@@ -6,8 +6,6 @@ int main(int argc, char** argv){
         server();
     } else {
         client();
-        sendCommand("1");
-        sendCommand("2");
-        sendCommand("3");
+        sendCommand("Test");
     }
 }

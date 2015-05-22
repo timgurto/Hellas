@@ -7,6 +7,8 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
+const int MAX_CLIENTS = 10;
+
 int server();
 
 int client();
