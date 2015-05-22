@@ -1,2 +1,10 @@
 *.user
 mmo.ncb
+*.ilk
+Debug/mmo.exe
+*.pdb
+mmo/Debug/BuildLog.htm
+*.obj
+mmo/Debug/mt.dep
+*.idb
+mmo/Debug/mmo.exe.intermediate.manifest
