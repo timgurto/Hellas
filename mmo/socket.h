@@ -7,12 +7,23 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-const int MAX_CLIENTS = 10;
-const int BUFFER_SIZE = 100;
+class Socket {
+public:
+    static const int MAX_CLIENTS;
+    static const int BUFFER_SIZE;
+    static int sockAddrSize;
 
-int server();
+private:
+    SOCKET s;
 
-int client();
-void sendCommand(std::string msg);
+public:
+    Socket();
+    ~Socket();
+
+    int runServer();
+
+    int runClient();
+    void sendCommand(std::string msg);
+};
 
 #endif

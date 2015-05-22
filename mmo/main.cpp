@@ -1,11 +1,12 @@
 #include <string>
-#include "socket.h"
+#include "Socket.h"
 
 int main(int argc, char** argv){
+    Socket socket;
     if (argc > 1 && std::string(argv[1]) == "-server") {
-        server();
+        socket.runServer();
     } else {
-        client();
-        sendCommand("Test");
+        socket.runClient();
+        socket.sendCommand("Test");
     }
 }

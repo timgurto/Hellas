@@ -1,19 +1,19 @@
-#include "socket.h"
+#include "Socket.h"
 
-//TODO use class
 //TODO exceptions
 
-static SOCKET s;
-static int sockAddrSize;
+const int Socket::MAX_CLIENTS = 10;
+const int Socket::BUFFER_SIZE = 100;
+int Socket::sockAddrSize = sizeof(sockaddr_in);
 
-void init(){
+
+
+Socket::Socket(){
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0){
         return;
     }
     std::cout << "Winsock initialized" << std::endl;
-
-    sockAddrSize = sizeof(sockaddr_in);
 
     s = socket(AF_INET, SOCK_STREAM, 0);
     if (s == INVALID_SOCKET) {
@@ -23,9 +23,12 @@ void init(){
     std::cout << "Socket created" << std::endl;
 }
 
-int server(){
-    init();
+Socket::~Socket(){
+    closesocket(s);
+    WSACleanup();
+}
 
+int Socket::runServer(){
     // Socket details
     sockaddr_in server;
     server.sin_family = AF_INET;
@@ -45,7 +48,7 @@ int server(){
     SOCKET clientSocket[MAX_CLIENTS];
     for (int i = 0; i != MAX_CLIENTS; ++i)
         clientSocket[i] = 0;
-    char buffer[BUFFER_SIZE];
+    char buffer[BUFFER_SIZE+1];
     for (int i = 0; i != BUFFER_SIZE; ++i)
         buffer[i] = '\0';
 
@@ -119,22 +122,18 @@ int server(){
     }
 
     // Should never reach here
-    closesocket(s);
-    WSACleanup();
     return 0;
 }
 
-int client(){
-    init();
-
+int Socket::runClient(){
     // Server details
-    sockaddr_in server;
-    server.sin_addr.s_addr = inet_addr("127.0.0.1");
-    server.sin_family = AF_INET;
-    server.sin_port = htons(8888);
+    sockaddr_in serverAddr;
+    serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(8888);
 
     // Connect to server
-    if (connect(s, (sockaddr*)&server, sizeof(server)) < 0){
+    if (connect(s, (sockaddr*)&serverAddr, sockAddrSize) < 0){
         std::cout << "Connection error" << std::endl;
         return 1;
     }
@@ -144,7 +143,7 @@ int client(){
 }
 
 // Send a client command to the server
-void sendCommand(std::string msg) {
+void Socket::sendCommand(std::string msg) {
     if (send(s, msg.c_str(), msg.length(), 0) < 0)
         std::cout << "Failed to send command: " << msg << std::endl;
     else
