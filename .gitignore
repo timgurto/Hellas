@@ -8,3 +8,5 @@ mmo/Debug/BuildLog.htm
 mmo/Debug/mt.dep
 *.idb
 mmo/Debug/mmo.exe.intermediate.manifest
+*.suo
+mmo.lnk
