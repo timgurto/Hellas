@@ -28,7 +28,17 @@ int server(){
     }
     std::cout << "Socket bound" << std::endl;
 
-    while (true);
+    while (true) {
+        listen(s, 3);
+        std::cout << "Waiting for connections" << std::endl;
+        sockaddr_in client;
+        static int c = sizeof(sockaddr_in);
+        SOCKET newSocket = accept(s, (sockaddr*)&client, &c);
+        if (newSocket == INVALID_SOCKET)
+            std::cout << "Error accepting connection: " << WSAGetLastError() << std::endl;
+        else
+            std::cout << "Connection accepted" << std::endl;
+    }
 
     //closesocket(s);
 }
