@@ -1,9 +1,14 @@
 #include "socket.h"
 
-int server(){
+//TODO use class
+//TODO exceptions
+
+static SOCKET s;
+
+void init(){
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0){
-        return 1;
+        return;
     }
     std::cout << "Winsock initialized" << std::endl;
 
@@ -11,7 +16,6 @@ int server(){
     s = socket(AF_INET, SOCK_STREAM, 0);
     if (s == INVALID_SOCKET) {
         std::cout << "Could not create socket: " << WSAGetLastError() << std::endl;
-        return 1;
     }
     std::cout << "Socket created" << std::endl;
 
@@ -37,26 +41,11 @@ int server(){
         if (newSocket == INVALID_SOCKET)
             std::cout << "Error accepting connection: " << WSAGetLastError() << std::endl;
         else
-            std::cout << "Connection accepted" << std::endl;
     }
 
-    //closesocket(s);
 }
 
 int client(){
-    WSADATA wsa;
-    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0){
-        return 1;
-    }
-    std::cout << "Winsock initialized" << std::endl;
-
-    SOCKET s;
-    s = socket(AF_INET, SOCK_STREAM, 0);
-    if (s == INVALID_SOCKET) {
-        std::cout << "Could not create socket: " << WSAGetLastError() << std::endl;
-        return 1;
-    }
-    std::cout << "Socket created" << std::endl;
 
     // Server details
     sockaddr_in server;

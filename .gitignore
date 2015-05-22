@@ -10,3 +10,4 @@ mmo/Debug/mt.dep
 mmo/Debug/mmo.exe.intermediate.manifest
 *.suo
 mmo.lnk
+*.tmp
