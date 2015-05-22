@@ -8,6 +8,7 @@
 #pragma comment(lib, "ws2_32.lib")
 
 const int MAX_CLIENTS = 10;
+const int BUFFER_SIZE = 100;
 
 int server();
 
