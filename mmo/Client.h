@@ -1,11 +1,11 @@
-#ifndef SERVER_H
-#define SERVER_H
+#ifndef CLIENT_H
+#define CLIENT_H
 
 #include "Socket.h"
 
-class Server{
+class Client{
 public:
-    Server();
+    Client();
     void run();
 
 private:
