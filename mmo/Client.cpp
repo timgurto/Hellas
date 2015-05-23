@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <SDL.h>
 #include <string>
+#include <sstream>
 
 #include "Client.h"
 
@@ -14,7 +15,8 @@ DWORD WINAPI startSocketClient(LPVOID client){
 Client::Client():
 window(0),
 image(0),
-screen(0){
+screen(0),
+_location(std::make_pair(0, 0)){
     DWORD socketThreadID;
     CreateThread(0, 0, &startSocketClient, this, 0, &socketThreadID);
 
@@ -74,12 +76,41 @@ void Client::run(){
     if (!window || !image)
         return;
 
-    draw();
+    while (true) {
+        // Deal with any messages from the server
+        if (!_messages.empty()){
+            handleMessage(_messages.front());
+            _messages.pop();
+        }
 
-    SDL_Delay(5000);
+        // Draw
+        draw();
+    }
 }
 
 void Client::draw(){
-    SDL_BlitSurface(image, 0, screen, 0);
+    SDL_Rect drawLoc;
+    drawLoc.x = _location.first;
+    drawLoc.y = _location.second;
+    SDL_BlitSurface(image, 0, screen, &drawLoc);
     SDL_UpdateWindowSurface(window);
+}
+
+void Client::handleMessage(std::string msg){
+    std::istringstream iss(msg);
+    int msgCode;
+    char del;
+    iss >> msgCode >> del;
+    switch(msgCode) {
+    case 0:
+        // Location
+        int x, y;
+        iss >> x >> del >> y;
+        if (iss.peek() != '|')
+            return;
+        _location = std::make_pair(x, y);
+
+    default:
+        ;
+    }
 }

@@ -137,6 +137,6 @@ void Server::addNewUser(SOCKET socket){
 
     // Send user his location
     std::ostringstream oss;
-    oss << "x" << _userLocations[socket].first << "y" << _userLocations[socket].second;
+    oss << "0," << _userLocations[socket].first << "," << _userLocations[socket].second << "|";
     Socket::sendMessage(socket, oss.str());
 }
