@@ -3,6 +3,8 @@
 
 #include <map>
 #include <utility>
+#include <queue>
+#include <string>
 
 #include "Socket.h"
 
@@ -20,9 +22,15 @@ private:
     Socket socket;
     SDL_Window *window;
 
+    bool _loop;
+
+    std::queue<std::pair<SOCKET, std::string> > _messages;
+
     std::map<SOCKET, std::pair<int, int> > _userLocations;
 
     void addNewUser(SOCKET socket);
+
+    void handleMessage(SOCKET user, std::string msg);
 };
 
 #endif

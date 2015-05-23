@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "Client.h"
+#include "messageCodes.h"
 
 const int Client::BUFFER_SIZE = 100;
 
@@ -16,7 +17,8 @@ Client::Client():
 window(0),
 image(0),
 screen(0),
-_location(std::make_pair(0, 0)){
+_location(std::make_pair(0, 0)),
+_loop(true){
     DWORD socketThreadID;
     CreateThread(0, 0, &startSocketClient, this, 0, &socketThreadID);
 
@@ -43,7 +45,6 @@ Client::~Client(){
 }
 
 void Client::runSocketClient(){
-    Socket s;
     // Server details
     sockaddr_in serverAddr;
     serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
@@ -51,7 +52,7 @@ void Client::runSocketClient(){
     serverAddr.sin_port = htons(8888);
 
     // Connect to server
-    if (connect(s.raw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0){
+    if (connect(_socket.raw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0){
         std::cout << "Connection error" << std::endl;
         return ;
     }
@@ -62,8 +63,9 @@ void Client::runSocketClient(){
     for (int i = 0; i != BUFFER_SIZE; ++i)
         buffer[i] = '\0';
     while (true) {
-        int recvSize = recv(s.raw(), buffer, 100, 0);
-        if (recvSize != SOCKET_ERROR){
+        int charsRead = recv(_socket.raw(), buffer, 100, 0);
+        if (charsRead != SOCKET_ERROR){
+            buffer[charsRead] = '\0';
             std::cout << "Received message: \"" << std::string(buffer) << "\"" << std::endl;
             _messages.push(std::string(buffer));
         }
@@ -71,16 +73,51 @@ void Client::runSocketClient(){
 }
 
 void Client::run(){
-    socket.sendCommand("Test");
 
     if (!window || !image)
         return;
 
-    while (true) {
+    while (_loop) {
         // Deal with any messages from the server
         if (!_messages.empty()){
             handleMessage(_messages.front());
             _messages.pop();
+        }
+
+        // Handle user events
+        static SDL_Event e;
+        while (SDL_PollEvent(&e) != 0) {
+            std::ostringstream oss;
+            switch(e.type) {
+            case SDL_QUIT:
+                _loop = false;
+                break;
+
+            case SDL_KEYDOWN:
+                switch(e.key.keysym.sym) {
+                case SDLK_UP:
+                    oss << '[' << REQ_MOVE_UP << ']';
+                    _socket.sendCommand(oss.str());
+                    break;
+                case SDLK_DOWN:
+                    oss << '[' << REQ_MOVE_DOWN << ']';
+                    _socket.sendCommand(oss.str());
+                    break;
+                case SDLK_LEFT:
+                    oss << '[' << REQ_MOVE_LEFT << ']';
+                    _socket.sendCommand(oss.str());
+                    break;
+                case SDLK_RIGHT:
+                    oss << '[' << REQ_MOVE_RIGHT << ']';
+                    _socket.sendCommand(oss.str());
+                    break;
+                }
+                break;
+
+            default:
+                //Unhandled event
+                ;
+            }
         }
 
         // Draw
@@ -100,17 +137,19 @@ void Client::handleMessage(std::string msg){
     std::istringstream iss(msg);
     int msgCode;
     char del;
-    iss >> msgCode >> del;
-    switch(msgCode) {
-    case 0:
-        // Location
-        int x, y;
-        iss >> x >> del >> y;
-        if (iss.peek() != '|')
-            return;
-        _location = std::make_pair(x, y);
+    while (iss.peek() == '[') {
+        iss >>del >> msgCode >> del;
+        switch(msgCode) {
 
-    default:
-        ;
+        case MSG_LOCATION:
+            int x, y;
+            iss >> x >> del >> y >> del;
+            if (del != ']')
+                return;
+            _location = std::make_pair(x, y);
+
+        default:
+            ;
+        }
     }
 }

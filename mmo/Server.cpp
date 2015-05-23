@@ -5,6 +5,7 @@
 
 #include "Socket.h"
 #include "Server.h"
+#include "messageCodes.h"
 
 const int Server::MAX_CLIENTS = 10;
 const int Server::BUFFER_SIZE = 100;
@@ -15,6 +16,7 @@ DWORD WINAPI startSocketServer(LPVOID server){
 }
 
 Server::Server():
+_loop(true),
 window(0){
     DWORD socketThreadID;
     CreateThread(0, 0, &startSocketServer, this, 0, &socketThreadID);
@@ -116,6 +118,7 @@ void Server::runSocketServer(){
                     // Message received
                     buffer[charsRead] = '\0';
                     std::cout << "Message received from client " << i << ": " << buffer << std::endl;
+                    _messages.push(std::make_pair(clientSocket[i], std::string(buffer)));
                 }
             }
         }
@@ -128,7 +131,29 @@ void Server::runSocketServer(){
 
 void Server::run(){
 
-    SDL_Delay(15000);
+    while (_loop) {
+        // Deal with any messages from the server
+        if (!_messages.empty()){
+            handleMessage(_messages.front().first, _messages.front().second);
+            _messages.pop();
+        }
+
+        // Handle user events
+        static SDL_Event e;
+        while (SDL_PollEvent(&e) != 0) {
+            switch(e.type) {
+            case SDL_KEYDOWN:
+            case SDL_QUIT:
+                _loop = false;
+                break;
+
+            default:
+                // Unhandled event
+                ;
+            }
+        }
+
+    }
 }
 
 void Server::addNewUser(SOCKET socket){
@@ -137,6 +162,58 @@ void Server::addNewUser(SOCKET socket){
 
     // Send user his location
     std::ostringstream oss;
-    oss << "0," << _userLocations[socket].first << "," << _userLocations[socket].second << "|";
+    oss << '[' << MSG_LOCATION << ',' << _userLocations[socket].first << ',' << _userLocations[socket].second << ']';
     Socket::sendMessage(socket, oss.str());
+}
+
+void Server::handleMessage(SOCKET user, std::string msg){
+    int eof = std::char_traits<wchar_t>::eof();
+    int msgCode;
+    char del;
+    bool sendLocation = false;
+    std::istringstream iss(msg);
+    while (iss.peek() == '[') {
+        iss >> del >> msgCode >> del;
+        switch(msgCode) {
+
+        case REQ_MOVE_UP:
+            if (del != ']')
+                return;
+            _userLocations[user].second -= 20;
+            sendLocation = true;
+            break;
+
+        case REQ_MOVE_DOWN:
+            if (del != ']')
+                return;
+            _userLocations[user].second += 20;
+            sendLocation = true;
+            break;
+
+        case REQ_MOVE_LEFT:
+            if (del != ']')
+                return;
+            _userLocations[user].first -= 20;
+            sendLocation = true;
+            break;
+
+        case REQ_MOVE_RIGHT:
+            if (del != ']')
+                return;
+            _userLocations[user].first += 20;
+            sendLocation = true;
+            break;
+
+        default:
+            ;
+        }
+    }
+
+    // Send user his location
+    if (sendLocation) {
+        std::ostringstream oss;
+        oss << '[' << MSG_LOCATION << ',' << _userLocations[user].first << ',' << _userLocations[user].second << ']';
+        Socket::sendMessage(user, oss.str());
+    }
+
 }

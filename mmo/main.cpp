@@ -5,7 +5,8 @@
 #include "Server.h"
 
 int main(int argc, char* args[]){
-    if (argc > 1 && std::string(args[1]) == "-server") {
+    //if (argc > 1 && std::string(args[1]) == "-server") {
+    if (argc == 1) {
         Server server;
         server.run();
     } else {

@@ -18,12 +18,13 @@ public:
 private:
     static const int BUFFER_SIZE;
 
-    Socket socket;
     SDL_Window *window;
 
     SDL_Surface
         *image,
         *screen;
+    bool _loop;
+    Socket _socket;
 
     std::pair<int, int> _location;
 

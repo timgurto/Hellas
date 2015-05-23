@@ -193,6 +193,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\messageCodes.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Server.h"
 				>
 			</File>
