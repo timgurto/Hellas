@@ -8,8 +8,12 @@ public:
     Server();
     ~Server();
     void run();
+    void runSocketServer();
 
 private:
+    static const int MAX_CLIENTS;
+    static const int BUFFER_SIZE;
+
     Socket socket;
     SDL_Window *window;
 };

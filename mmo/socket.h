@@ -7,21 +7,21 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
+// Wrapper class for WInsock's SOCKET
 class Socket {
 public:
-    static const int MAX_CLIENTS;
-    static const int BUFFER_SIZE;
     static int sockAddrSize;
 
 private:
-    SOCKET s;
+    SOCKET _raw;
 
 public:
     Socket();
     ~Socket();
 
-    int runServer();
-
+    void bind(sockaddr_in &socketAddr);
+    void listen();
+    SOCKET raw();
     int runClient();
     void sendCommand(std::string msg);
 };
