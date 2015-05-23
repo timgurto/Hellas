@@ -61,3 +61,10 @@ void Socket::sendCommand(std::string msg) {
     else
         std::cout << "Sent command: " << msg << std::endl;
 }
+
+void Socket::sendMessage(SOCKET s, std::string msg){
+    if (send(s, msg.c_str(), (int)msg.length(), 0) < 0)
+        std::cout << "Failed to send command: " << msg << std::endl;
+    else
+        std::cout << "Sent command: " << msg << std::endl;
+}

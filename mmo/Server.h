@@ -1,6 +1,9 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#include <map>
+#include <utility>
+
 #include "Socket.h"
 
 class Server{
@@ -16,6 +19,10 @@ private:
 
     Socket socket;
     SDL_Window *window;
+
+    std::map<SOCKET, std::pair<int, int> > _userLocations;
+
+    void addNewUser(SOCKET socket);
 };
 
 #endif

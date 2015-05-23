@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <cassert>
 #include <SDL.h>
+#include <sstream>
 
 #include "Socket.h"
 #include "Server.h"
@@ -66,6 +67,7 @@ void Server::runSocketServer(){
                     std::cout << "Connection accepted: "
                               << inet_ntoa(clientAddr.sin_addr) << ":" << ntohs(clientAddr.sin_port) << std::endl
                               << "ID= " << i << ", socket number = " << clientSocket[i] << std::endl;
+                    addNewUser(clientSocket[i]);
                 }
             }
         }
@@ -127,4 +129,12 @@ Server::~Server(){
 void Server::run(){
 
     SDL_Delay(10000);
+}
+
+void Server::addNewUser(SOCKET socket){
+    // Give new user a location
+    _userLocations[socket] = std::make_pair(500, 200);
+    std::ostringstream oss;
+    oss << "x" << _userLocations[socket].first << "y" << _userLocations[socket].second;
+    Socket::sendMessage(socket, oss.str());
 }

@@ -24,6 +24,8 @@ public:
     SOCKET raw();
     int runClient();
     void sendCommand(std::string msg);
+
+    static void Socket::sendMessage(SOCKET s, std::string msg);
 };
 
 #endif
