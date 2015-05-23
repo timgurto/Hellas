@@ -126,6 +126,5 @@ Server::~Server(){
 
 void Server::run(){
 
-    while (true)
-        ;
+    SDL_Delay(10000);
 }
