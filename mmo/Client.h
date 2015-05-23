@@ -4,6 +4,7 @@
 #include <queue>
 #include <string>
 #include <utility>
+#include <map>
 
 #include "Socket.h"
 
@@ -27,6 +28,8 @@ private:
     Socket _socket;
 
     std::pair<int, int> _location;
+
+    std::map<SOCKET, std::pair<int, int> > _otherUserLocations;
 
     std::queue<std::string> _messages;
 

@@ -141,11 +141,23 @@ void Client::handleMessage(std::string msg){
         switch(msgCode) {
 
         case MSG_LOCATION:
+        {
             int x, y;
             iss >> x >> del >> y >> del;
             if (del != ']')
                 return;
             _location = std::make_pair(x, y);
+        }
+
+        case MSG_OTHER_LOCATION:
+        {
+            SOCKET s;
+            int x, y;
+            iss >> s >> del >> x >> del >> y >> del;
+            if (del != ']')
+                return;
+            _otherUserLocations[s] = std::make_pair(x, y);
+        }
 
         default:
             ;

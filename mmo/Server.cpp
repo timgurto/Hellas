@@ -153,10 +153,7 @@ void Server::addNewUser(SOCKET socket){
     // Give new user a location
     _userLocations[socket] = std::make_pair(500, 200);
 
-    // Send user his location
-    std::ostringstream oss;
-    oss << '[' << MSG_LOCATION << ',' << _userLocations[socket].first << ',' << _userLocations[socket].second << ']';
-    Socket::sendMessage(socket, oss.str());
+    sendUserLocation(socket);
 }
 
 void Server::handleMessage(SOCKET user, std::string msg){
@@ -202,11 +199,22 @@ void Server::handleMessage(SOCKET user, std::string msg){
         }
     }
 
-    // Send user his location
     if (sendLocation) {
-        std::ostringstream oss;
-        oss << '[' << MSG_LOCATION << ',' << _userLocations[user].first << ',' << _userLocations[user].second << ']';
-        Socket::sendMessage(user, oss.str());
+        sendUserLocation(user);
     }
 
+}
+
+void Server::sendUserLocation(SOCKET socket){
+    // User himself
+    std::ostringstream oss;
+    oss << '[' << MSG_LOCATION << ',' << _userLocations[socket].first << ',' << _userLocations[socket].second << ']';
+    Socket::sendMessage(socket, oss.str());
+
+    // Other users
+    oss.clear();
+    oss << '[' << MSG_OTHER_LOCATION << ',' << socket << ',' << _userLocations[socket].first << ',' << _userLocations[socket].second << ']';
+    //for (std::set<SOCKET>::iterator it = _clientSockets.begin(); it != _clientSockets.end();)
+    //    if (*it != socket)
+    //        Socket::sendMessage(*it, oss.str());
 }

@@ -33,6 +33,9 @@ private:
 
     void addNewUser(SOCKET socket);
 
+    // Send a user's location to all users
+    void sendUserLocation(SOCKET socket);
+
     void handleMessage(SOCKET user, std::string msg);
 };
 

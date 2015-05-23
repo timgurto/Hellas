@@ -10,7 +10,9 @@ enum MessageCode{
 
     //Server messages
     MSG_LOCATION,
-    MSG_OTHER_LOCATION
+    MSG_OTHER_LOCATION,
+
+    NUM_MESSAGE_CODES
 };
 
 #endif
