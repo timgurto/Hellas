@@ -4,11 +4,19 @@
 
 #include "Client.h"
 
+const int Client::BUFFER_SIZE = 100;
+
+DWORD WINAPI startSocketClient(LPVOID client){
+    ((Client*)client)->runSocketClient();
+    return 0;
+}
+
 Client::Client():
 window(0),
 image(0),
 screen(0){
-    socket.runClient();
+    DWORD socketThreadID;
+    CreateThread(0, 0, &startSocketClient, this, 0, &socketThreadID);
 
     int ret = SDL_Init(SDL_INIT_VIDEO);
     if (ret < 0)
@@ -32,6 +40,34 @@ Client::~Client(){
     SDL_Quit();
 }
 
+void Client::runSocketClient(){
+    Socket s;
+    // Server details
+    sockaddr_in serverAddr;
+    serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(8888);
+
+    // Connect to server
+    if (connect(s.raw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0){
+        std::cout << "Connection error" << std::endl;
+        return ;
+    }
+    std::cout << "Connected" << std::endl;
+
+    //Receive messages indefinitely
+    char buffer[BUFFER_SIZE+1];
+    for (int i = 0; i != BUFFER_SIZE; ++i)
+        buffer[i] = '\0';
+    while (true) {
+        int recvSize = recv(s.raw(), buffer, 100, 0);
+        if (recvSize != SOCKET_ERROR){
+            std::cout << "Received message: \"" << std::string(buffer) << "\"" << std::endl;
+            _messages.push(std::string(buffer));
+        }
+    }
+}
+
 void Client::run(){
     socket.sendCommand("Test");
 
@@ -40,7 +76,7 @@ void Client::run(){
 
     draw();
 
-    SDL_Delay(2000);
+    SDL_Delay(5000);
 }
 
 void Client::draw(){

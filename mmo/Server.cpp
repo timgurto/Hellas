@@ -14,6 +14,25 @@ DWORD WINAPI startSocketServer(LPVOID server){
     return 0;
 }
 
+Server::Server():
+window(0){
+    DWORD socketThreadID;
+    CreateThread(0, 0, &startSocketServer, this, 0, &socketThreadID);
+    int ret = SDL_Init(SDL_INIT_VIDEO);
+    if (ret < 0)
+        return;
+
+    window = SDL_CreateWindow("Server", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
+    if (!window)
+        return;
+}
+
+Server::~Server(){
+    if (window)
+        SDL_DestroyWindow(window);
+    SDL_Quit();
+}
+
 void Server::runSocketServer(){
     Socket s;
     // Socket details
@@ -107,33 +126,16 @@ void Server::runSocketServer(){
     assert (false);
 }
 
-Server::Server():
-window(0){
-    DWORD socketThreadID;
-    CreateThread(0, 0, &startSocketServer, this, 0, &socketThreadID);
-    int ret = SDL_Init(SDL_INIT_VIDEO);
-    if (ret < 0)
-        return;
-
-    window = SDL_CreateWindow("Server", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
-    if (!window)
-        return;
-}
-
-Server::~Server(){
-    if (window)
-        SDL_DestroyWindow(window);
-    SDL_Quit();
-}
-
 void Server::run(){
 
-    SDL_Delay(10000);
+    SDL_Delay(15000);
 }
 
 void Server::addNewUser(SOCKET socket){
     // Give new user a location
     _userLocations[socket] = std::make_pair(500, 200);
+
+    // Send user his location
     std::ostringstream oss;
     oss << "x" << _userLocations[socket].first << "y" << _userLocations[socket].second;
     Socket::sendMessage(socket, oss.str());

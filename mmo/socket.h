@@ -22,7 +22,7 @@ public:
     void bind(sockaddr_in &socketAddr);
     void listen();
     SOCKET raw();
-    int runClient();
+
     void sendCommand(std::string msg);
 
     static void Socket::sendMessage(SOCKET s, std::string msg);

@@ -37,23 +37,6 @@ SOCKET Socket::raw(){
     return _raw;
 }
 
-int Socket::runClient(){
-    // Server details
-    sockaddr_in serverAddr;
-    serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(8888);
-
-    // Connect to server
-    if (connect(_raw, (sockaddr*)&serverAddr, sockAddrSize) < 0){
-        std::cout << "Connection error" << std::endl;
-        return 1;
-    }
-    std::cout << "Connected" << std::endl;
-
-    return 0;
-}
-
 // Send a client command to the server
 void Socket::sendCommand(std::string msg) {
     if (send(_raw, msg.c_str(), (int)msg.length(), 0) < 0)
