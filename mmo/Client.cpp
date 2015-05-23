@@ -1,4 +1,3 @@
-#include <windows.h>
 #include <SDL.h>
 #include <string>
 #include <sstream>
@@ -8,7 +7,7 @@
 
 const int Client::BUFFER_SIZE = 100;
 
-DWORD WINAPI startSocketClient(LPVOID client){
+int startSocketClient(void *client){
     ((Client*)client)->runSocketClient();
     return 0;
 }
@@ -19,8 +18,7 @@ image(0),
 screen(0),
 _location(std::make_pair(0, 0)),
 _loop(true){
-    DWORD socketThreadID;
-    CreateThread(0, 0, &startSocketClient, this, 0, &socketThreadID);
+    SDL_Thread *socketThreadID = SDL_CreateThread(startSocketClient, "Client socket handler", this);
 
     int ret = SDL_Init(SDL_INIT_VIDEO);
     if (ret < 0)

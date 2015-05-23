@@ -15,3 +15,4 @@ mmo.lnk
 *.dep
 Release/mmo.exe
 *.manifest
+*.lnk

@@ -1,4 +1,3 @@
-#include <windows.h>
 #include <cassert>
 #include <SDL.h>
 #include <sstream>
@@ -10,7 +9,7 @@
 const int Server::MAX_CLIENTS = 10;
 const int Server::BUFFER_SIZE = 100;
 
-DWORD WINAPI startSocketServer(LPVOID server){
+int startSocketServer(void *server){
     ((Server*)server)->runSocketServer();
     return 0;
 }
@@ -18,11 +17,11 @@ DWORD WINAPI startSocketServer(LPVOID server){
 Server::Server():
 _loop(true),
 window(0){
-    DWORD socketThreadID;
-    CreateThread(0, 0, &startSocketServer, this, 0, &socketThreadID);
     int ret = SDL_Init(SDL_INIT_VIDEO);
     if (ret < 0)
         return;
+
+    SDL_Thread *socketThreadID = SDL_CreateThread(startSocketServer, "Server socket handler", this);
 
     window = SDL_CreateWindow("Server", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
     if (!window)
