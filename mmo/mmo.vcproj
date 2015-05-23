@@ -58,6 +58,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				GenerateDebugInformation="true"
+				SubSystem="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -166,6 +167,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Server.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Socket.cpp"
 				>
 			</File>
@@ -175,6 +180,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\Server.h"
+				>
+			</File>
 			<File
 				RelativePath=".\Socket.h"
 				>
