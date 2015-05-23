@@ -47,9 +47,6 @@ void Server::runSocketServer(){
     s.listen();
 
     fd_set readFDs;
-    SOCKET clientSocket[MAX_CLIENTS];
-    for (int i = 0; i != MAX_CLIENTS; ++i)
-        clientSocket[i] = 0;
     char buffer[BUFFER_SIZE+1];
     for (int i = 0; i != BUFFER_SIZE; ++i)
         buffer[i] = '\0';
@@ -58,10 +55,8 @@ void Server::runSocketServer(){
         // Populate socket list with active sockets
         FD_ZERO(&readFDs);
         FD_SET(s.raw(), &readFDs);
-        for (int i = 0; i != MAX_CLIENTS; ++i){
-            if (clientSocket[i] != 0)
-                FD_SET(clientSocket[i], &readFDs);
-        }
+        for (std::set<SOCKET>::iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it)
+            FD_SET(*it, &readFDs);
         
         // Poll for activity
         int activity = select(0, &readFDs, 0, 0, 0);
@@ -72,55 +67,54 @@ void Server::runSocketServer(){
 
         // Activity on server socket: new connection
         if (FD_ISSET(s.raw(), &readFDs)) {
-            int i;
-            for (i = 0; i != MAX_CLIENTS; ++i)
-                if (clientSocket[i] == 0)
-                    break;
-            if (i == MAX_CLIENTS)
+            if (_clientSockets.size() == MAX_CLIENTS)
                 std::cout << "No room for additional clients; all slots full" << std::endl;
             else {
                 sockaddr_in clientAddr;
-                clientSocket[i] = accept(s.raw(), (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
-                if (clientSocket[i] == SOCKET_ERROR) {
+                SOCKET tempSocket = accept(s.raw(), (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
+                if (tempSocket == SOCKET_ERROR) {
                     std::cout << "Error accepting connection: " << WSAGetLastError() << std::endl;
-                    clientSocket[i] = 0;
                 } else {
                     std::cout << "Connection accepted: "
                               << inet_ntoa(clientAddr.sin_addr) << ":" << ntohs(clientAddr.sin_port) << std::endl
-                              << "ID= " << i << ", socket number = " << clientSocket[i] << std::endl;
-                    addNewUser(clientSocket[i]);
+                              << ", socket number = " << tempSocket << std::endl;
+                    _clientSockets.insert(tempSocket);
+                    addNewUser(tempSocket);
                 }
             }
         }
 
         // Activity on client socket: message received or client disconnected
-        for (int i = 0; i != MAX_CLIENTS; ++i) {
-            if (FD_ISSET(clientSocket[i], &readFDs)) {
+        for (std::set<SOCKET>::iterator it = _clientSockets.begin(); it != _clientSockets.end();) {
+            if (FD_ISSET(*it, &readFDs)) {
                 sockaddr_in clientAddr;
-                getpeername(clientSocket[i], (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
-                int charsRead = recv(clientSocket[i], buffer, BUFFER_SIZE, 0);
+                getpeername(*it, (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
+                int charsRead = recv(*it, buffer, BUFFER_SIZE, 0);
                 if (charsRead == SOCKET_ERROR) {
                     int err = WSAGetLastError();
                     if (err == WSAECONNRESET) {
                         // Client disconnected
-                        closesocket(clientSocket[i]);
-                        clientSocket[i] = 0;
-                        std::cout << "Client " << i << " disconnected" << std::endl;
+                        std::cout << "Client " << *it << " disconnected" << std::endl;
+                        closesocket(*it);
+                        _clientSockets.erase(it++);
+                        continue;
                     } else {
                         std::cout << "Error receiving message: " << err << std::endl;
                     }
                 } else if (charsRead == 0) {
                     // Client disconnected
-                    closesocket(clientSocket[i]);
-                    clientSocket[i] = 0;
-                    std::cout << "Client " << i << " disconnected" << std::endl;
+                    std::cout << "Client " << *it << " disconnected" << std::endl;
+                    closesocket(*it);
+                    _clientSockets.erase(it++);
+                    continue;
                 } else {
                     // Message received
                     buffer[charsRead] = '\0';
-                    std::cout << "Message received from client " << i << ": " << buffer << std::endl;
-                    _messages.push(std::make_pair(clientSocket[i], std::string(buffer)));
+                    std::cout << "Message received from client " << *it << ": " << buffer << std::endl;
+                    _messages.push(std::make_pair(*it, std::string(buffer)));
                 }
             }
+            ++it;
         }
 
     }

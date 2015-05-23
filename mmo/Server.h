@@ -2,6 +2,7 @@
 #define SERVER_H
 
 #include <map>
+#include <set>
 #include <utility>
 #include <queue>
 #include <string>
@@ -23,6 +24,8 @@ private:
     SDL_Window *window;
 
     bool _loop;
+
+    std::set<SOCKET> _clientSockets;
 
     std::queue<std::pair<SOCKET, std::string> > _messages;
 

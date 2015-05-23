@@ -9,7 +9,8 @@ enum MessageCode{
     REQ_MOVE_RIGHT,
 
     //Server messages
-    MSG_LOCATION
+    MSG_LOCATION,
+    MSG_OTHER_LOCATION
 };
 
 #endif
