@@ -6,10 +6,12 @@
 class Server{
 public:
     Server();
+    ~Server();
     void run();
 
 private:
     Socket socket;
+    SDL_Window *window;
 };
 
 #endif

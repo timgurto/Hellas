@@ -1,11 +1,8 @@
 #include <string>
 #include <SDL.h>
-#include <SDL_main.h>
 
 #include "Client.h"
 #include "Server.h"
-
-#undef main
 
 int main(int argc, char* args[]){
     if (argc > 1 && std::string(args[1]) == "-server") {
@@ -15,4 +12,5 @@ int main(int argc, char* args[]){
         Client client;
         client.run();
     }
+    return 0;
 }
