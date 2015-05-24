@@ -129,6 +129,11 @@ void Client::draw(){
     drawLoc.x = _location.first;
     drawLoc.y = _location.second;
     SDL_BlitSurface(image, 0, screen, &drawLoc);
+    for (std::map<SOCKET, std::pair<int, int> >::iterator it = _otherUserLocations.begin(); it != _otherUserLocations.end(); ++it){
+        drawLoc.x = it->second.first;
+        drawLoc.y = it->second.second;
+        SDL_BlitSurface(image, 0, screen, &drawLoc);
+    }
     SDL_UpdateWindowSurface(window);
 }
 
@@ -151,12 +156,11 @@ void Client::handleMessage(std::string msg){
 
         case MSG_OTHER_LOCATION:
         {
-            SOCKET s;
-            int x, y;
+            int s, x, y;
             iss >> s >> del >> x >> del >> y >> del;
             if (del != ']')
                 return;
-            _otherUserLocations[s] = std::make_pair(x, y);
+            _otherUserLocations[(SOCKET)s] = std::make_pair(x, y);
         }
 
         default:

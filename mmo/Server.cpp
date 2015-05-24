@@ -212,7 +212,7 @@ void Server::sendUserLocation(SOCKET socket){
     Socket::sendMessage(socket, oss.str());
 
     // Other users
-    oss.clear();
+    oss.str("");
     oss << '[' << MSG_OTHER_LOCATION << ',' << socket << ',' << _userLocations[socket].first << ',' << _userLocations[socket].second << ']';
     for (std::set<SOCKET>::iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it)
         if (*it != socket)
