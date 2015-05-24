@@ -156,11 +156,13 @@ void Server::addNewUser(SOCKET socket){
     sendUserLocation(socket);
 
     // Send new user everybody else's location
-    std::ostringstream oss;
-    oss << '[' << MSG_OTHER_LOCATION << ',' << socket << ',' << _userLocations[socket].first << ',' << _userLocations[socket].second << ']';
-    for (std::set<SOCKET>::iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it)
-        if (*it != socket)
-            Socket::sendMessage(*it, oss.str());
+    for (std::set<SOCKET>::iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it){
+        if (*it != socket && _userLocations.find(*it) != _userLocations.end()) {
+            std::ostringstream oss;
+            oss << '[' << MSG_OTHER_LOCATION << ',' << *it << ',' << _userLocations[*it].first << ',' << _userLocations[*it].second << ']';
+            Socket::sendMessage(socket, oss.str());
+        }
+    }
 }
 
 void Server::handleMessage(SOCKET user, std::string msg){
