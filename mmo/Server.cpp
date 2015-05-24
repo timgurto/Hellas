@@ -176,6 +176,8 @@ void Server::handleMessage(SOCKET user, std::string msg){
         case REQ_MOVE_UP:
             if (del != ']')
                 return;
+            if (_userLocations.find(user) == _userLocations.end())
+                break;
             _userLocations[user].second -= 20;
             sendLocation = true;
             break;
@@ -183,6 +185,8 @@ void Server::handleMessage(SOCKET user, std::string msg){
         case REQ_MOVE_DOWN:
             if (del != ']')
                 return;
+            if (_userLocations.find(user) == _userLocations.end())
+                break;
             _userLocations[user].second += 20;
             sendLocation = true;
             break;
@@ -190,6 +194,8 @@ void Server::handleMessage(SOCKET user, std::string msg){
         case REQ_MOVE_LEFT:
             if (del != ']')
                 return;
+            if (_userLocations.find(user) == _userLocations.end())
+                break;
             _userLocations[user].first -= 20;
             sendLocation = true;
             break;
@@ -197,6 +203,8 @@ void Server::handleMessage(SOCKET user, std::string msg){
         case REQ_MOVE_RIGHT:
             if (del != ']')
                 return;
+            if (_userLocations.find(user) == _userLocations.end())
+                break;
             _userLocations[user].first += 20;
             sendLocation = true;
             break;
