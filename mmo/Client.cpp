@@ -128,6 +128,12 @@ void Client::draw(){
     SDL_Rect drawLoc;
     drawLoc.x = _location.first;
     drawLoc.y = _location.second;
+    SDL_Rect borderRect = drawLoc;
+    borderRect.x = borderRect.x - 1;
+    borderRect.y = borderRect.y - 1;
+    borderRect.w = 22;
+    borderRect.h = 42;
+    SDL_FillRect(screen, &borderRect, SDL_MapRGB(screen->format, 255, 255, 255));
     SDL_BlitSurface(image, 0, screen, &drawLoc);
     for (std::map<SOCKET, std::pair<int, int> >::iterator it = _otherUserLocations.begin(); it != _otherUserLocations.end(); ++it){
         drawLoc.x = it->second.first;
