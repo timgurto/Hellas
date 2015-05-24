@@ -154,6 +154,13 @@ void Server::addNewUser(SOCKET socket){
     _userLocations[socket] = std::make_pair(500, 200);
 
     sendUserLocation(socket);
+
+    // Send new user everybody else's location
+    std::ostringstream oss;
+    oss << '[' << MSG_OTHER_LOCATION << ',' << socket << ',' << _userLocations[socket].first << ',' << _userLocations[socket].second << ']';
+    for (std::set<SOCKET>::iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it)
+        if (*it != socket)
+            Socket::sendMessage(*it, oss.str());
 }
 
 void Server::handleMessage(SOCKET user, std::string msg){
