@@ -30,8 +30,6 @@ _loop(true){
     screen = SDL_GetWindowSurface(window);
 
     image = SDL_LoadBMP("Images/man.bmp");
-    std::string err = SDL_GetError();
-
 }
 
 Client::~Client(){
