@@ -26,6 +26,7 @@ window(0){
     window = SDL_CreateWindow("Server", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
     if (!window)
         return;
+    screen = SDL_GetWindowSurface(window);
 }
 
 Server::~Server(){
@@ -146,6 +147,8 @@ void Server::run(){
             }
         }
 
+        SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 0, 0, 0));
+        SDL_UpdateWindowSurface(window);
     }
 }
 

@@ -22,6 +22,7 @@ private:
 
     Socket socket;
     SDL_Window *window;
+    SDL_Surface *screen;
 
     bool _loop;
 
