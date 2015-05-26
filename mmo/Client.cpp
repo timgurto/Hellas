@@ -31,6 +31,10 @@ _socketLoop(true){
 }
 
 Client::~Client(){
+    // Stop socket thread
+    _socketLoop = false;
+    SDL_WaitThread(_socketThreadID, 0);
+
     if (_image)
         SDL_FreeSurface(_image);
     if (_window)
@@ -53,15 +57,25 @@ void Client::runSocketClient(){
     std::cout << "Connected" << std::endl;
 
     // Receive messages indefinitely
+    fd_set readFDs;
     char buffer[BUFFER_SIZE+1];
     for (int i = 0; i != BUFFER_SIZE; ++i)
         buffer[i] = '\0';
+    timeval selectTimeout;
+    selectTimeout.tv_sec = 0;
+    selectTimeout.tv_usec = 10000;
+
     while (_socketLoop) {
-        int charsRead = recv(_socket.raw(), buffer, 100, 0);
-        if (charsRead != SOCKET_ERROR){
-            buffer[charsRead] = '\0';
-            std::cout << "Received message: \"" << std::string(buffer) << "\"" << std::endl;
-            _messages.push(std::string(buffer));
+        FD_ZERO(&readFDs);
+        FD_SET(_socket.raw(), &readFDs);
+        int activity = select(0, &readFDs, 0, 0, &selectTimeout);
+        if (activity != SOCKET_ERROR && FD_ISSET(_socket.raw(), &readFDs)) {
+            int charsRead = recv(_socket.raw(), buffer, 100, 0);
+            if (charsRead != SOCKET_ERROR && charsRead != 0){
+                buffer[charsRead] = '\0';
+                std::cout << "Received message: \"" << std::string(buffer) << "\"" << std::endl;
+                _messages.push(std::string(buffer));
+            }
         }
     }
 }

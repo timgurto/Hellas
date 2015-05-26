@@ -52,7 +52,6 @@ void Server::runSocketServer(){
     char buffer[BUFFER_SIZE+1];
     for (int i = 0; i != BUFFER_SIZE; ++i)
         buffer[i] = '\0';
-
     timeval selectTimeout;
     selectTimeout.tv_sec = 0;
     selectTimeout.tv_usec = 10000;
