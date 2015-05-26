@@ -7,13 +7,16 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-// Wrapper class for WInsock's SOCKET
+// Wrapper class for Winsock's SOCKET.  Singleton.
 class Socket {
 public:
     static int sockAddrSize;
 
 private:
-    SOCKET _raw;
+    static WSADATA _wsa;
+    static SOCKET _raw;
+    static bool _initialized;
+    static int _instances;
 
 public:
     Socket();
