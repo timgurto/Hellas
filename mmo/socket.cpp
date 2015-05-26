@@ -25,7 +25,7 @@ Socket::Socket(){
 Socket::~Socket(){
     -- _instances;
 
-    if (_initialized) {
+    if (_initialized && _instances == 0) {
         closesocket(_raw);
         WSACleanup();
     }
