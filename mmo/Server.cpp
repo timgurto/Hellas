@@ -15,23 +15,22 @@ int startSocketServer(void *server){
 }
 
 Server::Server():
-_loop(true),
-window(0){
+_loop(true){
     int ret = SDL_Init(SDL_INIT_VIDEO);
     if (ret < 0)
         return;
 
     SDL_Thread *socketThreadID = SDL_CreateThread(startSocketServer, "Server socket handler", this);
 
-    window = SDL_CreateWindow("Server", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
-    if (!window)
+    _window = SDL_CreateWindow("Server", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
+    if (!_window)
         return;
-    screen = SDL_GetWindowSurface(window);
+    _screen = SDL_GetWindowSurface(_window);
 }
 
 Server::~Server(){
-    if (window)
-        SDL_DestroyWindow(window);
+    if (_window)
+        SDL_DestroyWindow(_window);
     SDL_Quit();
 }
 
@@ -147,8 +146,8 @@ void Server::run(){
             }
         }
 
-        SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 0, 0, 0));
-        SDL_UpdateWindowSurface(window);
+        SDL_FillRect(_screen, 0, SDL_MapRGB(_screen->format, 0, 0, 0));
+        SDL_UpdateWindowSurface(_window);
     }
 }
 

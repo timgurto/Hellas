@@ -20,9 +20,9 @@ private:
     static const int MAX_CLIENTS;
     static const int BUFFER_SIZE;
 
-    Socket socket;
-    SDL_Window *window;
-    SDL_Surface *screen;
+    Socket _socket;
+    SDL_Window *_window;
+    SDL_Surface *_screen;
 
     bool _loop;
 

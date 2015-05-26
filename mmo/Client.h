@@ -19,11 +19,11 @@ public:
 private:
     static const int BUFFER_SIZE;
 
-    SDL_Window *window;
+    SDL_Window *_window;
 
     SDL_Surface
-        *image,
-        *screen;
+        *_image,
+        *_screen;
     bool _loop;
     Socket _socket;
 

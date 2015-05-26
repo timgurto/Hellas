@@ -13,9 +13,6 @@ int startSocketClient(void *client){
 }
 
 Client::Client():
-window(0),
-image(0),
-screen(0),
 _location(std::make_pair(0, 0)),
 _loop(true){
     SDL_Thread *socketThreadID = SDL_CreateThread(startSocketClient, "Client socket handler", this);
@@ -24,19 +21,19 @@ _loop(true){
     if (ret < 0)
         return;
 
-    window = SDL_CreateWindow("Client", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
-    if (!window)
+    _window = SDL_CreateWindow("Client", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
+    if (!_window)
         return;
-    screen = SDL_GetWindowSurface(window);
+    _screen = SDL_GetWindowSurface(_window);
 
-    image = SDL_LoadBMP("Images/man.bmp");
+    _image = SDL_LoadBMP("Images/man.bmp");
 }
 
 Client::~Client(){
-    if (image)
-        SDL_FreeSurface(image);
-    if (window)
-        SDL_DestroyWindow(window);
+    if (_image)
+        SDL_FreeSurface(_image);
+    if (_window)
+        SDL_DestroyWindow(_window);
     SDL_Quit();
 }
 
@@ -70,7 +67,7 @@ void Client::runSocketClient(){
 
 void Client::run(){
 
-    if (!window || !image)
+    if (!_window || !_image)
         return;
 
     while (_loop) {
@@ -122,7 +119,7 @@ void Client::run(){
 }
 
 void Client::draw(){
-    SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 0, 96, 0));
+    SDL_FillRect(_screen, 0, SDL_MapRGB(_screen->format, 0, 96, 0));
     SDL_Rect drawLoc;
     drawLoc.x = _location.first;
     drawLoc.y = _location.second;
@@ -131,14 +128,14 @@ void Client::draw(){
     borderRect.y = borderRect.y - 1;
     borderRect.w = 22;
     borderRect.h = 42;
-    SDL_FillRect(screen, &borderRect, SDL_MapRGB(screen->format, 255, 255, 255));
-    SDL_BlitSurface(image, 0, screen, &drawLoc);
+    SDL_FillRect(_screen, &borderRect, SDL_MapRGB(_screen->format, 255, 255, 255));
+    SDL_BlitSurface(_image, 0, _screen, &drawLoc);
     for (std::map<SOCKET, std::pair<int, int> >::iterator it = _otherUserLocations.begin(); it != _otherUserLocations.end(); ++it){
         drawLoc.x = it->second.first;
         drawLoc.y = it->second.second;
-        SDL_BlitSurface(image, 0, screen, &drawLoc);
+        SDL_BlitSurface(_image, 0, _screen, &drawLoc);
     }
-    SDL_UpdateWindowSurface(window);
+    SDL_UpdateWindowSurface(_window);
 }
 
 void Client::handleMessage(std::string msg){
