@@ -17,3 +17,4 @@ Release/mmo.exe
 *.manifest
 *.lnk
 *.exe
+server.bat

@@ -25,7 +25,9 @@ private:
         *_image,
         *_screen;
     bool _loop;
+    bool _socketLoop;
     Socket _socket;
+    SDL_Thread *_socketThreadID;
 
     std::pair<int, int> _location;
 

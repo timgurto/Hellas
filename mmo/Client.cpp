@@ -14,8 +14,9 @@ int startSocketClient(void *client){
 
 Client::Client():
 _location(std::make_pair(0, 0)),
-_loop(true){
-    SDL_Thread *socketThreadID = SDL_CreateThread(startSocketClient, "Client socket handler", this);
+_loop(true),
+_socketLoop(true){
+    _socketThreadID = SDL_CreateThread(startSocketClient, "Client socket handler", this);
 
     int ret = SDL_Init(SDL_INIT_VIDEO);
     if (ret < 0)
@@ -46,16 +47,16 @@ void Client::runSocketClient(){
 
     // Connect to server
     if (connect(_socket.raw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0){
-        std::cout << "Connection error" << std::endl;
+        std::cout << "Connection error: " << WSAGetLastError() << std::endl;
         return ;
     }
     std::cout << "Connected" << std::endl;
 
-    //Receive messages indefinitely
+    // Receive messages indefinitely
     char buffer[BUFFER_SIZE+1];
     for (int i = 0; i != BUFFER_SIZE; ++i)
         buffer[i] = '\0';
-    while (true) {
+    while (_socketLoop) {
         int charsRead = recv(_socket.raw(), buffer, 100, 0);
         if (charsRead != SOCKET_ERROR){
             buffer[charsRead] = '\0';
@@ -112,7 +113,7 @@ void Client::run(){
                 break;
 
             default:
-                //Unhandled event
+                // Unhandled event
                 ;
             }
         }
