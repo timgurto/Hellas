@@ -1,4 +1,3 @@
-#include <cassert>
 #include <SDL.h>
 #include <sstream>
 
@@ -15,12 +14,13 @@ int startSocketServer(void *server){
 }
 
 Server::Server():
-_loop(true){
+_loop(true),
+_socketLoop(true){
     int ret = SDL_Init(SDL_INIT_VIDEO);
     if (ret < 0)
         return;
 
-    SDL_Thread *socketThreadID = SDL_CreateThread(startSocketServer, "Server socket handler", this);
+    _socketThreadID = SDL_CreateThread(startSocketServer, "Server socket handler", this);
 
     _window = SDL_CreateWindow("Server", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
     if (!_window)
@@ -29,48 +29,55 @@ _loop(true){
 }
 
 Server::~Server(){
+    // Stop socket thread
+    _socketLoop = false;
+    SDL_WaitThread(_socketThreadID, 0);
+
     if (_window)
         SDL_DestroyWindow(_window);
     SDL_Quit();
 }
 
 void Server::runSocketServer(){
-    Socket s;
     // Socket details
     sockaddr_in serverAddr;
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_addr.s_addr = INADDR_ANY;
     serverAddr.sin_port = htons(8888);
 
-    s.bind(serverAddr);
-    s.listen();
+    _socket.bind(serverAddr);
+    _socket.listen();
 
     fd_set readFDs;
     char buffer[BUFFER_SIZE+1];
     for (int i = 0; i != BUFFER_SIZE; ++i)
         buffer[i] = '\0';
 
-    while (true) {
+    timeval selectTimeout;
+    selectTimeout.tv_sec = 0;
+    selectTimeout.tv_usec = 10000;
+
+    while (_socketLoop) {
         // Populate socket list with active sockets
         FD_ZERO(&readFDs);
-        FD_SET(s.raw(), &readFDs);
+        FD_SET(_socket.raw(), &readFDs);
         for (std::set<SOCKET>::iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it)
             FD_SET(*it, &readFDs);
         
         // Poll for activity
-        int activity = select(0, &readFDs, 0, 0, 0);
+        int activity = select(0, &readFDs, 0, 0, &selectTimeout);
         if (activity == SOCKET_ERROR) {
             std::cout << "Error polling sockets: " << WSAGetLastError() << std::endl;
             return;
         }
 
         // Activity on server socket: new connection
-        if (FD_ISSET(s.raw(), &readFDs)) {
+        if (FD_ISSET(_socket.raw(), &readFDs)) {
             if (_clientSockets.size() == MAX_CLIENTS)
                 std::cout << "No room for additional clients; all slots full" << std::endl;
             else {
                 sockaddr_in clientAddr;
-                SOCKET tempSocket = accept(s.raw(), (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
+                SOCKET tempSocket = accept(_socket.raw(), (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
                 if (tempSocket == SOCKET_ERROR) {
                     std::cout << "Error accepting connection: " << WSAGetLastError() << std::endl;
                 } else {
@@ -115,11 +122,7 @@ void Server::runSocketServer(){
             }
             ++it;
         }
-
     }
-
-    // Should never reach here
-    assert (false);
 }
 
 void Server::run(){

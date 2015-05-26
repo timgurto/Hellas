@@ -23,8 +23,10 @@ private:
     Socket _socket;
     SDL_Window *_window;
     SDL_Surface *_screen;
+    SDL_Thread *_socketThreadID;
 
     bool _loop;
+    bool _socketLoop;
 
     std::set<SOCKET> _clientSockets;
 
