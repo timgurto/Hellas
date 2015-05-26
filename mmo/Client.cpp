@@ -16,11 +16,8 @@ Client::Client():
 _location(std::make_pair(0, 0)),
 _loop(true),
 _socketLoop(true){
-    _socketThreadID = SDL_CreateThread(startSocketClient, "Client socket handler", this);
 
-    int ret = SDL_Init(SDL_INIT_VIDEO);
-    if (ret < 0)
-        return;
+    _socketThreadID = SDL_CreateThread(startSocketClient, "Client socket handler", this);
 
     _window = SDL_CreateWindow("Client", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
     if (!_window)
@@ -39,7 +36,6 @@ Client::~Client(){
         SDL_FreeSurface(_image);
     if (_window)
         SDL_DestroyWindow(_window);
-    SDL_Quit();
 }
 
 void Client::runSocketClient(){

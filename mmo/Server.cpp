@@ -15,10 +15,8 @@ int startSocketServer(void *server){
 
 Server::Server():
 _loop(true),
-_socketLoop(true){
-    int ret = SDL_Init(SDL_INIT_VIDEO);
-    if (ret < 0)
-        return;
+_socketLoop(true),
+_debug(10){
 
     _socketThreadID = SDL_CreateThread(startSocketServer, "Server socket handler", this);
 
@@ -35,7 +33,6 @@ Server::~Server(){
 
     if (_window)
         SDL_DestroyWindow(_window);
-    SDL_Quit();
 }
 
 void Server::runSocketServer(){
@@ -125,7 +122,6 @@ void Server::runSocketServer(){
 }
 
 void Server::run(){
-
     while (_loop) {
         // Deal with any messages from the server
         if (!_messages.empty()){
@@ -153,6 +149,7 @@ void Server::run(){
         }
 
         SDL_FillRect(_screen, 0, SDL_MapRGB(_screen->format, 0, 0, 0));
+        _debug.draw(_screen);
         SDL_UpdateWindowSurface(_window);
     }
 }

@@ -7,6 +7,7 @@
 #include <queue>
 #include <string>
 
+#include "Log.h"
 #include "Socket.h"
 
 class Server{
@@ -33,6 +34,8 @@ private:
     std::queue<std::pair<SOCKET, std::string> > _messages;
 
     std::map<SOCKET, std::pair<int, int> > _userLocations;
+
+    Log _debug;
 
     void addNewUser(SOCKET socket);
 
