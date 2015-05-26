@@ -136,6 +136,10 @@ void Server::run(){
         while (SDL_PollEvent(&e) != 0) {
             switch(e.type) {
             case SDL_KEYDOWN:
+                if (e.key.keysym.sym == SDLK_ESCAPE){
+                    _loop = false;
+                }
+                break;
             case SDL_QUIT:
                 _loop = false;
                 break;

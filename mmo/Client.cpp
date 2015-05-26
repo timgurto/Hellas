@@ -88,6 +88,10 @@ void Client::run(){
 
             case SDL_KEYDOWN:
                 switch(e.key.keysym.sym) {
+                case SDLK_ESCAPE:
+                    _loop = false;
+                    break;
+
                 case SDLK_UP:
                     oss << '[' << REQ_MOVE_UP << ']';
                     _socket.sendCommand(oss.str());
