@@ -16,3 +16,4 @@ mmo.lnk
 Release/mmo.exe
 *.manifest
 *.lnk
+*.exe
