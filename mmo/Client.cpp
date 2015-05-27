@@ -136,6 +136,7 @@ void Client::run(){
 
         // Draw
         draw();
+        SDL_Delay(10);
     }
 }
 

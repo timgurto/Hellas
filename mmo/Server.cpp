@@ -153,6 +153,7 @@ void Server::run(){
         SDL_FillRect(_screen, 0, SDL_MapRGB(_screen->format, 0, 0, 0));
         _debug.draw(_screen);
         SDL_UpdateWindowSurface(_window);
+        SDL_Delay(10);
     }
 }
 
