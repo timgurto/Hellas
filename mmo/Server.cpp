@@ -16,7 +16,7 @@ int startSocketServer(void *server){
 Server::Server():
 _loop(true),
 _socketLoop(true),
-_debug(10){
+_debug(30){
 
     _socketThreadID = SDL_CreateThread(startSocketServer, "Server socket handler", this);
 

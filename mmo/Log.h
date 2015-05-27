@@ -11,7 +11,7 @@
 class Log{
 public:
     Log();
-    Log(unsigned displayLines, const std::string &fontName = "consola.ttf", int fontSize = 18);
+    Log(unsigned displayLines, const std::string &fontName = "trebuc.ttf", int fontSize = 16);
     ~Log();
     void operator()(const std::string &message);
     void draw(SDL_Surface *targetSurface, int x = 0, int y = 0);
