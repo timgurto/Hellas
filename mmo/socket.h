@@ -9,17 +9,16 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-// Wrapper class for Winsock's SOCKET.  Singleton.
+// Wrapper class for Winsock's SOCKET.
 class Socket {
 public:
     static int sockAddrSize;
 
 private:
     static WSADATA _wsa;
-    static SOCKET _raw;
-    static bool _initialized;
-    static int _instances;
-    static Log *_debug;
+    static bool _winsockInitialized;
+    SOCKET _raw;
+    Log *_debug;
 
 public:
     Socket(Log *debugLog = 0);
@@ -27,11 +26,12 @@ public:
 
     void bind(sockaddr_in &socketAddr);
     void listen();
+    bool valid() const; // Whether this socket is safe to use
     SOCKET raw();
 
     void sendCommand(std::string msg);
 
-    static void Socket::sendMessage(SOCKET s, std::string msg);
+    static void Socket::sendMessage(SOCKET s, std::string msg, Log *debug = 0);
 };
 
 #endif
