@@ -70,16 +70,16 @@ void Server::runSocketServer(){
         // Activity on server socket: new connection
         if (FD_ISSET(_socket.raw(), &readFDs)) {
             if (_clientSockets.size() == MAX_CLIENTS)
-                std::cout << "No room for additional clients; all slots full" << std::endl;
+               _debug("No room for additional clients; all slots full");
             else {
                 sockaddr_in clientAddr;
                 SOCKET tempSocket = accept(_socket.raw(), (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
                 if (tempSocket == SOCKET_ERROR) {
                     std::cout << "Error accepting connection: " << WSAGetLastError() << std::endl;
                 } else {
-                    std::cout << "Connection accepted: "
-                              << inet_ntoa(clientAddr.sin_addr) << ":" << ntohs(clientAddr.sin_port) << std::endl
-                              << ", socket number = " << tempSocket << std::endl;
+                    _debug << "Connection accepted: "
+                           << inet_ntoa(clientAddr.sin_addr) << ":" << ntohs(clientAddr.sin_port) << Log::end
+                           << "Socket number = " << tempSocket << Log::end;
                     _clientSockets.insert(tempSocket);
                     addNewUser(tempSocket);
                 }
