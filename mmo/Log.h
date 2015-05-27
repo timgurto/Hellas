@@ -16,7 +16,7 @@ public:
     void operator()(const std::string &message);
     void draw(SDL_Surface *targetSurface, int x = 0, int y = 0);
 
-    enum LogEndType{end};
+    enum LogEndType{endl};
 
     template<typename T>
     Log &operator<<(const T &val) {

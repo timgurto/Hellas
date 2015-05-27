@@ -63,7 +63,7 @@ void Server::runSocketServer(){
         // Poll for activity
         int activity = select(0, &readFDs, 0, 0, &selectTimeout);
         if (activity == SOCKET_ERROR) {
-            std::cout << "Error polling sockets: " << WSAGetLastError() << std::endl;
+            _debug << "Error polling sockets: " << WSAGetLastError() << Log::endl;
             return;
         }
 
@@ -75,11 +75,11 @@ void Server::runSocketServer(){
                 sockaddr_in clientAddr;
                 SOCKET tempSocket = accept(_socket.raw(), (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
                 if (tempSocket == SOCKET_ERROR) {
-                    std::cout << "Error accepting connection: " << WSAGetLastError() << std::endl;
+                    _debug << "Error accepting connection: " << WSAGetLastError() << Log::endl;
                 } else {
                     _debug << "Connection accepted: "
-                           << inet_ntoa(clientAddr.sin_addr) << ":" << ntohs(clientAddr.sin_port) << Log::end
-                           << "Socket number = " << tempSocket << Log::end;
+                           << inet_ntoa(clientAddr.sin_addr) << ":" << ntohs(clientAddr.sin_port) << Log::endl
+                           << "Socket number = " << tempSocket << Log::endl;
                     _clientSockets.insert(tempSocket);
                     addNewUser(tempSocket);
                 }
@@ -96,23 +96,23 @@ void Server::runSocketServer(){
                     int err = WSAGetLastError();
                     if (err == WSAECONNRESET) {
                         // Client disconnected
-                        std::cout << "Client " << *it << " disconnected" << std::endl;
+                        _debug << "Client " << *it << " disconnected" << Log::endl;
                         closesocket(*it);
                         _clientSockets.erase(it++);
                         continue;
                     } else {
-                        std::cout << "Error receiving message: " << err << std::endl;
+                        _debug << "Error receiving message: " << err << Log::endl;
                     }
                 } else if (charsRead == 0) {
                     // Client disconnected
-                    std::cout << "Client " << *it << " disconnected" << std::endl;
+                    _debug << "Client " << *it << " disconnected" << Log::endl;
                     closesocket(*it);
                     _clientSockets.erase(it++);
                     continue;
                 } else {
                     // Message received
                     buffer[charsRead] = '\0';
-                    std::cout << "Message received from client " << *it << ": " << buffer << std::endl;
+                    _debug << "Message received from client " << *it << ": " << buffer << Log::endl;
                     _messages.push(std::make_pair(*it, std::string(buffer)));
                 }
             }
