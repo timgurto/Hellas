@@ -15,7 +15,6 @@ public:
     Server();
     ~Server();
     void run();
-    void runSocketServer();
 
 private:
     static const int MAX_CLIENTS;
@@ -24,10 +23,8 @@ private:
     Socket _socket;
     SDL_Window *_window;
     SDL_Surface *_screen;
-    SDL_Thread *_socketThreadID;
 
     bool _loop;
-    bool _socketLoop;
 
     std::set<SOCKET> _clientSockets;
 
@@ -42,6 +39,7 @@ private:
     // Send a user's location to all users
     void sendUserLocation(SOCKET socket);
 
+    void checkSockets();
     void handleMessage(SOCKET user, std::string msg);
 };
 

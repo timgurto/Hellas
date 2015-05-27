@@ -36,7 +36,6 @@ private:
     std::list<std::string> _messages;
     unsigned _maxMessages;
     TTF_Font *_font;
-    SDL_sem *_lock;
     bool _valid; // false if an error has occurred
     std::ostringstream _oss;
 };

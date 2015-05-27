@@ -7,19 +7,11 @@
 
 const int Client::BUFFER_SIZE = 100;
 
-int startSocketClient(void *client){
-    ((Client*)client)->runSocketClient();
-    return 0;
-}
-
 Client::Client():
 _location(std::make_pair(0, 0)),
 _loop(true),
-_socketLoop(true),
 _debug(30),
 _socket(&_debug){
-
-    _socketThreadID = SDL_CreateThread(startSocketClient, "Client socket handler", this);
 
     _window = SDL_CreateWindow("Client", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
     if (!_window)
@@ -27,20 +19,9 @@ _socket(&_debug){
     _screen = SDL_GetWindowSurface(_window);
 
     _image = SDL_LoadBMP("Images/man.bmp");
-}
 
-Client::~Client(){
-    // Stop socket thread
-    _socketLoop = false;
-    SDL_WaitThread(_socketThreadID, 0);
+    _debug("Client initialized");
 
-    if (_image)
-        SDL_FreeSurface(_image);
-    if (_window)
-        SDL_DestroyWindow(_window);
-}
-
-void Client::runSocketClient(){
     // Server details
     sockaddr_in serverAddr;
     serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
@@ -52,32 +33,33 @@ void Client::runSocketClient(){
         _debug << "Connection error: " << WSAGetLastError() << Log::endl;
         return ;
     }
-    _debug << "Connected" << Log::endl;
+    _debug << "Connected to server" << Log::endl;
+}
 
-    // Receive messages indefinitely
-    fd_set readFDs;
-    char buffer[BUFFER_SIZE+1];
-    for (int i = 0; i != BUFFER_SIZE; ++i)
-        buffer[i] = '\0';
-    timeval selectTimeout;
-    selectTimeout.tv_sec = 0;
-    selectTimeout.tv_usec = 10000;
+Client::~Client(){
+    if (_image)
+        SDL_FreeSurface(_image);
+    if (_window)
+        SDL_DestroyWindow(_window);
+}
 
-    while (_socketLoop) {
-        FD_ZERO(&readFDs);
-        FD_SET(_socket.raw(), &readFDs);_debug("C");
-        int activity = select(0, &readFDs, 0, 0, &selectTimeout);_debug("D");
-        if (activity == SOCKET_ERROR) {
-            _debug << "Error polling sockets: " << WSAGetLastError() << Log::endl;
-            continue;
-        }
-        if (FD_ISSET(_socket.raw(), &readFDs)) {_debug("E");
-            int charsRead = recv(_socket.raw(), buffer, 100, 0);
-            if (charsRead != SOCKET_ERROR && charsRead != 0){
-                buffer[charsRead] = '\0';
-                _debug << "Received message: \"" << std::string(buffer) << "\"" << Log::endl;
-                _messages.push(std::string(buffer));
-            }
+void Client::checkSocket(){
+    static fd_set readFDs;
+    FD_ZERO(&readFDs);
+    FD_SET(_socket.raw(), &readFDs);
+    static timeval selectTimeout = {0, 10000};
+    int activity = select(0, &readFDs, 0, 0, &selectTimeout);
+    if (activity == SOCKET_ERROR) {
+        _debug << "Error polling sockets: " << WSAGetLastError() << Log::endl;
+        return;
+    }
+    if (FD_ISSET(_socket.raw(), &readFDs)) {
+        static char buffer[BUFFER_SIZE+1];
+        int charsRead = recv(_socket.raw(), buffer, 100, 0);
+        if (charsRead != SOCKET_ERROR && charsRead != 0){
+            buffer[charsRead] = '\0';
+            _debug << "Received message: \"" << std::string(buffer) << "\"" << Log::endl;
+            _messages.push(std::string(buffer));
         }
     }
 }
@@ -136,6 +118,7 @@ void Client::run(){
 
         // Draw
         draw();
+        checkSocket();
         SDL_Delay(10);
     }
 }

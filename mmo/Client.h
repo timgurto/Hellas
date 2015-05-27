@@ -13,7 +13,6 @@ class Client{
 public:
     Client();
     ~Client();
-    void runSocketClient();
     void run();
     void draw();
 
@@ -38,6 +37,7 @@ private:
 
     Log _debug;
 
+    void checkSocket();
     void handleMessage(std::string msg);
 };
 
