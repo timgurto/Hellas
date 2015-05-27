@@ -5,8 +5,9 @@ int Socket::_instances = 0;
 bool Socket::_initialized = false;
 WSADATA Socket::_wsa;
 SOCKET Socket::_raw;
+Log *Socket::_debug;
 
-Socket::Socket(){
+Socket::Socket(Log *debugLog){
     ++ _instances;
 
     if (!_initialized) {
@@ -19,6 +20,8 @@ Socket::Socket(){
             return;
 
         _initialized = true;
+
+        _debug = debugLog;
     }
 }
 
@@ -36,9 +39,9 @@ void Socket::bind(sockaddr_in &socketAddr){
         return;
 
     if (::bind(_raw, (sockaddr*)&socketAddr, sockAddrSize) == SOCKET_ERROR)
-        std::cout << "Error binding socket: " << WSAGetLastError() <<  std::endl;
+        if (_debug) (*_debug) << "Error binding socket: " << WSAGetLastError() <<  Log::endl;
     else
-        std::cout << "Socket bound. " <<  std::endl;
+        if (_debug) (*_debug) << "Socket bound. " <<  Log::endl;
 }
 
 void Socket::listen(){
@@ -61,9 +64,9 @@ void Socket::sendCommand(std::string msg) {
         return;
 
     if (send(_raw, msg.c_str(), (int)msg.length(), 0) < 0)
-        std::cout << "Failed to send command: " << msg << std::endl;
+        if (_debug) (*_debug) << "Failed to send command: " << msg << Log::endl;
     else
-        std::cout << "Sent command: " << msg << std::endl;
+        if (_debug) (*_debug) << "Sent command: " << msg << Log::endl;
 }
 
 void Socket::sendMessage(SOCKET s, std::string msg){
@@ -71,7 +74,7 @@ void Socket::sendMessage(SOCKET s, std::string msg){
         return;
 
     if (send(s, msg.c_str(), (int)msg.length(), 0) < 0)
-        std::cout << "Failed to send command: " << msg << std::endl;
+        if (_debug) (*_debug) << "Failed to send command: " << msg << Log::endl;
     else
-        std::cout << "Sent command: " << msg << std::endl;
+        if (_debug) (*_debug) << "Sent command: " << msg << Log::endl;
 }

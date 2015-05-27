@@ -15,7 +15,9 @@ int startSocketClient(void *client){
 Client::Client():
 _location(std::make_pair(0, 0)),
 _loop(true),
-_socketLoop(true){
+_socketLoop(true),
+_debug(30),
+_socket(&_debug){
 
     _socketThreadID = SDL_CreateThread(startSocketClient, "Client socket handler", this);
 
@@ -47,10 +49,10 @@ void Client::runSocketClient(){
 
     // Connect to server
     if (connect(_socket.raw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0){
-        std::cout << "Connection error: " << WSAGetLastError() << std::endl;
+        _debug << "Connection error: " << WSAGetLastError() << Log::endl;
         return ;
     }
-    std::cout << "Connected" << std::endl;
+    _debug << "Connected" << Log::endl;
 
     // Receive messages indefinitely
     fd_set readFDs;
@@ -69,7 +71,7 @@ void Client::runSocketClient(){
             int charsRead = recv(_socket.raw(), buffer, 100, 0);
             if (charsRead != SOCKET_ERROR && charsRead != 0){
                 buffer[charsRead] = '\0';
-                std::cout << "Received message: \"" << std::string(buffer) << "\"" << std::endl;
+                _debug << "Received message: \"" << std::string(buffer) << "\"" << Log::endl;
                 _messages.push(std::string(buffer));
             }
         }
@@ -150,6 +152,7 @@ void Client::draw(){
         drawLoc.y = it->second.second;
         SDL_BlitSurface(_image, 0, _screen, &drawLoc);
     }
+    _debug.draw(_screen);
     SDL_UpdateWindowSurface(_window);
 }
 

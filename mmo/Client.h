@@ -6,6 +6,7 @@
 #include <utility>
 #include <map>
 
+#include "Log.h"
 #include "Socket.h"
 
 class Client{
@@ -34,6 +35,8 @@ private:
     std::map<SOCKET, std::pair<int, int> > _otherUserLocations;
 
     std::queue<std::string> _messages;
+
+    Log _debug;
 
     void handleMessage(std::string msg);
 };

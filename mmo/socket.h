@@ -5,6 +5,8 @@
 #include <string>
 #include <windows.h>
 
+#include "Log.h"
+
 #pragma comment(lib, "ws2_32.lib")
 
 // Wrapper class for Winsock's SOCKET.  Singleton.
@@ -17,9 +19,10 @@ private:
     static SOCKET _raw;
     static bool _initialized;
     static int _instances;
+    static Log *_debug;
 
 public:
-    Socket();
+    Socket(Log *debugLog = 0);
     ~Socket();
 
     void bind(sockaddr_in &socketAddr);

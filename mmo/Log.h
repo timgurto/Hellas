@@ -18,12 +18,13 @@ public:
 
     enum LogEndType{endl};
 
+    // Usage: log << "1" << 2 << endl;
+    // Does not add the completed message to the log until it receives endl.
     template<typename T>
     Log &operator<<(const T &val) {
         _oss << val;
         return *this;
     }
-
     template<>
     Log &operator<<(const LogEndType &val) {
         operator()(_oss.str());
