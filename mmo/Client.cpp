@@ -65,9 +65,13 @@ void Client::runSocketClient(){
 
     while (_socketLoop) {
         FD_ZERO(&readFDs);
-        FD_SET(_socket.raw(), &readFDs);
-        int activity = select(0, &readFDs, 0, 0, &selectTimeout);
-        if (activity != SOCKET_ERROR && FD_ISSET(_socket.raw(), &readFDs)) {
+        FD_SET(_socket.raw(), &readFDs);_debug("C");
+        int activity = select(0, &readFDs, 0, 0, &selectTimeout);_debug("D");
+        if (activity == SOCKET_ERROR) {
+            _debug << "Error polling sockets: " << WSAGetLastError() << Log::endl;
+            continue;
+        }
+        if (FD_ISSET(_socket.raw(), &readFDs)) {_debug("E");
             int charsRead = recv(_socket.raw(), buffer, 100, 0);
             if (charsRead != SOCKET_ERROR && charsRead != 0){
                 buffer[charsRead] = '\0';

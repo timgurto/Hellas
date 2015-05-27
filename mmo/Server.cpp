@@ -5,7 +5,7 @@
 #include "Server.h"
 #include "messageCodes.h"
 
-const int Server::MAX_CLIENTS = 10;
+const int Server::MAX_CLIENTS = 2;
 const int Server::BUFFER_SIZE = 100;
 
 int startSocketServer(void *server){
@@ -61,13 +61,13 @@ void Server::runSocketServer(){
         FD_SET(_socket.raw(), &readFDs);
         for (std::set<SOCKET>::iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it)
             FD_SET(*it, &readFDs);
-        
+
         // Poll for activity
         int activity = select(0, &readFDs, 0, 0, &selectTimeout);
         if (activity == SOCKET_ERROR) {
             _debug << "Error polling sockets: " << WSAGetLastError() << Log::endl;
-            return;
         }
+            continue;
 
         // Activity on server socket: new connection
         if (FD_ISSET(_socket.raw(), &readFDs)) {
@@ -80,8 +80,8 @@ void Server::runSocketServer(){
                     _debug << "Error accepting connection: " << WSAGetLastError() << Log::endl;
                 } else {
                     _debug << "Connection accepted: "
-                           << inet_ntoa(clientAddr.sin_addr) << ":" << ntohs(clientAddr.sin_port) << Log::endl
-                           << "Socket number = " << tempSocket << Log::endl;
+                           << inet_ntoa(clientAddr.sin_addr) << ":" << ntohs(clientAddr.sin_port)
+                           << ", socket number = " << tempSocket << Log::endl;
                     _clientSockets.insert(tempSocket);
                     addNewUser(tempSocket);
                 }

@@ -13,8 +13,8 @@ int main(int argc, char* args[]){
     if (ret < 0)
         return 1;
 
-    //if (argc > 1 && std::string(args[1]) == "-server") {
-    if (argc == 1) { /* Swap server/client, for debugging */
+    if (argc > 1 && std::string(args[1]) == "-server") {
+    //if (argc == 1) { /* Swap server/client, for debugging */
         Server server;
         server.run();
     } else {

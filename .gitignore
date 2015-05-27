@@ -18,3 +18,5 @@ Release/mmo.exe
 *.lnk
 *.exe
 server.bat
+client.bat
+kill.bat
