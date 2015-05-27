@@ -38,13 +38,7 @@ void Log::draw(SDL_Surface *targetSurface, int x, int y) {
     
     SDL_SemWait(_lock);
     for (std::list<std::string>::const_iterator it = _messages.begin(); it != _messages.end(); ++it) {
-
-SDL_Surface* msg = TTF_RenderText_Solid( _font, it->c_str(), color );
-//TTF_CloseFont(gFont);
-
-
-
-        //SDL_Surface *msg = TTF_RenderText_Solid(_font, it->c_str(), _color);
+        SDL_Surface* msg = TTF_RenderText_Solid( _font, it->c_str(), color );
         if (!msg){
             std::string err = TTF_GetError();
             continue;

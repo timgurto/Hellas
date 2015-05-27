@@ -36,6 +36,7 @@ Server::~Server(){
 }
 
 void Server::runSocketServer(){
+    _debug("Socket thread started");
     // Socket details
     sockaddr_in serverAddr;
     serverAddr.sin_family = AF_INET;
