@@ -1,5 +1,4 @@
-rem @echo off
-
+TASKKILL /F /IM "mmo.exe"
 xcopy /y /d Debug\mmo.exe .
 start mmo.exe -server
 timeout 1
