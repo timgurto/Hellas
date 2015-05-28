@@ -38,8 +38,11 @@ private:
     // Add the newly logged-in user; this happens not once the client connects, but rather when a CL_I_AM message is received.
     void addNewUser(SOCKET socket, const std::string &name);
 
-    // Send command to a specific user
+    // Send a command to a specific user
     void sendCommand(const User &dstUser, const std::string &msg) const;
+
+    // Send a command to all users
+    void broadcast(const std::string &msg) const;
 
     // Send a user's location to all users
     void sendUserLocation(const User &user) const;

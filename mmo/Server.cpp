@@ -154,7 +154,7 @@ void Server::addNewUser(SOCKET socket, const std::string &name){
 
     // Add new user to list, and broadcast his location
     _users.push_back(newUser);
-    sendUserLocation(newUser);
+    broadcast(newUser.makeLocationCommand());
     _debug << "New user, " << name << " has been registered." << Log::endl;
 }
 
@@ -222,7 +222,7 @@ void Server::handleMessage(SOCKET client, const std::string &msg){
     }
 
     if (user && sendLocation) {
-        sendUserLocation(*user);
+        broadcast(user->makeLocationCommand());
     }
 
 }
@@ -231,11 +231,9 @@ void Server::sendCommand(const User &dstUser, const std::string &msg) const{
     _socket.sendMessage(msg, dstUser.getSocket());
 }
 
-void Server::sendUserLocation(const User &user) const{
-    std::string cmd = user.makeLocationCommand();
-    // Send to all users
+void Server::broadcast(const std::string &msg) const{
     for (std::list<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
-        sendCommand(*it, cmd);
+        sendCommand(*it, msg);
 }
 
 User *Server::getUserBySocket(SOCKET socket){
