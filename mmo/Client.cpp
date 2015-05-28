@@ -22,8 +22,8 @@ _socket(&_debug){
 
     // For now, randomize player names
     for (int i = 0; i != 3; ++i)
-    _playerName.push_back('a' + rand() % 26);
-    _debug << "Player name: " << _playerName << Log::endl;
+    _username.push_back('a' + rand() % 26);
+    _debug << "Player name: " << _username << Log::endl;
 
     _debug("Client initialized");
 
@@ -43,7 +43,7 @@ _socket(&_debug){
 
     // Announce player name
     std::ostringstream oss;
-    oss << '[' << CL_I_AM << ',' << _playerName << ']';
+    oss << '[' << CL_I_AM << ',' << _username << ']';
     _socket.sendCommand(oss.str());
 }
 
@@ -148,15 +148,13 @@ void Client::draw(){
     borderRect.h = 42;
     SDL_FillRect(_screen, &borderRect, SDL_MapRGB(_screen->format, 255, 255, 255));
     SDL_BlitSurface(_image, 0, _screen, &drawLoc);
-    for (std::map<SOCKET, std::pair<int, int> >::iterator it = _otherUserLocations.begin(); it != _otherUserLocations.end(); ++it){
+    for (std::map<std::string, std::pair<int, int> >::iterator it = _otherUserLocations.begin(); it != _otherUserLocations.end(); ++it){
         drawLoc.x = it->second.first;
         drawLoc.y = it->second.second;
         SDL_BlitSurface(_image, 0, _screen, &drawLoc);
-        static char nameBuffer[10];
-        _itoa_s(it->first, nameBuffer, 10, 10);
         SDL_Color color = {0, 0xff, 0xff};
-        SDL_Surface *nameSurface = TTF_RenderText_Solid(_defaultFont, nameBuffer, color);
-        drawLoc.y -= 15;
+        SDL_Surface *nameSurface = TTF_RenderText_Solid(_defaultFont, it->first.c_str(), color);
+        drawLoc.y -= 20;
         SDL_BlitSurface(nameSurface, 0, _screen, &drawLoc);
         SDL_FreeSurface(nameSurface);
     }
@@ -168,6 +166,7 @@ void Client::handleMessage(const std::string &msg){
     std::istringstream iss(msg);
     int msgCode;
     char del;
+    static char buffer[BUFFER_SIZE+1];
     while (iss.peek() == '[') {
         iss >>del >> msgCode >> del;
         switch(msgCode) {
@@ -184,11 +183,15 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_OTHER_LOCATION:
         {
-            int s, x, y;
-            iss >> s >> del >> x >> del >> y >> del;
+            std::string name;
+            int x, y;
+            iss.get(buffer, BUFFER_SIZE, ',');
+            name = std::string(buffer);
+            iss >> del >> x >> del >> y >> del;
             if (del != ']')
                 return;
-            _otherUserLocations[(SOCKET)s] = std::make_pair(x, y);
+            if (name != _username)
+                _otherUserLocations[name] = std::make_pair(x, y);
             break;
         }
 

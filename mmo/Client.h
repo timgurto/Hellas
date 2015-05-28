@@ -27,11 +27,11 @@ private:
     bool _loop;
     Socket _socket;
     TTF_Font *_defaultFont;
-    std::string _playerName;
+    std::string _username;
 
     std::pair<int, int> _location;
 
-    std::map<SOCKET, std::pair<int, int> > _otherUserLocations;
+    std::map<std::string, std::pair<int, int> > _otherUserLocations;
 
     std::queue<std::string> _messages;
 

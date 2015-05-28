@@ -153,17 +153,15 @@ void Server::addNewUser(SOCKET socket, const std::string &name){
     sendUserLocation(name);
 
     // Send new user everybody else's location
-    for (std::set<SOCKET>::iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it){
-        if (*it != socket &&
-            _socketUsers.find(*it) != _socketUsers.end() &&
-            _userLocations.find(_socketUsers[*it]) != _userLocations.end()) {
-            std::ostringstream oss;
-            oss << '[' << SV_OTHER_LOCATION << ','
-                << *it << ','
-                << _userLocations[_socketUsers[*it]].first << ','
-                << _userLocations[_socketUsers[*it]].second << ']';
-            Socket::sendMessage(socket, oss.str());
-        }
+    for (std::map<std::string, std::pair<int, int> >::const_iterator it = _userLocations.begin(); it != _userLocations.end(); ++it) {
+        const std::string &otherName = it->first;
+        const std::pair<int, int> &otherLoc = it->second;
+        std::ostringstream oss;
+        oss << '[' << SV_OTHER_LOCATION << ','
+            << otherName << ','
+            << otherLoc.first << ','
+            << otherLoc.second << ']';
+        Socket::sendMessage(socket, oss.str());
     }
 
     _debug << "New user, " << name << " has been registered." << Log::endl;
@@ -216,8 +214,9 @@ void Server::handleMessage(SOCKET user, const std::string &msg){
 
         case CL_I_AM:
         {
+            std::string name;
             iss.get(buffer, BUFFER_SIZE, ']');
-            std::string name(buffer);
+            name = std::string(buffer);
             iss >> del;
             if (del != ']')
                 return;
@@ -258,7 +257,7 @@ void Server::sendUserLocation(const std::string &userName) const{
         return;
     SOCKET socket = it2->second;
     oss.str("");
-    oss << '[' << SV_OTHER_LOCATION << ',' << socket << ',' << loc.first << ',' << loc.second << ']';
+    oss << '[' << SV_OTHER_LOCATION << ',' << userName << ',' << loc.first << ',' << loc.second << ']';
     for (std::set<SOCKET>::const_iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it)
         if (*it != socket)
             Socket::sendMessage(*it, oss.str());
