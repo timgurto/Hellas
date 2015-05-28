@@ -25,9 +25,8 @@ private:
         *_image,
         *_screen;
     bool _loop;
-    bool _socketLoop;
     Socket _socket;
-    SDL_Thread *_socketThreadID;
+    TTF_Font *_defaultFont;
 
     std::pair<int, int> _location;
 

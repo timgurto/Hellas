@@ -22,6 +22,8 @@ _socket(&_debug){
 
     _debug("Client initialized");
 
+    _defaultFont = TTF_OpenFont("trebuc.ttf", 16);
+
     // Server details
     sockaddr_in serverAddr;
     serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
@@ -31,12 +33,13 @@ _socket(&_debug){
     // Connect to server
     if (connect(_socket.raw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0){
         _debug << "Connection error: " << WSAGetLastError() << Log::endl;
-        return ;
     }
     _debug << "Connected to server" << Log::endl;
 }
 
 Client::~Client(){
+    if (_defaultFont)
+        TTF_CloseFont(_defaultFont);
     if (_image)
         SDL_FreeSurface(_image);
     if (_window)
@@ -139,6 +142,13 @@ void Client::draw(){
         drawLoc.x = it->second.first;
         drawLoc.y = it->second.second;
         SDL_BlitSurface(_image, 0, _screen, &drawLoc);
+        static char nameBuffer[10];
+        _itoa_s(it->first, nameBuffer, 10, 10);
+        SDL_Color color = {0, 0xff, 0xff};
+        SDL_Surface *nameSurface = TTF_RenderText_Solid(_defaultFont, nameBuffer, color);
+        drawLoc.y -= 15;
+        SDL_BlitSurface(nameSurface, 0, _screen, &drawLoc);
+        SDL_FreeSurface(nameSurface);
     }
     _debug.draw(_screen);
     SDL_UpdateWindowSurface(_window);
@@ -159,6 +169,7 @@ void Client::handleMessage(std::string msg){
             if (del != ']')
                 return;
             _location = std::make_pair(x, y);
+            break;
         }
 
         case MSG_OTHER_LOCATION:
@@ -168,6 +179,7 @@ void Client::handleMessage(std::string msg){
             if (del != ']')
                 return;
             _otherUserLocations[(SOCKET)s] = std::make_pair(x, y);
+            break;
         }
 
         default:
