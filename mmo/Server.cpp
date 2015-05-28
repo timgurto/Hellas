@@ -144,22 +144,29 @@ void Server::run(){
 }
 
 void Server::addNewUser(SOCKET socket, const std::string &name){
-    _debug("addNewUser()");
     _userSockets[name] = socket;
+    _socketUsers[socket] = name;
 
     // Give new user a location
-    _userLocations[socket] = std::make_pair(500, 200);
+    _userLocations[name] = std::make_pair(500, 200);
 
-    sendUserLocation(socket);
+    sendUserLocation(name);
 
     // Send new user everybody else's location
     for (std::set<SOCKET>::iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it){
-        if (*it != socket && _userLocations.find(*it) != _userLocations.end()) {
+        if (*it != socket &&
+            _socketUsers.find(*it) != _socketUsers.end() &&
+            _userLocations.find(_socketUsers[*it]) != _userLocations.end()) {
             std::ostringstream oss;
-            oss << '[' << SV_OTHER_LOCATION << ',' << *it << ',' << _userLocations[*it].first << ',' << _userLocations[*it].second << ']';
+            oss << '[' << SV_OTHER_LOCATION << ','
+                << *it << ','
+                << _userLocations[_socketUsers[*it]].first << ','
+                << _userLocations[_socketUsers[*it]].second << ']';
             Socket::sendMessage(socket, oss.str());
         }
     }
+
+    _debug << "New user, " << name << " has been registered." << Log::endl;
 }
 
 void Server::handleMessage(SOCKET user, const std::string &msg){
@@ -171,47 +178,44 @@ void Server::handleMessage(SOCKET user, const std::string &msg){
     std::istringstream iss(msg);
     while (iss.peek() == '[') {
         iss >> del >> msgCode >> del;
+        
+        // Discard message if this client has not yet sent CL_I_AM
+        if (_socketUsers.find(user) == _socketUsers.end() && msgCode != CL_I_AM)
+            continue;
+        const std::string &playerName = _socketUsers[user];
+
         switch(msgCode) {
 
         case CL_MOVE_UP:
             if (del != ']')
                 return;
-            if (_userLocations.find(user) == _userLocations.end())
-                break;
-            _userLocations[user].second -= 20;
+            _userLocations[playerName].second -= 20;
             sendLocation = true;
             break;
 
         case CL_MOVE_DOWN:
             if (del != ']')
                 return;
-            if (_userLocations.find(user) == _userLocations.end())
-                break;
-            _userLocations[user].second += 20;
+            _userLocations[playerName].second += 20;
             sendLocation = true;
             break;
 
         case CL_MOVE_LEFT:
             if (del != ']')
                 return;
-            if (_userLocations.find(user) == _userLocations.end())
-                break;
-            _userLocations[user].first -= 20;
+            _userLocations[playerName].first -= 20;
             sendLocation = true;
             break;
 
         case CL_MOVE_RIGHT:
             if (del != ']')
                 return;
-            if (_userLocations.find(user) == _userLocations.end())
-                break;
-            _userLocations[user].first += 20;
+            _userLocations[playerName].first += 20;
             sendLocation = true;
             break;
 
         case CL_I_AM:
         {
-            _debug("CL_I_AM");
             iss.get(buffer, BUFFER_SIZE, ']');
             std::string name(buffer);
             iss >> del;
@@ -227,21 +231,35 @@ void Server::handleMessage(SOCKET user, const std::string &msg){
     }
 
     if (sendLocation) {
-        sendUserLocation(user);
+        sendUserLocation(_socketUsers[user]);
     }
 
 }
 
-void Server::sendUserLocation(SOCKET socket){
-    // User himself
-    std::ostringstream oss;
-    oss << '[' << SV_LOCATION << ',' << _userLocations[socket].first << ',' << _userLocations[socket].second << ']';
-    Socket::sendMessage(socket, oss.str());
+void Server::sendCommand(const std::string &name, const std::string &msg) const{
+    std::map<std::string, SOCKET>::const_iterator it = _userSockets.find(name);
+    if (it != _userSockets.end())
+        Socket::sendMessage(it->second, msg, &_debug);
+}
 
-    // Other users
+void Server::sendUserLocation(const std::string &userName) const{
+    // Client himself
+    std::map<std::string, std::pair<int, int>>::const_iterator it = _userLocations.find(userName);
+    if (it == _userLocations.end())
+        return;
+    std::pair<int, int> loc = it->second;
+    std::ostringstream oss;
+    oss << '[' << SV_LOCATION << ',' << loc.first << ',' << loc.second << ']';
+    sendCommand(userName, oss.str());
+
+    // Other clients
+    std::map<std::string, SOCKET>::const_iterator it2 = _userSockets.find(userName);
+    if (it2 == _userSockets.end())
+        return;
+    SOCKET socket = it2->second;
     oss.str("");
-    oss << '[' << SV_OTHER_LOCATION << ',' << socket << ',' << _userLocations[socket].first << ',' << _userLocations[socket].second << ']';
-    for (std::set<SOCKET>::iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it)
+    oss << '[' << SV_OTHER_LOCATION << ',' << socket << ',' << loc.first << ',' << loc.second << ']';
+    for (std::set<SOCKET>::const_iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it)
         if (*it != socket)
             Socket::sendMessage(*it, oss.str());
 }

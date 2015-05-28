@@ -1,3 +1,5 @@
+#include <ctime>
+#include <cstdlib>
 #include <string>
 #include <SDL.h>
 
@@ -12,6 +14,7 @@ int main(int argc, char* args[]){
     ret = TTF_Init();
     if (ret < 0)
         return 1;
+    srand(static_cast<unsigned>(time(0)));
 
     if (argc > 1 && std::string(args[1]) == "-server") {
     //if (argc == 1) { /* Swap server/client, for debugging */

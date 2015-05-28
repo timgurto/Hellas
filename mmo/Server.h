@@ -30,16 +30,19 @@ private:
 
     std::queue<std::pair<SOCKET, std::string> > _messages;
 
-    std::map<SOCKET, std::pair<int, int> > _userLocations;
+    std::map<std::string, std::pair<int, int> > _userLocations;
     std::map<std::string, SOCKET > _userSockets;
+    std::map<SOCKET, std::string> _socketUsers;
 
-    Log _debug;
+    mutable Log _debug;
 
     // Add the newly logged-in user; this happens not once the client connects, but rather when a CL_I_AM message is received.
     void addNewUser(SOCKET socket, const std::string &name);
 
+    void sendCommand(const std::string &name, const std::string &msg) const;
+
     // Send a user's location to all users
-    void sendUserLocation(SOCKET socket);
+    void sendUserLocation(const std::string &userName) const;
 
     void checkSockets();
     void handleMessage(SOCKET user, const std::string &msg);

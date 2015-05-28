@@ -35,7 +35,7 @@ private:
 
     std::queue<std::string> _messages;
 
-    Log _debug;
+    mutable Log _debug;
 
     void checkSocket();
     void handleMessage(const std::string &msg);
