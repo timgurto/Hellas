@@ -14,14 +14,24 @@ _valid(true){
 }
 
 Log::~Log(){
+    while (!_messages.empty()){
+        SDL_FreeSurface(_messages.front());
+        _messages.pop_front();
+    }
     if (_font)
         TTF_CloseFont(_font);
 }
 
 void Log::operator()(const std::string &message){
-    _messages.push_back(message);
-    if (_messages.size() > _maxMessages)
+    static SDL_Color color = {0xff, 0xff, 0xff, 0};
+    SDL_Surface *msgSurface = TTF_RenderText_Solid(_font, message.c_str(), color);
+    if (!msgSurface)
+        return;
+    _messages.push_back(msgSurface);
+    if (_messages.size() > _maxMessages){
+        SDL_FreeSurface(_messages.front());
         _messages.pop_front();
+    }
 }
 
 void Log::draw(SDL_Surface *targetSurface, int x, int y) {
@@ -30,17 +40,11 @@ void Log::draw(SDL_Surface *targetSurface, int x, int y) {
     SDL_Rect rect;
     rect.x = x;
     rect.y = y;
-    static SDL_Color color = {0xff, 0xff, 0xff, 0};
     
-    for (std::list<std::string>::const_iterator it = _messages.begin(); it != _messages.end(); ++it) {
-        SDL_Surface* msg = TTF_RenderText_Solid( _font, it->c_str(), color );
-        if (!msg){
-            std::string err = TTF_GetError();
-            continue;
-        }
-        SDL_BlitSurface(msg, 0, targetSurface, &rect);
-        rect.y += msg->h;
-        SDL_FreeSurface(msg);
+    for (std::list<SDL_Surface *>::const_iterator it = _messages.begin(); it != _messages.end(); ++it) {
+        SDL_Surface *msgSurface = *it;
+        SDL_BlitSurface(msgSurface, 0, targetSurface, &rect);
+        rect.y += msgSurface->h;
     }
 
 }

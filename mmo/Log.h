@@ -33,7 +33,7 @@ public:
     }
 
 private:
-    std::list<std::string> _messages;
+    std::list<SDL_Surface *> _messages;
     unsigned _maxMessages;
     TTF_Font *_font;
     bool _valid; // false if an error has occurred
