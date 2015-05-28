@@ -5,14 +5,12 @@ MMO economy simulator
 `-server` run the program as a server (default is as client)
 
 ## Glossary of ambiguous terms
-**character**, the *avatar* which represents a player in-game
+**character**, the *avatar* which represents a user in-game
 
 **client**, the *program* which connects to the server
-
-**player**, see **user**
 
 **server**, the *program* which manages the state of the game world and connects to clients
 
 **terminal**, a generic term for server or client
 
-**user**, the *human* playing on a client
+**user**, the *account* playing on a client.  Identified by a unique username.
