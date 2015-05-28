@@ -187,8 +187,21 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_USER_DISCONNECTED:
+        {
+            std::string name;
+            iss.get(buffer, BUFFER_SIZE, ']');
+            name = std::string(buffer);
+            iss >> del;
+            if (del != ']')
+                return;
+            _otherUserLocations.erase(name);
+            _debug << name << " disconnected." << Log::endl;
+            break;
+        }
+
         default:
-            ;
+            _debug("Unhandled message");
         }
     }
 }

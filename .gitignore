@@ -20,3 +20,4 @@ Release/mmo.exe
 server.bat
 client.bat
 kill.bat
+*.rsp

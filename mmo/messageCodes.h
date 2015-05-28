@@ -10,8 +10,7 @@ enum MessageCode{
     CL_MOVE_LEFT,
     CL_MOVE_RIGHT,
 
-    // Announcement of a user's name.
-    // All client messages are ignored unless its user has been announced with this command.
+    // Announcement of a user's name.  This has the effect of registering the user with the server.
     // Arguments: username
     CL_I_AM,
 
@@ -21,6 +20,10 @@ enum MessageCode{
     // The location of a user.
     // Arguments: username, x, y
     SV_LOCATION,
+
+    // A user has disconnected.
+    // Arguments: username
+    SV_USER_DISCONNECTED,
 
     NUM_MESSAGE_CODES
 };

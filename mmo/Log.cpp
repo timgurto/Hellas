@@ -34,7 +34,7 @@ void Log::operator()(const std::string &message){
     }
 }
 
-void Log::draw(SDL_Surface *targetSurface, int x, int y) {
+void Log::draw(SDL_Surface *targetSurface, int x, int y) const{
     if (!_valid)
         return;
     SDL_Rect rect;

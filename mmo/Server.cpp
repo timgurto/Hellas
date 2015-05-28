@@ -84,6 +84,7 @@ void Server::checkSockets(){
                 if (err == WSAECONNRESET) {
                     // Client disconnected
                     _debug << "Client " << *it << " disconnected" << Log::endl;
+                    removeUser(*it);
                     closesocket(*it);
                     _clientSockets.erase(it++);
                     continue;
@@ -93,6 +94,7 @@ void Server::checkSockets(){
             } else if (charsRead == 0) {
                 // Client disconnected
                 _debug << "Client " << *it << " disconnected" << Log::endl;
+                removeUser(*it);
                 closesocket(*it);
                 _clientSockets.erase(it++);
                 continue;
@@ -144,7 +146,7 @@ void Server::run(){
     }
 }
 
-void Server::addNewUser(SOCKET socket, const std::string &name){
+void Server::addUser(SOCKET socket, const std::string &name){
     std::pair<int, int> location = std::make_pair(rand() % 780, rand() % 560);
     User newUser(name, location, socket);
 
@@ -156,6 +158,19 @@ void Server::addNewUser(SOCKET socket, const std::string &name){
     _users.push_back(newUser);
     broadcast(newUser.makeLocationCommand());
     _debug << "New user, " << name << " has been registered." << Log::endl;
+}
+
+void Server::removeUser(SOCKET socket){
+    for (std::list<User>::iterator it = _users.begin(); it != _users.end(); ++it)
+        if (it->getSocket() == socket){
+            // Broadcast message
+            std::ostringstream oss;
+            oss << '[' << SV_USER_DISCONNECTED << ',' << it->getName() << ']';
+            broadcast(oss.str());
+
+            _users.erase(it);
+            return;
+        }
 }
 
 void Server::handleMessage(SOCKET client, const std::string &msg){
@@ -212,12 +227,12 @@ void Server::handleMessage(SOCKET client, const std::string &msg){
             iss >> del;
             if (del != ']')
                 return;
-            addNewUser(client, name);
+            addUser(client, name);
             break;
         }
 
         default:
-            ;
+            _debug("Unhandled message");
         }
     }
 

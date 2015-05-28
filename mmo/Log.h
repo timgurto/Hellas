@@ -14,7 +14,7 @@ public:
     Log(unsigned displayLines, const std::string &fontName = "trebuc.ttf", int fontSize = 16);
     ~Log();
     void operator()(const std::string &message);
-    void draw(SDL_Surface *targetSurface, int x = 0, int y = 0);
+    void draw(SDL_Surface *targetSurface, int x = 0, int y = 0) const;
 
     enum LogEndType{endl};
 
