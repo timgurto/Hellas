@@ -27,11 +27,10 @@ public:
     void bind(sockaddr_in &socketAddr);
     void listen();
     bool valid() const; // Whether this socket is safe to use
-    SOCKET raw();
+    SOCKET getRaw() const;
 
-    void sendCommand(std::string msg);
-
-    static void Socket::sendMessage(SOCKET s, std::string msg, Log *debug = 0);
+    // Default socket implies client->server message
+    void Socket::sendMessage(const std::string &msg, SOCKET destSocket = INVALID_SOCKET) const;
 };
 
 #endif

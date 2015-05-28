@@ -43,31 +43,21 @@ void Socket::listen(){
     ::listen(_raw, 3);
 }
 
-SOCKET Socket::raw(){
+SOCKET Socket::getRaw() const{
     if (valid())
         return _raw;
     return -1;
 }
 
-// Send a client command to the server
-void Socket::sendCommand(std::string msg) {
-    if (!valid())
-        return;
-
-    if (send(_raw, msg.c_str(), (int)msg.length(), 0) < 0)
-        if (_debug) (*_debug) << "Failed to send command: " << msg << Log::endl;
-    else
-        if (_debug) (*_debug) << "Sent command: " << msg << Log::endl;
-}
-
-void Socket::sendMessage(SOCKET s, std::string msg, Log *debug){
+void Socket::sendMessage(const std::string &msg, SOCKET destSocket) const{
     if (!_winsockInitialized)
         return;
 
-    if (send(s, msg.c_str(), (int)msg.length(), 0) < 0)
-        if (debug) (*debug) << "Failed to send command: " << msg << Log::endl;
-    else
-        if (debug) (*debug) << "Sent command: " << msg << Log::endl;
+    if (destSocket == SOCKET_ERROR)
+        destSocket = _raw;
+
+    if (send(destSocket, msg.c_str(), (int)msg.length(), 0) < 0)
+        if (_debug) (*_debug) << "Failed to send command: " << msg << Log::endl;
 }
 
 bool Socket::valid() const{

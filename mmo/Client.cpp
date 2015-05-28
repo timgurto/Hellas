@@ -36,7 +36,7 @@ _socket(&_debug){
     serverAddr.sin_port = htons(8888);
 
     // Connect to server
-    if (connect(_socket.raw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0)
+    if (connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0)
         _debug << "Connection error: " << WSAGetLastError() << Log::endl;
     else
         _debug << "Connected to server" << Log::endl;
@@ -44,7 +44,7 @@ _socket(&_debug){
     // Announce player name
     std::ostringstream oss;
     oss << '[' << CL_I_AM << ',' << _username << ']';
-    _socket.sendCommand(oss.str());
+    _socket.sendMessage(oss.str());
 }
 
 Client::~Client(){
@@ -59,19 +59,19 @@ Client::~Client(){
 void Client::checkSocket(){
     static fd_set readFDs;
     FD_ZERO(&readFDs);
-    FD_SET(_socket.raw(), &readFDs);
+    FD_SET(_socket.getRaw(), &readFDs);
     static timeval selectTimeout = {0, 10000};
     int activity = select(0, &readFDs, 0, 0, &selectTimeout);
     if (activity == SOCKET_ERROR) {
         _debug << "Error polling sockets: " << WSAGetLastError() << Log::endl;
         return;
     }
-    if (FD_ISSET(_socket.raw(), &readFDs)) {
+    if (FD_ISSET(_socket.getRaw(), &readFDs)) {
         static char buffer[BUFFER_SIZE+1];
-        int charsRead = recv(_socket.raw(), buffer, 100, 0);
+        int charsRead = recv(_socket.getRaw(), buffer, 100, 0);
         if (charsRead != SOCKET_ERROR && charsRead != 0){
             buffer[charsRead] = '\0';
-            _debug << "Received message: \"" << std::string(buffer) << "\"" << Log::endl;
+            _debug << "recv: " << std::string(buffer) << "" << Log::endl;
             _messages.push(std::string(buffer));
         }
     }
@@ -106,19 +106,19 @@ void Client::run(){
 
                 case SDLK_UP:
                     oss << '[' << CL_MOVE_UP << ']';
-                    _socket.sendCommand(oss.str());
+                    _socket.sendMessage(oss.str());
                     break;
                 case SDLK_DOWN:
                     oss << '[' << CL_MOVE_DOWN << ']';
-                    _socket.sendCommand(oss.str());
+                    _socket.sendMessage(oss.str());
                     break;
                 case SDLK_LEFT:
                     oss << '[' << CL_MOVE_LEFT << ']';
-                    _socket.sendCommand(oss.str());
+                    _socket.sendMessage(oss.str());
                     break;
                 case SDLK_RIGHT:
                     oss << '[' << CL_MOVE_RIGHT << ']';
-                    _socket.sendCommand(oss.str());
+                    _socket.sendMessage(oss.str());
                     break;
                 }
                 break;

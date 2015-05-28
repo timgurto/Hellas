@@ -1,7 +1,7 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <map>
+#include <list>
 #include <set>
 #include <utility>
 #include <queue>
@@ -9,6 +9,7 @@
 
 #include "Log.h"
 #include "Socket.h"
+#include "User.h"
 
 class Server{
 public:
@@ -30,22 +31,23 @@ private:
 
     std::queue<std::pair<SOCKET, std::string> > _messages;
 
-    std::map<std::string, std::pair<int, int> > _userLocations;
-    std::map<std::string, SOCKET > _userSockets;
-    std::map<SOCKET, std::string> _socketUsers;
+    std::list<User> _users;
 
     mutable Log _debug;
 
     // Add the newly logged-in user; this happens not once the client connects, but rather when a CL_I_AM message is received.
     void addNewUser(SOCKET socket, const std::string &name);
 
-    void sendCommand(const std::string &name, const std::string &msg) const;
+    // Send command to a specific user
+    void sendCommand(const User &dstUser, const std::string &msg) const;
 
     // Send a user's location to all users
-    void sendUserLocation(const std::string &username) const;
+    void sendUserLocation(const User &user) const;
 
     void checkSockets();
-    void handleMessage(SOCKET user, const std::string &msg);
+    void handleMessage(SOCKET client, const std::string &msg);
+
+    User *getUserBySocket(SOCKET socket);
 };
 
 #endif

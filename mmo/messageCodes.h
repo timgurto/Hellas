@@ -1,5 +1,5 @@
-#ifndef MESSAGECODES_H
-#define MESSAGECODES_H
+#ifndef MESSAGE_CODES_H
+#define MESSAGE_CODES_H
 
 enum MessageCode{
 
