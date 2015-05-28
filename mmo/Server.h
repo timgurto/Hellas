@@ -42,7 +42,7 @@ private:
     void sendCommand(const std::string &name, const std::string &msg) const;
 
     // Send a user's location to all users
-    void sendUserLocation(const std::string &userName) const;
+    void sendUserLocation(const std::string &username) const;
 
     void checkSockets();
     void handleMessage(SOCKET user, const std::string &msg);

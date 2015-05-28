@@ -173,16 +173,6 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_LOCATION:
         {
-            int x, y;
-            iss >> x >> del >> y >> del;
-            if (del != ']')
-                return;
-            _location = std::make_pair(x, y);
-            break;
-        }
-
-        case SV_OTHER_LOCATION:
-        {
             std::string name;
             int x, y;
             iss.get(buffer, BUFFER_SIZE, ',');
@@ -190,7 +180,9 @@ void Client::handleMessage(const std::string &msg){
             iss >> del >> x >> del >> y >> del;
             if (del != ']')
                 return;
-            if (name != _username)
+            if (name == _username)
+                _location = std::make_pair(x, y);
+            else
                 _otherUserLocations[name] = std::make_pair(x, y);
             break;
         }

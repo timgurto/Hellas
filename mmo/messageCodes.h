@@ -2,16 +2,25 @@
 #define MESSAGECODES_H
 
 enum MessageCode{
+
     // Client -> server
+
     CL_MOVE_UP,
     CL_MOVE_DOWN,
     CL_MOVE_LEFT,
     CL_MOVE_RIGHT,
-    CL_I_AM, // Player name announcement; required before other messages from this client will be accepted
+
+    // Announcement of a user's name.
+    // All client messages are ignored unless its user has been announced with this command.
+    // Arguments: username
+    CL_I_AM,
+
 
     // Server -> client
+
+    // The location of a user.
+    // Arguments: username, x, y
     SV_LOCATION,
-    SV_OTHER_LOCATION,
 
     NUM_MESSAGE_CODES
 };

@@ -156,8 +156,10 @@ void Server::addNewUser(SOCKET socket, const std::string &name){
     for (std::map<std::string, std::pair<int, int> >::const_iterator it = _userLocations.begin(); it != _userLocations.end(); ++it) {
         const std::string &otherName = it->first;
         const std::pair<int, int> &otherLoc = it->second;
+        if (otherName == name)
+            continue;
         std::ostringstream oss;
-        oss << '[' << SV_OTHER_LOCATION << ','
+        oss << '[' << SV_LOCATION << ','
             << otherName << ','
             << otherLoc.first << ','
             << otherLoc.second << ']';
@@ -241,24 +243,16 @@ void Server::sendCommand(const std::string &name, const std::string &msg) const{
         Socket::sendMessage(it->second, msg, &_debug);
 }
 
-void Server::sendUserLocation(const std::string &userName) const{
-    // Client himself
-    std::map<std::string, std::pair<int, int>>::const_iterator it = _userLocations.find(userName);
+void Server::sendUserLocation(const std::string &username) const{
+    // Build command
+    std::map<std::string, std::pair<int, int>>::const_iterator it = _userLocations.find(username);
     if (it == _userLocations.end())
         return;
-    std::pair<int, int> loc = it->second;
+    const std::pair<int, int> &loc = it->second;
     std::ostringstream oss;
-    oss << '[' << SV_LOCATION << ',' << loc.first << ',' << loc.second << ']';
-    sendCommand(userName, oss.str());
+    oss << '[' << SV_LOCATION << ',' << username << ',' << loc.first << ',' << loc.second << ']';
 
-    // Other clients
-    std::map<std::string, SOCKET>::const_iterator it2 = _userSockets.find(userName);
-    if (it2 == _userSockets.end())
-        return;
-    SOCKET socket = it2->second;
-    oss.str("");
-    oss << '[' << SV_OTHER_LOCATION << ',' << userName << ',' << loc.first << ',' << loc.second << ']';
+    // Send to all users
     for (std::set<SOCKET>::const_iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it)
-        if (*it != socket)
-            Socket::sendMessage(*it, oss.str());
+        Socket::sendMessage(*it, oss.str());
 }
