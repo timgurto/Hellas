@@ -9,8 +9,10 @@ MMO economy simulator
 
 **client**, the *program* which connects to the server
 
-**player**, the *human* playing on a client
+**player**, see **user**
 
 **server**, the *program* which manages the state of the game world and connects to clients
 
 **terminal**, a generic term for server or client
+
+**user**, the *human* playing on a client
