@@ -2,15 +2,16 @@
 #define MESSAGECODES_H
 
 enum MessageCode{
-    // Client requests
-    REQ_MOVE_UP,
-    REQ_MOVE_DOWN,
-    REQ_MOVE_LEFT,
-    REQ_MOVE_RIGHT,
+    // Client -> server
+    CL_MOVE_UP,
+    CL_MOVE_DOWN,
+    CL_MOVE_LEFT,
+    CL_MOVE_RIGHT,
+    CL_I_AM, // Player name announcement; required before other messages from this client will be accepted
 
-    //Server messages
-    MSG_LOCATION,
-    MSG_OTHER_LOCATION,
+    // Server -> client
+    SV_LOCATION,
+    SV_OTHER_LOCATION,
 
     NUM_MESSAGE_CODES
 };

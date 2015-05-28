@@ -29,7 +29,7 @@ _socket(&_debug){
     _socket.bind(serverAddr);
     _socket.listen();
 
-    _debug("Listening for connection...");
+    _debug("Listening for connections");
 }
 
 Server::~Server(){
@@ -67,7 +67,6 @@ void Server::checkSockets(){
                        << inet_ntoa(clientAddr.sin_addr) << ":" << ntohs(clientAddr.sin_port)
                        << ", socket number = " << tempSocket << Log::endl;
                 _clientSockets.insert(tempSocket);
-                addNewUser(tempSocket);
             }
         }
     }
@@ -144,7 +143,10 @@ void Server::run(){
     }
 }
 
-void Server::addNewUser(SOCKET socket){
+void Server::addNewUser(SOCKET socket, const std::string &name){
+    _debug("addNewUser()");
+    _userSockets[name] = socket;
+
     // Give new user a location
     _userLocations[socket] = std::make_pair(500, 200);
 
@@ -154,23 +156,24 @@ void Server::addNewUser(SOCKET socket){
     for (std::set<SOCKET>::iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it){
         if (*it != socket && _userLocations.find(*it) != _userLocations.end()) {
             std::ostringstream oss;
-            oss << '[' << MSG_OTHER_LOCATION << ',' << *it << ',' << _userLocations[*it].first << ',' << _userLocations[*it].second << ']';
+            oss << '[' << SV_OTHER_LOCATION << ',' << *it << ',' << _userLocations[*it].first << ',' << _userLocations[*it].second << ']';
             Socket::sendMessage(socket, oss.str());
         }
     }
 }
 
-void Server::handleMessage(SOCKET user, std::string msg){
+void Server::handleMessage(SOCKET user, const std::string &msg){
     int eof = std::char_traits<wchar_t>::eof();
     int msgCode;
     char del;
+    static char buffer[BUFFER_SIZE+1];
     bool sendLocation = false;
     std::istringstream iss(msg);
     while (iss.peek() == '[') {
         iss >> del >> msgCode >> del;
         switch(msgCode) {
 
-        case REQ_MOVE_UP:
+        case CL_MOVE_UP:
             if (del != ']')
                 return;
             if (_userLocations.find(user) == _userLocations.end())
@@ -179,7 +182,7 @@ void Server::handleMessage(SOCKET user, std::string msg){
             sendLocation = true;
             break;
 
-        case REQ_MOVE_DOWN:
+        case CL_MOVE_DOWN:
             if (del != ']')
                 return;
             if (_userLocations.find(user) == _userLocations.end())
@@ -188,7 +191,7 @@ void Server::handleMessage(SOCKET user, std::string msg){
             sendLocation = true;
             break;
 
-        case REQ_MOVE_LEFT:
+        case CL_MOVE_LEFT:
             if (del != ']')
                 return;
             if (_userLocations.find(user) == _userLocations.end())
@@ -197,7 +200,7 @@ void Server::handleMessage(SOCKET user, std::string msg){
             sendLocation = true;
             break;
 
-        case REQ_MOVE_RIGHT:
+        case CL_MOVE_RIGHT:
             if (del != ']')
                 return;
             if (_userLocations.find(user) == _userLocations.end())
@@ -205,6 +208,18 @@ void Server::handleMessage(SOCKET user, std::string msg){
             _userLocations[user].first += 20;
             sendLocation = true;
             break;
+
+        case CL_I_AM:
+        {
+            _debug("CL_I_AM");
+            iss.get(buffer, BUFFER_SIZE, ']');
+            std::string name(buffer);
+            iss >> del;
+            if (del != ']')
+                return;
+            addNewUser(user, name);
+            break;
+        }
 
         default:
             ;
@@ -220,12 +235,12 @@ void Server::handleMessage(SOCKET user, std::string msg){
 void Server::sendUserLocation(SOCKET socket){
     // User himself
     std::ostringstream oss;
-    oss << '[' << MSG_LOCATION << ',' << _userLocations[socket].first << ',' << _userLocations[socket].second << ']';
+    oss << '[' << SV_LOCATION << ',' << _userLocations[socket].first << ',' << _userLocations[socket].second << ']';
     Socket::sendMessage(socket, oss.str());
 
     // Other users
     oss.str("");
-    oss << '[' << MSG_OTHER_LOCATION << ',' << socket << ',' << _userLocations[socket].first << ',' << _userLocations[socket].second << ']';
+    oss << '[' << SV_OTHER_LOCATION << ',' << socket << ',' << _userLocations[socket].first << ',' << _userLocations[socket].second << ']';
     for (std::set<SOCKET>::iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it)
         if (*it != socket)
             Socket::sendMessage(*it, oss.str());

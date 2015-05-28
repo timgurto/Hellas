@@ -20,6 +20,11 @@ _socket(&_debug){
 
     _image = SDL_LoadBMP("Images/man.bmp");
 
+    // For now, randomize player names
+    for (int i = 0; i != 3; ++i)
+    _playerName.push_back('a' + rand() % 26);
+    _debug << "Player name: " << _playerName << Log::endl;
+
     _debug("Client initialized");
 
     _defaultFont = TTF_OpenFont("trebuc.ttf", 16);
@@ -31,10 +36,15 @@ _socket(&_debug){
     serverAddr.sin_port = htons(8888);
 
     // Connect to server
-    if (connect(_socket.raw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0){
+    if (connect(_socket.raw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0)
         _debug << "Connection error: " << WSAGetLastError() << Log::endl;
-    }
-    _debug << "Connected to server" << Log::endl;
+    else
+        _debug << "Connected to server" << Log::endl;
+
+    // Announce player name
+    std::ostringstream oss;
+    oss << '[' << CL_I_AM << ',' << _playerName << ']';
+    _socket.sendCommand(oss.str());
 }
 
 Client::~Client(){
@@ -95,19 +105,19 @@ void Client::run(){
                     break;
 
                 case SDLK_UP:
-                    oss << '[' << REQ_MOVE_UP << ']';
+                    oss << '[' << CL_MOVE_UP << ']';
                     _socket.sendCommand(oss.str());
                     break;
                 case SDLK_DOWN:
-                    oss << '[' << REQ_MOVE_DOWN << ']';
+                    oss << '[' << CL_MOVE_DOWN << ']';
                     _socket.sendCommand(oss.str());
                     break;
                 case SDLK_LEFT:
-                    oss << '[' << REQ_MOVE_LEFT << ']';
+                    oss << '[' << CL_MOVE_LEFT << ']';
                     _socket.sendCommand(oss.str());
                     break;
                 case SDLK_RIGHT:
-                    oss << '[' << REQ_MOVE_RIGHT << ']';
+                    oss << '[' << CL_MOVE_RIGHT << ']';
                     _socket.sendCommand(oss.str());
                     break;
                 }
@@ -154,7 +164,7 @@ void Client::draw(){
     SDL_UpdateWindowSurface(_window);
 }
 
-void Client::handleMessage(std::string msg){
+void Client::handleMessage(const std::string &msg){
     std::istringstream iss(msg);
     int msgCode;
     char del;
@@ -162,7 +172,7 @@ void Client::handleMessage(std::string msg){
         iss >>del >> msgCode >> del;
         switch(msgCode) {
 
-        case MSG_LOCATION:
+        case SV_LOCATION:
         {
             int x, y;
             iss >> x >> del >> y >> del;
@@ -172,7 +182,7 @@ void Client::handleMessage(std::string msg){
             break;
         }
 
-        case MSG_OTHER_LOCATION:
+        case SV_OTHER_LOCATION:
         {
             int s, x, y;
             iss >> s >> del >> x >> del >> y >> del;

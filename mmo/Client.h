@@ -27,6 +27,7 @@ private:
     bool _loop;
     Socket _socket;
     TTF_Font *_defaultFont;
+    std::string _playerName;
 
     std::pair<int, int> _location;
 
@@ -37,7 +38,7 @@ private:
     Log _debug;
 
     void checkSocket();
-    void handleMessage(std::string msg);
+    void handleMessage(const std::string &msg);
 };
 
 #endif
