@@ -3,10 +3,12 @@
 #include <string>
 #include <SDL.h>
 
+#include "Args.h"
 #include "Client.h"
 #include "Server.h"
 
-int main(int argc, char* args[]){
+int main(int argc, char* argv[]){
+    Args args(argc, argv);
 
     int ret = SDL_Init(SDL_INIT_VIDEO);
     if (ret < 0)
@@ -16,8 +18,7 @@ int main(int argc, char* args[]){
         return 1;
     srand(static_cast<unsigned>(time(0)));
 
-    if (argc > 1 && std::string(args[1]) == "-server") {
-    //if (argc == 1) { /* Swap server/client, for debugging */
+    if (args.contains("server")){
         Server server;
         server.run();
     } else {
