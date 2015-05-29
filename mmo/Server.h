@@ -7,17 +7,20 @@
 #include <queue>
 #include <string>
 
+#include "Args.h"
 #include "Log.h"
 #include "Socket.h"
 #include "User.h"
 
 class Server{
 public:
-    Server();
+    Server(const Args &args);
     ~Server();
     void run();
 
 private:
+    const Args &_args; //comand-line args
+
     static const int MAX_CLIENTS;
     static const int BUFFER_SIZE;
 

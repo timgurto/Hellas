@@ -1,10 +1,10 @@
-#include <cassert>
-
 #include "Args.h"
 
 Args::Args(int argc, char* argv[]){
     for (int i = 1; i != argc; ++i){
-        assert(argv[i][0] == '-');
+        if (argv[i][0] != '-')
+            // Ill-formed argument; skip
+            continue;
         std::string key = argv[i]+1;
 
         // Look ahead to see if next arg is a value rather than a key
@@ -12,8 +12,8 @@ Args::Args(int argc, char* argv[]){
             ++i;
             std::string value = argv[i];
             _args[key] = value;
-        }
-        _args[key] = "";
+        }else
+            _args[key] = "";
     }
 }
 

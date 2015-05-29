@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <sstream>
 
+#include "Client.h" //TODO remove; only here for random initial placement
 #include "Socket.h"
 #include "Server.h"
 #include "User.h"
@@ -9,12 +10,19 @@
 const int Server::MAX_CLIENTS = 10;
 const int Server::BUFFER_SIZE = 100;
 
-Server::Server():
+Server::Server(const Args &args):
+_args(args),
 _loop(true),
 _debug(30),
 _socket(&_debug){
 
-    _window = SDL_CreateWindow("Server", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
+    int screenX = _args.contains("left") ?
+                  _args.getInt("left") :
+                  SDL_WINDOWPOS_UNDEFINED;
+    int screenY = _args.contains("top") ?
+                  _args.getInt("top") :
+                  SDL_WINDOWPOS_UNDEFINED;
+    _window = SDL_CreateWindow("Server", screenX, screenY, 800, 600, SDL_WINDOW_SHOWN);
     if (!_window)
         return;
     _screen = SDL_GetWindowSurface(_window);
@@ -147,7 +155,8 @@ void Server::run(){
 }
 
 void Server::addUser(SOCKET socket, const std::string &name){
-    std::pair<int, int> location = std::make_pair(rand() % 780, rand() % 560);
+    std::pair<int, int> location = std::make_pair(rand() % (Client::SCREEN_WIDTH - 20),
+                                                  rand() % (Client::SCREEN_HEIGHT - 40));
     User newUser(name, location, socket);
 
     // Send new user everybody else's location

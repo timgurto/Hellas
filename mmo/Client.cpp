@@ -6,14 +6,23 @@
 #include "messageCodes.h"
 
 const int Client::BUFFER_SIZE = 100;
+const int Client::SCREEN_WIDTH = 640;
+const int Client::SCREEN_HEIGHT = 480;
 
-Client::Client():
+Client::Client(const Args &args):
+_args(args),
 _location(std::make_pair(0, 0)),
 _loop(true),
-_debug(30),
+_debug(SCREEN_HEIGHT/20),
 _socket(&_debug){
 
-    _window = SDL_CreateWindow("Client", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
+    int screenX = _args.contains("left") ?
+                  _args.getInt("left") :
+                  SDL_WINDOWPOS_UNDEFINED;
+    int screenY = _args.contains("top") ?
+                  _args.getInt("top") :
+                  SDL_WINDOWPOS_UNDEFINED;
+    _window = SDL_CreateWindow("Client", screenX, screenY, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (!_window)
         return;
     _screen = SDL_GetWindowSurface(_window);

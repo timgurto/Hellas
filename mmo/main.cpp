@@ -19,10 +19,10 @@ int main(int argc, char* argv[]){
     srand(static_cast<unsigned>(time(0)));
 
     if (args.contains("server")){
-        Server server;
+        Server server(args);
         server.run();
     } else {
-        Client client;
+        Client client(args);
         client.run();
     }
     
