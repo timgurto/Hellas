@@ -9,7 +9,27 @@
 
 #include "Color.h"
 
-// A message log which accepts, queues and displays messages to the screen
+/*
+A message log which accepts, queues and displays messages to the screen
+Usage:
+
+log("message");
+    Add a message to the screen.
+
+log("message", Color::YELLOW);
+    Add a colored message to the screen
+
+log << "message " << 1;
+    Compile a message of different values/types
+
+log << Color::YELLOW;
+    Change the color of the current compilation; it will reset after endl is received.
+    This can be done at any time.
+
+log << endl;
+    End the current compilation, adding it to the screen.
+*/
+
 class Log{
 public:
     Log();
@@ -20,17 +40,21 @@ public:
 
     enum LogEndType{endl};
 
-    // Usage: log << "1" << 2 << endl;
-    // Does not add the completed message to the log until it receives endl.
     template<typename T>
     Log &operator<<(const T &val) {
         _oss << val;
         return *this;
     }
-    template<>
+    template<> // endl: end message and begin a new one
     Log &operator<<(const LogEndType &val) {
-        operator()(_oss.str());
+        operator()(_oss.str(), &_compilationColor);
         _oss.str("");
+        _compilationColor = _color; // reset color for next compilation
+        return *this;
+    }
+    template<> // color: set color of current compilation
+    Log &operator<<(const Color &c) {
+        _compilationColor = c;
         return *this;
     }
 
@@ -41,6 +65,7 @@ private:
     bool _valid; // false if an error has occurred
     std::ostringstream _oss;
     Color _color;
+    Color _compilationColor; // for use while compiling a message
 };
 
 #endif

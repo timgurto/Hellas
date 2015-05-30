@@ -46,9 +46,9 @@ _socket(&_debug){
 
     // Connect to server
     if (connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0)
-        _debug << "Connection error: " << WSAGetLastError() << Log::endl;
+        _debug << Color::RED << "Connection error: " << WSAGetLastError() << Log::endl;
     else
-        _debug << "Connected to server" << Log::endl;
+        _debug << Color::GREEN << "Connected to server" << Log::endl;
 
     // Announce player name
     std::ostringstream oss;
@@ -72,7 +72,7 @@ void Client::checkSocket(){
     static timeval selectTimeout = {0, 10000};
     int activity = select(0, &readFDs, 0, 0, &selectTimeout);
     if (activity == SOCKET_ERROR) {
-        _debug << "Error polling sockets: " << WSAGetLastError() << Log::endl;
+        _debug << Color::RED << "Error polling sockets: " << WSAGetLastError() << Log::endl;
         return;
     }
     if (FD_ISSET(_socket.getRaw(), &readFDs)) {
@@ -210,7 +210,7 @@ void Client::handleMessage(const std::string &msg){
         }
 
         default:
-            _debug("Unhandled message");
+            _debug << Color::RED << "Unhandled message: " << msg;
         }
     }
 }

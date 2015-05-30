@@ -7,6 +7,7 @@ Log::Log(unsigned displayLines, const std::string &fontName, int fontSize, const
 _maxMessages(displayLines),
 _font(TTF_OpenFont(fontName.c_str(), fontSize)),
 _color(color),
+_compilationColor(color),
 _valid(true){
     if (!_font){
         std::string err = TTF_GetError();

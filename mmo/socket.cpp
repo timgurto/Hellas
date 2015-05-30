@@ -31,9 +31,9 @@ void Socket::bind(sockaddr_in &socketAddr){
         return;
 
     if (::bind(_raw, (sockaddr*)&socketAddr, sockAddrSize) == SOCKET_ERROR)
-        if (_debug) (*_debug) << "Error binding socket: " << WSAGetLastError() <<  Log::endl;
+        if (_debug) (*_debug) << Color::RED << "Error binding socket: " << WSAGetLastError() <<  Log::endl;
     else
-        if (_debug) (*_debug) << "Socket bound. " <<  Log::endl;
+        if (_debug) (*_debug) << Color::RED << "Socket bound. " <<  Log::endl;
 }
 
 void Socket::listen(){
@@ -57,7 +57,7 @@ void Socket::sendMessage(const std::string &msg, SOCKET destSocket) const{
         destSocket = _raw;
 
     if (send(destSocket, msg.c_str(), (int)msg.length(), 0) < 0)
-        if (_debug) (*_debug) << "Failed to send command: " << msg << Log::endl;
+        if (_debug) (*_debug) << Color::RED << "Failed to send command: " << msg << Log::endl;
 }
 
 bool Socket::valid() const{

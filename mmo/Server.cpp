@@ -58,7 +58,7 @@ void Server::checkSockets(){
     static timeval selectTimeout = {0, 10000};
     int activity = select(0, &readFDs, 0, 0, &selectTimeout);
     if (activity == SOCKET_ERROR) {
-        _debug << "Error polling sockets: " << WSAGetLastError() << Log::endl;
+        _debug << Color::RED << "Error polling sockets: " << WSAGetLastError() << Log::endl;
         return;
     }
 
@@ -70,9 +70,9 @@ void Server::checkSockets(){
             sockaddr_in clientAddr;
             SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
             if (tempSocket == SOCKET_ERROR) {
-                _debug << "Error accepting connection: " << WSAGetLastError() << Log::endl;
+                _debug << Color::RED << "Error accepting connection: " << WSAGetLastError() << Log::endl;
             } else {
-                _debug << "Connection accepted: "
+                _debug << Color::GREEN << "Connection accepted: "
                        << inet_ntoa(clientAddr.sin_addr) << ":" << ntohs(clientAddr.sin_port)
                        << ", socket number = " << tempSocket << Log::endl;
                 _clientSockets.insert(tempSocket);
@@ -97,7 +97,7 @@ void Server::checkSockets(){
                     _clientSockets.erase(it++);
                     continue;
                 } else {
-                    _debug << "Error receiving message: " << err << Log::endl;
+                    _debug << Color::RED << "Error receiving message: " << err << Log::endl;
                 }
             } else if (charsRead == 0) {
                 // Client disconnected
@@ -241,7 +241,7 @@ void Server::handleMessage(SOCKET client, const std::string &msg){
         }
 
         default:
-            _debug("Unhandled message");
+            _debug << Color::RED << "Unhandled message: " << msg;
         }
     }
 
