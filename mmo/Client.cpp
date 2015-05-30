@@ -14,7 +14,8 @@ _args(args),
 _location(std::make_pair(0, 0)),
 _loop(true),
 _debug(SCREEN_HEIGHT/20),
-_socket(&_debug){
+_socket(&_debug),
+_connected(false){
     _debug << args << Log::endl;
 
     int screenX = _args.contains("left") ?
@@ -38,27 +39,6 @@ _socket(&_debug){
     _debug("Client initialized");
 
     _defaultFont = TTF_OpenFont("trebuc.ttf", 16);
-
-    // Server details
-    sockaddr_in serverAddr;
-    serverAddr.sin_addr.s_addr = args.contains("server-ip") ?
-                                 inet_addr(args.getString("server-ip").c_str()) :
-                                 inet_addr("127.0.0.1");
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = args.contains("server-port") ?
-                          args.getInt("server-port") :
-                          htons(8888);
-
-    // Connect to server
-    if (connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0)
-        _debug << Color::RED << "Connection error: " << WSAGetLastError() << Log::endl;
-    else
-        _debug << Color::GREEN << "Connected to server" << Log::endl;
-
-    // Announce player name
-    std::ostringstream oss;
-    oss << '[' << CL_I_AM << ',' << _username << ']';
-    _socket.sendMessage(oss.str());
 }
 
 Client::~Client(){
@@ -71,6 +51,29 @@ Client::~Client(){
 }
 
 void Client::checkSocket(){
+    // Ensure connected to server
+    if (!_connected) {
+            // Server details
+            sockaddr_in serverAddr;
+            serverAddr.sin_addr.s_addr = _args.contains("server-ip") ?
+                                         inet_addr(_args.getString("server-ip").c_str()) :
+                                         inet_addr("127.0.0.1");
+            serverAddr.sin_family = AF_INET;
+            serverAddr.sin_port = _args.contains("server-port") ?
+                                  _args.getInt("server-port") :
+                                  htons(8888);
+        if (connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
+            _debug << Color::RED << "Connection error: " << WSAGetLastError() << Log::endl;
+        } else {
+            _debug << Color::GREEN << "Connected to server" << Log::endl;
+            _connected = true;
+            // Announce player name
+            std::ostringstream oss;
+            oss << '[' << CL_I_AM << ',' << _username << ']';
+            _socket.sendMessage(oss.str());
+        }
+    }
+
     static fd_set readFDs;
     FD_ZERO(&readFDs);
     FD_SET(_socket.getRaw(), &readFDs);
@@ -143,14 +146,22 @@ void Client::run(){
             }
         }
 
+        checkSocket();
         // Draw
         draw();
-        checkSocket();
+        if (!_connected)
+            SDL_Delay(1000);
         SDL_Delay(10);
     }
 }
 
 void Client::draw(){
+    if (!_connected){
+        SDL_FillRect(_screen, 0, Color::BLACK);
+        _debug.draw(_screen);
+        SDL_UpdateWindowSurface(_window);
+        return;
+    }
     SDL_FillRect(_screen, 0, Color::GREEN/4);
     SDL_Rect drawLoc;
     drawLoc.x = _location.first;
