@@ -34,3 +34,14 @@ int Args::getInt(const std::string &key) const{
     else
         return 0;
 }
+
+std::ostream &operator<<(std::ostream &lhs, const Args &rhs){
+    for (std::map<std::string, std::string>::const_iterator it = rhs._args.begin(); it != rhs._args.end();){
+        lhs << it->first;
+        if (it->second != "")
+            lhs << '=' << it->second;
+        if (++it != rhs._args.end())
+            lhs << ' ';
+    }
+    return lhs;
+}

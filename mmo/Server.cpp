@@ -15,6 +15,7 @@ _args(args),
 _loop(true),
 _debug(30),
 _socket(&_debug){
+    _debug << args << Log::endl;
 
     int screenX = _args.contains("left") ?
                   _args.getInt("left") :

@@ -2,6 +2,7 @@
 #define ARGS_H
 
 #include <map>
+#include <iostream>
 #include <string>
 
 // A class to simplify the handling of command-line arguments
@@ -13,6 +14,8 @@ public:
     // These functions will return "" or 0 if the key is not found, so use contains() first for accuracy.
     std::string getString(const std::string &key) const;
     int getInt(const std::string &key) const;
+
+    friend std::ostream &operator<<(std::ostream &lhs, const Args &rhs);
 
 private:
     /*

@@ -15,6 +15,7 @@ _location(std::make_pair(0, 0)),
 _loop(true),
 _debug(SCREEN_HEIGHT/20),
 _socket(&_debug){
+    _debug << args << Log::endl;
 
     int screenX = _args.contains("left") ?
                   _args.getInt("left") :
