@@ -41,9 +41,13 @@ _socket(&_debug){
 
     // Server details
     sockaddr_in serverAddr;
-    serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    serverAddr.sin_addr.s_addr = args.contains("server-ip") ?
+                                 inet_addr(args.getString("server-ip").c_str()) :
+                                 inet_addr("127.0.0.1");
     serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(8888);
+    serverAddr.sin_port = args.contains("server-port") ?
+                          args.getInt("server-port") :
+                          htons(8888);
 
     // Connect to server
     if (connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0)

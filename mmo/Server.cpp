@@ -37,6 +37,7 @@ _socket(&_debug){
     serverAddr.sin_port = htons(8888);
 
     _socket.bind(serverAddr);
+    _debug << "Server address: " << inet_ntoa(serverAddr.sin_addr) << ":" << ntohs(serverAddr.sin_port) << Log::endl;
     _socket.listen();
 
     _debug("Listening for connections");

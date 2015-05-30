@@ -21,3 +21,4 @@ server.bat
 client.bat
 kill.bat
 *.rsp
+*.zip
