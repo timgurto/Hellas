@@ -7,13 +7,15 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include "Color.h"
+
 // A message log which accepts, queues and displays messages to the screen
 class Log{
 public:
     Log();
-    Log(unsigned displayLines, const std::string &fontName = "trebuc.ttf", int fontSize = 16);
+    Log(unsigned displayLines, const std::string &fontName = "trebuc.ttf", int fontSize = 16, const Color &color = Color::WHITE);
     ~Log();
-    void operator()(const std::string &message);
+    void operator()(const std::string &message, const Color *color = 0);
     void draw(SDL_Surface *targetSurface, int x = 0, int y = 0) const;
 
     enum LogEndType{endl};
@@ -38,6 +40,7 @@ private:
     TTF_Font *_font;
     bool _valid; // false if an error has occurred
     std::ostringstream _oss;
+    Color _color;
 };
 
 #endif

@@ -175,6 +175,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Color.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Log.cpp"
 				>
 			</File>
@@ -206,6 +210,10 @@
 			</File>
 			<File
 				RelativePath=".\Client.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Color.h"
 				>
 			</File>
 			<File

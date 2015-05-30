@@ -146,7 +146,7 @@ void Client::run(){
 }
 
 void Client::draw(){
-    SDL_FillRect(_screen, 0, SDL_MapRGB(_screen->format, 0, 96, 0));
+    SDL_FillRect(_screen, 0, (Color::GREEN / 2.6));
     SDL_Rect drawLoc;
     drawLoc.x = _location.first;
     drawLoc.y = _location.second;
@@ -155,7 +155,7 @@ void Client::draw(){
     borderRect.y = borderRect.y - 1;
     borderRect.w = 22;
     borderRect.h = 42;
-    SDL_FillRect(_screen, &borderRect, SDL_MapRGB(_screen->format, 255, 255, 255));
+    SDL_FillRect(_screen, &borderRect, Color::WHITE);
     SDL_BlitSurface(_image, 0, _screen, &drawLoc);
     for (std::map<std::string, std::pair<int, int> >::iterator it = _otherUserLocations.begin(); it != _otherUserLocations.end(); ++it){
         drawLoc.x = it->second.first;

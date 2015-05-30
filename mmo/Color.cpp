@@ -1,0 +1,65 @@
+#include "Color.h"
+
+const Color Color::BLACK  (0x00, 0x00, 0x00);
+const Color Color::BLUE   (0x00, 0x00, 0xff);
+const Color Color::GREEN  (0x00, 0xff, 0x00);
+const Color Color::CYAN   (0x00, 0xff, 0xff);
+const Color Color::RED    (0xff, 0x00, 0x00);
+const Color Color::MAGENTA(0xff, 0x00, 0xff);
+const Color Color::YELLOW (0xff, 0xff, 0x00);
+const Color Color::WHITE  (0xff, 0xff, 0xff);
+
+Color::Color(Uint8 r, Uint8 g, Uint8 b):
+_r(r),
+_g(g),
+_b(b){}
+
+Color::Color(const SDL_Color &rhs):
+_r(rhs.r),
+_g(rhs.g),
+_b(rhs.b){}
+
+Color::operator SDL_Color() const{
+    SDL_Color c = {_r, _g, _b, 0};
+    return c;
+}
+
+Color::operator Uint32() const{
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    return
+        (_r << 16) +
+        (_g << 8) +
+        (_b);
+#else
+    return
+        (_r) +
+        (_g << 8) +
+        (_b << 16);
+#endif
+}
+
+Color Color::operator/(double d) const {
+    if (d < 0)
+        return BLACK;
+    int
+        r = static_cast<int>(_r/d + .5),
+        g = static_cast<int>(_g/d + .5),
+        b = static_cast<int>(_b/d + .5);
+    if (r > 0xff) r = 0xff;
+    if (g > 0xff) g = 0xff;
+    if (b > 0xff) b = 0xff;
+    return Color(r, g, b);
+}
+
+Color Color::operator*(double d) const {
+    if (d < 0)
+        return BLACK;
+    int
+        r = static_cast<int>(_r * d + .5),
+        g = static_cast<int>(_g * d + .5),
+        b = static_cast<int>(_b * d + .5);
+    if (r > 0xff) r = 0xff;
+    if (g > 0xff) g = 0xff;
+    if (b > 0xff) b = 0xff;
+    return Color(r, g, b);
+}

@@ -3,9 +3,10 @@
 Log::Log():
 _valid(false){}
 
-Log::Log(unsigned displayLines, const std::string &fontName, int fontSize):
+Log::Log(unsigned displayLines, const std::string &fontName, int fontSize, const Color &color):
 _maxMessages(displayLines),
 _font(TTF_OpenFont(fontName.c_str(), fontSize)),
+_color(color),
 _valid(true){
     if (!_font){
         std::string err = TTF_GetError();
@@ -22,9 +23,10 @@ Log::~Log(){
         TTF_CloseFont(_font);
 }
 
-void Log::operator()(const std::string &message){
-    static SDL_Color color = {0xff, 0xff, 0xff, 0};
-    SDL_Surface *msgSurface = TTF_RenderText_Solid(_font, message.c_str(), color);
+void Log::operator()(const std::string &message, const Color *color){
+    SDL_Surface *msgSurface = TTF_RenderText_Solid(_font,
+                                                   message.c_str(),
+                                                   color ? *color : _color);
     if (!msgSurface)
         return;
     _messages.push_back(msgSurface);
