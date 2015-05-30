@@ -146,7 +146,7 @@ void Client::run(){
 }
 
 void Client::draw(){
-    SDL_FillRect(_screen, 0, (Color::GREEN / 2.6));
+    SDL_FillRect(_screen, 0, Color::GREEN/4);
     SDL_Rect drawLoc;
     drawLoc.x = _location.first;
     drawLoc.y = _location.second;

@@ -38,17 +38,21 @@ Color::operator Uint32() const{
 #endif
 }
 
-Color Color::operator/(double d) const {
-    if (d < 0)
+Color Color::operator/(double s) const {
+    if (s < 0)
         return BLACK;
     int
-        r = static_cast<int>(_r/d + .5),
-        g = static_cast<int>(_g/d + .5),
-        b = static_cast<int>(_b/d + .5);
+        r = static_cast<int>(_r/s + .5),
+        g = static_cast<int>(_g/s + .5),
+        b = static_cast<int>(_b/s + .5);
     if (r > 0xff) r = 0xff;
     if (g > 0xff) g = 0xff;
     if (b > 0xff) b = 0xff;
     return Color(r, g, b);
+}
+
+Color Color::operator/(int s) const {
+    return *this / static_cast<double>(s);
 }
 
 Color Color::operator*(double d) const {
@@ -62,4 +66,8 @@ Color Color::operator*(double d) const {
     if (g > 0xff) g = 0xff;
     if (b > 0xff) b = 0xff;
     return Color(r, g, b);
+}
+
+Color Color::operator*(int s) const {
+    return *this * static_cast<double>(s);
 }
