@@ -7,5 +7,5 @@ rem )
 
 TASKKILL /F /IM "mmo.exe"
 xcopy /y /d Debug\mmo.exe .
-start mmo.exe -server-ip 192.168.1.5
+start mmo.exe -server-ip 192.168.1.5 -username Archon
 mmo.exe -left 5 -top 25 -server

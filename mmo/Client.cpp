@@ -31,9 +31,12 @@ _connected(false){
 
     _image = SDL_LoadBMP("Images/man.bmp");
 
-    // For now, randomize player names
-    for (int i = 0; i != 3; ++i)
-    _username.push_back('a' + rand() % 26);
+    // Randomize player name if not supplied
+    if (_args.contains("username"))
+        _username = _args.getString("username");
+    else
+        for (int i = 0; i != 3; ++i)
+            _username.push_back('a' + rand() % 26);
     _debug << "Player name: " << _username << Log::endl;
 
     _debug("Client initialized");

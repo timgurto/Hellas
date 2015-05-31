@@ -13,6 +13,8 @@ MMO economy simulator
 
 `-top `*`value`* the y co-ordinate of the window
 
+`-username `*`value`* the user as whom the client should log in
+
 ## Glossary of ambiguous terms
 **character**, the *avatar* which represents a user in-game
 

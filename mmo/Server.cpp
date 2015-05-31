@@ -7,7 +7,7 @@
 #include "User.h"
 #include "messageCodes.h"
 
-const int Server::MAX_CLIENTS = 10;
+const int Server::MAX_CLIENTS = 20;
 const int Server::BUFFER_SIZE = 100;
 
 Server::Server(const Args &args):
