@@ -3,11 +3,15 @@ MMO economy simulator
 
 ## Command-line arguments
 
-`-left `*`value`* the x co-ordinate of the window (integer)
+`-left `*`value`* the x co-ordinate of the window
 
 `-server` run the program as a server (default is as client)
 
-`-top `*`value`* the y co-ordinate of the window (integer)
+`-server-ip` for a client, attempt to connect to server at specific IP address
+
+`-server-port` for a client, attempt to connect to server at specific port
+
+`-top `*`value`* the y co-ordinate of the window
 
 ## Glossary of ambiguous terms
 **character**, the *avatar* which represents a user in-game

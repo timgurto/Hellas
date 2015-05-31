@@ -38,6 +38,8 @@ private:
 
     mutable Log _debug;
 
+    void draw() const;
+
     // Add the newly logged-in user; this happens not once the client connects, but rather when a CL_I_AM message is received.
     void addUser(SOCKET socket, const std::string &name);
 

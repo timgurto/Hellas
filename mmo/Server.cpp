@@ -146,14 +146,18 @@ void Server::run(){
             }
         }
 
-        SDL_FillRect(_screen, 0, Color::BLACK);
-        _debug.draw(_screen);
-        SDL_UpdateWindowSurface(_window);
+        draw();
 
         checkSockets();
 
         SDL_Delay(10);
     }
+}
+
+void Server::draw() const{
+    SDL_FillRect(_screen, 0, Color::BLACK);
+    _debug.draw(_screen);
+    SDL_UpdateWindowSurface(_window);
 }
 
 void Server::addUser(SOCKET socket, const std::string &name){
