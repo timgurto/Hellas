@@ -20,6 +20,9 @@ private:
     SOCKET _raw;
     Log *_debug;
 
+    Socket(const Socket &rhs);
+    const Socket &operator=(const Socket &rhs);
+
 public:
     Socket(Log *debugLog = 0);
     ~Socket();
