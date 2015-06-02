@@ -35,6 +35,8 @@ private:
     TTF_Font *_defaultFont;
     std::string _username;
 
+    bool _invalidUsername; // Flag set if server refused username
+
     bool _connected;
 
     static const int BUFFER_SIZE;

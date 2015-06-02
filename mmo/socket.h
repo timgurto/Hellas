@@ -31,6 +31,10 @@ public:
     const Socket &operator=(const Socket &rhs);
     ~Socket();
 
+    bool operator==(const Socket &rhs) const;
+    bool operator!=(const Socket &rhs) const;
+    bool operator<(const Socket &rhs) const;
+
     void bind(sockaddr_in &socketAddr);
     void listen();
     bool valid() const; // Whether this socket is safe to use

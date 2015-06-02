@@ -53,8 +53,8 @@ void Server::checkSockets(){
     static fd_set readFDs;
     FD_ZERO(&readFDs);
     FD_SET(_socket.getRaw(), &readFDs);
-    for (std::set<SOCKET>::iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it)
-        FD_SET(*it, &readFDs);
+    for (std::set<Socket>::iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it)
+        FD_SET(it->getRaw(), &readFDs);
 
     // Poll for activity
     static timeval selectTimeout = {0, 10000};
@@ -83,19 +83,20 @@ void Server::checkSockets(){
     }
 
     // Activity on client socket: message received or client disconnected
-    for (std::set<SOCKET>::iterator it = _clientSockets.begin(); it != _clientSockets.end();) {
-        if (FD_ISSET(*it, &readFDs)) {
+    for (std::set<Socket>::iterator it = _clientSockets.begin(); it != _clientSockets.end();) {
+        SOCKET raw = it->getRaw();
+        if (FD_ISSET(raw, &readFDs)) {
             sockaddr_in clientAddr;
-            getpeername(*it, (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
+            getpeername(raw, (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
             static char buffer[BUFFER_SIZE+1];
-            int charsRead = recv(*it, buffer, BUFFER_SIZE, 0);
+            int charsRead = recv(raw, buffer, BUFFER_SIZE, 0);
             if (charsRead == SOCKET_ERROR) {
                 int err = WSAGetLastError();
                 if (err == WSAECONNRESET) {
                     // Client disconnected
-                    _debug << "Client " << *it << " disconnected" << Log::endl;
-                    removeUser(*it);
-                    closesocket(*it);
+                    _debug << "Client " << raw << " disconnected" << Log::endl;
+                    removeUser(raw);
+                    closesocket(raw);
                     _clientSockets.erase(it++);
                     continue;
                 } else {
@@ -103,15 +104,15 @@ void Server::checkSockets(){
                 }
             } else if (charsRead == 0) {
                 // Client disconnected
-                _debug << "Client " << *it << " disconnected" << Log::endl;
+                _debug << "Client " << raw << " disconnected" << Log::endl;
                 removeUser(*it);
-                closesocket(*it);
+                closesocket(raw);
                 _clientSockets.erase(it++);
                 continue;
             } else {
                 // Message received
                 buffer[charsRead] = '\0';
-                _debug << "recv from client " << *it << ": " << buffer << Log::endl;
+                _debug << "recv from client " << raw << ": " << buffer << Log::endl;
                 _messages.push(std::make_pair(*it, std::string(buffer)));
             }
         }
@@ -160,10 +161,10 @@ void Server::draw() const{
     SDL_UpdateWindowSurface(_window);
 }
 
-void Server::addUser(SOCKET socket, const std::string &name){
+void Server::addUser(const Socket &socket, const std::string &name){
     std::pair<int, int> location = std::make_pair(rand() % (Client::SCREEN_WIDTH - 20),
                                                   rand() % (Client::SCREEN_HEIGHT - 40));
-    User newUser(name, location, Socket(socket));
+    User newUser(name, location, socket);
 
     // Send new user everybody else's location
     for (std::list<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
@@ -175,9 +176,9 @@ void Server::addUser(SOCKET socket, const std::string &name){
     _debug << "New user, " << name << " has been registered." << Log::endl;
 }
 
-void Server::removeUser(SOCKET socket){
+void Server::removeUser(const Socket &socket){
     for (std::list<User>::iterator it = _users.begin(); it != _users.end(); ++it)
-        if (it->getSocket().getRaw() == socket){
+        if (it->getSocket() == socket){
             // Broadcast message
             std::ostringstream oss;
             oss << '[' << SV_USER_DISCONNECTED << ',' << it->getName() << ']';
@@ -187,7 +188,7 @@ void Server::removeUser(SOCKET socket){
         }
 }
 
-void Server::handleMessage(SOCKET client, const std::string &msg){
+void Server::handleMessage(const Socket &client, const std::string &msg){
     int eof = std::char_traits<wchar_t>::eof();
     int msgCode;
     char del;
@@ -241,6 +242,34 @@ void Server::handleMessage(SOCKET client, const std::string &msg){
             iss >> del;
             if (del != ']')
                 return;
+
+            // Check that username is valid
+            bool invalid = false;
+            for (std::string::const_iterator it = name.begin(); it != name.end(); ++it){
+                if (*it < 'a' || *it > 'z') {
+                    std::ostringstream oss;
+                    oss << '[' << SV_INVALID_USERNAME << ']' << Log::endl;
+                    _socket.sendMessage(oss.str(), client);
+                    invalid = true;
+                    break;
+                }
+            }
+            if (invalid)
+                break;
+
+            // Check that user isn't already logged in
+            for (std::list<User>::const_iterator it = _users.begin(); it != _users.end(); ++it) {
+                if (it->getName() == name){
+                    std::ostringstream oss;
+                    oss << '[' << SV_DUPLICATE_USERNAME << ']' << Log::endl;
+                    _socket.sendMessage(oss.str(), client);
+                    invalid = true;
+                    break;
+                }
+            }
+            if (invalid)
+                break;
+
             addUser(client, name);
             break;
         }
@@ -265,9 +294,9 @@ void Server::broadcast(const std::string &msg) const{
         sendCommand(*it, msg);
 }
 
-User *Server::getUserBySocket(SOCKET socket){
+User *Server::getUserBySocket(const Socket &socket){
     for (std::list<User>::iterator it = _users.begin(); it != _users.end(); ++it)
-        if (it->getSocket().getRaw() == socket)
+        if (it->getSocket() == socket)
             return &*it;
     return 0;
 }

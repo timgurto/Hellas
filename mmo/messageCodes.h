@@ -25,6 +25,12 @@ enum MessageCode{
     // Arguments: username
     SV_USER_DISCONNECTED,
 
+    // The client has attempted to connect with a username already in use
+    SV_DUPLICATE_USERNAME,
+
+    // The client has attempted to connect with an invalid username
+    SV_INVALID_USERNAME,
+
     NUM_MESSAGE_CODES
 };
 

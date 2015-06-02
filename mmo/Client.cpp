@@ -15,7 +15,8 @@ _location(std::make_pair(0, 0)),
 _loop(true),
 _debug(SCREEN_HEIGHT/20),
 _socket(&_debug),
-_connected(false){
+_connected(false),
+_invalidUsername(false){
     _debug << args << Log::endl;
 
     int screenX = _args.contains("left") ?
@@ -54,6 +55,9 @@ Client::~Client(){
 }
 
 void Client::checkSocket(){
+    if (_invalidUsername)
+        return;
+
     // Ensure connected to server
     if (!_connected) {
             // Server details
@@ -228,8 +232,22 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_DUPLICATE_USERNAME:
+            if (del != ']')
+                return;
+            _invalidUsername = true;
+            _debug << Color::RED << "The user " << _username << " is already connected to the server." << Log::endl;
+            break;
+
+        case SV_INVALID_USERNAME:
+            if (del != ']')
+                return;
+            _invalidUsername = true;
+            _debug << Color::RED << "The username " << _username << " is invalid." << Log::endl;
+            break;
+
         default:
-            _debug << Color::RED << "Unhandled message: " << msg;
+            _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
         }
     }
 }

@@ -45,6 +45,18 @@ Socket::~Socket(){
     }
 }
 
+bool Socket::operator==(const Socket &rhs) const{
+    return _raw == rhs._raw;
+}
+
+bool Socket::operator!=(const Socket &rhs) const{
+    return !(*this == rhs);
+}
+
+bool Socket::operator<(const Socket &rhs) const{
+    return _raw < rhs._raw;
+}
+
 void Socket::bind(sockaddr_in &socketAddr){
     if (!valid())
         return;
