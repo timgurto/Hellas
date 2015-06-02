@@ -56,6 +56,10 @@ private:
 
     void checkSockets();
     void handleMessage(const Socket &client, const std::string &msg);
+
+    bool readUserData(User &user); // true: save data existed
+    void writeUserData(const User &user) const;
+
 };
 
 #endif

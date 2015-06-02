@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include <sstream>
+#include <fstream>
 
 #include "Client.h" //TODO remove; only here for random initial placement
 #include "Socket.h"
@@ -153,6 +154,11 @@ void Server::run(){
 
         SDL_Delay(10);
     }
+
+    // Save all user data
+    for(std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it){
+        writeUserData(*it);
+    }
 }
 
 void Server::draw() const{
@@ -162,9 +168,12 @@ void Server::draw() const{
 }
 
 void Server::addUser(const Socket &socket, const std::string &name){
-    Point loc(rand() % (Client::SCREEN_WIDTH - 20),
-              rand() % (Client::SCREEN_HEIGHT - 40));
-    User newUser(name, loc, socket);
+    User newUser(name, 0, socket);
+    bool userExisted = readUserData(newUser);
+    if (!userExisted) {
+        newUser.location.x = rand() % (Client::SCREEN_WIDTH - 20);
+        newUser.location.y = rand() % (Client::SCREEN_HEIGHT - 40);
+    }
     _usernames.insert(name);
 
     // Send new user everybody else's location
@@ -184,6 +193,9 @@ void Server::removeUser(const Socket &socket){
         std::ostringstream oss;
         oss << '[' << SV_USER_DISCONNECTED << ',' << it->getName() << ']';
         broadcast(oss.str());
+
+        // Save user data
+        writeUserData(*it);
 
         _usernames.erase(it->getName());
         _users.erase(it);
@@ -294,4 +306,21 @@ void Server::sendCommand(const User &dstUser, const std::string &msg) const{
 void Server::broadcast(const std::string &msg) const{
     for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
         sendCommand(*it, msg);
+}
+
+bool Server::readUserData(User &user){
+    std::string filename = std::string("Users/") + user.getName() + ".usr";
+    std::ifstream fs(filename.c_str());
+    if (!fs.good()) // File didn't exist
+        return false;
+    fs >> user.location.x >> user.location.y;
+    fs.close();
+    return true;
+}
+
+void Server::writeUserData(const User &user) const{
+    std::string filename = std::string("Users/") + user.getName() + ".usr";
+    std::ofstream fs(filename.c_str());
+    fs << user.location.x << ' ' << user.location.y;
+    fs.close();
 }
