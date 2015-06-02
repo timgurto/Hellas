@@ -12,7 +12,7 @@ const int Client::SCREEN_HEIGHT = 480;
 
 const Uint32 Client::MAX_TICK_LENGTH = 100;
 const double Client::MOVEMENT_SPEED = 80;
-const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 1000;
+const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 250;
 
 Client::Client(const Args &args):
 _args(args),
@@ -160,7 +160,7 @@ void Client::run(){
                 ;
             }
         }
-        // Key polling
+        // Poll keys (whether they are currently pressed, not key events)
         const Uint8 *keyboardState = SDL_GetKeyboardState(0);
         bool
             up = keyboardState[SDL_SCANCODE_UP] == SDL_PRESSED,

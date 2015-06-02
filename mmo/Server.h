@@ -52,7 +52,7 @@ private:
     void broadcast(const std::string &msg) const;
 
     // Send a user's location to all users
-    void sendUserLocation(const User &user) const;
+    //void sendUserLocation(const User &user) const;
 
     void checkSockets();
     void handleMessage(const Socket &client, const std::string &msg);

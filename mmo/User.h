@@ -21,10 +21,18 @@ public:
     std::string makeLocationCommand() const;
 
     Point location;
+    // Multiplier for legal movement distance, to compensate for latency fluctuations
+    // TODO: consider ability for users to exploit this
+    static const double LEGAL_MOVEMENT_MARGIN;
+
+    // Determine whether the proposed new location is legal, considering movement speed and time elapsed.
+    // Set location to the new, legal location
+    void updateLocation(double x, double y);
 
 private:
     std::string _name;
     Socket _socket;
+    Uint32 _lastLocUpdate; // Time that the last CL_LOCATION was received
 };
 
 #endif

@@ -207,7 +207,6 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
     int msgCode;
     char del;
     static char buffer[BUFFER_SIZE+1];
-    bool sendLocation = false;
     std::istringstream iss(msg);
     User *user = 0;
     while (iss.peek() == '[') {
@@ -230,9 +229,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> x >> del >> y >> del;
             if (del != ']')
                 return;
-            user->location.x = x;
-            user->location.y = y;
-            sendLocation = true;
+            user->updateLocation(x, y);
+            broadcast(user->makeLocationCommand());
             break;
         }
 
@@ -276,11 +274,6 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             _debug << Color::RED << "Unhandled message: " << msg;
         }
     }
-
-    if (user && sendLocation) {
-        broadcast(user->makeLocationCommand());
-    }
-
 }
 
 void Server::sendCommand(const User &dstUser, const std::string &msg) const{
