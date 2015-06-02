@@ -6,7 +6,7 @@
 #include "messageCodes.h"
 #include "util.h"
 
-const int Client::BUFFER_SIZE = 100;
+const int Client::BUFFER_SIZE = 1023;
 const int Client::SCREEN_WIDTH = 640;
 const int Client::SCREEN_HEIGHT = 480;
 
@@ -109,10 +109,12 @@ void Client::checkSocket(){
     }
     if (FD_ISSET(_socket.getRaw(), &readFDs)) {
         static char buffer[BUFFER_SIZE+1];
-        int charsRead = recv(_socket.getRaw(), buffer, 100, 0);
+        int charsRead = recv(_socket.getRaw(), buffer, BUFFER_SIZE, 0);
         if (charsRead != SOCKET_ERROR && charsRead != 0){
             buffer[charsRead] = '\0';
             // _debug << "recv: " << std::string(buffer) << "" << Log::endl;
+            if (charsRead == BUFFER_SIZE)
+                _debug << Color::RED << "Input buffer full; some messages are likely being discarded" << Log::endl;
             _messages.push(std::string(buffer));
         }
     }

@@ -9,7 +9,7 @@
 #include "messageCodes.h"
 
 const int Server::MAX_CLIENTS = 20;
-const int Server::BUFFER_SIZE = 100;
+const int Server::BUFFER_SIZE = 1023;
 
 const Uint32 Server::PING_FREQUENCY = 5000;
 
@@ -119,6 +119,8 @@ void Server::checkSockets(){
                 // Message received
                 buffer[charsRead] = '\0';
                 //_debug << "recv from client " << raw << ": " << buffer << Log::endl;
+                if (charsRead == BUFFER_SIZE)
+                    _debug << Color::RED << "Input buffer full; some messages are likely being discarded" << Log::endl;
                 _messages.push(std::make_pair(*it, std::string(buffer)));
             }
         }
