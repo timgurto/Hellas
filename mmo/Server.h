@@ -29,12 +29,11 @@ private:
 
     bool _loop;
 
-    std::set<Socket> _clientSockets;
-
     std::queue<std::pair<Socket, std::string> > _messages;
 
-    std::set<User> _users;
-    std::set<std::string> _usernames; // For faster lookup of duplicates
+    std::set<Socket> _clientSockets; // All connected sockets, including those without registered users
+    std::set<User> _users; // All connected users
+    std::set<std::string> _usernames; // All connected users' names, for faster lookup of duplicates
 
     mutable Log _debug;
 
