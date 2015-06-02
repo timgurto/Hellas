@@ -11,6 +11,7 @@ _debug(debugLog){
         initWinsock();
 
     _raw = socket(AF_INET, SOCK_STREAM, 0);
+    _refCounts[_raw] = 1;
 }
 
 Socket::Socket(SOCKET &rawSocket):
