@@ -6,8 +6,6 @@
 #include "messageCodes.h"
 #include "util.h"
 
-const double User::LEGAL_MOVEMENT_MARGIN = 1.05;
-
 User::User(const std::string &name, const Point &loc, const Socket &socket):
 _name(name),
 location(loc),
@@ -41,7 +39,7 @@ void User::updateLocation(double x, double y){
     _lastLocUpdate = newTime;
 
     // Max legal distance: straight line
-    double maxLegalDistance = timeElapsed / 1000.0 * Client::MOVEMENT_SPEED * LEGAL_MOVEMENT_MARGIN;
+    double maxLegalDistance = timeElapsed / 1000.0 * Client::MOVEMENT_SPEED;
     double distanceMoved = distance(location, Point(x, y));
     if (distanceMoved <= maxLegalDistance) {
         location.x = x;

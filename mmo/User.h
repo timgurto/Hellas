@@ -21,9 +21,6 @@ public:
     std::string makeLocationCommand() const;
 
     Point location;
-    // Multiplier for legal movement distance, to compensate for latency fluctuations
-    // TODO: consider ability for users to exploit this
-    static const double LEGAL_MOVEMENT_MARGIN;
 
     Uint32 latency;
 
