@@ -5,6 +5,10 @@ enum MessageCode{
 
     // Client -> server
 
+    // A reply to a ping from the server
+    // Arguments: time original was sent, time of reply
+    CL_PING_REPLY,
+
     // "My location has changed, and is now ..."
     // Arguments: x, y
     CL_LOCATION,
@@ -15,7 +19,16 @@ enum MessageCode{
     CL_I_AM,
 
 
+
     // Server -> client
+    
+    // A ping, to measure latency and reassure clients
+    // Arguments: time sent
+    SV_PING,
+
+    // A second ping reply, so that the client can measure latency
+    // Arguments: time reply sent from client
+    SV_PING_REPLY_2,
 
     // The location of a user.
     // Arguments: username, x, y
@@ -30,6 +43,8 @@ enum MessageCode{
 
     // The client has attempted to connect with an invalid username
     SV_INVALID_USERNAME,
+
+
 
     NUM_MESSAGE_CODES
 };

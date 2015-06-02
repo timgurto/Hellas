@@ -23,6 +23,10 @@ private:
     static const int MAX_CLIENTS;
     static const int BUFFER_SIZE;
 
+    Uint32 _time;
+    static const Uint32 PING_FREQUENCY; // How often to test latency with each client
+    Uint32 _lastPing; // When the last pings were sent
+
     Socket _socket;
     SDL_Window *_window;
     SDL_Surface *_screen;

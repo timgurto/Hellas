@@ -39,6 +39,8 @@ private:
     TTF_Font *_defaultFont;
     std::string _username;
 
+    Uint32 _time;
+
     bool _invalidUsername; // Flag set if server refused username
 
     bool _connected;

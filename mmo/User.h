@@ -25,6 +25,8 @@ public:
     // TODO: consider ability for users to exploit this
     static const double LEGAL_MOVEMENT_MARGIN;
 
+    Uint32 latency;
+
     // Determine whether the proposed new location is legal, considering movement speed and time elapsed.
     // Set location to the new, legal location
     void updateLocation(double x, double y);

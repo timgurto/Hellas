@@ -11,11 +11,15 @@
 const int Server::MAX_CLIENTS = 20;
 const int Server::BUFFER_SIZE = 100;
 
+const Uint32 Server::PING_FREQUENCY = 10000;
+
 Server::Server(const Args &args):
 _args(args),
 _loop(true),
 _debug(30),
-_socket(&_debug){
+_socket(&_debug),
+_time(SDL_GetTicks()),
+_lastPing(_time){
     _debug << args << Log::endl;
 
     int screenX = _args.contains("left") ?
@@ -64,6 +68,7 @@ void Server::checkSockets(){
         _debug << Color::RED << "Error polling sockets: " << WSAGetLastError() << Log::endl;
         return;
     }
+    _time = SDL_GetTicks();
 
     // Activity on server socket: new connection
     if (FD_ISSET(_socket.getRaw(), &readFDs)) {
@@ -113,7 +118,7 @@ void Server::checkSockets(){
             } else {
                 // Message received
                 buffer[charsRead] = '\0';
-                _debug << "recv from client " << raw << ": " << buffer << Log::endl;
+                //_debug << "recv from client " << raw << ": " << buffer << Log::endl;
                 _messages.push(std::make_pair(*it, std::string(buffer)));
             }
         }
@@ -123,6 +128,16 @@ void Server::checkSockets(){
 
 void Server::run(){
     while (_loop) {
+        _time = SDL_GetTicks();
+
+        // Send pings
+        if (_time - _lastPing > PING_FREQUENCY) {
+            std::ostringstream oss;
+            oss << '[' << SV_PING << ',' << _time << ']';
+            broadcast(oss.str());
+            _lastPing = _time;
+        }
+
         // Deal with any messages from the server
         while (!_messages.empty()){
             handleMessage(_messages.front().first, _messages.front().second);
@@ -183,7 +198,13 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // Add new user to list, and broadcast his location
     _users.insert(newUser);
     broadcast(newUser.makeLocationCommand());
-    _debug << "New user, " << name << " has been registered." << Log::endl;
+
+    // Measure latency with new user
+    std::ostringstream oss;
+    oss << '[' << SV_PING << ',' << _time << ']';
+    socket.sendMessage(oss.str());
+
+    _debug << "New user, " << name << " has logged in." << Log::endl;
 }
 
 void Server::removeUser(const Socket &socket){
@@ -222,6 +243,20 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         }
 
         switch(msgCode) {
+
+        case CL_PING_REPLY:
+        {
+            Uint32 timeSent, timeReplied;
+            iss >> timeSent >> del >> timeReplied >> del;
+            if (del != ']')
+                return;
+            user->latency = (_time - timeSent) / 2;
+            _debug << "User " << user->getName() << " has latency " << user->latency << "ms" << Log::endl;
+            std::ostringstream oss;
+            oss << '[' << SV_PING_REPLY_2 << ',' << timeReplied << ']';
+            _socket.sendMessage(oss.str(), user->getSocket());
+            break;
+        }
 
         case CL_LOCATION:
         {

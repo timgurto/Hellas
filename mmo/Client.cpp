@@ -23,7 +23,8 @@ _socket(&_debug),
 _connected(false),
 _invalidUsername(false),
 _timeSinceLocUpdate(0),
-_locationChanged(false){
+_locationChanged(false),
+_time(SDL_GetTicks()){
     _debug << args << Log::endl;
 
     int screenX = _args.contains("left") ?
@@ -102,7 +103,7 @@ void Client::checkSocket(){
         int charsRead = recv(_socket.getRaw(), buffer, 100, 0);
         if (charsRead != SOCKET_ERROR && charsRead != 0){
             buffer[charsRead] = '\0';
-            _debug << "recv: " << std::string(buffer) << "" << Log::endl;
+            // _debug << "recv: " << std::string(buffer) << "" << Log::endl;
             _messages.push(std::string(buffer));
         }
     }
@@ -115,12 +116,12 @@ void Client::run(){
 
     Uint32 timeAtLastTick = SDL_GetTicks();
     while (_loop) {
-        Uint32 newTime = SDL_GetTicks();
-        Uint32 timeElapsed = newTime - timeAtLastTick;
+        _time = SDL_GetTicks();
+        Uint32 timeElapsed = _time - timeAtLastTick;
         if (timeElapsed > MAX_TICK_LENGTH)
             timeElapsed = MAX_TICK_LENGTH;
         double delta = timeElapsed  / 1000.0;
-        timeAtLastTick = newTime;
+        timeAtLastTick = _time;
 
         _timeSinceLocUpdate += timeElapsed;
         if (_locationChanged && _timeSinceLocUpdate > TIME_BETWEEN_LOCATION_UPDATES) {
@@ -228,6 +229,28 @@ void Client::handleMessage(const std::string &msg){
     while (iss.peek() == '[') {
         iss >>del >> msgCode >> del;
         switch(msgCode) {
+
+        case SV_PING:
+        {
+            Uint32 t;
+            iss >> t >> del;
+            if (del != ']')
+                return;
+            std::ostringstream oss;
+            oss << '[' << CL_PING_REPLY << ',' << t << ',' << _time << ']';
+            _socket.sendMessage(oss.str());
+            break;
+        }
+
+        case SV_PING_REPLY_2:
+        {
+            Uint32 t;
+            iss >> t >> del;
+            if (del != ']')
+                return;
+            _debug << "Latency: " << (_time - t) / 2 << "ms" << Log::endl;
+            break;
+        }
 
         case SV_LOCATION:
         {
