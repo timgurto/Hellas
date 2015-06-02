@@ -165,27 +165,29 @@ void Server::addUser(const Socket &socket, const std::string &name){
     std::pair<int, int> location = std::make_pair(rand() % (Client::SCREEN_WIDTH - 20),
                                                   rand() % (Client::SCREEN_HEIGHT - 40));
     User newUser(name, location, socket);
+    _usernames.insert(name);
 
     // Send new user everybody else's location
-    for (std::list<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
+    for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
         sendCommand(newUser, it->makeLocationCommand());
 
     // Add new user to list, and broadcast his location
-    _users.push_back(newUser);
+    _users.insert(newUser);
     broadcast(newUser.makeLocationCommand());
     _debug << "New user, " << name << " has been registered." << Log::endl;
 }
 
 void Server::removeUser(const Socket &socket){
-    for (std::list<User>::iterator it = _users.begin(); it != _users.end(); ++it)
-        if (it->getSocket() == socket){
-            // Broadcast message
-            std::ostringstream oss;
-            oss << '[' << SV_USER_DISCONNECTED << ',' << it->getName() << ']';
-            broadcast(oss.str());
-            _users.erase(it);
-            break;
-        }
+    std::set<User>::iterator it = _users.find(socket);
+    if (it != _users.end()) {
+        // Broadcast message
+        std::ostringstream oss;
+        oss << '[' << SV_USER_DISCONNECTED << ',' << it->getName() << ']';
+        broadcast(oss.str());
+
+        _usernames.erase(it->getName());
+        _users.erase(it);
+    }
 }
 
 void Server::handleMessage(const Socket &client, const std::string &msg){
@@ -200,9 +202,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         iss >> del >> msgCode >> del;
         
         // Discard message if this client has not yet sent CL_I_AM
-        user = getUserBySocket(client);
-        if (!user && msgCode != CL_I_AM)
+        std::set<User>::iterator it = _users.find(client);
+        if (it == _users.end() && msgCode != CL_I_AM) {
             continue;
+        }
+        if (msgCode != CL_I_AM) {
+            user = &*it;
+        }
 
         switch(msgCode) {
 
@@ -258,17 +264,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
 
             // Check that user isn't already logged in
-            for (std::list<User>::const_iterator it = _users.begin(); it != _users.end(); ++it) {
-                if (it->getName() == name){
-                    std::ostringstream oss;
-                    oss << '[' << SV_DUPLICATE_USERNAME << ']' << Log::endl;
-                    _socket.sendMessage(oss.str(), client);
-                    invalid = true;
-                    break;
-                }
-            }
-            if (invalid)
+            if (_usernames.find(name) != _usernames.end()) {
+                std::ostringstream oss;
+                oss << '[' << SV_DUPLICATE_USERNAME << ']' << Log::endl;
+                _socket.sendMessage(oss.str(), client);
+                invalid = true;
                 break;
+            }
 
             addUser(client, name);
             break;
@@ -290,13 +292,6 @@ void Server::sendCommand(const User &dstUser, const std::string &msg) const{
 }
 
 void Server::broadcast(const std::string &msg) const{
-    for (std::list<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
+    for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
         sendCommand(*it, msg);
-}
-
-User *Server::getUserBySocket(const Socket &socket){
-    for (std::list<User>::iterator it = _users.begin(); it != _users.end(); ++it)
-        if (it->getSocket() == socket)
-            return &*it;
-    return 0;
 }

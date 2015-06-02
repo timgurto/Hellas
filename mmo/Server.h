@@ -1,7 +1,6 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <list>
 #include <set>
 #include <utility>
 #include <queue>
@@ -34,7 +33,8 @@ private:
 
     std::queue<std::pair<Socket, std::string> > _messages;
 
-    std::list<User> _users;
+    std::set<User> _users;
+    std::set<std::string> _usernames; // For faster lookup of duplicates
 
     mutable Log _debug;
 
@@ -57,8 +57,6 @@ private:
 
     void checkSockets();
     void handleMessage(const Socket &client, const std::string &msg);
-
-    User *getUserBySocket(const Socket &socket);
 };
 
 #endif

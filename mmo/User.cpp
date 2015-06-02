@@ -9,6 +9,13 @@ _name(name),
 location(loc),
 _socket(socket){}
 
+User::User(const Socket &rhs):
+_socket(rhs){}
+
+bool User::operator<(const User &rhs) const{
+    return _socket < rhs._socket;
+}
+
 const std::string &User::getName() const{
     return _name;
 }

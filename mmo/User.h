@@ -9,6 +9,9 @@
 class User{
 public:
     User(const std::string &name, const std::pair<int, int> &location, const Socket &socket);
+    User(const Socket &rhs); // for use with set::find(), allowing find-by-socket
+
+    bool operator<(const User &rhs) const;
 
     const std::string &getName() const;
     const Socket &getSocket() const;
