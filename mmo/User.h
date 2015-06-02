@@ -8,10 +8,10 @@
 // Stores information about a single user account for the server
 class User{
 public:
-    User(const std::string &name, const std::pair<int, int> &location, SOCKET socket);
+    User(const std::string &name, const std::pair<int, int> &location, const Socket &socket);
 
     const std::string &getName() const;
-    SOCKET getSocket() const;
+    const Socket &getSocket() const;
 
     std::string makeLocationCommand() const;
 
@@ -19,7 +19,7 @@ public:
 
 private:
     std::string _name;
-    SOCKET _socket;
+    Socket _socket;
 };
 
 #endif

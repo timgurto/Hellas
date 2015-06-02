@@ -2,6 +2,7 @@
 #define SOCKET_H
 
 #include <iostream>
+#include <map>
 #include <string>
 #include <windows.h>
 
@@ -19,12 +20,15 @@ private:
     static bool _winsockInitialized;
     SOCKET _raw;
     Log *_debug;
+    static std::map<SOCKET, int> _refCounts; // Reference counters for each raw SOCKET
 
-    Socket(const Socket &rhs);
-    const Socket &operator=(const Socket &rhs);
+    static void initWinsock();
 
 public:
+    Socket(const Socket &rhs);
     Socket(Log *debugLog = 0);
+    Socket(SOCKET &rawSocket);
+    const Socket &operator=(const Socket &rhs);
     ~Socket();
 
     void bind(sockaddr_in &socketAddr);
@@ -32,8 +36,9 @@ public:
     bool valid() const; // Whether this socket is safe to use
     SOCKET getRaw() const;
 
-    // Default socket implies client->server message
-    void Socket::sendMessage(const std::string &msg, SOCKET destSocket = INVALID_SOCKET) const;
+    // No destination socket implies client->server message
+    void Socket::sendMessage(const std::string &msg) const;
+    void Socket::sendMessage(const std::string &msg, const Socket &destSocket) const;
 };
 
 #endif

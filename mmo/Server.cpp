@@ -122,7 +122,7 @@ void Server::checkSockets(){
 void Server::run(){
     while (_loop) {
         // Deal with any messages from the server
-        if (!_messages.empty()){
+        while (!_messages.empty()){
             handleMessage(_messages.front().first, _messages.front().second);
             _messages.pop();
         }
@@ -163,7 +163,7 @@ void Server::draw() const{
 void Server::addUser(SOCKET socket, const std::string &name){
     std::pair<int, int> location = std::make_pair(rand() % (Client::SCREEN_WIDTH - 20),
                                                   rand() % (Client::SCREEN_HEIGHT - 40));
-    User newUser(name, location, socket);
+    User newUser(name, location, Socket(socket));
 
     // Send new user everybody else's location
     for (std::list<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
@@ -177,14 +177,13 @@ void Server::addUser(SOCKET socket, const std::string &name){
 
 void Server::removeUser(SOCKET socket){
     for (std::list<User>::iterator it = _users.begin(); it != _users.end(); ++it)
-        if (it->getSocket() == socket){
+        if (it->getSocket().getRaw() == socket){
             // Broadcast message
             std::ostringstream oss;
             oss << '[' << SV_USER_DISCONNECTED << ',' << it->getName() << ']';
             broadcast(oss.str());
-
             _users.erase(it);
-            return;
+            break;
         }
 }
 
@@ -268,7 +267,7 @@ void Server::broadcast(const std::string &msg) const{
 
 User *Server::getUserBySocket(SOCKET socket){
     for (std::list<User>::iterator it = _users.begin(); it != _users.end(); ++it)
-        if (it->getSocket() == socket)
+        if (it->getSocket().getRaw() == socket)
             return &*it;
     return 0;
 }
