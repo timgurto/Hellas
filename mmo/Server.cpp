@@ -11,7 +11,7 @@
 const int Server::MAX_CLIENTS = 20;
 const int Server::BUFFER_SIZE = 100;
 
-const Uint32 Server::PING_FREQUENCY = 10000;
+const Uint32 Server::PING_FREQUENCY = 5000;
 
 Server::Server(const Args &args):
 _args(args),

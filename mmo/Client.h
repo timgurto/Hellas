@@ -20,7 +20,10 @@ public:
     //TODO make private; only public for server's random initial placement
     static const int SCREEN_WIDTH;
     static const int SCREEN_HEIGHT;
+
     static const Uint32 MAX_TICK_LENGTH;
+    static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping from the server
+    static const Uint32 CONNECT_RETRY_DELAY; // How long to wait between retries at connecting to server
 
     static const double MOVEMENT_SPEED; // per second
     static const Uint32 TIME_BETWEEN_LOCATION_UPDATES;
@@ -40,6 +43,8 @@ private:
     std::string _username;
 
     Uint32 _time;
+    Uint32 _lastPing;
+    Uint32 _timeSinceConnectAttempt;
 
     bool _invalidUsername; // Flag set if server refused username
 
