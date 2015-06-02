@@ -11,7 +11,7 @@ const int Client::SCREEN_HEIGHT = 480;
 
 Client::Client(const Args &args):
 _args(args),
-_location(std::make_pair(0, 0)),
+_location(0, 0),
 _loop(true),
 _debug(SCREEN_HEIGHT/20),
 _socket(&_debug),
@@ -170,9 +170,7 @@ void Client::draw(){
         return;
     }
     SDL_FillRect(_screen, 0, Color::GREEN/4);
-    SDL_Rect drawLoc;
-    drawLoc.x = _location.first;
-    drawLoc.y = _location.second;
+    SDL_Rect drawLoc = _location;
     SDL_Rect borderRect = drawLoc;
     borderRect.x = borderRect.x - 1;
     borderRect.y = borderRect.y - 1;
@@ -180,9 +178,8 @@ void Client::draw(){
     borderRect.h = 42;
     SDL_FillRect(_screen, &borderRect, Color::WHITE);
     SDL_BlitSurface(_image, 0, _screen, &drawLoc);
-    for (std::map<std::string, std::pair<int, int> >::iterator it = _otherUserLocations.begin(); it != _otherUserLocations.end(); ++it){
-        drawLoc.x = it->second.first;
-        drawLoc.y = it->second.second;
+    for (std::map<std::string, Point>::iterator it = _otherUserLocations.begin(); it != _otherUserLocations.end(); ++it){
+        drawLoc = it->second;
         SDL_BlitSurface(_image, 0, _screen, &drawLoc);
         SDL_Color color = {0, 0xff, 0xff};
         SDL_Surface *nameSurface = TTF_RenderText_Solid(_defaultFont, it->first.c_str(), color);
@@ -206,16 +203,16 @@ void Client::handleMessage(const std::string &msg){
         case SV_LOCATION:
         {
             std::string name;
-            int x, y;
+            double x, y;
             iss.get(buffer, BUFFER_SIZE, ',');
             name = std::string(buffer);
             iss >> del >> x >> del >> y >> del;
             if (del != ']')
                 return;
             if (name == _username)
-                _location = std::make_pair(x, y);
+                _location = Point(x, y);
             else
-                _otherUserLocations[name] = std::make_pair(x, y);
+                _otherUserLocations[name] = Point(x, y);
             break;
         }
 

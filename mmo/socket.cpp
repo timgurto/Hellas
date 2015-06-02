@@ -67,7 +67,7 @@ void Socket::bind(sockaddr_in &socketAddr){
             (*_debug) << Color::RED << "Error binding socket: " << WSAGetLastError() <<  Log::endl;
     } else {
         if (_debug)
-            (*_debug) << Color::RED << "Socket bound. " <<  Log::endl;
+            (*_debug) << "Socket bound. " <<  Log::endl;
     }
 }
 

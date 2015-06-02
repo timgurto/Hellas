@@ -162,9 +162,9 @@ void Server::draw() const{
 }
 
 void Server::addUser(const Socket &socket, const std::string &name){
-    std::pair<int, int> location = std::make_pair(rand() % (Client::SCREEN_WIDTH - 20),
-                                                  rand() % (Client::SCREEN_HEIGHT - 40));
-    User newUser(name, location, socket);
+    Point loc(rand() % (Client::SCREEN_WIDTH - 20),
+              rand() % (Client::SCREEN_HEIGHT - 40));
+    User newUser(name, loc, socket);
     _usernames.insert(name);
 
     // Send new user everybody else's location
@@ -215,28 +215,28 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         case CL_MOVE_UP:
             if (del != ']')
                 return;
-            user->location.second -= 20;
+            user->location.y -= 20;
             sendLocation = true;
             break;
 
         case CL_MOVE_DOWN:
             if (del != ']')
                 return;
-            user->location.second += 20;
+            user->location.y += 20;
             sendLocation = true;
             break;
 
         case CL_MOVE_LEFT:
             if (del != ']')
                 return;
-            user->location.first -= 20;
+            user->location.x -= 20;
             sendLocation = true;
             break;
 
         case CL_MOVE_RIGHT:
             if (del != ']')
                 return;
-            user->location.first += 20;
+            user->location.x += 20;
             sendLocation = true;
             break;
 

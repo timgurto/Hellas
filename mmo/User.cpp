@@ -4,12 +4,13 @@
 #include "User.h"
 #include "messageCodes.h"
 
-User::User(const std::string &name, const std::pair<int, int> &loc, const Socket &socket):
+User::User(const std::string &name, const Point &loc, const Socket &socket):
 _name(name),
 location(loc),
 _socket(socket){}
 
 User::User(const Socket &rhs):
+location(0, 0),
 _socket(rhs){}
 
 bool User::operator<(const User &rhs) const{
@@ -26,6 +27,6 @@ const Socket &User::getSocket() const{
 
 std::string User::makeLocationCommand() const{
     std::ostringstream oss;
-    oss << '[' << SV_LOCATION << ',' << _name << ',' << location.first << ',' << location.second << ']';
+    oss << '[' << SV_LOCATION << ',' << _name << ',' << location.x << ',' << location.y << ']';
     return oss.str();
 }

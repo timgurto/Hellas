@@ -3,11 +3,11 @@
 
 #include <queue>
 #include <string>
-#include <utility>
 #include <map>
 
 #include "Args.h"
 #include "Log.h"
+#include "Point.h"
 #include "Socket.h"
 
 class Client{
@@ -41,9 +41,9 @@ private:
 
     static const int BUFFER_SIZE;
 
-    std::pair<int, int> _location;
+    Point _location;
 
-    std::map<std::string, std::pair<int, int> > _otherUserLocations;
+    std::map<std::string, Point> _otherUserLocations;
 
     std::queue<std::string> _messages;
 
