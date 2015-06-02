@@ -28,6 +28,7 @@ _invalidUsername(false),
 _timeSinceLocUpdate(0),
 _locationChanged(false),
 _time(SDL_GetTicks()),
+_timeElapsed(0),
 _lastPing(_time),
 _timeSinceConnectAttempt(CONNECT_RETRY_DELAY){
     _debug << args << Log::endl;
@@ -125,11 +126,10 @@ void Client::run(){
     Uint32 timeAtLastTick = SDL_GetTicks();
     while (_loop) {
         _time = SDL_GetTicks();
-
-        Uint32 timeElapsed = _time - timeAtLastTick;
-        if (timeElapsed > MAX_TICK_LENGTH)
-            timeElapsed = MAX_TICK_LENGTH;
-        double delta = timeElapsed  / 1000.0;
+        _timeElapsed = _time - timeAtLastTick;
+        if (_timeElapsed > MAX_TICK_LENGTH)
+            _timeElapsed = MAX_TICK_LENGTH;
+        double delta = _timeElapsed / 1000.0;
         timeAtLastTick = _time;
 
         // Ensure server connectivity
@@ -140,10 +140,10 @@ void Client::run(){
         }
 
         if (!_connected) {
-            _timeSinceConnectAttempt += timeElapsed;
+            _timeSinceConnectAttempt += _timeElapsed;
 
         } else {
-            _timeSinceLocUpdate += timeElapsed;
+            _timeSinceLocUpdate += _timeElapsed;
             if (_locationChanged && _timeSinceLocUpdate > TIME_BETWEEN_LOCATION_UPDATES) {
                 std::ostringstream oss;
                 oss << '[' << CL_LOCATION << ',' << _location.x << ',' << _location.y << ']';
@@ -220,7 +220,11 @@ void Client::draw(){
         SDL_UpdateWindowSurface(_window);
         return;
     }
+
+    // Background
     SDL_FillRect(_screen, 0, Color::GREEN/4);
+
+    // User
     SDL_Rect drawLoc = _location;
     SDL_Rect borderRect = drawLoc;
     borderRect.x = borderRect.x - 1;
@@ -229,6 +233,8 @@ void Client::draw(){
     borderRect.h = 42;
     SDL_FillRect(_screen, &borderRect, Color::WHITE);
     SDL_BlitSurface(_image, 0, _screen, &drawLoc);
+
+    // Other users
     for (std::map<std::string, Point>::iterator it = _otherUserLocations.begin(); it != _otherUserLocations.end(); ++it){
         drawLoc = it->second;
         SDL_BlitSurface(_image, 0, _screen, &drawLoc);
@@ -238,6 +244,19 @@ void Client::draw(){
         SDL_BlitSurface(nameSurface, 0, _screen, &drawLoc);
         SDL_FreeSurface(nameSurface);
     }
+
+    // FPS/latency
+    std::ostringstream oss;
+    if (_timeElapsed > 0)
+        oss << 1000/_timeElapsed;
+    else
+        oss << "infinite ";
+    oss << "fps " << _latency << "ms";
+    SDL_Surface *statsDisplay = TTF_RenderText_Solid(_defaultFont, oss.str().c_str(), Color::YELLOW);
+    SDL_Rect statsRect = {SCREEN_WIDTH - statsDisplay->w, 0, 0, 0};
+    SDL_BlitSurface(statsDisplay, 0, _screen, &statsRect);
+    SDL_FreeSurface(statsDisplay);
+
     _debug.draw(_screen);
     SDL_UpdateWindowSurface(_window);
 }
@@ -270,7 +289,7 @@ void Client::handleMessage(const std::string &msg){
             iss >> t >> del;
             if (del != ']')
                 return;
-            _debug << "Latency: " << (_time - t) / 2 << "ms" << Log::endl;
+            _latency = (_time - t) / 2;
             break;
         }
 

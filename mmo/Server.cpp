@@ -251,7 +251,6 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != ']')
                 return;
             user->latency = (_time - timeSent) / 2;
-            _debug << "User " << user->getName() << " has latency " << user->latency << "ms" << Log::endl;
             std::ostringstream oss;
             oss << '[' << SV_PING_REPLY_2 << ',' << timeReplied << ']';
             _socket.sendMessage(oss.str(), user->getSocket());

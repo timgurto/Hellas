@@ -43,7 +43,9 @@ private:
     std::string _username;
 
     Uint32 _time;
+    Uint32 _timeElapsed; // Time between last two ticks
     Uint32 _lastPing;
+    Uint32 _latency;
     Uint32 _timeSinceConnectAttempt;
 
     bool _invalidUsername; // Flag set if server refused username
