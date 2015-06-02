@@ -5,12 +5,12 @@ enum MessageCode{
 
     // Client -> server
 
-    CL_MOVE_UP,
-    CL_MOVE_DOWN,
-    CL_MOVE_LEFT,
-    CL_MOVE_RIGHT,
+    // "My location has changed, and is now ..."
+    // Arguments: x, y
+    CL_LOCATION,
 
-    // Announcement of a user's name.  This has the effect of registering the user with the server.
+    // "My name is ..."
+    // This has the effect of registering the user with the server.
     // Arguments: username
     CL_I_AM,
 

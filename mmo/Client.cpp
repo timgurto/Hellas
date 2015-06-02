@@ -4,10 +4,15 @@
 
 #include "Client.h"
 #include "messageCodes.h"
+#include "util.h"
 
 const int Client::BUFFER_SIZE = 100;
 const int Client::SCREEN_WIDTH = 640;
 const int Client::SCREEN_HEIGHT = 480;
+
+const Uint32 Client::MAX_TICK_LENGTH = 100;
+const double Client::MOVEMENT_SPEED = 80;
+const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 1000;
 
 Client::Client(const Args &args):
 _args(args),
@@ -16,7 +21,9 @@ _loop(true),
 _debug(SCREEN_HEIGHT/20),
 _socket(&_debug),
 _connected(false),
-_invalidUsername(false){
+_invalidUsername(false),
+_timeSinceLocUpdate(0),
+_locationChanged(false){
     _debug << args << Log::endl;
 
     int screenX = _args.contains("left") ?
@@ -106,7 +113,24 @@ void Client::run(){
     if (!_window || !_image)
         return;
 
+    Uint32 timeAtLastTick = SDL_GetTicks();
     while (_loop) {
+        Uint32 newTime = SDL_GetTicks();
+        Uint32 timeElapsed = newTime - timeAtLastTick;
+        if (timeElapsed > MAX_TICK_LENGTH)
+            timeElapsed = MAX_TICK_LENGTH;
+        double delta = timeElapsed  / 1000.0;
+        timeAtLastTick = newTime;
+
+        _timeSinceLocUpdate += timeElapsed;
+        if (_locationChanged && _timeSinceLocUpdate > TIME_BETWEEN_LOCATION_UPDATES) {
+            std::ostringstream oss;
+            oss << '[' << CL_LOCATION << ',' << _location.x << ',' << _location.y << ']';
+            _socket.sendMessage(oss.str());
+            _locationChanged = false;
+            _timeSinceLocUpdate = 0;
+        }
+
         // Deal with any messages from the server
         if (!_messages.empty()){
             handleMessage(_messages.front());
@@ -127,30 +151,35 @@ void Client::run(){
                 case SDLK_ESCAPE:
                     _loop = false;
                     break;
-
-                case SDLK_UP:
-                    oss << '[' << CL_MOVE_UP << ']';
-                    _socket.sendMessage(oss.str());
-                    break;
-                case SDLK_DOWN:
-                    oss << '[' << CL_MOVE_DOWN << ']';
-                    _socket.sendMessage(oss.str());
-                    break;
-                case SDLK_LEFT:
-                    oss << '[' << CL_MOVE_LEFT << ']';
-                    _socket.sendMessage(oss.str());
-                    break;
-                case SDLK_RIGHT:
-                    oss << '[' << CL_MOVE_RIGHT << ']';
-                    _socket.sendMessage(oss.str());
-                    break;
                 }
+
                 break;
 
             default:
                 // Unhandled event
                 ;
             }
+        }
+        // Key polling
+        const Uint8 *keyboardState = SDL_GetKeyboardState(0);
+        bool
+            up = keyboardState[SDL_SCANCODE_UP] == SDL_PRESSED,
+            down = keyboardState[SDL_SCANCODE_DOWN] == SDL_PRESSED,
+            left = keyboardState[SDL_SCANCODE_LEFT] == SDL_PRESSED,
+            right = keyboardState[SDL_SCANCODE_RIGHT] == SDL_PRESSED;
+            if (up != down || left != right) {
+            double
+                dist = delta * MOVEMENT_SPEED,
+                diagDist = dist / SQRT_2;
+            if (up && !down)
+                _location.y -= (left != right) ? diagDist : dist;
+            else if (down && !up)
+                _location.y += (left != right) ? diagDist : dist;
+            if (left && !right)
+                _location.x -= (up != down) ? diagDist : dist;
+            else if (right && !left)
+                _location.x += (up != down) ? diagDist : dist;
+            _locationChanged = true;
         }
 
         checkSocket();

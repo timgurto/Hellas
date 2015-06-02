@@ -224,33 +224,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
         switch(msgCode) {
 
-        case CL_MOVE_UP:
+        case CL_LOCATION:
+        {
+            double x, y;
+            iss >> x >> del >> y >> del;
             if (del != ']')
                 return;
-            user->location.y -= 20;
+            user->location.x = x;
+            user->location.y = y;
             sendLocation = true;
             break;
-
-        case CL_MOVE_DOWN:
-            if (del != ']')
-                return;
-            user->location.y += 20;
-            sendLocation = true;
-            break;
-
-        case CL_MOVE_LEFT:
-            if (del != ']')
-                return;
-            user->location.x -= 20;
-            sendLocation = true;
-            break;
-
-        case CL_MOVE_RIGHT:
-            if (del != ']')
-                return;
-            user->location.x += 20;
-            sendLocation = true;
-            break;
+        }
 
         case CL_I_AM:
         {

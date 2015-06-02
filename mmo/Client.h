@@ -20,6 +20,10 @@ public:
     //TODO make private; only public for server's random initial placement
     static const int SCREEN_WIDTH;
     static const int SCREEN_HEIGHT;
+    static const Uint32 MAX_TICK_LENGTH;
+
+    static const double MOVEMENT_SPEED; // per second
+    static const Uint32 TIME_BETWEEN_LOCATION_UPDATES;
 
 private:
     const Args &_args; //comand-line args
@@ -42,6 +46,8 @@ private:
     static const int BUFFER_SIZE;
 
     Point _location;
+    Uint32 _timeSinceLocUpdate; // Time since a CL_LOCATION was sent
+    bool _locationChanged;
 
     std::map<std::string, Point> _otherUserLocations;
 

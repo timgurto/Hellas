@@ -244,6 +244,10 @@
 				RelativePath=".\User.h"
 				>
 			</File>
+			<File
+				RelativePath=".\util.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
