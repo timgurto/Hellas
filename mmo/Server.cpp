@@ -33,6 +33,8 @@ _lastPing(_time){
         return;
     _screen = SDL_GetWindowSurface(_window);
 
+    ServerMessage::serverSocket = &_socket;
+
     _debug("Server initialized");
 
     // Socket details
@@ -135,8 +137,8 @@ void Server::run(){
         // Send pings
         if (_time - _lastPing > PING_FREQUENCY) {
             std::ostringstream oss;
-            oss << '[' << SV_PING << ',' << _time << ']';
-            broadcast(oss.str());
+            oss << _time ;
+            broadcast(SV_PING, oss.str());
             _lastPing = _time;
         }
 
@@ -168,6 +170,7 @@ void Server::run(){
         draw();
 
         checkSockets();
+        checkSentMessages();
 
         SDL_Delay(10);
     }
@@ -195,16 +198,16 @@ void Server::addUser(const Socket &socket, const std::string &name){
 
     // Send new user everybody else's location
     for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
-        sendCommand(newUser, it->makeLocationCommand());
+        _sentMessages.insert(ServerMessage(newUser.getSocket(), SV_LOCATION, it->makeLocationCommand()));
 
     // Add new user to list, and broadcast his location
     _users.insert(newUser);
-    broadcast(newUser.makeLocationCommand());
+    broadcast(SV_LOCATION, newUser.makeLocationCommand());
 
     // Measure latency with new user
     std::ostringstream oss;
-    oss << '[' << SV_PING << ',' << _time << ']';
-    socket.sendMessage(oss.str());
+    oss << _time;
+    _sentMessages.insert(ServerMessage(socket, SV_PING, oss.str()));
 
     _debug << "New user, " << name << " has logged in." << Log::endl;
 }
@@ -213,9 +216,7 @@ void Server::removeUser(const Socket &socket){
     std::set<User>::iterator it = _users.find(socket);
     if (it != _users.end()) {
         // Broadcast message
-        std::ostringstream oss;
-        oss << '[' << SV_USER_DISCONNECTED << ',' << it->getName() << ']';
-        broadcast(oss.str());
+        broadcast(SV_USER_DISCONNECTED, it->getName());
 
         // Save user data
         writeUserData(*it);
@@ -254,8 +255,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             user->latency = (_time - timeSent) / 2;
             std::ostringstream oss;
-            oss << '[' << SV_PING_REPLY_2 << ',' << timeReplied << ']';
-            _socket.sendMessage(oss.str(), user->getSocket());
+            oss << timeReplied;
+            _sentMessages.insert(ServerMessage(user->getSocket(), SV_PING_REPLY_2, oss.str()));
             break;
         }
 
@@ -266,7 +267,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != ']')
                 return;
             user->updateLocation(x, y);
-            broadcast(user->makeLocationCommand());
+            broadcast(SV_LOCATION, user->makeLocationCommand());
             break;
         }
 
@@ -283,9 +284,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             bool invalid = false;
             for (std::string::const_iterator it = name.begin(); it != name.end(); ++it){
                 if (*it < 'a' || *it > 'z') {
-                    std::ostringstream oss;
-                    oss << '[' << SV_INVALID_USERNAME << ']' << Log::endl;
-                    _socket.sendMessage(oss.str(), client);
+                    _sentMessages.insert(ServerMessage(client, SV_INVALID_USERNAME));
                     invalid = true;
                     break;
                 }
@@ -295,9 +294,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
             // Check that user isn't already logged in
             if (_usernames.find(name) != _usernames.end()) {
-                std::ostringstream oss;
-                oss << '[' << SV_DUPLICATE_USERNAME << ']' << Log::endl;
-                _socket.sendMessage(oss.str(), client);
+                _sentMessages.insert(ServerMessage(client, SV_DUPLICATE_USERNAME));
                 invalid = true;
                 break;
             }
@@ -312,13 +309,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
     }
 }
 
-void Server::sendCommand(const User &dstUser, const std::string &msg) const{
-    _socket.sendMessage(msg, dstUser.getSocket());
-}
-
-void Server::broadcast(const std::string &msg) const{
-    for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
-        sendCommand(*it, msg);
+void Server::broadcast(MessageCode msgCode, const std::string &args){
+    for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it){
+        _sentMessages.insert(ServerMessage(it->getSocket(), msgCode, args));
+    }
 }
 
 bool Server::readUserData(User &user){

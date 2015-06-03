@@ -8,6 +8,7 @@
 
 #include "Args.h"
 #include "Log.h"
+#include "ServerMessage.h"
 #include "Socket.h"
 #include "User.h"
 
@@ -49,11 +50,8 @@ private:
     // Remove traces of a user who has disconnected.
     void removeUser(const Socket &socket);
 
-    // Send a command to a specific user
-    void sendCommand(const User &dstUser, const std::string &msg) const;
-
     // Send a command to all users
-    void broadcast(const std::string &msg) const;
+    void broadcast(MessageCode msgCode, const std::string &args);
 
     // Send a user's location to all users
     //void sendUserLocation(const User &user) const;
@@ -63,7 +61,6 @@ private:
 
     bool readUserData(User &user); // true: save data existed
     void writeUserData(const User &user) const;
-
 };
 
 #endif

@@ -266,10 +266,11 @@ void Client::draw(){
 void Client::handleMessage(const std::string &msg){
     std::istringstream iss(msg);
     int msgCode;
+    unsigned serial;
     char del;
     static char buffer[BUFFER_SIZE+1];
     while (iss.peek() == '[') {
-        iss >>del >> msgCode >> del;
+        iss >> del >> serial >> del >> msgCode >> del;
         switch(msgCode) {
 
         case SV_PING:

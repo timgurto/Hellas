@@ -40,7 +40,8 @@ public:
     bool valid() const; // Whether this socket is safe to use
     SOCKET getRaw() const;
 
-    // No destination socket implies client->server message
+    // No destination socket implies client->server message,
+    // Server -> client messages should use the ServerMessage class, rather than calling sendMessage() directly.
     void Socket::sendMessage(const std::string &msg) const;
     void Socket::sendMessage(const std::string &msg, const Socket &destSocket) const;
 };

@@ -29,7 +29,7 @@ const Socket &User::getSocket() const{
 
 std::string User::makeLocationCommand() const{
     std::ostringstream oss;
-    oss << '[' << SV_LOCATION << ',' << _name << ',' << location.x << ',' << location.y << ']';
+    oss << _name << ',' << location.x << ',' << location.y;
     return oss.str();
 }
 
