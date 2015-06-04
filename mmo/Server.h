@@ -18,6 +18,8 @@ public:
     ~Server();
     void run();
 
+    static const Uint32 ACK_TIMEOUT;
+
 private:
     const Args &_args; //comand-line args
 
@@ -27,6 +29,8 @@ private:
     Uint32 _time;
     static const Uint32 PING_FREQUENCY; // How often to test latency with each client
     Uint32 _lastPing; // When the last pings were sent
+    std::set<ServerMessage> _sentMessages;
+    void checkSentMessages(); // If any sent messages haven't been acknowledged in time, resend them
 
     Socket _socket;
     SDL_Window *_window;

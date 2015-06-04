@@ -12,6 +12,7 @@ const int Server::MAX_CLIENTS = 20;
 const int Server::BUFFER_SIZE = 1023;
 
 const Uint32 Server::PING_FREQUENCY = 5000;
+const Uint32 Server::ACK_TIMEOUT = 1000;
 
 Server::Server(const Args &args):
 _args(args),
@@ -120,9 +121,6 @@ void Server::checkSockets(){
             } else {
                 // Message received
                 buffer[charsRead] = '\0';
-                //_debug << "recv from client " << raw << ": " << buffer << Log::endl;
-                if (charsRead == BUFFER_SIZE)
-                    _debug << Color::RED << "Input buffer full; some messages are likely being discarded" << Log::endl;
                 _messages.push(std::make_pair(*it, std::string(buffer)));
             }
         }
@@ -221,6 +219,14 @@ void Server::removeUser(const Socket &socket){
         // Save user data
         writeUserData(*it);
 
+        // Remove unacknowledged messages
+        for (std::set<ServerMessage>::iterator msgIt = _sentMessages.begin(); msgIt != _sentMessages.end();){
+            if (msgIt->socketMatches(socket))
+                _sentMessages.erase(msgIt++);
+            else
+                ++msgIt;
+        }
+
         _usernames.erase(it->getName());
         _users.erase(it);
     }
@@ -246,6 +252,19 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         }
 
         switch(msgCode) {
+
+        case CL_ACK:
+        {
+            unsigned serial;
+            iss >> serial >> del;
+            if (del != ']')
+                return;
+            std::set<ServerMessage>::iterator it = _sentMessages.find(serial);
+            if (it != _sentMessages.end()) {
+                _sentMessages.erase(it);
+            }
+            break;
+        }
 
         case CL_PING_REPLY:
         {
@@ -330,4 +349,18 @@ void Server::writeUserData(const User &user) const{
     std::ofstream fs(filename.c_str());
     fs << user.location.x << ' ' << user.location.y;
     fs.close();
+}
+
+void Server::checkSentMessages(){
+    for (std::set<ServerMessage>::iterator it = _sentMessages.begin(); it != _sentMessages.end();){
+        if (it->expired()){
+            //Remove and add a new one
+            ServerMessage s = it->resend();
+            _sentMessages.insert(it->resend());
+            _sentMessages.erase(it++);
+        } else {
+            // Messages should be in chronological order, so no others should have expired
+            break;
+        }
+    }
 }

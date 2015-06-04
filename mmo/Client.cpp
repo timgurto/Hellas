@@ -33,6 +33,7 @@ _lastPing(_time),
 _timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
 _loaded(false){
     _debug << args << Log::endl;
+    _debug << "Socket: " << _socket.getRaw() << Log::endl;
 
     int screenX = _args.contains("left") ?
                   _args.getInt("left") :
@@ -94,6 +95,7 @@ void Client::checkSocket(){
             std::ostringstream oss;
             oss << '[' << CL_I_AM << ',' << _username << ']';
             _socket.sendMessage(oss.str());
+            _debug("Loading data from server");
         }
     }
 
@@ -111,9 +113,6 @@ void Client::checkSocket(){
         int charsRead = recv(_socket.getRaw(), buffer, BUFFER_SIZE, 0);
         if (charsRead != SOCKET_ERROR && charsRead != 0){
             buffer[charsRead] = '\0';
-            // _debug << "recv: " << std::string(buffer) << "" << Log::endl;
-            if (charsRead == BUFFER_SIZE)
-                _debug << Color::RED << "Input buffer full; some messages are likely being discarded" << Log::endl;
             _messages.push(std::string(buffer));
         }
     }
@@ -268,6 +267,9 @@ void Client::handleMessage(const std::string &msg){
     unsigned serial;
     char del;
     static char buffer[BUFFER_SIZE+1];
+    // Read until a new message is found
+    while (iss.peek() != '[' && !iss.eof()) // Clear out malformed stuff
+        iss >> del;
     while (iss.peek() == '[') {
         iss >> del >> serial >> del >> msgCode >> del;
         switch(msgCode) {
@@ -277,7 +279,7 @@ void Client::handleMessage(const std::string &msg){
             Uint32 t;
             iss >> t >> del;
             if (del != ']')
-                return;
+                break;
             _lastPing = _time;
             std::ostringstream oss;
             oss << '[' << CL_PING_REPLY << ',' << t << ',' << _time << ']';
@@ -290,7 +292,7 @@ void Client::handleMessage(const std::string &msg){
             Uint32 t;
             iss >> t >> del;
             if (del != ']')
-                return;
+                break;
             _latency = (_time - t) / 2;
             break;
         }
@@ -303,7 +305,7 @@ void Client::handleMessage(const std::string &msg){
             name = std::string(buffer);
             iss >> del >> x >> del >> y >> del;
             if (del != ']')
-                return;
+                break;
             if (name == _username) {
                 _location = Point(x, y);
                 _loaded = true;
@@ -319,7 +321,7 @@ void Client::handleMessage(const std::string &msg){
             name = std::string(buffer);
             iss >> del;
             if (del != ']')
-                return;
+                break;
             _otherUserLocations.erase(name);
             _debug << name << " disconnected." << Log::endl;
             break;
@@ -327,20 +329,32 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_DUPLICATE_USERNAME:
             if (del != ']')
-                return;
+                break;
             _invalidUsername = true;
             _debug << Color::RED << "The user " << _username << " is already connected to the server." << Log::endl;
             break;
 
         case SV_INVALID_USERNAME:
             if (del != ']')
-                return;
+                break;
             _invalidUsername = true;
             _debug << Color::RED << "The username " << _username << " is invalid." << Log::endl;
             break;
 
         default:
             _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
+        }
+
+        if (del == ']') {
+        // Message successfully received; send acknowledgement
+            std::ostringstream oss;
+            oss << '[' << CL_ACK << ',' << serial << ']';
+            _socket.sendMessage(oss.str());
+        } else {
+            // Malformed or cut-off message; skip until a new message is found
+            while (iss.peek() != '[' && !iss.eof()){
+                iss >> del;
+            }
         }
     }
 }

@@ -88,7 +88,7 @@ void Socket::sendMessage(const std::string &msg, const Socket &destSocket) const
 
     if (send(destSocket.getRaw(), msg.c_str(), (int)msg.length(), 0) < 0)
         if (_debug)
-            (*_debug) << Color::RED << "Failed to send command: " << msg << Log::endl;
+            (*_debug) << Color::RED << "Failed to send command \"" << msg << "\" to socket " << destSocket.getRaw() << Log::endl;
 }
 
 void Socket::sendMessage(const std::string &msg) const{

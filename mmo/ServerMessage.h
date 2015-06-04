@@ -1,6 +1,7 @@
 #ifndef SERVER_MESSAGE_H
 #define SERVER_MESSAGE_H
 
+#include <iostream>
 #include <SDL.h>
 #include <string>
 
@@ -16,13 +17,20 @@ public:
 
     bool operator<(const ServerMessage &rhs) const;
 
-private:
+    bool expired();
+    ServerMessage resend() const; // Return a new ServerMessage with the same payload
+
+    friend std::ostream &operator<<(std::ostream &lhs, const ServerMessage &rhs);
+
+    bool socketMatches(const Socket &rhs) const;
+
+//private:
     static unsigned _currentSerial;
 
     unsigned _serial;
     Uint32 _timeSent;
-    const Socket *_dstSocket;
-    unsigned _msgCode;
+    Socket _dstSocket;
+    MessageCode _msgCode;
     std::string _args;
 };
 
