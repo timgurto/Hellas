@@ -11,7 +11,6 @@
 const int Server::MAX_CLIENTS = 20;
 const int Server::BUFFER_SIZE = 1023;
 
-const Uint32 Server::PING_FREQUENCY = 5000;
 const Uint32 Server::ACK_TIMEOUT = 1000;
 
 Server::Server(const Args &args):
@@ -19,8 +18,7 @@ _args(args),
 _loop(true),
 _debug(100),
 _socket(&_debug),
-_time(SDL_GetTicks()),
-_lastPing(_time){
+_time(SDL_GetTicks()){
     _debug << args << Log::endl;
 
     int screenX = _args.contains("left") ?
@@ -138,14 +136,6 @@ void Server::run(){
     while (_loop) {
         _time = SDL_GetTicks();
 
-        // Send pings
-        if (_time - _lastPing > PING_FREQUENCY) {
-            std::ostringstream oss;
-            oss << _time ;
-            broadcast(SV_PING, oss.str());
-            _lastPing = _time;
-        }
-
         // Deal with any messages from the server
         while (!_messages.empty()){
             handleMessage(_messages.front().first, _messages.front().second);
@@ -208,11 +198,6 @@ void Server::addUser(const Socket &socket, const std::string &name){
     _users.insert(newUser);
     broadcast(SV_LOCATION, newUser.makeLocationCommand());
 
-    // Measure latency with new user
-    std::ostringstream oss;
-    oss << _time;
-    _sentMessages.insert(ServerMessage(socket, SV_PING, oss.str()));
-
     _debug << "New user, " << name << " has logged in." << Log::endl;
 }
 
@@ -274,15 +259,15 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
-        case CL_PING_REPLY:
+        case CL_PING:
         {
-            Uint32 timeSent, timeReplied;
-            iss >> timeSent >> del >> timeReplied >> del;
+            Uint32 timeSent;
+            iss >> timeSent  >> del;
             if (del != ']')
                 return;
             std::ostringstream oss;
-            oss << timeReplied;
-            _sentMessages.insert(ServerMessage(user->getSocket(), SV_PING_REPLY_2, oss.str()));
+            oss << timeSent;
+            _sentMessages.insert(ServerMessage(user->getSocket(), SV_PING_REPLY, oss.str()));
             break;
         }
 

@@ -9,9 +9,9 @@ enum MessageCode{
     // Arguments: serial
     CL_ACK,
 
-    // A reply to a ping from the server
-    // Arguments: time original was sent, time of reply
-    CL_PING_REPLY,
+    // A ping, to measure latency and reassure the server
+    // Arguments: time sent
+    CL_PING,
 
     // "My location has changed, and is now ..."
     // Arguments: x, y
@@ -26,13 +26,9 @@ enum MessageCode{
 
     // Server -> client
     
-    // A ping, to measure latency and reassure clients
-    // Arguments: time sent
-    SV_PING,
-
-    // A second ping reply, so that the client can measure latency
-    // Arguments: time reply sent from client
-    SV_PING_REPLY_2,
+    // A reply to a ping from a client
+    // Arguments: time original was sent, time of reply
+    SV_PING_REPLY,
 
     // The location of a user.
     // Arguments: username, x, y

@@ -21,15 +21,16 @@ public:
     static const int SCREEN_WIDTH;
     static const int SCREEN_HEIGHT;
 
-    static const Uint32 MAX_TICK_LENGTH;
-    static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping from the server
-    static const Uint32 CONNECT_RETRY_DELAY; // How long to wait between retries at connecting to server
-
     static const double MOVEMENT_SPEED; // per second
-    static const Uint32 TIME_BETWEEN_LOCATION_UPDATES;
 
 private:
     const Args &_args; //comand-line args
+    
+    static const Uint32 MAX_TICK_LENGTH;
+    static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping reply from the server
+    static const Uint32 CONNECT_RETRY_DELAY; // How long to wait between retries at connecting to server
+    static const Uint32 PING_FREQUENCY; // How often to test latency with each client
+    static const Uint32 TIME_BETWEEN_LOCATION_UPDATES; // How often to send location updates to server (while moving)
 
     SDL_Window *_window;
 
@@ -44,7 +45,8 @@ private:
 
     Uint32 _time;
     Uint32 _timeElapsed; // Time between last two ticks
-    Uint32 _lastPing;
+    Uint32 _lastPingReply; // The last time a ping reply was received from the server
+    Uint32 _lastPingSent; // The last time a ping was sent to the server
     Uint32 _latency;
     Uint32 _timeSinceConnectAttempt;
 

@@ -13,6 +13,7 @@ const int Client::SCREEN_HEIGHT = 480;
 const Uint32 Client::MAX_TICK_LENGTH = 100;
 const Uint32 Client::SERVER_TIMEOUT = 10000;
 const Uint32 Client::CONNECT_RETRY_DELAY = 1000;
+const Uint32 Client::PING_FREQUENCY = 5000;
 
 const double Client::MOVEMENT_SPEED = 80;
 const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 250;
@@ -29,7 +30,8 @@ _timeSinceLocUpdate(0),
 _locationChanged(false),
 _time(SDL_GetTicks()),
 _timeElapsed(0),
-_lastPing(_time),
+_lastPingSent(_time),
+_lastPingReply(_time),
 _timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
 _loaded(false){
     _debug << args << Log::endl;
@@ -95,10 +97,11 @@ void Client::checkSocket(){
             _debug << Color::GREEN << "Connected to server" << Log::endl;
             _connected = true;
             _timeSinceConnectAttempt = 0;
-            _lastPing = _time;
+            _lastPingSent = _lastPingReply = _time;
             // Announce player name
             std::ostringstream oss;
             oss << '[' << CL_I_AM << ',' << _username << ']';
+            oss << '[' << CL_PING << ',' << SDL_GetTicks() << ']';
             _socket.sendMessage(oss.str());
             _debug("Loading data from server");
         }
@@ -131,6 +134,15 @@ void Client::run(){
     Uint32 timeAtLastTick = SDL_GetTicks();
     while (_loop) {
         _time = SDL_GetTicks();
+
+        // Send ping
+        if (_time - _lastPingSent > PING_FREQUENCY) {
+            std::ostringstream oss;
+            oss << '[' << CL_PING << ',' << _time << ']';
+            _socket.sendMessage(oss.str());
+            _lastPingSent = _time;
+        }
+
         _timeElapsed = _time - timeAtLastTick;
         if (_timeElapsed > MAX_TICK_LENGTH)
             _timeElapsed = MAX_TICK_LENGTH;
@@ -138,7 +150,7 @@ void Client::run(){
         timeAtLastTick = _time;
 
         // Ensure server connectivity
-        if (_connected && _time - _lastPing > SERVER_TIMEOUT) {
+        if (_connected && _time - _lastPingReply > SERVER_TIMEOUT) {
             _debug << Color::RED << "Disconnected from server" << Log::endl;
             _socket = Socket(&_debug);
             _connected = false;
@@ -279,26 +291,14 @@ void Client::handleMessage(const std::string &msg){
         iss >> del >> serial >> del >> msgCode >> del;
         switch(msgCode) {
 
-        case SV_PING:
+        case SV_PING_REPLY:
         {
-            Uint32 t;
-            iss >> t >> del;
+            Uint32 timeSent;
+            iss >> timeSent >> del;
             if (del != ']')
                 break;
-            _lastPing = _time;
-            std::ostringstream oss;
-            oss << '[' << CL_PING_REPLY << ',' << t << ',' << _time << ']';
-            _socket.sendMessage(oss.str());
-            break;
-        }
-
-        case SV_PING_REPLY_2:
-        {
-            Uint32 t;
-            iss >> t >> del;
-            if (del != ']')
-                break;
-            _latency = (_time - t) / 2;
+            _lastPingReply = _time;
+            _latency = (_time - timeSent) / 2;
             break;
         }
 
