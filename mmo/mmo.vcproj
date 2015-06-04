@@ -187,6 +187,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OtherUser.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Point.cpp"
 				>
 			</File>
@@ -234,6 +238,10 @@
 			</File>
 			<File
 				RelativePath=".\messageCodes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OtherUser.h"
 				>
 			</File>
 			<File

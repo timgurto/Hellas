@@ -11,6 +11,10 @@ struct Point{
     Point(double xArg = 0, double yArg = 0);
 
     operator SDL_Rect() const;
+    bool operator==(const Point &rhs) const;
+
+private:
+    static const double EPSILON;
 };
 
 #endif

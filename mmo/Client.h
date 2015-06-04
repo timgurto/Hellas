@@ -7,6 +7,7 @@
 
 #include "Args.h"
 #include "Log.h"
+#include "OtherUser.h"
 #include "Point.h"
 #include "Socket.h"
 
@@ -61,7 +62,7 @@ private:
     Uint32 _timeSinceLocUpdate; // Time since a CL_LOCATION was sent
     bool _locationChanged;
 
-    std::map<std::string, Point> _otherUserLocations;
+    std::map<std::string, OtherUser> _otherUsers;
 
     std::queue<std::string> _messages;
 

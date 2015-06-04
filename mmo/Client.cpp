@@ -223,6 +223,10 @@ void Client::run(){
             }
         }
 
+        // Update locations of other users
+        for (std::map<std::string, OtherUser>::iterator it = _otherUsers.begin(); it != _otherUsers.end(); ++it)
+            it->second.updateLocation(delta);
+
         checkSocket();
         // Draw
         draw();
@@ -252,12 +256,12 @@ void Client::draw(){
     SDL_BlitSurface(_image, 0, _screen, &drawLoc);
 
     // Other users
-    for (std::map<std::string, Point>::iterator it = _otherUserLocations.begin(); it != _otherUserLocations.end(); ++it){
-        drawLoc = it->second;
+    for (std::map<std::string, OtherUser>::iterator it = _otherUsers.begin(); it != _otherUsers.end(); ++it){
+        drawLoc = it->second.location;
         SDL_BlitSurface(_image, 0, _screen, &drawLoc);
-        SDL_Color color = {0, 0xff, 0xff};
-        SDL_Surface *nameSurface = TTF_RenderText_Solid(_defaultFont, it->first.c_str(), color);
+        SDL_Surface *nameSurface = TTF_RenderText_Solid(_defaultFont, it->first.c_str(), Color::CYAN);
         drawLoc.y -= 20;
+        drawLoc.x += _image->w/2 - nameSurface->w/2;
         SDL_BlitSurface(nameSurface, 0, _screen, &drawLoc);
         SDL_FreeSurface(nameSurface);
     }
@@ -314,8 +318,12 @@ void Client::handleMessage(const std::string &msg){
             if (name == _username) {
                 _location = Point(x, y);
                 _loaded = true;
-            } else
-                _otherUserLocations[name] = Point(x, y);
+            } else {
+                Point p(x, y);
+                if (_otherUsers.find(name) == _otherUsers.end())
+                    _otherUsers[name].location = p;
+                _otherUsers[name].destination = p;
+            }
             break;
         }
 
@@ -327,7 +335,7 @@ void Client::handleMessage(const std::string &msg){
             iss >> del;
             if (del != ']')
                 break;
-            _otherUserLocations.erase(name);
+            _otherUsers.erase(name);
             _debug << name << " disconnected." << Log::endl;
             break;
         }
