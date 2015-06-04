@@ -51,6 +51,7 @@ private:
     bool _invalidUsername; // Flag set if server refused username
 
     bool _connected;
+    bool _loaded; // Whether the client has sufficient information to begin
 
     static const int BUFFER_SIZE;
 

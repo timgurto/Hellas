@@ -30,7 +30,8 @@ _locationChanged(false),
 _time(SDL_GetTicks()),
 _timeElapsed(0),
 _lastPing(_time),
-_timeSinceConnectAttempt(CONNECT_RETRY_DELAY){
+_timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
+_loaded(false){
     _debug << args << Log::endl;
 
     int screenX = _args.contains("left") ?
@@ -53,8 +54,6 @@ _timeSinceConnectAttempt(CONNECT_RETRY_DELAY){
         for (int i = 0; i != 3; ++i)
             _username.push_back('a' + rand() % 26);
     _debug << "Player name: " << _username << Log::endl;
-
-    _debug("Client initialized");
 
     _defaultFont = TTF_OpenFont("trebuc.ttf", 16);
 }
@@ -216,7 +215,7 @@ void Client::run(){
 }
 
 void Client::draw(){
-    if (!_connected){
+    if (!_connected || !_loaded){
         SDL_FillRect(_screen, 0, Color::BLACK);
         _debug.draw(_screen);
         SDL_UpdateWindowSurface(_window);
@@ -229,10 +228,10 @@ void Client::draw(){
     // User
     SDL_Rect drawLoc = _location;
     SDL_Rect borderRect = drawLoc;
-    borderRect.x = borderRect.x - 1;
-    borderRect.y = borderRect.y - 1;
-    borderRect.w = 22;
-    borderRect.h = 42;
+    borderRect.x = borderRect.x - 3;
+    borderRect.y = borderRect.y - 3;
+    borderRect.w = 26;
+    borderRect.h = 46;
     SDL_FillRect(_screen, &borderRect, Color::WHITE);
     SDL_BlitSurface(_image, 0, _screen, &drawLoc);
 
@@ -305,9 +304,10 @@ void Client::handleMessage(const std::string &msg){
             iss >> del >> x >> del >> y >> del;
             if (del != ']')
                 return;
-            if (name == _username)
+            if (name == _username) {
                 _location = Point(x, y);
-            else
+                _loaded = true;
+            } else
                 _otherUserLocations[name] = Point(x, y);
             break;
         }
