@@ -26,7 +26,7 @@ public:
 
     // Determine whether the proposed new location is legal, considering movement speed and time elapsed.
     // Set location to the new, legal location
-    void updateLocation(double x, double y);
+    void updateLocation(const Point &dest);
 
 private:
     std::string _name;

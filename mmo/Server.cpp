@@ -277,7 +277,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> x >> del >> y >> del;
             if (del != ']')
                 return;
-            user->updateLocation(x, y);
+            user->updateLocation(Point(x, y));
             broadcast(SV_LOCATION, user->makeLocationCommand());
             break;
         }

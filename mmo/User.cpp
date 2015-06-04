@@ -33,24 +33,12 @@ std::string User::makeLocationCommand() const{
     return oss.str();
 }
 
-void User::updateLocation(double x, double y){
+void User::updateLocation(const Point &dest){
     Uint32 newTime = SDL_GetTicks();
     Uint32 timeElapsed = newTime - _lastLocUpdate;
     _lastLocUpdate = newTime;
 
     // Max legal distance: straight line
     double maxLegalDistance = timeElapsed / 1000.0 * Client::MOVEMENT_SPEED;
-    double distanceMoved = distance(location, Point(x, y));
-    if (distanceMoved <= maxLegalDistance) {
-        location.x = x;
-        location.y = y;
-        return;
-    }
-
-    // Moved too far: interpolate
-    double
-        xNorm = (x - location.x) / distanceMoved,
-        yNorm = (y - location.y) / distanceMoved;
-    location.x += xNorm * maxLegalDistance;
-    location.y += yNorm * maxLegalDistance;
+    location = interpolate(location, dest, maxLegalDistance);
 }
