@@ -17,7 +17,7 @@ const Uint32 Server::ACK_TIMEOUT = 1000;
 Server::Server(const Args &args):
 _args(args),
 _loop(true),
-_debug(30),
+_debug(100),
 _socket(&_debug),
 _time(SDL_GetTicks()),
 _lastPing(_time){
@@ -29,7 +29,13 @@ _lastPing(_time){
     int screenY = _args.contains("top") ?
                   _args.getInt("top") :
                   SDL_WINDOWPOS_UNDEFINED;
-    _window = SDL_CreateWindow("Server", screenX, screenY, 800, 600, SDL_WINDOW_SHOWN);
+    int screenW = _args.contains("width") ?
+                  _args.getInt("width") :
+                  800;
+    int screenH = _args.contains("height") ?
+                  _args.getInt("height") :
+                  600;
+    _window = SDL_CreateWindow("Client", screenX, screenY, screenW, screenH, SDL_WINDOW_SHOWN);
     if (!_window)
         return;
     _screen = SDL_GetWindowSurface(_window);

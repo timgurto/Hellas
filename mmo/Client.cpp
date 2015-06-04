@@ -33,7 +33,6 @@ _lastPing(_time),
 _timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
 _loaded(false){
     _debug << args << Log::endl;
-    _debug << "Socket: " << _socket.getRaw() << Log::endl;
 
     int screenX = _args.contains("left") ?
                   _args.getInt("left") :
@@ -41,7 +40,13 @@ _loaded(false){
     int screenY = _args.contains("top") ?
                   _args.getInt("top") :
                   SDL_WINDOWPOS_UNDEFINED;
-    _window = SDL_CreateWindow("Client", screenX, screenY, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    int screenW = _args.contains("width") ?
+                  _args.getInt("width") :
+                  SCREEN_WIDTH;
+    int screenH = _args.contains("height") ?
+                  _args.getInt("height") :
+                  SCREEN_HEIGHT;
+    _window = SDL_CreateWindow("Client", screenX, screenY, screenW, screenH, SDL_WINDOW_SHOWN);
     if (!_window)
         return;
     _screen = SDL_GetWindowSurface(_window);

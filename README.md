@@ -3,6 +3,8 @@ MMO economy simulator
 
 ## Command-line arguments
 
+`-height `*`value`* the height of the window
+
 `-left `*`value`* the x co-ordinate of the window
 
 `-server` run the program as a server (default is as client)
@@ -14,6 +16,8 @@ MMO economy simulator
 `-top `*`value`* the y co-ordinate of the window
 
 `-username `*`value`* the user as whom the client should log in
+
+`-width `*`value`* the width of the window
 
 ## Glossary of ambiguous terms
 **character**, the *avatar* which represents a user in-game
