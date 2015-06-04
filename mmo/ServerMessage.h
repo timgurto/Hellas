@@ -24,7 +24,9 @@ public:
 
     bool socketMatches(const Socket &rhs) const;
 
-//private:
+    Uint32 getLatency() const;
+
+private:
     static unsigned _currentSerial;
 
     unsigned _serial;

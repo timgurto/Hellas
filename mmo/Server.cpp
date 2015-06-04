@@ -267,6 +267,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             std::set<ServerMessage>::iterator it = _sentMessages.find(serial);
             if (it != _sentMessages.end()) {
+                // Update client's latency
+                user->latency = (it->getLatency());
                 _sentMessages.erase(it);
             }
             break;
@@ -278,7 +280,6 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> timeSent >> del >> timeReplied >> del;
             if (del != ']')
                 return;
-            user->latency = (_time - timeSent) / 2;
             std::ostringstream oss;
             oss << timeReplied;
             _sentMessages.insert(ServerMessage(user->getSocket(), SV_PING_REPLY_2, oss.str()));

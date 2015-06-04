@@ -46,3 +46,7 @@ ServerMessage ServerMessage::resend() const{
 bool ServerMessage::socketMatches(const Socket &rhs) const{
     return _dstSocket == rhs;
 };
+
+Uint32 ServerMessage::getLatency() const{
+    return (SDL_GetTicks() - _timeSent) /2;
+}
