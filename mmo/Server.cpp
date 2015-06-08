@@ -33,7 +33,7 @@ _time(SDL_GetTicks()){
     int screenH = _args.contains("height") ?
                   _args.getInt("height") :
                   600;
-    _window = SDL_CreateWindow("Client", screenX, screenY, screenW, screenH, SDL_WINDOW_SHOWN);
+    _window = SDL_CreateWindow("Server", screenX, screenY, screenW, screenH, SDL_WINDOW_SHOWN);
     if (!_window)
         return;
     _screen = SDL_GetWindowSurface(_window);
@@ -79,9 +79,16 @@ void Server::checkSockets(){
 
     // Activity on server socket: new connection
     if (FD_ISSET(_socket.getRaw(), &readFDs)) {
-        if (_clientSockets.size() == MAX_CLIENTS)
-           _debug("No room for additional clients; all slots full");
-        else {
+
+        int addrSize = sizeof(sockaddr);
+        if (_clientSockets.size() == MAX_CLIENTS) {
+            _debug("No room for additional clients; all slots full");
+            sockaddr_in clientAddr;
+            SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
+            Socket s(tempSocket);
+            s.delayClosing(5000); // Allow time for rejection message to be sent before closing socket
+            s.sendMessage("[0,9]");
+        } else {
             sockaddr_in clientAddr;
             SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
             if (tempSocket == SOCKET_ERROR) {
@@ -189,6 +196,9 @@ void Server::addUser(const Socket &socket, const std::string &name){
         newUser.location.y = rand() % (Client::SCREEN_HEIGHT - 40);
     }
     _usernames.insert(name);
+
+    // Send welcome message
+    _sentMessages.insert(ServerMessage(socket, SV_WELCOME));
 
     // Send new user everybody else's location
     for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
@@ -311,6 +321,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
 
             addUser(client, name);
+
             break;
         }
 

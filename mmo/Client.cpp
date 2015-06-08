@@ -12,7 +12,7 @@ const int Client::SCREEN_HEIGHT = 480;
 
 const Uint32 Client::MAX_TICK_LENGTH = 100;
 const Uint32 Client::SERVER_TIMEOUT = 10000;
-const Uint32 Client::CONNECT_RETRY_DELAY = 1000;
+const Uint32 Client::CONNECT_RETRY_DELAY = 3000;
 const Uint32 Client::PING_FREQUENCY = 5000;
 
 const double Client::MOVEMENT_SPEED = 80;
@@ -95,15 +95,11 @@ void Client::checkSocket(){
             _debug << Color::RED << "Connection error: " << WSAGetLastError() << Log::endl;
         } else {
             _debug << Color::GREEN << "Connected to server" << Log::endl;
-            _connected = true;
-            _timeSinceConnectAttempt = 0;
-            _lastPingSent = _lastPingReply = _time;
             // Announce player name
             std::ostringstream oss;
             oss << '[' << CL_I_AM << ',' << _username << ']';
             oss << '[' << CL_PING << ',' << SDL_GetTicks() << ']';
             _socket.sendMessage(oss.str());
-            _debug("Loading data from server");
         }
     }
 
@@ -136,7 +132,7 @@ void Client::run(){
         _time = SDL_GetTicks();
 
         // Send ping
-        if (_time - _lastPingSent > PING_FREQUENCY) {
+        if (_connected && _time - _lastPingSent > PING_FREQUENCY) {
             std::ostringstream oss;
             oss << '[' << CL_PING << ',' << _time << ']';
             _socket.sendMessage(oss.str());
@@ -295,6 +291,17 @@ void Client::handleMessage(const std::string &msg){
         iss >> del >> serial >> del >> msgCode >> del;
         switch(msgCode) {
 
+        case SV_WELCOME:
+        {
+            if (del != ']')
+                break;
+            _connected = true;
+            _timeSinceConnectAttempt = 0;
+            _lastPingSent = _lastPingReply = _time;
+            _debug << Color::GREEN << "Successfully logged in to server" << Log::endl;
+            break;
+        }
+
         case SV_PING_REPLY:
         {
             Uint32 timeSent;
@@ -354,9 +361,20 @@ void Client::handleMessage(const std::string &msg){
             _debug << Color::RED << "The username " << _username << " is invalid." << Log::endl;
             break;
 
+        case SV_SERVER_FULL:{
+            if (del != ']')
+                break;
+            _debug << Color::YELLOW << "The server is full.  Attempting reconnection..." << Log::endl;
+            _socket = Socket(&_debug);
+            _connected = false;
+            break;}
+
         default:
             _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
         }
+
+        if (!_connected)
+            return;
 
         if (del == ']') {
         // Message successfully received; send acknowledgement

@@ -44,6 +44,12 @@ enum MessageCode{
     // The client has attempted to connect with an invalid username
     SV_INVALID_USERNAME,
 
+    // There is no room for more clients
+    SV_SERVER_FULL,
+
+    // The client has been successfully registered
+    SV_WELCOME,
+
 
 
     NUM_MESSAGE_CODES

@@ -20,9 +20,12 @@ private:
     static bool _winsockInitialized;
     SOCKET _raw;
     Log *_debug;
+    Uint32 _lingerTime;
     static std::map<SOCKET, int> _refCounts; // Reference counters for each raw SOCKET
 
     static void initWinsock();
+    static int closeRawAfterDelay(void *data); // Thread function
+    void close(); // Decrement reference counter, and close socket if no references remain
 
 public:
     Socket(const Socket &rhs);
@@ -39,6 +42,7 @@ public:
     void listen();
     bool valid() const; // Whether this socket is safe to use
     SOCKET getRaw() const;
+    void delayClosing(Uint32 lingerTime); // Delay closing of socket
 
     // No destination socket implies client->server message,
     // Server -> client messages should use the ServerMessage class, rather than calling sendMessage() directly.

@@ -30,7 +30,10 @@ bool ServerMessage::operator<(const ServerMessage &rhs) const{
 }
 
 std::ostream &operator<<(std::ostream &lhs, const ServerMessage &rhs){
-    lhs << '[' << rhs._serial << ',' << rhs._msgCode << ',' << rhs._args << ']';
+    lhs << '[' << rhs._serial << ',' << rhs._msgCode;
+    if (rhs._args != "")
+        lhs << ',' << rhs._args;
+    lhs << ']';
     return lhs;
 }
 
