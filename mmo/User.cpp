@@ -28,9 +28,7 @@ const Socket &User::getSocket() const{
 }
 
 std::string User::makeLocationCommand() const{
-    std::ostringstream oss;
-    oss << _name << ',' << location.x << ',' << location.y;
-    return oss.str();
+    return makeArgs(_name, location.x, location.y);
 }
 
 void User::updateLocation(const Point &dest){

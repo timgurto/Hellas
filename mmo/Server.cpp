@@ -7,6 +7,7 @@
 #include "Server.h"
 #include "User.h"
 #include "messageCodes.h"
+#include "util.h"
 
 const int Server::MAX_CLIENTS = 20;
 const int Server::BUFFER_SIZE = 1023;
@@ -86,7 +87,7 @@ void Server::checkSockets(){
             SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
             Socket s(tempSocket);
             s.delayClosing(5000); // Allow time for rejection message to be sent before closing socket
-            s.sendMessage("[0,9]");
+            sendMessage(s, SV_SERVER_FULL);
         } else {
             sockaddr_in clientAddr;
             SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
@@ -250,9 +251,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> timeSent  >> del;
             if (del != ']')
                 return;
-            std::ostringstream oss;
-            oss << timeSent;
-            sendMessage(user->getSocket(), SV_PING_REPLY, oss.str());
+            sendMessage(user->getSocket(), SV_PING_REPLY, makeArgs(timeSent));
             break;
         }
 

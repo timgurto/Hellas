@@ -98,9 +98,7 @@ void Client::checkSocket(){
             _debug << Color::GREEN << "Connected to server" << Log::endl;
             // Announce player name
             sendMessage(CL_I_AM, _username);
-            std::ostringstream oss;
-            oss << SDL_GetTicks();
-            sendMessage(CL_PING, oss.str());
+            sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
         }
     }
 
@@ -134,9 +132,7 @@ void Client::run(){
 
         // Send ping
         if (_connected && _time - _lastPingSent > PING_FREQUENCY) {
-            std::ostringstream oss;
-            oss << _time;
-            sendMessage(CL_PING, oss.str());
+            sendMessage(CL_PING, makeArgs(_time));
             _lastPingSent = _time;
         }
 
@@ -159,9 +155,7 @@ void Client::run(){
         } else {
             _timeSinceLocUpdate += _timeElapsed;
             if (_locationChanged && _timeSinceLocUpdate > TIME_BETWEEN_LOCATION_UPDATES) {
-                std::ostringstream oss;
-                oss << _location.x << ',' << _location.y;
-                sendMessage(CL_LOCATION, oss.str());
+                sendMessage(CL_LOCATION, makeArgs(_location.x, _location.y));
                 _locationChanged = false;
                 _timeSinceLocUpdate = 0;
             }
