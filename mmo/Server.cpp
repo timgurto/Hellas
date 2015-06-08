@@ -14,12 +14,15 @@ const int Server::BUFFER_SIZE = 1023;
 
 const Uint32 Server::ACK_TIMEOUT = 1000;
 
+const Uint32 Server::SAVE_FREQUENCY = 1000;
+
 Server::Server(const Args &args):
 _args(args),
 _loop(true),
 _debug(100),
 _socket(),
-_time(SDL_GetTicks()){
+_time(SDL_GetTicks()),
+_lastSave(_time){
     _debug << args << Log::endl;
     Socket::debug = &_debug;
 
@@ -142,6 +145,14 @@ void Server::checkSockets(){
 void Server::run(){
     while (_loop) {
         _time = SDL_GetTicks();
+
+        // Save user data
+        if (_time - _lastSave >= SAVE_FREQUENCY) {
+            for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it) {
+                writeUserData(*it);
+            }
+            _lastSave = _time;
+        }
 
         // Deal with any messages from the server
         while (!_messages.empty()){

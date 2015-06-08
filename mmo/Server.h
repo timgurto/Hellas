@@ -60,6 +60,8 @@ private:
 
     bool readUserData(User &user); // true: save data existed
     void writeUserData(const User &user) const;
+    static const Uint32 SAVE_FREQUENCY;
+    Uint32 _lastSave;
 };
 
 #endif
