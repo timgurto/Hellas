@@ -12,20 +12,14 @@ _lingerTime(0){
         initWinsock();
 
     _raw = socket(AF_INET, SOCK_STREAM, 0);
-    if (_refCounts.find(_raw) != _refCounts.end())
-        ++_refCounts[_raw];
-    else
-        _refCounts[_raw] = 1;
+    addRef();
 }
 
 Socket::Socket(SOCKET &rawSocket):
 _raw(rawSocket),
 _debug(0),
 _lingerTime(0){
-    if (_refCounts.find(rawSocket) != _refCounts.end())
-        ++_refCounts[rawSocket];
-    else
-        _refCounts[rawSocket] = 1;
+    addRef();
     rawSocket = INVALID_SOCKET;
 }
 
@@ -33,10 +27,7 @@ Socket::Socket(const Socket &rhs):
 _raw(rhs._raw),
 _debug(rhs._debug),
 _lingerTime(rhs._lingerTime){
-    if (_refCounts.find(_raw) != _refCounts.end())
-        ++_refCounts[_raw];
-    else
-        _refCounts[_raw] = 1;
+    addRef();
 }
 
 const Socket &Socket::operator=(const Socket &rhs){
@@ -46,7 +37,7 @@ const Socket &Socket::operator=(const Socket &rhs){
     close();
 
     _raw = rhs._raw;
-    ++_refCounts[_raw];
+    addRef();
     _debug = rhs._debug;
     _lingerTime = rhs._lingerTime;
     return *this;
@@ -66,6 +57,13 @@ bool Socket::operator!=(const Socket &rhs) const{
 
 bool Socket::operator<(const Socket &rhs) const{
     return _raw < rhs._raw;
+}
+
+void Socket::addRef(){
+    if (_refCounts.find(_raw) != _refCounts.end())
+        ++_refCounts[_raw];
+    else
+        _refCounts[_raw] = 1;
 }
 
 void Socket::bind(sockaddr_in &socketAddr){

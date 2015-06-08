@@ -24,6 +24,7 @@ private:
     static std::map<SOCKET, int> _refCounts; // Reference counters for each raw SOCKET
 
     static void initWinsock();
+    void addRef(); // Increment reference counter
     static int closeRawAfterDelay(void *data); // Thread function
     void close(); // Decrement reference counter, and close socket if no references remain
 
