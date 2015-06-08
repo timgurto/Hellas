@@ -97,10 +97,10 @@ void Client::checkSocket(){
         } else {
             _debug << Color::GREEN << "Connected to server" << Log::endl;
             // Announce player name
+            sendMessage(CL_I_AM, _username);
             std::ostringstream oss;
-            oss << '[' << CL_I_AM << ',' << _username << ']';
-            oss << '[' << CL_PING << ',' << SDL_GetTicks() << ']';
-            _socket.sendMessage(oss.str());
+            oss << SDL_GetTicks();
+            sendMessage(CL_PING, oss.str());
         }
     }
 
@@ -135,8 +135,8 @@ void Client::run(){
         // Send ping
         if (_connected && _time - _lastPingSent > PING_FREQUENCY) {
             std::ostringstream oss;
-            oss << '[' << CL_PING << ',' << _time << ']';
-            _socket.sendMessage(oss.str());
+            oss << _time;
+            sendMessage(CL_PING, oss.str());
             _lastPingSent = _time;
         }
 
@@ -160,8 +160,8 @@ void Client::run(){
             _timeSinceLocUpdate += _timeElapsed;
             if (_locationChanged && _timeSinceLocUpdate > TIME_BETWEEN_LOCATION_UPDATES) {
                 std::ostringstream oss;
-                oss << '[' << CL_LOCATION << ',' << _location.x << ',' << _location.y << ']';
-                _socket.sendMessage(oss.str());
+                oss << _location.x << ',' << _location.y;
+                sendMessage(CL_LOCATION, oss.str());
                 _locationChanged = false;
                 _timeSinceLocUpdate = 0;
             }
@@ -402,4 +402,16 @@ void Client::handleMessage(const std::string &msg){
 
         iss.peek();
     }
+}
+
+void Client::sendMessage(MessageCode msgCode, const std::string &args) const{
+    // Compile message
+    std::ostringstream oss;
+    oss << '[' << msgCode;
+    if (args != "")
+        oss << ',' << args;
+    oss << ']';
+
+    // Send message
+    _socket.sendMessage(oss.str());
 }

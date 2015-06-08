@@ -10,6 +10,7 @@
 #include "OtherUser.h"
 #include "Point.h"
 #include "Socket.h"
+#include "messageCodes.h"
 
 class Client{
 public:
@@ -71,6 +72,7 @@ private:
     mutable Log _debug;
 
     void checkSocket();
+    void sendMessage(MessageCode msgCode, const std::string &args = "") const;
     void handleMessage(const std::string &msg);
 };
 
