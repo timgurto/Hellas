@@ -27,8 +27,6 @@ private:
     static const int BUFFER_SIZE;
 
     Uint32 _time;
-    std::set<ServerMessage> _sentMessages;
-    void checkSentMessages(); // If any sent messages haven't been acknowledged in time, resend them
 
     Socket _socket;
     SDL_Window *_window;

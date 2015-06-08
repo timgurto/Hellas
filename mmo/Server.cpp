@@ -172,7 +172,6 @@ void Server::run(){
         draw();
 
         checkSockets();
-        checkSentMessages();
 
         SDL_Delay(10);
     }
@@ -199,11 +198,11 @@ void Server::addUser(const Socket &socket, const std::string &name){
     _usernames.insert(name);
 
     // Send welcome message
-    _sentMessages.insert(ServerMessage(socket, SV_WELCOME));
+    ServerMessage(socket, SV_WELCOME);
 
     // Send new user everybody else's location
     for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
-        _sentMessages.insert(ServerMessage(newUser.getSocket(), SV_LOCATION, it->makeLocationCommand()));
+        ServerMessage(newUser.getSocket(), SV_LOCATION, it->makeLocationCommand());
 
     // Add new user to list, and broadcast his location
     _users.insert(newUser);
@@ -220,14 +219,6 @@ void Server::removeUser(const Socket &socket){
 
         // Save user data
         writeUserData(*it);
-
-        // Remove unacknowledged messages
-        for (std::set<ServerMessage>::iterator msgIt = _sentMessages.begin(); msgIt != _sentMessages.end();){
-            if (msgIt->socketMatches(socket))
-                _sentMessages.erase(msgIt++);
-            else
-                ++msgIt;
-        }
 
         _usernames.erase(it->getName());
         _users.erase(it);
@@ -255,21 +246,6 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
         switch(msgCode) {
 
-        case CL_ACK:
-        {
-            unsigned serial;
-            iss >> serial >> del;
-            if (del != ']')
-                return;
-            std::set<ServerMessage>::iterator it = _sentMessages.find(serial);
-            if (it != _sentMessages.end()) {
-                // Update client's latency
-                user->latency = (it->getLatency());
-                _sentMessages.erase(it);
-            }
-            break;
-        }
-
         case CL_PING:
         {
             Uint32 timeSent;
@@ -278,7 +254,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             std::ostringstream oss;
             oss << timeSent;
-            _sentMessages.insert(ServerMessage(user->getSocket(), SV_PING_REPLY, oss.str()));
+            ServerMessage(user->getSocket(), SV_PING_REPLY, oss.str());
             break;
         }
 
@@ -306,7 +282,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             bool invalid = false;
             for (std::string::const_iterator it = name.begin(); it != name.end(); ++it){
                 if (*it < 'a' || *it > 'z') {
-                    _sentMessages.insert(ServerMessage(client, SV_INVALID_USERNAME));
+                    ServerMessage(client, SV_INVALID_USERNAME);
                     invalid = true;
                     break;
                 }
@@ -316,7 +292,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
             // Check that user isn't already logged in
             if (_usernames.find(name) != _usernames.end()) {
-                _sentMessages.insert(ServerMessage(client, SV_DUPLICATE_USERNAME));
+                ServerMessage(client, SV_DUPLICATE_USERNAME);
                 invalid = true;
                 break;
             }
@@ -334,7 +310,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
 void Server::broadcast(MessageCode msgCode, const std::string &args){
     for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it){
-        _sentMessages.insert(ServerMessage(it->getSocket(), msgCode, args));
+        ServerMessage(it->getSocket(), msgCode, args);
     }
 }
 
@@ -353,18 +329,4 @@ void Server::writeUserData(const User &user) const{
     std::ofstream fs(filename.c_str());
     fs << user.location.x << ' ' << user.location.y;
     fs.close();
-}
-
-void Server::checkSentMessages(){
-    for (std::set<ServerMessage>::iterator it = _sentMessages.begin(); it != _sentMessages.end();){
-        if (it->expired()){
-            //Remove and add a new one
-            ServerMessage s = it->resend();
-            _sentMessages.insert(it->resend());
-            _sentMessages.erase(it++);
-        } else {
-            // Messages should be in chronological order, so no others should have expired
-            break;
-        }
-    }
 }

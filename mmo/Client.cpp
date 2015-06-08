@@ -284,7 +284,6 @@ void Client::handleMessage(const std::string &msg){
     std::istringstream iss(_partialMessage);
     _partialMessage = "";
     int msgCode;
-    unsigned serial;
     char del;
     static char buffer[BUFFER_SIZE+1];
 
@@ -312,7 +311,7 @@ void Client::handleMessage(const std::string &msg){
             iss.ignore(); // Throw away ']'
         }
         std::istringstream singleMsg(buffer);
-        singleMsg >> del >> serial >> del >> msgCode >> del;
+        singleMsg >> del >> msgCode >> del;
         switch(msgCode) {
 
         case SV_WELCOME:
@@ -397,13 +396,8 @@ void Client::handleMessage(const std::string &msg){
             _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
         }
 
-        if (del == ']' || iss.eof()) {
-            // Message successfully received; send acknowledgement
-            std::ostringstream oss;
-            oss << '[' << CL_ACK << ',' << serial << ']';
-            _socket.sendMessage(oss.str());
-        } else {
-            _debug << Color::RED << "Bad message ending." << Log::endl;
+        if (del != ']' && !iss.eof()) {
+            _debug << Color::RED << "Bad message ending" << Log::endl;
         }
 
         iss.peek();

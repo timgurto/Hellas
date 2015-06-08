@@ -5,10 +5,6 @@ enum MessageCode{
 
     // Client -> server
 
-    // Acknowledge a server message
-    // Arguments: serial
-    CL_ACK,
-
     // A ping, to measure latency and reassure the server
     // Arguments: time sent
     CL_PING,
