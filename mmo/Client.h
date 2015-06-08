@@ -44,6 +44,8 @@ private:
     TTF_Font *_defaultFont;
     std::string _username;
 
+    std::string _partialMessage;
+
     Uint32 _time;
     Uint32 _timeElapsed; // Time between last two ticks
     Uint32 _lastPingReply; // The last time a ping reply was received from the server

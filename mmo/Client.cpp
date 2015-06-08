@@ -280,16 +280,39 @@ void Client::draw(){
 }
 
 void Client::handleMessage(const std::string &msg){
-    std::istringstream iss(msg);
+    _partialMessage.append(msg);
+    std::istringstream iss(_partialMessage);
+    _partialMessage = "";
     int msgCode;
     unsigned serial;
     char del;
     static char buffer[BUFFER_SIZE+1];
-    // Read until a new message is found
-    while (iss.peek() != '[' && !iss.eof()) // Clear out malformed stuff
-        iss >> del;
-    while (iss.peek() == '[') {
-        iss >> del >> serial >> del >> msgCode >> del;
+
+    // Read while there are new messages
+    while (!iss.eof()) {
+        // Discard malformed data
+        if (iss.peek() != '[') {
+            iss.get(buffer, BUFFER_SIZE, '[');
+            _debug << "Read " << iss.gcount() << " characters." << Log::endl;
+            _debug << Color::RED << "Malformed message; discarded \"" << buffer << "\"" << Log::endl;
+            if (iss.eof()) {
+                break;
+            }
+        }
+
+        // Get next message
+        iss.get(buffer, BUFFER_SIZE, ']');
+        if (iss.eof()){
+            _partialMessage = buffer;
+            break;
+        } else {
+            int charsRead = iss.gcount();
+            buffer[charsRead] = ']';
+            buffer[charsRead+1] = '\0';
+            iss.ignore(); // Throw away ']'
+        }
+        std::istringstream singleMsg(buffer);
+        singleMsg >> del >> serial >> del >> msgCode >> del;
         switch(msgCode) {
 
         case SV_WELCOME:
@@ -306,7 +329,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_PING_REPLY:
         {
             Uint32 timeSent;
-            iss >> timeSent >> del;
+            singleMsg >> timeSent >> del;
             if (del != ']')
                 break;
             _lastPingReply = _time;
@@ -318,9 +341,9 @@ void Client::handleMessage(const std::string &msg){
         {
             std::string name;
             double x, y;
-            iss.get(buffer, BUFFER_SIZE, ',');
+            singleMsg.get(buffer, BUFFER_SIZE, ',');
             name = std::string(buffer);
-            iss >> del >> x >> del >> y >> del;
+            singleMsg >> del >> x >> del >> y >> del;
             if (del != ']')
                 break;
             if (name == _username) {
@@ -338,9 +361,9 @@ void Client::handleMessage(const std::string &msg){
         case SV_USER_DISCONNECTED:
         {
             std::string name;
-            iss.get(buffer, BUFFER_SIZE, ']');
+            singleMsg.get(buffer, BUFFER_SIZE, ']');
             name = std::string(buffer);
-            iss >> del;
+            singleMsg >> del;
             if (del != ']')
                 break;
             _otherUsers.erase(name);
@@ -374,19 +397,15 @@ void Client::handleMessage(const std::string &msg){
             _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
         }
 
-        if (!_connected)
-            return;
-
-        if (del == ']') {
-        // Message successfully received; send acknowledgement
+        if (del == ']' || iss.eof()) {
+            // Message successfully received; send acknowledgement
             std::ostringstream oss;
             oss << '[' << CL_ACK << ',' << serial << ']';
             _socket.sendMessage(oss.str());
         } else {
-            // Malformed or cut-off message; skip until a new message is found
-            while (iss.peek() != '[' && !iss.eof()){
-                iss >> del;
-            }
+            _debug << Color::RED << "Bad message ending." << Log::endl;
         }
+
+        iss.peek();
     }
 }
