@@ -26,10 +26,6 @@ enum MessageCode{
     // Arguments: time original was sent, time of reply
     SV_PING_REPLY,
 
-    // The location of a user.
-    // Arguments: username, x, y
-    SV_LOCATION,
-
     // A user has disconnected.
     // Arguments: username
     SV_USER_DISCONNECTED,
@@ -45,6 +41,14 @@ enum MessageCode{
 
     // The client has been successfully registered
     SV_WELCOME,
+
+    // The location of a user.
+    // Arguments: username, x, y
+    SV_LOCATION,
+
+    // The location of a branch
+    // Arguments: x, y
+    SV_BRANCH,
 
 
 

@@ -40,6 +40,8 @@ private:
     std::set<User> _users; // All connected users
     std::set<std::string> _usernames; // All connected users' names, for faster lookup of duplicates
 
+    std::list<Point> _branches;
+
     mutable Log _debug;
 
     void draw() const;

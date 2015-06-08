@@ -43,6 +43,9 @@ _lastSave(_time){
         return;
     _screen = SDL_GetWindowSurface(_window);
 
+    for (int i = 0; i != 5; ++i)
+        _branches.push_back(Point(rand() % Client::SCREEN_WIDTH, rand() % Client::SCREEN_HEIGHT));
+
     _debug("Server initialized");
 
     // Socket details
@@ -213,6 +216,10 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // Send new user everybody else's location
     for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
         sendMessage(newUser.getSocket(), SV_LOCATION, it->makeLocationCommand());
+
+    // Send him branch locations
+    for (std::list<Point>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
+        sendMessage(newUser.getSocket(), SV_BRANCH, makeArgs(it->x, it->y));
 
     // Add new user to list, and broadcast his location
     _users.insert(newUser);

@@ -66,6 +66,7 @@ private:
     bool _locationChanged;
 
     std::map<std::string, OtherUser> _otherUsers;
+    std::list<Point> _branches;
 
     std::queue<std::string> _messages;
 

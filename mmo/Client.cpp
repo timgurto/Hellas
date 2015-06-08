@@ -246,6 +246,14 @@ void Client::draw(){
     SDL_FillRect(_screen, &borderRect, Color::WHITE);
     SDL_BlitSurface(_image, 0, _screen, &drawLoc);
 
+    // Branches
+    SDL_Surface *branchSurface = SDL_LoadBMP("Images/branch.bmp");
+    for (std::list<Point>::const_iterator it = _branches.begin(); it != _branches.end(); ++it){
+        drawLoc = *it;
+        SDL_BlitSurface(branchSurface, 0, _screen, &drawLoc);
+    }
+    SDL_FreeSurface(branchSurface);
+
     // Other users
     for (std::map<std::string, OtherUser>::iterator it = _otherUsers.begin(); it != _otherUsers.end(); ++it){
         drawLoc = it->second.location;
@@ -330,27 +338,6 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_LOCATION:
-        {
-            std::string name;
-            double x, y;
-            singleMsg.get(buffer, BUFFER_SIZE, ',');
-            name = std::string(buffer);
-            singleMsg >> del >> x >> del >> y >> del;
-            if (del != ']')
-                break;
-            if (name == _username) {
-                _location = Point(x, y);
-                _loaded = true;
-            } else {
-                Point p(x, y);
-                if (_otherUsers.find(name) == _otherUsers.end())
-                    _otherUsers[name].location = p;
-                _otherUsers[name].destination = p;
-            }
-            break;
-        }
-
         case SV_USER_DISCONNECTED:
         {
             std::string name;
@@ -378,13 +365,44 @@ void Client::handleMessage(const std::string &msg){
             _debug << Color::RED << "The username " << _username << " is invalid." << Log::endl;
             break;
 
-        case SV_SERVER_FULL:{
+        case SV_SERVER_FULL:
             if (del != ']')
                 break;
             _debug << Color::YELLOW << "The server is full.  Attempting reconnection..." << Log::endl;
             _socket = Socket();
             _connected = false;
-            break;}
+            break;
+
+        case SV_LOCATION:
+        {
+            std::string name;
+            double x, y;
+            singleMsg.get(buffer, BUFFER_SIZE, ',');
+            name = std::string(buffer);
+            singleMsg >> del >> x >> del >> y >> del;
+            if (del != ']')
+                break;
+            if (name == _username) {
+                _location = Point(x, y);
+                _loaded = true;
+            } else {
+                Point p(x, y);
+                if (_otherUsers.find(name) == _otherUsers.end())
+                    _otherUsers[name].location = p;
+                _otherUsers[name].destination = p;
+            }
+            break;
+        }
+
+        case SV_BRANCH:
+        {
+            double x, y;
+            singleMsg >> x >> del >> y >> del;
+            if (del != ']')
+                break;
+            _branches.push_back(Point(x, y));
+            break;
+        }
 
         default:
             _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
