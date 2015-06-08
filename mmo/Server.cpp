@@ -39,8 +39,6 @@ _time(SDL_GetTicks()){
         return;
     _screen = SDL_GetWindowSurface(_window);
 
-    ServerMessage::serverSocket = &_socket;
-
     _debug("Server initialized");
 
     // Socket details
@@ -198,11 +196,11 @@ void Server::addUser(const Socket &socket, const std::string &name){
     _usernames.insert(name);
 
     // Send welcome message
-    ServerMessage(socket, SV_WELCOME);
+    sendMessage(socket, SV_WELCOME);
 
     // Send new user everybody else's location
     for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
-        ServerMessage(newUser.getSocket(), SV_LOCATION, it->makeLocationCommand());
+        sendMessage(newUser.getSocket(), SV_LOCATION, it->makeLocationCommand());
 
     // Add new user to list, and broadcast his location
     _users.insert(newUser);
@@ -254,7 +252,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             std::ostringstream oss;
             oss << timeSent;
-            ServerMessage(user->getSocket(), SV_PING_REPLY, oss.str());
+            sendMessage(user->getSocket(), SV_PING_REPLY, oss.str());
             break;
         }
 
@@ -282,7 +280,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             bool invalid = false;
             for (std::string::const_iterator it = name.begin(); it != name.end(); ++it){
                 if (*it < 'a' || *it > 'z') {
-                    ServerMessage(client, SV_INVALID_USERNAME);
+                    sendMessage(client, SV_INVALID_USERNAME);
                     invalid = true;
                     break;
                 }
@@ -292,7 +290,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
             // Check that user isn't already logged in
             if (_usernames.find(name) != _usernames.end()) {
-                ServerMessage(client, SV_DUPLICATE_USERNAME);
+                sendMessage(client, SV_DUPLICATE_USERNAME);
                 invalid = true;
                 break;
             }
@@ -310,7 +308,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
 void Server::broadcast(MessageCode msgCode, const std::string &args){
     for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it){
-        ServerMessage(it->getSocket(), msgCode, args);
+        sendMessage(it->getSocket(), msgCode, args);
     }
 }
 
@@ -329,4 +327,17 @@ void Server::writeUserData(const User &user) const{
     std::ofstream fs(filename.c_str());
     fs << user.location.x << ' ' << user.location.y;
     fs.close();
+}
+
+
+void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode, const std::string &args) const{
+    // Compile message
+    std::ostringstream oss;
+    oss << '[' << msgCode;
+    if (args != "")
+        oss << ',' << args;
+    oss << ']';
+
+    // Send message
+    _socket.sendMessage(oss.str(), dstSocket);
 }

@@ -8,9 +8,9 @@
 
 #include "Args.h"
 #include "Log.h"
-#include "ServerMessage.h"
 #include "Socket.h"
 #include "User.h"
+#include "messageCodes.h"
 
 class Server{
 public:
@@ -50,11 +50,10 @@ private:
     // Remove traces of a user who has disconnected.
     void removeUser(const Socket &socket);
 
+    void sendMessage(const Socket &dstSocket, MessageCode msgCode, const std::string &args = "") const;
+
     // Send a command to all users
     void broadcast(MessageCode msgCode, const std::string &args);
-
-    // Send a user's location to all users
-    //void sendUserLocation(const User &user) const;
 
     void checkSockets();
     void handleMessage(const Socket &client, const std::string &msg);

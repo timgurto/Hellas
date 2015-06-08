@@ -199,10 +199,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ServerMessage.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Socket.cpp"
 				>
 			</File>
@@ -250,10 +246,6 @@
 			</File>
 			<File
 				RelativePath=".\Server.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ServerMessage.h"
 				>
 			</File>
 			<File

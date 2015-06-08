@@ -45,10 +45,9 @@ public:
     SOCKET getRaw() const;
     void delayClosing(Uint32 lingerTime); // Delay closing of socket
 
-    // No destination socket implies client->server message,
-    // Server -> client messages should use the ServerMessage class, rather than calling sendMessage() directly.
-    void Socket::sendMessage(const std::string &msg) const;
-    void Socket::sendMessage(const std::string &msg, const Socket &destSocket) const;
+    // No destination socket implies client->server message
+    void sendMessage(const std::string &msg) const;
+    void sendMessage(const std::string &msg, const Socket &destSocket) const;
 };
 
 #endif
