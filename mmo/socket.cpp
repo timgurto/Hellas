@@ -1,12 +1,13 @@
 #include "Socket.h"
 
+Log *Socket::debug = 0;
+
 int Socket::sockAddrSize = sizeof(sockaddr_in);
 bool Socket::_winsockInitialized = false;
 WSADATA Socket::_wsa;
 std::map<SOCKET, int> Socket::_refCounts;
 
-Socket::Socket(Log *debugLog):
-_debug(debugLog),
+Socket::Socket():
 _lingerTime(0){
     if (!_winsockInitialized)
         initWinsock();
@@ -17,7 +18,6 @@ _lingerTime(0){
 
 Socket::Socket(SOCKET &rawSocket):
 _raw(rawSocket),
-_debug(0),
 _lingerTime(0){
     addRef();
     rawSocket = INVALID_SOCKET;
@@ -25,7 +25,6 @@ _lingerTime(0){
 
 Socket::Socket(const Socket &rhs):
 _raw(rhs._raw),
-_debug(rhs._debug),
 _lingerTime(rhs._lingerTime){
     addRef();
 }
@@ -38,7 +37,6 @@ const Socket &Socket::operator=(const Socket &rhs){
 
     _raw = rhs._raw;
     addRef();
-    _debug = rhs._debug;
     _lingerTime = rhs._lingerTime;
     return *this;
 }
@@ -71,11 +69,9 @@ void Socket::bind(sockaddr_in &socketAddr){
         return;
 
     if (::bind(_raw, (sockaddr*)&socketAddr, sockAddrSize) == SOCKET_ERROR) {
-        if (_debug)
-            (*_debug) << Color::RED << "Error binding socket: " << WSAGetLastError() <<  Log::endl;
+        *debug << Color::RED << "Error binding socket: " << WSAGetLastError() <<  Log::endl;
     } else {
-        if (_debug)
-            (*_debug) << "Socket bound. " <<  Log::endl;
+        *debug << "Socket bound. " <<  Log::endl;
     }
 }
 
@@ -95,8 +91,7 @@ void Socket::sendMessage(const std::string &msg, const Socket &destSocket) const
         return;
 
     if (send(destSocket.getRaw(), msg.c_str(), (int)msg.length(), 0) < 0) {
-        if (_debug)
-            (*_debug) << Color::RED << "Failed to send command \"" << msg << "\" to socket " << destSocket.getRaw() << Log::endl;
+        *debug << Color::RED << "Failed to send command \"" << msg << "\" to socket " << destSocket.getRaw() << Log::endl;
     }
 }
 

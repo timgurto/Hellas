@@ -23,7 +23,7 @@ _args(args),
 _location(0, 0),
 _loop(true),
 _debug(SCREEN_HEIGHT/20),
-_socket(&_debug),
+_socket(),
 _connected(false),
 _invalidUsername(false),
 _timeSinceLocUpdate(0),
@@ -35,6 +35,7 @@ _lastPingReply(_time),
 _timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
 _loaded(false){
     _debug << args << Log::endl;
+    Socket::debug = &_debug;
 
     int screenX = _args.contains("left") ?
                   _args.getInt("left") :
@@ -148,7 +149,7 @@ void Client::run(){
         // Ensure server connectivity
         if (_connected && _time - _lastPingReply > SERVER_TIMEOUT) {
             _debug << Color::RED << "Disconnected from server" << Log::endl;
-            _socket = Socket(&_debug);
+            _socket = Socket();
             _connected = false;
         }
 
@@ -365,7 +366,7 @@ void Client::handleMessage(const std::string &msg){
             if (del != ']')
                 break;
             _debug << Color::YELLOW << "The server is full.  Attempting reconnection..." << Log::endl;
-            _socket = Socket(&_debug);
+            _socket = Socket();
             _connected = false;
             break;}
 

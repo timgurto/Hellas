@@ -17,9 +17,10 @@ Server::Server(const Args &args):
 _args(args),
 _loop(true),
 _debug(100),
-_socket(&_debug),
+_socket(),
 _time(SDL_GetTicks()){
     _debug << args << Log::endl;
+    Socket::debug = &_debug;
 
     int screenX = _args.contains("left") ?
                   _args.getInt("left") :

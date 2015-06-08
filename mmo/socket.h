@@ -14,12 +14,12 @@
 class Socket {
 public:
     static int sockAddrSize;
+    static Log *debug;
 
 private:
     static WSADATA _wsa;
     static bool _winsockInitialized;
     SOCKET _raw;
-    Log *_debug;
     Uint32 _lingerTime;
     static std::map<SOCKET, int> _refCounts; // Reference counters for each raw SOCKET
 
@@ -30,7 +30,7 @@ private:
 
 public:
     Socket(const Socket &rhs);
-    Socket(Log *debugLog = 0);
+    Socket();
     Socket(SOCKET &rawSocket);
     const Socket &operator=(const Socket &rhs);
     ~Socket();
