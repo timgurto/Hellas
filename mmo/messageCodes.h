@@ -19,7 +19,7 @@ enum MessageCode{
     CL_I_AM,
 
     // User wants to collect a branch
-    // Arguments: branch x, branch y
+    // Arguments: serial
     CL_COLLECT_BRANCH,
 
 
@@ -46,6 +46,9 @@ enum MessageCode{
     // The user is too far away to perform an action
     SV_TOO_FAR,
 
+    // The user tried to perform an action on an object that doesn't exist
+    SV_DOESNT_EXIST,
+
     // The client has been successfully registered
     SV_WELCOME,
 
@@ -54,11 +57,11 @@ enum MessageCode{
     SV_LOCATION,
 
     // The location of a branch
-    // Arguments: x, y
+    // Arguments: serial, x, y
     SV_BRANCH,
 
     // A branch has been removed
-    // Arguments: x, u
+    // Arguments: serial
     SV_REMOVE_BRANCH,
 
 

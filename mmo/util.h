@@ -3,6 +3,8 @@
 
 #include <sstream>
 
+#include "Point.h"
+
 struct Point;
 
 const double SQRT_2 = 1.4142135623731;
@@ -43,13 +45,17 @@ inline SDL_Rect makeRect(int x, int y, int w, int h){
     return r;
 }
 
-inline SDL_Rect makeRect(double x, double y, int w, int h){
+inline SDL_Rect makeRect(double x, double y, int w = 0, int h = 0){
     SDL_Rect r;
     r.x = static_cast<int>(x + .5);
     r.y = static_cast<int>(y + .5);
     r.w = w;
     r.h = h;
     return r;
+}
+
+inline SDL_Rect makeRect(const Point &p){
+    return makeRect(p.x, p.y);
 }
 
 bool collision(const Point &point, const SDL_Rect &rect);

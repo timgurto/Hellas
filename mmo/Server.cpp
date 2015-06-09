@@ -225,8 +225,8 @@ void Server::addUser(const Socket &socket, const std::string &name){
         sendMessage(newUser.getSocket(), SV_LOCATION, it->makeLocationCommand());
 
     // Send him branch locations
-    for (std::list<Point>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
-        sendMessage(newUser.getSocket(), SV_BRANCH, makeArgs(it->x, it->y));
+    for (std::set<Branch>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
+        sendMessage(newUser.getSocket(), SV_BRANCH, makeArgs(it->serial, it->location.x, it->location.y));
 
     // Add new user to list, and broadcast his location
     _users.insert(newUser);
@@ -324,22 +324,20 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
         case CL_COLLECT_BRANCH:
         {
-            double x, y;
-            iss >> x >> del >> y >> del;
+            int serial;
+            iss >> serial >> del;
             if (del != ']')
                 return;
-            for (std::list<Point>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
-                if (it->x == x && it->y == y) {
-                    // Match; remove branch
-                    if (distance(user->location, *it) > ACTION_DISTANCE) {
-                        sendMessage(client, SV_TOO_FAR);
-                    } else {
-                        sendMessage(client, SV_REMOVE_BRANCH, makeArgs(x, y));
-                        _branches.erase(it);
-                        saveData();
-                    }
-                    break;
-                }
+            std::set<Branch>::const_iterator it = _branches.find(serial);
+            if (it == _branches.end()) {
+                sendMessage(client, SV_DOESNT_EXIST);
+            } else if (distance(user->location, it->location) > ACTION_DISTANCE) {
+                sendMessage(client, SV_TOO_FAR);
+            } else {
+                sendMessage(client, SV_REMOVE_BRANCH, makeArgs(serial));
+                _branches.erase(it);
+                saveData();
+            }
             break;
         }
 
@@ -394,23 +392,23 @@ void Server::loadData(){
         for (int i = 0; i != numBranches; ++i) {
             Point p;
             fs >> p.x >> p.y;
-            _branches.push_back(p);
+            _branches.insert(p);
         }
         fs.close();
 
     } else {
         // Create new random world
         for (int i = 0; i != 5; ++i)
-            _branches.push_back(Point(rand() % (Client::SCREEN_WIDTH - 20),
-                                     (rand() % Client::SCREEN_HEIGHT - 20)));
+            _branches.insert(Point(rand() % (Client::SCREEN_WIDTH - 20),
+                                  (rand() % Client::SCREEN_HEIGHT - 20)));
     }
 }
 
 void Server::saveData(){
     std::ofstream fs("World/branches.dat");
     fs << _branches.size() << std::endl;
-    for (std::list<Point>::const_iterator it = _branches.begin(); it != _branches.end(); ++it) {
-        fs << it->x << ' ' << it->y << std::endl;
+    for (std::set<Branch>::const_iterator it = _branches.begin(); it != _branches.end(); ++it) {
+        fs << it->location.x << ' ' << it->location.y << std::endl;
     }
     fs.close();
 }

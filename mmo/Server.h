@@ -7,6 +7,7 @@
 #include <string>
 
 #include "Args.h"
+#include "Branch.h"
 #include "Log.h"
 #include "Socket.h"
 #include "User.h"
@@ -45,7 +46,7 @@ private:
     std::set<User> _users; // All connected users
     std::set<std::string> _usernames; // All connected users' names, for faster lookup of duplicates
 
-    std::list<Point> _branches;
+    std::set<Branch> _branches;
 
     mutable Log _debug;
 

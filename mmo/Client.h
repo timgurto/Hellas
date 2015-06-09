@@ -4,8 +4,10 @@
 #include <queue>
 #include <string>
 #include <map>
+#include <set>
 
 #include "Args.h"
+#include "Branch.h"
 #include "Log.h"
 #include "OtherUser.h"
 #include "Point.h"
@@ -67,7 +69,7 @@ private:
     bool _locationChanged;
 
     std::map<std::string, OtherUser> _otherUsers;
-    std::list<Point> _branches;
+    std::set<Branch> _branches;
 
     std::queue<std::string> _messages;
 

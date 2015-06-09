@@ -1,3 +1,4 @@
+#include <cassert>
 #include <SDL.h>
 #include <string>
 #include <sstream>
@@ -194,9 +195,9 @@ void Client::run(){
             case SDL_MOUSEBUTTONUP:
                 if (_loaded) {
                     // Check whether clicking a branch
-                    for (std::list<Point>::const_iterator it = _branches.begin(); it != _branches.end(); ++it) {
-                        if (collision(_mouse, makeRect(it->x, it->y, 20, 20))) {
-                            sendMessage(CL_COLLECT_BRANCH, makeArgs(it->x, it->y));
+                    for (std::set<Branch>::const_iterator it = _branches.begin(); it != _branches.end(); ++it) {
+                        if (collision(_mouse, makeRect(it->location.x, it->location.y, 20, 20))) {
+                            sendMessage(CL_COLLECT_BRANCH, makeArgs(it->serial));
                             break;
                         }
                     }
@@ -263,13 +264,8 @@ void Client::draw(){
     SDL_BlitSurface(_image, 0, _screen, &drawLoc);
 
     // Branches
-    SDL_Surface *branchSurface = SDL_LoadBMP("Images/branch.bmp");
-    SDL_SetColorKey(branchSurface, SDL_TRUE, Color::MAGENTA);
-    for (std::list<Point>::const_iterator it = _branches.begin(); it != _branches.end(); ++it){
-        drawLoc = *it;
-        SDL_BlitSurface(branchSurface, 0, _screen, &drawLoc);
-    }
-    SDL_FreeSurface(branchSurface);
+    for (std::set<Branch>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
+        it->draw(_screen);
 
     // Other users
     for (std::map<std::string, OtherUser>::iterator it = _otherUsers.begin(); it != _otherUsers.end(); ++it){
@@ -396,6 +392,12 @@ void Client::handleMessage(const std::string &msg){
             _debug << Color::YELLOW << "You are too far away to perform that action." << Log::endl;
             break;
 
+        case SV_DOESNT_EXIST:
+            if (del != ']')
+                break;
+            _debug << Color::YELLOW << "That object doesn't exist." << Log::endl;
+            break;
+
         case SV_LOCATION:
         {
             std::string name;
@@ -419,25 +421,28 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_BRANCH:
         {
+            int serial;
             double x, y;
-            singleMsg >> x >> del >> y >> del;
+            singleMsg >> serial >> del >> x >> del >> y >> del;
             if (del != ']')
                 break;
-            _branches.push_back(Point(x, y));
+            _branches.insert(Branch(serial, Point(x, y)));
             break;
         }
 
         case SV_REMOVE_BRANCH:
         {
-            double x, y;
-            singleMsg >> x >> del >> y >> del;
+            int serial;
+            singleMsg >> serial >> del;
             if (del != ']')
                 break;
-            for (std::list<Point>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
-                if (it->x == x && it->y == y) {
-                    _branches.erase(it);
-                    break;
-                }
+            std::set<Branch>::const_iterator it = _branches.find(serial);
+            if (it == _branches.end()){
+                _debug << Color::YELLOW << "Server removed a branch we didn't know about." << Log::endl;
+                assert(false);
+                break; // We didn't know about this branch
+            }
+            _branches.erase(it);
             break;
         }
 

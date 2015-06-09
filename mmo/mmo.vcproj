@@ -171,6 +171,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Branch.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Client.cpp"
 				>
 			</File>
@@ -218,6 +222,10 @@
 			>
 			<File
 				RelativePath=".\Args.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Branch.h"
 				>
 			</File>
 			<File
