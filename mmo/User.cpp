@@ -1,6 +1,7 @@
 #include <sstream>
 
 #include "Client.h"
+#include "Server.h"
 #include "Socket.h"
 #include "User.h"
 #include "messageCodes.h"
@@ -10,7 +11,8 @@ User::User(const std::string &name, const Point &loc, const Socket &socket):
 _name(name),
 location(loc),
 _socket(socket),
-_lastLocUpdate(SDL_GetTicks()){}
+_lastLocUpdate(SDL_GetTicks()),
+_lastContact(SDL_GetTicks()){}
 
 User::User(const Socket &rhs):
 _socket(rhs){}
@@ -39,4 +41,12 @@ void User::updateLocation(const Point &dest){
     // Max legal distance: straight line
     double maxLegalDistance = timeElapsed / 1000.0 * Client::MOVEMENT_SPEED;
     location = interpolate(location, dest, maxLegalDistance);
+}
+
+void User::contact(){
+    _lastContact = SDL_GetTicks();
+}
+
+bool User::alive() const{
+    return SDL_GetTicks() - _lastContact <= Server::CLIENT_TIMEOUT;
 }

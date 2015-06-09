@@ -12,7 +12,7 @@
 const int Server::MAX_CLIENTS = 20;
 const int Server::BUFFER_SIZE = 1023;
 
-const Uint32 Server::ACK_TIMEOUT = 1000;
+const Uint32 Server::CLIENT_TIMEOUT = 10000;
 
 const Uint32 Server::SAVE_FREQUENCY = 1000;
 
@@ -151,6 +151,16 @@ void Server::run(){
     while (_loop) {
         _time = SDL_GetTicks();
 
+        // Check that clients are alive
+        for (std::set<User>::iterator it = _users.begin(); it != _users.end();) {
+            if (!it->alive()) {
+                _debug << Color::RED << "User " << it->getName() << " has timed out." << Log::endl;
+                removeUser(it++);
+            } else {
+                ++it;
+            }
+        }
+
         // Save user data
         if (_time - _lastSave >= SAVE_FREQUENCY) {
             for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it) {
@@ -233,9 +243,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
     broadcast(SV_LOCATION, newUser.makeLocationCommand());
 }
 
-void Server::removeUser(const Socket &socket){
-    std::set<User>::iterator it = _users.find(socket);
-    if (it != _users.end()) {
+void Server::removeUser(std::set<User>::iterator &it){
         // Broadcast message
         broadcast(SV_USER_DISCONNECTED, it->getName());
 
@@ -244,7 +252,12 @@ void Server::removeUser(const Socket &socket){
 
         _usernames.erase(it->getName());
         _users.erase(it);
-    }
+}
+
+void Server::removeUser(const Socket &socket){
+    std::set<User>::iterator it = _users.find(socket);
+    if (it != _users.end())
+        removeUser(it);
 }
 
 void Server::handleMessage(const Socket &client, const std::string &msg){
@@ -264,6 +277,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         }
         if (msgCode != CL_I_AM) {
             user = &*it;
+            user->contact();
         }
 
         switch(msgCode) {

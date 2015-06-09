@@ -19,7 +19,7 @@ public:
     ~Server();
     void run();
 
-    static const Uint32 ACK_TIMEOUT;
+    static const Uint32 CLIENT_TIMEOUT; // How much radio silence before we drop a client
 
 private:
     const Args &_args; //comand-line args
@@ -57,6 +57,7 @@ private:
 
     // Remove traces of a user who has disconnected.
     void removeUser(const Socket &socket);
+    void removeUser(std::set<User>::iterator &it);
 
     void sendMessage(const Socket &dstSocket, MessageCode msgCode, const std::string &args = "") const;
 

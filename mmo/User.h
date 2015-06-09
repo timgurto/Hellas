@@ -24,6 +24,9 @@ public:
 
     Uint32 latency;
 
+    void contact();
+    bool alive() const; // Whether the client has contacted the server recently enough
+
     // Determine whether the proposed new location is legal, considering movement speed and time elapsed.
     // Set location to the new, legal location
     void updateLocation(const Point &dest);
@@ -32,6 +35,7 @@ private:
     std::string _name;
     Socket _socket;
     Uint32 _lastLocUpdate; // Time that the last CL_LOCATION was received
+    Uint32 _lastContact;
 };
 
 #endif
