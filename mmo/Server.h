@@ -34,6 +34,9 @@ private:
 
     bool _loop;
 
+    void loadData(); // Load data from files, or randomly generate new world.
+    void saveData();
+
     std::queue<std::pair<Socket, std::string> > _messages;
 
     std::set<Socket> _clientSockets; // All connected sockets, including those without registered users

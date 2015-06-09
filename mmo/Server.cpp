@@ -43,9 +43,7 @@ _lastSave(_time){
         return;
     _screen = SDL_GetWindowSurface(_window);
 
-    for (int i = 0; i != 5; ++i)
-        _branches.push_back(Point(rand() % (Client::SCREEN_WIDTH - 20),
-                                 (rand() % Client::SCREEN_HEIGHT - 20)));
+    loadData();
 
     _debug("Server initialized");
 
@@ -65,6 +63,7 @@ _lastSave(_time){
 Server::~Server(){
     if (_window)
         SDL_DestroyWindow(_window);
+    saveData();
 }
 
 void Server::checkSockets(){
@@ -155,6 +154,7 @@ void Server::run(){
             for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it) {
                 writeUserData(*it);
             }
+            saveData();
             _lastSave = _time;
         }
 
@@ -208,7 +208,11 @@ void Server::addUser(const Socket &socket, const std::string &name){
     if (!userExisted) {
         newUser.location.x = rand() % (Client::SCREEN_WIDTH - 20);
         newUser.location.y = rand() % (Client::SCREEN_HEIGHT - 40);
+        _debug << "New";
+    } else {
+        _debug << "Existing";
     }
+    _debug << " user, " << name << " has logged in." << Log::endl;
     _usernames.insert(name);
 
     // Send welcome message
@@ -225,8 +229,6 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // Add new user to list, and broadcast his location
     _users.insert(newUser);
     broadcast(SV_LOCATION, newUser.makeLocationCommand());
-
-    _debug << "New user, " << name << " has logged in." << Log::endl;
 }
 
 void Server::removeUser(const Socket &socket){
@@ -358,4 +360,34 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode, const std
 
     // Send message
     _socket.sendMessage(oss.str(), dstSocket);
+}
+
+void Server::loadData(){
+    std::ifstream fs("World/branches.dat");
+    if (fs.good()) {
+        // Load data
+        int numBranches;
+        fs >> numBranches;
+        for (int i = 0; i != numBranches; ++i) {
+            Point p;
+            fs >> p.x >> p.y;
+            _branches.push_back(p);
+        }
+        fs.close();
+
+    } else {
+        // Create new random world
+        for (int i = 0; i != 5; ++i)
+            _branches.push_back(Point(rand() % (Client::SCREEN_WIDTH - 20),
+                                     (rand() % Client::SCREEN_HEIGHT - 20)));
+    }
+}
+
+void Server::saveData(){
+    std::ofstream fs("World/branches.dat");
+    fs << _branches.size() << std::endl;
+    for (std::list<Point>::const_iterator it = _branches.begin(); it != _branches.end(); ++it) {
+        fs << it->x << ' ' << it->y << std::endl;
+    }
+    fs.close();
 }
