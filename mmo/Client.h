@@ -8,6 +8,7 @@
 
 #include "Args.h"
 #include "Branch.h"
+#include "Item.h"
 #include "Log.h"
 #include "OtherUser.h"
 #include "Point.h"
@@ -40,7 +41,8 @@ private:
 
     SDL_Surface
         *_image,
-        *_screen;
+        *_screen,
+        *_invLabel;
 
     bool _loop;
     Socket _socket;
@@ -68,6 +70,11 @@ private:
     Uint32 _timeSinceLocUpdate; // Time since a CL_LOCATION was sent
     bool _locationChanged;
 
+    // Game data
+    std::set<Item> _items;
+
+    // Information about the state of the world
+    std::vector<std::pair<std::string, int> > _inventory;
     std::map<std::string, OtherUser> _otherUsers;
     std::set<Branch> _branches;
 

@@ -8,6 +8,7 @@
 
 #include "Args.h"
 #include "Branch.h"
+#include "Item.h"
 #include "Log.h"
 #include "Socket.h"
 #include "User.h"
@@ -47,6 +48,8 @@ private:
     std::set<std::string> _usernames; // All connected users' names, for faster lookup of duplicates
 
     std::set<Branch> _branches;
+
+    std::set<Item> _items;
 
     mutable Log _debug;
 

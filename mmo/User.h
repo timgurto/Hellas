@@ -24,6 +24,9 @@ public:
 
     Uint32 latency;
 
+    static const int INVENTORY_SIZE;
+    std::vector<std::pair<std::string, int> > inventory;
+
     void contact();
     bool alive() const; // Whether the client has contacted the server recently enough
 

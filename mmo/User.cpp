@@ -7,10 +7,13 @@
 #include "messageCodes.h"
 #include "util.h"
 
+const int User::INVENTORY_SIZE = 5;
+
 User::User(const std::string &name, const Point &loc, const Socket &socket):
 _name(name),
 location(loc),
 _socket(socket),
+inventory(INVENTORY_SIZE, std::make_pair("none", 0)),
 _lastLocUpdate(SDL_GetTicks()),
 _lastContact(SDL_GetTicks()){}
 

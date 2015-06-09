@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "Client.h"
+#include "User.h"
 #include "messageCodes.h"
 #include "util.h"
 
@@ -29,6 +30,7 @@ _connected(false),
 _invalidUsername(false),
 _timeSinceLocUpdate(0),
 _locationChanged(false),
+_inventory(User::INVENTORY_SIZE, std::make_pair("none", 0)),
 _time(SDL_GetTicks()),
 _timeElapsed(0),
 _lastPingSent(_time),
@@ -56,8 +58,11 @@ _mouse(0,0){
         return;
     _screen = SDL_GetWindowSurface(_window);
 
+    _defaultFont = TTF_OpenFont("trebuc.ttf", 16);
+
     _image = SDL_LoadBMP("Images/man.bmp");
     SDL_SetColorKey(_image, SDL_TRUE, Color::MAGENTA);
+    _invLabel = TTF_RenderText_Solid(_defaultFont, "Inventory", Color::WHITE);
 
     // Randomize player name if not supplied
     if (_args.contains("username"))
@@ -67,7 +72,9 @@ _mouse(0,0){
             _username.push_back('a' + rand() % 26);
     _debug << "Player name: " << _username << Log::endl;
 
-    _defaultFont = TTF_OpenFont("trebuc.ttf", 16);
+    // Load game data
+    _items.insert(Item("wood", "wood"));
+    _items.insert(Item("none", "none"));
 }
 
 Client::~Client(){
@@ -75,6 +82,8 @@ Client::~Client(){
         TTF_CloseFont(_defaultFont);
     if (_image)
         SDL_FreeSurface(_image);
+    if (_invLabel)
+        SDL_FreeSurface(_invLabel);
     if (_window)
         SDL_DestroyWindow(_window);
 }
@@ -209,7 +218,7 @@ void Client::run(){
                 ;
             }
         }
-        // Poll keys (whether they are currently pressed, not key events)
+        // Poll keys (whether they are currently pressed; not key events)
         static const Uint8 *keyboardState = SDL_GetKeyboardState(0);
         if (_connected) {
             bool
@@ -276,6 +285,27 @@ void Client::draw(){
         drawLoc.x += _image->w/2 - nameSurface->w/2;
         SDL_BlitSurface(nameSurface, 0, _screen, &drawLoc);
         SDL_FreeSurface(nameSurface);
+    }
+
+    // Inventory
+    SDL_Rect invBackgroundRect = makeRect(_screen->w - 250, _screen->h - 70, 250, 60);
+    SDL_FillRect(_screen, &invBackgroundRect, Color::WHITE/4);
+    SDL_BlitSurface(_invLabel, 0, _screen, &invBackgroundRect);
+    for (int i = 0; i != User::INVENTORY_SIZE; ++i){
+        SDL_Rect iconRect = makeRect(_screen->w - 248 + i*50, _screen->h - 48, 48, 48);
+        SDL_FillRect(_screen, &iconRect, Color::BLACK);
+        std::set<Item>::iterator it = _items.find(_inventory[i].first);
+        if (it == _items.end())
+            _debug << Color::RED << "Unknown item: " << _inventory[i].first;
+        else {
+            SDL_BlitSurface(it->getIcon(), 0, _screen, &iconRect);
+            SDL_Surface *qtySurface = TTF_RenderText_Solid(_defaultFont,
+                                                           makeArgs(_inventory[i].second).c_str(),
+                                                           Color::WHITE);
+            iconRect.x += 48 - qtySurface->w;
+            iconRect.y += 48 - qtySurface->h;
+            SDL_BlitSurface(qtySurface, 0, _screen, &iconRect);
+        }
     }
 
     // FPS/latency
@@ -416,6 +446,20 @@ void Client::handleMessage(const std::string &msg){
                     _otherUsers[name].location = p;
                 _otherUsers[name].destination = p;
             }
+            break;
+        }
+
+        case SV_INVENTORY:
+        {
+            int slot, quantity;
+            std::string itemID;
+            singleMsg >> slot >> del;
+            singleMsg.get(buffer, BUFFER_SIZE, ',');
+            itemID = std::string(buffer);
+            singleMsg >> del >> quantity >> del;
+            if (del != ']')
+                break;
+            _inventory[slot] = std::make_pair(itemID, quantity);
             break;
         }
 

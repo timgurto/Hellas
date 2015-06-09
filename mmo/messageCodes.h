@@ -56,6 +56,10 @@ enum MessageCode{
     // Arguments: username, x, y
     SV_LOCATION,
 
+    // An item in the user's inventory
+    // Arguments: slot, ID, quantity
+    SV_INVENTORY,
+
     // The location of a branch
     // Arguments: serial, x, y
     SV_BRANCH,

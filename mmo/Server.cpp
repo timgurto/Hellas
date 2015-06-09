@@ -238,6 +238,14 @@ void Server::addUser(const Socket &socket, const std::string &name){
     for (std::set<Branch>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
         sendMessage(newUser.getSocket(), SV_BRANCH, makeArgs(it->serial, it->location.x, it->location.y));
 
+    // Send him his inventory
+    for (int i = 0; i != User::INVENTORY_SIZE; ++i) {
+        if (newUser.inventory[i].first != "none")
+            sendMessage(socket, SV_INVENTORY, makeArgs(i,
+                                                       newUser.inventory[i].first,
+                                                       newUser.inventory[i].second));
+    }
+
     // Add new user to list, and broadcast his location
     _users.insert(newUser);
     broadcast(SV_LOCATION, newUser.makeLocationCommand());
@@ -372,7 +380,18 @@ bool Server::readUserData(User &user){
     std::ifstream fs(filename.c_str());
     if (!fs.good()) // File didn't exist
         return false;
+    
+    // Location
     fs >> user.location.x >> user.location.y;
+
+    // Inventory
+    for (int i = 0; i != User::INVENTORY_SIZE; ++i){
+        std::string itemID;
+        int quantity;
+        fs >> itemID >> quantity;
+        user.inventory[i] = std::make_pair(itemID, quantity);
+    }
+
     fs.close();
     return true;
 }
@@ -380,7 +399,15 @@ bool Server::readUserData(User &user){
 void Server::writeUserData(const User &user) const{
     std::string filename = std::string("Users/") + user.getName() + ".usr";
     std::ofstream fs(filename.c_str());
-    fs << user.location.x << ' ' << user.location.y;
+    
+    // Location
+    fs << user.location.x << ' ' << user.location.y << std::endl;
+
+    // Inventory
+    for (int i = 0; i != User::INVENTORY_SIZE; ++i){
+        fs << user.inventory[i].first << ' ' << user.inventory[i].second << std::endl;
+    }
+
     fs.close();
 }
 
@@ -412,10 +439,13 @@ void Server::loadData(){
 
     } else {
         // Create new random world
-        for (int i = 0; i != 5; ++i)
+        for (int i = 0; i != 30; ++i)
             _branches.insert(Point(rand() % (Client::SCREEN_WIDTH - 20),
                                   (rand() % Client::SCREEN_HEIGHT - 20)));
     }
+
+    _items.insert(Item("wood", "wood"));
+    _items.insert(Item("none", "none"));
 }
 
 void Server::saveData(){

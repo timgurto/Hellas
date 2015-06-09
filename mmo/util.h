@@ -36,7 +36,7 @@ std::string makeArgs(T1 val1, T2 val2, T3 val3){
     return oss.str();
 }
 
-inline SDL_Rect makeRect(int x, int y, int w, int h){
+inline SDL_Rect makeRect(int x = 0, int y = 0, int w = 0, int h = 0){
     SDL_Rect r;
     r.x = x;
     r.y = y;
