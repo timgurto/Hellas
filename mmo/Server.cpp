@@ -44,7 +44,8 @@ _lastSave(_time){
     _screen = SDL_GetWindowSurface(_window);
 
     for (int i = 0; i != 5; ++i)
-        _branches.push_back(Point(rand() % Client::SCREEN_WIDTH, rand() % Client::SCREEN_HEIGHT));
+        _branches.push_back(Point(rand() % (Client::SCREEN_WIDTH - 20),
+                                 (rand() % Client::SCREEN_HEIGHT - 20)));
 
     _debug("Server initialized");
 

@@ -55,6 +55,7 @@ _loaded(false){
     _screen = SDL_GetWindowSurface(_window);
 
     _image = SDL_LoadBMP("Images/man.bmp");
+    SDL_SetColorKey(_image, SDL_TRUE, Color::MAGENTA);
 
     // Randomize player name if not supplied
     if (_args.contains("username"))
@@ -238,16 +239,15 @@ void Client::draw(){
 
     // User
     SDL_Rect drawLoc = _location;
-    SDL_Rect borderRect = drawLoc;
-    borderRect.x = borderRect.x - 3;
-    borderRect.y = borderRect.y - 3;
-    borderRect.w = 26;
-    borderRect.h = 46;
-    SDL_FillRect(_screen, &borderRect, Color::WHITE);
+    SDL_FillRect(_screen, &makeRect(drawLoc.x, drawLoc.y, 1, _image->h), Color::WHITE);
+    SDL_FillRect(_screen, &makeRect(drawLoc.x + _image->w, drawLoc.y, 1, _image->h), Color::WHITE);
+    SDL_FillRect(_screen, &makeRect(drawLoc.x, drawLoc.y, _image->w, 1), Color::WHITE);
+    SDL_FillRect(_screen, &makeRect(drawLoc.x, drawLoc.y + _image->h, _image->w, 1), Color::WHITE);
     SDL_BlitSurface(_image, 0, _screen, &drawLoc);
 
     // Branches
     SDL_Surface *branchSurface = SDL_LoadBMP("Images/branch.bmp");
+    SDL_SetColorKey(branchSurface, SDL_TRUE, Color::MAGENTA);
     for (std::list<Point>::const_iterator it = _branches.begin(); it != _branches.end(); ++it){
         drawLoc = *it;
         SDL_BlitSurface(branchSurface, 0, _screen, &drawLoc);
