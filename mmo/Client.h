@@ -44,6 +44,7 @@ private:
     Socket _socket;
     TTF_Font *_defaultFont;
     std::string _username;
+    Point _mouse; // Mouse position
 
     std::string _partialMessage;
 

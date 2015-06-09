@@ -33,7 +33,8 @@ _timeElapsed(0),
 _lastPingSent(_time),
 _lastPingReply(_time),
 _timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
-_loaded(false){
+_loaded(false),
+_mouse(0,0){
     _debug << args << Log::endl;
     Socket::debug = &_debug;
 
@@ -183,7 +184,23 @@ void Client::run(){
                     _loop = false;
                     break;
                 }
+                break;
 
+            case SDL_MOUSEMOTION:
+                _mouse.x = e.motion.x;
+                _mouse.y = e.motion.y;
+                break;
+
+            case SDL_MOUSEBUTTONUP:
+                if (_loaded) {
+                    // Check whether clicking a branch
+                    for (std::list<Point>::const_iterator it = _branches.begin(); it != _branches.end(); ++it) {
+                        if (collision(_mouse, makeRect(it->x, it->y, 20, 20))) {
+                            sendMessage(CL_COLLECT_BRANCH, makeArgs(it->x, it->y));
+                            break;
+                        }
+                    }
+                }
                 break;
 
             default:
@@ -373,6 +390,12 @@ void Client::handleMessage(const std::string &msg){
             _connected = false;
             break;
 
+        case SV_TOO_FAR:
+            if (del != ']')
+                break;
+            _debug << Color::YELLOW << "You are too far away to perform that action." << Log::endl;
+            break;
+
         case SV_LOCATION:
         {
             std::string name;
@@ -401,6 +424,20 @@ void Client::handleMessage(const std::string &msg){
             if (del != ']')
                 break;
             _branches.push_back(Point(x, y));
+            break;
+        }
+
+        case SV_REMOVE_BRANCH:
+        {
+            double x, y;
+            singleMsg >> x >> del >> y >> del;
+            if (del != ']')
+                break;
+            for (std::list<Point>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
+                if (it->x == x && it->y == y) {
+                    _branches.erase(it);
+                    break;
+                }
             break;
         }
 

@@ -18,6 +18,10 @@ enum MessageCode{
     // Arguments: username
     CL_I_AM,
 
+    // User wants to collect a branch
+    // Arguments: branch x, branch y
+    CL_COLLECT_BRANCH,
+
 
 
     // Server -> client
@@ -39,6 +43,9 @@ enum MessageCode{
     // There is no room for more clients
     SV_SERVER_FULL,
 
+    // The user is too far away to perform an action
+    SV_TOO_FAR,
+
     // The client has been successfully registered
     SV_WELCOME,
 
@@ -49,6 +56,10 @@ enum MessageCode{
     // The location of a branch
     // Arguments: x, y
     SV_BRANCH,
+
+    // A branch has been removed
+    // Arguments: x, u
+    SV_REMOVE_BRANCH,
 
 
 

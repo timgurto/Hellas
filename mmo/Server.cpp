@@ -16,6 +16,8 @@ const Uint32 Server::ACK_TIMEOUT = 1000;
 
 const Uint32 Server::SAVE_FREQUENCY = 1000;
 
+const int Server::ACTION_DISTANCE = 20;
+
 Server::Server(const Args &args):
 _args(args),
 _loop(true),
@@ -317,6 +319,27 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
             addUser(client, name);
 
+            break;
+        }
+
+        case CL_COLLECT_BRANCH:
+        {
+            double x, y;
+            iss >> x >> del >> y >> del;
+            if (del != ']')
+                return;
+            for (std::list<Point>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
+                if (it->x == x && it->y == y) {
+                    // Match; remove branch
+                    if (distance(user->location, *it) > ACTION_DISTANCE) {
+                        sendMessage(client, SV_TOO_FAR);
+                    } else {
+                        sendMessage(client, SV_REMOVE_BRANCH, makeArgs(x, y));
+                        _branches.erase(it);
+                        saveData();
+                    }
+                    break;
+                }
             break;
         }
 

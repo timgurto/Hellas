@@ -26,3 +26,11 @@ Point interpolate(const Point &a, const Point &b, double dist){
     return Point(a.x + xNorm * dist,
                  a.y + yNorm * dist);
 }
+
+bool collision(const Point &point, const SDL_Rect &rect){
+    return
+        point.x > rect.x &&
+        point.y > rect.y &&
+        point.x < rect.x + rect.w &&
+        point.y < rect.y + rect.h;
+}

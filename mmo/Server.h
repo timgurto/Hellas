@@ -26,6 +26,8 @@ private:
     static const int MAX_CLIENTS;
     static const int BUFFER_SIZE;
 
+    static const int ACTION_DISTANCE; // How close a character must be to interact with an object
+
     Uint32 _time;
 
     Socket _socket;
