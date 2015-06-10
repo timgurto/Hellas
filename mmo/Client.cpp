@@ -8,7 +8,7 @@
 #include "messageCodes.h"
 #include "util.h"
 
-const int Client::BUFFER_SIZE = 1023;
+const size_t Client::BUFFER_SIZE = 1023;
 const int Client::SCREEN_WIDTH = 640;
 const int Client::SCREEN_HEIGHT = 480;
 

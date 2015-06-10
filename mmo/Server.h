@@ -26,7 +26,7 @@ private:
     const Args &_args; //comand-line args
 
     static const int MAX_CLIENTS;
-    static const int BUFFER_SIZE;
+    static const size_t BUFFER_SIZE;
 
     static const int ACTION_DISTANCE; // How close a character must be to interact with an object
 

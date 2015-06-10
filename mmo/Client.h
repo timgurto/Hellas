@@ -64,7 +64,7 @@ private:
     bool _connected;
     bool _loaded; // Whether the client has sufficient information to begin
 
-    static const int BUFFER_SIZE;
+    static const size_t BUFFER_SIZE;
 
     Point _location;
     Uint32 _timeSinceLocUpdate; // Time since a CL_LOCATION was sent

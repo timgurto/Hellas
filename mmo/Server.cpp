@@ -10,7 +10,7 @@
 #include "util.h"
 
 const int Server::MAX_CLIENTS = 20;
-const int Server::BUFFER_SIZE = 1023;
+const size_t Server::BUFFER_SIZE = 1023;
 
 const Uint32 Server::CLIENT_TIMEOUT = 10000;
 
