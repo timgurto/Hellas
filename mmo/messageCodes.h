@@ -49,6 +49,9 @@ enum MessageCode{
     // The user tried to perform an action on an object that doesn't exist
     SV_DOESNT_EXIST,
 
+    // The user cannot receive an item because his inventory is full
+    SV_INVENTORY_FULL,
+
     // The client has been successfully registered
     SV_WELCOME,
 

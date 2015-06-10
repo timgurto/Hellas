@@ -7,7 +7,7 @@
 #include "messageCodes.h"
 #include "util.h"
 
-const int User::INVENTORY_SIZE = 5;
+const size_t User::INVENTORY_SIZE = 5;
 
 User::User(const std::string &name, const Point &loc, const Socket &socket):
 _name(name),
@@ -52,4 +52,20 @@ void User::contact(){
 
 bool User::alive() const{
     return SDL_GetTicks() - _lastContact <= Server::CLIENT_TIMEOUT;
+}
+
+size_t User::giveItem(const Item &item){
+    size_t emptySlot = INVENTORY_SIZE;
+    for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
+        if (inventory[i].first == item.id && inventory[i].second < item.stackSize){
+            ++inventory[i].second;
+            return i;
+        }
+        if (inventory[i].first == "none" && emptySlot == INVENTORY_SIZE)
+            emptySlot = i;
+    }
+    if (emptySlot != INVENTORY_SIZE) {
+        inventory[emptySlot] = std::make_pair(item.id, 1);
+    }
+    return emptySlot;
 }

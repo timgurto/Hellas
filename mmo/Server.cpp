@@ -239,7 +239,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
         sendMessage(newUser.getSocket(), SV_BRANCH, makeArgs(it->serial, it->location.x, it->location.y));
 
     // Send him his inventory
-    for (int i = 0; i != User::INVENTORY_SIZE; ++i) {
+    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         if (newUser.inventory[i].first != "none")
             sendMessage(socket, SV_INVENTORY, makeArgs(i,
                                                        newUser.inventory[i].first,
@@ -356,7 +356,15 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             } else if (distance(user->location, it->location) > ACTION_DISTANCE) {
                 sendMessage(client, SV_TOO_FAR);
             } else {
-                sendMessage(client, SV_REMOVE_BRANCH, makeArgs(serial));
+                // Give wood to user
+                int slot = user->giveItem(*_items.find(std::string("wood")));
+                if (slot == User::INVENTORY_SIZE) {
+                    sendMessage(client, SV_INVENTORY_FULL);
+                    break;
+                }
+                sendMessage(client, SV_INVENTORY, makeArgs(slot, "wood", user->inventory[slot].second));
+                // Remove branch
+                broadcast(SV_REMOVE_BRANCH, makeArgs(serial));
                 _branches.erase(it);
                 saveData();
             }
@@ -385,7 +393,7 @@ bool Server::readUserData(User &user){
     fs >> user.location.x >> user.location.y;
 
     // Inventory
-    for (int i = 0; i != User::INVENTORY_SIZE; ++i){
+    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
         std::string itemID;
         int quantity;
         fs >> itemID >> quantity;
@@ -404,7 +412,7 @@ void Server::writeUserData(const User &user) const{
     fs << user.location.x << ' ' << user.location.y << std::endl;
 
     // Inventory
-    for (int i = 0; i != User::INVENTORY_SIZE; ++i){
+    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
         fs << user.inventory[i].first << ' ' << user.inventory[i].second << std::endl;
     }
 
@@ -444,7 +452,7 @@ void Server::loadData(){
                                   (rand() % Client::SCREEN_HEIGHT - 20)));
     }
 
-    _items.insert(Item("wood", "wood"));
+    _items.insert(Item("wood", "wood", 5));
     _items.insert(Item("none", "none"));
 }
 

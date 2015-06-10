@@ -2,29 +2,30 @@
 
 #include "Color.h"
 
-Item::Item(const std::string &id, const std::string &name):
-_id(id),
-_name(name),
-_icon(0){}
+Item::Item(const std::string &idArg, const std::string &nameArg, size_t stackSizeArg):
+id(idArg),
+name(nameArg),
+stackSize(stackSizeArg),
+icon(0){}
 
-Item::Item(const std::string &id):
-_id(id),
-_icon(0){}
+Item::Item(const std::string &idArg):
+id(idArg),
+icon(0){}
 
 Item::~Item(){
-    if (_icon)
-        SDL_FreeSurface(_icon);
+    if (icon)
+        SDL_FreeSurface(icon);
 }
 
 SDL_Surface *Item::getIcon(){
-    if (!_icon) {
-        std::string filename = std::string("Images/") + _id + ".bmp";
-        _icon = SDL_LoadBMP(filename.c_str());
-        SDL_SetColorKey(_icon, SDL_TRUE, Color::MAGENTA);
+    if (!icon) {
+        std::string filename = std::string("Images/") + id + ".bmp";
+        icon = SDL_LoadBMP(filename.c_str());
+        SDL_SetColorKey(icon, SDL_TRUE, Color::MAGENTA);
     }
-    return _icon;
+    return icon;
 }
 
 bool Item::operator<(const Item &rhs) const{
-    return _id < rhs._id;
+    return id < rhs.id;
 }

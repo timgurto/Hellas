@@ -24,8 +24,8 @@ public:
 
     Uint32 latency;
 
-    static const int INVENTORY_SIZE;
-    std::vector<std::pair<std::string, int> > inventory;
+    static const size_t INVENTORY_SIZE;
+    std::vector<std::pair<std::string, size_t> > inventory;
 
     void contact();
     bool alive() const; // Whether the client has contacted the server recently enough
@@ -33,6 +33,9 @@ public:
     // Determine whether the proposed new location is legal, considering movement speed and time elapsed.
     // Set location to the new, legal location
     void updateLocation(const Point &dest);
+
+    // Return value: which inventory slot was used
+    size_t giveItem(const Item &item);
 
 private:
     std::string _name;

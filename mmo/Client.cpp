@@ -73,7 +73,7 @@ _mouse(0,0){
     _debug << "Player name: " << _username << Log::endl;
 
     // Load game data
-    _items.insert(Item("wood", "wood"));
+    _items.insert(Item("wood", "wood", 5));
     _items.insert(Item("none", "none"));
 }
 
@@ -291,7 +291,7 @@ void Client::draw(){
     SDL_Rect invBackgroundRect = makeRect(_screen->w - 250, _screen->h - 70, 250, 60);
     SDL_FillRect(_screen, &invBackgroundRect, Color::WHITE/4);
     SDL_BlitSurface(_invLabel, 0, _screen, &invBackgroundRect);
-    for (int i = 0; i != User::INVENTORY_SIZE; ++i){
+    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
         SDL_Rect iconRect = makeRect(_screen->w - 248 + i*50, _screen->h - 48, 48, 48);
         SDL_FillRect(_screen, &iconRect, Color::BLACK);
         std::set<Item>::iterator it = _items.find(_inventory[i].first);
@@ -426,6 +426,12 @@ void Client::handleMessage(const std::string &msg){
             if (del != ']')
                 break;
             _debug << Color::YELLOW << "That object doesn't exist." << Log::endl;
+            break;
+
+        case SV_INVENTORY_FULL:
+            if (del != ']')
+                break;
+            _debug << Color::YELLOW << "Your inventory is full." << Log::endl;
             break;
 
         case SV_LOCATION:

@@ -74,7 +74,7 @@ private:
     std::set<Item> _items;
 
     // Information about the state of the world
-    std::vector<std::pair<std::string, int> > _inventory;
+    std::vector<std::pair<std::string, size_t> > _inventory;
     std::map<std::string, OtherUser> _otherUsers;
     std::set<Branch> _branches;
 
