@@ -4,9 +4,12 @@
 #include "Point.h"
 
 // A representation of a user other than the one using this client
-struct  OtherUser{
-    Point location;
+struct OtherUser{
     Point destination;
+    Entity entity;
+    static EntityType entityType;
+
+    OtherUser();
 
     // Set the destination, and reset the travel timer
     void setDestination(const Point &dst);
@@ -14,7 +17,7 @@ struct  OtherUser{
     // Move location towards destination, with distance determined by
     // this client's latency, and by time elapsed.
     // The idea is that 
-    void updateLocation(double delta);
+    Point interpolatedLocation(double delta);
 
 };
 

@@ -2,10 +2,15 @@
 #include "OtherUser.h"
 #include "util.h"
 
-void OtherUser::updateLocation(double delta){
-    if (destination == location)
-        return;
+EntityType OtherUser::entityType(makeRect(-9, -39));
+
+OtherUser::OtherUser():
+entity(entityType, 0){}
+
+Point OtherUser::interpolatedLocation(double delta){
+    if (destination == entity.location())
+        return destination;;
 
     double maxLegalDistance = delta * Client::MOVEMENT_SPEED;
-    location = interpolate(location, destination, maxLegalDistance);
+    return interpolate(entity.location(), destination, maxLegalDistance);
 }

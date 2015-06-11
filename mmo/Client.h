@@ -8,6 +8,7 @@
 
 #include "Args.h"
 #include "Branch.h"
+#include "Entity.h"
 #include "Item.h"
 #include "Log.h"
 #include "OtherUser.h"
@@ -40,9 +41,10 @@ private:
     SDL_Window *_window;
 
     SDL_Surface
-        *_image,
         *_screen,
         *_invLabel;
+
+    Entity _character; // Describes the user's character
 
     bool _loop;
     Socket _socket;
@@ -66,7 +68,6 @@ private:
 
     static const size_t BUFFER_SIZE;
 
-    Point _location;
     Uint32 _timeSinceLocUpdate; // Time since a CL_LOCATION was sent
     bool _locationChanged;
 
@@ -77,6 +78,14 @@ private:
     std::vector<std::pair<std::string, size_t> > _inventory;
     std::map<std::string, OtherUser> _otherUsers;
     std::set<Branch> _branches;
+
+    struct EntityCompare{
+        bool operator()(const Entity *lhs, const Entity *rhs) const{ return *lhs < *rhs; }
+    };
+    std::set<const Entity *, EntityCompare> _entities;
+
+    // Change an Entity's location, and ensure _entities remains ordered
+    void setEntityLocation(Entity &entity, const Point &newLocation);
 
     std::queue<std::string> _messages;
 

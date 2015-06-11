@@ -17,4 +17,11 @@ private:
     static const double EPSILON;
 };
 
+inline SDL_Rect operator+(const SDL_Rect &lhs, const Point &rhs){
+    SDL_Rect r = lhs;
+    r.x += static_cast<int>(rhs.x);
+    r.y += static_cast<int>(rhs.y);
+    return r;
+}
+
 #endif

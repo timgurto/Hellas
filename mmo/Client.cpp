@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "Client.h"
+#include "EntityType.h"
 #include "User.h"
 #include "messageCodes.h"
 #include "util.h"
@@ -22,7 +23,6 @@ const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 250;
 
 Client::Client(const Args &args):
 _args(args),
-_location(0, 0),
 _loop(true),
 _debug(SCREEN_HEIGHT/20),
 _socket(),
@@ -30,6 +30,7 @@ _connected(false),
 _invalidUsername(false),
 _timeSinceLocUpdate(0),
 _locationChanged(false),
+_character(OtherUser::entityType, 0),
 _inventory(User::INVENTORY_SIZE, std::make_pair("none", 0)),
 _time(SDL_GetTicks()),
 _timeElapsed(0),
@@ -57,11 +58,13 @@ _mouse(0,0){
     if (!_window)
         return;
     _screen = SDL_GetWindowSurface(_window);
+    EntityType::setScreen(_screen);
+
+    _entities.insert(&_character);
 
     _defaultFont = TTF_OpenFont("trebuc.ttf", 16);
 
-    _image = SDL_LoadBMP("Images/man.bmp");
-    SDL_SetColorKey(_image, SDL_TRUE, Color::MAGENTA);
+    OtherUser::entityType.image("Images/man.bmp");
     _invLabel = TTF_RenderText_Solid(_defaultFont, "Inventory", Color::WHITE);
 
     // Randomize player name if not supplied
@@ -80,8 +83,6 @@ _mouse(0,0){
 Client::~Client(){
     if (_defaultFont)
         TTF_CloseFont(_defaultFont);
-    if (_image)
-        SDL_FreeSurface(_image);
     if (_invLabel)
         SDL_FreeSurface(_invLabel);
     if (_window)
@@ -135,7 +136,7 @@ void Client::checkSocket(){
 
 void Client::run(){
 
-    if (!_window || !_image)
+    if (!_window)
         return;
 
     Uint32 timeAtLastTick = SDL_GetTicks();
@@ -164,10 +165,10 @@ void Client::run(){
         if (!_connected) {
             _timeSinceConnectAttempt += _timeElapsed;
 
-        } else {
+        } else { // Update server with current location
             _timeSinceLocUpdate += _timeElapsed;
             if (_locationChanged && _timeSinceLocUpdate > TIME_BETWEEN_LOCATION_UPDATES) {
-                sendMessage(CL_LOCATION, makeArgs(_location.x, _location.y));
+                sendMessage(CL_LOCATION, makeArgs(_character.location().x, _character.location().y));
                 _locationChanged = false;
                 _timeSinceLocUpdate = 0;
             }
@@ -226,25 +227,29 @@ void Client::run(){
                 down = keyboardState[SDL_SCANCODE_DOWN] == SDL_PRESSED,
                 left = keyboardState[SDL_SCANCODE_LEFT] == SDL_PRESSED,
                 right = keyboardState[SDL_SCANCODE_RIGHT] == SDL_PRESSED;
-                if (up != down || left != right) {
+            if (up != down || left != right) {
                 double
                     dist = delta * MOVEMENT_SPEED,
                     diagDist = dist / SQRT_2;
-                if (up && !down)
-                    _location.y -= (left != right) ? diagDist : dist;
-                else if (down && !up)
-                    _location.y += (left != right) ? diagDist : dist;
+                Point newLoc = _character.location();
+                if (up != down) {
+                    if (up && !down)
+                        newLoc.y -= (left != right) ? diagDist : dist;
+                    else if (down && !up)
+                        newLoc.y += (left != right) ? diagDist : dist;
+                }
                 if (left && !right)
-                    _location.x -= (up != down) ? diagDist : dist;
+                    newLoc.x -= (up != down) ? diagDist : dist;
                 else if (right && !left)
-                    _location.x += (up != down) ? diagDist : dist;
+                    newLoc.x += (up != down) ? diagDist : dist;
+                setEntityLocation(_character, newLoc);
                 _locationChanged = true;
             }
         }
 
         // Update locations of other users
         for (std::map<std::string, OtherUser>::iterator it = _otherUsers.begin(); it != _otherUsers.end(); ++it)
-            it->second.updateLocation(delta);
+            setEntityLocation(it->second.entity, it->second.interpolatedLocation(delta));
 
         checkSocket();
         // Draw
@@ -264,25 +269,28 @@ void Client::draw(){
     // Background
     SDL_FillRect(_screen, 0, Color::GREEN/4);
 
-    // User
-    SDL_Rect drawLoc = _location;
-    SDL_FillRect(_screen, &makeRect(drawLoc.x, drawLoc.y, 1, _image->h), Color::WHITE);
-    SDL_FillRect(_screen, &makeRect(drawLoc.x + _image->w, drawLoc.y, 1, _image->h), Color::WHITE);
-    SDL_FillRect(_screen, &makeRect(drawLoc.x, drawLoc.y, _image->w, 1), Color::WHITE);
-    SDL_FillRect(_screen, &makeRect(drawLoc.x, drawLoc.y + _image->h, _image->w, 1), Color::WHITE);
-    SDL_BlitSurface(_image, 0, _screen, &drawLoc);
+    // Entities, sorted from back to front
+    for (std::set<const Entity *, EntityCompare>::const_iterator it = _entities.begin(); it != _entities.end(); ++it)
+        (*it)->draw();
+
+    // Rectangle around user
+    SDL_Rect drawLoc = _character.drawRect();
+    SDL_FillRect(_screen, &makeRect(drawLoc.x, drawLoc.y, 1, drawLoc.h), Color::WHITE);
+    SDL_FillRect(_screen, &makeRect(drawLoc.x + drawLoc.w, drawLoc.y, 1, drawLoc.h), Color::WHITE);
+    SDL_FillRect(_screen, &makeRect(drawLoc.x, drawLoc.y, drawLoc.w, 1), Color::WHITE);
+    SDL_FillRect(_screen, &makeRect(drawLoc.x, drawLoc.y + drawLoc.h, drawLoc.w, 1), Color::WHITE);
 
     // Branches
     for (std::set<Branch>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
         it->draw(_screen);
 
-    // Other users
+    // Other users' names
     for (std::map<std::string, OtherUser>::iterator it = _otherUsers.begin(); it != _otherUsers.end(); ++it){
-        drawLoc = it->second.location;
-        SDL_BlitSurface(_image, 0, _screen, &drawLoc);
+        const Entity &entity = it->second.entity;
         SDL_Surface *nameSurface = TTF_RenderText_Solid(_defaultFont, it->first.c_str(), Color::CYAN);
-        drawLoc.y -= 20;
-        drawLoc.x += _image->w/2 - nameSurface->w/2;
+        SDL_Rect drawLoc = entity.location();
+        drawLoc.y -= 60;
+        drawLoc.x -= nameSurface->w/2;
         SDL_BlitSurface(nameSurface, 0, _screen, &drawLoc);
         SDL_FreeSurface(nameSurface);
     }
@@ -389,7 +397,11 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del;
             if (del != ']')
                 break;
-            _otherUsers.erase(name);
+            std::map<std::string, OtherUser>::iterator it = _otherUsers.find(name);
+            if (it != _otherUsers.end()) {
+                _entities.erase(&it->second.entity);
+                _otherUsers.erase(name);
+            }
             _debug << name << " disconnected." << Log::endl;
             break;
         }
@@ -443,13 +455,15 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del >> x >> del >> y >> del;
             if (del != ']')
                 break;
+            Point p(x, y);
             if (name == _username) {
-                _location = Point(x, y);
+                setEntityLocation(_character, p);
                 _loaded = true;
             } else {
-                Point p(x, y);
-                if (_otherUsers.find(name) == _otherUsers.end())
-                    _otherUsers[name].location = p;
+                if (_otherUsers.find(name) == _otherUsers.end()) {
+                    // Create new OtherUser
+                    setEntityLocation(_otherUsers[name].entity, p);
+                }
                 _otherUsers[name].destination = p;
             }
             break;
@@ -518,4 +532,21 @@ void Client::sendMessage(MessageCode msgCode, const std::string &args) const{
 
     // Send message
     _socket.sendMessage(oss.str());
+}
+
+void Client::setEntityLocation(Entity &entity, const Point &newLocation){
+    double oldY = entity.location().y;
+
+    // Remove entity from set
+    if (oldY != newLocation.y) {
+        std::set<const Entity *, EntityCompare>::iterator it = _entities.find(&entity);
+        if (it != _entities.end())
+            _entities.erase(it);
+    }
+
+    // Update location
+    entity.locationInner(newLocation);
+
+    // Add entity to set
+    _entities.insert(&entity);
 }

@@ -183,6 +183,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Entity.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EntityType.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Item.cpp"
 				>
 			</File>
@@ -238,6 +246,14 @@
 			</File>
 			<File
 				RelativePath=".\Color.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Entity.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EntityType.h"
 				>
 			</File>
 			<File
