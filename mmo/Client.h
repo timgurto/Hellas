@@ -79,8 +79,7 @@ private:
     std::map<std::string, OtherUser> _otherUsers;
     std::set<Branch> _branches;
 
-    std::set<const Entity *, Entity::Compare> _entities;
-
+    Entity::set_t _entities;
     // Change an Entity's location, and ensure _entities remains ordered
     void setEntityLocation(Entity &entity, const Point &newLocation);
 

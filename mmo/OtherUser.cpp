@@ -31,6 +31,6 @@ Point OtherUser::interpolatedLocation(double delta){
     return interpolate(_entity.location(), _destination, maxLegalDistance);
 }
 
-void OtherUser::setLocation(std::set<const Entity *, Entity::Compare> &entitiesSet, const Point &newLocation){
+void OtherUser::setLocation(Entity::set_t &entitiesSet, const Point &newLocation){
     _entity.setLocation(entitiesSet, newLocation);
 }

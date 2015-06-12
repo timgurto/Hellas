@@ -270,7 +270,7 @@ void Client::draw(){
     SDL_FillRect(_screen, 0, Color::GREEN/4);
 
     // Entities, sorted from back to front
-    for (std::set<const Entity *, Entity::Compare>::const_iterator it = _entities.begin(); it != _entities.end(); ++it)
+    for (Entity::set_t::const_iterator it = _entities.begin(); it != _entities.end(); ++it)
         (*it)->draw();
 
     // Rectangle around user

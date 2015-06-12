@@ -37,6 +37,8 @@ public:
     };
 
     void setLocation(std::set<const Entity *, Entity::Compare> &entitiesSet, const Point &newLocation);
+
+    typedef std::set<const Entity *, Compare> set_t;
 };
 
 #endif

@@ -26,7 +26,7 @@ public:
     */
     Point interpolatedLocation(double delta);
 
-    void setLocation(std::set<const Entity *, Entity::Compare> &entitiesSet, const Point &newLocation);
+    void setLocation(Entity::set_t &entitiesSet, const Point &newLocation);
 };
 
 #endif

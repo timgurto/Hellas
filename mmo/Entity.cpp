@@ -41,12 +41,12 @@ double Entity::bottomEdge() const{
     return _location.y + _type.drawRect().y + _type.height();
 }
 
-void Entity::setLocation(std::set<const Entity *, Entity::Compare> &entitiesSet, const Point &newLocation){
+void Entity::setLocation(set_t &entitiesSet, const Point &newLocation){
     double oldY = _location.y;
 
     // Remove entity from set
     if (oldY != newLocation.y) {
-        std::set<const Entity *, Entity::Compare>::iterator it = entitiesSet.find(this);
+        set_t::iterator it = entitiesSet.find(this);
         if (it != entitiesSet.end())
             entitiesSet.erase(it);
     }
