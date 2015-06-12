@@ -30,7 +30,7 @@ _connected(false),
 _invalidUsername(false),
 _timeSinceLocUpdate(0),
 _locationChanged(false),
-_character(OtherUser::entityType, 0),
+_character(OtherUser::entityType(), 0),
 _inventory(User::INVENTORY_SIZE, std::make_pair("none", 0)),
 _time(SDL_GetTicks()),
 _timeElapsed(0),
@@ -64,7 +64,7 @@ _mouse(0,0){
 
     _defaultFont = TTF_OpenFont("trebuc.ttf", 16);
 
-    OtherUser::entityType.image("Images/man.bmp");
+    OtherUser::setImage("Images/man.bmp");
     _invLabel = TTF_RenderText_Solid(_defaultFont, "Inventory", Color::WHITE);
 
     // Randomize player name if not supplied
@@ -206,8 +206,8 @@ void Client::run(){
                 if (_loaded) {
                     // Check whether clicking a branch
                     for (std::set<Branch>::const_iterator it = _branches.begin(); it != _branches.end(); ++it) {
-                        if (collision(_mouse, makeRect(it->location.x, it->location.y, 20, 20))) {
-                            sendMessage(CL_COLLECT_BRANCH, makeArgs(it->serial));
+                        if (collision(_mouse, makeRect(it->location().x, it->location().y, 20, 20))) {
+                            sendMessage(CL_COLLECT_BRANCH, makeArgs(it->serial()));
                             break;
                         }
                     }
@@ -249,7 +249,7 @@ void Client::run(){
 
         // Update locations of other users
         for (std::map<std::string, OtherUser>::iterator it = _otherUsers.begin(); it != _otherUsers.end(); ++it)
-            setEntityLocation(it->second.entity, it->second.interpolatedLocation(delta));
+            it->second.setLocation(_entities, it->second.interpolatedLocation(delta));
 
         checkSocket();
         // Draw
@@ -270,7 +270,7 @@ void Client::draw(){
     SDL_FillRect(_screen, 0, Color::GREEN/4);
 
     // Entities, sorted from back to front
-    for (std::set<const Entity *, EntityCompare>::const_iterator it = _entities.begin(); it != _entities.end(); ++it)
+    for (std::set<const Entity *, Entity::Compare>::const_iterator it = _entities.begin(); it != _entities.end(); ++it)
         (*it)->draw();
 
     // Rectangle around user
@@ -286,7 +286,7 @@ void Client::draw(){
 
     // Other users' names
     for (std::map<std::string, OtherUser>::iterator it = _otherUsers.begin(); it != _otherUsers.end(); ++it){
-        const Entity &entity = it->second.entity;
+        const Entity &entity = it->second.entity();
         SDL_Surface *nameSurface = TTF_RenderText_Solid(_defaultFont, it->first.c_str(), Color::CYAN);
         SDL_Rect drawLoc = entity.location();
         drawLoc.y -= 60;
@@ -306,7 +306,7 @@ void Client::draw(){
         if (it == _items.end())
             _debug << Color::RED << "Unknown item: " << _inventory[i].first;
         else {
-            SDL_BlitSurface(it->getIcon(), 0, _screen, &iconRect);
+            SDL_BlitSurface(it->icon(), 0, _screen, &iconRect);
             SDL_Surface *qtySurface = TTF_RenderText_Solid(_defaultFont,
                                                            makeArgs(_inventory[i].second).c_str(),
                                                            Color::WHITE);
@@ -399,7 +399,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             std::map<std::string, OtherUser>::iterator it = _otherUsers.find(name);
             if (it != _otherUsers.end()) {
-                _entities.erase(&it->second.entity);
+                _entities.erase(&it->second.entity());
                 _otherUsers.erase(name);
             }
             _debug << name << " disconnected." << Log::endl;
@@ -462,9 +462,9 @@ void Client::handleMessage(const std::string &msg){
             } else {
                 if (_otherUsers.find(name) == _otherUsers.end()) {
                     // Create new OtherUser
-                    setEntityLocation(_otherUsers[name].entity, p);
+                    _otherUsers[name].setLocation(_entities, p);
                 }
-                _otherUsers[name].destination = p;
+                _otherUsers[name].destination(p);
             }
             break;
         }
@@ -535,18 +535,5 @@ void Client::sendMessage(MessageCode msgCode, const std::string &args) const{
 }
 
 void Client::setEntityLocation(Entity &entity, const Point &newLocation){
-    double oldY = entity.location().y;
-
-    // Remove entity from set
-    if (oldY != newLocation.y) {
-        std::set<const Entity *, EntityCompare>::iterator it = _entities.find(&entity);
-        if (it != _entities.end())
-            _entities.erase(it);
-    }
-
-    // Update location
-    entity.locationInner(newLocation);
-
-    // Add entity to set
-    _entities.insert(&entity);
+    entity.setLocation(_entities, newLocation);
 }

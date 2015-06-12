@@ -154,7 +154,7 @@ void Server::run(){
         // Check that clients are alive
         for (std::set<User>::iterator it = _users.begin(); it != _users.end();) {
             if (!it->alive()) {
-                _debug << Color::RED << "User " << it->getName() << " has timed out." << Log::endl;
+                _debug << Color::RED << "User " << it->name() << " has timed out." << Log::endl;
                 removeUser(it++);
             } else {
                 ++it;
@@ -218,8 +218,8 @@ void Server::addUser(const Socket &socket, const std::string &name){
     User newUser(name, 0, socket);
     bool userExisted = readUserData(newUser);
     if (!userExisted) {
-        newUser.location.x = rand() % (Client::SCREEN_WIDTH - 20);
-        newUser.location.y = rand() % (Client::SCREEN_HEIGHT - 40);
+        newUser.location(Point(rand() % (Client::SCREEN_WIDTH - 20),
+                               rand() % (Client::SCREEN_HEIGHT - 40)));
         _debug << "New";
     } else {
         _debug << "Existing";
@@ -232,18 +232,18 @@ void Server::addUser(const Socket &socket, const std::string &name){
 
     // Send new user everybody else's location
     for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
-        sendMessage(newUser.getSocket(), SV_LOCATION, it->makeLocationCommand());
+        sendMessage(newUser.socket(), SV_LOCATION, it->makeLocationCommand());
 
     // Send him branch locations
     for (std::set<Branch>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
-        sendMessage(newUser.getSocket(), SV_BRANCH, makeArgs(it->serial, it->location.x, it->location.y));
+        sendMessage(newUser.socket(), SV_BRANCH, makeArgs(it->serial(), it->location().x, it->location().y));
 
     // Send him his inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
-        if (newUser.inventory[i].first != "none")
+        if (newUser.inventory(i).first != "none")
             sendMessage(socket, SV_INVENTORY, makeArgs(i,
-                                                       newUser.inventory[i].first,
-                                                       newUser.inventory[i].second));
+                                                       newUser.inventory(i).first,
+                                                       newUser.inventory(i).second));
     }
 
     // Add new user to list, and broadcast his location
@@ -253,12 +253,12 @@ void Server::addUser(const Socket &socket, const std::string &name){
 
 void Server::removeUser(std::set<User>::iterator &it){
         // Broadcast message
-        broadcast(SV_USER_DISCONNECTED, it->getName());
+        broadcast(SV_USER_DISCONNECTED, it->name());
 
         // Save user data
         writeUserData(*it);
 
-        _usernames.erase(it->getName());
+        _usernames.erase(it->name());
         _users.erase(it);
 }
 
@@ -296,7 +296,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> timeSent  >> del;
             if (del != ']')
                 return;
-            sendMessage(user->getSocket(), SV_PING_REPLY, makeArgs(timeSent));
+            sendMessage(user->socket(), SV_PING_REPLY, makeArgs(timeSent));
             break;
         }
 
@@ -353,7 +353,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             std::set<Branch>::const_iterator it = _branches.find(serial);
             if (it == _branches.end()) {
                 sendMessage(client, SV_DOESNT_EXIST);
-            } else if (distance(user->location, it->location) > ACTION_DISTANCE) {
+            } else if (distance(user->location(), it->location()) > ACTION_DISTANCE) {
                 sendMessage(client, SV_TOO_FAR);
             } else {
                 // Give wood to user
@@ -362,7 +362,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                     sendMessage(client, SV_INVENTORY_FULL);
                     break;
                 }
-                sendMessage(client, SV_INVENTORY, makeArgs(slot, "wood", user->inventory[slot].second));
+                sendMessage(client, SV_INVENTORY, makeArgs(slot, "wood", user->inventory(slot).second));
                 // Remove branch
                 broadcast(SV_REMOVE_BRANCH, makeArgs(serial));
                 _branches.erase(it);
@@ -379,25 +379,25 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
 void Server::broadcast(MessageCode msgCode, const std::string &args){
     for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it){
-        sendMessage(it->getSocket(), msgCode, args);
+        sendMessage(it->socket(), msgCode, args);
     }
 }
 
 bool Server::readUserData(User &user){
-    std::string filename = std::string("Users/") + user.getName() + ".usr";
+    std::string filename = std::string("Users/") + user.name() + ".usr";
     std::ifstream fs(filename.c_str());
     if (!fs.good()) // File didn't exist
         return false;
     
     // Location
-    fs >> user.location.x >> user.location.y;
+    user.location(fs);
 
     // Inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
         std::string itemID;
         int quantity;
         fs >> itemID >> quantity;
-        user.inventory[i] = std::make_pair(itemID, quantity);
+        user.inventory(i) = std::make_pair(itemID, quantity);
     }
 
     fs.close();
@@ -405,15 +405,15 @@ bool Server::readUserData(User &user){
 }
 
 void Server::writeUserData(const User &user) const{
-    std::string filename = std::string("Users/") + user.getName() + ".usr";
+    std::string filename = std::string("Users/") + user.name() + ".usr";
     std::ofstream fs(filename.c_str());
     
     // Location
-    fs << user.location.x << ' ' << user.location.y << std::endl;
+    fs << user.location().x << ' ' << user.location().y << std::endl;
 
     // Inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
-        fs << user.inventory[i].first << ' ' << user.inventory[i].second << std::endl;
+        fs << user.inventory(i).first << ' ' << user.inventory(i).second << std::endl;
     }
 
     fs.close();
@@ -460,7 +460,7 @@ void Server::saveData(){
     std::ofstream fs("World/branches.dat");
     fs << _branches.size() << std::endl;
     for (std::set<Branch>::const_iterator it = _branches.begin(); it != _branches.end(); ++it) {
-        fs << it->location.x << ' ' << it->location.y << std::endl;
+        fs << it->location().x << ' ' << it->location().y << std::endl;
     }
     fs.close();
 }

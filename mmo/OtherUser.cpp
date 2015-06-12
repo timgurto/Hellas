@@ -2,15 +2,35 @@
 #include "OtherUser.h"
 #include "util.h"
 
-EntityType OtherUser::entityType(makeRect(-9, -39));
+EntityType OtherUser::_entityType(makeRect(-9, -39));
 
 OtherUser::OtherUser():
-entity(entityType, 0){}
+_entity(_entityType, 0){}
+
+const EntityType &OtherUser::entityType(){
+    return _entityType;
+}
+
+void OtherUser::destination(const Point &dst){
+    _destination = dst;
+}
+
+const Entity &OtherUser::entity() const{
+    return _entity;
+}
+
+void OtherUser::setImage(const std::string &filename){
+    _entityType.image(filename);
+}
 
 Point OtherUser::interpolatedLocation(double delta){
-    if (destination == entity.location())
-        return destination;;
+    if (_destination == _entity.location())
+        return _destination;;
 
     double maxLegalDistance = delta * Client::MOVEMENT_SPEED;
-    return interpolate(entity.location(), destination, maxLegalDistance);
+    return interpolate(_entity.location(), _destination, maxLegalDistance);
+}
+
+void OtherUser::setLocation(std::set<const Entity *, Entity::Compare> &entitiesSet, const Point &newLocation){
+    _entity.setLocation(entitiesSet, newLocation);
 }

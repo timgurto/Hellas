@@ -2,44 +2,52 @@
 #include "Color.h"
 #include "util.h"
 
-int Branch::currentSerial = 0;
-int Branch::numBranches = 0;
-SDL_Surface *Branch::image = 0;
+int Branch::_currentSerial = 0;
+int Branch::_numBranches = 0;
+SDL_Surface *Branch::_image = 0;
 
 
 Branch::Branch(const Branch &rhs):
-location(rhs.location),
-serial(rhs.serial){
-    ++numBranches;
+_location(rhs._location),
+_serial(rhs._serial){
+    ++_numBranches;
 }
 
 Branch::Branch(const Point &loc):
-location(loc),
-serial(currentSerial++){
-    ++numBranches;
+_location(loc),
+_serial(_currentSerial++){
+    ++_numBranches;
 }
 
 Branch::Branch(int serialArg, const Point &loc):
-serial(serialArg),
-location(loc){
-    ++numBranches;
-    if (!image) {
-        image = SDL_LoadBMP("Images/branch.bmp");
-        SDL_SetColorKey(image, SDL_TRUE, Color::MAGENTA);
+_serial(serialArg),
+_location(loc){
+    ++_numBranches;
+    if (!_image) {
+        _image = SDL_LoadBMP("Images/branch.bmp");
+        SDL_SetColorKey(_image, SDL_TRUE, Color::MAGENTA);
     }
 }
 
 Branch::~Branch(){
-    --numBranches;
-    if (numBranches == 0)
-        SDL_FreeSurface(image);
+    --_numBranches;
+    if (_numBranches == 0)
+        SDL_FreeSurface(_image);
 }
 
 bool Branch::operator<(const Branch &rhs) const{
-    return serial < rhs.serial;
+    return _serial < rhs._serial;
+}
+
+int Branch::serial() const{
+    return _serial;
+}
+
+const Point &Branch::location() const{
+    return _location;
 }
 
 void Branch::draw(SDL_Surface *dstSurface) const{
-    if (image)
-        SDL_BlitSurface(image, 0, dstSurface, &makeRect(location));
+    if (_image)
+        SDL_BlitSurface(_image, 0, dstSurface, &makeRect(_location));
 }

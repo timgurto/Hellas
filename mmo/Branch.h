@@ -8,9 +8,15 @@
 #include "Point.h"
 
 // Describes a tree branch which can be collected by a user
-struct Branch{
-    int serial;
-    Point location;
+class Branch{
+    static int _currentSerial;
+    static int _numBranches;
+    static SDL_Surface *_image;
+
+    int _serial;
+    Point _location;
+
+public:
 
     Branch(const Branch &rhs);
     Branch(const Point &loc); // Generates new serial; should only be called by server
@@ -20,13 +26,13 @@ struct Branch{
     bool operator<(const Branch &rhs) const; // Compare serials
 
     friend std::ostream &operator<<(std::ostream &lhs, const Branch &rhs);
+
+    int serial() const;
+    const Point &location() const;
     
     void draw(SDL_Surface *dstSurface) const;
 
 private:
-    static int currentSerial;
-    static int numBranches;
-    static SDL_Surface *image;
 };
 
 #endif

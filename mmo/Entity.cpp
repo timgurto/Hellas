@@ -21,11 +21,6 @@ const Point &Entity::location() const{
     return _location;
 }
 
-// Shouldn't usually be called directly; instead call Client::setClientLocation().
-void Entity::locationInner(const Point &location){
-    _location = location;
-}
-
 SDL_Rect Entity::drawRect() const {
     return _type.drawRect() + _location;
 }
@@ -44,4 +39,23 @@ void Entity::draw() const{
 
 double Entity::bottomEdge() const{
     return _location.y + _type.drawRect().y + _type.height();
+}
+
+void Entity::setLocation(std::set<const Entity *, Entity::Compare> &entitiesSet, const Point &newLocation){
+    double oldY = _location.y;
+
+    // Remove entity from set
+    if (oldY != newLocation.y) {
+        std::set<const Entity *, Entity::Compare>::iterator it = entitiesSet.find(this);
+        if (it != entitiesSet.end())
+            entitiesSet.erase(it);
+    }
+
+    // Update location
+    _location = newLocation;
+
+    // Add entity to set
+    if (oldY != newLocation.y) {
+        entitiesSet.insert(this);
+    }
 }

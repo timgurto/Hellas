@@ -79,10 +79,7 @@ private:
     std::map<std::string, OtherUser> _otherUsers;
     std::set<Branch> _branches;
 
-    struct EntityCompare{
-        bool operator()(const Entity *lhs, const Entity *rhs) const{ return *lhs < *rhs; }
-    };
-    std::set<const Entity *, EntityCompare> _entities;
+    std::set<const Entity *, Entity::Compare> _entities;
 
     // Change an Entity's location, and ensure _entities remains ordered
     void setEntityLocation(Entity &entity, const Point &newLocation);
