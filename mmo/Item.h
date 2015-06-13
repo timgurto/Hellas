@@ -9,7 +9,7 @@ class Item{
     std::string _id; // The no-space, unique name used in data files
     std::string _name;
     size_t _stackSize;
-    SDL_Surface *_icon;
+    SDL_Texture *_icon;
 
 public:
     Item(const std::string &id, const std::string &name, size_t stackSize = 1);
@@ -20,7 +20,7 @@ public:
 
     const std::string &id() const;
     size_t stackSize() const;
-    SDL_Surface *icon();
+    SDL_Texture *icon();
 };
 
 #endif

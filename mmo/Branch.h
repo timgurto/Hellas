@@ -35,10 +35,6 @@ public:
     const Entity &entity() const;
 
     static void setImage(const std::string &filename);
-    
-    void draw(SDL_Surface *dstSurface) const;
-
-private:
 };
 
 #endif

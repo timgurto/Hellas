@@ -31,6 +31,8 @@ public:
 
     static bool isClient;
 
+    static SDL_Renderer *screen;
+
 private:
     const Args &_args; //comand-line args
     
@@ -42,9 +44,7 @@ private:
 
     SDL_Window *_window;
 
-    SDL_Surface
-        *_screen,
-        *_invLabel;
+    SDL_Texture *_invLabel;
 
     Entity _character; // Describes the user's character
 

@@ -24,6 +24,8 @@ public:
 
     static bool isServer;
 
+    static SDL_Renderer *screen;
+
 private:
     const Args &_args; //comand-line args
 
@@ -36,7 +38,6 @@ private:
 
     Socket _socket;
     SDL_Window *_window;
-    SDL_Surface *_screen;
 
     bool _loop;
 

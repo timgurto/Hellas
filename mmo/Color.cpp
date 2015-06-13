@@ -27,13 +27,13 @@ Color::operator SDL_Color() const{
 Color::operator Uint32() const{
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     return
-        (_r << 16) +
-        (_g << 8) +
+        (_r << 16) |
+        (_g << 8) |
         (_b);
 #else
     return
-        (_r) +
-        (_g << 8) +
+        (_r) |
+        (_g << 8) |
         (_b << 16);
 #endif
 }
@@ -70,4 +70,16 @@ Color Color::operator*(double d) const {
 
 Color Color::operator*(int s) const {
     return *this * static_cast<double>(s);
+}
+
+Uint8 Color::r() const{
+    return _r;
+}
+
+Uint8 Color::g() const{
+    return _g;
+}
+
+Uint8 Color::b() const{
+    return _b;
 }

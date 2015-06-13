@@ -36,7 +36,6 @@ public:
     Log(unsigned displayLines, const std::string &fontName = "trebuc.ttf", int fontSize = 16, const Color &color = Color::WHITE);
     ~Log();
     void operator()(const std::string &message, const Color *color = 0);
-    void draw(SDL_Surface *targetSurface, int x = 0, int y = 0) const;
 
     enum LogEndType{endl};
 
@@ -58,8 +57,10 @@ public:
         return *this;
     }
 
+    void draw(SDL_Renderer *renderer, int x = 0, int y = 0) const;
+
 private:
-    std::list<SDL_Surface *> _messages;
+    std::list<SDL_Texture *> _messages;
     unsigned _maxMessages;
     TTF_Font *_font;
     bool _valid; // false if an error has occurred

@@ -26,6 +26,10 @@ public:
     Color operator*(double s) const;
     Color operator*(int s) const; // to avoid ambiguity with implicit Uint32 cast
 
+    Uint8 r() const;
+    Uint8 g() const;
+    Uint8 b() const;
+
 private:
     Uint8 _r, _g, _b;
 };

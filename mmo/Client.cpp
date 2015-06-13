@@ -23,6 +23,8 @@ const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 250;
 
 bool Client::isClient = false;
 
+SDL_Renderer *Client::screen = 0;
+
 Client::Client(const Args &args):
 _args(args),
 _loop(true),
@@ -61,8 +63,8 @@ _mouse(0,0){
     _window = SDL_CreateWindow("Client", screenX, screenY, screenW, screenH, SDL_WINDOW_SHOWN);
     if (!_window)
         return;
-    _screen = SDL_GetWindowSurface(_window);
-    EntityType::setScreen(_screen);
+    screen = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
+    SDL_SetRenderDrawColor(screen, 0, 0, 0, 0xff);
 
     _entities.insert(&_character);
 
@@ -70,7 +72,7 @@ _mouse(0,0){
 
     OtherUser::setImage("Images/man.bmp");
     Branch::setImage("Images/branch.bmp");
-    _invLabel = TTF_RenderText_Solid(_defaultFont, "Inventory", Color::WHITE);
+    _invLabel = SDL_CreateTextureFromSurface(screen, TTF_RenderText_Solid(_defaultFont, "Inventory", Color::WHITE));
 
     // Randomize player name if not supplied
     if (_args.contains("username"))
@@ -89,7 +91,9 @@ Client::~Client(){
     if (_defaultFont)
         TTF_CloseFont(_defaultFont);
     if (_invLabel)
-        SDL_FreeSurface(_invLabel);
+        SDL_DestroyTexture(_invLabel);
+    if (screen)
+        SDL_DestroyRenderer(screen);
     if (_window)
         SDL_DestroyWindow(_window);
 }
@@ -265,55 +269,68 @@ void Client::run(){
 
 void Client::draw(){
     if (!_connected || !_loaded){
-        SDL_FillRect(_screen, 0, Color::BLACK);
-        _debug.draw(_screen);
-        SDL_UpdateWindowSurface(_window);
+        SDL_RenderClear(screen);
+        _debug.draw(screen);
+        SDL_RenderPresent(screen);
         return;
     }
 
     // Background
-    SDL_FillRect(_screen, 0, Color::GREEN/4);
+    static const Color backgroundColor = Color::GREEN/4;
+    SDL_SetRenderDrawColor(screen, backgroundColor.r(), backgroundColor.g(), backgroundColor.b(), 0xff);
+    SDL_RenderFillRect(screen, 0);
 
     // Entities, sorted from back to front
     for (Entity::set_t::const_iterator it = _entities.begin(); it != _entities.end(); ++it)
         (*it)->draw();
 
     // Rectangle around user
+    SDL_SetRenderDrawColor(screen, 0xff, 0xff, 0xff, 0xff); // White
     SDL_Rect drawLoc = _character.drawRect();
-    SDL_FillRect(_screen, &makeRect(drawLoc.x, drawLoc.y, 1, drawLoc.h), Color::WHITE);
-    SDL_FillRect(_screen, &makeRect(drawLoc.x + drawLoc.w, drawLoc.y, 1, drawLoc.h), Color::WHITE);
-    SDL_FillRect(_screen, &makeRect(drawLoc.x, drawLoc.y, drawLoc.w, 1), Color::WHITE);
-    SDL_FillRect(_screen, &makeRect(drawLoc.x, drawLoc.y + drawLoc.h, drawLoc.w, 1), Color::WHITE);
+    SDL_RenderDrawRect(screen, &drawLoc);
 
     // Other users' names
     for (std::map<std::string, OtherUser>::iterator it = _otherUsers.begin(); it != _otherUsers.end(); ++it){
         const Entity &entity = it->second.entity();
         SDL_Surface *nameSurface = TTF_RenderText_Solid(_defaultFont, it->first.c_str(), Color::CYAN);
+        SDL_Texture *nameTexture = SDL_CreateTextureFromSurface(screen, nameSurface);
         SDL_Rect drawLoc = entity.location();
         drawLoc.y -= 60;
         drawLoc.x -= nameSurface->w/2;
-        SDL_BlitSurface(nameSurface, 0, _screen, &drawLoc);
+        SDL_RenderCopy(screen, nameTexture, 0, &drawLoc);
+        SDL_DestroyTexture(nameTexture);
         SDL_FreeSurface(nameSurface);
     }
 
     // Inventory
-    SDL_Rect invBackgroundRect = makeRect(_screen->w - 250, _screen->h - 70, 250, 60);
-    SDL_FillRect(_screen, &invBackgroundRect, Color::WHITE/4);
-    SDL_BlitSurface(_invLabel, 0, _screen, &invBackgroundRect);
+    int screenW, screenH;
+    SDL_GetRendererOutputSize(screen, &screenW, &screenH);
+    static SDL_Rect invBackgroundRect = makeRect(screenW - 250, screenH - 70, 250, 60);
+    SDL_SetRenderDrawColor(screen, 0x3f, 0x3f, 0x3f, 0xff); // White/4
+    SDL_RenderFillRect(screen, &invBackgroundRect);
+    SDL_Rect labelRect = invBackgroundRect;
+    SDL_QueryTexture(_invLabel, 0, 0, &labelRect.w, &labelRect.h);
+    SDL_RenderCopy(screen, _invLabel, 0, &labelRect);
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
-        SDL_Rect iconRect = makeRect(_screen->w - 248 + i*50, _screen->h - 48, 48, 48);
-        SDL_FillRect(_screen, &iconRect, Color::BLACK);
+        SDL_Rect iconRect = makeRect(screenW - 248 + i*50, screenH - 48, 48, 48);
+        SDL_SetRenderDrawColor(screen, 0, 0, 0, 0xff); // Black
+        SDL_RenderFillRect(screen, &iconRect);
         std::set<Item>::iterator it = _items.find(_inventory[i].first);
         if (it == _items.end())
             _debug << Color::RED << "Unknown item: " << _inventory[i].first;
         else {
-            SDL_BlitSurface(it->icon(), 0, _screen, &iconRect);
+            SDL_RenderCopy(screen, it->icon(), 0, &iconRect);
             SDL_Surface *qtySurface = TTF_RenderText_Solid(_defaultFont,
                                                            makeArgs(_inventory[i].second).c_str(),
                                                            Color::WHITE);
-            iconRect.x += 48 - qtySurface->w;
-            iconRect.y += 48 - qtySurface->h;
-            SDL_BlitSurface(qtySurface, 0, _screen, &iconRect);
+            SDL_Texture *qtyTexture = SDL_CreateTextureFromSurface(screen, qtySurface);
+            SDL_Rect qtyRect;
+            SDL_QueryTexture(qtyTexture, 0, 0, &qtyRect.w, &qtyRect.h);
+            qtyRect.x = iconRect.x + 48 - qtyRect.w;
+            qtyRect.y = iconRect.y + 48 - qtyRect.h;
+            SDL_RenderCopy(screen, qtyTexture, 0, &qtyRect);
+            SDL_DestroyTexture(qtyTexture);
+            SDL_FreeSurface(qtySurface);
         }
     }
 
@@ -324,13 +341,17 @@ void Client::draw(){
     else
         oss << "infinite ";
     oss << "fps " << _latency << "ms";
-    SDL_Surface *statsDisplay = TTF_RenderText_Solid(_defaultFont, oss.str().c_str(), Color::YELLOW);
-    SDL_Rect statsRect = {SCREEN_WIDTH - statsDisplay->w, 0, 0, 0};
-    SDL_BlitSurface(statsDisplay, 0, _screen, &statsRect);
-    SDL_FreeSurface(statsDisplay);
+    SDL_Surface *statsDisplaySurface = TTF_RenderText_Solid(_defaultFont, oss.str().c_str(), Color::YELLOW);
+    SDL_Texture *statsDisplay = SDL_CreateTextureFromSurface(screen, statsDisplaySurface);
+    int statsWidth;
+    SDL_QueryTexture(statsDisplay, 0, 0, &statsWidth, 0);
+    SDL_Rect statsRect = {screenW - statsWidth, 0, 0, 0};
+    SDL_RenderCopy(screen, statsDisplay, 0, &statsRect);
+    SDL_DestroyTexture(statsDisplay);
+    SDL_FreeSurface(statsDisplaySurface);
 
-    _debug.draw(_screen);
-    SDL_UpdateWindowSurface(_window);
+    _debug.draw(screen);
+    SDL_RenderPresent(screen);
 }
 
 void Client::handleMessage(const std::string &msg){

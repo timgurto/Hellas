@@ -20,6 +20,8 @@ const int Server::ACTION_DISTANCE = 20;
 
 bool Server::isServer = false;
 
+SDL_Renderer *Server::screen = 0;
+
 Server::Server(const Args &args):
 _args(args),
 _loop(true),
@@ -47,7 +49,7 @@ _lastSave(_time){
     _window = SDL_CreateWindow("Server", screenX, screenY, screenW, screenH, SDL_WINDOW_SHOWN);
     if (!_window)
         return;
-    _screen = SDL_GetWindowSurface(_window);
+    screen = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
 
     loadData();
 
@@ -67,6 +69,8 @@ _lastSave(_time){
 }
 
 Server::~Server(){
+    if (screen)
+        SDL_DestroyRenderer(screen);
     if (_window)
         SDL_DestroyWindow(_window);
     saveData();
@@ -213,9 +217,10 @@ void Server::run(){
 }
 
 void Server::draw() const{
-    SDL_FillRect(_screen, 0, Color::BLACK);
-    _debug.draw(_screen);
-    SDL_UpdateWindowSurface(_window);
+    SDL_SetRenderDrawColor(screen, 0, 0, 0, 0xff); // black
+    SDL_RenderFillRect(screen, 0);
+    _debug.draw(screen);
+    SDL_RenderPresent(screen);
 }
 
 void Server::addUser(const Socket &socket, const std::string &name){
