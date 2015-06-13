@@ -320,17 +320,20 @@ void Client::draw(){
             _debug << Color::RED << "Unknown item: " << _inventory[i].first;
         else {
             SDL_RenderCopy(screen, it->icon(), 0, &iconRect);
-            SDL_Surface *qtySurface = TTF_RenderText_Solid(_defaultFont,
-                                                           makeArgs(_inventory[i].second).c_str(),
-                                                           Color::WHITE);
-            SDL_Texture *qtyTexture = SDL_CreateTextureFromSurface(screen, qtySurface);
-            SDL_Rect qtyRect;
-            SDL_QueryTexture(qtyTexture, 0, 0, &qtyRect.w, &qtyRect.h);
-            qtyRect.x = iconRect.x + 48 - qtyRect.w;
-            qtyRect.y = iconRect.y + 48 - qtyRect.h;
-            SDL_RenderCopy(screen, qtyTexture, 0, &qtyRect);
-            SDL_DestroyTexture(qtyTexture);
-            SDL_FreeSurface(qtySurface);
+            if (it->stackSize() > 1) {
+                // Display stack size
+                SDL_Surface *qtySurface = TTF_RenderText_Solid(_defaultFont,
+                                                               makeArgs(_inventory[i].second).c_str(),
+                                                               Color::WHITE);
+                SDL_Texture *qtyTexture = SDL_CreateTextureFromSurface(screen, qtySurface);
+                SDL_Rect qtyRect;
+                SDL_QueryTexture(qtyTexture, 0, 0, &qtyRect.w, &qtyRect.h);
+                qtyRect.x = iconRect.x + 48 - qtyRect.w;
+                qtyRect.y = iconRect.y + 48 - qtyRect.h;
+                SDL_RenderCopy(screen, qtyTexture, 0, &qtyRect);
+                SDL_DestroyTexture(qtyTexture);
+                SDL_FreeSurface(qtySurface);
+            }
         }
     }
 
