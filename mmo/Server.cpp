@@ -18,6 +18,8 @@ const Uint32 Server::SAVE_FREQUENCY = 1000;
 
 const int Server::ACTION_DISTANCE = 20;
 
+bool Server::isServer = false;
+
 Server::Server(const Args &args):
 _args(args),
 _loop(true),
@@ -25,6 +27,8 @@ _debug(100),
 _socket(),
 _time(SDL_GetTicks()),
 _lastSave(_time){
+    isServer = true;
+
     _debug << args << Log::endl;
     Socket::debug = &_debug;
 

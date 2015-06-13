@@ -21,6 +21,8 @@ const Uint32 Client::PING_FREQUENCY = 5000;
 const double Client::MOVEMENT_SPEED = 80;
 const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 250;
 
+bool Client::isClient = false;
+
 Client::Client(const Args &args):
 _args(args),
 _loop(true),
@@ -39,6 +41,8 @@ _lastPingReply(_time),
 _timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
 _loaded(false),
 _mouse(0,0){
+    isClient = true;
+
     _debug << args << Log::endl;
     Socket::debug = &_debug;
 

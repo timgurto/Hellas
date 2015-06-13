@@ -22,6 +22,8 @@ public:
 
     static const Uint32 CLIENT_TIMEOUT; // How much radio silence before we drop a client
 
+    static bool isServer;
+
 private:
     const Args &_args; //comand-line args
 

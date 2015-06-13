@@ -29,6 +29,8 @@ public:
 
     static const double MOVEMENT_SPEED; // per second
 
+    static bool isClient;
+
 private:
     const Args &_args; //comand-line args
     
