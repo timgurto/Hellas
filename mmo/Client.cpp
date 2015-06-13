@@ -65,6 +65,7 @@ _mouse(0,0){
     _defaultFont = TTF_OpenFont("trebuc.ttf", 16);
 
     OtherUser::setImage("Images/man.bmp");
+    Branch::setImage("Images/branch.bmp");
     _invLabel = TTF_RenderText_Solid(_defaultFont, "Inventory", Color::WHITE);
 
     // Randomize player name if not supplied
@@ -280,10 +281,6 @@ void Client::draw(){
     SDL_FillRect(_screen, &makeRect(drawLoc.x, drawLoc.y, drawLoc.w, 1), Color::WHITE);
     SDL_FillRect(_screen, &makeRect(drawLoc.x, drawLoc.y + drawLoc.h, drawLoc.w, 1), Color::WHITE);
 
-    // Branches
-    for (std::set<Branch>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
-        it->draw(_screen);
-
     // Other users' names
     for (std::map<std::string, OtherUser>::iterator it = _otherUsers.begin(); it != _otherUsers.end(); ++it){
         const Entity &entity = it->second.entity();
@@ -490,7 +487,12 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> serial >> del >> x >> del >> y >> del;
             if (del != ']')
                 break;
-            _branches.insert(Branch(serial, Point(x, y)));
+            std::pair<std::set<Branch>::iterator, size_t> ret =
+                _branches.insert(Branch(serial, Point(x, y)));
+            if (ret.second == 1) {
+                // A new branch was added; add entity to list
+                _entities.insert(&ret.first->entity());
+            }
             break;
         }
 
@@ -506,6 +508,7 @@ void Client::handleMessage(const std::string &msg){
                 assert(false);
                 break; // We didn't know about this branch
             }
+            _entities.erase(&it->entity());
             _branches.erase(it);
             break;
         }

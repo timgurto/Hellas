@@ -5,28 +5,25 @@
 int Branch::_currentSerial = 0;
 int Branch::_numBranches = 0;
 SDL_Surface *Branch::_image = 0;
+EntityType Branch::_entityType(makeRect(-10, -5));
 
 
 Branch::Branch(const Branch &rhs):
-_location(rhs._location),
-_serial(rhs._serial){
+_serial(rhs._serial),
+_entity(rhs._entity){
     ++_numBranches;
 }
 
 Branch::Branch(const Point &loc):
-_location(loc),
-_serial(_currentSerial++){
+_serial(_currentSerial++),
+_entity(_entityType, loc){
     ++_numBranches;
 }
 
 Branch::Branch(int serialArg, const Point &loc):
 _serial(serialArg),
-_location(loc){
+_entity(_entityType, loc){
     ++_numBranches;
-    if (!_image) {
-        _image = SDL_LoadBMP("Images/branch.bmp");
-        SDL_SetColorKey(_image, SDL_TRUE, Color::MAGENTA);
-    }
 }
 
 Branch::~Branch(){
@@ -39,15 +36,22 @@ bool Branch::operator<(const Branch &rhs) const{
     return _serial < rhs._serial;
 }
 
+bool Branch::operator==(const Branch &rhs) const{
+    return _serial == rhs._serial;
+}
+
 int Branch::serial() const{
     return _serial;
 }
 
 const Point &Branch::location() const{
-    return _location;
+    return _entity.location();
 }
 
-void Branch::draw(SDL_Surface *dstSurface) const{
-    if (_image)
-        SDL_BlitSurface(_image, 0, dstSurface, &makeRect(_location));
+const Entity &Branch::entity() const{
+    return _entity;
+}
+
+void Branch::setImage(const std::string &filename){
+    _entityType.image(filename);
 }

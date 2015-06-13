@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 
+#include "Entity.h"
 #include "Point.h"
 
 // Describes a tree branch which can be collected by a user
@@ -12,9 +13,10 @@ class Branch{
     static int _currentSerial;
     static int _numBranches;
     static SDL_Surface *_image;
+    static EntityType _entityType;
 
     int _serial;
-    Point _location;
+    Entity _entity;
 
 public:
 
@@ -24,11 +26,15 @@ public:
     ~Branch();
 
     bool operator<(const Branch &rhs) const; // Compare serials
+    bool operator==(const Branch &rhs) const;
 
     friend std::ostream &operator<<(std::ostream &lhs, const Branch &rhs);
 
     int serial() const;
     const Point &location() const;
+    const Entity &entity() const;
+
+    static void setImage(const std::string &filename);
     
     void draw(SDL_Surface *dstSurface) const;
 
