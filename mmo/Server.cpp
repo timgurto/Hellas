@@ -223,8 +223,8 @@ void Server::addUser(const Socket &socket, const std::string &name){
         sendMessage(newUser.socket(), SV_LOCATION, it->makeLocationCommand());
 
     // Send him branch locations
-    for (std::set<Branch>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
-        sendMessage(newUser.socket(), SV_BRANCH, makeArgs(it->serial(), it->location().x, it->location().y));
+    for (std::set<BranchLite>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
+        sendMessage(newUser.socket(), SV_BRANCH, makeArgs(it->serial, it->location.x, it->location.y));
 
     // Send him his inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
@@ -338,10 +338,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != ']')
                 return;
-            std::set<Branch>::const_iterator it = _branches.find(serial);
+            std::set<BranchLite>::const_iterator it = _branches.find(serial);
             if (it == _branches.end()) {
                 sendMessage(client, SV_DOESNT_EXIST);
-            } else if (distance(user->location(), it->location()) > ACTION_DISTANCE) {
+            } else if (distance(user->location(), it->location) > ACTION_DISTANCE) {
                 sendMessage(client, SV_TOO_FAR);
             } else {
                 // Give wood to user
@@ -447,8 +447,8 @@ void Server::loadData(){
 void Server::saveData(){
     std::ofstream fs("World/branches.dat");
     fs << _branches.size() << std::endl;
-    for (std::set<Branch>::const_iterator it = _branches.begin(); it != _branches.end(); ++it) {
-        fs << it->location().x << ' ' << it->location().y << std::endl;
+    for (std::set<BranchLite>::const_iterator it = _branches.begin(); it != _branches.end(); ++it) {
+        fs << it->location.x << ' ' << it->location.y << std::endl;
     }
     fs.close();
 }

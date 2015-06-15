@@ -175,6 +175,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\BranchLite.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Client.cpp"
 				>
 			</File>
@@ -246,6 +250,10 @@
 			</File>
 			<File
 				RelativePath=".\Branch.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BranchLite.h"
 				>
 			</File>
 			<File
