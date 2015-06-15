@@ -8,7 +8,7 @@
 // A class to simplify the handling of command-line arguments
 class Args{
 public:
-    Args(int argc, char* argv[]);
+    void init(int argc, char* argv[]);
     bool contains(const std::string &key) const;
 
     // These functions will return "" or 0 if the key is not found, so use contains() first for accuracy.

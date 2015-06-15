@@ -16,7 +16,7 @@
 
 class Server{
 public:
-    Server(const Args &args);
+    Server();
     ~Server();
     void run();
 
@@ -27,7 +27,6 @@ public:
     static SDL_Renderer *screen;
 
 private:
-    const Args &_args; //comand-line args
 
     static const int MAX_CLIENTS;
     static const size_t BUFFER_SIZE;

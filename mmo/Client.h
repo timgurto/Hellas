@@ -18,7 +18,7 @@
 
 class Client{
 public:
-    Client(const Args &args);
+    Client();
     ~Client();
     void run();
     void draw();
@@ -34,8 +34,6 @@ public:
     static SDL_Renderer *screen;
 
 private:
-    const Args &_args; //comand-line args
-    
     static const Uint32 MAX_TICK_LENGTH;
     static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping reply from the server
     static const Uint32 CONNECT_RETRY_DELAY; // How long to wait between retries at connecting to server

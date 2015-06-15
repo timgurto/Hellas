@@ -1,6 +1,6 @@
 #include "Args.h"
 
-Args::Args(int argc, char* argv[]){
+void Args::init(int argc, char* argv[]){
     for (int i = 1; i != argc; ++i){
         if (argv[i][0] != '-')
             // Ill-formed argument; skip

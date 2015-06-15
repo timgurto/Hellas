@@ -9,6 +9,8 @@
 #include "messageCodes.h"
 #include "util.h"
 
+extern Args cmdLineArgs;
+
 const int Server::MAX_CLIENTS = 20;
 const size_t Server::BUFFER_SIZE = 1023;
 
@@ -22,8 +24,7 @@ bool Server::isServer = false;
 
 SDL_Renderer *Server::screen = 0;
 
-Server::Server(const Args &args):
-_args(args),
+Server::Server():
 _loop(true),
 _debug(100),
 _socket(),
@@ -31,7 +32,7 @@ _time(SDL_GetTicks()),
 _lastSave(_time){
     isServer = true;
 
-    _debug << args << Log::endl;
+    _debug << cmdLineArgs << Log::endl;
     Socket::debug = &_debug;
 
     int screenX = _args.contains("left") ?

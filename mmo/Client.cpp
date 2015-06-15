@@ -9,6 +9,8 @@
 #include "messageCodes.h"
 #include "util.h"
 
+extern Args cmdLineArgs;
+
 const size_t Client::BUFFER_SIZE = 1023;
 const int Client::SCREEN_WIDTH = 640;
 const int Client::SCREEN_HEIGHT = 480;
@@ -25,8 +27,7 @@ bool Client::isClient = false;
 
 SDL_Renderer *Client::screen = 0;
 
-Client::Client(const Args &args):
-_args(args),
+Client::Client():
 _loop(true),
 _debug(SCREEN_HEIGHT/20),
 _socket(),
@@ -45,7 +46,7 @@ _loaded(false),
 _mouse(0,0){
     isClient = true;
 
-    _debug << args << Log::endl;
+    _debug << cmdLineArgs << Log::endl;
     Socket::debug = &_debug;
 
     int screenX = _args.contains("left") ?
@@ -75,8 +76,8 @@ _mouse(0,0){
     _invLabel = SDL_CreateTextureFromSurface(screen, TTF_RenderText_Solid(_defaultFont, "Inventory", Color::WHITE));
 
     // Randomize player name if not supplied
-    if (_args.contains("username"))
-        _username = _args.getString("username");
+    if (cmdLineArgs.contains("username"))
+        _username = cmdLineArgs.getString("username");
     else
         for (int i = 0; i != 3; ++i)
             _username.push_back('a' + rand() % 26);
@@ -107,12 +108,12 @@ void Client::checkSocket(){
         _timeSinceConnectAttempt = 0;
         // Server details
         sockaddr_in serverAddr;
-        serverAddr.sin_addr.s_addr = _args.contains("server-ip") ?
-                                     inet_addr(_args.getString("server-ip").c_str()) :
+        serverAddr.sin_addr.s_addr = cmdLineArgs.contains("server-ip") ?
+                                     inet_addr(cmdLineArgs.getString("server-ip").c_str()) :
                                      inet_addr("127.0.0.1");
         serverAddr.sin_family = AF_INET;
-        serverAddr.sin_port = _args.contains("server-port") ?
-                              _args.getInt("server-port") :
+        serverAddr.sin_port = cmdLineArgs.contains("server-port") ?
+                              cmdLineArgs.getInt("server-port") :
                               htons(8888);
         if (connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
             _debug << Color::RED << "Connection error: " << WSAGetLastError() << Log::endl;

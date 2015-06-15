@@ -7,8 +7,10 @@
 #include "Client.h"
 #include "Server.h"
 
+Args cmdLineArgs;
+
 int main(int argc, char* argv[]){
-    Args args(argc, argv);
+    cmdLineArgs.init(argc, argv);
 
     int ret = SDL_Init(SDL_INIT_VIDEO);
     if (ret < 0)
@@ -18,11 +20,11 @@ int main(int argc, char* argv[]){
         return 1;
     srand(static_cast<unsigned>(time(0)));
 
-    if (args.contains("server")){
-        Server server(args);
+    if (cmdLineArgs.contains("server")){
+        Server server;
         server.run();
     } else {
-        Client client(args);
+        Client client;
         client.run();
     }
     
