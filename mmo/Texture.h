@@ -32,17 +32,17 @@ public:
     Texture(const Texture &rhs);
     Texture &operator=(const Texture &rhs);
 
-    bool operator!() const;
-    operator bool() const;
+    inline bool operator!() const { return _raw == 0; }
+    inline operator bool() const { return _raw != 0; }
 
-    int width() const;
-    int height() const;
+    inline int width() const { return _w; }
+    inline int height() const { return _h; }
 
     void draw(int x, int y) const;
     void draw(const Point &location) const;
     void draw(const SDL_Rect &location) const;
 
-    static int numTextures();
+    inline static int numTextures() { return _numTextures; }
 };
 
 #endif

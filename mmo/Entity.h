@@ -23,11 +23,11 @@ public:
         Entity::setLocation(entitiesSet, location)
         OtherUser::setLocation(entitiesSet, location)
     */
-    const Point &location() const;
+    inline const Point &location() const { return _location; }
 
     SDL_Rect drawRect() const;
-    int width() const;
-    int height() const;
+    inline int width() const { return _type.width(); }
+    inline int height() const { return _type.height(); }
 
     void draw() const;
     double bottomEdge() const;

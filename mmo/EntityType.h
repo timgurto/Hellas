@@ -13,7 +13,7 @@ class EntityType{
 public:
     EntityType(const SDL_Rect &drawRect, const std::string &imageFile = "");
 
-    const SDL_Rect &drawRect() const;
+    inline const SDL_Rect &drawRect() const { return _drawRect; }
     int width() const;
     int height() const;
 

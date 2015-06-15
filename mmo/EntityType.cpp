@@ -17,10 +17,6 @@ void EntityType::image(const std::string &imageFile){
     _drawRect.h = _image.height();
 }
 
-const SDL_Rect &EntityType::drawRect() const{
-    return _drawRect;
-}
-
 int EntityType::width() const{
     return _image ? _drawRect.w : 0;
 }

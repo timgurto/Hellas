@@ -103,22 +103,6 @@ Texture::~Texture(){
         removeRef();
 }
 
-bool Texture::operator!() const{
-    return _raw == 0;
-}
-
-Texture::operator bool() const{
-    return _raw != 0;
-}
-
-int Texture::width() const{
-    return _w;
-}
-
-int Texture::height() const{
-    return _h;
-}
-
 void Texture::draw(int x, int y) const{
     SDL_Rect r = {x, y, _w, _h};
     draw(r);
@@ -150,8 +134,4 @@ void Texture::removeRef(){
             int ret = _refs.erase(_raw);
         }
     }
-}
-
-int Texture::numTextures(){
-    return _numTextures;
 }

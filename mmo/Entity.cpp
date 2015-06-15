@@ -17,20 +17,8 @@ bool Entity::operator<(const Entity &rhs) const{
     return this < &rhs;
 }
 
-const Point &Entity::location() const{
-    return _location;
-}
-
 SDL_Rect Entity::drawRect() const {
     return _type.drawRect() + _location;
-}
-
-int Entity::width() const{
-    return _type.width();
-}
-
-int Entity::height() const{
-    return _type.height();
 }
 
 void Entity::draw() const{

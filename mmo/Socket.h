@@ -35,14 +35,17 @@ public:
     const Socket &operator=(const Socket &rhs);
     ~Socket();
 
-    bool operator==(const Socket &rhs) const;
-    bool operator!=(const Socket &rhs) const;
-    bool operator<(const Socket &rhs) const;
+    inline bool operator==(const Socket &rhs) const { return _raw == rhs._raw; }
+    inline bool operator!=(const Socket &rhs) const { return _raw != rhs._raw; }
+    inline bool operator<(const Socket &rhs) const { return _raw < rhs._raw; }
 
     void bind(sockaddr_in &socketAddr);
     void listen();
-    bool valid() const; // Whether this socket is safe to use
-    SOCKET getRaw() const;
+
+    // Whether this socket is safe to use
+    inline bool valid() const { return _raw != INVALID_SOCKET; }
+
+    inline SOCKET getRaw() const { return _raw; }
     void delayClosing(Uint32 lingerTime); // Delay closing of socket
 
     // No destination socket implies client->server message

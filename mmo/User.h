@@ -23,12 +23,12 @@ public:
     User(const std::string &name, const Point &loc, const Socket &socket);
     User(const Socket &rhs); // for use with set::find(), allowing find-by-socket
 
-    bool operator<(const User &rhs) const;
+    inline bool operator<(const User &rhs) const { return _socket < rhs._socket; }
 
-    const std::string &name() const;
-    const Socket &socket() const;
-    const Point &location() const;
-    void location(const Point &loc);
+    inline const std::string &name() const { return _name; }
+    inline const Socket &socket() const { return _socket; }
+    inline const Point &location() const { return _location; }
+    inline void location(const Point &loc) { _location = loc; }
     void location(std::istream &is); // Read co-ordinates from stream
     const std::pair<std::string, size_t> &inventory(size_t index) const;
     std::pair<std::string, size_t> &inventory(size_t index);

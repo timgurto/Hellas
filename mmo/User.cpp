@@ -20,26 +20,6 @@ _lastContact(SDL_GetTicks()){}
 User::User(const Socket &rhs):
 _socket(rhs){}
 
-bool User::operator<(const User &rhs) const{
-    return _socket < rhs._socket;
-}
-
-const std::string &User::name() const{
-    return _name;
-}
-
-const Socket &User::socket() const{
-    return _socket;
-}
-
-const Point &User::location() const{
-    return _location;
-}
-
-void User::location(const Point &loc){
-    _location = loc;
-}
-
 void User::location(std::istream &is){
     is >> _location.x >> _location.y;
 }

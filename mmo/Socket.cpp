@@ -45,18 +45,6 @@ Socket::~Socket(){
     close();
 }
 
-bool Socket::operator==(const Socket &rhs) const{
-    return _raw == rhs._raw;
-}
-
-bool Socket::operator!=(const Socket &rhs) const{
-    return !(*this == rhs);
-}
-
-bool Socket::operator<(const Socket &rhs) const{
-    return _raw < rhs._raw;
-}
-
 void Socket::addRef(){
     if (_refCounts.find(_raw) != _refCounts.end())
         ++_refCounts[_raw];
@@ -82,10 +70,6 @@ void Socket::listen(){
     ::listen(_raw, 3);
 }
 
-SOCKET Socket::getRaw() const{
-    return _raw;
-}
-
 void Socket::sendMessage(const std::string &msg, const Socket &destSocket) const{
     if (!_winsockInitialized)
         return;
@@ -97,10 +81,6 @@ void Socket::sendMessage(const std::string &msg, const Socket &destSocket) const
 
 void Socket::sendMessage(const std::string &msg) const{
     sendMessage(msg, *this);
-}
-
-bool Socket::valid() const{
-    return _raw != INVALID_SOCKET;
 }
 
 void Socket::initWinsock(){

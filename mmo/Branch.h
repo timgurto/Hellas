@@ -21,15 +21,13 @@ public:
     Branch(const Point &loc); // Generates new serial; should only be called by server
     Branch(int serial, const Point &loc = 0); // No location: create dummy Branch, for set searches
 
-    bool operator<(const Branch &rhs) const; // Compare serials
-    bool operator==(const Branch &rhs) const;
+    inline bool operator<(const Branch &rhs) const { return _serial < rhs._serial; }
+    inline bool operator==(const Branch &rhs) const { return _serial == rhs._serial; }
 
-    friend std::ostream &operator<<(std::ostream &lhs, const Branch &rhs);
-
-    static void image(const std::string &filename);
-    int serial() const;
-    const Point &location() const;
-    const Entity &entity() const;
+    inline static void image(const std::string &filename) { _entityType.image(filename); }
+    inline int serial() const { return _serial; }
+    inline const Point &location() const { return _entity.location(); }
+    inline const Entity &entity() const { return _entity; }
 };
 
 #endif

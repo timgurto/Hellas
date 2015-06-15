@@ -16,10 +16,10 @@ public:
     Item(const std::string &id, const std::string &name, size_t stackSize = 1);
     Item(const std::string &id); // Creates a dummy Item for set lookup
 
-    bool operator<(const Item &rhs) const; // Compares ids
+    inline bool operator<(const Item &rhs) const { return _id < rhs._id; }
 
-    const std::string &id() const;
-    size_t stackSize() const;
+    inline const std::string &id() const { return _id; }
+    inline size_t stackSize() const { return _stackSize; }
     const Texture &icon();
 };
 
