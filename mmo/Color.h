@@ -14,6 +14,9 @@ public:
     static const Color YELLOW;
     static const Color WHITE;
 
+    static const Color BLUE_HELL;
+    static const Color NO_KEY;
+
     Color(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0);
     Color(const SDL_Color &rhs);
 

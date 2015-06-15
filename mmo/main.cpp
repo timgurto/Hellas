@@ -27,9 +27,6 @@ int main(int argc, char* argv[]){
         Client client;
         client.run();
     }
-    
-    TTF_Quit();
-    SDL_Quit();
 
     return 0;
 }

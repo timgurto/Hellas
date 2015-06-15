@@ -19,7 +19,7 @@ const Entity &OtherUser::entity() const{
     return _entity;
 }
 
-void OtherUser::setImage(const std::string &filename){
+void OtherUser::image(const std::string &filename){
     _entityType.image(filename);
 }
 

@@ -8,6 +8,7 @@
 #include <SDL_ttf.h>
 
 #include "Color.h"
+#include "Texture.h"
 
 /*
 A message log which accepts, queues and displays messages to the screen
@@ -57,10 +58,10 @@ public:
         return *this;
     }
 
-    void draw(SDL_Renderer *renderer, int x = 0, int y = 0) const;
+    void draw(int x = 0, int y = 0) const;
 
 private:
-    std::list<SDL_Texture *> _messages;
+    std::list<Texture> _messages;
     unsigned _maxMessages;
     TTF_Font *_font;
     bool _valid; // false if an error has occurred

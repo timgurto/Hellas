@@ -24,8 +24,6 @@ public:
 
     static bool isServer;
 
-    static SDL_Renderer *screen;
-
 private:
 
     static const int MAX_CLIENTS;
@@ -36,7 +34,6 @@ private:
     Uint32 _time;
 
     Socket _socket;
-    SDL_Window *_window;
 
     bool _loop;
 

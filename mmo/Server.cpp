@@ -22,8 +22,6 @@ const int Server::ACTION_DISTANCE = 20;
 
 bool Server::isServer = false;
 
-SDL_Renderer *Server::screen = 0;
-
 Server::Server():
 _loop(true),
 _debug(100),
@@ -34,23 +32,6 @@ _lastSave(_time){
 
     _debug << cmdLineArgs << Log::endl;
     Socket::debug = &_debug;
-
-    int screenX = _args.contains("left") ?
-                  _args.getInt("left") :
-                  SDL_WINDOWPOS_UNDEFINED;
-    int screenY = _args.contains("top") ?
-                  _args.getInt("top") :
-                  SDL_WINDOWPOS_UNDEFINED;
-    int screenW = _args.contains("width") ?
-                  _args.getInt("width") :
-                  800;
-    int screenH = _args.contains("height") ?
-                  _args.getInt("height") :
-                  600;
-    _window = SDL_CreateWindow("Server", screenX, screenY, screenW, screenH, SDL_WINDOW_SHOWN);
-    if (!_window)
-        return;
-    screen = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
 
     loadData();
 
@@ -70,10 +51,6 @@ _lastSave(_time){
 }
 
 Server::~Server(){
-    if (screen)
-        SDL_DestroyRenderer(screen);
-    if (_window)
-        SDL_DestroyWindow(_window);
     saveData();
 }
 
@@ -218,18 +195,17 @@ void Server::run(){
 }
 
 void Server::draw() const{
-    SDL_SetRenderDrawColor(screen, 0, 0, 0, 0xff); // black
-    SDL_RenderFillRect(screen, 0);
-    _debug.draw(screen);
-    SDL_RenderPresent(screen);
+    SDL_RenderFillRect(Texture::renderer, 0);
+    _debug.draw();
+    SDL_RenderPresent(Texture::renderer);
 }
 
 void Server::addUser(const Socket &socket, const std::string &name){
     User newUser(name, 0, socket);
     bool userExisted = readUserData(newUser);
     if (!userExisted) {
-        newUser.location(Point(rand() % (Client::SCREEN_WIDTH - 20),
-                               rand() % (Client::SCREEN_HEIGHT - 40)));
+        newUser.location(Point(rand() % (640 - 20),
+                               rand() % (480 - 40)));
         _debug << "New";
     } else {
         _debug << "Existing";
@@ -458,8 +434,8 @@ void Server::loadData(){
     } else {
         // Create new random world
         for (int i = 0; i != 30; ++i)
-            _branches.insert(Point(rand() % (Client::SCREEN_WIDTH - 20),
-                                  (rand() % Client::SCREEN_HEIGHT - 20)));
+            _branches.insert(Point(rand() % (640 - 20),
+                                  (rand() % 480 - 20)));
     }
 
     _items.insert(Item("wood", "wood", 5));

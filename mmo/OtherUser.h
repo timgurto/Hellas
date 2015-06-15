@@ -13,11 +13,10 @@ class OtherUser{
 public:
     OtherUser();
 
+    static void image(const std::string &filename);
     void destination(const Point &dst);
     const Entity &entity() const;
     static const EntityType &entityType();
-
-    static void setImage(const std::string &filename);
 
     /*
     Get the next location towards destination, with distance determined by

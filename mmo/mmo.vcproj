@@ -219,6 +219,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Texture.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\User.cpp"
 				>
 			</File>
@@ -282,6 +286,10 @@
 			</File>
 			<File
 				RelativePath=".\Socket.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Texture.h"
 				>
 			</File>
 			<File

@@ -9,6 +9,9 @@ const Color Color::MAGENTA(0xff, 0x00, 0xff);
 const Color Color::YELLOW (0xff, 0xff, 0x00);
 const Color Color::WHITE  (0xff, 0xff, 0xff);
 
+const Color Color::BLUE_HELL(0x18, 0x52, 0xa1);
+const Color Color::NO_KEY (0x01, 0x02, 0x03);
+
 Color::Color(Uint8 r, Uint8 g, Uint8 b):
 _r(r),
 _g(g),

@@ -23,15 +23,9 @@ public:
     void run();
     void draw();
 
-    //TODO make private; only public for server's random initial placement
-    static const int SCREEN_WIDTH;
-    static const int SCREEN_HEIGHT;
-
     static const double MOVEMENT_SPEED; // per second
 
     static bool isClient;
-
-    static SDL_Renderer *screen;
 
 private:
     static const Uint32 MAX_TICK_LENGTH;
@@ -40,9 +34,7 @@ private:
     static const Uint32 PING_FREQUENCY; // How often to test latency with each client
     static const Uint32 TIME_BETWEEN_LOCATION_UPDATES; // How often to send location updates to server (while moving)
 
-    SDL_Window *_window;
-
-    SDL_Texture *_invLabel;
+    Texture _invLabel;
 
     Entity _character; // Describes the user's character
 

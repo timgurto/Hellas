@@ -18,44 +18,31 @@ _valid(true){
 }
 
 Log::~Log(){
-    while (!_messages.empty()){
-        SDL_DestroyTexture(_messages.front());
+    while (!_messages.empty())
         _messages.pop_front();
-    }
+
     if (_font)
         TTF_CloseFont(_font);
 }
 
 void Log::operator()(const std::string &message, const Color *color){
-    SDL_Surface *msgSurface = TTF_RenderText_Solid(_font, message.c_str(),
-                                                   color ? *color : _color);
-    if (!msgSurface)
-        return;
-    SDL_Renderer *renderer = Client::isClient ? Client::screen : Server::screen;
-    SDL_Texture *msgTexture = SDL_CreateTextureFromSurface(renderer, msgSurface);
-    SDL_FreeSurface(msgSurface);
+    Texture msgTexture(_font, message, color ? *color : _color);
     if (!msgTexture)
         return;
 
     _messages.push_back(msgTexture);
     if (_messages.size() > _maxMessages){
-        SDL_DestroyTexture(_messages.front());
         _messages.pop_front();
     }
 }
 
-void Log::draw(SDL_Renderer *renderer, int x, int y) const{
+void Log::draw(int x, int y) const{
     if (!_valid)
         return;
-    SDL_Rect rect;
-    rect.x = x;
-    rect.y = y;
     
-    for (std::list<SDL_Texture *>::const_iterator it = _messages.begin(); it != _messages.end(); ++it) {
-        SDL_Texture *msgSurface = *it;
-        SDL_QueryTexture(msgSurface, 0, 0, &rect.w, &rect.h);
-        SDL_RenderCopy(renderer, msgSurface, 0, &rect);
-        rect.y += rect.h;
+    for (std::list<Texture>::const_iterator it = _messages.begin(); it != _messages.end(); ++it) {
+        it->draw(x, y);
+        y += it->height();
     }
 
 }

@@ -3,34 +3,20 @@
 #include "util.h"
 
 int Branch::_currentSerial = 0;
-int Branch::_numBranches = 0;
-SDL_Surface *Branch::_image = 0;
 EntityType Branch::_entityType(makeRect(-10, -5));
 
 
 Branch::Branch(const Branch &rhs):
 _serial(rhs._serial),
-_entity(rhs._entity){
-    ++_numBranches;
-}
+_entity(rhs._entity){}
 
 Branch::Branch(const Point &loc):
 _serial(_currentSerial++),
-_entity(_entityType, loc){
-    ++_numBranches;
-}
+_entity(_entityType, loc){}
 
 Branch::Branch(int serialArg, const Point &loc):
 _serial(serialArg),
-_entity(_entityType, loc){
-    ++_numBranches;
-}
-
-Branch::~Branch(){
-    --_numBranches;
-    if (_numBranches == 0)
-        SDL_FreeSurface(_image);
-}
+_entity(_entityType, loc){}
 
 bool Branch::operator<(const Branch &rhs) const{
     return _serial < rhs._serial;
@@ -52,6 +38,7 @@ const Entity &Branch::entity() const{
     return _entity;
 }
 
-void Branch::setImage(const std::string &filename){
+void Branch::image(const std::string &filename){
     _entityType.image(filename);
 }
+
