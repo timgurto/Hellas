@@ -14,10 +14,6 @@ class Texture{
     SDL_Texture *_raw;
     int _w, _h;
 
-    static SDL_Window *_window; // TODO: Move to a new 'Renderer' class
-    static bool _initialized;
-    static void initRenderer(); // Initializes window and renderer on first c'tor
-    static void destroyRenderer(); // Frees window/renderer on last d'tor
     static std::map<SDL_Texture *, size_t> _refs;
     void addRef(); // Increment reference counter, and initialize window and renderer on first run
     void removeRef(); // Decrement reference counter, and free memory/uninitialize if needed
@@ -28,8 +24,6 @@ class Texture{
     static Texture _programEndMarkerTexture;
 
 public:
-    static SDL_Renderer *renderer; // TODO: Move to a new 'Renderer' class
-
     Texture();
     Texture(const std::string &filename, const Color &colorKey = Color::NO_KEY);
     Texture(TTF_Font *font, const std::string &text, const Color &color = Color::WHITE);
@@ -49,9 +43,6 @@ public:
     void draw(const SDL_Rect &location) const;
 
     static int numTextures();
-
-    static void allowConstruction();
-    static void forbidDestruction();
 };
 
 #endif

@@ -5,19 +5,16 @@
 
 #include "Args.h"
 #include "Client.h"
+#include "Renderer.h"
 #include "Server.h"
 
-Args cmdLineArgs;
+Args cmdLineArgs; // MUST be defined before renderer
+Renderer renderer; // MUST be defined after cmdLineArgs
 
 int main(int argc, char* argv[]){
     cmdLineArgs.init(argc, argv);
+    renderer.init();
 
-    int ret = SDL_Init(SDL_INIT_VIDEO);
-    if (ret < 0)
-        return 1;
-    ret = TTF_Init();
-    if (ret < 0)
-        return 1;
     srand(static_cast<unsigned>(time(0)));
 
     if (cmdLineArgs.contains("server")){

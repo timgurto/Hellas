@@ -211,6 +211,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Renderer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Server.cpp"
 				>
 			</File>
@@ -278,6 +282,10 @@
 			</File>
 			<File
 				RelativePath=".\Point.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Renderer.h"
 				>
 			</File>
 			<File

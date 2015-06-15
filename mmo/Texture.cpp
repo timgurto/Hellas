@@ -2,18 +2,19 @@
 #include <SDL_ttf.h>
 #include <cassert>
 
-#include "Args.h"
 #include "Color.h"
+#include "Renderer.h"
 #include "Texture.h"
 
-extern Args cmdLineArgs;
+extern Renderer renderer;
 
-
-SDL_Window *Texture::_window = 0;
-SDL_Renderer *Texture::renderer = 0;
-bool Texture::_initialized = false;
 std::map<SDL_Texture *, size_t> Texture::_refs; // MUST be defined before _programEndMarkerTexture 
-Texture Texture::_programEndMarkerTexture(true); // MUST be defined after _refs
+/*
+MUST be defined after _refs, so that it is destroyed first.
+This object's d'tor signals that the program has ended.
+*/
+Texture Texture::_programEndMarkerTexture(true); 
+
 int Texture::_numTextures = 0;
 
 Texture::Texture():
@@ -30,8 +31,7 @@ _h(0),
 _raw(0){
     if (filename == "")
         return;
-
-    if (!_initialized) initRenderer();
+    assert (renderer);
 
     SDL_Surface *surface = SDL_LoadBMP(filename.c_str());
     if (!surface)
@@ -51,7 +51,7 @@ _programEndMarker(false),
 _w(0),
 _h(0),
 _raw(0){
-    if (!_initialized) initRenderer();
+    assert (renderer);
 
     SDL_Surface *surface = TTF_RenderText_Solid(font, text.c_str(), color);
     if (!surface)
@@ -96,7 +96,6 @@ Texture::~Texture(){
             SDL_DestroyTexture(it->first);
         }
         _refs.clear();
-        destroyRenderer();
         return;
     }
 
@@ -155,47 +154,4 @@ void Texture::removeRef(){
 
 int Texture::numTextures(){
     return _numTextures;
-}
-
-void Texture::initRenderer(){
-    int ret = SDL_Init(SDL_INIT_VIDEO);
-    if (ret < 0)
-        return;
-    ret = TTF_Init();
-    if (ret < 0)
-        return;
-
-    int screenX = cmdLineArgs.contains("left") ?
-                  cmdLineArgs.getInt("left") :
-                  SDL_WINDOWPOS_UNDEFINED;
-    int screenY = cmdLineArgs.contains("top") ?
-                  cmdLineArgs.getInt("top") :
-                  SDL_WINDOWPOS_UNDEFINED;
-    int screenW = cmdLineArgs.contains("width") ?
-                  cmdLineArgs.getInt("width") :
-                  640;
-    int screenH = cmdLineArgs.contains("height") ?
-                  cmdLineArgs.getInt("height") :
-                  480;
-
-    _window = SDL_CreateWindow((cmdLineArgs.contains("server") ? "Server" : "Client"),
-                               screenX, screenY, screenW, screenH, SDL_WINDOW_SHOWN);
-    if (!_window)
-        return;
-
-    renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
-    if (!renderer)
-        return;
-
-    _initialized = true;
-}
-
-void Texture::destroyRenderer(){
-    if (renderer)
-        SDL_DestroyRenderer(renderer);
-    if (_window)
-        SDL_DestroyWindow(_window);
-    
-    TTF_Quit();
-    SDL_Quit();
 }

@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "Client.h" //TODO remove; only here for random initial placement
+#include "Renderer.h"
 #include "Socket.h"
 #include "Server.h"
 #include "User.h"
@@ -10,6 +11,7 @@
 #include "util.h"
 
 extern Args cmdLineArgs;
+extern Renderer renderer;
 
 const int Server::MAX_CLIENTS = 20;
 const size_t Server::BUFFER_SIZE = 1023;
@@ -195,9 +197,9 @@ void Server::run(){
 }
 
 void Server::draw() const{
-    SDL_RenderFillRect(Texture::renderer, 0);
+    SDL_RenderFillRect(renderer, 0);
     _debug.draw();
-    SDL_RenderPresent(Texture::renderer);
+    SDL_RenderPresent(renderer);
 }
 
 void Server::addUser(const Socket &socket, const std::string &name){
