@@ -46,6 +46,8 @@ void Renderer::init(){
     if (!_renderer)
         return;
 
+    SDL_GetRendererOutputSize(_renderer, &_w, &_h);
+
     _valid = true;
 }
 
@@ -62,10 +64,31 @@ Renderer::~Renderer(){
     }
 }
 
-Renderer::operator SDL_Renderer* (){
-    return _renderer;
+SDL_Texture *Renderer::createTextureFromSurface(SDL_Surface *surface) const{
+    return SDL_CreateTextureFromSurface(_renderer, surface);
 }
 
-Renderer::operator bool() const{
-    return _valid;
+void Renderer::drawTexture(SDL_Texture *srcTex, const SDL_Rect &dstRect){
+    SDL_RenderCopy(_renderer, srcTex, 0, &dstRect);
+}
+
+void Renderer::setDrawColor(const Color &color){
+    SDL_SetRenderDrawColor(_renderer, color.r(), color.g(), color.b(), 0xff);
+}
+
+void Renderer::clear(){
+    SDL_RenderClear(_renderer);
+}
+
+void Renderer::present(){
+    SDL_RenderPresent(_renderer);
+}
+
+void Renderer::drawRect(const SDL_Rect &dstRect){
+    SDL_RenderDrawRect(_renderer, &dstRect);
+}
+
+void Renderer::fillRect(const SDL_Rect &dstRect){
+    SDL_RenderFillRect(_renderer, &dstRect);
+    
 }

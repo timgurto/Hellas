@@ -47,7 +47,7 @@ _mouse(0,0){
     _debug << cmdLineArgs << Log::endl;
     Socket::debug = &_debug;
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xff);
+    renderer.setDrawColor();
 
     _entities.insert(&_character);
 
@@ -245,25 +245,25 @@ void Client::run(){
 
 void Client::draw(){
     if (!_connected || !_loaded){
-        SDL_RenderClear(renderer);
+        renderer.clear();
         _debug.draw();
-        SDL_RenderPresent(renderer);
+        renderer.present();
         return;
     }
 
     // Background
     static const Color backgroundColor = Color::GREEN/4;
-    SDL_SetRenderDrawColor(renderer, backgroundColor.r(), backgroundColor.g(), backgroundColor.b(), 0xff);
-    SDL_RenderFillRect(renderer, 0);
+    renderer.setDrawColor(Color::GREEN / 4);
+    renderer.clear();
 
     // Entities, sorted from back to front
     for (Entity::set_t::const_iterator it = _entities.begin(); it != _entities.end(); ++it)
         (*it)->draw();
 
     // Rectangle around user
-    SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff); // White
+    renderer.setDrawColor(Color::WHITE);
     SDL_Rect drawLoc = _character.drawRect();
-    SDL_RenderDrawRect(renderer, &drawLoc);
+    renderer.drawRect(_character.drawRect());
 
     // Other users' names
     for (std::map<std::string, OtherUser>::iterator it = _otherUsers.begin(); it != _otherUsers.end(); ++it){
@@ -276,16 +276,14 @@ void Client::draw(){
     }
 
     // Inventory
-    int screenW, screenH;
-    SDL_GetRendererOutputSize(renderer, &screenW, &screenH);
-    static SDL_Rect invBackgroundRect = makeRect(screenW - 250, screenH - 70, 250, 60);
-    SDL_SetRenderDrawColor(renderer, 0x3f, 0x3f, 0x3f, 0xff); // White/4
-    SDL_RenderFillRect(renderer, &invBackgroundRect);
+    static SDL_Rect invBackgroundRect = makeRect(renderer.width() - 250, renderer.height() - 70, 250, 60);
+    renderer.setDrawColor(Color::WHITE / 4);
+    renderer.fillRect(invBackgroundRect);
     _invLabel.draw(invBackgroundRect.x, invBackgroundRect.y);
+    renderer.setDrawColor(Color::BLACK);
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
-        SDL_Rect iconRect = makeRect(screenW - 248 + i*50, screenH - 48, 48, 48);
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xff); // Black
-        SDL_RenderFillRect(renderer, &iconRect);
+        SDL_Rect iconRect = makeRect(renderer.width() - 248 + i*50, renderer.height() - 48, 48, 48);
+        renderer.fillRect(iconRect);
         std::set<Item>::iterator it = _items.find(_inventory[i].first);
         if (it == _items.end())
             _debug << Color::RED << "Unknown item: " << _inventory[i].first;
@@ -307,10 +305,10 @@ void Client::draw(){
         oss << "infinite ";
     oss << "fps " << _latency << "ms";
     Texture statsDisplay(_defaultFont, oss.str(), Color::YELLOW);
-    statsDisplay.draw(screenW - statsDisplay.width(), 0);
+    statsDisplay.draw(renderer.width() - statsDisplay.width(), 0);
 
     _debug.draw();
-    SDL_RenderPresent(renderer);
+    renderer.present();
 }
 
 void Client::handleMessage(const std::string &msg){

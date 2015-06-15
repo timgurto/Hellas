@@ -197,9 +197,9 @@ void Server::run(){
 }
 
 void Server::draw() const{
-    SDL_RenderFillRect(renderer, 0);
+    renderer.clear();
     _debug.draw();
-    SDL_RenderPresent(renderer);
+    renderer.present();
 }
 
 void Server::addUser(const Socket &socket, const std::string &name){

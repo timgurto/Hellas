@@ -39,7 +39,7 @@ _raw(0){
     if (&colorKey != &Color::NO_KEY) {
         SDL_SetColorKey(surface, SDL_TRUE, colorKey);
     }
-    _raw = SDL_CreateTextureFromSurface(renderer, surface);
+    _raw = renderer.createTextureFromSurface(surface);
     SDL_FreeSurface(surface);
     int ret = SDL_QueryTexture(_raw, 0, 0, &_w, &_h);
     if (_raw)
@@ -56,7 +56,7 @@ _raw(0){
     SDL_Surface *surface = TTF_RenderText_Solid(font, text.c_str(), color);
     if (!surface)
         return;
-    _raw = SDL_CreateTextureFromSurface(renderer, surface);
+    _raw = renderer.createTextureFromSurface(surface);
     SDL_FreeSurface(surface);
     SDL_QueryTexture(_raw, 0, 0, &_w, &_h);
     if (_raw)
@@ -129,7 +129,7 @@ void Texture::draw(const Point &location) const{
 }
 
 void Texture::draw(const SDL_Rect &location) const{
-    SDL_RenderCopy(renderer, _raw, 0, &location);
+    renderer.drawTexture(_raw, location);
 }
 
 void Texture::addRef(){
