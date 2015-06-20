@@ -1,27 +1,17 @@
 #include "Entity.h"
 
+#include "util.h"
+
 Entity::Entity(const EntityType &type, const Point &location):
 _type(type),
-_location(location){}
-
-bool Entity::operator<(const Entity &rhs) const{
-    double
-        lhsBottom = bottomEdge(),
-        rhsBottom = rhs.bottomEdge();
-
-    // 1. location
-    if (lhsBottom != rhsBottom)
-        return lhsBottom < rhsBottom;
-
-    // 2. memory address (to ensure a unique ordering)
-    return this < &rhs;
-}
+_location(location),
+_yChanged(false){}
 
 SDL_Rect Entity::drawRect() const {
     return _type.drawRect() + _location;
 }
 
-void Entity::draw() const{
+void Entity::draw(const Client &client) const{
     _type.drawAt(_location);
 }
 
@@ -29,21 +19,13 @@ double Entity::bottomEdge() const{
     return _location.y + _type.drawRect().y + _type.height();
 }
 
-void Entity::setLocation(set_t &entitiesSet, const Point &newLocation){
+void Entity::location(const Point &loc){
     double oldY = _location.y;
+    _location = loc;
+    if (_location.y != oldY)
+        _yChanged = true;
+}
 
-    // Remove entity from set
-    if (oldY != newLocation.y) {
-        set_t::iterator it = entitiesSet.find(this);
-        if (it != entitiesSet.end())
-            entitiesSet.erase(it);
-    }
-
-    // Update location
-    _location = newLocation;
-
-    // Add entity to set
-    if (oldY != newLocation.y) {
-        entitiesSet.insert(this);
-    }
+bool Entity::collision(const Point &p) const{
+    return ::collision(p, drawRect());
 }

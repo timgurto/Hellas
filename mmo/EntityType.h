@@ -14,8 +14,8 @@ public:
     EntityType(const SDL_Rect &drawRect, const std::string &imageFile = "");
 
     inline const SDL_Rect &drawRect() const { return _drawRect; }
-    int width() const;
-    int height() const;
+    inline int width() const { return _drawRect.w; }
+    inline int height() const { return _drawRect.h; }
 
     void drawAt(const Point &loc) const;
     void image(const std::string &imageFile);

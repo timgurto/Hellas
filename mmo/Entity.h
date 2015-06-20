@@ -6,39 +6,48 @@
 #include "EntityType.h"
 #include "Point.h"
 
-// Handles the graphical and UI side of in-game objects
+class Client;
+
+// Handles the graphical and UI side of in-game objects  Abstract class
 class Entity{
     const EntityType &_type;
     Point _location;
+    bool _yChanged; // y co-ordinate has changed, and the entity must be reordered.
 
 public:
     Entity(const EntityType &type, const Point &location);
 
-    bool operator<(const Entity &rhs) const; // Compares the bottom edge ("front")
-
-    /*
-    There should be no direct setter for_location, as it may invalidate a set of Entities;
-    instead use one of the following:
-        Client::setEntityLocation(entity, location)
-        Entity::setLocation(entitiesSet, location)
-        OtherUser::setLocation(entitiesSet, location)
-    */
     inline const Point &location() const { return _location; }
-
+    void location(const Point &loc); // yChanged() should be checked after changing location.
     SDL_Rect drawRect() const;
     inline int width() const { return _type.width(); }
     inline int height() const { return _type.height(); }
+    inline bool yChanged() const { return _yChanged; }
+    inline void yChanged(bool val) { _yChanged = val; }
 
-    void draw() const;
+    virtual void draw(const Client &client) const;
+    virtual void update(double delta) {}
+    virtual void onLeftClick(const Client &client) {}
+
     double bottomEdge() const;
+    bool collision(const Point &p) const;
 
-    struct Compare{
-        bool operator()(const Entity *lhs, const Entity *rhs) const{ return *lhs < *rhs; }
+    struct ComparePointers{
+        bool operator()(const Entity *lhs, const Entity *rhs) const{
+
+            // 1. location
+            double
+                lhsBottom = lhs->bottomEdge(),
+                rhsBottom = rhs->bottomEdge();
+            if (lhsBottom != rhsBottom)
+                return lhsBottom < rhsBottom;
+
+            // 2. memory address (to ensure a unique ordering)
+            return lhs < rhs;
+        }
     };
 
-    void setLocation(std::set<const Entity *, Entity::Compare> &entitiesSet, const Point &newLocation);
-
-    typedef std::set<const Entity *, Compare> set_t;
+    typedef std::set<Entity *, ComparePointers> set_t;
 };
 
 #endif

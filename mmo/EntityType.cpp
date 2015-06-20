@@ -17,14 +17,6 @@ void EntityType::image(const std::string &imageFile){
     _drawRect.h = _image.height();
 }
 
-int EntityType::width() const{
-    return _image ? _drawRect.w : 0;
-}
-
-int EntityType::height() const{
-    return _image ? _drawRect.h : 0;
-}
-
 void EntityType::drawAt(const Point &loc) const{
     _image.draw(_drawRect + loc);
 }

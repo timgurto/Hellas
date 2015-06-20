@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <string>
 #include <sstream>
+#include <vector>
 
 #include "Client.h"
 #include "EntityType.h"
@@ -188,13 +189,16 @@ void Client::run(){
 
             case SDL_MOUSEBUTTONUP:
                 if (_loaded) {
-                    // Check whether clicking a branch
-                    for (std::set<Branch>::const_iterator it = _branches.begin(); it != _branches.end(); ++it) {
-                        if (collision(_mouse, makeRect(it->location().x, it->location().y, 20, 20))) {
-                            sendMessage(CL_COLLECT_BRANCH, makeArgs(it->serial()));
-                            break;
-                        }
+                    // Check whether clicking an entity
+                    Entity::set_t::iterator mouseOverIt = _entities.end();
+                    static EntityType dummyEntityType(makeRect());
+                    Entity lookupEntity(dummyEntityType, _mouse);
+                    for (Entity::set_t::iterator it = _entities.lower_bound(&lookupEntity); it != _entities.end(); ++it) {
+                        if ((*it)->collision(_mouse))
+                            mouseOverIt = it;
                     }
+                    if (mouseOverIt != _entities.end())
+                        (*mouseOverIt)->onLeftClick(*this);
                 }
                 break;
 
@@ -212,9 +216,10 @@ void Client::run(){
                 left = keyboardState[SDL_SCANCODE_LEFT] == SDL_PRESSED,
                 right = keyboardState[SDL_SCANCODE_RIGHT] == SDL_PRESSED;
             if (up != down || left != right) {
+                static const double DIAG_SPEED = MOVEMENT_SPEED / SQRT_2;
                 double
                     dist = delta * MOVEMENT_SPEED,
-                    diagDist = dist / SQRT_2;
+                    diagDist = delta * DIAG_SPEED;
                 Point newLoc = _character.location();
                 if (up != down) {
                     if (up && !down)
@@ -226,17 +231,30 @@ void Client::run(){
                     newLoc.x -= (up != down) ? diagDist : dist;
                 else if (right && !left)
                     newLoc.x += (up != down) ? diagDist : dist;
-                setEntityLocation(_character, newLoc);
+                setEntityLocation(&_character, newLoc);
                 _locationChanged = true;
             }
         }
 
-        // Update locations of other users
-        for (std::map<std::string, OtherUser>::iterator it = _otherUsers.begin(); it != _otherUsers.end(); ++it)
-            it->second.setLocation(_entities, it->second.interpolatedLocation(delta));
+        // Update entities
+        std::vector<Entity *> entitiesToReorder;
+        for (Entity::set_t::iterator it = _entities.begin(); it != _entities.end(); ) {
+            Entity::set_t::iterator next = it; ++next;
+            Entity *toUpdate = *it;
+            toUpdate->update(delta);
+            if (toUpdate->yChanged()) {
+                // Entity has moved up or down, and must be re-ordered in set.
+                entitiesToReorder.push_back(toUpdate);
+                _entities.erase(it);
+                toUpdate->yChanged(false);
+            }
+            it = next;
+        }
+        for (std::vector<Entity *>::iterator it = entitiesToReorder.begin(); it != entitiesToReorder.end(); ++it)
+            _entities.insert(*it);
+        entitiesToReorder.clear();
 
         checkSocket();
-        //_debug << Texture::numTextures() << " textures" << Log::endl;
         // Draw
         draw();
         SDL_Delay(10);
@@ -258,22 +276,12 @@ void Client::draw(){
 
     // Entities, sorted from back to front
     for (Entity::set_t::const_iterator it = _entities.begin(); it != _entities.end(); ++it)
-        (*it)->draw();
+        (*it)->draw(*this);
 
     // Rectangle around user
     renderer.setDrawColor(Color::WHITE);
     SDL_Rect drawLoc = _character.drawRect();
     renderer.drawRect(_character.drawRect());
-
-    // Other users' names
-    for (std::map<std::string, OtherUser>::iterator it = _otherUsers.begin(); it != _otherUsers.end(); ++it){
-        const Entity &entity = it->second.entity();
-        Texture nameTexture(_defaultFont, it->first, Color::CYAN);
-        Point p = entity.location();
-        p.y -= 60;
-        p.x -= nameTexture.width() / 2;
-        nameTexture.draw(p);
-    }
 
     // Inventory
     static SDL_Rect invBackgroundRect = makeRect(renderer.width() - 250, renderer.height() - 70, 250, 60);
@@ -376,10 +384,10 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del;
             if (del != ']')
                 break;
-            std::map<std::string, OtherUser>::iterator it = _otherUsers.find(name);
+            std::map<std::string, OtherUser*>::iterator it = _otherUsers.find(name);
             if (it != _otherUsers.end()) {
-                _entities.erase(&it->second.entity());
-                _otherUsers.erase(name);
+                removeEntity(it->second);
+                _otherUsers.erase(it);
             }
             _debug << name << " disconnected." << Log::endl;
             break;
@@ -436,14 +444,16 @@ void Client::handleMessage(const std::string &msg){
                 break;
             Point p(x, y);
             if (name == _username) {
-                setEntityLocation(_character, p);
+                setEntityLocation(&_character, p);
                 _loaded = true;
             } else {
                 if (_otherUsers.find(name) == _otherUsers.end()) {
                     // Create new OtherUser
-                    _otherUsers[name].setLocation(_entities, p);
+                    OtherUser *newUser = new OtherUser(name, p);
+                    _otherUsers[name] = newUser;
+                    _entities.insert(newUser);
                 }
-                _otherUsers[name].destination(p);
+                _otherUsers[name]->destination(p);
             }
             break;
         }
@@ -469,11 +479,12 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> serial >> del >> x >> del >> y >> del;
             if (del != ']')
                 break;
-            std::pair<std::set<Branch>::iterator, size_t> ret =
-                _branches.insert(Branch(serial, Point(x, y)));
-            if (ret.second == 1) {
+            std::map<size_t, Branch*>::iterator it = _branches.find(serial);
+            if (it == _branches.end()) {
                 // A new branch was added; add entity to list
-                _entities.insert(&ret.first->entity());
+                Branch *newBranch = new Branch(serial, Point(x, y));
+                _entities.insert(newBranch);
+                _branches[serial] = newBranch;
             }
             break;
         }
@@ -484,13 +495,13 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> serial >> del;
             if (del != ']')
                 break;
-            std::set<Branch>::const_iterator it = _branches.find(serial);
+            std::map<size_t, Branch*>::const_iterator it = _branches.find(serial);
             if (it == _branches.end()){
                 _debug << Color::YELLOW << "Server removed a branch we didn't know about." << Log::endl;
                 assert(false);
                 break; // We didn't know about this branch
             }
-            _entities.erase(&it->entity());
+            removeEntity(it->second);
             _branches.erase(it);
             break;
         }
@@ -519,6 +530,31 @@ void Client::sendMessage(MessageCode msgCode, const std::string &args) const{
     _socket.sendMessage(oss.str());
 }
 
-void Client::setEntityLocation(Entity &entity, const Point &newLocation){
-    entity.setLocation(_entities, newLocation);
+const Socket &Client::socket() const{
+    return _socket;
+}
+
+void Client::removeEntity(Entity *const toRemove){
+    Entity::set_t::iterator it = _entities.find(toRemove);
+    if (it != _entities.end())
+        _entities.erase(it);
+    delete toRemove;
+}
+
+TTF_Font *Client::defaultFont() const{
+    return _defaultFont;
+}
+
+void Client::setEntityLocation(Entity *entity, const Point &location){
+    Entity::set_t::iterator it = _entities.find(entity);
+    if (it == _entities.end()){
+        assert(false); // Entity is not in set.
+        return;
+    }
+    entity->location(location);
+    if (entity->yChanged()) {
+        _entities.erase(it);
+        _entities.insert(entity);
+        entity->yChanged(false);
+    }
 }

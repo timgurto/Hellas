@@ -27,6 +27,9 @@ public:
 
     static bool isClient;
 
+    const Socket &socket() const;
+    TTF_Font *defaultFont() const;
+
 private:
     static const Uint32 MAX_TICK_LENGTH;
     static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping reply from the server
@@ -68,12 +71,12 @@ private:
 
     // Information about the state of the world
     std::vector<std::pair<std::string, size_t> > _inventory;
-    std::map<std::string, OtherUser> _otherUsers;
-    std::set<Branch> _branches;
+    std::map<std::string, OtherUser*> _otherUsers; // For lookup by name
+    std::map<size_t, Branch*> _branches; // For lookup by serial
 
     Entity::set_t _entities;
-    // Change an Entity's location, and ensure _entities remains ordered
-    void setEntityLocation(Entity &entity, const Point &newLocation);
+    void removeEntity(Entity *const toRemove); // Remove from _entities, and delete pointer
+    void setEntityLocation(Entity *entity, const Point &location); // Move the entity, and reorder it if necessary
 
     std::queue<std::string> _messages;
 
@@ -82,6 +85,8 @@ private:
     void checkSocket();
     void sendMessage(MessageCode msgCode, const std::string &args = "") const;
     void handleMessage(const std::string &msg);
+
+    friend OtherUser;
 };
 
 #endif

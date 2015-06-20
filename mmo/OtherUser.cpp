@@ -4,17 +4,29 @@
 
 EntityType OtherUser::_entityType(makeRect(-9, -39));
 
-OtherUser::OtherUser():
-_entity(_entityType, 0){}
+OtherUser::OtherUser(const std::string &name, const Point &location):
+Entity(_entityType, location),
+_name(name){}
 
 Point OtherUser::interpolatedLocation(double delta){
-    if (_destination == _entity.location())
+    if (_destination == location())
         return _destination;;
 
     double maxLegalDistance = delta * Client::MOVEMENT_SPEED;
-    return interpolate(_entity.location(), _destination, maxLegalDistance);
+    return interpolate(location(), _destination, maxLegalDistance);
 }
 
-void OtherUser::setLocation(Entity::set_t &entitiesSet, const Point &newLocation){
-    _entity.setLocation(entitiesSet, newLocation);
+void OtherUser::draw(const Client &client) const{
+    Entity::draw(client);
+
+    // Draw username
+    Texture nameTexture(client.defaultFont(), _name, Color::CYAN);
+    Point p = location();
+    p.y -= 60;
+    p.x -= nameTexture.width() / 2;
+    nameTexture.draw(p);
+}
+
+void OtherUser::update(double delta){
+    location(interpolatedLocation(delta));
 }

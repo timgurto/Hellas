@@ -8,11 +8,10 @@
 #include "Point.h"
 
 // Describes a tree branch which can be collected by a user
-class Branch{
+class Branch : public Entity{
     static EntityType _entityType;
 
     size_t _serial;
-    Entity _entity;
 
 public:
 
@@ -24,8 +23,8 @@ public:
 
     inline static void image(const std::string &filename) { _entityType.image(filename); }
     inline size_t serial() const { return _serial; }
-    inline const Point &location() const { return _entity.location(); }
-    inline const Entity &entity() const { return _entity; }
+
+    virtual void onLeftClick(const Client &client);
 };
 
 #endif
