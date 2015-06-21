@@ -1,3 +1,4 @@
+#include <cassert>
 #include <ctime>
 #include <cstdlib>
 #include <string>
@@ -7,6 +8,7 @@
 #include "Client.h"
 #include "Renderer.h"
 #include "Server.h"
+#include "Texture.h"
 
 Args cmdLineArgs; // MUST be defined before renderer
 Renderer renderer; // MUST be defined after cmdLineArgs
@@ -25,5 +27,6 @@ int main(int argc, char* argv[]){
         client.run();
     }
 
+    assert(Texture::numTextures() == 0);
     return 0;
 }

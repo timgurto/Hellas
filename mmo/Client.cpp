@@ -77,6 +77,8 @@ _currentMouseOverEntity(0){
 Client::~Client(){
     if (_defaultFont)
         TTF_CloseFont(_defaultFont);
+    OtherUser::image("");
+    Branch::image("");
 }
 
 void Client::checkSocket(){
