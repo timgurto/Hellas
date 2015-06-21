@@ -5,14 +5,17 @@
 
 #include "EntityType.h"
 #include "Point.h"
+#include "Texture.h"
 
 class Client;
 
 // Handles the graphical and UI side of in-game objects  Abstract class
 class Entity{
+    bool _yChanged; // y co-ordinate has changed, and the entity must be reordered.
+
+protected:
     const EntityType &_type;
     Point _location;
-    bool _yChanged; // y co-ordinate has changed, and the entity must be reordered.
 
 public:
     Entity(const EntityType &type, const Point &location);
@@ -27,7 +30,8 @@ public:
 
     virtual void draw(const Client &client) const;
     virtual void update(double delta) {}
-    virtual void onLeftClick(const Client &client) {}
+    virtual void onLeftClick(const Client &client) const {}
+    virtual Texture tooltip(const Client &client) const { return Texture(); }
 
     double bottomEdge() const;
     bool collision(const Point &p) const;

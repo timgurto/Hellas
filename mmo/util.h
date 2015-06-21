@@ -60,4 +60,14 @@ inline SDL_Rect makeRect(const Point &p){
 
 bool collision(const Point &point, const SDL_Rect &rect);
 
+template<typename T>
+T min(const T &lhs, const T &rhs) {
+    return lhs < rhs ? lhs : rhs;
+}
+
+template<typename T>
+T max(const T &lhs, const T &rhs) {
+    return rhs < lhs ? lhs : rhs;
+}
+
 #endif

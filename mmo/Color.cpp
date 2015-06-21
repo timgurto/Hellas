@@ -1,4 +1,5 @@
 #include "Color.h"
+#include "util.h"
 
 const Color Color::BLACK  (0x00, 0x00, 0x00);
 const Color Color::BLUE   (0x00, 0x00, 0xff);
@@ -73,4 +74,16 @@ Color Color::operator*(double d) const {
 
 Color Color::operator*(int s) const {
     return *this * static_cast<double>(s);
+}
+
+Color operator+(const Color &lhs, const Color &rhs){
+    Uint16 r = lhs.r();
+    Uint16 g = lhs.g();
+    Uint16 b = lhs.b();
+    r = min(r + rhs.r(), 0xff);
+    g = min(g + rhs.g(), 0xff);
+    b = min(b + rhs.b(), 0xff);
+    return Color(static_cast<Uint8>(r),
+                 static_cast<Uint8>(g),
+                 static_cast<Uint8>(b));
 }

@@ -22,14 +22,14 @@ public:
 
     static const Uint32 CLIENT_TIMEOUT; // How much radio silence before we drop a client
 
+    static const int ACTION_DISTANCE; // How close a character must be to interact with an object
+
     static bool isServer;
 
 private:
 
     static const int MAX_CLIENTS;
     static const size_t BUFFER_SIZE;
-
-    static const int ACTION_DISTANCE; // How close a character must be to interact with an object
 
     Uint32 _time;
 

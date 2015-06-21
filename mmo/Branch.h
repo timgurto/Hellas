@@ -24,7 +24,8 @@ public:
     inline static void image(const std::string &filename) { _entityType.image(filename); }
     inline size_t serial() const { return _serial; }
 
-    virtual void onLeftClick(const Client &client);
+    virtual void onLeftClick(const Client &client) const;
+    virtual Texture tooltip(const Client &client) const;
 };
 
 #endif

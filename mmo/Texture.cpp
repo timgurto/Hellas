@@ -21,13 +21,29 @@ Texture::Texture():
 _programEndMarker(false),
 _raw(0),
 _w(0),
-_h(0){
+_h(0),
+_validTarget(false){}
+
+Texture::Texture(int width, int height):
+_programEndMarker(false),
+_raw(0),
+_w(width),
+_h(height),
+_validTarget(true){
+    assert (renderer);
+
+    _raw = renderer.createTargetableTexture(width, height);
+    if (_raw)
+        addRef();
+    else
+        _validTarget = false;
 }
 
 Texture::Texture(const std::string &filename, const Color &colorKey):
 _programEndMarker(false),
 _w(0),
 _h(0),
+_validTarget(false),
 _raw(0){
     if (filename == "")
         return;
@@ -50,6 +66,7 @@ Texture::Texture(TTF_Font *font, const std::string &text, const Color &color):
 _programEndMarker(false),
 _w(0),
 _h(0),
+_validTarget(false),
 _raw(0){
     assert (renderer);
 
@@ -67,7 +84,8 @@ Texture::Texture(const Texture &rhs):
 _programEndMarker(false),
 _raw(rhs._raw),
 _w(rhs._w),
-_h(rhs._h){
+_h(rhs._h),
+_validTarget(rhs._validTarget){
     if (_raw)
         addRef();
 }
@@ -81,6 +99,7 @@ Texture &Texture::operator=(const Texture &rhs){
     _raw = rhs._raw;
     _w = rhs._w;
     _h = rhs._h;
+    _validTarget = rhs._validTarget;
     if (_raw)
         addRef();
     return *this;
@@ -101,6 +120,11 @@ Texture::~Texture(){
 
     if (_raw)
         removeRef();
+}
+
+void Texture::setBlend(SDL_BlendMode mode, Uint8 alpha){
+    SDL_SetTextureBlendMode(_raw, mode);
+    SDL_SetTextureAlphaMod(_raw, alpha);
 }
 
 void Texture::draw(int x, int y) const{
@@ -134,4 +158,9 @@ void Texture::removeRef(){
             int ret = _refs.erase(_raw);
         }
     }
+}
+
+void Texture::setRenderTarget() const{
+    if (_validTarget)
+        SDL_SetRenderTarget(renderer._renderer, _raw);
 }

@@ -30,6 +30,8 @@ public:
     const Socket &socket() const;
     TTF_Font *defaultFont() const;
 
+    inline const Entity &character() const { return _character; }
+
 private:
     static const Uint32 MAX_TICK_LENGTH;
     static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping reply from the server
@@ -77,6 +79,7 @@ private:
     Entity::set_t _entities;
     void removeEntity(Entity *const toRemove); // Remove from _entities, and delete pointer
     void setEntityLocation(Entity *entity, const Point &location); // Move the entity, and reorder it if necessary
+    const Entity *_currentMouseOverEntity;
 
     std::queue<std::string> _messages;
 

@@ -42,7 +42,8 @@ _lastPingSent(_time),
 _lastPingReply(_time),
 _timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
 _loaded(false),
-_mouse(0,0){
+_mouse(0,0),
+_currentMouseOverEntity(0){
     isClient = true;
 
     _debug << cmdLineArgs << Log::endl;
@@ -182,24 +183,36 @@ void Client::run(){
                 }
                 break;
 
-            case SDL_MOUSEMOTION:
+            case SDL_MOUSEMOTION: {
                 _mouse.x = e.motion.x;
                 _mouse.y = e.motion.y;
+
+                if (!_loaded)
+                    break;
+
+                // Check if mouse is over an entity
+                Entity::set_t::iterator mouseOverIt = _entities.end();
+                static EntityType dummyEntityType(makeRect());
+                Entity lookupEntity(dummyEntityType, _mouse);
+                for (Entity::set_t::iterator it = _entities.lower_bound(&lookupEntity); it != _entities.end(); ++it) {
+                    if ((*it)->collision(_mouse))
+                        mouseOverIt = it;
+                }
+                if (mouseOverIt != _entities.end())
+                    _currentMouseOverEntity = *mouseOverIt;
+                else
+                    _currentMouseOverEntity = 0;
+
                 break;
+            }
 
             case SDL_MOUSEBUTTONUP:
-                if (_loaded) {
-                    // Check whether clicking an entity
-                    Entity::set_t::iterator mouseOverIt = _entities.end();
-                    static EntityType dummyEntityType(makeRect());
-                    Entity lookupEntity(dummyEntityType, _mouse);
-                    for (Entity::set_t::iterator it = _entities.lower_bound(&lookupEntity); it != _entities.end(); ++it) {
-                        if ((*it)->collision(_mouse))
-                            mouseOverIt = it;
-                    }
-                    if (mouseOverIt != _entities.end())
-                        (*mouseOverIt)->onLeftClick(*this);
-                }
+                if (!_loaded)
+                    break;
+
+                if (_currentMouseOverEntity)
+                    _currentMouseOverEntity->onLeftClick(*this);
+
                 break;
 
             default:
@@ -263,6 +276,7 @@ void Client::run(){
 
 void Client::draw(){
     if (!_connected || !_loaded){
+        renderer.setDrawColor(Color::BLACK);
         renderer.clear();
         _debug.draw();
         renderer.present();
@@ -305,10 +319,16 @@ void Client::draw(){
         }
     }
 
+    // Tooltip
+    if (_currentMouseOverEntity) {
+        Texture tooltip = _currentMouseOverEntity->tooltip(*this);
+        tooltip.draw(10, renderer.height() - tooltip.height() - 10);
+    }
+
     // FPS/latency
     std::ostringstream oss;
     if (_timeElapsed > 0)
-        oss << 1000/_timeElapsed;
+        oss << static_cast<int>(1000.0/_timeElapsed + .5);
     else
         oss << "infinite ";
     oss << "fps " << _latency << "ms";
@@ -501,6 +521,8 @@ void Client::handleMessage(const std::string &msg){
                 assert(false);
                 break; // We didn't know about this branch
             }
+            if (it->second == _currentMouseOverEntity)
+                _currentMouseOverEntity = 0;
             removeEntity(it->second);
             _branches.erase(it);
             break;

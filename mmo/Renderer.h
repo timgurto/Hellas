@@ -4,6 +4,8 @@
 #include <SDL.h>
 
 #include "Color.h"
+#include "Texture.h"
+#include "util.h"
 
 // Wrapper class for SDL_Renderer and SDL_Window, plus related convenience functions.
 class Renderer{
@@ -12,6 +14,8 @@ class Renderer{
     int _w, _h;
     bool _valid; // Whether everything has been properly initialized
     static size_t _count;
+
+    friend void Texture::setRenderTarget() const; // Needs access to raw SDL_Renderer
 
 public:
     Renderer();
@@ -29,11 +33,14 @@ public:
     inline int height() const { return _h; }
 
     SDL_Texture *createTextureFromSurface(SDL_Surface *surface) const;
+    SDL_Texture *createTargetableTexture(int width, int height) const;
     void drawTexture(SDL_Texture *srcTex, const SDL_Rect &dstRect);
 
     void setDrawColor(const Color &color = Color::BLACK);
     void clear();
     void present();
+
+    void setRenderTarget() const; // Render to renderer instead of any Texture that might be set.
 
     void drawRect(const SDL_Rect &dstRect);
     void fillRect(const SDL_Rect &dstRect);

@@ -13,6 +13,7 @@
 class Texture{
     SDL_Texture *_raw;
     int _w, _h;
+    bool _validTarget;
 
     static std::map<SDL_Texture *, size_t> _refs;
     void addRef(); // Increment reference counter, and initialize window and renderer on first run
@@ -25,6 +26,7 @@ class Texture{
 
 public:
     Texture();
+    Texture(int width, int height); // Create a blank texture, which can be rendered to
     Texture(const std::string &filename, const Color &colorKey = Color::NO_KEY);
     Texture(TTF_Font *font, const std::string &text, const Color &color = Color::WHITE);
     ~Texture();
@@ -38,9 +40,15 @@ public:
     inline int width() const { return _w; }
     inline int height() const { return _h; }
 
-    void draw(int x, int y) const;
+    void setBlend(SDL_BlendMode mode, Uint8 alpha = 0xff);
+
+    void draw(int x = 0, int y = 0) const;
     void draw(const Point &location) const;
     void draw(const SDL_Rect &location) const;
+
+    // Render to this Texture instead of the renderer.
+    // Texture must have been created with Texture(width, height), otherwise this function will have no effect.
+    void setRenderTarget() const;
 
     inline static int numTextures() { return _numTextures; }
 };

@@ -37,4 +37,6 @@ private:
     Uint8 _r, _g, _b;
 };
 
+Color operator+(const Color &lhs, const Color &rhs);
+
 #endif
