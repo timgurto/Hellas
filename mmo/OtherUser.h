@@ -30,7 +30,7 @@ public:
     */
     Point interpolatedLocation(double delta);
 
-    virtual Texture tooltip(const Client &client) const;
+    virtual void refreshTooltip(const Client &client);
 };
 
 #endif

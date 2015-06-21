@@ -23,7 +23,7 @@ void Branch::onLeftClick(const Client &client) const{
     client.socket().sendMessage(oss.str());
 }
 
-Texture Branch::tooltip(const Client &client) const{
+void Branch::refreshTooltip(const Client &client){
     static const int PADDING = 10;
     Texture title(client.defaultFont(), "Branch", Color::WHITE);
     int totalHeight = title.height() + 2*PADDING;
@@ -39,7 +39,7 @@ Texture Branch::tooltip(const Client &client) const{
             totalWidth = tempWidth;
     }
 
-    Texture tooltipTexture(totalWidth, totalHeight);
+    _tooltip = Texture(totalWidth, totalHeight);
     
     // Draw background
     Texture background(totalWidth, totalHeight);
@@ -49,7 +49,7 @@ Texture Branch::tooltip(const Client &client) const{
     renderer.clear();
     background.setBlend(SDL_BLENDMODE_NONE, 0xbf);
 
-    tooltipTexture.setRenderTarget();
+    _tooltip.setRenderTarget();
     background.draw();
     renderer.setDrawColor(Color::WHITE);
     renderer.drawRect(makeRect(0, 0, totalWidth-1, totalHeight-1));
@@ -61,9 +61,7 @@ Texture Branch::tooltip(const Client &client) const{
         y += title.height() + PADDING;
         extra.draw(PADDING, y);
     }
-    tooltipTexture.setBlend(SDL_BLENDMODE_BLEND);
+    _tooltip.setBlend(SDL_BLENDMODE_BLEND);
 
     renderer.setRenderTarget();
-    
-    return tooltipTexture;
 }

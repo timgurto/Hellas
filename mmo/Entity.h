@@ -14,6 +14,10 @@ class Entity{
     bool _yChanged; // y co-ordinate has changed, and the entity must be reordered.
     const EntityType &_type;
     Point _location;
+    bool _needsTooltipRefresh;
+
+protected:
+    Texture _tooltip;
 
 public:
     Entity(const EntityType &type, const Point &location);
@@ -25,11 +29,13 @@ public:
     inline int height() const { return _type.height(); }
     inline bool yChanged() const { return _yChanged; }
     inline void yChanged(bool val) { _yChanged = val; }
+    inline bool needsTooltipRefresh() { return _needsTooltipRefresh; }
+    inline const Texture &tooltip() const { return _tooltip; }
 
     virtual void draw(const Client &client) const;
     virtual void update(double delta) {}
     virtual void onLeftClick(const Client &client) const {}
-    virtual Texture tooltip(const Client &client) const { return Texture(); }
+    virtual void refreshTooltip(const Client &client) {}
 
     double bottomEdge() const;
     bool collision(const Point &p) const;

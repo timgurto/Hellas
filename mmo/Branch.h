@@ -25,7 +25,7 @@ public:
     inline size_t serial() const { return _serial; }
 
     virtual void onLeftClick(const Client &client) const;
-    virtual Texture tooltip(const Client &client) const;
+    virtual void refreshTooltip(const Client &client);
 };
 
 #endif

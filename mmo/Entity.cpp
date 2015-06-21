@@ -5,7 +5,8 @@
 Entity::Entity(const EntityType &type, const Point &location):
 _type(type),
 _location(location),
-_yChanged(false){}
+_yChanged(false),
+_needsTooltipRefresh(false){}
 
 SDL_Rect Entity::drawRect() const {
     return _type.drawRect() + _location;

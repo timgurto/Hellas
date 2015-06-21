@@ -67,6 +67,7 @@ private:
 
     Uint32 _timeSinceLocUpdate; // Time since a CL_LOCATION was sent
     bool _locationChanged;
+    bool _tooltipNeedsRefresh; // "Official" location from server has changed
 
     // Game data
     std::set<Item> _items;
@@ -79,7 +80,7 @@ private:
     Entity::set_t _entities;
     void removeEntity(Entity *const toRemove); // Remove from _entities, and delete pointer
     void setEntityLocation(Entity *entity, const Point &location); // Move the entity, and reorder it if necessary
-    const Entity *_currentMouseOverEntity;
+    Entity *_currentMouseOverEntity;
 
     std::queue<std::string> _messages;
 

@@ -34,6 +34,7 @@ _connected(false),
 _invalidUsername(false),
 _timeSinceLocUpdate(0),
 _locationChanged(false),
+_tooltipNeedsRefresh(false),
 _character(OtherUser::entityType(), 0),
 _inventory(User::INVENTORY_SIZE, std::make_pair("none", 0)),
 _time(SDL_GetTicks()),
@@ -191,6 +192,7 @@ void Client::run(){
                     break;
 
                 // Check if mouse is over an entity
+                const Entity *oldMouseOverEntity = _currentMouseOverEntity;
                 Entity::set_t::iterator mouseOverIt = _entities.end();
                 static EntityType dummyEntityType(makeRect());
                 Entity lookupEntity(dummyEntityType, _mouse);
@@ -198,9 +200,16 @@ void Client::run(){
                     if ((*it)->collision(_mouse))
                         mouseOverIt = it;
                 }
-                if (mouseOverIt != _entities.end())
+                if (mouseOverIt != _entities.end()) {
                     _currentMouseOverEntity = *mouseOverIt;
-                else
+                    if (_currentMouseOverEntity != oldMouseOverEntity ||
+                        _currentMouseOverEntity->needsTooltipRefresh() ||
+                        _tooltipNeedsRefresh ||
+                        _locationChanged) {
+                        _currentMouseOverEntity->refreshTooltip(*this);
+                    }
+                        
+                } else
                     _currentMouseOverEntity = 0;
 
                 break;
@@ -321,7 +330,7 @@ void Client::draw(){
 
     // Tooltip
     if (_currentMouseOverEntity) {
-        Texture tooltip = _currentMouseOverEntity->tooltip(*this);
+        Texture tooltip = _currentMouseOverEntity->tooltip();
         tooltip.draw(10, renderer.height() - tooltip.height() - 10);
     }
 
@@ -466,6 +475,7 @@ void Client::handleMessage(const std::string &msg){
             if (name == _username) {
                 setEntityLocation(&_character, p);
                 _loaded = true;
+                _tooltipNeedsRefresh = true;
             } else {
                 if (_otherUsers.find(name) == _otherUsers.end()) {
                     // Create new OtherUser

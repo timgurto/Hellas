@@ -34,7 +34,7 @@ void OtherUser::update(double delta){
     location(interpolatedLocation(delta));
 }
 
-Texture OtherUser::tooltip(const Client &client) const{
+void OtherUser::refreshTooltip(const Client &client){
     static const int PADDING = 10;
     Texture title(client.defaultFont(), _name, Color::WHITE);
     int totalHeight = title.height() + 2*PADDING;
@@ -48,7 +48,7 @@ Texture OtherUser::tooltip(const Client &client) const{
     if (tempWidth > totalWidth)
         totalWidth = tempWidth;
 
-    Texture tooltipTexture(totalWidth, totalHeight);
+    _tooltip = Texture(totalWidth, totalHeight);
     
     // Draw background
     Texture background(totalWidth, totalHeight);
@@ -58,7 +58,7 @@ Texture OtherUser::tooltip(const Client &client) const{
     renderer.clear();
     background.setBlend(SDL_BLENDMODE_NONE, 0xbf);
 
-    tooltipTexture.setRenderTarget();
+    _tooltip.setRenderTarget();
     background.draw();
     renderer.setDrawColor(Color::WHITE);
     renderer.drawRect(makeRect(0, 0, totalWidth-1, totalHeight-1));
@@ -70,9 +70,7 @@ Texture OtherUser::tooltip(const Client &client) const{
         y += title.height() + PADDING;
         extra.draw(PADDING, y);
     }
-    tooltipTexture.setBlend(SDL_BLENDMODE_BLEND);
+    _tooltip.setBlend(SDL_BLENDMODE_BLEND);
 
     renderer.setRenderTarget();
-    
-    return tooltipTexture;
 }
