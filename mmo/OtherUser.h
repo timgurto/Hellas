@@ -29,6 +29,8 @@ public:
     This is used to smooth the apparent movement of other users.
     */
     Point interpolatedLocation(double delta);
+
+    virtual Texture tooltip(const Client &client) const;
 };
 
 #endif

@@ -1,6 +1,9 @@
 #include "Client.h"
 #include "OtherUser.h"
+#include "Renderer.h"
 #include "util.h"
+
+extern Renderer renderer;
 
 EntityType OtherUser::_entityType(makeRect(-9, -39));
 
@@ -29,4 +32,47 @@ void OtherUser::draw(const Client &client) const{
 
 void OtherUser::update(double delta){
     location(interpolatedLocation(delta));
+}
+
+Texture OtherUser::tooltip(const Client &client) const{
+    static const int PADDING = 10;
+    Texture title(client.defaultFont(), _name, Color::WHITE);
+    int totalHeight = title.height() + 2*PADDING;
+    int totalWidth = title.width() + 2*PADDING;
+
+    Texture extra;
+    static const Color textColor = Color::BLUE / 2 + Color::WHITE / 2;
+    extra = Texture(client.defaultFont(), "Player", textColor);
+    totalHeight += extra.height() + PADDING;
+    int tempWidth = extra.width() + 2*PADDING;
+    if (tempWidth > totalWidth)
+        totalWidth = tempWidth;
+
+    Texture tooltipTexture(totalWidth, totalHeight);
+    
+    // Draw background
+    Texture background(totalWidth, totalHeight);
+    static const Color backgroundColor = Color::WHITE/8 + Color::BLUE/6;
+    background.setRenderTarget();
+    renderer.setDrawColor(backgroundColor);
+    renderer.clear();
+    background.setBlend(SDL_BLENDMODE_NONE, 0xbf);
+
+    tooltipTexture.setRenderTarget();
+    background.draw();
+    renderer.setDrawColor(Color::WHITE);
+    renderer.drawRect(makeRect(0, 0, totalWidth-1, totalHeight-1));
+
+    // Draw text
+    int y = PADDING;
+    title.draw(PADDING, y);
+    if (extra) {
+        y += title.height() + PADDING;
+        extra.draw(PADDING, y);
+    }
+    tooltipTexture.setBlend(SDL_BLENDMODE_BLEND);
+
+    renderer.setRenderTarget();
+    
+    return tooltipTexture;
 }

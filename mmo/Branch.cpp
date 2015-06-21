@@ -25,14 +25,14 @@ void Branch::onLeftClick(const Client &client) const{
 
 Texture Branch::tooltip(const Client &client) const{
     static const int PADDING = 10;
-    static const Color titleColor = Color::BLUE / 2 + Color::WHITE / 2;
-    Texture title(client.defaultFont(), "Branch", titleColor);
+    Texture title(client.defaultFont(), "Branch", Color::WHITE);
     int totalHeight = title.height() + 2*PADDING;
     int totalWidth = title.width() + 2*PADDING;
 
     Texture extra;
-    if (distance(_location, client.character().location()) > Server::ACTION_DISTANCE) {
-        extra = Texture(client.defaultFont(), "Out of range", Color::WHITE);
+    if (distance(location(), client.character().location()) > Server::ACTION_DISTANCE) {
+        static const Color textColor = Color::BLUE / 2 + Color::WHITE / 2;
+        extra = Texture(client.defaultFont(), "Out of range", textColor);
         totalHeight += extra.height() + PADDING;
         int tempWidth = extra.width() + 2*PADDING;
         if (tempWidth > totalWidth)

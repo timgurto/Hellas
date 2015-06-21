@@ -12,8 +12,6 @@ class Client;
 // Handles the graphical and UI side of in-game objects  Abstract class
 class Entity{
     bool _yChanged; // y co-ordinate has changed, and the entity must be reordered.
-
-protected:
     const EntityType &_type;
     Point _location;
 
