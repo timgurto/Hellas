@@ -49,6 +49,8 @@ private:
     std::string _username;
     Point _mouse; // Mouse position
 
+    void drawTooltip() const;
+
     std::string _partialMessage;
 
     Uint32 _time;

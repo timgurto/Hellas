@@ -332,10 +332,8 @@ void Client::draw(){
     }
 
     // Tooltip
-    if (_currentMouseOverEntity) {
-        Texture tooltip = _currentMouseOverEntity->tooltip();
-        tooltip.draw(10, renderer.height() - tooltip.height() - 10);
-    }
+    if (_currentMouseOverEntity)
+        drawTooltip();
 
     // FPS/latency
     std::ostringstream oss;
@@ -349,6 +347,30 @@ void Client::draw(){
 
     _debug.draw();
     renderer.present();
+}
+
+void Client::drawTooltip() const{
+    Texture tooltip = _currentMouseOverEntity->tooltip();
+    if (tooltip) {
+        static const int EDGE_GAP = 10; // Gap from screen edges
+        static const int CURSOR_GAP = 20; // Horizontal gap from cursor
+        int x, y;
+        int mouseX = static_cast<int>(_mouse.x + .5);
+        int mouseY = static_cast<int>(_mouse.y + .5);
+
+        // y: below cursor, unless too close to the bottom of the screen
+        if (renderer.height() > mouseY + tooltip.height() + EDGE_GAP)
+            y = mouseY;
+        else
+            y = renderer.height() - tooltip.height() - EDGE_GAP;
+
+        // x: to the right of the cursor, unless too close to the right of the screen
+        if (renderer.width() > mouseX + tooltip.width() + EDGE_GAP + CURSOR_GAP)
+            x = mouseX + CURSOR_GAP;
+        else
+            x = mouseX - tooltip.width() - CURSOR_GAP;
+        tooltip.draw(x, y);
+    }
 }
 
 void Client::handleMessage(const std::string &msg){
