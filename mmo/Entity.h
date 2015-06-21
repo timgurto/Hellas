@@ -2,6 +2,7 @@
 #define ENTITY_H
 
 #include <set>
+#include <vector>
 
 #include "EntityType.h"
 #include "Point.h"
@@ -15,6 +16,7 @@ class Entity{
     const EntityType &_type;
     Point _location;
     bool _needsTooltipRefresh;
+    virtual std::vector<std::string> getTooltipMessages(const Client &client) const { return std::vector<std::string>(); }
 
 protected:
     Texture _tooltip;
@@ -35,7 +37,8 @@ public:
     virtual void draw(const Client &client) const;
     virtual void update(double delta) {}
     virtual void onLeftClick(const Client &client) const {}
-    virtual void refreshTooltip(const Client &client) {}
+
+    void refreshTooltip(const Client &client);
 
     double bottomEdge() const;
     bool collision(const Point &p) const;

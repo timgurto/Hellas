@@ -22,6 +22,7 @@ public:
 
     virtual void draw(const Client &client) const;
     virtual void update(double delta);
+    virtual std::vector<std::string> getTooltipMessages(const Client &client) const;
 
     /*
     Get the next location towards destination, with distance determined by
@@ -29,8 +30,6 @@ public:
     This is used to smooth the apparent movement of other users.
     */
     Point interpolatedLocation(double delta);
-
-    virtual void refreshTooltip(const Client &client);
 };
 
 #endif

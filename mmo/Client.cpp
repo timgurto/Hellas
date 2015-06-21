@@ -207,6 +207,7 @@ void Client::run(){
                         _tooltipNeedsRefresh ||
                         _locationChanged) {
                         _currentMouseOverEntity->refreshTooltip(*this);
+                        _tooltipNeedsRefresh = false;
                     }
                         
                 } else

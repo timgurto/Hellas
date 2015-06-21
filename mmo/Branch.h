@@ -25,7 +25,7 @@ public:
     inline size_t serial() const { return _serial; }
 
     virtual void onLeftClick(const Client &client) const;
-    virtual void refreshTooltip(const Client &client);
+    virtual std::vector<std::string> getTooltipMessages(const Client &client) const;
 };
 
 #endif
