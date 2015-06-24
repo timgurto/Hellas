@@ -17,7 +17,7 @@ SDL_Rect Entity::drawRect() const {
 }
 
 void Entity::draw(const Client &client) const{
-    _type.drawAt(_location);
+    _type.drawAt(_location + client.offset());
 }
 
 double Entity::bottomEdge() const{

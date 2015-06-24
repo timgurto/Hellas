@@ -36,7 +36,7 @@ std::string User::makeLocationCommand() const{
     return makeArgs(_name, _location.x, _location.y);
 }
 
-void User::updateLocation(const Point &dest){
+void User::updateLocation(const Point &dest, const Server &server){
     Uint32 newTime = SDL_GetTicks();
     Uint32 timeElapsed = newTime - _lastLocUpdate;
     _lastLocUpdate = newTime;
@@ -44,6 +44,16 @@ void User::updateLocation(const Point &dest){
     // Max legal distance: straight line
     double maxLegalDistance = timeElapsed / 1000.0 * Client::MOVEMENT_SPEED;
     _location = interpolate(_location, dest, maxLegalDistance);
+
+    // Keep in-bounds
+    if (_location.x < 0)
+        _location.x = 0;
+    else if (_location.x > server.mapSize().x)
+        _location.x = server.mapSize().x;
+    if (_location.y < 0)
+        _location.y = 0;
+    else if (_location.y > server.mapSize().y)
+        _location.y = server.mapSize().y;
 }
 
 void User::contact(){

@@ -44,6 +44,7 @@ _lastPingReply(_time),
 _timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
 _loaded(false),
 _mouse(0,0),
+_mouseMoved(false),
 _currentMouseOverEntity(0){
     isClient = true;
 
@@ -159,6 +160,7 @@ void Client::run(){
             if (_locationChanged && _timeSinceLocUpdate > TIME_BETWEEN_LOCATION_UPDATES) {
                 sendMessage(CL_LOCATION, makeArgs(_character.location().x, _character.location().y));
                 _locationChanged = false;
+                _tooltipNeedsRefresh = true;
                 _timeSinceLocUpdate = 0;
             }
         }
@@ -189,31 +191,10 @@ void Client::run(){
             case SDL_MOUSEMOTION: {
                 _mouse.x = e.motion.x;
                 _mouse.y = e.motion.y;
+                _mouseMoved = true;
 
                 if (!_loaded)
                     break;
-
-                // Check if mouse is over an entity
-                const Entity *oldMouseOverEntity = _currentMouseOverEntity;
-                Entity::set_t::iterator mouseOverIt = _entities.end();
-                static EntityType dummyEntityType(makeRect());
-                Entity lookupEntity(dummyEntityType, _mouse);
-                for (Entity::set_t::iterator it = _entities.lower_bound(&lookupEntity); it != _entities.end(); ++it) {
-                    if ((*it)->collision(_mouse))
-                        mouseOverIt = it;
-                }
-                if (mouseOverIt != _entities.end()) {
-                    _currentMouseOverEntity = *mouseOverIt;
-                    if (_currentMouseOverEntity != oldMouseOverEntity ||
-                        _currentMouseOverEntity->needsTooltipRefresh() ||
-                        _tooltipNeedsRefresh ||
-                        _locationChanged) {
-                        _currentMouseOverEntity->refreshTooltip(*this);
-                        _tooltipNeedsRefresh = false;
-                    }
-                        
-                } else
-                    _currentMouseOverEntity = 0;
 
                 break;
             }
@@ -256,8 +237,20 @@ void Client::run(){
                     newLoc.x -= (up != down) ? diagDist : dist;
                 else if (right && !left)
                     newLoc.x += (up != down) ? diagDist : dist;
+
+                if (newLoc.x < 0)
+                    newLoc.x = 0;
+                else if (newLoc.x > _mapSize.x)
+                    newLoc.x = _mapSize.x;
+                if (newLoc.y < 0)
+                    newLoc.y = 0;
+                else if (newLoc.y > _mapSize.y)
+                    newLoc.y = _mapSize.y;
+
                 setEntityLocation(&_character, newLoc);
+                updateOffset();
                 _locationChanged = true;
+                _mouseMoved = true;
             }
         }
 
@@ -279,11 +272,38 @@ void Client::run(){
             _entities.insert(*it);
         entitiesToReorder.clear();
 
+        if (_mouseMoved)
+            checkMouseOver();
+
         checkSocket();
         // Draw
         draw();
         SDL_Delay(10);
     }
+}
+
+void Client::checkMouseOver(){
+    // Check if mouse is over an entity
+    const Point mouseOffset = _mouse - _offset;
+    const Entity *oldMouseOverEntity = _currentMouseOverEntity;
+    Entity::set_t::iterator mouseOverIt = _entities.end();
+    static EntityType dummyEntityType(makeRect());
+    Entity lookupEntity(dummyEntityType, mouseOffset);
+    for (Entity::set_t::iterator it = _entities.lower_bound(&lookupEntity); it != _entities.end(); ++it) {
+        if ((*it)->collision(mouseOffset))
+            mouseOverIt = it;
+    }
+    if (mouseOverIt != _entities.end()) {
+        _currentMouseOverEntity = *mouseOverIt;
+        if (_currentMouseOverEntity != oldMouseOverEntity ||
+            _currentMouseOverEntity->needsTooltipRefresh() ||
+            _tooltipNeedsRefresh) {
+            _currentMouseOverEntity->refreshTooltip(*this);
+            _tooltipNeedsRefresh = false;
+        }
+            
+    } else
+        _currentMouseOverEntity = 0;
 }
 
 void Client::draw() const{
@@ -296,9 +316,14 @@ void Client::draw() const{
     }
 
     // Background
-    static const Color backgroundColor = Color::GREEN/4;
-    renderer.setDrawColor(Color::GREEN / 4);
+    renderer.setDrawColor(Color::BLUE_HELL);
     renderer.clear();
+
+    // Map
+    static const Color grassColor = Color::GREEN/4;
+    renderer.setDrawColor(grassColor);
+    renderer.fillRect(makeRect(_offset.x, _offset.y, _mapSize.x, _mapSize.y));
+
 
     // Entities, sorted from back to front
     for (Entity::set_t::const_iterator it = _entities.begin(); it != _entities.end(); ++it)
@@ -306,8 +331,8 @@ void Client::draw() const{
 
     // Rectangle around user
     renderer.setDrawColor(Color::WHITE);
-    SDL_Rect drawLoc = _character.drawRect();
-    renderer.drawRect(_character.drawRect());
+    SDL_Rect drawLoc = _character.drawRect() + _offset;
+    renderer.drawRect(drawLoc);
 
     // Inventory
     static SDL_Rect invBackgroundRect = makeRect(renderer.width() - 250, renderer.height() - 70, 250, 60);
@@ -487,6 +512,16 @@ void Client::handleMessage(const std::string &msg){
             _debug << Color::YELLOW << "Your inventory is full." << Log::endl;
             break;
 
+        case SV_MAP_SIZE:
+        {
+            double x, y;
+            singleMsg >> x >> del >> y >> del;
+            if (del != ']')
+                break;
+            _mapSize = Point(x, y);
+            break;
+        }
+
         case SV_LOCATION:
         {
             std::string name;
@@ -499,8 +534,10 @@ void Client::handleMessage(const std::string &msg){
             Point p(x, y);
             if (name == _username) {
                 setEntityLocation(&_character, p);
+                updateOffset();
                 _loaded = true;
                 _tooltipNeedsRefresh = true;
+                _mouseMoved = true;
             } else {
                 if (_otherUsers.find(name) == _otherUsers.end()) {
                     // Create new OtherUser
@@ -614,4 +651,9 @@ void Client::setEntityLocation(Entity *entity, const Point &location){
         _entities.insert(entity);
         entity->yChanged(false);
     }
+}
+
+void Client::updateOffset(){
+    _offset = Point(renderer.width() / 2 - _character.location().x,
+                    renderer.height() / 2 - _character.location().y);
 }

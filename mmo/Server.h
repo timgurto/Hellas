@@ -26,6 +26,8 @@ public:
 
     static bool isServer;
 
+    inline const Point &mapSize() const { return _mapSize; }
+
 private:
 
     static const int MAX_CLIENTS;
@@ -57,8 +59,13 @@ private:
 
     // World state
     std::set<BranchLite> _branches;
-    void loadData(); // Load data from files, or randomly generate new world.
-    void saveData();
+    void loadData(); // Attempt to load data from files.
+    void saveData() const;
+    Point _mapSize;
+    void generateWorld(); // Randomly generate a new world.
+    Point mapRand() const; // Return a random point on the map.
+
+
 
     // World data
     std::set<Item> _items;

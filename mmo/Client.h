@@ -30,6 +30,7 @@ public:
     TTF_Font *defaultFont() const;
 
     inline const Entity &character() const { return _character; }
+    inline const Point &offset() const { return _offset; }
 
 private:
     static const Uint32 MAX_TICK_LENGTH;
@@ -46,10 +47,15 @@ private:
     Socket _socket;
     TTF_Font *_defaultFont;
     std::string _username;
+
     Point _mouse; // Mouse position
+    bool _mouseMoved;
+    void checkMouseOver();
 
     void draw() const;
     void drawTooltip() const;
+    Point _offset; // An offset for drawing, based on the character's location on the map.
+    void updateOffset(); // Update the offset, when the character moves.
 
     std::string _partialMessage;
 
@@ -69,12 +75,13 @@ private:
 
     Uint32 _timeSinceLocUpdate; // Time since a CL_LOCATION was sent
     bool _locationChanged;
-    bool _tooltipNeedsRefresh; // "Official" location from server has changed
+    bool _tooltipNeedsRefresh; // Location has changed (local or official), and tooltip may have changed.
 
     // Game data
     std::set<Item> _items;
 
     // Information about the state of the world
+    Point _mapSize;
     std::vector<std::pair<std::string, size_t> > _inventory;
     std::map<std::string, OtherUser*> _otherUsers; // For lookup by name
     std::map<size_t, Branch*> _branches; // For lookup by serial

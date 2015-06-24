@@ -21,7 +21,7 @@ void OtherUser::draw(const Client &client) const{
 
     // Draw username
     Texture nameTexture(client.defaultFont(), _name, Color::CYAN);
-    Point p = location();
+    Point p = location() + client.offset();
     p.y -= 60;
     p.x -= nameTexture.width() / 2;
     nameTexture.draw(p);

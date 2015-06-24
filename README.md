@@ -41,11 +41,13 @@ Server | Client | Client state
  | Send `CL_I_AM` | 
 Receive `CL_I_AM`<sup>2</sup> | | 
 Send `SV_WELCOME` |  | 
+Send `SV_MAP_SIZE` |  | 
 Send `SV_LOCATION` for every other user |  | 
 Send `SV_BRANCH` for each branch |  | 
 Send `SV_INVENTORY` for each inventory item |  | 
 Send `SV_LOCATION` for user's location |  | 
  | Receive `SV_WELCOME` | Logged in
+ | Receive `SV_MAP_SIZE` | 
  | Receive others' `SV_LOCATION` messages | 
  | Receive `SV_BRANCH` messages | 
  | Receive `SV_INVENTORY` messages | 

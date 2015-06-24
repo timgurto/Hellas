@@ -206,8 +206,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
     User newUser(name, 0, socket);
     bool userExisted = readUserData(newUser);
     if (!userExisted) {
-        newUser.location(Point(rand() % (640 - 20),
-                               rand() % (480 - 40)));
+        newUser.location(mapRand());
         _debug << "New";
     } else {
         _debug << "Existing";
@@ -218,7 +217,10 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // Send welcome message
     sendMessage(socket, SV_WELCOME);
 
-    // Send new user everybody else's location
+    // Send new user the map size
+    sendMessage(newUser.socket(), SV_MAP_SIZE, makeArgs(_mapSize.x, _mapSize.y));
+
+    // Send him everybody else's location
     for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
         sendMessage(newUser.socket(), SV_LOCATION, it->makeLocationCommand());
 
@@ -294,7 +296,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> x >> del >> y >> del;
             if (del != ']')
                 return;
-            user->updateLocation(Point(x, y));
+            user->updateLocation(Point(x, y), *this);
             broadcast(SV_LOCATION, user->makeLocationCommand());
             break;
         }
@@ -421,9 +423,21 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode, const std
 }
 
 void Server::loadData(){
-    std::ifstream fs("World/branches.dat");
-    if (fs.good()) {
-        // Load data
+    // Load data
+    _items.insert(Item("wood", "wood", 5));
+    _items.insert(Item("none", "none"));
+
+    // Detect/load state
+    do {
+        std::ifstream fs("World/map.dat");
+        if (!fs.good())
+            break;
+        fs >> _mapSize.x >> _mapSize.y;
+        fs.close();
+
+        fs.open("World/branches.dat");
+        if (!fs.good())
+            break;
         int numBranches;
         fs >> numBranches;
         for (int i = 0; i != numBranches; ++i) {
@@ -433,22 +447,34 @@ void Server::loadData(){
         }
         fs.close();
 
-    } else {
-        // Create new random world
-        for (int i = 0; i != 30; ++i)
-            _branches.insert(Point(rand() % (640 - 20),
-                                  (rand() % 480 - 20)));
-    }
+        return;
+    } while (false);
 
-    _items.insert(Item("wood", "wood", 5));
-    _items.insert(Item("none", "none"));
+    _debug << Color::YELLOW << "No/invalid world data detected; generating new world." << Log::endl;
+    generateWorld();
 }
 
-void Server::saveData(){
-    std::ofstream fs("World/branches.dat");
-    fs << _branches.size() << std::endl;
+void Server::saveData() const{
+    std::ofstream fs("World/map.dat");
+    fs << _mapSize.x << '\n' << _mapSize.y << '\n';
+    fs.close();
+
+    fs.open("World/branches.dat");
+    fs << _branches.size() << '\n';
     for (std::set<BranchLite>::const_iterator it = _branches.begin(); it != _branches.end(); ++it) {
-        fs << it->location.x << ' ' << it->location.y << std::endl;
+        fs << it->location.x << ' ' << it->location.y << '\n';
     }
     fs.close();
+}
+
+void Server::generateWorld(){
+    _mapSize = Point(1000, 1000);
+
+    for (int i = 0; i != 30; ++i)
+        _branches.insert(mapRand());
+}
+
+Point Server::mapRand() const{
+    return Point(randDouble() * _mapSize.x,
+                 randDouble() * _mapSize.y);
 }

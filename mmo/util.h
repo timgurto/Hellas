@@ -9,6 +9,8 @@ struct Point;
 
 const double SQRT_2 = 1.4142135623731;
 
+inline double randDouble(){ return static_cast<double>(rand()) / RAND_MAX; }
+
 double distance(const Point &a, const Point &b);
 
 // Return the point between a and b which is dist from point a,
@@ -51,6 +53,15 @@ inline SDL_Rect makeRect(double x, double y, int w = 0, int h = 0){
     r.y = static_cast<int>(y + .5);
     r.w = w;
     r.h = h;
+    return r;
+}
+
+inline SDL_Rect makeRect(double x, double y, double w, double h){
+    SDL_Rect r;
+    r.x = static_cast<int>(x + .5);
+    r.y = static_cast<int>(y + .5);
+    r.w = static_cast<int>(w + .5);
+    r.h = static_cast<int>(h + .5);
     return r;
 }
 

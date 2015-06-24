@@ -55,7 +55,11 @@ enum MessageCode{
     // The client has been successfully registered
     SV_WELCOME,
 
-    // The location of a user.
+    // The map size
+    // Arguments: x, y
+    SV_MAP_SIZE,
+
+    // The location of a user
     // Arguments: username, x, y
     SV_LOCATION,
 
