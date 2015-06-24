@@ -30,7 +30,7 @@ Client::Client():
 _loop(true),
 _debug(640/20),
 _socket(),
-_connected(false),
+_loggedIn(false),
 _invalidUsername(false),
 _timeSinceLocUpdate(0),
 _locationChanged(false),
@@ -86,7 +86,7 @@ void Client::checkSocket(){
         return;
 
     // Ensure connected to server
-    if (!_connected && _timeSinceConnectAttempt >= CONNECT_RETRY_DELAY) {
+    if (!_loggedIn && _timeSinceConnectAttempt >= CONNECT_RETRY_DELAY) {
         _timeSinceConnectAttempt = 0;
         // Server details
         sockaddr_in serverAddr;
@@ -133,7 +133,7 @@ void Client::run(){
         _time = SDL_GetTicks();
 
         // Send ping
-        if (_connected && _time - _lastPingSent > PING_FREQUENCY) {
+        if (_loggedIn && _time - _lastPingSent > PING_FREQUENCY) {
             sendMessage(CL_PING, makeArgs(_time));
             _lastPingSent = _time;
         }
@@ -145,13 +145,13 @@ void Client::run(){
         timeAtLastTick = _time;
 
         // Ensure server connectivity
-        if (_connected && _time - _lastPingReply > SERVER_TIMEOUT) {
+        if (_loggedIn && _time - _lastPingReply > SERVER_TIMEOUT) {
             _debug << Color::RED << "Disconnected from server" << Log::endl;
             _socket = Socket();
-            _connected = false;
+            _loggedIn = false;
         }
 
-        if (!_connected) {
+        if (!_loggedIn) {
             _timeSinceConnectAttempt += _timeElapsed;
 
         } else { // Update server with current location
@@ -234,7 +234,7 @@ void Client::run(){
         }
         // Poll keys (whether they are currently pressed; not key events)
         static const Uint8 *keyboardState = SDL_GetKeyboardState(0);
-        if (_connected) {
+        if (_loggedIn) {
             bool
                 up = keyboardState[SDL_SCANCODE_UP] == SDL_PRESSED,
                 down = keyboardState[SDL_SCANCODE_DOWN] == SDL_PRESSED,
@@ -287,7 +287,7 @@ void Client::run(){
 }
 
 void Client::draw() const{
-    if (!_connected || !_loaded){
+    if (!_loggedIn || !_loaded){
         renderer.setDrawColor(Color::BLACK);
         renderer.clear();
         _debug.draw();
@@ -412,7 +412,7 @@ void Client::handleMessage(const std::string &msg){
         {
             if (del != ']')
                 break;
-            _connected = true;
+            _loggedIn = true;
             _timeSinceConnectAttempt = 0;
             _lastPingSent = _lastPingReply = _time;
             _debug << Color::GREEN << "Successfully logged in to server" << Log::endl;
@@ -466,7 +466,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             _debug << Color::YELLOW << "The server is full.  Attempting reconnection..." << Log::endl;
             _socket = Socket();
-            _connected = false;
+            _loggedIn = false;
             break;
 
         case SV_TOO_FAR:
