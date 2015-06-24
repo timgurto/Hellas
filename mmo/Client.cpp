@@ -286,7 +286,7 @@ void Client::run(){
     }
 }
 
-void Client::draw(){
+void Client::draw() const{
     if (!_connected || !_loaded){
         renderer.setDrawColor(Color::BLACK);
         renderer.clear();
@@ -318,7 +318,7 @@ void Client::draw(){
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
         SDL_Rect iconRect = makeRect(renderer.width() - 248 + i*50, renderer.height() - 48, 48, 48);
         renderer.fillRect(iconRect);
-        std::set<Item>::iterator it = _items.find(_inventory[i].first);
+        std::set<Item>::const_iterator it = _items.find(_inventory[i].first);
         if (it == _items.end())
             _debug << Color::RED << "Unknown item: " << _inventory[i].first;
         else {

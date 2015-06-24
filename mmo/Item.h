@@ -20,7 +20,7 @@ public:
 
     inline const std::string &id() const { return _id; }
     inline size_t stackSize() const { return _stackSize; }
-    const Texture &icon();
+    const Texture &icon() const { return _icon; }
 };
 
 #endif

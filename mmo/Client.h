@@ -21,7 +21,6 @@ public:
     Client();
     ~Client();
     void run();
-    void draw();
 
     static const double MOVEMENT_SPEED; // per second
 
@@ -49,6 +48,7 @@ private:
     std::string _username;
     Point _mouse; // Mouse position
 
+    void draw() const;
     void drawTooltip() const;
 
     std::string _partialMessage;
