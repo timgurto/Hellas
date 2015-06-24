@@ -39,6 +39,10 @@ private:
     static const Uint32 PING_FREQUENCY; // How often to test latency with each client
     static const Uint32 TIME_BETWEEN_LOCATION_UPDATES; // How often to send location updates to server (while moving)
 
+    static const int
+        SCREEN_X,
+        SCREEN_Y;
+
     Texture _invLabel;
 
     Entity _character; // Describes the user's character

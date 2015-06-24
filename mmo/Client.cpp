@@ -14,6 +14,9 @@
 extern Args cmdLineArgs;
 extern Renderer renderer;
 
+const int Client::SCREEN_X = 640;
+const int Client::SCREEN_Y = 360;
+
 const size_t Client::BUFFER_SIZE = 1023;
 
 const Uint32 Client::MAX_TICK_LENGTH = 100;
@@ -28,7 +31,7 @@ bool Client::isClient = false;
 
 Client::Client():
 _loop(true),
-_debug(640/20),
+_debug(360/20),
 _socket(),
 _loggedIn(false),
 _invalidUsername(false),
@@ -73,6 +76,9 @@ _currentMouseOverEntity(0){
     // Load game data
     _items.insert(Item("wood", "wood", 5));
     _items.insert(Item("none", "none"));
+
+    renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
+                      static_cast<float>(renderer.height()) / SCREEN_Y);
 }
 
 Client::~Client(){
@@ -208,6 +214,17 @@ void Client::run(){
 
                 break;
 
+            case SDL_WINDOWEVENT:
+                switch(e.window.event) {
+                case SDL_WINDOWEVENT_SIZE_CHANGED:
+                case SDL_WINDOWEVENT_RESIZED:
+                case SDL_WINDOWEVENT_MAXIMIZED:
+                case SDL_WINDOWEVENT_RESTORED:
+                    renderer.updateSize();
+                    renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
+                                      static_cast<float>(renderer.height()) / SCREEN_Y);
+                }
+
             default:
                 // Unhandled event
                 ;
@@ -335,13 +352,13 @@ void Client::draw() const{
     renderer.drawRect(drawLoc);
 
     // Inventory
-    static SDL_Rect invBackgroundRect = makeRect(renderer.width() - 250, renderer.height() - 70, 250, 60);
+    static SDL_Rect invBackgroundRect = makeRect(SCREEN_X - 250, SCREEN_Y - 70, 250, 60);
     renderer.setDrawColor(Color::WHITE / 4);
     renderer.fillRect(invBackgroundRect);
     _invLabel.draw(invBackgroundRect.x, invBackgroundRect.y);
     renderer.setDrawColor(Color::BLACK);
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
-        SDL_Rect iconRect = makeRect(renderer.width() - 248 + i*50, renderer.height() - 48, 48, 48);
+        SDL_Rect iconRect = makeRect(SCREEN_X - 248 + i*50, SCREEN_Y - 48, 48, 48);
         renderer.fillRect(iconRect);
         std::set<Item>::const_iterator it = _items.find(_inventory[i].first);
         if (it == _items.end())
@@ -384,13 +401,13 @@ void Client::drawTooltip() const{
         int mouseY = static_cast<int>(_mouse.y + .5);
 
         // y: below cursor, unless too close to the bottom of the screen
-        if (renderer.height() > mouseY + tooltip.height() + EDGE_GAP)
+        if (SCREEN_X > mouseY + tooltip.height() + EDGE_GAP)
             y = mouseY;
         else
-            y = renderer.height() - tooltip.height() - EDGE_GAP;
+            y = SCREEN_Y - tooltip.height() - EDGE_GAP;
 
         // x: to the right of the cursor, unless too close to the right of the screen
-        if (renderer.width() > mouseX + tooltip.width() + EDGE_GAP + CURSOR_GAP)
+        if (SCREEN_X > mouseX + tooltip.width() + EDGE_GAP + CURSOR_GAP)
             x = mouseX + CURSOR_GAP;
         else
             x = mouseX - tooltip.width() - CURSOR_GAP;
@@ -654,6 +671,6 @@ void Client::setEntityLocation(Entity *entity, const Point &location){
 }
 
 void Client::updateOffset(){
-    _offset = Point(renderer.width() / 2 - _character.location().x,
-                    renderer.height() / 2 - _character.location().y);
+    _offset = Point(SCREEN_X / 2 - _character.location().x,
+                    SCREEN_Y / 2 - _character.location().y);
 }

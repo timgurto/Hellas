@@ -38,7 +38,7 @@ void Renderer::init(){
                   480;
 
     _window = SDL_CreateWindow((cmdLineArgs.contains("server") ? "Server" : "Client"),
-                               screenX, screenY, screenW, screenH, SDL_WINDOW_SHOWN);
+                               screenX, screenY, screenW, screenH, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (!_window)
         return;
 
@@ -98,4 +98,12 @@ void Renderer::fillRect(const SDL_Rect &dstRect){
 
 void Renderer::setRenderTarget() const{
     SDL_SetRenderTarget(_renderer, 0);
+}
+
+void Renderer::setScale(float x, float y){
+    SDL_RenderSetScale(_renderer, x, y);
+}
+
+void Renderer::updateSize(){
+    SDL_GetRendererOutputSize(_renderer, &_w, &_h);
 }

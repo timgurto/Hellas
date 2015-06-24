@@ -44,6 +44,10 @@ public:
 
     void drawRect(const SDL_Rect &dstRect);
     void fillRect(const SDL_Rect &dstRect);
+
+    void setScale(float x, float y);
+
+    void updateSize();
 };
 
 #endif
