@@ -31,38 +31,38 @@ MMO economy simulator
 **Invalid username**, server has rejected client's username.  Until a login screen is added, this leaves the client in a zombie state.
 
 ## Login process
-Server | Client | Client state
------- | ------ | ------
-`Socket::bind()` | | Disconnected
-`Socket::listen()` | | 
-`select()` (looped) | | 
- | `connect()` | 
-`accept()`<sup>1</sup> | | Connected
- | Send `CL_I_AM` | 
-Receive `CL_I_AM`<sup>2</sup> | | 
-Send `SV_WELCOME` |  | 
-Send `SV_MAP_SIZE` |  | 
-Send `SV_LOCATION` for every other user |  | 
-Send `SV_BRANCH` for each branch |  | 
-Send `SV_INVENTORY` for each inventory item |  | 
-Send `SV_LOCATION` for user's location |  | 
- | Receive `SV_WELCOME` | Logged in
- | Receive `SV_MAP_SIZE` | 
- | Receive others' `SV_LOCATION` messages | 
- | Receive `SV_BRANCH` messages | 
- | Receive `SV_INVENTORY` messages | 
- | Receive own `SV_LOCATION` | Loaded
- | | 
-**Possible error cases:** | |
-<sup>1</sup> Send `SV_SERVER_FULL` | | 
-Wait 5s | Receive `SV_SERVER_FULL` | Disconnected
-`closesocket()` | | 
- | | 
-<sup>2</sup> Send `SV_DUPLICATE_USERNAME` | | 
- | Receive `SV_DUPLICATE_USERNAME` | Invalid username
- | | 
-<sup>2</sup> Send `SV_INVALID_USERNAME` | | 
- | Receive `SV_INVALID_USERNAME` | Invalid username
+Sequence | Server | Client | Client state
+-----: | ------ | ------ | ------
+1 | `Socket::bind()` | | Disconnected
+2 | `Socket::listen()` | | 
+3 | `select()` (looped) | | 
+4 | | `connect()` | 
+5 | `accept()`<sup>1</sup> | | Connected
+6 | | Send `CL_I_AM` | 
+7 | Receive `CL_I_AM`<sup>2</sup> | | 
+8 | Send `SV_WELCOME` |  | 
+9 | Send `SV_MAP_SIZE` |  | 
+10 | Send `SV_LOCATION` for every other user |  | 
+11 | Send `SV_BRANCH` for each branch |  | 
+12 | Send `SV_INVENTORY` for each inventory item |  | 
+13 | Send `SV_LOCATION` for user's location |  | 
+14 | | Receive `SV_WELCOME` | Logged in
+15 | | Receive `SV_MAP_SIZE` | 
+16 | | Receive others' `SV_LOCATION` messages | 
+17 | | Receive `SV_BRANCH` messages | 
+18 | | Receive `SV_INVENTORY` messages | 
+19 | | Receive own `SV_LOCATION` | Loaded
+ | | | 
+ | **Possible error cases:** | |
+1 |<sup>1</sup> Send `SV_SERVER_FULL` | | 
+2 |Wait 5s | Receive `SV_SERVER_FULL` | Disconnected
+3 |`closesocket()` | | 
+ | | | 
+1 |<sup>2</sup> Send `SV_DUPLICATE_USERNAME` | | 
+2 | | Receive `SV_DUPLICATE_USERNAME` | Invalid username
+ | | | 
+1 |<sup>2</sup> Send `SV_INVALID_USERNAME` | | 
+2 | | Receive `SV_INVALID_USERNAME` | Invalid username
 
 ## Glossary of ambiguous terms
 **character**, the *avatar* which represents a user in-game
