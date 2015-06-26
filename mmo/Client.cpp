@@ -60,8 +60,8 @@ _currentMouseOverEntity(0){
 
     _defaultFont = TTF_OpenFont("trebuc.ttf", 16);
 
-    OtherUser::image("Images/man.bmp");
-    Branch::image("Images/branch.bmp");
+    OtherUser::image("Images/man.png");
+    Branch::image("Images/branch.png");
 
     _invLabel = Texture(_defaultFont, "Inventory");
 
@@ -223,6 +223,7 @@ void Client::run(){
                     renderer.updateSize();
                     renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
                                       static_cast<float>(renderer.height()) / SCREEN_Y);
+                    break;
                 }
 
             default:

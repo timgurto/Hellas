@@ -1,4 +1,5 @@
 #include <SDL_ttf.h>
+#include <SDL_image.h>
 
 #include "Args.h"
 #include "Renderer.h"
@@ -19,6 +20,7 @@ _renderer(0){
         ret = TTF_Init();
         if (ret < 0)
             return;
+        ret = IMG_Init(IMG_INIT_PNG);
     }
     ++_count;
 }

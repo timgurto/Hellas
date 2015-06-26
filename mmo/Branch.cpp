@@ -4,7 +4,7 @@
 #include "Server.h"
 #include "util.h"
 
-EntityType Branch::_entityType(makeRect(-10, -5));
+EntityType Branch::_entityType(makeRect(-8, -8));
 
 Branch::Branch(const Branch &rhs):
 Entity(rhs),

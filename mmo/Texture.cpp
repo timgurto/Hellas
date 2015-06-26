@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <SDL_image.h>
 #include <cassert>
 
 #include "Color.h"
@@ -49,7 +50,7 @@ _raw(0){
         return;
     assert (renderer);
 
-    SDL_Surface *surface = SDL_LoadBMP(filename.c_str());
+    SDL_Surface *surface = IMG_Load(filename.c_str());
     if (!surface)
         return;
     if (&colorKey != &Color::NO_KEY) {
