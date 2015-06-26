@@ -45,6 +45,7 @@ public:
     void draw(int x = 0, int y = 0) const;
     void draw(const Point &location) const;
     void draw(const SDL_Rect &location) const;
+    void draw(const SDL_Rect &location, const SDL_Rect &srcRect) const;
 
     // Render to this Texture instead of the renderer.
     // Texture must have been created with Texture(width, height), otherwise this function will have no effect.

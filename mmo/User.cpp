@@ -46,14 +46,17 @@ void User::updateLocation(const Point &dest, const Server &server){
     _location = interpolate(_location, dest, maxLegalDistance);
 
     // Keep in-bounds
+    const int
+        xLimit = server.mapX() * Server::TILE_W - Server::TILE_W/2,
+        yLimit = server.mapY() * Server::TILE_H;
     if (_location.x < 0)
         _location.x = 0;
-    else if (_location.x > server.mapSize().x)
-        _location.x = server.mapSize().x;
+    else if (_location.x > xLimit)
+        _location.x = xLimit;
     if (_location.y < 0)
         _location.y = 0;
-    else if (_location.y > server.mapSize().y)
-        _location.y = server.mapSize().y;
+    else if (_location.y > yLimit)
+        _location.y = yLimit;
 }
 
 void User::contact(){

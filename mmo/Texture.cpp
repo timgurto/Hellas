@@ -141,6 +141,10 @@ void Texture::draw(const SDL_Rect &location) const{
     renderer.drawTexture(_raw, location);
 }
 
+void Texture::draw(const SDL_Rect &location, const SDL_Rect &srcRect) const{
+    renderer.drawTexture(_raw, location, srcRect);
+}
+
 void Texture::addRef(){
     ++_numTextures;
     std::map<SDL_Texture *, size_t>::iterator it = _refs.find(_raw);

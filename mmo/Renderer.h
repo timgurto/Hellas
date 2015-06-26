@@ -35,6 +35,7 @@ public:
     SDL_Texture *createTextureFromSurface(SDL_Surface *surface) const;
     SDL_Texture *createTargetableTexture(int width, int height) const;
     void drawTexture(SDL_Texture *srcTex, const SDL_Rect &dstRect);
+    void drawTexture(SDL_Texture *srcTex, const SDL_Rect &dstRect, const SDL_Rect &srcRect);
 
     void setDrawColor(const Color &color = Color::BLACK);
     void clear();

@@ -24,12 +24,17 @@ const int Server::ACTION_DISTANCE = 20;
 
 bool Server::isServer = false;
 
+const size_t Server::TILE_W = 32;
+const size_t Server::TILE_H = 32;
+
 Server::Server():
 _loop(true),
 _debug(100),
 _socket(),
 _time(SDL_GetTicks()),
-_lastSave(_time){
+_lastSave(_time),
+_mapX(0),
+_mapY(0){
     isServer = true;
 
     _debug << cmdLineArgs << Log::endl;
@@ -218,7 +223,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
     sendMessage(socket, SV_WELCOME);
 
     // Send new user the map size
-    sendMessage(newUser.socket(), SV_MAP_SIZE, makeArgs(_mapSize.x, _mapSize.y));
+    sendMessage(newUser.socket(), SV_MAP_SIZE, makeArgs(_mapX, _mapY));
 
     // Send him everybody else's location
     for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
@@ -432,7 +437,7 @@ void Server::loadData(){
         std::ifstream fs("World/map.dat");
         if (!fs.good())
             break;
-        fs >> _mapSize.x >> _mapSize.y;
+        fs >> _mapX >> _mapY;
         fs.close();
 
         fs.open("World/branches.dat");
@@ -456,7 +461,7 @@ void Server::loadData(){
 
 void Server::saveData() const{
     std::ofstream fs("World/map.dat");
-    fs << _mapSize.x << '\n' << _mapSize.y << '\n';
+    fs << _mapX << '\n' << _mapY << '\n';
     fs.close();
 
     fs.open("World/branches.dat");
@@ -468,13 +473,14 @@ void Server::saveData() const{
 }
 
 void Server::generateWorld(){
-    _mapSize = Point(1000, 1000);
+    _mapX = 20;
+    _mapY = 20;
 
     for (int i = 0; i != 30; ++i)
         _branches.insert(mapRand());
 }
 
 Point Server::mapRand() const{
-    return Point(randDouble() * _mapSize.x,
-                 randDouble() * _mapSize.y);
+    return Point(randDouble() * (_mapX - 0.5) * TILE_W,
+                 randDouble() * _mapY * TILE_H);
 }

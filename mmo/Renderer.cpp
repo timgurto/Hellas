@@ -78,6 +78,10 @@ void Renderer::drawTexture(SDL_Texture *srcTex, const SDL_Rect &dstRect){
     SDL_RenderCopy(_renderer, srcTex, 0, &dstRect);
 }
 
+void Renderer::drawTexture(SDL_Texture *srcTex, const SDL_Rect &dstRect, const SDL_Rect &srcRect){
+    SDL_RenderCopy(_renderer, srcTex, &srcRect, &dstRect);
+}
+
 void Renderer::setDrawColor(const Color &color){
     SDL_SetRenderDrawColor(_renderer, color.r(), color.g(), color.b(), 0xff);
 }

@@ -26,7 +26,9 @@ public:
 
     static bool isServer;
 
-    inline const Point &mapSize() const { return _mapSize; }
+    static const size_t TILE_W, TILE_H;
+    inline const size_t mapX() const { return _mapX; }
+    inline const size_t mapY() const { return _mapY; }
 
 private:
 
@@ -61,7 +63,7 @@ private:
     std::set<BranchLite> _branches;
     void loadData(); // Attempt to load data from files.
     void saveData() const;
-    Point _mapSize;
+    size_t _mapX, _mapY; // Number of tiles in each dimension
     void generateWorld(); // Randomly generate a new world.
     Point mapRand() const; // Return a random point on the map.
 

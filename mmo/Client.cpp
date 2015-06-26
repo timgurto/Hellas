@@ -7,6 +7,7 @@
 #include "Client.h"
 #include "EntityType.h"
 #include "Renderer.h"
+#include "Server.h"
 #include "User.h"
 #include "messageCodes.h"
 #include "util.h"
@@ -39,6 +40,7 @@ _timeSinceLocUpdate(0),
 _locationChanged(false),
 _tooltipNeedsRefresh(false),
 _character(OtherUser::entityType(), 0),
+_tile(std::string("Images/grass.png")),
 _inventory(User::INVENTORY_SIZE, std::make_pair("none", 0)),
 _time(SDL_GetTicks()),
 _timeElapsed(0),
@@ -256,14 +258,17 @@ void Client::run(){
                 else if (right && !left)
                     newLoc.x += (up != down) ? diagDist : dist;
 
+                const int
+                    xLimit = _mapX * Server::TILE_W - Server::TILE_W/2,
+                    yLimit = _mapY * Server::TILE_H;
                 if (newLoc.x < 0)
                     newLoc.x = 0;
-                else if (newLoc.x > _mapSize.x)
-                    newLoc.x = _mapSize.x;
+                else if (newLoc.x > xLimit)
+                    newLoc.x = xLimit;
                 if (newLoc.y < 0)
                     newLoc.y = 0;
-                else if (newLoc.y > _mapSize.y)
-                    newLoc.y = _mapSize.y;
+                else if (newLoc.y > yLimit)
+                    newLoc.y = yLimit;
 
                 setEntityLocation(&_character, newLoc);
                 updateOffset();
@@ -338,9 +343,26 @@ void Client::draw() const{
     renderer.clear();
 
     // Map
-    static const Color grassColor = Color::GREEN/4;
-    renderer.setDrawColor(grassColor);
-    renderer.fillRect(makeRect(_offset.x, _offset.y, _mapSize.x, _mapSize.y));
+    SDL_Rect leftHalf = {0, 0, Server::TILE_W/2, Server::TILE_H};
+    SDL_Rect rightHalf = {Server::TILE_W/2, 0, Server::TILE_W/2, Server::TILE_H};
+    for (size_t y = 0; y != _mapY; ++y) {
+        const bool yOdd = y % 2 == 1;
+        int yLoc = y * Server::TILE_H + static_cast<int>(_offset.y + .5);
+        for (size_t x = 0; x != _mapX; ++x){
+            int xLoc = x * Server::TILE_W + static_cast<int>(_offset.x + .5);
+            if (yOdd) {
+                if (x == 0) {
+                    _tile.draw(makeRect(xLoc, yLoc, Server::TILE_W/2, Server::TILE_H), rightHalf);
+                    continue;
+                } else
+                    xLoc -= Server::TILE_W/2;
+            } else if (x == _mapX-1) {
+                _tile.draw(makeRect(xLoc, yLoc, Server::TILE_W/2, Server::TILE_H), leftHalf);
+                continue;
+            }
+            _tile.draw(xLoc, yLoc);
+        }
+    }
 
 
     // Entities, sorted from back to front
@@ -532,11 +554,12 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_MAP_SIZE:
         {
-            double x, y;
+            size_t x, y;
             singleMsg >> x >> del >> y >> del;
             if (del != ']')
                 break;
-            _mapSize = Point(x, y);
+            _mapX = x;
+            _mapY = y;
             break;
         }
 
