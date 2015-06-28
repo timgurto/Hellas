@@ -91,7 +91,8 @@ Client::~Client(){
         TTF_CloseFont(_defaultFont);
     OtherUser::image("");
     Branch::image("");
-    _tile[0] = _tile[1] = _tile[2] = Texture();
+    for (Entity::set_t::iterator it = _entities.begin(); it != _entities.end(); ++it)
+        delete *it;
 }
 
 void Client::checkSocket(){
