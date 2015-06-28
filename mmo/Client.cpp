@@ -201,8 +201,8 @@ void Client::run(){
                 break;
 
             case SDL_MOUSEMOTION: {
-                _mouse.x = e.motion.x;
-                _mouse.y = e.motion.y;
+                _mouse.x = e.motion.x * SCREEN_X / static_cast<double>(renderer.width());
+                _mouse.y = e.motion.y * SCREEN_Y / static_cast<double>(renderer.height());
                 _mouseMoved = true;
 
                 if (!_loaded)
