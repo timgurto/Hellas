@@ -222,8 +222,15 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // Send welcome message
     sendMessage(socket, SV_WELCOME);
 
-    // Send new user the map size
+    // Send new user the map
     sendMessage(newUser.socket(), SV_MAP_SIZE, makeArgs(_mapX, _mapY));
+    for (size_t y = 0; y != _mapY; ++y){
+        std::ostringstream oss;
+        oss << "0," << y << "," << _mapX;
+        for (size_t x = 0; x != _mapX; ++x)
+            oss << "," << _map[x][y];
+        sendMessage(newUser.socket(), SV_TERRAIN, oss.str());
+    }
 
     // Send him everybody else's location
     for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
@@ -438,6 +445,12 @@ void Server::loadData(){
         if (!fs.good())
             break;
         fs >> _mapX >> _mapY;
+       _map = std::vector<std::vector<size_t> >(_mapX);
+        for (size_t x = 0; x != _mapX; ++x)
+            _map[x] = std::vector<size_t>(_mapY, 0);
+        for (size_t y = 0; y != _mapY; ++y)
+            for (size_t x = 0; x != _mapX; ++x)
+                fs >> _map[x][y];
         fs.close();
 
         fs.open("World/branches.dat");
@@ -462,6 +475,12 @@ void Server::loadData(){
 void Server::saveData() const{
     std::ofstream fs("World/map.dat");
     fs << _mapX << '\n' << _mapY << '\n';
+    for (size_t y = 0; y != _mapY; ++y){
+        for (size_t x = 0; x != _mapX; ++x){
+            fs << _map[x][y];
+        }
+        fs << '\n';
+    }
     fs.close();
 
     fs.open("World/branches.dat");
@@ -475,6 +494,13 @@ void Server::saveData() const{
 void Server::generateWorld(){
     _mapX = 20;
     _mapY = 20;
+
+    _map = std::vector<std::vector<size_t> >(_mapX);
+    for (size_t x = 0; x != _mapX; ++x){
+        _map[x] = std::vector<size_t>(_mapY);
+        for (size_t y = 0; y != _mapY; ++y)
+            _map[x][y] = rand() % 3;
+    }
 
     for (int i = 0; i != 30; ++i)
         _branches.insert(mapRand());

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cassert>
 #include <SDL.h>
 #include <string>
@@ -40,7 +41,6 @@ _timeSinceLocUpdate(0),
 _locationChanged(false),
 _tooltipNeedsRefresh(false),
 _character(OtherUser::entityType(), 0),
-_tile(std::string("Images/grass.png")),
 _inventory(User::INVENTORY_SIZE, std::make_pair("none", 0)),
 _time(SDL_GetTicks()),
 _timeElapsed(0),
@@ -64,6 +64,9 @@ _currentMouseOverEntity(0){
 
     OtherUser::image("Images/man.png");
     Branch::image("Images/branch.png");
+    _tile[0] = Texture(std::string("Images/grass.png"));
+    _tile[1] = Texture(std::string("Images/stone.png"));
+    _tile[2] = Texture(std::string("Images/road.png"));
 
     _invLabel = Texture(_defaultFont, "Inventory");
 
@@ -88,6 +91,7 @@ Client::~Client(){
         TTF_CloseFont(_defaultFont);
     OtherUser::image("");
     Branch::image("");
+    _tile[0] = _tile[1] = _tile[2] = Texture();
 }
 
 void Client::checkSocket(){
@@ -349,18 +353,19 @@ void Client::draw() const{
         const bool yOdd = y % 2 == 1;
         int yLoc = y * Server::TILE_H + static_cast<int>(_offset.y + .5);
         for (size_t x = 0; x != _mapX; ++x){
+            const Texture &tile = _tile[_map[x][y]];
             int xLoc = x * Server::TILE_W + static_cast<int>(_offset.x + .5);
             if (yOdd) {
                 if (x == 0) {
-                    _tile.draw(makeRect(xLoc, yLoc, Server::TILE_W/2, Server::TILE_H), rightHalf);
+                    tile.draw(makeRect(xLoc, yLoc, Server::TILE_W/2, Server::TILE_H), rightHalf);
                     continue;
                 } else
                     xLoc -= Server::TILE_W/2;
             } else if (x == _mapX-1) {
-                _tile.draw(makeRect(xLoc, yLoc, Server::TILE_W/2, Server::TILE_H), leftHalf);
+                tile.draw(makeRect(xLoc, yLoc, Server::TILE_W/2, Server::TILE_H), leftHalf);
                 continue;
             }
-            _tile.draw(xLoc, yLoc);
+            tile.draw(xLoc, yLoc);
         }
     }
 
@@ -560,6 +565,34 @@ void Client::handleMessage(const std::string &msg){
                 break;
             _mapX = x;
             _mapY = y;
+            _map = std::vector<std::vector<size_t> >(_mapX);
+            for (size_t x = 0; x != _mapX; ++x)
+                _map[x] = std::vector<size_t>(_mapY, 0);
+            break;
+        }
+
+        case SV_TERRAIN:
+        {
+            size_t x, y, n;
+            singleMsg >> x >> del >> y >> del >> n >> del;
+            if (x + n > _mapX)
+                break;
+            if (y > _mapY)
+                break;
+            std::vector<size_t> terrain;
+            for (size_t i = 0; i != n; ++i) {
+                size_t value;
+                singleMsg >> value >> del;
+                terrain.push_back(value);
+            }
+            if (del != ']')
+                break;
+            if (terrain.size() != n)
+                break;
+            if (n == _mapX)
+                _map[y].swap(terrain);
+            else
+                std::copy(terrain.begin(), terrain.end(), _map[y].begin() + x);
             break;
         }
 

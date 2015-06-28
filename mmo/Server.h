@@ -63,11 +63,10 @@ private:
     std::set<BranchLite> _branches;
     void loadData(); // Attempt to load data from files.
     void saveData() const;
-    size_t _mapX, _mapY; // Number of tiles in each dimension
     void generateWorld(); // Randomly generate a new world.
     Point mapRand() const; // Return a random point on the map.
-
-
+    size_t _mapX, _mapY; // Number of tiles in each dimension
+    std::vector<std::vector<size_t>> _map;
 
     // World data
     std::set<Item> _items;

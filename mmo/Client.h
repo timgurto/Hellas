@@ -44,7 +44,7 @@ private:
         SCREEN_Y;
 
     Texture _invLabel;
-    Texture _tile;
+    Texture _tile[3];
 
     Entity _character; // Describes the user's character
 
@@ -87,6 +87,7 @@ private:
 
     // Information about the state of the world
     size_t _mapX, _mapY;
+    std::vector<std::vector<size_t> > _map;
     std::vector<std::pair<std::string, size_t> > _inventory;
     std::map<std::string, OtherUser*> _otherUsers; // For lookup by name
     std::map<size_t, Branch*> _branches; // For lookup by serial
