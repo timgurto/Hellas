@@ -445,12 +445,14 @@ void Server::loadData(){
         if (!fs.good())
             break;
         fs >> _mapX >> _mapY;
-       _map = std::vector<std::vector<size_t> >(_mapX);
+        _map = std::vector<std::vector<size_t> >(_mapX);
         for (size_t x = 0; x != _mapX; ++x)
             _map[x] = std::vector<size_t>(_mapY, 0);
         for (size_t y = 0; y != _mapY; ++y)
             for (size_t x = 0; x != _mapX; ++x)
                 fs >> _map[x][y];
+        if (!fs.good())
+            break;
         fs.close();
 
         fs.open("World/branches.dat");
@@ -463,6 +465,8 @@ void Server::loadData(){
             fs >> p.x >> p.y;
             _branches.insert(p);
         }
+        if (!fs.good())
+            break;
         fs.close();
 
         return;
@@ -477,7 +481,7 @@ void Server::saveData() const{
     fs << _mapX << '\n' << _mapY << '\n';
     for (size_t y = 0; y != _mapY; ++y){
         for (size_t x = 0; x != _mapX; ++x){
-            fs << _map[x][y];
+            fs << ' ' << _map[x][y];
         }
         fs << '\n';
     }
