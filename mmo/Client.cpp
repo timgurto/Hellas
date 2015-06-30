@@ -481,54 +481,45 @@ void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
         RIGHT_HALF   = {Server::TILE_W/2, 0,                Server::TILE_W/2, Server::TILE_H},
         FULL         = {0,                0,                Server::TILE_W,   Server::TILE_H};
 
-    bool leftIsSame = tileID == H && H == L && L == G;
-    bool rightIsSame = tileID == E && E == R && R == F;
-    if (leftIsSame || rightIsSame) {
-            _tile[tileID].setAlpha(0xff);
-            _tile[tileID].setBlend(SDL_BLENDMODE_NONE);
-
-        if (leftIsSame && rightIsSame) 
-            _tile[tileID].draw(drawLoc + FULL);
-        else if (leftIsSame) 
-            _tile[tileID].draw(drawLoc + LEFT_HALF, LEFT_HALF);
-        else if (rightIsSame) 
-            _tile[tileID].draw(drawLoc + RIGHT_HALF, RIGHT_HALF);
-
-        _tile[tileID].setBlend(SDL_BLENDMODE_ADD);
-        if (leftIsSame && rightIsSame) {
-            _tile[tileID].setAlpha(0x3f);
-            return;
-        }
-    }
-
     // Black background
     // Assuming all tile images are set to SDL_BLENDMODE_ADD and 0x3f alpha
     renderer.setDrawColor(Color::BLACK);
-    if (leftIsSame || yOdd && x == 0)
+    if (yOdd && x == 0) {
         renderer.fillRect(drawLoc + RIGHT_HALF);
-    else if (rightIsSame || !yOdd && x == _mapX-1)
+    }
+    else if (!yOdd && x == _mapX-1) {
         renderer.fillRect(drawLoc + LEFT_HALF);
-    else
+    }
+    else {
         renderer.fillRect(drawLoc + FULL);
+    }
 
     // Half-alpha base tile
     _tile[tileID].setAlpha(0x7f);
-    if (leftIsSame || yOdd && x == 0)
-        _tile[tileID].draw(drawLoc + RIGHT_HALF, RIGHT_HALF);
-    else if (rightIsSame || !yOdd && x == _mapX-1)
-        _tile[tileID].draw(drawLoc + LEFT_HALF, LEFT_HALF);
-    else
-        _tile[tileID].draw(drawLoc + FULL, FULL);
+    if (yOdd && x == 0) {
+        _tile[tileID].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+        _tile[tileID].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+    } else if (!yOdd && x == _mapX-1) {
+        _tile[tileID].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+        _tile[tileID].draw(drawLoc + TOP_LEFT, TOP_LEFT);
+    } else {
+        _tile[tileID].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+        _tile[tileID].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+        _tile[tileID].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+        _tile[tileID].draw(drawLoc + TOP_LEFT, TOP_LEFT);
+    }
     _tile[tileID].setAlpha(0x3f);
 
     // Quarter-alpha L, R, E, F, G, H tiles
-    if (!leftIsSame && (!yOdd || x != 0)) {
-        _tile[L].draw(drawLoc + LEFT_HALF, LEFT_HALF);
+    if (!yOdd || x != 0) {
+        _tile[L].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+        _tile[L].draw(drawLoc + TOP_LEFT, TOP_LEFT);
         _tile[G].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
         _tile[H].draw(drawLoc + TOP_LEFT, TOP_LEFT);
     }
-    if (!rightIsSame && (yOdd || x != _mapX-1)) {
-        _tile[R].draw(drawLoc + RIGHT_HALF, RIGHT_HALF);
+    if (yOdd || x != _mapX-1) {
+        _tile[R].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+        _tile[R].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
         _tile[E].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
         _tile[F].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
     }

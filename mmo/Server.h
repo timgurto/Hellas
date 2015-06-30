@@ -26,7 +26,7 @@ public:
 
     static bool isServer;
 
-    static const size_t TILE_W, TILE_H;
+    static const int TILE_W, TILE_H;
     inline const size_t mapX() const { return _mapX; }
     inline const size_t mapY() const { return _mapY; }
 

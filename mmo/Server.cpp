@@ -24,8 +24,8 @@ const int Server::ACTION_DISTANCE = 20;
 
 bool Server::isServer = false;
 
-const size_t Server::TILE_W = 32;
-const size_t Server::TILE_H = 32;
+const int Server::TILE_W = 32;
+const int Server::TILE_H = 32;
 
 Server::Server():
 _loop(true),
