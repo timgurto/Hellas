@@ -407,7 +407,7 @@ void Client::draw() const{
         oss << "infinite ";
     oss << "fps " << _latency << "ms";
     Texture statsDisplay(_defaultFont, oss.str(), Color::YELLOW);
-    statsDisplay.draw(renderer.width() - statsDisplay.width(), 0);
+    statsDisplay.draw(SCREEN_X - statsDisplay.width(), 0);
 
     _debug.draw();
     renderer.present();
