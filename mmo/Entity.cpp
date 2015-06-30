@@ -73,7 +73,7 @@ void Entity::refreshTooltip(const Client &client){
     background.setRenderTarget();
     renderer.setDrawColor(backgroundColor);
     renderer.clear();
-    background.setBlend(SDL_BLENDMODE_NONE, 0xbf);
+    background.setAlpha(0xbf);
 
     _tooltip.setRenderTarget();
     background.draw();

@@ -67,6 +67,10 @@ _currentMouseOverEntity(0){
     _tile[0] = Texture(std::string("Images/grass.png"));
     _tile[1] = Texture(std::string("Images/stone.png"));
     _tile[2] = Texture(std::string("Images/road.png"));
+    for (size_t i = 0; i != 3; ++i) {
+        _tile[i].setBlend(SDL_BLENDMODE_ADD);
+        _tile[i].setAlpha(0x3f);
+    }
 
     _invLabel = Texture(_defaultFont, "Inventory");
 
@@ -352,6 +356,8 @@ void Client::draw() const{
         int yLoc = y * Server::TILE_H + static_cast<int>(_offset.y + .5);
         for (size_t x = 0; x != _mapX; ++x){
             int xLoc = x * Server::TILE_W + static_cast<int>(_offset.x + .5);
+            if (y % 2 == 1)
+                xLoc -= Server::TILE_W/2;
             drawTile(x, y, xLoc, yLoc);
         }
     }
@@ -431,20 +437,80 @@ void Client::drawTooltip() const{
 }
 
 void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
-    static const SDL_Rect LEFT_HALF = {0, 0, Server::TILE_W/2, Server::TILE_H};
-    static const SDL_Rect RIGHT_HALF = {Server::TILE_W/2, 0, Server::TILE_W/2, Server::TILE_H};
-    const Texture &tile = _tile[_map[x][y]];
-    if (y % 2 == 1) {
-        if (x == 0) {
-            tile.draw(makeRect(xLoc, yLoc, Server::TILE_W/2, Server::TILE_H), RIGHT_HALF);
-            return;
-        } else
-            xLoc -= Server::TILE_W/2;
-    } else if (x == _mapX-1) {
-        tile.draw(makeRect(xLoc, yLoc, Server::TILE_W/2, Server::TILE_H), LEFT_HALF);
-        return;
+    /*
+          H | E
+      L | tileID| R
+          G | F
+    */
+    const bool yOdd = (y % 2 == 1);
+    size_t tileID, L, R, E, F, G, H;
+    tileID = _map[x][y];
+    R = x == _mapX-1 ? tileID : _map[x+1][y];
+    L = x == 0 ? tileID : _map[x-1][y];
+    if (y == 0) {
+        H = E = tileID;
+    } else {
+        if (yOdd) {
+            E = _map[x][y-1];
+            H = x == 0 ? tileID : _map[x-1][y-1];
+        } else {
+            E = x == _mapX-1 ? tileID : _map[x+1][y-1];
+            H = _map[x][y-1];
+        }
     }
-    tile.draw(xLoc, yLoc);
+    if (y == _mapY-1) {
+        G = F = tileID;
+    } else {
+        if (!yOdd) {
+            F = x == _mapX-1 ? tileID : _map[x+1][y+1];
+            G = _map[x][y+1];
+        } else {
+            F = _map[x][y+1];
+            G = x == 0 ? tileID : _map[x-1][y+1];
+        }
+    }
+
+    static const SDL_Rect
+        TOP_LEFT     = {0,                0,                Server::TILE_W/2, Server::TILE_H/2},
+        TOP_RIGHT    = {Server::TILE_W/2, 0,                Server::TILE_W/2, Server::TILE_H/2},
+        BOTTOM_LEFT  = {0,                Server::TILE_H/2, Server::TILE_W/2, Server::TILE_H/2},
+        BOTTOM_RIGHT = {Server::TILE_W/2, Server::TILE_H/2, Server::TILE_W/2, Server::TILE_H/2},
+        LEFT_HALF    = {0,                0,                Server::TILE_W/2, Server::TILE_H},
+        RIGHT_HALF   = {Server::TILE_W/2, 0,                Server::TILE_W/2, Server::TILE_H},
+        FULL         = {0,                0,                Server::TILE_W,   Server::TILE_H};
+
+    // Black background
+    // Assuming all tile images are set to SDL_BLENDMODE_ADD
+    const SDL_Rect drawLoc = {xLoc, yLoc, 0, 0};
+    renderer.setDrawColor(Color::BLACK);
+    if (yOdd && x == 0)
+        renderer.fillRect(drawLoc + RIGHT_HALF);
+    else if (!yOdd && x == _mapX-1)
+        renderer.fillRect(drawLoc + LEFT_HALF);
+    else
+        renderer.fillRect(drawLoc + FULL);
+
+    // Half-alpha base tile
+    _tile[tileID].setAlpha(0x7f);
+    if (yOdd && x == 0)
+        _tile[tileID].draw(drawLoc + RIGHT_HALF, RIGHT_HALF);
+    else if (!yOdd && x == _mapX-1)
+        _tile[tileID].draw(drawLoc + LEFT_HALF, LEFT_HALF);
+    else
+        _tile[tileID].draw(drawLoc + FULL, FULL);
+    _tile[tileID].setAlpha(0x3f);
+
+    // Quarter-alpha L, R, E, F, G, H tiles
+    if (!yOdd || x != 0) {
+        _tile[L].draw(drawLoc + LEFT_HALF, LEFT_HALF);
+        _tile[G].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+        _tile[H].draw(drawLoc + TOP_LEFT, TOP_LEFT);
+    }
+    if (yOdd || x != _mapX-1) {
+        _tile[R].draw(drawLoc + RIGHT_HALF, RIGHT_HALF);
+        _tile[E].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+        _tile[F].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+    }
 }
 
 void Client::handleMessage(const std::string &msg){

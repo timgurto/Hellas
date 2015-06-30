@@ -123,8 +123,11 @@ Texture::~Texture(){
         removeRef();
 }
 
-void Texture::setBlend(SDL_BlendMode mode, Uint8 alpha){
+void Texture::setBlend(SDL_BlendMode mode) const{
     SDL_SetTextureBlendMode(_raw, mode);
+}
+
+void Texture::setAlpha(Uint8 alpha) const{
     SDL_SetTextureAlphaMod(_raw, alpha);
 }
 

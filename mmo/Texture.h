@@ -40,7 +40,9 @@ public:
     inline int width() const { return _w; }
     inline int height() const { return _h; }
 
-    void setBlend(SDL_BlendMode mode, Uint8 alpha = 0xff);
+    // These functions are const, making blendmode and alpha de-facto mutable
+    void setBlend(SDL_BlendMode mode = SDL_BLENDMODE_BLEND) const;
+    void setAlpha(Uint8 alpha = 0xff) const;
 
     void draw(int x = 0, int y = 0) const;
     void draw(const Point &location) const;

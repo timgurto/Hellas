@@ -65,6 +65,15 @@ inline SDL_Rect makeRect(double x, double y, double w, double h){
     return r;
 }
 
+inline SDL_Rect operator+(const SDL_Rect &lhs, const SDL_Rect &rhs){
+    SDL_Rect r;
+    r.x = lhs.x + rhs.x;
+    r.y = lhs.y + rhs.y;
+    r.w = lhs.w + rhs.w;
+    r.h = lhs.h + rhs.h;
+    return r;
+}
+
 inline SDL_Rect makeRect(const Point &p){
     return makeRect(p.x, p.y);
 }
