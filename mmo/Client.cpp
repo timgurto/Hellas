@@ -348,25 +348,11 @@ void Client::draw() const{
     renderer.clear();
 
     // Map
-    SDL_Rect leftHalf = {0, 0, Server::TILE_W/2, Server::TILE_H};
-    SDL_Rect rightHalf = {Server::TILE_W/2, 0, Server::TILE_W/2, Server::TILE_H};
     for (size_t y = 0; y != _mapY; ++y) {
-        const bool yOdd = y % 2 == 1;
         int yLoc = y * Server::TILE_H + static_cast<int>(_offset.y + .5);
         for (size_t x = 0; x != _mapX; ++x){
-            const Texture &tile = _tile[_map[x][y]];
             int xLoc = x * Server::TILE_W + static_cast<int>(_offset.x + .5);
-            if (yOdd) {
-                if (x == 0) {
-                    tile.draw(makeRect(xLoc, yLoc, Server::TILE_W/2, Server::TILE_H), rightHalf);
-                    continue;
-                } else
-                    xLoc -= Server::TILE_W/2;
-            } else if (x == _mapX-1) {
-                tile.draw(makeRect(xLoc, yLoc, Server::TILE_W/2, Server::TILE_H), leftHalf);
-                continue;
-            }
-            tile.draw(xLoc, yLoc);
+            drawTile(x, y, xLoc, yLoc);
         }
     }
 
@@ -442,6 +428,23 @@ void Client::drawTooltip() const{
             x = mouseX - tooltip.width() - CURSOR_GAP;
         tooltip.draw(x, y);
     }
+}
+
+void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
+    static const SDL_Rect LEFT_HALF = {0, 0, Server::TILE_W/2, Server::TILE_H};
+    static const SDL_Rect RIGHT_HALF = {Server::TILE_W/2, 0, Server::TILE_W/2, Server::TILE_H};
+    const Texture &tile = _tile[_map[x][y]];
+    if (y % 2 == 1) {
+        if (x == 0) {
+            tile.draw(makeRect(xLoc, yLoc, Server::TILE_W/2, Server::TILE_H), RIGHT_HALF);
+            return;
+        } else
+            xLoc -= Server::TILE_W/2;
+    } else if (x == _mapX-1) {
+        tile.draw(makeRect(xLoc, yLoc, Server::TILE_W/2, Server::TILE_H), LEFT_HALF);
+        return;
+    }
+    tile.draw(xLoc, yLoc);
 }
 
 void Client::handleMessage(const std::string &msg){

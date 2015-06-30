@@ -58,6 +58,7 @@ private:
     void checkMouseOver();
 
     void draw() const;
+    void drawTile(size_t x, size_t y, int xLoc, int yLoc) const;
     void drawTooltip() const;
     Point _offset; // An offset for drawing, based on the character's location on the map.
     void updateOffset(); // Update the offset, when the character moves.
