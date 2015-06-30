@@ -44,7 +44,7 @@ void Renderer::init(){
     if (!_window)
         return;
 
-    _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
+    _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!_renderer)
         return;
 
