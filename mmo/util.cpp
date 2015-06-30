@@ -10,6 +10,18 @@ double distance(const Point &a, const Point &b){
     return sqrt(xDelta * xDelta + yDelta * yDelta);
 }
 
+double distance(const Point &p, const Point &a, const Point &b){
+    double numerator = (b.y - a.y) * p.x -
+                       (b.x - a.x) * p.y +
+                       b.x * a.y -
+                       b.y * a.x;
+    numerator = abs(numerator);
+    double denominator = (b.y - a.y) * (b.y - a.y) +
+                         (b.x - a.x) * (b.x - a.x);
+    denominator = sqrt(denominator);
+    return numerator / denominator;
+}
+
 Point interpolate(const Point &a, const Point &b, double dist){
     double
         xDelta = b.x - a.x,

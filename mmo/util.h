@@ -12,6 +12,7 @@ const double SQRT_2 = 1.4142135623731;
 inline double randDouble(){ return static_cast<double>(rand()) / RAND_MAX; }
 
 double distance(const Point &a, const Point &b);
+double distance(const Point &p, const Point &a, const Point &b); // point P to line AB
 
 // Return the point between a and b which is dist from point a,
 // or return b if dist exceeds the distance between a and b.

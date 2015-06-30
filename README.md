@@ -7,11 +7,13 @@ MMO economy simulator
 
 `-left `*`value`* the x co-ordinate of the window
 
+`-new` (server only) generate a new world instead of attempting to load existing data
+
 `-server` run the program as a server (default is as client)
 
-`-server-ip`*`value`* for a client, attempt to connect to server at specific IP address
+`-server-ip`*`value`* (client only) attempt to connect to server at specific IP address
 
-`-server-port`*`value`* for a client, attempt to connect to server at specific port
+`-server-port`*`value`* (client only) attempt to connect to server at specific port
 
 `-top `*`value`* the y co-ordinate of the window
 

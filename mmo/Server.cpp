@@ -441,6 +441,9 @@ void Server::loadData(){
 
     // Detect/load state
     do {
+        if (cmdLineArgs.contains("new"))
+            break;
+
         std::ifstream fs("World/map.dat");
         if (!fs.good())
             break;
@@ -499,11 +502,33 @@ void Server::generateWorld(){
     _mapX = 20;
     _mapY = 20;
 
+    // Grass by default
     _map = std::vector<std::vector<size_t> >(_mapX);
     for (size_t x = 0; x != _mapX; ++x){
         _map[x] = std::vector<size_t>(_mapY);
         for (size_t y = 0; y != _mapY; ++y)
-            _map[x][y] = rand() % 3;
+            _map[x][y] = 0;
+    }
+
+    // Stone in circles
+    for (int i = 0; i != 5; ++i) {
+        size_t centerX = rand() % _mapX;
+        size_t centerY = rand() % _mapY;
+        for (size_t x = 0; x != _mapX; ++x)
+            for (size_t y = 0; y != _mapY; ++y)
+                if (distance(Point(centerX, centerY), Point(x, y)) <= 4)
+                    _map[x][y] = 1;
+    }
+
+    // Roads
+    for (int i = 0; i != 2; ++i) {
+        Point
+            start(rand() % _mapX, rand() % _mapY),
+            end(rand() % _mapX, rand() % _mapY);
+        for (size_t x = 0; x != _mapX; ++x)
+            for (size_t y = 0; y != _mapY; ++y)
+                if (distance(Point(x, y), start, end) <= 1)
+                    _map[x][y] = 2;
     }
 
     for (int i = 0; i != 30; ++i)
