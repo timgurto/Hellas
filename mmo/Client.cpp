@@ -96,7 +96,8 @@ Client::~Client(){
     OtherUser::image("");
     Branch::image("");
     for (Entity::set_t::iterator it = _entities.begin(); it != _entities.end(); ++it)
-        delete *it;
+        if (*it != &_character)
+            delete *it;
 }
 
 void Client::checkSocket(){
