@@ -531,6 +531,19 @@ void Server::generateWorld(){
                     _map[x][y] = 2;
     }
 
+    // River: randomish line
+    Point
+        start(rand() % _mapX, rand() % _mapY),
+        end(rand() % _mapX, rand() % _mapY);
+    for (size_t x = 0; x != _mapX; ++x)
+        for (size_t y = 0; y != _mapY; ++y) {
+            double dist = distance(Point(x, y), start, end) + randDouble() * 2 - 1;
+            if (dist <= 0.5)
+                _map[x][y] = 3;
+            else if (dist <= 2)
+                _map[x][y] = 4;
+        }
+
     for (int i = 0; i != 30; ++i)
         _branches.insert(mapRand());
 }

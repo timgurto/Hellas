@@ -44,7 +44,7 @@ private:
         SCREEN_Y;
 
     Texture _invLabel;
-    Texture _tile[3];
+    Texture _tile[5];
 
     Entity _character; // Describes the user's character
 

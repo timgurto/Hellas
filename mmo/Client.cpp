@@ -67,7 +67,9 @@ _currentMouseOverEntity(0){
     _tile[0] = Texture(std::string("Images/grass.png"));
     _tile[1] = Texture(std::string("Images/stone.png"));
     _tile[2] = Texture(std::string("Images/road.png"));
-    for (size_t i = 0; i != 3; ++i) {
+    _tile[3] = Texture(std::string("Images/deepWater.png"));
+    _tile[4] = Texture(std::string("Images/water.png"));
+    for (size_t i = 0; i != 5; ++i) {
         _tile[i].setBlend(SDL_BLENDMODE_ADD);
         _tile[i].setAlpha(0x3f);
     }
@@ -523,6 +525,11 @@ void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
         _tile[E].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
         _tile[F].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
     }
+
+    /*if (tileID == 3 || tileID == 4) {
+        renderer.setDrawColor(Color::RED);
+        renderer.drawRect(drawLoc + FULL);
+    }*/
 }
 
 void Client::handleMessage(const std::string &msg){
