@@ -35,7 +35,7 @@ bool Client::isClient = false;
 
 Client::Client():
 _loop(true),
-_debug(360/20),
+_debug(360/13, "trebuc.ttf", 10),
 _socket(),
 _loggedIn(false),
 _invalidUsername(false),
@@ -62,7 +62,7 @@ _currentMouseOverEntity(0){
 
     _entities.insert(&_character);
 
-    _defaultFont = TTF_OpenFont("trebuc.ttf", 16);
+    _defaultFont = TTF_OpenFont("trebuc.ttf", 10);
 
     OtherUser::image("Images/man.png");
     Branch::image("Images/branch.png");
@@ -398,7 +398,7 @@ void Client::draw() const{
             if (it->stackSize() > 1) {
                 // Display stack size
                 Texture qtyLabel(_defaultFont, makeArgs(makeArgs(_inventory[i].second)));
-                qtyLabel.draw(iconRect.x + ICON_SIZE - qtyLabel.width(), iconRect.y + ICON_SIZE - qtyLabel.height());
+                qtyLabel.draw(iconRect.x + ICON_SIZE - qtyLabel.width() + 1, iconRect.y + ICON_SIZE - qtyLabel.height() + 3);
             }
         }
     }
@@ -424,8 +424,8 @@ void Client::draw() const{
 void Client::drawTooltip() const{
     Texture tooltip = _currentMouseOverEntity->tooltip();
     if (tooltip) {
-        static const int EDGE_GAP = 10; // Gap from screen edges
-        static const int CURSOR_GAP = 20; // Horizontal gap from cursor
+        static const int EDGE_GAP = 2; // Gap from screen edges
+        static const int CURSOR_GAP = 10; // Horizontal gap from cursor
         int x, y;
         int mouseX = static_cast<int>(_mouse.x + .5);
         int mouseY = static_cast<int>(_mouse.y + .5);

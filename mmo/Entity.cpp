@@ -44,7 +44,7 @@ void Entity::refreshTooltip(const Client &client){
         return;
     }
 
-    static const int PADDING = 10; // margins, and between title and body
+    static const int PADDING = 4; // margins, and between title and body
     std::vector<Texture> textTextures;
     Texture heading(client.defaultFont(), textStrings.front(), Color::WHITE);
     textTextures.push_back(heading);
@@ -78,7 +78,7 @@ void Entity::refreshTooltip(const Client &client){
     _tooltip.setRenderTarget();
     background.draw();
     renderer.setDrawColor(Color::WHITE);
-    renderer.drawRect(makeRect(0, 0, totalWidth-1, totalHeight-1));
+    renderer.drawRect(makeRect(0, 0, totalWidth, totalHeight));
 
     // Draw text
     int y = PADDING;
