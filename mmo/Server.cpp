@@ -515,9 +515,14 @@ void Server::generateWorld(){
         size_t centerX = rand() % _mapX;
         size_t centerY = rand() % _mapY;
         for (size_t x = 0; x != _mapX; ++x)
-            for (size_t y = 0; y != _mapY; ++y)
-                if (distance(Point(centerX, centerY), Point(x, y)) <= 4)
+            for (size_t y = 0; y != _mapY; ++y) {
+                Point thisTile(x, y);
+                if (y % 2 == 1)
+                    thisTile.x -= .5;
+                double dist = distance(Point(centerX, centerY), thisTile);
+                if (dist <= 4)
                     _map[x][y] = 1;
+            }
     }
 
     // Roads
@@ -526,9 +531,14 @@ void Server::generateWorld(){
             start(rand() % _mapX, rand() % _mapY),
             end(rand() % _mapX, rand() % _mapY);
         for (size_t x = 0; x != _mapX; ++x)
-            for (size_t y = 0; y != _mapY; ++y)
-                if (distance(Point(x, y), start, end) <= 1)
+            for (size_t y = 0; y != _mapY; ++y) {
+                Point thisTile(x, y);
+                if (y % 2 == 1)
+                    thisTile.x -= .5;
+                double dist = distance(thisTile, start, end);
+                if (dist <= 1)
                     _map[x][y] = 2;
+            }
     }
 
     // River: randomish line
@@ -537,7 +547,10 @@ void Server::generateWorld(){
         end(rand() % _mapX, rand() % _mapY);
     for (size_t x = 0; x != _mapX; ++x)
         for (size_t y = 0; y != _mapY; ++y) {
-            double dist = distance(Point(x, y), start, end) + randDouble() * 2 - 1;
+            Point thisTile(x, y);
+            if (y % 2 == 1)
+                thisTile.x -= .5;
+            double dist = distance(thisTile, start, end) + randDouble() * 2 - 1;
             if (dist <= 0.5)
                 _map[x][y] = 3;
             else if (dist <= 2)
