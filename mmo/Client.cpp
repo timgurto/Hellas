@@ -66,6 +66,7 @@ _currentMouseOverEntity(0){
 
     OtherUser::image("Images/man.png");
     Branch::image("Images/branch.png");
+    Tree::image("Images/tree.png");
     _tile[0] = Texture(std::string("Images/grass.png"));
     _tile[1] = Texture(std::string("Images/stone.png"));
     _tile[2] = Texture(std::string("Images/road.png"));
@@ -99,6 +100,7 @@ Client::~Client(){
         TTF_CloseFont(_defaultFont);
     OtherUser::image("");
     Branch::image("");
+    Tree::image("");
     for (Entity::set_t::iterator it = _entities.begin(); it != _entities.end(); ++it)
         if (*it != &_character)
             delete *it;
@@ -744,6 +746,23 @@ void Client::handleMessage(const std::string &msg){
                 Branch *newBranch = new Branch(serial, Point(x, y));
                 _entities.insert(newBranch);
                 _branches[serial] = newBranch;
+            }
+            break;
+        }
+
+        case SV_TREE:
+        {
+            int serial;
+            double x, y;
+            singleMsg >> serial >> del >> x >> del >> y >> del;
+            if (del != ']')
+                break;
+            std::map<size_t, Tree*>::iterator it = _trees.find(serial);
+            if (it == _trees.end()) {
+                // A new branch was added; add entity to list
+                Tree *newTree = new Tree(serial, Point(x, y));
+                _entities.insert(newTree);
+                _trees[serial] = newTree;
             }
             break;
         }

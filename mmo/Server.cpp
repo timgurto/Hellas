@@ -240,6 +240,10 @@ void Server::addUser(const Socket &socket, const std::string &name){
     for (std::set<BranchLite>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
         sendMessage(newUser.socket(), SV_BRANCH, makeArgs(it->serial, it->location.x, it->location.y));
 
+    // Send him tree locations
+    for (std::set<TreeLite>::const_iterator it = _trees.begin(); it != _trees.end(); ++it)
+        sendMessage(newUser.socket(), SV_TREE, makeArgs(it->serial, it->location.x, it->location.y));
+
     // Send him his inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         if (newUser.inventory(i).first != "none")
@@ -472,6 +476,20 @@ void Server::loadData(){
             break;
         fs.close();
 
+        fs.open("World/trees.dat");
+        if (!fs.good())
+            break;
+        int numTrees;
+        fs >> numTrees;
+        for (int i = 0; i != numTrees; ++i) {
+            Point p;
+            fs >> p.x >> p.y;
+            _trees.insert(p);
+        }
+        if (!fs.good())
+            break;
+        fs.close();
+
         return;
     } while (false);
 
@@ -493,6 +511,13 @@ void Server::saveData() const{
     fs.open("World/branches.dat");
     fs << _branches.size() << '\n';
     for (std::set<BranchLite>::const_iterator it = _branches.begin(); it != _branches.end(); ++it) {
+        fs << it->location.x << ' ' << it->location.y << '\n';
+    }
+    fs.close();
+
+    fs.open("World/trees.dat");
+    fs << _trees.size() << '\n';
+    for (std::set<TreeLite>::const_iterator it = _trees.begin(); it != _trees.end(); ++it) {
         fs << it->location.x << ' ' << it->location.y << '\n';
     }
     fs.close();
@@ -559,6 +584,9 @@ void Server::generateWorld(){
 
     for (int i = 0; i != 30; ++i)
         _branches.insert(mapRand());
+
+    for (int i = 0; i != 10; ++i)
+        _trees.insert(mapRand());
 }
 
 Point Server::mapRand() const{

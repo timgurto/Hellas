@@ -11,6 +11,7 @@
 #include "Item.h"
 #include "Log.h"
 #include "Socket.h"
+#include "TreeLite.h"
 #include "User.h"
 #include "messageCodes.h"
 
@@ -61,6 +62,7 @@ private:
 
     // World state
     std::set<BranchLite> _branches;
+    std::set<TreeLite> _trees;
     void loadData(); // Attempt to load data from files.
     void saveData() const;
     void generateWorld(); // Randomly generate a new world.

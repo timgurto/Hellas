@@ -231,6 +231,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Tree.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TreeLite.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\User.cpp"
 				>
 			</File>
@@ -306,6 +314,14 @@
 			</File>
 			<File
 				RelativePath=".\Texture.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Tree.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TreeLite.h"
 				>
 			</File>
 			<File

@@ -14,6 +14,7 @@
 #include "OtherUser.h"
 #include "Point.h"
 #include "Socket.h"
+#include "Tree.h"
 #include "messageCodes.h"
 
 class Client{
@@ -94,6 +95,7 @@ private:
     std::vector<std::pair<std::string, size_t> > _inventory;
     std::map<std::string, OtherUser*> _otherUsers; // For lookup by name
     std::map<size_t, Branch*> _branches; // For lookup by serial
+    std::map<size_t, Tree*> _trees; // For lookup by serial
 
     Entity::set_t _entities;
     void removeEntity(Entity *const toRemove); // Remove from _entities, and delete pointer

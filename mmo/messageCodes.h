@@ -76,6 +76,10 @@ enum MessageCode{
     // Arguments: serial, x, y
     SV_BRANCH,
 
+    // The location of a tree
+    // Arguments: serial, x, y
+    SV_TREE,
+
     // A branch has been removed
     // Arguments: serial
     SV_REMOVE_BRANCH,
