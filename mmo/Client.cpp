@@ -678,10 +678,8 @@ void Client::handleMessage(const std::string &msg){
                 break;
             if (terrain.size() != n)
                 break;
-            if (n == _mapX)
-                _map[y].swap(terrain);
-            else
-                std::copy(terrain.begin(), terrain.end(), _map[y].begin() + x);
+            for (size_t i = 0; i != n; ++i)
+                _map[x+i][y] = terrain[i];
             break;
         }
 
