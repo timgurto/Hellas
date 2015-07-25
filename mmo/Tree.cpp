@@ -4,7 +4,7 @@
 #include "Server.h"
 #include "util.h"
 
-EntityType Tree::_entityType(makeRect(-12, -29));
+EntityType Tree::_entityType(makeRect(-20, -47));
 
 Tree::Tree(const Tree &rhs):
 Entity(rhs),
