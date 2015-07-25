@@ -46,6 +46,8 @@ private:
     Texture _invLabel;
     Texture _tile[5];
 
+    static const int ICON_SIZE;
+
     Entity _character; // Describes the user's character
 
     bool _loop;

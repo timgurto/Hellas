@@ -29,6 +29,8 @@ const Uint32 Client::PING_FREQUENCY = 5000;
 const double Client::MOVEMENT_SPEED = 80;
 const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 250;
 
+const int Client::ICON_SIZE = 16;
+
 bool Client::isClient = false;
 
 Client::Client():
@@ -376,13 +378,17 @@ void Client::draw() const{
     renderer.drawRect(drawLoc);
 
     // Inventory
-    static SDL_Rect invBackgroundRect = makeRect(SCREEN_X - 250, SCREEN_Y - 70, 250, 60);
+    static const size_t ICONS_X = 8;
+    const int INV_WIDTH = max(min(ICONS_X, _inventory.size()) * (ICON_SIZE + 1) + 1,
+                              static_cast<unsigned>(_invLabel.width()));
+    const int INV_HEIGHT = ICON_SIZE + _invLabel.height() + 1;
+    static SDL_Rect invBackgroundRect = makeRect(SCREEN_X - INV_WIDTH, SCREEN_Y - INV_HEIGHT, INV_WIDTH, INV_HEIGHT);
     renderer.setDrawColor(Color::WHITE / 4);
     renderer.fillRect(invBackgroundRect);
     _invLabel.draw(invBackgroundRect.x, invBackgroundRect.y);
     renderer.setDrawColor(Color::BLACK);
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
-        SDL_Rect iconRect = makeRect(SCREEN_X - 248 + i*50, SCREEN_Y - 48, 48, 48);
+        SDL_Rect iconRect = makeRect(SCREEN_X - INV_WIDTH + 1 + i*(ICON_SIZE+1), SCREEN_Y - ICON_SIZE, ICON_SIZE, ICON_SIZE);
         renderer.fillRect(iconRect);
         std::set<Item>::const_iterator it = _items.find(_inventory[i].first);
         if (it == _items.end())
@@ -392,7 +398,7 @@ void Client::draw() const{
             if (it->stackSize() > 1) {
                 // Display stack size
                 Texture qtyLabel(_defaultFont, makeArgs(makeArgs(_inventory[i].second)));
-                qtyLabel.draw(iconRect.x + 48 - qtyLabel.width(), iconRect.y + 48 - qtyLabel.height());
+                qtyLabel.draw(iconRect.x + ICON_SIZE - qtyLabel.width(), iconRect.y + ICON_SIZE - qtyLabel.height());
             }
         }
     }
