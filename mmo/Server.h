@@ -77,6 +77,8 @@ private:
 
     void draw() const;
 
+    void removeBranch (size_t serial, User &user);
+
     bool readUserData(User &user); // true: save data existed
     void writeUserData(const User &user) const;
     static const Uint32 SAVE_FREQUENCY;

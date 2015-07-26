@@ -10,6 +10,6 @@ TreeLite::TreeLite(const Point &loc):
 serial(_currentSerial++),
 location(loc) {}
 
-TreeLite::TreeLite(size_t s) // For set/map lookup
-:serial (s),
+TreeLite::TreeLite(size_t s): // For set/map lookup
+serial (s),
 location(0) {}

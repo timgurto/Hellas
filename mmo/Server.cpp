@@ -362,17 +362,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             } else if (distance(user->location(), it->location) > ACTION_DISTANCE) {
                 sendMessage(client, SV_TOO_FAR);
             } else {
-                // Give wood to user
-                int slot = user->giveItem(*_items.find(std::string("wood")));
-                if (slot == User::INVENTORY_SIZE) {
-                    sendMessage(client, SV_INVENTORY_FULL);
-                    break;
-                }
-                sendMessage(client, SV_INVENTORY, makeArgs(slot, "wood", user->inventory(slot).second));
-                // Remove branch
-                broadcast(SV_REMOVE_BRANCH, makeArgs(serial));
-                _branches.erase(it);
-                saveData();
+                removeBranch(serial, *user);
             }
             break;
         }
@@ -387,6 +377,21 @@ void Server::broadcast(MessageCode msgCode, const std::string &args){
     for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it){
         sendMessage(it->socket(), msgCode, args);
     }
+}
+
+void Server::removeBranch(size_t serial, User &user){
+    // Give wood to user
+    int slot = user.giveItem(*_items.find(std::string("wood")));
+    if (slot == User::INVENTORY_SIZE) {
+        sendMessage(user.socket(), SV_INVENTORY_FULL);
+        return;
+    }
+    sendMessage(user.socket(), SV_INVENTORY, makeArgs(slot, "wood", user.inventory(slot).second));
+    // Remove branch
+    std::set<BranchLite>::const_iterator it = _branches.find(serial);
+    broadcast(SV_REMOVE_BRANCH, makeArgs(serial));
+    _branches.erase(it);
+    saveData();
 }
 
 bool Server::readUserData(User &user){
