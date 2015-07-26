@@ -50,6 +50,7 @@ private:
     static const int ICON_SIZE;
 
     Entity _character; // Describes the user's character
+    Uint32 _actionTimer; // How long the character has been performing the current action.
 
     bool _loop;
     Socket _socket;

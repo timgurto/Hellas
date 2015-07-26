@@ -8,6 +8,8 @@ struct BranchLite{
     size_t serial;
     Point location;
 
+    static const Uint32 ACTION_TIME;
+
     BranchLite(const BranchLite &rhs);
 
     BranchLite(const Point &loc); // Generates new serial

@@ -12,6 +12,8 @@ const size_t User::INVENTORY_SIZE = 5;
 User::User(const std::string &name, const Point &loc, const Socket &socket):
 _name(name),
 _location(loc),
+_actionTarget(0),
+_actionTime(0),
 _socket(socket),
 _inventory(INVENTORY_SIZE, std::make_pair("none", 0)),
 _lastLocUpdate(SDL_GetTicks()),
@@ -81,4 +83,20 @@ size_t User::giveItem(const Item &item){
         _inventory[emptySlot] = std::make_pair(item.id(), 1);
     }
     return emptySlot;
+}
+
+void User::actionTarget(const BranchLite *branch){
+    _actionTarget = branch;
+    _actionTime = BranchLite::ACTION_TIME;
+}
+
+void User::update(Uint32 timeElapsed, Server &server){
+    if (_actionTime == 0)
+        return;
+    if (_actionTime > timeElapsed)
+        _actionTime -= timeElapsed;
+    else {
+        server.removeBranch(_actionTarget->serial, *this);
+        _actionTime = 0;
+    }
 }

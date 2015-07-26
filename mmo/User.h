@@ -15,6 +15,8 @@ class User{
     std::string _name;
     Socket _socket;
     Point _location;
+    const BranchLite *_actionTarget; // Points to a branch or tree that the user is acting upon.
+    Uint32 _actionTime; // Time remaining on current action.
     std::vector<std::pair<std::string, size_t> > _inventory;
 
     Uint32 _lastLocUpdate; // Time that the last CL_LOCATION was received
@@ -34,6 +36,8 @@ public:
     void location(std::istream &is); // Read co-ordinates from stream
     const std::pair<std::string, size_t> &inventory(size_t index) const;
     std::pair<std::string, size_t> &inventory(size_t index);
+    const BranchLite *actionTarget() const { return _actionTarget; }
+    void actionTarget(const BranchLite *branch);
 
     std::string makeLocationCommand() const;
 
@@ -48,6 +52,8 @@ public:
 
     // Return value: which inventory slot was used
     size_t giveItem(const Item &item);
+
+    void update(Uint32 timeElapsed, Server &server);
 };
 
 #endif

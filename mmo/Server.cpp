@@ -32,6 +32,7 @@ _loop(true),
 _debug(100),
 _socket(),
 _time(SDL_GetTicks()),
+_lastTime(_time),
 _lastSave(_time),
 _mapX(0),
 _mapY(0){
@@ -143,6 +144,8 @@ void Server::checkSockets(){
 void Server::run(){
     while (_loop) {
         _time = SDL_GetTicks();
+        const Uint32 timeElapsed = _time - _lastTime;
+        _lastTime = _time;
 
         // Check that clients are alive
         for (std::set<User>::iterator it = _users.begin(); it != _users.end();) {
@@ -162,6 +165,10 @@ void Server::run(){
             saveData();
             _lastSave = _time;
         }
+
+        // Update users
+        for (std::set<User>::iterator it = _users.begin(); it != _users.end(); ++it)
+            it->update(timeElapsed, *this);
 
         // Deal with any messages from the server
         while (!_messages.empty()){
@@ -362,7 +369,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             } else if (distance(user->location(), it->location) > ACTION_DISTANCE) {
                 sendMessage(client, SV_TOO_FAR);
             } else {
-                removeBranch(serial, *user);
+                user->actionTarget(&*it);
             }
             break;
         }
@@ -387,6 +394,12 @@ void Server::removeBranch(size_t serial, User &user){
         return;
     }
     sendMessage(user.socket(), SV_INVENTORY, makeArgs(slot, "wood", user.inventory(slot).second));
+    // Ensure no other users are targeting this branch, as it will be removed.
+    for (std::set<User>::iterator it = _users.begin(); it != _users.end(); ++it)
+        if (it->actionTarget()->serial == serial) {
+            it->actionTarget(0);
+            sendMessage(it->socket(), SV_DOESNT_EXIST);
+        }
     // Remove branch
     std::set<BranchLite>::const_iterator it = _branches.find(serial);
     broadcast(SV_REMOVE_BRANCH, makeArgs(serial));

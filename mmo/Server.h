@@ -36,7 +36,7 @@ private:
     static const int MAX_CLIENTS;
     static const size_t BUFFER_SIZE;
 
-    Uint32 _time;
+    Uint32 _time, _lastTime;
 
     Socket _socket;
 
@@ -78,6 +78,7 @@ private:
     void draw() const;
 
     void removeBranch (size_t serial, User &user);
+    friend void User::update(Uint32 timeElapsed, Server &server);
 
     bool readUserData(User &user); // true: save data existed
     void writeUserData(const User &user) const;
