@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <sstream>
 #include <fstream>
+#include <utility>
 
 #include "Client.h" //TODO remove; only here for random initial placement
 #include "Renderer.h"
@@ -219,6 +220,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
     bool userExisted = readUserData(newUser);
     if (!userExisted) {
         newUser.location(mapRand());
+        newUser.inventory(0) = std::make_pair("axe", 1);
         _debug << "New";
     } else {
         _debug << "Existing";
@@ -459,6 +461,7 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode, const std
 void Server::loadData(){
     // Load data
     _items.insert(Item("wood", "wood", 5));
+    _items.insert(Item("axe", "wooden axe", 1));
     _items.insert(Item("none", "none"));
 
     // Detect/load state

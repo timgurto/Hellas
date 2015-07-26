@@ -91,6 +91,7 @@ _currentMouseOverEntity(0){
 
     // Load game data
     _items.insert(Item("wood", "wood", 5));
+    _items.insert(Item("axe", "wooden axe", 1));
     _items.insert(Item("none", "none"));
 
     renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
@@ -762,7 +763,7 @@ void Client::handleMessage(const std::string &msg){
         }
 
         case SV_INVENTORY:
-        {
+        {_debug(singleMsg.str());
             int slot, quantity;
             std::string itemID;
             singleMsg >> slot >> del;
