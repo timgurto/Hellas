@@ -375,9 +375,9 @@ void Client::draw() const{
         (*it)->draw(*this);
 
     // Rectangle around user
-    renderer.setDrawColor(Color::WHITE);
-    SDL_Rect drawLoc = _character.drawRect() + _offset;
-    renderer.drawRect(drawLoc);
+    //renderer.setDrawColor(Color::WHITE);
+    //SDL_Rect drawLoc = _character.drawRect() + _offset;
+    //renderer.drawRect(drawLoc);
 
     // Inventory
     static const size_t ICONS_X = 8;
