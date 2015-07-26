@@ -36,7 +36,7 @@ public:
 
     virtual void draw(const Client &client) const;
     virtual void update(double delta) {}
-    virtual void onLeftClick(const Client &client) const {}
+    virtual void onLeftClick(Client &client) const {}
 
     void refreshTooltip(const Client &client);
 

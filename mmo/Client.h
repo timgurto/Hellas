@@ -33,6 +33,8 @@ public:
     inline const Entity &character() const { return _character; }
     inline const Point &offset() const { return _offset; }
 
+    void setAction(const std::string &msg, Uint32 actionLength);
+
 private:
     static const Uint32 MAX_TICK_LENGTH;
     static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping reply from the server
@@ -51,6 +53,8 @@ private:
 
     Entity _character; // Describes the user's character
     Uint32 _actionTimer; // How long the character has been performing the current action.
+    Uint32 _actionLength; // How long the current action should take.
+    std::string _actionMessage; // A description of the current action.
 
     bool _loop;
     Socket _socket;

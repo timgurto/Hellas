@@ -14,7 +14,7 @@ Tree::Tree(size_t serialArg, const Point &loc):
 Entity(_entityType, loc),
 _serial(serialArg){}
 
-void Tree::onLeftClick(const Client &client) const{
+void Tree::onLeftClick(Client &client) const{
     
 }
 

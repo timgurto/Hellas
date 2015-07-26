@@ -44,6 +44,7 @@ _locationChanged(false),
 _tooltipNeedsRefresh(false),
 _character(OtherUser::entityType(), 0),
 _actionTimer(0),
+_actionLength(0),
 _inventory(User::INVENTORY_SIZE, std::make_pair("none", 0)),
 _time(SDL_GetTicks()),
 _timeElapsed(0),
@@ -312,6 +313,13 @@ void Client::run(){
             _entities.insert(*it);
         entitiesToReorder.clear();
 
+        // Update cast bar
+        if (_actionLength > 0) {
+            _actionTimer += _timeElapsed;
+            if (_actionTimer > _actionLength)
+                setAction("", 0);
+        }
+
         if (_mouseMoved)
             checkMouseOver();
 
@@ -404,6 +412,36 @@ void Client::draw() const{
                 qtyLabel.draw(iconRect.x + ICON_SIZE - qtyLabel.width() + 1, iconRect.y + ICON_SIZE - qtyLabel.height() + 3);
             }
         }
+    }
+
+    // Cast bar
+    if (_actionTimer > 0) {
+        static const int
+            CAST_BAR_Y = 300,
+            CAST_BAR_HEIGHT = 7,
+            CAST_BAR_WIDTH = 100,
+            CAST_BAR_PADDING = 1;
+        static const Color
+            CAST_BAR_BACKGROUND = Color::BLUE / 2 + Color::WHITE / 2,
+            CAST_BAR_COLOR = Color::RED * 0.75;
+        const SDL_Rect
+            castBarBackgroundRect = makeRect(static_cast<int>((SCREEN_X - CAST_BAR_WIDTH) / 2.0 - CAST_BAR_PADDING + .5),
+                                             CAST_BAR_Y - CAST_BAR_PADDING,
+                                             CAST_BAR_WIDTH + 2 * CAST_BAR_PADDING,
+                                             CAST_BAR_HEIGHT + 2 * CAST_BAR_PADDING),
+            castBarRect = makeRect(static_cast<int>((SCREEN_X - CAST_BAR_WIDTH) / 2.0 + 0.5),
+                                   CAST_BAR_Y,
+                                   static_cast<int>(CAST_BAR_WIDTH * 1.0 * _actionTimer / _actionLength + .5),
+                                   CAST_BAR_HEIGHT);
+        renderer.setDrawColor(CAST_BAR_BACKGROUND);
+        renderer.fillRect(castBarBackgroundRect);
+        renderer.setDrawColor(CAST_BAR_COLOR);
+        renderer.fillRect(castBarRect);
+
+        renderer.setDrawColor(Color::WHITE);
+        Texture castBarLabel(_defaultFont, _actionMessage, Color::WHITE);
+        castBarLabel.draw(Point((SCREEN_X - castBarLabel.width()) / 2.0,
+                                CAST_BAR_Y + (CAST_BAR_HEIGHT - castBarLabel.height()) / 2.0));
     }
 
     // Tooltip
@@ -641,18 +679,21 @@ void Client::handleMessage(const std::string &msg){
             if (del != ']')
                 break;
             _debug << Color::YELLOW << "You are too far away to perform that action." << Log::endl;
+            setAction("", 0);
             break;
 
         case SV_DOESNT_EXIST:
             if (del != ']')
                 break;
             _debug << Color::YELLOW << "That object doesn't exist." << Log::endl;
+            setAction("", 0);
             break;
 
         case SV_INVENTORY_FULL:
             if (del != ']')
                 break;
             _debug << Color::YELLOW << "Your inventory is full." << Log::endl;
+            setAction("", 0);
             break;
 
         case SV_MAP_SIZE:
@@ -843,4 +884,10 @@ void Client::setEntityLocation(Entity *entity, const Point &location){
 void Client::updateOffset(){
     _offset = Point(SCREEN_X / 2 - _character.location().x,
                     SCREEN_Y / 2 - _character.location().y);
+}
+
+void Client::setAction(const std::string &msg, Uint32 actionLength){
+    _actionTimer = 0;
+    _actionLength = actionLength;
+    _actionMessage = msg;
 }

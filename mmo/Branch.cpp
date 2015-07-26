@@ -1,4 +1,5 @@
 #include "Branch.h"
+#include "BranchLite.h"
 #include "Client.h"
 #include "Color.h"
 #include "Server.h"
@@ -14,10 +15,11 @@ Branch::Branch(size_t serialArg, const Point &loc):
 Entity(_entityType, loc),
 _serial(serialArg){}
 
-void Branch::onLeftClick(const Client &client) const{
+void Branch::onLeftClick(Client &client) const{
     std::ostringstream oss;
     oss << '[' << CL_COLLECT_BRANCH << ',' << _serial << ']';
     client.socket().sendMessage(oss.str());
+    client.setAction("Gathering branch", BranchLite::ACTION_TIME);
 }
 
 std::vector<std::string> Branch::getTooltipMessages(const Client &client) const {
