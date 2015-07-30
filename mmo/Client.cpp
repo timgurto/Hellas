@@ -763,7 +763,7 @@ void Client::handleMessage(const std::string &msg){
         }
 
         case SV_INVENTORY:
-        {_debug(singleMsg.str());
+        {
             int slot, quantity;
             std::string itemID;
             singleMsg >> slot >> del;
@@ -826,6 +826,25 @@ void Client::handleMessage(const std::string &msg){
                 _currentMouseOverEntity = 0;
             removeEntity(it->second);
             _branches.erase(it);
+            break;
+        }
+
+        case SV_REMOVE_TREE:
+        {
+            int serial;
+            singleMsg >> serial >> del;
+            if (del != ']')
+                break;
+            std::map<size_t, Tree*>::const_iterator it = _trees.find(serial);
+            if (it == _trees.end()){
+                _debug << Color::YELLOW << "Server removed a tree we didn't know about." << Log::endl;
+                assert(false);
+                break; // We didn't know about this tree
+            }
+            if (it->second == _currentMouseOverEntity)
+                _currentMouseOverEntity = 0;
+            removeEntity(it->second);
+            _trees.erase(it);
             break;
         }
 

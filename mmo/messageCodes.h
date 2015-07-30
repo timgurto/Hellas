@@ -22,6 +22,10 @@ enum MessageCode{
     // Arguments: serial
     CL_COLLECT_BRANCH,
 
+    // User wants to collect a tree
+    // Arguments: serial
+    CL_COLLECT_TREE,
+
 
 
     // Server -> client
@@ -83,6 +87,10 @@ enum MessageCode{
     // A branch has been removed
     // Arguments: serial
     SV_REMOVE_BRANCH,
+
+    // A tree has been removed
+    // Arguments: serial
+    SV_REMOVE_TREE,
 
 
 

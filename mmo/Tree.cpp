@@ -15,7 +15,10 @@ Entity(_entityType, loc),
 _serial(serialArg){}
 
 void Tree::onLeftClick(Client &client) const{
-    
+    std::ostringstream oss;
+    oss << '[' << CL_COLLECT_TREE << ',' << _serial << ']';
+    client.socket().sendMessage(oss.str());
+    client.setAction("Gathering tree", TreeLite::ACTION_TIME);
 }
 
 std::vector<std::string> Tree::getTooltipMessages(const Client &client) const {

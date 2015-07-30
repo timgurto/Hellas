@@ -371,7 +371,24 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             } else if (distance(user->location(), it->location) > ACTION_DISTANCE) {
                 sendMessage(client, SV_TOO_FAR);
             } else {
-                user->actionTarget(&*it);
+                user->actionTargetBranch(&*it);
+            }
+            break;
+        }
+
+        case CL_COLLECT_TREE:
+        {
+            int serial;
+            iss >> serial >> del;
+            if (del != ']')
+                return;
+            std::set<TreeLite>::const_iterator it = _trees.find(serial);
+            if (it == _trees.end()) {
+                sendMessage(client, SV_DOESNT_EXIST);
+            } else if (distance(user->location(), it->location) > ACTION_DISTANCE) {
+                sendMessage(client, SV_TOO_FAR);
+            } else {
+                user->actionTargetTree(&*it);
             }
             break;
         }
@@ -388,6 +405,30 @@ void Server::broadcast(MessageCode msgCode, const std::string &args){
     }
 }
 
+void Server::removeTree(size_t serial, User &user){
+    // Give wood to user
+    std::set<TreeLite>::iterator it = _trees.find(serial);
+    int slot = user.giveItem(*_items.find(std::string("wood")));
+    if (slot == User::INVENTORY_SIZE) {
+        sendMessage(user.socket(), SV_INVENTORY_FULL);
+        return;
+    }
+    sendMessage(user.socket(), SV_INVENTORY, makeArgs(slot, "wood", user.inventory(slot).second));
+    // Ensure no other users are targeting this branch, as it will be removed.
+    for (std::set<User>::iterator it = _users.begin(); it != _users.end(); ++it)
+        if (&*it != &user && it->actionTargetTree()->serial == serial) {
+            it->actionTargetTree(0);
+            sendMessage(it->socket(), SV_DOESNT_EXIST);
+        }
+    // Remove tree if empty
+    it->decrementWood();
+    if (it->wood() == 0) {
+        broadcast(SV_REMOVE_TREE, makeArgs(serial));
+        _trees.erase(it);
+    }
+    saveData();
+}
+
 void Server::removeBranch(size_t serial, User &user){
     // Give wood to user
     int slot = user.giveItem(*_items.find(std::string("wood")));
@@ -398,8 +439,8 @@ void Server::removeBranch(size_t serial, User &user){
     sendMessage(user.socket(), SV_INVENTORY, makeArgs(slot, "wood", user.inventory(slot).second));
     // Ensure no other users are targeting this branch, as it will be removed.
     for (std::set<User>::iterator it = _users.begin(); it != _users.end(); ++it)
-        if (&*it != &user && it->actionTarget()->serial == serial) {
-            it->actionTarget(0);
+        if (&*it != &user && it->actionTargetBranch()->serial == serial) {
+            it->actionTargetBranch(0);
             sendMessage(it->socket(), SV_DOESNT_EXIST);
         }
     // Remove branch
@@ -504,8 +545,9 @@ void Server::loadData(){
         fs >> numTrees;
         for (int i = 0; i != numTrees; ++i) {
             Point p;
-            fs >> p.x >> p.y;
-            _trees.insert(p);
+            size_t wood;
+            fs >> p.x >> p.y >> wood;
+            _trees.insert(TreeLite(p, wood));
         }
         if (!fs.good())
             break;
@@ -539,7 +581,7 @@ void Server::saveData() const{
     fs.open("World/trees.dat");
     fs << _trees.size() << '\n';
     for (std::set<TreeLite>::const_iterator it = _trees.begin(); it != _trees.end(); ++it) {
-        fs << it->location.x << ' ' << it->location.y << '\n';
+        fs << it->location.x << ' ' << it->location.y << ' ' << it->wood() << '\n';
     }
     fs.close();
 }
@@ -606,8 +648,10 @@ void Server::generateWorld(){
     for (int i = 0; i != 30; ++i)
         _branches.insert(mapRand());
 
-    for (int i = 0; i != 10; ++i)
-        _trees.insert(mapRand());
+    for (int i = 0; i != 10; ++i) {
+        size_t wood = rand() % 3 + rand() % 3 + 6; // 5-9 wood per tree
+        _trees.insert(TreeLite(mapRand(), wood));
+    }
 }
 
 Point Server::mapRand() const{

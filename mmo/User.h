@@ -15,7 +15,8 @@ class User{
     std::string _name;
     Socket _socket;
     Point _location;
-    const BranchLite *_actionTarget; // Points to a branch or tree that the user is acting upon.
+    const BranchLite *_actionTargetBranch; // Points to a branch that the user is acting upon.
+    const TreeLite *_actionTargetTree; // Points to a branch that the user is acting upon.
     Uint32 _actionTime; // Time remaining on current action.
     std::vector<std::pair<std::string, size_t> > _inventory;
 
@@ -36,8 +37,10 @@ public:
     void location(std::istream &is); // Read co-ordinates from stream
     const std::pair<std::string, size_t> &inventory(size_t index) const;
     std::pair<std::string, size_t> &inventory(size_t index);
-    const BranchLite *actionTarget() const { return _actionTarget; }
-    void actionTarget(const BranchLite *branch);
+    const BranchLite *actionTargetBranch() const { return _actionTargetBranch; }
+    const TreeLite *actionTargetTree() const { return _actionTargetTree; }
+    void actionTargetBranch(const BranchLite *branch);
+    void actionTargetTree(const TreeLite *tree);
 
     std::string makeLocationCommand() const;
 

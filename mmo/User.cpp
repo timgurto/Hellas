@@ -12,7 +12,8 @@ const size_t User::INVENTORY_SIZE = 5;
 User::User(const std::string &name, const Point &loc, const Socket &socket):
 _name(name),
 _location(loc),
-_actionTarget(0),
+_actionTargetBranch(0),
+_actionTargetTree(0),
 _actionTime(0),
 _socket(socket),
 _inventory(INVENTORY_SIZE, std::make_pair("none", 0)),
@@ -85,9 +86,16 @@ size_t User::giveItem(const Item &item){
     return emptySlot;
 }
 
-void User::actionTarget(const BranchLite *branch){
-    _actionTarget = branch;
+void User::actionTargetBranch(const BranchLite *branch){
+    _actionTargetTree = 0;
+    _actionTargetBranch = branch;
     _actionTime = BranchLite::ACTION_TIME;
+}
+
+void User::actionTargetTree(const TreeLite *tree){
+    _actionTargetBranch = 0;
+    _actionTargetTree = tree;
+    _actionTime = TreeLite::ACTION_TIME;
 }
 
 void User::update(Uint32 timeElapsed, Server &server){
@@ -96,7 +104,10 @@ void User::update(Uint32 timeElapsed, Server &server){
     if (_actionTime > timeElapsed)
         _actionTime -= timeElapsed;
     else {
-        server.removeBranch(_actionTarget->serial, *this);
+        if (_actionTargetBranch)
+            server.removeBranch(_actionTargetBranch->serial, *this);
+        else if (_actionTargetTree)
+            server.removeTree(_actionTargetTree->serial, *this);
         _actionTime = 0;
     }
 }
