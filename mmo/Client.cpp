@@ -327,7 +327,7 @@ void Client::run(){
         checkSocket();
         // Draw
         draw();
-        SDL_Delay(10);
+        SDL_Delay(5);
     }
 }
 
