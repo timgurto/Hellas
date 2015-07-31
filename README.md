@@ -69,7 +69,15 @@ Sequence | Server | Client | Client state
 ## Glossary of ambiguous terms
 **character**, the *avatar* which represents a user in-game
 
+**class**, a category to which an item belongs, denoting functionality.
+
 **client**, the *program* which connects to the server
+
+**item**, something which exists virtually in-game, located in players' inventories
+
+**entity**, (client only) something which exists physically in-game, with a location and image, and supporting user interaction
+
+**object**, (server only) something which exists physically in-game, with a location and functionality
 
 **server**, the *program* which manages the state of the game world and connects to clients
 

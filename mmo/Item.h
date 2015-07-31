@@ -1,6 +1,7 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+#include <set>
 #include <string>
 
 #include "Texture.h"
@@ -10,6 +11,7 @@ class Item{
     std::string _id; // The no-space, unique name used in data files
     std::string _name;
     size_t _stackSize;
+    std::set<std::string> _classes;
     Texture _icon;
 
 public:
@@ -21,6 +23,9 @@ public:
     inline const std::string &id() const { return _id; }
     inline size_t stackSize() const { return _stackSize; }
     const Texture &icon() const { return _icon; }
+
+    void addClass(const std::string &className);
+    bool isClass(const std::string &className) const;
 };
 
 #endif
