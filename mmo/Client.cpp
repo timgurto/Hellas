@@ -90,9 +90,12 @@ _currentMouseOverEntity(0){
     _debug << "Player name: " << _username << Log::endl;
 
     // Load game data
-    _items.insert(Item("wood", "wood", 5));
-    _items.insert(Item("axe", "wooden axe", 1));
     _items.insert(Item("none", "none"));
+    _items.insert(Item("wood", "wood", 5));
+
+    Item i("axe", "wooden axe", 1);
+    i.addClass("axe");
+    _items.insert(i);
 
     renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
                       static_cast<float>(renderer.height()) / SCREEN_Y);
