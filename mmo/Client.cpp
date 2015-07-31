@@ -422,8 +422,8 @@ void Client::draw() const{
     if (_actionTimer > 0) {
         static const int
             CAST_BAR_Y = 300,
-            CAST_BAR_HEIGHT = 7,
-            CAST_BAR_WIDTH = 100,
+            CAST_BAR_HEIGHT = 9,
+            CAST_BAR_WIDTH = 150,
             CAST_BAR_PADDING = 1;
         static const Color
             CAST_BAR_BACKGROUND = Color::BLUE / 2 + Color::WHITE / 2,
