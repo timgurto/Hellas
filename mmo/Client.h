@@ -117,8 +117,7 @@ private:
 
     mutable Log _debug;
 
-    bool _enteringText; // Whether the user is entering a message, which will capture most keyboard events.
-    std::string _enteredText;
+    std::string _enteredText; // Text that has been entered by the user
 
     void checkSocket();
     void sendMessage(MessageCode msgCode, const std::string &args = "") const;

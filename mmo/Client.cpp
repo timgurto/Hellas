@@ -59,8 +59,7 @@ _timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
 _loaded(false),
 _mouse(0,0),
 _mouseMoved(false),
-_currentMouseOverEntity(0),
-_enteringText(false){
+_currentMouseOverEntity(0){
     isClient = true;
 
     _debug << cmdLineArgs << Log::endl;
@@ -233,15 +232,14 @@ void Client::run(){
                     break;
 
                 case SDLK_RETURN:
-                    _enteringText = !_enteringText;
-                    if (_enteringText)
-                        SDL_StartTextInput();
-                    else {
+                    if (SDL_IsTextInputActive()) {
                         SDL_StopTextInput();
                         if (_enteredText != "") {
                             _debug << Color::WHITE << _enteredText << Log::endl;
                             _enteredText = "";
                         }
+                    } else {
+                        SDL_StartTextInput();
                     }
                     break;
                 }
@@ -493,7 +491,7 @@ void Client::draw() const{
     statsDisplay.draw(SCREEN_X - statsDisplay.width(), 0);
 
     // Text box
-    if (_enteringText) {
+    if (SDL_IsTextInputActive()) {
         static const int
             TEXT_BOX_HEIGHT = 13,
             TEXT_BOX_WIDTH = 300;
