@@ -481,7 +481,10 @@ Texture Client::getInventoryTooltip() const{
     if (slot < 0 || slot >= ICONS_X)
         return Texture();
 
-    Item lookup(_inventory[static_cast<size_t>(slot)].first);
+    const std::string &itemName = _inventory[static_cast<size_t>(slot)].first;
+    if (itemName == "none")
+        return Texture();
+    Item lookup(itemName);
     std::set<Item>::const_iterator it = _items.find(lookup);
     if (it == _items.end())
         return Texture();
