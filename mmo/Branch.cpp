@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #include "Branch.h"
 #include "BranchLite.h"
 #include "Client.h"

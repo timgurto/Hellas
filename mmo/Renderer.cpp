@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #include <SDL_ttf.h>
 #include <SDL_image.h>
 

@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #include "TreeLite.h"
 
 size_t TreeLite::_currentSerial = 0;

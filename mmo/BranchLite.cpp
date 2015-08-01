@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #include "BranchLite.h"
 
 size_t BranchLite::_currentSerial = 0;

@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #include "Socket.h"
 
 Log *Socket::debug = 0;

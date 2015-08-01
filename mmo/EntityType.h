@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #ifndef ENTITY_TYPE_H
 #define ENTITY_TYPE_H
 

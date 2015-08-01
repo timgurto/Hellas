@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #include <cmath>
 
 #include "Point.h"

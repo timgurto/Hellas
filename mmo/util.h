@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #ifndef UTIL_H
 #define UTIL_H
 

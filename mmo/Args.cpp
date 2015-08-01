@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #include "Args.h"
 
 void Args::init(int argc, char* argv[]){

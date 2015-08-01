@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #include "Client.h"
 #include "Server.h"
 #include "Log.h"

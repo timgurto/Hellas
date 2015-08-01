@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #include <SDL.h>
 
 #include "Client.h"

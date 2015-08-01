@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #ifndef COLOR_H
 #define COLOR_H
 

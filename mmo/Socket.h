@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #ifndef SOCKET_H
 #define SOCKET_H
 

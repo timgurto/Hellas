@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #include <sstream>
 
 #include "Client.h"

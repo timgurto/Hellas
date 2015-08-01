@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #ifndef SERVER_H
 #define SERVER_H
 

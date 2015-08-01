@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #ifndef TOOLTIP_BUILDER_H
 #define TOOLTIP_BUILDER_H
 

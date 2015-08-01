@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #ifndef TEXTURE_H
 #define TEXTURE_H
 

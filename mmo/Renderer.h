@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #ifndef RENDERER_H
 #define RENDERER_H
 

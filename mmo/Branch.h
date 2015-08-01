@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #ifndef BRANCH_H
 #define BRANCH_H
 

@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #ifndef TREE_H
 #define TREE_H
 

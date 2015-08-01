@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #include "Tree.h"
 #include "Client.h"
 #include "Color.h"

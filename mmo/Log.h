@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #ifndef LOG_H
 #define LOG_H
 

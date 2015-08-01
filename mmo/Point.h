@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #ifndef POINT_H
 #define POINT_H
 

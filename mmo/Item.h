@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #ifndef ITEM_H
 #define ITEM_H
 

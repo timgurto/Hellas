@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #ifndef CLIENT_H
 #define CLIENT_H
 
