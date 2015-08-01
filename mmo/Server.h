@@ -66,9 +66,11 @@ private:
     void loadData(); // Attempt to load data from files.
     void saveData() const;
     void generateWorld(); // Randomly generate a new world.
+
     Point mapRand() const; // Return a random point on the map.
-    size_t _mapX, _mapY; // Number of tiles in each dimension
+    size_t _mapX, _mapY; // Number of tiles in each dimension.
     std::vector<std::vector<size_t>> _map;
+    size_t findTile(const Point &p) const; // Find the tile type at the specified location.
 
     // World data
     std::set<Item> _items;

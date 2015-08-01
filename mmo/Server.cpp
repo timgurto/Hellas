@@ -589,6 +589,17 @@ void Server::saveData() const{
     fs.close();
 }
 
+size_t Server::findTile(const Point &p) const{
+    size_t y = static_cast<size_t>(p.y / TILE_H);
+    double rawX = p.x;
+    if (y % 2 == 1)
+        rawX -= TILE_W/2;
+    size_t x = static_cast<size_t>(rawX / TILE_W);
+    if (x >= _mapX || y >= _mapY)
+        assert(false);
+    return _map[x][y];
+}
+
 void Server::generateWorld(){
     _mapX = 20;
     _mapY = 20;
@@ -648,12 +659,25 @@ void Server::generateWorld(){
                 _map[x][y] = 4;
         }
 
-    for (int i = 0; i != 30; ++i)
-        _branches.insert(mapRand());
+    for (int i = 0; i != 30; ++i){
+        Point loc;
+        size_t tile;
+        do {
+            loc = mapRand();
+            tile = findTile(loc);
+        } while (tile == 3 || tile == 4); // Forbidden on water
+        _branches.insert(loc);
+    }
 
     for (int i = 0; i != 10; ++i) {
         size_t wood = rand() % 3 + rand() % 3 + 6; // 5-9 wood per tree
-        _trees.insert(TreeLite(mapRand(), wood));
+        Point loc;
+        size_t tile;
+        do {
+            loc = mapRand();
+            tile = findTile(loc);
+        } while (tile == 3 || tile == 4); // Forbidden on water
+        _trees.insert(TreeLite(loc, wood));
     }
 }
 
