@@ -388,7 +388,19 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             } else if (distance(user->location(), it->location) > ACTION_DISTANCE) {
                 sendMessage(client, SV_TOO_FAR);
             } else {
-                user->actionTargetTree(&*it);
+                // Ensure user has an axe-class item
+                bool hasAxe = false;
+                for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
+                    const Item &item = *_items.find(user->inventory(i).first);
+                    if (item.isClass("axe")) {
+                        hasAxe = true;
+                        break;
+                    }
+                }
+                if (hasAxe)
+                    user->actionTargetTree(&*it);
+                else
+                    sendMessage(client, SV_AXE_NEEDED);
             }
             break;
         }

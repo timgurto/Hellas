@@ -1,5 +1,6 @@
 # Econ-sim MMO
 MMO economy simulator
+&copy; 2015 Tim Gurto
 
 ## Command-line arguments
 
@@ -69,7 +70,7 @@ Sequence | Server | Client | Client state
 ## Glossary of ambiguous terms
 **character**, the *avatar* which represents a user in-game
 
-**class**, a category to which an item belongs, denoting functionality.
+**class**, a category to which an item belongs, denoting functionality.  For example, to cut down a tree a user must have an "axe"-class item in his inventory.
 
 **client**, the *program* which connects to the server
 

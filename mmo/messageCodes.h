@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #ifndef MESSAGE_CODES_H
 #define MESSAGE_CODES_H
 
@@ -55,6 +57,9 @@ enum MessageCode{
 
     // The user cannot receive an item because his inventory is full
     SV_INVENTORY_FULL,
+
+    // The user cannot cut down a tree, as he doesn't have an axe-class item
+    SV_AXE_NEEDED,
 
     // The client has been successfully registered
     SV_WELCOME,

@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #include <algorithm>
 #include <cassert>
 #include <SDL.h>
@@ -739,6 +741,13 @@ void Client::handleMessage(const std::string &msg){
             if (del != ']')
                 break;
             _debug << Color::YELLOW << "Your inventory is full." << Log::endl;
+            setAction("", 0);
+            break;
+
+        case SV_AXE_NEEDED:
+            if (del != ']')
+                break;
+            _debug << Color::YELLOW << "You need an axe to cut gather a tree." << Log::endl;
             setAction("", 0);
             break;
 
