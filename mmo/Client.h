@@ -32,8 +32,8 @@ public:
     const Socket &socket() const;
     TTF_Font *defaultFont() const;
 
-    inline const Entity &character() const { return _character; }
-    inline const Point &offset() const { return _offset; }
+    const Entity &character() const { return _character; }
+    const Point &offset() const { return _offset; }
 
     void setAction(const std::string &msg, Uint32 actionLength);
 

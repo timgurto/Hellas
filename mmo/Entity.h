@@ -26,15 +26,15 @@ protected:
 public:
     Entity(const EntityType &type, const Point &location);
 
-    inline const Point &location() const { return _location; }
+    const Point &location() const { return _location; }
     void location(const Point &loc); // yChanged() should be checked after changing location.
     SDL_Rect drawRect() const;
-    inline int width() const { return _type.width(); }
-    inline int height() const { return _type.height(); }
-    inline bool yChanged() const { return _yChanged; }
-    inline void yChanged(bool val) { _yChanged = val; }
-    inline bool needsTooltipRefresh() { return _needsTooltipRefresh; }
-    inline const Texture &tooltip() const { return _tooltip; }
+    int width() const { return _type.width(); }
+    int height() const { return _type.height(); }
+    bool yChanged() const { return _yChanged; }
+    void yChanged(bool val) { _yChanged = val; }
+    bool needsTooltipRefresh() { return _needsTooltipRefresh; }
+    const Texture &tooltip() const { return _tooltip; }
 
     virtual void draw(const Client &client) const;
     virtual void update(double delta) {}

@@ -31,9 +31,9 @@ public:
     Color operator*(double s) const;
     Color operator*(int s) const; // to avoid ambiguity with implicit Uint32 cast
 
-    inline Uint8 r() const { return _r; }
-    inline Uint8 g() const { return _g; }
-    inline Uint8 b() const { return _b; }
+    Uint8 r() const { return _r; }
+    Uint8 g() const { return _g; }
+    Uint8 b() const { return _b; }
 
 private:
     Uint8 _r, _g, _b;

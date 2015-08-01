@@ -37,17 +37,17 @@ public:
     const Socket &operator=(const Socket &rhs);
     ~Socket();
 
-    inline bool operator==(const Socket &rhs) const { return _raw == rhs._raw; }
-    inline bool operator!=(const Socket &rhs) const { return _raw != rhs._raw; }
-    inline bool operator<(const Socket &rhs) const { return _raw < rhs._raw; }
+    bool operator==(const Socket &rhs) const { return _raw == rhs._raw; }
+    bool operator!=(const Socket &rhs) const { return _raw != rhs._raw; }
+    bool operator<(const Socket &rhs) const { return _raw < rhs._raw; }
 
     void bind(sockaddr_in &socketAddr);
     void listen();
 
     // Whether this socket is safe to use
-    inline bool valid() const { return _raw != INVALID_SOCKET; }
+    bool valid() const { return _raw != INVALID_SOCKET; }
 
-    inline SOCKET getRaw() const { return _raw; }
+    SOCKET getRaw() const { return _raw; }
     void delayClosing(Uint32 lingerTime); // Delay closing of socket
 
     // No destination socket implies client->server message

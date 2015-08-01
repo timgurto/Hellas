@@ -18,9 +18,9 @@ class OtherUser : public Entity{
 public:
     OtherUser(const std::string &name, const Point &location);
 
-    inline static void image(const std::string &filename) { _entityType.image(filename); }
-    inline void destination(const Point &dst) { _destination = dst; }
-    inline static const EntityType &entityType() { return _entityType; }
+    static void image(const std::string &filename) { _entityType.image(filename); }
+    void destination(const Point &dst) { _destination = dst; }
+    static const EntityType &entityType() { return _entityType; }
 
     virtual void draw(const Client &client) const;
     virtual void update(double delta);

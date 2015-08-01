@@ -36,11 +36,12 @@ public:
     Texture(const Texture &rhs);
     Texture &operator=(const Texture &rhs);
 
-    inline bool operator!() const { return _raw == 0; }
-    inline operator bool() const { return _raw != 0; }
+    bool operator!() const { return _raw == 0; }
+    operator bool() const { return _raw != 0; }
 
-    inline int width() const { return _w; }
-    inline int height() const { return _h; }
+    static int numTextures() { return _numTextures; }
+    int width() const { return _w; }
+    int height() const { return _h; }
 
     // These functions are const, making blendmode and alpha de-facto mutable
     void setBlend(SDL_BlendMode mode = SDL_BLENDMODE_BLEND) const;
@@ -54,8 +55,6 @@ public:
     // Render to this Texture instead of the renderer.
     // Texture must have been created with Texture(width, height), otherwise this function will have no effect.
     void setRenderTarget() const;
-
-    inline static int numTextures() { return _numTextures; }
 };
 
 #endif

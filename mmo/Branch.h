@@ -20,11 +20,11 @@ public:
     Branch(const Branch &rhs);
     Branch(size_t serial, const Point &loc = 0); // No location: create dummy Branch, for set searches
 
-    inline bool operator<(const Branch &rhs) const { return _serial < rhs._serial; }
-    inline bool operator==(const Branch &rhs) const { return _serial == rhs._serial; }
+    bool operator<(const Branch &rhs) const { return _serial < rhs._serial; }
+    bool operator==(const Branch &rhs) const { return _serial == rhs._serial; }
 
-    inline static void image(const std::string &filename) { _entityType.image(filename); }
-    inline size_t serial() const { return _serial; }
+    static void image(const std::string &filename) { _entityType.image(filename); }
+    size_t serial() const { return _serial; }
 
     virtual void onLeftClick(Client &client) const;
     virtual std::vector<std::string> getTooltipMessages(const Client &client) const;

@@ -29,10 +29,10 @@ public:
     */
     void init();
 
-    inline operator bool() const { return _valid; }
+    operator bool() const { return _valid; }
 
-    inline int width() const { return _w; }
-    inline int height() const { return _h; }
+    int width() const { return _w; }
+    int height() const { return _h; }
 
     SDL_Texture *createTextureFromSurface(SDL_Surface *surface) const;
     SDL_Texture *createTargetableTexture(int width, int height) const;

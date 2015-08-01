@@ -18,7 +18,7 @@ struct BranchLite{
 
     BranchLite(size_t s); // For set/map lookup
 
-    inline bool operator<(const BranchLite &rhs) const { return serial < rhs.serial; }
+    bool operator<(const BranchLite &rhs) const { return serial < rhs.serial; }
 
 private:
     static size_t _currentSerial;

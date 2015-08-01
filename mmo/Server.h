@@ -30,8 +30,8 @@ public:
     static bool isServer;
 
     static const int TILE_W, TILE_H;
-    inline const size_t mapX() const { return _mapX; }
-    inline const size_t mapY() const { return _mapY; }
+    const size_t mapX() const { return _mapX; }
+    const size_t mapY() const { return _mapY; }
 
 private:
 

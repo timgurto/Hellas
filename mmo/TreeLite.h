@@ -18,9 +18,9 @@ struct TreeLite{
 
     TreeLite(size_t s); // For set/map lookup
 
-    inline bool operator<(const TreeLite &rhs) const { return serial < rhs.serial; }
+    bool operator<(const TreeLite &rhs) const { return serial < rhs.serial; }
 
-    inline size_t wood() const { return _wood; }
+    size_t wood() const { return _wood; }
 
     void decrementWood();
 
