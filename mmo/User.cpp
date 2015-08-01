@@ -47,7 +47,8 @@ void User::updateLocation(const Point &dest, const Server &server){
     _lastLocUpdate = newTime;
 
     // Max legal distance: straight line
-    double maxLegalDistance = timeElapsed / 1000.0 * Client::MOVEMENT_SPEED * 3;
+    double maxLegalDistance = (min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES, timeElapsed + 100))
+                              / 1000.0 * Server::MOVEMENT_SPEED;
     _location = interpolate(_location, dest, maxLegalDistance);
 
     // Keep in-bounds

@@ -1,5 +1,6 @@
 #include "Client.h"
 #include "OtherUser.h"
+#include "Server.h"
 #include "util.h"
 
 EntityType OtherUser::_entityType(makeRect(-9, -39));
@@ -12,7 +13,7 @@ Point OtherUser::interpolatedLocation(double delta){
     if (_destination == location())
         return _destination;;
 
-    double maxLegalDistance = delta * Client::MOVEMENT_SPEED;
+    double maxLegalDistance = delta * Server::MOVEMENT_SPEED;
     return interpolate(location(), _destination, maxLegalDistance);
 }
 

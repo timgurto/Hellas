@@ -29,7 +29,6 @@ const Uint32 Client::SERVER_TIMEOUT = 10000;
 const Uint32 Client::CONNECT_RETRY_DELAY = 3000;
 const Uint32 Client::PING_FREQUENCY = 5000;
 
-const double Client::MOVEMENT_SPEED = 80;
 const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 250;
 
 const int Client::ICON_SIZE = 16;
@@ -312,9 +311,9 @@ void Client::run(){
                 left = keyboardState[SDL_SCANCODE_LEFT] == SDL_PRESSED,
                 right = keyboardState[SDL_SCANCODE_RIGHT] == SDL_PRESSED;
             if (up != down || left != right) {
-                static const double DIAG_SPEED = MOVEMENT_SPEED / SQRT_2;
+                static const double DIAG_SPEED = Server::MOVEMENT_SPEED / SQRT_2;
                 double
-                    dist = delta * MOVEMENT_SPEED,
+                    dist = delta * Server::MOVEMENT_SPEED,
                     diagDist = delta * DIAG_SPEED;
                 Point newLoc = _character.location();
                 if (up != down) {

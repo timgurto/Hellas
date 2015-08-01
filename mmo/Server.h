@@ -24,7 +24,9 @@ public:
     void run();
 
     static const Uint32 CLIENT_TIMEOUT; // How much radio silence before we drop a client
+    static const Uint32 MAX_TIME_BETWEEN_LOCATION_UPDATES;
 
+    static const double MOVEMENT_SPEED; // per second
     static const int ACTION_DISTANCE; // How close a character must be to interact with an object
 
     static bool isServer;

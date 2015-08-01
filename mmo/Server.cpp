@@ -18,9 +18,11 @@ const int Server::MAX_CLIENTS = 20;
 const size_t Server::BUFFER_SIZE = 1023;
 
 const Uint32 Server::CLIENT_TIMEOUT = 10000;
+const Uint32 Server::MAX_TIME_BETWEEN_LOCATION_UPDATES = 300;
 
 const Uint32 Server::SAVE_FREQUENCY = 1000;
 
+const double Server::MOVEMENT_SPEED = 80;
 const int Server::ACTION_DISTANCE = 20;
 
 bool Server::isServer = false;

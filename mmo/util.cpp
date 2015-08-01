@@ -20,6 +20,7 @@ double distance(const Point &p, const Point &a, const Point &b){
     numerator = abs(numerator);
     double denominator = (b.y - a.y) * (b.y - a.y) +
                          (b.x - a.x) * (b.x - a.x);
+    assert (denominator > 0);
     denominator = sqrt(denominator);
     return numerator / denominator;
 }
@@ -28,7 +29,10 @@ Point interpolate(const Point &a, const Point &b, double dist){
     double
         xDelta = b.x - a.x,
         yDelta = b.y - a.y;
+    if (xDelta == 0 && yDelta == 0)
+        return a;
     double lengthAB = sqrt(xDelta * xDelta + yDelta * yDelta);
+    assert (lengthAB > 0);
 
     if (dist >= lengthAB)
         // Target point exceeds b

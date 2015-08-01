@@ -25,8 +25,6 @@ public:
     ~Client();
     void run();
 
-    static const double MOVEMENT_SPEED; // per second
-
     static bool isClient;
 
     const Socket &socket() const;
