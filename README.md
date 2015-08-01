@@ -1,5 +1,6 @@
 # Econ-sim MMO
 MMO economy simulator
+
 &copy; 2015 Tim Gurto
 
 ## Command-line arguments
