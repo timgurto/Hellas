@@ -269,6 +269,11 @@ void Client::run(){
                         _loop = false;
                         break;
 
+                    case SDLK_LEFTBRACKET:
+                        SDL_StartTextInput();
+                        _enteredText = "[";
+                        break;
+
                     case SDLK_RETURN:
                     case SDLK_KP_ENTER:
                         SDL_StartTextInput();
