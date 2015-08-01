@@ -501,13 +501,12 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode, const std
 
 void Server::loadData(){
     // Load data
+    _items.insert(Item("none", "none"));
     _items.insert(Item("wood", "wood", 5));
 
     Item i("axe", "wooden axe", 1);
     i.addClass("axe");
     _items.insert(i);
-
-    _items.insert(Item("none", "none"));
 
     // Detect/load state
     do {

@@ -231,6 +231,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TooltipBuilder.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Tree.cpp"
 				>
 			</File>
@@ -314,6 +318,10 @@
 			</File>
 			<File
 				RelativePath=".\Texture.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TooltipBuilder.h"
 				>
 			</File>
 			<File

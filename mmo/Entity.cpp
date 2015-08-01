@@ -1,6 +1,7 @@
 #include "Client.h"
 #include "Entity.h"
 #include "Renderer.h"
+#include "TooltipBuilder.h"
 
 #include "util.h"
 
@@ -44,52 +45,18 @@ void Entity::refreshTooltip(const Client &client){
         return;
     }
 
-    static const int PADDING = 4; // margins, and between title and body
-    std::vector<Texture> textTextures;
-    Texture heading(client.defaultFont(), textStrings.front(), Color::WHITE);
-    textTextures.push_back(heading);
-    int totalHeight = heading.height() + 2*PADDING;
-    int totalWidth = heading.width() + 2*PADDING;
+    std::vector<std::string>::const_iterator it = textStrings.begin();
+    TooltipBuilder tb;
+    tb.setColor(Color::WHITE);
+    tb.addLine(*it);
+    tb.setColor();
+    ++it;
 
-    if (textStrings.size() > 1) {
-        totalHeight += PADDING;
-        for (size_t i = 1; i < textStrings.size(); ++i) {
-            static const Color textColor = Color::BLUE / 2 + Color::WHITE / 2;
-            Texture nextMessage(client.defaultFont(), textStrings[i], textColor);
-            textTextures.push_back(nextMessage);
-            totalHeight += nextMessage.height();
-            int tempWidth = nextMessage.width() + 2*PADDING;
-            if (tempWidth > totalWidth)
-                totalWidth = tempWidth;
-        }
+    if (it != textStrings.end())
+        tb.addGap();
 
-    }
+    for (; it != textStrings.end(); ++it)
+        tb.addLine(*it);
 
-    _tooltip = Texture(totalWidth, totalHeight);
-    
-    // Draw background
-    Texture background(totalWidth, totalHeight);
-    static const Color backgroundColor = Color::WHITE/8 + Color::BLUE/6;
-    background.setRenderTarget();
-    renderer.setDrawColor(backgroundColor);
-    renderer.clear();
-    background.setAlpha(0xbf);
-
-    _tooltip.setRenderTarget();
-    background.draw();
-    renderer.setDrawColor(Color::WHITE);
-    renderer.drawRect(makeRect(0, 0, totalWidth, totalHeight));
-
-    // Draw text
-    int y = PADDING;
-    std::vector<Texture>::const_iterator it = textTextures.begin();
-    it->draw(PADDING, y);
-    y += PADDING + it->height();
-    for (++it; it != textTextures.end(); ++it) {
-        it->draw(PADDING, y);
-        y += it->height();
-    }
-    _tooltip.setBlend(SDL_BLENDMODE_BLEND);
-
-    renderer.setRenderTarget();
+    tb.publish(_tooltip);
 }
