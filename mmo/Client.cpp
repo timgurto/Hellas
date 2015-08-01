@@ -228,10 +228,16 @@ void Client::run(){
             case SDL_KEYDOWN:
                 switch(e.key.keysym.sym) {
                 case SDLK_ESCAPE:
-                    _loop = false;
+                    if (SDL_IsTextInputActive()) {
+                        SDL_StopTextInput();
+                        _enteredText = "";
+                    } else {
+                        _loop = false;
+                    }
                     break;
 
                 case SDLK_RETURN:
+                case SDLK_KP_ENTER:
                     if (SDL_IsTextInputActive()) {
                         SDL_StopTextInput();
                         if (_enteredText != "") {
