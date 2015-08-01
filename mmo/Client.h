@@ -118,6 +118,7 @@ private:
     mutable Log _debug;
 
     std::string _enteredText; // Text that has been entered by the user
+    static const size_t MAX_TEXT_ENTERED;
 
     void checkSocket();
     void sendMessage(MessageCode msgCode, const std::string &args = "") const;

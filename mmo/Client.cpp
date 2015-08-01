@@ -36,6 +36,8 @@ const int Client::ICON_SIZE = 16;
 const size_t Client::ICONS_X = 8;
 SDL_Rect Client::INVENTORY_RECT;
 
+const size_t Client::MAX_TEXT_ENTERED = 100;
+
 bool Client::isClient = false;
 
 Client::Client():
@@ -222,7 +224,8 @@ void Client::run(){
                 break;
 
             case SDL_TEXTINPUT:
-                _enteredText.append(e.text.text);
+                if (_enteredText.size() < MAX_TEXT_ENTERED)
+                    _enteredText.append(e.text.text);
                 break;
 
             case SDL_KEYDOWN:
@@ -510,9 +513,20 @@ void Client::draw() const{
         renderer.setDrawColor(Color::BLACK);
         renderer.fillRect(TEXT_BOX_RECT);
         Texture text(_defaultFont, _enteredText);
-        text.draw(TEXT_BOX_RECT.x + 1, TEXT_BOX_RECT.y);
+        static const int MAX_TEXT_WIDTH = TEXT_BOX_WIDTH - 2;
+        int cursorX;
+        if (text.width() < MAX_TEXT_WIDTH) {
+            text.draw(TEXT_BOX_RECT.x + 1, TEXT_BOX_RECT.y);
+            cursorX = TEXT_BOX_RECT.x + text.width() + 1;
+        } else {
+            SDL_Rect
+                dstRect = makeRect(TEXT_BOX_RECT.x + 1, TEXT_BOX_RECT.y, MAX_TEXT_WIDTH, text.height()),
+                srcRect = makeRect(text.width() - MAX_TEXT_WIDTH, 0, MAX_TEXT_WIDTH, text.height());
+            text.draw(dstRect, srcRect);
+            cursorX = TEXT_BOX_RECT.x + TEXT_BOX_WIDTH;
+        }
         renderer.setDrawColor(Color::WHITE);
-        renderer.fillRect(makeRect(TEXT_BOX_RECT.x + text.width() + 1, TEXT_BOX_RECT.y + 1, 1, TEXT_BOX_HEIGHT - 2));
+        renderer.fillRect(makeRect(cursorX, TEXT_BOX_RECT.y + 1, 1, TEXT_BOX_HEIGHT - 2));
     }
 
     _debug.draw();
