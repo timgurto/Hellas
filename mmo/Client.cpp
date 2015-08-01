@@ -239,6 +239,12 @@ void Client::run(){
                     }
                     break;
 
+                case SDLK_BACKSPACE:
+                    if (SDL_IsTextInputActive() && _enteredText.size() > 0) {
+                        _enteredText.erase(_enteredText.size() - 1);
+                    }
+                    break;
+
                 case SDLK_RETURN:
                 case SDLK_KP_ENTER:
                     if (SDL_IsTextInputActive()) {
