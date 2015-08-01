@@ -518,7 +518,7 @@ void Client::drawTooltip() const{
         int mouseY = static_cast<int>(_mouse.y + .5);
 
         // y: below cursor, unless too close to the bottom of the screen
-        if (SCREEN_X > mouseY + tooltip.height() + EDGE_GAP)
+        if (SCREEN_Y > mouseY + tooltip.height() + EDGE_GAP)
             y = mouseY;
         else
             y = SCREEN_Y - tooltip.height() - EDGE_GAP;
