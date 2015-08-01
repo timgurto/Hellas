@@ -59,7 +59,8 @@ _timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
 _loaded(false),
 _mouse(0,0),
 _mouseMoved(false),
-_currentMouseOverEntity(0){
+_currentMouseOverEntity(0),
+_enteringText(false){
     isClient = true;
 
     _debug << cmdLineArgs << Log::endl;
@@ -97,6 +98,8 @@ _currentMouseOverEntity(0){
         for (int i = 0; i != 3; ++i)
             _username.push_back('a' + rand() % 26);
     _debug << "Player name: " << _username << Log::endl;
+
+    SDL_StopTextInput();
 
     // Load game data
     _items.insert(Item("none", "none"));
@@ -219,10 +222,27 @@ void Client::run(){
                 _loop = false;
                 break;
 
+            case SDL_TEXTINPUT:
+                _enteredText.append(e.text.text);
+                break;
+
             case SDL_KEYDOWN:
                 switch(e.key.keysym.sym) {
                 case SDLK_ESCAPE:
                     _loop = false;
+                    break;
+
+                case SDLK_RETURN:
+                    _enteringText = !_enteringText;
+                    if (_enteringText)
+                        SDL_StartTextInput();
+                    else {
+                        SDL_StopTextInput();
+                        if (_enteredText != "") {
+                            _debug << Color::WHITE << _enteredText << Log::endl;
+                            _enteredText = "";
+                        }
+                    }
                     break;
                 }
                 break;
@@ -471,6 +491,25 @@ void Client::draw() const{
     oss << "fps " << _latency << "ms";
     Texture statsDisplay(_defaultFont, oss.str(), Color::YELLOW);
     statsDisplay.draw(SCREEN_X - statsDisplay.width(), 0);
+
+    // Text box
+    if (_enteringText) {
+        static const int
+            TEXT_BOX_HEIGHT = 13,
+            TEXT_BOX_WIDTH = 300;
+        static const SDL_Rect TEXT_BOX_RECT = makeRect((SCREEN_X - TEXT_BOX_WIDTH) / 2,
+                                                       (SCREEN_Y - TEXT_BOX_HEIGHT) / 2,
+                                                       TEXT_BOX_WIDTH, TEXT_BOX_HEIGHT);
+        static const Color TEXT_BOX_BORDER = Color::WHITE / 4;
+        renderer.setDrawColor(TEXT_BOX_BORDER);
+        renderer.drawRect(TEXT_BOX_RECT + makeRect(-1, -1, 2, 2));
+        renderer.setDrawColor(Color::BLACK);
+        renderer.fillRect(TEXT_BOX_RECT);
+        Texture text(_defaultFont, _enteredText);
+        text.draw(TEXT_BOX_RECT.x + 1, TEXT_BOX_RECT.y);
+        renderer.setDrawColor(Color::WHITE);
+        renderer.fillRect(makeRect(TEXT_BOX_RECT.x + text.width() + 1, TEXT_BOX_RECT.y + 1, 1, TEXT_BOX_HEIGHT - 2));
+    }
 
     _debug.draw();
     renderer.present();
