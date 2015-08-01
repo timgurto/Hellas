@@ -416,7 +416,7 @@ void Server::removeTree(size_t serial, User &user){
     sendMessage(user.socket(), SV_INVENTORY, makeArgs(slot, "wood", user.inventory(slot).second));
     // Ensure no other users are targeting this branch, as it will be removed.
     for (std::set<User>::iterator it = _users.begin(); it != _users.end(); ++it)
-        if (&*it != &user && it->actionTargetTree()->serial == serial) {
+        if (&*it != &user && it->actionTargetTree() && it->actionTargetTree()->serial == serial) {
             it->actionTargetTree(0);
             sendMessage(it->socket(), SV_DOESNT_EXIST);
         }
@@ -439,7 +439,7 @@ void Server::removeBranch(size_t serial, User &user){
     sendMessage(user.socket(), SV_INVENTORY, makeArgs(slot, "wood", user.inventory(slot).second));
     // Ensure no other users are targeting this branch, as it will be removed.
     for (std::set<User>::iterator it = _users.begin(); it != _users.end(); ++it)
-        if (&*it != &user && it->actionTargetBranch()->serial == serial) {
+        if (&*it != &user && it->actionTargetBranch() && it->actionTargetBranch()->serial == serial) {
             it->actionTargetBranch(0);
             sendMessage(it->socket(), SV_DOESNT_EXIST);
         }
