@@ -37,7 +37,7 @@ void TooltipBuilder::addGap(){
     _content.push_back(Texture());
 }
 
-void TooltipBuilder::publish(Texture &target){
+Texture TooltipBuilder::publish(){
     // Calculate height and width of final tooltip
     int
         totalHeight = 2*PADDING,
@@ -61,8 +61,8 @@ void TooltipBuilder::publish(Texture &target){
     background.setAlpha(0xbf);
 
     // Draw background
-    target = Texture(totalWidth, totalHeight);
-    target.setRenderTarget();
+    Texture ret = Texture(totalWidth, totalHeight);
+    ret.setRenderTarget();
     background.draw();
 
     // Draw border
@@ -80,6 +80,7 @@ void TooltipBuilder::publish(Texture &target){
         }
     }
 
-    target.setBlend(SDL_BLENDMODE_BLEND);
+    ret.setBlend(SDL_BLENDMODE_BLEND);
     renderer.setRenderTarget();
+    return ret;
 }

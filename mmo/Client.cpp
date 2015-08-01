@@ -9,6 +9,7 @@
 #include "EntityType.h"
 #include "Renderer.h"
 #include "Server.h"
+#include "TooltipBuilder.h"
 #include "User.h"
 #include "messageCodes.h"
 #include "util.h"
@@ -30,6 +31,8 @@ const double Client::MOVEMENT_SPEED = 80;
 const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 250;
 
 const int Client::ICON_SIZE = 16;
+const size_t Client::ICONS_X = 8;
+SDL_Rect Client::INVENTORY_RECT;
 
 bool Client::isClient = false;
 
@@ -80,6 +83,10 @@ _currentMouseOverEntity(0){
     }
 
     _invLabel = Texture(_defaultFont, "Inventory");
+    int invW =  max(min(ICONS_X, _inventory.size()) * (ICON_SIZE + 1) + 1,
+                    static_cast<unsigned>(_invLabel.width()));
+    int invH = ICON_SIZE + _invLabel.height() + 1;
+    INVENTORY_RECT = makeRect(SCREEN_X - invW, SCREEN_Y - invH, invW, invH);
 
     // Randomize player name if not supplied
     if (cmdLineArgs.contains("username"))
@@ -335,6 +342,11 @@ void Client::run(){
 }
 
 void Client::checkMouseOver(){
+    // Check if mouse is over a UI element
+    _uiTooltip = Texture();
+    if (collision(_mouse, INVENTORY_RECT))
+        _uiTooltip = getInventoryTooltip();
+
     // Check if mouse is over an entity
     const Point mouseOffset = _mouse - _offset;
     const Entity *oldMouseOverEntity = _currentMouseOverEntity;
@@ -393,17 +405,14 @@ void Client::draw() const{
     //renderer.drawRect(drawLoc);
 
     // Inventory
-    static const size_t ICONS_X = 8;
-    const int INV_WIDTH = max(min(ICONS_X, _inventory.size()) * (ICON_SIZE + 1) + 1,
-                              static_cast<unsigned>(_invLabel.width()));
-    const int INV_HEIGHT = ICON_SIZE + _invLabel.height() + 1;
-    static SDL_Rect invBackgroundRect = makeRect(SCREEN_X - INV_WIDTH, SCREEN_Y - INV_HEIGHT, INV_WIDTH, INV_HEIGHT);
     renderer.setDrawColor(Color::WHITE / 4);
-    renderer.fillRect(invBackgroundRect);
-    _invLabel.draw(invBackgroundRect.x, invBackgroundRect.y);
+    renderer.fillRect(INVENTORY_RECT);
+    _invLabel.draw(INVENTORY_RECT.x, INVENTORY_RECT.y);
     renderer.setDrawColor(Color::BLACK);
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
-        SDL_Rect iconRect = makeRect(SCREEN_X - INV_WIDTH + 1 + i*(ICON_SIZE+1), SCREEN_Y - ICON_SIZE, ICON_SIZE, ICON_SIZE);
+        SDL_Rect iconRect = makeRect(SCREEN_X - INVENTORY_RECT.w + 1 + i*(ICON_SIZE+1),
+                                     SCREEN_Y - ICON_SIZE,
+                                     ICON_SIZE, ICON_SIZE);
         renderer.fillRect(iconRect);
         std::set<Item>::const_iterator it = _items.find(_inventory[i].first);
         if (it == _items.end())
@@ -449,8 +458,7 @@ void Client::draw() const{
     }
 
     // Tooltip
-    if (_currentMouseOverEntity)
-        drawTooltip();
+    drawTooltip();
 
     // FPS/latency
     std::ostringstream oss;
@@ -466,8 +474,39 @@ void Client::draw() const{
     renderer.present();
 }
 
+Texture Client::getInventoryTooltip() const{
+    if (_mouse.y < INVENTORY_RECT.w + _invLabel.height())
+        return Texture();
+    int slot = static_cast<size_t>((_mouse.x - INVENTORY_RECT.x) / (ICON_SIZE + 1));
+    if (slot < 0 || slot >= ICONS_X)
+        return Texture();
+
+    Item lookup(_inventory[static_cast<size_t>(slot)].first);
+    std::set<Item>::const_iterator it = _items.find(lookup);
+    if (it == _items.end())
+        return Texture();
+    const Item &item = *it;
+    TooltipBuilder tb;
+    tb.setColor(Color::WHITE);
+    tb.addLine(item.name());
+    if (item.hasClasses()) {
+        tb.setColor();
+        tb.addGap();
+        for (std::set<std::string>::const_iterator it = item.classes().begin(); it != item.classes().end(); ++it)
+            tb.addLine(*it);
+    }
+    return tb.publish();
+}
+
 void Client::drawTooltip() const{
-    Texture tooltip = _currentMouseOverEntity->tooltip();
+    Texture tooltip;
+    if (_uiTooltip)
+        tooltip = _uiTooltip;
+    else if (_currentMouseOverEntity)
+        tooltip = _currentMouseOverEntity->tooltip();
+    else
+        return;
+
     if (tooltip) {
         static const int EDGE_GAP = 2; // Gap from screen edges
         static const int CURSOR_GAP = 10; // Horizontal gap from cursor

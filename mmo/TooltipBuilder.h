@@ -25,7 +25,7 @@ public:
     void setColor(const Color &color = DEFAULT_COLOR);
     void addLine(const std::string &line);
     void addGap();
-    void publish(Texture &target);
+    Texture publish();
 };
 
 #endif

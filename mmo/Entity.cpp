@@ -58,5 +58,5 @@ void Entity::refreshTooltip(const Client &client){
     for (; it != textStrings.end(); ++it)
         tb.addLine(*it);
 
-    tb.publish(_tooltip);
+    _tooltip = tb.publish();
 }

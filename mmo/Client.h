@@ -47,9 +47,11 @@ private:
         SCREEN_Y;
 
     Texture _invLabel;
-    Texture _tile[5];
-
+    static SDL_Rect INVENTORY_RECT; // non-const, as it needs to be initialized at runtime.
     static const int ICON_SIZE;
+    static const size_t ICONS_X;
+
+    Texture _tile[5];
 
     Entity _character; // Describes the user's character
     Uint32 _actionTimer; // How long the character has been performing the current action.
@@ -68,6 +70,7 @@ private:
     void draw() const;
     void drawTile(size_t x, size_t y, int xLoc, int yLoc) const;
     void drawTooltip() const;
+    Texture _uiTooltip; // A tooltip which, if it exists, describes the UI element currently moused over.
     Point _offset; // An offset for drawing, based on the character's location on the map.
     void updateOffset(); // Update the offset, when the character moves.
 
@@ -90,6 +93,7 @@ private:
     Uint32 _timeSinceLocUpdate; // Time since a CL_LOCATION was sent
     bool _locationChanged;
     bool _tooltipNeedsRefresh; // Location has changed (local or official), and tooltip may have changed.
+    Texture getInventoryTooltip() const; // Generate tooltip for the inventory
 
     // Game data
     std::set<Item> _items;
