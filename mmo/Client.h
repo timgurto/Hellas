@@ -33,7 +33,7 @@ public:
     TTF_Font *defaultFont() const;
 
     const Entity &character() const { return _character; }
-    const Point &offset() const { return _offset; }
+    const Point &offset() const { return _intOffset; }
 
     void setAction(const std::string &msg, Uint32 actionLength);
 
@@ -74,6 +74,7 @@ private:
     void drawTooltip() const;
     Texture _uiTooltip; // A tooltip which, if it exists, describes the UI element currently moused over.
     Point _offset; // An offset for drawing, based on the character's location on the map.
+    Point _intOffset; // An integer version of the offset
     void updateOffset(); // Update the offset, when the character moves.
 
     std::string _partialMessage;

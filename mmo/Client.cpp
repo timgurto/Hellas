@@ -420,9 +420,9 @@ void Client::draw() const{
 
     // Map
     for (size_t y = 0; y != _mapY; ++y) {
-        int yLoc = y * Server::TILE_H + static_cast<int>(_offset.y + .5);
+        int yLoc = y * Server::TILE_H + static_cast<int>(offset().y + .5);
         for (size_t x = 0; x != _mapX; ++x){
-            int xLoc = x * Server::TILE_W + static_cast<int>(_offset.x + .5);
+            int xLoc = x * Server::TILE_W + static_cast<int>(offset().x + .5);
             if (y % 2 == 1)
                 xLoc -= Server::TILE_W/2;
             drawTile(x, y, xLoc, yLoc);
@@ -436,7 +436,7 @@ void Client::draw() const{
 
     // Rectangle around user
     //renderer.setDrawColor(Color::WHITE);
-    //SDL_Rect drawLoc = _character.drawRect() + _offset;
+    //SDL_Rect drawLoc = _character.drawRect() + offset();
     //renderer.drawRect(drawLoc);
 
     // Inventory
@@ -1021,6 +1021,8 @@ void Client::setEntityLocation(Entity *entity, const Point &location){
 void Client::updateOffset(){
     _offset = Point(SCREEN_X / 2 - _character.location().x,
                     SCREEN_Y / 2 - _character.location().y);
+    _intOffset = Point(static_cast<int>(_offset.x + 0.5),
+                       static_cast<int>(_offset.y + 0.5));
 }
 
 void Client::setAction(const std::string &msg, Uint32 actionLength){
