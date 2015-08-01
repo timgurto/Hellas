@@ -478,7 +478,7 @@ Texture Client::getInventoryTooltip() const{
     if (_mouse.y < INVENTORY_RECT.w + _invLabel.height())
         return Texture();
     int slot = static_cast<size_t>((_mouse.x - INVENTORY_RECT.x) / (ICON_SIZE + 1));
-    if (slot < 0 || slot >= ICONS_X)
+    if (slot < 0 || static_cast<size_t>(slot) >= _inventory.size())
         return Texture();
 
     const std::string &itemName = _inventory[static_cast<size_t>(slot)].first;
