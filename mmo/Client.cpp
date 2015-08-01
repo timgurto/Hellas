@@ -250,7 +250,13 @@ void Client::run(){
                     if (SDL_IsTextInputActive()) {
                         SDL_StopTextInput();
                         if (_enteredText != "") {
-                            _debug << Color::WHITE << _enteredText << Log::endl;
+                            if (_enteredText.at(0) == '[') {
+                                // Send message to server
+                                sendRawMessage(_enteredText);
+                                _debug << Color::YELLOW << _enteredText << Log::endl;
+                            } else {
+                                _debug << Color::WHITE << _enteredText << Log::endl;
+                            }
                             _enteredText = "";
                         }
                     } else {
@@ -977,6 +983,10 @@ void Client::handleMessage(const std::string &msg){
     }
 }
 
+void Client::sendRawMessage(const std::string &msg) const{
+    _socket.sendMessage(msg);
+}
+
 void Client::sendMessage(MessageCode msgCode, const std::string &args) const{
     // Compile message
     std::ostringstream oss;
@@ -986,7 +996,7 @@ void Client::sendMessage(MessageCode msgCode, const std::string &args) const{
     oss << ']';
 
     // Send message
-    _socket.sendMessage(oss.str());
+    sendRawMessage(oss.str());
 }
 
 const Socket &Client::socket() const{

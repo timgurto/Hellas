@@ -122,6 +122,7 @@ private:
     static const size_t MAX_TEXT_ENTERED;
 
     void checkSocket();
+    void sendRawMessage(const std::string &args = "") const;
     void sendMessage(MessageCode msgCode, const std::string &args = "") const;
     void handleMessage(const std::string &msg);
 
