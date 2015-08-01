@@ -228,25 +228,24 @@ void Client::run(){
                 break;
 
             case SDL_KEYDOWN:
-                switch(e.key.keysym.sym) {
-                case SDLK_ESCAPE:
-                    if (SDL_IsTextInputActive()) {
+                if (SDL_IsTextInputActive()) {
+                    // Text input
+
+                    switch(e.key.keysym.sym) {
+
+                    case SDLK_ESCAPE:
                         SDL_StopTextInput();
                         _enteredText = "";
-                    } else {
-                        _loop = false;
-                    }
-                    break;
+                        break;
 
-                case SDLK_BACKSPACE:
-                    if (SDL_IsTextInputActive() && _enteredText.size() > 0) {
-                        _enteredText.erase(_enteredText.size() - 1);
-                    }
-                    break;
+                    case SDLK_BACKSPACE:
+                        if (_enteredText.size() > 0) {
+                            _enteredText.erase(_enteredText.size() - 1);
+                        }
+                        break;
 
-                case SDLK_RETURN:
-                case SDLK_KP_ENTER:
-                    if (SDL_IsTextInputActive()) {
+                    case SDLK_RETURN:
+                    case SDLK_KP_ENTER:
                         SDL_StopTextInput();
                         if (_enteredText != "") {
                             if (_enteredText.at(0) == '[') {
@@ -258,10 +257,23 @@ void Client::run(){
                             }
                             _enteredText = "";
                         }
-                    } else {
-                        SDL_StartTextInput();
+                        break;
                     }
-                    break;
+
+                } else {
+                    // Regular key input
+
+                    switch(e.key.keysym.sym) {
+
+                    case SDLK_ESCAPE:
+                        _loop = false;
+                        break;
+
+                    case SDLK_RETURN:
+                    case SDLK_KP_ENTER:
+                        SDL_StartTextInput();
+                        break;
+                    }
                 }
                 break;
 
@@ -304,7 +316,7 @@ void Client::run(){
         }
         // Poll keys (whether they are currently pressed; not key events)
         static const Uint8 *keyboardState = SDL_GetKeyboardState(0);
-        if (_loggedIn) {
+        if (_loggedIn && !SDL_IsTextInputActive()) {
             bool
                 up = keyboardState[SDL_SCANCODE_UP] == SDL_PRESSED,
                 down = keyboardState[SDL_SCANCODE_DOWN] == SDL_PRESSED,
