@@ -4,15 +4,20 @@ MMO economy simulator
 &copy; 2015 Tim Gurto
 
 ## Contents
+#### Server and client usage
 [Glossary of ambiguous terms](#glossary)  
+[Keyboard controls](#keyboard)
 [Command-line arguments](#arguments)  
+
+#### Client programming guide
 [Client states](#states)  
 [Login sequence](#login)  
 [Message codes](#messages)  
 
 
+## Server and client usage
 <a id='glossary'></a>
-## Glossary of ambiguous terms
+### Glossary of ambiguous terms
 **character**, the *avatar* which represents a user in-game
 
 **class**, a category to which an item belongs, denoting functionality.  For example, to cut down a tree a user must have an "axe"-class item in his inventory.
@@ -32,8 +37,16 @@ MMO economy simulator
 **user**, the *account* playing on a client.  Identified by a unique username.
 
 
+<a id='keyboard'></a>
+### Keyboard shortcuts
+
+`Escape` Exit any open UI window, or exit the client
+
+`Enter` Open/close text-entry window, to send commands to the server
+
+
 <a id='arguments'></a>
-## Command-line arguments
+### Command-line arguments
 
 `-height `*`value`* the height of the window
 
@@ -54,8 +67,9 @@ MMO economy simulator
 `-width `*`value`* the width of the window
 
 
+## Client programming guide
 <a id='states'></a>
-## Client states
+### Client states
 **Disconnected**, no socket connection.  Attempts to connect to server every 3s (`Client::CONNECT_RETRY_DELAY`).
 
 **Connected**, socket connection exists but user has not been verified by server.  Client immediately attempts to log in.
@@ -68,7 +82,7 @@ MMO economy simulator
 
 
 <a id='login'></a>
-## Login sequence
+### Login sequence
 Sequence | Server                                      | Client                                  | Client state
 -------: | ------------------------------------------- | --------------------------------------- | ----------------
 1        | `Socket::bind()`                            |                                         | Disconnected
@@ -104,10 +118,10 @@ Sequence | Server                                      | Client                 
 
 
 <a id='messages'></a>
-## Message codes
+### Message codes
 Detailed below are the types of messages which can be sent between client and server.
 "Client requests" are sent from a client to the server, and "server commands" and "warnings and errors" are sent from the server to a client.
-### Client requests
+#### Client requests
 Code | Name                  | Syntax                     | Description
 ---: | --------------------- | -------------------------- | -----------
 0    | CL_PING               | `[0]`                      | A ping, to measure latency and reassure the server
@@ -116,7 +130,7 @@ Code | Name                  | Syntax                     | Description
 50   | CL_COLLECT_BRANCH     | `[50,serial]`              | "I want to collect branch #`serial`"
 51   | CL_COLLECT_TREE       | `[51,serial]`              | "I want to collect tree #`serial`"
 
-### Server commands
+#### Server commands
 Code | Name                  | Syntax                     | Description
 ---: | --------------------- | -------------------------- | -----------
 100  | SV_PING_REPLY         | `[100]`                    | A reply to a ping from a client
@@ -131,7 +145,7 @@ Code | Name                  | Syntax                     | Description
 152  | SV_REMOVE_BRANCH      | `[152,serial]`             | "Branch #`serial` no longer exists"
 153  | SV_REMOVE_TREE        | `[153,serial]`             | "Tree #`serial` no longer exists"
 
-### Warnings and errors
+#### Warnings and errors
 Code | Name                  | Syntax                     | Description
 ---: | --------------------- | -------------------------- | -----------
 900  | SV_DUPLICATE_USERNAME | `[900]`                    | The client has attempted to connect with a username already in use
