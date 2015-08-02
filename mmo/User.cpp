@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "Client.h"
+#include "Item.h"
 #include "Server.h"
 #include "Socket.h"
 #include "User.h"
@@ -91,14 +92,66 @@ size_t User::giveItem(const Item &item){
 
 void User::actionTargetBranch(const BranchLite *branch){
     _actionTargetTree = 0;
+    _actionCrafting = 0;
     _actionTargetBranch = branch;
     _actionTime = BranchLite::ACTION_TIME;
 }
 
 void User::actionTargetTree(const TreeLite *tree){
     _actionTargetBranch = 0;
+    _actionCrafting = 0;
     _actionTargetTree = tree;
     _actionTime = TreeLite::ACTION_TIME;
+}
+
+void User::actionCraft(const Item &item){
+    _actionTargetBranch = 0;
+    _actionTargetTree = 0;
+    _actionCrafting = &item;
+    _actionTime = item.craftTime();
+}
+
+bool User::hasMaterials(const Item &item) const{
+    std::map<std::string, size_t> remaining = item.materials();
+    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
+        const std::pair<std::string, size_t> &invSlot = _inventory[i];
+        std::map<std::string, size_t>::iterator it = remaining.find(invSlot.first);
+        if (it != remaining.end()) {
+            // Subtract this slot's stack from remaining materials needed
+            if (it->second <= invSlot.second)
+                remaining.erase(it);
+            else
+                it->second -= invSlot.second;
+        }
+    }
+    return remaining.empty();
+}
+
+void User::removeMaterials(const Item &item, Server &server) {
+    std::set<size_t> invSlotsChanged;
+    std::map<std::string, size_t> remaining = item.materials();
+    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
+        std::pair<std::string, size_t> &invSlot = _inventory[i];
+        std::map<std::string, size_t>::iterator it = remaining.find(invSlot.first);
+        if (it != remaining.end()) {
+            // Subtract this slot's stack from remaining materials needed
+            if (it->second <= invSlot.second) {
+                invSlot.second -= it->second;
+                invSlotsChanged.insert(i);
+                remaining.erase(it);
+            } else {
+                it->second -= invSlot.second;
+            }
+            if (invSlot.second == 0) {
+                invSlot.first = "none";
+                invSlotsChanged.insert(i);
+            }
+        }
+    }
+    for (std::set<size_t>::const_iterator it = invSlotsChanged.begin(); it != invSlotsChanged.end(); ++it){
+        const std::pair<std::string, size_t> &slot = _inventory[*it];
+        server.sendMessage(_socket, SV_INVENTORY, makeArgs(*it, slot.first, slot.second));
+    }
 }
 
 void User::update(Uint32 timeElapsed, Server &server){
@@ -107,10 +160,25 @@ void User::update(Uint32 timeElapsed, Server &server){
     if (_actionTime > timeElapsed)
         _actionTime -= timeElapsed;
     else {
-        if (_actionTargetBranch)
+        if (_actionTargetBranch) {
             server.removeBranch(_actionTargetBranch->serial, *this);
-        else if (_actionTargetTree)
+            _actionTargetBranch = 0;
+        } else if (_actionTargetTree) {
             server.removeTree(_actionTargetTree->serial, *this);
+            _actionTargetTree = 0;
+        } else if (_actionCrafting) {
+            // Give user his newly crafted item
+            size_t slot = giveItem(*_actionCrafting);
+            if (slot == INVENTORY_SIZE) {
+                server.sendMessage(_socket, SV_INVENTORY_FULL);
+                _actionCrafting = 0;
+                return;
+            }
+            server.sendMessage(_socket, SV_INVENTORY, makeArgs(slot, _actionCrafting->id(), 1));
+            // Remove materials from user's inventory
+            removeMaterials(*_actionCrafting, server);
+            _actionCrafting = 0;
+        }
         _actionTime = 0;
     }
 }

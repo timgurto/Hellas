@@ -20,6 +20,10 @@ enum MessageCode{
     // Arguments: x, y
     CL_LOCATION = 10,
 
+    // "I want to craft ..."
+    // Arguments: id
+    CL_CRAFT = 20,
+
     // User wants to collect a branch
     // Arguments: serial
     CL_COLLECT_BRANCH = 50,
@@ -93,6 +97,15 @@ enum MessageCode{
 
     // The user cannot receive an item because his inventory is full
     SV_INVENTORY_FULL = 912,
+
+    // The user does not have enough materials to craft an item
+    SV_NEED_MATERIALS = 913,
+
+    // The user tried to craft an item that does not exist
+    SV_INVALID_ITEM = 914,
+
+    // The user tried to craft an item that cnnot be crafted
+    SV_CANNOT_CRAFT = 915,
 
     // The user cannot cut down a tree, as he doesn't have an axe-class item
     SV_AXE_NEEDED = 950,

@@ -317,17 +317,6 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
-        case CL_LOCATION:
-        {
-            double x, y;
-            iss >> x >> del >> y >> del;
-            if (del != ']')
-                return;
-            user->updateLocation(Point(x, y), *this);
-            broadcast(SV_LOCATION, user->makeLocationCommand());
-            break;
-        }
-
         case CL_I_AM:
         {
             std::string name;
@@ -358,6 +347,42 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
             addUser(client, name);
 
+            break;
+        }
+
+        case CL_LOCATION:
+        {
+            double x, y;
+            iss >> x >> del >> y >> del;
+            if (del != ']')
+                return;
+            user->updateLocation(Point(x, y), *this);
+            broadcast(SV_LOCATION, user->makeLocationCommand());
+            break;
+        }
+
+        case CL_CRAFT:
+        {
+            std::string id;
+            iss.get(buffer, BUFFER_SIZE, ']');
+            id = std::string(buffer);
+            iss >> del;
+            if (del != ']')
+                return;
+            std::set<Item>::const_iterator it = _items.find(id);
+            if (it == _items.end()) {
+                sendMessage(client, SV_INVALID_ITEM);
+                break;
+            }
+            if (!it->isCraftable()) {
+                sendMessage(client, SV_CANNOT_CRAFT);
+                break;
+            }
+            if (!user->hasMaterials(*it)) {
+                sendMessage(client, SV_NEED_MATERIALS);
+                break;
+            }
+            user->actionCraft(*it);
             break;
         }
 
@@ -518,8 +543,10 @@ void Server::loadData(){
     _items.insert(Item("none", "none"));
     _items.insert(Item("wood", "wood", 5));
 
-    Item i("axe", "wooden axe", 1);
+    Item i("axe", "wooden axe");
     i.addClass("axe");
+    i.addMaterial("wood", 3);
+    i.craftTime(10);
     _items.insert(i);
 
     // Detect/load state

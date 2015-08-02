@@ -127,6 +127,7 @@ Code | Name                  | Syntax                     | Description
 0    | CL_PING               | `[0]`                      | A ping, to measure latency and reassure the server
 1    | CL_I_AM               | `[1,username]`             | "My name is `username`"
 10   | CL_LOCATION           | `[10,x,y]`                 | "My location has changed, and is now (`x`,`y`)"
+20   | CL_CRAFT              | `[20,id]`                  | "I want to craft an `id`"
 50   | CL_COLLECT_BRANCH     | `[50,serial]`              | "I want to collect branch #`serial`"
 51   | CL_COLLECT_TREE       | `[51,serial]`              | "I want to collect tree #`serial`"
 
@@ -154,4 +155,7 @@ Code | Name                  | Syntax                     | Description
 910  | SV_SV_TOO_FAR         | `[910]`                    | "You are too far away to perform that action"
 911  | SV_DOESNT_EXIST       | `[911]`                    | "The object you are trying to use does not exist"
 912  | SV_INVENTORY_FULL     | `[912]`                    | "You cannot receive an item because your inventory is full"
-950  | SV_AXE_NEEDED         | `[950]`                    | "You cannot cut down a tree without an axe"
+913  | SV_NEED_MATERIALS     | `[913]`                    | "You do not have enough materials to craft that item"
+914  | SV_INVALID_ITEM       | `[914]`                    | "You tried to craft an item that does not exist"
+915  | SV_CANNOT_CRAFT       | `[915]`                    | "You tried to craft an item that cannot be crafted"
+950  | SV_AXE_NEEDED         | `[950]`                    | "You tried to cut down a tree without an axe"

@@ -19,6 +19,7 @@ class User{
     Point _location;
     const BranchLite *_actionTargetBranch; // Points to a branch that the user is acting upon.
     const TreeLite *_actionTargetTree; // Points to a branch that the user is acting upon.
+    const Item *_actionCrafting; // The item this user is currently crafting.
     Uint32 _actionTime; // Time remaining on current action.
     std::vector<std::pair<std::string, size_t> > _inventory;
 
@@ -39,10 +40,15 @@ public:
     void location(std::istream &is); // Read co-ordinates from stream
     const std::pair<std::string, size_t> &inventory(size_t index) const;
     std::pair<std::string, size_t> &inventory(size_t index);
+
     const BranchLite *actionTargetBranch() const { return _actionTargetBranch; }
     const TreeLite *actionTargetTree() const { return _actionTargetTree; }
-    void actionTargetBranch(const BranchLite *branch);
-    void actionTargetTree(const TreeLite *tree);
+    void actionTargetBranch(const BranchLite *branch); // Configure user to gather a branch
+    void actionTargetTree(const TreeLite *tree); // Configure user to gather a tree
+
+    bool hasMaterials(const Item &item) const; // Whether the user has enough materials to craft an item
+    void removeMaterials(const Item &item, Server &server);
+    void actionCraft(const Item &item); // Configure user to craft an item
 
     std::string makeLocationCommand() const;
 

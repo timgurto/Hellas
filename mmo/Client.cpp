@@ -825,7 +825,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_INVENTORY_FULL:
             if (del != ']')
                 break;
-            _debug << Color::YELLOW << "Your inventory is full." << Log::endl;
+            _debug << Color::RED << "Your inventory is full." << Log::endl;
             setAction("", 0);
             break;
 
@@ -834,6 +834,24 @@ void Client::handleMessage(const std::string &msg){
                 break;
             _debug << Color::YELLOW << "You need an axe to cut gather a tree." << Log::endl;
             setAction("", 0);
+            break;
+
+        case SV_NEED_MATERIALS:
+            if (del != ']')
+                break;
+            _debug << Color::YELLOW << "You do not have the necessary materials to create that item." << Log::endl;
+            break;
+
+        case SV_INVALID_ITEM:
+            if (del != ']')
+                break;
+            _debug << Color::RED << "That is not a real item." << Log::endl;
+            break;
+
+        case SV_CANNOT_CRAFT:
+            if (del != ']')
+                break;
+            _debug << Color::RED << "That item cannot be crafted." << Log::endl;
             break;
 
         case SV_MAP_SIZE:
