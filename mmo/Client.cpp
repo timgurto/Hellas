@@ -462,7 +462,7 @@ void Client::draw() const{
     //renderer.drawRect(drawLoc);
 
     // Inventory
-    renderer.setDrawColor(Color::WHITE / 4);
+    renderer.setDrawColor(Color::GREY_4);
     renderer.fillRect(INVENTORY_RECT);
     _invLabel.draw(INVENTORY_RECT.x, INVENTORY_RECT.y);
     renderer.setDrawColor(Color::BLACK);
@@ -492,7 +492,7 @@ void Client::draw() const{
             CAST_BAR_WIDTH = 150,
             CAST_BAR_PADDING = 1;
         static const Color
-            CAST_BAR_BACKGROUND = Color::BLUE / 2 + Color::WHITE / 2,
+            CAST_BAR_BACKGROUND = Color::BLUE / 2 + Color::GREY_2,
             CAST_BAR_COLOR = Color::RED * 0.75;
         const SDL_Rect
             castBarBackgroundRect = makeRect(static_cast<int>((SCREEN_X - CAST_BAR_WIDTH) / 2.0 - CAST_BAR_PADDING + .5),
@@ -535,7 +535,7 @@ void Client::draw() const{
         static const SDL_Rect TEXT_BOX_RECT = makeRect((SCREEN_X - TEXT_BOX_WIDTH) / 2,
                                                        (SCREEN_Y - TEXT_BOX_HEIGHT) / 2,
                                                        TEXT_BOX_WIDTH, TEXT_BOX_HEIGHT);
-        static const Color TEXT_BOX_BORDER = Color::WHITE / 4;
+        static const Color TEXT_BOX_BORDER = Color::GREY_4;
         renderer.setDrawColor(TEXT_BOX_BORDER);
         renderer.drawRect(TEXT_BOX_RECT + makeRect(-1, -1, 2, 2));
         renderer.setDrawColor(Color::BLACK);

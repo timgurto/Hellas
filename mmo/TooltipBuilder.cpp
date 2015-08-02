@@ -7,8 +7,8 @@ extern Renderer renderer;
 
 const int TooltipBuilder::PADDING = 4; // Margins, and the height of gaps between lines.
 TTF_Font *TooltipBuilder::_defaultFont = 0;
-const Color TooltipBuilder::DEFAULT_COLOR = Color::BLUE / 2 + Color::WHITE / 2;
-const Color TooltipBuilder::BACKGROUND_COLOR = Color::WHITE/8 + Color::BLUE/6;
+const Color TooltipBuilder::DEFAULT_COLOR = Color::BLUE / 2 + Color::GREY_2;
+const Color TooltipBuilder::BACKGROUND_COLOR = Color::GREY_8 + Color::BLUE/6;
 
 TooltipBuilder::TooltipBuilder():
 _color(Color::WHITE)

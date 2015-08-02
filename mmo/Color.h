@@ -16,6 +16,10 @@ public:
     static const Color YELLOW;
     static const Color WHITE;
 
+    static const Color GREY_2;
+    static const Color GREY_4;
+    static const Color GREY_8;
+
     static const Color BLUE_HELL;
     static const Color NO_KEY;
 
