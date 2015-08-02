@@ -2,8 +2,10 @@
 
 #include <algorithm>
 #include <cassert>
+#include <map>
 #include <SDL.h>
 #include <string>
+#include <set>
 #include <sstream>
 #include <vector>
 
@@ -34,6 +36,9 @@ const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 250;
 const int Client::ICON_SIZE = 16;
 const size_t Client::ICONS_X = 8;
 SDL_Rect Client::INVENTORY_RECT;
+const int Client::CHECK_BOX_SIZE = 8;
+const int Client::ITEM_HEIGHT = ICON_SIZE;
+const int Client::TEXT_HEIGHT = 10;
 
 const size_t Client::MAX_TEXT_ENTERED = 100;
 
@@ -60,7 +65,10 @@ _timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
 _loaded(false),
 _mouse(0,0),
 _mouseMoved(false),
-_currentMouseOverEntity(0){
+_leftMouseDown(false),
+_currentMouseOverEntity(0),
+_craftingWindowOpen(true),
+_activeRecipe(0){
     isClient = true;
 
     _debug << cmdLineArgs << Log::endl;
@@ -107,7 +115,24 @@ _currentMouseOverEntity(0){
 
     Item i("axe", "wooden axe", 1);
     i.addClass("axe");
+    i.addMaterial("wood", 3);
+    i.craftTime(10);
     _items.insert(i);
+
+    // For crafting filters
+    for (std::set<Item>::const_iterator it = _items.begin(); it != _items.end(); ++it){
+        if (it->isCraftable()) {
+            _craftableItems.insert(&*it);
+            for (std::map<std::string, size_t>::const_iterator matsIt = it->materials().begin();
+                 matsIt != it->materials().end(); ++matsIt)
+                _matFilters[&*_items.find(matsIt->first)] = false;
+            for (std::set<std::string>::const_iterator classesIt = it->classes().begin();
+                 classesIt != it->classes().end(); ++classesIt)
+                 _classFilters[*classesIt] = false;
+        }
+    }
+    _haveMatsFilter = _classOr = _matOr = false;
+    _haveToolsFilter = true;
 
     renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
                       static_cast<float>(renderer.height()) / SCREEN_Y);
@@ -266,7 +291,10 @@ void Client::run(){
                     switch(e.key.keysym.sym) {
 
                     case SDLK_ESCAPE:
-                        _loop = false;
+                        if (_craftingWindowOpen)
+                            _craftingWindowOpen = false;
+                        else
+                            _loop = false;
                         break;
 
                     case SDLK_LEFTBRACKET:
@@ -277,6 +305,10 @@ void Client::run(){
                     case SDLK_RETURN:
                     case SDLK_KP_ENTER:
                         SDL_StartTextInput();
+                        break;
+
+                    case SDLK_c:
+                        _craftingWindowOpen = !_craftingWindowOpen;
                         break;
                     }
                 }
@@ -293,11 +325,20 @@ void Client::run(){
                 break;
             }
 
+            case SDL_MOUSEBUTTONDOWN:
+                _leftMouseDown = true;
+                break;
+
             case SDL_MOUSEBUTTONUP:
                 if (!_loaded)
                     break;
 
-                if (_currentMouseOverEntity)
+                _leftMouseDown = false;
+
+                if (_craftingWindowOpen)
+                    onCraftingWindowClick();
+
+                else if (_currentMouseOverEntity)
                     _currentMouseOverEntity->onLeftClick(*this);
 
                 break;
@@ -479,9 +520,237 @@ void Client::draw() const{
             if (it->stackSize() > 1) {
                 // Display stack size
                 Texture qtyLabel(_defaultFont, makeArgs(makeArgs(_inventory[i].second)));
-                qtyLabel.draw(iconRect.x + ICON_SIZE - qtyLabel.width() + 1, iconRect.y + ICON_SIZE - qtyLabel.height() + 3);
+                qtyLabel.draw(iconRect.x + ICON_SIZE - qtyLabel.width() + 1,
+                              iconRect.y + ICON_SIZE - qtyLabel.height() + 3);
             }
         }
+    }
+
+    // Crafting window
+    if (_craftingWindowOpen) {
+        static const int
+            FILTER_PANE_WIDTH = 100,
+            RECIPES_PANE_WIDTH = 110,
+            DETAILS_PANE_WIDTH = 100,
+            WINDOW_HEIGHT = 200,
+            HEADING_HEIGHT = 14,
+            WINDOW_WIDTH = FILTER_PANE_WIDTH + RECIPES_PANE_WIDTH + DETAILS_PANE_WIDTH,
+            MARGIN = 3;
+        _craftingRect = makeRect((SCREEN_X - WINDOW_WIDTH) / 2, (SCREEN_Y - WINDOW_HEIGHT) / 2,
+                                 WINDOW_WIDTH, WINDOW_HEIGHT);
+        _filtersRect = _recipesRect = _detailsRect = _craftingRect;
+        _filtersRect.w = FILTER_PANE_WIDTH;
+        _recipesRect.x += FILTER_PANE_WIDTH;
+        _recipesRect.w = RECIPES_PANE_WIDTH;
+        _detailsRect.x += FILTER_PANE_WIDTH + RECIPES_PANE_WIDTH;
+        _detailsRect.w = DETAILS_PANE_WIDTH;
+        static const Color
+            BACKGROUND = Color::GREY_4,
+            SHADOW_LIGHT = Color::GREY_2,
+            SHADOW_DARK = Color::GREY_8;
+        drawShadowBox(_craftingRect + makeRect(-1, -1, 2, 2));
+        renderer.setDrawColor(BACKGROUND);
+        renderer.fillRect(_craftingRect);
+        renderer.setDrawColor(SHADOW_DARK);
+        renderer.fillRect(makeRect(_craftingRect.x + FILTER_PANE_WIDTH - 1, _craftingRect.y,
+                                   1, WINDOW_HEIGHT));
+        renderer.fillRect(makeRect(_craftingRect.x + FILTER_PANE_WIDTH + RECIPES_PANE_WIDTH - 1, 
+                                   _craftingRect.y,
+                                   1, WINDOW_HEIGHT));
+        renderer.setDrawColor(SHADOW_LIGHT);
+        renderer.fillRect(makeRect(_craftingRect.x + FILTER_PANE_WIDTH, _craftingRect.y,
+                                   1, WINDOW_HEIGHT));
+        renderer.fillRect(makeRect(_craftingRect.x + FILTER_PANE_WIDTH + RECIPES_PANE_WIDTH,
+                                   _craftingRect.y,
+                                   1, WINDOW_HEIGHT));
+
+        const Texture filtersHeading(_defaultFont, "Filters");
+        filtersHeading.draw(_craftingRect.x + (FILTER_PANE_WIDTH - filtersHeading.width()) / 2,
+                            _craftingRect.y + 1);
+        const Texture recipesHeading(_defaultFont, "Recipes");
+        recipesHeading.draw(_craftingRect.x + FILTER_PANE_WIDTH
+                            + (RECIPES_PANE_WIDTH - recipesHeading.width()) / 2,
+                            _craftingRect.y + 1);
+
+        // Filters
+        static const int
+            GAP = 5,
+            GAP_CENTER_OFFSET = 1,
+            CLASSES_FILTER_HEIGHT = 40, // The list of categories only
+            MATERIALS_FILTER_HEIGHT = WINDOW_HEIGHT // The list of materials only
+                                      - CLASSES_FILTER_HEIGHT
+                                      - 6 * TEXT_HEIGHT
+                                      - 2 * GAP
+                                      - HEADING_HEIGHT
+                                      - MARGIN,
+            FILTERS_X = _craftingRect.x + MARGIN,
+            FILTERS_CONTENT_WIDTH = FILTER_PANE_WIDTH - 2*MARGIN;
+        int y = _craftingRect.y + HEADING_HEIGHT;
+        drawCheckbox(FILTERS_X, y, _haveMatsFilter, true, "Have materials");
+        _haveMatsRect = makeRect(FILTERS_X, y, FILTERS_CONTENT_WIDTH, TEXT_HEIGHT);
+        y += TEXT_HEIGHT;
+        drawCheckbox(FILTERS_X, y, _haveToolsFilter, true, "Have tools");
+        _haveToolsRect = makeRect(FILTERS_X, y, FILTERS_CONTENT_WIDTH, TEXT_HEIGHT);
+        y += TEXT_HEIGHT;
+        renderer.setDrawColor(SHADOW_DARK);
+        renderer.fillRect(makeRect(FILTERS_X, y + GAP / 2 + GAP_CENTER_OFFSET,
+                                   FILTERS_CONTENT_WIDTH, 1));
+        renderer.setDrawColor(SHADOW_LIGHT);
+        renderer.fillRect(makeRect(FILTERS_X, y + GAP / 2 + 1 + GAP_CENTER_OFFSET,
+                                   FILTERS_CONTENT_WIDTH, 1));
+        y += GAP;
+
+        Texture(_defaultFont, "Item class:").draw(FILTERS_X, y);
+        y += TEXT_HEIGHT;
+        _classFilterRect = makeRect(FILTERS_X, y, FILTERS_CONTENT_WIDTH, CLASSES_FILTER_HEIGHT);
+        int tempY = y;
+        renderer.setDrawColor(Color::WHITE);
+        bool aFilterIsSelected = false;
+        for (std::map<std::string, bool>::const_iterator it = _classFilters.begin();
+             it != _classFilters.end(); ++it){
+            if (it->second)
+                aFilterIsSelected = true;
+            drawCheckbox(FILTERS_X, y, it->second, true, it->first);
+            tempY += TEXT_HEIGHT;
+        }
+        y += CLASSES_FILTER_HEIGHT;
+        drawCheckbox(FILTERS_X, y, _classOr, aFilterIsSelected, "Any");
+        const static int FILTER_MID_X = _craftingRect.x + FILTER_PANE_WIDTH/2;
+        drawCheckbox(FILTER_MID_X, y, !_classOr, aFilterIsSelected, "All");
+        _classOrRect = makeRect(FILTERS_X, y, FILTERS_CONTENT_WIDTH, TEXT_HEIGHT);
+        y += TEXT_HEIGHT;
+        renderer.setDrawColor(SHADOW_DARK);
+        renderer.fillRect(makeRect(FILTERS_X, y + GAP / 2 + GAP_CENTER_OFFSET,
+                                   FILTER_PANE_WIDTH - 2*MARGIN, 1));
+        renderer.setDrawColor(SHADOW_LIGHT);
+        renderer.fillRect(makeRect(FILTERS_X, y + GAP / 2 + 1 + GAP_CENTER_OFFSET,
+                                   FILTER_PANE_WIDTH - 2*MARGIN, 1));
+        y += GAP;
+
+        Texture(_defaultFont, "Materials:").draw(FILTERS_X, y);
+        y += TEXT_HEIGHT;
+        _matsFilterRect = makeRect(FILTERS_X, y, FILTERS_CONTENT_WIDTH, MATERIALS_FILTER_HEIGHT);
+        aFilterIsSelected = false;
+        for (std::map<const Item *, bool>::const_iterator it = _matFilters.begin();
+             it != _matFilters.end(); ++it) {
+            if (it->second)
+                aFilterIsSelected = true;
+            const Item &item = *(it->first);
+            drawCheckbox(FILTERS_X, y, it->second);
+            item.icon().draw(FILTERS_X + CHECK_BOX_SIZE + GAP, y);
+            Texture(_defaultFont, item.name()).draw(FILTERS_X + CHECK_BOX_SIZE + ICON_SIZE + 2*GAP, y);
+            y += ITEM_HEIGHT;
+        }
+        y = _craftingRect.y + _craftingRect.h - GAP - TEXT_HEIGHT;
+        drawCheckbox(FILTERS_X, y, _matOr, aFilterIsSelected, "Any");
+        drawCheckbox(FILTER_MID_X, y, !_matOr, aFilterIsSelected, "All");
+        _matOrRect = makeRect(FILTERS_X, y, FILTERS_CONTENT_WIDTH, TEXT_HEIGHT);
+
+        // Recipes
+        static const int
+            RECIPES_X = FILTERS_X + FILTER_PANE_WIDTH,
+            RECIPES_CONTENT_WIDTH = RECIPES_PANE_WIDTH - 2*MARGIN;
+        y = _craftingRect.y + HEADING_HEIGHT;
+        _recipesListRect = makeRect(RECIPES_X, y, RECIPES_CONTENT_WIDTH,
+                                    _craftingRect.y + _craftingRect.h - MARGIN - y);
+        for (std::set<const Item *>::const_iterator it = _craftableItems.begin();
+             it != _craftableItems.end(); ++it) {
+            const Item &item = **it;
+            const SDL_Rect rect = makeRect(RECIPES_X, y, RECIPES_CONTENT_WIDTH, ITEM_HEIGHT);
+            if (&item == _activeRecipe) {
+                drawShadowBox(rect, true);
+            } else if (collision(_mouse, rect)) {
+                drawShadowBox(rect, _leftMouseDown);
+            }
+            item.icon().draw(RECIPES_X + 1, y);
+            Texture(_defaultFont, item.name()).draw(RECIPES_X + ICON_SIZE + GAP, y);
+            y += ITEM_HEIGHT;
+        }
+
+        // Details
+        static const int
+            DETAILS_X = RECIPES_X + RECIPES_PANE_WIDTH,
+            STATS_HEIGHT = 28,
+            STATS_X = DETAILS_X + ICON_SIZE + GAP;
+        bool sufficientMats = true;
+        if (_activeRecipe) {
+            const Item &item = *_activeRecipe;
+            const Texture detailsHeading(_defaultFont, item.name());
+            detailsHeading.draw(_craftingRect.x + FILTER_PANE_WIDTH + RECIPES_PANE_WIDTH
+                                + (DETAILS_PANE_WIDTH - detailsHeading.width()) / 2,
+                                _craftingRect.y + 1);
+            y = _craftingRect.y + HEADING_HEIGHT;
+
+            item.icon().draw(DETAILS_X, y);
+            // Stats/description can go here, next to the icon
+            y += ICON_SIZE;
+            std::string classes = "";
+            for (std::set<std::string>::const_iterator it = item.classes().begin();
+                 it != item.classes().end(); ++it) {
+                if (!classes.empty())
+                    classes.append(", ");
+                classes.append(*it);
+            }
+            if (!classes.empty())
+                Texture(_defaultFont, classes).draw(DETAILS_X, y);
+            y += STATS_HEIGHT - ICON_SIZE;
+            renderer.setDrawColor(SHADOW_DARK);
+            renderer.fillRect(makeRect(DETAILS_X, y + GAP / 2 + GAP_CENTER_OFFSET,
+                                       DETAILS_PANE_WIDTH - 2*MARGIN, 1));
+            renderer.setDrawColor(SHADOW_LIGHT);
+            renderer.fillRect(makeRect(DETAILS_X, y + GAP / 2 + 1 + GAP_CENTER_OFFSET,
+                                       DETAILS_PANE_WIDTH - 2*MARGIN, 1));
+            y += GAP;
+
+            Texture(_defaultFont, "Materials:").draw(DETAILS_X, y);
+            y += TEXT_HEIGHT;
+            for (std::map<std::string, size_t>::const_iterator it = item.materials().begin();
+                 it != item.materials().end(); ++it) {
+                std::ostringstream oss;
+                oss << it->first;
+                if (it->second > 1)
+                    oss << " x" << it->second;
+                Color matColor;
+                if (playerHasItem(it->first, it->second))
+                    matColor = Color::WHITE;
+                else {
+                    matColor = Color::GREY_2;
+                    sufficientMats = false;
+                }
+                std::set<Item>::const_iterator matIt = _items.find(it->first);
+                if (matIt == _items.end()) {
+                    assert(false);
+                    continue;
+                }
+                matIt->icon().draw(DETAILS_X, y);
+                Texture(_defaultFont, oss.str(), matColor).draw(DETAILS_X + ICON_SIZE + GAP, y);
+            }
+        }
+
+        static const int
+            BUTTON_HEIGHT = 15,
+            BUTTON_WIDTH = 40;
+        _craftButtonRect = makeRect(_craftingRect.x + _craftingRect.w - MARGIN - BUTTON_WIDTH,
+                                    _craftingRect.y + _craftingRect.h - MARGIN - BUTTON_HEIGHT,
+                                    BUTTON_WIDTH, BUTTON_HEIGHT),
+        _closeButtonRect = _craftButtonRect - makeRect(BUTTON_WIDTH + GAP, 0, 0, 0);
+        bool buttonDown;
+        if (_activeRecipe) {
+            buttonDown = _leftMouseDown && sufficientMats && collision(_mouse, _craftButtonRect);
+            drawShadowBox(_craftButtonRect, buttonDown);
+            Texture craftLabel(_defaultFont, "Craft", sufficientMats ? Color::WHITE : Color::GREY_2);
+            craftLabel.draw(_craftButtonRect.x + (_craftButtonRect.w - craftLabel.width()) / 2
+                            + (buttonDown ? 1 : 0),
+                            _craftButtonRect.y + (_craftButtonRect.h - craftLabel.height()) / 2
+                            + (buttonDown ? 1 : 0));
+        }
+        buttonDown = _leftMouseDown && collision(_mouse, _closeButtonRect);
+        drawShadowBox(_closeButtonRect, buttonDown);
+        Texture closeLabel(_defaultFont, "Close");
+        closeLabel.draw(_closeButtonRect.x + (_closeButtonRect.w - closeLabel.width()) / 2
+                        + (buttonDown ? 1 : 0),
+                        _closeButtonRect.y + (_closeButtonRect.h - closeLabel.height()) / 2
+                        + (buttonDown ? 1 : 0));
     }
 
     // Cast bar
@@ -561,6 +830,40 @@ void Client::draw() const{
     renderer.present();
 }
 
+void Client::drawCheckbox(int x, int y, bool checked, bool active, const std::string &text) const{
+    static const int
+        Y_OFFSET = 2,
+        GAP = 3;
+    const Color color = active ? Color::WHITE : Color::GREY_2;
+    static const SDL_Rect CHECKED_OFFSET = makeRect(2, 2, -4, -4);
+    renderer.setDrawColor(color);
+    SDL_Rect rect = makeRect(x, y + Y_OFFSET, CHECK_BOX_SIZE, CHECK_BOX_SIZE);
+    renderer.drawRect(rect);
+    if (checked)
+        renderer.fillRect(rect + CHECKED_OFFSET);
+    if (text != "")
+        Texture(_defaultFont, text, color).draw(x + CHECK_BOX_SIZE + GAP, y);
+}
+
+void Client::drawShadowBox(const SDL_Rect &rect, bool inverted) const{
+    static const Color
+        SHADOW_DARK = Color::GREY_8,
+        SHADOW_LIGHT = Color::GREY_2;
+    const int
+        width = rect.w,
+        height = rect.h,
+        left = rect.x,
+        right = left + width - 1,
+        top = rect.y,
+        bottom = top + height - 1;
+        renderer.setDrawColor(inverted ? SHADOW_DARK : SHADOW_LIGHT);
+        renderer.fillRect(makeRect(left, top, width - 1, 1));
+        renderer.fillRect(makeRect(left, top, 1, height - 1));
+        renderer.setDrawColor(inverted ? SHADOW_LIGHT : SHADOW_DARK);
+        renderer.fillRect(makeRect(right, top + 1, 1, height - 1));
+        renderer.fillRect(makeRect(left + 1, bottom, width - 1, 1));
+}
+
 Texture Client::getInventoryTooltip() const{
     if (_mouse.y < INVENTORY_RECT.w + _invLabel.height())
         return Texture();
@@ -582,10 +885,92 @@ Texture Client::getInventoryTooltip() const{
     if (item.hasClasses()) {
         tb.setColor();
         tb.addGap();
-        for (std::set<std::string>::const_iterator it = item.classes().begin(); it != item.classes().end(); ++it)
+        for (std::set<std::string>::const_iterator it = item.classes().begin();
+             it != item.classes().end(); ++it)
             tb.addLine(*it);
     }
     return tb.publish();
+}
+
+void Client::onCraftingWindowClick(){
+    if (!collision(_mouse, _craftingRect))
+        return;
+    if (collision(_mouse, _filtersRect)) {
+
+        // Have-materials filter: toggle
+        if (collision(_mouse, _haveMatsRect))
+            _haveMatsFilter = !_haveMatsFilter;
+
+        // Have-tools filter: toggle
+        else if (collision(_mouse, _haveToolsRect))
+            _haveToolsFilter = !_haveToolsFilter;
+
+        // Class-filter any/all buttons: toggle
+        else if (collision(_mouse, _classOrRect))
+            _classOr = !_classOr;
+
+        // Materials-filter any/all buttons: toggle
+        else if (collision(_mouse, _matOrRect))
+            _matOr = !_matOr;
+
+        // Class filter: toggle specific class
+        else if (collision(_mouse, _classFilterRect)) {
+            size_t index = static_cast<size_t>((_mouse.y - _classFilterRect.y) / TEXT_HEIGHT);
+            for (std::map<std::string, bool>::iterator it = _classFilters.begin();
+                 it != _classFilters.end(); ++it) {
+                if (index == 0) {
+                    it->second = !it->second;
+                    return;
+                }
+                --index;
+            }
+            
+        // Materials filter: toggle specific material
+        } else if (collision(_mouse, _matsFilterRect)) {
+            size_t index = static_cast<size_t>((_mouse.y - _matsFilterRect.y) / TEXT_HEIGHT);
+            for (std::map<const Item *, bool>::iterator it = _matFilters.begin();
+                 it != _matFilters.end(); ++it) {
+                if (index == 0) {
+                    it->second = !it->second;
+                    return;
+                }
+                --index;
+            }
+        }
+        
+    // Recipe: select recipe
+    } else if (collision(_mouse, _recipesListRect)) {
+        size_t index = static_cast<size_t>((_mouse.y - _recipesListRect.y) / ITEM_HEIGHT);
+        if (index >= _craftableItems.size()) {
+            _activeRecipe = 0;
+            return;
+        }
+        for (std::set<const Item *>::const_iterator it = _craftableItems.begin();
+             it != _craftableItems.end(); ++it){
+            if (index == 0) {
+                if (_activeRecipe == *it)
+                    _activeRecipe = 0;
+                else
+                    _activeRecipe = *it;
+                return;
+            }
+            --index;
+        }
+
+    } else if (collision(_mouse, _detailsRect)) {
+
+        // Close button: close crafting window
+        if (collision(_mouse, _closeButtonRect))
+            _craftingWindowOpen = false;
+
+        // Craft button: craft selected item
+        else if (collision(_mouse, _craftButtonRect)) {
+            if (_activeRecipe) {
+                sendMessage(CL_CRAFT, _activeRecipe->id());
+                setAction("Crafting " + _activeRecipe->name(), _activeRecipe->craftTime());
+            }
+        }
+    }
 }
 
 void Client::drawTooltip() const{
@@ -710,6 +1095,20 @@ void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
         renderer.setDrawColor(Color::RED);
         renderer.drawRect(drawLoc + FULL);
     }*/
+}
+
+bool Client::playerHasItem(const std::string &id, size_t quantity) const{
+    size_t remaining = quantity;
+    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
+        std::pair<std::string, size_t> slot = _inventory[i];
+        if (slot.first == id) {
+            if (slot.second >= quantity)
+                return true;
+            else
+                quantity -= slot.second;
+        }
+    }
+    return false;
 }
 
 void Client::handleMessage(const std::string &msg){
@@ -840,18 +1239,21 @@ void Client::handleMessage(const std::string &msg){
             if (del != ']')
                 break;
             _debug << Color::YELLOW << "You do not have the necessary materials to create that item." << Log::endl;
+            setAction("", 0);
             break;
 
         case SV_INVALID_ITEM:
             if (del != ']')
                 break;
             _debug << Color::RED << "That is not a real item." << Log::endl;
+            setAction("", 0);
             break;
 
         case SV_CANNOT_CRAFT:
             if (del != ']')
                 break;
             _debug << Color::RED << "That item cannot be crafted." << Log::endl;
+            setAction("", 0);
             break;
 
         case SV_MAP_SIZE:

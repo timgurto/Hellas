@@ -49,7 +49,26 @@ private:
     Texture _invLabel;
     static SDL_Rect INVENTORY_RECT; // non-const, as it needs to be initialized at runtime.
     static const int ICON_SIZE;
-    static const size_t ICONS_X;
+    static const size_t ICONS_X; // How many icons per inventory row
+    bool playerHasItem(const std::string &id, size_t quantity = 1) const; // Whether the user has the specified item(s).
+
+    mutable SDL_Rect
+        _craftingRect, _filtersRect, _recipesRect, _detailsRect,
+        _haveMatsRect, _haveToolsRect,
+        _classOrRect, _matOrRect,
+        _classFilterRect, _matsFilterRect,
+        _recipesListRect,
+        _closeButtonRect, _craftButtonRect;
+    bool _haveMatsFilter, _haveToolsFilter, _classOr, _matOr;
+    static const int ITEM_HEIGHT; // The height of list items featuring item icons.
+    static const int TEXT_HEIGHT; // The height of list items featuring only text.
+    const Item *_activeRecipe; // The recipe currently selected, if any
+    // Populated at load time, after _items
+    std::set<const Item *> _craftableItems;
+    std::map<std::string, bool> _classFilters;
+    std::map<const Item *, bool> _matFilters;
+    void onCraftingWindowClick();
+
 
     Texture _tile[5];
 
@@ -66,10 +85,14 @@ private:
     Point _mouse; // Mouse position
     bool _mouseMoved;
     void checkMouseOver();
+    bool _leftMouseDown; // Whether the left mouse button is pressed
 
     void draw() const;
     void drawTile(size_t x, size_t y, int xLoc, int yLoc) const;
     void drawTooltip() const;
+    static const int CHECK_BOX_SIZE;
+    void drawCheckbox(int x, int y, bool checked, bool active = true, const std::string &text = "") const;
+    void drawShadowBox(const SDL_Rect &rect, bool inverted = false) const;
     Texture _uiTooltip; // A tooltip which, if it exists, describes the UI element currently moused over.
     Point _offset; // An offset for drawing, based on the character's location on the map.
     Point _intOffset; // An integer version of the offset
@@ -118,6 +141,8 @@ private:
 
     std::string _enteredText; // Text that has been entered by the user
     static const size_t MAX_TEXT_ENTERED;
+
+    bool _craftingWindowOpen;
 
     void checkSocket();
     void sendRawMessage(const std::string &args = "") const;
