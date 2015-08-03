@@ -356,6 +356,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> x >> del >> y >> del;
             if (del != ']')
                 return;
+            user->cancelAction(*this);
             user->updateLocation(Point(x, y), *this);
             broadcast(SV_LOCATION, user->makeLocationCommand());
             break;
@@ -369,6 +370,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> del;
             if (del != ']')
                 return;
+            user->cancelAction(*this);
             std::set<Item>::const_iterator it = _items.find(id);
             if (it == _items.end()) {
                 sendMessage(client, SV_INVALID_ITEM);
@@ -392,6 +394,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != ']')
                 return;
+            user->cancelAction(*this);
             std::set<BranchLite>::const_iterator it = _branches.find(serial);
             if (it == _branches.end()) {
                 sendMessage(client, SV_DOESNT_EXIST);
@@ -409,6 +412,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != ']')
                 return;
+            user->cancelAction(*this);
             std::set<TreeLite>::const_iterator it = _trees.find(serial);
             if (it == _trees.end()) {
                 sendMessage(client, SV_DOESNT_EXIST);

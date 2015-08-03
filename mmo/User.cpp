@@ -90,23 +90,26 @@ size_t User::giveItem(const Item &item){
     return emptySlot;
 }
 
-void User::actionTargetBranch(const BranchLite *branch){
+void User::cancelAction(Server &server) {
+    if (_actionTargetBranch || _actionTargetTree || _actionCrafting)
+        server.sendMessage(_socket, SV_ACTION_INTERRUPTED);
+    _actionTargetBranch = 0;
     _actionTargetTree = 0;
     _actionCrafting = 0;
+    _actionTime = 0;
+}
+
+void User::actionTargetBranch(const BranchLite *branch){
     _actionTargetBranch = branch;
     _actionTime = BranchLite::ACTION_TIME;
 }
 
 void User::actionTargetTree(const TreeLite *tree){
-    _actionTargetBranch = 0;
-    _actionCrafting = 0;
     _actionTargetTree = tree;
     _actionTime = TreeLite::ACTION_TIME;
 }
 
 void User::actionCraft(const Item &item){
-    _actionTargetBranch = 0;
-    _actionTargetTree = 0;
     _actionCrafting = &item;
     _actionTime = item.craftTime();
 }

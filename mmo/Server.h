@@ -87,6 +87,7 @@ private:
     void removeTree (size_t serial, User &user);
     friend void User::update(Uint32 timeElapsed, Server &server);
     friend void User::removeMaterials(const Item &item, Server &server);
+    friend void User::cancelAction(Server &server);
 
     bool readUserData(User &user); // true: save data existed
     void writeUserData(const User &user) const;

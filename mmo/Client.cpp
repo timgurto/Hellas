@@ -1292,6 +1292,13 @@ void Client::handleMessage(const std::string &msg){
             setAction("", 0);
             break;
 
+        case SV_ACTION_INTERRUPTED:
+            if (del != ']')
+                break;
+            _debug << Color::YELLOW << "Action interrupted." << Log::endl;
+            setAction("", 0);
+            break;
+
         case SV_MAP_SIZE:
         {
             size_t x, y;

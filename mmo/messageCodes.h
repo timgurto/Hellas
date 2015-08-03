@@ -107,6 +107,9 @@ enum MessageCode{
     // The user tried to craft an item that cnnot be crafted
     SV_CANNOT_CRAFT = 915,
 
+    // The user was unable to complete an action
+    SV_ACTION_INTERRUPTED = 916,
+
     // The user cannot cut down a tree, as he doesn't have an axe-class item
     SV_AXE_NEEDED = 950,
 

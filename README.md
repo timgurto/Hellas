@@ -158,4 +158,5 @@ Code | Name                  | Syntax                     | Description
 913  | SV_NEED_MATERIALS     | `[913]`                    | "You do not have enough materials to craft that item"
 914  | SV_INVALID_ITEM       | `[914]`                    | "You tried to craft an item that does not exist"
 915  | SV_CANNOT_CRAFT       | `[915]`                    | "You tried to craft an item that cannot be crafted"
+916  | SV_ACTION_INTERRUPTED | `[916]`                    | "Action interrupted"
 950  | SV_AXE_NEEDED         | `[950]`                    | "You tried to cut down a tree without an axe"

@@ -50,6 +50,8 @@ public:
     void removeMaterials(const Item &item, Server &server);
     void actionCraft(const Item &item); // Configure user to craft an item
 
+    void cancelAction(Server &server); // Cancel any action in progress, and alert the client
+
     std::string makeLocationCommand() const;
 
     static const size_t INVENTORY_SIZE;
