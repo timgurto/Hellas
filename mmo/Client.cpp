@@ -67,7 +67,7 @@ _mouse(0,0),
 _mouseMoved(false),
 _leftMouseDown(false),
 _currentMouseOverEntity(0),
-_craftingWindowOpen(true),
+_craftingWindowOpen(false),
 _activeRecipe(0){
     isClient = true;
 
@@ -136,6 +136,36 @@ _activeRecipe(0){
 
     renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
                       static_cast<float>(renderer.height()) / SCREEN_Y);
+}
+
+bool Client::itemMatchesFilters(const Item &item) const{
+    // Material filters
+    bool matsFilterMatched = !_matFilterSelected;
+    for (std::map<std::string, size_t>::const_iterator it = item.materials().begin();
+         it != item.materials().end(); ++it) {
+        if (_haveMatsFilter && !playerHasItem(it->first, it->second))
+            return false;
+        if (_matFilterSelected) {
+            const Item &thisMaterial = *_items.find(it->first);
+            if (!matsFilterMatched && _matOr && _matFilters.find(&item)->second)
+                matsFilterMatched = true;
+            else if (!_matOr && !_matFilters.find(&item)->second)
+                return false;
+        }
+    }
+    // Class filters
+    bool classFilterMatched = !_classFilterSelected;
+    for (std::set<std::string>::const_iterator it = item.classes().begin();
+         it != item.classes().end(); ++it) {
+        if (_classFilterSelected) {
+            if (!classFilterMatched && _classOr && _classFilters.find(*it)->second)
+                classFilterMatched = true;
+            else if (!_classOr && !_classFilters.find(*it)->second)
+                return false;
+        }
+    }
+
+    return matsFilterMatched && classFilterMatched;
 }
 
 Client::~Client(){
@@ -444,6 +474,8 @@ void Client::checkMouseOver(){
     _uiTooltip = Texture();
     if (collision(_mouse, INVENTORY_RECT))
         _uiTooltip = getInventoryTooltip();
+    /*else if (collision(_mouse, _craftingRect))
+        _uiTooltip = getCraftingTooltip();*/
 
     // Check if mouse is over an entity
     const Point mouseOffset = _mouse - _offset;
@@ -605,18 +637,18 @@ void Client::draw() const{
         _classFilterRect = makeRect(FILTERS_X, y, FILTERS_CONTENT_WIDTH, CLASSES_FILTER_HEIGHT);
         int tempY = y;
         renderer.setDrawColor(Color::WHITE);
-        bool aFilterIsSelected = false;
+        _classFilterSelected = false;
         for (std::map<std::string, bool>::const_iterator it = _classFilters.begin();
              it != _classFilters.end(); ++it){
             if (it->second)
-                aFilterIsSelected = true;
+                _classFilterSelected = true;
             drawCheckbox(FILTERS_X, y, it->second, true, it->first);
             tempY += TEXT_HEIGHT;
         }
         y += CLASSES_FILTER_HEIGHT;
-        drawCheckbox(FILTERS_X, y, _classOr, aFilterIsSelected, "Any");
+        drawCheckbox(FILTERS_X, y, _classOr, _classFilterSelected, "Any");
         const static int FILTER_MID_X = _craftingRect.x + FILTER_PANE_WIDTH/2;
-        drawCheckbox(FILTER_MID_X, y, !_classOr, aFilterIsSelected, "All");
+        drawCheckbox(FILTER_MID_X, y, !_classOr, _classFilterSelected, "All");
         _classOrRect = makeRect(FILTERS_X, y, FILTERS_CONTENT_WIDTH, TEXT_HEIGHT);
         y += TEXT_HEIGHT;
         renderer.setDrawColor(SHADOW_DARK);
@@ -630,11 +662,11 @@ void Client::draw() const{
         Texture(_defaultFont, "Materials:").draw(FILTERS_X, y);
         y += TEXT_HEIGHT;
         _matsFilterRect = makeRect(FILTERS_X, y, FILTERS_CONTENT_WIDTH, MATERIALS_FILTER_HEIGHT);
-        aFilterIsSelected = false;
+        _matFilterSelected = false;
         for (std::map<const Item *, bool>::const_iterator it = _matFilters.begin();
              it != _matFilters.end(); ++it) {
             if (it->second)
-                aFilterIsSelected = true;
+                _matFilterSelected = true;
             const Item &item = *(it->first);
             drawCheckbox(FILTERS_X, y, it->second);
             item.icon().draw(FILTERS_X + CHECK_BOX_SIZE + GAP, y);
@@ -642,8 +674,8 @@ void Client::draw() const{
             y += ITEM_HEIGHT;
         }
         y = _craftingRect.y + _craftingRect.h - GAP - TEXT_HEIGHT;
-        drawCheckbox(FILTERS_X, y, _matOr, aFilterIsSelected, "Any");
-        drawCheckbox(FILTER_MID_X, y, !_matOr, aFilterIsSelected, "All");
+        drawCheckbox(FILTERS_X, y, _matOr, _matFilterSelected, "Any");
+        drawCheckbox(FILTER_MID_X, y, !_matOr, _matFilterSelected, "All");
         _matOrRect = makeRect(FILTERS_X, y, FILTERS_CONTENT_WIDTH, TEXT_HEIGHT);
 
         // Recipes
@@ -656,6 +688,8 @@ void Client::draw() const{
         for (std::set<const Item *>::const_iterator it = _craftableItems.begin();
              it != _craftableItems.end(); ++it) {
             const Item &item = **it;
+            if (!itemMatchesFilters(item))
+                continue;
             const SDL_Rect rect = makeRect(RECIPES_X, y, RECIPES_CONTENT_WIDTH, ITEM_HEIGHT);
             if (&item == _activeRecipe) {
                 drawShadowBox(rect, true);
@@ -947,6 +981,8 @@ void Client::onCraftingWindowClick(){
         }
         for (std::set<const Item *>::const_iterator it = _craftableItems.begin();
              it != _craftableItems.end(); ++it){
+            if (!itemMatchesFilters(**it))
+                continue;
             if (index == 0) {
                 if (_activeRecipe == *it)
                     _activeRecipe = 0;

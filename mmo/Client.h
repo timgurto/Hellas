@@ -67,6 +67,8 @@ private:
     std::set<const Item *> _craftableItems;
     std::map<std::string, bool> _classFilters;
     std::map<const Item *, bool> _matFilters;
+    mutable bool _classFilterSelected, _matFilterSelected; // Whether any filters have been selected
+    bool itemMatchesFilters(const Item &item) const;
     void onCraftingWindowClick();
 
 
