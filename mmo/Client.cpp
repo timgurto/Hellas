@@ -147,9 +147,9 @@ bool Client::itemMatchesFilters(const Item &item) const{
             return false;
         if (_matFilterSelected) {
             const Item &thisMaterial = *_items.find(it->first);
-            if (!matsFilterMatched && _matOr && _matFilters.find(&item)->second)
+            if (!matsFilterMatched && _matOr && _matFilters.find(&thisMaterial)->second)
                 matsFilterMatched = true;
-            else if (!_matOr && !_matFilters.find(&item)->second)
+            else if (!_matOr && !_matFilters.find(&thisMaterial)->second)
                 return false;
         }
     }
