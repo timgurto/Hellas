@@ -141,6 +141,8 @@ Code | Name                  | Syntax                     | Description
 121  | SV_TERRAIN            | `[121,x,y,n,t0,t1,t2,...]` | A package of map details.  "The `n` horizontal map tiles starting from (`x`,`y`) are of types `t0`, `t1`, `t2`, ..."
 122  | SV_LOCATION           | `[122,username,x,y]`       | "User `username` is located at (`x`,`y`)"
 123  | SV_INVENTORY          | `[123,slot,id,quantity]`   | "Your inventory slot #`slot` contains a stack of `quantity` items of type `id`"
+130  | SV_ACTION_STARTED     | `[130,time]`               | "You have begun an action that will take `t` milliseconds"
+130  | SV_ACTION_FINISHED    | `[131]`                    | "You have completed an action"
 150  | SV_BRANCH             | `[150,serial,x,y]`         | "Branch #`serial` is located at (`x`,`y`)"
 151  | SV_TREE               | `[151,serial,x,y]`         | "Tree #`serial` is located at (`x`,`y`)"
 152  | SV_REMOVE_BRANCH      | `[152,serial]`             | "Branch #`serial` no longer exists"

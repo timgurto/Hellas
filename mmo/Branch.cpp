@@ -21,7 +21,7 @@ void Branch::onLeftClick(Client &client) const{
     std::ostringstream oss;
     oss << '[' << CL_COLLECT_BRANCH << ',' << _serial << ']';
     client.socket().sendMessage(oss.str());
-    client.setAction("Gathering branch", BranchLite::ACTION_TIME);
+    client.prepareAction("Gathering branch");
 }
 
 std::vector<std::string> Branch::getTooltipMessages(const Client &client) const {

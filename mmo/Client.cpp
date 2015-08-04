@@ -1000,7 +1000,7 @@ void Client::onCraftingWindowClick(){
         else if (collision(_mouse, _craftButtonRect)) {
             if (_activeRecipe) {
                 sendMessage(CL_CRAFT, _activeRecipe->id());
-                setAction("Crafting " + _activeRecipe->name(), _activeRecipe->craftTime());
+                prepareAction("Crafting " + _activeRecipe->name());
             }
         }
     }
@@ -1244,56 +1244,70 @@ void Client::handleMessage(const std::string &msg){
             if (del != ']')
                 break;
             _debug << Color::YELLOW << "You are too far away to perform that action." << Log::endl;
-            setAction("", 0);
+            startAction(0);
             break;
 
         case SV_DOESNT_EXIST:
             if (del != ']')
                 break;
             _debug << Color::YELLOW << "That object doesn't exist." << Log::endl;
-            setAction("", 0);
+            startAction(0);
             break;
 
         case SV_INVENTORY_FULL:
             if (del != ']')
                 break;
             _debug << Color::RED << "Your inventory is full." << Log::endl;
-            setAction("", 0);
+            startAction(0);
             break;
 
         case SV_AXE_NEEDED:
             if (del != ']')
                 break;
             _debug << Color::YELLOW << "You need an axe to cut gather a tree." << Log::endl;
-            setAction("", 0);
+            startAction(0);
             break;
 
         case SV_NEED_MATERIALS:
             if (del != ']')
                 break;
             _debug << Color::YELLOW << "You do not have the necessary materials to create that item." << Log::endl;
-            setAction("", 0);
+            startAction(0);
             break;
 
         case SV_INVALID_ITEM:
             if (del != ']')
                 break;
             _debug << Color::RED << "That is not a real item." << Log::endl;
-            setAction("", 0);
+            startAction(0);
             break;
 
         case SV_CANNOT_CRAFT:
             if (del != ']')
                 break;
             _debug << Color::RED << "That item cannot be crafted." << Log::endl;
-            setAction("", 0);
+            startAction(0);
             break;
 
         case SV_ACTION_INTERRUPTED:
             if (del != ']')
                 break;
             _debug << Color::YELLOW << "Action interrupted." << Log::endl;
-            setAction("", 0);
+            startAction(0);
+            break;
+
+        case SV_ACTION_STARTED:
+            Uint32 time;
+            singleMsg >> time >> del;
+            if (del != ']')
+                break;
+            startAction(time);
+            break;
+
+        case SV_ACTION_FINISHED:
+            if (del != ']')
+                break;
+            startAction(0); // Effectively, hide the cast bar.
             break;
 
         case SV_MAP_SIZE:
@@ -1372,7 +1386,6 @@ void Client::handleMessage(const std::string &msg){
             if (del != ']')
                 break;
             _inventory[slot] = std::make_pair(itemID, quantity);
-            setAction("", 0); // crafting or gathering has succeeded
             break;
         }
 
@@ -1512,8 +1525,11 @@ void Client::updateOffset(){
                        static_cast<int>(_offset.y + 0.5));
 }
 
-void Client::setAction(const std::string &msg, Uint32 actionLength){
+void Client::prepareAction(const std::string &msg){
+    _actionMessage = msg;
+}
+
+void Client::startAction(Uint32 actionLength){
     _actionTimer = 0;
     _actionLength = actionLength;
-    _actionMessage = msg;
 }

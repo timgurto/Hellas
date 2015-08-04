@@ -20,7 +20,7 @@ void Tree::onLeftClick(Client &client) const{
     std::ostringstream oss;
     oss << '[' << CL_COLLECT_TREE << ',' << _serial << ']';
     client.socket().sendMessage(oss.str());
-    client.setAction("Gathering tree", TreeLite::ACTION_TIME);
+    client.prepareAction("Gathering tree");
 }
 
 std::vector<std::string> Tree::getTooltipMessages(const Client &client) const {

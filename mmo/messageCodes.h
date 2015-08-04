@@ -64,6 +64,13 @@ enum MessageCode{
     // Arguments: slot, ID, quantity
     SV_INVENTORY = 123,
 
+    // The user has begun an action
+    // Arguments: time
+    SV_ACTION_STARTED = 130,
+
+    // The user has completed an action
+    SV_ACTION_FINISHED = 131,
+
     // The location of a branch
     // Arguments: serial, x, y
     SV_BRANCH = 150,

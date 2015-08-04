@@ -385,6 +385,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             user->actionCraft(*it);
+            sendMessage(client, SV_ACTION_STARTED, makeArgs(it->craftTime()));
             break;
         }
 
@@ -402,6 +403,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_TOO_FAR);
             } else {
                 user->actionTargetBranch(&*it);
+                sendMessage(client, SV_ACTION_STARTED, makeArgs(BranchLite::ACTION_TIME));
             }
             break;
         }
@@ -428,9 +430,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                         break;
                     }
                 }
-                if (hasAxe)
+                if (hasAxe) {
                     user->actionTargetTree(&*it);
-                else
+                    sendMessage(client, SV_ACTION_STARTED, makeArgs(TreeLite::ACTION_TIME));
+                }else
                     sendMessage(client, SV_AXE_NEEDED);
             }
             break;

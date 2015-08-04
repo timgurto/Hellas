@@ -17,6 +17,7 @@ _name(name),
 _location(loc),
 _actionTargetBranch(0),
 _actionTargetTree(0),
+_actionCrafting(0),
 _actionTime(0),
 _socket(socket),
 _inventory(INVENTORY_SIZE, std::make_pair("none", 0)),
@@ -183,5 +184,6 @@ void User::update(Uint32 timeElapsed, Server &server){
             _actionCrafting = 0;
         }
         _actionTime = 0;
+        server.sendMessage(_socket, SV_ACTION_FINISHED);
     }
 }
