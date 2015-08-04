@@ -140,7 +140,7 @@ _activeRecipe(0){
 
 bool Client::itemMatchesFilters(const Item &item) const{
     // Material filters
-    bool matsFilterMatched = !_matFilterSelected;
+    bool matsFilterMatched = !_matFilterSelected || !_matOr;
     for (std::map<std::string, size_t>::const_iterator it = item.materials().begin();
          it != item.materials().end(); ++it) {
         if (_haveMatsFilter && !playerHasItem(it->first, it->second))
@@ -154,7 +154,7 @@ bool Client::itemMatchesFilters(const Item &item) const{
         }
     }
     // Class filters
-    bool classFilterMatched = !_classFilterSelected;
+    bool classFilterMatched = !_classFilterSelected || !_classOr;
     for (std::set<std::string>::const_iterator it = item.classes().begin();
          it != item.classes().end(); ++it) {
         if (_classFilterSelected) {
