@@ -658,8 +658,8 @@ size_t Server::findTile(const Point &p) const{
 }
 
 void Server::generateWorld(){
-    _mapX = 20;
-    _mapY = 20;
+    _mapX = 30;
+    _mapY = 30;
 
     // Grass by default
     _map = std::vector<std::vector<size_t> >(_mapX);
