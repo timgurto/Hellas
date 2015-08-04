@@ -321,7 +321,9 @@ void Client::run(){
                     switch(e.key.keysym.sym) {
 
                     case SDLK_ESCAPE:
-                        if (_craftingWindowOpen)
+                        if (_actionLength != 0)
+                            sendMessage(CL_CANCEL_ACTION);
+                        else if (_craftingWindowOpen)
                             _craftingWindowOpen = false;
                         else
                             _loop = false;

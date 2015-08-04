@@ -24,6 +24,9 @@ enum MessageCode{
     // Arguments: id
     CL_CRAFT = 20,
 
+    // Cancel user's current action
+    CL_CANCEL_ACTION = 21,
+
     // User wants to collect a branch
     // Arguments: serial
     CL_COLLECT_BRANCH = 50,

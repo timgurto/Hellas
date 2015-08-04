@@ -128,6 +128,7 @@ Code | Name                  | Syntax                     | Description
 1    | CL_I_AM               | `[1,username]`             | "My name is `username`"
 10   | CL_LOCATION           | `[10,x,y]`                 | "My location has changed, and is now (`x`,`y`)"
 20   | CL_CRAFT              | `[20,id]`                  | "I want to craft an `id`"
+21   | CL_CANCEL_ACTION      | `[21]`                    | "I don't want to finish my current action"
 50   | CL_COLLECT_BRANCH     | `[50,serial]`              | "I want to collect branch #`serial`"
 51   | CL_COLLECT_TREE       | `[51,serial]`              | "I want to collect tree #`serial`"
 

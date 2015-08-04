@@ -389,6 +389,15 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_CANCEL_ACTION:
+        {
+            iss >> del;
+            if (del != ']')
+                return;
+            user->cancelAction(*this);
+            break;
+        }
+
         case CL_COLLECT_BRANCH:
         {
             int serial;
