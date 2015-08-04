@@ -75,6 +75,8 @@ private:
     Texture _tile[5];
 
     Entity _character; // Describes the user's character
+
+    // These are superficial, and relate only to the cast bar.
     Uint32 _actionTimer; // How long the character has been performing the current action.
     Uint32 _actionLength; // How long the current action should take.
     std::string _actionMessage; // A description of the current action.

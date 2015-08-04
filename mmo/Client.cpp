@@ -453,11 +453,8 @@ void Client::run(){
         entitiesToReorder.clear();
 
         // Update cast bar
-        if (_actionLength > 0) {
-            _actionTimer += _timeElapsed;
-            if (_actionTimer > _actionLength)
-                setAction("", 0);
-        }
+        if (_actionLength > 0)
+            _actionTimer = min(_actionTimer + _timeElapsed, _actionLength);
 
         if (_mouseMoved)
             checkMouseOver();
@@ -1375,6 +1372,7 @@ void Client::handleMessage(const std::string &msg){
             if (del != ']')
                 break;
             _inventory[slot] = std::make_pair(itemID, quantity);
+            setAction("", 0); // crafting or gathering has succeeded
             break;
         }
 
