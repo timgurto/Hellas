@@ -73,6 +73,9 @@ _validTarget(false),
 _raw(0){
     assert (renderer);
 
+    if (!font)
+        return;
+
     SDL_Surface *surface = TTF_RenderText_Solid(font, text.c_str(), color);
     if (!surface)
         return;

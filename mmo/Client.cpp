@@ -119,6 +119,7 @@ _activeRecipe(0){
     i.craftTime(10);
     _items.insert(i);
 
+    Window::font(TTF_OpenFont("trebuc.ttf", 10));
     // For crafting filters
     for (std::set<Item>::const_iterator it = _items.begin(); it != _items.end(); ++it){
         if (it->isCraftable()) {
@@ -171,6 +172,8 @@ bool Client::itemMatchesFilters(const Item &item) const{
 Client::~Client(){
     if (_defaultFont)
         TTF_CloseFont(_defaultFont);
+    if (Window::font())
+        TTF_CloseFont(Window::font());
     OtherUser::image("");
     Branch::image("");
     Tree::image("");

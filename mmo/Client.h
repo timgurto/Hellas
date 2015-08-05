@@ -17,6 +17,7 @@
 #include "Point.h"
 #include "Socket.h"
 #include "Tree.h"
+#include "Window.h"
 #include "messageCodes.h"
 
 class Client{
