@@ -9,11 +9,13 @@ const Color Element::BACKGROUND_COLOR = Color::GREY_4;
 const Color Element::FONT_COLOR = Color::WHITE;
 TTF_Font *Element::_font = 0;
 
-Element::Element(){}
+Element::Element():
+_changed(true){}
 
 Element::Element(const SDL_Rect &rect):
 _rect(rect),
-_texture(rect.w, rect.h){}
+_texture(rect.w, rect.h),
+_changed(true){}
 
 void Element::refresh() const{
     _texture.setRenderTarget();
@@ -27,5 +29,9 @@ void Element::drawChildren() const{
 }
 
 void Element::draw() const{
+    if (_changed) {
+        refresh();
+        _changed = false;
+    }
     _texture.draw(_rect);
 }

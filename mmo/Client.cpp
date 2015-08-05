@@ -121,7 +121,6 @@ _activeRecipe(0){
 
     Window::font(TTF_OpenFont("trebuc.ttf", 10));
     _testWindow = Window(makeRect(100, 50, 300, 200), "Test window");
-    _testWindow.refresh();
     _testWindow.show();
 
     // For crafting filters

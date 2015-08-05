@@ -14,14 +14,14 @@ class Window : public Element{
     bool _visible; // If invisible, the window cannot be interacted with.
     std::string _title;
 
+    virtual void refresh() const;
+
 public:
     Window();
     Window(const SDL_Rect &rect, const std::string &title);
 
     void show() { _visible = true; }
     void hide() { _visible = false; }
-
-    virtual void refresh() const;
 
     virtual void draw() const;
 };
