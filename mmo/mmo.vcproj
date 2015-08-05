@@ -250,6 +250,10 @@
 				RelativePath=".\util.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Window.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -338,6 +342,10 @@
 			</File>
 			<File
 				RelativePath=".\util.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Window.h"
 				>
 			</File>
 		</Filter>

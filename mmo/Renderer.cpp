@@ -104,6 +104,10 @@ void Renderer::fillRect(const SDL_Rect &dstRect){
     SDL_RenderFillRect(_renderer, &dstRect);
 }
 
+void Renderer::fill(){
+    SDL_RenderFillRect(_renderer, 0);
+}
+
 void Renderer::setRenderTarget() const{
     SDL_SetRenderTarget(_renderer, 0);
 }
