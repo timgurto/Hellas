@@ -5,17 +5,17 @@
 #include "Renderer.h"
 #include "Window.h"
 
-const Color Window::BACKGROUND_COLOR = Color::GREY_4;
-const Color Window::FONT_COLOR = Color::WHITE;
-TTF_Font *Window::_font = 0;
-
 extern Renderer renderer;
 
-Window::Window(){}
+Window::Window():
+_visible(false){}
 
 Window::Window(const SDL_Rect &rect, const std::string &title):
-_rect(rect),
-_texture(rect.w, rect.h){
+Element(rect),
+_title(title),
+_visible(false){}
+
+void Window::refresh() const{
     _texture.setRenderTarget();
 
     // Draw background
@@ -23,12 +23,16 @@ _texture(rect.w, rect.h){
     renderer.fill();
 
     // Draw title
-    Texture titleTexture(_font, title, FONT_COLOR);
-    titleTexture.draw((rect.w - titleTexture.width()) / 2, 0);
+    Texture titleTexture(_font, _title, FONT_COLOR);
+    titleTexture.draw((_rect.w - titleTexture.width()) / 2, 0);
+
+    // Draw children
+    drawChildren();
 
     renderer.setRenderTarget();
 }
 
 void Window::draw() const{
-    _texture.draw(_rect);
+    if (_visible)
+        Element::draw();
 }

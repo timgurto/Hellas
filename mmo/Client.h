@@ -70,6 +70,8 @@ private:
     bool itemMatchesFilters(const Item &item) const;
     void onCraftingWindowClick();
 
+    Window _testWindow;
+
 
     Texture _tile[5];
 

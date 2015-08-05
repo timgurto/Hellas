@@ -6,27 +6,24 @@
 #include <SDL.h>
 #include <string>
 
-#include "Texture.h"
+#include "Element.h"
 
 // A generic window for the in-game UI.
-class Window{
-    static const Color
-        BACKGROUND_COLOR,
-        FONT_COLOR;
-    static TTF_Font *_font;
+class Window : public Element{
 
-    SDL_Rect _rect; // The window's location and dimensions
-
-    Texture _texture;
+    bool _visible; // If invisible, the window cannot be interacted with.
+    std::string _title;
 
 public:
     Window();
     Window(const SDL_Rect &rect, const std::string &title);
 
-    static TTF_Font *font() { return _font; }
-    static void font(TTF_Font *newFont) { _font = newFont; }
+    void show() { _visible = true; }
+    void hide() { _visible = false; }
 
-    void draw() const;
+    virtual void refresh() const;
+
+    virtual void draw() const;
 };
 
 #endif
