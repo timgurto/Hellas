@@ -358,6 +358,8 @@ void Client::run(){
                 _mouse.x = e.motion.x * SCREEN_X / static_cast<double>(renderer.width());
                 _mouse.y = e.motion.y * SCREEN_Y / static_cast<double>(renderer.height());
                 _mouseMoved = true;
+                
+                _testWindow->onMouseMove(_mouse);
 
                 if (!_loaded)
                     break;
@@ -367,6 +369,8 @@ void Client::run(){
 
             case SDL_MOUSEBUTTONDOWN:
                 _leftMouseDown = true;
+
+                _testWindow->onMouseDown(_mouse);
                 break;
 
             case SDL_MOUSEBUTTONUP:
@@ -374,6 +378,8 @@ void Client::run(){
                     break;
 
                 _leftMouseDown = false;
+
+                _testWindow->onMouseUp(_mouse);
 
                 if (_craftingWindowOpen)
                     onCraftingWindowClick();

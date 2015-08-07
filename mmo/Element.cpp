@@ -30,6 +30,21 @@ void Element::drawChildren() const{
     }
 }
 
+void Element::onMouseDown(const Point &mousePos){
+    for (std::vector<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
+        (*it)->onMouseDown(mousePos);
+}
+
+void Element::onMouseUp(const Point &mousePos){
+    for (std::vector<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
+        (*it)->onMouseUp(mousePos);
+}
+
+void Element::onMouseMove(const Point &mousePos){
+    for (std::vector<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
+        (*it)->onMouseMove(mousePos);
+}
+
 void Element::refresh(){
     renderer.pushRenderTarget(_texture);
     drawChildren();

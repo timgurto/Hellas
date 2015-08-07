@@ -35,6 +35,7 @@ protected:
         FONT_COLOR;
     Texture _texture; // A memoized image of the element, redrawn only when necessary.
     const SDL_Rect &rect() const { return _rect; }
+    void location(int x, int y) { _rect.x = x; _rect.y = y; }
 
     void drawChildren() const;
 
@@ -48,6 +49,10 @@ public:
     void addChild(Element *child) { _children.push_back(child); };
 
     void makeBackgroundTransparent();
+
+    virtual void onMouseDown(const Point &mousePos); // React to a mouse button being pressed down
+    virtual void onMouseUp(const Point &mousePos); // React to a mouse button being pressed down
+    virtual void onMouseMove(const Point &mousePos); // React to a mouse button being pressed down
 
     virtual void draw(); // Draw the existing texture to its designated location.
 

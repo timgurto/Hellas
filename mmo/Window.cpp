@@ -12,8 +12,29 @@ extern Renderer renderer;
 Window::Window(const SDL_Rect &rect, const std::string &title):
 Element(rect),
 _title(title),
-_visible(false){
+_visible(false),
+_dragging(false){
     addChild(new Label(makeRect(0, 0, rect.w, HEADING_HEIGHT), _title, Label::CENTER_JUSTIFIED));
+}
+
+void Window::onMouseDown(const Point &mousePos){
+    if (collision(mousePos, makeRect(rect().x, rect().y, rect().w, HEADING_HEIGHT))) {
+        _dragOffset = mousePos - rect();
+        _dragging = true;
+    }
+    Element::onMouseDown(mousePos);
+}
+
+void Window::onMouseUp(const Point &mousePos){
+    _dragging = false;
+    Element::onMouseUp(mousePos);
+}
+
+void Window::onMouseMove(const Point &mousePos){
+    if (_dragging) 
+        location(static_cast<int>(mousePos.x - _dragOffset.x + .5),
+                 static_cast<int>(mousePos.y - _dragOffset.y + .5));
+    Element::onMouseMove(mousePos);
 }
 
 void Window::refresh(){
