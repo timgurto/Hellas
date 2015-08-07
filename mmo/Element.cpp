@@ -8,16 +8,12 @@ const Color Element::BACKGROUND_COLOR = Color::GREY_4;
 const Color Element::FONT_COLOR = Color::WHITE;
 TTF_Font *Element::_font = 0;
 
+Texture Element::transparentBackground;
+
 Element::Element(const SDL_Rect &rect):
 _rect(rect),
 _texture(rect.w, rect.h),
 _changed(true){}
-
-void Element::refresh(){
-    renderer.pushRenderTarget(_texture);
-    drawChildren();
-    renderer.popRenderTarget();
-}
 
 Element::~Element(){
     // Free children
@@ -34,10 +30,33 @@ void Element::drawChildren() const{
     }
 }
 
+void Element::refresh(){
+    renderer.pushRenderTarget(_texture);
+    drawChildren();
+    renderer.popRenderTarget();
+}
+
 void Element::draw(){
     if (_changed) {
         refresh();
         _changed = false;
     }
     _texture.draw(_rect);
+}
+
+void Element::makeBackgroundTransparent(){
+    if (!transparentBackground) {
+        transparentBackground = Texture(renderer.width(), renderer.height());
+        transparentBackground.setAlpha(0);
+        transparentBackground.setBlend(SDL_BLENDMODE_NONE);
+        renderer.pushRenderTarget(transparentBackground);
+        renderer.fill();
+        renderer.popRenderTarget();
+    }
+    SDL_Rect rect = makeRect(0, 0,_rect.w, _rect.h);
+    transparentBackground.draw(rect, rect);
+}
+
+void Element::cleanup(){
+    transparentBackground = Texture();
 }

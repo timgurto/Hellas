@@ -20,6 +20,8 @@ class Element{
     std::vector<Element*> _children;
     static TTF_Font *_font;
 
+    static Texture transparentBackground;
+
     mutable bool _changed; // If true, this element should be refreshed before next being drawn.
 
     SDL_Rect _rect; // Location and dimensions within window
@@ -45,7 +47,11 @@ public:
 
     void addChild(Element *child) { _children.push_back(child); };
 
+    void makeBackgroundTransparent();
+
     virtual void draw(); // Draw the existing texture to its designated location.
+
+    static void cleanup(); // Release static resources
 };
 
 #endif

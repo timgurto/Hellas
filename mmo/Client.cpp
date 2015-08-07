@@ -173,6 +173,7 @@ bool Client::itemMatchesFilters(const Item &item) const{
 }
 
 Client::~Client(){
+    Element::cleanup();
     if (_defaultFont)
         TTF_CloseFont(_defaultFont);
     if (Window::font())

@@ -12,6 +12,8 @@ _justification(justification){}
 void Label::refresh(){
     renderer.pushRenderTarget(_texture);
 
+    makeBackgroundTransparent();
+
     Texture text(font(), _text, FONT_COLOR);
     int x;
     switch(_justification) {
