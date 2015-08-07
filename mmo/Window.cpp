@@ -16,29 +16,37 @@ Element(rect),
 _title(title),
 _visible(false),
 _dragging(false){
-    addChild(new Label(makeRect(0, 0, rect.w, HEADING_HEIGHT), _title, Label::CENTER_JUSTIFIED));
-    addChild(new Line(0, HEADING_HEIGHT, rect.w));
+    setMouseUpFunction(&stopDragging);
+    setMouseMoveFunction(&drag);
+
+    // Heading
+    Label *heading = new Label(makeRect(0, 0, rect.w, HEADING_HEIGHT), _title, CENTER_JUSTIFIED);
+    heading->setMouseDownFunction(&startDragging, this);
+    addChild(heading);
+
+    Line *headingLine = new Line(0, HEADING_HEIGHT, rect.w);
+    headingLine->setMouseDownFunction(&startDragging, this);
+    addChild(headingLine);
+
     addChild(new ShadowBox(makeRect(0, 0, rect.w, rect.h)));
 }
 
-void Window::onMouseDown(const Point &mousePos){
-    if (collision(mousePos, makeRect(rect().x, rect().y, rect().w, HEADING_HEIGHT))) {
-        _dragOffset = mousePos - rect();
-        _dragging = true;
-    }
-    Element::onMouseDown(mousePos);
+void Window::startDragging(Element &e){
+    Window &window = dynamic_cast<Window &>(e);
+    window._dragOffset = *absMouse - window.rect();
+    window._dragging = true;
 }
 
-void Window::onMouseUp(const Point &mousePos){
-    _dragging = false;
-    Element::onMouseUp(mousePos);
+void Window::stopDragging(Element &e){
+    Window &window = dynamic_cast<Window &>(e);
+    window._dragging = false;
 }
 
-void Window::onMouseMove(const Point &mousePos){
-    if (_dragging) 
-        rect(static_cast<int>(mousePos.x - _dragOffset.x + .5),
-             static_cast<int>(mousePos.y - _dragOffset.y + .5));
-    Element::onMouseMove(mousePos);
+void Window::drag(Element &e){
+    Window &window = dynamic_cast<Window &>(e);
+    if (window._dragging) 
+        window.rect(static_cast<int>(absMouse->x - window._dragOffset.x + .5),
+                    static_cast<int>(absMouse->y - window._dragOffset.y + .5));
 }
 
 void Window::refresh(){

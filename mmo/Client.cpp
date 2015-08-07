@@ -119,6 +119,7 @@ _activeRecipe(0){
     i.craftTime(10);
     _items.insert(i);
 
+    Element::absMouse = &_mouse;
     Element::font(TTF_OpenFont("trebuc.ttf", 10));
     _testWindow = new Window(makeRect(100, 50, 300, 200), "Test window");
     _testWindow->show();

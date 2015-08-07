@@ -12,21 +12,26 @@ TTF_Font *Element::_font = 0;
 
 Texture Element::transparentBackground;
 
+const Point *Element::absMouse = 0;
+
 Element::Element(const SDL_Rect &rect):
 _rect(rect),
 _texture(rect.w, rect.h),
-_changed(true){
+_changed(true),
+_mouseDown(0), _mouseDownElement(0),
+_mouseUp(0), _mouseUpElement(0),
+_mouseMove(0), _mouseMoveElement(0){
     _texture.setBlend(SDL_BLENDMODE_BLEND);
 }
 
 Element::~Element(){
     // Free children
-    for (std::vector<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
+    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
         delete *it;
 }
 
 void Element::drawChildren() const{
-    for (std::vector<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it) {
+    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it) {
         if ((*it)->_changed)
             _changed = true;
 
@@ -34,19 +39,60 @@ void Element::drawChildren() const{
     }
 }
 
-void Element::onMouseDown(const Point &mousePos){
-    for (std::vector<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
-        (*it)->onMouseDown(mousePos);
+bool Element::onMouseDown(const Point &mousePos){
+    // Assumption: if this is called, then the mouse collides with the element.
+    // Assumption: each element has at most one child that collides with the mouse.
+    const Point relativeLocation = mousePos - location();
+    bool functionCalled = false;
+    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it) {
+        if (collision(relativeLocation, (*it)->rect())) {
+            if ((*it)->onMouseDown(relativeLocation)) {
+                functionCalled = true;
+            }
+        }
+    }
+    if (functionCalled)
+        return true;
+    /*
+    If execution gets here, then this element has no children that both collide
+    and have _mouseDown defined.
+    */
+    if (_mouseDown) {
+        _mouseDown(*_mouseDownElement);
+        return true;
+    } else
+        return false;
 }
 
 void Element::onMouseUp(const Point &mousePos){
-    for (std::vector<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
-        (*it)->onMouseUp(mousePos);
+    const Point relativeLocation = mousePos - location();
+    if (_mouseUp)
+        _mouseUp(*_mouseUpElement);
+    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
+        (*it)->onMouseUp(relativeLocation);
 }
 
 void Element::onMouseMove(const Point &mousePos){
-    for (std::vector<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
-        (*it)->onMouseMove(mousePos);
+    const Point relativeLocation = mousePos - location();
+    if (_mouseMove)
+        _mouseMove(*_mouseMoveElement);
+    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
+        (*it)->onMouseMove(relativeLocation);
+}
+
+void Element::setMouseDownFunction(mouseDownFunction_t f, Element *e){
+    _mouseDown = f;
+    _mouseDownElement = e ? e : this;
+}
+
+void Element::setMouseUpFunction(mouseUpFunction_t f, Element *e){
+    _mouseUp = f;
+    _mouseUpElement = e ? e : this;
+}
+
+void Element::setMouseMoveFunction(mouseMoveFunction_t f, Element *e){
+    _mouseMove = f;
+    _mouseMoveElement = e ? e : this;
 }
 
 void Element::refresh(){

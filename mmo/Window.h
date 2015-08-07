@@ -26,9 +26,9 @@ public:
     void show() { _visible = true; }
     void hide() { _visible = false; }
 
-    virtual void onMouseDown(const Point &mousePos);
-    virtual void onMouseUp(const Point &mousePos);
-    virtual void onMouseMove(const Point &mousePos);
+    static void startDragging(Element &e);
+    static void stopDragging(Element &e);
+    static void drag(Element &e);
 
     virtual void draw();
 };

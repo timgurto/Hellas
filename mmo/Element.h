@@ -1,7 +1,7 @@
 // (C) 2015 Tim Gurto
 
 #include <SDL.h>
-#include <vector>
+#include <list>
 
 #include "Color.h"
 #include "Renderer.h"
@@ -29,7 +29,7 @@ public:
     };
 
 private:
-    std::vector<Element*> _children;
+    std::list<Element*> _children;
     static TTF_Font *_font;
 
     static Texture transparentBackground;
@@ -47,18 +47,33 @@ protected:
         SHADOW_LIGHT,
         SHADOW_DARK,
         FONT_COLOR;
+
     Texture _texture; // A memoized image of the element, redrawn only when necessary.
     const SDL_Rect &rect() const { return _rect; }
     void rect(int x, int y) { _rect.x = x; _rect.y = y; }
     void rect(int x, int y, int w, int h) { _rect = makeRect(x, y, w, h); }
+    Point location() const { return Point(_rect.x, _rect.y); }
     void width(int w) { _rect.w = w; }
     void height(int h) { _rect.h = h; }
+
+    typedef void (*mouseDownFunction_t)(Element &e);
+    typedef void (*mouseUpFunction_t)(Element &e);
+    typedef void (*mouseMoveFunction_t)(Element &e);
+
+    mouseDownFunction_t _mouseDown;
+    Element *_mouseDownElement;
+    mouseUpFunction_t _mouseUp;
+    Element *_mouseUpElement;
+    mouseMoveFunction_t _mouseMove;
+    Element *_mouseMoveElement;
 
     void drawChildren() const;
 
 public:
     Element(const SDL_Rect &rect);
     ~Element();
+    
+    static const Point *absMouse; // Absolute mouse co-ordinates
 
     static TTF_Font *font() { return _font; }
     static void font(TTF_Font *newFont) { _font = newFont; }
@@ -67,9 +82,17 @@ public:
 
     void makeBackgroundTransparent();
 
-    virtual void onMouseDown(const Point &mousePos); // React to a mouse button being pressed down
-    virtual void onMouseUp(const Point &mousePos); // React to a mouse button being pressed down
-    virtual void onMouseMove(const Point &mousePos); // React to a mouse button being pressed down
+    // e: allows the function to be called on behalf of another element.  0 = self.
+    void setMouseDownFunction(mouseDownFunction_t f, Element *e = 0);
+    void setMouseUpFunction(mouseUpFunction_t f, Element *e = 0);
+    void setMouseMoveFunction(mouseMoveFunction_t f, Element *e = 0);
+
+    // Recurse to all children, calling _mouseDown() in the lowest element that the mouse is over.
+    // Return value: whether this or any child has called _mouseDown().
+    bool onMouseDown(const Point &mousePos); 
+    // Recurse to all children, calling _mouse?() in all found.
+    void onMouseUp(const Point &mousePos);
+    void onMouseMove(const Point &mousePos);
 
     virtual void draw(); // Draw the existing texture to its designated location.
 
