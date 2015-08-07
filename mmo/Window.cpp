@@ -2,12 +2,14 @@
 
 #include <SDL_ttf.h>
 
+#include "Button.h"
 #include "Label.h"
 #include "Line.h"
 #include "ShadowBox.h"
 #include "Window.h"
 
 const int Window::HEADING_HEIGHT = 12;
+const int Window::CLOSE_BUTTON_SIZE = 11;
 
 extern Renderer renderer;
 
@@ -27,6 +29,13 @@ _dragging(false){
     Line *headingLine = new Line(0, HEADING_HEIGHT, rect.w);
     headingLine->setMouseDownFunction(&startDragging, this);
     addChild(headingLine);
+
+    Button *closeButton = new Button(makeRect(rect.w - CLOSE_BUTTON_SIZE - 1, 1,
+                                              CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE));
+    Label *closeButtonLabel = new Label(makeRect(0, 0, CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE),
+                                        "x", CENTER_JUSTIFIED, BOTTOM_JUSTIFIED);
+    closeButton->addChild(closeButtonLabel);
+    addChild(closeButton);
 
     addChild(new ShadowBox(makeRect(0, 0, rect.w, rect.h)));
 }

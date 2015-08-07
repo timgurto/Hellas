@@ -21,6 +21,8 @@ public:
     enum Justification{
         LEFT_JUSTIFIED,
         RIGHT_JUSTIFIED,
+        TOP_JUSTIFIED,
+        BOTTOM_JUSTIFIED,
         CENTER_JUSTIFIED
     };
     enum Orientation{

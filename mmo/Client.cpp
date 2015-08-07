@@ -9,6 +9,7 @@
 #include <sstream>
 #include <vector>
 
+#include "Button.h"
 #include "Client.h"
 #include "EntityType.h"
 #include "Renderer.h"
@@ -120,8 +121,10 @@ _activeRecipe(0){
     _items.insert(i);
 
     Element::absMouse = &_mouse;
+
     Element::font(TTF_OpenFont("trebuc.ttf", 10));
     _testWindow = new Window(makeRect(100, 50, 300, 200), "Test window");
+    _testWindow->addChild(new Button(makeRect(240, 170, 55, 25), "Close"));
     _testWindow->show();
 
     // For crafting filters

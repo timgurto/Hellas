@@ -12,6 +12,7 @@
 class Window : public Element{
 
     static const int HEADING_HEIGHT;
+    static const int CLOSE_BUTTON_SIZE;
 
     bool _visible; // If invisible, the window cannot be interacted with.
     std::string _title;

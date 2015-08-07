@@ -10,13 +10,14 @@
 // Displays text.
 class Label : public Element{
     std::string _text;
-    Justification _justification;
+    Justification _justificationH, _justificationV;
 
     virtual void refresh();
 
 public:
     Label(const SDL_Rect &rect, const std::string &text,
-          Justification justification = LEFT_JUSTIFIED);
+          Justification justificationH = LEFT_JUSTIFIED,
+          Justification justificationV = TOP_JUSTIFIED);
 };
 
 #endif

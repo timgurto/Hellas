@@ -13,10 +13,9 @@ void ShadowBox::refresh(){
 
     makeBackgroundTransparent();
 
-    static const int
-        width = rect().w,
-        height = rect().h;
     const int
+        width = rect().w,
+        height = rect().h,
         left = rect().x,
         right = left + width - 1,
         top = rect().y,
