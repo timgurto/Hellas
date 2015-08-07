@@ -39,6 +39,7 @@ public:
     bool operator!() const { return _raw == 0; }
     operator bool() const { return _raw != 0; }
 
+    SDL_Texture *raw() { return _raw; }
     static int numTextures() { return _numTextures; }
     int width() const { return _w; }
     int height() const { return _h; }

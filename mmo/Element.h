@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Color.h"
+#include "Renderer.h"
 #include "Texture.h"
 
 #ifndef ELEMENT_H
@@ -16,7 +17,7 @@ The base class may be used as an invisible container for other Elements, to impr
 of collision detection.
 */
 class Element{
-    std::vector<Element> _children;
+    std::vector<Element*> _children;
     static TTF_Font *_font;
 
     mutable bool _changed; // If true, this element should be refreshed before next being drawn.
@@ -24,29 +25,27 @@ class Element{
     SDL_Rect _rect; // Location and dimensions within window
 
     // Redraw the Element to its texture, usually after something has changed.
-    virtual void refresh() const;
+    virtual void refresh();
 
 protected:
     static const Color
         BACKGROUND_COLOR,
         FONT_COLOR;
-
     Texture _texture; // A memoized image of the element, redrawn only when necessary.
-
-    static void font(TTF_Font *newFont) { _font = newFont; }
     const SDL_Rect &rect() const { return _rect; }
 
     void drawChildren() const;
 
 public:
-    Element();
     Element(const SDL_Rect &rect);
+    ~Element();
 
     static TTF_Font *font() { return _font; }
+    static void font(TTF_Font *newFont) { _font = newFont; }
 
-    void addElement(const Element &element) { _children.push_back(element); };
+    void addChild(Element *child) { _children.push_back(child); };
 
-    virtual void draw() const; // Draw the existing texture to its designated location.
+    virtual void draw(); // Draw the existing texture to its designated location.
 };
 
 #endif

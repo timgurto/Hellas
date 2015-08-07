@@ -119,3 +119,14 @@ void Renderer::setScale(float x, float y){
 void Renderer::updateSize(){
     SDL_GetRendererOutputSize(_renderer, &_w, &_h);
 }
+
+void Renderer::pushRenderTarget(Texture &target) {
+    SDL_Texture *currentTarget = SDL_GetRenderTarget(_renderer);
+    _renderTargetsStack.push(currentTarget);
+    SDL_SetRenderTarget(_renderer, target.raw());
+}
+
+void Renderer::popRenderTarget() {
+    SDL_SetRenderTarget(_renderer, _renderTargetsStack.top());
+    _renderTargetsStack.pop();
+}

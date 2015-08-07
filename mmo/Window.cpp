@@ -2,37 +2,34 @@
 
 #include <SDL_ttf.h>
 
-#include "Renderer.h"
+#include "Label.h"
 #include "Window.h"
 
-extern Renderer renderer;
+const int Window::HEADING_HEIGHT = 12;
 
-Window::Window():
-_visible(false){}
+extern Renderer renderer;
 
 Window::Window(const SDL_Rect &rect, const std::string &title):
 Element(rect),
 _title(title),
-_visible(false){}
+_visible(false){
+    addChild(new Label(makeRect(0, 0, rect.w, HEADING_HEIGHT), _title, Label::CENTER_JUSTIFIED));
+}
 
-void Window::refresh() const{
-    _texture.setRenderTarget();
+void Window::refresh(){
+    renderer.pushRenderTarget(_texture);
 
     // Draw background
     renderer.setDrawColor(BACKGROUND_COLOR);
     renderer.fill();
 
-    // Draw title
-    Texture titleTexture(_font, _title, FONT_COLOR);
-    titleTexture.draw((_rect.w - titleTexture.width()) / 2, 0);
-
     // Draw children
     drawChildren();
 
-    renderer.setRenderTarget();
+    renderer.popRenderTarget();
 }
 
-void Window::draw() const{
+void Window::draw(){
     if (_visible)
         Element::draw();
 }

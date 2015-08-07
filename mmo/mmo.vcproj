@@ -203,6 +203,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Label.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Log.cpp"
 				>
 			</File>
@@ -298,6 +302,10 @@
 			</File>
 			<File
 				RelativePath=".\Item.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Label.h"
 				>
 			</File>
 			<File

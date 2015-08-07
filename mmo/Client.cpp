@@ -119,9 +119,9 @@ _activeRecipe(0){
     i.craftTime(10);
     _items.insert(i);
 
-    Window::font(TTF_OpenFont("trebuc.ttf", 10));
-    _testWindow = Window(makeRect(100, 50, 300, 200), "Test window");
-    _testWindow.show();
+    Element::font(TTF_OpenFont("trebuc.ttf", 10));
+    _testWindow = new Window(makeRect(100, 50, 300, 200), "Test window");
+    _testWindow->show();
 
     // For crafting filters
     for (std::set<Item>::const_iterator it = _items.begin(); it != _items.end(); ++it){
@@ -177,6 +177,7 @@ Client::~Client(){
         TTF_CloseFont(_defaultFont);
     if (Window::font())
         TTF_CloseFont(Window::font());
+    delete _testWindow;
     OtherUser::image("");
     Branch::image("");
     Tree::image("");
@@ -865,7 +866,7 @@ void Client::draw() const{
         renderer.fillRect(makeRect(cursorX, TEXT_BOX_RECT.y + 1, 1, TEXT_BOX_HEIGHT - 2));
     }
 
-    _testWindow.draw();
+    _testWindow->draw();
 
     _debug.draw();
     renderer.present();
