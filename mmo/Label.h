@@ -9,14 +9,6 @@
 
 // Displays text.
 class Label : public Element{
-public:
-    enum Justification{
-        LEFT_JUSTIFIED,
-        RIGHT_JUSTIFIED,
-        CENTER_JUSTIFIED
-    };
-
-private:
     std::string _text;
     Justification _justification;
 

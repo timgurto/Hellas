@@ -3,6 +3,7 @@
 #include <SDL_ttf.h>
 
 #include "Label.h"
+#include "Line.h"
 #include "ShadowBox.h"
 #include "Window.h"
 
@@ -15,8 +16,9 @@ Element(rect),
 _title(title),
 _visible(false),
 _dragging(false){
-    addChild(new ShadowBox(makeRect(0, 0, rect.w, rect.h)));
     addChild(new Label(makeRect(0, 0, rect.w, HEADING_HEIGHT), _title, Label::CENTER_JUSTIFIED));
+    addChild(new Line(0, HEADING_HEIGHT, rect.w));
+    addChild(new ShadowBox(makeRect(0, 0, rect.w, rect.h)));
 }
 
 void Window::onMouseDown(const Point &mousePos){
@@ -34,8 +36,8 @@ void Window::onMouseUp(const Point &mousePos){
 
 void Window::onMouseMove(const Point &mousePos){
     if (_dragging) 
-        location(static_cast<int>(mousePos.x - _dragOffset.x + .5),
-                 static_cast<int>(mousePos.y - _dragOffset.y + .5));
+        rect(static_cast<int>(mousePos.x - _dragOffset.x + .5),
+             static_cast<int>(mousePos.y - _dragOffset.y + .5));
     Element::onMouseMove(mousePos);
 }
 

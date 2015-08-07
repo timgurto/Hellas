@@ -17,6 +17,18 @@ The base class may be used as an invisible container for other Elements, to impr
 of collision detection.
 */
 class Element{
+public:
+    enum Justification{
+        LEFT_JUSTIFIED,
+        RIGHT_JUSTIFIED,
+        CENTER_JUSTIFIED
+    };
+    enum Orientation{
+        HORIZONTAL,
+        VERTICAL
+    };
+
+private:
     std::vector<Element*> _children;
     static TTF_Font *_font;
 
@@ -37,7 +49,10 @@ protected:
         FONT_COLOR;
     Texture _texture; // A memoized image of the element, redrawn only when necessary.
     const SDL_Rect &rect() const { return _rect; }
-    void location(int x, int y) { _rect.x = x; _rect.y = y; }
+    void rect(int x, int y) { _rect.x = x; _rect.y = y; }
+    void rect(int x, int y, int w, int h) { _rect = makeRect(x, y, w, h); }
+    void width(int w) { _rect.w = w; }
+    void height(int h) { _rect.h = h; }
 
     void drawChildren() const;
 

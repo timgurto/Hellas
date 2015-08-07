@@ -207,6 +207,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Line.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Log.cpp"
 				>
 			</File>
