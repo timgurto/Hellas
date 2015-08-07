@@ -32,6 +32,8 @@ class Element{
 protected:
     static const Color
         BACKGROUND_COLOR,
+        SHADOW_LIGHT,
+        SHADOW_DARK,
         FONT_COLOR;
     Texture _texture; // A memoized image of the element, redrawn only when necessary.
     const SDL_Rect &rect() const { return _rect; }

@@ -5,6 +5,8 @@
 extern Renderer renderer;
 
 const Color Element::BACKGROUND_COLOR = Color::GREY_4;
+const Color Element::SHADOW_LIGHT = Color::GREY_2;
+const Color Element::SHADOW_DARK = Color::GREY_8;
 const Color Element::FONT_COLOR = Color::WHITE;
 TTF_Font *Element::_font = 0;
 
@@ -13,7 +15,9 @@ Texture Element::transparentBackground;
 Element::Element(const SDL_Rect &rect):
 _rect(rect),
 _texture(rect.w, rect.h),
-_changed(true){}
+_changed(true){
+    _texture.setBlend(SDL_BLENDMODE_BLEND);
+}
 
 Element::~Element(){
     // Free children

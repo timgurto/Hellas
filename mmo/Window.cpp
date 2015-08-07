@@ -3,6 +3,7 @@
 #include <SDL_ttf.h>
 
 #include "Label.h"
+#include "ShadowBox.h"
 #include "Window.h"
 
 const int Window::HEADING_HEIGHT = 12;
@@ -14,6 +15,7 @@ Element(rect),
 _title(title),
 _visible(false),
 _dragging(false){
+    addChild(new ShadowBox(makeRect(0, 0, rect.w, rect.h)));
     addChild(new Label(makeRect(0, 0, rect.w, HEADING_HEIGHT), _title, Label::CENTER_JUSTIFIED));
 }
 

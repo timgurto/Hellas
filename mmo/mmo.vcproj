@@ -231,6 +231,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ShadowBox.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Socket.cpp"
 				>
 			</File>
@@ -309,6 +313,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Line.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Log.h"
 				>
 			</File>
@@ -330,6 +338,10 @@
 			</File>
 			<File
 				RelativePath=".\Server.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ShadowBox.h"
 				>
 			</File>
 			<File
