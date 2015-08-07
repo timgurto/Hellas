@@ -26,10 +26,11 @@ public:
 
     void show() { _visible = true; }
     void hide() { _visible = false; }
+    static void hideWindow(void *window);
 
     static void startDragging(Element &e);
-    static void stopDragging(Element &e);
-    static void drag(Element &e);
+    static void stopDragging(Element &e, const Point &mousePos);
+    static void drag(Element &e, const Point &mousePos);
 
     virtual void draw();
 };

@@ -124,7 +124,8 @@ _activeRecipe(0){
 
     Element::font(TTF_OpenFont("trebuc.ttf", 10));
     _testWindow = new Window(makeRect(100, 50, 300, 200), "Test window");
-    _testWindow->addChild(new Button(makeRect(240, 170, 55, 25), "Close"));
+    _testWindow->addChild(new Button(makeRect(240, 170, 55, 25), "Close",
+                                     Window::hideWindow, _testWindow));
     _testWindow->show();
 
     // For crafting filters

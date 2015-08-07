@@ -31,7 +31,6 @@ public:
     };
 
 private:
-    std::list<Element*> _children;
     static TTF_Font *_font;
 
     static Texture transparentBackground;
@@ -39,6 +38,8 @@ private:
     mutable bool _changed; // If true, this element should be refreshed before next being drawn.
 
     SDL_Rect _rect; // Location and dimensions within window
+
+    Element *_parent; // 0 if no parent.
 
     // Redraw the Element to its texture, usually after something has changed.
     virtual void refresh();
@@ -50,17 +51,18 @@ protected:
         SHADOW_DARK,
         FONT_COLOR;
 
+    std::list<Element*> _children;
+
     Texture _texture; // A memoized image of the element, redrawn only when necessary.
     const SDL_Rect &rect() const { return _rect; }
-    void rect(int x, int y) { _rect.x = x; _rect.y = y; }
-    void rect(int x, int y, int w, int h) { _rect = makeRect(x, y, w, h); }
     Point location() const { return Point(_rect.x, _rect.y); }
     void width(int w) { _rect.w = w; }
     void height(int h) { _rect.h = h; }
+    void markChanged();
 
     typedef void (*mouseDownFunction_t)(Element &e);
-    typedef void (*mouseUpFunction_t)(Element &e);
-    typedef void (*mouseMoveFunction_t)(Element &e);
+    typedef void (*mouseUpFunction_t)(Element &e, const Point &mousePos);
+    typedef void (*mouseMoveFunction_t)(Element &e, const Point &mousePos);
 
     mouseDownFunction_t _mouseDown;
     Element *_mouseDownElement;
@@ -79,8 +81,10 @@ public:
 
     static TTF_Font *font() { return _font; }
     static void font(TTF_Font *newFont) { _font = newFont; }
+    void rect(int x, int y) { _rect.x = x; _rect.y = y; }
+    void rect(int x, int y, int w, int h) { _rect = makeRect(x, y, w, h); }
 
-    void addChild(Element *child) { _children.push_back(child); };
+    virtual void addChild(Element *child);
 
     void makeBackgroundTransparent();
 

@@ -13,6 +13,8 @@ class ShadowBox : public Element{
 
 public:
     ShadowBox(const SDL_Rect &rect, bool reversed = false);
+
+    void setReversed(bool reversed);
 };
 
 #endif

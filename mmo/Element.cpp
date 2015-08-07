@@ -20,7 +20,8 @@ _texture(rect.w, rect.h),
 _changed(true),
 _mouseDown(0), _mouseDownElement(0),
 _mouseUp(0), _mouseUpElement(0),
-_mouseMove(0), _mouseMoveElement(0){
+_mouseMove(0), _mouseMoveElement(0),
+_parent(0){
     _texture.setBlend(SDL_BLENDMODE_BLEND);
 }
 
@@ -28,6 +29,12 @@ Element::~Element(){
     // Free children
     for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
         delete *it;
+}
+
+void Element::markChanged(){
+    _changed = true;
+    if (_parent)
+        _parent->markChanged();
 }
 
 void Element::drawChildren() const{
@@ -67,7 +74,7 @@ bool Element::onMouseDown(const Point &mousePos){
 void Element::onMouseUp(const Point &mousePos){
     const Point relativeLocation = mousePos - location();
     if (_mouseUp)
-        _mouseUp(*_mouseUpElement);
+        _mouseUp(*_mouseUpElement, relativeLocation);
     for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
         (*it)->onMouseUp(relativeLocation);
 }
@@ -75,7 +82,7 @@ void Element::onMouseUp(const Point &mousePos){
 void Element::onMouseMove(const Point &mousePos){
     const Point relativeLocation = mousePos - location();
     if (_mouseMove)
-        _mouseMove(*_mouseMoveElement);
+        _mouseMove(*_mouseMoveElement, relativeLocation);
     for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
         (*it)->onMouseMove(relativeLocation);
 }
@@ -94,6 +101,12 @@ void Element::setMouseMoveFunction(mouseMoveFunction_t f, Element *e){
     _mouseMove = f;
     _mouseMoveElement = e ? e : this;
 }
+
+void Element::addChild(Element *child){
+    _children.push_back(child);
+    child->_parent = this;
+    markChanged();
+};
 
 void Element::refresh(){
     renderer.pushRenderTarget(_texture);

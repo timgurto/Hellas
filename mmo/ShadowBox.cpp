@@ -32,3 +32,8 @@ void ShadowBox::refresh(){
 
     renderer.popRenderTarget();
 }
+
+void ShadowBox::setReversed(bool reversed){
+    _reversed = reversed;
+    markChanged();
+}
