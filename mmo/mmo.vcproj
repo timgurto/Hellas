@@ -183,6 +183,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CheckBox.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Client.cpp"
 				>
 			</File>
@@ -294,6 +298,10 @@
 			</File>
 			<File
 				RelativePath=".\Button.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CheckBox.h"
 				>
 			</File>
 			<File

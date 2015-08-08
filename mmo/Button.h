@@ -15,8 +15,6 @@ public:
     typedef void (*clickFun_t)(void *data);
 
 private:
-    std::string _caption;
-
     Element *_content;
 
     clickFun_t _clickFun;

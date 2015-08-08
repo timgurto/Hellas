@@ -59,6 +59,7 @@ protected:
     void width(int w) { _rect.w = w; }
     void height(int h) { _rect.h = h; }
     void markChanged();
+    virtual void checkIfChanged(); // Allows elements to update their changed status.
 
     typedef void (*mouseDownFunction_t)(Element &e);
     typedef void (*mouseUpFunction_t)(Element &e, const Point &mousePos);

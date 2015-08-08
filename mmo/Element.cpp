@@ -46,6 +46,11 @@ void Element::drawChildren() const{
     }
 }
 
+void Element::checkIfChanged(){
+    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
+        (*it)->checkIfChanged();
+}
+
 bool Element::onMouseDown(const Point &mousePos){
     // Assumption: if this is called, then the mouse collides with the element.
     // Assumption: each element has at most one child that collides with the mouse.
@@ -115,6 +120,8 @@ void Element::refresh(){
 }
 
 void Element::draw(){
+    if (!_parent)
+        checkIfChanged();
     if (_changed) {
         refresh();
         _changed = false;

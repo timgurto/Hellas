@@ -8,7 +8,6 @@ extern Renderer renderer;
 Button::Button(const SDL_Rect &rect, const std::string &caption, clickFun_t clickFunction,
                void *clickData):
 Element(rect),
-_caption(caption),
 _mouseButtonDown(false),
 _depressed(false),
 _content(new Element(makeRect(0, 0, rect.w, rect.h))),
