@@ -41,6 +41,8 @@ private:
 
     Element *_parent; // 0 if no parent.
 
+    std::string _id; // Optional ID for finding children.
+
     // Redraw the Element to its texture, usually after something has changed.
     virtual void refresh();
 
@@ -86,6 +88,8 @@ public:
     void rect(int x, int y, int w, int h) { _rect = makeRect(x, y, w, h); }
 
     virtual void addChild(Element *child);
+    void setID(const std::string &id) { _id = id; }
+    virtual Element *findChild(const std::string id); // Find a child by ID, or 0 if not found.
 
     void makeBackgroundTransparent();
 

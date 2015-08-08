@@ -36,6 +36,7 @@ public:
     Button(const SDL_Rect &rect, const std::string &caption = "", clickFun_t clickFunction = 0,
            void *clickData = 0);
     virtual void addChild(Element *child);
+    virtual Element *findChild(const std::string id);
 };
 
 #endif

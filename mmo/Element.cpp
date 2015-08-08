@@ -113,6 +113,13 @@ void Element::addChild(Element *child){
     markChanged();
 };
 
+Element *Element::findChild(const std::string id){
+    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
+        if ((*it)->_id == id)
+            return *it;
+    return 0;
+}
+
 void Element::refresh(){
     renderer.pushRenderTarget(_texture);
     drawChildren();

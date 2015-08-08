@@ -82,3 +82,7 @@ void Button::refresh(){
 void Button::addChild(Element *child){
     _content->addChild(child);
 }
+
+Element *Button::findChild(const std::string id){
+    return _content->findChild(id);
+}
