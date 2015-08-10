@@ -36,10 +36,10 @@ void Renderer::init(){
                   SDL_WINDOWPOS_UNDEFINED;
     int screenW = cmdLineArgs.contains("width") ?
                   cmdLineArgs.getInt("width") :
-                  640;
+                  1280;
     int screenH = cmdLineArgs.contains("height") ?
                   cmdLineArgs.getInt("height") :
-                  480;
+                  720;
 
     _window = SDL_CreateWindow((cmdLineArgs.contains("server") ? "Server" : "Client"),
                                screenX, screenY, screenW, screenH, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
