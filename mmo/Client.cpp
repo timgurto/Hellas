@@ -13,6 +13,8 @@
 #include "Checkbox.h"
 #include "Client.h"
 #include "EntityType.h"
+#include "Label.h"
+#include "List.h"
 #include "Renderer.h"
 #include "Server.h"
 #include "TooltipBuilder.h"
@@ -129,6 +131,22 @@ _activeRecipe(0){
                                      Window::hideWindow, _testWindow));
     _testWindow->addChild(new CheckBox(makeRect(10, 50, 120, 15), _craftingWindowOpen,
                                        "Crafting window is open"));
+    List *buttonList = new List(makeRect(200, 50, 80, 100), 15);
+    buttonList->addChild(createListItem("a"));
+    buttonList->addChild(createListItem("b"));
+    buttonList->addChild(createListItem("c"));
+    buttonList->addChild(createListItem("d"));
+    buttonList->addChild(createListItem("e"));
+    buttonList->addChild(createListItem("f"));
+    buttonList->addChild(createListItem("g"));
+    buttonList->addChild(createListItem("h"));
+    buttonList->addChild(createListItem("i"));
+    buttonList->addChild(createListItem("j"));
+    buttonList->addChild(createListItem("k"));
+    buttonList->addChild(createListItem("l"));
+    buttonList->addChild(createListItem("m"));
+    buttonList->addChild(createListItem("n"));
+    _testWindow->addChild(buttonList);
     _testWindow->show();
 
     // For crafting filters
@@ -885,6 +903,12 @@ void Client::draw() const{
 
     _debug.draw();
     renderer.present();
+}
+
+Element *Client::createListItem(const std::string &text){
+    Element *e = new Element(makeRect());
+    e->addChild(new Button(makeRect(10, 3, 10, 10), text));
+    return e;
 }
 
 void Client::drawCheckbox(int x, int y, bool checked, bool active, const std::string &text) const{

@@ -18,6 +18,7 @@ Element::Element(const SDL_Rect &rect):
 _rect(rect),
 _texture(rect.w, rect.h),
 _changed(true),
+_dimensionsChanged(false),
 _mouseDown(0), _mouseDownElement(0),
 _mouseUp(0), _mouseUpElement(0),
 _mouseMove(0), _mouseMoveElement(0),
@@ -29,6 +30,21 @@ Element::~Element(){
     // Free children
     for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
         delete *it;
+}
+
+void Element::rect(int x, int y, int w, int h){
+    _rect = makeRect(x, y, w, h);
+    _dimensionsChanged = true;
+}
+
+void Element::width(int w){
+    _rect.w = w;
+    _dimensionsChanged = true;
+}
+
+void Element::height(int h){
+    _rect.h = h;
+    _dimensionsChanged = true;
 }
 
 void Element::markChanged(){
@@ -129,6 +145,10 @@ void Element::refresh(){
 void Element::draw(){
     if (!_parent)
         checkIfChanged();
+    if (_dimensionsChanged) {
+        _texture = Texture(_rect.w, _rect.h);
+        markChanged();
+    }
     if (_changed) {
         refresh();
         _changed = false;

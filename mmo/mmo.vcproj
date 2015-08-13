@@ -219,6 +219,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\List.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Log.cpp"
 				>
 			</File>
@@ -334,6 +338,10 @@
 			</File>
 			<File
 				RelativePath=".\Line.h"
+				>
+			</File>
+			<File
+				RelativePath=".\List.h"
 				>
 			</File>
 			<File

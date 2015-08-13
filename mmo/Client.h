@@ -70,6 +70,7 @@ private:
     bool itemMatchesFilters(const Item &item) const;
     void onCraftingWindowClick();
 
+    Element *createListItem(const std::string &text);
     Window *_testWindow;
 
     Texture _tile[5];

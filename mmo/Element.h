@@ -36,6 +36,7 @@ private:
     static Texture transparentBackground;
 
     mutable bool _changed; // If true, this element should be refreshed before next being drawn.
+    bool _dimensionsChanged; // If true, destroy and recreate texture before next draw.
 
     SDL_Rect _rect; // Location and dimensions within window
 
@@ -58,8 +59,6 @@ protected:
     Texture _texture; // A memoized image of the element, redrawn only when necessary.
     const SDL_Rect &rect() const { return _rect; }
     Point location() const { return Point(_rect.x, _rect.y); }
-    void width(int w) { _rect.w = w; }
-    void height(int h) { _rect.h = h; }
     void markChanged();
     virtual void checkIfChanged(); // Allows elements to update their changed status.
 
@@ -85,7 +84,11 @@ public:
     static TTF_Font *font() { return _font; }
     static void font(TTF_Font *newFont) { _font = newFont; }
     void rect(int x, int y) { _rect.x = x; _rect.y = y; }
-    void rect(int x, int y, int w, int h) { _rect = makeRect(x, y, w, h); }
+    void rect(int x, int y, int w, int h);
+    int width() const { return _rect.w; }
+    void width(int w);
+    int height() const { return _rect.h; }
+    void height(int h);
 
     virtual void addChild(Element *child);
     void setID(const std::string &id) { _id = id; }
