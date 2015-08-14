@@ -235,6 +235,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Picture.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Point.cpp"
 				>
 			</File>
@@ -354,6 +358,10 @@
 			</File>
 			<File
 				RelativePath=".\OtherUser.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Picture.h"
 				>
 			</File>
 			<File

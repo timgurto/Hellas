@@ -57,7 +57,6 @@ protected:
     std::list<Element*> _children;
 
     Texture _texture; // A memoized image of the element, redrawn only when necessary.
-    const SDL_Rect &rect() const { return _rect; }
     Point location() const { return Point(_rect.x, _rect.y); }
     void markChanged();
     virtual void checkIfChanged(); // Allows elements to update their changed status.
@@ -77,12 +76,13 @@ protected:
 
 public:
     Element(const SDL_Rect &rect);
-    ~Element();
+    virtual ~Element();
     
     static const Point *absMouse; // Absolute mouse co-ordinates
 
     static TTF_Font *font() { return _font; }
     static void font(TTF_Font *newFont) { _font = newFont; }
+    const SDL_Rect &rect() const { return _rect; }
     void rect(int x, int y) { _rect.x = x; _rect.y = y; }
     void rect(int x, int y, int w, int h);
     int width() const { return _rect.w; }
