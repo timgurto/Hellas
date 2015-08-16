@@ -16,8 +16,8 @@ extern Renderer renderer;
 Window::Window(const SDL_Rect &rect, const std::string &title):
 Element(rect),
 _title(title),
-_visible(false),
 _dragging(false){
+    hide();
     setMouseUpFunction(&stopDragging);
     setMouseMoveFunction(&drag);
 
@@ -76,9 +76,4 @@ void Window::refresh(){
     drawChildren();
 
     renderer.popRenderTarget();
-}
-
-void Window::draw(){
-    if (_visible)
-        Element::draw();
 }

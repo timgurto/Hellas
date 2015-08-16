@@ -16,6 +16,7 @@ const Point *Element::absMouse = 0;
 
 Element::Element(const SDL_Rect &rect):
 _rect(rect),
+_visible(true),
 _texture(rect.w, rect.h),
 _changed(true),
 _dimensionsChanged(false),
@@ -70,6 +71,8 @@ void Element::checkIfChanged(){
 bool Element::onMouseDown(const Point &mousePos){
     // Assumption: if this is called, then the mouse collides with the element.
     // Assumption: each element has at most one child that collides with the mouse.
+    if (!_visible)
+        return false;
     const Point relativeLocation = mousePos - location();
     bool functionCalled = false;
     for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it) {
@@ -93,6 +96,8 @@ bool Element::onMouseDown(const Point &mousePos){
 }
 
 void Element::onMouseUp(const Point &mousePos){
+    if (!_visible)
+        return;
     const Point relativeLocation = mousePos - location();
     if (_mouseUp)
         _mouseUp(*_mouseUpElement, relativeLocation);
@@ -101,6 +106,8 @@ void Element::onMouseUp(const Point &mousePos){
 }
 
 void Element::onMouseMove(const Point &mousePos){
+    if (!_visible)
+        return;
     const Point relativeLocation = mousePos - location();
     if (_mouseMove)
         _mouseMove(*_mouseMoveElement, relativeLocation);
@@ -143,6 +150,8 @@ void Element::refresh(){
 }
 
 void Element::draw(){
+    if (!_visible)
+        return;
     if (!_parent)
         checkIfChanged();
     if (_dimensionsChanged) {

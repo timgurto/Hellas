@@ -38,6 +38,8 @@ private:
     mutable bool _changed; // If true, this element should be refreshed before next being drawn.
     bool _dimensionsChanged; // If true, destroy and recreate texture before next draw.
 
+    bool _visible;
+
     SDL_Rect _rect; // Location and dimensions within window
 
     Element *_parent; // 0 if no parent.
@@ -80,6 +82,7 @@ public:
     
     static const Point *absMouse; // Absolute mouse co-ordinates
 
+    bool visible() const { return _visible; }
     static TTF_Font *font() { return _font; }
     static void font(TTF_Font *newFont) { _font = newFont; }
     const SDL_Rect &rect() const { return _rect; }
@@ -89,6 +92,9 @@ public:
     void width(int w);
     int height() const { return _rect.h; }
     void height(int h);
+
+    void show() { _visible = true; }
+    void hide() { _visible = false; }
 
     virtual void addChild(Element *child);
     void setID(const std::string &id) { _id = id; }
@@ -108,7 +114,7 @@ public:
     void onMouseUp(const Point &mousePos);
     void onMouseMove(const Point &mousePos);
 
-    virtual void draw(); // Draw the existing texture to its designated location.
+    void draw(); // Draw the existing texture to its designated location.
 
     static void cleanup(); // Release static resources
 };
