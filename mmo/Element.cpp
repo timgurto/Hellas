@@ -165,6 +165,12 @@ void Element::draw(){
     _texture.draw(_rect);
 }
 
+void Element::forceRefresh(){
+    _changed = true;
+    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
+        (*it)->forceRefresh();
+}
+
 void Element::makeBackgroundTransparent(){
     if (!transparentBackground) {
         transparentBackground = Texture(renderer.width(), renderer.height());

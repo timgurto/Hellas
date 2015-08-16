@@ -115,6 +115,7 @@ public:
     void onMouseMove(const Point &mousePos);
 
     void draw(); // Draw the existing texture to its designated location.
+    void forceRefresh(); // Mark this and all children as changed
 
     static void cleanup(); // Release static resources
 };

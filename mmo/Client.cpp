@@ -424,6 +424,7 @@ void Client::run(){
                     renderer.updateSize();
                     renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
                                       static_cast<float>(renderer.height()) / SCREEN_Y);
+                    _testWindow->forceRefresh();
                     break;
                 }
 
