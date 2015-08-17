@@ -17,13 +17,13 @@ _orientation(orientation){
 void Line::refresh(){
     renderer.pushRenderTarget(_texture);
 
-    static SDL_Rect darkRect = _orientation == HORIZONTAL ?
+    const SDL_Rect darkRect = _orientation == HORIZONTAL ?
                                makeRect(0, 0, rect().w, 1) :
                                makeRect(0, 0, 1, rect().h);
     renderer.setDrawColor(SHADOW_DARK);
     renderer.fillRect(darkRect);
 
-    static SDL_Rect lightRect = _orientation == HORIZONTAL ?
+    const SDL_Rect lightRect = _orientation == HORIZONTAL ?
                                 makeRect(0, 1, rect().w, 1) :
                                 makeRect(1, 0, 1, rect().h);
     renderer.setDrawColor(SHADOW_LIGHT);
