@@ -18,8 +18,6 @@ class Window : public Element{
     bool _dragging; // Whether this window is currently being dragged by the mouse.
     Point _dragOffset; // While dragging, where the mouse is on the window.
 
-    virtual void refresh();
-
 public:
     Window(const SDL_Rect &rect, const std::string &title);
 

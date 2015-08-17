@@ -20,6 +20,7 @@ _dragging(false){
     hide();
     setMouseUpFunction(&stopDragging);
     setMouseMoveFunction(&drag);
+    fillBackground();
 
     // Heading
     Label *heading = new Label(makeRect(0, 0, rect.w - CLOSE_BUTTON_SIZE, HEADING_HEIGHT),
@@ -63,17 +64,4 @@ void Window::drag(Element &e, const Point &mousePos){
 void Window::hideWindow(void *window){
     Window &win = * static_cast<Window *>(window);
     win.hide();
-}
-
-void Window::refresh(){
-    renderer.pushRenderTarget(_texture);
-
-    // Draw background
-    renderer.setDrawColor(BACKGROUND_COLOR);
-    renderer.fill();
-
-    // Draw children
-    drawChildren();
-
-    renderer.popRenderTarget();
 }

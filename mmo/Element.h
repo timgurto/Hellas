@@ -40,6 +40,8 @@ private:
 
     bool _visible;
 
+    bool _solidBackground; // If true, fill the entire _rect with BACKGROUND_COLOR.
+
     SDL_Rect _rect; // Location and dimensions within window
 
     Element *_parent; // 0 if no parent.
@@ -95,6 +97,7 @@ public:
 
     void show() { _visible = true; }
     void hide() { _visible = false; }
+    void fillBackground() { _solidBackground = true; }
 
     virtual void addChild(Element *child);
     void setID(const std::string &id) { _id = id; }
