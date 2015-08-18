@@ -26,7 +26,7 @@ private:
     void depress();
     void release(bool click); // click: whether, on release, the button's _clickFun will be called.
 
-    static void mouseDown(Element &e);
+    static void mouseDown(Element &e, const Point &mousePos);
     static void mouseUp(Element &e, const Point &mousePos);
     static void mouseMove(Element &e, const Point &mousePos);
 

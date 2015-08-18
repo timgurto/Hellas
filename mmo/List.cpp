@@ -18,7 +18,10 @@ Element(rect),
 _childHeight(childHeight),
 _content(new Element(makeRect(0, 0, rect.w - ARROW_W, 0))),
 _scrollBar(new Element(makeRect(rect.w - ARROW_W, 0, ARROW_W, rect.h))),
-_cursor(new Element(makeRect(0, 0, ARROW_W, CURSOR_HEIGHT))){
+_cursor(new Element(makeRect(0, 0, ARROW_W, CURSOR_HEIGHT))),
+_mouseDownOnCursor(false),
+_scrolledToBottom(false),
+_cursorOffset(0){
     Element::addChild(_content);
     Element::addChild(_scrollBar);
 
@@ -42,8 +45,11 @@ _cursor(new Element(makeRect(0, 0, ARROW_W, CURSOR_HEIGHT))){
     _scrollBar->addChild(_whiteDown);
     _scrollBar->addChild(_greyDown);
 
-    setScrollUpFunction(scrollUp, this);
-    setScrollDownFunction(scrollDown, this);
+    _cursor->setMouseDownFunction(cursorMouseDown, this);
+    setMouseUpFunction(mouseUp, this);
+    _scrollBar->setMouseMoveFunction(mouseMove, this);
+    setScrollUpFunction(scrollUpRaw, this);
+    setScrollDownFunction(scrollDownRaw, this);
 
     _cursor->fillBackground();
     _cursor->addChild(new ShadowBox(_cursor->rect()));
@@ -57,6 +63,12 @@ void List::updateScrollBar(){
     const int Y_MAX = _scrollBar->rect().h - ARROW_H - CURSOR_HEIGHT + 1;
     const int Y_RANGE = Y_MAX - Y_MIN;
     double progress = -1.0 * _content->rect().y / (_content->rect().h - rect().h);
+    if (progress < 0)
+        progress = 0;
+    else if (progress >= 1) {
+        progress = 1;
+        _scrolledToBottom = true;
+    }
     _cursor->rect(0, static_cast<int>(progress * Y_RANGE + Y_MIN + .5));
     _scrollBar->markChanged();
 
@@ -66,7 +78,7 @@ void List::updateScrollBar(){
         _greyUp->show();
         _whiteDown->show();
         _greyDown->hide();
-    } else if (_content->rect().y == -(_content->rect().h - rect().h)) { // At bottom
+    } else if (_scrolledToBottom) {
         _whiteUp->show();
         _greyUp->hide();
         _whiteDown->hide();
@@ -106,19 +118,55 @@ Element *List::findChild(const std::string id){
     return _content->findChild(id);
 }
 
-void List::scrollUp(Element &e){
+void List::cursorMouseDown(Element &e, const Point &mousePos){
     List &list = dynamic_cast<List&>(e);
+    list._mouseDownOnCursor = true;
+    list._cursorOffset = static_cast<int>(mousePos.y + .5);
+}
+
+void List::mouseUp(Element &e, const Point &mousePos){
+    List &list = dynamic_cast<List&>(e);
+    list._mouseDownOnCursor = false;
+}
+
+void List::mouseMove(Element &e, const Point &mousePos){
+    List &list = dynamic_cast<List&>(e);
+    if (list._mouseDownOnCursor){
+        // Scroll based on mouse pos
+        list._scrolledToBottom = false;
+        static const int Y_MIN = ARROW_H + list._cursorOffset - 1;
+        const int Y_MAX = list._scrollBar->rect().h - ARROW_H - CURSOR_HEIGHT + list._cursorOffset + 1;
+        const int Y_RANGE = Y_MAX - Y_MIN;
+        double progress = (mousePos.y - Y_MIN) / Y_RANGE;
+        if (progress < 0)
+            progress = 0;
+        else if (progress >= 1) {
+            progress = 1;
+            list._scrolledToBottom = true;
+        }
+        int newY = static_cast<int>(-progress * (list._content->rect().h - list.rect().h) - .5);
+        list._content->rect(0, newY);
+        list.updateScrollBar();
+    }
+}
+
+void List::scrollUpRaw(Element &e){
+    List &list = dynamic_cast<List&>(e);
+    list._scrolledToBottom = false;
     list._content->rect(0, list._content->rect().y + SCROLL_AMOUNT);
     if (list._content->rect().y > 0)
         list._content->rect(0, 0);
     list.updateScrollBar();
 }
 
-void List::scrollDown(Element &e){
+void List::scrollDownRaw(Element &e){
     List &list = dynamic_cast<List&>(e);
+    list._scrolledToBottom = false;
     list._content->rect(0, list._content->rect().y - SCROLL_AMOUNT);
     const int minScroll = -(list._content->rect().h - list.rect().h);
-    if (list._content->rect().y < minScroll)
+    if (list._content->rect().y <= minScroll) {
         list._content->rect(0, minScroll);
+        list._scrolledToBottom = true;
+    }
     list.updateScrollBar();
 }

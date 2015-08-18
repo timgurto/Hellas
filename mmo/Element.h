@@ -64,7 +64,7 @@ protected:
     Point location() const { return Point(_rect.x, _rect.y); }
     virtual void checkIfChanged(); // Allows elements to update their changed status.
 
-    typedef void (*mouseDownFunction_t)(Element &e);
+    typedef void (*mouseDownFunction_t)(Element &e, const Point &mousePos);
     typedef void (*mouseUpFunction_t)(Element &e, const Point &mousePos);
     typedef void (*mouseMoveFunction_t)(Element &e, const Point &mousePos);
     typedef void (*scrollUpFunction_t)(Element &e);

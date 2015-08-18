@@ -7,7 +7,7 @@ extern Renderer renderer;
 
 const int CheckBox::BOX_SIZE = 8;
 const int CheckBox::GAP = 3;
-const int CheckBox::Y_OFFSET = 2;
+const int CheckBox::Y_OFFSET = 1;
 
 CheckBox::CheckBox(const SDL_Rect &rect, bool &linkedBool, const std::string &caption):
 Element(rect),
@@ -39,7 +39,7 @@ void CheckBox::release(bool click){
     _depressed = false;
 }
 
-void CheckBox::mouseDown(Element &e){
+void CheckBox::mouseDown(Element &e, const Point &mousePos){
     CheckBox &checkBox = dynamic_cast<CheckBox&>(e);
     checkBox._mouseButtonDown = true;
     checkBox.depress();

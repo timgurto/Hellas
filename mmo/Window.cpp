@@ -43,7 +43,7 @@ _dragging(false){
     addChild(new ShadowBox(makeRect(0, 0, rect.w, rect.h)));
 }
 
-void Window::startDragging(Element &e){
+void Window::startDragging(Element &e, const Point &mousePos){
     Window &window = dynamic_cast<Window &>(e);
     window._dragOffset = *absMouse - window.rect();
     window._dragging = true;

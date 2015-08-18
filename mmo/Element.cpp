@@ -91,7 +91,7 @@ bool Element::onMouseDown(const Point &mousePos){
     and have _mouseDown defined.
     */
     if (_mouseDown) {
-        _mouseDown(*_mouseDownElement);
+        _mouseDown(*_mouseDownElement, relativeLocation);
         return true;
     } else
         return false;

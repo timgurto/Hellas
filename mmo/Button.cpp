@@ -42,7 +42,7 @@ void Button::release(bool click){
     markChanged();
 }
 
-void Button::mouseDown(Element &e){
+void Button::mouseDown(Element &e, const Point &mousePos){
     Button &button = dynamic_cast<Button&>(e);
     button._mouseButtonDown = true;
     button.depress();

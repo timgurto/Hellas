@@ -23,7 +23,7 @@ public:
 
     static void hideWindow(void *window);
 
-    static void startDragging(Element &e);
+    static void startDragging(Element &e, const Point &mousePos);
     static void stopDragging(Element &e, const Point &mousePos);
     static void drag(Element &e, const Point &mousePos);
 };

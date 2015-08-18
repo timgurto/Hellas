@@ -14,7 +14,8 @@ class List : public Element{
         CURSOR_HEIGHT,
         SCROLL_AMOUNT;
 
-    int _scrollY; // Offset, in pixels; should always be 0 or negative.
+    bool _mouseDownOnCursor;
+    int _cursorOffset; // y-offset of the mouse on the cursor.
 
     int _childHeight;
 
@@ -28,9 +29,15 @@ class List : public Element{
         *_greyDown;
     Element *_cursor; // Shows position on the scroll bar, and can be dragged.
     void updateScrollBar(); // Update the appearance of the scroll bar.
+    bool _scrolledToBottom;
 
-    static void scrollUp(Element &e);
-    static void scrollDown(Element &e);
+    static void cursorMouseDown(Element &e, const Point &mousePos);
+    static void mouseUp(Element &e, const Point &mousePos);
+    static void mouseMove(Element &e, const Point &mousePos);
+    static void scrollUpRaw(Element &e);
+    static void scrollDownRaw(Element &e);
+    static void scrollUp(Element &e, const Point &mousePos) { scrollUpRaw(e); }
+    static void scrollDown(Element &e, const Point &mousePos) { scrollDownRaw(e); }
 
     virtual void refresh();
 
