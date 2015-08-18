@@ -10,15 +10,15 @@ extern Renderer renderer;
 
 const int List::ARROW_W = 8;
 const int List::ARROW_H = 5;
-const int List::CURSOR_HEIGHT = 5;
+const int List::CURSOR_HEIGHT = 8;
+const int List::SCROLL_AMOUNT = 10;
 
 List::List(const SDL_Rect &rect, int childHeight):
 Element(rect),
 _childHeight(childHeight),
 _content(new Element(makeRect(0, 0, rect.w - ARROW_W, 0))),
 _scrollBar(new Element(makeRect(rect.w - ARROW_W, 0, ARROW_W, rect.h))),
-_cursor(new Element(makeRect(0, 0, ARROW_W, CURSOR_HEIGHT))),
-_scrollY(0){
+_cursor(new Element(makeRect(0, 0, ARROW_W, CURSOR_HEIGHT))){
     Element::addChild(_content);
     Element::addChild(_scrollBar);
 
@@ -35,23 +35,48 @@ _scrollY(0){
                             Texture("Images/arrowDownGrey.png", Color::MAGENTA));
     _whiteUp->hide();
     _greyDown->hide();
+    _whiteUp->setMouseDownFunction(scrollUp, this);
+    _whiteDown->setMouseDownFunction(scrollDown, this);
     _scrollBar->addChild(_whiteUp);
     _scrollBar->addChild(_greyUp);
     _scrollBar->addChild(_whiteDown);
     _scrollBar->addChild(_greyDown);
 
+    setScrollUpFunction(scrollUp, this);
+    setScrollDownFunction(scrollDown, this);
+
     _cursor->fillBackground();
     _cursor->addChild(new ShadowBox(_cursor->rect()));
     _scrollBar->addChild(_cursor);
-    updateCursor();
+    updateScrollBar();
 }
 
-void List::updateCursor(){
+void List::updateScrollBar(){
+    // Cursor position
     static const int Y_MIN = ARROW_H - 1;
-    const int Y_MAX = _scrollBar->rect().h - ARROW_H + 1;
+    const int Y_MAX = _scrollBar->rect().h - ARROW_H - CURSOR_HEIGHT + 1;
     const int Y_RANGE = Y_MAX - Y_MIN;
     double progress = -1.0 * _content->rect().y / (_content->rect().h - rect().h);
     _cursor->rect(0, static_cast<int>(progress * Y_RANGE + Y_MIN + .5));
+    _scrollBar->markChanged();
+
+    // Arrow visibility
+    if (_content->rect().y == 0) { // Scroll bar at top
+        _whiteUp->hide();
+        _greyUp->show();
+        _whiteDown->show();
+        _greyDown->hide();
+    } else if (_content->rect().y == -(_content->rect().h - rect().h)) { // At bottom
+        _whiteUp->show();
+        _greyUp->hide();
+        _whiteDown->hide();
+        _greyDown->show();
+    } else { // In the middle somewhere
+        _whiteUp->show();
+        _greyUp->hide();
+        _whiteDown->show();
+        _greyDown->hide();
+    }
 }
 
 void List::refresh(){
@@ -79,4 +104,21 @@ void List::addChild(Element *child){
 
 Element *List::findChild(const std::string id){
     return _content->findChild(id);
+}
+
+void List::scrollUp(Element &e){
+    List &list = dynamic_cast<List&>(e);
+    list._content->rect(0, list._content->rect().y + SCROLL_AMOUNT);
+    if (list._content->rect().y > 0)
+        list._content->rect(0, 0);
+    list.updateScrollBar();
+}
+
+void List::scrollDown(Element &e){
+    List &list = dynamic_cast<List&>(e);
+    list._content->rect(0, list._content->rect().y - SCROLL_AMOUNT);
+    const int minScroll = -(list._content->rect().h - list.rect().h);
+    if (list._content->rect().y < minScroll)
+        list._content->rect(0, minScroll);
+    list.updateScrollBar();
 }

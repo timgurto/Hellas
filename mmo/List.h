@@ -11,13 +11,15 @@ class List : public Element{
     static const int
         ARROW_W,
         ARROW_H,
-        CURSOR_HEIGHT;
+        CURSOR_HEIGHT,
+        SCROLL_AMOUNT;
 
     int _scrollY; // Offset, in pixels; should always be 0 or negative.
 
     int _childHeight;
 
     Element *_content; // Holds the list items themselves, and moves up and down to "scroll".
+
     Element *_scrollBar;
     Picture // Arrow images
         *_whiteUp,
@@ -25,7 +27,10 @@ class List : public Element{
         *_greyUp,
         *_greyDown;
     Element *_cursor; // Shows position on the scroll bar, and can be dragged.
-    void updateCursor(); // Set the cursor location based on _scrollY.
+    void updateScrollBar(); // Update the appearance of the scroll bar.
+
+    static void scrollUp(Element &e);
+    static void scrollDown(Element &e);
 
     virtual void refresh();
 

@@ -62,12 +62,13 @@ protected:
 
     Texture _texture; // A memoized image of the element, redrawn only when necessary.
     Point location() const { return Point(_rect.x, _rect.y); }
-    void markChanged();
     virtual void checkIfChanged(); // Allows elements to update their changed status.
 
     typedef void (*mouseDownFunction_t)(Element &e);
     typedef void (*mouseUpFunction_t)(Element &e, const Point &mousePos);
     typedef void (*mouseMoveFunction_t)(Element &e, const Point &mousePos);
+    typedef void (*scrollUpFunction_t)(Element &e);
+    typedef void (*scrollDownFunction_t)(Element &e);
 
     mouseDownFunction_t _mouseDown;
     Element *_mouseDownElement;
@@ -75,6 +76,11 @@ protected:
     Element *_mouseUpElement;
     mouseMoveFunction_t _mouseMove;
     Element *_mouseMoveElement;
+
+    scrollUpFunction_t _scrollUp;
+    Element *_scrollUpElement;
+    scrollUpFunction_t _scrollDown;
+    Element *_scrollDownElement;
 
     void drawChildren() const;
 
@@ -99,6 +105,8 @@ public:
     void hide() { _visible = false; }
     void fillBackground() { _solidBackground = true; }
 
+    void markChanged();
+
     virtual void addChild(Element *child);
     void setID(const std::string &id) { _id = id; }
     virtual Element *findChild(const std::string id); // Find a child by ID, or 0 if not found.
@@ -109,10 +117,14 @@ public:
     void setMouseDownFunction(mouseDownFunction_t f, Element *e = 0);
     void setMouseUpFunction(mouseUpFunction_t f, Element *e = 0);
     void setMouseMoveFunction(mouseMoveFunction_t f, Element *e = 0);
+    void setScrollUpFunction(scrollUpFunction_t f, Element *e = 0);
+    void setScrollDownFunction(scrollDownFunction_t f, Element *e = 0);
 
-    // Recurse to all children, calling _mouseDown() in the lowest element that the mouse is over.
+    // Recurse to all children, calling _mouseDown() etc. in the lowest element that the mouse is over.
     // Return value: whether this or any child has called _mouseDown().
     bool onMouseDown(const Point &mousePos); 
+    bool onScrollUp(const Point &mousePos);
+    bool onScrollDown(const Point &mousePos);
     // Recurse to all children, calling _mouse?() in all found.
     void onMouseUp(const Point &mousePos);
     void onMouseMove(const Point &mousePos);

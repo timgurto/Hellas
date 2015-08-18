@@ -23,6 +23,8 @@ _dimensionsChanged(false),
 _mouseDown(0), _mouseDownElement(0),
 _mouseUp(0), _mouseUpElement(0),
 _mouseMove(0), _mouseMoveElement(0),
+_scrollUp(0), _scrollUpElement(0),
+_scrollDown(0), _scrollDownElement(0),
 _parent(0){
     _texture.setBlend(SDL_BLENDMODE_BLEND);
 }
@@ -95,6 +97,60 @@ bool Element::onMouseDown(const Point &mousePos){
         return false;
 }
 
+bool Element::onScrollUp(const Point &mousePos){
+    // Assumption: if this is called, then the mouse collides with the element.
+    // Assumption: each element has at most one child that collides with the mouse.
+    if (!_visible)
+        return false;
+    const Point relativeLocation = mousePos - location();
+    bool functionCalled = false;
+    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it) {
+        if (collision(relativeLocation, (*it)->rect())) {
+            if ((*it)->onScrollUp(relativeLocation)) {
+                functionCalled = true;
+            }
+        }
+    }
+    if (functionCalled)
+        return true;
+    /*
+    If execution gets here, then this element has no children that both collide
+    and have _scrollUp defined.
+    */
+    if (_scrollUp) {
+        _scrollUp(*_scrollUpElement);
+        return true;
+    } else
+        return false;
+}
+
+bool Element::onScrollDown(const Point &mousePos){
+    // Assumption: if this is called, then the mouse collides with the element.
+    // Assumption: each element has at most one child that collides with the mouse.
+    if (!_visible)
+        return false;
+    const Point relativeLocation = mousePos - location();
+    bool functionCalled = false;
+    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it) {
+        if (collision(relativeLocation, (*it)->rect())) {
+            if ((*it)->onScrollDown(relativeLocation)) {
+                functionCalled = true;
+            }
+        }
+    }
+    if (functionCalled)
+        return true;
+    /*
+    If execution gets here, then this element has no children that both collide
+    and have _scrollDown defined.
+    */
+    if (_scrollDown) {
+        _scrollDown(*_scrollDownElement);
+        return true;
+    } else
+        return false;
+}
+
 void Element::onMouseUp(const Point &mousePos){
     if (!_visible)
         return;
@@ -128,6 +184,16 @@ void Element::setMouseUpFunction(mouseUpFunction_t f, Element *e){
 void Element::setMouseMoveFunction(mouseMoveFunction_t f, Element *e){
     _mouseMove = f;
     _mouseMoveElement = e ? e : this;
+}
+
+void Element::setScrollUpFunction(scrollUpFunction_t f, Element *e){
+    _scrollUp = f;
+    _scrollUpElement = e ? e : this;
+}
+
+void Element::setScrollDownFunction(scrollDownFunction_t f, Element *e){
+    _scrollDown = f;
+    _scrollDownElement = e ? e : this;
 }
 
 void Element::addChild(Element *child){

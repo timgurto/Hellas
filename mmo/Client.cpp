@@ -415,6 +415,13 @@ void Client::run(){
 
                 break;
 
+            case SDL_MOUSEWHEEL:
+                if (e.wheel.y < 0)
+                    _testWindow->onScrollDown(_mouse);
+                else if (e.wheel.y > 0)
+                    _testWindow->onScrollUp(_mouse);
+                break;
+
             case SDL_WINDOWEVENT:
                 switch(e.window.event) {
                 case SDL_WINDOWEVENT_SIZE_CHANGED:
