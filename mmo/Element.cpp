@@ -203,9 +203,17 @@ void Element::addChild(Element *child){
 };
 
 Element *Element::findChild(const std::string id){
+    // Check this level first
     for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
         if ((*it)->_id == id)
             return *it;
+
+    // Check children recursively
+    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it) {
+        Element *found = (*it)->findChild(id);
+        if (found)
+            return found;
+    }
     return 0;
 }
 
