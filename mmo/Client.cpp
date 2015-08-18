@@ -14,6 +14,7 @@
 #include "Client.h"
 #include "EntityType.h"
 #include "Label.h"
+#include "Line.h"
 #include "List.h"
 #include "Renderer.h"
 #include "Server.h"
@@ -124,30 +125,7 @@ _activeRecipe(0){
     _items.insert(i);
 
     Element::absMouse = &_mouse;
-
     Element::font(TTF_OpenFont("trebuc.ttf", 10));
-    _testWindow = new Window(makeRect(100, 50, 300, 200), "Test window");
-    _testWindow->addChild(new Button(makeRect(240, 170, 55, 25), "Close",
-                                     Window::hideWindow, _testWindow));
-    _testWindow->addChild(new CheckBox(makeRect(10, 50, 120, 15), _craftingWindowOpen,
-                                       "Crafting window is open"));
-    List *buttonList = new List(makeRect(200, 50, 80, 100), 15);
-    buttonList->addChild(createListItem("a"));
-    buttonList->addChild(createListItem("b"));
-    buttonList->addChild(createListItem("c"));
-    buttonList->addChild(createListItem("d"));
-    buttonList->addChild(createListItem("e"));
-    buttonList->addChild(createListItem("f"));
-    buttonList->addChild(createListItem("g"));
-    buttonList->addChild(createListItem("h"));
-    buttonList->addChild(createListItem("i"));
-    buttonList->addChild(createListItem("j"));
-    buttonList->addChild(createListItem("k"));
-    buttonList->addChild(createListItem("l"));
-    buttonList->addChild(createListItem("m"));
-    buttonList->addChild(createListItem("n"));
-    _testWindow->addChild(buttonList);
-    _testWindow->show();
 
     // For crafting filters
     for (std::set<Item>::const_iterator it = _items.begin(); it != _items.end(); ++it){
@@ -163,6 +141,83 @@ _activeRecipe(0){
     }
     _haveMatsFilter = _classOr = _matOr = false;
     _haveToolsFilter = true;
+
+    // Set up crafting window
+    static const int
+        FILTERS_PANE_W = 100,
+        RECIPES_PANE_W = 110,
+        DETAILS_PANE_W = 100,
+        PANE_GAP = 6,
+        FILTERS_PANE_X = PANE_GAP / 2,
+        RECIPES_PANE_X = FILTERS_PANE_X + FILTERS_PANE_W + PANE_GAP,
+        DETAILS_PANE_X = RECIPES_PANE_X + RECIPES_PANE_W + PANE_GAP,
+        CRAFTING_WINDOW_W = DETAILS_PANE_X + DETAILS_PANE_W + PANE_GAP/2,
+
+        CONTENT_H = 200,
+        CONTENT_Y = Window::HEADING_HEIGHT + PANE_GAP/2,
+        CRAFTING_WINDOW_H = CONTENT_Y + CONTENT_H + PANE_GAP/2,
+        
+        TEXT_HEIGHT = 10,
+        HEADING_HEIGHT = 14,
+        LINE_GAP = 6;
+
+    _craftingWindow = new Window(makeRect(250, 50, CRAFTING_WINDOW_W, CRAFTING_WINDOW_H), "Crafting");
+    _craftingWindow->show();
+    _craftingWindow->addChild(new Line(RECIPES_PANE_X - PANE_GAP/2, CONTENT_Y, CONTENT_H, Element::VERTICAL));
+    _craftingWindow->addChild(new Line(DETAILS_PANE_X - PANE_GAP/2, CONTENT_Y, CONTENT_H, Element::VERTICAL));
+
+    // Filters
+    static const int
+        CLASS_LIST_HEIGHT = 62,
+        MATERIALS_LIST_HEIGHT = 62;
+    Element *filterPane = new Element(makeRect(FILTERS_PANE_X, CONTENT_Y, FILTERS_PANE_W, CONTENT_H));
+    _craftingWindow->addChild(filterPane);
+    filterPane->addChild(new Label(makeRect(0, 0, FILTERS_PANE_W, HEADING_HEIGHT),
+                                   "Filters", Element::CENTER_JUSTIFIED));
+    int y = HEADING_HEIGHT;
+    filterPane->addChild(new CheckBox(makeRect(0, y, FILTERS_PANE_W, TEXT_HEIGHT),
+                                      _haveMatsFilter, "Have materials:"));
+    y += TEXT_HEIGHT;
+    filterPane->addChild(new Line(0, y + LINE_GAP/2, FILTERS_PANE_W));
+    y += LINE_GAP;
+
+    // Class filters
+    filterPane->addChild(new Label(makeRect(0, y, FILTERS_PANE_W, TEXT_HEIGHT), "Item class:"));
+    y += TEXT_HEIGHT;
+    List *classList = new List(makeRect(0, y, FILTERS_PANE_W, CLASS_LIST_HEIGHT), TEXT_HEIGHT);
+    filterPane->addChild(classList);
+    for (std::map<std::string, bool>::iterator it = _classFilters.begin();
+         it != _classFilters.end(); ++it)
+        classList->addChild(new CheckBox(makeRect(0, 0, FILTERS_PANE_W, TEXT_HEIGHT), it->second, it->first));
+    y += CLASS_LIST_HEIGHT;
+    filterPane->addChild(new CheckBox(makeRect(0, y, FILTERS_PANE_W/2, TEXT_HEIGHT), _classOr, "Any"));
+    filterPane->addChild(new CheckBox(makeRect(FILTERS_PANE_W/2, y, FILTERS_PANE_W/2, TEXT_HEIGHT),
+                                      _classOr, "All", true));
+    y += TEXT_HEIGHT;
+    filterPane->addChild(new Line(0, y + LINE_GAP/2, FILTERS_PANE_W));
+    y += LINE_GAP;
+
+    // Material filters
+    filterPane->addChild(new Label(makeRect(0, y, FILTERS_PANE_W, TEXT_HEIGHT), "Materials:"));
+    y += TEXT_HEIGHT;
+    List *materialsList = new List(makeRect(0, y, FILTERS_PANE_W, MATERIALS_LIST_HEIGHT), ICON_SIZE);
+    filterPane->addChild(materialsList);
+    for (std::map<const Item*, bool>::iterator it = _matFilters.begin(); it != _matFilters.end(); ++it){
+        CheckBox *mat = new CheckBox(makeRect(0, 0, FILTERS_PANE_W, ICON_SIZE), it->second);
+        static const int
+            ICON_X = CheckBox::BOX_SIZE + CheckBox::GAP,
+            LABEL_X = ICON_X + ICON_SIZE + CheckBox::GAP,
+            LABEL_W = FILTERS_PANE_W - LABEL_X;
+        mat->addChild(new Picture(makeRect(ICON_X, 0, ICON_SIZE, ICON_SIZE), it->first->icon()));
+        mat->addChild(new Label(makeRect(LABEL_X, 0, LABEL_W, ICON_SIZE), it->first->name(),
+                                Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+        materialsList->addChild(mat);
+    }
+    y += MATERIALS_LIST_HEIGHT;
+    filterPane->addChild(new CheckBox(makeRect(0, y, FILTERS_PANE_W/2, TEXT_HEIGHT), _matOr, "Any"));
+    filterPane->addChild(new CheckBox(makeRect(FILTERS_PANE_W/2, y, FILTERS_PANE_W/2, TEXT_HEIGHT),
+                                      _matOr, "All", true));
+
 
     renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
                       static_cast<float>(renderer.height()) / SCREEN_Y);
@@ -204,7 +259,7 @@ Client::~Client(){
         TTF_CloseFont(_defaultFont);
     if (Window::font())
         TTF_CloseFont(Window::font());
-    delete _testWindow;
+    delete _craftingWindow;
     OtherUser::image("");
     Branch::image("");
     Tree::image("");
@@ -385,7 +440,7 @@ void Client::run(){
                 _mouse.y = e.motion.y * SCREEN_Y / static_cast<double>(renderer.height());
                 _mouseMoved = true;
                 
-                _testWindow->onMouseMove(_mouse);
+                _craftingWindow->onMouseMove(_mouse);
 
                 if (!_loaded)
                     break;
@@ -396,7 +451,7 @@ void Client::run(){
             case SDL_MOUSEBUTTONDOWN:
                 _leftMouseDown = true;
 
-                _testWindow->onMouseDown(_mouse);
+                _craftingWindow->onMouseDown(_mouse);
                 break;
 
             case SDL_MOUSEBUTTONUP:
@@ -405,7 +460,7 @@ void Client::run(){
 
                 _leftMouseDown = false;
 
-                _testWindow->onMouseUp(_mouse);
+                _craftingWindow->onMouseUp(_mouse);
 
                 if (_craftingWindowOpen)
                     onCraftingWindowClick();
@@ -417,9 +472,9 @@ void Client::run(){
 
             case SDL_MOUSEWHEEL:
                 if (e.wheel.y < 0)
-                    _testWindow->onScrollDown(_mouse);
+                    _craftingWindow->onScrollDown(_mouse);
                 else if (e.wheel.y > 0)
-                    _testWindow->onScrollUp(_mouse);
+                    _craftingWindow->onScrollUp(_mouse);
                 break;
 
             case SDL_WINDOWEVENT:
@@ -431,7 +486,7 @@ void Client::run(){
                     renderer.updateSize();
                     renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
                                       static_cast<float>(renderer.height()) / SCREEN_Y);
-                    _testWindow->forceRefresh();
+                    _craftingWindow->forceRefresh();
                     break;
                 }
 
@@ -907,16 +962,10 @@ void Client::draw() const{
         renderer.fillRect(makeRect(cursorX, TEXT_BOX_RECT.y + 1, 1, TEXT_BOX_HEIGHT - 2));
     }
 
-    _testWindow->draw();
+    _craftingWindow->draw();
 
     _debug.draw();
     renderer.present();
-}
-
-Element *Client::createListItem(const std::string &text){
-    Element *e = new Element(makeRect());
-    e->addChild(new Button(makeRect(10, 3, 10, 10), text));
-    return e;
 }
 
 void Client::drawCheckbox(int x, int y, bool checked, bool active, const std::string &text) const{

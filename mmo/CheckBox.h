@@ -11,8 +11,6 @@
 class CheckBox : public Element{
 private:
     static const int
-        BOX_SIZE,
-        GAP, // The gap between box and label, if any.
         Y_OFFSET; // Shifts the box vertically
 
     bool &_linkedBool; // A boolean whose value is tied to this check box
@@ -37,6 +35,10 @@ private:
     virtual void refresh();
 
 public:
+    static const int
+        BOX_SIZE,
+        GAP; // The gap between box and label, if any.
+
     CheckBox(const SDL_Rect &rect, bool &linkedBool, const std::string &caption = "", bool inverse = false);
 };
 
