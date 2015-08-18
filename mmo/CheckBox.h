@@ -20,6 +20,8 @@ private:
     bool _lastCheckedValue;
     void toggleBool();
 
+    bool _inverse; // Whether this checkbox should inversely reflect its linked bool.
+
     virtual void checkIfChanged();
 
     bool _mouseButtonDown;
@@ -35,7 +37,7 @@ private:
     virtual void refresh();
 
 public:
-    CheckBox(const SDL_Rect &rect, bool &linkedBool, const std::string &caption = "");
+    CheckBox(const SDL_Rect &rect, bool &linkedBool, const std::string &caption = "", bool inverse = false);
 };
 
 #endif

@@ -9,11 +9,12 @@ const int CheckBox::BOX_SIZE = 8;
 const int CheckBox::GAP = 3;
 const int CheckBox::Y_OFFSET = 1;
 
-CheckBox::CheckBox(const SDL_Rect &rect, bool &linkedBool, const std::string &caption):
+CheckBox::CheckBox(const SDL_Rect &rect, bool &linkedBool, const std::string &caption, bool inverse):
 Element(rect),
 _depressed(false),
 _mouseButtonDown(false),
-_linkedBool(linkedBool){
+_linkedBool(linkedBool),
+_inverse(inverse){
     if (!caption.empty())
         addChild(new Label(makeRect(BOX_SIZE + GAP, 0, rect.w, rect.h),
                            caption, LEFT_JUSTIFIED, CENTER_JUSTIFIED));
@@ -84,7 +85,7 @@ void CheckBox::refresh(){
     renderer.drawRect(boxRect);
 
     // Check (filled square)
-    if (_depressed || _linkedBool) {
+    if (_depressed || (_linkedBool ^ _inverse)) {
         if (_depressed)
             renderer.setDrawColor(SHADOW_LIGHT);
         static const SDL_Rect CHECK_OFFSET_RECT = makeRect(2, 2, -4, -4);
