@@ -152,6 +152,8 @@ void List::mouseMove(Element &e, const Point &mousePos){
 
 void List::scrollUpRaw(Element &e){
     List &list = dynamic_cast<List&>(e);
+    if (list._content->rect().h <= list.rect().h)
+        return;
     list._scrolledToBottom = false;
     list._content->rect(0, list._content->rect().y + SCROLL_AMOUNT);
     if (list._content->rect().y > 0)
@@ -161,6 +163,8 @@ void List::scrollUpRaw(Element &e){
 
 void List::scrollDownRaw(Element &e){
     List &list = dynamic_cast<List&>(e);
+    if (list._content->rect().h <= list.rect().h)
+        return;
     list._scrolledToBottom = false;
     list._content->rect(0, list._content->rect().y - SCROLL_AMOUNT);
     const int minScroll = -(list._content->rect().h - list.rect().h);
