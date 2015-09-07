@@ -73,7 +73,8 @@ SDL_Texture *Renderer::createTextureFromSurface(SDL_Surface *surface) const{
 }
 
 SDL_Texture *Renderer::createTargetableTexture(int width, int height) const{
-    return SDL_CreateTexture(_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
+    return SDL_CreateTexture(_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
+                             width, height);
 }
 
 void Renderer::drawTexture(SDL_Texture *srcTex, const SDL_Rect &dstRect){

@@ -18,7 +18,8 @@ class Branch : public Entity{
 public:
 
     Branch(const Branch &rhs);
-    Branch(size_t serial, const Point &loc = 0); // No location: create dummy Branch, for set searches
+    // No location: create dummy Branch, for set searches
+    Branch(size_t serial, const Point &loc = 0);
 
     bool operator<(const Branch &rhs) const { return _serial < rhs._serial; }
     bool operator==(const Branch &rhs) const { return _serial == rhs._serial; }

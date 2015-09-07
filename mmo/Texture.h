@@ -53,8 +53,11 @@ public:
     void draw(const SDL_Rect &location) const;
     void draw(const SDL_Rect &location, const SDL_Rect &srcRect) const;
 
-    // Render to this Texture instead of the renderer.
-    // Texture must have been created with Texture(width, height), otherwise this function will have no effect.
+    /*
+    Render to this Texture instead of the renderer.
+    Texture must have been created with Texture(width, height), otherwise this function will have
+    no effect.
+    */
     void setRenderTarget() const;
 };
 

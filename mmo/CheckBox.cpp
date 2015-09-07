@@ -9,7 +9,8 @@ const int CheckBox::BOX_SIZE = 8;
 const int CheckBox::GAP = 3;
 const int CheckBox::Y_OFFSET = 1;
 
-CheckBox::CheckBox(const SDL_Rect &rect, bool &linkedBool, const std::string &caption, bool inverse):
+CheckBox::CheckBox(const SDL_Rect &rect, bool &linkedBool, const std::string &caption,
+                   bool inverse):
 Element(rect),
 _depressed(false),
 _mouseButtonDown(false),

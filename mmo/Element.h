@@ -125,8 +125,10 @@ public:
     void setScrollUpFunction(scrollUpFunction_t f, Element *e = 0);
     void setScrollDownFunction(scrollDownFunction_t f, Element *e = 0);
 
-    // Recurse to all children, calling _mouseDown() etc. in the lowest element that the mouse is over.
-    // Return value: whether this or any child has called _mouseDown().
+    /*
+    Recurse to all children, calling _mouseDown() etc. in the lowest element that the mouse is over.
+    Return value: whether this or any child has called _mouseDown().
+    */
     bool onMouseDown(const Point &mousePos); 
     bool onScrollUp(const Point &mousePos);
     bool onScrollDown(const Point &mousePos);

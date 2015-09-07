@@ -18,7 +18,9 @@ class Entity{
     const EntityType &_type;
     Point _location;
     bool _needsTooltipRefresh;
-    virtual std::vector<std::string> getTooltipMessages(const Client &client) const { return std::vector<std::string>(); }
+    virtual std::vector<std::string> getTooltipMessages(const Client &client) const {
+        return std::vector<std::string>();
+    }
 
 protected:
     Texture _tooltip;

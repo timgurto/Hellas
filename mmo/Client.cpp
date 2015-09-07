@@ -27,7 +27,8 @@
 extern Args cmdLineArgs;
 extern Renderer renderer;
 
-static Client *_instance = 0; // TODO: Move all client functionality to a namespace, rather than a class.
+// TODO: Move all client functionality to a namespace, rather than a class.
+static Client *_instance = 0;
 
 const int Client::SCREEN_X = 640;
 const int Client::SCREEN_Y = 360;
@@ -166,16 +167,20 @@ _activeRecipe(0){
         HEADING_HEIGHT = 14,
         LINE_GAP = 6;
 
-    _craftingWindow = new Window(makeRect(250, 50, CRAFTING_WINDOW_W, CRAFTING_WINDOW_H), "Crafting");
+    _craftingWindow = new Window(makeRect(250, 50, CRAFTING_WINDOW_W, CRAFTING_WINDOW_H),
+                                 "Crafting");
     _craftingWindow->show();
-    _craftingWindow->addChild(new Line(RECIPES_PANE_X - PANE_GAP/2, CONTENT_Y, CONTENT_H, Element::VERTICAL));
-    _craftingWindow->addChild(new Line(DETAILS_PANE_X - PANE_GAP/2, CONTENT_Y, CONTENT_H, Element::VERTICAL));
+    _craftingWindow->addChild(new Line(RECIPES_PANE_X - PANE_GAP/2, CONTENT_Y,
+                                       CONTENT_H, Element::VERTICAL));
+    _craftingWindow->addChild(new Line(DETAILS_PANE_X - PANE_GAP/2, CONTENT_Y,
+                                       CONTENT_H, Element::VERTICAL));
 
     // Filters
     static const int
         CLASS_LIST_HEIGHT = 62,
         MATERIALS_LIST_HEIGHT = 62;
-    Element *filterPane = new Element(makeRect(FILTERS_PANE_X, CONTENT_Y, FILTERS_PANE_W, CONTENT_H));
+    Element *filterPane = new Element(makeRect(FILTERS_PANE_X, CONTENT_Y,
+                                               FILTERS_PANE_W, CONTENT_H));
     _craftingWindow->addChild(filterPane);
     filterPane->addChild(new Label(makeRect(0, 0, FILTERS_PANE_W, HEADING_HEIGHT),
                                    "Filters", Element::CENTER_JUSTIFIED));
@@ -193,9 +198,11 @@ _activeRecipe(0){
     filterPane->addChild(classList);
     for (std::map<std::string, bool>::iterator it = _classFilters.begin();
          it != _classFilters.end(); ++it)
-        classList->addChild(new CheckBox(makeRect(0, 0, FILTERS_PANE_W, TEXT_HEIGHT), it->second, it->first));
+        classList->addChild(new CheckBox(makeRect(0, 0, FILTERS_PANE_W, TEXT_HEIGHT),
+                                         it->second, it->first));
     y += CLASS_LIST_HEIGHT;
-    filterPane->addChild(new CheckBox(makeRect(0, y, FILTERS_PANE_W/2, TEXT_HEIGHT), _classOr, "Any"));
+    filterPane->addChild(new CheckBox(makeRect(0, y, FILTERS_PANE_W/2, TEXT_HEIGHT),
+                                      _classOr, "Any"));
     filterPane->addChild(new CheckBox(makeRect(FILTERS_PANE_W/2, y, FILTERS_PANE_W/2, TEXT_HEIGHT),
                                       _classOr, "All", true));
     y += TEXT_HEIGHT;
@@ -205,9 +212,10 @@ _activeRecipe(0){
     // Material filters
     filterPane->addChild(new Label(makeRect(0, y, FILTERS_PANE_W, TEXT_HEIGHT), "Materials:"));
     y += TEXT_HEIGHT;
-    List *materialsList = new List(makeRect(0, y, FILTERS_PANE_W, MATERIALS_LIST_HEIGHT), ICON_SIZE);
+    List *materialsList = new List(makeRect(0, y, FILTERS_PANE_W, MATERIALS_LIST_HEIGHT),
+                                   ICON_SIZE);
     filterPane->addChild(materialsList);
-    for (std::map<const Item*, bool>::iterator it = _matFilters.begin(); it != _matFilters.end(); ++it){
+    for (auto it = _matFilters.begin(); it != _matFilters.end(); ++it){
         CheckBox *mat = new CheckBox(makeRect(0, 0, FILTERS_PANE_W, ICON_SIZE), it->second);
         static const int
             ICON_X = CheckBox::BOX_SIZE + CheckBox::GAP,
@@ -219,12 +227,14 @@ _activeRecipe(0){
         materialsList->addChild(mat);
     }
     y += MATERIALS_LIST_HEIGHT;
-    filterPane->addChild(new CheckBox(makeRect(0, y, FILTERS_PANE_W/2, TEXT_HEIGHT), _matOr, "Any"));
+    filterPane->addChild(new CheckBox(makeRect(0, y, FILTERS_PANE_W/2, TEXT_HEIGHT),
+                                      _matOr, "Any"));
     filterPane->addChild(new CheckBox(makeRect(FILTERS_PANE_W/2, y, FILTERS_PANE_W/2, TEXT_HEIGHT),
                                       _matOr, "All", true));
 
     // Recipes
-    Element *recipesPane = new Element(makeRect(RECIPES_PANE_X, CONTENT_Y, RECIPES_PANE_W, CONTENT_H));
+    Element *recipesPane = new Element(makeRect(RECIPES_PANE_X, CONTENT_Y,
+                                                RECIPES_PANE_W, CONTENT_H));
     _craftingWindow->addChild(recipesPane);
     recipesPane->addChild(new Label(makeRect(0, 0, RECIPES_PANE_W, HEADING_HEIGHT), "Recipes",
                                     Element::CENTER_JUSTIFIED));
@@ -254,7 +264,8 @@ void Client::populateRecipesList(Element &e, const Point &mousePos){
         recipe->addChild(new Picture(makeRect(1, 1, ICON_SIZE, ICON_SIZE), item.icon()));
         static const int NAME_X = ICON_SIZE + CheckBox::GAP + 1;
         recipe->addChild(new Label(makeRect(NAME_X, 0, recipe->rect().w - NAME_X, ICON_SIZE + 2),
-                                   item.name(), Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+                                   item.name(),
+                                   Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
         recipe->id(item.id());
     }
 }
@@ -380,7 +391,8 @@ void Client::run(){
         } else { // Update server with current location
             _timeSinceLocUpdate += _timeElapsed;
             if (_locationChanged && _timeSinceLocUpdate > TIME_BETWEEN_LOCATION_UPDATES) {
-                sendMessage(CL_LOCATION, makeArgs(_character.location().x, _character.location().y));
+                sendMessage(CL_LOCATION,
+                            makeArgs(_character.location().x, _character.location().y));
                 _locationChanged = false;
                 _tooltipNeedsRefresh = true;
                 _timeSinceLocUpdate = 0;
@@ -589,7 +601,7 @@ void Client::run(){
             }
             it = next;
         }
-        for (std::vector<Entity *>::iterator it = entitiesToReorder.begin(); it != entitiesToReorder.end(); ++it)
+        for (auto it = entitiesToReorder.begin(); it != entitiesToReorder.end(); ++it)
             _entities.insert(*it);
         entitiesToReorder.clear();
 
@@ -621,7 +633,7 @@ void Client::checkMouseOver(){
     Entity::set_t::iterator mouseOverIt = _entities.end();
     static EntityType dummyEntityType(makeRect());
     Entity lookupEntity(dummyEntityType, mouseOffset);
-    for (Entity::set_t::iterator it = _entities.lower_bound(&lookupEntity); it != _entities.end(); ++it) {
+    for (auto it = _entities.lower_bound(&lookupEntity); it != _entities.end(); ++it) {
         if ((*it)->collision(mouseOffset))
             mouseOverIt = it;
     }
@@ -808,7 +820,8 @@ void Client::draw() const{
             const Item &item = *(it->first);
             drawCheckbox(FILTERS_X, y, it->second);
             item.icon().draw(FILTERS_X + CHECK_BOX_SIZE + GAP, y);
-            Texture(_defaultFont, item.name()).draw(FILTERS_X + CHECK_BOX_SIZE + ICON_SIZE + 2*GAP, y);
+            Texture(_defaultFont, item.name())
+                .draw(FILTERS_X + CHECK_BOX_SIZE + ICON_SIZE + 2*GAP, y);
             y += ITEM_HEIGHT;
         }
         y = _craftingRect.y + _craftingRect.h - GAP - TEXT_HEIGHT;
@@ -910,7 +923,8 @@ void Client::draw() const{
         if (_activeRecipe) {
             buttonDown = _leftMouseDown && sufficientMats && collision(_mouse, _craftButtonRect);
             drawShadowBox(_craftButtonRect, buttonDown);
-            Texture craftLabel(_defaultFont, "Craft", sufficientMats ? Color::WHITE : Color::GREY_2);
+            Texture craftLabel(_defaultFont, "Craft",
+                               sufficientMats ? Color::WHITE : Color::GREY_2);
             craftLabel.draw(_craftButtonRect.x + (_craftButtonRect.w - craftLabel.width()) / 2
                             + (buttonDown ? 1 : 0),
                             _craftButtonRect.y + (_craftButtonRect.h - craftLabel.height()) / 2
@@ -942,7 +956,8 @@ void Client::draw() const{
                                              CAST_BAR_HEIGHT + 2 * CAST_BAR_PADDING),
             castBarRect = makeRect(static_cast<int>((SCREEN_X - CAST_BAR_WIDTH) / 2.0 + 0.5),
                                    CAST_BAR_Y,
-                                   static_cast<int>(CAST_BAR_WIDTH * 1.0 * _actionTimer / _actionLength + .5),
+                                   static_cast<int>(CAST_BAR_WIDTH * 1.0 * _actionTimer /
+                                                    _actionLength + .5),
                                    CAST_BAR_HEIGHT);
         renderer.setDrawColor(CAST_BAR_BACKGROUND);
         renderer.fillRect(castBarBackgroundRect);
@@ -989,8 +1004,10 @@ void Client::draw() const{
             cursorX = TEXT_BOX_RECT.x + text.width() + 1;
         } else {
             SDL_Rect
-                dstRect = makeRect(TEXT_BOX_RECT.x + 1, TEXT_BOX_RECT.y, MAX_TEXT_WIDTH, text.height()),
-                srcRect = makeRect(text.width() - MAX_TEXT_WIDTH, 0, MAX_TEXT_WIDTH, text.height());
+                dstRect = makeRect(TEXT_BOX_RECT.x + 1, TEXT_BOX_RECT.y,
+                                   MAX_TEXT_WIDTH, text.height()),
+                srcRect = makeRect(text.width() - MAX_TEXT_WIDTH, 0,
+                                   MAX_TEXT_WIDTH, text.height());
             text.draw(dstRect, srcRect);
             cursorX = TEXT_BOX_RECT.x + TEXT_BOX_WIDTH;
         }
@@ -1301,7 +1318,8 @@ void Client::handleMessage(const std::string &msg){
         if (iss.peek() != '[') {
             iss.get(buffer, BUFFER_SIZE, '[');
             _debug << "Read " << iss.gcount() << " characters." << Log::endl;
-            _debug << Color::RED << "Malformed message; discarded \"" << buffer << "\"" << Log::endl;
+            _debug << Color::RED << "Malformed message; discarded \""
+                   << buffer << "\"" << Log::endl;
             if (iss.eof()) {
                 break;
             }
@@ -1365,7 +1383,8 @@ void Client::handleMessage(const std::string &msg){
             if (del != ']')
                 break;
             _invalidUsername = true;
-            _debug << Color::RED << "The user " << _username << " is already connected to the server." << Log::endl;
+            _debug << Color::RED << "The user " << _username
+                   << " is already connected to the server." << Log::endl;
             break;
 
         case SV_INVALID_USERNAME:
@@ -1378,7 +1397,8 @@ void Client::handleMessage(const std::string &msg){
         case SV_SERVER_FULL:
             if (del != ']')
                 break;
-            _debug << Color::YELLOW << "The server is full.  Attempting reconnection..." << Log::endl;
+            _debug << Color::YELLOW << "The server is full.  Attempting reconnection..."
+                   << Log::endl;
             _socket = Socket();
             _loggedIn = false;
             break;
@@ -1414,7 +1434,8 @@ void Client::handleMessage(const std::string &msg){
         case SV_NEED_MATERIALS:
             if (del != ']')
                 break;
-            _debug << Color::YELLOW << "You do not have the necessary materials to create that item." << Log::endl;
+            _debug << Color::YELLOW << "You do not have the necessary materials"
+                      "to create that item." << Log::endl;
             startAction(0);
             break;
 
@@ -1574,7 +1595,8 @@ void Client::handleMessage(const std::string &msg){
                 break;
             std::map<size_t, Branch*>::const_iterator it = _branches.find(serial);
             if (it == _branches.end()){
-                _debug << Color::YELLOW << "Server removed a branch we didn't know about." << Log::endl;
+                _debug << Color::YELLOW << "Server removed a branch we didn't know about."
+                       << Log::endl;
                 assert(false);
                 break; // We didn't know about this branch
             }
@@ -1593,7 +1615,8 @@ void Client::handleMessage(const std::string &msg){
                 break;
             std::map<size_t, Tree*>::const_iterator it = _trees.find(serial);
             if (it == _trees.end()){
-                _debug << Color::YELLOW << "Server removed a tree we didn't know about." << Log::endl;
+                _debug << Color::YELLOW << "Server removed a tree we didn't know about."
+                       << Log::endl;
                 assert(false);
                 break; // We didn't know about this tree
             }

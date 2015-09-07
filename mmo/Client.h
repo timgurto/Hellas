@@ -36,10 +36,11 @@ public:
 
 private:
     static const Uint32 MAX_TICK_LENGTH;
-    static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping reply from the server
-    static const Uint32 CONNECT_RETRY_DELAY; // How long to wait between retries at connecting to server
+    static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping reply
+    static const Uint32 CONNECT_RETRY_DELAY; // How long to wait between retries at connecting
     static const Uint32 PING_FREQUENCY; // How often to test latency with each client
-    static const Uint32 TIME_BETWEEN_LOCATION_UPDATES; // How often to send location updates to server (while moving)
+    // How often to send location updates to server (while moving)
+    static const Uint32 TIME_BETWEEN_LOCATION_UPDATES;
 
     static const int
         SCREEN_X,
@@ -49,7 +50,8 @@ private:
     static SDL_Rect INVENTORY_RECT; // non-const, as it needs to be initialized at runtime.
     static const int ICON_SIZE;
     static const size_t ICONS_X; // How many icons per inventory row
-    bool playerHasItem(const std::string &id, size_t quantity = 1) const; // Whether the user has the specified item(s).
+    // Whether the user has the specified item(s).
+    bool playerHasItem(const std::string &id, size_t quantity = 1) const;
 
     mutable SDL_Rect
         _craftingRect, _filtersRect, _recipesRect, _detailsRect,
@@ -101,9 +103,11 @@ private:
     void drawTile(size_t x, size_t y, int xLoc, int yLoc) const;
     void drawTooltip() const;
     static const int CHECK_BOX_SIZE;
-    void drawCheckbox(int x, int y, bool checked, bool active = true, const std::string &text = "") const;
+    void drawCheckbox(int x, int y, bool checked, bool active = true,
+                      const std::string &text = "") const;
     void drawShadowBox(const SDL_Rect &rect, bool inverted = false) const;
-    Texture _uiTooltip; // A tooltip which, if it exists, describes the UI element currently moused over.
+    // A tooltip which, if it exists, describes the UI element currently moused over.
+    Texture _uiTooltip;
     Point _offset; // An offset for drawing, based on the character's location on the map.
     Point _intOffset; // An integer version of the offset
     void updateOffset(); // Update the offset, when the character moves.
@@ -126,7 +130,8 @@ private:
 
     Uint32 _timeSinceLocUpdate; // Time since a CL_LOCATION was sent
     bool _locationChanged;
-    bool _tooltipNeedsRefresh; // Location has changed (local or official), and tooltip may have changed.
+    // Location has changed (local or official), and tooltip may have changed.
+    bool _tooltipNeedsRefresh;
     Texture getInventoryTooltip() const; // Generate tooltip for the inventory
 
     // Game data
@@ -142,7 +147,8 @@ private:
 
     Entity::set_t _entities;
     void removeEntity(Entity *const toRemove); // Remove from _entities, and delete pointer
-    void setEntityLocation(Entity *entity, const Point &location); // Move the entity, and reorder it if necessary
+    // Move the entity, and reorder it if necessary
+    void setEntityLocation(Entity *entity, const Point &location);
     Entity *_currentMouseOverEntity;
 
     std::queue<std::string> _messages;

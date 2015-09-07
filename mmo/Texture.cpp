@@ -117,7 +117,7 @@ Texture::~Texture(){
         Program has ended; only static Textures are being destroyed now.
         Destroy all SDL_Textures before _refs is destroyed, then clear _refs.
         */
-        for (std::map<SDL_Texture *, size_t>::iterator it = _refs.begin(); it != _refs.end(); ++it) {
+        for (auto it = _refs.begin(); it != _refs.end(); ++it) {
             SDL_DestroyTexture(it->first);
         }
         _refs.clear();
