@@ -69,6 +69,8 @@ private:
     mutable bool _classFilterSelected, _matFilterSelected; // Whether any filters have been selected
     bool itemMatchesFilters(const Item &item) const;
     void onCraftingWindowClick();
+     // Called when filters pane is clicked.
+    static void populateRecipesList(Element &e, const Point &mousePos);
 
     Element *_craftingWindow;
 

@@ -11,6 +11,7 @@
 
 #include "Button.h"
 #include "Checkbox.h"
+#include "ChoiceList.h"
 #include "Client.h"
 #include "EntityType.h"
 #include "Label.h"
@@ -25,6 +26,8 @@
 
 extern Args cmdLineArgs;
 extern Renderer renderer;
+
+static Client *_instance = 0; // TODO: Move all client functionality to a namespace, rather than a class.
 
 const int Client::SCREEN_X = 640;
 const int Client::SCREEN_Y = 360;
@@ -75,6 +78,7 @@ _currentMouseOverEntity(0),
 _craftingWindowOpen(false),
 _activeRecipe(0){
     isClient = true;
+    _instance = this;
 
     _debug << cmdLineArgs << Log::endl;
     Socket::debug = &_debug;
@@ -141,6 +145,7 @@ _activeRecipe(0){
     }
     _haveMatsFilter = _classOr = _matOr = false;
     _haveToolsFilter = true;
+    _classFilterSelected = _matFilterSelected = false;
 
     // Set up crafting window
     static const int
@@ -218,9 +223,40 @@ _activeRecipe(0){
     filterPane->addChild(new CheckBox(makeRect(FILTERS_PANE_W/2, y, FILTERS_PANE_W/2, TEXT_HEIGHT),
                                       _matOr, "All", true));
 
+    // Recipes
+    Element *recipesPane = new Element(makeRect(RECIPES_PANE_X, CONTENT_Y, RECIPES_PANE_W, CONTENT_H));
+    _craftingWindow->addChild(recipesPane);
+    recipesPane->addChild(new Label(makeRect(0, 0, RECIPES_PANE_W, HEADING_HEIGHT), "Recipes",
+                                    Element::CENTER_JUSTIFIED));
+    ChoiceList *recipesList = new ChoiceList(makeRect(0, HEADING_HEIGHT,
+                                                      RECIPES_PANE_W, CONTENT_H - HEADING_HEIGHT),
+                                             ICON_SIZE + 2);
+    recipesPane->addChild(recipesList);
+    populateRecipesList(*recipesList, Point());
+    
+    filterPane->setMouseUpFunction(populateRecipesList, recipesList);
+
 
     renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
                       static_cast<float>(renderer.height()) / SCREEN_Y);
+}
+
+void Client::populateRecipesList(Element &e, const Point &mousePos){
+    ChoiceList &recipesList = dynamic_cast<ChoiceList &>(e);
+    recipesList.clearChildren();
+    for (std::set<const Item *>::const_iterator it = _instance->_craftableItems.begin();
+         it != _instance->_craftableItems.end(); ++it) {
+        const Item &item = **it;
+        if (!_instance->itemMatchesFilters(item))
+            continue;
+        Element *recipe = new Element(makeRect());
+        recipesList.addChild(recipe);
+        recipe->addChild(new Picture(makeRect(1, 1, ICON_SIZE, ICON_SIZE), item.icon()));
+        static const int NAME_X = ICON_SIZE + CheckBox::GAP + 1;
+        recipe->addChild(new Label(makeRect(NAME_X, 0, recipe->rect().w - NAME_X, ICON_SIZE + 2),
+                                   item.name(), Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+        recipe->id(item.id());
+    }
 }
 
 bool Client::itemMatchesFilters(const Item &item) const{
