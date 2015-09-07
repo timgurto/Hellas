@@ -1,5 +1,6 @@
 // (C) 2015 Tim Gurto
 
+#include <cassert>
 #include <cmath>
 
 #include "Point.h"
