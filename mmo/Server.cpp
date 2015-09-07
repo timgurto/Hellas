@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <cassert>
 #include <sstream>
 #include <fstream>
 #include <utility>

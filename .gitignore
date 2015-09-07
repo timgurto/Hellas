@@ -29,3 +29,7 @@ World/map.dat
 World/trees.dat
 *.sdf
 *.opensdf
+*.unsuccessfulbuild
+*.log
+*.lastbuildstate
+*.tlog
