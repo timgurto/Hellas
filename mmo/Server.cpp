@@ -172,7 +172,7 @@ void Server::run(){
 
         // Update users
         for (std::set<User>::iterator it = _users.begin(); it != _users.end(); ++it)
-            it->update(timeElapsed, *this);
+            const_cast<User&>(*it).update(timeElapsed, *this);
 
         // Deal with any messages from the server
         while (!_messages.empty()){
@@ -302,7 +302,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             continue;
         }
         if (msgCode != CL_I_AM) {
-            user = &*it;
+            User &userRef = const_cast<User&>(*it);
+            user = &userRef;
             user->contact();
         }
 
@@ -464,6 +465,7 @@ void Server::broadcast(MessageCode msgCode, const std::string &args){
 void Server::removeTree(size_t serial, User &user){
     // Give wood to user
     std::set<TreeLite>::iterator it = _trees.find(serial);
+    TreeLite &tree = const_cast<TreeLite &>(*it);
     int slot = user.giveItem(*_items.find(std::string("wood")));
     if (slot == User::INVENTORY_SIZE) {
         sendMessage(user.socket(), SV_INVENTORY_FULL);
@@ -473,11 +475,12 @@ void Server::removeTree(size_t serial, User &user){
     // Ensure no other users are targeting this branch, as it will be removed.
     for (std::set<User>::iterator it = _users.begin(); it != _users.end(); ++it)
         if (&*it != &user && it->actionTargetTree() && it->actionTargetTree()->serial == serial) {
-            it->actionTargetTree(0);
+            User &user = const_cast<User &>(*it);
+            user.actionTargetTree(0);
             sendMessage(it->socket(), SV_DOESNT_EXIST);
         }
     // Remove tree if empty
-    it->decrementWood();
+    tree.decrementWood();
     if (it->wood() == 0) {
         broadcast(SV_REMOVE_TREE, makeArgs(serial));
         _trees.erase(it);
@@ -496,7 +499,8 @@ void Server::removeBranch(size_t serial, User &user){
     // Ensure no other users are targeting this branch, as it will be removed.
     for (std::set<User>::iterator it = _users.begin(); it != _users.end(); ++it)
         if (&*it != &user && it->actionTargetBranch() && it->actionTargetBranch()->serial == serial) {
-            it->actionTargetBranch(0);
+            User &user = const_cast<User &>(*it);
+            user.actionTargetBranch(0);
             sendMessage(it->socket(), SV_DOESNT_EXIST);
         }
     // Remove branch
