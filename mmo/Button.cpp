@@ -83,6 +83,10 @@ void Button::addChild(Element *child){
     _content->addChild(child);
 }
 
+void Button::clearChildren(){
+    _content->clearChildren();
+}
+
 Element *Button::findChild(const std::string id){
     return _content->findChild(id);
 }

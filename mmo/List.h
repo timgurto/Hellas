@@ -8,18 +8,18 @@
 
 // A scrollable vertical list of elements of uniform height
 class List : public Element{
+public:
     static const int
         ARROW_W,
         ARROW_H,
         CURSOR_HEIGHT,
         SCROLL_AMOUNT;
 
+private:
     bool _mouseDownOnCursor;
     int _cursorOffset; // y-offset of the mouse on the cursor.
 
     int _childHeight;
-
-    Element *_content; // Holds the list items themselves, and moves up and down to "scroll".
 
     Element *_scrollBar;
     Picture // Arrow images
@@ -39,13 +39,19 @@ class List : public Element{
     static void scrollUp(Element &e, const Point &mousePos) { scrollUpRaw(e); }
     static void scrollDown(Element &e, const Point &mousePos) { scrollDownRaw(e); }
 
-    virtual void refresh();
+protected:
+    int childHeight() const { return _childHeight; }
+
+    Element *_content; // Holds the list items themselves, and moves up and down to "scroll".
 
 public:
     List(const SDL_Rect &rect, int childHeight);
 
     virtual void addChild(Element *child);
+    virtual void clearChildren();
     virtual Element *findChild(const std::string id);
+
+    virtual void refresh();
 };
 
 #endif

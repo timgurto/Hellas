@@ -40,6 +40,11 @@ void Element::rect(int x, int y, int w, int h){
     _dimensionsChanged = true;
 }
 
+void Element::rect(const SDL_Rect &rhs){
+    _rect = rhs;
+    _dimensionsChanged = true;
+}
+
 void Element::width(int w){
     _rect.w = w;
     _dimensionsChanged = true;
@@ -50,7 +55,7 @@ void Element::height(int h){
     _dimensionsChanged = true;
 }
 
-void Element::markChanged(){
+void Element::markChanged() const{
     _changed = true;
     if (_parent)
         _parent->markChanged();
@@ -59,7 +64,7 @@ void Element::markChanged(){
 void Element::drawChildren() const{
     for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it) {
         if ((*it)->_changed)
-            _changed = true;
+            markChanged();
 
         (*it)->draw();
     }
@@ -202,6 +207,12 @@ void Element::addChild(Element *child){
     markChanged();
 };
 
+void Element::clearChildren(){
+    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
+        delete *it;
+    _children.clear();
+}
+
 Element *Element::findChild(const std::string id){
     // Check this level first
     for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
@@ -238,11 +249,13 @@ void Element::draw(){
     if (_dimensionsChanged) {
         _texture = Texture(_rect.w, _rect.h);
         markChanged();
+        _dimensionsChanged = false;
     }
     if (_changed) {
         refresh();
         _changed = false;
     }
+    _texture.setBlend(SDL_BLENDMODE_BLEND);
     _texture.draw(_rect);
 }
 

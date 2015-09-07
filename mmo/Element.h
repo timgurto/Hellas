@@ -94,21 +94,26 @@ public:
     static TTF_Font *font() { return _font; }
     static void font(TTF_Font *newFont) { _font = newFont; }
     const SDL_Rect &rect() const { return _rect; }
+    void rect(const SDL_Rect &rhs);
     void rect(int x, int y) { _rect.x = x; _rect.y = y; }
     void rect(int x, int y, int w, int h);
     int width() const { return _rect.w; }
     void width(int w);
     int height() const { return _rect.h; }
     void height(int h);
+    bool changed() const { return _changed; }
+    const std::string &id() const { return _id; }
+    void id(const std::string &id) { _id = id; }
+    const std::list<Element *> &children() const { return _children; }
 
     void show() { _visible = true; }
     void hide() { _visible = false; }
     void fillBackground() { _solidBackground = true; }
 
-    void markChanged();
+    void markChanged() const;
 
     virtual void addChild(Element *child);
-    void setID(const std::string &id) { _id = id; }
+    virtual void clearChildren(); // Delete all children
     virtual Element *findChild(const std::string id); // Find a child by ID, or 0 if not found.
 
     void makeBackgroundTransparent();

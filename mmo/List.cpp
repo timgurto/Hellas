@@ -114,6 +114,11 @@ void List::addChild(Element *child){
     _content->addChild(child);
 }
 
+void List::clearChildren(){
+    _content->clearChildren();
+    _content->height(0);
+}
+
 Element *List::findChild(const std::string id){
     return _content->findChild(id);
 }
