@@ -27,5 +27,10 @@ test.bat
 World/branches.dat
 World/map.dat
 World/trees.dat
-mmo.marker.tss
 *.tss
+*.sdf
+*.opensdf
+*.unsuccessfulbuild
+*.log
+*.lastbuildstate
+*.tlog
