@@ -39,6 +39,7 @@ public:
     bool operator!() const { return _raw == 0; }
     operator bool() const { return _raw != 0; }
 
+    SDL_Texture *raw() { return _raw; }
     static int numTextures() { return _numTextures; }
     int width() const { return _w; }
     int height() const { return _h; }
@@ -52,8 +53,11 @@ public:
     void draw(const SDL_Rect &location) const;
     void draw(const SDL_Rect &location, const SDL_Rect &srcRect) const;
 
-    // Render to this Texture instead of the renderer.
-    // Texture must have been created with Texture(width, height), otherwise this function will have no effect.
+    /*
+    Render to this Texture instead of the renderer.
+    Texture must have been created with Texture(width, height), otherwise this function will have
+    no effect.
+    */
     void setRenderTarget() const;
 };
 

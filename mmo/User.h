@@ -46,7 +46,8 @@ public:
     void actionTargetBranch(const BranchLite *branch); // Configure user to gather a branch
     void actionTargetTree(const TreeLite *tree); // Configure user to gather a tree
 
-    bool hasMaterials(const Item &item) const; // Whether the user has enough materials to craft an item
+    // Whether the user has enough materials to craft an item
+    bool hasMaterials(const Item &item) const;
     void removeMaterials(const Item &item, Server &server);
     void actionCraft(const Item &item); // Configure user to craft an item
 
@@ -59,8 +60,11 @@ public:
     void contact();
     bool alive() const; // Whether the client has contacted the server recently enough
 
-    // Determine whether the proposed new location is legal, considering movement speed and time elapsed.
-    // Set location to the new, legal location
+    /*
+    Determine whether the proposed new location is legal, considering movement speed and
+    time elapsed.
+    Set location to the new, legal location.
+    */
     void updateLocation(const Point &dest, const Server &server);
 
     // Return value: which inventory slot was used

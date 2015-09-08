@@ -73,7 +73,8 @@ SDL_Texture *Renderer::createTextureFromSurface(SDL_Surface *surface) const{
 }
 
 SDL_Texture *Renderer::createTargetableTexture(int width, int height) const{
-    return SDL_CreateTexture(_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
+    return SDL_CreateTexture(_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
+                             width, height);
 }
 
 void Renderer::drawTexture(SDL_Texture *srcTex, const SDL_Rect &dstRect){
@@ -104,6 +105,10 @@ void Renderer::fillRect(const SDL_Rect &dstRect){
     SDL_RenderFillRect(_renderer, &dstRect);
 }
 
+void Renderer::fill(){
+    SDL_RenderFillRect(_renderer, 0);
+}
+
 void Renderer::setRenderTarget() const{
     SDL_SetRenderTarget(_renderer, 0);
 }
@@ -114,4 +119,15 @@ void Renderer::setScale(float x, float y){
 
 void Renderer::updateSize(){
     SDL_GetRendererOutputSize(_renderer, &_w, &_h);
+}
+
+void Renderer::pushRenderTarget(Texture &target) {
+    SDL_Texture *currentTarget = SDL_GetRenderTarget(_renderer);
+    _renderTargetsStack.push(currentTarget);
+    SDL_SetRenderTarget(_renderer, target.raw());
+}
+
+void Renderer::popRenderTarget() {
+    SDL_SetRenderTarget(_renderer, _renderTargetsStack.top());
+    _renderTargetsStack.pop();
 }

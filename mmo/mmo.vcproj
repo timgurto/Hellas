@@ -179,11 +179,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Button.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CheckBox.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ChoiceList.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Client.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\Color.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Element.cpp"
 				>
 			</File>
 			<File
@@ -199,6 +215,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Label.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Line.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\List.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Log.cpp"
 				>
 			</File>
@@ -211,6 +239,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Picture.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Point.cpp"
 				>
 			</File>
@@ -220,6 +252,10 @@
 			</File>
 			<File
 				RelativePath=".\Server.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ShadowBox.cpp"
 				>
 			</File>
 			<File
@@ -250,6 +286,10 @@
 				RelativePath=".\util.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Window.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -269,11 +309,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Button.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CheckBox.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ChoiceList.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Client.h"
 				>
 			</File>
 			<File
 				RelativePath=".\Color.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Element.h"
 				>
 			</File>
 			<File
@@ -289,6 +345,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Label.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Line.h"
+				>
+			</File>
+			<File
+				RelativePath=".\List.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Log.h"
 				>
 			</File>
@@ -301,6 +369,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Picture.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Point.h"
 				>
 			</File>
@@ -310,6 +382,10 @@
 			</File>
 			<File
 				RelativePath=".\Server.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ShadowBox.h"
 				>
 			</File>
 			<File
@@ -338,6 +414,10 @@
 			</File>
 			<File
 				RelativePath=".\util.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Window.h"
 				>
 			</File>
 		</Filter>

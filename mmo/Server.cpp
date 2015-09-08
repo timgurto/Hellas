@@ -1,3 +1,5 @@
+// (C) 2015 Tim Gurto
+
 #include <SDL.h>
 #include <cassert>
 #include <sstream>
@@ -56,7 +58,8 @@ _mapY(0){
     serverAddr.sin_port = htons(8888);
 
     _socket.bind(serverAddr);
-    _debug << "Server address: " << inet_ntoa(serverAddr.sin_addr) << ":" << ntohs(serverAddr.sin_port) << Log::endl;
+    _debug << "Server address: " << inet_ntoa(serverAddr.sin_addr)
+           << ":" << ntohs(serverAddr.sin_port) << Log::endl;
     _socket.listen();
 
     _debug("Listening for connections");
@@ -90,15 +93,19 @@ void Server::checkSockets(){
         if (_clientSockets.size() == MAX_CLIENTS) {
             _debug("No room for additional clients; all slots full");
             sockaddr_in clientAddr;
-            SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
+            SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr*)&clientAddr,
+                                       (int*)&Socket::sockAddrSize);
             Socket s(tempSocket);
-            s.delayClosing(5000); // Allow time for rejection message to be sent before closing socket
+            // Allow time for rejection message to be sent before closing socket
+            s.delayClosing(5000);
             sendMessage(s, SV_SERVER_FULL);
         } else {
             sockaddr_in clientAddr;
-            SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
+            SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr*)&clientAddr,
+                                       (int*)&Socket::sockAddrSize);
             if (tempSocket == SOCKET_ERROR) {
-                _debug << Color::RED << "Error accepting connection: " << WSAGetLastError() << Log::endl;
+                _debug << Color::RED << "Error accepting connection: "
+                       << WSAGetLastError() << Log::endl;
             } else {
                 _debug << Color::GREEN << "Connection accepted: "
                        << inet_ntoa(clientAddr.sin_addr) << ":" << ntohs(clientAddr.sin_port)
@@ -250,18 +257,19 @@ void Server::addUser(const Socket &socket, const std::string &name){
 
     // Send him branch locations
     for (std::set<BranchLite>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
-        sendMessage(newUser.socket(), SV_BRANCH, makeArgs(it->serial, it->location.x, it->location.y));
+        sendMessage(newUser.socket(), SV_BRANCH,
+                    makeArgs(it->serial, it->location.x, it->location.y));
 
     // Send him tree locations
     for (std::set<TreeLite>::const_iterator it = _trees.begin(); it != _trees.end(); ++it)
-        sendMessage(newUser.socket(), SV_TREE, makeArgs(it->serial, it->location.x, it->location.y));
+        sendMessage(newUser.socket(), SV_TREE,
+                    makeArgs(it->serial, it->location.x, it->location.y));
 
     // Send him his inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         if (newUser.inventory(i).first != "none")
-            sendMessage(socket, SV_INVENTORY, makeArgs(i,
-                                                       newUser.inventory(i).first,
-                                                       newUser.inventory(i).second));
+            sendMessage(socket, SV_INVENTORY,
+                        makeArgs(i, newUser.inventory(i).first, newUser.inventory(i).second));
     }
 
     // Add new user to list, and broadcast his location
@@ -498,7 +506,10 @@ void Server::removeBranch(size_t serial, User &user){
     sendMessage(user.socket(), SV_INVENTORY, makeArgs(slot, "wood", user.inventory(slot).second));
     // Ensure no other users are targeting this branch, as it will be removed.
     for (std::set<User>::iterator it = _users.begin(); it != _users.end(); ++it)
-        if (&*it != &user && it->actionTargetBranch() && it->actionTargetBranch()->serial == serial) {
+        if (&*it != &user &&
+            it->actionTargetBranch() &&
+            it->actionTargetBranch()->serial == serial) {
+
             User &user = const_cast<User &>(*it);
             user.actionTargetBranch(0);
             sendMessage(it->socket(), SV_DOESNT_EXIST);
@@ -547,7 +558,8 @@ void Server::writeUserData(const User &user) const{
 }
 
 
-void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode, const std::string &args) const{
+void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
+                         const std::string &args) const{
     // Compile message
     std::ostringstream oss;
     oss << '[' << msgCode;

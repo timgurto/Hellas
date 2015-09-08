@@ -30,4 +30,11 @@ inline SDL_Rect operator+(const SDL_Rect &lhs, const Point &rhs){
     return r;
 }
 
+inline Point operator-(const Point &lhs, const SDL_Rect &rhs){
+    Point p = lhs;
+    p.x -= rhs.x;
+    p.y -= rhs.y;
+    return p;
+}
+
 #endif

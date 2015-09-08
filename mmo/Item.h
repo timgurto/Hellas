@@ -17,7 +17,10 @@ class Item{
     std::set<std::string> _classes;
     Texture _icon;
 
-    // The materials necessary to craft this item.  An empty map implies an item that cannot be crafted.
+    /*
+    The materials necessary to craft this item.
+    An empty map implies an item that cannot be crafted.
+    */
     std::map<std::string, size_t> _materials;
     Uint32 _craftTime; // How long this item takes to craft
 

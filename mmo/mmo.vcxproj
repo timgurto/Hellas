@@ -86,17 +86,26 @@
     <ClCompile Include="Args.cpp" />
     <ClCompile Include="Branch.cpp" />
     <ClCompile Include="BranchLite.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="CheckBox.cpp" />
+    <ClCompile Include="ChoiceList.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Element.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityType.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Label.cpp" />
+    <ClCompile Include="Line.cpp" />
+    <ClCompile Include="List.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OtherUser.cpp" />
+    <ClCompile Include="Picture.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Server.cpp" />
+    <ClCompile Include="ShadowBox.cpp" />
     <ClCompile Include="Socket.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TooltipBuilder.cpp" />
@@ -104,22 +113,32 @@
     <ClCompile Include="TreeLite.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="util.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Args.h" />
     <ClInclude Include="Branch.h" />
     <ClInclude Include="BranchLite.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="CheckBox.h" />
+    <ClInclude Include="ChoiceList.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Element.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityType.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Label.h" />
+    <ClInclude Include="Line.h" />
+    <ClInclude Include="List.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="messageCodes.h" />
     <ClInclude Include="OtherUser.h" />
+    <ClInclude Include="Picture.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Server.h" />
+    <ClInclude Include="ShadowBox.h" />
     <ClInclude Include="Socket.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TooltipBuilder.h" />
@@ -127,6 +146,7 @@
     <ClInclude Include="TreeLite.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="util.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

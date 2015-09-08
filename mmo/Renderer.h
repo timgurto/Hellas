@@ -4,6 +4,7 @@
 #define RENDERER_H
 
 #include <SDL.h>
+#include <stack>
 
 #include "Color.h"
 #include "Texture.h"
@@ -16,6 +17,8 @@ class Renderer{
     int _w, _h;
     bool _valid; // Whether everything has been properly initialized
     static size_t _count;
+
+    std::stack<SDL_Texture *> _renderTargetsStack;
 
     friend void Texture::setRenderTarget() const; // Needs access to raw SDL_Renderer
 
@@ -47,10 +50,14 @@ public:
 
     void drawRect(const SDL_Rect &dstRect);
     void fillRect(const SDL_Rect &dstRect);
+    void fill();
 
     void setScale(float x, float y);
 
     void updateSize();
+
+    void pushRenderTarget(Texture &target);
+    void popRenderTarget();
 };
 
 #endif

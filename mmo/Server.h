@@ -48,16 +48,21 @@ private:
 
     // Messages
     std::queue<std::pair<Socket, std::string> > _messages;
-    void sendMessage(const Socket &dstSocket, MessageCode msgCode, const std::string &args = "") const;
+    void sendMessage(const Socket &dstSocket, MessageCode msgCode,
+                     const std::string &args = "") const;
     void broadcast(MessageCode msgCode, const std::string &args); // Send a command to all users
     void handleMessage(const Socket &client, const std::string &msg);
 
     // Clients
-    std::set<Socket> _clientSockets; // All connected sockets, including those without registered users
+    // All connected sockets, including those without registered users
+    std::set<Socket> _clientSockets;
     std::set<User> _users; // All connected users
     std::set<std::string> _usernames; // All connected users' names, for faster lookup of duplicates
     void checkSockets();
-    // Add the newly logged-in user; this happens not once the client connects, but rather when a CL_I_AM message is received.
+    /*
+    Add the newly logged-in user
+    This happens not once the client connects, but rather when a CL_I_AM message is received.
+    */
     void addUser(const Socket &socket, const std::string &name);
 
     // Remove traces of a user who has disconnected.

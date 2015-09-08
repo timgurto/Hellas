@@ -152,7 +152,7 @@ void User::removeMaterials(const Item &item, Server &server) {
             }
         }
     }
-    for (std::set<size_t>::const_iterator it = invSlotsChanged.begin(); it != invSlotsChanged.end(); ++it){
+    for (auto it = invSlotsChanged.cbegin(); it != invSlotsChanged.end(); ++it){
         const std::pair<std::string, size_t> &slot = _inventory[*it];
         server.sendMessage(_socket, SV_INVENTORY, makeArgs(*it, slot.first, slot.second));
     }

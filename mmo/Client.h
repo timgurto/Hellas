@@ -10,6 +10,7 @@
 
 #include "Args.h"
 #include "Branch.h"
+#include "ChoiceList.h"
 #include "Entity.h"
 #include "Item.h"
 #include "Log.h"
@@ -17,6 +18,7 @@
 #include "Point.h"
 #include "Socket.h"
 #include "Tree.h"
+#include "Window.h"
 #include "messageCodes.h"
 
 class Client{
@@ -35,10 +37,11 @@ public:
 
 private:
     static const Uint32 MAX_TICK_LENGTH;
-    static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping reply from the server
-    static const Uint32 CONNECT_RETRY_DELAY; // How long to wait between retries at connecting to server
+    static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping reply
+    static const Uint32 CONNECT_RETRY_DELAY; // How long to wait between retries at connecting
     static const Uint32 PING_FREQUENCY; // How often to test latency with each client
-    static const Uint32 TIME_BETWEEN_LOCATION_UPDATES; // How often to send location updates to server (while moving)
+    // How often to send location updates to server (while moving)
+    static const Uint32 TIME_BETWEEN_LOCATION_UPDATES;
 
     static const int
         SCREEN_X,
@@ -48,7 +51,8 @@ private:
     static SDL_Rect INVENTORY_RECT; // non-const, as it needs to be initialized at runtime.
     static const int ICON_SIZE;
     static const size_t ICONS_X; // How many icons per inventory row
-    bool playerHasItem(const std::string &id, size_t quantity = 1) const; // Whether the user has the specified item(s).
+    // Whether the user has the specified item(s).
+    bool playerHasItem(const std::string &id, size_t quantity = 1) const;
 
     mutable SDL_Rect
         _craftingRect, _filtersRect, _recipesRect, _detailsRect,
@@ -60,15 +64,25 @@ private:
     bool _haveMatsFilter, _haveToolsFilter, _classOr, _matOr;
     static const int ITEM_HEIGHT; // The height of list items featuring item icons.
     static const int TEXT_HEIGHT; // The height of list items featuring only text.
+    static const int HEADING_HEIGHT; // The height of windows' section headings
+    static const int LINE_GAP; // The total height occupied by a line and its surrounding spacing
     const Item *_activeRecipe; // The recipe currently selected, if any
+    static void startCrafting(void *data); // Called when the "Craft" button is clicked.
     // Populated at load time, after _items
     std::set<const Item *> _craftableItems;
     std::map<std::string, bool> _classFilters;
     std::map<const Item *, bool> _matFilters;
     mutable bool _classFilterSelected, _matFilterSelected; // Whether any filters have been selected
     bool itemMatchesFilters(const Item &item) const;
-    void onCraftingWindowClick();
+    // Called when filters pane is clicked.
+    static void populateRecipesList(Element &e, const Point &mousePos);
+    // Called when a recipe is selected.
+    static void selectRecipe(Element &e, const Point &mousePos);
 
+    ChoiceList *_recipeList;
+    Element *_detailsPane;
+
+    Element *_craftingWindow;
 
     Texture _tile[5];
 
@@ -96,10 +110,8 @@ private:
     void draw() const;
     void drawTile(size_t x, size_t y, int xLoc, int yLoc) const;
     void drawTooltip() const;
-    static const int CHECK_BOX_SIZE;
-    void drawCheckbox(int x, int y, bool checked, bool active = true, const std::string &text = "") const;
-    void drawShadowBox(const SDL_Rect &rect, bool inverted = false) const;
-    Texture _uiTooltip; // A tooltip which, if it exists, describes the UI element currently moused over.
+    // A tooltip which, if it exists, describes the UI element currently moused over.
+    Texture _uiTooltip;
     Point _offset; // An offset for drawing, based on the character's location on the map.
     Point _intOffset; // An integer version of the offset
     void updateOffset(); // Update the offset, when the character moves.
@@ -122,7 +134,8 @@ private:
 
     Uint32 _timeSinceLocUpdate; // Time since a CL_LOCATION was sent
     bool _locationChanged;
-    bool _tooltipNeedsRefresh; // Location has changed (local or official), and tooltip may have changed.
+    // Location has changed (local or official), and tooltip may have changed.
+    bool _tooltipNeedsRefresh;
     Texture getInventoryTooltip() const; // Generate tooltip for the inventory
 
     // Game data
@@ -138,7 +151,8 @@ private:
 
     Entity::set_t _entities;
     void removeEntity(Entity *const toRemove); // Remove from _entities, and delete pointer
-    void setEntityLocation(Entity *entity, const Point &location); // Move the entity, and reorder it if necessary
+    // Move the entity, and reorder it if necessary
+    void setEntityLocation(Entity *entity, const Point &location);
     Entity *_currentMouseOverEntity;
 
     std::queue<std::string> _messages;
@@ -147,8 +161,6 @@ private:
 
     std::string _enteredText; // Text that has been entered by the user
     static const size_t MAX_TEXT_ENTERED;
-
-    bool _craftingWindowOpen;
 
     void checkSocket();
     void sendRawMessage(const std::string &args = "") const;
