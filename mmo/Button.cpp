@@ -85,6 +85,7 @@ void Button::addChild(Element *child){
 
 void Button::clearChildren(){
     _content->clearChildren();
+    markChanged();
 }
 
 Element *Button::findChild(const std::string id){
