@@ -74,7 +74,6 @@ private:
     std::map<const Item *, bool> _matFilters;
     mutable bool _classFilterSelected, _matFilterSelected; // Whether any filters have been selected
     bool itemMatchesFilters(const Item &item) const;
-    void onCraftingWindowClick();
     // Called when filters pane is clicked.
     static void populateRecipesList(Element &e, const Point &mousePos);
     // Called when a recipe is selected.
@@ -111,10 +110,6 @@ private:
     void draw() const;
     void drawTile(size_t x, size_t y, int xLoc, int yLoc) const;
     void drawTooltip() const;
-    static const int CHECK_BOX_SIZE;
-    void drawCheckbox(int x, int y, bool checked, bool active = true,
-                      const std::string &text = "") const;
-    void drawShadowBox(const SDL_Rect &rect, bool inverted = false) const;
     // A tooltip which, if it exists, describes the UI element currently moused over.
     Texture _uiTooltip;
     Point _offset; // An offset for drawing, based on the character's location on the map.
@@ -166,8 +161,6 @@ private:
 
     std::string _enteredText; // Text that has been entered by the user
     static const size_t MAX_TEXT_ENTERED;
-
-    bool _craftingWindowOpen;
 
     void checkSocket();
     void sendRawMessage(const std::string &args = "") const;

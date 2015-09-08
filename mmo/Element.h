@@ -108,6 +108,7 @@ public:
 
     void show() { _visible = true; }
     void hide() { _visible = false; }
+    void toggleVisibility() { _visible = !_visible; }
     void fillBackground() { _solidBackground = true; }
 
     void markChanged() const;
