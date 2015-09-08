@@ -48,6 +48,8 @@ SDL_Rect Client::INVENTORY_RECT;
 const int Client::CHECK_BOX_SIZE = 8;
 const int Client::ITEM_HEIGHT = ICON_SIZE;
 const int Client::TEXT_HEIGHT = 10;
+const int Client::HEADING_HEIGHT = 14;
+const int Client::LINE_GAP = 6;
 
 const size_t Client::MAX_TEXT_ENTERED = 100;
 
@@ -77,6 +79,7 @@ _mouseMoved(false),
 _leftMouseDown(false),
 _currentMouseOverEntity(0),
 _craftingWindowOpen(false),
+_recipeList(0),
 _activeRecipe(0){
     isClient = true;
     _instance = this;
@@ -161,11 +164,7 @@ _activeRecipe(0){
 
         CONTENT_H = 200,
         CONTENT_Y = Window::HEADING_HEIGHT + PANE_GAP/2,
-        CRAFTING_WINDOW_H = CONTENT_Y + CONTENT_H + PANE_GAP/2,
-        
-        TEXT_HEIGHT = 10,
-        HEADING_HEIGHT = 14,
-        LINE_GAP = 6;
+        CRAFTING_WINDOW_H = CONTENT_Y + CONTENT_H + PANE_GAP/2;
 
     _craftingWindow = new Window(makeRect(250, 50, CRAFTING_WINDOW_W, CRAFTING_WINDOW_H),
                                  "Crafting");
@@ -236,19 +235,122 @@ _activeRecipe(0){
     Element *recipesPane = new Element(makeRect(RECIPES_PANE_X, CONTENT_Y,
                                                 RECIPES_PANE_W, CONTENT_H));
     _craftingWindow->addChild(recipesPane);
+    
     recipesPane->addChild(new Label(makeRect(0, 0, RECIPES_PANE_W, HEADING_HEIGHT), "Recipes",
                                     Element::CENTER_JUSTIFIED));
-    ChoiceList *recipesList = new ChoiceList(makeRect(0, HEADING_HEIGHT,
+    _recipeList = new ChoiceList(makeRect(0, HEADING_HEIGHT,
                                                       RECIPES_PANE_W, CONTENT_H - HEADING_HEIGHT),
                                              ICON_SIZE + 2);
-    recipesPane->addChild(recipesList);
-    populateRecipesList(*recipesList, Point());
+    recipesPane->addChild(_recipeList);
+    populateRecipesList(*_recipeList, Point());
     
-    filterPane->setMouseUpFunction(populateRecipesList, recipesList);
+    filterPane->setMouseUpFunction(populateRecipesList, _recipeList);
 
+    // Selected Recipe Details
+    _detailsPane = new Element(makeRect(DETAILS_PANE_X, CONTENT_Y, DETAILS_PANE_W, CONTENT_H));
+    _craftingWindow->addChild(_detailsPane);
+    selectRecipe(*_detailsPane, Point()); // Fill details pane initially
 
     renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
                       static_cast<float>(renderer.height()) / SCREEN_Y);
+}
+
+void Client::selectRecipe(Element &e, const Point &mousePos){
+    Element &pane = *_instance->_detailsPane;
+    pane.clearChildren();
+    const SDL_Rect &paneRect = pane.rect();
+
+    // Close Button
+    static const int
+        BUTTON_HEIGHT = 15,
+        BUTTON_WIDTH = 40,
+        BUTTON_GAP = 3,
+        BUTTON_Y = paneRect.h - BUTTON_HEIGHT;
+    pane.addChild(new Button(makeRect(paneRect.w - BUTTON_WIDTH, BUTTON_Y,
+                                      BUTTON_WIDTH, BUTTON_HEIGHT),
+                             "Close", Window::hideWindow, _instance->_craftingWindow));
+
+    // If no recipe selected
+    const std::string &selectedID = _instance->_recipeList->getSelected();
+    if (selectedID == "") {
+        _instance->_activeRecipe = 0;
+        return;
+    }
+
+    // Crafting Button
+    pane.addChild(new Button(makeRect(paneRect.w - 2*BUTTON_WIDTH - BUTTON_GAP, BUTTON_Y,
+                                      BUTTON_WIDTH, BUTTON_HEIGHT),
+                             "Craft", startCrafting, 0));
+
+    std::set<Item>::const_iterator it = _instance->_items.find(selectedID);
+    if (it == _instance->_items.end()) {
+        return;
+    }
+    const Item &item = *it;
+    if (_instance->_activeRecipe == &item)
+        return; // Recipe already selected; no change necessary
+    _instance->_activeRecipe = &item;
+
+    // Title
+    pane.addChild(new Label(makeRect(0, 0, paneRect.w, HEADING_HEIGHT), item.name()));
+    int y = HEADING_HEIGHT;
+
+    // Icon
+    pane.addChild(new Picture(makeRect(0, y, ICON_SIZE, ICON_SIZE), item.icon()));
+
+    // Class list
+    int x = ICON_SIZE + CheckBox::GAP;
+    size_t classesRemaining = item.classes().size();
+    const int minLineY = y + ICON_SIZE;
+    for (auto it = item.classes().cbegin(); it != item.classes().end(); ++it) {
+        std::string text = *it;
+        if (--classesRemaining > 0)
+            text += ", ";
+        Label *classLabel = new Label(makeRect(0, 0, 0, TEXT_HEIGHT), text);
+        classLabel->matchW();
+        classLabel->refresh();
+        const int width = classLabel->rect().w;
+        static const int SPACE_WIDTH = 4;
+        if (x + width - SPACE_WIDTH > paneRect.w) {
+            x = ICON_SIZE + CheckBox::GAP;
+            y += TEXT_HEIGHT;
+        }
+        classLabel->rect(x, y);
+        x += width;
+        pane.addChild(classLabel);
+    }
+    y += TEXT_HEIGHT;
+    if (y < minLineY)
+        y = minLineY;
+
+    // Divider
+    pane.addChild(new Line(0, y + LINE_GAP/2, paneRect.w));
+    y += LINE_GAP;
+
+    // Materials list
+    pane.addChild(new Label(makeRect(0, y, paneRect.w, TEXT_HEIGHT), "Materials:"));
+    y += TEXT_HEIGHT;
+    List *matsList = new List(makeRect(0, y, paneRect.w, BUTTON_Y - BUTTON_GAP - y), ICON_SIZE);
+    pane.addChild(matsList);
+    for (auto it = item.materials().cbegin(); it != item.materials().end(); ++it) {
+        const Item &mat = *_instance->_items.find(it->first);
+        std::string entryText = it->first;
+        if (it->second > 1)
+            entryText += " x" + makeArgs(it->second);
+        Element *entry = new Element(makeRect(0, 0, paneRect.w, ICON_SIZE));
+        matsList->addChild(entry);
+        entry->addChild(new Picture(makeRect(0, 0, ICON_SIZE, ICON_SIZE), mat.icon()));
+        entry->addChild(new Label(makeRect(ICON_SIZE + CheckBox::GAP, 0, paneRect.w, ICON_SIZE),
+                        entryText, Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+    }
+    pane.markChanged();
+}
+
+void Client::startCrafting(void *data){
+    if (_instance->_activeRecipe) {
+        _instance->sendMessage(CL_CRAFT, _instance->_activeRecipe->id());
+        _instance->prepareAction("Crafting " + _instance->_activeRecipe->name());
+    }
 }
 
 void Client::populateRecipesList(Element &e, const Point &mousePos){
@@ -266,6 +368,7 @@ void Client::populateRecipesList(Element &e, const Point &mousePos){
         recipe->addChild(new Label(makeRect(NAME_X, 0, recipe->rect().w - NAME_X, ICON_SIZE + 2),
                                    item.name(),
                                    Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+        recipe->setMouseUpFunction(selectRecipe);
         recipe->id(item.id());
     }
 }

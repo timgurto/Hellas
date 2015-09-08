@@ -9,7 +9,8 @@ Label::Label(const SDL_Rect &rect, const std::string &text,
 Element(rect),
 _text(text),
 _justificationH(justificationH),
-_justificationV(justificationV){}
+_justificationV(justificationV),
+_matchWidth(false){}
 
 void Label::refresh(){
     renderer.pushRenderTarget(_texture);
@@ -17,6 +18,8 @@ void Label::refresh(){
     makeBackgroundTransparent();
 
     Texture text(font(), _text, FONT_COLOR);
+    if (_matchWidth)
+        width(text.width());
 
     int x = 0;
     switch(_justificationH) {
@@ -43,4 +46,8 @@ void Label::refresh(){
     drawChildren();
 
     renderer.popRenderTarget();
+}
+
+void Label::matchW(){
+    _matchWidth = true;
 }

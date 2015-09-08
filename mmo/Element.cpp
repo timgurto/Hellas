@@ -163,7 +163,8 @@ void Element::onMouseUp(const Point &mousePos){
     if (_mouseUp)
         _mouseUp(*_mouseUpElement, relativeLocation);
     for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
-        (*it)->onMouseUp(relativeLocation);
+        if (collision(relativeLocation, (*it)->rect()))
+            (*it)->onMouseUp(relativeLocation);
 }
 
 void Element::onMouseMove(const Point &mousePos){
@@ -211,6 +212,7 @@ void Element::clearChildren(){
     for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
         delete *it;
     _children.clear();
+    markChanged();
 }
 
 Element *Element::findChild(const std::string id){

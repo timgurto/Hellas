@@ -11,13 +11,16 @@
 class Label : public Element{
     std::string _text;
     Justification _justificationH, _justificationV;
-
-    virtual void refresh();
+    bool _matchWidth;
 
 public:
     Label(const SDL_Rect &rect, const std::string &text,
           Justification justificationH = LEFT_JUSTIFIED,
           Justification justificationV = TOP_JUSTIFIED);
+
+    virtual void refresh();
+
+    void matchW(); // Set the label's width to the width of the contained text image.
 };
 
 #endif

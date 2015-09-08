@@ -10,6 +10,7 @@
 
 #include "Args.h"
 #include "Branch.h"
+#include "ChoiceList.h"
 #include "Entity.h"
 #include "Item.h"
 #include "Log.h"
@@ -63,7 +64,10 @@ private:
     bool _haveMatsFilter, _haveToolsFilter, _classOr, _matOr;
     static const int ITEM_HEIGHT; // The height of list items featuring item icons.
     static const int TEXT_HEIGHT; // The height of list items featuring only text.
+    static const int HEADING_HEIGHT; // The height of windows' section headings
+    static const int LINE_GAP; // The total height occupied by a line and its surrounding spacing
     const Item *_activeRecipe; // The recipe currently selected, if any
+    static void startCrafting(void *data); // Called when the "Craft" button is clicked.
     // Populated at load time, after _items
     std::set<const Item *> _craftableItems;
     std::map<std::string, bool> _classFilters;
@@ -71,8 +75,13 @@ private:
     mutable bool _classFilterSelected, _matFilterSelected; // Whether any filters have been selected
     bool itemMatchesFilters(const Item &item) const;
     void onCraftingWindowClick();
-     // Called when filters pane is clicked.
+    // Called when filters pane is clicked.
     static void populateRecipesList(Element &e, const Point &mousePos);
+    // Called when a recipe is selected.
+    static void selectRecipe(Element &e, const Point &mousePos);
+
+    ChoiceList *_recipeList;
+    Element *_detailsPane;
 
     Element *_craftingWindow;
 
