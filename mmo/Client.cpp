@@ -46,7 +46,7 @@ const int Client::ICON_SIZE = 16;
 const size_t Client::ICONS_X = 8;
 SDL_Rect Client::INVENTORY_RECT;
 const int Client::ITEM_HEIGHT = ICON_SIZE;
-const int Client::TEXT_HEIGHT = 10;
+const int Client::TEXT_HEIGHT = 11;
 const int Client::HEADING_HEIGHT = 14;
 const int Client::LINE_GAP = 6;
 
@@ -180,8 +180,8 @@ _activeRecipe(0){
 
     // Filters
     static const int
-        CLASS_LIST_HEIGHT = 62,
-        MATERIALS_LIST_HEIGHT = 62;
+        CLASS_LIST_HEIGHT = 59,
+        MATERIALS_LIST_HEIGHT = 60;
     Element *filterPane = new Element(makeRect(FILTERS_PANE_X, CONTENT_Y,
                                                FILTERS_PANE_W, CONTENT_H));
     _craftingWindow->addChild(filterPane);
