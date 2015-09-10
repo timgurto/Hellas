@@ -291,8 +291,6 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
         return;
     }
     const Item &item = *it;
-    if (_instance->_activeRecipe == &item)
-        return; // Recipe already selected; no change necessary
     _instance->_activeRecipe = &item;
 
     // Title
