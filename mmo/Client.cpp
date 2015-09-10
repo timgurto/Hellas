@@ -1088,7 +1088,7 @@ void Client::handleMessage(const std::string &msg){
             _partialMessage = buffer;
             break;
         } else {
-            int charsRead = iss.gcount();
+            std::streamsize charsRead = iss.gcount();
             buffer[charsRead] = ']';
             buffer[charsRead+1] = '\0';
             iss.ignore(); // Throw away ']'
