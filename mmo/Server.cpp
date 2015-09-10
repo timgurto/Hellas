@@ -582,6 +582,13 @@ void Server::loadData(){
     i.craftTime(10);
     _items.insert(i);
 
+    i = Item("chest", "wooden chest");
+    i.addClass("structure");
+    i.addClass("container");
+    i.addMaterial("wood", 5);
+    i.craftTime(10);
+    _items.insert(i);
+
     // Detect/load state
     do {
         if (cmdLineArgs.contains("new"))

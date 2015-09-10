@@ -130,6 +130,13 @@ _activeRecipe(0){
     i.craftTime(10);
     _items.insert(i);
 
+    i = Item("chest", "wooden chest");
+    i.addClass("structure");
+    i.addClass("container");
+    i.addMaterial("wood", 5);
+    i.craftTime(10);
+    _items.insert(i);
+
     Element::absMouse = &_mouse;
     Element::font(TTF_OpenFont("trebuc.ttf", 10));
 
