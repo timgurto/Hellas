@@ -273,6 +273,8 @@ void Element::draw(){
         markChanged();
         _dimensionsChanged = false;
     }
+    if (!_texture)
+        markChanged();
     if (_changed) {
         refresh();
         _changed = false;
