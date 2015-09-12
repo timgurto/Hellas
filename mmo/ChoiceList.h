@@ -18,7 +18,7 @@ class ChoiceList : public List{
         *_mouseOverBox,
         *_mouseDownBox;
 
-    const std::string &getIdFromMouse(double mouseY) const;
+    const std::string &getIdFromMouse(double mouseY, int *index = 0) const;
     bool contentCollision(const Point &p) const;
 
     static void markMouseDown(Element &e, const Point &mousePos);
@@ -29,8 +29,6 @@ public:
     ChoiceList(const SDL_Rect &rect, int childHeight);
 
     const std::string &getSelected() { return _selectedID; }
-    
-    virtual void refresh();
 };
 
 #endif

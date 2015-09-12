@@ -1,5 +1,7 @@
 // (C) 2015 Tim Gurto
 
+#include <cassert>
+
 #include "ChoiceList.h"
 
 static const std::string EMPTY_STR = "";
@@ -23,81 +25,116 @@ _mouseOverBox(new ShadowBox(makeRect(0, 0, rect.w - List::ARROW_W, childHeight))
     Element::addChild(_mouseDownBox);
 }
 
-void ChoiceList::refresh(){
-    _mouseOverBox->hide();
-    _mouseDownBox->hide();
-    _selectedBox->hide();
-
-    // Draw mouse-over and selection boxes
-    for (std::list<Element*>::const_iterator it = _content->children().begin();
-         it != _content->children().end(); ++it) {
-        const std::string &id = (*it)->id();
-        SDL_Rect itemRect = (*it)->rect();
-        if (id == _selectedID) {
-            _selectedBox->rect(itemRect.x, itemRect.y);
-            _selectedBox->show();
-        } else if (id == _mouseOverID) {
-            if (id == _mouseDownID) {
-                _mouseDownBox->rect(itemRect.x, itemRect.y);
-                _mouseDownBox->show();
-            } else {
-                _mouseOverBox->rect(itemRect.x, itemRect.y);
-                _mouseOverBox->show();
-            }
-        }
-    }
-    markChanged();
-
-    List::refresh(); // Draw list elements and scroll bar
-}
-
-const std::string &ChoiceList::getIdFromMouse(double mouseY) const{
+const std::string &ChoiceList::getIdFromMouse(double mouseY, int *index) const{
     int i = static_cast<int>(mouseY / childHeight());
-    if (i < 0 || i >= static_cast<int>(_content->children().size()))
+    if (i < 0 || i >= static_cast<int>(_content->children().size())) {
+        *index = -1;
         return EMPTY_STR;
-    std::list<Element*>::const_iterator it = _content->children().begin();
+    }
+    *index = i;
+    auto it = _content->children().cbegin();
     while (i-- > 0)
         ++it;
     return (*it)->id();
 }
 
+bool ChoiceList::contentCollision(const Point &p) const{
+    return collision(p, makeRect(0,
+                                 0,
+                                 _content->rect().w,
+                                 min(_content->rect().h, rect().h)));
+}
+
 void ChoiceList::markMouseDown(Element &e, const Point &mousePos){
     ChoiceList &list = dynamic_cast<ChoiceList &>(e);
     if (!list.contentCollision(mousePos)) {
+        list._mouseDownBox->hide();
+        list.markChanged();
         return;
-    list._mouseDownID = list.getIdFromMouse(mousePos.y);
+    }
+    int index;
+    list._mouseDownID = list.getIdFromMouse(mousePos.y, &index);
+    if (index < 0){
+        list._mouseDownBox->hide();
+        list.markChanged();
+        return;
+    }
+    assert (index >= 0);
+    list._mouseDownBox->rect(0, index * list.childHeight());
+    list._mouseDownBox->show();
     list.markChanged();
 }
 
 void ChoiceList::toggle(Element &e, const Point &mousePos){
     ChoiceList &list = dynamic_cast<ChoiceList &>(e);
-    if (list._mouseDownID == "")
+    if (list._mouseDownID == EMPTY_STR)
         return;
+    if (!list.contentCollision(mousePos)) {
+        list._mouseDownBox->hide();
+        list.markChanged();
         return;
     }
-    const std::string &id = list.getIdFromMouse(mousePos.y);
+    int index;
+    const std::string &id = list.getIdFromMouse(mousePos.y, &index);
+    if (index < 0){
+        list._selectedID = EMPTY_STR;
+        list._selectedBox->hide();
+        list._mouseDownID = EMPTY_STR;
+        list._mouseDownBox->hide();
+        return;
+    }
+    assert (index >= 0);
     if (list._mouseDownID != id) { // Mouse was moved away before releasing button
-        list._mouseDownID = "";
+        list._mouseDownID = EMPTY_STR;
+        list._mouseDownBox->hide();
+        list.markChanged();
         return;
     }
 
-    if (list._selectedID == id)
-        list._selectedID = "";
-    else
+    if (list._selectedID == id) { // Unselect the current item
+        list._selectedID = EMPTY_STR;
+        list._selectedBox->hide();
+    } else {
         list._selectedID = id;
-    list._mouseDownID = "";
+        list._selectedBox->rect(0, index * list.childHeight());
+        list._selectedBox->show();
+    }
+    list._mouseDownID = EMPTY_STR;
+    list._mouseDownBox->hide();
     list.markChanged();
 }
 
 void ChoiceList::markMouseOver(Element &e, const Point &mousePos){
     ChoiceList &list = dynamic_cast<ChoiceList &>(e);
-        if (list._mouseOverID != "") {
-            list._mouseOverID = "";
     if (!list.contentCollision(mousePos)) {
+        if (list._mouseOverID != EMPTY_STR) {
+            list._mouseOverID = EMPTY_STR;
+            list._mouseOverBox->hide();
             list.markChanged();
         }
         return;
     }
-    list._mouseOverID = list.getIdFromMouse(mousePos.y);
+    int index;
+    list._mouseOverID = list.getIdFromMouse(mousePos.y, &index);
+    if (index < 0) {
+        list._mouseOverID = EMPTY_STR;
+        list._mouseOverBox->hide();
+        list.markChanged();
+        return;
+    }
+    assert (index >= 0);
+    int itemY = index * list.childHeight();
+    if (list._mouseOverID == list._mouseDownID) {
+        list._mouseDownBox->rect(0, itemY);
+        list._mouseDownBox->show();
+    } else {
+        list._mouseDownBox->hide();
+    }
+    if (list._mouseOverID == list._selectedID || list._mouseOverID == list._mouseDownID) {
+        list._mouseOverBox->hide();
+    } else {
+        list._mouseOverBox->rect(0, itemY);
+        list._mouseOverBox->show();
+    }
     list.markChanged();
 }
