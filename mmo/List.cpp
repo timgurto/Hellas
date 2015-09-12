@@ -22,6 +22,8 @@ _cursor(new Element(makeRect(0, 0, ARROW_W, CURSOR_HEIGHT))),
 _mouseDownOnCursor(false),
 _scrolledToBottom(false),
 _cursorOffset(0){
+    if (_childHeight <= 0) // Prevent div/0
+        _childHeight = 1;
     Element::addChild(_content);
     Element::addChild(_scrollBar);
 
