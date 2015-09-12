@@ -30,9 +30,7 @@ _parent(0){
 }
 
 Element::~Element(){
-    // Free children
-    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
-        delete *it;
+    clearChildren();
 }
 
 void Element::rect(int x, int y, int w, int h){
