@@ -63,7 +63,7 @@ const std::string &ChoiceList::getIdFromMouse(double mouseY) const{
 
 void ChoiceList::markMouseDown(Element &e, const Point &mousePos){
     ChoiceList &list = dynamic_cast<ChoiceList &>(e);
-    if (!collision(mousePos, makeRect(0, 0, list._content->rect().w, list._content->rect().h)))
+    if (!list.contentCollision(mousePos)) {
         return;
     list._mouseDownID = list.getIdFromMouse(mousePos.y);
     list.markChanged();
@@ -73,8 +73,6 @@ void ChoiceList::toggle(Element &e, const Point &mousePos){
     ChoiceList &list = dynamic_cast<ChoiceList &>(e);
     if (list._mouseDownID == "")
         return;
-    if (!collision(mousePos, makeRect(0, 0, list._content->rect().w, list._content->rect().h))) {
-        list._mouseDownID = "";
         return;
     }
     const std::string &id = list.getIdFromMouse(mousePos.y);
@@ -93,9 +91,9 @@ void ChoiceList::toggle(Element &e, const Point &mousePos){
 
 void ChoiceList::markMouseOver(Element &e, const Point &mousePos){
     ChoiceList &list = dynamic_cast<ChoiceList &>(e);
-    if (!collision(mousePos, makeRect(0, 0, list._content->rect().w, list._content->rect().h))) {
         if (list._mouseOverID != "") {
             list._mouseOverID = "";
+    if (!list.contentCollision(mousePos)) {
             list.markChanged();
         }
         return;

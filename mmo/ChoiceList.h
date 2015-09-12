@@ -19,6 +19,7 @@ class ChoiceList : public List{
         *_mouseDownBox;
 
     const std::string &getIdFromMouse(double mouseY) const;
+    bool contentCollision(const Point &p) const;
 
     static void markMouseDown(Element &e, const Point &mousePos);
     static void toggle(Element &e, const Point &mousePos);
