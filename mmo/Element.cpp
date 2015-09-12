@@ -1,5 +1,7 @@
 // (C) 2015 Tim Gurto
 
+#include <cassert>
+
 #include "Element.h"
 
 extern Renderer renderer;

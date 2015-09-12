@@ -26,6 +26,8 @@ MMO economy simulator
 
 **item**, something which exists virtually in-game, located in players' inventories
 
+**element**, (client only) a part of the GUI, possibly containing child elements
+
 **entity**, (client only) something which exists physically in-game, with a location and image, and supporting user interaction
 
 **object**, (server only) something which exists physically in-game, with a location and functionality
