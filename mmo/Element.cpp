@@ -220,7 +220,9 @@ void Element::setScrollDownFunction(scrollDownFunction_t f, Element *e){
     _scrollDownElement = e ? e : this;
 }
 
+// Note: takes ownership of child.  Child should be allocated with new.
 void Element::addChild(Element *child){
+    assert(child);
     _children.push_back(child);
     child->_parent = this;
     markChanged();
