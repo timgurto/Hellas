@@ -294,7 +294,8 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     _instance->_activeRecipe = &item;
 
     // Title
-    pane.addChild(new Label(makeRect(0, 0, paneRect.w, HEADING_HEIGHT), item.name()));
+    pane.addChild(new Label(makeRect(0, 0, paneRect.w, HEADING_HEIGHT), item.name(),
+                            Element::CENTER_JUSTIFIED));
     int y = HEADING_HEIGHT;
 
     // Icon
