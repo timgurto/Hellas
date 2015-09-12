@@ -16,9 +16,9 @@ void ShadowBox::refresh(){
     const int
         width = rect().w,
         height = rect().h,
-        left = rect().x,
+        left = 0,
         right = left + width - 1,
-        top = rect().y,
+        top = 0,
         bottom = top + height - 1;
 
     renderer.setDrawColor(_reversed ? SHADOW_DARK : SHADOW_LIGHT);
