@@ -29,6 +29,7 @@ public:
         HORIZONTAL,
         VERTICAL
     };
+    typedef std::list<Element*> children_t;
 
 private:
     static TTF_Font *_font;
@@ -58,7 +59,6 @@ protected:
         SHADOW_DARK,
         FONT_COLOR;
 
-    typedef std::list<Element*> children_t;
     children_t _children;
 
     Texture _texture; // A memoized image of the element, redrawn only when necessary.
