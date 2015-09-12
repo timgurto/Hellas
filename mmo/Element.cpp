@@ -287,15 +287,15 @@ void Element::forceRefresh(){
 
 void Element::makeBackgroundTransparent(){
     if (!transparentBackground) {
-        transparentBackground = Texture(renderer.width(), renderer.height());
+        transparentBackground = Texture(4,4);//Texture(renderer.width(), renderer.height());
         transparentBackground.setAlpha(0);
         transparentBackground.setBlend(SDL_BLENDMODE_NONE);
         renderer.pushRenderTarget(transparentBackground);
         renderer.fill();
         renderer.popRenderTarget();
     }
-    SDL_Rect rect = makeRect(0, 0,_rect.w, _rect.h);
-    transparentBackground.draw(rect, rect);
+    SDL_Rect dstRect = makeRect(0, 0, _rect.w, _rect.h);
+    transparentBackground.draw(dstRect);
 }
 
 void Element::cleanup(){
