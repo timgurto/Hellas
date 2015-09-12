@@ -284,6 +284,8 @@ void Element::draw(){
 }
 
 void Element::forceRefresh(){
+    if (!_parent)
+        transparentBackground = Texture();
     _changed = true;
     for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
         (*it)->forceRefresh();
