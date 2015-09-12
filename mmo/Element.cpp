@@ -61,6 +61,24 @@ void Element::markChanged() const{
         _parent->markChanged();
 }
 
+void Element::show(){
+    _visible = true;
+    if (_parent)
+        _parent->markChanged();
+}
+
+void Element::hide(){
+    _visible = false;
+    if (_parent)
+        _parent->markChanged();
+}
+
+void Element::toggleVisibility(){
+    _visible = !_visible;
+    if (_parent)
+        _parent->markChanged();
+}
+
 void Element::drawChildren() const{
     for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it) {
         if ((*it)->_changed)

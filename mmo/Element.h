@@ -106,10 +106,10 @@ public:
     void id(const std::string &id) { _id = id; }
     const std::list<Element *> &children() const { return _children; }
 
-    void show() { _visible = true; }
-    void hide() { _visible = false; }
-    void toggleVisibility() { _visible = !_visible; }
     void fillBackground() { _solidBackground = true; }
+    void show();
+    void hide();
+    void toggleVisibility();
 
     void markChanged() const;
 
