@@ -29,6 +29,7 @@ public:
         HORIZONTAL,
         VERTICAL
     };
+    typedef std::list<Element*> children_t;
 
 private:
     static TTF_Font *_font;
@@ -58,7 +59,7 @@ protected:
         SHADOW_DARK,
         FONT_COLOR;
 
-    std::list<Element*> _children;
+    children_t _children;
 
     Texture _texture; // A memoized image of the element, redrawn only when necessary.
     Point location() const { return Point(_rect.x, _rect.y); }
@@ -104,7 +105,7 @@ public:
     bool changed() const { return _changed; }
     const std::string &id() const { return _id; }
     void id(const std::string &id) { _id = id; }
-    const std::list<Element *> &children() const { return _children; }
+    const children_t &children() const { return _children; }
 
     void fillBackground() { _solidBackground = true; markChanged(); }
     void show();
