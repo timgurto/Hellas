@@ -379,27 +379,32 @@ void Client::populateRecipesList(Element &e, const Point &mousePos){
 bool Client::itemMatchesFilters(const Item &item) const{
     // Material filters
     bool matsFilterMatched = !_matFilterSelected || !_matOr;
-    for (std::map<std::string, size_t>::const_iterator it = item.materials().begin();
-         it != item.materials().end(); ++it) {
-        if (_haveMatsFilter && !playerHasItem(it->first, it->second))
-            return false;
-        if (_matFilterSelected) {
-            const Item &thisMaterial = *_items.find(it->first);
-            if (!matsFilterMatched && _matOr && _matFilters.find(&thisMaterial)->second)
-                matsFilterMatched = true;
-            else if (!_matOr && !_matFilters.find(&thisMaterial)->second)
+    if (_matFilterSelected || _haveMatsFilter) {
+        for (std::map<std::string, size_t>::const_iterator it = item.materials().begin();
+             it != item.materials().end(); ++it) {
+            if (_haveMatsFilter && !playerHasItem(it->first, it->second))
                 return false;
+            if (_matFilterSelected) {
+                const Item &thisMaterial = *_items.find(it->first);
+                if (!matsFilterMatched && _matOr && _matFilters.find(&thisMaterial)->second)
+                    matsFilterMatched = true;
+                else if (!_matOr && !_matFilters.find(&thisMaterial)->second)
+                    return false;
+            }
         }
     }
+
     // Class filters
     bool classFilterMatched = !_classFilterSelected || !_classOr;
-    for (std::set<std::string>::const_iterator it = item.classes().begin();
-         it != item.classes().end(); ++it) {
-        if (_classFilterSelected) {
-            if (!classFilterMatched && _classOr && _classFilters.find(*it)->second)
-                classFilterMatched = true;
-            else if (!_classOr && !_classFilters.find(*it)->second)
-                return false;
+    if (_classFilterSelected) {
+        for (std::set<std::string>::const_iterator it = item.classes().begin();
+             it != item.classes().end(); ++it) {
+            if (_classFilterSelected) {
+                if (!classFilterMatched && _classOr && _classFilters.find(*it)->second)
+                    classFilterMatched = true;
+                else if (!_classOr && !_classFilters.find(*it)->second)
+                    return false;
+            }
         }
     }
 
