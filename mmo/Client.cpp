@@ -677,6 +677,8 @@ void Client::run(){
                 _leftMouseDown = false;
 
                 _craftingWindow->onMouseUp(_mouse);
+                if (collision(_mouse, _craftingWindow->rect()))
+                    break;
 
                 if (_currentMouseOverEntity)
                     _currentMouseOverEntity->onLeftClick(*this);
