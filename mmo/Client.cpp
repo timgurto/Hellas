@@ -395,18 +395,34 @@ void Client::populateRecipesList(Element &e){
 }
 
 bool Client::itemMatchesFilters(const Item &item) const{
+    // "Have materials" filter
+    if (_haveMatsFilter) {
+        for (const std::pair<std::string, size_t> &materialsNeeded : item.materials())
+            if (!playerHasItem(materialsNeeded.first, materialsNeeded.second))
+                return false;
+    }
+
     // Material filters
     bool matsFilterMatched = !_matFilterSelected || !_matOr;
-    if (_matFilterSelected || _haveMatsFilter) {
-        for (std::map<std::string, size_t>::const_iterator it = item.materials().begin();
-             it != item.materials().end(); ++it) {
-            if (_haveMatsFilter && !playerHasItem(it->first, it->second))
-                return false;
-            if (_matFilterSelected) {
-                const Item &thisMaterial = *_items.find(it->first);
-                if (!matsFilterMatched && _matOr && _matFilters.find(&thisMaterial)->second)
+    if (_matFilterSelected) {
+        /*
+        "Or": check that the item matches any active material filter.
+        Faster to iterate through item's materials, rather than all filters.
+        */
+        if (_matOr) {
+            for (const std::pair<std::string, size_t> &materialsNeeded : item.materials()) {
+                const Item *matP = &*_items.find(materialsNeeded.first);
+                if (_matFilters.find(matP)->second) {
                     matsFilterMatched = true;
-                else if (!_matOr && !_matFilters.find(&thisMaterial)->second)
+                    break;
+                }
+            }
+        // "And": check that all active filters apply to the item.
+        } else {
+            for (const std::pair<const Item *, bool> &matFilter : _matFilters) {
+                if (!matFilter.second) // Filter is not active
+                    continue;
+                if (item.materials().find(matFilter.first->name()) == item.materials().end())
                     return false;
             }
         }
@@ -415,12 +431,23 @@ bool Client::itemMatchesFilters(const Item &item) const{
     // Class filters
     bool classFilterMatched = !_classFilterSelected || !_classOr;
     if (_classFilterSelected) {
-        for (std::set<std::string>::const_iterator it = item.classes().begin();
-             it != item.classes().end(); ++it) {
-            if (_classFilterSelected) {
-                if (!classFilterMatched && _classOr && _classFilters.find(*it)->second)
-                    classFilterMatched = true;
-                else if (!_classOr && !_classFilters.find(*it)->second)
+        /*
+        "Or": check that the item matches any active class filter.
+        Faster to iterate through item's classes, rather than all filters.
+        */
+        if (_classOr) {
+            for (const std::string &className : item.classes()) {
+                if (_classFilters.find(className)->second) {
+                        classFilterMatched = true;
+                        break;
+                }
+            }
+        // "And": check that all active filters apply to the item.
+        } else {
+            for (const std::pair<std::string, bool> &classFilter : _classFilters) {
+                if (!classFilter.second) // Filter is not active
+                    continue;
+                if (item.classes().find(classFilter.first) == item.classes().end())
                     return false;
             }
         }
