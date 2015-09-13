@@ -100,7 +100,7 @@ public:
     static void font(TTF_Font *newFont) { _font = newFont; }
     const SDL_Rect &rect() const { return _rect; }
     void rect(const SDL_Rect &rhs);
-    void rect(int x, int y) { _rect.x = x; _rect.y = y; }
+    void rect(int x, int y);
     void rect(int x, int y, int w, int h);
     int width() const { return _rect.w; }
     void width(int w);

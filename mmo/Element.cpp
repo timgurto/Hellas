@@ -46,6 +46,13 @@ void Element::rect(const SDL_Rect &rhs){
     _dimensionsChanged = true;
 }
 
+void Element::rect(int x, int y) {
+    _rect.x = x;
+    _rect.y = y;
+    if (_parent)
+        _parent->markChanged();
+}
+
 void Element::width(int w){
     _rect.w = w;
     _dimensionsChanged = true;
