@@ -59,7 +59,6 @@ void ChoiceList::markMouseDown(Element &e, const Point &mousePos){
         list.markChanged();
         return;
     }
-    assert (index >= 0);
     list._mouseDownBox->rect(0, index * list.childHeight());
     list._mouseDownBox->show();
     list.markChanged();
@@ -83,7 +82,6 @@ void ChoiceList::toggle(Element &e, const Point &mousePos){
         list._mouseDownBox->hide();
         return;
     }
-    assert (index >= 0);
     if (list._mouseDownID != id) { // Mouse was moved away before releasing button
         list._mouseDownID = EMPTY_STR;
         list._mouseDownBox->hide();
@@ -122,7 +120,6 @@ void ChoiceList::markMouseOver(Element &e, const Point &mousePos){
         list.markChanged();
         return;
     }
-    assert (index >= 0);
     int itemY = index * list.childHeight();
     if (list._mouseOverID == list._mouseDownID) {
         list._mouseDownBox->rect(0, itemY);
