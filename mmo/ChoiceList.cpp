@@ -96,6 +96,7 @@ void ChoiceList::toggle(Element &e, const Point &mousePos){
         list._selectedID = id;
         list._selectedBox->rect(0, index * list.childHeight());
         list._selectedBox->show();
+        list._mouseOverBox->hide();
     }
     list._mouseDownID = EMPTY_STR;
     list._mouseDownBox->hide();
