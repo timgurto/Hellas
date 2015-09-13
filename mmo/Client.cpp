@@ -377,6 +377,7 @@ void Client::populateRecipesList(Element &e){
 
     ChoiceList &recipesList = dynamic_cast<ChoiceList &>(e);
     recipesList.clearChildren();
+
     for (std::set<const Item *>::const_iterator it = _instance->_craftableItems.begin();
          it != _instance->_craftableItems.end(); ++it) {
         const Item &item = **it;
@@ -392,6 +393,7 @@ void Client::populateRecipesList(Element &e){
         recipe->setMouseUpFunction(selectRecipe);
         recipe->id(item.id());
     }
+    recipesList.verifyBoxes();
 }
 
 bool Client::itemMatchesFilters(const Item &item) const{
@@ -1356,6 +1358,7 @@ void Client::handleMessage(const std::string &msg){
             if (del != ']')
                 break;
             _inventory[slot] = std::make_pair(itemID, quantity);
+            _recipeList->markChanged();
             break;
         }
 

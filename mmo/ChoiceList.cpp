@@ -133,3 +133,35 @@ void ChoiceList::markMouseOver(Element &e, const Point &mousePos){
         list._mouseOverBox->show();
     }
 }
+
+void ChoiceList::verifyBoxes(){
+    bool
+        mouseOverFound = _mouseOverID == EMPTY_STR,
+        mouseDownFound =  _mouseDownID == EMPTY_STR,
+        selectedFound =  _selectedID == EMPTY_STR;
+
+    for (const Element *item : _content->children()) {
+        const std::string &id = item->id();
+        if (!mouseOverFound && id == _mouseOverID)
+            mouseOverFound = true;
+        if (!mouseDownFound && id == _mouseDownID)
+            mouseDownFound = true;
+        if (!selectedFound && id == _selectedID)
+            selectedFound = true;
+    }
+
+    if (!mouseOverFound) {
+        _mouseOverID = EMPTY_STR;
+        _mouseOverBox->hide();
+    }
+    if (!mouseDownFound) {
+        _mouseDownID = EMPTY_STR;
+        _mouseDownBox->hide();
+    }
+    if (!selectedFound) {
+        _selectedID = EMPTY_STR;
+        _selectedBox->hide();
+    }
+    if (! (mouseOverFound && mouseDownFound && selectedFound))
+        markChanged();
+}
