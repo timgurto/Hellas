@@ -248,7 +248,12 @@ _activeRecipe(0){
                                              ICON_SIZE + 2);
     recipesPane->addChild(_recipeList);
     // Click on a filter: force recipe list to refresh
-    filterPane->setMouseUpFunction([](Element &e, const Point &){ e.markChanged(); }, _recipeList);
+    filterPane->setMouseUpFunction([](Element &e, const Point &mousePos){
+                                       if (collision(mousePos,
+                                                     makeRect(0, 0, e.rect().w, e.rect().h)))
+                                           e.markChanged();
+                                   },
+                                   _recipeList);
     // Repopulate recipe list before every refresh
     _recipeList->setPreRefreshFunction(populateRecipesList, _recipeList);
 
@@ -262,6 +267,8 @@ _activeRecipe(0){
 }
 
 void Client::selectRecipe(Element &e, const Point &mousePos){
+    if (!collision(mousePos, makeRect(0, 0, e.rect().w, e.rect().h)))
+        return;
     Element &pane = *_instance->_detailsPane;
     pane.clearChildren();
     const SDL_Rect &paneRect = pane.rect();
@@ -384,7 +391,7 @@ void Client::populateRecipesList(Element &e){
         if (!_instance->itemMatchesFilters(item))
             continue;
         Element *recipe = new Element(makeRect());
-        recipesList.addChild(recipe);
+        //recipesList.addChild(recipe);
         recipe->addChild(new Picture(makeRect(1, 1, ICON_SIZE, ICON_SIZE), item.icon()));
         static const int NAME_X = ICON_SIZE + CheckBox::GAP + 1;
         recipe->addChild(new Label(makeRect(NAME_X, 0, recipe->rect().w - NAME_X, ICON_SIZE + 2),

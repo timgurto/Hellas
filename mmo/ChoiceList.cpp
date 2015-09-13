@@ -70,7 +70,6 @@ void ChoiceList::toggle(Element &e, const Point &mousePos){
         return;
     if (!list.contentCollision(mousePos)) {
         list._mouseDownBox->hide();
-        list.markChanged();
         return;
     }
     int index;
