@@ -142,12 +142,21 @@ void ChoiceList::verifyBoxes(){
 
     for (const Element *item : _content->children()) {
         const std::string &id = item->id();
-        if (!mouseOverFound && id == _mouseOverID)
+        if (!mouseOverFound && id == _mouseOverID) {
             mouseOverFound = true;
-        if (!mouseDownFound && id == _mouseDownID)
+            if (item->rect().y != _mouseOverBox->rect().y)
+                _mouseOverBox->rect(item->rect());
+        }
+        if (!mouseDownFound && id == _mouseDownID) {
             mouseDownFound = true;
-        if (!selectedFound && id == _selectedID)
+            if (item->rect().y != _mouseDownBox->rect().y)
+                _mouseDownBox->rect(item->rect());
+        }
+        if (!selectedFound && id == _selectedID) {
             selectedFound = true;
+            if (item->rect().y != _selectedBox->rect().y)
+                _selectedBox->rect(item->rect());
+        }
     }
 
     if (!mouseOverFound) {
@@ -162,6 +171,4 @@ void ChoiceList::verifyBoxes(){
         _selectedID = EMPTY_STR;
         _selectedBox->hide();
     }
-    if (! (mouseOverFound && mouseDownFound && selectedFound))
-        markChanged();
 }
