@@ -42,10 +42,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
+    <IncludePath>D:\My stuff\Docs\C++ Libraries\SDL2-devel-2.0.3-VC\SDL2-2.0.3\include;D:\My stuff\Docs\C++ Libraries\SDL2_ttf-devel-2.0.12-VC\SDL2_ttf-2.0.12\include;D:\My stuff\Docs\C++ Libraries\SDL2_mixer-devel-2.0.0-VC\SDL2_mixer-2.0.0\include;D:\My stuff\Docs\C++ Libraries\SDL2_image-devel-2.0.0-VC\SDL2_image-2.0.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\My stuff\Docs\C++ Libraries\SDL2-devel-2.0.3-VC\SDL2-2.0.3\lib\x86;D:\My stuff\Docs\C++ Libraries\SDL2_ttf-devel-2.0.12-VC\SDL2_ttf-2.0.12\lib\x86;D:\My stuff\Docs\C++ Libraries\SDL2_mixer-devel-2.0.0-VC\SDL2_mixer-2.0.0\lib\x86;D:\My stuff\Docs\C++ Libraries\SDL2_image-devel-2.0.0-VC\SDL2_image-2.0.0\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
+    <IncludePath>D:\My stuff\Docs\C++ Libraries\SDL2-devel-2.0.3-VC\SDL2-2.0.3\include;D:\My stuff\Docs\C++ Libraries\SDL2_ttf-devel-2.0.12-VC\SDL2_ttf-2.0.12\include;D:\My stuff\Docs\C++ Libraries\SDL2_mixer-devel-2.0.0-VC\SDL2_mixer-2.0.0\include;D:\My stuff\Docs\C++ Libraries\SDL2_image-devel-2.0.0-VC\SDL2_image-2.0.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\My stuff\Docs\C++ Libraries\SDL2-devel-2.0.3-VC\SDL2-2.0.3\lib\x86;D:\My stuff\Docs\C++ Libraries\SDL2_ttf-devel-2.0.12-VC\SDL2_ttf-2.0.12\lib\x86;D:\My stuff\Docs\C++ Libraries\SDL2_mixer-devel-2.0.0-VC\SDL2_mixer-2.0.0\lib\x86;D:\My stuff\Docs\C++ Libraries\SDL2_image-devel-2.0.0-VC\SDL2_image-2.0.0\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -88,7 +92,6 @@
     <ClCompile Include="BranchLite.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CheckBox.cpp" />
-    <ClCompile Include="ChestLite.cpp" />
     <ClCompile Include="ChoiceList.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Color.cpp" />
@@ -122,7 +125,6 @@
     <ClInclude Include="BranchLite.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CheckBox.h" />
-    <ClInclude Include="ChestLite.h" />
     <ClInclude Include="ChoiceList.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Color.h" />
