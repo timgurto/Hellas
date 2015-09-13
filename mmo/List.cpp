@@ -102,6 +102,9 @@ void List::refresh(){
 
     renderer.pushRenderTarget(_texture);
 
+    renderer.setDrawColor(Element::BACKGROUND_COLOR);
+    renderer.fill();
+
     drawChildren();
 
     renderer.popRenderTarget();
