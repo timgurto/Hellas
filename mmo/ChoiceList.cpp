@@ -109,7 +109,6 @@ void ChoiceList::markMouseOver(Element &e, const Point &mousePos){
         if (list._mouseOverID != EMPTY_STR) {
             list._mouseOverID = EMPTY_STR;
             list._mouseOverBox->hide();
-            list.markChanged();
         }
         return;
     }
@@ -118,7 +117,6 @@ void ChoiceList::markMouseOver(Element &e, const Point &mousePos){
     if (index < 0) {
         list._mouseOverID = EMPTY_STR;
         list._mouseOverBox->hide();
-        list.markChanged();
         return;
     }
     int itemY = index * list.childHeight();
@@ -134,5 +132,4 @@ void ChoiceList::markMouseOver(Element &e, const Point &mousePos){
         list._mouseOverBox->rect(0, itemY);
         list._mouseOverBox->show();
     }
-    list.markChanged();
 }

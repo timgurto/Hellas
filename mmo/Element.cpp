@@ -63,15 +63,15 @@ void Element::markChanged() const{
 }
 
 void Element::show(){
-    _visible = true;
-    if (_parent)
+    if (!_visible && _parent)
         _parent->markChanged();
+    _visible = true;
 }
 
 void Element::hide(){
-    _visible = false;
-    if (_parent)
+    if (_visible && _parent)
         _parent->markChanged();
+    _visible = false;
 }
 
 void Element::toggleVisibility(){
