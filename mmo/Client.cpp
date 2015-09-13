@@ -141,15 +141,13 @@ _activeRecipe(0){
     Element::font(TTF_OpenFont("trebuc.ttf", 10));
 
     // For crafting filters
-    for (std::set<Item>::const_iterator it = _items.begin(); it != _items.end(); ++it){
-        if (it->isCraftable()) {
-            _craftableItems.insert(&*it);
-            for (std::map<std::string, size_t>::const_iterator matsIt = it->materials().begin();
-                 matsIt != it->materials().end(); ++matsIt)
-                _matFilters[&*_items.find(matsIt->first)] = false;
-            for (std::set<std::string>::const_iterator classesIt = it->classes().begin();
-                 classesIt != it->classes().end(); ++classesIt)
-                 _classFilters[*classesIt] = false;
+    for (const Item &item : _items){
+        if (item.isCraftable()) {
+            _craftableItems.insert(&item);
+            for (const std::pair<std::string, size_t> mat : item.materials())
+                _matFilters[&*_items.find(mat.first)] = false;
+            for (const std::string &className : item.classes())
+                 _classFilters[className] = false;
         }
     }
     _haveMatsFilter = _classOr = _matOr = false;
@@ -314,8 +312,8 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     int x = ICON_SIZE + CheckBox::GAP;
     size_t classesRemaining = item.classes().size();
     const int minLineY = y + ICON_SIZE;
-    for (auto it = item.classes().cbegin(); it != item.classes().end(); ++it) {
-        std::string text = *it;
+    for (const std::string &className : item.classes()) {
+        std::string text = className;
         if (--classesRemaining > 0)
             text += ", ";
         Label *classLabel = new Label(makeRect(0, 0, 0, TEXT_HEIGHT), text);
@@ -344,11 +342,11 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     y += TEXT_HEIGHT;
     List *matsList = new List(makeRect(0, y, paneRect.w, BUTTON_Y - BUTTON_GAP - y), ICON_SIZE);
     pane.addChild(matsList);
-    for (auto it = item.materials().cbegin(); it != item.materials().end(); ++it) {
-        const Item &mat = *_instance->_items.find(it->first);
-        std::string entryText = it->first;
-        if (it->second > 1)
-            entryText += " x" + makeArgs(it->second);
+    for (const std::pair<std::string, size_t> & matCost : item.materials()) {
+        const Item &mat = *_instance->_items.find(matCost.first);
+        std::string entryText = matCost.first;
+        if (matCost.second > 1)
+            entryText += " x" + makeArgs(matCost.second);
         Element *entry = new Element(makeRect(0, 0, paneRect.w, ICON_SIZE));
         matsList->addChild(entry);
         entry->addChild(new Picture(makeRect(0, 0, ICON_SIZE, ICON_SIZE), mat.icon()));
@@ -385,20 +383,18 @@ void Client::populateRecipesList(Element &e){
     ChoiceList &recipesList = dynamic_cast<ChoiceList &>(e);
     recipesList.clearChildren();
 
-    for (std::set<const Item *>::const_iterator it = _instance->_craftableItems.begin();
-         it != _instance->_craftableItems.end(); ++it) {
-        const Item &item = **it;
-        if (!_instance->itemMatchesFilters(item))
+    for (const Item *item : _instance->_craftableItems) {
+        if (!_instance->itemMatchesFilters(*item))
             continue;
         Element *recipe = new Element(makeRect());
         recipesList.addChild(recipe);
-        recipe->addChild(new Picture(makeRect(1, 1, ICON_SIZE, ICON_SIZE), item.icon()));
+        recipe->addChild(new Picture(makeRect(1, 1, ICON_SIZE, ICON_SIZE), item->icon()));
         static const int NAME_X = ICON_SIZE + CheckBox::GAP + 1;
         recipe->addChild(new Label(makeRect(NAME_X, 0, recipe->rect().w - NAME_X, ICON_SIZE + 2),
-                                   item.name(),
+                                   item->name(),
                                    Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
         recipe->setMouseUpFunction(selectRecipe);
-        recipe->id(item.id());
+        recipe->id(item->id());
     }
     const std::string oldSelectedRecipe = recipesList.getSelected();
     recipesList.verifyBoxes();
@@ -478,9 +474,11 @@ Client::~Client(){
     OtherUser::image("");
     Branch::image("");
     Tree::image("");
-    for (Entity::set_t::iterator it = _entities.begin(); it != _entities.end(); ++it)
-        if (*it != &_character)
-            delete *it;
+    for (const Entity *entityConst : _entities) {
+        Entity *entity = const_cast<Entity *>(entityConst);
+        if (entity != &_character)
+            delete entity;
+    }
 }
 
 void Client::checkSocket(){
@@ -757,7 +755,8 @@ void Client::run(){
         // Update entities
         std::vector<Entity *> entitiesToReorder;
         for (Entity::set_t::iterator it = _entities.begin(); it != _entities.end(); ) {
-            Entity::set_t::iterator next = it; ++next;
+            Entity::set_t::iterator next = it;
+            ++next;
             Entity *toUpdate = *it;
             toUpdate->update(delta);
             if (toUpdate->yChanged()) {
@@ -768,8 +767,8 @@ void Client::run(){
             }
             it = next;
         }
-        for (auto it = entitiesToReorder.begin(); it != entitiesToReorder.end(); ++it)
-            _entities.insert(*it);
+        for (Entity *entity : entitiesToReorder)
+            _entities.insert(entity);
         entitiesToReorder.clear();
 
         // Update cast bar
@@ -843,8 +842,8 @@ void Client::draw() const{
 
 
     // Entities, sorted from back to front
-    for (Entity::set_t::const_iterator it = _entities.begin(); it != _entities.end(); ++it)
-        (*it)->draw(*this);
+    for (const Entity *entity : _entities)
+        entity->draw(*this);
 
     // Rectangle around user
     //renderer.setDrawColor(Color::WHITE);
@@ -979,9 +978,8 @@ Texture Client::getInventoryTooltip() const{
     if (item.hasClasses()) {
         tb.setColor();
         tb.addGap();
-        for (std::set<std::string>::const_iterator it = item.classes().begin();
-             it != item.classes().end(); ++it)
-            tb.addLine(*it);
+        for (const std::string &className : item.classes())
+            tb.addLine(className);
     }
     return tb.publish();
 }

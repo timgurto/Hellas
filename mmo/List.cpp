@@ -146,7 +146,8 @@ void List::mouseMove(Element &e, const Point &mousePos){
         // Scroll based on mouse pos
         list._scrolledToBottom = false;
         static const int Y_MIN = ARROW_H + list._cursorOffset - 1;
-        const int Y_MAX = list._scrollBar->rect().h - ARROW_H - CURSOR_HEIGHT + list._cursorOffset + 1;
+        const int Y_MAX =
+            list._scrollBar->rect().h -ARROW_H - CURSOR_HEIGHT + list._cursorOffset + 1;
         const int Y_RANGE = Y_MAX - Y_MIN;
         double progress = (mousePos.y - Y_MIN) / Y_RANGE;
         if (progress < 0)

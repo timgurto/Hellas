@@ -42,9 +42,9 @@ void Log::draw(int x, int y) const{
     if (!_valid)
         return;
     
-    for (std::list<Texture>::const_iterator it = _messages.begin(); it != _messages.end(); ++it) {
-        it->draw(x, y);
-        y += it->height();
+    for (const Texture message : _messages) {
+        message.draw(x, y);
+        y += message.height();
     }
 
 }

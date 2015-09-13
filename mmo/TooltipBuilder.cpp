@@ -44,11 +44,11 @@ Texture TooltipBuilder::publish(){
     int
         totalHeight = 2*PADDING,
         totalWidth = 0;
-    for (std::vector<Texture>::const_iterator it = _content.begin(); it != _content.end(); ++it){
-        if (*it) {
-            totalHeight += it->height();
-            if (it->width() > totalWidth)
-                totalWidth = it->width();
+    for (const Texture &item : _content){
+        if (item) {
+            totalHeight += item.height();
+            if (item.width() > totalWidth)
+                totalWidth = item.width();
         } else {
             totalHeight += PADDING;
         }
@@ -73,12 +73,12 @@ Texture TooltipBuilder::publish(){
 
     // Draw text
     int y = PADDING;
-    for (std::vector<Texture>::const_iterator it = _content.begin(); it != _content.end(); ++it){
-        if (!*it)
+    for (const Texture &item : _content){
+        if (!item)
             y += PADDING;
         else {
-            it->draw(PADDING, y);
-            y += it->height();
+            item.draw(PADDING, y);
+            y += item.height();
         }
     }
 

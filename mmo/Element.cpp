@@ -88,17 +88,17 @@ void Element::toggleVisibility(){
 }
 
 void Element::drawChildren() const{
-    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it) {
-        if ((*it)->_changed)
+    for (Element *child : _children) {
+        if (child->_changed)
             markChanged();
 
-        (*it)->draw();
+        child->draw();
     }
 }
 
 void Element::checkIfChanged(){
-    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
-        (*it)->checkIfChanged();
+    for (Element *child : _children)
+        child->checkIfChanged();
 }
 
 bool Element::onMouseDown(const Point &mousePos){
@@ -108,9 +108,9 @@ bool Element::onMouseDown(const Point &mousePos){
         return false;
     const Point relativeLocation = mousePos - location();
     bool functionCalled = false;
-    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it) {
-        if (collision(relativeLocation, (*it)->rect())) {
-            if ((*it)->onMouseDown(relativeLocation)) {
+    for (Element *child : _children) {
+        if (collision(relativeLocation, child->rect())) {
+            if (child->onMouseDown(relativeLocation)) {
                 functionCalled = true;
             }
         }
@@ -135,9 +135,9 @@ bool Element::onScrollUp(const Point &mousePos){
         return false;
     const Point relativeLocation = mousePos - location();
     bool functionCalled = false;
-    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it) {
-        if (collision(relativeLocation, (*it)->rect())) {
-            if ((*it)->onScrollUp(relativeLocation)) {
+    for (Element *child : _children) {
+        if (collision(relativeLocation, child->rect())) {
+            if (child->onScrollUp(relativeLocation)) {
                 functionCalled = true;
             }
         }
@@ -162,9 +162,9 @@ bool Element::onScrollDown(const Point &mousePos){
         return false;
     const Point relativeLocation = mousePos - location();
     bool functionCalled = false;
-    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it) {
-        if (collision(relativeLocation, (*it)->rect())) {
-            if ((*it)->onScrollDown(relativeLocation)) {
+    for (Element *child : _children) {
+        if (collision(relativeLocation, child->rect())) {
+            if (child->onScrollDown(relativeLocation)) {
                 functionCalled = true;
             }
         }
@@ -188,8 +188,8 @@ void Element::onMouseUp(const Point &mousePos){
     const Point relativeLocation = mousePos - location();
     if (_mouseUp)
         _mouseUp(*_mouseUpElement, relativeLocation);
-    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
-        (*it)->onMouseUp(relativeLocation);
+    for (Element *child : _children)
+        child->onMouseUp(relativeLocation);
 }
 
 void Element::onMouseMove(const Point &mousePos){
@@ -198,8 +198,8 @@ void Element::onMouseMove(const Point &mousePos){
     const Point relativeLocation = mousePos - location();
     if (_mouseMove)
         _mouseMove(*_mouseMoveElement, relativeLocation);
-    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
-        (*it)->onMouseMove(relativeLocation);
+    for (Element *child : _children)
+        child->onMouseMove(relativeLocation);
 }
 
 void Element::setMouseDownFunction(mouseDownFunction_t f, Element *e){
@@ -241,21 +241,21 @@ void Element::addChild(Element *child){
 };
 
 void Element::clearChildren(){
-    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
-        delete *it;
+    for (Element *child : _children)
+        delete child;
     _children.clear();
     markChanged();
 }
 
 Element *Element::findChild(const std::string id){
     // Check this level first
-    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
-        if ((*it)->_id == id)
-            return *it;
+    for (Element *child : _children)
+        if (child->_id == id)
+            return child;
 
     // Check children recursively
-    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it) {
-        Element *found = (*it)->findChild(id);
+    for (Element *child : _children) {
+        Element *found = child->findChild(id);
         if (found)
             return found;
     }
@@ -304,8 +304,8 @@ void Element::forceRefresh(){
     if (!_parent)
         transparentBackground = Texture();
     _changed = true;
-    for (std::list<Element*>::const_iterator it = _children.begin(); it != _children.end(); ++it)
-        (*it)->forceRefresh();
+    for (Element *child : _children)
+        child->forceRefresh();
 }
 
 void Element::makeBackgroundTransparent(){

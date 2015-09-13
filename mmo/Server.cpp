@@ -74,8 +74,9 @@ void Server::checkSockets(){
     static fd_set readFDs;
     FD_ZERO(&readFDs);
     FD_SET(_socket.getRaw(), &readFDs);
-    for (std::set<Socket>::iterator it = _clientSockets.begin(); it != _clientSockets.end(); ++it)
-        FD_SET(it->getRaw(), &readFDs);
+    for (const Socket &socket : _clientSockets) {
+        FD_SET(socket.getRaw(), &readFDs);
+    }
 
     // Poll for activity
     static timeval selectTimeout = {0, 10000};
@@ -170,16 +171,16 @@ void Server::run(){
 
         // Save user data
         if (_time - _lastSave >= SAVE_FREQUENCY) {
-            for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it) {
-                writeUserData(*it);
+            for (const User &user : _users) {
+                writeUserData(user);
             }
             saveData();
             _lastSave = _time;
         }
 
         // Update users
-        for (std::set<User>::iterator it = _users.begin(); it != _users.end(); ++it)
-            const_cast<User&>(*it).update(timeElapsed, *this);
+        for (const User &user : _users)
+            const_cast<User&>(user).update(timeElapsed, *this);
 
         // Deal with any messages from the server
         while (!_messages.empty()){
@@ -214,8 +215,8 @@ void Server::run(){
     }
 
     // Save all user data
-    for(std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it){
-        writeUserData(*it);
+    for(const User &user : _users){
+        writeUserData(user);
     }
 }
 
@@ -252,18 +253,18 @@ void Server::addUser(const Socket &socket, const std::string &name){
     }
 
     // Send him everybody else's location
-    for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it)
-        sendMessage(newUser.socket(), SV_LOCATION, it->makeLocationCommand());
+    for (const User &user : _users)
+        sendMessage(newUser.socket(), SV_LOCATION, user.makeLocationCommand());
 
     // Send him branch locations
-    for (std::set<BranchLite>::const_iterator it = _branches.begin(); it != _branches.end(); ++it)
+    for (const BranchLite &branch : _branches)
         sendMessage(newUser.socket(), SV_BRANCH,
-                    makeArgs(it->serial, it->location.x, it->location.y));
+                    makeArgs(branch.serial, branch.location.x, branch.location.y));
 
     // Send him tree locations
-    for (std::set<TreeLite>::const_iterator it = _trees.begin(); it != _trees.end(); ++it)
+    for (const TreeLite &tree : _trees)
         sendMessage(newUser.socket(), SV_TREE,
-                    makeArgs(it->serial, it->location.x, it->location.y));
+                    makeArgs(tree.serial, tree.location.x, tree.location.y));
 
     // Send him his inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
@@ -338,8 +339,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
             // Check that username is valid
             bool invalid = false;
-            for (std::string::const_iterator it = name.begin(); it != name.end(); ++it){
-                if (*it < 'a' || *it > 'z') {
+            for (char c : name){
+                if (c < 'a' || c > 'z') {
                     sendMessage(client, SV_INVALID_USERNAME);
                     invalid = true;
                     break;
@@ -465,8 +466,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 }
 
 void Server::broadcast(MessageCode msgCode, const std::string &args){
-    for (std::set<User>::const_iterator it = _users.begin(); it != _users.end(); ++it){
-        sendMessage(it->socket(), msgCode, args);
+    for (const User &user : _users){
+        sendMessage(user.socket(), msgCode, args);
     }
 }
 
@@ -481,12 +482,16 @@ void Server::removeTree(size_t serial, User &user){
     }
     sendMessage(user.socket(), SV_INVENTORY, makeArgs(slot, "wood", user.inventory(slot).second));
     // Ensure no other users are targeting this branch, as it will be removed.
-    for (std::set<User>::iterator it = _users.begin(); it != _users.end(); ++it)
-        if (&*it != &user && it->actionTargetTree() && it->actionTargetTree()->serial == serial) {
-            User &user = const_cast<User &>(*it);
+    for (const User &otherUserConst : _users) {
+        User &otherUser = const_cast<User &>(otherUserConst);
+        if (&otherUser != &user &&
+            otherUser.actionTargetTree() &&
+            otherUser.actionTargetTree()->serial == serial) {
+
             user.actionTargetTree(0);
-            sendMessage(it->socket(), SV_DOESNT_EXIST);
+            sendMessage(otherUser.socket(), SV_DOESNT_EXIST);
         }
+    }
     // Remove tree if empty
     tree.decrementWood();
     if (it->wood() == 0) {
@@ -505,15 +510,16 @@ void Server::removeBranch(size_t serial, User &user){
     }
     sendMessage(user.socket(), SV_INVENTORY, makeArgs(slot, "wood", user.inventory(slot).second));
     // Ensure no other users are targeting this branch, as it will be removed.
-    for (std::set<User>::iterator it = _users.begin(); it != _users.end(); ++it)
-        if (&*it != &user &&
-            it->actionTargetBranch() &&
-            it->actionTargetBranch()->serial == serial) {
+    for (const User &otherUserConst : _users) {
+        User &otherUser = const_cast<User &>(otherUserConst);
+        if (&otherUser != &user &&
+            otherUser.actionTargetBranch() &&
+            otherUser.actionTargetBranch()->serial == serial) {
 
-            User &user = const_cast<User &>(*it);
             user.actionTargetBranch(0);
-            sendMessage(it->socket(), SV_DOESNT_EXIST);
+            sendMessage(otherUser.socket(), SV_DOESNT_EXIST);
         }
+    }
     // Remove branch
     std::set<BranchLite>::const_iterator it = _branches.find(serial);
     broadcast(SV_REMOVE_BRANCH, makeArgs(serial));
@@ -657,15 +663,15 @@ void Server::saveData() const{
 
     fs.open("World/branches.dat");
     fs << _branches.size() << '\n';
-    for (std::set<BranchLite>::const_iterator it = _branches.begin(); it != _branches.end(); ++it) {
-        fs << it->location.x << ' ' << it->location.y << '\n';
+    for (const BranchLite &branch : _branches) {
+        fs << branch.location.x << ' ' << branch.location.y << '\n';
     }
     fs.close();
 
     fs.open("World/trees.dat");
     fs << _trees.size() << '\n';
-    for (std::set<TreeLite>::const_iterator it = _trees.begin(); it != _trees.end(); ++it) {
-        fs << it->location.x << ' ' << it->location.y << ' ' << it->wood() << '\n';
+    for (const TreeLite &tree : _trees) {
+        fs << tree.location.x << ' ' << tree.location.y << ' ' << tree.wood() << '\n';
     }
     fs.close();
 }
