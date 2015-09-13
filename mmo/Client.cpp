@@ -393,7 +393,10 @@ void Client::populateRecipesList(Element &e){
         recipe->setMouseUpFunction(selectRecipe);
         recipe->id(item.id());
     }
+    const std::string oldSelectedRecipe = recipesList.getSelected();
     recipesList.verifyBoxes();
+    if (recipesList.getSelected() != oldSelectedRecipe)
+        selectRecipe(recipesList, Point());
 }
 
 bool Client::itemMatchesFilters(const Item &item) const{
