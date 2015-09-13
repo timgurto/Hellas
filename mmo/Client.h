@@ -75,7 +75,7 @@ private:
     mutable bool _classFilterSelected, _matFilterSelected; // Whether any filters have been selected
     bool itemMatchesFilters(const Item &item) const;
     // Called when filters pane is clicked.
-    static void populateRecipesList(Element &e, const Point &mousePos);
+    static void populateRecipesList(Element &e);
     // Called when a recipe is selected.
     static void selectRecipe(Element &e, const Point &mousePos);
 

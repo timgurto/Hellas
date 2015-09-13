@@ -156,6 +156,7 @@ _activeRecipe(0){
     _haveToolsFilter = true;
     _classFilterSelected = _matFilterSelected = false;
 
+
     // Set up crafting window
     static const int
         FILTERS_PANE_W = 100,
@@ -246,9 +247,10 @@ _activeRecipe(0){
                                                       RECIPES_PANE_W, CONTENT_H - HEADING_HEIGHT),
                                              ICON_SIZE + 2);
     recipesPane->addChild(_recipeList);
-    populateRecipesList(*_recipeList, Point());
-    
-    filterPane->setMouseUpFunction(populateRecipesList, _recipeList);
+    // Click on a filter: force recipe list to refresh
+    filterPane->setMouseUpFunction([](Element &e, const Point &){ e.markChanged(); }, _recipeList);
+    // Repopulate recipe list before every refresh
+    _recipeList->setPreRefreshFunction(populateRecipesList, _recipeList);
 
     // Selected Recipe Details
     _detailsPane = new Element(makeRect(DETAILS_PANE_X, CONTENT_Y, DETAILS_PANE_W, CONTENT_H));
@@ -356,7 +358,23 @@ void Client::startCrafting(void *data){
     }
 }
 
-void Client::populateRecipesList(Element &e, const Point &mousePos){
+void Client::populateRecipesList(Element &e){
+    // Check which filters are applied
+    _instance->_matFilterSelected = false;
+    for (const std::pair<const Item *, bool> &filter : _instance->_matFilters) {
+        if (filter.second) {
+            _instance->_matFilterSelected = true;
+            break;
+        }
+    }
+    _instance->_classFilterSelected = false;
+    for (const std::pair<std::string, bool> &filter : _instance->_classFilters) {
+        if (filter.second) {
+            _instance->_classFilterSelected = true;
+            break;
+        }
+    }
+
     ChoiceList &recipesList = dynamic_cast<ChoiceList &>(e);
     recipesList.clearChildren();
     for (std::set<const Item *>::const_iterator it = _instance->_craftableItems.begin();

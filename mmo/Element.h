@@ -70,6 +70,7 @@ protected:
     typedef void (*mouseMoveFunction_t)(Element &e, const Point &mousePos);
     typedef void (*scrollUpFunction_t)(Element &e);
     typedef void (*scrollDownFunction_t)(Element &e);
+    typedef void (*preRefreshFunction_t)(Element &e);
 
     mouseDownFunction_t _mouseDown;
     Element *_mouseDownElement;
@@ -82,6 +83,9 @@ protected:
     Element *_scrollUpElement;
     scrollUpFunction_t _scrollDown;
     Element *_scrollDownElement;
+
+    preRefreshFunction_t _preRefresh;
+    Element *_preRefreshElement;
 
     void drawChildren() const;
 
@@ -126,6 +130,7 @@ public:
     void setMouseMoveFunction(mouseMoveFunction_t f, Element *e = 0);
     void setScrollUpFunction(scrollUpFunction_t f, Element *e = 0);
     void setScrollDownFunction(scrollDownFunction_t f, Element *e = 0);
+    void setPreRefreshFunction(preRefreshFunction_t f, Element *e = 0);
 
     /*
     Recurse to all children, calling _mouseDown() etc. in the lowest element that the mouse is over.

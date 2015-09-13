@@ -27,6 +27,7 @@ _mouseUp(0), _mouseUpElement(0),
 _mouseMove(0), _mouseMoveElement(0),
 _scrollUp(0), _scrollUpElement(0),
 _scrollDown(0), _scrollDownElement(0),
+_preRefresh(0), _preRefreshElement(0),
 _parent(0){
     _texture.setBlend(SDL_BLENDMODE_BLEND);
 }
@@ -220,6 +221,11 @@ void Element::setScrollDownFunction(scrollDownFunction_t f, Element *e){
     _scrollDownElement = e ? e : this;
 }
 
+void Element::setPreRefreshFunction(preRefreshFunction_t f, Element *e){
+    _preRefresh = f;
+    _preRefreshElement = e ? e : this;
+}
+
 // Note: takes ownership of child.  Child should be allocated with new.
 void Element::addChild(Element *child){
     assert(child);
@@ -276,6 +282,8 @@ void Element::draw(){
     if (!_texture)
         markChanged();
     if (_changed) {
+        if (_preRefresh)
+            _preRefresh(*_preRefreshElement);
         refresh();
         _changed = false;
     }
