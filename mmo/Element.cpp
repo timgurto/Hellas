@@ -263,6 +263,9 @@ Element *Element::findChild(const std::string id){
 }
 
 void Element::refresh(){
+    if (!_texture)
+        return;
+
     renderer.pushRenderTarget(_texture);
 
     if (_solidBackground) {

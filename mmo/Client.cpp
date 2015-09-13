@@ -391,7 +391,7 @@ void Client::populateRecipesList(Element &e){
         if (!_instance->itemMatchesFilters(item))
             continue;
         Element *recipe = new Element(makeRect());
-        //recipesList.addChild(recipe);
+        recipesList.addChild(recipe);
         recipe->addChild(new Picture(makeRect(1, 1, ICON_SIZE, ICON_SIZE), item.icon()));
         static const int NAME_X = ICON_SIZE + CheckBox::GAP + 1;
         recipe->addChild(new Label(makeRect(NAME_X, 0, recipe->rect().w - NAME_X, ICON_SIZE + 2),
