@@ -92,6 +92,8 @@
     <ClCompile Include="BranchLite.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CheckBox.cpp" />
+    <ClCompile Include="Chest.cpp" />
+    <ClCompile Include="ChestLite.cpp" />
     <ClCompile Include="ChoiceList.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Color.cpp" />
@@ -125,6 +127,8 @@
     <ClInclude Include="BranchLite.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CheckBox.h" />
+    <ClInclude Include="Chest.h" />
+    <ClInclude Include="ChestLite.h" />
     <ClInclude Include="ChoiceList.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Color.h" />
