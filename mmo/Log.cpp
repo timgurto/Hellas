@@ -48,3 +48,17 @@ void Log::draw(int x, int y) const{
     }
 
 }
+
+template<>
+Log &Log::operator<<(const LogEndType &val) {
+    operator()(_oss.str(), &_compilationColor);
+    _oss.str("");
+    _compilationColor = _color; // reset color for next compilation
+    return *this;
+}
+    
+template<>
+Log &Log::operator<<(const Color &c) {
+    _compilationColor = c;
+    return *this;
+}
