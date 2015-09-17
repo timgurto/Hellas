@@ -34,3 +34,4 @@ World/trees.dat
 *.log
 *.lastbuildstate
 *.tlog
+Makefile~
