@@ -39,3 +39,4 @@ Makefile~
 *.cpp~
 *.h~
 *.md~
+*.o
