@@ -22,3 +22,7 @@ PROGRAM_NAME = mmo.exe
 
 all : $(OBJECTS)
 	$(CC) $(LIBRARY_PATHS) $(OBJECTS) $(LDFLAGS) -o $(PROGRAM_NAME)
+
+clean:
+	rm -f $(PROGRAM_NAME)
+	rm -f mmo/*.o
