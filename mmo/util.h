@@ -3,6 +3,7 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include <cstdlib>
 #include <sstream>
 
 #include "Point.h"

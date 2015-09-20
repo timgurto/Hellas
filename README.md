@@ -4,40 +4,47 @@ MMO economy simulator
 &copy; 2015 Tim Gurto
 
 ## Contents
-#### Server and client usage
-[Glossary of ambiguous terms](#glossary)  
-[Keyboard controls](#keyboard)
+
+#### Building
+[Building in Visual Studio](#vs) 
+[Building with GCC](#gcc)   
+
+#### Running
 [Command-line arguments](#arguments)  
+[Keyboard controls](#keyboard)  
 
 #### Client programming guide
+[Glossary of ambiguous terms](#glossary)  
 [Client states](#states)  
 [Login sequence](#login)  
 [Message codes](#messages)  
 
+## Building
 
-## Server and client usage
-<a id='glossary'></a>
-### Glossary of ambiguous terms
-**character**, the *avatar* which represents a user in-game
+<a id='vs'></a>
+### Building in Visual Studio
+#### Prerequisites
+ - Microsoft Visual Studio 2012
+ - SDL2
+ - SDL2_image
+ - SDL2_ttf
 
-**class**, a category to which an item belongs, denoting functionality.  For example, to cut down a tree a user must have an "axe"-class item in his inventory.
+#### Steps
+1. Open mmo.sln in Visual Studio.
+2. Ensure the three SDL libraries are included in the project's Include and Library directories, via Project Properties.
+3. Build the project.
 
-**client**, the *program* which connects to the server
+<a id='gcc'></a>
+### Building with GCC
+#### Prerequisites
+ - MinGW
+ - Make
 
-**item**, something which exists virtually in-game, located in players' inventories
+#### Steps
+1. Run `make`
 
-**element**, (client only) a part of the GUI, possibly containing child elements
 
-**entity**, (client only) something which exists physically in-game, with a location and image, and supporting user interaction
-
-**object**, (server only) something which exists physically in-game, with a location and functionality
-
-**server**, the *program* which manages the state of the game world and connects to clients
-
-**terminal**, a generic term for server or client
-
-**user**, the *account* playing on a client.  Identified by a unique username.
-
+## Running
 
 <a id='keyboard'></a>
 ### Keyboard shortcuts
@@ -45,6 +52,10 @@ MMO economy simulator
 `Escape` Exit any open UI window, or exit the client
 
 `Enter` Open/close text-entry window, to send commands to the server
+
+`[` Open/close text-entry window, and add a `[` character to it
+
+`C` Open/close crafting window
 
 
 <a id='arguments'></a>
@@ -70,6 +81,29 @@ MMO economy simulator
 
 
 ## Client programming guide
+
+<a id='glossary'></a>
+### Glossary of ambiguous terms
+**character**, the *avatar* which represents a user in-game
+
+**class**, a category to which an item belongs, denoting functionality.  For example, to cut down a tree a user must have an "axe"-class item in his inventory.
+
+**client**, the *program* which connects to the server
+
+**item**, something which exists virtually in-game, located in players' inventories
+
+**element**, (client only) a part of the GUI, possibly containing child elements
+
+**entity**, (client only) something which exists physically in-game, with a location and image, and supporting user interaction
+
+**object**, (server only) something which exists physically in-game, with a location and functionality
+
+**server**, the *program* which manages the state of the game world and connects to clients
+
+**terminal**, a generic term for server or client
+
+**user**, the *account* playing on a client.  Identified by a unique username.
+
 <a id='states'></a>
 ### Client states
 **Disconnected**, no socket connection.  Attempts to connect to server every 3s (`Client::CONNECT_RETRY_DELAY`).

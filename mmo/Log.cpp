@@ -46,5 +46,16 @@ void Log::draw(int x, int y) const{
         message.draw(x, y);
         y += message.height();
     }
+}
 
+Log &Log::operator<<(const LogEndType &val) {
+    operator()(_oss.str(), &_compilationColor);
+    _oss.str("");
+    _compilationColor = _color; // reset color for next compilation
+    return *this;
+}
+    
+Log &Log::operator<<(const Color &c) {
+    _compilationColor = c;
+    return *this;
 }

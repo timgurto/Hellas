@@ -1,5 +1,7 @@
 // (C) 2015 Tim Gurto
 
+#include <cstdlib>
+
 #include "Args.h"
 
 void Args::init(int argc, char* argv[]){
