@@ -21,8 +21,13 @@ LDFLAGS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image -lws2_32
 PROGRAM_NAME = mmo.exe
 
 all : $(OBJECTS)
-	$(CC) $(LIBRARY_PATHS) $(OBJECTS) $(LDFLAGS) -o $(PROGRAM_NAME)
+	@echo Linking
+	@$(CC) $(LIBRARY_PATHS) $(OBJECTS) $(LDFLAGS) -o $(PROGRAM_NAME)
 
 clean:
 	rm -f $(PROGRAM_NAME)
 	rm -f mmo/*.o
+
+%.o: %.cpp
+	@echo Compiling $<
+	@$(CC) $(CXXFLAGS) $(INCLUDE_PATHS) -c -o $@ $<
