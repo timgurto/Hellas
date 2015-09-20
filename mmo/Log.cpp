@@ -4,6 +4,8 @@
 #include "Server.h"
 #include "Log.h"
 
+Color Log::defaultColor = Color::NO_KEY;
+
 Log::Log():
 _valid(false){}
 
@@ -27,8 +29,9 @@ Log::~Log(){
         TTF_CloseFont(_font);
 }
 
-void Log::operator()(const std::string &message, const Color *color){
-    Texture msgTexture(_font, message, color ? *color : _color);
+void Log::operator()(const std::string &message, const Color &color){
+    const Color &msgColor = (&color == &defaultColor) ? _color : color;
+    Texture msgTexture(_font, message, color);
     if (!msgTexture)
         return;
 
@@ -46,6 +49,7 @@ void Log::draw(int x, int y) const{
         message.draw(x, y);
         y += message.height();
     }
+}
 
 Log &Log::operator<<(const LogEndType &val) {
     operator()(_oss.str(), _compilationColor);

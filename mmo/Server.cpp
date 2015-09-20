@@ -460,7 +460,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         }
 
         default:
-            _debug << Color::RED << "Unhandled message: " << msg;
+            _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
         }
     }
 }
@@ -646,7 +646,7 @@ void Server::loadData(){
         return;
     } while (false);
 
-    _debug << Color::YELLOW << "No/invalid world data detected; generating new world." << Log::endl;
+    _debug("No/invalid world data detected; generating new world.", Color::YELLOW);
     generateWorld();
 }
 
