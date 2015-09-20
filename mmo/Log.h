@@ -47,18 +47,10 @@ public:
         _oss << val;
         return *this;
     }
-    template<> // endl: end message and begin a new one
-    Log &operator<<(const LogEndType &val) {
-        operator()(_oss.str(), &_compilationColor);
-        _oss.str("");
-        _compilationColor = _color; // reset color for next compilation
-        return *this;
-    }
-    template<> // color: set color of current compilation
-    Log &operator<<(const Color &c) {
-        _compilationColor = c;
-        return *this;
-    }
+    // endl: end message and begin a new one
+    Log &operator<<(const LogEndType &val);
+    // color: set color of current compilation
+    Log &operator<<(const Color &c);
 
     void draw(int x = 0, int y = 0) const;
 
