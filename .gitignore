@@ -34,3 +34,10 @@ World/trees.dat
 *.log
 *.lastbuildstate
 *.tlog
+Makefile~
+*.swp
+*.cpp~
+*.h~
+*.md~
+*.o
+*.swo
