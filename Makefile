@@ -3,12 +3,12 @@ OBJECTS := $(SOURCES:.cpp=.o)
 
 CC := g++
 
-INCLUDE_PATHS = -ILib\SDL2-2.0.3\include\SDL2 \
+INCLUDE_PATHS = -ISDL2\SDL2-2.0.3\include\SDL2 \
 		-ISDL2\SDL2_image-2.0.0\include \
 		-ISDL2\SDL2_ttf-2.0.12\include \
 		-ISDL2\SDL2_mixer-2.0.0\include
 
-LIBRARY_PATHS = -LLib\SDL2-2.0.3\lib\x86 \
+LIBRARY_PATHS = -LSDL2\SDL2-2.0.3\lib\x86 \
 		-LSDL2\SDL2_image-2.0.0\lib\x86 \
 		-LSDL2\SDL2_ttf-2.0.12\lib\x86 \
 		-LSDL2\SDL2_mixer-2.0.0\lib\x86
