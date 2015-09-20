@@ -40,3 +40,4 @@ Makefile~
 *.h~
 *.md~
 *.o
+*.swo

@@ -15,6 +15,7 @@
 #include "Client.h"
 #include "EntityType.h"
 #include "Label.h"
+#include "Log.h"
 #include "Line.h"
 #include "List.h"
 #include "Renderer.h"
