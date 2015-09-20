@@ -16,7 +16,7 @@ LIBRARY_PATHS = -LLib\SDL2-2.0.3\lib \
 # -Wl,-subsystem,windows gets rid of the console window
 CXXFLAGS = -Wl,-subsystem,windows -std=c++11 $(INCLUDE_PATHS)
 
-LDFLAGS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image
+LDFLAGS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image -lws2_32
 
 PROGRAM_NAME = mmo.exe
 
