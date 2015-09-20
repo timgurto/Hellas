@@ -25,14 +25,10 @@ MMO economy simulator
 ### Building in Visual Studio
 #### Prerequisites
  - Microsoft Visual Studio 2012
- - SDL2
- - SDL2_image
- - SDL2_ttf
 
 #### Steps
 1. Open mmo.sln in Visual Studio.
-2. Ensure the three SDL libraries are included in the project's Include and Library directories, via Project Properties.
-3. Build the project.
+2. Build the project.
 
 <a id='gcc'></a>
 ### Building with GCC
