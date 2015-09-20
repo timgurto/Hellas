@@ -163,7 +163,9 @@ void Server::run(){
         for (std::set<User>::iterator it = _users.begin(); it != _users.end();) {
             if (!it->alive()) {
                 _debug << Color::RED << "User " << it->name() << " has timed out." << Log::endl;
-                removeUser(it++);
+                std::set<User>::iterator next = it; ++next;
+                removeUser(it);
+                it = next;
             } else {
                 ++it;
             }
