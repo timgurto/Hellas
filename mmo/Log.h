@@ -27,7 +27,7 @@ log << "message " << 1;
 
 log << Color::YELLOW;
     Change the color of the current compilation; it will reset after endl is received.
-    This can be done at any time.
+    This can be done at any time, but the one color will be used for the entire compilation.
 
 log << endl;
     End the current compilation, adding it to the screen.
@@ -38,7 +38,9 @@ public:
     Log();
     Log(unsigned displayLines, const std::string &fontName = "trebuc.ttf", int fontSize = 16, const Color &color = Color::WHITE);
     ~Log();
-    void operator()(const std::string &message, const Color *color = 0);
+    // For default reference parameter.  Indicates that the Log's _color should be used.
+    static Color defaultColor;
+    void operator()(const std::string &message, const Color &color = defaultColor);
 
     enum LogEndType{endl};
 

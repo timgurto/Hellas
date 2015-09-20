@@ -501,7 +501,7 @@ void Client::checkSocket(){
         if (connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
             _debug << Color::RED << "Connection error: " << WSAGetLastError() << Log::endl;
         } else {
-            _debug << Color::GREEN << "Connected to server" << Log::endl;
+            _debug("Connected to server", Color::GREEN);
             // Announce player name
             sendMessage(CL_I_AM, _username);
             sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
@@ -547,7 +547,7 @@ void Client::run(){
 
         // Ensure server connectivity
         if (_loggedIn && _time - _lastPingReply > SERVER_TIMEOUT) {
-            _debug << Color::RED << "Disconnected from server" << Log::endl;
+            _debug("Disconnected from server", Color::RED);
             _socket = Socket();
             _loggedIn = false;
         }
@@ -610,9 +610,9 @@ void Client::run(){
                             if (_enteredText.at(0) == '[') {
                                 // Send message to server
                                 sendRawMessage(_enteredText);
-                                _debug << Color::YELLOW << _enteredText << Log::endl;
+                                _debug(_enteredText, Color::YELLOW);
                             } else {
-                                _debug << Color::WHITE << _enteredText << Log::endl;
+                                _debug(_enteredText, Color::WHITE);
                             }
                             _enteredText = "";
                         }
@@ -1166,7 +1166,7 @@ void Client::handleMessage(const std::string &msg){
             _loggedIn = true;
             _timeSinceConnectAttempt = 0;
             _lastPingSent = _lastPingReply = _time;
-            _debug << Color::GREEN << "Successfully logged in to server" << Log::endl;
+            _debug("Successfully logged in to server", Color::GREEN);
             break;
         }
 
@@ -1216,8 +1216,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_SERVER_FULL:
             if (del != ']')
                 break;
-            _debug << Color::YELLOW << "The server is full.  Attempting reconnection..."
-                   << Log::endl;
+            _debug("The server is full.  Attempting reconnection...", Color::YELLOW);
             _socket = Socket();
             _loggedIn = false;
             break;
@@ -1225,57 +1224,57 @@ void Client::handleMessage(const std::string &msg){
         case SV_TOO_FAR:
             if (del != ']')
                 break;
-            _debug << Color::YELLOW << "You are too far away to perform that action." << Log::endl;
+            _debug("You are too far away to perform that action.", Color::YELLOW);
             startAction(0);
             break;
 
         case SV_DOESNT_EXIST:
             if (del != ']')
                 break;
-            _debug << Color::YELLOW << "That object doesn't exist." << Log::endl;
+            _debug("That object doesn't exist.", Color::YELLOW);
             startAction(0);
             break;
 
         case SV_INVENTORY_FULL:
             if (del != ']')
                 break;
-            _debug << Color::RED << "Your inventory is full." << Log::endl;
+            _debug("Your inventory is full.", Color::RED);
             startAction(0);
             break;
 
         case SV_AXE_NEEDED:
             if (del != ']')
                 break;
-            _debug << Color::YELLOW << "You need an axe to cut gather a tree." << Log::endl;
+            _debug("You need an axe to cut gather a tree.", Color::YELLOW);
             startAction(0);
             break;
 
         case SV_NEED_MATERIALS:
             if (del != ']')
                 break;
-            _debug << Color::YELLOW << "You do not have the necessary materials"
-                      "to create that item." << Log::endl;
+            _debug("You do not have the necessary materials"
+                      "to create that item.", Color::YELLOW);
             startAction(0);
             break;
 
         case SV_INVALID_ITEM:
             if (del != ']')
                 break;
-            _debug << Color::RED << "That is not a real item." << Log::endl;
+            _debug("That is not a real item.", Color::RED);
             startAction(0);
             break;
 
         case SV_CANNOT_CRAFT:
             if (del != ']')
                 break;
-            _debug << Color::RED << "That item cannot be crafted." << Log::endl;
+            _debug("That item cannot be crafted.", Color::RED);
             startAction(0);
             break;
 
         case SV_ACTION_INTERRUPTED:
             if (del != ']')
                 break;
-            _debug << Color::YELLOW << "Action interrupted." << Log::endl;
+            _debug("Action interrupted.", Color::YELLOW);
             startAction(0);
             break;
 
@@ -1415,8 +1414,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             std::map<size_t, Branch*>::const_iterator it = _branches.find(serial);
             if (it == _branches.end()){
-                _debug << Color::YELLOW << "Server removed a branch we didn't know about."
-                       << Log::endl;
+                _debug("Server removed a branch we didn't know about.", Color::YELLOW);
                 assert(false);
                 break; // We didn't know about this branch
             }
@@ -1435,8 +1433,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             std::map<size_t, Tree*>::const_iterator it = _trees.find(serial);
             if (it == _trees.end()){
-                _debug << Color::YELLOW << "Server removed a tree we didn't know about."
-                       << Log::endl;
+                _debug("Server removed a tree we didn't know about.", Color::YELLOW);
                 assert(false);
                 break; // We didn't know about this tree
             }
@@ -1452,7 +1449,7 @@ void Client::handleMessage(const std::string &msg){
         }
 
         if (del != ']' && !iss.eof()) {
-            _debug << Color::RED << "Bad message ending" << Log::endl;
+            _debug("Bad message ending", Color::RED);
         }
 
         iss.peek();
