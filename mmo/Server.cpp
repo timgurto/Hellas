@@ -233,7 +233,6 @@ void Server::addUser(const Socket &socket, const std::string &name){
     bool userExisted = readUserData(newUser);
     if (!userExisted) {
         newUser.location(mapRand());
-        newUser.inventory(0) = std::make_pair("axe", 1);
         _debug << "New";
     } else {
         _debug << "Existing";
