@@ -31,7 +31,7 @@ Log::~Log(){
 
 void Log::operator()(const std::string &message, const Color &color){
     const Color &msgColor = (&color == &defaultColor) ? _color : color;
-    Texture msgTexture(_font, message, color);
+    Texture msgTexture(_font, message, msgColor);
     if (!msgTexture)
         return;
 
