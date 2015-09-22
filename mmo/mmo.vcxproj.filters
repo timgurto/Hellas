@@ -114,6 +114,9 @@
     <ClCompile Include="ChestLite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="craftingWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Args.h">

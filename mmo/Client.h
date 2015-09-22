@@ -47,6 +47,8 @@ private:
         SCREEN_X,
         SCREEN_Y;
 
+    static Client *_instance;
+
     Texture _invLabel;
     static SDL_Rect INVENTORY_RECT; // non-const, as it needs to be initialized at runtime.
     static const int ICON_SIZE;
