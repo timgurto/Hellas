@@ -431,7 +431,6 @@ void Client::run(){
                     newLoc.y = yLimit;
 
                 _pendingCharLoc = newLoc;
-                updateOffset();
                 _mouseMoved = true;
             }
         }
@@ -454,6 +453,8 @@ void Client::run(){
         for (Entity *entity : entitiesToReorder)
             _entities.insert(entity);
         entitiesToReorder.clear();
+
+        updateOffset();
 
         // Update cast bar
         if (_actionLength > 0)
