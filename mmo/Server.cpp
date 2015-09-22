@@ -474,7 +474,7 @@ void Server::removeTree(size_t serial, User &user){
     // Give wood to user
     std::set<TreeLite>::iterator it = _trees.find(serial);
     TreeLite &tree = const_cast<TreeLite &>(*it);
-    int slot = user.giveItem(*_items.find(std::string("wood")));
+    size_t slot = user.giveItem(*_items.find(std::string("wood")));
     if (slot == User::INVENTORY_SIZE) {
         sendMessage(user.socket(), SV_INVENTORY_FULL);
         return;
@@ -502,7 +502,7 @@ void Server::removeTree(size_t serial, User &user){
 
 void Server::removeBranch(size_t serial, User &user){
     // Give wood to user
-    int slot = user.giveItem(*_items.find(std::string("wood")));
+    size_t slot = user.giveItem(*_items.find(std::string("wood")));
     if (slot == User::INVENTORY_SIZE) {
         sendMessage(user.socket(), SV_INVENTORY_FULL);
         return;

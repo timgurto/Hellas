@@ -21,7 +21,7 @@ void Label::refresh(){
     if (_matchWidth)
         width(text.width());
 
-    int x = 0;
+    int x;
     switch(_justificationH) {
     case RIGHT_JUSTIFIED:
         x = rect().w - text.width();
@@ -29,9 +29,12 @@ void Label::refresh(){
     case CENTER_JUSTIFIED:
         x = (rect().w - text.width()) / 2;
         break;
+    case LEFT_JUSTIFIED:
+    default:
+        x = 0;
     }
 
-    int y = 0;
+    int y;
     switch (_justificationV) {
     case BOTTOM_JUSTIFIED:
         y = rect().h - text.height();
@@ -39,6 +42,9 @@ void Label::refresh(){
     case CENTER_JUSTIFIED:
         y = (rect().h - text.height()) / 2;
         break;
+    case TOP_JUSTIFIED:
+    default:
+        y = 0;
     }
 
     text.draw(x, y);
