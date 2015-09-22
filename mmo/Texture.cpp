@@ -60,9 +60,13 @@ _programEndMarker(false){
     }
     _raw = renderer.createTextureFromSurface(surface);
     SDL_FreeSurface(surface);
-    int ret = SDL_QueryTexture(_raw, 0, 0, &_w, &_h);
     if (_raw)
         addRef();
+    int ret = SDL_QueryTexture(_raw, 0, 0, &_w, &_h);
+    if (ret != 0) {
+        removeRef();
+    _raw = 0;
+    }
 }
 
 Texture::Texture(TTF_Font *font, const std::string &text, const Color &color):
