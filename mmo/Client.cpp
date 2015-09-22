@@ -718,10 +718,14 @@ void Client::run(){
         static const Uint8 *keyboardState = SDL_GetKeyboardState(0);
         if (_loggedIn && !SDL_IsTextInputActive()) {
             bool
-                up = keyboardState[SDL_SCANCODE_UP] == SDL_PRESSED,
-                down = keyboardState[SDL_SCANCODE_DOWN] == SDL_PRESSED,
-                left = keyboardState[SDL_SCANCODE_LEFT] == SDL_PRESSED,
-                right = keyboardState[SDL_SCANCODE_RIGHT] == SDL_PRESSED;
+                up = keyboardState[SDL_SCANCODE_UP] == SDL_PRESSED ||
+                     keyboardState[SDL_SCANCODE_W] == SDL_PRESSED,
+                down = keyboardState[SDL_SCANCODE_DOWN] == SDL_PRESSED ||
+                       keyboardState[SDL_SCANCODE_S] == SDL_PRESSED,
+                left = keyboardState[SDL_SCANCODE_LEFT] == SDL_PRESSED ||
+                       keyboardState[SDL_SCANCODE_A] == SDL_PRESSED,
+                right = keyboardState[SDL_SCANCODE_RIGHT] == SDL_PRESSED ||
+                        keyboardState[SDL_SCANCODE_D] == SDL_PRESSED;
             if (up != down || left != right) {
                 static const double DIAG_SPEED = Server::MOVEMENT_SPEED / SQRT_2;
                 double
