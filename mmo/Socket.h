@@ -10,8 +10,6 @@
 
 #include "Log.h"
 
-#pragma comment(lib, "ws2_32.lib")
-
 // Wrapper class for Winsock's SOCKET.
 class Socket {
 public:
