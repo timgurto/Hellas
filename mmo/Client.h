@@ -9,12 +9,12 @@
 #include <set>
 
 #include "Args.h"
+#include "Avatar.h"
 #include "Branch.h"
 #include "ChoiceList.h"
 #include "Entity.h"
 #include "Item.h"
 #include "Log.h"
-#include "Avatar.h"
 #include "Point.h"
 #include "Socket.h"
 #include "Tree.h"
@@ -82,7 +82,8 @@ private:
 
     Texture _tile[5];
 
-    Entity _character; // Describes the user's character
+    Avatar _character; // Describes the user's character
+    Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.
 
     // These are superficial, and relate only to the cast bar.
     Uint32 _actionTimer; // How long the character has been performing the current action.
@@ -129,7 +130,6 @@ private:
     static const size_t BUFFER_SIZE;
 
     Uint32 _timeSinceLocUpdate; // Time since a CL_LOCATION was sent
-    bool _locationChanged;
     // Location has changed (local or official), and tooltip may have changed.
     bool _tooltipNeedsRefresh;
     Texture getInventoryTooltip() const; // Generate tooltip for the inventory

@@ -54,7 +54,6 @@ _activeRecipe(0),
 _recipeList(0),
 _detailsPane(0),
 _craftingWindow(0),	
-_character(OtherUser::entityType(), 0),
 _actionTimer(0),
 _actionLength(0),
 _loop(true),
@@ -73,7 +72,6 @@ _invalidUsername(false),
 _loggedIn(false),
 _loaded(false),
 _timeSinceLocUpdate(0),
-_locationChanged(false),
 _tooltipNeedsRefresh(false),
 _mapX(0), _mapY(0),
 _inventory(User::INVENTORY_SIZE, std::make_pair("none", 0)),
@@ -117,6 +115,7 @@ _debug(360/13, "trebuc.ttf", 10){
         for (int i = 0; i != 3; ++i)
             _username.push_back('a' + rand() % 26);
     _debug << "Player name: " << _username << Log::endl;
+    _character.name(_username);
 
     SDL_StopTextInput();
 
@@ -234,13 +233,16 @@ void Client::run(){
             _timeSinceConnectAttempt += _timeElapsed;
 
         } else { // Update server with current location
-            _timeSinceLocUpdate += _timeElapsed;
-            if (_locationChanged && _timeSinceLocUpdate > TIME_BETWEEN_LOCATION_UPDATES) {
-                sendMessage(CL_LOCATION,
-                            makeArgs(_character.location().x, _character.location().y));
-                _locationChanged = false;
-                _tooltipNeedsRefresh = true;
+            bool atTarget = _pendingCharLoc == _character.location();
+            if (atTarget)
                 _timeSinceLocUpdate = 0;
+            else {
+                _timeSinceLocUpdate += _timeElapsed;
+                if (_timeSinceLocUpdate > TIME_BETWEEN_LOCATION_UPDATES){
+                    sendMessage(CL_LOCATION, makeArgs(_pendingCharLoc.x, _pendingCharLoc.y));
+                    _tooltipNeedsRefresh = true;
+                    _timeSinceLocUpdate = 0;
+                }
             }
         }
 
@@ -404,7 +406,7 @@ void Client::run(){
                 double
                     dist = delta * Server::MOVEMENT_SPEED,
                     diagDist = delta * DIAG_SPEED;
-                Point newLoc = _character.location();
+                Point newLoc = _pendingCharLoc;
                 if (up != down) {
                     if (up && !down)
                         newLoc.y -= (left != right) ? diagDist : dist;
@@ -428,9 +430,8 @@ void Client::run(){
                 else if (newLoc.y > yLimit)
                     newLoc.y = yLimit;
 
-                setEntityLocation(&_character, newLoc);
+                _pendingCharLoc = newLoc;
                 updateOffset();
-                _locationChanged = true;
                 _mouseMoved = true;
             }
         }
@@ -1028,7 +1029,11 @@ void Client::handleMessage(const std::string &msg){
                 break;
             Point p(x, y);
             if (name == _username) {
-                setEntityLocation(&_character, p);
+                _character.destination(p);
+                if (!_loaded) {
+                    setEntityLocation(&_character, p);
+                    _pendingCharLoc = p;
+                }
                 updateOffset();
                 _loaded = true;
                 _tooltipNeedsRefresh = true;

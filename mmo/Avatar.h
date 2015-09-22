@@ -1,7 +1,7 @@
 // (C) 2015 Tim Gurto
 
-#ifndef OTHER_USER_H
-#define OTHER_USER_H
+#ifndef AVATAR_H
+#define AVATAR_H
 
 #include <string>
 
@@ -16,9 +16,10 @@ class Avatar : public Entity{
     std::string _name;
 
 public:
-    Avatar(const std::string &name, const Point &location);
+    Avatar(const std::string &name = "", const Point &location = 0);
 
     static void image(const std::string &filename) { _entityType.image(filename); }
+    void name(const std::string &newName) { _name = newName; }
     void destination(const Point &dst) { _destination = dst; }
     static const EntityType &entityType() { return _entityType; }
 
@@ -26,6 +27,7 @@ public:
     virtual void update(double delta);
     virtual std::vector<std::string> getTooltipMessages(const Client &client) const;
 
+private:
     /*
     Get the next location towards destination, with distance determined by
     this client's latency, and by time elapsed.
