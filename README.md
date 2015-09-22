@@ -45,13 +45,21 @@ MMO economy simulator
 <a id='keyboard'></a>
 ### Keyboard shortcuts
 
-`Escape` Exit any open UI window, or exit the client
+&#8593;, `w` Move up
+
+&#8595;, `s` Move down
+
+&#8592;, `a` Move left
+
+&#8594;, `d` Move right
+
+`Esc` Exit any open UI window, or exit the client
 
 `Enter` Open/close text-entry window, to send commands to the server
 
-`[` Open/close text-entry window, and add a `[` character to it
+`[` Open text-entry window, and add a `[` character to it
 
-`C` Open/close crafting window
+`c` Open/close crafting window
 
 
 <a id='arguments'></a>
