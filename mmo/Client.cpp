@@ -146,6 +146,10 @@ _debug(360/13, "trebuc.ttf", 10){
     Element::absMouse = &_mouse;
     Element::font(TTF_OpenFont("trebuc.ttf", 10));
 
+    initializeCraftingWindow();
+}
+
+void Client::initializeCraftingWindow(){
     // For crafting filters
     for (const Item &item : _items){
         if (item.isCraftable()) {
