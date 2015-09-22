@@ -57,6 +57,8 @@ MMO economy simulator
 <a id='arguments'></a>
 ### Command-line arguments
 
+`-debug` (client only) displays additional information in the client, to assist with debugging
+
 `-height `*`value`* the height of the window
 
 `-left `*`value`* the x co-ordinate of the window

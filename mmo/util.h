@@ -12,6 +12,8 @@ struct Point;
 
 const double SQRT_2 = 1.4142135623731;
 
+bool isDebug();
+
 inline double randDouble(){ return static_cast<double>(rand()) / RAND_MAX; }
 
 double distance(const Point &a, const Point &b);

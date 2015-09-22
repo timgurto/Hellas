@@ -21,6 +21,15 @@ SDL_Rect Entity::drawRect() const {
 
 void Entity::draw(const Client &client) const{
     _type.drawAt(_location + client.offset());
+    if (isDebug()) {
+        renderer.setDrawColor(Color::YELLOW);
+        renderer.fillRect(makeRect(_location.x + client.offset().x,
+                                   _location.y + client.offset().y - 1,
+                                   1, 3));
+        renderer.fillRect(makeRect(_location.x + client.offset().x - 1,
+                                   _location.y + client.offset().y,
+                                   3, 1));
+    }
 }
 
 double Entity::bottomEdge() const{

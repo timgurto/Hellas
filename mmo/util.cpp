@@ -3,8 +3,16 @@
 #include <cassert>
 #include <cmath>
 
+#include "Args.h"
 #include "Point.h"
 #include "util.h"
+
+extern Args cmdLineArgs;
+
+bool isDebug(){
+    static bool debug = cmdLineArgs.contains("debug");
+    return debug;
+}
 
 double distance(const Point &a, const Point &b){
     double

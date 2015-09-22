@@ -524,6 +524,13 @@ void Client::draw() const{
         }
     }
 
+    // Character's target
+    if (isDebug()) {
+        renderer.setDrawColor(Color::WHITE);
+        Point pendingLoc(_pendingCharLoc.x + offset().x, _pendingCharLoc.y + offset().y);
+        renderer.drawRect(makeRect(pendingLoc.x, pendingLoc.y, 1, 1));
+        renderer.drawRect(makeRect(pendingLoc.x - 2, pendingLoc.y - 2, 5, 5));
+    }
 
     // Entities, sorted from back to front
     for (const Entity *entity : _entities)
