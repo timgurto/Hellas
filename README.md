@@ -45,13 +45,13 @@ MMO economy simulator
 <a id='keyboard'></a>
 ### Keyboard shortcuts
 
-&#8593;, `w` Move up
+`w`, `↑` Move up
 
-&#8595;, `s` Move down
+`s`, `↓` Move down
 
-&#8592;, `a` Move left
+`a`, `←` Move left
 
-&#8594;, `d` Move right
+`d`, `→` Move right
 
 `Esc` Exit any open UI window, or exit the client
 
