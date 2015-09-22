@@ -525,8 +525,12 @@ void Client::draw() const{
         }
     }
 
-    // Character's target
+    // Character's target and actual location
     if (isDebug()) {
+        renderer.setDrawColor(Color::CYAN);
+        const Point &actualLoc = _character.destination() + offset();
+        renderer.drawRect(makeRect(actualLoc.x - 1, actualLoc.y - 1, 3, 3));
+
         renderer.setDrawColor(Color::WHITE);
         Point pendingLoc(_pendingCharLoc.x + offset().x, _pendingCharLoc.y + offset().y);
         renderer.drawRect(makeRect(pendingLoc.x, pendingLoc.y, 1, 1));
