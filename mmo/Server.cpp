@@ -90,7 +90,6 @@ void Server::checkSockets(){
     // Activity on server socket: new connection
     if (FD_ISSET(_socket.getRaw(), &readFDs)) {
 
-        int addrSize = sizeof(sockaddr);
         if (_clientSockets.size() == MAX_CLIENTS) {
             _debug("No room for additional clients; all slots full");
             sockaddr_in clientAddr;
@@ -297,7 +296,6 @@ void Server::removeUser(const Socket &socket){
 }
 
 void Server::handleMessage(const Socket &client, const std::string &msg){
-    int eof = std::char_traits<wchar_t>::eof();
     int msgCode;
     char del;
     static char buffer[BUFFER_SIZE+1];

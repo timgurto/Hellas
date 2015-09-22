@@ -238,7 +238,7 @@ void Element::addChild(Element *child){
     _children.push_back(child);
     child->_parent = this;
     markChanged();
-};
+}
 
 void Element::clearChildren(){
     for (Element *child : _children)

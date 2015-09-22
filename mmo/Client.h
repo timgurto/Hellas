@@ -54,13 +54,6 @@ private:
     // Whether the user has the specified item(s).
     bool playerHasItem(const std::string &id, size_t quantity = 1) const;
 
-    mutable SDL_Rect
-        _craftingRect, _filtersRect, _recipesRect, _detailsRect,
-        _haveMatsRect, _haveToolsRect,
-        _classOrRect, _matOrRect,
-        _classFilterRect, _matsFilterRect,
-        _recipesListRect,
-        _closeButtonRect, _craftButtonRect;
     bool _haveMatsFilter, _haveToolsFilter, _classOr, _matOr;
     static const int ITEM_HEIGHT; // The height of list items featuring item icons.
     static const int TEXT_HEIGHT; // The height of list items featuring only text.

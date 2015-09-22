@@ -167,7 +167,7 @@ void Texture::removeRef(){
         --_refs[_raw];
         if (_refs[_raw] == 0) {
             SDL_DestroyTexture(_raw);
-            int ret = _refs.erase(_raw);
+            _refs.erase(_raw);
         }
     }
 }

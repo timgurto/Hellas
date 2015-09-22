@@ -1115,7 +1115,6 @@ void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
 }
 
 bool Client::playerHasItem(const std::string &id, size_t quantity) const{
-    size_t remaining = quantity;
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         std::pair<std::string, size_t> slot = _inventory[i];
         if (slot.first == id) {
