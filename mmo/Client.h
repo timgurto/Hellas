@@ -34,6 +34,7 @@ public:
 
     const Entity &character() const { return _character; }
     const Point &offset() const { return _intOffset; }
+    const std::string &username() const { return _username; }
 
 private:
     static const Uint32 MAX_TICK_LENGTH;

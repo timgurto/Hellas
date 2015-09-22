@@ -23,11 +23,13 @@ void Avatar::draw(const Client &client) const{
     Entity::draw(client);
 
     // Draw username
-    Texture nameTexture(client.defaultFont(), _name, Color::CYAN);
-    Point p = location() + client.offset();
-    p.y -= 60;
-    p.x -= nameTexture.width() / 2;
-    nameTexture.draw(p);
+    if (_name != client.username()) {
+        Texture nameTexture(client.defaultFont(), _name, Color::WHITE);
+        Point p = location() + client.offset();
+        p.y -= 60;
+        p.x -= nameTexture.width() / 2;
+        nameTexture.draw(p);
+    }
 }
 
 void Avatar::update(double delta){
