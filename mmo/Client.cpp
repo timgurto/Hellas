@@ -35,7 +35,7 @@ const Uint32 Client::SERVER_TIMEOUT = 10000;
 const Uint32 Client::CONNECT_RETRY_DELAY = 3000;
 const Uint32 Client::PING_FREQUENCY = 5000;
 
-const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 250;
+const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 50;
 
 const int Client::ICON_SIZE = 16;
 const size_t Client::ICONS_X = 8;
