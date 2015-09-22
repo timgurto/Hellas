@@ -8,11 +8,11 @@ extern Renderer renderer;
 Button::Button(const SDL_Rect &rect, const std::string &caption, clickFun_t clickFunction,
                void *clickData):
 Element(rect),
-_mouseButtonDown(false),
-_depressed(false),
 _content(new Element(makeRect(0, 0, rect.w, rect.h))),
 _clickFun(clickFunction),
-_clickData(clickData){
+_clickData(clickData),
+_mouseButtonDown(false),
+_depressed(false){
     Element::addChild(_content);
     Element::addChild(new ShadowBox(makeRect(0, 0, rect.w, rect.h)));
 

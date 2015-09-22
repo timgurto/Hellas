@@ -11,8 +11,8 @@ extern Renderer renderer;
 ChoiceList::ChoiceList(const SDL_Rect &rect, int childHeight):
 List(rect, childHeight),
 _selectedBox(new ShadowBox(makeRect(0, 0, rect.w - List::ARROW_W, childHeight), true)),
-_mouseDownBox(new ShadowBox(makeRect(0, 0, rect.w - List::ARROW_W, childHeight), true)),
-_mouseOverBox(new ShadowBox(makeRect(0, 0, rect.w - List::ARROW_W, childHeight))){
+_mouseOverBox(new ShadowBox(makeRect(0, 0, rect.w - List::ARROW_W, childHeight))),
+_mouseDownBox(new ShadowBox(makeRect(0, 0, rect.w - List::ARROW_W, childHeight), true)){
     setMouseDownFunction(markMouseDown);
     setMouseUpFunction(toggle);
     setMouseMoveFunction(markMouseOver);

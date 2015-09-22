@@ -21,18 +21,18 @@ Texture Texture::_programEndMarkerTexture(true);
 int Texture::_numTextures = 0;
 
 Texture::Texture():
-_programEndMarker(false),
 _raw(0),
 _w(0),
 _h(0),
-_validTarget(false){}
+_validTarget(false),
+_programEndMarker(false){}
 
 Texture::Texture(int width, int height):
-_programEndMarker(false),
 _raw(0),
 _w(width),
 _h(height),
-_validTarget(true){
+_validTarget(true),
+_programEndMarker(false){
     assert (renderer);
 
     _raw = renderer.createTargetableTexture(width, height);
@@ -43,11 +43,11 @@ _validTarget(true){
 }
 
 Texture::Texture(const std::string &filename, const Color &colorKey):
-_programEndMarker(false),
+_raw(0),
 _w(0),
 _h(0),
 _validTarget(false),
-_raw(0){
+_programEndMarker(false){
     if (filename == "")
         return;
     assert (renderer);
@@ -66,11 +66,11 @@ _raw(0){
 }
 
 Texture::Texture(TTF_Font *font, const std::string &text, const Color &color):
-_programEndMarker(false),
+_raw(0),
 _w(0),
 _h(0),
 _validTarget(false),
-_raw(0){
+_programEndMarker(false){
     assert (renderer);
 
     if (!font)
@@ -87,11 +87,11 @@ _raw(0){
 }
 
 Texture::Texture(const Texture &rhs):
-_programEndMarker(false),
 _raw(rhs._raw),
 _w(rhs._w),
 _h(rhs._h),
-_validTarget(rhs._validTarget){
+_validTarget(rhs._validTarget),
+_programEndMarker(false){
     if (_raw)
         addRef();
 }

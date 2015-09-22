@@ -12,10 +12,10 @@ const int CheckBox::Y_OFFSET = 1;
 CheckBox::CheckBox(const SDL_Rect &rect, bool &linkedBool, const std::string &caption,
                    bool inverse):
 Element(rect),
-_depressed(false),
-_mouseButtonDown(false),
 _linkedBool(linkedBool),
-_inverse(inverse){
+_inverse(inverse),
+_mouseButtonDown(false),
+_depressed(false){
     if (!caption.empty())
         addChild(new Label(makeRect(BOX_SIZE + GAP, 0, rect.w, rect.h),
                            caption, LEFT_JUSTIFIED, CENTER_JUSTIFIED));

@@ -17,18 +17,18 @@ Texture Element::transparentBackground;
 const Point *Element::absMouse = 0;
 
 Element::Element(const SDL_Rect &rect):
-_rect(rect),
-_visible(true),
-_texture(rect.w, rect.h),
 _changed(true),
 _dimensionsChanged(false),
+_visible(true),
+_rect(rect),
+_parent(0),
+_texture(rect.w, rect.h),
 _mouseDown(0), _mouseDownElement(0),
 _mouseUp(0), _mouseUpElement(0),
 _mouseMove(0), _mouseMoveElement(0),
 _scrollUp(0), _scrollUpElement(0),
 _scrollDown(0), _scrollDownElement(0),
-_preRefresh(0), _preRefreshElement(0),
-_parent(0){
+_preRefresh(0), _preRefreshElement(0){
     _texture.setBlend(SDL_BLENDMODE_BLEND);
 }
 

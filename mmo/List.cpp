@@ -15,13 +15,13 @@ const int List::SCROLL_AMOUNT = 10;
 
 List::List(const SDL_Rect &rect, int childHeight):
 Element(rect),
+_mouseDownOnCursor(false),
+_cursorOffset(0),
 _childHeight(childHeight),
-_content(new Element(makeRect(0, 0, rect.w - ARROW_W, 0))),
 _scrollBar(new Element(makeRect(rect.w - ARROW_W, 0, ARROW_W, rect.h))),
 _cursor(new Element(makeRect(0, 0, ARROW_W, CURSOR_HEIGHT))),
-_mouseDownOnCursor(false),
 _scrolledToBottom(false),
-_cursorOffset(0){
+_content(new Element(makeRect(0, 0, rect.w - ARROW_W, 0))){
     if (_childHeight <= 0) // Prevent div/0
         _childHeight = 1;
     Element::addChild(_content);

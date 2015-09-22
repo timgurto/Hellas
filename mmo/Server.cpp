@@ -34,14 +34,14 @@ const int Server::TILE_W = 32;
 const int Server::TILE_H = 32;
 
 Server::Server():
-_loop(true),
-_debug(100),
-_socket(),
 _time(SDL_GetTicks()),
 _lastTime(_time),
-_lastSave(_time),
+_socket(),
+_loop(true),
 _mapX(0),
-_mapY(0){
+_mapY(0),
+_debug(100),
+_lastSave(_time){
     isServer = true;
 
     _debug << cmdLineArgs << Log::endl;

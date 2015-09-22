@@ -14,12 +14,12 @@ const size_t User::INVENTORY_SIZE = 5;
 
 User::User(const std::string &name, const Point &loc, const Socket &socket):
 _name(name),
+_socket(socket),
 _location(loc),
 _actionTargetBranch(0),
 _actionTargetTree(0),
 _actionCrafting(0),
 _actionTime(0),
-_socket(socket),
 _inventory(INVENTORY_SIZE, std::make_pair("none", 0)),
 _lastLocUpdate(SDL_GetTicks()),
 _lastContact(SDL_GetTicks()){}

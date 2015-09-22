@@ -12,9 +12,9 @@ _valid(false){}
 Log::Log(unsigned displayLines, const std::string &fontName, int fontSize, const Color &color):
 _maxMessages(displayLines),
 _font(TTF_OpenFont(fontName.c_str(), fontSize)),
+_valid(true),
 _color(color),
-_compilationColor(color),
-_valid(true){
+_compilationColor(color){
     if (!_font){
         std::string err = TTF_GetError();
         _valid = false;
