@@ -27,6 +27,7 @@ protected:
 
 public:
     Entity(const EntityType &type, const Point &location);
+    virtual ~Entity(){}
 
     const Point &location() const { return _location; }
     void location(const Point &loc); // yChanged() should be checked after changing location.
