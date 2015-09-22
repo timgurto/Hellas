@@ -14,7 +14,7 @@
 #include "Entity.h"
 #include "Item.h"
 #include "Log.h"
-#include "OtherUser.h"
+#include "Avatar.h"
 #include "Point.h"
 #include "Socket.h"
 #include "Tree.h"
@@ -141,7 +141,7 @@ private:
     size_t _mapX, _mapY;
     std::vector<std::vector<size_t> > _map;
     std::vector<std::pair<std::string, size_t> > _inventory;
-    std::map<std::string, OtherUser*> _otherUsers; // For lookup by name
+    std::map<std::string, Avatar*> _otherUsers; // For lookup by name
     std::map<size_t, Branch*> _branches; // For lookup by serial
     std::map<size_t, Tree*> _trees; // For lookup by serial
 
@@ -163,7 +163,7 @@ private:
     void sendMessage(MessageCode msgCode, const std::string &args = "") const;
     void handleMessage(const std::string &msg);
 
-    friend OtherUser;
+    friend Avatar;
 };
 
 #endif

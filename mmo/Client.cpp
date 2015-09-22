@@ -91,7 +91,7 @@ _debug(360/13, "trebuc.ttf", 10){
 
     _defaultFont = TTF_OpenFont("trebuc.ttf", 10);
 
-    OtherUser::image("Images/man.png");
+    Avatar::image("Images/man.png");
     Branch::image("Images/branch.png");
     Tree::image("Images/tree.png");
     _tile[0] = Texture(std::string("Images/grass.png"));
@@ -150,7 +150,7 @@ Client::~Client(){
     if (Window::font())
         TTF_CloseFont(Window::font());
     delete _craftingWindow;
-    OtherUser::image("");
+    Avatar::image("");
     Branch::image("");
     Tree::image("");
     for (const Entity *entityConst : _entities) {
@@ -877,7 +877,7 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del;
             if (del != ']')
                 break;
-            std::map<std::string, OtherUser*>::iterator it = _otherUsers.find(name);
+            std::map<std::string, Avatar*>::iterator it = _otherUsers.find(name);
             if (it != _otherUsers.end()) {
                 removeEntity(it->second);
                 _otherUsers.erase(it);
@@ -1035,8 +1035,8 @@ void Client::handleMessage(const std::string &msg){
                 _mouseMoved = true;
             } else {
                 if (_otherUsers.find(name) == _otherUsers.end()) {
-                    // Create new OtherUser
-                    OtherUser *newUser = new OtherUser(name, p);
+                    // Create new Avatar
+                    Avatar *newUser = new Avatar(name, p);
                     _otherUsers[name] = newUser;
                     _entities.insert(newUser);
                 }

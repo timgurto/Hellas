@@ -107,7 +107,7 @@
     <ClCompile Include="List.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="OtherUser.cpp" />
+    <ClCompile Include="Avatar.cpp" />
     <ClCompile Include="Picture.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -142,7 +142,7 @@
     <ClInclude Include="List.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="messageCodes.h" />
-    <ClInclude Include="OtherUser.h" />
+    <ClInclude Include="Avatar.h" />
     <ClInclude Include="Picture.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Renderer.h" />

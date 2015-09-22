@@ -1,15 +1,17 @@
+// (C) 2015 Tim Gurto
+
+#include "Avatar.h"
 #include "Client.h"
-#include "OtherUser.h"
 #include "Server.h"
 #include "util.h"
 
-EntityType OtherUser::_entityType(makeRect(-9, -39));
+EntityType Avatar::_entityType(makeRect(-9, -39));
 
-OtherUser::OtherUser(const std::string &name, const Point &location):
+Avatar::Avatar(const std::string &name, const Point &location):
 Entity(_entityType, location),
 _name(name){}
 
-Point OtherUser::interpolatedLocation(double delta){
+Point Avatar::interpolatedLocation(double delta){
     if (_destination == location())
         return _destination;;
 
@@ -17,7 +19,7 @@ Point OtherUser::interpolatedLocation(double delta){
     return interpolate(location(), _destination, maxLegalDistance);
 }
 
-void OtherUser::draw(const Client &client) const{
+void Avatar::draw(const Client &client) const{
     Entity::draw(client);
 
     // Draw username
@@ -28,11 +30,11 @@ void OtherUser::draw(const Client &client) const{
     nameTexture.draw(p);
 }
 
-void OtherUser::update(double delta){
+void Avatar::update(double delta){
     location(interpolatedLocation(delta));
 }
 
-std::vector<std::string> OtherUser::getTooltipMessages(const Client &client) const {
+std::vector<std::string> Avatar::getTooltipMessages(const Client &client) const {
     std::vector<std::string> text;
     text.push_back(_name);
     text.push_back("Player");
