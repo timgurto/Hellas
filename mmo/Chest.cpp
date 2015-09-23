@@ -7,7 +7,7 @@
 #include "Server.h"
 #include "util.h"
 
-EntityType Chest::_entityType(makeRect(-14, -12));
+EntityType Chest::_entityType(makeRect(-14, -17));
 
 Chest::Chest(const Chest &rhs):
 Entity(rhs),

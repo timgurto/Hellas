@@ -20,12 +20,16 @@ enum MessageCode{
     // Arguments: x, y
     CL_LOCATION = 10,
 
+    // Cancel user's current action
+    CL_CANCEL_ACTION = 20,
+
     // "I want to craft ..."
     // Arguments: id
-    CL_CRAFT = 20,
+    CL_CRAFT = 21,
 
-    // Cancel user's current action
-    CL_CANCEL_ACTION = 21,
+    // "I want to construct the item in inventory slot ..., at location ..."
+    // Arguments: slot, x, y
+    CL_CONSTRUCT = 22,
 
     // User wants to collect a branch
     // Arguments: serial
@@ -114,11 +118,20 @@ enum MessageCode{
     // The user tried to craft an item that does not exist
     SV_INVALID_ITEM = 914,
 
-    // The user tried to craft an item that cnnot be crafted
+    // The user tried to craft an item that cannot be crafted
     SV_CANNOT_CRAFT = 915,
 
     // The user was unable to complete an action
     SV_ACTION_INTERRUPTED = 916,
+
+    // The user tried to manipulate an empty inventory slot
+    SV_EMPTY_SLOT = 917,
+
+    // The user attempted to manipulate an out-of-range inventory slot
+    SV_INVALID_SLOT = 918,
+
+    // The user tried to construct an item that cannot be constructed
+    SV_CANNOT_CONSTRUCT = 919,
 
     // The user cannot cut down a tree, as he doesn't have an axe-class item
     SV_AXE_NEEDED = 950,

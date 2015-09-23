@@ -399,6 +399,41 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_CONSTRUCT:
+        {
+            size_t slot;
+            double x, y;
+            iss >> slot >> del >> x >> del >> y >> del;
+            if (del != ']')
+                return;
+            user->cancelAction(*this);
+            if (slot >= User::INVENTORY_SIZE) {
+                sendMessage(client, SV_INVALID_SLOT);
+                break;
+            }
+            const std::pair<std::string, size_t> &invSlot = user->inventory(slot);
+            if (invSlot.first == "none") {
+                sendMessage(client, SV_EMPTY_SLOT);
+                break;
+            }
+            std::set<Item>::const_iterator it = _items.find(invSlot.first);
+            if (it == _items.end()) {
+                break;
+            }
+            if (!it->isClass("structure")) {
+                sendMessage(client, SV_CANNOT_CONSTRUCT);
+                break;
+            }
+            Point location(x, y);
+            if (distance(user->location(), location) > ACTION_DISTANCE) {
+                sendMessage(client, SV_TOO_FAR);
+                break;
+            }
+            //user->actionConstruct([object], location, slot);
+            //sendMessage(client, SV_ACTION_STARTED, makeArgs(it->craftTime()));
+            break;
+        }
+
         case CL_CANCEL_ACTION:
         {
             iss >> del;
@@ -587,7 +622,7 @@ void Server::loadData(){
     i.craftTime(10);
     _items.insert(i);
 
-    i = Item("chest", "wooden chest");
+    i = Item("chest", "wooden chest", 10);
     i.addClass("structure");
     i.addClass("container");
     i.addMaterial("wood", 5);

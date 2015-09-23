@@ -953,8 +953,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_NEED_MATERIALS:
             if (del != ']')
                 break;
-            _debug("You do not have the necessary materials"
-                      "to create that item.", Color::YELLOW);
+            _debug("You do not have the necessary materials to create that item.", Color::YELLOW);
             startAction(0);
             break;
 
@@ -976,6 +975,27 @@ void Client::handleMessage(const std::string &msg){
             if (del != ']')
                 break;
             _debug("Action interrupted.", Color::YELLOW);
+            startAction(0);
+            break;
+
+        case SV_INVALID_SLOT:
+            if (del != ']')
+                break;
+            _debug("That is not a valid inventory slot.", Color::RED);
+            startAction(0);
+            break;
+
+        case SV_EMPTY_SLOT:
+            if (del != ']')
+                break;
+            _debug("That inventory slot is empty.", Color::RED);
+            startAction(0);
+            break;
+
+        case SV_CANNOT_CONSTRUCT:
+            if (del != ']')
+                break;
+            _debug("Only 'structure'-class items can be constructed.", Color::RED);
             startAction(0);
             break;
 
