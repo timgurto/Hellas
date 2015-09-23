@@ -671,11 +671,20 @@ Texture Client::getInventoryTooltip() const{
     TooltipBuilder tb;
     tb.setColor(Color::WHITE);
     tb.addLine(item.name());
+    bool isStructure = false;
     if (item.hasClasses()) {
         tb.setColor();
         tb.addGap();
-        for (const std::string &className : item.classes())
+        for (const std::string &className : item.classes()) {
             tb.addLine(className);
+            if (className == "structure")
+                isStructure = true;
+        }
+    }
+    if (isStructure) {
+        tb.addGap();
+        tb.setColor(Color::YELLOW);
+        tb.addLine("Right-click to construct");
     }
     return tb.publish();
 }
