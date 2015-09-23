@@ -108,6 +108,8 @@
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Avatar.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="ObjectType.cpp" />
     <ClCompile Include="Picture.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -143,6 +145,8 @@
     <ClInclude Include="Log.h" />
     <ClInclude Include="messageCodes.h" />
     <ClInclude Include="Avatar.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="ObjectType.h" />
     <ClInclude Include="Picture.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Renderer.h" />
