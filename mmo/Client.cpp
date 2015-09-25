@@ -1183,7 +1183,7 @@ void Client::handleMessage(const std::string &msg){
         }
 
         if (del != ']' && !iss.eof()) {
-            _debug("Bad message ending", Color::RED);
+            _debug << Color::RED << "Bad message ending: " << iss << Log::endl;
         }
 
         iss.peek();
