@@ -9,7 +9,8 @@ Color Log::defaultColor = Color::NO_KEY;
 Log::Log():
 _valid(false){}
 
-Log::Log(unsigned displayLines, const std::string &fontName, int fontSize, const Color &color):
+Log::Log(unsigned displayLines, const std::string &logFileName, const std::string &fontName,
+         int fontSize, const Color &color):
 _maxMessages(displayLines),
 _font(TTF_OpenFont(fontName.c_str(), fontSize)),
 _valid(true),
@@ -19,6 +20,10 @@ _compilationColor(color){
         std::string err = TTF_GetError();
         _valid = false;
     }
+    if (!logFileName.empty()) {
+        _logFile.open(logFileName);
+        _logFile << std::endl << std::endl << std::endl;
+    }
 }
 
 Log::~Log(){
@@ -27,9 +32,15 @@ Log::~Log(){
 
     if (_font)
         TTF_CloseFont(_font);
+
+    if (_logFile.is_open())
+        _logFile.close();
 }
 
 void Log::operator()(const std::string &message, const Color &color){
+    if (_logFile.is_open())
+        _logFile << message << std::endl;
+
     const Color &msgColor = (&color == &defaultColor) ? _color : color;
     Texture msgTexture(_font, message, msgColor);
     if (!msgTexture)

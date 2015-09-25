@@ -3,6 +3,7 @@
 #ifndef LOG_H
 #define LOG_H
 
+#include <fstream>
 #include <list>
 #include <sstream>
 #include <string>
@@ -36,7 +37,9 @@ log << endl;
 class Log{
 public:
     Log();
-    Log(unsigned displayLines, const std::string &fontName = "trebuc.ttf", int fontSize = 16, const Color &color = Color::WHITE);
+    Log(unsigned displayLines, const std::string &logFileName = "",
+        const std::string &fontName = "trebuc.ttf", int fontSize = 16,
+        const Color &color = Color::WHITE);
     ~Log();
     // For default reference parameter.  Indicates that the Log's _color should be used.
     static Color defaultColor;
@@ -64,6 +67,7 @@ private:
     std::ostringstream _oss;
     Color _color;
     Color _compilationColor; // for use while compiling a message
+    std::ofstream _logFile;
 };
 
 #endif

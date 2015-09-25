@@ -76,7 +76,7 @@ _tooltipNeedsRefresh(false),
 _mapX(0), _mapY(0),
 _inventory(User::INVENTORY_SIZE, std::make_pair("none", 0)),
 _currentMouseOverEntity(0),
-_debug(360/13, "trebuc.ttf", 10){
+_debug(360/13, "client.log", "trebuc.ttf", 10){
     isClient = true;
     _instance = this;
 
