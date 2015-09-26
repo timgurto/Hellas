@@ -1021,7 +1021,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_ITEM_NEEDED:
         {
             std::string reqItemClass;
-            singleMsg.get(buffer, BUFFER_SIZE, ',');
+            singleMsg.get(buffer, BUFFER_SIZE, ']');
             reqItemClass = std::string(buffer);
             singleMsg >> del;
             if (del != ']')
@@ -1032,7 +1032,7 @@ void Client::handleMessage(const std::string &msg){
             if (first == 'a' || first == 'e' || first == 'i' ||
                 first == 'o' || first == 'u')
                 msg += 'n';
-            _debug(msg + ' ' + reqItemClass + "to do that.", Color::RED);
+            _debug(msg + ' ' + reqItemClass + " to do that.", Color::YELLOW);
             startAction(0);
             break;
         }

@@ -455,9 +455,9 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             } else {
                 const Object &obj = *it;
                 // Check that the user meets the requirements
-                const std::string &pickUpReq = obj.type().pickUpReq();
-                if (pickUpReq != "" && !user->hasItemClass(pickUpReq, *this)) {
-                    sendMessage(client, SV_ITEM_NEEDED, pickUpReq);
+                const std::string &gatherReq = obj.type().gatherReq();
+                if (gatherReq != "none" && !user->hasItemClass(gatherReq, *this)) {
+                    sendMessage(client, SV_ITEM_NEEDED, gatherReq);
                     break;
                 }
                 user->actionTarget(&obj);
@@ -588,8 +588,9 @@ void Server::loadData(){
         std::string id;
         Uint32 actionTime;
         size_t wood;
-        fs >> id >> actionTime >> wood;
-        _objectTypes.insert(ObjectType(id, actionTime, wood));
+        std::string gatherReq;
+        fs >> id >> actionTime >> wood >> gatherReq;
+        _objectTypes.insert(ObjectType(id, actionTime, wood, gatherReq));
     }
     if (!fs.good()) {
         _debug("Object-types file invalid; aborting data load.", Color::RED);
