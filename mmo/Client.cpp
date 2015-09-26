@@ -353,7 +353,8 @@ void Client::run(){
                 _mouse.y = e.motion.y * SCREEN_Y / static_cast<double>(renderer.height());
                 _mouseMoved = true;
                 
-                _craftingWindow->onMouseMove(_mouse);
+                if (_craftingWindow->visible())
+                    _craftingWindow->onMouseMove(_mouse);
 
                 if (!_loaded)
                     break;
@@ -502,7 +503,7 @@ void Client::checkMouseOver(){
     Entity::set_t::iterator mouseOverIt = _entities.end();
     Entity lookupEntity(EntityType(), mouseOffset);
     for (auto it = _entities.lower_bound(&lookupEntity); it != _entities.end(); ++it) {
-        if ((*it)->collision(mouseOffset))
+        if (*it != &_character &&(*it)->collision(mouseOffset))
             mouseOverIt = it;
     }
     if (mouseOverIt != _entities.end()) {
