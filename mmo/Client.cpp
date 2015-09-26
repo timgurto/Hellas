@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <fstream>
 #include <map>
 #include <SDL.h>
 #include <string>
@@ -90,8 +91,6 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
     _defaultFont = TTF_OpenFont("trebuc.ttf", 10);
 
     Avatar::image("Images/man.png");
-    Branch::image("Images/branch.png");
-    Tree::image("Images/tree.png");
     _tile[0] = Texture(std::string("Images/grass.png"));
     _tile[1] = Texture(std::string("Images/stone.png"));
     _tile[2] = Texture(std::string("Images/road.png"));
@@ -136,6 +135,27 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
     i.craftTime(10);
     _items.insert(i);
 
+    std::ifstream fs("Data/objectTypesClient.dat");
+    if (!fs.good()) {
+        _debug("Object-types file invalid; aborting data load.", Color::RED);
+    }
+    int numObjTypes;
+    fs >> numObjTypes;
+    for (int i = 0; i != numObjTypes; ++i) {
+        std::string id, name;
+        SDL_Rect drawRect;
+        drawRect.w = drawRect.h = 0;
+        bool canGather;
+        fs >> id >> name >> drawRect.x >> drawRect.y >> canGather;
+        _objectTypes.insert(EntityType(drawRect, std::string("Images/") + id + ".png", id, name,
+                                       canGather));
+    }
+    if (!fs.good()) {
+        _debug("Object-types file invalid; aborting data load.", Color::RED);
+    }
+    fs.close();
+
+
     Element::absMouse = &_mouse;
     Element::font(TTF_OpenFont("trebuc.ttf", 10));
 
@@ -150,8 +170,6 @@ Client::~Client(){
         TTF_CloseFont(Window::font());
     delete _craftingWindow;
     Avatar::image("");
-    Branch::image("");
-    Tree::image("");
     for (const Entity *entityConst : _entities) {
         Entity *entity = const_cast<Entity *>(entityConst);
         if (entity != &_character)
@@ -482,8 +500,7 @@ void Client::checkMouseOver(){
     const Point mouseOffset = _mouse - _offset;
     const Entity *oldMouseOverEntity = _currentMouseOverEntity;
     Entity::set_t::iterator mouseOverIt = _entities.end();
-    static EntityType dummyEntityType(makeRect());
-    Entity lookupEntity(dummyEntityType, mouseOffset);
+    Entity lookupEntity(EntityType(), mouseOffset);
     for (auto it = _entities.lower_bound(&lookupEntity); it != _entities.end(); ++it) {
         if ((*it)->collision(mouseOffset))
             mouseOverIt = it;
@@ -952,13 +969,6 @@ void Client::handleMessage(const std::string &msg){
             startAction(0);
             break;
 
-        case SV_AXE_NEEDED:
-            if (del != ']')
-                break;
-            _debug("You need an axe to cut gather a tree.", Color::YELLOW);
-            startAction(0);
-            break;
-
         case SV_NEED_MATERIALS:
             if (del != ']')
                 break;
@@ -1007,6 +1017,25 @@ void Client::handleMessage(const std::string &msg){
             _debug("Only 'structure'-class items can be constructed.", Color::RED);
             startAction(0);
             break;
+
+        case SV_ITEM_NEEDED:
+        {
+            std::string reqItemClass;
+            singleMsg.get(buffer, BUFFER_SIZE, ',');
+            reqItemClass = std::string(buffer);
+            singleMsg >> del;
+            if (del != ']')
+                break;
+            std::string msg = "You need a";
+            bool vowelStart = false;
+            char first= reqItemClass.front();
+            if (first == 'a' || first == 'e' || first == 'i' ||
+                first == 'o' || first == 'u')
+                msg += 'n';
+            _debug(msg + ' ' + reqItemClass + "to do that.", Color::RED);
+            startAction(0);
+            break;
+        }
 
         case SV_ACTION_STARTED:
             Uint32 time;
@@ -1106,75 +1135,46 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_BRANCH:
+        case SV_OBJECT:
         {
             int serial;
             double x, y;
+            std::string type;
             singleMsg >> serial >> del >> x >> del >> y >> del;
+            singleMsg.get(buffer, BUFFER_SIZE, ']');
+            type = std::string(buffer);
+            singleMsg >> del;
             if (del != ']')
                 break;
-            std::map<size_t, Branch*>::iterator it = _branches.find(serial);
-            if (it == _branches.end()) {
-                // A new branch was added; add entity to list
-                Branch *newBranch = new Branch(serial, Point(x, y));
-                _entities.insert(newBranch);
-                _branches[serial] = newBranch;
+            std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
+            if (it == _objects.end()) {
+                // A new object was added; add entity to list
+                std::set<EntityType>::const_iterator it = _objectTypes.find(type);
+                if (it == _objectTypes.end())
+                    break;
+                ClientObject *obj = new ClientObject(serial, *it, Point(x, y));
+                _entities.insert(obj);
+                _objects[serial] = obj;
             }
             break;
         }
 
-        case SV_TREE:
-        {
-            int serial;
-            double x, y;
-            singleMsg >> serial >> del >> x >> del >> y >> del;
-            if (del != ']')
-                break;
-            std::map<size_t, Tree*>::iterator it = _trees.find(serial);
-            if (it == _trees.end()) {
-                // A new branch was added; add entity to list
-                Tree *newTree = new Tree(serial, Point(x, y));
-                _entities.insert(newTree);
-                _trees[serial] = newTree;
-            }
-            break;
-        }
-
-        case SV_REMOVE_BRANCH:
+        case SV_REMOVE_OBJECT:
         {
             int serial;
             singleMsg >> serial >> del;
             if (del != ']')
                 break;
-            std::map<size_t, Branch*>::const_iterator it = _branches.find(serial);
-            if (it == _branches.end()){
-                _debug("Server removed a branch we didn't know about.", Color::YELLOW);
+            std::map<size_t, ClientObject*>::const_iterator it = _objects.find(serial);
+            if (it == _objects.end()){
+                _debug("Server removed an object we didn't know about.", Color::YELLOW);
                 assert(false);
-                break; // We didn't know about this branch
+                break; // We didn't know about this object
             }
             if (it->second == _currentMouseOverEntity)
                 _currentMouseOverEntity = 0;
             removeEntity(it->second);
-            _branches.erase(it);
-            break;
-        }
-
-        case SV_REMOVE_TREE:
-        {
-            int serial;
-            singleMsg >> serial >> del;
-            if (del != ']')
-                break;
-            std::map<size_t, Tree*>::const_iterator it = _trees.find(serial);
-            if (it == _trees.end()){
-                _debug("Server removed a tree we didn't know about.", Color::YELLOW);
-                assert(false);
-                break; // We didn't know about this tree
-            }
-            if (it->second == _currentMouseOverEntity)
-                _currentMouseOverEntity = 0;
-            removeEntity(it->second);
-            _trees.erase(it);
+            _objects.erase(it);
             break;
         }
 
@@ -1183,7 +1183,7 @@ void Client::handleMessage(const std::string &msg){
         }
 
         if (del != ']' && !iss.eof()) {
-            _debug << Color::RED << "Bad message ending: " << iss << Log::endl;
+            _debug("Bad message ending", Color::RED);
         }
 
         iss.peek();

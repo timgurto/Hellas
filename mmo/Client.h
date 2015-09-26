@@ -10,14 +10,13 @@
 
 #include "Args.h"
 #include "Avatar.h"
-#include "Branch.h"
+#include "ClientObject.h"
 #include "ChoiceList.h"
 #include "Entity.h"
 #include "Item.h"
 #include "Log.h"
 #include "Point.h"
 #include "Socket.h"
-#include "Tree.h"
 #include "Window.h"
 #include "messageCodes.h"
 
@@ -92,8 +91,7 @@ private:
     std::string _actionMessage; // A description of the current action.
     void prepareAction(const std::string &msg); // Set up the action, awaiting server confirmation.
     void startAction(Uint32 actionLength); // Start the action timer.  If zero, stop the timer.
-    friend void Branch::onLeftClick(Client &client) const;
-    friend void Tree::onLeftClick(Client &client) const;
+    friend void ClientObject::onLeftClick(Client &client) const;
 
     bool _loop;
     Socket _socket;
@@ -137,14 +135,14 @@ private:
 
     // Game data
     std::set<Item> _items;
+    std::set<EntityType> _objectTypes;
 
     // Information about the state of the world
     size_t _mapX, _mapY;
     std::vector<std::vector<size_t> > _map;
     std::vector<std::pair<std::string, size_t> > _inventory;
     std::map<std::string, Avatar*> _otherUsers; // For lookup by name
-    std::map<size_t, Branch*> _branches; // For lookup by serial
-    std::map<size_t, Tree*> _trees; // For lookup by serial
+    std::map<size_t, ClientObject*> _objects; // For lookup by serial
 
     Entity::set_t _entities;
     void removeEntity(Entity *const toRemove); // Remove from _entities, and delete pointer

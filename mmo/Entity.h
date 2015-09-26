@@ -24,6 +24,7 @@ class Entity{
 
 protected:
     Texture _tooltip;
+    const EntityType &type() const { return _type; }
 
 public:
     Entity(const EntityType &type, const Point &location);

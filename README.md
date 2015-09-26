@@ -14,7 +14,8 @@ MMO economy simulator
 [Keyboard controls](#keyboard)  
 
 #### Client programming guide
-[Glossary of ambiguous terms](#glossary)  
+[Glossary of ambiguous terms](#glossary) 
+[Item classes](#classes)  
 [Client states](#states)  
 [Login sequence](#login)  
 [Message codes](#messages)  
@@ -93,7 +94,7 @@ To clone this repository: `git clone --recursive https://github.com/timgurto/mmo
 ### Glossary of ambiguous terms
 **character**, the *avatar* which represents a user in-game
 
-**class**, a category to which an item belongs, denoting functionality.  For example, to cut down a tree a user must have an "axe"-class item in his inventory.
+**class**, a category to which an item belongs, denoting functionality.  For example, to cut down a tree a user must have an "axe"-class item in his inventory.  An item can have many classes or none at all.
 
 **client**, the *program* which connects to the server
 
@@ -103,13 +104,26 @@ To clone this repository: `git clone --recursive https://github.com/timgurto/mmo
 
 **entity**, (client only) something which exists physically in-game, with a location and image, and supporting user interaction
 
-**object**, (server only) something which exists physically in-game, with a location and functionality
+**gather**, when the user performs an action on an object in order to extract items from it.  Some objects can be gathered multiple times before they disappear.
+
+**object**, something which exists physically in-game, with a location and functionality
 
 **server**, the *program* which manages the state of the game world and connects to clients
 
 **terminal**, a generic term for server or client
 
 **user**, the *account* playing on a client.  Identified by a unique username.
+
+<a id='classes'></a>
+### Item classes
+The classes themselves are not coded anywhere authoritative, but are deduced by inspecting the classes on each defined item.
+
+**axe**, required to chop down trees
+
+**container**, has an inventory that can store items.
+
+**structure**, can be transformed into a physical object by "constructing" it
+
 
 <a id='states'></a>
 ### Client states
@@ -171,10 +185,9 @@ Code | Name                  | Syntax                     | Description
 1    | CL_I_AM               | `[1,username]`             | "My name is `username`"
 10   | CL_LOCATION           | `[10,x,y]`                 | "My location has changed, and is now (`x`,`y`)"
 20   | CL_CANCEL_ACTION      | `[20]`                     | "I don't want to finish my current action"
-21   | CL_CRAFT              | `[21,id]`                  | "I want to craft an `id`"
+21   | CL_CRAFT              | `[21,type]`                | "I want to craft a `type`"
 22   | CL_CONSTRUCT          | `[22,slot,x,y]`            | "I want to construct the item in inventory slot `slot`, at location (`x`,`y`)""
-50   | CL_COLLECT_BRANCH*    | `[50,serial]`              | "I want to collect branch #`serial`"
-51   | CL_COLLECT_TREE*      | `[51,serial]`              | "I want to collect tree #`serial`"
+23   | CL_GATHER             | `[23,serial]`              | "I want to gather object #`serial`
 
 #### Server commands
 Code | Name                  | Syntax                     | Description
@@ -185,13 +198,11 @@ Code | Name                  | Syntax                     | Description
 120  | SV_MAP_SIZE           | `[120,x,y]`                | "The map size is `x`&times;`y`"
 121  | SV_TERRAIN            | `[121,x,y,n,t0,t1,t2,...]` | A package of map details.  "The `n` horizontal map tiles starting from (`x`,`y`) are of types `t0`, `t1`, `t2`, ..."
 122  | SV_LOCATION           | `[122,username,x,y]`       | "User `username` is located at (`x`,`y`)"
-123  | SV_INVENTORY          | `[123,slot,id,quantity]`   | "Your inventory slot #`slot` contains a stack of `quantity` items of type `id`"
+123  | SV_INVENTORY          | `[123,slot,type,quantity]` | "Your inventory slot #`slot` contains a stack of `quantity` `type`s"
+124  | SV_OBJECT             | `[124,serial,x,y,type]`    | "Object #`serial` is located at (`x`,`y`), and is a `type`"
+125  | SV_REMOVE_OBJECT      | `[125,serial]`             | "Object #`serial` no longer exists"
 130  | SV_ACTION_STARTED     | `[130,time]`               | "You have begun an action that will take `t` milliseconds"
-130  | SV_ACTION_FINISHED    | `[131]`                    | "You have completed an action"
-150  | SV_BRANCH*            | `[150,serial,x,y]`         | "Branch #`serial` is located at (`x`,`y`)"
-151  | SV_TREE*              | `[151,serial,x,y]`         | "Tree #`serial` is located at (`x`,`y`)"
-152  | SV_REMOVE_BRANCH*     | `[152,serial]`             | "Branch #`serial` no longer exists"
-153  | SV_REMOVE_TREE*       | `[153,serial]`             | "Tree #`serial` no longer exists"
+131  | SV_ACTION_FINISHED    | `[131]`                    | "You have completed an action"
 
 #### Warnings and errors
 Code | Name                  | Syntax                     | Description
@@ -209,6 +220,4 @@ Code | Name                  | Syntax                     | Description
 917  | SV_EMPTY_SLOT         | `[917]`                    | "You tried to manipulate an empty inventory slot"
 918  | SV_INVALID_SLOT       | `[918]`                    | "You tried to manipulate an inventory slot that does not exist"
 919  | SV_CANNOT_CONSTRUCT   | `[919]`                    | "You tried to construct an item that is not a structure"
-950  | SV_AXE_NEEDED*        | `[950]`                    | "You tried to cut down a tree without an axe"
-
-*Temporary message only
+920  | SV_ITEM_NEEDED        | `[920,reqItemClass]`       | "You tried to perform an action, without the necessary `reqItemClass`"

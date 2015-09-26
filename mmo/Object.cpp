@@ -5,16 +5,17 @@
 
 ObjectType Object::emptyType("");
 
-Object::Object(const Object &rhs):
-_serial(rhs._serial),
-_location(rhs._location),
-_type(rhs._type) {}
-
-Object::Object(const ObjectType &type, const Point &loc, Uint32 gatherTime):
+Object::Object(const ObjectType &type, const Point &loc):
 _serial(generateSerial()),
 _location(loc),
 _type(type),
-_gatherTime(gatherTime){}
+_wood(type.wood()){}
+
+Object::Object(const ObjectType &type, const Point &loc, size_t wood):
+_serial(generateSerial()),
+_location(loc),
+_type(type),
+_wood(wood){}
 
 Object::Object(size_t serial): // For set/map lookup
 _serial (serial),
@@ -23,4 +24,8 @@ _type(emptyType){}
 size_t Object::generateSerial() {
     static size_t currentSerial = 0;
     return currentSerial++;
+}
+
+void Object::decrementWood(){
+    --_wood;
 }

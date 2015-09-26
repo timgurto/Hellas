@@ -41,3 +41,4 @@ Makefile~
 *.md~
 *.o
 *.swo
+World/objects.dat

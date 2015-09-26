@@ -7,6 +7,7 @@
 #include <string>
 #include <windows.h>
 
+#include "Object.h"
 #include "Point.h"
 #include "Socket.h"
 
@@ -17,8 +18,7 @@ class User{
     std::string _name;
     Socket _socket;
     Point _location;
-    const BranchLite *_actionTargetBranch; // Points to a branch that the user is acting upon.
-    const TreeLite *_actionTargetTree; // Points to a branch that the user is acting upon.
+    const Object *_actionTarget; // Points to the object that the user is acting upon.
     const Item *_actionCrafting; // The item this user is currently crafting.
     Uint32 _actionTime; // Time remaining on current action.
     std::vector<std::pair<std::string, size_t> > _inventory;
@@ -41,10 +41,8 @@ public:
     const std::pair<std::string, size_t> &inventory(size_t index) const;
     std::pair<std::string, size_t> &inventory(size_t index);
 
-    const BranchLite *actionTargetBranch() const { return _actionTargetBranch; }
-    const TreeLite *actionTargetTree() const { return _actionTargetTree; }
-    void actionTargetBranch(const BranchLite *branch); // Configure user to gather a branch
-    void actionTargetTree(const TreeLite *tree); // Configure user to gather a tree
+    const Object *actionTarget() const { return _actionTarget; }
+    void actionTarget(const Object *object); // Configure user to perform an action on an object
 
     // Whether the user has enough materials to craft an item
     bool hasMaterials(const Item &item) const;
@@ -66,6 +64,9 @@ public:
     Set location to the new, legal location.
     */
     void updateLocation(const Point &dest, const Server &server);
+
+    // Whether the user has at least one item with the specified item class
+    bool hasItemClass(const std::string &className, const Server &server) const;
 
     // Return value: which inventory slot was used
     size_t giveItem(const Item &item);

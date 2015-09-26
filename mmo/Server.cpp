@@ -7,6 +7,8 @@
 #include <utility>
 
 #include "Client.h" //TODO remove; only here for random initial placement
+#include "Object.h"
+#include "ObjectType.h"
 #include "Renderer.h"
 #include "Socket.h"
 #include "Server.h"
@@ -256,15 +258,10 @@ void Server::addUser(const Socket &socket, const std::string &name){
     for (const User &user : _users)
         sendMessage(newUser.socket(), SV_LOCATION, user.makeLocationCommand());
 
-    // Send him branch locations
-    for (const BranchLite &branch : _branches)
-        sendMessage(newUser.socket(), SV_BRANCH,
-                    makeArgs(branch.serial, branch.location.x, branch.location.y));
-
-    // Send him tree locations
-    for (const TreeLite &tree : _trees)
-        sendMessage(newUser.socket(), SV_TREE,
-                    makeArgs(tree.serial, tree.location.x, tree.location.y));
+    // Send him object locations
+    for (const Object &obj : _objects)
+        sendMessage(newUser.socket(), SV_OBJECT,
+                    makeArgs(obj.serial(), obj.location().x, obj.location().y, obj.type().id()));
 
     // Send him his inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
@@ -443,52 +440,28 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
-        case CL_COLLECT_BRANCH:
+        case CL_GATHER:
         {
             int serial;
             iss >> serial >> del;
             if (del != ']')
                 return;
             user->cancelAction(*this);
-            std::set<BranchLite>::const_iterator it = _branches.find(serial);
-            if (it == _branches.end()) {
+            std::set<Object>::const_iterator it = _objects.find(serial);
+            if (it == _objects.end()) {
                 sendMessage(client, SV_DOESNT_EXIST);
-            } else if (distance(user->location(), it->location) > ACTION_DISTANCE) {
+            } else if (distance(user->location(), it->location()) > ACTION_DISTANCE) {
                 sendMessage(client, SV_TOO_FAR);
             } else {
-                user->actionTargetBranch(&*it);
-                sendMessage(client, SV_ACTION_STARTED, makeArgs(BranchLite::ACTION_TIME));
-            }
-            break;
-        }
-
-        case CL_COLLECT_TREE:
-        {
-            int serial;
-            iss >> serial >> del;
-            if (del != ']')
-                return;
-            user->cancelAction(*this);
-            std::set<TreeLite>::const_iterator it = _trees.find(serial);
-            if (it == _trees.end()) {
-                sendMessage(client, SV_DOESNT_EXIST);
-            } else if (distance(user->location(), it->location) > ACTION_DISTANCE) {
-                sendMessage(client, SV_TOO_FAR);
-            } else {
-                // Ensure user has an axe-class item
-                bool hasAxe = false;
-                for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
-                    const Item &item = *_items.find(user->inventory(i).first);
-                    if (item.isClass("axe")) {
-                        hasAxe = true;
-                        break;
-                    }
+                const Object &obj = *it;
+                // Check that the user meets the requirements
+                const std::string &pickUpReq = obj.type().pickUpReq();
+                if (pickUpReq != "" && !user->hasItemClass(pickUpReq, *this)) {
+                    sendMessage(client, SV_ITEM_NEEDED, pickUpReq);
+                    break;
                 }
-                if (hasAxe) {
-                    user->actionTargetTree(&*it);
-                    sendMessage(client, SV_ACTION_STARTED, makeArgs(TreeLite::ACTION_TIME));
-                }else
-                    sendMessage(client, SV_AXE_NEEDED);
+                user->actionTarget(&obj);
+                sendMessage(client, SV_ACTION_STARTED, makeArgs(obj.type().actionTime()));
             }
             break;
         }
@@ -505,59 +478,34 @@ void Server::broadcast(MessageCode msgCode, const std::string &args){
     }
 }
 
-void Server::removeTree(size_t serial, User &user){
+void Server::gatherObject(size_t serial, User &user){
     // Give wood to user
-    std::set<TreeLite>::iterator it = _trees.find(serial);
-    TreeLite &tree = const_cast<TreeLite &>(*it);
+    std::set<Object>::iterator it = _objects.find(serial);
+    Object &obj = const_cast<Object &>(*it);
     size_t slot = user.giveItem(*_items.find(std::string("wood")));
     if (slot == User::INVENTORY_SIZE) {
         sendMessage(user.socket(), SV_INVENTORY_FULL);
         return;
     }
     sendMessage(user.socket(), SV_INVENTORY, makeArgs(slot, "wood", user.inventory(slot).second));
-    // Ensure no other users are targeting this branch, as it will be removed.
-    for (const User &otherUserConst : _users) {
-        User &otherUser = const_cast<User &>(otherUserConst);
-        if (&otherUser != &user &&
-            otherUser.actionTargetTree() &&
-            otherUser.actionTargetTree()->serial == serial) {
-
-            user.actionTargetTree(0);
-            sendMessage(otherUser.socket(), SV_DOESNT_EXIST);
-        }
-    }
     // Remove tree if empty
-    tree.decrementWood();
+    obj.decrementWood();
     if (it->wood() == 0) {
-        broadcast(SV_REMOVE_TREE, makeArgs(serial));
-        _trees.erase(it);
-    }
-    saveData();
-}
+        // Ensure no other users are targeting this object, as it will be removed.
+        for (const User &otherUserConst : _users) {
+            User &otherUser = const_cast<User &>(otherUserConst);
+            if (&otherUser != &user &&
+                otherUser.actionTarget() &&
+                otherUser.actionTarget()->serial() == serial) {
 
-void Server::removeBranch(size_t serial, User &user){
-    // Give wood to user
-    size_t slot = user.giveItem(*_items.find(std::string("wood")));
-    if (slot == User::INVENTORY_SIZE) {
-        sendMessage(user.socket(), SV_INVENTORY_FULL);
-        return;
-    }
-    sendMessage(user.socket(), SV_INVENTORY, makeArgs(slot, "wood", user.inventory(slot).second));
-    // Ensure no other users are targeting this branch, as it will be removed.
-    for (const User &otherUserConst : _users) {
-        User &otherUser = const_cast<User &>(otherUserConst);
-        if (&otherUser != &user &&
-            otherUser.actionTargetBranch() &&
-            otherUser.actionTargetBranch()->serial == serial) {
-
-            user.actionTargetBranch(0);
-            sendMessage(otherUser.socket(), SV_DOESNT_EXIST);
+                user.actionTarget(0);
+                sendMessage(otherUser.socket(), SV_DOESNT_EXIST);
+            }
         }
+        broadcast(SV_REMOVE_OBJECT, makeArgs(serial));
+        _objects.erase(it);
     }
-    // Remove branch
-    std::set<BranchLite>::const_iterator it = _branches.find(serial);
-    broadcast(SV_REMOVE_BRANCH, makeArgs(serial));
-    _branches.erase(it);
+
     saveData();
 }
 
@@ -629,12 +577,32 @@ void Server::loadData(){
     i.craftTime(10);
     _items.insert(i);
 
+    std::ifstream fs("Data/objectTypes.dat");
+    if (!fs.good()) {
+        _debug("Object-types file invalid; aborting data load.", Color::RED);
+        return;
+    }
+    int numObjTypes;
+    fs >> numObjTypes;
+    for (int i = 0; i != numObjTypes; ++i) {
+        std::string id;
+        Uint32 actionTime;
+        size_t wood;
+        fs >> id >> actionTime >> wood;
+        _objectTypes.insert(ObjectType(id, actionTime, wood));
+    }
+    if (!fs.good()) {
+        _debug("Object-types file invalid; aborting data load.", Color::RED);
+        return;
+    }
+    fs.close();
+
     // Detect/load state
     do {
         if (cmdLineArgs.contains("new"))
             break;
 
-        std::ifstream fs("World/map.dat");
+        fs.open("World/map.dat");
         if (!fs.good())
             break;
         fs >> _mapX >> _mapY;
@@ -648,30 +616,23 @@ void Server::loadData(){
             break;
         fs.close();
 
-        fs.open("World/branches.dat");
+        fs.open("World/objects.dat");
         if (!fs.good())
             break;
-        int numBranches;
-        fs >> numBranches;
-        for (int i = 0; i != numBranches; ++i) {
-            Point p;
-            fs >> p.x >> p.y;
-            _branches.insert(p);
-        }
-        if (!fs.good())
-            break;
-        fs.close();
-
-        fs.open("World/trees.dat");
-        if (!fs.good())
-            break;
-        int numTrees;
-        fs >> numTrees;
-        for (int i = 0; i != numTrees; ++i) {
+        int numObjects;
+        fs >> numObjects;
+        for (int i = 0; i != numObjects; ++i) {
+            std::string type;
             Point p;
             size_t wood;
-            fs >> p.x >> p.y >> wood;
-            _trees.insert(TreeLite(p, wood));
+            fs >> type >> p.x >> p.y >> wood;
+            std::set<ObjectType>::const_iterator it = _objectTypes.find(type);
+            if (it == _objectTypes.end()) {
+                _debug << Color::RED << "Object with invalid type '" << type <<
+                       "' cannot be loaded." << Log::endl;
+                continue;
+            }
+            _objects.insert(Object(*it, p, wood));
         }
         if (!fs.good())
             break;
@@ -695,17 +656,13 @@ void Server::saveData() const{
     }
     fs.close();
 
-    fs.open("World/branches.dat");
-    fs << _branches.size() << '\n';
-    for (const BranchLite &branch : _branches) {
-        fs << branch.location.x << ' ' << branch.location.y << '\n';
-    }
-    fs.close();
-
-    fs.open("World/trees.dat");
-    fs << _trees.size() << '\n';
-    for (const TreeLite &tree : _trees) {
-        fs << tree.location.x << ' ' << tree.location.y << ' ' << tree.wood() << '\n';
+    fs.open("World/objects.dat");
+    fs << _objects.size() << '\n';
+    for (const Object &obj : _objects) {
+        fs << obj.type().id() << ' '
+           << obj.location().x << ' '
+           << obj.location().y << ' '
+           << obj.wood() << '\n';
     }
     fs.close();
 }
@@ -780,6 +737,7 @@ void Server::generateWorld(){
                 _map[x][y] = 4;
         }
 
+    const ObjectType &branch = *_objectTypes.find(std::string("branch"));
     for (int i = 0; i != 30; ++i){
         Point loc;
         size_t tile;
@@ -787,22 +745,29 @@ void Server::generateWorld(){
             loc = mapRand();
             tile = findTile(loc);
         } while (tile == 3 || tile == 4); // Forbidden on water
-        _branches.insert(loc);
+        _objects.insert(Object(branch, loc));
     }
 
+    const ObjectType &tree = *_objectTypes.find(std::string("tree"));
     for (int i = 0; i != 10; ++i) {
-        size_t wood = rand() % 3 + rand() % 3 + 6; // 5-9 wood per tree
         Point loc;
         size_t tile;
         do {
             loc = mapRand();
             tile = findTile(loc);
         } while (tile == 3 || tile == 4); // Forbidden on water
-        _trees.insert(TreeLite(loc, wood));
+        _objects.insert(Object(tree, loc));
     }
 }
 
 Point Server::mapRand() const{
     return Point(randDouble() * (_mapX - 0.5) * TILE_W,
                  randDouble() * _mapY * TILE_H);
+}
+
+bool Server::itemIsClass(const std::string &itemID, const std::string &className) const{
+    std::set<Item>::const_iterator it = _items.find(itemID);
+    if (it == _items.end())
+        return false;
+    return it->isClass(className);
 }

@@ -16,8 +16,7 @@ User::User(const std::string &name, const Point &loc, const Socket &socket):
 _name(name),
 _socket(socket),
 _location(loc),
-_actionTargetBranch(0),
-_actionTargetTree(0),
+_actionTarget(0),
 _actionCrafting(0),
 _actionTime(0),
 _inventory(INVENTORY_SIZE, std::make_pair("none", 0)),
@@ -92,22 +91,16 @@ size_t User::giveItem(const Item &item){
 }
 
 void User::cancelAction(Server &server) {
-    if (_actionTargetBranch || _actionTargetTree || _actionCrafting)
+    if (_actionTarget || _actionCrafting)
         server.sendMessage(_socket, SV_ACTION_INTERRUPTED);
-    _actionTargetBranch = 0;
-    _actionTargetTree = 0;
+    _actionTarget = 0;
     _actionCrafting = 0;
     _actionTime = 0;
 }
 
-void User::actionTargetBranch(const BranchLite *branch){
-    _actionTargetBranch = branch;
-    _actionTime = BranchLite::ACTION_TIME;
-}
-
-void User::actionTargetTree(const TreeLite *tree){
-    _actionTargetTree = tree;
-    _actionTime = TreeLite::ACTION_TIME;
+void User::actionTarget(const Object *obj){
+    _actionTarget = obj;
+    _actionTime = obj->type().actionTime();
 }
 
 void User::actionCraft(const Item &item){
@@ -129,6 +122,15 @@ bool User::hasMaterials(const Item &item) const{
         }
     }
     return remaining.empty();
+}
+
+bool User::hasItemClass(const std::string &className, const Server &server) const{
+    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
+        const std::string &itemID = _inventory[i].first;
+        if (server.itemIsClass(itemID, className))
+            return true;
+    }
+    return false;
 }
 
 void User::removeMaterials(const Item &item, Server &server) {
@@ -164,12 +166,9 @@ void User::update(Uint32 timeElapsed, Server &server){
     if (_actionTime > timeElapsed)
         _actionTime -= timeElapsed;
     else {
-        if (_actionTargetBranch) {
-            server.removeBranch(_actionTargetBranch->serial, *this);
-            _actionTargetBranch = 0;
-        } else if (_actionTargetTree) {
-            server.removeTree(_actionTargetTree->serial, *this);
-            _actionTargetTree = 0;
+        if (_actionTarget) {
+            server.gatherObject(_actionTarget->serial(), *this);
+            _actionTarget = 0;
         } else if (_actionCrafting) {
             // Give user his newly crafted item
             size_t slot = giveItem(*_actionCrafting);

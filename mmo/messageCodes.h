@@ -31,13 +31,9 @@ enum MessageCode{
     // Arguments: slot, x, y
     CL_CONSTRUCT = 22,
 
-    // User wants to collect a branch
+    // "I want to pick up an object"
     // Arguments: serial
-    CL_COLLECT_BRANCH = 50,
-
-    // User wants to collect a tree
-    // Arguments: serial
-    CL_COLLECT_TREE = 51,
+    CL_GATHER = 23,
 
 
 
@@ -71,20 +67,20 @@ enum MessageCode{
     // Arguments: slot, ID, quantity
     SV_INVENTORY = 123,
 
+    // The details of an object
+    // Arguments: serial, x, y, type
+    SV_OBJECT = 124,
+
+    // An object has been removed
+    // Arguments: serial
+    SV_REMOVE_OBJECT = 125,
+
     // The user has begun an action
     // Arguments: time
     SV_ACTION_STARTED = 130,
 
     // The user has completed an action
     SV_ACTION_FINISHED = 131,
-
-    // The location of a branch
-    // Arguments: serial, x, y
-    SV_BRANCH = 150,
-
-    // The location of a tree
-    // Arguments: serial, x, y
-    SV_TREE = 151,
 
     // A branch has been removed
     // Arguments: serial
@@ -133,8 +129,9 @@ enum MessageCode{
     // The user tried to construct an item that cannot be constructed
     SV_CANNOT_CONSTRUCT = 919,
 
-    // The user cannot cut down a tree, as he doesn't have an axe-class item
-    SV_AXE_NEEDED = 950,
+    // The user tried to perform an action but does not have the requisite item
+    // Arguments: requiredItemClass
+    SV_ITEM_NEEDED = 920,
 
 
 

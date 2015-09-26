@@ -9,11 +9,10 @@
 #include <string>
 
 #include "Args.h"
-#include "BranchLite.h"
 #include "Item.h"
 #include "Log.h"
+#include "Object.h"
 #include "Socket.h"
-#include "TreeLite.h"
 #include "User.h"
 #include "messageCodes.h"
 
@@ -34,6 +33,8 @@ public:
     static const int TILE_W, TILE_H;
     const size_t mapX() const { return _mapX; }
     const size_t mapY() const { return _mapY; }
+
+    bool itemIsClass(const std::string &itemID, const std::string &className) const;
 
 private:
 
@@ -70,8 +71,7 @@ private:
     void removeUser(std::set<User>::iterator &it);
 
     // World state
-    std::set<BranchLite> _branches;
-    std::set<TreeLite> _trees;
+    std::set<Object> _objects;
     void loadData(); // Attempt to load data from files.
     void saveData() const;
     void generateWorld(); // Randomly generate a new world.
@@ -83,13 +83,13 @@ private:
 
     // World data
     std::set<Item> _items;
+    std::set<ObjectType> _objectTypes;
 
     mutable Log _debug;
 
     void draw() const;
 
-    void removeBranch (size_t serial, User &user);
-    void removeTree (size_t serial, User &user);
+    void gatherObject (size_t serial, User &user);
     friend void User::update(Uint32 timeElapsed, Server &server);
     friend void User::removeMaterials(const Item &item, Server &server);
     friend void User::cancelAction(Server &server);

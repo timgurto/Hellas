@@ -44,6 +44,13 @@ std::string makeArgs(T1 val1, T2 val2, T3 val3){
     return oss.str();
 }
 
+template<typename T1, typename T2, typename T3, typename T4>
+std::string makeArgs(T1 val1, T2 val2, T3 val3, T4 val4){
+    std::ostringstream oss;
+    oss << val1 << ',' << val2 << ',' << val3 << ',' << val4;
+    return oss.str();
+}
+
 inline SDL_Rect makeRect(int x = 0, int y = 0, int w = 0, int h = 0){
     SDL_Rect r;
     r.x = x;

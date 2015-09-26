@@ -2,6 +2,7 @@
 
 #include "ObjectType.h"
 
-ObjectType::ObjectType(const std::string &id, Uint32 actionTime):
+ObjectType::ObjectType(const std::string &id, Uint32 actionTime, size_t wood):
 _id(id),
-_actionTime(actionTime){}
+_actionTime(actionTime),
+_wood(wood){}
