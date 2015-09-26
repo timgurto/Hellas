@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 
+#include "ClientObjectType.h"
 #include "Entity.h"
 #include "Point.h"
 
@@ -22,6 +23,8 @@ public:
     bool operator==(const ClientObject &rhs) const { return _serial == rhs._serial; }
 
     size_t serial() const { return _serial; }
+    const ClientObjectType &objectType() const
+        { return dynamic_cast<const ClientObjectType &>(type()); }
 
     virtual void onLeftClick(Client &client) const;
     virtual std::vector<std::string> getTooltipMessages(const Client &client) const;

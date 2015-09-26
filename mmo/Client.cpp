@@ -147,8 +147,8 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
         drawRect.w = drawRect.h = 0;
         bool canGather;
         fs >> id >> name >> drawRect.x >> drawRect.y >> canGather;
-        _objectTypes.insert(EntityType(drawRect, std::string("Images/") + id + ".png", id, name,
-                                       canGather));
+        _objectTypes.insert(ClientObjectType(drawRect, std::string("Images/") + id + ".png",
+                                             id, name, canGather));
     }
     if (!fs.good()) {
         _debug("Object-types file invalid; aborting data load.", Color::RED);
@@ -1149,7 +1149,7 @@ void Client::handleMessage(const std::string &msg){
             std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()) {
                 // A new object was added; add entity to list
-                std::set<EntityType>::const_iterator it = _objectTypes.find(type);
+                std::set<ClientObjectType>::const_iterator it = _objectTypes.find(type);
                 if (it == _objectTypes.end())
                     break;
                 ClientObject *obj = new ClientObject(serial, *it, Point(x, y));

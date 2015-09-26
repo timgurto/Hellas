@@ -11,6 +11,7 @@
 #include "Args.h"
 #include "Avatar.h"
 #include "ClientObject.h"
+#include "ClientObjectType.h"
 #include "ChoiceList.h"
 #include "Entity.h"
 #include "Item.h"
@@ -135,7 +136,7 @@ private:
 
     // Game data
     std::set<Item> _items;
-    std::set<EntityType> _objectTypes;
+    std::set<ClientObjectType> _objectTypes;
 
     // Information about the state of the world
     size_t _mapX, _mapY;
