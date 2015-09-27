@@ -15,7 +15,7 @@ class Client;
 // Handles the graphical and UI side of in-game objects  Abstract class
 class Entity{
     bool _yChanged; // y co-ordinate has changed, and the entity must be reordered.
-    const EntityType &_type;
+    const EntityType *_type;
     Point _location;
     bool _needsTooltipRefresh;
     virtual std::vector<std::string> getTooltipMessages(const Client &client) const {
@@ -24,17 +24,17 @@ class Entity{
 
 protected:
     Texture _tooltip;
-    const EntityType &type() const { return _type; }
+    const EntityType *type() const { return _type; }
 
 public:
-    Entity(const EntityType &type, const Point &location);
+    Entity(const EntityType *type, const Point &location);
     virtual ~Entity(){}
 
     const Point &location() const { return _location; }
     void location(const Point &loc); // yChanged() should be checked after changing location.
     SDL_Rect drawRect() const;
-    int width() const { return _type.width(); }
-    int height() const { return _type.height(); }
+    int width() const { return _type->width(); }
+    int height() const { return _type->height(); }
     bool yChanged() const { return _yChanged; }
     void yChanged(bool val) { _yChanged = val; }
     bool needsTooltipRefresh() { return _needsTooltipRefresh; }

@@ -10,23 +10,23 @@ ClientObject::ClientObject(const ClientObject &rhs):
 Entity(rhs),
 _serial(rhs._serial){}
 
-ClientObject::ClientObject(size_t serialArg, const EntityType &type, const Point &loc):
+ClientObject::ClientObject(size_t serialArg, const EntityType *type, const Point &loc):
 Entity(type, loc),
 _serial(serialArg){}
 
 void ClientObject::onLeftClick(Client &client) const{
-    if (objectType().canGather()) {
+    if (objectType()->canGather()) {
         std::ostringstream oss;
         oss << '[' << CL_GATHER << ',' << _serial << ']';
         client.socket().sendMessage(oss.str());
-        client.prepareAction(std::string("Gathering") + objectType().name());
+        client.prepareAction(std::string("Gathering") + objectType()->name());
     }
 }
 
 std::vector<std::string> ClientObject::getTooltipMessages(const Client &client) const {
     std::vector<std::string> text;
-    text.push_back(objectType().name());
-    if (objectType().canGather() &&
+    text.push_back(objectType()->name());
+    if (objectType()->canGather() &&
         distance(location(), client.character().location()) > Server::ACTION_DISTANCE) {
 
         text.push_back("Out of range");

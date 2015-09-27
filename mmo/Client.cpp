@@ -501,7 +501,7 @@ void Client::checkMouseOver(){
     const Point mouseOffset = _mouse - _offset;
     const Entity *oldMouseOverEntity = _currentMouseOverEntity;
     Entity::set_t::iterator mouseOverIt = _entities.end();
-    Entity lookupEntity(EntityType(), mouseOffset);
+    Entity lookupEntity(0, mouseOffset);
     for (auto it = _entities.lower_bound(&lookupEntity); it != _entities.end(); ++it) {
         if (*it != &_character &&(*it)->collision(mouseOffset))
             mouseOverIt = it;
@@ -1151,7 +1151,7 @@ void Client::handleMessage(const std::string &msg){
                 std::set<ClientObjectType>::const_iterator it = _objectTypes.find(type);
                 if (it == _objectTypes.end())
                     break;
-                ClientObject *obj = new ClientObject(serial, *it, Point(x, y));
+                ClientObject *obj = new ClientObject(serial, &*it, Point(x, y));
                 _entities.insert(obj);
                 _objects[serial] = obj;
             }

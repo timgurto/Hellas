@@ -8,7 +8,7 @@
 EntityType Avatar::_entityType(makeRect(-9, -39));
 
 Avatar::Avatar(const std::string &name, const Point &location):
-Entity(_entityType, location),
+Entity(&_entityType, location),
 _name(name){}
 
 Point Avatar::interpolatedLocation(double delta){

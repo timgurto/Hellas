@@ -17,14 +17,14 @@ class ClientObject : public Entity{
 public:
     ClientObject(const ClientObject &rhs);
     // Serial only: create dummy object, for set searches
-    ClientObject(size_t serial, const EntityType &type = EntityType(), const Point &loc = Point());
+    ClientObject(size_t serial, const EntityType *type = 0, const Point &loc = Point());
 
     bool operator<(const ClientObject &rhs) const { return _serial < rhs._serial; }
     bool operator==(const ClientObject &rhs) const { return _serial == rhs._serial; }
 
     size_t serial() const { return _serial; }
-    const ClientObjectType &objectType() const
-        { return dynamic_cast<const ClientObjectType &>(type()); }
+    const ClientObjectType *objectType() const
+        { return dynamic_cast<const ClientObjectType *>(type()); }
 
     virtual void onLeftClick(Client &client) const;
     virtual std::vector<std::string> getTooltipMessages(const Client &client) const;

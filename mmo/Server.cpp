@@ -259,9 +259,11 @@ void Server::addUser(const Socket &socket, const std::string &name){
         sendMessage(newUser.socket(), SV_LOCATION, user.makeLocationCommand());
 
     // Send him object locations
-    for (const Object &obj : _objects)
+    for (const Object &obj : _objects) {
+        assert (obj.type());
         sendMessage(newUser.socket(), SV_OBJECT,
-                    makeArgs(obj.serial(), obj.location().x, obj.location().y, obj.type().id()));
+                    makeArgs(obj.serial(), obj.location().x, obj.location().y, obj.type()->id()));
+    }
 
     // Send him his inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
@@ -455,13 +457,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             } else {
                 const Object &obj = *it;
                 // Check that the user meets the requirements
-                const std::string &gatherReq = obj.type().gatherReq();
+                assert (obj.type());
+                const std::string &gatherReq = obj.type()->gatherReq();
                 if (gatherReq != "none" && !user->hasItemClass(gatherReq, *this)) {
                     sendMessage(client, SV_ITEM_NEEDED, gatherReq);
                     break;
                 }
                 user->actionTarget(&obj);
-                sendMessage(client, SV_ACTION_STARTED, makeArgs(obj.type().actionTime()));
+                sendMessage(client, SV_ACTION_STARTED, makeArgs(obj.type()->actionTime()));
             }
             break;
         }
@@ -633,7 +636,7 @@ void Server::loadData(){
                        "' cannot be loaded." << Log::endl;
                 continue;
             }
-            _objects.insert(Object(*it, p, wood));
+            _objects.insert(Object(&*it, p, wood));
         }
         if (!fs.good())
             break;
@@ -660,7 +663,8 @@ void Server::saveData() const{
     fs.open("World/objects.dat");
     fs << _objects.size() << '\n';
     for (const Object &obj : _objects) {
-        fs << obj.type().id() << ' '
+        assert (obj.type());
+        fs << obj.type()->id() << ' '
            << obj.location().x << ' '
            << obj.location().y << ' '
            << obj.wood() << '\n';
@@ -738,7 +742,7 @@ void Server::generateWorld(){
                 _map[x][y] = 4;
         }
 
-    const ObjectType &branch = *_objectTypes.find(std::string("branch"));
+    const ObjectType *branch = &*_objectTypes.find(std::string("branch"));
     for (int i = 0; i != 30; ++i){
         Point loc;
         size_t tile;
@@ -749,7 +753,7 @@ void Server::generateWorld(){
         _objects.insert(Object(branch, loc));
     }
 
-    const ObjectType &tree = *_objectTypes.find(std::string("tree"));
+    const ObjectType *tree = &*_objectTypes.find(std::string("tree"));
     for (int i = 0; i != 10; ++i) {
         Point loc;
         size_t tile;
@@ -760,7 +764,7 @@ void Server::generateWorld(){
         _objects.insert(Object(tree, loc));
     }
 
-    const ObjectType &chest = *_objectTypes.find(std::string("chest"));
+    const ObjectType *chest = &*_objectTypes.find(std::string("chest"));
     for (int i = 0; i != 10; ++i) {
         Point loc;
         size_t tile;

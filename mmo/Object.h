@@ -10,7 +10,7 @@
 class Object{
     size_t _serial;
     Point _location;
-    const ObjectType &_type;
+    const ObjectType *_type;
     size_t _wood; // wood remaining
 
 protected:
@@ -18,16 +18,14 @@ protected:
 
 public:
     // Both constructors generate new serials
-    Object(const ObjectType &type, const Point &loc);
-    Object(const ObjectType &type, const Point &loc, size_t wood); // Load pre-existing from file
-
-    static ObjectType emptyType; // Used for below dummy-lookup items
+    Object(const ObjectType *type, const Point &loc);
+    Object(const ObjectType *type, const Point &loc, size_t wood); // Load pre-existing from file
     Object(size_t serial); // For set/map lookup; contains only a serial
 
     const Point &location() const { return _location; }
     size_t serial() const { return _serial; }
     void serial(size_t s) { _serial = s; }
-    const ObjectType &type() const { return _type; }
+    const ObjectType *type() const { return _type; }
     size_t wood() const { return _wood; }
 
     bool operator<(const Object &rhs) const { return _serial < rhs._serial; }

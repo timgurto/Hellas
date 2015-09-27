@@ -1,5 +1,6 @@
 // (C) 2015 Tim Gurto
 
+#include <cassert>
 #include <sstream>
 
 #include "Client.h"
@@ -100,7 +101,8 @@ void User::cancelAction(Server &server) {
 
 void User::actionTarget(const Object *obj){
     _actionTarget = obj;
-    _actionTime = obj->type().actionTime();
+    assert(obj->type());
+    _actionTime = obj->type()->actionTime();
 }
 
 void User::actionCraft(const Item &item){

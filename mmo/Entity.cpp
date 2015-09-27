@@ -1,5 +1,7 @@
 // (C) 2015 Tim Gurto
 
+#include <cassert>
+
 #include "Client.h"
 #include "Entity.h"
 #include "Renderer.h"
@@ -9,18 +11,19 @@
 
 extern Renderer renderer;
 
-Entity::Entity(const EntityType &type, const Point &location):
+Entity::Entity(const EntityType *type, const Point &location):
 _yChanged(false),
 _type(type),
 _location(location),
 _needsTooltipRefresh(false){}
 
 SDL_Rect Entity::drawRect() const {
-    return _type.drawRect() + _location;
+    return _type->drawRect() + _location;
 }
 
 void Entity::draw(const Client &client) const{
-    _type.drawAt(_location + client.offset());
+    assert(_type);
+    _type->drawAt(_location + client.offset());
     if (isDebug()) {
         renderer.setDrawColor(Color::YELLOW);
         renderer.fillRect(makeRect(_location.x + client.offset().x,
@@ -33,7 +36,10 @@ void Entity::draw(const Client &client) const{
 }
 
 double Entity::bottomEdge() const{
-    return _location.y + _type.drawRect().y + _type.height();
+    if (_type)
+        return _location.y + _type->drawRect().y + _type->height();
+    else
+        return _location.y;
 }
 
 void Entity::location(const Point &loc){
