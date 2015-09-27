@@ -1027,7 +1027,6 @@ void Client::handleMessage(const std::string &msg){
             if (del != ']')
                 break;
             std::string msg = "You need a";
-            bool vowelStart = false;
             char first= reqItemClass.front();
             if (first == 'a' || first == 'e' || first == 'i' ||
                 first == 'o' || first == 'u')

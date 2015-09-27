@@ -6,8 +6,8 @@
 #include "EntityType.h"
 
 EntityType::EntityType(const SDL_Rect &drawRect, const std::string &imageFile):
-_drawRect(drawRect),
-_image(imageFile, Color::MAGENTA){
+_image(imageFile, Color::MAGENTA),
+_drawRect(drawRect){
     _drawRect.w = _image.width();
     _drawRect.h = _image.height();
 }
