@@ -8,7 +8,7 @@ Item::Item(const std::string &idArg, const std::string &nameArg, size_t stackSiz
 _id(idArg),
 _name(nameArg),
 _stackSize(stackSizeArg),
-_icon(std::string("Images/") + _id + ".png", Color::MAGENTA),
+_icon(std::string("Images/Items/") + _id + ".png", Color::MAGENTA),
 _craftTime(0){}
 
 Item::Item(const std::string &idArg):

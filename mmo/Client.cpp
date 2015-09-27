@@ -91,11 +91,11 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
     _defaultFont = TTF_OpenFont("trebuc.ttf", 10);
 
     Avatar::image("Images/man.png");
-    _tile[0] = Texture(std::string("Images/grass.png"));
-    _tile[1] = Texture(std::string("Images/stone.png"));
-    _tile[2] = Texture(std::string("Images/road.png"));
-    _tile[3] = Texture(std::string("Images/deepWater.png"));
-    _tile[4] = Texture(std::string("Images/water.png"));
+    _tile[0] = Texture(std::string("Images/Terrain/grass.png"));
+    _tile[1] = Texture(std::string("Images/Terrain/stone.png"));
+    _tile[2] = Texture(std::string("Images/Terrain/road.png"));
+    _tile[3] = Texture(std::string("Images/Terrain/deepWater.png"));
+    _tile[4] = Texture(std::string("Images/Terrain/water.png"));
     for (size_t i = 0; i != 5; ++i) {
         _tile[i].setBlend(SDL_BLENDMODE_ADD);
         _tile[i].setAlpha(0x3f);
@@ -147,7 +147,7 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
         drawRect.w = drawRect.h = 0;
         bool canGather;
         fs >> id >> name >> drawRect.x >> drawRect.y >> canGather;
-        _objectTypes.insert(ClientObjectType(drawRect, std::string("Images/") + id + ".png",
+        _objectTypes.insert(ClientObjectType(drawRect, std::string("Images/Objects/") + id + ".png",
                                              id, name, canGather));
     }
     if (!fs.good()) {

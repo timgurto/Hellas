@@ -1,4 +1,4 @@
 3
 tree Tree -20 -47 1
 branch Branch -14 -12 1
-chestObject WoodenChest -14 -17 0
+chest WoodenChest -14 -17 0

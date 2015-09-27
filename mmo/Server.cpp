@@ -759,6 +759,17 @@ void Server::generateWorld(){
         } while (tile == 3 || tile == 4); // Forbidden on water
         _objects.insert(Object(tree, loc));
     }
+
+    const ObjectType &chest = *_objectTypes.find(std::string("chest"));
+    for (int i = 0; i != 10; ++i) {
+        Point loc;
+        size_t tile;
+        do {
+            loc = mapRand();
+            tile = findTile(loc);
+        } while (tile == 3 || tile == 4); // Forbidden on water
+        _objects.insert(Object(chest, loc));
+    }
 }
 
 Point Server::mapRand() const{
