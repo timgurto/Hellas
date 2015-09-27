@@ -57,8 +57,8 @@ void Window::stopDragging(Element &e, const Point &mousePos){
 void Window::drag(Element &e, const Point &mousePos){
     Window &window = dynamic_cast<Window &>(e);
     if (window._dragging) 
-        window.rect(static_cast<int>(absMouse->x - window._dragOffset.x + .5),
-                    static_cast<int>(absMouse->y - window._dragOffset.y + .5));
+        window.rect(toInt(absMouse->x - window._dragOffset.x),
+                    toInt(absMouse->y - window._dragOffset.y));
 }
 
 void Window::hideWindow(void *window){

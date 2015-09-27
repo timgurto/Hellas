@@ -534,9 +534,9 @@ void Client::draw() const{
 
     // Map
     for (size_t y = 0; y != _mapY; ++y) {
-        int yLoc = y * Server::TILE_H + static_cast<int>(offset().y + .5);
+        int yLoc = y * Server::TILE_H + toInt(offset().y);
         for (size_t x = 0; x != _mapX; ++x){
-            int xLoc = x * Server::TILE_W + static_cast<int>(offset().x + .5);
+            int xLoc = x * Server::TILE_W + toInt(offset().x);
             if (y % 2 == 1)
                 xLoc -= Server::TILE_W/2;
             drawTile(x, y, xLoc, yLoc);
@@ -599,15 +599,14 @@ void Client::draw() const{
             CAST_BAR_BACKGROUND = Color::BLUE / 2 + Color::GREY_2,
             CAST_BAR_COLOR = Color::RED * 0.75;
         const SDL_Rect
-            castBarBackgroundRect = makeRect(static_cast<int>((SCREEN_X - CAST_BAR_WIDTH) / 2.0 -
-                                                              CAST_BAR_PADDING + .5),
+            castBarBackgroundRect = makeRect(toInt((SCREEN_X - CAST_BAR_WIDTH) / 2.0 -
+                                                              CAST_BAR_PADDING),
                                              CAST_BAR_Y - CAST_BAR_PADDING,
                                              CAST_BAR_WIDTH + 2 * CAST_BAR_PADDING,
                                              CAST_BAR_HEIGHT + 2 * CAST_BAR_PADDING),
-            castBarRect = makeRect(static_cast<int>((SCREEN_X - CAST_BAR_WIDTH) / 2.0 + 0.5),
+            castBarRect = makeRect(toInt((SCREEN_X - CAST_BAR_WIDTH) / 2.0),
                                    CAST_BAR_Y,
-                                   static_cast<int>(CAST_BAR_WIDTH * 1.0 * _actionTimer /
-                                                    _actionLength + .5),
+                                   toInt(CAST_BAR_WIDTH * 1.0 * _actionTimer / _actionLength),
                                    CAST_BAR_HEIGHT);
         renderer.setDrawColor(CAST_BAR_BACKGROUND);
         renderer.fillRect(castBarBackgroundRect);
@@ -626,7 +625,7 @@ void Client::draw() const{
     // FPS/latency
     std::ostringstream oss;
     if (_timeElapsed > 0)
-        oss << static_cast<int>(1000.0/_timeElapsed + .5);
+        oss << toInt(1000.0/_timeElapsed);
     else
         oss << "infinite ";
     oss << "fps " << _latency << "ms";
@@ -720,8 +719,8 @@ void Client::drawTooltip() const{
         static const int EDGE_GAP = 2; // Gap from screen edges
         static const int CURSOR_GAP = 10; // Horizontal gap from cursor
         int x, y;
-        int mouseX = static_cast<int>(_mouse.x + .5);
-        int mouseY = static_cast<int>(_mouse.y + .5);
+        int mouseX = toInt(_mouse.x);
+        int mouseY = toInt(_mouse.y);
 
         // y: below cursor, unless too close to the bottom of the screen
         if (SCREEN_Y > mouseY + tooltip.height() + EDGE_GAP)
@@ -1239,8 +1238,8 @@ void Client::setEntityLocation(Entity *entity, const Point &location){
 void Client::updateOffset(){
     _offset = Point(SCREEN_X / 2 - _character.location().x,
                     SCREEN_Y / 2 - _character.location().y);
-    _intOffset = Point(static_cast<int>(_offset.x + 0.5),
-                       static_cast<int>(_offset.y + 0.5));
+    _intOffset = Point(toInt(_offset.x),
+                       toInt(_offset.y));
 }
 
 void Client::prepareAction(const std::string &msg){

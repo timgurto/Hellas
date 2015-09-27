@@ -71,7 +71,7 @@ void List::updateScrollBar(){
         progress = 1;
         _scrolledToBottom = true;
     }
-    _cursor->rect(0, static_cast<int>(progress * Y_RANGE + Y_MIN + .5));
+    _cursor->rect(0, toInt(progress * Y_RANGE + Y_MIN));
     _scrollBar->markChanged();
 
     // Arrow visibility
@@ -132,7 +132,7 @@ Element *List::findChild(const std::string id){
 void List::cursorMouseDown(Element &e, const Point &mousePos){
     List &list = dynamic_cast<List&>(e);
     list._mouseDownOnCursor = true;
-    list._cursorOffset = static_cast<int>(mousePos.y + .5);
+    list._cursorOffset = toInt(mousePos.y);
 }
 
 void List::mouseUp(Element &e, const Point &mousePos){
@@ -156,7 +156,7 @@ void List::mouseMove(Element &e, const Point &mousePos){
             progress = 1;
             list._scrolledToBottom = true;
         }
-        int newY = static_cast<int>(-progress * (list._content->rect().h - list.rect().h) - .5);
+        int newY = toInt(-progress * (list._content->rect().h - list.rect().h));
         list._content->rect(0, newY);
         list.updateScrollBar();
     }

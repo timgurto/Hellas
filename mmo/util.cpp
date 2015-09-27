@@ -34,6 +34,10 @@ double distance(const Point &p, const Point &a, const Point &b){
     return numerator / denominator;
 }
 
+SDL_Rect makeRect(const Point &p){
+    return makeRect(p.x, p.y);
+}
+
 Point interpolate(const Point &a, const Point &b, double dist){
     double
         xDelta = b.x - a.x,

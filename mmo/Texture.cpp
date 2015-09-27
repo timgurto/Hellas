@@ -145,7 +145,7 @@ void Texture::draw(int x, int y) const{
 }
 
 void Texture::draw(const Point &location) const{
-    draw(static_cast<int>(location.x + .5), static_cast<int>(location.y + .5));
+    draw(toInt(location.x), toInt(location.y));
 }
 
 void Texture::draw(const SDL_Rect &location) const{

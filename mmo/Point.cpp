@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "Point.h"
+#include "util.h"
 
 const double Point::EPSILON = 0.001;
 
@@ -12,8 +13,8 @@ y(yArg){}
 
 Point::operator SDL_Rect() const{
     SDL_Rect r;
-    r.x = static_cast<int>(x + .5);
-    r.y = static_cast<int>(y + .5);
+    r.x = toInt(x);
+    r.y = toInt(y);
     r.w = r.h = 0;
     return r;
 }

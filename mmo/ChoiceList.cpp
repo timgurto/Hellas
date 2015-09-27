@@ -26,7 +26,7 @@ _mouseDownBox(new ShadowBox(makeRect(0, 0, rect.w - List::ARROW_W, childHeight),
 }
 
 const std::string &ChoiceList::getIdFromMouse(double mouseY, int *index) const{
-    int i = static_cast<int>(mouseY / childHeight());
+    int i = toInt(mouseY / childHeight());
     if (i < 0 || i >= static_cast<int>(_content->children().size())) {
         *index = -1;
         return EMPTY_STR;

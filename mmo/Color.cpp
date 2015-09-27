@@ -52,9 +52,9 @@ Color Color::operator/(double s) const {
     if (s < 0)
         return BLACK;
     int
-        r = static_cast<int>(_r/s + .5),
-        g = static_cast<int>(_g/s + .5),
-        b = static_cast<int>(_b/s + .5);
+        r = toInt(_r/s),
+        g = toInt(_g/s),
+        b = toInt(_b/s);
     if (r > 0xff) r = 0xff;
     if (g > 0xff) g = 0xff;
     if (b > 0xff) b = 0xff;
@@ -69,9 +69,9 @@ Color Color::operator*(double d) const {
     if (d < 0)
         return BLACK;
     int
-        r = static_cast<int>(_r * d + .5),
-        g = static_cast<int>(_g * d + .5),
-        b = static_cast<int>(_b * d + .5);
+        r = toInt(_r * d),
+        g = toInt(_g * d),
+        b = toInt(_b * d);
     if (r > 0xff) r = 0xff;
     if (g > 0xff) g = 0xff;
     if (b > 0xff) b = 0xff;
