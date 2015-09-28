@@ -543,7 +543,11 @@ void Server::writeUserData(const User &user) const{
 
     // Inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
-        fs << user.inventory(i).first << ' ' << user.inventory(i).second << std::endl;
+        const std::pair<const Item *, size_t> &slot = user.inventory(i);
+        if (slot.first)
+            fs << user.inventory(i).first->id() << ' ' << user.inventory(i).second << std::endl;
+        else
+            fs << "none 0" << std::endl;
     }
 
     fs.close();

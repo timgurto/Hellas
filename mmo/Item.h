@@ -15,6 +15,9 @@ class Item{
     std::string _name;
     size_t _stackSize;
     std::set<std::string> _classes;
+
+    //const ObjectType *_structure; // The object that this Item can be transformed into, if any
+
     Texture _icon;
 
     /*
