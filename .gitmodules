@@ -1,3 +1,6 @@
 [submodule "SDL2"]
 	path = SDL2
 	url = https://github.com/timgurto/SDL2-libraries
+[submodule "tinyxml"]
+	path = tinyxml
+	url = https://github.com/timgurto/TinyXML-library
