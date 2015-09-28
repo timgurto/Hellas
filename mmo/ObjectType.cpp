@@ -2,9 +2,8 @@
 
 #include "ObjectType.h"
 
-ObjectType::ObjectType(const std::string &id, Uint32 actionTime, size_t wood,
-                       const std::string &gatherReq):
+ObjectType::ObjectType(const std::string &id):
 _id(id),
-_actionTime(actionTime),
-_wood(wood),
-_gatherReq(gatherReq){}
+_actionTime(0),
+_wood(0),
+_gatherReq("none"){}

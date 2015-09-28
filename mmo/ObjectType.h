@@ -16,9 +16,9 @@ class ObjectType{
     std::string _gatherReq;
 
 public:
-    ObjectType(const std::string &id, Uint32 actionTime = 0, size_t wood = 0,
-               const std::string &gatherReq = "none");
+    ObjectType(const std::string &id);
 
+    void actionTime(Uint32 t) { _actionTime = t; }
     size_t wood() const { return _wood; }
     void wood(size_t qty) { _wood = qty; }
     const std::string &gatherReq() const { return _gatherReq; }

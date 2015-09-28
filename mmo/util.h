@@ -28,6 +28,13 @@ double distance(const Point &p, const Point &a, const Point &b); // point P to l
 // or return b if dist exceeds the distance between a and b.
 Point interpolate(const Point &a, const Point &b, double dist);
 
+inline int str2int(const std::string str) {
+    std::istringstream iss(str);
+    int i;
+    iss >> i;
+    return i;
+}
+
 template<typename T1>
 std::string makeArgs(T1 val1){
     std::ostringstream oss;

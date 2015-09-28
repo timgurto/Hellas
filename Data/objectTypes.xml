@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<root>
+<objectType
+    id="tree"
+    gatherReq="axe"
+    actionTime=3000
+    wood=6
+/>
+<objectType
+    id="branch"
+    actionTime=1000
+    wood=1
+/>
+<objectType
+    id="chest"
+/>
+</root>

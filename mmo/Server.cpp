@@ -4,6 +4,7 @@
 #include <cassert>
 #include <sstream>
 #include <fstream>
+#include "tinyxml.h"
 #include <utility>
 
 #include "Client.h" //TODO remove; only here for random initial placement
@@ -584,28 +585,45 @@ void Server::loadData(){
     chest.addMaterial(&wood, 5);
     chest.craftTime(10);
 
-
-    std::ifstream fs("Data/objectTypes.dat");
-    if (!fs.good()) {
-        _debug("Object-types file invalid; aborting data load.", Color::RED);
+    TiXmlDocument doc;
+    bool ret = doc.LoadFile("Data/objectTypes.xml");
+    if (!ret) {
+        _debug(doc.ErrorDesc(), Color::RED);
         return;
     }
-    int numObjTypes;
-    fs >> numObjTypes;
-    for (int i = 0; i != numObjTypes; ++i) {
-        std::string id;
-        Uint32 actionTime;
-        size_t wood;
-        std::string gatherReq;
-        fs >> id >> actionTime >> wood >> gatherReq;
-        _objectTypes.insert(ObjectType(id, actionTime, wood, gatherReq));
-    }
-    if (!fs.good()) {
-        _debug("Object-types file invalid; aborting data load.", Color::RED);
+    TiXmlElement *root = doc.FirstChildElement();
+    if (!root){
+        _debug("Object-types file has no root node; aborting.", Color::RED);
+        doc.Clear();
         return;
     }
-    fs.close();
+    static const std::string VAL = "objectType";
+    for (TiXmlElement *elem = root->FirstChildElement(); elem; elem = elem->NextSiblingElement()) {
+        std::string val = elem->Value();
+        if (elem->Value() != VAL)
+            continue;
+        
+        const char *id = elem->Attribute("id");
+        if (!id)
+            continue;
+        ObjectType ot(id);
 
+        const char *actionTime = elem->Attribute("actionTime");
+        if (actionTime)
+            ot.actionTime(str2int(actionTime));
+
+        const char *wood = elem->Attribute("wood");
+        if (wood)
+            ot.wood(str2int(wood));
+
+        const char *gatherReq = elem->Attribute("gatherReq");
+        if (gatherReq)
+            ot.gatherReq(gatherReq);
+        
+        _objectTypes.insert(ot);
+    }
+
+    std::ifstream fs;
     // Detect/load state
     do {
         if (cmdLineArgs.contains("new"))
