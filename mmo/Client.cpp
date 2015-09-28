@@ -100,6 +100,10 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
         _tile[i].setAlpha(0x3f);
     }
 
+    // Player's inventory
+    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i)
+        _inventory.push_back(std::make_pair<const Item *, size_t>(0, 0));
+
     _invLabel = Texture(_defaultFont, "Inventory");
     int invW =  max(min(ICONS_X, _inventory.size()) * (ICON_SIZE + 1) + 1,
                     static_cast<unsigned>(_invLabel.width()));
@@ -114,10 +118,6 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
             _username.push_back('a' + rand() % 26);
     _debug << "Player name: " << _username << Log::endl;
     _character.name(_username);
-
-    // Player's inventory
-    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i)
-        _inventory.push_back(std::make_pair<const Item *, size_t>(0, 0));
 
     SDL_StopTextInput();
 
