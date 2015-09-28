@@ -123,7 +123,6 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
 
 
     // First pass: empty items, to facilitate links between items in second pass
-    _items.insert(Item("none", "none"));
     Item &wood = const_cast<Item &>(*_items.insert(Item("wood", "wood", 5)).first);
     Item &axe = const_cast<Item &>(*_items.insert(Item("axe", "wooden axe")).first);
     Item &chest = const_cast<Item &>(*_items.insert(Item("chest", "wooden chest", 10)).first);
@@ -1129,8 +1128,9 @@ void Client::handleMessage(const std::string &msg){
                 break;
             std::set<Item>::const_iterator it = _items.find(itemID);
             if (it == _items.end())
-                break;
-            _inventory[slot] = std::make_pair(&*it, quantity);
+                _inventory[slot] = std::make_pair<const Item *, size_t>(0, 0);
+            else
+                _inventory[slot] = std::make_pair(&*it, quantity);
             _recipeList->markChanged();
             break;
         }

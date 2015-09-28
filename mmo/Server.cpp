@@ -527,8 +527,9 @@ bool Server::readUserData(User &user){
         fs >> itemID >> quantity;
         std::set<Item>::const_iterator it = _items.find(itemID);
         if (it == _items.end())
-            continue;
-        user.inventory(i) = std::make_pair(&*it, quantity);
+            user.inventory(i) = std::make_pair<const Item *, size_t>(0, 0);
+        else
+            user.inventory(i) = std::make_pair(&*it, quantity);
     }
 
     fs.close();
@@ -570,7 +571,6 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
 
 void Server::loadData(){
     // First pass: empty items, to facilitate links between items in second pass
-    _items.insert(Item("none", "none"));
     Item &wood = const_cast<Item &>(*_items.insert(Item("wood", "wood", 5)).first);
     Item &axe = const_cast<Item &>(*_items.insert(Item("axe", "wooden axe")).first);
     Item &chest = const_cast<Item &>(*_items.insert(Item("chest", "wooden chest", 10)).first);
