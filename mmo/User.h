@@ -11,6 +11,7 @@
 #include "Point.h"
 #include "Socket.h"
 
+class Item;
 class Server;
 
 // Stores information about a single user account for the server
@@ -21,7 +22,7 @@ class User{
     const Object *_actionTarget; // Points to the object that the user is acting upon.
     const Item *_actionCrafting; // The item this user is currently crafting.
     Uint32 _actionTime; // Time remaining on current action.
-    std::vector<std::pair<std::string, size_t> > _inventory;
+    std::vector<std::pair<const Item *, size_t> > _inventory;
 
     Uint32 _lastLocUpdate; // Time that the last CL_LOCATION was received
     Uint32 _lastContact;
@@ -38,8 +39,8 @@ public:
     const Point &location() const { return _location; }
     void location(const Point &loc) { _location = loc; }
     void location(std::istream &is); // Read co-ordinates from stream
-    const std::pair<std::string, size_t> &inventory(size_t index) const;
-    std::pair<std::string, size_t> &inventory(size_t index);
+    const std::pair<const Item *, size_t> &inventory(size_t index) const;
+    std::pair<const Item *, size_t> &inventory(size_t index);
 
     const Object *actionTarget() const { return _actionTarget; }
     void actionTarget(const Object *object); // Configure user to perform an action on an object
@@ -66,10 +67,10 @@ public:
     void updateLocation(const Point &dest, const Server &server);
 
     // Whether the user has at least one item with the specified item class
-    bool hasItemClass(const std::string &className, const Server &server) const;
+    bool hasItemClass(const std::string &className) const;
 
     // Return value: which inventory slot was used
-    size_t giveItem(const Item &item);
+    size_t giveItem(const Item *item);
 
     void update(Uint32 timeElapsed, Server &server);
 };

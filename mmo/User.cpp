@@ -20,9 +20,12 @@ _location(loc),
 _actionTarget(0),
 _actionCrafting(0),
 _actionTime(0),
-_inventory(INVENTORY_SIZE, std::make_pair("none", 0)),
+_inventory(INVENTORY_SIZE),
 _lastLocUpdate(SDL_GetTicks()),
-_lastContact(SDL_GetTicks()){}
+_lastContact(SDL_GetTicks()){
+    for (size_t i = 0; i != INVENTORY_SIZE; ++i)
+        _inventory[i] = std::make_pair<const Item *, size_t>(0, 0);
+}
 
 User::User(const Socket &rhs):
 _socket(rhs){}
@@ -31,11 +34,11 @@ void User::location(std::istream &is){
     is >> _location.x >> _location.y;
 }
 
-const std::pair<std::string, size_t> &User::inventory(size_t index) const{
+const std::pair<const Item *, size_t> &User::inventory(size_t index) const{
     return _inventory[index];
 }
 
-std::pair<std::string, size_t> &User::inventory(size_t index){
+std::pair<const Item *, size_t> &User::inventory(size_t index){
     return _inventory[index];
 }
 
@@ -75,18 +78,20 @@ bool User::alive() const{
     return SDL_GetTicks() - _lastContact <= Server::CLIENT_TIMEOUT;
 }
 
-size_t User::giveItem(const Item &item){
+size_t User::giveItem(const Item *item){
     size_t emptySlot = INVENTORY_SIZE;
     for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
-        if (_inventory[i].first == item.id() && _inventory[i].second < item.stackSize()){
+        const Item *invItem = _inventory[i].first;
+        size_t invQty = _inventory[i].second;
+        if (invItem == item && invQty < item->stackSize()){
             ++_inventory[i].second;
             return i;
         }
-        if (_inventory[i].first == "none" && emptySlot == INVENTORY_SIZE)
+        if (!invItem && emptySlot == INVENTORY_SIZE)
             emptySlot = i;
     }
     if (emptySlot != INVENTORY_SIZE) {
-        _inventory[emptySlot] = std::make_pair(item.id(), 1);
+        _inventory[emptySlot] = std::make_pair(item, 1);
     }
     return emptySlot;
 }
@@ -111,10 +116,10 @@ void User::actionCraft(const Item &item){
 }
 
 bool User::hasMaterials(const Item &item) const{
-    std::map<std::string, size_t> remaining = item.materials();
+    std::map<const Item *, size_t> remaining = item.materials();
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
-        const std::pair<std::string, size_t> &invSlot = _inventory[i];
-        std::map<std::string, size_t>::iterator it = remaining.find(invSlot.first);
+        const std::pair<const Item *, size_t> &invSlot = _inventory[i];
+        std::map<const Item *, size_t>::iterator it = remaining.find(invSlot.first);
         if (it != remaining.end()) {
             // Subtract this slot's stack from remaining materials needed
             if (it->second <= invSlot.second)
@@ -126,10 +131,10 @@ bool User::hasMaterials(const Item &item) const{
     return remaining.empty();
 }
 
-bool User::hasItemClass(const std::string &className, const Server &server) const{
+bool User::hasItemClass(const std::string &className) const{
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
-        const std::string &itemID = _inventory[i].first;
-        if (server.itemIsClass(itemID, className))
+        const Item *item = _inventory[i].first;
+        if (item->isClass(className))
             return true;
     }
     return false;
@@ -137,10 +142,10 @@ bool User::hasItemClass(const std::string &className, const Server &server) cons
 
 void User::removeMaterials(const Item &item, Server &server) {
     std::set<size_t> invSlotsChanged;
-    std::map<std::string, size_t> remaining = item.materials();
+    std::map<const Item*, size_t> remaining = item.materials();
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
-        std::pair<std::string, size_t> &invSlot = _inventory[i];
-        std::map<std::string, size_t>::iterator it = remaining.find(invSlot.first);
+        std::pair<const Item *, size_t> &invSlot = _inventory[i];
+        std::map<const Item *, size_t>::iterator it = remaining.find(invSlot.first);
         if (it != remaining.end()) {
             // Subtract this slot's stack from remaining materials needed
             if (it->second <= invSlot.second) {
@@ -151,14 +156,14 @@ void User::removeMaterials(const Item &item, Server &server) {
                 it->second -= invSlot.second;
             }
             if (invSlot.second == 0) {
-                invSlot.first = "none";
+                invSlot.first = 0;
                 invSlotsChanged.insert(i);
             }
         }
     }
     for (size_t slotNum : invSlotsChanged) {
-        const std::pair<std::string, size_t> &slot = _inventory[slotNum];
-        server.sendMessage(_socket, SV_INVENTORY, makeArgs(slotNum, slot.first, slot.second));
+        const std::pair<const Item *, size_t> &slot = _inventory[slotNum];
+        server.sendMessage(_socket, SV_INVENTORY, makeArgs(slotNum, slot.first->id(), slot.second));
     }
 }
 
@@ -173,7 +178,7 @@ void User::update(Uint32 timeElapsed, Server &server){
             _actionTarget = 0;
         } else if (_actionCrafting) {
             // Give user his newly crafted item
-            size_t slot = giveItem(*_actionCrafting);
+            size_t slot = giveItem(_actionCrafting);
             if (slot == INVENTORY_SIZE) {
                 server.sendMessage(_socket, SV_INVENTORY_FULL);
                 _actionCrafting = 0;

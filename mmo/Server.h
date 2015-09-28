@@ -34,7 +34,7 @@ public:
     const size_t mapX() const { return _mapX; }
     const size_t mapY() const { return _mapY; }
 
-    bool itemIsClass(const std::string &itemID, const std::string &className) const;
+    bool itemIsClass(const Item *item, const std::string &className) const;
 
 private:
 

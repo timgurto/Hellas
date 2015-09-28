@@ -1,5 +1,7 @@
 // (C) 2015 Tim Gurto
 
+#include <cassert>
+
 #include "Button.h"
 #include "CheckBox.h"
 #include "Client.h"
@@ -14,8 +16,8 @@ void Client::initializeCraftingWindow(){
     for (const Item &item : _items){
         if (item.isCraftable()) {
             _craftableItems.insert(&item);
-            for (const std::pair<std::string, size_t> mat : item.materials())
-                _matFilters[&*_items.find(mat.first)] = false;
+            for (const std::pair<const Item *, size_t> mat : item.materials())
+                _matFilters[mat.first] = false;
             for (const std::string &className : item.classes())
                  _classFilters[className] = false;
         }
@@ -212,11 +214,13 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     y += TEXT_HEIGHT;
     List *matsList = new List(makeRect(0, y, paneRect.w, BUTTON_Y - BUTTON_GAP - y), ICON_SIZE);
     pane.addChild(matsList);
-    for (const std::pair<std::string, size_t> & matCost : item.materials()) {
-        const Item &mat = *_instance->_items.find(matCost.first);
-        std::string entryText = matCost.first;
-        if (matCost.second > 1)
-            entryText += " x" + makeArgs(matCost.second);
+    for (const std::pair<const Item *, size_t> & matCost : item.materials()) {
+        assert (matCost.first);
+        const Item &mat = *matCost.first;
+        size_t qty = matCost.second;
+        std::string entryText = mat.name();
+        if (qty > 1)
+            entryText += " x" + makeArgs(qty);
         Element *entry = new Element(makeRect(0, 0, paneRect.w, ICON_SIZE));
         matsList->addChild(entry);
         entry->addChild(new Picture(makeRect(0, 0, ICON_SIZE, ICON_SIZE), mat.icon()));
@@ -268,7 +272,7 @@ void Client::populateRecipesList(Element &e){
 bool Client::itemMatchesFilters(const Item &item) const{
     // "Have materials" filter
     if (_haveMatsFilter) {
-        for (const std::pair<std::string, size_t> &materialsNeeded : item.materials())
+        for (const std::pair<const Item *, size_t> &materialsNeeded : item.materials())
             if (!playerHasItem(materialsNeeded.first, materialsNeeded.second))
                 return false;
     }
@@ -281,8 +285,8 @@ bool Client::itemMatchesFilters(const Item &item) const{
         Faster to iterate through item's materials, rather than all filters.
         */
         if (_matOr) {
-            for (const std::pair<std::string, size_t> &materialsNeeded : item.materials()) {
-                const Item *matP = &*_items.find(materialsNeeded.first);
+            for (const std::pair<const Item *, size_t> &materialsNeeded : item.materials()) {
+                const Item *matP = materialsNeeded.first;
                 if (_matFilters.find(matP)->second) {
                     matsFilterMatched = true;
                     break;
@@ -293,7 +297,8 @@ bool Client::itemMatchesFilters(const Item &item) const{
             for (const std::pair<const Item *, bool> &matFilter : _matFilters) {
                 if (!matFilter.second) // Filter is not active
                     continue;
-                if (item.materials().find(matFilter.first->name()) == item.materials().end())
+                const Item *matP = matFilter.first;
+                if (item.materials().find(matP) == item.materials().end())
                     return false;
             }
         }

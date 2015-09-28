@@ -75,7 +75,6 @@ _loaded(false),
 _timeSinceLocUpdate(0),
 _tooltipNeedsRefresh(false),
 _mapX(0), _mapY(0),
-_inventory(User::INVENTORY_SIZE, std::make_pair("none", 0)),
 _currentMouseOverEntity(0),
 _debug(360/13, "client.log", "trebuc.ttf", 10){
     isClient = true;
@@ -116,24 +115,29 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
     _debug << "Player name: " << _username << Log::endl;
     _character.name(_username);
 
+    // Player's inventory
+    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i)
+        _inventory.push_back(std::make_pair<const Item *, size_t>(0, 0));
+
     SDL_StopTextInput();
 
-    // Load game data
+
+    // First pass: empty items, to facilitate links between items in second pass
     _items.insert(Item("none", "none"));
-    _items.insert(Item("wood", "wood", 5));
+    Item &wood = const_cast<Item &>(*_items.insert(Item("wood", "wood", 5)).first);
+    Item &axe = const_cast<Item &>(*_items.insert(Item("axe", "wooden axe")).first);
+    Item &chest = const_cast<Item &>(*_items.insert(Item("chest", "wooden chest", 10)).first);
 
-    Item i("axe", "wooden axe", 1);
-    i.addClass("axe");
-    i.addMaterial("wood", 3);
-    i.craftTime(10);
-    _items.insert(i);
+    // Load data
+    axe.addClass("axe");
+    axe.addMaterial(&wood, 3);
+    axe.craftTime(10);
 
-    i = Item("chest", "wooden chest");
-    i.addClass("structure");
-    i.addClass("container");
-    i.addMaterial("wood", 5);
-    i.craftTime(10);
-    _items.insert(i);
+    chest.addClass("structure");
+    chest.addClass("container");
+    chest.addMaterial(&wood, 5);
+    chest.craftTime(10);
+
 
     std::ifstream fs("Data/objectTypesClient.dat");
     if (!fs.good()) {
@@ -574,14 +578,13 @@ void Client::draw() const{
                                      SCREEN_Y - ICON_SIZE,
                                      ICON_SIZE, ICON_SIZE);
         renderer.fillRect(iconRect);
-        std::set<Item>::const_iterator it = _items.find(_inventory[i].first);
-        if (it == _items.end())
-            _debug << Color::RED << "Unknown item: " << _inventory[i].first;
-        else {
-            it->icon().draw(iconRect);
-            if (it->stackSize() > 1) {
+        const Item *item = _inventory[i].first;
+        if (item) {
+            const size_t qty = _inventory[i].second;
+            item->icon().draw(iconRect);
+            if (item->stackSize() > 1) {
                 // Display stack size
-                Texture qtyLabel(_defaultFont, makeArgs(makeArgs(_inventory[i].second)));
+                Texture qtyLabel(_defaultFont, makeArgs(makeArgs(qty)));
                 qtyLabel.draw(iconRect.x + ICON_SIZE - qtyLabel.width() + 1,
                               iconRect.y + ICON_SIZE - qtyLabel.height() + 3);
             }
@@ -677,22 +680,17 @@ Texture Client::getInventoryTooltip() const{
     if (slot < 0 || static_cast<size_t>(slot) >= _inventory.size())
         return Texture();
 
-    const std::string &itemName = _inventory[static_cast<size_t>(slot)].first;
-    if (itemName == "none")
+    const Item *item = _inventory[static_cast<size_t>(slot)].first;
+    if (!item)
         return Texture();
-    Item lookup(itemName);
-    std::set<Item>::const_iterator it = _items.find(lookup);
-    if (it == _items.end())
-        return Texture();
-    const Item &item = *it;
     TooltipBuilder tb;
     tb.setColor(Color::WHITE);
-    tb.addLine(item.name());
+    tb.addLine(item->name());
     bool isStructure = false;
-    if (item.hasClasses()) {
+    if (item->hasClasses()) {
         tb.setColor();
         tb.addGap();
-        for (const std::string &className : item.classes()) {
+        for (const std::string &className : item->classes()) {
             tb.addLine(className);
             if (className == "structure")
                 isStructure = true;
@@ -837,10 +835,10 @@ void Client::startCrafting(void *data){
     }
 }
 
-bool Client::playerHasItem(const std::string &id, size_t quantity) const{
+bool Client::playerHasItem(const Item *item, size_t quantity) const{
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
-        std::pair<std::string, size_t> slot = _inventory[i];
-        if (slot.first == id) {
+        std::pair<const Item *, size_t> slot = _inventory[i];
+        if (slot.first == item) {
             if (slot.second >= quantity)
                 return true;
             else
@@ -1129,7 +1127,10 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del >> quantity >> del;
             if (del != ']')
                 break;
-            _inventory[slot] = std::make_pair(itemID, quantity);
+            std::set<Item>::const_iterator it = _items.find(itemID);
+            if (it == _items.end())
+                break;
+            _inventory[slot] = std::make_pair(&*it, quantity);
             _recipeList->markChanged();
             break;
         }

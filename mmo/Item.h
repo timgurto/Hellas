@@ -21,7 +21,7 @@ class Item{
     The materials necessary to craft this item.
     An empty map implies an item that cannot be crafted.
     */
-    std::map<std::string, size_t> _materials;
+    std::map<const Item *, size_t> _materials;
     Uint32 _craftTime; // How long this item takes to craft
 
 public:
@@ -35,7 +35,7 @@ public:
     size_t stackSize() const { return _stackSize; }
     const Texture &icon() const { return _icon; }
     const std::set<std::string> &classes() const { return _classes; }
-    const std::map<std::string, size_t> &materials() const { return _materials; }
+    const std::map<const Item *, size_t> &materials() const { return _materials; }
     Uint32 craftTime() const { return _craftTime; }
     void craftTime(Uint32 time) { _craftTime = time * 1000; }
 
@@ -43,7 +43,7 @@ public:
     bool hasClasses() const { return _classes.size() > 0; }
     bool isClass(const std::string &className) const;
 
-    void addMaterial(const std::string &id, size_t quantity = 1);
+    void addMaterial(const Item *id, size_t quantity = 1);
     bool isCraftable() const { return !_materials.empty(); }
 };
 

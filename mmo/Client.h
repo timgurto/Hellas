@@ -55,7 +55,7 @@ private:
     static const int ICON_SIZE;
     static const size_t ICONS_X; // How many icons per inventory row
     // Whether the user has the specified item(s).
-    bool playerHasItem(const std::string &id, size_t quantity = 1) const;
+    bool playerHasItem(const Item *item, size_t quantity = 1) const;
 
     void initializeCraftingWindow();
     bool _haveMatsFilter, _haveToolsFilter, _classOr, _matOr;
@@ -141,7 +141,7 @@ private:
     // Information about the state of the world
     size_t _mapX, _mapY;
     std::vector<std::vector<size_t> > _map;
-    std::vector<std::pair<std::string, size_t> > _inventory;
+    std::vector<std::pair<const Item *, size_t> > _inventory;
     std::map<std::string, Avatar*> _otherUsers; // For lookup by name
     std::map<size_t, ClientObject*> _objects; // For lookup by serial
 

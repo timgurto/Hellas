@@ -267,9 +267,9 @@ void Server::addUser(const Socket &socket, const std::string &name){
 
     // Send him his inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
-        if (newUser.inventory(i).first != "none")
+        if (newUser.inventory(i).first)
             sendMessage(socket, SV_INVENTORY,
-                        makeArgs(i, newUser.inventory(i).first, newUser.inventory(i).second));
+                        makeArgs(i, newUser.inventory(i).first->id(), newUser.inventory(i).second));
     }
 
     // Add new user to list, and broadcast his location
@@ -410,16 +410,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_INVALID_SLOT);
                 break;
             }
-            const std::pair<std::string, size_t> &invSlot = user->inventory(slot);
-            if (invSlot.first == "none") {
+            const std::pair<const Item *, size_t> &invSlot = user->inventory(slot);
+            if (!invSlot.first) {
                 sendMessage(client, SV_EMPTY_SLOT);
                 break;
             }
-            std::set<Item>::const_iterator it = _items.find(invSlot.first);
-            if (it == _items.end()) {
-                break;
-            }
-            if (!it->isClass("structure")) {
+            const Item &item = *invSlot.first;
+            if (!item.isClass("structure")) {
                 sendMessage(client, SV_CANNOT_CONSTRUCT);
                 break;
             }
@@ -459,7 +456,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 // Check that the user meets the requirements
                 assert (obj.type());
                 const std::string &gatherReq = obj.type()->gatherReq();
-                if (gatherReq != "none" && !user->hasItemClass(gatherReq, *this)) {
+                if (gatherReq != "none" && !user->hasItemClass(gatherReq)) {
                     sendMessage(client, SV_ITEM_NEEDED, gatherReq);
                     break;
                 }
@@ -485,7 +482,8 @@ void Server::gatherObject(size_t serial, User &user){
     // Give wood to user
     std::set<Object>::iterator it = _objects.find(serial);
     Object &obj = const_cast<Object &>(*it);
-    size_t slot = user.giveItem(*_items.find(std::string("wood")));
+    const Item *wood = &*_items.find(std::string("wood"));
+    size_t slot = user.giveItem(wood);
     if (slot == User::INVENTORY_SIZE) {
         sendMessage(user.socket(), SV_INVENTORY_FULL);
         return;
@@ -526,7 +524,10 @@ bool Server::readUserData(User &user){
         std::string itemID;
         int quantity;
         fs >> itemID >> quantity;
-        user.inventory(i) = std::make_pair(itemID, quantity);
+        std::set<Item>::const_iterator it = _items.find(itemID);
+        if (it == _items.end())
+            continue;
+        user.inventory(i) = std::make_pair(&*it, quantity);
     }
 
     fs.close();
@@ -563,22 +564,22 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
 }
 
 void Server::loadData(){
-    // Load data
+    // First pass: empty items, to facilitate links between items in second pass
     _items.insert(Item("none", "none"));
-    _items.insert(Item("wood", "wood", 5));
+    Item &wood = const_cast<Item &>(*_items.insert(Item("wood", "wood", 5)).first);
+    Item &axe = const_cast<Item &>(*_items.insert(Item("axe", "wooden axe")).first);
+    Item &chest = const_cast<Item &>(*_items.insert(Item("chest", "wooden chest", 10)).first);
 
-    Item i("axe", "wooden axe");
-    i.addClass("axe");
-    i.addMaterial("wood", 3);
-    i.craftTime(10);
-    _items.insert(i);
+    // Load data
+    axe.addClass("axe");
+    axe.addMaterial(&wood, 3);
+    axe.craftTime(10);
 
-    i = Item("chest", "wooden chest", 10);
-    i.addClass("structure");
-    i.addClass("container");
-    i.addMaterial("wood", 5);
-    i.craftTime(10);
-    _items.insert(i);
+    chest.addClass("structure");
+    chest.addClass("container");
+    chest.addMaterial(&wood, 5);
+    chest.craftTime(10);
+
 
     std::ifstream fs("Data/objectTypes.dat");
     if (!fs.good()) {
@@ -781,9 +782,7 @@ Point Server::mapRand() const{
                  randDouble() * _mapY * TILE_H);
 }
 
-bool Server::itemIsClass(const std::string &itemID, const std::string &className) const{
-    std::set<Item>::const_iterator it = _items.find(itemID);
-    if (it == _items.end())
-        return false;
-    return it->isClass(className);
+bool Server::itemIsClass(const Item *item, const std::string &className) const{
+    assert (item);
+    return item->isClass(className);
 }
