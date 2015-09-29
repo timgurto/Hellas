@@ -81,7 +81,7 @@ void CheckBox::refresh(){
     makeBackgroundTransparent();
 
     // Box
-    SDL_Rect boxRect = makeRect(0, (rect().h - BOX_SIZE) / 2 + Y_OFFSET, BOX_SIZE, BOX_SIZE);
+    const SDL_Rect boxRect = makeRect(0, (rect().h - BOX_SIZE) / 2 + Y_OFFSET, BOX_SIZE, BOX_SIZE);
     renderer.setDrawColor(FONT_COLOR);
     renderer.drawRect(boxRect);
 

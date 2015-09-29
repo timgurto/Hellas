@@ -28,18 +28,12 @@ _valid(false){
 }
 
 void Renderer::init(){
-    int screenX = cmdLineArgs.contains("left") ?
-                  cmdLineArgs.getInt("left") :
-                  SDL_WINDOWPOS_UNDEFINED;
-    int screenY = cmdLineArgs.contains("top") ?
-                  cmdLineArgs.getInt("top") :
-                  SDL_WINDOWPOS_UNDEFINED;
-    int screenW = cmdLineArgs.contains("width") ?
-                  cmdLineArgs.getInt("width") :
-                  1280;
-    int screenH = cmdLineArgs.contains("height") ?
-                  cmdLineArgs.getInt("height") :
-                  720;
+    const int screenX = cmdLineArgs.contains("left") ? cmdLineArgs.getInt("left") :
+                                                       SDL_WINDOWPOS_UNDEFINED;
+    const int screenY = cmdLineArgs.contains("top") ? cmdLineArgs.getInt("top") :
+                                                      SDL_WINDOWPOS_UNDEFINED;
+    const int screenW = cmdLineArgs.contains("width") ? cmdLineArgs.getInt("width") : 1280;
+    const int screenH = cmdLineArgs.contains("height") ? cmdLineArgs.getInt("height") : 720;
 
     _window = SDL_CreateWindow((cmdLineArgs.contains("server") ? "Server" : "Client"),
                                screenX, screenY, screenW, screenH,

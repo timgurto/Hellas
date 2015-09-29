@@ -47,13 +47,14 @@ std::string User::makeLocationCommand() const{
 }
 
 void User::updateLocation(const Point &dest, const Server &server){
-    Uint32 newTime = SDL_GetTicks();
+    const Uint32 newTime = SDL_GetTicks();
     Uint32 timeElapsed = newTime - _lastLocUpdate;
     _lastLocUpdate = newTime;
 
     // Max legal distance: straight line
-    double maxLegalDistance = (min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES, timeElapsed + 100))
-                              / 1000.0 * Server::MOVEMENT_SPEED;
+    const double maxLegalDistance = min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES,
+                                        timeElapsed + 100)
+                                    / 1000.0 * Server::MOVEMENT_SPEED;
     _location = interpolate(_location, dest, maxLegalDistance);
 
     // Keep in-bounds
@@ -133,7 +134,7 @@ bool User::hasMaterials(const Item &item) const{
 
 bool User::hasItemClass(const std::string &className) const{
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
-        const Item *item = _inventory[i].first;
+        const Item *const item = _inventory[i].first;
         if (item->isClass(className))
             return true;
     }
@@ -145,7 +146,7 @@ void User::removeMaterials(const Item &item, Server &server) {
     std::map<const Item*, size_t> remaining = item.materials();
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
         std::pair<const Item *, size_t> &invSlot = _inventory[i];
-        std::map<const Item *, size_t>::iterator it = remaining.find(invSlot.first);
+        const std::map<const Item *, size_t>::iterator it = remaining.find(invSlot.first);
         if (it != remaining.end()) {
             // Subtract this slot's stack from remaining materials needed
             if (it->second <= invSlot.second) {
@@ -178,7 +179,7 @@ void User::update(Uint32 timeElapsed, Server &server){
             _actionTarget = 0;
         } else if (_actionCrafting) {
             // Give user his newly crafted item
-            size_t slot = giveItem(_actionCrafting);
+            const size_t slot = giveItem(_actionCrafting);
             if (slot == INVENTORY_SIZE) {
                 server.sendMessage(_socket, SV_INVENTORY_FULL);
                 _actionCrafting = 0;

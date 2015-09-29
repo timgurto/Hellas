@@ -240,7 +240,7 @@ void Client::run(){
         _timeElapsed = _time - timeAtLastTick;
         if (_timeElapsed > MAX_TICK_LENGTH)
             _timeElapsed = MAX_TICK_LENGTH;
-        double delta = _timeElapsed / 1000.0;
+        const double delta = _timeElapsed / 1000.0;
         timeAtLastTick = _time;
 
         // Ensure server connectivity
@@ -254,7 +254,7 @@ void Client::run(){
             _timeSinceConnectAttempt += _timeElapsed;
 
         } else { // Update server with current location
-            bool atTarget = _pendingCharLoc == _character.location();
+            const bool atTarget = _pendingCharLoc == _character.location();
             if (atTarget)
                 _timeSinceLocUpdate = 0;
             else {
@@ -425,7 +425,7 @@ void Client::run(){
                         keyboardState[SDL_SCANCODE_D] == SDL_PRESSED;
             if (up != down || left != right) {
                 static const double DIAG_SPEED = Server::MOVEMENT_SPEED / SQRT_2;
-                double
+                const double
                     dist = delta * Server::MOVEMENT_SPEED,
                     diagDist = delta * DIAG_SPEED;
                 Point newLoc = _pendingCharLoc;
@@ -462,7 +462,7 @@ void Client::run(){
         for (Entity::set_t::iterator it = _entities.begin(); it != _entities.end(); ) {
             Entity::set_t::iterator next = it;
             ++next;
-            Entity *toUpdate = *it;
+            Entity *const toUpdate = *it;
             toUpdate->update(delta);
             if (toUpdate->yChanged()) {
                 // Entity has moved up or down, and must be re-ordered in set.
@@ -502,7 +502,7 @@ void Client::checkMouseOver(){
 
     // Check if mouse is over an entity
     const Point mouseOffset = _mouse - _offset;
-    const Entity *oldMouseOverEntity = _currentMouseOverEntity;
+    const Entity *const oldMouseOverEntity = _currentMouseOverEntity;
     Entity::set_t::iterator mouseOverIt = _entities.end();
     Entity lookupEntity(0, mouseOffset);
     for (auto it = _entities.lower_bound(&lookupEntity); it != _entities.end(); ++it) {
@@ -537,7 +537,7 @@ void Client::draw() const{
 
     // Map
     for (size_t y = 0; y != _mapY; ++y) {
-        int yLoc = y * Server::TILE_H + toInt(offset().y);
+        const int yLoc = y * Server::TILE_H + toInt(offset().y);
         for (size_t x = 0; x != _mapX; ++x){
             int xLoc = x * Server::TILE_W + toInt(offset().x);
             if (y % 2 == 1)
@@ -573,9 +573,9 @@ void Client::draw() const{
     _invLabel.draw(INVENTORY_RECT.x, INVENTORY_RECT.y);
     renderer.setDrawColor(Color::BLACK);
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
-        SDL_Rect iconRect = makeRect(SCREEN_X - INVENTORY_RECT.w + 1 + i*(ICON_SIZE+1),
-                                     SCREEN_Y - ICON_SIZE,
-                                     ICON_SIZE, ICON_SIZE);
+        const SDL_Rect iconRect = makeRect(SCREEN_X - INVENTORY_RECT.w + 1 + i*(ICON_SIZE+1),
+                                           SCREEN_Y - ICON_SIZE,
+                                           ICON_SIZE, ICON_SIZE);
         renderer.fillRect(iconRect);
         const Item *item = _inventory[i].first;
         if (item) {
@@ -583,7 +583,7 @@ void Client::draw() const{
             item->icon().draw(iconRect);
             if (item->stackSize() > 1) {
                 // Display stack size
-                Texture qtyLabel(_defaultFont, makeArgs(makeArgs(qty)));
+                const Texture qtyLabel(_defaultFont, makeArgs(makeArgs(qty)));
                 qtyLabel.draw(iconRect.x + ICON_SIZE - qtyLabel.width() + 1,
                               iconRect.y + ICON_SIZE - qtyLabel.height() + 3);
             }
@@ -631,7 +631,7 @@ void Client::draw() const{
     else
         oss << "infinite ";
     oss << "fps " << _latency << "ms";
-    Texture statsDisplay(_defaultFont, oss.str(), Color::YELLOW);
+    const Texture statsDisplay(_defaultFont, oss.str(), Color::YELLOW);
     statsDisplay.draw(SCREEN_X - statsDisplay.width(), 0);
 
     // Text box
@@ -647,14 +647,14 @@ void Client::draw() const{
         renderer.drawRect(TEXT_BOX_RECT + makeRect(-1, -1, 2, 2));
         renderer.setDrawColor(Color::BLACK);
         renderer.fillRect(TEXT_BOX_RECT);
-        Texture text(_defaultFont, _enteredText);
+        const Texture text(_defaultFont, _enteredText);
         static const int MAX_TEXT_WIDTH = TEXT_BOX_WIDTH - 2;
         int cursorX;
         if (text.width() < MAX_TEXT_WIDTH) {
             text.draw(TEXT_BOX_RECT.x + 1, TEXT_BOX_RECT.y);
             cursorX = TEXT_BOX_RECT.x + text.width() + 1;
         } else {
-            SDL_Rect
+            const SDL_Rect
                 dstRect = makeRect(TEXT_BOX_RECT.x + 1, TEXT_BOX_RECT.y,
                                    MAX_TEXT_WIDTH, text.height()),
                 srcRect = makeRect(text.width() - MAX_TEXT_WIDTH, 0,
@@ -675,11 +675,11 @@ void Client::draw() const{
 Texture Client::getInventoryTooltip() const{
     if (_mouse.y < INVENTORY_RECT.w + _invLabel.height())
         return Texture();
-    int slot = static_cast<size_t>((_mouse.x - INVENTORY_RECT.x) / (ICON_SIZE + 1));
+    const int slot = static_cast<size_t>((_mouse.x - INVENTORY_RECT.x) / (ICON_SIZE + 1));
     if (slot < 0 || static_cast<size_t>(slot) >= _inventory.size())
         return Texture();
 
-    const Item *item = _inventory[static_cast<size_t>(slot)].first;
+    const Item *const item = _inventory[static_cast<size_t>(slot)].first;
     if (!item)
         return Texture();
     TooltipBuilder tb;
@@ -691,7 +691,7 @@ Texture Client::getInventoryTooltip() const{
         tb.addGap();
         for (const std::string &className : item->classes()) {
             tb.addLine(className);
-            if (className == "structure")
+            if (!isStructure && className == "structure")
                 isStructure = true;
         }
     }
@@ -716,8 +716,8 @@ void Client::drawTooltip() const{
         static const int EDGE_GAP = 2; // Gap from screen edges
         static const int CURSOR_GAP = 10; // Horizontal gap from cursor
         int x, y;
-        int mouseX = toInt(_mouse.x);
-        int mouseY = toInt(_mouse.y);
+        const int mouseX = toInt(_mouse.x);
+        const int mouseY = toInt(_mouse.y);
 
         // y: below cursor, unless too close to the bottom of the screen
         if (SCREEN_Y > mouseY + tooltip.height() + EDGE_GAP)
@@ -836,7 +836,7 @@ void Client::startCrafting(void *data){
 
 bool Client::playerHasItem(const Item *item, size_t quantity) const{
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
-        std::pair<const Item *, size_t> slot = _inventory[i];
+        const std::pair<const Item *, size_t> slot = _inventory[i];
         if (slot.first == item) {
             if (slot.second >= quantity)
                 return true;
@@ -913,7 +913,7 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del;
             if (del != ']')
                 break;
-            std::map<std::string, Avatar*>::iterator it = _otherUsers.find(name);
+            const std::map<std::string, Avatar*>::iterator it = _otherUsers.find(name);
             if (it != _otherUsers.end()) {
                 removeEntity(it->second);
                 _otherUsers.erase(it);
@@ -1024,7 +1024,7 @@ void Client::handleMessage(const std::string &msg){
             if (del != ']')
                 break;
             std::string msg = "You need a";
-            char first= reqItemClass.front();
+            const char first = reqItemClass.front();
             if (first == 'a' || first == 'e' || first == 'i' ||
                 first == 'o' || first == 'u')
                 msg += 'n';
@@ -1093,7 +1093,7 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del >> x >> del >> y >> del;
             if (del != ']')
                 break;
-            Point p(x, y);
+            const Point p(x, y);
             if (name == _username) {
                 _character.destination(p);
                 if (!_loaded) {
@@ -1149,10 +1149,10 @@ void Client::handleMessage(const std::string &msg){
             std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()) {
                 // A new object was added; add entity to list
-                std::set<ClientObjectType>::const_iterator it = _objectTypes.find(type);
+                const std::set<ClientObjectType>::const_iterator it = _objectTypes.find(type);
                 if (it == _objectTypes.end())
                     break;
-                ClientObject *obj = new ClientObject(serial, &*it, Point(x, y));
+                ClientObject *const obj = new ClientObject(serial, &*it, Point(x, y));
                 _entities.insert(obj);
                 _objects[serial] = obj;
             }
@@ -1165,7 +1165,7 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> serial >> del;
             if (del != ']')
                 break;
-            std::map<size_t, ClientObject*>::const_iterator it = _objects.find(serial);
+            const std::map<size_t, ClientObject*>::const_iterator it = _objects.find(serial);
             if (it == _objects.end()){
                 _debug("Server removed an object we didn't know about.", Color::YELLOW);
                 assert(false);
@@ -1211,7 +1211,7 @@ const Socket &Client::socket() const{
 }
 
 void Client::removeEntity(Entity *const toRemove){
-    Entity::set_t::iterator it = _entities.find(toRemove);
+    const Entity::set_t::iterator it = _entities.find(toRemove);
     if (it != _entities.end())
         _entities.erase(it);
     delete toRemove;
@@ -1222,7 +1222,7 @@ TTF_Font *Client::defaultFont() const{
 }
 
 void Client::setEntityLocation(Entity *entity, const Point &location){
-    Entity::set_t::iterator it = _entities.find(entity);
+    const Entity::set_t::iterator it = _entities.find(entity);
     if (it == _entities.end()){
         assert(false); // Entity is not in set.
         return;

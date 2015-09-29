@@ -43,7 +43,7 @@ double Entity::bottomEdge() const{
 }
 
 void Entity::location(const Point &loc){
-    double oldY = _location.y;
+    const double oldY = _location.y;
     _location = loc;
     if (_location.y != oldY)
         _yChanged = true;

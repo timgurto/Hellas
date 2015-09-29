@@ -17,7 +17,6 @@ _valid(true),
 _color(color),
 _compilationColor(color){
     if (!_font){
-        std::string err = TTF_GetError();
         _valid = false;
     }
     if (!logFileName.empty()) {
@@ -42,7 +41,7 @@ void Log::operator()(const std::string &message, const Color &color){
         _logFile << message << std::endl;
 
     const Color &msgColor = (&color == &defaultColor) ? _color : color;
-    Texture msgTexture(_font, message, msgColor);
+    const Texture msgTexture(_font, message, msgColor);
     if (!msgTexture)
         return;
 
@@ -56,7 +55,7 @@ void Log::draw(int x, int y) const{
     if (!_valid)
         return;
     
-    for (const Texture message : _messages) {
+    for (const Texture &message : _messages) {
         message.draw(x, y);
         y += message.height();
     }

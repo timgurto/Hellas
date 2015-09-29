@@ -67,8 +67,8 @@ void List::updateScrollBar(){
     double progress = -1.0 * _content->rect().y / (_content->rect().h - rect().h);
     if (progress < 0)
         progress = 0;
-    else if (progress >= 1) {
-        progress = 1;
+    else if (progress >= 1.) {
+        progress = 1.;
         _scrolledToBottom = true;
     }
     _cursor->rect(0, toInt(progress * Y_RANGE + Y_MIN));

@@ -53,8 +53,8 @@ void Client::initializeCraftingWindow(){
     static const int
         CLASS_LIST_HEIGHT = 59,
         MATERIALS_LIST_HEIGHT = 60;
-    Element *filterPane = new Element(makeRect(FILTERS_PANE_X, CONTENT_Y,
-                                               FILTERS_PANE_W, CONTENT_H));
+    Element *const filterPane = new Element(makeRect(FILTERS_PANE_X, CONTENT_Y,
+                                                     FILTERS_PANE_W, CONTENT_H));
     _craftingWindow->addChild(filterPane);
     filterPane->addChild(new Label(makeRect(0, 0, FILTERS_PANE_W, HEADING_HEIGHT),
                                    "Filters", Element::CENTER_JUSTIFIED));
@@ -68,7 +68,7 @@ void Client::initializeCraftingWindow(){
     // Class filters
     filterPane->addChild(new Label(makeRect(0, y, FILTERS_PANE_W, TEXT_HEIGHT), "Item class:"));
     y += TEXT_HEIGHT;
-    List *classList = new List(makeRect(0, y, FILTERS_PANE_W, CLASS_LIST_HEIGHT), TEXT_HEIGHT);
+    List *const classList = new List(makeRect(0, y, FILTERS_PANE_W, CLASS_LIST_HEIGHT), TEXT_HEIGHT);
     filterPane->addChild(classList);
     for (std::map<std::string, bool>::iterator it = _classFilters.begin();
          it != _classFilters.end(); ++it)
@@ -86,11 +86,11 @@ void Client::initializeCraftingWindow(){
     // Material filters
     filterPane->addChild(new Label(makeRect(0, y, FILTERS_PANE_W, TEXT_HEIGHT), "Materials:"));
     y += TEXT_HEIGHT;
-    List *materialsList = new List(makeRect(0, y, FILTERS_PANE_W, MATERIALS_LIST_HEIGHT),
-                                   ICON_SIZE);
+    List *const materialsList = new List(makeRect(0, y, FILTERS_PANE_W, MATERIALS_LIST_HEIGHT),
+                                         ICON_SIZE);
     filterPane->addChild(materialsList);
     for (auto it = _matFilters.begin(); it != _matFilters.end(); ++it){
-        CheckBox *mat = new CheckBox(makeRect(0, 0, FILTERS_PANE_W, ICON_SIZE), it->second);
+        CheckBox *const mat = new CheckBox(makeRect(0, 0, FILTERS_PANE_W, ICON_SIZE), it->second);
         static const int
             ICON_X = CheckBox::BOX_SIZE + CheckBox::GAP,
             LABEL_X = ICON_X + ICON_SIZE + CheckBox::GAP,
@@ -107,8 +107,8 @@ void Client::initializeCraftingWindow(){
                                       _matOr, "All", true));
 
     // Recipes
-    Element *recipesPane = new Element(makeRect(RECIPES_PANE_X, CONTENT_Y,
-                                                RECIPES_PANE_W, CONTENT_H));
+    Element *const recipesPane = new Element(makeRect(RECIPES_PANE_X, CONTENT_Y,
+                                                      RECIPES_PANE_W, CONTENT_H));
     _craftingWindow->addChild(recipesPane);
     
     recipesPane->addChild(new Label(makeRect(0, 0, RECIPES_PANE_W, HEADING_HEIGHT), "Recipes",
@@ -165,7 +165,7 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
                                       BUTTON_WIDTH, BUTTON_HEIGHT),
                              "Craft", startCrafting, 0));
 
-    std::set<Item>::const_iterator it = _instance->_items.find(selectedID);
+    const std::set<Item>::const_iterator it = _instance->_items.find(selectedID);
     if (it == _instance->_items.end()) {
         return;
     }
@@ -188,7 +188,7 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
         std::string text = className;
         if (--classesRemaining > 0)
             text += ", ";
-        Label *classLabel = new Label(makeRect(0, 0, 0, TEXT_HEIGHT), text);
+        Label *const classLabel = new Label(makeRect(0, 0, 0, TEXT_HEIGHT), text);
         classLabel->matchW();
         classLabel->refresh();
         const int width = classLabel->rect().w;
@@ -212,16 +212,17 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     // Materials list
     pane.addChild(new Label(makeRect(0, y, paneRect.w, TEXT_HEIGHT), "Materials:"));
     y += TEXT_HEIGHT;
-    List *matsList = new List(makeRect(0, y, paneRect.w, BUTTON_Y - BUTTON_GAP - y), ICON_SIZE);
+    List *const matsList = new List(makeRect(0, y, paneRect.w, BUTTON_Y - BUTTON_GAP - y),
+                                    ICON_SIZE);
     pane.addChild(matsList);
     for (const std::pair<const Item *, size_t> & matCost : item.materials()) {
         assert (matCost.first);
         const Item &mat = *matCost.first;
-        size_t qty = matCost.second;
+        const size_t qty = matCost.second;
         std::string entryText = mat.name();
         if (qty > 1)
             entryText += " x" + makeArgs(qty);
-        Element *entry = new Element(makeRect(0, 0, paneRect.w, ICON_SIZE));
+        Element *const entry = new Element(makeRect(0, 0, paneRect.w, ICON_SIZE));
         matsList->addChild(entry);
         entry->addChild(new Picture(makeRect(0, 0, ICON_SIZE, ICON_SIZE), mat.icon()));
         entry->addChild(new Label(makeRect(ICON_SIZE + CheckBox::GAP, 0, paneRect.w, ICON_SIZE),
@@ -253,7 +254,7 @@ void Client::populateRecipesList(Element &e){
     for (const Item *item : _instance->_craftableItems) {
         if (!_instance->itemMatchesFilters(*item))
             continue;
-        Element *recipe = new Element(makeRect());
+        Element *const recipe = new Element(makeRect());
         recipesList.addChild(recipe);
         recipe->addChild(new Picture(makeRect(1, 1, ICON_SIZE, ICON_SIZE), item->icon()));
         static const int NAME_X = ICON_SIZE + CheckBox::GAP + 1;
@@ -286,7 +287,7 @@ bool Client::itemMatchesFilters(const Item &item) const{
         */
         if (_matOr) {
             for (const std::pair<const Item *, size_t> &materialsNeeded : item.materials()) {
-                const Item *matP = materialsNeeded.first;
+                const Item *const matP = materialsNeeded.first;
                 if (_matFilters.find(matP)->second) {
                     matsFilterMatched = true;
                     break;
@@ -297,7 +298,7 @@ bool Client::itemMatchesFilters(const Item &item) const{
             for (const std::pair<const Item *, bool> &matFilter : _matFilters) {
                 if (!matFilter.second) // Filter is not active
                     continue;
-                const Item *matP = matFilter.first;
+                const Item *const matP = matFilter.first;
                 if (item.materials().find(matP) == item.materials().end())
                     return false;
             }

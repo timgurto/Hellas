@@ -52,7 +52,7 @@ _programEndMarker(false){
         return;
     assert (renderer);
 
-    SDL_Surface *surface = IMG_Load(filename.c_str());
+    SDL_Surface *const surface = IMG_Load(filename.c_str());
     if (!surface)
         return;
     if (&colorKey != &Color::NO_KEY) {
@@ -62,7 +62,7 @@ _programEndMarker(false){
     SDL_FreeSurface(surface);
     if (_raw)
         addRef();
-    int ret = SDL_QueryTexture(_raw, 0, 0, &_w, &_h);
+    const int ret = SDL_QueryTexture(_raw, 0, 0, &_w, &_h);
     if (ret != 0) {
         removeRef();
     _raw = 0;
@@ -80,7 +80,7 @@ _programEndMarker(false){
     if (!font)
         return;
 
-    SDL_Surface *surface = TTF_RenderText_Solid(font, text.c_str(), color);
+    SDL_Surface *const surface = TTF_RenderText_Solid(font, text.c_str(), color);
     if (!surface)
         return;
     _raw = renderer.createTextureFromSurface(surface);
@@ -158,7 +158,7 @@ void Texture::draw(const SDL_Rect &location, const SDL_Rect &srcRect) const{
 
 void Texture::addRef(){
     ++_numTextures;
-    std::map<SDL_Texture *, size_t>::iterator it = _refs.find(_raw);
+    const std::map<SDL_Texture *, size_t>::iterator it = _refs.find(_raw);
     if (it != _refs.end())
         ++ it->second;
     else

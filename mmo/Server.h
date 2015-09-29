@@ -68,7 +68,7 @@ private:
 
     // Remove traces of a user who has disconnected.
     void removeUser(const Socket &socket);
-    void removeUser(std::set<User>::iterator &it);
+    void removeUser(const std::set<User>::iterator &it);
 
     // World state
     std::set<Object> _objects;

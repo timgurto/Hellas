@@ -31,7 +31,7 @@ void TooltipBuilder::addLine(const std::string &line){
         addGap();
         return;
     }
-    Texture lineTexture(_font, line, _color);
+    const Texture lineTexture(_font, line, _color);
     _content.push_back(lineTexture);
 }
 

@@ -97,9 +97,9 @@ void Socket::delayClosing(Uint32 lingerTime){
 }
 
 int Socket::closeRawAfterDelay(void *data){
-    Uint32 *p = static_cast<Uint32 *>(data);
-    SOCKET s = static_cast<SOCKET>(p[0]);
-    Uint32 delay = p[1];
+    Uint32 *const p = static_cast<Uint32 *>(data);
+    const SOCKET s = static_cast<SOCKET>(p[0]);
+    const Uint32 delay = p[1];
     delete[] p;
 
     SDL_Delay(delay);
@@ -113,7 +113,7 @@ void Socket::close(){
         --_refCounts[_raw];
         if (_refCounts[_raw] == 0) {
             if (_lingerTime > 0) {
-                Uint32 *args = new Uint32[2];
+                Uint32 *const args = new Uint32[2];
                 args[0] = static_cast<Uint32>(_raw);
                 args[1] = _lingerTime;
                 SDL_CreateThread(closeRawAfterDelay,

@@ -82,7 +82,7 @@ void Server::checkSockets(){
     }
 
     // Poll for activity
-    static timeval selectTimeout = {0, 10000};
+    static const timeval selectTimeout = {0, 10000};
     int activity = select(0, &readFDs, 0, 0, &selectTimeout);
     if (activity == SOCKET_ERROR) {
         _debug << Color::RED << "Error polling sockets: " << WSAGetLastError() << Log::endl;
@@ -125,7 +125,7 @@ void Server::checkSockets(){
             sockaddr_in clientAddr;
             getpeername(raw, (sockaddr*)&clientAddr, (int*)&Socket::sockAddrSize);
             static char buffer[BUFFER_SIZE+1];
-            int charsRead = recv(raw, buffer, BUFFER_SIZE, 0);
+            const int charsRead = recv(raw, buffer, BUFFER_SIZE, 0);
             if (charsRead == SOCKET_ERROR) {
                 int err = WSAGetLastError();
                 if (err == WSAECONNRESET) {
@@ -232,7 +232,7 @@ void Server::draw() const{
 
 void Server::addUser(const Socket &socket, const std::string &name){
     User newUser(name, 0, socket);
-    bool userExisted = readUserData(newUser);
+    const bool userExisted = readUserData(newUser);
     if (!userExisted) {
         newUser.location(mapRand());
         _debug << "New";
@@ -278,7 +278,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
     broadcast(SV_LOCATION, newUser.makeLocationCommand());
 }
 
-void Server::removeUser(std::set<User>::iterator &it){
+void Server::removeUser(const std::set<User>::iterator &it){
         // Broadcast message
         broadcast(SV_USER_DISCONNECTED, it->name());
 
@@ -290,7 +290,7 @@ void Server::removeUser(std::set<User>::iterator &it){
 }
 
 void Server::removeUser(const Socket &socket){
-    std::set<User>::iterator it = _users.find(socket);
+    const std::set<User>::iterator it = _users.find(socket);
     if (it != _users.end())
         removeUser(it);
 }
@@ -310,7 +310,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             continue;
         }
         if (msgCode != CL_I_AM) {
-            User &userRef = const_cast<User&>(*it);
+            User &const userRef = const_cast<User&>(*it);
             user = &userRef;
             user->contact();
         }
@@ -381,7 +381,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != ']')
                 return;
             user->cancelAction(*this);
-            std::set<Item>::const_iterator it = _items.find(id);
+            const std::set<Item>::const_iterator it = _items.find(id);
             if (it == _items.end()) {
                 sendMessage(client, SV_INVALID_ITEM);
                 break;
@@ -421,7 +421,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_CANNOT_CONSTRUCT);
                 break;
             }
-            Point location(x, y);
+            const Point location(x, y);
             if (distance(user->location(), location) > ACTION_DISTANCE) {
                 sendMessage(client, SV_TOO_FAR);
                 break;
@@ -481,10 +481,10 @@ void Server::broadcast(MessageCode msgCode, const std::string &args){
 
 void Server::gatherObject(size_t serial, User &user){
     // Give wood to user
-    std::set<Object>::iterator it = _objects.find(serial);
+    const std::set<Object>::iterator it = _objects.find(serial);
     Object &obj = const_cast<Object &>(*it);
-    const Item *wood = &*_items.find(std::string("wood"));
-    size_t slot = user.giveItem(wood);
+    static const Item *const wood = &*_items.find(std::string("wood"));
+    const size_t slot = user.giveItem(wood);
     if (slot == User::INVENTORY_SIZE) {
         sendMessage(user.socket(), SV_INVENTORY_FULL);
         return;
@@ -495,7 +495,7 @@ void Server::gatherObject(size_t serial, User &user){
     if (it->wood() == 0) {
         // Ensure no other users are targeting this object, as it will be removed.
         for (const User &otherUserConst : _users) {
-            User &otherUser = const_cast<User &>(otherUserConst);
+            const User &const otherUser = const_cast<User &>(otherUserConst);
             if (&otherUser != &user &&
                 otherUser.actionTarget() &&
                 otherUser.actionTarget()->serial() == serial) {
@@ -512,7 +512,7 @@ void Server::gatherObject(size_t serial, User &user){
 }
 
 bool Server::readUserData(User &user){
-    std::string filename = std::string("Users/") + user.name() + ".usr";
+    const std::string filename = std::string("Users/") + user.name() + ".usr";
     std::ifstream fs(filename.c_str());
     if (!fs.good()) // File didn't exist
         return false;
@@ -537,7 +537,7 @@ bool Server::readUserData(User &user){
 }
 
 void Server::writeUserData(const User &user) const{
-    std::string filename = std::string("Users/") + user.name() + ".usr";
+    const std::string filename = std::string("Users/") + user.name() + ".usr";
     std::ofstream fs(filename.c_str());
     
     // Location
@@ -571,9 +571,9 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
 
 void Server::loadData(){
     // First pass: empty items, to facilitate links between items in second pass
-    Item &wood = const_cast<Item &>(*_items.insert(Item("wood", "wood", 5)).first);
-    Item &axe = const_cast<Item &>(*_items.insert(Item("axe", "wooden axe")).first);
-    Item &chest = const_cast<Item &>(*_items.insert(Item("chest", "wooden chest", 10)).first);
+    Item &const wood = const_cast<Item &>(*_items.insert(Item("wood", "wood", 5)).first);
+    Item &const axe = const_cast<Item &>(*_items.insert(Item("axe", "wooden axe")).first);
+    Item &const chest = const_cast<Item &>(*_items.insert(Item("chest", "wooden chest", 10)).first);
 
     // Load data
     axe.addClass("axe");
@@ -586,12 +586,12 @@ void Server::loadData(){
     chest.craftTime(10);
 
     TiXmlDocument doc;
-    bool ret = doc.LoadFile("Data/objectTypes.xml");
+    const bool ret = doc.LoadFile("Data/objectTypes.xml");
     if (!ret) {
         _debug(doc.ErrorDesc(), Color::RED);
         return;
     }
-    TiXmlElement *root = doc.FirstChildElement();
+    TiXmlElement *const root = doc.FirstChildElement();
     if (!root){
         _debug("Object-types file has no root node; aborting.", Color::RED);
         doc.Clear();
@@ -603,20 +603,20 @@ void Server::loadData(){
         if (elem->Value() != VAL)
             continue;
         
-        const char *id = elem->Attribute("id");
+        const char *const id = elem->Attribute("id");
         if (!id)
             continue;
         ObjectType ot(id);
 
-        const char *actionTime = elem->Attribute("actionTime");
+        const char *const actionTime = elem->Attribute("actionTime");
         if (actionTime)
             ot.actionTime(str2int(actionTime));
 
-        const char *wood = elem->Attribute("wood");
+        const char *const wood = elem->Attribute("wood");
         if (wood)
             ot.wood(str2int(wood));
 
-        const char *gatherReq = elem->Attribute("gatherReq");
+        const char *const gatherReq = elem->Attribute("gatherReq");
         if (gatherReq)
             ot.gatherReq(gatherReq);
         
@@ -696,11 +696,11 @@ void Server::saveData() const{
 }
 
 size_t Server::findTile(const Point &p) const{
-    size_t y = static_cast<size_t>(p.y / TILE_H);
+    const size_t y = static_cast<size_t>(p.y / TILE_H);
     double rawX = p.x;
     if (y % 2 == 1)
         rawX -= TILE_W/2;
-    size_t x = static_cast<size_t>(rawX / TILE_W);
+    const size_t x = static_cast<size_t>(rawX / TILE_W);
     if (x >= _mapX || y >= _mapY)
         assert(false);
     return _map[x][y];
@@ -720,14 +720,14 @@ void Server::generateWorld(){
 
     // Stone in circles
     for (int i = 0; i != 5; ++i) {
-        size_t centerX = rand() % _mapX;
-        size_t centerY = rand() % _mapY;
+        const size_t centerX = rand() % _mapX;
+        const size_t centerY = rand() % _mapY;
         for (size_t x = 0; x != _mapX; ++x)
             for (size_t y = 0; y != _mapY; ++y) {
                 Point thisTile(x, y);
                 if (y % 2 == 1)
                     thisTile.x -= .5;
-                double dist = distance(Point(centerX, centerY), thisTile);
+                const double dist = distance(Point(centerX, centerY), thisTile);
                 if (dist <= 4)
                     _map[x][y] = 1;
             }
@@ -735,7 +735,7 @@ void Server::generateWorld(){
 
     // Roads
     for (int i = 0; i != 2; ++i) {
-        Point
+        const Point
             start(rand() % _mapX, rand() % _mapY),
             end(rand() % _mapX, rand() % _mapY);
         for (size_t x = 0; x != _mapX; ++x)
@@ -750,7 +750,7 @@ void Server::generateWorld(){
     }
 
     // River: randomish line
-    Point
+    const Point
         start(rand() % _mapX, rand() % _mapY),
         end(rand() % _mapX, rand() % _mapY);
     for (size_t x = 0; x != _mapX; ++x)
@@ -765,7 +765,7 @@ void Server::generateWorld(){
                 _map[x][y] = 4;
         }
 
-    const ObjectType *branch = &*_objectTypes.find(std::string("branch"));
+    const ObjectType *const branch = &*_objectTypes.find(std::string("branch"));
     for (int i = 0; i != 30; ++i){
         Point loc;
         size_t tile;
@@ -776,7 +776,7 @@ void Server::generateWorld(){
         _objects.insert(Object(branch, loc));
     }
 
-    const ObjectType *tree = &*_objectTypes.find(std::string("tree"));
+    const ObjectType *const tree = &*_objectTypes.find(std::string("tree"));
     for (int i = 0; i != 10; ++i) {
         Point loc;
         size_t tile;
@@ -787,7 +787,7 @@ void Server::generateWorld(){
         _objects.insert(Object(tree, loc));
     }
 
-    const ObjectType *chest = &*_objectTypes.find(std::string("chest"));
+    const ObjectType *const chest = &*_objectTypes.find(std::string("chest"));
     for (int i = 0; i != 10; ++i) {
         Point loc;
         size_t tile;

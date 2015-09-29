@@ -30,7 +30,7 @@ _g(rhs.g),
 _b(rhs.b){}
 
 Color::operator SDL_Color() const{
-    SDL_Color c = {_r, _g, _b, 0};
+    const SDL_Color c = {_r, _g, _b, 0};
     return c;
 }
 

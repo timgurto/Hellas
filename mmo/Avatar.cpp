@@ -15,7 +15,7 @@ Point Avatar::interpolatedLocation(double delta){
     if (_destination == location())
         return _destination;;
 
-    double maxLegalDistance = delta * Server::MOVEMENT_SPEED;
+    const double maxLegalDistance = delta * Server::MOVEMENT_SPEED;
     return interpolate(location(), _destination, maxLegalDistance);
 }
 
@@ -24,7 +24,7 @@ void Avatar::draw(const Client &client) const{
 
     // Draw username
     if (_name != client.username()) {
-        Texture nameTexture(client.defaultFont(), _name, Color::WHITE);
+        const Texture nameTexture(client.defaultFont(), _name, Color::WHITE);
         Point p = location() + client.offset();
         p.y -= 60;
         p.x -= nameTexture.width() / 2;

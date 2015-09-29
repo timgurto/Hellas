@@ -9,7 +9,7 @@ void Args::init(int argc, char* argv[]){
         if (argv[i][0] != '-')
             // Ill-formed argument; skip
             continue;
-        std::string key = argv[i]+1;
+        const std::string key = argv[i]+1;
 
         // Look ahead to see if next arg is a value rather than a key
         if (argc > i+1 && argv[i+1][0] != '-') {
@@ -41,7 +41,7 @@ int Args::getInt(const std::string &key) const{
 
 std::ostream &operator<<(std::ostream &lhs, const Args &rhs){
     for (std::map<std::string, std::string>::const_iterator it = rhs._args.begin();
-         it != rhs._args.end();){
+        it != rhs._args.end();){
         lhs << it->first;
         if (it->second != "")
             lhs << '=' << it->second;

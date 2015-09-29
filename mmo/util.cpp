@@ -10,7 +10,7 @@
 extern Args cmdLineArgs;
 
 bool isDebug(){
-    static bool debug = cmdLineArgs.contains("debug");
+    const static bool debug = cmdLineArgs.contains("debug");
     return debug;
 }
 
@@ -39,19 +39,19 @@ SDL_Rect makeRect(const Point &p){
 }
 
 Point interpolate(const Point &a, const Point &b, double dist){
-    double
+    const double
         xDelta = b.x - a.x,
         yDelta = b.y - a.y;
     if (xDelta == 0 && yDelta == 0)
         return a;
-    double lengthAB = sqrt(xDelta * xDelta + yDelta * yDelta);
+    const double lengthAB = sqrt(xDelta * xDelta + yDelta * yDelta);
     assert (lengthAB > 0);
 
     if (dist >= lengthAB)
         // Target point exceeds b
         return b;
 
-    double
+    const double
         xNorm = xDelta / lengthAB,
         yNorm = yDelta / lengthAB;
     return Point(a.x + xNorm * dist,
