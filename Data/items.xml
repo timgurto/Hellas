@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<root>
+<item
+    id="wood"
+    name="Wood"
+    stackSize=5
+/>
+<item
+    id="axe"
+    name="Wooden axe"
+    craftTime=10
+>
+    <material id="wood" quantity=3/>
+    <class name="axe"/>
+</item>
+<item
+    id="chest"
+    name="Wooden chest"
+    craftTime=10
+>
+    <material id="wood" quantity=5/>
+    <class name="container"/>
+    <class name="structure"/>
+</item>
+</root>

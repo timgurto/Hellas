@@ -41,6 +41,7 @@ public:
     const std::string &id() const { return _id; }
     const std::string &name() const { return _name; }
     size_t stackSize() const { return _stackSize; }
+    void stackSize(size_t n) { _stackSize = n; }
     const Texture &icon() const { return _icon; }
     const std::set<std::string> &classes() const { return _classes; }
     const std::map<const Item *, size_t> &materials() const { return _materials; }

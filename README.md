@@ -16,6 +16,7 @@ MMO economy simulator
 #### Client programming guide
 [Glossary of ambiguous terms](#glossary) 
 [Item classes](#classes)  
+[Game data](#data)  
 [Client states](#states)  
 [Login sequence](#login)  
 [Message codes](#messages)  
@@ -124,6 +125,11 @@ The classes themselves are not coded anywhere authoritative, but are deduced by 
 
 **structure**, can be transformed into a physical object by "constructing" it
 
+<a id='data'></a>
+### Game data
+The data files used by the server can be viewed here:
+ - [Object types](Data/objectTypes.xml)
+ - [Items](Data/items.xml)
 
 <a id='states'></a>
 ### Client states

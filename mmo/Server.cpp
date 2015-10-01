@@ -310,7 +310,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             continue;
         }
         if (msgCode != CL_I_AM) {
-            User &const userRef = const_cast<User&>(*it);
+            User & userRef = const_cast<User&>(*it);
             user = &userRef;
             user->contact();
         }
@@ -495,7 +495,7 @@ void Server::gatherObject(size_t serial, User &user){
     if (it->wood() == 0) {
         // Ensure no other users are targeting this object, as it will be removed.
         for (const User &otherUserConst : _users) {
-            const User &const otherUser = const_cast<User &>(otherUserConst);
+            const User & otherUser = const_cast<User &>(otherUserConst);
             if (&otherUser != &user &&
                 otherUser.actionTarget() &&
                 otherUser.actionTarget()->serial() == serial) {
@@ -570,57 +570,119 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
 }
 
 void Server::loadData(){
-    // First pass: empty items, to facilitate links between items in second pass
-    Item &const wood = const_cast<Item &>(*_items.insert(Item("wood", "wood", 5)).first);
-    Item &const axe = const_cast<Item &>(*_items.insert(Item("axe", "wooden axe")).first);
-    Item &const chest = const_cast<Item &>(*_items.insert(Item("chest", "wooden chest", 10)).first);
+    // Object types
+    {
+        TiXmlDocument doc;
+        bool ret = doc.LoadFile("Data/objectTypes.xml");
+        if (!ret) {
+            _debug(doc.ErrorDesc(), Color::RED);
+            return;
+        }
+        TiXmlElement *const root = doc.FirstChildElement();
+        if (!root){
+            _debug("Object-types file has no root node; aborting.", Color::RED);
+            doc.Clear();
+            return;
+        }
+        static const std::string OBJECT_TYPE_VAL = "objectType";
+        for (TiXmlElement *elem = root->FirstChildElement(); elem;
+             elem = elem->NextSiblingElement()) {
+            std::string val = elem->Value();
+            if (elem->Value() != OBJECT_TYPE_VAL)
+                continue;
+        
+            const char *const id = elem->Attribute("id");
+            if (!id)
+                continue; // ID is manadatory
+            ObjectType ot(id);
 
-    // Load data
-    axe.addClass("axe");
-    axe.addMaterial(&wood, 3);
-    axe.craftTime(10);
+            const char *const actionTime = elem->Attribute("actionTime");
+            if (actionTime)
+                ot.actionTime(str2int(actionTime));
 
-    chest.addClass("structure");
-    chest.addClass("container");
-    chest.addMaterial(&wood, 5);
-    chest.craftTime(10);
+            const char *const wood = elem->Attribute("wood");
+            if (wood)
+                ot.wood(str2int(wood));
 
-    TiXmlDocument doc;
-    const bool ret = doc.LoadFile("Data/objectTypes.xml");
-    if (!ret) {
-        _debug(doc.ErrorDesc(), Color::RED);
-        return;
-    }
-    TiXmlElement *const root = doc.FirstChildElement();
-    if (!root){
-        _debug("Object-types file has no root node; aborting.", Color::RED);
+            const char *const gatherReq = elem->Attribute("gatherReq");
+            if (gatherReq)
+                ot.gatherReq(gatherReq);
+        
+            _objectTypes.insert(ot);
+        }
         doc.Clear();
-        return;
     }
-    static const std::string VAL = "objectType";
-    for (TiXmlElement *elem = root->FirstChildElement(); elem; elem = elem->NextSiblingElement()) {
-        std::string val = elem->Value();
-        if (elem->Value() != VAL)
-            continue;
+
+    // Items
+    {
+        TiXmlDocument doc;
+        const bool ret = doc.LoadFile("Data/items.xml");
+        if (!ret) {
+            _debug(doc.ErrorDesc(), Color::RED);
+            return;
+        }
+        TiXmlElement *const root = doc.FirstChildElement();
+        if (!root){
+            _debug("Items file has no root node; aborting.", Color::RED);
+            doc.Clear();
+            return;
+        }
+        static const std::string ITEM_VAL = "item";
+        for (TiXmlElement *elem = root->FirstChildElement(); elem;
+             elem = elem->NextSiblingElement()) {
+            std::string val = elem->Value();
+            if (elem->Value() != ITEM_VAL)
+                continue;
         
-        const char *const id = elem->Attribute("id");
-        if (!id)
-            continue;
-        ObjectType ot(id);
+            const char *const id = elem->Attribute("id");
+            const char *const name = elem->Attribute("name");
+            if (!id || !name)
+                continue; // ID is manadatory
+            Item item(id, name);
 
-        const char *const actionTime = elem->Attribute("actionTime");
-        if (actionTime)
-            ot.actionTime(str2int(actionTime));
+            const char *const stackSize = elem->Attribute("stackSize");
+            if (stackSize)
+                item.stackSize(str2int(stackSize));
 
-        const char *const wood = elem->Attribute("wood");
-        if (wood)
-            ot.wood(str2int(wood));
+            const char *const craftTime = elem->Attribute("craftTime");
+            if (craftTime)
+                item.craftTime(str2int(craftTime));
 
-        const char *const gatherReq = elem->Attribute("gatherReq");
-        if (gatherReq)
-            ot.gatherReq(gatherReq);
+            for (TiXmlElement *child = elem->FirstChildElement(); child;
+                 child = child->NextSiblingElement()) {
+                std::string val = child->Value();
+                static const std::string
+                    MAT_VAL = "material",
+                    CLASS_VAL = "class";
+                if (val == MAT_VAL) {
+                    size_t matQty = 1;
+                    const char *const matQtyStr = child->Attribute("quantity");
+                    if (matQtyStr)
+                        item.stackSize(str2int(matQtyStr));
+                    const char *const matID = child->Attribute("id");
+                    if (matID) {
+                        /*
+                        If the item hasn't been added yet, this will create a dummy that can be
+                        referred to.
+                        */
+                        item.addMaterial(&*(_items.insert(Item(matID)).first), matQty);
+                    }
+                } else if (val == CLASS_VAL) {
+                    const char *const className = child->Attribute("name");
+                    if (className) {
+                        item.addClass(className);
+                    }
+                } else
+                    continue;
+            }
         
-        _objectTypes.insert(ot);
+            std::pair<std::set<Item>::iterator, bool> ret = _items.insert(item);
+            if (!ret.second) {
+                Item &itemInPlace = const_cast<Item &>(*ret.first);
+                itemInPlace = item;
+            }
+        }
+        doc.Clear();
     }
 
     std::ifstream fs;
