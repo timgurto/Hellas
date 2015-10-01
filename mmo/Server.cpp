@@ -878,3 +878,9 @@ bool Server::itemIsClass(const Item *item, const std::string &className) const{
     assert (item);
     return item->isClass(className);
 }
+
+void Server::addObject (const ObjectType *type, const Point &location){
+    Object newObj(type, location);
+    _objects.insert(newObj);
+    broadcast(SV_OBJECT, makeArgs(newObj.serial(), location.x, location.y, type->id()));
+}

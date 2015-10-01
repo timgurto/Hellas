@@ -120,6 +120,8 @@ void User::actionCraft(const Item &item){
 void User::actionConstruct(const ObjectType &obj, const Point &location, size_t slot){
     _actionConstructing = &obj;
     _actionTime = obj.constructionTime();
+    _constructingSlot = slot;
+    _constructingLocation = location;
 }
 
 bool User::hasMaterials(const Item &item) const{
@@ -196,6 +198,18 @@ void User::update(Uint32 timeElapsed, Server &server){
             // Remove materials from user's inventory
             removeMaterials(*_actionCrafting, server);
             _actionCrafting = 0;
+        } else if (_actionConstructing) {
+            // Create object
+            server.addObject(_actionConstructing, _constructingLocation);
+
+            // Remove item from user's inventory
+            std::pair<const Item *, size_t> &slot = _inventory[_constructingSlot];
+            assert(slot.first->constructsObject() == _actionConstructing);
+            --slot.second;
+            if (slot.second == 0)
+                slot.first = 0;
+            const std::string &id = slot.first ? slot.first->id() : "none";
+            server.sendMessage(_socket, SV_INVENTORY, makeArgs(_constructingSlot, id, slot.second));
         }
         _actionTime = 0;
         server.sendMessage(_socket, SV_ACTION_FINISHED);

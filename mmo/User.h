@@ -21,7 +21,11 @@ class User{
     Point _location;
     const Object *_actionTarget; // Points to the object that the user is acting upon.
     const Item *_actionCrafting; // The item this user is currently crafting.
+
     const ObjectType *_actionConstructing; // The object this user is currently constructing.
+    size_t _constructingSlot;
+    Point _constructingLocation;
+
     Uint32 _actionTime; // Time remaining on current action.
     std::vector<std::pair<const Item *, size_t> > _inventory;
 
