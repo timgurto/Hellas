@@ -600,6 +600,10 @@ void Server::loadData(){
             if (actionTime)
                 ot.actionTime(str2int(actionTime));
 
+            const char *const constructionTime = elem->Attribute("constructionTime");
+            if (constructionTime)
+                ot.constructionTime(str2int(constructionTime));
+
             const char *const wood = elem->Attribute("wood");
             if (wood)
                 ot.wood(str2int(wood));
@@ -647,6 +651,10 @@ void Server::loadData(){
             const char *const craftTime = elem->Attribute("craftTime");
             if (craftTime)
                 item.craftTime(str2int(craftTime));
+
+            const char *const constructs = elem->Attribute("constructs");
+            if (constructs)
+                item.constructsObject(&*(_objectTypes.insert(ObjectType(constructs)).first));
 
             for (TiXmlElement *child = elem->FirstChildElement(); child;
                  child = child->NextSiblingElement()) {

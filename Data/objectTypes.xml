@@ -13,5 +13,6 @@
 />
 <objectType
     id="chest"
+    constructionTime=2000
 />
 </root>

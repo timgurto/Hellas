@@ -8,7 +8,7 @@
 <item
     id="axe"
     name="Wooden axe"
-    craftTime=10
+    craftTime=10000
 >
     <material id="wood" quantity=3/>
     <class name="axe"/>
@@ -16,7 +16,8 @@
 <item
     id="chest"
     name="Wooden chest"
-    craftTime=10
+    constructs="chest"
+    craftTime=10000
 >
     <material id="wood" quantity=5/>
     <class name="container"/>
