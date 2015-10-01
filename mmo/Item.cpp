@@ -3,13 +3,15 @@
 #include "Item.h"
 #include "Client.h"
 #include "Color.h"
+#include "ObjectType.h"
 
 Item::Item(const std::string &idArg, const std::string &nameArg, size_t stackSizeArg):
 _id(idArg),
 _name(nameArg),
 _stackSize(stackSizeArg),
 _icon(std::string("Images/Items/") + _id + ".png", Color::MAGENTA),
-_craftTime(0){}
+_craftTime(0),
+_constructsObject(0){}
 
 Item::Item(const std::string &idArg):
 _id(idArg){}

@@ -9,6 +9,8 @@
 
 #include "Texture.h"
 
+class ObjectType;
+
 // Describes an item type
 class Item{
     std::string _id; // The no-space, unique name used in data files
@@ -27,6 +29,9 @@ class Item{
     std::map<const Item *, size_t> _materials;
     Uint32 _craftTime; // How long this item takes to craft
 
+    // The object that this item can construct
+    const ObjectType *_constructsObject;
+
 public:
     Item(const std::string &id, const std::string &name, size_t stackSize = 1);
     Item(const std::string &id); // Creates a dummy Item for set lookup
@@ -41,6 +46,8 @@ public:
     const std::map<const Item *, size_t> &materials() const { return _materials; }
     Uint32 craftTime() const { return _craftTime; }
     void craftTime(Uint32 time) { _craftTime = time * 1000; }
+    void constructsObject(const ObjectType *obj) { _constructsObject = obj; }
+    const ObjectType *constructsObject() const { return _constructsObject; }
 
     void addClass(const std::string &className);
     bool hasClasses() const { return _classes.size() > 0; }

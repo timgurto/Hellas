@@ -10,6 +10,7 @@
 class ObjectType{
     std::string _id;
     Uint32 _actionTime;
+    Uint32 _constructionTime;
     size_t _wood; // TODO: abstract _resources, probably map<item-id, pair<mean,sd>>
 
     // To gather objects of this type, a user must have an item of the following class
@@ -26,6 +27,8 @@ public:
 
     const std::string &id() const { return _id; }
     Uint32 actionTime() const { return _actionTime; }
+    Uint32 constructionTime() const { return _constructionTime; }
+    void constructionTime(Uint32 t) { _constructionTime = t; }
 
     bool operator<(const ObjectType &rhs) const { return _id < rhs._id; }
 };

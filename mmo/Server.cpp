@@ -417,7 +417,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             const Item &item = *invSlot.first;
-            if (!item.isClass("structure")) {
+            if (!item.isClass("structure") || !item.constructsObject()) {
                 sendMessage(client, SV_CANNOT_CONSTRUCT);
                 break;
             }
@@ -426,8 +426,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_TOO_FAR);
                 break;
             }
-            //user->actionConstruct([object], location, slot);
-            //sendMessage(client, SV_ACTION_STARTED, makeArgs(it->craftTime()));
+            user->actionConstruct(*item.constructsObject(), location, slot);
+            sendMessage(client, SV_ACTION_STARTED, makeArgs(item.constructsObject()->constructionTime()));
             break;
         }
 

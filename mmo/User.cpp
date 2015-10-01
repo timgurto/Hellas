@@ -19,6 +19,7 @@ _socket(socket),
 _location(loc),
 _actionTarget(0),
 _actionCrafting(0),
+_actionConstructing(0),
 _actionTime(0),
 _inventory(INVENTORY_SIZE),
 _lastLocUpdate(SDL_GetTicks()),
@@ -116,6 +117,11 @@ void User::actionCraft(const Item &item){
     _actionTime = item.craftTime();
 }
 
+void User::actionConstruct(const ObjectType &obj, const Point &location, size_t slot){
+    _actionConstructing = &obj;
+    _actionTime = obj.constructionTime();
+}
+
 bool User::hasMaterials(const Item &item) const{
     std::map<const Item *, size_t> remaining = item.materials();
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
@@ -135,7 +141,7 @@ bool User::hasMaterials(const Item &item) const{
 bool User::hasItemClass(const std::string &className) const{
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         const Item *const item = _inventory[i].first;
-        if (item->isClass(className))
+        if (item && item->isClass(className))
             return true;
     }
     return false;
@@ -164,7 +170,8 @@ void User::removeMaterials(const Item &item, Server &server) {
     }
     for (size_t slotNum : invSlotsChanged) {
         const std::pair<const Item *, size_t> &slot = _inventory[slotNum];
-        server.sendMessage(_socket, SV_INVENTORY, makeArgs(slotNum, slot.first->id(), slot.second));
+        std::string id = slot.first ? slot.first->id() : "none";
+        server.sendMessage(_socket, SV_INVENTORY, makeArgs(slotNum, id, slot.second));
     }
 }
 

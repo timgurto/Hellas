@@ -21,6 +21,7 @@ class User{
     Point _location;
     const Object *_actionTarget; // Points to the object that the user is acting upon.
     const Item *_actionCrafting; // The item this user is currently crafting.
+    const ObjectType *_actionConstructing; // The object this user is currently constructing.
     Uint32 _actionTime; // Time remaining on current action.
     std::vector<std::pair<const Item *, size_t> > _inventory;
 
@@ -49,6 +50,9 @@ public:
     bool hasMaterials(const Item &item) const;
     void removeMaterials(const Item &item, Server &server);
     void actionCraft(const Item &item); // Configure user to craft an item
+
+    // Configure user to construct an item
+    void actionConstruct(const ObjectType &obj, const Point &location, size_t slot);
 
     void cancelAction(Server &server); // Cancel any action in progress, and alert the client
 
