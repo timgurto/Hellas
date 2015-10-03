@@ -17,11 +17,12 @@ class XmlDoc{
 public:
     XmlDoc(const char *filename, Log *debug = 0);
     ~XmlDoc();
+    
+    static std::set<TiXmlElement *> getChildren(const std::string &val, TiXmlElement *elem);
+    std::set<TiXmlElement *> getChildren(const std::string &val) { return getChildren(val, _root); }
 
     static bool findStrAttr(TiXmlElement *elem, const char *attr, std::string &val);
     static bool findIntAttr(TiXmlElement *elem, const char *attr, int &val);
-
-    TiXmlElement *root() { return _root; }
 };
 
 #endif

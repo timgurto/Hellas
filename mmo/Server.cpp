@@ -573,17 +573,11 @@ void Server::loadData(){
     // Object types
     {
         XmlDoc objTypes("Data/objectTypes.xml", &_debug);
-        TiXmlElement *const root = objTypes.root();
-        static const std::string OBJECT_TYPE_VAL = "objectType";
-        for (TiXmlElement *elem = root->FirstChildElement(); elem;
-             elem = elem->NextSiblingElement()) {
-            std::string val = elem->Value();
-            if (elem->Value() != OBJECT_TYPE_VAL)
-                continue;
-
+        for (auto elem : objTypes.getChildren("objectType")) {
             std::string id;
             if (!objTypes.findStrAttr(elem, "id", id))
                 continue;
+            _debug << "Loaded object type with id=\"" << id << "\"." << Log::endl;
             ObjectType ot(id);
 
             std::string s; int n;
@@ -599,14 +593,7 @@ void Server::loadData(){
     // Items
     {
         XmlDoc items("Data/items.xml", &_debug);
-        TiXmlElement *const root  = items.root();
-        static const std::string ITEM_VAL = "item";
-        for (TiXmlElement *elem = root->FirstChildElement(); elem;
-             elem = elem->NextSiblingElement()) {
-            std::string val = elem->Value();
-            if (elem->Value() != ITEM_VAL)
-                continue;
-        
+        for (auto elem : items.getChildren("item")) {
             std::string id, name;
             if (!items.findStrAttr(elem, "id", id) || !items.findStrAttr(elem, "name", name))
                 continue; // ID and name are mandatory.
@@ -619,25 +606,15 @@ void Server::loadData(){
                 // Create dummy ObjectType if necessary
                 item.constructsObject(&*(_objectTypes.insert(ObjectType(s)).first));
 
-            for (TiXmlElement *child = elem->FirstChildElement(); child;
-                 child = child->NextSiblingElement()) {
-                std::string val = child->Value();
-                static const std::string
-                    MAT_VAL = "material",
-                    CLASS_VAL = "class";
-
-                if (val == MAT_VAL) {
-                    int matQty = 1;
-                    items.findIntAttr(child, "quantity", matQty);
-                    if (items.findStrAttr(child, "id", s))
-                        // Create dummy Item if necessary
-                        item.addMaterial(&*(_items.insert(Item(s)).first), matQty);
-
-                } else if (val == CLASS_VAL) {
-                    if (items.findStrAttr(child, "name", s)) item.addClass(s);
-                } else
-                    continue;
+            for (auto child : XmlDoc::getChildren("material", elem)) {
+                int matQty = 1;
+                items.findIntAttr(child, "quantity", matQty);
+                if (items.findStrAttr(child, "id", s))
+                    // Create dummy Item if necessary
+                    item.addMaterial(&*(_items.insert(Item(s)).first), matQty);
             }
+            for (auto child : XmlDoc::getChildren("class", elem))
+                if (items.findStrAttr(child, "name", s)) item.addClass(s);
         
             std::pair<std::set<Item>::iterator, bool> ret = _items.insert(item);
             if (!ret.second) {

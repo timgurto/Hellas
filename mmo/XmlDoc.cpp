@@ -1,5 +1,6 @@
 // (C) 2015 Tim Gurto
 
+#include <set>
 #include <sstream>
 
 #include "XmlDoc.h"
@@ -22,6 +23,14 @@ _root(0){
 
 XmlDoc::~XmlDoc(){
     _doc.Clear();
+}
+
+std::set<TiXmlElement *> XmlDoc::getChildren(const std::string &val, TiXmlElement *elem) {
+    std::set<TiXmlElement *> children;
+    for (TiXmlElement *child = elem->FirstChildElement(); child; child = child->NextSiblingElement())
+        if (val == child->Value())
+            children.insert(child);
+    return children;
 }
 
 bool XmlDoc::findStrAttr(TiXmlElement *elem, const char *attr, std::string &strVal){
