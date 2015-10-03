@@ -1,0 +1,35 @@
+// (C) 2015 Tim Gurto
+
+#include "XmlWriter.h"
+
+XmlWriter::XmlWriter(const std::string &filename):
+_filename(filename){
+    _root = new TiXmlElement("root");
+    _doc.LinkEndChild(_root);
+}
+
+XmlWriter::~XmlWriter(){
+    _doc.Clear();
+}
+
+TiXmlElement *XmlWriter::addChild(const char *val, TiXmlElement *elem){
+    TiXmlElement *e = new TiXmlElement(val);
+    elem->LinkEndChild(e);
+    return e;
+}
+
+void XmlWriter::setAttr(TiXmlElement *elem, const char *attr, const std::string &val){
+    elem->SetAttribute(attr, val);
+}
+
+void XmlWriter::setAttr(TiXmlElement *elem, const char *attr, int val){
+    elem->SetAttribute(attr, val);
+}
+
+void XmlWriter::setAttr(TiXmlElement *elem, const char *attr, const char *val){
+    elem->SetAttribute(attr, val);
+}
+
+void XmlWriter::publish(){
+    _doc.SaveFile(_filename);
+}

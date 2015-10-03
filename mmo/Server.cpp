@@ -4,7 +4,6 @@
 #include <cassert>
 #include <sstream>
 #include <fstream>
-#include <tinyxml.h>
 #include <utility>
 
 #include "Client.h" //TODO remove; only here for random initial placement
@@ -15,6 +14,7 @@
 #include "Server.h"
 #include "User.h"
 #include "XmlReader.h"
+#include "XmlWriter.h"
 #include "messageCodes.h"
 #include "util.h"
 
@@ -547,32 +547,24 @@ bool Server::readUserData(User &user){
 }
 
 void Server::writeUserData(const User &user) const{
-    TiXmlDocument doc;
-    TiXmlElement *root = new TiXmlElement("root");
-    doc.LinkEndChild(root);
+    XmlWriter xw(std::string("Users/") + user.name() + ".usr");
 
-    TiXmlElement *e = new TiXmlElement("location");
-    root->LinkEndChild(e);
-    e->SetAttribute("x", makeArgs(user.location().x));
-    e->SetAttribute("y", makeArgs(user.location().y));
+    auto e = xw.addChild("location");
+    xw.setAttr(e, "x", user.location().x);
+    xw.setAttr(e, "y", user.location().y);
 
-    e = new TiXmlElement("inventory");
-    root->LinkEndChild(e);
+    e = xw.addChild("inventory");
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         const std::pair<const Item *, size_t> &slot = user.inventory(i);
         if (slot.first) {
-            TiXmlElement *slotElement = new TiXmlElement("slot");
-            e->LinkEndChild(slotElement);
-            slotElement->SetAttribute("slot", makeArgs(i));
-            slotElement->SetAttribute("id", slot.first->id());
-            slotElement->SetAttribute("quantity", slot.second);
+            auto slotElement = xw.addChild("slot", e);
+            xw.setAttr(slotElement, "slot", i);
+            xw.setAttr(slotElement, "id", slot.first->id());
+            xw.setAttr(slotElement, "quantity", slot.second);
         }
     }
 
-    bool ret = doc.SaveFile(std::string("Users/") + user.name() + ".usr");
-    if (!ret)
-        _debug("Failed to save user file", Color::RED);
-    doc.Clear();
+    xw.publish();
 }
 
 
