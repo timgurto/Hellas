@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<root>
+<objectType
+    id="tree"
+    name="Tree"
+    xDrawOffset=-20
+    yDrawOffset=-47
+    canGather=1
+/>
+<objectType
+    id="branch"
+    name="Branch"
+    xDrawOffset=-14
+    yDrawOffset=-12
+    canGather=1
+/>
+<objectType
+    id="chest"
+    name="Wooden chest"
+    xDrawOffset=-17
+    yDrawOffset=-13
+/>
+</root>

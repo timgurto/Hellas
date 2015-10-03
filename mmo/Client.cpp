@@ -19,6 +19,7 @@
 #include "User.h"
 #include "messageCodes.h"
 #include "util.h"
+#include "XmlDoc.h"
 
 extern Args cmdLineArgs;
 extern Renderer renderer;
@@ -138,25 +139,22 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
     chest.craftTime(10);
 
 
-    std::ifstream fs("Data/objectTypesClient.dat");
-    if (!fs.good()) {
-        _debug("Object-types file invalid; aborting data load.", Color::RED);
+    // Object types
+    XmlDoc doc("Data/objectTypesClient.xml", &_debug);
+    for (auto elem : doc.getChildren("objectType")) {
+        std::string s; int n;
+        if (!doc.findStrAttr(elem, "id", s))
+            continue;
+        ClientObjectType cot(s);
+        cot.image(std::string("Images/Objects/") + s + ".png");
+        if (doc.findStrAttr(elem, "name", s)) cot.name(s);
+        SDL_Rect drawRect = {0, 0, cot.width(), cot.height()};
+        if (doc.findIntAttr(elem, "xDrawOffset", drawRect.x) ||
+            doc.findIntAttr(elem, "yDrawOffset", drawRect.y))
+            cot.drawRect(drawRect);
+        if (doc.findIntAttr(elem, "canGather", n) && n != 0) cot.canGather(true);
+        _objectTypes.insert(cot);
     }
-    int numObjTypes;
-    fs >> numObjTypes;
-    for (int i = 0; i != numObjTypes; ++i) {
-        std::string id, name;
-        SDL_Rect drawRect;
-        drawRect.w = drawRect.h = 0;
-        bool canGather;
-        fs >> id >> name >> drawRect.x >> drawRect.y >> canGather;
-        _objectTypes.insert(ClientObjectType(drawRect, std::string("Images/Objects/") + id + ".png",
-                                             id, name, canGather));
-    }
-    if (!fs.good()) {
-        _debug("Object-types file invalid; aborting data load.", Color::RED);
-    }
-    fs.close();
 
 
     Element::absMouse = &_mouse;

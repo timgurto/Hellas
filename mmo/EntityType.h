@@ -20,12 +20,13 @@ public:
 
     virtual ~EntityType(){}
 
+    void image(const std::string &filename);
     const SDL_Rect &drawRect() const { return _drawRect; }
+    void drawRect(const SDL_Rect &rect) { _drawRect = rect; }
     int width() const { return _drawRect.w; }
     int height() const { return _drawRect.h; }
 
     void drawAt(const Point &loc) const;
-    void image(const std::string &imageFile);
 };
 
 #endif

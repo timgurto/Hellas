@@ -17,13 +17,12 @@ class ClientObjectType : public EntityType{
     bool _canGather; // Whether this represents objects that can be gathered
 
 public:
-    ClientObjectType(const SDL_Rect &drawRect = makeRect(), const std::string &imageFile = "",
-                     const std::string &id = "", const std::string &name = "",
-                     bool canGather = false);
-    ClientObjectType(const std::string &id); // For set lookup
+    ClientObjectType(const std::string &id);
 
-    bool canGather() const { return _canGather; }
     const std::string &name() const { return _name; }
+    void name(const std::string &s) { _name = s; }
+    bool canGather() const { return _canGather; }
+    void canGather(bool b) { _canGather = b; }
 
     bool operator<(const ClientObjectType &rhs) const { return _id < rhs._id; }
 };

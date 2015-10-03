@@ -576,7 +576,6 @@ void Server::loadData(){
         std::string id;
         if (!doc.findStrAttr(elem, "id", id))
             continue;
-        _debug << "Loaded object type with id=\"" << id << "\"." << Log::endl;
         ObjectType ot(id);
 
         std::string s; int n;
