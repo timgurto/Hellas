@@ -513,7 +513,7 @@ void Server::gatherObject(size_t serial, User &user){
 }
 
 bool Server::readUserData(User &user){
-    XmlReader xr((std::string("Users/") + user.name() + ".usr").c_str(), &_debug);
+    XmlReader xr((std::string("Users/") + user.name() + ".usr").c_str());
     if (!xr)
         return false;
 
@@ -583,7 +583,7 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
 
 void Server::loadData(){
     // Object types
-    XmlReader xr("Data/objectTypes.xml", &_debug);
+    XmlReader xr("Data/objectTypes.xml");
     for (auto elem : xr.getChildren("objectType")) {
         std::string id;
         if (!xr.findAttr(elem, "id", id))

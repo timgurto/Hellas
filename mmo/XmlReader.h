@@ -6,16 +6,13 @@
 #include <string>
 #include <tinyxml.h>
 
-#include "Log.h"
-
 // Wrapper class for TinyXml functionality
 class XmlReader{
-    Log *_debug;
     TiXmlDocument _doc;
     TiXmlElement *_root;
 
 public:
-    XmlReader(const char *filename, Log *debug = 0);
+    XmlReader(const char *filename);
     ~XmlReader();
 
     operator bool() const { return _root != 0; }

@@ -5,8 +5,7 @@
 
 #include "XmlReader.h"
 
-XmlReader::XmlReader(const char *filename, Log *debug):
-_debug(debug),
+XmlReader::XmlReader(const char *filename):
 _root(0){
     newFile(filename);
 }
@@ -17,17 +16,11 @@ XmlReader::~XmlReader(){
 
 void XmlReader::newFile(const char *filename){
     _doc.Clear();
+    _root = 0;
     bool ret = _doc.LoadFile(filename);
-    if (!ret) {
-        if (_debug)
-            *_debug << Color::RED << "Failed to load XML file " << filename << ": "
-                    << _doc.ErrorDesc() << Log::endl;
+    if (!ret)
         return;
-    }
     _root = _doc.FirstChildElement();
-    if (!_root && _debug)
-        *_debug << Color::RED
-               << "XML file " << filename << "has no root node; aborting." << Log::endl;
 }
 
 std::set<TiXmlElement *> XmlReader::getChildren(const std::string &val, TiXmlElement *elem) {

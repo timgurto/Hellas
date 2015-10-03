@@ -150,7 +150,7 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
 
 
     // Object types
-    XmlReader xr("Data/objectTypesClient.xml", &_debug);
+    XmlReader xr("Data/objectTypesClient.xml");
     for (auto elem : xr.getChildren("objectType")) {
         std::string s; int n;
         if (!xr.findAttr(elem, "id", s))
