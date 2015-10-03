@@ -42,3 +42,4 @@ Makefile~
 *.o
 *.swo
 World/objects.dat
+World/map.map

@@ -637,19 +637,29 @@ void Server::loadData(){
         if (cmdLineArgs.contains("new"))
             break;
 
-        fs.open("World/map.dat");
-        if (!fs.good())
+        xr.newFile("World/map.map");
+        if (!xr)
             break;
-        fs >> _mapX >> _mapY;
+        for (auto elem : xr.getChildren("size")) {
+            if (!xr.findAttr(elem, "x", _mapX) || !xr.findAttr(elem, "y", _mapY))
+                break;
+        }
         _map = std::vector<std::vector<size_t> >(_mapX);
         for (size_t x = 0; x != _mapX; ++x)
             _map[x] = std::vector<size_t>(_mapY, 0);
-        for (size_t y = 0; y != _mapY; ++y)
-            for (size_t x = 0; x != _mapX; ++x)
-                fs >> _map[x][y];
-        if (!fs.good())
-            break;
-        fs.close();
+
+        for (auto row : xr.getChildren("row")) {
+            size_t y;
+            if (!xr.findAttr(row, "y", y) || y >= _mapY)
+                break;
+            for (auto tile : xr.getChildren("tile", row)) {
+                size_t x;
+                if (!xr.findAttr(tile, "x", x) || x >= _mapX)
+                    break;
+                if (!xr.findAttr(tile, "terrain", _map[x][y]))
+                    break;
+            }
+        }
 
         fs.open("World/objects.dat");
         if (!fs.good())
@@ -681,17 +691,22 @@ void Server::loadData(){
 }
 
 void Server::saveData() const{
-    std::ofstream fs("World/map.dat");
-    fs << _mapX << '\n' << _mapY << '\n';
+    XmlWriter xw("World/map.map");
+    auto e = xw.addChild("size");
+    xw.setAttr(e, "x", _mapX);
+    xw.setAttr(e, "y", _mapY);
     for (size_t y = 0; y != _mapY; ++y){
+        auto row = xw.addChild("row");
+        xw.setAttr(row, "y", y);
         for (size_t x = 0; x != _mapX; ++x){
-            fs << ' ' << _map[x][y];
+            auto tile = xw.addChild("tile", row);
+            xw.setAttr(tile, "x", x);
+            xw.setAttr(tile, "terrain", _map[x][y]);
         }
-        fs << '\n';
     }
-    fs.close();
+    xw.publish();
 
-    fs.open("World/objects.dat");
+    std::ofstream fs("World/objects.dat");
     fs << _objects.size() << '\n';
     for (const Object &obj : _objects) {
         assert (obj.type());
