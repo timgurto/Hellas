@@ -123,6 +123,9 @@
     <ClCompile Include="..\tinyxml\tinyxmlparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="xmlUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Args.h">
@@ -217,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="Button.h" />
     <ClInclude Include="..\tinyxml\tinyxml.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="xmlUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

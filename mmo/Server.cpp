@@ -4,7 +4,6 @@
 #include <cassert>
 #include <sstream>
 #include <fstream>
-#include "tinyxml.h"
 #include <utility>
 
 #include "Client.h" //TODO remove; only here for random initial placement
@@ -16,6 +15,7 @@
 #include "User.h"
 #include "messageCodes.h"
 #include "util.h"
+#include "xmlUtil.h"
 
 extern Args cmdLineArgs;
 extern Renderer renderer;
@@ -590,27 +590,17 @@ void Server::loadData(){
             std::string val = elem->Value();
             if (elem->Value() != OBJECT_TYPE_VAL)
                 continue;
-        
-            const char *const id = elem->Attribute("id");
-            if (!id)
-                continue; // ID is manadatory
+
+            std::string id;
+            if (!findStrAttr(elem, "id", id))
+                continue;
             ObjectType ot(id);
 
-            const char *const actionTime = elem->Attribute("actionTime");
-            if (actionTime)
-                ot.actionTime(str2int(actionTime));
-
-            const char *const constructionTime = elem->Attribute("constructionTime");
-            if (constructionTime)
-                ot.constructionTime(str2int(constructionTime));
-
-            const char *const wood = elem->Attribute("wood");
-            if (wood)
-                ot.wood(str2int(wood));
-
-            const char *const gatherReq = elem->Attribute("gatherReq");
-            if (gatherReq)
-                ot.gatherReq(gatherReq);
+            std::string s; int n;
+            if (findIntAttr(elem, "actionTime", n)) ot.actionTime(n);
+            if (findIntAttr(elem, "constructionTime", n)) ot.constructionTime(n);
+            if (findIntAttr(elem, "wood", n)) ot.wood(n);
+            if (findStrAttr(elem, "gatherReq", s)) ot.gatherReq(s);
         
             _objectTypes.insert(ot);
         }
@@ -638,23 +628,17 @@ void Server::loadData(){
             if (elem->Value() != ITEM_VAL)
                 continue;
         
-            const char *const id = elem->Attribute("id");
-            const char *const name = elem->Attribute("name");
-            if (!id || !name)
-                continue; // ID is manadatory
+            std::string id, name;
+            if (!findStrAttr(elem, "id", id) || !findStrAttr(elem, "name", name))
+                continue; // ID and name are mandatory.
             Item item(id, name);
 
-            const char *const stackSize = elem->Attribute("stackSize");
-            if (stackSize)
-                item.stackSize(str2int(stackSize));
-
-            const char *const craftTime = elem->Attribute("craftTime");
-            if (craftTime)
-                item.craftTime(str2int(craftTime));
-
-            const char *const constructs = elem->Attribute("constructs");
-            if (constructs)
-                item.constructsObject(&*(_objectTypes.insert(ObjectType(constructs)).first));
+            std::string s; int n;
+            if (findIntAttr(elem, "stackSize", n)) item.stackSize(n);
+            if (findIntAttr(elem, "craftTime", n)) item.craftTime(n);
+            if (findStrAttr(elem, "constructs", s))
+                // Create dummy ObjectType if necessary
+                item.constructsObject(&*(_objectTypes.insert(ObjectType(s)).first));
 
             for (TiXmlElement *child = elem->FirstChildElement(); child;
                  child = child->NextSiblingElement()) {
@@ -662,24 +646,16 @@ void Server::loadData(){
                 static const std::string
                     MAT_VAL = "material",
                     CLASS_VAL = "class";
+
                 if (val == MAT_VAL) {
-                    size_t matQty = 1;
-                    const char *const matQtyStr = child->Attribute("quantity");
-                    if (matQtyStr)
-                        item.stackSize(str2int(matQtyStr));
-                    const char *const matID = child->Attribute("id");
-                    if (matID) {
-                        /*
-                        If the item hasn't been added yet, this will create a dummy that can be
-                        referred to.
-                        */
-                        item.addMaterial(&*(_items.insert(Item(matID)).first), matQty);
-                    }
+                    int matQty = 1;
+                    findIntAttr(child, "quantity", matQty);
+                    if (findStrAttr(child, "id", s))
+                        // Create dummy Item if necessary
+                        item.addMaterial(&*(_items.insert(Item(s)).first), matQty);
+
                 } else if (val == CLASS_VAL) {
-                    const char *const className = child->Attribute("name");
-                    if (className) {
-                        item.addClass(className);
-                    }
+                    if (findStrAttr(child, "name", s)) item.addClass(s);
                 } else
                     continue;
             }
