@@ -43,7 +43,6 @@ public:
     const Socket &socket() const { return _socket; }
     const Point &location() const { return _location; }
     void location(const Point &loc) { _location = loc; }
-    void location(std::istream &is); // Read co-ordinates from stream
     const std::pair<const Item *, size_t> &inventory(size_t index) const;
     std::pair<const Item *, size_t> &inventory(size_t index);
 

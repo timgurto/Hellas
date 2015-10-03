@@ -4,7 +4,7 @@
 #define XML_DOC_H
 
 #include <string>
-#include "tinyxml.h"
+#include <tinyxml.h>
 
 #include "Log.h"
 
@@ -25,6 +25,7 @@ public:
 
     static bool findStrAttr(TiXmlElement *elem, const char *attr, std::string &val);
     static bool findIntAttr(TiXmlElement *elem, const char *attr, int &val);
+    static bool findDoubleAttr(TiXmlElement *elem, const char *attr, double &val);
 };
 
 #endif

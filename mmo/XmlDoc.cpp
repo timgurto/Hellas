@@ -57,3 +57,14 @@ bool XmlDoc::findIntAttr(TiXmlElement *elem, const char *attr, int &intVal){
     }
     return false;
 }
+
+bool XmlDoc::findDoubleAttr(TiXmlElement *elem, const char *attr, double &dblVal){
+    const char *const val = elem->Attribute(attr);
+    if (val) {
+        std::string strVal(val);
+        std::istringstream iss(strVal);
+        iss >> dblVal;
+        return true;
+    }
+    return false;
+}

@@ -4,6 +4,7 @@
 #include <cassert>
 #include <sstream>
 #include <fstream>
+#include <tinyxml.h>
 #include <utility>
 
 #include "Client.h" //TODO remove; only here for random initial placement
@@ -512,47 +513,64 @@ void Server::gatherObject(size_t serial, User &user){
 }
 
 bool Server::readUserData(User &user){
-    const std::string filename = std::string("Users/") + user.name() + ".usr";
-    std::ifstream fs(filename.c_str());
-    if (!fs.good()) // File didn't exist
-        return false;
-    
-    // Location
-    user.location(fs);
+    XmlDoc doc((std::string("Users/") + user.name() + ".usr").c_str(), &_debug);
 
-    // Inventory
-    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
-        std::string itemID;
-        int quantity;
-        fs >> itemID >> quantity;
-        std::set<Item>::const_iterator it = _items.find(itemID);
-        if (it == _items.end())
-            user.inventory(i) = std::make_pair<const Item *, size_t>(0, 0);
-        else
-            user.inventory(i) = std::make_pair(&*it, quantity);
+    for (auto elem : doc.getChildren("location")) {
+        double x, y;
+        if (!doc.findDoubleAttr(elem, "x", x) || !doc.findDoubleAttr(elem, "y", y)) {
+            _debug("Invalid user data (location)", Color::RED);
+            return false;
+        }
+        user.location(Point(x, y));
     }
 
-    fs.close();
+    for (auto elem : doc.getChildren("inventory")) {
+        for (auto slotElem : doc.getChildren("slot", elem)) {
+            int slot; std::string id; int qty;
+            if (!doc.findIntAttr(slotElem, "slot", slot)) continue;
+            if (!doc.findStrAttr(slotElem, "id", id)) continue;
+            if (!doc.findIntAttr(slotElem, "quantity", qty)) continue;
+
+            std::set<Item>::const_iterator it = _items.find(id);
+            if (it == _items.end()) {
+                _debug("Invalid user data (inventory item).  Removing item.", Color::RED);
+                continue;
+            }
+            user.inventory(slot) =
+                std::make_pair<const Item *, size_t>(&*it, static_cast<size_t>(qty));
+        }
+    }
     return true;
+
 }
 
 void Server::writeUserData(const User &user) const{
-    const std::string filename = std::string("Users/") + user.name() + ".usr";
-    std::ofstream fs(filename.c_str());
-    
-    // Location
-    fs << user.location().x << ' ' << user.location().y << std::endl;
+    TiXmlDocument doc;
+    TiXmlElement *root = new TiXmlElement("root");
+    doc.LinkEndChild(root);
 
-    // Inventory
-    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
+    TiXmlElement *e = new TiXmlElement("location");
+    root->LinkEndChild(e);
+    e->SetAttribute("x", makeArgs(user.location().x));
+    e->SetAttribute("y", makeArgs(user.location().y));
+
+    e = new TiXmlElement("inventory");
+    root->LinkEndChild(e);
+    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         const std::pair<const Item *, size_t> &slot = user.inventory(i);
-        if (slot.first)
-            fs << user.inventory(i).first->id() << ' ' << user.inventory(i).second << std::endl;
-        else
-            fs << "none 0" << std::endl;
+        if (slot.first) {
+            TiXmlElement *slotElement = new TiXmlElement("slot");
+            e->LinkEndChild(slotElement);
+            slotElement->SetAttribute("slot", makeArgs(i));
+            slotElement->SetAttribute("id", slot.first->id());
+            slotElement->SetAttribute("quantity", slot.second);
+        }
     }
 
-    fs.close();
+    bool ret = doc.SaveFile(std::string("Users/") + user.name() + ".usr");
+    if (!ret)
+        _debug("Failed to save user file", Color::RED);
+    doc.Clear();
 }
 
 

@@ -31,10 +31,6 @@ _lastContact(SDL_GetTicks()){
 User::User(const Socket &rhs):
 _socket(rhs){}
 
-void User::location(std::istream &is){
-    is >> _location.x >> _location.y;
-}
-
 const std::pair<const Item *, size_t> &User::inventory(size_t index) const{
     return _inventory[index];
 }
