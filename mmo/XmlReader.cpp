@@ -3,19 +3,19 @@
 #include <set>
 #include <sstream>
 
-#include "XmlDoc.h"
+#include "XmlReader.h"
 
-XmlDoc::XmlDoc(const char *filename, Log *debug):
+XmlReader::XmlReader(const char *filename, Log *debug):
 _debug(debug),
 _root(0){
     newFile(filename);
 }
 
-XmlDoc::~XmlDoc(){
+XmlReader::~XmlReader(){
     _doc.Clear();
 }
 
-void XmlDoc::newFile(const char *filename){
+void XmlReader::newFile(const char *filename){
     _doc.Clear();
     bool ret = _doc.LoadFile(filename);
     if (!ret) {
@@ -30,7 +30,7 @@ void XmlDoc::newFile(const char *filename){
                << "XML file " << filename << "has no root node; aborting." << Log::endl;
 }
 
-std::set<TiXmlElement *> XmlDoc::getChildren(const std::string &val, TiXmlElement *elem) {
+std::set<TiXmlElement *> XmlReader::getChildren(const std::string &val, TiXmlElement *elem) {
     std::set<TiXmlElement *> children;
     for (TiXmlElement *child = elem->FirstChildElement(); child; child = child->NextSiblingElement())
         if (val == child->Value())
@@ -38,7 +38,7 @@ std::set<TiXmlElement *> XmlDoc::getChildren(const std::string &val, TiXmlElemen
     return children;
 }
 
-bool XmlDoc::findAttr(TiXmlElement *elem, const char *attr, std::string &val){
+bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, std::string &val){
     const char *const cStrVal = elem->Attribute(attr);
     if (cStrVal) {
         val = cStrVal;

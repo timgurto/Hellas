@@ -18,9 +18,9 @@
 #include "Server.h"
 #include "TooltipBuilder.h"
 #include "User.h"
+#include "XmlReader.h"
 #include "messageCodes.h"
 #include "util.h"
-#include "XmlDoc.h"
 
 extern Args cmdLineArgs;
 extern Renderer renderer;
@@ -150,7 +150,7 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
 
 
     // Object types
-    XmlDoc doc("Data/objectTypesClient.xml", &_debug);
+    XmlReader doc("Data/objectTypesClient.xml", &_debug);
     for (auto elem : doc.getChildren("objectType")) {
         std::string s; int n;
         if (!doc.findAttr(elem, "id", s))

@@ -14,7 +14,7 @@
 #include "Socket.h"
 #include "Server.h"
 #include "User.h"
-#include "XmlDoc.h"
+#include "XmlReader.h"
 #include "messageCodes.h"
 #include "util.h"
 
@@ -513,7 +513,7 @@ void Server::gatherObject(size_t serial, User &user){
 }
 
 bool Server::readUserData(User &user){
-    XmlDoc doc((std::string("Users/") + user.name() + ".usr").c_str(), &_debug);
+    XmlReader doc((std::string("Users/") + user.name() + ".usr").c_str(), &_debug);
     if (!doc)
         return false;
 
@@ -591,7 +591,7 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
 
 void Server::loadData(){
     // Object types
-    XmlDoc doc("Data/objectTypes.xml", &_debug);
+    XmlReader doc("Data/objectTypes.xml", &_debug);
     for (auto elem : doc.getChildren("objectType")) {
         std::string id;
         if (!doc.findAttr(elem, "id", id))

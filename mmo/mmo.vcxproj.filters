@@ -123,7 +123,7 @@
     <ClCompile Include="..\tinyxml\tinyxmlparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="XmlDoc.cpp">
+    <ClCompile Include="XmlReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -222,7 +222,7 @@
     <ClInclude Include="..\tinyxml\tinyxml.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="XmlDoc.h">
+    <ClInclude Include="XmlReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
