@@ -588,7 +588,7 @@ void Server::loadData(){
     }
 
     // Items
-    doc = XmlDoc("Data/items.xml", &_debug);
+    doc.newFile("Data/items.xml");
     for (auto elem : doc.getChildren("item")) {
         std::string id, name;
         if (!doc.findStrAttr(elem, "id", id) || !doc.findStrAttr(elem, "name", name))

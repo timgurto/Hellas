@@ -8,6 +8,15 @@
 XmlDoc::XmlDoc(const char *filename, Log *debug):
 _debug(debug),
 _root(0){
+    newFile(filename);
+}
+
+XmlDoc::~XmlDoc(){
+    _doc.Clear();
+}
+
+void XmlDoc::newFile(const char *filename){
+    _doc.Clear();
     bool ret = _doc.LoadFile(filename);
     if (!ret) {
         if (_debug)
@@ -19,10 +28,6 @@ _root(0){
     if (!_root && _debug)
         *_debug << Color::RED
                << "XML file " << filename << "has no root node; aborting." << Log::endl;
-}
-
-XmlDoc::~XmlDoc(){
-    _doc.Clear();
 }
 
 std::set<TiXmlElement *> XmlDoc::getChildren(const std::string &val, TiXmlElement *elem) {

@@ -17,6 +17,8 @@ class XmlDoc{
 public:
     XmlDoc(const char *filename, Log *debug = 0);
     ~XmlDoc();
+
+    void newFile(const char *filename); // Close the current file and open a new one
     
     static std::set<TiXmlElement *> getChildren(const std::string &val, TiXmlElement *elem);
     std::set<TiXmlElement *> getChildren(const std::string &val) { return getChildren(val, _root); }
