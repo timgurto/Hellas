@@ -38,32 +38,10 @@ std::set<TiXmlElement *> XmlDoc::getChildren(const std::string &val, TiXmlElemen
     return children;
 }
 
-bool XmlDoc::findStrAttr(TiXmlElement *elem, const char *attr, std::string &strVal){
-    const char *const val = elem->Attribute(attr);
-    if (val) {
-        strVal = val;
-        return true;
-    }
-    return false;
-}
-
-bool XmlDoc::findIntAttr(TiXmlElement *elem, const char *attr, int &intVal){
-    const char *const val = elem->Attribute(attr);
-    if (val) {
-        std::string strVal(val);
-        std::istringstream iss(strVal);
-        iss >> intVal;
-        return true;
-    }
-    return false;
-}
-
-bool XmlDoc::findDoubleAttr(TiXmlElement *elem, const char *attr, double &dblVal){
-    const char *const val = elem->Attribute(attr);
-    if (val) {
-        std::string strVal(val);
-        std::istringstream iss(strVal);
-        iss >> dblVal;
+bool XmlDoc::findAttr(TiXmlElement *elem, const char *attr, std::string &val){
+    const char *const cStrVal = elem->Attribute(attr);
+    if (cStrVal) {
+        val = cStrVal;
         return true;
     }
     return false;

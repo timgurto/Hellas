@@ -23,9 +23,18 @@ public:
     static std::set<TiXmlElement *> getChildren(const std::string &val, TiXmlElement *elem);
     std::set<TiXmlElement *> getChildren(const std::string &val) { return getChildren(val, _root); }
 
-    static bool findStrAttr(TiXmlElement *elem, const char *attr, std::string &val);
-    static bool findIntAttr(TiXmlElement *elem, const char *attr, int &val);
-    static bool findDoubleAttr(TiXmlElement *elem, const char *attr, double &val);
+    template<typename T>
+    static bool findAttr(TiXmlElement *elem, const char *attr, T &val) {
+        const char *const cStrVal = elem->Attribute(attr);
+        if (cStrVal) {
+            std::string strVal(cStrVal);
+            std::istringstream iss(strVal);
+            iss >> val;
+            return true;
+        }
+        return false;
+    }
+    static bool findAttr(TiXmlElement *elem, const char *attr, std::string &val);
 };
 
 #endif
