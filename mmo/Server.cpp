@@ -571,56 +571,52 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
 
 void Server::loadData(){
     // Object types
-    {
-        XmlDoc objTypes("Data/objectTypes.xml", &_debug);
-        for (auto elem : objTypes.getChildren("objectType")) {
-            std::string id;
-            if (!objTypes.findStrAttr(elem, "id", id))
-                continue;
-            _debug << "Loaded object type with id=\"" << id << "\"." << Log::endl;
-            ObjectType ot(id);
+    XmlDoc doc("Data/objectTypes.xml", &_debug);
+    for (auto elem : doc.getChildren("objectType")) {
+        std::string id;
+        if (!doc.findStrAttr(elem, "id", id))
+            continue;
+        _debug << "Loaded object type with id=\"" << id << "\"." << Log::endl;
+        ObjectType ot(id);
 
-            std::string s; int n;
-            if (objTypes.findIntAttr(elem, "actionTime", n)) ot.actionTime(n);
-            if (objTypes.findIntAttr(elem, "constructionTime", n)) ot.constructionTime(n);
-            if (objTypes.findIntAttr(elem, "wood", n)) ot.wood(n);
-            if (objTypes.findStrAttr(elem, "gatherReq", s)) ot.gatherReq(s);
+        std::string s; int n;
+        if (doc.findIntAttr(elem, "actionTime", n)) ot.actionTime(n);
+        if (doc.findIntAttr(elem, "constructionTime", n)) ot.constructionTime(n);
+        if (doc.findIntAttr(elem, "wood", n)) ot.wood(n);
+        if (doc.findStrAttr(elem, "gatherReq", s)) ot.gatherReq(s);
         
-            _objectTypes.insert(ot);
-        }
+        _objectTypes.insert(ot);
     }
 
     // Items
-    {
-        XmlDoc items("Data/items.xml", &_debug);
-        for (auto elem : items.getChildren("item")) {
-            std::string id, name;
-            if (!items.findStrAttr(elem, "id", id) || !items.findStrAttr(elem, "name", name))
-                continue; // ID and name are mandatory.
-            Item item(id, name);
+    doc = XmlDoc("Data/items.xml", &_debug);
+    for (auto elem : doc.getChildren("item")) {
+        std::string id, name;
+        if (!doc.findStrAttr(elem, "id", id) || !doc.findStrAttr(elem, "name", name))
+            continue; // ID and name are mandatory.
+        Item item(id, name);
 
-            std::string s; int n;
-            if (items.findIntAttr(elem, "stackSize", n)) item.stackSize(n);
-            if (items.findIntAttr(elem, "craftTime", n)) item.craftTime(n);
-            if (items.findStrAttr(elem, "constructs", s))
-                // Create dummy ObjectType if necessary
-                item.constructsObject(&*(_objectTypes.insert(ObjectType(s)).first));
+        std::string s; int n;
+        if (doc.findIntAttr(elem, "stackSize", n)) item.stackSize(n);
+        if (doc.findIntAttr(elem, "craftTime", n)) item.craftTime(n);
+        if (doc.findStrAttr(elem, "constructs", s))
+            // Create dummy ObjectType if necessary
+            item.constructsObject(&*(_objectTypes.insert(ObjectType(s)).first));
 
-            for (auto child : XmlDoc::getChildren("material", elem)) {
-                int matQty = 1;
-                items.findIntAttr(child, "quantity", matQty);
-                if (items.findStrAttr(child, "id", s))
-                    // Create dummy Item if necessary
-                    item.addMaterial(&*(_items.insert(Item(s)).first), matQty);
-            }
-            for (auto child : XmlDoc::getChildren("class", elem))
-                if (items.findStrAttr(child, "name", s)) item.addClass(s);
+        for (auto child : doc.getChildren("material", elem)) {
+            int matQty = 1;
+            doc.findIntAttr(child, "quantity", matQty);
+            if (doc.findStrAttr(child, "id", s))
+                // Create dummy Item if necessary
+                item.addMaterial(&*(_items.insert(Item(s)).first), matQty);
+        }
+        for (auto child : doc.getChildren("class", elem))
+            if (doc.findStrAttr(child, "name", s)) item.addClass(s);
         
-            std::pair<std::set<Item>::iterator, bool> ret = _items.insert(item);
-            if (!ret.second) {
-                Item &itemInPlace = const_cast<Item &>(*ret.first);
-                itemInPlace = item;
-            }
+        std::pair<std::set<Item>::iterator, bool> ret = _items.insert(item);
+        if (!ret.second) {
+            Item &itemInPlace = const_cast<Item &>(*ret.first);
+            itemInPlace = item;
         }
     }
 
