@@ -16,7 +16,7 @@ _window(0),
 _valid(false){
     if (_count == 0) {
         // First renderer constructed; initialize SDL
-        int ret = SDL_Init(SDL_INIT_VIDEO);
+        int ret = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
         if (ret < 0)
             return;
         ret = TTF_Init();

@@ -20,6 +20,7 @@ void ClientObject::onLeftClick(Client &client) const{
         oss << '[' << CL_GATHER << ',' << _serial << ']';
         client.socket().sendMessage(oss.str());
         client.prepareAction(std::string("Gathering") + objectType()->name());
+        playGatherSound();
     }
 }
 
@@ -32,4 +33,11 @@ std::vector<std::string> ClientObject::getTooltipMessages(const Client &client) 
         text.push_back("Out of range");
     }
     return text;
+}
+
+void ClientObject::playGatherSound() const {
+    Mix_Chunk *sound = objectType()->gatherSound();
+    if (sound) {
+        Mix_PlayChannel(Client::PLAYER_ACTION_CHANNEL, sound, -1);
+    }
 }

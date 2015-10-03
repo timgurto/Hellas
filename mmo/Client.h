@@ -36,6 +36,8 @@ public:
     const Point &offset() const { return _intOffset; }
     const std::string &username() const { return _username; }
 
+    static const int PLAYER_ACTION_CHANNEL;
+
 private:
     static const Uint32 MAX_TICK_LENGTH;
     static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping reply

@@ -6,6 +6,7 @@
     xDrawOffset=-20
     yDrawOffset=-47
     canGather=1
+    gatherSound="chop-pause"
 />
 <objectType
     id="branch"

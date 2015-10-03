@@ -5,6 +5,7 @@
 #include <fstream>
 #include <map>
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include <string>
 #include <set>
 #include <sstream>
@@ -49,6 +50,8 @@ const int Client::LINE_GAP = 6;
 
 const size_t Client::MAX_TEXT_ENTERED = 100;
 
+const int Client::PLAYER_ACTION_CHANNEL = 0;
+
 bool Client::isClient = false;
 
 Client::Client():
@@ -83,6 +86,13 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
 
     _debug << cmdLineArgs << Log::endl;
     Socket::debug = &_debug;
+
+    int ret = (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 512) < 0);
+    if (ret < 0){
+        _debug("SDL_mixer failed to initialize.", Color::RED);
+    } else {
+        _debug("SDL_mixer initialized.");
+    }
 
     renderer.setDrawColor();
 
@@ -153,6 +163,8 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
             doc.findIntAttr(elem, "yDrawOffset", drawRect.y))
             cot.drawRect(drawRect);
         if (doc.findIntAttr(elem, "canGather", n) && n != 0) cot.canGather(true);
+        if (doc.findStrAttr(elem, "gatherSound", s))
+            cot.gatherSound(std::string("Sounds/") + s + ".wav");
         _objectTypes.insert(cot);
     }
 
@@ -176,6 +188,7 @@ Client::~Client(){
         if (entity != &_character)
             delete entity;
     }
+    Mix_Quit();
 }
 
 void Client::checkSocket(){
@@ -1247,4 +1260,6 @@ void Client::prepareAction(const std::string &msg){
 void Client::startAction(Uint32 actionLength){
     _actionTimer = 0;
     _actionLength = actionLength;
+    if (actionLength == 0)
+        Mix_HaltChannel(PLAYER_ACTION_CHANNEL);
 }

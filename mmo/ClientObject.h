@@ -28,6 +28,8 @@ public:
 
     virtual void onLeftClick(Client &client) const;
     virtual std::vector<std::string> getTooltipMessages(const Client &client) const;
+
+    void playGatherSound() const;
 };
 
 #endif
