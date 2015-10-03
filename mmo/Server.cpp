@@ -573,17 +573,7 @@ void Server::loadData(){
     // Object types
     {
         TiXmlDocument doc;
-        bool ret = doc.LoadFile("Data/objectTypes.xml");
-        if (!ret) {
-            _debug(doc.ErrorDesc(), Color::RED);
-            return;
-        }
-        TiXmlElement *const root = doc.FirstChildElement();
-        if (!root){
-            _debug("Object-types file has no root node; aborting.", Color::RED);
-            doc.Clear();
-            return;
-        }
+        TiXmlElement *const root = openAndGetRoot("Data/objectTypes.xml", doc, &_debug);
         static const std::string OBJECT_TYPE_VAL = "objectType";
         for (TiXmlElement *elem = root->FirstChildElement(); elem;
              elem = elem->NextSiblingElement()) {
@@ -610,17 +600,7 @@ void Server::loadData(){
     // Items
     {
         TiXmlDocument doc;
-        const bool ret = doc.LoadFile("Data/items.xml");
-        if (!ret) {
-            _debug(doc.ErrorDesc(), Color::RED);
-            return;
-        }
-        TiXmlElement *const root = doc.FirstChildElement();
-        if (!root){
-            _debug("Items file has no root node; aborting.", Color::RED);
-            doc.Clear();
-            return;
-        }
+        TiXmlElement *const root = openAndGetRoot("Data/items.xml", doc, &_debug);
         static const std::string ITEM_VAL = "item";
         for (TiXmlElement *elem = root->FirstChildElement(); elem;
              elem = elem->NextSiblingElement()) {
