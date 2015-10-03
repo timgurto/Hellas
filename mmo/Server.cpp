@@ -13,9 +13,9 @@
 #include "Socket.h"
 #include "Server.h"
 #include "User.h"
+#include "XmlDoc.h"
 #include "messageCodes.h"
 #include "util.h"
-#include "xmlUtil.h"
 
 extern Args cmdLineArgs;
 extern Renderer renderer;
@@ -572,8 +572,8 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
 void Server::loadData(){
     // Object types
     {
-        TiXmlDocument doc;
-        TiXmlElement *const root = openAndGetRoot("Data/objectTypes.xml", doc, &_debug);
+        XmlDoc objTypes("Data/objectTypes.xml", &_debug);
+        TiXmlElement *const root = objTypes.root();
         static const std::string OBJECT_TYPE_VAL = "objectType";
         for (TiXmlElement *elem = root->FirstChildElement(); elem;
              elem = elem->NextSiblingElement()) {
@@ -582,25 +582,24 @@ void Server::loadData(){
                 continue;
 
             std::string id;
-            if (!findStrAttr(elem, "id", id))
+            if (!objTypes.findStrAttr(elem, "id", id))
                 continue;
             ObjectType ot(id);
 
             std::string s; int n;
-            if (findIntAttr(elem, "actionTime", n)) ot.actionTime(n);
-            if (findIntAttr(elem, "constructionTime", n)) ot.constructionTime(n);
-            if (findIntAttr(elem, "wood", n)) ot.wood(n);
-            if (findStrAttr(elem, "gatherReq", s)) ot.gatherReq(s);
+            if (objTypes.findIntAttr(elem, "actionTime", n)) ot.actionTime(n);
+            if (objTypes.findIntAttr(elem, "constructionTime", n)) ot.constructionTime(n);
+            if (objTypes.findIntAttr(elem, "wood", n)) ot.wood(n);
+            if (objTypes.findStrAttr(elem, "gatherReq", s)) ot.gatherReq(s);
         
             _objectTypes.insert(ot);
         }
-        doc.Clear();
     }
 
     // Items
     {
-        TiXmlDocument doc;
-        TiXmlElement *const root = openAndGetRoot("Data/items.xml", doc, &_debug);
+        XmlDoc items("Data/items.xml", &_debug);
+        TiXmlElement *const root  = items.root();
         static const std::string ITEM_VAL = "item";
         for (TiXmlElement *elem = root->FirstChildElement(); elem;
              elem = elem->NextSiblingElement()) {
@@ -609,14 +608,14 @@ void Server::loadData(){
                 continue;
         
             std::string id, name;
-            if (!findStrAttr(elem, "id", id) || !findStrAttr(elem, "name", name))
+            if (!items.findStrAttr(elem, "id", id) || !items.findStrAttr(elem, "name", name))
                 continue; // ID and name are mandatory.
             Item item(id, name);
 
             std::string s; int n;
-            if (findIntAttr(elem, "stackSize", n)) item.stackSize(n);
-            if (findIntAttr(elem, "craftTime", n)) item.craftTime(n);
-            if (findStrAttr(elem, "constructs", s))
+            if (items.findIntAttr(elem, "stackSize", n)) item.stackSize(n);
+            if (items.findIntAttr(elem, "craftTime", n)) item.craftTime(n);
+            if (items.findStrAttr(elem, "constructs", s))
                 // Create dummy ObjectType if necessary
                 item.constructsObject(&*(_objectTypes.insert(ObjectType(s)).first));
 
@@ -629,13 +628,13 @@ void Server::loadData(){
 
                 if (val == MAT_VAL) {
                     int matQty = 1;
-                    findIntAttr(child, "quantity", matQty);
-                    if (findStrAttr(child, "id", s))
+                    items.findIntAttr(child, "quantity", matQty);
+                    if (items.findStrAttr(child, "id", s))
                         // Create dummy Item if necessary
                         item.addMaterial(&*(_items.insert(Item(s)).first), matQty);
 
                 } else if (val == CLASS_VAL) {
-                    if (findStrAttr(child, "name", s)) item.addClass(s);
+                    if (items.findStrAttr(child, "name", s)) item.addClass(s);
                 } else
                     continue;
             }
@@ -646,7 +645,6 @@ void Server::loadData(){
                 itemInPlace = item;
             }
         }
-        doc.Clear();
     }
 
     std::ifstream fs;
