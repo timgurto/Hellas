@@ -150,20 +150,20 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
 
 
     // Object types
-    XmlReader doc("Data/objectTypesClient.xml", &_debug);
-    for (auto elem : doc.getChildren("objectType")) {
+    XmlReader xr("Data/objectTypesClient.xml", &_debug);
+    for (auto elem : xr.getChildren("objectType")) {
         std::string s; int n;
-        if (!doc.findAttr(elem, "id", s))
+        if (!xr.findAttr(elem, "id", s))
             continue;
         ClientObjectType cot(s);
         cot.image(std::string("Images/Objects/") + s + ".png");
-        if (doc.findAttr(elem, "name", s)) cot.name(s);
+        if (xr.findAttr(elem, "name", s)) cot.name(s);
         SDL_Rect drawRect = {0, 0, cot.width(), cot.height()};
-        if (doc.findAttr(elem, "xDrawOffset", drawRect.x) ||
-            doc.findAttr(elem, "yDrawOffset", drawRect.y))
+        if (xr.findAttr(elem, "xDrawOffset", drawRect.x) ||
+            xr.findAttr(elem, "yDrawOffset", drawRect.y))
             cot.drawRect(drawRect);
-        if (doc.findAttr(elem, "canGather", n) && n != 0) cot.canGather(true);
-        if (doc.findAttr(elem, "gatherSound", s))
+        if (xr.findAttr(elem, "canGather", n) && n != 0) cot.canGather(true);
+        if (xr.findAttr(elem, "gatherSound", s))
             cot.gatherSound(std::string("Sounds/") + s + ".wav");
         _objectTypes.insert(cot);
     }

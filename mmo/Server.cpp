@@ -513,25 +513,25 @@ void Server::gatherObject(size_t serial, User &user){
 }
 
 bool Server::readUserData(User &user){
-    XmlReader doc((std::string("Users/") + user.name() + ".usr").c_str(), &_debug);
-    if (!doc)
+    XmlReader xr((std::string("Users/") + user.name() + ".usr").c_str(), &_debug);
+    if (!xr)
         return false;
 
-    for (auto elem : doc.getChildren("location")) {
+    for (auto elem : xr.getChildren("location")) {
         double x, y;
-        if (!doc.findAttr(elem, "x", x) || !doc.findAttr(elem, "y", y)) {
+        if (!xr.findAttr(elem, "x", x) || !xr.findAttr(elem, "y", y)) {
             _debug("Invalid user data (location)", Color::RED);
             return false;
         }
         user.location(Point(x, y));
     }
 
-    for (auto elem : doc.getChildren("inventory")) {
-        for (auto slotElem : doc.getChildren("slot", elem)) {
+    for (auto elem : xr.getChildren("inventory")) {
+        for (auto slotElem : xr.getChildren("slot", elem)) {
             int slot; std::string id; int qty;
-            if (!doc.findAttr(slotElem, "slot", slot)) continue;
-            if (!doc.findAttr(slotElem, "id", id)) continue;
-            if (!doc.findAttr(slotElem, "quantity", qty)) continue;
+            if (!xr.findAttr(slotElem, "slot", slot)) continue;
+            if (!xr.findAttr(slotElem, "id", id)) continue;
+            if (!xr.findAttr(slotElem, "quantity", qty)) continue;
 
             std::set<Item>::const_iterator it = _items.find(id);
             if (it == _items.end()) {
@@ -583,46 +583,46 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
 
 void Server::loadData(){
     // Object types
-    XmlReader doc("Data/objectTypes.xml", &_debug);
-    for (auto elem : doc.getChildren("objectType")) {
+    XmlReader xr("Data/objectTypes.xml", &_debug);
+    for (auto elem : xr.getChildren("objectType")) {
         std::string id;
-        if (!doc.findAttr(elem, "id", id))
+        if (!xr.findAttr(elem, "id", id))
             continue;
         ObjectType ot(id);
 
         std::string s; int n;
-        if (doc.findAttr(elem, "actionTime", n)) ot.actionTime(n);
-        if (doc.findAttr(elem, "constructionTime", n)) ot.constructionTime(n);
-        if (doc.findAttr(elem, "wood", n)) ot.wood(n);
-        if (doc.findAttr(elem, "gatherReq", s)) ot.gatherReq(s);
+        if (xr.findAttr(elem, "actionTime", n)) ot.actionTime(n);
+        if (xr.findAttr(elem, "constructionTime", n)) ot.constructionTime(n);
+        if (xr.findAttr(elem, "wood", n)) ot.wood(n);
+        if (xr.findAttr(elem, "gatherReq", s)) ot.gatherReq(s);
         
         _objectTypes.insert(ot);
     }
 
     // Items
-    doc.newFile("Data/items.xml");
-    for (auto elem : doc.getChildren("item")) {
+    xr.newFile("Data/items.xml");
+    for (auto elem : xr.getChildren("item")) {
         std::string id, name;
-        if (!doc.findAttr(elem, "id", id) || !doc.findAttr(elem, "name", name))
+        if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name))
             continue; // ID and name are mandatory.
         Item item(id, name);
 
         std::string s; int n;
-        if (doc.findAttr(elem, "stackSize", n)) item.stackSize(n);
-        if (doc.findAttr(elem, "craftTime", n)) item.craftTime(n);
-        if (doc.findAttr(elem, "constructs", s))
+        if (xr.findAttr(elem, "stackSize", n)) item.stackSize(n);
+        if (xr.findAttr(elem, "craftTime", n)) item.craftTime(n);
+        if (xr.findAttr(elem, "constructs", s))
             // Create dummy ObjectType if necessary
             item.constructsObject(&*(_objectTypes.insert(ObjectType(s)).first));
 
-        for (auto child : doc.getChildren("material", elem)) {
+        for (auto child : xr.getChildren("material", elem)) {
             int matQty = 1;
-            doc.findAttr(child, "quantity", matQty);
-            if (doc.findAttr(child, "id", s))
+            xr.findAttr(child, "quantity", matQty);
+            if (xr.findAttr(child, "id", s))
                 // Create dummy Item if necessary
                 item.addMaterial(&*(_items.insert(Item(s)).first), matQty);
         }
-        for (auto child : doc.getChildren("class", elem))
-            if (doc.findAttr(child, "name", s)) item.addClass(s);
+        for (auto child : xr.getChildren("class", elem))
+            if (xr.findAttr(child, "name", s)) item.addClass(s);
         
         std::pair<std::set<Item>::iterator, bool> ret = _items.insert(item);
         if (!ret.second) {
