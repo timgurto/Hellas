@@ -514,6 +514,8 @@ void Server::gatherObject(size_t serial, User &user){
 
 bool Server::readUserData(User &user){
     XmlDoc doc((std::string("Users/") + user.name() + ".usr").c_str(), &_debug);
+    if (!doc)
+        return false;
 
     for (auto elem : doc.getChildren("location")) {
         double x, y;

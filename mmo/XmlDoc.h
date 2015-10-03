@@ -18,6 +18,9 @@ public:
     XmlDoc(const char *filename, Log *debug = 0);
     ~XmlDoc();
 
+    operator bool() const { return _root != 0; }
+    bool operator!() const { return _root == 0; }
+
     void newFile(const char *filename); // Close the current file and open a new one
     
     static std::set<TiXmlElement *> getChildren(const std::string &val, TiXmlElement *elem);
