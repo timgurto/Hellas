@@ -21,7 +21,6 @@ _compilationColor(color){
     }
     if (!logFileName.empty()) {
         _logFile.open(logFileName);
-        _logFile << std::endl << std::endl << std::endl;
     }
 }
 
