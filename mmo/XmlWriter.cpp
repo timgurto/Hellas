@@ -12,6 +12,13 @@ XmlWriter::~XmlWriter(){
     _doc.Clear();
 }
 
+void XmlWriter::newFile(const std::string &filename){
+    _doc.Clear();
+    _filename = filename;
+    _root = new TiXmlElement("root");
+    _doc.LinkEndChild(_root);
+}
+
 TiXmlElement *XmlWriter::addChild(const char *val, TiXmlElement *elem){
     TiXmlElement *e = new TiXmlElement(val);
     elem->LinkEndChild(e);

@@ -27,6 +27,7 @@ public:
     void serial(size_t s) { _serial = s; }
     const ObjectType *type() const { return _type; }
     size_t wood() const { return _wood; }
+    void wood(size_t w) { _wood = w; }
 
     bool operator<(const Object &rhs) const { return _serial < rhs._serial; }
 

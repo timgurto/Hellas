@@ -637,7 +637,8 @@ void Server::loadData(){
         if (cmdLineArgs.contains("new"))
             break;
 
-        xr.newFile("World/map.map");
+        // Map
+        xr.newFile("World/map.world");
         if (!xr)
             break;
         for (auto elem : xr.getChildren("size")) {
@@ -647,7 +648,6 @@ void Server::loadData(){
         _map = std::vector<std::vector<size_t> >(_mapX);
         for (size_t x = 0; x != _mapX; ++x)
             _map[x] = std::vector<size_t>(_mapY, 0);
-
         for (auto row : xr.getChildren("row")) {
             size_t y;
             if (!xr.findAttr(row, "y", y) || y >= _mapY)
@@ -661,27 +661,32 @@ void Server::loadData(){
             }
         }
 
-        fs.open("World/objects.dat");
-        if (!fs.good())
+        // Objects
+        xr.newFile("World/objects.world");
+        if (!xr)
             break;
-        int numObjects;
-        fs >> numObjects;
-        for (int i = 0; i != numObjects; ++i) {
-            std::string type;
-            Point p;
-            size_t wood;
-            fs >> type >> p.x >> p.y >> wood;
-            std::set<ObjectType>::const_iterator it = _objectTypes.find(type);
-            if (it == _objectTypes.end()) {
-                _debug << Color::RED << "Object with invalid type '" << type <<
-                       "' cannot be loaded." << Log::endl;
+        for (auto elem : xr.getChildren("object")) {
+            std::string id;
+            if (!xr.findAttr(elem, "id", id)) {
+                _debug("Skipping importing object with no id.", Color::RED);
                 continue;
             }
-            _objects.insert(Object(&*it, p, wood));
+            Point p;
+            auto loc = xr.findChild("location", elem);
+            if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
+                _debug("Skipping importing object with invalid/no location", Color::RED);
+                break;
+            }
+            std::set<ObjectType>::const_iterator it = _objectTypes.find(id);
+            if (it == _objectTypes.end()) {
+                _debug << Color::RED << "Skipping importing object with unknown type \"" << id
+                       << "\"." << Log::endl;
+            }
+            Object obj(&*it, p);
+            size_t n;
+            if (xr.findAttr(elem, "wood", n)) obj.wood(n);
+            _objects.insert(obj);
         }
-        if (!fs.good())
-            break;
-        fs.close();
 
         return;
     } while (false);
@@ -691,7 +696,8 @@ void Server::loadData(){
 }
 
 void Server::saveData() const{
-    XmlWriter xw("World/map.map");
+    // Map
+    XmlWriter xw("World/map.world");
     auto e = xw.addChild("size");
     xw.setAttr(e, "x", _mapX);
     xw.setAttr(e, "y", _mapY);
@@ -706,16 +712,20 @@ void Server::saveData() const{
     }
     xw.publish();
 
-    std::ofstream fs("World/objects.dat");
-    fs << _objects.size() << '\n';
+    // Objects
+    xw.newFile("World/objects.world");
     for (const Object &obj : _objects) {
-        assert (obj.type());
-        fs << obj.type()->id() << ' '
-           << obj.location().x << ' '
-           << obj.location().y << ' '
-           << obj.wood() << '\n';
+        if (!obj.type())
+            continue;
+        auto e = xw.addChild("object");
+        xw.setAttr(e, "id", obj.type()->id());
+        if (obj.wood() > 0)
+            xw.setAttr(e, "wood", obj.wood());
+        auto loc = xw.addChild("location", e);
+        xw.setAttr(loc, "x", obj.location().x);
+        xw.setAttr(loc, "y", obj.location().y);
     }
-    fs.close();
+    xw.publish();
 }
 
 size_t Server::findTile(const Point &p) const{

@@ -16,6 +16,8 @@ public:
     XmlWriter(const std::string &filename);
     ~XmlWriter();
 
+    void newFile(const std::string &filename);
+
     static TiXmlElement *addChild(const char *val, TiXmlElement *elem);
     TiXmlElement *addChild(const char *val) { return addChild(val, _root); }
 

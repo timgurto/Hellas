@@ -31,6 +31,13 @@ std::set<TiXmlElement *> XmlReader::getChildren(const std::string &val, TiXmlEle
     return children;
 }
 
+TiXmlElement *XmlReader::findChild(const std::string &val, TiXmlElement *elem){
+    for (TiXmlElement *child = elem->FirstChildElement(); child; child = child->NextSiblingElement())
+        if (val == child->Value())
+            return child;
+    return 0;
+}
+
 bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, std::string &val){
     const char *const cStrVal = elem->Attribute(attr);
     if (cStrVal) {
