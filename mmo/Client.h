@@ -38,6 +38,8 @@ public:
 
     static const int PLAYER_ACTION_CHANNEL;
 
+    static const int ICON_SIZE;
+
 private:
     static const Uint32 MAX_TICK_LENGTH;
     static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping reply
@@ -54,7 +56,6 @@ private:
 
     Texture _invLabel;
     static SDL_Rect INVENTORY_RECT; // non-const, as it needs to be initialized at runtime.
-    static const int ICON_SIZE;
     static const size_t ICONS_X; // How many icons per inventory row
     // Whether the user has the specified item(s).
     bool playerHasItem(const Item *item, size_t quantity = 1) const;
@@ -81,7 +82,10 @@ private:
     ChoiceList *_recipeList;
     Element *_detailsPane;
 
-    Element *_craftingWindow;
+    Window *_craftingWindow;
+
+    Window *_inventoryWindow;
+    void initializeInventoryWindow();
 
     Texture _tile[5];
 

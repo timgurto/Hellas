@@ -99,10 +99,12 @@
     <ClCompile Include="ClientObject.cpp" />
     <ClCompile Include="ClientObjectType.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Container.cpp" />
     <ClCompile Include="craftingWindow.cpp" />
     <ClCompile Include="Element.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityType.cpp" />
+    <ClCompile Include="inventoryWindow.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="Line.cpp" />
@@ -136,6 +138,7 @@
     <ClInclude Include="ClientObject.h" />
     <ClInclude Include="ClientObjectType.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Container.h" />
     <ClInclude Include="Element.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityType.h" />

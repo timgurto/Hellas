@@ -173,6 +173,7 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
     Element::font(TTF_OpenFont("trebuc.ttf", 10));
 
     initializeCraftingWindow();
+    initializeInventoryWindow();
 }
 
 Client::~Client(){
@@ -182,6 +183,7 @@ Client::~Client(){
     if (Window::font())
         TTF_CloseFont(Window::font());
     delete _craftingWindow;
+    delete _inventoryWindow;
     Avatar::image("");
     for (const Entity *entityConst : _entities) {
         Entity *entity = const_cast<Entity *>(entityConst);
@@ -678,6 +680,7 @@ void Client::draw() const{
     }
 
     _craftingWindow->draw();
+    _inventoryWindow->draw();
 
     _debug.draw();
     renderer.present();
