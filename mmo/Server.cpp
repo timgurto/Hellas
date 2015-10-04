@@ -517,14 +517,13 @@ bool Server::readUserData(User &user){
     if (!xr)
         return false;
 
-    for (auto elem : xr.getChildren("location")) {
-        double x, y;
-        if (!xr.findAttr(elem, "x", x) || !xr.findAttr(elem, "y", y)) {
+    auto elem = xr.findChild("location");
+    Point p;
+    if (!elem || !xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
             _debug("Invalid user data (location)", Color::RED);
             return false;
-        }
-        user.location(Point(x, y));
     }
+    user.location(p);
 
     for (auto elem : xr.getChildren("inventory")) {
         for (auto slotElem : xr.getChildren("slot", elem)) {
@@ -641,9 +640,10 @@ void Server::loadData(){
         xr.newFile("World/map.world");
         if (!xr)
             break;
-        for (auto elem : xr.getChildren("size")) {
-            if (!xr.findAttr(elem, "x", _mapX) || !xr.findAttr(elem, "y", _mapY))
-                break;
+        auto elem = xr.findChild("size");
+        if (!elem || !xr.findAttr(elem, "x", _mapX) || !xr.findAttr(elem, "y", _mapY)) {
+            _debug("Map size missing or incomplete.", Color::RED);
+            break;
         }
         _map = std::vector<std::vector<size_t> >(_mapX);
         for (size_t x = 0; x != _mapX; ++x)
