@@ -27,11 +27,10 @@ void ClientObject::onLeftClick(Client &client) const{
 std::vector<std::string> ClientObject::getTooltipMessages(const Client &client) const {
     std::vector<std::string> text;
     text.push_back(objectType()->name());
-    if (objectType()->canGather() &&
-        distance(location(), client.character().location()) > Server::ACTION_DISTANCE) {
-
+    if (!_owner.empty())
+        text.push_back(std::string("Owned by ") + _owner);
+    if (distance(location(), client.character().location()) > Server::ACTION_DISTANCE)
         text.push_back("Out of range");
-    }
     return text;
 }
 

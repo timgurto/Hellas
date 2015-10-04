@@ -1189,6 +1189,23 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_OWNER:
+        {
+            int serial;
+            singleMsg >> serial >> del;
+            singleMsg.get(buffer, BUFFER_SIZE, ']');
+            singleMsg >> del;
+            if (del != ']')
+                break;
+            const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
+            if (it == _objects.end()){
+                _debug("Received ownership info for an unknown object.", Color::RED);
+                break;
+            }
+            (it->second)->owner(std::string(buffer));
+            break;
+        }
+
         default:
             _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
         }

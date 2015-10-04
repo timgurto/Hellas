@@ -12,6 +12,7 @@ class Object{
     Point _location;
     const ObjectType *_type;
     size_t _wood; // wood remaining
+    std::string _owner;
 
 protected:
     static size_t generateSerial();
@@ -28,6 +29,8 @@ public:
     const ObjectType *type() const { return _type; }
     size_t wood() const { return _wood; }
     void wood(size_t w) { _wood = w; }
+    const std::string &owner() const { return _owner; }
+    void owner(const std::string &name) { _owner = name; }
 
     bool operator<(const Object &rhs) const { return _serial < rhs._serial; }
 

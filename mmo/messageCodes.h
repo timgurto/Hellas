@@ -82,13 +82,9 @@ enum MessageCode{
     // The user has completed an action
     SV_ACTION_FINISHED = 131,
 
-    // A branch has been removed
-    // Arguments: serial
-    SV_REMOVE_BRANCH = 152,
-
-    // A tree has been removed
-    // Arguments: serial
-    SV_REMOVE_TREE = 153,
+    // An object has an owner
+    // Arguments: serial, owner
+    SV_OWNER = 150,
 
     // The client has attempted to connect with a username already in use
     SV_DUPLICATE_USERNAME = 900,

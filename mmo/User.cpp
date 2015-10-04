@@ -196,7 +196,7 @@ void User::update(Uint32 timeElapsed, Server &server){
             _actionCrafting = 0;
         } else if (_actionConstructing) {
             // Create object
-            server.addObject(_actionConstructing, _constructingLocation);
+            server.addObject(_actionConstructing, _constructingLocation, this);
 
             // Remove item from user's inventory
             std::pair<const Item *, size_t> &slot = _inventory[_constructingSlot];

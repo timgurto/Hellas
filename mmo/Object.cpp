@@ -11,11 +11,11 @@ _type(type){
         _wood = type->wood();
 }
 
-Object::Object(const ObjectType *type, const Point &loc, size_t wood):
+/*Object::Object(const ObjectType *type, const Point &loc, size_t wood):
 _serial(generateSerial()),
 _location(loc),
 _type(type),
-_wood(wood){}
+_wood(wood)){}*/
 
 Object::Object(size_t serial): // For set/map lookup
 _serial (serial),

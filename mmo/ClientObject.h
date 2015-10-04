@@ -13,6 +13,7 @@
 // A client-side description of an object
 class ClientObject : public Entity{
     size_t _serial;
+    std::string _owner;
 
 public:
     ClientObject(const ClientObject &rhs);
@@ -25,6 +26,8 @@ public:
     size_t serial() const { return _serial; }
     const ClientObjectType *objectType() const
         { return dynamic_cast<const ClientObjectType *>(type()); }
+    const std::string &owner() const { return _owner; }
+    void owner(const std::string &name) { _owner = name; }
 
     virtual void onLeftClick(Client &client) const;
     virtual std::vector<std::string> getTooltipMessages(const Client &client) const;

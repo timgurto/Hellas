@@ -260,11 +260,13 @@ void Server::addUser(const Socket &socket, const std::string &name){
     for (const User &user : _users)
         sendMessage(newUser.socket(), SV_LOCATION, user.makeLocationCommand());
 
-    // Send him object locations
+    // Send him object details
     for (const Object &obj : _objects) {
         assert (obj.type());
         sendMessage(newUser.socket(), SV_OBJECT,
                     makeArgs(obj.serial(), obj.location().x, obj.location().y, obj.type()->id()));
+        if (!obj.owner().empty())
+            sendMessage(newUser.socket(), SV_OWNER, makeArgs(obj.serial(), obj.owner()));
     }
 
     // Send him his inventory
@@ -666,8 +668,8 @@ void Server::loadData(){
         if (!xr)
             break;
         for (auto elem : xr.getChildren("object")) {
-            std::string id;
-            if (!xr.findAttr(elem, "id", id)) {
+            std::string s;
+            if (!xr.findAttr(elem, "id", s)) {
                 _debug("Skipping importing object with no id.", Color::RED);
                 continue;
             }
@@ -677,14 +679,15 @@ void Server::loadData(){
                 _debug("Skipping importing object with invalid/no location", Color::RED);
                 break;
             }
-            std::set<ObjectType>::const_iterator it = _objectTypes.find(id);
+            std::set<ObjectType>::const_iterator it = _objectTypes.find(s);
             if (it == _objectTypes.end()) {
-                _debug << Color::RED << "Skipping importing object with unknown type \"" << id
+                _debug << Color::RED << "Skipping importing object with unknown type \"" << s
                        << "\"." << Log::endl;
             }
             Object obj(&*it, p);
             size_t n;
             if (xr.findAttr(elem, "wood", n)) obj.wood(n);
+            if (xr.findAttr(elem, "owner", s)) obj.owner(s);
             _objects.insert(obj);
         }
 
@@ -721,6 +724,8 @@ void Server::saveData() const{
         xw.setAttr(e, "id", obj.type()->id());
         if (obj.wood() > 0)
             xw.setAttr(e, "wood", obj.wood());
+        if (!obj.owner().empty())
+            xw.setAttr(e, "owner", obj.owner());
         auto loc = xw.addChild("location", e);
         xw.setAttr(loc, "x", obj.location().x);
         xw.setAttr(loc, "y", obj.location().y);
@@ -842,8 +847,12 @@ bool Server::itemIsClass(const Item *item, const std::string &className) const{
     return item->isClass(className);
 }
 
-void Server::addObject (const ObjectType *type, const Point &location){
+void Server::addObject (const ObjectType *type, const Point &location, const User *owner){
     Object newObj(type, location);
+    if (owner)
+        newObj.owner(owner->name());
     _objects.insert(newObj);
     broadcast(SV_OBJECT, makeArgs(newObj.serial(), location.x, location.y, type->id()));
+    if (owner)
+        broadcast(SV_OWNER, makeArgs(newObj.serial(), newObj.owner()));
 }

@@ -209,6 +209,7 @@ Code | Name                  | Syntax                     | Description
 125  | SV_REMOVE_OBJECT      | `[125,serial]`             | "Object #`serial` no longer exists"
 130  | SV_ACTION_STARTED     | `[130,time]`               | "You have begun an action that will take `t` milliseconds"
 131  | SV_ACTION_FINISHED    | `[131]`                    | "You have completed an action"
+150  | SV_OWNER              | `[150,serial,owner]`       | "Object #`serial` is owned by `owner`"
 
 #### Warnings and errors
 Code | Name                  | Syntax                     | Description
