@@ -371,6 +371,8 @@ void Client::run(){
                 
                 if (_craftingWindow->visible())
                     _craftingWindow->onMouseMove(_mouse);
+                if (_inventoryWindow->visible())
+                    _inventoryWindow->onMouseMove(_mouse);
 
                 if (!_loaded)
                     break;
@@ -381,7 +383,10 @@ void Client::run(){
             case SDL_MOUSEBUTTONDOWN:
                 _leftMouseDown = true;
 
-                _craftingWindow->onMouseDown(_mouse);
+                if (_craftingWindow->visible())
+                    _craftingWindow->onMouseDown(_mouse);
+                if (_inventoryWindow->visible())
+                    _inventoryWindow->onMouseDown(_mouse);
                 break;
 
             case SDL_MOUSEBUTTONUP:
@@ -390,9 +395,14 @@ void Client::run(){
 
                 _leftMouseDown = false;
 
-                _craftingWindow->onMouseUp(_mouse);
-                if (_craftingWindow->visible() && collision(_mouse, _craftingWindow->rect()))
+                if (_craftingWindow->visible() && collision(_mouse, _craftingWindow->rect())) {
+                    _craftingWindow->onMouseUp(_mouse);
                     break;
+                } else if (_inventoryWindow->visible() &&
+                           collision(_mouse, _inventoryWindow->rect())) {
+                    _inventoryWindow->onMouseUp(_mouse);
+                    break;
+                }
 
                 if (_currentMouseOverEntity)
                     _currentMouseOverEntity->onLeftClick(*this);
