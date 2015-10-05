@@ -16,7 +16,8 @@ _mouseButtonDown(false),
 _depressed(false){
     Element::addChild(new ColorBlock(makeRect(1, 1, rect.w - 2, rect.h - 2)));
     Element::addChild(_content);
-    Element::addChild(new ShadowBox(makeRect(0, 0, rect.w, rect.h)));
+    _shadowBox = new ShadowBox(makeRect(0, 0, rect.w, rect.h));
+    Element::addChild(_shadowBox);
 
     if (!caption.empty())
         addChild(new Label(makeRect(0, 0, rect.w, rect.h),
@@ -27,16 +28,14 @@ _depressed(false){
 }
 
 void Button::depress(){
-    ShadowBox &border = *dynamic_cast<ShadowBox*>(* ++_children.begin());
-    border.setReversed(true);
+    _shadowBox->setReversed(true);
     _content->rect(1, 1); // Draw contents at an offset
     _depressed = true;
     markChanged();
 }
 
 void Button::release(bool click){
-    ShadowBox &border = *dynamic_cast<ShadowBox*>(* ++_children.begin());
-    border.setReversed(false);
+    _shadowBox->setReversed(false);
     _content->rect(0, 0);
     if (click && _clickFun)
         _clickFun(_clickData);

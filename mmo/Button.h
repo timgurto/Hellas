@@ -16,6 +16,7 @@ public:
 
 private:
     Element *_content;
+    ShadowBox *_shadowBox;
 
     clickFun_t _clickFun;
     void *_clickData; // Data passed to _clickFun().
