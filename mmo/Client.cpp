@@ -430,6 +430,7 @@ void Client::run(){
                     renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
                                       static_cast<float>(renderer.height()) / SCREEN_Y);
                     _craftingWindow->forceRefresh();
+                    _inventoryWindow->forceRefresh();
                     break;
                 }
 
