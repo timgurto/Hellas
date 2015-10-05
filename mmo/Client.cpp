@@ -360,6 +360,10 @@ void Client::run(){
                     case SDLK_c:
                         _craftingWindow->toggleVisibility();
                         break;
+
+                    case SDLK_i:
+                        _inventoryWindow->toggleVisibility();
+                        break;
                     }
                 }
                 break;

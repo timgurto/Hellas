@@ -10,13 +10,12 @@ void Client::initializeInventoryWindow(){
         COLS = 3;
     Container *inventory = new Container(ROWS, COLS, _inventory);
     const int
-        MARGIN = 1,
-        HEIGHT = inventory->height() * 2 + MARGIN * 2 + Window::HEADING_HEIGHT,
-        WIDTH = inventory->width() * 2 + MARGIN * 2,
         LEFT = 50,
         TOP = 300;
+        HEIGHT = inventory->height(),
+        WIDTH = inventory->width(),
 
-    _inventoryWindow = new Window(makeRect(TOP, LEFT, WIDTH, HEIGHT), "Inventory");
+    _inventoryWindow = new Window(makeRect(LEFT, TOP, WIDTH, HEIGHT), "Inventory");
     _inventoryWindow->addChild(inventory);
 
     _inventoryWindow->show();
