@@ -16,6 +16,7 @@ class Window : public Element{
     std::string _title;
     bool _dragging; // Whether this window is currently being dragged by the mouse.
     Point _dragOffset; // While dragging, where the mouse is on the window.
+    Element *_content;
 
 public:
     static const int HEADING_HEIGHT;
@@ -27,6 +28,10 @@ public:
     static void startDragging(Element &e, const Point &mousePos);
     static void stopDragging(Element &e, const Point &mousePos);
     static void drag(Element &e, const Point &mousePos);
+
+    virtual void addChild(Element *child);
+    virtual void clearChildren();
+    virtual Element *findChild(const std::string id);
 };
 
 #endif

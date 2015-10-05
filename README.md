@@ -64,6 +64,8 @@ To clone this repository: `git clone --recursive https://github.com/timgurto/mmo
 
 `c` Open/close crafting window
 
+`i` Open/close inventory
+
 
 <a id='arguments'></a>
 ### Command-line arguments

@@ -173,6 +173,7 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
     Element::font(TTF_OpenFont("trebuc.ttf", 10));
 
     initializeCraftingWindow();
+    initializeInventoryWindow();
 }
 
 Client::~Client(){
@@ -182,6 +183,7 @@ Client::~Client(){
     if (Window::font())
         TTF_CloseFont(Window::font());
     delete _craftingWindow;
+    delete _inventoryWindow;
     Avatar::image("");
     for (const Entity *entityConst : _entities) {
         Entity *entity = const_cast<Entity *>(entityConst);
@@ -358,6 +360,10 @@ void Client::run(){
                     case SDLK_c:
                         _craftingWindow->toggleVisibility();
                         break;
+
+                    case SDLK_i:
+                        _inventoryWindow->toggleVisibility();
+                        break;
                     }
                 }
                 break;
@@ -369,6 +375,8 @@ void Client::run(){
                 
                 if (_craftingWindow->visible())
                     _craftingWindow->onMouseMove(_mouse);
+                if (_inventoryWindow->visible())
+                    _inventoryWindow->onMouseMove(_mouse);
 
                 if (!_loaded)
                     break;
@@ -379,7 +387,10 @@ void Client::run(){
             case SDL_MOUSEBUTTONDOWN:
                 _leftMouseDown = true;
 
-                _craftingWindow->onMouseDown(_mouse);
+                if (_craftingWindow->visible())
+                    _craftingWindow->onMouseDown(_mouse);
+                if (_inventoryWindow->visible())
+                    _inventoryWindow->onMouseDown(_mouse);
                 break;
 
             case SDL_MOUSEBUTTONUP:
@@ -388,9 +399,14 @@ void Client::run(){
 
                 _leftMouseDown = false;
 
-                _craftingWindow->onMouseUp(_mouse);
-                if (_craftingWindow->visible() && collision(_mouse, _craftingWindow->rect()))
+                if (_craftingWindow->visible() && collision(_mouse, _craftingWindow->rect())) {
+                    _craftingWindow->onMouseUp(_mouse);
                     break;
+                } else if (_inventoryWindow->visible() &&
+                           collision(_mouse, _inventoryWindow->rect())) {
+                    _inventoryWindow->onMouseUp(_mouse);
+                    break;
+                }
 
                 if (_currentMouseOverEntity)
                     _currentMouseOverEntity->onLeftClick(*this);
@@ -414,6 +430,7 @@ void Client::run(){
                     renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
                                       static_cast<float>(renderer.height()) / SCREEN_Y);
                     _craftingWindow->forceRefresh();
+                    _inventoryWindow->forceRefresh();
                     break;
                 }
 
@@ -578,29 +595,6 @@ void Client::draw() const{
     //SDL_Rect drawLoc = _character.drawRect() + offset();
     //renderer.drawRect(drawLoc);
 
-    // Inventory
-    renderer.setDrawColor(Color::GREY_4);
-    renderer.fillRect(INVENTORY_RECT);
-    _invLabel.draw(INVENTORY_RECT.x, INVENTORY_RECT.y);
-    renderer.setDrawColor(Color::BLACK);
-    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
-        const SDL_Rect iconRect = makeRect(SCREEN_X - INVENTORY_RECT.w + 1 + i*(ICON_SIZE+1),
-                                           SCREEN_Y - ICON_SIZE,
-                                           ICON_SIZE, ICON_SIZE);
-        renderer.fillRect(iconRect);
-        const Item *item = _inventory[i].first;
-        if (item) {
-            const size_t qty = _inventory[i].second;
-            item->icon().draw(iconRect);
-            if (item->stackSize() > 1) {
-                // Display stack size
-                const Texture qtyLabel(_defaultFont, makeArgs(makeArgs(qty)));
-                qtyLabel.draw(iconRect.x + ICON_SIZE - qtyLabel.width() + 1,
-                              iconRect.y + ICON_SIZE - qtyLabel.height() + 3);
-            }
-        }
-    }
-
     // Cast bar
     if (_actionTimer > 0) {
         static const int
@@ -678,6 +672,7 @@ void Client::draw() const{
     }
 
     _craftingWindow->draw();
+    _inventoryWindow->draw();
 
     _debug.draw();
     renderer.present();
@@ -1143,6 +1138,7 @@ void Client::handleMessage(const std::string &msg){
             else
                 _inventory[slot] = std::make_pair(&*it, quantity);
             _recipeList->markChanged();
+            _inventoryWindow->forceRefresh();
             break;
         }
 

@@ -1,5 +1,6 @@
 // (C) 2015 Tim Gurto
 
+#include "ColorBlock.h"
 #include "Label.h"
 #include "Line.h"
 #include "List.h"
@@ -24,6 +25,7 @@ _scrolledToBottom(false),
 _content(new Element(makeRect(0, 0, rect.w - ARROW_W, 0))){
     if (_childHeight <= 0) // Prevent div/0
         _childHeight = 1;
+    Element::addChild(new ColorBlock(makeRect(0, 0, rect.w, rect.h)));
     Element::addChild(_content);
     Element::addChild(_scrollBar);
 
@@ -53,7 +55,6 @@ _content(new Element(makeRect(0, 0, rect.w - ARROW_W, 0))){
     setScrollUpFunction(scrollUpRaw, this);
     setScrollDownFunction(scrollDownRaw, this);
 
-    _cursor->fillBackground();
     _cursor->addChild(new ShadowBox(_cursor->rect()));
     _scrollBar->addChild(_cursor);
     updateScrollBar();
@@ -100,14 +101,7 @@ void List::refresh(){
     else
         _scrollBar->show();
 
-    renderer.pushRenderTarget(_texture);
-
-    renderer.setDrawColor(Element::BACKGROUND_COLOR);
-    renderer.fill();
-
-    drawChildren();
-
-    renderer.popRenderTarget();
+    Element::refresh();
 }
 
 void List::addChild(Element *child){

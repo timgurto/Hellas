@@ -16,6 +16,7 @@ public:
 
 private:
     Element *_content;
+    ShadowBox *_shadowBox;
 
     clickFun_t _clickFun;
     void *_clickData; // Data passed to _clickFun().
@@ -29,8 +30,6 @@ private:
     static void mouseDown(Element &e, const Point &mousePos);
     static void mouseUp(Element &e, const Point &mousePos);
     static void mouseMove(Element &e, const Point &mousePos);
-
-    virtual void refresh();
 
 public:
     Button(const SDL_Rect &rect, const std::string &caption = "", clickFun_t clickFunction = 0,

@@ -39,7 +39,7 @@ void Client::initializeCraftingWindow(){
         CRAFTING_WINDOW_W = DETAILS_PANE_X + DETAILS_PANE_W + PANE_GAP/2,
 
         CONTENT_H = 200,
-        CONTENT_Y = Window::HEADING_HEIGHT + PANE_GAP/2,
+        CONTENT_Y = PANE_GAP/2,
         CRAFTING_WINDOW_H = CONTENT_Y + CONTENT_H + PANE_GAP/2;
 
     _craftingWindow = new Window(makeRect(250, 50, CRAFTING_WINDOW_W, CRAFTING_WINDOW_H),

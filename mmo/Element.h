@@ -41,16 +41,11 @@ private:
 
     bool _visible;
 
-    bool _solidBackground; // If true, fill the entire _rect with BACKGROUND_COLOR.
-
     SDL_Rect _rect; // Location and dimensions within window
 
     Element *_parent; // 0 if no parent.
 
     std::string _id; // Optional ID for finding children.
-
-    // Redraw the Element to its texture, usually after something has changed.
-    virtual void refresh();
 
 protected:
     static const Color
@@ -87,6 +82,9 @@ protected:
     preRefreshFunction_t _preRefresh;
     Element *_preRefreshElement;
 
+    // Redraw the Element to its texture, usually after something has changed.
+    virtual void refresh();
+
     void drawChildren() const;
 
 public:
@@ -111,7 +109,6 @@ public:
     void id(const std::string &id) { _id = id; }
     const children_t &children() const { return _children; }
 
-    void fillBackground() { _solidBackground = true; markChanged(); }
     void show();
     void hide();
     void toggleVisibility();

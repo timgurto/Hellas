@@ -268,11 +268,6 @@ void Element::refresh(){
 
     renderer.pushRenderTarget(_texture);
 
-    if (_solidBackground) {
-        renderer.setDrawColor(BACKGROUND_COLOR);
-        renderer.fill();
-    }
-
     drawChildren();
 
     renderer.popRenderTarget();

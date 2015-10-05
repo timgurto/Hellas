@@ -1,6 +1,7 @@
 // (C) 2015 Tim Gurto
 
 #include "CheckBox.h"
+#include "ColorBlock.h"
 #include "Label.h"
 
 extern Renderer renderer;
@@ -16,6 +17,7 @@ _linkedBool(linkedBool),
 _inverse(inverse),
 _mouseButtonDown(false),
 _depressed(false){
+    addChild(new ColorBlock(makeRect(0, 0, rect.w, rect.h)));
     if (!caption.empty())
         addChild(new Label(makeRect(BOX_SIZE + GAP, 0, rect.w, rect.h),
                            caption, LEFT_JUSTIFIED, CENTER_JUSTIFIED));
@@ -78,7 +80,7 @@ void CheckBox::checkIfChanged(){
 void CheckBox::refresh(){
     renderer.pushRenderTarget(_texture);
 
-    makeBackgroundTransparent();
+    drawChildren();
 
     // Box
     const SDL_Rect boxRect = makeRect(0, (rect().h - BOX_SIZE) / 2 + Y_OFFSET, BOX_SIZE, BOX_SIZE);
@@ -92,8 +94,6 @@ void CheckBox::refresh(){
         static const SDL_Rect CHECK_OFFSET_RECT = makeRect(2, 2, -4, -4);
         renderer.fillRect(boxRect + CHECK_OFFSET_RECT);
     }
-
-    drawChildren();
 
     renderer.popRenderTarget();
 }
