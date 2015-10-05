@@ -1161,6 +1161,7 @@ void Client::handleMessage(const std::string &msg){
             else
                 _inventory[slot] = std::make_pair(&*it, quantity);
             _recipeList->markChanged();
+            _inventoryWindow->forceRefresh();
             break;
         }
 
