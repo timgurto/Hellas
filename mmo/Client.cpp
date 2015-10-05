@@ -595,29 +595,6 @@ void Client::draw() const{
     //SDL_Rect drawLoc = _character.drawRect() + offset();
     //renderer.drawRect(drawLoc);
 
-    // Inventory
-    renderer.setDrawColor(Color::GREY_4);
-    renderer.fillRect(INVENTORY_RECT);
-    _invLabel.draw(INVENTORY_RECT.x, INVENTORY_RECT.y);
-    renderer.setDrawColor(Color::BLACK);
-    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
-        const SDL_Rect iconRect = makeRect(SCREEN_X - INVENTORY_RECT.w + 1 + i*(ICON_SIZE+1),
-                                           SCREEN_Y - ICON_SIZE,
-                                           ICON_SIZE, ICON_SIZE);
-        renderer.fillRect(iconRect);
-        const Item *item = _inventory[i].first;
-        if (item) {
-            const size_t qty = _inventory[i].second;
-            item->icon().draw(iconRect);
-            if (item->stackSize() > 1) {
-                // Display stack size
-                const Texture qtyLabel(_defaultFont, makeArgs(makeArgs(qty)));
-                qtyLabel.draw(iconRect.x + ICON_SIZE - qtyLabel.width() + 1,
-                              iconRect.y + ICON_SIZE - qtyLabel.height() + 3);
-            }
-        }
-    }
-
     // Cast bar
     if (_actionTimer > 0) {
         static const int

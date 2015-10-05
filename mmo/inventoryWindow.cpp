@@ -13,8 +13,8 @@ void Client::initializeInventoryWindow(){
     const int
         HEIGHT = inventory->height(),
         WIDTH = inventory->width(),
-        LEFT = 640 - WIDTH - 6,
-        TOP = 360 - HEIGHT - 18;
+        LEFT = 640 - WIDTH - 1,
+        TOP = 360 - HEIGHT - 13;
 
     _inventoryWindow = new Window(makeRect(LEFT, TOP, WIDTH, HEIGHT), "Inventory");
     _inventoryWindow->addChild(inventory);
