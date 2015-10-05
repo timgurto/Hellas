@@ -1,5 +1,6 @@
 // (C) 2015 Tim Gurto
 
+#include "ColorBlock.h"
 #include "Container.h"
 #include "Renderer.h"
 #include "User.h"
@@ -16,24 +17,14 @@ _rows(rows),
 _cols(cols),
 _linked(linked){
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
-        int
+        const int
             x = i % cols,
             y = i / cols;
-        addChild(new ShadowBox(makeRect(x * (Client::ICON_SIZE + GAP) + GAP,
-                                        y * (Client::ICON_SIZE + GAP) + GAP + 1,
-                                        Client::ICON_SIZE, Client::ICON_SIZE),
-                               true));
+        static const SDL_Rect SLOT_BACKGROUND_OFFSET = makeRect(1, 1, -2, -2);
+        const SDL_Rect slotRect = makeRect(x * (Client::ICON_SIZE + GAP) + GAP,
+                                           y * (Client::ICON_SIZE + GAP) + GAP + 1,
+                                           Client::ICON_SIZE, Client::ICON_SIZE);
+        addChild(new ColorBlock(slotRect + SLOT_BACKGROUND_OFFSET, Color::BLACK));
+        addChild(new ShadowBox(slotRect, true));
     }
-}
-
-void Container::refresh(){
-    renderer.pushRenderTarget(_texture);
-
-    renderer.setDrawColor(Color::BLACK);
-    for (Element *slot : _children)
-        renderer.fillRect(slot->rect());
-
-    drawChildren();
-
-    renderer.popRenderTarget();
 }

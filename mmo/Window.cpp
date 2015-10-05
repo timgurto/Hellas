@@ -3,6 +3,7 @@
 #include <SDL_ttf.h>
 
 #include "Button.h"
+#include "ColorBlock.h"
 #include "Label.h"
 #include "Line.h"
 #include "ShadowBox.h"
@@ -22,10 +23,12 @@ _content(new Element(makeRect(1, HEADING_HEIGHT + 1, rect.w, rect.h))){
     hide();
     setMouseUpFunction(&stopDragging);
     setMouseMoveFunction(&drag);
-    fillBackground();
+
+    Element::addChild(new ColorBlock(makeRect(1, 1, windowRect.w - 2, windowRect.h - 2)));
 
     // Heading
-    Label *const heading = new Label(makeRect(0, 0, windowRect.w - CLOSE_BUTTON_SIZE, HEADING_HEIGHT),
+    Label *const heading = new Label(makeRect(0, 0,
+                                              windowRect.w - CLOSE_BUTTON_SIZE, HEADING_HEIGHT),
                                      _title, CENTER_JUSTIFIED);
     heading->setMouseDownFunction(&startDragging, this);
     Element::addChild(heading);

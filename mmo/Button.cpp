@@ -1,6 +1,7 @@
 // (C) 2015 Tim Gurto
 
 #include "Button.h"
+#include "ColorBlock.h"
 #include "Label.h"
 
 extern Renderer renderer;
@@ -13,6 +14,7 @@ _clickFun(clickFunction),
 _clickData(clickData),
 _mouseButtonDown(false),
 _depressed(false){
+    Element::addChild(new ColorBlock(makeRect(1, 1, rect.w - 2, rect.h - 2)));
     Element::addChild(_content);
     Element::addChild(new ShadowBox(makeRect(0, 0, rect.w, rect.h)));
 
@@ -66,17 +68,6 @@ void Button::mouseMove(Element &e, const Point &mousePos){
         if (button._depressed)
             button.release(false);
     }
-}
-
-void Button::refresh(){
-    renderer.pushRenderTarget(_texture);
-
-    renderer.setDrawColor(BACKGROUND_COLOR);
-    renderer.fillRect(makeRect(1, 1, rect().w - 2, rect().h - 2));
-
-    drawChildren();
-
-    renderer.popRenderTarget();
 }
 
 void Button::addChild(Element *child){

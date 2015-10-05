@@ -30,8 +30,6 @@ private:
     static void mouseUp(Element &e, const Point &mousePos);
     static void mouseMove(Element &e, const Point &mousePos);
 
-    virtual void refresh();
-
 public:
     Button(const SDL_Rect &rect, const std::string &caption = "", clickFun_t clickFunction = 0,
            void *clickData = 0);
