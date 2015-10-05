@@ -28,3 +28,29 @@ _linked(linked){
         addChild(new ShadowBox(slotRect, true));
     }
 }
+
+void Container::refresh(){
+    renderer.pushRenderTarget(_texture);
+
+    drawChildren();
+
+    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
+        const int
+            x = i % _cols,
+            y = i / _cols;
+        const std::pair<const Item *, size_t> &slot = _linked[i];
+        if (slot.first){
+            const SDL_Rect slotRect = makeRect(x * (Client::ICON_SIZE + GAP) + GAP,
+                                               y * (Client::ICON_SIZE + GAP) + GAP + 1,
+                                               Client::ICON_SIZE, Client::ICON_SIZE);
+            slot.first->icon().draw(slotRect);
+            if (slot.second > 1){
+                Texture label(font(), makeArgs(slot.second), FONT_COLOR);
+                label.draw(slotRect.x + slotRect.w - label.width() - 1,
+                           slotRect.y + slotRect.h - label.height() - 1);
+            }
+        }
+    }
+
+    renderer.popRenderTarget();
+}

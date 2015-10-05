@@ -21,6 +21,8 @@ private:
     size_t _rows, _cols;
     containerVec_t &_linked;
 
+    virtual void refresh();
+
 public:
     Container(size_t rows, size_t cols, containerVec_t &linked, int x = 0, int y = 0);
 };
