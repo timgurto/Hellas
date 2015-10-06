@@ -9,7 +9,7 @@ extern Renderer renderer;
 
 const int Container::GAP = 0;
 
-Container::Container(size_t rows, size_t cols, containerVec_t &linked, int x, int y):
+Container::Container(size_t rows, size_t cols, Item::vect_t &linked, int x, int y):
 Element(makeRect(x, y,
                  cols * (Client::ICON_SIZE + GAP + 2) + GAP,
                  rows * (Client::ICON_SIZE + GAP + 2) + GAP + 1)),

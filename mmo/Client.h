@@ -147,7 +147,7 @@ private:
     // Information about the state of the world
     size_t _mapX, _mapY;
     std::vector<std::vector<size_t> > _map;
-    std::vector<std::pair<const Item *, size_t> > _inventory;
+    Item::vect_t _inventory;
     std::map<std::string, Avatar*> _otherUsers; // For lookup by name
     std::map<size_t, ClientObject*> _objects; // For lookup by serial
 

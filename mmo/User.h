@@ -7,11 +7,11 @@
 #include <string>
 #include <windows.h>
 
+#include "Item.h"
 #include "Object.h"
 #include "Point.h"
 #include "Socket.h"
 
-class Item;
 class Server;
 
 // Stores information about a single user account for the server
@@ -27,7 +27,7 @@ class User{
     Point _constructingLocation;
 
     Uint32 _actionTime; // Time remaining on current action.
-    std::vector<std::pair<const Item *, size_t> > _inventory;
+    Item::vect_t _inventory;
 
     Uint32 _lastLocUpdate; // Time that the last CL_LOCATION was received
     Uint32 _lastContact;

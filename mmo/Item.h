@@ -6,6 +6,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <vector>
 
 #include "Texture.h"
 
@@ -49,6 +50,8 @@ public:
     void craftTime(Uint32 time) { _craftTime = time; }
     void constructsObject(const ObjectType *obj) { _constructsObject = obj; }
     const ObjectType *constructsObject() const { return _constructsObject; }
+
+    typedef std::vector<std::pair<const Item *, size_t> > vect_t;
 
     void addClass(const std::string &className);
     bool hasClasses() const { return _classes.size() > 0; }
