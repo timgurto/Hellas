@@ -159,8 +159,10 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
         cot.image(std::string("Images/Objects/") + s + ".png");
         if (xr.findAttr(elem, "name", s)) cot.name(s);
         SDL_Rect drawRect = {0, 0, cot.width(), cot.height()};
-        if (xr.findAttr(elem, "xDrawOffset", drawRect.x) ||
-            xr.findAttr(elem, "yDrawOffset", drawRect.y))
+        bool
+            xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
+            ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
+        if (xSet || ySet)
             cot.drawRect(drawRect);
         if (xr.findAttr(elem, "canGather", n) && n != 0) cot.canGather(true);
         if (xr.findAttr(elem, "gatherSound", s))
