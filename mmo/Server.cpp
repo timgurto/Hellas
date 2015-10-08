@@ -34,8 +34,8 @@ const int Server::ACTION_DISTANCE = 20;
 
 bool Server::isServer = false;
 
-const int Server::TILE_W = 32;
-const int Server::TILE_H = 32;
+const int Server::TILE_W = 16;
+const int Server::TILE_H = 16;
 
 Server::Server():
 _time(SDL_GetTicks()),
@@ -766,8 +766,8 @@ size_t Server::findTile(const Point &p) const{
 }
 
 void Server::generateWorld(){
-    _mapX = 30;
-    _mapY = 30;
+    _mapX = 60;
+    _mapY = 60;
 
     // Grass by default
     _map = std::vector<std::vector<size_t> >(_mapX);
@@ -792,22 +792,6 @@ void Server::generateWorld(){
             }
     }
 
-    // Roads
-    for (int i = 0; i != 2; ++i) {
-        const Point
-            start(rand() % _mapX, rand() % _mapY),
-            end(rand() % _mapX, rand() % _mapY);
-        for (size_t x = 0; x != _mapX; ++x)
-            for (size_t y = 0; y != _mapY; ++y) {
-                Point thisTile(x, y);
-                if (y % 2 == 1)
-                    thisTile.x -= .5;
-                double dist = distance(thisTile, start, end);
-                if (dist <= 1)
-                    _map[x][y] = 2;
-            }
-    }
-
     // River: randomish line
     const Point
         start(rand() % _mapX, rand() % _mapY),
@@ -818,10 +802,8 @@ void Server::generateWorld(){
             if (y % 2 == 1)
                 thisTile.x -= .5;
             double dist = distance(thisTile, start, end) + randDouble() * 2 - 1;
-            if (dist <= 0.5)
-                _map[x][y] = 3;
-            else if (dist <= 2)
-                _map[x][y] = 4;
+            if (dist <=4)
+                _map[x][y] = 2;
         }
 
     const ObjectType *const branch = &*_objectTypes.find(std::string("branch"));
@@ -831,7 +813,7 @@ void Server::generateWorld(){
         do {
             loc = mapRand();
             tile = findTile(loc);
-        } while (tile == 3 || tile == 4); // Forbidden on water
+        } while (tile == 2); // Forbidden on water
         _objects.insert(Object(branch, loc));
     }
 
@@ -842,19 +824,8 @@ void Server::generateWorld(){
         do {
             loc = mapRand();
             tile = findTile(loc);
-        } while (tile == 3 || tile == 4); // Forbidden on water
+        } while (tile == 2); // Forbidden on water
         _objects.insert(Object(tree, loc));
-    }
-
-    const ObjectType *const chest = &*_objectTypes.find(std::string("chest"));
-    for (int i = 0; i != 10; ++i) {
-        Point loc;
-        size_t tile;
-        do {
-            loc = mapRand();
-            tile = findTile(loc);
-        } while (tile == 3 || tile == 4); // Forbidden on water
-        _objects.insert(Object(chest, loc));
     }
 }
 
