@@ -1,19 +1,25 @@
 <root>
 <objectType
-    id="tree"
-    gatherReq="axe"
-    actionTime=3000 >
-    <yield id="wood" initialMean=6 initialSD=0.8 />
-</objectType>
+    id="intrusiveRock"
+/>
 
 <objectType
-    id="branch"
-    actionTime=1000 >
-    <yield id="wood" />
-</objectType>
+    id="extrusiveRock"
+/>
 
 <objectType
-    id="chest"
-    constructionTime=2000
+    id="metamorphicRock"
+/>
+
+<objectType
+    id="sedimentaryRock"
+/>
+
+<objectType
+    id="grass"
+/>
+
+<objectType
+    id="seaweed"
 />
 </root>

@@ -807,26 +807,18 @@ void Server::generateWorld(){
                 _map[x][y] = 1;
         }
 
-    const ObjectType *const branch = &*_objectTypes.find(std::string("branch"));
-    for (int i = 0; i != 30; ++i){
-        Point loc;
-        size_t tile;
-        do {
-            loc = mapRand();
-            tile = findTile(loc);
-        } while (tile == 1); // Forbidden on water
-        _objects.insert(Object(branch, loc));
-    }
-
-    const ObjectType *const tree = &*_objectTypes.find(std::string("tree"));
-    for (int i = 0; i != 10; ++i) {
-        Point loc;
-        size_t tile;
-        do {
-            loc = mapRand();
-            tile = findTile(loc);
-        } while (tile == 1); // Forbidden on water
-        _objects.insert(Object(tree, loc));
+    // Rocks/grass/seaweed
+    const ObjectType *objType[6];
+    objType[0] = &*_objectTypes.find(std::string("grass"));
+    objType[1] = &*_objectTypes.find(std::string("seaweed"));
+    objType[2] = &*_objectTypes.find(std::string("extrusiveRock"));
+    objType[3] = &*_objectTypes.find(std::string("intrusiveRock"));
+    objType[4] = &*_objectTypes.find(std::string("metamorphicRock"));
+    objType[5] = &*_objectTypes.find(std::string("sedimentaryRock"));
+    for (int i = 0; i != 300; ++i){
+        Point p = mapRand();
+        size_t tile = findTile(p);
+        _objects.insert(Object(objType[tile], p));
     }
 }
 

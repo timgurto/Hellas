@@ -1,25 +1,38 @@
 <root>
 <objectType
-    id="tree"
-    name="Tree"
-    xDrawOffset=-20
-    yDrawOffset=-47
-    canGather=1
-    gatherSound="chop-pause"
+    id="intrusiveRock"
+    name="Igneous Intrusive Rock"
+    xDrawOffset=-8
+    yDrawOffset=-8
 />
-
 <objectType
-    id="branch"
-    name="Branch"
-    xDrawOffset=-14
-    yDrawOffset=-12
-    canGather=1
+    id="extrusiveRock"
+    name="Igneous Extrusive Rock"
+    xDrawOffset=-8
+    yDrawOffset=-8
 />
-
 <objectType
-    id="chest"
-    name="Wooden chest"
-    xDrawOffset=-17
-    yDrawOffset=-13
+    id="metamorphicRock"
+    name="Metamorphic Rock"
+    xDrawOffset=-8
+    yDrawOffset=-8
+/>
+<objectType
+    id="sedimentaryRock"
+    name="Sedimentary Rock"
+    xDrawOffset=-8
+    yDrawOffset=-8
+/>
+<objectType
+    id="grass"
+    name="Grass"
+    xDrawOffset=-8
+    yDrawOffset=-16
+/>
+<objectType
+    id="seaweed"
+    name="Seaweed"
+    xDrawOffset=-8
+    yDrawOffset=-16
 />
 </root>
