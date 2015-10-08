@@ -47,7 +47,7 @@ void Container::refresh(){
             if (slot.second > 1){
                 Texture label(font(), makeArgs(slot.second), FONT_COLOR);
                 label.draw(slotRect.x + slotRect.w - label.width() - 1,
-                           slotRect.y + slotRect.h - label.height() - 1);
+                           slotRect.y + slotRect.h - label.height() + 1);
             }
         }
     }

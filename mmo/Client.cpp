@@ -107,10 +107,11 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
     _tile[3] = Texture(std::string("Images/Terrain/Intrusive Raw.png"));
     _tile[4] = Texture(std::string("Images/Terrain/Metamorphic Raw.png"));
     _tile[5] = Texture(std::string("Images/Terrain/Sedimentary Raw.png"));
-    for (size_t i = 0; i != 6; ++i) {
-        _tile[i].setBlend(SDL_BLENDMODE_ADD);
-        _tile[i].setAlpha(0x3f);
-    }
+    if (!isDebug())
+        for (size_t i = 0; i != 6; ++i) {
+            _tile[i].setBlend(SDL_BLENDMODE_ADD);
+            _tile[i].setAlpha(0x3f);
+        }
 
     // Player's inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i)
@@ -752,6 +753,12 @@ void Client::drawTooltip() const{
 }
 
 void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
+    if (isDebug()) {
+        _tile[_map[x][y]].draw(xLoc, yLoc);
+        return;
+    }
+
+
     /*
           H | E
       L | tileID| R
