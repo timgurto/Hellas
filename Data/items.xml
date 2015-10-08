@@ -1,25 +1,25 @@
 <root>
 <item
-    id="wood"
-    name="Wood"
-    stackSize=5
+    id="intrusiveRock"
+    name="Intrusive Igneous Rock"
+    stackSize=64
 />
 
 <item
-    id="axe"
-    name="Wooden axe"
-    craftTime=10000 >
-    <material id="wood" quantity=3/>
-    <class name="axe"/>
-</item>
+    id="extrusiveRock"
+    name="Extrusivetrusive Igneous Rock"
+    stackSize=64
+/>
 
 <item
-    id="chest"
-    name="Wooden chest"
-    constructs="chest"
-    craftTime=10000 >
-    <material id="wood" quantity=5/>
-    <class name="container"/>
-    <class name="structure"/>
-</item>
+    id="metamorphicRock"
+    name="Metamorphic Rock"
+    stackSize=64
+/>
+
+<item
+    id="seaweed"
+    name="Seaweed"
+    stackSize=160
+/>
 </root>
