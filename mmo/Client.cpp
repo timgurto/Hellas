@@ -133,25 +133,33 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
 
     SDL_StopTextInput();
 
-
-    // First pass: empty items, to facilitate links between items in second pass
-    Item &wood = const_cast<Item &>(*_items.insert(Item("wood", "wood", 5)).first);
-    Item &axe = const_cast<Item &>(*_items.insert(Item("axe", "wooden axe")).first);
-    Item &chest = const_cast<Item &>(*_items.insert(Item("chest", "wooden chest", 10)).first);
-
-    // Load data
-    axe.addClass("axe");
-    axe.addMaterial(&wood, 3);
-    axe.craftTime(10);
-
-    chest.addClass("structure");
-    chest.addClass("container");
-    chest.addMaterial(&wood, 5);
-    chest.craftTime(10);
-
+    // Load Items
+    XmlReader xr("Data/items.xml");
+    for (auto elem : xr.getChildren("item")) {
+        std::string id, name;
+        if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name))
+            continue; // ID and name are mandatory.
+        Item item(id, name);
+        std::string s;
+        for (auto child : xr.getChildren("material", elem)) {
+            int matQty = 1;
+            xr.findAttr(child, "quantity", matQty);
+            if (xr.findAttr(child, "id", s))
+                // Create dummy Item if necessary
+                item.addMaterial(&*(_items.insert(Item(s)).first), matQty);
+        }
+        for (auto child : xr.getChildren("class", elem))
+            if (xr.findAttr(child, "name", s)) item.addClass(s);
+        
+        std::pair<std::set<Item>::iterator, bool> ret = _items.insert(item);
+        if (!ret.second) {
+            Item &itemInPlace = const_cast<Item &>(*ret.first);
+            itemInPlace = item;
+        }
+    }
 
     // Object types
-    XmlReader xr("Data/objectTypesClient.xml");
+    xr.newFile("Data/objectTypesClient.xml");
     for (auto elem : xr.getChildren("objectType")) {
         std::string s; int n;
         if (!xr.findAttr(elem, "id", s))
