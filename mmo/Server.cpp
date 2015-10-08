@@ -483,19 +483,20 @@ void Server::broadcast(MessageCode msgCode, const std::string &args){
 }
 
 void Server::gatherObject(size_t serial, User &user){
-    // Give wood to user
+    // Give item to user
     const std::set<Object>::iterator it = _objects.find(serial);
     Object &obj = const_cast<Object &>(*it);
-    static const Item *const wood = &*_items.find(std::string("wood"));
-    const size_t slot = user.giveItem(wood);
+    static const Item *const toGive = obj.chooseGatherItem();
+    const size_t slot = user.giveItem(toGive);
     if (slot == User::INVENTORY_SIZE) {
         sendMessage(user.socket(), SV_INVENTORY_FULL);
         return;
     }
-    sendMessage(user.socket(), SV_INVENTORY, makeArgs(slot, "wood", user.inventory(slot).second));
+    sendMessage(user.socket(), SV_INVENTORY, makeArgs(slot, toGive->id(),
+                user.inventory(slot).second));
     // Remove tree if empty
-    obj.decrementWood();
-    if (it->wood() == 0) {
+    obj.removeItem(toGive);
+    if (obj.contents().empty()) {
         // Ensure no other users are targeting this object, as it will be removed.
         for (const User &otherUserConst : _users) {
             const User & otherUser = const_cast<User &>(otherUserConst);
@@ -594,8 +595,18 @@ void Server::loadData(){
         std::string s; int n;
         if (xr.findAttr(elem, "actionTime", n)) ot.actionTime(n);
         if (xr.findAttr(elem, "constructionTime", n)) ot.constructionTime(n);
-        if (xr.findAttr(elem, "wood", n)) ot.wood(n);
         if (xr.findAttr(elem, "gatherReq", s)) ot.gatherReq(s);
+        for (auto yield : xr.getChildren("yield", elem)) {
+            if (!xr.findAttr(yield, "id", s))
+                continue;
+            double initMean = 1., initSD = 0, gatherMean = 1, gatherSD = 0;
+            xr.findAttr(yield, "initialMean", initMean);
+            xr.findAttr(yield, "initialSD", initSD);
+            xr.findAttr(yield, "gatherMean", gatherMean);
+            xr.findAttr(yield, "gatherSD", gatherSD);
+            std::set<Item>::const_iterator itemIt = _items.insert(Item(s)).first;
+            ot.addYield(&*itemIt, initMean, initSD, gatherMean, gatherSD);
+        }
         
         _objectTypes.insert(ot);
     }
@@ -670,7 +681,7 @@ void Server::loadData(){
         for (auto elem : xr.getChildren("object")) {
             std::string s;
             if (!xr.findAttr(elem, "id", s)) {
-                _debug("Skipping importing object with no id.", Color::RED);
+                _debug("Skipping importing object with no type.", Color::RED);
                 continue;
             }
             Point p;
@@ -686,8 +697,16 @@ void Server::loadData(){
             }
             Object obj(&*it, p);
             size_t n;
-            if (xr.findAttr(elem, "wood", n)) obj.wood(n);
             if (xr.findAttr(elem, "owner", s)) obj.owner(s);
+            Yield::contents_t contents;
+            for (auto content : xr.getChildren("contains", elem)) {
+                if (!xr.findAttr(content, "id", s))
+                    continue;
+                n = 1;
+                xr.findAttr(content, "quantity", n);
+                contents[&*_items.find(s)] = n;
+            }
+            obj.contents(contents);
             _objects.insert(obj);
         }
 
@@ -722,8 +741,11 @@ void Server::saveData() const{
             continue;
         auto e = xw.addChild("object");
         xw.setAttr(e, "id", obj.type()->id());
-        if (obj.wood() > 0)
-            xw.setAttr(e, "wood", obj.wood());
+        for (auto content : obj.contents()) {
+            auto contentE = xw.addChild("contains", e);
+            xw.setAttr(contentE, "id", content.first->id());
+            xw.setAttr(contentE, "quantity", content.second);
+        }
         if (!obj.owner().empty())
             xw.setAttr(e, "owner", obj.owner());
         auto loc = xw.addChild("location", e);

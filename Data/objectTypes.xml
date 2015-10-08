@@ -4,12 +4,15 @@
     gatherReq="axe"
     actionTime=3000
     wood=6
-/>
+>
+    <yield id="wood" initialMean=6 initialSD=0.8 />
+</objectType>
 <objectType
     id="branch"
     actionTime=1000
-    wood=1
-/>
+>
+    <yield id="wood" />
+</objectType>
 <objectType
     id="chest"
     constructionTime=2000

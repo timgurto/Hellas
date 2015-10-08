@@ -128,6 +128,7 @@
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="XmlReader.cpp" />
     <ClCompile Include="XmlWriter.cpp" />
+    <ClCompile Include="Yield.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tinyxml\tinyxml.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="Window.h" />
     <ClInclude Include="XmlReader.h" />
     <ClInclude Include="XmlWriter.h" />
+    <ClInclude Include="Yield.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,14 +5,15 @@
 
 #include "ObjectType.h"
 #include "Point.h"
+#include "Yield.h"
 
 // A server-side representation of an in-game object
 class Object{
     size_t _serial;
     Point _location;
     const ObjectType *_type;
-    size_t _wood; // wood remaining
     std::string _owner;
+    Yield::contents_t _contents; // Remaining contents, which can be gathered
 
 protected:
     static size_t generateSerial();
@@ -27,14 +28,16 @@ public:
     size_t serial() const { return _serial; }
     void serial(size_t s) { _serial = s; }
     const ObjectType *type() const { return _type; }
-    size_t wood() const { return _wood; }
-    void wood(size_t w) { _wood = w; }
     const std::string &owner() const { return _owner; }
     void owner(const std::string &name) { _owner = name; }
+    const Yield::contents_t &contents() const { return _contents; }
+    void contents(Yield::contents_t contents) { _contents = contents; }
 
     bool operator<(const Object &rhs) const { return _serial < rhs._serial; }
 
-    void decrementWood();
+    // Randomly choose an item type for the user to gather.
+    const Item *chooseGatherItem() const;
+    void removeItem(const Item *item);
 };
 
 #endif

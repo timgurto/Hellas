@@ -1,5 +1,7 @@
 // (C) 2015 Tim Gurto
 
+#include <cassert>
+
 #include "Object.h"
 #include "util.h"
 
@@ -7,15 +9,10 @@ Object::Object(const ObjectType *type, const Point &loc):
 _serial(generateSerial()),
 _location(loc),
 _type(type){
-    if (type)
-        _wood = type->wood();
+    assert(type);
+    if (type->yield())
+        type->yield().instantiate(_contents);
 }
-
-/*Object::Object(const ObjectType *type, const Point &loc, size_t wood):
-_serial(generateSerial()),
-_location(loc),
-_type(type),
-_wood(wood)){}*/
 
 Object::Object(size_t serial): // For set/map lookup
 _serial (serial),
@@ -26,6 +23,15 @@ size_t Object::generateSerial() {
     return currentSerial++;
 }
 
-void Object::decrementWood(){
-    --_wood;
+void Object::removeItem(const Item *item){
+    auto it = _contents.find(item);
+    --it->second;
+    if (it->second == 0)
+        _contents.erase(it);
+}
+
+const Item *Object::chooseGatherItem() const{
+    assert(!_contents.empty());
+    // TODO: choose randomly
+    return _contents.begin()->first;
 }
