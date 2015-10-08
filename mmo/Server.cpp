@@ -778,7 +778,8 @@ void Server::generateWorld(){
     }
 
     // Stone in circles
-    for (int i = 0; i != 5; ++i) {
+    for (int i = 0; i != 15; ++i) {
+        const size_t rockType = rand() % 4 + 2;
         const size_t centerX = rand() % _mapX;
         const size_t centerY = rand() % _mapY;
         for (size_t x = 0; x != _mapX; ++x)
@@ -787,8 +788,8 @@ void Server::generateWorld(){
                 if (y % 2 == 1)
                     thisTile.x -= .5;
                 const double dist = distance(Point(centerX, centerY), thisTile);
-                if (dist <= 4)
-                    _map[x][y] = 1;
+                if (dist <= 7)
+                    _map[x][y] = rockType;
             }
     }
 
@@ -803,7 +804,7 @@ void Server::generateWorld(){
                 thisTile.x -= .5;
             double dist = distance(thisTile, start, end) + randDouble() * 2 - 1;
             if (dist <=4)
-                _map[x][y] = 2;
+                _map[x][y] = 1;
         }
 
     const ObjectType *const branch = &*_objectTypes.find(std::string("branch"));
@@ -813,7 +814,7 @@ void Server::generateWorld(){
         do {
             loc = mapRand();
             tile = findTile(loc);
-        } while (tile == 2); // Forbidden on water
+        } while (tile == 1); // Forbidden on water
         _objects.insert(Object(branch, loc));
     }
 
@@ -824,7 +825,7 @@ void Server::generateWorld(){
         do {
             loc = mapRand();
             tile = findTile(loc);
-        } while (tile == 2); // Forbidden on water
+        } while (tile == 1); // Forbidden on water
         _objects.insert(Object(tree, loc));
     }
 }
