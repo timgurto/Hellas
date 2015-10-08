@@ -4,20 +4,20 @@
     name="Wood"
     stackSize=5
 />
+
 <item
     id="axe"
     name="Wooden axe"
-    craftTime=10000
->
+    craftTime=10000 >
     <material id="wood" quantity=3/>
     <class name="axe"/>
 </item>
+
 <item
     id="chest"
     name="Wooden chest"
     constructs="chest"
-    craftTime=10000
->
+    craftTime=10000 >
     <material id="wood" quantity=5/>
     <class name="container"/>
     <class name="structure"/>

@@ -7,6 +7,7 @@
     canGather=1
     gatherSound="chop-pause"
 />
+
 <objectType
     id="branch"
     name="Branch"
@@ -14,6 +15,7 @@
     yDrawOffset=-12
     canGather=1
 />
+
 <objectType
     id="chest"
     name="Wooden chest"
