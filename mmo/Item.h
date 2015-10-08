@@ -44,6 +44,7 @@ public:
     size_t stackSize() const { return _stackSize; }
     void stackSize(size_t n) { _stackSize = n; }
     const Texture &icon() const { return _icon; }
+    void icon(const std::string &filename);
     const std::set<std::string> &classes() const { return _classes; }
     const std::map<const Item *, size_t> &materials() const { return _materials; }
     Uint32 craftTime() const { return _craftTime; }
