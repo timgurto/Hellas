@@ -94,6 +94,8 @@ private:
     friend void User::removeMaterials(const Item &item, Server &server);
     friend void User::cancelAction(Server &server);
 
+    friend size_t User::giveItem(const Item *item, size_t quantity, const Server &server);
+
     void addObject (const ObjectType *type, const Point &location, const User *owner = 0);
 
     bool readUserData(User &user); // true: save data existed

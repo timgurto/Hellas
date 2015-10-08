@@ -26,10 +26,12 @@ size_t Object::generateSerial() {
     return currentSerial++;
 }
 
-void Object::removeItem(const Item *item){
+void Object::removeItem(const Item *item, size_t qty){
     auto it = _contents.find(item);
-    --_totalContents;
-    --it->second;
+    assert (it->second >= qty);
+    assert (_totalContents >= qty);
+    _totalContents -= qty;;
+    it->second -= qty;
     if (it->second == 0)
         _contents.erase(it);
 }
@@ -48,4 +50,9 @@ const Item *Object::chooseGatherItem() const{
     }
     assert(false);
     return 0;
+}
+
+size_t Object::chooseGatherQuantity(const Item *item) const{
+    size_t randomQty = _type->yield().generateGatherQuantity(item);
+    return min<size_t>(randomQty, _contents.find(item)->second);
 }

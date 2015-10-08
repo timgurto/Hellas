@@ -76,8 +76,11 @@ public:
     // Whether the user has at least one item with the specified item class
     bool hasItemClass(const std::string &className) const;
 
-    // Return value: which inventory slot was used
-    size_t giveItem(const Item *item);
+    // Return value: 0 if there was room for all items, otherwise the remainder.
+    size_t giveItem(const Item *item, size_t quantity, const Server &server);
+
+    // Whether the user has room for one or more of an item
+    bool hasSpace(const Item *item, size_t quantity = 1) const;
 
     void update(Uint32 timeElapsed, Server &server);
 };

@@ -11,7 +11,7 @@
 #include "messageCodes.h"
 #include "util.h"
 
-const size_t User::INVENTORY_SIZE = 5;
+const size_t User::INVENTORY_SIZE = 10;
 
 User::User(const std::string &name, const Point &loc, const Socket &socket):
 _name(name),
@@ -76,22 +76,52 @@ bool User::alive() const{
     return SDL_GetTicks() - _lastContact <= Server::CLIENT_TIMEOUT;
 }
 
-size_t User::giveItem(const Item *item){
-    size_t emptySlot = INVENTORY_SIZE;
+bool User::hasSpace(const Item *item, size_t quantity) const{
     for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
-        const Item *invItem = _inventory[i].first;
-        size_t invQty = _inventory[i].second;
-        if (invItem == item && invQty < item->stackSize()){
-            ++_inventory[i].second;
-            return i;
+        if (!_inventory[i].first) {
+            if (quantity <= item->stackSize())
+                return true;
+            quantity -= item->stackSize();
+        } else if (_inventory[i].first == item) {
+            size_t spaceAvailable = item->stackSize() - _inventory[i].second;
+            if (quantity <= spaceAvailable)
+                return true;
+            quantity -= spaceAvailable;
+        } else
+            continue;
+    }
+    return false;
+}
+
+size_t User::giveItem(const Item *item, size_t quantity, const Server &server){
+    // First pass: partial stacks
+    for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
+        if (_inventory[i].first != item)
+            continue;
+        size_t spaceAvailable = item->stackSize() - _inventory[i].second;
+        if (spaceAvailable > 0) {
+            size_t qtyInThisSlot = min(spaceAvailable, quantity);
+            _inventory[i].second += qtyInThisSlot;
+            server.sendMessage(_socket, SV_INVENTORY, makeArgs(i, item->id(), _inventory[i].second));
+            quantity -= qtyInThisSlot;
         }
-        if (!invItem && emptySlot == INVENTORY_SIZE)
-            emptySlot = i;
+        if (quantity == 0)
+            return 0;
     }
-    if (emptySlot != INVENTORY_SIZE) {
-        _inventory[emptySlot] = std::make_pair(item, 1);
+
+    // Second pass: empty slots
+    for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
+        if (_inventory[i].first)
+            continue;
+        size_t qtyInThisSlot = min(item->stackSize(), quantity);
+        _inventory[i].first = item;
+        _inventory[i].second = qtyInThisSlot;
+        server.sendMessage(_socket, SV_INVENTORY, makeArgs(i, item->id(), qtyInThisSlot));
+        quantity -= qtyInThisSlot;
+        if (quantity == 0)
+            return 0;
     }
-    return emptySlot;
+    return quantity;
 }
 
 void User::cancelAction(Server &server) {
@@ -183,14 +213,12 @@ void User::update(Uint32 timeElapsed, Server &server){
             server.gatherObject(_actionTarget->serial(), *this);
             _actionTarget = 0;
         } else if (_actionCrafting) {
-            // Give user his newly crafted item
-            const size_t slot = giveItem(_actionCrafting);
-            if (slot == INVENTORY_SIZE) {
+            if (!hasSpace(_actionCrafting)) {
                 server.sendMessage(_socket, SV_INVENTORY_FULL);
-                _actionCrafting = 0;
                 return;
             }
-            server.sendMessage(_socket, SV_INVENTORY, makeArgs(slot, _actionCrafting->id(), 1));
+            // Give user his newly crafted item
+            giveItem(_actionCrafting, 1, server);
             // Remove materials from user's inventory
             removeMaterials(*_actionCrafting, server);
             _actionCrafting = 0;

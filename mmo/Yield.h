@@ -13,6 +13,7 @@ class Yield{
     struct YieldEntry{
         double _initMean, _initSD; // The initial distribution of an Item in a Yield
         double _gatherMean, _gatherSD; // The distribution of individual gathers of an Item
+        mutable std::normal_distribution<double> _gatherDistribution;
     };
 
     std::map<const Item *, YieldEntry> _entries;
@@ -30,8 +31,9 @@ public:
     // Returns a new instance of this Yield, with random init values
     void instantiate(contents_t &contents) const; 
 
-    // Generate a normally-distributed random number based on the initMean and initSD of an entry
-    static size_t generateQuantity(const YieldEntry &entry);
+    // Generate a normally-distributed random number based on the mean and SD of an entry
+    static size_t generateInitialQuantity(const YieldEntry &entry);
+    size_t generateGatherQuantity(const Item *item) const;
 };
 
 #endif

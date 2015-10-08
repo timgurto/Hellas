@@ -37,7 +37,9 @@ public:
 
     // Randomly choose an item type for the user to gather.
     const Item *chooseGatherItem() const;
-    void removeItem(const Item *item);
+    // Randomly choose a quantity of the above items, between 1 and the object's contents.
+    size_t chooseGatherQuantity(const Item *item) const;
+    void removeItem(const Item *item, size_t qty);
 };
 
 #endif
