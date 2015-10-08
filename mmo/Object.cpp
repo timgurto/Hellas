@@ -8,10 +8,13 @@
 Object::Object(const ObjectType *type, const Point &loc):
 _serial(generateSerial()),
 _location(loc),
-_type(type){
+_type(type),
+_totalContents(0){
     assert(type);
     if (type->yield())
         type->yield().instantiate(_contents);
+    for (auto item : _contents)
+        _totalContents += item.second;
 }
 
 Object::Object(size_t serial): // For set/map lookup
@@ -25,6 +28,7 @@ size_t Object::generateSerial() {
 
 void Object::removeItem(const Item *item){
     auto it = _contents.find(item);
+    --_totalContents;
     --it->second;
     if (it->second == 0)
         _contents.erase(it);
@@ -32,6 +36,16 @@ void Object::removeItem(const Item *item){
 
 const Item *Object::chooseGatherItem() const{
     assert(!_contents.empty());
-    // TODO: choose randomly
-    return _contents.begin()->first;
+    assert(_totalContents > 0);
+    
+    // Choose random item, weighted by remaining quantity of each item type.
+    size_t i = rand() % _totalContents;
+    for (auto item : _contents) {
+        if (i <= item.second)
+            return item.first;
+        else
+            i -= item.second;
+    }
+    assert(false);
+    return 0;
 }

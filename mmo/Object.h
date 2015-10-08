@@ -14,6 +14,7 @@ class Object{
     const ObjectType *_type;
     std::string _owner;
     Yield::contents_t _contents; // Remaining contents, which can be gathered
+    size_t _totalContents; // Total quantity of contents remaining.
 
 protected:
     static size_t generateSerial();
@@ -21,7 +22,6 @@ protected:
 public:
     // Both constructors generate new serials
     Object(const ObjectType *type, const Point &loc);
-    Object(const ObjectType *type, const Point &loc, size_t wood); // Load pre-existing from file
     Object(size_t serial); // For set/map lookup; contains only a serial
 
     const Point &location() const { return _location; }
