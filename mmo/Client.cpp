@@ -150,6 +150,11 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
         }
         for (auto child : xr.getChildren("class", elem))
             if (xr.findAttr(child, "name", s)) item.addClass(s);
+
+        if (xr.findAttr(elem, "iconFile", s))
+            item.icon(s);
+        else
+            item.icon(id);
         
         std::pair<std::set<Item>::iterator, bool> ret = _items.insert(item);
         if (!ret.second) {

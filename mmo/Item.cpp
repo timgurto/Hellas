@@ -9,12 +9,18 @@ Item::Item(const std::string &idArg, const std::string &nameArg, size_t stackSiz
 _id(idArg),
 _name(nameArg),
 _stackSize(stackSizeArg),
-_icon(std::string("Images/Items/") + _id + ".png", Color::MAGENTA),
 _craftTime(0),
 _constructsObject(0){}
 
 Item::Item(const std::string &idArg):
 _id(idArg){}
+
+void Item::icon(const std::string &filename){
+    static const std::string
+        prefix = "Images/Items/",
+        suffix = ".png";
+    _icon = Texture(prefix + filename + suffix, Color::MAGENTA);
+}
 
 void Item::addClass(const std::string &className){
     _classes.insert(className);
