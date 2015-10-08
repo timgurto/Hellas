@@ -2,6 +2,8 @@
 
 #include "Yield.h"
 
+std::default_random_engine Yield::generator;
+
 void Yield::addItem(const Item *item, double initMean, double initSD, double gatherMean,
                     double gatherSD){
     YieldEntry *entry = &_entries[item];
@@ -17,6 +19,7 @@ void Yield::instantiate(contents_t &contents) const{
     }
 }
 
-size_t Yield::generateQuantity(const YieldEntry entry){
-    return entry._initMean; // TODO: generate random quantities.
+size_t Yield::generateQuantity(const YieldEntry &entry){
+    double d = std::normal_distribution<double>(entry._initMean, entry._initSD)(generator);
+    return max<size_t>(0, toInt(d));
 }

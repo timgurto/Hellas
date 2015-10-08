@@ -4,6 +4,7 @@
 #define YIELD_H
 
 #include <map>
+#include <random>
 
 #include "Item.h"
 
@@ -15,6 +16,8 @@ class Yield{
     };
 
     std::map<const Item *, YieldEntry> _entries;
+
+    static std::default_random_engine generator;
 
 public:
     typedef std::map<const Item *, size_t> contents_t;
@@ -28,7 +31,7 @@ public:
     void instantiate(contents_t &contents) const; 
 
     // Generate a normally-distributed random number based on the initMean and initSD of an entry
-    static size_t generateQuantity(const YieldEntry entry);
+    static size_t generateQuantity(const YieldEntry &entry);
 };
 
 #endif
