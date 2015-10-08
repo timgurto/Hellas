@@ -26,6 +26,13 @@ size_t Object::generateSerial() {
     return currentSerial++;
 }
 
+void Object::contents(Yield::contents_t contents){
+    _contents = contents;
+    _totalContents = 0;
+    for (auto item : _contents)
+        _totalContents += item.second;
+}
+
 void Object::removeItem(const Item *item, size_t qty){
     auto it = _contents.find(item);
     assert (it->second >= qty);
