@@ -1,25 +1,86 @@
 <root>
-<item
-    id="intrusiveRock"
-    name="Intrusive Igneous Rock"
-    stackSize=64
-/>
+<item id="intrusiveRock" name="Intrusive Igneous Rock" stackSize=64 />
+<item id="extrusiveRock" name="Extrusive Igneous Rock" stackSize=64 />
+<item id="metamorphicRock" name="Metamorphic Rock" stackSize=64 />
+<item id="sedimentaryRock" name="Sedimentary Rock" stackSize=64 />
+<item id="seaweed" name="Seaweed" stackSize=160 />
 
-<item
-    id="extrusiveRock"
-    name="Extrusivetrusive Igneous Rock"
-    stackSize=64
-/>
+<item id="stoneAxeHeadIntrusive" name="Stone Axe Head" iconFile="Stone Axe Head" stackSize=64 >
+    <material id="intrusiveRock" quantity=2/>
+</item>
+<item id="stoneAxeHeadExtrusive" name="Stone Axe Head" iconFile="Stone Axe Head" stackSize=64 >
+    <material id="extrusiveRock" quantity=2/>
+</item>
+<item id="stoneAxeHeadMetamorphic" name="Stone Axe Head" iconFile="Stone Axe Head" stackSize=64 >
+    <material id="metamorphicRock" quantity=2/>
+</item>
+<item id="stoneAxeHeadSedimentary" name="Stone Axe Head" iconFile="Stone Axe Head" stackSize=64 >
+    <material id="sedimentaryRock" quantity=2/>
+</item>
 
-<item
-    id="metamorphicRock"
-    name="Metamorphic Rock"
-    stackSize=64
-/>
+<item id="stoneHammerHeadIntrusive" name="Stone Hammer Head" iconFile="Stone Hammer Head" stackSize=64 >
+    <material id="intrusiveRock" quantity=2/>
+</item>
+<item id="stoneHammerHeadExtrusive" name="Stone Hammer Head" iconFile="Stone Hammer Head" stackSize=64 >
+    <material id="extrusiveRock" quantity=2/>
+</item>
+<item id="stoneHammerHeadMetamorphic" name="Stone Hammer Head" iconFile="Stone Hammer Head" stackSize=64 >
+    <material id="metamorphicRock" quantity=2/>
+</item>
+<item id="stoneHammerHeadSedimentary" name="Stone Hammer Head" iconFile="Stone Hammer Head" stackSize=64 >
+    <material id="sedimentaryRock" quantity=2/>
+</item>
 
-<item
-    id="seaweed"
-    name="Seaweed"
-    stackSize=160
-/>
+<item id="stoneHoeHeadIntrusive" name="Stone Hoe Head" iconFile="Stone Hoe Head" stackSize=64 >
+    <material id="intrusiveRock" quantity=2/>
+</item>
+<item id="stoneHoeHeadExtrusive" name="Stone Hoe Head" iconFile="Stone Hoe Head" stackSize=64 >
+    <material id="extrusiveRock" quantity=2/>
+</item>
+<item id="stoneHoeHeadMetamorphic" name="Stone Hoe Head" iconFile="Stone Hoe Head" stackSize=64 >
+    <material id="metamorphicRock" quantity=2/>
+</item>
+<item id="stoneHoeHeadSedimentary" name="Stone Hoe Head" iconFile="Stone Hoe Head" stackSize=64 >
+    <material id="sedimentaryRock" quantity=2/>
+</item>
+
+<item id="stoneJavelinHeadIntrusive" name="Stone Javelin Head" iconFile="Stone Javelin Head" stackSize=64 >
+    <material id="intrusiveRock" quantity=2/>
+</item>
+<item id="stoneJavelinHeadExtrusive" name="Stone Javelin Head" iconFile="Stone Javelin Head" stackSize=64 >
+    <material id="extrusiveRock" quantity=2/>
+</item>
+<item id="stoneJavelinHeadMetamorphic" name="Stone Javelin Head" iconFile="Stone Javelin Head" stackSize=64 >
+    <material id="metamorphicRock" quantity=2/>
+</item>
+<item id="stoneJavelinHeadSedimentary" name="Stone Javelin Head" iconFile="Stone Javelin Head" stackSize=64 >
+    <material id="sedimentaryRock" quantity=2/>
+</item>
+
+<item id="stoneKnifeHeadIntrusive" name="Stone Knife Head" iconFile="Stone Knife Blade" stackSize=64 >
+    <material id="intrusiveRock" quantity=2/>
+</item>
+<item id="stoneKnifeHeadExtrusive" name="Stone Knife Head" iconFile="Stone Knife Blade" stackSize=64 >
+    <material id="extrusiveRock" quantity=2/>
+</item>
+<item id="stoneKnifeHeadMetamorphic" name="Stone Knife Head" iconFile="Stone Knife Blade" stackSize=64 >
+    <material id="metamorphicRock" quantity=2/>
+</item>
+<item id="stoneKnifeHeadSedimentary" name="Stone Knife Head" iconFile="Stone Knife Blade" stackSize=64 >
+    <material id="sedimentaryRock" quantity=2/>
+</item>
+
+<item id="stoneShovelHeadIntrusive" name="Stone Shovel Head" iconFile="Stone Shovel Head" stackSize=64 >
+    <material id="intrusiveRock" quantity=2/>
+</item>
+<item id="stoneShovelHeadExtrusive" name="Stone Shovel Head" iconFile="Stone Shovel Head" stackSize=64 >
+    <material id="extrusiveRock" quantity=2/>
+</item>
+<item id="stoneShovelHeadMetamorphic" name="Stone Shovel Head" iconFile="Stone Shovel Head" stackSize=64 >
+    <material id="metamorphicRock" quantity=2/>
+</item>
+<item id="stoneShovelHeadSedimentary" name="Stone Shovel Head" iconFile="Stone Shovel Head" stackSize=64 >
+    <material id="sedimentaryRock" quantity=2/>
+</item>
+
 </root>
