@@ -4,6 +4,7 @@
 #include <cassert>
 #include <sstream>
 #include <fstream>
+#include <thread>
 #include <utility>
 
 #include "Client.h" //TODO remove; only here for random initial placement
@@ -70,7 +71,7 @@ _lastSave(_time){
 }
 
 Server::~Server(){
-    saveData();
+    saveData(this, _objects);
 }
 
 void Server::checkSockets(){
@@ -174,12 +175,12 @@ void Server::run(){
             }
         }
 
-        // Save user data
+        // Save data
         if (_time - _lastSave >= SAVE_FREQUENCY) {
             for (const User &user : _users) {
                 writeUserData(user);
             }
-            saveData();
+            std::thread(saveData, this, _objects).detach();
             _lastSave = _time;
         }
 
@@ -486,7 +487,7 @@ void Server::gatherObject(size_t serial, User &user){
     // Give item to user
     const std::set<Object>::iterator it = _objects.find(serial);
     Object &obj = const_cast<Object &>(*it);
-    static const Item *const toGive = obj.chooseGatherItem();
+    const Item *const toGive = obj.chooseGatherItem();
     size_t qtyToGive = obj.chooseGatherQuantity(toGive);
     const size_t remaining = user.giveItem(toGive, qtyToGive, *this);
     if (remaining > 0) {
@@ -511,7 +512,7 @@ void Server::gatherObject(size_t serial, User &user){
         _objects.erase(it);
     }
 
-    saveData();
+    std::thread(saveData, this, _objects).detach();
 }
 
 bool Server::readUserData(User &user){
@@ -687,12 +688,13 @@ void Server::loadData(){
             auto loc = xr.findChild("location", elem);
             if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
                 _debug("Skipping importing object with invalid/no location", Color::RED);
-                break;
+                continue;
             }
             std::set<ObjectType>::const_iterator it = _objectTypes.find(s);
             if (it == _objectTypes.end()) {
                 _debug << Color::RED << "Skipping importing object with unknown type \"" << s
                        << "\"." << Log::endl;
+                continue;
             }
             Object obj(&*it, p);
             size_t n;
@@ -716,26 +718,31 @@ void Server::loadData(){
     generateWorld();
 }
 
-void Server::saveData() const{
+void Server::saveData(const Server *server, const std::set<Object> &objects){
     // Map
+    static std::mutex mapFileMutex;
+    mapFileMutex.lock();
     XmlWriter xw("World/map.world");
     auto e = xw.addChild("size");
-    xw.setAttr(e, "x", _mapX);
-    xw.setAttr(e, "y", _mapY);
-    for (size_t y = 0; y != _mapY; ++y){
+    xw.setAttr(e, "x", server->_mapX);
+    xw.setAttr(e, "y", server->_mapY);
+    for (size_t y = 0; y != server->_mapY; ++y){
         auto row = xw.addChild("row");
         xw.setAttr(row, "y", y);
-        for (size_t x = 0; x != _mapX; ++x){
+        for (size_t x = 0; x != server->_mapX; ++x){
             auto tile = xw.addChild("tile", row);
             xw.setAttr(tile, "x", x);
-            xw.setAttr(tile, "terrain", _map[x][y]);
+            xw.setAttr(tile, "terrain", server->_map[x][y]);
         }
     }
     xw.publish();
+    mapFileMutex.unlock();
 
     // Objects
+    static std::mutex objectsFileMutex;
+    objectsFileMutex.lock();
     xw.newFile("World/objects.world");
-    for (const Object &obj : _objects) {
+    for (const Object &obj : objects) {
         if (!obj.type())
             continue;
         auto e = xw.addChild("object");
@@ -752,16 +759,25 @@ void Server::saveData() const{
         xw.setAttr(loc, "y", obj.location().y);
     }
     xw.publish();
+    objectsFileMutex.unlock();
 }
 
 size_t Server::findTile(const Point &p) const{
-    const size_t y = static_cast<size_t>(p.y / TILE_H);
+    size_t y = static_cast<size_t>(p.y / TILE_H);
+    if (y >= _mapY) {
+        _debug << Color::RED << "Invalid location; clipping y from " << y << " to " << _mapY-1
+               << ". original co-ord=" << p.y << Log::endl;
+        y = _mapY-1;
+    }
     double rawX = p.x;
     if (y % 2 == 1)
         rawX -= TILE_W/2;
-    const size_t x = static_cast<size_t>(rawX / TILE_W);
-    if (x >= _mapX || y >= _mapY)
-        assert(false);
+    size_t x = static_cast<size_t>(rawX / TILE_W);
+    if (x >= _mapX) {
+        _debug << Color::RED << "Invalid location; clipping x from " << x << " to " << _mapX-1
+               << ". original co-ord=" << p.x << Log::endl;
+        x = _mapX-1;
+    }
     return _map[x][y];
 }
 

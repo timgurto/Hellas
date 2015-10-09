@@ -31,7 +31,7 @@ public:
     const std::string &owner() const { return _owner; }
     void owner(const std::string &name) { _owner = name; }
     const Yield::contents_t &contents() const { return _contents; }
-    void contents(Yield::contents_t contents);
+    void contents(const Yield::contents_t &contents);
 
     bool operator<(const Object &rhs) const { return _serial < rhs._serial; }
 

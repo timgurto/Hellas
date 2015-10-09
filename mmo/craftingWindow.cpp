@@ -29,9 +29,9 @@ void Client::initializeCraftingWindow(){
 
     // Set up crafting window
     static const int
-        FILTERS_PANE_W = 100,
-        RECIPES_PANE_W = 110,
-        DETAILS_PANE_W = 100,
+        FILTERS_PANE_W = 150,
+        RECIPES_PANE_W = 160,
+        DETAILS_PANE_W = 150,
         PANE_GAP = 6,
         FILTERS_PANE_X = PANE_GAP / 2,
         RECIPES_PANE_X = FILTERS_PANE_X + FILTERS_PANE_W + PANE_GAP,
@@ -42,7 +42,7 @@ void Client::initializeCraftingWindow(){
         CONTENT_Y = PANE_GAP/2,
         CRAFTING_WINDOW_H = CONTENT_Y + CONTENT_H + PANE_GAP/2;
 
-    _craftingWindow = new Window(makeRect(250, 50, CRAFTING_WINDOW_W, CRAFTING_WINDOW_H),
+    _craftingWindow = new Window(makeRect(100, 50, CRAFTING_WINDOW_W, CRAFTING_WINDOW_H),
                                  "Crafting");
     _craftingWindow->addChild(new Line(RECIPES_PANE_X - PANE_GAP/2, CONTENT_Y,
                                        CONTENT_H, Element::VERTICAL));
