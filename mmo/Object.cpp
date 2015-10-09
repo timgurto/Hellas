@@ -26,7 +26,7 @@ size_t Object::generateSerial() {
     return currentSerial++;
 }
 
-void Object::contents(Yield::contents_t contents){
+void Object::contents(const Yield::contents_t &contents){
     _contents = contents;
     _totalContents = 0;
     for (auto item : _contents)
