@@ -4,24 +4,28 @@
     name="Igneous Intrusive Rock"
     xDrawOffset=-8
     yDrawOffset=-8
+    gatherSound="stone1"
 />
 <objectType
     id="extrusiveRock"
     name="Igneous Extrusive Rock"
     xDrawOffset=-8
     yDrawOffset=-8
+    gatherSound="stone1"
 />
 <objectType
     id="metamorphicRock"
     name="Metamorphic Rock"
     xDrawOffset=-8
     yDrawOffset=-8
+    gatherSound="stone1"
 />
 <objectType
     id="sedimentaryRock"
     name="Sedimentary Rock"
     xDrawOffset=-8
     yDrawOffset=-8
+    gatherSound="stone1"
 />
 <objectType
     id="grass"
@@ -34,5 +38,6 @@
     name="Seaweed"
     xDrawOffset=-8
     yDrawOffset=-16
+    gatherSound="grass1"
 />
 </root>
