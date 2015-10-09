@@ -763,13 +763,21 @@ void Server::saveData(const Server *server, const std::set<Object> &objects){
 }
 
 size_t Server::findTile(const Point &p) const{
-    const size_t y = static_cast<size_t>(p.y / TILE_H);
+    size_t y = static_cast<size_t>(p.y / TILE_H);
+    if (y >= _mapY) {
+        _debug << Color::RED << "Invalid location; clipping y from " << y << " to " << _mapY-1
+               << ". original co-ord=" << p.y << Log::endl;
+        y = _mapY-1;
+    }
     double rawX = p.x;
     if (y % 2 == 1)
         rawX -= TILE_W/2;
-    const size_t x = static_cast<size_t>(rawX / TILE_W);
-    if (x >= _mapX || y >= _mapY)
-        assert(false);
+    size_t x = static_cast<size_t>(rawX / TILE_W);
+    if (x >= _mapX) {
+        _debug << Color::RED << "Invalid location; clipping x from " << x << " to " << _mapX-1
+               << ". original co-ord=" << p.x << Log::endl;
+        x = _mapX-1;
+    }
     return _map[x][y];
 }
 
