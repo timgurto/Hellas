@@ -688,12 +688,13 @@ void Server::loadData(){
             auto loc = xr.findChild("location", elem);
             if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
                 _debug("Skipping importing object with invalid/no location", Color::RED);
-                break;
+                continue;
             }
             std::set<ObjectType>::const_iterator it = _objectTypes.find(s);
             if (it == _objectTypes.end()) {
                 _debug << Color::RED << "Skipping importing object with unknown type \"" << s
                        << "\"." << Log::endl;
+                continue;
             }
             Object obj(&*it, p);
             size_t n;
