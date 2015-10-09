@@ -32,4 +32,10 @@
     actionTime = 1000 >
     <yield id="seaweed" initialMean=10 initialSD=2.5 gatherMean = 160 />
 </objectType>
+
+<objectType
+    id="stick"
+    actionTime = 1 >
+    <yield id="stick" />
+</objectType>
 </root>

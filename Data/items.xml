@@ -83,4 +83,6 @@
     <material id="sedimentaryRock" quantity=2/>
 </item>
 
+<item id="stick" name="Stick" stackSize=64 />
+
 </root>

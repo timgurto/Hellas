@@ -40,4 +40,11 @@
     yDrawOffset=-16
     gatherSound="grass1"
 />
+<objectType
+    id="stick"
+    name="Stick"
+    xDrawOffset=-8
+    yDrawOffset=-8
+    gatherSound="wood1"
+/>
 </root>
