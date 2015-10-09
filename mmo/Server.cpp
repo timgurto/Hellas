@@ -808,17 +808,25 @@ void Server::generateWorld(){
         }
 
     // Rocks/grass/seaweed
-    const ObjectType *objType[6];
+    const ObjectType *objType[12];
     objType[0] = &*_objectTypes.find(std::string("grass"));
     objType[1] = &*_objectTypes.find(std::string("seaweed"));
     objType[2] = &*_objectTypes.find(std::string("extrusiveRock"));
     objType[3] = &*_objectTypes.find(std::string("intrusiveRock"));
     objType[4] = &*_objectTypes.find(std::string("metamorphicRock"));
     objType[5] = &*_objectTypes.find(std::string("sedimentaryRock"));
+    
+    objType[6] = &*_objectTypes.find(std::string("stick"));
+    objType[7] = objType[8] = objType[9] = objType[10] = objType[11] = 0;
     for (int i = 0; i != 300; ++i){
         Point p = mapRand();
         size_t tile = findTile(p);
-        _objects.insert(Object(objType[tile], p));
+        if (rand() % 2 == 0)
+            tile += 6;
+        if (objType[tile]) {
+            Object o(objType[tile], p);
+            _objects.insert(o).first;
+        }
     }
 }
 
