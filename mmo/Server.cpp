@@ -486,7 +486,7 @@ void Server::gatherObject(size_t serial, User &user){
     // Give item to user
     const std::set<Object>::iterator it = _objects.find(serial);
     Object &obj = const_cast<Object &>(*it);
-    static const Item *const toGive = obj.chooseGatherItem();
+    const Item *const toGive = obj.chooseGatherItem();
     size_t qtyToGive = obj.chooseGatherQuantity(toGive);
     const size_t remaining = user.giveItem(toGive, qtyToGive, *this);
     if (remaining > 0) {
