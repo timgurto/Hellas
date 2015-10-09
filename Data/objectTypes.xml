@@ -1,26 +1,25 @@
 <root>
 <objectType
     id="intrusiveRock"
-    actionTime = 100 >
+    actionTime = 1 >
     <yield id="intrusiveRock" />
 </objectType>
 
-
 <objectType
     id="extrusiveRock"
-    actionTime = 100 >
+    actionTime = 1 >
     <yield id="extrusiveRock" />
 </objectType>
 
 <objectType
     id="metamorphicRock"
-    actionTime = 100 >
+    actionTime = 1 >
     <yield id="metamorphicRock" />
 </objectType>
 
 <objectType
     id="sedimentaryRock"
-    actionTime = 100 >
+    actionTime = 1 >
     <yield id="sedimentaryRock" />
 </objectType>
 
