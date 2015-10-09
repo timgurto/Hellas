@@ -3,10 +3,11 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <set>
-#include <utility>
+#include <mutex>
 #include <queue>
+#include <set>
 #include <string>
+#include <utility>
 
 #include "Args.h"
 #include "Item.h"
@@ -73,7 +74,7 @@ private:
     // World state
     std::set<Object> _objects;
     void loadData(); // Attempt to load data from files.
-    void saveData() const;
+    static void saveData(const Server *server, const std::set<Object> &objects);
     void generateWorld(); // Randomly generate a new world.
 
     Point mapRand() const; // Return a random point on the map.

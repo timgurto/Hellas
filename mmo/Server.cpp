@@ -4,6 +4,7 @@
 #include <cassert>
 #include <sstream>
 #include <fstream>
+#include <thread>
 #include <utility>
 
 #include "Client.h" //TODO remove; only here for random initial placement
@@ -70,7 +71,7 @@ _lastSave(_time){
 }
 
 Server::~Server(){
-    saveData();
+    saveData(this, _objects);
 }
 
 void Server::checkSockets(){
@@ -174,12 +175,12 @@ void Server::run(){
             }
         }
 
-        // Save user data
+        // Save data
         if (_time - _lastSave >= SAVE_FREQUENCY) {
             for (const User &user : _users) {
                 writeUserData(user);
             }
-            saveData();
+            std::thread(saveData, this, _objects).detach();
             _lastSave = _time;
         }
 
@@ -511,7 +512,7 @@ void Server::gatherObject(size_t serial, User &user){
         _objects.erase(it);
     }
 
-    saveData();
+    std::thread(saveData, this, _objects).detach();
 }
 
 bool Server::readUserData(User &user){
@@ -716,26 +717,31 @@ void Server::loadData(){
     generateWorld();
 }
 
-void Server::saveData() const{
+void Server::saveData(const Server *server, const std::set<Object> &objects){
     // Map
+    static std::mutex mapFileMutex;
+    mapFileMutex.lock();
     XmlWriter xw("World/map.world");
     auto e = xw.addChild("size");
-    xw.setAttr(e, "x", _mapX);
-    xw.setAttr(e, "y", _mapY);
-    for (size_t y = 0; y != _mapY; ++y){
+    xw.setAttr(e, "x", server->_mapX);
+    xw.setAttr(e, "y", server->_mapY);
+    for (size_t y = 0; y != server->_mapY; ++y){
         auto row = xw.addChild("row");
         xw.setAttr(row, "y", y);
-        for (size_t x = 0; x != _mapX; ++x){
+        for (size_t x = 0; x != server->_mapX; ++x){
             auto tile = xw.addChild("tile", row);
             xw.setAttr(tile, "x", x);
-            xw.setAttr(tile, "terrain", _map[x][y]);
+            xw.setAttr(tile, "terrain", server->_map[x][y]);
         }
     }
     xw.publish();
+    mapFileMutex.unlock();
 
     // Objects
+    static std::mutex objectsFileMutex;
+    objectsFileMutex.lock();
     xw.newFile("World/objects.world");
-    for (const Object &obj : _objects) {
+    for (const Object &obj : objects) {
         if (!obj.type())
             continue;
         auto e = xw.addChild("object");
@@ -752,6 +758,7 @@ void Server::saveData() const{
         xw.setAttr(loc, "y", obj.location().y);
     }
     xw.publish();
+    objectsFileMutex.unlock();
 }
 
 size_t Server::findTile(const Point &p) const{
