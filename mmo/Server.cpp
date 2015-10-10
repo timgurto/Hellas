@@ -4,8 +4,12 @@
 #include <cassert>
 #include <sstream>
 #include <fstream>
-#include <thread>
 #include <utility>
+
+#ifndef SINGLE_THREAD
+#include <mutex>
+#include <thread>
+#endif
 
 #include "Client.h" //TODO remove; only here for random initial placement
 #include "Object.h"
@@ -180,7 +184,11 @@ void Server::run(){
             for (const User &user : _users) {
                 writeUserData(user);
             }
+#ifdef SINGLE_THREAD
+            saveData(this, _objects);
+#else
             std::thread(saveData, this, _objects).detach();
+#endif
             _lastSave = _time;
         }
 
@@ -512,7 +520,11 @@ void Server::gatherObject(size_t serial, User &user){
         _objects.erase(it);
     }
 
+#ifdef SINGLE_THREAD
+    saveData(this, _objects);
+#else
     std::thread(saveData, this, _objects).detach();
+#endif
 }
 
 bool Server::readUserData(User &user){
@@ -720,8 +732,10 @@ void Server::loadData(){
 
 void Server::saveData(const Server *server, const std::set<Object> &objects){
     // Map
+#ifndef SINGLE_THREAD
     static std::mutex mapFileMutex;
     mapFileMutex.lock();
+#endif
     XmlWriter xw("World/map.world");
     auto e = xw.addChild("size");
     xw.setAttr(e, "x", server->_mapX);
@@ -736,11 +750,15 @@ void Server::saveData(const Server *server, const std::set<Object> &objects){
         }
     }
     xw.publish();
+#ifndef SINGLE_THREAD
     mapFileMutex.unlock();
+#endif
 
     // Objects
+#ifndef SINGLE_THREAD
     static std::mutex objectsFileMutex;
     objectsFileMutex.lock();
+#endif
     xw.newFile("World/objects.world");
     for (const Object &obj : objects) {
         if (!obj.type())
@@ -759,7 +777,9 @@ void Server::saveData(const Server *server, const std::set<Object> &objects){
         xw.setAttr(loc, "y", obj.location().y);
     }
     xw.publish();
+#ifndef SINGLE_THREAD
     objectsFileMutex.unlock();
+#endif
 }
 
 size_t Server::findTile(const Point &p) const{

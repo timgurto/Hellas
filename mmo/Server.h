@@ -3,7 +3,6 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <mutex>
 #include <queue>
 #include <set>
 #include <string>
