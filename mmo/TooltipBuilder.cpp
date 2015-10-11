@@ -14,7 +14,7 @@ TooltipBuilder::TooltipBuilder():
 _color(Color::WHITE)
 {
     if (!_defaultFont)
-        _defaultFont = TTF_OpenFont("trebuc.ttf", 10);
+        _defaultFont = TTF_OpenFont("04B_03__.TTF", 8);
     _font = _defaultFont;
 }
 

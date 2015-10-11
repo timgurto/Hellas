@@ -80,9 +80,29 @@ _timeSinceLocUpdate(0),
 _tooltipNeedsRefresh(false),
 _mapX(0), _mapY(0),
 _currentMouseOverEntity(0),
-_debug(360/13, "client.log", "trebuc.ttf", 10){
+_debug(360/13, "client.log", "04B_03__.TTF", 8){
     isClient = true;
     _instance = this;
+
+    // Read config file
+    XmlReader xr("client-config.xml");
+
+    std::string fontFile = "04B_03__.TTF";
+    int fontSize = 8;
+    int fontHeight = 8;
+    auto elem = xr.findChild("debugFont");
+    if (xr.findAttr(elem, "filename", fontFile) ||
+        xr.findAttr(elem, "size", fontSize))
+        _debug.setFont(fontFile, fontSize);
+    if (xr.findAttr(elem, "height", fontHeight)) _debug.setLineHeight(fontHeight);
+
+    fontFile = "poh_pixels.ttf";
+    fontSize = 16;
+    elem = xr.findChild("gameFont");
+    xr.findAttr(elem, "filename", fontFile);
+    xr.findAttr(elem, "size", fontSize);
+    _defaultFont = TTF_OpenFont(fontFile.c_str(), fontSize);
+
 
     _debug << cmdLineArgs << Log::endl;
     Socket::debug = &_debug;
@@ -97,8 +117,6 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
     renderer.setDrawColor();
 
     _entities.insert(&_character);
-
-    _defaultFont = TTF_OpenFont("trebuc.ttf", 10);
 
     Avatar::image("Images/man.png");
     _tile[0] = Texture(std::string("Images/Terrain/grass.png"));
@@ -134,7 +152,7 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
     SDL_StopTextInput();
 
     // Load Items
-    XmlReader xr("Data/items.xml");
+    xr.newFile("Data/items.xml");
     for (auto elem : xr.getChildren("item")) {
         std::string id, name;
         if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name))
@@ -186,7 +204,7 @@ _debug(360/13, "client.log", "trebuc.ttf", 10){
 
 
     Element::absMouse = &_mouse;
-    Element::font(TTF_OpenFont("trebuc.ttf", 10));
+    Element::font(TTF_OpenFont("poh_pixels.ttf", 16));
 
     initializeCraftingWindow();
     initializeInventoryWindow();

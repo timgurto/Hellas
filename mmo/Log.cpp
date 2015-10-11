@@ -6,6 +6,8 @@
 
 Color Log::defaultColor = Color::NO_KEY;
 
+const int Log::DEFAULT_LINE_HEIGHT = 10;
+
 Log::Log():
 _valid(false){}
 
@@ -15,7 +17,8 @@ _maxMessages(displayLines),
 _font(TTF_OpenFont(fontName.c_str(), fontSize)),
 _valid(true),
 _color(color),
-_compilationColor(color){
+_compilationColor(color),
+_lineHeight(DEFAULT_LINE_HEIGHT){
     if (!_font){
         _valid = false;
     }
@@ -56,7 +59,7 @@ void Log::draw(int x, int y) const{
     
     for (const Texture &message : _messages) {
         message.draw(x, y);
-        y += message.height();
+        y += (_lineHeight == DEFAULT_LINE_HEIGHT) ? message.height() : _lineHeight;
     }
 }
 
@@ -70,4 +73,16 @@ Log &Log::operator<<(const LogEndType &val) {
 Log &Log::operator<<(const Color &c) {
     _compilationColor = c;
     return *this;
+}
+
+void Log::setFont(const std::string &fontName, int fontSize){
+    if (_font)
+        TTF_CloseFont(_font);
+    _font = TTF_OpenFont(fontName.c_str(), fontSize);
+    if (!_font)
+        _valid = (_font != 0);
+}
+
+void Log::setLineHeight(int height){
+    _lineHeight = height;
 }
