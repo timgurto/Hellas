@@ -7,7 +7,7 @@
 #include "Renderer.h"
 #include "TooltipBuilder.h"
 
-#include "util.h"
+#include "../util.h"
 
 extern Renderer renderer;
 

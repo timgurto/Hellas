@@ -3,8 +3,8 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-#include "Color.h"
 #include "ClientObjectType.h"
+#include "../Color.h"
 
 ClientObjectType::ClientObjectType(const std::string &id):
 _id(id),

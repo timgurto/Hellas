@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "Texture.h"
+#include "../client/Texture.h"
 
 class ObjectType;
 

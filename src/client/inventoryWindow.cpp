@@ -1,9 +1,9 @@
 // (C) 2015 Tim Gurto
 
 #include "Client.h"
-#include "Container.h"
-#include "User.h"
-#include "Window.h"
+#include "../server/User.h"
+#include "ui/Container.h"
+#include "ui/Window.h"
 
 void Client::initializeInventoryWindow(){
     static const int

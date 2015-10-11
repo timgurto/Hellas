@@ -3,9 +3,9 @@
 #include <SDL.h>
 #include <list>
 
-#include "Color.h"
-#include "Renderer.h"
-#include "Texture.h"
+#include "../Renderer.h"
+#include "../Texture.h"
+#include "../../Color.h"
 
 #ifndef ELEMENT_H
 #define ELEMENT_H

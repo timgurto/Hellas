@@ -4,8 +4,8 @@
 #define OBJECT_H
 
 #include "ObjectType.h"
-#include "Point.h"
 #include "Yield.h"
+#include "../Point.h"
 
 // A server-side representation of an in-game object
 class Object{

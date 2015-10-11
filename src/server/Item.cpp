@@ -1,9 +1,9 @@
 // (C) 2015 Tim Gurto
 
 #include "Item.h"
-#include "Client.h"
-#include "Color.h"
 #include "ObjectType.h"
+#include "../Color.h"
+#include "../client/Client.h"
 
 Item::Item(const std::string &idArg, const std::string &nameArg, size_t stackSizeArg):
 _id(idArg),

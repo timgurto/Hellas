@@ -2,9 +2,9 @@
 
 #include "ClientObject.h"
 #include "Client.h"
-#include "Color.h"
-#include "Server.h"
-#include "util.h"
+#include "../Color.h"
+#include "../server/Server.h"
+#include "../util.h"
 
 ClientObject::ClientObject(const ClientObject &rhs):
 Entity(rhs),

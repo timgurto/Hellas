@@ -8,7 +8,7 @@
 
 #include "ClientObjectType.h"
 #include "Entity.h"
-#include "Point.h"
+#include "../Point.h"
 
 // A client-side description of an object
 class ClientObject : public Entity{

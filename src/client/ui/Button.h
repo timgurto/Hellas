@@ -6,8 +6,8 @@
 #include <string>
 
 #include "Element.h"
-#include "Point.h"
 #include "ShadowBox.h"
+#include "../../Point.h"
 
 // A button which can be clicked, showing visible feedback and performing a function.
 class Button : public Element{

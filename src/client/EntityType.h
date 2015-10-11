@@ -5,9 +5,9 @@
 
 #include <string>
 
-#include "Point.h"
 #include "Texture.h"
-#include "util.h"
+#include "../Point.h"
+#include "../util.h"
 
 // Describes a class of Entities, the "instances" of which share common properties
 class EntityType{

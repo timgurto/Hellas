@@ -1,7 +1,7 @@
 // (C) 2015 Tim Gurto
 
 #include "Line.h"
-#include "Renderer.h"
+#include "../Renderer.h"
 
 extern Renderer renderer;
 

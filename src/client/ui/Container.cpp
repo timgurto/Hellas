@@ -2,8 +2,8 @@
 
 #include "ColorBlock.h"
 #include "Container.h"
-#include "Renderer.h"
-#include "User.h"
+#include "../Renderer.h"
+#include "../../server/User.h"
 
 extern Renderer renderer;
 

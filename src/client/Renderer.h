@@ -6,9 +6,9 @@
 #include <SDL.h>
 #include <stack>
 
-#include "Color.h"
 #include "Texture.h"
-#include "util.h"
+#include "../Color.h"
+#include "../util.h"
 
 // Wrapper class for SDL_Renderer and SDL_Window, plus related convenience functions.
 class Renderer{

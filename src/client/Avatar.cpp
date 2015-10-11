@@ -2,8 +2,8 @@
 
 #include "Avatar.h"
 #include "Client.h"
-#include "Server.h"
-#include "util.h"
+#include "../util.h"
+#include "../server/Server.h"
 
 EntityType Avatar::_entityType(makeRect(-9, -39));
 

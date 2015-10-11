@@ -5,7 +5,7 @@
 #include <SDL_image.h>
 #include <cassert>
 
-#include "Color.h"
+#include "../Color.h"
 #include "Renderer.h"
 #include "Texture.h"
 

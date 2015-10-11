@@ -8,7 +8,7 @@
 #include <string>
 #include <windows.h>
 
-#include "Log.h"
+#include "client\Log.h"
 
 // Wrapper class for Winsock's SOCKET.
 class Socket {

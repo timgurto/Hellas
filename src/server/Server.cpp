@@ -11,17 +11,17 @@
 #include <thread>
 #endif
 
-#include "Client.h" //TODO remove; only here for random initial placement
 #include "Object.h"
 #include "ObjectType.h"
-#include "Renderer.h"
-#include "Socket.h"
 #include "Server.h"
 #include "User.h"
-#include "XmlReader.h"
-#include "XmlWriter.h"
-#include "messageCodes.h"
-#include "util.h"
+#include "../Socket.h"
+#include "../XmlReader.h"
+#include "../XmlWriter.h"
+#include "../messageCodes.h"
+#include "../util.h"
+#include "../client/Client.h" //TODO remove; only here for random initial placement
+#include "../client/Renderer.h"
 
 extern Args cmdLineArgs;
 extern Renderer renderer;

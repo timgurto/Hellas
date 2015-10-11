@@ -1,8 +1,8 @@
 // (C) 2015 Tim Gurto
 
 #include "Client.h"
-#include "Server.h"
 #include "Log.h"
+#include "../server/Server.h"
 
 Color Log::defaultColor = Color::NO_KEY;
 

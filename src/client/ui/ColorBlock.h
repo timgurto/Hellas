@@ -3,8 +3,8 @@
 #ifndef COLOR_BLOCK_H
 #define COLOR_BLOCK_H
 
-#include "Color.h"
 #include "Element.h"
+#include "../../Color.h"
 
 // A colored, filled rectangle
 class ColorBlock : public Element {

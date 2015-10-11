@@ -8,18 +8,18 @@
 #include <map>
 #include <set>
 
-#include "Args.h"
 #include "Avatar.h"
 #include "ClientObject.h"
 #include "ClientObjectType.h"
-#include "ChoiceList.h"
+#include "ui/ChoiceList.h"
 #include "Entity.h"
-#include "Item.h"
 #include "Log.h"
-#include "Point.h"
-#include "Socket.h"
-#include "Window.h"
-#include "messageCodes.h"
+#include "ui/Window.h"
+#include "../Args.h"
+#include "../Point.h"
+#include "../Socket.h"
+#include "../messageCodes.h"
+#include "../server/Item.h"
 
 class Client{
 public:

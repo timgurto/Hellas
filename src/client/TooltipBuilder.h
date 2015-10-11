@@ -7,8 +7,8 @@
 #include <vector>
 #include <string>
 
-#include "Color.h"
 #include "Texture.h"
+#include "../Color.h"
 
 class TooltipBuilder{
     TTF_Font *_font;

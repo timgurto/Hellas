@@ -3,13 +3,13 @@
 #include <cassert>
 #include <sstream>
 
-#include "Client.h"
 #include "Item.h"
 #include "Server.h"
-#include "Socket.h"
 #include "User.h"
-#include "messageCodes.h"
-#include "util.h"
+#include "../Socket.h"
+#include "../messageCodes.h"
+#include "../util.h"
+#include "../client/Client.h"
 
 const size_t User::INVENTORY_SIZE = 10;
 

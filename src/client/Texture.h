@@ -8,8 +8,8 @@
 #include <map>
 #include <string>
 
-#include "Color.h"
-#include "Point.h"
+#include "../Color.h"
+#include "../Point.h"
 
 // A wrapper class for SDL_Texture, which also provides related functionality
 class Texture{

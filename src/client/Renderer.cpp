@@ -3,8 +3,8 @@
 #include <SDL_ttf.h>
 #include <SDL_image.h>
 
-#include "Args.h"
 #include "Renderer.h"
+#include "../Args.h"
 
 extern Args cmdLineArgs;
 

@@ -3,9 +3,9 @@
 #ifndef CONTAINER_H
 #define CONTAINER_H
 
-#include "Client.h"
 #include "Element.h"
-#include "Item.h"
+#include "../Client.h"
+#include "../../server/Item.h"
 
 // A grid that allows access to a collection of items
 class Container : public Element{

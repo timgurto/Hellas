@@ -7,8 +7,8 @@
 #include <vector>
 
 #include "EntityType.h"
-#include "Point.h"
 #include "Texture.h"
+#include "../Point.h"
 
 class Client;
 

@@ -4,8 +4,8 @@
 #include "Label.h"
 #include "Line.h"
 #include "List.h"
-#include "Renderer.h"
 #include "ShadowBox.h"
+#include "../Renderer.h"
 
 extern Renderer renderer;
 

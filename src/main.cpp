@@ -7,10 +7,10 @@
 #include <SDL.h>
 
 #include "Args.h"
-#include "Client.h"
-#include "Renderer.h"
-#include "Server.h"
-#include "Texture.h"
+#include "client/Client.h"
+#include "client/Renderer.h"
+#include "client/Texture.h"
+#include "server/Server.h"
 
 Args cmdLineArgs; // MUST be defined before renderer
 Renderer renderer; // MUST be defined after cmdLineArgs

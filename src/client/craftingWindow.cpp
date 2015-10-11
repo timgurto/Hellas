@@ -2,12 +2,12 @@
 
 #include <cassert>
 
-#include "Button.h"
-#include "CheckBox.h"
 #include "Client.h"
-#include "Label.h"
-#include "Line.h"
 #include "Renderer.h"
+#include "ui/Button.h"
+#include "ui/CheckBox.h"
+#include "ui/Label.h"
+#include "ui/Line.h"
 
 extern Renderer renderer;
 

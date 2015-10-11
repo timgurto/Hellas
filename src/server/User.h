@@ -9,8 +9,8 @@
 
 #include "Item.h"
 #include "Object.h"
-#include "Point.h"
-#include "Socket.h"
+#include "../Point.h"
+#include "../Socket.h"
 
 class Server;
 

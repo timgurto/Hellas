@@ -8,13 +8,13 @@
 #include <string>
 #include <utility>
 
-#include "Args.h"
 #include "Item.h"
-#include "Log.h"
 #include "Object.h"
-#include "Socket.h"
 #include "User.h"
-#include "messageCodes.h"
+#include "../Args.h"
+#include "../messageCodes.h"
+#include "../Socket.h"
+#include "../client/Log.h"
 
 class Server{
 public:

@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 
-#include "Color.h"
+#include "../Color.h"
 #include "EntityType.h"
 
 EntityType::EntityType(const SDL_Rect &drawRect, const std::string &imageFile):

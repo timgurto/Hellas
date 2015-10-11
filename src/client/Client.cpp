@@ -15,12 +15,12 @@
 #include "EntityType.h"
 #include "Log.h"
 #include "Renderer.h"
-#include "Server.h"
 #include "TooltipBuilder.h"
-#include "User.h"
-#include "XmlReader.h"
-#include "messageCodes.h"
-#include "util.h"
+#include "../XmlReader.h"
+#include "../messageCodes.h"
+#include "../util.h"
+#include "../server/Server.h"
+#include "../server/User.h"
 
 extern Args cmdLineArgs;
 extern Renderer renderer;
