@@ -60,7 +60,7 @@ public:
     void draw(int x = 0, int y = 0) const;
 
     void setFont(const std::string &fontName = "trebuc.ttf", int fontSize = 16);
-    void Log::setLineHeight(int height = 16);
+    void setLineHeight(int height = 16);
 
     int _lineHeight;
     static const int DEFAULT_LINE_HEIGHT;
