@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F587C0B6-1063-43A4-BB6F-F512036EF518}</ProjectGuid>
+    <RootNamespace>mmo</RootNamespace>
+    <ProjectName>mmo-server</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <IncludePath>$(SolutionDir)tinyxml;$(SolutionDir)SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\include;$(SolutionDir)SDL2\SDL2_image-2.0.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)SDL2\SDL2-2.0.3\lib\x86;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)SDL2\SDL2_image-2.0.0\lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <IncludePath>$(SolutionDir)tinyxml;$(SolutionDir)SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\include;$(SolutionDir)SDL2\SDL2_image-2.0.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)SDL2\SDL2-2.0.3\lib\x86;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)SDL2\SDL2_image-2.0.0\lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>/verbose:lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Args.cpp" />
+    <ClCompile Include="src\client\Avatar.cpp" />
+    <ClCompile Include="src\client\Client.cpp" />
+    <ClCompile Include="src\client\ClientObject.cpp" />
+    <ClCompile Include="src\client\ClientObjectType.cpp" />
+    <ClCompile Include="src\client\craftingWindow.cpp" />
+    <ClCompile Include="src\client\Entity.cpp" />
+    <ClCompile Include="src\client\EntityType.cpp" />
+    <ClCompile Include="src\client\inventoryWindow.cpp" />
+    <ClCompile Include="src\client\Log.cpp" />
+    <ClCompile Include="src\client\Renderer.cpp" />
+    <ClCompile Include="src\client\Texture.cpp" />
+    <ClCompile Include="src\client\TooltipBuilder.cpp" />
+    <ClCompile Include="src\client\ui\Button.cpp" />
+    <ClCompile Include="src\client\ui\CheckBox.cpp" />
+    <ClCompile Include="src\client\ui\ChoiceList.cpp" />
+    <ClCompile Include="src\client\ui\ColorBlock.cpp" />
+    <ClCompile Include="src\client\ui\Container.cpp" />
+    <ClCompile Include="src\client\ui\Element.cpp" />
+    <ClCompile Include="src\client\ui\Label.cpp" />
+    <ClCompile Include="src\client\ui\Line.cpp" />
+    <ClCompile Include="src\client\ui\List.cpp" />
+    <ClCompile Include="src\client\ui\Picture.cpp" />
+    <ClCompile Include="src\client\ui\ShadowBox.cpp" />
+    <ClCompile Include="src\client\ui\Window.cpp" />
+    <ClCompile Include="src\Color.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Point.cpp" />
+    <ClCompile Include="src\server\Item.cpp" />
+    <ClCompile Include="src\server\Object.cpp" />
+    <ClCompile Include="src\server\ObjectType.cpp" />
+    <ClCompile Include="src\server\Server.cpp" />
+    <ClCompile Include="src\server\User.cpp" />
+    <ClCompile Include="src\server\Yield.cpp" />
+    <ClCompile Include="src\Socket.cpp" />
+    <ClCompile Include="src\util.cpp" />
+    <ClCompile Include="src\XmlReader.cpp" />
+    <ClCompile Include="src\XmlWriter.cpp" />
+    <ClCompile Include="tinyxml\tinystr.cpp" />
+    <ClCompile Include="tinyxml\tinyxml.cpp" />
+    <ClCompile Include="tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Args.h" />
+    <ClInclude Include="src\client\Avatar.h" />
+    <ClInclude Include="src\client\Client.h" />
+    <ClInclude Include="src\client\ClientObject.h" />
+    <ClInclude Include="src\client\ClientObjectType.h" />
+    <ClInclude Include="src\client\Entity.h" />
+    <ClInclude Include="src\client\EntityType.h" />
+    <ClInclude Include="src\client\Log.h" />
+    <ClInclude Include="src\client\Renderer.h" />
+    <ClInclude Include="src\client\Texture.h" />
+    <ClInclude Include="src\client\TooltipBuilder.h" />
+    <ClInclude Include="src\client\ui\Button.h" />
+    <ClInclude Include="src\client\ui\CheckBox.h" />
+    <ClInclude Include="src\client\ui\ChoiceList.h" />
+    <ClInclude Include="src\client\ui\ColorBlock.h" />
+    <ClInclude Include="src\client\ui\Container.h" />
+    <ClInclude Include="src\client\ui\Element.h" />
+    <ClInclude Include="src\client\ui\Label.h" />
+    <ClInclude Include="src\client\ui\Line.h" />
+    <ClInclude Include="src\client\ui\List.h" />
+    <ClInclude Include="src\client\ui\Picture.h" />
+    <ClInclude Include="src\client\ui\ShadowBox.h" />
+    <ClInclude Include="src\client\ui\Window.h" />
+    <ClInclude Include="src\Color.h" />
+    <ClInclude Include="src\messageCodes.h" />
+    <ClInclude Include="src\Point.h" />
+    <ClInclude Include="src\server\Item.h" />
+    <ClInclude Include="src\server\Object.h" />
+    <ClInclude Include="src\server\ObjectType.h" />
+    <ClInclude Include="src\server\Server.h" />
+    <ClInclude Include="src\server\User.h" />
+    <ClInclude Include="src\server\Yield.h" />
+    <ClInclude Include="src\Socket.h" />
+    <ClInclude Include="src\util.h" />
+    <ClInclude Include="src\XmlReader.h" />
+    <ClInclude Include="src\XmlWriter.h" />
+    <ClInclude Include="tinyxml\tinyxml.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

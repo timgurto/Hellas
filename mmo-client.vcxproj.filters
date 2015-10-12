@@ -15,241 +15,243 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Args.cpp">
+    <ClCompile Include="src\Args.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Client.cpp">
+    <ClCompile Include="src\client\Avatar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Color.cpp">
+    <ClCompile Include="src\client\Client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
+    <ClCompile Include="src\client\ClientObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EntityType.cpp">
+    <ClCompile Include="src\client\ClientObjectType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
+    <ClCompile Include="src\client\craftingWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Log.cpp">
+    <ClCompile Include="src\client\Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\client\EntityType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Point.cpp">
+    <ClCompile Include="src\client\inventoryWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
+    <ClCompile Include="src\client\Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Server.cpp">
+    <ClCompile Include="src\client\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Socket.cpp">
+    <ClCompile Include="src\client\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
+    <ClCompile Include="src\client\TooltipBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TooltipBuilder.cpp">
+    <ClCompile Include="src\client\ui\Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="User.cpp">
+    <ClCompile Include="src\client\ui\CheckBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="util.cpp">
+    <ClCompile Include="src\client\ui\ChoiceList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
+    <ClCompile Include="src\client\ui\ColorBlock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CheckBox.cpp">
+    <ClCompile Include="src\client\ui\Container.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChoiceList.cpp">
+    <ClCompile Include="src\client\ui\Element.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Element.cpp">
+    <ClCompile Include="src\client\ui\Label.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Label.cpp">
+    <ClCompile Include="src\client\ui\Line.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Line.cpp">
+    <ClCompile Include="src\client\ui\List.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="List.cpp">
+    <ClCompile Include="src\client\ui\Picture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Picture.cpp">
+    <ClCompile Include="src\client\ui\ShadowBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ShadowBox.cpp">
+    <ClCompile Include="src\client\ui\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
+    <ClCompile Include="src\Color.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="craftingWindow.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Avatar.cpp">
+    <ClCompile Include="src\Point.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
+    <ClCompile Include="src\server\Item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectType.cpp">
+    <ClCompile Include="src\server\Object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ClientObject.cpp">
+    <ClCompile Include="src\server\ObjectType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ClientObjectType.cpp">
+    <ClCompile Include="src\server\Server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\tinyxml\tinystr.cpp">
+    <ClCompile Include="src\server\User.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\tinyxml\tinyxml.cpp">
+    <ClCompile Include="src\server\Yield.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\tinyxml\tinyxmlerror.cpp">
+    <ClCompile Include="src\Socket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\tinyxml\tinyxmlparser.cpp">
+    <ClCompile Include="src\util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="XmlReader.cpp">
+    <ClCompile Include="src\XmlReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="XmlWriter.cpp">
+    <ClCompile Include="src\XmlWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="inventoryWindow.cpp">
+    <ClCompile Include="tinyxml\tinystr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Container.cpp">
+    <ClCompile Include="tinyxml\tinyxml.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ColorBlock.cpp">
+    <ClCompile Include="tinyxml\tinyxmlerror.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Yield.cpp">
+    <ClCompile Include="tinyxml\tinyxmlparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Args.h">
+    <ClInclude Include="src\Args.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Client.h">
+    <ClInclude Include="src\client\Avatar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Color.h">
+    <ClInclude Include="src\client\Client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
+    <ClInclude Include="src\client\ClientObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EntityType.h">
+    <ClInclude Include="src\client\ClientObjectType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
+    <ClInclude Include="src\client\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Log.h">
+    <ClInclude Include="src\client\EntityType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="messageCodes.h">
+    <ClInclude Include="src\client\Log.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Point.h">
+    <ClInclude Include="src\client\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h">
+    <ClInclude Include="src\client\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Server.h">
+    <ClInclude Include="src\client\TooltipBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Socket.h">
+    <ClInclude Include="src\client\ui\Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
+    <ClInclude Include="src\client\ui\CheckBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TooltipBuilder.h">
+    <ClInclude Include="src\client\ui\ChoiceList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="User.h">
+    <ClInclude Include="src\client\ui\ColorBlock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="util.h">
+    <ClInclude Include="src\client\ui\Container.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CheckBox.h">
+    <ClInclude Include="src\client\ui\Element.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChoiceList.h">
+    <ClInclude Include="src\client\ui\Label.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Element.h">
+    <ClInclude Include="src\client\ui\Line.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Label.h">
+    <ClInclude Include="src\client\ui\List.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Line.h">
+    <ClInclude Include="src\client\ui\Picture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="List.h">
+    <ClInclude Include="src\client\ui\ShadowBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Picture.h">
+    <ClInclude Include="src\client\ui\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ShadowBox.h">
+    <ClInclude Include="src\Color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Window.h">
+    <ClInclude Include="src\messageCodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Avatar.h">
+    <ClInclude Include="src\Point.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
+    <ClInclude Include="src\server\Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectType.h">
+    <ClInclude Include="src\server\Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ClientObject.h">
+    <ClInclude Include="src\server\ObjectType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ClientObjectType.h">
+    <ClInclude Include="src\server\Server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="..\tinyxml\tinyxml.h">
+    <ClInclude Include="src\server\User.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="XmlReader.h">
+    <ClInclude Include="src\server\Yield.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="XmlWriter.h">
+    <ClInclude Include="src\Socket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Container.h">
+    <ClInclude Include="src\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ColorBlock.h">
+    <ClInclude Include="src\XmlReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Yield.h">
+    <ClInclude Include="src\XmlWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml\tinyxml.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
