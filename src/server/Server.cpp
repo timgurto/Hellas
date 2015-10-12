@@ -20,7 +20,6 @@
 #include "../XmlWriter.h"
 #include "../messageCodes.h"
 #include "../util.h"
-#include "../client/Client.h" //TODO remove; only here for random initial placement
 
 extern Args cmdLineArgs;
 

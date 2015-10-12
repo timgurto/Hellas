@@ -3,13 +3,14 @@
 #ifndef CLIENT_OBJECT_TYPE_H
 #define CLIENT_OBJECT_TYPE_H
 
-#include <SDL_mixer.h>
 #include <string>
 
 #include "EntityType.h"
 #include "Texture.h"
 #include "../Point.h"
 #include "../util.h"
+
+class Mix_Chunk;
 
 // Describes a class of Entities, the "instances" of which share common properties
 class ClientObjectType : public EntityType{

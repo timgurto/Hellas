@@ -9,7 +9,6 @@
 #include "../Socket.h"
 #include "../messageCodes.h"
 #include "../util.h"
-#include "../client/Client.h"
 
 const size_t User::INVENTORY_SIZE = 10;
 

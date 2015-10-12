@@ -3,6 +3,7 @@
 #ifndef CLIENT_OBJECT_H
 #define CLIENT_OBJECT_H
 
+#include <SDL_mixer.h>
 #include <sstream>
 #include <string>
 

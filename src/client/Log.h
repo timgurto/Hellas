@@ -62,7 +62,6 @@ public:
     void setFont(const std::string &fontName = "trebuc.ttf", int fontSize = 16);
     void setLineHeight(int height = 16);
 
-    int _lineHeight;
     static const int DEFAULT_LINE_HEIGHT;
 
 private:
@@ -74,6 +73,7 @@ private:
     Color _color;
     Color _compilationColor; // for use while compiling a message
     std::ofstream _logFile;
+    int _lineHeight;
 };
 
 #endif
