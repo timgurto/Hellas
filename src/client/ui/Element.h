@@ -47,8 +47,10 @@ private:
 
     std::string _id; // Optional ID for finding children.
 
+    static bool initialized;
+
 protected:
-    static const Color
+    static Color
         BACKGROUND_COLOR,
         SHADOW_LIGHT,
         SHADOW_DARK,

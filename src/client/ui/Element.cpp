@@ -6,10 +6,13 @@
 
 extern Renderer renderer;
 
-const Color Element::BACKGROUND_COLOR = Color::GREY_4;
-const Color Element::SHADOW_LIGHT = Color::GREY_2;
-const Color Element::SHADOW_DARK = Color::GREY_8;
-const Color Element::FONT_COLOR = Color::WHITE;
+bool Element::initialized = false;
+
+Color Element::BACKGROUND_COLOR;
+Color Element::SHADOW_LIGHT;
+Color Element::SHADOW_DARK;
+Color Element::FONT_COLOR;
+
 TTF_Font *Element::_font = 0;
 
 Texture Element::transparentBackground;
@@ -29,6 +32,14 @@ _mouseMove(0), _mouseMoveElement(0),
 _scrollUp(0), _scrollUpElement(0),
 _scrollDown(0), _scrollDownElement(0),
 _preRefresh(0), _preRefreshElement(0){
+    if (!initialized) {
+        BACKGROUND_COLOR = Color::GREY_4;
+        SHADOW_LIGHT = Color::GREY_2;
+        SHADOW_DARK = Color::GREY_8;
+        FONT_COLOR = Color::WHITE;
+        initialized = true;
+    }
+
     _texture.setBlend(SDL_BLENDMODE_BLEND);
 }
 
@@ -283,7 +294,7 @@ void Element::draw(){
         markChanged();
         _dimensionsChanged = false;
     }
-    if (!_texture)
+    if (true || !_texture)
         markChanged();
     if (_changed) {
         if (_preRefresh)
