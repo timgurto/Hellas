@@ -70,13 +70,25 @@ To clone this repository: `git clone --recursive https://github.com/timgurto/mmo
 <a id='arguments'></a>
 ### Command-line arguments
 
-`-debug` (client only) displays additional information in the client, to assist with debugging
+#### Server arguments
 
 `-height `*`value`* the height of the window
 
 `-left `*`value`* the x co-ordinate of the window
 
-`-new` (server only) generate a new world instead of attempting to load existing data
+`-new` generate a new world instead of attempting to load existing data
+
+`-top `*`value`* the y co-ordinate of the window
+
+`-width `*`value`* the width of the window
+
+#### Client arguments
+
+`-debug` (client only) displays additional information in the client, to assist with debugging
+
+`-height `*`value`* the height of the window
+
+`-left `*`value`* the x co-ordinate of the window
 
 `-server` run the program as a server (default is as client)
 

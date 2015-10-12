@@ -114,9 +114,9 @@
     <ClCompile Include="src\client\ui\ShadowBox.cpp" />
     <ClCompile Include="src\client\ui\Window.cpp" />
     <ClCompile Include="src\Color.cpp" />
-    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Point.cpp" />
     <ClCompile Include="src\server\Item.cpp" />
+    <ClCompile Include="src\server\main.cpp" />
     <ClCompile Include="src\server\Object.cpp" />
     <ClCompile Include="src\server\ObjectType.cpp" />
     <ClCompile Include="src\server\Server.cpp" />
