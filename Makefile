@@ -1,6 +1,7 @@
-SOURCES_SERVER := $(wildcard src/*.cpp) $(wildcard src/server/*.cpp) $(wildcard tinyxml/*.cpp)
-SOURCES_CLIENT := $(wildcard src/*.cpp) $(wildcard src/client/*.cpp) $(wildcard tinyxml/*.cpp)
-OBJECTS_SERVER := $(SOURCES_CLIENT:.cpp=.o)
+SOURCES_COMMON := $(wildcard src/*.cpp) $(wildcard tinyxml/*.cpp)
+SOURCES_SERVER := $(SOURCES_COMMON) $(wildcard src/server/*.cpp) src/client/Log.cpp src/client/Renderer.cpp src/client/Texture.cpp
+SOURCES_CLIENT := $(SOURCES_COMMON) $(wildcard src/client/*.cpp) $(wildcard src/client/ui/*.cpp) src/server/User.cpp src/server/Item.cpp src/server/Server.cpp src/server/Object.cpp src/server/ObjectType.cpp src/server/Yield.cpp
+OBJECTS_SERVER := $(SOURCES_SERVER:.cpp=.o)
 OBJECTS_CLIENT := $(SOURCES_CLIENT:.cpp=.o)
 
 CC := g++
@@ -28,15 +29,15 @@ all : server client
 
 server : $(OBJECTS_SERVER)
 	@echo Linking server
-	@$(CC) $(LIBRARY_PATHS) $(OBJECTS_SERVER) $(LD_FLAGS) -o $(PROGRAM_NAME_SERVER)
+	@$(CC) $(LIBRARY_PATHS) $(OBJECTS_SERVER) $(LDFLAGS) -o $(PROGRAM_NAME_SERVER)
 
 client : $(OBJECTS_CLIENT)
 	@echo Linking client
-	@$(CC) $(LIBRARY_PATHS) $(OBJECTS_CLIENT) $(LD_FLAGS) -o $(PROGRAM_NAME_CLIENT)
+	@$(CC) $(LIBRARY_PATHS) $(OBJECTS_CLIENT) $(LDFLAGS) -o $(PROGRAM_NAME_CLIENT)
 
 clean:
 	rm -f $(PROGRAM_NAME_SERVER) $(PROGRAM_NAME_CLIENT)
-	rm -f mmo/*.o
+	rm -f src/*.o src/server/*.o src/client/*.o src/client/ui/*.o
 
 %.o: %.cpp
 	@echo Compiling $<
