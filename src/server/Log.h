@@ -4,8 +4,10 @@
 #define LOG_H
 
 #include <fstream>
-#include <sstream>
+#include <iostream>
 #include <string>
+
+#include "../Color.h"
 
 /*
 A message log which accepts, queues and displays messages to the screen
@@ -30,14 +32,18 @@ log << endl;
 
 class Log{
 public:
-    Log();
+    Log(const std::string &logFileName);
+    ~Log();
+
     void operator()(const std::string &message, const Color &color = defaultColor);
 
     enum LogEndType{endl};
 
     template<typename T>
     Log &operator<<(const T &val) {
-        _oss << val;
+        std::cout << val;
+        if (_logFile.is_open())
+            _logFile << val;
         return *this;
     }
     // endl: end message and begin a new one
@@ -46,9 +52,8 @@ public:
     Log &operator<<(const Color &c);
 
 private:
-    std::ostringstream _oss;
-    Color _color;
-    Color _compilationColor; // for use while compiling a message
+    std::ofstream _logFile;
+    static const Color defaultColor;
 };
 
 #endif

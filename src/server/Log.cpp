@@ -3,22 +3,22 @@
 #include "Log.h"
 #include "Server.h"
 
-Color Log::defaultColor = Color::NO_KEY;
+const Color Log::defaultColor = Color::NO_KEY;
+
+Log::Log(const std::string &logFileName){
+    if (!logFileName.empty())
+        _logFile.open(logFileName);
+}
+
+Log::~Log(){
+    if (_logFile.is_open())
+        _logFile.close();
+}
 
 void Log::operator()(const std::string &message, const Color &color){
     std::cout << message << std::endl;
     if (_logFile.is_open())
         _logFile << message << std::endl;
-
-    const Color &msgColor = (&color == &defaultColor) ? _color : color;
-    const Texture msgTexture(_font, message, msgColor);
-    if (!msgTexture)
-        return;
-
-    _messages.push_back(msgTexture);
-    if (_messages.size() > _maxMessages){
-        _messages.pop_front();
-    }
 }
 
 Log &Log::operator<<(const Color &c) {
@@ -27,6 +27,8 @@ Log &Log::operator<<(const Color &c) {
 
 Log &Log::operator<<(const LogEndType &val) {
     std::cout << val;
+    if (_logFile.is_open())
+        _logFile << std::endl;
     return *this;
 }
     
