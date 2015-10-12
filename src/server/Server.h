@@ -14,7 +14,7 @@
 #include "../Args.h"
 #include "../messageCodes.h"
 #include "../Socket.h"
-#include "../client/Log.h"
+#include "Log.h"
 
 class Server{
 public:
@@ -86,8 +86,6 @@ private:
     std::set<ObjectType> _objectTypes;
 
     mutable Log _debug;
-
-    void draw() const;
 
     void gatherObject (size_t serial, User &user);
     friend void User::update(Uint32 timeElapsed, Server &server);

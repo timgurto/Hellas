@@ -1,9 +1,9 @@
 // (C) 2015 Tim Gurto
 
-#include <SDL.h>
 #include <cassert>
-#include <sstream>
 #include <fstream>
+#include <iostream>
+#include <sstream>
 #include <utility>
 
 #ifndef SINGLE_THREAD
@@ -21,10 +21,8 @@
 #include "../messageCodes.h"
 #include "../util.h"
 #include "../client/Client.h" //TODO remove; only here for random initial placement
-#include "../client/Renderer.h"
 
 extern Args cmdLineArgs;
-extern Renderer renderer;
 
 const int Server::MAX_CLIENTS = 20;
 const size_t Server::BUFFER_SIZE = 1023;
@@ -49,7 +47,6 @@ _socket(),
 _loop(true),
 _mapX(0),
 _mapY(0),
-_debug(100, "server.log"),
 _lastSave(_time){
     isServer = true;
 
@@ -202,27 +199,6 @@ void Server::run(){
             _messages.pop();
         }
 
-        // Handle user events
-        static SDL_Event e;
-        while (SDL_PollEvent(&e) != 0) {
-            switch(e.type) {
-            case SDL_KEYDOWN:
-                if (e.key.keysym.sym == SDLK_ESCAPE){
-                    _loop = false;
-                }
-                break;
-            case SDL_QUIT:
-                _loop = false;
-                break;
-
-            default:
-                // Unhandled event
-                ;
-            }
-        }
-
-        draw();
-
         checkSockets();
 
         SDL_Delay(10);
@@ -232,12 +208,6 @@ void Server::run(){
     for(const User &user : _users){
         writeUserData(user);
     }
-}
-
-void Server::draw() const{
-    renderer.clear();
-    _debug.draw();
-    renderer.present();
 }
 
 void Server::addUser(const Socket &socket, const std::string &name){
