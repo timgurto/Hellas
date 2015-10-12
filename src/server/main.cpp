@@ -8,8 +8,10 @@
 
 #include "Server.h"
 #include "../Args.h"
+#include "../client/Renderer.h"
 
 Args cmdLineArgs;
+Renderer renderer;
 
 int main(int argc, char* argv[]){
     cmdLineArgs.init(argc, argv);

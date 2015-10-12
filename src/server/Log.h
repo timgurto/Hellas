@@ -32,7 +32,7 @@ log << endl;
 
 class Log{
 public:
-    Log(const std::string &logFileName);
+    Log(const std::string &logFileName = "");
     ~Log();
 
     void operator()(const std::string &message, const Color &color = defaultColor);

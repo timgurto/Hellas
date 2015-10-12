@@ -9,12 +9,12 @@
 #include <utility>
 
 #include "Item.h"
+#include "Log.h"
 #include "Object.h"
 #include "User.h"
 #include "../Args.h"
 #include "../messageCodes.h"
 #include "../Socket.h"
-#include "Log.h"
 
 class Server{
 public:

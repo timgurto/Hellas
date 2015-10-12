@@ -47,6 +47,7 @@ _socket(),
 _loop(true),
 _mapX(0),
 _mapY(0),
+_debug("server.log"),
 _lastSave(_time){
     isServer = true;
 
