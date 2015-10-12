@@ -3,7 +3,6 @@
 #include "Avatar.h"
 #include "Client.h"
 #include "../util.h"
-#include "../server/Server.h"
 
 EntityType Avatar::_entityType(makeRect(-9, -39));
 
@@ -15,7 +14,7 @@ Point Avatar::interpolatedLocation(double delta){
     if (_destination == location())
         return _destination;;
 
-    const double maxLegalDistance = delta * Server::MOVEMENT_SPEED;
+    const double maxLegalDistance = delta * Client::MOVEMENT_SPEED;
     return interpolate(location(), _destination, maxLegalDistance);
 }
 

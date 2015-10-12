@@ -39,6 +39,11 @@ public:
     static const int PLAYER_ACTION_CHANNEL;
 
     static const int ICON_SIZE;
+    static const int TILE_W, TILE_H;
+    static const double MOVEMENT_SPEED;
+
+    static const size_t INVENTORY_SIZE;
+    static const int ACTION_DISTANCE;
 
 private:
     static const Uint32 MAX_TICK_LENGTH;

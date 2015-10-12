@@ -2,6 +2,7 @@
 
 #include "ColorBlock.h"
 #include "Container.h"
+#include "../Client.h"
 #include "../Renderer.h"
 #include "../../server/User.h"
 
@@ -16,7 +17,7 @@ Element(makeRect(x, y,
 _rows(rows),
 _cols(cols),
 _linked(linked){
-    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
+    for (size_t i = 0; i != Client::INVENTORY_SIZE; ++i) {
         const int
             x = i % cols,
             y = i / cols;
@@ -34,7 +35,7 @@ void Container::refresh(){
 
     drawChildren();
 
-    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
+    for (size_t i = 0; i != Client::INVENTORY_SIZE; ++i) {
         const int
             x = i % _cols,
             y = i / _cols;

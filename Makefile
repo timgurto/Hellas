@@ -1,6 +1,6 @@
 SOURCES_COMMON := $(wildcard src/*.cpp) $(wildcard tinyxml/*.cpp)
-SOURCES_SERVER := $(wildcard src/server/*.cpp) src/client/Texture.cpp
-SOURCES_CLIENT := $(wildcard src/client/*.cpp) $(wildcard src/client/ui/*.cpp) src/server/User.cpp src/server/Item.cpp src/server/Server.cpp src/server/Object.cpp src/server/ObjectType.cpp src/server/Yield.cpp
+SOURCES_SERVER := $(wildcard src/server/*.cpp) src/client/Texture.cpp src/client/Renderer.cpp
+SOURCES_CLIENT := $(wildcard src/client/*.cpp) $(wildcard src/client/ui/*.cpp) src/server/Item.cpp src/server/Object.cpp src/server/ObjectType.cpp src/server/Yield.cpp
 
 OBJECTS_COMMON := $(SOURCES_COMMON:.cpp=.o)
 OBJECTS_SERVER := $(SOURCES_SERVER:.cpp=.o)
@@ -16,10 +16,10 @@ INCLUDE_PATHS_SERVER = $(INCLUDE_PATHS_COMMON)
 INCLUDE_PATHS_CLIENT = $(INCLUDE_PATHS_COMMON) \
 	-ISDL2\SDL2_mixer-2.0.0\include
 
-LIBRARY_PATHS_COMMON = -LSDL2\SDL2-2.0.3\lib\x86
-LIBRARY_PATHS_SERVER = $(LIBRARY_PATHS_COMMON) \
+LIBRARY_PATHS_COMMON = -LSDL2\SDL2-2.0.3\lib\x86 \
 	-LSDL2\SDL2_image-2.0.0\lib\x86 \
 	-LSDL2\SDL2_ttf-2.0.12\lib\x86
+LIBRARY_PATHS_SERVER = $(LIBRARY_PATHS_COMMON)
 LIBRARY_PATHS_CLIENT = $(LIBRARY_PATHS_COMMON) \
 	-LSDL2\SDL2_mixer-2.0.0\lib\x86
 

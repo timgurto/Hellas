@@ -19,7 +19,6 @@
 #include "../XmlReader.h"
 #include "../messageCodes.h"
 #include "../util.h"
-#include "../server/Server.h"
 #include "../server/User.h"
 
 extern Args cmdLineArgs;
@@ -47,6 +46,14 @@ const int Client::ITEM_HEIGHT = ICON_SIZE;
 const int Client::TEXT_HEIGHT = 11;
 const int Client::HEADING_HEIGHT = 14;
 const int Client::LINE_GAP = 6;
+
+const int Client::TILE_W = 32;
+const int Client::TILE_H = 32;
+const double Client::MOVEMENT_SPEED = 80;
+
+const int Client::ACTION_DISTANCE = 20;
+
+const size_t Client::INVENTORY_SIZE = 10;
 
 const size_t Client::MAX_TEXT_ENTERED = 100;
 
@@ -131,7 +138,7 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
         }
 
     // Player's inventory
-    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i)
+    for (size_t i = 0; i != INVENTORY_SIZE; ++i)
         _inventory.push_back(std::make_pair<const Item *, size_t>(0, 0));
 
     _invLabel = Texture(_defaultFont, "Inventory");
@@ -486,9 +493,9 @@ void Client::run(){
                 right = keyboardState[SDL_SCANCODE_RIGHT] == SDL_PRESSED ||
                         keyboardState[SDL_SCANCODE_D] == SDL_PRESSED;
             if (up != down || left != right) {
-                static const double DIAG_SPEED = Server::MOVEMENT_SPEED / SQRT_2;
+                static const double DIAG_SPEED = MOVEMENT_SPEED / SQRT_2;
                 const double
-                    dist = delta * Server::MOVEMENT_SPEED,
+                    dist = delta * MOVEMENT_SPEED,
                     diagDist = delta * DIAG_SPEED;
                 Point newLoc = _pendingCharLoc;
                 if (up != down) {
@@ -503,8 +510,8 @@ void Client::run(){
                     newLoc.x += (up != down) ? diagDist : dist;
 
                 const int
-                    xLimit = _mapX * Server::TILE_W - Server::TILE_W/2,
-                    yLimit = _mapY * Server::TILE_H;
+                    xLimit = _mapX * TILE_W - TILE_W/2,
+                    yLimit = _mapY * TILE_H;
                 if (newLoc.x < 0)
                     newLoc.x = 0;
                 else if (newLoc.x > xLimit)
@@ -599,11 +606,11 @@ void Client::draw() const{
 
     // Map
     for (size_t y = 0; y != _mapY; ++y) {
-        const int yLoc = y * Server::TILE_H + toInt(offset().y);
+        const int yLoc = y * TILE_H + toInt(offset().y);
         for (size_t x = 0; x != _mapX; ++x){
-            int xLoc = x * Server::TILE_W + toInt(offset().x);
+            int xLoc = x * TILE_W + toInt(offset().x);
             if (y % 2 == 1)
-                xLoc -= Server::TILE_W/2;
+                xLoc -= TILE_W/2;
             drawTile(x, y, xLoc, yLoc);
         }
     }
@@ -816,13 +823,13 @@ void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
     }
 
     static const SDL_Rect
-        TOP_LEFT     = {0,                0,                Server::TILE_W/2, Server::TILE_H/2},
-        TOP_RIGHT    = {Server::TILE_W/2, 0,                Server::TILE_W/2, Server::TILE_H/2},
-        BOTTOM_LEFT  = {0,                Server::TILE_H/2, Server::TILE_W/2, Server::TILE_H/2},
-        BOTTOM_RIGHT = {Server::TILE_W/2, Server::TILE_H/2, Server::TILE_W/2, Server::TILE_H/2},
-        LEFT_HALF    = {0,                0,                Server::TILE_W/2, Server::TILE_H},
-        RIGHT_HALF   = {Server::TILE_W/2, 0,                Server::TILE_W/2, Server::TILE_H},
-        FULL         = {0,                0,                Server::TILE_W,   Server::TILE_H};
+        TOP_LEFT     = {0,                0,                TILE_W/2, TILE_H/2},
+        TOP_RIGHT    = {TILE_W/2, 0,                TILE_W/2, TILE_H/2},
+        BOTTOM_LEFT  = {0,                TILE_H/2, TILE_W/2, TILE_H/2},
+        BOTTOM_RIGHT = {TILE_W/2, TILE_H/2, TILE_W/2, TILE_H/2},
+        LEFT_HALF    = {0,                0,                TILE_W/2, TILE_H},
+        RIGHT_HALF   = {TILE_W/2, 0,                TILE_W/2, TILE_H},
+        FULL         = {0,                0,                TILE_W,   TILE_H};
 
     // Black background
     // Assuming all tile images are set to SDL_BLENDMODE_ADD and 0x3f alpha
@@ -881,7 +888,7 @@ void Client::startCrafting(void *data){
 }
 
 bool Client::playerHasItem(const Item *item, size_t quantity) const{
-    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
+    for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
         const std::pair<const Item *, size_t> slot = _inventory[i];
         if (slot.first == item) {
             if (slot.second >= quantity)

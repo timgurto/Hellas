@@ -3,7 +3,6 @@
 #include "ClientObject.h"
 #include "Client.h"
 #include "../Color.h"
-#include "../server/Server.h"
 #include "../util.h"
 
 ClientObject::ClientObject(const ClientObject &rhs):
@@ -29,7 +28,7 @@ std::vector<std::string> ClientObject::getTooltipMessages(const Client &client) 
     text.push_back(objectType()->name());
     if (!_owner.empty())
         text.push_back(std::string("Owned by ") + _owner);
-    if (distance(location(), client.character().location()) > Server::ACTION_DISTANCE)
+    if (distance(location(), client.character().location()) > Client::ACTION_DISTANCE)
         text.push_back("Out of range");
     return text;
 }
