@@ -72,15 +72,7 @@ To clone this repository: `git clone --recursive https://github.com/timgurto/mmo
 
 #### Server arguments
 
-`-height `*`value`* the height of the window
-
-`-left `*`value`* the x co-ordinate of the window
-
 `-new` generate a new world instead of attempting to load existing data
-
-`-top `*`value`* the y co-ordinate of the window
-
-`-width `*`value`* the width of the window
 
 #### Client arguments
 
