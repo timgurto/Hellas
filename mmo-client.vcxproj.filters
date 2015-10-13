@@ -42,7 +42,7 @@
     <ClCompile Include="src\client\inventoryWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\client\Log.cpp">
+    <ClCompile Include="src\client\LogSDL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\client\Renderer.cpp">
@@ -158,7 +158,7 @@
     <ClInclude Include="src\client\EntityType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\client\Log.h">
+    <ClInclude Include="src\client\LogSDL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\client\Renderer.h">
@@ -209,7 +209,13 @@
     <ClInclude Include="src\Color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\messageCodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Point.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Point.h">

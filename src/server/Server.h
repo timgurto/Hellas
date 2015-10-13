@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "Item.h"
-#include "Log.h"
+#include "LogConsole.h"
 #include "Object.h"
 #include "User.h"
 #include "../Args.h"
@@ -85,7 +85,7 @@ private:
     std::set<Item> _items;
     std::set<ObjectType> _objectTypes;
 
-    mutable Log _debug;
+    mutable LogConsole _debug;
 
     void gatherObject (size_t serial, User &user);
     friend void User::update(Uint32 timeElapsed, Server &server);

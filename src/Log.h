@@ -3,11 +3,10 @@
 #ifndef LOG_H
 #define LOG_H
 
-#include <fstream>
-#include <iostream>
+#include <sstream>
 #include <string>
 
-#include "../Color.h"
+#include "Color.h"
 
 /*
 A message log which accepts, queues and displays messages to the screen
@@ -32,28 +31,24 @@ log << endl;
 
 class Log{
 public:
-    Log(const std::string &logFileName = "");
-    ~Log();
+    virtual ~Log(){}
 
-    void operator()(const std::string &message, const Color &color = defaultColor);
+    void operator()(const std::string &message, const Color &color = Color::NO_KEY);
 
     enum LogEndType{endl};
 
     template<typename T>
-    Log &operator<<(const T &val) {
-        std::cout << val;
-        if (_logFile.is_open())
-            _logFile << val;
+    Log &operator<<(const T &val){
+        std::ostringstream oss;
+        oss << val;
+        *this << oss.str();
         return *this;
     }
+    virtual Log &operator<<(const std::string &val) = 0;
     // endl: end message and begin a new one
-    Log &operator<<(const LogEndType &val);
+    virtual Log &operator<<(const LogEndType &val) = 0;
     // color: set color of current compilation
-    Log &operator<<(const Color &c);
-
-private:
-    std::ofstream _logFile;
-    static const Color defaultColor;
+    virtual Log &operator<<(const Color &c) = 0;
 };
 
 #endif

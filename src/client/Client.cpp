@@ -13,7 +13,7 @@
 
 #include "Client.h"
 #include "EntityType.h"
-#include "Log.h"
+#include "LogSDL.h"
 #include "Renderer.h"
 #include "TooltipBuilder.h"
 #include "../XmlReader.h"

@@ -3,12 +3,13 @@
 #ifndef SOCKET_H
 #define SOCKET_H
 
+#include <SDL.h>
 #include <iostream>
 #include <map>
 #include <string>
 #include <windows.h>
 
-#include "client\Log.h"
+#include "Log.h"
 
 // Wrapper class for Winsock's SOCKET.
 class Socket {

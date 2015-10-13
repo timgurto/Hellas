@@ -1,18 +1,15 @@
 // (C) 2015 Tim Gurto
 
 #include "Client.h"
-#include "Log.h"
-#include "../server/Server.h"
+#include "LogSDL.h"
 
-Color Log::defaultColor = Color::NO_KEY;
+const int LogSDL::DEFAULT_LINE_HEIGHT = 10;
 
-const int Log::DEFAULT_LINE_HEIGHT = 10;
-
-Log::Log():
+LogSDL::LogSDL():
 _valid(false){}
 
-Log::Log(unsigned displayLines, const std::string &logFileName, const std::string &fontName,
-         int fontSize, const Color &color):
+LogSDL::LogSDL(unsigned displayLines, const std::string &logFileName, const std::string &fontName,
+               int fontSize, const Color &color):
 _maxMessages(displayLines),
 _font(TTF_OpenFont(fontName.c_str(), fontSize)),
 _valid(true),
@@ -27,7 +24,7 @@ _lineHeight(DEFAULT_LINE_HEIGHT){
     }
 }
 
-Log::~Log(){
+LogSDL::~LogSDL(){
     while (!_messages.empty())
         _messages.pop_front();
 
@@ -38,11 +35,11 @@ Log::~Log(){
         _logFile.close();
 }
 
-void Log::operator()(const std::string &message, const Color &color){
+void LogSDL::operator()(const std::string &message, const Color &color){
     if (_logFile.is_open())
         _logFile << message << std::endl;
 
-    const Color &msgColor = (&color == &defaultColor) ? _color : color;
+    const Color &msgColor = (&color == &Color::NO_KEY) ? _color : color;
     const Texture msgTexture(_font, message, msgColor);
     if (!msgTexture)
         return;
@@ -53,7 +50,7 @@ void Log::operator()(const std::string &message, const Color &color){
     }
 }
 
-void Log::draw(int x, int y) const{
+void LogSDL::draw(int x, int y) const{
     if (!_valid)
         return;
     
@@ -63,19 +60,24 @@ void Log::draw(int x, int y) const{
     }
 }
 
-Log &Log::operator<<(const LogEndType &val) {
+LogSDL &LogSDL::operator<<(const std::string &val) {
+    _oss << val;
+    return *this;
+}
+
+LogSDL &LogSDL::operator<<(const LogEndType &val) {
     operator()(_oss.str(), _compilationColor);
     _oss.str("");
     _compilationColor = _color; // reset color for next compilation
     return *this;
 }
     
-Log &Log::operator<<(const Color &c) {
+LogSDL &LogSDL::operator<<(const Color &c) {
     _compilationColor = c;
     return *this;
 }
 
-void Log::setFont(const std::string &fontName, int fontSize){
+void LogSDL::setFont(const std::string &fontName, int fontSize){
     if (_font)
         TTF_CloseFont(_font);
     _font = TTF_OpenFont(fontName.c_str(), fontSize);
@@ -83,6 +85,6 @@ void Log::setFont(const std::string &fontName, int fontSize){
         _valid = (_font != 0);
 }
 
-void Log::setLineHeight(int height){
+void LogSDL::setLineHeight(int height){
     _lineHeight = height;
 }

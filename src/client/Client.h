@@ -13,7 +13,7 @@
 #include "ClientObjectType.h"
 #include "ui/ChoiceList.h"
 #include "Entity.h"
-#include "Log.h"
+#include "LogSDL.h"
 #include "ui/Window.h"
 #include "../Args.h"
 #include "../Point.h"
@@ -164,7 +164,7 @@ private:
 
     std::queue<std::string> _messages;
 
-    mutable Log _debug;
+    mutable LogSDL _debug;
 
     std::string _enteredText; // Text that has been entered by the user
     static const size_t MAX_TEXT_ENTERED;

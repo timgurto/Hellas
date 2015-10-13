@@ -19,6 +19,9 @@
     <ClCompile Include="src\server\Item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\server\LogConsole.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\server\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -61,9 +64,6 @@
     <ClCompile Include="tinyxml\tinyxmlparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\server\Log.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h">
@@ -78,6 +78,9 @@
     <ClInclude Include="src\Color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\messageCodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -85,6 +88,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\server\Item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\server\LogConsole.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\server\Object.h">
@@ -115,9 +121,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tinyxml\tinyxml.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\server\Log.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

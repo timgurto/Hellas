@@ -100,7 +100,7 @@
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\Point.cpp" />
     <ClCompile Include="src\server\Item.cpp" />
-    <ClCompile Include="src\server\Log.cpp" />
+    <ClCompile Include="src\server\LogConsole.cpp" />
     <ClCompile Include="src\server\main.cpp" />
     <ClCompile Include="src\server\Object.cpp" />
     <ClCompile Include="src\server\ObjectType.cpp" />
@@ -121,10 +121,11 @@
     <ClInclude Include="src\client\Renderer.h" />
     <ClInclude Include="src\client\Texture.h" />
     <ClInclude Include="src\Color.h" />
+    <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\messageCodes.h" />
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\server\Item.h" />
-    <ClInclude Include="src\server\Log.h" />
+    <ClInclude Include="src\server\LogConsole.h" />
     <ClInclude Include="src\server\Object.h" />
     <ClInclude Include="src\server\ObjectType.h" />
     <ClInclude Include="src\server\Server.h" />
