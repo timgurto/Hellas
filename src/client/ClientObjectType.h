@@ -10,7 +10,7 @@
 #include "../Point.h"
 #include "../util.h"
 
-class Mix_Chunk;
+struct Mix_Chunk;
 
 // Describes a class of Entities, the "instances" of which share common properties
 class ClientObjectType : public EntityType{
