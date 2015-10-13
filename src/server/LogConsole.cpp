@@ -31,7 +31,7 @@ LogConsole &LogConsole::operator<<(const Color &c) {
 }
 
 LogConsole &LogConsole::operator<<(const LogEndType &val) {
-    std::cout << val;
+    std::cout << std::endl;
     if (_logFile.is_open())
         _logFile << std::endl;
     return *this;
