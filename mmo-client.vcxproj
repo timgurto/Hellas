@@ -41,13 +41,14 @@
     <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <IncludePath>$(SolutionDir)tinyxml;$(SolutionDir)SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\include;$(SolutionDir)SDL2\SDL2_image-2.0.0\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)SDL2\SDL2-2.0.3\lib\x86;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)SDL2\SDL2_image-2.0.0\lib\x86;$(LibraryPath)</LibraryPath>
+    <TargetName>$(ProjectName)-debug</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <IncludePath>$(SolutionDir)tinyxml;$(SolutionDir)SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\include;$(SolutionDir)SDL2\SDL2_image-2.0.0\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)SDL2\SDL2-2.0.3\lib\x86;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)SDL2\SDL2_image-2.0.0\lib\x86;$(LibraryPath)</LibraryPath>
@@ -60,6 +61,8 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <ObjectFileName>$(IntDir)$(ProjectName)\</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)$(ProjectName)\vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
       <AdditionalOptions>/verbose:lib %(AdditionalOptions)</AdditionalOptions>
@@ -67,6 +70,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -77,6 +81,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ObjectFileName>$(IntDir)$(ProjectName)\</ObjectFileName>
     </ClCompile>
     <Link>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -119,8 +124,6 @@
     <ClCompile Include="src\server\Item.cpp" />
     <ClCompile Include="src\server\Object.cpp" />
     <ClCompile Include="src\server\ObjectType.cpp" />
-    <ClCompile Include="src\server\Server.cpp" />
-    <ClCompile Include="src\server\User.cpp" />
     <ClCompile Include="src\server\Yield.cpp" />
     <ClCompile Include="src\Socket.cpp" />
     <ClCompile Include="src\util.cpp" />
@@ -161,8 +164,6 @@
     <ClInclude Include="src\server\Item.h" />
     <ClInclude Include="src\server\Object.h" />
     <ClInclude Include="src\server\ObjectType.h" />
-    <ClInclude Include="src\server\Server.h" />
-    <ClInclude Include="src\server\User.h" />
     <ClInclude Include="src\server\Yield.h" />
     <ClInclude Include="src\Socket.h" />
     <ClInclude Include="src\util.h" />

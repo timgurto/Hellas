@@ -41,13 +41,14 @@
     <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <IncludePath>$(SolutionDir)tinyxml;$(SolutionDir)SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\include;$(SolutionDir)SDL2\SDL2_image-2.0.0\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)SDL2\SDL2-2.0.3\lib\x86;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)SDL2\SDL2_image-2.0.0\lib\x86;$(LibraryPath)</LibraryPath>
+    <TargetName>$(ProjectName)-debug</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <IncludePath>$(SolutionDir)tinyxml;$(SolutionDir)SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\include;$(SolutionDir)SDL2\SDL2_image-2.0.0\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)SDL2\SDL2-2.0.3\lib\x86;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)SDL2\SDL2_image-2.0.0\lib\x86;$(LibraryPath)</LibraryPath>
@@ -60,6 +61,8 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <ObjectFileName>$(IntDir)$(ProjectName)\</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)$(ProjectName)\vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
       <AdditionalOptions>/verbose:lib %(AdditionalOptions)</AdditionalOptions>
@@ -67,6 +70,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -77,6 +81,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ObjectFileName>$(IntDir)$(ProjectName)\</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)$(ProjectName)\vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -89,33 +95,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Args.cpp" />
-    <ClCompile Include="src\client\Avatar.cpp" />
-    <ClCompile Include="src\client\Client.cpp" />
-    <ClCompile Include="src\client\ClientObject.cpp" />
-    <ClCompile Include="src\client\ClientObjectType.cpp" />
-    <ClCompile Include="src\client\craftingWindow.cpp" />
-    <ClCompile Include="src\client\Entity.cpp" />
-    <ClCompile Include="src\client\EntityType.cpp" />
-    <ClCompile Include="src\client\inventoryWindow.cpp" />
-    <ClCompile Include="src\client\Log.cpp" />
     <ClCompile Include="src\client\Renderer.cpp" />
     <ClCompile Include="src\client\Texture.cpp" />
-    <ClCompile Include="src\client\TooltipBuilder.cpp" />
-    <ClCompile Include="src\client\ui\Button.cpp" />
-    <ClCompile Include="src\client\ui\CheckBox.cpp" />
-    <ClCompile Include="src\client\ui\ChoiceList.cpp" />
-    <ClCompile Include="src\client\ui\ColorBlock.cpp" />
-    <ClCompile Include="src\client\ui\Container.cpp" />
-    <ClCompile Include="src\client\ui\Element.cpp" />
-    <ClCompile Include="src\client\ui\Label.cpp" />
-    <ClCompile Include="src\client\ui\Line.cpp" />
-    <ClCompile Include="src\client\ui\List.cpp" />
-    <ClCompile Include="src\client\ui\Picture.cpp" />
-    <ClCompile Include="src\client\ui\ShadowBox.cpp" />
-    <ClCompile Include="src\client\ui\Window.cpp" />
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\Point.cpp" />
     <ClCompile Include="src\server\Item.cpp" />
+    <ClCompile Include="src\server\Log.cpp" />
     <ClCompile Include="src\server\main.cpp" />
     <ClCompile Include="src\server\Object.cpp" />
     <ClCompile Include="src\server\ObjectType.cpp" />
@@ -133,32 +118,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
-    <ClInclude Include="src\client\Avatar.h" />
-    <ClInclude Include="src\client\Client.h" />
-    <ClInclude Include="src\client\ClientObject.h" />
-    <ClInclude Include="src\client\ClientObjectType.h" />
-    <ClInclude Include="src\client\Entity.h" />
-    <ClInclude Include="src\client\EntityType.h" />
-    <ClInclude Include="src\client\Log.h" />
     <ClInclude Include="src\client\Renderer.h" />
     <ClInclude Include="src\client\Texture.h" />
-    <ClInclude Include="src\client\TooltipBuilder.h" />
-    <ClInclude Include="src\client\ui\Button.h" />
-    <ClInclude Include="src\client\ui\CheckBox.h" />
-    <ClInclude Include="src\client\ui\ChoiceList.h" />
-    <ClInclude Include="src\client\ui\ColorBlock.h" />
-    <ClInclude Include="src\client\ui\Container.h" />
-    <ClInclude Include="src\client\ui\Element.h" />
-    <ClInclude Include="src\client\ui\Label.h" />
-    <ClInclude Include="src\client\ui\Line.h" />
-    <ClInclude Include="src\client\ui\List.h" />
-    <ClInclude Include="src\client\ui\Picture.h" />
-    <ClInclude Include="src\client\ui\ShadowBox.h" />
-    <ClInclude Include="src\client\ui\Window.h" />
     <ClInclude Include="src\Color.h" />
     <ClInclude Include="src\messageCodes.h" />
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\server\Item.h" />
+    <ClInclude Include="src\server\Log.h" />
     <ClInclude Include="src\server\Object.h" />
     <ClInclude Include="src\server\ObjectType.h" />
     <ClInclude Include="src\server\Server.h" />
