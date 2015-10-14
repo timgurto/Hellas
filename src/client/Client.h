@@ -13,13 +13,13 @@
 #include "ClientObjectType.h"
 #include "ui/ChoiceList.h"
 #include "Entity.h"
+#include "Item.h"
 #include "LogSDL.h"
 #include "ui/Window.h"
 #include "../Args.h"
 #include "../Point.h"
 #include "../Socket.h"
 #include "../messageCodes.h"
-#include "../server/Item.h"
 
 class Client{
 public:

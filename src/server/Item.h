@@ -3,25 +3,19 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+#include <SDL.h>
 #include <map>
 #include <set>
 #include <string>
 #include <vector>
-
-#include "../client/Texture.h"
 
 class ObjectType;
 
 // Describes an item type
 class Item{
     std::string _id; // The no-space, unique name used in data files
-    std::string _name;
     size_t _stackSize;
     std::set<std::string> _classes;
-
-    //const ObjectType *_structure; // The object that this Item can be transformed into, if any
-
-    Texture _icon;
 
     /*
     The materials necessary to craft this item.
@@ -34,16 +28,13 @@ class Item{
     const ObjectType *_constructsObject;
 
 public:
-    Item(const std::string &id, const std::string &name, size_t stackSize = 1);
-    Item(const std::string &id); // Creates a dummy Item for set lookup
+    Item(const std::string &id);
 
     bool operator<(const Item &rhs) const { return _id < rhs._id; }
 
     const std::string &id() const { return _id; }
-    const std::string &name() const { return _name; }
     size_t stackSize() const { return _stackSize; }
     void stackSize(size_t n) { _stackSize = n; }
-    const Texture &icon() const { return _icon; }
     void icon(const std::string &filename);
     const std::set<std::string> &classes() const { return _classes; }
     const std::map<const Item *, size_t> &materials() const { return _materials; }

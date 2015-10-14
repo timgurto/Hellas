@@ -1,6 +1,7 @@
 // (C) 2015 Tim Gurto
 
 #include "Yield.h"
+#include "../util.h"
 
 std::default_random_engine Yield::generator;
 

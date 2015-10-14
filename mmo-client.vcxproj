@@ -102,6 +102,7 @@
     <ClCompile Include="src\client\Entity.cpp" />
     <ClCompile Include="src\client\EntityType.cpp" />
     <ClCompile Include="src\client\inventoryWindow.cpp" />
+    <ClCompile Include="src\client\Item.cpp" />
     <ClCompile Include="src\client\main.cpp" />
     <ClCompile Include="src\client\LogSDL.cpp" />
     <ClCompile Include="src\client\Renderer.cpp" />
@@ -121,7 +122,6 @@
     <ClCompile Include="src\client\ui\Window.cpp" />
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\Point.cpp" />
-    <ClCompile Include="src\server\Item.cpp" />
     <ClCompile Include="src\server\Object.cpp" />
     <ClCompile Include="src\server\ObjectType.cpp" />
     <ClCompile Include="src\server\Yield.cpp" />
@@ -142,6 +142,7 @@
     <ClInclude Include="src\client\ClientObjectType.h" />
     <ClInclude Include="src\client\Entity.h" />
     <ClInclude Include="src\client\EntityType.h" />
+    <ClInclude Include="src\client\Item.h" />
     <ClInclude Include="src\client\LogSDL.h" />
     <ClInclude Include="src\client\Renderer.h" />
     <ClInclude Include="src\client\Texture.h" />
@@ -162,7 +163,6 @@
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\messageCodes.h" />
     <ClInclude Include="src\Point.h" />
-    <ClInclude Include="src\server\Item.h" />
     <ClInclude Include="src\server\Object.h" />
     <ClInclude Include="src\server\ObjectType.h" />
     <ClInclude Include="src\server\Yield.h" />
