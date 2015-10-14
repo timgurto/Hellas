@@ -599,7 +599,7 @@ void Server::loadData(){
         std::string id, name;
         if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name))
             continue; // ID and name are mandatory.
-        Item item(id, name);
+        Item item(id);
 
         std::string s; int n;
         if (xr.findAttr(elem, "stackSize", n)) item.stackSize(n);

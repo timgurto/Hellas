@@ -1,6 +1,6 @@
 SOURCES_COMMON := $(wildcard src/*.cpp) $(wildcard tinyxml/*.cpp)
 SOURCES_SERVER := $(wildcard src/server/*.cpp) src/client/Texture.cpp src/client/Renderer.cpp
-SOURCES_CLIENT := $(wildcard src/client/*.cpp) $(wildcard src/client/ui/*.cpp) src/server/Item.cpp src/server/Object.cpp src/server/ObjectType.cpp src/server/Yield.cpp
+SOURCES_CLIENT := $(wildcard src/client/*.cpp) $(wildcard src/client/ui/*.cpp) src/server/Object.cpp src/server/ObjectType.cpp src/server/Yield.cpp
 
 OBJECTS_COMMON := $(SOURCES_COMMON:.cpp=.o)
 OBJECTS_SERVER := $(SOURCES_SERVER:.cpp=.o)
