@@ -17,8 +17,10 @@ class TooltipBuilder{
 
     static const int PADDING;
     static TTF_Font *_defaultFont;
-    static const Color DEFAULT_COLOR;
-    static const Color BACKGROUND_COLOR;
+    static Color DEFAULT_COLOR;
+    static Color BACKGROUND_COLOR;
+
+    static bool initialized;
 
 public:
     TooltipBuilder();

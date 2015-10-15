@@ -5,14 +5,21 @@
 
 extern Renderer renderer;
 
+bool TooltipBuilder::initialized = false;
+
 const int TooltipBuilder::PADDING = 4; // Margins, and the height of gaps between lines.
 TTF_Font *TooltipBuilder::_defaultFont = 0;
-const Color TooltipBuilder::DEFAULT_COLOR = Color::BLUE / 2 + Color::GREY_2;
-const Color TooltipBuilder::BACKGROUND_COLOR = Color::GREY_8 + Color::BLUE/6;
+Color TooltipBuilder::DEFAULT_COLOR;
+Color TooltipBuilder::BACKGROUND_COLOR;
 
 TooltipBuilder::TooltipBuilder():
 _color(Color::WHITE)
 {
+    if (!initialized) {
+        DEFAULT_COLOR = Color::BLUE / 2 + Color::GREY_2;
+        BACKGROUND_COLOR = Color::GREY_8 + Color::BLUE/6;
+    }
+
     if (!_defaultFont)
         _defaultFont = TTF_OpenFont("04B_03__.TTF", 8);
     _font = _defaultFont;
