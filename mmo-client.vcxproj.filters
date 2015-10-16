@@ -96,6 +96,9 @@
     <ClCompile Include="src\Point.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\server\Item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -221,7 +224,7 @@
     <ClInclude Include="src\Point.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Point.h">
+    <ClInclude Include="src\Rect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\server\Item.h">

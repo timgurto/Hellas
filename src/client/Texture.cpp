@@ -140,8 +140,7 @@ void Texture::setAlpha(Uint8 alpha) const{
 }
 
 void Texture::draw(int x, int y) const{
-    Rect r = {x, y, _w, _h};
-    draw(r);
+    draw(Rect(x, y, _w, _h));
 }
 
 void Texture::draw(const Point &location) const{

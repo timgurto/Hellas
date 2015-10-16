@@ -43,15 +43,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)</OutDir>
     <IntDir>$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)tinyxml;$(SolutionDir)SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\include;$(SolutionDir)SDL2\SDL2_image-2.0.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)SDL2\SDL2-2.0.3\lib\x86;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)SDL2\SDL2_image-2.0.0\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)tinyxml;$(SolutionDir)SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)SDL2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)SDL2\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
     <TargetName>$(ProjectName)-debug</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)</OutDir>
     <IntDir>$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)tinyxml;$(SolutionDir)SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\include;$(SolutionDir)SDL2\SDL2_image-2.0.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)SDL2\SDL2-2.0.3\lib\x86;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)SDL2\SDL2_image-2.0.0\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)tinyxml;$(SolutionDir)SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)SDL2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)SDL2\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -66,7 +66,7 @@
     </ClCompile>
     <Link>
       <AdditionalOptions>/verbose:lib %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -85,7 +85,7 @@
       <ProgramDataBaseFileName>$(IntDir)$(ProjectName)\vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -95,10 +95,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Args.cpp" />
-    <ClCompile Include="src\client\Renderer.cpp" />
-    <ClCompile Include="src\client\Texture.cpp" />
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\Point.cpp" />
+    <ClCompile Include="src\Rect.cpp" />
     <ClCompile Include="src\server\Item.cpp" />
     <ClCompile Include="src\server\LogConsole.cpp" />
     <ClCompile Include="src\server\main.cpp" />
@@ -118,12 +117,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
-    <ClInclude Include="src\client\Renderer.h" />
-    <ClInclude Include="src\client\Texture.h" />
     <ClInclude Include="src\Color.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\messageCodes.h" />
     <ClInclude Include="src\Point.h" />
+    <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\server\Item.h" />
     <ClInclude Include="src\server\LogConsole.h" />
     <ClInclude Include="src\server\Object.h" />
