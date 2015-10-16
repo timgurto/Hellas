@@ -8,7 +8,6 @@
 
 #include "Server.h"
 #include "../Args.h"
-#include "../client/Renderer.h"
 
 Args cmdLineArgs;
 
