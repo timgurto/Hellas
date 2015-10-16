@@ -3,4 +3,5 @@
 	url = https://github.com/timgurto/SDL2-libraries
 [submodule "tinyxml"]
 	path = tinyxml
-	url = https://github.com/timgurto/TinyXML-library
+    url = https://github.com/timgurto/TinyXML-library
+    ignore = dirty
