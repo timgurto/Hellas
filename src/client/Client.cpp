@@ -41,7 +41,7 @@ const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 50;
 
 const int Client::ICON_SIZE = 16;
 const size_t Client::ICONS_X = 8;
-SDL_Rect Client::INVENTORY_RECT;
+Rect Client::INVENTORY_RECT;
 const int Client::ITEM_HEIGHT = ICON_SIZE;
 const int Client::TEXT_HEIGHT = 11;
 const int Client::HEADING_HEIGHT = 14;
@@ -145,7 +145,7 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
     int invW =  max(min(ICONS_X, _inventory.size()) * (ICON_SIZE + 1) + 1,
                     static_cast<unsigned>(_invLabel.width()));
     int invH = ICON_SIZE + _invLabel.height() + 1;
-    INVENTORY_RECT = makeRect(SCREEN_X - invW, SCREEN_Y - invH, invW, invH);
+    INVENTORY_RECT = Rect(SCREEN_X - invW, SCREEN_Y - invH, invW, invH);
 
     // Randomize player name if not supplied
     if (cmdLineArgs.contains("username"))
@@ -197,7 +197,7 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
         ClientObjectType cot(s);
         cot.image(std::string("Images/Objects/") + s + ".png");
         if (xr.findAttr(elem, "name", s)) cot.name(s);
-        SDL_Rect drawRect = {0, 0, cot.width(), cot.height()};
+        Rect drawRect(0, 0, cot.width(), cot.height());
         bool
             xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
             ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
@@ -619,12 +619,12 @@ void Client::draw() const{
     if (isDebug()) {
         renderer.setDrawColor(Color::CYAN);
         const Point &actualLoc = _character.destination() + offset();
-        renderer.drawRect(makeRect(actualLoc.x - 1, actualLoc.y - 1, 3, 3));
+        renderer.drawRect(Rect(actualLoc.x - 1, actualLoc.y - 1, 3, 3));
 
         renderer.setDrawColor(Color::WHITE);
         Point pendingLoc(_pendingCharLoc.x + offset().x, _pendingCharLoc.y + offset().y);
-        renderer.drawRect(makeRect(pendingLoc.x, pendingLoc.y, 1, 1));
-        renderer.drawRect(makeRect(pendingLoc.x - 2, pendingLoc.y - 2, 5, 5));
+        renderer.drawRect(Rect(pendingLoc.x, pendingLoc.y, 1, 1));
+        renderer.drawRect(Rect(pendingLoc.x - 2, pendingLoc.y - 2, 5, 5));
     }
 
     // Entities, sorted from back to front
@@ -633,7 +633,7 @@ void Client::draw() const{
 
     // Rectangle around user
     //renderer.setDrawColor(Color::WHITE);
-    //SDL_Rect drawLoc = _character.drawRect() + offset();
+    //Rect drawLoc = _character.drawRect() + offset();
     //renderer.drawRect(drawLoc);
 
     // Cast bar
@@ -646,16 +646,15 @@ void Client::draw() const{
         static const Color
             CAST_BAR_BACKGROUND = Color::BLUE / 2 + Color::GREY_2,
             CAST_BAR_COLOR = Color::RED * 0.75;
-        const SDL_Rect
-            castBarBackgroundRect = makeRect(toInt((SCREEN_X - CAST_BAR_WIDTH) / 2.0 -
-                                                              CAST_BAR_PADDING),
-                                             CAST_BAR_Y - CAST_BAR_PADDING,
-                                             CAST_BAR_WIDTH + 2 * CAST_BAR_PADDING,
-                                             CAST_BAR_HEIGHT + 2 * CAST_BAR_PADDING),
-            castBarRect = makeRect(toInt((SCREEN_X - CAST_BAR_WIDTH) / 2.0),
-                                   CAST_BAR_Y,
-                                   toInt(CAST_BAR_WIDTH * 1.0 * _actionTimer / _actionLength),
-                                   CAST_BAR_HEIGHT);
+        const Rect
+            castBarBackgroundRect(toInt((SCREEN_X - CAST_BAR_WIDTH) / 2.0 - CAST_BAR_PADDING),
+                                  CAST_BAR_Y - CAST_BAR_PADDING,
+                                  CAST_BAR_WIDTH + 2 * CAST_BAR_PADDING,
+                                  CAST_BAR_HEIGHT + 2 * CAST_BAR_PADDING),
+            castBarRect(toInt((SCREEN_X - CAST_BAR_WIDTH) / 2.0),
+                        CAST_BAR_Y,
+                        toInt(CAST_BAR_WIDTH * 1.0 * _actionTimer / _actionLength),
+                        CAST_BAR_HEIGHT);
         renderer.setDrawColor(CAST_BAR_BACKGROUND);
         renderer.fillRect(castBarBackgroundRect);
         renderer.setDrawColor(CAST_BAR_COLOR);
@@ -685,12 +684,12 @@ void Client::draw() const{
         static const int
             TEXT_BOX_HEIGHT = 13,
             TEXT_BOX_WIDTH = 300;
-        static const SDL_Rect TEXT_BOX_RECT = makeRect((SCREEN_X - TEXT_BOX_WIDTH) / 2,
-                                                       (SCREEN_Y - TEXT_BOX_HEIGHT) / 2,
-                                                       TEXT_BOX_WIDTH, TEXT_BOX_HEIGHT);
+        static const Rect TEXT_BOX_RECT((SCREEN_X - TEXT_BOX_WIDTH) / 2,
+                                        (SCREEN_Y - TEXT_BOX_HEIGHT) / 2,
+                                        TEXT_BOX_WIDTH, TEXT_BOX_HEIGHT);
         static const Color TEXT_BOX_BORDER = Color::GREY_4;
         renderer.setDrawColor(TEXT_BOX_BORDER);
-        renderer.drawRect(TEXT_BOX_RECT + makeRect(-1, -1, 2, 2));
+        renderer.drawRect(TEXT_BOX_RECT + Rect(-1, -1, 2, 2));
         renderer.setDrawColor(Color::BLACK);
         renderer.fillRect(TEXT_BOX_RECT);
         const Texture text(_defaultFont, _enteredText);
@@ -700,16 +699,15 @@ void Client::draw() const{
             text.draw(TEXT_BOX_RECT.x + 1, TEXT_BOX_RECT.y);
             cursorX = TEXT_BOX_RECT.x + text.width() + 1;
         } else {
-            const SDL_Rect
-                dstRect = makeRect(TEXT_BOX_RECT.x + 1, TEXT_BOX_RECT.y,
-                                   MAX_TEXT_WIDTH, text.height()),
-                srcRect = makeRect(text.width() - MAX_TEXT_WIDTH, 0,
+            const Rect
+                dstRect(TEXT_BOX_RECT.x + 1, TEXT_BOX_RECT.y, MAX_TEXT_WIDTH, text.height()),
+                srcRect = Rect(text.width() - MAX_TEXT_WIDTH, 0,
                                    MAX_TEXT_WIDTH, text.height());
             text.draw(dstRect, srcRect);
             cursorX = TEXT_BOX_RECT.x + TEXT_BOX_WIDTH;
         }
         renderer.setDrawColor(Color::WHITE);
-        renderer.fillRect(makeRect(cursorX, TEXT_BOX_RECT.y + 1, 1, TEXT_BOX_HEIGHT - 2));
+        renderer.fillRect(Rect(cursorX, TEXT_BOX_RECT.y + 1, 1, TEXT_BOX_HEIGHT - 2));
     }
 
     _craftingWindow->draw();
@@ -793,7 +791,7 @@ void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
       L | tileID| R
           G | F
     */
-    const SDL_Rect drawLoc = {xLoc, yLoc, 0, 0};
+    const Rect drawLoc(xLoc, yLoc, 0, 0);
     const bool yOdd = (y % 2 == 1);
     size_t tileID, L, R, E, F, G, H;
     tileID = _map[x][y];
@@ -822,14 +820,14 @@ void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
         }
     }
 
-    static const SDL_Rect
-        TOP_LEFT     = {0,                0,                TILE_W/2, TILE_H/2},
-        TOP_RIGHT    = {TILE_W/2, 0,                TILE_W/2, TILE_H/2},
-        BOTTOM_LEFT  = {0,                TILE_H/2, TILE_W/2, TILE_H/2},
-        BOTTOM_RIGHT = {TILE_W/2, TILE_H/2, TILE_W/2, TILE_H/2},
-        LEFT_HALF    = {0,                0,                TILE_W/2, TILE_H},
-        RIGHT_HALF   = {TILE_W/2, 0,                TILE_W/2, TILE_H},
-        FULL         = {0,                0,                TILE_W,   TILE_H};
+    static const Rect
+        TOP_LEFT     (0,        0,        TILE_W/2, TILE_H/2),
+        TOP_RIGHT    (TILE_W/2, 0,        TILE_W/2, TILE_H/2),
+        BOTTOM_LEFT  (0,        TILE_H/2, TILE_W/2, TILE_H/2),
+        BOTTOM_RIGHT (TILE_W/2, TILE_H/2, TILE_W/2, TILE_H/2),
+        LEFT_HALF    (0,        0,        TILE_W/2, TILE_H),
+        RIGHT_HALF   (TILE_W/2, 0,        TILE_W/2, TILE_H),
+        FULL         (0,        0,        TILE_W,   TILE_H);
 
     // Black background
     // Assuming all tile images are set to SDL_BLENDMODE_ADD and 0x3f alpha

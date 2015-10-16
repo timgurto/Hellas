@@ -8,11 +8,11 @@ static const std::string EMPTY_STR = "";
 
 extern Renderer renderer;
 
-ChoiceList::ChoiceList(const SDL_Rect &rect, int childHeight):
+ChoiceList::ChoiceList(const Rect &rect, int childHeight):
 List(rect, childHeight),
-_selectedBox(new ShadowBox(makeRect(0, 0, rect.w - List::ARROW_W, childHeight), true)),
-_mouseOverBox(new ShadowBox(makeRect(0, 0, rect.w - List::ARROW_W, childHeight))),
-_mouseDownBox(new ShadowBox(makeRect(0, 0, rect.w - List::ARROW_W, childHeight), true)){
+_selectedBox(new ShadowBox(Rect(0, 0, rect.w - List::ARROW_W, childHeight), true)),
+_mouseOverBox(new ShadowBox(Rect(0, 0, rect.w - List::ARROW_W, childHeight))),
+_mouseDownBox(new ShadowBox(Rect(0, 0, rect.w - List::ARROW_W, childHeight), true)){
     setMouseDownFunction(markMouseDown);
     setMouseUpFunction(toggle);
     setMouseMoveFunction(markMouseOver);
@@ -39,7 +39,7 @@ const std::string &ChoiceList::getIdFromMouse(double mouseY, int *index) const{
 }
 
 bool ChoiceList::contentCollision(const Point &p) const{
-    return collision(p, makeRect(0,
+    return collision(p, Rect(0,
                                  0,
                                  _content->rect().w,
                                  min(_content->rect().h, rect().h)));

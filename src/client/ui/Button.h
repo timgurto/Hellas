@@ -32,7 +32,7 @@ private:
     static void mouseMove(Element &e, const Point &mousePos);
 
 public:
-    Button(const SDL_Rect &rect, const std::string &caption = "", clickFun_t clickFunction = 0,
+    Button(const Rect &rect, const std::string &caption = "", clickFun_t clickFunction = 0,
            void *clickData = 0);
     virtual void addChild(Element *child);
     virtual void clearChildren();

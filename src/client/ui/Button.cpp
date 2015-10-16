@@ -6,21 +6,21 @@
 
 extern Renderer renderer;
 
-Button::Button(const SDL_Rect &rect, const std::string &caption, clickFun_t clickFunction,
+Button::Button(const Rect &rect, const std::string &caption, clickFun_t clickFunction,
                void *clickData):
 Element(rect),
-_content(new Element(makeRect(0, 0, rect.w, rect.h))),
+_content(new Element(Rect(0, 0, rect.w, rect.h))),
 _clickFun(clickFunction),
 _clickData(clickData),
 _mouseButtonDown(false),
 _depressed(false){
-    Element::addChild(new ColorBlock(makeRect(1, 1, rect.w - 2, rect.h - 2)));
+    Element::addChild(new ColorBlock(Rect(1, 1, rect.w - 2, rect.h - 2)));
     Element::addChild(_content);
-    _shadowBox = new ShadowBox(makeRect(0, 0, rect.w, rect.h));
+    _shadowBox = new ShadowBox(Rect(0, 0, rect.w, rect.h));
     Element::addChild(_shadowBox);
 
     if (!caption.empty())
-        addChild(new Label(makeRect(0, 0, rect.w, rect.h),
+        addChild(new Label(Rect(0, 0, rect.w, rect.h),
                            caption, CENTER_JUSTIFIED, CENTER_JUSTIFIED));
     setMouseDownFunction(&mouseDown);
     setMouseUpFunction(&mouseUp);
@@ -53,14 +53,14 @@ void Button::mouseUp(Element &e, const Point &mousePos){
     Button &button = dynamic_cast<Button&>(e);
     button._mouseButtonDown = false;
     if (button._depressed) {
-        bool click = collision(mousePos, makeRect(0, 0, button.rect().w, button.rect().h));
+        bool click = collision(mousePos, Rect(0, 0, button.rect().w, button.rect().h));
         button.release(click);
     }
 }
 
 void Button::mouseMove(Element &e, const Point &mousePos){
     Button &button = dynamic_cast<Button&>(e);
-    if (collision(mousePos, makeRect(0, 0, button.rect().w, button.rect().h))) {
+    if (collision(mousePos, Rect(0, 0, button.rect().w, button.rect().h))) {
         if (button._mouseButtonDown && !button._depressed)
             button.depress();
     } else {

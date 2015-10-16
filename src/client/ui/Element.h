@@ -41,7 +41,7 @@ private:
 
     bool _visible;
 
-    SDL_Rect _rect; // Location and dimensions within window
+    Rect _rect; // Location and dimensions within window
 
     Element *_parent; // 0 if no parent.
 
@@ -90,7 +90,7 @@ protected:
     void drawChildren() const;
 
 public:
-    Element(const SDL_Rect &rect);
+    Element(const Rect &rect);
     virtual ~Element();
     
     static const Point *absMouse; // Absolute mouse co-ordinates
@@ -98,8 +98,8 @@ public:
     bool visible() const { return _visible; }
     static TTF_Font *font() { return _font; }
     static void font(TTF_Font *newFont) { _font = newFont; }
-    const SDL_Rect &rect() const { return _rect; }
-    void rect(const SDL_Rect &rhs);
+    const Rect &rect() const { return _rect; }
+    void rect(const Rect &rhs);
     void rect(int x, int y);
     void rect(int x, int y, int w, int h);
     int width() const { return _rect.w; }

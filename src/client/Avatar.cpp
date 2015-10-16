@@ -4,7 +4,7 @@
 #include "Client.h"
 #include "../util.h"
 
-EntityType Avatar::_entityType(makeRect(-9, -39));
+EntityType Avatar::_entityType(Rect(-9, -39));
 
 Avatar::Avatar(const std::string &name, const Point &location):
 Entity(&_entityType, location),

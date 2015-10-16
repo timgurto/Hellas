@@ -140,7 +140,7 @@ void Texture::setAlpha(Uint8 alpha) const{
 }
 
 void Texture::draw(int x, int y) const{
-    SDL_Rect r = {x, y, _w, _h};
+    Rect r = {x, y, _w, _h};
     draw(r);
 }
 
@@ -148,11 +148,11 @@ void Texture::draw(const Point &location) const{
     draw(toInt(location.x), toInt(location.y));
 }
 
-void Texture::draw(const SDL_Rect &location) const{
+void Texture::draw(const Rect &location) const{
     renderer.drawTexture(_raw, location);
 }
 
-void Texture::draw(const SDL_Rect &location, const SDL_Rect &srcRect) const{
+void Texture::draw(const Rect &location, const Rect &srcRect) const{
     renderer.drawTexture(_raw, location, srcRect);
 }
 

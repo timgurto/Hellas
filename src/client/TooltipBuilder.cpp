@@ -76,7 +76,7 @@ Texture TooltipBuilder::publish(){
 
     // Draw border
     renderer.setDrawColor(Color::WHITE);
-    renderer.drawRect(makeRect(0, 0, totalWidth, totalHeight));
+    renderer.drawRect(Rect(0, 0, totalWidth, totalHeight));
 
     // Draw text
     int y = PADDING;

@@ -12,7 +12,7 @@ class ShadowBox : public Element{
     virtual void refresh();
 
 public:
-    ShadowBox(const SDL_Rect &rect, bool reversed = false);
+    ShadowBox(const Rect &rect, bool reversed = false);
 
     void setReversed(bool reversed);
 };

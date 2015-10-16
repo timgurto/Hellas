@@ -3,8 +3,6 @@
 #ifndef POINT_H
 #define POINT_H
 
-#include <SDL.h>
-
 #include "util.h"
 
 // Describes a 2D point
@@ -14,7 +12,6 @@ struct Point{
 
     Point(double xArg = 0, double yArg = 0);
 
-    operator SDL_Rect() const;
     bool operator==(const Point &rhs) const;
     Point &operator+=(const Point &rhs);
     Point &operator-=(const Point &rhs);
@@ -25,14 +22,14 @@ private:
     static const double EPSILON;
 };
 
-inline SDL_Rect operator+(const SDL_Rect &lhs, const Point &rhs){
-    SDL_Rect r = lhs;
+inline Rect operator+(const Rect &lhs, const Point &rhs){
+    Rect r = lhs;
     r.x += toInt(rhs.x);
     r.y += toInt(rhs.y);
     return r;
 }
 
-inline Point operator-(const Point &lhs, const SDL_Rect &rhs){
+inline Point operator-(const Point &lhs, const Rect &rhs){
     Point p = lhs;
     p.x -= rhs.x;
     p.y -= rhs.y;

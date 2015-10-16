@@ -27,7 +27,7 @@ class ChoiceList : public List{
     static void markMouseOver(Element &e, const Point &mousePos);
 
 public:
-    ChoiceList(const SDL_Rect &rect, int childHeight);
+    ChoiceList(const Rect &rect, int childHeight);
 
     const std::string &getSelected() { return _selectedID; }
 

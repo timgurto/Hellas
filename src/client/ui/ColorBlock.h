@@ -11,7 +11,7 @@ class ColorBlock : public Element {
     Color _color;
 
 public:
-    ColorBlock(const SDL_Rect &rect, const Color &color = BACKGROUND_COLOR);
+    ColorBlock(const Rect &rect, const Color &color = BACKGROUND_COLOR);
 
     virtual void refresh();
 };

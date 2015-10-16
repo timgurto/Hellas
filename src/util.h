@@ -3,6 +3,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include "Rect.h"
+
 #include <cstdlib>
 #include <sstream>
 
@@ -63,54 +65,7 @@ std::string makeArgs(T1 val1, T2 val2, T3 val3, T4 val4){
     return oss.str();
 }
 
-inline SDL_Rect makeRect(int x = 0, int y = 0, int w = 0, int h = 0){
-    SDL_Rect r;
-    r.x = x;
-    r.y = y;
-    r.w = w;
-    r.h = h;
-    return r;
-}
-
-inline SDL_Rect makeRect(double x, double y, int w = 0, int h = 0){
-    SDL_Rect r;
-    r.x = toInt(x);
-    r.y = toInt(y);
-    r.w = w;
-    r.h = h;
-    return r;
-}
-
-inline SDL_Rect makeRect(double x, double y, double w, double h){
-    SDL_Rect r;
-    r.x = toInt(x);
-    r.y = toInt(y);
-    r.w = toInt(w);
-    r.h = toInt(h);
-    return r;
-}
-
-SDL_Rect makeRect(const Point &p);
-
-inline SDL_Rect operator+(const SDL_Rect &lhs, const SDL_Rect &rhs){
-    SDL_Rect r;
-    r.x = lhs.x + rhs.x;
-    r.y = lhs.y + rhs.y;
-    r.w = lhs.w + rhs.w;
-    r.h = lhs.h + rhs.h;
-    return r;
-}
-
-inline SDL_Rect operator-(const SDL_Rect &lhs, const SDL_Rect &rhs){
-    SDL_Rect r;
-    r.x = lhs.x - rhs.x;
-    r.y = lhs.y - rhs.y;
-    r.w = lhs.w - rhs.w;
-    r.h = lhs.h - rhs.h;
-    return r;
-}
-
-bool collision(const Point &point, const SDL_Rect &rect);
+bool collision(const Point &point, const Rect &rect);
 
 #undef min
 #undef max

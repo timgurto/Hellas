@@ -10,16 +10,16 @@ const int CheckBox::BOX_SIZE = 8;
 const int CheckBox::GAP = 3;
 const int CheckBox::Y_OFFSET = 1;
 
-CheckBox::CheckBox(const SDL_Rect &rect, bool &linkedBool, const std::string &caption,
+CheckBox::CheckBox(const Rect &rect, bool &linkedBool, const std::string &caption,
                    bool inverse):
 Element(rect),
 _linkedBool(linkedBool),
 _inverse(inverse),
 _mouseButtonDown(false),
 _depressed(false){
-    addChild(new ColorBlock(makeRect(0, 0, rect.w, rect.h)));
+    addChild(new ColorBlock(Rect(0, 0, rect.w, rect.h)));
     if (!caption.empty())
-        addChild(new Label(makeRect(BOX_SIZE + GAP, 0, rect.w, rect.h),
+        addChild(new Label(Rect(BOX_SIZE + GAP, 0, rect.w, rect.h),
                            caption, LEFT_JUSTIFIED, CENTER_JUSTIFIED));
     setMouseDownFunction(&mouseDown);
     setMouseUpFunction(&mouseUp);
@@ -53,14 +53,14 @@ void CheckBox::mouseUp(Element &e, const Point &mousePos){
     CheckBox &checkBox = dynamic_cast<CheckBox&>(e);
     checkBox._mouseButtonDown = false;
     if (checkBox._depressed) {
-        bool click = collision(mousePos, makeRect(0, 0, checkBox.rect().w, checkBox.rect().h));
+        bool click = collision(mousePos, Rect(0, 0, checkBox.rect().w, checkBox.rect().h));
         checkBox.release(click);
     }
 }
 
 void CheckBox::mouseMove(Element &e, const Point &mousePos){
     CheckBox &checkBox = dynamic_cast<CheckBox&>(e);
-    if (collision(mousePos, makeRect(0, 0, checkBox.rect().w, checkBox.rect().h))) {
+    if (collision(mousePos, Rect(0, 0, checkBox.rect().w, checkBox.rect().h))) {
         if (checkBox._mouseButtonDown && !checkBox._depressed)
             checkBox.depress();
     } else {
@@ -83,7 +83,7 @@ void CheckBox::refresh(){
     drawChildren();
 
     // Box
-    const SDL_Rect boxRect = makeRect(0, (rect().h - BOX_SIZE) / 2 + Y_OFFSET, BOX_SIZE, BOX_SIZE);
+    const Rect boxRect = Rect(0, (rect().h - BOX_SIZE) / 2 + Y_OFFSET, BOX_SIZE, BOX_SIZE);
     renderer.setDrawColor(FONT_COLOR);
     renderer.drawRect(boxRect);
 
@@ -91,7 +91,7 @@ void CheckBox::refresh(){
     if (_depressed || (_linkedBool ^ _inverse)) {
         if (_depressed)
             renderer.setDrawColor(SHADOW_LIGHT);
-        static const SDL_Rect CHECK_OFFSET_RECT = makeRect(2, 2, -4, -4);
+        static const Rect CHECK_OFFSET_RECT = Rect(2, 2, -4, -4);
         renderer.fillRect(boxRect + CHECK_OFFSET_RECT);
     }
 

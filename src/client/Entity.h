@@ -32,7 +32,7 @@ public:
 
     const Point &location() const { return _location; }
     void location(const Point &loc); // yChanged() should be checked after changing location.
-    SDL_Rect drawRect() const;
+    Rect drawRect() const;
     int width() const { return _type->width(); }
     int height() const { return _type->height(); }
     bool yChanged() const { return _yChanged; }

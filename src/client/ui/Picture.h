@@ -12,7 +12,7 @@ class Picture : public Element{
     virtual void refresh();
 
 public:
-    Picture(const SDL_Rect &rect, const Texture &srcTexture);
+    Picture(const Rect &rect, const Texture &srcTexture);
 };
 
 #endif

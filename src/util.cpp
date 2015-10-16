@@ -34,10 +34,6 @@ double distance(const Point &p, const Point &a, const Point &b){
     return numerator / denominator;
 }
 
-SDL_Rect makeRect(const Point &p){
-    return makeRect(p.x, p.y);
-}
-
 Point interpolate(const Point &a, const Point &b, double dist){
     const double
         xDelta = b.x - a.x,
@@ -58,7 +54,7 @@ Point interpolate(const Point &a, const Point &b, double dist){
                  a.y + yNorm * dist);
 }
 
-bool collision(const Point &point, const SDL_Rect &rect){
+bool collision(const Point &point, const Rect &rect){
     return
         point.x > rect.x &&
         point.y > rect.y &&

@@ -73,12 +73,12 @@ SDL_Texture *Renderer::createTargetableTexture(int width, int height) const{
                              width, height);
 }
 
-void Renderer::drawTexture(SDL_Texture *srcTex, const SDL_Rect &dstRect){
-    SDL_RenderCopy(_renderer, srcTex, 0, &dstRect);
+void Renderer::drawTexture(SDL_Texture *srcTex, const Rect &dstRect){
+    SDL_RenderCopy(_renderer, srcTex, 0, &rectToSDL(dstRect));
 }
 
-void Renderer::drawTexture(SDL_Texture *srcTex, const SDL_Rect &dstRect, const SDL_Rect &srcRect){
-    SDL_RenderCopy(_renderer, srcTex, &srcRect, &dstRect);
+void Renderer::drawTexture(SDL_Texture *srcTex, const Rect &dstRect, const Rect &srcRect){
+    SDL_RenderCopy(_renderer, srcTex, &rectToSDL(srcRect), &rectToSDL(dstRect));
 }
 
 void Renderer::setDrawColor(const Color &color){
@@ -93,12 +93,12 @@ void Renderer::present(){
     SDL_RenderPresent(_renderer);
 }
 
-void Renderer::drawRect(const SDL_Rect &dstRect){
-    SDL_RenderDrawRect(_renderer, &dstRect);
+void Renderer::drawRect(const Rect &dstRect){
+    SDL_RenderDrawRect(_renderer, &rectToSDL(dstRect));
 }
 
-void Renderer::fillRect(const SDL_Rect &dstRect){
-    SDL_RenderFillRect(_renderer, &dstRect);
+void Renderer::fillRect(const Rect &dstRect){
+    SDL_RenderFillRect(_renderer, &rectToSDL(dstRect));
 }
 
 void Renderer::fill(){
@@ -127,3 +127,9 @@ void Renderer::popRenderTarget() {
     SDL_SetRenderTarget(_renderer, _renderTargetsStack.top());
     _renderTargetsStack.pop();
 }
+
+SDL_Rect Renderer::rectToSDL(const Rect &rect){
+    SDL_Rect r = {rect.x, rect.y, rect.w, rect.h};
+    return r;
+}
+

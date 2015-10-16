@@ -4,7 +4,7 @@
 
 extern Renderer renderer;
 
-Label::Label(const SDL_Rect &rect, const std::string &text,
+Label::Label(const Rect &rect, const std::string &text,
              Justification justificationH, Justification justificationV):
 Element(rect),
 _text(text),

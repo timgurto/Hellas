@@ -14,31 +14,31 @@ const int List::ARROW_H = 5;
 const int List::CURSOR_HEIGHT = 8;
 const int List::SCROLL_AMOUNT = 10;
 
-List::List(const SDL_Rect &rect, int childHeight):
+List::List(const Rect &rect, int childHeight):
 Element(rect),
 _mouseDownOnCursor(false),
 _cursorOffset(0),
 _childHeight(childHeight),
-_scrollBar(new Element(makeRect(rect.w - ARROW_W, 0, ARROW_W, rect.h))),
-_cursor(new Element(makeRect(0, 0, ARROW_W, CURSOR_HEIGHT))),
+_scrollBar(new Element(Rect(rect.w - ARROW_W, 0, ARROW_W, rect.h))),
+_cursor(new Element(Rect(0, 0, ARROW_W, CURSOR_HEIGHT))),
 _scrolledToBottom(false),
-_content(new Element(makeRect(0, 0, rect.w - ARROW_W, 0))){
+_content(new Element(Rect(0, 0, rect.w - ARROW_W, 0))){
     if (_childHeight <= 0) // Prevent div/0
         _childHeight = 1;
-    Element::addChild(new ColorBlock(makeRect(0, 0, rect.w, rect.h)));
+    Element::addChild(new ColorBlock(Rect(0, 0, rect.w, rect.h)));
     Element::addChild(_content);
     Element::addChild(_scrollBar);
 
     // Scroll bar details
     _scrollBar->addChild(new Line(ARROW_W/2 - 1, ARROW_H, rect.h - 2*ARROW_H, VERTICAL));
 
-    _whiteUp = new Picture(makeRect(0, 0, ARROW_W, ARROW_H),
+    _whiteUp = new Picture(Rect(0, 0, ARROW_W, ARROW_H),
                            Texture("Images/arrowUp.png", Color::MAGENTA));
-    _greyUp = new Picture(makeRect(0, 0, ARROW_W, ARROW_H),
+    _greyUp = new Picture(Rect(0, 0, ARROW_W, ARROW_H),
                           Texture("Images/arrowUpGrey.png", Color::MAGENTA));
-    _whiteDown = new Picture(makeRect(0, rect.h - ARROW_H, ARROW_W, ARROW_H),
+    _whiteDown = new Picture(Rect(0, rect.h - ARROW_H, ARROW_W, ARROW_H),
                              Texture("Images/arrowDown.png", Color::MAGENTA)),
-    _greyDown = new Picture(makeRect(0, rect.h - ARROW_H, ARROW_W, ARROW_H),
+    _greyDown = new Picture(Rect(0, rect.h - ARROW_H, ARROW_W, ARROW_H),
                             Texture("Images/arrowDownGrey.png", Color::MAGENTA));
     _whiteUp->hide();
     _greyDown->hide();

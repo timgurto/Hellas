@@ -45,7 +45,7 @@ protected:
     Element *_content; // Holds the list items themselves, and moves up and down to "scroll".
 
 public:
-    List(const SDL_Rect &rect, int childHeight);
+    List(const Rect &rect, int childHeight);
 
     virtual void addChild(Element *child);
     virtual void clearChildren();

@@ -21,7 +21,7 @@ class Window : public Element{
 public:
     static const int HEADING_HEIGHT;
 
-    Window(const SDL_Rect &rect, const std::string &title);
+    Window(const Rect &rect, const std::string &title);
 
     static void hideWindow(void *window);
 

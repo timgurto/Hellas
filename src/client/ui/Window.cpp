@@ -14,20 +14,20 @@ const int Window::CLOSE_BUTTON_SIZE = 11;
 
 extern Renderer renderer;
 
-Window::Window(const SDL_Rect &rect, const std::string &title):
-Element(makeRect(rect.x, rect.y, rect.w + 2, rect.h + 2 + HEADING_HEIGHT)),
+Window::Window(const Rect &rect, const std::string &title):
+Element(Rect(rect.x, rect.y, rect.w + 2, rect.h + 2 + HEADING_HEIGHT)),
 _title(title),
 _dragging(false),
-_content(new Element(makeRect(1, HEADING_HEIGHT + 1, rect.w, rect.h))){
-    const SDL_Rect windowRect = this->rect();
+_content(new Element(Rect(1, HEADING_HEIGHT + 1, rect.w, rect.h))){
+    const Rect windowRect = this->rect();
     hide();
     setMouseUpFunction(&stopDragging);
     setMouseMoveFunction(&drag);
 
-    Element::addChild(new ColorBlock(makeRect(1, 1, windowRect.w - 2, windowRect.h - 2)));
+    Element::addChild(new ColorBlock(Rect(1, 1, windowRect.w - 2, windowRect.h - 2)));
 
     // Heading
-    Label *const heading = new Label(makeRect(0, 0,
+    Label *const heading = new Label(Rect(0, 0,
                                               windowRect.w - CLOSE_BUTTON_SIZE, HEADING_HEIGHT),
                                      _title, CENTER_JUSTIFIED);
     heading->setMouseDownFunction(&startDragging, this);
@@ -37,15 +37,15 @@ _content(new Element(makeRect(1, HEADING_HEIGHT + 1, rect.w, rect.h))){
     headingLine->setMouseDownFunction(&startDragging, this);
     Element::addChild(headingLine);
 
-    Button *const closeButton = new Button(makeRect(windowRect.w - CLOSE_BUTTON_SIZE - 1, 1,
+    Button *const closeButton = new Button(Rect(windowRect.w - CLOSE_BUTTON_SIZE - 1, 1,
                                                     CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE), "",
                                                     hideWindow, this);
-    Label *const closeButtonLabel = new Label(makeRect(0, 0, CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE),
+    Label *const closeButtonLabel = new Label(Rect(0, 0, CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE),
                                               "x", CENTER_JUSTIFIED, BOTTOM_JUSTIFIED);
     closeButton->addChild(closeButtonLabel);
     Element::addChild(closeButton);
 
-    Element::addChild(new ShadowBox(makeRect(0, 0, windowRect.w, windowRect.h)));
+    Element::addChild(new ShadowBox(Rect(0, 0, windowRect.w, windowRect.h)));
 
     Element::addChild(_content);
 }

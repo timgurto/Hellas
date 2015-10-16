@@ -19,7 +19,7 @@ Texture Element::transparentBackground;
 
 const Point *Element::absMouse = 0;
 
-Element::Element(const SDL_Rect &rect):
+Element::Element(const Rect &rect):
 _changed(true),
 _dimensionsChanged(false),
 _visible(true),
@@ -48,11 +48,11 @@ Element::~Element(){
 }
 
 void Element::rect(int x, int y, int w, int h){
-    _rect = makeRect(x, y, w, h);
+    _rect = Rect(x, y, w, h);
     _dimensionsChanged = true;
 }
 
-void Element::rect(const SDL_Rect &rhs){
+void Element::rect(const Rect &rhs){
     _rect = rhs;
     _dimensionsChanged = true;
 }
@@ -323,7 +323,7 @@ void Element::makeBackgroundTransparent(){
         renderer.fill();
         renderer.popRenderTarget();
     }
-    SDL_Rect dstRect = makeRect(0, 0, _rect.w, _rect.h);
+    Rect dstRect = Rect(0, 0, _rect.w, _rect.h);
     transparentBackground.draw(dstRect);
 }
 

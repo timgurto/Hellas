@@ -39,7 +39,7 @@ public:
         BOX_SIZE,
         GAP; // The gap between box and label, if any.
 
-    CheckBox(const SDL_Rect &rect, bool &linkedBool, const std::string &caption = "",
+    CheckBox(const Rect &rect, bool &linkedBool, const std::string &caption = "",
              bool inverse = false);
 };
 

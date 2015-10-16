@@ -14,7 +14,7 @@ class Label : public Element{
     bool _matchWidth;
 
 public:
-    Label(const SDL_Rect &rect, const std::string &text,
+    Label(const Rect &rect, const std::string &text,
           Justification justificationH = LEFT_JUSTIFIED,
           Justification justificationV = TOP_JUSTIFIED);
 
