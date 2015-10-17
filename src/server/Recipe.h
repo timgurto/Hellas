@@ -20,6 +20,7 @@ public:
 
     bool operator<(const Recipe &rhs) const { return _id < rhs._id; }
 
+    const std::string &id() const { return _id; }
     const ItemSet &materials() const { return _materials; }
     const Item *product() const { return _product; }
     void product(const Item *item) { _product = item; }

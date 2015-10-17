@@ -88,5 +88,7 @@ void ItemSet::remove(const Item *item, size_t qty){
         return;
     size_t qtyToRemove = min(qty, it->second);
     it->second -= qtyToRemove;
+    if (it->second == 0)
+        _set.erase(it);
     _totalQty -= qtyToRemove;
 }

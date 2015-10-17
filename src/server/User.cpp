@@ -155,8 +155,10 @@ bool User::hasItems(const ItemSet &items) const{
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
         const std::pair<const Item *, size_t> &invSlot = _inventory[i];
         remaining.remove(invSlot.first, invSlot.second);
+        if (remaining.isEmpty())
+            return true;
     }
-    return remaining.isEmpty();
+    return false;
 }
 
 bool User::hasItemClass(const std::string &className) const{

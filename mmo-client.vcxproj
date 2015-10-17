@@ -126,6 +126,7 @@
     <ClCompile Include="src\server\ItemSet.cpp" />
     <ClCompile Include="src\server\Object.cpp" />
     <ClCompile Include="src\server\ObjectType.cpp" />
+    <ClCompile Include="src\server\Recipe.cpp" />
     <ClCompile Include="src\server\Yield.cpp" />
     <ClCompile Include="src\Socket.cpp" />
     <ClCompile Include="src\util.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="src\server\ItemSet.h" />
     <ClInclude Include="src\server\Object.h" />
     <ClInclude Include="src\server\ObjectType.h" />
+    <ClInclude Include="src\server\Recipe.h" />
     <ClInclude Include="src\server\Yield.h" />
     <ClInclude Include="src\Socket.h" />
     <ClInclude Include="src\util.h" />

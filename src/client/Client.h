@@ -11,15 +11,16 @@
 #include "Avatar.h"
 #include "ClientObject.h"
 #include "ClientObjectType.h"
-#include "ui/ChoiceList.h"
 #include "Entity.h"
 #include "Item.h"
 #include "LogSDL.h"
+#include "ui/ChoiceList.h"
 #include "ui/Window.h"
 #include "../Args.h"
 #include "../Point.h"
 #include "../Socket.h"
 #include "../messageCodes.h"
+#include "../server/Recipe.h"
 
 class Client{
 public:
@@ -71,14 +72,13 @@ private:
     static const int TEXT_HEIGHT; // The height of list items featuring only text.
     static const int HEADING_HEIGHT; // The height of windows' section headings
     static const int LINE_GAP; // The total height occupied by a line and its surrounding spacing
-    const Item *_activeRecipe; // The recipe currently selected, if any
+    const Recipe *_activeRecipe; // The recipe currently selected, if any
     static void startCrafting(void *data); // Called when the "Craft" button is clicked.
     // Populated at load time, after _items
-    std::set<const Item *> _craftableItems;
     std::map<std::string, bool> _classFilters;
     std::map<const Item *, bool> _matFilters;
     mutable bool _classFilterSelected, _matFilterSelected; // Whether any filters have been selected
-    bool itemMatchesFilters(const Item &item) const;
+    bool recipeMatchesFilters(const Recipe &recipe) const;
     // Called when filters pane is clicked.
     static void populateRecipesList(Element &e);
     // Called when a recipe is selected.
@@ -147,6 +147,7 @@ private:
 
     // Game data
     std::set<Item> _items;
+    std::set<Recipe> _recipes;
     std::set<ClientObjectType> _objectTypes;
 
     // Information about the state of the world

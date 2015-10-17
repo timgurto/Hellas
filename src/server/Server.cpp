@@ -407,7 +407,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             user->actionConstruct(*item.constructsObject(), location, slot);
-            sendMessage(client, SV_ACTION_STARTED, makeArgs(item.constructsObject()->constructionTime()));
+            sendMessage(client, SV_ACTION_STARTED,
+                        makeArgs(item.constructsObject()->constructionTime()));
             break;
         }
 
