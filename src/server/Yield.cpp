@@ -15,9 +15,9 @@ void Yield::addItem(const Item *item, double initMean, double initSD, double gat
     entry->_gatherDistribution = std::normal_distribution<double>(gatherMean, gatherSD);
 }
 
-void Yield::instantiate(contents_t &contents) const{
+void Yield::instantiate(ItemSet &contents) const{
     for (auto entry : _entries) {
-        contents[entry.first] = generateInitialQuantity(entry.second);
+        contents.set(entry.first, generateInitialQuantity(entry.second));
     }
 }
 

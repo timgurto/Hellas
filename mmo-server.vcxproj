@@ -99,6 +99,7 @@
     <ClCompile Include="src\Point.cpp" />
     <ClCompile Include="src\Rect.cpp" />
     <ClCompile Include="src\server\Item.cpp" />
+    <ClCompile Include="src\server\ItemSet.cpp" />
     <ClCompile Include="src\server\LogConsole.cpp" />
     <ClCompile Include="src\server\main.cpp" />
     <ClCompile Include="src\server\Object.cpp" />
@@ -123,6 +124,7 @@
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\server\Item.h" />
+    <ClInclude Include="src\server\ItemSet.h" />
     <ClInclude Include="src\server\LogConsole.h" />
     <ClInclude Include="src\server\Object.h" />
     <ClInclude Include="src\server\ObjectType.h" />

@@ -123,6 +123,7 @@
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\Point.cpp" />
     <ClCompile Include="src\Rect.cpp" />
+    <ClCompile Include="src\server\ItemSet.cpp" />
     <ClCompile Include="src\server\Object.cpp" />
     <ClCompile Include="src\server\ObjectType.cpp" />
     <ClCompile Include="src\server\Yield.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="src\messageCodes.h" />
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\Rect.h" />
+    <ClInclude Include="src\server\ItemSet.h" />
     <ClInclude Include="src\server\Object.h" />
     <ClInclude Include="src\server\ObjectType.h" />
     <ClInclude Include="src\server\Yield.h" />
