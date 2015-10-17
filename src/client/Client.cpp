@@ -166,13 +166,6 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
             continue; // ID and name are mandatory.
         Item item(id, name);
         std::string s;
-        for (auto child : xr.getChildren("material", elem)) {
-            int matQty = 1;
-            xr.findAttr(child, "quantity", matQty);
-            if (xr.findAttr(child, "id", s))
-                // Create dummy Item if necessary
-                item.addMaterial(&*(_items.insert(Item(s)).first), matQty);
-        }
         for (auto child : xr.getChildren("class", elem))
             if (xr.findAttr(child, "name", s)) item.addClass(s);
 
@@ -186,6 +179,40 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
             Item &itemInPlace = const_cast<Item &>(*ret.first);
             itemInPlace = item;
         }
+    }
+
+    // Recipes
+    xr.newFile("Data/recipes.xml");
+    for (auto elem : xr.getChildren("recipe")) {
+        std::string id, name;
+        if (!xr.findAttr(elem, "id", id))
+            continue; // ID is mandatory.
+        Recipe recipe(id);
+
+        std::string s;
+        if (!xr.findAttr(elem, "product", s))
+            continue; // product is mandatory.
+        auto it = _items.find(s);
+        if (it == _items.end()) {
+            _debug << Color::RED << "Skipping recipe with invalid product " << s << Log::endl;
+            continue;
+        }
+        recipe.product(&*it);
+
+        for (auto child : xr.getChildren("material", elem)) {
+            int matQty = 1;
+            xr.findAttr(child, "quantity", matQty);
+            if (xr.findAttr(child, "id", s)) {
+                auto it = _items.find(Item(s));
+                if (it == _items.end()) {
+                    _debug << Color::RED << "Skipping invalid recipe material " << s << Log::endl;
+                    continue;
+                }
+                recipe.addMaterial(&*it, matQty);
+            }
+        }
+        
+        _recipes.insert(recipe);
     }
 
     // Object types
@@ -881,7 +908,7 @@ void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
 void Client::startCrafting(void *data){
     if (_instance->_activeRecipe) {
         _instance->sendMessage(CL_CRAFT, _instance->_activeRecipe->id());
-        _instance->prepareAction("Crafting " + _instance->_activeRecipe->name());
+        _instance->prepareAction("Crafting " + _instance->_activeRecipe->product()->name());
     }
 }
 

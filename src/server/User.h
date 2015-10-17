@@ -9,6 +9,7 @@
 
 #include "Item.h"
 #include "Object.h"
+#include "Recipe.h"
 #include "../Point.h"
 #include "../Socket.h"
 
@@ -20,7 +21,7 @@ class User{
     Socket _socket;
     Point _location;
     const Object *_actionTarget; // Points to the object that the user is acting upon.
-    const Item *_actionCrafting; // The item this user is currently crafting.
+    const Recipe *_actionCrafting; // The recipe this user is currently crafting.
 
     const ObjectType *_actionConstructing; // The object this user is currently constructing.
     size_t _constructingSlot;
@@ -49,10 +50,10 @@ public:
     const Object *actionTarget() const { return _actionTarget; }
     void actionTarget(const Object *object); // Configure user to perform an action on an object
 
-    // Whether the user has enough materials to craft an item
-    bool hasMaterials(const Item &item) const;
-    void removeMaterials(const Item &item, Server &server);
-    void actionCraft(const Item &item); // Configure user to craft an item
+    // Whether the user has enough materials to craft a recipe
+    bool hasItems(const ItemSet &items) const;
+    void removeItems(const ItemSet &items, Server &server);
+    void actionCraft(const Recipe &item); // Configure user to craft an item
 
     // Configure user to construct an item
     void actionConstruct(const ObjectType &obj, const Point &location, size_t slot);

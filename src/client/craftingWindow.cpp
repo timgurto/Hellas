@@ -13,14 +13,11 @@ extern Renderer renderer;
 
 void Client::initializeCraftingWindow(){
     // For crafting filters
-    for (const Item &item : _items){
-        if (item.isCraftable()) {
-            _craftableItems.insert(&item);
-            for (const std::pair<const Item *, size_t> mat : item.materials())
-                _matFilters[mat.first] = false;
-            for (const std::string &className : item.classes())
-                 _classFilters[className] = false;
-        }
+    for (const Recipe &recipe : _recipes) {
+        for (auto matPair : recipe.materials())
+            _matFilters[matPair.first] = false;
+        for (const std::string &className : recipe.product()->classes())
+            _classFilters[className] = false;
     }
     _haveMatsFilter = _classOr = _matOr = false;
     _haveToolsFilter = true;
@@ -164,26 +161,27 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
                                       BUTTON_WIDTH, BUTTON_HEIGHT),
                              "Craft", startCrafting, 0));
 
-    const std::set<Item>::const_iterator it = _instance->_items.find(selectedID);
-    if (it == _instance->_items.end()) {
+    const std::set<Recipe>::const_iterator it = _instance->_recipes.find(selectedID);
+    if (it == _instance->_recipes.end()) {
         return;
     }
-    const Item &item = *it;
-    _instance->_activeRecipe = &item;
+    const Recipe &recipe = *it;
+    _instance->_activeRecipe = &recipe;
+    const Item &product = *recipe.product();
 
     // Title
-    pane.addChild(new Label(Rect(0, 0, paneRect.w, HEADING_HEIGHT), item.name(),
+    pane.addChild(new Label(Rect(0, 0, paneRect.w, HEADING_HEIGHT), recipe.product()->name(),
                             Element::CENTER_JUSTIFIED));
     int y = HEADING_HEIGHT;
 
     // Icon
-    pane.addChild(new Picture(Rect(0, y, ICON_SIZE, ICON_SIZE), item.icon()));
+    pane.addChild(new Picture(Rect(0, y, ICON_SIZE, ICON_SIZE), product.icon()));
 
     // Class list
     int x = ICON_SIZE + CheckBox::GAP;
-    size_t classesRemaining = item.classes().size();
+    size_t classesRemaining = product.classes().size();
     const int minLineY = y + ICON_SIZE;
-    for (const std::string &className : item.classes()) {
+    for (const std::string &className : product.classes()) {
         std::string text = className;
         if (--classesRemaining > 0)
             text += ", ";
@@ -214,7 +212,7 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     List *const matsList = new List(Rect(0, y, paneRect.w, BUTTON_Y - BUTTON_GAP - y),
                                     ICON_SIZE);
     pane.addChild(matsList);
-    for (const std::pair<const Item *, size_t> & matCost : item.materials()) {
+    for (const std::pair<const Item *, size_t> & matCost : recipe.materials()) {
         assert (matCost.first);
         const Item &mat = *matCost.first;
         const size_t qty = matCost.second;
@@ -250,18 +248,20 @@ void Client::populateRecipesList(Element &e){
     ChoiceList &recipesList = dynamic_cast<ChoiceList &>(e);
     recipesList.clearChildren();
 
-    for (const Item *item : _instance->_craftableItems) {
-        if (!_instance->itemMatchesFilters(*item))
+    for (const Recipe &recipe : _instance->_recipes) {
+        if (!_instance->recipeMatchesFilters(recipe))
             continue;
-        Element *const recipe = new Element(Rect());
-        recipesList.addChild(recipe);
-        recipe->addChild(new Picture(Rect(1, 1, ICON_SIZE, ICON_SIZE), item->icon()));
+        const Item &product = *recipe.product();
+        Element *const recipeElement = new Element(Rect());
+        recipesList.addChild(recipeElement);
+        recipeElement->addChild(new Picture(Rect(1, 1, ICON_SIZE, ICON_SIZE), product.icon()));
         static const int NAME_X = ICON_SIZE + CheckBox::GAP + 1;
-        recipe->addChild(new Label(Rect(NAME_X, 0, recipe->rect().w - NAME_X, ICON_SIZE + 2),
-                                   item->name(),
-                                   Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
-        recipe->setMouseUpFunction(selectRecipe);
-        recipe->id(item->id());
+        recipeElement->addChild(new Label(Rect(NAME_X, 0, recipeElement->rect().w - NAME_X,
+                                               ICON_SIZE + 2),
+                                          recipe.product()->name(),
+                                          Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+        recipeElement->setMouseUpFunction(selectRecipe);
+        recipeElement->id(recipe.id());
     }
     const std::string oldSelectedRecipe = recipesList.getSelected();
     recipesList.verifyBoxes();
@@ -269,10 +269,10 @@ void Client::populateRecipesList(Element &e){
         selectRecipe(recipesList, Point());
 }
 
-bool Client::itemMatchesFilters(const Item &item) const{
+bool Client::recipeMatchesFilters(const Recipe &recipe) const{
     // "Have materials" filter
     if (_haveMatsFilter) {
-        for (const std::pair<const Item *, size_t> &materialsNeeded : item.materials())
+        for (const std::pair<const Item *, size_t> &materialsNeeded : recipe.materials())
             if (!playerHasItem(materialsNeeded.first, materialsNeeded.second))
                 return false;
     }
@@ -285,7 +285,7 @@ bool Client::itemMatchesFilters(const Item &item) const{
         Faster to iterate through item's materials, rather than all filters.
         */
         if (_matOr) {
-            for (const std::pair<const Item *, size_t> &materialsNeeded : item.materials()) {
+            for (const std::pair<const Item *, size_t> &materialsNeeded : recipe.materials()) {
                 const Item *const matP = materialsNeeded.first;
                 if (_matFilters.find(matP)->second) {
                     matsFilterMatched = true;
@@ -298,7 +298,7 @@ bool Client::itemMatchesFilters(const Item &item) const{
                 if (!matFilter.second) // Filter is not active
                     continue;
                 const Item *const matP = matFilter.first;
-                if (item.materials().find(matP) == item.materials().end())
+                if (!recipe.materials().contains(matP))
                     return false;
             }
         }
@@ -311,8 +311,9 @@ bool Client::itemMatchesFilters(const Item &item) const{
         "Or": check that the item matches any active class filter.
         Faster to iterate through item's classes, rather than all filters.
         */
+        auto classes = recipe.product()->classes();
         if (_classOr) {
-            for (const std::string &className : item.classes()) {
+            for (const std::string &className : classes) {
                 if (_classFilters.find(className)->second) {
                         classFilterMatched = true;
                         break;
@@ -323,7 +324,7 @@ bool Client::itemMatchesFilters(const Item &item) const{
             for (const std::pair<std::string, bool> &classFilter : _classFilters) {
                 if (!classFilter.second) // Filter is not active
                     continue;
-                if (item.classes().find(classFilter.first) == item.classes().end())
+                if (classes.find(classFilter.first) == classes.end())
                     return false;
             }
         }

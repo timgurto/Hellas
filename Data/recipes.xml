@@ -1,0 +1,10 @@
+<root>
+<recipe
+    id="axe" time=10000 product="axe" >
+    <material id="wood" quantity=3 />
+</recipe>
+<recipe
+    id="chest" time=10000 product="chest" >
+    <material id="wood" quantity=5 />
+</recipe>
+</root>

@@ -10,6 +10,8 @@ struct Rect {
     int x, y, w, h;
 
     Rect(int x = 0, int y = 0, int w = 0, int h = 0);
+    Rect(double x, double y, double w = 0, double h = 0);
+    Rect(double x, double y, int w, int h);
     Rect(const Point &rhs);
 };
 
