@@ -108,6 +108,7 @@ private:
     bool _loop;
     Socket _socket;
     TTF_Font *_defaultFont;
+    int _defaultFontOffset; // Vertical offset for game text
     std::string _username;
 
     Point _mouse; // Mouse position

@@ -71,6 +71,7 @@ _actionLength(0),
 _loop(true),
 _socket(),
 _defaultFont(0),
+_defaultFontOffset(0),
 _mouse(0,0),
 _mouseMoved(false),
 _leftMouseDown(false),
@@ -109,6 +110,8 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
     xr.findAttr(elem, "filename", fontFile);
     xr.findAttr(elem, "size", fontSize);
     _defaultFont = TTF_OpenFont(fontFile.c_str(), fontSize);
+    xr.findAttr(elem, "offset", _defaultFontOffset);
+    Element::textOffset = _defaultFontOffset;
 
 
     _debug << cmdLineArgs << Log::endl;
