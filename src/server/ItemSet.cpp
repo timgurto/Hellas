@@ -33,10 +33,6 @@ const ItemSet &ItemSet::operator-=(const ItemSet &rhs){
     return *this;
 }
 
-//ItemSet ItemSet::operator-(const ItemSet &rhs) const{
-//    
-//}
-
 size_t ItemSet::operator[](const Item *key) const{
     auto it = _set.find(key);
     if (it == _set.end())
@@ -66,6 +62,15 @@ bool ItemSet::contains(const ItemSet &rhs) const{
             remaining._set.erase(it);
     }
     return true;
+}
+
+bool ItemSet::contains(const Item *item, size_t qty) const{
+    if (qty == 0)
+        return true;
+    auto it = _set.find(item);
+    if (it == _set.end())
+        return false;
+    return (it->second >= qty);
 }
 
 void ItemSet::add(const Item *item, size_t qty){

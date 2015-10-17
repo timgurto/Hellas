@@ -7,18 +7,14 @@
 
 <item
     id="axe"
-    name="Wooden axe"
-    craftTime=10000 >
-    <material id="wood" quantity=3/>
-    <class name="axe"/>
+    name="Wooden axe" >
+    <class name="axe" />
 </item>
 
 <item
     id="chest"
     name="Wooden chest"
-    constructs="chest"
-    craftTime=10000 >
-    <material id="wood" quantity=5/>
+    constructs="chest" >
     <class name="container"/>
     <class name="structure"/>
 </item>

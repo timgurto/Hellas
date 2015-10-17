@@ -25,6 +25,7 @@ public:
 
     void set(const Item *item, size_t quantity = 1);
     bool contains(const ItemSet &rhs) const; // Subset
+    bool contains(const Item *item, size_t qty = 1) const;
     size_t totalQuantity() const { return _totalQty; }
     void add(const Item *item, size_t qty = 1);
     void remove(const Item *item, size_t qty = 1);

@@ -48,9 +48,6 @@ public:
     void addClass(const std::string &className);
     bool hasClasses() const { return _classes.size() > 0; }
     bool isClass(const std::string &className) const;
-
-    void addMaterial(const Item *id, size_t quantity = 1);
-    bool isCraftable() const { return !_materials.empty(); }
 };
 
 #endif

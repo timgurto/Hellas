@@ -11,8 +11,10 @@
 #include <thread>
 #endif
 
+#include "ItemSet.h"
 #include "Object.h"
 #include "ObjectType.h"
+#include "Recipe.h"
 #include "Server.h"
 #include "User.h"
 #include "../Socket.h"
@@ -363,21 +365,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != ']')
                 return;
             user->cancelAction(*this);
-            const std::set<Item>::const_iterator it = _items.find(id);
-            if (it == _items.end()) {
+            const std::set<Recipe>::const_iterator it = _recipes.find(id);
+            if (it == _recipes.end()) {
                 sendMessage(client, SV_INVALID_ITEM);
                 break;
             }
-            if (!it->isCraftable()) {
-                sendMessage(client, SV_CANNOT_CRAFT);
-                break;
-            }
-            if (!user->hasMaterials(*it)) {
+            if (!user->hasItems(it->materials())) {
                 sendMessage(client, SV_NEED_MATERIALS);
                 break;
             }
             user->actionCraft(*it);
-            sendMessage(client, SV_ACTION_STARTED, makeArgs(it->craftTime()));
+            sendMessage(client, SV_ACTION_STARTED, makeArgs(it->time()));
             break;
         }
 
@@ -474,7 +472,7 @@ void Server::gatherObject(size_t serial, User &user){
     }
     // Remove tree if empty
     obj.removeItem(toGive, qtyToGive);
-    if (obj.contents().empty()) {
+    if (obj.contents().isEmpty()) {
         // Ensure no other users are targeting this object, as it will be removed.
         for (const User &otherUserConst : _users) {
             const User & otherUser = const_cast<User &>(otherUserConst);
@@ -603,18 +601,10 @@ void Server::loadData(){
 
         std::string s; int n;
         if (xr.findAttr(elem, "stackSize", n)) item.stackSize(n);
-        if (xr.findAttr(elem, "craftTime", n)) item.craftTime(n);
         if (xr.findAttr(elem, "constructs", s))
             // Create dummy ObjectType if necessary
             item.constructsObject(&*(_objectTypes.insert(ObjectType(s)).first));
 
-        for (auto child : xr.getChildren("material", elem)) {
-            int matQty = 1;
-            xr.findAttr(child, "quantity", matQty);
-            if (xr.findAttr(child, "id", s))
-                // Create dummy Item if necessary
-                item.addMaterial(&*(_items.insert(Item(s)).first), matQty);
-        }
         for (auto child : xr.getChildren("class", elem))
             if (xr.findAttr(child, "name", s)) item.addClass(s);
         
@@ -623,6 +613,42 @@ void Server::loadData(){
             Item &itemInPlace = const_cast<Item &>(*ret.first);
             itemInPlace = item;
         }
+    }
+
+    // Recipes
+    xr.newFile("Data/recipes.xml");
+    for (auto elem : xr.getChildren("recipe")) {
+        std::string id, name;
+        if (!xr.findAttr(elem, "id", id))
+            continue; // ID is mandatory.
+        Recipe recipe(id);
+
+        std::string s; int n;
+        if (!xr.findAttr(elem, "product", s))
+            continue; // product is mandatory.
+        auto it = _items.find(s);
+        if (it == _items.end()) {
+            _debug << Color::RED << "Skipping recipe with invalid product " << s << Log::endl;
+            continue;
+        }
+        recipe.product(&*it);
+
+        if (xr.findAttr(elem, "time", n)) recipe.time(n);
+
+        for (auto child : xr.getChildren("material", elem)) {
+            int matQty = 1;
+            xr.findAttr(child, "quantity", matQty);
+            if (xr.findAttr(child, "id", s)) {
+                auto it = _items.find(Item(s));
+                if (it == _items.end()) {
+                    _debug << Color::RED << "Skipping invalid recipe material " << s << Log::endl;
+                    continue;
+                }
+                recipe.addMaterial(&*it, matQty);
+            }
+        }
+        
+        _recipes.insert(recipe);
     }
 
     std::ifstream fs;
@@ -681,13 +707,13 @@ void Server::loadData(){
             Object obj(&*it, p);
             size_t n;
             if (xr.findAttr(elem, "owner", s)) obj.owner(s);
-            Yield::contents_t contents;
+            ItemSet contents;
             for (auto content : xr.getChildren("contains", elem)) {
                 if (!xr.findAttr(content, "id", s))
                     continue;
                 n = 1;
                 xr.findAttr(content, "quantity", n);
-                contents[&*_items.find(s)] = n;
+                contents.set(&*_items.find(s), n);
             }
             obj.contents(contents);
             _objects.insert(obj);
@@ -735,7 +761,7 @@ void Server::saveData(const Server *server, const std::set<Object> &objects){
             continue;
         auto e = xw.addChild("object");
         xw.setAttr(e, "id", obj.type()->id());
-        for (auto content : obj.contents()) {
+        for (auto &content : obj.contents()) {
             auto contentE = xw.addChild("contains", e);
             xw.setAttr(contentE, "id", content.first->id());
             xw.setAttr(contentE, "quantity", content.second);
