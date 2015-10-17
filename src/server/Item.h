@@ -17,13 +17,6 @@ class Item{
     size_t _stackSize;
     std::set<std::string> _classes;
 
-    /*
-    The materials necessary to craft this item.
-    An empty map implies an item that cannot be crafted.
-    */
-    std::map<const Item *, size_t> _materials;
-    Uint32 _craftTime; // How long this item takes to craft
-
     // The object that this item can construct
     const ObjectType *_constructsObject;
 
@@ -37,9 +30,6 @@ public:
     void stackSize(size_t n) { _stackSize = n; }
     void icon(const std::string &filename);
     const std::set<std::string> &classes() const { return _classes; }
-    const std::map<const Item *, size_t> &materials() const { return _materials; }
-    Uint32 craftTime() const { return _craftTime; }
-    void craftTime(Uint32 time) { _craftTime = time; }
     void constructsObject(const ObjectType *obj) { _constructsObject = obj; }
     const ObjectType *constructsObject() const { return _constructsObject; }
 
