@@ -1,104 +1,104 @@
 <root>
 
-<recipe id="stoneAxeHeadIntrusive" product="stoneAxeHead" craftTime=10000 >
+<recipe id="stoneAxeHeadIntrusive" product="stoneAxeHead" time=10000 >
     <material id="intrusiveRock" quantity=2 />
 </recipe>
-<recipe id="stoneAxeHeadExtrusive" product="stoneAxeHead" craftTime=10000 >
+<recipe id="stoneAxeHeadExtrusive" product="stoneAxeHead" time=10000 >
     <material id="extrusiveRock" quantity=2 />
 </recipe>
-<recipe id="stoneAxeHeadMetamorphic" product="stoneAxeHead" craftTime=10000 >
+<recipe id="stoneAxeHeadMetamorphic" product="stoneAxeHead" time=10000 >
     <material id="metamorphicRock" quantity=2 />
 </recipe>
-<recipe id="stoneAxeHeadSedimentary" product="stoneAxeHead" craftTime=10000 >
+<recipe id="stoneAxeHeadSedimentary" product="stoneAxeHead" time=10000 >
     <material id="sedimentaryRock" quantity=2 />
 </recipe>
 
-<recipe id="stoneHammerHeadIntrusive" product="stoneHammerHead" craftTime=10000 >
+<recipe id="stoneHammerHeadIntrusive" product="stoneHammerHead" time=10000 >
     <material id="intrusiveRock" quantity=2 />
 </recipe>
-<recipe id="stoneHammerHeadExtrusive" product="stoneHammerHead" craftTime=10000 >
+<recipe id="stoneHammerHeadExtrusive" product="stoneHammerHead" time=10000 >
     <material id="extrusiveRock" quantity=2 />
 </recipe>
-<recipe id="stoneHammerHeadMetamorphic" product="stoneHammerHead" craftTime=10000 >
+<recipe id="stoneHammerHeadMetamorphic" product="stoneHammerHead" time=10000 >
     <material id="metamorphicRock" quantity=2 />
 </recipe>
-<recipe id="stoneHammerHeadSedimentary" product="stoneHammerHead" craftTime=10000 >
+<recipe id="stoneHammerHeadSedimentary" product="stoneHammerHead" time=10000 >
     <material id="sedimentaryRock" quantity=2 />
 </recipe>
 
-<recipe id="stoneHoeHeadIntrusive" product="stoneHoeHead" craftTime=10000 >
+<recipe id="stoneHoeHeadIntrusive" product="stoneHoeHead" time=10000 >
     <material id="intrusiveRock" quantity=2 />
 </recipe>
-<recipe id="stoneHoeHeadExtrusive" product="stoneHoeHead" craftTime=10000 >
+<recipe id="stoneHoeHeadExtrusive" product="stoneHoeHead" time=10000 >
     <material id="extrusiveRock" quantity=2 />
 </recipe>
-<recipe id="stoneHoeHeadMetamorphic" product="stoneHoeHead" craftTime=10000 >
+<recipe id="stoneHoeHeadMetamorphic" product="stoneHoeHead" time=10000 >
     <material id="metamorphicRock" quantity=2 />
 </recipe>
-<recipe id="stoneHoeHeadSedimentary" product="stoneHoeHead" craftTime=10000 >
+<recipe id="stoneHoeHeadSedimentary" product="stoneHoeHead" time=10000 >
     <material id="sedimentaryRock" quantity=2 />
 </recipe>
 
-<recipe id="stoneJavelinHeadIntrusive" product="stoneJavelinHead" craftTime=10000 >
+<recipe id="stoneJavelinHeadIntrusive" product="stoneJavelinHead" time=10000 >
     <material id="intrusiveRock" quantity=2 />
 </recipe>
-<recipe id="stoneJavelinHeadExtrusive" product="stoneJavelinHead" craftTime=10000 >
+<recipe id="stoneJavelinHeadExtrusive" product="stoneJavelinHead" time=10000 >
     <material id="extrusiveRock" quantity=2 />
 </recipe>
-<recipe id="stoneJavelinHeadMetamorphic" product="stoneJavelinHead" craftTime=10000 >
+<recipe id="stoneJavelinHeadMetamorphic" product="stoneJavelinHead" time=10000 >
     <material id="metamorphicRock" quantity=2 />
 </recipe>
-<recipe id="stoneJavelinHeadSedimentary" product="stoneJavelinHead" craftTime=10000 >
+<recipe id="stoneJavelinHeadSedimentary" product="stoneJavelinHead" time=10000 >
     <material id="sedimentaryRock" quantity=2 />
 </recipe>
 
-<recipe id="stoneKnifeBladeIntrusive" product="stoneKnifeBlade" craftTime=10000 >
+<recipe id="stoneKnifeBladeIntrusive" product="stoneKnifeBlade" time=10000 >
     <material id="intrusiveRock" quantity=2 />
 </recipe>
-<recipe id="stoneKnifeBladeExtrusive" product="stoneKnifeBlade" craftTime=10000 >
+<recipe id="stoneKnifeBladeExtrusive" product="stoneKnifeBlade" time=10000 >
     <material id="extrusiveRock" quantity=2 />
 </recipe>
-<recipe id="stoneKnifeBladeMetamorphic" product="stoneKnifeBlade" craftTime=10000 >
+<recipe id="stoneKnifeBladeMetamorphic" product="stoneKnifeBlade" time=10000 >
     <material id="metamorphicRock" quantity=2 />
 </recipe>
-<recipe id="stoneKnifeBladeSedimentary" product="stoneKnifeBlade" craftTime=10000 >
+<recipe id="stoneKnifeBladeSedimentary" product="stoneKnifeBlade" time=10000 >
     <material id="sedimentaryRock" quantity=2 />
 </recipe>
 
-<recipe id="stoneShovelHeadIntrusive" product="stoneShovelHead" craftTime=10000 >
+<recipe id="stoneShovelHeadIntrusive" product="stoneShovelHead" time=10000 >
     <material id="intrusiveRock" quantity=2 />
 </recipe>
-<recipe id="stoneShovelHeadExtrusive" product="stoneShovelHead" craftTime=10000 >
+<recipe id="stoneShovelHeadExtrusive" product="stoneShovelHead" time=10000 >
     <material id="extrusiveRock" quantity=2 />
 </recipe>
-<recipe id="stoneShovelHeadMetamorphic" product="stoneShovelHead" craftTime=10000 >
+<recipe id="stoneShovelHeadMetamorphic" product="stoneShovelHead" time=10000 >
     <material id="metamorphicRock" quantity=2 />
 </recipe>
-<recipe id="stoneShovelHeadSedimentary" product="stoneShovelHead" craftTime=10000 >
+<recipe id="stoneShovelHeadSedimentary" product="stoneShovelHead" time=10000 >
     <material id="sedimentaryRock" quantity=2 />
 </recipe>
 
-<recipe id="stoneAxe" product="stoneAxe" craftTime=10000 >
+<recipe id="stoneAxe" product="stoneAxe" time=10000 >
     <material id="stoneAxeHead" />
     <material id="stick" />
 </recipe>
-<recipe id="stoneHammer" product="stoneHammer" craftTime=10000 >
+<recipe id="stoneHammer" product="stoneHammer" time=10000 >
     <material id="stoneHammerHead" />
     <material id="stick" />
 </recipe>
-<recipe id="stoneHoe" product="stoneHoe" craftTime=10000 >
+<recipe id="stoneHoe" product="stoneHoe" time=10000 >
     <material id="stoneHoeHead" />
     <material id="stick" />
 </recipe>
-<recipe id="stoneJavelin" product="stoneJavelin" craftTime=10000 >
+<recipe id="stoneJavelin" product="stoneJavelin" time=10000 >
     <material id="stoneJavelinHead" />
     <material id="stick" />
 </recipe>
-<recipe id="stoneKnife" product="stoneKnife" craftTime=10000 >
+<recipe id="stoneKnife" product="stoneKnife" time=10000 >
     <material id="stoneKnifeBlade" />
     <material id="stick" />
 </recipe>
-<recipe id="stoneShovel" product="stoneShovel" craftTime=10000 >
+<recipe id="stoneShovel" product="stoneShovel" time=10000 >
     <material id="stoneShovelHead" />
     <material id="stick" />
 </recipe>
