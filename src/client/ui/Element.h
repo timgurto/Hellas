@@ -30,6 +30,7 @@ public:
         VERTICAL
     };
     typedef std::list<Element*> children_t;
+    static int TEXT_HEIGHT, ITEM_HEIGHT;
 
 private:
     static TTF_Font *_font;
@@ -46,8 +47,6 @@ private:
     Element *_parent; // 0 if no parent.
 
     std::string _id; // Optional ID for finding children.
-
-    static bool initialized;
 
 protected:
     static Color
@@ -92,6 +91,8 @@ protected:
 public:
     Element(const Rect &rect);
     virtual ~Element();
+
+    static void initialize();
     
     static const Point *absMouse; // Absolute mouse co-ordinates
     static int textOffset;

@@ -43,8 +43,6 @@ const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 50;
 const int Client::ICON_SIZE = 16;
 const size_t Client::ICONS_X = 8;
 Rect Client::INVENTORY_RECT;
-const int Client::ITEM_HEIGHT = ICON_SIZE;
-const int Client::TEXT_HEIGHT = 11;
 const int Client::HEADING_HEIGHT = 14;
 const int Client::LINE_GAP = 6;
 
@@ -114,6 +112,9 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
     Element::font(_defaultFont);
     xr.findAttr(elem, "offset", _defaultFontOffset);
     Element::textOffset = _defaultFontOffset;
+    xr.findAttr(elem, "height", Element::TEXT_HEIGHT);
+
+    Element::initialize();
 
 
     _debug << cmdLineArgs << Log::endl;
