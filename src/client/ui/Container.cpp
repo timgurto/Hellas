@@ -21,25 +21,26 @@ _linked(linked){
         const int
             x = i % cols,
             y = i / cols;
-        static const Rect SLOT_BACKGROUND_OFFSET = Rect(1, 1, -2, -2);
         const Rect slotRect = Rect(x * (Client::ICON_SIZE + GAP + 2) + GAP,
                                            y * (Client::ICON_SIZE + GAP + 2) + GAP + 1,
                                            Client::ICON_SIZE + 2, Client::ICON_SIZE + 2);
-        addChild(new ColorBlock(slotRect + SLOT_BACKGROUND_OFFSET, Color::BLACK));
         addChild(new ShadowBox(slotRect, true));
     }
 }
 
 void Container::refresh(){
+    renderer.setDrawColor(Color::BLACK);
     for (size_t i = 0; i != Client::INVENTORY_SIZE; ++i) {
         const int
             x = i % _cols,
             y = i / _cols;
+        const Rect slotRect = Rect(x * (Client::ICON_SIZE + GAP + 2) + GAP,
+                                            y * (Client::ICON_SIZE + GAP + 2) + GAP + 1,
+                                            Client::ICON_SIZE + 2, Client::ICON_SIZE + 2);
+        static const Rect SLOT_BACKGROUND_OFFSET = Rect(1, 1, -2, -2);
+        renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
         const std::pair<const Item *, size_t> &slot = _linked[i];
         if (slot.first){
-            const Rect slotRect = Rect(x * (Client::ICON_SIZE + GAP + 2) + GAP,
-                                               y * (Client::ICON_SIZE + GAP + 2) + GAP + 1,
-                                               Client::ICON_SIZE + 2, Client::ICON_SIZE + 2);
             slot.first->icon().draw(slotRect.x + 1, slotRect.y + 1);
             if (slot.second > 1){
                 Texture label(font(), makeArgs(slot.second), FONT_COLOR);
