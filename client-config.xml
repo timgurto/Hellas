@@ -1,4 +1,4 @@
 <root>
 <debugFont filename="pocket_pixel.ttf" size=8 height=8 />
-<gameFont filename="poh_pixels.ttf" size=8 offset=2 />
+<gameFont filename="ProFontWindows.ttf" size=9 height=11 offset=0 />
 </root>
