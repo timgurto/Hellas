@@ -55,6 +55,7 @@ _content(new Element(Rect(0, 0, rect.w - ARROW_W, 0))){
     setScrollUpFunction(scrollUpRaw, this);
     setScrollDownFunction(scrollDownRaw, this);
 
+    _cursor->addChild(new ColorBlock(Rect(1, 1, _cursor->width() - 2, _cursor->height() - 2)));
     _cursor->addChild(new ShadowBox(_cursor->rect()));
     _scrollBar->addChild(_cursor);
     updateScrollBar();

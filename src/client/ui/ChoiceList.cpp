@@ -12,7 +12,8 @@ ChoiceList::ChoiceList(const Rect &rect, int childHeight):
 List(rect, childHeight),
 _selectedBox(new ShadowBox(Rect(0, 0, rect.w - List::ARROW_W, childHeight), true)),
 _mouseOverBox(new ShadowBox(Rect(0, 0, rect.w - List::ARROW_W, childHeight))),
-_mouseDownBox(new ShadowBox(Rect(0, 0, rect.w - List::ARROW_W, childHeight), true)){
+_mouseDownBox(new ShadowBox(Rect(0, 0, rect.w - List::ARROW_W, childHeight), true)),
+_boxLayer(new Element(_content->rect())){
     setMouseDownFunction(markMouseDown);
     setMouseUpFunction(toggle);
     setMouseMoveFunction(markMouseOver);
@@ -20,13 +21,14 @@ _mouseDownBox(new ShadowBox(Rect(0, 0, rect.w - List::ARROW_W, childHeight), tru
     _selectedBox->hide();
     _mouseOverBox->hide();
     _mouseDownBox->hide();
-    Element::addChild(_selectedBox);
-    Element::addChild(_mouseOverBox);
-    Element::addChild(_mouseDownBox);
+    _boxLayer->addChild(_selectedBox);
+    _boxLayer->addChild(_mouseOverBox);
+    _boxLayer->addChild(_mouseDownBox);
+    Element::addChild(_boxLayer);
 }
 
 const std::string &ChoiceList::getIdFromMouse(double mouseY, int *index) const{
-    int i = static_cast<int>(mouseY / childHeight());
+    int i = static_cast<int>((mouseY - _content->rect().y) / childHeight());
     if (i < 0 || i >= static_cast<int>(_content->children().size())) {
         *index = -1;
         return EMPTY_STR;
@@ -66,6 +68,7 @@ void ChoiceList::markMouseDown(Element &e, const Point &mousePos){
 
 void ChoiceList::toggle(Element &e, const Point &mousePos){
     ChoiceList &list = dynamic_cast<ChoiceList &>(e);
+    List::mouseUp(e, mousePos);
     if (list._mouseDownID == EMPTY_STR)
         return;
     if (!list.contentCollision(mousePos)) {
@@ -170,4 +173,9 @@ void ChoiceList::verifyBoxes(){
         _selectedID = EMPTY_STR;
         _selectedBox->hide();
     }
+}
+
+void ChoiceList::refresh(){
+    List::refresh();
+    _boxLayer->rect(_content->rect());
 }

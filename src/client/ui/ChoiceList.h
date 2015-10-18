@@ -18,6 +18,7 @@ class ChoiceList : public List{
         *_selectedBox,
         *_mouseOverBox,
         *_mouseDownBox;
+    Element *_boxLayer; // shape/position is a copy of List::_content
 
     const std::string &getIdFromMouse(double mouseY, int *index = 0) const;
     bool contentCollision(const Point &p) const;
@@ -28,6 +29,8 @@ class ChoiceList : public List{
 
 public:
     ChoiceList(const Rect &rect, int childHeight);
+
+    virtual void refresh();
 
     const std::string &getSelected() { return _selectedID; }
 

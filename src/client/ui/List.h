@@ -15,6 +15,9 @@ public:
         CURSOR_HEIGHT,
         SCROLL_AMOUNT;
 
+protected:
+    static void mouseUp(Element &e, const Point &mousePos);
+
 private:
     bool _mouseDownOnCursor;
     int _cursorOffset; // y-offset of the mouse on the cursor.
@@ -32,7 +35,6 @@ private:
     bool _scrolledToBottom;
 
     static void cursorMouseDown(Element &e, const Point &mousePos);
-    static void mouseUp(Element &e, const Point &mousePos);
     static void mouseMove(Element &e, const Point &mousePos);
     static void scrollUpRaw(Element &e);
     static void scrollDownRaw(Element &e);

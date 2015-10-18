@@ -295,7 +295,8 @@ void Element::draw(){
     if (_changed) {
         if (_preRefresh)
             _preRefresh(*_preRefreshElement);
-        assert(_texture);
+        if (!_texture)
+            return;
 
         renderer.pushRenderTarget(_texture);
         makeBackgroundTransparent();
