@@ -8,6 +8,7 @@
 
 ClientObjectType::ClientObjectType(const std::string &id):
 _id(id),
+_canGather(false),
 _gatherSound(0){}
 
 ClientObjectType::~ClientObjectType(){
