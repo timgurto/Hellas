@@ -283,7 +283,7 @@ Element *Element::findChild(const std::string id){
 void Element::refresh(){
     if (!_texture)
         return;
-
+    makeBackgroundTransparent();
     renderer.pushRenderTarget(_texture);
 
     drawChildren();
