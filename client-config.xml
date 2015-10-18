@@ -1,4 +1,4 @@
 <root>
 <debugFont filename="pocket_pixel.ttf" size=8 height=8 />
-<gameFont filename="ProFontWindows.ttf" size=9 height=11 offset=0 />
+<gameFont filename="Minecraftia-Regular.ttf" size=8 height=9 offset=2 />
 </root>
