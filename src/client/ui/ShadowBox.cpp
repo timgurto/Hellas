@@ -9,10 +9,6 @@ Element(rect),
 _reversed(reversed){}
 
 void ShadowBox::refresh(){
-    renderer.pushRenderTarget(_texture);
-
-    makeBackgroundTransparent();
-
     const int
         width = rect().w,
         height = rect().h,
@@ -27,10 +23,6 @@ void ShadowBox::refresh(){
     renderer.setDrawColor(_reversed ? SHADOW_LIGHT : SHADOW_DARK);
     renderer.fillRect(Rect(right, top + 1, 1, height - 1));
     renderer.fillRect(Rect(left + 1, bottom, width - 1, 1));
-
-    drawChildren();
-
-    renderer.popRenderTarget();
 }
 
 void ShadowBox::setReversed(bool reversed){

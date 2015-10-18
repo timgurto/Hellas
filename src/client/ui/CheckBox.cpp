@@ -17,7 +17,6 @@ _linkedBool(linkedBool),
 _inverse(inverse),
 _mouseButtonDown(false),
 _depressed(false){
-    addChild(new ColorBlock(Rect(0, 0, rect.w, rect.h)));
     if (!caption.empty())
         addChild(new Label(Rect(BOX_SIZE + GAP, 0, rect.w, rect.h),
                            caption, LEFT_JUSTIFIED, CENTER_JUSTIFIED));
@@ -78,10 +77,6 @@ void CheckBox::checkIfChanged(){
 }
 
 void CheckBox::refresh(){
-    renderer.pushRenderTarget(_texture);
-
-    drawChildren();
-
     // Box
     const Rect boxRect = Rect(0, (rect().h - BOX_SIZE) / 2 + Y_OFFSET, BOX_SIZE, BOX_SIZE);
     renderer.setDrawColor(FONT_COLOR);
@@ -94,6 +89,4 @@ void CheckBox::refresh(){
         static const Rect CHECK_OFFSET_RECT = Rect(2, 2, -4, -4);
         renderer.fillRect(boxRect + CHECK_OFFSET_RECT);
     }
-
-    renderer.popRenderTarget();
 }

@@ -10,12 +10,6 @@ Element(rect),
 _color(color){}
 
 void ColorBlock::refresh(){
-    renderer.pushRenderTarget(_texture);
-
     renderer.setDrawColor(_color);
     renderer.fillRect(Rect(0, 0, rect().w, rect().h));
-
-    drawChildren();
-
-    renderer.popRenderTarget();
 }

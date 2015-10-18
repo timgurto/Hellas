@@ -100,8 +100,6 @@ void List::refresh(){
         _scrollBar->hide();
     else
         _scrollBar->show();
-
-    Element::refresh();
 }
 
 void List::addChild(Element *child){

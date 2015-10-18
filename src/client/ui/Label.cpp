@@ -13,10 +13,6 @@ _justificationV(justificationV),
 _matchWidth(false){}
 
 void Label::refresh(){
-    renderer.pushRenderTarget(_texture);
-
-    makeBackgroundTransparent();
-
     Texture text(font(), _text, FONT_COLOR);
     if (_matchWidth)
         width(text.width());
@@ -48,10 +44,6 @@ void Label::refresh(){
     }
 
     text.draw(x, y + textOffset);
-
-    drawChildren();
-
-    renderer.popRenderTarget();
 }
 
 void Label::matchW(){

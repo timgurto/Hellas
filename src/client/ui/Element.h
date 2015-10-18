@@ -83,8 +83,11 @@ protected:
     preRefreshFunction_t _preRefresh;
     Element *_preRefreshElement;
 
-    // Redraw the Element to its texture, usually after something has changed.
-    virtual void refresh();
+    /*
+    Perform any extra redrawing.  The renderer can be used direclty.
+    After this function is called, the element's children are drawn on top.
+    */
+    virtual void refresh(){}
 
     void drawChildren() const;
 
