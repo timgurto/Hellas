@@ -11,14 +11,14 @@
 <item id="stoneHammerHead" name="Stone Hammer Head" iconFile="Stone Hammer Head" stackSize=64 />
 <item id="stoneHoeHead" name="Stone Hoe Head" iconFile="Stone Hoe Head" stackSize=64 />
 <item id="stoneJavelinHead" name="Stone Javelin Head" iconFile="Stone Javelin Head" stackSize=64 />
-<item id="stoneKnifeHead" name="Stone Knife Head" iconFile="Stone Knife Blade" stackSize=64 />
+<item id="stoneKnifeBlade" name="Stone Knife Head" iconFile="Stone Knife Blade" stackSize=64 />
 <item id="stoneShovelHead" name="Stone Shovel Head" iconFile="Stone Shovel Head" stackSize=64 />
 
-<item id="stoneAxeIntrusive" name="Stone Axe" iconFile="Stone Axe" />
-<item id="stoneHammerIntrusive" name="Stone Hammer" iconFile="Stone Hammer" />
-<item id="stoneHoeIntrusive" name="Stone Hoe" iconFile="Stone Hoe" />
-<item id="stoneJavelinIntrusive" name="Stone Javelin" iconFile="Stone Javelin" />
-<item id="stoneKnifeIntrusive" name="Stone Knife" iconFile="Stone Knife" />
-<item id="stoneShoveIntrusive" name="Stone Shove" iconFile="Stone Shove" />
+<item id="stoneAxe" name="Stone Axe" iconFile="Stone Axe" />
+<item id="stoneHammer" name="Stone Hammer" iconFile="Stone Hammer" />
+<item id="stoneHoe" name="Stone Hoe" iconFile="Stone Hoe" />
+<item id="stoneJavelin" name="Stone Javelin" iconFile="Stone Javelin" />
+<item id="stoneKnife" name="Stone Knife" iconFile="Stone Knife" />
+<item id="stoneShovel" name="Stone Shovel" iconFile="Stone Shovel" />
 
 </root>

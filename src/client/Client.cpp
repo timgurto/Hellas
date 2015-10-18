@@ -47,8 +47,8 @@ const int Client::TEXT_HEIGHT = 11;
 const int Client::HEADING_HEIGHT = 14;
 const int Client::LINE_GAP = 6;
 
-const int Client::TILE_W = 32;
-const int Client::TILE_H = 32;
+const int Client::TILE_W = 16;
+const int Client::TILE_H = 16;
 const double Client::MOVEMENT_SPEED = 80;
 
 const int Client::ACTION_DISTANCE = 20;
