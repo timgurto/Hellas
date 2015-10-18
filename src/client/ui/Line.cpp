@@ -15,8 +15,6 @@ _orientation(orientation){
 }
 
 void Line::refresh(){
-    renderer.pushRenderTarget(_texture);
-
     const Rect darkRect = _orientation == HORIZONTAL ? Rect(0, 0, rect().w, 1) :
                                                        Rect(0, 0, 1, rect().h); 
     renderer.setDrawColor(SHADOW_DARK);
@@ -27,8 +25,4 @@ void Line::refresh(){
                                
     renderer.setDrawColor(SHADOW_LIGHT);
     renderer.fillRect(lightRect);
-
-    drawChildren();
-
-    renderer.popRenderTarget();
 }

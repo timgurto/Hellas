@@ -31,10 +31,6 @@ _linked(linked){
 }
 
 void Container::refresh(){
-    renderer.pushRenderTarget(_texture);
-
-    drawChildren();
-
     for (size_t i = 0; i != Client::INVENTORY_SIZE; ++i) {
         const int
             x = i % _cols,
@@ -48,10 +44,8 @@ void Container::refresh(){
             if (slot.second > 1){
                 Texture label(font(), makeArgs(slot.second), FONT_COLOR);
                 label.draw(slotRect.x + slotRect.w - label.width() - 1,
-                           slotRect.y + slotRect.h - label.height() + 1);
+                           slotRect.y + slotRect.h - label.height() + 1 + textOffset);
             }
         }
     }
-
-    renderer.popRenderTarget();
 }

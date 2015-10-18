@@ -10,11 +10,5 @@ Element(rect),
 _srcTexture(srcTexture){}
 
 void Picture::refresh(){
-    renderer.pushRenderTarget(_texture);
-
     _srcTexture.draw(Rect(0, 0, rect().w, rect().h));
-
-    drawChildren();
-
-    renderer.popRenderTarget();
 }

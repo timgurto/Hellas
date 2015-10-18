@@ -280,17 +280,6 @@ Element *Element::findChild(const std::string id){
     return 0;
 }
 
-void Element::refresh(){
-    if (!_texture)
-        return;
-
-    renderer.pushRenderTarget(_texture);
-
-    drawChildren();
-
-    renderer.popRenderTarget();
-}
-
 void Element::draw(){
     if (!_visible)
         return;
@@ -301,12 +290,19 @@ void Element::draw(){
         markChanged();
         _dimensionsChanged = false;
     }
-    if (true || !_texture)
+    if (!_texture)
         markChanged();
     if (_changed) {
         if (_preRefresh)
             _preRefresh(*_preRefreshElement);
+        assert(_texture);
+
+        renderer.pushRenderTarget(_texture);
+        makeBackgroundTransparent();
         refresh();
+        drawChildren();
+        renderer.popRenderTarget();
+
         _changed = false;
     }
     _texture.setBlend(SDL_BLENDMODE_BLEND);
