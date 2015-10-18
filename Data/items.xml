@@ -1,190 +1,24 @@
 <root>
+
 <item id="intrusiveRock" name="Intrusive Igneous Rock" stackSize=64 />
 <item id="extrusiveRock" name="Extrusive Igneous Rock" stackSize=64 />
 <item id="metamorphicRock" name="Metamorphic Rock" stackSize=64 />
 <item id="sedimentaryRock" name="Sedimentary Rock" stackSize=64 />
 <item id="seaweed" name="Seaweed" stackSize=160 />
-
-<item id="stoneAxeHeadIntrusive" name="Stone Axe Head" iconFile="Stone Axe Head" craftTime=10000 stackSize=64 >
-    <material id="intrusiveRock" quantity=2 />
-</item>
-<item id="stoneAxeHeadExtrusive" name="Stone Axe Head" iconFile="Stone Axe Head" craftTime=10000  stackSize=64 >
-    <material id="extrusiveRock" quantity=2 />
-</item>
-<item id="stoneAxeHeadMetamorphic" name="Stone Axe Head" iconFile="Stone Axe Head" craftTime=10000  stackSize=64 >
-    <material id="metamorphicRock" quantity=2 />
-</item>
-<item id="stoneAxeHeadSedimentary" name="Stone Axe Head" iconFile="Stone Axe Head" craftTime=10000  stackSize=64 >
-    <material id="sedimentaryRock" quantity=2 />
-</item>
-
-<item id="stoneHammerHeadIntrusive" name="Stone Hammer Head" iconFile="Stone Hammer Head" craftTime=10000  stackSize=64 >
-    <material id="intrusiveRock" quantity=2 />
-</item>
-<item id="stoneHammerHeadExtrusive" name="Stone Hammer Head" iconFile="Stone Hammer Head" craftTime=10000  stackSize=64 >
-    <material id="extrusiveRock" quantity=2 />
-</item>
-<item id="stoneHammerHeadMetamorphic" name="Stone Hammer Head" iconFile="Stone Hammer Head" craftTime=10000  stackSize=64 >
-    <material id="metamorphicRock" quantity=2 />
-</item>
-<item id="stoneHammerHeadSedimentary" name="Stone Hammer Head" iconFile="Stone Hammer Head" craftTime=10000  stackSize=64 >
-    <material id="sedimentaryRock" quantity=2 />
-</item>
-
-<item id="stoneHoeHeadIntrusive" name="Stone Hoe Head" iconFile="Stone Hoe Head" craftTime=10000  stackSize=64 >
-    <material id="intrusiveRock" quantity=2 />
-</item>
-<item id="stoneHoeHeadExtrusive" name="Stone Hoe Head" iconFile="Stone Hoe Head" craftTime=10000  stackSize=64 >
-    <material id="extrusiveRock" quantity=2 />
-</item>
-<item id="stoneHoeHeadMetamorphic" name="Stone Hoe Head" iconFile="Stone Hoe Head" craftTime=10000  stackSize=64 >
-    <material id="metamorphicRock" quantity=2 />
-</item>
-<item id="stoneHoeHeadSedimentary" name="Stone Hoe Head" iconFile="Stone Hoe Head" craftTime=10000  stackSize=64 >
-    <material id="sedimentaryRock" quantity=2 />
-</item>
-
-<item id="stoneJavelinHeadIntrusive" name="Stone Javelin Head" iconFile="Stone Javelin Head" craftTime=10000  stackSize=64 >
-    <material id="intrusiveRock" quantity=2 />
-</item>
-<item id="stoneJavelinHeadExtrusive" name="Stone Javelin Head" iconFile="Stone Javelin Head" craftTime=10000  stackSize=64 >
-    <material id="extrusiveRock" quantity=2 />
-</item>
-<item id="stoneJavelinHeadMetamorphic" name="Stone Javelin Head" iconFile="Stone Javelin Head" craftTime=10000  stackSize=64 >
-    <material id="metamorphicRock" quantity=2 />
-</item>
-<item id="stoneJavelinHeadSedimentary" name="Stone Javelin Head" iconFile="Stone Javelin Head" craftTime=10000  stackSize=64 >
-    <material id="sedimentaryRock" quantity=2 />
-</item>
-
-<item id="stoneKnifeBladeIntrusive" name="Stone Knife Blade" iconFile="Stone Knife Blade" craftTime=10000  stackSize=64 >
-    <material id="intrusiveRock" quantity=2 />
-</item>
-<item id="stoneKnifeBladeExtrusive" name="Stone Knife Blade" iconFile="Stone Knife Blade" craftTime=10000  stackSize=64 >
-    <material id="extrusiveRock" quantity=2 />
-</item>
-<item id="stoneKnifeBladeMetamorphic" name="Stone Knife Blade" iconFile="Stone Knife Blade" craftTime=10000  stackSize=64 >
-    <material id="metamorphicRock" quantity=2 />
-</item>
-<item id="stoneKnifeBladeSedimentary" name="Stone Knife Blade" iconFile="Stone Knife Blade" craftTime=10000  stackSize=64 >
-    <material id="sedimentaryRock" quantity=2 />
-</item>
-
-<item id="stoneShovelHeadIntrusive" name="Stone Shovel Head" iconFile="Stone Shovel Head" craftTime=10000  stackSize=64 >
-    <material id="intrusiveRock" quantity=2 />
-</item>
-<item id="stoneShovelHeadExtrusive" name="Stone Shovel Head" iconFile="Stone Shovel Head" craftTime=10000  stackSize=64 >
-    <material id="extrusiveRock" quantity=2 />
-</item>
-<item id="stoneShovelHeadMetamorphic" name="Stone Shovel Head" iconFile="Stone Shovel Head" craftTime=10000  stackSize=64 >
-    <material id="metamorphicRock" quantity=2 />
-</item>
-<item id="stoneShovelHeadSedimentary" name="Stone Shovel Head" iconFile="Stone Shovel Head" craftTime=10000  stackSize=64 >
-    <material id="sedimentaryRock" quantity=2 />
-</item>
-
-<item id="stoneAxeIntrusive" name="Stone Axe" iconFile="Stone Axe" craftTime=10000  >
-    <material id="stoneAxeHeadIntrusive" />
-    <material id="stick" />
-</item>
-<item id="stoneAxeExtrusive" name="Stone Axe" iconFile="Stone Axe" craftTime=10000  >
-    <material id="stoneAxeHeadIntrusive" />
-    <material id="stick" />
-</item>
-<item id="stoneAxeMetamorphic" name="Stone Axe" iconFile="Stone Axe" craftTime=10000  >
-    <material id="stoneAxeHeadIntrusive" />
-    <material id="stick" />
-</item>
-<item id="stoneAxeimentary" name="Stone Axe" iconFile="Stone Axe" craftTime=10000  >
-    <material id="stoneAxeHeadSedimentary" />
-    <material id="stick" />
-</item>
-
-<item id="stoneHammerIntrusive" name="Stone Hammer" iconFile="Stone Hammer" craftTime=10000  >
-    <material id="stoneHammerHeadIntrusive" />
-    <material id="stick" />
-</item>
-<item id="stoneHammerExtrusive" name="Stone Hammer" iconFile="Stone Hammer" craftTime=10000  >
-    <material id="stoneHammerHeadExtrusive" />
-    <material id="stick" />
-</item>
-<item id="stoneHammerMetamorphic" name="Stone Hammer" iconFile="Stone Hammer" craftTime=10000  >
-    <material id="stoneHammerHeadMetamorphic" />
-    <material id="stick" />
-</item>
-<item id="stoneHammerSedimentary" name="Stone Hammer" iconFile="Stone Hammer" craftTime=10000  >
-    <material id="stoneHammerHeadSedimentary" />
-    <material id="stick" />
-</item>
-
-<item id="stoneHoeIntrusive" name="Stone Hoe" iconFile="Stone Hoe" craftTime=10000  >
-    <material id="stoneHoeHeadIntrusive" />
-    <material id="stick" />
-</item>
-<item id="stoneHoeExtrusive" name="Stone Hoe" iconFile="Stone Hoe" craftTime=10000  >
-    <material id="stoneHoeHeadExtrusive" />
-    <material id="stick" />
-</item>
-<item id="stoneHoeMetamorphic" name="Stone Hoe" iconFile="Stone Hoe" craftTime=10000  >
-    <material id="stoneHoeHeadMetamorphic" />
-    <material id="stick" />
-</item>
-<item id="stoneHoeSedimentary" name="Stone Hoe" iconFile="Stone Hoe" craftTime=10000  >
-    <material id="stoneHoeHeadSedimentary" />
-    <material id="stick" />
-</item>
-
-<item id="stoneJavelinIntrusive" name="Stone Javelin" iconFile="Stone Javelin" craftTime=10000  >
-    <material id="stoneJavelinHeadIntrusive" />
-    <material id="stick" />
-</item>
-<item id="stoneJavelinExtrusive" name="Stone Javelin" iconFile="Stone Javelin" craftTime=10000  >
-    <material id="stoneJavelinHeadExtrusive" />
-    <material id="stick" />
-</item>
-<item id="stoneJavelinMetamorphic" name="Stone Javelin" iconFile="Stone Javelin" craftTime=10000  >
-    <material id="stoneJavelinHeadMetamorphic" />
-    <material id="stick" />
-</item>
-<item id="stoneJavelinSedimentary" name="Stone Javelin" iconFile="Stone Javelin" craftTime=10000  >
-    <material id="stoneJavelinHeadSedimentary" />
-    <material id="stick" />
-</item>
-
-<item id="stoneKnifeIntrusive" name="Stone Knife" iconFile="Stone Knife" craftTime=10000  >
-    <material id="stoneKnifeBladeIntrusive" />
-    <material id="stick" />
-</item>
-<item id="stoneKnifeExtrusive" name="Stone Knife" iconFile="Stone Knife" craftTime=10000  >
-    <material id="stoneKnifeBladeExtrusive" />
-    <material id="stick" />
-</item>
-<item id="stoneKnifeMetamorphic" name="Stone Knife" iconFile="Stone Knife" craftTime=10000  >
-    <material id="stoneKnifBladeMetamorphic" />
-    <material id="stick" />
-</item>
-<item id="stoneKnifeSedimentary" name="Stone Knife" iconFile="Stone Knife" craftTime=10000  >
-    <material id="stoneKnifeBladeSedimentary" />
-    <material id="stick" />
-</item>
-
-<item id="stoneShovelIntrusive" name="Stone Shovel" iconFile="Stone Shovel" craftTime=10000  >
-    <material id="stoneShovelHeadIntrusive" />
-    <material id="stick" />
-</item>
-<item id="stoneShovelExtrusive" name="Stone Shovel" iconFile="Stone Shovel" craftTime=10000  >
-    <material id="stoneShovelHeadExtrusive" />
-    <material id="stick" />
-</item>
-<item id="stoneShovelMetamorphic" name="Stone Shovel" iconFile="Stone Shovel" craftTime=10000  >
-    <material id="stoneShovelHeadMetamorphic" />
-    <material id="stick" />
-</item>
-<item id="stoneShovelSedimentary" name="Stone Shovel" iconFile="Stone Shovel" craftTime=10000  >
-    <material id="stoneShovelHeadSedimentary" />
-    <material id="stick" />
-</item>
-
 <item id="stick" name="Stick" stackSize=64 />
+
+<item id="stoneAxeHead" name="Stone Axe Head" iconFile="Stone Axe Head" stackSize=64 />
+<item id="stoneHammerHead" name="Stone Hammer Head" iconFile="Stone Hammer Head" stackSize=64 />
+<item id="stoneHoeHead" name="Stone Hoe Head" iconFile="Stone Hoe Head" stackSize=64 />
+<item id="stoneJavelinHead" name="Stone Javelin Head" iconFile="Stone Javelin Head" stackSize=64 />
+<item id="stoneKnifeHead" name="Stone Knife Head" iconFile="Stone Knife Blade" stackSize=64 />
+<item id="stoneShovelHead" name="Stone Shovel Head" iconFile="Stone Shovel Head" stackSize=64 />
+
+<item id="stoneAxeIntrusive" name="Stone Axe" iconFile="Stone Axe" />
+<item id="stoneHammerIntrusive" name="Stone Hammer" iconFile="Stone Hammer" />
+<item id="stoneHoeIntrusive" name="Stone Hoe" iconFile="Stone Hoe" />
+<item id="stoneJavelinIntrusive" name="Stone Javelin" iconFile="Stone Javelin" />
+<item id="stoneKnifeIntrusive" name="Stone Knife" iconFile="Stone Knife" />
+<item id="stoneShoveIntrusive" name="Stone Shove" iconFile="Stone Shove" />
 
 </root>

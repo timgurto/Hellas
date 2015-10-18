@@ -17,7 +17,3 @@ void Item::addClass(const std::string &className){
     _classes.insert(className);
 }
 
-void Item::addMaterial(const Item *id, size_t quantity){
-    _materials[id] = quantity;
-}
-

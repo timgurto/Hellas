@@ -10,6 +10,18 @@ y(yy),
 w(ww),
 h(hh){}
 
+Rect::Rect(double xx, double yy, double ww, double hh):
+x(toInt(xx)),
+y(toInt(yy)),
+w(toInt(ww)),
+h(toInt(hh)){}
+
+Rect::Rect(double xx, double yy, int ww, int hh):
+x(toInt(xx)),
+y(toInt(yy)),
+w(ww),
+h(hh){}
+
 Rect::Rect(const Point &rhs):
 x(toInt(rhs.x)),
 y(toInt(rhs.y)),

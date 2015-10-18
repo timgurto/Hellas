@@ -9,8 +9,10 @@
 #include <utility>
 
 #include "Item.h"
+#include "ItemSet.h"
 #include "LogConsole.h"
 #include "Object.h"
+#include "Recipe.h"
 #include "User.h"
 #include "../Args.h"
 #include "../messageCodes.h"
@@ -83,13 +85,14 @@ private:
 
     // World data
     std::set<Item> _items;
+    std::set<Recipe> _recipes;
     std::set<ObjectType> _objectTypes;
 
     mutable LogConsole _debug;
 
     void gatherObject (size_t serial, User &user);
     friend void User::update(Uint32 timeElapsed, Server &server);
-    friend void User::removeMaterials(const Item &item, Server &server);
+    friend void User::removeItems(const ItemSet &items, Server &server);
     friend void User::cancelAction(Server &server);
 
     friend size_t User::giveItem(const Item *item, size_t quantity, const Server &server);

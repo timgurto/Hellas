@@ -47,7 +47,7 @@ void Label::refresh(){
         y = 0;
     }
 
-    text.draw(x, y);
+    text.draw(x, y + textOffset);
 
     drawChildren();
 

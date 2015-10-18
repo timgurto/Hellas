@@ -23,7 +23,7 @@ enum MessageCode{
     // Cancel user's current action
     CL_CANCEL_ACTION = 20,
 
-    // "I want to craft ..."
+    // "I want to craft using recipe ..."
     // Arguments: id
     CL_CRAFT = 21,
 

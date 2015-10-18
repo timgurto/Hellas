@@ -94,6 +94,7 @@ public:
     virtual ~Element();
     
     static const Point *absMouse; // Absolute mouse co-ordinates
+    static int textOffset;
 
     bool visible() const { return _visible; }
     static TTF_Font *font() { return _font; }

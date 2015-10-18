@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "Item.h"
+#include "ItemSet.h"
 #include "Server.h"
 #include "User.h"
 #include "../Socket.h"
@@ -137,9 +138,9 @@ void User::actionTarget(const Object *obj){
     _actionTime = obj->type()->actionTime();
 }
 
-void User::actionCraft(const Item &item){
-    _actionCrafting = &item;
-    _actionTime = item.craftTime();
+void User::actionCraft(const Recipe &recipe){
+    _actionCrafting = &recipe;
+    _actionTime = recipe.time();
 }
 
 void User::actionConstruct(const ObjectType &obj, const Point &location, size_t slot){
@@ -149,20 +150,15 @@ void User::actionConstruct(const ObjectType &obj, const Point &location, size_t 
     _constructingLocation = location;
 }
 
-bool User::hasMaterials(const Item &item) const{
-    std::map<const Item *, size_t> remaining = item.materials();
+bool User::hasItems(const ItemSet &items) const{
+    ItemSet remaining = items;
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
         const std::pair<const Item *, size_t> &invSlot = _inventory[i];
-        std::map<const Item *, size_t>::iterator it = remaining.find(invSlot.first);
-        if (it != remaining.end()) {
-            // Subtract this slot's stack from remaining materials needed
-            if (it->second <= invSlot.second)
-                remaining.erase(it);
-            else
-                it->second -= invSlot.second;
-        }
+        remaining.remove(invSlot.first, invSlot.second);
+        if (remaining.isEmpty())
+            return true;
     }
-    return remaining.empty();
+    return false;
 }
 
 bool User::hasItemClass(const std::string &className) const{
@@ -174,25 +170,14 @@ bool User::hasItemClass(const std::string &className) const{
     return false;
 }
 
-void User::removeMaterials(const Item &item, Server &server) {
+void User::removeItems(const ItemSet &items, Server &server) {
     std::set<size_t> invSlotsChanged;
-    std::map<const Item*, size_t> remaining = item.materials();
+    ItemSet remaining = items;
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
         std::pair<const Item *, size_t> &invSlot = _inventory[i];
-        const std::map<const Item *, size_t>::iterator it = remaining.find(invSlot.first);
-        if (it != remaining.end()) {
-            // Subtract this slot's stack from remaining materials needed
-            if (it->second <= invSlot.second) {
-                invSlot.second -= it->second;
-                invSlotsChanged.insert(i);
-                remaining.erase(it);
-            } else {
-                it->second -= invSlot.second;
-            }
-            if (invSlot.second == 0) {
-                invSlot.first = 0;
-                invSlotsChanged.insert(i);
-            }
+        if (remaining.contains(invSlot.first)) {
+            remaining.remove(invSlot.first, invSlot.second);
+            invSlotsChanged.insert(i);
         }
     }
     for (size_t slotNum : invSlotsChanged) {
@@ -212,14 +197,14 @@ void User::update(Uint32 timeElapsed, Server &server){
             server.gatherObject(_actionTarget->serial(), *this);
             _actionTarget = 0;
         } else if (_actionCrafting) {
-            if (!hasSpace(_actionCrafting)) {
+            if (!hasSpace(_actionCrafting->product())) {
                 server.sendMessage(_socket, SV_INVENTORY_FULL);
                 return;
             }
             // Give user his newly crafted item
-            giveItem(_actionCrafting, 1, server);
+            giveItem(_actionCrafting->product(), 1, server);
             // Remove materials from user's inventory
-            removeMaterials(*_actionCrafting, server);
+            removeItems(_actionCrafting->materials(), server);
             _actionCrafting = 0;
         } else if (_actionConstructing) {
             // Create object

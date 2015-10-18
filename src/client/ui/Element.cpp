@@ -14,6 +14,7 @@ Color Element::SHADOW_DARK;
 Color Element::FONT_COLOR;
 
 TTF_Font *Element::_font = 0;
+int Element::textOffset = 0;
 
 Texture Element::transparentBackground;
 

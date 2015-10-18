@@ -99,9 +99,6 @@
     <ClCompile Include="src\Rect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\server\Item.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\server\Object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -139,6 +136,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\client\Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\server\ItemSet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\server\Recipe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -227,9 +230,6 @@
     <ClInclude Include="src\Rect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\server\Item.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\server\Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -255,6 +255,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\client\Item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\server\ItemSet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\server\Recipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

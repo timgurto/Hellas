@@ -4,7 +4,7 @@
 #define OBJECT_H
 
 #include "ObjectType.h"
-#include "Yield.h"
+#include "ItemSet.h"
 #include "../Point.h"
 
 // A server-side representation of an in-game object
@@ -13,8 +13,7 @@ class Object{
     Point _location;
     const ObjectType *_type;
     std::string _owner;
-    Yield::contents_t _contents; // Remaining contents, which can be gathered
-    size_t _totalContents; // Total quantity of contents remaining.
+    ItemSet _contents; // Remaining contents, which can be gathered
 
 protected:
     static size_t generateSerial();
@@ -30,8 +29,8 @@ public:
     const ObjectType *type() const { return _type; }
     const std::string &owner() const { return _owner; }
     void owner(const std::string &name) { _owner = name; }
-    const Yield::contents_t &contents() const { return _contents; }
-    void contents(const Yield::contents_t &contents);
+    const ItemSet &contents() const { return _contents; }
+    void contents(const ItemSet &contents);
 
     bool operator<(const Object &rhs) const { return _serial < rhs._serial; }
 

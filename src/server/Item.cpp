@@ -14,7 +14,3 @@ bool Item::isClass(const std::string &className) const{
     return _classes.find(className) != _classes.end();
 }
 
-void Item::addMaterial(const Item *id, size_t quantity){
-    _materials[id] = quantity;
-}
-
