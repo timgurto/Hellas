@@ -176,8 +176,14 @@ void User::removeItems(const ItemSet &items, Server &server) {
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
         std::pair<const Item *, size_t> &invSlot = _inventory[i];
         if (remaining.contains(invSlot.first)) {
-            remaining.remove(invSlot.first, invSlot.second);
+            size_t itemsToRemove = min(invSlot.second, remaining[invSlot.first]);
+            remaining.remove(invSlot.first, itemsToRemove);
+            _inventory[i].second -= itemsToRemove;
+            if (_inventory[i].second == 0)
+                _inventory[i].first = 0;
             invSlotsChanged.insert(i);
+            if (remaining.isEmpty())
+                break;
         }
     }
     for (size_t slotNum : invSlotsChanged) {
