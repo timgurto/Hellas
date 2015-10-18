@@ -10,16 +10,14 @@
 
 // A generic window for the in-game UI.
 class Window : public Element{
-
-    static const int CLOSE_BUTTON_SIZE;
-
     std::string _title;
     bool _dragging; // Whether this window is currently being dragged by the mouse.
     Point _dragOffset; // While dragging, where the mouse is on the window.
     Element *_content;
 
 public:
-    static const int HEADING_HEIGHT;
+    static int HEADING_HEIGHT;
+    static int CLOSE_BUTTON_SIZE;
 
     Window(const Rect &rect, const std::string &title);
 

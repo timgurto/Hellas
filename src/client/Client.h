@@ -68,8 +68,6 @@ private:
 
     void initializeCraftingWindow();
     bool _haveMatsFilter, _haveToolsFilter, _classOr, _matOr;
-    static const int ITEM_HEIGHT; // The height of list items featuring item icons.
-    static const int TEXT_HEIGHT; // The height of list items featuring only text.
     static const int HEADING_HEIGHT; // The height of windows' section headings
     static const int LINE_GAP; // The total height occupied by a line and its surrounding spacing
     const Recipe *_activeRecipe; // The recipe currently selected, if any

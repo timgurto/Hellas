@@ -6,6 +6,7 @@
 #include "Renderer.h"
 #include "ui/Button.h"
 #include "ui/CheckBox.h"
+#include "ui/Element.h"
 #include "ui/Label.h"
 #include "ui/Line.h"
 
@@ -46,42 +47,48 @@ void Client::initializeCraftingWindow(){
                                        CONTENT_H, Element::VERTICAL));
 
     // Filters
-    static const int
-        CLASS_LIST_HEIGHT = 59,
-        MATERIALS_LIST_HEIGHT = 60;
     Element *const filterPane = new Element(Rect(FILTERS_PANE_X, CONTENT_Y,
                                                  FILTERS_PANE_W, CONTENT_H));
     _craftingWindow->addChild(filterPane);
     filterPane->addChild(new Label(Rect(0, 0, FILTERS_PANE_W, HEADING_HEIGHT),
                                    "Filters", Element::CENTER_JUSTIFIED));
     int y = HEADING_HEIGHT;
-    filterPane->addChild(new CheckBox(Rect(0, y, FILTERS_PANE_W, TEXT_HEIGHT),
+    filterPane->addChild(new CheckBox(Rect(0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT),
                                       _haveMatsFilter, "Have materials:"));
-    y += TEXT_HEIGHT;
+    y += Element::TEXT_HEIGHT;
     filterPane->addChild(new Line(0, y + LINE_GAP/2, FILTERS_PANE_W));
     y += LINE_GAP;
 
+    static const int
+        TOTAL_FILTERS_HEIGHT = CONTENT_H - y - 4 * Element::TEXT_HEIGHT - LINE_GAP,
+        //TOTAL_FILTERS_HEIGHT = CRAFTING_WINDOW_H - PANE_GAP/2 - y - 4 * Element::TEXT_HEIGHT - LINE_GAP,
+        CLASS_LIST_HEIGHT = TOTAL_FILTERS_HEIGHT / 2,
+        MATERIALS_LIST_HEIGHT = TOTAL_FILTERS_HEIGHT - CLASS_LIST_HEIGHT;
+
     // Class filters
-    filterPane->addChild(new Label(Rect(0, y, FILTERS_PANE_W, TEXT_HEIGHT), "Item class:"));
-    y += TEXT_HEIGHT;
-    List *const classList = new List(Rect(0, y, FILTERS_PANE_W, CLASS_LIST_HEIGHT), TEXT_HEIGHT);
+    filterPane->addChild(new Label(Rect(0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT),
+                                   "Item class:"));
+    y += Element::TEXT_HEIGHT;
+    List *const classList = new List(Rect(0, y, FILTERS_PANE_W, CLASS_LIST_HEIGHT),
+                                     Element::TEXT_HEIGHT);
     filterPane->addChild(classList);
     for (std::map<std::string, bool>::iterator it = _classFilters.begin();
          it != _classFilters.end(); ++it)
-        classList->addChild(new CheckBox(Rect(0, 0, FILTERS_PANE_W, TEXT_HEIGHT),
+        classList->addChild(new CheckBox(Rect(0, 0, FILTERS_PANE_W, Element::TEXT_HEIGHT),
                                          it->second, it->first));
     y += CLASS_LIST_HEIGHT;
-    filterPane->addChild(new CheckBox(Rect(0, y, FILTERS_PANE_W/2, TEXT_HEIGHT),
+    filterPane->addChild(new CheckBox(Rect(0, y, FILTERS_PANE_W/2, Element::TEXT_HEIGHT),
                                       _classOr, "Any"));
-    filterPane->addChild(new CheckBox(Rect(FILTERS_PANE_W/2, y, FILTERS_PANE_W/2, TEXT_HEIGHT),
+    filterPane->addChild(new CheckBox(Rect(FILTERS_PANE_W/2, y,
+                                           FILTERS_PANE_W/2, Element::TEXT_HEIGHT),
                                       _classOr, "All", true));
-    y += TEXT_HEIGHT;
+    y += Element::TEXT_HEIGHT;
     filterPane->addChild(new Line(0, y + LINE_GAP/2, FILTERS_PANE_W));
     y += LINE_GAP;
 
     // Material filters
-    filterPane->addChild(new Label(Rect(0, y, FILTERS_PANE_W, TEXT_HEIGHT), "Materials:"));
-    y += TEXT_HEIGHT;
+    filterPane->addChild(new Label(Rect(0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT), "Materials:"));
+    y += Element::TEXT_HEIGHT;
     List *const materialsList = new List(Rect(0, y, FILTERS_PANE_W, MATERIALS_LIST_HEIGHT),
                                          ICON_SIZE);
     filterPane->addChild(materialsList);
@@ -97,9 +104,10 @@ void Client::initializeCraftingWindow(){
         materialsList->addChild(mat);
     }
     y += MATERIALS_LIST_HEIGHT;
-    filterPane->addChild(new CheckBox(Rect(0, y, FILTERS_PANE_W/2, TEXT_HEIGHT),
+    filterPane->addChild(new CheckBox(Rect(0, y, FILTERS_PANE_W/2, Element::TEXT_HEIGHT),
                                       _matOr, "Any"));
-    filterPane->addChild(new CheckBox(Rect(FILTERS_PANE_W/2, y, FILTERS_PANE_W/2, TEXT_HEIGHT),
+    filterPane->addChild(new CheckBox(Rect(FILTERS_PANE_W/2, y,
+                                           FILTERS_PANE_W/2, Element::TEXT_HEIGHT),
                                       _matOr, "All", true));
 
     // Recipes
@@ -141,7 +149,7 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
 
     // Close Button
     static const int
-        BUTTON_HEIGHT = 15,
+        BUTTON_HEIGHT = Element::TEXT_HEIGHT + 4,
         BUTTON_WIDTH = 40,
         BUTTON_GAP = 3,
         BUTTON_Y = paneRect.h - BUTTON_HEIGHT;
@@ -185,20 +193,20 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
         std::string text = className;
         if (--classesRemaining > 0)
             text += ", ";
-        Label *const classLabel = new Label(Rect(0, 0, 0, TEXT_HEIGHT), text);
+        Label *const classLabel = new Label(Rect(0, 0, 0, Element::TEXT_HEIGHT), text);
         classLabel->matchW();
         classLabel->refresh();
         const int width = classLabel->rect().w;
         static const int SPACE_WIDTH = 4;
         if (x + width - SPACE_WIDTH > paneRect.w) {
             x = ICON_SIZE + CheckBox::GAP;
-            y += TEXT_HEIGHT;
+            y += Element::TEXT_HEIGHT;
         }
         classLabel->rect(x, y);
         x += width;
         pane.addChild(classLabel);
     }
-    y += TEXT_HEIGHT;
+    y += Element::TEXT_HEIGHT;
     if (y < minLineY)
         y = minLineY;
 
@@ -207,8 +215,8 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     y += LINE_GAP;
 
     // Materials list
-    pane.addChild(new Label(Rect(0, y, paneRect.w, TEXT_HEIGHT), "Materials:"));
-    y += TEXT_HEIGHT;
+    pane.addChild(new Label(Rect(0, y, paneRect.w, Element::TEXT_HEIGHT), "Materials:"));
+    y += Element::TEXT_HEIGHT;
     List *const matsList = new List(Rect(0, y, paneRect.w, BUTTON_Y - BUTTON_GAP - y),
                                     ICON_SIZE);
     pane.addChild(matsList);

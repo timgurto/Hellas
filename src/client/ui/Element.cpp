@@ -3,10 +3,11 @@
 #include <cassert>
 
 #include "Element.h"
+#include "Window.h"
+#include "../Client.h"
+#include "../../util.h"
 
 extern Renderer renderer;
-
-bool Element::initialized = false;
 
 Color Element::BACKGROUND_COLOR;
 Color Element::SHADOW_LIGHT;
@@ -15,6 +16,8 @@ Color Element::FONT_COLOR;
 
 TTF_Font *Element::_font = 0;
 int Element::textOffset = 0;
+int Element::TEXT_HEIGHT = 0;
+int Element::ITEM_HEIGHT = 0;
 
 Texture Element::transparentBackground;
 
@@ -33,19 +36,22 @@ _mouseMove(0), _mouseMoveElement(0),
 _scrollUp(0), _scrollUpElement(0),
 _scrollDown(0), _scrollDownElement(0),
 _preRefresh(0), _preRefreshElement(0){
-    if (!initialized) {
-        BACKGROUND_COLOR = Color::GREY_4;
-        SHADOW_LIGHT = Color::GREY_2;
-        SHADOW_DARK = Color::GREY_8;
-        FONT_COLOR = Color::WHITE;
-        initialized = true;
-    }
-
     _texture.setBlend(SDL_BLENDMODE_BLEND);
 }
 
 Element::~Element(){
     clearChildren();
+}
+
+void Element::initialize(){
+    BACKGROUND_COLOR = Color::GREY_4;
+    SHADOW_LIGHT = Color::GREY_2;
+    SHADOW_DARK = Color::GREY_8;
+    FONT_COLOR = Color::WHITE;
+
+    ITEM_HEIGHT = max(Client::ICON_SIZE, TEXT_HEIGHT);
+    Window::HEADING_HEIGHT = TEXT_HEIGHT + 3;
+    Window::CLOSE_BUTTON_SIZE = TEXT_HEIGHT + 2;
 }
 
 void Element::rect(int x, int y, int w, int h){

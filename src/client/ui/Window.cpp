@@ -9,8 +9,8 @@
 #include "ShadowBox.h"
 #include "Window.h"
 
-const int Window::HEADING_HEIGHT = 12;
-const int Window::CLOSE_BUTTON_SIZE = 11;
+int Window::HEADING_HEIGHT = 0;
+int Window::CLOSE_BUTTON_SIZE = 0;
 
 extern Renderer renderer;
 
@@ -41,7 +41,7 @@ _content(new Element(Rect(1, HEADING_HEIGHT + 1, rect.w, rect.h))){
                                                     CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE), "",
                                                     hideWindow, this);
     Label *const closeButtonLabel = new Label(Rect(0, 0, CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE),
-                                              "x", CENTER_JUSTIFIED, BOTTOM_JUSTIFIED);
+                                              "x", CENTER_JUSTIFIED, CENTER_JUSTIFIED);
     closeButton->addChild(closeButtonLabel);
     Element::addChild(closeButton);
 
