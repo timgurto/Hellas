@@ -253,8 +253,6 @@ Client::~Client(){
     Element::cleanup();
     if (_defaultFont)
         TTF_CloseFont(_defaultFont);
-    if (Window::font())
-        TTF_CloseFont(Window::font());
     delete _craftingWindow;
     delete _inventoryWindow;
     Avatar::image("");
