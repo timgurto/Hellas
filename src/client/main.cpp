@@ -20,8 +20,10 @@ int main(int argc, char* argv[]){
 
     srand(static_cast<unsigned>(time(0)));
 
-    Client client;
-    client.run();
+    {
+        Client client;
+        client.run();
+    }
 
     assert(Texture::numTextures() == 0);
     return 0;
