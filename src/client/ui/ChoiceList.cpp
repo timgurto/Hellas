@@ -68,6 +68,7 @@ void ChoiceList::markMouseDown(Element &e, const Point &mousePos){
 
 void ChoiceList::toggle(Element &e, const Point &mousePos){
     ChoiceList &list = dynamic_cast<ChoiceList &>(e);
+    List::mouseUp(e, mousePos);
     if (list._mouseDownID == EMPTY_STR)
         return;
     if (!list.contentCollision(mousePos)) {
