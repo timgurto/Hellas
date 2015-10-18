@@ -24,7 +24,7 @@ LIBRARY_PATHS_CLIENT = $(LIBRARY_PATHS_COMMON) \
 	-LSDL2\SDL2_ttf-2.0.12\lib\x86
 
 # -Wl,-subsystem,windows gets rid of the console window
-CXXFLAGS_COMMON = -fpermissive -Wall -Wpedantic -std=c++11 -DSINGLE_THREAD
+CXXFLAGS_COMMON = -fpermissive -Wall -Wpedantic -std=c++11 -DSINGLE_THREAD -g
 CXXFLAGS_SERVER = $(CXXFLAGS_COMMON) -DSINGLE_THREAD
 CXXFLAGS_CLIENT = $(CXXFLAGS_COMMON) -Wl,-subsystem,windows
 
