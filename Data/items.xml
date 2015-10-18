@@ -1,9 +1,26 @@
 <root>
 
-<item id="intrusiveRock" name="Intrusive Igneous Rock" stackSize=64 />
-<item id="extrusiveRock" name="Extrusive Igneous Rock" stackSize=64 />
-<item id="metamorphicRock" name="Metamorphic Rock" stackSize=64 />
-<item id="sedimentaryRock" name="Sedimentary Rock" stackSize=64 />
+<item id="AndesiteRock" name="Andesite Rock" stackSize=64 />
+<item id="BasaltRock" name="Basalt Rock" stackSize=64 />
+<item id="ChalkRock" name="Chalk Rock" stackSize=64 />
+<item id="ChertRock" name="Chert Rock" stackSize=64 />
+<item id="ClaystoneRock" name="Claystone Rock" stackSize=64 />
+<item id="ConglomerateRock" name="Conglomerate Rock" stackSize=64 />
+<item id="DaciteRock" name="Dacite Rock" stackSize=64 />
+<item id="DioriteRock" name="Diorite Rock" stackSize=64 />
+<item id="DolomiteRock" name="Dolomite Rock" stackSize=64 />
+<item id="GabbroRock" name="Gabbro Rock" stackSize=64 />
+<item id="GneissRock" name="Gneiss Rock" stackSize=64 />
+<item id="GraniteRock" name="Granite Rock" stackSize=64 />
+<item id="LimestoneRock" name="Limestone Rock" stackSize=64 />
+<item id="MarbleRock" name="Marble Rock" stackSize=64 />
+<item id="PhylliteRock" name="Phyllite Rock" stackSize=64 />
+<item id="QuartziteRock" name="Quartzite Rock" stackSize=64 />
+<item id="RhyoliteRock" name="Rhyolite Rock" stackSize=64 />
+<item id="RockSaltRock" name="Rock Salt Rock" stackSize=64 />
+<item id="SchistRock" name="Schist Rock" stackSize=64 />
+<item id="ShaleRock" name="Shale Rock" stackSize=64 />
+<item id="SlateRock" name="Slate Rock" stackSize=64 />
 
 <item id="seaweed" name="Seaweed" stackSize=160 />
 <item id="stick" name="Stick" stackSize=64 />

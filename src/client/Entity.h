@@ -53,11 +53,13 @@ public:
         bool operator()(const Entity *lhs, const Entity *rhs) const{
 
             // 1. location
-            double
+            /*double
                 lhsBottom = lhs->bottomEdge(),
                 rhsBottom = rhs->bottomEdge();
             if (lhsBottom != rhsBottom)
-                return lhsBottom < rhsBottom;
+                return lhsBottom < rhsBottom;*/
+            if (lhs->location().y != rhs->location().y)
+                return lhs->location().y < rhs->location().y;
 
             // 2. memory address (to ensure a unique ordering)
             return lhs < rhs;

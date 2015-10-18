@@ -1,6 +1,6 @@
 <root>
 
-<recipe id="stoneKnifeBladeIntrusive" product="stoneKnifeBlade" time=10000 >
+<!--recipe id="stoneKnifeBladeIntrusive" product="stoneKnifeBlade" time=10000 >
     <material id="intrusiveRock" quantity=2 />
 </recipe>
 <recipe id="stoneKnifeBladeExtrusive" product="stoneKnifeBlade" time=10000 >
@@ -11,7 +11,7 @@
 </recipe>
 <recipe id="stoneKnifeBladeSedimentary" product="stoneKnifeBlade" time=10000 >
     <material id="sedimentaryRock" quantity=2 />
-</recipe>
+</recipe-->
 
 <recipe id="stoneKnife" product="stoneKnife" time=10000 >
     <material id="stoneKnifeBlade" />

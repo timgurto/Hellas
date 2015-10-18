@@ -798,6 +798,25 @@ size_t Server::findTile(const Point &p) const{
     return _map[x][y];
 }
 
+size_t Server::findStoneLayer(const Point &p, const std::vector<std::vector<size_t> > &stoneLayers) const{
+    size_t y = static_cast<size_t>(p.y / TILE_H);
+    if (y >= _mapY) {
+        _debug << Color::RED << "Invalid location; clipping y from " << y << " to " << _mapY-1
+               << ". original co-ord=" << p.y << Log::endl;
+        y = _mapY-1;
+    }
+    double rawX = p.x;
+    if (y % 2 == 1)
+        rawX -= TILE_W/2;
+    size_t x = static_cast<size_t>(rawX / TILE_W);
+    if (x >= _mapX) {
+        _debug << Color::RED << "Invalid location; clipping x from " << x << " to " << _mapX-1
+               << ". original co-ord=" << p.x << Log::endl;
+        x = _mapX-1;
+    }
+    return stoneLayers[x][y];
+}
+
 void Server::generateWorld(){
     _mapX = 60;
     _mapY = 60;
@@ -808,22 +827,6 @@ void Server::generateWorld(){
         _map[x] = std::vector<size_t>(_mapY);
         for (size_t y = 0; y != _mapY; ++y)
             _map[x][y] = 0;
-    }
-
-    // Stone in circles
-    for (int i = 0; i != 15; ++i) {
-        const size_t rockType = rand() % 4 + 2;
-        const size_t centerX = rand() % _mapX;
-        const size_t centerY = rand() % _mapY;
-        for (size_t x = 0; x != _mapX; ++x)
-            for (size_t y = 0; y != _mapY; ++y) {
-                Point thisTile(x, y);
-                if (y % 2 == 1)
-                    thisTile.x -= .5;
-                const double dist = distance(Point(centerX, centerY), thisTile);
-                if (dist <= 7)
-                    _map[x][y] = rockType;
-            }
     }
 
     // River: randomish line
@@ -840,26 +843,101 @@ void Server::generateWorld(){
                 _map[x][y] = 1;
         }
 
+    //Generate stone layer
+    auto stoneLayer = _map;
+    static const size_t LAYER_SIZE = 30;
+    for (size_t y = 0; y < _mapY; y += LAYER_SIZE)
+        for (size_t x = 0; x < _mapX; x += LAYER_SIZE) {
+            size_t stoneType = rand() % 21;
+            for (size_t xx = x; xx != x + LAYER_SIZE && xx != _mapX; ++xx)
+                for (size_t yy = y; yy != y + LAYER_SIZE && yy != _mapX; ++yy)
+                    stoneLayer[xx][yy] = stoneType;
+        }
+
+    // Stone in circles
+    const ObjectType *stoneObj[21];
+    stoneObj[ 0] = &*_objectTypes.find(std::string("Andesite"));
+    stoneObj[ 1] = &*_objectTypes.find(std::string("Basalt"));
+    stoneObj[ 2] = &*_objectTypes.find(std::string("Chalk"));
+    stoneObj[ 3] = &*_objectTypes.find(std::string("Chert"));
+    stoneObj[ 4] = &*_objectTypes.find(std::string("Claystone"));
+    stoneObj[ 5] = &*_objectTypes.find(std::string("Conglomerate"));
+    stoneObj[ 6] = &*_objectTypes.find(std::string("Dacite"));
+    stoneObj[ 7] = &*_objectTypes.find(std::string("Diorite"));
+    stoneObj[ 8] = &*_objectTypes.find(std::string("Dolomite"));
+    stoneObj[ 9] = &*_objectTypes.find(std::string("Gabbro"));
+    stoneObj[10] = &*_objectTypes.find(std::string("Gneiss"));
+    stoneObj[11] = &*_objectTypes.find(std::string("Granite"));
+    stoneObj[12] = &*_objectTypes.find(std::string("Limestone"));
+    stoneObj[13] = &*_objectTypes.find(std::string("Marble"));
+    stoneObj[14] = &*_objectTypes.find(std::string("Phyllite"));
+    stoneObj[15] = &*_objectTypes.find(std::string("Quartzite"));
+    stoneObj[16] = &*_objectTypes.find(std::string("Rhyolite"));
+    stoneObj[17] = &*_objectTypes.find(std::string("RockSalt"));
+    stoneObj[18] = &*_objectTypes.find(std::string("Schist"));
+    stoneObj[19] = &*_objectTypes.find(std::string("Shale"));
+    stoneObj[20] = &*_objectTypes.find(std::string("Slate"));
+    for (int i = 0; i != 15; ++i) {
+        const size_t centerX = rand() % _mapX;
+        const size_t centerY = rand() % _mapY;
+        for (size_t x = 0; x != _mapX; ++x)
+            for (size_t y = 0; y != _mapY; ++y) {
+                Point thisTile(x, y);
+                if (y % 2 == 1)
+                    thisTile.x -= .5;
+                const double dist = distance(Point(centerX, centerY), thisTile);
+                if (dist <= 7) {
+                    Object stone(stoneObj[stoneLayer[x][y]], Point(thisTile.x * TILE_W,
+                                                                   thisTile.y * TILE_H));
+                    _objects.insert(stone);
+                }
+            }
+    }
+
     // Rocks/grass/seaweed
-    const ObjectType *objType[12];
-    objType[0] = &*_objectTypes.find(std::string("grass"));
-    objType[1] = &*_objectTypes.find(std::string("seaweed"));
-    objType[2] = &*_objectTypes.find(std::string("extrusiveRock"));
-    objType[3] = &*_objectTypes.find(std::string("intrusiveRock"));
-    objType[4] = &*_objectTypes.find(std::string("metamorphicRock"));
-    objType[5] = &*_objectTypes.find(std::string("sedimentaryRock"));
+    const ObjectType *rock[21];
+    rock[ 0] = &*_objectTypes.find(std::string("AndesiteRock"));
+    rock[ 1] = &*_objectTypes.find(std::string("BasaltRock"));
+    rock[ 2] = &*_objectTypes.find(std::string("ChalkRock"));
+    rock[ 3] = &*_objectTypes.find(std::string("ChertRock"));
+    rock[ 4] = &*_objectTypes.find(std::string("ClaystoneRock"));
+    rock[ 5] = &*_objectTypes.find(std::string("ConglomerateRock"));
+    rock[ 6] = &*_objectTypes.find(std::string("DaciteRock"));
+    rock[ 7] = &*_objectTypes.find(std::string("DioriteRock"));
+    rock[ 8] = &*_objectTypes.find(std::string("DolomiteRock"));
+    rock[ 9] = &*_objectTypes.find(std::string("GabbroRock"));
+    rock[10] = &*_objectTypes.find(std::string("GneissRock"));
+    rock[11] = &*_objectTypes.find(std::string("GraniteRock"));
+    rock[12] = &*_objectTypes.find(std::string("LimestoneRock"));
+    rock[13] = &*_objectTypes.find(std::string("MarbleRock"));
+    rock[14] = &*_objectTypes.find(std::string("PhylliteRock"));
+    rock[15] = &*_objectTypes.find(std::string("QuartziteRock"));
+    rock[16] = &*_objectTypes.find(std::string("RhyoliteRock"));
+    rock[17] = &*_objectTypes.find(std::string("RockSaltRock"));
+    rock[18] = &*_objectTypes.find(std::string("SchistRock"));
+    rock[19] = &*_objectTypes.find(std::string("ShaleRock"));
+    rock[20] = &*_objectTypes.find(std::string("SlateRock"));
     
-    objType[6] = &*_objectTypes.find(std::string("stick"));
-    objType[7] = objType[8] = objType[9] = objType[10] = objType[11] = 0;
+    const ObjectType *stick = &*_objectTypes.find(std::string("stick"));
+    const ObjectType *seaweed = &*_objectTypes.find(std::string("seaweed"));
+    const ObjectType *grass = &*_objectTypes.find(std::string("grass"));
+    
     for (int i = 0; i != 300; ++i){
         Point p = mapRand();
-        size_t tile = findTile(p);
-        if (rand() % 2 == 0)
-            tile += 6;
-        if (objType[tile]) {
-            Object o(objType[tile], p);
-            _objects.insert(o).first;
+        const ObjectType *type = 0;
+        size_t terrain = findTile(p);
+        if (terrain == 1)
+            type = seaweed;
+        else {
+            size_t randNum = rand() % 8;
+            if (randNum < 4)
+                type = grass;
+            else if (randNum < 6)
+                type = stick;
+            else
+                type = rock[findStoneLayer(p, stoneLayer)];
         }
+        _objects.insert(Object(type, p));
     }
 }
 

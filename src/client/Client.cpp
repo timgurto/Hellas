@@ -134,12 +134,8 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
     Avatar::image("Images/man.png");
     _tile[0] = Texture(std::string("Images/Terrain/grass.png"));
     _tile[1] = Texture(std::string("Images/Terrain/water.png"));
-    _tile[2] = Texture(std::string("Images/Terrain/Extrusive Raw.png"));
-    _tile[3] = Texture(std::string("Images/Terrain/Intrusive Raw.png"));
-    _tile[4] = Texture(std::string("Images/Terrain/Metamorphic Raw.png"));
-    _tile[5] = Texture(std::string("Images/Terrain/Sedimentary Raw.png"));
     if (!isDebug())
-        for (size_t i = 0; i != 6; ++i) {
+        for (size_t i = 0; i != 2; ++i) {
             _tile[i].setBlend(SDL_BLENDMODE_ADD);
             _tile[i].setAlpha(0x3f);
         }

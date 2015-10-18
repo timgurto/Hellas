@@ -90,7 +90,7 @@ private:
     Window *_inventoryWindow;
     void initializeInventoryWindow();
 
-    Texture _tile[6];
+    Texture _tile[2];
 
     Avatar _character; // Describes the user's character
     Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.

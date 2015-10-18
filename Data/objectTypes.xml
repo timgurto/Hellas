@@ -1,16 +1,89 @@
 <root>
-<objectType id="intrusiveRock" actionTime = 1 >
-    <yield id="intrusiveRock" />
+<objectType id="AndesiteRock" actionTime = 1 >
+    <yield id="AndesiteRock" />
 </objectType>
-<objectType id="extrusiveRock" actionTime = 1 >
-    <yield id="extrusiveRock" />
+<objectType id="BasaltRock" actionTime = 1 >
+    <yield id="BasaltRock" />
 </objectType>
-<objectType id="metamorphicRock" actionTime = 1 >
-    <yield id="metamorphicRock" />
+<objectType id="ChalkRock" actionTime = 1 >
+    <yield id="ChalkRock" />
 </objectType>
-<objectType id="sedimentaryRock" actionTime = 1 >
-    <yield id="sedimentaryRock" />
+<objectType id="ChertRock" actionTime = 1 >
+    <yield id="ChertRock" />
 </objectType>
+<objectType id="ClaystoneRock" actionTime = 1 >
+    <yield id="ClaystoneRock" />
+</objectType>
+<objectType id="ConglomerateRock" actionTime = 1 >
+    <yield id="ConglomerateRock" />
+</objectType>
+<objectType id="DaciteRock" actionTime = 1 >
+    <yield id="DaciteRock" />
+</objectType>
+<objectType id="DioriteRock" actionTime = 1 >
+    <yield id="DioriteRock" />
+</objectType>
+<objectType id="DolomiteRock" actionTime = 1 >
+    <yield id="DolomiteRock" />
+</objectType>
+<objectType id="GabbroRock" actionTime = 1 >
+    <yield id="GabbroRock" />
+</objectType>
+<objectType id="GneissRock" actionTime = 1 >
+    <yield id="GneissRock" />
+</objectType>
+<objectType id="GraniteRock" actionTime = 1 >
+    <yield id="GraniteRock" />
+</objectType>
+<objectType id="LimestoneRock" actionTime = 1 >
+    <yield id="LimestoneRock" />
+</objectType>
+<objectType id="MarbleRock" actionTime = 1 >
+    <yield id="MarbleRock" />
+</objectType>
+<objectType id="PhylliteRock" actionTime = 1 >
+    <yield id="PhylliteRock" />
+</objectType>
+<objectType id="QuartziteRock" actionTime = 1 >
+    <yield id="QuartziteRock" />
+</objectType>
+<objectType id="RhyoliteRock" actionTime = 1 >
+    <yield id="RhyoliteRock" />
+</objectType>
+<objectType id="RockSaltRock" actionTime = 1 >
+    <yield id="RockSaltRock" />
+</objectType>
+<objectType id="SchistRock" actionTime = 1 >
+    <yield id="SchistRock" />
+</objectType>
+<objectType id="ShaleRock" actionTime = 1 >
+    <yield id="ShaleRock" />
+</objectType>
+<objectType id="SlateRock" actionTime = 1 >
+    <yield id="SlateRock" />
+</objectType>
+
+<objectType id="Andesite" />
+<objectType id="Basalt" />
+<objectType id="Chalk" />
+<objectType id="Chert" />
+<objectType id="Claystone" />
+<objectType id="Conglomerate" />
+<objectType id="Dacite" />
+<objectType id="Diorite" />
+<objectType id="Dolomite" />
+<objectType id="Gabbro" />
+<objectType id="Gneiss" />
+<objectType id="Granite" />
+<objectType id="Limestone" />
+<objectType id="Marble" />
+<objectType id="Phyllite" />
+<objectType id="Quartzite" />
+<objectType id="Rhyolite" />
+<objectType id="RockSalt" />
+<objectType id="Schist" />
+<objectType id="Shale" />
+<objectType id="Slate" />
 
 <objectType id="grass" actionTime=1 gatherReq="knife" >
     <yield id="straw" />
