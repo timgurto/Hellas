@@ -4,25 +4,15 @@
 <item id="extrusiveRock" name="Extrusive Igneous Rock" stackSize=64 />
 <item id="metamorphicRock" name="Metamorphic Rock" stackSize=64 />
 <item id="sedimentaryRock" name="Sedimentary Rock" stackSize=64 />
+
 <item id="seaweed" name="Seaweed" stackSize=160 />
 <item id="stick" name="Stick" stackSize=64 />
 <item id="straw" name="Straw" stackSize=64 iconFile="Straw" />
 <item id="thatch" name="Thatch" stackSize=32 iconFile="Thatch" />
 
-<item id="stoneAxeHead" name="Stone Axe Head" iconFile="Stone Axe Head" stackSize=64 />
-<item id="stoneHammerHead" name="Stone Hammer Head" iconFile="Stone Hammer Head" stackSize=64 />
-<item id="stoneHoeHead" name="Stone Hoe Head" iconFile="Stone Hoe Head" stackSize=64 />
-<item id="stoneJavelinHead" name="Stone Javelin Head" iconFile="Stone Javelin Head" stackSize=64 />
-<item id="stoneShovelHead" name="Stone Shovel Head" iconFile="Stone Shovel Head" stackSize=64 />
 <item id="stoneKnifeBlade" name="Stone Knife Head" iconFile="Stone Knife Blade" stackSize=64 />
-
-<item id="stoneAxe" name="Stone Axe" iconFile="Stone Axe" />
-<item id="stoneHammer" name="Stone Hammer" iconFile="Stone Hammer" />
-<item id="stoneHoe" name="Stone Hoe" iconFile="Stone Hoe" />
-<item id="stoneJavelin" name="Stone Javelin" iconFile="Stone Javelin" />
 <item id="stoneKnife" name="Stone Knife" iconFile="Stone Knife">
     <class name="knife" />
 </item>
-<item id="stoneShovel" name="Stone Shovel" iconFile="Stone Shovel" />
 
 </root>

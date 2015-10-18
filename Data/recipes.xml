@@ -1,57 +1,5 @@
 <root>
 
-<recipe id="stoneAxeHeadIntrusive" product="stoneAxeHead" time=10000 >
-    <material id="intrusiveRock" quantity=2 />
-</recipe>
-<recipe id="stoneAxeHeadExtrusive" product="stoneAxeHead" time=10000 >
-    <material id="extrusiveRock" quantity=2 />
-</recipe>
-<recipe id="stoneAxeHeadMetamorphic" product="stoneAxeHead" time=10000 >
-    <material id="metamorphicRock" quantity=2 />
-</recipe>
-<recipe id="stoneAxeHeadSedimentary" product="stoneAxeHead" time=10000 >
-    <material id="sedimentaryRock" quantity=2 />
-</recipe>
-
-<recipe id="stoneHammerHeadIntrusive" product="stoneHammerHead" time=10000 >
-    <material id="intrusiveRock" quantity=2 />
-</recipe>
-<recipe id="stoneHammerHeadExtrusive" product="stoneHammerHead" time=10000 >
-    <material id="extrusiveRock" quantity=2 />
-</recipe>
-<recipe id="stoneHammerHeadMetamorphic" product="stoneHammerHead" time=10000 >
-    <material id="metamorphicRock" quantity=2 />
-</recipe>
-<recipe id="stoneHammerHeadSedimentary" product="stoneHammerHead" time=10000 >
-    <material id="sedimentaryRock" quantity=2 />
-</recipe>
-
-<recipe id="stoneHoeHeadIntrusive" product="stoneHoeHead" time=10000 >
-    <material id="intrusiveRock" quantity=2 />
-</recipe>
-<recipe id="stoneHoeHeadExtrusive" product="stoneHoeHead" time=10000 >
-    <material id="extrusiveRock" quantity=2 />
-</recipe>
-<recipe id="stoneHoeHeadMetamorphic" product="stoneHoeHead" time=10000 >
-    <material id="metamorphicRock" quantity=2 />
-</recipe>
-<recipe id="stoneHoeHeadSedimentary" product="stoneHoeHead" time=10000 >
-    <material id="sedimentaryRock" quantity=2 />
-</recipe>
-
-<recipe id="stoneJavelinHeadIntrusive" product="stoneJavelinHead" time=10000 >
-    <material id="intrusiveRock" quantity=2 />
-</recipe>
-<recipe id="stoneJavelinHeadExtrusive" product="stoneJavelinHead" time=10000 >
-    <material id="extrusiveRock" quantity=2 />
-</recipe>
-<recipe id="stoneJavelinHeadMetamorphic" product="stoneJavelinHead" time=10000 >
-    <material id="metamorphicRock" quantity=2 />
-</recipe>
-<recipe id="stoneJavelinHeadSedimentary" product="stoneJavelinHead" time=10000 >
-    <material id="sedimentaryRock" quantity=2 />
-</recipe>
-
 <recipe id="stoneKnifeBladeIntrusive" product="stoneKnifeBlade" time=10000 >
     <material id="intrusiveRock" quantity=2 />
 </recipe>
@@ -65,41 +13,8 @@
     <material id="sedimentaryRock" quantity=2 />
 </recipe>
 
-<recipe id="stoneShovelHeadIntrusive" product="stoneShovelHead" time=10000 >
-    <material id="intrusiveRock" quantity=2 />
-</recipe>
-<recipe id="stoneShovelHeadExtrusive" product="stoneShovelHead" time=10000 >
-    <material id="extrusiveRock" quantity=2 />
-</recipe>
-<recipe id="stoneShovelHeadMetamorphic" product="stoneShovelHead" time=10000 >
-    <material id="metamorphicRock" quantity=2 />
-</recipe>
-<recipe id="stoneShovelHeadSedimentary" product="stoneShovelHead" time=10000 >
-    <material id="sedimentaryRock" quantity=2 />
-</recipe>
-
-<recipe id="stoneAxe" product="stoneAxe" time=10000 >
-    <material id="stoneAxeHead" />
-    <material id="stick" />
-</recipe>
-<recipe id="stoneHammer" product="stoneHammer" time=10000 >
-    <material id="stoneHammerHead" />
-    <material id="stick" />
-</recipe>
-<recipe id="stoneHoe" product="stoneHoe" time=10000 >
-    <material id="stoneHoeHead" />
-    <material id="stick" />
-</recipe>
-<recipe id="stoneJavelin" product="stoneJavelin" time=10000 >
-    <material id="stoneJavelinHead" />
-    <material id="stick" />
-</recipe>
 <recipe id="stoneKnife" product="stoneKnife" time=10000 >
     <material id="stoneKnifeBlade" />
-    <material id="stick" />
-</recipe>
-<recipe id="stoneShovel" product="stoneShovel" time=10000 >
-    <material id="stoneShovelHead" />
     <material id="stick" />
 </recipe>
 
