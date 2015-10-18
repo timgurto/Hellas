@@ -1,41 +1,26 @@
 <root>
-<objectType
-    id="intrusiveRock"
-    actionTime = 1 >
+<objectType id="intrusiveRock" actionTime = 1 >
     <yield id="intrusiveRock" />
 </objectType>
-
-<objectType
-    id="extrusiveRock"
-    actionTime = 1 >
+<objectType id="extrusiveRock" actionTime = 1 >
     <yield id="extrusiveRock" />
 </objectType>
-
-<objectType
-    id="metamorphicRock"
-    actionTime = 1 >
+<objectType id="metamorphicRock" actionTime = 1 >
     <yield id="metamorphicRock" />
 </objectType>
-
-<objectType
-    id="sedimentaryRock"
-    actionTime = 1 >
+<objectType id="sedimentaryRock" actionTime = 1 >
     <yield id="sedimentaryRock" />
 </objectType>
 
-<objectType
-    id="grass" >
+<objectType id="grass" actionTime=1 gatherReq="knife" >
+    <yield id="straw" />
 </objectType>
 
-<objectType
-    id="seaweed"
-    actionTime = 1000 >
+<objectType id="seaweed" actionTime = 1000 gatherReq="knife" >
     <yield id="seaweed" initialMean=10 initialSD=2.5 gatherMean = 160 />
 </objectType>
 
-<objectType
-    id="stick"
-    actionTime = 1 >
+<objectType id="stick" actionTime = 1 >
     <yield id="stick" />
 </objectType>
 </root>

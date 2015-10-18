@@ -103,4 +103,8 @@
     <material id="stick" />
 </recipe>
 
+<recipe id="thatch" product="thatch" time=1000 >
+    <material id="straw" quantity=4 />
+</recipe>
+
 </root>
