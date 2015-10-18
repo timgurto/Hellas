@@ -16,6 +16,7 @@
 #include "LogSDL.h"
 #include "Renderer.h"
 #include "TooltipBuilder.h"
+#include "ui/Element.h"
 #include "../XmlReader.h"
 #include "../messageCodes.h"
 #include "../util.h"
@@ -110,6 +111,7 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
     xr.findAttr(elem, "filename", fontFile);
     xr.findAttr(elem, "size", fontSize);
     _defaultFont = TTF_OpenFont(fontFile.c_str(), fontSize);
+    Element::font(_defaultFont);
     xr.findAttr(elem, "offset", _defaultFontOffset);
     Element::textOffset = _defaultFontOffset;
 
@@ -241,7 +243,6 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
 
 
     Element::absMouse = &_mouse;
-    Element::font(TTF_OpenFont("poh_pixels.ttf", 16));
 
     initializeCraftingWindow();
     initializeInventoryWindow();
