@@ -1,17 +1,68 @@
 <root>
 
-<!--recipe id="stoneKnifeBladeIntrusive" product="stoneKnifeBlade" time=10000 >
-    <material id="intrusiveRock" quantity=2 />
+<recipe id="stoneKnifeBladeAndesite" product="stoneKnifeBlade" time=1000 >
+    <material id="AndesiteRock" quantity=2 />
 </recipe>
-<recipe id="stoneKnifeBladeExtrusive" product="stoneKnifeBlade" time=10000 >
-    <material id="extrusiveRock" quantity=2 />
+<recipe id="stoneKnifeBladeBasalt" product="stoneKnifeBlade" time=1000 >
+    <material id="BasaltRock" quantity=2 />
 </recipe>
-<recipe id="stoneKnifeBladeMetamorphic" product="stoneKnifeBlade" time=10000 >
-    <material id="metamorphicRock" quantity=2 />
+<recipe id="stoneKnifeBladeChalk" product="stoneKnifeBlade" time=1000 >
+    <material id="ChalkRock" quantity=2 />
 </recipe>
-<recipe id="stoneKnifeBladeSedimentary" product="stoneKnifeBlade" time=10000 >
-    <material id="sedimentaryRock" quantity=2 />
-</recipe-->
+<recipe id="stoneKnifeBladeChert" product="stoneKnifeBlade" time=1000 >
+    <material id="ChertRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladeClaystone" product="stoneKnifeBlade" time=1000 >
+    <material id="ClaystoneRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladeConglomerate" product="stoneKnifeBlade" time=1000 >
+    <material id="ConglomerateRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladeDacite" product="stoneKnifeBlade" time=1000 >
+    <material id="DaciteRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladeDiorite" product="stoneKnifeBlade" time=1000 >
+    <material id="DioriteRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladeDolomite" product="stoneKnifeBlade" time=1000 >
+    <material id="DolomiteRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladeGabbro" product="stoneKnifeBlade" time=1000 >
+    <material id="GabbroRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladeGneiss" product="stoneKnifeBlade" time=1000 >
+    <material id="GneissRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladeGranite" product="stoneKnifeBlade" time=1000 >
+    <material id="GraniteRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladeLimestone" product="stoneKnifeBlade" time=1000 >
+    <material id="LimestoneRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladeMarble" product="stoneKnifeBlade" time=1000 >
+    <material id="MarbleRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladePhyllite" product="stoneKnifeBlade" time=1000 >
+    <material id="PhylliteRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladeQuartzite" product="stoneKnifeBlade" time=1000 >
+    <material id="QuartziteRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladeRhyolite" product="stoneKnifeBlade" time=1000 >
+    <material id="RhyoliteRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladeRockSalt" product="stoneKnifeBlade" time=1000 >
+    <material id="RockSaltRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladeSchist" product="stoneKnifeBlade" time=1000 >
+    <material id="SchistRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladeShale" product="stoneKnifeBlade" time=1000 >
+    <material id="ShaleRock" quantity=2 />
+</recipe>
+<recipe id="stoneKnifeBladeSlate" product="stoneKnifeBlade" time=1000 >
+    <material id="SlateRock" quantity=2 />
+</recipe>
 
 <recipe id="stoneKnife" product="stoneKnife" time=10000 >
     <material id="stoneKnifeBlade" />
