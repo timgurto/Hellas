@@ -20,6 +20,7 @@ class ObjectType{
 
     Yield _yield; // If gatherable.
 
+    bool _collides; // false by default; true if any collisionRect is specified.
     Rect _collisionRect; // Relative to position
 
 public:
@@ -34,6 +35,7 @@ public:
     Uint32 constructionTime() const { return _constructionTime; }
     void constructionTime(Uint32 t) { _constructionTime = t; }
     const Yield &yield() const { return _yield; }
+    bool collides() const { return _collides; }
     const Rect &collisionRect() const { return _collisionRect; }
     void collisionRect(const Rect &r) { _collisionRect = r; _collides = true; }
 

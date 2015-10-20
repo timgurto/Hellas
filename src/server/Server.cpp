@@ -588,6 +588,15 @@ void Server::loadData(){
             std::set<Item>::const_iterator itemIt = _items.insert(Item(s)).first;
             ot.addYield(&*itemIt, initMean, initSD, gatherMean, gatherSD);
         }
+        auto collisionRect = xr.findChild("collisionRect", elem);
+        if (collisionRect) {
+            Rect r;
+            xr.findAttr(collisionRect, "x", r.x);
+            xr.findAttr(collisionRect, "y", r.y);
+            xr.findAttr(collisionRect, "w", r.w);
+            xr.findAttr(collisionRect, "h", r.h);
+            ot.collisionRect(r);
+        }
         
         _objectTypes.insert(ot);
     }
@@ -917,6 +926,7 @@ bool Server::isLocationValid(const Point &loc, const ObjectType &type, const Obj
     const int
         right = rect.x + rect.w,
         bottom = rect.y + rect.h;
+    // Map edges
     const int
         xLimit = _mapX * Server::TILE_W - Server::TILE_W/2,
         yLimit = _mapY * Server::TILE_H;
@@ -924,5 +934,14 @@ bool Server::isLocationValid(const Point &loc, const ObjectType &type, const Obj
         rect.y < 0 || bottom > yLimit)
         return false;
 
+    // Objects
+    for (const Object checkObj : _objects) {
+        if (&checkObj == object)
+            continue;
+        if (!checkObj.type()->collides())
+            continue;
+        if (rect.collides(checkObj.collisionRect()))
+            return false;
+    }
     return true;
 }

@@ -55,8 +55,9 @@ void User::updateLocation(const Point &dest, const Server &server){
                                     / 1000.0 * Server::MOVEMENT_SPEED;
     Point newDest = interpolate(_location, dest, maxLegalDistance);
 
+    const static Rect AVATAR_COLLISION_RECT(-10, -10, 20, 20);
     static ObjectType PLAYER_TYPE("");
-    PLAYER_TYPE.collisionRect(Rect(-10, -10, 20, 20));
+    PLAYER_TYPE.collisionRect(AVATAR_COLLISION_RECT);
 
     if (!server.isLocationValid(newDest, PLAYER_TYPE)) {
         static const double ACCURACY = 0.5;
