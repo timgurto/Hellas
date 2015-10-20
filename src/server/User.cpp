@@ -53,22 +53,36 @@ void User::updateLocation(const Point &dest, const Server &server){
     const double maxLegalDistance = min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES,
                                         timeElapsed + 100)
                                     / 1000.0 * Server::MOVEMENT_SPEED;
-    Point newDest = interpolate(_location, dest, maxLegalDistance);
+    Point interpolated = interpolate(_location, dest, maxLegalDistance);
 
     const static Rect AVATAR_COLLISION_RECT(-10, -10, 20, 20);
     static ObjectType PLAYER_TYPE("");
     PLAYER_TYPE.collisionRect(AVATAR_COLLISION_RECT);
 
+    Point newDest = interpolated;
     if (!server.isLocationValid(newDest, PLAYER_TYPE)) {
+        newDest = _location;
         static const double ACCURACY = 0.5;
-        double testDist = 0;
         Point testPoint = _location;
+        const bool xDeltaPositive = _location.x < interpolated.x;
         do {
-            newDest = testPoint;
-            testPoint = interpolate(testPoint, dest, ACCURACY);
-        } while (server.isLocationValid(testPoint, PLAYER_TYPE));
+            newDest.x = testPoint.x;
+            testPoint.x = xDeltaPositive ? (testPoint.x) + ACCURACY : (testPoint.x - ACCURACY);
+        } while ((xDeltaPositive ? (testPoint.x <= interpolated.x) :
+                                   (testPoint.x >= interpolated.x)) &&
+                 server.isLocationValid(testPoint, PLAYER_TYPE));
+        const bool yDeltaPositive = _location.y < interpolated.y;
+        testPoint.x = newDest.x; // Keep it valid for y testing.
+        do {
+            newDest.y = testPoint.y;
+            testPoint.y = yDeltaPositive ? (testPoint.y + ACCURACY) : (testPoint.y - ACCURACY);
+        } while ((yDeltaPositive ? (testPoint.y <= interpolated.y) :
+                                   (testPoint.y >= interpolated.y)) &&
+                 server.isLocationValid(testPoint, PLAYER_TYPE));
+
         server.sendMessage(_socket, SV_BLOCKED);
     }
+
     _location = newDest;
 }
 

@@ -64,7 +64,9 @@ Client::Client():
 _activeRecipe(0),
 _recipeList(0),
 _detailsPane(0),
-_craftingWindow(0),	
+_craftingWindow(0),
+_inventoryWindow(0),
+_blocked(false),
 _actionTimer(0),
 _actionLength(0),
 _loop(true),
@@ -539,20 +541,16 @@ void Client::run(){
                 else if (right && !left)
                     newLoc.x += (up != down) ? diagDist : dist;
 
-                const int
-                    xLimit = _mapX * TILE_W - TILE_W/2,
-                    yLimit = _mapY * TILE_H;
-                if (newLoc.x < 0)
-                    newLoc.x = 0;
-                else if (newLoc.x > xLimit)
-                    newLoc.x = xLimit;
-                if (newLoc.y < 0)
-                    newLoc.y = 0;
-                else if (newLoc.y > yLimit)
-                    newLoc.y = yLimit;
-
                 _pendingCharLoc = newLoc;
+                static double const MAX_PENDING_DISTANCE = 50;
+                _pendingCharLoc = interpolate(_character.location(), _pendingCharLoc,
+                                              MAX_PENDING_DISTANCE);
                 _mouseMoved = true;
+            } else if (_blocked) {
+                _pendingCharLoc = _character.location();
+                _character.destination(_character.location());
+                _timeSinceLocUpdate = 0;
+                _blocked = false;
             }
         }
 
@@ -1117,7 +1115,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_BLOCKED:
             if (del != ']')
                 break;
-            _pendingCharLoc = _character.location();
+            _blocked = true;
             break;
 
         case SV_ACTION_STARTED:
