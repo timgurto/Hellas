@@ -94,10 +94,14 @@ private:
     friend void User::update(Uint32 timeElapsed, Server &server);
     friend void User::removeItems(const ItemSet &items, Server &server);
     friend void User::cancelAction(Server &server);
+    friend void User::updateLocation(const Point &dest, const Server &server);
 
     friend size_t User::giveItem(const Item *item, size_t quantity, const Server &server);
 
     void addObject (const ObjectType *type, const Point &location, const User *owner = 0);
+
+    // Collision detection
+    bool isLocationValid(const Point &loc, const ObjectType &type, const Object *exclude = 0) const;
 
     bool readUserData(User &user); // true: save data existed
     void writeUserData(const User &user) const;

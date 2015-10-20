@@ -129,6 +129,9 @@ enum MessageCode{
     // Arguments: requiredItemClass
     SV_ITEM_NEEDED = 920,
 
+    // The user tried to move somewhere blocked by terrain or an object.
+    SV_BLOCKED = 921,
+
 
 
     NO_CODE

@@ -69,7 +69,7 @@ public:
 
     /*
     Determine whether the proposed new location is legal, considering movement speed and
-    time elapsed.
+    time elapsed, and checking for collisions.
     Set location to the new, legal location.
     */
     void updateLocation(const Point &dest, const Server &server);

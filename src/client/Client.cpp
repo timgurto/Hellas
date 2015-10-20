@@ -1114,6 +1114,12 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_BLOCKED:
+            if (del != ']')
+                break;
+            _pendingCharLoc = _character.location();
+            break;
+
         case SV_ACTION_STARTED:
             Uint32 time;
             singleMsg >> time >> del;

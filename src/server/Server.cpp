@@ -910,3 +910,19 @@ void Server::addObject (const ObjectType *type, const Point &location, const Use
     if (owner)
         broadcast(SV_OWNER, makeArgs(newObj.serial(), newObj.owner()));
 }
+
+
+bool Server::isLocationValid(const Point &loc, const ObjectType &type, const Object *object) const{
+    Rect rect = type.collisionRect() + loc;
+    const int
+        right = rect.x + rect.w,
+        bottom = rect.y + rect.h;
+    const int
+        xLimit = _mapX * Server::TILE_W - Server::TILE_W/2,
+        yLimit = _mapY * Server::TILE_H;
+    if (rect.x < 0 || right > xLimit ||
+        rect.y < 0 || bottom > yLimit)
+        return false;
+
+    return true;
+}

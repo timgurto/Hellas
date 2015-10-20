@@ -31,6 +31,7 @@ public:
     void owner(const std::string &name) { _owner = name; }
     const ItemSet &contents() const { return _contents; }
     void contents(const ItemSet &contents);
+    const Rect collisionRect() const { return _type->collisionRect() + _location; }
 
     bool operator<(const Object &rhs) const { return _serial < rhs._serial; }
 

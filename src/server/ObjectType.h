@@ -6,6 +6,7 @@
 #include <SDL.h>
 #include <string>
 
+#include "../Rect.h"
 #include "Yield.h"
 
 // Describes a class of Objects, the "instances" of which share common properties
@@ -19,6 +20,8 @@ class ObjectType{
 
     Yield _yield; // If gatherable.
 
+    Rect _collisionRect; // Relative to position
+
 public:
     ObjectType(const std::string &id);
 
@@ -31,6 +34,8 @@ public:
     Uint32 constructionTime() const { return _constructionTime; }
     void constructionTime(Uint32 t) { _constructionTime = t; }
     const Yield &yield() const { return _yield; }
+    const Rect &collisionRect() const { return _collisionRect; }
+    void collisionRect(const Rect &r) { _collisionRect = r; _collides = true; }
 
     bool operator<(const ObjectType &rhs) const { return _id < rhs._id; }
 

@@ -5,6 +5,7 @@
 
 #include "Item.h"
 #include "ItemSet.h"
+#include "ObjectType.h"
 #include "Server.h"
 #include "User.h"
 #include "../Socket.h"
@@ -52,20 +53,22 @@ void User::updateLocation(const Point &dest, const Server &server){
     const double maxLegalDistance = min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES,
                                         timeElapsed + 100)
                                     / 1000.0 * Server::MOVEMENT_SPEED;
-    _location = interpolate(_location, dest, maxLegalDistance);
+    Point newDest = interpolate(_location, dest, maxLegalDistance);
 
-    // Keep in-bounds
-    const int
-        xLimit = server.mapX() * Server::TILE_W - Server::TILE_W/2,
-        yLimit = server.mapY() * Server::TILE_H;
-    if (_location.x < 0)
-        _location.x = 0;
-    else if (_location.x > xLimit)
-        _location.x = xLimit;
-    if (_location.y < 0)
-        _location.y = 0;
-    else if (_location.y > yLimit)
-        _location.y = yLimit;
+    static ObjectType PLAYER_TYPE("");
+    PLAYER_TYPE.collisionRect(Rect(-10, -10, 20, 20));
+
+    if (!server.isLocationValid(newDest, PLAYER_TYPE)) {
+        static const double ACCURACY = 0.5;
+        double testDist = 0;
+        Point testPoint = _location;
+        do {
+            newDest = testPoint;
+            testPoint = interpolate(testPoint, dest, ACCURACY);
+        } while (server.isLocationValid(testPoint, PLAYER_TYPE));
+        server.sendMessage(_socket, SV_BLOCKED);
+    }
+    _location = newDest;
 }
 
 void User::contact(){
