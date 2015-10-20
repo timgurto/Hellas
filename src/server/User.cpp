@@ -79,8 +79,6 @@ void User::updateLocation(const Point &dest, const Server &server){
         } while ((yDeltaPositive ? (testPoint.y <= interpolated.y) :
                                    (testPoint.y >= interpolated.y)) &&
                  server.isLocationValid(testPoint, PLAYER_TYPE));
-
-        server.sendMessage(_socket, SV_BLOCKED);
     }
 
     _location = newDest;

@@ -94,7 +94,6 @@ private:
 
     Avatar _character; // Describes the user's character
     Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.
-    bool _blocked; // Whether the server has detected an invalid taget location.
 
     // These are superficial, and relate only to the cast bar.
     Uint32 _actionTimer; // How long the character has been performing the current action.

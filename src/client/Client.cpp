@@ -66,7 +66,6 @@ _recipeList(0),
 _detailsPane(0),
 _craftingWindow(0),
 _inventoryWindow(0),
-_blocked(false),
 _actionTimer(0),
 _actionLength(0),
 _loop(true),
@@ -546,11 +545,6 @@ void Client::run(){
                 _pendingCharLoc = interpolate(_character.location(), _pendingCharLoc,
                                               MAX_PENDING_DISTANCE);
                 _mouseMoved = true;
-            } else if (_blocked) {
-                _pendingCharLoc = _character.location();
-                _character.destination(_character.location());
-                _timeSinceLocUpdate = 0;
-                _blocked = false;
             }
         }
 
@@ -1112,12 +1106,6 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_BLOCKED:
-            if (del != ']')
-                break;
-            _blocked = true;
-            break;
-
         case SV_ACTION_STARTED:
             Uint32 time;
             singleMsg >> time >> del;
@@ -1180,6 +1168,10 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const Point p(x, y);
             if (name == _username) {
+                if (p.x == _character.location().x)
+                    _pendingCharLoc.x = p.x;
+                if (p.y == _character.location().y)
+                    _pendingCharLoc.y = p.y;
                 _character.destination(p);
                 if (!_loaded) {
                     setEntityLocation(&_character, p);
