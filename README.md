@@ -234,3 +234,4 @@ Code | Name                  | Syntax                     | Description
 918  | SV_INVALID_SLOT       | `[918]`                    | "You tried to manipulate an inventory slot that does not exist"
 919  | SV_CANNOT_CONSTRUCT   | `[919]`                    | "You tried to construct an item that is not a structure"
 920  | SV_ITEM_NEEDED        | `[920,reqItemClass]`       | "You tried to perform an action, without the necessary `reqItemClass`"
+921  | SV_BLOCKED            | `[921]`                    | "You tried to perform an action at a location that is blocked"

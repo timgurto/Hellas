@@ -20,7 +20,8 @@ void Client::initializeCraftingWindow(){
         for (const std::string &className : recipe.product()->classes())
             _classFilters[className] = false;
     }
-    _haveMatsFilter = _classOr = _matOr = false;
+    _haveMatsFilter = true;
+    _classOr = _matOr = false;
     _haveToolsFilter = true;
     _classFilterSelected = _matFilterSelected = false;
 

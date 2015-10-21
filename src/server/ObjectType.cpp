@@ -6,7 +6,15 @@ ObjectType::ObjectType(const std::string &id):
 _id(id),
 _actionTime(0),
 _constructionTime(0),
-_gatherReq("none"){}
+_gatherReq("none"),
+_collides(false){}
+
+ObjectType::ObjectType(const Rect &collisionRect):
+_collisionRect(collisionRect),
+_actionTime(0),
+_constructionTime(0),
+_gatherReq("none"),
+_collides(true){}
 
 void ObjectType::addYield(const Item *item, double initMean, double initSD, double gatherMean,
                           double gatherSD){

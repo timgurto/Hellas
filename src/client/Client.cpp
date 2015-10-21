@@ -64,7 +64,8 @@ Client::Client():
 _activeRecipe(0),
 _recipeList(0),
 _detailsPane(0),
-_craftingWindow(0),	
+_craftingWindow(0),
+_inventoryWindow(0),
 _actionTimer(0),
 _actionLength(0),
 _loop(true),
@@ -536,19 +537,10 @@ void Client::run(){
                 else if (right && !left)
                     newLoc.x += (up != down) ? diagDist : dist;
 
-                const int
-                    xLimit = _mapX * TILE_W - TILE_W/2,
-                    yLimit = _mapY * TILE_H;
-                if (newLoc.x < 0)
-                    newLoc.x = 0;
-                else if (newLoc.x > xLimit)
-                    newLoc.x = xLimit;
-                if (newLoc.y < 0)
-                    newLoc.y = 0;
-                else if (newLoc.y > yLimit)
-                    newLoc.y = yLimit;
-
                 _pendingCharLoc = newLoc;
+                static double const MAX_PENDING_DISTANCE = 50;
+                _pendingCharLoc = interpolate(_character.location(), _pendingCharLoc,
+                                              MAX_PENDING_DISTANCE);
                 _mouseMoved = true;
             }
         }
@@ -657,11 +649,6 @@ void Client::draw() const{
     // Entities, sorted from back to front
     for (const Entity *entity : _entities)
         entity->draw(*this);
-
-    // Rectangle around user
-    //renderer.setDrawColor(Color::WHITE);
-    //Rect drawLoc = _character.drawRect() + offset();
-    //renderer.drawRect(drawLoc);
 
     // Cast bar
     if (_actionTimer > 0) {
@@ -1111,6 +1098,13 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_BLOCKED:
+            if (del != ']')
+                break;
+            _debug("That location is already occupied.", Color::YELLOW);
+            startAction(0);
+            break;
+
         case SV_ACTION_STARTED:
             Uint32 time;
             singleMsg >> time >> del;
@@ -1173,6 +1167,10 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const Point p(x, y);
             if (name == _username) {
+                if (p.x == _character.location().x)
+                    _pendingCharLoc.x = p.x;
+                if (p.y == _character.location().y)
+                    _pendingCharLoc.y = p.y;
                 _character.destination(p);
                 if (!_loaded) {
                     setEntityLocation(&_character, p);

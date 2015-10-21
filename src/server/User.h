@@ -64,12 +64,14 @@ public:
 
     static const size_t INVENTORY_SIZE;
 
+    static const ObjectType OBJECT_TYPE;
+
     void contact();
     bool alive() const; // Whether the client has contacted the server recently enough
 
     /*
     Determine whether the proposed new location is legal, considering movement speed and
-    time elapsed.
+    time elapsed, and checking for collisions.
     Set location to the new, legal location.
     */
     void updateLocation(const Point &dest, const Server &server);

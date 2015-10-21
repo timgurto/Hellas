@@ -216,7 +216,9 @@ void Server::addUser(const Socket &socket, const std::string &name){
     User newUser(name, 0, socket);
     const bool userExisted = readUserData(newUser);
     if (!userExisted) {
-        newUser.location(mapRand());
+        do {
+            newUser.location(mapRand());
+        } while (!isLocationValid(newUser.location(), User::OBJECT_TYPE));
         _debug << "New";
     } else {
         _debug << "Existing";
@@ -406,9 +408,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_TOO_FAR);
                 break;
             }
-            user->actionConstruct(*item.constructsObject(), location, slot);
+            const ObjectType objType = *item.constructsObject();
+            if (!isLocationValid(location, objType)) {
+                sendMessage(client, SV_BLOCKED);
+                break;
+            }
+            user->actionConstruct(objType, location, slot);
             sendMessage(client, SV_ACTION_STARTED,
-                        makeArgs(item.constructsObject()->constructionTime()));
+                        makeArgs(objType.constructionTime()));
             break;
         }
 
@@ -587,6 +594,15 @@ void Server::loadData(){
             xr.findAttr(yield, "gatherSD", gatherSD);
             std::set<Item>::const_iterator itemIt = _items.insert(Item(s)).first;
             ot.addYield(&*itemIt, initMean, initSD, gatherMean, gatherSD);
+        }
+        auto collisionRect = xr.findChild("collisionRect", elem);
+        if (collisionRect) {
+            Rect r;
+            xr.findAttr(collisionRect, "x", r.x);
+            xr.findAttr(collisionRect, "y", r.y);
+            xr.findAttr(collisionRect, "w", r.w);
+            xr.findAttr(collisionRect, "h", r.h);
+            ot.collisionRect(r);
         }
         
         _objectTypes.insert(ot);
@@ -788,7 +804,7 @@ size_t Server::findTile(const Point &p) const{
     }
     double rawX = p.x;
     if (y % 2 == 1)
-        rawX -= TILE_W/2;
+        rawX += TILE_W/2;
     size_t x = static_cast<size_t>(rawX / TILE_W);
     if (x >= _mapX) {
         _debug << Color::RED << "Invalid location; clipping x from " << x << " to " << _mapX-1
@@ -843,6 +859,7 @@ void Server::generateWorld(){
                 _map[x][y] = 1;
         }
 
+<<<<<<< HEAD
     //Generate stone layer
     auto stoneLayer = _map;
     static const size_t LAYER_SIZE = 30;
@@ -938,6 +955,33 @@ void Server::generateWorld(){
                 type = rock[findStoneLayer(p, stoneLayer)];
         }
         _objects.insert(Object(type, p));
+=======
+    const ObjectType *const branch = &*_objectTypes.find(std::string("branch"));
+    for (int i = 0; i != 30; ++i){
+        Point loc;
+        do {
+            loc = mapRand();
+        } while (!isLocationValid(loc, *branch));
+        _objects.insert(Object(branch, loc));
+    }
+
+    const ObjectType *const tree = &*_objectTypes.find(std::string("tree"));
+    for (int i = 0; i != 10; ++i) {
+        Point loc;
+        do {
+            loc = mapRand();
+        } while (!isLocationValid(loc, *tree));
+        _objects.insert(Object(tree, loc));
+    }
+
+    const ObjectType *const chest = &*_objectTypes.find(std::string("chest"));
+    for (int i = 0; i != 10; ++i) {
+        Point loc;
+        do {
+            loc = mapRand();
+        } while (!isLocationValid(loc, *chest));
+        _objects.insert(Object(chest, loc));
+>>>>>>> refs/remotes/origin/master
     }
 }
 
@@ -959,4 +1003,44 @@ void Server::addObject (const ObjectType *type, const Point &location, const Use
     broadcast(SV_OBJECT, makeArgs(newObj.serial(), location.x, location.y, type->id()));
     if (owner)
         broadcast(SV_OWNER, makeArgs(newObj.serial(), newObj.owner()));
+}
+
+
+bool Server::isLocationValid(const Point &loc, const ObjectType &type,
+                             const Object *thisObject, const User *thisUser) const{
+    Rect rect = type.collisionRect() + loc;
+    const int
+        right = rect.x + rect.w,
+        bottom = rect.y + rect.h;
+    // Map edges
+    const int
+        xLimit = _mapX * Server::TILE_W - Server::TILE_W/2,
+        yLimit = _mapY * Server::TILE_H;
+    if (rect.x < 0 || right > xLimit ||
+        rect.y < 0 || bottom > yLimit)
+        return false;
+
+    // Terrain
+    size_t terrain = findTile(loc);
+    if (terrain == 3 || terrain == 4)
+        return false;
+
+    // Users
+    for (const auto &user : _users) {
+        if (&user == thisUser)
+            continue;
+        if (rect.collides(user.location() + User::OBJECT_TYPE.collisionRect()))
+            return false;
+    }
+
+    // Objects
+    for (const Object obj : _objects) {
+        if (&obj == thisObject)
+            continue;
+        if (!obj.type()->collides())
+            continue;
+        if (rect.collides(obj.collisionRect()))
+            return false;
+    }
+    return true;
 }

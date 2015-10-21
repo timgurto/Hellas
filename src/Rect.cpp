@@ -28,10 +28,17 @@ y(toInt(rhs.y)),
 w(0),
 h(0){}
 
+bool Rect::collides(const Rect &rhs) const{
+    return
+        rhs.x <= x + w &&
+        x <= rhs.x + rhs.w &&
+        rhs.y <= y + h &&
+        y <= rhs.y + rhs.h;
+}
+
 Rect operator+(const Rect &lhs, const Rect &rhs){
     return Rect(lhs.x + rhs.x,
                 lhs.y + rhs.y,
                 lhs.w + rhs.w,
                 lhs.h + rhs.h);
 }
-

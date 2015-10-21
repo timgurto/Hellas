@@ -18,25 +18,25 @@ bool Point::operator==(const Point &rhs) const{
 }
 
 Point &Point::operator+=(const Point &rhs){
-    *this = *this + rhs;
+    this->x += rhs.x;
+    this->y += rhs.y;
     return *this;
 }
 
 Point &Point::operator-=(const Point &rhs){
-    *this = *this - rhs;
+    this->x -= rhs.x;
+    this->y -= rhs.y;
     return *this;
 }
 
 Point Point::operator+(const Point &rhs) const{
     Point ret = *this;
-    ret.x += rhs.x;
-    ret.y += rhs.y;
+    ret += rhs;
     return ret;
 }
 
 Point Point::operator-(const Point &rhs) const{
     Point ret = *this;
-    ret.x -= rhs.x;
-    ret.y -= rhs.y;
+    ret -= rhs;
     return ret;
 }

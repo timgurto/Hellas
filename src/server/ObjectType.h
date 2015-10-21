@@ -6,6 +6,7 @@
 #include <SDL.h>
 #include <string>
 
+#include "../Rect.h"
 #include "Yield.h"
 
 // Describes a class of Objects, the "instances" of which share common properties
@@ -19,8 +20,12 @@ class ObjectType{
 
     Yield _yield; // If gatherable.
 
+    bool _collides; // false by default; true if any collisionRect is specified.
+    Rect _collisionRect; // Relative to position
+
 public:
     ObjectType(const std::string &id);
+    ObjectType(const Rect &collisionRect); // Anonymous object type used for collision testing.
 
     void actionTime(Uint32 t) { _actionTime = t; }
     const std::string &gatherReq() const { return _gatherReq; }
@@ -31,6 +36,9 @@ public:
     Uint32 constructionTime() const { return _constructionTime; }
     void constructionTime(Uint32 t) { _constructionTime = t; }
     const Yield &yield() const { return _yield; }
+    bool collides() const { return _collides; }
+    const Rect &collisionRect() const { return _collisionRect; }
+    void collisionRect(const Rect &r) { _collisionRect = r; _collides = true; }
 
     bool operator<(const ObjectType &rhs) const { return _id < rhs._id; }
 

@@ -13,6 +13,8 @@ struct Rect {
     Rect(double x, double y, double w = 0, double h = 0);
     Rect(double x, double y, int w, int h);
     Rect(const Point &rhs);
+
+    bool collides(const Rect &rhs) const;
 };
 
 Rect operator+(const Rect &lhs, const Rect &rhs);
