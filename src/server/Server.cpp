@@ -869,33 +869,27 @@ void Server::generateWorld(){
     const ObjectType *const branch = &*_objectTypes.find(std::string("branch"));
     for (int i = 0; i != 30; ++i){
         Point loc;
-        size_t tile;
         do {
             loc = mapRand();
-            tile = findTile(loc);
-        } while (tile == 3 || tile == 4); // Forbidden on water
+        } while (!isLocationValid(loc, *branch));
         _objects.insert(Object(branch, loc));
     }
 
     const ObjectType *const tree = &*_objectTypes.find(std::string("tree"));
     for (int i = 0; i != 10; ++i) {
         Point loc;
-        size_t tile;
         do {
             loc = mapRand();
-            tile = findTile(loc);
-        } while (tile == 3 || tile == 4); // Forbidden on water
+        } while (!isLocationValid(loc, *tree));
         _objects.insert(Object(tree, loc));
     }
 
     const ObjectType *const chest = &*_objectTypes.find(std::string("chest"));
     for (int i = 0; i != 10; ++i) {
         Point loc;
-        size_t tile;
         do {
             loc = mapRand();
-            tile = findTile(loc);
-        } while (tile == 3 || tile == 4); // Forbidden on water
+        } while (!isLocationValid(loc, *chest));
         _objects.insert(Object(chest, loc));
     }
 }
