@@ -1101,6 +1101,13 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_BLOCKED:
+            if (del != ']')
+                break;
+            _debug("That location is already occupied.", Color::YELLOW);
+            startAction(0);
+            break;
+
         case SV_ACTION_STARTED:
             Uint32 time;
             singleMsg >> time >> del;

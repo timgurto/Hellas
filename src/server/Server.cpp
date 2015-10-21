@@ -406,9 +406,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_TOO_FAR);
                 break;
             }
-            user->actionConstruct(*item.constructsObject(), location, slot);
+            const ObjectType objType = *item.constructsObject();
+            if (!isLocationValid(location, objType)) {
+                sendMessage(client, SV_BLOCKED);
+                break;
+            }
+            user->actionConstruct(objType, location, slot);
             sendMessage(client, SV_ACTION_STARTED,
-                        makeArgs(item.constructsObject()->constructionTime()));
+                        makeArgs(objType.constructionTime()));
             break;
         }
 
