@@ -859,7 +859,6 @@ void Server::generateWorld(){
                 _map[x][y] = 1;
         }
 
-<<<<<<< HEAD
     //Generate stone layer
     auto stoneLayer = _map;
     static const size_t LAYER_SIZE = 30;
@@ -940,48 +939,24 @@ void Server::generateWorld(){
     const ObjectType *grass = &*_objectTypes.find(std::string("grass"));
     
     for (int i = 0; i != 300; ++i){
-        Point p = mapRand();
+        Point p;
         const ObjectType *type = 0;
-        size_t terrain = findTile(p);
-        if (terrain == 1)
-            type = seaweed;
-        else {
-            size_t randNum = rand() % 8;
-            if (randNum < 4)
-                type = grass;
-            else if (randNum < 6)
-                type = stick;
-            else
-                type = rock[findStoneLayer(p, stoneLayer)];
-        }
+        do {
+            p = mapRand();
+            size_t terrain = findTile(p);
+            if (terrain == 1)
+                type = seaweed;
+            else {
+                size_t randNum = rand() % 8;
+                if (randNum < 4)
+                    type = grass;
+                else if (randNum < 6)
+                    type = stick;
+                else
+                    type = rock[findStoneLayer(p, stoneLayer)];
+            }
+        } while (!isLocationValid(p, *type));
         _objects.insert(Object(type, p));
-=======
-    const ObjectType *const branch = &*_objectTypes.find(std::string("branch"));
-    for (int i = 0; i != 30; ++i){
-        Point loc;
-        do {
-            loc = mapRand();
-        } while (!isLocationValid(loc, *branch));
-        _objects.insert(Object(branch, loc));
-    }
-
-    const ObjectType *const tree = &*_objectTypes.find(std::string("tree"));
-    for (int i = 0; i != 10; ++i) {
-        Point loc;
-        do {
-            loc = mapRand();
-        } while (!isLocationValid(loc, *tree));
-        _objects.insert(Object(tree, loc));
-    }
-
-    const ObjectType *const chest = &*_objectTypes.find(std::string("chest"));
-    for (int i = 0; i != 10; ++i) {
-        Point loc;
-        do {
-            loc = mapRand();
-        } while (!isLocationValid(loc, *chest));
-        _objects.insert(Object(chest, loc));
->>>>>>> refs/remotes/origin/master
     }
 }
 
@@ -1022,7 +997,7 @@ bool Server::isLocationValid(const Point &loc, const ObjectType &type,
 
     // Terrain
     size_t terrain = findTile(loc);
-    if (terrain == 3 || terrain == 4)
+    if (terrain == 1)
         return false;
 
     // Users

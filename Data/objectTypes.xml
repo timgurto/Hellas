@@ -1,89 +1,152 @@
 <root>
 <objectType id="AndesiteRock" actionTime = 1 >
     <yield id="AndesiteRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="BasaltRock" actionTime = 1 >
     <yield id="BasaltRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="ChalkRock" actionTime = 1 >
     <yield id="ChalkRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="ChertRock" actionTime = 1 >
     <yield id="ChertRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="ClaystoneRock" actionTime = 1 >
     <yield id="ClaystoneRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="ConglomerateRock" actionTime = 1 >
     <yield id="ConglomerateRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="DaciteRock" actionTime = 1 >
     <yield id="DaciteRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="DioriteRock" actionTime = 1 >
     <yield id="DioriteRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="DolomiteRock" actionTime = 1 >
     <yield id="DolomiteRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="GabbroRock" actionTime = 1 >
     <yield id="GabbroRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="GneissRock" actionTime = 1 >
     <yield id="GneissRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="GraniteRock" actionTime = 1 >
     <yield id="GraniteRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="LimestoneRock" actionTime = 1 >
     <yield id="LimestoneRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="MarbleRock" actionTime = 1 >
     <yield id="MarbleRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="PhylliteRock" actionTime = 1 >
     <yield id="PhylliteRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="QuartziteRock" actionTime = 1 >
     <yield id="QuartziteRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="RhyoliteRock" actionTime = 1 >
     <yield id="RhyoliteRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="RockSaltRock" actionTime = 1 >
     <yield id="RockSaltRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="SchistRock" actionTime = 1 >
     <yield id="SchistRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="ShaleRock" actionTime = 1 >
     <yield id="ShaleRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="SlateRock" actionTime = 1 >
     <yield id="SlateRock" />
+    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 
-<objectType id="Andesite" />
-<objectType id="Basalt" />
-<objectType id="Chalk" />
-<objectType id="Chert" />
-<objectType id="Claystone" />
-<objectType id="Conglomerate" />
-<objectType id="Dacite" />
-<objectType id="Diorite" />
-<objectType id="Dolomite" />
-<objectType id="Gabbro" />
-<objectType id="Gneiss" />
-<objectType id="Granite" />
-<objectType id="Limestone" />
-<objectType id="Marble" />
-<objectType id="Phyllite" />
-<objectType id="Quartzite" />
-<objectType id="Rhyolite" />
-<objectType id="RockSalt" />
-<objectType id="Schist" />
-<objectType id="Shale" />
-<objectType id="Slate" />
+<objectType id="Andesite" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Basalt" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Chalk" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Chert" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Claystone" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Conglomerate" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Dacite" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Diorite" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Dolomite" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Gabbro" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Gneiss" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Granite" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Limestone" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Marble" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Phyllite" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Quartzite" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Rhyolite" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="RockSalt" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Schist" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Shale" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+<objectType id="Slate" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
 
 <objectType id="grass" actionTime=1 gatherReq="knife" >
     <yield id="straw" />

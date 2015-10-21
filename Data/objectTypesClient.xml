@@ -1,25 +1,25 @@
 <root>
-<objectType id="Andesite" name="Andesite" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Basalt" name="Basalt" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Chalk" name="Chalk" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Chert" name="Chert" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Claystone" name="Claystone" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Conglomerate" name="Conglomerate" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Dacite" name="Dacite" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Diorite" name="Diorite" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Dolomite" name="Dolomite" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Gabbro" name="Gabbro" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Gneiss" name="Gneiss" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Granite" name="Granite" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Limestone" name="Limestone" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Marble" name="Marble" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Phyllite" name="Phyllite" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Quartzite" name="Quartzite" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Rhyolite" name="Rhyolite" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="RockSalt" name="Rock Salt" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Schist" name="Schist" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Shale" name="Shale" xDrawOffset=-8 yDrawOffset=0 />
-<objectType id="Slate" name="Slate" xDrawOffset=-8 yDrawOffset=0 />
+<objectType id="Andesite" name="Andesite" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Basalt" name="Basalt" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Chalk" name="Chalk" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Chert" name="Chert" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Claystone" name="Claystone" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Conglomerate" name="Conglomerate" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Dacite" name="Dacite" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Diorite" name="Diorite" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Dolomite" name="Dolomite" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Gabbro" name="Gabbro" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Gneiss" name="Gneiss" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Granite" name="Granite" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Limestone" name="Limestone" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Marble" name="Marble" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Phyllite" name="Phyllite" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Quartzite" name="Quartzite" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Rhyolite" name="Rhyolite" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="RockSalt" name="Rock Salt" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Schist" name="Schist" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Shale" name="Shale" xDrawOffset=-8 yDrawOffset=8 />
+<objectType id="Slate" name="Slate" xDrawOffset=-8 yDrawOffset=8 />
 
 <objectType id="AndesiteRock" name="Andesite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
 <objectType id="BasaltRock" name="Basalt Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
