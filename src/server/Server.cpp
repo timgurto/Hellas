@@ -797,7 +797,7 @@ size_t Server::findTile(const Point &p) const{
     }
     double rawX = p.x;
     if (y % 2 == 1)
-        rawX -= TILE_W/2;
+        rawX += TILE_W/2;
     size_t x = static_cast<size_t>(rawX / TILE_W);
     if (x >= _mapX) {
         _debug << Color::RED << "Invalid location; clipping x from " << x << " to " << _mapX-1
@@ -932,6 +932,11 @@ bool Server::isLocationValid(const Point &loc, const ObjectType &type, const Obj
         yLimit = _mapY * Server::TILE_H;
     if (rect.x < 0 || right > xLimit ||
         rect.y < 0 || bottom > yLimit)
+        return false;
+
+    // Terrain
+    size_t terrain = findTile(loc);
+    if (terrain == 3 || terrain == 4)
         return false;
 
     // Objects
