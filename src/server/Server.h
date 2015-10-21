@@ -101,7 +101,8 @@ private:
     void addObject (const ObjectType *type, const Point &location, const User *owner = 0);
 
     // Collision detection
-    bool isLocationValid(const Point &loc, const ObjectType &type, const Object *exclude = 0) const;
+    bool isLocationValid(const Point &loc, const ObjectType &type,
+                         const Object *thisObject = 0, const User *thisUser = 0) const;
 
     bool readUserData(User &user); // true: save data existed
     void writeUserData(const User &user) const;

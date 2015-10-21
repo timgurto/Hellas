@@ -25,6 +25,7 @@ class ObjectType{
 
 public:
     ObjectType(const std::string &id);
+    ObjectType(const Rect &collisionRect); // Anonymous object type used for collision testing.
 
     void actionTime(Uint32 t) { _actionTime = t; }
     const std::string &gatherReq() const { return _gatherReq; }

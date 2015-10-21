@@ -921,7 +921,8 @@ void Server::addObject (const ObjectType *type, const Point &location, const Use
 }
 
 
-bool Server::isLocationValid(const Point &loc, const ObjectType &type, const Object *object) const{
+bool Server::isLocationValid(const Point &loc, const ObjectType &type,
+                             const Object *thisObject, const User *thisUser) const{
     Rect rect = type.collisionRect() + loc;
     const int
         right = rect.x + rect.w,
@@ -939,13 +940,21 @@ bool Server::isLocationValid(const Point &loc, const ObjectType &type, const Obj
     if (terrain == 3 || terrain == 4)
         return false;
 
+    // Users
+    for (const auto &user : _users) {
+        if (&user == thisUser)
+            continue;
+        if (rect.collides(user.location() + User::OBJECT_TYPE.collisionRect()))
+            return false;
+    }
+
     // Objects
-    for (const Object checkObj : _objects) {
-        if (&checkObj == object)
+    for (const Object obj : _objects) {
+        if (&obj == thisObject)
             continue;
-        if (!checkObj.type()->collides())
+        if (!obj.type()->collides())
             continue;
-        if (rect.collides(checkObj.collisionRect()))
+        if (rect.collides(obj.collisionRect()))
             return false;
     }
     return true;

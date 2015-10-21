@@ -14,6 +14,8 @@
 
 const size_t User::INVENTORY_SIZE = 10;
 
+const ObjectType User::OBJECT_TYPE(Rect(-10, -10, 20, 20));
+
 User::User(const std::string &name, const Point &loc, const Socket &socket):
 _name(name),
 _socket(socket),
@@ -55,12 +57,8 @@ void User::updateLocation(const Point &dest, const Server &server){
                                     / 1000.0 * Server::MOVEMENT_SPEED;
     Point interpolated = interpolate(_location, dest, maxLegalDistance);
 
-    const static Rect AVATAR_COLLISION_RECT(-10, -10, 20, 20);
-    static ObjectType PLAYER_TYPE("");
-    PLAYER_TYPE.collisionRect(AVATAR_COLLISION_RECT);
-
     Point newDest = interpolated;
-    if (!server.isLocationValid(newDest, PLAYER_TYPE)) {
+    if (!server.isLocationValid(newDest, OBJECT_TYPE, 0, this)) {
         newDest = _location;
         static const double ACCURACY = 0.5;
         Point testPoint = _location;
@@ -70,7 +68,7 @@ void User::updateLocation(const Point &dest, const Server &server){
             testPoint.x = xDeltaPositive ? (testPoint.x) + ACCURACY : (testPoint.x - ACCURACY);
         } while ((xDeltaPositive ? (testPoint.x <= interpolated.x) :
                                    (testPoint.x >= interpolated.x)) &&
-                 server.isLocationValid(testPoint, PLAYER_TYPE));
+                 server.isLocationValid(testPoint, OBJECT_TYPE, 0, this));
         const bool yDeltaPositive = _location.y < interpolated.y;
         testPoint.x = newDest.x; // Keep it valid for y testing.
         do {
@@ -78,7 +76,7 @@ void User::updateLocation(const Point &dest, const Server &server){
             testPoint.y = yDeltaPositive ? (testPoint.y + ACCURACY) : (testPoint.y - ACCURACY);
         } while ((yDeltaPositive ? (testPoint.y <= interpolated.y) :
                                    (testPoint.y >= interpolated.y)) &&
-                 server.isLocationValid(testPoint, PLAYER_TYPE));
+                 server.isLocationValid(testPoint, OBJECT_TYPE, 0, this));
     }
 
     _location = newDest;

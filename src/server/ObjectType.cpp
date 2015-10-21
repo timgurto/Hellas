@@ -9,6 +9,13 @@ _constructionTime(0),
 _gatherReq("none"),
 _collides(false){}
 
+ObjectType::ObjectType(const Rect &collisionRect):
+_collisionRect(collisionRect),
+_actionTime(0),
+_constructionTime(0),
+_gatherReq("none"),
+_collides(true){}
+
 void ObjectType::addYield(const Item *item, double initMean, double initSD, double gatherMean,
                           double gatherSD){
     _yield.addItem(item, initMean, initSD, gatherMean, gatherSD);

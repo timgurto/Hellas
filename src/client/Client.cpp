@@ -653,11 +653,6 @@ void Client::draw() const{
     for (const Entity *entity : _entities)
         entity->draw(*this);
 
-    // Rectangle around user
-    //renderer.setDrawColor(Color::WHITE);
-    //Rect drawLoc = _character.drawRect() + offset();
-    //renderer.drawRect(drawLoc);
-
     // Cast bar
     if (_actionTimer > 0) {
         static const int

@@ -64,6 +64,8 @@ public:
 
     static const size_t INVENTORY_SIZE;
 
+    static const ObjectType OBJECT_TYPE;
+
     void contact();
     bool alive() const; // Whether the client has contacted the server recently enough
 
