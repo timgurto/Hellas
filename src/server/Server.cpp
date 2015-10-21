@@ -849,7 +849,9 @@ void Server::generateWorld(){
     const Point
         start(rand() % _mapX, rand() % _mapY),
         end(rand() % _mapX, rand() % _mapY);
-    for (size_t x = 0; x != _mapX; ++x)
+    size_t progress = 0;
+    for (size_t x = 0; x != _mapX; ++x) {
+        _debug << "Generating river... " << 100 * ++progress / _mapX << "%\r";
         for (size_t y = 0; y != _mapY; ++y) {
             Point thisTile(x, y);
             if (y % 2 == 1)
@@ -858,17 +860,23 @@ void Server::generateWorld(){
             if (dist <=4)
                 _map[x][y] = 1;
         }
+    }
+    _debug << Log::endl;
 
     //Generate stone layer
+    progress = 0;
     auto stoneLayer = _map;
     static const size_t LAYER_SIZE = 30;
+    const size_t totalRegions = toInt((_mapY + .5) / LAYER_SIZE) * toInt((_mapX + .5) / LAYER_SIZE);
     for (size_t y = 0; y < _mapY; y += LAYER_SIZE)
         for (size_t x = 0; x < _mapX; x += LAYER_SIZE) {
+            _debug << "Initializing stone regions... " << ++progress << "/" << totalRegions << "\r";
             size_t stoneType = rand() % 21;
             for (size_t xx = x; xx != x + LAYER_SIZE && xx != _mapX; ++xx)
                 for (size_t yy = y; yy != y + LAYER_SIZE && yy != _mapX; ++yy)
                     stoneLayer[xx][yy] = stoneType;
         }
+    _debug << Log::endl;
 
     // Stone in circles
     const ObjectType *stoneObj[21];
@@ -893,7 +901,10 @@ void Server::generateWorld(){
     stoneObj[18] = &*_objectTypes.find(std::string("Schist"));
     stoneObj[19] = &*_objectTypes.find(std::string("Shale"));
     stoneObj[20] = &*_objectTypes.find(std::string("Slate"));
-    for (int i = 0; i != 15; ++i) {
+    static const size_t numStoneCircles = 15;
+    progress = 0;
+    for (int i = 0; i != numStoneCircles; ++i) {
+        _debug << "Generating stone deposits... " << ++progress << "/" << numStoneCircles << "\r";
         const size_t centerX = rand() % _mapX;
         const size_t centerY = rand() % _mapY;
         for (size_t x = 0; x != _mapX; ++x)
@@ -909,6 +920,8 @@ void Server::generateWorld(){
                 }
             }
     }
+    _debug << Log::endl;
+
 
     // Rocks/grass/seaweed
     const ObjectType *rock[21];
@@ -938,7 +951,10 @@ void Server::generateWorld(){
     const ObjectType *seaweed = &*_objectTypes.find(std::string("seaweed"));
     const ObjectType *grass = &*_objectTypes.find(std::string("grass"));
     
-    for (int i = 0; i != 300; ++i){
+    static const size_t numObjects = 300;
+    progress = 0;
+    for (int i = 0; i != numObjects; ++i){
+        _debug << "Generating objects... " << ++progress << "/" << numObjects << "\r";
         Point p;
         const ObjectType *type = 0;
         do {
@@ -958,6 +974,7 @@ void Server::generateWorld(){
         } while (!isLocationValid(p, *type));
         _objects.insert(Object(type, p));
     }
+    _debug << Log::endl;
 }
 
 Point Server::mapRand() const{
