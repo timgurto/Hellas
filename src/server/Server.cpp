@@ -216,7 +216,9 @@ void Server::addUser(const Socket &socket, const std::string &name){
     User newUser(name, 0, socket);
     const bool userExisted = readUserData(newUser);
     if (!userExisted) {
-        newUser.location(mapRand());
+        do {
+            newUser.location(mapRand());
+        } while (!isLocationValid(newUser.location(), User::OBJECT_TYPE));
         _debug << "New";
     } else {
         _debug << "Existing";
