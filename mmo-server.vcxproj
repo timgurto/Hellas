@@ -98,6 +98,7 @@
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\Point.cpp" />
     <ClCompile Include="src\Rect.cpp" />
+    <ClCompile Include="src\server\collisionDetection.cpp" />
     <ClCompile Include="src\server\Item.cpp" />
     <ClCompile Include="src\server\ItemSet.cpp" />
     <ClCompile Include="src\server\LogConsole.cpp" />
