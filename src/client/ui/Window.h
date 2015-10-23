@@ -27,9 +27,9 @@ public:
     static void stopDragging(Element &e, const Point &mousePos);
     static void drag(Element &e, const Point &mousePos);
 
-    virtual void addChild(Element *child);
-    virtual void clearChildren();
-    virtual Element *findChild(const std::string id);
+    virtual void addChild(Element *child) override;
+    virtual void clearChildren() override;
+    virtual Element *findChild(const std::string id) override;
 };
 
 #endif

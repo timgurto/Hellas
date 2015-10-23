@@ -18,7 +18,7 @@ public:
           Justification justificationH = LEFT_JUSTIFIED,
           Justification justificationV = TOP_JUSTIFIED);
 
-    virtual void refresh();
+    virtual void refresh() override;
 
     void matchW(); // Set the label's width to the width of the contained text image.
 };

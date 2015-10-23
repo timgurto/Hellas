@@ -9,7 +9,7 @@
 class Picture : public Element{
     Texture _srcTexture; // Can't use _texture directly, as the Picture may have child Elements.
 
-    virtual void refresh();
+    virtual void refresh() override;
 
 public:
     Picture(const Rect &rect, const Texture &srcTexture);

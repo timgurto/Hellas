@@ -49,11 +49,11 @@ protected:
 public:
     List(const Rect &rect, int childHeight);
 
-    virtual void addChild(Element *child);
-    virtual void clearChildren();
-    virtual Element *findChild(const std::string id);
+    virtual void addChild(Element *child) override;
+    virtual void clearChildren() override;
+    virtual Element *findChild(const std::string id) override;
 
-    virtual void refresh();
+    virtual void refresh() override;
 };
 
 #endif

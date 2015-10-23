@@ -24,9 +24,9 @@ public:
     void destination(const Point &dst) { _destination = dst; }
     static const EntityType &entityType() { return _entityType; }
 
-    virtual void draw(const Client &client) const;
-    virtual void update(double delta);
-    virtual std::vector<std::string> getTooltipMessages(const Client &client) const;
+    virtual void draw(const Client &client) const override;
+    virtual void update(double delta) override;
+    virtual std::vector<std::string> getTooltipMessages(const Client &client) const override;
 
 private:
     /*

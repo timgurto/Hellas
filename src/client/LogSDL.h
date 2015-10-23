@@ -30,11 +30,11 @@ public:
         _oss << val;
         return *this;
     }
-    LogSDL &operator<<(const std::string &val);
+    LogSDL &operator<<(const std::string &val) override;
     // endl: end message and begin a new one
-    LogSDL &operator<<(const LogEndType &val);
+    LogSDL &operator<<(const LogEndType &val) override;
     // color: set color of current compilation
-    LogSDL &operator<<(const Color &c);
+    LogSDL &operator<<(const Color &c) override;
 
     void draw(int x = 0, int y = 0) const;
 

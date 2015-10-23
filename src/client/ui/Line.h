@@ -9,7 +9,7 @@
 class Line : public Element{
     Orientation _orientation;
 
-    virtual void refresh();
+    virtual void refresh() override;
 
 public:
     Line(int x, int y, int length, Orientation _orientation = HORIZONTAL); // x,y = top-left corner.
