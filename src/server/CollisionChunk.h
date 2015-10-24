@@ -17,6 +17,7 @@ public:
     bool isTilePassable(size_t x, size_t y) const;
 
     void addObject(const Object *obj);
+    void removeObject(size_t serial);
     const std::map<size_t, const Object *> objects() const { return _objects; }
 };
 
