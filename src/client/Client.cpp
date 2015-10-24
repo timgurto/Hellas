@@ -627,9 +627,14 @@ void Client::draw() const{
     renderer.clear();
 
     // Map
-    for (size_t y = 0; y != _mapY; ++y) {
+    size_t
+        xMin = max(0, -offset().x / TILE_W),
+        xMax = min(_mapX, toInt(1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
+        yMin = max(0, -offset().y / TILE_H),
+        yMax = min(_mapY, (-offset().y + SCREEN_Y) / TILE_H + 1);
+    for (size_t y = yMin; y != yMax; ++y) {
         const int yLoc = y * TILE_H + toInt(offset().y);
-        for (size_t x = 0; x != _mapX; ++x){
+        for (size_t x = xMin; x != xMax; ++x){
             int xLoc = x * TILE_W + toInt(offset().x);
             if (y % 2 == 1)
                 xLoc -= TILE_W/2;
