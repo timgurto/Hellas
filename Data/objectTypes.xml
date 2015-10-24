@@ -1,86 +1,65 @@
 <root>
 <objectType id="AndesiteRock" actionTime = 1 >
     <yield id="AndesiteRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="BasaltRock" actionTime = 1 >
     <yield id="BasaltRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="ChalkRock" actionTime = 1 >
     <yield id="ChalkRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="ChertRock" actionTime = 1 >
     <yield id="ChertRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="ClaystoneRock" actionTime = 1 >
     <yield id="ClaystoneRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="ConglomerateRock" actionTime = 1 >
     <yield id="ConglomerateRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="DaciteRock" actionTime = 1 >
     <yield id="DaciteRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="DioriteRock" actionTime = 1 >
     <yield id="DioriteRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="DolomiteRock" actionTime = 1 >
     <yield id="DolomiteRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="GabbroRock" actionTime = 1 >
     <yield id="GabbroRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="GneissRock" actionTime = 1 >
     <yield id="GneissRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="GraniteRock" actionTime = 1 >
     <yield id="GraniteRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="LimestoneRock" actionTime = 1 >
     <yield id="LimestoneRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="MarbleRock" actionTime = 1 >
     <yield id="MarbleRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="PhylliteRock" actionTime = 1 >
     <yield id="PhylliteRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="QuartziteRock" actionTime = 1 >
     <yield id="QuartziteRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="RhyoliteRock" actionTime = 1 >
     <yield id="RhyoliteRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="RockSaltRock" actionTime = 1 >
     <yield id="RockSaltRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="SchistRock" actionTime = 1 >
     <yield id="SchistRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="ShaleRock" actionTime = 1 >
     <yield id="ShaleRock" />
-    <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 <objectType id="SlateRock" actionTime = 1 >
-    <yield id="SlateRock" />
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 
