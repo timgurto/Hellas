@@ -917,5 +917,6 @@ void Server::addObject (const ObjectType *type, const Point &location, const Use
         broadcast(SV_OWNER, makeArgs(newObj.serial(), newObj.owner()));
 
     // Add item to relevant chunk
-    getCollisionChunk(location).addObject(&*it);
+    if (type->collides())
+        getCollisionChunk(location).addObject(&*it);
 }
