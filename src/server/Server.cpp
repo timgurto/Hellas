@@ -875,7 +875,7 @@ void Server::generateWorld(){
         do {
             loc = mapRand();
         } while (!isLocationValid(loc, *branch));
-        _objects.insert(Object(branch, loc));
+        addObject(branch, loc);
     }
 
     const ObjectType *const tree = &*_objectTypes.find(std::string("tree"));
@@ -884,7 +884,7 @@ void Server::generateWorld(){
         do {
             loc = mapRand();
         } while (!isLocationValid(loc, *tree));
-        _objects.insert(Object(tree, loc));
+        addObject(tree, loc);
     }
 
     const ObjectType *const chest = &*_objectTypes.find(std::string("chest"));
@@ -893,7 +893,7 @@ void Server::generateWorld(){
         do {
             loc = mapRand();
         } while (!isLocationValid(loc, *chest));
-        _objects.insert(Object(chest, loc));
+        addObject(chest, loc);
     }
 }
 
