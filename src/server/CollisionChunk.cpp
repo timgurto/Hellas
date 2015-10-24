@@ -18,3 +18,9 @@ bool CollisionChunk::isTilePassable(size_t x, size_t y) const{
 void CollisionChunk::addObject(const Object *obj){
     _objects[obj->serial()] = obj;
 }
+
+void CollisionChunk::removeObject(size_t serial){
+    auto it = _objects.find(serial);
+    if (it != _objects.end())
+        _objects.erase(it);
+}

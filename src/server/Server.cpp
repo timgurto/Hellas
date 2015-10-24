@@ -493,6 +493,7 @@ void Server::gatherObject(size_t serial, User &user){
             }
         }
         broadcast(SV_REMOVE_OBJECT, makeArgs(serial));
+        getCollisionChunk(obj.location()).removeObject(serial);
         _objects.erase(it);
     }
 
