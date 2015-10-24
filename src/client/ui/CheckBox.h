@@ -20,7 +20,7 @@ private:
 
     bool _inverse; // Whether this checkbox should inversely reflect its linked bool.
 
-    virtual void checkIfChanged();
+    virtual void checkIfChanged() override;
 
     bool _mouseButtonDown;
     bool _depressed;
@@ -32,7 +32,7 @@ private:
     static void mouseUp(Element &e, const Point &mousePos);
     static void mouseMove(Element &e, const Point &mousePos);
 
-    virtual void refresh();
+    virtual void refresh() override;
 
 public:
     static const int

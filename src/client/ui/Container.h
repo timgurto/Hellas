@@ -14,7 +14,7 @@ class Container : public Element{
     size_t _rows, _cols;
     Item::vect_t &_linked;
 
-    virtual void refresh();
+    virtual void refresh() override;
 
 public:
     Container(size_t rows, size_t cols, Item::vect_t &linked, int x = 0, int y = 0);

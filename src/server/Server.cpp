@@ -795,25 +795,6 @@ void Server::saveData(const Server *server, const std::set<Object> &objects){
 #endif
 }
 
-size_t Server::findTile(const Point &p) const{
-    size_t y = static_cast<size_t>(p.y / TILE_H);
-    if (y >= _mapY) {
-        _debug << Color::RED << "Invalid location; clipping y from " << y << " to " << _mapY-1
-               << ". original co-ord=" << p.y << Log::endl;
-        y = _mapY-1;
-    }
-    double rawX = p.x;
-    if (y % 2 == 1)
-        rawX += TILE_W/2;
-    size_t x = static_cast<size_t>(rawX / TILE_W);
-    if (x >= _mapX) {
-        _debug << Color::RED << "Invalid location; clipping x from " << x << " to " << _mapX-1
-               << ". original co-ord=" << p.x << Log::endl;
-        x = _mapX-1;
-    }
-    return _map[x][y];
-}
-
 size_t Server::findStoneLayer(const Point &p, const std::vector<std::vector<size_t> > &stoneLayers) const{
     size_t y = static_cast<size_t>(p.y / TILE_H);
     if (y >= _mapY) {
@@ -860,6 +841,30 @@ void Server::generateWorld(){
             if (dist <=4)
                 _map[x][y] = 1;
         }
+    }
+
+    // Add tiles to chunks
+    for (size_t x = 0; x != _mapX; ++x)
+        for (size_t y = 0; y != _mapY; ++y) {
+            Point tileMidpoint(x * TILE_W, y * TILE_H + TILE_H / 2);
+            if (y % 2 == 1)
+                tileMidpoint.x += TILE_W / 2;
+            // Add terrain info to adjacent chunks too
+            auto superChunk = getCollisionSuperChunk(tileMidpoint);
+            for (CollisionChunk *chunk : superChunk){
+                size_t tile = _map[x][y];
+                bool passable = tile != 3 && tile != 4;
+                chunk->addTile(x, y, (tile != 3 && tile != 4));
+            }
+        }
+
+    const ObjectType *const branch = &*_objectTypes.find(std::string("branch"));
+    for (int i = 0; i != 30; ++i){
+        Point loc;
+        do {
+            loc = mapRand();
+        } while (!isLocationValid(loc, *branch));
+        addObject(branch, loc);
     }
     _debug << Log::endl;
 
@@ -914,14 +919,12 @@ void Server::generateWorld(){
                     thisTile.x -= .5;
                 const double dist = distance(Point(centerX, centerY), thisTile);
                 if (dist <= 7) {
-                    Object stone(stoneObj[stoneLayer[x][y]], Point(thisTile.x * TILE_W,
-                                                                   thisTile.y * TILE_H));
-                    _objects.insert(stone);
+                    addObject(stoneObj[stoneLayer[x][y]], Point(thisTile.x * TILE_W,
+                                                                thisTile.y * TILE_H));;
                 }
             }
     }
     _debug << Log::endl;
-
 
     // Rocks/grass/seaweed
     const ObjectType *rock[21];
@@ -972,7 +975,7 @@ void Server::generateWorld(){
                     type = rock[findStoneLayer(p, stoneLayer)];
             }
         } while (!isLocationValid(p, *type));
-        _objects.insert(Object(type, p));
+        addObject(type, p);
     }
     _debug << Log::endl;
 }
@@ -991,48 +994,11 @@ void Server::addObject (const ObjectType *type, const Point &location, const Use
     Object newObj(type, location);
     if (owner)
         newObj.owner(owner->name());
-    _objects.insert(newObj);
+    auto it = _objects.insert(newObj).first;
     broadcast(SV_OBJECT, makeArgs(newObj.serial(), location.x, location.y, type->id()));
     if (owner)
         broadcast(SV_OWNER, makeArgs(newObj.serial(), newObj.owner()));
-}
 
-
-bool Server::isLocationValid(const Point &loc, const ObjectType &type,
-                             const Object *thisObject, const User *thisUser) const{
-    Rect rect = type.collisionRect() + loc;
-    const int
-        right = rect.x + rect.w,
-        bottom = rect.y + rect.h;
-    // Map edges
-    const int
-        xLimit = _mapX * Server::TILE_W - Server::TILE_W/2,
-        yLimit = _mapY * Server::TILE_H;
-    if (rect.x < 0 || right > xLimit ||
-        rect.y < 0 || bottom > yLimit)
-        return false;
-
-    // Terrain
-    size_t terrain = findTile(loc);
-    if (terrain == 1)
-        return false;
-
-    // Users
-    for (const auto &user : _users) {
-        if (&user == thisUser)
-            continue;
-        if (rect.collides(user.location() + User::OBJECT_TYPE.collisionRect()))
-            return false;
-    }
-
-    // Objects
-    for (const Object obj : _objects) {
-        if (&obj == thisObject)
-            continue;
-        if (!obj.type()->collides())
-            continue;
-        if (rect.collides(obj.collisionRect()))
-            return false;
-    }
-    return true;
+    // Add item to relevant chunk
+    getCollisionChunk(location).addObject(&*it);
 }

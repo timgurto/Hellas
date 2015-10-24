@@ -13,7 +13,7 @@ class ColorBlock : public Element {
 public:
     ColorBlock(const Rect &rect, const Color &color = BACKGROUND_COLOR);
 
-    virtual void refresh();
+    virtual void refresh() override;
 };
 
 #endif

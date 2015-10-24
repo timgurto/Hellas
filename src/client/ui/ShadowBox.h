@@ -9,7 +9,7 @@
 class ShadowBox : public Element{
     bool _reversed;
 
-    virtual void refresh();
+    virtual void refresh() override;
 
 public:
     ShadowBox(const Rect &rect, bool reversed = false);

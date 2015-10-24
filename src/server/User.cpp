@@ -46,7 +46,7 @@ std::string User::makeLocationCommand() const{
     return makeArgs(_name, _location.x, _location.y);
 }
 
-void User::updateLocation(const Point &dest, const Server &server){
+void User::updateLocation(const Point &dest, Server &server){
     const Uint32 newTime = SDL_GetTicks();
     Uint32 timeElapsed = newTime - _lastLocUpdate;
     _lastLocUpdate = newTime;

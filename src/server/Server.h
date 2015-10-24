@@ -3,11 +3,13 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#include <list>
 #include <queue>
 #include <set>
 #include <string>
 #include <utility>
 
+#include "CollisionChunk.h"
 #include "Item.h"
 #include "ItemSet.h"
 #include "LogConsole.h"
@@ -83,6 +85,7 @@ private:
     std::vector<std::vector<size_t>> _map;
     size_t findTile(const Point &p) const; // Find the tile type at the specified location.
     size_t findStoneLayer(const Point &p, const std::vector<std::vector<size_t> > &stoneLayers) const;
+    std::pair<size_t, size_t> getTileCoords(const Point &p) const;
 
     // World data
     std::set<Item> _items;
@@ -95,15 +98,19 @@ private:
     friend void User::update(Uint32 timeElapsed, Server &server);
     friend void User::removeItems(const ItemSet &items, Server &server);
     friend void User::cancelAction(Server &server);
-    friend void User::updateLocation(const Point &dest, const Server &server);
+    friend void User::updateLocation(const Point &dest, Server &server);
 
     friend size_t User::giveItem(const Item *item, size_t quantity, const Server &server);
 
     void addObject (const ObjectType *type, const Point &location, const User *owner = 0);
 
     // Collision detection
+    static const int COLLISION_CHUNK_SIZE;
+    CollisionGrid _collisionGrid;
+    CollisionChunk &getCollisionChunk(const Point &p);
+    std::list<CollisionChunk *> getCollisionSuperChunk(const Point &p);
     bool isLocationValid(const Point &loc, const ObjectType &type,
-                         const Object *thisObject = 0, const User *thisUser = 0) const;
+                         const Object *thisObject = 0, const User *thisUser = 0);
 
     bool readUserData(User &user); // true: save data existed
     void writeUserData(const User &user) const;

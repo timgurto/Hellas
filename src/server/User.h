@@ -74,7 +74,7 @@ public:
     time elapsed, and checking for collisions.
     Set location to the new, legal location.
     */
-    void updateLocation(const Point &dest, const Server &server);
+    void updateLocation(const Point &dest, Server &server);
 
     // Whether the user has at least one item with the specified item class
     bool hasItemClass(const std::string &className) const;

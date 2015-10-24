@@ -24,11 +24,11 @@ public:
             _logFile << val;
         return *this;
     }
-    LogConsole &operator<<(const std::string &val);
+    LogConsole &operator<<(const std::string &val) override;
     // endl: end message and begin a new one
-    LogConsole &operator<<(const LogEndType &val);
+    LogConsole &operator<<(const LogEndType &val) override;
     // color: set color of current compilation
-    LogConsole &operator<<(const Color &c);
+    LogConsole &operator<<(const Color &c) override;
 
 private:
     std::ofstream _logFile;

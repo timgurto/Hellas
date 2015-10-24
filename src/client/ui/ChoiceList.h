@@ -30,7 +30,7 @@ class ChoiceList : public List{
 public:
     ChoiceList(const Rect &rect, int childHeight);
 
-    virtual void refresh();
+    virtual void refresh() override;
 
     const std::string &getSelected() { return _selectedID; }
 
