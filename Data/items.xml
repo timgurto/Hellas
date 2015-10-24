@@ -26,10 +26,16 @@
 <item id="stick" name="Stick" stackSize=64 />
 <item id="straw" name="Straw" stackSize=64 iconFile="Straw" />
 <item id="thatch" name="Thatch" stackSize=32 iconFile="Thatch" />
+<item id="clay" name="Clay" stackSize=64 iconFile="Clay" />
 
-<item id="stoneKnifeBlade" name="Stone Knife Head" iconFile="Stone Knife Blade" stackSize=64 />
+<item id="stoneKnifeBlade" name="Stone Knife Blade" iconFile="Stone Knife Blade" stackSize=64 />
 <item id="stoneKnife" name="Stone Knife" iconFile="Stone Knife">
     <class name="knife" />
+</item>
+
+<item id="stoneShovelHead" name="Stone Shovel Head" iconFile="Stone Shovel Head" stackSize=64 />
+<item id="stoneShovel" name="Stone Shovel" iconFile="Stone Shovel">
+    <class name="shovel" />
 </item>
 
 </root>

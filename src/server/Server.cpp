@@ -871,13 +871,36 @@ void Server::generateWorld(){
     const size_t totalRegions = toInt((_mapY + .5) / LAYER_SIZE) * toInt((_mapX + .5) / LAYER_SIZE);
     for (size_t y = 0; y < _mapY; y += LAYER_SIZE)
         for (size_t x = 0; x < _mapX; x += LAYER_SIZE) {
-            _debug << "Initializing stone regions... " << ++progress << "/" << totalRegions << "\r";
+            _debug << "Initializing stone regions... " << (100 * ++progress / totalRegions) << "%\r";
             size_t stoneType = rand() % 21;
             for (size_t xx = x; xx != x + LAYER_SIZE && xx != _mapX; ++xx)
                 for (size_t yy = y; yy != y + LAYER_SIZE && yy != _mapX; ++yy)
                     stoneLayer[xx][yy] = stoneType;
         }
     _debug << "Initializing stone regions... 100%" << Log::endl;
+
+    // Clay patches
+    static const int numClayPatches = 7;
+    const ObjectType *clay = &*_objectTypes.find(std::string("clay"));
+    progress = 0;
+    for (size_t i = 0; i != numClayPatches; ++i) {
+        _debug << "Generating clay patches... " << 100 * ++progress / numClayPatches << "%\r";
+        const size_t centerX = rand() % _mapX;
+        const size_t centerY = rand() % _mapY;
+        for (size_t x = 0; x != _mapX; ++x)
+            for (size_t y = 0; y != _mapY; ++y) {
+                Point thisTile(x, y);
+                if (y % 2 == 1)
+                    thisTile.x -= .5;
+                Point tileCenter(centerX, centerY);
+                const double dist = distance(tileCenter, thisTile);
+                if (dist <= 7) {
+                    if (isLocationValid(tileCenter, *clay))
+                        addObject(clay, Point(thisTile.x * TILE_W, thisTile.y * TILE_H));
+                }
+            }
+    }
+    _debug << "Generating clay patches... 100%" << Log::endl;
 
     // Stone in circles
     const ObjectType *stoneObj[21];
@@ -902,10 +925,10 @@ void Server::generateWorld(){
     stoneObj[18] = &*_objectTypes.find(std::string("Schist"));
     stoneObj[19] = &*_objectTypes.find(std::string("Shale"));
     stoneObj[20] = &*_objectTypes.find(std::string("Slate"));
-    static const size_t numStoneCircles = 15;
+    static const size_t numStoneCircles = 10;
     progress = 0;
     for (int i = 0; i != numStoneCircles; ++i) {
-        _debug << "Generating stone deposits... " << ++progress << "/" << numStoneCircles << "\r";
+        _debug << "Generating stone deposits... " << (100 * ++progress / numStoneCircles) << "%\r";
         const size_t centerX = rand() % _mapX;
         const size_t centerY = rand() % _mapY;
         for (size_t x = 0; x != _mapX; ++x)
@@ -913,14 +936,16 @@ void Server::generateWorld(){
                 Point thisTile(x, y);
                 if (y % 2 == 1)
                     thisTile.x -= .5;
-                const double dist = distance(Point(centerX, centerY), thisTile);
+                Point tileCenter(centerX, centerY);
+                const double dist = distance(tileCenter, thisTile);
                 if (dist <= 7) {
-                    addObject(stoneObj[stoneLayer[x][y]], Point(thisTile.x * TILE_W,
-                                                                thisTile.y * TILE_H));;
+                    const ObjectType *type = stoneObj[stoneLayer[x][y]];
+                    if (isLocationValid(tileCenter, *type))
+                        addObject(type, Point(thisTile.x * TILE_W, thisTile.y * TILE_H));
                 }
             }
     }
-    _debug << Log::endl;
+    _debug << "Generating stone deposits... 100%" << Log::endl;
 
     // Rocks/grass/seaweed
     const ObjectType *rock[21];

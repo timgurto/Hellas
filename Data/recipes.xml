@@ -69,6 +69,75 @@
     <material id="stick" />
 </recipe>
 
+<recipe id="stoneShovelHeadAndesite" product="stoneShovelHead" time=1000 >
+    <material id="AndesiteRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadBasalt" product="stoneShovelHead" time=1000 >
+    <material id="BasaltRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadChalk" product="stoneShovelHead" time=1000 >
+    <material id="ChalkRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadChert" product="stoneShovelHead" time=1000 >
+    <material id="ChertRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadClaystone" product="stoneShovelHead" time=1000 >
+    <material id="ClaystoneRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadConglomerate" product="stoneShovelHead" time=1000 >
+    <material id="ConglomerateRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadDacite" product="stoneShovelHead" time=1000 >
+    <material id="DaciteRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadDiorite" product="stoneShovelHead" time=1000 >
+    <material id="DioriteRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadDolomite" product="stoneShovelHead" time=1000 >
+    <material id="DolomiteRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadGabbro" product="stoneShovelHead" time=1000 >
+    <material id="GabbroRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadGneiss" product="stoneShovelHead" time=1000 >
+    <material id="GneissRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadGranite" product="stoneShovelHead" time=1000 >
+    <material id="GraniteRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadLimestone" product="stoneShovelHead" time=1000 >
+    <material id="LimestoneRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadMarble" product="stoneShovelHead" time=1000 >
+    <material id="MarbleRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadPhyllite" product="stoneShovelHead" time=1000 >
+    <material id="PhylliteRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadQuartzite" product="stoneShovelHead" time=1000 >
+    <material id="QuartziteRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadRhyolite" product="stoneShovelHead" time=1000 >
+    <material id="RhyoliteRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadRockSalt" product="stoneShovelHead" time=1000 >
+    <material id="RockSaltRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadSchist" product="stoneShovelHead" time=1000 >
+    <material id="SchistRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadShale" product="stoneShovelHead" time=1000 >
+    <material id="ShaleRock" quantity=2 />
+</recipe>
+<recipe id="stoneShovelHeadSlate" product="stoneShovelHead" time=1000 >
+    <material id="SlateRock" quantity=2 />
+</recipe>
+
+<recipe id="stoneShovel" product="stoneShovel" time=10000 >
+    <material id="stoneShovelHead" />
+    <material id="stick" />
+</recipe>
+
 <recipe id="thatch" product="thatch" time=1000 >
     <material id="straw" quantity=4 />
 </recipe>

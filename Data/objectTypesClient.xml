@@ -67,4 +67,12 @@
     canGather=1
     gatherSound="wood1"
 />
+<objectType
+    id="clay"
+    name="Clay"
+    xDrawOffset=-8
+    yDrawOffset=-8
+    canGather=1
+    gatherSound="grass1"
+/>
 </root>

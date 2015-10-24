@@ -138,4 +138,9 @@
 <objectType id="stick" actionTime = 1 >
     <yield id="stick" />
 </objectType>
+
+<objectType id="clay" actionTime = 1000 gatherReq="shovel" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="clay" initialMean = 2.5 initialSD = 0.75 gatherMean = 100 />
+</objectType>
 </root>
