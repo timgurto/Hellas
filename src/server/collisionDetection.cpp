@@ -37,14 +37,14 @@ bool Server::isLocationValid(const Point &loc, const ObjectType &type,
     }
 
     // Objects
-    for (const Object obj : _objects) {
-        if (&obj == thisObject)
-            continue;
-        if (!obj.type()->collides())
-            continue;
-        if (rect.collides(obj.collisionRect()))
-            return false;
-    }
+    auto superChunk = getCollisionSuperChunk(loc);
+    for (CollisionChunk *chunk : superChunk)
+        for (const auto &ret : chunk->objects()) {
+            const Object *pObj = ret.second;
+            if (rect.collides(pObj->collisionRect()))
+                return false;
+        }
+
     return true;
 }
 

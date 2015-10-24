@@ -911,8 +911,11 @@ void Server::addObject (const ObjectType *type, const Point &location, const Use
     Object newObj(type, location);
     if (owner)
         newObj.owner(owner->name());
-    _objects.insert(newObj);
+    auto it = _objects.insert(newObj).first;
     broadcast(SV_OBJECT, makeArgs(newObj.serial(), location.x, location.y, type->id()));
     if (owner)
         broadcast(SV_OWNER, makeArgs(newObj.serial(), newObj.owner()));
+
+    // Add item to relevant chunk
+    getCollisionChunk(location).addObject(&*it);
 }
