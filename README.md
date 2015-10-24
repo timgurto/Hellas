@@ -191,6 +191,7 @@ Code | Name                  | Syntax                     | Description
 21   | CL_CRAFT              | `[21,id]`                  | "I want to craft an item using recipe `id`"
 22   | CL_CONSTRUCT          | `[22,slot,x,y]`            | "I want to construct the item in inventory slot #`slot`, at location (`x`,`y`)""
 23   | CL_GATHER             | `[23,serial]`              | "I want to gather object #`serial`
+24   | CL_DROP               | `[24,slot]`                | "I want to drop the item in inventory slot #`slot`
 
 #### Server commands
 Code | Name                  | Syntax                     | Description

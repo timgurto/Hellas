@@ -455,6 +455,19 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_DROP:
+        {
+            size_t slot;
+            iss >> slot >> del;
+            if (del != ']')
+                return;
+            if (user->inventory(slot).second != 0){
+                user->inventory(slot) = std::make_pair<const Item *, size_t>(0, 0);
+                sendMessage(client, SV_INVENTORY, makeArgs(slot, "none", 0));
+            }
+            break;
+        }
+
         default:
             _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
         }
