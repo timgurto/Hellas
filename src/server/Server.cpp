@@ -795,25 +795,6 @@ void Server::saveData(const Server *server, const std::set<Object> &objects){
 #endif
 }
 
-size_t Server::findTile(const Point &p) const{
-    size_t y = static_cast<size_t>(p.y / TILE_H);
-    if (y >= _mapY) {
-        _debug << Color::RED << "Invalid location; clipping y from " << y << " to " << _mapY-1
-               << ". original co-ord=" << p.y << Log::endl;
-        y = _mapY-1;
-    }
-    double rawX = p.x;
-    if (y % 2 == 1)
-        rawX += TILE_W/2;
-    size_t x = static_cast<size_t>(rawX / TILE_W);
-    if (x >= _mapX) {
-        _debug << Color::RED << "Invalid location; clipping x from " << x << " to " << _mapX-1
-               << ". original co-ord=" << p.x << Log::endl;
-        x = _mapX-1;
-    }
-    return _map[x][y];
-}
-
 void Server::generateWorld(){
     _mapX = 30;
     _mapY = 30;
@@ -871,6 +852,21 @@ void Server::generateWorld(){
                 _map[x][y] = 3;
             else if (dist <= 2)
                 _map[x][y] = 4;
+        }
+
+    // Add tiles to chunks
+    for (size_t x = 0; x != _mapX; ++x)
+        for (size_t y = 0; y != _mapY; ++y) {
+            Point tileMidpoint(x * TILE_W, y * TILE_H + TILE_H / 2);
+            if (y % 2 == 1)
+                tileMidpoint.x += TILE_W / 2;
+            // Add terrain info to adjacent chunks too
+            auto superChunk = getCollisionSuperChunk(tileMidpoint);
+            for (CollisionChunk *chunk : superChunk){
+                size_t tile = _map[x][y];
+                bool passable = tile != 3 && tile != 4;
+                chunk->addTile(x, y, (tile != 3 && tile != 4));
+            }
         }
 
     const ObjectType *const branch = &*_objectTypes.find(std::string("branch"));
