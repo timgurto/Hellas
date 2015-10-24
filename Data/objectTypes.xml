@@ -60,7 +60,7 @@
     <yield id="ShaleRock" />
 </objectType>
 <objectType id="SlateRock" actionTime = 1 >
-    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="SlateRock" />
 </objectType>
 
 <objectType id="Andesite" >
