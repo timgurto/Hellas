@@ -6,7 +6,7 @@
 #include "CollisionChunk.h"
 #include "Server.h"
 
-const int Server::COLLISION_CHUNK_SIZE = 100;
+const int Server::COLLISION_CHUNK_SIZE = 40;
 
 bool Server::isLocationValid(const Point &loc, const ObjectType &type,
                              const Object *thisObject, const User *thisUser){
