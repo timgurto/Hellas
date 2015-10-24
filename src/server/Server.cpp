@@ -831,9 +831,9 @@ void Server::generateWorld(){
     const Point
         start(rand() % _mapX, rand() % _mapY),
         end(rand() % _mapX, rand() % _mapY);
-    size_t progress = 0;
     for (size_t x = 0; x != _mapX; ++x) {
-        _debug << "Generating river... " << 100 * ++progress / _mapX << "%\r";
+        if (x % 3 == 0)
+        _debug << "Generating river... " << 100 * x / _mapX << "%\r";
         for (size_t y = 0; y != _mapY; ++y) {
             Point thisTile(x, y);
             if (y % 2 == 1)
@@ -843,9 +843,12 @@ void Server::generateWorld(){
                 _map[x][y] = 1;
         }
     }
+    _debug << "Generating river... 100%" << Log::endl;
 
     // Add tiles to chunks
-    for (size_t x = 0; x != _mapX; ++x)
+    for (size_t x = 0; x != _mapX; ++x) {
+        if (x % 2 == 0)
+            _debug << "Dividing terrain into chunks... " << 100 * x / _mapX << "%\r";
         for (size_t y = 0; y != _mapY; ++y) {
             Point tileMidpoint(x * TILE_W, y * TILE_H + TILE_H / 2);
             if (y % 2 == 1)
@@ -858,19 +861,11 @@ void Server::generateWorld(){
                 chunk->addTile(x, y, (tile != 3 && tile != 4));
             }
         }
-
-    const ObjectType *const branch = &*_objectTypes.find(std::string("branch"));
-    for (int i = 0; i != 30; ++i){
-        Point loc;
-        do {
-            loc = mapRand();
-        } while (!isLocationValid(loc, *branch));
-        addObject(branch, loc);
     }
-    _debug << Log::endl;
+    _debug << "Dividing terrain into chunks... 100%" << Log::endl;
 
     //Generate stone layer
-    progress = 0;
+    size_t progress = 0;
     auto stoneLayer = _map;
     static const size_t LAYER_SIZE = 30;
     const size_t totalRegions = toInt((_mapY + .5) / LAYER_SIZE) * toInt((_mapX + .5) / LAYER_SIZE);
@@ -882,7 +877,7 @@ void Server::generateWorld(){
                 for (size_t yy = y; yy != y + LAYER_SIZE && yy != _mapX; ++yy)
                     stoneLayer[xx][yy] = stoneType;
         }
-    _debug << Log::endl;
+    _debug << "Initializing stone regions... 100%" << Log::endl;
 
     // Stone in circles
     const ObjectType *stoneObj[21];
@@ -958,7 +953,8 @@ void Server::generateWorld(){
     static const size_t numObjects = 300;
     progress = 0;
     for (int i = 0; i != numObjects; ++i){
-        _debug << "Generating objects... " << ++progress << "/" << numObjects << "\r";
+        if (i % 25 == 0)
+            _debug << "Generating objects... " << (100 * i / (numObjects-1)) << "%" << "\r";
         Point p;
         const ObjectType *type = 0;
         do {
@@ -978,7 +974,7 @@ void Server::generateWorld(){
         } while (!isLocationValid(p, *type));
         addObject(type, p);
     }
-    _debug << Log::endl;
+    _debug << "Generating objects... 100%" << Log::endl;
 }
 
 Point Server::mapRand() const{
