@@ -14,7 +14,7 @@
 
 const size_t User::INVENTORY_SIZE = 10;
 
-const ObjectType User::OBJECT_TYPE(Rect(-10, -10, 20, 20));
+const ObjectType User::OBJECT_TYPE(Rect(-5, -2, 10, 4));
 
 User::User(const std::string &name, const Point &loc, const Socket &socket):
 _name(name),
