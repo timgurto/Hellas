@@ -871,7 +871,7 @@ void Server::generateWorld(){
             for (CollisionChunk *chunk : superChunk){
                 size_t tile = _map[x][y];
                 bool passable = tile != 1;
-                chunk->addTile(x, y, (tile != 3 && tile != 4));
+                chunk->addTile(x, y, (tile != 1));
             }
         }
     }
