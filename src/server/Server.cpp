@@ -713,6 +713,25 @@ void Server::loadData(){
             }
         }
 
+        // Add tiles to chunks
+        for (size_t x = 0; x != _mapX; ++x) {
+            if (x % 2 == 0)
+                _debug << "Dividing terrain into chunks... " << 100 * x / _mapX << "%\r";
+            for (size_t y = 0; y != _mapY; ++y) {
+                Point tileMidpoint(x * TILE_W, y * TILE_H + TILE_H / 2);
+                if (y % 2 == 1)
+                    tileMidpoint.x += TILE_W / 2;
+                // Add terrain info to adjacent chunks too
+                auto superChunk = getCollisionSuperChunk(tileMidpoint);
+                for (CollisionChunk *chunk : superChunk){
+                    size_t tile = _map[x][y];
+                    bool passable = tile != 1;
+                    chunk->addTile(x, y, (tile != 1));
+                }
+            }
+        }
+        _debug << "Dividing terrain into chunks... 100%" << Log::endl;
+
         // Objects
         xr.newFile("World/objects.world");
         if (!xr)
