@@ -628,10 +628,10 @@ void Client::draw() const{
 
     // Map
     size_t
-        xMin = max(0, -offset().x / TILE_W),
-        xMax = min(_mapX, toInt(1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
-        yMin = max(0, -offset().y / TILE_H),
-        yMax = min(_mapY, (-offset().y + SCREEN_Y) / TILE_H + 1);
+        xMin = static_cast<size_t>(max(0, -offset().x / TILE_W)),
+        xMax = static_cast<size_t>(min(_mapX, 1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
+        yMin = static_cast<size_t>(max(0, -offset().y / TILE_H)),
+        yMax = static_cast<size_t>(min(_mapY, (-offset().y + SCREEN_Y) / TILE_H + 1));
     for (size_t y = yMin; y != yMax; ++y) {
         const int yLoc = y * TILE_H + toInt(offset().y);
         for (size_t x = xMin; x != xMax; ++x){
@@ -655,8 +655,25 @@ void Client::draw() const{
     }
 
     // Entities, sorted from back to front
-    for (const Entity *entity : _entities)
-        entity->draw(*this);
+    static const int
+        DRAW_MARGIN_ABOVE = 50,
+        DRAW_MARGIN_BELOW = 10,
+        DRAW_MARGIN_SIDES = 30;
+    const double
+        topY = -offset().y - DRAW_MARGIN_BELOW,
+        bottomY = -offset().y + SCREEN_Y + DRAW_MARGIN_ABOVE,
+        leftX = -offset().x - DRAW_MARGIN_SIDES,
+        rightX = -offset().x + SCREEN_X + DRAW_MARGIN_SIDES;
+
+    // Cull by y
+    auto top = _entities.lower_bound(&Entity(0, Point(0, topY)));
+    auto bottom = _entities.upper_bound(&Entity(0, Point(0, bottomY)));
+    for (auto it = top; it != bottom; ++it) {
+        // Cull by x
+        double x = (*it)->location().x;
+        if (x >= leftX && x <= rightX)
+            (*it)->draw(*this);
+    }
 
     // Cast bar
     if (_actionTimer > 0) {
