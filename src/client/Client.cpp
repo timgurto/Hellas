@@ -16,6 +16,7 @@
 #include "LogSDL.h"
 #include "Renderer.h"
 #include "TooltipBuilder.h"
+#include "ui/Container.h"
 #include "ui/Element.h"
 #include "../XmlReader.h"
 #include "../messageCodes.h"
@@ -66,6 +67,7 @@ _recipeList(0),
 _detailsPane(0),
 _craftingWindow(0),
 _inventoryWindow(0),
+_dragSlot(INVENTORY_SIZE),
 _actionTimer(0),
 _actionLength(0),
 _loop(true),
@@ -477,7 +479,15 @@ void Client::run(){
                 } else if (_inventoryWindow->visible() &&
                            collision(_mouse, _inventoryWindow->rect())) {
                     _inventoryWindow->onMouseUp(_mouse);
+                    const Container *invContainer = dynamic_cast<Container *>(
+                        _inventoryWindow->findChild("inventory"));
+                    _dragSlot = invContainer->leftClickSlot();
                     break;
+                } else if (_dragSlot != INVENTORY_SIZE) {
+                    sendMessage(CL_DROP, makeArgs(_dragSlot));
+                    Container *invContainer = dynamic_cast<Container *>(
+                        _inventoryWindow->findChild("inventory"));
+                    invContainer->clearMouseDown();
                 }
 
                 if (_currentMouseOverEntity)
@@ -751,6 +761,14 @@ void Client::draw() const{
 
     _craftingWindow->draw();
     _inventoryWindow->draw();
+
+    // Dragged item
+    static const Point MOUSE_ICON_OFFSET(-Client::ICON_SIZE/2, -Client::ICON_SIZE/2);
+    if (_dragSlot != INVENTORY_SIZE) {
+        const Item *dragItem = _inventory[_dragSlot].first;
+        if (dragItem)
+            dragItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
+    }
 
     _debug.draw();
     renderer.present();

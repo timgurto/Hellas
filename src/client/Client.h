@@ -90,6 +90,9 @@ private:
     Window *_inventoryWindow;
     void initializeInventoryWindow();
 
+    // Eventually this will need to distinguish between different containers.
+    size_t _dragSlot; // The inventory slot of the item being dragged, if any.
+
     Texture _tile[5];
 
     Avatar _character; // Describes the user's character
