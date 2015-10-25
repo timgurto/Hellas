@@ -26,22 +26,12 @@ To clone this repository: `git clone --recursive https://github.com/timgurto/mmo
 
 <a id='vs'></a>
 ### Building in Visual Studio
-#### Prerequisites
- - Microsoft Visual Studio 2012
-
-#### Steps
-1. Open mmo.sln in Visual Studio.
+1. Open mmo.sln in Visual Studio 2012 or later.
 2. Build the project.
 
 <a id='gcc'></a>
-### Building with GCC
-#### Prerequisites
- - MinGW
- - Make
-
-#### Steps
-1. Run `make`
-
+### Building with MinGW
+1. Run `make`.
 
 ## Running
 
@@ -135,6 +125,7 @@ The classes themselves are not coded anywhere authoritative, but are deduced by 
 ### Game data
 The data files used by the server can be viewed here:
  - [Object types](Data/objectTypes.xml)
+ - [Object types (client-side)](Data/objectTypesClient.xml)
  - [Items](Data/items.xml)
 
 <a id='states'></a>
@@ -198,8 +189,9 @@ Code | Name                  | Syntax                     | Description
 10   | CL_LOCATION           | `[10,x,y]`                 | "My location has changed, and is now (`x`,`y`)"
 20   | CL_CANCEL_ACTION      | `[20]`                     | "I don't want to finish my current action"
 21   | CL_CRAFT              | `[21,id]`                  | "I want to craft an item using recipe `id`"
-22   | CL_CONSTRUCT          | `[22,slot,x,y]`            | "I want to construct the item in inventory slot `slot`, at location (`x`,`y`)""
+22   | CL_CONSTRUCT          | `[22,slot,x,y]`            | "I want to construct the item in inventory slot #`slot`, at location (`x`,`y`)""
 23   | CL_GATHER             | `[23,serial]`              | "I want to gather object #`serial`
+24   | CL_DROP               | `[24,slot]`                | "I want to drop the item in inventory slot #`slot`
 
 #### Server commands
 Code | Name                  | Syntax                     | Description
@@ -223,7 +215,7 @@ Code | Name                  | Syntax                     | Description
 900  | SV_DUPLICATE_USERNAME | `[900]`                    | The client has attempted to connect with a username already in use
 901  | SV_INVALID_USERNAME   | `[901]`                    | The client has attempted to connect with an invalid username
 902  | SV_SERVER_FULL        | `[902]`                    | There is no room for more clients
-910  | SV_SV_TOO_FAR         | `[910]`                    | "You are too far away to perform that action"
+910  | SV_TOO_FAR            | `[910]`                    | "You are too far away to perform that action"
 911  | SV_DOESNT_EXIST       | `[911]`                    | "The object you are trying to use does not exist"
 912  | SV_INVENTORY_FULL     | `[912]`                    | "You cannot receive an item because your inventory is full"
 913  | SV_NEED_MATERIALS     | `[913]`                    | "You do not have enough materials to craft that item"

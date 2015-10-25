@@ -35,6 +35,10 @@ enum MessageCode{
     // Arguments: serial
     CL_GATHER = 23,
 
+    // "I want to drop the item in inventory slot ..."
+    // Arguments: slot
+    CL_DROP = 24,
+
 
 
     // Server -> client
