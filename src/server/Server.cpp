@@ -973,5 +973,6 @@ void Server::addObject (const ObjectType *type, const Point &location, const Use
 
 void Server::sendInventoryMessage(const User &user, size_t slot) const{
     auto invSlot = user.inventory(slot);
-    sendMessage(user.socket(), SV_INVENTORY, makeArgs(slot, invSlot.first->id(), invSlot.second));
+    sendMessage(user.socket(), SV_INVENTORY,
+                makeArgs(slot,invSlot.first ? invSlot.first->id() : "none", invSlot.second));
 }
