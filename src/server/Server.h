@@ -57,6 +57,7 @@ private:
                      const std::string &args = "") const;
     void broadcast(MessageCode msgCode, const std::string &args); // Send a command to all users
     void handleMessage(const Socket &client, const std::string &msg);
+    void sendInventoryMessage(const User &user, size_t slot) const;
 
     // Clients
     // All connected sockets, including those without registered users
