@@ -468,6 +468,26 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_SWAP_ITEMS:
+        {
+            size_t slot1, slot2;
+            iss >> slot1 >> del >> slot2 >> del;
+            if (del != ']')
+                return;
+            if (slot1 >= User::INVENTORY_SIZE || slot2 >= User::INVENTORY_SIZE) {
+                sendMessage(client, SV_INVALID_SLOT);
+                break;
+            }
+            auto temp = user->inventory(slot1);
+            user->inventory(slot1) = user->inventory(slot2);
+            user->inventory(slot2) = temp;
+            sendMessage(client, SV_INVENTORY, makeArgs(slot1, user->inventory(slot1).first->id(),
+                                                       user->inventory(slot1).second));
+            sendMessage(client, SV_INVENTORY, makeArgs(slot2, user->inventory(slot2).first->id(),
+                                                       user->inventory(slot2).second));
+            break;
+        }
+
         default:
             _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
         }

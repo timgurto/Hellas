@@ -39,6 +39,10 @@ enum MessageCode{
     // Arguments: slot
     CL_DROP = 24,
 
+    // "I want to swap the items in inventory slots ... and ..."
+    // Arguments: slot1, slot2
+    CL_SWAP_ITEMS = 25,
+
 
 
     // Server -> client
