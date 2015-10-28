@@ -638,10 +638,10 @@ void Client::draw() const{
 
     // Map
     size_t
-        xMin = static_cast<size_t>(max(0, -offset().x / TILE_W)),
-        xMax = static_cast<size_t>(min(_mapX, 1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
-        yMin = static_cast<size_t>(max(0, -offset().y / TILE_H)),
-        yMax = static_cast<size_t>(min(_mapY, (-offset().y + SCREEN_Y) / TILE_H + 1));
+        xMin = static_cast<size_t>(max<double>(0, -offset().x / TILE_W)),
+        xMax = static_cast<size_t>(min<double>(_mapX, 1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
+        yMin = static_cast<size_t>(max<double>(0, -offset().y / TILE_H)),
+        yMax = static_cast<size_t>(min<double>(_mapY, (-offset().y + SCREEN_Y) / TILE_H + 1));
     for (size_t y = yMin; y != yMax; ++y) {
         const int yLoc = y * TILE_H + toInt(offset().y);
         for (size_t x = xMin; x != xMax; ++x){
