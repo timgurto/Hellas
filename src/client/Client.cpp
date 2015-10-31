@@ -481,6 +481,8 @@ void Client::run(){
                            collision(_mouse, _inventoryWindow->rect())) {
                     _inventoryWindow->onMouseUp(_mouse);
                     break;
+                } else if (Container::getDragItem()) {
+                    Container::dropItem();
                 }
 
                 if (_currentMouseOverEntity)
@@ -1246,7 +1248,6 @@ void Client::handleMessage(const std::string &msg){
                 _inventory[slot] = std::make_pair(&*it, quantity);
             _recipeList->markChanged();
             _inventoryWindow->forceRefresh();
-            _debug("Inventory update received");
             break;
         }
 

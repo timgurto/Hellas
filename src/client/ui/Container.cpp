@@ -38,7 +38,6 @@ _leftMouseDownSlot(NO_SLOT){
 }
 
 void Container::refresh(){
-    Client::_instance->_debug("Refreshing container");
     renderer.setDrawColor(Color::BLACK);
     for (size_t i = 0; i != Client::INVENTORY_SIZE; ++i) {
         const int
@@ -104,4 +103,12 @@ const Item *Container::getDragItem() {
         return 0;
     else
         return dragContainer->_linked[dragSlot].first;
+}
+
+void Container::dropItem() {
+    if (dragSlot != NO_SLOT && dragContainer) {
+        Client::_instance->sendMessage(CL_DROP, makeArgs(dragSlot));
+        dragSlot = NO_SLOT;
+        dragContainer = 0;
+    }
 }
