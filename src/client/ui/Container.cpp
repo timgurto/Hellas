@@ -91,11 +91,11 @@ void Container::mouseUp(Element &e, const Point &mousePos){
                        container._linked[slot].first) { // and slot isn't empty: start dragging
                 dragSlot = slot;
                 dragContainer = &container;
+                container.markChanged();
             }
         }
     }
     container._leftMouseDownSlot = NO_SLOT;
-    container.markChanged();
 }
 
 const Item *Container::getDragItem() {
