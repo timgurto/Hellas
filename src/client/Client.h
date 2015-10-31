@@ -21,6 +21,7 @@
 #include "../Socket.h"
 #include "../messageCodes.h"
 #include "../server/Recipe.h"
+#include "ui/Container.h"
 
 class Client{
 public:
@@ -89,9 +90,6 @@ private:
 
     Window *_inventoryWindow;
     void initializeInventoryWindow();
-
-    // Eventually this will need to distinguish between different containers.
-    size_t _dragSlot; // The inventory slot of the item being dragged, if any.
 
     Texture _tile[5];
 
@@ -177,7 +175,7 @@ private:
     void sendMessage(MessageCode msgCode, const std::string &args = "") const;
     void handleMessage(const std::string &msg);
 
-    friend Avatar;
+    friend class Container; // Needs to send CL_SWAP_ITEMS messages
 };
 
 #endif

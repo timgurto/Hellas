@@ -10,6 +10,12 @@ extern Renderer renderer;
 
 const int Container::GAP = 0;
 
+// TODO: set to Client::INVENTORY_SIZE.
+const size_t Container::NO_SLOT = 999;
+
+size_t Container::dragSlot = NO_SLOT;
+const Container *Container::dragContainer = 0;
+
 Container::Container(size_t rows, size_t cols, Item::vect_t &linked, int x, int y):
 Element(Rect(x, y,
                  cols * (Client::ICON_SIZE + GAP + 2) + GAP,
@@ -17,8 +23,7 @@ Element(Rect(x, y,
 _rows(rows),
 _cols(cols),
 _linked(linked),
-_leftMouseDownSlot(Client::INVENTORY_SIZE),
-_leftClickSlot(Client::INVENTORY_SIZE){
+_leftMouseDownSlot(NO_SLOT){
     for (size_t i = 0; i != Client::INVENTORY_SIZE; ++i) {
         const int
             x = i % cols,
@@ -33,6 +38,7 @@ _leftClickSlot(Client::INVENTORY_SIZE){
 }
 
 void Container::refresh(){
+    Client::_instance->_debug("Refreshing container");
     renderer.setDrawColor(Color::BLACK);
     for (size_t i = 0; i != Client::INVENTORY_SIZE; ++i) {
         const int
@@ -43,7 +49,7 @@ void Container::refresh(){
                                             Client::ICON_SIZE + 2, Client::ICON_SIZE + 2);
         static const Rect SLOT_BACKGROUND_OFFSET = Rect(1, 1, -2, -2);
         renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
-        if (_leftClickSlot == i) // Don't draw an item being moved by the mouse.
+        if (dragSlot == i) // Don't draw an item being moved by the mouse.
             continue;
         const std::pair<const Item *, size_t> &slot = _linked[i];
         if (slot.first){
@@ -62,33 +68,40 @@ size_t Container::getSlot(const Point &mousePos) const{
         x = static_cast<size_t>((mousePos.x - GAP) / (Client::ICON_SIZE + GAP + 2)),
         y = static_cast<size_t>((mousePos.y - GAP - 1) / (Client::ICON_SIZE + GAP + 2));
     size_t slot = y * _cols + x;
-    return min(slot, Client::INVENTORY_SIZE);
+    if (slot > Client::INVENTORY_SIZE)
+        return NO_SLOT;
+    return slot;
 }
 
 void Container::mouseDown(Element &e, const Point &mousePos){
     Container &container = dynamic_cast<Container &>(e);
-    container._leftMouseDownSlot = container.getSlot(mousePos);
-    if (!container._linked[container._leftMouseDownSlot].first)
-        container._leftMouseDownSlot = Client::INVENTORY_SIZE;
+    size_t slot = container.getSlot(mousePos);
+    container._leftMouseDownSlot = slot;
 }
 
 void Container::mouseUp(Element &e, const Point &mousePos){
-    e.markChanged();
     Container &container = dynamic_cast<Container &>(e);
     size_t slot = container.getSlot(mousePos);
-    if (container._leftClickSlot == slot) { // User dropped item in same location.
-        container._leftClickSlot = Client::INVENTORY_SIZE;
-        return;
+    if (slot != NO_SLOT) { // Clicked a valid slot
+        if (slot != NO_SLOT) {
+            if (dragSlot != slot && dragSlot != NO_SLOT) { // Different slot: finish dragging
+                Client::_instance->sendMessage(CL_SWAP_ITEMS, makeArgs(dragSlot, slot));
+                dragSlot = NO_SLOT;
+                dragContainer = 0;
+            } else if (container._leftMouseDownSlot == slot && // Same slot that mouse went down on
+                       container._linked[slot].first) { // and slot isn't empty: start dragging
+                dragSlot = slot;
+                dragContainer = &container;
+            }
+        }
     }
-    if (container._leftMouseDownSlot == slot) {
-        container._leftClickSlot = slot;
-        container._leftMouseDownSlot = Client::INVENTORY_SIZE;
-    } else {
-        container._leftMouseDownSlot = Client::INVENTORY_SIZE;
-        container._leftClickSlot = Client::INVENTORY_SIZE;
-    }
+    container._leftMouseDownSlot = NO_SLOT;
+    container.markChanged();
 }
 
-void Container::clearMouseDown(){
-    _leftClickSlot = Client::INVENTORY_SIZE;
+const Item *Container::getDragItem() {
+    if (dragSlot == NO_SLOT || !dragContainer)
+        return 0;
+    else
+        return dragContainer->_linked[dragSlot].first;
 }

@@ -67,7 +67,6 @@ _recipeList(0),
 _detailsPane(0),
 _craftingWindow(0),
 _inventoryWindow(0),
-_dragSlot(INVENTORY_SIZE),
 _actionTimer(0),
 _actionLength(0),
 _loop(true),
@@ -476,18 +475,12 @@ void Client::run(){
                 if (_craftingWindow->visible() && collision(_mouse, _craftingWindow->rect())) {
                     _craftingWindow->onMouseUp(_mouse);
                     break;
-                } else if (_inventoryWindow->visible() &&
+                }
+
+                if (_inventoryWindow->visible() &&
                            collision(_mouse, _inventoryWindow->rect())) {
                     _inventoryWindow->onMouseUp(_mouse);
-                    const Container *invContainer = dynamic_cast<Container *>(
-                        _inventoryWindow->findChild("inventory"));
-                    _dragSlot = invContainer->leftClickSlot();
                     break;
-                } else if (_dragSlot != INVENTORY_SIZE) {
-                    sendMessage(CL_DROP, makeArgs(_dragSlot));
-                    Container *invContainer = dynamic_cast<Container *>(
-                        _inventoryWindow->findChild("inventory"));
-                    invContainer->clearMouseDown();
                 }
 
                 if (_currentMouseOverEntity)
@@ -767,11 +760,9 @@ void Client::draw() const{
 
     // Dragged item
     static const Point MOUSE_ICON_OFFSET(-Client::ICON_SIZE/2, -Client::ICON_SIZE/2);
-    if (_dragSlot != INVENTORY_SIZE) {
-        const Item *dragItem = _inventory[_dragSlot].first;
-        if (dragItem)
-            dragItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
-    }
+    const Item *draggedItem = Container::getDragItem();
+    if (draggedItem)
+        draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
 
     _debug.draw();
     renderer.present();
@@ -1255,6 +1246,7 @@ void Client::handleMessage(const std::string &msg){
                 _inventory[slot] = std::make_pair(&*it, quantity);
             _recipeList->markChanged();
             _inventoryWindow->forceRefresh();
+            _debug("Inventory update received");
             break;
         }
 

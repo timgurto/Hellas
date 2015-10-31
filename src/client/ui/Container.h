@@ -15,9 +15,12 @@ class Container : public Element{
     Item::vect_t &_linked;
 
     // For these, INVENTORY_SIZE = none
-    size_t
-        _leftMouseDownSlot, // The slot that the left mouse button went down on, if any.
-        _leftClickSlot; // The slot that was left-clicked, if any.
+    size_t _leftMouseDownSlot; // The slot that the left mouse button went down on, if any.
+
+    static const size_t NO_SLOT;
+
+    static size_t dragSlot; // The slot currently being dragged from.
+    static const Container *dragContainer; // The container currently being dragged from.
 
     virtual void refresh() override;
 
@@ -29,8 +32,7 @@ class Container : public Element{
 public:
     Container(size_t rows, size_t cols, Item::vect_t &linked, int x = 0, int y = 0);
 
-    size_t leftClickSlot() const { return _leftClickSlot; }
-    void clearMouseDown();
+    static const Item *getDragItem();
 };
 
 #endif
