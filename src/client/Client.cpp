@@ -470,23 +470,28 @@ void Client::run(){
                 if (!_loaded)
                     break;
 
-                _leftMouseDown = false;
+                switch (e.button.button) {
+                case SDL_BUTTON_LEFT:
+                    _leftMouseDown = false;
 
-                if (_craftingWindow->visible() && collision(_mouse, _craftingWindow->rect())) {
-                    _craftingWindow->onMouseUp(_mouse);
+                    if (_craftingWindow->visible() && collision(_mouse, _craftingWindow->rect())) {
+                        _craftingWindow->onMouseUp(_mouse);
+                        break;
+                    }
+
+                    if (_inventoryWindow->visible() &&
+                               collision(_mouse, _inventoryWindow->rect())) {
+                        _inventoryWindow->onMouseUp(_mouse);
+                        break;
+                    } else if (Container::getDragItem()) {
+                        Container::dropItem();
+                    }
+
+                    if (_currentMouseOverEntity)
+                        _currentMouseOverEntity->onLeftClick(*this);
+
                     break;
                 }
-
-                if (_inventoryWindow->visible() &&
-                           collision(_mouse, _inventoryWindow->rect())) {
-                    _inventoryWindow->onMouseUp(_mouse);
-                    break;
-                } else if (Container::getDragItem()) {
-                    Container::dropItem();
-                }
-
-                if (_currentMouseOverEntity)
-                    _currentMouseOverEntity->onLeftClick(*this);
 
                 break;
 
