@@ -236,7 +236,6 @@ void User::update(Uint32 timeElapsed, Server &server){
             --slot.second;
             if (slot.second == 0)
                 slot.first = 0;
-            const std::string &id = slot.first ? slot.first->id() : "none";
             server.sendInventoryMessage(*this, _constructingSlot);
         }
         _actionTime = 0;
