@@ -123,7 +123,7 @@ void Client::initializeCraftingWindow(){
                                  ICON_SIZE + 2);
     recipesPane->addChild(_recipeList);
     // Click on a filter: force recipe list to refresh
-    filterPane->setMouseUpFunction([](Element &e, const Point &mousePos){
+    filterPane->setLeftMouseUpFunction([](Element &e, const Point &mousePos){
                                        if (collision(mousePos,
                                                      Rect(0, 0, e.rect().w, e.rect().h)))
                                            e.markChanged();
@@ -269,7 +269,7 @@ void Client::populateRecipesList(Element &e){
                                                ICON_SIZE + 2),
                                           recipe.product()->name(),
                                           Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
-        recipeElement->setMouseUpFunction(selectRecipe);
+        recipeElement->setLeftMouseUpFunction(selectRecipe);
         recipeElement->id(recipe.id());
     }
     const std::string oldSelectedRecipe = recipesList.getSelected();

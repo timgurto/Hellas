@@ -21,7 +21,7 @@ _dragging(false),
 _content(new Element(Rect(1, HEADING_HEIGHT + 1, rect.w, rect.h))){
     const Rect windowRect = this->rect();
     hide();
-    setMouseUpFunction(&stopDragging);
+    setLeftMouseUpFunction(&stopDragging);
     setMouseMoveFunction(&drag);
 
     Element::addChild(new ColorBlock(Rect(1, 1, windowRect.w - 2, windowRect.h - 2)));
@@ -30,11 +30,11 @@ _content(new Element(Rect(1, HEADING_HEIGHT + 1, rect.w, rect.h))){
     Label *const heading = new Label(Rect(0, 0,
                                               windowRect.w - CLOSE_BUTTON_SIZE, HEADING_HEIGHT),
                                      _title, CENTER_JUSTIFIED);
-    heading->setMouseDownFunction(&startDragging, this);
+    heading->setLeftMouseDownFunction(&startDragging, this);
     Element::addChild(heading);
 
     Line *const headingLine = new Line(0, HEADING_HEIGHT, windowRect.w);
-    headingLine->setMouseDownFunction(&startDragging, this);
+    headingLine->setLeftMouseDownFunction(&startDragging, this);
     Element::addChild(headingLine);
 
     Button *const closeButton = new Button(Rect(windowRect.w - CLOSE_BUTTON_SIZE - 1, 1,

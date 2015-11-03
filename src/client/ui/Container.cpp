@@ -33,8 +33,8 @@ _leftMouseDownSlot(NO_SLOT){
                                    Client::ICON_SIZE + 2, Client::ICON_SIZE + 2);
         addChild(new ShadowBox(slotRect, true));
     }
-    setMouseDownFunction(mouseDown);
-    setMouseUpFunction(mouseUp);
+    setLeftMouseDownFunction(mouseDown);
+    setLeftMouseUpFunction(mouseUp);
 }
 
 void Container::refresh(){

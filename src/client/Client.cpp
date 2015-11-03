@@ -458,12 +458,21 @@ void Client::run(){
             }
 
             case SDL_MOUSEBUTTONDOWN:
-                _leftMouseDown = true;
+                switch (e.button.button) {
+                case SDL_BUTTON_LEFT:
+                    _leftMouseDown = true;
 
-                if (_craftingWindow->visible())
-                    _craftingWindow->onMouseDown(_mouse);
-                if (_inventoryWindow->visible())
-                    _inventoryWindow->onMouseDown(_mouse);
+                    if (_craftingWindow->visible())
+                        _craftingWindow->onLeftMouseDown(_mouse);
+                    if (_inventoryWindow->visible())
+                        _inventoryWindow->onLeftMouseDown(_mouse);
+                    break;
+
+                case SDL_BUTTON_RIGHT:
+                    if (_inventoryWindow->visible())
+                        //_inventoryWindow->onRightMouseDown(_mouse);
+                    break;
+                }
                 break;
 
             case SDL_MOUSEBUTTONUP:
@@ -475,13 +484,13 @@ void Client::run(){
                     _leftMouseDown = false;
 
                     if (_craftingWindow->visible() && collision(_mouse, _craftingWindow->rect())) {
-                        _craftingWindow->onMouseUp(_mouse);
+                        _craftingWindow->onLeftMouseUp(_mouse);
                         break;
                     }
 
                     if (_inventoryWindow->visible() &&
                                collision(_mouse, _inventoryWindow->rect())) {
-                        _inventoryWindow->onMouseUp(_mouse);
+                        _inventoryWindow->onLeftMouseUp(_mouse);
                         break;
                     } else if (Container::getDragItem()) {
                         Container::dropItem();
@@ -490,6 +499,11 @@ void Client::run(){
                     if (_currentMouseOverEntity)
                         _currentMouseOverEntity->onLeftClick(*this);
 
+                    break;
+
+                case SDL_BUTTON_RIGHT:
+                    if (_inventoryWindow->visible())
+                        //_inventoryWindow->onRightMouseUp(_mouse);
                     break;
                 }
 

@@ -68,10 +68,14 @@ protected:
     typedef void (*scrollDownFunction_t)(Element &e);
     typedef void (*preRefreshFunction_t)(Element &e);
 
-    mouseDownFunction_t _mouseDown;
-    Element *_mouseDownElement;
-    mouseUpFunction_t _mouseUp;
-    Element *_mouseUpElement;
+    mouseDownFunction_t _leftMouseDown;
+    Element *_leftMouseDownElement;
+    mouseUpFunction_t _leftMouseUp;
+    Element *_leftMouseUpElement;
+    mouseDownFunction_t _rightMouseDown;
+    Element *_rightMouseDownElement;
+    mouseUpFunction_t _rightMouseUp;
+    Element *_rightMouseUpElement;
     mouseMoveFunction_t _mouseMove;
     Element *_mouseMoveElement;
 
@@ -129,8 +133,10 @@ public:
     void makeBackgroundTransparent();
 
     // e: allows the function to be called on behalf of another element.  0 = self.
-    void setMouseDownFunction(mouseDownFunction_t f, Element *e = 0);
-    void setMouseUpFunction(mouseUpFunction_t f, Element *e = 0);
+    void setLeftMouseDownFunction(mouseDownFunction_t f, Element *e = 0);
+    void setLeftMouseUpFunction(mouseUpFunction_t f, Element *e = 0);
+    void setRightMouseDownFunction(mouseDownFunction_t f, Element *e = 0);
+    void setRightMouseUpFunction(mouseUpFunction_t f, Element *e = 0);
     void setMouseMoveFunction(mouseMoveFunction_t f, Element *e = 0);
     void setScrollUpFunction(scrollUpFunction_t f, Element *e = 0);
     void setScrollDownFunction(scrollDownFunction_t f, Element *e = 0);
@@ -140,11 +146,13 @@ public:
     Recurse to all children, calling _mouseDown() etc. in the lowest element that the mouse is over.
     Return value: whether this or any child has called _mouseDown().
     */
-    bool onMouseDown(const Point &mousePos); 
+    bool onLeftMouseDown(const Point &mousePos); 
+    bool onRightMouseDown(const Point &mousePos); 
     bool onScrollUp(const Point &mousePos);
     bool onScrollDown(const Point &mousePos);
     // Recurse to all children, calling _mouse?() in all found.
-    void onMouseUp(const Point &mousePos);
+    void onLeftMouseUp(const Point &mousePos);
+    void onRightMouseUp(const Point &mousePos);
     void onMouseMove(const Point &mousePos);
 
     void draw(); // Draw the existing texture to its designated location.

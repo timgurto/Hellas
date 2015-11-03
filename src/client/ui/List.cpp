@@ -42,15 +42,15 @@ _content(new Element(Rect(0, 0, rect.w - ARROW_W, 0))){
                             Texture("Images/arrowDownGrey.png", Color::MAGENTA));
     _whiteUp->hide();
     _greyDown->hide();
-    _whiteUp->setMouseDownFunction(scrollUp, this);
-    _whiteDown->setMouseDownFunction(scrollDown, this);
+    _whiteUp->setLeftMouseDownFunction(scrollUp, this);
+    _whiteDown->setLeftMouseDownFunction(scrollDown, this);
     _scrollBar->addChild(_whiteUp);
     _scrollBar->addChild(_greyUp);
     _scrollBar->addChild(_whiteDown);
     _scrollBar->addChild(_greyDown);
 
-    _cursor->setMouseDownFunction(cursorMouseDown, this);
-    setMouseUpFunction(mouseUp, this);
+    _cursor->setLeftMouseDownFunction(cursorMouseDown, this);
+    setLeftMouseUpFunction(mouseUp, this);
     _scrollBar->setMouseMoveFunction(mouseMove, this);
     setScrollUpFunction(scrollUpRaw, this);
     setScrollDownFunction(scrollDownRaw, this);
