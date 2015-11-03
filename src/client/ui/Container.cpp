@@ -33,8 +33,8 @@ _leftMouseDownSlot(NO_SLOT){
                                    Client::ICON_SIZE + 2, Client::ICON_SIZE + 2);
         addChild(new ShadowBox(slotRect, true));
     }
-    setLeftMouseDownFunction(mouseDown);
-    setLeftMouseUpFunction(mouseUp);
+    setLeftMouseDownFunction(leftMouseDown);
+    setLeftMouseUpFunction(leftMouseUp);
 }
 
 void Container::refresh(){
@@ -72,13 +72,13 @@ size_t Container::getSlot(const Point &mousePos) const{
     return slot;
 }
 
-void Container::mouseDown(Element &e, const Point &mousePos){
+void Container::leftMouseDown(Element &e, const Point &mousePos){
     Container &container = dynamic_cast<Container &>(e);
     size_t slot = container.getSlot(mousePos);
     container._leftMouseDownSlot = slot;
 }
 
-void Container::mouseUp(Element &e, const Point &mousePos){
+void Container::leftMouseUp(Element &e, const Point &mousePos){
     Container &container = dynamic_cast<Container &>(e);
     size_t slot = container.getSlot(mousePos);
     if (slot != NO_SLOT) { // Clicked a valid slot

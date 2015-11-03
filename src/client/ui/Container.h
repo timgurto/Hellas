@@ -23,9 +23,11 @@ class Container : public Element{
     static const Container *dragContainer; // The container currently being dragged from.
 
     virtual void refresh() override;
-
-    static void mouseDown(Element &e, const Point &mousePos);
-    static void mouseUp(Element &e, const Point &mousePos);
+    
+    static void leftMouseDown(Element &e, const Point &mousePos);
+    static void leftMouseUp(Element &e, const Point &mousePos);
+    static void rightMouseDown(Element &e, const Point &mousePos);
+    static void rightMouseUp(Element &e, const Point &mousePos);
 
     size_t getSlot(const Point &mousePos) const;
 
