@@ -87,17 +87,19 @@ void Container::leftMouseUp(Element &e, const Point &mousePos){
     Container &container = dynamic_cast<Container &>(e);
     size_t slot = container.getSlot(mousePos);
     if (slot != NO_SLOT) { // Clicked a valid slot
-        if (slot != NO_SLOT) {
-            if (dragSlot != slot && dragSlot != NO_SLOT) { // Different slot: finish dragging
-                Client::_instance->sendMessage(CL_SWAP_ITEMS, makeArgs(dragSlot, slot));
-                dragSlot = NO_SLOT;
-                dragContainer = 0;
-            } else if (container._leftMouseDownSlot == slot && // Same slot that mouse went down on
-                       container._linked[slot].first) { // and slot isn't empty: start dragging
-                dragSlot = slot;
-                dragContainer = &container;
-                container.markChanged();
-            }
+        if (dragSlot != slot && dragSlot != NO_SLOT) { // Different slot: finish dragging
+            Client::_instance->sendMessage(CL_SWAP_ITEMS, makeArgs(dragSlot, slot));
+            dragSlot = NO_SLOT;
+            dragContainer = 0;
+        } else if (slot == dragSlot && &container == dragContainer) {
+            dragSlot = NO_SLOT;
+            dragContainer = 0;
+            container.markChanged();
+        } else if (container._leftMouseDownSlot == slot && // Same slot that mouse went down on
+                    container._linked[slot].first) { // and slot isn't empty: start dragging
+            dragSlot = slot;
+            dragContainer = &container;
+            container.markChanged();
         }
     }
     container._leftMouseDownSlot = NO_SLOT;
