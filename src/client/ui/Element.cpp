@@ -148,6 +148,33 @@ bool Element::onLeftMouseDown(const Point &mousePos){
         return false;
 }
 
+bool Element::onRightMouseDown(const Point &mousePos){
+    // Assumption: if this is called, then the mouse collides with the element.
+    // Assumption: each element has at most one child that collides with the mouse.
+    if (!_visible)
+        return false;
+    const Point relativeLocation = mousePos - location();
+    bool functionCalled = false;
+    for (Element *child : _children) {
+        if (collision(relativeLocation, child->rect())) {
+            if (child->onRightMouseDown(relativeLocation)) {
+                functionCalled = true;
+            }
+        }
+    }
+    if (functionCalled)
+        return true;
+    /*
+    If execution gets here, then this element has no children that both collide
+    and have _mouseDown defined.
+    */
+    if (_rightMouseDown) {
+        _rightMouseDown(*_rightMouseDownElement, relativeLocation);
+        return true;
+    } else
+        return false;
+}
+
 bool Element::onScrollUp(const Point &mousePos){
     // Assumption: if this is called, then the mouse collides with the element.
     // Assumption: each element has at most one child that collides with the mouse.
@@ -210,6 +237,16 @@ void Element::onLeftMouseUp(const Point &mousePos){
         _leftMouseUp(*_leftMouseUpElement, relativeLocation);
     for (Element *child : _children)
         child->onLeftMouseUp(relativeLocation);
+}
+
+void Element::onRightMouseUp(const Point &mousePos){
+    if (!_visible)
+        return;
+    const Point relativeLocation = mousePos - location();
+    if (_rightMouseUp)
+        _rightMouseUp(*_rightMouseUpElement, relativeLocation);
+    for (Element *child : _children)
+        child->onRightMouseUp(relativeLocation);
 }
 
 void Element::onMouseMove(const Point &mousePos){

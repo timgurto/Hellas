@@ -14,13 +14,17 @@ class Container : public Element{
     size_t _rows, _cols;
     Item::vect_t &_linked;
 
-    // For these, INVENTORY_SIZE = none
-    size_t _leftMouseDownSlot; // The slot that the left mouse button went down on, if any.
+    size_t
+        _leftMouseDownSlot, // The slot that the left mouse button went down on, if any.
+        _rightMouseDownSlot; // The slot that the left mouse button went down on, if any.
 
     static const size_t NO_SLOT;
 
     static size_t dragSlot; // The slot currently being dragged from.
     static const Container *dragContainer; // The container currently being dragged from.
+    
+    static size_t useSlot; // The slot whose item is currently being "used" (after right-clicking)
+    static const Container *useContainer;
 
     virtual void refresh() override;
     

@@ -16,6 +16,8 @@ const size_t Container::NO_SLOT = 999;
 size_t Container::dragSlot = NO_SLOT;
 const Container *Container::dragContainer = 0;
 
+size_t Container::useSlot = NO_SLOT;
+
 Container::Container(size_t rows, size_t cols, Item::vect_t &linked, int x, int y):
 Element(Rect(x, y,
                  cols * (Client::ICON_SIZE + GAP + 2) + GAP,
@@ -23,7 +25,8 @@ Element(Rect(x, y,
 _rows(rows),
 _cols(cols),
 _linked(linked),
-_leftMouseDownSlot(NO_SLOT){
+_leftMouseDownSlot(NO_SLOT),
+_rightMouseDownSlot(NO_SLOT){
     for (size_t i = 0; i != Client::INVENTORY_SIZE; ++i) {
         const int
             x = i % cols,
@@ -35,6 +38,8 @@ _leftMouseDownSlot(NO_SLOT){
     }
     setLeftMouseDownFunction(leftMouseDown);
     setLeftMouseUpFunction(leftMouseUp);
+    setRightMouseDownFunction(rightMouseDown);
+    setRightMouseUpFunction(rightMouseUp);
 }
 
 void Container::refresh(){
@@ -96,6 +101,22 @@ void Container::leftMouseUp(Element &e, const Point &mousePos){
         }
     }
     container._leftMouseDownSlot = NO_SLOT;
+}
+
+void Container::rightMouseDown(Element &e, const Point &mousePos){
+    Container &container = dynamic_cast<Container &>(e);
+    size_t slot = container.getSlot(mousePos);
+    container._rightMouseDownSlot = slot;
+}
+
+void Container::rightMouseUp(Element &e, const Point &mousePos){
+    Container &container = dynamic_cast<Container &>(e);
+    if (dragSlot != NO_SLOT) { // Cancel dragging
+        dragSlot = NO_SLOT;
+        dragContainer = 0;
+        container.markChanged();
+    }
+    container._rightMouseDownSlot = NO_SLOT;
 }
 
 const Item *Container::getDragItem() {

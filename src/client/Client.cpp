@@ -503,7 +503,7 @@ void Client::run(){
 
                 case SDL_BUTTON_RIGHT:
                     if (_inventoryWindow->visible())
-                        //_inventoryWindow->onRightMouseUp(_mouse);
+                        _inventoryWindow->onRightMouseUp(_mouse);
                     break;
                 }
 
