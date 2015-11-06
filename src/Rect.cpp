@@ -30,10 +30,10 @@ h(0){}
 
 bool Rect::collides(const Rect &rhs) const{
     return
-        rhs.x <= x + w &&
-        x <= rhs.x + rhs.w &&
-        rhs.y <= y + h &&
-        y <= rhs.y + rhs.h;
+        rhs.x < x + w &&
+        x < rhs.x + rhs.w &&
+        rhs.y < y + h &&
+        y < rhs.y + rhs.h;
 }
 
 Rect operator+(const Rect &lhs, const Rect &rhs){
