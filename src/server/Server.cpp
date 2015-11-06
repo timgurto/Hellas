@@ -924,7 +924,7 @@ void Server::generateWorld(){
                     thisTile.x -= .5;
                 Point tileCenter(centerX, centerY);
                 const double dist = distance(tileCenter, thisTile);
-                if (dist <= 7) {
+                if (dist <= 6) {
                     if (isLocationValid(tileCenter, *clay))
                         addObject(clay, Point(thisTile.x * TILE_W, thisTile.y * TILE_H));
                 }
@@ -968,7 +968,7 @@ void Server::generateWorld(){
                     thisTile.x -= .5;
                 Point tileCenter(centerX, centerY);
                 const double dist = distance(tileCenter, thisTile);
-                if (dist <= 7) {
+                if (dist <= 6) {
                     const ObjectType *type = stoneObj[stoneLayer[x][y]];
                     if (isLocationValid(tileCenter, *type))
                         addObject(type, Point(thisTile.x * TILE_W, thisTile.y * TILE_H));
