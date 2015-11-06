@@ -240,6 +240,7 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
         if (xSet || ySet)
             cot.drawRect(drawRect);
         if (xr.findAttr(elem, "canGather", n) && n != 0) cot.canGather(true);
+        if (xr.findAttr(elem, "isFlat", n) && n != 0) cot.isFlat(true);
         if (xr.findAttr(elem, "gatherSound", s))
             cot.gatherSound(std::string("Sounds/") + s + ".wav");
         auto pair = _objectTypes.insert(cot);
@@ -709,18 +710,29 @@ void Client::draw() const{
         bottomY = -offset().y + SCREEN_Y + DRAW_MARGIN_ABOVE,
         leftX = -offset().x - DRAW_MARGIN_SIDES,
         rightX = -offset().x + SCREEN_X + DRAW_MARGIN_SIDES;
-
     // Cull by y
     Entity
         topEntity(0, Point(0, topY)),
         bottomEntity(0, Point(0, bottomY));
     auto top = _entities.lower_bound(&topEntity);
     auto bottom = _entities.upper_bound(&bottomEntity);
+    // Flat entities
     for (auto it = top; it != bottom; ++it) {
-        // Cull by x
-        double x = (*it)->location().x;
-        if (x >= leftX && x <= rightX)
-            (*it)->draw(*this);
+        if ((*it)->type()->isFlat()) {
+            // Cull by x
+            double x = (*it)->location().x;
+            if (x >= leftX && x <= rightX)
+                (*it)->draw(*this);
+        }
+    }
+    // Non-flat entities
+    for (auto it = top; it != bottom; ++it) {
+        if (!(*it)->type()->isFlat()) {
+            // Cull by x
+            double x = (*it)->location().x;
+            if (x >= leftX && x <= rightX)
+                (*it)->draw(*this);
+        }
     }
 
     // Cast bar
