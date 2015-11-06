@@ -14,6 +14,7 @@
     xDrawOffset=-14
     yDrawOffset=-12
     canGather=1
+    isFlat=1
 />
 
 <objectType

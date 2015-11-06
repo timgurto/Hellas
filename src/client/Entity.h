@@ -24,7 +24,6 @@ class Entity{
 
 protected:
     Texture _tooltip;
-    const EntityType *type() const { return _type; }
 
 public:
     Entity(const EntityType *type, const Point &location);
@@ -37,6 +36,7 @@ public:
     int height() const { return _type->height(); }
     bool yChanged() const { return _yChanged; }
     void yChanged(bool val) { _yChanged = val; }
+    const EntityType *type() const { return _type; }
     bool needsTooltipRefresh() { return _needsTooltipRefresh; }
     const Texture &tooltip() const { return _tooltip; }
 
