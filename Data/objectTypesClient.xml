@@ -21,27 +21,27 @@
 <objectType id="Shale" name="Shale" xDrawOffset=-8 yDrawOffset=-8 />
 <objectType id="Slate" name="Slate" xDrawOffset=-8 yDrawOffset=-8 />
 
-<objectType id="AndesiteRock" name="Andesite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="BasaltRock" name="Basalt Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="ChalkRock" name="Chalk Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="ChertRock" name="Chert Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="ClaystoneRock" name="Claystone Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="ConglomerateRock" name="Conglomerate Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="DaciteRock" name="Dacite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="DioriteRock" name="Diorite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="DolomiteRock" name="Dolomite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="GabbroRock" name="Gabbro Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="GneissRock" name="Gneiss Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="GraniteRock" name="Granite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="LimestoneRock" name="Limestone Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="MarbleRock" name="Marble Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="PhylliteRock" name="Phyllite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="QuartziteRock" name="Quartzite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="RhyoliteRock" name="Rhyolite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="RockSaltRock" name="Rock Salt Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="SchistRock" name="Schist Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="ShaleRock" name="Shale Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
-<objectType id="SlateRock" name="Slate Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="AndesiteRock" name="Andesite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="BasaltRock" name="Basalt Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="ChalkRock" name="Chalk Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="ChertRock" name="Chert Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="ClaystoneRock" name="Claystone Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="ConglomerateRock" name="Conglomerate Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="DaciteRock" name="Dacite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="DioriteRock" name="Diorite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="DolomiteRock" name="Dolomite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="GabbroRock" name="Gabbro Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="GneissRock" name="Gneiss Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="GraniteRock" name="Granite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="LimestoneRock" name="Limestone Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="MarbleRock" name="Marble Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="PhylliteRock" name="Phyllite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="QuartziteRock" name="Quartzite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="RhyoliteRock" name="Rhyolite Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="RockSaltRock" name="Rock Salt Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="SchistRock" name="Schist Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="ShaleRock" name="Shale Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
+<objectType id="SlateRock" name="Slate Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
 
 <objectType
     id="grass"
@@ -50,6 +50,7 @@
     yDrawOffset=-16
     canGather=1
     gatherSound="grass1"
+    isFlat=1
 />
 <objectType
     id="seaweed"
@@ -58,6 +59,7 @@
     yDrawOffset=-16
     canGather=1
     gatherSound="grass1"
+    isFlat=1
 />
 <objectType
     id="stick"
@@ -66,6 +68,7 @@
     yDrawOffset=-8
     canGather=1
     gatherSound="wood1"
+    isFlat=1
 />
 <objectType
     id="clay"
