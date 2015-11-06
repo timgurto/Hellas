@@ -51,7 +51,7 @@ const int Client::TILE_W = 32;
 const int Client::TILE_H = 32;
 const double Client::MOVEMENT_SPEED = 80;
 
-const int Client::ACTION_DISTANCE = 20;
+const int Client::ACTION_DISTANCE = 30;
 
 const size_t Client::INVENTORY_SIZE = 10;
 
