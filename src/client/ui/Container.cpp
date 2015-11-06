@@ -17,6 +17,7 @@ size_t Container::dragSlot = NO_SLOT;
 const Container *Container::dragContainer = 0;
 
 size_t Container::useSlot = NO_SLOT;
+const Container *Container::useContainer = 0;
 
 Container::Container(size_t rows, size_t cols, Item::vect_t &linked, int x, int y):
 Element(Rect(x, y,
@@ -118,6 +119,18 @@ void Container::rightMouseUp(Element &e, const Point &mousePos){
         dragContainer = 0;
         container.markChanged();
     }
+    size_t slot = container.getSlot(mousePos);
+    if (useSlot != NO_SLOT) { // Right-clicked instead of used: cancel use
+        useSlot = NO_SLOT;
+        useContainer = 0;
+    } else if (slot != NO_SLOT) { // Right-clicked a slot
+        const Item *item = container._linked[slot].first;
+        if (item && // Slot is not empty
+            item->isClass("structure")) { // Can construct item
+            useSlot = slot;
+            useContainer = &container;
+        }
+    }
     container._rightMouseDownSlot = NO_SLOT;
 }
 
@@ -128,10 +141,22 @@ const Item *Container::getDragItem() {
         return dragContainer->_linked[dragSlot].first;
 }
 
+const Item *Container::getUseItem() {
+    if (useSlot == NO_SLOT || !useContainer)
+        return 0;
+    else
+        return useContainer->_linked[useSlot].first;
+}
+
 void Container::dropItem() {
     if (dragSlot != NO_SLOT && dragContainer) {
         Client::_instance->sendMessage(CL_DROP, makeArgs(dragSlot));
         dragSlot = NO_SLOT;
         dragContainer = 0;
     }
+}
+
+void Container::clearUseItem() {
+    useSlot = NO_SLOT;
+    useContainer = 0;
 }

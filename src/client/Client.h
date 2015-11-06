@@ -91,6 +91,8 @@ private:
     Window *_inventoryWindow;
     void initializeInventoryWindow();
 
+    Texture _constructionFootprint;
+
     Texture _tile[5];
 
     Avatar _character; // Describes the user's character

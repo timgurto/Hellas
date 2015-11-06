@@ -37,9 +37,15 @@ class Container : public Element{
 
 public:
     Container(size_t rows, size_t cols, Item::vect_t &linked, int x = 0, int y = 0);
-
+    
     static const Item *getDragItem();
+    static const Item *getUseItem();
     static void dropItem(); // Drop the item currently being dragged.
+
+    static void clearDragItem();
+    static void clearUseItem();
+
+    friend Client;
 };
 
 #endif

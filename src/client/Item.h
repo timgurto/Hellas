@@ -10,6 +10,8 @@
 
 #include "Texture.h"
 
+class ClientObjectType;
+
 // The client-side representation of an item type
 class Item{
     std::string _id;
@@ -17,6 +19,9 @@ class Item{
     Texture _icon;
 
     std::set<std::string> _classes;
+
+    // The object that this item can construct
+    const ClientObjectType *_constructsObject;
 
 public:
     Item(const std::string &id, const std::string &name = "");
@@ -31,6 +36,8 @@ public:
     const std::string &id() const { return _id; }
     void icon(const std::string &filename);
     const std::set<std::string> &classes() const { return _classes; }
+    void constructsObject(const ClientObjectType *obj) { _constructsObject = obj; }
+    const ClientObjectType *constructsObject() const { return _constructsObject; }
 
     void addClass(const std::string &className);
     bool hasClasses() const { return _classes.size() > 0; }

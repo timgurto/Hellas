@@ -181,6 +181,10 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
             item.icon(s);
         else
             item.icon(id);
+
+        if (xr.findAttr(elem, "constructs", s))
+            // Create dummy ObjectType if necessary
+            item.constructsObject(&*(_objectTypes.insert(ClientObjectType(s)).first));
         
         std::pair<std::set<Item>::iterator, bool> ret = _items.insert(item);
         if (!ret.second) {
@@ -241,7 +245,11 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
         if (xr.findAttr(elem, "canGather", n) && n != 0) cot.canGather(true);
         if (xr.findAttr(elem, "gatherSound", s))
             cot.gatherSound(std::string("Sounds/") + s + ".wav");
-        _objectTypes.insert(cot);
+        auto pair = _objectTypes.insert(cot);
+        if (!pair.second) {
+            ClientObjectType &type = const_cast<ClientObjectType &>(*pair.first);
+            type = cot;
+        }
     }
 
 
@@ -483,6 +491,16 @@ void Client::run(){
                 case SDL_BUTTON_LEFT:
                     _leftMouseDown = false;
 
+                    // Construct item
+                    if (Container::getUseItem()) {
+                        int
+                            x = toInt(_mouse.x - offset().x),
+                            y = toInt(_mouse.y - offset().y);
+                        sendMessage(CL_CONSTRUCT, makeArgs(Container::useSlot, x, y));
+                        Container::clearUseItem();
+                        _constructionFootprint = Texture();;;
+                    }
+
                     if (_craftingWindow->visible() && collision(_mouse, _craftingWindow->rect())) {
                         _craftingWindow->onLeftMouseUp(_mouse);
                         break;
@@ -502,8 +520,14 @@ void Client::run(){
                     break;
 
                 case SDL_BUTTON_RIGHT:
-                    if (_inventoryWindow->visible())
+                    if (_inventoryWindow->visible()) {
                         _inventoryWindow->onRightMouseUp(_mouse);
+                        const Item *useItem = Container::getUseItem();
+                        if (useItem)
+                            _constructionFootprint = useItem->constructsObject()->image();
+                        else
+                            _constructionFootprint = Texture();
+                    }
                     break;
                 }
 
@@ -784,6 +808,15 @@ void Client::draw() const{
     const Item *draggedItem = Container::getDragItem();
     if (draggedItem)
         draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
+
+    // Used item
+    if (_constructionFootprint) {
+        _constructionFootprint.setAlpha(0x7f);
+        _constructionFootprint.draw(toInt(_mouse.x - _constructionFootprint.width() / 2.0),
+                                    toInt(_mouse.y - _constructionFootprint.height() / 2.0));
+        _constructionFootprint.setAlpha();
+
+    }
 
     _debug.draw();
     renderer.present();

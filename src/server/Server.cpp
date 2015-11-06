@@ -407,7 +407,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_TOO_FAR);
                 break;
             }
-            const ObjectType objType = *item.constructsObject();
+            const ObjectType &objType = *item.constructsObject();
             if (!isLocationValid(location, objType)) {
                 sendMessage(client, SV_BLOCKED);
                 break;
