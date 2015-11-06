@@ -644,8 +644,14 @@ void Client::checkMouseOver(){
     const Point mouseOffset = _mouse - _offset;
     const Entity *const oldMouseOverEntity = _currentMouseOverEntity;
     Entity::set_t::iterator mouseOverIt = _entities.end();
-    Entity lookupEntity(0, mouseOffset);
-    for (auto it = _entities.lower_bound(&lookupEntity); it != _entities.end(); ++it) {
+    static const int LOOKUP_MARGIN = 30;
+    Entity
+        topEntity(0, Point(0, mouseOffset.y - LOOKUP_MARGIN)),
+        bottomEntity(0, Point(0, mouseOffset.y + LOOKUP_MARGIN));
+    auto
+        lowerBound = _entities.lower_bound(&topEntity),
+        upperBound = _entities.upper_bound(&bottomEntity);
+    for (auto it = lowerBound; it != upperBound; ++it) {
         if (*it != &_character &&(*it)->collision(mouseOffset))
             mouseOverIt = it;
     }
