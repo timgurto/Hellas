@@ -143,4 +143,9 @@
     <collisionRect x=-8 y=-8 w=16 h=16 />
     <yield id="clay" initialMean = 2.5 initialSD = 0.75 gatherMean = 100 />
 </objectType>
+
+<objectType id="thatch" actionTime = 1000 constructionTime=1000 >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="thatch" />
+</objectType>
 </root>

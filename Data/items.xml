@@ -25,8 +25,11 @@
 <item id="seaweed" name="Seaweed" stackSize=160 />
 <item id="stick" name="Stick" stackSize=64 />
 <item id="straw" name="Straw" stackSize=64 iconFile="Straw" />
-<item id="thatch" name="Thatch" stackSize=32 iconFile="Thatch" />
 <item id="clay" name="Clay" stackSize=64 iconFile="Clay" />
+
+<item id="thatch" name="Thatch" stackSize=32 iconFile="Thatch" constructs="thatch" >
+    <class name="structure" />
+</item>
 
 <item id="stoneKnifeBlade" name="Stone Knife Blade" iconFile="Stone Knife Blade" stackSize=64 />
 <item id="stoneKnife" name="Stone Knife" iconFile="Stone Knife">
