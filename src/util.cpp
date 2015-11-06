@@ -57,7 +57,7 @@ Point interpolate(const Point &a, const Point &b, double dist){
 bool collision(const Point &point, const Rect &rect){
     return
         point.x > rect.x &&
-        point.y > rect.y &&
         point.x < rect.x + rect.w &&
+        point.y > rect.y &&
         point.y < rect.y + rect.h;
 }
