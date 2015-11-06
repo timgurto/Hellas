@@ -30,8 +30,10 @@ _visible(true),
 _rect(rect),
 _parent(0),
 _texture(rect.w, rect.h),
-_mouseDown(0), _mouseDownElement(0),
-_mouseUp(0), _mouseUpElement(0),
+_leftMouseDown(0), _leftMouseDownElement(0),
+_leftMouseUp(0), _leftMouseUpElement(0),
+_rightMouseDown(0), _rightMouseDownElement(0),
+_rightMouseUp(0), _rightMouseUpElement(0),
 _mouseMove(0), _mouseMoveElement(0),
 _scrollUp(0), _scrollUpElement(0),
 _scrollDown(0), _scrollDownElement(0),
@@ -119,7 +121,7 @@ void Element::checkIfChanged(){
         child->checkIfChanged();
 }
 
-bool Element::onMouseDown(const Point &mousePos){
+bool Element::onLeftMouseDown(const Point &mousePos){
     // Assumption: if this is called, then the mouse collides with the element.
     // Assumption: each element has at most one child that collides with the mouse.
     if (!_visible)
@@ -128,7 +130,7 @@ bool Element::onMouseDown(const Point &mousePos){
     bool functionCalled = false;
     for (Element *child : _children) {
         if (collision(relativeLocation, child->rect())) {
-            if (child->onMouseDown(relativeLocation)) {
+            if (child->onLeftMouseDown(relativeLocation)) {
                 functionCalled = true;
             }
         }
@@ -139,8 +141,35 @@ bool Element::onMouseDown(const Point &mousePos){
     If execution gets here, then this element has no children that both collide
     and have _mouseDown defined.
     */
-    if (_mouseDown) {
-        _mouseDown(*_mouseDownElement, relativeLocation);
+    if (_leftMouseDown) {
+        _leftMouseDown(*_leftMouseDownElement, relativeLocation);
+        return true;
+    } else
+        return false;
+}
+
+bool Element::onRightMouseDown(const Point &mousePos){
+    // Assumption: if this is called, then the mouse collides with the element.
+    // Assumption: each element has at most one child that collides with the mouse.
+    if (!_visible)
+        return false;
+    const Point relativeLocation = mousePos - location();
+    bool functionCalled = false;
+    for (Element *child : _children) {
+        if (collision(relativeLocation, child->rect())) {
+            if (child->onRightMouseDown(relativeLocation)) {
+                functionCalled = true;
+            }
+        }
+    }
+    if (functionCalled)
+        return true;
+    /*
+    If execution gets here, then this element has no children that both collide
+    and have _mouseDown defined.
+    */
+    if (_rightMouseDown) {
+        _rightMouseDown(*_rightMouseDownElement, relativeLocation);
         return true;
     } else
         return false;
@@ -200,14 +229,24 @@ bool Element::onScrollDown(const Point &mousePos){
         return false;
 }
 
-void Element::onMouseUp(const Point &mousePos){
+void Element::onLeftMouseUp(const Point &mousePos){
     if (!_visible)
         return;
     const Point relativeLocation = mousePos - location();
-    if (_mouseUp)
-        _mouseUp(*_mouseUpElement, relativeLocation);
+    if (_leftMouseUp)
+        _leftMouseUp(*_leftMouseUpElement, relativeLocation);
     for (Element *child : _children)
-        child->onMouseUp(relativeLocation);
+        child->onLeftMouseUp(relativeLocation);
+}
+
+void Element::onRightMouseUp(const Point &mousePos){
+    if (!_visible)
+        return;
+    const Point relativeLocation = mousePos - location();
+    if (_rightMouseUp)
+        _rightMouseUp(*_rightMouseUpElement, relativeLocation);
+    for (Element *child : _children)
+        child->onRightMouseUp(relativeLocation);
 }
 
 void Element::onMouseMove(const Point &mousePos){
@@ -220,14 +259,24 @@ void Element::onMouseMove(const Point &mousePos){
         child->onMouseMove(relativeLocation);
 }
 
-void Element::setMouseDownFunction(mouseDownFunction_t f, Element *e){
-    _mouseDown = f;
-    _mouseDownElement = e ? e : this;
+void Element::setLeftMouseDownFunction(mouseDownFunction_t f, Element *e){
+    _leftMouseDown = f;
+    _leftMouseDownElement = e ? e : this;
 }
 
-void Element::setMouseUpFunction(mouseUpFunction_t f, Element *e){
-    _mouseUp = f;
-    _mouseUpElement = e ? e : this;
+void Element::setLeftMouseUpFunction(mouseUpFunction_t f, Element *e){
+    _leftMouseUp = f;
+    _leftMouseUpElement = e ? e : this;
+}
+
+void Element::setRightMouseDownFunction(mouseDownFunction_t f, Element *e){
+    _rightMouseDown = f;
+    _rightMouseDownElement = e ? e : this;
+}
+
+void Element::setRightMouseUpFunction(mouseUpFunction_t f, Element *e){
+    _rightMouseUp = f;
+    _rightMouseUpElement = e ? e : this;
 }
 
 void Element::setMouseMoveFunction(mouseMoveFunction_t f, Element *e){

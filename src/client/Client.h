@@ -21,6 +21,7 @@
 #include "../Socket.h"
 #include "../messageCodes.h"
 #include "../server/Recipe.h"
+#include "ui/Container.h"
 
 class Client{
 public:
@@ -89,6 +90,7 @@ private:
 
     Window *_inventoryWindow;
     void initializeInventoryWindow();
+    Texture _constructionFootprint;
 
     Texture _tile[2];
 
@@ -174,7 +176,7 @@ private:
     void sendMessage(MessageCode msgCode, const std::string &args = "") const;
     void handleMessage(const std::string &msg);
 
-    friend Avatar;
+    friend class Container; // Needs to send CL_SWAP_ITEMS messages
 };
 
 #endif

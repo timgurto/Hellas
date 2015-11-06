@@ -14,8 +14,8 @@ _selectedBox(new ShadowBox(Rect(0, 0, rect.w - List::ARROW_W, childHeight), true
 _mouseOverBox(new ShadowBox(Rect(0, 0, rect.w - List::ARROW_W, childHeight))),
 _mouseDownBox(new ShadowBox(Rect(0, 0, rect.w - List::ARROW_W, childHeight), true)),
 _boxLayer(new Element(_content->rect())){
-    setMouseDownFunction(markMouseDown);
-    setMouseUpFunction(toggle);
+    setLeftMouseDownFunction(markMouseDown);
+    setLeftMouseUpFunction(toggle);
     setMouseMoveFunction(markMouseOver);
 
     _selectedBox->hide();

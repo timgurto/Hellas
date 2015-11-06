@@ -16,6 +16,7 @@
 #include "LogSDL.h"
 #include "Renderer.h"
 #include "TooltipBuilder.h"
+#include "ui/Container.h"
 #include "ui/Element.h"
 #include "../XmlReader.h"
 #include "../messageCodes.h"
@@ -177,6 +178,10 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
             item.icon(s);
         else
             item.icon(id);
+
+        if (xr.findAttr(elem, "constructs", s))
+            // Create dummy ObjectType if necessary
+            item.constructsObject(&*(_objectTypes.insert(ClientObjectType(s)).first));
         
         std::pair<std::set<Item>::iterator, bool> ret = _items.insert(item);
         if (!ret.second) {
@@ -237,7 +242,11 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
         if (xr.findAttr(elem, "canGather", n) && n != 0) cot.canGather(true);
         if (xr.findAttr(elem, "gatherSound", s))
             cot.gatherSound(std::string("Sounds/") + s + ".wav");
-        _objectTypes.insert(cot);
+        auto pair = _objectTypes.insert(cot);
+        if (!pair.second) {
+            ClientObjectType &type = const_cast<ClientObjectType &>(*pair.first);
+            type = cot;
+        }
     }
 
 
@@ -454,31 +463,70 @@ void Client::run(){
             }
 
             case SDL_MOUSEBUTTONDOWN:
-                _leftMouseDown = true;
+                switch (e.button.button) {
+                case SDL_BUTTON_LEFT:
+                    _leftMouseDown = true;
 
-                if (_craftingWindow->visible())
-                    _craftingWindow->onMouseDown(_mouse);
-                if (_inventoryWindow->visible())
-                    _inventoryWindow->onMouseDown(_mouse);
+                    if (_craftingWindow->visible())
+                        _craftingWindow->onLeftMouseDown(_mouse);
+                    if (_inventoryWindow->visible())
+                        _inventoryWindow->onLeftMouseDown(_mouse);
+                    break;
+
+                case SDL_BUTTON_RIGHT:
+                    if (_inventoryWindow->visible())
+                        //_inventoryWindow->onRightMouseDown(_mouse);
+                    break;
+                }
                 break;
 
             case SDL_MOUSEBUTTONUP:
                 if (!_loaded)
                     break;
 
-                _leftMouseDown = false;
+                switch (e.button.button) {
+                case SDL_BUTTON_LEFT:
+                    _leftMouseDown = false;
 
-                if (_craftingWindow->visible() && collision(_mouse, _craftingWindow->rect())) {
-                    _craftingWindow->onMouseUp(_mouse);
+                    // Construct item
+                    if (Container::getUseItem()) {
+                        int
+                            x = toInt(_mouse.x - offset().x),
+                            y = toInt(_mouse.y - offset().y);
+                        sendMessage(CL_CONSTRUCT, makeArgs(Container::useSlot, x, y));
+                        Container::clearUseItem();
+                        _constructionFootprint = Texture();;;
+                    }
+
+                    if (_craftingWindow->visible() && collision(_mouse, _craftingWindow->rect())) {
+                        _craftingWindow->onLeftMouseUp(_mouse);
+                        break;
+                    }
+
+                    if (_inventoryWindow->visible() &&
+                               collision(_mouse, _inventoryWindow->rect())) {
+                        _inventoryWindow->onLeftMouseUp(_mouse);
+                        break;
+                    } else if (Container::getDragItem()) {
+                        Container::dropItem();
+                    }
+
+                    if (_currentMouseOverEntity)
+                        _currentMouseOverEntity->onLeftClick(*this);
+
                     break;
-                } else if (_inventoryWindow->visible() &&
-                           collision(_mouse, _inventoryWindow->rect())) {
-                    _inventoryWindow->onMouseUp(_mouse);
+
+                case SDL_BUTTON_RIGHT:
+                    if (_inventoryWindow->visible()) {
+                        _inventoryWindow->onRightMouseUp(_mouse);
+                        const Item *useItem = Container::getUseItem();
+                        if (useItem)
+                            _constructionFootprint = useItem->constructsObject()->image();
+                        else
+                            _constructionFootprint = Texture();
+                    }
                     break;
                 }
-
-                if (_currentMouseOverEntity)
-                    _currentMouseOverEntity->onLeftClick(*this);
 
                 break;
 
@@ -625,10 +673,10 @@ void Client::draw() const{
 
     // Map
     size_t
-        xMin = static_cast<size_t>(max(0, -offset().x / TILE_W)),
-        xMax = static_cast<size_t>(min(_mapX, 1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
-        yMin = static_cast<size_t>(max(0, -offset().y / TILE_H)),
-        yMax = static_cast<size_t>(min(_mapY, (-offset().y + SCREEN_Y) / TILE_H + 1));
+        xMin = static_cast<size_t>(max<double>(0, -offset().x / TILE_W)),
+        xMax = static_cast<size_t>(min<double>(_mapX, 1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
+        yMin = static_cast<size_t>(max<double>(0, -offset().y / TILE_H)),
+        yMax = static_cast<size_t>(min<double>(_mapY, (-offset().y + SCREEN_Y) / TILE_H + 1));
     for (size_t y = yMin; y != yMax; ++y) {
         const int yLoc = y * TILE_H + toInt(offset().y);
         for (size_t x = xMin; x != xMax; ++x){
@@ -663,8 +711,11 @@ void Client::draw() const{
         rightX = -offset().x + SCREEN_X + DRAW_MARGIN_SIDES;
 
     // Cull by y
-    auto top = _entities.lower_bound(&Entity(0, Point(0, topY)));
-    auto bottom = _entities.upper_bound(&Entity(0, Point(0, bottomY)));
+    Entity
+        topEntity(0, Point(0, topY)),
+        bottomEntity(0, Point(0, bottomY));
+    auto top = _entities.lower_bound(&topEntity);
+    auto bottom = _entities.upper_bound(&bottomEntity);
     for (auto it = top; it != bottom; ++it) {
         // Cull by x
         double x = (*it)->location().x;
@@ -748,6 +799,21 @@ void Client::draw() const{
 
     _craftingWindow->draw();
     _inventoryWindow->draw();
+
+    // Dragged item
+    static const Point MOUSE_ICON_OFFSET(-Client::ICON_SIZE/2, -Client::ICON_SIZE/2);
+    const Item *draggedItem = Container::getDragItem();
+    if (draggedItem)
+        draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
+
+    // Used item
+    if (_constructionFootprint) {
+        _constructionFootprint.setAlpha(0x7f);
+        _constructionFootprint.draw(toInt(_mouse.x - _constructionFootprint.width() / 2.0),
+                                    toInt(_mouse.y - _constructionFootprint.height() / 2.0));
+        _constructionFootprint.setAlpha();
+
+    }
 
     _debug.draw();
     renderer.present();

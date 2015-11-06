@@ -255,8 +255,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // Send him his inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         if (newUser.inventory(i).first)
-            sendMessage(socket, SV_INVENTORY,
-                        makeArgs(i, newUser.inventory(i).first->id(), newUser.inventory(i).second));
+            sendInventoryMessage(newUser, i);
     }
 
     // Add new user to list, and broadcast his location
@@ -408,7 +407,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_TOO_FAR);
                 break;
             }
-            const ObjectType objType = *item.constructsObject();
+            const ObjectType &objType = *item.constructsObject();
             if (!isLocationValid(location, objType)) {
                 sendMessage(client, SV_BLOCKED);
                 break;
@@ -463,8 +462,26 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             if (user->inventory(slot).second != 0){
                 user->inventory(slot) = std::make_pair<const Item *, size_t>(0, 0);
-                sendMessage(client, SV_INVENTORY, makeArgs(slot, "none", 0));
+                sendInventoryMessage(*user, slot);
             }
+            break;
+        }
+
+        case CL_SWAP_ITEMS:
+        {
+            size_t slot1, slot2;
+            iss >> slot1 >> del >> slot2 >> del;
+            if (del != ']')
+                return;
+            if (slot1 >= User::INVENTORY_SIZE || slot2 >= User::INVENTORY_SIZE) {
+                sendMessage(client, SV_INVALID_SLOT);
+                break;
+            }
+            auto temp = user->inventory(slot1);
+            user->inventory(slot1) = user->inventory(slot2);
+            user->inventory(slot2) = temp;
+            sendInventoryMessage(*user, slot1);
+            sendInventoryMessage(*user, slot2);
             break;
         }
 
@@ -871,7 +888,7 @@ void Server::generateWorld(){
             for (CollisionChunk *chunk : superChunk){
                 size_t tile = _map[x][y];
                 bool passable = tile != 1;
-                chunk->addTile(x, y, (tile != 1));
+                chunk->addTile(x, y, passable);
             }
         }
     }
@@ -1037,4 +1054,10 @@ void Server::addObject (const ObjectType *type, const Point &location, const Use
     // Add item to relevant chunk
     if (type->collides())
         getCollisionChunk(location).addObject(&*it);
+}
+
+void Server::sendInventoryMessage(const User &user, size_t slot) const{
+    auto invSlot = user.inventory(slot);
+    sendMessage(user.socket(), SV_INVENTORY,
+                makeArgs(slot,invSlot.first ? invSlot.first->id() : "none", invSlot.second));
 }

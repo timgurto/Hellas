@@ -21,6 +21,7 @@ public:
     virtual ~EntityType(){}
 
     void image(const std::string &filename);
+    const Texture &image() const { return _image; }
     const Rect &drawRect() const { return _drawRect; }
     void drawRect(const Rect &rect) { _drawRect = rect; }
     int width() const { return _drawRect.w; }

@@ -23,6 +23,8 @@ _location(loc),
 _actionTarget(0),
 _actionCrafting(0),
 _actionConstructing(0),
+_constructingSlot(INVENTORY_SIZE),
+_constructingLocation(0, 0),
 _actionTime(0),
 _inventory(INVENTORY_SIZE),
 _lastLocUpdate(SDL_GetTicks()),
@@ -116,7 +118,7 @@ size_t User::giveItem(const Item *item, size_t quantity, const Server &server){
         if (spaceAvailable > 0) {
             size_t qtyInThisSlot = min(spaceAvailable, quantity);
             _inventory[i].second += qtyInThisSlot;
-            server.sendMessage(_socket, SV_INVENTORY, makeArgs(i, item->id(), _inventory[i].second));
+            server.sendInventoryMessage(*this, i);
             quantity -= qtyInThisSlot;
         }
         if (quantity == 0)
@@ -130,7 +132,7 @@ size_t User::giveItem(const Item *item, size_t quantity, const Server &server){
         size_t qtyInThisSlot = min(item->stackSize(), quantity);
         _inventory[i].first = item;
         _inventory[i].second = qtyInThisSlot;
-        server.sendMessage(_socket, SV_INVENTORY, makeArgs(i, item->id(), qtyInThisSlot));
+        server.sendInventoryMessage(*this, i);
         quantity -= qtyInThisSlot;
         if (quantity == 0)
             return 0;
@@ -203,7 +205,7 @@ void User::removeItems(const ItemSet &items, Server &server) {
     for (size_t slotNum : invSlotsChanged) {
         const std::pair<const Item *, size_t> &slot = _inventory[slotNum];
         std::string id = slot.first ? slot.first->id() : "none";
-        server.sendMessage(_socket, SV_INVENTORY, makeArgs(slotNum, id, slot.second));
+        server.sendInventoryMessage(*this, slotNum);
     }
 }
 
@@ -236,8 +238,7 @@ void User::update(Uint32 timeElapsed, Server &server){
             --slot.second;
             if (slot.second == 0)
                 slot.first = 0;
-            const std::string &id = slot.first ? slot.first->id() : "none";
-            server.sendMessage(_socket, SV_INVENTORY, makeArgs(_constructingSlot, id, slot.second));
+            server.sendInventoryMessage(*this, _constructingSlot);
         }
         _actionTime = 0;
         server.sendMessage(_socket, SV_ACTION_FINISHED);

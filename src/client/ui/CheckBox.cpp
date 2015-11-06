@@ -20,8 +20,8 @@ _depressed(false){
     if (!caption.empty())
         addChild(new Label(Rect(BOX_SIZE + GAP, 0, rect.w, rect.h),
                            caption, LEFT_JUSTIFIED, CENTER_JUSTIFIED));
-    setMouseDownFunction(&mouseDown);
-    setMouseUpFunction(&mouseUp);
+    setLeftMouseDownFunction(&mouseDown);
+    setLeftMouseUpFunction(&mouseUp);
     setMouseMoveFunction(&mouseMove);
 }
 

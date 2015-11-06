@@ -17,6 +17,7 @@ void Client::initializeInventoryWindow(){
         TOP = 360 - HEIGHT - 13;
 
     _inventoryWindow = new Window(Rect(LEFT, TOP, WIDTH, HEIGHT), "Inventory");
+    inventory->id("inventory");
     _inventoryWindow->addChild(inventory);
 
     _inventoryWindow->show();

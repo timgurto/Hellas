@@ -192,6 +192,7 @@ Code | Name                  | Syntax                     | Description
 22   | CL_CONSTRUCT          | `[22,slot,x,y]`            | "I want to construct the item in inventory slot #`slot`, at location (`x`,`y`)""
 23   | CL_GATHER             | `[23,serial]`              | "I want to gather object #`serial`
 24   | CL_DROP               | `[24,slot]`                | "I want to drop the item in inventory slot #`slot`
+25   | CL_SWAP_ITEMS         | `[25,slot1,slot2]`         | "I want to swap the items in inventory slots #`slot1` and #`slot2`
 
 #### Server commands
 Code | Name                  | Syntax                     | Description
