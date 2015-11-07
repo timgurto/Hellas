@@ -498,8 +498,6 @@ void Client::run(){
                             x = toInt(_mouse.x - offset().x),
                             y = toInt(_mouse.y - offset().y);
                         sendMessage(CL_CONSTRUCT, makeArgs(Container::useSlot, x, y));
-                        Container::clearUseItem();
-                        _constructionFootprint = Texture();;;
                     }
 
                     if (_craftingWindow->visible() && collision(_mouse, _craftingWindow->rect())) {
@@ -1220,6 +1218,11 @@ void Client::handleMessage(const std::string &msg){
             if (del != ']')
                 break;
             startAction(time);
+
+            // If crafting, hide footprint now that it has successfully started.
+            Container::clearUseItem();
+            _constructionFootprint = Texture();
+
             break;
 
         case SV_ACTION_FINISHED:
