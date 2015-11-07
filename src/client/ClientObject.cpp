@@ -28,8 +28,6 @@ std::vector<std::string> ClientObject::getTooltipMessages(const Client &client) 
     text.push_back(objectType()->name());
     if (!_owner.empty())
         text.push_back(std::string("Owned by ") + _owner);
-    if (distance(location(), client.character().location()) > Client::ACTION_DISTANCE)
-        text.push_back("Out of range");
     return text;
 }
 

@@ -47,6 +47,8 @@ public:
     const std::pair<const Item *, size_t> &inventory(size_t index) const;
     std::pair<const Item *, size_t> &inventory(size_t index);
 
+    const Rect collisionRect() const;
+
     const Object *actionTarget() const { return _actionTarget; }
     void actionTarget(const Object *object); // Configure user to perform an action on an object
 

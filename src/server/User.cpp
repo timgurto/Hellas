@@ -244,3 +244,7 @@ void User::update(Uint32 timeElapsed, Server &server){
         server.sendMessage(_socket, SV_ACTION_FINISHED);
     }
 }
+
+const Rect User::collisionRect() const{
+    return OBJECT_TYPE.collisionRect() + _location;
+}

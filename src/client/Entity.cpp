@@ -25,11 +25,7 @@ void Entity::draw(const Client &client) const{
     assert(_type);
     // Highilght moused-over entity
     if (this == client.currentMouseOverEntity()) {
-        Color highlightColor =
-            (distance(_location, client.character().location()) <= Client::ACTION_DISTANCE) ?
-            Color::WHITE :
-            Color::RED;
-        renderer.setDrawColor(highlightColor);
+        renderer.setDrawColor(Color::WHITE);
         renderer.drawRect(drawRect() + Rect(-1, -1, 2, 2) + client.offset());
     }
 

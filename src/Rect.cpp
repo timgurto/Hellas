@@ -42,3 +42,37 @@ Rect operator+(const Rect &lhs, const Rect &rhs){
                 lhs.w + rhs.w,
                 lhs.h + rhs.h);
 }
+
+double distance(const Rect &lhs, const Rect &rhs){
+    const int
+        aL = lhs.x,
+        aR = lhs.x + lhs.w,
+        aT = lhs.y,
+        aB = lhs.y + lhs.h,
+        bL = rhs.x,
+        bR = rhs.x + rhs.w,
+        bT = rhs.y,
+        bB = rhs.y + rhs.h;
+
+    if (aR < bL) // A is to the left of B
+        if (aB < bT)
+            return distance(Point(aR, aB), Point(bL, bT));
+        else if (bB < aT)
+            return distance(Point(aR, aT), Point(bL, bB));
+        else
+            return bL - aR;
+    if (bR < aL) // A is to the right of B
+        if (aB < bT)
+            return distance(Point(aL, aB), Point(bR, bT));
+        else if (bB < aT)
+            return distance(Point(aL, aT), Point(bR, bB));
+        else
+            return aL - bR;
+    // A and B intersect horizontally
+    if (aB < bT)
+        return bT - aB;
+    if (bB < aT)
+        return aT - bB;
+    else
+        return 0;
+}
