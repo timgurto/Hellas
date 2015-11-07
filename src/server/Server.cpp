@@ -1031,6 +1031,15 @@ void Server::generateWorld(){
         addObject(type, p);
     }
     _debug << "Generating objects... 100%" << Log::endl;
+
+    const ObjectType *ashTree = &*_objectTypes.find(std::string("ashTree"));
+    for (int i = 0; i != 5; ++i){
+        Point p;
+        do {
+            p = mapRand();
+        } while (!isLocationValid(p, *ashTree));
+        addObject(ashTree, p);
+    }
 }
 
 Point Server::mapRand() const{

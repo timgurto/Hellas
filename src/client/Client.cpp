@@ -706,7 +706,7 @@ void Client::draw() const{
 
     // Entities, sorted from back to front
     static const int
-        DRAW_MARGIN_ABOVE = 50,
+        DRAW_MARGIN_ABOVE = 140,
         DRAW_MARGIN_BELOW = 10,
         DRAW_MARGIN_SIDES = 30;
     const double

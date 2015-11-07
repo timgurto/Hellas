@@ -127,6 +127,10 @@
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 
+<objectType id="ashTree" actionTime=10000 gatherReq="axe" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
+
 <objectType id="grass" actionTime=1 gatherReq="knife" >
     <yield id="straw" />
 </objectType>
