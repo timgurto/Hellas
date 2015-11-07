@@ -1,5 +1,74 @@
 <root>
 
+<recipe id="stoneAxeHeadAndesite" product="stoneAxeHead" time=1000 >
+    <material id="AndesiteRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadBasalt" product="stoneAxeHead" time=1000 >
+    <material id="BasaltRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadChalk" product="stoneAxeHead" time=1000 >
+    <material id="ChalkRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadChert" product="stoneAxeHead" time=1000 >
+    <material id="ChertRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadClaystone" product="stoneAxeHead" time=1000 >
+    <material id="ClaystoneRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadConglomerate" product="stoneAxeHead" time=1000 >
+    <material id="ConglomerateRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadDacite" product="stoneAxeHead" time=1000 >
+    <material id="DaciteRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadDiorite" product="stoneAxeHead" time=1000 >
+    <material id="DioriteRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadDolomite" product="stoneAxeHead" time=1000 >
+    <material id="DolomiteRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadGabbro" product="stoneAxeHead" time=1000 >
+    <material id="GabbroRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadGneiss" product="stoneAxeHead" time=1000 >
+    <material id="GneissRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadGranite" product="stoneAxeHead" time=1000 >
+    <material id="GraniteRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadLimestone" product="stoneAxeHead" time=1000 >
+    <material id="LimestoneRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadMarble" product="stoneAxeHead" time=1000 >
+    <material id="MarbleRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadPhyllite" product="stoneAxeHead" time=1000 >
+    <material id="PhylliteRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadQuartzite" product="stoneAxeHead" time=1000 >
+    <material id="QuartziteRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadRhyolite" product="stoneAxeHead" time=1000 >
+    <material id="RhyoliteRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadRockSalt" product="stoneAxeHead" time=1000 >
+    <material id="RockSaltRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadSchist" product="stoneAxeHead" time=1000 >
+    <material id="SchistRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadShale" product="stoneAxeHead" time=1000 >
+    <material id="ShaleRock" quantity=2 />
+</recipe>
+<recipe id="stoneAxeHeadSlate" product="stoneAxeHead" time=1000 >
+    <material id="SlateRock" quantity=2 />
+</recipe>
+
+<recipe id="stoneAxe" product="stoneAxe" time=10000 >
+    <material id="stoneAxeHead" />
+    <material id="stick" />
+</recipe>
+
 <recipe id="stoneKnifeBladeAndesite" product="stoneKnifeBlade" time=1000 >
     <material id="AndesiteRock" quantity=2 />
 </recipe>

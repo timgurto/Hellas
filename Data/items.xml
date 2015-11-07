@@ -31,6 +31,11 @@
     <class name="structure" />
 </item>
 
+<item id="stoneAxeHead" name="Stone Axe Head" iconFile="Stone Axe Head" stackSize=64 />
+<item id="stoneAxe" name="Stone Axe" iconFile="Stone Axe">
+    <class name="axe" />
+</item>
+
 <item id="stoneKnifeBlade" name="Stone Knife Blade" iconFile="Stone Knife Blade" stackSize=64 />
 <item id="stoneKnife" name="Stone Knife" iconFile="Stone Knife">
     <class name="knife" />
@@ -40,5 +45,10 @@
 <item id="stoneShovel" name="Stone Shovel" iconFile="Stone Shovel">
     <class name="shovel" />
 </item>
+
+<item id="ashLog" name="Ash Log" stackSize=16 constructs="ashLog" >
+    <class name="structure" />
+</item>
+<item id="ashSapling" name="Ash Log" stackSize=16 />
 
 </root>

@@ -44,6 +44,7 @@
 <objectType id="SlateRock" name="Slate Rock" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" isFlat=1 />
 
 <objectType id="ashTree" name="Ash Tree" xDrawOffset=-56 yDrawOffset=-120 canGather=1 gatherSound="wood1" />
+<objectType id="ashLog" name="Ash Log" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="wood1" />
 
 <objectType
     id="grass"
@@ -52,7 +53,6 @@
     yDrawOffset=-16
     canGather=1
     gatherSound="grass1"
-    isFlat=1
 />
 <objectType
     id="seaweed"
