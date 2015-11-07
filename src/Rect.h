@@ -19,5 +19,7 @@ struct Rect {
 
 Rect operator+(const Rect &lhs, const Rect &rhs);
 
+double distance(const Rect &lhs, const Rect &rhs); // Shortest distance
+
 #endif
 

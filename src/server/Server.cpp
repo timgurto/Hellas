@@ -34,7 +34,7 @@ const Uint32 Server::MAX_TIME_BETWEEN_LOCATION_UPDATES = 300;
 const Uint32 Server::SAVE_FREQUENCY = 1000;
 
 const double Server::MOVEMENT_SPEED = 80;
-const int Server::ACTION_DISTANCE = 20;
+const int Server::ACTION_DISTANCE = 30;
 
 bool Server::isServer = false;
 
@@ -403,11 +403,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             const Point location(x, y);
-            if (distance(user->location(), location) > ACTION_DISTANCE) {
+            const ObjectType &objType = *item.constructsObject();
+            if (distance(user->collisionRect(), objType.collisionRect() + location) >
+                ACTION_DISTANCE) {
                 sendMessage(client, SV_TOO_FAR);
                 break;
             }
-            const ObjectType &objType = *item.constructsObject();
             if (!isLocationValid(location, objType)) {
                 sendMessage(client, SV_BLOCKED);
                 break;
@@ -437,7 +438,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             std::set<Object>::const_iterator it = _objects.find(serial);
             if (it == _objects.end()) {
                 sendMessage(client, SV_DOESNT_EXIST);
-            } else if (distance(user->location(), it->location()) > ACTION_DISTANCE) {
+            } else if (distance(user->collisionRect(), it->collisionRect()) > ACTION_DISTANCE) {
                 sendMessage(client, SV_TOO_FAR);
             } else {
                 const Object &obj = *it;
