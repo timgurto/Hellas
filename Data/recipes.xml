@@ -211,4 +211,20 @@
     <material id="straw" quantity=4 />
 </recipe>
 
+<recipe id="clayVessel" product="clayVessel" time=1000 >
+    <material id="clay" quantity=5 />
+</recipe>
+
+<recipe id="clayAxeMold" product="clayAxeMold" time=1000 >
+    <material id="clay" quantity=5 />
+</recipe>
+
+<recipe id="clayKnifeMold" product="clayKnifeMold" time=1000 >
+    <material id="clay" quantity=5 />
+</recipe>
+
+<recipe id="clayShovelMold" product="clayShovelMold" time=1000 >
+    <material id="clay" quantity=5 />
+</recipe>
+
 </root>

@@ -25,7 +25,6 @@
 <item id="seaweed" name="Seaweed" stackSize=160 />
 <item id="stick" name="Stick" stackSize=64 />
 <item id="straw" name="Straw" stackSize=64 iconFile="Straw" />
-<item id="clay" name="Clay" stackSize=64 iconFile="Clay" />
 
 <item id="thatch" name="Thatch" stackSize=32 iconFile="Thatch" constructs="thatch" >
     <class name="structure" />
@@ -50,5 +49,11 @@
     <class name="structure" />
 </item>
 <item id="ashSapling" name="Ash Log" stackSize=16 />
+
+<item id="clay" name="Clay" stackSize=64 iconFile="Clay" />
+<item id="clayVessel" name="Clay Vessel" iconFile="Clay Vessel" />
+<item id="clayAxeMold" name="Clay Axe Mold" iconFile = "Clay Mold Axe" />
+<item id="clayKnifeMold" name="Clay Knife Mold" iconFile = "Clay Mold Knife" />
+<item id="clayShovelMold" name="Clay Shovel Mold" iconFile = "Clay Mold Shovel" />
 
 </root>
