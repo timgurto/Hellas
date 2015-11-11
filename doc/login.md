@@ -26,17 +26,23 @@ Sequence | Server                                      | Client                 
 ### Possible error cases
 
 #### Server is full
-5        | `accept()`<sup>1</sup>                      |                                         | Connected
+Sequence | Server                                      | Client                                  | Client state
+-------: | ------------------------------------------- | --------------------------------------- | ----------------
+5        | `accept()`                                  |                                         | Connected
 6        | Send `SV_SERVER_FULL`                       |                                         | 
 7        | Wait 5s                                     | Receive `SV_SERVER_FULL`                | Disconnected
 8        |`closesocket()`                              |                                         | 
 
 #### The user is already logged in
+Sequence | Server                                      | Client                                  | Client state
+-------: | ------------------------------------------- | --------------------------------------- | ----------------
 7        | Receive `CL_I_AM`                           |                                         | 
 8        | Send `SV_DUPLICATE_USERNAME`                |                                         | 
 9        |                                             | Receive `SV_DUPLICATE_USERNAME`         | Invalid username
 
 #### The user has used an invalid username
+Sequence | Server                                      | Client                                  | Client state
+-------: | ------------------------------------------- | --------------------------------------- | ----------------
 7        | Receive `CL_I_AM`                           |                                         | 
 8        | Send `SV_INVALID_USERNAME`                  |                                         | 
 9        |                                             | Receive `SV_INVALID_USERNAME`           | Invalid username
