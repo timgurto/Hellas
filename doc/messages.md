@@ -8,7 +8,7 @@ Code | Name                  | Syntax                     | Description
 ---: | --------------------- | -------------------------- | -----------
 0    | CL_PING               | `[0]`                      | A ping, to measure latency and reassure the server
 1    | CL_I_AM               | `[1,username]`             | "My name is `username`"
-10   | CL_LOCATION           | `[10,x,y]`                 | "My location has changed, and is now (`x`,`y`)"
+10   | CL_LOCATION           | `[10,x,y]`                 | "I want to move to (`x`,`y`)"
 20   | CL_CANCEL_ACTION      | `[20]`                     | "I don't want to finish my current action"
 21   | CL_CRAFT              | `[21,id]`                  | "I want to craft an item using recipe `id`"
 22   | CL_CONSTRUCT          | `[22,slot,x,y]`            | "I want to construct the item in inventory slot #`slot`, at location (`x`,`y`)""

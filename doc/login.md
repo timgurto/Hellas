@@ -13,13 +13,13 @@ Sequence | Server                                      | Client                 
 8        | Send `SV_WELCOME`                           |                                         | 
 9        | Send `SV_MAP_SIZE`                          |                                         | 
 10       | Send `SV_LOCATION` for every other user     |                                         | 
-11       | Send `SV_BRANCH` for each branch            |                                         | 
+11       | Send `SV_OBJECT` for each object            |                                         | 
 12       | Send `SV_INVENTORY` for each inventory item |                                         | 
 13       | Send `SV_LOCATION` for user's location      |                                         | 
 14       |                                             | Receive `SV_WELCOME`                    | Logged in
 15       |                                             | Receive `SV_MAP_SIZE`                   | 
 16       |                                             | Receive others' `SV_LOCATION` messages  | 
-17       |                                             | Receive `SV_BRANCH` messages            | 
+17       |                                             | Receive `SV_OBJECT` messages            | 
 18       |                                             | Receive `SV_INVENTORY` messages         | 
 19       |                                             | Receive own `SV_LOCATION`               | Loaded
 
