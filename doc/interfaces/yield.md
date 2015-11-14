@@ -35,6 +35,7 @@ tree.addYield(&squirrel, -2, 1);
 When an object is instantiated, its constructor calls `Yield::instantiate()`, which chooses random initial values based on the `_initMean` and `_initSD` of each item's `YieldEntry`, and gives the new object those quantities of items.
 
 For example, a new 'tree' object might be given the following initial quantities of items, based on each `YieldEntry`'s mean and standard deviation:
+
 Item      | &mu; | &sigma; | Sample initial quantities
 --------- | ----:| -------:|-------------------------:
 wood      | 10   | 2       | 11
