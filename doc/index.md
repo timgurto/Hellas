@@ -12,15 +12,15 @@
  - [Client states](clientStates.md)  
  - [Login sequence](login.md)  
  - [Message codes](messages.md)  
- - Code interfaces
-  - Command-line arguments :soon:
-  - Sockets :soon:
-  - XML reading/writing :soon:
-  - Yields :soon:
-  - UI :soon:
-  - Rendering :soon:
-  - Textures :soons:
-  - Tooltip building :soon:
+ - Code interfaces  
+  - :soon: Command-line arguments  
+  - :soon: Sockets  
+  - :soon: XML reading/writing  
+  - [Yields](interfaces/yield.md)  
+  - :soon: UI  
+  - :soon: Rendering  
+  - :soon: Textures  
+  - :soon: Tooltip building  
 
 ### Game data
  - [Object types](../Data/objectTypes.xml) 
