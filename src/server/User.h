@@ -55,6 +55,8 @@ public:
     // Whether the user has enough materials to craft a recipe
     bool hasItems(const ItemSet &items) const;
     void removeItems(const ItemSet &items, Server &server);
+    bool hasTool(const std::string &className) const;
+    bool hasTools(const std::set<std::string> &classes) const;
     void actionCraft(const Recipe &item); // Configure user to craft an item
 
     // Configure user to construct an item

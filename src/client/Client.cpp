@@ -1145,6 +1145,13 @@ void Client::handleMessage(const std::string &msg){
             startAction(0);
             break;
 
+        case SV_NEED_TOOLS:
+            if (del != ']')
+                break;
+            _debug("You do not have the necessary tools to create that item.", Color::YELLOW);
+            startAction(0);
+            break;
+
         case SV_INVALID_ITEM:
             if (del != ']')
                 break;

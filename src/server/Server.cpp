@@ -371,8 +371,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_INVALID_ITEM);
                 break;
             }
+            ItemSet remaining;
             if (!user->hasItems(it->materials())) {
                 sendMessage(client, SV_NEED_MATERIALS);
+                break;
+            }
+            if (!user->hasTools(it->tools())) {
+                sendMessage(client, SV_NEED_TOOLS);
                 break;
             }
             user->actionCraft(*it);
@@ -694,6 +699,12 @@ void Server::loadData(){
                     continue;
                 }
                 recipe.addMaterial(&*it, matQty);
+            }
+        }
+
+        for (auto child : xr.getChildren("tool", elem)) {
+            if (xr.findAttr(child, "name", s)) {
+                recipe.addTool(s);
             }
         }
         

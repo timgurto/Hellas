@@ -50,3 +50,4 @@ Code | Name                  | Syntax                     | Description
 919  | SV_CANNOT_CONSTRUCT   | `[919]`                    | "You tried to construct an item that is not a structure"
 920  | SV_ITEM_NEEDED        | `[920,reqItemClass]`       | "You tried to perform an action, without the necessary `reqItemClass`"
 921  | SV_BLOCKED            | `[921]`                    | "You tried to perform an action at a location that is blocked"
+922  | SV_NEED_TOOLS         | `[922]`                    | "You tried to craft an item, but need additional tools"

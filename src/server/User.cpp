@@ -177,6 +177,22 @@ bool User::hasItems(const ItemSet &items) const{
     return false;
 }
 
+bool User::hasTool(const std::string &className) const{
+    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
+        const Item *item = _inventory[i].first;
+        if (item && item->isClass(className))
+            return true;
+    }
+    return false;
+}
+
+bool User::hasTools(const std::set<std::string> &classes) const{
+    for (const std::string &className : classes)
+        if (!hasTool(className))
+            return false;
+    return true;
+}
+
 bool User::hasItemClass(const std::string &className) const{
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         const Item *const item = _inventory[i].first;
