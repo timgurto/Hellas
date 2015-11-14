@@ -43,6 +43,7 @@ treeHeart | 1    | 0       | 1
 squirrel  | -2   | 1       | 0
 
 When an object is gathered from, there are two steps involved in determining what will be gathered:
+
 1. The object's `chooseGatherType()` function is called, which randomly chooses an item type, weighted by the quantities of each remaining item type.
 2. Once the item is chosen, a quantity is chosen by calling `generateGatherQuantity()` on the object's type's `Yield`, which uses the item's `YieldEntry`'s `_gatherMean` and `_gatherSD`.
 
@@ -70,6 +71,7 @@ after 16th gather | `w`                                                       | 
 after 17th gather |                                                           |                  |
 
 In this example, the following items are received on successive gathers:
+
 1. 7 leaves
 2. 15 leaves
 3. 1 wood
@@ -88,4 +90,4 @@ In this example, the following items are received on successive gathers:
 16. 1 wood
 17. 1 wood
 
-Note that there is a proposal for a new method of choosing the item type to gather, detailed in issue #149.
+Note that there is a proposal for a new method of choosing the item type to gather, detailed in issue [#149](https://github.com/timgurto/mmo/issues/149).
