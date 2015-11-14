@@ -18,4 +18,10 @@
     <class name="container"/>
     <class name="structure"/>
 </item>
+
+<item
+    id="setSquare"
+    name="Set square">
+    <class name="set square"/>
+</item>
 </root>
