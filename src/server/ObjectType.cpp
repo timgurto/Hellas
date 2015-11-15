@@ -20,3 +20,11 @@ void ObjectType::addYield(const Item *item, double initMean, double initSD, doub
                           double gatherSD){
     _yield.addItem(item, initMean, initSD, gatherMean, gatherSD);
 }
+
+void ObjectType::addClass(const std::string &className){
+    _classes.insert(className);
+}
+
+bool ObjectType::isClass( const std::string &className) const{
+    return _classes.find(className) != _classes.end();
+}

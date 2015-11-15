@@ -641,6 +641,9 @@ void Server::loadData(){
             xr.findAttr(collisionRect, "h", r.h);
             ot.collisionRect(r);
         }
+        for (auto objClass :xr.getChildren("class", elem))
+            if (xr.findAttr(objClass, "name", s))
+                ot.addClass(s);
         
         _objectTypes.insert(ot);
     }
