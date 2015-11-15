@@ -158,4 +158,10 @@
     <collisionRect x=-8 y=-8 w=16 h=16 />
     <yield id="thatch" />
 </objectType>
+
+<objectType id="pitKiln" constructionTime = 1000 >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <class name="pit kiln" />
+</objectType>
+
 </root>

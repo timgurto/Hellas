@@ -64,7 +64,7 @@
     <material id="SlateRock" quantity=2 />
 </recipe>
 
-<recipe id="stoneAxe" product="stoneAxe" time=10000 >
+<recipe id="stoneAxe" product="stoneAxe" time=5000 >
     <material id="stoneAxeHead" />
     <material id="stick" />
 </recipe>
@@ -133,7 +133,7 @@
     <material id="SlateRock" quantity=2 />
 </recipe>
 
-<recipe id="stoneKnife" product="stoneKnife" time=10000 >
+<recipe id="stoneKnife" product="stoneKnife" time=5000 >
     <material id="stoneKnifeBlade" />
     <material id="stick" />
 </recipe>
@@ -202,7 +202,7 @@
     <material id="SlateRock" quantity=2 />
 </recipe>
 
-<recipe id="stoneShovel" product="stoneShovel" time=10000 >
+<recipe id="stoneShovel" product="stoneShovel" time=5000 >
     <material id="stoneShovelHead" />
     <material id="stick" />
 </recipe>
@@ -214,17 +214,47 @@
 <recipe id="clayVessel" product="clayVessel" time=1000 >
     <material id="clay" quantity=5 />
 </recipe>
+<recipe id="ceramicVessel" product="ceramicVessel" time=20000 >
+    <material id="clayVessel" />
+    <tool name="pit kiln" />
+    <tool name="fire starter" />
+</recipe>
 
 <recipe id="clayAxeMold" product="clayAxeMold" time=1000 >
     <material id="clay" quantity=5 />
+</recipe>
+<recipe id="ceramicAxeMold" product="ceramicAxeMold" time=20000 >
+    <material id="clayAxeMold" />
+    <tool name="pit kiln" />
+    <tool name="fire starter" />
 </recipe>
 
 <recipe id="clayKnifeMold" product="clayKnifeMold" time=1000 >
     <material id="clay" quantity=5 />
 </recipe>
+<recipe id="ceramicKnifeMold" product="ceramicKnifeMold" time=20000 >
+    <material id="clayKnifeMold" />
+    <tool name="pit kiln" />
+    <tool name="fire starter" />
+</recipe>
 
 <recipe id="clayShovelMold" product="clayShovelMold" time=1000 >
     <material id="clay" quantity=5 />
+</recipe>
+<recipe id="ceramicShovelMold" product="ceramicShovelMold" time=20000 >
+    <material id="clayShovelMold" />
+    <tool name="pit kiln" />
+    <tool name="fire starter" />
+</recipe>
+
+<recipe id="fireStarter" product="fireStarter" time=1000 >
+    <material id="stick" quantity=2 />
+</recipe>
+
+<recipe id="pitKilnAsh" product="pitKiln" time=1000 >
+    <material id="ashLog" quantity=8 />
+    <material id="straw" quantity=8 />
+    <tool name="shovel" />
 </recipe>
 
 </root>

@@ -52,8 +52,20 @@
 
 <item id="clay" name="Clay" stackSize=64 iconFile="Clay" />
 <item id="clayVessel" name="Clay Vessel" iconFile="Clay Vessel" />
+<item id="ceramicVessel" name="Ceramic Vessel" iconFile="Ceramic Vessel" />
 <item id="clayAxeMold" name="Clay Axe Mold" iconFile = "Clay Mold Axe" />
+<item id="ceramicAxeMold" name="Ceramic Axe Mold" iconFile = "Ceramic Mold Axe" />
 <item id="clayKnifeMold" name="Clay Knife Mold" iconFile = "Clay Mold Knife" />
+<item id="ceramicKnifeMold" name="Ceramic Knife Mold" iconFile = "Ceramic Mold Knife" />
 <item id="clayShovelMold" name="Clay Shovel Mold" iconFile = "Clay Mold Shovel" />
+<item id="ceramicShovelMold" name="Ceramic Shovel Mold" iconFile = "Ceramic Mold Shovel" />
+
+<item id="pitKiln" name="Pit Kiln" constructs="pitKiln" >
+    <class name="structure" />
+</item>
+
+<item id="fireStarter" name="Firestarter" >
+    <class name="fire starter" />
+</item>
 
 </root>
