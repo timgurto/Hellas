@@ -376,7 +376,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_NEED_MATERIALS);
                 break;
             }
-            if (!user->hasTools(it->tools())) {
+            if (!user->hasTools(it->tools(), *this)) {
                 sendMessage(client, SV_NEED_TOOLS);
                 break;
             }

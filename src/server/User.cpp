@@ -177,18 +177,29 @@ bool User::hasItems(const ItemSet &items) const{
     return false;
 }
 
-bool User::hasTool(const std::string &className) const{
+bool User::hasTool(const std::string &className, Server &server) const{
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         const Item *item = _inventory[i].first;
         if (item && item->isClass(className))
             return true;
     }
+
+    // Check nearby objects
+    auto superChunk = server.getCollisionSuperChunk(_location);
+    for (CollisionChunk *chunk : superChunk)
+        for (const auto &ret : chunk->objects()) {
+            const Object *pObj = ret.second;
+            if (pObj->type()->isClass(className) &&
+                distance(pObj->collisionRect(), collisionRect()) < Server::ACTION_DISTANCE)
+                return true;
+        }
+
     return false;
 }
 
-bool User::hasTools(const std::set<std::string> &classes) const{
+bool User::hasTools(const std::set<std::string> &classes, Server &server) const{
     for (const std::string &className : classes)
-        if (!hasTool(className))
+        if (!hasTool(className, server))
             return false;
     return true;
 }
