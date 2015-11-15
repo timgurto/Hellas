@@ -371,8 +371,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_INVALID_ITEM);
                 break;
             }
+            ItemSet remaining;
             if (!user->hasItems(it->materials())) {
                 sendMessage(client, SV_NEED_MATERIALS);
+                break;
+            }
+            if (!user->hasTools(it->tools(), *this)) {
+                sendMessage(client, SV_NEED_TOOLS);
                 break;
             }
             user->actionCraft(*it);
@@ -445,7 +450,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 // Check that the user meets the requirements
                 assert (obj.type());
                 const std::string &gatherReq = obj.type()->gatherReq();
-                if (gatherReq != "none" && !user->hasItemClass(gatherReq)) {
+                if (gatherReq != "none" && !user->hasTool(gatherReq, *this)) {
                     sendMessage(client, SV_ITEM_NEEDED, gatherReq);
                     break;
                 }
@@ -636,6 +641,9 @@ void Server::loadData(){
             xr.findAttr(collisionRect, "h", r.h);
             ot.collisionRect(r);
         }
+        for (auto objClass :xr.getChildren("class", elem))
+            if (xr.findAttr(objClass, "name", s))
+                ot.addClass(s);
         
         _objectTypes.insert(ot);
     }
@@ -694,6 +702,12 @@ void Server::loadData(){
                     continue;
                 }
                 recipe.addMaterial(&*it, matQty);
+            }
+        }
+
+        for (auto child : xr.getChildren("tool", elem)) {
+            if (xr.findAttr(child, "name", s)) {
+                recipe.addTool(s);
             }
         }
         

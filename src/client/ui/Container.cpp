@@ -73,7 +73,7 @@ size_t Container::getSlot(const Point &mousePos) const{
         x = static_cast<size_t>((mousePos.x - GAP) / (Client::ICON_SIZE + GAP + 2)),
         y = static_cast<size_t>((mousePos.y - GAP - 1) / (Client::ICON_SIZE + GAP + 2));
     size_t slot = y * _cols + x;
-    if (slot > Client::INVENTORY_SIZE)
+    if (slot >= Client::INVENTORY_SIZE)
         return NO_SLOT;
     return slot;
 }

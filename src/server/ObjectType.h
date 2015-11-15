@@ -23,6 +23,8 @@ class ObjectType{
     bool _collides; // false by default; true if any collisionRect is specified.
     Rect _collisionRect; // Relative to position
 
+    std::set<std::string> _classes;
+
 public:
     ObjectType(const std::string &id);
     ObjectType(const Rect &collisionRect); // Anonymous object type used for collision testing.
@@ -39,11 +41,13 @@ public:
     bool collides() const { return _collides; }
     const Rect &collisionRect() const { return _collisionRect; }
     void collisionRect(const Rect &r) { _collisionRect = r; _collides = true; }
+    bool isClass( const std::string &className) const;
 
     bool operator<(const ObjectType &rhs) const { return _id < rhs._id; }
 
     void addYield(const Item *item, double initMean,
                   double initSD, double gatherMean, double gatherSD);
+    void addClass(const std::string &className);
 };
 
 #endif

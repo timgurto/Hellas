@@ -103,6 +103,9 @@ private:
 
     friend size_t User::giveItem(const Item *item, size_t quantity, const Server &server);
 
+    friend bool User::hasTool(const std::string &className, Server &server) const;
+    friend bool User::hasTools(const std::set<std::string> &classes, Server &server) const;
+
     void addObject (const ObjectType *type, const Point &location, const User *owner = 0);
 
     // Collision detection

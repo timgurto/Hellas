@@ -1,5 +1,6 @@
 // (C) 2015 Tim Gurto
 
+#include "Item.h"
 #include "ItemSet.h"
 #include "../util.h"
 
@@ -71,6 +72,20 @@ bool ItemSet::contains(const Item *item, size_t qty) const{
     if (it == _set.end())
         return false;
     return (it->second >= qty);
+}
+
+bool ItemSet::contains(const std::string &className){
+    for (auto pair : _set)
+        if (pair.first->classes().find(className) != pair.first->classes().end())
+            return true;
+    return false;
+}
+
+bool ItemSet::contains(const std::set<std::string> &classes){
+    for (const std::string &name : classes)
+        if (!contains(name))
+            return false;
+    return true;
 }
 
 void ItemSet::add(const Item *item, size_t qty){

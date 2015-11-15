@@ -140,6 +140,9 @@ enum MessageCode{
     // The user tried to perform an action at an occupied location
     SV_BLOCKED = 921,
 
+    // The user does not have the tools required to craft an item
+    SV_NEED_TOOLS = 922,
+
 
 
     NO_CODE

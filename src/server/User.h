@@ -55,6 +55,8 @@ public:
     // Whether the user has enough materials to craft a recipe
     bool hasItems(const ItemSet &items) const;
     void removeItems(const ItemSet &items, Server &server);
+    bool hasTool(const std::string &className, Server &server) const;
+    bool hasTools(const std::set<std::string> &classes, Server &server) const;
     void actionCraft(const Recipe &item); // Configure user to craft an item
 
     // Configure user to construct an item
@@ -77,9 +79,6 @@ public:
     Set location to the new, legal location.
     */
     void updateLocation(const Point &dest, Server &server);
-
-    // Whether the user has at least one item with the specified item class
-    bool hasItemClass(const std::string &className) const;
 
     // Return value: 0 if there was room for all items, otherwise the remainder.
     size_t giveItem(const Item *item, size_t quantity, const Server &server);
