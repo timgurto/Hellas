@@ -450,7 +450,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 // Check that the user meets the requirements
                 assert (obj.type());
                 const std::string &gatherReq = obj.type()->gatherReq();
-                if (gatherReq != "none" && !user->hasItemClass(gatherReq)) {
+                if (gatherReq != "none" && !user->hasTool(gatherReq, *this)) {
                     sendMessage(client, SV_ITEM_NEEDED, gatherReq);
                     break;
                 }

@@ -204,15 +204,6 @@ bool User::hasTools(const std::set<std::string> &classes, Server &server) const{
     return true;
 }
 
-bool User::hasItemClass(const std::string &className) const{
-    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
-        const Item *const item = _inventory[i].first;
-        if (item && item->isClass(className))
-            return true;
-    }
-    return false;
-}
-
 void User::removeItems(const ItemSet &items, Server &server) {
     std::set<size_t> invSlotsChanged;
     ItemSet remaining = items;

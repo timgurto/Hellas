@@ -80,9 +80,6 @@ public:
     */
     void updateLocation(const Point &dest, Server &server);
 
-    // Whether the user has at least one item with the specified item class
-    bool hasItemClass(const std::string &className) const;
-
     // Return value: 0 if there was room for all items, otherwise the remainder.
     size_t giveItem(const Item *item, size_t quantity, const Server &server);
 
