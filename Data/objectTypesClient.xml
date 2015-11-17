@@ -84,7 +84,7 @@
     id="thatch"
     name="Thatch"
     xDrawOffset=-8
-    yDrawOffset=-8
+    yDrawOffset=-24
     canGather=1
     gatherSound="grass1"
 />
