@@ -828,10 +828,12 @@ void Client::draw() const{
     // Used item
     if (_constructionFootprint) {
         _constructionFootprint.setAlpha(0x7f);
-        _constructionFootprint.draw(toInt(_mouse.x - _constructionFootprint.width() / 2.0),
-                                    toInt(_mouse.y - _constructionFootprint.height() / 2.0));
+        const Rect &drawRect = Container::getUseItem()->constructsObject()->drawRect();
+        int
+            x = toInt(_mouse.x + drawRect.x),
+            y = toInt(_mouse.y + drawRect.y);
+        _constructionFootprint.draw(x, y);
         _constructionFootprint.setAlpha();
-
     }
 
     _debug.draw();
