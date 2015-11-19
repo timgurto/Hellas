@@ -26,9 +26,7 @@
 <item id="stick" name="Stick" stackSize=64 />
 <item id="straw" name="Straw" stackSize=64 iconFile="Straw" />
 
-<item id="thatch" name="Thatch" stackSize=32 iconFile="Thatch" constructs="thatch" >
-    <class name="structure" />
-</item>
+<item id="thatch" name="Thatch" stackSize=32 iconFile="Thatch" constructs="thatch" />
 
 <item id="stoneAxeHead" name="Stone Axe Head" iconFile="Stone Axe Head" stackSize=64 />
 <item id="stoneAxe" name="Stone Axe" iconFile="Stone Axe">
@@ -45,9 +43,7 @@
     <class name="shovel" />
 </item>
 
-<item id="ashLog" name="Ash Log" stackSize=16 constructs="ashLog" >
-    <class name="structure" />
-</item>
+<item id="ashLog" name="Ash Log" stackSize=16 constructs="ashLog" />
 <item id="ashSapling" name="Ash Log" stackSize=16 />
 
 <item id="clay" name="Clay" stackSize=64 iconFile="Clay" />
@@ -60,9 +56,7 @@
 <item id="clayShovelMold" name="Clay Shovel Mold" iconFile = "Clay Mold Shovel" />
 <item id="ceramicShovelMold" name="Ceramic Shovel Mold" iconFile = "Ceramic Mold Shovel" />
 
-<item id="pitKiln" name="Pit Kiln" constructs="pitKiln" >
-    <class name="structure" />
-</item>
+<item id="pitKiln" name="Pit Kiln" constructs="pitKiln" />
 
 <item id="fireStarter" name="Firestarter" >
     <class name="fire starter" />
