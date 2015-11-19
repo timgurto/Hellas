@@ -243,6 +243,15 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
         if (xr.findAttr(elem, "isFlat", n) && n != 0) cot.isFlat(true);
         if (xr.findAttr(elem, "gatherSound", s))
             cot.gatherSound(std::string("Sounds/") + s + ".wav");
+        auto collisionRect = xr.findChild("collisionRect", elem);
+        if (collisionRect) {
+            Rect r;
+            xr.findAttr(collisionRect, "x", r.x);
+            xr.findAttr(collisionRect, "y", r.y);
+            xr.findAttr(collisionRect, "w", r.w);
+            xr.findAttr(collisionRect, "h", r.h);
+            cot.collisionRect(r);
+        }
         auto pair = _objectTypes.insert(cot);
         if (!pair.second) {
             ClientObjectType &type = const_cast<ClientObjectType &>(*pair.first);
@@ -495,6 +504,7 @@ void Client::run(){
                             x = toInt(_mouse.x - offset().x),
                             y = toInt(_mouse.y - offset().y);
                         sendMessage(CL_CONSTRUCT, makeArgs(Container::useSlot, x, y));
+                        break;
                     }
 
                     if (_craftingWindow->visible() && collision(_mouse, _craftingWindow->rect())) {
@@ -824,13 +834,23 @@ void Client::draw() const{
 
     // Used item
     if (_constructionFootprint) {
-        _constructionFootprint.setAlpha(0x7f);
-        const Rect &drawRect = Container::getUseItem()->constructsObject()->drawRect();
-        int
-            x = toInt(_mouse.x + drawRect.x),
-            y = toInt(_mouse.y + drawRect.y);
-        _constructionFootprint.draw(x, y);
-        _constructionFootprint.setAlpha();
+        const ClientObjectType *ot = Container::getUseItem()->constructsObject();
+        Rect footprintRect = ot->collisionRect() + _mouse - _offset;
+        if (distance(playerCollisionRect(), footprintRect) <=Client::ACTION_DISTANCE) {
+            renderer.setDrawColor(Color::WHITE);
+            renderer.fillRect(footprintRect + _offset);
+
+            const Rect &drawRect = ot->drawRect();
+            int
+                x = toInt(_mouse.x + drawRect.x),
+                y = toInt(_mouse.y + drawRect.y);
+            _constructionFootprint.setAlpha(0x7f);
+            _constructionFootprint.draw(x, y);
+            _constructionFootprint.setAlpha();
+        } else {
+            renderer.setDrawColor(Color::RED);
+            renderer.fillRect(footprintRect + _offset);
+        }
     }
 
     _debug.draw();
@@ -850,17 +870,14 @@ Texture Client::getInventoryTooltip() const{
     TooltipBuilder tb;
     tb.setColor(Color::WHITE);
     tb.addLine(item->name());
-    bool isStructure = false;
     if (item->hasClasses()) {
         tb.setColor();
         tb.addGap();
         for (const std::string &className : item->classes()) {
             tb.addLine(className);
-            if (!isStructure && className == "structure")
-                isStructure = true;
         }
     }
-    if (isStructure) {
+    if (item->constructsObject()) {
         tb.addGap();
         tb.setColor(Color::YELLOW);
         tb.addLine("Right-click to construct");
@@ -1189,7 +1206,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_CANNOT_CONSTRUCT:
             if (del != ']')
                 break;
-            _debug("Only 'structure'-class items can be constructed.", Color::RED);
+            _debug("That item cannot be constructed.", Color::RED);
             startAction(0);
             break;
 

@@ -2,9 +2,13 @@
 
 #include "Avatar.h"
 #include "Client.h"
+#include "Renderer.h"
 #include "../util.h"
 
+extern Renderer renderer;
+
 EntityType Avatar::_entityType(Rect(-9, -31));
+Rect Avatar::_collisionRect(-5, -2, 10, 4);
 
 Avatar::Avatar(const std::string &name, const Point &location):
 Entity(&_entityType, location),
@@ -20,6 +24,11 @@ Point Avatar::interpolatedLocation(double delta){
 
 void Avatar::draw(const Client &client) const{
     Entity::draw(client);
+
+    if (isDebug()) {
+        renderer.setDrawColor(Color::GREY_2);
+        renderer.drawRect(_collisionRect + location() + client.offset());
+    }
 
     // Draw username
     if (_name != client.username()) {

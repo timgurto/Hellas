@@ -11,6 +11,7 @@
 // The client-side representation of a user, including the player
 class Avatar : public Entity{
     static EntityType _entityType;
+    static Rect _collisionRect;
 
     Point _destination;
     std::string _name;
@@ -23,6 +24,7 @@ public:
     const Point &destination() const { return _destination; }
     void destination(const Point &dst) { _destination = dst; }
     static const EntityType &entityType() { return _entityType; }
+    static const Rect &collisionRect() { return _collisionRect; }
 
     virtual void draw(const Client &client) const override;
     virtual void update(double delta) override;

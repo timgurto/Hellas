@@ -403,7 +403,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             const Item &item = *invSlot.first;
-            if (!item.isClass("structure") || !item.constructsObject()) {
+            if (!item.constructsObject()) {
                 sendMessage(client, SV_CANNOT_CONSTRUCT);
                 break;
             }

@@ -29,6 +29,13 @@ inline Rect operator+(const Rect &lhs, const Point &rhs){
     return r;
 }
 
+inline Rect operator-(const Rect &lhs, const Point &rhs){
+    Rect r = lhs;
+    r.x -= toInt(rhs.x);
+    r.y -= toInt(rhs.y);
+    return r;
+}
+
 inline Point operator-(const Point &lhs, const Rect &rhs){
     Point p = lhs;
     p.x -= rhs.x;
