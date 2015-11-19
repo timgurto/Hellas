@@ -5,8 +5,9 @@
     xDrawOffset=-20
     yDrawOffset=-47
     canGather=1
-    gatherSound="chop-pause"
-/>
+    gatherSound="chop-pause" >
+    <collisionRect x=-5 y=-5 w=10 h=10 />
+</objectType>
 
 <objectType
     id="branch"
@@ -21,6 +22,7 @@
     id="chest"
     name="Wooden chest"
     xDrawOffset=-17
-    yDrawOffset=-13
-/>
+    yDrawOffset=-13 >
+    <collisionRect x=-5 y=-5 w=10 h=10 />
+</objectType>
 </root>

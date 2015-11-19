@@ -18,6 +18,7 @@
 #include "ui/Window.h"
 #include "../Args.h"
 #include "../Point.h"
+#include "../Rect.h"
 #include "../Socket.h"
 #include "../messageCodes.h"
 #include "../server/Recipe.h"
@@ -38,6 +39,8 @@ public:
     const Point &offset() const { return _intOffset; }
     const std::string &username() const { return _username; }
     const Entity *currentMouseOverEntity() const { return _currentMouseOverEntity; }
+    Rect playerCollisionRect() const { return _character.location() +
+                                              Avatar::collisionRect(); }
 
     static const int PLAYER_ACTION_CHANNEL;
 

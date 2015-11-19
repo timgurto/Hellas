@@ -246,6 +246,15 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
         if (xr.findAttr(elem, "isFlat", n) && n != 0) cot.isFlat(true);
         if (xr.findAttr(elem, "gatherSound", s))
             cot.gatherSound(std::string("Sounds/") + s + ".wav");
+        auto collisionRect = xr.findChild("collisionRect", elem);
+        if (collisionRect) {
+            Rect r;
+            xr.findAttr(collisionRect, "x", r.x);
+            xr.findAttr(collisionRect, "y", r.y);
+            xr.findAttr(collisionRect, "w", r.w);
+            xr.findAttr(collisionRect, "h", r.h);
+            cot.collisionRect(r);
+        }
         auto pair = _objectTypes.insert(cot);
         if (!pair.second) {
             ClientObjectType &type = const_cast<ClientObjectType &>(*pair.first);

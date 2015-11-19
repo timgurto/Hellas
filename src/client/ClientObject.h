@@ -29,6 +29,10 @@ public:
         { return dynamic_cast<const ClientObjectType *>(type()); }
     const std::string &owner() const { return _owner; }
     void owner(const std::string &name) { _owner = name; }
+    
+    virtual void draw(const Client &client) const;
+
+    Rect collisionRect() const { return objectType()->collisionRect() + location(); }
 
     virtual void onLeftClick(Client &client) const;
     virtual std::vector<std::string> getTooltipMessages(const Client &client) const;

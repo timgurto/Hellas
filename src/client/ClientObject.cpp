@@ -1,9 +1,14 @@
 // (C) 2015 Tim Gurto
 
+#include <cassert>
+
 #include "ClientObject.h"
 #include "Client.h"
+#include "Renderer.h"
 #include "../Color.h"
 #include "../util.h"
+
+extern Renderer renderer;
 
 ClientObject::ClientObject(const ClientObject &rhs):
 Entity(rhs),
@@ -35,5 +40,31 @@ void ClientObject::playGatherSound() const {
     Mix_Chunk *sound = objectType()->gatherSound();
     if (sound) {
         Mix_PlayChannel(Client::PLAYER_ACTION_CHANNEL, sound, -1);
+    }
+}
+
+void ClientObject::draw(const Client &client) const{
+    assert(type());
+    // Highilght moused-over entity
+    if (this == client.currentMouseOverEntity()) {
+        if (distance(collisionRect(), client.playerCollisionRect()) <= Client::ACTION_DISTANCE)
+            renderer.setDrawColor(Color::BLUE/2 + Color::WHITE/2);
+        else
+            renderer.setDrawColor(Color::GREY_2);
+        renderer.drawRect(collisionRect() + Rect(-1, -1, 2, 2) + client.offset());
+    }
+
+    type()->drawAt(location() + client.offset());
+
+    if (isDebug()) {
+        renderer.setDrawColor(Color::GREY_2);
+        renderer.drawRect(collisionRect() + client.offset());
+        renderer.setDrawColor(Color::YELLOW);
+        renderer.fillRect(Rect(location().x + client.offset().x,
+                                location().y + client.offset().y - 1,
+                                1, 3));
+        renderer.fillRect(Rect(location().x + client.offset().x - 1,
+                               location().y + client.offset().y,
+                               3, 1));
     }
 }
