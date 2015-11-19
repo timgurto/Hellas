@@ -507,6 +507,7 @@ void Client::run(){
                             x = toInt(_mouse.x - offset().x),
                             y = toInt(_mouse.y - offset().y);
                         sendMessage(CL_CONSTRUCT, makeArgs(Container::useSlot, x, y));
+                        break;
                     }
 
                     if (_craftingWindow->visible() && collision(_mouse, _craftingWindow->rect())) {
