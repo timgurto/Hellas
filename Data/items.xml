@@ -16,7 +16,6 @@
     name="Wooden chest"
     constructs="chest" >
     <class name="container"/>
-    <class name="structure"/>
 </item>
 
 <item

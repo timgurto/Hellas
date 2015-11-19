@@ -126,7 +126,7 @@ void Container::rightMouseUp(Element &e, const Point &mousePos){
     } else if (slot != NO_SLOT) { // Right-clicked a slot
         const Item *item = container._linked[slot].first;
         if (item && // Slot is not empty
-            item->isClass("structure")) { // Can construct item
+            item->constructsObject()) { // Can construct item
             useSlot = slot;
             useContainer = &container;
         }

@@ -853,17 +853,14 @@ Texture Client::getInventoryTooltip() const{
     TooltipBuilder tb;
     tb.setColor(Color::WHITE);
     tb.addLine(item->name());
-    bool isStructure = false;
     if (item->hasClasses()) {
         tb.setColor();
         tb.addGap();
         for (const std::string &className : item->classes()) {
             tb.addLine(className);
-            if (!isStructure && className == "structure")
-                isStructure = true;
         }
     }
-    if (isStructure) {
+    if (item->constructsObject()) {
         tb.addGap();
         tb.setColor(Color::YELLOW);
         tb.addLine("Right-click to construct");
@@ -1192,7 +1189,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_CANNOT_CONSTRUCT:
             if (del != ']')
                 break;
-            _debug("Only 'structure'-class items can be constructed.", Color::RED);
+            _debug("That item cannot be constructed.", Color::RED);
             startAction(0);
             break;
 
