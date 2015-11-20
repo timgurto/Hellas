@@ -63,68 +63,89 @@
     <yield id="SlateRock" />
 </objectType>
 
-<objectType id="Andesite" >
+<objectType id="Andesite" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="AndesiteRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Basalt" >
+<objectType id="Basalt" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="BasaltRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Chalk" >
+<objectType id="Chalk" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="ChalkRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Chert" >
+<objectType id="Chert" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="ChertRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Claystone" >
+<objectType id="Claystone" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="ClaystoneRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Conglomerate" >
+<objectType id="Conglomerate" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="ConglomerateRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Dacite" >
+<objectType id="Dacite" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="DaciteRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Diorite" >
+<objectType id="Diorite" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="DioriteRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Dolomite" >
+<objectType id="Dolomite" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="DolomiteRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Gabbro" >
+<objectType id="Gabbro" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="GabbroRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Gneiss" >
+<objectType id="Gneiss" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="GneissRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Granite" >
+<objectType id="Granite" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="GraniteRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Limestone" >
+<objectType id="Limestone" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="LimestoneRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Marble" >
+<objectType id="Marble" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="MarbleRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Phyllite" >
+<objectType id="Phyllite" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="PhylliteRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Quartzite" >
+<objectType id="Quartzite" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="QuartziteRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Rhyolite" >
+<objectType id="Rhyolite" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="RhyoliteRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="RockSalt" >
+<objectType id="RockSalt" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="RockSaltRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Schist" >
+<objectType id="Schist" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="SchistRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Shale" >
+<objectType id="Shale" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="ShaleRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
-<objectType id="Slate" >
+<objectType id="Slate" actionTime = 1000 gatherReq="pick" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="SlateRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
 
 <objectType id="ashTree" actionTime=1000 gatherReq="axe" >

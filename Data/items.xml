@@ -38,6 +38,10 @@
     <class name="knife" />
 </item>
 
+<item id="copperPick" name="Copper Pick" iconFile="Copper Pick">
+    <class name="pick" />
+</item>
+
 <item id="stoneShovelHead" name="Stone Shovel Head" iconFile="Stone Shovel Head" stackSize=64 />
 <item id="stoneShovel" name="Stone Shovel" iconFile="Stone Shovel">
     <class name="shovel" />

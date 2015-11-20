@@ -1,65 +1,65 @@
 <root>
-<objectType id="Andesite" name="Andesite" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Andesite" name="Andesite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Basalt" name="Basalt" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Basalt" name="Basalt" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Chalk" name="Chalk" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Chalk" name="Chalk" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Chert" name="Chert" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Chert" name="Chert" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Claystone" name="Claystone" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Claystone" name="Claystone" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Conglomerate" name="Conglomerate" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Conglomerate" name="Conglomerate" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Dacite" name="Dacite" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Dacite" name="Dacite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Diorite" name="Diorite" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Diorite" name="Diorite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Dolomite" name="Dolomite" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Dolomite" name="Dolomite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Gabbro" name="Gabbro" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Gabbro" name="Gabbro" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Gneiss" name="Gneiss" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Gneiss" name="Gneiss" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Granite" name="Granite" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Granite" name="Granite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Limestone" name="Limestone" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Limestone" name="Limestone" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Marble" name="Marble" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Marble" name="Marble" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Phyllite" name="Phyllite" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Phyllite" name="Phyllite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Quartzite" name="Quartzite" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Quartzite" name="Quartzite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Rhyolite" name="Rhyolite" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Rhyolite" name="Rhyolite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="RockSalt" name="Rock Salt" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="RockSalt" name="Rock Salt" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Schist" name="Schist" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Schist" name="Schist" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Shale" name="Shale" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Shale" name="Shale" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
-<objectType id="Slate" name="Slate" xDrawOffset=-8 yDrawOffset=-8>
+<objectType id="Slate" name="Slate" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 
