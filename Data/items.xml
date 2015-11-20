@@ -66,4 +66,6 @@
     <class name="fire starter" />
 </item>
 
+<item id="copperOre" name="Copper Ore" stackSize=400 />
+
 </root>

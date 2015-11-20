@@ -1,4 +1,5 @@
 <root>
+<!-- ROCKS -->
 <objectType id="AndesiteRock" actionTime = 1 >
     <yield id="AndesiteRock" />
 </objectType>
@@ -64,6 +65,7 @@
 </objectType>
 
 <objectType id="Andesite" actionTime = 1000 gatherReq="pick" >
+<!-- STONE -->
     <collisionRect x=-8 y=-8 w=16 h=16 />
     <yield id="AndesiteRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
@@ -148,6 +150,189 @@
     <yield id="SlateRock" initialMean=20 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
 
+<!-- ORE/MINERALS -->
+<objectType id="copperAndesiteNormal" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=250 initialSD=50 gatherMean=25 />
+    <yield id="AndesiteRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperAndesitePoor" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=150 initialSD=30 gatherMean=15 />
+    <yield id="AndesiteRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperAndesiteRich" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=350 initialSD=70 gatherMean=35 />
+    <yield id="AndesiteRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperBasaltNormal" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=250 initialSD=50 gatherMean=25 />
+    <yield id="BasaltRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperBasaltPoor" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=150 initialSD=30 gatherMean=15 />
+    <yield id="BasaltRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperBasaltRich" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=350 initialSD=70 gatherMean=35 />
+    <yield id="BasaltRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperDaciteNormal" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=250 initialSD=50 gatherMean=25 />
+    <yield id="DaciteRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperDacitePoor" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=150 initialSD=30 gatherMean=15 />
+    <yield id="DaciteRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperDaciteRich" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=350 initialSD=70 gatherMean=35 />
+    <yield id="DaciteRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperGneissNormal" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=250 initialSD=50 gatherMean=25 />
+    <yield id="GneissRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperGneissPoor" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=150 initialSD=30 gatherMean=15 />
+    <yield id="GneissRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperGneissRich" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=350 initialSD=70 gatherMean=35 />
+    <yield id="GneissRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperLimestoneNormal" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=250 initialSD=50 gatherMean=25 />
+    <yield id="LimestoneRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperLimestonePoor" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=150 initialSD=30 gatherMean=15 />
+    <yield id="LimestoneRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperLimestoneRich" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=350 initialSD=70 gatherMean=35 />
+    <yield id="LimestoneRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperMarbleNormal" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=250 initialSD=50 gatherMean=25 />
+    <yield id="MarbleRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperMarblePoor" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=150 initialSD=30 gatherMean=15 />
+    <yield id="MarbleRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperMarbleRich" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=350 initialSD=70 gatherMean=35 />
+    <yield id="MarbleRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperMarble2Normal" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=250 initialSD=50 gatherMean=25 />
+    <yield id="MarbleRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperMarble2Poor" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=150 initialSD=30 gatherMean=15 />
+    <yield id="MarbleRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperMarble2Rich" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=350 initialSD=70 gatherMean=35 />
+    <yield id="MarbleRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperPhylliteNormal" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=250 initialSD=50 gatherMean=25 />
+    <yield id="PhylliteRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperPhyllitePoor" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=150 initialSD=30 gatherMean=15 />
+    <yield id="PhylliteRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperPhylliteRich" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=350 initialSD=70 gatherMean=35 />
+    <yield id="PhylliteRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperQuartziteNormal" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=250 initialSD=50 gatherMean=25 />
+    <yield id="QuartziteRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperQuartzitePoor" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=150 initialSD=30 gatherMean=15 />
+    <yield id="QuartziteRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperQuartziteRich" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=350 initialSD=70 gatherMean=35 />
+    <yield id="QuartziteRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperRhyoliteNormal" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=250 initialSD=50 gatherMean=25 />
+    <yield id="RhyoliteRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperRhyolitePoor" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=150 initialSD=30 gatherMean=15 />
+    <yield id="RhyoliteRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperRhyoliteRich" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=350 initialSD=70 gatherMean=35 />
+    <yield id="RhyoliteRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperSchistNormal" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=250 initialSD=50 gatherMean=25 />
+    <yield id="SchistRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperSchistPoor" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=150 initialSD=30 gatherMean=15 />
+    <yield id="SchistRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperSchistRich" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=350 initialSD=70 gatherMean=35 />
+    <yield id="SchistRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperSlateNormal" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=250 initialSD=50 gatherMean=25 />
+    <yield id="SlateRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperSlatePoor" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=150 initialSD=30 gatherMean=15 />
+    <yield id="SlateRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+<objectType id="copperSlateRich" actionTime=1000 gatherReq="pick" >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <yield id="copperOre" initialMean=350 initialSD=70 gatherMean=35 />
+    <yield id="SlateRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
+</objectType>
+
+<!-- TREES and LOGS -->
 <objectType id="ashTree" actionTime=1000 gatherReq="axe" >
     <collisionRect x=-8 y=-8 w=16 h=16 />
     <yield id="ashLog" initialMean=4 initialSD=1 />
@@ -158,6 +343,7 @@
     <yield id="ashLog" />
 </objectType>
 
+<!-- MISCELLANEOUS -->
 <objectType id="grass" actionTime=1 gatherReq="knife" >
     <yield id="straw" />
 </objectType>

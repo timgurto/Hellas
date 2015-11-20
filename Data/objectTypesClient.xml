@@ -90,6 +90,42 @@
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
 
+<objectType id="copperAndesiteNormal" name="Native copper vein" imageFile="copperAndesite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperAndesitePoor" name="Native copper vein" imageFile="copperAndesite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperAndesiteRich" name="Native copper vein" imageFile="copperAndesite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperBasaltNormal" name="Native copper vein" imageFile="copperBasalt" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperBasaltPoor" name="Native copper vein" imageFile="copperBasalt" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperBasaltRich" name="Native copper vein" imageFile="copperBasalt" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperDaciteNormal" name="Native copper vein" imageFile="copperDacite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperDacitePoor" name="Native copper vein" imageFile="copperDacite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperDaciteRich" name="Native copper vein" imageFile="copperDacite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperGneissNormal" name="Tetrahedrite vein" imageFile="copperGneiss" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperGneissPoor" name="Tetrahedrite vein" imageFile="copperGneiss" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperGneissRich" name="Tetrahedrite vein" imageFile="copperGneiss" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperLimestoneNormal" name="Malachite vein" imageFile="copperLimestone" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperLimestonePoor" name="Malachite vein" imageFile="copperLimestone" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperLimestoneRich" name="Malachite vein" imageFile="copperLimestone" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperMarbleNormal" name="Malachite vein" imageFile="copperMarble" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperMarblePoor" name="Malachite vein" imageFile="copperMarble" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperMarbleRich" name="Malachite vein" imageFile="copperMarble" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperMarble2Normal" name="Tetrahedrite vein" imageFile="copperMarble2" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperMarble2Poor" name="Tetrahedrite vein" imageFile="copperMarble2" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperMarble2Rich" name="Tetrahedrite vein" imageFile="copperMarble2" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperPhylliteNormal" name="Tetrahedrite vein" imageFile="copperPhyllite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperPhyllitePoor" name="Tetrahedrite vein" imageFile="copperPhyllite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperPhylliteRich" name="Tetrahedrite vein" imageFile="copperPhyllite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperQuartziteNormal" name="Tetrahedrite vein" imageFile="copperQuartzite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperQuartzitePoor" name="Tetrahedrite vein" imageFile="copperQuartzite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperQuartziteRich" name="Tetrahedrite vein" imageFile="copperQuartzite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperRhyoliteNormal" name="Native copper vein" imageFile="copperRhyolite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperRhyolitePoor" name="Native copper vein" imageFile="copperRhyolite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperRhyoliteRich" name="Native copper vein" imageFile="copperRhyolite" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperSchistNormal" name="Tetrahedrite vein" imageFile="copperSchist" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperSchistPoor" name="Tetrahedrite vein" imageFile="copperSchist" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperSchistRich" name="Tetrahedrite vein" imageFile="copperSchist" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperSlateNormal" name="Tetrahedrite vein" imageFile="copperSlate" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperSlatePoor" name="Tetrahedrite vein" imageFile="copperSlate" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="copperSlateRich" name="Tetrahedrite vein" imageFile="copperSlate" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
 
 <objectType
     id="grass"

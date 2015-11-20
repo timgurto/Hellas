@@ -948,29 +948,65 @@ void Server::generateWorld(){
     _debug << "Generating clay patches... 100%" << Log::endl;
 
     // Stone in circles
-    const ObjectType *stoneObj[21];
-    stoneObj[ 0] = &*_objectTypes.find(std::string("Andesite"));
-    stoneObj[ 1] = &*_objectTypes.find(std::string("Basalt"));
-    stoneObj[ 2] = &*_objectTypes.find(std::string("Chalk"));
-    stoneObj[ 3] = &*_objectTypes.find(std::string("Chert"));
-    stoneObj[ 4] = &*_objectTypes.find(std::string("Claystone"));
-    stoneObj[ 5] = &*_objectTypes.find(std::string("Conglomerate"));
-    stoneObj[ 6] = &*_objectTypes.find(std::string("Dacite"));
-    stoneObj[ 7] = &*_objectTypes.find(std::string("Diorite"));
-    stoneObj[ 8] = &*_objectTypes.find(std::string("Dolomite"));
-    stoneObj[ 9] = &*_objectTypes.find(std::string("Gabbro"));
-    stoneObj[10] = &*_objectTypes.find(std::string("Gneiss"));
-    stoneObj[11] = &*_objectTypes.find(std::string("Granite"));
-    stoneObj[12] = &*_objectTypes.find(std::string("Limestone"));
-    stoneObj[13] = &*_objectTypes.find(std::string("Marble"));
-    stoneObj[14] = &*_objectTypes.find(std::string("Phyllite"));
-    stoneObj[15] = &*_objectTypes.find(std::string("Quartzite"));
-    stoneObj[16] = &*_objectTypes.find(std::string("Rhyolite"));
-    stoneObj[17] = &*_objectTypes.find(std::string("RockSalt"));
-    stoneObj[18] = &*_objectTypes.find(std::string("Schist"));
-    stoneObj[19] = &*_objectTypes.find(std::string("Shale"));
-    stoneObj[20] = &*_objectTypes.find(std::string("Slate"));
     static const size_t numStoneCircles = 10;
+    std::vector<const ObjectType *> stoneObj[21];
+    stoneObj[ 0].push_back(&*_objectTypes.find(std::string("Andesite")));
+    pushBackMultiple(stoneObj[ 0], &*_objectTypes.find(std::string("copperAndesiteNormal")), 5);
+    pushBackMultiple(stoneObj[ 0], &*_objectTypes.find(std::string("copperAndesitePoor")), 3);
+    pushBackMultiple(stoneObj[ 0], &*_objectTypes.find(std::string("copperAndesiteRich")), 2);
+    stoneObj[ 1].push_back(&*_objectTypes.find(std::string("Basalt")));
+    pushBackMultiple(stoneObj[ 1], &*_objectTypes.find(std::string("copperBasaltNormal")), 5);
+    pushBackMultiple(stoneObj[ 1], &*_objectTypes.find(std::string("copperBasaltPoor")), 3);
+    pushBackMultiple(stoneObj[ 1], &*_objectTypes.find(std::string("copperBasaltRich")), 2);
+    stoneObj[ 2].push_back(&*_objectTypes.find(std::string("Chalk")));
+    stoneObj[ 3].push_back(&*_objectTypes.find(std::string("Chert")));
+    stoneObj[ 4].push_back(&*_objectTypes.find(std::string("Claystone")));
+    stoneObj[ 5].push_back(&*_objectTypes.find(std::string("Conglomerate")));
+    stoneObj[ 6].push_back(&*_objectTypes.find(std::string("Dacite")));
+    pushBackMultiple(stoneObj[ 6], &*_objectTypes.find(std::string("copperDaciteNormal")), 5);
+    pushBackMultiple(stoneObj[ 6], &*_objectTypes.find(std::string("copperDacitePoor")), 3);
+    pushBackMultiple(stoneObj[ 6], &*_objectTypes.find(std::string("copperDaciteRich")), 2);
+    stoneObj[ 7].push_back(&*_objectTypes.find(std::string("Diorite")));
+    stoneObj[ 8].push_back(&*_objectTypes.find(std::string("Dolomite")));
+    stoneObj[ 9].push_back(&*_objectTypes.find(std::string("Gabbro")));
+    stoneObj[10].push_back(&*_objectTypes.find(std::string("Gneiss")));
+    pushBackMultiple(stoneObj[10], &*_objectTypes.find(std::string("copperGneissNormal")), 5);
+    pushBackMultiple(stoneObj[10], &*_objectTypes.find(std::string("copperGneissPoor")), 3);
+    pushBackMultiple(stoneObj[10], &*_objectTypes.find(std::string("copperGneissRich")), 2);
+    stoneObj[11].push_back(&*_objectTypes.find(std::string("Granite")));
+    stoneObj[12].push_back(&*_objectTypes.find(std::string("Limestone")));
+    pushBackMultiple(stoneObj[12], &*_objectTypes.find(std::string("copperLimestoneNormal")), 5);
+    pushBackMultiple(stoneObj[12], &*_objectTypes.find(std::string("copperLimestonePoor")), 3);
+    pushBackMultiple(stoneObj[12], &*_objectTypes.find(std::string("copperLimestoneRich")), 2);
+    stoneObj[13].push_back(&*_objectTypes.find(std::string("Marble")));
+    pushBackMultiple(stoneObj[13], &*_objectTypes.find(std::string("copperMarbleNormal")), 5);
+    pushBackMultiple(stoneObj[13], &*_objectTypes.find(std::string("copperMarblePoor")), 3);
+    pushBackMultiple(stoneObj[13], &*_objectTypes.find(std::string("copperMarbleRich")), 2);
+    pushBackMultiple(stoneObj[13], &*_objectTypes.find(std::string("copperMarble2Normal")), 5);
+    pushBackMultiple(stoneObj[13], &*_objectTypes.find(std::string("copperMarble2Poor")), 3);
+    pushBackMultiple(stoneObj[13], &*_objectTypes.find(std::string("copperMarble2Rich")), 2);
+    stoneObj[14].push_back(&*_objectTypes.find(std::string("Phyllite")));
+    pushBackMultiple(stoneObj[14], &*_objectTypes.find(std::string("copperPhylliteNormal")), 5);
+    pushBackMultiple(stoneObj[14], &*_objectTypes.find(std::string("copperPhyllitePoor")), 3);
+    pushBackMultiple(stoneObj[14], &*_objectTypes.find(std::string("copperPhylliteRich")), 2);
+    stoneObj[15].push_back(&*_objectTypes.find(std::string("Quartzite")));
+    pushBackMultiple(stoneObj[15], &*_objectTypes.find(std::string("copperQuartziteNormal")), 5);
+    pushBackMultiple(stoneObj[15], &*_objectTypes.find(std::string("copperQuartzitePoor")), 3);
+    pushBackMultiple(stoneObj[15], &*_objectTypes.find(std::string("copperQuartziteRich")), 2);
+    stoneObj[16].push_back(&*_objectTypes.find(std::string("Rhyolite")));
+    pushBackMultiple(stoneObj[16], &*_objectTypes.find(std::string("copperRhyoliteNormal")), 5);
+    pushBackMultiple(stoneObj[16], &*_objectTypes.find(std::string("copperRhyolitePoor")), 3);
+    pushBackMultiple(stoneObj[16], &*_objectTypes.find(std::string("copperRhyoliteRich")), 2);
+    stoneObj[17].push_back(&*_objectTypes.find(std::string("RockSalt")));
+    stoneObj[18].push_back(&*_objectTypes.find(std::string("Schist")));
+    pushBackMultiple(stoneObj[18], &*_objectTypes.find(std::string("copperSchistNormal")), 5);
+    pushBackMultiple(stoneObj[18], &*_objectTypes.find(std::string("copperSchistPoor")), 3);
+    pushBackMultiple(stoneObj[18], &*_objectTypes.find(std::string("copperSchistRich")), 2);
+    stoneObj[19].push_back(&*_objectTypes.find(std::string("Shale")));
+    stoneObj[20].push_back(&*_objectTypes.find(std::string("Slate")));
+    pushBackMultiple(stoneObj[20], &*_objectTypes.find(std::string("copperSlateNormal")), 5);
+    pushBackMultiple(stoneObj[20], &*_objectTypes.find(std::string("copperSlatePoor")), 3);
+    pushBackMultiple(stoneObj[20], &*_objectTypes.find(std::string("copperSlateRich")), 2);
     progress = 0;
     for (int i = 0; i != numStoneCircles; ++i) {
         _debug << "Generating stone deposits... " << (100 * ++progress / numStoneCircles) << "%\r";
@@ -984,7 +1020,14 @@ void Server::generateWorld(){
                 Point tileCenter(centerX, centerY);
                 const double dist = distance(tileCenter, thisTile);
                 if (dist <= 6) {
-                    const ObjectType *type = stoneObj[stoneLayer[x][y]];
+                    size_t stoneIndex = 0;
+                    const std::vector<const ObjectType *> stoneVec = stoneObj[stoneLayer[x][y]];
+                    if (rand() % 10 == 0 && stoneVec.size() > 1) {
+                        // This object will be a random ore/mineral
+                        stoneIndex = rand() % (stoneVec.size() - 1) + 1;
+                    }
+                    const ObjectType *type = stoneVec[stoneIndex];
+                    assert(type);
                     if (isLocationValid(tileCenter, *type))
                         addObject(type, Point(thisTile.x * TILE_W, thisTile.y * TILE_H));
                 }
