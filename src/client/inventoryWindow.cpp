@@ -7,7 +7,7 @@
 
 void Client::initializeInventoryWindow(){
     static const int
-        COLS = 4,
+        COLS = 9,
         ROWS = (Client::INVENTORY_SIZE - 1) / COLS + 1;
     Container *inventory = new Container(ROWS, COLS, _inventory);
     const int

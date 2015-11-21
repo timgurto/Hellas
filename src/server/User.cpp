@@ -12,7 +12,7 @@
 #include "../messageCodes.h"
 #include "../util.h"
 
-const size_t User::INVENTORY_SIZE = 10;
+const size_t User::INVENTORY_SIZE = 36;
 
 const ObjectType User::OBJECT_TYPE(Rect(-5, -2, 10, 4));
 

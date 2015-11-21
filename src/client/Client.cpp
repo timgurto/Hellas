@@ -53,7 +53,7 @@ const double Client::MOVEMENT_SPEED = 80;
 
 const int Client::ACTION_DISTANCE = 30;
 
-const size_t Client::INVENTORY_SIZE = 10;
+const size_t Client::INVENTORY_SIZE = 36;
 
 const size_t Client::MAX_TEXT_ENTERED = 100;
 
