@@ -234,6 +234,7 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
         if (!xr.findAttr(elem, "id", s))
             continue;
         ClientObjectType cot(s);
+        xr.findAttr(elem, "imageFile", s); // If no explicit imageFile, s will still == id
         cot.image(std::string("Images/Objects/") + s + ".png");
         if (xr.findAttr(elem, "name", s)) cot.name(s);
         Rect drawRect(0, 0, cot.width(), cot.height());
