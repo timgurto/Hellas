@@ -551,6 +551,14 @@ bool Server::readUserData(User &user){
             _debug("Invalid user data (location)", Color::RED);
             return false;
     }
+    bool randomizedLocation = false;
+    while (!isLocationValid(p, User::OBJECT_TYPE)) {
+        p = mapRand();
+        randomizedLocation = true;
+    }
+    if (randomizedLocation)
+        _debug << Color::YELLOW << "Player " << user.name()
+               << " was moved due to an invalid location." << Log::endl;
     user.location(p);
 
     for (auto elem : xr.getChildren("inventory")) {
