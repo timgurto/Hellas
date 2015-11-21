@@ -6,6 +6,7 @@
 #include "Rect.h"
 
 #include <cstdlib>
+#include <vector>
 #include <sstream>
 
 struct Point;
@@ -22,6 +23,12 @@ inline int toInt(double d){
 }
 
 inline double randDouble(){ return static_cast<double>(rand()) / RAND_MAX; }
+
+template<typename T>
+void pushBackMultiple(std::vector<T> &vec, const T &val, size_t count){
+    for (size_t i = 0; i != count; ++i)
+        vec.push_back(val);
+}
 
 double distance(const Point &a, const Point &b);
 double distance(const Point &p, const Point &a, const Point &b); // point P to line AB

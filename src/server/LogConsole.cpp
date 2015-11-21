@@ -40,7 +40,7 @@ void LogConsole::operator()(const std::string &message, const Color &color){
 }
 
 LogConsole &LogConsole::operator<<(const std::string &val) {
-    std::cout << val;
+    std::cout << val << std::flush;
     if (_logFile.is_open())
         _logFile << val;
     return *this;

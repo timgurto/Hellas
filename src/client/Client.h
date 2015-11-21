@@ -94,7 +94,6 @@ private:
 
     Window *_inventoryWindow;
     void initializeInventoryWindow();
-
     Texture _constructionFootprint;
 
     Texture _tile[5];
