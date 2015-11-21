@@ -138,6 +138,21 @@
     <material id="stick" />
 </recipe>
 
+<recipe id="copperPickMold" product="copperPickMold" time=20000 >
+    <material id="copperOre" quantity=100 />
+    <material id="ceramicPickMold" />
+    <tool name="pit kiln" />
+    <tool name="fire starter" />
+    <tool name="ceramic vessel" />
+</recipe>
+<recipe id="copperPickHead" product="copperPickHead" time=1 >
+    <material id="copperPickMold" />
+</recipe>
+<recipe id="copperPick" product="copperPick" time=5000 >
+    <material id="copperPickHead" />
+    <material id="stick" />
+</recipe>
+
 <recipe id="stoneShovelHeadAndesite" product="stoneShovelHead" time=1000 >
     <material id="AndesiteRock" quantity=2 />
 </recipe>
@@ -234,6 +249,15 @@
 </recipe>
 <recipe id="ceramicKnifeMold" product="ceramicKnifeMold" time=20000 >
     <material id="clayKnifeMold" />
+    <tool name="pit kiln" />
+    <tool name="fire starter" />
+</recipe>
+
+<recipe id="clayPickMold" product="clayPickMold" time=1000 >
+    <material id="clay" quantity=5 />
+</recipe>
+<recipe id="ceramicPickMold" product="ceramicPickMold" time=20000 >
+    <material id="clayPickMold" />
     <tool name="pit kiln" />
     <tool name="fire starter" />
 </recipe>

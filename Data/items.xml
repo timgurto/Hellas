@@ -38,6 +38,8 @@
     <class name="knife" />
 </item>
 
+<item id="copperPickMold" name="Ceramic Pick Mold (Copper)" iconFile="Ceramic Mold Pick Copper" stackSize=64 />
+<item id="copperPickHead" name="Copper Pick Head" iconFile="Copper Pick Head" stackSize=64 />
 <item id="copperPick" name="Copper Pick" iconFile="Copper Pick">
     <class name="pick" />
 </item>
@@ -52,13 +54,17 @@
 
 <item id="clay" name="Clay" stackSize=64 iconFile="Clay" />
 <item id="clayVessel" name="Clay Vessel" iconFile="Clay Vessel" />
-<item id="ceramicVessel" name="Ceramic Vessel" iconFile="Ceramic Vessel" />
+<item id="ceramicVessel" name="Ceramic Vessel" iconFile="Ceramic Vessel" >
+    <class name="ceramic vessel" />
+</item>
 <item id="clayAxeMold" name="Clay Axe Mold" iconFile = "Clay Mold Axe" />
 <item id="ceramicAxeMold" name="Ceramic Axe Mold" iconFile = "Ceramic Mold Axe" />
 <item id="clayKnifeMold" name="Clay Knife Mold" iconFile = "Clay Mold Knife" />
 <item id="ceramicKnifeMold" name="Ceramic Knife Mold" iconFile = "Ceramic Mold Knife" />
 <item id="clayShovelMold" name="Clay Shovel Mold" iconFile = "Clay Mold Shovel" />
 <item id="ceramicShovelMold" name="Ceramic Shovel Mold" iconFile = "Ceramic Mold Shovel" />
+<item id="clayPickMold" name="Clay Pick Mold" iconFile = "Clay Mold Pick" />
+<item id="ceramicPickMold" name="Ceramic Pick Mold" iconFile = "Ceramic Mold Pick" />
 
 <item id="pitKiln" name="Pit Kiln" constructs="pitKiln" />
 
