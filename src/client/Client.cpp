@@ -223,6 +223,12 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
                 recipe.addMaterial(&*it, matQty);
             }
         }
+
+        for (auto child : xr.getChildren("tool", elem)) {
+            if (xr.findAttr(child, "name", s)) {
+                recipe.addTool(s);
+            }
+        }
         
         _recipes.insert(recipe);
     }
@@ -1038,6 +1044,17 @@ bool Client::playerHasItem(const Item *item, size_t quantity) const{
     }
     return false;
 }
+
+//bool Client::playerHasTool(const std::string &className) const{
+//    // Check inventory
+//    for (std::pair<const Item *, size_t> slot : _inventory)
+//        if slot.first->isClass(className)
+//            return true;
+//
+//    //Check nearby objects
+//    for (
+//    return false;
+//}
 
 void Client::handleMessage(const std::string &msg){
     _partialMessage.append(msg);

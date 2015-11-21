@@ -216,10 +216,14 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     y += LINE_GAP;
 
     // Materials list
+    const int
+        TOTAL_LIST_SPACE = BUTTON_Y - BUTTON_GAP - y - 2 * Element::TEXT_HEIGHT,
+        MATS_LIST_HEIGHT = TOTAL_LIST_SPACE / 2,
+        TOOLS_LIST_HEIGHT = TOTAL_LIST_SPACE - MATS_LIST_HEIGHT;
     pane.addChild(new Label(Rect(0, y, paneRect.w, Element::TEXT_HEIGHT), "Materials:"));
     y += Element::TEXT_HEIGHT;
-    List *const matsList = new List(Rect(0, y, paneRect.w, BUTTON_Y - BUTTON_GAP - y),
-                                    ICON_SIZE);
+    List *const matsList = new List(Rect(0, y, paneRect.w, MATS_LIST_HEIGHT), ICON_SIZE);
+    y += MATS_LIST_HEIGHT;
     pane.addChild(matsList);
     for (const std::pair<const Item *, size_t> & matCost : recipe.materials()) {
         assert (matCost.first);
@@ -233,6 +237,15 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
         entry->addChild(new Picture(Rect(0, 0, ICON_SIZE, ICON_SIZE), mat.icon()));
         entry->addChild(new Label(Rect(ICON_SIZE + CheckBox::GAP, 0, paneRect.w, ICON_SIZE),
                         entryText, Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+    }
+    pane.addChild(new Label(Rect(0, y, paneRect.w, Element::TEXT_HEIGHT), "Tools:"));
+    y += Element::TEXT_HEIGHT;
+    List *const toolsList = new List(Rect(0, y, paneRect.w, TOOLS_LIST_HEIGHT), ICON_SIZE);
+    pane.addChild(toolsList);
+    for (const std::string &tool : recipe.tools()) {
+        static const int TOOL_MARGIN = 5;
+        Label *entry = new Label(Rect(TOOL_MARGIN, 0, paneRect.w - TOOL_MARGIN, Element::TEXT_HEIGHT), tool);
+        toolsList->addChild(entry);
     }
     pane.markChanged();
 }
