@@ -32,15 +32,17 @@ public:
     static const double MOVEMENT_SPEED; // per second
     static const int ACTION_DISTANCE; // How close a character must be to interact with an object
 
-    static bool isServer;
-
     static const int TILE_W, TILE_H;
     const size_t mapX() const { return _mapX; }
     const size_t mapY() const { return _mapY; }
 
+    static const Server &instance(){ return *_instance; }
+
     bool itemIsClass(const Item *item, const std::string &className) const;
 
 private:
+
+    static Server *_instance;
 
     static const int MAX_CLIENTS;
     static const size_t BUFFER_SIZE;
@@ -78,7 +80,7 @@ private:
     // World state
     std::set<Object> _objects;
     void loadData(); // Attempt to load data from files.
-    static void saveData(const Server *server, const std::set<Object> &objects);
+    static void saveData(const std::set<Object> &objects);
     void generateWorld(); // Randomly generate a new world.
 
     Point mapRand() const; // Return a random point on the map.
@@ -95,15 +97,15 @@ private:
     mutable LogConsole _debug;
 
     void gatherObject (size_t serial, User &user);
-    friend void User::update(Uint32 timeElapsed, Server &server);
-    friend void User::removeItems(const ItemSet &items, Server &server);
-    friend void User::cancelAction(Server &server);
-    friend void User::updateLocation(const Point &dest, Server &server);
+    friend void User::update(Uint32 timeElapsed);
+    friend void User::removeItems(const ItemSet &items);
+    friend void User::cancelAction();
+    friend void User::updateLocation(const Point &dest);
 
-    friend size_t User::giveItem(const Item *item, size_t quantity, const Server &server);
+    friend size_t User::giveItem(const Item *item, size_t quantity);
 
-    friend bool User::hasTool(const std::string &className, Server &server) const;
-    friend bool User::hasTools(const std::set<std::string> &classes, Server &server) const;
+    friend bool User::hasTool(const std::string &className) const;
+    friend bool User::hasTools(const std::set<std::string> &classes) const;
 
     void addObject (const ObjectType *type, const Point &location, const User *owner = 0);
 
