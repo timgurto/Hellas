@@ -25,6 +25,8 @@
 
 extern Args cmdLineArgs;
 
+Server *Server::_instance = 0;
+
 const int Server::MAX_CLIENTS = 20;
 const size_t Server::BUFFER_SIZE = 1023;
 
@@ -35,8 +37,6 @@ const Uint32 Server::SAVE_FREQUENCY = 1000;
 
 const double Server::MOVEMENT_SPEED = 80;
 const int Server::ACTION_DISTANCE = 30;
-
-bool Server::isServer = false;
 
 const int Server::TILE_W = 16;
 const int Server::TILE_H = 16;
@@ -50,7 +50,7 @@ _mapX(0),
 _mapY(0),
 _debug("server.log"),
 _lastSave(_time){
-    isServer = true;
+    _instance = this;
 
     _debug << cmdLineArgs << Log::endl;
     Socket::debug = &_debug;
@@ -74,7 +74,7 @@ _lastSave(_time){
 }
 
 Server::~Server(){
-    saveData(this, _objects);
+    saveData(_objects);
 }
 
 void Server::checkSockets(){
@@ -184,16 +184,16 @@ void Server::run(){
                 writeUserData(user);
             }
 #ifdef SINGLE_THREAD
-            saveData(this, _objects);
+            saveData(_objects);
 #else
-            std::thread(saveData, this, _objects).detach();
+            std::thread(saveData, _objects).detach();
 #endif
             _lastSave = _time;
         }
 
         // Update users
         for (const User &user : _users)
-            const_cast<User&>(user).update(timeElapsed, *this);
+            const_cast<User&>(user).update(timeElapsed);
 
         // Deal with any messages from the server
         while (!_messages.empty()){
@@ -351,8 +351,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> x >> del >> y >> del;
             if (del != ']')
                 return;
-            user->cancelAction(*this);
-            user->updateLocation(Point(x, y), *this);
+            user->cancelAction();
+            user->updateLocation(Point(x, y));
             broadcast(SV_LOCATION, user->makeLocationCommand());
             break;
         }
@@ -365,7 +365,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> del;
             if (del != ']')
                 return;
-            user->cancelAction(*this);
+            user->cancelAction();
             const std::set<Recipe>::const_iterator it = _recipes.find(id);
             if (it == _recipes.end()) {
                 sendMessage(client, SV_INVALID_ITEM);
@@ -376,7 +376,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_NEED_MATERIALS);
                 break;
             }
-            if (!user->hasTools(it->tools(), *this)) {
+            if (!user->hasTools(it->tools())) {
                 sendMessage(client, SV_NEED_TOOLS);
                 break;
             }
@@ -392,7 +392,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> slot >> del >> x >> del >> y >> del;
             if (del != ']')
                 return;
-            user->cancelAction(*this);
+            user->cancelAction();
             if (slot >= User::INVENTORY_SIZE) {
                 sendMessage(client, SV_INVALID_SLOT);
                 break;
@@ -429,7 +429,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> del;
             if (del != ']')
                 return;
-            user->cancelAction(*this);
+            user->cancelAction();
             break;
         }
 
@@ -439,7 +439,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != ']')
                 return;
-            user->cancelAction(*this);
+            user->cancelAction();
             std::set<Object>::const_iterator it = _objects.find(serial);
             if (it == _objects.end()) {
                 sendMessage(client, SV_DOESNT_EXIST);
@@ -450,7 +450,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 // Check that the user meets the requirements
                 assert (obj.type());
                 const std::string &gatherReq = obj.type()->gatherReq();
-                if (gatherReq != "none" && !user->hasTool(gatherReq, *this)) {
+                if (gatherReq != "none" && !user->hasTool(gatherReq)) {
                     sendMessage(client, SV_ITEM_NEEDED, gatherReq);
                     break;
                 }
@@ -509,7 +509,7 @@ void Server::gatherObject(size_t serial, User &user){
     Object &obj = const_cast<Object &>(*it);
     const Item *const toGive = obj.chooseGatherItem();
     size_t qtyToGive = obj.chooseGatherQuantity(toGive);
-    const size_t remaining = user.giveItem(toGive, qtyToGive, *this);
+    const size_t remaining = user.giveItem(toGive, qtyToGive);
     if (remaining > 0) {
         sendMessage(user.socket(), SV_INVENTORY_FULL);
         qtyToGive -= remaining;
@@ -534,9 +534,9 @@ void Server::gatherObject(size_t serial, User &user){
     }
 
 #ifdef SINGLE_THREAD
-    saveData(this, _objects);
+    saveData(_objects);
 #else
-    std::thread(saveData, this, _objects).detach();
+    std::thread(saveData, _objects).detach();
 #endif
 }
 
@@ -551,6 +551,14 @@ bool Server::readUserData(User &user){
             _debug("Invalid user data (location)", Color::RED);
             return false;
     }
+    bool randomizedLocation = false;
+    while (!isLocationValid(p, User::OBJECT_TYPE)) {
+        p = mapRand();
+        randomizedLocation = true;
+    }
+    if (randomizedLocation)
+        _debug << Color::YELLOW << "Player " << user.name()
+               << " was moved due to an invalid location." << Log::endl;
     user.location(p);
 
     for (auto elem : xr.getChildren("inventory")) {
@@ -789,7 +797,7 @@ void Server::loadData(){
     generateWorld();
 }
 
-void Server::saveData(const Server *server, const std::set<Object> &objects){
+void Server::saveData(const std::set<Object> &objects){
     // Map
 #ifndef SINGLE_THREAD
     static std::mutex mapFileMutex;
@@ -797,15 +805,16 @@ void Server::saveData(const Server *server, const std::set<Object> &objects){
 #endif
     XmlWriter xw("World/map.world");
     auto e = xw.addChild("size");
-    xw.setAttr(e, "x", server->_mapX);
-    xw.setAttr(e, "y", server->_mapY);
-    for (size_t y = 0; y != server->_mapY; ++y){
+    const Server &server = Server::instance();
+    xw.setAttr(e, "x", server._mapX);
+    xw.setAttr(e, "y", server._mapY);
+    for (size_t y = 0; y != server._mapY; ++y){
         auto row = xw.addChild("row");
         xw.setAttr(row, "y", y);
-        for (size_t x = 0; x != server->_mapX; ++x){
+        for (size_t x = 0; x != server._mapX; ++x){
             auto tile = xw.addChild("tile", row);
             xw.setAttr(tile, "x", x);
-            xw.setAttr(tile, "terrain", server->_map[x][y]);
+            xw.setAttr(tile, "terrain", server._map[x][y]);
         }
     }
     xw.publish();

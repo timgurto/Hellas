@@ -35,8 +35,7 @@ void Renderer::init(){
     const int screenW = cmdLineArgs.contains("width") ? cmdLineArgs.getInt("width") : 1280;
     const int screenH = cmdLineArgs.contains("height") ? cmdLineArgs.getInt("height") : 720;
 
-    _window = SDL_CreateWindow((cmdLineArgs.contains("server") ? "Server" : "Client"),
-                               screenX, screenY, screenW, screenH,
+    _window = SDL_CreateWindow("Client", screenX, screenY, screenW, screenH,
                                SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (!_window)
         return;

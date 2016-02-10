@@ -48,7 +48,7 @@ std::string User::makeLocationCommand() const{
     return makeArgs(_name, _location.x, _location.y);
 }
 
-void User::updateLocation(const Point &dest, Server &server){
+void User::updateLocation(const Point &dest){
     const Uint32 newTime = SDL_GetTicks();
     Uint32 timeElapsed = newTime - _lastLocUpdate;
     _lastLocUpdate = newTime;
@@ -60,6 +60,7 @@ void User::updateLocation(const Point &dest, Server &server){
     Point interpolated = interpolate(_location, dest, maxLegalDistance);
 
     Point newDest = interpolated;
+    Server &server = *Server::_instance;
     if (!server.isLocationValid(newDest, OBJECT_TYPE, 0, this)) {
         newDest = _location;
         static const double ACCURACY = 0.5;
@@ -109,7 +110,7 @@ bool User::hasSpace(const Item *item, size_t quantity) const{
     return false;
 }
 
-size_t User::giveItem(const Item *item, size_t quantity, const Server &server){
+size_t User::giveItem(const Item *item, size_t quantity){
     // First pass: partial stacks
     for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
         if (_inventory[i].first != item)
@@ -118,7 +119,7 @@ size_t User::giveItem(const Item *item, size_t quantity, const Server &server){
         if (spaceAvailable > 0) {
             size_t qtyInThisSlot = min(spaceAvailable, quantity);
             _inventory[i].second += qtyInThisSlot;
-            server.sendInventoryMessage(*this, i);
+            Server::instance().sendInventoryMessage(*this, i);
             quantity -= qtyInThisSlot;
         }
         if (quantity == 0)
@@ -132,7 +133,7 @@ size_t User::giveItem(const Item *item, size_t quantity, const Server &server){
         size_t qtyInThisSlot = min(item->stackSize(), quantity);
         _inventory[i].first = item;
         _inventory[i].second = qtyInThisSlot;
-        server.sendInventoryMessage(*this, i);
+        Server::instance().sendInventoryMessage(*this, i);
         quantity -= qtyInThisSlot;
         if (quantity == 0)
             return 0;
@@ -140,9 +141,9 @@ size_t User::giveItem(const Item *item, size_t quantity, const Server &server){
     return quantity;
 }
 
-void User::cancelAction(Server &server) {
+void User::cancelAction() {
     if (_actionTarget || _actionCrafting)
-        server.sendMessage(_socket, SV_ACTION_INTERRUPTED);
+        Server::instance().sendMessage(_socket, SV_ACTION_INTERRUPTED);
     _actionTarget = 0;
     _actionCrafting = 0;
     _actionTime = 0;
@@ -177,7 +178,7 @@ bool User::hasItems(const ItemSet &items) const{
     return false;
 }
 
-bool User::hasTool(const std::string &className, Server &server) const{
+bool User::hasTool(const std::string &className) const{
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         const Item *item = _inventory[i].first;
         if (item && item->isClass(className))
@@ -185,7 +186,7 @@ bool User::hasTool(const std::string &className, Server &server) const{
     }
 
     // Check nearby objects
-    auto superChunk = server.getCollisionSuperChunk(_location);
+    auto superChunk = Server::_instance->getCollisionSuperChunk(_location);
     for (CollisionChunk *chunk : superChunk)
         for (const auto &ret : chunk->objects()) {
             const Object *pObj = ret.second;
@@ -197,14 +198,14 @@ bool User::hasTool(const std::string &className, Server &server) const{
     return false;
 }
 
-bool User::hasTools(const std::set<std::string> &classes, Server &server) const{
+bool User::hasTools(const std::set<std::string> &classes) const{
     for (const std::string &className : classes)
-        if (!hasTool(className, server))
+        if (!hasTool(className))
             return false;
     return true;
 }
 
-void User::removeItems(const ItemSet &items, Server &server) {
+void User::removeItems(const ItemSet &items) {
     std::set<size_t> invSlotsChanged;
     ItemSet remaining = items;
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
@@ -223,13 +224,14 @@ void User::removeItems(const ItemSet &items, Server &server) {
     for (size_t slotNum : invSlotsChanged) {
         const std::pair<const Item *, size_t> &slot = _inventory[slotNum];
         std::string id = slot.first ? slot.first->id() : "none";
-        server.sendInventoryMessage(*this, slotNum);
+        Server::instance().sendInventoryMessage(*this, slotNum);
     }
 }
 
-void User::update(Uint32 timeElapsed, Server &server){
+void User::update(Uint32 timeElapsed){
     if (_actionTime == 0)
         return;
+    Server &server = *Server::_instance;
     if (_actionTime > timeElapsed)
         _actionTime -= timeElapsed;
     else {
@@ -238,13 +240,13 @@ void User::update(Uint32 timeElapsed, Server &server){
             _actionTarget = 0;
         } else if (_actionCrafting) {
             if (!hasSpace(_actionCrafting->product())) {
-                server.sendMessage(_socket, SV_INVENTORY_FULL);
+                Server::instance().sendMessage(_socket, SV_INVENTORY_FULL);
                 return;
             }
             // Give user his newly crafted item
-            giveItem(_actionCrafting->product(), 1, server);
+            giveItem(_actionCrafting->product(), 1);
             // Remove materials from user's inventory
-            removeItems(_actionCrafting->materials(), server);
+            removeItems(_actionCrafting->materials());
             _actionCrafting = 0;
         } else if (_actionConstructing) {
             // Create object

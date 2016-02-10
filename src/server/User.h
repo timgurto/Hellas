@@ -54,15 +54,15 @@ public:
 
     // Whether the user has enough materials to craft a recipe
     bool hasItems(const ItemSet &items) const;
-    void removeItems(const ItemSet &items, Server &server);
-    bool hasTool(const std::string &className, Server &server) const;
-    bool hasTools(const std::set<std::string> &classes, Server &server) const;
+    void removeItems(const ItemSet &items);
+    bool hasTool(const std::string &className) const;
+    bool hasTools(const std::set<std::string> &classes) const;
     void actionCraft(const Recipe &item); // Configure user to craft an item
 
     // Configure user to construct an item
     void actionConstruct(const ObjectType &obj, const Point &location, size_t slot);
 
-    void cancelAction(Server &server); // Cancel any action in progress, and alert the client
+    void cancelAction(); // Cancel any action in progress, and alert the client
 
     std::string makeLocationCommand() const;
 
@@ -78,15 +78,15 @@ public:
     time elapsed, and checking for collisions.
     Set location to the new, legal location.
     */
-    void updateLocation(const Point &dest, Server &server);
+    void updateLocation(const Point &dest);
 
     // Return value: 0 if there was room for all items, otherwise the remainder.
-    size_t giveItem(const Item *item, size_t quantity, const Server &server);
+    size_t giveItem(const Item *item, size_t quantity);
 
     // Whether the user has room for one or more of an item
     bool hasSpace(const Item *item, size_t quantity = 1) const;
 
-    void update(Uint32 timeElapsed, Server &server);
+    void update(Uint32 timeElapsed);
 };
 
 #endif

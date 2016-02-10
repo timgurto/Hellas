@@ -10,10 +10,11 @@ Element(rect),
 _text(text),
 _justificationH(justificationH),
 _justificationV(justificationV),
-_matchWidth(false){}
+_matchWidth(false),
+_color(FONT_COLOR){}
 
 void Label::refresh(){
-    Texture text(font(), _text, FONT_COLOR);
+    Texture text(font(), _text, _color);
     if (_matchWidth)
         width(text.width());
 
@@ -48,4 +49,8 @@ void Label::refresh(){
 
 void Label::matchW(){
     _matchWidth = true;
+}
+
+void Label::setColor(const Color &color){
+    _color = color;
 }
