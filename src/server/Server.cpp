@@ -26,6 +26,7 @@
 extern Args cmdLineArgs;
 
 Server *Server::_instance = 0;
+LogConsole *Server::_debugInstance = 0;
 
 const int Server::MAX_CLIENTS = 20;
 const size_t Server::BUFFER_SIZE = 1023;
@@ -51,6 +52,7 @@ _mapY(0),
 _debug("server.log"),
 _lastSave(_time){
     _instance = this;
+    _debugInstance = &_debug;
 
     _debug << cmdLineArgs << Log::endl;
     Socket::debug = &_debug;
