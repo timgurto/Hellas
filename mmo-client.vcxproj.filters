@@ -99,12 +99,6 @@
     <ClCompile Include="src\Rect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\server\Object.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\server\ObjectType.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\server\Yield.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -228,12 +222,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Rect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\server\Object.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\server\ObjectType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\server\Yield.h">
