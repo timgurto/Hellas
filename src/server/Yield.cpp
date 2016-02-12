@@ -23,7 +23,7 @@ void Yield::instantiate(ItemSet &contents) const{
 
 size_t Yield::generateInitialQuantity(const YieldEntry &entry){
     double d = std::normal_distribution<double>(entry._initMean, entry._initSD)(generator);
-    return max<size_t>(0, toInt(d));
+    return toInt(max<double>(0, d));
 }
 
 size_t Yield::generateGatherQuantity(const Item *item) const{

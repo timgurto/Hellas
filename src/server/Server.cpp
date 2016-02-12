@@ -1100,6 +1100,7 @@ void Server::generateWorld(){
     }
     _debug << "Generating objects... 100%" << Log::endl;
 
+    // Trees
     const ObjectType *ashTree = &*_objectTypes.find(std::string("ashTree"));
     for (int i = 0; i != 5; ++i){
         Point p;

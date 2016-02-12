@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include "Object.h"
+#include "Server.h"
 #include "../util.h"
 
 Object::Object(const ObjectType *type, const Point &loc):
@@ -10,8 +11,16 @@ _serial(generateSerial()),
 _location(loc),
 _type(type){
     assert(type);
-    if (type->yield())
+    if (type->yield()) {
         type->yield().instantiate(_contents);
+
+        // Print contents
+        //Server::debug() << "New " << type->id() << " contains "
+        //                << _contents.totalQuantity() << " items:";
+        //for (auto &pair : _contents)
+        //    Server::debug() << " " << pair.second << "*" << pair.first->id();
+        //Server::debug() << Log::endl;
+    }
 }
 
 Object::Object(size_t serial): // For set/map lookup
@@ -51,5 +60,6 @@ const Item *Object::chooseGatherItem() const{
 
 size_t Object::chooseGatherQuantity(const Item *item) const{
     size_t randomQty = _type->yield().generateGatherQuantity(item);
-    return min<size_t>(randomQty, _contents[item]);
+    size_t qty = min<size_t>(randomQty, _contents[item]);
+    return qty;
 }

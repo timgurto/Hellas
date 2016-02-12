@@ -1,5 +1,7 @@
 // (C) 2015 Tim Gurto
 
+#include <cassert>
+
 #include "Item.h"
 #include "ItemSet.h"
 #include "../util.h"
@@ -12,12 +14,14 @@ const ItemSet &ItemSet::operator+=(const ItemSet &rhs){
         _set[pair.first] += pair.second;
         _totalQty += pair.second;
     }
+    checkTotalQty();
     return *this;
 }
 
 const ItemSet &ItemSet::operator+=(const Item *newItem){
     ++_set[newItem];
     ++_totalQty;
+    checkTotalQty();
     return *this;
 }
 
@@ -29,8 +33,8 @@ const ItemSet &ItemSet::operator-=(const ItemSet &rhs){
         _totalQty -= qtyToRemove;
         if (it->second == 0)
             _set.erase(it);
-
     }
+    checkTotalQty();
     return *this;
 }
 
@@ -43,11 +47,13 @@ size_t ItemSet::operator[](const Item *key) const{
 
 void ItemSet::set(const Item *item, size_t quantity){
     size_t oldQty = _set[item];
+    assert(_totalQty >= oldQty);
     auto it = _set.find(item);
     it->second = quantity;
+    _totalQty = _totalQty - oldQty + quantity;
     if (quantity == 0)
         _set.erase(it);
-    _totalQty = _totalQty - oldQty + quantity;
+    checkTotalQty();
 }
 
 bool ItemSet::contains(const ItemSet &rhs) const{
@@ -93,6 +99,7 @@ void ItemSet::add(const Item *item, size_t qty){
         return;
     _set[item] += qty;
     _totalQty += qty;
+    checkTotalQty();
 }
 
 void ItemSet::remove(const Item *item, size_t qty){
@@ -106,4 +113,12 @@ void ItemSet::remove(const Item *item, size_t qty){
     if (it->second == 0)
         _set.erase(it);
     _totalQty -= qtyToRemove;
+    checkTotalQty();
 }
+
+void ItemSet::checkTotalQty() const{
+    size_t total = 0;
+    for (const auto &pair : _set)
+        total += pair.second;
+    assert(_totalQty == total);
+};
