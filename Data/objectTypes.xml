@@ -16,7 +16,7 @@
 <objectType
     id="chest"
     constructionTime=2000 >
-    <collisionRect x=-5 y=-5 w=10 h=10 />
+    <collisionRect x=-14 y=-6 w=28 h=12 />
     <class name="set square" />
 </objectType>
 </root>
