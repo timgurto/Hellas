@@ -65,6 +65,10 @@ private:
 
     static Client *_instance;
 
+    Texture
+        _cursorNormal;
+    const Texture *_currentCursor;
+
     Texture _invLabel;
     static Rect INVENTORY_RECT; // non-const, as it needs to be initialized at runtime.
     static const size_t ICONS_X; // How many icons per inventory row

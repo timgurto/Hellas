@@ -62,6 +62,8 @@ const int Client::PLAYER_ACTION_CHANNEL = 0;
 bool Client::isClient = false;
 
 Client::Client():
+_cursorNormal(std::string("Images/Cursors/normal.png"), Color::MAGENTA),
+_currentCursor(&_cursorNormal),
 _activeRecipe(0),
 _recipeList(0),
 _detailsPane(0),
@@ -118,6 +120,7 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
 
     Element::initialize();
 
+    SDL_ShowCursor(SDL_DISABLE);
 
     _debug << cmdLineArgs << Log::endl;
     Socket::debug = &_debug;
@@ -277,6 +280,7 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
 }
 
 Client::~Client(){
+    SDL_ShowCursor(SDL_ENABLE);
     Element::cleanup();
     if (_defaultFont)
         TTF_CloseFont(_defaultFont);
@@ -699,7 +703,8 @@ void Client::draw() const{
     // Map
     size_t
         xMin = static_cast<size_t>(max<double>(0, -offset().x / TILE_W)),
-        xMax = static_cast<size_t>(min<double>(_mapX, 1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
+        xMax = static_cast<size_t>(min<double>(_mapX,
+                                               1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
         yMin = static_cast<size_t>(max<double>(0, -offset().y / TILE_H)),
         yMax = static_cast<size_t>(min<double>(_mapY, (-offset().y + SCREEN_Y) / TILE_H + 1));
     for (size_t y = yMin; y != yMax; ++y) {
@@ -862,6 +867,9 @@ void Client::draw() const{
             renderer.fillRect(footprintRect + _offset);
         }
     }
+
+    // Cursor
+    _currentCursor->draw(_mouse);
 
     _debug.draw();
     renderer.present();
