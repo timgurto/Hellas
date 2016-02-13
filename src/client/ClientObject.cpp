@@ -18,12 +18,12 @@ ClientObject::ClientObject(size_t serialArg, const EntityType *type, const Point
 Entity(type, loc),
 _serial(serialArg){}
 
-void ClientObject::onLeftClick(Client &client) const{
+void ClientObject::onRightClick(Client &client) const{
     if (objectType()->canGather()) {
         std::ostringstream oss;
         oss << '[' << CL_GATHER << ',' << _serial << ']';
         client.socket().sendMessage(oss.str());
-        client.prepareAction(std::string("Gathering") + objectType()->name());
+        client.prepareAction(std::string("Gathering ") + objectType()->name());
         playGatherSound();
     }
 }

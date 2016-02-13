@@ -34,10 +34,12 @@ public:
 
     Rect collisionRect() const { return objectType()->collisionRect() + location(); }
 
-    virtual void onLeftClick(Client &client) const;
+    virtual void onRightClick(Client &client) const;
     virtual std::vector<std::string> getTooltipMessages(const Client &client) const;
 
     void playGatherSound() const;
+
+    virtual bool isObject(){ return true; }
 };
 
 #endif

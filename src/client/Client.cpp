@@ -63,35 +63,50 @@ bool Client::isClient = false;
 
 Client::Client():
 _cursorNormal(std::string("Images/Cursors/normal.png"), Color::MAGENTA),
+_cursorGather(std::string("Images/Cursors/gather.png"), Color::MAGENTA),
 _currentCursor(&_cursorNormal),
+
 _activeRecipe(0),
 _recipeList(0),
 _detailsPane(0),
 _craftingWindow(0),
 _inventoryWindow(0),
+
 _actionTimer(0),
 _actionLength(0),
+
 _loop(true),
 _socket(),
+
 _defaultFont(0),
 _defaultFontOffset(0),
+
 _mouse(0,0),
 _mouseMoved(false),
 _leftMouseDown(false),
+_leftMouseDownEntity(0),
+_rightMouseDown(false),
+_rightMouseDownEntity(0),
+
 _time(SDL_GetTicks()),
 _timeElapsed(0),
 _lastPingReply(_time),
 _lastPingSent(_time),
 _latency(0),
 _timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
+
 _invalidUsername(false),
 _loggedIn(false),
 _loaded(false),
+
 _timeSinceLocUpdate(0),
+
 _tooltipNeedsRefresh(false),
+
 _mapX(0), _mapY(0),
+
 _currentMouseOverEntity(0),
-_leftMouseDownEntity(0),
+
 _debug(360/13, "client.log", "04B_03__.TTF", 8){
     isClient = true;
     _instance = this;
@@ -501,8 +516,7 @@ void Client::run(){
                     break;
 
                 case SDL_BUTTON_RIGHT:
-                    //if (_inventoryWindow->visible())
-                        //_inventoryWindow->onRightMouseDown(_mouse);
+                    _rightMouseDownEntity = getEntityAtMouse();
                     break;
                 }
                 break;
@@ -537,12 +551,15 @@ void Client::run(){
                         Container::dropItem();
                     }
 
-                    if (_currentMouseOverEntity && _currentMouseOverEntity == _leftMouseDownEntity)
+                    if (_leftMouseDownEntity && _currentMouseOverEntity == _leftMouseDownEntity)
                         _currentMouseOverEntity->onLeftClick(*this);
+                    _leftMouseDownEntity = 0;
 
                     break;
 
                 case SDL_BUTTON_RIGHT:
+                    _rightMouseDown = false;
+
                     if (_inventoryWindow->visible()) {
                         _inventoryWindow->onRightMouseUp(_mouse);
                         const Item *useItem = Container::getUseItem();
@@ -551,6 +568,11 @@ void Client::run(){
                         else
                             _constructionFootprint = Texture();
                     }
+
+                    if (_rightMouseDownEntity && _currentMouseOverEntity == _rightMouseDownEntity)
+                        _currentMouseOverEntity->onRightClick(*this);
+                    _rightMouseDownEntity = 0;
+
                     break;
                 }
 
@@ -675,6 +697,8 @@ Entity *Client::getEntityAtMouse(){
 }
 
 void Client::checkMouseOver(){
+    _currentCursor = &_cursorNormal;
+
     // Check if mouse is over a UI element
     _uiTooltip = Texture();
     if (collision(_mouse, INVENTORY_RECT))
@@ -693,6 +717,11 @@ void Client::checkMouseOver(){
         _currentMouseOverEntity->refreshTooltip(*this);
         _tooltipNeedsRefresh = false;
     }
+    
+    // Set cursor
+    if (_currentMouseOverEntity->isObject() &&
+        dynamic_cast<ClientObject*>(_currentMouseOverEntity)->objectType()->canGather())
+        _currentCursor = &_cursorGather;
 }
 
 void Client::draw() const{

@@ -66,7 +66,8 @@ private:
     static Client *_instance;
 
     Texture
-        _cursorNormal;
+        _cursorNormal,
+        _cursorGather;
     const Texture *_currentCursor;
 
     Texture _invLabel;
@@ -127,6 +128,10 @@ private:
     bool _leftMouseDown; // Whether the left mouse button is pressed
     Entity *_leftMouseDownEntity;
     friend void ClientObject::onLeftClick(Client &client) const;
+
+    bool _rightMouseDown;
+    Entity *_rightMouseDownEntity;
+    friend void ClientObject::onRightClick(Client &client) const;
 
 
     void draw() const;
