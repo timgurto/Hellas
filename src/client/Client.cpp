@@ -91,6 +91,7 @@ _timeSinceLocUpdate(0),
 _tooltipNeedsRefresh(false),
 _mapX(0), _mapY(0),
 _currentMouseOverEntity(0),
+_leftMouseDownEntity(0),
 _debug(360/13, "client.log", "04B_03__.TTF", 8){
     isClient = true;
     _instance = this;
@@ -495,10 +496,12 @@ void Client::run(){
                         _craftingWindow->onLeftMouseDown(_mouse);
                     if (_inventoryWindow->visible())
                         _inventoryWindow->onLeftMouseDown(_mouse);
+
+                    _leftMouseDownEntity = getEntityAtMouse();
                     break;
 
                 case SDL_BUTTON_RIGHT:
-                    if (_inventoryWindow->visible())
+                    //if (_inventoryWindow->visible())
                         //_inventoryWindow->onRightMouseDown(_mouse);
                     break;
                 }
@@ -534,7 +537,7 @@ void Client::run(){
                         Container::dropItem();
                     }
 
-                    if (_currentMouseOverEntity)
+                    if (_currentMouseOverEntity && _currentMouseOverEntity == _leftMouseDownEntity)
                         _currentMouseOverEntity->onLeftClick(*this);
 
                     break;
@@ -651,17 +654,8 @@ void Client::run(){
     }
 }
 
-void Client::checkMouseOver(){
-    // Check if mouse is over a UI element
-    _uiTooltip = Texture();
-    if (collision(_mouse, INVENTORY_RECT))
-        _uiTooltip = getInventoryTooltip();
-    /*else if (collision(_mouse, _craftingRect))
-        _uiTooltip = getCraftingTooltip();*/
-
-    // Check if mouse is over an entity
+Entity *Client::getEntityAtMouse(){
     const Point mouseOffset = _mouse - _offset;
-    const Entity *const oldMouseOverEntity = _currentMouseOverEntity;
     Entity::set_t::iterator mouseOverIt = _entities.end();
     static const int LOOKUP_MARGIN = 30;
     Entity
@@ -674,17 +668,31 @@ void Client::checkMouseOver(){
         if (*it != &_character &&(*it)->collision(mouseOffset))
             mouseOverIt = it;
     }
-    if (mouseOverIt != _entities.end()) {
-        _currentMouseOverEntity = *mouseOverIt;
-        if (_currentMouseOverEntity != oldMouseOverEntity ||
-            _currentMouseOverEntity->needsTooltipRefresh() ||
-            _tooltipNeedsRefresh) {
-            _currentMouseOverEntity->refreshTooltip(*this);
-            _tooltipNeedsRefresh = false;
-        }
-            
-    } else
-        _currentMouseOverEntity = 0;
+    if (mouseOverIt != _entities.end())
+        return *mouseOverIt;
+    else
+        return 0;
+}
+
+void Client::checkMouseOver(){
+    // Check if mouse is over a UI element
+    _uiTooltip = Texture();
+    if (collision(_mouse, INVENTORY_RECT))
+        _uiTooltip = getInventoryTooltip();
+    /*else if (collision(_mouse, _craftingRect))
+        _uiTooltip = getCraftingTooltip();*/
+
+    // Check if mouse is over an entity
+    const Entity *const oldMouseOverEntity = _currentMouseOverEntity;
+    _currentMouseOverEntity = getEntityAtMouse();
+    if (!_currentMouseOverEntity)
+        return;
+    if (_currentMouseOverEntity != oldMouseOverEntity ||
+        _currentMouseOverEntity->needsTooltipRefresh() ||
+        _tooltipNeedsRefresh) {
+        _currentMouseOverEntity->refreshTooltip(*this);
+        _tooltipNeedsRefresh = false;
+    }
 }
 
 void Client::draw() const{

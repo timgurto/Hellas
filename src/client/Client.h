@@ -111,7 +111,6 @@ private:
     std::string _actionMessage; // A description of the current action.
     void prepareAction(const std::string &msg); // Set up the action, awaiting server confirmation.
     void startAction(Uint32 actionLength); // Start the action timer.  If zero, stop the timer.
-    friend void ClientObject::onLeftClick(Client &client) const;
 
     bool _loop;
     Socket _socket;
@@ -119,10 +118,16 @@ private:
     int _defaultFontOffset; // Vertical offset for game text
     std::string _username;
 
+    // Mouse stuff
     Point _mouse; // Mouse position
     bool _mouseMoved;
+    Entity *getEntityAtMouse();
     void checkMouseOver();
+
     bool _leftMouseDown; // Whether the left mouse button is pressed
+    Entity *_leftMouseDownEntity;
+    friend void ClientObject::onLeftClick(Client &client) const;
+
 
     void draw() const;
     void drawTile(size_t x, size_t y, int xLoc, int yLoc) const;
