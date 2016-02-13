@@ -34,6 +34,8 @@ public:
     void remove(const Item *item, size_t qty = 1);
     bool isEmpty() const { return _set.empty(); }
 
+    void checkTotalQty() const;
+
     // Wrappers for inner 
     std::map<const Item *, size_t>::const_iterator begin() const { return _set.begin(); }
     std::map<const Item *, size_t>::const_iterator end() const { return _set.end(); }
