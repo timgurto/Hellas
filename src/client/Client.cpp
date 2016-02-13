@@ -64,6 +64,7 @@ bool Client::isClient = false;
 Client::Client():
 _cursorNormal(std::string("Images/Cursors/normal.png"), Color::MAGENTA),
 _cursorGather(std::string("Images/Cursors/gather.png"), Color::MAGENTA),
+_cursorContainer(std::string("Images/Cursors/container.png"), Color::MAGENTA),
 _currentCursor(&_cursorNormal),
 
 _activeRecipe(0),
@@ -269,6 +270,7 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
         if (xSet || ySet)
             cot.drawRect(drawRect);
         if (xr.findAttr(elem, "canGather", n) && n != 0) cot.canGather(true);
+        if (xr.findAttr(elem, "isContainer", n) && n != 0) cot.isContainer(true);
         if (xr.findAttr(elem, "isFlat", n) && n != 0) cot.isFlat(true);
         if (xr.findAttr(elem, "gatherSound", s))
             cot.gatherSound(std::string("Sounds/") + s + ".wav");
@@ -719,9 +721,14 @@ void Client::checkMouseOver(){
     }
     
     // Set cursor
-    if (_currentMouseOverEntity->isObject() &&
-        dynamic_cast<ClientObject*>(_currentMouseOverEntity)->objectType()->canGather())
-        _currentCursor = &_cursorGather;
+    if (_currentMouseOverEntity->isObject()) {
+        const ClientObjectType &objType =
+            *dynamic_cast<ClientObject*>(_currentMouseOverEntity)->objectType();
+        if (objType.canGather())
+            _currentCursor = &_cursorGather;
+        else if (objType.isContainer())
+            _currentCursor = &_cursorContainer;
+    }
 }
 
 void Client::draw() const{

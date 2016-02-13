@@ -17,6 +17,7 @@ class ClientObjectType : public EntityType{
     std::string _id;
     std::string _name;
     bool _canGather; // Whether this represents objects that can be gathered
+    bool _isContainer;
     Mix_Chunk *_gatherSound;
     Rect _collisionRect;
 
@@ -28,6 +29,8 @@ public:
     void name(const std::string &s) { _name = s; }
     bool canGather() const { return _canGather; }
     void canGather(bool b) { _canGather = b; }
+    bool isContainer() const { return _isContainer; }
+    void isContainer(bool b) { _isContainer = b; }
     void gatherSound(const std::string &filename);
     Mix_Chunk *gatherSound() const { return _gatherSound; }
     const Rect &collisionRect() const { return _collisionRect; }

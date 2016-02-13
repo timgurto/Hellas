@@ -67,7 +67,8 @@ private:
 
     Texture
         _cursorNormal,
-        _cursorGather;
+        _cursorGather,
+        _cursorContainer;
     const Texture *_currentCursor;
 
     Texture _invLabel;
