@@ -37,12 +37,16 @@ public:
     const size_t mapY() const { return _mapY; }
 
     static const Server &instance(){ return *_instance; }
+    static LogConsole &debug(){ return *_debugInstance; }
 
     bool itemIsClass(const Item *item, const std::string &className) const;
+
+    mutable LogConsole _debug;
 
 private:
 
     static Server *_instance;
+    static LogConsole *_debugInstance;
 
     static const int MAX_CLIENTS;
     static const size_t BUFFER_SIZE;
@@ -93,8 +97,6 @@ private:
     std::set<Item> _items;
     std::set<Recipe> _recipes;
     std::set<ObjectType> _objectTypes;
-
-    mutable LogConsole _debug;
 
     void gatherObject (size_t serial, User &user);
     friend void User::update(Uint32 timeElapsed);
