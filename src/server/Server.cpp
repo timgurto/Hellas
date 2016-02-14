@@ -848,7 +848,7 @@ void Server::loadData(){
             if (xr.findAttr(elem, "owner", s)) obj.owner(s);
 
             ItemSet contents;
-            for (auto content : xr.getChildren("contains", elem)) {
+            for (auto content : xr.getChildren("gatherable", elem)) {
                 if (!xr.findAttr(content, "id", s))
                     continue;
                 n = 1;
@@ -856,6 +856,23 @@ void Server::loadData(){
                 contents.set(&*_items.find(s), n);
             }
             obj.contents(contents);
+
+            size_t q;
+            for (auto inventory : xr.getChildren("inventory", elem)) {
+                if (!xr.findAttr(inventory, "id", s))
+                    continue;
+                if (!xr.findAttr(inventory, "slot", n))
+                    continue;
+                q = 1;
+                xr.findAttr(inventory, "qty", q);
+                if (obj.container().size() <= n) {
+                    _debug << Color::RED << "Skipping object with invalid inventory slot." << Log::endl;
+                    continue;
+                }
+                auto &invSlot = obj.container()[n];
+                invSlot.first = &*_items.find(s);
+                invSlot.second = q;
+            }
 
             _objects.insert(obj);
         }
@@ -902,17 +919,31 @@ void Server::saveData(const std::set<Object> &objects){
         if (!obj.type())
             continue;
         auto e = xw.addChild("object");
+
         xw.setAttr(e, "id", obj.type()->id());
+
         for (auto &content : obj.contents()) {
-            auto contentE = xw.addChild("contains", e);
+            auto contentE = xw.addChild("gatherable", e);
             xw.setAttr(contentE, "id", content.first->id());
             xw.setAttr(contentE, "quantity", content.second);
         }
+
         if (!obj.owner().empty())
             xw.setAttr(e, "owner", obj.owner());
+
         auto loc = xw.addChild("location", e);
         xw.setAttr(loc, "x", obj.location().x);
         xw.setAttr(loc, "y", obj.location().y);
+
+        const auto container = obj.container();
+        for (size_t i = 0; i != container.size(); ++i) {
+            if (container[i].second == 0)
+                continue;
+            auto invSlotE = xw.addChild("inventory", e);
+            xw.setAttr(invSlotE, "slot", i);
+            xw.setAttr(invSlotE, "item", container[i].first->id());
+            xw.setAttr(invSlotE, "qty", container[i].second);
+        }
     }
     xw.publish();
 #ifndef SINGLE_THREAD
