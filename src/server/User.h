@@ -46,6 +46,8 @@ public:
     void location(const Point &loc) { _location = loc; }
     const std::pair<const Item *, size_t> &inventory(size_t index) const;
     std::pair<const Item *, size_t> &inventory(size_t index);
+    Item::vect_t &inventory() { return _inventory; }
+    const Item::vect_t &inventory() const { return _inventory; }
 
     const Rect collisionRect() const;
 

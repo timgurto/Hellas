@@ -21,6 +21,9 @@ _type(type){
         //    Server::debug() << " " << pair.second << "*" << pair.first->id();
         //Server::debug() << Log::endl;
     }
+
+    if (type->containerSlots() != 0)
+        _container = Item::vect_t(type->containerSlots());
 }
 
 Object::Object(size_t serial): // For set/map lookup
@@ -28,7 +31,7 @@ _serial (serial),
 _type(0){}
 
 size_t Object::generateSerial() {
-    static size_t currentSerial = 0;
+    static size_t currentSerial = 1; // Serial 0 is unavailable, and has special meaning.
     return currentSerial++;
 }
 

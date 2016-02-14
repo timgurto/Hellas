@@ -18,5 +18,6 @@
     constructionTime=2000 >
     <collisionRect x=-14 y=-6 w=28 h=12 />
     <class name="set square" />
+    <container slots=10 />
 </objectType>
 </root>

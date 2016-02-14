@@ -13,6 +13,7 @@ class Container : public Element{
 
     size_t _rows, _cols;
     Item::vect_t &_linked;
+    size_t _serial; // The serial of the object with this container.  0 = user's inventory.
 
     size_t
         _leftMouseDownSlot, // The slot that the left mouse button went down on, if any.
@@ -36,7 +37,8 @@ class Container : public Element{
     size_t getSlot(const Point &mousePos) const;
 
 public:
-    Container(size_t rows, size_t cols, Item::vect_t &linked, int x = 0, int y = 0);
+    Container(size_t rows, size_t cols, Item::vect_t &linked, size_t serial = 0,
+              int x = 0, int y = 0);
     
     static const Item *getDragItem();
     static const Item *getUseItem();

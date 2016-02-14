@@ -7,12 +7,14 @@ _id(id),
 _actionTime(0),
 _constructionTime(0),
 _gatherReq("none"),
+_containerSlots(0),
 _collides(false){}
 
 ObjectType::ObjectType(const Rect &collisionRect):
 _actionTime(0),
 _constructionTime(0),
 _gatherReq("none"),
+_containerSlots(0),
 _collides(true),
 _collisionRect(collisionRect){}
 
