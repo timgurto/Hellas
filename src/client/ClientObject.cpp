@@ -6,6 +6,7 @@
 #include "Client.h"
 #include "Renderer.h"
 #include "../Color.h"
+#include "../Log.h"
 #include "../util.h"
 
 extern Renderer renderer;
@@ -23,6 +24,7 @@ _serial(serialArg){
 }
 
 void ClientObject::onRightClick(Client &client) const{
+    Client::debug() << "Right-clicked on object #" << _serial << Log::endl;
     if (objectType()->canGather()) {
         std::ostringstream oss;
         oss << '[' << CL_GATHER << ',' << _serial << ']';

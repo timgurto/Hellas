@@ -51,7 +51,11 @@ public:
     static const size_t INVENTORY_SIZE;
     static const int ACTION_DISTANCE;
 
+    static LogSDL &debug() { return *_debugInstance; }
+
 private:
+    static LogSDL *_debugInstance;
+
     static const Uint32 MAX_TICK_LENGTH;
     static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping reply
     static const Uint32 CONNECT_RETRY_DELAY; // How long to wait between retries at connecting

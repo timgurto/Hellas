@@ -29,6 +29,8 @@ extern Renderer renderer;
 // TODO: Move all client functionality to a namespace, rather than a class.
 Client *Client::_instance = 0;
 
+LogSDL *Client::_debugInstance = 0;
+
 const int Client::SCREEN_X = 640;
 const int Client::SCREEN_Y = 360;
 
@@ -111,6 +113,7 @@ _currentMouseOverEntity(0),
 _debug(360/13, "client.log", "04B_03__.TTF", 8){
     isClient = true;
     _instance = this;
+    _debugInstance = &_debug;
 
     // Read config file
     XmlReader xr("client-config.xml");
@@ -1141,6 +1144,7 @@ void Client::handleMessage(const std::string &msg){
             iss.ignore(); // Throw away ']'
         }
         std::istringstream singleMsg(buffer);
+        //_debug(buffer, Color::CYAN);
         singleMsg >> del >> msgCode >> del;
         switch(msgCode) {
 
@@ -1413,7 +1417,8 @@ void Client::handleMessage(const std::string &msg){
 
             std::set<Item>::const_iterator it = _items.find(itemID);
             if (it == _items.end()) {
-                _debug("Unknown inventory item announced; ignored.", Color::RED);
+                _debug << Color::RED << "Unknown inventory item \"" << itemID
+                       << "\"announced; ignored.";
                 break;
             }
             const Item *item = &*it;
