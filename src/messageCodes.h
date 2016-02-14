@@ -73,8 +73,8 @@ enum MessageCode{
     // Arguments: username, x, y
     SV_LOCATION = 122,
 
-    // An item in the user's inventory
-    // Arguments: slot, ID, quantity
+    // An item is in the user's inventory, or a container object
+    // Arguments: serial, slot, ID, quantity
     SV_INVENTORY = 123,
 
     // The details of an object

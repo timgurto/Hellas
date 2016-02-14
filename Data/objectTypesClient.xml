@@ -23,7 +23,7 @@
     name="Wooden chest"
     xDrawOffset=-14
     yDrawOffset=-22
-    isContainer=1 >
+    containerSlots=10 >
     <collisionRect x=-14 y=-6 w=28 h=12 />
 </objectType>
 </root>

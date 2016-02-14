@@ -12,11 +12,15 @@ extern Renderer renderer;
 
 ClientObject::ClientObject(const ClientObject &rhs):
 Entity(rhs),
-_serial(rhs._serial){}
+_serial(rhs._serial),
+_container(rhs._container){}
 
 ClientObject::ClientObject(size_t serialArg, const EntityType *type, const Point &loc):
 Entity(type, loc),
-_serial(serialArg){}
+_serial(serialArg){
+    if (type)
+        _container = Item::vect_t(objectType()->containerSlots());
+}
 
 void ClientObject::onRightClick(Client &client) const{
     if (objectType()->canGather()) {

@@ -270,7 +270,7 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
         if (xSet || ySet)
             cot.drawRect(drawRect);
         if (xr.findAttr(elem, "canGather", n) && n != 0) cot.canGather(true);
-        if (xr.findAttr(elem, "isContainer", n) && n != 0) cot.isContainer(true);
+        if (xr.findAttr(elem, "containerSlots", n)) cot.containerSlots(n);
         if (xr.findAttr(elem, "isFlat", n) && n != 0) cot.isFlat(true);
         if (xr.findAttr(elem, "gatherSound", s))
             cot.gatherSound(std::string("Sounds/") + s + ".wav");
@@ -726,7 +726,7 @@ void Client::checkMouseOver(){
             *dynamic_cast<ClientObject*>(_currentMouseOverEntity)->objectType();
         if (objType.canGather())
             _currentCursor = &_cursorGather;
-        else if (objType.isContainer())
+        else if (objType.containerSlots() != 0)
             _currentCursor = &_cursorContainer;
     }
 }
@@ -1402,21 +1402,43 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_INVENTORY:
         {
-            int slot, quantity;
+            size_t serial, slot, quantity;
             std::string itemID;
-            singleMsg >> slot >> del;
+            singleMsg >> serial >> del >> slot >> del;
             singleMsg.get(buffer, BUFFER_SIZE, ',');
             itemID = std::string(buffer);
             singleMsg >> del >> quantity >> del;
             if (del != ']')
                 break;
+
             std::set<Item>::const_iterator it = _items.find(itemID);
-            if (it == _items.end())
-                _inventory[slot] = std::make_pair<const Item *, size_t>(0, 0);
-            else
-                _inventory[slot] = std::make_pair(&*it, quantity);
+            if (it == _items.end()) {
+                _debug("Unknown inventory item announced; ignored.", Color::RED);
+                break;
+            }
+            const Item *item = &*it;
+
+            Item::vect_t *container;
+            if (serial == 0)
+                container = &_inventory;
+            else {
+                auto it = _objects.find(serial);
+                if (it == _objects.end()) {
+                    _debug("Received inventory of nonexistent object; ignored.", Color::RED);
+                    break;
+                }
+                container = &it->second->container();
+            }
+            if (slot >= container->size()) {
+                _debug("Received item in invalid inventory slot; ignored.", Color::RED);
+                break;
+            }
+            auto &invSlot = (*container)[slot];
+            invSlot.first = item;
+            invSlot.second = quantity;
             _recipeList->markChanged();
-            _inventoryWindow->forceRefresh();
+            if (serial == 0)
+                _inventoryWindow->forceRefresh();
             break;
         }
 
@@ -1485,7 +1507,7 @@ void Client::handleMessage(const std::string &msg){
         }
 
         if (del != ']' && !iss.eof()) {
-            _debug("Bad message ending", Color::RED);
+            _debug << Color::RED << "Bad message ending. code=" << msgCode << Log::endl;
         }
 
         iss.peek();
