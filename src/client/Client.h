@@ -53,6 +53,8 @@ public:
 
     static LogSDL &debug() { return *_debugInstance; }
 
+    typedef std::list<Window *> windows_t;
+
 private:
     static LogSDL *_debugInstance;
 
@@ -96,6 +98,10 @@ private:
     static void populateRecipesList(Element &e);
     // Called when a recipe is selected.
     static void selectRecipe(Element &e, const Point &mousePos);
+
+    windows_t _windows;
+    void addWindow(Window *window);
+    void removeWindow(Window *window); // Linear time
 
     ChoiceList *_recipeList;
     Element *_detailsPane;

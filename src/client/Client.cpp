@@ -298,6 +298,8 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
 
     initializeCraftingWindow();
     initializeInventoryWindow();
+    addWindow(_craftingWindow);
+    addWindow(_inventoryWindow);
 }
 
 Client::~Client(){
@@ -305,8 +307,8 @@ Client::~Client(){
     Element::cleanup();
     if (_defaultFont)
         TTF_CloseFont(_defaultFont);
-    delete _craftingWindow;
-    delete _inventoryWindow;
+    for (Window *window : _windows)
+        delete window;
     Avatar::image("");
     for (const Entity *entityConst : _entities) {
         Entity *entity = const_cast<Entity *>(entityConst);
@@ -496,10 +498,9 @@ void Client::run(){
                 _mouse.y = e.motion.y * SCREEN_Y / static_cast<double>(renderer.height());
                 _mouseMoved = true;
                 
-                if (_craftingWindow->visible())
-                    _craftingWindow->onMouseMove(_mouse);
-                if (_inventoryWindow->visible())
-                    _inventoryWindow->onMouseMove(_mouse);
+                for (Window *window : _windows)
+                    if (window->visible())
+                        window->onMouseMove(_mouse);
 
                 if (!_loaded)
                     break;
@@ -512,10 +513,9 @@ void Client::run(){
                 case SDL_BUTTON_LEFT:
                     _leftMouseDown = true;
 
-                    if (_craftingWindow->visible())
-                        _craftingWindow->onLeftMouseDown(_mouse);
-                    if (_inventoryWindow->visible())
-                        _inventoryWindow->onLeftMouseDown(_mouse);
+                    for (Window *window : _windows)
+                        if (window->visible())
+                            window->onLeftMouseDown(_mouse);
 
                     _leftMouseDownEntity = getEntityAtMouse();
                     break;
@@ -531,7 +531,7 @@ void Client::run(){
                     break;
 
                 switch (e.button.button) {
-                case SDL_BUTTON_LEFT:
+                case SDL_BUTTON_LEFT: {
                     _leftMouseDown = false;
 
                     // Construct item
@@ -543,28 +543,32 @@ void Client::run(){
                         break;
                     }
 
-                    if (_craftingWindow->visible() && collision(_mouse, _craftingWindow->rect())) {
-                        _craftingWindow->onLeftMouseUp(_mouse);
-                        break;
-                    }
+                    bool mouseUpOnWindow = false;
+                    for (Window *window : _windows)
+                        if (window->visible() && collision(_mouse, window->rect())) {
+                            window->onLeftMouseUp(_mouse);
+                            mouseUpOnWindow = true;
+                            break;
+                        }
 
-                    if (_inventoryWindow->visible() &&
-                               collision(_mouse, _inventoryWindow->rect())) {
-                        _inventoryWindow->onLeftMouseUp(_mouse);
-                        break;
-                    } else if (Container::getDragItem()) {
+                    // Dragged item onto map -> drop.
+                    if (!mouseUpOnWindow && Container::getDragItem()) {
                         Container::dropItem();
                     }
 
+                    // Mouse down and up on same entity: onLeftClick
                     if (_leftMouseDownEntity && _currentMouseOverEntity == _leftMouseDownEntity)
                         _currentMouseOverEntity->onLeftClick(*this);
                     _leftMouseDownEntity = 0;
 
                     break;
+                }
 
                 case SDL_BUTTON_RIGHT:
                     _rightMouseDown = false;
 
+                    // Items can only be constructed or used from the inventory, not container
+                    // objects.
                     if (_inventoryWindow->visible()) {
                         _inventoryWindow->onRightMouseUp(_mouse);
                         const Item *useItem = Container::getUseItem();
@@ -574,6 +578,7 @@ void Client::run(){
                             _constructionFootprint = Texture();
                     }
 
+                    // Mouse down and up on same entity: onRightClick
                     if (_rightMouseDownEntity && _currentMouseOverEntity == _rightMouseDownEntity)
                         _currentMouseOverEntity->onRightClick(*this);
                     _rightMouseDownEntity = 0;
@@ -599,8 +604,8 @@ void Client::run(){
                     renderer.updateSize();
                     renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
                                       static_cast<float>(renderer.height()) / SCREEN_Y);
-                    _craftingWindow->forceRefresh();
-                    _inventoryWindow->forceRefresh();
+                    for (Window *window : _windows)
+                        window->forceRefresh();
                     break;
                 }
 
@@ -885,8 +890,8 @@ void Client::draw() const{
         renderer.fillRect(Rect(cursorX, TEXT_BOX_RECT.y + 1, 1, TEXT_BOX_HEIGHT - 2));
     }
 
-    _craftingWindow->draw();
-    _inventoryWindow->draw();
+    for (Window *window : _windows)
+        window->draw();
 
     // Dragged item
     static const Point MOUSE_ICON_OFFSET(-Client::ICON_SIZE/2, -Client::ICON_SIZE/2);
@@ -1583,4 +1588,12 @@ void Client::startAction(Uint32 actionLength){
     _actionLength = actionLength;
     if (actionLength == 0)
         Mix_HaltChannel(PLAYER_ACTION_CHANNEL);
+}
+
+void Client::addWindow(Window *window){
+    _windows.push_front(window);
+}
+
+void Client::removeWindow(Window *window){
+    _windows.remove(window);
 }
