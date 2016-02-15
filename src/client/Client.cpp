@@ -922,7 +922,7 @@ void Client::draw() const{
     if (_constructionFootprint) {
         const ClientObjectType *ot = Container::getUseItem()->constructsObject();
         Rect footprintRect = ot->collisionRect() + _mouse - _offset;
-        if (distance(playerCollisionRect(), footprintRect) <=Client::ACTION_DISTANCE) {
+        if (distance(playerCollisionRect(), footprintRect) <= Client::ACTION_DISTANCE) {
             renderer.setDrawColor(Color::WHITE);
             renderer.fillRect(footprintRect + _offset);
 

@@ -36,7 +36,14 @@ ClientObject::~ClientObject(){
 }
 
 void ClientObject::onRightClick(Client &client){
-    Client::debug() << "Right-clicked on object #" << _serial << Log::endl;
+    //Client::debug() << "Right-clicked on object #" << _serial << Log::endl;
+
+    // Make sure object is in range
+    if (distance(client.playerCollisionRect(), collisionRect()) > Client::ACTION_DISTANCE) {
+        client._debug("That object is too far away.", Color::YELLOW);
+        return;
+    }
+
     if (objectType()->canGather()) {
         std::ostringstream oss;
         client.sendMessage(CL_GATHER, makeArgs(_serial));
