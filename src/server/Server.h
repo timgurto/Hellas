@@ -91,6 +91,7 @@ private:
     size_t _mapX, _mapY; // Number of tiles in each dimension.
     std::vector<std::vector<size_t>> _map;
     size_t findTile(const Point &p) const; // Find the tile type at the specified location.
+    size_t findStoneLayer(const Point &p, const std::vector<std::vector<size_t> > &stoneLayers) const;
     std::pair<size_t, size_t> getTileCoords(const Point &p) const;
 
     // World data
