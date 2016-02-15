@@ -15,6 +15,7 @@ Code | Name                    | Syntax                             | Descriptio
 23   | `CL_GATHER`             | `[23,serial]`                      | "I want to gather object #`serial`"
 24   | `CL_DROP`               | `[24,serial,slot]`                 | "I want to drop object #`serial`'s item #`slot`."<br>A serial of `0` uses the user's inventory.
 25   | `CL_SWAP_ITEMS`         | `[25,serial1,slot1,serial2,slot2]` | "I want to swap object #`serial1`'s item #`slot1` with object #`serial2`'s item #`slot2`"<br>A serial of `0` uses the user's inventory.
+40   | `CL_GET_INVENTORY`      | `[40,serial]`                      | "Tell me what object #`serial`'s container holds."
 
 #### Server commands                                        
 Code | Name                    | Syntax                     | Description

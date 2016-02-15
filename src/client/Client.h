@@ -138,11 +138,11 @@ private:
 
     bool _leftMouseDown; // Whether the left mouse button is pressed
     Entity *_leftMouseDownEntity;
-    friend void ClientObject::onLeftClick(Client &client) const;
+    friend void ClientObject::onLeftClick(Client &client);
 
     bool _rightMouseDown;
     Entity *_rightMouseDownEntity;
-    friend void ClientObject::onRightClick(Client &client) const;
+    friend void ClientObject::onRightClick(Client &client);
 
 
     void draw() const;
@@ -206,6 +206,7 @@ private:
     void handleMessage(const std::string &msg);
 
     friend class Container; // Needs to send CL_SWAP_ITEMS messages
+    friend ClientObject::~ClientObject();
 };
 
 #endif

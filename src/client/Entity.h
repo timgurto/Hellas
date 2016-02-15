@@ -42,8 +42,8 @@ public:
 
     virtual void draw(const Client &client) const;
     virtual void update(double delta) {}
-    virtual void onLeftClick(Client &client) const {}
-    virtual void onRightClick(Client &client) const {}
+    virtual void onLeftClick(Client &client) {}
+    virtual void onRightClick(Client &client) {}
 
     //Class identifiers
     virtual bool isObject(){ return false; }

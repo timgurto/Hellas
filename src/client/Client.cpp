@@ -307,14 +307,16 @@ Client::~Client(){
     Element::cleanup();
     if (_defaultFont)
         TTF_CloseFont(_defaultFont);
-    for (Window *window : _windows)
-        delete window;
     Avatar::image("");
     for (const Entity *entityConst : _entities) {
         Entity *entity = const_cast<Entity *>(entityConst);
         if (entity != &_character)
             delete entity;
     }
+
+    // Some entities will destroy their own windows, and remove them from this list.
+    for (Window *window : _windows)
+        delete window;
     Mix_Quit();
 }
 
@@ -1432,6 +1434,7 @@ void Client::handleMessage(const std::string &msg){
             }
 
             Item::vect_t *container;
+            ClientObject *object = 0;
             if (serial == 0)
                 container = &_inventory;
             else {
@@ -1440,7 +1443,8 @@ void Client::handleMessage(const std::string &msg){
                     _debug("Received inventory of nonexistent object; ignored.", Color::RED);
                     break;
                 }
-                container = &it->second->container();
+                object = it->second;
+                container = &object->container();
             }
             if (slot >= container->size()) {
                 _debug("Received item in invalid inventory slot; ignored.", Color::RED);
@@ -1452,6 +1456,8 @@ void Client::handleMessage(const std::string &msg){
             _recipeList->markChanged();
             if (serial == 0)
                 _inventoryWindow->forceRefresh();
+            else
+                object->refreshWindow();
             break;
         }
 

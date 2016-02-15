@@ -551,6 +551,21 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_GET_INVENTORY:
+        {
+            size_t serial;
+            iss >> serial >> del;
+            if (del != ']')
+                return;
+            auto it = _objects.find(serial);
+            if (!isValidObject(client, *user, it))
+                break;
+            size_t slots = it->container().size();
+            for (size_t i = 0; i != slots; ++i)
+                sendInventoryMessage(*user, serial, i);
+            break;
+        }
+
         default:
             _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
         }

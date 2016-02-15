@@ -45,6 +45,10 @@ enum MessageCode{
     // Arguments: serial1, slot1, serial2, slot2
     CL_SWAP_ITEMS = 25,
 
+    // "I want to know what is inside object ...". 
+    // Arguments: serial
+    CL_GET_INVENTORY = 40,
+
 
 
     // Server -> client
