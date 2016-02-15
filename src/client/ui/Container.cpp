@@ -10,7 +10,7 @@ extern Renderer renderer;
 
 const int Container::GAP = 0;
 
-// TODO: set to Client::INVENTORY_SIZE.
+// TODO: find better alternative.
 const size_t Container::NO_SLOT = 999;
 
 size_t Container::dragSlot = NO_SLOT;
@@ -29,7 +29,7 @@ _linked(linked),
 _serial(serial),
 _leftMouseDownSlot(NO_SLOT),
 _rightMouseDownSlot(NO_SLOT){
-    for (size_t i = 0; i != Client::INVENTORY_SIZE; ++i) {
+    for (size_t i = 0; i != _linked.size(); ++i) {
         const int
             x = i % cols,
             y = i / cols;
@@ -46,7 +46,7 @@ _rightMouseDownSlot(NO_SLOT){
 
 void Container::refresh(){
     renderer.setDrawColor(Color::BLACK);
-    for (size_t i = 0; i != Client::INVENTORY_SIZE; ++i) {
+    for (size_t i = 0; i != _linked.size(); ++i) {
         const int
             x = i % _cols,
             y = i / _cols;
@@ -74,7 +74,7 @@ size_t Container::getSlot(const Point &mousePos) const{
         x = static_cast<size_t>((mousePos.x - GAP) / (Client::ICON_SIZE + GAP + 2)),
         y = static_cast<size_t>((mousePos.y - GAP - 1) / (Client::ICON_SIZE + GAP + 2));
     size_t slot = y * _cols + x;
-    if (slot >= Client::INVENTORY_SIZE)
+    if (slot >= _linked.size())
         return NO_SLOT;
     return slot;
 }
