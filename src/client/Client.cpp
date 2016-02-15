@@ -515,14 +515,30 @@ void Client::run(){
                 case SDL_BUTTON_LEFT:
                     _leftMouseDown = true;
 
+                    // Send onLeftMouseDown to all visible windows
                     for (Window *window : _windows)
                         if (window->visible())
                             window->onLeftMouseDown(_mouse);
+
+                    // Bring top clicked window to front
+                    for (windows_t::iterator it = _windows.begin(); it != _windows.end(); ++it) {
+                        Window &window = **it;
+                        if (window.visible() && collision(_mouse, window.rect())) {
+                            _windows.erase(it); // Invalidates iterator.
+                            addWindow(&window);
+                            break;
+                        }
+                    }
 
                     _leftMouseDownEntity = getEntityAtMouse();
                     break;
 
                 case SDL_BUTTON_RIGHT:
+                    // Send onRightMouseDown to all visible windows
+                    for (Window *window : _windows)
+                        if (window->visible())
+                            window->onRightMouseDown(_mouse);
+
                     _rightMouseDownEntity = getEntityAtMouse();
                     break;
                 }
@@ -892,8 +908,9 @@ void Client::draw() const{
         renderer.fillRect(Rect(cursorX, TEXT_BOX_RECT.y + 1, 1, TEXT_BOX_HEIGHT - 2));
     }
 
-    for (Window *window : _windows)
-        window->draw();
+    // Windows
+    for (windows_t::const_reverse_iterator it = _windows.rbegin(); it != _windows.rend(); ++it)
+        (*it)->draw();
 
     // Dragged item
     static const Point MOUSE_ICON_OFFSET(-Client::ICON_SIZE/2, -Client::ICON_SIZE/2);
