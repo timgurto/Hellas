@@ -1415,13 +1415,16 @@ void Client::handleMessage(const std::string &msg){
             if (del != ']')
                 break;
 
-            std::set<Item>::const_iterator it = _items.find(itemID);
-            if (it == _items.end()) {
-                _debug << Color::RED << "Unknown inventory item \"" << itemID
-                       << "\"announced; ignored.";
-                break;
+            const Item *item = 0;
+            if (quantity > 0) {
+                std::set<Item>::const_iterator it = _items.find(itemID);
+                if (it == _items.end()) {
+                    _debug << Color::RED << "Unknown inventory item \"" << itemID
+                           << "\"announced; ignored.";
+                    break;
+                }
+                item = &*it;
             }
-            const Item *item = &*it;
 
             Item::vect_t *container;
             if (serial == 0)

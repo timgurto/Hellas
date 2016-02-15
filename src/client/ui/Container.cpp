@@ -51,8 +51,8 @@ void Container::refresh(){
             x = i % _cols,
             y = i / _cols;
         const Rect slotRect = Rect(x * (Client::ICON_SIZE + GAP + 2) + GAP,
-                                            y * (Client::ICON_SIZE + GAP + 2) + GAP + 1,
-                                            Client::ICON_SIZE + 2, Client::ICON_SIZE + 2);
+                                   y * (Client::ICON_SIZE + GAP + 2) + GAP + 1,
+                                   Client::ICON_SIZE + 2, Client::ICON_SIZE + 2);
         static const Rect SLOT_BACKGROUND_OFFSET = Rect(1, 1, -2, -2);
         renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
         if (dragSlot == i) // Don't draw an item being moved by the mouse.
