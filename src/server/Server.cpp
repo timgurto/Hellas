@@ -257,7 +257,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // Send him his inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         if (newUser.inventory(i).first)
-            sendInventoryMessage(newUser, i);
+            sendInventoryMessage(newUser, 0, i);
     }
 
     // Add new user to list, and broadcast his location
@@ -280,6 +280,23 @@ void Server::removeUser(const Socket &socket){
     const std::set<User>::iterator it = _users.find(socket);
     if (it != _users.end())
         removeUser(it);
+}
+
+bool Server::isValidObject(const Socket &client, const User &user,
+                           const std::set<Object>::const_iterator &it) const{
+    // Object doesn't exist
+    if (it == _objects.end()) {
+        sendMessage(client, SV_DOESNT_EXIST);
+        return false;
+    }
+    
+    // Check distance from user
+    if (distance(user.collisionRect(), it->collisionRect()) > ACTION_DISTANCE) {
+        sendMessage(client, SV_TOO_FAR);
+        return false;
+    }
+
+    return true;
 }
 
 void Server::handleMessage(const Socket &client, const std::string &msg){
@@ -443,53 +460,109 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             user->cancelAction();
             std::set<Object>::const_iterator it = _objects.find(serial);
-            if (it == _objects.end()) {
-                sendMessage(client, SV_DOESNT_EXIST);
-            } else if (distance(user->collisionRect(), it->collisionRect()) > ACTION_DISTANCE) {
-                sendMessage(client, SV_TOO_FAR);
-            } else {
-                const Object &obj = *it;
-                // Check that the user meets the requirements
-                assert (obj.type());
-                const std::string &gatherReq = obj.type()->gatherReq();
-                if (gatherReq != "none" && !user->hasTool(gatherReq)) {
-                    sendMessage(client, SV_ITEM_NEEDED, gatherReq);
-                    break;
-                }
-                user->actionTarget(&obj);
-                sendMessage(client, SV_ACTION_STARTED, makeArgs(obj.type()->actionTime()));
+            if (!isValidObject(client, *user, it))
+                break;
+            const Object &obj = *it;
+            // Check that the user meets the requirements
+            assert (obj.type());
+            const std::string &gatherReq = obj.type()->gatherReq();
+            if (gatherReq != "none" && !user->hasTool(gatherReq)) {
+                sendMessage(client, SV_ITEM_NEEDED, gatherReq);
+                break;
             }
+            user->actionTarget(&obj);
+            sendMessage(client, SV_ACTION_STARTED, makeArgs(obj.type()->actionTime()));
             break;
         }
 
         case CL_DROP:
         {
-            size_t slot;
-            iss >> slot >> del;
+            size_t serial, slot;
+            iss >> serial >> slot >> del;
             if (del != ']')
                 return;
-            if (user->inventory(slot).second != 0){
-                user->inventory(slot) = std::make_pair<const Item *, size_t>(0, 0);
-                sendInventoryMessage(*user, slot);
+            Item::vect_t *container;
+            if (serial == 0)
+                container = &user->inventory();
+            else {
+                auto it = _objects.find(serial);
+                if (!isValidObject(client, *user, it))
+                    break;
+                container = &(const_cast<Object&>(*it).container());
+            }
+
+            if (slot >= container->size()) {
+                sendMessage(client, SV_INVALID_SLOT);
+                break;
+            }
+            auto &containerSlot = (*container)[slot];
+            if (containerSlot.second != 0) {
+                containerSlot.first = 0;
+                containerSlot.second = 0;
+                sendInventoryMessage(*user, serial, slot);
             }
             break;
         }
 
         case CL_SWAP_ITEMS:
         {
-            size_t slot1, slot2;
-            iss >> slot1 >> del >> slot2 >> del;
+            size_t obj1, slot1, obj2, slot2;
+            iss >> obj1 >> del
+                >> slot1 >> del
+                >> obj2 >> del
+                >> slot2 >> del;
             if (del != ']')
                 return;
-            if (slot1 >= User::INVENTORY_SIZE || slot2 >= User::INVENTORY_SIZE) {
+            Item::vect_t
+                *containerFrom,
+                *containerTo;
+            if (obj1 == 0)
+                containerFrom = &user->inventory();
+            else {
+                auto it = _objects.find(obj1);
+                if (!isValidObject(client, *user, it))
+                    break;
+                containerFrom = &(const_cast<Object&>(*it).container());
+            }
+            if (obj2 == 0)
+                containerTo = &user->inventory();
+            else {
+                auto it = _objects.find(obj2);
+                if (!isValidObject(client, *user, it))
+                    break;
+                containerTo = &(const_cast<Object&>(*it).container());
+            }
+
+            if (slot1 >= containerFrom->size() || slot2 >= containerTo->size()) {
                 sendMessage(client, SV_INVALID_SLOT);
                 break;
             }
-            auto temp = user->inventory(slot1);
-            user->inventory(slot1) = user->inventory(slot2);
-            user->inventory(slot2) = temp;
-            sendInventoryMessage(*user, slot1);
-            sendInventoryMessage(*user, slot2);
+
+            // Perform the swap
+            auto
+                &slotFrom = (*containerFrom)[slot1],
+                &slotTo = (*containerTo)[slot2];
+            auto temp = slotTo;
+            slotTo = slotFrom;
+            slotFrom = temp;
+
+            sendInventoryMessage(*user, obj1, slot1);
+            sendInventoryMessage(*user, obj2, slot2);
+            break;
+        }
+
+        case CL_GET_INVENTORY:
+        {
+            size_t serial;
+            iss >> serial >> del;
+            if (del != ']')
+                return;
+            auto it = _objects.find(serial);
+            if (!isValidObject(client, *user, it))
+                break;
+            size_t slots = it->container().size();
+            for (size_t i = 0; i != slots; ++i)
+                sendInventoryMessage(*user, serial, i);
             break;
         }
 
@@ -654,6 +727,10 @@ void Server::loadData(){
         for (auto objClass :xr.getChildren("class", elem))
             if (xr.findAttr(objClass, "name", s))
                 ot.addClass(s);
+        auto container = xr.findChild("container", elem);
+        if (container) {
+            if (xr.findAttr(container, "slots", n)) ot.containerSlots(n);
+        }
         
         _objectTypes.insert(ot);
     }
@@ -765,23 +842,28 @@ void Server::loadData(){
                 _debug("Skipping importing object with no type.", Color::RED);
                 continue;
             }
+
             Point p;
             auto loc = xr.findChild("location", elem);
             if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
                 _debug("Skipping importing object with invalid/no location", Color::RED);
                 continue;
             }
+
             std::set<ObjectType>::const_iterator it = _objectTypes.find(s);
             if (it == _objectTypes.end()) {
                 _debug << Color::RED << "Skipping importing object with unknown type \"" << s
                        << "\"." << Log::endl;
                 continue;
             }
+
             Object obj(&*it, p);
+
             size_t n;
             if (xr.findAttr(elem, "owner", s)) obj.owner(s);
+
             ItemSet contents;
-            for (auto content : xr.getChildren("contains", elem)) {
+            for (auto content : xr.getChildren("gatherable", elem)) {
                 if (!xr.findAttr(content, "id", s))
                     continue;
                 n = 1;
@@ -789,6 +871,24 @@ void Server::loadData(){
                 contents.set(&*_items.find(s), n);
             }
             obj.contents(contents);
+
+            size_t q;
+            for (auto inventory : xr.getChildren("inventory", elem)) {
+                if (!xr.findAttr(inventory, "id", s))
+                    continue;
+                if (!xr.findAttr(inventory, "slot", n))
+                    continue;
+                q = 1;
+                xr.findAttr(inventory, "qty", q);
+                if (obj.container().size() <= n) {
+                    _debug << Color::RED << "Skipping object with invalid inventory slot." << Log::endl;
+                    continue;
+                }
+                auto &invSlot = obj.container()[n];
+                invSlot.first = &*_items.find(s);
+                invSlot.second = q;
+            }
+
             _objects.insert(obj);
         }
 
@@ -834,17 +934,31 @@ void Server::saveData(const std::set<Object> &objects){
         if (!obj.type())
             continue;
         auto e = xw.addChild("object");
+
         xw.setAttr(e, "id", obj.type()->id());
+
         for (auto &content : obj.contents()) {
-            auto contentE = xw.addChild("contains", e);
+            auto contentE = xw.addChild("gatherable", e);
             xw.setAttr(contentE, "id", content.first->id());
             xw.setAttr(contentE, "quantity", content.second);
         }
+
         if (!obj.owner().empty())
             xw.setAttr(e, "owner", obj.owner());
+
         auto loc = xw.addChild("location", e);
         xw.setAttr(loc, "x", obj.location().x);
         xw.setAttr(loc, "y", obj.location().y);
+
+        const auto container = obj.container();
+        for (size_t i = 0; i != container.size(); ++i) {
+            if (container[i].second == 0)
+                continue;
+            auto invSlotE = xw.addChild("inventory", e);
+            xw.setAttr(invSlotE, "slot", i);
+            xw.setAttr(invSlotE, "item", container[i].first->id());
+            xw.setAttr(invSlotE, "qty", container[i].second);
+        }
     }
     xw.publish();
 #ifndef SINGLE_THREAD
@@ -1135,8 +1249,22 @@ void Server::addObject (const ObjectType *type, const Point &location, const Use
         getCollisionChunk(location).addObject(&*it);
 }
 
-void Server::sendInventoryMessage(const User &user, size_t slot) const{
-    auto invSlot = user.inventory(slot);
-    sendMessage(user.socket(), SV_INVENTORY,
-                makeArgs(slot,invSlot.first ? invSlot.first->id() : "none", invSlot.second));
+void Server::sendInventoryMessage(const User &user, size_t serial, size_t slot) const{
+    const Item::vect_t *container;
+    if (serial == 0)
+        container = &user.inventory();
+    else {
+        auto it = _objects.find(serial);
+        if (it == _objects.end())
+            return; // Object doesn't exist.
+        else
+            container = &it->container();
+    }
+    if (slot >= container->size()) {
+        sendMessage(user.socket(), SV_INVALID_SLOT);
+        return;
+    }
+    auto containerSlot = (*container)[slot];
+    std::string itemID = containerSlot.first ? containerSlot.first->id() : "none";
+    sendMessage(user.socket(), SV_INVENTORY, makeArgs(serial, slot, itemID, containerSlot.second));
 }

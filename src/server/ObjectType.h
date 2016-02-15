@@ -15,8 +15,10 @@ class ObjectType{
     Uint32 _actionTime;
     Uint32 _constructionTime;
 
-    // To gather objects of this type, a user must have an item of the following class
+    // To gather from objects of this type, a user must have an item of the following class.
     std::string _gatherReq;
+
+    size_t _containerSlots;
 
     Yield _yield; // If gatherable.
 
@@ -32,6 +34,8 @@ public:
     void actionTime(Uint32 t) { _actionTime = t; }
     const std::string &gatherReq() const { return _gatherReq; }
     void gatherReq(const std::string &req) { _gatherReq = req; }
+    size_t containerSlots() const { return _containerSlots; }
+    void containerSlots(size_t n) { _containerSlots = n; }
 
     const std::string &id() const { return _id; }
     Uint32 actionTime() const { return _actionTime; }

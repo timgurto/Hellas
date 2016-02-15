@@ -9,11 +9,12 @@
 
 // A server-side representation of an in-game object
 class Object{
-    size_t _serial;
+    size_t _serial; // Starts at 1; 0 is reserved.
     Point _location;
     const ObjectType *_type;
     std::string _owner;
     ItemSet _contents; // Remaining contents, which can be gathered
+    Item::vect_t _container; // Items contained in object
 
 protected:
     static size_t generateSerial();
@@ -31,6 +32,8 @@ public:
     void owner(const std::string &name) { _owner = name; }
     const ItemSet &contents() const { return _contents; }
     void contents(const ItemSet &contents);
+    Item::vect_t &container() { return _container; }
+    const Item::vect_t &container() const { return _container; }
     const Rect collisionRect() const { return _type->collisionRect() + _location; }
 
     bool operator<(const Object &rhs) const { return _serial < rhs._serial; }

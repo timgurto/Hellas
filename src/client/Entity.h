@@ -42,7 +42,11 @@ public:
 
     virtual void draw(const Client &client) const;
     virtual void update(double delta) {}
-    virtual void onLeftClick(Client &client) const {}
+    virtual void onLeftClick(Client &client) {}
+    virtual void onRightClick(Client &client) {}
+
+    //Class identifiers
+    virtual bool isObject(){ return false; }
 
     void refreshTooltip(const Client &client);
 
@@ -53,13 +57,11 @@ public:
         bool operator()(const Entity *lhs, const Entity *rhs) const{
 
             // 1. location
-            /*double
+            double
                 lhsBottom = lhs->bottomEdge(),
                 rhsBottom = rhs->bottomEdge();
             if (lhsBottom != rhsBottom)
-                return lhsBottom < rhsBottom;*/
-            if (lhs->location().y != rhs->location().y)
-                return lhs->location().y < rhs->location().y;
+                return lhsBottom < rhsBottom;
 
             // 2. memory address (to ensure a unique ordering)
             return lhs < rhs;

@@ -63,7 +63,7 @@ private:
                      const std::string &args = "") const;
     void broadcast(MessageCode msgCode, const std::string &args); // Send a command to all users
     void handleMessage(const Socket &client, const std::string &msg);
-    void sendInventoryMessage(const User &user, size_t slot) const;
+    void sendInventoryMessage(const User &user, size_t serial, size_t slot) const;
 
     // Clients
     // All connected sockets, including those without registered users
@@ -91,7 +91,6 @@ private:
     size_t _mapX, _mapY; // Number of tiles in each dimension.
     std::vector<std::vector<size_t>> _map;
     size_t findTile(const Point &p) const; // Find the tile type at the specified location.
-    size_t findStoneLayer(const Point &p, const std::vector<std::vector<size_t> > &stoneLayers) const;
     std::pair<size_t, size_t> getTileCoords(const Point &p) const;
 
     // World data
@@ -111,6 +110,11 @@ private:
     friend bool User::hasTools(const std::set<std::string> &classes) const;
 
     void addObject (const ObjectType *type, const Point &location, const User *owner = 0);
+
+    // Checks whether the object exists, and is within range of the user.  If not, a relevant error
+    // message is sentg to the client.
+    bool isValidObject(const Socket &client, const User &user,
+                       const std::set<Object>::const_iterator &it) const;
 
     // Collision detection
     static const int COLLISION_CHUNK_SIZE;

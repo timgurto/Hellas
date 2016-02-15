@@ -19,13 +19,14 @@ const Container *Container::dragContainer = 0;
 size_t Container::useSlot = NO_SLOT;
 const Container *Container::useContainer = 0;
 
-Container::Container(size_t rows, size_t cols, Item::vect_t &linked, int x, int y):
+Container::Container(size_t rows, size_t cols, Item::vect_t &linked, size_t serial, int x, int y):
 Element(Rect(x, y,
                  cols * (Client::ICON_SIZE + GAP + 2) + GAP,
                  rows * (Client::ICON_SIZE + GAP + 2) + GAP + 1)),
 _rows(rows),
 _cols(cols),
 _linked(linked),
+_serial(serial),
 _leftMouseDownSlot(NO_SLOT),
 _rightMouseDownSlot(NO_SLOT){
     for (size_t i = 0; i != Client::INVENTORY_SIZE; ++i) {
@@ -50,8 +51,8 @@ void Container::refresh(){
             x = i % _cols,
             y = i / _cols;
         const Rect slotRect = Rect(x * (Client::ICON_SIZE + GAP + 2) + GAP,
-                                            y * (Client::ICON_SIZE + GAP + 2) + GAP + 1,
-                                            Client::ICON_SIZE + 2, Client::ICON_SIZE + 2);
+                                   y * (Client::ICON_SIZE + GAP + 2) + GAP + 1,
+                                   Client::ICON_SIZE + 2, Client::ICON_SIZE + 2);
         static const Rect SLOT_BACKGROUND_OFFSET = Rect(1, 1, -2, -2);
         renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
         if (dragSlot == i) // Don't draw an item being moved by the mouse.
@@ -89,7 +90,8 @@ void Container::leftMouseUp(Element &e, const Point &mousePos){
     size_t slot = container.getSlot(mousePos);
     if (slot != NO_SLOT) { // Clicked a valid slot
         if (dragSlot != slot && dragSlot != NO_SLOT) { // Different slot: finish dragging
-            Client::_instance->sendMessage(CL_SWAP_ITEMS, makeArgs(dragSlot, slot));
+            Client::_instance->sendMessage(CL_SWAP_ITEMS, makeArgs(dragContainer->_serial, dragSlot,
+                                                                   container._serial, slot));
             dragSlot = NO_SLOT;
             dragContainer = 0;
         } else if (slot == dragSlot && &container == dragContainer) {
@@ -150,7 +152,7 @@ const Item *Container::getUseItem() {
 
 void Container::dropItem() {
     if (dragSlot != NO_SLOT && dragContainer) {
-        Client::_instance->sendMessage(CL_DROP, makeArgs(dragSlot));
+        Client::_instance->sendMessage(CL_DROP, makeArgs(dragContainer->_serial, dragSlot));
         dragSlot = NO_SLOT;
         dragContainer = 0;
     }

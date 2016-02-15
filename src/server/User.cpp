@@ -119,7 +119,7 @@ size_t User::giveItem(const Item *item, size_t quantity){
         if (spaceAvailable > 0) {
             size_t qtyInThisSlot = min(spaceAvailable, quantity);
             _inventory[i].second += qtyInThisSlot;
-            Server::instance().sendInventoryMessage(*this, i);
+            Server::instance().sendInventoryMessage(*this, 0, i);
             quantity -= qtyInThisSlot;
         }
         if (quantity == 0)
@@ -133,7 +133,7 @@ size_t User::giveItem(const Item *item, size_t quantity){
         size_t qtyInThisSlot = min(item->stackSize(), quantity);
         _inventory[i].first = item;
         _inventory[i].second = qtyInThisSlot;
-        Server::instance().sendInventoryMessage(*this, i);
+        Server::instance().sendInventoryMessage(*this, 0, i);
         quantity -= qtyInThisSlot;
         if (quantity == 0)
             return 0;
@@ -224,7 +224,7 @@ void User::removeItems(const ItemSet &items) {
     for (size_t slotNum : invSlotsChanged) {
         const std::pair<const Item *, size_t> &slot = _inventory[slotNum];
         std::string id = slot.first ? slot.first->id() : "none";
-        Server::instance().sendInventoryMessage(*this, slotNum);
+        Server::instance().sendInventoryMessage(*this, 0, slotNum);
     }
 }
 
@@ -258,7 +258,7 @@ void User::update(Uint32 timeElapsed){
             --slot.second;
             if (slot.second == 0)
                 slot.first = 0;
-            server.sendInventoryMessage(*this, _constructingSlot);
+            server.sendInventoryMessage(*this, 0, _constructingSlot);
         }
         _actionTime = 0;
         server.sendMessage(_socket, SV_ACTION_FINISHED);

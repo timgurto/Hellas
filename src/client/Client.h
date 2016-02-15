@@ -51,7 +51,13 @@ public:
     static const size_t INVENTORY_SIZE;
     static const int ACTION_DISTANCE;
 
+    static LogSDL &debug() { return *_debugInstance; }
+
+    typedef std::list<Window *> windows_t;
+
 private:
+    static LogSDL *_debugInstance;
+
     static const Uint32 MAX_TICK_LENGTH;
     static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping reply
     static const Uint32 CONNECT_RETRY_DELAY; // How long to wait between retries at connecting
@@ -64,6 +70,12 @@ private:
         SCREEN_Y;
 
     static Client *_instance;
+
+    Texture
+        _cursorNormal,
+        _cursorGather,
+        _cursorContainer;
+    const Texture *_currentCursor;
 
     Texture _invLabel;
     static Rect INVENTORY_RECT; // non-const, as it needs to be initialized at runtime.
@@ -87,6 +99,10 @@ private:
     // Called when a recipe is selected.
     static void selectRecipe(Element &e, const Point &mousePos);
 
+    windows_t _windows;
+    void addWindow(Window *window);
+    void removeWindow(Window *window); // Linear time
+
     ChoiceList *_recipeList;
     Element *_detailsPane;
 
@@ -107,7 +123,6 @@ private:
     std::string _actionMessage; // A description of the current action.
     void prepareAction(const std::string &msg); // Set up the action, awaiting server confirmation.
     void startAction(Uint32 actionLength); // Start the action timer.  If zero, stop the timer.
-    friend void ClientObject::onLeftClick(Client &client) const;
 
     bool _loop;
     Socket _socket;
@@ -115,10 +130,20 @@ private:
     int _defaultFontOffset; // Vertical offset for game text
     std::string _username;
 
+    // Mouse stuff
     Point _mouse; // Mouse position
     bool _mouseMoved;
+    Entity *getEntityAtMouse();
     void checkMouseOver();
+
     bool _leftMouseDown; // Whether the left mouse button is pressed
+    Entity *_leftMouseDownEntity;
+    friend void ClientObject::onLeftClick(Client &client);
+
+    bool _rightMouseDown;
+    Entity *_rightMouseDownEntity;
+    friend void ClientObject::onRightClick(Client &client);
+
 
     void draw() const;
     void drawTile(size_t x, size_t y, int xLoc, int yLoc) const;
@@ -181,6 +206,7 @@ private:
     void handleMessage(const std::string &msg);
 
     friend class Container; // Needs to send CL_SWAP_ITEMS messages
+    friend ClientObject::~ClientObject();
 };
 
 #endif

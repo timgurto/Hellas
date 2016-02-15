@@ -24,6 +24,8 @@ public:
     Item(const std::string &id);
 
     bool operator<(const Item &rhs) const { return _id < rhs._id; }
+    
+    typedef std::vector<std::pair<const Item *, size_t> > vect_t;
 
     const std::string &id() const { return _id; }
     size_t stackSize() const { return _stackSize; }

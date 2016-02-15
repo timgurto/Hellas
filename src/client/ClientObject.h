@@ -9,17 +9,23 @@
 
 #include "ClientObjectType.h"
 #include "Entity.h"
+#include "Item.h"
 #include "../Point.h"
+
+class Window;
 
 // A client-side description of an object
 class ClientObject : public Entity{
     size_t _serial;
     std::string _owner;
+    Item::vect_t _container;
+    Window *_window; // For containers, etc.
 
 public:
     ClientObject(const ClientObject &rhs);
     // Serial only: create dummy object, for set searches
     ClientObject(size_t serial, const EntityType *type = 0, const Point &loc = Point());
+    virtual ~ClientObject();
 
     bool operator<(const ClientObject &rhs) const { return _serial < rhs._serial; }
     bool operator==(const ClientObject &rhs) const { return _serial == rhs._serial; }
@@ -29,15 +35,21 @@ public:
         { return dynamic_cast<const ClientObjectType *>(type()); }
     const std::string &owner() const { return _owner; }
     void owner(const std::string &name) { _owner = name; }
+    Item::vect_t &container() { return _container; }
+    const Item::vect_t &container() const { return _container; }
     
     virtual void draw(const Client &client) const;
 
     Rect collisionRect() const { return objectType()->collisionRect() + location(); }
 
-    virtual void onLeftClick(Client &client) const;
+    virtual void onRightClick(Client &client);
     virtual std::vector<std::string> getTooltipMessages(const Client &client) const;
 
     void playGatherSound() const;
+
+    virtual bool isObject(){ return true; }
+
+    void refreshWindow();
 };
 
 #endif

@@ -29,6 +29,8 @@ extern Renderer renderer;
 // TODO: Move all client functionality to a namespace, rather than a class.
 Client *Client::_instance = 0;
 
+LogSDL *Client::_debugInstance = 0;
+
 const int Client::SCREEN_X = 640;
 const int Client::SCREEN_Y = 360;
 
@@ -62,36 +64,56 @@ const int Client::PLAYER_ACTION_CHANNEL = 0;
 bool Client::isClient = false;
 
 Client::Client():
+_cursorNormal(std::string("Images/Cursors/normal.png"), Color::MAGENTA),
+_cursorGather(std::string("Images/Cursors/gather.png"), Color::MAGENTA),
+_cursorContainer(std::string("Images/Cursors/container.png"), Color::MAGENTA),
+_currentCursor(&_cursorNormal),
+
 _activeRecipe(0),
 _recipeList(0),
 _detailsPane(0),
 _craftingWindow(0),
 _inventoryWindow(0),
+
 _actionTimer(0),
 _actionLength(0),
+
 _loop(true),
 _socket(),
+
 _defaultFont(0),
 _defaultFontOffset(0),
+
 _mouse(0,0),
 _mouseMoved(false),
 _leftMouseDown(false),
+_leftMouseDownEntity(0),
+_rightMouseDown(false),
+_rightMouseDownEntity(0),
+
 _time(SDL_GetTicks()),
 _timeElapsed(0),
 _lastPingReply(_time),
 _lastPingSent(_time),
 _latency(0),
 _timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
+
 _invalidUsername(false),
 _loggedIn(false),
 _loaded(false),
+
 _timeSinceLocUpdate(0),
+
 _tooltipNeedsRefresh(false),
+
 _mapX(0), _mapY(0),
+
 _currentMouseOverEntity(0),
+
 _debug(360/13, "client.log", "04B_03__.TTF", 8){
     isClient = true;
     _instance = this;
+    _debugInstance = &_debug;
 
     // Read config file
     XmlReader xr("client-config.xml");
@@ -118,6 +140,7 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
 
     Element::initialize();
 
+    SDL_ShowCursor(SDL_DISABLE);
 
     _debug << cmdLineArgs << Log::endl;
     Socket::debug = &_debug;
@@ -247,6 +270,7 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
         if (xSet || ySet)
             cot.drawRect(drawRect);
         if (xr.findAttr(elem, "canGather", n) && n != 0) cot.canGather(true);
+        if (xr.findAttr(elem, "containerSlots", n)) cot.containerSlots(n);
         if (xr.findAttr(elem, "isFlat", n) && n != 0) cot.isFlat(true);
         if (xr.findAttr(elem, "gatherSound", s))
             cot.gatherSound(std::string("Sounds/") + s + ".wav");
@@ -271,20 +295,25 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
 
     initializeCraftingWindow();
     initializeInventoryWindow();
+    addWindow(_craftingWindow);
+    addWindow(_inventoryWindow);
 }
 
 Client::~Client(){
+    SDL_ShowCursor(SDL_ENABLE);
     Element::cleanup();
     if (_defaultFont)
         TTF_CloseFont(_defaultFont);
-    delete _craftingWindow;
-    delete _inventoryWindow;
     Avatar::image("");
     for (const Entity *entityConst : _entities) {
         Entity *entity = const_cast<Entity *>(entityConst);
         if (entity != &_character)
             delete entity;
     }
+
+    // Some entities will destroy their own windows, and remove them from this list.
+    for (Window *window : _windows)
+        delete window;
     Mix_Quit();
 }
 
@@ -468,10 +497,9 @@ void Client::run(){
                 _mouse.y = e.motion.y * SCREEN_Y / static_cast<double>(renderer.height());
                 _mouseMoved = true;
                 
-                if (_craftingWindow->visible())
-                    _craftingWindow->onMouseMove(_mouse);
-                if (_inventoryWindow->visible())
-                    _inventoryWindow->onMouseMove(_mouse);
+                for (Window *window : _windows)
+                    if (window->visible())
+                        window->onMouseMove(_mouse);
 
                 if (!_loaded)
                     break;
@@ -484,15 +512,31 @@ void Client::run(){
                 case SDL_BUTTON_LEFT:
                     _leftMouseDown = true;
 
-                    if (_craftingWindow->visible())
-                        _craftingWindow->onLeftMouseDown(_mouse);
-                    if (_inventoryWindow->visible())
-                        _inventoryWindow->onLeftMouseDown(_mouse);
+                    // Send onLeftMouseDown to all visible windows
+                    for (Window *window : _windows)
+                        if (window->visible())
+                            window->onLeftMouseDown(_mouse);
+
+                    // Bring top clicked window to front
+                    for (windows_t::iterator it = _windows.begin(); it != _windows.end(); ++it) {
+                        Window &window = **it;
+                        if (window.visible() && collision(_mouse, window.rect())) {
+                            _windows.erase(it); // Invalidates iterator.
+                            addWindow(&window);
+                            break;
+                        }
+                    }
+
+                    _leftMouseDownEntity = getEntityAtMouse();
                     break;
 
                 case SDL_BUTTON_RIGHT:
-                    if (_inventoryWindow->visible())
-                        //_inventoryWindow->onRightMouseDown(_mouse);
+                    // Send onRightMouseDown to all visible windows
+                    for (Window *window : _windows)
+                        if (window->visible())
+                            window->onRightMouseDown(_mouse);
+
+                    _rightMouseDownEntity = getEntityAtMouse();
                     break;
                 }
                 break;
@@ -502,7 +546,7 @@ void Client::run(){
                     break;
 
                 switch (e.button.button) {
-                case SDL_BUTTON_LEFT:
+                case SDL_BUTTON_LEFT: {
                     _leftMouseDown = false;
 
                     // Construct item
@@ -514,25 +558,32 @@ void Client::run(){
                         break;
                     }
 
-                    if (_craftingWindow->visible() && collision(_mouse, _craftingWindow->rect())) {
-                        _craftingWindow->onLeftMouseUp(_mouse);
-                        break;
-                    }
+                    bool mouseUpOnWindow = false;
+                    for (Window *window : _windows)
+                        if (window->visible() && collision(_mouse, window->rect())) {
+                            window->onLeftMouseUp(_mouse);
+                            mouseUpOnWindow = true;
+                            break;
+                        }
 
-                    if (_inventoryWindow->visible() &&
-                               collision(_mouse, _inventoryWindow->rect())) {
-                        _inventoryWindow->onLeftMouseUp(_mouse);
-                        break;
-                    } else if (Container::getDragItem()) {
+                    // Dragged item onto map -> drop.
+                    if (!mouseUpOnWindow && Container::getDragItem()) {
                         Container::dropItem();
                     }
 
-                    if (_currentMouseOverEntity)
+                    // Mouse down and up on same entity: onLeftClick
+                    if (_leftMouseDownEntity && _currentMouseOverEntity == _leftMouseDownEntity)
                         _currentMouseOverEntity->onLeftClick(*this);
+                    _leftMouseDownEntity = 0;
 
                     break;
+                }
 
                 case SDL_BUTTON_RIGHT:
+                    _rightMouseDown = false;
+
+                    // Items can only be constructed or used from the inventory, not container
+                    // objects.
                     if (_inventoryWindow->visible()) {
                         _inventoryWindow->onRightMouseUp(_mouse);
                         const Item *useItem = Container::getUseItem();
@@ -541,6 +592,12 @@ void Client::run(){
                         else
                             _constructionFootprint = Texture();
                     }
+
+                    // Mouse down and up on same entity: onRightClick
+                    if (_rightMouseDownEntity && _currentMouseOverEntity == _rightMouseDownEntity)
+                        _currentMouseOverEntity->onRightClick(*this);
+                    _rightMouseDownEntity = 0;
+
                     break;
                 }
 
@@ -562,8 +619,8 @@ void Client::run(){
                     renderer.updateSize();
                     renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
                                       static_cast<float>(renderer.height()) / SCREEN_Y);
-                    _craftingWindow->forceRefresh();
-                    _inventoryWindow->forceRefresh();
+                    for (Window *window : _windows)
+                        window->forceRefresh();
                     break;
                 }
 
@@ -644,17 +701,8 @@ void Client::run(){
     }
 }
 
-void Client::checkMouseOver(){
-    // Check if mouse is over a UI element
-    _uiTooltip = Texture();
-    if (collision(_mouse, INVENTORY_RECT))
-        _uiTooltip = getInventoryTooltip();
-    /*else if (collision(_mouse, _craftingRect))
-        _uiTooltip = getCraftingTooltip();*/
-
-    // Check if mouse is over an entity
+Entity *Client::getEntityAtMouse(){
     const Point mouseOffset = _mouse - _offset;
-    const Entity *const oldMouseOverEntity = _currentMouseOverEntity;
     Entity::set_t::iterator mouseOverIt = _entities.end();
     static const int LOOKUP_MARGIN = 30;
     Entity
@@ -667,17 +715,43 @@ void Client::checkMouseOver(){
         if (*it != &_character &&(*it)->collision(mouseOffset))
             mouseOverIt = it;
     }
-    if (mouseOverIt != _entities.end()) {
-        _currentMouseOverEntity = *mouseOverIt;
-        if (_currentMouseOverEntity != oldMouseOverEntity ||
-            _currentMouseOverEntity->needsTooltipRefresh() ||
-            _tooltipNeedsRefresh) {
-            _currentMouseOverEntity->refreshTooltip(*this);
-            _tooltipNeedsRefresh = false;
-        }
-            
-    } else
-        _currentMouseOverEntity = 0;
+    if (mouseOverIt != _entities.end())
+        return *mouseOverIt;
+    else
+        return 0;
+}
+
+void Client::checkMouseOver(){
+    _currentCursor = &_cursorNormal;
+
+    // Check if mouse is over a UI element
+    _uiTooltip = Texture();
+    if (collision(_mouse, INVENTORY_RECT))
+        _uiTooltip = getInventoryTooltip();
+    /*else if (collision(_mouse, _craftingRect))
+        _uiTooltip = getCraftingTooltip();*/
+
+    // Check if mouse is over an entity
+    const Entity *const oldMouseOverEntity = _currentMouseOverEntity;
+    _currentMouseOverEntity = getEntityAtMouse();
+    if (!_currentMouseOverEntity)
+        return;
+    if (_currentMouseOverEntity != oldMouseOverEntity ||
+        _currentMouseOverEntity->needsTooltipRefresh() ||
+        _tooltipNeedsRefresh) {
+        _currentMouseOverEntity->refreshTooltip(*this);
+        _tooltipNeedsRefresh = false;
+    }
+    
+    // Set cursor
+    if (_currentMouseOverEntity->isObject()) {
+        const ClientObjectType &objType =
+            *dynamic_cast<ClientObject*>(_currentMouseOverEntity)->objectType();
+        if (objType.canGather())
+            _currentCursor = &_cursorGather;
+        else if (objType.containerSlots() != 0)
+            _currentCursor = &_cursorContainer;
+    }
 }
 
 void Client::draw() const{
@@ -696,7 +770,8 @@ void Client::draw() const{
     // Map
     size_t
         xMin = static_cast<size_t>(max<double>(0, -offset().x / TILE_W)),
-        xMax = static_cast<size_t>(min<double>(_mapX, 1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
+        xMax = static_cast<size_t>(min<double>(_mapX,
+                                               1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
         yMin = static_cast<size_t>(max<double>(0, -offset().y / TILE_H)),
         yMax = static_cast<size_t>(min<double>(_mapY, (-offset().y + SCREEN_Y) / TILE_H + 1));
     for (size_t y = yMin; y != yMax; ++y) {
@@ -830,8 +905,9 @@ void Client::draw() const{
         renderer.fillRect(Rect(cursorX, TEXT_BOX_RECT.y + 1, 1, TEXT_BOX_HEIGHT - 2));
     }
 
-    _craftingWindow->draw();
-    _inventoryWindow->draw();
+    // Windows
+    for (windows_t::const_reverse_iterator it = _windows.rbegin(); it != _windows.rend(); ++it)
+        (*it)->draw();
 
     // Dragged item
     static const Point MOUSE_ICON_OFFSET(-Client::ICON_SIZE/2, -Client::ICON_SIZE/2);
@@ -843,7 +919,7 @@ void Client::draw() const{
     if (_constructionFootprint) {
         const ClientObjectType *ot = Container::getUseItem()->constructsObject();
         Rect footprintRect = ot->collisionRect() + _mouse - _offset;
-        if (distance(playerCollisionRect(), footprintRect) <=Client::ACTION_DISTANCE) {
+        if (distance(playerCollisionRect(), footprintRect) <= Client::ACTION_DISTANCE) {
             renderer.setDrawColor(Color::WHITE);
             renderer.fillRect(footprintRect + _offset);
 
@@ -859,6 +935,9 @@ void Client::draw() const{
             renderer.fillRect(footprintRect + _offset);
         }
     }
+
+    // Cursor
+    _currentCursor->draw(_mouse);
 
     _debug.draw();
     renderer.present();
@@ -1086,6 +1165,7 @@ void Client::handleMessage(const std::string &msg){
             iss.ignore(); // Throw away ']'
         }
         std::istringstream singleMsg(buffer);
+        //_debug(buffer, Color::CYAN);
         singleMsg >> del >> msgCode >> del;
         switch(msgCode) {
 
@@ -1347,21 +1427,51 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_INVENTORY:
         {
-            int slot, quantity;
+            size_t serial, slot, quantity;
             std::string itemID;
-            singleMsg >> slot >> del;
+            singleMsg >> serial >> del >> slot >> del;
             singleMsg.get(buffer, BUFFER_SIZE, ',');
             itemID = std::string(buffer);
             singleMsg >> del >> quantity >> del;
             if (del != ']')
                 break;
-            std::set<Item>::const_iterator it = _items.find(itemID);
-            if (it == _items.end())
-                _inventory[slot] = std::make_pair<const Item *, size_t>(0, 0);
-            else
-                _inventory[slot] = std::make_pair(&*it, quantity);
+
+            const Item *item = 0;
+            if (quantity > 0) {
+                std::set<Item>::const_iterator it = _items.find(itemID);
+                if (it == _items.end()) {
+                    _debug << Color::RED << "Unknown inventory item \"" << itemID
+                           << "\"announced; ignored.";
+                    break;
+                }
+                item = &*it;
+            }
+
+            Item::vect_t *container;
+            ClientObject *object = 0;
+            if (serial == 0)
+                container = &_inventory;
+            else {
+                auto it = _objects.find(serial);
+                if (it == _objects.end()) {
+                    _debug("Received inventory of nonexistent object; ignored.", Color::RED);
+                    break;
+                }
+                object = it->second;
+                container = &object->container();
+            }
+            if (slot >= container->size()) {
+                _debug("Received item in invalid inventory slot; ignored.", Color::RED);
+                break;
+            }
+            auto &invSlot = (*container)[slot];
+            invSlot.first = item;
+            invSlot.second = quantity;
             _recipeList->markChanged();
-            _inventoryWindow->forceRefresh();
+            if (serial == 0)
+                _inventoryWindow->forceRefresh();
+            else
+                object->refreshWindow();
             break;
         }
 
@@ -1430,7 +1540,7 @@ void Client::handleMessage(const std::string &msg){
         }
 
         if (del != ']' && !iss.eof()) {
-            _debug("Bad message ending", Color::RED);
+            _debug << Color::RED << "Bad message ending. code=" << msgCode << Log::endl;
         }
 
         iss.peek();
@@ -1498,4 +1608,12 @@ void Client::startAction(Uint32 actionLength){
     _actionLength = actionLength;
     if (actionLength == 0)
         Mix_HaltChannel(PLAYER_ACTION_CHANNEL);
+}
+
+void Client::addWindow(Window *window){
+    _windows.push_front(window);
+}
+
+void Client::removeWindow(Window *window){
+    _windows.remove(window);
 }
