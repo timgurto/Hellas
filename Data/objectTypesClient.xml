@@ -179,4 +179,14 @@
     yDrawOffset=-8 >
     <collisionRect x=-8 y=-8 w=16 h=16 />
 </objectType>
+
+<objectType
+    id="ceramicVessel"
+    name="Ceramic Vessel"
+    imageFile = "Ceramic Vessel"
+    containerSlots=4
+    xDrawOffset=-8
+    yDrawOffset=-8 >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+</objectType>
 </root>

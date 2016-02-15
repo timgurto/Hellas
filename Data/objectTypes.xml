@@ -371,4 +371,9 @@
     <class name="pit kiln" />
 </objectType>
 
+<objectType id="ceramicVessel" constructionTime = 1000 >
+    <collisionRect x=-8 y=-8 w=16 h=16 />
+    <container slots=4 />
+</objectType>
+
 </root>
