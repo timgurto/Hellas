@@ -127,6 +127,10 @@
 <objectType id="copperSlatePoor" name="Tetrahedrite vein" imageFile="copperSlate" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
 <objectType id="copperSlateRich" name="Tetrahedrite vein" imageFile="copperSlate" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
 
+<objectType id="smallCopper" name="Native Copper Nugget" imageFile="Native Copper Small Ore" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="smallTetrahedrite" name="Tetrahedrite Nugget" imageFile="Tetrahedrite Small Ore" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+<objectType id="smallMalachite" name="Malachite Nugget" imageFile="Malachite Small Ore" xDrawOffset=-8 yDrawOffset=-8 canGather=1 gatherSound="stone1" />
+
 <objectType
     id="grass"
     name="Grass"

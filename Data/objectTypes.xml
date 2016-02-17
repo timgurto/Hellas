@@ -332,6 +332,17 @@
     <yield id="SlateRock" initialMean=10 initialSD=5 gatherMean=2 gatherSD=1 />
 </objectType>
 
+<!-- GROUND ORE -->
+<objectType id="smallCopper" actionTime=1 >
+    <yield id="copperOre" initialMean=10 initialSD=0 gatherMean=100 />
+</objectType>
+<objectType id="smallTetrahedrite" actionTime=1 >
+    <yield id="copperOre" initialMean=10 initialSD=0 gatherMean=100 />
+</objectType>
+<objectType id="smallMalachite" actionTime=1 >
+    <yield id="copperOre" initialMean=10 initialSD=0 gatherMean=100 />
+</objectType>
+
 <!-- TREES and LOGS -->
 <objectType id="ashTree" actionTime=1000 gatherReq="axe" >
     <collisionRect x=-8 y=-8 w=16 h=16 />

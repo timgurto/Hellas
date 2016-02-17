@@ -54,7 +54,9 @@
 
 <item id="clay" name="Clay" stackSize=64 iconFile="Clay" />
 <item id="clayVessel" name="Clay Vessel" iconFile="Clay Vessel" />
-<item id="ceramicVessel" name="Ceramic Vessel" iconFile="Ceramic Vessel" constructs="ceramicVessel" />
+<item id="ceramicVessel" name="Ceramic Vessel" iconFile="Ceramic Vessel" constructs="ceramicVessel" >
+    <class name="ceramic vessel" />
+</item>
 
 <item id="clayAxeMold" name="Clay Axe Mold" iconFile = "Clay Mold Axe" />
 <item id="ceramicAxeMold" name="Ceramic Axe Mold" iconFile = "Ceramic Mold Axe" />
