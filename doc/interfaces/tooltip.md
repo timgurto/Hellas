@@ -84,3 +84,4 @@ Texture tooltip1 = basicTooltip("A simple tooltip.");
 Texture tooltip2 = basicTooltip("A longer tooltip, which will probably end up using multiple lines of text.");
 Texture tooltip3 = basicTooltip("Another long tooltip, but forced to use a single line.", NO_WRAP);
 ```
+![Multi-line tooltip](tooltipMulti.png)

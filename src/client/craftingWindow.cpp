@@ -54,8 +54,10 @@ void Client::initializeCraftingWindow(){
     filterPane->addChild(new Label(Rect(0, 0, FILTERS_PANE_W, HEADING_HEIGHT),
                                    "Filters", Element::CENTER_JUSTIFIED));
     int y = HEADING_HEIGHT;
-    filterPane->addChild(new CheckBox(Rect(0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT),
-                                      _haveMatsFilter, "Have materials:"));
+    CheckBox *pCB = new CheckBox(Rect(0, y, FILTERS_PANE_W / 2, Element::TEXT_HEIGHT),
+                                 _haveMatsFilter, "Have materials:");
+    pCB->setTooltip("Only show recipes for which you have the materials");
+    filterPane->addChild(pCB);
     y += Element::TEXT_HEIGHT;
     filterPane->addChild(new Line(0, y + LINE_GAP/2, FILTERS_PANE_W));
     y += LINE_GAP;
@@ -78,11 +80,16 @@ void Client::initializeCraftingWindow(){
         classList->addChild(new CheckBox(Rect(0, 0, FILTERS_PANE_W, Element::TEXT_HEIGHT),
                                          it->second, it->first));
     y += CLASS_LIST_HEIGHT;
-    filterPane->addChild(new CheckBox(Rect(0, y, FILTERS_PANE_W/2, Element::TEXT_HEIGHT),
-                                      _classOr, "Any"));
-    filterPane->addChild(new CheckBox(Rect(FILTERS_PANE_W/2, y,
-                                           FILTERS_PANE_W/2, Element::TEXT_HEIGHT),
-                                      _classOr, "All", true));
+
+    pCB = new CheckBox(Rect(0, y, FILTERS_PANE_W/4, Element::TEXT_HEIGHT), _classOr, "Any");
+    pCB->setTooltip("Only show recipes whose product is at least one of the selected classes.");
+    filterPane->addChild(pCB);
+
+    pCB = new CheckBox(Rect(FILTERS_PANE_W/2, y, FILTERS_PANE_W/4, Element::TEXT_HEIGHT), _classOr,
+                       "All", true);
+    pCB->setTooltip("Only show recipes whose product is all of the selected classes.");
+    filterPane->addChild(pCB);
+
     y += Element::TEXT_HEIGHT;
     filterPane->addChild(new Line(0, y + LINE_GAP/2, FILTERS_PANE_W));
     y += LINE_GAP;
@@ -105,11 +112,14 @@ void Client::initializeCraftingWindow(){
         materialsList->addChild(mat);
     }
     y += MATERIALS_LIST_HEIGHT;
-    filterPane->addChild(new CheckBox(Rect(0, y, FILTERS_PANE_W/2, Element::TEXT_HEIGHT),
-                                      _matOr, "Any"));
-    filterPane->addChild(new CheckBox(Rect(FILTERS_PANE_W/2, y,
-                                           FILTERS_PANE_W/2, Element::TEXT_HEIGHT),
-                                      _matOr, "All", true));
+    pCB = new CheckBox(Rect(0, y, FILTERS_PANE_W/4, Element::TEXT_HEIGHT), _matOr, "Any");
+    pCB->setTooltip("Only show recipes that require at least one of the selected materials.");
+    filterPane->addChild(pCB);
+
+    pCB = new CheckBox(Rect(FILTERS_PANE_W/2, y, FILTERS_PANE_W/4, Element::TEXT_HEIGHT), _matOr,
+                                 "All", true);
+    pCB->setTooltip("Only show recipes that require all of the selected materials.");
+    filterPane->addChild(pCB);
 
     // Recipes
     Element *const recipesPane = new Element(Rect(RECIPES_PANE_X, CONTENT_Y,
@@ -224,6 +234,7 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     y += Element::TEXT_HEIGHT;
     List *const matsList = new List(Rect(0, y, paneRect.w, MATS_LIST_HEIGHT), ICON_SIZE);
     y += MATS_LIST_HEIGHT;
+    matsList->setTooltip("The materials required for this recipe.");
     pane.addChild(matsList);
     for (const std::pair<const Item *, size_t> & matCost : recipe.materials()) {
         assert (matCost.first);
@@ -241,6 +252,7 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     pane.addChild(new Label(Rect(0, y, paneRect.w, Element::TEXT_HEIGHT), "Tools:"));
     y += Element::TEXT_HEIGHT;
     List *const toolsList = new List(Rect(0, y, paneRect.w, TOOLS_LIST_HEIGHT), ICON_SIZE);
+    toolsList->setTooltip("The tools required for this recipe.");
     pane.addChild(toolsList);
     for (const std::string &tool : recipe.tools()) {
         static const int TOOL_MARGIN = 5;
