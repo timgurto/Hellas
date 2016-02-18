@@ -20,7 +20,7 @@
   - :soon: UI  
   - :soon: Rendering  
   - :soon: Textures  
-  - :soon: Tooltip building  
+  - [Tooltip building](interfaces/tooltip.md)  
 
 ### Game data
  - [Object types](../Data/objectTypes.xml) 
