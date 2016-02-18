@@ -19,17 +19,25 @@ class TooltipBuilder{
     static TTF_Font *_defaultFont;
     static Color DEFAULT_COLOR;
     static Color BACKGROUND_COLOR;
+    const static int DEFAULT_MAX_WIDTH;
 
     static bool initialized;
 
 public:
     TooltipBuilder();
 
+    const static int NO_WRAP;
+
     void setFont(TTF_Font *font = 0); // Default: default font
     void setColor(const Color &color = DEFAULT_COLOR);
     void addLine(const std::string &line);
     void addGap();
     Texture publish();
+
+    // Create a basic tooltip containing a single string, broken over multiple lines if necessary.
+    // maxWidth: the maximum width of the tooltip excluding padding; text will be wrapped to fit.
+    // A maxWidth of NO_WRAP will result in no wrapping.
+    static Texture basicTooltip(const std::string &text, int maxWidth = DEFAULT_MAX_WIDTH);
 };
 
 #endif

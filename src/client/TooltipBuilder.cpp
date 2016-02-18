@@ -1,5 +1,7 @@
 // (C) 2015 Tim Gurto
 
+#include <sstream>
+
 #include "Renderer.h"
 #include "TooltipBuilder.h"
 
@@ -11,14 +13,16 @@ const int TooltipBuilder::PADDING = 4; // Margins, and the height of gaps betwee
 TTF_Font *TooltipBuilder::_defaultFont = 0;
 Color TooltipBuilder::DEFAULT_COLOR;
 Color TooltipBuilder::BACKGROUND_COLOR;
+const int TooltipBuilder::DEFAULT_MAX_WIDTH = 150;
+const int TooltipBuilder::NO_WRAP = 0;
 
-TooltipBuilder::TooltipBuilder():
-_color(Color::WHITE)
+TooltipBuilder::TooltipBuilder()
 {
     if (!initialized) {
         DEFAULT_COLOR = Color::BLUE / 2 + Color::GREY_2;
         BACKGROUND_COLOR = Color::GREY_8 + Color::BLUE/6;
     }
+    _color = DEFAULT_COLOR;
 
     if (!_defaultFont)
         _defaultFont = TTF_OpenFont("04B_03__.TTF", 8);
@@ -92,4 +96,51 @@ Texture TooltipBuilder::publish(){
     ret.setBlend(SDL_BLENDMODE_BLEND);
     renderer.setRenderTarget();
     return ret;
+}
+
+Texture TooltipBuilder::basicTooltip(const std::string &text, int maxWidth)
+{
+    TooltipBuilder tb;
+    
+    { // Try a single line
+        Texture lineTexture(tb._font, text, tb._color);
+        if (maxWidth == NO_WRAP || lineTexture.width() <= maxWidth) { // No wrapping necessary.
+            tb._content.push_back(lineTexture);
+            return tb.publish();
+        }
+    }
+
+    std::istringstream iss(text);
+    static const size_t BUFFER_SIZE = 50; // Maximum word length
+    static char buffer[BUFFER_SIZE];
+
+    std::string segment;
+    std::string extraSpaces;
+    while (!iss.eof()) {
+        iss.get(buffer, BUFFER_SIZE, ' '); iss.ignore(1);
+        std::string word(buffer);
+        word = extraSpaces + word;
+        extraSpaces = "";
+        while (iss.peek() == ' ') {
+            extraSpaces += " ";
+            iss.ignore(1);
+        }
+        Texture lineTexture(tb._font, segment + " " +  word, tb._color);
+        if (lineTexture.width() > maxWidth) {
+            if (segment == "") {
+                tb._content.push_back(lineTexture);
+                continue;
+            } else {
+                tb.addLine(segment);
+                segment = word;
+                continue;
+            }
+        }
+        if (segment != "")
+            segment += " ";
+        segment += word;
+    }
+    tb.addLine(segment);
+    
+    return tb.publish();
 }

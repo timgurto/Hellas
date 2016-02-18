@@ -70,3 +70,17 @@ tb.addLine("Owned by ppd");
 tb.publish();
 ```
 ![Object tooltip](tooltip.png)
+
+## Shortcut for simple tooltips
+For simple tooltips containing a single string of text, there's a shortcut function to speed things up:
+```cpp
+static Texture TooltipBuilder::basicTooltip(const std::string &text, int maxWidth = DEFAULT_MAX_WIDTH);
+```
+If the width of the tooltip would exceed `maxWidth`, the text is wrapped over multiple lines automatically (unless the specified `maxWidth` is `TooltipBuilder::NO_WRAP`).
+
+For example:
+```cpp
+Texture tooltip1 = basicTooltip("A simple tooltip.");
+Texture tooltip2 = basicTooltip("A longer tooltip, which will probably end up using multiple lines of text.");
+Texture tooltip3 = basicTooltip("Another long tooltip, but forced to use a single line.", NO_WRAP);
+```
