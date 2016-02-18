@@ -500,6 +500,7 @@ void Client::run(){
                 _mouse.y = e.motion.y * SCREEN_Y / static_cast<double>(renderer.height());
                 _mouseMoved = true;
                 
+                Element::resetTooltip();
                 for (Window *window : _windows)
                     if (window->visible())
                         window->onMouseMove(_mouse);
@@ -727,13 +728,6 @@ Entity *Client::getEntityAtMouse(){
 void Client::checkMouseOver(){
     _currentCursor = &_cursorNormal;
 
-    // Check if mouse is over a UI element
-    _uiTooltip = Texture();
-    if (collision(_mouse, INVENTORY_RECT))
-        _uiTooltip = getInventoryTooltip();
-    /*else if (collision(_mouse, _craftingRect))
-        _uiTooltip = getCraftingTooltip();*/
-
     // Check if mouse is over an entity
     const Entity *const oldMouseOverEntity = _currentMouseOverEntity;
     _currentMouseOverEntity = getEntityAtMouse();
@@ -864,9 +858,6 @@ void Client::draw() const{
                                 CAST_BAR_Y + (CAST_BAR_HEIGHT - castBarLabel.height()) / 2.0));
     }
 
-    // Tooltip
-    drawTooltip();
-
     // FPS/latency
     std::ostringstream oss;
     if (_timeElapsed > 0)
@@ -939,6 +930,9 @@ void Client::draw() const{
         }
     }
 
+    // Tooltip
+    drawTooltip();
+
     // Cursor
     _currentCursor->draw(_mouse);
 
@@ -975,11 +969,11 @@ Texture Client::getInventoryTooltip() const{
 }
 
 void Client::drawTooltip() const{
-    Texture tooltip;
-    if (_uiTooltip)
-        tooltip = _uiTooltip;
+    const Texture *tooltip;
+    if (Element::tooltip())
+        tooltip = Element::tooltip();
     else if (_currentMouseOverEntity)
-        tooltip = _currentMouseOverEntity->tooltip();
+        tooltip = &_currentMouseOverEntity->tooltip();
     else
         return;
 
@@ -991,17 +985,17 @@ void Client::drawTooltip() const{
         const int mouseY = toInt(_mouse.y);
 
         // y: below cursor, unless too close to the bottom of the screen
-        if (SCREEN_Y > mouseY + tooltip.height() + EDGE_GAP)
+        if (SCREEN_Y > mouseY + tooltip->height() + EDGE_GAP)
             y = mouseY;
         else
-            y = SCREEN_Y - tooltip.height() - EDGE_GAP;
+            y = SCREEN_Y - tooltip->height() - EDGE_GAP;
 
         // x: to the right of the cursor, unless too close to the right of the screen
-        if (SCREEN_X > mouseX + tooltip.width() + EDGE_GAP + CURSOR_GAP)
+        if (SCREEN_X > mouseX + tooltip->width() + EDGE_GAP + CURSOR_GAP)
             x = mouseX + CURSOR_GAP;
         else
-            x = mouseX - tooltip.width() - CURSOR_GAP;
-        tooltip.draw(x, y);
+            x = mouseX - tooltip->width() - CURSOR_GAP;
+        tooltip->draw(x, y);
     }
 }
 

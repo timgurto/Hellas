@@ -149,7 +149,7 @@ private:
     void drawTile(size_t x, size_t y, int xLoc, int yLoc) const;
     void drawTooltip() const;
     // A tooltip which, if it exists, describes the UI element currently moused over.
-    Texture _uiTooltip;
+    const Texture *_uiTooltip;
     Point _offset; // An offset for drawing, based on the character's location on the map.
     Point _intOffset; // An integer version of the offset
     void updateOffset(); // Update the offset, when the character moves.

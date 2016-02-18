@@ -5,6 +5,7 @@
 #include "Element.h"
 #include "Window.h"
 #include "../Client.h"
+#include "../TooltipBuilder.h"
 #include "../../util.h"
 
 extern Renderer renderer;
@@ -22,6 +23,8 @@ int Element::ITEM_HEIGHT = 0;
 Texture Element::transparentBackground;
 
 const Point *Element::absMouse = 0;
+
+const Texture *Element::_currentTooltip = 0;
 
 Element::Element(const Rect &rect):
 _changed(true),
@@ -255,6 +258,8 @@ void Element::onMouseMove(const Point &mousePos){
     const Point relativeLocation = mousePos - location();
     if (_mouseMove)
         _mouseMove(*_mouseMoveElement, relativeLocation);
+    if (_tooltip && collision(mousePos, rect()))
+        _currentTooltip = &_tooltip;
     for (Element *child : _children)
         child->onMouseMove(relativeLocation);
 }
@@ -327,6 +332,14 @@ Element *Element::findChild(const std::string id){
             return found;
     }
     return 0;
+}
+
+void Element::resetTooltip(){
+    _currentTooltip = 0;
+}
+
+void Element::setTooltip(const std::string &text){
+    _tooltip = TooltipBuilder::basicTooltip(text);
 }
 
 void Element::draw(){

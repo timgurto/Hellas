@@ -37,6 +37,8 @@ private:
 
     static Texture transparentBackground;
 
+    static const Texture *_currentTooltip; // The tooltip currently moused over.
+
     mutable bool _changed; // If true, this element should be refreshed before next being drawn.
     bool _dimensionsChanged; // If true, destroy and recreate texture before next draw.
 
@@ -47,6 +49,8 @@ private:
     Element *_parent; // 0 if no parent.
 
     std::string _id; // Optional ID for finding children.
+
+    Texture _tooltip; // Optional tooltip
 
 protected:
     static Color
@@ -60,6 +64,8 @@ protected:
     Texture _texture; // A memoized image of the element, redrawn only when necessary.
     Point location() const { return Point(_rect.x, _rect.y); }
     virtual void checkIfChanged(); // Allows elements to update their changed status.
+
+    static void resetTooltip(); // To be called once, when the mouse moves.
 
     typedef void (*mouseDownFunction_t)(Element &e, const Point &mousePos);
     typedef void (*mouseUpFunction_t)(Element &e, const Point &mousePos);
@@ -119,6 +125,8 @@ public:
     const std::string &id() const { return _id; }
     void id(const std::string &id) { _id = id; }
     const children_t &children() const { return _children; }
+    void setTooltip(const std::string &text); // Add a simple tooltip.
+    static const Texture *tooltip() { return _currentTooltip; }
 
     void show();
     void hide();
