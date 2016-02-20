@@ -395,4 +395,5 @@ void Element::makeBackgroundTransparent(){
 
 void Element::cleanup(){
     transparentBackground = Texture();
+    Container::_highlight = Texture();
 }

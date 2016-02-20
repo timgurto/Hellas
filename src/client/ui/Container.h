@@ -16,10 +16,13 @@ class Container : public Element{
     size_t _serial; // The serial of the object with this container.  0 = user's inventory.
 
     size_t
+        _mouseOverSlot, // The slot that the mouse is currently over
         _leftMouseDownSlot, // The slot that the left mouse button went down on, if any.
         _rightMouseDownSlot; // The slot that the left mouse button went down on, if any.
 
     static const size_t NO_SLOT;
+
+    static Texture _highlight; // Emphasizes any slot the mouse is over.
 
     static size_t dragSlot; // The slot currently being dragged from.
     static const Container *dragContainer; // The container currently being dragged from.
@@ -33,6 +36,7 @@ class Container : public Element{
     static void leftMouseUp(Element &e, const Point &mousePos);
     static void rightMouseDown(Element &e, const Point &mousePos);
     static void rightMouseUp(Element &e, const Point &mousePos);
+    static void mouseMove(Element &e, const Point &mousePos);
 
     size_t getSlot(const Point &mousePos) const;
 
@@ -48,6 +52,7 @@ public:
     static void clearUseItem();
 
     friend Client;
+    friend void Element::cleanup();
 };
 
 #endif

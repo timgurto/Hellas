@@ -158,7 +158,7 @@ public:
     bool onRightMouseDown(const Point &mousePos); 
     bool onScrollUp(const Point &mousePos);
     bool onScrollDown(const Point &mousePos);
-    // Recurse to all children, calling _mouse?() in all found.
+    // Recurse to all children, calling _mouse*() in all found.
     void onLeftMouseUp(const Point &mousePos);
     void onRightMouseUp(const Point &mousePos);
     void onMouseMove(const Point &mousePos);

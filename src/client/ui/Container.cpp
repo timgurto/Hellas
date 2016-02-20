@@ -4,6 +4,7 @@
 #include "Container.h"
 #include "../Client.h"
 #include "../Renderer.h"
+#include "../Texture.h"
 #include "../../server/User.h"
 
 extern Renderer renderer;
@@ -19,6 +20,8 @@ const Container *Container::dragContainer = 0;
 size_t Container::useSlot = NO_SLOT;
 const Container *Container::useContainer = 0;
 
+Texture Container::_highlight;
+
 Container::Container(size_t rows, size_t cols, Item::vect_t &linked, size_t serial, int x, int y):
 Element(Rect(x, y,
                  cols * (Client::ICON_SIZE + GAP + 2) + GAP,
@@ -27,8 +30,12 @@ _rows(rows),
 _cols(cols),
 _linked(linked),
 _serial(serial),
+_mouseOverSlot(NO_SLOT),
 _leftMouseDownSlot(NO_SLOT),
 _rightMouseDownSlot(NO_SLOT){
+    if (!_highlight)
+        _highlight = Texture(std::string("Images/Items/highlight.png"));
+
     for (size_t i = 0; i != _linked.size(); ++i) {
         const int
             x = i % cols,
@@ -42,6 +49,7 @@ _rightMouseDownSlot(NO_SLOT){
     setLeftMouseUpFunction(leftMouseUp);
     setRightMouseDownFunction(rightMouseDown);
     setRightMouseUpFunction(rightMouseUp);
+    setMouseMoveFunction(mouseMove);
 }
 
 void Container::refresh(){
@@ -55,16 +63,19 @@ void Container::refresh(){
                                    Client::ICON_SIZE + 2, Client::ICON_SIZE + 2);
         static const Rect SLOT_BACKGROUND_OFFSET = Rect(1, 1, -2, -2);
         renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
-        if (dragSlot == i) // Don't draw an item being moved by the mouse.
-            continue;
-        const std::pair<const Item *, size_t> &slot = _linked[i];
-        if (slot.first){
-            slot.first->icon().draw(slotRect.x + 1, slotRect.y + 1);
-            if (slot.second > 1){
-                Texture label(font(), makeArgs(slot.second), FONT_COLOR);
-                label.draw(slotRect.x + slotRect.w - label.width() - 1,
-                           slotRect.y + slotRect.h - label.height() + 1 + textOffset);
+        if (dragSlot != i) { // Don't draw an item being moved by the mouse.
+            const std::pair<const Item *, size_t> &slot = _linked[i];
+            if (slot.first){
+                slot.first->icon().draw(slotRect.x + 1, slotRect.y + 1);
+                if (slot.second > 1){
+                    Texture label(font(), makeArgs(slot.second), FONT_COLOR);
+                    label.draw(slotRect.x + slotRect.w - label.width() - 1,
+                               slotRect.y + slotRect.h - label.height() + 1 + textOffset);
+                }
             }
+        }
+        if (_mouseOverSlot == i) {
+            _highlight.draw(slotRect.x + 1, slotRect.y + 1);
         }
     }
 }
@@ -134,6 +145,15 @@ void Container::rightMouseUp(Element &e, const Point &mousePos){
         }
     }
     container._rightMouseDownSlot = NO_SLOT;
+}
+
+void Container::mouseMove(Element &e, const Point &mousePos){
+    Container &container = dynamic_cast<Container &>(e);
+    size_t slot = container.getSlot(mousePos);
+    if (slot != container._mouseOverSlot) {
+        container._mouseOverSlot = slot;
+        container.markChanged();
+    }
 }
 
 const Item *Container::getDragItem() {
