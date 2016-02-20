@@ -14,6 +14,7 @@
 #include "Entity.h"
 #include "Item.h"
 #include "LogSDL.h"
+#include "Terrain.h"
 #include "ui/ChoiceList.h"
 #include "ui/Window.h"
 #include "../Args.h"
@@ -56,6 +57,7 @@ public:
     typedef std::list<Window *> windows_t;
 
 private:
+    static Client *_instance;
     static LogSDL *_debugInstance;
 
     static const Uint32 MAX_TICK_LENGTH;
@@ -68,8 +70,6 @@ private:
     static const int
         SCREEN_X,
         SCREEN_Y;
-
-    static Client *_instance;
 
     Texture
         _cursorNormal,
@@ -112,7 +112,7 @@ private:
     void initializeInventoryWindow();
     Texture _constructionFootprint;
 
-    Texture _tile[5];
+    Terrain _terrain[5];
 
     Avatar _character; // Describes the user's character
     Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.

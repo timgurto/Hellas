@@ -157,16 +157,11 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
     _entities.insert(&_character);
 
     Avatar::image("Images/man.png");
-    _tile[0] = Texture(std::string("Images/Terrain/grass.png"));
-    _tile[1] = Texture(std::string("Images/Terrain/stone.png"));
-    _tile[2] = Texture(std::string("Images/Terrain/road.png"));
-    _tile[3] = Texture(std::string("Images/Terrain/deepWater.png"));
-    _tile[4] = Texture(std::string("Images/Terrain/water.png"));
-    if (!isDebug())
-        for (size_t i = 0; i != 5; ++i) {
-            _tile[i].setBlend(SDL_BLENDMODE_ADD);
-            _tile[i].setAlpha(0x3f);
-        }
+    _terrain[0] = Terrain("Images/Terrain/grass.png");
+    _terrain[1] = Terrain("Images/Terrain/stone.png");
+    _terrain[2] = Terrain("Images/Terrain/road.png");
+    _terrain[3] = Terrain("Images/Terrain/deepWater.png", false);
+    _terrain[4] = Terrain("Images/Terrain/water.png", false);
 
     // Player's inventory
     for (size_t i = 0; i != INVENTORY_SIZE; ++i)
@@ -1001,7 +996,7 @@ void Client::drawTooltip() const{
 
 void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
     if (isDebug()) {
-        _tile[_map[x][y]].draw(xLoc, yLoc);
+        _terrain[_map[x][y]].draw(xLoc, yLoc);
         return;
     }
 
@@ -1050,7 +1045,7 @@ void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
         FULL         (0,        0,        TILE_W,   TILE_H);
 
     // Black background
-    // Assuming all tile images are set to SDL_BLENDMODE_ADD and 0x3f alpha
+    // Assuming all tile images are set to SDL_BLENDMODE_ADD and quarter alpha
     renderer.setDrawColor(Color::BLACK);
     if (yOdd && x == 0) {
         renderer.fillRect(drawLoc + RIGHT_HALF);
@@ -1063,36 +1058,36 @@ void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
     }
 
     // Half-alpha base tile
-    _tile[tileID].setAlpha(0x7f);
+    _terrain[tileID].setHalfAlpha();
     if (yOdd && x == 0) {
-        _tile[tileID].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-        _tile[tileID].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+        _terrain[tileID].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+        _terrain[tileID].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
     } else if (!yOdd && x == _mapX-1) {
-        _tile[tileID].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-        _tile[tileID].draw(drawLoc + TOP_LEFT, TOP_LEFT);
+        _terrain[tileID].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+        _terrain[tileID].draw(drawLoc + TOP_LEFT, TOP_LEFT);
     } else {
-        _tile[tileID].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-        _tile[tileID].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-        _tile[tileID].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-        _tile[tileID].draw(drawLoc + TOP_LEFT, TOP_LEFT);
+        _terrain[tileID].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+        _terrain[tileID].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+        _terrain[tileID].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+        _terrain[tileID].draw(drawLoc + TOP_LEFT, TOP_LEFT);
     }
-    _tile[tileID].setAlpha(0x3f);
+    _terrain[tileID].setQuarterAlpha();
 
     // Quarter-alpha L, R, E, F, G, H tiles
     if (!yOdd || x != 0) {
-        _tile[L].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-        _tile[L].draw(drawLoc + TOP_LEFT, TOP_LEFT);
-        _tile[G].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-        _tile[H].draw(drawLoc + TOP_LEFT, TOP_LEFT);
+        _terrain[L].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+        _terrain[L].draw(drawLoc + TOP_LEFT, TOP_LEFT);
+        _terrain[G].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+        _terrain[H].draw(drawLoc + TOP_LEFT, TOP_LEFT);
     }
     if (yOdd || x != _mapX-1) {
-        _tile[R].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-        _tile[R].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-        _tile[E].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-        _tile[F].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+        _terrain[R].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+        _terrain[R].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+        _terrain[E].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+        _terrain[F].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
     }
 
-    /*if (tileID == 3 || tileID == 4) {
+    /*if (!_terrain[tileID].isTraversable()) {
         renderer.setDrawColor(Color::RED);
         renderer.drawRect(drawLoc + FULL);
     }*/

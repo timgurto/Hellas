@@ -106,6 +106,7 @@
     <ClCompile Include="src\client\main.cpp" />
     <ClCompile Include="src\client\LogSDL.cpp" />
     <ClCompile Include="src\client\Renderer.cpp" />
+    <ClCompile Include="src\Client\Terrain.cpp" />
     <ClCompile Include="src\client\Texture.cpp" />
     <ClCompile Include="src\client\TooltipBuilder.cpp" />
     <ClCompile Include="src\client\ui\Button.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="src\client\Item.h" />
     <ClInclude Include="src\client\LogSDL.h" />
     <ClInclude Include="src\client\Renderer.h" />
+    <ClInclude Include="src\Client\Terrain.h" />
     <ClInclude Include="src\client\Texture.h" />
     <ClInclude Include="src\client\TooltipBuilder.h" />
     <ClInclude Include="src\client\ui\Button.h" />
