@@ -81,6 +81,8 @@ void Container::refresh(){
 }
 
 size_t Container::getSlot(const Point &mousePos) const{
+    if (!collision(mousePos, rect()))
+        return NO_SLOT;
     size_t
         x = static_cast<size_t>((mousePos.x - GAP) / (Client::ICON_SIZE + GAP + 2)),
         y = static_cast<size_t>((mousePos.y - GAP - 1) / (Client::ICON_SIZE + GAP + 2));
