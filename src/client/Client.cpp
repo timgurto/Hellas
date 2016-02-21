@@ -161,15 +161,17 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
     // Load terrain
     xr.newFile("Data/terrain.xml");
     for (auto elem : xr.getChildren("terrain")) {
-        std::string s;
-        if (!xr.findAttr(elem, "index", s))
+        int index;
+        if (!xr.findAttr(elem, "index", index))
             continue;
-        char index = s[0];
-        if (!xr.findAttr(elem, "imageFile", s))
+        std::string fileName;
+        if (!xr.findAttr(elem, "imageFile", fileName))
             continue;
         int isTraversable = 1;
         xr.findAttr(elem, "isTraversable", isTraversable);
-        _terrain.insert(Terrain(index, s, isTraversable != 0));
+        if (index >= static_cast<int>(_terrain.size()))
+            _terrain.resize(index+1);
+        _terrain[index] = Terrain(fileName, isTraversable != 0);
     }
 
     // Player's inventory
@@ -1005,7 +1007,7 @@ void Client::drawTooltip() const{
 
 void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
     if (isDebug()) {
-        _terrain.find(_map[x][y])->draw(xLoc, yLoc);
+        _terrain[_map[x][y]].draw(xLoc, yLoc);
         return;
     }
 
@@ -1067,36 +1069,36 @@ void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
     }
 
     // Half-alpha base tile
-    _terrain.find(tileID)->setHalfAlpha();
+    _terrain[tileID].setHalfAlpha();
     if (yOdd && x == 0) {
-        _terrain.find(tileID)->draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-        _terrain.find(tileID)->draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+        _terrain[tileID].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+        _terrain[tileID].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
     } else if (!yOdd && x == _mapX-1) {
-        _terrain.find(tileID)->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-        _terrain.find(tileID)->draw(drawLoc + TOP_LEFT, TOP_LEFT);
+        _terrain[tileID].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+        _terrain[tileID].draw(drawLoc + TOP_LEFT, TOP_LEFT);
     } else {
-        _terrain.find(tileID)->draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-        _terrain.find(tileID)->draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-        _terrain.find(tileID)->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-        _terrain.find(tileID)->draw(drawLoc + TOP_LEFT, TOP_LEFT);
+        _terrain[tileID].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+        _terrain[tileID].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+        _terrain[tileID].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+        _terrain[tileID].draw(drawLoc + TOP_LEFT, TOP_LEFT);
     }
-    _terrain.find(tileID)->setQuarterAlpha();
+    _terrain[tileID].setQuarterAlpha();
 
     // Quarter-alpha L, R, E, F, G, H tiles
     if (!yOdd || x != 0) {
-        _terrain.find(L)->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-        _terrain.find(L)->draw(drawLoc + TOP_LEFT, TOP_LEFT);
-        _terrain.find(G)->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-        _terrain.find(H)->draw(drawLoc + TOP_LEFT, TOP_LEFT);
+        _terrain[L].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+        _terrain[L].draw(drawLoc + TOP_LEFT, TOP_LEFT);
+        _terrain[G].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+        _terrain[H].draw(drawLoc + TOP_LEFT, TOP_LEFT);
     }
     if (yOdd || x != _mapX-1) {
-        _terrain.find(R)->draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-        _terrain.find(R)->draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-        _terrain.find(E)->draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-        _terrain.find(F)->draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+        _terrain[R].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+        _terrain[R].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+        _terrain[E].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+        _terrain[F].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
     }
 
-    /*if (!_terrain.find(tileID)->isTraversable()) {
+    /*if (!_terrain[tileID].isTraversable()) {
         renderer.setDrawColor(Color::RED);
         renderer.drawRect(drawLoc + FULL);
     }*/
@@ -1361,9 +1363,9 @@ void Client::handleMessage(const std::string &msg){
                 break;
             _mapX = x;
             _mapY = y;
-            _map = std::vector<std::vector<char> >(_mapX);
+            _map = std::vector<std::vector<size_t> >(_mapX);
             for (size_t x = 0; x != _mapX; ++x)
-                _map[x] = std::vector<char>(_mapY, 0);
+                _map[x] = std::vector<size_t>(_mapY, 0);
             break;
         }
 
@@ -1375,10 +1377,15 @@ void Client::handleMessage(const std::string &msg){
                 break;
             if (y > _mapY)
                 break;
-            std::vector<char> terrain;
+            std::vector<size_t> terrain;
             for (size_t i = 0; i != n; ++i) {
-                char index;
+                size_t index;
                 singleMsg >> index >> del;
+                if (index > _terrain.size()) {
+                    _debug << Color::RED << "Invalid terrain type receved ("
+                           << index << "); aborted." << Log::endl;
+                    break;
+                }
                 terrain.push_back(index);
             }
             if (del != ']')

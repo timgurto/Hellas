@@ -9,9 +9,9 @@ Client only:
  - imageFile
 -->
 
-<terrain index="G" imageFile="grass" />
-<terrain index="S" imageFile="stone" />
-<terrain index="R" imageFile="road" />
-<terrain index="W" imageFile="deepWater" isTraversable=0 />
-<terrain index="w" imageFile="water" isTraversable=0 />
+<terrain index=0 imageFile="grass" />
+<terrain index=1 imageFile="stone" />
+<terrain index=2 imageFile="road" />
+<terrain index=3 imageFile="deepWater" isTraversable=0 />
+<terrain index=4 imageFile="water" isTraversable=0 />
 </root>

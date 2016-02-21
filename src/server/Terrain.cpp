@@ -2,11 +2,6 @@
 
 #include "Terrain.h"
 
-Terrain::Terrain(char index, bool isTraversable):
-_index(index),
+Terrain::Terrain(bool isTraversable):
 _isTraversable(isTraversable)
 {}
-
-bool Terrain::operator<(const Terrain &rhs) const{
-    return _index < rhs._index;
-}

@@ -696,12 +696,14 @@ void Server::loadData(){
     // Load terrain
     XmlReader xr("Data/terrain.xml");
     for (auto elem : xr.getChildren("terrain")) {
-        std::string index;
+        int index;
         if (!xr.findAttr(elem, "index", index))
             continue;
         int isTraversable = 1;
         xr.findAttr(elem, "isTraversable", isTraversable);
-        _terrain.insert(Terrain(index[0], isTraversable != 0));
+        if (index >= static_cast<int>(_terrain.size()))
+            _terrain.resize(index+1);
+        _terrain[index] = Terrain(isTraversable != 0);
     }
 
     // Object types
@@ -828,9 +830,9 @@ void Server::loadData(){
             _debug("Map size missing or incomplete.", Color::RED);
             break;
         }
-        _map = std::vector<std::vector<char> >(_mapX);
+        _map = std::vector<std::vector<size_t> >(_mapX);
         for (size_t x = 0; x != _mapX; ++x)
-            _map[x] = std::vector<char>(_mapY, 0);
+            _map[x] = std::vector<size_t>(_mapY, 0);
         for (auto row : xr.getChildren("row")) {
             size_t y;
             if (!xr.findAttr(row, "y", y) || y >= _mapY)
@@ -839,10 +841,10 @@ void Server::loadData(){
                 size_t x;
                 if (!xr.findAttr(tile, "x", x) || x >= _mapX)
                     break;
-                std::string index;
+                int index;
                 if (!xr.findAttr(tile, "terrain", index))
                     break;
-                _map[x][y] = index[0];
+                _map[x][y] = index;
             }
         }
 
@@ -985,16 +987,16 @@ void Server::generateWorld(){
     _mapY = 30;
 
     static const char
-        GRASS = 'G',
-        STONE = 'S',
-        ROAD = 'R',
-        WATER = 'w',
-        DEEP_WATER = 'W';
+        GRASS = 0,
+        STONE = 1,
+        ROAD = 2,
+        WATER = 4,
+        DEEP_WATER = 3;
 
     // Grass by default
-    _map = std::vector<std::vector<char> >(_mapX);
+    _map = std::vector<std::vector<size_t> >(_mapX);
     for (size_t x = 0; x != _mapX; ++x){
-        _map[x] = std::vector<char>(_mapY);
+        _map[x] = std::vector<size_t>(_mapY);
         for (size_t y = 0; y != _mapY; ++y)
             _map[x][y] = GRASS;
     }
