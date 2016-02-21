@@ -471,7 +471,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             user->actionTarget(&obj);
-            sendMessage(client, SV_ACTION_STARTED, makeArgs(obj.type()->actionTime()));
+            sendMessage(client, SV_ACTION_STARTED, makeArgs(obj.type()->gatherTime()));
             break;
         }
 
@@ -715,7 +715,7 @@ void Server::loadData(){
         ObjectType ot(id);
 
         std::string s; int n;
-        if (xr.findAttr(elem, "actionTime", n)) ot.actionTime(n);
+        if (xr.findAttr(elem, "gatherTime", n)) ot.gatherTime(n);
         if (xr.findAttr(elem, "constructionTime", n)) ot.constructionTime(n);
         if (xr.findAttr(elem, "gatherReq", s)) ot.gatherReq(s);
         for (auto yield : xr.getChildren("yield", elem)) {

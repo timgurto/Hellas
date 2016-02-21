@@ -1,4 +1,16 @@
 <root>
+
+<!--
+Both:
+ - id
+ - class
+ - constructs
+ - stackSize
+
+Client only:
+ - name
+-->
+
 <item
     id="wood"
     name="Wood"

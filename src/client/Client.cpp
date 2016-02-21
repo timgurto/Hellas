@@ -263,7 +263,7 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
     }
 
     // Object types
-    xr.newFile("Data/objectTypesClient.xml");
+    xr.newFile("Data/objectTypes.xml");
     for (auto elem : xr.getChildren("objectType")) {
         std::string s; int n;
         if (!xr.findAttr(elem, "id", s))
@@ -278,8 +278,13 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
             ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
         if (xSet || ySet)
             cot.drawRect(drawRect);
-        if (xr.findAttr(elem, "canGather", n) && n != 0) cot.canGather(true);
-        if (xr.findAttr(elem, "containerSlots", n)) cot.containerSlots(n);
+        if (xr.getChildren("yield", elem).size() > 0) cot.canGather(true);
+        
+        auto container = xr.findChild("container", elem);
+        if (container) {
+            if (xr.findAttr(container, "slots", n)) cot.containerSlots(n);
+        }
+
         if (xr.findAttr(elem, "isFlat", n) && n != 0) cot.isFlat(true);
         if (xr.findAttr(elem, "gatherSound", s))
             cot.gatherSound(std::string("Sounds/") + s + ".wav");

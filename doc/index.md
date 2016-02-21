@@ -22,7 +22,6 @@
   - :soon: Textures  
   - [Tooltip building](interfaces/tooltip.md)  
 
-### Game data
- - [Object types](../Data/objectTypes.xml) 
- - [Object types (client side)](../Data/objectTypesClient.xml) 
+### Client data
+ - [Object types](../Data/objectTypes.xml)  
  - [Items](../Data/items.xml)  

@@ -152,7 +152,7 @@ void User::cancelAction() {
 void User::actionTarget(const Object *obj){
     _actionTarget = obj;
     assert(obj->type());
-    _actionTime = obj->type()->actionTime();
+    _actionTime = obj->type()->gatherTime();
 }
 
 void User::actionCraft(const Recipe &recipe){

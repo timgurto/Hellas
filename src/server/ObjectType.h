@@ -12,7 +12,7 @@
 // Describes a class of Objects, the "instances" of which share common properties
 class ObjectType{
     std::string _id;
-    Uint32 _actionTime;
+    Uint32 _gatherTime;
     Uint32 _constructionTime;
 
     // To gather from objects of this type, a user must have an item of the following class.
@@ -31,14 +31,14 @@ public:
     ObjectType(const std::string &id);
     ObjectType(const Rect &collisionRect); // Anonymous object type used for collision testing.
 
-    void actionTime(Uint32 t) { _actionTime = t; }
+    void gatherTime(Uint32 t) { _gatherTime = t; }
     const std::string &gatherReq() const { return _gatherReq; }
     void gatherReq(const std::string &req) { _gatherReq = req; }
     size_t containerSlots() const { return _containerSlots; }
     void containerSlots(size_t n) { _containerSlots = n; }
 
     const std::string &id() const { return _id; }
-    Uint32 actionTime() const { return _actionTime; }
+    Uint32 gatherTime() const { return _gatherTime; }
     Uint32 constructionTime() const { return _constructionTime; }
     void constructionTime(Uint32 t) { _constructionTime = t; }
     const Yield &yield() const { return _yield; }

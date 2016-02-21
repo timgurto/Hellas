@@ -1,20 +1,54 @@
 <root>
+
+<!--
+Both:
+ - id
+ - container
+ - yield
+ - collisionRect
+
+Client only:
+ - name
+ - xDrawOffset
+ - yDrawOffset
+ - isFlat
+ - gatherSound
+
+Server only:
+ - constructionTimer
+ - gatherReq
+ - class
+-->
+
 <objectType
     id="tree"
+    name="Tree"
+    xDrawOffset=-20
+    yDrawOffset=-47
+    canGather=1
+    gatherSound="chop-pause"
     gatherReq="axe"
-    actionTime=3000 >
+    gatherTime=3000 >
     <yield id="wood" initialMean=6 initialSD=0.8 />
     <collisionRect x=-5 y=-5 w=10 h=10 />
 </objectType>
 
 <objectType
     id="branch"
-    actionTime=1000 >
+    gatherTime=1000
+    name="Branch"
+    xDrawOffset=-14
+    yDrawOffset=-12
+    canGather=1
+    isFlat=1 >
     <yield id="wood" />
 </objectType>
 
 <objectType
     id="chest"
+    name="Wooden chest"
+    xDrawOffset=-14
+    yDrawOffset=-22
     constructionTime=2000 >
     <collisionRect x=-14 y=-6 w=28 h=12 />
     <class name="set square" />
