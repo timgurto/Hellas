@@ -4,14 +4,19 @@
 #include "Terrain.h"
 #include "../util.h"
 
-Terrain::Terrain(const std::string &imageFile, bool isTraversable):
-_image(imageFile),
+Terrain::Terrain(char index, const std::string &imageFile, bool isTraversable):
+_index(index),
+_image(std::string("Images/Terrain/") + imageFile + ".png"),
 _isTraversable(isTraversable)
 {
     if (!isDebug()) {
         _image.setBlend(SDL_BLENDMODE_ADD);
         setQuarterAlpha();
     }
+}
+
+bool Terrain::operator<(const Terrain &rhs) const{
+    return _index < rhs._index;
 }
 
 void Terrain::draw(const Rect &loc, const Rect &srcRect) const{

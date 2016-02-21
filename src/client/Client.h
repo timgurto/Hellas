@@ -112,8 +112,6 @@ private:
     void initializeInventoryWindow();
     Texture _constructionFootprint;
 
-    Terrain _terrain[5];
-
     Avatar _character; // Describes the user's character
     Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.
 
@@ -176,13 +174,14 @@ private:
     Texture getInventoryTooltip() const; // Generate tooltip for the inventory
 
     // Game data
+    std::set<Terrain> _terrain;
     std::set<Item> _items;
     std::set<Recipe> _recipes;
     std::set<ClientObjectType> _objectTypes;
 
     // Information about the state of the world
     size_t _mapX, _mapY;
-    std::vector<std::vector<size_t> > _map;
+    std::vector<std::vector<char> > _map;
     Item::vect_t _inventory;
     std::map<std::string, Avatar*> _otherUsers; // For lookup by name
     std::map<size_t, ClientObject*> _objects; // For lookup by serial

@@ -1,0 +1,17 @@
+<root>
+
+<!--
+Both:
+ - index
+ - isTraversable
+
+Client only:
+ - imageFile
+-->
+
+<terrain index="G" imageFile="grass" />
+<terrain index="S" imageFile="stone" />
+<terrain index="R" imageFile="road" />
+<terrain index="W" imageFile="deepWater" isTraversable=0 />
+<terrain index="w" imageFile="water" isTraversable=0 />
+</root>

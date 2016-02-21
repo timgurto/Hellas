@@ -25,7 +25,8 @@ bool Server::isLocationValid(const Point &loc, const ObjectType &type,
     // Terrain
     CollisionChunk chunk = getCollisionChunk(loc);
     auto coords = getTileCoords(loc);
-    if (!chunk.isTilePassable(coords.first, coords.second))
+    const Terrain &terrain = *_terrain.find(_map[coords.first][coords.second]);
+    if (!terrain.isTraversable())
         return false;
 
     // Users

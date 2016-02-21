@@ -7,11 +7,14 @@
 #include "../Rect.h"
 
 class Terrain{
+    char _index;
     Texture _image;
     bool _isTraversable;
 
 public:
-    Terrain(const std::string &imageFile = "", bool isTraversable = true);
+    Terrain(char index, const std::string &imageFile = "", bool isTraversable = true);
+
+    bool operator<(const Terrain &rhs) const;
 
     void draw(const Rect &loc, const Rect &srcRect) const;
     void draw(int x, int y) const;

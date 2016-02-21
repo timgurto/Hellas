@@ -692,8 +692,20 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
 }
 
 void Server::loadData(){
+
+    // Load terrain
+    XmlReader xr("Data/terrain.xml");
+    for (auto elem : xr.getChildren("terrain")) {
+        std::string index;
+        if (!xr.findAttr(elem, "index", index))
+            continue;
+        int isTraversable = 1;
+        xr.findAttr(elem, "isTraversable", isTraversable);
+        _terrain.insert(Terrain(index[0], isTraversable != 0));
+    }
+
     // Object types
-    XmlReader xr("Data/objectTypes.xml");
+    xr.newFile("Data/objectTypes.xml");
     for (auto elem : xr.getChildren("objectType")) {
         std::string id;
         if (!xr.findAttr(elem, "id", id))
@@ -816,9 +828,9 @@ void Server::loadData(){
             _debug("Map size missing or incomplete.", Color::RED);
             break;
         }
-        _map = std::vector<std::vector<size_t> >(_mapX);
+        _map = std::vector<std::vector<char> >(_mapX);
         for (size_t x = 0; x != _mapX; ++x)
-            _map[x] = std::vector<size_t>(_mapY, 0);
+            _map[x] = std::vector<char>(_mapY, 0);
         for (auto row : xr.getChildren("row")) {
             size_t y;
             if (!xr.findAttr(row, "y", y) || y >= _mapY)
@@ -827,8 +839,10 @@ void Server::loadData(){
                 size_t x;
                 if (!xr.findAttr(tile, "x", x) || x >= _mapX)
                     break;
-                if (!xr.findAttr(tile, "terrain", _map[x][y]))
+                std::string index;
+                if (!xr.findAttr(tile, "terrain", index))
                     break;
+                _map[x][y] = index[0];
             }
         }
 
@@ -900,7 +914,7 @@ void Server::loadData(){
 }
 
 void Server::saveData(const std::set<Object> &objects){
-    // Map
+    // Map // TODO: Only save map once, on generation.
 #ifndef SINGLE_THREAD
     static std::mutex mapFileMutex;
     mapFileMutex.lock();
@@ -970,12 +984,19 @@ void Server::generateWorld(){
     _mapX = 30;
     _mapY = 30;
 
+    static const char
+        GRASS = 'G',
+        STONE = 'S',
+        ROAD = 'R',
+        WATER = 'w',
+        DEEP_WATER = 'W';
+
     // Grass by default
-    _map = std::vector<std::vector<size_t> >(_mapX);
+    _map = std::vector<std::vector<char> >(_mapX);
     for (size_t x = 0; x != _mapX; ++x){
-        _map[x] = std::vector<size_t>(_mapY);
+        _map[x] = std::vector<char>(_mapY);
         for (size_t y = 0; y != _mapY; ++y)
-            _map[x][y] = 0;
+            _map[x][y] = GRASS;
     }
 
     // Stone in circles
@@ -989,7 +1010,7 @@ void Server::generateWorld(){
                     thisTile.x -= .5;
                 const double dist = distance(Point(centerX, centerY), thisTile);
                 if (dist <= 4)
-                    _map[x][y] = 1;
+                    _map[x][y] = STONE;
             }
     }
 
@@ -1005,7 +1026,7 @@ void Server::generateWorld(){
                     thisTile.x -= .5;
                 double dist = distance(thisTile, start, end);
                 if (dist <= 1)
-                    _map[x][y] = 2;
+                    _map[x][y] = ROAD;
             }
     }
 
@@ -1020,24 +1041,9 @@ void Server::generateWorld(){
                 thisTile.x -= .5;
             double dist = distance(thisTile, start, end) + randDouble() * 2 - 1;
             if (dist <= 0.5)
-                _map[x][y] = 3;
+                _map[x][y] = DEEP_WATER;
             else if (dist <= 2)
-                _map[x][y] = 4;
-        }
-
-    // Add tiles to chunks
-    for (size_t x = 0; x != _mapX; ++x)
-        for (size_t y = 0; y != _mapY; ++y) {
-            Point tileMidpoint(x * TILE_W, y * TILE_H + TILE_H / 2);
-            if (y % 2 == 1)
-                tileMidpoint.x += TILE_W / 2;
-            // Add terrain info to adjacent chunks too
-            auto superChunk = getCollisionSuperChunk(tileMidpoint);
-            for (CollisionChunk *chunk : superChunk){
-                size_t tile = _map[x][y];
-                bool passable = tile != 3 && tile != 4;
-                chunk->addTile(x, y, passable);
-            }
+                _map[x][y] = WATER;
         }
 
     const ObjectType *const branch = &*_objectTypes.find(std::string("branch"));

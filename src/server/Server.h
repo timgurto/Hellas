@@ -15,6 +15,7 @@
 #include "LogConsole.h"
 #include "Object.h"
 #include "Recipe.h"
+#include "Terrain.h"
 #include "User.h"
 #include "../Args.h"
 #include "../messageCodes.h"
@@ -89,11 +90,12 @@ private:
 
     Point mapRand() const; // Return a random point on the map.
     size_t _mapX, _mapY; // Number of tiles in each dimension.
-    std::vector<std::vector<size_t>> _map;
+    std::vector<std::vector<char>> _map;
     size_t findTile(const Point &p) const; // Find the tile type at the specified location.
     std::pair<size_t, size_t> getTileCoords(const Point &p) const;
 
     // World data
+    std::set<Terrain> _terrain;
     std::set<Item> _items;
     std::set<Recipe> _recipes;
     std::set<ObjectType> _objectTypes;
