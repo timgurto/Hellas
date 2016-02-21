@@ -171,7 +171,10 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
         xr.findAttr(elem, "isTraversable", isTraversable);
         if (index >= static_cast<int>(_terrain.size()))
             _terrain.resize(index+1);
-        _terrain[index] = Terrain(fileName, isTraversable != 0);
+        int frames = 1, frameTime = 0;
+        xr.findAttr(elem, "frames", frames);
+        xr.findAttr(elem, "frameTime", frameTime);
+        _terrain[index] = Terrain(fileName, isTraversable != 0, frames, frameTime);
     }
 
     // Player's inventory
@@ -705,6 +708,10 @@ void Client::run(){
         // Update cast bar
         if (_actionLength > 0)
             _actionTimer = min(_actionTimer + _timeElapsed, _actionLength);
+
+        // Update terrain animation
+        for (Terrain &terrain : _terrain)
+            terrain.advanceTime(_timeElapsed);
 
         if (_mouseMoved)
             checkMouseOver();

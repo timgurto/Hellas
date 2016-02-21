@@ -1,33 +1,62 @@
 // (C) 2016 Tim Gurto
 
 #include <cassert>
+#include <sstream>
 
 #include "Client.h"
 #include "Terrain.h"
 #include "../util.h"
 
-Terrain::Terrain(const std::string &imageFile, bool isTraversable):
-_image(std::string("Images/Terrain/") + imageFile + ".png"),
-_isTraversable(isTraversable)
+Terrain::Terrain(const std::string &imageFile, bool isTraversable, size_t frames, Uint32 frameTime):
+_isTraversable(isTraversable),
+_frames(frames),
+_frame(0),
+_frameTime(frameTime),
+_frameTimer(frameTime)
 {
-    if (!isDebug()) {
-        _image.setBlend(SDL_BLENDMODE_ADD);
-        setQuarterAlpha();
-    }
+    if (_frames == 1)
+        _images.push_back(std::string("Images/Terrain/") + imageFile + ".png");
+    else
+        for (size_t i = 0; i != frames; ++i) {
+            std::ostringstream oss;
+            oss << "Images/Terrain/" << imageFile;
+            //if (_frames > 100 && i < 100)
+            //    oss << "0";
+            if (_frames > 10 && i < 10)
+                oss << "0";
+            oss << i << ".png";
+            _images.push_back(oss.str());
+        }
+
+    if (!isDebug())
+        for (Texture &frame : _images) {
+            frame.setBlend(SDL_BLENDMODE_ADD);
+            frame.setAlpha(0x3f);
+        }
 }
 
 void Terrain::draw(const Rect &loc, const Rect &srcRect) const{
-    _image.draw(loc, srcRect);
+    _images[_frame].draw(loc, srcRect);
 }
 
 void Terrain::draw(int x, int y) const{
-    _image.draw(x, y);
+    _images[_frame].draw(x, y);
 }
 
 void Terrain::setHalfAlpha() const{
-    _image.setAlpha(0x7f);
+    _images[_frame].setAlpha(0x7f);
 }
 
 void Terrain::setQuarterAlpha() const{
-    _image.setAlpha(0x3f);
+    _images[_frame].setAlpha(0x3f);
+}
+
+void Terrain::advanceTime(Uint32 timeElapsed) {
+    if (_frameTime == 0)
+        return;
+
+    _frameTimer += timeElapsed;
+    if (_frameTimer >= _frameTime * _frames)
+        _frameTimer -= _frameTime * _frames;
+    _frame = _frameTimer / _frameTime;
 }
