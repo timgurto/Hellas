@@ -16,6 +16,7 @@
 #include "LogSDL.h"
 #include "Renderer.h"
 #include "TooltipBuilder.h"
+#include "ui/Button.h"
 #include "ui/Container.h"
 #include "ui/Element.h"
 #include "../XmlReader.h"
@@ -327,6 +328,20 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
                                        _actionTimer, _actionLength);
     _castBar->hide();
     addUI(_castBar);
+
+    static const int
+        MENU_BUTTON_W = 50,
+        MENU_BUTTON_H = 13,
+        NUM_BUTTONS = 2;
+    Element *menuBar = new Element(Rect(SCREEN_X/2 - MENU_BUTTON_W * NUM_BUTTONS / 2,
+                                        SCREEN_Y - MENU_BUTTON_H,
+                                        MENU_BUTTON_W * NUM_BUTTONS,
+                                        MENU_BUTTON_H));
+    menuBar->addChild(new Button(Rect(0, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Crafting",
+                                 Element::toggleVisibilityOf, _craftingWindow));
+    menuBar->addChild(new Button(Rect(MENU_BUTTON_W, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Inventory",
+                                 Element::toggleVisibilityOf, _inventoryWindow));
+    addUI(menuBar);
 }
 
 Client::~Client(){

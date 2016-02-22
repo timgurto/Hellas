@@ -393,6 +393,11 @@ void Element::makeBackgroundTransparent(){
     transparentBackground.draw(dstRect);
 }
 
+void Element::toggleVisibilityOf(void *element){
+    Element *e = static_cast<Element *>(element);
+    e->toggleVisibility();
+}
+
 void Element::cleanup(){
     transparentBackground = Texture();
     Container::_highlight = Texture();

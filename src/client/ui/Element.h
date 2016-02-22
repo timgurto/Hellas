@@ -131,6 +131,7 @@ public:
     void show();
     void hide();
     void toggleVisibility();
+    static void toggleVisibilityOf(void *element);
 
     void markChanged() const;
 
