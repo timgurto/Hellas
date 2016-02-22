@@ -119,7 +119,6 @@
     <ClCompile Include="src\client\ui\Line.cpp" />
     <ClCompile Include="src\client\ui\List.cpp" />
     <ClCompile Include="src\client\ui\Picture.cpp" />
-    <ClCompile Include="src\Client\ui\ProgressBar.cpp" />
     <ClCompile Include="src\client\ui\ShadowBox.cpp" />
     <ClCompile Include="src\client\ui\Window.cpp" />
     <ClCompile Include="src\Color.cpp" />
