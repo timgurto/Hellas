@@ -22,8 +22,6 @@ private:
         _lastDenominatorVal;
 
     virtual void checkIfChanged() override;
-    
-    virtual void refresh() override;
 
 public:
     ProgressBar(const Rect &rect, const T &numerator, const T &denominator);
@@ -50,23 +48,23 @@ _lastDenominatorVal(denominator)
 
 template<typename T>
 void ProgressBar<T>::checkIfChanged(){
+    bool changed = false;
     if (_lastNumeratorVal != _numerator) {
         _lastNumeratorVal = _numerator;
-        markChanged();
+        changed = true;
     }
     if (_lastDenominatorVal != _denominator) {
         _lastDenominatorVal = _denominator;
+        changed = true;
+    }
+    if (true) {
+        if (_denominator == 0 || _numerator >= _denominator)
+            _bar->width(width() - 2);
+        else
+            _bar->width(toInt(1.0 * _numerator / _denominator * (width() - 2)));
         markChanged();
     }
     Element::checkIfChanged();
-}
-
-template<typename T>
-void ProgressBar<T>::refresh(){
-    if (_denominator == 0 || _numerator >= _denominator)
-        _bar->width(width() - 2);
-    else
-        _bar->width(toInt(1.0 * _numerator / _denominator * (width() - 2)));
 }
 
 #endif

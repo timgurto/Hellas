@@ -115,6 +115,7 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
     _instance = this;
     _debugInstance = &_debug;
 
+
     // Read config file
     XmlReader xr("client-config.xml");
 
@@ -137,6 +138,13 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
     xr.findAttr(elem, "offset", _defaultFontOffset);
     Element::textOffset = _defaultFontOffset;
     xr.findAttr(elem, "height", Element::TEXT_HEIGHT);
+
+    int castBarY = 300, castBarW = 150, castBarH = 11;
+    elem = xr.findChild("castBar");
+    xr.findAttr(elem, "y", castBarY);
+    xr.findAttr(elem, "w", castBarW);
+    xr.findAttr(elem, "h", castBarH);
+
 
     Element::initialize();
 
@@ -314,6 +322,11 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
     initializeInventoryWindow();
     addWindow(_craftingWindow);
     addWindow(_inventoryWindow);
+    
+    _castBar = new ProgressBar<Uint32>(Rect(SCREEN_X/2 - castBarW/2, castBarY, castBarW, castBarH),
+                                       _actionTimer, _actionLength);
+    _castBar->hide();
+    addUI(_castBar);
 }
 
 Client::~Client(){
@@ -331,6 +344,9 @@ Client::~Client(){
     // Some entities will destroy their own windows, and remove them from this list.
     for (Window *window : _windows)
         delete window;
+
+    for (Element *element : _ui)
+        delete element;
     Mix_Quit();
 }
 
@@ -518,6 +534,9 @@ void Client::run(){
                 for (Window *window : _windows)
                     if (window->visible())
                         window->onMouseMove(_mouse);
+                for (Element *element : _ui)
+                    if (element->visible())
+                        element->onMouseMove(_mouse);
 
                 if (!_loaded)
                     break;
@@ -534,6 +553,9 @@ void Client::run(){
                     for (Window *window : _windows)
                         if (window->visible())
                             window->onLeftMouseDown(_mouse);
+                    for (Element *element : _ui)
+                        if (element->visible())
+                            element->onLeftMouseDown(_mouse);
 
                     // Bring top clicked window to front
                     for (windows_t::iterator it = _windows.begin(); it != _windows.end(); ++it) {
@@ -553,6 +575,9 @@ void Client::run(){
                     for (Window *window : _windows)
                         if (window->visible())
                             window->onRightMouseDown(_mouse);
+                    for (Element *element : _ui)
+                        if (element->visible())
+                            element->onRightMouseDown(_mouse);
 
                     _rightMouseDownEntity = getEntityAtMouse();
                     break;
@@ -581,6 +606,13 @@ void Client::run(){
                         if (window->visible() && collision(_mouse, window->rect())) {
                             window->onLeftMouseUp(_mouse);
                             mouseUpOnWindow = true;
+                            break;
+                        }
+                    for (Element *element : _ui)
+                        if (!mouseUpOnWindow &&
+                            element->visible() &&
+                            collision(_mouse, element->rect())) {
+                            element->onLeftMouseUp(_mouse);
                             break;
                         }
 
@@ -639,6 +671,8 @@ void Client::run(){
                                       static_cast<float>(renderer.height()) / SCREEN_Y);
                     for (Window *window : _windows)
                         window->forceRefresh();
+                    for (Element *element : _ui)
+                        element->forceRefresh();
                     break;
                 }
 
@@ -706,8 +740,10 @@ void Client::run(){
         updateOffset();
 
         // Update cast bar
-        if (_actionLength > 0)
+        if (_actionLength > 0) {
             _actionTimer = min(_actionTimer + _timeElapsed, _actionLength);
+            _castBar->show();
+        }
 
         // Update terrain animation
         for (Terrain &terrain : _terrain)
@@ -846,36 +882,6 @@ void Client::draw() const{
         }
     }
 
-    // Cast bar
-    if (_actionTimer > 0) {
-        static const int
-            CAST_BAR_Y = 300,
-            CAST_BAR_HEIGHT = 9,
-            CAST_BAR_WIDTH = 150,
-            CAST_BAR_PADDING = 1;
-        static const Color
-            CAST_BAR_BACKGROUND = Color::BLUE / 2 + Color::GREY_2,
-            CAST_BAR_COLOR = Color::RED * 0.75;
-        const Rect
-            castBarBackgroundRect(toInt((SCREEN_X - CAST_BAR_WIDTH) / 2.0 - CAST_BAR_PADDING),
-                                  CAST_BAR_Y - CAST_BAR_PADDING,
-                                  CAST_BAR_WIDTH + 2 * CAST_BAR_PADDING,
-                                  CAST_BAR_HEIGHT + 2 * CAST_BAR_PADDING),
-            castBarRect(toInt((SCREEN_X - CAST_BAR_WIDTH) / 2.0),
-                        CAST_BAR_Y,
-                        toInt(CAST_BAR_WIDTH * 1.0 * _actionTimer / _actionLength),
-                        CAST_BAR_HEIGHT);
-        renderer.setDrawColor(CAST_BAR_BACKGROUND);
-        renderer.fillRect(castBarBackgroundRect);
-        renderer.setDrawColor(CAST_BAR_COLOR);
-        renderer.fillRect(castBarRect);
-
-        renderer.setDrawColor(Color::WHITE);
-        Texture castBarLabel(_defaultFont, _actionMessage, Color::WHITE);
-        castBarLabel.draw(Point((SCREEN_X - castBarLabel.width()) / 2.0,
-                                CAST_BAR_Y + (CAST_BAR_HEIGHT - castBarLabel.height()) / 2.0));
-    }
-
     // FPS/latency
     std::ostringstream oss;
     if (_timeElapsed > 0)
@@ -916,6 +922,10 @@ void Client::draw() const{
         renderer.setDrawColor(Color::WHITE);
         renderer.fillRect(Rect(cursorX, TEXT_BOX_RECT.y + 1, 1, TEXT_BOX_HEIGHT - 2));
     }
+
+    // Non-window UI
+    for (Element *element : _ui)
+        element->draw();
 
     // Windows
     for (windows_t::const_reverse_iterator it = _windows.rbegin(); it != _windows.rend(); ++it)
@@ -1626,8 +1636,10 @@ void Client::prepareAction(const std::string &msg){
 void Client::startAction(Uint32 actionLength){
     _actionTimer = 0;
     _actionLength = actionLength;
-    if (actionLength == 0)
+    if (actionLength == 0) {
+        _castBar->hide();
         Mix_HaltChannel(PLAYER_ACTION_CHANNEL);
+    }
 }
 
 void Client::addWindow(Window *window){
@@ -1636,4 +1648,8 @@ void Client::addWindow(Window *window){
 
 void Client::removeWindow(Window *window){
     _windows.remove(window);
+}
+
+void Client::addUI(Element *element){
+    _ui.push_back(element);
 }

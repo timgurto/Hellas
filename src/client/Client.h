@@ -24,6 +24,7 @@
 #include "../messageCodes.h"
 #include "../server/Recipe.h"
 #include "ui/Container.h"
+#include "ui/ProgressBar.h"
 
 class Client{
 public:
@@ -55,6 +56,7 @@ public:
     static LogSDL &debug() { return *_debugInstance; }
 
     typedef std::list<Window *> windows_t;
+    typedef std::list<Element *> ui_t; // For the UI, that sits below all windows.
 
 private:
     static Client *_instance;
@@ -99,10 +101,6 @@ private:
     // Called when a recipe is selected.
     static void selectRecipe(Element &e, const Point &mousePos);
 
-    windows_t _windows;
-    void addWindow(Window *window);
-    void removeWindow(Window *window); // Linear time
-
     ChoiceList *_recipeList;
     Element *_detailsPane;
 
@@ -111,6 +109,14 @@ private:
     Window *_inventoryWindow;
     void initializeInventoryWindow();
     Texture _constructionFootprint;
+
+    windows_t _windows;
+    void addWindow(Window *window);
+    void removeWindow(Window *window); // Linear time
+
+    ui_t _ui;
+    void addUI(Element *element);
+    ProgressBar<Uint32> *_castBar;
 
     Avatar _character; // Describes the user's character
     Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.
