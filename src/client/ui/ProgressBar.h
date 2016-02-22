@@ -42,8 +42,8 @@ _denominator(denominator),
 _lastNumeratorVal(numerator),
 _lastDenominatorVal(denominator)
 {
-    addChild(new ShadowBox(rect, true));
-    _bar = new ColorBlock(rect + Rect(1, 1, -2, -2), Element::FONT_COLOR);
+    addChild(new ShadowBox(Rect(0, 0, rect.w, rect.h), true));
+    _bar = new ColorBlock(Rect(1, 1, rect.w - 2, rect.h - 2), Element::FONT_COLOR);
     addChild(_bar);
 }
 
