@@ -100,6 +100,7 @@ _lastPingReply(_time),
 _lastPingSent(_time),
 _latency(0),
 _timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
+_fps(0),
 
 _invalidUsername(false),
 _loggedIn(false),
@@ -355,6 +356,27 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
     menuBar->addChild(new Button(Rect(MENU_BUTTON_W, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Inventory",
                                  Element::toggleVisibilityOf, _inventoryWindow));
     addUI(menuBar);
+
+    // Initialize FPS/latency display
+    static const int
+        HARDWARE_STATS_W = 60,
+        HARDWARE_STATS_H = 22,
+        HARDWARE_STATS_LABEL_HEIGHT = 11;
+    static const Rect
+        HARDWARE_STATS_RECT(SCREEN_X - HARDWARE_STATS_W, 0, HARDWARE_STATS_W, HARDWARE_STATS_H);
+    Element *hardwareStats = new Element(Rect(SCREEN_X - HARDWARE_STATS_W, 0,
+                                              HARDWARE_STATS_W, HARDWARE_STATS_H));
+    LinkedLabel<unsigned> *fps = new LinkedLabel<unsigned>(
+        Rect(0, 0, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT),
+        _fps, "", "fps", Label::RIGHT_JUSTIFIED);
+    LinkedLabel<Uint32> *lat = new LinkedLabel<Uint32>(
+        Rect(0, HARDWARE_STATS_LABEL_HEIGHT, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT),
+        _latency, "", "ms", Label::RIGHT_JUSTIFIED);
+    fps->setColor(Color::YELLOW);
+    lat->setColor(Color::YELLOW);
+    hardwareStats->addChild(fps);
+    hardwareStats->addChild(lat);
+    addUI(hardwareStats);
 }
 
 Client::~Client(){
@@ -440,6 +462,7 @@ void Client::run(){
             _timeElapsed = MAX_TICK_LENGTH;
         const double delta = _timeElapsed / 1000.0;
         timeAtLastTick = _time;
+        _fps = toInt(1000.0 / _timeElapsed);
 
         // Ensure server connectivity
         if (_loggedIn && _time - _lastPingReply > SERVER_TIMEOUT) {
@@ -909,16 +932,6 @@ void Client::draw() const{
                 (*it)->draw(*this);
         }
     }
-
-    // FPS/latency
-    std::ostringstream oss;
-    if (_timeElapsed > 0)
-        oss << toInt(1000.0/_timeElapsed);
-    else
-        oss << "infinite ";
-    oss << "fps " << _latency << "ms";
-    const Texture statsDisplay(_defaultFont, oss.str(), Color::YELLOW);
-    statsDisplay.draw(SCREEN_X - statsDisplay.width(), 0);
 
     // Text box
     if (SDL_IsTextInputActive()) {

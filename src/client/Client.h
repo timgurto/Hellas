@@ -165,6 +165,7 @@ private:
     Uint32 _lastPingSent; // The last time a ping was sent to the server
     Uint32 _latency;
     Uint32 _timeSinceConnectAttempt;
+    unsigned _fps;
 
     bool _invalidUsername; // Flag set if server refused username
 
