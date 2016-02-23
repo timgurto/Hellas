@@ -121,9 +121,16 @@ _debug("client.log"){
     // Read config file
     XmlReader xr("client-config.xml");
 
+    int
+        chatW = 150,
+        chatH = 100;
+    auto elem = xr.findChild("chatLog");
+    xr.findAttr(elem, "width", chatW);
+    xr.findAttr(elem, "height", chatH);
+
     std::string fontFile = "poh_pixels.ttf";
     int fontSize = 16;
-    auto elem = xr.findChild("gameFont");
+    elem = xr.findChild("gameFont");
     xr.findAttr(elem, "filename", fontFile);
     xr.findAttr(elem, "size", fontSize);
     _defaultFont = TTF_OpenFont(fontFile.c_str(), fontSize);
@@ -142,11 +149,8 @@ _debug("client.log"){
     Element::initialize();
 
     // Initialize chat log
-    static const int
-        CHAT_W = 150,
-        CHAT_H = 100;
-    _chatWindow = new Window(Rect(0, SCREEN_Y - CHAT_H - 16, CHAT_W, CHAT_H), "Chat Log");
-    _chatLog = new List(Rect(0, 0, CHAT_W, CHAT_H));
+    _chatWindow = new Window(Rect(0, SCREEN_Y - chatH - 16, chatW, chatH), "Chat Log");
+    _chatLog = new List(Rect(0, 0, chatW, chatH));
     _chatWindow->addChild(_chatLog);
     _chatWindow->show();
     addWindow(_chatWindow);

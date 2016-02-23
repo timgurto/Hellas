@@ -1,4 +1,5 @@
 <root>
+<chatLog width=150 height=60 />
 <gameFont filename="poh_pixels.ttf" size=16 height=11 offset=2 />
 <castBar y=300 w=150 h=11 />
 </root>
