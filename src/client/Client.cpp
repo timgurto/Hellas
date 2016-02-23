@@ -705,10 +705,21 @@ void Client::run(){
                 break;
 
             case SDL_MOUSEWHEEL:
-                if (e.wheel.y < 0)
-                    _craftingWindow->onScrollDown(_mouse);
-                else if (e.wheel.y > 0)
-                    _craftingWindow->onScrollUp(_mouse);
+                if (e.wheel.y < 0) {
+                    for (Window *window : _windows)
+                        if (collision(_mouse, window->rect()))
+                            window->onScrollDown(_mouse);
+                    for (Element *element : _ui)
+                        if (collision(_mouse, element->rect()))
+                            element->onScrollDown(_mouse);
+                } else if (e.wheel.y > 0) {
+                    for (Window *window : _windows)
+                        if (collision(_mouse, window->rect()))
+                            window->onScrollUp(_mouse);
+                    for (Element *element : _ui)
+                        if (collision(_mouse, element->rect()))
+                            element->onScrollUp(_mouse);
+                }
                 break;
 
             case SDL_WINDOWEVENT:
