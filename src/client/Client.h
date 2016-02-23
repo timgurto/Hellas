@@ -78,9 +78,6 @@ private:
         _cursorContainer;
     const Texture *_currentCursor;
 
-    Texture _invLabel;
-    static Rect INVENTORY_RECT; // non-const, as it needs to be initialized at runtime.
-    static const size_t ICONS_X; // How many icons per inventory row
     // Whether the user has the specified item(s).
     bool playerHasItem(const Item *item, size_t quantity = 1) const;
 

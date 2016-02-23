@@ -47,8 +47,6 @@ const Uint32 Client::PING_FREQUENCY = 5000;
 const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 50;
 
 const int Client::ICON_SIZE = 16;
-const size_t Client::ICONS_X = 8;
-Rect Client::INVENTORY_RECT;
 const int Client::HEADING_HEIGHT = 14;
 const int Client::LINE_GAP = 6;
 
@@ -193,12 +191,6 @@ _debug("client.log"){
     // Player's inventory
     for (size_t i = 0; i != INVENTORY_SIZE; ++i)
         _inventory.push_back(std::make_pair<const Item *, size_t>(0, 0));
-
-    _invLabel = Texture(_defaultFont, "Inventory");
-    int invW =  max(min(ICONS_X, _inventory.size()) * (ICON_SIZE + 1) + 1,
-                    static_cast<unsigned>(_invLabel.width()));
-    int invH = ICON_SIZE + _invLabel.height() + 1;
-    INVENTORY_RECT = Rect(SCREEN_X - invW, SCREEN_Y - invH, invW, invH);
 
     // Randomize player name if not supplied
     if (cmdLineArgs.contains("username"))
@@ -1023,34 +1015,6 @@ void Client::draw() const{
     _currentCursor->draw(_mouse);
 
     renderer.present();
-}
-
-Texture Client::getInventoryTooltip() const{
-    if (_mouse.y < INVENTORY_RECT.w + _invLabel.height())
-        return Texture();
-    const int slot = static_cast<size_t>((_mouse.x - INVENTORY_RECT.x) / (ICON_SIZE + 1));
-    if (slot < 0 || static_cast<size_t>(slot) >= _inventory.size())
-        return Texture();
-
-    const Item *const item = _inventory[static_cast<size_t>(slot)].first;
-    if (!item)
-        return Texture();
-    TooltipBuilder tb;
-    tb.setColor(Color::WHITE);
-    tb.addLine(item->name());
-    if (item->hasClasses()) {
-        tb.setColor();
-        tb.addGap();
-        for (const std::string &className : item->classes()) {
-            tb.addLine(className);
-        }
-    }
-    if (item->constructsObject()) {
-        tb.addGap();
-        tb.setColor(Color::YELLOW);
-        tb.addLine("Right-click to construct");
-    }
-    return tb.publish();
 }
 
 void Client::drawTooltip() const{
