@@ -24,7 +24,7 @@ void LogSDL::operator()(const std::string &message, const Color &color){
     Label *l = new Label(Rect(0), message);
     l->setColor(color);
     List &chatLog = *Client::_instance->_chatLog;
-    bool atBottom = chatLog.isScrolledToBottom();
+    bool atBottom = chatLog.isScrolledToBottom() || !chatLog.isScrollBarVisible();
     chatLog.addChild(l);
     if (atBottom)
         chatLog.scrollToBottom();

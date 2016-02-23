@@ -55,6 +55,7 @@ public:
 
     void scrollToBottom();
     bool isScrolledToBottom() const { return _scrolledToBottom; }
+    bool isScrollBarVisible() const { return _scrollBar->visible(); }
 
     virtual void refresh() override;
 };
