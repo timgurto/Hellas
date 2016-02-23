@@ -179,3 +179,12 @@ void List::scrollDownRaw(Element &e){
     }
     list.updateScrollBar();
 }
+
+void List::scrollToBottom(){
+    if (_content->rect().h <= rect().h)
+        return;
+    const int minScroll = -(_content->rect().h - rect().h);
+    _content->rect(0, minScroll);
+    _scrolledToBottom = true;
+    updateScrollBar();
+}

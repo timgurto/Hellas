@@ -114,7 +114,7 @@ _mapX(0), _mapY(0),
 
 _currentMouseOverEntity(0),
 
-_debug(360/13, "client.log", "04B_03__.TTF", 8){
+_debug("client.log"){
     isClient = true;
     _instance = this;
     _debugInstance = &_debug;
@@ -123,18 +123,9 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
     // Read config file
     XmlReader xr("client-config.xml");
 
-    std::string fontFile = "04B_03__.TTF";
-    int fontSize = 8;
-    int fontHeight = 8;
-    auto elem = xr.findChild("debugFont");
-    if (xr.findAttr(elem, "filename", fontFile) ||
-        xr.findAttr(elem, "size", fontSize))
-        _debug.setFont(fontFile, fontSize);
-    if (xr.findAttr(elem, "height", fontHeight)) _debug.setLineHeight(fontHeight);
-
-    fontFile = "poh_pixels.ttf";
-    fontSize = 16;
-    elem = xr.findChild("gameFont");
+    std::string fontFile = "poh_pixels.ttf";
+    int fontSize = 16;
+    auto elem = xr.findChild("gameFont");
     xr.findAttr(elem, "filename", fontFile);
     xr.findAttr(elem, "size", fontSize);
     _defaultFont = TTF_OpenFont(fontFile.c_str(), fontSize);
@@ -151,6 +142,16 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
 
 
     Element::initialize();
+
+    // Initialize chat log
+    static const int
+        CHAT_W = 150,
+        CHAT_H = 100;
+    _chatWindow = new Window(Rect(0, SCREEN_Y - CHAT_H - 16, CHAT_W, CHAT_H), "Chat Log");
+    _chatLog = new List(Rect(0, 0, CHAT_W, CHAT_H));
+    _chatWindow->addChild(_chatLog);
+    _chatWindow->show();
+    addWindow(_chatWindow);
 
     SDL_ShowCursor(SDL_DISABLE);
 
@@ -346,7 +347,7 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
     static const int
         MENU_BUTTON_W = 50,
         MENU_BUTTON_H = 13,
-        NUM_BUTTONS = 2;
+        NUM_BUTTONS = 3;
     Element *menuBar = new Element(Rect(SCREEN_X/2 - MENU_BUTTON_W * NUM_BUTTONS / 2,
                                         SCREEN_Y - MENU_BUTTON_H,
                                         MENU_BUTTON_W * NUM_BUTTONS,
@@ -355,6 +356,8 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
                                  Element::toggleVisibilityOf, _craftingWindow));
     menuBar->addChild(new Button(Rect(MENU_BUTTON_W, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Inventory",
                                  Element::toggleVisibilityOf, _inventoryWindow));
+    menuBar->addChild(new Button(Rect(MENU_BUTTON_W * 2, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Chat",
+                                 Element::toggleVisibilityOf, _chatWindow));
     addUI(menuBar);
 
     // Initialize FPS/latency display
@@ -567,6 +570,10 @@ void Client::run(){
 
                     case SDLK_c:
                         _craftingWindow->toggleVisibility();
+                        break;
+
+                    case SDLK_l:
+                        _chatWindow->toggleVisibility();
                         break;
 
                     case SDLK_i:
@@ -871,7 +878,6 @@ void Client::draw() const{
     if (!_loggedIn || !_loaded){
         renderer.setDrawColor(Color::BLACK);
         renderer.clear();
-        _debug.draw();
         renderer.present();
         return;
     }
@@ -1016,7 +1022,6 @@ void Client::draw() const{
     // Cursor
     _currentCursor->draw(_mouse);
 
-    _debug.draw();
     renderer.present();
 }
 

@@ -47,11 +47,14 @@ protected:
     Element *_content; // Holds the list items themselves, and moves up and down to "scroll".
 
 public:
-    List(const Rect &rect, int childHeight);
+    List(const Rect &rect, int childHeight = Element::TEXT_HEIGHT);
 
     virtual void addChild(Element *child) override;
     virtual void clearChildren() override;
     virtual Element *findChild(const std::string id) override;
+
+    void scrollToBottom();
+    bool isScrolledToBottom() const { return _scrolledToBottom; }
 
     virtual void refresh() override;
 };

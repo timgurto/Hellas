@@ -139,6 +139,7 @@ public:
     virtual void clearChildren(); // Delete all children
     virtual Element *findChild(const std::string id); // Find a child by ID, or 0 if not found.
 
+    // To be called during refresh.
     void makeBackgroundTransparent();
 
     // e: allows the function to be called on behalf of another element.  0 = self.

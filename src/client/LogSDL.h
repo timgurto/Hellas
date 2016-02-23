@@ -16,14 +16,11 @@
 // A message log that uses SDL to display colored text on the screen.
 class LogSDL : public Log{
 public:
-    LogSDL();
-    LogSDL(unsigned displayLines, const std::string &logFileName = "",
-        const std::string &fontName = "trebuc.ttf", int fontSize = 16,
-        const Color &color = Color::WHITE);
+    LogSDL(const std::string &logFileName = "");
     ~LogSDL();
     // For default reference parameter.  Indicates that the Log's _color should be used.
     static Color defaultColor;
-    void operator()(const std::string &message, const Color &color = Color::NO_KEY);
+    void operator()(const std::string &message, const Color &color = Color::WHITE);
 
     template<typename T>
     LogSDL &operator<<(const T &val) {
@@ -38,21 +35,10 @@ public:
 
     void draw(int x = 0, int y = 0) const;
 
-    void setFont(const std::string &fontName = "trebuc.ttf", int fontSize = 16);
-    void setLineHeight(int height = 16);
-
-    static const int DEFAULT_LINE_HEIGHT;
-
 private:
-    std::list<Texture> _messages;
-    unsigned _maxMessages;
-    TTF_Font *_font;
-    bool _valid; // false if an error has occurred
     std::ostringstream _oss;
-    Color _color;
     Color _compilationColor; // for use while compiling a message
     std::ofstream _logFile;
-    int _lineHeight;
 };
 
 #endif

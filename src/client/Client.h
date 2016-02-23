@@ -117,6 +117,9 @@ private:
     void addUI(Element *element);
     Element *_castBar;
 
+    Window *_chatWindow;
+    List *_chatLog;
+
     Avatar _character; // Describes the user's character
     Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.
 
@@ -212,6 +215,7 @@ private:
 
     friend class Container; // Needs to send CL_SWAP_ITEMS messages
     friend ClientObject::~ClientObject();
+    friend void LogSDL::operator()(const std::string &message, const Color &color);
 };
 
 #endif
