@@ -19,6 +19,8 @@
 #include "ui/Button.h"
 #include "ui/Container.h"
 #include "ui/Element.h"
+#include "ui/LinkedLabel.h"
+#include "ui/ProgressBar.h"
 #include "../XmlReader.h"
 #include "../messageCodes.h"
 #include "../util.h"
@@ -324,11 +326,22 @@ _debug(360/13, "client.log", "04B_03__.TTF", 8){
     addWindow(_craftingWindow);
     addWindow(_inventoryWindow);
     
-    _castBar = new ProgressBar<Uint32>(Rect(SCREEN_X/2 - castBarW/2, castBarY, castBarW, castBarH),
-                                       _actionTimer, _actionLength);
+    // Initialize cast bar
+    const Rect
+        CAST_BAR_RECT(SCREEN_X/2 - castBarW/2, castBarY, castBarW, castBarH),
+        CAST_BAR_DIMENSIONS(0, 0, castBarW, castBarH);
+    static const Color CAST_BAR_LABEL_COLOR = Color::BLUE / 2 + Color::GREY_2;
+    _castBar = new Element(CAST_BAR_RECT);
+    _castBar->addChild(new ProgressBar<Uint32>(CAST_BAR_DIMENSIONS, _actionTimer, _actionLength));
+    LinkedLabel<std::string> *castBarLabel = new LinkedLabel<std::string>(CAST_BAR_DIMENSIONS,
+                                                                          _actionMessage, "", "",
+                                                                          Label::CENTER_JUSTIFIED);
+    castBarLabel->setColor(CAST_BAR_LABEL_COLOR);
+    _castBar->addChild(castBarLabel);
     _castBar->hide();
     addUI(_castBar);
 
+    // Initialize menu bar
     static const int
         MENU_BUTTON_W = 50,
         MENU_BUTTON_H = 13,

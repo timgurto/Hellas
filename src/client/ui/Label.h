@@ -11,10 +11,12 @@ class Color;
 
 // Displays text.
 class Label : public Element{
-    std::string _text;
     Justification _justificationH, _justificationV;
     bool _matchWidth;
     Color _color;
+
+protected:
+    std::string _text;
 
 public:
     Label(const Rect &rect, const std::string &text,
@@ -26,6 +28,8 @@ public:
     void setColor(const Color &color);
 
     void matchW(); // Set the label's width to the width of the contained text image.
+
+    void changeText(const std::string &text);
 };
 
 #endif

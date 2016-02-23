@@ -158,6 +158,7 @@
     <ClInclude Include="src\client\ui\Element.h" />
     <ClInclude Include="src\client\ui\Label.h" />
     <ClInclude Include="src\client\ui\Line.h" />
+    <ClInclude Include="src\client\ui\LinkedLabel.h" />
     <ClInclude Include="src\client\ui\List.h" />
     <ClInclude Include="src\client\ui\Picture.h" />
     <ClInclude Include="src\Client\ui\ProgressBar.h" />

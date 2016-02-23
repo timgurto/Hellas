@@ -260,5 +260,8 @@
     <ClInclude Include="src\Client\ui\ProgressBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\client\ui\LinkedLabel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

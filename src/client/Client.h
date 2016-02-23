@@ -24,7 +24,6 @@
 #include "../messageCodes.h"
 #include "../server/Recipe.h"
 #include "ui/Container.h"
-#include "ui/ProgressBar.h"
 
 class Client{
 public:
@@ -116,7 +115,7 @@ private:
 
     ui_t _ui;
     void addUI(Element *element);
-    ProgressBar<Uint32> *_castBar;
+    Element *_castBar;
 
     Avatar _character; // Describes the user's character
     Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.

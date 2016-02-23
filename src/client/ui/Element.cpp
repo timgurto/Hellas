@@ -120,7 +120,7 @@ void Element::drawChildren() const{
 }
 
 void Element::checkIfChanged(){
-    for (Element *child : _children)
+    for (Element *child : _children) // TODO: Only check visible elements
         child->checkIfChanged();
 }
 
