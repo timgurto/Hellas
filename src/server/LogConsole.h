@@ -15,7 +15,7 @@ public:
     LogConsole(const std::string &logFileName = "");
     ~LogConsole();
 
-    void operator()(const std::string &message, const Color &color = Color::NO_KEY);
+    void operator()(const std::string &message, const Color &color = Color::YELLOW);
 
     template<typename T>
     LogConsole &operator<<(const T &val) {

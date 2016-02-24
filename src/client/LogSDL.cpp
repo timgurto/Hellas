@@ -21,13 +21,7 @@ void LogSDL::operator()(const std::string &message, const Color &color){
     if (_logFile.is_open())
         _logFile << message << std::endl;
 
-    Label *l = new Label(Rect(0), message);
-    l->setColor(color);
-    List &chatLog = *Client::_instance->_chatLog;
-    bool atBottom = chatLog.isScrolledToBottom() || !chatLog.isScrollBarVisible();
-    chatLog.addChild(l);
-    if (atBottom)
-        chatLog.scrollToBottom();
+    Client::_instance->addChatMessage(message, color);
 }
 
 LogSDL &LogSDL::operator<<(const std::string &val) {

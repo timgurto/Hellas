@@ -1678,3 +1678,12 @@ void Client::removeWindow(Window *window){
 void Client::addUI(Element *element){
     _ui.push_back(element);
 }
+
+void Client::addChatMessage(const std::string &msg, const Color &color){
+    Label *label = new Label(Rect(), msg);
+    label->setColor(color);
+    bool atBottom = _chatLog->isScrolledToBottom() || !_chatLog->isScrollBarVisible();
+    _chatLog->addChild(label);
+    if (atBottom)
+        _chatLog->scrollToBottom();
+}

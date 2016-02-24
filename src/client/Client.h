@@ -116,6 +116,7 @@ private:
 
     Window *_chatWindow;
     List *_chatLog;
+    void addChatMessage(const std::string &msg, const Color &color = Color::WHITE);
 
     Avatar _character; // Describes the user's character
     Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.
