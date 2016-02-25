@@ -533,10 +533,9 @@ void Client::run(){
                     case SDLK_KP_ENTER:
                         SDL_StopTextInput();
                         if (_enteredText != "") {
-                            if (_enteredText.at(0) == '[') {
-                                // Send message to server
-                                sendRawMessage(_enteredText);
-                                _debug(_enteredText, Color::YELLOW);
+                            if (_enteredText.at(0) == '/') {
+                                // Perform command
+                                performCommand(_enteredText);
                             } else {
                                 _debug(_enteredText, Color::WHITE);
                             }
@@ -559,9 +558,9 @@ void Client::run(){
                             _loop = false;
                         break;
 
-                    case SDLK_LEFTBRACKET:
+                    case SDLK_SLASH:
                         SDL_StartTextInput();
-                        _enteredText = "[";
+                        _enteredText = "/";
                         break;
 
                     case SDLK_RETURN:
@@ -1671,4 +1670,48 @@ void Client::initializeMessageNames(){
     addMessageName(SV_CANNOT_CONSTRUCT, "That item cannot be constructed.");
     addMessageName(SV_ITEM_NEEDED, "You need an item of a specific class to do that.");
     addMessageName(SV_BLOCKED, "That location is already occupied.");
+}
+
+void Client::performCommand(const std::string &commandString){
+    _debug(commandString, Color::YELLOW);
+    std::istringstream iss(commandString);
+    std::string token;
+    char c;
+    iss >> c;
+    if (c != '/') {
+        _debug("Commands must begin with '/.", Color::RED);
+        return;
+    }
+
+    static char buffer[BUFFER_SIZE+1];
+    iss.get(buffer, BUFFER_SIZE, ' ');
+    std::string command(buffer);
+
+    std::vector<std::string> args;
+    while (!iss.eof()) {
+        iss.ignore(BUFFER_SIZE, ' ');
+        if (iss.eof())
+            break;
+        iss.get(buffer, BUFFER_SIZE, ' ');
+        args.push_back(buffer);
+    }
+
+    // Messages to server
+    if (_msgCode.find(command) != _msgCode.end()){
+        int code = _msgCode[command];
+        if (code >= CL_END) {
+            _debug("You are not allowed to send that message to the server.", Color::RED);
+            return;
+        }
+        std::ostringstream oss;
+        for (size_t i = 0; i != args.size(); ++i){
+            oss << args[i];
+            if (i < args.size() - 1)
+                oss << MSG_DELIM;
+        }
+        sendMessage(static_cast<MessageCode>(code), oss.str());
+        return;
+    }
+
+    _debug("Unknown command.", Color::RED);
 }

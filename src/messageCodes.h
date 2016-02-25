@@ -54,6 +54,8 @@ enum MessageCode{
     // Arguments: serial
     CL_GET_INVENTORY = 40,
 
+    CL_END = 99, // marker
+
 
 
     // Server -> client

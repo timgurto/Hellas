@@ -216,6 +216,8 @@ private:
     void sendMessage(MessageCode msgCode, const std::string &args = "") const;
     void handleMessage(const std::string &msg);
 
+    void performCommand(const std::string &commandString);
+
     friend class Container; // Needs to send CL_SWAP_ITEMS messages
     friend ClientObject::~ClientObject();
     friend void LogSDL::operator()(const std::string &message, const Color &color);
