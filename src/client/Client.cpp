@@ -64,6 +64,9 @@ const int Client::PLAYER_ACTION_CHANNEL = 0;
 
 bool Client::isClient = false;
 
+std::map<int, std::string> Client::_msgName;
+std::map<std::string, int> Client::_msgCode;
+
 Client::Client():
 _cursorNormal(std::string("Images/Cursors/normal.png"), Color::MAGENTA),
 _cursorGather(std::string("Images/Cursors/gather.png"), Color::MAGENTA),
@@ -154,6 +157,8 @@ _debug("client.log"){
     _chatContainer->addChild(_chatLog);
     _chatContainer->addChild(new ShadowBox(Rect(0, 0, chatW, chatH), true));
     addUI(_chatContainer);
+
+    initializeMessageNames();
 
     SDL_ShowCursor(SDL_DISABLE);
 
@@ -1217,6 +1222,7 @@ void Client::handleMessage(const std::string &msg){
         std::istringstream singleMsg(buffer);
         //_debug(buffer, Color::CYAN);
         singleMsg >> del >> msgCode >> del;
+        Color errorMessageColor = Color::RED;
         switch(msgCode) {
 
         case SV_WELCOME:
@@ -1274,87 +1280,22 @@ void Client::handleMessage(const std::string &msg){
             break;
 
         case SV_SERVER_FULL:
-            if (del != MSG_END)
-                break;
-            _debug("The server is full.  Attempting reconnection...", Color::YELLOW);
-            _socket = Socket();
-            _loggedIn = false;
-            break;
-
         case SV_TOO_FAR:
-            if (del != MSG_END)
-                break;
-            _debug("You are too far away to perform that action.", Color::YELLOW);
-            startAction(0);
-            break;
-
         case SV_DOESNT_EXIST:
-            if (del != MSG_END)
-                break;
-            _debug("That object doesn't exist.", Color::YELLOW);
-            startAction(0);
-            break;
-
-        case SV_INVENTORY_FULL:
-            if (del != MSG_END)
-                break;
-            _debug("Your inventory is full.", Color::RED);
-            startAction(0);
-            break;
-
         case SV_NEED_MATERIALS:
-            if (del != MSG_END)
-                break;
-            _debug("You do not have the necessary materials to create that item.", Color::YELLOW);
-            startAction(0);
-            break;
-
         case SV_NEED_TOOLS:
-            if (del != MSG_END)
-                break;
-            _debug("You do not have the necessary tools to create that item.", Color::YELLOW);
-            startAction(0);
-            break;
-
-        case SV_INVALID_ITEM:
-            if (del != MSG_END)
-                break;
-            _debug("That is not a real item.", Color::RED);
-            startAction(0);
-            break;
-
-        case SV_CANNOT_CRAFT:
-            if (del != MSG_END)
-                break;
-            _debug("That item cannot be crafted.", Color::RED);
-            startAction(0);
-            break;
-
         case SV_ACTION_INTERRUPTED:
-            if (del != MSG_END)
-                break;
-            _debug("Action interrupted.", Color::YELLOW);
-            startAction(0);
-            break;
-
+        case SV_BLOCKED:
+            errorMessageColor = Color::YELLOW;
+        case SV_INVENTORY_FULL:
+        case SV_INVALID_ITEM:
+        case SV_CANNOT_CRAFT:
         case SV_INVALID_SLOT:
-            if (del != MSG_END)
-                break;
-            _debug("That is not a valid inventory slot.", Color::RED);
-            startAction(0);
-            break;
-
         case SV_EMPTY_SLOT:
-            if (del != MSG_END)
-                break;
-            _debug("That inventory slot is empty.", Color::RED);
-            startAction(0);
-            break;
-
         case SV_CANNOT_CONSTRUCT:
             if (del != MSG_END)
                 break;
-            _debug("That item cannot be constructed.", Color::RED);
+            _debug(_msgName[msgCode], errorMessageColor);
             startAction(0);
             break;
 
@@ -1375,13 +1316,6 @@ void Client::handleMessage(const std::string &msg){
             startAction(0);
             break;
         }
-
-        case SV_BLOCKED:
-            if (del != MSG_END)
-                break;
-            _debug("That location is already occupied.", Color::YELLOW);
-            startAction(0);
-            break;
 
         case SV_ACTION_STARTED:
             Uint32 time;
@@ -1686,4 +1620,54 @@ void Client::addChatMessage(const std::string &msg, const Color &color){
     _chatLog->addChild(label);
     if (atBottom)
         _chatLog->scrollToBottom();
+}
+
+void Client::addMessageName(int code, const std::string &name){
+    _msgCode[name] = code;
+    _msgName[code] = name;
+}
+
+void Client::initializeMessageNames(){
+
+    // Client-message names are all lower case, as they can also be used as commands.
+    addMessageName(CL_PING, "ping");
+    addMessageName(CL_I_AM, "iam");
+    addMessageName(CL_LOCATION, "location");
+    addMessageName(CL_CANCEL_ACTION, "cancel");
+    addMessageName(CL_CRAFT, "craft");
+    addMessageName(CL_CONSTRUCT, "construct");
+    addMessageName(CL_GATHER, "gather");
+    addMessageName(CL_DROP, "drop");
+    addMessageName(CL_SWAP_ITEMS, "swap");
+    addMessageName(CL_GET_INVENTORY, "getinventory");
+
+    addMessageName(SV_PING_REPLY, "Ping reply");
+    addMessageName(SV_WELCOME, "Welcome");
+    addMessageName(SV_USER_DISCONNECTED, "User disconnected");
+    addMessageName(SV_MAP_SIZE, "Map size");
+    addMessageName(SV_TERRAIN, "Terrain");
+    addMessageName(SV_LOCATION, "Location");
+    addMessageName(SV_INVENTORY, "Inventory");
+    addMessageName(SV_OBJECT, "Object");
+    addMessageName(SV_REMOVE_OBJECT, "Remove object");
+    addMessageName(SV_ACTION_STARTED, "Action started");
+    addMessageName(SV_ACTION_FINISHED, "Action finished");
+    addMessageName(SV_OWNER, "Owner");
+
+    addMessageName(SV_DUPLICATE_USERNAME, "That user is already connected to the server.");
+    addMessageName(SV_INVALID_USERNAME, "That username is invalid.");
+    addMessageName(SV_SERVER_FULL, "The server is full.  Attempting reconnection...");
+    addMessageName(SV_TOO_FAR, "You are too far away to perform that action.");
+    addMessageName(SV_DOESNT_EXIST, "That object doesn't exist.");
+    addMessageName(SV_INVENTORY_FULL, "Your inventory is full.");
+    addMessageName(SV_NEED_MATERIALS, "You do not have the materials neded to create that item.");
+    addMessageName(SV_NEED_TOOLS, "You do not have the tools needed to create that item.");
+    addMessageName(SV_INVALID_ITEM, "That is not a real item.");
+    addMessageName(SV_CANNOT_CRAFT, "That item cannot be crafted.");
+    addMessageName(SV_ACTION_INTERRUPTED, "Action interrupted.");
+    addMessageName(SV_EMPTY_SLOT, "That inventory slot is empty.");
+    addMessageName(SV_INVALID_SLOT, "That is not a valid inventory slot.");
+    addMessageName(SV_CANNOT_CONSTRUCT, "That item cannot be constructed.");
+    addMessageName(SV_ITEM_NEEDED, "You need an item of a specific class to do that.");
+    addMessageName(SV_BLOCKED, "That location is already occupied.");
 }

@@ -61,6 +61,11 @@ private:
     static Client *_instance;
     static LogSDL *_debugInstance;
 
+    static std::map<int, std::string> _msgName;
+    static std::map<std::string, int> _msgCode;
+    static void addMessageName(int code, const std::string &name);
+    static void initializeMessageNames();
+
     static const Uint32 MAX_TICK_LENGTH;
     static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping reply
     static const Uint32 CONNECT_RETRY_DELAY; // How long to wait between retries at connecting
