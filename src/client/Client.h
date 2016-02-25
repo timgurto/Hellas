@@ -61,9 +61,8 @@ private:
     static Client *_instance;
     static LogSDL *_debugInstance;
 
-    static std::map<int, std::string> _msgName;
-    static std::map<std::string, int> _msgCode;
-    static void addMessageName(int code, const std::string &name);
+    static std::map<std::string, int> _messageCommands;
+    static std::map<int, std::string> _errorMessages;
     static void initializeMessageNames();
 
     static const Uint32 MAX_TICK_LENGTH;
