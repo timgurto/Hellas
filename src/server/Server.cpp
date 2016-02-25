@@ -305,7 +305,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
     static char buffer[BUFFER_SIZE+1];
     std::istringstream iss(msg);
     User *user = 0;
-    while (iss.peek() == '[') {
+    while (iss.peek() == MSG_START) {
         iss >> del >> msgCode >> del;
         
         // Discard message if this client has not yet sent CL_I_AM
@@ -325,7 +325,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         {
             Uint32 timeSent;
             iss >> timeSent  >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 return;
             sendMessage(user->socket(), SV_PING_REPLY, makeArgs(timeSent));
             break;
@@ -334,10 +334,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         case CL_I_AM:
         {
             std::string name;
-            iss.get(buffer, BUFFER_SIZE, ']');
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
             name = std::string(buffer);
             iss >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 return;
 
             // Check that username is valid
@@ -368,7 +368,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         {
             double x, y;
             iss >> x >> del >> y >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 return;
             user->cancelAction();
             user->updateLocation(Point(x, y));
@@ -379,10 +379,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         case CL_CRAFT:
         {
             std::string id;
-            iss.get(buffer, BUFFER_SIZE, ']');
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
             id = std::string(buffer);
             iss >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 return;
             user->cancelAction();
             const std::set<Recipe>::const_iterator it = _recipes.find(id);
@@ -409,7 +409,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             size_t slot;
             double x, y;
             iss >> slot >> del >> x >> del >> y >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 return;
             user->cancelAction();
             if (slot >= User::INVENTORY_SIZE) {
@@ -446,7 +446,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         case CL_CANCEL_ACTION:
         {
             iss >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 return;
             user->cancelAction();
             break;
@@ -456,7 +456,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         {
             int serial;
             iss >> serial >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 return;
             user->cancelAction();
             std::set<Object>::const_iterator it = _objects.find(serial);
@@ -479,7 +479,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         {
             size_t serial, slot;
             iss >> serial >> slot >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 return;
             Item::vect_t *container;
             if (serial == 0)
@@ -511,7 +511,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 >> slot1 >> del
                 >> obj2 >> del
                 >> slot2 >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 return;
             Item::vect_t
                 *containerFrom,
@@ -555,7 +555,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         {
             size_t serial;
             iss >> serial >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 return;
             auto it = _objects.find(serial);
             if (!isValidObject(client, *user, it))
@@ -682,10 +682,10 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
                          const std::string &args) const{
     // Compile message
     std::ostringstream oss;
-    oss << '[' << msgCode;
+    oss << MSG_START << msgCode;
     if (args != "")
-        oss << ',' << args;
-    oss << ']';
+        oss << MSG_DELIM << args;
+    oss << MSG_END;
 
     // Send message
     _socket.sendMessage(oss.str(), dstSocket);

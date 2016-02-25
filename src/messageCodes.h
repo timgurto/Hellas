@@ -3,6 +3,11 @@
 #ifndef MESSAGE_CODES_H
 #define MESSAGE_CODES_H
 
+const char
+    MSG_START = '\002', // STX
+    MSG_END = '\003', // ETX
+    MSG_DELIM = '\037'; // US
+
 enum MessageCode{
 
     // Client -> server

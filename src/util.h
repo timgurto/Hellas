@@ -4,6 +4,7 @@
 #define UTIL_H
 
 #include "Rect.h"
+#include "messageCodes.h"
 
 #include <cstdlib>
 #include <vector>
@@ -54,21 +55,21 @@ std::string makeArgs(T1 val1){
 template<typename T1, typename T2>
 std::string makeArgs(T1 val1, T2 val2){
     std::ostringstream oss;
-    oss << val1 << ',' << val2;
+    oss << val1 << MSG_DELIM << val2;
     return oss.str();
 }
 
 template<typename T1, typename T2, typename T3>
 std::string makeArgs(T1 val1, T2 val2, T3 val3){
     std::ostringstream oss;
-    oss << val1 << ',' << val2 << ',' << val3;
+    oss << val1 << MSG_DELIM << val2 << MSG_DELIM << val3;
     return oss.str();
 }
 
 template<typename T1, typename T2, typename T3, typename T4>
 std::string makeArgs(T1 val1, T2 val2, T3 val3, T4 val4){
     std::ostringstream oss;
-    oss << val1 << ',' << val2 << ',' << val3 << ',' << val4;
+    oss << val1 << MSG_DELIM << val2 << MSG_DELIM << val3 << MSG_DELIM << val4;
     return oss.str();
 }
 

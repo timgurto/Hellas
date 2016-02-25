@@ -1193,8 +1193,8 @@ void Client::handleMessage(const std::string &msg){
     // Read while there are new messages
     while (!iss.eof()) {
         // Discard malformed data
-        if (iss.peek() != '[') {
-            iss.get(buffer, BUFFER_SIZE, '[');
+        if (iss.peek() != MSG_START) {
+            iss.get(buffer, BUFFER_SIZE, MSG_START);
             _debug << "Read " << iss.gcount() << " characters." << Log::endl;
             _debug << Color::RED << "Malformed message; discarded \""
                    << buffer << "\"" << Log::endl;
@@ -1204,13 +1204,13 @@ void Client::handleMessage(const std::string &msg){
         }
 
         // Get next message
-        iss.get(buffer, BUFFER_SIZE, ']');
+        iss.get(buffer, BUFFER_SIZE, MSG_END);
         if (iss.eof()){
             _partialMessage = buffer;
             break;
         } else {
             std::streamsize charsRead = iss.gcount();
-            buffer[charsRead] = ']';
+            buffer[charsRead] = MSG_END;
             buffer[charsRead+1] = '\0';
             iss.ignore(); // Throw away ']'
         }
@@ -1221,7 +1221,7 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_WELCOME:
         {
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _loggedIn = true;
             _timeSinceConnectAttempt = 0;
@@ -1234,7 +1234,7 @@ void Client::handleMessage(const std::string &msg){
         {
             Uint32 timeSent;
             singleMsg >> timeSent >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _lastPingReply = _time;
             _latency = (_time - timeSent) / 2;
@@ -1244,10 +1244,10 @@ void Client::handleMessage(const std::string &msg){
         case SV_USER_DISCONNECTED:
         {
             std::string name;
-            singleMsg.get(buffer, BUFFER_SIZE, ']');
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
             name = std::string(buffer);
             singleMsg >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             const std::map<std::string, Avatar*>::iterator it = _otherUsers.find(name);
             if (it != _otherUsers.end()) {
@@ -1259,7 +1259,7 @@ void Client::handleMessage(const std::string &msg){
         }
 
         case SV_DUPLICATE_USERNAME:
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _invalidUsername = true;
             _debug << Color::RED << "The user " << _username
@@ -1267,14 +1267,14 @@ void Client::handleMessage(const std::string &msg){
             break;
 
         case SV_INVALID_USERNAME:
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _invalidUsername = true;
             _debug << Color::RED << "The username " << _username << " is invalid." << Log::endl;
             break;
 
         case SV_SERVER_FULL:
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _debug("The server is full.  Attempting reconnection...", Color::YELLOW);
             _socket = Socket();
@@ -1282,77 +1282,77 @@ void Client::handleMessage(const std::string &msg){
             break;
 
         case SV_TOO_FAR:
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _debug("You are too far away to perform that action.", Color::YELLOW);
             startAction(0);
             break;
 
         case SV_DOESNT_EXIST:
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _debug("That object doesn't exist.", Color::YELLOW);
             startAction(0);
             break;
 
         case SV_INVENTORY_FULL:
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _debug("Your inventory is full.", Color::RED);
             startAction(0);
             break;
 
         case SV_NEED_MATERIALS:
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _debug("You do not have the necessary materials to create that item.", Color::YELLOW);
             startAction(0);
             break;
 
         case SV_NEED_TOOLS:
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _debug("You do not have the necessary tools to create that item.", Color::YELLOW);
             startAction(0);
             break;
 
         case SV_INVALID_ITEM:
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _debug("That is not a real item.", Color::RED);
             startAction(0);
             break;
 
         case SV_CANNOT_CRAFT:
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _debug("That item cannot be crafted.", Color::RED);
             startAction(0);
             break;
 
         case SV_ACTION_INTERRUPTED:
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _debug("Action interrupted.", Color::YELLOW);
             startAction(0);
             break;
 
         case SV_INVALID_SLOT:
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _debug("That is not a valid inventory slot.", Color::RED);
             startAction(0);
             break;
 
         case SV_EMPTY_SLOT:
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _debug("That inventory slot is empty.", Color::RED);
             startAction(0);
             break;
 
         case SV_CANNOT_CONSTRUCT:
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _debug("That item cannot be constructed.", Color::RED);
             startAction(0);
@@ -1361,10 +1361,10 @@ void Client::handleMessage(const std::string &msg){
         case SV_ITEM_NEEDED:
         {
             std::string reqItemClass;
-            singleMsg.get(buffer, BUFFER_SIZE, ']');
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
             reqItemClass = std::string(buffer);
             singleMsg >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             std::string msg = "You need a";
             const char first = reqItemClass.front();
@@ -1377,7 +1377,7 @@ void Client::handleMessage(const std::string &msg){
         }
 
         case SV_BLOCKED:
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _debug("That location is already occupied.", Color::YELLOW);
             startAction(0);
@@ -1386,7 +1386,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_ACTION_STARTED:
             Uint32 time;
             singleMsg >> time >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             startAction(time);
 
@@ -1397,7 +1397,7 @@ void Client::handleMessage(const std::string &msg){
             break;
 
         case SV_ACTION_FINISHED:
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             startAction(0); // Effectively, hide the cast bar.
             break;
@@ -1406,7 +1406,7 @@ void Client::handleMessage(const std::string &msg){
         {
             size_t x, y;
             singleMsg >> x >> del >> y >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             _mapX = x;
             _mapY = y;
@@ -1435,7 +1435,7 @@ void Client::handleMessage(const std::string &msg){
                 }
                 terrain.push_back(index);
             }
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             if (terrain.size() != n)
                 break;
@@ -1448,10 +1448,10 @@ void Client::handleMessage(const std::string &msg){
         {
             std::string name;
             double x, y;
-            singleMsg.get(buffer, BUFFER_SIZE, ',');
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
             name = std::string(buffer);
             singleMsg >> del >> x >> del >> y >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             const Point p(x, y);
             if (name == _username) {
@@ -1485,10 +1485,10 @@ void Client::handleMessage(const std::string &msg){
             size_t serial, slot, quantity;
             std::string itemID;
             singleMsg >> serial >> del >> slot >> del;
-            singleMsg.get(buffer, BUFFER_SIZE, ',');
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
             itemID = std::string(buffer);
             singleMsg >> del >> quantity >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 break;
 
             const Item *item = 0;
@@ -1536,10 +1536,10 @@ void Client::handleMessage(const std::string &msg){
             double x, y;
             std::string type;
             singleMsg >> serial >> del >> x >> del >> y >> del;
-            singleMsg.get(buffer, BUFFER_SIZE, ']');
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
             type = std::string(buffer);
             singleMsg >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()) {
@@ -1558,7 +1558,7 @@ void Client::handleMessage(const std::string &msg){
         {
             int serial;
             singleMsg >> serial >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             const std::map<size_t, ClientObject*>::const_iterator it = _objects.find(serial);
             if (it == _objects.end()){
@@ -1577,9 +1577,9 @@ void Client::handleMessage(const std::string &msg){
         {
             int serial;
             singleMsg >> serial >> del;
-            singleMsg.get(buffer, BUFFER_SIZE, ']');
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
             singleMsg >> del;
-            if (del != ']')
+            if (del != MSG_END)
                 break;
             const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()){
@@ -1594,7 +1594,7 @@ void Client::handleMessage(const std::string &msg){
             _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
         }
 
-        if (del != ']' && !iss.eof()) {
+        if (del != MSG_END && !iss.eof()) {
             _debug << Color::RED << "Bad message ending. code=" << msgCode << Log::endl;
         }
 
@@ -1609,10 +1609,10 @@ void Client::sendRawMessage(const std::string &msg) const{
 void Client::sendMessage(MessageCode msgCode, const std::string &args) const{
     // Compile message
     std::ostringstream oss;
-    oss << '[' << msgCode;
+    oss << MSG_START << msgCode;
     if (args != "")
-        oss << ',' << args;
-    oss << ']';
+        oss << MSG_DELIM << args;
+    oss << MSG_END;
 
     // Send message
     sendRawMessage(oss.str());
