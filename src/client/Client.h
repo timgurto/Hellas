@@ -114,7 +114,7 @@ private:
     void addUI(Element *element);
     Element *_castBar;
 
-    Window *_chatWindow;
+    Element *_chatContainer;
     List *_chatLog;
     void addChatMessage(const std::string &msg, const Color &color = Color::WHITE);
 

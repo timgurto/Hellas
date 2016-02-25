@@ -149,11 +149,11 @@ _debug("client.log"){
     Element::initialize();
 
     // Initialize chat log
-    _chatWindow = new Window(Rect(0, SCREEN_Y - chatH - 16, chatW, chatH), "Chat Log");
-    _chatLog = new List(Rect(0, 0, chatW, chatH));
-    _chatWindow->addChild(_chatLog);
-    _chatWindow->show();
-    addWindow(_chatWindow);
+    _chatContainer = new Element(Rect(0, SCREEN_Y - chatH, chatW, chatH));
+    _chatLog = new List(Rect(1, 1, chatW - 2, chatH - 2));
+    _chatContainer->addChild(_chatLog);
+    _chatContainer->addChild(new ShadowBox(Rect(0, 0, chatW, chatH), true));
+    addUI(_chatContainer);
 
     SDL_ShowCursor(SDL_DISABLE);
 
@@ -353,7 +353,7 @@ _debug("client.log"){
     menuBar->addChild(new Button(Rect(MENU_BUTTON_W, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Inventory",
                                  Element::toggleVisibilityOf, _inventoryWindow));
     menuBar->addChild(new Button(Rect(MENU_BUTTON_W * 2, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Chat",
-                                 Element::toggleVisibilityOf, _chatWindow));
+                                 Element::toggleVisibilityOf, _chatContainer));
     addUI(menuBar);
 
     // Initialize FPS/latency display
@@ -569,7 +569,7 @@ void Client::run(){
                         break;
 
                     case SDLK_l:
-                        _chatWindow->toggleVisibility();
+                        _chatContainer->toggleVisibility();
                         break;
 
                     case SDLK_i:
