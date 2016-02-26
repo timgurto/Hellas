@@ -1716,42 +1716,65 @@ void Client::performCommand(const std::string &commandString){
     iss.get(buffer, BUFFER_SIZE, ' ');
     std::string command(buffer);
 
-    std::vector<std::string> args;
-    while (!iss.eof()) {
-        iss.ignore(BUFFER_SIZE, ' ');
-        if (iss.eof())
-            break;
-        iss.get(buffer, BUFFER_SIZE, ' ');
-        args.push_back(buffer);
-    }
+    //std::vector<std::string> args;
+    //while (!iss.eof()) {
+    //    while (iss.peek() == ' ')
+    //        iss.ignore(BUFFER_SIZE, ' ');
+    //    if (iss.eof())
+    //        break;
+    //    iss.get(buffer, BUFFER_SIZE, ' ');
+    //    args.push_back(buffer);
+    //}
 
     // Messages to server
     if (_messageCommands.find(command) != _messageCommands.end()){
         MessageCode code = static_cast<MessageCode>(_messageCommands[command]);
-        std::ostringstream oss;
-        for (size_t i = 0; i != args.size(); ++i){
-            oss << args[i];
-            if (i < args.size() - 1) {
-                if (code == CL_SAY || // Allow spaces in messages
-                    code == CL_WHISPER && i > 0)
-                    oss << ' ';
-                else
-                    oss << MSG_DELIM;
-            }
-        }
-        sendMessage(code, oss.str());
+        std::string argsString;
+        switch(code){
 
-        // Give user feedback
-        switch(code) {
         case CL_SAY:
-            addChatMessage("[" + _username + "] " + oss.str(), SAY_COLOR);
+            iss.get(buffer, BUFFER_SIZE);
+            argsString = buffer;
+            addChatMessage("[" + _username + "] " + argsString, SAY_COLOR);
             break;
+
         case CL_WHISPER:
-            if (args.size() < 1)
-                break;
-            addChatMessage("[To " + args[0] + "] " + oss.str().substr(args[0].size()+1),
-                           WHISPER_COLOR);
+        {
+            while (iss.peek() == ' ') iss.ignore(BUFFER_SIZE, ' ');
+            if (iss.eof()) break;
+            iss.get(buffer, BUFFER_SIZE, ' ');
+            std::string username(buffer);
+            iss.get(buffer, BUFFER_SIZE);
+            argsString = username + MSG_DELIM + buffer;
+            addChatMessage("[To " +username + "] " + buffer, WHISPER_COLOR);
+            break;
         }
+
+        default:
+            std::vector<std::string> args;
+            while (!iss.eof()) {
+                while (iss.peek() == ' ')
+                    iss.ignore(BUFFER_SIZE, ' ');
+                if (iss.eof())
+                    break;
+                iss.get(buffer, BUFFER_SIZE, ' ');
+                args.push_back(buffer);
+            }
+            std::ostringstream oss;
+            for (size_t i = 0; i != args.size(); ++i){
+                oss << args[i];
+                if (i < args.size() - 1) {
+                    if (code == CL_SAY || // Allow spaces in messages
+                        code == CL_WHISPER && i > 0)
+                        oss << ' ';
+                    else
+                        oss << MSG_DELIM;
+                }
+            }
+            argsString = oss.str();
+        }
+
+        sendMessage(code, argsString);
         return;
     }
 
