@@ -3,52 +3,60 @@
 
 Detailed here are the types of messages which can be sent between client and server.
 "Client requests" are sent from a client to the server, and "server commands" and "warnings and errors" are sent from the server to a client.
+
+The message text itself is divided by ASCII control characters; they will be represented below by the following symbols:
+Symbol  | ASCII value  | Meaning
+------- | ------------ | --------
+&laquo; | `0x02` (STX) | Start message
+&raquo; | `0x03` (ETX) | End message
+&#8226; | `0x1F` (US)  | Value delimiter
+
 #### Client requests
-Code | Name                    | Syntax                             | Description
----: | ----------------------- | ---------------------------------- | -----------
-0    | `CL_PING`               | `[0]`                              | A ping, to measure latency and reassure the server
-1    | `CL_I_AM`               | `[1,username]`                     | "My name is `username`"
-10   | `CL_LOCATION`           | `[10,x,y]`                         | "I want to move to (`x`,`y`)"
-20   | `CL_CANCEL_ACTION`      | `[20]`                             | "I don't want to finish my current action"
-21   | `CL_CRAFT`              | `[21,id]`                          | "I want to craft an item using recipe `id`"
-22   | `CL_CONSTRUCT`          | `[22,slot,x,y]`                    | "I want to construct the item in inventory slot #`slot`, at location (`x`,`y`)"
-23   | `CL_GATHER`             | `[23,serial]`                      | "I want to gather object #`serial`"
-24   | `CL_DROP`               | `[24,serial,slot]`                 | "I want to drop object #`serial`'s item #`slot`."<br>A serial of `0` uses the user's inventory.
-25   | `CL_SWAP_ITEMS`         | `[25,serial1,slot1,serial2,slot2]` | "I want to swap object #`serial1`'s item #`slot1` with object #`serial2`'s item #`slot2`"<br>A serial of `0` uses the user's inventory.
-40   | `CL_GET_INVENTORY`      | `[40,serial]`                      | "Tell me what object #`serial`'s container holds."
+Code | Name                    | Syntax                                                               | Description
+---: | ----------------------- | -------------------------------------------------------------------- | -----------
+0    | `CL_PING`               | &laquo;0&raquo;                                                      | A ping, to measure latency and reassure the server
+1    | `CL_I_AM`               | &laquo;1&#8226;username&raquo;                                       | "My name is `username`"
+10   | `CL_LOCATION`           | &laquo;10&#8226;x&#8226;y&raquo;                                     | "I want to move to (`x`,`y`)"
+20   | `CL_CANCEL_ACTION`      | &laquo;20&raquo;                                                     | "I don't want to finish my current action"
+21   | `CL_CRAFT`              | &laquo;21&#8226;id&raquo;                                            | "I want to craft an item using recipe `id`"
+22   | `CL_CONSTRUCT`          | &laquo;22&#8226;slot&#8226;x&#8226;y&raquo;                          | "I want to construct the item in inventory slot #`slot`, at location (`x`,`y`)"
+23   | `CL_GATHER`             | &laquo;23&#8226;serial&raquo;                                        | "I want to gather object #`serial`"
+24   | `CL_DROP`               | &laquo;24&#8226;serial&#8226;slot&raquo;                             | "I want to drop object #`serial`'s item #`slot`."<br>A serial of `0` uses the user's inventory.
+25   | `CL_SWAP_ITEMS`         | &laquo;25&#8226;serial1&#8226;slot1&#8226;serial2&#8226;slot2&raquo; | "I want to swap object #`serial1`'s item #`slot1` with object #`serial2`'s item #`slot2`"<br>A serial of `0` uses the user's inventory.
+40   | `CL_GET_INVENTORY`      | &laquo;40&#8226;serial&raquo;                                        | "Tell me what object #`serial`'s container holds."
 
 #### Server commands                                        
-Code | Name                    | Syntax                     | Description
----: | ----------------------- | -------------------------- | -----------
-100  | `SV_PING_REPLY`         | `[100]`                    | A reply to a ping from a client
-101  | `SV_WELCOME`            | `[101]`                    | "You have been successfully registered"
-110  | `SV_USER_DISCONNECTED`  | `[110,username]`           | "User `username` has disconnected"
-120  | `SV_MAP_SIZE`           | `[120,x,y]`                | "The map size is `x`&times;`y`"
-121  | `SV_TERRAIN`            | `[121,x,y,n,t0,t1,t2,...]` | A package of map details.  "The `n` horizontal map tiles starting from (`x`,`y`) are of types `t0`, `t1`, `t2`, ..."
-122  | `SV_LOCATION`           | `[122,username,x,y]`       | "User `username` is located at (`x`,`y`)"
-123  | `SV_INVENTORY`          | `[123,slot,type,quantity]` | "Your inventory slot #`slot` contains a stack of `quantity` `type`s"
-124  | `SV_OBJECT`             | `[124,serial,x,y,type]`    | "Object #`serial` is located at (`x`,`y`), and is a `type`"
-125  | `SV_REMOVE_OBJECT`      | `[125,serial]`             | "Object #`serial` no longer exists"
-130  | `SV_ACTION_STARTED`     | `[130,time]`               | "You have begun an action that will take `t` milliseconds"
-131  | `SV_ACTION_FINISHED`    | `[131]`                    | "You have completed an action"
-150  | `SV_OWNER`              | `[150,serial,owner]`       | "Object #`serial` is owned by `owner`"
+Code | Name                    | Syntax                                                                         | Description
+---: | ----------------------- | ------------------------------------------------------------------------------ | -----------
+100  | `SV_PING_REPLY`         | &laquo;100&raquo;                                                              | A reply to a ping from a client
+101  | `SV_WELCOME`            | &laquo;101&raquo;                                                              | "You have been successfully registered"
+110  | `SV_USER_DISCONNECTED`  | &laquo;110&#8226;username&raquo;                                               | "User `username` has disconnected"
+120  | `SV_MAP_SIZE`           | &laquo;120&#8226;x&#8226;y&raquo;                                              | "The map size is `x`&times;`y`"
+121  | `SV_TERRAIN`            | &laquo;121&#8226;x&#8226;y&#8226;n&#8226;t0&#8226;t1&#8226;t2&#8226;...&raquo; | A package of map details.  "The `n` horizontal map tiles starting from (`x`,`y`) are of types `t0`, `t1`, ..."
+122  | `SV_LOCATION`           | &laquo;122&#8226;username&#8226;x&#8226;y&raquo;                               | "User `username` is located at (`x`,`y`)"
+123  | `SV_INVENTORY`          | &laquo;123&#8226;slot&#8226;type&#8226;quantity&raquo;                         | "Your inventory slot #`slot` contains a stack of `quantity` `type`s"
+124  | `SV_OBJECT`             | &laquo;124&#8226;serial&#8226;x&#8226;y&#8226;type&raquo;                      | "Object #`serial` is located at (`x`,`y`), and is a `type`"
+125  | `SV_REMOVE_OBJECT`      | &laquo;125&#8226;serial&raquo;                                                 | "Object #`serial` no longer exists"
+130  | `SV_ACTION_STARTED`     | &laquo;130&#8226;time&raquo;                                                   | "You have begun an action that will take `t` milliseconds"
+131  | `SV_ACTION_FINISHED`    | &laquo;131&raquo;                                                              | "You have completed an action"
+150  | `SV_OWNER`              | &laquo;150&#8226;serial&#8226;owner&raquo;                                     | "Object #`serial` is owned by `owner`"
 
 #### Warnings and errors                                          
-Code | Name                    | Syntax               | Description
----: | ----------------------- | -------------------- | -----------
-900  | `SV_DUPLICATE_USERNAME` | `[900]`              | The client has attempted to connect with a username already in use
-901  | `SV_INVALID_USERNAME`   | `[901]`              | The client has attempted to connect with an invalid username
-902  | `SV_SERVER_FULL`        | `[902]`              | There is no room for more clients
-910  | `SV_TOO_FAR`            | `[910]`              | "You are too far away to perform that action"
-911  | `SV_DOESNT_EXIST`       | `[911]`              | "The object you are trying to use does not exist"
-912  | `SV_INVENTORY_FULL`     | `[912]`              | "You cannot receive an item because your inventory is full"
-913  | `SV_NEED_MATERIALS`     | `[913]`              | "You do not have enough materials to craft that item"
-914  | `SV_INVALID_ITEM`       | `[914]`              | "You tried to craft an item that does not exist"
-915  | `SV_CANNOT_CRAFT`       | `[915]`              | "You tried to craft an item that cannot be crafted"
-916  | `SV_ACTION_INTERRUPTED` | `[916]`              | "Action interrupted"
-917  | `SV_EMPTY_SLOT`         | `[917]`              | "You tried to manipulate an empty inventory slot"
-918  | `SV_INVALID_SLOT`       | `[918]`              | "You tried to manipulate an inventory slot that does not exist"
-919  | `SV_CANNOT_CONSTRUCT`   | `[919]`              | "You tried to construct an item that is not a structure"
-920  | `SV_ITEM_NEEDED`        | `[920,reqItemClass]` | "You tried to perform an action, without the necessary `reqItemClass`"
-921  | `SV_BLOCKED`            | `[921]`              | "You tried to perform an action at a location that is blocked"
-922  | `SV_NEED_TOOLS`         | `[922]`              | "You tried to craft an item, but need additional tools"
+Code | Name                    | Syntax                               | Description
+---: | ----------------------- | ------------------------------------ | -----------
+900  | `SV_DUPLICATE_USERNAME` | &laquo;900&raquo;                    | The client has attempted to connect with a username already in use
+901  | `SV_INVALID_USERNAME`   | &laquo;901&raquo;                    | The client has attempted to connect with an invalid username
+902  | `SV_SERVER_FULL`        | &laquo;902&raquo;                    | There is no room for more clients
+910  | `SV_TOO_FAR`            | &laquo;910&raquo;                    | "You are too far away to perform that action"
+911  | `SV_DOESNT_EXIST`       | &laquo;911&raquo;                    | "The object you are trying to use does not exist"
+912  | `SV_INVENTORY_FULL`     | &laquo;912&raquo;                    | "You cannot receive an item because your inventory is full"
+913  | `SV_NEED_MATERIALS`     | &laquo;913&raquo;                    | "You do not have enough materials to craft that item"
+914  | `SV_INVALID_ITEM`       | &laquo;914&raquo;                    | "You tried to craft an item that does not exist"
+915  | `SV_CANNOT_CRAFT`       | &laquo;915&raquo;                    | "You tried to craft an item that cannot be crafted"
+916  | `SV_ACTION_INTERRUPTED` | &laquo;916&raquo;                    | "Action interrupted"
+917  | `SV_EMPTY_SLOT`         | &laquo;917&raquo;                    | "You tried to manipulate an empty inventory slot"
+918  | `SV_INVALID_SLOT`       | &laquo;918&raquo;                    | "You tried to manipulate an inventory slot that does not exist"
+919  | `SV_CANNOT_CONSTRUCT`   | &laquo;919&raquo;                    | "You tried to construct an item that is not a structure"
+920  | `SV_ITEM_NEEDED`        | &laquo;920&#8226;reqItemClass&raquo; | "You tried to perform an action, without the necessary `reqItemClass`"
+921  | `SV_BLOCKED`            | &laquo;921&raquo;                    | "You tried to perform an action at a location that is blocked"
+922  | `SV_NEED_TOOLS`         | &laquo;922&raquo;                    | "You tried to craft an item, but need additional tools"
