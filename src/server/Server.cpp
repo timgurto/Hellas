@@ -226,7 +226,6 @@ void Server::addUser(const Socket &socket, const std::string &name){
         _debug << "Existing";
     }
     _debug << " user, " << name << " has logged in." << Log::endl;
-    _usernames.insert(name);
 
     // Send welcome message
     sendMessage(socket, SV_WELCOME);
@@ -261,7 +260,8 @@ void Server::addUser(const Socket &socket, const std::string &name){
     }
 
     // Add new user to list, and broadcast his location
-    _users.insert(newUser);
+    std::set<User>::const_iterator it = _users.insert(newUser).first;
+    _usersByName[name] = &*it;
     broadcast(SV_LOCATION, newUser.makeLocationCommand());
 }
 
@@ -272,7 +272,7 @@ void Server::removeUser(const std::set<User>::iterator &it){
         // Save user data
         writeUserData(*it);
 
-        _usernames.erase(it->name());
+        _usersByName.erase(it->name());
         _users.erase(it);
 }
 
@@ -353,7 +353,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
 
             // Check that user isn't already logged in
-            if (_usernames.find(name) != _usernames.end()) {
+            if (_usersByName.find(name) != _usersByName.end()) {
                 sendMessage(client, SV_DUPLICATE_USERNAME);
                 invalid = true;
                 break;
@@ -563,6 +563,37 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             size_t slots = it->container().size();
             for (size_t i = 0; i != slots; ++i)
                 sendInventoryMessage(*user, serial, i);
+            break;
+        }
+
+        case CL_SAY:
+        {
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
+            std::string message(buffer);
+            iss >> del;
+            if (del != MSG_END)
+                return;
+            broadcast(SV_SAY, makeArgs(user->name(), message));
+            break;
+        }
+
+        case CL_WHISPER:
+        {
+            iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            std::string username(buffer);
+            iss >> del;
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
+            std::string message(buffer);
+            iss >> del;
+            if (del != MSG_END)
+                return;
+            auto it = _usersByName.find(username);
+            if (it == _usersByName.end()) {
+                sendMessage(client, SV_INVALID_USER);
+                break;
+            }
+            const User *target = it->second;
+            sendMessage(target->socket(), SV_WHISPER, makeArgs(user->name(), message));
             break;
         }
 

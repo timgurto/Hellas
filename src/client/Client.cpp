@@ -537,7 +537,7 @@ void Client::run(){
                                 // Perform command
                                 performCommand(_enteredText);
                             } else {
-                                _debug(_enteredText, Color::WHITE);
+                                performCommand("/say " + _enteredText);
                             }
                             _enteredText = "";
                         }
@@ -1294,6 +1294,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_BLOCKED:
         case SV_INVENTORY_FULL:
             errorMessageColor = Color::YELLOW; // Yellow above, red below
+        case SV_INVALID_USER:
         case SV_INVALID_ITEM:
         case SV_CANNOT_CRAFT:
         case SV_INVALID_SLOT:
@@ -1530,6 +1531,25 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_SAY:
+        case SV_WHISPER:
+        {
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            std::string username(buffer);
+            singleMsg >> del;
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            std::string message(buffer);
+            singleMsg >> del;
+            if (del != MSG_END)
+                break;
+            static const Color
+                SAY_COLOR = Color::WHITE,
+                WHISPER_COLOR = Color::RED/2 + Color::WHITE/2;
+            Color color = msgCode == SV_SAY ? SAY_COLOR : WHISPER_COLOR;
+            addChatMessage("[" + username + "] " + message, color);
+            break;
+        }
+
         default:
             _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
         }
@@ -1637,6 +1657,10 @@ void Client::initializeMessageNames(){
     _messageCommands["drop"] = CL_DROP;
     _messageCommands["swap"] = CL_SWAP_ITEMS;
     _messageCommands["getinventory"] = CL_GET_INVENTORY;
+    _messageCommands["say"] = CL_SAY;
+    _messageCommands["s"] = CL_SAY;
+    _messageCommands["whisper"] = CL_WHISPER;
+    _messageCommands["w"] = CL_WHISPER;
 
     _errorMessages[SV_TOO_FAR] = "You are too far away to perform that action.";
     _errorMessages[SV_DOESNT_EXIST] = "That object doesn't exist.";
@@ -1646,6 +1670,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_ACTION_INTERRUPTED] = "Action interrupted.";
 
     _errorMessages[SV_SERVER_FULL] = "The server is full.  Attempting reconnection...";
+    _errorMessages[SV_INVALID_USER] = "That user doesn't exist.";
     _errorMessages[SV_INVALID_ITEM] = "That is not a real item.";
     _errorMessages[SV_CANNOT_CRAFT] = "That item cannot be crafted.";
     _errorMessages[SV_EMPTY_SLOT] = "That inventory slot is empty.";
@@ -1680,13 +1705,19 @@ void Client::performCommand(const std::string &commandString){
 
     // Messages to server
     if (_messageCommands.find(command) != _messageCommands.end()){
+        MessageCode code = static_cast<MessageCode>(_messageCommands[command]);
         std::ostringstream oss;
         for (size_t i = 0; i != args.size(); ++i){
             oss << args[i];
-            if (i < args.size() - 1)
-                oss << MSG_DELIM;
+            if (i < args.size() - 1) {
+                if (code == CL_SAY || // Allow spaces in messages
+                    code == CL_WHISPER && i > 0)
+                    oss << ' ';
+                else
+                    oss << MSG_DELIM;
+            }
         }
-        sendMessage(static_cast<MessageCode>(_messageCommands[command]), oss.str());
+        sendMessage(code, oss.str());
         return;
     }
 

@@ -70,7 +70,8 @@ private:
     // All connected sockets, including those without registered users
     std::set<Socket> _clientSockets;
     std::set<User> _users; // All connected users
-    std::set<std::string> _usernames; // All connected users' names, for faster lookup of duplicates
+    // Pointers to all connected users, ordered by name for faster lookup
+    std::map<std::string, const User *> _usersByName;
     void checkSockets();
     /*
     Add the newly logged-in user

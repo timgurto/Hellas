@@ -54,6 +54,14 @@ enum MessageCode{
     // Arguments: serial
     CL_GET_INVENTORY = 40,
 
+    // "I want to say ... to everybody". 
+    // Arguments: message
+    CL_SAY = 60,
+
+    // "I want to say ... to ...". 
+    // Arguments: username, message
+    CL_WHISPER = 61,
+
 
 
     // Server -> client
@@ -105,6 +113,14 @@ enum MessageCode{
     // Arguments: serial, owner
     SV_OWNER = 150,
 
+    // "User ... has said ...".
+    // Arguments: username, message
+    SV_SAY = 200,
+
+    // "User ... has said ... to you".
+    // Arguments: username, message
+    SV_WHISPER = 201,
+
     // The client has attempted to connect with a username already in use
     SV_DUPLICATE_USERNAME = 900,
 
@@ -113,6 +129,9 @@ enum MessageCode{
 
     // There is no room for more clients
     SV_SERVER_FULL = 902,
+
+    // That user doesn't exist
+    SV_INVALID_USER = 903,
 
     // The user is too far away to perform an action
     SV_TOO_FAR = 910,

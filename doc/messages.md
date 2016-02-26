@@ -25,6 +25,8 @@ Code | Name                    | Syntax                                         
 24   | `CL_DROP`               | &laquo;24&#8226;serial&#8226;slot&raquo;                             | "I want to drop object #`serial`'s item #`slot`."<br>A serial of `0` uses the user's inventory.
 25   | `CL_SWAP_ITEMS`         | &laquo;25&#8226;serial1&#8226;slot1&#8226;serial2&#8226;slot2&raquo; | "I want to swap object #`serial1`'s item #`slot1` with object #`serial2`'s item #`slot2`"<br>A serial of `0` uses the user's inventory.
 40   | `CL_GET_INVENTORY`      | &laquo;40&#8226;serial&raquo;                                        | "Tell me what object #`serial`'s container holds."
+60   | `CL_SAY`                | &laquo;60&#8226;message&raquo;                                       | "I want to say '`message`' to everybody."
+61   | `CL_WHISPER`            | &laquo;61&#8226;username&#8226;message&raquo;                        | "I want to say '`message`' to user `username`."
 
 #### Server commands                                        
 Code | Name                    | Syntax                                                                         | Description
@@ -41,6 +43,8 @@ Code | Name                    | Syntax                                         
 130  | `SV_ACTION_STARTED`     | &laquo;130&#8226;time&raquo;                                                   | "You have begun an action that will take `t` milliseconds"
 131  | `SV_ACTION_FINISHED`    | &laquo;131&raquo;                                                              | "You have completed an action"
 150  | `SV_OWNER`              | &laquo;150&#8226;serial&#8226;owner&raquo;                                     | "Object #`serial` is owned by `owner`"
+200  | `SV_SAY`                | &laquo;61&#8226;username&#8226;message&raquo;                                  | "User `username` said '`message`'."
+201  | `SV_WHISPER`            | &laquo;61&#8226;username&#8226;message&raquo;                                  | "User `username` said '`message` to you'."
 
 #### Warnings and errors                                          
 Code | Name                    | Syntax                               | Description
@@ -48,6 +52,7 @@ Code | Name                    | Syntax                               | Descript
 900  | `SV_DUPLICATE_USERNAME` | &laquo;900&raquo;                    | The client has attempted to connect with a username already in use
 901  | `SV_INVALID_USERNAME`   | &laquo;901&raquo;                    | The client has attempted to connect with an invalid username
 902  | `SV_SERVER_FULL`        | &laquo;902&raquo;                    | There is no room for more clients
+903  | `SV_INVALID_USER`       | &laquo;903&raquo;                    | "You tried to interact with a nonexistent user"
 910  | `SV_TOO_FAR`            | &laquo;910&raquo;                    | "You are too far away to perform that action"
 911  | `SV_DOESNT_EXIST`       | &laquo;911&raquo;                    | "The object you are trying to use does not exist"
 912  | `SV_INVENTORY_FULL`     | &laquo;912&raquo;                    | "You cannot receive an item because your inventory is full"
