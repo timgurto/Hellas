@@ -43,12 +43,12 @@ enum MessageCode{
     // "I want to drop the item in object ...'s slot ..."
     // An object serial of 0 denotes the user's inventory.
     // Arguments: serial, slot
-    CL_DROP = 24,
+    CL_DROP = 30,
 
     // "I want to swap the items in container slots ... and ...". 
     // An object serial of 0 denotes the user's inventory.
     // Arguments: serial1, slot1, serial2, slot2
-    CL_SWAP_ITEMS = 25,
+    CL_SWAP_ITEMS = 31,
 
     // "I want to know what is inside object ...". 
     // Arguments: serial

@@ -22,8 +22,8 @@ Code | Name                    | Syntax                                         
 21   | `CL_CRAFT`              | &laquo;21&#8226;id&raquo;                                            | "I want to craft an item using recipe `id`"
 22   | `CL_CONSTRUCT`          | &laquo;22&#8226;slot&#8226;x&#8226;y&raquo;                          | "I want to construct the item in inventory slot #`slot`, at location (`x`,`y`)"
 23   | `CL_GATHER`             | &laquo;23&#8226;serial&raquo;                                        | "I want to gather object #`serial`"
-24   | `CL_DROP`               | &laquo;24&#8226;serial&#8226;slot&raquo;                             | "I want to drop object #`serial`'s item #`slot`."<br>A serial of `0` uses the user's inventory.
-25   | `CL_SWAP_ITEMS`         | &laquo;25&#8226;serial1&#8226;slot1&#8226;serial2&#8226;slot2&raquo; | "I want to swap object #`serial1`'s item #`slot1` with object #`serial2`'s item #`slot2`"<br>A serial of `0` uses the user's inventory.
+30   | `CL_DROP`               | &laquo;30&#8226;serial&#8226;slot&raquo;                             | "I want to drop object #`serial`'s item #`slot`."<br>A serial of `0` uses the user's inventory.
+31   | `CL_SWAP_ITEMS`         | &laquo;31&#8226;serial1&#8226;slot1&#8226;serial2&#8226;slot2&raquo; | "I want to swap object #`serial1`'s item #`slot1` with object #`serial2`'s item #`slot2`"<br>A serial of `0` uses the user's inventory.
 40   | `CL_GET_INVENTORY`      | &laquo;40&#8226;serial&raquo;                                        | "Tell me what object #`serial`'s container holds."
 60   | `CL_SAY`                | &laquo;60&#8226;message&raquo;                                       | "I want to say '`message`' to everybody."
 61   | `CL_WHISPER`            | &laquo;61&#8226;username&#8226;message&raquo;                        | "I want to say '`message`' to user `username`."
