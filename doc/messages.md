@@ -5,6 +5,7 @@ Detailed here are the types of messages which can be sent between client and ser
 "Client requests" are sent from a client to the server, and "server commands" and "warnings and errors" are sent from the server to a client.
 
 The message text itself is divided by ASCII control characters; they will be represented below by the following symbols:
+
 Symbol  | ASCII value  | Meaning
 ------- | ------------ | --------
 &laquo; | `0x02` (STX) | Start message

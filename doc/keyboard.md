@@ -7,7 +7,7 @@ Key       | Action
 `s`, `↓` | Move down
 `a`, `←` | Move left
 `d`, `→` | Move right
-`Esc`   ` | Exit a UI window if one is open, or exit the client
+`Esc`     | Exit a UI window if one is open, or exit the client
 `Enter`   | Open/close text-entry window, to send commands to the server
 `/`       | Open text-entry window, and add a `/` character to it
 `c`       | Open/close crafting window
