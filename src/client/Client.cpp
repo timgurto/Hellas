@@ -579,6 +579,13 @@ void Client::run(){
                     case SDLK_i:
                         _inventoryWindow->toggleVisibility();
                         break;
+
+                    case SDLK_r:
+                        if (!_lastWhisperer.empty()) {
+                            SDL_StartTextInput();
+                            _enteredText = "/whisper " + _lastWhisperer + " ";
+                        }
+                        break;
                     }
                 }
                 break;
@@ -1547,6 +1554,8 @@ void Client::handleMessage(const std::string &msg){
                 WHISPER_COLOR = Color::RED/2 + Color::WHITE/2;
             Color color = msgCode == SV_SAY ? SAY_COLOR : WHISPER_COLOR;
             addChatMessage("[" + username + "] " + message, color);
+            if (msgCode == SV_WHISPER)
+                _lastWhisperer = username;
             break;
         }
 

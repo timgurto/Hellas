@@ -13,3 +13,4 @@ Key       | Action
 `c`       | Open/close crafting window
 `i`       | Open/close inventory
 `l`       | Open/close chat log
+`r`       | Reply to last person who whispered
