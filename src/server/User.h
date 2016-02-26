@@ -17,17 +17,29 @@ class Server;
 
 // Stores information about a single user account for the server
 class User{
+public:
+    enum Action{
+        GATHER,
+        CRAFT,
+        CONSTRUCT,
+
+        NO_ACTION
+    };
+
+private:
     std::string _name;
     Socket _socket;
     Point _location;
-    const Object *_actionTarget; // Points to the object that the user is acting upon.
-    const Recipe *_actionCrafting; // The recipe this user is currently crafting.
 
-    const ObjectType *_actionConstructing; // The object this user is currently constructing.
-    size_t _constructingSlot;
-    Point _constructingLocation;
-
+    Action _action;
     Uint32 _actionTime; // Time remaining on current action.
+    // Information used when action completes:
+    const Object *_actionObject; // Gather
+    const Recipe *_actionRecipe; // Craft
+    const ObjectType *_actionObjectType; // Construct
+    size_t _actionSlot; // Construct
+    Point _actionLocation; // Construct
+
     Item::vect_t _inventory;
 
     Uint32 _lastLocUpdate; // Time that the last CL_LOCATION was received
@@ -51,18 +63,21 @@ public:
 
     const Rect collisionRect() const;
 
-    const Object *actionTarget() const { return _actionTarget; }
-    void actionTarget(const Object *object); // Configure user to perform an action on an object
+    Action action() const { return _action; }
+    void action(Action a) { _action = a; }
+    const Object *actionObject() const { return _actionObject; }
+    void beginGathering(const Object *object); // Configure user to perform an action on an object
 
     // Whether the user has enough materials to craft a recipe
     bool hasItems(const ItemSet &items) const;
     void removeItems(const ItemSet &items);
     bool hasTool(const std::string &className) const;
     bool hasTools(const std::set<std::string> &classes) const;
-    void actionCraft(const Recipe &item); // Configure user to craft an item
+
+    void beginCrafting(const Recipe &item); // Configure user to craft an item
 
     // Configure user to construct an item
-    void actionConstruct(const ObjectType &obj, const Point &location, size_t slot);
+    void beginConstructing(const ObjectType &obj, const Point &location, size_t slot);
 
     void cancelAction(); // Cancel any action in progress, and alert the client
 

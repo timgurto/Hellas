@@ -399,7 +399,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_NEED_TOOLS);
                 break;
             }
-            user->actionCraft(*it);
+            user->beginCrafting(*it);
             sendMessage(client, SV_ACTION_STARTED, makeArgs(it->time()));
             break;
         }
@@ -437,7 +437,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_BLOCKED);
                 break;
             }
-            user->actionConstruct(objType, location, slot);
+            user->beginConstructing(objType, location, slot);
             sendMessage(client, SV_ACTION_STARTED,
                         makeArgs(objType.constructionTime()));
             break;
@@ -460,8 +460,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             user->cancelAction();
             std::set<Object>::const_iterator it = _objects.find(serial);
-            if (!isValidObject(client, *user, it))
+            if (!isValidObject(client, *user, it)) {
+                sendMessage(client, SV_DOESNT_EXIST);
                 break;
+            }
             const Object &obj = *it;
             // Check that the user meets the requirements
             assert (obj.type());
@@ -470,7 +472,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_ITEM_NEEDED, gatherReq);
                 break;
             }
-            user->actionTarget(&obj);
+            user->beginGathering(&obj);
             sendMessage(client, SV_ACTION_STARTED, makeArgs(obj.type()->gatherTime()));
             break;
         }
@@ -620,17 +622,17 @@ void Server::gatherObject(size_t serial, User &user){
         sendMessage(user.socket(), SV_INVENTORY_FULL);
         qtyToGive -= remaining;
     }
-    // Remove tree if empty
+    // Remove object if empty
     obj.removeItem(toGive, qtyToGive);
     if (obj.contents().isEmpty()) {
         // Ensure no other users are targeting this object, as it will be removed.
         for (const User &otherUserConst : _users) {
             const User & otherUser = const_cast<User &>(otherUserConst);
             if (&otherUser != &user &&
-                otherUser.actionTarget() &&
-                otherUser.actionTarget()->serial() == serial) {
+                otherUser.action() == User::GATHER &&
+                otherUser.actionObject()->serial() == serial) {
 
-                user.actionTarget(0);
+                user.action(User::NO_ACTION);
                 sendMessage(otherUser.socket(), SV_DOESNT_EXIST);
             }
         }

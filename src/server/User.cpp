@@ -20,12 +20,15 @@ User::User(const std::string &name, const Point &loc, const Socket &socket):
 _name(name),
 _socket(socket),
 _location(loc),
-_actionTarget(0),
-_actionCrafting(0),
-_actionConstructing(0),
-_constructingSlot(INVENTORY_SIZE),
-_constructingLocation(0, 0),
+
+_action(NO_ACTION),
 _actionTime(0),
+_actionObject(0),
+_actionRecipe(0),
+_actionObjectType(0),
+_actionSlot(INVENTORY_SIZE),
+_actionLocation(0, 0),
+
 _inventory(INVENTORY_SIZE),
 _lastLocUpdate(SDL_GetTicks()),
 _lastContact(SDL_GetTicks()){
@@ -142,29 +145,31 @@ size_t User::giveItem(const Item *item, size_t quantity){
 }
 
 void User::cancelAction() {
-    if (_actionTarget || _actionCrafting)
+    if (_action != NO_ACTION) {
         Server::instance().sendMessage(_socket, SV_ACTION_INTERRUPTED);
-    _actionTarget = 0;
-    _actionCrafting = 0;
-    _actionTime = 0;
+        _action = NO_ACTION;
+    }
 }
 
-void User::actionTarget(const Object *obj){
-    _actionTarget = obj;
+void User::beginGathering(const Object *obj){
+    _action = GATHER;
+    _actionObject = obj;
     assert(obj->type());
     _actionTime = obj->type()->gatherTime();
 }
 
-void User::actionCraft(const Recipe &recipe){
-    _actionCrafting = &recipe;
+void User::beginCrafting(const Recipe &recipe){
+    _action = CRAFT;
+    _actionRecipe = &recipe;
     _actionTime = recipe.time();
 }
 
-void User::actionConstruct(const ObjectType &obj, const Point &location, size_t slot){
-    _actionConstructing = &obj;
+void User::beginConstructing(const ObjectType &obj, const Point &location, size_t slot){
+    _action = CONSTRUCT;
+    _actionObjectType = &obj;
     _actionTime = obj.constructionTime();
-    _constructingSlot = slot;
-    _constructingLocation = location;
+    _actionSlot = slot;
+    _actionLocation = location;
 }
 
 bool User::hasItems(const ItemSet &items) const{
@@ -229,40 +234,45 @@ void User::removeItems(const ItemSet &items) {
 }
 
 void User::update(Uint32 timeElapsed){
-    if (_actionTime == 0)
+    if (_action == NO_ACTION)
         return;
-    Server &server = *Server::_instance;
-    if (_actionTime > timeElapsed)
+    if (_actionTime > timeElapsed) {
         _actionTime -= timeElapsed;
-    else {
-        if (_actionTarget) {
-            server.gatherObject(_actionTarget->serial(), *this);
-            _actionTarget = 0;
-        } else if (_actionCrafting) {
-            if (!hasSpace(_actionCrafting->product())) {
-                Server::instance().sendMessage(_socket, SV_INVENTORY_FULL);
-                return;
-            }
-            // Give user his newly crafted item
-            giveItem(_actionCrafting->product(), 1);
-            // Remove materials from user's inventory
-            removeItems(_actionCrafting->materials());
-            _actionCrafting = 0;
-        } else if (_actionConstructing) {
-            // Create object
-            server.addObject(_actionConstructing, _constructingLocation, this);
-
-            // Remove item from user's inventory
-            std::pair<const Item *, size_t> &slot = _inventory[_constructingSlot];
-            assert(slot.first->constructsObject() == _actionConstructing);
-            --slot.second;
-            if (slot.second == 0)
-                slot.first = 0;
-            server.sendInventoryMessage(*this, 0, _constructingSlot);
-        }
-        _actionTime = 0;
-        server.sendMessage(_socket, SV_ACTION_FINISHED);
+        return;
     }
+
+    Server &server = *Server::_instance;
+    switch(_action){
+    case GATHER:
+        server.gatherObject(_actionObject->serial(), *this);
+        break;
+
+    case CRAFT:
+        if (!hasSpace(_actionRecipe->product())) {
+            Server::instance().sendMessage(_socket, SV_INVENTORY_FULL);
+            _action = NO_ACTION;
+            return;
+        }
+        // Give user his newly crafted item
+        giveItem(_actionRecipe->product(), 1);
+        // Remove materials from user's inventory
+        removeItems(_actionRecipe->materials());
+        break;
+
+    case CONSTRUCT:
+        // Create object
+        server.addObject(_actionObjectType, _actionLocation, this);
+        // Remove item from user's inventory
+        std::pair<const Item *, size_t> &slot = _inventory[_actionSlot];
+        assert(slot.first->constructsObject() == _actionObjectType);
+        --slot.second;
+        if (slot.second == 0)
+            slot.first = 0;
+        server.sendInventoryMessage(*this, 0, _actionSlot);
+    }
+    
+    server.sendMessage(_socket, SV_ACTION_FINISHED);
+    _action = NO_ACTION;
 }
 
 const Rect User::collisionRect() const{

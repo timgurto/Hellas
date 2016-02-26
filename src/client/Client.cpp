@@ -1708,6 +1708,7 @@ void Client::performCommand(const std::string &commandString){
     char c;
     iss >> c;
     if (c != '/') {
+        assert(false);
         _debug("Commands must begin with '/.", Color::RED);
         return;
     }
