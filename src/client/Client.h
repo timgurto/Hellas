@@ -118,11 +118,17 @@ private:
     void addUI(Element *element);
     Element *_castBar;
 
+
     Element *_chatContainer;
     List *_chatLog;
     void addChatMessage(const std::string &msg, const Color &color = Color::WHITE);
 
+    static Color
+        SAY_COLOR,
+        WHISPER_COLOR;
+
     std::string _lastWhisperer; // The username of the last person to whisper, for fast replying.
+
 
     Avatar _character; // Describes the user's character
     Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.

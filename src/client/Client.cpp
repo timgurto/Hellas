@@ -62,6 +62,9 @@ const size_t Client::MAX_TEXT_ENTERED = 100;
 
 const int Client::PLAYER_ACTION_CHANNEL = 0;
 
+Color Client::SAY_COLOR;
+Color Client::WHISPER_COLOR;
+
 bool Client::isClient = false;
 
 std::map<std::string, int> Client::_messageCommands;
@@ -157,6 +160,8 @@ _debug("client.log"){
     _chatContainer->addChild(_chatLog);
     _chatContainer->addChild(new ShadowBox(Rect(0, 0, chatW, chatH), true));
     addUI(_chatContainer);
+    SAY_COLOR = Color::WHITE;
+    WHISPER_COLOR = Color::RED/2 + Color::WHITE/2;
 
     initializeMessageNames();
 
@@ -1539,6 +1544,19 @@ void Client::handleMessage(const std::string &msg){
         }
 
         case SV_SAY:
+        {
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            std::string username(buffer);
+            singleMsg >> del;
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            std::string message(buffer);
+            singleMsg >> del;
+            if (del != MSG_END || username == _username) // We already know we said this.
+                break;
+            addChatMessage("[" + username + "] " + message, SAY_COLOR);
+            break;
+        }
+
         case SV_WHISPER:
         {
             singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
@@ -1549,13 +1567,8 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del;
             if (del != MSG_END)
                 break;
-            static const Color
-                SAY_COLOR = Color::WHITE,
-                WHISPER_COLOR = Color::RED/2 + Color::WHITE/2;
-            Color color = msgCode == SV_SAY ? SAY_COLOR : WHISPER_COLOR;
-            addChatMessage("[" + username + "] " + message, color);
-            if (msgCode == SV_WHISPER)
-                _lastWhisperer = username;
+            addChatMessage("[From " + username + "] " + message, WHISPER_COLOR);
+            _lastWhisperer = username;
             break;
         }
 
@@ -1564,7 +1577,8 @@ void Client::handleMessage(const std::string &msg){
         }
 
         if (del != MSG_END && !iss.eof()) {
-            _debug << Color::RED << "Bad message ending. code=" << msgCode << Log::endl;
+            _debug << Color::RED << "Bad message ending. code=" << msgCode
+                   << "; remaining message = " << del << singleMsg.str() << Log::endl;
         }
 
         iss.peek();
@@ -1689,7 +1703,6 @@ void Client::initializeMessageNames(){
 }
 
 void Client::performCommand(const std::string &commandString){
-    _debug(commandString, Color::YELLOW);
     std::istringstream iss(commandString);
     std::string token;
     char c;
@@ -1727,6 +1740,18 @@ void Client::performCommand(const std::string &commandString){
             }
         }
         sendMessage(code, oss.str());
+
+        // Give user feedback
+        switch(code) {
+        case CL_SAY:
+            addChatMessage("[" + _username + "] " + oss.str(), SAY_COLOR);
+            break;
+        case CL_WHISPER:
+            if (args.size() < 1)
+                break;
+            addChatMessage("[To " + args[0] + "] " + oss.str().substr(args[0].size()+1),
+                           WHISPER_COLOR);
+        }
         return;
     }
 
