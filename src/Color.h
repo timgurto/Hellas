@@ -16,6 +16,23 @@ public:
     static const Color YELLOW;
     static const Color WHITE;
 
+    static const Color QB_BLACK;
+    static const Color QB_BLUE;
+    static const Color QB_GREEN;
+    static const Color QB_CYAN;
+    static const Color QB_RED;
+    static const Color QB_MAGENTA;
+    static const Color QB_BROWN;
+    static const Color QB_WHITE;
+    static const Color QB_GREY;
+    static const Color QB_LIGHT_BLUE;
+    static const Color QB_LIGHT_GREEN;
+    static const Color QB_LIGHT_CYAN;
+    static const Color QB_LIGHT_RED;
+    static const Color QB_LIGHT_MAGENTA;
+    static const Color QB_YELLOW;
+    static const Color QB_BRIGHT_WHITE;
+
     static const Color GREY_2;
     static const Color GREY_4;
     static const Color GREY_8;
