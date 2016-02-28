@@ -6,6 +6,7 @@ Both:
  - container
  - yield
  - collisionRect
+ - deconstructs
 
 Client only:
  - name
@@ -49,7 +50,9 @@ Server only:
     name="Wooden chest"
     xDrawOffset=-14
     yDrawOffset=-22
-    constructionTime=2000 >
+    constructionTime=2000
+    deconstructs="chest"
+    deconstructionTime=1000 >
     <collisionRect x=-14 y=-6 w=28 h=12 />
     <class name="set square" />
     <container slots=10 />

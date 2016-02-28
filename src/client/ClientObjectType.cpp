@@ -9,6 +9,7 @@
 ClientObjectType::ClientObjectType(const std::string &id):
 _id(id),
 _canGather(false),
+_canDeconstruct(false),
 _containerSlots(0),
 _gatherSound(0){}
 

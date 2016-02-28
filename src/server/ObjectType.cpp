@@ -6,6 +6,8 @@ ObjectType::ObjectType(const std::string &id):
 _id(id),
 _gatherTime(0),
 _constructionTime(0),
+_deconstructsItem(0),
+_deconstructionTime(0),
 _gatherReq("none"),
 _containerSlots(0),
 _collides(false){}
@@ -13,6 +15,8 @@ _collides(false){}
 ObjectType::ObjectType(const Rect &collisionRect):
 _gatherTime(0),
 _constructionTime(0),
+_deconstructsItem(0),
+_deconstructionTime(0),
 _gatherReq("none"),
 _containerSlots(0),
 _collides(true),

@@ -40,6 +40,10 @@ enum MessageCode{
     // Arguments: serial
     CL_GATHER = 23,
 
+    // "I want to deconstruct an object"
+    // Arguments: serial
+    CL_DECONSTRUCT = 24,
+
     // "I want to drop the item in object ...'s slot ..."
     // An object serial of 0 denotes the user's inventory.
     // Arguments: serial, slot
@@ -172,6 +176,9 @@ enum MessageCode{
 
     // The user does not have the tools required to craft an item
     SV_NEED_TOOLS = 922,
+
+    // The user tried to deconstruct an item that cannot be deconstructed
+    SV_CANNOT_DECONSTRUCT = 923,
 
 
 

@@ -9,11 +9,16 @@
 #include "../Rect.h"
 #include "Yield.h"
 
+class Item;
+
 // Describes a class of Objects, the "instances" of which share common properties
 class ObjectType{
     std::string _id;
     Uint32 _gatherTime;
     Uint32 _constructionTime;
+
+    const Item *_deconstructsItem; // Item gained when this object is deconstructed
+    Uint32 _deconstructionTime;
 
     // To gather from objects of this type, a user must have an item of the following class.
     std::string _gatherReq;
@@ -46,11 +51,16 @@ public:
     const Rect &collisionRect() const { return _collisionRect; }
     void collisionRect(const Rect &r) { _collisionRect = r; _collides = true; }
     bool isClass( const std::string &className) const;
+    const Item *deconstructsItem() const { return _deconstructsItem; }
+    void deconstructsItem(const Item *item) { _deconstructsItem = item; }
+    Uint32 deconstructionTime() const { return _deconstructionTime; }
+    void deconstructionTime(Uint32 t) { _deconstructionTime = t; }
 
     bool operator<(const ObjectType &rhs) const { return _id < rhs._id; }
 
-    void addYield(const Item *item, double initMean,
-                  double initSD, double gatherMean, double gatherSD);
+    void addYield(const Item *item,
+                  double initMean, double initSD,
+                  double gatherMean, double gatherSD);
     void addClass(const std::string &className);
 };
 

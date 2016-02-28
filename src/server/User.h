@@ -22,6 +22,7 @@ public:
         GATHER,
         CRAFT,
         CONSTRUCT,
+        DECONSTRUCT,
 
         NO_ACTION
     };
@@ -34,7 +35,7 @@ private:
     Action _action;
     Uint32 _actionTime; // Time remaining on current action.
     // Information used when action completes:
-    const Object *_actionObject; // Gather
+    Object *_actionObject; // Gather, deconstruct
     const Recipe *_actionRecipe; // Craft
     const ObjectType *_actionObjectType; // Construct
     size_t _actionSlot; // Construct
@@ -66,7 +67,7 @@ public:
     Action action() const { return _action; }
     void action(Action a) { _action = a; }
     const Object *actionObject() const { return _actionObject; }
-    void beginGathering(const Object *object); // Configure user to perform an action on an object
+    void beginGathering(Object *object); // Configure user to perform an action on an object
 
     // Whether the user has enough materials to craft a recipe
     bool hasItems(const ItemSet &items) const;
@@ -78,6 +79,9 @@ public:
 
     // Configure user to construct an item
     void beginConstructing(const ObjectType &obj, const Point &location, size_t slot);
+
+    // Configure user to deconstruct an object
+    void beginDeconstructing(Object &obj);
 
     void cancelAction(); // Cancel any action in progress, and alert the client
 
@@ -98,7 +102,7 @@ public:
     void updateLocation(const Point &dest);
 
     // Return value: 0 if there was room for all items, otherwise the remainder.
-    size_t giveItem(const Item *item, size_t quantity);
+    size_t giveItem(const Item *item, size_t quantity = 1);
 
     // Whether the user has room for one or more of an item
     bool hasSpace(const Item *item, size_t quantity = 1) const;

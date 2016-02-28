@@ -22,6 +22,7 @@ Code | Name                    | Syntax                                         
 21   | `CL_CRAFT`              | &laquo;21&#8226;id&raquo;                                            | "I want to craft an item using recipe `id`"
 22   | `CL_CONSTRUCT`          | &laquo;22&#8226;slot&#8226;x&#8226;y&raquo;                          | "I want to construct the item in inventory slot #`slot`, at location (`x`,`y`)"
 23   | `CL_GATHER`             | &laquo;23&#8226;serial&raquo;                                        | "I want to gather object #`serial`"
+24   | `CL_DECONSTRUCT`        | &laquo;23&#8226;serial&raquo;                                        | "I want to deconstruct object #`serial`"
 30   | `CL_DROP`               | &laquo;30&#8226;serial&#8226;slot&raquo;                             | "I want to drop object #`serial`'s item #`slot`."<br>A serial of `0` uses the user's inventory.
 31   | `CL_SWAP_ITEMS`         | &laquo;31&#8226;serial1&#8226;slot1&#8226;serial2&#8226;slot2&raquo; | "I want to swap object #`serial1`'s item #`slot1` with object #`serial2`'s item #`slot2`"<br>A serial of `0` uses the user's inventory.
 40   | `CL_GET_INVENTORY`      | &laquo;40&#8226;serial&raquo;                                        | "Tell me what object #`serial`'s container holds."
@@ -66,3 +67,4 @@ Code | Name                    | Syntax                               | Descript
 920  | `SV_ITEM_NEEDED`        | &laquo;920&#8226;reqItemClass&raquo; | "You tried to perform an action, without the necessary `reqItemClass`"
 921  | `SV_BLOCKED`            | &laquo;921&raquo;                    | "You tried to perform an action at a location that is blocked"
 922  | `SV_NEED_TOOLS`         | &laquo;922&raquo;                    | "You tried to craft an item, but need additional tools"
+923  | `SV_CANNOT_DECONSTRUCT` | &laquo;923&raquo;                    | "You tried to deconstruct an object that cannot be deconstructed"

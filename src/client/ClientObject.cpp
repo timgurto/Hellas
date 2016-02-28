@@ -74,6 +74,8 @@ void ClientObject::onRightClick(Client &client){
 std::vector<std::string> ClientObject::getTooltipMessages(const Client &client) const {
     std::vector<std::string> text;
     text.push_back(objectType()->name());
+    if (isDebug())
+        text.push_back("Serial: " + makeArgs(_serial));
     if (!_owner.empty())
         text.push_back(std::string("Owned by ") + _owner);
     return text;

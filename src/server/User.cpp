@@ -151,7 +151,7 @@ void User::cancelAction() {
     }
 }
 
-void User::beginGathering(const Object *obj){
+void User::beginGathering(Object *obj){
     _action = GATHER;
     _actionObject = obj;
     assert(obj->type());
@@ -170,6 +170,12 @@ void User::beginConstructing(const ObjectType &obj, const Point &location, size_
     _actionTime = obj.constructionTime();
     _actionSlot = slot;
     _actionLocation = location;
+}
+
+void User::beginDeconstructing(Object &obj){
+    _action = DECONSTRUCT;
+    _actionObject = &obj;
+    _actionTime = obj.type()->deconstructionTime();
 }
 
 bool User::hasItems(const ItemSet &items) const{
@@ -249,7 +255,7 @@ void User::update(Uint32 timeElapsed){
 
     case CRAFT:
         if (!hasSpace(_actionRecipe->product())) {
-            Server::instance().sendMessage(_socket, SV_INVENTORY_FULL);
+            server.sendMessage(_socket, SV_INVENTORY_FULL);
             _action = NO_ACTION;
             return;
         }
@@ -260,6 +266,7 @@ void User::update(Uint32 timeElapsed){
         break;
 
     case CONSTRUCT:
+    {
         // Create object
         server.addObject(_actionObjectType, _actionLocation, this);
         // Remove item from user's inventory
@@ -269,6 +276,27 @@ void User::update(Uint32 timeElapsed){
         if (slot.second == 0)
             slot.first = 0;
         server.sendInventoryMessage(*this, 0, _actionSlot);
+        break;
+    }
+
+    case DECONSTRUCT:
+    {
+        //Check for inventory space
+        const Item *item = _actionObject->type()->deconstructsItem();
+        if (!hasSpace(item)){
+            server.sendMessage(_socket, SV_INVENTORY_FULL);
+            _action = NO_ACTION;
+            return;
+        }
+        // Give user his item
+        giveItem(item);
+        // Remove object
+        server.removeObject(*_actionObject);
+        break;
+    }
+
+    default:
+        assert(false);
     }
     
     server.sendMessage(_socket, SV_ACTION_FINISHED);

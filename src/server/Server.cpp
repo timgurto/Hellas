@@ -459,12 +459,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             user->cancelAction();
-            std::set<Object>::const_iterator it = _objects.find(serial);
+            std::set<Object>::iterator it = _objects.find(serial);
             if (!isValidObject(client, *user, it)) {
                 sendMessage(client, SV_DOESNT_EXIST);
                 break;
             }
-            const Object &obj = *it;
+            Object &obj = const_cast<Object &>(*it);
             // Check that the user meets the requirements
             assert (obj.type());
             const std::string &gatherReq = obj.type()->gatherReq();
@@ -474,6 +474,30 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
             user->beginGathering(&obj);
             sendMessage(client, SV_ACTION_STARTED, makeArgs(obj.type()->gatherTime()));
+            break;
+        }
+
+        case CL_DECONSTRUCT:
+        {
+            int serial;
+            iss >> serial >> del;
+            if (del != MSG_END)
+                return;
+            user->cancelAction();
+            std::set<Object>::iterator it = _objects.find(serial);
+            if (!isValidObject(client, *user, it)) {
+                sendMessage(client, SV_DOESNT_EXIST);
+                break;
+            }
+            Object &obj = const_cast<Object &>(*it);
+            // Check that the object can be deconstructed
+            assert (obj.type());
+            if (!obj.type()->deconstructsItem()){
+                sendMessage(client, SV_CANNOT_DECONSTRUCT);
+                break;
+            }
+            user->beginDeconstructing(obj);
+            sendMessage(client, SV_ACTION_STARTED, makeArgs(obj.type()->deconstructionTime()));
             break;
         }
 
@@ -611,6 +635,25 @@ void Server::broadcast(MessageCode msgCode, const std::string &args){
     }
 }
 
+void Server::removeObject(Object &obj, const User *userToExclude){
+    // Ensure no other users are targeting this object, as it will be removed.
+    size_t serial = obj.serial();
+    for (const User &userConst : _users) {
+        User & user = const_cast<User &>(userConst);
+        if (&user != userToExclude &&
+            user.action() == User::GATHER &&
+            user.actionObject()->serial() == serial) {
+
+            user.action(User::NO_ACTION);
+            sendMessage(user.socket(), SV_DOESNT_EXIST);
+        }
+    }
+    broadcast(SV_REMOVE_OBJECT, makeArgs(serial));
+    getCollisionChunk(obj.location()).removeObject(serial);
+    _objects.erase(obj);
+
+}
+
 void Server::gatherObject(size_t serial, User &user){
     // Give item to user
     const std::set<Object>::iterator it = _objects.find(serial);
@@ -625,20 +668,7 @@ void Server::gatherObject(size_t serial, User &user){
     // Remove object if empty
     obj.removeItem(toGive, qtyToGive);
     if (obj.contents().isEmpty()) {
-        // Ensure no other users are targeting this object, as it will be removed.
-        for (const User &otherUserConst : _users) {
-            const User & otherUser = const_cast<User &>(otherUserConst);
-            if (&otherUser != &user &&
-                otherUser.action() == User::GATHER &&
-                otherUser.actionObject()->serial() == serial) {
-
-                user.action(User::NO_ACTION);
-                sendMessage(otherUser.socket(), SV_DOESNT_EXIST);
-            }
-        }
-        broadcast(SV_REMOVE_OBJECT, makeArgs(serial));
-        getCollisionChunk(obj.location()).removeObject(serial);
-        _objects.erase(it);
+        removeObject(obj, &user);
     }
 
 #ifdef SINGLE_THREAD
@@ -751,6 +781,11 @@ void Server::loadData(){
         if (xr.findAttr(elem, "gatherTime", n)) ot.gatherTime(n);
         if (xr.findAttr(elem, "constructionTime", n)) ot.constructionTime(n);
         if (xr.findAttr(elem, "gatherReq", s)) ot.gatherReq(s);
+        if (xr.findAttr(elem, "deconstructs", s)){
+            std::set<Item>::const_iterator itemIt = _items.insert(Item(s)).first;
+            ot.deconstructsItem(&*itemIt);
+        }
+        if (xr.findAttr(elem, "deconstructionTime", n)) ot.deconstructionTime(n);
         for (auto yield : xr.getChildren("yield", elem)) {
             if (!xr.findAttr(yield, "id", s))
                 continue;

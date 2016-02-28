@@ -301,6 +301,7 @@ _debug("client.log"){
         if (xSet || ySet)
             cot.drawRect(drawRect);
         if (xr.getChildren("yield", elem).size() > 0) cot.canGather(true);
+        if (xr.findAttr(elem, "deconstructs", s)) cot.canDeconstruct(true);
         
         auto container = xr.findChild("container", elem);
         if (container) {
@@ -1677,6 +1678,7 @@ void Client::initializeMessageNames(){
     _messageCommands["craft"] = CL_CRAFT;
     _messageCommands["construct"] = CL_CONSTRUCT;
     _messageCommands["gather"] = CL_GATHER;
+    _messageCommands["deconstruct"] = CL_DECONSTRUCT;
     _messageCommands["drop"] = CL_DROP;
     _messageCommands["swap"] = CL_SWAP_ITEMS;
     _messageCommands["getinventory"] = CL_GET_INVENTORY;

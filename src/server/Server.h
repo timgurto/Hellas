@@ -101,6 +101,7 @@ private:
     std::set<Recipe> _recipes;
     std::set<ObjectType> _objectTypes;
 
+    void removeObject(Object &obj, const User *userToExclude = 0); // Optionally skip telling a user
     void gatherObject (size_t serial, User &user);
     friend void User::update(Uint32 timeElapsed);
     friend void User::removeItems(const ItemSet &items);
