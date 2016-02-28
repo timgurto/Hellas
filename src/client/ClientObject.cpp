@@ -52,6 +52,11 @@ void ClientObject::onRightClick(Client &client){
         playGatherSound();
     } else {
 
+        if (_window){
+            client.removeWindow(_window);
+            client.addWindow(_window);
+        }
+
         // Create window, if necessary
         bool hasContainer = objType.containerSlots() > 0;
         if (userHasAccess() && !_window && (hasContainer || objType.canDeconstruct())){

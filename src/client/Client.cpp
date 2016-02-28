@@ -585,6 +585,8 @@ void Client::run(){
 
                     case SDLK_c:
                         _craftingWindow->toggleVisibility();
+                        removeWindow(_craftingWindow);
+                        addWindow(_craftingWindow);
                         break;
 
                     case SDLK_l:
@@ -593,6 +595,8 @@ void Client::run(){
 
                     case SDLK_i:
                         _inventoryWindow->toggleVisibility();
+                        removeWindow(_inventoryWindow);
+                        addWindow(_inventoryWindow);
                         break;
 
                     case SDLK_r:
