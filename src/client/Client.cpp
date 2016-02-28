@@ -556,13 +556,22 @@ void Client::run(){
                     switch(e.key.keysym.sym) {
 
                     case SDLK_ESCAPE:
+                    {
+                        Window *frontMostVisibleWindow = 0;
+                        for (Window *window : _windows)
+                            if (window->visible()){
+                                frontMostVisibleWindow = window;
+                                break;
+                            }
+
                         if (_actionLength != 0)
                             sendMessage(CL_CANCEL_ACTION);
-                        else if (_craftingWindow->visible())
-                            _craftingWindow->hide();
+                        else if (frontMostVisibleWindow)
+                            frontMostVisibleWindow->hide();
                         else
                             _loop = false;
                         break;
+                    }
 
                     case SDLK_SLASH:
                         SDL_StartTextInput();
