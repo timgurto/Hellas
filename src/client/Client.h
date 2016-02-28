@@ -161,6 +161,8 @@ private:
     friend void ClientObject::onRightClick(Client &client);
     friend void ClientObject::startDeconstructing(void *object);
 
+    void handleInput(double delta);
+
 
     void draw() const;
     void drawTile(size_t x, size_t y, int xLoc, int yLoc) const;
@@ -186,7 +188,7 @@ private:
     bool _loggedIn;
     bool _loaded; // Whether the client has sufficient information to begin
 
-    static const size_t BUFFER_SIZE;
+    static const size_t BUFFER_SIZE = 1023;
 
     Uint32 _timeSinceLocUpdate; // Time since a CL_LOCATION was sent
     // Location has changed (local or official), and tooltip may have changed.

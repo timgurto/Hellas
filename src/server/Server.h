@@ -50,7 +50,7 @@ private:
     static LogConsole *_debugInstance;
 
     static const int MAX_CLIENTS;
-    static const size_t BUFFER_SIZE;
+    static const size_t BUFFER_SIZE = 1023;
 
     Uint32 _time, _lastTime;
 

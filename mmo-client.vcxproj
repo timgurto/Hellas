@@ -99,12 +99,15 @@
     <ClCompile Include="src\client\ClientObject.cpp" />
     <ClCompile Include="src\client\ClientObjectType.cpp" />
     <ClCompile Include="src\client\craftingWindow.cpp" />
+    <ClCompile Include="src\client\drawing.cpp" />
     <ClCompile Include="src\client\Entity.cpp" />
     <ClCompile Include="src\client\EntityType.cpp" />
+    <ClCompile Include="src\client\input.cpp" />
     <ClCompile Include="src\client\inventoryWindow.cpp" />
     <ClCompile Include="src\client\Item.cpp" />
     <ClCompile Include="src\client\main.cpp" />
     <ClCompile Include="src\client\LogSDL.cpp" />
+    <ClCompile Include="src\client\messages.cpp" />
     <ClCompile Include="src\client\Renderer.cpp" />
     <ClCompile Include="src\Client\Terrain.cpp" />
     <ClCompile Include="src\client\Texture.cpp" />

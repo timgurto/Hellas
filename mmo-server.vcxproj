@@ -100,10 +100,12 @@
     <ClCompile Include="src\Rect.cpp" />
     <ClCompile Include="src\server\CollisionChunk.cpp" />
     <ClCompile Include="src\server\collisionDetection.cpp" />
+    <ClCompile Include="src\server\data.cpp" />
     <ClCompile Include="src\server\Item.cpp" />
     <ClCompile Include="src\server\ItemSet.cpp" />
     <ClCompile Include="src\server\LogConsole.cpp" />
     <ClCompile Include="src\server\main.cpp" />
+    <ClCompile Include="src\server\messages.cpp" />
     <ClCompile Include="src\server\Object.cpp" />
     <ClCompile Include="src\server\ObjectType.cpp" />
     <ClCompile Include="src\server\Recipe.cpp" />
