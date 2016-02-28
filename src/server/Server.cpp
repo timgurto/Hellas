@@ -465,8 +465,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             Object &obj = const_cast<Object &>(*it);
-            // Check that the user meets the requirements
             assert (obj.type());
+            // Check that the user meets the requirements
+            if (!obj.userHasAccess(user->name())){
+                sendMessage(client, SV_NO_PERMISSION);
+                break;
+            }
             const std::string &gatherReq = obj.type()->gatherReq();
             if (gatherReq != "none" && !user->hasTool(gatherReq)) {
                 sendMessage(client, SV_ITEM_NEEDED, gatherReq);
@@ -490,8 +494,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             Object &obj = const_cast<Object &>(*it);
-            // Check that the object can be deconstructed
             assert (obj.type());
+            if (!obj.userHasAccess(user->name())){
+                sendMessage(client, SV_NO_PERMISSION);
+                break;
+            }
+            // Check that the object can be deconstructed
             if (!obj.type()->deconstructsItem()){
                 sendMessage(client, SV_CANNOT_DECONSTRUCT);
                 break;

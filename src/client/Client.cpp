@@ -1306,6 +1306,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_ACTION_INTERRUPTED:
         case SV_BLOCKED:
         case SV_INVENTORY_FULL:
+        case SV_NO_PERMISSION:
             errorMessageColor = Color::YELLOW; // Yellow above, red below
         case SV_INVALID_USER:
         case SV_INVALID_ITEM:
@@ -1693,7 +1694,6 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_NEED_MATERIALS] = "You do not have the materials neded to create that item.";
     _errorMessages[SV_NEED_TOOLS] = "You do not have the tools needed to create that item.";
     _errorMessages[SV_ACTION_INTERRUPTED] = "Action interrupted.";
-
     _errorMessages[SV_SERVER_FULL] = "The server is full.  Attempting reconnection...";
     _errorMessages[SV_INVALID_USER] = "That user doesn't exist.";
     _errorMessages[SV_INVALID_ITEM] = "That is not a real item.";
@@ -1702,6 +1702,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_INVALID_SLOT] = "That is not a valid inventory slot.";
     _errorMessages[SV_CANNOT_CONSTRUCT] = "That item cannot be constructed.";
     _errorMessages[SV_BLOCKED] = "That location is already occupied.";
+    _errorMessages[SV_NO_PERMISSION] = "You do not have permission to do that.";
 }
 
 void Client::performCommand(const std::string &commandString){

@@ -51,6 +51,8 @@ public:
     virtual bool isObject(){ return true; }
 
     void refreshWindow();
+
+    bool userHasAccess() const;
 };
 
 #endif

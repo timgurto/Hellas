@@ -66,3 +66,9 @@ size_t Object::chooseGatherQuantity(const Item *item) const{
     size_t qty = min<size_t>(randomQty, _contents[item]);
     return qty;
 }
+
+bool Object::userHasAccess(const std::string &username) const{
+    return
+        _owner.empty() ||
+        _owner == username;
+}

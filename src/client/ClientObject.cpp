@@ -46,7 +46,7 @@ void ClientObject::onRightClick(Client &client){
     }
 
     const ClientObjectType &objType = *objectType();
-    if (objType.canGather()) {
+    if (objType.canGather() && userHasAccess()) {
         client.sendMessage(CL_GATHER, makeArgs(_serial));
         client.prepareAction(std::string("Gathering ") + objType.name());
         playGatherSound();
@@ -54,7 +54,7 @@ void ClientObject::onRightClick(Client &client){
 
         // Create window, if necessary
         bool hasContainer = objType.containerSlots() > 0;
-        if (!_window && (hasContainer || objType.canDeconstruct())){
+        if (userHasAccess() && !_window && (hasContainer || objType.canDeconstruct())){
             static const size_t COLS = 8;
             static const int
                 WINDOW_WIDTH = Container(1, 8, _container).width(),
@@ -91,14 +91,16 @@ void ClientObject::onRightClick(Client &client){
             _window->resize(winWidth, y);
         }
 
-        // Determine placement: center around object, but keep entirely on screen.
-        int x = toInt(location().x - _window->width() / 2 + client.offset().x);
-        x = max(0, min(x, Client::SCREEN_X - _window->width()));
-        int y = toInt(location().y - _window->height() / 2 + client.offset().y);
-        y = max(0, min(y, Client::SCREEN_Y - _window->height()));
-        _window->rect(x, y);
+        if (_window) {
+            // Determine placement: center around object, but keep entirely on screen.
+            int x = toInt(location().x - _window->width() / 2 + client.offset().x);
+            x = max(0, min(x, Client::SCREEN_X - _window->width()));
+            int y = toInt(location().y - _window->height() / 2 + client.offset().y);
+            y = max(0, min(y, Client::SCREEN_Y - _window->height()));
+            _window->rect(x, y);
 
-        _window->show();
+            _window->show();
+        }
     }
 }
 
@@ -155,4 +157,10 @@ void ClientObject::startDeconstructing(void *object){
     Client &client = *Client::_instance;
     client.sendMessage(CL_DECONSTRUCT, makeArgs(obj.serial()));
     client.prepareAction(std::string("Deconstructing ") + obj.objectType()->name());
+}
+
+bool ClientObject::userHasAccess() const{
+    return
+        _owner.empty() ||
+        _owner == Client::_instance->username();
 }

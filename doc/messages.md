@@ -68,3 +68,4 @@ Code | Name                    | Syntax                               | Descript
 921  | `SV_BLOCKED`            | &laquo;921&raquo;                    | "You tried to perform an action at a location that is blocked"
 922  | `SV_NEED_TOOLS`         | &laquo;922&raquo;                    | "You tried to craft an item, but need additional tools"
 923  | `SV_CANNOT_DECONSTRUCT` | &laquo;923&raquo;                    | "You tried to deconstruct an object that cannot be deconstructed"
+924  | `SV_NO_PERMISSION`      | &laquo;924&raquo;                    | "You don't have permission to do that"

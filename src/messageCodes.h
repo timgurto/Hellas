@@ -177,8 +177,11 @@ enum MessageCode{
     // The user does not have the tools required to craft an item
     SV_NEED_TOOLS = 922,
 
-    // The user tried to deconstruct an item that cannot be deconstructed
+    // The user tried to deconstruct an object that cannot be deconstructed
     SV_CANNOT_DECONSTRUCT = 923,
+
+    // The user does not have permission to perform an action
+    SV_NO_PERMISSION = 924,
 
 
 
