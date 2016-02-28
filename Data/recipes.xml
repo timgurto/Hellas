@@ -12,4 +12,8 @@
     id="setSquare" time=10000 product="setSquare" >
     <material id="wood" quantity=2 />
 </recipe>
+<recipe
+    id="tradeCart" time=10000 product="tradeCart" >
+    <material id="wood" quantity=4 />
+</recipe>
 </root>

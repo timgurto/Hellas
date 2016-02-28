@@ -32,7 +32,12 @@ Client only:
 
 <item
     id="setSquare"
-    name="Set square">
+    name="Set square" >
     <class name="set square"/>
 </item>
+
+<item
+    id="tradeCart"
+    name="Trade Cart"
+    constructs="tradeCart" />
 </root>
