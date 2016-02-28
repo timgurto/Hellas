@@ -183,6 +183,8 @@ void Client::handleInput(double delta){
                         x = toInt(_mouse.x - offset().x),
                         y = toInt(_mouse.y - offset().y);
                     sendMessage(CL_CONSTRUCT, makeArgs(Container::useSlot, x, y));
+                    prepareAction(std::string("Constructing ") +
+                                  _inventory[Container::useSlot].first->name());
                     break;
                 }
 

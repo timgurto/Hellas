@@ -86,7 +86,7 @@ void ClientObject::onRightClick(Client &client){
             if (objType.canDeconstruct()){
                 y += BUTTON_GAP;
                 Button *deconstructButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT),
-                                                       "Deconstruct", startDeconstructing, this);
+                                                       "Dismantle", startDeconstructing, this);
                 _window->addChild(deconstructButton);
                 // x += BUTTON_GAP + BUTTON_WIDTH;
                 y += BUTTON_GAP + BUTTON_HEIGHT;
@@ -161,7 +161,7 @@ void ClientObject::startDeconstructing(void *object){
     const ClientObject &obj = *static_cast<const ClientObject *>(object);
     Client &client = *Client::_instance;
     client.sendMessage(CL_DECONSTRUCT, makeArgs(obj.serial()));
-    client.prepareAction(std::string("Deconstructing ") + obj.objectType()->name());
+    client.prepareAction(std::string("Dismantling ") + obj.objectType()->name());
 }
 
 bool ClientObject::userHasAccess() const{
