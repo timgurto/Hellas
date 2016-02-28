@@ -5,6 +5,7 @@
 #include "ClientObject.h"
 #include "Client.h"
 #include "Renderer.h"
+#include "ui/Button.h"
 #include "ui/Container.h"
 #include "ui/Window.h"
 #include "../Color.h"
@@ -44,30 +45,60 @@ void ClientObject::onRightClick(Client &client){
         return;
     }
 
-    if (objectType()->canGather()) {
-        std::ostringstream oss;
+    const ClientObjectType &objType = *objectType();
+    if (objType.canGather()) {
         client.sendMessage(CL_GATHER, makeArgs(_serial));
-        client.prepareAction(std::string("Gathering ") + objectType()->name());
+        client.prepareAction(std::string("Gathering ") + objType.name());
         playGatherSound();
-    } else if (objectType()->containerSlots() > 0) {
-        // Display window
-        if (!_window) {
-            static const int
-                COLS = 8,
-                DEFAULT_X = 100,
-                DEFAULT_Y = 100;
-            const size_t slots = objectType()->containerSlots();
-            size_t rows = (slots - 1) / COLS + 1;
-            Container *invElem = new Container(rows, COLS, _container, _serial);
-            _window = new Window(Rect(DEFAULT_X, DEFAULT_Y, invElem->width(), invElem->height()),
-                                 objectType()->name());
-            _window->addChild(invElem);
-            client.addWindow(_window);
-        }
-        _window->show();
+    } else {
 
-        // Request inventory
-        client.sendMessage(CL_GET_INVENTORY, makeArgs(_serial));
+        // Create window, if necessary
+        bool hasContainer = objType.containerSlots() > 0;
+        if (!_window && (hasContainer || objType.canDeconstruct())){
+            static const size_t COLS = 8;
+            static const int
+                WINDOW_WIDTH = Container(1, 8, _container).width(),
+                BUTTON_HEIGHT = 15,
+                BUTTON_WIDTH = 60,
+                BUTTON_GAP = 1;
+            int x = BUTTON_GAP, y = 0;
+            int winWidth = 0;
+            _window = new Window(Rect(0, 0, 0, 0), objType.name());
+            client.addWindow(_window);
+
+            // Inventory container
+            if (hasContainer){
+                const size_t slots = objType.containerSlots();
+                size_t rows = (slots - 1) / COLS + 1;
+                Container *container = new Container(rows, COLS, _container, _serial);
+                client.sendMessage(CL_GET_INVENTORY, makeArgs(_serial)); // Request inventory
+                _window->addChild(container);
+                y += container->height();
+                winWidth = max(winWidth, container->width());
+            }
+
+            // Deconstruct button
+            if (objType.canDeconstruct()){
+                y += BUTTON_GAP;
+                Button *deconstructButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT),
+                                                       "Deconstruct", startDeconstructing, this);
+                _window->addChild(deconstructButton);
+                // x += BUTTON_GAP + BUTTON_WIDTH;
+                y += BUTTON_GAP + BUTTON_HEIGHT;
+                winWidth = max(winWidth, x);
+            }
+
+            _window->resize(winWidth, y);
+        }
+
+        // Determine placement: center around object, but keep entirely on screen.
+        int x = toInt(location().x - _window->width() / 2 + client.offset().x);
+        x = max(0, min(x, Client::SCREEN_X - _window->width()));
+        int y = toInt(location().y - _window->height() / 2 + client.offset().y);
+        y = max(0, min(y, Client::SCREEN_Y - _window->height()));
+        _window->rect(x, y);
+
+        _window->show();
     }
 }
 
@@ -117,4 +148,11 @@ void ClientObject::draw(const Client &client) const{
 void ClientObject::refreshWindow() {
     if (_window)
         _window->forceRefresh();
+}
+
+void ClientObject::startDeconstructing(void *object){
+    const ClientObject &obj = *static_cast<const ClientObject *>(object);
+    Client &client = *Client::_instance;
+    client.sendMessage(CL_DECONSTRUCT, makeArgs(obj.serial()));
+    client.prepareAction(std::string("Deconstructing ") + obj.objectType()->name());
 }

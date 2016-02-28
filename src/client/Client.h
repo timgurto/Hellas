@@ -57,6 +57,10 @@ public:
     typedef std::list<Window *> windows_t;
     typedef std::list<Element *> ui_t; // For the UI, that sits below all windows.
 
+    static const int
+        SCREEN_X,
+        SCREEN_Y;
+
 private:
     static Client *_instance;
     static LogSDL *_debugInstance;
@@ -71,10 +75,6 @@ private:
     static const Uint32 PING_FREQUENCY; // How often to test latency with each client
     // How often to send location updates to server (while moving)
     static const Uint32 TIME_BETWEEN_LOCATION_UPDATES;
-
-    static const int
-        SCREEN_X,
-        SCREEN_Y;
 
     Texture
         _cursorNormal,
@@ -159,6 +159,7 @@ private:
     bool _rightMouseDown;
     Entity *_rightMouseDownEntity;
     friend void ClientObject::onRightClick(Client &client);
+    friend void ClientObject::startDeconstructing(void *object);
 
 
     void draw() const;

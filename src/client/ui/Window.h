@@ -6,7 +6,12 @@
 #include <SDL.h>
 #include <string>
 
-#include "Element.h"
+class Button;
+class ColorBlock;
+class Element;
+class Label;
+class Line;
+class ShadowBox;
 
 // A generic window for the in-game UI.
 class Window : public Element{
@@ -14,6 +19,11 @@ class Window : public Element{
     bool _dragging; // Whether this window is currently being dragged by the mouse.
     Point _dragOffset; // While dragging, where the mouse is on the window.
     Element *_content;
+    ColorBlock *_background;
+    ShadowBox *_border;
+    Label *_heading;
+    Line *_headingLine;
+    Button *_closeButton;
 
 public:
     static int HEADING_HEIGHT;
@@ -26,6 +36,8 @@ public:
     static void startDragging(Element &e, const Point &mousePos);
     static void stopDragging(Element &e, const Point &mousePos);
     static void drag(Element &e, const Point &mousePos);
+
+    void resize(int w, int h); // Resize window, so that the content size matches the given dims.
 
     virtual void addChild(Element *child) override;
     virtual void clearChildren() override;

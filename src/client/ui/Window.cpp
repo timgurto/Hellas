@@ -4,6 +4,7 @@
 
 #include "Button.h"
 #include "ColorBlock.h"
+#include "Element.h"
 #include "Label.h"
 #include "Line.h"
 #include "ShadowBox.h"
@@ -24,28 +25,28 @@ _content(new Element(Rect(1, HEADING_HEIGHT + 1, rect.w, rect.h))){
     setLeftMouseUpFunction(&stopDragging);
     setMouseMoveFunction(&drag);
 
-    Element::addChild(new ColorBlock(Rect(1, 1, windowRect.w - 2, windowRect.h - 2)));
+    _background = new ColorBlock(Rect(1, 1, windowRect.w - 2, windowRect.h - 2));
+    Element::addChild(_background);
 
     // Heading
-    Label *const heading = new Label(Rect(0, 0,
-                                              windowRect.w - CLOSE_BUTTON_SIZE, HEADING_HEIGHT),
-                                     _title, CENTER_JUSTIFIED);
-    heading->setLeftMouseDownFunction(&startDragging, this);
-    Element::addChild(heading);
+    _heading = new Label(Rect(0, 0,  windowRect.w - CLOSE_BUTTON_SIZE, HEADING_HEIGHT), _title,
+                         CENTER_JUSTIFIED);
+    _heading->setLeftMouseDownFunction(&startDragging, this);
+    Element::addChild(_heading);
 
-    Line *const headingLine = new Line(0, HEADING_HEIGHT, windowRect.w);
-    headingLine->setLeftMouseDownFunction(&startDragging, this);
-    Element::addChild(headingLine);
+    _headingLine = new Line(0, HEADING_HEIGHT, windowRect.w);
+    _headingLine->setLeftMouseDownFunction(&startDragging, this);
+    Element::addChild(_headingLine);
 
-    Button *const closeButton = new Button(Rect(windowRect.w - CLOSE_BUTTON_SIZE - 1, 1,
-                                                    CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE), "",
-                                                    hideWindow, this);
-    Label *const closeButtonLabel = new Label(Rect(0, 0, CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE),
-                                              "x", CENTER_JUSTIFIED, CENTER_JUSTIFIED);
-    closeButton->addChild(closeButtonLabel);
-    Element::addChild(closeButton);
+    _closeButton = new Button(Rect(windowRect.w - CLOSE_BUTTON_SIZE - 1, 1,
+                                   CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE),
+                              "", hideWindow, this);
+    _closeButton->addChild(new Label(Rect(0, 0, CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE), "x",
+                                    CENTER_JUSTIFIED, CENTER_JUSTIFIED));
+    Element::addChild(_closeButton);
 
-    Element::addChild(new ShadowBox(Rect(0, 0, windowRect.w, windowRect.h)));
+    _border = new ShadowBox(Rect(0, 0, windowRect.w, windowRect.h));
+    Element::addChild(_border);
 
     Element::addChild(_content);
 }
@@ -84,4 +85,28 @@ void Window::clearChildren(){
 
 Element *Window::findChild(const std::string id){
     return _content->findChild(id);
+}
+
+void Window::resize(int w, int h){
+    const int
+        winW = w + 2,
+        winH = h + 2 + HEADING_HEIGHT;
+
+    width(winW);
+    height(winH);
+
+    _content->width(w);
+    _content->height(h);
+
+    _background->width(w);
+    _background->height(h + HEADING_HEIGHT);
+
+    _heading->width(winW - CLOSE_BUTTON_SIZE);
+
+    _headingLine->width(winW);
+
+    _closeButton->rect(winW - CLOSE_BUTTON_SIZE - 1, 1);
+
+    _border->width(winW);
+    _border->height(winH);
 }

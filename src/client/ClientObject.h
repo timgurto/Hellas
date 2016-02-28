@@ -43,6 +43,7 @@ public:
     Rect collisionRect() const { return objectType()->collisionRect() + location(); }
 
     virtual void onRightClick(Client &client);
+    static void startDeconstructing(void *object);
     virtual std::vector<std::string> getTooltipMessages(const Client &client) const;
 
     void playGatherSound() const;
