@@ -24,6 +24,7 @@ class ObjectType{
     std::string _gatherReq;
 
     size_t _containerSlots;
+    size_t _merchantSlots;
 
     Yield _yield; // If gatherable.
 
@@ -41,6 +42,8 @@ public:
     void gatherReq(const std::string &req) { _gatherReq = req; }
     size_t containerSlots() const { return _containerSlots; }
     void containerSlots(size_t n) { _containerSlots = n; }
+    size_t merchantSlots() const { return _merchantSlots; }
+    void merchantSlots(size_t n) { _merchantSlots = n; }
 
     const std::string &id() const { return _id; }
     Uint32 gatherTime() const { return _gatherTime; }

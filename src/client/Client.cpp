@@ -304,6 +304,8 @@ _debug("client.log"){
             if (xr.findAttr(container, "slots", n)) cot.containerSlots(n);
         }
 
+        if (xr.findAttr(elem, "merchantSlots", n)) cot.merchantSlots(n);
+
         if (xr.findAttr(elem, "isFlat", n) && n != 0) cot.isFlat(true);
         if (xr.findAttr(elem, "gatherSound", s))
             cot.gatherSound(std::string("Sounds/") + s + ".wav");

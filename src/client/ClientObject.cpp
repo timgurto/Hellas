@@ -58,7 +58,9 @@ void ClientObject::onRightClick(Client &client){
         }
 
         // Create window, if necessary
-        bool hasContainer = objType.containerSlots() > 0;
+        bool
+            hasContainer = objType.containerSlots() > 0,
+            isMerchant = objType.merchantSlots() > 0;
         if (userHasAccess() && !_window && (hasContainer || objType.canDeconstruct())){
             static const size_t COLS = 8;
             static const int
@@ -70,6 +72,11 @@ void ClientObject::onRightClick(Client &client){
             int winWidth = 0;
             _window = new Window(Rect(0, 0, 0, 0), objType.name());
             client.addWindow(_window);
+
+            // Merchant setup
+            if (isMerchant){
+
+            }
 
             // Inventory container
             if (hasContainer){

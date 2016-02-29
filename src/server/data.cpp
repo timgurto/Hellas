@@ -264,6 +264,8 @@ void Server::loadData(){
             size_t n;
             if (xr.findAttr(elem, "owner", s)) obj.owner(s);
 
+            if (xr.findAttr(elem, "merchantSlots", n)) obj.merchantSlots(n);
+
             ItemSet contents;
             for (auto content : xr.getChildren("gatherable", elem)) {
                 if (!xr.findAttr(content, "id", s))

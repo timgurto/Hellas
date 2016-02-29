@@ -11,6 +11,7 @@ _id(id),
 _canGather(false),
 _canDeconstruct(false),
 _containerSlots(0),
+_merchantSlots(0),
 _gatherSound(0){}
 
 ClientObjectType::~ClientObjectType(){
