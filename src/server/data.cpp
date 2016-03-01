@@ -115,6 +115,7 @@ void Server::loadData(){
             std::set<Item>::const_iterator itemIt = _items.insert(Item(s)).first;
             ot.addYield(&*itemIt, initMean, initSD, gatherMean, gatherSD);
         }
+        if (xr.findAttr(elem, "merchantSlots", n)) ot.merchantSlots(n);
         auto collisionRect = xr.findChild("collisionRect", elem);
         if (collisionRect) {
             Rect r;
@@ -263,8 +264,6 @@ void Server::loadData(){
 
             size_t n;
             if (xr.findAttr(elem, "owner", s)) obj.owner(s);
-
-            if (xr.findAttr(elem, "merchantSlots", n)) obj.merchantSlots(n);
 
             ItemSet contents;
             for (auto content : xr.getChildren("gatherable", elem)) {

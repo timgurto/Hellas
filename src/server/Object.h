@@ -3,6 +3,7 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
+#include "MerchantSlot.h"
 #include "ObjectType.h"
 #include "ItemSet.h"
 #include "../Point.h"
@@ -15,6 +16,7 @@ class Object{
     std::string _owner;
     ItemSet _contents; // Remaining contents, which can be gathered
     Item::vect_t _container; // Items contained in object
+    std::vector<MerchantSlot> _merchantSlots;
 
 protected:
     static size_t generateSerial();
@@ -35,6 +37,8 @@ public:
     Item::vect_t &container() { return _container; }
     const Item::vect_t &container() const { return _container; }
     const Rect collisionRect() const { return _type->collisionRect() + _location; }
+    const MerchantSlot &merchantSlot(size_t slot) const { return _merchantSlots[slot]; }
+    MerchantSlot &merchantSlot(size_t slot) { return _merchantSlots[slot]; }
 
     bool operator<(const Object &rhs) const { return _serial < rhs._serial; }
 

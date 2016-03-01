@@ -290,6 +290,72 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_SET_MERCHANT_SLOT:
+        {
+            size_t serial, slot, wareQty, priceQty;
+            iss >> serial >> del >> slot >> del;
+            iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            std::string ware(buffer);
+            iss >> del >> wareQty >> del;
+            iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            std::string price(buffer);
+            iss >> del >> priceQty >> del;
+            if (del != MSG_END)
+                return;
+            auto objIt = _objects.find(serial);
+            if (!isValidObject(client, *user, objIt))
+                break;
+            Object &obj = const_cast<Object &>(*objIt);
+            size_t slots = obj.type()->merchantSlots();
+            if (slots == 0){
+                sendMessage(client, SV_NOT_MERCHANT);
+                break;
+            }
+            if (slot >= slots){
+                sendMessage(client, SV_INVALID_MERCHANT_SLOT);
+                break;
+            }
+            auto wareIt = _items.find(ware);
+            if (wareIt == _items.end()){
+                sendMessage(client, SV_INVALID_ITEM);
+                break;
+            }
+            auto priceIt = _items.find(price);
+            if (priceIt == _items.end()){
+                sendMessage(client, SV_INVALID_ITEM);
+                break;
+            }
+            MerchantSlot &mSlot = obj.merchantSlot(slot);
+            mSlot.ware = &*wareIt;
+            mSlot.wareQty = wareQty;
+            mSlot.price = &*priceIt;
+            mSlot.priceQty = priceQty;
+            break;
+        }
+
+        case CL_CLEAR_MERCHANT_SLOT:
+        {
+            size_t serial, slot;
+            iss >> serial >> del >> slot >> del;
+            if (del != MSG_END)
+                return;
+            auto objIt = _objects.find(serial);
+            if (!isValidObject(client, *user, objIt))
+                break;
+            Object &obj = const_cast<Object &>(*objIt);
+            size_t slots = obj.type()->merchantSlots();
+            if (slots == 0){
+                sendMessage(client, SV_NOT_MERCHANT);
+                break;
+            }
+            if (slot >= slots){
+                sendMessage(client, SV_INVALID_MERCHANT_SLOT);
+                break;
+            }
+            obj.merchantSlot(slot) = MerchantSlot();
+            break;
+        }
+
         case CL_GET_INVENTORY:
         {
             size_t serial;

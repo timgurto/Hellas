@@ -24,6 +24,9 @@ _type(type){
 
     if (type->containerSlots() != 0)
         _container = Item::vect_t(type->containerSlots());
+
+    if (type->merchantSlots() != 0)
+        _merchantSlots = std::vector<MerchantSlot>(type->merchantSlots());
 }
 
 Object::Object(size_t serial): // For set/map lookup

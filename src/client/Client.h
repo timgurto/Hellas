@@ -22,6 +22,7 @@
 #include "../Rect.h"
 #include "../Socket.h"
 #include "../messageCodes.h"
+#include "../server/MerchantSlot.h"
 #include "../server/Recipe.h"
 #include "ui/Container.h"
 

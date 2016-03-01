@@ -117,6 +117,8 @@ void Client::handleMessage(const std::string &msg){
         case SV_INVALID_SLOT:
         case SV_EMPTY_SLOT:
         case SV_CANNOT_CONSTRUCT:
+        case SV_NOT_MERCHANT:
+        case SV_INVALID_MERCHANT_SLOT:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
@@ -415,7 +417,10 @@ void Client::initializeMessageNames(){
     _messageCommands["deconstruct"] = CL_DECONSTRUCT;
     _messageCommands["drop"] = CL_DROP;
     _messageCommands["swap"] = CL_SWAP_ITEMS;
+    _messageCommands["setMerchantSlot"] = CL_SET_MERCHANT_SLOT;
+    _messageCommands["clearMerchantSlot"] = CL_CLEAR_MERCHANT_SLOT;
     _messageCommands["getinventory"] = CL_GET_INVENTORY;
+
     _messageCommands["say"] = CL_SAY;
     _messageCommands["s"] = CL_SAY;
     _messageCommands["whisper"] = CL_WHISPER;
@@ -436,6 +441,8 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_CANNOT_CONSTRUCT] = "That item cannot be constructed.";
     _errorMessages[SV_BLOCKED] = "That location is already occupied.";
     _errorMessages[SV_NO_PERMISSION] = "You do not have permission to do that.";
+    _errorMessages[SV_NOT_MERCHANT] = "That is not a merchant object.";
+    _errorMessages[SV_INVALID_MERCHANT_SLOT] = "That is not a valid merchant slot.";
 }
 
 void Client::performCommand(const std::string &commandString){
