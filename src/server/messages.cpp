@@ -306,6 +306,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (!isValidObject(client, *user, objIt))
                 break;
             Object &obj = const_cast<Object &>(*objIt);
+            if (!obj.userHasAccess(user->name())){
+                sendMessage(client, SV_NO_PERMISSION);
+                break;
+            }
             size_t slots = obj.type()->merchantSlots();
             if (slots == 0){
                 sendMessage(client, SV_NOT_MERCHANT);
@@ -343,6 +347,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (!isValidObject(client, *user, objIt))
                 break;
             Object &obj = const_cast<Object &>(*objIt);
+            if (!obj.userHasAccess(user->name())){
+                sendMessage(client, SV_NO_PERMISSION);
+                break;
+            }
             size_t slots = obj.type()->merchantSlots();
             if (slots == 0){
                 sendMessage(client, SV_NOT_MERCHANT);
