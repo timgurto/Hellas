@@ -334,6 +334,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             mSlot.wareQty = wareQty;
             mSlot.price = &*priceIt;
             mSlot.priceQty = priceQty;
+
+            sendMerchantSlotMessage(*user, obj, slot);
             break;
         }
 
@@ -361,6 +363,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             obj.merchantSlot(slot) = MerchantSlot();
+
+            sendMerchantSlotMessage(*user, obj, slot);
             break;
         }
 
@@ -453,4 +457,11 @@ void Server::sendInventoryMessage(const User &user, size_t serial, size_t slot) 
     auto containerSlot = (*container)[slot];
     std::string itemID = containerSlot.first ? containerSlot.first->id() : "none";
     sendMessage(user.socket(), SV_INVENTORY, makeArgs(serial, slot, itemID, containerSlot.second));
+}
+
+void Server::sendMerchantSlotMessage(const User &user, const Object &obj, size_t slot) const{
+    assert(slot < obj.merchantSlots().size());
+    const MerchantSlot &mSlot = obj.merchantSlot(slot);
+    sendMessage(user.socket(), SV_MERCHANT_SLOT,
+                makeArgs(obj.serial(), slot, mSlot.ware, mSlot.wareQty, mSlot.price, mSlot.priceQty));
 }

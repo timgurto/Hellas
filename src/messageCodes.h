@@ -115,6 +115,10 @@ enum MessageCode{
     // Arguments: serial
     SV_REMOVE_OBJECT = 125,
 
+    // Details of an object's merchant slot
+    // Arguments: serial, slot, ware, wareQty, price, priceQty
+    SV_MERCHANT_SLOT = 126,
+
     // The user has begun an action
     // Arguments: time
     SV_ACTION_STARTED = 130,
