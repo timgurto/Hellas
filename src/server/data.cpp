@@ -292,6 +292,27 @@ void Server::loadData(){
                 invSlot.second = q;
             }
 
+            auto merchant = xr.findChild("merchant", elem);
+            if (merchant){
+                size_t slot;
+                if (!xr.findAttr(merchant, "slot", slot))
+                    continue;
+                std::string wareName, priceName;
+                if (!xr.findAttr(merchant, "ware", wareName) ||
+                    !xr.findAttr(merchant, "price", priceName))
+                    continue;
+                auto wareIt = _items.find(wareName);
+                if (wareIt == _items.end())
+                    continue;
+                auto priceIt = _items.find(priceName);
+                if (priceIt == _items.end())
+                    continue;
+                size_t wareQty = 1, priceQty = 1;
+                xr.findAttr(merchant, "wareQty", wareQty);
+                xr.findAttr(merchant, "priceQty", priceQty);
+                obj.merchantSlot(slot) = MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty);
+            }
+
             _objects.insert(obj);
         }
 
@@ -361,6 +382,18 @@ void Server::saveData(const std::set<Object> &objects){
             xw.setAttr(invSlotE, "slot", i);
             xw.setAttr(invSlotE, "item", container[i].first->id());
             xw.setAttr(invSlotE, "qty", container[i].second);
+        }
+
+        const auto mSlots = obj.merchantSlots();
+        for (size_t i = 0; i != mSlots.size(); ++i){
+            auto mSlotE = xw.addChild("merchant", e);
+            if (!mSlots[i])
+                continue;
+            xw.setAttr(mSlotE, "slot", i);
+            xw.setAttr(mSlotE, "ware", mSlots[i].ware->id());
+            xw.setAttr(mSlotE, "wareQty", mSlots[i].wareQty);
+            xw.setAttr(mSlotE, "price", mSlots[i].price->id());
+            xw.setAttr(mSlotE, "priceQty", mSlots[i].priceQty);
         }
     }
     xw.publish();

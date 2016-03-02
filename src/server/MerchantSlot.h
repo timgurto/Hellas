@@ -9,7 +9,10 @@ struct MerchantSlot{
     const Item *ware, *price;
     size_t wareQty, priceQty;
 
-    MerchantSlot();
+    MerchantSlot(const Item *ware = 0, size_t wareQty = 0,
+                 const Item *price = 0, size_t priceQty = 0);
+
+    operator bool() const;
 };
 
 #endif

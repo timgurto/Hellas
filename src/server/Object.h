@@ -36,7 +36,8 @@ public:
     void contents(const ItemSet &contents);
     Item::vect_t &container() { return _container; }
     const Item::vect_t &container() const { return _container; }
-    const Rect collisionRect() const { return _type->collisionRect() + _location; }
+    const Rect collisionRect() const { return _type->collisionRect() + _location;  }
+    const std::vector<MerchantSlot> &merchantSlots() const { return _merchantSlots; }
     const MerchantSlot &merchantSlot(size_t slot) const { return _merchantSlots[slot]; }
     MerchantSlot &merchantSlot(size_t slot) { return _merchantSlots[slot]; }
 
