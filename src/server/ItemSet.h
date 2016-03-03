@@ -6,8 +6,7 @@
 #include <map>
 #include <set>
 #include <utility>
-
-class Item;
+#include "Item.h"
 
 // A collection of Items, with duplicates/quantities allowed.
 class ItemSet{
@@ -40,5 +39,11 @@ public:
     std::map<const Item *, size_t>::const_iterator begin() const { return _set.begin(); }
     std::map<const Item *, size_t>::const_iterator end() const { return _set.end(); }
 };
+
+bool operator<=(const ItemSet &itemSet, const Item::vect_t &vect);
+bool operator<=(const ItemSet &lhs, const ItemSet &rhs);
+
+bool operator>(const ItemSet &itemSet, const Item::vect_t &vect);
+bool operator>(const ItemSet &lhs, const ItemSet &rhs) ;
 
 #endif

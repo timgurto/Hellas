@@ -47,9 +47,12 @@ public:
     const Item *chooseGatherItem() const;
     // Randomly choose a quantity of the above items, between 1 and the object's contents.
     size_t chooseGatherQuantity(const Item *item) const;
-    void removeItem(const Item *item, size_t qty);
+    void removeItem(const Item *item, size_t qty); // From _contents; gathering
+    void removeItems(const ItemSet &items); // From _container; inventory
+    void giveItem(const Item *item, size_t qty = 1); // To _container; inventory
 
     bool userHasAccess(const std::string &username) const;
+
 };
 
 #endif

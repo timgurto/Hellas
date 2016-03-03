@@ -1,18 +1,39 @@
 // (C) 2016 Tim Gurto
 
-#ifndef MERCHANT_SLOT
-#define MERCHANT_SLOT
+#ifndef MERCHANT_SLOT_H
+#define MERCHANT_SLOT_H
+
+#include "ItemSet.h"
 
 class Item;
 
-struct MerchantSlot{
-    const Item *ware, *price;
-    size_t wareQty, priceQty;
+class MerchantSlot{
+    const Item
+        *_wareItem,
+        *_priceItem;
+    size_t
+        _wareQty,
+        _priceQty;
+    ItemSet
+        _ware,
+        _price;
 
-    MerchantSlot(const Item *ware = 0, size_t wareQty = 0,
-                 const Item *price = 0, size_t priceQty = 0);
+public:
+    MerchantSlot(const Item *wareItem = 0, size_t wareQty = 0,
+                 const Item *priceItem = 0, size_t priceQty = 0);
 
     operator bool() const;
+    
+    const Item *wareItem() const { return _wareItem; };
+    void wareItem(const Item *item);
+    size_t wareQty() const { return _wareQty; };
+    void wareQty(size_t qty);
+    const Item *priceItem() const { return _priceItem; };
+    void priceItem(const Item *item);
+    size_t priceQty() const { return _priceQty; };
+    void priceQty(size_t qty);
+    const ItemSet &ware() const { return _ware; }
+    const ItemSet &price() const { return _price; }
 };
 
 #endif

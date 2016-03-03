@@ -110,6 +110,9 @@ void Client::handleMessage(const std::string &msg){
         case SV_BLOCKED:
         case SV_INVENTORY_FULL:
         case SV_NO_PERMISSION:
+        case SV_NO_WARE:
+        case SV_NO_PRICE:
+        case SV_MERCHANT_INVENTORY_FULL:
             errorMessageColor = Color::YELLOW; // Yellow above, red below
         case SV_INVALID_USER:
         case SV_INVALID_ITEM:
@@ -417,6 +420,7 @@ void Client::initializeMessageNames(){
     _messageCommands["deconstruct"] = CL_DECONSTRUCT;
     _messageCommands["drop"] = CL_DROP;
     _messageCommands["swap"] = CL_SWAP_ITEMS;
+    _messageCommands["trade"] = CL_TRADE;
     _messageCommands["setMerchantSlot"] = CL_SET_MERCHANT_SLOT;
     _messageCommands["clearMerchantSlot"] = CL_CLEAR_MERCHANT_SLOT;
     _messageCommands["getinventory"] = CL_GET_INVENTORY;
@@ -443,6 +447,10 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_NO_PERMISSION] = "You do not have permission to do that.";
     _errorMessages[SV_NOT_MERCHANT] = "That is not a merchant object.";
     _errorMessages[SV_INVALID_MERCHANT_SLOT] = "That is not a valid merchant slot.";
+    _errorMessages[SV_NO_WARE] = "The object does not have enough items in stock.";
+    _errorMessages[SV_NO_PRICE] = "You cannot afford to buy that.";
+    _errorMessages[SV_MERCHANT_INVENTORY_FULL] =
+        "The object does not have enough inventory space for that exchange.";
 }
 
 void Client::performCommand(const std::string &commandString){
@@ -452,7 +460,7 @@ void Client::performCommand(const std::string &commandString){
     iss >> c;
     if (c != '/') {
         assert(false);
-        _debug("Commands must begin with '/.", Color::RED);
+        _debug("Commands must begin with '/'.", Color::RED);
         return;
     }
 

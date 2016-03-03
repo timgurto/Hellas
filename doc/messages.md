@@ -23,6 +23,7 @@ Code | Name                     | Syntax                                        
 22   | `CL_CONSTRUCT`           | &laquo;22&#8226;slot&#8226;x&#8226;y&raquo;                          | "I want to construct the item in inventory slot #`slot`, at location (`x`,`y`)"
 23   | `CL_GATHER`              | &laquo;23&#8226;serial&raquo;                                        | "I want to gather object #`serial`"
 24   | `CL_DECONSTRUCT`         | &laquo;23&#8226;serial&raquo;                                        | "I want to deconstruct object #`serial`"
+25   | `CL_TRADE`               | &laquo;32&#8226;serial&#8226;slot&raquo;                             | "I want to trade using object #`serial`'s merchant slot #`slot`.
 30   | `CL_DROP`                | &laquo;30&#8226;serial&#8226;slot&raquo;                             | "I want to drop object #`serial`'s item #`slot`."<br>A serial of `0` uses the user's inventory.
 31   | `CL_SWAP_ITEMS`          | &laquo;31&#8226;serial1&#8226;slot1&#8226;serial2&#8226;slot2&raquo; | "I want to swap object #`serial1`'s item #`slot1` with object #`serial2`'s item #`slot2`"<br>A serial of `0` uses the user's inventory.
 32   | `CL_SET_MERCHANT_SLOT`   | &laquo;32&#8226;serial&#8226;slot&#8226;ware&#8226;wareQty&#8226;price&#8226;priceQty&raquo; | "I want to set object #`serial`'s merchant slot #`slot` to sell `wareQty` `ware`s for `priceQty` `price`s"
@@ -51,26 +52,29 @@ Code | Name                    | Syntax                                         
 201  | `SV_WHISPER`            | &laquo;61&#8226;username&#8226;message&raquo;                                  | "User `username` said '`message` to you'."
 
 #### Warnings and errors                                          
-Code | Name                       | Syntax                               | Description
----: | -------------------------- | ------------------------------------ | -----------
-900  | `SV_DUPLICATE_USERNAME`    | &laquo;900&raquo;                    | The client has attempted to connect with a username already in use
-901  | `SV_INVALID_USERNAME`      | &laquo;901&raquo;                    | The client has attempted to connect with an invalid username
-902  | `SV_SERVER_FULL`           | &laquo;902&raquo;                    | There is no room for more clients
-903  | `SV_INVALID_USER`          | &laquo;903&raquo;                    | "You tried to interact with a nonexistent user"
-910  | `SV_TOO_FAR`               | &laquo;910&raquo;                    | "You are too far away to perform that action"
-911  | `SV_DOESNT_EXIST`          | &laquo;911&raquo;                    | "The object you are trying to use does not exist"
-912  | `SV_INVENTORY_FULL`        | &laquo;912&raquo;                    | "You cannot receive an item because your inventory is full"
-913  | `SV_NEED_MATERIALS`        | &laquo;913&raquo;                    | "You do not have enough materials to craft that item"
-914  | `SV_INVALID_ITEM`          | &laquo;914&raquo;                    | "You tried to craft an item that does not exist"
-915  | `SV_CANNOT_CRAFT`          | &laquo;915&raquo;                    | "You tried to craft an item that cannot be crafted"
-916  | `SV_ACTION_INTERRUPTED`    | &laquo;916&raquo;                    | "Action interrupted"
-917  | `SV_EMPTY_SLOT`            | &laquo;917&raquo;                    | "You tried to manipulate an empty inventory slot"
-918  | `SV_INVALID_SLOT`          | &laquo;918&raquo;                    | "You tried to manipulate an inventory slot that does not exist"
-919  | `SV_CANNOT_CONSTRUCT`      | &laquo;919&raquo;                    | "You tried to construct an item that is not a structure"
-920  | `SV_ITEM_NEEDED`           | &laquo;920&#8226;reqItemClass&raquo; | "You tried to perform an action, without the necessary `reqItemClass`"
-921  | `SV_BLOCKED`               | &laquo;921&raquo;                    | "You tried to perform an action at a location that is blocked"
-922  | `SV_NEED_TOOLS`            | &laquo;922&raquo;                    | "You tried to craft an item, but need additional tools"
-923  | `SV_CANNOT_DECONSTRUCT`    | &laquo;923&raquo;                    | "You tried to deconstruct an object that cannot be deconstructed"
-924  | `SV_NO_PERMISSION`         | &laquo;924&raquo;                    | "You don't have permission to do that"
-925  | `SV_NOT_MERCHANT`          | &laquo;924&raquo;                    | "You tried to use a non-merchant object as a merchant"
-926  | `SV_INVALID_MERCHANT_SLOT` | &laquo;924&raquo;                    | "You tried to use a merchant object's invalid merchant slot"
+Code | Name                         | Syntax                               | Description
+---: | ---------------------------- | ------------------------------------ | -----------
+900  | `SV_DUPLICATE_USERNAME`      | &laquo;900&raquo;                    | The client has attempted to connect with a username already in use
+901  | `SV_INVALID_USERNAME`        | &laquo;901&raquo;                    | The client has attempted to connect with an invalid username
+902  | `SV_SERVER_FULL`             | &laquo;902&raquo;                    | There is no room for more clients
+903  | `SV_INVALID_USER`            | &laquo;903&raquo;                    | "You tried to interact with a nonexistent user"
+910  | `SV_TOO_FAR`                 | &laquo;910&raquo;                    | "You are too far away to perform that action"
+911  | `SV_DOESNT_EXIST`            | &laquo;911&raquo;                    | "The object you are trying to use does not exist"
+912  | `SV_INVENTORY_FULL`          | &laquo;912&raquo;                    | "You cannot receive an item because your inventory is full"
+913  | `SV_NEED_MATERIALS`          | &laquo;913&raquo;                    | "You do not have enough materials to craft that item"
+914  | `SV_INVALID_ITEM`            | &laquo;914&raquo;                    | "You tried to craft an item that does not exist"
+915  | `SV_CANNOT_CRAFT`            | &laquo;915&raquo;                    | "You tried to craft an item that cannot be crafted"
+916  | `SV_ACTION_INTERRUPTED`      | &laquo;916&raquo;                    | "Action interrupted"
+917  | `SV_EMPTY_SLOT`              | &laquo;917&raquo;                    | "You tried to manipulate an empty inventory slot"
+918  | `SV_INVALID_SLOT`            | &laquo;918&raquo;                    | "You tried to manipulate an inventory slot that does not exist"
+919  | `SV_CANNOT_CONSTRUCT`        | &laquo;919&raquo;                    | "You tried to construct an item that is not a structure"
+920  | `SV_ITEM_NEEDED`             | &laquo;920&#8226;reqItemClass&raquo; | "You tried to perform an action, without the necessary `reqItemClass`"
+921  | `SV_BLOCKED`                 | &laquo;921&raquo;                    | "You tried to perform an action at a location that is blocked"
+922  | `SV_NEED_TOOLS`              | &laquo;922&raquo;                    | "You tried to craft an item, but need additional tools"
+923  | `SV_CANNOT_DECONSTRUCT`      | &laquo;923&raquo;                    | "You tried to deconstruct an object that cannot be deconstructed"
+924  | `SV_NO_PERMISSION`           | &laquo;924&raquo;                    | "You don't have permission to do that"
+925  | `SV_NOT_MERCHANT`            | &laquo;925&raquo;                    | "You tried to use a non-merchant object as a merchant"
+926  | `SV_INVALID_MERCHANT_SLOT`   | &laquo;926&raquo;                    | "You tried to use a merchant object's invalid merchant slot"
+927  | `SV_NO_WARE`                 | &laquo;927&raquo;                    | "You tried to purchase from a merchant object, but it doesn't have enough wares in stock"
+928  | `SV_NO_PRICE`                | &laquo;928&raquo;                    | "You tried to purchase from a merchant object, but you can't afford it"
+929  | `SV_MERCHANT_INVENTORY_FULL` | &laquo;929&raquo;                    | "You tried to purchase from a merchant object, but it doesn't have enough inventory space to accept your payment"

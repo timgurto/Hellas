@@ -298,8 +298,8 @@ void Server::loadData(){
                 if (!xr.findAttr(merchant, "slot", slot))
                     continue;
                 std::string wareName, priceName;
-                if (!xr.findAttr(merchant, "ware", wareName) ||
-                    !xr.findAttr(merchant, "price", priceName))
+                if (!xr.findAttr(merchant, "wareItem", wareName) ||
+                    !xr.findAttr(merchant, "priceItem", priceName))
                     continue;
                 auto wareIt = _items.find(wareName);
                 if (wareIt == _items.end())
@@ -390,10 +390,10 @@ void Server::saveData(const std::set<Object> &objects){
             if (!mSlots[i])
                 continue;
             xw.setAttr(mSlotE, "slot", i);
-            xw.setAttr(mSlotE, "ware", mSlots[i].ware->id());
-            xw.setAttr(mSlotE, "wareQty", mSlots[i].wareQty);
-            xw.setAttr(mSlotE, "price", mSlots[i].price->id());
-            xw.setAttr(mSlotE, "priceQty", mSlots[i].priceQty);
+            xw.setAttr(mSlotE, "wareItem", mSlots[i].wareItem()->id());
+            xw.setAttr(mSlotE, "wareQty", mSlots[i].wareQty());
+            xw.setAttr(mSlotE, "priceItem", mSlots[i].priceItem()->id());
+            xw.setAttr(mSlotE, "priceQty", mSlots[i].priceQty());
         }
     }
     xw.publish();

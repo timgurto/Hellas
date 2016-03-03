@@ -42,4 +42,6 @@ public:
     bool isClass(const std::string &className) const;
 };
 
+bool vectHasSpace(const Item::vect_t &vect, const Item *item, size_t qty = 1);
+
 #endif

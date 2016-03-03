@@ -290,6 +290,71 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_TRADE:
+        {
+            size_t serial, slot;
+            iss >> serial >> del >> slot >> del;
+            if (del != MSG_END)
+                return;
+
+            // Check that merchant slot is valid
+            auto it = _objects.find(serial);
+            if (!isValidObject(client, *user, it))
+                break;
+            Object &obj = const_cast<Object &>(*it);
+            size_t slots = obj.type()->merchantSlots();
+            if (slots == 0){
+                sendMessage(client, SV_NOT_MERCHANT);
+                break;
+            } else if (slot >= slots){
+                sendMessage(client, SV_INVALID_MERCHANT_SLOT);
+                break;
+            }
+            const MerchantSlot &mSlot = obj.merchantSlot(slot);
+            if (!mSlot){
+                sendMessage(client, SV_INVALID_MERCHANT_SLOT);
+                break;
+            }
+
+            // Check that object has items in stock
+            if (mSlot.ware() > obj.container()){
+                sendMessage(client, SV_NO_WARE);
+                break;
+            }
+
+            // Check that user has price
+            if (mSlot.price() > user->inventory()){
+                sendMessage(client, SV_NO_PRICE);
+                break;
+            }
+
+            // Check that user has inventory space
+            if (!vectHasSpace(user->inventory(), mSlot.wareItem(), mSlot.wareQty())){
+                sendMessage(client, SV_INVENTORY_FULL);
+                break;
+            }
+
+            // Check that object has inventory space
+            if (!vectHasSpace(obj.container(), mSlot.wareItem(), mSlot.wareQty())){
+                sendMessage(client, SV_MERCHANT_INVENTORY_FULL);
+                break;
+            }
+
+            // Take price from user
+            user->removeItems(mSlot.price());
+
+            // Take ware from object
+            obj.removeItems(mSlot.ware());
+
+            // Give price to object
+            obj.giveItem(mSlot.priceItem(), mSlot.priceQty());
+
+            // Give ware to user
+            user->giveItem(mSlot.wareItem(), mSlot.wareQty());
+
+            break;
+        }
+
         case CL_SET_MERCHANT_SLOT:
         {
             size_t serial, slot, wareQty, priceQty;
@@ -330,10 +395,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             MerchantSlot &mSlot = obj.merchantSlot(slot);
-            mSlot.ware = &*wareIt;
-            mSlot.wareQty = wareQty;
-            mSlot.price = &*priceIt;
-            mSlot.priceQty = priceQty;
+            mSlot = MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty);
 
             sendMerchantSlotMessage(*user, obj, slot);
             break;
@@ -462,6 +524,7 @@ void Server::sendInventoryMessage(const User &user, size_t serial, size_t slot) 
 void Server::sendMerchantSlotMessage(const User &user, const Object &obj, size_t slot) const{
     assert(slot < obj.merchantSlots().size());
     const MerchantSlot &mSlot = obj.merchantSlot(slot);
-    sendMessage(user.socket(), SV_MERCHANT_SLOT,
-                makeArgs(obj.serial(), slot, mSlot.ware, mSlot.wareQty, mSlot.price, mSlot.priceQty));
+    sendMessage(user.socket(), SV_MERCHANT_SLOT, makeArgs(obj.serial(), slot,
+                                                          mSlot.wareItem(), mSlot.wareQty(),
+                                                          mSlot.priceItem(), mSlot.priceQty()));
 }

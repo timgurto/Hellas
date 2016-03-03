@@ -75,3 +75,52 @@ bool Object::userHasAccess(const std::string &username) const{
         _owner.empty() ||
         _owner == username;
 }
+
+void Object::removeItems(const ItemSet &items) {
+    std::set<size_t> invSlotsChanged;
+    ItemSet remaining = items;
+    for (size_t i = 0; i != _container.size(); ++i){
+        std::pair<const Item *, size_t> &invSlot = _container[i];
+        if (remaining.contains(invSlot.first)) {
+            size_t itemsToRemove = min(invSlot.second, remaining[invSlot.first]);
+            remaining.remove(invSlot.first, itemsToRemove);
+            _container[i].second -= itemsToRemove;
+            if (_container[i].second == 0)
+                _container[i].first = 0;
+            invSlotsChanged.insert(i);
+            if (remaining.isEmpty())
+                break;
+        }
+    }
+}
+
+
+
+void Object::giveItem(const Item *item, size_t qty){
+// First pass: partial stacks
+    for (size_t i = 0; i != _container.size(); ++i) {
+        if (_container[i].first != item)
+            continue;
+        size_t spaceAvailable = item->stackSize() - _container[i].second;
+        if (spaceAvailable > 0) {
+            size_t qtyInThisSlot = min(spaceAvailable, qty);
+            _container[i].second += qtyInThisSlot;
+            qty -= qtyInThisSlot;
+        }
+        if (qty == 0)
+            return;
+    }
+
+    // Second pass: empty slots
+    for (size_t i = 0; i != _container.size(); ++i) {
+        if (_container[i].first)
+            continue;
+        size_t qtyInThisSlot = min(item->stackSize(), qty);
+        _container[i].first = item;
+        _container[i].second = qtyInThisSlot;
+        qty -= qtyInThisSlot;
+        if (qty == 0)
+            return;
+    }
+    assert(false);
+}
