@@ -25,6 +25,8 @@
 
 **object**, something which exists physically in-game, with a location and functionality
 
+**owner**, the user who owns an object.  Only an object's owner can access its inventory.  An object with no owner specified is accessible to all users.
+
 **price**, the item(s) that can be given to a merchant object in one transaction, consisting of an item type and a quantity.  For example, if a merchant slot is selling 1 wood for 5 gold coins, then its "price" is 5 gold coins.
 
 **server**, the *program* which manages the state of the game world and connects to clients

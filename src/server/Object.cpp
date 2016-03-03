@@ -92,12 +92,19 @@ void Object::removeItems(const ItemSet &items) {
                 break;
         }
     }
+    for (const std::string &username : _watchers) {
+        const User &user = Server::instance().getUserByName(username);
+        for (size_t slotNum : invSlotsChanged) {
+            Server::instance().sendInventoryMessage(user, _serial, slotNum);
+        }
+    }
 }
 
 
 
 void Object::giveItem(const Item *item, size_t qty){
-// First pass: partial stacks
+    std::set<size_t> changedSlots;
+    // First pass: partial stacks
     for (size_t i = 0; i != _container.size(); ++i) {
         if (_container[i].first != item)
             continue;
@@ -105,22 +112,41 @@ void Object::giveItem(const Item *item, size_t qty){
         if (spaceAvailable > 0) {
             size_t qtyInThisSlot = min(spaceAvailable, qty);
             _container[i].second += qtyInThisSlot;
+            changedSlots.insert(i);
             qty -= qtyInThisSlot;
         }
         if (qty == 0)
-            return;
+            break;;
     }
 
     // Second pass: empty slots
-    for (size_t i = 0; i != _container.size(); ++i) {
-        if (_container[i].first)
-            continue;
-        size_t qtyInThisSlot = min(item->stackSize(), qty);
-        _container[i].first = item;
-        _container[i].second = qtyInThisSlot;
-        qty -= qtyInThisSlot;
-        if (qty == 0)
-            return;
+    if (qty != 0)
+        for (size_t i = 0; i != _container.size(); ++i) {
+            if (_container[i].first)
+                continue;
+            size_t qtyInThisSlot = min(item->stackSize(), qty);
+            _container[i].first = item;
+            _container[i].second = qtyInThisSlot;
+            changedSlots.insert(i);
+            qty -= qtyInThisSlot;
+            if (qty == 0)
+                break;;
+        }
+    assert(qty == 0);
+
+    for (const std::string &username : _watchers){
+        const User &user = Server::instance().getUserByName(username);
+        for (size_t slot : changedSlots)
+            Server::instance().sendInventoryMessage(user, _serial, slot);
     }
-    assert(false);
+}
+
+void Object::addWatcher(const std::string &username){
+    _watchers.insert(username);
+    Server::debug() << username << " is now watching an object." << Log::endl;
+}
+
+void Object::removeWatcher(const std::string &username){
+    _watchers.erase(username);
+    Server::debug() << username << " is no longer watching an object." << Log::endl;
 }

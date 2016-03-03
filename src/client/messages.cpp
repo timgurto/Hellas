@@ -240,6 +240,13 @@ void Client::handleMessage(const std::string &msg){
                 }
                 _otherUsers[name]->destination(p);
             }
+
+            // Unwatch objects if out of range
+            for (const ClientObject *obj : _objectsWatched){
+                if (distance(playerCollisionRect(), obj->collisionRect()) > ACTION_DISTANCE)
+                    unwatchObject(*obj);
+            }
+
             break;
         }
 
@@ -423,7 +430,8 @@ void Client::initializeMessageNames(){
     _messageCommands["trade"] = CL_TRADE;
     _messageCommands["setMerchantSlot"] = CL_SET_MERCHANT_SLOT;
     _messageCommands["clearMerchantSlot"] = CL_CLEAR_MERCHANT_SLOT;
-    _messageCommands["getinventory"] = CL_GET_INVENTORY;
+    _messageCommands["startWatching"] = CL_START_WATCHING;
+    _messageCommands["stopWatching"] = CL_STOP_WATCHING;
 
     _messageCommands["say"] = CL_SAY;
     _messageCommands["s"] = CL_SAY;

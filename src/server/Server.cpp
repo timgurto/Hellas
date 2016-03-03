@@ -456,3 +456,8 @@ void Server::addObject (const ObjectType *type, const Point &location, const Use
     if (type->collides())
         getCollisionChunk(location).addObject(&*it);
 }
+
+const User &Server::getUserByName(const std::string &username) const {
+    return *_usersByName.find(username)->second;
+}
+

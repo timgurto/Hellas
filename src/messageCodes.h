@@ -67,9 +67,13 @@ enum MessageCode{
     // Arguments: serial, slot
     CL_CLEAR_MERCHANT_SLOT = 33,
 
-    // "I want to know what is inside object ...". 
+    // "Tell me what's inside object ..., and let me know of changes in the future". 
     // Arguments: serial
-    CL_GET_INVENTORY = 40,
+    CL_START_WATCHING = 40,
+
+    // "I'm no longer interested in updates from object ...". 
+    // Arguments: serial
+    CL_STOP_WATCHING = 41,
 
     // "I want to say ... to everybody". 
     // Arguments: message

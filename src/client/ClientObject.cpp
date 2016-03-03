@@ -83,7 +83,7 @@ void ClientObject::onRightClick(Client &client){
                 const size_t slots = objType.containerSlots();
                 size_t rows = (slots - 1) / COLS + 1;
                 Container *container = new Container(rows, COLS, _container, _serial);
-                client.sendMessage(CL_GET_INVENTORY, makeArgs(_serial)); // Request inventory
+                client.watchObject(*this);
                 _window->addChild(container);
                 y += container->height();
                 winWidth = max(winWidth, container->width());

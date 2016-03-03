@@ -42,6 +42,8 @@ public:
 
     bool itemIsClass(const Item *item, const std::string &className) const;
 
+    const User &getUserByName(const std::string &username) const;
+
     mutable LogConsole _debug;
 
 private:
@@ -113,6 +115,9 @@ private:
 
     friend bool User::hasTool(const std::string &className) const;
     friend bool User::hasTools(const std::set<std::string> &classes) const;
+
+    friend void Object::removeItems(const ItemSet &items);
+    friend void Object::giveItem(const Item *item, size_t qty);
 
     void addObject (const ObjectType *type, const Point &location, const User *owner = 0);
 

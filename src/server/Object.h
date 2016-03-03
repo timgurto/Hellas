@@ -18,12 +18,14 @@ class Object{
     Item::vect_t _container; // Items contained in object
     std::vector<MerchantSlot> _merchantSlots;
 
+    // Users watching this object for changes to inventory or merchant slots
+    std::set<std::string> _watchers;
+
 protected:
     static size_t generateSerial();
 
 public:
-    // Both constructors generate new serials
-    Object(const ObjectType *type, const Point &loc);
+    Object(const ObjectType *type, const Point &loc); // Generates a new serial
     Object(size_t serial); // For set/map lookup; contains only a serial
 
     const Point &location() const { return _location; }
@@ -40,6 +42,7 @@ public:
     const std::vector<MerchantSlot> &merchantSlots() const { return _merchantSlots; }
     const MerchantSlot &merchantSlot(size_t slot) const { return _merchantSlots[slot]; }
     MerchantSlot &merchantSlot(size_t slot) { return _merchantSlots[slot]; }
+    const std::set<std::string> &watchers() const { return _watchers; }
 
     bool operator<(const Object &rhs) const { return _serial < rhs._serial; }
 
@@ -52,7 +55,9 @@ public:
     void giveItem(const Item *item, size_t qty = 1); // To _container; inventory
 
     bool userHasAccess(const std::string &username) const;
-
+    
+    void addWatcher(const std::string &username);
+    void removeWatcher(const std::string &username);
 };
 
 #endif

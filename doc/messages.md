@@ -28,7 +28,8 @@ Code | Name                     | Syntax                                        
 31   | `CL_SWAP_ITEMS`          | &laquo;31&#8226;serial1&#8226;slot1&#8226;serial2&#8226;slot2&raquo; | "I want to swap object #`serial1`'s item #`slot1` with object #`serial2`'s item #`slot2`"<br>A serial of `0` uses the user's inventory.
 32   | `CL_SET_MERCHANT_SLOT`   | &laquo;32&#8226;serial&#8226;slot&#8226;ware&#8226;wareQty&#8226;price&#8226;priceQty&raquo; | "I want to set object #`serial`'s merchant slot #`slot` to sell `wareQty` `ware`s for `priceQty` `price`s"
 33   | `CL_CLEAR_MERCHANT_SLOT` | &laquo;33&#8226;serial&#8226;slot                                    | "I want to clear object #`serial`'s merchant slot #`slot`.
-40   | `CL_GET_INVENTORY`       | &laquo;40&#8226;serial&raquo;                                        | "Tell me what object #`serial`'s container holds."
+40   | `CL_START_WATCHIMG`      | &laquo;40&#8226;serial&raquo;                                        | "Tell me the details of object #`serial`'s inventory and merchant slots, and alert me of any changes."
+41   | `CL_STOP_WATCHING`       | &laquo;41&#8226;serial&raquo;                                        | "Stop alerting me of changes to object #`serial`."
 60   | `CL_SAY`                 | &laquo;60&#8226;message&raquo;                                       | "I want to say '`message`' to everybody."
 61   | `CL_WHISPER`             | &laquo;61&#8226;username&#8226;message&raquo;                        | "I want to say '`message`' to user `username`."
 
@@ -44,12 +45,12 @@ Code | Name                    | Syntax                                         
 123  | `SV_INVENTORY`          | &laquo;123&#8226;slot&#8226;type&#8226;quantity&raquo;                         | "Your inventory slot #`slot` contains a stack of `quantity` `type`s"
 124  | `SV_OBJECT`             | &laquo;124&#8226;serial&#8226;x&#8226;y&#8226;type&raquo;                      | "Object #`serial` is located at (`x`,`y`), and is a `type`"
 125  | `SV_REMOVE_OBJECT`      | &laquo;125&#8226;serial&raquo;                                                 | "Object #`serial` no longer exists"
-126  | `SV_MERCHANT_SLOT`      | &laquo;32&#8226;serial&#8226;slot&#8226;ware&#8226;wareQty&#8226;price&#8226;priceQty&raquo; | "Object #`serial`'s merchant slot #`slot` is selling `wareQty` `ware`s for `priceQty` `price`s"
+126  | `SV_MERCHANT_SLOT`      | &laquo;126&#8226;serial&#8226;slot&#8226;ware&#8226;wareQty&#8226;price&#8226;priceQty&raquo; | "Object #`serial`'s merchant slot #`slot` is selling `wareQty` `ware`s for `priceQty` `price`s"
 130  | `SV_ACTION_STARTED`     | &laquo;130&#8226;time&raquo;                                                   | "You have begun an action that will take `t` milliseconds"
 131  | `SV_ACTION_FINISHED`    | &laquo;131&raquo;                                                              | "You have completed an action"
 150  | `SV_OWNER`              | &laquo;150&#8226;serial&#8226;owner&raquo;                                     | "Object #`serial` is owned by `owner`"
-200  | `SV_SAY`                | &laquo;61&#8226;username&#8226;message&raquo;                                  | "User `username` said '`message`'."
-201  | `SV_WHISPER`            | &laquo;61&#8226;username&#8226;message&raquo;                                  | "User `username` said '`message` to you'."
+200  | `SV_SAY`                | &laquo;200&#8226;username&#8226;message&raquo;                                 | "User `username` said '`message`'."
+201  | `SV_WHISPER`            | &laquo;201&#8226;username&#8226;message&raquo;                                 | "User `username` said '`message` to you'."
 
 #### Warnings and errors                                          
 Code | Name                         | Syntax                               | Description

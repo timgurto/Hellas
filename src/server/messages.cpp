@@ -238,7 +238,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (containerSlot.second != 0) {
                 containerSlot.first = 0;
                 containerSlot.second = 0;
-                sendInventoryMessage(*user, serial, slot);
+                if (serial == 0)
+                    sendInventoryMessage(*user, serial, slot);
+                else{
+                    const Object &obj = *_objects.find(serial);
+                    for (auto username : obj.watchers())
+                         if (obj.userHasAccess(username))
+                            sendInventoryMessage(*_usersByName[username], serial, slot);
+                }
             }
             break;
         }
@@ -285,8 +292,24 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             slotTo = slotFrom;
             slotFrom = temp;
 
-            sendInventoryMessage(*user, obj1, slot1);
-            sendInventoryMessage(*user, obj2, slot2);
+            if (obj1 == 0)
+                sendInventoryMessage(*user, obj1, slot1);
+            if (obj2 == 0)
+                sendInventoryMessage(*user, obj2, slot2);
+            
+            // Alert watchers
+            if (obj1 != 0) {
+                const Object &object1 = *_objects.find(obj1);
+                for (auto username : object1.watchers())
+                    if (object1.userHasAccess(username))
+                        sendInventoryMessage(*_usersByName[username], obj1, slot1);
+            }
+            if (obj2 != 0) {
+                const Object &object2 = *_objects.find(obj2);
+                for (auto username : object2.watchers())
+                    if (object2.userHasAccess(username))
+                        sendInventoryMessage(*_usersByName[username], obj2, slot2);
+            }
             break;
         }
 
@@ -397,7 +420,9 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             MerchantSlot &mSlot = obj.merchantSlot(slot);
             mSlot = MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty);
 
-            sendMerchantSlotMessage(*user, obj, slot);
+            // Alert watchers
+            for (auto username : obj.watchers())
+                sendMerchantSlotMessage(*_usersByName[username], obj, slot);
             break;
         }
 
@@ -426,11 +451,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
             obj.merchantSlot(slot) = MerchantSlot();
 
-            sendMerchantSlotMessage(*user, obj, slot);
+            // Alert watchers
+            for (auto username : obj.watchers())
+                sendMerchantSlotMessage(*_usersByName[username], obj, slot);
             break;
         }
 
-        case CL_GET_INVENTORY:
+        case CL_START_WATCHING:
         {
             size_t serial;
             iss >> serial >> del;
@@ -439,9 +466,39 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             auto it = _objects.find(serial);
             if (!isValidObject(client, *user, it))
                 break;
-            size_t slots = it->container().size();
-            for (size_t i = 0; i != slots; ++i)
-                sendInventoryMessage(*user, serial, i);
+            Object &obj = const_cast<Object &>(*it);
+
+            // Describe merchant slots, if any
+            size_t mSlots = obj.merchantSlots().size();
+            for (size_t i = 0; i != mSlots; ++i)
+                sendMerchantSlotMessage(*user, obj, i);
+
+            // Describe inventory, if user has permission
+            if (obj.userHasAccess(user->name())){
+                size_t slots = it->container().size();
+                for (size_t i = 0; i != slots; ++i)
+                    sendInventoryMessage(*user, serial, i);
+            }
+
+            // Add as watcher
+            obj.addWatcher(user->name());
+
+            break;
+        }
+
+        case CL_STOP_WATCHING:
+        {
+            size_t serial;
+            iss >> serial >> del;
+            if (del != MSG_END)
+                return;
+            auto it = _objects.find(serial);
+            if (!isValidObject(client, *user, it))
+                break;
+            Object &obj = const_cast<Object &>(*it);
+
+            obj.removeWatcher(user->name());
+
             break;
         }
 
@@ -524,7 +581,11 @@ void Server::sendInventoryMessage(const User &user, size_t serial, size_t slot) 
 void Server::sendMerchantSlotMessage(const User &user, const Object &obj, size_t slot) const{
     assert(slot < obj.merchantSlots().size());
     const MerchantSlot &mSlot = obj.merchantSlot(slot);
-    sendMessage(user.socket(), SV_MERCHANT_SLOT, makeArgs(obj.serial(), slot,
-                                                          mSlot.wareItem(), mSlot.wareQty(),
-                                                          mSlot.priceItem(), mSlot.priceQty()));
+    if (mSlot)
+        sendMessage(user.socket(), SV_MERCHANT_SLOT,
+                    makeArgs(obj.serial(), slot,
+                             mSlot.wareItem()->id(), mSlot.wareQty(),
+                             mSlot.priceItem()->id(), mSlot.priceQty()));
+    else
+        sendMessage(user.socket(), SV_MERCHANT_SLOT, makeArgs(obj.serial(), slot, "", 0, "", 0));
 }
