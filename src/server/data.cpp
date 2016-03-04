@@ -277,7 +277,7 @@ void Server::loadData(){
 
             size_t q;
             for (auto inventory : xr.getChildren("inventory", elem)) {
-                if (!xr.findAttr(inventory, "id", s))
+                if (!xr.findAttr(inventory, "item", s))
                     continue;
                 if (!xr.findAttr(inventory, "slot", n))
                     continue;
@@ -292,8 +292,7 @@ void Server::loadData(){
                 invSlot.second = q;
             }
 
-            auto merchant = xr.findChild("merchant", elem);
-            if (merchant){
+            for (auto merchant : xr.getChildren("merchant", elem)) {
                 size_t slot;
                 if (!xr.findAttr(merchant, "slot", slot))
                     continue;
@@ -386,9 +385,9 @@ void Server::saveData(const std::set<Object> &objects){
 
         const auto mSlots = obj.merchantSlots();
         for (size_t i = 0; i != mSlots.size(); ++i){
-            auto mSlotE = xw.addChild("merchant", e);
             if (!mSlots[i])
                 continue;
+            auto mSlotE = xw.addChild("merchant", e);
             xw.setAttr(mSlotE, "slot", i);
             xw.setAttr(mSlotE, "wareItem", mSlots[i].wareItem()->id());
             xw.setAttr(mSlotE, "wareQty", mSlots[i].wareQty());
