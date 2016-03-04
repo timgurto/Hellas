@@ -66,7 +66,7 @@ Server only:
     constructionTime=4000
     deconstructs="tradeCart"
     deconstructionTime=1000
-    merchantSlots=1 >
+    merchantSlots=2 >
     <collisionRect x=-11 y=-7 w=35 h=11 />
     <class name="set square" />
     <container slots=5 />

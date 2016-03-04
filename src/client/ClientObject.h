@@ -11,7 +11,9 @@
 #include "Entity.h"
 #include "Item.h"
 #include "../Point.h"
+#include "../server/MerchantSlot.h"
 
+class Element;
 class Window;
 
 // A client-side description of an object
@@ -20,6 +22,8 @@ class ClientObject : public Entity{
     std::string _owner;
     Item::vect_t _container;
     Window *_window; // For containers, etc.
+    std::vector<MerchantSlot> _merchantSlots;
+    std::vector<Element *> _merchantSlotElements;
 
 public:
     ClientObject(const ClientObject &rhs);
@@ -53,6 +57,8 @@ public:
     void refreshWindow();
 
     bool userHasAccess() const;
+
+    void setMerchantSlot(size_t i, const MerchantSlot &mSlot);
 };
 
 #endif

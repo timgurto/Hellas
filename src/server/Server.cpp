@@ -431,6 +431,15 @@ void Server::generateWorld(){
         } while (!isLocationValid(loc, *chest));
         addObject(chest, loc);
     }
+
+    const ObjectType *const tradeCart = &*_objectTypes.find(std::string("tradeCart"));
+    for (int i = 0; i != 20; ++i) {
+        Point loc;
+        do {
+            loc = mapRand();
+        } while (!isLocationValid(loc, *tradeCart));
+        addObject(tradeCart, loc);
+    }
 }
 
 Point Server::mapRand() const{

@@ -360,6 +360,44 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_MERCHANT_SLOT:
+        {
+            size_t serial, slot, wareQty, priceQty;
+            singleMsg >> serial >> del >> slot >> del;
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            std::string ware(buffer);
+            singleMsg >> del >> wareQty >> del;
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            std::string price(buffer);
+            singleMsg >> del >> priceQty >> del;
+            if (del != MSG_END)
+                return;
+            auto objIt = _objects.find(serial);
+            if (objIt == _objects.end()){
+                _debug("Info received about unknown object.", Color::RED);
+                break;
+            }
+            ClientObject &obj = const_cast<ClientObject &>(*objIt->second);
+            size_t slots = obj.objectType()->merchantSlots();
+            if (slot >= slots){
+                _debug("Received invalid merchant slot.", Color::RED);
+                break;
+            }
+            auto wareIt = _items.find(ware);
+            if (wareIt == _items.end()){
+                _debug("Received merchant slot describing invalid item", Color::RED);
+                break;
+            }
+            auto priceIt = _items.find(price);
+            if (priceIt == _items.end()){
+                _debug("Received merchant slot describing invalid item", Color::RED);
+                break;
+            }
+            _debug("Setting object's merchant slot");
+            obj.setMerchantSlot(slot, MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty));
+            break;
+        }
+
         case SV_SAY:
         {
             singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);

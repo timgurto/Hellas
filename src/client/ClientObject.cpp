@@ -7,6 +7,7 @@
 #include "Renderer.h"
 #include "ui/Button.h"
 #include "ui/Container.h"
+#include "ui/Label.h"
 #include "ui/Window.h"
 #include "../Color.h"
 #include "../Log.h"
@@ -25,7 +26,12 @@ Entity(type, loc),
 _serial(serialArg),
 _window(0){
     if (type) { // i.e., not a serial-only search dummy
-        _container = Item::vect_t(objectType()->containerSlots());
+        const size_t
+            containerSlots = objectType()->containerSlots(),
+            merchantSlots = objectType()->merchantSlots();
+        _container = Item::vect_t(containerSlots);
+        _merchantSlots = std::vector<MerchantSlot>(merchantSlots);
+        _merchantSlotElements = std::vector<Element *>(merchantSlots, 0);
     }
 }
 
@@ -34,6 +40,60 @@ ClientObject::~ClientObject(){
         Client::_instance->removeWindow(_window);
         delete _window;
     }
+}
+
+void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
+    _merchantSlots[i] = mSlot;
+
+    if (!_window)
+        return;
+    assert(_merchantSlotElements[i]);
+
+    // Update slot element
+    Element &e = *_merchantSlotElements[i];
+    if (!mSlot) {
+        e = Element();
+        return;
+    }
+
+    static const int // TODO: remove duplicate consts
+        GAP = 2,
+        NAME_WIDTH = 100,
+        QUANTITY_WIDTH = 20,
+        BUTTON_PADDING = 1,
+        TEXT_HEIGHT = Element::TEXT_HEIGHT,
+        ICON_SIZE = Element::ITEM_HEIGHT,
+        BUTTON_LABEL_WIDTH = 45,
+        BUTTON_HEIGHT = ICON_SIZE + 2 * BUTTON_PADDING,
+        BUTTON_WIDTH = BUTTON_PADDING * 2 + BUTTON_LABEL_WIDTH + ICON_SIZE + NAME_WIDTH,
+        ROW_HEIGHT = BUTTON_HEIGHT + 2 * GAP,
+        TEXT_TOP = (ROW_HEIGHT - TEXT_HEIGHT) / 2,
+        BUTTON_TEXT_TOP = (BUTTON_HEIGHT - TEXT_HEIGHT) / 2;
+
+    // Ware
+    int x = GAP;
+    e.addChild(new Label(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT),
+                         makeArgs(mSlot.wareQty()), Element::RIGHT_JUSTIFIED));
+    x += QUANTITY_WIDTH;
+    e.addChild(new Picture(Rect(x, (ROW_HEIGHT - ICON_SIZE) / 2, ICON_SIZE, ICON_SIZE),
+                           mSlot.wareItem()->icon()));
+    x += ICON_SIZE;
+    e.addChild(new Label(Rect(x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT), mSlot.wareItem()->name()));
+    x += NAME_WIDTH + GAP;
+    
+    // Buy button
+    Button *button = new Button(Rect(x, GAP, BUTTON_WIDTH, BUTTON_HEIGHT), "");
+    e.addChild(button);
+    x = BUTTON_PADDING;
+    button->addChild(new Label(Rect(x, BUTTON_TEXT_TOP, BUTTON_LABEL_WIDTH, TEXT_HEIGHT),
+                               std::string("Buy for ") + makeArgs(mSlot.priceQty()),
+                               Element::RIGHT_JUSTIFIED));
+    x += BUTTON_LABEL_WIDTH;
+    button->addChild(new Picture(Rect(x, BUTTON_PADDING, ICON_SIZE, ICON_SIZE),
+                                 mSlot.priceItem()->icon()));
+    x += ICON_SIZE;
+    button->addChild(new Label(Rect(x, BUTTON_TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT),
+                               mSlot.priceItem()->name()));
 }
 
 void ClientObject::onRightClick(Client &client){
@@ -61,7 +121,7 @@ void ClientObject::onRightClick(Client &client){
         bool
             hasContainer = objType.containerSlots() > 0,
             isMerchant = objType.merchantSlots() > 0;
-        if (userHasAccess() && !_window && (hasContainer || objType.canDeconstruct())){
+        if (userHasAccess() && !_window && (hasContainer || isMerchant || objType.canDeconstruct())){
             static const size_t COLS = 8;
             static const int
                 WINDOW_WIDTH = Container(1, 8, _container).width(),
@@ -75,7 +135,7 @@ void ClientObject::onRightClick(Client &client){
 
             // Merchant setup
             if (isMerchant){
-
+                
             }
 
             // Inventory container
@@ -101,6 +161,39 @@ void ClientObject::onRightClick(Client &client){
             }
 
             _window->resize(winWidth, y);
+
+        } else if (!userHasAccess() && !_window && isMerchant) {
+            client.watchObject(*this);
+            // Draw trade window
+            static const int
+                GAP = 2,
+                NAME_WIDTH = 100,
+                QUANTITY_WIDTH = 20,
+                BUTTON_PADDING = 1,
+                BUTTON_LABEL_WIDTH = 45,
+                BUTTON_HEIGHT = Element::ITEM_HEIGHT + 2 * BUTTON_PADDING,
+                ROW_HEIGHT = BUTTON_HEIGHT + 2 * GAP,
+                WIDTH = 2 * Element::ITEM_HEIGHT +
+                        2 * NAME_WIDTH +
+                        QUANTITY_WIDTH + 
+                        BUTTON_LABEL_WIDTH +
+                        2 * BUTTON_PADDING +
+                        3 * GAP +
+                        List::ARROW_W;
+            const double
+                MAX_ROWS = 7.5,
+                NUM_ROWS = objType.merchantSlots() < MAX_ROWS ? objType.merchantSlots() : MAX_ROWS;
+            static const int
+                HEIGHT = toInt(ROW_HEIGHT * NUM_ROWS);
+            _window = new Window(Rect(0, 0, WIDTH, HEIGHT), objType.name());
+            client.addWindow(_window);
+            List *list = new List(Rect(0, 0, WIDTH, HEIGHT), ROW_HEIGHT);
+            _window->addChild(list);
+            for (size_t i = 0; i != objType.merchantSlots(); ++i){
+                const MerchantSlot &mSlot = _merchantSlots[i];
+                _merchantSlotElements[i] = new Element();
+                list->addChild(_merchantSlotElements[i]);
+            }
         }
 
         if (_window) {
