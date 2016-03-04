@@ -393,7 +393,6 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Received merchant slot describing invalid item", Color::RED);
                 break;
             }
-            _debug("Setting object's merchant slot");
             obj.setMerchantSlot(slot, MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty));
             break;
         }
