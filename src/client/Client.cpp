@@ -54,8 +54,6 @@ const int Client::ACTION_DISTANCE = 30;
 
 const size_t Client::INVENTORY_SIZE = 10;
 
-const size_t Client::MAX_TEXT_ENTERED = 100;
-
 const int Client::PLAYER_ACTION_CHANNEL = 0;
 
 Color Client::SAY_COLOR;

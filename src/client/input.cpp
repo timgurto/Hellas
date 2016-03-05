@@ -2,6 +2,7 @@
 
 #include "Client.h"
 #include "Renderer.h"
+#include "ui/TextBox.h"
 
 extern Renderer renderer;
 
@@ -15,8 +16,7 @@ void Client::handleInput(double delta){
             break;
 
         case SDL_TEXTINPUT:
-            if (_enteredText.size() < MAX_TEXT_ENTERED)
-                _enteredText.append(e.text.text);
+            TextBox::addText(e.text.text);
             break;
 
         case SDL_KEYDOWN:
@@ -25,19 +25,13 @@ void Client::handleInput(double delta){
 
                 switch(e.key.keysym.sym) {
 
-                case SDLK_ESCAPE:
-                    SDL_StopTextInput();
-                    _enteredText = "";
-                    break;
-
                 case SDLK_BACKSPACE:
-                    if (_enteredText.size() > 0) {
-                        _enteredText.erase(_enteredText.size() - 1);
-                    }
+                    TextBox::backspace();
                     break;
 
-                case SDLK_RETURN:
+                /*case SDLK_RETURN:
                 case SDLK_KP_ENTER:
+                    // TODO: Send commands
                     SDL_StopTextInput();
                     if (_enteredText != "") {
                         if (_enteredText.at(0) == '/') {
@@ -48,7 +42,7 @@ void Client::handleInput(double delta){
                         }
                         _enteredText = "";
                     }
-                    break;
+                    break;*/
                 }
 
             } else {
@@ -74,15 +68,15 @@ void Client::handleInput(double delta){
                     break;
                 }
 
-                case SDLK_SLASH:
+                /*case SDLK_SLASH:
                     SDL_StartTextInput();
                     _enteredText = "/";
-                    break;
+                    break;*/
 
-                case SDLK_RETURN:
+                /*case SDLK_RETURN:
                 case SDLK_KP_ENTER:
                     SDL_StartTextInput();
-                    break;
+                    break;*/
 
                 case SDLK_c:
                     _craftingWindow->toggleVisibility();
@@ -100,12 +94,12 @@ void Client::handleInput(double delta){
                     addWindow(_inventoryWindow);
                     break;
 
-                case SDLK_r:
+                /*case SDLK_r:
                     if (!_lastWhisperer.empty()) {
                         SDL_StartTextInput();
                         _enteredText = "/whisper " + _lastWhisperer + " ";
                     }
-                    break;
+                    break;*/
                 }
             }
             break;
@@ -134,13 +128,20 @@ void Client::handleInput(double delta){
             case SDL_BUTTON_LEFT:
                 _leftMouseDown = true;
 
+                TextBox::clearFocus();
+
                 // Send onLeftMouseDown to all visible windows
                 for (Window *window : _windows)
                     if (window->visible())
                         window->onLeftMouseDown(_mouse);
                 for (Element *element : _ui)
-                    if (element->visible()&& collision(_mouse, element->rect()))
+                    if (element->visible() && collision(_mouse, element->rect()))
                         element->onLeftMouseDown(_mouse);
+
+                if (SDL_IsTextInputActive() && !TextBox::focus())
+                    SDL_StopTextInput();
+                else if (!SDL_IsTextInputActive() && TextBox::focus())
+                    SDL_StartTextInput();
 
                 // Bring top clicked window to front
                 for (windows_t::iterator it = _windows.begin(); it != _windows.end(); ++it) {
@@ -161,7 +162,7 @@ void Client::handleInput(double delta){
                     if (window->visible())
                         window->onRightMouseDown(_mouse);
                 for (Element *element : _ui)
-                    if (element->visible()&& collision(_mouse, element->rect()))
+                    if (element->visible() && collision(_mouse, element->rect()))
                         element->onRightMouseDown(_mouse);
 
                 _rightMouseDownEntity = getEntityAtMouse();

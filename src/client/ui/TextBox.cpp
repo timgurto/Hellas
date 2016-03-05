@@ -1,13 +1,16 @@
 // (C) 2016 Tim Gurto
 
+#include <cassert>
+
 #include "ShadowBox.h"
 #include "TextBox.h"
 #include "../Renderer.h"
 
 extern Renderer renderer;
 
-const TextBox *TextBox::currentFocus = 0;
+TextBox *TextBox::currentFocus = 0;
 const int TextBox::HEIGHT = 14;
+const size_t TextBox::MAX_TEXT_LENGTH = 100;
 
 TextBox::TextBox(const Rect &rect):
 Element(Rect(rect.x, rect.y, rect.w, HEIGHT)),
@@ -43,11 +46,14 @@ void TextBox::refresh(){
     }
 }
 
-void TextBox::click(Element &e, const Point &mousePos){
-    //if (!collision(mousePos, e.dimRect()))
-    //    return;
+void TextBox::clearFocus(){
+    if (currentFocus)
+        currentFocus->markChanged();
+    currentFocus = 0;
+}
 
-    const TextBox *newFocus = dynamic_cast<const TextBox *>(&e);
+void TextBox::click(Element &e, const Point &mousePos){
+    TextBox *newFocus = dynamic_cast<TextBox *>(&e);
     if (newFocus == currentFocus)
         return;
 
@@ -57,4 +63,24 @@ void TextBox::click(Element &e, const Point &mousePos){
         currentFocus->markChanged();
 
     currentFocus = newFocus;
+}
+
+void TextBox::addText(const char *newText){
+    assert(currentFocus);
+    
+    std::string &text = currentFocus->_text;
+    if (text.size() < MAX_TEXT_LENGTH) {
+        text.append(text);
+        currentFocus->markChanged();
+    }
+}
+
+void TextBox::backspace(){
+    assert(currentFocus);
+
+    std::string &text = currentFocus->_text;
+    if (text.size() > 0) {
+        text.erase(text.size() - 1);
+        currentFocus->markChanged();
+    }
 }

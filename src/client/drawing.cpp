@@ -82,37 +82,6 @@ void Client::draw() const{
         }
     }
 
-    // Text box
-    if (SDL_IsTextInputActive()) {
-        static const int
-            TEXT_BOX_HEIGHT = 13,
-            TEXT_BOX_WIDTH = 300;
-        static const Rect TEXT_BOX_RECT((SCREEN_X - TEXT_BOX_WIDTH) / 2,
-                                        (SCREEN_Y - TEXT_BOX_HEIGHT) / 2,
-                                        TEXT_BOX_WIDTH, TEXT_BOX_HEIGHT);
-        static const Color TEXT_BOX_BORDER = Color::GREY_4;
-        renderer.setDrawColor(TEXT_BOX_BORDER);
-        renderer.drawRect(TEXT_BOX_RECT + Rect(-1, -1, 2, 2));
-        renderer.setDrawColor(Color::BLACK);
-        renderer.fillRect(TEXT_BOX_RECT);
-        const Texture text(_defaultFont, _enteredText);
-        static const int MAX_TEXT_WIDTH = TEXT_BOX_WIDTH - 2;
-        int cursorX;
-        if (text.width() < MAX_TEXT_WIDTH) {
-            text.draw(TEXT_BOX_RECT.x + 1, TEXT_BOX_RECT.y);
-            cursorX = TEXT_BOX_RECT.x + text.width() + 1;
-        } else {
-            const Rect
-                dstRect(TEXT_BOX_RECT.x + 1, TEXT_BOX_RECT.y, MAX_TEXT_WIDTH, text.height()),
-                srcRect = Rect(text.width() - MAX_TEXT_WIDTH, 0,
-                                   MAX_TEXT_WIDTH, text.height());
-            text.draw(dstRect, srcRect);
-            cursorX = TEXT_BOX_RECT.x + TEXT_BOX_WIDTH;
-        }
-        renderer.setDrawColor(Color::WHITE);
-        renderer.fillRect(Rect(cursorX, TEXT_BOX_RECT.y + 1, 1, TEXT_BOX_HEIGHT - 2));
-    }
-
     // Non-window UI
     for (Element *element : _ui)
         element->draw();
