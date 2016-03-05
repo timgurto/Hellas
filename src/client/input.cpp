@@ -26,6 +26,10 @@ void Client::handleInput(double delta){
                 switch(e.key.keysym.sym) {
 
                 case SDLK_ESCAPE:
+                    if (TextBox::focus() == _chatTextBox){
+                        _chatTextBox->text("");
+                        _chatTextBox->hide();
+                    }
                     TextBox::clearFocus();
                     SDL_StopTextInput();
                     break;
@@ -61,6 +65,12 @@ void Client::handleInput(double delta){
 
                 case SDLK_ESCAPE:
                 {
+                    if (_chatTextBox->visible()){
+                        _chatTextBox->text("");
+                        _chatTextBox->hide();
+                        break;
+                    }
+
                     Window *frontMostVisibleWindow = 0;
                     for (Window *window : _windows)
                         if (window->visible()){
@@ -78,19 +88,36 @@ void Client::handleInput(double delta){
                 }
 
                 case SDLK_SLASH:
-                    if (!SDL_IsTextInputActive())
+                    if (_chatTextBox->visible()){
                         SDL_StartTextInput();
-                    _chatTextBox->show();
-                    TextBox::focus(_chatTextBox);
-                    _chatTextBox->text("/");
-                    break;
+                        _chatTextBox->show();
+                        TextBox::focus(_chatTextBox);
+                        _chatTextBox->text("/");
+                        break;
+                    }
 
                 case SDLK_RETURN:
                 case SDLK_KP_ENTER:
-                    if (!SDL_IsTextInputActive())
+                    if (_chatTextBox->visible()){
+                        // Send command/chat
+                        const std::string &text = _chatTextBox->text();
+                        if (text != "") {
+                            if (text.at(0) == '/') {
+                                // Perform command
+                                performCommand(text);
+                            } else {
+                                performCommand("/say " + text);
+                            }
+                            _chatTextBox->text("");
+                            _chatTextBox->hide();
+                            TextBox::clearFocus();
+                        }
+                        break;
+                    } else {
                         SDL_StartTextInput();
-                    _chatTextBox->show();
-                    TextBox::focus(_chatTextBox);
+                        _chatTextBox->show();
+                        TextBox::focus(_chatTextBox);
+                    }
                     break;
 
                 case SDLK_c:
@@ -100,7 +127,7 @@ void Client::handleInput(double delta){
                     break;
 
                 case SDLK_l:
-                    _chatContainer->toggleVisibility();
+                    _chatLog->toggleVisibility();
                     break;
 
                 case SDLK_i:

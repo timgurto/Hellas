@@ -7,9 +7,9 @@ Key       | Action
 `s`, `↓` | Move down
 `a`, `←` | Move left
 `d`, `→` | Move right
-`Esc`     | Exit a UI window if one is open, or exit the client
-`Enter`   | Open/close text-entry window, to send commands to the server
-`/`       | Open text-entry window, and add a `/` character to it
+`Esc`     | Cancel chat, exit a UI window if one is open, or exit the client
+`Enter`   | Begin typing a chat message or command, or send a completed message to the server
+`/`       | Begin typing a command, with the `/` automatically included
 `c`       | Open/close crafting window
 `i`       | Open/close inventory
 `l`       | Open/close chat log
