@@ -10,6 +10,7 @@ _deconstructsItem(0),
 _deconstructionTime(0),
 _gatherReq("none"),
 _containerSlots(0),
+_merchantSlots(0),
 _collides(false){}
 
 ObjectType::ObjectType(const Rect &collisionRect):
@@ -19,6 +20,7 @@ _deconstructsItem(0),
 _deconstructionTime(0),
 _gatherReq("none"),
 _containerSlots(0),
+_merchantSlots(0),
 _collides(true),
 _collisionRect(collisionRect){}
 

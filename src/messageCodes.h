@@ -44,6 +44,10 @@ enum MessageCode{
     // Arguments: serial
     CL_DECONSTRUCT = 24,
 
+    // "I want to trade using merchant slot ... in object ..."
+    // Arguments: serial, slot
+    CL_TRADE = 25,
+
     // "I want to drop the item in object ...'s slot ..."
     // An object serial of 0 denotes the user's inventory.
     // Arguments: serial, slot
@@ -54,9 +58,22 @@ enum MessageCode{
     // Arguments: serial1, slot1, serial2, slot2
     CL_SWAP_ITEMS = 31,
 
-    // "I want to know what is inside object ...". 
+    // "I want to set object ...'s merchant slot ... to the following:
+    // Sell ...x... for ...x..."
+    // Arguments: serial, slot, ware, wareQty, price, priceQty
+    CL_SET_MERCHANT_SLOT = 32,
+
+    // "I want to clear object ...'s merchant slot ..."
+    // Arguments: serial, slot
+    CL_CLEAR_MERCHANT_SLOT = 33,
+
+    // "Tell me what's inside object ..., and let me know of changes in the future". 
     // Arguments: serial
-    CL_GET_INVENTORY = 40,
+    CL_START_WATCHING = 40,
+
+    // "I'm no longer interested in updates from object ...". 
+    // Arguments: serial
+    CL_STOP_WATCHING = 41,
 
     // "I want to say ... to everybody". 
     // Arguments: message
@@ -106,6 +123,10 @@ enum MessageCode{
     // Arguments: serial
     SV_REMOVE_OBJECT = 125,
 
+    // Details of an object's merchant slot
+    // Arguments: serial, slot, ware, wareQty, price, priceQty
+    SV_MERCHANT_SLOT = 126,
+
     // The user has begun an action
     // Arguments: time
     SV_ACTION_STARTED = 130,
@@ -152,7 +173,7 @@ enum MessageCode{
     // The user tried to craft an item that does not exist
     SV_INVALID_ITEM = 914,
 
-    // The user tried to craft an item that cannot be crafted
+    // The user referred to a nonexistent item
     SV_CANNOT_CRAFT = 915,
 
     // The user was unable to complete an action
@@ -182,6 +203,21 @@ enum MessageCode{
 
     // The user does not have permission to perform an action
     SV_NO_PERMISSION = 924,
+
+    // The user tried to perform a merchant function on a non-merchant object
+    SV_NOT_MERCHANT = 925,
+
+    // The user tried to perform a merchant function on an invalid merchant slot
+    SV_INVALID_MERCHANT_SLOT = 926,
+
+    // The merchant has no wares in stock to sell the user
+    SV_NO_WARE = 927,
+
+    // The user cannot afford the price of a merchant exchange
+    SV_NO_PRICE = 928,
+
+    // The merchant object does not have enough inventory space to trade with the user
+    SV_MERCHANT_INVENTORY_FULL = 929,
 
 
 

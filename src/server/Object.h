@@ -3,6 +3,7 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
+#include "MerchantSlot.h"
 #include "ObjectType.h"
 #include "ItemSet.h"
 #include "../Point.h"
@@ -15,13 +16,16 @@ class Object{
     std::string _owner;
     ItemSet _contents; // Remaining contents, which can be gathered
     Item::vect_t _container; // Items contained in object
+    std::vector<MerchantSlot> _merchantSlots;
+
+    // Users watching this object for changes to inventory or merchant slots
+    std::set<std::string> _watchers;
 
 protected:
     static size_t generateSerial();
 
 public:
-    // Both constructors generate new serials
-    Object(const ObjectType *type, const Point &loc);
+    Object(const ObjectType *type, const Point &loc); // Generates a new serial
     Object(size_t serial); // For set/map lookup; contains only a serial
 
     const Point &location() const { return _location; }
@@ -34,7 +38,11 @@ public:
     void contents(const ItemSet &contents);
     Item::vect_t &container() { return _container; }
     const Item::vect_t &container() const { return _container; }
-    const Rect collisionRect() const { return _type->collisionRect() + _location; }
+    const Rect collisionRect() const { return _type->collisionRect() + _location;  }
+    const std::vector<MerchantSlot> &merchantSlots() const { return _merchantSlots; }
+    const MerchantSlot &merchantSlot(size_t slot) const { return _merchantSlots[slot]; }
+    MerchantSlot &merchantSlot(size_t slot) { return _merchantSlots[slot]; }
+    const std::set<std::string> &watchers() const { return _watchers; }
 
     bool operator<(const Object &rhs) const { return _serial < rhs._serial; }
 
@@ -42,9 +50,14 @@ public:
     const Item *chooseGatherItem() const;
     // Randomly choose a quantity of the above items, between 1 and the object's contents.
     size_t chooseGatherQuantity(const Item *item) const;
-    void removeItem(const Item *item, size_t qty);
+    void removeItem(const Item *item, size_t qty); // From _contents; gathering
+    void removeItems(const ItemSet &items); // From _container; inventory
+    void giveItem(const Item *item, size_t qty = 1); // To _container; inventory
 
     bool userHasAccess(const std::string &username) const;
+    
+    void addWatcher(const std::string &username);
+    void removeWatcher(const std::string &username);
 };
 
 #endif

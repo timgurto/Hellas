@@ -110,6 +110,9 @@ void Client::handleMessage(const std::string &msg){
         case SV_BLOCKED:
         case SV_INVENTORY_FULL:
         case SV_NO_PERMISSION:
+        case SV_NO_WARE:
+        case SV_NO_PRICE:
+        case SV_MERCHANT_INVENTORY_FULL:
             errorMessageColor = Color::YELLOW; // Yellow above, red below
         case SV_INVALID_USER:
         case SV_INVALID_ITEM:
@@ -117,6 +120,8 @@ void Client::handleMessage(const std::string &msg){
         case SV_INVALID_SLOT:
         case SV_EMPTY_SLOT:
         case SV_CANNOT_CONSTRUCT:
+        case SV_NOT_MERCHANT:
+        case SV_INVALID_MERCHANT_SLOT:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
@@ -235,6 +240,13 @@ void Client::handleMessage(const std::string &msg){
                 }
                 _otherUsers[name]->destination(p);
             }
+
+            // Unwatch objects if out of range
+            for (const ClientObject *obj : _objectsWatched){
+                if (distance(playerCollisionRect(), obj->collisionRect()) > ACTION_DISTANCE)
+                    unwatchObject(*obj);
+            }
+
             break;
         }
 
@@ -348,6 +360,43 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_MERCHANT_SLOT:
+        {
+            size_t serial, slot, wareQty, priceQty;
+            singleMsg >> serial >> del >> slot >> del;
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            std::string ware(buffer);
+            singleMsg >> del >> wareQty >> del;
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            std::string price(buffer);
+            singleMsg >> del >> priceQty >> del;
+            if (del != MSG_END)
+                return;
+            auto objIt = _objects.find(serial);
+            if (objIt == _objects.end()){
+                _debug("Info received about unknown object.", Color::RED);
+                break;
+            }
+            ClientObject &obj = const_cast<ClientObject &>(*objIt->second);
+            size_t slots = obj.objectType()->merchantSlots();
+            if (slot >= slots){
+                _debug("Received invalid merchant slot.", Color::RED);
+                break;
+            }
+            auto wareIt = _items.find(ware);
+            if (wareIt == _items.end()){
+                _debug("Received merchant slot describing invalid item", Color::RED);
+                break;
+            }
+            auto priceIt = _items.find(price);
+            if (priceIt == _items.end()){
+                _debug("Received merchant slot describing invalid item", Color::RED);
+                break;
+            }
+            obj.setMerchantSlot(slot, MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty));
+            break;
+        }
+
         case SV_SAY:
         {
             singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
@@ -415,7 +464,12 @@ void Client::initializeMessageNames(){
     _messageCommands["deconstruct"] = CL_DECONSTRUCT;
     _messageCommands["drop"] = CL_DROP;
     _messageCommands["swap"] = CL_SWAP_ITEMS;
-    _messageCommands["getinventory"] = CL_GET_INVENTORY;
+    _messageCommands["trade"] = CL_TRADE;
+    _messageCommands["setMerchantSlot"] = CL_SET_MERCHANT_SLOT;
+    _messageCommands["clearMerchantSlot"] = CL_CLEAR_MERCHANT_SLOT;
+    _messageCommands["startWatching"] = CL_START_WATCHING;
+    _messageCommands["stopWatching"] = CL_STOP_WATCHING;
+
     _messageCommands["say"] = CL_SAY;
     _messageCommands["s"] = CL_SAY;
     _messageCommands["whisper"] = CL_WHISPER;
@@ -436,6 +490,12 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_CANNOT_CONSTRUCT] = "That item cannot be constructed.";
     _errorMessages[SV_BLOCKED] = "That location is already occupied.";
     _errorMessages[SV_NO_PERMISSION] = "You do not have permission to do that.";
+    _errorMessages[SV_NOT_MERCHANT] = "That is not a merchant object.";
+    _errorMessages[SV_INVALID_MERCHANT_SLOT] = "That is not a valid merchant slot.";
+    _errorMessages[SV_NO_WARE] = "The object does not have enough items in stock.";
+    _errorMessages[SV_NO_PRICE] = "You cannot afford to buy that.";
+    _errorMessages[SV_MERCHANT_INVENTORY_FULL] =
+        "The object does not have enough inventory space for that exchange.";
 }
 
 void Client::performCommand(const std::string &commandString){
@@ -445,7 +505,7 @@ void Client::performCommand(const std::string &commandString){
     iss >> c;
     if (c != '/') {
         assert(false);
-        _debug("Commands must begin with '/.", Color::RED);
+        _debug("Commands must begin with '/'.", Color::RED);
         return;
     }
 

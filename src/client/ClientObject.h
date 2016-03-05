@@ -11,7 +11,9 @@
 #include "Entity.h"
 #include "Item.h"
 #include "../Point.h"
+#include "../server/MerchantSlot.h"
 
+class Element;
 class Window;
 
 // A client-side description of an object
@@ -20,6 +22,10 @@ class ClientObject : public Entity{
     std::string _owner;
     Item::vect_t _container;
     Window *_window; // For containers, etc.
+    std::vector<MerchantSlot> _merchantSlots;
+    std::vector<Element *> _merchantSlotElements;
+    typedef std::pair<size_t, size_t> serialSlotPair_t;
+    std::vector<serialSlotPair_t *> _serialSlotPairs;
 
 public:
     ClientObject(const ClientObject &rhs);
@@ -44,6 +50,7 @@ public:
 
     virtual void onRightClick(Client &client);
     static void startDeconstructing(void *object);
+    static void trade(void *serialAndSlot);
     virtual std::vector<std::string> getTooltipMessages(const Client &client) const;
 
     void playGatherSound() const;
@@ -53,6 +60,8 @@ public:
     void refreshWindow();
 
     bool userHasAccess() const;
+
+    void setMerchantSlot(size_t i, const MerchantSlot &mSlot);
 };
 
 #endif

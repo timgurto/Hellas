@@ -19,6 +19,7 @@ class ClientObjectType : public EntityType{
     bool _canGather; // Whether this represents objects that can be gathered
     bool _canDeconstruct; // Whether these objects can be deconstructed into items
     size_t _containerSlots;
+    size_t _merchantSlots;
     Mix_Chunk *_gatherSound;
     Rect _collisionRect;
 
@@ -34,6 +35,8 @@ public:
     void canDeconstruct(bool b) { _canDeconstruct = b; }
     size_t containerSlots() const { return _containerSlots; }
     void containerSlots(size_t n) { _containerSlots = n; }
+    size_t merchantSlots() const { return _merchantSlots; }
+    void merchantSlots(size_t n) { _merchantSlots = n; }
     void gatherSound(const std::string &filename);
     Mix_Chunk *gatherSound() const { return _gatherSound; }
     const Rect &collisionRect() const { return _collisionRect; }

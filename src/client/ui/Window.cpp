@@ -16,10 +16,10 @@ int Window::CLOSE_BUTTON_SIZE = 0;
 extern Renderer renderer;
 
 Window::Window(const Rect &rect, const std::string &title):
-Element(Rect(rect.x, rect.y, rect.w + 2, rect.h + 2 + HEADING_HEIGHT)),
+Element(Rect(rect.x, rect.y, rect.w + 2, rect.h + 3 + HEADING_HEIGHT)),
 _title(title),
 _dragging(false),
-_content(new Element(Rect(1, HEADING_HEIGHT + 1, rect.w, rect.h))){
+_content(new Element(Rect(1, HEADING_HEIGHT + 2, rect.w, rect.h))){
     const Rect windowRect = this->rect();
     hide();
     setLeftMouseUpFunction(&stopDragging);

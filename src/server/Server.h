@@ -42,6 +42,8 @@ public:
 
     bool itemIsClass(const Item *item, const std::string &className) const;
 
+    const User &getUserByName(const std::string &username) const;
+
     mutable LogConsole _debug;
 
 private:
@@ -65,6 +67,7 @@ private:
     void broadcast(MessageCode msgCode, const std::string &args); // Send a command to all users
     void handleMessage(const Socket &client, const std::string &msg);
     void sendInventoryMessage(const User &user, size_t serial, size_t slot) const;
+    void sendMerchantSlotMessage(const User &user, const Object &obj, size_t slot) const;
 
     // Clients
     // All connected sockets, including those without registered users
@@ -112,6 +115,9 @@ private:
 
     friend bool User::hasTool(const std::string &className) const;
     friend bool User::hasTools(const std::set<std::string> &classes) const;
+
+    friend void Object::removeItems(const ItemSet &items);
+    friend void Object::giveItem(const Item *item, size_t qty);
 
     void addObject (const ObjectType *type, const Point &location, const User *owner = 0);
 

@@ -104,9 +104,6 @@ public:
     // Return value: 0 if there was room for all items, otherwise the remainder.
     size_t giveItem(const Item *item, size_t quantity = 1);
 
-    // Whether the user has room for one or more of an item
-    bool hasSpace(const Item *item, size_t quantity = 1) const;
-
     void update(Uint32 timeElapsed);
 };
 

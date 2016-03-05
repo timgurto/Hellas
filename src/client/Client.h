@@ -22,6 +22,7 @@
 #include "../Rect.h"
 #include "../Socket.h"
 #include "../messageCodes.h"
+#include "../server/MerchantSlot.h"
 #include "../server/Recipe.h"
 #include "ui/Container.h"
 
@@ -100,6 +101,10 @@ private:
     static void populateRecipesList(Element &e);
     // Called when a recipe is selected.
     static void selectRecipe(Element &e, const Point &mousePos);
+
+    std::set<const ClientObject *> _objectsWatched;
+    void watchObject(const ClientObject &obj);
+    void unwatchObject(const ClientObject &obj);
 
     ChoiceList *_recipeList;
     Element *_detailsPane;
@@ -229,8 +234,7 @@ private:
     void performCommand(const std::string &commandString);
 
     friend class Container; // Needs to send CL_SWAP_ITEMS messages
-    friend ClientObject::~ClientObject();
-    friend bool ClientObject::userHasAccess() const;
+    friend class ClientObject;
     friend void LogSDL::operator()(const std::string &message, const Color &color);
 };
 

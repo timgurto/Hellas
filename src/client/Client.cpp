@@ -304,6 +304,8 @@ _debug("client.log"){
             if (xr.findAttr(container, "slots", n)) cot.containerSlots(n);
         }
 
+        if (xr.findAttr(elem, "merchantSlots", n)) cot.merchantSlots(n);
+
         if (xr.findAttr(elem, "isFlat", n) && n != 0) cot.isFlat(true);
         if (xr.findAttr(elem, "gatherSound", s))
             cot.gatherSound(std::string("Sounds/") + s + ".wav");
@@ -688,4 +690,14 @@ void Client::addChatMessage(const std::string &msg, const Color &color){
     _chatLog->addChild(label);
     if (atBottom)
         _chatLog->scrollToBottom();
+}
+
+void Client::watchObject(const ClientObject &obj){
+    sendMessage(CL_START_WATCHING, makeArgs(obj.serial()));
+    _objectsWatched.insert(&obj);
+}
+
+void Client::unwatchObject(const ClientObject &obj){
+    sendMessage(CL_STOP_WATCHING, makeArgs(obj.serial()));
+    _objectsWatched.erase(&obj);
 }

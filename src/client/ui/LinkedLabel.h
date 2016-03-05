@@ -1,7 +1,7 @@
 // (C) 2016 Tim Gurto
 
-#ifndef LINKED_LABEL
-#define LINKED_LABEL
+#ifndef LINKED_LABEL_H
+#define LINKED_LABEL_H
 
 #include <sstream>
 #include <string>

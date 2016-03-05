@@ -96,23 +96,6 @@ bool User::alive() const{
     return SDL_GetTicks() - _lastContact <= Server::CLIENT_TIMEOUT;
 }
 
-bool User::hasSpace(const Item *item, size_t quantity) const{
-    for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
-        if (!_inventory[i].first) {
-            if (quantity <= item->stackSize())
-                return true;
-            quantity -= item->stackSize();
-        } else if (_inventory[i].first == item) {
-            size_t spaceAvailable = item->stackSize() - _inventory[i].second;
-            if (quantity <= spaceAvailable)
-                return true;
-            quantity -= spaceAvailable;
-        } else
-            continue;
-    }
-    return false;
-}
-
 size_t User::giveItem(const Item *item, size_t quantity){
     // First pass: partial stacks
     for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
@@ -254,7 +237,7 @@ void User::update(Uint32 timeElapsed){
         break;
 
     case CRAFT:
-        if (!hasSpace(_actionRecipe->product())) {
+        if (!vectHasSpace(_inventory, _actionRecipe->product())) {
             server.sendMessage(_socket, SV_INVENTORY_FULL);
             _action = NO_ACTION;
             return;
@@ -283,7 +266,7 @@ void User::update(Uint32 timeElapsed){
     {
         //Check for inventory space
         const Item *item = _actionObject->type()->deconstructsItem();
-        if (!hasSpace(item)){
+        if (!vectHasSpace(_inventory, item)){
             server.sendMessage(_socket, SV_INVENTORY_FULL);
             _action = NO_ACTION;
             return;

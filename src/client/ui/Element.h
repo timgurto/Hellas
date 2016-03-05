@@ -102,7 +102,7 @@ protected:
     void drawChildren() const;
 
 public:
-    Element(const Rect &rect);
+    Element(const Rect &rect = Rect());
     virtual ~Element();
 
     static void initialize();
