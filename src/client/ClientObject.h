@@ -24,6 +24,8 @@ class ClientObject : public Entity{
     Window *_window; // For containers, etc.
     std::vector<MerchantSlot> _merchantSlots;
     std::vector<Element *> _merchantSlotElements;
+    typedef std::pair<size_t, size_t> serialSlotPair_t;
+    std::vector<serialSlotPair_t *> _serialSlotPairs;
 
 public:
     ClientObject(const ClientObject &rhs);
@@ -48,6 +50,7 @@ public:
 
     virtual void onRightClick(Client &client);
     static void startDeconstructing(void *object);
+    static void trade(void *serialAndSlot);
     virtual std::vector<std::string> getTooltipMessages(const Client &client) const;
 
     void playGatherSound() const;

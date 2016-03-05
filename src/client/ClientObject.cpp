@@ -32,10 +32,19 @@ _window(0){
         _container = Item::vect_t(containerSlots);
         _merchantSlots = std::vector<MerchantSlot>(merchantSlots);
         _merchantSlotElements = std::vector<Element *>(merchantSlots, 0);
+        _serialSlotPairs = std::vector<serialSlotPair_t *>(merchantSlots, 0);
+        for (size_t i = 0; i != merchantSlots; ++i){
+            serialSlotPair_t *pair = new serialSlotPair_t();
+            pair->first = _serial;
+            pair->second = i;
+            _serialSlotPairs[i] = pair;
+        }
     }
 }
 
 ClientObject::~ClientObject(){
+    for (auto p : _serialSlotPairs)
+        delete p;
     if (_window) {
         Client::_instance->removeWindow(_window);
         delete _window;
@@ -82,7 +91,8 @@ void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
     x += NAME_WIDTH + GAP;
     
     // Buy button
-    Button *button = new Button(Rect(x, GAP, BUTTON_WIDTH, BUTTON_HEIGHT), "");
+    Button *button = new Button(Rect(x, GAP, BUTTON_WIDTH, BUTTON_HEIGHT), "", trade,
+                                _serialSlotPairs[i]);
     e.addChild(button);
     x = BUTTON_PADDING;
     button->addChild(new Label(Rect(x, BUTTON_TEXT_TOP, BUTTON_LABEL_WIDTH, TEXT_HEIGHT),
@@ -262,6 +272,11 @@ void ClientObject::startDeconstructing(void *object){
     Client &client = *Client::_instance;
     client.sendMessage(CL_DECONSTRUCT, makeArgs(obj.serial()));
     client.prepareAction(std::string("Dismantling ") + obj.objectType()->name());
+}
+
+void ClientObject::trade(void *serialAndSlot){
+    const std::pair<size_t, size_t> pair = *static_cast<std::pair<size_t, size_t>*>(serialAndSlot);
+    Client::_instance->sendMessage(CL_TRADE, makeArgs(pair.first, pair.second));
 }
 
 bool ClientObject::userHasAccess() const{

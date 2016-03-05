@@ -234,8 +234,7 @@ private:
     void performCommand(const std::string &commandString);
 
     friend class Container; // Needs to send CL_SWAP_ITEMS messages
-    friend ClientObject::~ClientObject();
-    friend bool ClientObject::userHasAccess() const;
+    friend class ClientObject;
     friend void LogSDL::operator()(const std::string &message, const Color &color);
 };
 
