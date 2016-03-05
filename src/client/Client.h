@@ -26,6 +26,8 @@
 #include "../server/Recipe.h"
 #include "ui/Container.h"
 
+class TextBox;
+
 class Client{
 public:
     Client();
@@ -126,6 +128,7 @@ private:
 
     Element *_chatContainer;
     List *_chatLog;
+    TextBox *_chatTextBox;
     void addChatMessage(const std::string &msg, const Color &color = Color::WHITE);
 
     static Color

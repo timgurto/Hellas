@@ -13,8 +13,7 @@ const int TextBox::HEIGHT = 14;
 const size_t TextBox::MAX_TEXT_LENGTH = 100;
 
 TextBox::TextBox(const Rect &rect):
-Element(Rect(rect.x, rect.y, rect.w, HEIGHT)),
-_text("asdf")
+Element(Rect(rect.x, rect.y, rect.w, HEIGHT))
 {
     addChild(new ShadowBox(Rect(0, 0, rect.w, HEIGHT), true));
     setLeftMouseDownFunction(&click);
@@ -70,7 +69,7 @@ void TextBox::addText(const char *newText){
     
     std::string &text = currentFocus->_text;
     if (text.size() < MAX_TEXT_LENGTH) {
-        text.append(text);
+        text.append(newText);
         currentFocus->markChanged();
     }
 }

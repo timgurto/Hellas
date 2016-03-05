@@ -26,6 +26,7 @@ public:
 
     static void clearFocus();
     static const TextBox *focus() { return currentFocus; }
+    static void focus(TextBox *textBox) { currentFocus = textBox; }
 
     static void addText(const char *newText);
     static void backspace();

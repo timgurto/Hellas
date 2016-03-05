@@ -25,7 +25,7 @@ _scrolledToBottom(false),
 _content(new Element(Rect(0, 0, rect.w - ARROW_W, 0))){
     if (_childHeight <= 0) // Prevent div/0
         _childHeight = 1;
-    Element::addChild(new ColorBlock(Rect(0, 0, rect.w, rect.h)));
+    //Element::addChild(new ColorBlock(Rect(0, 0, rect.w, rect.h)));
     Element::addChild(_content);
     Element::addChild(_scrollBar);
 

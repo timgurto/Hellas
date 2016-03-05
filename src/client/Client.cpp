@@ -20,6 +20,7 @@
 #include "ui/Element.h"
 #include "ui/LinkedLabel.h"
 #include "ui/ProgressBar.h"
+#include "ui/TextBox.h"
 #include "../XmlReader.h"
 #include "../messageCodes.h"
 #include "../util.h"
@@ -150,9 +151,13 @@ _debug("client.log"){
 
     // Initialize chat log
     _chatContainer = new Element(Rect(0, SCREEN_Y - chatH, chatW, chatH));
-    _chatLog = new List(Rect(1, 1, chatW - 2, chatH - 2));
+    _chatTextBox = new TextBox(Rect(0, chatH, chatW));
+    _chatLog = new List(Rect(0, 0, chatW, chatH - _chatTextBox->height()));
+    _chatTextBox->rect(0, _chatLog->height());
+    _chatTextBox->hide();
     _chatContainer->addChild(_chatLog);
-    _chatContainer->addChild(new ShadowBox(Rect(0, 0, chatW, chatH), true));
+    _chatContainer->addChild(_chatTextBox);
+
     addUI(_chatContainer);
     SAY_COLOR = Color::WHITE;
     WHISPER_COLOR = Color::RED/2 + Color::WHITE/2;

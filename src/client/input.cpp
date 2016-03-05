@@ -25,24 +25,33 @@ void Client::handleInput(double delta){
 
                 switch(e.key.keysym.sym) {
 
+                case SDLK_ESCAPE:
+                    TextBox::clearFocus();
+                    SDL_StopTextInput();
+                    break;
+
                 case SDLK_BACKSPACE:
                     TextBox::backspace();
                     break;
 
-                /*case SDLK_RETURN:
+                case SDLK_RETURN:
                 case SDLK_KP_ENTER:
-                    // TODO: Send commands
-                    SDL_StopTextInput();
-                    if (_enteredText != "") {
-                        if (_enteredText.at(0) == '/') {
-                            // Perform command
-                            performCommand(_enteredText);
-                        } else {
-                            performCommand("/say " + _enteredText);
+                    if (TextBox::focus() == _chatTextBox){
+                        SDL_StopTextInput();
+                        const std::string &text = _chatTextBox->text();
+                        if (text != "") {
+                            if (text.at(0) == '/') {
+                                // Perform command
+                                performCommand(text);
+                            } else {
+                                performCommand("/say " + text);
+                            }
+                            _chatTextBox->text("");
+                            _chatTextBox->hide();
+                            TextBox::clearFocus();
                         }
-                        _enteredText = "";
                     }
-                    break;*/
+                    break;
                 }
 
             } else {
@@ -68,15 +77,21 @@ void Client::handleInput(double delta){
                     break;
                 }
 
-                /*case SDLK_SLASH:
-                    SDL_StartTextInput();
-                    _enteredText = "/";
-                    break;*/
+                case SDLK_SLASH:
+                    if (!SDL_IsTextInputActive())
+                        SDL_StartTextInput();
+                    _chatTextBox->show();
+                    TextBox::focus(_chatTextBox);
+                    _chatTextBox->text("/");
+                    break;
 
-                /*case SDLK_RETURN:
+                case SDLK_RETURN:
                 case SDLK_KP_ENTER:
-                    SDL_StartTextInput();
-                    break;*/
+                    if (!SDL_IsTextInputActive())
+                        SDL_StartTextInput();
+                    _chatTextBox->show();
+                    TextBox::focus(_chatTextBox);
+                    break;
 
                 case SDLK_c:
                     _craftingWindow->toggleVisibility();
@@ -94,12 +109,16 @@ void Client::handleInput(double delta){
                     addWindow(_inventoryWindow);
                     break;
 
-                /*case SDLK_r:
+                case SDLK_r:
                     if (!_lastWhisperer.empty()) {
-                        SDL_StartTextInput();
-                        _enteredText = "/whisper " + _lastWhisperer + " ";
+                        if (!SDL_IsTextInputActive())
+                            SDL_StartTextInput();
+                        _chatTextBox->show();
+                        TextBox::focus(_chatTextBox);
+                        TextBox::focus(_chatTextBox);
+                    _chatTextBox->text(std::string("/whisper ") + _lastWhisperer + " ");
                     }
-                    break;*/
+                    break;
                 }
             }
             break;
