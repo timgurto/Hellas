@@ -139,7 +139,7 @@ void Client::handleInput(double delta){
                     if (window->visible())
                         window->onLeftMouseDown(_mouse);
                 for (Element *element : _ui)
-                    if (element->visible())
+                    if (element->visible()&& collision(_mouse, element->rect()))
                         element->onLeftMouseDown(_mouse);
 
                 // Bring top clicked window to front
@@ -161,7 +161,7 @@ void Client::handleInput(double delta){
                     if (window->visible())
                         window->onRightMouseDown(_mouse);
                 for (Element *element : _ui)
-                    if (element->visible())
+                    if (element->visible()&& collision(_mouse, element->rect()))
                         element->onRightMouseDown(_mouse);
 
                 _rightMouseDownEntity = getEntityAtMouse();
