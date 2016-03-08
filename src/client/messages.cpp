@@ -3,6 +3,18 @@
 #include <cassert>
 #include "Client.h"
 
+std::istringstream &operator>>(std::istringstream &lhs, std::string &rhs){
+    if (lhs.peek() == MSG_DELIM) {
+        rhs = "";
+    } else {
+        static const size_t BUFFER_SIZE = 1023;
+        static char buffer[BUFFER_SIZE+1];
+        lhs.get(buffer, BUFFER_SIZE, MSG_DELIM);
+        rhs = buffer;
+    }
+    return lhs;
+}
+
 void Client::handleMessage(const std::string &msg){
     _partialMessage.append(msg);
     std::istringstream iss(_partialMessage);
@@ -367,13 +379,10 @@ void Client::handleMessage(const std::string &msg){
         case SV_MERCHANT_SLOT:
         {
             size_t serial, slot, wareQty, priceQty;
+            std::string ware, price;
             singleMsg >> serial >> del >> slot >> del;
-            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
-            std::string ware(buffer);
-            singleMsg >> del >> wareQty >> del;
-            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
-            std::string price(buffer);
-            singleMsg >> del >> priceQty >> del;
+            singleMsg >> ware >> del >> wareQty >> del;
+            singleMsg >> price >> del >> priceQty >> del;
             if (del != MSG_END)
                 return;
             auto objIt = _objects.find(serial);
@@ -385,6 +394,10 @@ void Client::handleMessage(const std::string &msg){
             size_t slots = obj.objectType()->merchantSlots();
             if (slot >= slots){
                 _debug("Received invalid merchant slot.", Color::RED);
+                break;
+            }
+            if (ware.empty() || price.empty()){
+                obj.setMerchantSlot(slot, MerchantSlot());
                 break;
             }
             auto wareIt = _items.find(ware);
