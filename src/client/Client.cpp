@@ -695,12 +695,12 @@ void Client::addChatMessage(const std::string &msg, const Color &color){
         _chatLog->scrollToBottom();
 }
 
-void Client::watchObject(const ClientObject &obj){
+void Client::watchObject(ClientObject &obj){
     sendMessage(CL_START_WATCHING, makeArgs(obj.serial()));
     _objectsWatched.insert(&obj);
 }
 
-void Client::unwatchObject(const ClientObject &obj){
+void Client::unwatchObject(ClientObject &obj){
     sendMessage(CL_STOP_WATCHING, makeArgs(obj.serial()));
     _objectsWatched.erase(&obj);
 }

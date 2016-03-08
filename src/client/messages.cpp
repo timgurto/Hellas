@@ -242,9 +242,13 @@ void Client::handleMessage(const std::string &msg){
             }
 
             // Unwatch objects if out of range
-            for (const ClientObject *obj : _objectsWatched){
-                if (distance(playerCollisionRect(), obj->collisionRect()) > ACTION_DISTANCE)
-                    unwatchObject(*obj);
+            for (auto it = _objectsWatched.begin(); it != _objectsWatched.end(); ){
+                ClientObject &obj = **it;
+                ++it;
+                if (distance(playerCollisionRect(), obj.collisionRect()) > ACTION_DISTANCE) {
+                    obj.hideWindow();
+                    unwatchObject(obj);
+                }
             }
 
             break;

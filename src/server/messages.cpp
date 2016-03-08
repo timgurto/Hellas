@@ -493,8 +493,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             auto it = _objects.find(serial);
-            if (!isValidObject(client, *user, it))
+            if (it == _objects.end()) {
+                sendMessage(client, SV_DOESNT_EXIST);
                 break;
+            }
             Object &obj = const_cast<Object &>(*it);
 
             obj.removeWatcher(user->name());

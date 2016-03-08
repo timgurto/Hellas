@@ -267,6 +267,11 @@ void ClientObject::refreshWindow() {
         _window->forceRefresh();
 }
 
+void ClientObject::hideWindow() {
+    if (_window)
+        _window->hide();
+}
+
 void ClientObject::startDeconstructing(void *object){
     const ClientObject &obj = *static_cast<const ClientObject *>(object);
     Client &client = *Client::_instance;

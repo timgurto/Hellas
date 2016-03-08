@@ -23,6 +23,7 @@ class ClientObject : public Entity{
     Item::vect_t _container;
     Window *_window; // For containers, etc.
     std::vector<MerchantSlot> _merchantSlots;
+    // Used for either the trade screen, or the merchant setup screen.
     std::vector<Element *> _merchantSlotElements;
     typedef std::pair<size_t, size_t> serialSlotPair_t;
     std::vector<serialSlotPair_t *> _serialSlotPairs;
@@ -58,6 +59,8 @@ public:
     virtual bool isObject(){ return true; }
 
     void refreshWindow();
+    void hideWindow();
+
 
     bool userHasAccess() const;
 

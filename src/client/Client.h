@@ -104,9 +104,9 @@ private:
     // Called when a recipe is selected.
     static void selectRecipe(Element &e, const Point &mousePos);
 
-    std::set<const ClientObject *> _objectsWatched;
-    void watchObject(const ClientObject &obj);
-    void unwatchObject(const ClientObject &obj);
+    std::set<ClientObject *> _objectsWatched;
+    void watchObject(ClientObject &obj);
+    void unwatchObject(ClientObject &obj);
 
     ChoiceList *_recipeList;
     Element *_detailsPane;
