@@ -3,15 +3,19 @@
 #include <cassert>
 #include "Client.h"
 
-std::istringstream &operator>>(std::istringstream &lhs, std::string &rhs){
-    if (lhs.peek() == MSG_DELIM) {
-        rhs = "";
+static void readString(std::istream &iss, std::string &str, char delim = MSG_DELIM){
+    if (iss.peek() == delim) {
+        str = "";
     } else {
         static const size_t BUFFER_SIZE = 1023;
         static char buffer[BUFFER_SIZE+1];
-        lhs.get(buffer, BUFFER_SIZE, MSG_DELIM);
-        rhs = buffer;
+        iss.get(buffer, BUFFER_SIZE, delim);
+        str = buffer;
     }
+}
+
+std::istream &operator>>(std::istream &lhs, std::string &rhs){
+    readString(lhs, rhs, MSG_DELIM);
     return lhs;
 }
 
@@ -79,9 +83,8 @@ void Client::handleMessage(const std::string &msg){
         case SV_USER_DISCONNECTED:
         {
             std::string name;
-            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
-            name = std::string(buffer);
-            singleMsg >> del;
+            readString(singleMsg, name, MSG_END);
+            singleMsg >> name >> del;
             if (del != MSG_END)
                 break;
             const std::map<std::string, Avatar*>::iterator it = _otherUsers.find(name);
@@ -143,8 +146,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_ITEM_NEEDED:
         {
             std::string reqItemClass;
-            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
-            reqItemClass = std::string(buffer);
+            readString(singleMsg, reqItemClass, MSG_END);
             singleMsg >> del;
             if (del != MSG_END)
                 break;
@@ -223,9 +225,7 @@ void Client::handleMessage(const std::string &msg){
         {
             std::string name;
             double x, y;
-            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
-            name = std::string(buffer);
-            singleMsg >> del >> x >> del >> y >> del;
+            singleMsg >> name >> del >> x >> del >> y >> del;
             if (del != MSG_END)
                 break;
             const Point p(x, y);
@@ -270,10 +270,7 @@ void Client::handleMessage(const std::string &msg){
         {
             size_t serial, slot, quantity;
             std::string itemID;
-            singleMsg >> serial >> del >> slot >> del;
-            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
-            itemID = std::string(buffer);
-            singleMsg >> del >> quantity >> del;
+            singleMsg >> serial >> del >> slot >> del >> itemID >> del >> quantity >> del;
             if (del != MSG_END)
                 break;
 
@@ -322,8 +319,7 @@ void Client::handleMessage(const std::string &msg){
             double x, y;
             std::string type;
             singleMsg >> serial >> del >> x >> del >> y >> del;
-            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
-            type = std::string(buffer);
+            readString(singleMsg, type, MSG_END);
             singleMsg >> del;
             if (del != MSG_END)
                 break;
@@ -362,8 +358,8 @@ void Client::handleMessage(const std::string &msg){
         case SV_OWNER:
         {
             int serial;
-            singleMsg >> serial >> del;
-            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            std::string name;
+            singleMsg >> serial >> del >> name >> del;
             singleMsg >> del;
             if (del != MSG_END)
                 break;
@@ -372,7 +368,7 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Received ownership info for an unknown object.", Color::RED);
                 break;
             }
-            (it->second)->owner(std::string(buffer));
+            (it->second)->owner(name);
             break;
         }
 
@@ -380,9 +376,9 @@ void Client::handleMessage(const std::string &msg){
         {
             size_t serial, slot, wareQty, priceQty;
             std::string ware, price;
-            singleMsg >> serial >> del >> slot >> del;
-            singleMsg >> ware >> del >> wareQty >> del;
-            singleMsg >> price >> del >> priceQty >> del;
+            singleMsg >> serial >> del >> slot >> del
+                      >> ware >> del >> wareQty >> del
+                      >> price >> del >> priceQty >> del;
             if (del != MSG_END)
                 return;
             auto objIt = _objects.find(serial);
@@ -416,11 +412,9 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_SAY:
         {
-            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
-            std::string username(buffer);
-            singleMsg >> del;
-            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
-            std::string message(buffer);
+            std::string username, message;
+            singleMsg >> username >> del;
+            readString(singleMsg, message, MSG_END);
             singleMsg >> del;
             if (del != MSG_END || username == _username) // We already know we said this.
                 break;
@@ -430,11 +424,9 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_WHISPER:
         {
-            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
-            std::string username(buffer);
-            singleMsg >> del;
-            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
-            std::string message(buffer);
+            std::string username, message;
+            singleMsg >> username >> del;
+            readString(singleMsg, message, MSG_END);
             singleMsg >> del;
             if (del != MSG_END)
                 break;
