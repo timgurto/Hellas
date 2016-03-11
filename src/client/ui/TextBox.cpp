@@ -12,8 +12,9 @@ TextBox *TextBox::currentFocus = 0;
 const int TextBox::HEIGHT = 14;
 const size_t TextBox::MAX_TEXT_LENGTH = 100;
 
-TextBox::TextBox(const Rect &rect):
-Element(Rect(rect.x, rect.y, rect.w, HEIGHT))
+TextBox::TextBox(const Rect &rect, bool numeralsOnly):
+Element(Rect(rect.x, rect.y, rect.w, HEIGHT)),
+_numeralsOnly(numeralsOnly)
 {
     addChild(new ShadowBox(Rect(0, 0, rect.w, HEIGHT), true));
     setLeftMouseDownFunction(&click);
@@ -66,7 +67,11 @@ void TextBox::click(Element &e, const Point &mousePos){
 
 void TextBox::addText(const char *newText){
     assert(currentFocus);
-    
+    assert(newText[1] == '\0');
+
+    if (currentFocus->_numeralsOnly && (newText[0] < '0' || newText[0] > '9'))
+        return;
+
     std::string &text = currentFocus->_text;
     if (text.size() < MAX_TEXT_LENGTH) {
         text.append(newText);

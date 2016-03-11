@@ -11,6 +11,8 @@
 class TextBox : public Element{
     std::string _text;
 
+    bool _numeralsOnly;
+
     static const size_t MAX_TEXT_LENGTH;
 
     static const int
@@ -19,7 +21,7 @@ class TextBox : public Element{
     static TextBox *currentFocus;
 
 public:
-    TextBox(const Rect &rect);
+    TextBox(const Rect &rect, bool numeralsOnly = false);
 
     const std::string &text() const { return _text; }
     void text(const std::string &text);
