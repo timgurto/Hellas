@@ -88,13 +88,13 @@ void Client::handleInput(double delta){
                 }
 
                 case SDLK_SLASH:
-                    if (_chatTextBox->visible()){
+                    if (!_chatTextBox->visible()){
                         SDL_StartTextInput();
                         _chatTextBox->show();
                         TextBox::focus(_chatTextBox);
                         _chatTextBox->text("/");
-                        break;
                     }
+                    break;
 
                 case SDLK_RETURN:
                 case SDLK_KP_ENTER:
