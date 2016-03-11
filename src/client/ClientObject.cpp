@@ -80,7 +80,9 @@ void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
 
     if (userHasAccess()){ // Setup view
         int x = GAP;
-        e.addChild(new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT)));
+        TextBox *textBox = new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT));
+        textBox->text(makeArgs(mSlot.wareQty()));
+        e.addChild(textBox);
         x += QUANTITY_WIDTH + GAP;
         Button *button = new Button(Rect(x, BUTTON_TOP, ICON_SIZE, ICON_SIZE));
         e.addChild(button);
@@ -92,7 +94,9 @@ void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
             e.addChild(new Label(Rect(x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT), item.name()));
         }
         x += NAME_WIDTH + 2 * GAP + 2;
-        e.addChild(new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT)));
+        textBox = new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT));
+        textBox->text(makeArgs(mSlot.wareQty()));
+        e.addChild(textBox);
         x += QUANTITY_WIDTH + GAP;
         button = new Button(Rect(x, BUTTON_TOP, ICON_SIZE, ICON_SIZE));
         e.addChild(button);
