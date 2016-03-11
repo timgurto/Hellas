@@ -82,15 +82,27 @@ void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
         int x = GAP;
         e.addChild(new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT)));
         x += QUANTITY_WIDTH + GAP;
-        e.addChild(new Button(Rect(x, BUTTON_TOP, ICON_SIZE, ICON_SIZE)));
+        Button *button = new Button(Rect(x, BUTTON_TOP, ICON_SIZE, ICON_SIZE));
+        e.addChild(button);
+        button->setTooltip("Select an item to sell");
         x += ICON_SIZE + GAP;
-        e.addChild(new Label(Rect(x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT), "[Item name]" ));
+        if (mSlot.wareItem()){
+            const Item &item = *mSlot.wareItem();
+            button->addChild(new Picture(Rect(0, 0, ICON_SIZE, ICON_SIZE), item.icon()));
+            e.addChild(new Label(Rect(x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT), item.name()));
+        }
         x += NAME_WIDTH + 2 * GAP + 2;
         e.addChild(new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT)));
         x += QUANTITY_WIDTH + GAP;
-        e.addChild(new Button(Rect(x, BUTTON_TOP, ICON_SIZE, ICON_SIZE)));
+        button = new Button(Rect(x, BUTTON_TOP, ICON_SIZE, ICON_SIZE));
+        e.addChild(button);
+        button->setTooltip("Select an item as the price");
         x += ICON_SIZE + GAP;
-        e.addChild(new Label(Rect(x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT), "[Item name]"));
+        if (mSlot.priceItem()){
+            const Item &item = *mSlot.priceItem();
+            button->addChild(new Picture(Rect(0, 0, ICON_SIZE, ICON_SIZE), item.icon()));
+            e.addChild(new Label(Rect(x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT), item.name()));
+        }
 
     } else { // Trade view
         if (!mSlot){
