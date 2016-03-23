@@ -9,24 +9,25 @@
 
 #include "Texture.h"
 #include "../Color.h"
+#include "../types.h"
 
 class TooltipBuilder{
     TTF_Font *_font;
     Color _color;
     std::vector<Texture> _content; // The lines of text; an empty texture implies a gap.
 
-    static const int PADDING;
+    static const px_t PADDING;
     static TTF_Font *_defaultFont;
     static Color DEFAULT_COLOR;
     static Color BACKGROUND_COLOR;
-    const static int DEFAULT_MAX_WIDTH;
+    const static px_t DEFAULT_MAX_WIDTH;
 
     static bool initialized;
 
 public:
     TooltipBuilder();
 
-    const static int NO_WRAP;
+    const static px_t NO_WRAP;
 
     void setFont(TTF_Font *font = 0); // Default: default font
     void setColor(const Color &color = DEFAULT_COLOR);
@@ -37,7 +38,7 @@ public:
     // Create a basic tooltip containing a single string, broken over multiple lines if necessary.
     // maxWidth: the maximum width of the tooltip excluding padding; text will be wrapped to fit.
     // A maxWidth of NO_WRAP will result in no wrapping.
-    static Texture basicTooltip(const std::string &text, int maxWidth = DEFAULT_MAX_WIDTH);
+    static Texture basicTooltip(const std::string &text, px_t maxWidth = DEFAULT_MAX_WIDTH);
 };
 
 #endif

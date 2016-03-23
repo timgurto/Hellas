@@ -33,7 +33,7 @@ public:
     // color: set color of current compilation
     LogSDL &operator<<(const Color &c) override;
 
-    void draw(int x = 0, int y = 0) const;
+    void draw(px_t x = 0, px_t y = 0) const;
 
 private:
     std::ostringstream _oss;

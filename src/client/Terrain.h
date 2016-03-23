@@ -20,7 +20,7 @@ public:
             ms_t frameTime = 0);
 
     void draw(const Rect &loc, const Rect &srcRect) const;
-    void draw(int x, int y) const;
+    void draw(px_t x, px_t y) const;
 
     void setQuarterAlpha() const;
     void setHalfAlpha() const;

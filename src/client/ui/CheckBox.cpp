@@ -6,9 +6,9 @@
 
 extern Renderer renderer;
 
-const int CheckBox::BOX_SIZE = 8;
-const int CheckBox::GAP = 3;
-const int CheckBox::Y_OFFSET = 1;
+const px_t CheckBox::BOX_SIZE = 8;
+const px_t CheckBox::GAP = 3;
+const px_t CheckBox::Y_OFFSET = 1;
 
 CheckBox::CheckBox(const Rect &rect, bool &linkedBool, const std::string &caption,
                    bool inverse):

@@ -2,9 +2,10 @@
 
 #include "Point.h"
 #include "Rect.h"
+#include "types.h"
 #include "util.h"
 
-Rect::Rect(int xx, int yy, int ww, int hh):
+Rect::Rect(px_t xx, px_t yy, px_t ww, px_t hh):
 x(xx),
 y(yy),
 w(ww),
@@ -16,7 +17,7 @@ y(toInt(yy)),
 w(toInt(ww)),
 h(toInt(hh)){}
 
-Rect::Rect(double xx, double yy, int ww, int hh):
+Rect::Rect(double xx, double yy, px_t ww, px_t hh):
 x(toInt(xx)),
 y(toInt(yy)),
 w(ww),
@@ -44,7 +45,7 @@ Rect operator+(const Rect &lhs, const Rect &rhs){
 }
 
 double distance(const Rect &lhs, const Rect &rhs){
-    const int
+    const px_t
         aL = lhs.x,
         aR = lhs.x + lhs.w,
         aT = lhs.y,

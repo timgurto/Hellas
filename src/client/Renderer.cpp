@@ -5,6 +5,7 @@
 
 #include "Renderer.h"
 #include "../Args.h"
+#include "../types.h"
 
 extern Args cmdLineArgs;
 
@@ -28,12 +29,12 @@ _valid(false){
 }
 
 void Renderer::init(){
-    const int screenX = cmdLineArgs.contains("left") ? cmdLineArgs.getInt("left") :
+    const px_t screenX = cmdLineArgs.contains("left") ? cmdLineArgs.getInt("left") :
                                                        SDL_WINDOWPOS_UNDEFINED;
-    const int screenY = cmdLineArgs.contains("top") ? cmdLineArgs.getInt("top") :
+    const px_t screenY = cmdLineArgs.contains("top") ? cmdLineArgs.getInt("top") :
                                                       SDL_WINDOWPOS_UNDEFINED;
-    const int screenW = cmdLineArgs.contains("width") ? cmdLineArgs.getInt("width") : 1280;
-    const int screenH = cmdLineArgs.contains("height") ? cmdLineArgs.getInt("height") : 720;
+    const px_t screenW = cmdLineArgs.contains("width") ? cmdLineArgs.getInt("width") : 1280;
+    const px_t screenH = cmdLineArgs.contains("height") ? cmdLineArgs.getInt("height") : 720;
 
     _window = SDL_CreateWindow("Client", screenX, screenY, screenW, screenH,
                                SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
@@ -67,7 +68,7 @@ SDL_Texture *Renderer::createTextureFromSurface(SDL_Surface *surface) const{
     return SDL_CreateTextureFromSurface(_renderer, surface);
 }
 
-SDL_Texture *Renderer::createTargetableTexture(int width, int height) const{
+SDL_Texture *Renderer::createTargetableTexture(px_t width, px_t height) const{
     return SDL_CreateTexture(_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
                              width, height);
 }

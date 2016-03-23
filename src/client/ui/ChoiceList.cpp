@@ -8,7 +8,7 @@ static const std::string EMPTY_STR = "";
 
 extern Renderer renderer;
 
-ChoiceList::ChoiceList(const Rect &rect, int childHeight):
+ChoiceList::ChoiceList(const Rect &rect, px_t childHeight):
 List(rect, childHeight),
 _selectedBox(new ShadowBox(Rect(0, 0, rect.w - List::ARROW_W, childHeight), true)),
 _mouseOverBox(new ShadowBox(Rect(0, 0, rect.w - List::ARROW_W, childHeight))),
@@ -121,7 +121,7 @@ void ChoiceList::markMouseOver(Element &e, const Point &mousePos){
         list._mouseOverBox->hide();
         return;
     }
-    int itemY = index * list.childHeight();
+    px_t itemY = index * list.childHeight();
     if (list._mouseOverID == list._mouseDownID) {
         list._mouseDownBox->rect(0, itemY);
         list._mouseDownBox->show();

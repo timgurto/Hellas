@@ -6,11 +6,11 @@
 #include "ui/Window.h"
 
 void Client::initializeInventoryWindow(){
-    static const int
+    static const px_t
         COLS = 4,
         ROWS = (Client::INVENTORY_SIZE - 1) / COLS + 1;
     Container *inventory = new Container(ROWS, COLS, _inventory);
-    const int
+    const px_t
         HEIGHT = inventory->height(),
         WIDTH = inventory->width(),
         LEFT = 640 - WIDTH - 1,

@@ -49,19 +49,19 @@ public:
 
     static const int PLAYER_ACTION_CHANNEL;
 
-    static const int ICON_SIZE;
-    static const int TILE_W, TILE_H;
+    static const px_t ICON_SIZE;
+    static const px_t TILE_W, TILE_H;
     static const double MOVEMENT_SPEED;
 
     static const size_t INVENTORY_SIZE;
-    static const int ACTION_DISTANCE;
+    static const px_t ACTION_DISTANCE;
 
     static LogSDL &debug() { return *_debugInstance; }
 
     typedef std::list<Window *> windows_t;
     typedef std::list<Element *> ui_t; // For the UI, that sits below all windows.
 
-    static const int
+    static const px_t
         SCREEN_X,
         SCREEN_Y;
 
@@ -91,8 +91,8 @@ private:
 
     void initializeCraftingWindow();
     bool _haveMatsFilter, _haveToolsFilter, _classOr, _matOr;
-    static const int HEADING_HEIGHT; // The height of windows' section headings
-    static const int LINE_GAP; // The total height occupied by a line and its surrounding spacing
+    static const px_t HEADING_HEIGHT; // The height of windows' section headings
+    static const px_t LINE_GAP; // The total height occupied by a line and its surrounding spacing
     const Recipe *_activeRecipe; // The recipe currently selected, if any
     static void startCrafting(void *data); // Called when the "Craft" button is clicked.
     // Populated at load time, after _items
@@ -152,7 +152,7 @@ private:
     bool _loop;
     Socket _socket;
     TTF_Font *_defaultFont;
-    int _defaultFontOffset; // Vertical offset for game text
+    px_t _defaultFontOffset; // Vertical offset for game text
     std::string _username;
 
     // Mouse stuff
@@ -174,7 +174,7 @@ private:
 
 
     void draw() const;
-    void drawTile(size_t x, size_t y, int xLoc, int yLoc) const;
+    void drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const;
     void drawTooltip() const;
     // A tooltip which, if it exists, describes the UI element currently moused over.
     const Texture *_uiTooltip;

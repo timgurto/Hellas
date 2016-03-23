@@ -16,9 +16,9 @@ Color Element::SHADOW_DARK;
 Color Element::FONT_COLOR;
 
 TTF_Font *Element::_font = 0;
-int Element::textOffset = 0;
-int Element::TEXT_HEIGHT = 0;
-int Element::ITEM_HEIGHT = 0;
+px_t Element::textOffset = 0;
+px_t Element::TEXT_HEIGHT = 0;
+px_t Element::ITEM_HEIGHT = 0;
 
 Texture Element::transparentBackground;
 
@@ -59,7 +59,7 @@ void Element::initialize(){
     Window::CLOSE_BUTTON_SIZE = TEXT_HEIGHT + 2;
 }
 
-void Element::rect(int x, int y, int w, int h){
+void Element::rect(px_t x, px_t y, px_t w, px_t h){
     _rect = Rect(x, y, w, h);
     _dimensionsChanged = true;
 }
@@ -69,19 +69,19 @@ void Element::rect(const Rect &rhs){
     _dimensionsChanged = true;
 }
 
-void Element::rect(int x, int y) {
+void Element::rect(px_t x, px_t y) {
     _rect.x = x;
     _rect.y = y;
     if (_parent)
         _parent->markChanged();
 }
 
-void Element::width(int w){
+void Element::width(px_t w){
     _rect.w = w;
     _dimensionsChanged = true;
 }
 
-void Element::height(int h){
+void Element::height(px_t h){
     _rect.h = h;
     _dimensionsChanged = true;
 }

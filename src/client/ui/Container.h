@@ -9,7 +9,7 @@
 
 // A grid that allows access to a collection of items
 class Container : public Element{
-    static const int GAP;
+    static const px_t GAP;
 
     size_t _rows, _cols;
     Item::vect_t &_linked;
@@ -42,7 +42,7 @@ class Container : public Element{
 
 public:
     Container(size_t rows, size_t cols, Item::vect_t &linked, size_t serial = 0,
-              int x = 0, int y = 0);
+              px_t x = 0, px_t y = 0);
     
     static const Item *getDragItem();
     static const Item *getUseItem();

@@ -33,8 +33,8 @@ Client *Client::_instance = 0;
 
 LogSDL *Client::_debugInstance = 0;
 
-const int Client::SCREEN_X = 640;
-const int Client::SCREEN_Y = 360;
+const px_t Client::SCREEN_X = 640;
+const px_t Client::SCREEN_Y = 360;
 
 const ms_t Client::MAX_TICK_LENGTH = 100;
 const ms_t Client::SERVER_TIMEOUT = 10000;
@@ -43,15 +43,15 @@ const ms_t Client::PING_FREQUENCY = 5000;
 
 const ms_t Client::TIME_BETWEEN_LOCATION_UPDATES = 50;
 
-const int Client::ICON_SIZE = 16;
-const int Client::HEADING_HEIGHT = 14;
-const int Client::LINE_GAP = 6;
+const px_t Client::ICON_SIZE = 16;
+const px_t Client::HEADING_HEIGHT = 14;
+const px_t Client::LINE_GAP = 6;
 
-const int Client::TILE_W = 32;
-const int Client::TILE_H = 32;
+const px_t Client::TILE_W = 32;
+const px_t Client::TILE_H = 32;
 const double Client::MOVEMENT_SPEED = 80;
 
-const int Client::ACTION_DISTANCE = 30;
+const px_t Client::ACTION_DISTANCE = 30;
 
 const size_t Client::INVENTORY_SIZE = 10;
 
@@ -122,7 +122,7 @@ _debug("client.log"){
     // Read config file
     XmlReader xr("client-config.xml");
 
-    int
+    px_t
         chatW = 150,
         chatH = 100;
     auto elem = xr.findChild("chatLog");
@@ -140,7 +140,7 @@ _debug("client.log"){
     Element::textOffset = _defaultFontOffset;
     xr.findAttr(elem, "height", Element::TEXT_HEIGHT);
 
-    int castBarY = 300, castBarW = 150, castBarH = 11;
+    px_t castBarY = 300, castBarW = 150, castBarH = 11;
     elem = xr.findChild("castBar");
     xr.findAttr(elem, "y", castBarY);
     xr.findAttr(elem, "w", castBarW);
@@ -352,7 +352,7 @@ _debug("client.log"){
     addUI(_castBar);
 
     // Initialize menu bar
-    static const int
+    static const px_t
         MENU_BUTTON_W = 50,
         MENU_BUTTON_H = 13,
         NUM_BUTTONS = 3;
@@ -369,7 +369,7 @@ _debug("client.log"){
     addUI(menuBar);
 
     // Initialize FPS/latency display
-    static const int
+    static const px_t
         HARDWARE_STATS_W = 60,
         HARDWARE_STATS_H = 22,
         HARDWARE_STATS_LABEL_HEIGHT = 11;
@@ -551,7 +551,7 @@ void Client::run(){
 Entity *Client::getEntityAtMouse(){
     const Point mouseOffset = _mouse - _offset;
     Entity::set_t::iterator mouseOverIt = _entities.end();
-    static const int LOOKUP_MARGIN = 30;
+    static const px_t LOOKUP_MARGIN = 30;
     Entity
         topEntity(0, Point(0, mouseOffset.y - LOOKUP_MARGIN)),
         bottomEntity(0, Point(0, mouseOffset.y + LOOKUP_MARGIN));

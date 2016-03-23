@@ -31,9 +31,9 @@ public:
     static const ms_t MAX_TIME_BETWEEN_LOCATION_UPDATES;
 
     static const double MOVEMENT_SPEED; // per second
-    static const int ACTION_DISTANCE; // How close a character must be to interact with an object
+    static const px_t ACTION_DISTANCE; // How close a character must be to interact with an object
 
-    static const int TILE_W, TILE_H;
+    static const px_t TILE_W, TILE_H;
     const size_t mapX() const { return _mapX; }
     const size_t mapY() const { return _mapY; }
 
@@ -127,7 +127,7 @@ private:
                        const std::set<Object>::const_iterator &it) const;
 
     // Collision detection
-    static const int COLLISION_CHUNK_SIZE;
+    static const px_t COLLISION_CHUNK_SIZE;
     CollisionGrid _collisionGrid;
     CollisionChunk &getCollisionChunk(const Point &p);
     std::list<CollisionChunk *> getCollisionSuperChunk(const Point &p);

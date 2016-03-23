@@ -10,8 +10,8 @@
 #include "ShadowBox.h"
 #include "Window.h"
 
-int Window::HEADING_HEIGHT = 0;
-int Window::CLOSE_BUTTON_SIZE = 0;
+px_t Window::HEADING_HEIGHT = 0;
+px_t Window::CLOSE_BUTTON_SIZE = 0;
 
 extern Renderer renderer;
 
@@ -87,8 +87,8 @@ Element *Window::findChild(const std::string id){
     return _content->findChild(id);
 }
 
-void Window::resize(int w, int h){
-    const int
+void Window::resize(px_t w, px_t h){
+    const px_t
         winW = w + 2,
         winH = h + 2 + HEADING_HEIGHT;
 

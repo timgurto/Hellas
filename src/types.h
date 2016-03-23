@@ -5,6 +5,9 @@
 
 #include <SDL.h>
 
+// Pixels
+typedef int px_t;
+
 // Time, in milliseconds
 typedef Uint32 ms_t;
 

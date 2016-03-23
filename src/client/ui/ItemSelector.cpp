@@ -2,7 +2,7 @@
 
 #include "ItemSelector.h"
 
-ItemSelector::ItemSelector(int x, int y):
+ItemSelector::ItemSelector(px_t x, px_t y):
 Button(Rect(x, y, Element::ITEM_HEIGHT, Element::ITEM_HEIGHT), ""
        ),
 _item(0)

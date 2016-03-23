@@ -5,7 +5,7 @@
 
 extern Renderer renderer;
 
-Line::Line(int x, int y, int length, Orientation orientation):
+Line::Line(px_t x, px_t y, px_t length, Orientation orientation):
 Element(Rect(x, y, 2, 2)),
 _orientation(orientation){
     if (_orientation == HORIZONTAL)

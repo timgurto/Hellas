@@ -10,7 +10,7 @@
 // A button which can be clicked, showing visible feedback and performing a function.
 class CheckBox : public Element{
 private:
-    static const int
+    static const px_t
         Y_OFFSET; // Shifts the box vertically
 
     bool &_linkedBool; // A boolean whose value is tied to this check box
@@ -35,7 +35,7 @@ private:
     virtual void refresh() override;
 
 public:
-    static const int
+    static const px_t
         BOX_SIZE,
         GAP; // The gap between box and label, if any.
 

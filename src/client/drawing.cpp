@@ -26,9 +26,9 @@ void Client::draw() const{
         yMin = static_cast<size_t>(max<double>(0, -offset().y / TILE_H)),
         yMax = static_cast<size_t>(min<double>(_mapY, (-offset().y + SCREEN_Y) / TILE_H + 1));
     for (size_t y = yMin; y != yMax; ++y) {
-        const int yLoc = y * TILE_H + toInt(offset().y);
+        const px_t yLoc = y * TILE_H + toInt(offset().y);
         for (size_t x = xMin; x != xMax; ++x){
-            int xLoc = x * TILE_W + toInt(offset().x);
+            px_t xLoc = x * TILE_W + toInt(offset().x);
             if (y % 2 == 1)
                 xLoc -= TILE_W/2;
             drawTile(x, y, xLoc, yLoc);
@@ -48,7 +48,7 @@ void Client::draw() const{
     }
 
     // Entities, sorted from back to front
-    static const int
+    static const px_t
         DRAW_MARGIN_ABOVE = 50,
         DRAW_MARGIN_BELOW = 10,
         DRAW_MARGIN_SIDES = 30;
@@ -105,7 +105,7 @@ void Client::draw() const{
             renderer.fillRect(footprintRect + _offset);
 
             const Rect &drawRect = ot->drawRect();
-            int
+            px_t
                 x = toInt(_mouse.x + drawRect.x),
                 y = toInt(_mouse.y + drawRect.y);
             _constructionFootprint.setAlpha(0x7f);
@@ -136,11 +136,11 @@ void Client::drawTooltip() const{
         return;
 
     if (tooltip) {
-        static const int EDGE_GAP = 2; // Gap from screen edges
-        static const int CURSOR_GAP = 10; // Horizontal gap from cursor
-        int x, y;
-        const int mouseX = toInt(_mouse.x);
-        const int mouseY = toInt(_mouse.y);
+        static const px_t EDGE_GAP = 2; // Gap from screen edges
+        static const px_t CURSOR_GAP = 10; // Horizontal gap from cursor
+        px_t x, y;
+        const px_t mouseX = toInt(_mouse.x);
+        const px_t mouseY = toInt(_mouse.y);
 
         // y: below cursor, unless too close to the bottom of the screen
         if (SCREEN_Y > mouseY + tooltip->height() + EDGE_GAP)
@@ -157,7 +157,7 @@ void Client::drawTooltip() const{
     }
 }
 
-void Client::drawTile(size_t x, size_t y, int xLoc, int yLoc) const{
+void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const{
     if (isDebug()) {
         _terrain[_map[x][y]].draw(xLoc, yLoc);
         return;

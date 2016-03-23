@@ -65,7 +65,7 @@ void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
     // Update slot element
     Element &e = *_merchantSlotElements[i];
 
-    static const int // TODO: remove duplicate consts
+    static const px_t // TODO: remove duplicate consts
         GAP = 2,
         NAME_WIDTH = 100,
         QUANTITY_WIDTH = 20,
@@ -84,7 +84,7 @@ void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
         SET_BUTTON_TOP = (ROW_HEIGHT - SET_BUTTON_HEIGHT) / 2;
 
     if (userHasAccess()){ // Setup view
-        int x = GAP;
+        px_t x = GAP;
         TextBox *textBox = new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT), true);
         _wareQtyBoxes[i] = textBox;
         textBox->text(makeArgs(mSlot.wareQty()));
@@ -125,7 +125,7 @@ void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
         }
 
         // Ware
-        int x = GAP;
+        px_t x = GAP;
         e.addChild(new Label(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT),
                              makeArgs(mSlot.wareQty()), Element::RIGHT_JUSTIFIED));
         x += QUANTITY_WIDTH;
@@ -179,20 +179,20 @@ void ClientObject::onRightClick(Client &client){
             isMerchant = objType.merchantSlots() > 0;
         if (userHasAccess() && !_window && (hasContainer || isMerchant || objType.canDeconstruct())){
             static const size_t COLS = 8;
-            static const int
+            static const px_t
                 WINDOW_WIDTH = Container(1, 8, _container).width(),
                 BUTTON_HEIGHT = 15,
                 BUTTON_WIDTH = 60,
                 BUTTON_GAP = 1;
-            int x = BUTTON_GAP, y = 0;
-            int winWidth = 0;
+            px_t x = BUTTON_GAP, y = 0;
+            px_t winWidth = 0;
             _window = new Window(Rect(0, 0, 0, 0), objType.name());
             client.addWindow(_window);
 
             // Merchant setup
             if (isMerchant){
                 client.watchObject(*this);
-                static const int
+                static const px_t
                     QUANTITY_WIDTH = 20,
                     NAME_WIDTH = 100,
                     GAP = 2,
@@ -202,7 +202,7 @@ void ClientObject::onRightClick(Client &client){
                     ROW_HEIGHT = Element::ITEM_HEIGHT + 2 * GAP;
                 static const double
                     MAX_ROWS = 5.5;
-                const int
+                const px_t
                     LIST_HEIGHT = toInt(ROW_HEIGHT * min(MAX_ROWS, objType.merchantSlots()));
                 x = GAP;
                 _window->addChild(new Label(Rect(x, y, PANE_WIDTH, TITLE_HEIGHT), "Item to sell",
@@ -259,7 +259,7 @@ void ClientObject::onRightClick(Client &client){
         } else if (!userHasAccess() && !_window && isMerchant) {
             client.watchObject(*this);
             // Draw trade window
-            static const int
+            static const px_t
                 GAP = 2,
                 NAME_WIDTH = 100,
                 QUANTITY_WIDTH = 20,
@@ -277,7 +277,7 @@ void ClientObject::onRightClick(Client &client){
             const double
                 MAX_ROWS = 7.5,
                 NUM_ROWS = objType.merchantSlots() < MAX_ROWS ? objType.merchantSlots() : MAX_ROWS;
-            static const int
+            static const px_t
                 HEIGHT = toInt(ROW_HEIGHT * NUM_ROWS);
             _window = new Window(Rect(0, 0, WIDTH, HEIGHT), objType.name());
             client.addWindow(_window);
@@ -291,9 +291,9 @@ void ClientObject::onRightClick(Client &client){
 
         if (_window) {
             // Determine placement: center around object, but keep entirely on screen.
-            int x = toInt(location().x - _window->width() / 2 + client.offset().x);
+            px_t x = toInt(location().x - _window->width() / 2 + client.offset().x);
             x = max(0, min(x, Client::SCREEN_X - _window->width()));
-            int y = toInt(location().y - _window->height() / 2 + client.offset().y);
+            px_t y = toInt(location().y - _window->height() / 2 + client.offset().y);
             y = max(0, min(y, Client::SCREEN_Y - _window->height()));
             _window->rect(x, y);
 

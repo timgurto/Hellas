@@ -9,7 +9,7 @@
 extern Renderer renderer;
 
 TextBox *TextBox::currentFocus = 0;
-const int TextBox::HEIGHT = 14;
+const px_t TextBox::HEIGHT = 14;
 const size_t TextBox::MAX_TEXT_LENGTH = 100;
 
 TextBox::TextBox(const Rect &rect, bool numeralsOnly):
@@ -31,13 +31,13 @@ void TextBox::refresh(){
     renderer.fill();
 
     // Text
-    static const int
+    static const px_t
         TEXT_GAP = 2;
     Texture text(Element::font(), _text);
     text.draw(TEXT_GAP, TEXT_GAP);
 
     // Cursor
-    const static int
+    const static px_t
         CURSOR_GAP = 0,
         CURSOR_WIDTH = 1;
     if (currentFocus == this) {

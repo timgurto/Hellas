@@ -14,7 +14,7 @@
 // A wrapper class for SDL_Texture, which also provides related functionality
 class Texture{
     SDL_Texture *_raw;
-    int _w, _h;
+    px_t _w, _h;
     bool _validTarget;
 
     static std::map<SDL_Texture *, size_t> _refs;
@@ -28,7 +28,7 @@ class Texture{
 
 public:
     Texture();
-    Texture(int width, int height); // Create a blank texture, which can be rendered to
+    Texture(px_t width, px_t height); // Create a blank texture, which can be rendered to
     Texture(const std::string &filename, const Color &colorKey = Color::NO_KEY);
     Texture(TTF_Font *font, const std::string &text, const Color &color = Color::WHITE);
     ~Texture();
@@ -41,14 +41,14 @@ public:
 
     SDL_Texture *raw() { return _raw; }
     static int numTextures() { return _numTextures; }
-    int width() const { return _w; }
-    int height() const { return _h; }
+    px_t width() const { return _w; }
+    px_t height() const { return _h; }
 
     // These functions are const, making blendmode and alpha de-facto mutable
     void setBlend(SDL_BlendMode mode = SDL_BLENDMODE_BLEND) const;
     void setAlpha(Uint8 alpha = 0xff) const;
 
-    void draw(int x = 0, int y = 0) const;
+    void draw(px_t x = 0, px_t y = 0) const;
     void draw(const Point &location) const;
     void draw(const Rect &location) const;
     void draw(const Rect &location, const Rect &srcRect) const;

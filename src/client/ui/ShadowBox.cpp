@@ -9,7 +9,7 @@ Element(rect),
 _reversed(reversed){}
 
 void ShadowBox::refresh(){
-    const int
+    const px_t
         width = rect().w,
         height = rect().h,
         left = 0,

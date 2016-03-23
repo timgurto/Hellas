@@ -34,10 +34,10 @@ const ms_t Server::MAX_TIME_BETWEEN_LOCATION_UPDATES = 300;
 const ms_t Server::SAVE_FREQUENCY = 1000;
 
 const double Server::MOVEMENT_SPEED = 80;
-const int Server::ACTION_DISTANCE = 30;
+const px_t Server::ACTION_DISTANCE = 30;
 
-const int Server::TILE_W = 32;
-const int Server::TILE_H = 32;
+const px_t Server::TILE_W = 32;
+const px_t Server::TILE_H = 32;
 
 Server::Server():
 _time(SDL_GetTicks()),

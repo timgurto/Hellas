@@ -6,6 +6,7 @@
 #include "../Renderer.h"
 #include "../Texture.h"
 #include "../../Color.h"
+#include "../../types.h"
 
 #ifndef ELEMENT_H
 #define ELEMENT_H
@@ -30,7 +31,7 @@ public:
         VERTICAL
     };
     typedef std::list<Element*> children_t;
-    static int TEXT_HEIGHT, ITEM_HEIGHT;
+    static px_t TEXT_HEIGHT, ITEM_HEIGHT;
 
 private:
     static TTF_Font *_font;
@@ -108,19 +109,19 @@ public:
     static void initialize();
     
     static const Point *absMouse; // Absolute mouse co-ordinates
-    static int textOffset;
+    static px_t textOffset;
 
     bool visible() const { return _visible; }
     static TTF_Font *font() { return _font; }
     static void font(TTF_Font *newFont) { _font = newFont; }
     const Rect &rect() const { return _rect; }
     void rect(const Rect &rhs);
-    void rect(int x, int y);
-    void rect(int x, int y, int w, int h);
-    int width() const { return _rect.w; }
-    void width(int w);
-    int height() const { return _rect.h; }
-    void height(int h);
+    void rect(px_t x, px_t y);
+    void rect(px_t x, px_t y, px_t w, px_t h);
+    px_t width() const { return _rect.w; }
+    void width(px_t w);
+    px_t height() const { return _rect.h; }
+    void height(px_t h);
     bool changed() const { return _changed; }
     const std::string &id() const { return _id; }
     void id(const std::string &id) { _id = id; }

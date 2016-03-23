@@ -32,8 +32,8 @@ public:
     const Point &location() const { return _location; }
     void location(const Point &loc); // yChanged() should be checked after changing location.
     Rect drawRect() const;
-    int width() const { return _type->width(); }
-    int height() const { return _type->height(); }
+    px_t width() const { return _type->width(); }
+    px_t height() const { return _type->height(); }
     bool yChanged() const { return _yChanged; }
     void yChanged(bool val) { _yChanged = val; }
     const EntityType *type() const { return _type; }

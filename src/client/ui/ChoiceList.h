@@ -28,7 +28,7 @@ class ChoiceList : public List{
     static void markMouseOver(Element &e, const Point &mousePos);
 
 public:
-    ChoiceList(const Rect &rect, int childHeight);
+    ChoiceList(const Rect &rect, px_t childHeight);
 
     virtual void refresh() override;
 

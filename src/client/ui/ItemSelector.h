@@ -11,7 +11,7 @@ class Item;
 class ItemSelector : public Button{
     const Item *_item;
 
-    ItemSelector(int x = 0, int y = 0);
+    ItemSelector(px_t x = 0, px_t y = 0);
 
     const Item *item() const{ return _item; }
     void item(const Item *item) { _item = item; }

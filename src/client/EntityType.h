@@ -27,8 +27,8 @@ public:
     void drawRect(const Rect &rect) { _drawRect = rect; }
     bool isFlat() const { return _isFlat; }
     void isFlat(bool b) { _isFlat = b; }
-    int width() const { return _drawRect.w; }
-    int height() const { return _drawRect.h; }
+    px_t width() const { return _drawRect.w; }
+    px_t height() const { return _drawRect.h; }
 
     void drawAt(const Point &loc) const;
 };

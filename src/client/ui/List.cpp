@@ -9,12 +9,12 @@
 
 extern Renderer renderer;
 
-const int List::ARROW_W = 8;
-const int List::ARROW_H = 5;
-const int List::CURSOR_HEIGHT = 8;
-const int List::SCROLL_AMOUNT = 10;
+const px_t List::ARROW_W = 8;
+const px_t List::ARROW_H = 5;
+const px_t List::CURSOR_HEIGHT = 8;
+const px_t List::SCROLL_AMOUNT = 10;
 
-List::List(const Rect &rect, int childHeight):
+List::List(const Rect &rect, px_t childHeight):
 Element(rect),
 _mouseDownOnCursor(false),
 _cursorOffset(0),
@@ -63,9 +63,9 @@ _content(new Element(Rect(0, 0, rect.w - ARROW_W, 0))){
 
 void List::updateScrollBar(){
     // Cursor position
-    static const int Y_MIN = ARROW_H - 1;
-    const int Y_MAX = _scrollBar->rect().h - ARROW_H - CURSOR_HEIGHT + 1;
-    const int Y_RANGE = Y_MAX - Y_MIN;
+    static const px_t Y_MIN = ARROW_H - 1;
+    const px_t Y_MAX = _scrollBar->rect().h - ARROW_H - CURSOR_HEIGHT + 1;
+    const px_t Y_RANGE = Y_MAX - Y_MIN;
     double progress = -1.0 * _content->rect().y / (_content->rect().h - rect().h);
     if (progress < 0)
         progress = 0;
@@ -138,10 +138,10 @@ void List::mouseMove(Element &e, const Point &mousePos){
     if (list._mouseDownOnCursor){
         // Scroll based on mouse pos
         list._scrolledToBottom = false;
-        static const int Y_MIN = ARROW_H + list._cursorOffset - 1;
-        const int Y_MAX =
+        static const px_t Y_MIN = ARROW_H + list._cursorOffset - 1;
+        const px_t Y_MAX =
             list._scrollBar->rect().h -ARROW_H - CURSOR_HEIGHT + list._cursorOffset + 1;
-        const int Y_RANGE = Y_MAX - Y_MIN;
+        const px_t Y_RANGE = Y_MAX - Y_MIN;
         double progress = (mousePos.y - Y_MIN) / Y_RANGE;
         if (progress < 0)
             progress = 0;
@@ -149,7 +149,7 @@ void List::mouseMove(Element &e, const Point &mousePos){
             progress = 1;
             list._scrolledToBottom = true;
         }
-        int newY = toInt(-progress * (list._content->rect().h - list.rect().h));
+        px_t newY = toInt(-progress * (list._content->rect().h - list.rect().h));
         list._content->rect(0, newY);
         list.updateScrollBar();
     }
@@ -172,7 +172,7 @@ void List::scrollDownRaw(Element &e){
         return;
     list._scrolledToBottom = false;
     list._content->rect(0, list._content->rect().y - SCROLL_AMOUNT);
-    const int minScroll = -(list._content->rect().h - list.rect().h);
+    const px_t minScroll = -(list._content->rect().h - list.rect().h);
     if (list._content->rect().y <= minScroll) {
         list._content->rect(0, minScroll);
         list._scrolledToBottom = true;
@@ -183,7 +183,7 @@ void List::scrollDownRaw(Element &e){
 void List::scrollToBottom(){
     if (_content->rect().h <= rect().h)
         return;
-    const int minScroll = -(_content->rect().h - rect().h);
+    const px_t minScroll = -(_content->rect().h - rect().h);
     _content->rect(0, minScroll);
     _scrolledToBottom = true;
     updateScrollBar();

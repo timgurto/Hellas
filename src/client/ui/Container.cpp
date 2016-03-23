@@ -9,7 +9,7 @@
 
 extern Renderer renderer;
 
-const int Container::GAP = 0;
+const px_t Container::GAP = 0;
 
 // TODO: find better alternative.
 const size_t Container::NO_SLOT = 999;
@@ -22,7 +22,7 @@ const Container *Container::useContainer = 0;
 
 Texture Container::_highlight;
 
-Container::Container(size_t rows, size_t cols, Item::vect_t &linked, size_t serial, int x, int y):
+Container::Container(size_t rows, size_t cols, Item::vect_t &linked, size_t serial, px_t x, px_t y):
 Element(Rect(x, y,
                  cols * (Client::ICON_SIZE + GAP + 2) + GAP,
                  rows * (Client::ICON_SIZE + GAP + 2) + GAP + 1)),
@@ -37,7 +37,7 @@ _rightMouseDownSlot(NO_SLOT){
         _highlight = Texture(std::string("Images/Items/highlight.png"));
 
     for (size_t i = 0; i != _linked.size(); ++i) {
-        const int
+        const px_t
             x = i % cols,
             y = i / cols;
         const Rect slotRect = Rect(x * (Client::ICON_SIZE + GAP + 2) + GAP,
@@ -55,7 +55,7 @@ _rightMouseDownSlot(NO_SLOT){
 void Container::refresh(){
     renderer.setDrawColor(Color::BLACK);
     for (size_t i = 0; i != _linked.size(); ++i) {
-        const int
+        const px_t
             x = i % _cols,
             y = i / _cols;
         const Rect slotRect = Rect(x * (Client::ICON_SIZE + GAP + 2) + GAP,

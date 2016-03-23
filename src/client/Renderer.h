@@ -15,7 +15,7 @@
 class Renderer{
     SDL_Renderer *_renderer;
     SDL_Window *_window;
-    int _w, _h;
+    px_t _w, _h;
     bool _valid; // Whether everything has been properly initialized
     static size_t _count;
 
@@ -37,11 +37,11 @@ public:
 
     operator bool() const { return _valid; }
 
-    int width() const { return _w; }
-    int height() const { return _h; }
+    px_t width() const { return _w; }
+    px_t height() const { return _h; }
 
     SDL_Texture *createTextureFromSurface(SDL_Surface *surface) const;
-    SDL_Texture *createTargetableTexture(int width, int height) const;
+    SDL_Texture *createTargetableTexture(px_t width, px_t height) const;
     void drawTexture(SDL_Texture *srcTex, const Rect &dstRect);
     void drawTexture(SDL_Texture *srcTex, const Rect &dstRect, const Rect &srcRect);
 

@@ -6,16 +6,16 @@
 #include "CollisionChunk.h"
 #include "Server.h"
 
-const int Server::COLLISION_CHUNK_SIZE = 100;
+const px_t Server::COLLISION_CHUNK_SIZE = 100;
 
 bool Server::isLocationValid(const Point &loc, const ObjectType &type,
                              const Object *thisObject, const User *thisUser){
     Rect rect = type.collisionRect() + loc;
-    const int
+    const px_t
         right = rect.x + rect.w,
         bottom = rect.y + rect.h;
     // Map edges
-    const int
+    const px_t
         xLimit = _mapX * Server::TILE_W - Server::TILE_W/2,
         yLimit = _mapY * Server::TILE_H;
     if (rect.x < 0 || right > xLimit ||

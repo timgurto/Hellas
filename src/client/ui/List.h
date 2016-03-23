@@ -9,7 +9,7 @@
 // A scrollable vertical list of elements of uniform height
 class List : public Element{
 public:
-    static const int
+    static const px_t
         ARROW_W,
         ARROW_H,
         CURSOR_HEIGHT,
@@ -20,9 +20,9 @@ protected:
 
 private:
     bool _mouseDownOnCursor;
-    int _cursorOffset; // y-offset of the mouse on the cursor.
+    px_t _cursorOffset; // y-offset of the mouse on the cursor.
 
-    int _childHeight;
+    px_t _childHeight;
 
     Element *_scrollBar;
     Picture // Arrow images
@@ -42,12 +42,12 @@ private:
     static void scrollDown(Element &e, const Point &mousePos) { scrollDownRaw(e); }
 
 protected:
-    int childHeight() const { return _childHeight; }
+    px_t childHeight() const { return _childHeight; }
 
     Element *_content; // Holds the list items themselves, and moves up and down to "scroll".
 
 public:
-    List(const Rect &rect, int childHeight = Element::TEXT_HEIGHT);
+    List(const Rect &rect, px_t childHeight = Element::TEXT_HEIGHT);
 
     virtual void addChild(Element *child) override;
     virtual void clearChildren() override;

@@ -3,15 +3,17 @@
 #ifndef RECT_H
 #define RECT_H
 
+#include "types.h"
+
 struct Point;
 struct SDL_Rect;
 
 struct Rect {
-    int x, y, w, h;
+    px_t x, y, w, h;
 
-    Rect(int x = 0, int y = 0, int w = 0, int h = 0);
+    Rect(px_t x = 0, px_t y = 0, px_t w = 0, px_t h = 0);
     Rect(double x, double y, double w = 0, double h = 0);
-    Rect(double x, double y, int w, int h);
+    Rect(double x, double y, px_t w, px_t h);
     Rect(const Point &rhs);
 
     bool collides(const Rect &rhs) const;

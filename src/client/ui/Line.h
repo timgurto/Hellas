@@ -12,7 +12,7 @@ class Line : public Element{
     virtual void refresh() override;
 
 public:
-    Line(int x, int y, int length, Orientation _orientation = HORIZONTAL); // x,y = top-left corner.
+    Line(px_t x, px_t y, px_t length, Orientation _orientation = HORIZONTAL); // x,y = top-left corner.
 };
 
 #endif

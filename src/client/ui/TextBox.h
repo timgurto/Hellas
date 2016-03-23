@@ -15,7 +15,7 @@ class TextBox : public Element{
 
     static const size_t MAX_TEXT_LENGTH;
 
-    static const int
+    static const px_t
         HEIGHT;
 
     static TextBox *currentFocus;

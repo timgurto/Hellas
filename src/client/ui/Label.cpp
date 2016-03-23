@@ -18,7 +18,7 @@ void Label::refresh(){
     if (_matchWidth)
         width(text.width());
 
-    int x;
+    px_t x;
     switch(_justificationH) {
     case RIGHT_JUSTIFIED:
         x = rect().w - text.width();
@@ -31,7 +31,7 @@ void Label::refresh(){
         x = 0;
     }
 
-    int y;
+    px_t y;
     switch (_justificationV) {
     case BOTTOM_JUSTIFIED:
         y = rect().h - text.height();

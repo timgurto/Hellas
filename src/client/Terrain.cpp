@@ -39,7 +39,7 @@ void Terrain::draw(const Rect &loc, const Rect &srcRect) const{
     _images[_frame].draw(loc, srcRect);
 }
 
-void Terrain::draw(int x, int y) const{
+void Terrain::draw(px_t x, px_t y) const{
     _images[_frame].draw(x, y);
 }
 

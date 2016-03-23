@@ -26,8 +26,8 @@ class Window : public Element{
     Button *_closeButton;
 
 public:
-    static int HEADING_HEIGHT;
-    static int CLOSE_BUTTON_SIZE;
+    static px_t HEADING_HEIGHT;
+    static px_t CLOSE_BUTTON_SIZE;
 
     Window(const Rect &rect, const std::string &title);
 
@@ -37,7 +37,7 @@ public:
     static void stopDragging(Element &e, const Point &mousePos);
     static void drag(Element &e, const Point &mousePos);
 
-    void resize(int w, int h); // Resize window, so that the content size matches the given dims.
+    void resize(px_t w, px_t h); // Resize window, so that the content size matches the given dims.
 
     virtual void addChild(Element *child) override;
     virtual void clearChildren() override;

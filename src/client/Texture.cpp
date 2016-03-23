@@ -27,7 +27,7 @@ _h(0),
 _validTarget(false),
 _programEndMarker(false){}
 
-Texture::Texture(int width, int height):
+Texture::Texture(px_t width, px_t height):
 _raw(0),
 _w(width),
 _h(height),
@@ -139,7 +139,7 @@ void Texture::setAlpha(Uint8 alpha) const{
     SDL_SetTextureAlphaMod(_raw, alpha);
 }
 
-void Texture::draw(int x, int y) const{
+void Texture::draw(px_t x, px_t y) const{
     draw(Rect(x, y, _w, _h));
 }
 
