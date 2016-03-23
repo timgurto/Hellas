@@ -88,3 +88,7 @@ void TextBox::backspace(){
         currentFocus->markChanged();
     }
 }
+
+size_t TextBox::textAsNum() const{
+    return 5;
+}

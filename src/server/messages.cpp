@@ -5,6 +5,7 @@
 #include "../messageCodes.h"
 
 void Server::handleMessage(const Socket &client, const std::string &msg){
+    _debug(msg);
     int msgCode;
     char del;
     static char buffer[BUFFER_SIZE+1];

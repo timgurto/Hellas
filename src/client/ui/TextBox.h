@@ -25,6 +25,7 @@ public:
 
     const std::string &text() const { return _text; }
     void text(const std::string &text);
+    size_t textAsNum() const;
 
     static void clearFocus();
     static const TextBox *focus() { return currentFocus; }

@@ -41,6 +41,8 @@ _window(0){
             pair->second = i;
             _serialSlotPairs[i] = pair;
         }
+        _wareQtyBoxes = std::vector<TextBox *>(merchantSlots, 0);
+        _priceQtyBoxes = std::vector<TextBox *>(merchantSlots, 0);
     }
 }
 
@@ -76,11 +78,15 @@ void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
         BUTTON_WIDTH = BUTTON_PADDING * 2 + BUTTON_LABEL_WIDTH + ICON_SIZE + NAME_WIDTH,
         ROW_HEIGHT = BUTTON_HEIGHT + 2 * GAP,
         TEXT_TOP = (ROW_HEIGHT - TEXT_HEIGHT) / 2,
-        BUTTON_TEXT_TOP = (BUTTON_HEIGHT - TEXT_HEIGHT) / 2;
+        BUTTON_TEXT_TOP = (BUTTON_HEIGHT - TEXT_HEIGHT) / 2,
+        SET_BUTTON_WIDTH = 60,
+        SET_BUTTON_HEIGHT = 15,
+        SET_BUTTON_TOP = (ROW_HEIGHT - SET_BUTTON_HEIGHT) / 2;
 
     if (userHasAccess()){ // Setup view
         int x = GAP;
         TextBox *textBox = new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT), true);
+        _wareQtyBoxes[i] = textBox;
         textBox->text(makeArgs(mSlot.wareQty()));
         e.addChild(textBox);
         x += QUANTITY_WIDTH + GAP;
@@ -95,6 +101,7 @@ void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
         }
         x += NAME_WIDTH + 2 * GAP + 2;
         textBox = new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT), true);
+        _priceQtyBoxes[i] = textBox;
         textBox->text(makeArgs(mSlot.wareQty()));
         e.addChild(textBox);
         x += QUANTITY_WIDTH + GAP;
@@ -107,6 +114,9 @@ void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
             button->addChild(new Picture(Rect(0, 0, ICON_SIZE, ICON_SIZE), item.icon()));
             e.addChild(new Label(Rect(x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT), item.name()));
         }
+        x += NAME_WIDTH + 2 * GAP + 2;
+        e.addChild(new Button(Rect(x, SET_BUTTON_TOP, SET_BUTTON_WIDTH, SET_BUTTON_HEIGHT), "Set",
+                              sendMerchantSlot, _serialSlotPairs[i]));
 
     } else { // Trade view
         if (!mSlot){
@@ -188,6 +198,7 @@ void ClientObject::onRightClick(Client &client){
                     GAP = 2,
                     PANE_WIDTH = Element::ITEM_HEIGHT + QUANTITY_WIDTH + NAME_WIDTH + 2 * GAP,
                     TITLE_HEIGHT = 14,
+                    SET_BUTTON_WIDTH = 60,
                     ROW_HEIGHT = Element::ITEM_HEIGHT + 2 * GAP;
                 static const double
                     MAX_ROWS = 5.5;
@@ -203,9 +214,14 @@ void ClientObject::onRightClick(Client &client){
                 _window->addChild(new Label(Rect(x, y, PANE_WIDTH, TITLE_HEIGHT), "Price",
                                             Element::CENTER_JUSTIFIED));
                 x += PANE_WIDTH + GAP;
+                vertDivider = new Line(x, y, TITLE_HEIGHT + LIST_HEIGHT, Line::VERTICAL);
+                _window->addChild(vertDivider);
+                x += 2 * GAP + vertDivider->width() + SET_BUTTON_WIDTH;
                 winWidth = max(winWidth, x);
                 y += Element::TEXT_HEIGHT;
-                List *merchantList = new List(Rect(0, y, PANE_WIDTH * 2 + GAP * 3, LIST_HEIGHT),
+                List *merchantList = new List(Rect(0, y,
+                                                   PANE_WIDTH * 2 + GAP * 5 + SET_BUTTON_WIDTH + 6,
+                                                   LIST_HEIGHT),
                                               ROW_HEIGHT);
                 _window->addChild(merchantList);
                 y += LIST_HEIGHT;
@@ -349,6 +365,35 @@ void ClientObject::startDeconstructing(void *object){
 void ClientObject::trade(void *serialAndSlot){
     const std::pair<size_t, size_t> pair = *static_cast<std::pair<size_t, size_t>*>(serialAndSlot);
     Client::_instance->sendMessage(CL_TRADE, makeArgs(pair.first, pair.second));
+}
+
+void ClientObject::sendMerchantSlot(void *serialAndSlot){
+    const std::pair<size_t, size_t> pair = *static_cast<std::pair<size_t, size_t>*>(serialAndSlot);
+    size_t
+        serial = pair.first,
+        slot = pair.second;
+    const auto &objects = Client::_instance->_objects;
+    auto it = objects.find(serial);
+    if (it == objects.end()){
+        Client::debug()("Attempting to configure nonexistent object", Color::RED);
+        return;
+    }
+    ClientObject &obj = *it->second;
+    MerchantSlot &mSlot = obj._merchantSlots[slot];
+
+    // Set quantities
+    mSlot.wareQty(obj._wareQtyBoxes[slot]->textAsNum());
+    mSlot.priceQty(obj._priceQtyBoxes[slot]->textAsNum());
+
+    if (!mSlot.wareItem() || !mSlot.priceItem()){
+        Client::debug()("You must select an item", Color::YELLOW);
+        return;
+    }
+
+    Client::_instance->sendMessage(CL_SET_MERCHANT_SLOT,
+                                   makeArgs(serial, slot,
+                                            mSlot.wareItem()->id(), mSlot.wareQty(),
+                                            mSlot.priceItem()->id(), mSlot.priceQty()));
 }
 
 bool ClientObject::userHasAccess() const{

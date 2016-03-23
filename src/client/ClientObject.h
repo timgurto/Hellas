@@ -14,6 +14,7 @@
 #include "../server/MerchantSlot.h"
 
 class Element;
+class TextBox;
 class Window;
 
 // A client-side description of an object
@@ -27,6 +28,8 @@ class ClientObject : public Entity{
     std::vector<Element *> _merchantSlotElements;
     typedef std::pair<size_t, size_t> serialSlotPair_t;
     std::vector<serialSlotPair_t *> _serialSlotPairs;
+    std::vector<TextBox *> _wareQtyBoxes;
+    std::vector<TextBox *> _priceQtyBoxes;
 
 public:
     ClientObject(const ClientObject &rhs);
@@ -52,6 +55,7 @@ public:
     virtual void onRightClick(Client &client);
     static void startDeconstructing(void *object);
     static void trade(void *serialAndSlot);
+    static void sendMerchantSlot(void *serialAndSlot);
     virtual std::vector<std::string> getTooltipMessages(const Client &client) const;
 
     void playGatherSound() const;
