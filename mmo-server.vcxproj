@@ -143,6 +143,7 @@
     <ClInclude Include="src\server\User.h" />
     <ClInclude Include="src\server\Yield.h" />
     <ClInclude Include="src\Socket.h" />
+    <ClInclude Include="src\types.h" />
     <ClInclude Include="src\util.h" />
     <ClInclude Include="src\XmlReader.h" />
     <ClInclude Include="src\XmlWriter.h" />

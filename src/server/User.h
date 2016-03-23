@@ -33,7 +33,7 @@ private:
     Point _location;
 
     Action _action;
-    Uint32 _actionTime; // Time remaining on current action.
+    ms_t _actionTime; // Time remaining on current action.
     // Information used when action completes:
     Object *_actionObject; // Gather, deconstruct
     const Recipe *_actionRecipe; // Craft
@@ -43,9 +43,9 @@ private:
 
     Item::vect_t _inventory;
 
-    Uint32 _lastLocUpdate; // Time that the last CL_LOCATION was received
-    Uint32 _lastContact;
-    Uint32 _latency;
+    ms_t _lastLocUpdate; // Time that the last CL_LOCATION was received
+    ms_t _lastContact;
+    ms_t _latency;
 
 public:
     User(const std::string &name, const Point &loc, const Socket &socket);
@@ -104,7 +104,7 @@ public:
     // Return value: 0 if there was room for all items, otherwise the remainder.
     size_t giveItem(const Item *item, size_t quantity = 1);
 
-    void update(Uint32 timeElapsed);
+    void update(ms_t timeElapsed);
 };
 
 #endif

@@ -52,8 +52,8 @@ std::string User::makeLocationCommand() const{
 }
 
 void User::updateLocation(const Point &dest){
-    const Uint32 newTime = SDL_GetTicks();
-    Uint32 timeElapsed = newTime - _lastLocUpdate;
+    const ms_t newTime = SDL_GetTicks();
+    ms_t timeElapsed = newTime - _lastLocUpdate;
     _lastLocUpdate = newTime;
 
     // Max legal distance: straight line
@@ -222,7 +222,7 @@ void User::removeItems(const ItemSet &items) {
     }
 }
 
-void User::update(Uint32 timeElapsed){
+void User::update(ms_t timeElapsed){
     if (_action == NO_ACTION)
         return;
     if (_actionTime > timeElapsed) {

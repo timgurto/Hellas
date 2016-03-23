@@ -36,12 +36,12 @@ LogSDL *Client::_debugInstance = 0;
 const int Client::SCREEN_X = 640;
 const int Client::SCREEN_Y = 360;
 
-const Uint32 Client::MAX_TICK_LENGTH = 100;
-const Uint32 Client::SERVER_TIMEOUT = 10000;
-const Uint32 Client::CONNECT_RETRY_DELAY = 3000;
-const Uint32 Client::PING_FREQUENCY = 5000;
+const ms_t Client::MAX_TICK_LENGTH = 100;
+const ms_t Client::SERVER_TIMEOUT = 10000;
+const ms_t Client::CONNECT_RETRY_DELAY = 3000;
+const ms_t Client::PING_FREQUENCY = 5000;
 
-const Uint32 Client::TIME_BETWEEN_LOCATION_UPDATES = 50;
+const ms_t Client::TIME_BETWEEN_LOCATION_UPDATES = 50;
 
 const int Client::ICON_SIZE = 16;
 const int Client::HEADING_HEIGHT = 14;
@@ -342,7 +342,7 @@ _debug("client.log"){
         CAST_BAR_DIMENSIONS(0, 0, castBarW, castBarH);
     static const Color CAST_BAR_LABEL_COLOR = Color::BLUE / 2 + Color::GREY_2;
     _castBar = new Element(CAST_BAR_RECT);
-    _castBar->addChild(new ProgressBar<Uint32>(CAST_BAR_DIMENSIONS, _actionTimer, _actionLength));
+    _castBar->addChild(new ProgressBar<ms_t>(CAST_BAR_DIMENSIONS, _actionTimer, _actionLength));
     LinkedLabel<std::string> *castBarLabel = new LinkedLabel<std::string>(CAST_BAR_DIMENSIONS,
                                                                           _actionMessage, "", "",
                                                                           Label::CENTER_JUSTIFIED);
@@ -380,7 +380,7 @@ _debug("client.log"){
     LinkedLabel<unsigned> *fps = new LinkedLabel<unsigned>(
         Rect(0, 0, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT),
         _fps, "", "fps", Label::RIGHT_JUSTIFIED);
-    LinkedLabel<Uint32> *lat = new LinkedLabel<Uint32>(
+    LinkedLabel<ms_t> *lat = new LinkedLabel<ms_t>(
         Rect(0, HARDWARE_STATS_LABEL_HEIGHT, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT),
         _latency, "", "ms", Label::RIGHT_JUSTIFIED);
     fps->setColor(Color::YELLOW);
@@ -458,7 +458,7 @@ void Client::checkSocket(){
 
 void Client::run(){
 
-    Uint32 timeAtLastTick = SDL_GetTicks();
+    ms_t timeAtLastTick = SDL_GetTicks();
     while (_loop) {
         _time = SDL_GetTicks();
 
@@ -665,7 +665,7 @@ void Client::prepareAction(const std::string &msg){
     _actionMessage = msg;
 }
 
-void Client::startAction(Uint32 actionLength){
+void Client::startAction(ms_t actionLength){
     _actionTimer = 0;
     _actionLength = actionLength;
     if (actionLength == 0) {

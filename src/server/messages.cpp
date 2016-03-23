@@ -29,7 +29,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
         case CL_PING:
         {
-            Uint32 timeSent;
+            ms_t timeSent;
             iss >> timeSent  >> del;
             if (del != MSG_END)
                 return;

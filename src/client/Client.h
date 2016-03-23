@@ -16,15 +16,16 @@
 #include "LogSDL.h"
 #include "Terrain.h"
 #include "ui/ChoiceList.h"
+#include "ui/Container.h"
 #include "ui/Window.h"
 #include "../Args.h"
 #include "../Point.h"
 #include "../Rect.h"
 #include "../Socket.h"
 #include "../messageCodes.h"
+#include "../types.h"
 #include "../server/MerchantSlot.h"
 #include "../server/Recipe.h"
-#include "ui/Container.h"
 
 class TextBox;
 
@@ -72,12 +73,12 @@ private:
     static std::map<int, std::string> _errorMessages;
     static void initializeMessageNames();
 
-    static const Uint32 MAX_TICK_LENGTH;
-    static const Uint32 SERVER_TIMEOUT; // How long the client will wait for a ping reply
-    static const Uint32 CONNECT_RETRY_DELAY; // How long to wait between retries at connecting
-    static const Uint32 PING_FREQUENCY; // How often to test latency with each client
+    static const ms_t MAX_TICK_LENGTH;
+    static const ms_t SERVER_TIMEOUT; // How long the client will wait for a ping reply
+    static const ms_t CONNECT_RETRY_DELAY; // How long to wait between retries at connecting
+    static const ms_t PING_FREQUENCY; // How often to test latency with each client
     // How often to send location updates to server (while moving)
-    static const Uint32 TIME_BETWEEN_LOCATION_UPDATES;
+    static const ms_t TIME_BETWEEN_LOCATION_UPDATES;
 
     Texture
         _cursorNormal,
@@ -142,11 +143,11 @@ private:
     Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.
 
     // These are superficial, and relate only to the cast bar.
-    Uint32 _actionTimer; // How long the character has been performing the current action.
-    Uint32 _actionLength; // How long the current action should take.
+    ms_t _actionTimer; // How long the character has been performing the current action.
+    ms_t _actionLength; // How long the current action should take.
     std::string _actionMessage; // A description of the current action.
     void prepareAction(const std::string &msg); // Set up the action, awaiting server confirmation.
-    void startAction(Uint32 actionLength); // Start the action timer.  If zero, stop the timer.
+    void startAction(ms_t actionLength); // Start the action timer.  If zero, stop the timer.
 
     bool _loop;
     Socket _socket;
@@ -183,12 +184,12 @@ private:
 
     std::string _partialMessage;
 
-    Uint32 _time;
-    Uint32 _timeElapsed; // Time between last two ticks
-    Uint32 _lastPingReply; // The last time a ping reply was received from the server
-    Uint32 _lastPingSent; // The last time a ping was sent to the server
-    Uint32 _latency;
-    Uint32 _timeSinceConnectAttempt;
+    ms_t _time;
+    ms_t _timeElapsed; // Time between last two ticks
+    ms_t _lastPingReply; // The last time a ping reply was received from the server
+    ms_t _lastPingSent; // The last time a ping was sent to the server
+    ms_t _latency;
+    ms_t _timeSinceConnectAttempt;
     unsigned _fps;
 
     bool _invalidUsername; // Flag set if server refused username
@@ -198,7 +199,7 @@ private:
 
     static const size_t BUFFER_SIZE = 1023;
 
-    Uint32 _timeSinceLocUpdate; // Time since a CL_LOCATION was sent
+    ms_t _timeSinceLocUpdate; // Time since a CL_LOCATION was sent
     // Location has changed (local or official), and tooltip may have changed.
     bool _tooltipNeedsRefresh;
     Texture getInventoryTooltip() const; // Generate tooltip for the inventory

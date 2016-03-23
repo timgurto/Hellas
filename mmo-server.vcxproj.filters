@@ -156,6 +156,9 @@
     <ClInclude Include="src\server\MerchantSlot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

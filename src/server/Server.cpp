@@ -28,10 +28,10 @@ LogConsole *Server::_debugInstance = 0;
 
 const int Server::MAX_CLIENTS = 20;
 
-const Uint32 Server::CLIENT_TIMEOUT = 10000;
-const Uint32 Server::MAX_TIME_BETWEEN_LOCATION_UPDATES = 300;
+const ms_t Server::CLIENT_TIMEOUT = 10000;
+const ms_t Server::MAX_TIME_BETWEEN_LOCATION_UPDATES = 300;
 
-const Uint32 Server::SAVE_FREQUENCY = 1000;
+const ms_t Server::SAVE_FREQUENCY = 1000;
 
 const double Server::MOVEMENT_SPEED = 80;
 const int Server::ACTION_DISTANCE = 30;
@@ -162,7 +162,7 @@ void Server::checkSockets(){
 void Server::run(){
     while (_loop) {
         _time = SDL_GetTicks();
-        const Uint32 timeElapsed = _time - _lastTime;
+        const ms_t timeElapsed = _time - _lastTime;
         _lastTime = _time;
 
         // Check that clients are alive

@@ -3,13 +3,13 @@
 #ifndef SOCKET_H
 #define SOCKET_H
 
-#include <SDL.h>
 #include <iostream>
 #include <map>
 #include <string>
 #include <windows.h>
 
 #include "Log.h"
+#include "types.h"
 
 // Wrapper class for Winsock's SOCKET.
 class Socket {
@@ -21,7 +21,7 @@ private:
     static WSADATA _wsa;
     static bool _winsockInitialized;
     SOCKET _raw;
-    Uint32 _lingerTime;
+    ms_t _lingerTime;
     static std::map<SOCKET, int> _refCounts; // Reference counters for each raw SOCKET
 
     static void initWinsock();
@@ -47,7 +47,7 @@ public:
     bool valid() const { return _raw != INVALID_SOCKET; }
 
     SOCKET getRaw() const { return _raw; }
-    void delayClosing(Uint32 lingerTime); // Delay closing of socket
+    void delayClosing(ms_t lingerTime); // Delay closing of socket
 
     // No destination socket implies client->server message
     void sendMessage(const std::string &msg) const;

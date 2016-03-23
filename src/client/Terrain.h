@@ -5,18 +5,19 @@
 
 #include "Texture.h"
 #include "../Rect.h"
+#include "../types.h"
 
 class Terrain{
     std::vector<Texture> _images;
     bool _isTraversable;
     size_t _frames;
     size_t _frame;
-    Uint32 _frameTime;
-    Uint32 _frameTimer;
+    ms_t _frameTime;
+    ms_t _frameTimer;
 
 public:
     Terrain(const std::string &imageFile = "", bool isTraversable = true, size_t frames = 1,
-            Uint32 frameTime = 0);
+            ms_t frameTime = 0);
 
     void draw(const Rect &loc, const Rect &srcRect) const;
     void draw(int x, int y) const;
@@ -24,7 +25,7 @@ public:
     void setQuarterAlpha() const;
     void setHalfAlpha() const;
 
-    void advanceTime(Uint32 timeElapsed);
+    void advanceTime(ms_t timeElapsed);
 };
 
 #endif

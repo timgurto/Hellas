@@ -92,14 +92,14 @@ void Socket::initWinsock(){
     
 }
 
-void Socket::delayClosing(Uint32 lingerTime){
+void Socket::delayClosing(ms_t lingerTime){
     _lingerTime = lingerTime;
 }
 
 int Socket::closeRawAfterDelay(void *data){
-    Uint32 *const p = static_cast<Uint32 *>(data);
+    ms_t *const p = static_cast<ms_t *>(data);
     const SOCKET s = static_cast<SOCKET>(p[0]);
-    const Uint32 delay = p[1];
+    const ms_t delay = p[1];
     delete[] p;
 
     SDL_Delay(delay);
@@ -113,8 +113,8 @@ void Socket::close(){
         --_refCounts[_raw];
         if (_refCounts[_raw] == 0) {
             if (_lingerTime > 0) {
-                Uint32 *const args = new Uint32[2];
-                args[0] = static_cast<Uint32>(_raw);
+                ms_t *const args = new ms_t[2];
+                args[0] = static_cast<ms_t>(_raw);
                 args[1] = _lingerTime;
                 SDL_CreateThread(closeRawAfterDelay,
                                  "Closing socket",

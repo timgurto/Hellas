@@ -71,7 +71,7 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_PING_REPLY:
         {
-            Uint32 timeSent;
+            ms_t timeSent;
             singleMsg >> timeSent >> del;
             if (del != MSG_END)
                 break;
@@ -161,7 +161,7 @@ void Client::handleMessage(const std::string &msg){
         }
 
         case SV_ACTION_STARTED:
-            Uint32 time;
+            ms_t time;
             singleMsg >> time >> del;
             if (del != MSG_END)
                 break;

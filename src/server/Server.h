@@ -27,8 +27,8 @@ public:
     ~Server();
     void run();
 
-    static const Uint32 CLIENT_TIMEOUT; // How much radio silence before we drop a client
-    static const Uint32 MAX_TIME_BETWEEN_LOCATION_UPDATES;
+    static const ms_t CLIENT_TIMEOUT; // How much radio silence before we drop a client
+    static const ms_t MAX_TIME_BETWEEN_LOCATION_UPDATES;
 
     static const double MOVEMENT_SPEED; // per second
     static const int ACTION_DISTANCE; // How close a character must be to interact with an object
@@ -54,7 +54,7 @@ private:
     static const int MAX_CLIENTS;
     static const size_t BUFFER_SIZE = 1023;
 
-    Uint32 _time, _lastTime;
+    ms_t _time, _lastTime;
 
     Socket _socket;
 
@@ -106,7 +106,7 @@ private:
 
     void removeObject(Object &obj, const User *userToExclude = 0); // Optionally skip telling a user
     void gatherObject (size_t serial, User &user);
-    friend void User::update(Uint32 timeElapsed);
+    friend void User::update(ms_t timeElapsed);
     friend void User::removeItems(const ItemSet &items);
     friend void User::cancelAction();
     friend void User::updateLocation(const Point &dest);
@@ -136,8 +136,8 @@ private:
 
     bool readUserData(User &user); // true: save data existed
     void writeUserData(const User &user) const;
-    static const Uint32 SAVE_FREQUENCY;
-    Uint32 _lastSave;
+    static const ms_t SAVE_FREQUENCY;
+    ms_t _lastSave;
 };
 
 #endif

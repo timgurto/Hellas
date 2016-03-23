@@ -3,10 +3,10 @@
 #ifndef OBJECT_TYPE_H
 #define OBJECT_TYPE_H
 
-#include <SDL.h>
 #include <string>
 
 #include "../Rect.h"
+#include "../types.h"
 #include "Yield.h"
 
 class Item;
@@ -14,11 +14,11 @@ class Item;
 // Describes a class of Objects, the "instances" of which share common properties
 class ObjectType{
     std::string _id;
-    Uint32 _gatherTime;
-    Uint32 _constructionTime;
+    ms_t _gatherTime;
+    ms_t _constructionTime;
 
     const Item *_deconstructsItem; // Item gained when this object is deconstructed
-    Uint32 _deconstructionTime;
+    ms_t _deconstructionTime;
 
     // To gather from objects of this type, a user must have an item of the following class.
     std::string _gatherReq;
@@ -37,7 +37,7 @@ public:
     ObjectType(const std::string &id);
     ObjectType(const Rect &collisionRect); // Anonymous object type used for collision testing.
 
-    void gatherTime(Uint32 t) { _gatherTime = t; }
+    void gatherTime(ms_t t) { _gatherTime = t; }
     const std::string &gatherReq() const { return _gatherReq; }
     void gatherReq(const std::string &req) { _gatherReq = req; }
     size_t containerSlots() const { return _containerSlots; }
@@ -46,9 +46,9 @@ public:
     void merchantSlots(size_t n) { _merchantSlots = n; }
 
     const std::string &id() const { return _id; }
-    Uint32 gatherTime() const { return _gatherTime; }
-    Uint32 constructionTime() const { return _constructionTime; }
-    void constructionTime(Uint32 t) { _constructionTime = t; }
+    ms_t gatherTime() const { return _gatherTime; }
+    ms_t constructionTime() const { return _constructionTime; }
+    void constructionTime(ms_t t) { _constructionTime = t; }
     const Yield &yield() const { return _yield; }
     bool collides() const { return _collides; }
     const Rect &collisionRect() const { return _collisionRect; }
@@ -56,8 +56,8 @@ public:
     bool isClass( const std::string &className) const;
     const Item *deconstructsItem() const { return _deconstructsItem; }
     void deconstructsItem(const Item *item) { _deconstructsItem = item; }
-    Uint32 deconstructionTime() const { return _deconstructionTime; }
-    void deconstructionTime(Uint32 t) { _deconstructionTime = t; }
+    ms_t deconstructionTime() const { return _deconstructionTime; }
+    void deconstructionTime(ms_t t) { _deconstructionTime = t; }
 
     bool operator<(const ObjectType &rhs) const { return _id < rhs._id; }
 

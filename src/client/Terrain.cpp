@@ -7,7 +7,7 @@
 #include "Terrain.h"
 #include "../util.h"
 
-Terrain::Terrain(const std::string &imageFile, bool isTraversable, size_t frames, Uint32 frameTime):
+Terrain::Terrain(const std::string &imageFile, bool isTraversable, size_t frames, ms_t frameTime):
 _isTraversable(isTraversable),
 _frames(frames),
 _frame(0),
@@ -51,7 +51,7 @@ void Terrain::setQuarterAlpha() const{
     _images[_frame].setAlpha(0x3f);
 }
 
-void Terrain::advanceTime(Uint32 timeElapsed) {
+void Terrain::advanceTime(ms_t timeElapsed) {
     if (_frameTime == 0)
         return;
 
