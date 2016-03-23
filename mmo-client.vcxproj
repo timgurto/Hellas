@@ -118,6 +118,7 @@
     <ClCompile Include="src\client\ui\ColorBlock.cpp" />
     <ClCompile Include="src\client\ui\Container.cpp" />
     <ClCompile Include="src\client\ui\Element.cpp" />
+    <ClCompile Include="src\client\ui\ItemSelector.cpp" />
     <ClCompile Include="src\client\ui\Label.cpp" />
     <ClCompile Include="src\client\ui\Line.cpp" />
     <ClCompile Include="src\client\ui\List.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="src\client\ui\ColorBlock.h" />
     <ClInclude Include="src\client\ui\Container.h" />
     <ClInclude Include="src\client\ui\Element.h" />
+    <ClInclude Include="src\client\ui\ItemSelector.h" />
     <ClInclude Include="src\client\ui\Label.h" />
     <ClInclude Include="src\client\ui\Line.h" />
     <ClInclude Include="src\client\ui\LinkedLabel.h" />
