@@ -3,6 +3,7 @@
 #ifndef POINT_H
 #define POINT_H
 
+#include "types.h"
 #include "util.h"
 
 // Describes a 2D point
