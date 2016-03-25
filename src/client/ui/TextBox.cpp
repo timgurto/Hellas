@@ -47,7 +47,7 @@ void TextBox::refresh(){
 }
 
 void TextBox::clearFocus(){
-    if (currentFocus)
+    if (currentFocus != nullptr)
         currentFocus->markChanged();
     currentFocus = 0;
 }
@@ -59,7 +59,7 @@ void TextBox::click(Element &e, const Point &mousePos){
 
     // Mark changed, to (un)draw cursor
     e.markChanged();
-    if (currentFocus)
+    if (currentFocus != nullptr)
         currentFocus->markChanged();
 
     currentFocus = newFocus;

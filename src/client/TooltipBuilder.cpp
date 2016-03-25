@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include <sstream>
 
@@ -24,7 +24,7 @@ TooltipBuilder::TooltipBuilder()
     }
     _color = DEFAULT_COLOR;
 
-    if (!_defaultFont)
+    if (_defaultFont == nullptr)
         _defaultFont = TTF_OpenFont("04B_03__.TTF", 8);
     _font = _defaultFont;
 }

@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include "Button.h"
 #include "ColorBlock.h"
@@ -37,7 +37,7 @@ void Button::depress(){
 void Button::release(bool click){
     _shadowBox->setReversed(false);
     _content->rect(0, 0);
-    if (click && _clickFun)
+    if (click && _clickFun != nullptr)
         _clickFun(_clickData);
     _depressed = false;
     markChanged();

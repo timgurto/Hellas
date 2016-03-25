@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include <cassert>
 
@@ -72,7 +72,7 @@ void Element::rect(const Rect &rhs){
 void Element::rect(px_t x, px_t y) {
     _rect.x = x;
     _rect.y = y;
-    if (_parent)
+    if (_parent != nullptr)
         _parent->markChanged();
 }
 
@@ -88,25 +88,25 @@ void Element::height(px_t h){
 
 void Element::markChanged() const{
     _changed = true;
-    if (_parent)
+    if (_parent != nullptr)
         _parent->markChanged();
 }
 
 void Element::show(){
-    if (!_visible && _parent)
+    if (!_visible && _parent != nullptr)
         _parent->markChanged();
     _visible = true;
 }
 
 void Element::hide(){
-    if (_visible && _parent)
+    if (_visible && _parent != nullptr)
         _parent->markChanged();
     _visible = false;
 }
 
 void Element::toggleVisibility(){
     _visible = !_visible;
-    if (_parent)
+    if (_parent != nullptr)
         _parent->markChanged();
 }
 
@@ -144,7 +144,7 @@ bool Element::onLeftMouseDown(const Point &mousePos){
     If execution gets here, then this element has no children that both collide
     and have _mouseDown defined.
     */
-    if (_leftMouseDown) {
+    if (_leftMouseDown != nullptr) {
         _leftMouseDown(*_leftMouseDownElement, relativeLocation);
         return true;
     } else
@@ -171,7 +171,7 @@ bool Element::onRightMouseDown(const Point &mousePos){
     If execution gets here, then this element has no children that both collide
     and have _mouseDown defined.
     */
-    if (_rightMouseDown) {
+    if (_rightMouseDown != nullptr) {
         _rightMouseDown(*_rightMouseDownElement, relativeLocation);
         return true;
     } else
@@ -198,7 +198,7 @@ bool Element::onScrollUp(const Point &mousePos){
     If execution gets here, then this element has no children that both collide
     and have _scrollUp defined.
     */
-    if (_scrollUp) {
+    if (_scrollUp != nullptr) {
         _scrollUp(*_scrollUpElement);
         return true;
     } else
@@ -225,7 +225,7 @@ bool Element::onScrollDown(const Point &mousePos){
     If execution gets here, then this element has no children that both collide
     and have _scrollDown defined.
     */
-    if (_scrollDown) {
+    if (_scrollDown != nullptr) {
         _scrollDown(*_scrollDownElement);
         return true;
     } else
@@ -236,7 +236,7 @@ void Element::onLeftMouseUp(const Point &mousePos){
     if (!_visible)
         return;
     const Point relativeLocation = mousePos - location();
-    if (_leftMouseUp)
+    if (_leftMouseUp != nullptr)
         _leftMouseUp(*_leftMouseUpElement, relativeLocation);
     for (Element *child : _children)
         child->onLeftMouseUp(relativeLocation);
@@ -246,7 +246,7 @@ void Element::onRightMouseUp(const Point &mousePos){
     if (!_visible)
         return;
     const Point relativeLocation = mousePos - location();
-    if (_rightMouseUp)
+    if (_rightMouseUp != nullptr)
         _rightMouseUp(*_rightMouseUpElement, relativeLocation);
     for (Element *child : _children)
         child->onRightMouseUp(relativeLocation);
@@ -256,7 +256,7 @@ void Element::onMouseMove(const Point &mousePos){
     if (!_visible)
         return;
     const Point relativeLocation = mousePos - location();
-    if (_mouseMove)
+    if (_mouseMove != nullptr)
         _mouseMove(*_mouseMoveElement, relativeLocation);
     if (_tooltip && collision(mousePos, rect()))
         _currentTooltip = &_tooltip;
@@ -345,7 +345,7 @@ void Element::setTooltip(const std::string &text){
 void Element::draw(){
     if (!_visible)
         return;
-    if (!_parent)
+    if (_parent == nullptr)
         checkIfChanged();
     if (_dimensionsChanged) {
         _texture = Texture(_rect.w, _rect.h);
@@ -373,7 +373,7 @@ void Element::draw(){
 }
 
 void Element::forceRefresh(){
-    if (!_parent)
+    if (_parent == nullptr)
         transparentBackground = Texture();
     _changed = true;
     for (Element *child : _children)

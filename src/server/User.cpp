@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include <cassert>
 #include <sstream>
@@ -114,7 +114,7 @@ size_t User::giveItem(const Item *item, size_t quantity){
 
     // Second pass: empty slots
     for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
-        if (_inventory[i].first)
+        if (_inventory[i].first != nullptr)
             continue;
         size_t qtyInThisSlot = min(item->stackSize(), quantity);
         _inventory[i].first = item;

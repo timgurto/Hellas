@@ -80,7 +80,7 @@ void Client::handleInput(double delta){
 
                     if (_actionLength != 0)
                         sendMessage(CL_CANCEL_ACTION);
-                    else if (frontMostVisibleWindow)
+                    else if (frontMostVisibleWindow != nullptr)
                         frontMostVisibleWindow->hide();
                     else
                         _loop = false;
@@ -251,12 +251,13 @@ void Client::handleInput(double delta){
                     }
 
                 // Dragged item onto map -> drop.
-                if (!mouseUpOnWindow && Container::getDragItem()) {
+                if (!mouseUpOnWindow && Container::getDragItem() != nullptr) {
                     Container::dropItem();
                 }
 
                 // Mouse down and up on same entity: onLeftClick
-                if (_leftMouseDownEntity && _currentMouseOverEntity == _leftMouseDownEntity)
+                if (_leftMouseDownEntity != nullptr &&
+                    _currentMouseOverEntity == _leftMouseDownEntity)
                     _currentMouseOverEntity->onLeftClick(*this);
                 _leftMouseDownEntity = 0;
 
@@ -271,14 +272,15 @@ void Client::handleInput(double delta){
                 if (_inventoryWindow->visible()) {
                     _inventoryWindow->onRightMouseUp(_mouse);
                     const Item *useItem = Container::getUseItem();
-                    if (useItem)
+                    if (useItem != nullptr)
                         _constructionFootprint = useItem->constructsObject()->image();
                     else
                         _constructionFootprint = Texture();
                 }
 
                 // Mouse down and up on same entity: onRightClick
-                if (_rightMouseDownEntity && _currentMouseOverEntity == _rightMouseDownEntity)
+                if (_rightMouseDownEntity != nullptr &&
+                    _currentMouseOverEntity == _rightMouseDownEntity)
                     _currentMouseOverEntity->onRightClick(*this);
                 _rightMouseDownEntity = 0;
 

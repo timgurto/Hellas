@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #ifndef XML_READER_H
 #define XML_READER_H
@@ -28,7 +28,7 @@ public:
     template<typename T>
     static bool findAttr(TiXmlElement *elem, const char *attr, T &val) {
         const char *const cStrVal = elem->Attribute(attr);
-        if (cStrVal) {
+        if (cStrVal != nullptr) {
             std::string strVal(cStrVal);
             std::istringstream iss(strVal);
             iss >> val;

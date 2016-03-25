@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include <cassert>
 
@@ -27,7 +27,7 @@ ClientObject::ClientObject(size_t serialArg, const EntityType *type, const Point
 Entity(type, loc),
 _serial(serialArg),
 _window(0){
-    if (type) { // i.e., not a serial-only search dummy
+    if (type != nullptr) { // i.e., not a serial-only search dummy
         const size_t
             containerSlots = objectType()->containerSlots(),
             merchantSlots = objectType()->merchantSlots();
@@ -49,7 +49,7 @@ _window(0){
 ClientObject::~ClientObject(){
     for (auto p : _serialSlotPairs)
         delete p;
-    if (_window) {
+    if (_window != nullptr) {
         Client::_instance->removeWindow(_window);
         delete _window;
     }
@@ -58,7 +58,7 @@ ClientObject::~ClientObject(){
 void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
     _merchantSlots[i] = mSlot;
 
-    if (!_window)
+    if (_window == nullptr)
         return;
     assert(_merchantSlotElements[i]);
 
@@ -94,7 +94,7 @@ void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
         e.addChild(button);
         button->setTooltip("Select an item to sell");
         x += ICON_SIZE + GAP;
-        if (mSlot.wareItem()){
+        if (mSlot.wareItem() != nullptr){
             const Item &item = *mSlot.wareItem();
             button->addChild(new Picture(Rect(0, 0, ICON_SIZE, ICON_SIZE), item.icon()));
             e.addChild(new Label(Rect(x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT), item.name()));
@@ -109,7 +109,7 @@ void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
         e.addChild(button);
         button->setTooltip("Select an item as the price");
         x += ICON_SIZE + GAP;
-        if (mSlot.priceItem()){
+        if (mSlot.priceItem() != nullptr){
             const Item &item = *mSlot.priceItem();
             button->addChild(new Picture(Rect(0, 0, ICON_SIZE, ICON_SIZE), item.icon()));
             e.addChild(new Label(Rect(x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT), item.name()));
@@ -168,7 +168,7 @@ void ClientObject::onRightClick(Client &client){
         playGatherSound();
     } else {
 
-        if (_window){
+        if (_window != nullptr){
             client.removeWindow(_window);
             client.addWindow(_window);
         }
@@ -177,7 +177,8 @@ void ClientObject::onRightClick(Client &client){
         bool
             hasContainer = objType.containerSlots() > 0,
             isMerchant = objType.merchantSlots() > 0;
-        if (userHasAccess() && !_window && (hasContainer || isMerchant || objType.canDeconstruct())){
+        if (userHasAccess() && _window == nullptr &&
+            (hasContainer || isMerchant || objType.canDeconstruct())){
             static const size_t COLS = 8;
             static const px_t
                 WINDOW_WIDTH = Container(1, 8, _container).width(),
@@ -289,7 +290,7 @@ void ClientObject::onRightClick(Client &client){
             }
         }
 
-        if (_window) {
+        if (_window != nullptr) {
             // Determine placement: center around object, but keep entirely on screen.
             px_t x = toInt(location().x - _window->width() / 2 + client.offset().x);
             x = max(0, min(x, Client::SCREEN_X - _window->width()));
@@ -314,7 +315,7 @@ std::vector<std::string> ClientObject::getTooltipMessages(const Client &client) 
 
 void ClientObject::playGatherSound() const {
     Mix_Chunk *sound = objectType()->gatherSound();
-    if (sound) {
+    if (sound != nullptr) {
         Mix_PlayChannel(Client::PLAYER_ACTION_CHANNEL, sound, -1);
     }
 }
@@ -346,12 +347,12 @@ void ClientObject::draw(const Client &client) const{
 }
 
 void ClientObject::refreshWindow() {
-    if (_window)
+    if (_window != nullptr)
         _window->forceRefresh();
 }
 
 void ClientObject::hideWindow() {
-    if (_window)
+    if (_window != nullptr)
         _window->hide();
 }
 
@@ -385,7 +386,7 @@ void ClientObject::sendMerchantSlot(void *serialAndSlot){
     mSlot.wareQty(obj._wareQtyBoxes[slot]->textAsNum());
     mSlot.priceQty(obj._priceQtyBoxes[slot]->textAsNum());
 
-    if (!mSlot.wareItem() || !mSlot.priceItem()){
+    if (mSlot.wareItem() == nullptr || mSlot.priceItem() == nullptr){
         Client::debug()("You must select an item", Color::YELLOW);
         return;
     }

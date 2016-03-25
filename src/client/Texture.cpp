@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include <SDL.h>
 #include <SDL_ttf.h>
@@ -36,7 +36,7 @@ _programEndMarker(false){
     assert (renderer);
 
     _raw = renderer.createTargetableTexture(width, height);
-    if (_raw)
+    if (_raw != nullptr)
         addRef();
     else
         _validTarget = false;
@@ -53,14 +53,14 @@ _programEndMarker(false){
     assert (renderer);
 
     SDL_Surface *const surface = IMG_Load(filename.c_str());
-    if (!surface)
+    if (surface == nullptr)
         return;
     if (&colorKey != &Color::NO_KEY) {
         SDL_SetColorKey(surface, SDL_TRUE, colorKey);
     }
     _raw = renderer.createTextureFromSurface(surface);
     SDL_FreeSurface(surface);
-    if (_raw)
+    if (_raw != nullptr)
         addRef();
     const int ret = SDL_QueryTexture(_raw, 0, 0, &_w, &_h);
     if (ret != 0) {
@@ -77,16 +77,16 @@ _validTarget(false),
 _programEndMarker(false){
     assert (renderer);
 
-    if (!font)
+    if (font == nullptr)
         return;
 
     SDL_Surface *const surface = TTF_RenderText_Solid(font, text.c_str(), color);
-    if (!surface)
+    if (surface == nullptr)
         return;
     _raw = renderer.createTextureFromSurface(surface);
     SDL_FreeSurface(surface);
     SDL_QueryTexture(_raw, 0, 0, &_w, &_h);
-    if (_raw)
+    if (_raw != nullptr)
         addRef();
 }
 
@@ -96,21 +96,21 @@ _w(rhs._w),
 _h(rhs._h),
 _validTarget(rhs._validTarget),
 _programEndMarker(false){
-    if (_raw)
+    if (_raw != nullptr)
         addRef();
 }
 
 Texture &Texture::operator=(const Texture &rhs){
     if (this == &rhs)
         return *this;
-    if (_raw)
+    if (_raw != nullptr)
         removeRef();
 
     _raw = rhs._raw;
     _w = rhs._w;
     _h = rhs._h;
     _validTarget = rhs._validTarget;
-    if (_raw)
+    if (_raw != nullptr)
         addRef();
     return *this;
 }
@@ -127,7 +127,7 @@ Texture::~Texture(){
         return;
     }
 
-    if (_raw)
+    if (_raw != nullptr)
         removeRef();
 }
 
@@ -165,7 +165,7 @@ void Texture::addRef(){
 }
 
 void Texture::removeRef(){
-    if (_raw && !_refs.empty()) {
+    if (_raw != nullptr && !_refs.empty()) {
         --_numTextures;
         --_refs[_raw];
         if (_refs[_raw] == 0) {

@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include "Item.h"
 #include "ObjectType.h"
@@ -18,7 +18,7 @@ bool Item::isClass(const std::string &className) const{
 
 bool vectHasSpace(const Item::vect_t &vect, const Item *item, size_t qty){
     for (size_t i = 0; i != vect.size(); ++i) {
-        if (!vect[i].first) {
+        if (vect[i].first == nullptr) {
             if (qty <= item->stackSize())
                 return true;
             qty -= item->stackSize();

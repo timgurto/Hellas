@@ -17,7 +17,7 @@ bool Server::readUserData(User &user){
 
     auto elem = xr.findChild("location");
     Point p;
-    if (!elem || !xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
+    if (elem == nullptr || !xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
             _debug("Invalid user data (location)", Color::RED);
             return false;
     }
@@ -129,7 +129,7 @@ void Server::loadData(){
             if (xr.findAttr(objClass, "name", s))
                 ot.addClass(s);
         auto container = xr.findChild("container", elem);
-        if (container) {
+        if (container != nullptr) {
             if (xr.findAttr(container, "slots", n)) ot.containerSlots(n);
         }
         
@@ -213,7 +213,7 @@ void Server::loadData(){
         if (!xr)
             break;
         auto elem = xr.findChild("size");
-        if (!elem || !xr.findAttr(elem, "x", _mapX) || !xr.findAttr(elem, "y", _mapY)) {
+        if (elem == nullptr || !xr.findAttr(elem, "x", _mapX) || !xr.findAttr(elem, "y", _mapY)) {
             _debug("Map size missing or incomplete.", Color::RED);
             break;
         }
@@ -354,7 +354,7 @@ void Server::saveData(const std::set<Object> &objects){
 #endif
     xw.newFile("World/objects.world");
     for (const Object &obj : objects) {
-        if (!obj.type())
+        if (obj.type() == nullptr)
             continue;
         auto e = xw.addChild("object");
 

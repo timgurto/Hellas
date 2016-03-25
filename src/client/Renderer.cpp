@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include <SDL_ttf.h>
 #include <SDL_image.h>
@@ -38,12 +38,12 @@ void Renderer::init(){
 
     _window = SDL_CreateWindow("Client", screenX, screenY, screenW, screenH,
                                SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-    if (!_window)
+    if (_window == nullptr)
         return;
 
     _renderer = SDL_CreateRenderer(_window, -1,
                                    SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (!_renderer)
+    if (_renderer == nullptr)
         return;
 
     SDL_GetRendererOutputSize(_renderer, &_w, &_h);
@@ -52,9 +52,9 @@ void Renderer::init(){
 }
 
 Renderer::~Renderer(){
-    if (_renderer)
+    if (_renderer != nullptr)
         SDL_DestroyRenderer(_renderer);
-    if (_window)
+    if (_window != nullptr)
         SDL_DestroyWindow(_window);
     
     --_count;

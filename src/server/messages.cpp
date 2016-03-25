@@ -123,12 +123,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             const std::pair<const Item *, size_t> &invSlot = user->inventory(slot);
-            if (!invSlot.first) {
+            if (invSlot.first == nullptr) {
                 sendMessage(client, SV_EMPTY_SLOT);
                 break;
             }
             const Item &item = *invSlot.first;
-            if (!item.constructsObject()) {
+            if (item.constructsObject() == nullptr) {
                 sendMessage(client, SV_CANNOT_CONSTRUCT);
                 break;
             }
@@ -206,7 +206,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             // Check that the object can be deconstructed
-            if (!obj.type()->deconstructsItem()){
+            if (obj.type()->deconstructsItem() == nullptr){
                 sendMessage(client, SV_CANNOT_DECONSTRUCT);
                 break;
             }

@@ -93,7 +93,7 @@ void Client::draw() const{
     // Dragged item
     static const Point MOUSE_ICON_OFFSET(-Client::ICON_SIZE/2, -Client::ICON_SIZE/2);
     const Item *draggedItem = Container::getDragItem();
-    if (draggedItem)
+    if (draggedItem != nullptr)
         draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
 
     // Used item
@@ -128,14 +128,14 @@ void Client::draw() const{
 
 void Client::drawTooltip() const{
     const Texture *tooltip;
-    if (Element::tooltip())
+    if (Element::tooltip() != nullptr)
         tooltip = Element::tooltip();
-    else if (_currentMouseOverEntity)
+    else if (_currentMouseOverEntity != nullptr)
         tooltip = &_currentMouseOverEntity->tooltip();
     else
         return;
 
-    if (tooltip) {
+    if (tooltip != nullptr) {
         static const px_t EDGE_GAP = 2; // Gap from screen edges
         static const px_t CURSOR_GAP = 10; // Horizontal gap from cursor
         px_t x, y;

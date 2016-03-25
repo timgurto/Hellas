@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include <cassert>
 
@@ -38,7 +38,7 @@ void Entity::draw(const Client &client) const{
 }
 
 double Entity::bottomEdge() const{
-    if (_type)
+    if (_type != nullptr)
         return _location.y + _type->drawRect().y + _type->height();
     else
         return _location.y;

@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include <SDL.h>
 #include <SDL_mixer.h>
@@ -16,7 +16,7 @@ _gatherSound(0){}
 
 ClientObjectType::~ClientObjectType(){
     // TODO: wrap sound functionality in class that properly handeles copies.
-    /*if (_gatherSound)
+    /*if (_gatherSound != nullptr)
         Mix_FreeChunk(_gatherSound);*/
 }
 

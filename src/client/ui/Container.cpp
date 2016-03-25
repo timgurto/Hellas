@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include "ColorBlock.h"
 #include "Container.h"
@@ -65,7 +65,7 @@ void Container::refresh(){
         renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
         if (dragSlot != i) { // Don't draw an item being moved by the mouse.
             const std::pair<const Item *, size_t> &slot = _linked[i];
-            if (slot.first){
+            if (slot.first != nullptr){
                 slot.first->icon().draw(slotRect.x + 1, slotRect.y + 1);
                 if (slot.second > 1){
                     Texture label(font(), makeArgs(slot.second), FONT_COLOR);
@@ -140,8 +140,8 @@ void Container::rightMouseUp(Element &e, const Point &mousePos){
         useContainer = 0;
     } else if (slot != NO_SLOT) { // Right-clicked a slot
         const Item *item = container._linked[slot].first;
-        if (item && // Slot is not empty
-            item->constructsObject()) { // Can construct item
+        if (item != nullptr && // Slot is not empty
+            item->constructsObject() != nullptr) { // Can construct item
             useSlot = slot;
             useContainer = &container;
         }

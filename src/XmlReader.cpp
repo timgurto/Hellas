@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include <set>
 #include <sstream>
@@ -40,7 +40,7 @@ TiXmlElement *XmlReader::findChild(const std::string &val, TiXmlElement *elem){
 
 bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, std::string &val){
     const char *const cStrVal = elem->Attribute(attr);
-    if (cStrVal) {
+    if (cStrVal != nullptr) {
         val = cStrVal;
         return true;
     }

@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include <algorithm>
 #include <cassert>
@@ -303,7 +303,7 @@ _debug("client.log"){
         if (xr.findAttr(elem, "deconstructs", s)) cot.canDeconstruct(true);
         
         auto container = xr.findChild("container", elem);
-        if (container) {
+        if (container != nullptr) {
             if (xr.findAttr(container, "slots", n)) cot.containerSlots(n);
         }
 
@@ -393,7 +393,7 @@ _debug("client.log"){
 Client::~Client(){
     SDL_ShowCursor(SDL_ENABLE);
     Element::cleanup();
-    if (_defaultFont)
+    if (_defaultFont != nullptr)
         TTF_CloseFont(_defaultFont);
     Avatar::image("");
     for (const Entity *entityConst : _entities) {
@@ -574,7 +574,7 @@ void Client::checkMouseOver(){
     // Check if mouse is over an entity
     const Entity *const oldMouseOverEntity = _currentMouseOverEntity;
     _currentMouseOverEntity = getEntityAtMouse();
-    if (!_currentMouseOverEntity)
+    if (_currentMouseOverEntity == nullptr)
         return;
     if (_currentMouseOverEntity != oldMouseOverEntity ||
         _currentMouseOverEntity->needsTooltipRefresh() ||
@@ -595,7 +595,7 @@ void Client::checkMouseOver(){
 }
 
 void Client::startCrafting(void *data){
-    if (_instance->_activeRecipe) {
+    if (_instance->_activeRecipe != nullptr) {
         _instance->sendMessage(CL_CRAFT, _instance->_activeRecipe->id());
         _instance->prepareAction("Crafting " + _instance->_activeRecipe->product()->name());
     }
