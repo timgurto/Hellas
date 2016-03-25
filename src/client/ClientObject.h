@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #ifndef CLIENT_OBJECT_H
 #define CLIENT_OBJECT_H
@@ -34,7 +34,7 @@ class ClientObject : public Entity{
 public:
     ClientObject(const ClientObject &rhs);
     // Serial only: create dummy object, for set searches
-    ClientObject(size_t serial, const EntityType *type = 0, const Point &loc = Point());
+    ClientObject(size_t serial, const EntityType *type = nullptr, const Point &loc = Point());
     virtual ~ClientObject();
 
     bool operator<(const ClientObject &rhs) const { return _serial < rhs._serial; }

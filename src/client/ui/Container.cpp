@@ -15,10 +15,10 @@ const px_t Container::GAP = 0;
 const size_t Container::NO_SLOT = 999;
 
 size_t Container::dragSlot = NO_SLOT;
-const Container *Container::dragContainer = 0;
+const Container *Container::dragContainer = nullptr;
 
 size_t Container::useSlot = NO_SLOT;
-const Container *Container::useContainer = 0;
+const Container *Container::useContainer = nullptr;
 
 Texture Container::_highlight;
 
@@ -106,10 +106,10 @@ void Container::leftMouseUp(Element &e, const Point &mousePos){
             Client::_instance->sendMessage(CL_SWAP_ITEMS, makeArgs(dragContainer->_serial, dragSlot,
                                                                    container._serial, slot));
             dragSlot = NO_SLOT;
-            dragContainer = 0;
+            dragContainer = nullptr;
         } else if (slot == dragSlot && &container == dragContainer) {
             dragSlot = NO_SLOT;
-            dragContainer = 0;
+            dragContainer = nullptr;
             container.markChanged();
         } else if (container._leftMouseDownSlot == slot && // Same slot that mouse went down on
                     container._linked[slot].first) { // and slot isn't empty: start dragging
@@ -131,13 +131,13 @@ void Container::rightMouseUp(Element &e, const Point &mousePos){
     Container &container = dynamic_cast<Container &>(e);
     if (dragSlot != NO_SLOT) { // Cancel dragging
         dragSlot = NO_SLOT;
-        dragContainer = 0;
+        dragContainer = nullptr;
         container.markChanged();
     }
     size_t slot = container.getSlot(mousePos);
     if (useSlot != NO_SLOT) { // Right-clicked instead of used: cancel use
         useSlot = NO_SLOT;
-        useContainer = 0;
+        useContainer = nullptr;
     } else if (slot != NO_SLOT) { // Right-clicked a slot
         const Item *item = container._linked[slot].first;
         if (item != nullptr && // Slot is not empty
@@ -160,14 +160,14 @@ void Container::mouseMove(Element &e, const Point &mousePos){
 
 const Item *Container::getDragItem() {
     if (dragSlot == NO_SLOT || !dragContainer)
-        return 0;
+        return nullptr;
     else
         return dragContainer->_linked[dragSlot].first;
 }
 
 const Item *Container::getUseItem() {
     if (useSlot == NO_SLOT || !useContainer)
-        return 0;
+        return nullptr;
     else
         return useContainer->_linked[useSlot].first;
 }
@@ -176,11 +176,11 @@ void Container::dropItem() {
     if (dragSlot != NO_SLOT && dragContainer) {
         Client::_instance->sendMessage(CL_DROP, makeArgs(dragContainer->_serial, dragSlot));
         dragSlot = NO_SLOT;
-        dragContainer = 0;
+        dragContainer = nullptr;
     }
 }
 
 void Container::clearUseItem() {
     useSlot = NO_SLOT;
-    useContainer = 0;
+    useContainer = nullptr;
 }

@@ -19,8 +19,8 @@ class MerchantSlot{
         _price;
 
 public:
-    MerchantSlot(const Item *wareItem = 0, size_t wareQty = 0,
-                 const Item *priceItem = 0, size_t priceQty = 0);
+    MerchantSlot(const Item *wareItem = nullptr, size_t wareQty = 0,
+                 const Item *priceItem = nullptr, size_t priceQty = 0);
 
     operator bool() const;
     

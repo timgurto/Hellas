@@ -1,11 +1,11 @@
-// (C) 2015 Tim Gurto 
+// (C) 2015-2016 Tim Gurto 
 
 #include "Item.h"
 
 Item::Item(const std::string &id, const std::string &name):
 _id(id),
 _name(name),
-_constructsObject(0){}
+_constructsObject(nullptr){}
 
 void Item::icon(const std::string &filename){
     static const std::string

@@ -23,9 +23,9 @@ _location(loc),
 
 _action(NO_ACTION),
 _actionTime(0),
-_actionObject(0),
-_actionRecipe(0),
-_actionObjectType(0),
+_actionObject(nullptr),
+_actionRecipe(nullptr),
+_actionObjectType(nullptr),
 _actionSlot(INVENTORY_SIZE),
 _actionLocation(0, 0),
 
@@ -74,7 +74,7 @@ void User::updateLocation(const Point &dest){
             testPoint.x = xDeltaPositive ? (testPoint.x) + ACCURACY : (testPoint.x - ACCURACY);
         } while ((xDeltaPositive ? (testPoint.x <= interpolated.x) :
                                    (testPoint.x >= interpolated.x)) &&
-                 server.isLocationValid(testPoint, OBJECT_TYPE, 0, this));
+                 server.isLocationValid(testPoint, OBJECT_TYPE, nullptr, this));
         const bool yDeltaPositive = _location.y < interpolated.y;
         testPoint.x = newDest.x; // Keep it valid for y testing.
         do {
@@ -82,7 +82,7 @@ void User::updateLocation(const Point &dest){
             testPoint.y = yDeltaPositive ? (testPoint.y + ACCURACY) : (testPoint.y - ACCURACY);
         } while ((yDeltaPositive ? (testPoint.y <= interpolated.y) :
                                    (testPoint.y >= interpolated.y)) &&
-                 server.isLocationValid(testPoint, OBJECT_TYPE, 0, this));
+                 server.isLocationValid(testPoint, OBJECT_TYPE, nullptr, this));
     }
 
     _location = newDest;
@@ -209,7 +209,7 @@ void User::removeItems(const ItemSet &items) {
             remaining.remove(invSlot.first, itemsToRemove);
             _inventory[i].second -= itemsToRemove;
             if (_inventory[i].second == 0)
-                _inventory[i].first = 0;
+                _inventory[i].first = nullptr;
             invSlotsChanged.insert(i);
             if (remaining.isEmpty())
                 break;
@@ -257,7 +257,7 @@ void User::update(ms_t timeElapsed){
         assert(slot.first->constructsObject() == _actionObjectType);
         --slot.second;
         if (slot.second == 0)
-            slot.first = 0;
+            slot.first = nullptr;
         server.sendInventoryMessage(*this, 0, _actionSlot);
         break;
     }

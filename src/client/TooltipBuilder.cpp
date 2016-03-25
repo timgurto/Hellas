@@ -10,7 +10,7 @@ extern Renderer renderer;
 bool TooltipBuilder::initialized = false;
 
 const px_t TooltipBuilder::PADDING = 4; // Margins, and the height of gaps between lines.
-TTF_Font *TooltipBuilder::_defaultFont = 0;
+TTF_Font *TooltipBuilder::_defaultFont = nullptr;
 Color TooltipBuilder::DEFAULT_COLOR;
 Color TooltipBuilder::BACKGROUND_COLOR;
 const px_t TooltipBuilder::DEFAULT_MAX_WIDTH = 150;

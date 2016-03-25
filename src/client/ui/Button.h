@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #ifndef BUTTON_H
 #define BUTTON_H
@@ -32,8 +32,8 @@ private:
     static void mouseMove(Element &e, const Point &mousePos);
 
 public:
-    Button(const Rect &rect, const std::string &caption = "", clickFun_t clickFunction = 0,
-           void *clickData = 0);
+    Button(const Rect &rect, const std::string &caption = "", clickFun_t clickFunction = nullptr,
+           void *clickData = nullptr);
     virtual void addChild(Element *child) override;
     virtual void clearChildren() override;
     virtual Element *findChild(const std::string id) override;

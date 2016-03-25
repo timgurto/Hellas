@@ -15,32 +15,32 @@ Color Element::SHADOW_LIGHT;
 Color Element::SHADOW_DARK;
 Color Element::FONT_COLOR;
 
-TTF_Font *Element::_font = 0;
+TTF_Font *Element::_font = nullptr;
 px_t Element::textOffset = 0;
 px_t Element::TEXT_HEIGHT = 0;
 px_t Element::ITEM_HEIGHT = 0;
 
 Texture Element::transparentBackground;
 
-const Point *Element::absMouse = 0;
+const Point *Element::absMouse = nullptr;
 
-const Texture *Element::_currentTooltip = 0;
+const Texture *Element::_currentTooltip = nullptr;
 
 Element::Element(const Rect &rect):
 _changed(true),
 _dimensionsChanged(false),
 _visible(true),
 _rect(rect),
-_parent(0),
+_parent(nullptr),
 _texture(rect.w, rect.h),
-_leftMouseDown(0), _leftMouseDownElement(0),
-_leftMouseUp(0), _leftMouseUpElement(0),
-_rightMouseDown(0), _rightMouseDownElement(0),
-_rightMouseUp(0), _rightMouseUpElement(0),
-_mouseMove(0), _mouseMoveElement(0),
-_scrollUp(0), _scrollUpElement(0),
-_scrollDown(0), _scrollDownElement(0),
-_preRefresh(0), _preRefreshElement(0){
+_leftMouseDown(nullptr), _leftMouseDownElement(nullptr),
+_leftMouseUp(nullptr), _leftMouseUpElement(nullptr),
+_rightMouseDown(nullptr), _rightMouseDownElement(nullptr),
+_rightMouseUp(nullptr), _rightMouseUpElement(nullptr),
+_mouseMove(nullptr), _mouseMoveElement(nullptr),
+_scrollUp(nullptr), _scrollUpElement(nullptr),
+_scrollDown(nullptr), _scrollDownElement(nullptr),
+_preRefresh(nullptr), _preRefreshElement(nullptr){
     _texture.setBlend(SDL_BLENDMODE_BLEND);
 }
 
@@ -331,11 +331,11 @@ Element *Element::findChild(const std::string id){
         if (found)
             return found;
     }
-    return 0;
+    return nullptr;
 }
 
 void Element::resetTooltip(){
-    _currentTooltip = 0;
+    _currentTooltip = nullptr;
 }
 
 void Element::setTooltip(const std::string &text){

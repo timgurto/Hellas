@@ -12,8 +12,8 @@ extern Args cmdLineArgs;
 size_t Renderer::_count = 0;
 
 Renderer::Renderer():
-_renderer(0),
-_window(0),
+_renderer(nullptr),
+_window(nullptr),
 _valid(false){
     if (_count == 0) {
         // First renderer constructed; initialize SDL

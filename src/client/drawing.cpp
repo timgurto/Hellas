@@ -59,8 +59,8 @@ void Client::draw() const{
         rightX = -offset().x + SCREEN_X + DRAW_MARGIN_SIDES;
     // Cull by y
     Entity
-        topEntity(0, Point(0, topY)),
-        bottomEntity(0, Point(0, bottomY));
+        topEntity(nullptr, Point(0, topY)),
+        bottomEntity(nullptr, Point(0, bottomY));
     auto top = _entities.lower_bound(&topEntity);
     auto bottom = _entities.upper_bound(&bottomEntity);
     // Flat entities

@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #ifndef CHOICE_LIST_H
 #define CHOICE_LIST_H
@@ -20,7 +20,7 @@ class ChoiceList : public List{
         *_mouseDownBox;
     Element *_boxLayer; // shape/position is a copy of List::_content
 
-    const std::string &getIdFromMouse(double mouseY, int *index = 0) const;
+    const std::string &getIdFromMouse(double mouseY, int *index = nullptr) const;
     bool contentCollision(const Point &p) const;
 
     static void markMouseDown(Element &e, const Point &mousePos);

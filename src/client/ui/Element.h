@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include <SDL.h>
 #include <list>
@@ -47,7 +47,7 @@ private:
 
     Rect _rect; // Location and dimensions within window
 
-    Element *_parent; // 0 if no parent.
+    Element *_parent; // nullptr if no parent.
 
     std::string _id; // Optional ID for finding children.
 
@@ -138,20 +138,20 @@ public:
 
     virtual void addChild(Element *child);
     virtual void clearChildren(); // Delete all children
-    virtual Element *findChild(const std::string id); // Find a child by ID, or 0 if not found.
+    virtual Element *findChild(const std::string id); // Find a child by ID, or nullptr if not found.
 
     // To be called during refresh.
     void makeBackgroundTransparent();
 
-    // e: allows the function to be called on behalf of another element.  0 = self.
-    void setLeftMouseDownFunction(mouseDownFunction_t f, Element *e = 0);
-    void setLeftMouseUpFunction(mouseUpFunction_t f, Element *e = 0);
-    void setRightMouseDownFunction(mouseDownFunction_t f, Element *e = 0);
-    void setRightMouseUpFunction(mouseUpFunction_t f, Element *e = 0);
-    void setMouseMoveFunction(mouseMoveFunction_t f, Element *e = 0);
-    void setScrollUpFunction(scrollUpFunction_t f, Element *e = 0);
-    void setScrollDownFunction(scrollDownFunction_t f, Element *e = 0);
-    void setPreRefreshFunction(preRefreshFunction_t f, Element *e = 0);
+    // e: allows the function to be called on behalf of another element.  nullptr = self.
+    void setLeftMouseDownFunction(mouseDownFunction_t f, Element *e = nullptr);
+    void setLeftMouseUpFunction(mouseUpFunction_t f, Element *e = nullptr);
+    void setRightMouseDownFunction(mouseDownFunction_t f, Element *e = nullptr);
+    void setRightMouseUpFunction(mouseUpFunction_t f, Element *e = nullptr);
+    void setMouseMoveFunction(mouseMoveFunction_t f, Element *e = nullptr);
+    void setScrollUpFunction(scrollUpFunction_t f, Element *e = nullptr);
+    void setScrollDownFunction(scrollDownFunction_t f, Element *e = nullptr);
+    void setPreRefreshFunction(preRefreshFunction_t f, Element *e = nullptr);
 
     /*
     Recurse to all children, calling _mouseDown() etc. in the lowest element that the mouse is over.

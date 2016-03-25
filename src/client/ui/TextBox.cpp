@@ -8,7 +8,7 @@
 
 extern Renderer renderer;
 
-TextBox *TextBox::currentFocus = 0;
+TextBox *TextBox::currentFocus = nullptr;
 const px_t TextBox::HEIGHT = 14;
 const size_t TextBox::MAX_TEXT_LENGTH = 100;
 
@@ -49,7 +49,7 @@ void TextBox::refresh(){
 void TextBox::clearFocus(){
     if (currentFocus != nullptr)
         currentFocus->markChanged();
-    currentFocus = 0;
+    currentFocus = nullptr;
 }
 
 void TextBox::click(Element &e, const Point &mousePos){

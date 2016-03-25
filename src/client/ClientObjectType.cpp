@@ -12,7 +12,7 @@ _canGather(false),
 _canDeconstruct(false),
 _containerSlots(0),
 _merchantSlots(0),
-_gatherSound(0){}
+_gatherSound(nullptr){}
 
 ClientObjectType::~ClientObjectType(){
     // TODO: wrap sound functionality in class that properly handeles copies.

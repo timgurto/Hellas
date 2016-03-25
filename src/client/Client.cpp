@@ -29,9 +29,9 @@
 extern Args cmdLineArgs;
 
 // TODO: Move all client functionality to a namespace, rather than a class.
-Client *Client::_instance = 0;
+Client *Client::_instance = nullptr;
 
-LogSDL *Client::_debugInstance = 0;
+LogSDL *Client::_debugInstance = nullptr;
 
 const px_t Client::SCREEN_X = 640;
 const px_t Client::SCREEN_Y = 360;
@@ -71,11 +71,11 @@ _cursorGather(std::string("Images/Cursors/gather.png"), Color::MAGENTA),
 _cursorContainer(std::string("Images/Cursors/container.png"), Color::MAGENTA),
 _currentCursor(&_cursorNormal),
 
-_activeRecipe(0),
-_recipeList(0),
-_detailsPane(0),
-_craftingWindow(0),
-_inventoryWindow(0),
+_activeRecipe(nullptr),
+_recipeList(nullptr),
+_detailsPane(nullptr),
+_craftingWindow(nullptr),
+_inventoryWindow(nullptr),
 
 _actionTimer(0),
 _actionLength(0),
@@ -83,15 +83,15 @@ _actionLength(0),
 _loop(true),
 _socket(),
 
-_defaultFont(0),
+_defaultFont(nullptr),
 _defaultFontOffset(0),
 
 _mouse(0,0),
 _mouseMoved(false),
 _leftMouseDown(false),
-_leftMouseDownEntity(0),
+_leftMouseDownEntity(nullptr),
 _rightMouseDown(false),
-_rightMouseDownEntity(0),
+_rightMouseDownEntity(nullptr),
 
 _time(SDL_GetTicks()),
 _timeElapsed(0),
@@ -111,7 +111,7 @@ _tooltipNeedsRefresh(false),
 
 _mapX(0), _mapY(0),
 
-_currentMouseOverEntity(0),
+_currentMouseOverEntity(nullptr),
 
 _debug("client.log"){
     isClient = true;
@@ -203,7 +203,7 @@ _debug("client.log"){
 
     // Player's inventory
     for (size_t i = 0; i != INVENTORY_SIZE; ++i)
-        _inventory.push_back(std::make_pair<const Item *, size_t>(0, 0));
+        _inventory.push_back(std::make_pair<const Item *, size_t>(nullptr, 0));
 
     // Randomize player name if not supplied
     if (cmdLineArgs.contains("username"))
@@ -441,7 +441,7 @@ void Client::checkSocket(){
     FD_ZERO(&readFDs);
     FD_SET(_socket.getRaw(), &readFDs);
     static timeval selectTimeout = {0, 10000};
-    int activity = select(0, &readFDs, 0, 0, &selectTimeout);
+    int activity = select(0, &readFDs, nullptr, nullptr, &selectTimeout);
     if (activity == SOCKET_ERROR) {
         _debug << Color::RED << "Error polling sockets: " << WSAGetLastError() << Log::endl;
         return;
@@ -553,8 +553,8 @@ Entity *Client::getEntityAtMouse(){
     Entity::set_t::iterator mouseOverIt = _entities.end();
     static const px_t LOOKUP_MARGIN = 30;
     Entity
-        topEntity(0, Point(0, mouseOffset.y - LOOKUP_MARGIN)),
-        bottomEntity(0, Point(0, mouseOffset.y + LOOKUP_MARGIN));
+        topEntity(nullptr, Point(0, mouseOffset.y - LOOKUP_MARGIN)),
+        bottomEntity(nullptr, Point(0, mouseOffset.y + LOOKUP_MARGIN));
     auto
         lowerBound = _entities.lower_bound(&topEntity),
         upperBound = _entities.upper_bound(&bottomEntity);
@@ -565,7 +565,7 @@ Entity *Client::getEntityAtMouse(){
     if (mouseOverIt != _entities.end())
         return *mouseOverIt;
     else
-        return 0;
+        return nullptr;
 }
 
 void Client::checkMouseOver(){

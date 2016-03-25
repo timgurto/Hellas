@@ -21,28 +21,28 @@ ClientObject::ClientObject(const ClientObject &rhs):
 Entity(rhs),
 _serial(rhs._serial),
 _container(rhs._container),
-_window(0){}
+_window(nullptr){}
 
 ClientObject::ClientObject(size_t serialArg, const EntityType *type, const Point &loc):
 Entity(type, loc),
 _serial(serialArg),
-_window(0){
+_window(nullptr){
     if (type != nullptr) { // i.e., not a serial-only search dummy
         const size_t
             containerSlots = objectType()->containerSlots(),
             merchantSlots = objectType()->merchantSlots();
         _container = Item::vect_t(containerSlots);
         _merchantSlots = std::vector<MerchantSlot>(merchantSlots);
-        _merchantSlotElements = std::vector<Element *>(merchantSlots, 0);
-        _serialSlotPairs = std::vector<serialSlotPair_t *>(merchantSlots, 0);
+        _merchantSlotElements = std::vector<Element *>(merchantSlots, nullptr);
+        _serialSlotPairs = std::vector<serialSlotPair_t *>(merchantSlots, nullptr);
         for (size_t i = 0; i != merchantSlots; ++i){
             serialSlotPair_t *pair = new serialSlotPair_t();
             pair->first = _serial;
             pair->second = i;
             _serialSlotPairs[i] = pair;
         }
-        _wareQtyBoxes = std::vector<TextBox *>(merchantSlots, 0);
-        _priceQtyBoxes = std::vector<TextBox *>(merchantSlots, 0);
+        _wareQtyBoxes = std::vector<TextBox *>(merchantSlots, nullptr);
+        _priceQtyBoxes = std::vector<TextBox *>(merchantSlots, nullptr);
     }
 }
 

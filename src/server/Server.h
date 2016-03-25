@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #ifndef SERVER_H
 #define SERVER_H
@@ -104,7 +104,8 @@ private:
     std::set<Recipe> _recipes;
     std::set<ObjectType> _objectTypes;
 
-    void removeObject(Object &obj, const User *userToExclude = 0); // Optionally skip telling a user
+    void removeObject(Object &obj,
+                      const User *userToExclude = nullptr); // Optionally skip telling a user
     void gatherObject (size_t serial, User &user);
     friend void User::update(ms_t timeElapsed);
     friend void User::removeItems(const ItemSet &items);
@@ -119,7 +120,7 @@ private:
     friend void Object::removeItems(const ItemSet &items);
     friend void Object::giveItem(const Item *item, size_t qty);
 
-    void addObject (const ObjectType *type, const Point &location, const User *owner = 0);
+    void addObject (const ObjectType *type, const Point &location, const User *owner = nullptr);
 
     // Checks whether the object exists, and is within range of the user.  If not, a relevant error
     // message is sentg to the client.
@@ -132,7 +133,7 @@ private:
     CollisionChunk &getCollisionChunk(const Point &p);
     std::list<CollisionChunk *> getCollisionSuperChunk(const Point &p);
     bool isLocationValid(const Point &loc, const ObjectType &type,
-                         const Object *thisObject = 0, const User *thisUser = 0);
+                         const Object *thisObject = nullptr, const User *thisUser = nullptr);
 
     bool readUserData(User &user); // true: save data existed
     void writeUserData(const User &user) const;

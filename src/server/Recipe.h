@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #ifndef RECIPE_H
 #define RECIPE_H
@@ -19,7 +19,7 @@ class Recipe{
     ms_t _time;
 
 public:
-    Recipe(const std::string &id); //time=0, ptrs = 0
+    Recipe(const std::string &id); //time = 0, ptrs = nullptr
 
     bool operator<(const Recipe &rhs) const { return _id < rhs._id; }
 

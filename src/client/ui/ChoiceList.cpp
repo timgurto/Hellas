@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include <cassert>
 
@@ -42,9 +42,9 @@ const std::string &ChoiceList::getIdFromMouse(double mouseY, int *index) const{
 
 bool ChoiceList::contentCollision(const Point &p) const{
     return collision(p, Rect(0,
-                                 0,
-                                 _content->rect().w,
-                                 min(_content->rect().h, rect().h)));
+                             0,
+                             _content->rect().w,
+                             min(_content->rect().h, rect().h)));
 }
 
 void ChoiceList::markMouseDown(Element &e, const Point &mousePos){

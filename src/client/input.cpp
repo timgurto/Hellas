@@ -71,7 +71,7 @@ void Client::handleInput(double delta){
                         break;
                     }
 
-                    Window *frontMostVisibleWindow = 0;
+                    Window *frontMostVisibleWindow = nullptr;
                     for (Window *window : _windows)
                         if (window->visible()){
                             frontMostVisibleWindow = window;
@@ -259,7 +259,7 @@ void Client::handleInput(double delta){
                 if (_leftMouseDownEntity != nullptr &&
                     _currentMouseOverEntity == _leftMouseDownEntity)
                     _currentMouseOverEntity->onLeftClick(*this);
-                _leftMouseDownEntity = 0;
+                _leftMouseDownEntity = nullptr;
 
                 break;
             }
@@ -282,7 +282,7 @@ void Client::handleInput(double delta){
                 if (_rightMouseDownEntity != nullptr &&
                     _currentMouseOverEntity == _rightMouseDownEntity)
                     _currentMouseOverEntity->onRightClick(*this);
-                _rightMouseDownEntity = 0;
+                _rightMouseDownEntity = nullptr;
 
                 break;
             }

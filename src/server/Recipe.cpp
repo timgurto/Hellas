@@ -1,10 +1,10 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include "Recipe.h"
 
 Recipe::Recipe(const std::string &id):
 _id(id),
-_product(0),
+_product(nullptr),
 _time(0){}
 
 void Recipe::addMaterial(const Item *item, size_t qty){

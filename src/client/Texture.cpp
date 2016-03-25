@@ -21,14 +21,14 @@ Texture Texture::_programEndMarkerTexture(true);
 int Texture::_numTextures = 0;
 
 Texture::Texture():
-_raw(0),
+_raw(nullptr),
 _w(0),
 _h(0),
 _validTarget(false),
 _programEndMarker(false){}
 
 Texture::Texture(px_t width, px_t height):
-_raw(0),
+_raw(nullptr),
 _w(width),
 _h(height),
 _validTarget(true),
@@ -43,7 +43,7 @@ _programEndMarker(false){
 }
 
 Texture::Texture(const std::string &filename, const Color &colorKey):
-_raw(0),
+_raw(nullptr),
 _w(0),
 _h(0),
 _validTarget(false),
@@ -62,7 +62,7 @@ _programEndMarker(false){
     SDL_FreeSurface(surface);
     if (_raw != nullptr)
         addRef();
-    const int ret = SDL_QueryTexture(_raw, 0, 0, &_w, &_h);
+    const int ret = SDL_QueryTexture(_raw, nullptr, nullptr, &_w, &_h);
     if (ret != 0) {
         removeRef();
     _raw = 0;
@@ -70,7 +70,7 @@ _programEndMarker(false){
 }
 
 Texture::Texture(TTF_Font *font, const std::string &text, const Color &color):
-_raw(0),
+_raw(nullptr),
 _w(0),
 _h(0),
 _validTarget(false),
@@ -85,7 +85,7 @@ _programEndMarker(false){
         return;
     _raw = renderer.createTextureFromSurface(surface);
     SDL_FreeSurface(surface);
-    SDL_QueryTexture(_raw, 0, 0, &_w, &_h);
+    SDL_QueryTexture(_raw, nullptr, nullptr, &_w, &_h);
     if (_raw != nullptr)
         addRef();
 }

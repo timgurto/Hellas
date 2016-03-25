@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #ifndef TEXTURE_H
 #define TEXTURE_H
@@ -36,8 +36,8 @@ public:
     Texture(const Texture &rhs);
     Texture &operator=(const Texture &rhs);
 
-    bool operator!() const { return _raw == 0; }
-    operator bool() const { return _raw != 0; }
+    bool operator!() const { return _raw == nullptr; }
+    operator bool() const { return _raw != nullptr; }
 
     SDL_Texture *raw() { return _raw; }
     static int numTextures() { return _numTextures; }

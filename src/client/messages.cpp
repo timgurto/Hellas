@@ -274,7 +274,7 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
 
-            const Item *item = 0;
+            const Item *item = nullptr;
             if (quantity > 0) {
                 std::set<Item>::const_iterator it = _items.find(itemID);
                 if (it == _items.end()) {
@@ -286,7 +286,7 @@ void Client::handleMessage(const std::string &msg){
             }
 
             Item::vect_t *container;
-            ClientObject *object = 0;
+            ClientObject *object = nullptr;
             if (serial == 0)
                 container = &_inventory;
             else {
@@ -349,7 +349,7 @@ void Client::handleMessage(const std::string &msg){
                 break; // We didn't know about this object
             }
             if (it->second == _currentMouseOverEntity)
-                _currentMouseOverEntity = 0;
+                _currentMouseOverEntity = nullptr;
             removeEntity(it->second);
             _objects.erase(it);
             break;

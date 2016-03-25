@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include <cassert>
 
@@ -171,14 +171,14 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     // If no recipe selected
     const std::string &selectedID = _instance->_recipeList->getSelected();
     if (selectedID == "") {
-        _instance->_activeRecipe = 0;
+        _instance->_activeRecipe = nullptr;
         return;
     }
 
     // Crafting Button
     pane.addChild(new Button(Rect(paneRect.w - 2*BUTTON_WIDTH - BUTTON_GAP, BUTTON_Y,
                                       BUTTON_WIDTH, BUTTON_HEIGHT),
-                             "Craft", startCrafting, 0));
+                             "Craft", startCrafting, nullptr));
 
     const std::set<Recipe>::const_iterator it = _instance->_recipes.find(selectedID);
     if (it == _instance->_recipes.end()) {

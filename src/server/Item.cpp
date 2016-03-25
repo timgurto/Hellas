@@ -6,7 +6,7 @@
 Item::Item(const std::string &idArg):
 _id(idArg),
 _stackSize(1),
-_constructsObject(0){}
+_constructsObject(nullptr){}
 
 void Item::addClass(const std::string &className){
     _classes.insert(className);

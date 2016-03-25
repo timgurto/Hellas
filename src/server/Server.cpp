@@ -23,8 +23,8 @@
 
 extern Args cmdLineArgs;
 
-Server *Server::_instance = 0;
-LogConsole *Server::_debugInstance = 0;
+Server *Server::_instance = nullptr;
+LogConsole *Server::_debugInstance = nullptr;
 
 const int Server::MAX_CLIENTS = 20;
 
@@ -87,7 +87,7 @@ void Server::checkSockets(){
 
     // Poll for activity
     static const timeval selectTimeout = {0, 10000};
-    int activity = select(0, &readFDs, 0, 0, &selectTimeout);
+    int activity = select(0, &readFDs, nullptr, nullptr, &selectTimeout);
     if (activity == SOCKET_ERROR) {
         _debug << Color::RED << "Error polling sockets: " << WSAGetLastError() << Log::endl;
         return;

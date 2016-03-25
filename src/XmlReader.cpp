@@ -6,7 +6,7 @@
 #include "XmlReader.h"
 
 XmlReader::XmlReader(const char *filename):
-_root(0){
+_root(nullptr){
     newFile(filename);
 }
 
@@ -16,7 +16,7 @@ XmlReader::~XmlReader(){
 
 void XmlReader::newFile(const char *filename){
     _doc.Clear();
-    _root = 0;
+    _root = nullptr;
     bool ret = _doc.LoadFile(filename);
     if (!ret)
         return;
@@ -35,7 +35,7 @@ TiXmlElement *XmlReader::findChild(const std::string &val, TiXmlElement *elem){
     for (TiXmlElement *child = elem->FirstChildElement(); child; child = child->NextSiblingElement())
         if (val == child->Value())
             return child;
-    return 0;
+    return nullptr;
 }
 
 bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, std::string &val){

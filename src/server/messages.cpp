@@ -10,7 +10,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
     char del;
     static char buffer[BUFFER_SIZE+1];
     std::istringstream iss(msg);
-    User *user = 0;
+    User *user = nullptr;
     while (iss.peek() == MSG_START) {
         iss >> del >> msgCode >> del;
         
@@ -237,7 +237,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
             auto &containerSlot = (*container)[slot];
             if (containerSlot.second != 0) {
-                containerSlot.first = 0;
+                containerSlot.first = nullptr;
                 containerSlot.second = 0;
                 if (serial == 0)
                     sendInventoryMessage(*user, serial, slot);

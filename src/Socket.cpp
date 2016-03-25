@@ -1,8 +1,8 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include "Socket.h"
 
-Log *Socket::debug = 0;
+Log *Socket::debug = nullptr;
 
 int Socket::sockAddrSize = sizeof(sockaddr_in);
 bool Socket::_winsockInitialized = false;

@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include "ObjectType.h"
 
@@ -6,7 +6,7 @@ ObjectType::ObjectType(const std::string &id):
 _id(id),
 _gatherTime(0),
 _constructionTime(0),
-_deconstructsItem(0),
+_deconstructsItem(nullptr),
 _deconstructionTime(0),
 _gatherReq("none"),
 _containerSlots(0),
@@ -16,7 +16,7 @@ _collides(false){}
 ObjectType::ObjectType(const Rect &collisionRect):
 _gatherTime(0),
 _constructionTime(0),
-_deconstructsItem(0),
+_deconstructsItem(nullptr),
 _deconstructionTime(0),
 _gatherReq("none"),
 _containerSlots(0),

@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #ifndef TOOLTIP_BUILDER_H
 #define TOOLTIP_BUILDER_H
@@ -29,7 +29,7 @@ public:
 
     const static px_t NO_WRAP;
 
-    void setFont(TTF_Font *font = 0); // Default: default font
+    void setFont(TTF_Font *font = nullptr); // Default: default font
     void setColor(const Color &color = DEFAULT_COLOR);
     void addLine(const std::string &line);
     void addGap();

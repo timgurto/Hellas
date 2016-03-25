@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #include <cassert>
 
@@ -31,7 +31,7 @@ _type(type){
 
 Object::Object(size_t serial): // For set/map lookup
 _serial (serial),
-_type(0){}
+_type(nullptr){}
 
 size_t Object::generateSerial() {
     static size_t currentSerial = 1; // Serial 0 is unavailable, and has special meaning.
