@@ -68,6 +68,7 @@ void ClientObject::setMerchantSlot(size_t i, MerchantSlot &mSlotArg){
 
     // Update slot element
     Element &e = *_merchantSlotElements[i];
+    e.clearChildren();
 
     static const px_t // TODO: remove duplicate consts
         GAP = 2,
