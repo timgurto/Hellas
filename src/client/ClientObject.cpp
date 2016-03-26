@@ -58,8 +58,9 @@ ClientObject::~ClientObject(){
     }
 }
 
-void ClientObject::setMerchantSlot(size_t i, MerchantSlot &mSlot){
-    _merchantSlots[i] = mSlot;
+void ClientObject::setMerchantSlot(size_t i, MerchantSlot &mSlotArg){
+    _merchantSlots[i] = mSlotArg;
+    MerchantSlot &mSlot = _merchantSlots[i];
 
     if (_window == nullptr)
         return;

@@ -12,8 +12,8 @@ priceQty(priceQtyArg)
 
 MerchantSlot::operator bool() const{
     return
-        wareItem &&
-        priceItem &&
+        wareItem != nullptr &&
+        priceItem != nullptr &&
         wareQty > 0 &&
         priceQty > 0;
 }

@@ -1,13 +1,16 @@
 // (C) 2016 Tim Gurto
 
 #include "ItemSelector.h"
+#include "Label.h"
 #include "Line.h"
+#include "Picture.h"
 #include "TextBox.h"
 #include "Window.h"
 #include "../Client.h"
 
 const px_t ItemSelector::GAP = 2;
 const px_t ItemSelector::LABEL_WIDTH = 120;
+const px_t ItemSelector::WIDTH = 80;
 const px_t ItemSelector::LABEL_TOP = (ITEM_HEIGHT - TEXT_HEIGHT) / 2;
 const px_t ItemSelector::LIST_WIDTH = LABEL_WIDTH + ITEM_HEIGHT + 2 + GAP;
 const px_t ItemSelector::LIST_GAP = 0;
@@ -24,10 +27,19 @@ TextBox *ItemSelector::_filterText = nullptr;
 List *ItemSelector::_itemList = nullptr;
 
 ItemSelector::ItemSelector(const Item *&item, px_t x, px_t y):
-Button(Rect(x, y, Element::ITEM_HEIGHT + 2, Element::ITEM_HEIGHT + 2), "",
-       openFindItemWindow, &_item),
-_item(item)
+Button(Rect(x, y, WIDTH, Element::ITEM_HEIGHT + 2), "",
+       openFindItemWindow, nullptr),
+_item(item),
+_lastItem(item),
+_icon(new Picture(Rect(1, 1, ITEM_HEIGHT, ITEM_HEIGHT), Texture())),
+_name(new Label(Rect(ITEM_HEIGHT + 1 + GAP, 1, WIDTH, ITEM_HEIGHT), "",
+                Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED))
 {
+    addChild(_icon);
+    addChild(_name);
+
+    clickData(&_item);
+
     if (_findItemWindow == nullptr){
         _findItemWindow = new Window(Rect((Client::SCREEN_X - WINDOW_WIDTH) / 2,
                                           (Client::SCREEN_Y - WINDOW_HEIGHT) / 2,
@@ -79,7 +91,8 @@ void ItemSelector::applyFilter(void *data){
 }
 
 void ItemSelector::selectItem(void *data){
-
+    *_itemBeingSelected = static_cast<Item *>(data);
+    _findItemWindow->hide();
 }
 
 bool ItemSelector::itemMatchesFilter(const Item &item, const std::string &filter){
@@ -89,4 +102,22 @@ bool ItemSelector::itemMatchesFilter(const Item &item, const std::string &filter
     // Class matches
 
     return true;
+}
+
+void ItemSelector::checkIfChanged(){
+    if (_lastItem != _item){
+        _lastItem = _item;
+        markChanged();
+    }
+    Element::checkIfChanged();
+}
+
+void ItemSelector::refresh(){
+    if (_item == nullptr){
+        _icon->changeTexture();
+        _name->changeText("[None]");
+    } else {
+        _icon->changeTexture(_item->icon());
+        _name->changeText(_item->name());
+    }
 }

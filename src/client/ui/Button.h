@@ -34,6 +34,7 @@ private:
 public:
     Button(const Rect &rect, const std::string &caption = "", clickFun_t clickFunction = nullptr,
            void *clickData = nullptr);
+    void clickData(void *data = nullptr) { _clickData = data; }
     virtual void addChild(Element *child) override;
     virtual void clearChildren() override;
     virtual Element *findChild(const std::string id) override;
