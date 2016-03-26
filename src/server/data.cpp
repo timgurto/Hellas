@@ -389,10 +389,10 @@ void Server::saveData(const std::set<Object> &objects){
                 continue;
             auto mSlotE = xw.addChild("merchant", e);
             xw.setAttr(mSlotE, "slot", i);
-            xw.setAttr(mSlotE, "wareItem", mSlots[i].wareItem()->id());
-            xw.setAttr(mSlotE, "wareQty", mSlots[i].wareQty());
-            xw.setAttr(mSlotE, "priceItem", mSlots[i].priceItem()->id());
-            xw.setAttr(mSlotE, "priceQty", mSlots[i].priceQty());
+            xw.setAttr(mSlotE, "wareItem", mSlots[i].wareItem->id());
+            xw.setAttr(mSlotE, "wareQty", mSlots[i].wareQty);
+            xw.setAttr(mSlotE, "priceItem", mSlots[i].priceItem->id());
+            xw.setAttr(mSlotE, "priceQty", mSlots[i].priceQty);
         }
     }
     xw.publish();

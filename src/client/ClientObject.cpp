@@ -1,5 +1,6 @@
 // (C) 2015-2016 Tim Gurto
 
+#include <SDL_mixer.h>
 #include <cassert>
 
 #include "ClientObject.h"
@@ -7,6 +8,7 @@
 #include "Renderer.h"
 #include "ui/Button.h"
 #include "ui/Container.h"
+#include "ui/ItemSelector.h"
 #include "ui/Label.h"
 #include "ui/Line.h"
 #include "ui/TextBox.h"
@@ -14,6 +16,7 @@
 #include "../Color.h"
 #include "../Log.h"
 #include "../util.h"
+#include "../server/MerchantSlot.h"
 
 extern Renderer renderer;
 
@@ -55,7 +58,7 @@ ClientObject::~ClientObject(){
     }
 }
 
-void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
+void ClientObject::setMerchantSlot(size_t i, MerchantSlot &mSlot){
     _merchantSlots[i] = mSlot;
 
     if (_window == nullptr)
@@ -87,34 +90,18 @@ void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
         px_t x = GAP;
         TextBox *textBox = new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT), true);
         _wareQtyBoxes[i] = textBox;
-        textBox->text(makeArgs(mSlot.wareQty()));
+        textBox->text(makeArgs(mSlot.wareQty));
         e.addChild(textBox);
         x += QUANTITY_WIDTH + GAP;
-        Button *button = new Button(Rect(x, BUTTON_TOP, ICON_SIZE, ICON_SIZE));
-        e.addChild(button);
-        button->setTooltip("Select an item to sell");
-        x += ICON_SIZE + GAP;
-        if (mSlot.wareItem() != nullptr){
-            const Item &item = *mSlot.wareItem();
-            button->addChild(new Picture(Rect(0, 0, ICON_SIZE, ICON_SIZE), item.icon()));
-            e.addChild(new Label(Rect(x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT), item.name()));
-        }
-        x += NAME_WIDTH + 2 * GAP + 2;
+        e.addChild(new ItemSelector(mSlot.wareItem, x, BUTTON_TOP));
+        x += ICON_SIZE + 2 + NAME_WIDTH + 3 * GAP + 2;
         textBox = new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT), true);
         _priceQtyBoxes[i] = textBox;
-        textBox->text(makeArgs(mSlot.wareQty()));
+        textBox->text(makeArgs(mSlot.wareQty));
         e.addChild(textBox);
         x += QUANTITY_WIDTH + GAP;
-        button = new Button(Rect(x, BUTTON_TOP, ICON_SIZE, ICON_SIZE));
-        e.addChild(button);
-        button->setTooltip("Select an item as the price");
-        x += ICON_SIZE + GAP;
-        if (mSlot.priceItem() != nullptr){
-            const Item &item = *mSlot.priceItem();
-            button->addChild(new Picture(Rect(0, 0, ICON_SIZE, ICON_SIZE), item.icon()));
-            e.addChild(new Label(Rect(x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT), item.name()));
-        }
-        x += NAME_WIDTH + 2 * GAP + 2;
+        e.addChild(new ItemSelector(mSlot.priceItem, x, BUTTON_TOP));
+        x += ICON_SIZE + 2 + NAME_WIDTH + 2 * GAP + 2;
         e.addChild(new Button(Rect(x, SET_BUTTON_TOP, SET_BUTTON_WIDTH, SET_BUTTON_HEIGHT), "Set",
                               sendMerchantSlot, _serialSlotPairs[i]));
 
@@ -127,12 +114,12 @@ void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
         // Ware
         px_t x = GAP;
         e.addChild(new Label(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT),
-                             makeArgs(mSlot.wareQty()), Element::RIGHT_JUSTIFIED));
+                             makeArgs(mSlot.wareQty), Element::RIGHT_JUSTIFIED));
         x += QUANTITY_WIDTH;
         e.addChild(new Picture(Rect(x, (ROW_HEIGHT - ICON_SIZE) / 2, ICON_SIZE, ICON_SIZE),
-                               mSlot.wareItem()->icon()));
+                               mSlot.wareItem->icon()));
         x += ICON_SIZE;
-        e.addChild(new Label(Rect(x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT), mSlot.wareItem()->name()));
+        e.addChild(new Label(Rect(x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT), mSlot.wareItem->name()));
         x += NAME_WIDTH + GAP;
     
         // Buy button
@@ -141,14 +128,14 @@ void ClientObject::setMerchantSlot(size_t i, const MerchantSlot &mSlot){
         e.addChild(button);
         x = BUTTON_PADDING;
         button->addChild(new Label(Rect(x, BUTTON_TEXT_TOP, BUTTON_LABEL_WIDTH, TEXT_HEIGHT),
-                                   std::string("Buy for ") + makeArgs(mSlot.priceQty()),
+                                   std::string("Buy for ") + makeArgs(mSlot.priceQty),
                                    Element::RIGHT_JUSTIFIED));
         x += BUTTON_LABEL_WIDTH;
         button->addChild(new Picture(Rect(x, BUTTON_PADDING, ICON_SIZE, ICON_SIZE),
-                                     mSlot.priceItem()->icon()));
+                                     mSlot.priceItem->icon()));
         x += ICON_SIZE;
         button->addChild(new Label(Rect(x, BUTTON_TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT),
-                                   mSlot.priceItem()->name()));
+                                   mSlot.priceItem->name()));
     }
 }
 
@@ -200,7 +187,7 @@ void ClientObject::onRightClick(Client &client){
                     PANE_WIDTH = Element::ITEM_HEIGHT + QUANTITY_WIDTH + NAME_WIDTH + 2 * GAP,
                     TITLE_HEIGHT = 14,
                     SET_BUTTON_WIDTH = 60,
-                    ROW_HEIGHT = Element::ITEM_HEIGHT + 2 * GAP;
+                    ROW_HEIGHT = Element::ITEM_HEIGHT + 4 * GAP;
                 static const double
                     MAX_ROWS = 5.5;
                 const px_t
@@ -218,10 +205,12 @@ void ClientObject::onRightClick(Client &client){
                 vertDivider = new Line(x, y, TITLE_HEIGHT + LIST_HEIGHT, Line::VERTICAL);
                 _window->addChild(vertDivider);
                 x += 2 * GAP + vertDivider->width() + SET_BUTTON_WIDTH;
+                x += List::ARROW_W;
                 winWidth = max(winWidth, x);
                 y += Element::TEXT_HEIGHT;
                 List *merchantList = new List(Rect(0, y,
-                                                   PANE_WIDTH * 2 + GAP * 5 + SET_BUTTON_WIDTH + 6,
+                                                   PANE_WIDTH * 2 + GAP * 5 + SET_BUTTON_WIDTH + 6 +
+                                                   List::ARROW_W,
                                                    LIST_HEIGHT),
                                               ROW_HEIGHT);
                 _window->addChild(merchantList);
@@ -383,18 +372,18 @@ void ClientObject::sendMerchantSlot(void *serialAndSlot){
     MerchantSlot &mSlot = obj._merchantSlots[slot];
 
     // Set quantities
-    mSlot.wareQty(obj._wareQtyBoxes[slot]->textAsNum());
-    mSlot.priceQty(obj._priceQtyBoxes[slot]->textAsNum());
+    mSlot.wareQty = obj._wareQtyBoxes[slot]->textAsNum();
+    mSlot.priceQty = obj._priceQtyBoxes[slot]->textAsNum();
 
-    if (mSlot.wareItem() == nullptr || mSlot.priceItem() == nullptr){
+    if (mSlot.wareItem == nullptr || mSlot.priceItem == nullptr){
         Client::debug()("You must select an item", Color::YELLOW);
         return;
     }
 
     Client::_instance->sendMessage(CL_SET_MERCHANT_SLOT,
                                    makeArgs(serial, slot,
-                                            mSlot.wareItem()->id(), mSlot.wareQty(),
-                                            mSlot.priceItem()->id(), mSlot.priceQty()));
+                                            mSlot.wareItem->id(), mSlot.wareQty,
+                                            mSlot.priceItem->id(), mSlot.priceQty));
 }
 
 bool ClientObject::userHasAccess() const{

@@ -1,9 +1,92 @@
 // (C) 2016 Tim Gurto
 
 #include "ItemSelector.h"
+#include "Line.h"
+#include "TextBox.h"
+#include "Window.h"
+#include "../Client.h"
 
-ItemSelector::ItemSelector(px_t x, px_t y):
-Button(Rect(x, y, Element::ITEM_HEIGHT, Element::ITEM_HEIGHT), ""
-       ),
-_item(nullptr)
-{}
+const px_t ItemSelector::GAP = 2;
+const px_t ItemSelector::LABEL_WIDTH = 120;
+const px_t ItemSelector::LABEL_TOP = (ITEM_HEIGHT - TEXT_HEIGHT) / 2;
+const px_t ItemSelector::LIST_WIDTH = LABEL_WIDTH + ITEM_HEIGHT + 2 + GAP;
+const px_t ItemSelector::LIST_GAP = 0;
+const px_t ItemSelector::WINDOW_WIDTH = LIST_WIDTH + 2 * GAP;
+const px_t ItemSelector::WINDOW_HEIGHT = 200;
+const px_t ItemSelector::SEARCH_BUTTON_WIDTH = 40;
+const px_t ItemSelector::SEARCH_BUTTON_HEIGHT = 13;
+const px_t ItemSelector::SEARCH_TEXT_WIDTH = LIST_WIDTH - GAP - SEARCH_BUTTON_WIDTH;
+const px_t ItemSelector::LIST_HEIGHT = WINDOW_HEIGHT - SEARCH_BUTTON_HEIGHT - 4 * GAP - 2;
+
+Item **ItemSelector::_itemBeingSelected = nullptr;
+Window *ItemSelector::_findItemWindow = nullptr;
+TextBox *ItemSelector::_filterText = nullptr;
+List *ItemSelector::_itemList = nullptr;
+
+ItemSelector::ItemSelector(const Item *&item, px_t x, px_t y):
+Button(Rect(x, y, Element::ITEM_HEIGHT + 2, Element::ITEM_HEIGHT + 2), "",
+       openFindItemWindow, &_item),
+_item(item)
+{
+    if (_findItemWindow == nullptr){
+        _findItemWindow = new Window(Rect((Client::SCREEN_X - WINDOW_WIDTH) / 2,
+                                          (Client::SCREEN_Y - WINDOW_HEIGHT) / 2,
+                                          WINDOW_WIDTH, WINDOW_HEIGHT),
+                                     "Find Item");
+        px_t y = GAP;
+        _filterText = new TextBox(Rect(GAP, y, SEARCH_TEXT_WIDTH, SEARCH_BUTTON_HEIGHT));
+        _findItemWindow->addChild(_filterText);
+        _findItemWindow->addChild(new Button(Rect(SEARCH_TEXT_WIDTH + 2 * GAP, y,
+                                                  SEARCH_BUTTON_WIDTH, SEARCH_BUTTON_HEIGHT),
+                                             "Search", applyFilter, nullptr));
+        y += SEARCH_BUTTON_HEIGHT + GAP;
+        _findItemWindow->addChild(new Line(0, y, WINDOW_WIDTH));
+        y += 2 + GAP;
+        _itemList = new List(Rect(GAP, y, LIST_WIDTH, LIST_HEIGHT), ITEM_HEIGHT + 2 + LIST_GAP);
+        _findItemWindow->addChild(_itemList);
+
+        applyFilter(nullptr); // Populate list for the first time.
+        Client::_instance->addWindow(_findItemWindow);
+    }
+}
+
+void ItemSelector::openFindItemWindow(void *data){
+    _findItemWindow->show();
+    Client::_instance->removeWindow(_findItemWindow);
+    Client::_instance->addWindow(_findItemWindow);
+    _itemBeingSelected = static_cast<Item **>(data);
+}
+
+void ItemSelector::applyFilter(void *data){
+    _itemList->clearChildren();
+    const std::string &filterText = _filterText->text();
+
+    const auto &items = Client::_instance->_items;
+    for (const Item &item : items){
+        if (filterText == "" || itemMatchesFilter(item, filterText)){
+            // Add item to list
+            Element *container = new Element();
+            _itemList->addChild(container);
+            Button *itemButton = new Button(Rect(0, 0, LIST_WIDTH - List::ARROW_W, ITEM_HEIGHT + 2),
+                                            "", selectItem, const_cast<Item *>(&item));
+            container->addChild(itemButton);
+            itemButton->addChild(new Picture(Rect(1, 1, ITEM_HEIGHT, ITEM_HEIGHT), item.icon()));
+            itemButton->addChild(new Label(Rect(ITEM_HEIGHT + GAP, LABEL_TOP,
+                                                LABEL_WIDTH, TEXT_HEIGHT),
+                                           item.name()));
+        }
+    }
+}
+
+void ItemSelector::selectItem(void *data){
+
+}
+
+bool ItemSelector::itemMatchesFilter(const Item &item, const std::string &filter){
+    // Name matches
+
+
+    // Class matches
+
+    return true;
+}

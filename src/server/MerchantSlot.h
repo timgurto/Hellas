@@ -7,33 +7,21 @@
 
 class Item;
 
-class MerchantSlot{
+struct MerchantSlot{
     const Item
-        *_wareItem,
-        *_priceItem;
+        *wareItem,
+        *priceItem;
     size_t
-        _wareQty,
-        _priceQty;
-    ItemSet
-        _ware,
-        _price;
+        wareQty,
+        priceQty;
 
-public:
     MerchantSlot(const Item *wareItem = nullptr, size_t wareQty = 0,
                  const Item *priceItem = nullptr, size_t priceQty = 0);
 
     operator bool() const;
     
-    const Item *wareItem() const { return _wareItem; };
-    void wareItem(const Item *item);
-    size_t wareQty() const { return _wareQty; };
-    void wareQty(size_t qty);
-    const Item *priceItem() const { return _priceItem; };
-    void priceItem(const Item *item);
-    size_t priceQty() const { return _priceQty; };
-    void priceQty(size_t qty);
-    const ItemSet &ware() const { return _ware; }
-    const ItemSet &price() const { return _price; }
+    const ItemSet ware() const;
+    const ItemSet price() const;
 };
 
 #endif

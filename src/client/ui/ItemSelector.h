@@ -5,16 +5,48 @@
 
 #include "Button.h"
 
+class Client;
 class Item;
+class List;
+class TextBox;
+class Window;
 
 // A button used to choose an Item, and display that choice.
 class ItemSelector : public Button{
-    const Item *_item;
+    static const px_t
+        GAP,
+        LABEL_WIDTH,
+        LABEL_TOP,
+        LIST_WIDTH,
+        LIST_GAP,
+        WINDOW_WIDTH,
+        WINDOW_HEIGHT,
+        SEARCH_BUTTON_WIDTH,
+        SEARCH_BUTTON_HEIGHT,
+        SEARCH_TEXT_WIDTH,
+        LIST_HEIGHT;
 
-    ItemSelector(px_t x = 0, px_t y = 0);
+    const Item *&_item; // Reference to the external Item* that this selector will set.
+
+public:
+    ItemSelector(const Item *&item, px_t x = 0, px_t y = 0);
 
     const Item *item() const{ return _item; }
     void item(const Item *item) { _item = item; }
+
+    static Item **_itemBeingSelected;
+
+    static Window *_findItemWindow;
+    static TextBox *_filterText;
+    static List *_itemList;
+
+    static void openFindItemWindow(void *data); // The find-item window, when a selector is clicked.
+    static void applyFilter(void *data);
+    static void selectItem(void *data);
+
+    static bool itemMatchesFilter(const Item &item, const std::string &filter);
+
+    friend class Client;
 };
 
 #endif

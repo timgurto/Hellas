@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #ifndef CLIENT_H
 #define CLIENT_H
@@ -17,6 +17,7 @@
 #include "Terrain.h"
 #include "ui/ChoiceList.h"
 #include "ui/Container.h"
+#include "ui/ItemSelector.h"
 #include "ui/Window.h"
 #include "../Args.h"
 #include "../Point.h"
@@ -237,6 +238,7 @@ private:
     friend class Container; // Needs to send CL_SWAP_ITEMS messages
     friend class ClientObject;
     friend void LogSDL::operator()(const std::string &message, const Color &color);
+    friend class ItemSelector;
 };
 
 #endif

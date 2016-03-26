@@ -3,7 +3,6 @@
 #ifndef CLIENT_OBJECT_H
 #define CLIENT_OBJECT_H
 
-#include <SDL_mixer.h>
 #include <sstream>
 #include <string>
 
@@ -11,9 +10,9 @@
 #include "Entity.h"
 #include "Item.h"
 #include "../Point.h"
-#include "../server/MerchantSlot.h"
 
 class Element;
+struct MerchantSlot;
 class TextBox;
 class Window;
 
@@ -68,7 +67,7 @@ public:
 
     bool userHasAccess() const;
 
-    void setMerchantSlot(size_t i, const MerchantSlot &mSlot);
+    void setMerchantSlot(size_t i, MerchantSlot &mSlot);
 };
 
 #endif
