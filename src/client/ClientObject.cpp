@@ -377,7 +377,8 @@ void ClientObject::sendMerchantSlot(void *serialAndSlot){
     mSlot.priceQty = obj._priceQtyBoxes[slot]->textAsNum();
 
     if (mSlot.wareItem == nullptr || mSlot.priceItem == nullptr){
-        Client::debug()("You must select an item", Color::YELLOW);
+        Client::debug()("You must select an item; clearing slot.", Color::YELLOW);
+        Client::_instance->sendMessage(CL_CLEAR_MERCHANT_SLOT, makeArgs(serial, slot));
         return;
     }
 

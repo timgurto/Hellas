@@ -88,6 +88,15 @@ void ItemSelector::applyFilter(void *data){
                                            item.name()));
         }
     }
+
+    // Add 'none' option
+    Element *container = new Element();
+    _itemList->addChild(container);
+    Button *itemButton = new Button(Rect(0, 0, LIST_WIDTH - List::ARROW_W, ITEM_HEIGHT + 2), "",
+                                    selectItem, nullptr);
+    container->addChild(itemButton);
+    itemButton->addChild(new Label(Rect(ITEM_HEIGHT + GAP, LABEL_TOP,
+                                        LABEL_WIDTH, TEXT_HEIGHT), "[None]"));
 }
 
 void ItemSelector::selectItem(void *data){
