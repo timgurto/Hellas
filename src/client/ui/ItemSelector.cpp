@@ -106,11 +106,15 @@ void ItemSelector::selectItem(void *data){
 
 bool ItemSelector::itemMatchesFilter(const Item &item, const std::string &filter){
     // Name matches
-
+    if (item.name().find(filter) != std::string::npos)
+        return true;
 
     // Class matches
+    for (const std::string &className : item.classes())
+        if (className.find(filter) != std::string::npos)
+            return true;
 
-    return true;
+    return false;
 }
 
 void ItemSelector::checkIfChanged(){
