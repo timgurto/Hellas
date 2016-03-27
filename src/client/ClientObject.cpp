@@ -99,7 +99,7 @@ void ClientObject::setMerchantSlot(size_t i, MerchantSlot &mSlotArg){
         x += ICON_SIZE + 2 + NAME_WIDTH + 3 * GAP + 2;
         textBox = new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT), true);
         _priceQtyBoxes[i] = textBox;
-        textBox->text(makeArgs(mSlot.wareQty));
+        textBox->text(makeArgs(mSlot.priceQty));
         e.addChild(textBox);
         x += QUANTITY_WIDTH + GAP;
         e.addChild(new ItemSelector(mSlot.priceItem, x, BUTTON_TOP));

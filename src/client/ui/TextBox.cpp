@@ -90,5 +90,8 @@ void TextBox::backspace(){
 }
 
 size_t TextBox::textAsNum() const{
-    return 5;
+    std::istringstream iss(_text);
+    int n;
+    iss >> n;
+    return n;
 }
