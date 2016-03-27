@@ -359,7 +359,8 @@ void Client::handleMessage(const std::string &msg){
         {
             int serial;
             std::string name;
-            singleMsg >> serial >> del >> name >> del;
+            singleMsg >> serial >> del;
+            readString(singleMsg, name, MSG_END);
             singleMsg >> del;
             if (del != MSG_END)
                 break;
