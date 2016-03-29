@@ -109,8 +109,7 @@ void ClientObject::setMerchantSlot(size_t i, MerchantSlot &mSlotArg){
 
     } else { // Trade view
         if (!mSlot){
-            e = Element();
-            return;
+            return; // Blank
         }
 
         // Ware
@@ -226,10 +225,10 @@ void ClientObject::onRightClick(Client &client){
 
             // Inventory container
             if (hasContainer){
+                client.watchObject(*this);
                 const size_t slots = objType.containerSlots();
                 size_t rows = (slots - 1) / COLS + 1;
                 Container *container = new Container(rows, COLS, _container, _serial, 0, y);
-                client.watchObject(*this);
                 _window->addChild(container);
                 y += container->height();
                 winWidth = max(winWidth, container->width());
