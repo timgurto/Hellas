@@ -95,7 +95,7 @@ void Object::removeItems(const ItemSet &items) {
     for (const std::string &username : _watchers) {
         const User &user = Server::instance().getUserByName(username);
         for (size_t slotNum : invSlotsChanged) {
-            Server::instance().sendInventoryMessage(user, _serial, slotNum);
+            Server::instance().sendInventoryMessage(user, slotNum, this);
         }
     }
 }
@@ -137,7 +137,7 @@ void Object::giveItem(const Item *item, size_t qty){
     for (const std::string &username : _watchers){
         const User &user = Server::instance().getUserByName(username);
         for (size_t slot : changedSlots)
-            Server::instance().sendInventoryMessage(user, _serial, slot);
+            Server::instance().sendInventoryMessage(user, slot, this);
     }
 }
 

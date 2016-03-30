@@ -222,13 +222,15 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             Item::vect_t *container;
+            Object *pObj = nullptr;
             if (serial == 0)
                 container = &user->inventory();
             else {
                 auto it = _objects.find(serial);
                 if (!isValidObject(client, *user, it))
                     break;
-                container = &(const_cast<Object&>(*it).container());
+                pObj = &const_cast<Object&>(*it);
+                container = &pObj->container();
             }
 
             if (slot >= container->size()) {
@@ -240,12 +242,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 containerSlot.first = nullptr;
                 containerSlot.second = 0;
                 if (serial == 0)
-                    sendInventoryMessage(*user, serial, slot);
+                    sendInventoryMessage(*user, slot);
                 else{
-                    const Object &obj = *_objects.find(serial);
-                    for (auto username : obj.watchers())
-                         if (obj.userHasAccess(username))
-                            sendInventoryMessage(*_usersByName[username], serial, slot);
+                    for (auto username : pObj->watchers())
+                         if (pObj->userHasAccess(username))
+                            sendInventoryMessage(*_usersByName[username], slot, pObj);
                 }
             }
             break;
@@ -263,13 +264,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             Item::vect_t
                 *containerFrom,
                 *containerTo;
+            Object
+                *pObj1 = nullptr,
+                *pObj2 = nullptr;
             if (obj1 == 0)
                 containerFrom = &user->inventory();
             else {
                 auto it = _objects.find(obj1);
                 if (!isValidObject(client, *user, it))
                     break;
-                containerFrom = &(const_cast<Object&>(*it).container());
+                pObj1 = &const_cast<Object&>(*it);
+                containerFrom = &pObj1->container();
             }
             if (obj2 == 0)
                 containerTo = &user->inventory();
@@ -277,7 +282,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 auto it = _objects.find(obj2);
                 if (!isValidObject(client, *user, it))
                     break;
-                containerTo = &(const_cast<Object&>(*it).container());
+                pObj2 = &const_cast<Object&>(*it);
+                containerTo = &pObj2->container();
             }
 
             if (slot1 >= containerFrom->size() || slot2 >= containerTo->size()) {
@@ -294,22 +300,20 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             slotFrom = temp;
 
             if (obj1 == 0)
-                sendInventoryMessage(*user, obj1, slot1);
+                sendInventoryMessage(*user, slot1);
             if (obj2 == 0)
-                sendInventoryMessage(*user, obj2, slot2);
+                sendInventoryMessage(*user, slot2);
             
             // Alert watchers
             if (obj1 != 0) {
-                const Object &object1 = *_objects.find(obj1);
-                for (auto username : object1.watchers())
-                    if (object1.userHasAccess(username))
-                        sendInventoryMessage(*_usersByName[username], obj1, slot1);
+                for (auto username : pObj1->watchers())
+                    if (pObj1->userHasAccess(username))
+                        sendInventoryMessage(*_usersByName[username], slot1, pObj1);
             }
             if (obj2 != 0) {
-                const Object &object2 = *_objects.find(obj2);
-                for (auto username : object2.watchers())
-                    if (object2.userHasAccess(username))
-                        sendInventoryMessage(*_usersByName[username], obj2, slot2);
+                for (auto username : pObj2->watchers())
+                    if (pObj2->userHasAccess(username))
+                        sendInventoryMessage(*_usersByName[username], slot2, pObj2);
             }
             break;
         }
@@ -478,7 +482,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (obj.userHasAccess(user->name())){
                 size_t slots = it->container().size();
                 for (size_t i = 0; i != slots; ++i)
-                    sendInventoryMessage(*user, serial, i);
+                    sendInventoryMessage(*user, i, &obj);
             }
 
             // Add as watcher
@@ -561,22 +565,14 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
     _socket.sendMessage(oss.str(), dstSocket);
 }
 
-void Server::sendInventoryMessage(const User &user, size_t serial, size_t slot) const{
-    const Item::vect_t *container;
-    if (serial == 0)
-        container = &user.inventory();
-    else {
-        auto it = _objects.find(serial);
-        if (it == _objects.end())
-            return; // Object doesn't exist.
-        else
-            container = &it->container();
-    }
-    if (slot >= container->size()) {
+void Server::sendInventoryMessage(const User &user, size_t slot, const Object *obj) const{
+    const Item::vect_t &container = (obj == nullptr) ? user.inventory() : obj->container();
+    if (slot >= container.size()) {
         sendMessage(user.socket(), SV_INVALID_SLOT);
         return;
     }
-    auto containerSlot = (*container)[slot];
+    size_t serial = obj == nullptr ? 0 : obj->serial();
+    auto containerSlot = container[slot];
     std::string itemID = containerSlot.first ? containerSlot.first->id() : "none";
     sendMessage(user.socket(), SV_INVENTORY, makeArgs(serial, slot, itemID, containerSlot.second));
 }

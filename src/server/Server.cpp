@@ -253,7 +253,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // Send him his inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         if (newUser.inventory(i).first != nullptr)
-            sendInventoryMessage(newUser, 0, i);
+            sendInventoryMessage(newUser, i);
     }
 
     // Add new user to list, and broadcast his location
