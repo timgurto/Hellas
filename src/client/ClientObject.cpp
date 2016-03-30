@@ -92,14 +92,14 @@ void ClientObject::setMerchantSlot(size_t i, MerchantSlot &mSlotArg){
         px_t x = GAP;
         TextBox *textBox = new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT), true);
         _wareQtyBoxes[i] = textBox;
-        textBox->text(makeArgs(mSlot.wareQty));
+        textBox->text(toString(mSlot.wareQty));
         e.addChild(textBox);
         x += QUANTITY_WIDTH + GAP;
         e.addChild(new ItemSelector(mSlot.wareItem, x, BUTTON_TOP));
         x += ICON_SIZE + 2 + NAME_WIDTH + 3 * GAP + 2;
         textBox = new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT), true);
         _priceQtyBoxes[i] = textBox;
-        textBox->text(makeArgs(mSlot.priceQty));
+        textBox->text(toString(mSlot.priceQty));
         e.addChild(textBox);
         x += QUANTITY_WIDTH + GAP;
         e.addChild(new ItemSelector(mSlot.priceItem, x, BUTTON_TOP));
@@ -115,7 +115,7 @@ void ClientObject::setMerchantSlot(size_t i, MerchantSlot &mSlotArg){
         // Ware
         px_t x = GAP;
         e.addChild(new Label(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT),
-                             makeArgs(mSlot.wareQty), Element::RIGHT_JUSTIFIED));
+                             toString(mSlot.wareQty), Element::RIGHT_JUSTIFIED));
         x += QUANTITY_WIDTH;
         e.addChild(new Picture(Rect(x, (ROW_HEIGHT - ICON_SIZE) / 2, ICON_SIZE, ICON_SIZE),
                                mSlot.wareItem->icon()));
@@ -129,7 +129,7 @@ void ClientObject::setMerchantSlot(size_t i, MerchantSlot &mSlotArg){
         e.addChild(button);
         x = BUTTON_PADDING;
         button->addChild(new Label(Rect(x, BUTTON_TEXT_TOP, BUTTON_LABEL_WIDTH, TEXT_HEIGHT),
-                                   std::string("Buy for ") + makeArgs(mSlot.priceQty),
+                                   std::string("Buy for ") + toString(mSlot.priceQty),
                                    Element::RIGHT_JUSTIFIED));
         x += BUTTON_LABEL_WIDTH;
         button->addChild(new Picture(Rect(x, BUTTON_PADDING, ICON_SIZE, ICON_SIZE),
@@ -297,7 +297,7 @@ std::vector<std::string> ClientObject::getTooltipMessages(const Client &client) 
     std::vector<std::string> text;
     text.push_back(objectType()->name());
     if (isDebug())
-        text.push_back("Serial: " + makeArgs(_serial));
+        text.push_back("Serial: " + toString(_serial));
     if (!_owner.empty())
         text.push_back(std::string("Owned by ") + _owner);
     return text;

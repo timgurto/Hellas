@@ -45,11 +45,16 @@ inline int str2int(const std::string str) {
     return i;
 }
 
+template<typename T>
+std::string toString(T val){
+    std::ostringstream oss;
+    oss << val;
+    return oss.str();
+}
+
 template<typename T1>
 std::string makeArgs(T1 val1){
-    std::ostringstream oss;
-    oss << val1;
-    return oss.str();
+    return toString(val1);
 }
 
 template<typename T1, typename T2>

@@ -242,7 +242,7 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
         const size_t qty = matCost.second;
         std::string entryText = mat.name();
         if (qty > 1)
-            entryText += " x" + makeArgs(qty);
+            entryText += " x" + toString(qty);
         Element *const entry = new Element(Rect(0, 0, paneRect.w, ICON_SIZE));
         matsList->addChild(entry);
         entry->addChild(new Picture(Rect(0, 0, ICON_SIZE, ICON_SIZE), mat.icon()));
