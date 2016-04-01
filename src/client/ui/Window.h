@@ -24,6 +24,7 @@ class Window : public Element{
     Label *_heading;
     Line *_headingLine;
     Button *_closeButton;
+    bool _deleteOnHide; // Whether the window is deleted when hidden.  Default = false.
 
 public:
     static px_t HEADING_HEIGHT;
@@ -36,6 +37,8 @@ public:
     static void startDragging(Element &e, const Point &mousePos);
     static void stopDragging(Element &e, const Point &mousePos);
     static void drag(Element &e, const Point &mousePos);
+
+    void deleteOnHide(); // Removes the window when hideWindow() is called (e.g. X button)
 
     void resize(px_t w, px_t h); // Resize window, so that the content size matches the given dims.
 

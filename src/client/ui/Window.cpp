@@ -9,6 +9,7 @@
 #include "Line.h"
 #include "ShadowBox.h"
 #include "Window.h"
+#include "../Client.h"
 
 px_t Window::HEADING_HEIGHT = 0;
 px_t Window::CLOSE_BUTTON_SIZE = 0;
@@ -19,7 +20,8 @@ Window::Window(const Rect &rect, const std::string &title):
 Element(Rect(rect.x, rect.y, rect.w + 2, rect.h + 3 + HEADING_HEIGHT)),
 _title(title),
 _dragging(false),
-_content(new Element(Rect(1, HEADING_HEIGHT + 2, rect.w, rect.h))){
+_content(new Element(Rect(1, HEADING_HEIGHT + 2, rect.w, rect.h))),
+_deleteOnHide(false){
     const Rect windowRect = this->rect();
     hide();
     setLeftMouseUpFunction(&stopDragging);
@@ -71,7 +73,11 @@ void Window::drag(Element &e, const Point &mousePos){
 
 void Window::hideWindow(void *window){
     Window &win = * static_cast<Window *>(window);
-    win.hide();
+    if (win._deleteOnHide){
+        Client::_instance->removeWindow(&win);
+    }
+    else
+        win.hide();
 }
 
 void Window::addChild(Element *child){
@@ -109,4 +115,8 @@ void Window::resize(px_t w, px_t h){
 
     _border->width(winW);
     _border->height(winH);
+}
+
+void Window::deleteOnHide(){
+    _deleteOnHide = true;
 }

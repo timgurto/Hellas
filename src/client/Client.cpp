@@ -704,3 +704,29 @@ void Client::unwatchObject(ClientObject &obj){
     sendMessage(CL_STOP_WATCHING, makeArgs(obj.serial()));
     _objectsWatched.erase(&obj);
 }
+
+void Client::confirmThenSendMessage(const std::string &confirmationMessage,
+                                    const std::string &message){
+    static const px_t
+        WINDOW_WIDTH = 200,
+        PADDING = 2,
+        BUTTON_WIDTH = 60,
+        BUTTON_HEIGHT = 15,
+        WINDOW_HEIGHT = BUTTON_HEIGHT + 3 * PADDING + Element::TEXT_HEIGHT,
+        BUTTON_Y = 2 * PADDING + Element::TEXT_HEIGHT;
+    Window *confirmationWindow = new Window(Rect((SCREEN_X - WINDOW_WIDTH) / 2,
+                                                 (SCREEN_Y - WINDOW_HEIGHT) / 2,
+                                                 WINDOW_WIDTH, WINDOW_HEIGHT),
+                                            "Confirmation");
+    confirmationWindow->addChild(new Label(Rect(0, PADDING, WINDOW_WIDTH, Element::TEXT_HEIGHT),
+                                           confirmationMessage, Element::CENTER_JUSTIFIED));
+    confirmationWindow->addChild(new Button(Rect((WINDOW_WIDTH - PADDING) / 2 - BUTTON_WIDTH,
+                                                BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT),
+                                            "OK", sendMessageStatic, new std::string(message)));
+    confirmationWindow->addChild(new Button(Rect((WINDOW_WIDTH + PADDING) / 2, BUTTON_Y,
+                                                 BUTTON_WIDTH, BUTTON_HEIGHT),
+                                             "Cancel", Window::hideWindow, confirmationWindow));
+    confirmationWindow->show();
+    confirmationWindow->deleteOnHide();
+    addWindow(confirmationWindow);
+}

@@ -183,8 +183,6 @@ private:
     Point _intOffset; // An integer version of the offset
     void updateOffset(); // Update the offset, when the character moves.
 
-    std::string _partialMessage;
-
     ms_t _time;
     ms_t _timeElapsed; // Time between last two ticks
     ms_t _lastPingReply; // The last time a ping reply was received from the server
@@ -224,21 +222,26 @@ private:
     void setEntityLocation(Entity *entity, const Point &location);
     Entity *_currentMouseOverEntity;
 
-    std::queue<std::string> _messages;
 
     mutable LogSDL _debug;
 
+    // Message stuff
+    std::queue<std::string> _messages;
+    std::string _partialMessage;
     void checkSocket();
-    void sendRawMessage(const std::string &args = "") const;
+    void sendRawMessage(const std::string &msg = "") const;
+    static void confirmSendMessage(void *data); // Responsible for deleting pair afterwards.
     void sendMessage(MessageCode msgCode, const std::string &args = "") const;
     void handleMessage(const std::string &msg);
-
+    // Show a confirmation window, and on confirmation, send the specified message to the server.
+    void confirmThenSendMessage(const std::string &confirmationMessage, const std::string &message);
     void performCommand(const std::string &commandString);
 
-    friend class Container; // Needs to send CL_SWAP_ITEMS messages
+    friend class Container; // Needs to send CL_SWAP_ITEMS messages, and open a confirmation window
     friend class ClientObject;
     friend void LogSDL::operator()(const std::string &message, const Color &color);
     friend class ItemSelector;
+    friend void Window::hideWindow(void *window);
 };
 
 #endif
