@@ -88,6 +88,7 @@ _defaultFontOffset(0),
 
 _mouse(0,0),
 _mouseMoved(false),
+_mouseOverWindow(false),
 _leftMouseDown(false),
 _leftMouseDownEntity(nullptr),
 _rightMouseDown(false),
@@ -576,6 +577,15 @@ Entity *Client::getEntityAtMouse(){
 
 void Client::checkMouseOver(){
     _currentCursor = &_cursorNormal;
+
+    // Check whether mouse is over a window
+    _mouseOverWindow = false;
+    for (const Window *window : _windows)
+        if (window->visible() && collision(_mouse, window->rect())){
+            _mouseOverWindow = true;
+            _currentMouseOverEntity = nullptr;
+            return;
+        }
 
     // Check if mouse is over an entity
     const Entity *const oldMouseOverEntity = _currentMouseOverEntity;

@@ -156,12 +156,18 @@ void Client::handleInput(double delta){
             _mouseMoved = true;
                 
             Element::resetTooltip();
-            for (Window *window : _windows)
+            for (Window *window : _windows) {
+                if (Element::tooltip != nullptr)
+                    break;
                 if (window->visible())
                     window->onMouseMove(_mouse);
-            for (Element *element : _ui)
+            }
+            for (Element *element : _ui) {
+                if (Element::tooltip != nullptr)
+                    break;
                 if (element->visible())
                     element->onMouseMove(_mouse);
+            }
 
             if (!_loaded)
                 break;

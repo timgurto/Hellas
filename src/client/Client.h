@@ -161,6 +161,7 @@ private:
     bool _mouseMoved;
     Entity *getEntityAtMouse();
     void checkMouseOver();
+    bool _mouseOverWindow; // Whether the mouse is over any visible window.
 
     bool _leftMouseDown; // Whether the left mouse button is pressed
     Entity *_leftMouseDownEntity;

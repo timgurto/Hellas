@@ -130,7 +130,7 @@ void Client::drawTooltip() const{
     const Texture *tooltip;
     if (Element::tooltip() != nullptr)
         tooltip = Element::tooltip();
-    else if (_currentMouseOverEntity != nullptr)
+    else if (_currentMouseOverEntity != nullptr && !_mouseOverWindow)
         tooltip = &_currentMouseOverEntity->tooltip();
     else
         return;
