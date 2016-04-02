@@ -63,7 +63,7 @@ void Container::refresh(){
                                    Client::ICON_SIZE + 2, Client::ICON_SIZE + 2);
         static const Rect SLOT_BACKGROUND_OFFSET = Rect(1, 1, -2, -2);
         renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
-        if (dragSlot != i) { // Don't draw an item being moved by the mouse.
+        if (dragSlot != i || dragContainer != this) { // Don't draw an item being moved by the mouse.
             const std::pair<const Item *, size_t> &slot = _linked[i];
             if (slot.first != nullptr){
                 slot.first->icon().draw(slotRect.x + 1, slotRect.y + 1);
