@@ -230,12 +230,20 @@ private:
     std::string _partialMessage;
     void checkSocket();
     void sendRawMessage(const std::string &msg = "") const;
-    static void confirmSendMessage(void *data); // Responsible for deleting pair afterwards.
     void sendMessage(MessageCode msgCode, const std::string &args = "") const;
     void handleMessage(const std::string &msg);
-    // Show a confirmation window, and on confirmation, send the specified message to the server.
-    void confirmThenSendMessage(const std::string &confirmationMessage, const std::string &message);
     void performCommand(const std::string &commandString);
+
+    // Confirmation-window stuff
+    Window *_confirmationWindow;
+    Label *_confirmationWindowText;
+    size_t
+        _serialToDrop,
+        _slotToDrop;
+    std::string _messageToConfirm;
+    // Show a confirmation window, then drop item if confirmed
+    void dropItemOnConfirmation(size_t serial, size_t slot, const Item *item);
+    static void sendMessageAndHideConfirmationWindow(void *data);
 
     friend class Container; // Needs to send CL_SWAP_ITEMS messages, and open a confirmation window
     friend class ClientObject;

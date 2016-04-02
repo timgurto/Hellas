@@ -180,10 +180,8 @@ const Item *Container::getUseItem() {
 
 void Container::dropItem() {
     if (dragSlot != NO_SLOT && dragContainer) {
-        std::string msg = "" + MSG_START +
-                          makeArgs(CL_DROP, dragContainer->_serial, dragSlot) + MSG_END;
-        Client::_instance->confirmThenSendMessage("Are you sure you want to destroy that item?",
-                                                  msg);
+        Client::_instance->dropItemOnConfirmation(dragContainer->_serial, dragSlot,
+                                                  dragContainer->_linked[dragSlot].first);
         dragSlot = NO_SLOT;
         dragContainer->markChanged();
         dragContainer = nullptr;

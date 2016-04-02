@@ -218,7 +218,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         case CL_DROP:
         {
             size_t serial, slot;
-            iss >> serial >> slot >> del;
+            iss >> serial >> del >> slot >> del;
             if (del != MSG_END)
                 return;
             Item::vect_t *container;

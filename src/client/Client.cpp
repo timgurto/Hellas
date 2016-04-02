@@ -113,6 +113,12 @@ _mapX(0), _mapY(0),
 
 _currentMouseOverEntity(nullptr),
 
+_confirmationWindow(nullptr),
+_confirmationWindowText(nullptr),
+
+_serialToDrop(0),
+_slotToDrop(Container::NO_SLOT),
+
 _debug("client.log"){
     isClient = true;
     _instance = this;
@@ -705,28 +711,45 @@ void Client::unwatchObject(ClientObject &obj){
     _objectsWatched.erase(&obj);
 }
 
-void Client::confirmThenSendMessage(const std::string &confirmationMessage,
-                                    const std::string &message){
-    static const px_t
-        WINDOW_WIDTH = 200,
-        PADDING = 2,
-        BUTTON_WIDTH = 60,
-        BUTTON_HEIGHT = 15,
-        WINDOW_HEIGHT = BUTTON_HEIGHT + 3 * PADDING + Element::TEXT_HEIGHT,
-        BUTTON_Y = 2 * PADDING + Element::TEXT_HEIGHT;
-    Window *confirmationWindow = new Window(Rect((SCREEN_X - WINDOW_WIDTH) / 2,
-                                                 (SCREEN_Y - WINDOW_HEIGHT) / 2,
-                                                 WINDOW_WIDTH, WINDOW_HEIGHT),
-                                            "Confirmation");
-    confirmationWindow->addChild(new Label(Rect(0, PADDING, WINDOW_WIDTH, Element::TEXT_HEIGHT),
-                                           confirmationMessage, Element::CENTER_JUSTIFIED));
-    confirmationWindow->addChild(new Button(Rect((WINDOW_WIDTH - PADDING) / 2 - BUTTON_WIDTH,
-                                                BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT),
-                                            "OK", sendMessageStatic, new std::string(message)));
-    confirmationWindow->addChild(new Button(Rect((WINDOW_WIDTH + PADDING) / 2, BUTTON_Y,
-                                                 BUTTON_WIDTH, BUTTON_HEIGHT),
-                                             "Cancel", Window::hideWindow, confirmationWindow));
-    confirmationWindow->show();
-    confirmationWindow->deleteOnHide();
-    addWindow(confirmationWindow);
+void Client::dropItemOnConfirmation(size_t serial, size_t slot, const Item *item){
+    _serialToDrop = serial;
+    _slotToDrop = slot;
+    std::string windowText = "Are you sure you want to drop ";
+    windowText += item->name() + "?";
+
+    _messageToConfirm = MSG_START + toString(CL_DROP) + MSG_DELIM + makeArgs(serial, slot) +
+                        MSG_END;
+
+    if (_confirmationWindow == nullptr){
+        static const px_t
+            WINDOW_WIDTH = 200,
+            PADDING = 2,
+            BUTTON_WIDTH = 60,
+            BUTTON_HEIGHT = 15,
+            WINDOW_HEIGHT = BUTTON_HEIGHT + 3 * PADDING + Element::TEXT_HEIGHT,
+            BUTTON_Y = 2 * PADDING + Element::TEXT_HEIGHT;
+        _confirmationWindow = new Window(Rect((SCREEN_X - WINDOW_WIDTH) / 2,
+                                              (SCREEN_Y - WINDOW_HEIGHT) / 2,
+                                              WINDOW_WIDTH, WINDOW_HEIGHT),
+                                         "Confirmation");
+        _confirmationWindowText = new Label(Rect(0, PADDING, WINDOW_WIDTH, Element::TEXT_HEIGHT),
+                                            windowText, Element::CENTER_JUSTIFIED);
+        _confirmationWindow->addChild(_confirmationWindowText);
+        _confirmationWindow->addChild(new Button(Rect((WINDOW_WIDTH - PADDING) / 2 - BUTTON_WIDTH,
+                                                      BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT),
+                                                "OK", sendMessageAndHideConfirmationWindow));
+        _confirmationWindow->addChild(new Button(Rect((WINDOW_WIDTH + PADDING) / 2, BUTTON_Y,
+                                                       BUTTON_WIDTH, BUTTON_HEIGHT),
+                                                 "Cancel",
+                                                 Window::hideWindow, _confirmationWindow));
+        addWindow(_confirmationWindow);
+    } else {
+        _confirmationWindowText->changeText(windowText);
+    }
+    _confirmationWindow->show();
+}
+
+void Client::sendMessageAndHideConfirmationWindow(void *data){
+    _instance->sendRawMessage(_instance->_messageToConfirm);
+    _instance->_confirmationWindow->hide();
 }

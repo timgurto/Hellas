@@ -587,12 +587,3 @@ void Client::performCommand(const std::string &commandString){
 
     _debug("Unknown command.", Color::RED);
 }
-
-void Client::confirmSendMessage(void *data){
-    auto pair = static_cast<std::pair<std::string, Window *> >(data);
-    const std::string &msg = *pair->first;
-    Window *window = pair->second;
-    _instance->sendRawMessage(*msg);
-    _instance->removeWindow(window);
-    delete pair;
-}
