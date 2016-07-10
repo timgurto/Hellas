@@ -5,3 +5,5 @@
 To clone this repository: `git clone --recursive https://github.com/timgurto/mmo`
 
 [Detailed documentation](doc/index.md)
+
+![Issue backlog](backlog.png)
