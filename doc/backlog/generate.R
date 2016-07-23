@@ -37,6 +37,9 @@ data$roi = match(data$value, vals) - match(data$effort, vals)
 # NA
 data$blockedBy[is.na(data$blockedBy)] <- ""
 
+# Sort data
+data <- data[with(data, order(-roi, effort, issue)),]
+
 plot(
     NULL, log="xy", xlab="Effort", ylab="Value", axes=FALSE, main="Issue backlog",
     xlim=c(min(x), max(x)), ylim=c(min(y), max(y))
