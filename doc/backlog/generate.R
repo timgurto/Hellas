@@ -127,6 +127,7 @@ dev.off()
 text = "# Backlog"
 
 text = c(text, "![Issue backlog](backlog.png)")
+text = c(text, "")
 
 text = c(text, "| Issue | Description | Value | Effort | ROI | Blocked by |")
 text = c(text, "| ----: | ----------- | ----: | -----: | --: | ---------: |")
