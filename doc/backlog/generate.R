@@ -1,9 +1,9 @@
 library("RColorBrewer")
 
-circleSize = 1.75
+circleSize = 1.5
 
 #svg("backlog.svg", width=8, height=8)
-png("backlog.png", width=1000, height=1000, type="cairo", pointsize=13)
+png("backlog.png", width=500, height=500, type="cairo", pointsize=13)
 
 jitter_log <- function(vals, scaler=0.05) {
   noise <- rnorm(length(vals), mean=0, sd=vals*scaler)
@@ -125,6 +125,9 @@ dev.off()
 
 # Write markdown file
 text = "# Backlog"
+
+text = c(text, "![Issue backlog](backlog.png)")
+
 text = c(text, "| Issue | Description | Value | Effort | ROI | Blocked by |")
 text = c(text, "| ----: | ----------- | ----: | -----: | --: | ---------: |")
 
