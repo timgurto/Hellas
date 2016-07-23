@@ -125,10 +125,8 @@ dev.off()
 
 # Write markdown file
 text = "# Backlog"
-
 text = c(text, "![Issue backlog](backlog.png)")
 text = c(text, "")
-
 text = c(text, "| Issue | Description | Value | Effort | ROI | Blocked by |")
 text = c(text, "| ----: | ----------- | ----: | -----: | --: | ---------: |")
 
@@ -138,7 +136,7 @@ for (i in 1:length(data$roi)){
         " | ", data$description[i],
         " | ", data$value[i],
         " | ", data$effort[i],
-        " | ", data$roi[i],
+        " | ", "![", i, "](roi_", i, ".png)",
         " | ", data$blockedBy[i],
         " |", sep=""
     )
