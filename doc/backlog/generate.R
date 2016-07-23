@@ -3,7 +3,9 @@ library("RColorBrewer")
 circleSize = 1.5
 
 #svg("backlog.svg", width=8, height=8)
-png("backlog.png", width=500, height=500, type="cairo", pointsize=13)
+png("backlog.png", width=600, height=500, type="cairo", pointsize=13)
+
+par(mar=c(5.1, 4.1, 4.1, 11))
 
 jitter_log <- function(vals, scaler=0.05) {
   noise <- rnorm(length(vals), mean=0, sd=vals*scaler)
@@ -109,11 +111,18 @@ for (v in 1:8){
 }
 
 
-points(x, y, pch=21, bg=data$color, cex=circleSize)
-#points(x, y, col=data$color, cex=circleSize, lwd=3)
+#points(x, y, pch=21, bg=data$color, cex=circleSize)
+points(x, y, col=data$color, cex=circleSize, lwd=3)
 
 
-legend(legend=cats, x="topright", fill=cols)
+add_legend <- function(...) {
+  opar <- par(fig=c(0, 1, 0, 1), oma=c(0, 0, 0, 0), 
+    mar=c(0, 0, 0, 0), new=TRUE)
+  on.exit(par(opar))
+  plot(0, 0, type='n', bty='n', xaxt='n', yaxt='n')
+  legend(...)
+}
+add_legend(legend=cats, x="topright", fill=cols, inset=c(0.06,0.15))
 
 
 
