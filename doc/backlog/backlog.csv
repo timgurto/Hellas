@@ -1,29 +1,28 @@
-value,effort,type
-1,5,Documentation
-34,8,Aesthetics
-2,8,Code quality
-3,5,Code quality
-13,5,Bug
-2,1,Aesthetics
-8,3,Bug
-3,3,Performance
-5,5,Code quality
-8,8,Code quality
-8,8,Code quality
-13,8,Feature
-13,8,Feature
-3,21,Performance
-5,8,Feature
-5,5,Code quality
-3,13,Code quality
-21,8,Documentation
-21,5,Documentation
-21,5,Documentation
-21,2,Feature
-34,2,Bug
-13,3,Feature
-13,1,Code quality
-8,13,Performance
-34,8,Performance
-55,8,Performance
-8,8,Aesthetics
+issue,description,value,effort,type,blockedBy
+163,Create generic particle system,8,8,Aesthetics,60
+162,Cull objects,55,8,Performance,
+161,Cull players,34,8,Performance,
+160,Cull terrain,8,13,Performance,
+156,Fix ambiguity of Object::removeItem() and Object::removeItems(),13,1,Code quality,
+154,Allow giving away or begging for goods via trade,13,3,Feature,
+152,Prevent gathering/deconstructing when object has an inventory,34,2,Bug,
+149,"Choose gather item based on gathers left, not nominal quantity",21,2,Feature,
+148,Document XML interface,21,5,Documentation,
+146,Document Texture interface,21,5,Documentation,
+145,Document UI interface,21,8,Documentation,
+140,Move appropriate configuration details into config file,3,13,Code quality,
+138,Use set::count() and map::count() to test set membership,5,5,Code quality,
+137,Allow a recipe to create multiple item types,5,8,Feature,
+133,Switch from MinGW to Clang,3,21,Performance,
+130,Make trees drop branches over time,13,8,Feature,
+129,"Add grass objects, which grow naturally on grass tiles",13,8,Feature,
+128,"Use forward declarations where possible, to reduce unnecessary #includes",8,8,Code quality,
+101,Change dynamic_casts that don't check their result to static_cast or check for nullptr,5,5,Code quality,
+100,Optimize container types for faster iteration,3,3,Performance,
+95,Fix scroll-bar dragging offset,8,3,Bug,
+93,Allow terrain types to be marked as non-blending,2,1,Aesthetics,
+83,"Sort _materials and _craftableItems by name, not ID",13,5,Aesthetics,
+74,Throw exceptions where appropriate on SDL-function failures,3,5,Code quality,
+72,Move SDL functions and types to a namespace,2,8,Code quality,
+60,Add particle effects when cutting down a tree,34,8,Aesthetics,
+32,Document and improve use of various disconnects,1,5,Documentation,

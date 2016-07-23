@@ -34,6 +34,9 @@ data$color = cols[data$typeID]
 vals = c(1, 2, 3, 5, 8, 13, 21, 34, 55, 89)
 data$roi = match(data$value, vals) - match(data$effort, vals)
 
+# NA
+data$blockedBy[is.na(data$blockedBy)] <- ""
+
 plot(
     NULL, log="xy", xlab="Effort", ylab="Value", axes=FALSE, main="Issue backlog",
     xlim=c(min(x), max(x)), ylim=c(min(y), max(y))
@@ -122,18 +125,18 @@ dev.off()
 
 # Write markdown file
 text = "# Backlog"
-text = c(text, "| Issue  | Description | Value | Effort | ROI | Blocker |")
-text = c(text, "| - | - | - | - | - | - |")
+text = c(text, "| Issue | Description | Value | Effort | ROI | Blocked by |")
+text = c(text, "| ----: | ----------- | ----: | -----: | --: | ---------: |")
 
 for (i in 1:length(data$roi)){
     entry = paste(
-        "| ", 0,
-        " | ", "a",
+        "| [", data$issue[i], "](", "https://github.com/timgurto/mmo/issues/", data$issue[i], ")",
+        " | ", data$description[i],
         " | ", data$value[i],
         " | ", data$effort[i],
         " | ", data$roi[i],
-        " | ", 0,
-        " |"
+        " | ", data$blockedBy[i],
+        " |", sep=""
     )
     text = c(text, entry)
 }
