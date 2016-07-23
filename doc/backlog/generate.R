@@ -33,7 +33,6 @@ data$color = cols[data$typeID]
 # ROI
 vals = c(1, 2, 3, 5, 8, 13, 21, 34, 55, 89)
 data$roi = match(data$value, vals) - match(data$effort, vals)
-data
 
 plot(
     NULL, log="xy", xlab="Effort", ylab="Value", axes=FALSE, main="Issue backlog",
@@ -120,3 +119,23 @@ legend(legend=cats, x="topright", fill=cols)
 
 
 dev.off()
+
+# Write markdown file
+text = "# Backlog"
+text = c(text, "| Issue  | Description | Value | Effort | ROI | Blocker |")
+text = c(text, "| - | - | - | - | - | - |")
+
+for (i in 1:length(data$roi)){
+    entry = paste(
+        "| ", 0,
+        " | ", "a",
+        " | ", data$value[i],
+        " | ", data$effort[i],
+        " | ", data$roi[i],
+        " | ", 0,
+        " |"
+    )
+    text = c(text, entry)
+}
+
+write(text, file="backlog.md")
