@@ -136,7 +136,7 @@ for (i in 1:length(data$roi)){
         " | ", data$description[i],
         " | ", data$value[i],
         " | ", data$effort[i],
-        " | ", "![", i, "](roi-images/roi_", i, ".png)",
+        " | ", "![", data$roi[i], "](roi-images/roi_", data$roi[i], ".png)",
         " | ", data$blockedBy[i],
         " |", sep=""
     )
