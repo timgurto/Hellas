@@ -16,15 +16,6 @@ roiPalette = colorRampPalette(brewer.pal(11, "RdYlGn"))
 roiCols = roiPalette(19)
 
 data <- read.csv("backlog.csv", sep=",")
-x = jitter_log(data$effort)
-y = jitter_log(data$value)
-
-maxEffort = max(data$effort)
-maxValue = max(data$value)
-x = sapply(x, function(n) min(c(n, maxEffort)))
-x = sapply(x, function(n) max(c(n, 1)))
-y = sapply(y, function(n) min(c(n, maxValue)))
-y = sapply(y, function(n) max(c(n, 1)))
 
 # Categories
 cats = sort(unique(data$type))
@@ -41,6 +32,16 @@ data$blockedBy[is.na(data$blockedBy)] <- ""
 
 # Sort data
 data <- data[with(data, order(-roi, effort, issue)),]
+
+x = jitter_log(data$effort)
+y = jitter_log(data$value)
+
+maxEffort = max(data$effort)
+maxValue = max(data$value)
+x = sapply(x, function(n) min(c(n, maxEffort)))
+x = sapply(x, function(n) max(c(n, 1)))
+y = sapply(y, function(n) min(c(n, maxValue)))
+y = sapply(y, function(n) max(c(n, 1)))
 
 plot(
     NULL, log="xy", xlab="Effort", ylab="Value", axes=FALSE, main="Issue backlog",
@@ -139,13 +140,14 @@ dev.off()
 text = "# Backlog"
 text = c(text, "![Issue backlog](backlog.png)")
 text = c(text, "")
-text = c(text, "| Issue | Description | Value | Effort | ROI | Blocked by |")
-text = c(text, "| ----: | ----------- | ----: | -----: | --: | ---------: |")
+text = c(text, "| Issue | Description | Type | Value | Effort | ROI | Blocked by |")
+text = c(text, "| ----: | ----------- | ---- | ----: | -----: | --: | ---------: |")
 
 for (i in 1:length(data$roi)){
     entry = paste(
         "| [", data$issue[i], "](", "https://github.com/timgurto/mmo/issues/", data$issue[i], ")",
         " | ", data$description[i],
+        " | ", data$type[i], 
         " | ", data$value[i],
         " | ", data$effort[i],
         " | ", "![", data$roi[i], "](roi-images/roi_", data$roi[i], ".png)",
