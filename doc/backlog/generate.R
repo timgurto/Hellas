@@ -28,7 +28,20 @@ vals = c(1, 2, 3, 5, 8, 13, 21, 34, 55, 89)
 data$roi = match(data$value, vals) - match(data$effort, vals)
 
 # NA
-data$blockedBy[is.na(data$blockedBy)] <- ""
+data$notes = data$blockedBy;
+data$notes[is.na(data$notes)] <- ""
+for (i in 1:length(data$blockedBy)){
+    if (data$notes[i] != "")
+        data$notes[i] = paste(":no_entry_sign:", data$notes[i], sep="")
+}
+
+# Mark refinement suggestions
+data$refinementPriority = data$effort*data$value
+data <- data[with(data, order(-refinementPriority,-roi)),]
+numToRefine = min(3, length(data$roi));
+for (i in 1:numToRefine){
+    data$notes[i] = paste(data$notes[i], ":heavy_division_sign:")
+}
 
 # Sort data
 data <- data[with(data, order(-roi, effort, issue)),]
@@ -140,8 +153,12 @@ dev.off()
 text = "# Backlog"
 text = c(text, "![Issue backlog](backlog.png)")
 text = c(text, "")
-text = c(text, "| Issue | Description | Type | Value | Effort | ROI | Blocked by |")
-text = c(text, "| ----: | ----------- | ---- | ----: | -----: | --: | ---------: |")
+text = c(text, "Legend:")
+text = c(text, "- :no_entry_sign:_n_: blocked by issue _n_")
+text = c(text, "- :heavy_division_sign:: further refinement suggested")
+text = c(text, "")
+text = c(text, "| Issue | Description | Type | Value | Effort | log<sub>&phi;</sub>(ROI) | Notes |")
+text = c(text, "| ----: | ----------- | ---- | ----: | -----: | -----------------------: | :---: |")
 
 for (i in 1:length(data$roi)){
     entry = paste(
@@ -151,7 +168,7 @@ for (i in 1:length(data$roi)){
         " | ", data$value[i],
         " | ", data$effort[i],
         " | ", "![", data$roi[i], "](roi-images/roi_", data$roi[i], ".png)",
-        " | ", data$blockedBy[i],
+        " | ", data$notes[i],
         " |", sep=""
     )
     text = c(text, entry)
