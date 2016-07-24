@@ -24,7 +24,7 @@ cols = brewer.pal(length(cats), "Set1")
 data$color = cols[data$typeID]
 
 # ROI
-vals = c(1, 2, 3, 5, 8, 13, 21, 34, 55, 89)
+vals = c(1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144)
 data$roi = match(data$value, vals) - match(data$effort, vals)
 
 # NA
@@ -60,8 +60,10 @@ plot(
     NULL, log="xy", xlab="Effort", ylab="Value", axes=FALSE, main="Issue backlog",
     xlim=c(min(x), max(x)), ylim=c(min(y), max(y))
 )
-axis(1, at=c(1,2,3,5,8,13,21))
-axis(2, at=c(1,2,3,5,8,13,21,34,55))
+effortVals = vals[1:match(maxEffort, vals)]
+valueVals = vals[1:match(maxValue, vals)]
+axis(1, at=effortVals)
+axis(2, at=valueVals)
 #box()
 
 
@@ -73,12 +75,14 @@ logHalf <- function(a, b){
 
 
 
+numVals = length(vals)
+topVal = vals[numVals]
+secondTopVal = vals[numVals-1]
+topEdge = logHalf(secondTopVal, topVal)
 
-topEdge = logHalf(55,89)
+polygon(x=c(1,topVal,topVal,1), y=c(1,1,topVal,topVal), lty=0, col=roiCols[10])
 
-polygon(x=c(1,89,89,1), y=c(1,1,89,89), lty=0, col=roiCols[10])
-
-for (e in 1:8){
+for (e in 1:(numVals-1)){
     midE = logHalf(vals[e], vals[e+1])
     nextMidE = logHalf(vals[e+1], vals[e+2])
     if (e > 1) {
@@ -101,7 +105,7 @@ for (e in 1:8){
     )
 }
 
-for (v in 1:8){
+for (v in 1:(numVals-1)){
     midV = logHalf(vals[v], vals[v+1])
     nextMidV = logHalf(vals[v+1], vals[v+2])
     if (v > 1){
