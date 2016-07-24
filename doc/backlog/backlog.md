@@ -6,7 +6,7 @@ Legend:
 - :heavy_division_sign:: further refinement suggested
 
 | Issue | Description | Type | Value | Effort | log<sub>&phi;</sub>(ROI) | Notes |
-| ----: | ----------- | ---- | ----: | -----: | -----------------------: | :---: |
+| ----: | ----------- | ---- | ----: | -----: | :----------------------: | :---: |
 | [152](https://github.com/timgurto/mmo/issues/152) | Prevent gathering/deconstructing when object has an inventory | Bug | 34 | 2 | ![6](roi-images/roi_6.png) |  |
 | [156](https://github.com/timgurto/mmo/issues/156) | Fix ambiguity of Object::removeItem() and Object::removeItems() | Code quality | 13 | 1 | ![5](roi-images/roi_5.png) |  |
 | [149](https://github.com/timgurto/mmo/issues/149) | Choose gather item based on gathers left, not nominal quantity | Feature | 21 | 2 | ![5](roi-images/roi_5.png) |  |

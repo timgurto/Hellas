@@ -158,7 +158,7 @@ text = c(text, "- :no_entry_sign:_n_: blocked by issue _n_")
 text = c(text, "- :heavy_division_sign:: further refinement suggested")
 text = c(text, "")
 text = c(text, "| Issue | Description | Type | Value | Effort | log<sub>&phi;</sub>(ROI) | Notes |")
-text = c(text, "| ----: | ----------- | ---- | ----: | -----: | -----------------------: | :---: |")
+text = c(text, "| ----: | ----------- | ---- | ----: | -----: | :----------------------: | :---: |")
 
 for (i in 1:length(data$roi)){
     entry = paste(

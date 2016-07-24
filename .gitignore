@@ -27,3 +27,5 @@
 *.o
 *.swo
 *.world
+doc/backlog/gen-image.R
+doc/backlog/generate.sh
