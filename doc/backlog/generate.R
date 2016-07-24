@@ -36,12 +36,11 @@ for (i in 1:length(data$blockedBy)){
 }
 
 # Mark refinement suggestions
+suggestRefinementAt = 200
 data$refinementPriority = data$effort*data$value
-data <- data[with(data, order(-refinementPriority,-roi)),]
-numToRefine = min(3, length(data$roi));
-for (i in 1:numToRefine){
-    data$notes[i] = paste(data$notes[i], ":heavy_division_sign:")
-}
+for (i in 1:length(data$refinementPriority))
+    if (data$refinementPriority[i] >= suggestRefinementAt)
+        data$notes[i] = paste(data$notes[i], ":heavy_division_sign:")
 
 # Sort data
 data <- data[with(data, order(-roi, effort, issue)),]

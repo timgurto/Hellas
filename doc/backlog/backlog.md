@@ -14,8 +14,8 @@ Legend:
 | [154](https://github.com/timgurto/mmo/issues/154) | Allow giving away or begging for goods via trade | Feature | 13 | 3 | ![3](roi-images/roi_3.png) |  |
 | [146](https://github.com/timgurto/mmo/issues/146) | Document Texture interface | Documentation | 21 | 5 | ![3](roi-images/roi_3.png) |  |
 | [148](https://github.com/timgurto/mmo/issues/148) | Document XML interface | Documentation | 21 | 5 | ![3](roi-images/roi_3.png) |  |
-| [60](https://github.com/timgurto/mmo/issues/60) | Add particle effects when cutting down a tree | Aesthetics | 34 | 8 | ![3](roi-images/roi_3.png) |  |
-| [161](https://github.com/timgurto/mmo/issues/161) | Cull players | Performance | 34 | 8 | ![3](roi-images/roi_3.png) |  |
+| [60](https://github.com/timgurto/mmo/issues/60) | Add particle effects when cutting down a tree | Aesthetics | 34 | 8 | ![3](roi-images/roi_3.png) |  :heavy_division_sign: |
+| [161](https://github.com/timgurto/mmo/issues/161) | Cull players | Performance | 34 | 8 | ![3](roi-images/roi_3.png) |  :heavy_division_sign: |
 | [165](https://github.com/timgurto/mmo/issues/165) | Gear | Feature | 89 | 21 | ![3](roi-images/roi_3.png) | :no_entry_sign:164 :heavy_division_sign: |
 | [95](https://github.com/timgurto/mmo/issues/95) | Fix scroll-bar dragging offset | Bug | 8 | 3 | ![2](roi-images/roi_2.png) |  |
 | [83](https://github.com/timgurto/mmo/issues/83) | Sort _materials and _craftableItems by name, not ID | Aesthetics | 13 | 5 | ![2](roi-images/roi_2.png) |  |
