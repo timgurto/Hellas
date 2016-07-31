@@ -13,7 +13,7 @@ issue,description,value,effort,type,blockedBy
 130,Make trees drop branches over time,13,8,Feature,
 133,Switch from MinGW to Clang,3,21,Performance,
 137,Allow a recipe to create multiple item types,5,8,Feature,
-138,Use set::count() and map::count() to test set membership,5,5,Code quality,
+138,Use set::count() and map::count() to test set membership,5,3,Code quality,
 140,Move appropriate configuration details into config file,3,13,Code quality,
 145,Document UI interface,21,8,Documentation,
 146,Document Texture interface,21,5,Documentation,
@@ -26,5 +26,21 @@ issue,description,value,effort,type,blockedBy
 161,Cull players,34,8,Performance,
 162,Cull objects,55,8,Performance,
 163,Create generic particle system,8,8,Aesthetics,60
-164,Combat,55,34,Feature,
-165,Gear,89,21,Feature,164
+166,Health stat,2,2,Feature,
+167,Static critters w/ health,13,5,Feature,
+168,Can attack NPCs,5,8,Feature,167
+169,NPCs can die,3,3,Feature,
+170,Attack stat,2,1,Feature,
+171,NPC loot,8,5,Feature,167
+172,Critter run-away AI,1,8,Feature,
+173,Animal that fights back,3,5,Feature,168
+174,Player death,5,8,Feature,166
+175,NPC spawning,8,8,Feature,13
+176,PVP,5,5,Feature,174
+177,Character has gear slots,21,8,Feature,
+178,Items can match gear slots,13,3,Feature,177
+179,Robe of +1 health,21,5,Feature,178
+180,Gear visible on character,34,13,Feature,177
+181,AI NPC clients,55,34,Feature,
+182,Make use of Winsock modular,21,13,Code quality,
+183,Linux support,21,21,Code quality,182
