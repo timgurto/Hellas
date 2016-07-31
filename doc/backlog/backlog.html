@@ -99,7 +99,7 @@
         
     function sortByIssue(){
         PBIs.sort(function(a, b){
-            return b.issue - a.issue;
+            return a.issue - b.issue;
         });
         refreshTable();
     }
