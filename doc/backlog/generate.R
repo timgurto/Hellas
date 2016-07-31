@@ -147,7 +147,8 @@ add_legend(legend=cats, x="topright", fill=cols, inset=c(0.02,0.15))
 dev.off()
 
 
-suggestRefinementAt = 200
+suggestRefinementAtEV = 200
+suggestRefinementAtEffort = 9
 
 # Write js file
 fieldNum <- function(name, value){
@@ -171,7 +172,8 @@ for (i in 1:length(data$roi)){
         text = c(text, fieldNum("blockedBy", data$blockedBy[i]))
     }
 
-    if (data$effort[i] * data$value[i] >= suggestRefinementAt){
+    if (data$effort[i] * data$value[i] >= suggestRefinementAtEV &&
+        data$effort[i] >= suggestRefinementAtEffort){
         text = c(text, fieldStr("refine", "true"))
     }
 
