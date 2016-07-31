@@ -128,6 +128,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_NO_WARE:
         case SV_NO_PRICE:
         case SV_MERCHANT_INVENTORY_FULL:
+        case SV_NOT_EMPTY:
             errorMessageColor = Color::YELLOW; // Yellow above, red below
         case SV_INVALID_USER:
         case SV_INVALID_ITEM:
@@ -506,6 +507,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_NO_PRICE] = "You cannot afford to buy that.";
     _errorMessages[SV_MERCHANT_INVENTORY_FULL] =
         "The object does not have enough inventory space for that exchange.";
+    _errorMessages[SV_NOT_EMPTY] = "That object is not empty.";
 }
 
 void Client::performCommand(const std::string &commandString){

@@ -19,7 +19,6 @@ issue,description,value,effort,type,blockedBy
 146,Document Texture interface,21,5,Documentation,
 148,Document XML interface,21,5,Documentation,
 149,"Choose gather item based on gathers left, not nominal quantity",21,2,Feature,
-152,Prevent gathering/deconstructing when object has an inventory,34,2,Bug,
 154,Allow giving away or begging for goods via trade,13,3,Feature,
 156,Fix ambiguity of Object::removeItem() and Object::removeItems(),13,1,Code quality,
 160,Cull terrain,8,13,Performance,

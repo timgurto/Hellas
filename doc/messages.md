@@ -79,3 +79,4 @@ Code | Name                         | Syntax                               | Des
 927  | `SV_NO_WARE`                 | &laquo;927&raquo;                    | "You tried to purchase from a merchant object, but it doesn't have enough wares in stock"
 928  | `SV_NO_PRICE`                | &laquo;928&raquo;                    | "You tried to purchase from a merchant object, but you can't afford it"
 929  | `SV_MERCHANT_INVENTORY_FULL` | &laquo;929&raquo;                    | "You tried to purchase from a merchant object, but it doesn't have enough inventory space to accept your payment"
+929  | `SV_NOT_EMPTY`               | &laquo;930&raquo;                    | "You tried to deconstruct an object that contains an inventory of items"

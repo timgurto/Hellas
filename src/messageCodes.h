@@ -219,6 +219,9 @@ enum MessageCode{
     // The merchant object does not have enough inventory space to trade with the user
     SV_MERCHANT_INVENTORY_FULL = 929,
 
+    // The object cannot be removed because it has an inventory of items
+    SV_NOT_EMPTY = 930,
+
 
 
     NO_CODE

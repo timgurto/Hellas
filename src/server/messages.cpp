@@ -182,6 +182,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_ITEM_NEEDED, gatherReq);
                 break;
             }
+            // Check that it has no inventory
+            if (!obj.container().empty()){
+                sendMessage(client, SV_NOT_EMPTY);
+                break;
+            }
             user->beginGathering(&obj);
             sendMessage(client, SV_ACTION_STARTED, makeArgs(obj.type()->gatherTime()));
             break;
@@ -210,6 +215,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_CANNOT_DECONSTRUCT);
                 break;
             }
+            // Check that it has no inventory
+            if (!obj.container().empty()){
+                sendMessage(client, SV_NOT_EMPTY);
+                break;
+            }
+
             user->beginDeconstructing(obj);
             sendMessage(client, SV_ACTION_STARTED, makeArgs(obj.type()->deconstructionTime()));
             break;

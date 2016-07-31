@@ -29,3 +29,5 @@
 *.world
 doc/backlog/gen-image.R
 doc/backlog/generate.sh
+doc/backlog/backlog.svg
+doc/backlog/backlog.js
