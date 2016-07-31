@@ -27,14 +27,6 @@ data$color = cols[data$typeID]
 vals = c(1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144)
 data$roi = match(data$value, vals) - match(data$effort, vals)
 
-# NA
-data$notes = data$blockedBy;
-data$notes[is.na(data$notes)] <- ""
-for (i in 1:length(data$blockedBy)){
-    if (data$notes[i] != "")
-        data$notes[i] = paste(":no_entry_sign:", data$notes[i], sep="")
-}
-
 # Sort data
 data <- data[with(data, order(-roi, effort, issue)),]
 
@@ -147,8 +139,8 @@ add_legend(legend=cats, x="topright", fill=cols, inset=c(0.02,0.15))
 dev.off()
 
 
-suggestRefinementAtEV = 200
-suggestRefinementAtEffort = 9
+suggestRefinementAtEV = 400
+suggestRefinementAtEffort = 14
 
 # Write js file
 fieldNum <- function(name, value){

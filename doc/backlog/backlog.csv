@@ -1,45 +1,45 @@
 issue,description,value,effort,type,blockedBy
-32,Document and improve use of various disconnects,1,5,Documentation,
-60,Add particle effects when cutting down a tree,34,8,Aesthetics,
+32,Document and improve use of various disconnects,2,5,Documentation,
+60,Add particle effects when cutting down a tree,13,13,Aesthetics,
 72,Move SDL functions and types to a namespace,2,8,Code quality,
-74,Throw exceptions where appropriate on SDL-function failures,3,5,Code quality,
-83,"Sort _materials and _craftableItems by name, not ID",13,5,Aesthetics,
-93,Allow terrain types to be marked as non-blending,2,1,Aesthetics,
-95,Fix scroll-bar dragging offset,8,3,Bug,
-100,Optimize container types for faster iteration,3,3,Performance,
-101,Change dynamic_casts that don't check their result to static_cast or check for nullptr,5,5,Code quality,
-128,"Use forward declarations where possible, to reduce unnecessary #includes",8,8,Code quality,
-129,"Add grass objects, which grow naturally on grass tiles",13,8,Feature,
-130,Make trees drop branches over time,13,8,Feature,
-133,Switch from MinGW to Clang,3,21,Performance,
-137,Allow a recipe to create multiple item types,5,8,Feature,
-138,Use set::count() and map::count() to test set membership,5,3,Code quality,
-140,Move appropriate configuration details into config file,3,13,Code quality,
-145,Document UI interface,21,8,Documentation,
-146,Document Texture interface,21,5,Documentation,
-148,Document XML interface,21,5,Documentation,
-149,"Choose gather item based on gathers left, not nominal quantity",21,2,Feature,
-154,Allow giving away or begging for goods via trade,13,3,Feature,
-156,Fix ambiguity of Object::removeItem() and Object::removeItems(),13,1,Code quality,
-160,Cull terrain,8,13,Performance,
-161,Cull players,34,8,Performance,
-162,Cull objects,55,8,Performance,
+74,Throw exceptions where appropriate on SDL-function failures,3,8,Code quality,
+83,"Sort _materials and _craftableItems by name, not ID",8,8,Aesthetics,
+93,Allow terrain types to be marked as non-blending,1,1,Aesthetics,
+95,Fix scroll-bar dragging offset,5,8,Bug,
+100,Optimize container types for faster iteration,2,2,Performance,
+101,Change dynamic_casts that don't check their result to static_cast or check for nullptr,2,2,Code quality,
+128,"Use forward declarations where possible, to reduce unnecessary #includes",3,8,Code quality,
+129,"Add grass objects, which grow naturally on grass tiles",5,21,Feature,
+130,Make trees drop branches over time,5,21,Feature,
+137,Allow a recipe to create multiple item types,5,13,Feature,
+138,Use set::count() and map::count() to test set membership,2,2,Code quality,
+140,Move appropriate configuration details into config file,5,34,Code quality,
+145,Document UI interface,13,8,Documentation,
+146,Document Texture interface,8,3,Documentation,
+148,Document XML interface,8,3,Documentation,
+149,"Choose gather item based on gathers left, not nominal quantity",8,5,Feature,
+154,Allow giving away or begging for goods via trade,8,5,Feature,
+156,Fix ambiguity of Object::removeItem() and Object::removeItems(),2,2,Code quality,
+160,Cull terrain,21,21,Performance,
+161,Cull players,34,34,Performance,
+162,Cull objects,55,34,Performance,
 163,Create generic particle system,8,8,Aesthetics,60
-166,Health stat,2,2,Feature,
-167,Static critters w/ health,13,5,Feature,
-168,Can attack NPCs,5,8,Feature,167
-169,NPCs can die,3,3,Feature,
-170,Attack stat,2,1,Feature,
-171,NPC loot,8,5,Feature,167
-172,Critter run-away AI,1,8,Feature,
-173,Animal that fights back,3,5,Feature,168
-174,Player death,5,8,Feature,166
-175,NPC spawning,8,8,Feature,13
-176,PVP,5,5,Feature,174
-177,Character has gear slots,21,8,Feature,
-178,Items can match gear slots,13,3,Feature,177
-179,Robe of +1 health,21,5,Feature,178
-180,Gear visible on character,34,13,Feature,177
-181,AI NPC clients,55,34,Feature,
-182,Make use of Winsock modular,21,13,Code quality,
-183,Linux support,21,21,Code quality,182
+166,Health stat,8,2,Feature,
+167,Static critters w/ health,34,13,Feature,
+168,Can attack NPCs,13,55,Feature,167
+169,NPCs can die,13,3,Feature,167
+170,Attack stat,8,1,Feature,
+171,NPC loot,13,34,Feature,169
+172,Critter run-away AI,5,34,Feature,
+173,Animal that fights back,21,55,Feature,168
+174,Player death,13,5,Feature,166
+175,NPC spawning,5,21,Feature,167
+176,PVP,13,3,Feature,168
+177,Character has gear slots,13,21,Feature,
+178,Items can match gear slots,8,3,Feature,177
+179,Gear can have stats,13,8,Feature,178
+180,Gear visible on character,34,34,Aesthetics,177
+181,AI NPC clients,55,89,Feature,
+182,Make use of Winsock modular,8,21,Code quality,
+183,Linux support,21,13,Code quality,182
+184,NPC idling AI,8,21,Feature,167

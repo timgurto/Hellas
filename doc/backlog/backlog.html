@@ -99,7 +99,7 @@
         
     function sortByIssue(){
         PBIs.sort(function(a, b){
-            return a.issue > b.issue;
+            return b.issue - a.issue;
         });
         refreshTable();
     }
@@ -120,21 +120,21 @@
         
     function sortByValue(){
         PBIs.sort(function(a, b){
-            return a.value < b.value;
+            return b.value - a.value;
         });
         refreshTable();
     }
         
     function sortByEffort(){
         PBIs.sort(function(a, b){
-            return a.effort < b.effort;
+            return b.effort - a.effort;
         });
         refreshTable();
     }
         
     function sortByROI(){
         PBIs.sort(function(a, b){
-            return a.roi < b.roi;
+            return b.roi - a.roi;
         });
         refreshTable();
     }
