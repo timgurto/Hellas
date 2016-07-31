@@ -2,10 +2,10 @@ library("RColorBrewer")
 
 circleSize = 1.5
 
-#svg("backlog.svg", width=8, height=8)
-png("backlog.png", width=600, height=500, type="cairo", pointsize=13)
+svg("backlog.svg", width=12, height=8)
+#png("backlog.png", width=600, height=500, type="cairo", pointsize=13)
 
-par(mar=c(5.1, 4.1, 4.1, 11))
+par(mar=c(4.1, 4.1, 0, 11))
 
 jitter_log <- function(vals, scaler=0.05) {
   noise <- rnorm(length(vals), mean=0, sd=vals*scaler)
@@ -35,13 +35,6 @@ for (i in 1:length(data$blockedBy)){
         data$notes[i] = paste(":no_entry_sign:", data$notes[i], sep="")
 }
 
-# Mark refinement suggestions
-suggestRefinementAt = 200
-data$refinementPriority = data$effort*data$value
-for (i in 1:length(data$refinementPriority))
-    if (data$refinementPriority[i] >= suggestRefinementAt)
-        data$notes[i] = paste(data$notes[i], ":heavy_division_sign:")
-
 # Sort data
 data <- data[with(data, order(-roi, effort, issue)),]
 
@@ -56,7 +49,8 @@ y = sapply(y, function(n) min(c(n, maxValue)))
 y = sapply(y, function(n) max(c(n, 1)))
 
 plot(
-    NULL, log="xy", xlab="Effort", ylab="Value", axes=FALSE, main="Issue backlog",
+    NULL, log="xy", xlab="Effort", ylab="Value", axes=FALSE,
+    #main="Issue backlog",
     xlim=c(min(x), max(x)), ylim=c(min(y), max(y))
 )
 effortVals = vals[1:match(maxEffort, vals)]
@@ -139,7 +133,7 @@ add_legend <- function(...) {
   plot(0, 0, type='n', bty='n', xaxt='n', yaxt='n')
   legend(...)
 }
-add_legend(legend=cats, x="topright", fill=cols, inset=c(0.06,0.15))
+add_legend(legend=cats, x="topright", fill=cols, inset=c(0.02,0.15))
 
 
 
@@ -152,29 +146,37 @@ add_legend(legend=cats, x="topright", fill=cols, inset=c(0.06,0.15))
 
 dev.off()
 
-# Write markdown file
-text = "# Backlog"
-text = c(text, "![Issue backlog](backlog.png)")
-text = c(text, "")
-text = c(text, "Legend:")
-text = c(text, "- :no_entry_sign:_n_: blocked by issue _n_")
-text = c(text, "- :heavy_division_sign:: further refinement suggested")
-text = c(text, "")
-text = c(text, "| Issue | Description | Type | Value | Effort | log<sub>&phi;</sub>(ROI) | Notes |")
-text = c(text, "| ----: | ----------- | ---- | ----: | -----: | :----------------------: | :---: |")
 
-for (i in 1:length(data$roi)){
-    entry = paste(
-        "| [", data$issue[i], "](", "https://github.com/timgurto/mmo/issues/", data$issue[i], ")",
-        " | ", data$description[i],
-        " | ", data$type[i], 
-        " | ", data$value[i],
-        " | ", data$effort[i],
-        " | ", "![", data$roi[i], "](roi-images/roi_", data$roi[i], ".png)",
-        " | ", data$notes[i],
-        " |", sep=""
-    )
-    text = c(text, entry)
+suggestRefinementAt = 200
+
+# Write js file
+fieldNum <- function(name, value){
+    paste("    ", name, ": ", value, ",", sep="")
+}
+fieldStr <- function(name, value){
+    paste("    ", name, ": \"", value, "\",", sep="")
 }
 
-write(text, file="backlog.md")
+text = "PBIs = ["
+for (i in 1:length(data$roi)){
+    text = c(text, "{")
+    text = c(text, fieldNum("issue", data$issue[i]))
+    text = c(text, fieldStr("description", data$description[i]))
+    text = c(text, fieldStr("type", data$type[i]))
+    text = c(text, fieldNum("value", data$value[i]))
+    text = c(text, fieldNum("effort", data$effort[i]))
+    text = c(text, fieldNum("roi", data$roi[i]))
+    
+    if (!is.na(data$blockedBy[i])){
+        text = c(text, fieldNum("blockedBy", data$blockedBy[i]))
+    }
+
+    if (data$effort[i] * data$value[i] >= suggestRefinementAt){
+        text = c(text, fieldStr("refine", "true"))
+    }
+
+    text = c(text, "},")
+}
+text = c(text, "];")
+
+write(text, file="backlog.js")

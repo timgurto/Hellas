@@ -1,0 +1,195 @@
+<html>
+<head>
+<script type="text/javascript" src="backlog.js"></script>
+
+
+<style type="text/css">
+    body {
+        font-family: Helvetica, Arial, Sans;
+    }
+
+    .tableHeading{
+        font-weight: bold;
+    }
+
+    .roi-9{background: #A50026}
+    .roi-8{background: #C01A26}
+    .roi-7{background: #DA362A}
+    .roi-6{background: #EA5839}
+    .roi-5{background: #F67B49}
+    .roi-4{background: #FB9F5A}
+    .roi-3{background: #FDBE6E}
+    .roi-2{background: #FDDA86}
+    .roi-1{background: #FEEDA2}
+    .roi0{background: #FFFFBF}
+    .roi1{background: #E9F6A2}
+    .roi2{background: #D3EC87}
+    .roi3{background: #B7E075}
+    .roi4{background: #97D268}
+    .roi5{background: #74C364}
+    .roi6{background: #4CB05C}
+    .roi7{background: #229C52}
+    .roi8{background: #0E8244}
+    .roi9{background: #006837}
+    
+    .blocked{
+        color: red;
+        text-decoration: none;
+    }
+    
+    .refine{
+        color: #11bbd4;
+    }
+    
+    .issue{
+        text-align: right;
+    }
+    
+    .value{
+        text-align: right;
+    }
+    
+    .effort{
+        text-align: right;
+    }
+    
+    .roi{
+        text-align: right;
+    }
+    
+    .notes{
+        text-align: center;
+    }
+    
+    td{
+        padding-left: 0.4em;
+        padding-right: 0.4em;
+    }
+</style>
+
+</head>
+
+<body>
+
+<h1>MMO&mdash;Product Backlog</h1>
+
+<table id="backlog">
+    <tr class="tableHeading">
+        <td onClick='sortByIssue();'>Issue</td>
+        <td onClick='sortByDescription();'>Description</td>
+        <td onClick='sortByType();'>Type</td>
+        <td onClick='sortByValue();'>Value</td>
+        <td onClick='sortByEffort();'>Effort</td>
+        <td onClick='sortByROI();'>log<sub>&phi;</sub>(ROI)</td>
+        <td>Notes</td>
+    </tr>
+</table>
+
+<h2>ROI plot</h2>
+<img src="backlog.svg"></img>
+
+<script>
+    var nameLookup = {};
+    for (i in PBIs)
+        /*nameLookup.push({
+            key: PBIs[i].issue,
+            value: PBIs[i].description
+        });*/
+        nameLookup[PBIs[i].issue] = PBIs[i].description;
+        
+    function sortByIssue(){
+        PBIs.sort(function(a, b){
+            return a.issue > b.issue;
+        });
+        refreshTable();
+    }
+        
+    function sortByDescription(){
+        PBIs.sort(function(a, b){
+            return a.description.localeCompare(b.description);
+        });
+        refreshTable();
+    }
+        
+    function sortByType(){
+        PBIs.sort(function(a, b){
+            return a.type.localeCompare(b.type);
+        });
+        refreshTable();
+    }
+        
+    function sortByValue(){
+        PBIs.sort(function(a, b){
+            return a.value < b.value;
+        });
+        refreshTable();
+    }
+        
+    function sortByEffort(){
+        PBIs.sort(function(a, b){
+            return a.effort < b.effort;
+        });
+        refreshTable();
+    }
+        
+    function sortByROI(){
+        PBIs.sort(function(a, b){
+            return a.roi < b.roi;
+        });
+        refreshTable();
+    }
+
+    function refreshTable(){
+        var table = document.getElementById("backlog");
+        var rows = table.rows;
+        var i = rows.length;
+        while (--i)
+            table.deleteRow(i);
+    
+        for (i in PBIs){
+        var PBI = PBIs[i]
+            var row = table.insertRow(-1);
+            
+            var cell = row.insertCell(-1);
+            cell.innerHTML = '<a name="' + PBI.issue + '" href="https://github.com/timgurto/mmo/issues/' +
+                    PBI.issue + '">' + PBI.issue + '</a>';
+            cell.className = "issue";
+            
+            cell = row.insertCell(-1);
+            cell.innerHTML = PBI.description;
+            cell.className = "description";
+            
+            cell = row.insertCell(-1);
+            cell.innerHTML = PBI.type;
+            cell.className = "type";
+            
+            cell = row.insertCell(-1);
+            cell.innerHTML = PBI.value;
+            cell.className = "value";
+            
+            cell = row.insertCell(-1);
+            cell.innerHTML = PBI.effort;
+            cell.className = "effort";
+            
+            cell = row.insertCell(-1);
+            cell.innerHTML = PBI.roi;
+            cell.className = "roi roi"+PBI.roi;
+            
+            cell = row.insertCell(-1);
+            if (PBI.hasOwnProperty("blockedBy"))
+                cell.innerHTML += '<a class="blocked" title="Blocked by: ' +
+                        nameLookup[PBI.blockedBy] +
+                        '" href="#' + PBI.blockedBy + '">&#9888;</span>';
+            if (PBI.hasOwnProperty("refine"))
+                cell.innerHTML += '<span class="refine" title="Consider refining">&#9879;</span>';
+            cell.className = "Notes";
+        }
+    }
+    
+    refreshTable();
+        
+
+</script>
+
+</body>
+</html>
