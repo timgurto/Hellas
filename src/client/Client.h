@@ -160,7 +160,7 @@ private:
     Point _mouse; // Mouse position
     bool _mouseMoved;
     Entity *getEntityAtMouse();
-    void checkMouseOver();
+    void checkMouseOver(); // Set state based on window/entity/etc. being moused over.
     bool _mouseOverWindow; // Whether the mouse is over any visible window.
 
     bool _leftMouseDown; // Whether the left mouse button is pressed
