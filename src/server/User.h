@@ -47,6 +47,9 @@ private:
     ms_t _lastContact;
     ms_t _latency;
 
+    // Stats
+    static const unsigned ATTACK;
+
 public:
     User(const std::string &name, const Point &loc, const Socket &socket);
     User(const Socket &rhs); // for use with set::find(), allowing find-by-socket

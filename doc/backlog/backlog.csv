@@ -28,7 +28,6 @@ issue,description,value,effort,type,blockedBy
 167,Static critters w/ health,34,13,Feature,
 168,Can attack NPCs,13,55,Feature,167
 169,NPCs can die,13,3,Feature,167
-170,Attack stat,8,1,Feature,
 171,NPC loot,13,34,Feature,169
 172,Critter run-away AI,5,34,Feature,
 173,Animal that fights back,21,21,Feature,168
