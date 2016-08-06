@@ -3,6 +3,6 @@
 #include "testing.h"
 
 void trivialTests(){
-    testContainer.push_back([](){ return 1+1==2; });
-    testContainer.push_back([](){ return 1+1!=2; });
+    addTest("Basic pass case", [](){ return 1+1==2; });
+    addTest("Basic fail case", [](){ return 1+1!=2; });
 }

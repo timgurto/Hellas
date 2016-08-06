@@ -3,11 +3,20 @@
 #ifndef TESTING_H
 #define TESTING_H
 
+#include <string>
 #include <vector>
 
-typedef bool (*testFun_t)();
-typedef std::vector<testFun_t> testContainer_t;
+struct Test{
+    std::string description;
+    typedef bool (*testFun_t)();
+    testFun_t fun;
+    
+    typedef std::vector<Test> testContainer_t;
+    static testContainer_t testContainer;
 
-extern testContainer_t testContainer;
+    Test(std::string &description, testFun_t fun);
+};
+
+void addTest(const char *description, Test::testFun_t fun);
 
 #endif
