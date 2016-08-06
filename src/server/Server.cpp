@@ -452,7 +452,7 @@ bool Server::itemIsClass(const Item *item, const std::string &className) const{
     return item->isClass(className);
 }
 
-void Server::addObject (const ObjectType *type, const Point &location, const User *owner){
+Object &Server::addObject (const ObjectType *type, const Point &location, const User *owner){
     Object newObj(type, location);
     if (owner)
         newObj.owner(owner->name());
@@ -464,6 +464,8 @@ void Server::addObject (const ObjectType *type, const Point &location, const Use
     // Add item to relevant chunk
     if (type->collides())
         getCollisionChunk(location).addObject(&*it);
+
+    return const_cast<Object&>(*it);
 }
 
 const User &Server::getUserByName(const std::string &username) const {

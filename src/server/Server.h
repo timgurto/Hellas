@@ -89,6 +89,8 @@ private:
 
     // World state
     std::set<Object> _objects;
+    Object::byX_t _objectsByX; // This and below are for alerting users only to nearby objects.
+    Object::byY_t _objectsByY;
     void loadData(); // Attempt to load data from files.
     static void saveData(const std::set<Object> &objects);
     void generateWorld(); // Randomly generate a new world.
@@ -121,7 +123,7 @@ private:
     friend void Object::removeItems(const ItemSet &items);
     friend void Object::giveItem(const Item *item, size_t qty);
 
-    void addObject (const ObjectType *type, const Point &location, const User *owner = nullptr);
+    Object &addObject (const ObjectType *type, const Point &location, const User *owner = nullptr);
 
     // Checks whether the object exists, and is within range of the user.  If not, a relevant error
     // message is sentg to the client.

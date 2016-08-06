@@ -260,7 +260,7 @@ void Server::loadData(){
                 continue;
             }
 
-            Object obj(&*it, p);
+            Object &obj = addObject(&*it, p, nullptr);
 
             size_t n;
             if (xr.findAttr(elem, "owner", s)) obj.owner(s);
@@ -311,8 +311,6 @@ void Server::loadData(){
                 xr.findAttr(merchant, "priceQty", priceQty);
                 obj.merchantSlot(slot) = MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty);
             }
-
-            _objects.insert(obj);
         }
 
         return;
