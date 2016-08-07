@@ -49,6 +49,10 @@
         text-align: right;
     }
     
+    .type{
+        font-weight: bold;
+    }
+    
     .effort{
         text-align: right;
     }
@@ -162,6 +166,7 @@
             cell = row.insertCell(-1);
             cell.innerHTML = PBI.type;
             cell.className = "type";
+            cell.style.color = PBI.typeColor;
             
             cell = row.insertCell(-1);
             cell.innerHTML = PBI.value;

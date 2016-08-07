@@ -20,7 +20,11 @@ data <- read.csv("backlog.csv", sep=",")
 # Categories
 cats = sort(unique(data$type))
 data$typeID = match(data$type, cats)
-cols = brewer.pal(length(cats), "Set1")
+set1Cols = brewer.pal(9, "Set1")
+cols = set1Cols;
+cols[1] = set1Cols[2]; # Probably aesthetics; blue
+cols[2] = set1Cols[1]; # Probably bug; red
+cols[6] = brewer.pal(8, "Set2")[6]
 data$color = cols[data$typeID]
 
 # ROI
@@ -156,6 +160,7 @@ for (i in 1:length(data$roi)){
     text = c(text, fieldNum("issue", data$issue[i]))
     text = c(text, fieldStr("description", data$description[i]))
     text = c(text, fieldStr("type", data$type[i]))
+    text = c(text, fieldStr("typeColor", cols[data$type[i]]))
     text = c(text, fieldNum("value", data$value[i]))
     text = c(text, fieldNum("effort", data$effort[i]))
     text = c(text, fieldNum("roi", data$roi[i]))
