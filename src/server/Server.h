@@ -32,6 +32,7 @@ public:
 
     static const double MOVEMENT_SPEED; // per second
     static const px_t ACTION_DISTANCE; // How close a character must be to interact with an object
+    static const px_t CULL_DISTANCE; // Users only get information within a circle with this radius.
 
     static const px_t TILE_W, TILE_H;
     const size_t mapX() const { return _mapX; }

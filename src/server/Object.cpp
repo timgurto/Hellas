@@ -29,8 +29,13 @@ _type(type){
         _merchantSlots = std::vector<MerchantSlot>(type->merchantSlots());
 }
 
-Object::Object(size_t serial): // For set/map lookup
-_serial (serial),
+Object::Object(size_t serial): // For set/map lookup ONLY
+_serial(serial),
+_type(nullptr){}
+
+Object::Object(const Point &loc): // For set/map lookup ONLY
+_location(loc),
+_serial(0),
 _type(nullptr){}
 
 bool Object::compareXThenSerial::operator()( const Object *a, const Object *b){
