@@ -78,7 +78,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             user->cancelAction();
             user->updateLocation(Point(x, y));
-            broadcast(SV_LOCATION, user->makeLocationCommand());
+            for (const User *userP : findUsersInArea(user->location()))
+                sendMessage(userP->socket(), SV_LOCATION, user->makeLocationCommand());
             break;
         }
 
