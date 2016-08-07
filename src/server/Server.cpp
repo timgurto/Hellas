@@ -241,8 +241,8 @@ void Server::addUser(const Socket &socket, const std::string &name){
     }
 
     // Send him everybody else's location
-    for (const User &user : _users)
-        sendMessage(newUser.socket(), SV_LOCATION, user.makeLocationCommand());
+    for (const User *userP : findUsersInArea(newUser.location()))
+        sendMessage(newUser.socket(), SV_LOCATION, userP->makeLocationCommand());
 
     // Send him object details
     const Point &loc = newUser.location();
