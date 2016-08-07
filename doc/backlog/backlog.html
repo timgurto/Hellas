@@ -12,26 +12,6 @@
         font-weight: bold;
     }
 
-    .roi-9{background: #A50026}
-    .roi-8{background: #C01A26}
-    .roi-7{background: #DA362A}
-    .roi-6{background: #EA5839}
-    .roi-5{background: #F67B49}
-    .roi-4{background: #FB9F5A}
-    .roi-3{background: #FDBE6E}
-    .roi-2{background: #FDDA86}
-    .roi-1{background: #FEEDA2}
-    .roi0{background: #FFFFBF}
-    .roi1{background: #E9F6A2}
-    .roi2{background: #D3EC87}
-    .roi3{background: #B7E075}
-    .roi4{background: #97D268}
-    .roi5{background: #74C364}
-    .roi6{background: #4CB05C}
-    .roi7{background: #229C52}
-    .roi8{background: #0E8244}
-    .roi9{background: #006837}
-    
     .blocked{
         color: red;
         text-decoration: none;
@@ -58,7 +38,7 @@
     }
     
     .roi{
-        text-align: right;
+        text-align: center;
     }
     
     .notes{
@@ -93,6 +73,18 @@
 <img src="backlog.svg"></img>
 
 <script>
+    function getfg(bg){// Return white for dark colors, and black for bright colors.
+        var hex = bg.substring(1);
+        var r = parseInt(hex.substring(0,2),16);
+        var g = parseInt(hex.substring(2,4),16);
+        var b = parseInt(hex.substring(4,6),16);
+        var v = Math.max(r,g,b) / 255;
+        if (v >= 0.85)
+            return "black";
+        else
+            return "white";
+    }
+
     var nameLookup = {};
     for (i in PBIs)
         /*nameLookup.push({
@@ -178,7 +170,9 @@
             
             cell = row.insertCell(-1);
             cell.innerHTML = PBI.roi;
-            cell.className = "roi roi"+PBI.roi;
+            cell.className = "roi";
+            cell.style.backgroundColor = PBI.roiColor;
+            cell.style.color = getfg(PBI.roiColor);
             
             cell = row.insertCell(-1);
             if (PBI.hasOwnProperty("blockedBy"))

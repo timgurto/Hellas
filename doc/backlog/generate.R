@@ -12,9 +12,6 @@ jitter_log <- function(vals, scaler=0.05) {
   vals + noise
 }
 
-roiPalette = colorRampPalette(brewer.pal(11, "RdYlGn"))
-roiCols = roiPalette(19)
-
 data <- read.csv("backlog.csv", sep=",")
 
 # Categories
@@ -24,12 +21,32 @@ set1Cols = brewer.pal(9, "Set1")
 cols = set1Cols;
 cols[1] = set1Cols[2]; # Probably aesthetics; blue
 cols[2] = set1Cols[1]; # Probably bug; red
-cols[6] = brewer.pal(8, "Set2")[6]
+cols[6] = brewer.pal(8, "Set2")[6] # Normal yellow too light
 data$color = cols[data$typeID]
 
 # ROI
 vals = c(1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144)
 data$roi = match(data$value, vals) - match(data$effort, vals)
+
+minROI = min(data$roi)
+maxROI = max(data$roi)
+roiRange = maxROI - minROI + 1
+roiPalette = colorRampPalette(brewer.pal(11, "RdYlGn"))
+paletteSize = roiRange;
+if (roiRange %% 2 == 0){
+    paletteSize = paletteSize + 1
+}
+roiColsRaw = roiPalette(paletteSize)
+roiCols = 1:19
+for (i in (-9:minROI + 10)){
+    roiCols[i] = roiColsRaw[1]
+}
+for (i in (maxROI:9 +10)){
+    roiCols[i] = roiColsRaw[roiRange]
+}
+for (i in 1:roiRange){
+    roiCols[minROI+10 + i - 1] = roiColsRaw[i]
+}
 
 # Sort data
 data <- data[with(data, order(-roi, effort, issue)),]
@@ -118,8 +135,8 @@ for (v in 1:(numVals-1)){
 }
 
 
-#points(x, y, pch=21, bg=data$color, cex=circleSize)
-points(x, y, col=data$color, cex=circleSize, lwd=3)
+points(x, y, pch=21, bg=data$color, cex=circleSize, col="black")
+#points(x, y, col=data$color, cex=circleSize, lwd=3)
 
 
 add_legend <- function(...) {
@@ -164,6 +181,7 @@ for (i in 1:length(data$roi)){
     text = c(text, fieldNum("value", data$value[i]))
     text = c(text, fieldNum("effort", data$effort[i]))
     text = c(text, fieldNum("roi", data$roi[i]))
+    text = c(text, fieldStr("roiColor", roiCols[data$roi[i]+10]))
     
     if (!is.na(data$blockedBy[i])){
         text = c(text, fieldNum("blockedBy", data$blockedBy[i]))
