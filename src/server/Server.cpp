@@ -240,9 +240,12 @@ void Server::addUser(const Socket &socket, const std::string &name){
         sendMessage(newUser.socket(), SV_TERRAIN, oss.str());
     }
 
-    // Send him everybody else's location
-    for (const User *userP : findUsersInArea(newUser.location()))
+    for (const User *userP : findUsersInArea(newUser.location())){
+        // Send him the locations of other nearby users
         sendMessage(newUser.socket(), SV_LOCATION, userP->makeLocationCommand());
+        // Send nearby others this user's location
+        sendMessage(userP->socket(), SV_LOCATION, newUser.makeLocationCommand());
+    }
 
     // Send him object details
     const Point &loc = newUser.location();
@@ -265,10 +268,9 @@ void Server::addUser(const Socket &socket, const std::string &name){
             sendInventoryMessage(newUser, i);
     }
 
-    // Add new user to list, and broadcast his location
+    // Add new user to list
     std::set<User>::const_iterator it = _users.insert(newUser).first;
     _usersByName[name] = &*it;
-    broadcast(SV_LOCATION, newUser.makeLocationCommand());
 
     // Add user to location-indexed trees
     _usersByX.insert(&*it);
