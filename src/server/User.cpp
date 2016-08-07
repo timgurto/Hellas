@@ -41,6 +41,21 @@ _lastContact(SDL_GetTicks()){
 User::User(const Socket &rhs):
 _socket(rhs){}
 
+User::User(const Point &loc):
+_location(loc){}
+
+bool User::compareXThenSerial::operator()( const User *a, const User *b){
+    if (a->_location.x != b->_location.x)
+        return a->_location.x < b->_location.x;
+    return a->_socket < b->_socket; // Just need something unique.
+}
+
+bool User::compareYThenSerial::operator()( const User *a, const User *b){
+    if (a->_location.y != b->_location.y)
+        return a->_location.y < b->_location.y;
+    return a->_socket < b->_socket; // Just need something unique.
+}
+
 const std::pair<const Item *, size_t> &User::inventory(size_t index) const{
     return _inventory[index];
 }
@@ -132,7 +147,21 @@ void User::updateLocation(const Point &dest){
             server.sendMessage(socket(), SV_OWNER, makeArgs(objP->serial(), objP->owner()));
     }
 
+    Point oldLoc = _location;
+
+    // Remove from location-indexed trees
+    if (newDest.x != oldLoc.x)
+        server._usersByX.erase(this);
+    if (newDest.y != oldLoc.y)
+        server._usersByY.erase(this);
+
     _location = newDest;
+
+    // Re-insert into location-indexed trees
+    if (newDest.x != oldLoc.x)
+        server._usersByX.insert(this);
+    if (newDest.y != oldLoc.y)
+        server._usersByY.insert(this);
 }
 
 void User::contact(){

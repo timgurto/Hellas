@@ -266,6 +266,10 @@ void Server::addUser(const Socket &socket, const std::string &name){
     std::set<User>::const_iterator it = _users.insert(newUser).first;
     _usersByName[name] = &*it;
     broadcast(SV_LOCATION, newUser.makeLocationCommand());
+
+    // Add user to location-indexed trees
+    _usersByX.insert(&*it);
+    _usersByY.insert(&*it);
 }
 
 void Server::removeUser(const std::set<User>::iterator &it){
@@ -275,7 +279,10 @@ void Server::removeUser(const std::set<User>::iterator &it){
         // Save user data
         writeUserData(*it);
 
+        _usersByX.erase(&*it);
+        _usersByY.erase(&*it);
         _usersByName.erase(it->name());
+
         _users.erase(it);
 }
 

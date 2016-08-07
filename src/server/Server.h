@@ -88,6 +88,9 @@ private:
     void removeUser(const Socket &socket);
     void removeUser(const std::set<User>::iterator &it);
 
+    User::byX_t _usersByX; // This and below are for alerting users in a specific area.
+    User::byY_t _usersByY;
+
     // World state
     std::set<Object> _objects;
     Object::byX_t _objectsByX; // This and below are for alerting users only to nearby objects.

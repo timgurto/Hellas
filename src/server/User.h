@@ -53,6 +53,7 @@ private:
 public:
     User(const std::string &name, const Point &loc, const Socket &socket);
     User(const Socket &rhs); // for use with set::find(), allowing find-by-socket
+    User(const Point &loc); // for use with set::find(), allowing find-by-location
 
     bool operator<(const User &rhs) const { return _socket < rhs._socket; }
 
@@ -108,6 +109,11 @@ public:
     size_t giveItem(const Item *item, size_t quantity = 1);
 
     void update(ms_t timeElapsed);
+
+    struct compareXThenSerial{ bool operator()( const User *a, const User *b); };
+    struct compareYThenSerial{ bool operator()( const User *a, const User *b); };
+    typedef std::set<const User*, User::compareXThenSerial> byX_t;
+    typedef std::set<const User*, User::compareYThenSerial> byY_t;
 };
 
 #endif
