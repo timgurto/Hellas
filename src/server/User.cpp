@@ -106,7 +106,7 @@ void User::updateLocation(const Point &dest){
     }
 
     // Tell user about any additional objects he can now see
-    std::list<const Object *> objectsToSend;
+    std::list<const Object *> nearbyObjects;
     double left, right, top, bottom;
     if (newDest.x > _location.x){ // Moved right
         left = _location.x + Server::CULL_DISTANCE;
@@ -128,7 +128,7 @@ void User::updateLocation(const Point &dest){
     auto hiY = server._objectsByY.upper_bound(&Object(Point(0, bottom)));
     for (auto it = loX; it != hiX; ++it){
         if (abs((*it)->location().y - newDest.y) <= Server::CULL_DISTANCE)
-            objectsToSend.push_back(*it);
+            nearbyObjects.push_back(*it);
     }
     for (auto it = loY; it != hiY; ++it){
         double objX = (*it)->location().x;
@@ -140,15 +140,41 @@ void User::updateLocation(const Point &dest){
                 continue;
         }
         if (abs(objX - newDest.x) <= Server::CULL_DISTANCE)
-            objectsToSend.push_back(*it);
+            nearbyObjects.push_back(*it);
     }
-    for (const Object *objP : objectsToSend){
+    for (const Object *objP : nearbyObjects){
         server.sendMessage(socket(), SV_OBJECT,
                            makeArgs(objP->serial(), objP->location().x, objP->location().y,
                                     objP->type()->id()));
         if (!objP->owner().empty())
             server.sendMessage(socket(), SV_OWNER, makeArgs(objP->serial(), objP->owner()));
     }
+
+    // Tell user about any additional users he can now see
+    auto loUserX = server._usersByX.lower_bound(&User(Point(left, 0)));
+    auto hiUserX = server._usersByX.upper_bound(&User(Point(right, 0)));
+    auto loUserY = server._usersByY.lower_bound(&User(Point(0, top)));
+    auto hiUserY = server._usersByY.upper_bound(&User(Point(0, bottom)));
+    std::list<const User *> nearbyUsers;
+    for (auto it = loUserX; it != hiUserX; ++it){
+        if (abs((*it)->location().y - newDest.y) <= Server::CULL_DISTANCE)
+            nearbyUsers.push_back(*it);
+    }
+    for (auto it = loUserY; it != hiUserY; ++it){
+        double userX = (*it)->location().x;
+        if (newDest.x > _location.x){ // Don't count objects twice
+            if (userX > left)
+                continue;
+        } else {
+            if (userX < right)
+                continue;
+        }
+        if (abs(userX - newDest.x) <= Server::CULL_DISTANCE)
+            nearbyUsers.push_back(*it);
+    }
+    for (const User *userP : nearbyUsers)
+        server.sendMessage(socket(), SV_LOCATION, userP->makeLocationCommand());
+
 
     Point oldLoc = _location;
 

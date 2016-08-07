@@ -122,7 +122,6 @@ private:
 
     friend size_t User::giveItem(const Item *item, size_t quantity);
 
-    friend void User::updateLocation(const Point &dest);
     friend bool User::hasTool(const std::string &className) const;
     friend bool User::hasTools(const std::set<std::string> &classes) const;
 
