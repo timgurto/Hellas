@@ -58,6 +58,11 @@ public:
     
     void addWatcher(const std::string &username);
     void removeWatcher(const std::string &username);
+    
+    struct compareXThenSerial{ bool operator()( const Object *a, const Object *b); };
+    struct compareYThenSerial{ bool operator()( const Object *a, const Object *b); };
+    typedef std::set<const Object*, Object::compareXThenSerial> byX_t;
+    typedef std::set<const Object*, Object::compareYThenSerial> byY_t;
 };
 
 #endif

@@ -311,6 +311,8 @@ void Server::removeObject(Object &obj, const User *userToExclude){
     }
     broadcast(SV_REMOVE_OBJECT, makeArgs(serial));
     getCollisionChunk(obj.location()).removeObject(serial);
+    _objectsByX.erase(&obj);
+    _objectsByY.erase(&obj);
     _objects.erase(obj);
 
 }
@@ -461,9 +463,13 @@ Object &Server::addObject (const ObjectType *type, const Point &location, const 
     if (owner)
         broadcast(SV_OWNER, makeArgs(newObj.serial(), newObj.owner()));
 
-    // Add item to relevant chunk
+    // Add object to relevant chunk
     if (type->collides())
         getCollisionChunk(location).addObject(&*it);
+
+    // Add object to x/y index sets
+    _objectsByX.insert(&*it);
+    _objectsByY.insert(&*it);
 
     return const_cast<Object&>(*it);
 }

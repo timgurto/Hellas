@@ -33,6 +33,18 @@ Object::Object(size_t serial): // For set/map lookup
 _serial (serial),
 _type(nullptr){}
 
+bool Object::compareXThenSerial::operator()( const Object *a, const Object *b){
+    if (a->_location.x != b->_location.x)
+        return a->_location.x < b->_location.x;
+    return a->_serial < b->_serial;
+}
+
+bool Object::compareYThenSerial::operator()( const Object *a, const Object *b){
+    if (a->_location.y != b->_location.y)
+        return a->_location.y < b->_location.y;
+    return a->_serial < b->_serial;
+}
+
 size_t Object::generateSerial() {
     static size_t currentSerial = 1; // Serial 0 is unavailable, and has special meaning.
     return currentSerial++;
