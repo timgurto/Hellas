@@ -87,6 +87,51 @@ void User::updateLocation(const Point &dest){
                  server.isLocationValid(testPoint, OBJECT_TYPE, nullptr, this));
     }
 
+    // Tell user about any additional objects he can now see
+    std::list<const Object *> objectsToSend;
+    double left, right, top, bottom;
+    if (newDest.x > _location.x){ // Moved right
+        left = _location.x + Server::CULL_DISTANCE;
+        right = newDest.x + Server::CULL_DISTANCE;
+    } else { // Moved left
+        left = newDest.x - Server::CULL_DISTANCE;
+        right = _location.x - Server::CULL_DISTANCE;
+    }
+    if (newDest.y > _location.y){ // Moved down
+        top = _location.y + Server::CULL_DISTANCE;
+        bottom = newDest.y + Server::CULL_DISTANCE;
+    } else { // Moved up
+        top = newDest.y - Server::CULL_DISTANCE;
+        bottom = _location.y - Server::CULL_DISTANCE;
+    }
+    auto loX = server._objectsByX.lower_bound(&Object(Point(left, 0)));
+    auto hiX = server._objectsByX.upper_bound(&Object(Point(right, 0)));
+    auto loY = server._objectsByY.lower_bound(&Object(Point(0, top)));
+    auto hiY = server._objectsByY.upper_bound(&Object(Point(0, bottom)));
+    for (auto it = loX; it != hiX; ++it){
+        if (abs((*it)->location().y - newDest.y) <= Server::CULL_DISTANCE)
+            objectsToSend.push_back(*it);
+    }
+    for (auto it = loY; it != hiY; ++it){
+        double objX = (*it)->location().x;
+        if (newDest.x > _location.x){ // Don't count objects twice
+            if (objX > left)
+                continue;
+        } else {
+            if (objX < right)
+                continue;
+        }
+        if (abs(objX - newDest.x) <= Server::CULL_DISTANCE)
+            objectsToSend.push_back(*it);
+    }
+    for (const Object *objP : objectsToSend){
+        server.sendMessage(socket(), SV_OBJECT,
+                           makeArgs(objP->serial(), objP->location().x, objP->location().y,
+                                    objP->type()->id()));
+        if (!objP->owner().empty())
+            server.sendMessage(socket(), SV_OWNER, makeArgs(objP->serial(), objP->owner()));
+    }
+
     _location = newDest;
 }
 

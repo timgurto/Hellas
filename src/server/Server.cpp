@@ -32,10 +32,10 @@ const ms_t Server::CLIENT_TIMEOUT = 10000;
 const ms_t Server::MAX_TIME_BETWEEN_LOCATION_UPDATES = 300;
 
 const ms_t Server::SAVE_FREQUENCY = 1000;
-const px_t Server::CULL_DISTANCE = 100;
+
 const double Server::MOVEMENT_SPEED = 80;
 const px_t Server::ACTION_DISTANCE = 30;
-
+const px_t Server::CULL_DISTANCE = 100;
 const px_t Server::TILE_W = 32;
 const px_t Server::TILE_H = 32;
 
@@ -243,8 +243,8 @@ void Server::addUser(const Socket &socket, const std::string &name){
 
     // Send him object details
     const Point &loc = newUser.location();
-    auto loX = _objectsByX.lower_bound(&Object(Point(loc.x - CULL_DISTANCE, loc.y)));
-    auto hiX = _objectsByX.upper_bound(&Object(Point(loc.x + CULL_DISTANCE, loc.y)));
+    auto loX = _objectsByX.lower_bound(&Object(Point(loc.x - CULL_DISTANCE, 0)));
+    auto hiX = _objectsByX.upper_bound(&Object(Point(loc.x + CULL_DISTANCE, 0)));
     for (auto it = loX; it != hiX; ++it){
         const Object &obj = **it;
         assert (obj.type() != nullptr);
