@@ -46,3 +46,4 @@ issue,description,value,effort,type,blockedBy
 187,Woodcutter Python AI,13,55,Feature,189
 188,Merchant Python AI,5,55,Feature,189
 189,Auto-login for Python client,8,13,Feature,185
+190,Release scrollbar on mouse up,5,2,Bug
