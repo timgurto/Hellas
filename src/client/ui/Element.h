@@ -95,7 +95,7 @@ protected:
     Element *_preRefreshElement;
 
     /*
-    Perform any extra redrawing.  The renderer can be used direclty.
+    Perform any extra redrawing.  The renderer can be used directly.
     After this function is called, the element's children are drawn on top.
     */
     virtual void refresh(){}

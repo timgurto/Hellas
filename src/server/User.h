@@ -27,6 +27,11 @@ public:
         NO_ACTION
     };
 
+    // Stats
+    static const unsigned
+        ATTACK,
+        MAX_HEALTH;
+
 private:
     std::string _name;
     Socket _socket;
@@ -48,9 +53,6 @@ private:
     ms_t _latency;
 
     // Stats
-    static const unsigned
-        ATTACK,
-        MAX_HEALTH;
     unsigned
         _health;
 
@@ -69,6 +71,8 @@ public:
     std::pair<const Item *, size_t> &inventory(size_t index);
     Item::vect_t &inventory() { return _inventory; }
     const Item::vect_t &inventory() const { return _inventory; }
+    unsigned health() const { return _health; }
+    void health(unsigned n) { _health = n; }
 
     const Rect collisionRect() const;
 

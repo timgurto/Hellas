@@ -23,14 +23,13 @@ issue,description,value,effort,type,blockedBy
 160,Cull terrain,21,13,Performance,
 161,Cull players,34,8,Performance,
 163,Create generic particle system,8,8,Aesthetics,60
-166,Health stat,8,2,Feature,
 167,Static critters w/ health,34,13,Feature,
 168,Can attack NPCs,13,55,Feature,167
 169,NPCs can die,13,3,Feature,167
 171,NPC loot,13,34,Feature,169
 172,Critter run-away AI,5,34,Feature,
 173,Animal that fights back,21,21,Feature,168
-174,Player death,13,5,Feature,166
+174,Player death,13,5,Feature,
 175,NPC spawning,5,21,Feature,167
 176,PVP,13,3,Feature,168
 177,Character has gear slots,13,21,Feature,
@@ -45,4 +44,4 @@ issue,description,value,effort,type,blockedBy
 187,Woodcutter Python AI,13,55,Feature,189
 188,Merchant Python AI,5,55,Feature,189
 189,Auto-login for Python client,8,13,Feature,185
-190,Release scrollbar on mouse up,5,2,Bug
+190,Release scrollbar on mouse up,5,2,Bug,

@@ -138,6 +138,10 @@ enum MessageCode{
     // Arguments: serial, owner
     SV_OWNER = 150,
 
+    // The user's health value
+    // Arguments: hp
+    SV_HEALTH = 160,
+
     // "User ... has said ...".
     // Arguments: username, message
     SV_SAY = 200,

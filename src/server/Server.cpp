@@ -227,6 +227,9 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // Send welcome message
     sendMessage(socket, SV_WELCOME);
 
+    // Send him his health
+    sendMessage(newUser.socket(), SV_HEALTH, makeArgs(newUser.health()));
+
     // Send new user the map
     sendMessage(newUser.socket(), SV_MAP_SIZE, makeArgs(_mapX, _mapY));
     for (size_t y = 0; y != _mapY; ++y){

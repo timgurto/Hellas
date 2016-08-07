@@ -141,6 +141,7 @@ private:
 
 
     Avatar _character; // Describes the user's character
+    size_t _health; // The character's health
     Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.
 
     // These are superficial, and relate only to the cast bar.

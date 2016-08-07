@@ -373,6 +373,16 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_HEALTH:
+        {
+            unsigned health;
+            singleMsg >> health >> del;
+            if (del != MSG_END)
+                break;
+            _health = health;
+            break;
+        }
+
         case SV_MERCHANT_SLOT:
         {
             size_t serial, slot, wareQty, priceQty;

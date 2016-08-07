@@ -47,6 +47,12 @@ bool Server::readUserData(User &user){
                 std::make_pair<const Item *, size_t>(&*it, static_cast<size_t>(qty));
         }
     }
+
+    elem = xr.findChild("stats");
+    unsigned n;
+    if (xr.findAttr(elem, "health", n))
+        user.health(n);
+
     return true;
 
 }
@@ -68,6 +74,9 @@ void Server::writeUserData(const User &user) const{
             xw.setAttr(slotElement, "quantity", slot.second);
         }
     }
+
+    e = xw.addChild("stats");
+    xw.setAttr(e, "health", user.health());
 
     xw.publish();
 }

@@ -49,6 +49,7 @@ Code | Name                    | Syntax                                         
 130  | `SV_ACTION_STARTED`     | &laquo;130&#8226;time&raquo;                                                   | "You have begun an action that will take `t` milliseconds"
 131  | `SV_ACTION_FINISHED`    | &laquo;131&raquo;                                                              | "You have completed an action"
 150  | `SV_OWNER`              | &laquo;150&#8226;serial&#8226;owner&raquo;                                     | "Object #`serial` is owned by `owner`"
+160  | `SV_HEALTH`             | &laquo;160&#8226;hp&raquo;                                                     | "You have `hp` health"
 200  | `SV_SAY`                | &laquo;200&#8226;username&#8226;message&raquo;                                 | "User `username` said '`message`'."
 201  | `SV_WHISPER`            | &laquo;201&#8226;username&#8226;message&raquo;                                 | "User `username` said '`message` to you'."
 
