@@ -22,7 +22,6 @@ issue,description,value,effort,type,blockedBy
 156,Fix ambiguity of Object::removeItem() and Object::removeItems(),2,2,Code quality,
 160,Cull terrain,21,13,Performance,
 161,Cull players,34,8,Performance,
-162,Cull objects,55,8,Performance,
 163,Create generic particle system,8,8,Aesthetics,60
 166,Health stat,8,2,Feature,
 167,Static critters w/ health,34,13,Feature,

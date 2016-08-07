@@ -90,6 +90,7 @@ private:
 
     User::byX_t _usersByX; // This and below are for alerting users in a specific area.
     User::byY_t _usersByY;
+    std::list<const User*> findUsersInArea(Point loc, double squareRadius = CULL_DISTANCE) const;
 
     // World state
     std::set<Object> _objects;

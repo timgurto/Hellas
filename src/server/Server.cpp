@@ -292,6 +292,17 @@ void Server::removeUser(const Socket &socket){
         removeUser(it);
 }
 
+std::list<const User *> Server::findUsersInArea(Point loc, double squareRadius) const{
+    std::list<const User *> users;
+    auto loX = _usersByX.lower_bound(&User(Point(loc.x - squareRadius, 0)));
+    auto hiX = _usersByX.upper_bound(&User(Point(loc.x + squareRadius, 0)));
+    for (auto it = loX; it != hiX; ++it)
+        if (abs(loc.y - (*it)->location().y) <= squareRadius)
+            users.push_back(*it);
+
+    return users;
+}
+
 bool Server::isValidObject(const Socket &client, const User &user,
                            const std::set<Object>::const_iterator &it) const{
     // Object doesn't exist
@@ -322,7 +333,11 @@ void Server::removeObject(Object &obj, const User *userToExclude){
             sendMessage(user.socket(), SV_DOESNT_EXIST);
         }
     }
-    broadcast(SV_REMOVE_OBJECT, makeArgs(serial));
+
+    // Alert nearby users of the removal
+    for (const User *userP : findUsersInArea(obj.location()))
+        sendMessage(userP->socket(), SV_REMOVE_OBJECT, makeArgs(serial));
+
     getCollisionChunk(obj.location()).removeObject(serial);
     _objectsByX.erase(&obj);
     _objectsByY.erase(&obj);
@@ -469,12 +484,17 @@ bool Server::itemIsClass(const Item *item, const std::string &className) const{
 
 Object &Server::addObject (const ObjectType *type, const Point &location, const User *owner){
     Object newObj(type, location);
-    if (owner)
+    if (owner != nullptr)
         newObj.owner(owner->name());
     auto it = _objects.insert(newObj).first;
-    broadcast(SV_OBJECT, makeArgs(newObj.serial(), location.x, location.y, type->id()));
-    if (owner)
-        broadcast(SV_OWNER, makeArgs(newObj.serial(), newObj.owner()));
+
+    // Alert nearby users
+    for (const User *userP : findUsersInArea(location)){
+        sendMessage(userP->socket(), SV_OBJECT,
+                    makeArgs(newObj.serial(), location.x, location.y, type->id()));
+        if (owner != nullptr)
+            sendMessage(userP->socket(), SV_OWNER, makeArgs(newObj.serial(), newObj.owner()));
+    }
 
     // Add object to relevant chunk
     if (type->collides())

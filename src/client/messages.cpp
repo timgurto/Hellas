@@ -346,7 +346,6 @@ void Client::handleMessage(const std::string &msg){
             const std::map<size_t, ClientObject*>::const_iterator it = _objects.find(serial);
             if (it == _objects.end()){
                 _debug("Server removed an object we didn't know about.", Color::YELLOW);
-                assert(false);
                 break; // We didn't know about this object
             }
             if (it->second == _currentMouseOverEntity)
