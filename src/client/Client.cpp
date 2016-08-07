@@ -398,6 +398,16 @@ _debug("client.log"){
     hardwareStats->addChild(fps);
     hardwareStats->addChild(lat);
     addUI(hardwareStats);
+
+    // Initialize health bar
+    static const px_t
+        HEALTH_BAR_LENGTH = 130,
+        HEALTH_BAR_HEIGHT = 13;
+    Element *healthBar = new Element(Rect(0, 0, HEALTH_BAR_LENGTH, HEALTH_BAR_HEIGHT));
+    static const unsigned MAX_HEALTH = 100;
+    healthBar->addChild(new ProgressBar<unsigned>(Rect(0, 0, HEALTH_BAR_LENGTH, HEALTH_BAR_HEIGHT),
+                                                  _health, MAX_HEALTH));
+    addUI(healthBar);
 }
 
 Client::~Client(){
