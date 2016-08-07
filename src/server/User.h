@@ -48,7 +48,11 @@ private:
     ms_t _latency;
 
     // Stats
-    static const unsigned ATTACK;
+    static const unsigned
+        ATTACK,
+        MAX_HEALTH;
+    unsigned
+        _health;
 
 public:
     User(const std::string &name, const Point &loc, const Socket &socket);

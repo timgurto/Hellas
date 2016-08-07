@@ -17,6 +17,7 @@ const size_t User::INVENTORY_SIZE = 10;
 const ObjectType User::OBJECT_TYPE(Rect(-5, -2, 10, 4));
 
 const unsigned User::ATTACK = 5;
+const unsigned User::MAX_HEALTH = 100;
 
 User::User(const std::string &name, const Point &loc, const Socket &socket):
 _name(name),
@@ -30,6 +31,8 @@ _actionRecipe(nullptr),
 _actionObjectType(nullptr),
 _actionSlot(INVENTORY_SIZE),
 _actionLocation(0, 0),
+
+_health(MAX_HEALTH),
 
 _inventory(INVENTORY_SIZE),
 _lastLocUpdate(SDL_GetTicks()),
