@@ -66,6 +66,9 @@ public:
         SCREEN_X,
         SCREEN_Y;
 
+    static const px_t
+        CULL_DISTANCE;
+
 private:
     static Client *_instance;
     static LogSDL *_debugInstance;
@@ -109,6 +112,8 @@ private:
     std::set<ClientObject *> _objectsWatched;
     void watchObject(ClientObject &obj);
     void unwatchObject(ClientObject &obj);
+
+    bool outsideCullRange(const Point &loc) const;
 
     ChoiceList *_recipeList;
     Element *_detailsPane;

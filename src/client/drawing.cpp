@@ -117,6 +117,16 @@ void Client::draw() const{
         }
     }
 
+    // Cull distance
+    if (isDebug()){
+        Point midScreen = _character.location() + offset();
+        renderer.setDrawColor(Color::RED);
+        renderer.drawRect(Rect(midScreen.x - CULL_DISTANCE,
+                               midScreen.y - CULL_DISTANCE,
+                               CULL_DISTANCE * 2,
+                               CULL_DISTANCE * 2));
+    }
+
     // Tooltip
     drawTooltip();
 

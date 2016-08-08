@@ -53,6 +53,8 @@ const double Client::MOVEMENT_SPEED = 80;
 
 const px_t Client::ACTION_DISTANCE = 30;
 
+const px_t Client::CULL_DISTANCE = 100;
+
 const size_t Client::INVENTORY_SIZE = 10;
 
 const int Client::PLAYER_ACTION_CHANNEL = 0;
@@ -775,4 +777,11 @@ void Client::dropItemOnConfirmation(size_t serial, size_t slot, const Item *item
 void Client::sendMessageAndHideConfirmationWindow(void *data){
     _instance->sendRawMessage(_instance->_messageToConfirm);
     _instance->_confirmationWindow->hide();
+}
+
+bool Client::outsideCullRange(const Point &loc) const{
+    static const px_t TEST_CULL_DISTANCE = CULL_DISTANCE + 10;
+    return
+        abs(loc.x - _character.location().x) > TEST_CULL_DISTANCE ||
+        abs(loc.y - _character.location().y) > TEST_CULL_DISTANCE;
 }

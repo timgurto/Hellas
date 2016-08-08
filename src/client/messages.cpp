@@ -229,6 +229,7 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> name >> del >> x >> del >> y >> del;
             if (del != MSG_END)
                 break;
+            _debug(name);
             const Point p(x, y);
             if (name == _username) {
                 if (p.x == _character.location().x)
@@ -264,6 +265,19 @@ void Client::handleMessage(const std::string &msg){
                 }
             }
 
+            // Forget about objects if out of cull range
+            if (name == _username){
+                std::list<std::pair<size_t, Entity *> > objectsToRemove;
+                for (auto pair : _objects)
+                    if (outsideCullRange(pair.second->location()))
+                        objectsToRemove.push_back(pair);
+                for (auto pair : objectsToRemove){
+                    if (pair.second == _currentMouseOverEntity)
+                        _currentMouseOverEntity = nullptr;
+                    removeEntity(pair.second);
+                    _objects.erase(_objects.find(pair.first));
+                }
+            }
             break;
         }
 

@@ -79,7 +79,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             user->cancelAction();
             user->updateLocation(Point(x, y));
             for (const User *userP : findUsersInArea(user->location()))
-                sendMessage(userP->socket(), SV_LOCATION, user->makeLocationCommand());
+                if (userP != user)
+                    sendMessage(userP->socket(), SV_LOCATION, user->makeLocationCommand());
             break;
         }
 

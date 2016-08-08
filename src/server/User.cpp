@@ -105,6 +105,9 @@ void User::updateLocation(const Point &dest){
                  server.isLocationValid(testPoint, OBJECT_TYPE, nullptr, this));
     }
 
+    // At this point, the user's new location has been finalized.
+    server.sendMessage(socket(), SV_LOCATION, makeArgs(_name, newDest.x, newDest.y));
+
     // Tell user about any additional objects he can now see
     std::list<const Object *> nearbyObjects;
     double left, right, top, bottom;
