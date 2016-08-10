@@ -281,17 +281,17 @@ void Server::addUser(const Socket &socket, const std::string &name){
 }
 
 void Server::removeUser(const std::set<User>::iterator &it){
-        // Broadcast message
-        broadcast(SV_USER_DISCONNECTED, it->name());
+    // Broadcast message
+    broadcast(SV_USER_DISCONNECTED, it->name());
 
-        // Save user data
-        writeUserData(*it);
+    // Save user data
+    writeUserData(*it);
 
-        _usersByX.erase(&*it);
-        _usersByY.erase(&*it);
-        _usersByName.erase(it->name());
+    _usersByX.erase(&*it);
+    _usersByY.erase(&*it);
+    _usersByName.erase(it->name());
 
-        _users.erase(it);
+    _users.erase(it);
 }
 
 void Server::removeUser(const Socket &socket){
