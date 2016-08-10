@@ -4,7 +4,7 @@ issue,description,value,effort,type,blockedBy
 72,Move SDL functions and types to a namespace,2,8,Code quality,
 74,Throw exceptions where appropriate on SDL-function failures,3,8,Code quality,
 83,"Sort _materials and _craftableItems by name, not ID",8,8,Aesthetics,
-93,Allow terrain types to be marked as non-blending,1,1,Aesthetics,
+93,Allow terrain types to be marked as non-blending,1,2,Aesthetics,
 95,Fix scroll-bar dragging offset,5,8,Bug,
 100,Optimize container types for faster iteration,2,2,Performance,
 101,Change dynamic_casts that don't check their result to static_cast or check for nullptr,2,2,Code quality,
@@ -44,3 +44,4 @@ issue,description,value,effort,type,blockedBy
 188,Merchant Python AI,5,55,Feature,189
 189,Auto-login for Python client,8,13,Feature,185
 190,Release scrollbar on mouse up,5,2,Bug,
+191,Allow external clients to connect,55,13,Feature,
