@@ -21,7 +21,6 @@ issue,description,value,effort,type,blockedBy
 154,Allow giving away or begging for goods via trade,8,5,Feature,
 156,Fix ambiguity of Object::removeItem() and Object::removeItems(),2,2,Code quality,
 160,Cull terrain,21,13,Performance,
-161,Cull players,34,8,Performance,
 163,Create generic particle system,8,8,Aesthetics,60
 167,Static critters w/ health,34,13,Feature,
 168,Can attack NPCs,13,55,Feature,167
