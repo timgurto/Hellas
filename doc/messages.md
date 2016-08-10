@@ -39,6 +39,7 @@ Code | Name                    | Syntax                                         
 100  | `SV_PING_REPLY`         | &laquo;100&raquo;                                                              | A reply to a ping from a client
 101  | `SV_WELCOME`            | &laquo;101&raquo;                                                              | "You have been successfully registered"
 110  | `SV_USER_DISCONNECTED`  | &laquo;110&#8226;username&raquo;                                               | "User `username` has disconnected"
+111  | `SV_USER_OUT_OF_RANGE`  | &laquo;111&#8226;username&raquo;                                               | "User `username` has moved away from you, and you will stop receiving updates from him"
 120  | `SV_MAP_SIZE`           | &laquo;120&#8226;x&#8226;y&raquo;                                              | "The map size is `x`&times;`y`"
 121  | `SV_TERRAIN`            | &laquo;121&#8226;x&#8226;y&#8226;n&#8226;t0&#8226;t1&#8226;t2&#8226;...&raquo; | A package of map details.  "The `n` horizontal map tiles starting from (`x`,`y`) are of types `t0`, `t1`, ..."
 122  | `SV_LOCATION`           | &laquo;122&#8226;username&#8226;x&#8226;y&raquo;                               | "User `username` is located at (`x`,`y`)"

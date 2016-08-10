@@ -54,6 +54,7 @@ const double Client::MOVEMENT_SPEED = 80;
 const px_t Client::ACTION_DISTANCE = 30;
 
 const px_t Client::CULL_DISTANCE = 100;
+const px_t Client::CULL_HYSTERESIS_DISTANCE = 10;
 
 const size_t Client::INVENTORY_SIZE = 10;
 
@@ -779,9 +780,9 @@ void Client::sendMessageAndHideConfirmationWindow(void *data){
     _instance->_confirmationWindow->hide();
 }
 
-bool Client::outsideCullRange(const Point &loc) const{
-    static const px_t TEST_CULL_DISTANCE = CULL_DISTANCE + 10;
+bool Client::outsideCullRange(const Point &loc, px_t hysteresis) const{
+    px_t testCullDist = CULL_DISTANCE + hysteresis;
     return
-        abs(loc.x - _character.location().x) > TEST_CULL_DISTANCE ||
-        abs(loc.y - _character.location().y) > TEST_CULL_DISTANCE;
+        abs(loc.x - _character.location().x) > testCullDist ||
+        abs(loc.y - _character.location().y) > testCullDist;
 }

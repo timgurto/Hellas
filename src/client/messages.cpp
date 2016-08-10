@@ -81,10 +81,11 @@ void Client::handleMessage(const std::string &msg){
         }
 
         case SV_USER_DISCONNECTED:
+        case SV_USER_OUT_OF_RANGE:
         {
             std::string name;
             readString(singleMsg, name, MSG_END);
-            singleMsg >> name >> del;
+            singleMsg >> del;
             if (del != MSG_END)
                 break;
             const std::map<std::string, Avatar*>::iterator it = _otherUsers.find(name);
@@ -92,7 +93,8 @@ void Client::handleMessage(const std::string &msg){
                 removeEntity(it->second);
                 _otherUsers.erase(it);
             }
-            _debug << name << " disconnected." << Log::endl;
+            if (msgCode == SV_USER_DISCONNECTED)
+                _debug << name << " disconnected." << Log::endl;
             break;
         }
 
@@ -229,7 +231,7 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> name >> del >> x >> del >> y >> del;
             if (del != MSG_END)
                 break;
-            _debug(name);
+            Avatar *newUser = nullptr;
             const Point p(x, y);
             if (name == _username) {
                 if (p.x == _character.location().x)
@@ -248,7 +250,7 @@ void Client::handleMessage(const std::string &msg){
             } else {
                 if (_otherUsers.find(name) == _otherUsers.end()) {
                     // Create new Avatar
-                    Avatar *newUser = new Avatar(name, p);
+                    newUser = new Avatar(name, p);
                     _otherUsers[name] = newUser;
                     _entities.insert(newUser);
                 }
@@ -266,10 +268,10 @@ void Client::handleMessage(const std::string &msg){
             }
 
             // Forget about objects if out of cull range
-            if (name == _username){
+            if (name == _username){ // No need to cull objects when other users move
                 std::list<std::pair<size_t, Entity *> > objectsToRemove;
                 for (auto pair : _objects)
-                    if (outsideCullRange(pair.second->location()))
+                    if (outsideCullRange(pair.second->location(), CULL_HYSTERESIS_DISTANCE))
                         objectsToRemove.push_back(pair);
                 for (auto pair : objectsToRemove){
                     if (pair.second == _currentMouseOverEntity)
@@ -278,6 +280,21 @@ void Client::handleMessage(const std::string &msg){
                     _objects.erase(_objects.find(pair.first));
                 }
             }
+            if (name == _username){ // We moved; look at everyone else
+                std::list<Avatar*> usersToRemove;
+                for (auto pair : _otherUsers)
+                    if (outsideCullRange(pair.second->location(), CULL_HYSTERESIS_DISTANCE)){
+                        _debug("Removing other user");
+                        usersToRemove.push_back(pair.second);
+                    }
+                for (Avatar *avatar : usersToRemove){
+                    if (_currentMouseOverEntity == avatar)
+                        _currentMouseOverEntity = nullptr;
+                    _otherUsers.erase(_otherUsers.find(avatar->name()));
+                    removeEntity(avatar);
+                }
+            }
+
             break;
         }
 

@@ -67,7 +67,8 @@ public:
         SCREEN_Y;
 
     static const px_t
-        CULL_DISTANCE;
+        CULL_DISTANCE,
+        CULL_HYSTERESIS_DISTANCE;
 
 private:
     static Client *_instance;
@@ -113,7 +114,7 @@ private:
     void watchObject(ClientObject &obj);
     void unwatchObject(ClientObject &obj);
 
-    bool outsideCullRange(const Point &loc) const;
+    bool outsideCullRange(const Point &loc, px_t hysteresis = 0) const;
 
     ChoiceList *_recipeList;
     Element *_detailsPane;

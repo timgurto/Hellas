@@ -21,6 +21,7 @@ public:
 
     static void image(const std::string &filename) { _entityType.image(filename); }
     void name(const std::string &newName) { _name = newName; }
+    const std::string &name() const { return _name; }
     const Point &destination() const { return _destination; }
     void destination(const Point &dst) { _destination = dst; }
     static const EntityType &entityType() { return _entityType; }

@@ -111,19 +111,28 @@ void User::updateLocation(const Point &dest){
     // Tell user about any additional objects he can now see
     std::list<const Object *> nearbyObjects;
     double left, right, top, bottom;
+    double forgetLeft, forgetRight, forgetTop, forgetBottom; // Areas newly invisible
     if (newDest.x > _location.x){ // Moved right
         left = _location.x + Server::CULL_DISTANCE;
         right = newDest.x + Server::CULL_DISTANCE;
+        forgetLeft = _location.x - Server::CULL_DISTANCE;
+        forgetRight = newDest.x - Server::CULL_DISTANCE;
     } else { // Moved left
         left = newDest.x - Server::CULL_DISTANCE;
         right = _location.x - Server::CULL_DISTANCE;
+        forgetLeft = newDest.x + Server::CULL_DISTANCE;
+        forgetRight = _location.x + Server::CULL_DISTANCE;
     }
     if (newDest.y > _location.y){ // Moved down
         top = _location.y + Server::CULL_DISTANCE;
         bottom = newDest.y + Server::CULL_DISTANCE;
+        forgetTop = _location.y - Server::CULL_DISTANCE;
+        forgetBottom = newDest.y - Server::CULL_DISTANCE;
     } else { // Moved up
         top = newDest.y - Server::CULL_DISTANCE;
         bottom = _location.y - Server::CULL_DISTANCE;
+        forgetTop = newDest.y + Server::CULL_DISTANCE;
+        forgetBottom = _location.y + Server::CULL_DISTANCE;
     }
     auto loX = server._objectsByX.lower_bound(&Object(Point(left, 0)));
     auto hiX = server._objectsByX.upper_bound(&Object(Point(right, 0)));
@@ -160,7 +169,8 @@ void User::updateLocation(const Point &dest){
     auto hiUserY = server._usersByY.upper_bound(&User(Point(0, bottom)));
     std::list<const User *> nearbyUsers;
     for (auto it = loUserX; it != hiUserX; ++it){
-        if (abs((*it)->location().y - newDest.y) <= Server::CULL_DISTANCE)
+        double userY = (*it)->location().y;
+        if (userY - newDest.y <= Server::CULL_DISTANCE)
             nearbyUsers.push_back(*it);
     }
     for (auto it = loUserY; it != hiUserY; ++it){
@@ -178,6 +188,31 @@ void User::updateLocation(const Point &dest){
     for (const User *userP : nearbyUsers)
         server.sendMessage(socket(), SV_LOCATION, userP->makeLocationCommand());
 
+    // Tell any users he has moved away from to forget about him.
+   loUserX = server._usersByX.lower_bound(&User(Point(forgetLeft, 0)));
+   hiUserX = server._usersByX.upper_bound(&User(Point(forgetRight, 0)));
+   loUserY = server._usersByY.lower_bound(&User(Point(0, forgetTop)));
+   hiUserY = server._usersByY.upper_bound(&User(Point(0, forgetBottom)));
+   std::list<const User *> usersToForget;
+    for (auto it = loUserX; it != hiUserX; ++it){
+        double userY = (*it)->location().y;
+        if (userY - _location.y <= Server::CULL_DISTANCE)
+            usersToForget.push_back(*it);
+    }
+    for (auto it = loUserY; it != hiUserY; ++it){
+        double userX = (*it)->location().x;
+        if (newDest.x > _location.x){ // Don't count objects twice.
+            if (userX < forgetLeft)
+                continue;
+        } else {
+            if (userX > forgetRight)
+                continue;
+        }
+        if (abs(userX - _location.x) <= Server::CULL_DISTANCE)
+            usersToForget.push_back(*it);
+    }
+    for (const User *userP : usersToForget)
+        server.sendMessage(userP->socket(), SV_USER_OUT_OF_RANGE, name());
 
     Point oldLoc = _location;
 
