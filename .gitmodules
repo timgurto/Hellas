@@ -5,3 +5,6 @@
 	path = tinyxml
     url = https://github.com/timgurto/TinyXML-library
     ignore = dirty
+[submodule "libcurl"]
+	path = libcurl
+    url = https://github.com/timgurto/libcurl
