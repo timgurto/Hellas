@@ -7,4 +7,4 @@
     ignore = dirty
 [submodule "libcurl"]
 	path = libcurl
-    url = https://github.com/timgurto/libcurl
+	url = https://github.com/timgurto/libcurl
