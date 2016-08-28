@@ -21,12 +21,21 @@
     <ClCompile Include="src\testing\trivial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\testing\networking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\curlUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\testing\testing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\testing\tests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\curlUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
