@@ -22,6 +22,7 @@
 #include "ui/ProgressBar.h"
 #include "ui/TextBox.h"
 #include "../XmlReader.h"
+#include "../curlUtil.h"
 #include "../messageCodes.h"
 #include "../util.h"
 #include "../server/User.h"
@@ -188,6 +189,12 @@ _debug("client.log"){
     } else {
         _debug("SDL_mixer initialized.");
     }
+
+    // Resolve default server IP
+    elem = xr.findChild("server");
+    std::string serverHostDirectory;
+    xr.findAttr(elem, "hostDirectory", serverHostDirectory);
+    _defaultServerAddress = readFromURL(serverHostDirectory);
 
     renderer.setDrawColor();
 
@@ -442,10 +449,14 @@ void Client::checkSocket(){
     if (!_loggedIn && _timeSinceConnectAttempt >= CONNECT_RETRY_DELAY) {
         _timeSinceConnectAttempt = 0;
         // Server details
+        std::string serverIP;
+        if (cmdLineArgs.contains("server-ip"))
+            serverIP = cmdLineArgs.getString("server-ip");
+        else{
+            serverIP = _defaultServerAddress;
+        }
         sockaddr_in serverAddr;
-        serverAddr.sin_addr.s_addr = cmdLineArgs.contains("server-ip") ?
-                                     inet_addr(cmdLineArgs.getString("server-ip").c_str()) :
-                                     inet_addr("127.0.0.1");
+        serverAddr.sin_addr.s_addr = inet_addr(serverIP.c_str());
         serverAddr.sin_family = AF_INET;
         serverAddr.sin_port = cmdLineArgs.contains("server-port") ?
                               cmdLineArgs.getInt("server-port") :

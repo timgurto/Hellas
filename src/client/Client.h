@@ -78,6 +78,8 @@ private:
     static std::map<int, std::string> _errorMessages;
     static void initializeMessageNames();
 
+    std::string _defaultServerAddress;
+
     static const ms_t MAX_TICK_LENGTH;
     static const ms_t SERVER_TIMEOUT; // How long the client will wait for a ping reply
     static const ms_t CONNECT_RETRY_DELAY; // How long to wait between retries at connecting
