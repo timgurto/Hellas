@@ -79,12 +79,12 @@
   <ItemGroup>
     <ClCompile Include="src\curlUtil.cpp" />
     <ClCompile Include="src\testing\networking.cpp" />
+    <ClCompile Include="src\testing\Test.cpp" />
     <ClCompile Include="src\testing\testing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\curlUtil.h" />
-    <ClInclude Include="src\testing\testing.h" />
-    <ClInclude Include="src\testing\tests.h" />
+    <ClInclude Include="src\testing\Test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

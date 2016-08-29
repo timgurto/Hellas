@@ -15,26 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\testing\testing.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\testing\networking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\curlUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\testing\Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\testing\testing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\testing\testing.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\testing\tests.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\curlUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\testing\Test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
