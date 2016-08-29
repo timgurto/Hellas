@@ -80,7 +80,6 @@
     <ClCompile Include="src\curlUtil.cpp" />
     <ClCompile Include="src\testing\networking.cpp" />
     <ClCompile Include="src\testing\testing.cpp" />
-    <ClCompile Include="src\testing\trivial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\curlUtil.h" />

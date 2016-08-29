@@ -18,7 +18,6 @@
     <ClCompile Include="src\testing\testing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\testing\trivial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\testing\networking.cpp">

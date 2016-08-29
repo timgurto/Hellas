@@ -6,9 +6,4 @@
 void trivialTests();
 void networkingTests();
 
-void populate(){
-    trivialTests();
-    networkingTests();
-}
-
 #endif
