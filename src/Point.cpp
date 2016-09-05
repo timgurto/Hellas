@@ -11,6 +11,10 @@ Point::Point(double xArg, double yArg):
 x(xArg),
 y(yArg){}
 
+Point::Point(const Rect &rect):
+x(rect.x),
+y(rect.y){}
+
 bool Point::operator==(const Point &rhs) const{
     return
         abs(x - rhs.x) <= EPSILON &&

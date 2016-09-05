@@ -11,6 +11,10 @@ const px_t Server::COLLISION_CHUNK_SIZE = 100;
 bool Server::isLocationValid(const Point &loc, const ObjectType &type,
                              const Object *thisObject, const User *thisUser){
     Rect rect = type.collisionRect() + loc;
+    return isLocationValid(rect, thisObject, thisUser);
+}
+
+bool Server::isLocationValid(const Rect &rect, const Object *thisObject, const User *thisUser){
     const px_t
         right = rect.x + rect.w,
         bottom = rect.y + rect.h;
@@ -23,8 +27,9 @@ bool Server::isLocationValid(const Point &loc, const ObjectType &type,
         return false;
 
     // Terrain
-    CollisionChunk chunk = getCollisionChunk(loc);
-    auto coords = getTileCoords(loc);
+    CollisionChunk chunk = getCollisionChunk(Point(rect));
+    Point rectCenter(rect.x + rect.w / 2, rect.y + rect.h / 2);
+    auto coords = getTileCoords(rectCenter);
     const Terrain &terrain = _terrain[_map[coords.first][coords.second]];
     if (!terrain.isTraversable())
         return false;
@@ -38,7 +43,7 @@ bool Server::isLocationValid(const Point &loc, const ObjectType &type,
     }
 
     // Objects
-    auto superChunk = getCollisionSuperChunk(loc);
+    auto superChunk = getCollisionSuperChunk(rectCenter);
     for (CollisionChunk *chunk : superChunk)
         for (const auto &ret : chunk->objects()) {
             const Object *pObj = ret.second;

@@ -13,6 +13,8 @@ struct Point{
 
     Point(double xArg = 0, double yArg = 0);
 
+    Point(const Rect &rect);
+
     bool operator==(const Point &rhs) const;
     Point &operator+=(const Point &rhs);
     Point &operator-=(const Point &rhs);
@@ -41,6 +43,13 @@ inline Point operator-(const Point &lhs, const Rect &rhs){
     Point p = lhs;
     p.x -= rhs.x;
     p.y -= rhs.y;
+    return p;
+}
+
+inline Point operator+(const Point &lhs, const Rect &rhs){
+    Point p = lhs;
+    p.x += rhs.x;
+    p.y += rhs.y;
     return p;
 }
 

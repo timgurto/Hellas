@@ -142,6 +142,8 @@ private:
     std::list<CollisionChunk *> getCollisionSuperChunk(const Point &p);
     bool isLocationValid(const Point &loc, const ObjectType &type,
                          const Object *thisObject = nullptr, const User *thisUser = nullptr);
+    bool isLocationValid(const Rect &rect, const Object *thisObject = nullptr,
+                         const User *thisUser = nullptr);
 
     bool readUserData(User &user); // true: save data existed
     void writeUserData(const User &user) const;
