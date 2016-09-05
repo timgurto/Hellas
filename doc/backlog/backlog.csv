@@ -44,4 +44,4 @@ issue,description,value,effort,type,blockedBy
 188,Merchant Python AI,5,55,Feature,189
 189,Auto-login for Python client,8,13,Feature,185
 190,Release scrollbar on mouse up,5,2,Bug,
-191,Allow external clients to connect,55,13,Feature,
+192,isLocationValid() only checks one point against one terrain tile/chunk,8,2,Bug,
