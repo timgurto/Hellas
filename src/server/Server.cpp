@@ -37,7 +37,7 @@ const ms_t Server::SAVE_FREQUENCY = 1000;
 
 const double Server::MOVEMENT_SPEED = 80;
 const px_t Server::ACTION_DISTANCE = 30;
-const px_t Server::CULL_DISTANCE = 100;
+const px_t Server::CULL_DISTANCE = 320;
 const px_t Server::TILE_W = 32;
 const px_t Server::TILE_H = 32;
 

@@ -54,8 +54,8 @@ const double Client::MOVEMENT_SPEED = 80;
 
 const px_t Client::ACTION_DISTANCE = 30;
 
-const px_t Client::CULL_DISTANCE = 100;
-const px_t Client::CULL_HYSTERESIS_DISTANCE = 10;
+const px_t Client::CULL_DISTANCE = 320;
+const px_t Client::CULL_HYSTERESIS_DISTANCE = 50;
 
 const size_t Client::INVENTORY_SIZE = 10;
 
