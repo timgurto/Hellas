@@ -483,7 +483,7 @@ void Server::generateWorld(){
     }
 
     // Critters
-    /*const ObjectType *const critterObj = _objectTypes.find(std::string("critter"));
+    const ObjectType *const critterObj = findObjectTypeByName("critter");
     const NPCType *const critter = dynamic_cast<const NPCType *const>(critterObj);
     for (int i = 0; i != 20; ++i) {
         Point loc;
@@ -491,7 +491,7 @@ void Server::generateWorld(){
             loc = mapRand();
         } while (!isLocationValid(loc, *critter));
         addObject(NPC(critter, loc));
-    }*/
+    }
 }
 
 Point Server::mapRand() const{
