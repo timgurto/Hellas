@@ -13,6 +13,7 @@
 
 #include "ItemSet.h"
 #include "NPC.h"
+#include "NPCType.h"
 #include "Object.h"
 #include "ObjectType.h"
 #include "Recipe.h"
@@ -445,7 +446,7 @@ void Server::generateWorld(){
                 _map[x][y] = WATER;
         }
 
-    const ObjectType *const branch = &*_objectTypes.find(std::string("branch"));
+    const ObjectType *const branch = findObjectTypeByName("branch");
     for (int i = 0; i != 30; ++i){
         Point loc;
         do {
@@ -454,7 +455,7 @@ void Server::generateWorld(){
         addObject(branch, loc);
     }
 
-    const ObjectType *const tree = &*_objectTypes.find(std::string("tree"));
+    const ObjectType *const tree = findObjectTypeByName("tree");
     for (int i = 0; i != 10; ++i) {
         Point loc;
         do {
@@ -463,7 +464,7 @@ void Server::generateWorld(){
         addObject(tree, loc);
     }
 
-    const ObjectType *const chest = &*_objectTypes.find(std::string("chest"));
+    const ObjectType *const chest = findObjectTypeByName("chest");
     for (int i = 0; i != 10; ++i) {
         Point loc;
         do {
@@ -472,7 +473,7 @@ void Server::generateWorld(){
         addObject(chest, loc);
     }
 
-    const ObjectType *const tradeCart = &*_objectTypes.find(std::string("tradeCart"));
+    const ObjectType *const tradeCart = findObjectTypeByName("tradeCart");
     for (int i = 0; i != 20; ++i) {
         Point loc;
         do {
@@ -503,7 +504,15 @@ bool Server::itemIsClass(const Item *item, const std::string &className) const{
     return item->isClass(className);
 }
 
-Object &Server::addObject (const ObjectType *type, const Point &location, const User *owner){
+const ObjectType *Server::findObjectTypeByName(const std::string &id) const{
+    auto it = std::find_if(_objectTypes.begin(), _objectTypes.end(),
+                           [id](const ObjectType *ot){ return ot->id() == id; });
+    if (it != _objectTypes.end())
+        return *it;
+    else
+        return nullptr;
+}
+
 Object &Server::addObject(const ObjectType *type, const Point &location, const User *owner){
     Object newObj(type, location);
     if (owner != nullptr)

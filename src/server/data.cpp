@@ -103,17 +103,17 @@ void Server::loadData(){
         std::string id;
         if (!xr.findAttr(elem, "id", id))
             continue;
-        ObjectType ot(id);
+        ObjectType *ot = new ObjectType(id);
 
         std::string s; int n;
-        if (xr.findAttr(elem, "gatherTime", n)) ot.gatherTime(n);
-        if (xr.findAttr(elem, "constructionTime", n)) ot.constructionTime(n);
-        if (xr.findAttr(elem, "gatherReq", s)) ot.gatherReq(s);
+        if (xr.findAttr(elem, "gatherTime", n)) ot->gatherTime(n);
+        if (xr.findAttr(elem, "constructionTime", n)) ot->constructionTime(n);
+        if (xr.findAttr(elem, "gatherReq", s)) ot->gatherReq(s);
         if (xr.findAttr(elem, "deconstructs", s)){
             std::set<Item>::const_iterator itemIt = _items.insert(Item(s)).first;
-            ot.deconstructsItem(&*itemIt);
+            ot->deconstructsItem(&*itemIt);
         }
-        if (xr.findAttr(elem, "deconstructionTime", n)) ot.deconstructionTime(n);
+        if (xr.findAttr(elem, "deconstructionTime", n)) ot->deconstructionTime(n);
         for (auto yield : xr.getChildren("yield", elem)) {
             if (!xr.findAttr(yield, "id", s))
                 continue;
@@ -123,9 +123,9 @@ void Server::loadData(){
             xr.findAttr(yield, "gatherMean", gatherMean);
             xr.findAttr(yield, "gatherSD", gatherSD);
             std::set<Item>::const_iterator itemIt = _items.insert(Item(s)).first;
-            ot.addYield(&*itemIt, initMean, initSD, gatherMean, gatherSD);
+            ot->addYield(&*itemIt, initMean, initSD, gatherMean, gatherSD);
         }
-        if (xr.findAttr(elem, "merchantSlots", n)) ot.merchantSlots(n);
+        if (xr.findAttr(elem, "merchantSlots", n)) ot->merchantSlots(n);
         auto collisionRect = xr.findChild("collisionRect", elem);
         if (collisionRect) {
             Rect r;
@@ -133,14 +133,14 @@ void Server::loadData(){
             xr.findAttr(collisionRect, "y", r.y);
             xr.findAttr(collisionRect, "w", r.w);
             xr.findAttr(collisionRect, "h", r.h);
-            ot.collisionRect(r);
+            ot->collisionRect(r);
         }
         for (auto objClass :xr.getChildren("class", elem))
             if (xr.findAttr(objClass, "name", s))
-                ot.addClass(s);
+                ot->addClass(s);
         auto container = xr.findChild("container", elem);
         if (container != nullptr) {
-            if (xr.findAttr(container, "slots", n)) ot.containerSlots(n);
+            if (xr.findAttr(container, "slots", n)) ot->containerSlots(n);
         }
         
         _objectTypes.insert(ot);
@@ -181,9 +181,14 @@ void Server::loadData(){
 
         std::string s; int n;
         if (xr.findAttr(elem, "stackSize", n)) item.stackSize(n);
-        if (xr.findAttr(elem, "constructs", s))
+        if (xr.findAttr(elem, "constructs", s)){
             // Create dummy ObjectType if necessary
-            item.constructsObject(&*(_objectTypes.insert(ObjectType(s)).first));
+            const ObjectType *ot = findObjectTypeByName(s);
+            if (ot != nullptr)
+                item.constructsObject(ot);
+            else
+                item.constructsObject(*(_objectTypes.insert(new ObjectType(s)).first));
+        }
 
         for (auto child : xr.getChildren("class", elem))
             if (xr.findAttr(child, "name", s)) item.addClass(s);
@@ -288,14 +293,14 @@ void Server::loadData(){
                 continue;
             }
 
-            std::set<ObjectType>::const_iterator it = _objectTypes.find(s);
-            if (it == _objectTypes.end()) {
+            const ObjectType *type = findObjectTypeByName(s);
+            if (type == nullptr){
                 _debug << Color::RED << "Skipping importing object with unknown type \"" << s
                        << "\"." << Log::endl;
                 continue;
             }
 
-            Object &obj = addObject(&*it, p, nullptr);
+            Object &obj = addObject(type, p, nullptr);
 
             size_t n;
             if (xr.findAttr(elem, "owner", s)) obj.owner(s);

@@ -110,7 +110,8 @@ private:
     std::vector<Terrain> _terrain;
     std::set<Item> _items;
     std::set<Recipe> _recipes;
-    std::set<ObjectType> _objectTypes;
+    std::set<const ObjectType *> _objectTypes;
+    const ObjectType *findObjectTypeByName(const std::string &id) const; // Linear complexity
 
     void removeObject(Object &obj,
                       const User *userToExclude = nullptr); // Optionally skip telling a user
