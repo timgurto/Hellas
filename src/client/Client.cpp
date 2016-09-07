@@ -348,6 +348,38 @@ _debug("client.log"){
         }
     }
 
+    // NPC types
+    xr.newFile("Data/npcTypes.xml");
+    for (auto elem : xr.getChildren("npcType")) {
+        std::string s; int n;
+        if (!xr.findAttr(elem, "id", s))
+            continue;
+        ClientObjectType cot(s);
+        xr.findAttr(elem, "imageFile", s); // If no explicit imageFile, s will still == id
+        cot.image(std::string("Images/NPCs/") + s + ".png");
+        if (xr.findAttr(elem, "name", s)) cot.name(s);
+        Rect drawRect(0, 0, cot.width(), cot.height());
+        bool
+            xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
+            ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
+        if (xSet || ySet)
+            cot.drawRect(drawRect);
+        auto collisionRect = xr.findChild("collisionRect", elem);
+        if (collisionRect) {
+            Rect r;
+            xr.findAttr(collisionRect, "x", r.x);
+            xr.findAttr(collisionRect, "y", r.y);
+            xr.findAttr(collisionRect, "w", r.w);
+            xr.findAttr(collisionRect, "h", r.h);
+            cot.collisionRect(r);
+        }
+        auto pair = _objectTypes.insert(cot);
+        if (!pair.second) {
+            ClientObjectType &type = const_cast<ClientObjectType &>(*pair.first);
+            type = cot;
+        }
+    }
+
 
     Element::absMouse = &_mouse;
 

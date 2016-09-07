@@ -16,7 +16,7 @@ Server only:
 
 <npcType
     id="critter"
-    name="critter"
+    name="Critter"
     xDrawOffset=-14
     yDrawOffset=-17 >
     <collisionRect x=-9 y=-3 w=18 h=5 />
