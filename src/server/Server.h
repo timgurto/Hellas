@@ -129,6 +129,7 @@ private:
     friend void Object::giveItem(const Item *item, size_t qty);
 
     Object &addObject (const ObjectType *type, const Point &location, const User *owner = nullptr);
+    Object &addObject (const Object &newObj);
 
     // Checks whether the object exists, and is within range of the user.  If not, a relevant error
     // message is sentg to the client.

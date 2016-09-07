@@ -482,13 +482,15 @@ void Server::generateWorld(){
     }
 
     // Critters
-    for (int i = 0; i != 20; ++i){
+    /*const ObjectType *const critterObj = _objectTypes.find(std::string("critter"));
+    const NPCType *const critter = dynamic_cast<const NPCType *const>(critterObj);
+    for (int i = 0; i != 20; ++i) {
         Point loc;
         do {
             loc = mapRand();
-        } while (!isLocationValid(loc + NPC::COLLISION_RECT));
-        // addNPC()
-    }
+        } while (!isLocationValid(loc, *critter));
+        addObject(NPC(critter, loc));
+    }*/
 }
 
 Point Server::mapRand() const{
@@ -502,22 +504,28 @@ bool Server::itemIsClass(const Item *item, const std::string &className) const{
 }
 
 Object &Server::addObject (const ObjectType *type, const Point &location, const User *owner){
+Object &Server::addObject(const ObjectType *type, const Point &location, const User *owner){
     Object newObj(type, location);
     if (owner != nullptr)
         newObj.owner(owner->name());
+    return addObject(newObj);
+}
+
+Object &Server::addObject(const Object &newObj){
     auto it = _objects.insert(newObj).first;
+    const Point &loc = newObj.location();
 
     // Alert nearby users
-    for (const User *userP : findUsersInArea(location)){
+    for (const User *userP : findUsersInArea(loc)){
         sendMessage(userP->socket(), SV_OBJECT,
-                    makeArgs(newObj.serial(), location.x, location.y, type->id()));
-        if (owner != nullptr)
+                    makeArgs(newObj.serial(), loc.x, loc.y, newObj.type()->id()));
+        if (!newObj.owner().empty())
             sendMessage(userP->socket(), SV_OWNER, makeArgs(newObj.serial(), newObj.owner()));
     }
 
     // Add object to relevant chunk
-    if (type->collides())
-        getCollisionChunk(location).addObject(&*it);
+    if (newObj.type()->collides())
+        getCollisionChunk(loc).addObject(&*it);
 
     // Add object to x/y index sets
     _objectsByX.insert(&*it);

@@ -4,6 +4,7 @@
 #include <mutex>
 #include <thread>
 #endif
+#include "NPCType.h"
 #include "Server.h"
 #include "../XmlReader.h"
 #include "../XmlWriter.h"
@@ -143,6 +144,31 @@ void Server::loadData(){
         }
         
         _objectTypes.insert(ot);
+    }
+
+    // NPC types
+    xr.newFile("Data/npcTypes.xml");
+    for (auto elem : xr.getChildren("npcType")) {
+        std::string id;
+        if (!xr.findAttr(elem, "id", id))
+            continue;
+        NPCType *nt = new NPCType(id);
+
+        std::string s; int n;
+        auto collisionRect = xr.findChild("collisionRect", elem);
+        if (collisionRect) {
+            Rect r;
+            xr.findAttr(collisionRect, "x", r.x);
+            xr.findAttr(collisionRect, "y", r.y);
+            xr.findAttr(collisionRect, "w", r.w);
+            xr.findAttr(collisionRect, "h", r.h);
+            nt->collisionRect(r);
+        }
+        for (auto objClass :xr.getChildren("class", elem))
+            if (xr.findAttr(objClass, "name", s))
+                nt->addClass(s);
+        
+        _objectTypes.insert(nt);
     }
 
     // Items

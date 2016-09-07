@@ -37,6 +37,8 @@ public:
     ObjectType(const std::string &id);
     ObjectType(const Rect &collisionRect); // Anonymous object type used for collision testing.
 
+    virtual ~ObjectType(){}
+
     void gatherTime(ms_t t) { _gatherTime = t; }
     const std::string &gatherReq() const { return _gatherReq; }
     void gatherReq(const std::string &req) { _gatherReq = req; }

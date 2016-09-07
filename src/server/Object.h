@@ -29,6 +29,8 @@ public:
     Object(size_t serial); // For set/map lookup; contains only a serial
     Object(const Point &loc); // For set/map lookup; contains only a location
 
+    virtual ~Object(){}
+
     const Point &location() const { return _location; }
     size_t serial() const { return _serial; }
     void serial(size_t s) { _serial = s; }

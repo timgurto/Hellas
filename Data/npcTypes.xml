@@ -1,0 +1,25 @@
+<root>
+
+<!--
+Both:
+ - id
+ - collisionRect
+
+Client only:
+ - name
+ - xDrawOffset
+ - yDrawOffset
+
+Server only:
+ - class
+-->
+
+<npcType
+    id="critter"
+    name="critter"
+    xDrawOffset=-14
+    yDrawOffset=-17 >
+    <collisionRect x=-9 y=-3 w=18 h=5 />
+    <class name="pacifist" />
+</npcType>
+</root>
