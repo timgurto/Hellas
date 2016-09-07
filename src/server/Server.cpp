@@ -12,6 +12,7 @@
 #endif
 
 #include "ItemSet.h"
+#include "NPC.h"
 #include "Object.h"
 #include "ObjectType.h"
 #include "Recipe.h"
@@ -478,6 +479,15 @@ void Server::generateWorld(){
             loc = mapRand();
         } while (!isLocationValid(loc, *tradeCart));
         addObject(tradeCart, loc);
+    }
+
+    // Critters
+    for (int i = 0; i != 20; ++i){
+        Point loc;
+        do {
+            loc = mapRand();
+        } while (!isLocationValid(loc + NPC::COLLISION_RECT));
+        // addNPC()
     }
 }
 
