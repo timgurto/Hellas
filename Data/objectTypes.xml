@@ -24,22 +24,22 @@ Server only:
 <objectType
     id="tree"
     name="Tree"
-    xDrawOffset=-20
-    yDrawOffset=-47
+    xDrawOffset=-23
+    yDrawOffset=-57
     canGather=1
     gatherSound="chop-pause"
     gatherReq="axe"
     gatherTime=3000 >
     <yield id="wood" initialMean=6 initialSD=0.8 />
-    <collisionRect x=-5 y=-5 w=10 h=10 />
+    <collisionRect x=-7 y=-3 w=16 h=6 />
 </objectType>
 
 <objectType
     id="branch"
     gatherTime=1000
     name="Branch"
-    xDrawOffset=-14
-    yDrawOffset=-12
+    xDrawOffset=-9
+    yDrawOffset=-9
     canGather=1
     isFlat=1 >
     <yield id="wood" />
@@ -48,12 +48,12 @@ Server only:
 <objectType
     id="chest"
     name="Wooden chest"
-    xDrawOffset=-14
-    yDrawOffset=-22
+    xDrawOffset=-12
+    yDrawOffset=-10
     constructionTime=2000
     deconstructs="chest"
     deconstructionTime=1000 >
-    <collisionRect x=-14 y=-6 w=28 h=12 />
+    <collisionRect x=-12 y=-5 w=25 h=12 />
     <class name="set square" />
     <container slots=10 />
 </objectType>
@@ -61,13 +61,13 @@ Server only:
 <objectType
     id="tradeCart"
     name="Trade Cart"
-    xDrawOffset=-11
-    yDrawOffset=-17
+    xDrawOffset=-13
+    yDrawOffset=-16
     constructionTime=4000
     deconstructs="tradeCart"
     deconstructionTime=1000
     merchantSlots=2 >
-    <collisionRect x=-11 y=-7 w=35 h=11 />
+    <collisionRect x=-13 y=-4 w=25 h=8 />
     <class name="set square" />
     <container slots=5 />
 </objectType>
