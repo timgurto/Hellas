@@ -41,14 +41,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)</OutDir>
     <TargetName>$(ProjectName)-debug</TargetName>
-    <LibraryPath>$(SolutionDir)libcurl\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)libcurl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>F:\My stuff\Docs\VS2012 Projects\mmo\SDL2\SDL2-2.0.3\lib\x86;$(SolutionDir)libcurl\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>F:\My stuff\Docs\VS2012 Projects\mmo\SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)libcurl\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)</OutDir>
     <TargetName>$(ProjectName)-release</TargetName>
-    <IncludePath>$(SolutionDir)libcurl\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)libcurl\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>F:\My stuff\Docs\VS2012 Projects\mmo\SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)libcurl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>F:\My stuff\Docs\VS2012 Projects\mmo\SDL2\SDL2-2.0.3\lib\x86;$(SolutionDir)libcurl\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -73,16 +73,19 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\curlUtil.cpp" />
+    <ClCompile Include="src\testing\math.cpp" />
     <ClCompile Include="src\testing\networking.cpp" />
     <ClCompile Include="src\testing\Test.cpp" />
     <ClCompile Include="src\testing\testing.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Color.h" />
     <ClInclude Include="src\curlUtil.h" />
     <ClInclude Include="src\testing\Test.h" />
   </ItemGroup>

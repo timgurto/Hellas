@@ -42,6 +42,7 @@ public:
 
     Color(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0);
     Color(const SDL_Color &rhs);
+    Color(Uint32 rhs);
 
     operator SDL_Color() const;
     operator Uint32() const; // Used by some SDL functions

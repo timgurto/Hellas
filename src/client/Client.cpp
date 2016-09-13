@@ -351,7 +351,7 @@ _debug("client.log"){
     // NPC types
     xr.newFile("Data/npcTypes.xml");
     for (auto elem : xr.getChildren("npcType")) {
-        std::string s; int n;
+        std::string s;
         if (!xr.findAttr(elem, "id", s))
             continue;
         ClientObjectType cot(s);

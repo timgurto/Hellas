@@ -46,6 +46,22 @@ _r(rhs.r),
 _g(rhs.g),
 _b(rhs.b){}
 
+Color::Color(Uint32 rhs){
+    Uint8
+        little = rhs % 0x100,
+        middle = (rhs >> 8) % 0x100,
+        big = (rhs >> 16) % 0x100;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    _r = big;
+    _g = middle;
+    _b = little;
+#else
+    _r = little;
+    _g = middle;
+    _b = big;
+#endif
+}
+
 Color::operator SDL_Color() const{
     const SDL_Color c = {_r, _g, _b, 0};
     return c;
