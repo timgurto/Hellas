@@ -219,7 +219,7 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const{
 
     // Black background
     // Assuming all tile images are set to SDL_BLENDMODE_ADD and quarter alpha
-    renderer.setDrawColor(Color::MMO_OUTLINE);
+    renderer.setDrawColor(Color::BLACK);
     if (yOdd && x == 0) {
         renderer.fillRect(drawLoc + RIGHT_HALF);
     }
