@@ -169,6 +169,7 @@ _debug("client.log"){
     _chatLog = new List(Rect(0, 0, chatW, chatH - _chatTextBox->height()));
     _chatTextBox->rect(0, _chatLog->height());
     _chatTextBox->hide();
+    _chatContainer->addChild(new ColorBlock(_chatLog->rect(), Color::MMO_OUTLINE));
     _chatContainer->addChild(_chatLog);
     _chatContainer->addChild(_chatTextBox);
 
