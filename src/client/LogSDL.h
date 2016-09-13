@@ -20,7 +20,7 @@ public:
     ~LogSDL();
     // For default reference parameter.  Indicates that the Log's _color should be used.
     static Color defaultColor;
-    void operator()(const std::string &message, const Color &color = Color::WHITE);
+    void operator()(const std::string &message, const Color &color = Color::MMO_L_GREY);
 
     template<typename T>
     LogSDL &operator<<(const T &val) {

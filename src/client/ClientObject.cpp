@@ -145,7 +145,7 @@ void ClientObject::onRightClick(Client &client){
 
     // Make sure object is in range
     if (distance(client.playerCollisionRect(), collisionRect()) > Client::ACTION_DISTANCE) {
-        client._debug("That object is too far away.", Color::YELLOW);
+        client._debug("That object is too far away.", Color::MMO_HIGHLIGHT);
         return;
     }
 
@@ -315,9 +315,9 @@ void ClientObject::draw(const Client &client) const{
     // Highilght moused-over entity
     if (this == client.currentMouseOverEntity()) {
         if (distance(collisionRect(), client.playerCollisionRect()) <= Client::ACTION_DISTANCE)
-            renderer.setDrawColor(Color::BLUE/2 + Color::WHITE/2);
+            renderer.setDrawColor(Color::MMO_L_GREEN);
         else
-            renderer.setDrawColor(Color::GREY_2);
+            renderer.setDrawColor(Color::MMO_ORANGE);
         renderer.drawRect(collisionRect() + Rect(-1, -1, 2, 2) + client.offset());
     }
 
@@ -366,7 +366,7 @@ void ClientObject::sendMerchantSlot(void *serialAndSlot){
     const auto &objects = Client::_instance->_objects;
     auto it = objects.find(serial);
     if (it == objects.end()){
-        Client::debug()("Attempting to configure nonexistent object", Color::RED);
+        Client::debug()("Attempting to configure nonexistent object", Color::MMO_RED);
         return;
     }
     ClientObject &obj = *it->second;
@@ -377,7 +377,7 @@ void ClientObject::sendMerchantSlot(void *serialAndSlot){
     mSlot.priceQty = obj._priceQtyBoxes[slot]->textAsNum();
 
     if (mSlot.wareItem == nullptr || mSlot.priceItem == nullptr){
-        Client::debug()("You must select an item; clearing slot.", Color::YELLOW);
+        Client::debug()("You must select an item; clearing slot.", Color::MMO_HIGHLIGHT);
         Client::_instance->sendMessage(CL_CLEAR_MERCHANT_SLOT, makeArgs(serial, slot));
         return;
     }

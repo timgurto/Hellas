@@ -7,7 +7,7 @@ extern Renderer renderer;
 
 void Client::draw() const{
     if (!_loggedIn || !_loaded){
-        renderer.setDrawColor(Color::BLACK);
+        renderer.setDrawColor(Color::MMO_OUTLINE);
         renderer.clear();
         _chatLog->draw();
         renderer.present();
@@ -15,7 +15,7 @@ void Client::draw() const{
     }
 
     // Background
-    renderer.setDrawColor(Color::BLUE_HELL);
+    renderer.setDrawColor(Color::MMO_OUTLINE); // TODO: Revert to BLUE_HELL
     renderer.clear();
 
     // Map
@@ -101,7 +101,7 @@ void Client::draw() const{
         const ClientObjectType *ot = Container::getUseItem()->constructsObject();
         Rect footprintRect = ot->collisionRect() + _mouse - _offset;
         if (distance(playerCollisionRect(), footprintRect) <= Client::ACTION_DISTANCE) {
-            renderer.setDrawColor(Color::WHITE);
+            renderer.setDrawColor(Color::MMO_GREY);
             renderer.fillRect(footprintRect + _offset);
 
             const Rect &drawRect = ot->drawRect();
@@ -112,7 +112,7 @@ void Client::draw() const{
             _constructionFootprint.draw(x, y);
             _constructionFootprint.setAlpha();
         } else {
-            renderer.setDrawColor(Color::RED);
+            renderer.setDrawColor(Color::MMO_RED);
             renderer.fillRect(footprintRect + _offset);
         }
     }
@@ -219,7 +219,7 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const{
 
     // Black background
     // Assuming all tile images are set to SDL_BLENDMODE_ADD and quarter alpha
-    renderer.setDrawColor(Color::BLACK);
+    renderer.setDrawColor(Color::MMO_OUTLINE);
     if (yOdd && x == 0) {
         renderer.fillRect(drawLoc + RIGHT_HALF);
     }

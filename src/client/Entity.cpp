@@ -66,7 +66,7 @@ void Entity::refreshTooltip(const Client &client){
 
     std::vector<std::string>::const_iterator it = textStrings.begin();
     TooltipBuilder tb;
-    tb.setColor(Color::WHITE);
+    tb.setColor(Color::MMO_L_GREY);
     tb.addLine(*it);
     tb.setColor();
     ++it;

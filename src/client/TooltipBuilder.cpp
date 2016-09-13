@@ -19,8 +19,8 @@ const px_t TooltipBuilder::NO_WRAP = 0;
 TooltipBuilder::TooltipBuilder()
 {
     if (!initialized) {
-        DEFAULT_COLOR = Color::BLUE / 2 + Color::GREY_2;
-        BACKGROUND_COLOR = Color::GREY_8 + Color::BLUE/6;
+        DEFAULT_COLOR = Color::MMO_L_GREEN;
+        BACKGROUND_COLOR = Color::MMO_D_BLUE;
     }
     _color = DEFAULT_COLOR;
 
@@ -79,7 +79,7 @@ Texture TooltipBuilder::publish(){
     background.draw();
 
     // Draw border
-    renderer.setDrawColor(Color::WHITE);
+    renderer.setDrawColor(Color::MMO_L_GREY);
     renderer.drawRect(Rect(0, 0, totalWidth, totalHeight));
 
     // Draw text

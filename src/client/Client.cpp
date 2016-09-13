@@ -173,8 +173,8 @@ _debug("client.log"){
     _chatContainer->addChild(_chatTextBox);
 
     addUI(_chatContainer);
-    SAY_COLOR = Color::WHITE;
-    WHISPER_COLOR = Color::RED/2 + Color::WHITE/2;
+    SAY_COLOR = Color::MMO_L_GREY;
+    WHISPER_COLOR = Color::MMO_PURPLE;
 
     initializeMessageNames();
 
@@ -185,7 +185,7 @@ _debug("client.log"){
 
     int ret = (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 512) < 0);
     if (ret < 0){
-        _debug("SDL_mixer failed to initialize.", Color::RED);
+        _debug("SDL_mixer failed to initialize.", Color::MMO_RED);
     } else {
         _debug("SDL_mixer initialized.");
     }
@@ -276,7 +276,7 @@ _debug("client.log"){
             continue; // product is mandatory.
         auto it = _items.find(s);
         if (it == _items.end()) {
-            _debug << Color::RED << "Skipping recipe with invalid product " << s << Log::endl;
+            _debug << Color::MMO_RED << "Skipping recipe with invalid product " << s << Log::endl;
             continue;
         }
         recipe.product(&*it);
@@ -287,7 +287,7 @@ _debug("client.log"){
             if (xr.findAttr(child, "id", s)) {
                 auto it = _items.find(Item(s));
                 if (it == _items.end()) {
-                    _debug << Color::RED << "Skipping invalid recipe material " << s << Log::endl;
+                    _debug << Color::MMO_RED << "Skipping invalid recipe material " << s << Log::endl;
                     continue;
                 }
                 recipe.addMaterial(&*it, matQty);
@@ -392,7 +392,7 @@ _debug("client.log"){
     const Rect
         CAST_BAR_RECT(SCREEN_X/2 - castBarW/2, castBarY, castBarW, castBarH),
         CAST_BAR_DIMENSIONS(0, 0, castBarW, castBarH);
-    static const Color CAST_BAR_LABEL_COLOR = Color::BLUE / 2 + Color::GREY_2;
+    static const Color CAST_BAR_LABEL_COLOR = Color::MMO_L_GREY;
     _castBar = new Element(CAST_BAR_RECT);
     _castBar->addChild(new ProgressBar<ms_t>(CAST_BAR_DIMENSIONS, _actionTimer, _actionLength));
     LinkedLabel<std::string> *castBarLabel = new LinkedLabel<std::string>(CAST_BAR_DIMENSIONS,
@@ -435,8 +435,8 @@ _debug("client.log"){
     LinkedLabel<ms_t> *lat = new LinkedLabel<ms_t>(
         Rect(0, HARDWARE_STATS_LABEL_HEIGHT, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT),
         _latency, "", "ms", Label::RIGHT_JUSTIFIED);
-    fps->setColor(Color::YELLOW);
-    lat->setColor(Color::YELLOW);
+    fps->setColor(Color::MMO_HIGHLIGHT);
+    lat->setColor(Color::MMO_HIGHLIGHT);
     hardwareStats->addChild(fps);
     hardwareStats->addChild(lat);
     addUI(hardwareStats);
@@ -494,9 +494,9 @@ void Client::checkSocket(){
                               cmdLineArgs.getInt("server-port") :
                               htons(8888);
         if (connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
-            _debug << Color::RED << "Connection error: " << WSAGetLastError() << Log::endl;
+            _debug << Color::MMO_RED << "Connection error: " << WSAGetLastError() << Log::endl;
         } else {
-            _debug("Connected to server", Color::GREEN);
+            _debug("Connected to server", Color::MMO_L_GREEN);
             // Announce player name
             sendMessage(CL_I_AM, _username);
             sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
@@ -509,7 +509,7 @@ void Client::checkSocket(){
     static timeval selectTimeout = {0, 10000};
     int activity = select(0, &readFDs, nullptr, nullptr, &selectTimeout);
     if (activity == SOCKET_ERROR) {
-        _debug << Color::RED << "Error polling sockets: " << WSAGetLastError() << Log::endl;
+        _debug << Color::MMO_RED << "Error polling sockets: " << WSAGetLastError() << Log::endl;
         return;
     }
     if (FD_ISSET(_socket.getRaw(), &readFDs)) {
@@ -543,7 +543,7 @@ void Client::run(){
 
         // Ensure server connectivity
         if (_loggedIn && _time - _lastPingReply > SERVER_TIMEOUT) {
-            _debug("Disconnected from server", Color::RED);
+            _debug("Disconnected from server", Color::MMO_RED);
             _socket = Socket();
             _loggedIn = false;
         }

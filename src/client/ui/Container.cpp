@@ -53,7 +53,7 @@ _rightMouseDownSlot(NO_SLOT){
 }
 
 void Container::refresh(){
-    renderer.setDrawColor(Color::BLACK);
+    renderer.setDrawColor(Color::MMO_OUTLINE);
     for (size_t i = 0; i != _linked.size(); ++i) {
         const px_t
             x = i % _cols,

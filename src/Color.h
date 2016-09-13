@@ -16,28 +16,27 @@ public:
     static const Color YELLOW;
     static const Color WHITE;
 
-    static const Color QB_BLACK;
-    static const Color QB_BLUE;
-    static const Color QB_GREEN;
-    static const Color QB_CYAN;
-    static const Color QB_RED;
-    static const Color QB_MAGENTA;
-    static const Color QB_BROWN;
-    static const Color QB_WHITE;
-    static const Color QB_GREY;
-    static const Color QB_LIGHT_BLUE;
-    static const Color QB_LIGHT_GREEN;
-    static const Color QB_LIGHT_CYAN;
-    static const Color QB_LIGHT_RED;
-    static const Color QB_LIGHT_MAGENTA;
-    static const Color QB_YELLOW;
-    static const Color QB_BRIGHT_WHITE;
+    static const Color MMO_OUTLINE;
+    static const Color MMO_HIGHLIGHT;
+    static const Color MMO_L_GREEN;
+    static const Color MMO_GREEN;
+    static const Color MMO_D_GREEN;
+    static const Color MMO_L_BLUE;
+    static const Color MMO_BLUE;
+    static const Color MMO_D_BLUE;
+    static const Color MMO_L_GREY;
+    static const Color MMO_GREY;
+    static const Color MMO_PURPLE;
+    static const Color MMO_RED;
+    static const Color MMO_R_ORANGE;
+    static const Color MMO_ORANGE;
+    static const Color MMO_Y_ORANGE;
 
     static const Color GREY_2;
     static const Color GREY_4;
     static const Color GREY_8;
 
-    static const Color BLUE_HELL;
+    //static const Color BLUE_HELL;
     static const Color NO_KEY;
 
     Color(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0);

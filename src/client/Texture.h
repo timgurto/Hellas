@@ -30,7 +30,7 @@ public:
     Texture();
     Texture(px_t width, px_t height); // Create a blank texture, which can be rendered to
     Texture(const std::string &filename, const Color &colorKey = Color::NO_KEY);
-    Texture(TTF_Font *font, const std::string &text, const Color &color = Color::WHITE);
+    Texture(TTF_Font *font, const std::string &text, const Color &color = Color::MMO_L_GREY);
     ~Texture();
 
     Texture(const Texture &rhs);

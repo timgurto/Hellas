@@ -554,7 +554,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         }
 
         default:
-            _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
+            _debug << Color::MMO_RED << "Unhandled message: " << msg << Log::endl;
         }
     }
 }

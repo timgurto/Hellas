@@ -6,7 +6,7 @@
 #include "ui/List.h"
 
 LogSDL::LogSDL(const std::string &logFileName):
-_compilationColor(Color::WHITE){
+_compilationColor(Color::MMO_L_GREY){
     if (!logFileName.empty()) {
         _logFile.open(logFileName);
     }
@@ -32,7 +32,7 @@ LogSDL &LogSDL::operator<<(const std::string &val) {
 LogSDL &LogSDL::operator<<(const LogEndType &val) {
     operator()(_oss.str(), _compilationColor);
     _oss.str("");
-    _compilationColor = Color::WHITE; // reset color for next compilation
+    _compilationColor = Color::MMO_L_GREY; // reset color for next compilation
     return *this;
 }
     

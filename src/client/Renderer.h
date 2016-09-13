@@ -45,7 +45,7 @@ public:
     void drawTexture(SDL_Texture *srcTex, const Rect &dstRect);
     void drawTexture(SDL_Texture *srcTex, const Rect &dstRect, const Rect &srcRect);
 
-    void setDrawColor(const Color &color = Color::BLACK);
+    void setDrawColor(const Color &color = Color::MMO_OUTLINE);
     void clear();
     void present();
 

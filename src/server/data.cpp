@@ -154,7 +154,7 @@ void Server::loadData(){
             continue;
         NPCType *nt = new NPCType(id);
 
-        std::string s; int n;
+        std::string s;
         auto collisionRect = xr.findChild("collisionRect", elem);
         if (collisionRect) {
             Rect r;
