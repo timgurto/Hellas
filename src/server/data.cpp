@@ -464,6 +464,8 @@ void Server::saveData(const std::set<Object> &objects){
         auto loc = xw.addChild("location", e);
         xw.setAttr(loc, "x", npc.location().x);
         xw.setAttr(loc, "y", npc.location().y);
+
+        xw.setAttr(e, "health", npc.health());
     }
     xw.publish();
 #ifndef SINGLE_THREAD

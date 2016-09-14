@@ -3,4 +3,6 @@
 #include "NPCType.h"
 
 NPCType::NPCType(const std::string &id):
-ObjectType(id){}
+ObjectType(id),
+_maxHealth(1)
+{}
