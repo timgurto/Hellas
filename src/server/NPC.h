@@ -12,6 +12,7 @@ class NPC : public Object {
 public:
     NPC(const NPCType *type, const Point &loc); // Generates a new serial
 
+    virtual char classTag() const override { return 'n'; }
 };
 
 #endif

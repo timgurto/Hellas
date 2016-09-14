@@ -5,6 +5,7 @@
 #include <thread>
 #endif
 #include "NPCType.h"
+#include "NPC.h"
 #include "Server.h"
 #include "../XmlReader.h"
 #include "../XmlWriter.h"
@@ -167,6 +168,10 @@ void Server::loadData(){
         for (auto objClass :xr.getChildren("class", elem))
             if (xr.findAttr(objClass, "name", s))
                 nt->addClass(s);
+
+        int n;
+        if (xr.findAttr(elem, "health", n))
+            nt->maxHealth(n);
         
         _objectTypes.insert(nt);
     }
@@ -392,6 +397,8 @@ void Server::saveData(const std::set<Object> &objects){
 #endif
     xw.newFile("World/objects.world");
     for (const Object &obj : objects) {
+        if (obj.classTag() != 'o')
+            continue;
         if (obj.type() == nullptr)
             continue;
         auto e = xw.addChild("object");
@@ -436,6 +443,31 @@ void Server::saveData(const std::set<Object> &objects){
     xw.publish();
 #ifndef SINGLE_THREAD
     objectsFileMutex.unlock();
+#endif
+
+    // NPCs
+#ifndef SINGLE_THREAD
+    static std::mutex npcsFileMutex;
+    npcsFileMutex.lock();
+#endif
+    xw.newFile("World/npcs.world");
+    for (const Object &obj : objects) {
+        if (obj.classTag() != 'n')
+            continue;
+        if (obj.type() == nullptr)
+            continue;
+        const NPC &npc = reinterpret_cast<const NPC &>(obj);
+        auto e = xw.addChild("npc");
+
+        xw.setAttr(e, "id", npc.type()->id());
+
+        auto loc = xw.addChild("location", e);
+        xw.setAttr(loc, "x", npc.location().x);
+        xw.setAttr(loc, "y", npc.location().y);
+    }
+    xw.publish();
+#ifndef SINGLE_THREAD
+    npcsFileMutex.unlock();
 #endif
 }
 

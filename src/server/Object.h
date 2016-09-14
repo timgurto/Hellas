@@ -47,6 +47,8 @@ public:
     MerchantSlot &merchantSlot(size_t slot) { return _merchantSlots[slot]; }
     const std::set<std::string> &watchers() const { return _watchers; }
 
+    virtual char classTag() const { return 'o'; }
+
     bool operator<(const Object &rhs) const { return _serial < rhs._serial; }
 
     // Randomly choose an item type for the user to gather.
