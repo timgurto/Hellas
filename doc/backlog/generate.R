@@ -134,8 +134,38 @@ for (v in 1:(numVals-1)){
     )
 }
 
+# blocker lines
+#for (i in 1:length(data$roi)){
+#	blockedBy = data$blockedBy[i]
+#	toX = x[i]
+#	toY = y[i]
+#    if (!is.na(blockedBy)){
+#		# find blocking PBI
+#		for (j in 1:length(data$roi)){
+#			if (data$issue[j] == blockedBy){
+#				fromX = x[j]
+#				fromY = y[j]
+#				arrows(
+#					fromX, fromY, toX, toY,
+#					angle = 20,
+#				)
+#				break
+#			}
+#		}
+#	}
+#}
 
-points(x, y, pch=21, bg=data$color, cex=circleSize, col="black")
+for (i in 1:length(data$roi)){
+	blockedBy = data$blockedBy[i]
+    if (!is.na(blockedBy)){
+		points(x[i], y[i], pch=21, bg=data$color[i], cex=circleSize - 0.25, col="grey")
+	} else {
+		points(x[i], y[i], pch=21, bg=data$color[i], cex=circleSize, col="black")
+	}
+}
+
+
+#points(x, y, pch=21, bg=data$color, cex=circleSize, col="black")
 #points(x, y, col=data$color, cex=circleSize, lwd=3)
 
 
