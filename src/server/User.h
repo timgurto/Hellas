@@ -7,6 +7,7 @@
 #include <string>
 #include <windows.h>
 
+#include "Combatant.h"
 #include "Item.h"
 #include "Object.h"
 #include "Recipe.h"
@@ -16,7 +17,7 @@
 class Server;
 
 // Stores information about a single user account for the server
-class User{
+class User : public Combatant{
 public:
     enum Action{
         GATHER,
@@ -29,7 +30,6 @@ public:
 
     // Stats
     static const unsigned
-        ATTACK,
         MAX_HEALTH;
 
 private:
@@ -52,10 +52,6 @@ private:
     ms_t _lastContact;
     ms_t _latency;
 
-    // Stats
-    unsigned
-        _health;
-
 public:
     User(const std::string &name, const Point &loc, const Socket &socket);
     User(const Socket &rhs); // for use with set::find(), allowing find-by-socket
@@ -71,8 +67,8 @@ public:
     std::pair<const Item *, size_t> &inventory(size_t index);
     Item::vect_t &inventory() { return _inventory; }
     const Item::vect_t &inventory() const { return _inventory; }
-    unsigned health() const { return _health; }
-    void health(unsigned n) { _health = n; }
+
+    virtual health_t maxHealth() const override { return MAX_HEALTH; }
 
     const Rect collisionRect() const;
 
