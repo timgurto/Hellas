@@ -50,3 +50,4 @@ issue,description,value,effort,type,blockedBy
 195,Move object inventory to ABC,3,8,Code quality
 196,Move merchant slots to ABC,3,8,Code quality
 197,Move gatherable functionality to ABC,3,8,Code quality
+198,"Only save map data once, on generation",3,1,Performance

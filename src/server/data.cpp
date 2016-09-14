@@ -361,7 +361,7 @@ void Server::loadData(){
 }
 
 void Server::saveData(const std::set<Object> &objects){
-    // Map // TODO: Only save map once, on generation.
+    // Map
 #ifndef SINGLE_THREAD
     static std::mutex mapFileMutex;
     mapFileMutex.lock();
