@@ -358,6 +358,34 @@ void Server::loadData(){
             }
         }
 
+        // NPCs
+        xr.newFile("World/npcs.world");
+        if (!xr)
+            break;
+        for (auto elem : xr.getChildren("npc")) {
+            std::string s;
+            if (!xr.findAttr(elem, "id", s)) {
+                _debug("Skipping importing NPC with no type.", Color::RED);
+                continue;
+            }
+
+            Point p;
+            auto loc = xr.findChild("location", elem);
+            if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
+                _debug("Skipping importing object with invalid/no location", Color::RED);
+                continue;
+            }
+
+            const NPCType *type = dynamic_cast<const NPCType *>(findObjectTypeByName(s));
+            if (type == nullptr){
+                _debug << Color::RED << "Skipping importing NPC with unknown type \"" << s
+                       << "\"." << Log::endl;
+                continue;
+            }
+
+            NPC &npc= addNPC(type, p);
+        }
+
         return;
     } while (false);
 

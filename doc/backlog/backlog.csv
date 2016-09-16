@@ -22,14 +22,13 @@ issue,description,value,effort,type,blockedBy
 156,Fix ambiguity of Object::removeItem() and Object::removeItems(),2,2,Code quality,
 160,Cull terrain,21,13,Performance,
 163,Create generic particle system,8,8,Aesthetics,60
-167,Static critters w/ health,34,13,Feature,
-168,Can attack NPCs,13,55,Feature,167
+168,Can attack NPCs,13,55,Feature,
 169,NPCs can die,13,3,Feature,168
 171,NPC loot,13,34,Feature,169
 172,Critter run-away AI,5,34,Feature,168
 173,Animal that fights back,21,21,Feature,168
 174,Player death,13,5,Feature,173
-175,NPC spawning,5,21,Feature,167
+175,NPC spawning,5,21,Feature,
 176,PVP,13,3,Feature,168
 177,Character has gear slots,13,21,Feature,
 178,Items can match gear slots,8,3,Feature,177
@@ -37,7 +36,7 @@ issue,description,value,effort,type,blockedBy
 180,Gear visible on character,34,21,Aesthetics,178
 182,Make use of Winsock modular,8,21,Code quality,
 183,Linux support,21,13,Code quality,182
-184,NPC idling AI,8,21,Feature,167
+184,NPC idling AI,8,21,Feature,
 185,Python client with text interface,34,21,Feature,
 186,Random Python AI,8,13,Feature,189
 187,Woodcutter Python AI,13,55,Feature,189
@@ -46,8 +45,9 @@ issue,description,value,effort,type,blockedBy
 190,Release scrollbar on mouse up,5,2,Bug,
 192,isLocationValid() only checks one point against one terrain tile/chunk,8,2,Bug,
 193,Move client colors to config file instead of hardcoding,5,2,Code quality,
-194,Players can move through small objects,13,2,Bug
+194,Players can move through small objects,13,2,Bug,
 195,Move object inventory to ABC,3,8,Code quality
 196,Move merchant slots to ABC,3,8,Code quality
 197,Move gatherable functionality to ABC,3,8,Code quality
 198,"Only save map data once, on generation",3,1,Performance
+199,Empty objects reported as not empty when attempting to dismantle,21,2,Bug

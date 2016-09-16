@@ -13,6 +13,7 @@
 #include "Item.h"
 #include "ItemSet.h"
 #include "LogConsole.h"
+#include "NPC.h"
 #include "Object.h"
 #include "Recipe.h"
 #include "Terrain.h"
@@ -133,6 +134,7 @@ private:
     friend void Object::removeItems(const ItemSet &items);
     friend void Object::giveItem(const Item *item, size_t qty);
 
+    NPC &addNPC(const NPCType *type, const Point &location); 
     Object &addObject (const ObjectType *type, const Point &location, const User *owner = nullptr);
     Object &addObject (Object *newObj);
 

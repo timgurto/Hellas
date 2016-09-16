@@ -518,6 +518,11 @@ Object &Server::addObject(const ObjectType *type, const Point &location, const U
     return addObject(newObj);
 }
 
+NPC &Server::addNPC(const NPCType *type, const Point &location){
+    NPC *newNPC = new NPC(type, location);
+    return dynamic_cast<NPC &>(addObject(newNPC));
+}
+
 Object &Server::addObject(Object *newObj){
     auto it = _objects.insert(newObj).first;
     const Point &loc = newObj->location();
