@@ -365,7 +365,7 @@ void Server::loadData(){
     generateWorld();
 }
 
-void Server::saveData(const std::set<Object *> &objects){
+void Server::saveData(const objects_t &objects){
     // Map
 #ifndef SINGLE_THREAD
     static std::mutex mapFileMutex;

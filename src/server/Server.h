@@ -93,14 +93,15 @@ private:
     std::list<const User*> findUsersInArea(Point loc, double squareRadius = CULL_DISTANCE) const;
 
     // World state
-    std::set<Object *> _objects;
+    typedef std::set<Object *, Object::compareSerial> objects_t;
+    objects_t _objects;
     Object::byX_t _objectsByX; // This and below are for alerting users only to nearby objects.
     Object::byY_t _objectsByY;
     Object *findObject(size_t serial);
     Object *findObject(const Point &loc);
 
     void loadData(); // Attempt to load data from files.
-    static void saveData(const std::set<Object *> &objects);
+    static void saveData(const objects_t &objects);
     void generateWorld(); // Randomly generate a new world.
 
     Point mapRand() const; // Return a random point on the map.

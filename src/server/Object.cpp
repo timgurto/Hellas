@@ -38,6 +38,10 @@ _location(loc),
 _serial(0),
 _type(nullptr){}
 
+bool Object::compareSerial::operator()( const Object *a, const Object *b){
+    return a->_serial < b->_serial;
+}
+
 bool Object::compareXThenSerial::operator()( const Object *a, const Object *b){
     if (a->_location.x != b->_location.x)
         return a->_location.x < b->_location.x;

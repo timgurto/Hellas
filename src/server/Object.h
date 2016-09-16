@@ -50,7 +50,6 @@ public:
 
     virtual char classTag() const { return 'o'; }
 
-    bool operator<(const Object &rhs) const { return _serial < rhs._serial; }
 
     // Randomly choose an item type for the user to gather.
     const Item *chooseGatherItem() const;
@@ -65,6 +64,7 @@ public:
     void addWatcher(const std::string &username);
     void removeWatcher(const std::string &username);
     
+    struct compareSerial{ bool operator()(const Object *a, const Object *b); };
     struct compareXThenSerial{ bool operator()( const Object *a, const Object *b); };
     struct compareYThenSerial{ bool operator()( const Object *a, const Object *b); };
     typedef std::set<const Object*, Object::compareXThenSerial> byX_t;
