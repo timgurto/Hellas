@@ -314,16 +314,15 @@ std::list<const User *> Server::findUsersInArea(Point loc, double squareRadius) 
     return users;
 }
 
-bool Server::isValidObject(const Socket &client, const User &user,
-                           const std::set<Object>::const_iterator &it) const{
+bool Server::isObjectInRange(const Socket &client, const User &user, const Object *obj) const{
     // Object doesn't exist
-    if (it == _objects.end()) {
+    if (obj == nullptr) {
         sendMessage(client, SV_DOESNT_EXIST);
         return false;
     }
-    
+
     // Check distance from user
-    if (distance(user.collisionRect(), it->collisionRect()) > ACTION_DISTANCE) {
+    if (distance(user.collisionRect(), obj->collisionRect()) > ACTION_DISTANCE) {
         sendMessage(client, SV_TOO_FAR);
         return false;
     }
@@ -352,25 +351,24 @@ void Server::removeObject(Object &obj, const User *userToExclude){
     getCollisionChunk(obj.location()).removeObject(serial);
     _objectsByX.erase(&obj);
     _objectsByY.erase(&obj);
-    _objects.erase(obj);
+    _objects.erase(&obj);
 
 }
 
 void Server::gatherObject(size_t serial, User &user){
     // Give item to user
-    const std::set<Object>::iterator it = _objects.find(serial);
-    Object &obj = const_cast<Object &>(*it);
-    const Item *const toGive = obj.chooseGatherItem();
-    size_t qtyToGive = obj.chooseGatherQuantity(toGive);
+    Object *obj = findObject(serial);
+    const Item *const toGive = obj->chooseGatherItem();
+    size_t qtyToGive = obj->chooseGatherQuantity(toGive);
     const size_t remaining = user.giveItem(toGive, qtyToGive);
     if (remaining > 0) {
         sendMessage(user.socket(), SV_INVENTORY_FULL);
         qtyToGive -= remaining;
     }
     // Remove object if empty
-    obj.removeItem(toGive, qtyToGive);
-    if (obj.contents().isEmpty()) {
-        removeObject(obj, &user);
+    obj->removeItem(toGive, qtyToGive);
+    if (obj->contents().isEmpty()) {
+        removeObject(*obj, &user);
     }
 
 #ifdef SINGLE_THREAD
@@ -490,7 +488,7 @@ void Server::generateWorld(){
         do {
             loc = mapRand();
         } while (!isLocationValid(loc, *critter));
-        addObject(NPC(critter, loc));
+        addObject(new NPC(critter, loc));
     }
 }
 
@@ -514,36 +512,51 @@ const ObjectType *Server::findObjectTypeByName(const std::string &id) const{
 }
 
 Object &Server::addObject(const ObjectType *type, const Point &location, const User *owner){
-    Object newObj(type, location);
+    Object *newObj = new Object(type, location);
     if (owner != nullptr)
-        newObj.owner(owner->name());
+        newObj->owner(owner->name());
     return addObject(newObj);
 }
 
-Object &Server::addObject(const Object &newObj){
+Object &Server::addObject(Object *newObj){
     auto it = _objects.insert(newObj).first;
-    const Point &loc = newObj.location();
+    const Point &loc = newObj->location();
 
     // Alert nearby users
     for (const User *userP : findUsersInArea(loc)){
         sendMessage(userP->socket(), SV_OBJECT,
-                    makeArgs(newObj.serial(), loc.x, loc.y, newObj.type()->id()));
-        if (!newObj.owner().empty())
-            sendMessage(userP->socket(), SV_OWNER, makeArgs(newObj.serial(), newObj.owner()));
+                    makeArgs(newObj->serial(), loc.x, loc.y, newObj->type()->id()));
+        if (!newObj->owner().empty())
+            sendMessage(userP->socket(), SV_OWNER, makeArgs(newObj->serial(), newObj->owner()));
     }
 
     // Add object to relevant chunk
-    if (newObj.type()->collides())
-        getCollisionChunk(loc).addObject(&*it);
+    if (newObj->type()->collides())
+        getCollisionChunk(loc).addObject(*it);
 
     // Add object to x/y index sets
-    _objectsByX.insert(&*it);
-    _objectsByY.insert(&*it);
+    _objectsByX.insert(*it);
+    _objectsByY.insert(*it);
 
-    return const_cast<Object&>(*it);
+    return const_cast<Object&>(**it);
 }
 
 const User &Server::getUserByName(const std::string &username) const {
     return *_usersByName.find(username)->second;
 }
 
+Object *Server::findObject(size_t serial){
+    auto it = _objects.find(&Object(serial));
+    if (it == _objects.end())
+        return nullptr;
+    else
+        return *it;
+}
+
+Object *Server::findObject(const Point &loc){
+    auto it = _objects.find(&Object(loc));
+    if (it == _objects.end())
+        return nullptr;
+    else
+        return *it;
+}

@@ -167,30 +167,29 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             user->cancelAction();
-            std::set<Object>::iterator it = _objects.find(serial);
-            if (!isValidObject(client, *user, it)) {
+            Object *obj = findObject(serial);
+            if (!isObjectInRange(client, *user, obj)) {
                 sendMessage(client, SV_DOESNT_EXIST);
                 break;
             }
-            Object &obj = const_cast<Object &>(*it);
-            assert (obj.type());
+            assert (obj->type());
             // Check that the user meets the requirements
-            if (!obj.userHasAccess(user->name())){
+            if (!obj->userHasAccess(user->name())){
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
             }
-            const std::string &gatherReq = obj.type()->gatherReq();
+            const std::string &gatherReq = obj->type()->gatherReq();
             if (gatherReq != "none" && !user->hasTool(gatherReq)) {
                 sendMessage(client, SV_ITEM_NEEDED, gatherReq);
                 break;
             }
             // Check that it has no inventory
-            if (!obj.container().empty()){
+            if (!obj->container().empty()){
                 sendMessage(client, SV_NOT_EMPTY);
                 break;
             }
-            user->beginGathering(&obj);
-            sendMessage(client, SV_ACTION_STARTED, makeArgs(obj.type()->gatherTime()));
+            user->beginGathering(obj);
+            sendMessage(client, SV_ACTION_STARTED, makeArgs(obj->type()->gatherTime()));
             break;
         }
 
@@ -201,30 +200,29 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             user->cancelAction();
-            std::set<Object>::iterator it = _objects.find(serial);
-            if (!isValidObject(client, *user, it)) {
+            Object *obj = findObject(serial);
+            if (!isObjectInRange(client, *user, obj)) {
                 sendMessage(client, SV_DOESNT_EXIST);
                 break;
             }
-            Object &obj = const_cast<Object &>(*it);
-            assert (obj.type());
-            if (!obj.userHasAccess(user->name())){
+            assert (obj->type());
+            if (!obj->userHasAccess(user->name())){
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
             }
             // Check that the object can be deconstructed
-            if (obj.type()->deconstructsItem() == nullptr){
+            if (obj->type()->deconstructsItem() == nullptr){
                 sendMessage(client, SV_CANNOT_DECONSTRUCT);
                 break;
             }
             // Check that it has no inventory
-            if (!obj.container().empty()){
+            if (!obj->container().empty()){
                 sendMessage(client, SV_NOT_EMPTY);
                 break;
             }
 
-            user->beginDeconstructing(obj);
-            sendMessage(client, SV_ACTION_STARTED, makeArgs(obj.type()->deconstructionTime()));
+            user->beginDeconstructing(*obj);
+            sendMessage(client, SV_ACTION_STARTED, makeArgs(obj->type()->deconstructionTime()));
             break;
         }
 
@@ -239,10 +237,9 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (serial == 0)
                 container = &user->inventory();
             else {
-                auto it = _objects.find(serial);
-                if (!isValidObject(client, *user, it))
+                pObj = findObject(serial);
+                if (!isObjectInRange(client, *user, pObj))
                     break;
-                pObj = &const_cast<Object&>(*it);
                 container = &pObj->container();
             }
 
@@ -283,19 +280,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (obj1 == 0)
                 containerFrom = &user->inventory();
             else {
-                auto it = _objects.find(obj1);
-                if (!isValidObject(client, *user, it))
+                pObj1 = findObject(obj1);
+                if (!isObjectInRange(client, *user, pObj1))
                     break;
-                pObj1 = &const_cast<Object&>(*it);
                 containerFrom = &pObj1->container();
             }
             if (obj2 == 0)
                 containerTo = &user->inventory();
             else {
-                auto it = _objects.find(obj2);
-                if (!isValidObject(client, *user, it))
+                pObj2 = findObject(obj1);
+                if (!isObjectInRange(client, *user, pObj2))
                     break;
-                pObj2 = &const_cast<Object&>(*it);
                 containerTo = &pObj2->container();
             }
 
@@ -339,11 +334,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
 
             // Check that merchant slot is valid
-            auto it = _objects.find(serial);
-            if (!isValidObject(client, *user, it))
+            Object *obj = findObject(serial);
+            if (!isObjectInRange(client, *user, obj))
                 break;
-            Object &obj = const_cast<Object &>(*it);
-            size_t slots = obj.type()->merchantSlots();
+            size_t slots = obj->type()->merchantSlots();
             if (slots == 0){
                 sendMessage(client, SV_NOT_MERCHANT);
                 break;
@@ -351,14 +345,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_INVALID_MERCHANT_SLOT);
                 break;
             }
-            const MerchantSlot &mSlot = obj.merchantSlot(slot);
+            const MerchantSlot &mSlot = obj->merchantSlot(slot);
             if (!mSlot){
                 sendMessage(client, SV_INVALID_MERCHANT_SLOT);
                 break;
             }
 
             // Check that object has items in stock
-            if (mSlot.ware() > obj.container()){
+            if (mSlot.ware() > obj->container()){
                 sendMessage(client, SV_NO_WARE);
                 break;
             }
@@ -376,7 +370,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
 
             // Check that object has inventory space
-            if (!vectHasSpace(obj.container(), mSlot.wareItem, mSlot.wareQty)){
+            if (!vectHasSpace(obj->container(), mSlot.wareItem, mSlot.wareQty)){
                 sendMessage(client, SV_MERCHANT_INVENTORY_FULL);
                 break;
             }
@@ -385,10 +379,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             user->removeItems(mSlot.price());
 
             // Take ware from object
-            obj.removeItems(mSlot.ware());
+            obj->removeItems(mSlot.ware());
 
             // Give price to object
-            obj.giveItem(mSlot.priceItem, mSlot.priceQty);
+            obj->giveItem(mSlot.priceItem, mSlot.priceQty);
 
             // Give ware to user
             user->giveItem(mSlot.wareItem, mSlot.wareQty);
@@ -408,15 +402,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> del >> priceQty >> del;
             if (del != MSG_END)
                 return;
-            auto objIt = _objects.find(serial);
-            if (!isValidObject(client, *user, objIt))
+            Object *obj = findObject(serial);
+            if (!isObjectInRange(client, *user, obj))
                 break;
-            Object &obj = const_cast<Object &>(*objIt);
-            if (!obj.userHasAccess(user->name())){
+            if (!obj->userHasAccess(user->name())){
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
             }
-            size_t slots = obj.type()->merchantSlots();
+            size_t slots = obj->type()->merchantSlots();
             if (slots == 0){
                 sendMessage(client, SV_NOT_MERCHANT);
                 break;
@@ -435,12 +428,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_INVALID_ITEM);
                 break;
             }
-            MerchantSlot &mSlot = obj.merchantSlot(slot);
+            MerchantSlot &mSlot = obj->merchantSlot(slot);
             mSlot = MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty);
 
             // Alert watchers
-            for (auto username : obj.watchers())
-                sendMerchantSlotMessage(*_usersByName[username], obj, slot);
+            for (auto username : obj->watchers())
+                sendMerchantSlotMessage(*_usersByName[username], *obj, slot);
             break;
         }
 
@@ -450,15 +443,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del >> slot >> del;
             if (del != MSG_END)
                 return;
-            auto objIt = _objects.find(serial);
-            if (!isValidObject(client, *user, objIt))
+            Object *obj = findObject(serial);
+            if (!isObjectInRange(client, *user, obj))
                 break;
-            Object &obj = const_cast<Object &>(*objIt);
-            if (!obj.userHasAccess(user->name())){
+            if (!obj->userHasAccess(user->name())){
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
             }
-            size_t slots = obj.type()->merchantSlots();
+            size_t slots = obj->type()->merchantSlots();
             if (slots == 0){
                 sendMessage(client, SV_NOT_MERCHANT);
                 break;
@@ -467,11 +459,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_INVALID_MERCHANT_SLOT);
                 break;
             }
-            obj.merchantSlot(slot) = MerchantSlot();
+            obj->merchantSlot(slot) = MerchantSlot();
 
             // Alert watchers
-            for (auto username : obj.watchers())
-                sendMerchantSlotMessage(*_usersByName[username], obj, slot);
+            for (auto username : obj->watchers())
+                sendMerchantSlotMessage(*_usersByName[username], *obj, slot);
             break;
         }
 
@@ -481,25 +473,24 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != MSG_END)
                 return;
-            auto it = _objects.find(serial);
-            if (!isValidObject(client, *user, it))
+            Object *obj = findObject(serial);
+            if (!isObjectInRange(client, *user, obj))
                 break;
-            Object &obj = const_cast<Object &>(*it);
 
             // Describe merchant slots, if any
-            size_t mSlots = obj.merchantSlots().size();
+            size_t mSlots = obj->merchantSlots().size();
             for (size_t i = 0; i != mSlots; ++i)
-                sendMerchantSlotMessage(*user, obj, i);
+                sendMerchantSlotMessage(*user, *obj, i);
 
             // Describe inventory, if user has permission
-            if (obj.userHasAccess(user->name())){
-                size_t slots = it->container().size();
+            if (obj->userHasAccess(user->name())){
+                size_t slots = obj->container().size();
                 for (size_t i = 0; i != slots; ++i)
-                    sendInventoryMessage(*user, i, &obj);
+                    sendInventoryMessage(*user, i, obj);
             }
 
             // Add as watcher
-            obj.addWatcher(user->name());
+            obj->addWatcher(user->name());
 
             break;
         }
@@ -510,14 +501,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != MSG_END)
                 return;
-            auto it = _objects.find(serial);
-            if (it == _objects.end()) {
+            Object *obj = findObject(serial);
+            if (obj == nullptr) {
                 sendMessage(client, SV_DOESNT_EXIST);
                 break;
             }
-            Object &obj = const_cast<Object &>(*it);
 
-            obj.removeWatcher(user->name());
+            obj->removeWatcher(user->name());
 
             break;
         }

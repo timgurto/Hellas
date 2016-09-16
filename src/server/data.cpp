@@ -365,7 +365,7 @@ void Server::loadData(){
     generateWorld();
 }
 
-void Server::saveData(const std::set<Object> &objects){
+void Server::saveData(const std::set<Object *> &objects){
     // Map
 #ifndef SINGLE_THREAD
     static std::mutex mapFileMutex;
@@ -396,29 +396,29 @@ void Server::saveData(const std::set<Object> &objects){
     objectsFileMutex.lock();
 #endif
     xw.newFile("World/objects.world");
-    for (const Object &obj : objects) {
-        if (obj.classTag() != 'o')
+    for (const Object *obj : objects) {
+        if (obj->classTag() != 'o')
             continue;
-        if (obj.type() == nullptr)
+        if (obj->type() == nullptr)
             continue;
         auto e = xw.addChild("object");
 
-        xw.setAttr(e, "id", obj.type()->id());
+        xw.setAttr(e, "id", obj->type()->id());
 
-        for (auto &content : obj.contents()) {
+        for (auto &content : obj->contents()) {
             auto contentE = xw.addChild("gatherable", e);
             xw.setAttr(contentE, "id", content.first->id());
             xw.setAttr(contentE, "quantity", content.second);
         }
 
-        if (!obj.owner().empty())
-            xw.setAttr(e, "owner", obj.owner());
+        if (!obj->owner().empty())
+            xw.setAttr(e, "owner", obj->owner());
 
         auto loc = xw.addChild("location", e);
-        xw.setAttr(loc, "x", obj.location().x);
-        xw.setAttr(loc, "y", obj.location().y);
+        xw.setAttr(loc, "x", obj->location().x);
+        xw.setAttr(loc, "y", obj->location().y);
 
-        const auto container = obj.container();
+        const auto container = obj->container();
         for (size_t i = 0; i != container.size(); ++i) {
             if (container[i].second == 0)
                 continue;
@@ -428,7 +428,7 @@ void Server::saveData(const std::set<Object> &objects){
             xw.setAttr(invSlotE, "qty", container[i].second);
         }
 
-        const auto mSlots = obj.merchantSlots();
+        const auto mSlots = obj->merchantSlots();
         for (size_t i = 0; i != mSlots.size(); ++i){
             if (!mSlots[i])
                 continue;
@@ -451,12 +451,12 @@ void Server::saveData(const std::set<Object> &objects){
     npcsFileMutex.lock();
 #endif
     xw.newFile("World/npcs.world");
-    for (const Object &obj : objects) {
-        if (obj.classTag() != 'n')
+    for (const Object *obj : objects) {
+        if (obj->classTag() != 'n')
             continue;
-        if (obj.type() == nullptr)
+        if (obj->type() == nullptr)
             continue;
-        const NPC &npc = reinterpret_cast<const NPC &>(obj);
+        const NPC &npc = *reinterpret_cast<const NPC *>(obj);
         auto e = xw.addChild("npc");
 
         xw.setAttr(e, "id", npc.type()->id());

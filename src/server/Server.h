@@ -93,11 +93,14 @@ private:
     std::list<const User*> findUsersInArea(Point loc, double squareRadius = CULL_DISTANCE) const;
 
     // World state
-    std::set<Object> _objects;
+    std::set<Object *> _objects;
     Object::byX_t _objectsByX; // This and below are for alerting users only to nearby objects.
     Object::byY_t _objectsByY;
+    Object *findObject(size_t serial);
+    Object *findObject(const Point &loc);
+
     void loadData(); // Attempt to load data from files.
-    static void saveData(const std::set<Object> &objects);
+    static void saveData(const std::set<Object *> &objects);
     void generateWorld(); // Randomly generate a new world.
 
     Point mapRand() const; // Return a random point on the map.
@@ -130,12 +133,11 @@ private:
     friend void Object::giveItem(const Item *item, size_t qty);
 
     Object &addObject (const ObjectType *type, const Point &location, const User *owner = nullptr);
-    Object &addObject (const Object &newObj);
+    Object &addObject (Object *newObj);
 
-    // Checks whether the object exists, and is within range of the user.  If not, a relevant error
-    // message is sentg to the client.
-    bool isValidObject(const Socket &client, const User &user,
-                       const std::set<Object>::const_iterator &it) const;
+    // Checks whether the object is within range of the user.  If not, a relevant error message is
+    // sent to the client.
+    bool isObjectInRange(const Socket &client, const User &user, const Object *obj) const;
 
     // Collision detection
     static const px_t COLLISION_CHUNK_SIZE;

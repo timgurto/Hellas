@@ -26,6 +26,7 @@ protected:
 
 public:
     Object(const ObjectType *type, const Point &loc); // Generates a new serial
+
     Object(size_t serial); // For set/map lookup; contains only a serial
     Object(const Point &loc); // For set/map lookup; contains only a location
 
