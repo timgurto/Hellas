@@ -30,7 +30,7 @@ bool Server::isLocationValid(const Rect &rect, const Object *thisObject, const U
     CollisionChunk chunk = getCollisionChunk(Point(rect));
     Point rectCenter(rect.x + rect.w / 2, rect.y + rect.h / 2);
     auto coords = getTileCoords(rectCenter);
-    const Terrain &terrain = _terrain[_map[coords.first][coords.second]];
+    const TerrainType &terrain = _terrain[_map[coords.first][coords.second]];
     if (!terrain.isTraversable())
         return false;
 

@@ -95,7 +95,7 @@ void Server::loadData(){
         xr.findAttr(elem, "isTraversable", isTraversable);
         if (index >= static_cast<int>(_terrain.size()))
             _terrain.resize(index+1);
-        _terrain[index] = Terrain(isTraversable != 0);
+        _terrain[index] = TerrainType(isTraversable != 0);
     }
 
     // Object types

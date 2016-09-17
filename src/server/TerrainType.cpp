@@ -2,6 +2,6 @@
 
 #include "TerrainType.h"
 
-Terrain::Terrain(bool isTraversable):
+TerrainType::TerrainType(bool isTraversable):
 _isTraversable(isTraversable)
 {}

@@ -112,7 +112,7 @@ private:
     std::pair<size_t, size_t> getTileCoords(const Point &p) const;
 
     // World data
-    std::vector<Terrain> _terrain;
+    std::vector<TerrainType> _terrain;
     std::set<Item> _items;
     std::set<Recipe> _recipes;
     std::set<const ObjectType *> _objectTypes;

@@ -3,11 +3,11 @@
 #ifndef TERRAIN_TYPE_H
 #define TERRAIN_TYPE_H
 
-class Terrain{
+class TerrainType{
     bool _isTraversable;
 
 public:
-    Terrain(bool isTraversable = true);
+    TerrainType(bool isTraversable = true);
 
     bool isTraversable() const { return _isTraversable; }
 };
