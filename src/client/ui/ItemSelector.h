@@ -6,7 +6,7 @@
 #include "Button.h"
 
 class Client;
-class Item;
+class ClientItem;
 class Label;
 class List;
 class Picture;
@@ -29,22 +29,22 @@ class ItemSelector : public Button{
         SEARCH_TEXT_WIDTH,
         LIST_HEIGHT;
 
-    const Item *&_item; // Reference to the external Item* that this selector will set.
-    const Item *_lastItem; // The last item selected; used to detect changes.
+    const ClientItem *&_item; // Reference to the external Item* that this selector will set.
+    const ClientItem *_lastItem; // The last item selected; used to detect changes.
 
     Picture *_icon;
     Label *_name;
 
 public:
-    ItemSelector(const Item *&item, px_t x = 0, px_t y = 0);
+    ItemSelector(const ClientItem *&item, px_t x = 0, px_t y = 0);
 
-    const Item *item() const{ return _item; }
-    void item(const Item *item) { _item = item; }
+    const ClientItem *item() const{ return _item; }
+    void item(const ClientItem *item) { _item = item; }
     
     virtual void refresh() override;
     virtual void checkIfChanged() override;
 
-    static Item **_itemBeingSelected;
+    static ClientItem **_itemBeingSelected;
 
     static Window *_findItemWindow;
     static TextBox *_filterText;
@@ -54,7 +54,7 @@ public:
     static void applyFilter(void *data);
     static void selectItem(void *data);
 
-    static bool itemMatchesFilter(const Item &item, const std::string &filter);
+    static bool itemMatchesFilter(const ClientItem &item, const std::string &filter);
 
     friend class Client;
 };

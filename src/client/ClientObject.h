@@ -9,6 +9,7 @@
 #include "ClientObjectType.h"
 #include "Entity.h"
 #include "ClientItem.h"
+#include "ClientMerchantSlot.h"
 #include "../Point.h"
 
 class Element;
@@ -20,9 +21,9 @@ class Window;
 class ClientObject : public Entity{
     size_t _serial;
     std::string _owner;
-    Item::vect_t _container;
+    ClientItem::vect_t _container;
     Window *_window; // For containers, etc.
-    std::vector<MerchantSlot> _merchantSlots;
+    std::vector<ClientMerchantSlot> _merchantSlots;
     // Used for either the trade screen, or the merchant setup screen.
     std::vector<Element *> _merchantSlotElements;
     typedef std::pair<size_t, size_t> serialSlotPair_t;
@@ -44,8 +45,8 @@ public:
         { return dynamic_cast<const ClientObjectType *>(type()); }
     const std::string &owner() const { return _owner; }
     void owner(const std::string &name) { _owner = name; }
-    Item::vect_t &container() { return _container; }
-    const Item::vect_t &container() const { return _container; }
+    ClientItem::vect_t &container() { return _container; }
+    const ClientItem::vect_t &container() const { return _container; }
     
     virtual void draw(const Client &client) const;
 
@@ -67,7 +68,7 @@ public:
 
     bool userHasAccess() const;
 
-    void setMerchantSlot(size_t i, MerchantSlot &mSlot);
+    void setMerchantSlot(size_t i, ClientMerchantSlot &mSlot);
 };
 
 #endif

@@ -22,7 +22,8 @@ const Container *Container::useContainer = nullptr;
 
 Texture Container::_highlight;
 
-Container::Container(size_t rows, size_t cols, Item::vect_t &linked, size_t serial, px_t x, px_t y):
+Container::Container(size_t rows, size_t cols, ClientItem::vect_t &linked, size_t serial,
+                     px_t x, px_t y):
 Element(Rect(x, y,
                  cols * (Client::ICON_SIZE + GAP + 2) + GAP,
                  rows * (Client::ICON_SIZE + GAP + 2) + GAP + 1)),
@@ -64,7 +65,7 @@ void Container::refresh(){
         static const Rect SLOT_BACKGROUND_OFFSET = Rect(1, 1, -2, -2);
         renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
         if (dragSlot != i || dragContainer != this) { // Don't draw an item being moved by the mouse.
-            const std::pair<const Item *, size_t> &slot = _linked[i];
+            const std::pair<const ClientItem *, size_t> &slot = _linked[i];
             if (slot.first != nullptr){
                 slot.first->icon().draw(slotRect.x + 1, slotRect.y + 1);
                 if (slot.second > 1){
@@ -145,7 +146,7 @@ void Container::rightMouseUp(Element &e, const Point &mousePos){
         useSlot = NO_SLOT;
         useContainer = nullptr;
     } else if (slot != NO_SLOT) { // Right-clicked a slot
-        const Item *item = container._linked[slot].first;
+        const ClientItem *item = container._linked[slot].first;
         if (item != nullptr && // Slot is not empty
             item->constructsObject() != nullptr) { // Can construct item
             useSlot = slot;
@@ -164,14 +165,14 @@ void Container::mouseMove(Element &e, const Point &mousePos){
     }
 }
 
-const Item *Container::getDragItem() {
+const ClientItem *Container::getDragItem() {
     if (dragSlot == NO_SLOT || !dragContainer)
         return nullptr;
     else
         return dragContainer->_linked[dragSlot].first;
 }
 
-const Item *Container::getUseItem() {
+const ClientItem *Container::getUseItem() {
     if (useSlot == NO_SLOT || !useContainer)
         return nullptr;
     else

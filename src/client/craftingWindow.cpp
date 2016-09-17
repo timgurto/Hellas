@@ -14,7 +14,7 @@ extern Renderer renderer;
 
 void Client::initializeCraftingWindow(){
     // For crafting filters
-    for (const Recipe &recipe : _recipes) {
+    for (const ClientRecipe &recipe : _recipes) {
         for (auto matPair : recipe.materials())
             _matFilters[matPair.first] = false;
         for (const std::string &className : recipe.product()->classes())
@@ -180,13 +180,13 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
                                       BUTTON_WIDTH, BUTTON_HEIGHT),
                              "Craft", startCrafting, nullptr));
 
-    const std::set<Recipe>::const_iterator it = _instance->_recipes.find(selectedID);
+    const std::set<ClientRecipe>::const_iterator it = _instance->_recipes.find(selectedID);
     if (it == _instance->_recipes.end()) {
         return;
     }
-    const Recipe &recipe = *it;
+    const ClientRecipe &recipe = *it;
     _instance->_activeRecipe = &recipe;
-    const Item &product = *recipe.product();
+    const ClientItem &product = *recipe.product();
 
     // Title
     pane.addChild(new Label(Rect(0, 0, paneRect.w, HEADING_HEIGHT), recipe.product()->name(),
@@ -236,9 +236,9 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     y += MATS_LIST_HEIGHT;
     matsList->setTooltip("The materials required for this recipe.");
     pane.addChild(matsList);
-    for (const std::pair<const Item *, size_t> & matCost : recipe.materials()) {
+    for (const std::pair<const ClientItem *, size_t> & matCost : recipe.materials()) {
         assert (matCost.first);
-        const Item &mat = *matCost.first;
+        const ClientItem &mat = *matCost.first;
         const size_t qty = matCost.second;
         std::string entryText = mat.name();
         if (qty > 1)
@@ -265,7 +265,7 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
 void Client::populateRecipesList(Element &e){
     // Check which filters are applied
     _instance->_matFilterSelected = false;
-    for (const std::pair<const Item *, bool> &filter : _instance->_matFilters) {
+    for (const std::pair<const ClientItem *, bool> &filter : _instance->_matFilters) {
         if (filter.second) {
             _instance->_matFilterSelected = true;
             break;
@@ -282,10 +282,10 @@ void Client::populateRecipesList(Element &e){
     ChoiceList &recipesList = dynamic_cast<ChoiceList &>(e);
     recipesList.clearChildren();
 
-    for (const Recipe &recipe : _instance->_recipes) {
+    for (const ClientRecipe &recipe : _instance->_recipes) {
         if (!_instance->recipeMatchesFilters(recipe))
             continue;
-        const Item &product = *recipe.product();
+        const ClientItem &product = *recipe.product();
         Element *const recipeElement = new Element(Rect());
         recipesList.addChild(recipeElement);
         recipeElement->addChild(new Picture(Rect(1, 1, ICON_SIZE, ICON_SIZE), product.icon()));
@@ -303,10 +303,10 @@ void Client::populateRecipesList(Element &e){
         selectRecipe(recipesList, Point());
 }
 
-bool Client::recipeMatchesFilters(const Recipe &recipe) const{
+bool Client::recipeMatchesFilters(const ClientRecipe &recipe) const{
     // "Have materials" filter
     if (_haveMatsFilter) {
-        for (const std::pair<const Item *, size_t> &materialsNeeded : recipe.materials())
+        for (const std::pair<const ClientItem *, size_t> &materialsNeeded : recipe.materials())
             if (!playerHasItem(materialsNeeded.first, materialsNeeded.second))
                 return false;
     }
@@ -319,8 +319,8 @@ bool Client::recipeMatchesFilters(const Recipe &recipe) const{
         Faster to iterate through item's materials, rather than all filters.
         */
         if (_matOr) {
-            for (const std::pair<const Item *, size_t> &materialsNeeded : recipe.materials()) {
-                const Item *const matP = materialsNeeded.first;
+            for (const std::pair<const ClientItem *, size_t> &materialsNeeded : recipe.materials()) {
+                const ClientItem *const matP = materialsNeeded.first;
                 if (_matFilters.find(matP)->second) {
                     matsFilterMatched = true;
                     break;
@@ -328,10 +328,10 @@ bool Client::recipeMatchesFilters(const Recipe &recipe) const{
             }
         // "And": check that all active filters apply to the item.
         } else {
-            for (const std::pair<const Item *, bool> &matFilter : _matFilters) {
+            for (const std::pair<const ClientItem *, bool> &matFilter : _matFilters) {
                 if (!matFilter.second) // Filter is not active
                     continue;
-                const Item *const matP = matFilter.first;
+                const ClientItem *const matP = matFilter.first;
                 if (!recipe.materials().contains(matP))
                     return false;
             }

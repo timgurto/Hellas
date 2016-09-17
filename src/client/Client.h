@@ -13,6 +13,8 @@
 #include "ClientObjectType.h"
 #include "Entity.h"
 #include "ClientItem.h"
+#include "ClientMerchantSlot.h"
+#include "ClientRecipe.h"
 #include "LogSDL.h"
 #include "Terrain.h"
 #include "ui/ChoiceList.h"
@@ -25,8 +27,6 @@
 #include "../Socket.h"
 #include "../messageCodes.h"
 #include "../types.h"
-#include "../server/MerchantSlot.h"
-#include "../server/Recipe.h"
 
 class TextBox;
 
@@ -94,19 +94,19 @@ private:
     const Texture *_currentCursor;
 
     // Whether the user has the specified item(s).
-    bool playerHasItem(const Item *item, size_t quantity = 1) const;
+    bool playerHasItem(const ClientItem *item, size_t quantity = 1) const;
 
     void initializeCraftingWindow();
     bool _haveMatsFilter, _haveToolsFilter, _classOr, _matOr;
     static const px_t HEADING_HEIGHT; // The height of windows' section headings
     static const px_t LINE_GAP; // The total height occupied by a line and its surrounding spacing
-    const Recipe *_activeRecipe; // The recipe currently selected, if any
+    const ClientRecipe *_activeRecipe; // The recipe currently selected, if any
     static void startCrafting(void *data); // Called when the "Craft" button is clicked.
     // Populated at load time, after _items
     std::map<std::string, bool> _classFilters;
-    std::map<const Item *, bool> _matFilters;
+    std::map<const ClientItem *, bool> _matFilters;
     mutable bool _classFilterSelected, _matFilterSelected; // Whether any filters have been selected
-    bool recipeMatchesFilters(const Recipe &recipe) const;
+    bool recipeMatchesFilters(const ClientRecipe &recipe) const;
     // Called when filters pane is clicked.
     static void populateRecipesList(Element &e);
     // Called when a recipe is selected.
@@ -215,14 +215,14 @@ private:
 
     // Game data
     std::vector<Terrain> _terrain;
-    std::set<Item> _items;
-    std::set<Recipe> _recipes;
+    std::set<ClientItem> _items;
+    std::set<ClientRecipe> _recipes;
     std::set<ClientObjectType> _objectTypes;
 
     // Information about the state of the world
     size_t _mapX, _mapY;
     std::vector<std::vector<size_t> > _map;
-    Item::vect_t _inventory;
+    ClientItem::vect_t _inventory;
     std::map<std::string, Avatar*> _otherUsers; // For lookup by name
     std::map<size_t, ClientObject*> _objects; // For lookup by serial
 
@@ -252,7 +252,7 @@ private:
         _slotToDrop;
     std::string _messageToConfirm;
     // Show a confirmation window, then drop item if confirmed
-    void dropItemOnConfirmation(size_t serial, size_t slot, const Item *item);
+    void dropItemOnConfirmation(size_t serial, size_t slot, const ClientItem *item);
     static void sendMessageAndHideConfirmationWindow(void *data);
 
     friend class Container; // Needs to send CL_SWAP_ITEMS messages, and open a confirmation window

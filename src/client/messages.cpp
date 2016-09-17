@@ -306,9 +306,9 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
 
-            const Item *item = nullptr;
+            const ClientItem *item = nullptr;
             if (quantity > 0) {
-                std::set<Item>::const_iterator it = _items.find(itemID);
+                std::set<ClientItem>::const_iterator it = _items.find(itemID);
                 if (it == _items.end()) {
                     _debug << Color::MMO_RED << "Unknown inventory item \"" << itemID
                            << "\"announced; ignored.";
@@ -317,7 +317,7 @@ void Client::handleMessage(const std::string &msg){
                 item = &*it;
             }
 
-            Item::vect_t *container;
+            ClientItem::vect_t *container;
             ClientObject *object = nullptr;
             if (serial == 0)
                 container = &_inventory;
@@ -435,7 +435,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             }
             if (ware.empty() || price.empty()){
-                obj.setMerchantSlot(slot, MerchantSlot());
+                obj.setMerchantSlot(slot, ClientMerchantSlot());
                 break;
             }
             auto wareIt = _items.find(ware);
@@ -448,7 +448,7 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Received merchant slot describing invalid item", Color::MMO_RED);
                 break;
             }
-            obj.setMerchantSlot(slot, MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty));
+            obj.setMerchantSlot(slot, ClientMerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty));
             break;
         }
 

@@ -58,6 +58,6 @@ issue,description,value,effort,type,blockedBy,done
 197,Move gatherable functionality to ABC,3,8,Code quality,,
 198,"Only save map data once, on generation",3,1,Performance,,
 199,Empty objects reported as not empty when attempting to dismantle,21,2,Bug,200,
-200,Test: objects can be gathered,5,13,Code quality,201,
+200,Test: objects can be gathered,5,13,Code quality,,
 201,Use namespaces for server and client,5,21,Code quality,,
-202,Include finished tasks in backlog,3,3,Code quality,,
+202,Include finished tasks in backlog,3,3,Code quality,,TRUE

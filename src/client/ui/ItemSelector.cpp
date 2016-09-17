@@ -21,12 +21,12 @@ const px_t ItemSelector::SEARCH_BUTTON_HEIGHT = 13;
 const px_t ItemSelector::SEARCH_TEXT_WIDTH = LIST_WIDTH - GAP - SEARCH_BUTTON_WIDTH;
 const px_t ItemSelector::LIST_HEIGHT = WINDOW_HEIGHT - SEARCH_BUTTON_HEIGHT - 4 * GAP - 2;
 
-Item **ItemSelector::_itemBeingSelected = nullptr;
+ClientItem **ItemSelector::_itemBeingSelected = nullptr;
 Window *ItemSelector::_findItemWindow = nullptr;
 TextBox *ItemSelector::_filterText = nullptr;
 List *ItemSelector::_itemList = nullptr;
 
-ItemSelector::ItemSelector(const Item *&item, px_t x, px_t y):
+ItemSelector::ItemSelector(const ClientItem *&item, px_t x, px_t y):
 Button(Rect(x, y, WIDTH, Element::ITEM_HEIGHT + 2), "",
        openFindItemWindow, nullptr),
 _item(item),
@@ -66,7 +66,7 @@ void ItemSelector::openFindItemWindow(void *data){
     _findItemWindow->show();
     Client::_instance->removeWindow(_findItemWindow);
     Client::_instance->addWindow(_findItemWindow);
-    _itemBeingSelected = static_cast<Item **>(data);
+    _itemBeingSelected = static_cast<ClientItem **>(data);
 }
 
 void ItemSelector::applyFilter(void *data){
@@ -74,13 +74,13 @@ void ItemSelector::applyFilter(void *data){
     const std::string &filterText = _filterText->text();
 
     const auto &items = Client::_instance->_items;
-    for (const Item &item : items){
+    for (const ClientItem &item : items){
         if (filterText == "" || itemMatchesFilter(item, filterText)){
             // Add item to list
             Element *container = new Element();
             _itemList->addChild(container);
             Button *itemButton = new Button(Rect(0, 0, LIST_WIDTH - List::ARROW_W, ITEM_HEIGHT + 2),
-                                            "", selectItem, const_cast<Item *>(&item));
+                                            "", selectItem, const_cast<ClientItem *>(&item));
             container->addChild(itemButton);
             itemButton->addChild(new Picture(Rect(1, 1, ITEM_HEIGHT, ITEM_HEIGHT), item.icon()));
             itemButton->addChild(new Label(Rect(ITEM_HEIGHT + GAP, LABEL_TOP,
@@ -100,11 +100,11 @@ void ItemSelector::applyFilter(void *data){
 }
 
 void ItemSelector::selectItem(void *data){
-    *_itemBeingSelected = static_cast<Item *>(data);
+    *_itemBeingSelected = static_cast<ClientItem *>(data);
     _findItemWindow->hide();
 }
 
-bool ItemSelector::itemMatchesFilter(const Item &item, const std::string &filter){
+bool ItemSelector::itemMatchesFilter(const ClientItem &item, const std::string &filter){
     // Name matches
     if (item.name().find(filter) != std::string::npos)
         return true;

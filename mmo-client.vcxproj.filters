@@ -99,9 +99,6 @@
     <ClCompile Include="src\Rect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\server\Yield.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Socket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -129,12 +126,6 @@
     <ClCompile Include="src\client\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\server\ItemSet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\server\Recipe.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Client\Terrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -147,9 +138,6 @@
     <ClCompile Include="src\client\messages.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\server\MerchantSlot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\client\ui\TextBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -160,6 +148,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\client\ClientItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\ClientItemSet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\ClientMerchantSlot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\ClientRecipe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -248,9 +245,6 @@
     <ClInclude Include="src\Rect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\server\Yield.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Socket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -266,12 +260,6 @@
     <ClInclude Include="tinyxml\tinyxml.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\server\ItemSet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\server\Recipe.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Client\Terrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -279,9 +267,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\client\ui\LinkedLabel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\server\MerchantSlot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\client\ui\TextBox.h">
@@ -297,6 +282,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\client\ClientItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\ClientItemSet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\ClientMerchantSlot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\ClientRecipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

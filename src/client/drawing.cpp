@@ -92,7 +92,7 @@ void Client::draw() const{
 
     // Dragged item
     static const Point MOUSE_ICON_OFFSET(-Client::ICON_SIZE/2, -Client::ICON_SIZE/2);
-    const Item *draggedItem = Container::getDragItem();
+    const ClientItem *draggedItem = Container::getDragItem();
     if (draggedItem != nullptr)
         draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
 

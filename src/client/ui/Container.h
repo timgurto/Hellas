@@ -5,14 +5,14 @@
 
 #include "Element.h"
 #include "../Client.h"
-#include "../../server/Item.h"
+#include "../ClientItem.h"
 
 // A grid that allows access to a collection of items
 class Container : public Element{
     static const px_t GAP;
 
     size_t _rows, _cols;
-    Item::vect_t &_linked;
+    ClientItem::vect_t &_linked;
     size_t _serial; // The serial of the object with this container.  0 = user's inventory.
 
     size_t
@@ -41,11 +41,11 @@ class Container : public Element{
     size_t getSlot(const Point &mousePos) const;
 
 public:
-    Container(size_t rows, size_t cols, Item::vect_t &linked, size_t serial = 0,
+    Container(size_t rows, size_t cols, ClientItem::vect_t &linked, size_t serial = 0,
               px_t x = 0, px_t y = 0);
     
-    static const Item *getDragItem();
-    static const Item *getUseItem();
+    static const ClientItem *getDragItem();
+    static const ClientItem *getUseItem();
     static void dropItem(); // Drop the item currently being dragged.
 
     static void clearDragItem();

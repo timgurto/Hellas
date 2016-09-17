@@ -271,7 +271,7 @@ void Client::handleInput(double delta){
                 // objects.
                 if (_inventoryWindow->visible()) {
                     _inventoryWindow->onRightMouseUp(_mouse);
-                    const Item *useItem = Container::getUseItem();
+                    const ClientItem *useItem = Container::getUseItem();
                     if (useItem != nullptr)
                         _constructionFootprint = useItem->constructsObject()->image();
                     else

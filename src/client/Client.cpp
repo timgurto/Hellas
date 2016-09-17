@@ -224,7 +224,7 @@ _debug("client.log"){
 
     // Player's inventory
     for (size_t i = 0; i != INVENTORY_SIZE; ++i)
-        _inventory.push_back(std::make_pair<const Item *, size_t>(nullptr, 0));
+        _inventory.push_back(std::make_pair<const ClientItem *, size_t>(nullptr, 0));
 
     // Randomize player name if not supplied
     if (cmdLineArgs.contains("username"))
@@ -243,7 +243,7 @@ _debug("client.log"){
         std::string id, name;
         if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name))
             continue; // ID and name are mandatory.
-        Item item(id, name);
+        ClientItem item(id, name);
         std::string s;
         for (auto child : xr.getChildren("class", elem))
             if (xr.findAttr(child, "name", s)) item.addClass(s);
@@ -257,9 +257,9 @@ _debug("client.log"){
             // Create dummy ObjectType if necessary
             item.constructsObject(&*(_objectTypes.insert(ClientObjectType(s)).first));
         
-        std::pair<std::set<Item>::iterator, bool> ret = _items.insert(item);
+        std::pair<std::set<ClientItem>::iterator, bool> ret = _items.insert(item);
         if (!ret.second) {
-            Item &itemInPlace = const_cast<Item &>(*ret.first);
+            ClientItem &itemInPlace = const_cast<ClientItem &>(*ret.first);
             itemInPlace = item;
         }
     }
@@ -270,7 +270,7 @@ _debug("client.log"){
         std::string id, name;
         if (!xr.findAttr(elem, "id", id))
             continue; // ID is mandatory.
-        Recipe recipe(id);
+        ClientRecipe recipe(id);
 
         std::string s;
         if (!xr.findAttr(elem, "product", s))
@@ -286,7 +286,7 @@ _debug("client.log"){
             int matQty = 1;
             xr.findAttr(child, "quantity", matQty);
             if (xr.findAttr(child, "id", s)) {
-                auto it = _items.find(Item(s));
+                auto it = _items.find(ClientItem(s));
                 if (it == _items.end()) {
                     _debug << Color::MMO_RED << "Skipping invalid recipe material " << s << Log::endl;
                     continue;
@@ -677,9 +677,9 @@ void Client::startCrafting(void *data){
     }
 }
 
-bool Client::playerHasItem(const Item *item, size_t quantity) const{
+bool Client::playerHasItem(const ClientItem *item, size_t quantity) const{
     for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
-        const std::pair<const Item *, size_t> slot = _inventory[i];
+        const std::pair<const ClientItem *, size_t> slot = _inventory[i];
         if (slot.first == item) {
             if (slot.second >= quantity)
                 return true;
@@ -781,7 +781,7 @@ void Client::unwatchObject(ClientObject &obj){
     _objectsWatched.erase(&obj);
 }
 
-void Client::dropItemOnConfirmation(size_t serial, size_t slot, const Item *item){
+void Client::dropItemOnConfirmation(size_t serial, size_t slot, const ClientItem *item){
     _serialToDrop = serial;
     _slotToDrop = slot;
     std::string windowText = "Are you sure you want to drop ";

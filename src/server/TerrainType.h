@@ -1,7 +1,7 @@
 // (C) 2016 Tim Gurto
 
-#ifndef TERRAIN_H
-#define TERRAIN_H
+#ifndef TERRAIN_TYPE_H
+#define TERRAIN_TYPE_H
 
 class Terrain{
     bool _isTraversable;
