@@ -106,7 +106,7 @@
     <ClCompile Include="src\client\EntityType.cpp" />
     <ClCompile Include="src\client\input.cpp" />
     <ClCompile Include="src\client\inventoryWindow.cpp" />
-    <ClCompile Include="src\client\Item.cpp" />
+    <ClCompile Include="src\client\ClientItem.cpp" />
     <ClCompile Include="src\client\main.cpp" />
     <ClCompile Include="src\client\LogSDL.cpp" />
     <ClCompile Include="src\client\messages.cpp" />
@@ -153,7 +153,7 @@
     <ClInclude Include="src\client\ClientObjectType.h" />
     <ClInclude Include="src\client\Entity.h" />
     <ClInclude Include="src\client\EntityType.h" />
-    <ClInclude Include="src\client\Item.h" />
+    <ClInclude Include="src\client\ClientItem.h" />
     <ClInclude Include="src\client\LogSDL.h" />
     <ClInclude Include="src\client\Renderer.h" />
     <ClInclude Include="src\Client\Terrain.h" />

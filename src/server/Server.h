@@ -16,7 +16,7 @@
 #include "NPC.h"
 #include "Object.h"
 #include "Recipe.h"
-#include "Terrain.h"
+#include "TerrainType.h"
 #include "User.h"
 #include "../Args.h"
 #include "../messageCodes.h"

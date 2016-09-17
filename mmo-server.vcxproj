@@ -114,7 +114,7 @@
     <ClCompile Include="src\server\ObjectType.cpp" />
     <ClCompile Include="src\server\Recipe.cpp" />
     <ClCompile Include="src\server\Server.cpp" />
-    <ClCompile Include="src\server\Terrain.cpp" />
+    <ClCompile Include="src\server\TerrainType.cpp" />
     <ClCompile Include="src\server\User.cpp" />
     <ClCompile Include="src\server\Yield.cpp" />
     <ClCompile Include="src\Socket.cpp" />
@@ -145,7 +145,7 @@
     <ClInclude Include="src\server\ObjectType.h" />
     <ClInclude Include="src\server\Recipe.h" />
     <ClInclude Include="src\server\Server.h" />
-    <ClInclude Include="src\server\Terrain.h" />
+    <ClInclude Include="src\server\TerrainType.h" />
     <ClInclude Include="src\server\User.h" />
     <ClInclude Include="src\server\Yield.h" />
     <ClInclude Include="src\Socket.h" />

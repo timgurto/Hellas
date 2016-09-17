@@ -1,6 +1,6 @@
 // (C) 2015-2016 Tim Gurto 
 
-#include "Item.h"
+#include "ClientItem.h"
 
 Item::Item(const std::string &id, const std::string &name):
 _id(id),

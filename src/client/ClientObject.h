@@ -8,7 +8,7 @@
 
 #include "ClientObjectType.h"
 #include "Entity.h"
-#include "Item.h"
+#include "ClientItem.h"
 #include "../Point.h"
 
 class Element;

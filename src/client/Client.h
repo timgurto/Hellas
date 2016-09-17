@@ -12,7 +12,7 @@
 #include "ClientObject.h"
 #include "ClientObjectType.h"
 #include "Entity.h"
-#include "Item.h"
+#include "ClientItem.h"
 #include "LogSDL.h"
 #include "Terrain.h"
 #include "ui/ChoiceList.h"
