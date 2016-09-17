@@ -1,5 +1,6 @@
 <html>
 <head>
+<script src="jquery-3.1.0.min.js"></script>
 <script type="text/javascript" src="backlog.js"></script>
 
 
@@ -49,6 +50,11 @@
         padding-left: 0.4em;
         padding-right: 0.4em;
     }
+	
+    .doneRow td{
+        text-decoration:line-through;
+        //color:#999;
+    }
 </style>
 
 </head>
@@ -57,6 +63,9 @@
 
 <h1>MMO&mdash;Product Backlog</h1>
 
+<input type="checkbox" id="showDone" onChange='applyOptions();'>Show 'done' items</input>
+
+<p>
 <table id="backlog">
     <tr class="tableHeading">
         <td onClick='sortByIssue();'>Issue</td>
@@ -145,6 +154,8 @@
         for (i in PBIs){
         var PBI = PBIs[i]
             var row = table.insertRow(-1);
+			if (PBI.done)
+				row.className = "doneRow";
             
             var cell = row.insertCell(-1);
             cell.innerHTML = '<a name="' + PBI.issue + '" href="https://github.com/timgurto/mmo/issues/' +
@@ -185,7 +196,15 @@
         }
     }
     
+    function applyOptions(){
+        if ($("#showDone").is(':checked'))
+            $(".doneRow").show('fast');
+        else
+            $(".doneRow").hide('fast');
+    }
+    
     refreshTable();
+    applyOptions();
         
 
 </script>

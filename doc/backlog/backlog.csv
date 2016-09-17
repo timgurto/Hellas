@@ -1,29 +1,35 @@
-issue,description,value,effort,type,blockedBy
-32,Document and improve use of various disconnects,2,5,Documentation,
-60,Add particle effects when cutting down a tree,13,13,Aesthetics,
-72,Move SDL functions and types to a namespace,2,8,Code quality,
-74,Throw exceptions where appropriate on SDL-function failures,3,8,Code quality,
-83,"Sort _materials and _craftableItems by name, not ID",8,8,Aesthetics,
-93,Allow terrain types to be marked as non-blending,1,2,Aesthetics,
-95,Fix scroll-bar dragging offset,5,8,Bug,200
-100,Optimize container types for faster iteration,2,2,Performance,
-101,Change dynamic_casts that don't check their result to static_cast or check for nullptr,2,2,Code quality,
-128,"Use forward declarations where possible, to reduce unnecessary #includes",3,8,Code quality,
-129,"Add grass objects, which grow naturally on grass tiles",5,21,Feature,
-130,Make trees drop branches over time,5,21,Feature,
-137,Allow a recipe to create multiple item types,5,13,Feature,
-138,Use set::count() and map::count() to test set membership,2,2,Code quality,
-140,Move appropriate configuration details into config file,5,34,Code quality,
-145,Document UI interface,13,8,Documentation,
-146,Document Texture interface,8,3,Documentation,
-148,Document XML interface,8,3,Documentation,
-149,"Choose gather item based on gathers left, not nominal quantity",8,5,Feature,
-154,Allow giving away or begging for goods via trade,8,5,Feature,
-156,Fix ambiguity of Object::removeItem() and Object::removeItems(),2,2,Code quality,
-160,Cull terrain,21,13,Performance,
-163,Create generic particle system,8,8,Aesthetics,60
-168,Can attack NPCs,13,55,Feature,
-169,NPCs can die,13,3,Feature,168
+issue,description,value,effort,type,blockedBy,done
+32,Document and improve use of various disconnects,2,5,Documentation,,
+60,Add particle effects when cutting down a tree,13,13,Aesthetics,,
+72,Move SDL functions and types to a namespace,2,8,Code quality,,
+74,Throw exceptions where appropriate on SDL-function failures,3,8,Code quality,,
+83,"Sort _materials and _craftableItems by name, not ID",8,8,Aesthetics,,
+93,Allow terrain types to be marked as non-blending,1,2,Aesthetics,,
+95,Fix scroll-bar dragging offset,5,8,Bug,200,
+100,Optimize container types for faster iteration,2,2,Performance,,
+101,Change dynamic_casts that don't check their result to static_cast or check for nullptr,2,2,Code quality,,
+128,"Use forward declarations where possible, to reduce unnecessary #includes",3,8,Code quality,,
+129,"Add grass objects, which grow naturally on grass tiles",5,21,Feature,,
+130,Make trees drop branches over time,5,21,Feature,,
+137,Allow a recipe to create multiple item types,5,13,Feature,,
+138,Use set::count() and map::count() to test set membership,2,2,Code quality,,
+140,Move appropriate configuration details into config file,5,34,Code quality,,
+145,Document UI interface,13,8,Documentation,,
+146,Document Texture interface,8,3,Documentation,,
+148,Document XML interface,8,3,Documentation,,
+149,"Choose gather item based on gathers left, not nominal quantity",8,5,Feature,,
+152,Prevent gathering/deconstructing when object has an inventory,34,2,Bug,,TRUE
+154,Allow giving away or begging for goods via trade,8,5,Feature,,
+156,Fix ambiguity of Object::removeItem() and Object::removeItems(),2,2,Code quality,,
+160,Cull terrain,21,13,Performance,,
+161,Cull players,34,8,Performance,,TRUE
+162,Cull objects,55,8,Performance,,TRUE
+163,Create generic particle system,8,8,Aesthetics,60,
+166,Health stat,8,2,Feature,,TRUE
+167,Static critters w/ health,34,13,Feature,,TRUE
+168,Can attack NPCs,13,55,Feature,,
+169,NPCs can die,13,3,Feature,168,
+170,Attack stat,8,1,Feature,,TRUE
 171,NPC loot,13,34,Feature,169
 172,Critter run-away AI,5,34,Feature,168
 173,Animal that fights back,21,21,Feature,168
@@ -40,17 +46,18 @@ issue,description,value,effort,type,blockedBy
 185,Python client with text interface,34,21,Feature,
 186,Random Python AI,8,13,Feature,189
 187,Woodcutter Python AI,13,55,Feature,189
-188,Merchant Python AI,5,55,Feature,189
-189,Auto-login for Python client,8,13,Feature,185
-190,Release scrollbar on mouse up,5,2,Bug,200
-192,isLocationValid() only checks one point against one terrain tile/chunk,8,2,Bug,
-193,Move client colors to config file instead of hardcoding,5,2,Code quality,
-194,Players can move through small objects,13,2,Bug,200
-195,Move object inventory to ABC,3,8,Code quality,
-196,Move merchant slots to ABC,3,8,Code quality,
-197,Move gatherable functionality to ABC,3,8,Code quality,
-198,"Only save map data once, on generation",3,1,Performance,
-199,Empty objects reported as not empty when attempting to dismantle,21,2,Bug,200
-200,Test: objects can be gathered,5,13,Code quality,201
-201,Use namespaces for server and client,5,21,Code quality,
-202,Include finished tasks in backlog,3,3,Code quality,
+188,Merchant Python AI,5,55,Feature,189,
+189,Auto-login for Python client,8,13,Feature,185,
+190,Release scrollbar on mouse up,5,2,Bug,200,
+191,Allow external clients to connect,55,13,Feature,,TRUE
+192,isLocationValid() only checks one point against one terrain tile/chunk,8,2,Bug,,
+193,Move client colors to config file instead of hardcoding,5,2,Code quality,,
+194,Players can move through small objects,13,2,Bug,200,
+195,Move object inventory to ABC,3,8,Code quality,,
+196,Move merchant slots to ABC,3,8,Code quality,,
+197,Move gatherable functionality to ABC,3,8,Code quality,,
+198,"Only save map data once, on generation",3,1,Performance,,
+199,Empty objects reported as not empty when attempting to dismantle,21,2,Bug,200,
+200,Test: objects can be gathered,5,13,Code quality,201,
+201,Use namespaces for server and client,5,21,Code quality,,
+202,Include finished tasks in backlog,3,3,Code quality,,

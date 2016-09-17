@@ -155,12 +155,16 @@ for (v in 1:(numVals-1)){
 #	}
 #}
 
+data$done = !is.na(data$done)
+
 for (i in 1:length(data$roi)){
-	blockedBy = data$blockedBy[i]
-    if (!is.na(blockedBy)){
-		points(x[i], y[i], pch=21, bg=data$color[i], cex=circleSize - 0.25, col="grey")
-	} else {
-		points(x[i], y[i], pch=21, bg=data$color[i], cex=circleSize, col="black")
+	if (!data$done[i]) {
+		blockedBy = data$blockedBy[i]
+		if (!is.na(blockedBy)){
+			points(x[i], y[i], pch=21, bg=data$color[i], cex=circleSize - 0.25, col="grey")
+		} else {
+			points(x[i], y[i], pch=21, bg=data$color[i], cex=circleSize, col="black")
+		}
 	}
 }
 
@@ -212,6 +216,7 @@ for (i in 1:length(data$roi)){
     text = c(text, fieldNum("effort", data$effort[i]))
     text = c(text, fieldNum("roi", data$roi[i]))
     text = c(text, fieldStr("roiColor", roiCols[data$roi[i]+10]))
+    text = c(text, fieldNum("done", if (data$done[i]) "true" else "false"))
     
     if (!is.na(data$blockedBy[i])){
         text = c(text, fieldNum("blockedBy", data$blockedBy[i]))
