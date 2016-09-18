@@ -3,7 +3,7 @@
 #include <cassert>
 #include <sstream>
 
-#include "Item.h"
+#include "ServerItem.h"
 #include "ItemSet.h"
 #include "ObjectType.h"
 #include "Server.h"
@@ -37,7 +37,7 @@ _inventory(INVENTORY_SIZE),
 _lastLocUpdate(SDL_GetTicks()),
 _lastContact(SDL_GetTicks()){
     for (size_t i = 0; i != INVENTORY_SIZE; ++i)
-        _inventory[i] = std::make_pair<const Item *, size_t>(0, 0);
+        _inventory[i] = std::make_pair<const ServerItem *, size_t>(0, 0);
 }
 
 User::User(const Socket &rhs):
@@ -58,11 +58,11 @@ bool User::compareYThenSerial::operator()( const User *a, const User *b){
     return a->_socket < b->_socket; // Just need something unique.
 }
 
-const std::pair<const Item *, size_t> &User::inventory(size_t index) const{
+const std::pair<const ServerItem *, size_t> &User::inventory(size_t index) const{
     return _inventory[index];
 }
 
-std::pair<const Item *, size_t> &User::inventory(size_t index){
+std::pair<const ServerItem *, size_t> &User::inventory(size_t index){
     return _inventory[index];
 }
 
@@ -238,7 +238,7 @@ bool User::alive() const{
     return SDL_GetTicks() - _lastContact <= Server::CLIENT_TIMEOUT;
 }
 
-size_t User::giveItem(const Item *item, size_t quantity){
+size_t User::giveItem(const ServerItem *item, size_t quantity){
     // First pass: partial stacks
     for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
         if (_inventory[i].first != item)
@@ -306,7 +306,7 @@ void User::beginDeconstructing(Object &obj){
 bool User::hasItems(const ItemSet &items) const{
     ItemSet remaining = items;
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
-        const std::pair<const Item *, size_t> &invSlot = _inventory[i];
+        const std::pair<const ServerItem *, size_t> &invSlot = _inventory[i];
         remaining.remove(invSlot.first, invSlot.second);
         if (remaining.isEmpty())
             return true;
@@ -316,7 +316,7 @@ bool User::hasItems(const ItemSet &items) const{
 
 bool User::hasTool(const std::string &className) const{
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
-        const Item *item = _inventory[i].first;
+        const ServerItem *item = _inventory[i].first;
         if (item && item->isClass(className))
             return true;
     }
@@ -345,7 +345,7 @@ void User::removeItems(const ItemSet &items) {
     std::set<size_t> invSlotsChanged;
     ItemSet remaining = items;
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
-        std::pair<const Item *, size_t> &invSlot = _inventory[i];
+        std::pair<const ServerItem *, size_t> &invSlot = _inventory[i];
         if (remaining.contains(invSlot.first)) {
             size_t itemsToRemove = min(invSlot.second, remaining[invSlot.first]);
             remaining.remove(invSlot.first, itemsToRemove);
@@ -358,7 +358,7 @@ void User::removeItems(const ItemSet &items) {
         }
     }
     for (size_t slotNum : invSlotsChanged) {
-        const std::pair<const Item *, size_t> &slot = _inventory[slotNum];
+        const std::pair<const ServerItem *, size_t> &slot = _inventory[slotNum];
         std::string id = slot.first ? slot.first->id() : "none";
         Server::instance().sendInventoryMessage(*this, slotNum);
     }
@@ -395,7 +395,7 @@ void User::update(ms_t timeElapsed){
         // Create object
         server.addObject(_actionObjectType, _actionLocation, this);
         // Remove item from user's inventory
-        std::pair<const Item *, size_t> &slot = _inventory[_actionSlot];
+        std::pair<const ServerItem *, size_t> &slot = _inventory[_actionSlot];
         assert(slot.first->constructsObject() == _actionObjectType);
         --slot.second;
         if (slot.second == 0)
@@ -407,7 +407,7 @@ void User::update(ms_t timeElapsed){
     case DECONSTRUCT:
     {
         //Check for inventory space
-        const Item *item = _actionObject->type()->deconstructsItem();
+        const ServerItem *item = _actionObject->type()->deconstructsItem();
         if (!vectHasSpace(_inventory, item)){
             server.sendMessage(_socket, SV_INVENTORY_FULL);
             _action = NO_ACTION;

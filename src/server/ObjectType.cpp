@@ -24,7 +24,7 @@ _merchantSlots(0),
 _collides(true),
 _collisionRect(collisionRect){}
 
-void ObjectType::addYield(const Item *item, double initMean, double initSD, double gatherMean,
+void ObjectType::addYield(const ServerItem *item, double initMean, double initSD, double gatherMean,
                           double gatherSD){
     _yield.addItem(item, initMean, initSD, gatherMean, gatherSD);
 }

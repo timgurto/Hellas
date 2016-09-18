@@ -9,7 +9,7 @@
 #include "../types.h"
 #include "Yield.h"
 
-class Item;
+class ServerItem;
 
 // Describes a class of Objects, the "instances" of which share common properties
 class ObjectType{
@@ -17,7 +17,7 @@ class ObjectType{
     ms_t _gatherTime;
     ms_t _constructionTime;
 
-    const Item *_deconstructsItem; // Item gained when this object is deconstructed
+    const ServerItem *_deconstructsItem; // Item gained when this object is deconstructed
     ms_t _deconstructionTime;
 
     // To gather from objects of this type, a user must have an item of the following class.
@@ -56,14 +56,14 @@ public:
     const Rect &collisionRect() const { return _collisionRect; }
     void collisionRect(const Rect &r) { _collisionRect = r; _collides = true; }
     bool isClass( const std::string &className) const;
-    const Item *deconstructsItem() const { return _deconstructsItem; }
-    void deconstructsItem(const Item *item) { _deconstructsItem = item; }
+    const ServerItem *deconstructsItem() const { return _deconstructsItem; }
+    void deconstructsItem(const ServerItem *item) { _deconstructsItem = item; }
     ms_t deconstructionTime() const { return _deconstructionTime; }
     void deconstructionTime(ms_t t) { _deconstructionTime = t; }
 
     bool operator<(const ObjectType &rhs) const { return _id < rhs._id; }
 
-    void addYield(const Item *item,
+    void addYield(const ServerItem *item,
                   double initMean, double initSD,
                   double gatherMean, double gatherSD);
     void addClass(const std::string &className);

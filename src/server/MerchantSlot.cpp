@@ -2,8 +2,8 @@
 
 #include "MerchantSlot.h"
 
-MerchantSlot::MerchantSlot(const Item *wareItemArg, size_t wareQtyArg,
-                           const Item *priceItemArg, size_t priceQtyArg):
+MerchantSlot::MerchantSlot(const ServerItem *wareItemArg, size_t wareQtyArg,
+                           const ServerItem *priceItemArg, size_t priceQtyArg):
 wareItem(wareItemArg),
 priceItem(priceItemArg),
 wareQty(wareQtyArg),

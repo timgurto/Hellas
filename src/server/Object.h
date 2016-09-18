@@ -15,7 +15,7 @@ class Object{
     const ObjectType *_type;
     std::string _owner;
     ItemSet _contents; // Remaining contents, which can be gathered
-    Item::vect_t _container; // Items contained in object
+    ServerItem::vect_t _container; // Items contained in object
     std::vector<MerchantSlot> _merchantSlots;
 
     // Users watching this object for changes to inventory or merchant slots
@@ -40,8 +40,8 @@ public:
     void owner(const std::string &name) { _owner = name; }
     const ItemSet &contents() const { return _contents; }
     void contents(const ItemSet &contents);
-    Item::vect_t &container() { return _container; }
-    const Item::vect_t &container() const { return _container; }
+    ServerItem::vect_t &container() { return _container; }
+    const ServerItem::vect_t &container() const { return _container; }
     const Rect collisionRect() const { return _type->collisionRect() + _location;  }
     const std::vector<MerchantSlot> &merchantSlots() const { return _merchantSlots; }
     const MerchantSlot &merchantSlot(size_t slot) const { return _merchantSlots[slot]; }
@@ -52,12 +52,12 @@ public:
 
 
     // Randomly choose an item type for the user to gather.
-    const Item *chooseGatherItem() const;
+    const ServerItem *chooseGatherItem() const;
     // Randomly choose a quantity of the above items, between 1 and the object's contents.
-    size_t chooseGatherQuantity(const Item *item) const;
-    void removeItem(const Item *item, size_t qty); // From _contents; gathering
+    size_t chooseGatherQuantity(const ServerItem *item) const;
+    void removeItem(const ServerItem *item, size_t qty); // From _contents; gathering
     void removeItems(const ItemSet &items); // From _container; inventory
-    void giveItem(const Item *item, size_t qty = 1); // To _container; inventory
+    void giveItem(const ServerItem *item, size_t qty = 1); // To _container; inventory
 
     bool userHasAccess(const std::string &username) const;
     

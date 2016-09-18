@@ -10,12 +10,12 @@
 #include <utility>
 
 #include "CollisionChunk.h"
-#include "Item.h"
 #include "ItemSet.h"
 #include "LogConsole.h"
 #include "NPC.h"
 #include "Object.h"
 #include "Recipe.h"
+#include "ServerItem.h"
 #include "TerrainType.h"
 #include "User.h"
 #include "../Args.h"
@@ -42,7 +42,7 @@ public:
     static const Server &instance(){ return *_instance; }
     static LogConsole &debug(){ return *_debugInstance; }
 
-    bool itemIsClass(const Item *item, const std::string &className) const;
+    bool itemIsClass(const ServerItem *item, const std::string &className) const;
 
     const User &getUserByName(const std::string &username) const;
 
@@ -113,7 +113,7 @@ private:
 
     // World data
     std::vector<TerrainType> _terrain;
-    std::set<Item> _items;
+    std::set<ServerItem> _items;
     std::set<Recipe> _recipes;
     std::set<const ObjectType *> _objectTypes;
     const ObjectType *findObjectTypeByName(const std::string &id) const; // Linear complexity
@@ -126,13 +126,13 @@ private:
     friend void User::cancelAction();
     friend void User::updateLocation(const Point &dest);
 
-    friend size_t User::giveItem(const Item *item, size_t quantity);
+    friend size_t User::giveItem(const ServerItem *item, size_t quantity);
 
     friend bool User::hasTool(const std::string &className) const;
     friend bool User::hasTools(const std::set<std::string> &classes) const;
 
     friend void Object::removeItems(const ItemSet &items);
-    friend void Object::giveItem(const Item *item, size_t qty);
+    friend void Object::giveItem(const ServerItem *item, size_t qty);
 
     NPC &addNPC(const NPCType *type, const Point &location); 
     Object &addObject (const ObjectType *type, const Point &location, const User *owner = nullptr);

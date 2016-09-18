@@ -8,9 +8,9 @@
 #include <windows.h>
 
 #include "Combatant.h"
-#include "Item.h"
 #include "Object.h"
 #include "Recipe.h"
+#include "ServerItem.h"
 #include "../Point.h"
 #include "../Socket.h"
 
@@ -46,7 +46,7 @@ private:
     size_t _actionSlot; // Construct
     Point _actionLocation; // Construct
 
-    Item::vect_t _inventory;
+    ServerItem::vect_t _inventory;
 
     ms_t _lastLocUpdate; // Time that the last CL_LOCATION was received
     ms_t _lastContact;
@@ -63,10 +63,10 @@ public:
     const Socket &socket() const { return _socket; }
     const Point &location() const { return _location; }
     void location(const Point &loc) { _location = loc; }
-    const std::pair<const Item *, size_t> &inventory(size_t index) const;
-    std::pair<const Item *, size_t> &inventory(size_t index);
-    Item::vect_t &inventory() { return _inventory; }
-    const Item::vect_t &inventory() const { return _inventory; }
+    const std::pair<const ServerItem *, size_t> &inventory(size_t index) const;
+    std::pair<const ServerItem *, size_t> &inventory(size_t index);
+    ServerItem::vect_t &inventory() { return _inventory; }
+    const ServerItem::vect_t &inventory() const { return _inventory; }
 
     virtual health_t maxHealth() const override { return MAX_HEALTH; }
 
@@ -110,7 +110,7 @@ public:
     void updateLocation(const Point &dest);
 
     // Return value: 0 if there was room for all items, otherwise the remainder.
-    size_t giveItem(const Item *item, size_t quantity = 1);
+    size_t giveItem(const ServerItem *item, size_t quantity = 1);
 
     void update(ms_t timeElapsed);
 
