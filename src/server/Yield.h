@@ -6,8 +6,8 @@
 #include <map>
 #include <random>
 
-#include "Item.h"
 #include "ItemSet.h"
+#include "ServerItem.h"
 
 // Provides a way for objects to give players items when gathered.  This is part of an ObjectType.
 class Yield{
@@ -17,14 +17,14 @@ class Yield{
         mutable std::normal_distribution<double> _gatherDistribution;
     };
 
-    std::map<const Item *, YieldEntry> _entries;
+    std::map<const ServerItem *, YieldEntry> _entries;
 
     static std::default_random_engine generator;
 
 public:
     operator bool() const {return !_entries.empty(); }
     
-    void addItem(const Item *item, double initMean = 1, double initSD = 0,
+    void addItem(const ServerItem *item, double initMean = 1, double initSD = 0,
                  double gatherMean = 1., double gatherSD = 0);
 
     // Returns a new instance of this Yield, with random init values
@@ -32,7 +32,7 @@ public:
 
     // Generate a normally-distributed random number based on the mean and SD of an entry
     static size_t generateInitialQuantity(const YieldEntry &entry);
-    size_t generateGatherQuantity(const Item *item) const;
+    size_t generateGatherQuantity(const ServerItem *item) const;
 };
 
 #endif

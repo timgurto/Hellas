@@ -5,18 +5,18 @@
 
 #include "ItemSet.h"
 
-class Item;
+class ServerItem;
 
 struct MerchantSlot{
-    const Item
+    const ServerItem
         *wareItem,
         *priceItem;
     size_t
         wareQty,
         priceQty;
 
-    MerchantSlot(const Item *wareItem = nullptr, size_t wareQty = 0,
-                 const Item *priceItem = nullptr, size_t priceQty = 0);
+    MerchantSlot(const ServerItem *wareItem = nullptr, size_t wareQty = 0,
+                 const ServerItem *priceItem = nullptr, size_t priceQty = 0);
 
     operator bool() const;
     

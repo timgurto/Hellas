@@ -7,7 +7,7 @@ _id(id),
 _product(nullptr),
 _time(0){}
 
-void Recipe::addMaterial(const Item *item, size_t qty){
+void Recipe::addMaterial(const ServerItem *item, size_t qty){
     _materials.add(item, qty);
 }
 

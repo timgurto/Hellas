@@ -23,7 +23,7 @@ _type(type){
     }
 
     if (type->containerSlots() != 0)
-        _container = Item::vect_t(type->containerSlots());
+        _container = ServerItem::vect_t(type->containerSlots());
 
     if (type->merchantSlots() != 0)
         _merchantSlots = std::vector<MerchantSlot>(type->merchantSlots());
@@ -63,13 +63,13 @@ void Object::contents(const ItemSet &contents){
     _contents = contents;
 }
 
-void Object::removeItem(const Item *item, size_t qty){
+void Object::removeItem(const ServerItem *item, size_t qty){
     assert (_contents[item] >= qty);
     assert (_contents.totalQuantity() >= qty);
     _contents.remove(item, qty);
 }
 
-const Item *Object::chooseGatherItem() const{
+const ServerItem *Object::chooseGatherItem() const{
     assert(!_contents.isEmpty());
     assert(_contents.totalQuantity() > 0);
     
@@ -85,7 +85,7 @@ const Item *Object::chooseGatherItem() const{
     return 0;
 }
 
-size_t Object::chooseGatherQuantity(const Item *item) const{
+size_t Object::chooseGatherQuantity(const ServerItem *item) const{
     size_t randomQty = _type->yield().generateGatherQuantity(item);
     size_t qty = min<size_t>(randomQty, _contents[item]);
     return qty;
@@ -101,7 +101,7 @@ void Object::removeItems(const ItemSet &items) {
     std::set<size_t> invSlotsChanged;
     ItemSet remaining = items;
     for (size_t i = 0; i != _container.size(); ++i){
-        std::pair<const Item *, size_t> &invSlot = _container[i];
+        std::pair<const ServerItem *, size_t> &invSlot = _container[i];
         if (remaining.contains(invSlot.first)) {
             size_t itemsToRemove = min(invSlot.second, remaining[invSlot.first]);
             remaining.remove(invSlot.first, itemsToRemove);
@@ -123,7 +123,7 @@ void Object::removeItems(const ItemSet &items) {
 
 
 
-void Object::giveItem(const Item *item, size_t qty){
+void Object::giveItem(const ServerItem *item, size_t qty){
     std::set<size_t> changedSlots;
     // First pass: partial stacks
     for (size_t i = 0; i != _container.size(); ++i) {

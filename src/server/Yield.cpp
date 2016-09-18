@@ -5,7 +5,7 @@
 
 std::default_random_engine Yield::generator;
 
-void Yield::addItem(const Item *item, double initMean, double initSD, double gatherMean,
+void Yield::addItem(const ServerItem *item, double initMean, double initSD, double gatherMean,
                     double gatherSD){
     YieldEntry *entry = &_entries[item];
     entry->_initMean = initMean;
@@ -26,7 +26,7 @@ size_t Yield::generateInitialQuantity(const YieldEntry &entry){
     return toInt(max<double>(0, d));
 }
 
-size_t Yield::generateGatherQuantity(const Item *item) const{
+size_t Yield::generateGatherQuantity(const ServerItem *item) const{
     const YieldEntry &entry = _entries.find(item)->second;
     double d = entry._gatherDistribution(generator);
     return max<size_t>(1, toInt(d)); // User always gets at least one item when gathering

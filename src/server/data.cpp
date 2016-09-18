@@ -40,13 +40,13 @@ bool Server::readUserData(User &user){
             if (!xr.findAttr(slotElem, "id", id)) continue;
             if (!xr.findAttr(slotElem, "quantity", qty)) continue;
 
-            std::set<Item>::const_iterator it = _items.find(id);
+            std::set<ServerItem>::const_iterator it = _items.find(id);
             if (it == _items.end()) {
                 _debug("Invalid user data (inventory item).  Removing item.", Color::RED);
                 continue;
             }
             user.inventory(slot) =
-                std::make_pair<const Item *, size_t>(&*it, static_cast<size_t>(qty));
+                std::make_pair<const ServerItem *, size_t>(&*it, static_cast<size_t>(qty));
         }
     }
 
@@ -68,7 +68,7 @@ void Server::writeUserData(const User &user) const{
 
     e = xw.addChild("inventory");
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
-        const std::pair<const Item *, size_t> &slot = user.inventory(i);
+        const std::pair<const ServerItem *, size_t> &slot = user.inventory(i);
         if (slot.first) {
             auto slotElement = xw.addChild("slot", e);
             xw.setAttr(slotElement, "slot", i);
@@ -111,7 +111,7 @@ void Server::loadData(){
         if (xr.findAttr(elem, "constructionTime", n)) ot->constructionTime(n);
         if (xr.findAttr(elem, "gatherReq", s)) ot->gatherReq(s);
         if (xr.findAttr(elem, "deconstructs", s)){
-            std::set<Item>::const_iterator itemIt = _items.insert(Item(s)).first;
+            std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
             ot->deconstructsItem(&*itemIt);
         }
         if (xr.findAttr(elem, "deconstructionTime", n)) ot->deconstructionTime(n);
@@ -123,7 +123,7 @@ void Server::loadData(){
             xr.findAttr(yield, "initialSD", initSD);
             xr.findAttr(yield, "gatherMean", gatherMean);
             xr.findAttr(yield, "gatherSD", gatherSD);
-            std::set<Item>::const_iterator itemIt = _items.insert(Item(s)).first;
+            std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
             ot->addYield(&*itemIt, initMean, initSD, gatherMean, gatherSD);
         }
         if (xr.findAttr(elem, "merchantSlots", n)) ot->merchantSlots(n);
@@ -182,7 +182,7 @@ void Server::loadData(){
         std::string id, name;
         if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name))
             continue; // ID and name are mandatory.
-        Item item(id);
+        ServerItem item(id);
 
         std::string s; int n;
         if (xr.findAttr(elem, "stackSize", n)) item.stackSize(n);
@@ -198,9 +198,9 @@ void Server::loadData(){
         for (auto child : xr.getChildren("class", elem))
             if (xr.findAttr(child, "name", s)) item.addClass(s);
         
-        std::pair<std::set<Item>::iterator, bool> ret = _items.insert(item);
+        std::pair<std::set<ServerItem>::iterator, bool> ret = _items.insert(item);
         if (!ret.second) {
-            Item &itemInPlace = const_cast<Item &>(*ret.first);
+            ServerItem &itemInPlace = const_cast<ServerItem &>(*ret.first);
             itemInPlace = item;
         }
     }
@@ -229,7 +229,7 @@ void Server::loadData(){
             int matQty = 1;
             xr.findAttr(child, "quantity", matQty);
             if (xr.findAttr(child, "id", s)) {
-                auto it = _items.find(Item(s));
+                auto it = _items.find(ServerItem(s));
                 if (it == _items.end()) {
                     _debug << Color::RED << "Skipping invalid recipe material " << s << Log::endl;
                     continue;

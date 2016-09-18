@@ -358,7 +358,7 @@ void Server::removeObject(Object &obj, const User *userToExclude){
 void Server::gatherObject(size_t serial, User &user){
     // Give item to user
     Object *obj = findObject(serial);
-    const Item *const toGive = obj->chooseGatherItem();
+    const ServerItem *const toGive = obj->chooseGatherItem();
     size_t qtyToGive = obj->chooseGatherQuantity(toGive);
     const size_t remaining = user.giveItem(toGive, qtyToGive);
     if (remaining > 0) {
@@ -497,7 +497,7 @@ Point Server::mapRand() const{
                  randDouble() * _mapY * TILE_H);
 }
 
-bool Server::itemIsClass(const Item *item, const std::string &className) const{
+bool Server::itemIsClass(const ServerItem *item, const std::string &className) const{
     assert (item);
     return item->isClass(className);
 }

@@ -124,12 +124,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_INVALID_SLOT);
                 break;
             }
-            const std::pair<const Item *, size_t> &invSlot = user->inventory(slot);
+            const std::pair<const ServerItem *, size_t> &invSlot = user->inventory(slot);
             if (invSlot.first == nullptr) {
                 sendMessage(client, SV_EMPTY_SLOT);
                 break;
             }
-            const Item &item = *invSlot.first;
+            const ServerItem &item = *invSlot.first;
             if (item.constructsObject() == nullptr) {
                 sendMessage(client, SV_CANNOT_CONSTRUCT);
                 break;
@@ -232,7 +232,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del >> slot >> del;
             if (del != MSG_END)
                 return;
-            Item::vect_t *container;
+            ServerItem::vect_t *container;
             Object *pObj = nullptr;
             if (serial == 0)
                 container = &user->inventory();
@@ -271,7 +271,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 >> slot2 >> del;
             if (del != MSG_END)
                 return;
-            Item::vect_t
+            ServerItem::vect_t
                 *containerFrom,
                 *containerTo;
             Object
@@ -569,7 +569,7 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
 }
 
 void Server::sendInventoryMessage(const User &user, size_t slot, const Object *obj) const{
-    const Item::vect_t &container = (obj == nullptr) ? user.inventory() : obj->container();
+    const ServerItem::vect_t &container = (obj == nullptr) ? user.inventory() : obj->container();
     if (slot >= container.size()) {
         sendMessage(user.socket(), SV_INVALID_SLOT);
         return;

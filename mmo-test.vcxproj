@@ -129,7 +129,7 @@
     <ClCompile Include="src\server\collisionDetection.cpp" />
     <ClCompile Include="src\server\Combatant.cpp" />
     <ClCompile Include="src\server\data.cpp" />
-    <ClCompile Include="src\server\Item.cpp" />
+    <ClCompile Include="src\server\ServerItem.cpp" />
     <ClCompile Include="src\server\ItemSet.cpp" />
     <ClCompile Include="src\server\LogConsole.cpp" />
     <ClCompile Include="src\server\MerchantSlot.cpp" />
@@ -201,7 +201,7 @@
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\server\CollisionChunk.h" />
     <ClInclude Include="src\server\Combatant.h" />
-    <ClInclude Include="src\server\Item.h" />
+    <ClInclude Include="src\server\ServerItem.h" />
     <ClInclude Include="src\server\ItemSet.h" />
     <ClInclude Include="src\server\LogConsole.h" />
     <ClInclude Include="src\server\MerchantSlot.h" />
