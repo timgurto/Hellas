@@ -9,11 +9,12 @@
 #include <vector>
 
 #include "Texture.h"
+#include "../Item.h"
 
 class ClientObjectType;
 
 // The client-side representation of an item type
-class ClientItem{
+class ClientItem : public Item{
     std::string _id;
     std::string _name;
     Texture _icon;

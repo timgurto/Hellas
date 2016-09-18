@@ -9,10 +9,12 @@
 #include <string>
 #include <vector>
 
+#include "../Item.h"
+
 class ObjectType;
 
 // Describes an item type
-class ServerItem{
+class ServerItem : public Item{
     std::string _id; // The no-space, unique name used in data files
     size_t _stackSize;
     std::set<std::string> _classes;

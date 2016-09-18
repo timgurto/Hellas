@@ -94,6 +94,9 @@
     <ClCompile Include="src\server\ServerItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h">
@@ -112,9 +115,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Rect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\server\Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\server\LogConsole.h">
@@ -179,6 +179,9 @@
     </ClInclude>
     <ClInclude Include="src\server\ServerItem.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Item.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
