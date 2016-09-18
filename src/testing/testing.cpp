@@ -2,9 +2,15 @@
 
 #include <iostream>
 
+#include <SDL.h>
 #include "Test.h"
+#include "../client/Renderer.h"
+#include "../Args.h"
 
-int main(){
+Args cmdLineArgs;
+Renderer renderer;
+
+int main(int argc, char **argv){
     size_t failures = 0;
     size_t i = 0;
     for (const Test &test : Test::testContainer()){
@@ -23,4 +29,5 @@ int main(){
               << i - failures << " passed, "
               << failures << " failed."
               << std::endl;
+    return 0;
 }
