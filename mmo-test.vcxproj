@@ -145,9 +145,9 @@
     <ClCompile Include="src\server\User.cpp" />
     <ClCompile Include="src\server\Yield.cpp" />
     <ClCompile Include="src\Socket.cpp" />
-    <ClCompile Include="src\testing\math.cpp" />
-    <ClCompile Include="src\testing\networking.cpp" />
-    <ClCompile Include="src\testing\objects.cpp" />
+    <ClCompile Include="src\testing\test-math.cpp" />
+    <ClCompile Include="src\testing\test-networking.cpp" />
+    <ClCompile Include="src\testing\test-objects.cpp" />
     <ClCompile Include="src\testing\Test.cpp" />
     <ClCompile Include="src\testing\testing.cpp" />
     <ClCompile Include="src\util.cpp" />
