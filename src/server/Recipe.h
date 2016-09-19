@@ -15,7 +15,7 @@ class Recipe{
     std::string _id;
     ItemSet _materials;
     std::set<std::string> _tools; // Tools required for crafting
-    const ServerItem *_product;
+    const Item *_product;
     ms_t _time;
 
 public:
@@ -26,12 +26,12 @@ public:
     const std::string &id() const { return _id; }
     const ItemSet &materials() const { return _materials; }
     const std::set<std::string> & tools() const { return _tools; }
-    const ServerItem *product() const { return _product; }
-    void product(const ServerItem *item) { _product = item; }
+    const Item *product() const { return _product; }
+    void product(const Item *item) { _product = item; }
     ms_t time() const { return _time; }
     void time(ms_t time) { _time = time; }
 
-    void addMaterial(const ServerItem *item, size_t qty);
+    void addMaterial(const Item *item, size_t qty);
     void addTool(const std::string &name);
 };
 

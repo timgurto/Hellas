@@ -13,10 +13,10 @@
 #include "ClientObjectType.h"
 #include "Entity.h"
 #include "ClientItem.h"
-#include "ClientMerchantSlot.h"
-#include "ClientRecipe.h"
 #include "LogSDL.h"
 #include "Terrain.h"
+#include "../server/MerchantSlot.h"
+#include "../server/Recipe.h"
 #include "ui/ChoiceList.h"
 #include "ui/Container.h"
 #include "ui/ItemSelector.h"
@@ -94,19 +94,19 @@ private:
     const Texture *_currentCursor;
 
     // Whether the user has the specified item(s).
-    bool playerHasItem(const ClientItem *item, size_t quantity = 1) const;
+    bool playerHasItem(const Item *item, size_t quantity = 1) const;
 
     void initializeCraftingWindow();
     bool _haveMatsFilter, _haveToolsFilter, _classOr, _matOr;
     static const px_t HEADING_HEIGHT; // The height of windows' section headings
     static const px_t LINE_GAP; // The total height occupied by a line and its surrounding spacing
-    const ClientRecipe *_activeRecipe; // The recipe currently selected, if any
+    const Recipe *_activeRecipe; // The recipe currently selected, if any
     static void startCrafting(void *data); // Called when the "Craft" button is clicked.
     // Populated at load time, after _items
     std::map<std::string, bool> _classFilters;
     std::map<const ClientItem *, bool> _matFilters;
     mutable bool _classFilterSelected, _matFilterSelected; // Whether any filters have been selected
-    bool recipeMatchesFilters(const ClientRecipe &recipe) const;
+    bool recipeMatchesFilters(const Recipe &recipe) const;
     // Called when filters pane is clicked.
     static void populateRecipesList(Element &e);
     // Called when a recipe is selected.
@@ -216,7 +216,7 @@ private:
     // Game data
     std::vector<Terrain> _terrain;
     std::set<ClientItem> _items;
-    std::set<ClientRecipe> _recipes;
+    std::set<Recipe> _recipes;
     std::set<ClientObjectType> _objectTypes;
 
     // Information about the state of the world

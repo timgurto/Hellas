@@ -3,7 +3,7 @@
 #include "ClientItem.h"
 
 ClientItem::ClientItem(const std::string &id, const std::string &name):
-_id(id),
+Item(id),
 _name(name),
 _constructsObject(nullptr){}
 
@@ -14,10 +14,6 @@ void ClientItem::icon(const std::string &filename){
     _icon = Texture(prefix + filename + suffix, Color::MAGENTA);
 }
 
-void ClientItem::addClass(const std::string &className){
-    _classes.insert(className);
-}
-
-bool ClientItem::isClass(const std::string &className) const{
-    return _classes.find(className) != _classes.end();
+const ClientItem *toClientItem(const Item *item){
+    return dynamic_cast<const ClientItem *>(item);
 }

@@ -17,7 +17,7 @@ const ItemSet &ItemSet::operator+=(const ItemSet &rhs){
     return *this;
 }
 
-const ItemSet &ItemSet::operator+=(const ServerItem *newItem){
+const ItemSet &ItemSet::operator+=(const Item *newItem){
     ++_set[newItem];
     ++_totalQty;
     checkTotalQty();
@@ -37,14 +37,14 @@ const ItemSet &ItemSet::operator-=(const ItemSet &rhs){
     return *this;
 }
 
-size_t ItemSet::operator[](const ServerItem *key) const{
+size_t ItemSet::operator[](const Item *key) const{
     auto it = _set.find(key);
     if (it == _set.end())
         return 0;
     return it->second;
 }
 
-void ItemSet::set(const ServerItem *item, size_t quantity){
+void ItemSet::set(const Item *item, size_t quantity){
     size_t oldQty = _set[item];
     assert(_totalQty >= oldQty);
     auto it = _set.find(item);
@@ -70,7 +70,7 @@ bool ItemSet::contains(const ItemSet &rhs) const{
     return true;
 }
 
-bool ItemSet::contains(const ServerItem *item, size_t qty) const{
+bool ItemSet::contains(const Item *item, size_t qty) const{
     if (qty == 0)
         return true;
     auto it = _set.find(item);
@@ -93,7 +93,7 @@ bool ItemSet::contains(const std::set<std::string> &classes){
     return true;
 }
 
-void ItemSet::add(const ServerItem *item, size_t qty){
+void ItemSet::add(const Item *item, size_t qty){
     if (qty == 0)
         return;
     _set[item] += qty;
@@ -101,7 +101,7 @@ void ItemSet::add(const ServerItem *item, size_t qty){
     checkTotalQty();
 }
 
-void ItemSet::remove(const ServerItem *item, size_t qty){
+void ItemSet::remove(const Item *item, size_t qty){
     if (qty == 0)
         return;
     auto it = _set.find(item);
@@ -122,10 +122,10 @@ void ItemSet::checkTotalQty() const{
     assert(_totalQty == total);
 };
 
-bool operator<=(const ItemSet &itemSet, const ServerItem::vect_t &vect){
+bool operator<=(const ItemSet &itemSet, const Item::vect_t &vect){
     ItemSet remaining = itemSet;
     for (size_t i = 0; i != vect.size(); ++i){
-        const std::pair<const ServerItem *, size_t> &invSlot = vect[i];
+        const std::pair<const Item *, size_t> &invSlot = vect[i];
         remaining.remove(invSlot.first, invSlot.second);
         if (remaining.isEmpty())
             return true;
@@ -137,7 +137,7 @@ bool operator<=(const ItemSet &lhs, const ItemSet &rhs) {
     return rhs.contains(lhs);
 }
 
-bool operator>(const ItemSet &itemSet, const ServerItem::vect_t &vect) {
+bool operator>(const ItemSet &itemSet, const Item::vect_t &vect) {
     return ! (itemSet <= vect);
 }
 

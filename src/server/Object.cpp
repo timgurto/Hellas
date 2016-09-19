@@ -77,7 +77,7 @@ const ServerItem *Object::chooseGatherItem() const{
     size_t i = rand() % _contents.totalQuantity();
     for (auto item : _contents) {
         if (i <= item.second)
-            return item.first;
+            return toServerItem(item.first);
         else
             i -= item.second;
     }

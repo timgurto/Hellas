@@ -435,7 +435,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             }
             if (ware.empty() || price.empty()){
-                obj.setMerchantSlot(slot, ClientMerchantSlot());
+                obj.setMerchantSlot(slot, MerchantSlot());
                 break;
             }
             auto wareIt = _items.find(ware);
@@ -448,7 +448,7 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Received merchant slot describing invalid item", Color::MMO_RED);
                 break;
             }
-            obj.setMerchantSlot(slot, ClientMerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty));
+            obj.setMerchantSlot(slot, MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty));
             break;
         }
 

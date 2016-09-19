@@ -114,19 +114,10 @@
     <ClCompile Include="src\client\ClientItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\client\ClientItemSet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\ClientMerchantSlot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\client\ClientObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\client\ClientObjectType.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\ClientRecipe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\client\craftingWindow.cpp">
@@ -320,19 +311,10 @@
     <ClInclude Include="src\client\ClientItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\client\ClientItemSet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\client\ClientMerchantSlot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\client\ClientObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\client\ClientObjectType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\client\ClientRecipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\client\Entity.h">

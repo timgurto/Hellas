@@ -270,7 +270,7 @@ _debug("client.log"){
         std::string id, name;
         if (!xr.findAttr(elem, "id", id))
             continue; // ID is mandatory.
-        ClientRecipe recipe(id);
+        Recipe recipe(id);
 
         std::string s;
         if (!xr.findAttr(elem, "product", s))
@@ -673,11 +673,12 @@ void Client::checkMouseOver(){
 void Client::startCrafting(void *data){
     if (_instance->_activeRecipe != nullptr) {
         _instance->sendMessage(CL_CRAFT, _instance->_activeRecipe->id());
-        _instance->prepareAction("Crafting " + _instance->_activeRecipe->product()->name());
+        const ClientItem *product = toClientItem(_instance->_activeRecipe->product());
+        _instance->prepareAction("Crafting " + product->name());
     }
 }
 
-bool Client::playerHasItem(const ClientItem *item, size_t quantity) const{
+bool Client::playerHasItem(const Item *item, size_t quantity) const{
     for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
         const std::pair<const ClientItem *, size_t> slot = _inventory[i];
         if (slot.first == item) {

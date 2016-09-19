@@ -4,17 +4,9 @@
 #include "ObjectType.h"
 
 ServerItem::ServerItem(const std::string &idArg):
-_id(idArg),
+Item(idArg),
 _stackSize(1),
 _constructsObject(nullptr){}
-
-void ServerItem::addClass(const std::string &className){
-    _classes.insert(className);
-}
-
-bool ServerItem::isClass(const std::string &className) const{
-    return _classes.find(className) != _classes.end();
-}
 
 bool vectHasSpace(const ServerItem::vect_t &vect, const ServerItem *item, size_t qty){
     for (size_t i = 0; i != vect.size(); ++i) {
@@ -31,4 +23,27 @@ bool vectHasSpace(const ServerItem::vect_t &vect, const ServerItem *item, size_t
             continue;
     }
     return false;
+}
+
+bool operator<=(const ItemSet &itemSet, const ServerItem::vect_t &vect){
+    ItemSet remaining = itemSet;
+    for (size_t i = 0; i != vect.size(); ++i){
+        const std::pair<const ServerItem *, size_t> &invSlot = vect[i];
+        remaining.remove(invSlot.first, invSlot.second);
+        if (remaining.isEmpty())
+            return true;
+    }
+    return false;
+}
+
+bool operator>(const ItemSet &itemSet, const ServerItem::vect_t &vect) {
+    return ! (itemSet <= vect);
+}
+
+bool operator>(const ServerItem::vect_t &vect, const ItemSet &itemSet) {
+    return ! (itemSet <= vect);
+}
+
+const ServerItem *toServerItem(const Item *item){
+    return dynamic_cast<const ServerItem *>(item);
 }

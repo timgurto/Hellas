@@ -35,7 +35,7 @@ _window(nullptr){
             containerSlots = objectType()->containerSlots(),
             merchantSlots = objectType()->merchantSlots();
         _container = ClientItem::vect_t(containerSlots);
-        _merchantSlots = std::vector<ClientMerchantSlot>(merchantSlots);
+        _merchantSlots = std::vector<MerchantSlot>(merchantSlots);
         _merchantSlotElements = std::vector<Element *>(merchantSlots, nullptr);
         _serialSlotPairs = std::vector<serialSlotPair_t *>(merchantSlots, nullptr);
         for (size_t i = 0; i != merchantSlots; ++i){
@@ -58,9 +58,9 @@ ClientObject::~ClientObject(){
     }
 }
 
-void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
+void ClientObject::setMerchantSlot(size_t i, MerchantSlot &mSlotArg){
     _merchantSlots[i] = mSlotArg;
-    ClientMerchantSlot &mSlot = _merchantSlots[i];
+    MerchantSlot &mSlot = _merchantSlots[i];
 
     if (_window == nullptr)
         return;
@@ -68,6 +68,9 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
 
     // Update slot element
     Element &e = *_merchantSlotElements[i];
+    const ClientItem
+        *wareItem = toClientItem(mSlot.wareItem),
+        *priceItem = toClientItem(mSlot.priceItem);
     e.clearChildren();
 
     static const px_t // TODO: remove duplicate consts
@@ -95,14 +98,14 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
         textBox->text(toString(mSlot.wareQty));
         e.addChild(textBox);
         x += QUANTITY_WIDTH + GAP;
-        e.addChild(new ItemSelector(mSlot.wareItem, x, BUTTON_TOP));
+        e.addChild(new ItemSelector(wareItem, x, BUTTON_TOP));
         x += ICON_SIZE + 2 + NAME_WIDTH + 3 * GAP + 2;
         textBox = new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT), true);
         _priceQtyBoxes[i] = textBox;
         textBox->text(toString(mSlot.priceQty));
         e.addChild(textBox);
         x += QUANTITY_WIDTH + GAP;
-        e.addChild(new ItemSelector(mSlot.priceItem, x, BUTTON_TOP));
+        e.addChild(new ItemSelector(priceItem, x, BUTTON_TOP));
         x += ICON_SIZE + 2 + NAME_WIDTH + 2 * GAP + 2;
         e.addChild(new Button(Rect(x, SET_BUTTON_TOP, SET_BUTTON_WIDTH, SET_BUTTON_HEIGHT), "Set",
                               sendMerchantSlot, _serialSlotPairs[i]));
@@ -118,9 +121,9 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
                              toString(mSlot.wareQty), Element::RIGHT_JUSTIFIED));
         x += QUANTITY_WIDTH;
         e.addChild(new Picture(Rect(x, (ROW_HEIGHT - ICON_SIZE) / 2, ICON_SIZE, ICON_SIZE),
-                               mSlot.wareItem->icon()));
+                               wareItem->icon()));
         x += ICON_SIZE;
-        e.addChild(new Label(Rect(x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT), mSlot.wareItem->name()));
+        e.addChild(new Label(Rect(x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT), wareItem->name()));
         x += NAME_WIDTH + GAP;
     
         // Buy button
@@ -133,10 +136,10 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
                                    Element::RIGHT_JUSTIFIED));
         x += BUTTON_LABEL_WIDTH;
         button->addChild(new Picture(Rect(x, BUTTON_PADDING, ICON_SIZE, ICON_SIZE),
-                                     mSlot.priceItem->icon()));
+                                     priceItem->icon()));
         x += ICON_SIZE;
         button->addChild(new Label(Rect(x, BUTTON_TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT),
-                                   mSlot.priceItem->name()));
+                                   priceItem->name()));
     }
 }
 
@@ -370,7 +373,7 @@ void ClientObject::sendMerchantSlot(void *serialAndSlot){
         return;
     }
     ClientObject &obj = *it->second;
-    ClientMerchantSlot &mSlot = obj._merchantSlots[slot];
+    MerchantSlot &mSlot = obj._merchantSlots[slot];
 
     // Set quantities
     mSlot.wareQty = obj._wareQtyBoxes[slot]->textAsNum();

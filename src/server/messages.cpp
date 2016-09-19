@@ -364,13 +364,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
 
             // Check that user has inventory space
-            if (!vectHasSpace(user->inventory(), mSlot.wareItem, mSlot.wareQty)){
+            const ServerItem *wareItem = toServerItem(mSlot.wareItem);
+            if (!vectHasSpace(user->inventory(), wareItem, mSlot.wareQty)){
                 sendMessage(client, SV_INVENTORY_FULL);
                 break;
             }
 
             // Check that object has inventory space
-            if (!vectHasSpace(obj->container(), mSlot.wareItem, mSlot.wareQty)){
+            if (!vectHasSpace(obj->container(), wareItem, mSlot.wareQty)){
                 sendMessage(client, SV_MERCHANT_INVENTORY_FULL);
                 break;
             }
@@ -382,10 +383,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             obj->removeItems(mSlot.ware());
 
             // Give price to object
-            obj->giveItem(mSlot.priceItem, mSlot.priceQty);
+            obj->giveItem(toServerItem(mSlot.priceItem), mSlot.priceQty);
 
             // Give ware to user
-            user->giveItem(mSlot.wareItem, mSlot.wareQty);
+            user->giveItem(wareItem, mSlot.wareQty);
 
             break;
         }
