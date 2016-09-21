@@ -22,11 +22,13 @@ TEST("Zero-SD normal variables")
         c(-0.5, 0);
     return
         a.generate() == 0 &&
+        a() == 0 &&
         b.generate() == 1 &&
         c.generate() == -0.5;
 TEND
 
 TEST("Complex normal variable")
+    NormalVariable default;
     NormalVariable v(10, 2);
     static const size_t SAMPLES = 1000;
     size_t
@@ -42,11 +44,11 @@ TEST("Complex normal variable")
     double
         proportionWithin1SD = 1.0 * numWithin1SD / SAMPLES,
         proportionBetween1and2SD = 1.0 * (numWithin2SD - numWithin1SD) / SAMPLES;
-    // Proportion within 1 standard deviation should be between 0.58 and 0.78
-    if (proportionWithin1SD < 0.58 || proportionWithin1SD > 0.78)
+    // Proportion within 1 standard deviation should be around 0.68
+    if (proportionWithin1SD < 0.63 || proportionWithin1SD > 0.73)
         return false;
-    // Proportion between 1 and 2 standard deviations should be between 0.17 and 0.37
-    if (proportionBetween1and2SD < 0.17 || proportionBetween1and2SD > 0.37)
+    // Proportion between 1 and 2 standard deviations should be around 0.27
+    if (proportionBetween1and2SD < 0.22 || proportionBetween1and2SD > 0.32)
         return false;
     return true;
 TEND
