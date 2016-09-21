@@ -11,6 +11,8 @@ Args cmdLineArgs;
 Renderer renderer;
 
 int main(int argc, char **argv){
+    renderer.init();
+
     size_t failures = 0;
     size_t i = 0;
     for (const Test &test : Test::testContainer()){
