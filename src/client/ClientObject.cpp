@@ -320,7 +320,7 @@ void ClientObject::draw(const Client &client) const{
         if (distance(collisionRect(), client.playerCollisionRect()) <= Client::ACTION_DISTANCE)
             renderer.setDrawColor(Color::MMO_L_GREEN);
         else
-            renderer.setDrawColor(Color::MMO_ORANGE);
+            renderer.setDrawColor(Color::MMO_SKIN);
         renderer.drawRect(collisionRect() + Rect(-1, -1, 2, 2) + client.offset());
     }
 

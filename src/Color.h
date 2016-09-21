@@ -28,9 +28,9 @@ public:
     static const Color MMO_GREY;
     static const Color MMO_PURPLE;
     static const Color MMO_RED;
-    static const Color MMO_R_ORANGE;
-    static const Color MMO_ORANGE;
-    static const Color MMO_Y_ORANGE;
+    static const Color MMO_D_SKIN;
+    static const Color MMO_SKIN;
+    static const Color MMO_L_SKIN;
 
     static const Color GREY_2;
     static const Color GREY_4;
