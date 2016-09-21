@@ -3,16 +3,18 @@
 #include "Yield.h"
 #include "../util.h"
 
-std::default_random_engine Yield::generator;
-
 void Yield::addItem(const ServerItem *item, double initMean, double initSD, double gatherMean,
                     double gatherSD){
+    /*this;
+    _entries;
+    _entries.size();
+    auto map = _entries;
+    map[item];*/
+    //_entries.insert(std::make_pair(item, YieldEntry()));
+    _entries[item];
     YieldEntry *entry = &_entries[item];
-    entry->_initMean = initMean;
-    entry->_initSD = initSD;
-    entry->_gatherMean = gatherMean;
-    entry->_gatherSD = gatherSD;
-    entry->_gatherDistribution = std::normal_distribution<double>(gatherMean, gatherSD);
+    entry->_initDistribution = NormalVariable(initMean, initSD);
+    entry->_gatherDistribution = NormalVariable(gatherMean, gatherSD);
 }
 
 void Yield::instantiate(ItemSet &contents) const{
@@ -22,12 +24,12 @@ void Yield::instantiate(ItemSet &contents) const{
 }
 
 size_t Yield::generateInitialQuantity(const YieldEntry &entry){
-    double d = std::normal_distribution<double>(entry._initMean, entry._initSD)(generator);
+    double d = entry._initDistribution();
     return toInt(max<double>(0, d));
 }
 
 size_t Yield::generateGatherQuantity(const ServerItem *item) const{
     const YieldEntry &entry = _entries.find(item)->second;
-    double d = entry._gatherDistribution(generator);
+    double d = entry._gatherDistribution();
     return max<size_t>(1, toInt(d)); // User always gets at least one item when gathering
 }
