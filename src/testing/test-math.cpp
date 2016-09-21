@@ -1,5 +1,6 @@
 // (C) 2016 Tim Gurto
 
+#include <csignal>
 #include <cstdlib>
 #include <SDL.h>
 
@@ -48,4 +49,24 @@ TEST("Complex normal variable")
     if (proportionBetween1and2SD < 0.17 || proportionBetween1and2SD > 0.37)
         return false;
     return true;
+TEND
+
+TEST("NormalVariable copying")
+    bool ret = true;
+    
+    auto prevHandler = std::signal(SIGSEGV, Test::signalThrower); // Set signal handler
+    int prevAssertMode = _CrtSetReportMode(_CRT_ASSERT,0); // Disable asserts
+
+    try {
+        NormalVariable nv1;
+        NormalVariable nv2 = nv1;
+        nv1();
+    } catch(int) {
+        ret = false;
+    }
+
+    _CrtSetReportMode(_CRT_ASSERT,prevAssertMode); // Re-enable asserts
+    std::signal(SIGSEGV, prevHandler); // Reset signal handler
+
+    return ret;
 TEND

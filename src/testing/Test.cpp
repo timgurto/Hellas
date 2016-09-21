@@ -16,3 +16,7 @@ Test::testContainer_t &Test::testContainer(){
         _testContainer = new testContainer_t;
     return *_testContainer;
 }
+
+void Test::signalThrower(int signal){
+    throw signal;
+}

@@ -23,6 +23,8 @@ public:
 
     const std::string &description() const { return _description; }
     testFun_t fun() const { return _fun; }
+
+    static void signalThrower(int signal); // A signal handler that throws the signal.
 };
 
 #define TOKEN_CONCAT_2(a, b) a ## b
