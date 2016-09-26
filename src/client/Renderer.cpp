@@ -52,10 +52,14 @@ void Renderer::init(){
 }
 
 Renderer::~Renderer(){
-    if (_renderer != nullptr)
+    if (_renderer != nullptr){
         SDL_DestroyRenderer(_renderer);
-    if (_window != nullptr)
+        _renderer = nullptr;
+    }
+    if (_window != nullptr){
         SDL_DestroyWindow(_window);
+        _window = nullptr;
+    }
     
     --_count;
     if (_count == 0) {
