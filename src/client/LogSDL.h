@@ -18,8 +18,6 @@ class LogSDL : public Log{
 public:
     LogSDL(const std::string &logFileName = "");
     ~LogSDL() override;
-    // For default reference parameter.  Indicates that the Log's _color should be used.
-    static Color defaultColor;
     void operator()(const std::string &message, const Color &color = Color::MMO_L_GREY) override;
 
     template<typename T>
@@ -28,9 +26,7 @@ public:
         return *this;
     }
     LogSDL &operator<<(const std::string &val) override;
-    // endl: end message and begin a new one
-    LogSDL &operator<<(const LogEndType &val) override;
-    // color: set color of current compilation
+    LogSDL &operator<<(const LogSpecial &val) override;
     LogSDL &operator<<(const Color &c) override;
 
     void draw(px_t x = 0, px_t y = 0) const;

@@ -29,10 +29,18 @@ LogSDL &LogSDL::operator<<(const std::string &val) {
     return *this;
 }
 
-LogSDL &LogSDL::operator<<(const LogEndType &val) {
-    operator()(_oss.str(), _compilationColor);
-    _oss.str("");
-    _compilationColor = Color::MMO_L_GREY; // reset color for next compilation
+LogSDL &LogSDL::operator<<(const LogSpecial &val) {
+    switch (val){
+    case endl:
+        operator()(_oss.str(), _compilationColor);
+        _oss.str("");
+        _compilationColor = Color::MMO_L_GREY; // reset color for next compilation
+        break;
+
+    case uncolor:
+        _compilationColor = Color::MMO_L_GREY;
+        break;
+    }
     return *this;
 }
     

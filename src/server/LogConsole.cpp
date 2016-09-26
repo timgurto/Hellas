@@ -51,10 +51,18 @@ LogConsole &LogConsole::operator<<(const Color &c) {
     return *this;
 }
 
-LogConsole &LogConsole::operator<<(const LogEndType &val) {
-    std::cout << colorCode() << std::endl;
-    if (_logFile.is_open())
-        _logFile << std::endl;
+LogConsole &LogConsole::operator<<(const LogSpecial &val) {
+    switch (val){
+    case endl:
+        std::cout << colorCode() << std::endl;
+        if (_logFile.is_open())
+            _logFile << std::endl;
+        break;
+
+    case uncolor:
+        std::cout << colorCode() << std::endl;
+        break;
+    }
     return *this;
 }
     

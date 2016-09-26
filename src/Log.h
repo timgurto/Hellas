@@ -35,7 +35,10 @@ public:
 
     virtual void operator()(const std::string &message, const Color &color = Color::NO_KEY) = 0;
 
-    enum LogEndType{endl};
+    enum LogSpecial {
+        endl,
+        uncolor
+    };
 
     template<typename T>
     Log &operator<<(const T &val){
@@ -45,8 +48,13 @@ public:
         return *this;
     }
     virtual Log &operator<<(const std::string &val) = 0;
-    // endl: end message and begin a new one
-    virtual Log &operator<<(const LogEndType &val) = 0;
+
+    /*
+    Handle special commands:
+      endl: end message and begin a new one
+      uncolor: revert to the default message color
+    */
+    virtual Log &operator<<(const LogSpecial &val) = 0;
     // color: set color of current compilation
     virtual Log &operator<<(const Color &c) = 0;
 };

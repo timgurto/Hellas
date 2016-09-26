@@ -25,9 +25,7 @@ public:
         return *this;
     }
     LogConsole &operator<<(const std::string &val) override;
-    // endl: end message and begin a new one
-    LogConsole &operator<<(const LogEndType &val) override;
-    // color: set color of current compilation
+    LogConsole &operator<<(const LogSpecial &val) override;
     LogConsole &operator<<(const Color &c) override;
 
 private:
