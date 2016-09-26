@@ -33,7 +33,7 @@ class Log{
 public:
     virtual ~Log(){}
 
-    void operator()(const std::string &message, const Color &color = Color::NO_KEY);
+    virtual void operator()(const std::string &message, const Color &color = Color::NO_KEY) = 0;
 
     enum LogEndType{endl};
 

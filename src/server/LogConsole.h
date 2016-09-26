@@ -13,9 +13,9 @@
 class LogConsole : public Log{
 public:
     LogConsole(const std::string &logFileName = "");
-    ~LogConsole();
+    ~LogConsole() override;
 
-    void operator()(const std::string &message, const Color &color = Color::YELLOW);
+    void operator()(const std::string &message, const Color &color = Color::YELLOW) override;
 
     template<typename T>
     LogConsole &operator<<(const T &val) {
