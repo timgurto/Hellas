@@ -23,6 +23,8 @@ private:
 public:
     static Args args;
     static testContainer_t &testContainer();
+    static const size_t STATUS_MARGIN;
+
     Test(std::string description, bool slow, testFun_t fun);
 
     const std::string &description() const { return _description; }

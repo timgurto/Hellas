@@ -1,5 +1,6 @@
 // (C) 2016 Tim Gurto
 
+#include <iomanip>
 #include <iostream>
 
 #include <SDL.h>
@@ -15,30 +16,49 @@ int main(int argc, char **argv){
 
     Test::args.init(argc, argv);
 
-    size_t failed = 0;
-    size_t i = 0;
-    size_t skipped = 0;
+    std::string
+        colorStart = "\x1B[38;2;0;127;127m",
+        colorFail  = "\x1B[38;2;255;0;0m",
+        colorPass  = "\x1B[38;2;0;192;0m",
+        colorSkip  = "\x1B[38;2;51;51;51m",
+        colorReset = "\x1B[0m";
+
+    size_t
+        i = 0,
+        passed = 0,
+        failed = 0,
+        skipped = 0;
     for (const Test &test : Test::testContainer()){
         ++i;
+        const std::string *statusColor;
+        size_t gapLength = Test::STATUS_MARGIN - 
+                           min(Test::STATUS_MARGIN, test.description().length());
+        std::string gap(gapLength, ' ');
+        std::cout
+            << colorStart << std::setw(4) << i << colorReset << ' '
+            << test.description() << gap << std::flush;
         if (test.shouldSkip()) {
+            statusColor = &colorSkip;
             ++skipped;
-            continue;
+        } else {
+            bool result = test.fun()();
+            if (!result){
+                statusColor = &colorFail;
+                ++failed;
+            } else {
+                statusColor = &colorPass;
+                ++passed;
+            }
         }
-        std::cout << "  " << test.description() << "... " << std::flush;
-        bool result = test.fun()();
-        if (!result){
-            std::cout << "\x1b[31mFAIL\x1B[0m";
-            ++failed;
-        }
-        std::cout << std::endl;
+        std::cout << *statusColor << char(220) << colorReset << std::endl;
     }
 
     std::cout << "----------" << std::endl
               << "  " << i << " tests in total";
-    size_t passed = i - failed - skipped;
-    if (passed > 0) std::cout << ", " << passed << " passed";
-    if (failed > 0) std::cout << ", " << failed << " failed";
-    if (skipped > 0) std::cout << ", " << skipped << " skipped";
+    if (passed > 0)  std::cout << ", " << colorPass << passed  << " passed"  << colorReset;
+    if (failed > 0)  std::cout << ", " << colorFail << failed  << " failed"  << colorReset;
+    if (skipped > 0) std::cout << ", " << colorSkip << skipped << " skipped" << colorReset;
     std::cout << "." << std::endl;
+
     return 0;
 }
