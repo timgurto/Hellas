@@ -3,11 +3,11 @@
 #include "Test.h"
 #include "../curlUtil.h"
 
-TEST("Read invalid URL")
+SLOW_TEST("Read invalid URL")
     return readFromURL("fake.fake.fake").empty();
 TEND
 
-TEST("Read badly-formed URL")
+SLOW_TEST("Read badly-formed URL")
     return readFromURL("1").empty();
 TEND
 

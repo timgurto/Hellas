@@ -13,23 +13,32 @@ Renderer renderer;
 int main(int argc, char **argv){
     renderer.init();
 
-    size_t failures = 0;
+    Test::args.init(argc, argv);
+
+    size_t failed = 0;
     size_t i = 0;
+    size_t skipped = 0;
     for (const Test &test : Test::testContainer()){
         ++i;
+        if (test.shouldSkip()) {
+            ++skipped;
+            continue;
+        }
         std::cout << "  " << test.description() << "... " << std::flush;
         bool result = test.fun()();
         if (!result){
             std::cout << "\x1b[31mFAIL\x1B[0m";
-            ++failures;
+            ++failed;
         }
         std::cout << std::endl;
     }
 
     std::cout << "----------" << std::endl
-              << "Ran " << i << " tests, "
-              << i - failures << " passed, "
-              << failures << " failed."
-              << std::endl;
+              << "  " << i << " tests in total";
+    size_t passed = i - failed - skipped;
+    if (passed > 0) std::cout << ", " << passed << " passed";
+    if (failed > 0) std::cout << ", " << failed << " failed";
+    if (skipped > 0) std::cout << ", " << skipped << " skipped";
+    std::cout << "." << std::endl;
     return 0;
 }
