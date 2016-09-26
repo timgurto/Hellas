@@ -14,13 +14,13 @@ TEST("Create server and client objects")
     return true;
 TEND
 
-template<typename T>
-static void start(T *t){
-    t->run();
-}
-
-TEST("Start server")
+TEST("Start and stop server")
+    LogConsole log;
     Server server;
-    std::thread(start<Server>, &server).detach();
+    Socket::debug = &log;
+    std::thread([& server](){ server.run(); }).detach(); // Run server loop in new thread
+    while (!server.running()) ; // Wait for server to begin running
+    server.loop(false); // Stop server
+    while (server.running()) ; // Wait for server to finish
     return true;
 TEND

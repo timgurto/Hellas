@@ -48,6 +48,11 @@ public:
 
     mutable LogConsole _debug;
 
+    // Accessors
+    bool loop() const { return _loop; }
+    void loop(bool b){ _loop = b; }
+    bool running() const { return _running; }
+
 private:
 
     static Server *_instance;
@@ -61,6 +66,7 @@ private:
     Socket _socket;
 
     bool _loop;
+    bool _running; // True while run() is being executed.
 
     // Messages
     std::queue<std::pair<Socket, std::string> > _messages;

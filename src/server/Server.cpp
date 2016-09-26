@@ -45,7 +45,8 @@ Server::Server():
 _time(SDL_GetTicks()),
 _lastTime(_time),
 _socket(),
-_loop(true),
+_loop(false),
+_running(false),
 _mapX(0),
 _mapY(0),
 _debug("server.log"),
@@ -162,6 +163,8 @@ void Server::checkSockets(){
 }
 
 void Server::run(){
+    _loop = true;
+    _running = true;
     while (_loop) {
         _time = SDL_GetTicks();
         const ms_t timeElapsed = _time - _lastTime;
@@ -211,6 +214,7 @@ void Server::run(){
     for(const User &user : _users){
         writeUserData(user);
     }
+    _running = false;
 }
 
 void Server::addUser(const Socket &socket, const std::string &name){
