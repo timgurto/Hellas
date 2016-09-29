@@ -21,7 +21,6 @@ private:
     static testContainer_t *_testContainer;
 
 public:
-    static Args args;
     static testContainer_t &testContainer();
     static const size_t STATUS_MARGIN;
 

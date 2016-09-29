@@ -14,7 +14,7 @@ Renderer renderer;
 int main(int argc, char **argv){
     renderer.init();
 
-    Test::args.init(argc, argv);
+    cmdLineArgs.init(argc, argv);
 
     std::string
         colorStart = "\x1B[38;2;0;127;127m",

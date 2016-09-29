@@ -1,10 +1,13 @@
 // (C) 2016 Tim Gurto
 
 #include <iostream>
+
 #include "Test.h"
+#include "../Args.h"
+
+extern Args cmdLineArgs;
 
 Test::testContainer_t *Test::_testContainer = nullptr;
-Args Test::args;
 const size_t Test::STATUS_MARGIN = 50;
 
 Test::Test(std::string description, bool slow, testFun_t fun):
@@ -25,5 +28,5 @@ void Test::signalThrower(int signal){
 }
 
 bool Test::shouldSkip() const{
-    return _slow && args.contains("skipSlow");
+    return _slow && cmdLineArgs.contains("skipSlow");
 }
