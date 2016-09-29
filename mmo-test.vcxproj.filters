@@ -404,5 +404,8 @@
     <ClInclude Include="src\NormalVariable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\testing\Accessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
