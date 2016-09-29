@@ -83,10 +83,10 @@ void Server::writeUserData(const User &user) const{
     xw.publish();
 }
 
-void Server::loadData(){
+void Server::loadData(const std::string &path){
 
     // Load terrain
-    XmlReader xr("Data/terrain.xml");
+    XmlReader xr(path + "/terrain.xml");
     for (auto elem : xr.getChildren("terrain")) {
         int index;
         if (!xr.findAttr(elem, "index", index))
@@ -99,7 +99,7 @@ void Server::loadData(){
     }
 
     // Object types
-    xr.newFile("Data/objectTypes.xml");
+    xr.newFile(path + "/objectTypes.xml");
     for (auto elem : xr.getChildren("objectType")) {
         std::string id;
         if (!xr.findAttr(elem, "id", id))
@@ -148,7 +148,7 @@ void Server::loadData(){
     }
 
     // NPC types
-    xr.newFile("Data/npcTypes.xml");
+    xr.newFile(path + "/npcTypes.xml");
     for (auto elem : xr.getChildren("npcType")) {
         std::string id;
         if (!xr.findAttr(elem, "id", id))
@@ -177,7 +177,7 @@ void Server::loadData(){
     }
 
     // Items
-    xr.newFile("Data/items.xml");
+    xr.newFile(path + "/items.xml");
     for (auto elem : xr.getChildren("item")) {
         std::string id, name;
         if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name))
@@ -206,7 +206,7 @@ void Server::loadData(){
     }
 
     // Recipes
-    xr.newFile("Data/recipes.xml");
+    xr.newFile(path + "/recipes.xml");
     for (auto elem : xr.getChildren("recipe")) {
         std::string id, name;
         if (!xr.findAttr(elem, "id", id))

@@ -107,7 +107,7 @@ private:
     Object *findObject(size_t serial);
     Object *findObject(const Point &loc);
 
-    void loadData(); // Attempt to load data from files.
+    void loadData(const std::string &path = "Data"); // Attempt to load data from files.
     static void saveData(const objects_t &objects);
     void generateWorld(); // Randomly generate a new world.
 

@@ -10,6 +10,11 @@ _root(nullptr){
     newFile(filename);
 }
 
+XmlReader::XmlReader(const std::string &filename):
+_root(nullptr){
+    newFile(filename);
+}
+
 XmlReader::~XmlReader(){
     _doc.Clear();
 }
@@ -21,6 +26,10 @@ void XmlReader::newFile(const char *filename){
     if (!ret)
         return;
     _root = _doc.FirstChildElement();
+}
+
+void XmlReader::newFile(const std::string &filename){
+    newFile(filename.c_str());
 }
 
 std::set<TiXmlElement *> XmlReader::getChildren(const std::string &val, TiXmlElement *elem) {

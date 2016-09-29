@@ -13,12 +13,15 @@ class XmlReader{
 
 public:
     XmlReader(const char *filename);
+    XmlReader(const std::string &filename);
     ~XmlReader();
 
     operator bool() const { return _root != 0; }
     bool operator!() const { return _root == 0; }
-
-    void newFile(const char *filename); // Close the current file and open a new one
+    
+    // Close the current file and open a new one
+    void newFile(const char *filename);
+    void newFile(const std::string &filename);
     
     static std::set<TiXmlElement *> getChildren(const std::string &val, TiXmlElement *elem);
     std::set<TiXmlElement *> getChildren(const std::string &val) { return getChildren(val, _root); }
