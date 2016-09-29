@@ -3,6 +3,7 @@
 #ifndef XML_READER_H
 #define XML_READER_H
 
+#include <set>
 #include <string>
 #include <tinyxml.h>
 

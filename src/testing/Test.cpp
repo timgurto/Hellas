@@ -8,7 +8,7 @@
 extern Args cmdLineArgs;
 
 Test::testContainer_t *Test::_testContainer = nullptr;
-const size_t Test::STATUS_MARGIN = 50;
+const size_t Test::STATUS_MARGIN = 40;
 
 Test::Test(std::string description, bool slow, testFun_t fun):
     _description(description),

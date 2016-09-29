@@ -50,7 +50,7 @@ int main(int argc, char **argv){
                 ++passed;
             }
         }
-        std::cout << *statusColor << char(220) << colorReset << std::endl;
+        std::cout << *statusColor << char(254) << colorReset << std::endl;
     }
 
     std::cout << "----------" << std::endl
