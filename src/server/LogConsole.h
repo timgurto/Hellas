@@ -17,8 +17,13 @@ public:
 
     void operator()(const std::string &message, const Color &color = Color::YELLOW) override;
 
+    void quiet(bool b = true){ _quiet = b; }
+
     template<typename T>
     LogConsole &operator<<(const T &val) {
+        if (_quiet)
+            return *this;
+
         std::cout << val;
         if (_logFile.is_open())
             _logFile << val;
@@ -30,6 +35,7 @@ public:
 
 private:
     std::ofstream _logFile;
+    bool _quiet; // If true, suppress all messages.
 };
 
 #endif

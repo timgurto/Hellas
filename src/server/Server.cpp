@@ -53,6 +53,8 @@ _debug("server.log"),
 _lastSave(_time){
     _instance = this;
     _debugInstance = &_debug;
+    if (cmdLineArgs.contains("quiet"))
+        _debug.quiet();
 
     _debug << cmdLineArgs << Log::endl;
     Socket::debug = &_debug;

@@ -5,6 +5,8 @@
 
 `-new` generate a new world instead of attempting to load existing data
 
+`-quiet` suppress console output
+
 ### Client arguments
 
 `-debug` displays additional information in the client, to assist with debugging
@@ -22,3 +24,7 @@
 `-username `*`value`* the user as whom the client should log in
 
 `-width `*`value`* the width of the window
+
+### Unit-test arguments
+
+`-skipSlow` skip slow-running tests
