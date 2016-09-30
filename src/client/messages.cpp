@@ -62,6 +62,7 @@ void Client::handleMessage(const std::string &msg){
         {
             if (del != MSG_END)
                 break;
+            _connectionStatus = LOGGED_IN;
             _loggedIn = true;
             _timeSinceConnectAttempt = 0;
             _lastPingSent = _lastPingReply = _time;
@@ -244,6 +245,7 @@ void Client::handleMessage(const std::string &msg){
                     _pendingCharLoc = p;
                 }
                 updateOffset();
+                _connectionStatus = LOADED;
                 _loaded = true;
                 _tooltipNeedsRefresh = true;
                 _mouseMoved = true;

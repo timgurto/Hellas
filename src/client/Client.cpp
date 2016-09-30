@@ -81,10 +81,13 @@ _detailsPane(nullptr),
 _craftingWindow(nullptr),
 _inventoryWindow(nullptr),
 
+_connectionStatus(TRYING),
+
 _actionTimer(0),
 _actionLength(0),
 
 _loop(true),
+_running(false),
 _socket(),
 
 _defaultFont(nullptr),
@@ -496,11 +499,13 @@ void Client::checkSocket(){
                               htons(8888);
         if (connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
             _debug << Color::MMO_RED << "Connection error: " << WSAGetLastError() << Log::endl;
+            _connectionStatus = CONNECTION_ERROR;
         } else {
             _debug("Connected to server", Color::MMO_L_GREEN);
             // Announce player name
             sendMessage(CL_I_AM, _username);
             sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
+            _connectionStatus = CONNECTED;
         }
     }
 
@@ -524,6 +529,7 @@ void Client::checkSocket(){
 }
 
 void Client::run(){
+    _running = true;
 
     ms_t timeAtLastTick = SDL_GetTicks();
     while (_loop) {
@@ -613,6 +619,7 @@ void Client::run(){
         draw();
         SDL_Delay(5);
     }
+    _running  = false;
 }
 
 Entity *Client::getEntityAtMouse(){

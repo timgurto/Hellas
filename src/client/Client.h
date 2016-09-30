@@ -160,6 +160,7 @@ private:
     void startAction(ms_t actionLength); // Start the action timer.  If zero, stop the timer.
 
     bool _loop;
+    bool _running; // True while run() is being executed.
     Socket _socket;
     TTF_Font *_defaultFont;
     px_t _defaultFontOffset; // Vertical offset for game text
@@ -238,11 +239,20 @@ private:
     // Message stuff
     std::queue<std::string> _messages;
     std::string _partialMessage;
-    void checkSocket();
     void sendRawMessage(const std::string &msg = "") const;
     void sendMessage(MessageCode msgCode, const std::string &args = "") const;
     void handleMessage(const std::string &msg);
     void performCommand(const std::string &commandString);
+    
+    enum ConnectionStatus{
+        TRYING,
+        CONNECTED,
+        LOGGED_IN,
+        LOADED,
+        CONNECTION_ERROR
+    };
+    ConnectionStatus _connectionStatus;
+    void checkSocket();
 
     // Confirmation-window stuff
     Window *_confirmationWindow;
