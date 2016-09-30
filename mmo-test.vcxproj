@@ -90,6 +90,9 @@
     <ClCompile Include="src\client\ClientObject.cpp" />
     <ClCompile Include="src\client\ClientObjectType.cpp" />
     <ClCompile Include="src\client\craftingWindow.cpp" />
+    <ClCompile Include="src\client\data.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName)\data-client</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="src\client\drawing.cpp" />
     <ClCompile Include="src\client\Entity.cpp" />
     <ClCompile Include="src\client\EntityType.cpp" />
@@ -127,7 +130,9 @@
     <ClCompile Include="src\server\CollisionChunk.cpp" />
     <ClCompile Include="src\server\collisionDetection.cpp" />
     <ClCompile Include="src\server\Combatant.cpp" />
-    <ClCompile Include="src\server\data.cpp" />
+    <ClCompile Include="src\server\data.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName)\data-server</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="src\server\ServerItem.cpp" />
     <ClCompile Include="src\server\ItemSet.cpp" />
     <ClCompile Include="src\server\LogConsole.cpp" />
@@ -146,6 +151,7 @@
     <ClCompile Include="src\server\User.cpp" />
     <ClCompile Include="src\server\Yield.cpp" />
     <ClCompile Include="src\Socket.cpp" />
+    <ClCompile Include="src\testing\test-graphics.cpp" />
     <ClCompile Include="src\testing\test-math.cpp" />
     <ClCompile Include="src\testing\test-networking.cpp" />
     <ClCompile Include="src\testing\test-objects.cpp" />

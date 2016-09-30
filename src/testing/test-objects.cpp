@@ -25,9 +25,16 @@ TEST("Start and stop server")
     return true;
 TEND
 
-TEST("Multiple calls to Server::loadData()")
+TEST("Server::loadData() replaces, not adds")
     Server s;
     s.loadData("testing/data/basic_rock");
     s.loadData("testing/data/basic_rock");
     return s._objectTypes.size() == 1;
+TEND
+
+TEST("Client::loadData() replaces, not adds")
+    Client c;
+    c.loadData("testing/data/basic_rock");
+    c.loadData("testing/data/basic_rock");
+    return c._objectTypes.size() == 1;
 TEND

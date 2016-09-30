@@ -215,6 +215,7 @@ private:
     Texture getInventoryTooltip() const; // Generate tooltip for the inventory
 
     // Game data
+    void loadData(const std::string &path = "Data");
     std::vector<Terrain> _terrain;
     std::set<ClientItem> _items;
     std::set<Recipe> _recipes;
