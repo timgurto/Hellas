@@ -84,6 +84,10 @@ void Server::writeUserData(const User &user) const{
 }
 
 void Server::loadData(const std::string &path){
+    _terrain.clear();
+    _objectTypes.clear();
+    _items.clear();
+    _recipes.clear();
 
     // Load terrain
     XmlReader xr(path + "/terrain.xml");

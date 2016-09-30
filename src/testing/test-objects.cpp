@@ -24,3 +24,10 @@ TEST("Start and stop server")
     while (server.running()) ; // Wait for server to finish
     return true;
 TEND
+
+TEST("Multiple calls to Server::loadData()")
+    Server s;
+    s.loadData("testing/data/basic_rock");
+    s.loadData("testing/data/basic_rock");
+    return s._objectTypes.size() == 1;
+TEND
