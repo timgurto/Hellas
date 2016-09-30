@@ -123,8 +123,10 @@ void Socket::close(){
                 closesocket(_raw);
             }
             _refCounts.erase(_raw);
-            if (_refCounts.empty())
+            if (_refCounts.empty()){
                 WSACleanup();
+                _winsockInitialized = false;
+            }
         }
     }
 }
