@@ -1,0 +1,35 @@
+<root>
+
+<!--
+Both:
+ - id
+ - container
+ - yield
+ - collisionRect
+ - deconstructs
+
+Client only:
+ - name
+ - xDrawOffset
+ - yDrawOffset
+ - isFlat
+ - gatherSound
+
+Server only:
+ - constructionTimer
+ - gatherReq
+ - class
+-->
+
+<objectType
+    id="rock"
+    name="Rock"
+    xDrawOffset=-20
+    yDrawOffset=-20
+    canGather=1
+    gatherTime=1
+    isFlat=1	>
+    <yield id="fakeStone" initialMean=1 initialSD=0 />
+</objectType>
+
+</root>

@@ -1,0 +1,17 @@
+<root>
+
+<!--
+Both:
+ - id
+ - collisionRect
+
+Client only:
+ - name
+ - xDrawOffset
+ - yDrawOffset
+
+Server only:
+ - class
+-->
+
+</root>

@@ -38,3 +38,10 @@ TEST("Client::loadData() replaces, not adds")
     c.loadData("testing/data/basic_rock");
     return c._objectTypes.size() == 1;
 TEND
+
+TEST("Load object type naming an invalid item")
+    Server s;
+    s.loadData("testing/data/fake_item");
+    auto it = s._items.find(ServerItem("fakeStone"));
+    return it == s._items.end();
+TEND

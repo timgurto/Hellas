@@ -189,7 +189,10 @@ void Server::loadData(const std::string &path){
         ServerItem item(id);
 
         std::string s; int n;
-        if (xr.findAttr(elem, "stackSize", n)) item.stackSize(n);
+        if (xr.findAttr(elem, "stackSize", n))
+            item.stackSize(n);
+        else
+            item.stackSize(1);
         if (xr.findAttr(elem, "constructs", s)){
             // Create dummy ObjectType if necessary
             const ObjectType *ot = findObjectTypeByName(s);
@@ -249,6 +252,16 @@ void Server::loadData(const std::string &path){
         }
         
         _recipes.insert(recipe);
+    }
+
+    // Remove invalid items referred to by objects/recipes
+    for (auto it = _items.begin(); it != _items.end(); ){
+        if (!it->valid()){
+            auto temp = it;
+            ++it;
+            _items.erase(temp);
+        } else
+            ++it;
     }
 
     std::ifstream fs;

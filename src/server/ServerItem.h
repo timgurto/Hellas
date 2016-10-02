@@ -27,6 +27,7 @@ public:
     void stackSize(size_t n) { _stackSize = n; }
     void constructsObject(const ObjectType *obj) { _constructsObject = obj; }
     const ObjectType *constructsObject() const { return _constructsObject; }
+    bool valid() const { return _stackSize > 0; }
 };
 
 bool vectHasSpace(const ServerItem::vect_t &vect, const ServerItem *item, size_t qty = 1);

@@ -1,0 +1,19 @@
+<root>
+
+<!--
+Both:
+ - id
+ - class
+ - constructs
+ - stackSize
+
+Client only:
+ - name
+-->
+
+<item
+    id="stone"
+    name="Stone"
+/>
+
+</root>

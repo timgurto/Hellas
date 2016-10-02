@@ -5,7 +5,7 @@
 
 ServerItem::ServerItem(const std::string &idArg):
 Item(idArg),
-_stackSize(1),
+_stackSize(0),
 _constructsObject(nullptr){}
 
 bool vectHasSpace(const ServerItem::vect_t &vect, const ServerItem *item, size_t qty){
