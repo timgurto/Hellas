@@ -4,6 +4,10 @@
 #include "../XmlReader.h"
 
 void Client::loadData(const std::string &path){
+    _terrain.clear();
+    _items.clear();
+    _recipes.clear();
+    _objectTypes.clear();
 
     // Load terrain
     XmlReader xr(path + "/terrain.xml");
