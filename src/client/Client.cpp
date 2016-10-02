@@ -206,25 +206,6 @@ _debug("client.log"){
 
     Avatar::image("Images/man.png");
 
-    // Load terrain
-    xr.newFile("Data/terrain.xml");
-    for (auto elem : xr.getChildren("terrain")) {
-        int index;
-        if (!xr.findAttr(elem, "index", index))
-            continue;
-        std::string fileName;
-        if (!xr.findAttr(elem, "imageFile", fileName))
-            continue;
-        int isTraversable = 1;
-        xr.findAttr(elem, "isTraversable", isTraversable);
-        if (index >= static_cast<int>(_terrain.size()))
-            _terrain.resize(index+1);
-        int frames = 1, frameTime = 0;
-        xr.findAttr(elem, "frames", frames);
-        xr.findAttr(elem, "frameTime", frameTime);
-        _terrain[index] = Terrain(fileName, isTraversable != 0, frames, frameTime);
-    }
-
     // Player's inventory
     for (size_t i = 0; i != INVENTORY_SIZE; ++i)
         _inventory.push_back(std::make_pair<const ClientItem *, size_t>(nullptr, 0));
