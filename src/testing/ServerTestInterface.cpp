@@ -1,0 +1,35 @@
+// (C) 2016 Tim Gurto
+
+#include <cassert>
+#include <thread>
+
+#include "ServerTestInterface.h"
+#include "Test.h"
+
+void ServerTestInterface::run(){
+    Server &server = _server;
+    std::thread([& server](){ server.run(); }).detach();
+    WAIT_UNTIL (_server.running());
+}
+
+void ServerTestInterface::stop(){
+    _server._loop = false;
+    WAIT_UNTIL (!_server.running());
+}
+
+void ServerTestInterface::setMap(const std::vector<std::vector<size_t> > &map){
+    assert(map.size() > 0);
+    _server._mapX = map.size();
+
+    assert(map[0].size() > 0);
+    _server._mapY = map[0].size();
+    for (auto col : map)
+        assert(col.size() == _server._mapY);
+
+    _server._map = map;
+}
+
+void ServerTestInterface::addObject(const std::string &typeName, const Point &loc){
+    const ObjectType *const type = _server.findObjectTypeByName(typeName);
+    _server.addObject(type, loc);
+}

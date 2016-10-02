@@ -231,6 +231,12 @@
     <ClCompile Include="src\client\data.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\testing\ServerTestInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\testing\ClientTestInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\curlUtil.h">
@@ -413,7 +419,10 @@
     <ClInclude Include="src\NormalVariable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\testing\Accessor.h">
+    <ClInclude Include="src\testing\ServerTestInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\testing\ClientTestInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

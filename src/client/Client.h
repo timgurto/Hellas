@@ -271,6 +271,7 @@ private:
     friend void LogSDL::operator()(const std::string &message, const Color &color);
     friend class ItemSelector;
     friend void Window::hideWindow(void *window);
+    friend class ClientTestInterface;
 };
 
 #endif

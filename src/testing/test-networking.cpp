@@ -1,12 +1,10 @@
 // (C) 2016 Tim Gurto
 
-#include <thread>
-
+#include "ClientTestInterface.h"
+#include "ServerTestInterface.h"
 #include "Test.h"
 #include "../Socket.h"
 #include "../curlUtil.h"
-#include "../client/Client.h"
-#include "../server/Server.h"
 
 SLOW_TEST("Read invalid URL")
     return readFromURL("fake.fake.fake").empty();
@@ -29,23 +27,15 @@ TEST("Use socket after cleanup")
     bool ret = true;
     // Run twice: Winsock will be cleaned up after the first iteration.
     for (size_t i = 0; i != 2; ++i){
-        Server s;
-        std::thread([& s](){ s.run(); }).detach(); // Run server loop in new thread
+        ServerTestInterface s;
+        ClientTestInterface c;
+        s.run();
+        c.run();
 
-        //Create client and wait for login
-        Client c;
-        std::thread([& c](){ c.run(); }).detach(); // Run client loop in new thread
-        while (c._connectionStatus == Client::TRYING) ;
-        if (c._connectionStatus == Client::CONNECTED)
-            ret = true;
-        else
-            ret = false;
+        ret = c.connected(); // false in case of a connection error.
 
-        //Kill client and server
-        c._loop = false;
-        s._loop = false;
-        while (c._running) ;
-        while (s._running) ;
+        c.stop();
+        s.stop();
     }
     return ret;
 TEND

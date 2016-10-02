@@ -49,9 +49,16 @@ public:
     mutable LogConsole _debug;
 
     // Accessors
-    bool loop() const { return _loop; }
-    void loop(bool b){ _loop = b; }
     bool running() const { return _running; }
+
+    // Const Searches/queries
+    size_t findTile(const Point &p) const; // Find the tile type at the specified location.
+    std::list<const User*> findUsersInArea(Point loc, double squareRadius = CULL_DISTANCE) const;
+    const ObjectType *findObjectTypeByName(const std::string &id) const; // Linear complexity
+
+    // Checks whether the object is within range of the user.  If not, a relevant error message is
+    // sent to the client.
+    bool isObjectInRange(const Socket &client, const User &user, const Object *obj) const;
 
 private:
 
@@ -97,7 +104,6 @@ private:
 
     User::byX_t _usersByX; // This and below are for alerting users in a specific area.
     User::byY_t _usersByY;
-    std::list<const User*> findUsersInArea(Point loc, double squareRadius = CULL_DISTANCE) const;
 
     // World state
     typedef std::set<Object *, Object::compareSerial> objects_t;
@@ -114,7 +120,6 @@ private:
     Point mapRand() const; // Return a random point on the map.
     size_t _mapX, _mapY; // Number of tiles in each dimension.
     std::vector<std::vector<size_t>> _map;
-    size_t findTile(const Point &p) const; // Find the tile type at the specified location.
     std::pair<size_t, size_t> getTileCoords(const Point &p) const;
 
     // World data
@@ -122,7 +127,6 @@ private:
     std::set<ServerItem> _items;
     std::set<Recipe> _recipes;
     std::set<const ObjectType *> _objectTypes;
-    const ObjectType *findObjectTypeByName(const std::string &id) const; // Linear complexity
 
     void removeObject(Object &obj,
                       const User *userToExclude = nullptr); // Optionally skip telling a user
@@ -140,13 +144,11 @@ private:
     friend void Object::removeItems(const ItemSet &items);
     friend void Object::giveItem(const ServerItem *item, size_t qty);
 
+    friend class ServerTestInterface;
+
     NPC &addNPC(const NPCType *type, const Point &location); 
     Object &addObject (const ObjectType *type, const Point &location, const User *owner = nullptr);
     Object &addObject (Object *newObj);
-
-    // Checks whether the object is within range of the user.  If not, a relevant error message is
-    // sent to the client.
-    bool isObjectInRange(const Socket &client, const User &user, const Object *obj) const;
 
     // Collision detection
     static const px_t COLLISION_CHUNK_SIZE;

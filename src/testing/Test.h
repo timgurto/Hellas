@@ -39,4 +39,6 @@ public:
 #define SLOW_TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) (name, true, [](){
 #define TEND });
 
+#define WAIT_UNTIL(x) while( ! (x) )
+
 #endif

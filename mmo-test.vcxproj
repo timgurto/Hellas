@@ -151,6 +151,8 @@
     <ClCompile Include="src\server\User.cpp" />
     <ClCompile Include="src\server\Yield.cpp" />
     <ClCompile Include="src\Socket.cpp" />
+    <ClCompile Include="src\testing\ClientTestInterface.cpp" />
+    <ClCompile Include="src\testing\ServerTestInterface.cpp" />
     <ClCompile Include="src\testing\test-graphics.cpp" />
     <ClCompile Include="src\testing\test-math.cpp" />
     <ClCompile Include="src\testing\test-networking.cpp" />
@@ -220,7 +222,8 @@
     <ClInclude Include="src\server\User.h" />
     <ClInclude Include="src\server\Yield.h" />
     <ClInclude Include="src\Socket.h" />
-    <ClInclude Include="src\testing\Accessor.h" />
+    <ClInclude Include="src\testing\ClientTestInterface.h" />
+    <ClInclude Include="src\testing\ServerTestInterface.h" />
     <ClInclude Include="src\testing\Test.h" />
     <ClInclude Include="src\types.h" />
     <ClInclude Include="src\util.h" />
