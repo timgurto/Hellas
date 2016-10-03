@@ -8,6 +8,7 @@ void Client::loadData(const std::string &path){
     _items.clear();
     _recipes.clear();
     _objectTypes.clear();
+    _objects.clear();
 
     // Load terrain
     XmlReader xr(path + "/terrain.xml");
