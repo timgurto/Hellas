@@ -9,12 +9,12 @@
 void ServerTestInterface::run(){
     Server &server = _server;
     std::thread([& server](){ server.run(); }).detach();
-    WAIT_UNTIL (_server.running());
+    WAIT_UNTIL (_server._running);
 }
 
 void ServerTestInterface::stop(){
     _server._loop = false;
-    WAIT_UNTIL (!_server.running());
+    WAIT_UNTIL (!_server._running);
 }
 
 void ServerTestInterface::setMap(const std::vector<std::vector<size_t> > &map){

@@ -48,8 +48,6 @@ public:
 
     mutable LogConsole _debug;
 
-    // Accessors
-    bool running() const { return _running; }
 
     // Const Searches/queries
     size_t findTile(const Point &p) const; // Find the tile type at the specified location.
