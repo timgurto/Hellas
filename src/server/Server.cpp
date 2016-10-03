@@ -451,50 +451,56 @@ void Server::generateWorld(){
         }
 
     const ObjectType *const branch = findObjectTypeByName("branch");
-    for (int i = 0; i != 30; ++i){
-        Point loc;
-        do {
-            loc = mapRand();
-        } while (!isLocationValid(loc, *branch));
-        addObject(branch, loc);
-    }
+    if (branch != nullptr)
+        for (int i = 0; i != 30; ++i){
+            Point loc;
+            do {
+                loc = mapRand();
+            } while (!isLocationValid(loc, *branch));
+            addObject(branch, loc);
+        }
 
     const ObjectType *const tree = findObjectTypeByName("tree");
-    for (int i = 0; i != 10; ++i) {
-        Point loc;
-        do {
-            loc = mapRand();
-        } while (!isLocationValid(loc, *tree));
-        addObject(tree, loc);
-    }
+    if (tree != nullptr)
+        for (int i = 0; i != 10; ++i) {
+            Point loc;
+            do {
+                loc = mapRand();
+            } while (!isLocationValid(loc, *tree));
+            addObject(tree, loc);
+        }
 
     const ObjectType *const chest = findObjectTypeByName("chest");
-    for (int i = 0; i != 10; ++i) {
-        Point loc;
-        do {
-            loc = mapRand();
-        } while (!isLocationValid(loc, *chest));
-        addObject(chest, loc);
-    }
+    if (chest != nullptr)
+        for (int i = 0; i != 10; ++i) {
+            Point loc;
+            do {
+                loc = mapRand();
+            } while (!isLocationValid(loc, *chest));
+            addObject(chest, loc);
+        }
 
     const ObjectType *const tradeCart = findObjectTypeByName("tradeCart");
-    for (int i = 0; i != 20; ++i) {
-        Point loc;
-        do {
-            loc = mapRand();
-        } while (!isLocationValid(loc, *tradeCart));
-        addObject(tradeCart, loc);
-    }
+    if (tradeCart != nullptr)
+        for (int i = 0; i != 20; ++i) {
+            Point loc;
+            do {
+                loc = mapRand();
+            } while (!isLocationValid(loc, *tradeCart));
+            addObject(tradeCart, loc);
+        }
 
     // Critters
     const ObjectType *const critterObj = findObjectTypeByName("critter");
-    const NPCType *const critter = dynamic_cast<const NPCType *const>(critterObj);
-    for (int i = 0; i != 20; ++i) {
-        Point loc;
-        do {
-            loc = mapRand();
-        } while (!isLocationValid(loc, *critter));
-        addObject(new NPC(critter, loc));
+    if (critterObj != nullptr){
+        const NPCType *const critter = dynamic_cast<const NPCType *const>(critterObj);
+        for (int i = 0; i != 20; ++i) {
+            Point loc;
+            do {
+                loc = mapRand();
+            } while (!isLocationValid(loc, *critter));
+            addObject(new NPC(critter, loc));
+        }
     }
 }
 
