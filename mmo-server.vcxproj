@@ -42,14 +42,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)</OutDir>
-    <IntDir>$(Configuration)\</IntDir>
+    <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
     <IncludePath>$(SolutionDir)tinyxml;$(SolutionDir)SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)SDL2;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)SDL2\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
     <TargetName>$(ProjectName)-debug</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)</OutDir>
-    <IntDir>$(Configuration)\</IntDir>
+    <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
     <IncludePath>$(SolutionDir)tinyxml;$(SolutionDir)SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)SDL2;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)SDL2\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
