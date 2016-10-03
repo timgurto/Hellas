@@ -97,14 +97,14 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
         textBox->text(toString(mSlot.wareQty));
         e.addChild(textBox);
         x += QUANTITY_WIDTH + GAP;
-        e.addChild(new ItemSelector(wareItem, x, BUTTON_TOP));
+        e.addChild(new ItemSelector(mSlot.wareItem, x, BUTTON_TOP));
         x += ICON_SIZE + 2 + NAME_WIDTH + 3 * GAP + 2;
         textBox = new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT), true);
         _priceQtyBoxes[i] = textBox;
         textBox->text(toString(mSlot.priceQty));
         e.addChild(textBox);
         x += QUANTITY_WIDTH + GAP;
-        e.addChild(new ItemSelector(priceItem, x, BUTTON_TOP));
+        e.addChild(new ItemSelector(mSlot.priceItem, x, BUTTON_TOP));
         x += ICON_SIZE + 2 + NAME_WIDTH + 2 * GAP + 2;
         e.addChild(new Button(Rect(x, SET_BUTTON_TOP, SET_BUTTON_WIDTH, SET_BUTTON_HEIGHT), "Set",
                               sendMerchantSlot, _serialSlotPairs[i]));
