@@ -16,7 +16,6 @@
 #include "../Color.h"
 #include "../Log.h"
 #include "../util.h"
-#include "../server/MerchantSlot.h"
 
 extern Renderer renderer;
 
@@ -35,7 +34,7 @@ _window(nullptr){
             containerSlots = objectType()->containerSlots(),
             merchantSlots = objectType()->merchantSlots();
         _container = ClientItem::vect_t(containerSlots);
-        _merchantSlots = std::vector<MerchantSlot>(merchantSlots);
+        _merchantSlots = std::vector<ClientMerchantSlot>(merchantSlots);
         _merchantSlotElements = std::vector<Element *>(merchantSlots, nullptr);
         _serialSlotPairs = std::vector<serialSlotPair_t *>(merchantSlots, nullptr);
         for (size_t i = 0; i != merchantSlots; ++i){
@@ -58,9 +57,9 @@ ClientObject::~ClientObject(){
     }
 }
 
-void ClientObject::setMerchantSlot(size_t i, MerchantSlot &mSlotArg){
+void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
     _merchantSlots[i] = mSlotArg;
-    MerchantSlot &mSlot = _merchantSlots[i];
+    ClientMerchantSlot &mSlot = _merchantSlots[i];
 
     if (_window == nullptr)
         return;
@@ -373,7 +372,7 @@ void ClientObject::sendMerchantSlot(void *serialAndSlot){
         return;
     }
     ClientObject &obj = *it->second;
-    MerchantSlot &mSlot = obj._merchantSlots[slot];
+    ClientMerchantSlot &mSlot = obj._merchantSlots[slot];
 
     // Set quantities
     mSlot.wareQty = obj._wareQtyBoxes[slot]->textAsNum();

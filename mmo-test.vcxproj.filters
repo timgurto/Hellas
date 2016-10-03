@@ -237,6 +237,9 @@
     <ClCompile Include="src\testing\ClientTestInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\client\ClientMerchantSlot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\curlUtil.h">
@@ -423,6 +426,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\testing\ClientTestInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\ClientMerchantSlot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

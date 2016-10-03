@@ -156,13 +156,13 @@
     <ClCompile Include="src\server\ItemSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\server\MerchantSlot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\server\Recipe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\client\data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\ClientMerchantSlot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -296,10 +296,10 @@
     <ClInclude Include="src\server\ItemSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\server\MerchantSlot.h">
+    <ClInclude Include="src\server\Recipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\server\Recipe.h">
+    <ClInclude Include="src\client\ClientMerchantSlot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,13 +9,13 @@
 #include <set>
 
 #include "Avatar.h"
+#include "ClientMerchantSlot.h"
 #include "ClientObject.h"
 #include "ClientObjectType.h"
 #include "Entity.h"
 #include "ClientItem.h"
 #include "LogSDL.h"
 #include "Terrain.h"
-#include "../server/MerchantSlot.h"
 #include "../server/Recipe.h"
 #include "ui/ChoiceList.h"
 #include "ui/Container.h"

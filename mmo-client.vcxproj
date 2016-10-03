@@ -98,6 +98,7 @@
     <ClCompile Include="src\Args.cpp" />
     <ClCompile Include="src\client\Avatar.cpp" />
     <ClCompile Include="src\client\Client.cpp" />
+    <ClCompile Include="src\client\ClientMerchantSlot.cpp" />
     <ClCompile Include="src\client\ClientObject.cpp" />
     <ClCompile Include="src\client\ClientObjectType.cpp" />
     <ClCompile Include="src\client\craftingWindow.cpp" />
@@ -135,7 +136,6 @@
     <ClCompile Include="src\Point.cpp" />
     <ClCompile Include="src\Rect.cpp" />
     <ClCompile Include="src\server\ItemSet.cpp" />
-    <ClCompile Include="src\server\MerchantSlot.cpp" />
     <ClCompile Include="src\server\Recipe.cpp" />
     <ClCompile Include="src\Socket.cpp" />
     <ClCompile Include="src\util.cpp" />
@@ -150,6 +150,7 @@
     <ClInclude Include="src\Args.h" />
     <ClInclude Include="src\client\Avatar.h" />
     <ClInclude Include="src\client\Client.h" />
+    <ClInclude Include="src\client\ClientMerchantSlot.h" />
     <ClInclude Include="src\client\ClientObject.h" />
     <ClInclude Include="src\client\ClientObjectType.h" />
     <ClInclude Include="src\client\Entity.h" />
@@ -184,7 +185,6 @@
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\server\ItemSet.h" />
-    <ClInclude Include="src\server\MerchantSlot.h" />
     <ClInclude Include="src\server\Recipe.h" />
     <ClInclude Include="src\Socket.h" />
     <ClInclude Include="src\types.h" />

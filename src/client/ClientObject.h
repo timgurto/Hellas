@@ -6,11 +6,11 @@
 #include <sstream>
 #include <string>
 
+#include "ClientMerchantSlot.h"
 #include "ClientObjectType.h"
 #include "Entity.h"
 #include "ClientItem.h"
 #include "../Point.h"
-#include "../Server/MerchantSlot.h"
 
 class Element;
 struct MerchantSlot;
@@ -23,7 +23,7 @@ class ClientObject : public Entity{
     std::string _owner;
     ClientItem::vect_t _container;
     Window *_window; // For containers, etc.
-    std::vector<MerchantSlot> _merchantSlots;
+    std::vector<ClientMerchantSlot> _merchantSlots;
     // Used for either the trade screen, or the merchant setup screen.
     std::vector<Element *> _merchantSlotElements;
     typedef std::pair<size_t, size_t> serialSlotPair_t;
@@ -68,7 +68,7 @@ public:
 
     bool userHasAccess() const;
 
-    void setMerchantSlot(size_t i, MerchantSlot &mSlot);
+    void setMerchantSlot(size_t i, ClientMerchantSlot &mSlot);
 };
 
 #endif
