@@ -18,7 +18,10 @@ public:
     std::set<ServerItem> &items() { return _server._items; }
     std::set<User> &users() { return _server._users; }
 
-    void setMap(const std::vector<std::vector<size_t> > &map);
+    // 1x1, terrain = 0
+    static const std::vector<std::vector<size_t> > TINY_MAP;
+
+    void setMap(const std::vector<std::vector<size_t> > &map = TINY_MAP);
     void addObject(const std::string &typeName, const Point &loc);
 
     Server *operator->(){ return &_server; }

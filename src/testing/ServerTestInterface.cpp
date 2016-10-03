@@ -6,6 +6,8 @@
 #include "ServerTestInterface.h"
 #include "Test.h"
 
+const std::vector<std::vector<size_t> > ServerTestInterface::TINY_MAP(1, std::vector<size_t>(1,0));
+
 void ServerTestInterface::run(){
     Server &server = _server;
     std::thread([& server](){ server.run(); }).detach();

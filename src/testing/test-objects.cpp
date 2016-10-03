@@ -38,12 +38,7 @@ TEND
 TEST("Gather an item from an object")
     ServerTestInterface s;
     s.loadData("testing/data/basic_rock");
-
-    // Replace map
-    std::vector<std::vector<size_t> > map(1);
-    map[0] = std::vector<size_t>(1, 0);
-    s.setMap(map);
-
+    s.setMap();
     s.run();
 
     ClientTestInterface c;
