@@ -13,12 +13,15 @@
 class Yield{
     struct YieldEntry{
         NormalVariable _initDistribution, _gatherDistribution;
+        double _gatherMean;
     };
 
     std::map<const ServerItem *, YieldEntry> _entries;
 
 public:
     operator bool() const {return !_entries.empty(); }
+
+    double gatherMean(const ServerItem *item) const;
     
     void addItem(const ServerItem *item, double initMean = 1, double initSD = 0,
                  double gatherMean = 1., double gatherSD = 0);

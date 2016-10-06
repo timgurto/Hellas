@@ -73,9 +73,19 @@ const ServerItem *Object::chooseGatherItem() const{
     assert(!_contents.isEmpty());
     assert(_contents.totalQuantity() > 0);
     
-    // Choose random item, weighted by remaining quantity of each item type.
-    size_t i = rand() % _contents.totalQuantity();
+    // Count number of average gathers remaining for each item type.
+    size_t totalGathersRemaining = 0;
+    std::map<const Item *, size_t> gathersRemaining;
     for (auto item : _contents) {
+        size_t qtyRemaining = item.second;
+        double gatherSize = type()->yield().gatherMean(toServerItem(item.first));
+        size_t remaining = ceil(qtyRemaining / gatherSize);
+        gathersRemaining[item.first] = remaining;
+        totalGathersRemaining += remaining;
+    }
+    // Choose random item, weighted by remaining gathers.
+    size_t i = rand() % totalGathersRemaining;
+    for (auto item : gathersRemaining){
         if (i <= item.second)
             return toServerItem(item.first);
         else
