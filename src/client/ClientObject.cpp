@@ -63,7 +63,7 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
 
     if (_window == nullptr)
         return;
-    assert(_merchantSlotElements[i]);
+    assert(_merchantSlotElements[i] != nullptr);
 
     // Update slot element
     Element &e = *_merchantSlotElements[i];

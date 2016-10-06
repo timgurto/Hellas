@@ -47,6 +47,9 @@ public:
     void owner(const std::string &name) { _owner = name; }
     ClientItem::vect_t &container() { return _container; }
     const ClientItem::vect_t &container() const { return _container; }
+    const std::vector<Element *> &merchantSlotElements() const
+        { return _merchantSlotElements; }
+    const Window *window() const { return _window; }
     
     virtual void draw(const Client &client) const;
 

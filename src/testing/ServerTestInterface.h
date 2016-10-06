@@ -26,6 +26,9 @@ public:
 
     Server *operator->(){ return &_server; }
     void loadData(const std::string path){ _server.loadData(path); }
+    void sendMessage(const Socket &socket, MessageCode code, const std::string &args){
+        _server.sendMessage(socket, code, args);
+    }
 };
 
 #endif

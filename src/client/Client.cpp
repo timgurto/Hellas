@@ -127,6 +127,8 @@ _currentMouseOverEntity(nullptr),
 _confirmationWindow(nullptr),
 _confirmationWindowText(nullptr),
 
+_drawingFinished(false),
+
 _serialToDrop(0),
 _slotToDrop(Container::NO_SLOT),
 

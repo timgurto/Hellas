@@ -134,6 +134,7 @@ void Client::draw() const{
     _currentCursor->draw(_mouse);
 
     renderer.present();
+    _drawingFinished = true;
 }
 
 void Client::drawTooltip() const{

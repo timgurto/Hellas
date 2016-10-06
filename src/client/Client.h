@@ -186,6 +186,7 @@ private:
 
 
     void draw() const;
+    mutable bool _drawingFinished; // Set to true after every redraw.
     void drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const;
     void drawTooltip() const;
     // A tooltip which, if it exists, describes the UI element currently moused over.

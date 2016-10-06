@@ -1,5 +1,7 @@
 // (C) 2016 Tim Gurto
 
+#include <cassert>
+#include <csignal>
 #include <cstdlib>
 #include <SDL.h>
 
@@ -50,7 +52,7 @@ TEST("Gather an item from an object")
     const User &user = *s.users().begin();
     const_cast<User &>(user).updateLocation(Point(10, 10));
 
-    // Replace objects and NPCs with a single rock
+    // Add a single rock
     s.addObject("rock", Point(10, 10));
     WAIT_UNTIL (c.objects().size() == 1);
 
@@ -75,4 +77,51 @@ TEST("Gather an item from an object")
     s.stop();
 
     return ret;
+TEND
+
+TEST("View merchant slots in window")
+    ServerTestInterface s;
+    s.loadData("testing/data/merchant");
+    s.setMap();
+    s.run();
+
+    ClientTestInterface c;
+    c.loadData("testing/data/merchant");
+    c.run();
+
+    // Move user to object
+    WAIT_UNTIL (s.users().size() == 1);
+    const User &user = *s.users().begin();
+    const_cast<User &>(user).updateLocation(Point(10, 10));
+
+
+    // Add a single vending machine
+    s.addObject("vendingMachine", Point(10, 10));
+    assert(s.objects().size() == 1);
+    WAIT_UNTIL (c.objects().size() == 1);
+
+    auto it = c.objects().begin();
+    size_t serial = it->first;
+    ClientObject *cObj = it->second;
+
+    // Open merchant object's window
+    cObj->onRightClick(c.client());
+    WAIT_UNTIL (cObj->window() != nullptr);
+
+    // Wait until the merchant interface is drawn
+    typedef const Element *ep_t;
+    const ep_t &e = cObj->merchantSlotElements()[0];
+    WAIT_UNTIL (e != nullptr);
+    WAIT_UNTIL (e->changed() == false);
+
+    // Wait until merchant-slot details are received from server, and the element constructed
+    WAIT_UNTIL (e->children().size() > 0);
+
+    // Expected fail-case crash will happen on redraw.
+    c.waitForRedraw();
+
+    c.stop();
+    s.stop();
+
+    return true;;
 TEND

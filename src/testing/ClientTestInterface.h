@@ -19,8 +19,11 @@ public:
     std::set<ClientObjectType> &objectTypes() { return _client._objectTypes; }
 
     Client *operator->(){ return &_client; }
+    Client &client() { return _client; }
     void loadData(const std::string path){ _client.loadData(path); }
     void sendMessage(MessageCode code, const std::string &args){ _client.sendMessage(code, args); }
+
+    void waitForRedraw();
 };
 
 #endif

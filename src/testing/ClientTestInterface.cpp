@@ -15,3 +15,8 @@ void ClientTestInterface::stop(){
     _client._loop = false;
     WAIT_UNTIL (!_client._running);
 }
+
+void ClientTestInterface::waitForRedraw(){
+    _client._drawingFinished = false;
+    WAIT_UNTIL(_client._drawingFinished);
+}

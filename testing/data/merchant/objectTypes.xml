@@ -1,0 +1,12 @@
+<root>
+
+<objectType
+    id="vendingMachine"
+    name="Rock Vending Machine"
+    xDrawOffset=-20
+    yDrawOffset=-20
+    isFlat=1
+    merchantSlots=2
+/>
+
+</root>
