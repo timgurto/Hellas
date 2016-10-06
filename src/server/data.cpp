@@ -411,37 +411,31 @@ void Server::loadData(const std::string &path){
     generateWorld();
 }
 
-void Server::saveData(const objects_t &objects){
+void Server::saveMap(){
     // Map
-#ifndef SINGLE_THREAD
-    static std::mutex mapFileMutex;
-    mapFileMutex.lock();
-#endif
     XmlWriter xw("World/map.world");
     auto e = xw.addChild("size");
-    const Server &server = Server::instance();
-    xw.setAttr(e, "x", server._mapX);
-    xw.setAttr(e, "y", server._mapY);
-    for (size_t y = 0; y != server._mapY; ++y){
+    xw.setAttr(e, "x", _mapX);
+    xw.setAttr(e, "y", _mapY);
+    for (size_t y = 0; y != _mapY; ++y){
         auto row = xw.addChild("row");
         xw.setAttr(row, "y", y);
-        for (size_t x = 0; x != server._mapX; ++x){
+        for (size_t x = 0; x != _mapX; ++x){
             auto tile = xw.addChild("tile", row);
             xw.setAttr(tile, "x", x);
-            xw.setAttr(tile, "terrain", server._map[x][y]);
+            xw.setAttr(tile, "terrain", _map[x][y]);
         }
     }
     xw.publish();
-#ifndef SINGLE_THREAD
-    mapFileMutex.unlock();
-#endif
+}
 
+void Server::saveData(const objects_t &objects){
     // Objects
 #ifndef SINGLE_THREAD
     static std::mutex objectsFileMutex;
     objectsFileMutex.lock();
 #endif
-    xw.newFile("World/objects.world");
+    XmlWriter xw("World/objects.world");
     for (const Object *obj : objects) {
         if (obj->classTag() != 'o')
             continue;

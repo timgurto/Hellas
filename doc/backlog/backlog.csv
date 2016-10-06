@@ -56,7 +56,7 @@ issue,description,value,effort,type,blockedBy,done
 195,Move object inventory to ABC,3,8,Code quality,,
 196,Move merchant slots to ABC,3,8,Code quality,,
 197,Move gatherable functionality to ABC,3,8,Code quality,,
-198,"Only save map data once, on generation",3,1,Performance,,
+198,"Only save map data once, on generation",3,1,Performance,,TRUE
 199,Empty objects reported as not empty when attempting to dismantle,21,2,Bug,,
 200,Test: objects can be gathered,5,13,Code quality,,TRUE
 201,Use namespaces for server and client,5,21,Code quality,,

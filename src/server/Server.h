@@ -113,6 +113,7 @@ private:
 
     void loadData(const std::string &path = "Data"); // Attempt to load data from files.
     static void saveData(const objects_t &objects);
+    void saveMap();
     void generateWorld(); // Randomly generate a new world.
 
     Point mapRand() const; // Return a random point on the map.

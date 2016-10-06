@@ -502,6 +502,8 @@ void Server::generateWorld(){
             addObject(new NPC(critter, loc));
         }
     }
+
+    saveMap(); // Save data to xml file.
 }
 
 Point Server::mapRand() const{
