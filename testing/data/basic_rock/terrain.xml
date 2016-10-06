@@ -1,13 +1,5 @@
 <root>
 
-<!--
-Both:
- - index
- - isTraversable
-
-Client only:
- - imageFile
--->
-
 <terrain index=0 imageFile="grass" />
+
 </root>
