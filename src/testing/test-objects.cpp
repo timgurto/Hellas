@@ -125,3 +125,46 @@ TEST("View merchant slots in window")
 
     return true;;
 TEND
+
+/*
+One gather worth of 1 million units of iron
+1000 gathers worth of single rocks
+This is to test the new gather algorithm, which would favor rocks rather than iron.
+*/
+TEST("Gather chance is by gathers, not quantity")
+    ServerTestInterface s;
+    s.loadData("testing/data/rare_iron");
+    s.setMap();
+    s.run();
+
+    ClientTestInterface c;
+    c.loadData("testing/data/rare_iron");
+    c.run();
+
+    //Move user to object
+    WAIT_UNTIL (s.users().size() == 1);
+    const User &user = *s.users().begin();
+    const_cast<User &>(user).updateLocation(Point(10, 10));
+
+    // Add a single iron deposit
+    s.addObject("ironDeposit", Point(10, 10));
+    WAIT_UNTIL (c.objects().size() == 1);
+
+    //Gather
+    size_t serial = c.objects().begin()->first;
+    c.sendMessage(CL_GATHER, makeArgs(serial));
+    WAIT_UNTIL (user.action() == User::Action::GATHER) ; // Wait for gathering to start
+    WAIT_UNTIL (user.action() == User::Action::NO_ACTION) ; // Wait for gathering to finish
+
+    bool ret = true;
+
+    //Make sure user has a rock, and not the iron
+    const ServerItem &item = *s.items().find(ServerItem("rock"));
+    if (user.inventory()[0].first != &item)
+        ret = false;
+
+    c.stop();
+    s.stop();
+
+    return ret;
+TEND
