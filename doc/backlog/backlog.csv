@@ -27,15 +27,14 @@ issue,description,value,effort,type,blockedBy,done
 163,Create generic particle system,8,8,Aesthetics,60,
 166,Health stat,8,2,Feature,,TRUE
 167,Static critters w/ health,34,13,Feature,,TRUE
-168,Can attack NPCs,13,55,Feature,,
-169,NPCs can die,13,3,Feature,168,
+169,NPCs can die,13,3,Feature,206,
 170,Attack stat,8,1,Feature,,TRUE
-171,NPC loot,13,34,Feature,169
-172,Critter run-away AI,5,34,Feature,168
-173,Animal that fights back,21,21,Feature,168
+171,NPC loot,13,34,Feature,169,
+172,Critter run-away AI,5,34,Feature,206
+173,Animal that fights back,21,21,Feature,206
 174,Player death,13,5,Feature,173
 175,NPC spawning,5,21,Feature,
-176,PVP,13,3,Feature,168
+176,PVP,13,3,Feature,206
 177,Character has gear slots,13,21,Feature,
 178,Items can match gear slots,8,3,Feature,177
 179,Gear can have stats,13,8,Feature,178
@@ -46,7 +45,7 @@ issue,description,value,effort,type,blockedBy,done
 185,Python client with text interface,34,21,Feature,
 186,Random Python AI,8,13,Feature,189
 187,Woodcutter Python AI,13,55,Feature,189
-188,Merchant Python AI,5,55,Feature,189,
+188,Merchant Python AI,5,55,Feature,189
 189,Auto-login for Python client,8,13,Feature,185,
 190,Release scrollbar on mouse up,5,2,Bug,,
 191,Allow external clients to connect,55,13,Feature,,TRUE
@@ -61,3 +60,9 @@ issue,description,value,effort,type,blockedBy,done
 200,Test: objects can be gathered,5,13,Code quality,,TRUE
 201,Use namespaces for server and client,5,21,Code quality,,
 202,Include finished tasks in backlog,3,3,Documentation,,TRUE
+203,Attack cursor over NPCs,5,1,Aesthetics,,
+204,Health bars over NPCs,3,1,Aesthetics,,
+205,Users can have target NPCs,8,2,Feature,
+206,Deal constant damage every 1s when close to target,21,8,Feature,205
+207,Display target name/health in UI,5,2,Aesthetics,205
+208,Allow aggressive and normal targeting on right/left click,5,2,Feature,205
