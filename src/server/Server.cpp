@@ -291,7 +291,8 @@ void Server::addUser(const Socket &socket, const std::string &name){
 void Server::removeUser(const std::set<User>::iterator &it){
     // Alert nearby users
     for (const User *userP : findUsersInArea(it->location()))
-        sendMessage(userP->socket(), SV_USER_DISCONNECTED, it->name());
+        if (userP != &*it)
+            sendMessage(userP->socket(), SV_USER_DISCONNECTED, it->name());
 
     // Save user data
     writeUserData(*it);
