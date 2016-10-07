@@ -62,18 +62,16 @@ TEST("Gather an item from an object")
     WAIT_UNTIL (user.action() == User::Action::GATHER) ; // Wait for gathering to start
     WAIT_UNTIL (user.action() == User::Action::NO_ACTION) ; // Wait for gathering to finish
 
-    bool ret = true;
-
     //Make sure user has item
     const Item &item = *s.items().begin();
     if (user.inventory()[0].first != &item)
-        ret = false;
+        return false;
 
     //Make sure object no longer exists
     else if (!s.objects().empty())
-        ret = false;
+        return false;
 
-    return ret;
+    return true;
 TEND
 
 TEST("View merchant slots in window")
@@ -118,7 +116,6 @@ TEST("View merchant slots in window")
 
     // Expected fail-case crash will happen on redraw.
     c.waitForRedraw();
-
     return true;;
 TEND
 
@@ -152,14 +149,9 @@ TEST("Gather chance is by gathers, not quantity")
     WAIT_UNTIL (user.action() == User::Action::GATHER) ; // Wait for gathering to start
     WAIT_UNTIL (user.action() == User::Action::NO_ACTION) ; // Wait for gathering to finish
 
-    bool ret = true;
-
     //Make sure user has a rock, and not the iron
     const ServerItem &item = *s.items().find(ServerItem("rock"));
-    if (user.inventory()[0].first != &item)
-        ret = false;
-
-    return ret;
+    return user.inventory()[0].first == &item;
 TEND
 
 TEST("Dismantle an object")
@@ -185,14 +177,6 @@ TEST("Dismantle an object")
     size_t serial = c.objects().begin()->first;
     c.sendMessage(CL_DECONSTRUCT, makeArgs(serial));
 
-    bool ret;
-    switch (c.getNextMessage()){
-    case SV_ACTION_STARTED:
-        ret = true;
-    default:
-        ret = false;
-    }
-
-    return ret;
+    return c.getNextMessage() == SV_ACTION_STARTED;
     
 TEND
