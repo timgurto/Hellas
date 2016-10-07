@@ -57,7 +57,8 @@ _lastSave(_time){
         _debug.quiet();
 
     _debug << cmdLineArgs << Log::endl;
-    Socket::debug = &_debug;
+    if (Socket::debug == nullptr)
+        Socket::debug = &_debug;
 
     loadData();
 

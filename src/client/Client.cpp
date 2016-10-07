@@ -187,7 +187,8 @@ _debug("client.log"){
     SDL_ShowCursor(SDL_DISABLE);
 
     _debug << cmdLineArgs << Log::endl;
-    Socket::debug = &_debug;
+    if (Socket::debug == nullptr)
+        Socket::debug = &_debug;
 
     int ret = (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 512) < 0);
     if (ret < 0){

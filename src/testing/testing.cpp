@@ -7,6 +7,8 @@
 #include "Test.h"
 #include "../client/Renderer.h"
 #include "../Args.h"
+#include "../Socket.h"
+#include "../server/LogConsole.h"
 
 Args cmdLineArgs;
 Renderer renderer;
@@ -17,6 +19,9 @@ int main(int argc, char **argv){
     renderer.init();
 
     cmdLineArgs.init(argc, argv);
+
+    LogConsole log;
+    Socket::debug = &log;
 
     std::string
         colorStart = "\x1B[38;2;0;127;127m",
