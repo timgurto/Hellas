@@ -100,6 +100,8 @@ TEST("View merchant slots in window")
     auto it = c.objects().begin();
     size_t serial = it->first;
     ClientObject *cObj = it->second;
+    if (cObj == nullptr)
+        return false;
 
     // Open merchant object's window
     cObj->onRightClick(c.client());
