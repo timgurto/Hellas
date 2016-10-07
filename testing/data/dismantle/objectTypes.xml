@@ -1,13 +1,14 @@
 <root>
 
 <objectType
-    id="chair"
-    name="Chair"
+    id="box"
+    name="Box"
     xDrawOffset=-20
     yDrawOffset=-20
     isFlat=1
-    deconstructs="chair"
-    deconstructionTime=200
-/>
+    deconstructs="box"
+    deconstructionTime=200 >
+    <container slots=10 />
+</objectType>
 
 </root>

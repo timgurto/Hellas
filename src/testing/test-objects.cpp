@@ -154,7 +154,7 @@ TEST("Gather chance is by gathers, not quantity")
     return user.inventory()[0].first == &item;
 TEND
 
-TEST("Dismantle an object")
+TEST("Dismantle an object with an inventory")
     ServerTestInterface s;
     s.loadData("testing/data/dismantle");
     s.setMap();
@@ -170,7 +170,7 @@ TEST("Dismantle an object")
     const_cast<User &>(user).updateLocation(Point(10, 10));
 
     // Add a single chair
-    s.addObject("chair", Point(10, 10));
+    s.addObject("box", Point(10, 10));
     WAIT_UNTIL (c.objects().size() == 1);
 
     // Deconstruct
