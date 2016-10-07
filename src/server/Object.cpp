@@ -79,7 +79,7 @@ const ServerItem *Object::chooseGatherItem() const{
     for (auto item : _contents) {
         size_t qtyRemaining = item.second;
         double gatherSize = type()->yield().gatherMean(toServerItem(item.first));
-        size_t remaining = ceil(qtyRemaining / gatherSize);
+        size_t remaining = static_cast<size_t>(ceil(qtyRemaining / gatherSize));
         gathersRemaining[item.first] = remaining;
         totalGathersRemaining += remaining;
     }
