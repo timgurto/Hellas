@@ -22,6 +22,8 @@ int main(int argc, char **argv){
 
     LogConsole log;
     Socket::debug = &log;
+    if (cmdLineArgs.contains("quiet"))
+        log.quiet();
 
     std::string
         colorStart = "\x1B[38;2;0;127;127m",
