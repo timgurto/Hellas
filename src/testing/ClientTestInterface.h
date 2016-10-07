@@ -13,6 +13,8 @@ public:
     void run();
     void stop();
 
+    ~ClientTestInterface(){ stop(); }
+
     bool connected() const { return _client._connectionStatus == Client::CONNECTED; }
 
     std::map<size_t, ClientObject*> &objects() { return _client._objects; }

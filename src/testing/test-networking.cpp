@@ -33,9 +33,6 @@ TEST("Use socket after cleanup")
         c.run();
 
         ret = c.connected(); // false in case of a connection error.
-
-        c.stop();
-        s.stop();
     }
     return ret;
 TEND

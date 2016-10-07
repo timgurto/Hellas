@@ -12,6 +12,8 @@ class ServerTestInterface{
 public:
     void run();
     void stop();
+
+    ~ServerTestInterface(){ stop(); }
     
     std::set<const ObjectType *> &objectTypes() { return _server._objectTypes; }
     Server::objects_t &objects() { return _server._objects; }

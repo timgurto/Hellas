@@ -73,9 +73,6 @@ TEST("Gather an item from an object")
     else if (!s.objects().empty())
         ret = false;
 
-    c.stop();
-    s.stop();
-
     return ret;
 TEND
 
@@ -120,9 +117,6 @@ TEST("View merchant slots in window")
     // Expected fail-case crash will happen on redraw.
     c.waitForRedraw();
 
-    c.stop();
-    s.stop();
-
     return true;;
 TEND
 
@@ -163,8 +157,6 @@ TEST("Gather chance is by gathers, not quantity")
     if (user.inventory()[0].first != &item)
         ret = false;
 
-    c.stop();
-    s.stop();
 
     return ret;
 TEND
