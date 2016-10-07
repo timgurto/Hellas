@@ -245,6 +245,7 @@ private:
     void sendMessage(MessageCode msgCode, const std::string &args = "") const;
     void handleMessage(const std::string &msg);
     void performCommand(const std::string &commandString);
+    std::vector<size_t> _messagesReceived;
     
     enum ConnectionStatus{
         TRYING,

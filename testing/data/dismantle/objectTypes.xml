@@ -1,0 +1,13 @@
+<root>
+
+<objectType
+    id="chair"
+    name="Chair"
+    xDrawOffset=-20
+    yDrawOffset=-20
+    isFlat=1
+    deconstructs="chair"
+    deconstructionTime=200
+/>
+
+</root>

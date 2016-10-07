@@ -54,6 +54,7 @@ void Client::handleMessage(const std::string &msg){
         std::istringstream singleMsg(buffer);
         //_debug(buffer, Color::CYAN);
         singleMsg >> del >> msgCode >> del;
+        _messagesReceived.push_back(msgCode);
         Color errorMessageColor = Color::MMO_RED;
 
         switch(msgCode) {

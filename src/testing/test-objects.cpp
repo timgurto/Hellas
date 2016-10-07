@@ -159,6 +159,40 @@ TEST("Gather chance is by gathers, not quantity")
     if (user.inventory()[0].first != &item)
         ret = false;
 
+    return ret;
+TEND
+
+TEST("Dismantle an object")
+    ServerTestInterface s;
+    s.loadData("testing/data/dismantle");
+    s.setMap();
+    s.run();
+
+    ClientTestInterface c;
+    c.loadData("testing/data/dismantle");
+    c.run();
+
+    //Move user to object
+    WAIT_UNTIL (s.users().size() == 1);
+    const User &user = *s.users().begin();
+    const_cast<User &>(user).updateLocation(Point(10, 10));
+
+    // Add a single chair
+    s.addObject("chair", Point(10, 10));
+    WAIT_UNTIL (c.objects().size() == 1);
+
+    // Deconstruct
+    size_t serial = c.objects().begin()->first;
+    c.sendMessage(CL_DECONSTRUCT, makeArgs(serial));
+
+    bool ret;
+    switch (c.getNextMessage()){
+    case SV_ACTION_STARTED:
+        ret = true;
+    default:
+        ret = false;
+    }
 
     return ret;
+    
 TEND
