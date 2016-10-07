@@ -162,6 +162,7 @@
     <ClCompile Include="src\testing\test-math.cpp" />
     <ClCompile Include="src\testing\test-networking.cpp" />
     <ClCompile Include="src\testing\test-objects.cpp" />
+    <ClCompile Include="src\testing\test-ui.cpp" />
     <ClCompile Include="src\testing\test-xml.cpp" />
     <ClCompile Include="src\testing\Test.cpp" />
     <ClCompile Include="src\testing\testing.cpp" />

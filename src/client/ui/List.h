@@ -57,6 +57,8 @@ public:
     bool isScrolledToBottom() const { return _scrolledToBottom; }
     bool isScrollBarVisible() const { return _scrollBar->visible(); }
 
+    size_t size() const { return _content->children().size(); }
+
     virtual void refresh() override;
 };
 
