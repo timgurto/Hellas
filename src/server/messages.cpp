@@ -216,7 +216,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             // Check that it has no inventory
-            if (!obj->container().empty()){
+            if (!obj->isContainerEmpty()){
                 sendMessage(client, SV_NOT_EMPTY);
                 break;
             }

@@ -89,7 +89,6 @@ TEST("View merchant slots in window")
     const User &user = *s.users().begin();
     const_cast<User &>(user).updateLocation(Point(10, 10));
 
-
     // Add a single vending machine
     s.addObject("vendingMachine", Point(10, 10));
     assert(s.objects().size() == 1);
@@ -154,6 +153,17 @@ TEST("Gather chance is by gathers, not quantity")
     return user.inventory()[0].first == &item;
 TEND
 
+TEST("Object container empty check")
+    ObjectType type("box");
+    type.containerSlots(5);
+    Object obj(&type, Point());
+    if (!obj.isContainerEmpty())
+        return false;
+    ServerItem item("rock");
+    obj.container()[1] = std::make_pair(&item, 1);
+    return obj.isContainerEmpty() == false;
+TEND
+
 TEST("Dismantle an object with an inventory")
     ServerTestInterface s;
     s.loadData("testing/data/dismantle");
@@ -178,5 +188,4 @@ TEST("Dismantle an object with an inventory")
     c.sendMessage(CL_DECONSTRUCT, makeArgs(serial));
 
     return c.getNextMessage() == SV_ACTION_STARTED;
-    
 TEND

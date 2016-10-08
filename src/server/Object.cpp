@@ -181,3 +181,10 @@ void Object::removeWatcher(const std::string &username){
     _watchers.erase(username);
     Server::debug() << username << " is no longer watching an object." << Log::endl;
 }
+
+bool Object::isContainerEmpty() const{
+    for (auto pair : _container)
+        if (pair.first != nullptr)
+            return false;
+    return true;
+}

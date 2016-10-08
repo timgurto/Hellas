@@ -48,6 +48,8 @@ public:
     MerchantSlot &merchantSlot(size_t slot) { return _merchantSlots[slot]; }
     const std::set<std::string> &watchers() const { return _watchers; }
 
+    bool isContainerEmpty() const;
+
     virtual char classTag() const { return 'o'; }
 
 
