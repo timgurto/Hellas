@@ -288,7 +288,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (obj2 == 0)
                 containerTo = &user->inventory();
             else {
-                pObj2 = findObject(obj1);
+                pObj2 = findObject(obj2);
                 if (!isObjectInRange(client, *user, pObj2))
                     break;
                 containerTo = &pObj2->container();
