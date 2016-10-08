@@ -73,6 +73,7 @@ Client::Client():
 _cursorNormal(std::string("Images/Cursors/normal.png"), Color::MAGENTA),
 _cursorGather(std::string("Images/Cursors/gather.png"), Color::MAGENTA),
 _cursorContainer(std::string("Images/Cursors/container.png"), Color::MAGENTA),
+_cursorAttack(std::string("Images/Cursors/attack.png"), Color::MAGENTA),
 _currentCursor(&_cursorNormal),
 
 _activeRecipe(nullptr),
@@ -515,6 +516,8 @@ void Client::checkMouseOver(){
             _currentCursor = &_cursorGather;
         else if (objType.containerSlots() != 0)
             _currentCursor = &_cursorContainer;
+        else if (objType.npc())
+            _currentCursor = &_cursorAttack;
     }
 }
 

@@ -12,6 +12,7 @@ _canGather(false),
 _canDeconstruct(false),
 _containerSlots(0),
 _merchantSlots(0),
+_npc(false),
 _gatherSound(nullptr){}
 
 ClientObjectType::~ClientObjectType(){

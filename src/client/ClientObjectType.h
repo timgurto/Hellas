@@ -22,6 +22,7 @@ class ClientObjectType : public EntityType{
     size_t _merchantSlots;
     Mix_Chunk *_gatherSound;
     Rect _collisionRect;
+    bool _npc;
 
 public:
     ClientObjectType(const std::string &id);
@@ -41,6 +42,8 @@ public:
     Mix_Chunk *gatherSound() const { return _gatherSound; }
     const Rect &collisionRect() const { return _collisionRect; }
     void collisionRect(const Rect &r) { _collisionRect = r; }
+    void npc(bool b) { _npc = true; }
+    bool npc() const { return _npc; }
 
     bool operator<(const ClientObjectType &rhs) const { return _id < rhs._id; }
 };

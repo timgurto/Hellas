@@ -148,6 +148,7 @@ void Client::loadData(const std::string &path){
         if (!xr.findAttr(elem, "id", s))
             continue;
         ClientObjectType cot(s);
+        cot.npc(true);
         xr.findAttr(elem, "imageFile", s); // If no explicit imageFile, s will still == id
         cot.image(std::string("Images/NPCs/") + s + ".png");
         if (xr.findAttr(elem, "name", s)) cot.name(s);

@@ -90,7 +90,8 @@ private:
     Texture
         _cursorNormal,
         _cursorGather,
-        _cursorContainer;
+        _cursorContainer,
+        _cursorAttack;
     const Texture *_currentCursor;
 
     // Whether the user has the specified item(s).
