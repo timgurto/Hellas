@@ -3,4 +3,5 @@
 #include "NPC.h"
 
 NPC::NPC(const NPCType *type, const Point &loc):
-Object(type, loc){}
+Object(type, loc),
+_health(type->maxHealth()){}
