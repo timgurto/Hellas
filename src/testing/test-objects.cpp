@@ -49,8 +49,8 @@ TEST("Gather an item from an object")
 
     //Move user to object
     WAIT_UNTIL (s.users().size() == 1);
-    const User &user = *s.users().begin();
-    const_cast<User &>(user).updateLocation(Point(10, 10));
+    User &user = const_cast<User &>(*s.users().begin());
+    user.updateLocation(Point(10, 10));
 
     // Add a single rock
     s.addObject("rock", Point(10, 10));
@@ -135,8 +135,8 @@ TEST("Gather chance is by gathers, not quantity")
 
     //Move user to object
     WAIT_UNTIL (s.users().size() == 1);
-    const User &user = *s.users().begin();
-    const_cast<User &>(user).updateLocation(Point(10, 10));
+    User &user = const_cast<User &>(*s.users().begin());
+    user.updateLocation(Point(10, 10));
 
     // Add a single iron deposit
     s.addObject("ironDeposit", Point(10, 10));
@@ -176,10 +176,10 @@ TEST("Dismantle an object with an inventory")
 
     //Move user to object
     WAIT_UNTIL (s.users().size() == 1);
-    const User &user = *s.users().begin();
-    const_cast<User &>(user).updateLocation(Point(10, 10));
+    User &user = const_cast<User &>(*s.users().begin());
+    user.updateLocation(Point(10, 10));
 
-    // Add a single chair
+    // Add a single box
     s.addObject("box", Point(10, 10));
     WAIT_UNTIL (c.objects().size() == 1);
 
