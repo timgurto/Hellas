@@ -281,7 +281,6 @@ void Client::handleInput(double delta){
                         _constructionFootprint = useItem->constructsObject()->image();
                     else
                         _constructionFootprint = Texture();
-                    return;
                 }
 
                 // Mouse down and up on same entity: onRightClick
