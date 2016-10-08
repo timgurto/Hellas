@@ -14,6 +14,7 @@
 #include "../Point.h"
 #include "../Socket.h"
 
+class NPC;
 class Server;
 
 // Stores information about a single user account for the server
@@ -52,6 +53,8 @@ private:
     ms_t _lastContact;
     ms_t _latency;
 
+    const NPC *_targetNPC;
+
 public:
     User(const std::string &name, const Point &loc, const Socket &socket);
     User(const Socket &rhs); // for use with set::find(), allowing find-by-socket
@@ -67,6 +70,9 @@ public:
     std::pair<const ServerItem *, size_t> &inventory(size_t index);
     ServerItem::vect_t &inventory() { return _inventory; }
     const ServerItem::vect_t &inventory() const { return _inventory; }
+    void targetNPC(const NPC *npc){ _targetNPC = npc; }
+    const NPC *targetNPC() const { return _targetNPC; }
+
 
     virtual health_t maxHealth() const override { return MAX_HEALTH; }
 

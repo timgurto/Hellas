@@ -47,6 +47,8 @@ public:
     const Entity *currentMouseOverEntity() const { return _currentMouseOverEntity; }
     Rect playerCollisionRect() const { return _character.location() +
                                               Avatar::collisionRect(); }
+    void Client::targetNPC(const ClientObject *npc);
+    const ClientObject *targetNPC() const { return _targetNPC; }
 
     static const int PLAYER_ACTION_CHANNEL;
 
@@ -159,6 +161,9 @@ private:
     std::string _actionMessage; // A description of the current action.
     void prepareAction(const std::string &msg); // Set up the action, awaiting server confirmation.
     void startAction(ms_t actionLength); // Start the action timer.  If zero, stop the timer.
+
+    const ClientObject *_targetNPC;
+    std::string _targetNPCName;
 
     bool _loop;
     bool _running; // True while run() is being executed.

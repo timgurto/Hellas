@@ -102,6 +102,9 @@ _leftMouseDownEntity(nullptr),
 _rightMouseDown(false),
 _rightMouseDownEntity(nullptr),
 
+_targetNPC(nullptr),
+_targetNPCName(""),
+
 _time(SDL_GetTicks()),
 _timeElapsed(0),
 _lastPingReply(_time),
@@ -296,6 +299,10 @@ _debug("client.log"){
     healthBar->addChild(new ProgressBar<unsigned>(Rect(0, 0, HEALTH_BAR_LENGTH, HEALTH_BAR_HEIGHT),
                                                   _health, MAX_HEALTH));
     addUI(healthBar);
+
+    // Initialize target display
+    addUI(new LinkedLabel<std::string>(Rect(5, 30, 100, Element::TEXT_HEIGHT), _targetNPCName,
+                                       "Target NPC: "));
 }
 
 Client::~Client(){
@@ -681,4 +688,9 @@ bool Client::outsideCullRange(const Point &loc, px_t hysteresis) const{
     return
         abs(loc.x - _character.location().x) > testCullDist ||
         abs(loc.y - _character.location().y) > testCullDist;
+}
+
+void Client::targetNPC(const ClientObject *npc){ 
+    _targetNPC = npc;
+    _targetNPCName = (npc == nullptr) ? "" : npc->objectType()->name();
 }

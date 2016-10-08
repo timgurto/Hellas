@@ -75,6 +75,9 @@ enum MessageCode{
     // Arguments: serial
     CL_STOP_WATCHING = 41,
 
+    // "I'm targeting NPC ..."
+    CL_TARGET = 50,
+
     // "I want to say ... to everybody". 
     // Arguments: message
     CL_SAY = 60,
@@ -229,6 +232,9 @@ enum MessageCode{
 
     // The object cannot be removed because it has an inventory of items
     SV_NOT_EMPTY = 930,
+
+    // The object is not an NPC
+    SV_NOT_NPC = 931,
 
 
 

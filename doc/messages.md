@@ -30,6 +30,7 @@ Code | Name                     | Syntax                                        
 33   | `CL_CLEAR_MERCHANT_SLOT` | &laquo;33&#8226;serial&#8226;slot                                    | "I want to clear object #`serial`'s merchant slot #`slot`.
 40   | `CL_START_WATCHIMG`      | &laquo;40&#8226;serial&raquo;                                        | "Tell me the details of object #`serial`'s inventory and merchant slots, and alert me of any changes."
 41   | `CL_STOP_WATCHING`       | &laquo;41&#8226;serial&raquo;                                        | "Stop alerting me of changes to object #`serial`."
+50   | `CL_TARGET`              | &laquo;50&#8226;serial&raquo;                                        | "I am targeting NPC #`serial`."
 60   | `CL_SAY`                 | &laquo;60&#8226;message&raquo;                                       | "I want to say '`message`' to everybody."
 61   | `CL_WHISPER`             | &laquo;61&#8226;username&#8226;message&raquo;                        | "I want to say '`message`' to user `username`."
 
@@ -82,3 +83,4 @@ Code | Name                         | Syntax                               | Des
 928  | `SV_NO_PRICE`                | &laquo;928&raquo;                    | "You tried to purchase from a merchant object, but you can't afford it"
 929  | `SV_MERCHANT_INVENTORY_FULL` | &laquo;929&raquo;                    | "You tried to purchase from a merchant object, but it doesn't have enough inventory space to accept your payment"
 930  | `SV_NOT_EMPTY`               | &laquo;930&raquo;                    | "You tried to deconstruct an object that contains an inventory of items"
+931  | `SV_NOT_NPC`                 | &laquo;931&raquo;                    | "You tried to perform an action on an NPC, but that object isn't one"

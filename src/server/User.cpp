@@ -33,6 +33,8 @@ _actionObjectType(nullptr),
 _actionSlot(INVENTORY_SIZE),
 _actionLocation(0, 0),
 
+_targetNPC(nullptr),
+
 _inventory(INVENTORY_SIZE),
 _lastLocUpdate(SDL_GetTicks()),
 _lastContact(SDL_GetTicks()){

@@ -65,6 +65,11 @@ void Client::handleInput(double delta){
 
                 case SDLK_ESCAPE:
                 {
+                    if (_targetNPC != nullptr){
+                        targetNPC(nullptr);
+                        break;
+                    }
+
                     if (_chatTextBox->visible()){
                         _chatTextBox->text("");
                         _chatTextBox->hide();

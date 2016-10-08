@@ -62,7 +62,8 @@ issue,description,value,effort,type,blockedBy,done
 202,Include finished tasks in backlog,3,3,Documentation,,TRUE
 203,Attack cursor over NPCs,5,1,Aesthetics,,TRUE
 204,Health bars over NPCs,3,1,Aesthetics,,
-205,Users can have target NPCs,8,2,Feature,
-206,Deal constant damage every 1s when close to target,21,8,Feature,205
-207,Display target name/health in UI,5,2,Aesthetics,205
-208,Allow aggressive and normal targeting on right/left click,5,2,Feature,205
+205,Users can have target NPCs,8,2,Feature,,TRUE
+206,Deal constant damage every 1s when close to target,21,8,Feature,,
+207,Display target name/health in UI,5,2,Aesthetics,,
+208,Allow aggressive and normal targeting on right/left click,5,2,Feature,,
+209,Memoize texture for other users' names,1,2,Performance,,

@@ -152,12 +152,20 @@ void ClientObject::onRightClick(Client &client){
     }
 
     const ClientObjectType &objType = *objectType();
+    
+    // Gatherable
     if (objType.canGather() && userHasAccess()) {
         client.sendMessage(CL_GATHER, makeArgs(_serial));
         client.prepareAction(std::string("Gathering ") + objType.name());
         playGatherSound();
-    } else {
+    
+    // NPC
+    } else if (objType.npc()){
+        client.sendMessage(CL_TARGET, makeArgs(_serial));
+        client.targetNPC(this);
 
+    // Merchant object
+    } else {
         if (_window != nullptr){
             client.removeWindow(_window);
             client.addWindow(_window);

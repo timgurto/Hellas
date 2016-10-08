@@ -279,6 +279,8 @@ void Client::handleMessage(const std::string &msg){
                 for (auto pair : objectsToRemove){
                     if (pair.second == _currentMouseOverEntity)
                         _currentMouseOverEntity = nullptr;
+                    if (pair.second == _targetNPC)
+                        targetNPC(nullptr);
                     removeEntity(pair.second);
                     _objects.erase(_objects.find(pair.first));
                 }
@@ -384,6 +386,8 @@ void Client::handleMessage(const std::string &msg){
             }
             if (it->second == _currentMouseOverEntity)
                 _currentMouseOverEntity = nullptr;
+            if (it->second == _targetNPC)
+                targetNPC(nullptr);
             removeEntity(it->second);
             _objects.erase(it);
             break;
@@ -551,6 +555,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_MERCHANT_INVENTORY_FULL] =
         "The object does not have enough inventory space for that exchange.";
     _errorMessages[SV_NOT_EMPTY] = "That object is not empty.";
+    _errorMessages[SV_NOT_NPC] = "That object is not an NPC.";
 }
 
 void Client::performCommand(const std::string &commandString){
