@@ -6,6 +6,7 @@
 
 #include "Test.h"
 #include "../Color.h"
+#include "../Point.h"
 #include "../NormalVariable.h"
 
 TEST("Convert from Uint32 to Color and back")
@@ -71,4 +72,11 @@ TEST("NormalVariable copying")
     std::signal(SIGSEGV, prevHandler); // Reset signal handler
 
     return ret;
+TEND
+
+TEST("Distance-to-line with A=B")
+    Point p(10, 10);
+    Point q(5, 3);
+    distance(p, q, q);
+    return true;
 TEND

@@ -22,6 +22,8 @@ double distance(const Point &a, const Point &b){
 }
 
 double distance(const Point &p, const Point &a, const Point &b){
+    if (a == b)
+        return distance(p, a);
     double numerator = (b.y - a.y) * p.x -
                        (b.x - a.x) * p.y +
                        b.x * a.y -
