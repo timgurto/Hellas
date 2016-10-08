@@ -145,161 +145,164 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
 void ClientObject::onRightClick(Client &client){
     //Client::debug() << "Right-clicked on object #" << _serial << Log::endl;
 
+    const ClientObjectType &objType = *objectType();
+
+    // NPC
+    if (objType.npc()){
+        client.sendMessage(CL_TARGET, makeArgs(_serial));
+        client.targetNPC(this);
+        return;
+    }
+
     // Make sure object is in range
     if (distance(client.playerCollisionRect(), collisionRect()) > Client::ACTION_DISTANCE) {
         client._debug("That object is too far away.", Color::MMO_HIGHLIGHT);
         return;
     }
 
-    const ClientObjectType &objType = *objectType();
     
     // Gatherable
     if (objType.canGather() && userHasAccess()) {
         client.sendMessage(CL_GATHER, makeArgs(_serial));
         client.prepareAction(std::string("Gathering ") + objType.name());
         playGatherSound();
+        return;
+    }
     
-    // NPC
-    } else if (objType.npc()){
-        client.sendMessage(CL_TARGET, makeArgs(_serial));
-        client.targetNPC(this);
-
     // Merchant object
-    } else {
-        if (_window != nullptr){
-            client.removeWindow(_window);
-            client.addWindow(_window);
-        }
+    if (_window != nullptr){
+        client.removeWindow(_window);
+        client.addWindow(_window);
+    }
 
-        // Create window, if necessary
-        bool
-            hasContainer = objType.containerSlots() > 0,
-            isMerchant = objType.merchantSlots() > 0;
-        if (userHasAccess() && _window == nullptr &&
-            (hasContainer || isMerchant || objType.canDeconstruct())){
-            static const size_t COLS = 8;
-            static const px_t
-                WINDOW_WIDTH = Container(1, 8, _container).width(),
-                BUTTON_HEIGHT = 15,
-                BUTTON_WIDTH = 60,
-                BUTTON_GAP = 1;
-            px_t x = BUTTON_GAP, y = 0;
-            px_t winWidth = 0;
-            _window = new Window(Rect(0, 0, 0, 0), objType.name());
-            client.addWindow(_window);
+    // Create window, if necessary
+    bool
+        hasContainer = objType.containerSlots() > 0,
+        isMerchant = objType.merchantSlots() > 0;
+    if (userHasAccess() && _window == nullptr &&
+        (hasContainer || isMerchant || objType.canDeconstruct())){
+        static const size_t COLS = 8;
+        static const px_t
+            WINDOW_WIDTH = Container(1, 8, _container).width(),
+            BUTTON_HEIGHT = 15,
+            BUTTON_WIDTH = 60,
+            BUTTON_GAP = 1;
+        px_t x = BUTTON_GAP, y = 0;
+        px_t winWidth = 0;
+        _window = new Window(Rect(0, 0, 0, 0), objType.name());
+        client.addWindow(_window);
 
-            // Merchant setup
-            if (isMerchant){
-                client.watchObject(*this);
-                static const px_t
-                    QUANTITY_WIDTH = 20,
-                    NAME_WIDTH = 100,
-                    GAP = 2,
-                    PANE_WIDTH = Element::ITEM_HEIGHT + QUANTITY_WIDTH + NAME_WIDTH + 2 * GAP,
-                    TITLE_HEIGHT = 14,
-                    SET_BUTTON_WIDTH = 60,
-                    ROW_HEIGHT = Element::ITEM_HEIGHT + 4 * GAP;
-                static const double
-                    MAX_ROWS = 5.5;
-                const px_t
-                    LIST_HEIGHT = toInt(ROW_HEIGHT * min(MAX_ROWS, objType.merchantSlots()));
-                x = GAP;
-                _window->addChild(new Label(Rect(x, y, PANE_WIDTH, TITLE_HEIGHT), "Item to sell",
-                                            Element::CENTER_JUSTIFIED));
-                x += PANE_WIDTH + GAP;
-                Line *vertDivider = new Line(x, y, TITLE_HEIGHT + LIST_HEIGHT, Line::VERTICAL);
-                _window->addChild(vertDivider);
-                x += vertDivider->width() + GAP;
-                _window->addChild(new Label(Rect(x, y, PANE_WIDTH, TITLE_HEIGHT), "Price",
-                                            Element::CENTER_JUSTIFIED));
-                x += PANE_WIDTH + GAP;
-                vertDivider = new Line(x, y, TITLE_HEIGHT + LIST_HEIGHT, Line::VERTICAL);
-                _window->addChild(vertDivider);
-                x += 2 * GAP + vertDivider->width() + SET_BUTTON_WIDTH;
-                x += List::ARROW_W;
-                winWidth = max(winWidth, x);
-                y += Element::TEXT_HEIGHT;
-                List *merchantList = new List(Rect(0, y,
-                                                   PANE_WIDTH * 2 + GAP * 5 + SET_BUTTON_WIDTH + 6 +
-                                                   List::ARROW_W,
-                                                   LIST_HEIGHT),
-                                              ROW_HEIGHT);
-                _window->addChild(merchantList);
-                y += LIST_HEIGHT;
-
-                for (size_t i = 0; i != objType.merchantSlots(); ++i){
-                    _merchantSlotElements[i] = new Element();
-                    merchantList->addChild(_merchantSlotElements[i]);
-                }
-            }
-
-            // Inventory container
-            if (hasContainer){
-                client.watchObject(*this);
-                const size_t slots = objType.containerSlots();
-                size_t rows = (slots - 1) / COLS + 1;
-                Container *container = new Container(rows, COLS, _container, _serial, 0, y);
-                _window->addChild(container);
-                y += container->height();
-                winWidth = max(winWidth, container->width());
-            }
-
-            // Deconstruct button
-            if (objType.canDeconstruct()){
-                y += BUTTON_GAP;
-                Button *deconstructButton = new Button(Rect(0, y, BUTTON_WIDTH, BUTTON_HEIGHT),
-                                                       "Dismantle", startDeconstructing, this);
-                _window->addChild(deconstructButton);
-                // x += BUTTON_GAP + BUTTON_WIDTH;
-                y += BUTTON_GAP + BUTTON_HEIGHT;
-                winWidth = max(winWidth, x);
-            }
-
-            _window->resize(winWidth, y);
-
-        } else if (!userHasAccess() && !_window && isMerchant) {
+        // Merchant setup
+        if (isMerchant){
             client.watchObject(*this);
-            // Draw trade window
             static const px_t
-                GAP = 2,
-                NAME_WIDTH = 100,
                 QUANTITY_WIDTH = 20,
-                BUTTON_PADDING = 1,
-                BUTTON_LABEL_WIDTH = 45,
-                BUTTON_HEIGHT = Element::ITEM_HEIGHT + 2 * BUTTON_PADDING,
-                ROW_HEIGHT = BUTTON_HEIGHT + 2 * GAP,
-                WIDTH = 2 * Element::ITEM_HEIGHT +
-                        2 * NAME_WIDTH +
-                        QUANTITY_WIDTH + 
-                        BUTTON_LABEL_WIDTH +
-                        2 * BUTTON_PADDING +
-                        3 * GAP +
-                        List::ARROW_W;
-            const double
-                MAX_ROWS = 7.5,
-                NUM_ROWS = objType.merchantSlots() < MAX_ROWS ? objType.merchantSlots() : MAX_ROWS;
-            static const px_t
-                HEIGHT = toInt(ROW_HEIGHT * NUM_ROWS);
-            _window = new Window(Rect(0, 0, WIDTH, HEIGHT), objType.name());
-            client.addWindow(_window);
-            List *list = new List(Rect(0, 0, WIDTH, HEIGHT), ROW_HEIGHT);
-            _window->addChild(list);
+                NAME_WIDTH = 100,
+                GAP = 2,
+                PANE_WIDTH = Element::ITEM_HEIGHT + QUANTITY_WIDTH + NAME_WIDTH + 2 * GAP,
+                TITLE_HEIGHT = 14,
+                SET_BUTTON_WIDTH = 60,
+                ROW_HEIGHT = Element::ITEM_HEIGHT + 4 * GAP;
+            static const double
+                MAX_ROWS = 5.5;
+            const px_t
+                LIST_HEIGHT = toInt(ROW_HEIGHT * min(MAX_ROWS, objType.merchantSlots()));
+            x = GAP;
+            _window->addChild(new Label(Rect(x, y, PANE_WIDTH, TITLE_HEIGHT), "Item to sell",
+                                        Element::CENTER_JUSTIFIED));
+            x += PANE_WIDTH + GAP;
+            Line *vertDivider = new Line(x, y, TITLE_HEIGHT + LIST_HEIGHT, Line::VERTICAL);
+            _window->addChild(vertDivider);
+            x += vertDivider->width() + GAP;
+            _window->addChild(new Label(Rect(x, y, PANE_WIDTH, TITLE_HEIGHT), "Price",
+                                        Element::CENTER_JUSTIFIED));
+            x += PANE_WIDTH + GAP;
+            vertDivider = new Line(x, y, TITLE_HEIGHT + LIST_HEIGHT, Line::VERTICAL);
+            _window->addChild(vertDivider);
+            x += 2 * GAP + vertDivider->width() + SET_BUTTON_WIDTH;
+            x += List::ARROW_W;
+            winWidth = max(winWidth, x);
+            y += Element::TEXT_HEIGHT;
+            List *merchantList = new List(Rect(0, y,
+                                                PANE_WIDTH * 2 + GAP * 5 + SET_BUTTON_WIDTH + 6 +
+                                                List::ARROW_W,
+                                                LIST_HEIGHT),
+                                            ROW_HEIGHT);
+            _window->addChild(merchantList);
+            y += LIST_HEIGHT;
+
             for (size_t i = 0; i != objType.merchantSlots(); ++i){
                 _merchantSlotElements[i] = new Element();
-                list->addChild(_merchantSlotElements[i]);
+                merchantList->addChild(_merchantSlotElements[i]);
             }
         }
 
-        if (_window != nullptr) {
-            // Determine placement: center around object, but keep entirely on screen.
-            px_t x = toInt(location().x - _window->width() / 2 + client.offset().x);
-            x = max(0, min(x, Client::SCREEN_X - _window->width()));
-            px_t y = toInt(location().y - _window->height() / 2 + client.offset().y);
-            y = max(0, min(y, Client::SCREEN_Y - _window->height()));
-            _window->rect(x, y);
-
-            _window->show();
+        // Inventory container
+        if (hasContainer){
+            client.watchObject(*this);
+            const size_t slots = objType.containerSlots();
+            size_t rows = (slots - 1) / COLS + 1;
+            Container *container = new Container(rows, COLS, _container, _serial, 0, y);
+            _window->addChild(container);
+            y += container->height();
+            winWidth = max(winWidth, container->width());
         }
+
+        // Deconstruct button
+        if (objType.canDeconstruct()){
+            y += BUTTON_GAP;
+            Button *deconstructButton = new Button(Rect(0, y, BUTTON_WIDTH, BUTTON_HEIGHT),
+                                                    "Dismantle", startDeconstructing, this);
+            _window->addChild(deconstructButton);
+            // x += BUTTON_GAP + BUTTON_WIDTH;
+            y += BUTTON_GAP + BUTTON_HEIGHT;
+            winWidth = max(winWidth, x);
+        }
+
+        _window->resize(winWidth, y);
+
+    } else if (!userHasAccess() && !_window && isMerchant) {
+        client.watchObject(*this);
+        // Draw trade window
+        static const px_t
+            GAP = 2,
+            NAME_WIDTH = 100,
+            QUANTITY_WIDTH = 20,
+            BUTTON_PADDING = 1,
+            BUTTON_LABEL_WIDTH = 45,
+            BUTTON_HEIGHT = Element::ITEM_HEIGHT + 2 * BUTTON_PADDING,
+            ROW_HEIGHT = BUTTON_HEIGHT + 2 * GAP,
+            WIDTH = 2 * Element::ITEM_HEIGHT +
+                    2 * NAME_WIDTH +
+                    QUANTITY_WIDTH + 
+                    BUTTON_LABEL_WIDTH +
+                    2 * BUTTON_PADDING +
+                    3 * GAP +
+                    List::ARROW_W;
+        const double
+            MAX_ROWS = 7.5,
+            NUM_ROWS = objType.merchantSlots() < MAX_ROWS ? objType.merchantSlots() : MAX_ROWS;
+        static const px_t
+            HEIGHT = toInt(ROW_HEIGHT * NUM_ROWS);
+        _window = new Window(Rect(0, 0, WIDTH, HEIGHT), objType.name());
+        client.addWindow(_window);
+        List *list = new List(Rect(0, 0, WIDTH, HEIGHT), ROW_HEIGHT);
+        _window->addChild(list);
+        for (size_t i = 0; i != objType.merchantSlots(); ++i){
+            _merchantSlotElements[i] = new Element();
+            list->addChild(_merchantSlotElements[i]);
+        }
+    }
+
+    if (_window != nullptr) {
+        // Determine placement: center around object, but keep entirely on screen.
+        px_t x = toInt(location().x - _window->width() / 2 + client.offset().x);
+        x = max(0, min(x, Client::SCREEN_X - _window->width()));
+        px_t y = toInt(location().y - _window->height() / 2 + client.offset().y);
+        y = max(0, min(y, Client::SCREEN_Y - _window->height()));
+        _window->rect(x, y);
+
+        _window->show();
     }
 }
 
