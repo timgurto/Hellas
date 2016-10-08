@@ -31,12 +31,17 @@ void Avatar::draw(const Client &client) const{
     }
 
     // Draw username
+    const Color &color = Color::MMO_L_SKIN;
+    const Color &outline = Color::MMO_GREY;
     if (_name != client.username()) {
-        const Texture nameTexture(client.defaultFont(), _name, Color::MMO_L_GREY);
+        const Texture nameTexture(client.defaultFont(), _name, outline);
         Point p = location() + client.offset();
         p.y -= 60;
         p.x -= nameTexture.width() / 2;
-        nameTexture.draw(p);
+        for (int x = -1; x <= 1; x += 2)
+            for (int y = -1; y <= 1; y += 2)
+                nameTexture.draw(p + Point(x, y));
+        Texture(client.defaultFont(), _name, color).draw(p);
     }
 }
 
