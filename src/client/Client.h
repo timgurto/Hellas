@@ -64,6 +64,8 @@ public:
     typedef std::list<Window *> windows_t;
     typedef std::list<Element *> ui_t; // For the UI, that sits below all windows.
 
+    typedef std::set<const ClientObjectType*, ClientObjectType::ptrCompare> objectTypes_t;
+
     static const px_t
         SCREEN_X,
         SCREEN_Y;
@@ -226,7 +228,7 @@ private:
     std::vector<Terrain> _terrain;
     std::set<ClientItem> _items;
     std::set<Recipe> _recipes;
-    std::set<ClientObjectType> _objectTypes;
+    objectTypes_t _objectTypes;
 
     // Information about the state of the world
     size_t _mapX, _mapY;

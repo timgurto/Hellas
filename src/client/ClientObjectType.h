@@ -45,7 +45,11 @@ public:
     void npc(bool b) { _npc = true; }
     bool npc() const { return _npc; }
 
-    bool operator<(const ClientObjectType &rhs) const { return _id < rhs._id; }
+    struct ptrCompare{
+        bool operator()(const ClientObjectType *lhs, const ClientObjectType *rhs){
+            return lhs->_id < rhs->_id;
+        }
+    };
 };
 
 #endif

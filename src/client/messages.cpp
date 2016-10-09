@@ -363,10 +363,14 @@ void Client::handleMessage(const std::string &msg){
             std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()) {
                 // A new object was added; add entity to list
-                const std::set<ClientObjectType>::const_iterator it = _objectTypes.find(type);
-                if (it == _objectTypes.end())
+                ClientObjectType *dummy = new ClientObjectType(type);
+                const Client::objectTypes_t::const_iterator it = _objectTypes.find(dummy);
+                delete dummy;
+                if (it == _objectTypes.end()){
+                    _debug("Received object of invalid type; ignored.", Color::MMO_RED);
                     break;
-                ClientObject *const obj = new ClientObject(serial, &*it, Point(x, y));
+                }
+                ClientObject *const obj = new ClientObject(serial, *it, Point(x, y));
                 _entities.insert(obj);
                 _objects[serial] = obj;
             }

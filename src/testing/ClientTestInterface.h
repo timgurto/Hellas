@@ -18,7 +18,7 @@ public:
     bool connected() const { return _client._connectionStatus == Client::CONNECTED; }
 
     std::map<size_t, ClientObject*> &objects() { return _client._objects; }
-    std::set<ClientObjectType> &objectTypes() { return _client._objectTypes; }
+    Client::objectTypes_t &objectTypes() { return _client._objectTypes; }
 
     Client *operator->(){ return &_client; }
     Client &client() { return _client; }

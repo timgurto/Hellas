@@ -45,9 +45,11 @@ void Client::loadData(const std::string &path){
         else
             item.icon(id);
 
-        if (xr.findAttr(elem, "constructs", s))
+        if (xr.findAttr(elem, "constructs", s)){
             // Create dummy ObjectType if necessary
-            item.constructsObject(&*(_objectTypes.insert(ClientObjectType(s)).first));
+            auto pair = _objectTypes.insert(new ClientObjectType(s));
+            item.constructsObject(*pair.first);
+        }
         
         std::pair<std::set<ClientItem>::iterator, bool> ret = _items.insert(item);
         if (!ret.second) {
@@ -102,29 +104,29 @@ void Client::loadData(const std::string &path){
         std::string s; int n;
         if (!xr.findAttr(elem, "id", s))
             continue;
-        ClientObjectType cot(s);
+        ClientObjectType *cot = new ClientObjectType(s);
         xr.findAttr(elem, "imageFile", s); // If no explicit imageFile, s will still == id
-        cot.image(std::string("Images/Objects/") + s + ".png");
-        if (xr.findAttr(elem, "name", s)) cot.name(s);
-        Rect drawRect(0, 0, cot.width(), cot.height());
+        cot->image(std::string("Images/Objects/") + s + ".png");
+        if (xr.findAttr(elem, "name", s)) cot->name(s);
+        Rect drawRect(0, 0, cot->width(), cot->height());
         bool
             xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
             ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
         if (xSet || ySet)
-            cot.drawRect(drawRect);
-        if (xr.getChildren("yield", elem).size() > 0) cot.canGather(true);
-        if (xr.findAttr(elem, "deconstructs", s)) cot.canDeconstruct(true);
+            cot->drawRect(drawRect);
+        if (xr.getChildren("yield", elem).size() > 0) cot->canGather(true);
+        if (xr.findAttr(elem, "deconstructs", s)) cot->canDeconstruct(true);
         
         auto container = xr.findChild("container", elem);
         if (container != nullptr) {
-            if (xr.findAttr(container, "slots", n)) cot.containerSlots(n);
+            if (xr.findAttr(container, "slots", n)) cot->containerSlots(n);
         }
 
-        if (xr.findAttr(elem, "merchantSlots", n)) cot.merchantSlots(n);
+        if (xr.findAttr(elem, "merchantSlots", n)) cot->merchantSlots(n);
 
-        if (xr.findAttr(elem, "isFlat", n) && n != 0) cot.isFlat(true);
+        if (xr.findAttr(elem, "isFlat", n) && n != 0) cot->isFlat(true);
         if (xr.findAttr(elem, "gatherSound", s))
-            cot.gatherSound(std::string("Sounds/") + s + ".wav");
+            cot->gatherSound(std::string("Sounds/") + s + ".wav");
         auto collisionRect = xr.findChild("collisionRect", elem);
         if (collisionRect) {
             Rect r;
@@ -132,12 +134,13 @@ void Client::loadData(const std::string &path){
             xr.findAttr(collisionRect, "y", r.y);
             xr.findAttr(collisionRect, "w", r.w);
             xr.findAttr(collisionRect, "h", r.h);
-            cot.collisionRect(r);
+            cot->collisionRect(r);
         }
         auto pair = _objectTypes.insert(cot);
         if (!pair.second) {
-            ClientObjectType &type = const_cast<ClientObjectType &>(*pair.first);
-            type = cot;
+            ClientObjectType &type = const_cast<ClientObjectType &>(**pair.first);
+            type = *cot;
+            delete cot;
         }
     }
 
@@ -147,17 +150,17 @@ void Client::loadData(const std::string &path){
         std::string s;
         if (!xr.findAttr(elem, "id", s))
             continue;
-        ClientObjectType cot(s);
-        cot.npc(true);
+        ClientObjectType *cot = new ClientObjectType(s);
+        cot->npc(true);
         xr.findAttr(elem, "imageFile", s); // If no explicit imageFile, s will still == id
-        cot.image(std::string("Images/NPCs/") + s + ".png");
-        if (xr.findAttr(elem, "name", s)) cot.name(s);
-        Rect drawRect(0, 0, cot.width(), cot.height());
+        cot->image(std::string("Images/NPCs/") + s + ".png");
+        if (xr.findAttr(elem, "name", s)) cot->name(s);
+        Rect drawRect(0, 0, cot->width(), cot->height());
         bool
             xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
             ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
         if (xSet || ySet)
-            cot.drawRect(drawRect);
+            cot->drawRect(drawRect);
         auto collisionRect = xr.findChild("collisionRect", elem);
         if (collisionRect) {
             Rect r;
@@ -165,12 +168,13 @@ void Client::loadData(const std::string &path){
             xr.findAttr(collisionRect, "y", r.y);
             xr.findAttr(collisionRect, "w", r.w);
             xr.findAttr(collisionRect, "h", r.h);
-            cot.collisionRect(r);
+            cot->collisionRect(r);
         }
         auto pair = _objectTypes.insert(cot);
         if (!pair.second) {
-            ClientObjectType &type = const_cast<ClientObjectType &>(*pair.first);
-            type = cot;
+            ClientObjectType &type = const_cast<ClientObjectType &>(**pair.first);
+            type = *cot;
+            delete cot;
         }
     }
 

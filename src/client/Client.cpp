@@ -317,6 +317,9 @@ Client::~Client(){
             delete entity;
     }
 
+    for (const ClientObjectType *type : _objectTypes)
+        delete type;
+
     // Some entities will destroy their own windows, and remove them from this list.
     for (Window *window : _windows)
         delete window;
