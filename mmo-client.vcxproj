@@ -99,6 +99,7 @@
     <ClCompile Include="src\client\Avatar.cpp" />
     <ClCompile Include="src\client\Client.cpp" />
     <ClCompile Include="src\client\ClientMerchantSlot.cpp" />
+    <ClCompile Include="src\client\ClientNPC.cpp" />
     <ClCompile Include="src\client\ClientObject.cpp" />
     <ClCompile Include="src\client\ClientObjectType.cpp" />
     <ClCompile Include="src\client\craftingWindow.cpp" />
@@ -112,6 +113,7 @@
     <ClCompile Include="src\client\main.cpp" />
     <ClCompile Include="src\client\LogSDL.cpp" />
     <ClCompile Include="src\client\messages.cpp" />
+    <ClCompile Include="src\client\ClientNPCType.cpp" />
     <ClCompile Include="src\client\Renderer.cpp" />
     <ClCompile Include="src\Client\Terrain.cpp" />
     <ClCompile Include="src\client\Texture.cpp" />
@@ -151,12 +153,14 @@
     <ClInclude Include="src\client\Avatar.h" />
     <ClInclude Include="src\client\Client.h" />
     <ClInclude Include="src\client\ClientMerchantSlot.h" />
+    <ClInclude Include="src\client\ClientNPC.h" />
     <ClInclude Include="src\client\ClientObject.h" />
     <ClInclude Include="src\client\ClientObjectType.h" />
     <ClInclude Include="src\client\Entity.h" />
     <ClInclude Include="src\client\EntityType.h" />
     <ClInclude Include="src\client\ClientItem.h" />
     <ClInclude Include="src\client\LogSDL.h" />
+    <ClInclude Include="src\client\ClientNPCType.h" />
     <ClInclude Include="src\client\Renderer.h" />
     <ClInclude Include="src\Client\Terrain.h" />
     <ClInclude Include="src\client\Texture.h" />

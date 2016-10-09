@@ -30,6 +30,8 @@ public:
     px_t width() const { return _drawRect.w; }
     px_t height() const { return _drawRect.h; }
 
+    virtual char classTag() const { return 'e'; }
+
     void drawAt(const Point &loc) const;
 };
 

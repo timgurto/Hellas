@@ -50,6 +50,8 @@ public:
     const std::vector<Element *> &merchantSlotElements() const
         { return _merchantSlotElements; }
     const Window *window() const { return _window; }
+
+    virtual char classTag() const override { return 'o'; }
     
     virtual void draw(const Client &client) const;
 

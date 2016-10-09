@@ -1,6 +1,7 @@
 // (C) 2016 Tim Gurto
 
 #include "Client.h"
+#include "ClientNPCType.h"
 #include "../XmlReader.h"
 
 void Client::loadData(const std::string &path){
@@ -150,17 +151,16 @@ void Client::loadData(const std::string &path){
         std::string s;
         if (!xr.findAttr(elem, "id", s))
             continue;
-        ClientObjectType *cot = new ClientObjectType(s);
-        cot->npc(true);
+        ClientNPCType *nt = new ClientNPCType(s);
         xr.findAttr(elem, "imageFile", s); // If no explicit imageFile, s will still == id
-        cot->image(std::string("Images/NPCs/") + s + ".png");
-        if (xr.findAttr(elem, "name", s)) cot->name(s);
-        Rect drawRect(0, 0, cot->width(), cot->height());
+        nt->image(std::string("Images/NPCs/") + s + ".png");
+        if (xr.findAttr(elem, "name", s)) nt->name(s);
+        Rect drawRect(0, 0, nt->width(), nt->height());
         bool
             xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
             ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
         if (xSet || ySet)
-            cot->drawRect(drawRect);
+            nt->drawRect(drawRect);
         auto collisionRect = xr.findChild("collisionRect", elem);
         if (collisionRect) {
             Rect r;
@@ -168,13 +168,13 @@ void Client::loadData(const std::string &path){
             xr.findAttr(collisionRect, "y", r.y);
             xr.findAttr(collisionRect, "w", r.w);
             xr.findAttr(collisionRect, "h", r.h);
-            cot->collisionRect(r);
+            nt->collisionRect(r);
         }
-        auto pair = _objectTypes.insert(cot);
+        auto pair = _objectTypes.insert(nt);
         if (!pair.second) {
             ClientObjectType &type = const_cast<ClientObjectType &>(**pair.first);
-            type = *cot;
-            delete cot;
+            type = *nt;
+            delete nt;
         }
     }
 

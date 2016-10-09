@@ -526,7 +526,7 @@ void Client::checkMouseOver(){
             _currentCursor = &_cursorGather;
         else if (objType.containerSlots() != 0)
             _currentCursor = &_cursorContainer;
-        else if (objType.npc())
+        else if (_currentMouseOverEntity->classTag() == 'n')
             _currentCursor = &_cursorAttack;
     }
 }

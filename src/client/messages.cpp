@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include "Client.h"
+#include "ClientNPC.h"
 
 static void readString(std::istream &iss, std::string &str, char delim = MSG_DELIM){
     if (iss.peek() == delim) {
@@ -365,12 +366,22 @@ void Client::handleMessage(const std::string &msg){
                 // A new object was added; add entity to list
                 ClientObjectType *dummy = new ClientObjectType(type);
                 const Client::objectTypes_t::const_iterator it = _objectTypes.find(dummy);
-                delete dummy;
                 if (it == _objectTypes.end()){
                     _debug("Received object of invalid type; ignored.", Color::MMO_RED);
                     break;
                 }
-                ClientObject *const obj = new ClientObject(serial, *it, Point(x, y));
+                ClientObject *obj;
+                switch ((*it)->classTag()){
+                case 'n':
+                {
+                    const ClientNPCType *npcType = static_cast<const ClientNPCType *>(*it);
+                    obj = new ClientNPC(serial, npcType, Point(x, y));
+                    break;
+                }
+                case 'o':
+                default:
+                    obj = new ClientObject(serial, *it, Point(x, y));
+                }
                 _entities.insert(obj);
                 _objects[serial] = obj;
             }

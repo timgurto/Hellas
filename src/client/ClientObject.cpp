@@ -148,7 +148,7 @@ void ClientObject::onRightClick(Client &client){
     const ClientObjectType &objType = *objectType();
 
     // NPC
-    if (objType.npc()){
+    if (classTag() == 'n'){
         client.sendMessage(CL_TARGET, makeArgs(_serial));
         client.targetNPC(this);
         return;
@@ -159,7 +159,6 @@ void ClientObject::onRightClick(Client &client){
         client._debug("That object is too far away.", Color::MMO_HIGHLIGHT);
         return;
     }
-
     
     // Gatherable
     if (objType.canGather() && userHasAccess()) {

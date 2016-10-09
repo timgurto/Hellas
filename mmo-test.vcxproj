@@ -90,6 +90,8 @@
     <ClCompile Include="src\client\Client.cpp" />
     <ClCompile Include="src\client\ClientItem.cpp" />
     <ClCompile Include="src\client\ClientMerchantSlot.cpp" />
+    <ClCompile Include="src\client\ClientNPC.cpp" />
+    <ClCompile Include="src\client\ClientNPCType.cpp" />
     <ClCompile Include="src\client\ClientObject.cpp" />
     <ClCompile Include="src\client\ClientObjectType.cpp" />
     <ClCompile Include="src\client\craftingWindow.cpp" />
@@ -180,6 +182,8 @@
     <ClInclude Include="src\client\Client.h" />
     <ClInclude Include="src\client\ClientItem.h" />
     <ClInclude Include="src\client\ClientMerchantSlot.h" />
+    <ClInclude Include="src\client\ClientNPC.h" />
+    <ClInclude Include="src\client\ClientNPCType.h" />
     <ClInclude Include="src\client\ClientObject.h" />
     <ClInclude Include="src\client\ClientObjectType.h" />
     <ClInclude Include="src\client\Entity.h" />

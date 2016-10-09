@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #ifndef ENTITY_H
 #define ENTITY_H
@@ -39,6 +39,8 @@ public:
     const EntityType *type() const { return _type; }
     bool needsTooltipRefresh() { return _needsTooltipRefresh; }
     const Texture &tooltip() const { return _tooltip; }
+
+    virtual char classTag() const { return 'e'; }
 
     virtual void draw(const Client &client) const;
     virtual void update(double delta) {}
