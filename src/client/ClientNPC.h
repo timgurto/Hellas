@@ -7,10 +7,16 @@
 #include "ClientObject.h"
 
 class ClientNPC : public ClientObject{
+    health_t _health;
+
 public:
     ClientNPC(size_t serial, const ClientNPCType *type = nullptr, const Point &loc = Point());
 
+    const ClientNPCType *npcType() const { return dynamic_cast<const ClientNPCType *>(type()); }
+
     virtual char classTag() const override { return 'n'; }
+
+    virtual void draw(const Client &client) const;
 };
 
 #endif
