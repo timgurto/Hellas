@@ -309,15 +309,16 @@ _debug("client.log"){
         TARGET_X = 50,
         TARGET_Y = 0,
         TARGET_W = 60,
-        TARGET_H = 20,
+        TARGET_H = 23,
         TARGET_BAR_HEIGHT = 7;
     _targetDisplay = new Element(Rect(TARGET_X, TARGET_Y, TARGET_W, TARGET_H));
     _targetDisplay->addChild(new ColorBlock(Rect(0, 0, TARGET_W, TARGET_H)));
+    _targetDisplay->addChild(new ShadowBox(Rect(0, 0, TARGET_W, TARGET_H)));
     _targetDisplay->addChild(new LinkedLabel<std::string>(
-            Rect(1, 0, TARGET_W - 2, Element::TEXT_HEIGHT), _targetNPCName, "", "",
+            Rect(2, 1, TARGET_W - 4, Element::TEXT_HEIGHT), _targetNPCName, "", "",
             Element::CENTER_JUSTIFIED));
     _targetDisplay->addChild(new ProgressBar<health_t>(
-            Rect(1, TARGET_H - TARGET_BAR_HEIGHT - 1, TARGET_W - 2, TARGET_BAR_HEIGHT),
+            Rect(2, TARGET_H - TARGET_BAR_HEIGHT - 2, TARGET_W - 4, TARGET_BAR_HEIGHT),
             _targetNPCHealth, _targetNPCMaxHealth, Color::MMO_L_GREEN));
     _targetDisplay->hide();
     addUI(_targetDisplay);
