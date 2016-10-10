@@ -619,4 +619,9 @@ void Server::sendObjectInfo(const User &user, const Object &object) const{
     sendMessage(user.socket(), SV_OBJECT, makeArgs(object.serial(),
                                                    object.location().x, object.location().y,
                                                    object.type()->id()));
+    if (object.classTag() == 'n'){
+        const NPC &npc = dynamic_cast<const NPC &>(object);
+        if (npc.health() < npc.npcType()->maxHealth())
+            sendMessage(user.socket(), SV_NPC_HEALTH, makeArgs(npc.serial(), npc.health()));
+    }
 }

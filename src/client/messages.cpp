@@ -426,6 +426,26 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_NPC_HEALTH:
+        {
+            int serial, health;
+            singleMsg >> serial >> del >> health >> del;
+            if (del != MSG_END)
+                break;
+            const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
+            if (it == _objects.end()){
+                _debug("Received health info for an unknown object.", Color::MMO_RED);
+                break;
+            }
+            if (it->second->classTag() != 'n'){
+                _debug("Received health info for a non-NPC object.", Color::MMO_RED);
+            }
+            ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
+            npc.health(health);
+            _debug << health << Log::endl;
+            break;
+        }
+
         case SV_HEALTH:
         {
             unsigned health;

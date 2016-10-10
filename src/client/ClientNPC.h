@@ -12,6 +12,9 @@ class ClientNPC : public ClientObject{
 public:
     ClientNPC(size_t serial, const ClientNPCType *type = nullptr, const Point &loc = Point());
 
+    health_t health() const { return _health; }
+    void health(health_t n) { _health = n; }
+
     const ClientNPCType *npcType() const { return dynamic_cast<const ClientNPCType *>(type()); }
 
     virtual char classTag() const override { return 'n'; }

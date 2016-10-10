@@ -134,6 +134,10 @@ enum MessageCode{
     // Arguments: serial, slot, ware, wareQty, price, priceQty
     SV_MERCHANT_SLOT = 126,
 
+    // The health of an NPC
+    // Arguments: serial, health
+    SV_NPC_HEALTH = 127,
+
     // The user has begun an action
     // Arguments: time
     SV_ACTION_STARTED = 130,
@@ -156,6 +160,10 @@ enum MessageCode{
     // "User ... has said ... to you".
     // Arguments: username, message
     SV_WHISPER = 201,
+
+
+
+    // Errors and warnings
 
     // The client has attempted to connect with a username already in use
     SV_DUPLICATE_USERNAME = 900,
