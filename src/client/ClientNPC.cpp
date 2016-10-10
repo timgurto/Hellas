@@ -11,18 +11,10 @@ _health(type->maxHealth())
 {}
 
 void ClientNPC::draw(const Client &client) const{
-    const Point &offset = client.offset();
-
-    // If selected, draw colored base
-    if (client.targetNPC() == this){
-        const Texture &base = client.aggressive() ? client._baseAggressive : client._basePassive;
-    static const Point BASE_OFFSET(-15, -10);
-        base.draw(location() + offset + BASE_OFFSET);
-    }
-
     ClientObject::draw(client);
 
     // Draw health bar if damaged or targeted
+    const Point &offset = client.offset();
     if (client.targetNPC() == this || client.currentMouseOverEntity() == this ||
         _health < npcType()->maxHealth()){
         static const px_t

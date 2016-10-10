@@ -1,6 +1,7 @@
 // (C) 2016 Tim Gurto
 
 #include "Client.h"
+#include "ClientNPC.h"
 #include "Renderer.h"
 
 extern Renderer renderer;
@@ -33,6 +34,13 @@ void Client::draw() const{
                 xLoc -= TILE_W/2;
             drawTile(x, y, xLoc, yLoc);
         }
+    }
+
+    // Base under target NPC
+    if (_targetNPC != nullptr){
+        const Texture &base = aggressive() ? _baseAggressive : _basePassive;
+        static const Point BASE_OFFSET(-15, -10);
+        base.draw(targetNPC()->location() + offset() + BASE_OFFSET);
     }
 
     // Character's target and actual location
