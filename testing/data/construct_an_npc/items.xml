@@ -1,0 +1,9 @@
+<root>
+
+<item
+    id="mechPigKit"
+    name="Mechanical-pig kit"
+    constructs="mechPig"
+/>
+
+</root>

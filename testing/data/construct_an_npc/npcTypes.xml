@@ -1,0 +1,9 @@
+<root>
+
+<npcType
+    id="mechPig"
+    name="Mechanical pig"
+	maxHealth=5 >
+</npcType>
+
+</root>

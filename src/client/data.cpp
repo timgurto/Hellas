@@ -152,7 +152,7 @@ void Client::loadData(const std::string &path){
         if (!xr.findAttr(elem, "id", s)) // No ID: skip
             continue;
         int n;
-        if (xr.findAttr(elem, "maxHealth", n)) // No max health: skip
+        if (!xr.findAttr(elem, "maxHealth", n)) // No max health: skip
             continue;
         ClientNPCType *nt = new ClientNPCType(s, n);
         xr.findAttr(elem, "imageFile", s); // If no explicit imageFile, s will still == id
@@ -175,9 +175,16 @@ void Client::loadData(const std::string &path){
         }
         auto pair = _objectTypes.insert(nt);
         if (!pair.second) {
-            ClientObjectType &type = const_cast<ClientObjectType &>(**pair.first);
-            type = *nt;
-            delete nt;
+            // A ClientObjectType is being pointed to by items; they need to point to this instead.
+            const ClientObjectType *dummy = *pair.first;
+            for (const ClientItem &item : _items)
+                if (item.constructsObject() == dummy){
+                    ClientItem &nonConstItem = const_cast<ClientItem &>(item);
+                    nonConstItem.constructsObject(nt);
+                }
+            _objectTypes.erase(dummy);
+            delete dummy;
+            _objectTypes.insert(nt);
         }
     }
 

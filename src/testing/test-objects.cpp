@@ -8,6 +8,7 @@
 #include "ClientTestInterface.h"
 #include "ServerTestInterface.h"
 #include "Test.h"
+#include "../client/ClientNPCType.h"
 
 TEST("Start and stop server")
     ServerTestInterface server;
@@ -221,4 +222,19 @@ TEST("Place item in object");
 
     // Should be the alert that the object's inventory has changed
     return c.getNextMessage() == SV_INVENTORY;
+TEND
+
+TEST("Constructible NPC")
+    ClientTestInterface c;
+    
+// Load an item that refers to an object type, then an NPC type to define it
+    c.loadData("testing/data/construct_an_npc");
+
+    const ClientObjectType &objType = **c.objectTypes().begin();
+    if (objType.classTag() != 'n')
+        return false;
+
+    // Check its health (to distinguish it from a plain ClientObject)
+    const ClientNPCType &npcType = dynamic_cast<const ClientNPCType &>(objType);
+    return npcType.maxHealth() == 5;
 TEND
