@@ -149,9 +149,12 @@ void Client::loadData(const std::string &path){
     xr.newFile(path + "/npcTypes.xml");
     for (auto elem : xr.getChildren("npcType")) {
         std::string s;
-        if (!xr.findAttr(elem, "id", s))
+        if (!xr.findAttr(elem, "id", s)) // No ID: skip
             continue;
-        ClientNPCType *nt = new ClientNPCType(s);
+        int n;
+        if (xr.findAttr(elem, "maxHealth", n)) // No max health: skip
+            continue;
+        ClientNPCType *nt = new ClientNPCType(s, n);
         xr.findAttr(elem, "imageFile", s); // If no explicit imageFile, s will still == id
         nt->image(std::string("Images/NPCs/") + s + ".png");
         if (xr.findAttr(elem, "name", s)) nt->name(s);

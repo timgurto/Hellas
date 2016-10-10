@@ -2,5 +2,6 @@
 
 #include "ClientNPCType.h"
 
-ClientNPCType::ClientNPCType(const std::string &id):
-ClientObjectType(id){}
+ClientNPCType::ClientNPCType(const std::string &id, health_t maxHealth):
+ClientObjectType(id),
+_maxHealth(maxHealth){}
