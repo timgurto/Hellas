@@ -65,7 +65,7 @@ issue,description,value,effort,type,blockedBy,done
 205,Users can have target NPCs,8,2,Feature,,TRUE
 206,Deal constant damage every 1s when close to target,21,8,Feature,,
 207,Display target name/health in UI,5,2,Aesthetics,,TRUE
-208,Allow aggressive and normal targeting on right/left click,5,2,Feature,,
+208,Allow aggressive and normal targeting on right/left click,5,2,Feature,,TRUE
 209,Memoize texture for other users' names,1,2,Performance,,
 210,Make client-side NPCs a subclass of ClientObject,5,2,Code quality,,TRUE
 211,Fix flaky merchant-slot-window test,13,13,Bug,,

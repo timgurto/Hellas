@@ -39,9 +39,14 @@ void ClientNPC::draw(const Client &client) const{
     }
 }
 
-void ClientNPC::onRightClick(Client &client){
-    client.sendMessage(CL_TARGET, makeArgs(serial()));
-    client.targetNPC(dynamic_cast<const ClientNPC *>(this));
+void ClientNPC::onLeftClick(Client &client){
+    client.targetNPC(this);
     
-    // Note: parent's onRightClick() not called.
+    // Note: parent class's onLeftClick() not called.
+}
+
+void ClientNPC::onRightClick(Client &client){
+    client.targetNPC(this, true);
+    
+    // Note: parent class's onRightClick() not called.
 }

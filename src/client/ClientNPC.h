@@ -19,6 +19,7 @@ public:
 
     virtual char classTag() const override { return 'n'; }
     
+    virtual void onLeftClick(Client &client) override;
     virtual void onRightClick(Client &client) override;
     virtual void draw(const Client &client) const;
 };

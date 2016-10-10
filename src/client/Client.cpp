@@ -109,6 +109,7 @@ _targetNPCHealth(0),
 _targetNPCMaxHealth(0),
 _targetDisplay(nullptr),
 _usernameDisplay(nullptr),
+_aggressive(false),
 
 _time(SDL_GetTicks()),
 _timeElapsed(0),
@@ -722,8 +723,41 @@ bool Client::outsideCullRange(const Point &loc, px_t hysteresis) const{
         abs(loc.y - _character.location().y) > testCullDist;
 }
 
-void Client::targetNPC(const ClientNPC *npc){ 
+void Client::targetNPC(const ClientNPC *npc, bool aggressive){
+    bool tellServer = false;
+    size_t serialToSend = 0;
+
+    // Same target
+    if (npc == _targetNPC){
+        if (aggressive != _aggressive){
+            assert(npc != nullptr);
+            tellServer = true;
+            if (aggressive) // Switching from passive to aggressive
+                serialToSend = npc->serial();
+        }
+    }
+
+    // Was aggressive, but switched
+    else if (_aggressive){
+        tellServer = true;
+        if (npc != nullptr && aggressive)
+            serialToSend = npc->serial();
+    }
+
+    // New target, aggressive
+    else if (aggressive){
+        assert(npc != nullptr);
+        tellServer = true;
+        serialToSend = npc->serial();
+    }
+
     _targetNPC = npc;
+    _aggressive = aggressive;
+
+    if (tellServer){
+        sendMessage(CL_TARGET, makeArgs(serialToSend));
+    }
+
     if (npc == nullptr){
         _targetDisplay->hide();
     } else {

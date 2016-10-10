@@ -519,18 +519,21 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != MSG_END)
                 return;
-            Object *obj = findObject(serial);
-            if (obj == nullptr) {
-                sendMessage(client, SV_DOESNT_EXIST);
-                break;
-            }
-            if (obj->classTag() != 'n'){
-                sendMessage(client, SV_NOT_NPC);
+            Object *obj;
+            if (serial == 0)
+                obj = nullptr;
+            else {
+                obj = findObject(serial);
+                if (obj == nullptr) {
+                    sendMessage(client, SV_DOESNT_EXIST);
+                    break;
+                }
+                if (obj->classTag() != 'n'){
+                    sendMessage(client, SV_NOT_NPC);
+                }
             }
 
             user->targetNPC(dynamic_cast<NPC *>(obj));
-
-            obj->removeWatcher(user->name());
 
             break;
         }

@@ -264,6 +264,8 @@ void Client::handleInput(double delta){
                 if (_leftMouseDownEntity != nullptr &&
                     _currentMouseOverEntity == _leftMouseDownEntity)
                     _currentMouseOverEntity->onLeftClick(*this);
+                else
+                    targetNPC(nullptr);
                 _leftMouseDownEntity = nullptr;
 
                 break;

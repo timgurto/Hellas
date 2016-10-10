@@ -48,7 +48,7 @@ public:
     const Entity *currentMouseOverEntity() const { return _currentMouseOverEntity; }
     Rect playerCollisionRect() const { return _character.location() +
                                               Avatar::collisionRect(); }
-    void targetNPC(const ClientNPC *npc);
+    void targetNPC(const ClientNPC *npc, bool aggressive = false);
     const ClientNPC *targetNPC() const { return _targetNPC; }
 
     static const int PLAYER_ACTION_CHANNEL;
@@ -171,6 +171,11 @@ private:
         _targetNPCHealth,
         _targetNPCMaxHealth;
     Element *_targetDisplay;
+    /*
+    Whether the player is targeting aggressively, i.e., will attack when in range.
+    Used here to decide when to alert server of new targets.
+    */
+    bool _aggressive;
 
     bool _loop;
     bool _running; // True while run() is being executed.
