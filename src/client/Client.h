@@ -140,6 +140,7 @@ private:
     ui_t _ui;
     void addUI(Element *element);
     Element *_castBar;
+    Label *_usernameDisplay;
 
     Element *_chatContainer;
     List *_chatLog;

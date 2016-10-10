@@ -108,6 +108,7 @@ _targetNPCName(""),
 _targetNPCHealth(0),
 _targetNPCMaxHealth(0),
 _targetDisplay(nullptr),
+_usernameDisplay(nullptr),
 
 _time(SDL_GetTicks()),
 _timeElapsed(0),
@@ -294,23 +295,31 @@ _debug("client.log"){
     hardwareStats->addChild(lat);
     addUI(hardwareStats);
 
-    // Initialize health bar
+    // Initialize player display
     static const px_t
-        HEALTH_BAR_LENGTH = 40,
-        HEALTH_BAR_HEIGHT = 13;
-    Element *healthBar = new Element(Rect(0, 0, HEALTH_BAR_LENGTH, HEALTH_BAR_HEIGHT));
+        PLAYER_X = 2,
+        PLAYER_Y = 2,
+        PLAYER_W = 60,
+        PLAYER_H = 23,
+        BAR_HEIGHT = 7;
+    Element *playerDisplay = new Element(Rect(PLAYER_X, PLAYER_Y, PLAYER_W, PLAYER_H));
+    playerDisplay->addChild(new ColorBlock(Rect(0, 0, PLAYER_W, PLAYER_H)));
+    playerDisplay->addChild(new ShadowBox(Rect(0, 0, PLAYER_W, PLAYER_H)));
+    _usernameDisplay = new Label(Rect(2, 1, PLAYER_W - 4, Element::TEXT_HEIGHT), "",
+                                 Element::CENTER_JUSTIFIED);
+    playerDisplay->addChild(_usernameDisplay);
     static const unsigned MAX_HEALTH = 100;
-    healthBar->addChild(new ProgressBar<unsigned>(Rect(0, 0, HEALTH_BAR_LENGTH, HEALTH_BAR_HEIGHT),
-                                                  _health, MAX_HEALTH));
-    addUI(healthBar);
+    playerDisplay->addChild(new ProgressBar<health_t>(
+            Rect(2, PLAYER_H - BAR_HEIGHT - 2, PLAYER_W - 4, BAR_HEIGHT), _health, MAX_HEALTH,
+            Color::MMO_L_GREEN));
+    addUI(playerDisplay);
     
     // Initialize target display
     static const px_t
-        TARGET_X = 50,
-        TARGET_Y = 0,
-        TARGET_W = 60,
-        TARGET_H = 23,
-        TARGET_BAR_HEIGHT = 7;
+        TARGET_X = PLAYER_X * 2 + PLAYER_W,
+        TARGET_Y = PLAYER_Y,
+        TARGET_W = PLAYER_W,
+        TARGET_H = PLAYER_H;
     _targetDisplay = new Element(Rect(TARGET_X, TARGET_Y, TARGET_W, TARGET_H));
     _targetDisplay->addChild(new ColorBlock(Rect(0, 0, TARGET_W, TARGET_H)));
     _targetDisplay->addChild(new ShadowBox(Rect(0, 0, TARGET_W, TARGET_H)));
@@ -318,7 +327,7 @@ _debug("client.log"){
             Rect(2, 1, TARGET_W - 4, Element::TEXT_HEIGHT), _targetNPCName, "", "",
             Element::CENTER_JUSTIFIED));
     _targetDisplay->addChild(new ProgressBar<health_t>(
-            Rect(2, TARGET_H - TARGET_BAR_HEIGHT - 2, TARGET_W - 4, TARGET_BAR_HEIGHT),
+            Rect(2, TARGET_H - BAR_HEIGHT - 2, TARGET_W - 4, BAR_HEIGHT),
             _targetNPCHealth, _targetNPCMaxHealth, Color::MMO_L_GREEN));
     _targetDisplay->hide();
     addUI(_targetDisplay);
@@ -377,6 +386,7 @@ void Client::checkSocket(){
             sendMessage(CL_I_AM, _username);
             sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
             _connectionStatus = CONNECTED;
+            _usernameDisplay->changeText(_username);
         }
     }
 
