@@ -318,8 +318,7 @@ _debug("client.log"){
             Element::CENTER_JUSTIFIED));
     _targetDisplay->addChild(new ProgressBar<health_t>(
             Rect(1, TARGET_H - TARGET_BAR_HEIGHT - 1, TARGET_W - 2, TARGET_BAR_HEIGHT),
-            _targetNPCHealth,
-            _targetNPCMaxHealth));
+            _targetNPCHealth, _targetNPCMaxHealth, Color::MMO_L_GREEN));
     _targetDisplay->hide();
     addUI(_targetDisplay);
 }

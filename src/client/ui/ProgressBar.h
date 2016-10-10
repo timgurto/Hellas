@@ -24,7 +24,9 @@ private:
     virtual void checkIfChanged() override;
 
 public:
-    ProgressBar(const Rect &rect, const T &numerator, const T &denominator);
+    ProgressBar(const Rect &rect, const T &numerator, const T &denominator,
+               const Color&barColor = Color::MMO_PURPLE,
+               const Color &backgroundColor = Color::MMO_D_BLUE);
 };
 
 
@@ -33,16 +35,17 @@ public:
 extern Renderer renderer;
 
 template<typename T>
-ProgressBar<T>::ProgressBar(const Rect &rect, const T &numerator, const T &denominator):
+ProgressBar<T>::ProgressBar(const Rect &rect, const T &numerator, const T &denominator,
+                            const Color &barColor, const Color &backgroundColor):
 Element(rect),
 _numerator(numerator),
 _denominator(denominator),
 _lastNumeratorVal(numerator),
 _lastDenominatorVal(denominator)
 {
-    addChild(new ColorBlock(Rect(1, 1, rect.w - 2, rect.h - 2), Color::MMO_D_BLUE));
+    addChild(new ColorBlock(Rect(1, 1, rect.w - 2, rect.h - 2), backgroundColor));
     addChild(new ShadowBox(Rect(0, 0, rect.w, rect.h), true));
-    _bar = new ColorBlock(Rect(1, 1, rect.w - 2, rect.h - 2), Color::MMO_PURPLE);
+    _bar = new ColorBlock(Rect(1, 1, rect.w - 2, rect.h - 2), barColor);
     addChild(_bar);
 }
 
