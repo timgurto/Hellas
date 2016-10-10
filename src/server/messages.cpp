@@ -614,3 +614,9 @@ void Server::sendMerchantSlotMessage(const User &user, const Object &obj, size_t
     else
         sendMessage(user.socket(), SV_MERCHANT_SLOT, makeArgs(obj.serial(), slot, "", 0, "", 0));
 }
+
+void Server::sendObjectInfo(const User &user, const Object &object) const{
+    sendMessage(user.socket(), SV_OBJECT, makeArgs(object.serial(),
+                                                   object.location().x, object.location().y,
+                                                   object.type()->id()));
+}

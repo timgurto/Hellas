@@ -227,7 +227,7 @@ TEND
 TEST("Constructible NPC")
     ClientTestInterface c;
     
-// Load an item that refers to an object type, then an NPC type to define it
+    // Load an item that refers to an object type, then an NPC type to define it
     c.loadData("testing/data/construct_an_npc");
 
     const ClientObjectType &objType = **c.objectTypes().begin();

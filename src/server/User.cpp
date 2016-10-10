@@ -156,9 +156,7 @@ void User::updateLocation(const Point &dest){
             nearbyObjects.push_back(*it);
     }
     for (const Object *objP : nearbyObjects){
-        server.sendMessage(socket(), SV_OBJECT,
-                           makeArgs(objP->serial(), objP->location().x, objP->location().y,
-                                    objP->type()->id()));
+        server.sendObjectInfo(*this, *objP);
         if (!objP->owner().empty())
             server.sendMessage(socket(), SV_OWNER, makeArgs(objP->serial(), objP->owner()));
     }

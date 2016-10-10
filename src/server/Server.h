@@ -82,6 +82,7 @@ private:
     // obj==nullptr implies the user's inventory, instead of an object's.
     void sendInventoryMessage(const User &user, size_t slot, const Object *obj = nullptr) const;
     void sendMerchantSlotMessage(const User &user, const Object &obj, size_t slot) const;
+    void sendObjectInfo(const User &user, const Object &object) const;
 
     // Clients
     // All connected sockets, including those without registered users

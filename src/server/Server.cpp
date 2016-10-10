@@ -268,8 +268,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
         assert (obj.type() != nullptr);
         if (abs(obj.location().y - loc.y) > CULL_DISTANCE) // Cull y
             continue;
-        sendMessage(newUser.socket(), SV_OBJECT,
-                    makeArgs(obj.serial(), obj.location().x, obj.location().y, obj.type()->id()));
+        sendObjectInfo(newUser, obj);
         if (!obj.owner().empty())
             sendMessage(newUser.socket(), SV_OWNER, makeArgs(obj.serial(), obj.owner()));
     }
@@ -545,8 +544,7 @@ Object &Server::addObject(Object *newObj){
 
     // Alert nearby users
     for (const User *userP : findUsersInArea(loc)){
-        sendMessage(userP->socket(), SV_OBJECT,
-                    makeArgs(newObj->serial(), loc.x, loc.y, newObj->type()->id()));
+        sendObjectInfo(*userP, *newObj);
         if (!newObj->owner().empty())
             sendMessage(userP->socket(), SV_OWNER, makeArgs(newObj->serial(), newObj->owner()));
     }

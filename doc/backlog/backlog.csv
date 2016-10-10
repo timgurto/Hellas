@@ -68,3 +68,4 @@ issue,description,value,effort,type,blockedBy,done
 208,Allow aggressive and normal targeting on right/left click,5,2,Feature,,
 209,Memoize texture for other users' names,1,2,Performance,,
 210,Make client-side NPCs a subclass of ClientObject,5,2,Code quality,,TRUE
+211,Fix flaky merchant-slot-window test,13,13,Bug,,
