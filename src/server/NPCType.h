@@ -10,7 +10,7 @@ class NPCType : public ObjectType{
     health_t _maxHealth;
 
 public:
-    NPCType(const std::string &id);
+    NPCType(const std::string &id, health_t maxHealth);
 
     void maxHealth(health_t hp) { _maxHealth = hp; }
     health_t maxHealth() const { return _maxHealth; }

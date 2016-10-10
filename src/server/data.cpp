@@ -156,9 +156,12 @@ void Server::loadData(const std::string &path){
     xr.newFile(path + "/npcTypes.xml");
     for (auto elem : xr.getChildren("npcType")) {
         std::string id;
-        if (!xr.findAttr(elem, "id", id))
+        if (!xr.findAttr(elem, "id", id)) // No ID: skip
             continue;
-        NPCType *nt = new NPCType(id);
+        int n;
+        if (!xr.findAttr(elem, "maxHealth", n)) // No health: skip
+            continue;
+        NPCType *nt = new NPCType(id, n);
 
         std::string s;
         auto collisionRect = xr.findChild("collisionRect", elem);
@@ -174,7 +177,6 @@ void Server::loadData(const std::string &path){
             if (xr.findAttr(objClass, "name", s))
                 nt->addClass(s);
 
-        int n;
         if (xr.findAttr(elem, "health", n))
             nt->maxHealth(n);
         

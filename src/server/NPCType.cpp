@@ -2,7 +2,7 @@
 
 #include "NPCType.h"
 
-NPCType::NPCType(const std::string &id):
+NPCType::NPCType(const std::string &id, health_t maxHealth):
 ObjectType(id),
-_maxHealth(1)
+_maxHealth(maxHealth)
 {}
