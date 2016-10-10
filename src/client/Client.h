@@ -28,6 +28,7 @@
 #include "../messageCodes.h"
 #include "../types.h"
 
+class ClientNPC;
 class TextBox;
 
 class Client{
@@ -47,8 +48,8 @@ public:
     const Entity *currentMouseOverEntity() const { return _currentMouseOverEntity; }
     Rect playerCollisionRect() const { return _character.location() +
                                               Avatar::collisionRect(); }
-    void Client::targetNPC(const ClientObject *npc);
-    const ClientObject *targetNPC() const { return _targetNPC; }
+    void targetNPC(const ClientNPC *npc);
+    const ClientNPC *targetNPC() const { return _targetNPC; }
 
     static const int PLAYER_ACTION_CHANNEL;
 
@@ -140,7 +141,6 @@ private:
     void addUI(Element *element);
     Element *_castBar;
 
-
     Element *_chatContainer;
     List *_chatLog;
     TextBox *_chatTextBox;
@@ -164,8 +164,12 @@ private:
     void prepareAction(const std::string &msg); // Set up the action, awaiting server confirmation.
     void startAction(ms_t actionLength); // Start the action timer.  If zero, stop the timer.
 
-    const ClientObject *_targetNPC;
+    const ClientNPC *_targetNPC;
     std::string _targetNPCName;
+    health_t
+        _targetNPCHealth,
+        _targetNPCMaxHealth;
+    Element *_targetDisplay;
 
     bool _loop;
     bool _running; // True while run() is being executed.

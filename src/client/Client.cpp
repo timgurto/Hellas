@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "Client.h"
+#include "ClientNPC.h"
 #include "EntityType.h"
 #include "LogSDL.h"
 #include "TooltipBuilder.h"
@@ -104,6 +105,9 @@ _rightMouseDownEntity(nullptr),
 
 _targetNPC(nullptr),
 _targetNPCName(""),
+_targetNPCHealth(0),
+_targetNPCMaxHealth(0),
+_targetDisplay(nullptr),
 
 _time(SDL_GetTicks()),
 _timeElapsed(0),
@@ -292,17 +296,32 @@ _debug("client.log"){
 
     // Initialize health bar
     static const px_t
-        HEALTH_BAR_LENGTH = 130,
+        HEALTH_BAR_LENGTH = 40,
         HEALTH_BAR_HEIGHT = 13;
     Element *healthBar = new Element(Rect(0, 0, HEALTH_BAR_LENGTH, HEALTH_BAR_HEIGHT));
     static const unsigned MAX_HEALTH = 100;
     healthBar->addChild(new ProgressBar<unsigned>(Rect(0, 0, HEALTH_BAR_LENGTH, HEALTH_BAR_HEIGHT),
                                                   _health, MAX_HEALTH));
     addUI(healthBar);
-
+    
     // Initialize target display
-    addUI(new LinkedLabel<std::string>(Rect(5, 30, 100, Element::TEXT_HEIGHT), _targetNPCName,
-                                       "Target NPC: "));
+    static const px_t
+        TARGET_X = 50,
+        TARGET_Y = 0,
+        TARGET_W = 60,
+        TARGET_H = 20,
+        TARGET_BAR_HEIGHT = 7;
+    _targetDisplay = new Element(Rect(TARGET_X, TARGET_Y, TARGET_W, TARGET_H));
+    _targetDisplay->addChild(new ColorBlock(Rect(0, 0, TARGET_W, TARGET_H)));
+    _targetDisplay->addChild(new LinkedLabel<std::string>(
+            Rect(1, 0, TARGET_W - 2, Element::TEXT_HEIGHT), _targetNPCName, "", "",
+            Element::CENTER_JUSTIFIED));
+    _targetDisplay->addChild(new ProgressBar<health_t>(
+            Rect(1, TARGET_H - TARGET_BAR_HEIGHT - 1, TARGET_W - 2, TARGET_BAR_HEIGHT),
+            _targetNPCHealth,
+            _targetNPCMaxHealth));
+    _targetDisplay->hide();
+    addUI(_targetDisplay);
 }
 
 Client::~Client(){
@@ -693,7 +712,14 @@ bool Client::outsideCullRange(const Point &loc, px_t hysteresis) const{
         abs(loc.y - _character.location().y) > testCullDist;
 }
 
-void Client::targetNPC(const ClientObject *npc){ 
+void Client::targetNPC(const ClientNPC *npc){ 
     _targetNPC = npc;
-    _targetNPCName = (npc == nullptr) ? "" : npc->objectType()->name();
+    if (npc == nullptr){
+        _targetDisplay->hide();
+    } else {
+        _targetDisplay->show();
+        _targetNPCName = npc->npcType()->name();
+        _targetNPCHealth = npc->health();
+        _targetNPCMaxHealth = npc->npcType()->maxHealth();
+    }
 }

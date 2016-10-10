@@ -3,6 +3,7 @@
 #include <SDL_mixer.h>
 #include <cassert>
 
+#include "ClientNPC.h"
 #include "ClientObject.h"
 #include "Client.h"
 #include "Renderer.h"
@@ -150,7 +151,7 @@ void ClientObject::onRightClick(Client &client){
     // NPC
     if (classTag() == 'n'){
         client.sendMessage(CL_TARGET, makeArgs(_serial));
-        client.targetNPC(this);
+        client.targetNPC(dynamic_cast<const ClientNPC *>(this));
         return;
     }
 
