@@ -1,4 +1,4 @@
-// (C) 2015 Tim Gurto
+// (C) 2015-2016 Tim Gurto
 
 #ifndef CLIENT_OBJECT_TYPE_H
 #define CLIENT_OBJECT_TYPE_H
@@ -42,7 +42,7 @@ public:
     const Rect &collisionRect() const { return _collisionRect; }
     void collisionRect(const Rect &r) { _collisionRect = r; }
 
-    virtual char classTag() const { return 'o'; }
+    virtual char classTag() const override { return 'o'; }
 
     struct ptrCompare{
         bool operator()(const ClientObjectType *lhs, const ClientObjectType *rhs){

@@ -57,7 +57,7 @@ public:
 
     Rect collisionRect() const { return objectType()->collisionRect() + location(); }
 
-    virtual void onRightClick(Client &client);
+    virtual void onRightClick(Client &client) override;
     static void startDeconstructing(void *object);
     static void trade(void *serialAndSlot);
     static void sendMerchantSlot(void *serialAndSlot);

@@ -283,6 +283,7 @@ private:
 
     friend class Container; // Needs to send CL_SWAP_ITEMS messages, and open a confirmation window
     friend class ClientObject;
+    friend class ClientNPC;
     friend void LogSDL::operator()(const std::string &message, const Color &color);
     friend class ItemSelector;
     friend void Window::hideWindow(void *window);

@@ -38,3 +38,10 @@ void ClientNPC::draw(const Client &client) const{
         renderer.fillRect(Rect(x + barLength, y, BAR_TOTAL_LENGTH - barLength, BAR_HEIGHT) + offset);
     }
 }
+
+void ClientNPC::onRightClick(Client &client){
+    client.sendMessage(CL_TARGET, makeArgs(serial()));
+    client.targetNPC(dynamic_cast<const ClientNPC *>(this));
+    
+    // Note: parent's onRightClick() not called.
+}

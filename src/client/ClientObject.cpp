@@ -148,13 +148,6 @@ void ClientObject::onRightClick(Client &client){
 
     const ClientObjectType &objType = *objectType();
 
-    // NPC
-    if (classTag() == 'n'){
-        client.sendMessage(CL_TARGET, makeArgs(_serial));
-        client.targetNPC(dynamic_cast<const ClientNPC *>(this));
-        return;
-    }
-
     // Make sure object is in range
     if (distance(client.playerCollisionRect(), collisionRect()) > Client::ACTION_DISTANCE) {
         client._debug("That object is too far away.", Color::MMO_HIGHLIGHT);

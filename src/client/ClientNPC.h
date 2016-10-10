@@ -18,7 +18,8 @@ public:
     const ClientNPCType *npcType() const { return dynamic_cast<const ClientNPCType *>(type()); }
 
     virtual char classTag() const override { return 'n'; }
-
+    
+    virtual void onRightClick(Client &client) override;
     virtual void draw(const Client &client) const;
 };
 
