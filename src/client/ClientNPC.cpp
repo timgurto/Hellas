@@ -11,6 +11,15 @@ _health(type->maxHealth())
 {}
 
 void ClientNPC::draw(const Client &client) const{
+    const Point &offset = client.offset();
+
+    // If selected, draw colored base
+    if (client.targetNPC() == this){
+        const Texture &base = client.aggressive() ? client._baseAggressive : client._basePassive;
+    static const Point BASE_OFFSET(-15, -10);
+        base.draw(location() + offset + BASE_OFFSET);
+    }
+
     ClientObject::draw(client);
 
     // Draw health bar if damaged or targeted
@@ -29,7 +38,6 @@ void ClientNPC::draw(const Client &client) const{
             OUTLINE = Color::MMO_OUTLINE,
             COLOR = Color::MMO_L_GREEN,
             BACKGROUND_COLOR = Color::MMO_RED;
-        const Point &offset = client.offset();
         renderer.setDrawColor(Color::MMO_OUTLINE);
         renderer.drawRect(Rect(x-1 + offset.x, y-1 + offset.y, BAR_TOTAL_LENGTH + 2, BAR_HEIGHT + 2));
         renderer.setDrawColor(COLOR);

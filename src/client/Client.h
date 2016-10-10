@@ -50,6 +50,7 @@ public:
                                               Avatar::collisionRect(); }
     void targetNPC(const ClientNPC *npc, bool aggressive = false);
     const ClientNPC *targetNPC() const { return _targetNPC; }
+    bool aggressive() const { return _aggressive; }
 
     static const int PLAYER_ACTION_CHANNEL;
 
@@ -176,6 +177,9 @@ private:
     Used here to decide when to alert server of new targets.
     */
     bool _aggressive;
+    Texture
+        _basePassive,
+        _baseAggressive;
 
     bool _loop;
     bool _running; // True while run() is being executed.

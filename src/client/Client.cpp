@@ -110,6 +110,8 @@ _targetNPCMaxHealth(0),
 _targetDisplay(nullptr),
 _usernameDisplay(nullptr),
 _aggressive(false),
+_basePassive(std::string("Images/targetPassive.png"), Color::MAGENTA),
+_baseAggressive(std::string("Images/targetAggressive.png"), Color::MAGENTA),
 
 _time(SDL_GetTicks()),
 _timeElapsed(0),
