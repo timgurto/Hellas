@@ -1,6 +1,13 @@
 # Glossary of ambiguous terms
 [Home](index.md)
 
+**action**, a timed pursuit, of which any user can be engaged in up to one.  The actions are:
+* Gathering items from an appropriate object.  When the time elapses, the object will yield a random item in a random quantity, and then disappear if empty.
+* Crafting an item, following a recipe.  When the time elapses, the user loses the materials and gains the new product.
+* Constructing an object from an item.  When the time elapses, the object appears in the world and the user loses the item.
+* Deconstructing an object into an item.  When the time elapses, the object disappears and the user receives the item.
+* Attacking an NPC.  When the time elapses, the target loses health once it is in range, then the timer resets.  This continues while the NPC is alive and the user is 'attacking' it.
+
 **character**, the *avatar* which represents a user in-game
 
 **class**, a category to which an item belongs, denoting functionality.  For example, cutting down a tree might require a user to have an "axe"-class item in his inventory.  An item can have many classes or none at all.
@@ -19,6 +26,8 @@
 
 **gather**, when the user performs an action on an object in order to extract items from it.  Some objects can be gathered multiple times before they disappear.
 
+**material**, an item required by a recipe.  When the recipe is used to craft an item, the materials disappear.
+
 **merchant object**, an object that allows exchanging one item type for another.  Merchant objects also necessarily have inventory space.
 
 **merchant slot**, one of many potential transaction slots configured in a merchant object
@@ -29,9 +38,13 @@
 
 **price**, the item(s) that can be given to a merchant object in one transaction, consisting of an item type and a quantity.  For example, if a merchant slot is selling 1 wood for 5 gold coins, then its "price" is 5 gold coins.
 
+**product**, the item created by a recipe
+
 **server**, the *program* which manages the state of the game world and connects to clients
 
 **terminal**, a generic term for server or client
+
+**tool**, a class of item or object that may be required to craft a recipe.  If an item it must be in the user's inventory; if an object, it must be nearby.
 
 **user**, the *account* playing on a client.  Identified by a unique username.
 

@@ -27,14 +27,14 @@ issue,description,value,effort,type,blockedBy,done
 163,Create generic particle system,8,8,Aesthetics,60,
 166,Health stat,8,2,Feature,,TRUE
 167,Static critters w/ health,34,13,Feature,,TRUE
-169,NPCs can die,13,3,Feature,206,
+169,NPCs can die,13,3,Feature,,
 170,Attack stat,8,1,Feature,,TRUE
 171,NPC loot,13,34,Feature,169,
-172,Critter run-away AI,5,34,Feature,206
-173,Animal that fights back,21,21,Feature,206
+172,Critter run-away AI,5,34,Feature,
+173,Animal that fights back,21,21,Feature,
 174,Player death,13,5,Feature,173
 175,NPC spawning,5,21,Feature,
-176,PVP,13,3,Feature,206
+176,PVP,13,3,Feature,
 177,Character has gear slots,13,21,Feature,
 178,Items can match gear slots,8,3,Feature,177
 179,Gear can have stats,13,8,Feature,178
@@ -63,9 +63,10 @@ issue,description,value,effort,type,blockedBy,done
 203,Attack cursor over NPCs,5,1,Aesthetics,,TRUE
 204,Health bars over NPCs,3,1,Aesthetics,,TRUE
 205,Users can have target NPCs,8,2,Feature,,TRUE
-206,Deal constant damage every 1s when close to target,21,8,Feature,,
+206,Deal constant damage every 1s when close to target,21,8,Feature,,TRUE
 207,Display target name/health in UI,5,2,Aesthetics,,TRUE
 208,Allow aggressive and normal targeting on right/left click,5,2,Feature,,TRUE
 209,Memoize texture for other users' names,1,2,Performance,,
 210,Make client-side NPCs a subclass of ClientObject,5,2,Code quality,,TRUE
 211,Fix flaky merchant-slot-window test,13,13,Bug,,
+212,Prevent movement from interrupting attacking,13,2,Bug,,

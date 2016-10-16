@@ -525,11 +525,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             else {
                 obj = findObject(serial);
                 if (obj == nullptr) {
+                    user->targetNPC(nullptr);
                     sendMessage(client, SV_DOESNT_EXIST);
                     break;
                 }
                 if (obj->classTag() != 'n'){
+                    user->targetNPC(nullptr);
                     sendMessage(client, SV_NOT_NPC);
+                    break;
                 }
             }
 

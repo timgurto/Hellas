@@ -18,7 +18,7 @@ Server only:
 <npcType
     id="critter"
     name="Critter"
-	maxHealth=5
+	maxHealth=20
     xDrawOffset=-11
     yDrawOffset=-13 >
     <collisionRect x=-9 y=-4 w=18 h=7 />

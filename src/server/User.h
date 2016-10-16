@@ -25,13 +25,17 @@ public:
         CRAFT,
         CONSTRUCT,
         DECONSTRUCT,
+        ATTACK,
 
         NO_ACTION
     };
 
     // Stats
-    static const unsigned
-        MAX_HEALTH;
+    static const health_t
+        MAX_HEALTH,
+        ATTACK_DAMAGE;
+    static const ms_t
+        ATTACK_TIME;
 
 private:
     std::string _name;
@@ -46,6 +50,7 @@ private:
     const ObjectType *_actionObjectType; // Construct
     size_t _actionSlot; // Construct
     Point _actionLocation; // Construct
+    NPC *_actionNPC; // Attack
 
     ServerItem::vect_t _inventory;
 
@@ -53,7 +58,6 @@ private:
     ms_t _lastContact;
     ms_t _latency;
 
-    const NPC *_targetNPC;
 
 public:
     User(const std::string &name, const Point &loc, const Socket &socket);
@@ -70,8 +74,7 @@ public:
     std::pair<const ServerItem *, size_t> &inventory(size_t index);
     ServerItem::vect_t &inventory() { return _inventory; }
     const ServerItem::vect_t &inventory() const { return _inventory; }
-    void targetNPC(const NPC *npc){ _targetNPC = npc; }
-    const NPC *targetNPC() const { return _targetNPC; }
+    NPC *targetNPC() const { return _actionNPC; }
 
 
     virtual health_t maxHealth() const override { return MAX_HEALTH; }
@@ -82,6 +85,7 @@ public:
     void action(Action a) { _action = a; }
     const Object *actionObject() const { return _actionObject; }
     void beginGathering(Object *object); // Configure user to perform an action on an object
+    void targetNPC(NPC *npc); // Configure user to prepare to attack an NPC
 
     // Whether the user has enough materials to craft a recipe
     bool hasItems(const ItemSet &items) const;

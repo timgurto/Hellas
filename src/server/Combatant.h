@@ -17,6 +17,8 @@ public:
 
     health_t health() const { return _health; }
     void health(health_t health) { _health = health; }
+
+    health_t reduceHealth(health_t damage); // Returns remaining health.
 };
 
 #endif

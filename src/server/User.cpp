@@ -16,7 +16,9 @@ const size_t User::INVENTORY_SIZE = 10;
 
 const ObjectType User::OBJECT_TYPE(Rect(-5, -2, 10, 4));
 
-const unsigned User::MAX_HEALTH = 100;
+const health_t User::MAX_HEALTH = 100;
+const health_t User::ATTACK_DAMAGE = 8;
+const ms_t User::ATTACK_TIME = 1000;
 
 User::User(const std::string &name, const Point &loc, const Socket &socket):
 Combatant(MAX_HEALTH),
@@ -32,8 +34,7 @@ _actionRecipe(nullptr),
 _actionObjectType(nullptr),
 _actionSlot(INVENTORY_SIZE),
 _actionLocation(0, 0),
-
-_targetNPC(nullptr),
+_actionNPC(nullptr),
 
 _inventory(INVENTORY_SIZE),
 _lastLocUpdate(SDL_GetTicks()),
@@ -303,6 +304,17 @@ void User::beginDeconstructing(Object &obj){
     _actionTime = obj.type()->deconstructionTime();
 }
 
+void User::targetNPC(NPC *npc){
+    _actionNPC = npc;
+    if (_actionNPC == nullptr){
+        _action = NO_ACTION;
+        _actionTime = 0;
+        return;
+    }
+    _action = ATTACK;
+    _actionTime = ATTACK_TIME;
+}
+
 bool User::hasItems(const ItemSet &items) const{
     ItemSet remaining = items;
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
@@ -371,6 +383,9 @@ void User::update(ms_t timeElapsed){
         _actionTime -= timeElapsed;
         return;
     }
+    
+    // Timer has finished; complete action
+    _actionTime = 0;
 
     Server &server = *Server::_instance;
     switch(_action){
@@ -423,12 +438,32 @@ void User::update(ms_t timeElapsed){
         break;
     }
 
+    case ATTACK:
+    {
+        // Check if within range
+        if (distance(collisionRect(), _actionNPC->collisionRect()) <= Server::ACTION_DISTANCE){
+
+            // Reduce target health (to minimum 0)
+            health_t remaining = _actionNPC->reduceHealth(ATTACK_DAMAGE);
+            for (const User *user: server.findUsersInArea(_actionNPC->location()))
+                server.sendMessage(user->socket(), SV_NPC_HEALTH,
+                                   makeArgs(_actionNPC->serial(), remaining));
+
+            // Reset timer
+            _actionTime = ATTACK_TIME;
+        }
+
+        break;
+    }
+
     default:
         assert(false);
     }
     
-    server.sendMessage(_socket, SV_ACTION_FINISHED);
-    _action = NO_ACTION;
+    if (_action != ATTACK){ // ATTACK is a repeating action.
+        server.sendMessage(_socket, SV_ACTION_FINISHED);
+        _action = NO_ACTION;
+    }
 }
 
 const Rect User::collisionRect() const{
