@@ -729,6 +729,9 @@ void Client::targetNPC(const ClientNPC *npc, bool aggressive){
     bool tellServer = false;
     size_t serialToSend = 0;
 
+    if (npc != nullptr && npc->health() == 0)
+        aggressive = false;
+
     // Same target
     if (npc == _targetNPC){
         if (aggressive != _aggressive){

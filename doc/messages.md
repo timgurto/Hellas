@@ -85,3 +85,4 @@ Code | Name                         | Syntax                               | Des
 929  | `SV_MERCHANT_INVENTORY_FULL` | &laquo;929&raquo;                    | "You tried to purchase from a merchant object, but it doesn't have enough inventory space to accept your payment"
 930  | `SV_NOT_EMPTY`               | &laquo;930&raquo;                    | "You tried to deconstruct an object that contains an inventory of items"
 931  | `SV_NOT_NPC`                 | &laquo;931&raquo;                    | "You tried to perform an action on an NPC, but that object isn't one"
+932  | `SV_NPC_DEAD`                | &laquo;932&raquo;                    | "You tried to perform an action on an NPC, but it's dead"

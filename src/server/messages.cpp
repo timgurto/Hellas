@@ -537,7 +537,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 }
             }
 
-            user->targetNPC(dynamic_cast<NPC *>(obj));
+            NPC *npc = dynamic_cast<NPC *>(obj);
+            if (npc != nullptr && npc->health() == 0){
+                user->targetNPC(nullptr);
+                sendMessage(client, SV_NPC_DEAD);
+                break;
+            }
+
+            user->targetNPC(npc);
 
             break;
         }

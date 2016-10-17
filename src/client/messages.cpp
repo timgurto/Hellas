@@ -143,6 +143,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_CANNOT_CONSTRUCT:
         case SV_NOT_MERCHANT:
         case SV_INVALID_MERCHANT_SLOT:
+        case SV_NPC_DEAD:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
@@ -566,6 +567,7 @@ void Client::initializeMessageNames(){
     _messageCommands["clearMerchantSlot"] = CL_CLEAR_MERCHANT_SLOT;
     _messageCommands["startWatching"] = CL_START_WATCHING;
     _messageCommands["stopWatching"] = CL_STOP_WATCHING;
+    _messageCommands["target"] = CL_TARGET;
 
     _messageCommands["say"] = CL_SAY;
     _messageCommands["s"] = CL_SAY;
@@ -595,6 +597,7 @@ void Client::initializeMessageNames(){
         "The object does not have enough inventory space for that exchange.";
     _errorMessages[SV_NOT_EMPTY] = "That object is not empty.";
     _errorMessages[SV_NOT_NPC] = "That object is not an NPC.";
+    _errorMessages[SV_NPC_DEAD] = "That NPC is dead.";
 }
 
 void Client::performCommand(const std::string &commandString){
