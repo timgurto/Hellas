@@ -157,6 +157,7 @@ void Client::loadData(const std::string &path){
         ClientNPCType *nt = new ClientNPCType(s, n);
         xr.findAttr(elem, "imageFile", s); // If no explicit imageFile, s will still == id
         nt->image(std::string("Images/NPCs/") + s + ".png");
+        nt->corpseImage(std::string("Images/NPCs/") + s + "-corpse.png");
         if (xr.findAttr(elem, "name", s)) nt->name(s);
         Rect drawRect(0, 0, nt->width(), nt->height());
         bool

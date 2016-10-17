@@ -188,3 +188,7 @@ bool Object::isContainerEmpty() const{
             return false;
     return true;
 }
+
+void Object::markForRemoval(){
+    Server::_instance->_objectsToRemove.push_back(this);
+}

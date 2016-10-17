@@ -4,4 +4,5 @@
 
 ClientNPCType::ClientNPCType(const std::string &id, health_t maxHealth):
 ClientObjectType(id),
-_maxHealth(maxHealth){}
+_maxHealth(maxHealth)
+{}

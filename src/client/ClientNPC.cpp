@@ -11,10 +11,13 @@ _health(type->maxHealth())
 {}
 
 void ClientNPC::draw(const Client &client) const{
-    ClientObject::draw(client);
+    const Point &offset = client.offset();
+
+    // Draw the sprite here, rather than calling Entity::draw()
+    const Texture image = _health > 0 ? type()->image() : npcType()->corpseImage();
+    image.draw(location() + offset + type()->drawRect());
 
     // Draw health bar if damaged or targeted
-    const Point &offset = client.offset();
     if (client.targetNPC() == this || client.currentMouseOverEntity() == this ||
         _health < npcType()->maxHealth()){
         static const px_t

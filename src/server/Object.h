@@ -52,6 +52,9 @@ public:
 
     virtual char classTag() const { return 'o'; }
 
+    virtual void update(ms_t timeElapsed) { }
+    // Add this object to a list, for removal after all objects are updated.
+    void markForRemoval();
 
     // Randomly choose an item type for the user to gather.
     const ServerItem *chooseGatherItem() const;

@@ -202,6 +202,15 @@ void Server::run(){
         for (const User &user : _users)
             const_cast<User&>(user).update(timeElapsed);
 
+        // Update objects
+        for (Object *objP : _objects)
+            objP->update(timeElapsed);
+
+        // Clean up dead objects
+        for (Object *objP : _objectsToRemove)
+            removeObject(*objP);
+        _objectsToRemove.clear();
+
         // Deal with any messages from the server
         while (!_messages.empty()){
             handleMessage(_messages.front().first, _messages.front().second);
@@ -337,22 +346,29 @@ bool Server::isObjectInRange(const Socket &client, const User &user, const Objec
     return true;
 }
 
-void Server::removeObject(Object &obj, const User *userToExclude){
-    // Ensure no other users are targeting this object, as it will be removed.
+void Server::forceUntarget(const Object &obj, const User *userToExclude){
     size_t serial = obj.serial();
     for (const User &userConst : _users) {
         User & user = const_cast<User &>(userConst);
-        if (&user != userToExclude &&
-            user.action() == User::GATHER &&
-            user.actionObject()->serial() == serial) {
+        if (&user == userToExclude)
+            continue;
+        if ((user.action() == User::GATHER && user.actionObject()->serial() == serial) ||
+            (user.action() == User::ATTACK && user.targetNPC()->serial() == serial)) {
 
             user.action(User::NO_ACTION);
             sendMessage(user.socket(), SV_DOESNT_EXIST);
         }
     }
+}
+
+void Server::removeObject(Object &obj, const User *userToExclude){
+    // Ensure no other users are targeting this object, as it will be removed.
+    forceUntarget(obj, userToExclude);
 
     // Alert nearby users of the removal
+    size_t serial = obj.serial();
     for (const User *userP : findUsersInArea(obj.location()))
+        if (userP != userToExclude)
         sendMessage(userP->socket(), SV_REMOVE_OBJECT, makeArgs(serial));
 
     getCollisionChunk(obj.location()).removeObject(serial);

@@ -128,8 +128,10 @@ private:
     std::set<Recipe> _recipes;
     std::set<const ObjectType *> _objectTypes;
 
-    void removeObject(Object &obj,
-                      const User *userToExclude = nullptr); // Optionally skip telling a user
+    std::list<Object *> _objectsToRemove; // Emptied every tick.
+    // Force all users to untarget an object
+    void forceUntarget(const Object &obj, const User *userToExclude = nullptr); 
+    void removeObject(Object &obj, const User *userToExclude = nullptr);
     void gatherObject (size_t serial, User &user);
     friend void User::update(ms_t timeElapsed);
     friend void User::removeItems(const ItemSet &items);
@@ -141,8 +143,11 @@ private:
     friend bool User::hasTool(const std::string &className) const;
     friend bool User::hasTools(const std::set<std::string> &classes) const;
 
+    friend void Object::markForRemoval();
     friend void Object::removeItems(const ItemSet &items);
     friend void Object::giveItem(const ServerItem *item, size_t qty);
+
+    friend void NPC::update(ms_t timeElapsed);
 
     friend class ServerTestInterface;
 
