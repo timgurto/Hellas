@@ -8,6 +8,7 @@
 #include "ClientTestInterface.h"
 #include "ServerTestInterface.h"
 #include "Test.h"
+#include "../client/ClientNPC.h"
 #include "../client/ClientNPCType.h"
 
 TEST("Start and stop server")
@@ -48,7 +49,7 @@ TEST("Gather an item from an object")
     c.loadData("testing/data/basic_rock");
     c.run();
 
-    //Move user to object
+    //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
     User &user = const_cast<User &>(*s.users().begin());
     user.updateLocation(Point(10, 10));
@@ -85,7 +86,7 @@ TEST("View merchant slots in window")
     c.loadData("testing/data/merchant");
     c.run();
 
-    // Move user to object
+    // Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
     const User &user = *s.users().begin();
     const_cast<User &>(user).updateLocation(Point(10, 10));
@@ -134,7 +135,7 @@ TEST("Gather chance is by gathers, not quantity")
     c.loadData("testing/data/rare_iron");
     c.run();
 
-    //Move user to object
+    //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
     User &user = const_cast<User &>(*s.users().begin());
     user.updateLocation(Point(10, 10));
@@ -175,7 +176,7 @@ TEST("Dismantle an object with an inventory")
     c.loadData("testing/data/dismantle");
     c.run();
 
-    //Move user to object
+    //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
     User &user = const_cast<User &>(*s.users().begin());
     user.updateLocation(Point(10, 10));
@@ -201,7 +202,7 @@ TEST("Place item in object");
     c.loadData("testing/data/dismantle");
     c.run();
 
-    //Move user to object
+    //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
     User &user = const_cast<User &>(*s.users().begin());
     user.updateLocation(Point(10, 10));
@@ -237,4 +238,44 @@ TEST("Constructible NPC")
     // Check its health (to distinguish it from a plain ClientObject)
     const ClientNPCType &npcType = dynamic_cast<const ClientNPCType &>(objType);
     return npcType.maxHealth() == 5;
+TEND
+
+TEST("Players can attack immediately")
+    ServerTestInterface s;
+    s.loadData("testing/data/ant");
+    s.setMap();
+    s.run();
+
+    ClientTestInterface c;
+    c.loadData("testing/data/ant");
+    c.run();
+
+    //Move user to middle
+    WAIT_UNTIL (s.users().size() == 1);
+    User &user = const_cast<User &>(*s.users().begin());
+    user.updateLocation(Point(10, 10));
+
+    // Add NPC
+    s.addNPC("ant", Point(10, 10));
+    WAIT_UNTIL (c.objects().size() == 1);
+
+    // Start attacking
+    const auto objects = c.objects();
+    const auto it = objects.begin();
+    auto pair = *it;
+    const ClientObject *objP = pair.second;
+    const ClientNPC &ant = dynamic_cast<const ClientNPC &>(*objP);
+    size_t serial = ant.serial();
+    c.sendMessage(CL_TARGET, makeArgs(serial));
+    
+    // NPC should be damaged very quickly
+    ms_t startTime = SDL_GetTicks();
+    static const ms_t MAX_WAIT_TIME = 200;
+    while (true){
+        if (ant.health() < ant.npcType()->maxHealth())
+            return true;
+        ms_t timeElapsed = SDL_GetTicks() - startTime;
+        if (timeElapsed > MAX_WAIT_TIME)
+            return false;
+    }
 TEND

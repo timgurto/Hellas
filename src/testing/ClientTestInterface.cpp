@@ -21,7 +21,7 @@ void ClientTestInterface::waitForRedraw(){
     WAIT_UNTIL(_client._drawingFinished);
 }
 
-size_t ClientTestInterface::getNextMessage() const {
+MessageCode ClientTestInterface::getNextMessage() const {
     size_t currentSize = _client._messagesReceived.size();
     WAIT_UNTIL(_client._messagesReceived.size() > currentSize);
     return _client._messagesReceived.back();

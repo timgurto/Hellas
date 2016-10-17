@@ -519,6 +519,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != MSG_END)
                 return;
+            user->cancelAction();
             Object *obj;
             if (serial == 0)
                 obj = nullptr;

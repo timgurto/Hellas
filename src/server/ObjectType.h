@@ -47,6 +47,8 @@ public:
     size_t merchantSlots() const { return _merchantSlots; }
     void merchantSlots(size_t n) { _merchantSlots = n; }
 
+    virtual char classTag() const { return 'o'; }
+
     const std::string &id() const { return _id; }
     ms_t gatherTime() const { return _gatherTime; }
     ms_t constructionTime() const { return _constructionTime; }

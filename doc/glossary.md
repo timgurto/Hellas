@@ -1,7 +1,7 @@
 # Glossary of ambiguous terms
 [Home](index.md)
 
-**action**, a timed pursuit, of which any user can be engaged in up to one.  The actions are:
+**action**, a timed endeavor, of which any user can be engaged in up to one.  The actions are:
 * Gathering items from an appropriate object.  When the time elapses, the object will yield a random item in a random quantity, and then disappear if empty.
 * Crafting an item, following a recipe.  When the time elapses, the user loses the materials and gains the new product.
 * Constructing an object from an item.  When the time elapses, the object appears in the world and the user loses the item.
@@ -10,7 +10,7 @@
 
 **character**, the *avatar* which represents a user in-game
 
-**class**, a category to which an item belongs, denoting functionality.  For example, cutting down a tree might require a user to have an "axe"-class item in his inventory.  An item can have many classes or none at all.
+**class**, a category to which an item or object belongs, implying functionality.  For example, cutting down a tree might require a user either to have an "axe"-class item in his inventory, or to be near an "axe"-class object.  An item or object can have one or many classes, or none at all.
 
 **client**, the *program* which connects to the server
 

@@ -44,6 +44,8 @@ private:
 
     Action _action;
     ms_t _actionTime; // Time remaining on current action.
+    // Independent timer for attacks, to avoid instant attacks via action cancellation.
+    ms_t _attackTime;
     // Information used when action completes:
     Object *_actionObject; // Gather, deconstruct
     const Recipe *_actionRecipe; // Craft
@@ -75,7 +77,6 @@ public:
     ServerItem::vect_t &inventory() { return _inventory; }
     const ServerItem::vect_t &inventory() const { return _inventory; }
     NPC *targetNPC() const { return _actionNPC; }
-
 
     virtual health_t maxHealth() const override { return MAX_HEALTH; }
 

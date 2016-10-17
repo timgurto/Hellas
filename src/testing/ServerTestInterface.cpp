@@ -35,3 +35,10 @@ void ServerTestInterface::addObject(const std::string &typeName, const Point &lo
     const ObjectType *const type = _server.findObjectTypeByName(typeName);
     _server.addObject(type, loc);
 }
+
+void ServerTestInterface::addNPC(const std::string &typeName, const Point &loc){
+    const ObjectType *const type = _server.findObjectTypeByName(typeName);
+    assert(type->classTag() == 'n');
+    const NPCType *const npcType = dynamic_cast<const NPCType *const>(type);
+    _server.addNPC(npcType, loc);
+}

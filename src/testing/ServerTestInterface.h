@@ -25,6 +25,7 @@ public:
 
     void setMap(const std::vector<std::vector<size_t> > &map = TINY_MAP);
     void addObject(const std::string &typeName, const Point &loc);
+    void addNPC(const std::string &typeName, const Point &loc);
 
     Server *operator->(){ return &_server; }
     void loadData(const std::string path){ _server.loadData(path); }

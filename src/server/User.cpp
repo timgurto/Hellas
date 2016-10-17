@@ -29,6 +29,7 @@ _location(loc),
 
 _action(NO_ACTION),
 _actionTime(0),
+_attackTime(0),
 _actionObject(nullptr),
 _actionRecipe(nullptr),
 _actionObjectType(nullptr),
@@ -271,7 +272,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity){
 }
 
 void User::cancelAction() {
-    if (_action != NO_ACTION) {
+    if (_action != NO_ACTION && _action != ATTACK) {
         Server::instance().sendMessage(_socket, SV_ACTION_INTERRUPTED);
         _action = NO_ACTION;
     }
@@ -308,11 +309,9 @@ void User::targetNPC(NPC *npc){
     _actionNPC = npc;
     if (_actionNPC == nullptr){
         _action = NO_ACTION;
-        _actionTime = 0;
         return;
     }
     _action = ATTACK;
-    _actionTime = ATTACK_TIME;
 }
 
 bool User::hasItems(const ItemSet &items) const{
@@ -379,15 +378,48 @@ void User::removeItems(const ItemSet &items) {
 void User::update(ms_t timeElapsed){
     if (_action == NO_ACTION)
         return;
-    if (_actionTime > timeElapsed) {
+
+    if (_actionTime > timeElapsed)
         _actionTime -= timeElapsed;
-        return;
-    }
-    
-    // Timer has finished; complete action
-    _actionTime = 0;
+    else
+        _actionTime = 0;
+
+    if (_attackTime > timeElapsed)
+        _attackTime -= timeElapsed;
+    else
+        _attackTime = 0;
 
     Server &server = *Server::_instance;
+
+
+    // Attack actions:
+
+    if (_action == ATTACK){
+        if (_attackTime > 0)
+            return;
+
+        // Check if within range
+        if (distance(collisionRect(), _actionNPC->collisionRect()) <= Server::ACTION_DISTANCE){
+
+            // Reduce target health (to minimum 0)
+            health_t remaining = _actionNPC->reduceHealth(ATTACK_DAMAGE);
+            for (const User *user: server.findUsersInArea(_actionNPC->location()))
+                server.sendMessage(user->socket(), SV_NPC_HEALTH,
+                                   makeArgs(_actionNPC->serial(), remaining));
+
+            // Reset timer
+            _attackTime = ATTACK_TIME;
+        }
+        return;
+    }
+
+
+    // Non-attack actions:
+
+    if (_actionTime > 0) // Action hasn't finished yet.
+        return;
+    
+    // Timer has finished; complete action
     switch(_action){
     case GATHER:
         server.gatherObject(_actionObject->serial(), *this);
@@ -435,24 +467,6 @@ void User::update(ms_t timeElapsed){
         giveItem(item);
         // Remove object
         server.removeObject(*_actionObject);
-        break;
-    }
-
-    case ATTACK:
-    {
-        // Check if within range
-        if (distance(collisionRect(), _actionNPC->collisionRect()) <= Server::ACTION_DISTANCE){
-
-            // Reduce target health (to minimum 0)
-            health_t remaining = _actionNPC->reduceHealth(ATTACK_DAMAGE);
-            for (const User *user: server.findUsersInArea(_actionNPC->location()))
-                server.sendMessage(user->socket(), SV_NPC_HEALTH,
-                                   makeArgs(_actionNPC->serial(), remaining));
-
-            // Reset timer
-            _actionTime = ATTACK_TIME;
-        }
-
         break;
     }
 

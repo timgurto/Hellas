@@ -15,6 +15,8 @@ public:
     void maxHealth(health_t hp) { _maxHealth = hp; }
     health_t maxHealth() const { return _maxHealth; }
 
+    virtual char classTag() const override { return 'n'; }
+
 };
 
 #endif

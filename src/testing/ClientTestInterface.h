@@ -24,7 +24,7 @@ public:
     Client &client() { return _client; }
     void loadData(const std::string path){ _client.loadData(path); }
     void sendMessage(MessageCode code, const std::string &args){ _client.sendMessage(code, args); }
-    size_t getNextMessage() const;
+    MessageCode getNextMessage() const;
 
     void waitForRedraw();
 };

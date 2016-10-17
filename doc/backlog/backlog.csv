@@ -69,4 +69,5 @@ issue,description,value,effort,type,blockedBy,done
 209,Memoize texture for other users' names,1,2,Performance,,
 210,Make client-side NPCs a subclass of ClientObject,5,2,Code quality,,TRUE
 211,Fix flaky merchant-slot-window test,13,13,Bug,,
-212,Prevent movement from interrupting attacking,13,2,Bug,,
+212,Prevent movement from interrupting attacking,13,2,Bug,,TRUE
+213,Avoid multiple data loads for custom server data,5,1,Code quality,,
