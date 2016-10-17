@@ -244,6 +244,9 @@ enum MessageCode{
     // The object is not an NPC
     SV_NOT_NPC = 931,
 
+    // The NPC is dead
+    SV_NPC_DEAD = 932,
+
 
 
     NO_CODE

@@ -21,6 +21,8 @@ public:
 
     virtual char classTag() const override { return 'n'; }
 
+    virtual void kill() override;
+
     virtual void update(ms_t timeElapsed);
 };
 

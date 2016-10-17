@@ -14,6 +14,7 @@ public:
     virtual ~Combatant(){}
 
     virtual health_t maxHealth() const = 0;
+    virtual void kill() {}; // Anything that needs to happen upon death.
 
     health_t health() const { return _health; }
     void health(health_t health) { _health = health; }

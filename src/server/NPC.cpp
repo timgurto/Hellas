@@ -13,13 +13,14 @@ void NPC::update(ms_t timeElapsed){
     Object::update(timeElapsed);
 
     if (health() == 0){
-        if (_corpseTime == 0){ // The NPC has probably just died
-            _corpseTime = CORPSE_TIME;
-            Server::_instance->forceUntarget(*this);
-
-        } else if (timeElapsed < _corpseTime)
+        if (timeElapsed < _corpseTime)
             _corpseTime -= timeElapsed;
         else
             markForRemoval();
     }
+}
+
+void NPC::kill(){
+    _corpseTime = CORPSE_TIME;
+    Server::_instance->forceUntarget(*this);
 }

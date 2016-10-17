@@ -395,6 +395,8 @@ void User::update(ms_t timeElapsed){
     // Attack actions:
 
     if (_action == ATTACK){
+        assert(_actionNPC->health() > 0);
+
         if (_attackTime > 0)
             return;
 

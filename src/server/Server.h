@@ -147,7 +147,7 @@ private:
     friend void Object::removeItems(const ItemSet &items);
     friend void Object::giveItem(const ServerItem *item, size_t qty);
 
-    friend void NPC::update(ms_t timeElapsed);
+    friend void NPC::kill();
 
     friend class ServerTestInterface;
 

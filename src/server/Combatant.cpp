@@ -17,5 +17,8 @@ health_t Combatant::reduceHealth(health_t damage){
     else
         _health -= damage;
 
+    if (_health == 0)
+        kill();
+
     return _health;
 }
