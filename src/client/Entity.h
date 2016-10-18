@@ -52,9 +52,6 @@ public:
     virtual void onLeftClick(Client &client) {}
     virtual void onRightClick(Client &client) {}
 
-    //Class identifiers
-    virtual bool isObject(){ return false; }
-
     void refreshTooltip(const Client &client);
 
     double bottomEdge() const;

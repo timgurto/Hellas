@@ -558,7 +558,8 @@ void Client::checkMouseOver(){
     }
     
     // Set cursor
-    if (_currentMouseOverEntity->isObject()) {
+    char classTag = _currentMouseOverEntity->classTag();
+    if (classTag == 'o' || classTag == 'n') {
         const ClientObjectType &objType =
             *dynamic_cast<ClientObject*>(_currentMouseOverEntity)->objectType();
         if (objType.canGather())

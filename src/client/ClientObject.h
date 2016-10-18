@@ -65,8 +65,6 @@ public:
 
     void playGatherSound() const;
 
-    virtual bool isObject(){ return true; }
-
     void refreshWindow();
     void hideWindow();
 
