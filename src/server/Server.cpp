@@ -369,7 +369,6 @@ void Server::removeObject(Object &obj, const User *userToExclude){
     // Alert nearby users of the removal
     size_t serial = obj.serial();
     for (const User *userP : findUsersInArea(obj.location()))
-        if (userP != userToExclude)
         sendMessage(userP->socket(), SV_REMOVE_OBJECT, makeArgs(serial));
 
     getCollisionChunk(obj.location()).removeObject(serial);
