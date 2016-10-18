@@ -12,6 +12,7 @@
 
 struct Point;
 
+const double PI = 3.1415926535897;
 const double SQRT_2 = 1.4142135623731;
 
 bool isDebug();

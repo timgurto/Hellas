@@ -22,6 +22,8 @@ class Entity{
         return std::vector<std::string>();
     }
 
+    bool _toRemove; // No longer draw or update, and remove when possible.
+
 protected:
     Texture _tooltip;
 
@@ -31,7 +33,7 @@ public:
 
     const Point &location() const { return _location; }
     void location(const Point &loc); // yChanged() should be checked after changing location.
-    Rect drawRect() const;
+    virtual Rect drawRect() const;
     px_t width() const { return _type->width(); }
     px_t height() const { return _type->height(); }
     bool yChanged() const { return _yChanged; }
@@ -39,6 +41,9 @@ public:
     const EntityType *type() const { return _type; }
     bool needsTooltipRefresh() { return _needsTooltipRefresh; }
     const Texture &tooltip() const { return _tooltip; }
+    virtual const Texture &image() const { return _type->image(); }
+    void markForRemoval() { _toRemove = true; }
+    bool markedForRemoval() const { return _toRemove; }
 
     virtual char classTag() const { return 'e'; }
 

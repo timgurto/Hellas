@@ -109,6 +109,7 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)messages-client</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)messages-client</ObjectFileName>
     </ClCompile>
+    <ClCompile Include="src\client\Particle.cpp" />
     <ClCompile Include="src\client\Renderer.cpp" />
     <ClCompile Include="src\client\Terrain.cpp" />
     <ClCompile Include="src\client\Texture.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="src\client\Entity.h" />
     <ClInclude Include="src\client\EntityType.h" />
     <ClInclude Include="src\client\LogSDL.h" />
+    <ClInclude Include="src\client\Particle.h" />
     <ClInclude Include="src\client\Renderer.h" />
     <ClInclude Include="src\client\Terrain.h" />
     <ClInclude Include="src\client\Texture.h" />

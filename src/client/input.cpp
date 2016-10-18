@@ -1,6 +1,7 @@
 // (C) 2016 Tim Gurto
 
 #include "Client.h"
+#include "Particle.h"
 #include "Renderer.h"
 #include "ui/TextBox.h"
 

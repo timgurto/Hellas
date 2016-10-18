@@ -114,6 +114,7 @@
     <ClCompile Include="src\client\LogSDL.cpp" />
     <ClCompile Include="src\client\messages.cpp" />
     <ClCompile Include="src\client\ClientNPCType.cpp" />
+    <ClCompile Include="src\client\Particle.cpp" />
     <ClCompile Include="src\client\Renderer.cpp" />
     <ClCompile Include="src\Client\Terrain.cpp" />
     <ClCompile Include="src\client\Texture.cpp" />
@@ -135,6 +136,7 @@
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\curlUtil.cpp" />
     <ClCompile Include="src\Item.cpp" />
+    <ClCompile Include="src\NormalVariable.cpp" />
     <ClCompile Include="src\Point.cpp" />
     <ClCompile Include="src\Rect.cpp" />
     <ClCompile Include="src\server\ItemSet.cpp" />
@@ -161,6 +163,7 @@
     <ClInclude Include="src\client\ClientItem.h" />
     <ClInclude Include="src\client\LogSDL.h" />
     <ClInclude Include="src\client\ClientNPCType.h" />
+    <ClInclude Include="src\client\Particle.h" />
     <ClInclude Include="src\client\Renderer.h" />
     <ClInclude Include="src\Client\Terrain.h" />
     <ClInclude Include="src\client\Texture.h" />
@@ -186,6 +189,7 @@
     <ClInclude Include="src\Item.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\messageCodes.h" />
+    <ClInclude Include="src\NormalVariable.h" />
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\server\ItemSet.h" />

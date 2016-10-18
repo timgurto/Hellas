@@ -15,6 +15,7 @@
 #include "ClientNPC.h"
 #include "EntityType.h"
 #include "LogSDL.h"
+#include "Particle.h"
 #include "TooltipBuilder.h"
 #include "ui/Button.h"
 #include "ui/Container.h"
@@ -339,6 +340,7 @@ _debug("client.log"){
 Client::~Client(){
     SDL_ShowCursor(SDL_ENABLE);
     Element::cleanup();
+    Particle::quit();
     if (_defaultFont != nullptr)
         TTF_CloseFont(_defaultFont);
     Avatar::image("");
@@ -428,7 +430,7 @@ void Client::run(){
         _timeElapsed = _time - timeAtLastTick;
         if (_timeElapsed > MAX_TICK_LENGTH)
             _timeElapsed = MAX_TICK_LENGTH;
-        const double delta = _timeElapsed / 1000.0;
+        const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
         timeAtLastTick = _time;
         _fps = toInt(1000.0 / _timeElapsed);
 
@@ -470,6 +472,11 @@ void Client::run(){
             Entity::set_t::iterator next = it;
             ++next;
             Entity *const toUpdate = *it;
+            if (toUpdate->markedForRemoval()){
+                _entities.erase(it);
+                it = next;
+                continue;
+            }
             toUpdate->update(delta);
             if (toUpdate->yChanged()) {
                 // Entity has moved up or down, and must be re-ordered in set.

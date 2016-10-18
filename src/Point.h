@@ -53,4 +53,11 @@ inline Point operator+(const Point &lhs, const Rect &rhs){
     return p;
 }
 
+inline Point operator*(const Point &lhs, double rhs){
+    Point p = lhs;
+    p.x *= rhs;
+    p.y *= rhs;
+    return p;
+}
+
 #endif

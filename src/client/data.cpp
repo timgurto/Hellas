@@ -2,6 +2,7 @@
 
 #include "Client.h"
 #include "ClientNPCType.h"
+#include "Particle.h"
 #include "../XmlReader.h"
 
 void Client::loadData(const std::string &path){
@@ -188,5 +189,8 @@ void Client::loadData(const std::string &path){
             _objectTypes.insert(nt);
         }
     }
+
+    // Particles
+    Particle::init();
 
 }

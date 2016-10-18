@@ -6,6 +6,7 @@
 #include "ClientNPC.h"
 #include "ClientObject.h"
 #include "Client.h"
+#include "Particle.h"
 #include "Renderer.h"
 #include "ui/Button.h"
 #include "ui/Container.h"
@@ -159,6 +160,9 @@ void ClientObject::onRightClick(Client &client){
         client.sendMessage(CL_GATHER, makeArgs(_serial));
         client.prepareAction(std::string("Gathering ") + objType.name());
         playGatherSound();
+        if (objType.name() == "Tree")
+            for (size_t i = 0; i != 7; ++i)
+                client.addEntity(new Particle(location()));
         return;
     }
     

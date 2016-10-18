@@ -15,26 +15,16 @@ Entity::Entity(const EntityType *type, const Point &location):
 _yChanged(false),
 _type(type),
 _location(location),
-_needsTooltipRefresh(false){}
+_needsTooltipRefresh(false),
+_toRemove(false){}
 
 Rect Entity::drawRect() const {
+    assert(_type != nullptr);
     return _type->drawRect() + _location;
 }
 
 void Entity::draw(const Client &client) const{
-    assert(_type);
-
-    _type->drawAt(_location + client.offset());
-
-    if (isDebug()) {
-        renderer.setDrawColor(Color::YELLOW);
-        renderer.fillRect(Rect(_location.x + client.offset().x,
-                                _location.y + client.offset().y - 1,
-                                1, 3));
-        renderer.fillRect(Rect(_location.x + client.offset().x - 1,
-                               _location.y + client.offset().y,
-                               3, 1));
-    }
+    image().draw(drawRect() + client.offset());
 }
 
 double Entity::bottomEdge() const{

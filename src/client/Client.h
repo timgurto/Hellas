@@ -252,6 +252,7 @@ private:
     std::map<size_t, ClientObject*> _objects; // For lookup by serial
 
     Entity::set_t _entities;
+    void addEntity(Entity *entity) { _entities.insert(entity); }
     void removeEntity(Entity *const toRemove); // Remove from _entities, and delete pointer
     // Move the entity, and reorder it if necessary
     void setEntityLocation(Entity *entity, const Point &location);
