@@ -88,6 +88,7 @@ _connectionStatus(TRYING),
 
 _actionTimer(0),
 _actionLength(0),
+_actionHasParticles(false),
 
 _loop(true),
 _running(false),
@@ -496,6 +497,13 @@ void Client::run(){
         if (_actionLength > 0) {
             _actionTimer = min(_actionTimer + _timeElapsed, _actionLength);
             _castBar->show();
+
+            // Add particles
+            if (_actionHasParticles){
+                size_t numParticles = Particle::numParticlesToAdd(delta);
+                for (size_t i = 0; i != numParticles; ++i)
+                    addEntity(new Particle(_particleLocation));
+            }
         }
 
         // Update terrain animation

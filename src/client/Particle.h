@@ -15,6 +15,7 @@ class Particle : public Entity{
     static Texture *images[3];
     static const Rect DRAW_RECT;
     static const EntityType ENTITY_TYPE;
+    static const double PARTICLES_PER_SECOND;
     static const NormalVariable
         startingDistanceGenerator,
         startingAltitudeGenerator,
@@ -47,6 +48,8 @@ public:
     virtual Rect drawRect() const override;
     virtual const Texture &image() const override;
     virtual void update(double delta) override;
+
+    static size_t numParticlesToAdd(double delta);
     
     static void init();
     static void quit();

@@ -7,6 +7,7 @@ Texture *Particle::images[3];
 
 const EntityType Particle::ENTITY_TYPE; // Default constructor will suffice.
 const Rect Particle::DRAW_RECT(-2, -2, 4, 4);
+const double Particle::PARTICLES_PER_SECOND = 2;
 
 const double Particle::GRAVITY = 100;
 
@@ -74,4 +75,16 @@ void Particle::update(double delta){
     _fallSpeed += GRAVITY * delta;
 
     location(location() + _velocity * delta);
+}
+
+size_t Particle::numParticlesToAdd(double delta){
+    size_t total = 0;
+    double particlesToAdd = PARTICLES_PER_SECOND * delta;
+    if (particlesToAdd >= 1){ // Whole part
+        total = static_cast<size_t>(particlesToAdd);
+        particlesToAdd -= total;
+    }
+    if (randDouble() <= particlesToAdd)
+        ++total;
+    return total;
 }
