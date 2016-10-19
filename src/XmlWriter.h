@@ -14,9 +14,11 @@ class XmlWriter{
 
 public:
     XmlWriter(const std::string &filename);
+    XmlWriter(const char *filename);
     ~XmlWriter();
-
+    
     void newFile(const std::string &filename);
+    void newFile(const char *filename);
 
     static TiXmlElement *addChild(const char *val, TiXmlElement *elem);
     TiXmlElement *addChild(const char *val) { return addChild(val, _root); }
