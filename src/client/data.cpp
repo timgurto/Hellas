@@ -2,8 +2,23 @@
 
 #include "Client.h"
 #include "ClientNPCType.h"
-#include "Particle.h"
+#include "ParticleProfile.h"
 #include "../XmlReader.h"
+
+/*
+If a child exists with the specified name, attempt to read its 'mean' and 'sd' attributes into
+the provided variables.  Use default values of mean=0, sd=1.
+mean and sd will be changed if and only if the child is found.
+Return value: whether or not the child was found.
+*/
+static bool findNormVarChild(const std::string &val, TiXmlElement *elem, double &mean, double &sd){
+    TiXmlElement *child = XmlReader::findChild(val, elem);
+    if (child == nullptr)
+        return false;
+    if (!XmlReader::findAttr(child, "mean", mean)) mean = 0;
+    if (!XmlReader::findAttr(child, "sd", sd)) sd = 1;
+    return true;
+}
 
 /*
 If a child exists with the specified name, attempt to read its 'x', 'y', 'w', and 'h' attributes
@@ -46,6 +61,32 @@ void Client::loadData(const std::string &path){
         xr.findAttr(elem, "frames", frames);
         xr.findAttr(elem, "frameTime", frameTime);
         _terrain[index] = Terrain(fileName, isTraversable != 0, frames, frameTime);
+    }
+
+    // Particles
+    xr.newFile(path + "/particles.xml");
+    for (auto elem : xr.getChildren("particleProfile")) {
+        std::string s;
+        if (!xr.findAttr(elem, "id", s)) // No ID: skip
+            continue;
+        ParticleProfile *profile = new ParticleProfile(s);
+        double mean, sd;
+        if (xr.findAttr(elem, "particlesPerSecond", mean)) profile->particlesPerSecond(mean);
+        if (findNormVarChild("particlesPerHit", elem, mean, sd)) profile->particlesPerHit(mean, sd);
+        if (findNormVarChild("distance", elem, mean, sd)) profile->distance(mean, sd);
+        if (findNormVarChild("altitude", elem, mean, sd)) profile->altitude(mean, sd);
+        if (findNormVarChild("velocity", elem, mean, sd)) profile->velocity(mean, sd);
+        if (findNormVarChild("fallSpeed", elem, mean, sd)) profile->fallSpeed(mean, sd);
+
+        for (auto variety : xr.getChildren("variety", elem)){
+            if (!xr.findAttr(variety, "imageFile", s))
+                continue; // No image file specified; skip
+            Rect rect;
+            findRectChild("drawRect", variety, rect);
+            profile->addVariety(s, rect);
+        }
+
+        _particleProfiles.insert(profile);
     }
 
     // Load Items
@@ -192,8 +233,5 @@ void Client::loadData(const std::string &path){
             _objectTypes.insert(nt);
         }
     }
-
-    // Particles
-    Particle::init();
 
 }

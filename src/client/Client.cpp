@@ -341,7 +341,6 @@ _debug("client.log"){
 Client::~Client(){
     SDL_ShowCursor(SDL_ENABLE);
     Element::cleanup();
-    Particle::quit();
     if (_defaultFont != nullptr)
         TTF_CloseFont(_defaultFont);
     Avatar::image("");
@@ -353,6 +352,8 @@ Client::~Client(){
 
     for (const ClientObjectType *type : _objectTypes)
         delete type;
+    for (const ParticleProfile *profile : _particleProfiles)
+        delete profile;
 
     // Some entities will destroy their own windows, and remove them from this list.
     for (Window *window : _windows)
@@ -500,9 +501,12 @@ void Client::run(){
 
             // Add particles
             if (_actionHasParticles){
-                size_t numParticles = Particle::numParticlesToAdd(delta);
+                ParticleProfile dummy("tree");
+                const ParticleProfile &treeProfile = **_particleProfiles.find(&dummy);
+                size_t numParticles = treeProfile.numParticlesToAdd(delta);
+                _debug << "Adding " << numParticles << " particles." << Log::endl;
                 for (size_t i = 0; i != numParticles; ++i)
-                    addEntity(new Particle(_particleLocation));
+                    addEntity(treeProfile.instantiate(_particleLocation));
             }
         }
 

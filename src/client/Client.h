@@ -15,8 +15,8 @@
 #include "Entity.h"
 #include "ClientItem.h"
 #include "LogSDL.h"
+#include "ParticleProfile.h"
 #include "Terrain.h"
-#include "../server/Recipe.h"
 #include "ui/ChoiceList.h"
 #include "ui/Container.h"
 #include "ui/ItemSelector.h"
@@ -27,6 +27,7 @@
 #include "../Socket.h"
 #include "../messageCodes.h"
 #include "../types.h"
+#include "../server/Recipe.h"
 
 class ClientNPC;
 class TextBox;
@@ -65,8 +66,6 @@ public:
 
     typedef std::list<Window *> windows_t;
     typedef std::list<Element *> ui_t; // For the UI, that sits below all windows.
-
-    typedef std::set<const ClientObjectType*, ClientObjectType::ptrCompare> objectTypes_t;
 
     static const px_t
         SCREEN_X,
@@ -244,7 +243,11 @@ private:
     std::vector<Terrain> _terrain;
     std::set<ClientItem> _items;
     std::set<Recipe> _recipes;
+    typedef std::set<const ClientObjectType*, ClientObjectType::ptrCompare> objectTypes_t;
     objectTypes_t _objectTypes;
+    typedef std::set<const ParticleProfile*, ParticleProfile::ptrCompare> particleProfiles_t;
+    particleProfiles_t _particleProfiles;
+    
 
     // Information about the state of the world
     size_t _mapX, _mapY;

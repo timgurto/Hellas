@@ -12,17 +12,10 @@ class Texture;
 
 // An individual particle
 class Particle : public Entity{
-    static Texture *images[3];
-    static const Rect DRAW_RECT;
     static const EntityType ENTITY_TYPE;
-    static const double PARTICLES_PER_SECOND;
-    static const NormalVariable
-        startingDistanceGenerator,
-        startingAltitudeGenerator,
-        velocityGenerator,
-        startingFallSpeedGenerator;
 
-    size_t _imageType; // Random
+    const Texture &_image;
+    const Rect &_drawRect;
 
     // x and y
     Point _velocity; // in px/s
@@ -31,28 +24,17 @@ class Particle : public Entity{
     double _altitude;
     double _fallSpeed;
 
-    static const double
-        GRAVITY, // px/s/s
-        DISTANCE_MEAN, // Distance from center
-        DISTANCE_SD,
-        ALTITUDE_MEAN, // Height from base
-        ALTITUDE_SD,
-        VELOCITY_MEAN, // In random lateral (x,y) direction
-        VELOCITY_SD,
-        FALL_SPEED_MEAN,
-        FALL_SPEED_SD;
+    static const double GRAVITY; // px/s/s
 
 public:
-    Particle(const Point &loc);
+    Particle(const Point &loc, const Texture &image, const Rect &drawRect, const Point &velocity,
+             double startingAltitude, double startingFallSpeed);
 
     virtual Rect drawRect() const override;
-    virtual const Texture &image() const override;
+    virtual const Texture &image() const override { return _image; }
     virtual void update(double delta) override;
 
     static size_t numParticlesToAdd(double delta);
-    
-    static void init();
-    static void quit();
 };
 
 #endif
