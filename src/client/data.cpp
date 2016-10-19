@@ -5,6 +5,23 @@
 #include "Particle.h"
 #include "../XmlReader.h"
 
+/*
+If a child exists with the specified name, attempt to read its 'x', 'y', 'w', and 'h' attributes
+into the provided Rect variable.  It will be changed if and only if the child is found.
+Any missing attributes will be assumed to be 0.
+Return value: whether or not the child was found.
+*/
+static bool findRectChild(const std::string &val, TiXmlElement *elem, Rect &rect){
+    TiXmlElement *child = XmlReader::findChild(val, elem);
+    if (child == nullptr)
+        return false;
+    if (!XmlReader::findAttr(child, "x", rect.x)) rect.x = 0;
+    if (!XmlReader::findAttr(child, "y", rect.y)) rect.y = 0;
+    if (!XmlReader::findAttr(child, "w", rect.w)) rect.w = 0;
+    if (!XmlReader::findAttr(child, "h", rect.h)) rect.h = 0;
+    return true;
+}
+
 void Client::loadData(const std::string &path){
     _terrain.clear();
     _items.clear();
@@ -129,15 +146,8 @@ void Client::loadData(const std::string &path){
         if (xr.findAttr(elem, "isFlat", n) && n != 0) cot->isFlat(true);
         if (xr.findAttr(elem, "gatherSound", s))
             cot->gatherSound(std::string("Sounds/") + s + ".wav");
-        auto collisionRect = xr.findChild("collisionRect", elem);
-        if (collisionRect) {
-            Rect r;
-            xr.findAttr(collisionRect, "x", r.x);
-            xr.findAttr(collisionRect, "y", r.y);
-            xr.findAttr(collisionRect, "w", r.w);
-            xr.findAttr(collisionRect, "h", r.h);
-            cot->collisionRect(r);
-        }
+        Rect r;
+        if (findRectChild("collisionRect", elem, r)) cot->collisionRect(r);
         auto pair = _objectTypes.insert(cot);
         if (!pair.second) {
             ClientObjectType &type = const_cast<ClientObjectType &>(**pair.first);
@@ -166,15 +176,8 @@ void Client::loadData(const std::string &path){
             ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
         if (xSet || ySet)
             nt->drawRect(drawRect);
-        auto collisionRect = xr.findChild("collisionRect", elem);
-        if (collisionRect) {
-            Rect r;
-            xr.findAttr(collisionRect, "x", r.x);
-            xr.findAttr(collisionRect, "y", r.y);
-            xr.findAttr(collisionRect, "w", r.w);
-            xr.findAttr(collisionRect, "h", r.h);
-            nt->collisionRect(r);
-        }
+        Rect r;
+        if (findRectChild("collisionRect", elem, r)) nt->collisionRect(r);
         auto pair = _objectTypes.insert(nt);
         if (!pair.second) {
             // A ClientObjectType is being pointed to by items; they need to point to this instead.
