@@ -1,6 +1,6 @@
 issue,description,value,effort,type,blockedBy,done
 32,Document and improve use of various disconnects,2,5,Documentation,,
-60,Add particle effects when cutting down a tree,13,13,Aesthetics,,
+60,Add particle effects when cutting down a tree,13,13,Aesthetics,,TRUE
 72,Move SDL functions and types to a namespace,2,8,Code quality,,
 74,Throw exceptions where appropriate on SDL-function failures,3,8,Code quality,,
 83,"Sort _materials and _craftableItems by name, not ID",8,8,Aesthetics,,
@@ -16,7 +16,7 @@ issue,description,value,effort,type,blockedBy,done
 140,Move appropriate configuration details into config file,5,34,Code quality,,
 145,Document UI interface,13,8,Documentation,,
 146,Document Texture interface,8,3,Documentation,,
-148,Document XML interface,8,3,Documentation,,
+148,Document XML interface,8,3,Documentation,,TRUE
 149,"Choose gather item based on gathers left, not nominal quantity",8,5,Feature,,TRUE
 152,Prevent gathering/deconstructing when object has an inventory,34,2,Bug,,TRUE
 154,Allow giving away or begging for goods via trade,8,5,Feature,,
@@ -24,7 +24,7 @@ issue,description,value,effort,type,blockedBy,done
 160,Cull terrain,21,13,Performance,,
 161,Cull players,34,8,Performance,,TRUE
 162,Cull objects,55,8,Performance,,TRUE
-163,Create generic particle system,8,8,Aesthetics,60,
+163,Create generic particle system,8,8,Aesthetics,,
 166,Health stat,8,2,Feature,,TRUE
 167,Static critters w/ health,34,13,Feature,,TRUE
 169,NPCs can die,13,3,Feature,,TRUE
@@ -73,3 +73,4 @@ issue,description,value,effort,type,blockedBy,done
 213,Avoid multiple data loads for custom server data,5,1,Code quality,,
 214,Prefix abstract-class names with I,2,1,Code quality,,
 215,"Blood particles for attacking and death, that remain for a time",5,5,Aesthetics,163,
+216,Allow nonexistent data files (for tests),2,2,Code quality,,

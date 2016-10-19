@@ -15,7 +15,7 @@
  - Code interfaces  
   - :soon: Command-line arguments  
   - :soon: Sockets  
-  - :soon: XML reading/writing  
+  - [XML reading/writing](interfaces/xml.md)  
   - [Yields](interfaces/yield.md)  
   - :soon: UI  
   - :soon: Rendering  
