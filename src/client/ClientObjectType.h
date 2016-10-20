@@ -11,6 +11,7 @@
 #include "../util.h"
 
 struct Mix_Chunk;
+class ParticleProfile;
 
 // Describes a class of Entities, the "instances" of which share common properties
 class ClientObjectType : public EntityType{
@@ -22,6 +23,7 @@ class ClientObjectType : public EntityType{
     size_t _merchantSlots;
     Mix_Chunk *_gatherSound;
     Rect _collisionRect;
+    const ParticleProfile *_gatherParticles;
 
 public:
     ClientObjectType(const std::string &id);
@@ -41,6 +43,8 @@ public:
     Mix_Chunk *gatherSound() const { return _gatherSound; }
     const Rect &collisionRect() const { return _collisionRect; }
     void collisionRect(const Rect &r) { _collisionRect = r; }
+    const ParticleProfile *gatherParticles() const { return _gatherParticles; }
+    void gatherParticles(const ParticleProfile *profile) { _gatherParticles = profile; }
 
     virtual char classTag() const override { return 'o'; }
 

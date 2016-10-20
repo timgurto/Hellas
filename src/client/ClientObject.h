@@ -52,7 +52,8 @@ public:
     const Window *window() const { return _window; }
 
     virtual char classTag() const override { return 'o'; }
-    
+
+    virtual void update(double delta) override;
     virtual void draw(const Client &client) const;
 
     Rect collisionRect() const { return objectType()->collisionRect() + location(); }

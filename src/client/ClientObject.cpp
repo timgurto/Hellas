@@ -146,7 +146,6 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
 
 void ClientObject::onRightClick(Client &client){
     //Client::debug() << "Right-clicked on object #" << _serial << Log::endl;
-    client._actionHasParticles = false;
 
     const ClientObjectType &objType = *objectType();
 
@@ -161,10 +160,6 @@ void ClientObject::onRightClick(Client &client){
         client.sendMessage(CL_GATHER, makeArgs(_serial));
         client.prepareAction(std::string("Gathering ") + objType.name());
         playGatherSound();
-        if (objType.name() == "Tree"){
-            client._actionHasParticles = true;
-            client._particleLocation = location();
-        }
         return;
     }
     
@@ -404,4 +399,19 @@ bool ClientObject::userHasAccess() const{
     return
         _owner.empty() ||
         _owner == Client::_instance->username();
+}
+
+void ClientObject::update(double delta) {
+    Client &client = *Client::_instance;
+
+    // If being gathered, add particles.
+    if (false /*beingGathered()*/){
+        const ParticleProfile *gatherParticles = objectType()->gatherParticles();
+        if (gatherParticles != nullptr){
+            size_t numParticles = gatherParticles->numParticlesToAdd(delta);
+            client._debug << "Adding " << numParticles << " particles." << Log::endl;
+            for (size_t i = 0; i != numParticles; ++i)
+                client.addEntity(gatherParticles->instantiate(location()));
+        }
+    }
 }

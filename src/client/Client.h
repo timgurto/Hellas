@@ -159,8 +159,6 @@ private:
     Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.
 
     // These are superficial, and relate only to the cast bar.
-    bool _actionHasParticles; // Whether to add particles for the current action.
-    Point _particleLocation; // Where to add particles.
     ms_t _actionTimer; // How long the character has been performing the current action.
     ms_t _actionLength; // How long the current action should take.
     std::string _actionMessage; // A description of the current action.
@@ -295,6 +293,11 @@ private:
     // Show a confirmation window, then drop item if confirmed
     void dropItemOnConfirmation(size_t serial, size_t slot, const ClientItem *item);
     static void sendMessageAndHideConfirmationWindow(void *data);
+
+
+    // Searches
+    const ParticleProfile *findParticleProfile(const std::string &id);
+
 
     friend class Container; // Needs to send CL_SWAP_ITEMS messages, and open a confirmation window
     friend class ClientObject;

@@ -187,6 +187,7 @@ void Client::loadData(const std::string &path){
         if (xr.findAttr(elem, "isFlat", n) && n != 0) cot->isFlat(true);
         if (xr.findAttr(elem, "gatherSound", s))
             cot->gatherSound(std::string("Sounds/") + s + ".wav");
+        if (xr.findAttr(elem, "gatherParticles", s)) cot->gatherParticles(findParticleProfile(s));
         Rect r;
         if (findRectChild("collisionRect", elem, r)) cot->collisionRect(r);
         auto pair = _objectTypes.insert(cot);

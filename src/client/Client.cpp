@@ -88,7 +88,6 @@ _connectionStatus(TRYING),
 
 _actionTimer(0),
 _actionLength(0),
-_actionHasParticles(false),
 
 _loop(true),
 _running(false),
@@ -498,16 +497,6 @@ void Client::run(){
         if (_actionLength > 0) {
             _actionTimer = min(_actionTimer + _timeElapsed, _actionLength);
             _castBar->show();
-
-            // Add particles
-            if (_actionHasParticles){
-                ParticleProfile dummy("tree");
-                const ParticleProfile &treeProfile = **_particleProfiles.find(&dummy);
-                size_t numParticles = treeProfile.numParticlesToAdd(delta);
-                _debug << "Adding " << numParticles << " particles." << Log::endl;
-                for (size_t i = 0; i != numParticles; ++i)
-                    addEntity(treeProfile.instantiate(_particleLocation));
-            }
         }
 
         // Update terrain animation
@@ -791,4 +780,12 @@ void Client::targetNPC(const ClientNPC *npc, bool aggressive){
         _targetNPCHealth = npc->health();
         _targetNPCMaxHealth = npc->npcType()->maxHealth();
     }
+}
+
+const ParticleProfile *Client::findParticleProfile(const std::string &id){
+    ParticleProfile dummy(id);
+    auto it = _particleProfiles.find(&dummy);
+    if (it == _particleProfiles.end())
+        return nullptr;
+    return *it;
 }

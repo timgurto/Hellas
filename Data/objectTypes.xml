@@ -28,6 +28,7 @@ Server only:
     yDrawOffset=-57
     canGather=1
     gatherSound="chop-pause"
+    gatherParticles="tree"
     gatherReq="axe"
     gatherTime=3000 >
     <yield id="wood" initialMean=6 initialSD=0.8 />
