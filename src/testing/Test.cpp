@@ -8,13 +8,22 @@
 extern Args cmdLineArgs;
 
 Test::testContainer_t *Test::_testContainer = nullptr;
+bool Test::_runSubset = false;
 const size_t Test::STATUS_MARGIN = 45;
 
-Test::Test(std::string description, bool slow, testFun_t fun):
-    _description(description),
-    _fun(fun),
-    _slow(slow){
-    Test::testContainer().push_back(*this);
+Test::Test(std::string description, bool slow, bool subset, testFun_t fun):
+_description(description),
+_fun(fun),
+_slow(slow){
+    if (subset) {
+        if (!_runSubset)
+            testContainer().clear();
+        _runSubset = true;
+        testContainer().push_back(*this);
+    }
+    
+    else if (!_runSubset)
+        testContainer().push_back(*this);
 }
 
 Test::testContainer_t &Test::testContainer(){

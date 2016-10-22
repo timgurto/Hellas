@@ -19,12 +19,14 @@ private:
     bool _slow;
     
     static testContainer_t *_testContainer;
+    static bool _runSubset; // At least one test was defined with ONLY_TEST
 
 public:
     static testContainer_t &testContainer();
+    static testContainer_t &testSubset();
     static const size_t STATUS_MARGIN;
 
-    Test(std::string description, bool slow, testFun_t fun);
+    Test(std::string description, bool slow, bool subset, testFun_t fun);
 
     const std::string &description() const { return _description; }
     testFun_t fun() const { return _fun; }
@@ -35,8 +37,9 @@ public:
 
 #define TOKEN_CONCAT_2(a, b) a ## b
 #define TOKEN_CONCAT(a, b) TOKEN_CONCAT_2(a, b)
-#define TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) (name, false, [](){
-#define SLOW_TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) (name, true, [](){
+#define TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) (name, false, false, [](){
+#define SLOW_TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) (name, true, false, [](){
+#define ONLY_TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) (name, false, true, [](){
 #define TEND });
 
 #define WAIT_UNTIL(x) while( ! (x) )
