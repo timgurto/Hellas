@@ -70,7 +70,7 @@ issue,description,value,effort,type,blockedBy,done
 210,Make client-side NPCs a subclass of ClientObject,5,2,Code quality,,TRUE
 211,Fix flaky merchant-slot-window test,13,13,Bug,,
 212,Prevent movement from interrupting attacking,13,2,Bug,,TRUE
-213,Avoid multiple data loads for custom server data,5,1,Code quality,,
+213,Avoid multiple data loads for custom server data,5,1,Code quality,,TRUE
 214,Prefix abstract-class names with I,2,1,Code quality,,
 215,"Blood particles for attacking and death, that remain for a time",5,5,Aesthetics,,
 216,Allow nonexistent data files (for tests),2,2,Code quality,,TRUE

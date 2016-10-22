@@ -50,7 +50,8 @@ _running(false),
 _mapX(0),
 _mapY(0),
 _debug("server.log"),
-_lastSave(_time){
+_lastSave(_time),
+_dataLoaded(false){
     _instance = this;
     _debugInstance = &_debug;
     if (cmdLineArgs.contains("quiet"))
@@ -59,8 +60,6 @@ _lastSave(_time){
     _debug << cmdLineArgs << Log::endl;
     if (Socket::debug == nullptr)
         Socket::debug = &_debug;
-
-    loadData();
 
     _debug("Server initialized");
 
@@ -166,6 +165,9 @@ void Server::checkSockets(){
 }
 
 void Server::run(){
+    if (!_dataLoaded)
+        loadData();
+
     _loop = true;
     _running = true;
     while (_loop) {

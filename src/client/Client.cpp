@@ -92,6 +92,7 @@ _actionLength(0),
 _loop(true),
 _running(false),
 _socket(),
+_dataLoaded(false),
 
 _defaultFont(nullptr),
 _defaultFontOffset(0),
@@ -236,8 +237,6 @@ _debug("client.log"){
     _character.name(_username);
 
     SDL_StopTextInput();
-
-    loadData();
 
     Element::absMouse = &_mouse;
 
@@ -416,6 +415,9 @@ void Client::checkSocket(){
 }
 
 void Client::run(){
+    if (!_dataLoaded)
+        loadData();
+
     _running = true;
 
     ms_t timeAtLastTick = SDL_GetTicks();

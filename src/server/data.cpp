@@ -407,11 +407,13 @@ void Server::loadData(const std::string &path){
             NPC &npc= addNPC(type, p);
         }
 
+        _dataLoaded = true;
         return;
     } while (false);
 
     _debug("No/invalid world data detected; generating new world.", Color::YELLOW);
     generateWorld();
+    _dataLoaded = true;
 }
 
 void Server::saveMap(){

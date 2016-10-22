@@ -236,4 +236,5 @@ void Client::loadData(const std::string &path){
             }
         }
 
+    _dataLoaded = true;
 }
