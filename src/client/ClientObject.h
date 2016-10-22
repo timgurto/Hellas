@@ -30,6 +30,7 @@ class ClientObject : public Entity{
     std::vector<serialSlotPair_t *> _serialSlotPairs;
     std::vector<TextBox *> _wareQtyBoxes;
     std::vector<TextBox *> _priceQtyBoxes;
+    bool _beingGathered;
 
 public:
     ClientObject(const ClientObject &rhs);
@@ -50,6 +51,8 @@ public:
     const std::vector<Element *> &merchantSlotElements() const
         { return _merchantSlotElements; }
     const Window *window() const { return _window; }
+    void beingGathered(bool b) { _beingGathered = b; }
+    bool beingGathered() const { return _beingGathered; }
 
     virtual char classTag() const override { return 'o'; }
 

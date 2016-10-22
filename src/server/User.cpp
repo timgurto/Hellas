@@ -272,15 +272,34 @@ size_t User::giveItem(const ServerItem *item, size_t quantity){
 }
 
 void User::cancelAction() {
-    if (_action != NO_ACTION && _action != ATTACK) {
-        Server::instance().sendMessage(_socket, SV_ACTION_INTERRUPTED);
-        _action = NO_ACTION;
+    if (_action == NO_ACTION)
+        return;
+
+    switch(_action){
+    case GATHER:
+        _actionObject->decrementGatheringUsers();
     }
+
+    Server::instance().sendMessage(_socket, SV_ACTION_INTERRUPTED);
+    _action = NO_ACTION;
+}
+
+void User::finishAction() {
+    if (_action == NO_ACTION)
+        return;
+
+    switch(_action){
+    case GATHER:
+        _actionObject->decrementGatheringUsers(this);
+    }
+
+    _action = NO_ACTION;
 }
 
 void User::beginGathering(Object *obj){
     _action = GATHER;
     _actionObject = obj;
+    _actionObject->incrementGatheringUsers();
     assert(obj->type());
     _actionTime = obj->type()->gatherTime();
 }
@@ -308,7 +327,7 @@ void User::beginDeconstructing(Object &obj){
 void User::targetNPC(NPC *npc){
     _actionNPC = npc;
     if (_actionNPC == nullptr){
-        _action = NO_ACTION;
+        cancelAction();
         return;
     }
     _action = ATTACK;
@@ -432,7 +451,7 @@ void User::update(ms_t timeElapsed){
         const ServerItem *product = toServerItem(_actionRecipe->product());
         if (!vectHasSpace(_inventory, product)) {
             server.sendMessage(_socket, SV_INVENTORY_FULL);
-            _action = NO_ACTION;
+            cancelAction();
             return;
         }
         // Give user his newly crafted item
@@ -462,7 +481,7 @@ void User::update(ms_t timeElapsed){
         const ServerItem *item = _actionObject->type()->deconstructsItem();
         if (!vectHasSpace(_inventory, item)){
             server.sendMessage(_socket, SV_INVENTORY_FULL);
-            _action = NO_ACTION;
+            cancelAction();
             return;
         }
         // Give user his item
@@ -478,7 +497,7 @@ void User::update(ms_t timeElapsed){
     
     if (_action != ATTACK){ // ATTACK is a repeating action.
         server.sendMessage(_socket, SV_ACTION_FINISHED);
-        _action = NO_ACTION;
+        finishAction();
     }
 }
 

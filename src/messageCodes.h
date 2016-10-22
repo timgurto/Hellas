@@ -145,6 +145,12 @@ enum MessageCode{
     // The user has completed an action
     SV_ACTION_FINISHED = 131,
 
+    // An object is being gathered from
+    SV_GATHERING_OBJECT = 140,
+
+    // An object is not being gathered from
+    SV_NOT_GATHERING_OBJECT = 141,
+
     // An object has an owner
     // Arguments: serial, owner
     SV_OWNER = 150,

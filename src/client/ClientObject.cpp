@@ -25,12 +25,14 @@ ClientObject::ClientObject(const ClientObject &rhs):
 Entity(rhs),
 _serial(rhs._serial),
 _container(rhs._container),
-_window(nullptr){}
+_window(nullptr),
+_beingGathered(rhs._beingGathered){}
 
 ClientObject::ClientObject(size_t serialArg, const EntityType *type, const Point &loc):
 Entity(type, loc),
 _serial(serialArg),
-_window(nullptr){
+_window(nullptr),
+_beingGathered(false){
     if (type != nullptr) { // i.e., not a serial-only search dummy
         const size_t
             containerSlots = objectType()->containerSlots(),
@@ -405,11 +407,10 @@ void ClientObject::update(double delta) {
     Client &client = *Client::_instance;
 
     // If being gathered, add particles.
-    if (false /*beingGathered()*/){
+    if (beingGathered()){
         const ParticleProfile *gatherParticles = objectType()->gatherParticles();
         if (gatherParticles != nullptr){
             size_t numParticles = gatherParticles->numParticlesToAdd(delta);
-            client._debug << "Adding " << numParticles << " particles." << Log::endl;
             for (size_t i = 0; i != numParticles; ++i)
                 client.addEntity(gatherParticles->instantiate(location()));
         }

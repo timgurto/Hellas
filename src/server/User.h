@@ -103,6 +103,7 @@ public:
     void beginDeconstructing(Object &obj);
 
     void cancelAction(); // Cancel any action in progress, and alert the client
+    void finishAction(); // An action has just ended; clean up the state.
 
     std::string makeLocationCommand() const;
 

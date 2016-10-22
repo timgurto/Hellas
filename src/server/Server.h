@@ -146,6 +146,8 @@ private:
     friend void Object::markForRemoval();
     friend void Object::removeItems(const ItemSet &items);
     friend void Object::giveItem(const ServerItem *item, size_t qty);
+    friend void Object::incrementGatheringUsers(const User *userToSkip);
+    friend void Object::decrementGatheringUsers(const User *userToSkip);
 
     friend void NPC::kill();
 

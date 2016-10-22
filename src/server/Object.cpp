@@ -9,7 +9,9 @@
 Object::Object(const ObjectType *type, const Point &loc):
 _serial(generateSerial()),
 _location(loc),
-_type(type){
+_type(type),
+_numUsersGathering(0)
+{
     assert(type);
     if (type->yield()) {
         type->yield().instantiate(_contents);
@@ -191,4 +193,26 @@ bool Object::isContainerEmpty() const{
 
 void Object::markForRemoval(){
     Server::_instance->_objectsToRemove.push_back(this);
+}
+
+void Object::incrementGatheringUsers(const User *userToSkip){
+    const Server &server = *Server::_instance;
+    ++_numUsersGathering;
+    server._debug << Color::CYAN << _numUsersGathering << Log::endl;
+    if (_numUsersGathering == 1){
+        for (const User &user : server._users)
+            if (&user != userToSkip)
+                server.sendMessage(user.socket(), SV_GATHERING_OBJECT, makeArgs(_serial));
+    }
+}
+
+void Object::decrementGatheringUsers(const User *userToSkip){
+    const Server &server = *Server::_instance;
+    --_numUsersGathering;
+    server._debug << Color::CYAN << _numUsersGathering << Log::endl;
+    if (_numUsersGathering == 0){
+        for (const User &user : server._users)
+            if (&user != userToSkip)
+                server.sendMessage(user.socket(), SV_NOT_GATHERING_OBJECT, makeArgs(_serial));
+    }
 }

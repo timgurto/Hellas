@@ -352,12 +352,13 @@ void Server::forceUntarget(const Object &obj, const User *userToExclude){
         User & user = const_cast<User &>(userConst);
         if (&user == userToExclude)
             continue;
-        if ((user.action() == User::GATHER && user.actionObject()->serial() == serial) ||
-            (user.action() == User::ATTACK && user.targetNPC()->serial() == serial)) {
-
-            if (user.action() == User::GATHER)
-                sendMessage(user.socket(), SV_DOESNT_EXIST);
-            user.action(User::NO_ACTION);
+        if (user.action() == User::ATTACK && user.targetNPC()->serial() == serial) {
+            user.finishAction();
+            continue;
+        }
+        if (user.action() == User::GATHER && user.actionObject()->serial() == serial) {
+            sendMessage(user.socket(), SV_DOESNT_EXIST);
+            user.cancelAction();
         }
     }
 }

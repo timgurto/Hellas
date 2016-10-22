@@ -8,6 +8,8 @@
 #include "ItemSet.h"
 #include "../Point.h"
 
+class User;
+
 // A server-side representation of an in-game object
 class Object{
     size_t _serial; // Starts at 1; 0 is reserved.
@@ -17,6 +19,8 @@ class Object{
     ItemSet _contents; // Remaining contents, which can be gathered
     ServerItem::vect_t _container; // Items contained in object
     std::vector<MerchantSlot> _merchantSlots;
+
+    size_t _numUsersGathering; // The number of users gathering from this object.
 
     // Users watching this object for changes to inventory or merchant slots
     std::set<std::string> _watchers;
@@ -47,6 +51,8 @@ public:
     const MerchantSlot &merchantSlot(size_t slot) const { return _merchantSlots[slot]; }
     MerchantSlot &merchantSlot(size_t slot) { return _merchantSlots[slot]; }
     const std::set<std::string> &watchers() const { return _watchers; }
+    void incrementGatheringUsers(const User *userToSkip = nullptr);
+    void decrementGatheringUsers(const User *userToSkip = nullptr);
 
     bool isContainerEmpty() const;
 

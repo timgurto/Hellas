@@ -427,6 +427,36 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_GATHERING_OBJECT:
+        {
+            int serial;
+            singleMsg >> serial >> del;
+            if (del != MSG_END)
+                break;
+            const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
+            if (it == _objects.end()){
+                _debug("Received info about an unknown object.", Color::MMO_RED);
+                break;
+            }
+            (it->second)->beingGathered(true);
+            break;
+        }
+
+        case SV_NOT_GATHERING_OBJECT:
+        {
+            int serial;
+            singleMsg >> serial >> del;
+            if (del != MSG_END)
+                break;
+            const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
+            if (it == _objects.end()){
+                _debug("Received info about an unknown object.", Color::MMO_RED);
+                break;
+            }
+            (it->second)->beingGathered(false);
+            break;
+        }
+
         case SV_NPC_HEALTH:
         {
             int serial, health;
