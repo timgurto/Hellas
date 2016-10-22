@@ -19,17 +19,17 @@ XmlReader::~XmlReader(){
     _doc.Clear();
 }
 
-void XmlReader::newFile(const char *filename){
+bool XmlReader::newFile(const char *filename){
     _doc.Clear();
     _root = nullptr;
-    bool ret = _doc.LoadFile(filename);
-    if (!ret)
-        return;
+    if (!_doc.LoadFile(filename))
+        return false;
     _root = _doc.FirstChildElement();
+    return *this;
 }
 
-void XmlReader::newFile(const std::string &filename){
-    newFile(filename.c_str());
+bool XmlReader::newFile(const std::string &filename){
+    return newFile(filename.c_str());
 }
 
 std::set<TiXmlElement *> XmlReader::getChildren(const std::string &val, TiXmlElement *elem) {

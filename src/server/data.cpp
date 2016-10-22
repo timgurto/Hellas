@@ -92,170 +92,171 @@ void Server::loadData(const std::string &path){
 
     // Load terrain
     XmlReader xr(path + "/terrain.xml");
-    for (auto elem : xr.getChildren("terrain")) {
-        int index;
-        if (!xr.findAttr(elem, "index", index))
-            continue;
-        int isTraversable = 1;
-        xr.findAttr(elem, "isTraversable", isTraversable);
-        if (index >= static_cast<int>(_terrain.size()))
-            _terrain.resize(index+1);
-        _terrain[index] = TerrainType(isTraversable != 0);
-    }
+    if (xr)
+        for (auto elem : xr.getChildren("terrain")) {
+            int index;
+            if (!xr.findAttr(elem, "index", index))
+                continue;
+            int isTraversable = 1;
+            xr.findAttr(elem, "isTraversable", isTraversable);
+            if (index >= static_cast<int>(_terrain.size()))
+                _terrain.resize(index+1);
+            _terrain[index] = TerrainType(isTraversable != 0);
+        }
 
     // Object types
-    xr.newFile(path + "/objectTypes.xml");
-    for (auto elem : xr.getChildren("objectType")) {
-        std::string id;
-        if (!xr.findAttr(elem, "id", id))
-            continue;
-        ObjectType *ot = new ObjectType(id);
-
-        std::string s; int n;
-        if (xr.findAttr(elem, "gatherTime", n)) ot->gatherTime(n);
-        if (xr.findAttr(elem, "constructionTime", n)) ot->constructionTime(n);
-        if (xr.findAttr(elem, "gatherReq", s)) ot->gatherReq(s);
-        if (xr.findAttr(elem, "deconstructs", s)){
-            std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
-            ot->deconstructsItem(&*itemIt);
-        }
-        if (xr.findAttr(elem, "deconstructionTime", n)) ot->deconstructionTime(n);
-        for (auto yield : xr.getChildren("yield", elem)) {
-            if (!xr.findAttr(yield, "id", s))
+    if (xr.newFile(path + "/objectTypes.xml"))
+        for (auto elem : xr.getChildren("objectType")) {
+            std::string id;
+            if (!xr.findAttr(elem, "id", id))
                 continue;
-            double initMean = 1., initSD = 0, gatherMean = 1, gatherSD = 0;
-            xr.findAttr(yield, "initialMean", initMean);
-            xr.findAttr(yield, "initialSD", initSD);
-            xr.findAttr(yield, "gatherMean", gatherMean);
-            xr.findAttr(yield, "gatherSD", gatherSD);
-            std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
-            ot->addYield(&*itemIt, initMean, initSD, gatherMean, gatherSD);
-        }
-        if (xr.findAttr(elem, "merchantSlots", n)) ot->merchantSlots(n);
-        auto collisionRect = xr.findChild("collisionRect", elem);
-        if (collisionRect) {
-            Rect r;
-            xr.findAttr(collisionRect, "x", r.x);
-            xr.findAttr(collisionRect, "y", r.y);
-            xr.findAttr(collisionRect, "w", r.w);
-            xr.findAttr(collisionRect, "h", r.h);
-            ot->collisionRect(r);
-        }
-        for (auto objClass :xr.getChildren("class", elem))
-            if (xr.findAttr(objClass, "name", s))
-                ot->addClass(s);
-        auto container = xr.findChild("container", elem);
-        if (container != nullptr) {
-            if (xr.findAttr(container, "slots", n)) ot->containerSlots(n);
-        }
+            ObjectType *ot = new ObjectType(id);
+
+            std::string s; int n;
+            if (xr.findAttr(elem, "gatherTime", n)) ot->gatherTime(n);
+            if (xr.findAttr(elem, "constructionTime", n)) ot->constructionTime(n);
+            if (xr.findAttr(elem, "gatherReq", s)) ot->gatherReq(s);
+            if (xr.findAttr(elem, "deconstructs", s)){
+                std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
+                ot->deconstructsItem(&*itemIt);
+            }
+            if (xr.findAttr(elem, "deconstructionTime", n)) ot->deconstructionTime(n);
+            for (auto yield : xr.getChildren("yield", elem)) {
+                if (!xr.findAttr(yield, "id", s))
+                    continue;
+                double initMean = 1., initSD = 0, gatherMean = 1, gatherSD = 0;
+                xr.findAttr(yield, "initialMean", initMean);
+                xr.findAttr(yield, "initialSD", initSD);
+                xr.findAttr(yield, "gatherMean", gatherMean);
+                xr.findAttr(yield, "gatherSD", gatherSD);
+                std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
+                ot->addYield(&*itemIt, initMean, initSD, gatherMean, gatherSD);
+            }
+            if (xr.findAttr(elem, "merchantSlots", n)) ot->merchantSlots(n);
+            auto collisionRect = xr.findChild("collisionRect", elem);
+            if (collisionRect) {
+                Rect r;
+                xr.findAttr(collisionRect, "x", r.x);
+                xr.findAttr(collisionRect, "y", r.y);
+                xr.findAttr(collisionRect, "w", r.w);
+                xr.findAttr(collisionRect, "h", r.h);
+                ot->collisionRect(r);
+            }
+            for (auto objClass :xr.getChildren("class", elem))
+                if (xr.findAttr(objClass, "name", s))
+                    ot->addClass(s);
+            auto container = xr.findChild("container", elem);
+            if (container != nullptr) {
+                if (xr.findAttr(container, "slots", n)) ot->containerSlots(n);
+            }
         
-        _objectTypes.insert(ot);
-    }
+            _objectTypes.insert(ot);
+        }
 
     // NPC types
-    xr.newFile(path + "/npcTypes.xml");
-    for (auto elem : xr.getChildren("npcType")) {
-        std::string id;
-        if (!xr.findAttr(elem, "id", id)) // No ID: skip
-            continue;
-        int n;
-        if (!xr.findAttr(elem, "maxHealth", n)) // No health: skip
-            continue;
-        NPCType *nt = new NPCType(id, n);
+    if (xr.newFile(path + "/npcTypes.xml"))
+        for (auto elem : xr.getChildren("npcType")) {
+            std::string id;
+            if (!xr.findAttr(elem, "id", id)) // No ID: skip
+                continue;
+            int n;
+            if (!xr.findAttr(elem, "maxHealth", n)) // No health: skip
+                continue;
+            NPCType *nt = new NPCType(id, n);
 
-        std::string s;
-        auto collisionRect = xr.findChild("collisionRect", elem);
-        if (collisionRect) {
-            Rect r;
-            xr.findAttr(collisionRect, "x", r.x);
-            xr.findAttr(collisionRect, "y", r.y);
-            xr.findAttr(collisionRect, "w", r.w);
-            xr.findAttr(collisionRect, "h", r.h);
-            nt->collisionRect(r);
-        }
-        for (auto objClass :xr.getChildren("class", elem))
-            if (xr.findAttr(objClass, "name", s))
-                nt->addClass(s);
+            std::string s;
+            auto collisionRect = xr.findChild("collisionRect", elem);
+            if (collisionRect) {
+                Rect r;
+                xr.findAttr(collisionRect, "x", r.x);
+                xr.findAttr(collisionRect, "y", r.y);
+                xr.findAttr(collisionRect, "w", r.w);
+                xr.findAttr(collisionRect, "h", r.h);
+                nt->collisionRect(r);
+            }
+            for (auto objClass :xr.getChildren("class", elem))
+                if (xr.findAttr(objClass, "name", s))
+                    nt->addClass(s);
 
-        if (xr.findAttr(elem, "health", n))
-            nt->maxHealth(n);
+            if (xr.findAttr(elem, "health", n))
+                nt->maxHealth(n);
         
-        _objectTypes.insert(nt);
-    }
+            _objectTypes.insert(nt);
+        }
 
     // Items
-    xr.newFile(path + "/items.xml");
-    for (auto elem : xr.getChildren("item")) {
-        std::string id, name;
-        if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name))
-            continue; // ID and name are mandatory.
-        ServerItem item(id);
+    if (xr.newFile(path + "/items.xml"))
+        for (auto elem : xr.getChildren("item")) {
+            std::string id, name;
+            if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name))
+                continue; // ID and name are mandatory.
+            ServerItem item(id);
 
-        std::string s; int n;
-        if (xr.findAttr(elem, "stackSize", n))
-            item.stackSize(n);
-        else
-            item.stackSize(1);
-        if (xr.findAttr(elem, "constructs", s)){
-            // Create dummy ObjectType if necessary
-            const ObjectType *ot = findObjectTypeByName(s);
-            if (ot != nullptr)
-                item.constructsObject(ot);
+            std::string s; int n;
+            if (xr.findAttr(elem, "stackSize", n))
+                item.stackSize(n);
             else
-                item.constructsObject(*(_objectTypes.insert(new ObjectType(s)).first));
-        }
+                item.stackSize(1);
+            if (xr.findAttr(elem, "constructs", s)){
+                // Create dummy ObjectType if necessary
+                const ObjectType *ot = findObjectTypeByName(s);
+                if (ot != nullptr)
+                    item.constructsObject(ot);
+                else
+                    item.constructsObject(*(_objectTypes.insert(new ObjectType(s)).first));
+            }
 
-        for (auto child : xr.getChildren("class", elem))
-            if (xr.findAttr(child, "name", s)) item.addClass(s);
+            for (auto child : xr.getChildren("class", elem))
+                if (xr.findAttr(child, "name", s)) item.addClass(s);
         
-        std::pair<std::set<ServerItem>::iterator, bool> ret = _items.insert(item);
-        if (!ret.second) {
-            ServerItem &itemInPlace = const_cast<ServerItem &>(*ret.first);
-            itemInPlace = item;
+            std::pair<std::set<ServerItem>::iterator, bool> ret = _items.insert(item);
+            if (!ret.second) {
+                ServerItem &itemInPlace = const_cast<ServerItem &>(*ret.first);
+                itemInPlace = item;
+            }
         }
-    }
 
     // Recipes
-    xr.newFile(path + "/recipes.xml");
-    for (auto elem : xr.getChildren("recipe")) {
-        std::string id, name;
-        if (!xr.findAttr(elem, "id", id))
-            continue; // ID is mandatory.
-        Recipe recipe(id);
+    if (xr.newFile(path + "/recipes.xml"))
+        for (auto elem : xr.getChildren("recipe")) {
+            std::string id, name;
+            if (!xr.findAttr(elem, "id", id))
+                continue; // ID is mandatory.
+            Recipe recipe(id);
 
-        std::string s; int n;
-        if (!xr.findAttr(elem, "product", s))
-            continue; // product is mandatory.
-        auto it = _items.find(s);
-        if (it == _items.end()) {
-            _debug << Color::RED << "Skipping recipe with invalid product " << s << Log::endl;
-            continue;
-        }
-        recipe.product(&*it);
+            std::string s; int n;
+            if (!xr.findAttr(elem, "product", s))
+                continue; // product is mandatory.
+            auto it = _items.find(s);
+            if (it == _items.end()) {
+                _debug << Color::RED << "Skipping recipe with invalid product " << s << Log::endl;
+                continue;
+            }
+            recipe.product(&*it);
 
-        if (xr.findAttr(elem, "time", n)) recipe.time(n);
+            if (xr.findAttr(elem, "time", n)) recipe.time(n);
 
-        for (auto child : xr.getChildren("material", elem)) {
-            int matQty = 1;
-            xr.findAttr(child, "quantity", matQty);
-            if (xr.findAttr(child, "id", s)) {
-                auto it = _items.find(ServerItem(s));
-                if (it == _items.end()) {
-                    _debug << Color::RED << "Skipping invalid recipe material " << s << Log::endl;
-                    continue;
+            for (auto child : xr.getChildren("material", elem)) {
+                int matQty = 1;
+                xr.findAttr(child, "quantity", matQty);
+                if (xr.findAttr(child, "id", s)) {
+                    auto it = _items.find(ServerItem(s));
+                    if (it == _items.end()) {
+                        _debug << Color::RED << "Skipping invalid recipe material " << s << Log::endl;
+                        continue;
+                    }
+                    recipe.addMaterial(&*it, matQty);
                 }
-                recipe.addMaterial(&*it, matQty);
             }
-        }
 
-        for (auto child : xr.getChildren("tool", elem)) {
-            if (xr.findAttr(child, "name", s)) {
-                recipe.addTool(s);
+            for (auto child : xr.getChildren("tool", elem)) {
+                if (xr.findAttr(child, "name", s)) {
+                    recipe.addTool(s);
+                }
             }
-        }
         
-        _recipes.insert(recipe);
-    }
+            _recipes.insert(recipe);
+        }
 
     // Remove invalid items referred to by objects/recipes
     for (auto it = _items.begin(); it != _items.end(); ){

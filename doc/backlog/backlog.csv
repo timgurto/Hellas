@@ -24,7 +24,7 @@ issue,description,value,effort,type,blockedBy,done
 160,Cull terrain,21,13,Performance,,
 161,Cull players,34,8,Performance,,TRUE
 162,Cull objects,55,8,Performance,,TRUE
-163,Create generic particle system,8,8,Aesthetics,,
+163,Create generic particle system,8,8,Aesthetics,,TRUE
 166,Health stat,8,2,Feature,,TRUE
 167,Static critters w/ health,34,13,Feature,,TRUE
 169,NPCs can die,13,3,Feature,,TRUE
@@ -72,5 +72,6 @@ issue,description,value,effort,type,blockedBy,done
 212,Prevent movement from interrupting attacking,13,2,Bug,,TRUE
 213,Avoid multiple data loads for custom server data,5,1,Code quality,,
 214,Prefix abstract-class names with I,2,1,Code quality,,
-215,"Blood particles for attacking and death, that remain for a time",5,5,Aesthetics,163,
-216,Allow nonexistent data files (for tests),2,2,Code quality,,
+215,"Blood particles for attacking and death, that remain for a time",5,5,Aesthetics,,
+216,Allow nonexistent data files (for tests),2,2,Code quality,,TRUE
+217,Sounds for attacking and death,8,8,Aesthetics,,

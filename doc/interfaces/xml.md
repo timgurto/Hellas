@@ -21,10 +21,11 @@ One `XmlReader` can be reused for multiple files, in the following way:
 xr.newFile("data2.xml");
 ```
 
-Once the object is created, its validity can be tested with the `!` operator or by an implicit cast to `bool`.  The object is considered valid if the file exists, and contains a root XML element.
+Once the object is created, its validity can be tested with the `!` operator or by an implicit cast to `bool`.  The object is considered valid if the file exists, and contains a root XML element.  The `newFile()` function also returns this `bool` value.
 ```cpp
 XmlReader xr("data.xml");
 assert(xr);
+assert(xr.newFile("data2.xml");
 ```
 
 ### Navigating the tree
