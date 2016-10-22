@@ -159,8 +159,6 @@ void User::updateLocation(const Point &dest){
     }
     for (const Object *objP : nearbyObjects){
         server.sendObjectInfo(*this, *objP);
-        if (!objP->owner().empty())
-            server.sendMessage(socket(), SV_OWNER, makeArgs(objP->serial(), objP->owner()));
     }
 
     // Tell user about any additional users he can now see
@@ -287,11 +285,6 @@ void User::cancelAction() {
 void User::finishAction() {
     if (_action == NO_ACTION)
         return;
-
-    switch(_action){
-    case GATHER:
-        _actionObject->decrementGatheringUsers(this);
-    }
 
     _action = NO_ACTION;
 }

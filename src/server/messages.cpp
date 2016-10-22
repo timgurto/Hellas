@@ -633,9 +633,18 @@ void Server::sendObjectInfo(const User &user, const Object &object) const{
     sendMessage(user.socket(), SV_OBJECT, makeArgs(object.serial(),
                                                    object.location().x, object.location().y,
                                                    object.type()->id()));
+    // NPC health
     if (object.classTag() == 'n'){
         const NPC &npc = dynamic_cast<const NPC &>(object);
         if (npc.health() < npc.npcType()->maxHealth())
             sendMessage(user.socket(), SV_NPC_HEALTH, makeArgs(npc.serial(), npc.health()));
     }
+
+    // Owner
+    if (!object.owner().empty())
+        sendMessage(user.socket(), SV_OWNER, makeArgs(object.serial(), object.owner()));
+
+    // Being gathered
+    if (object.numUsersGathering() > 0)
+        sendMessage(user.socket(), SV_GATHERING_OBJECT, makeArgs(object.serial()));
 }

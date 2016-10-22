@@ -53,6 +53,7 @@ public:
     const std::set<std::string> &watchers() const { return _watchers; }
     void incrementGatheringUsers(const User *userToSkip = nullptr);
     void decrementGatheringUsers(const User *userToSkip = nullptr);
+    size_t numUsersGathering() const { return _numUsersGathering; }
 
     bool isContainerEmpty() const;
 

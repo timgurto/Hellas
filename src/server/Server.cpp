@@ -278,8 +278,6 @@ void Server::addUser(const Socket &socket, const std::string &name){
         if (abs(obj.location().y - loc.y) > CULL_DISTANCE) // Cull y
             continue;
         sendObjectInfo(newUser, obj);
-        if (!obj.owner().empty())
-            sendMessage(newUser.socket(), SV_OWNER, makeArgs(obj.serial(), obj.owner()));
     }
 
     // Send him his inventory
@@ -393,6 +391,8 @@ void Server::gatherObject(size_t serial, User &user){
     obj->removeItem(toGive, qtyToGive);
     if (obj->contents().isEmpty()) {
         removeObject(*obj, &user);
+    } else {
+        obj->decrementGatheringUsers();
     }
 
 #ifdef SINGLE_THREAD
@@ -560,11 +560,8 @@ Object &Server::addObject(Object *newObj){
     const Point &loc = newObj->location();
 
     // Alert nearby users
-    for (const User *userP : findUsersInArea(loc)){
+    for (const User *userP : findUsersInArea(loc))
         sendObjectInfo(*userP, *newObj);
-        if (!newObj->owner().empty())
-            sendMessage(userP->socket(), SV_OWNER, makeArgs(newObj->serial(), newObj->owner()));
-    }
 
     // Add object to relevant chunk
     if (newObj->type()->collides())
