@@ -75,3 +75,7 @@ issue,description,value,effort,type,blockedBy,done
 215,"Blood particles for attacking and death, that remain for a time",5,5,Aesthetics,,
 216,Allow nonexistent data files (for tests),2,2,Code quality,,TRUE
 217,Sounds for attacking and death,8,8,Aesthetics,,
+218,Add homesteading and tile property rights,13,55,Feature,209,
+209,Find mechanics to encourage town construction,13,21,Feature,,
+210,Find mechanics to encourage specialization,13,21,Feature,,
+211,Design Ancient Greece game,55,55,Feature,209
