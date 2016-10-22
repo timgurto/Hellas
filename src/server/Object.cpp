@@ -200,9 +200,9 @@ void Object::incrementGatheringUsers(const User *userToSkip){
     ++_numUsersGathering;
     server._debug << Color::CYAN << _numUsersGathering << Log::endl;
     if (_numUsersGathering == 1){
-        for (const User &user : server._users)
-            if (&user != userToSkip)
-                server.sendMessage(user.socket(), SV_GATHERING_OBJECT, makeArgs(_serial));
+        for (const User *user : server.findUsersInArea(location()))
+            if (user != userToSkip)
+                server.sendMessage(user->socket(), SV_GATHERING_OBJECT, makeArgs(_serial));
     }
 }
 
@@ -211,8 +211,8 @@ void Object::decrementGatheringUsers(const User *userToSkip){
     --_numUsersGathering;
     server._debug << Color::CYAN << _numUsersGathering << Log::endl;
     if (_numUsersGathering == 0){
-        for (const User &user : server._users)
-            if (&user != userToSkip)
-                server.sendMessage(user.socket(), SV_NOT_GATHERING_OBJECT, makeArgs(_serial));
+        for (const User *user : server.findUsersInArea(location()))
+            if (user != userToSkip)
+                server.sendMessage(user->socket(), SV_NOT_GATHERING_OBJECT, makeArgs(_serial));
     }
 }
