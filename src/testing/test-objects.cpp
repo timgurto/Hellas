@@ -272,3 +272,32 @@ TEST("Players can attack immediately")
             return true;
     return false;
 TEND
+
+ONLY_TEST("Thin objects block movement")
+    ServerTestInterface s;
+    s.loadData("testing/data/thin_wall");
+    s.setMap();
+    s.run();
+
+    ClientTestInterface c;
+    c.loadData("testing/data/thin_wall");
+    c.run();
+
+    // Move user to middle, below wall
+    WAIT_UNTIL(s.users().size() == 1);
+    User &user = const_cast<User &>(*s.users().begin());
+    user.updateLocation(Point(10, 15));
+
+    // Add wall
+    s.addObject("wall", Point(10, 10));
+    WAIT_UNTIL (c.objects().size() == 1);
+
+    // Try to move user up, through the wall
+    REPEAT_FOR_MS(500) {
+        c.sendMessage(CL_LOCATION, makeArgs(10, 5));
+        if (user.location().y < 5.5)
+            return false;
+    }
+
+    return true;
+TEND

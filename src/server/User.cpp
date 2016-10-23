@@ -87,7 +87,26 @@ void User::updateLocation(const Point &dest){
 
     Point newDest = interpolated;
     Server &server = *Server::_instance;
-    if (!server.isLocationValid(newDest, OBJECT_TYPE, 0, this)) {
+
+    int
+        displacementX = toInt(newDest.x - _location.x),
+        displacementY = toInt(newDest.y - _location.y);
+    Rect journeyRect = collisionRect();
+    if (displacementX < 0) {
+        journeyRect.x += displacementX;
+        journeyRect.w -= displacementX;
+    } else {
+        journeyRect.w += displacementX;
+    }
+    if (displacementY < 0) {
+        journeyRect.y += displacementY;
+        journeyRect.h -= displacementY;
+    } else {
+        journeyRect.h += displacementY;
+    }
+    server._debug << "journey rect: x=" << journeyRect.x << " y=" << journeyRect.y
+            << " w=" << journeyRect.w << " h=" << journeyRect.h << Log::endl;
+    if (!server.isLocationValid(journeyRect, nullptr, this)) {
         newDest = _location;
         static const double ACCURACY = 0.5;
         Point testPoint = _location;

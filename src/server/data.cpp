@@ -134,7 +134,7 @@ void Server::loadData(const std::string &path){
             }
             if (xr.findAttr(elem, "merchantSlots", n)) ot->merchantSlots(n);
             auto collisionRect = xr.findChild("collisionRect", elem);
-            if (collisionRect) {
+            if (collisionRect != nullptr) {
                 Rect r;
                 xr.findAttr(collisionRect, "x", r.x);
                 xr.findAttr(collisionRect, "y", r.y);
@@ -166,7 +166,7 @@ void Server::loadData(const std::string &path){
 
             std::string s;
             auto collisionRect = xr.findChild("collisionRect", elem);
-            if (collisionRect) {
+            if (collisionRect != nullptr) {
                 Rect r;
                 xr.findAttr(collisionRect, "x", r.x);
                 xr.findAttr(collisionRect, "y", r.y);
