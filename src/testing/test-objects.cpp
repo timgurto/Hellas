@@ -261,21 +261,14 @@ TEST("Players can attack immediately")
 
     // Start attacking
     const auto objects = c.objects();
-    const auto it = objects.begin();
-    auto pair = *it;
-    const ClientObject *objP = pair.second;
+    const ClientObject *objP = objects.begin()->second;
     const ClientNPC &ant = dynamic_cast<const ClientNPC &>(*objP);
     size_t serial = ant.serial();
     c.sendMessage(CL_TARGET, makeArgs(serial));
     
     // NPC should be damaged very quickly
-    ms_t startTime = SDL_GetTicks();
-    static const ms_t MAX_WAIT_TIME = 200;
-    while (true){
+    REPEAT_FOR_MS(200)
         if (ant.health() < ant.npcType()->maxHealth())
             return true;
-        ms_t timeElapsed = SDL_GetTicks() - startTime;
-        if (timeElapsed > MAX_WAIT_TIME)
-            return false;
-    }
+    return false;
 TEND

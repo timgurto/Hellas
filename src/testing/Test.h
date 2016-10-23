@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "../Args.h"
+#include "../types.h"
 
 class Test{
 public:
@@ -42,6 +43,8 @@ public:
 #define ONLY_TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) (name, false, true, [](){
 #define TEND });
 
+#define REPEAT_FOR_MS(TIME_TO_REPEAT) \
+    for (ms_t startTime = SDL_GetTicks(); SDL_GetTicks() < startTime + (TIME_TO_REPEAT); )
 #define WAIT_UNTIL(x) while( ! (x) )
 
 #endif
