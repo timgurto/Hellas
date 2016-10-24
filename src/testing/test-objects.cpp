@@ -273,7 +273,7 @@ TEST("Players can attack immediately")
     return false;
 TEND
 
-ONLY_TEST("Thin objects block movement")
+TEST("Thin objects block movement")
     ServerTestInterface s;
     s.loadData("testing/data/thin_wall");
     s.setMap();

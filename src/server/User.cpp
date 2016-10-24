@@ -104,8 +104,6 @@ void User::updateLocation(const Point &dest){
     } else {
         journeyRect.h += displacementY;
     }
-    server._debug << "journey rect: x=" << journeyRect.x << " y=" << journeyRect.y
-            << " w=" << journeyRect.w << " h=" << journeyRect.h << Log::endl;
     if (!server.isLocationValid(journeyRect, nullptr, this)) {
         newDest = _location;
         static const double ACCURACY = 0.5;
