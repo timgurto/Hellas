@@ -5,38 +5,6 @@
 #include "ParticleProfile.h"
 #include "../XmlReader.h"
 
-/*
-If a child exists with the specified name, attempt to read its 'mean' and 'sd' attributes into
-the provided variables.  Use default values of mean=0, sd=1.
-mean and sd will be changed if and only if the child is found.
-Return value: whether or not the child was found.
-*/
-static bool findNormVarChild(const std::string &val, TiXmlElement *elem, double &mean, double &sd){
-    TiXmlElement *child = XmlReader::findChild(val, elem);
-    if (child == nullptr)
-        return false;
-    if (!XmlReader::findAttr(child, "mean", mean)) mean = 0;
-    if (!XmlReader::findAttr(child, "sd", sd)) sd = 1;
-    return true;
-}
-
-/*
-If a child exists with the specified name, attempt to read its 'x', 'y', 'w', and 'h' attributes
-into the provided Rect variable.  It will be changed if and only if the child is found.
-Any missing attributes will be assumed to be 0.
-Return value: whether or not the child was found.
-*/
-static bool findRectChild(const std::string &val, TiXmlElement *elem, Rect &rect){
-    TiXmlElement *child = XmlReader::findChild(val, elem);
-    if (child == nullptr)
-        return false;
-    if (!XmlReader::findAttr(child, "x", rect.x)) rect.x = 0;
-    if (!XmlReader::findAttr(child, "y", rect.y)) rect.y = 0;
-    if (!XmlReader::findAttr(child, "w", rect.w)) rect.w = 0;
-    if (!XmlReader::findAttr(child, "h", rect.h)) rect.h = 0;
-    return true;
-}
-
 void Client::loadData(const std::string &path){
     _terrain.clear();
     _items.clear();
@@ -73,17 +41,17 @@ void Client::loadData(const std::string &path){
             ParticleProfile *profile = new ParticleProfile(s);
             double mean, sd;
             if (xr.findAttr(elem, "particlesPerSecond", mean)) profile->particlesPerSecond(mean);
-            if (findNormVarChild("particlesPerHit", elem, mean, sd)) profile->particlesPerHit(mean, sd);
-            if (findNormVarChild("distance", elem, mean, sd)) profile->distance(mean, sd);
-            if (findNormVarChild("altitude", elem, mean, sd)) profile->altitude(mean, sd);
-            if (findNormVarChild("velocity", elem, mean, sd)) profile->velocity(mean, sd);
-            if (findNormVarChild("fallSpeed", elem, mean, sd)) profile->fallSpeed(mean, sd);
+            if (xr.findNormVarChild("particlesPerHit", elem, mean, sd)) profile->particlesPerHit(mean, sd);
+            if (xr.findNormVarChild("distance", elem, mean, sd)) profile->distance(mean, sd);
+            if (xr.findNormVarChild("altitude", elem, mean, sd)) profile->altitude(mean, sd);
+            if (xr.findNormVarChild("velocity", elem, mean, sd)) profile->velocity(mean, sd);
+            if (xr.findNormVarChild("fallSpeed", elem, mean, sd)) profile->fallSpeed(mean, sd);
 
             for (auto variety : xr.getChildren("variety", elem)){
                 if (!xr.findAttr(variety, "imageFile", s))
                     continue; // No image file specified; skip
                 Rect rect;
-                findRectChild("drawRect", variety, rect);
+                xr.findRectChild("drawRect", variety, rect);
                 profile->addVariety(s, rect);
             }
 
@@ -190,7 +158,7 @@ void Client::loadData(const std::string &path){
                 cot->gatherSound(std::string("Sounds/") + s + ".wav");
             if (xr.findAttr(elem, "gatherParticles", s)) cot->gatherParticles(findParticleProfile(s));
             Rect r;
-            if (findRectChild("collisionRect", elem, r)) cot->collisionRect(r);
+            if (xr.findRectChild("collisionRect", elem, r)) cot->collisionRect(r);
             auto pair = _objectTypes.insert(cot);
             if (!pair.second) {
                 ClientObjectType &type = const_cast<ClientObjectType &>(**pair.first);
@@ -220,7 +188,7 @@ void Client::loadData(const std::string &path){
             if (xSet || ySet)
                 nt->drawRect(drawRect);
             Rect r;
-            if (findRectChild("collisionRect", elem, r)) nt->collisionRect(r);
+            if (xr.findRectChild("collisionRect", elem, r)) nt->collisionRect(r);
             auto pair = _objectTypes.insert(nt);
             if (!pair.second) {
                 // A ClientObjectType is being pointed to by items; they need to point to this instead.

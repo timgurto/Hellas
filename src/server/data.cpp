@@ -133,15 +133,9 @@ void Server::loadData(const std::string &path){
                 ot->addYield(&*itemIt, initMean, initSD, gatherMean, gatherSD);
             }
             if (xr.findAttr(elem, "merchantSlots", n)) ot->merchantSlots(n);
-            auto collisionRect = xr.findChild("collisionRect", elem);
-            if (collisionRect != nullptr) {
-                Rect r;
-                xr.findAttr(collisionRect, "x", r.x);
-                xr.findAttr(collisionRect, "y", r.y);
-                xr.findAttr(collisionRect, "w", r.w);
-                xr.findAttr(collisionRect, "h", r.h);
+            Rect r;
+            if (xr.findRectChild("collisionRect", elem, r))
                 ot->collisionRect(r);
-            }
             for (auto objClass :xr.getChildren("class", elem))
                 if (xr.findAttr(objClass, "name", s))
                     ot->addClass(s);
@@ -165,15 +159,9 @@ void Server::loadData(const std::string &path){
             NPCType *nt = new NPCType(id, n);
 
             std::string s;
-            auto collisionRect = xr.findChild("collisionRect", elem);
-            if (collisionRect != nullptr) {
-                Rect r;
-                xr.findAttr(collisionRect, "x", r.x);
-                xr.findAttr(collisionRect, "y", r.y);
-                xr.findAttr(collisionRect, "w", r.w);
-                xr.findAttr(collisionRect, "h", r.h);
+            Rect r;
+            if (xr.findRectChild("collisionRect", elem, r))
                 nt->collisionRect(r);
-            }
             for (auto objClass :xr.getChildren("class", elem))
                 if (xr.findAttr(objClass, "name", s))
                     nt->addClass(s);

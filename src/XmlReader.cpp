@@ -3,6 +3,8 @@
 #include <set>
 #include <sstream>
 
+#include "NormalVariable.h"
+#include "Rect.h"
 #include "XmlReader.h"
 
 XmlReader::XmlReader(const char *filename):
@@ -54,4 +56,25 @@ bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, std::string &val)
         return true;
     }
     return false;
+}
+
+bool XmlReader::findNormVarChild(const std::string &val, TiXmlElement *elem,
+                                        double &mean, double &sd){
+    TiXmlElement *child = XmlReader::findChild(val, elem);
+    if (child == nullptr)
+        return false;
+    if (!XmlReader::findAttr(child, "mean", mean)) mean = 0;
+    if (!XmlReader::findAttr(child, "sd", sd)) sd = 1;
+    return true;
+}
+
+bool XmlReader::findRectChild(const std::string &val, TiXmlElement *elem, Rect &rect){
+    TiXmlElement *child = XmlReader::findChild(val, elem);
+    if (child == nullptr)
+        return false;
+    if (!XmlReader::findAttr(child, "x", rect.x)) rect.x = 0;
+    if (!XmlReader::findAttr(child, "y", rect.y)) rect.y = 0;
+    if (!XmlReader::findAttr(child, "w", rect.w)) rect.w = 0;
+    if (!XmlReader::findAttr(child, "h", rect.h)) rect.h = 0;
+    return true;
 }
