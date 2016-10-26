@@ -1,9 +1,8 @@
-// (C) 2016 Tim Gurto
-
 #ifndef SINGLE_THREAD
 #include <mutex>
 #include <thread>
 #endif
+
 #include "NPCType.h"
 #include "NPC.h"
 #include "Server.h"
@@ -168,6 +167,16 @@ void Server::loadData(const std::string &path){
 
             if (xr.findAttr(elem, "health", n))
                 nt->maxHealth(n);
+
+            for (auto loot : xr.getChildren("loot", elem)){
+                if (!xr.findAttr(loot, "id", s))
+                    continue;
+
+                double mean=1, sd=0;
+                xr.findNormVarChild("normal", loot, mean, sd);
+                std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
+                nt->addLoot(&*itemIt, mean, sd);
+            }
         
             _objectTypes.insert(nt);
         }

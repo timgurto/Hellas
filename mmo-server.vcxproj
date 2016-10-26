@@ -106,6 +106,7 @@
     <ClCompile Include="src\server\data.cpp" />
     <ClCompile Include="src\server\ItemSet.cpp" />
     <ClCompile Include="src\server\LogConsole.cpp" />
+    <ClCompile Include="src\server\LootTable.cpp" />
     <ClCompile Include="src\server\main.cpp" />
     <ClCompile Include="src\server\MerchantSlot.cpp" />
     <ClCompile Include="src\server\messages.cpp" />
@@ -141,6 +142,7 @@
     <ClInclude Include="src\server\Combatant.h" />
     <ClInclude Include="src\server\ItemSet.h" />
     <ClInclude Include="src\server\LogConsole.h" />
+    <ClInclude Include="src\server\LootTable.h" />
     <ClInclude Include="src\server\MerchantSlot.h" />
     <ClInclude Include="src\server\NPC.h" />
     <ClInclude Include="src\server\NPCType.h" />

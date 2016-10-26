@@ -40,4 +40,14 @@ Client only:
     id="tradeCart"
     name="Trade Cart"
     constructs="tradeCart" />
+
+<item
+    id="hide"
+    name="Hide"
+    stackSize=5 />
+
+<item
+    id="bone"
+    name="Bone"
+    stackSize=10 />
 </root>

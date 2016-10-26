@@ -1,9 +1,8 @@
-// (C) 2016 Tim Gurto
-
 #include "NPC.h"
 #include "Server.h"
 
 const ms_t NPC::CORPSE_TIME = 600000; // 10 minutes
+const size_t NPC::LOOT_CAPACITY = 8;
 
 NPC::NPC(const NPCType *type, const Point &loc):
 Object(type, loc),
@@ -23,4 +22,5 @@ void NPC::update(ms_t timeElapsed){
 void NPC::kill(){
     _corpseTime = CORPSE_TIME;
     Server::_instance->forceUntarget(*this);
+    npcType()->lootTable().instantiate(_container);
 }

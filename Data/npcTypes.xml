@@ -5,6 +5,7 @@ Both:
  - id
  - collisionRect
  - maxHealth
+ - loot
 
 Client only:
  - name
@@ -22,6 +23,7 @@ Server only:
     xDrawOffset=-11
     yDrawOffset=-13 >
     <collisionRect x=-9 y=-4 w=18 h=7 />
-    <class name="pacifist" />
+    <loot id="hide" />
+    <loot id="bone" > <normal mean=2 sd=0.5 /> </loot>
 </npcType>
 </root>

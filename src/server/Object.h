@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef OBJECT_H
 #define OBJECT_H
 
@@ -17,7 +15,6 @@ class Object{
     const ObjectType *_type;
     std::string _owner;
     ItemSet _contents; // Remaining contents, which can be gathered
-    ServerItem::vect_t _container; // Items contained in object
     std::vector<MerchantSlot> _merchantSlots;
 
     size_t _numUsersGathering; // The number of users gathering from this object.
@@ -27,6 +24,8 @@ class Object{
 
 protected:
     static size_t generateSerial();
+
+    ServerItem::vect_t _container; // Items contained in object
 
 public:
     Object(const ObjectType *type, const Point &loc); // Generates a new serial

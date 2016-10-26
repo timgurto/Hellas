@@ -1,9 +1,9 @@
-// (C) 2016 Tim Gurto
-
 #include "Client.h"
 #include "ClientNPC.h"
 
 extern Renderer renderer;
+
+const size_t ClientNPC::LOOT_CAPACITY = 8;
 
 ClientNPC::ClientNPC(size_t serial, const ClientNPCType *type, const Point &loc):
 ClientObject(serial, type, loc),
@@ -51,5 +51,7 @@ void ClientNPC::onLeftClick(Client &client){
 void ClientNPC::onRightClick(Client &client){
     client.targetNPC(this, true);
     
-    // Note: parent class's onRightClick() not called.
+    // Loot window
+    if (_health == 0)
+        ClientObject::onRightClick(client);
 }

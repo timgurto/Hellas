@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #ifndef CLIENT_NPC_H
 #define CLIENT_NPC_H
 
@@ -10,6 +8,8 @@ class ClientNPC : public ClientObject{
     health_t _health;
 
 public:
+    static const size_t LOOT_CAPACITY;
+
     ClientNPC(size_t serial, const ClientNPCType *type = nullptr, const Point &loc = Point());
 
     health_t health() const { return _health; }

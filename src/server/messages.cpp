@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #include <cassert>
 #include "Server.h"
 #include "../messageCodes.h"
@@ -612,7 +610,7 @@ void Server::sendInventoryMessage(const User &user, size_t slot, const Object *o
         return;
     }
     size_t serial = obj == nullptr ? 0 : obj->serial();
-    auto containerSlot = container[slot];
+    const auto &containerSlot = container[slot];
     std::string itemID = containerSlot.first ? containerSlot.first->id() : "none";
     sendMessage(user.socket(), SV_INVENTORY, makeArgs(serial, slot, itemID, containerSlot.second));
 }

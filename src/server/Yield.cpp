@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #include <cassert>
 
 #include "Yield.h"
@@ -7,12 +5,6 @@
 
 void Yield::addItem(const ServerItem *item, double initMean, double initSD, double gatherMean,
                     double gatherSD){
-    /*this;
-    _entries;
-    _entries.size();
-    auto map = _entries;
-    map[item];*/
-    //_entries.insert(std::make_pair(item, YieldEntry()));
     _entries[item];
     YieldEntry *entry = &_entries[item];
     entry->_initDistribution = NormalVariable(initMean, initSD);
