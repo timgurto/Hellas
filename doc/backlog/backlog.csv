@@ -29,7 +29,7 @@ issue,description,value,effort,type,blockedBy,done
 167,Static critters w/ health,34,13,Feature,,TRUE
 169,NPCs can die,13,3,Feature,,TRUE
 170,Attack stat,8,1,Feature,,TRUE
-171,NPC loot,13,34,Feature,,
+171,NPC loot,13,34,Feature,,TRUE
 172,Critter run-away AI,5,34,Feature,
 173,Animal that fights back,21,21,Feature,
 174,Player death,13,5,Feature,173
@@ -79,3 +79,4 @@ issue,description,value,effort,type,blockedBy,done
 209,Find mechanics to encourage town construction,13,21,Feature,,
 210,Find mechanics to encourage specialization,13,21,Feature,,
 211,Design Ancient Greece game,55,55,Feature,209
+212,Stacks of the same item can be combined,,,Feature,

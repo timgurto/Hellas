@@ -56,14 +56,17 @@ enum MessageCode{
     // Arguments: serial1, slot1, serial2, slot2
     CL_SWAP_ITEMS = 31,
 
+    // "I want to take the item in container slot ..."
+    CL_TAKE_ITEM = 32,
+
     // "I want to set object ...'s merchant slot ... to the following:
     // Sell ...x... for ...x..."
     // Arguments: serial, slot, ware, wareQty, price, priceQty
-    CL_SET_MERCHANT_SLOT = 32,
+    CL_SET_MERCHANT_SLOT = 33,
 
     // "I want to clear object ...'s merchant slot ..."
     // Arguments: serial, slot
-    CL_CLEAR_MERCHANT_SLOT = 33,
+    CL_CLEAR_MERCHANT_SLOT = 34,
 
     // "Tell me what's inside object ..., and let me know of changes in the future". 
     // Arguments: serial
@@ -253,6 +256,9 @@ enum MessageCode{
 
     // The user tried to put an item into an NPC
     SV_NPC_SWAP = 933,
+
+    // The user tried to take an item from himself
+    SV_TAKE_SELF = 934,
 
 
 

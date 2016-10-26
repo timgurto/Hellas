@@ -144,6 +144,8 @@ void Client::handleMessage(const std::string &msg){
         case SV_NOT_MERCHANT:
         case SV_INVALID_MERCHANT_SLOT:
         case SV_NPC_DEAD:
+        case SV_NPC_SWAP:
+        case SV_TAKE_SELF:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
@@ -598,6 +600,7 @@ void Client::initializeMessageNames(){
     _messageCommands["startWatching"] = CL_START_WATCHING;
     _messageCommands["stopWatching"] = CL_STOP_WATCHING;
     _messageCommands["target"] = CL_TARGET;
+    _messageCommands["take"] = CL_TAKE_ITEM;
 
     _messageCommands["say"] = CL_SAY;
     _messageCommands["s"] = CL_SAY;
@@ -628,6 +631,8 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_NOT_EMPTY] = "That object is not empty.";
     _errorMessages[SV_NOT_NPC] = "That object is not an NPC.";
     _errorMessages[SV_NPC_DEAD] = "That NPC is dead.";
+    _errorMessages[SV_NPC_SWAP] = "You can't put items inside an NPC.";
+    _errorMessages[SV_TAKE_SELF] = "You can't take an item from yourself.";
 }
 
 void Client::performCommand(const std::string &commandString){

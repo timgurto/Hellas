@@ -26,8 +26,9 @@ Code | Name                     | Syntax                                        
 25   | `CL_TRADE`               | &laquo;32&#8226;serial&#8226;slot&raquo;                             | "I want to trade using object #`serial`'s merchant slot #`slot`.
 30   | `CL_DROP`                | &laquo;30&#8226;serial&#8226;slot&raquo;                             | "I want to drop object #`serial`'s item #`slot`."<br>A serial of `0` uses the user's inventory.
 31   | `CL_SWAP_ITEMS`          | &laquo;31&#8226;serial1&#8226;slot1&#8226;serial2&#8226;slot2&raquo; | "I want to swap object #`serial1`'s item #`slot1` with object #`serial2`'s item #`slot2`"<br>A serial of `0` uses the user's inventory.
-32   | `CL_SET_MERCHANT_SLOT`   | &laquo;32&#8226;serial&#8226;slot&#8226;ware&#8226;wareQty&#8226;price&#8226;priceQty&raquo; | "I want to set object #`serial`'s merchant slot #`slot` to sell `wareQty` `ware`s for `priceQty` `price`s"
-33   | `CL_CLEAR_MERCHANT_SLOT` | &laquo;33&#8226;serial&#8226;slot                                    | "I want to clear object #`serial`'s merchant slot #`slot`.
+32   | `CL_SWAP_ITEMS`          | &laquo;32&#8226;serial&#8226;slot&raquo;                             | "I want to take object #`serial1`'s item #`slot1`
+33   | `CL_SET_MERCHANT_SLOT`   | &laquo;33&#8226;serial&#8226;slot&#8226;ware&#8226;wareQty&#8226;price&#8226;priceQty&raquo; | "I want to set object #`serial`'s merchant slot #`slot` to sell `wareQty` `ware`s for `priceQty` `price`s"
+34   | `CL_CLEAR_MERCHANT_SLOT` | &laquo;34&#8226;serial&#8226;slot                                    | "I want to clear object #`serial`'s merchant slot #`slot`.
 40   | `CL_START_WATCHIMG`      | &laquo;40&#8226;serial&raquo;                                        | "Tell me the details of object #`serial`'s inventory and merchant slots, and alert me of any changes."
 41   | `CL_STOP_WATCHING`       | &laquo;41&#8226;serial&raquo;                                        | "Stop alerting me of changes to object #`serial`."
 50   | `CL_TARGET`              | &laquo;50&#8226;serial&raquo;                                        | "I am targeting NPC #`serial`."
@@ -89,3 +90,4 @@ Code | Name                         | Syntax                               | Des
 931  | `SV_NOT_NPC`                 | &laquo;931&raquo;                    | "You tried to perform an action on an NPC, but that object isn't one"
 932  | `SV_NPC_DEAD`                | &laquo;932&raquo;                    | "You tried to perform an action on an NPC, but it's dead"
 933  | `SV_NPC_SWAP`                | &laquo;933&raquo;                    | "You tried to put an item into an NPC"
+934  | `SV_TAKE_SELF`               | &laquo;934&raquo;                    | "You tried to take an item from yourself"
