@@ -19,10 +19,13 @@ void LootTable::instantiate(ServerItem::vect_t &container) const{
     for (const LootEntry &entry : _entries){
         double rawQty = entry.normalDist.generate();
         size_t qty = toInt(max<double>(0, rawQty));
-        if (qty > 0){
+        size_t stackSize = entry.item->stackSize();
+        while (qty > 0){
+            size_t thisSlot = min(stackSize, qty);
             auto &pair = container[i];
             pair.first = entry.item;
-            pair.second = qty;
+            pair.second = thisSlot;
+            qty -= thisSlot;
             ++i;
             if (i == container.size()){
                 assert(false);
