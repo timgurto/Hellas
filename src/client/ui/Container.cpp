@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #include "ColorBlock.h"
 #include "Container.h"
 #include "../Client.h"
@@ -136,21 +134,26 @@ void Container::rightMouseDown(Element &e, const Point &mousePos){
 
 void Container::rightMouseUp(Element &e, const Point &mousePos){
     Container &container = dynamic_cast<Container &>(e);
+    size_t slot = container.getSlot(mousePos);
     if (dragSlot != NO_SLOT) { // Cancel dragging
         dragSlot = NO_SLOT;
         dragContainer = nullptr;
         container.markChanged();
     }
-    size_t slot = container.getSlot(mousePos);
     if (useSlot != NO_SLOT) { // Right-clicked instead of used: cancel use
         useSlot = NO_SLOT;
         useContainer = nullptr;
     } else if (slot != NO_SLOT) { // Right-clicked a slot
         const ClientItem *item = container._linked[slot].first;
-        if (item != nullptr && // Slot is not empty
-            item->constructsObject() != nullptr) { // Can construct item
-            useSlot = slot;
-            useContainer = &container;
+        if (item != nullptr){ // Slot is not empty
+            if (container._serial == 0) { // User's inventory
+                if (item->constructsObject() != nullptr) { // Can construct item
+                    useSlot = slot;
+                    useContainer = &container;
+                }
+            } else { // An object: take item
+                Client::_instance->sendMessage(CL_TAKE_ITEM, makeArgs(container._serial, slot));
+            }
         }
     }
     container._rightMouseDownSlot = NO_SLOT;
