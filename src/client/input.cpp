@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #include "Client.h"
 #include "Particle.h"
 #include "Renderer.h"
@@ -241,6 +239,7 @@ void Client::handleInput(double delta){
                     break;
                 }
 
+                // Propagate event to windows
                 bool mouseUpOnWindow = false;
                 for (Window *window : _windows)
                     if (window->visible() && collision(_mouse, window->rect())) {
@@ -248,6 +247,7 @@ void Client::handleInput(double delta){
                         mouseUpOnWindow = true;
                         break;
                     }
+                // Propagate event to UI elements
                 for (Element *element : _ui)
                     if (!mouseUpOnWindow &&
                         element->visible() &&
@@ -274,17 +274,32 @@ void Client::handleInput(double delta){
 
             case SDL_BUTTON_RIGHT:
                 _rightMouseDown = false;
+                Container::useContainer = nullptr;
+                Container::useSlot = Container::NO_SLOT;
 
-                // Items can only be constructed or used from the inventory, not container
-                // objects.
-                if (_inventoryWindow->visible()) {
-                    _inventoryWindow->onRightMouseUp(_mouse);
-                    const ClientItem *useItem = Container::getUseItem();
-                    if (useItem != nullptr)
-                        _constructionFootprint = useItem->constructsObject()->image();
-                    else
-                        _constructionFootprint = Texture();
-                }
+                // Propagate event to windows
+                bool mouseUpOnWindow = false;
+                for (Window *window : _windows)
+                    if (window->visible() && collision(_mouse, window->rect())) {
+                        window->onRightMouseUp(_mouse);
+                        mouseUpOnWindow = true;
+                        break;
+                    }
+                // Propagate event to UI elements
+                for (Element *element : _ui)
+                    if (!mouseUpOnWindow &&
+                        element->visible() &&
+                        collision(_mouse, element->rect())) {
+                        element->onRightMouseUp(_mouse);
+                        break;
+                    }
+
+                // Use item
+                const ClientItem *useItem = Container::getUseItem();
+                if (useItem != nullptr)
+                    _constructionFootprint = useItem->constructsObject()->image();
+                else
+                    _constructionFootprint = Texture();
 
                 // Mouse down and up on same entity: onRightClick
                 if (_rightMouseDownEntity != nullptr &&

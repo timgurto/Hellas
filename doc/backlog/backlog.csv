@@ -80,3 +80,4 @@ issue,description,value,effort,type,blockedBy,done
 210,Find mechanics to encourage specialization,13,21,Feature,,
 211,Design Ancient Greece game,55,55,Feature,209
 212,Stacks of the same item can be combined,,,Feature,
+213,Remove useItem info from Container class; move it into Client object,,,Code quality,
