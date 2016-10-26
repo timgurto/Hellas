@@ -88,3 +88,4 @@ Code | Name                         | Syntax                               | Des
 930  | `SV_NOT_EMPTY`               | &laquo;930&raquo;                    | "You tried to deconstruct an object that contains an inventory of items"
 931  | `SV_NOT_NPC`                 | &laquo;931&raquo;                    | "You tried to perform an action on an NPC, but that object isn't one"
 932  | `SV_NPC_DEAD`                | &laquo;932&raquo;                    | "You tried to perform an action on an NPC, but it's dead"
+933  | `SV_NPC_SWAP`                | &laquo;933&raquo;                    | "You tried to put an item into an NPC"

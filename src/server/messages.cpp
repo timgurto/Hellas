@@ -297,10 +297,16 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
 
-            // Perform the swap
             auto
                 &slotFrom = (*containerFrom)[slot1],
                 &slotTo = (*containerTo)[slot2];
+            
+            if (pObj1 != nullptr && pObj1->classTag() == 'n' && slotTo.first != nullptr ||
+                pObj2 != nullptr && pObj2->classTag() == 'n' && slotFrom.first != nullptr){
+                    sendMessage(client, SV_NPC_SWAP);
+                    break;
+            }
+            // Perform the swap
             auto temp = slotTo;
             slotTo = slotFrom;
             slotFrom = temp;

@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef MESSAGE_CODES_H
 #define MESSAGE_CODES_H
 
@@ -252,6 +250,9 @@ enum MessageCode{
 
     // The NPC is dead
     SV_NPC_DEAD = 932,
+
+    // The user tried to put an item into an NPC
+    SV_NPC_SWAP = 933,
 
 
 
