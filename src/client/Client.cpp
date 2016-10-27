@@ -516,64 +516,6 @@ void Client::run(){
     _running  = false;
 }
 
-Entity *Client::getEntityAtMouse(){
-    const Point mouseOffset = _mouse - _offset;
-    Entity::set_t::iterator mouseOverIt = _entities.end();
-    static const px_t LOOKUP_MARGIN = 30;
-    Entity
-        topEntity(nullptr, Point(0, mouseOffset.y - LOOKUP_MARGIN)),
-        bottomEntity(nullptr, Point(0, mouseOffset.y + LOOKUP_MARGIN));
-    auto
-        lowerBound = _entities.lower_bound(&topEntity),
-        upperBound = _entities.upper_bound(&bottomEntity);
-    for (auto it = lowerBound; it != upperBound; ++it) {
-        if (*it != &_character &&(*it)->collision(mouseOffset))
-            mouseOverIt = it;
-    }
-    if (mouseOverIt != _entities.end())
-        return *mouseOverIt;
-    else
-        return nullptr;
-}
-
-void Client::checkMouseOver(){
-    _currentCursor = &_cursorNormal;
-
-    // Check whether mouse is over a window
-    _mouseOverWindow = false;
-    for (const Window *window : _windows)
-        if (window->visible() && collision(_mouse, window->rect())){
-            _mouseOverWindow = true;
-            _currentMouseOverEntity = nullptr;
-            return;
-        }
-
-    // Check if mouse is over an entity
-    const Entity *const oldMouseOverEntity = _currentMouseOverEntity;
-    _currentMouseOverEntity = getEntityAtMouse();
-    if (_currentMouseOverEntity == nullptr)
-        return;
-    if (_currentMouseOverEntity != oldMouseOverEntity ||
-        _currentMouseOverEntity->needsTooltipRefresh() ||
-        _tooltipNeedsRefresh) {
-        _currentMouseOverEntity->refreshTooltip(*this);
-        _tooltipNeedsRefresh = false;
-    }
-    
-    // Set cursor
-    char classTag = _currentMouseOverEntity->classTag();
-    if (classTag == 'o' || classTag == 'n') {
-        const ClientObjectType &objType =
-            *dynamic_cast<ClientObject*>(_currentMouseOverEntity)->objectType();
-        if (objType.canGather())
-            _currentCursor = &_cursorGather;
-        else if (objType.containerSlots() != 0)
-            _currentCursor = &_cursorContainer;
-        else if (_currentMouseOverEntity->classTag() == 'n')
-            _currentCursor = &_cursorAttack;
-    }
-}
-
 void Client::startCrafting(void *data){
     if (_instance->_activeRecipe != nullptr) {
         _instance->sendMessage(CL_CRAFT, _instance->_activeRecipe->id());
