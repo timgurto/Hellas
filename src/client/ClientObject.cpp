@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #include <SDL_mixer.h>
 #include <cassert>
 
@@ -415,4 +413,13 @@ void ClientObject::update(double delta) {
                 client.addEntity(gatherParticles->instantiate(location()));
         }
     }
+}
+
+const Texture &ClientObject::cursor(const Client &client) const {
+    const ClientObjectType &ot = *objectType();
+    if (ot.canGather())
+        return client.cursorGather();
+    if (ot.containerSlots() > 0)
+        return client.cursorContainer();
+    return client.cursorNormal();
 }

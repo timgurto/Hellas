@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #ifndef ENTITY_H
 #define ENTITY_H
 
@@ -51,6 +49,7 @@ public:
     virtual void update(double delta) {}
     virtual void onLeftClick(Client &client) {}
     virtual void onRightClick(Client &client) {}
+    virtual const Texture &cursor(const Client &client) const;
 
     void refreshTooltip(const Client &client);
 

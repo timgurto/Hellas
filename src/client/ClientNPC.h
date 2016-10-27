@@ -17,11 +17,14 @@ public:
 
     const ClientNPCType *npcType() const { return dynamic_cast<const ClientNPCType *>(type()); }
 
+    bool hasLoot() const;
+
     virtual char classTag() const override { return 'n'; }
     
     virtual void onLeftClick(Client &client) override;
     virtual void onRightClick(Client &client) override;
     virtual void draw(const Client &client) const;
+    virtual const Texture &cursor(const Client &client) const override;
 };
 
 #endif

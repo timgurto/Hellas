@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #ifndef CLIENT_OBJECT_H
 #define CLIENT_OBJECT_H
 
@@ -58,6 +56,7 @@ public:
 
     virtual void update(double delta) override;
     virtual void draw(const Client &client) const;
+    virtual const Texture &cursor(const Client &client) const override;
 
     Rect collisionRect() const { return objectType()->collisionRect() + location(); }
 

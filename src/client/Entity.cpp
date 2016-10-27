@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #include <cassert>
 
 #include "Client.h"
@@ -68,4 +66,8 @@ void Entity::refreshTooltip(const Client &client){
         tb.addLine(*it);
 
     _tooltip = tb.publish();
+}
+
+const Texture &Entity::cursor(const Client &client) const {
+    return client.cursorNormal();
 }

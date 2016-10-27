@@ -436,15 +436,5 @@ void Client::checkMouseOver(){
     }
     
     // Set cursor
-    char classTag = _currentMouseOverEntity->classTag();
-    if (classTag == 'o' || classTag == 'n') {
-        const ClientObjectType &objType =
-            *dynamic_cast<ClientObject*>(_currentMouseOverEntity)->objectType();
-        if (objType.canGather())
-            _currentCursor = &_cursorGather;
-        else if (objType.containerSlots() != 0)
-            _currentCursor = &_cursorContainer;
-        else if (_currentMouseOverEntity->classTag() == 'n')
-            _currentCursor = &_cursorAttack;
-    }
+    _currentCursor = &_currentMouseOverEntity->cursor(*this);
 }

@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #ifndef CLIENT_H
 #define CLIENT_H
 
@@ -52,6 +50,11 @@ public:
     void targetNPC(const ClientNPC *npc, bool aggressive = false);
     const ClientNPC *targetNPC() const { return _targetNPC; }
     bool aggressive() const { return _aggressive; }
+    
+    const Texture &cursorNormal() const { return _cursorNormal; }
+    const Texture &cursorGather() const { return _cursorGather; }
+    const Texture &cursorContainer() const { return _cursorContainer; }
+    const Texture &cursorAttack() const { return _cursorAttack; }
 
     static const int PLAYER_ACTION_CHANNEL;
 

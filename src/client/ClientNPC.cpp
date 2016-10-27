@@ -55,3 +55,18 @@ void ClientNPC::onRightClick(Client &client){
     if (_health == 0)
         ClientObject::onRightClick(client);
 }
+
+const Texture &ClientNPC::cursor(const Client &client) const{
+    if (_health > 0)
+        return client.cursorAttack();
+    if (hasLoot())
+        return  client.cursorContainer();
+    return client.cursorNormal();
+}
+
+bool ClientNPC::hasLoot() const{
+    for (auto &pair : container())
+        if (pair.first != nullptr)
+            return true;
+    return false;
+}
