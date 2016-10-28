@@ -19,6 +19,8 @@ void ClientNPC::draw(const Client &client) const{
     image.draw(location() + offset + type()->drawRect());
 
     // Draw health bar if damaged or targeted
+    if (health() == 0)
+        return;
     if (client.targetNPC() == this || client.currentMouseOverEntity() == this ||
         _health < npcType()->maxHealth()){
         static const px_t
