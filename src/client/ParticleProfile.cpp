@@ -1,13 +1,16 @@
-// (C) 2016 Tim Gurto
-
 #include <cassert>
 
 #include "Particle.h"
 #include "ParticleProfile.h"
 
+const double ParticleProfile::DEFAULT_GRAVITY = 100.0;
+const ms_t ParticleProfile::DEFAULT_LIFESPAN = 10000;
+
 ParticleProfile::ParticleProfile(const std::string &id):
 _id(id),
-_particlesPerSecond(0){}
+_particlesPerSecond(0),
+_gravity(DEFAULT_GRAVITY),
+_lifespan(DEFAULT_LIFESPAN, 0){}
 
 ParticleProfile::~ParticleProfile(){
     for (const EntityType *variety : _varieties)
@@ -37,10 +40,11 @@ Particle *ParticleProfile::instantiate(const Point &location) const{
 
 
     return new Particle(startingLoc, variety.image(), variety.drawRect(), startingVelocity,
-                        _altitude.generate(), _fallSpeed.generate());
+                        _altitude.generate(), _fallSpeed.generate(), _gravity,
+                        max(0, toInt(_lifespan.generate())));
 }
 
-size_t ParticleProfile::numParticlesToAdd(double delta) const{
+size_t ParticleProfile::numParticlesContinuous(double delta) const{
     size_t total = 0;
     double particlesToAdd = _particlesPerSecond * delta;
     if (particlesToAdd >= 1){ // Whole part
@@ -50,4 +54,8 @@ size_t ParticleProfile::numParticlesToAdd(double delta) const{
     if (randDouble() <= particlesToAdd)
         ++total;
     return total;
+}
+
+size_t ParticleProfile::numParticlesDiscrete() const{
+    return max(0, toInt(_particlesPerHit.generate()));
 }

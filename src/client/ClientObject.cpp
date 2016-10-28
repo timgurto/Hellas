@@ -405,14 +405,8 @@ void ClientObject::update(double delta) {
     Client &client = *Client::_instance;
 
     // If being gathered, add particles.
-    if (beingGathered()){
-        const ParticleProfile *gatherParticles = objectType()->gatherParticles();
-        if (gatherParticles != nullptr){
-            size_t numParticles = gatherParticles->numParticlesToAdd(delta);
-            for (size_t i = 0; i != numParticles; ++i)
-                client.addEntity(gatherParticles->instantiate(location()));
-        }
-    }
+    if (beingGathered())
+        client.addParticles(objectType()->gatherParticles(), location(), delta);
 }
 
 const Texture &ClientObject::cursor(const Client &client) const {

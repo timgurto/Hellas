@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #include "Client.h"
 #include "ClientNPCType.h"
 #include "ParticleProfile.h"
@@ -41,11 +39,13 @@ void Client::loadData(const std::string &path){
             ParticleProfile *profile = new ParticleProfile(s);
             double mean, sd;
             if (xr.findAttr(elem, "particlesPerSecond", mean)) profile->particlesPerSecond(mean);
+            if (xr.findAttr(elem, "gravityModifier", mean)) profile->gravityuModifer(mean);
             if (xr.findNormVarChild("particlesPerHit", elem, mean, sd)) profile->particlesPerHit(mean, sd);
             if (xr.findNormVarChild("distance", elem, mean, sd)) profile->distance(mean, sd);
             if (xr.findNormVarChild("altitude", elem, mean, sd)) profile->altitude(mean, sd);
             if (xr.findNormVarChild("velocity", elem, mean, sd)) profile->velocity(mean, sd);
             if (xr.findNormVarChild("fallSpeed", elem, mean, sd)) profile->fallSpeed(mean, sd);
+            if (xr.findNormVarChild("lifespan", elem, mean, sd)) profile->lifespan(mean, sd);
 
             for (auto variety : xr.getChildren("variety", elem)){
                 if (!xr.findAttr(variety, "imageFile", s))

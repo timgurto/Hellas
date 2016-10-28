@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
@@ -23,12 +21,13 @@ class Particle : public Entity{
     // z (height)
     double _altitude;
     double _fallSpeed;
+    double _gravity;
 
-    static const double GRAVITY; // px/s/s
+    ms_t _lifespan;
 
 public:
     Particle(const Point &loc, const Texture &image, const Rect &drawRect, const Point &velocity,
-             double startingAltitude, double startingFallSpeed);
+             double startingAltitude, double startingFallSpeed, double gravity, ms_t lifespan);
 
     virtual Rect drawRect() const override;
     virtual const Texture &image() const override { return _image; }

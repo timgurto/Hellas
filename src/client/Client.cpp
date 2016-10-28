@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #include <algorithm>
 #include <cassert>
 #include <fstream>
@@ -732,4 +730,35 @@ const ParticleProfile *Client::findParticleProfile(const std::string &id){
     if (it == _particleProfiles.end())
         return nullptr;
     return *it;
+}
+
+void Client::addParticles(const ParticleProfile *profile, const Point &location, size_t qty){
+    for (size_t i = 0; i != qty; ++i) {
+        Particle *particle = profile->instantiate(location);
+        addEntity(particle);
+    }
+}
+
+void Client::addParticles(const ParticleProfile *profile, const Point &location){
+    if (profile == nullptr)
+        return;
+    size_t qty = profile->numParticlesDiscrete();
+    addParticles(profile, location, qty);
+}
+
+void Client::addParticles(const ParticleProfile *profile, const Point &location, double delta){
+    if (profile == nullptr)
+        return;
+    size_t qty = profile->numParticlesContinuous(delta);
+    addParticles(profile, location, qty);
+}
+
+void Client::addParticles(const std::string &profileName, const Point &location){
+    const ParticleProfile *profile = findParticleProfile(profileName);
+    addParticles(profile, location);
+}
+
+void Client::addParticles(const std::string &profileName, const Point &location, double delta){
+    const ParticleProfile *profile = findParticleProfile(profileName);
+    addParticles(profile, location, delta);
 }

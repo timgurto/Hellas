@@ -43,6 +43,14 @@ void ClientNPC::draw(const Client &client) const{
     }
 }
 
+void ClientNPC::update(double delta){
+    ClientObject::update(delta);
+
+    // Loot sparkles
+    if (lootable())
+        Client::_instance->addParticles("lootSparkles", location(), delta);
+}
+
 void ClientNPC::onLeftClick(Client &client){
     client.targetNPC(this);
     
@@ -53,7 +61,7 @@ void ClientNPC::onRightClick(Client &client){
     client.targetNPC(this, true);
     
     // Loot window
-    if (_health == 0 && lootable())
+    if (lootable())
         ClientObject::onRightClick(client);
 }
 

@@ -264,6 +264,12 @@ private:
     // Move the entity, and reorder it if necessary
     void setEntityLocation(Entity *entity, const Point &location);
     Entity *_currentMouseOverEntity;
+    
+    void addParticles(const ParticleProfile *profile, const Point &location, size_t qty);
+    void addParticles(const ParticleProfile *profile, const Point &location); // Single hit
+    void addParticles(const ParticleProfile *profile, const Point &location, double delta);  // /s
+    void addParticles(const std::string &profileName, const Point &location); // Single hit
+    void addParticles(const std::string &profileName, const Point &location, double delta);  // /s
 
 
     mutable LogSDL _debug;

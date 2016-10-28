@@ -30,6 +30,7 @@ public:
     virtual void onLeftClick(Client &client) override;
     virtual void onRightClick(Client &client) override;
     virtual void draw(const Client &client) const;
+    virtual void update(double delta) override;
     virtual const Texture &cursor(const Client &client) const override;
 };
 
