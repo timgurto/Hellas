@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #include <cassert>
 #include "Client.h"
 #include "ClientNPC.h"
@@ -480,6 +478,44 @@ void Client::handleMessage(const std::string &msg){
                 if (health == 0)
                     _aggressive = false;
             }
+            break;
+        }
+
+        case SV_LOOTABLE:
+        {
+            int serial;
+            singleMsg >> serial >> del;
+            if (del != MSG_END)
+                break;
+            const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
+            if (it == _objects.end()){
+                _debug("Received loot info for an unknown object.", Color::MMO_RED);
+                break;
+            }
+            if (it->second->classTag() != 'n'){
+                _debug("Received loot info for a non-NPC object.", Color::MMO_RED);
+            }
+            ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
+            npc.lootable(true);
+            break;
+        }
+
+        case SV_NOT_LOOTABLE:
+        {
+            int serial;
+            singleMsg >> serial >> del;
+            if (del != MSG_END)
+                break;
+            const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
+            if (it == _objects.end()){
+                _debug("Received loot info for an unknown object.", Color::MMO_RED);
+                break;
+            }
+            if (it->second->classTag() != 'n'){
+                _debug("Received loot info for a non-NPC object.", Color::MMO_RED);
+            }
+            ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
+            npc.lootable(false);
             break;
         }
 

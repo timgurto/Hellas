@@ -23,4 +23,6 @@ void NPC::kill(){
     _corpseTime = CORPSE_TIME;
     Server::_instance->forceUntarget(*this);
     npcType()->lootTable().instantiate(_container);
+    for (const User *user : Server::_instance->findUsersInArea(location()))
+        Server::_instance->sendMessage(user->socket(), SV_LOOTABLE, makeArgs(serial()));
 }

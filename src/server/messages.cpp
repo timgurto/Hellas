@@ -376,6 +376,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 if (pObj->userHasAccess(username))
                     sendInventoryMessage(*_usersByName[username], slotNum, pObj);
 
+            // Alert nearby users if NPC has no loot left
+            if (pObj->classTag() == 'n' && pObj->isContainerEmpty())
+                for (auto user : findUsersInArea(pObj->location()))
+                    sendMessage(user->socket(), SV_NOT_LOOTABLE, makeArgs(pObj->serial()));
+
             break;
         }
 
@@ -686,11 +691,16 @@ void Server::sendObjectInfo(const User &user, const Object &object) const{
     sendMessage(user.socket(), SV_OBJECT, makeArgs(object.serial(),
                                                    object.location().x, object.location().y,
                                                    object.type()->id()));
-    // NPC health
     if (object.classTag() == 'n'){
         const NPC &npc = dynamic_cast<const NPC &>(object);
+        
+        // Health
         if (npc.health() < npc.npcType()->maxHealth())
             sendMessage(user.socket(), SV_NPC_HEALTH, makeArgs(npc.serial(), npc.health()));
+
+        // Loot
+        if (!npc.isContainerEmpty())
+            sendMessage(user.socket(), SV_LOOTABLE, makeArgs(npc.serial()));
     }
 
     // Owner

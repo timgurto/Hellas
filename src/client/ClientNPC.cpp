@@ -7,7 +7,8 @@ const size_t ClientNPC::LOOT_CAPACITY = 8;
 
 ClientNPC::ClientNPC(size_t serial, const ClientNPCType *type, const Point &loc):
 ClientObject(serial, type, loc),
-_health(type->maxHealth())
+_health(type->maxHealth()),
+_lootable(false)
 {}
 
 void ClientNPC::draw(const Client &client) const{
@@ -59,14 +60,7 @@ void ClientNPC::onRightClick(Client &client){
 const Texture &ClientNPC::cursor(const Client &client) const{
     if (_health > 0)
         return client.cursorAttack();
-    if (hasLoot())
+    if (lootable())
         return  client.cursorContainer();
     return client.cursorNormal();
-}
-
-bool ClientNPC::hasLoot() const{
-    for (auto &pair : container())
-        if (pair.first != nullptr)
-            return true;
-    return false;
 }

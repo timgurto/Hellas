@@ -7,6 +7,12 @@
 class ClientNPC : public ClientObject{
     health_t _health;
 
+    /*
+    True if the NPC is dead and has loot available.  This is used as the loot itself is unknown
+    until a user opens the container.
+    */
+    bool _lootable;
+
 public:
     static const size_t LOOT_CAPACITY;
 
@@ -14,10 +20,10 @@ public:
 
     health_t health() const { return _health; }
     void health(health_t n) { _health = n; }
+    bool lootable() const { return _lootable; }
+    void lootable(bool b) { _lootable = b; }
 
     const ClientNPCType *npcType() const { return dynamic_cast<const ClientNPCType *>(type()); }
-
-    bool hasLoot() const;
 
     virtual char classTag() const override { return 'n'; }
     

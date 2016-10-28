@@ -156,6 +156,12 @@ enum MessageCode{
     // An object is not being gathered from
     SV_NOT_GATHERING_OBJECT = 152,
 
+    // An NPC can be looted
+    SV_LOOTABLE = 153,
+
+    // An NPC can no longer be looted
+    SV_NOT_LOOTABLE = 154,
+
     // The user's health value
     // Arguments: hp
     SV_HEALTH = 160,
