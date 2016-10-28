@@ -53,7 +53,7 @@ void ClientNPC::onRightClick(Client &client){
     client.targetNPC(this, true);
     
     // Loot window
-    if (_health == 0)
+    if (_health == 0 && lootable())
         ClientObject::onRightClick(client);
 }
 

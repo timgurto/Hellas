@@ -516,6 +516,7 @@ void Client::handleMessage(const std::string &msg){
             }
             ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
             npc.lootable(false);
+            npc.hideWindow();
             break;
         }
 
