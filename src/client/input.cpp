@@ -253,8 +253,12 @@ void Client::handleInput(double delta){
                         element->visible() &&
                         collision(_mouse, element->rect())) {
                         element->onLeftMouseUp(_mouse);
+                        mouseUpOnWindow = true;
                         break;
                     }
+
+                if (mouseUpOnWindow)
+                    break;
 
                 // Dragged item onto map -> drop.
                 if (!mouseUpOnWindow && Container::getDragItem() != nullptr) {
@@ -291,15 +295,20 @@ void Client::handleInput(double delta){
                         element->visible() &&
                         collision(_mouse, element->rect())) {
                         element->onRightMouseUp(_mouse);
+                        mouseUpOnWindow = true;
                         break;
                     }
 
                 // Use item
                 const ClientItem *useItem = Container::getUseItem();
-                if (useItem != nullptr)
+                if (useItem != nullptr) {
                     _constructionFootprint = useItem->constructsObject()->image();
-                else
+                    break;
+                } else
                     _constructionFootprint = Texture();
+
+                if (mouseUpOnWindow)
+                    break;
 
                 // Mouse down and up on same entity: onRightClick
                 if (_rightMouseDownEntity != nullptr &&
