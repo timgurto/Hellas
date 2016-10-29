@@ -163,18 +163,35 @@ void ClientObject::onRightClick(Client &client){
         return;
     }
     
-    // Merchant object
+    // Bring existing window to front
     if (_window != nullptr){
         client.removeWindow(_window);
         client.addWindow(_window);
     }
 
     // Create window, if necessary
+    if (_window == nullptr)
+        createWindow(client);
+
+    if (_window != nullptr) {
+        // Determine placement: center around object, but keep entirely on screen.
+        px_t x = toInt(location().x - _window->width() / 2 + client.offset().x);
+        x = max(0, min(x, Client::SCREEN_X - _window->width()));
+        px_t y = toInt(location().y - _window->height() / 2 + client.offset().y);
+        y = max(0, min(y, Client::SCREEN_Y - _window->height()));
+        _window->rect(x, y);
+
+        _window->show();
+    }
+}
+
+void ClientObject::createWindow(Client &client){
+    const ClientObjectType &objType = *objectType();
+
     bool
         hasContainer = objType.containerSlots() > 0,
         isMerchant = objType.merchantSlots() > 0;
-    if (userHasAccess() && _window == nullptr &&
-        (hasContainer || isMerchant || objType.canDeconstruct())){
+    if (userHasAccess() && (hasContainer || isMerchant || objType.canDeconstruct())){
         static const size_t COLS = 8;
         static const px_t
             WINDOW_WIDTH = Container(1, 8, _container).width(),
@@ -255,7 +272,7 @@ void ClientObject::onRightClick(Client &client){
 
         _window->resize(winWidth, y);
 
-    } else if (!userHasAccess() && !_window && isMerchant) {
+    } else if (!userHasAccess() && isMerchant) {
         client.watchObject(*this);
         // Draw trade window
         static const px_t
@@ -286,17 +303,6 @@ void ClientObject::onRightClick(Client &client){
             _merchantSlotElements[i] = new Element();
             list->addChild(_merchantSlotElements[i]);
         }
-    }
-
-    if (_window != nullptr) {
-        // Determine placement: center around object, but keep entirely on screen.
-        px_t x = toInt(location().x - _window->width() / 2 + client.offset().x);
-        x = max(0, min(x, Client::SCREEN_X - _window->width()));
-        px_t y = toInt(location().y - _window->height() / 2 + client.offset().y);
-        y = max(0, min(y, Client::SCREEN_Y - _window->height()));
-        _window->rect(x, y);
-
-        _window->show();
     }
 }
 
