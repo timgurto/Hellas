@@ -1,5 +1,8 @@
+#include <cassert>
+
 #include "Client.h"
 #include "ClientNPC.h"
+#include "ui/TakeContainer.h"
 
 extern Renderer renderer;
 
@@ -8,7 +11,8 @@ const size_t ClientNPC::LOOT_CAPACITY = 8;
 ClientNPC::ClientNPC(size_t serial, const ClientNPCType *type, const Point &loc):
 ClientObject(serial, type, loc),
 _health(type->maxHealth()),
-_lootable(false)
+_lootable(false),
+_lootContainer(nullptr)
 {}
 
 void ClientNPC::draw(const Client &client) const{
@@ -67,10 +71,27 @@ void ClientNPC::onRightClick(Client &client){
         ClientObject::onRightClick(client);
 }
 
+void ClientNPC::createWindow(Client &client){
+    static const px_t
+        WIDTH = 100,
+        HEIGHT = 100;
+    _lootContainer = new TakeContainer(container(), serial(), Rect(0, 0, WIDTH, HEIGHT));
+    Rect winRect = location();
+    winRect.w = WIDTH;
+    winRect.h = HEIGHT;
+    _window = new Window(winRect, objectType()->name());
+    _window->addChild(_lootContainer);
+}
+
 const Texture &ClientNPC::cursor(const Client &client) const{
     if (_health > 0)
         return client.cursorAttack();
     if (lootable())
         return  client.cursorContainer();
     return client.cursorNormal();
+}
+
+void ClientNPC::onInventoryUpdate(){
+    assert(_lootContainer != nullptr);
+    _lootContainer->repopulate();
 }

@@ -23,8 +23,8 @@ Texture Container::_highlight;
 Container::Container(size_t rows, size_t cols, ClientItem::vect_t &linked, size_t serial,
                      px_t x, px_t y):
 Element(Rect(x, y,
-                 cols * (Client::ICON_SIZE + GAP + 2) + GAP,
-                 rows * (Client::ICON_SIZE + GAP + 2) + GAP + 1)),
+             cols * (Client::ICON_SIZE + GAP + 2) + GAP,
+             rows * (Client::ICON_SIZE + GAP + 2) + GAP + 1)),
 _rows(rows),
 _cols(cols),
 _linked(linked),

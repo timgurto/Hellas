@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #include "ColorBlock.h"
 #include "Label.h"
 #include "Line.h"
@@ -186,5 +184,10 @@ void List::scrollToBottom(){
     const px_t minScroll = -(_content->rect().h - rect().h);
     _content->rect(0, minScroll);
     _scrolledToBottom = true;
+    updateScrollBar();
+}
+
+void List::scrollPos(px_t newPos){
+    _content->rect(0, newPos);
     updateScrollBar();
 }

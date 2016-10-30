@@ -4,6 +4,8 @@
 #include "ClientNPCType.h"
 #include "ClientObject.h"
 
+class TakeContainer;
+
 class ClientNPC : public ClientObject{
     health_t _health;
 
@@ -12,6 +14,7 @@ class ClientNPC : public ClientObject{
     until a user opens the container.
     */
     bool _lootable;
+    TakeContainer *_lootContainer;
 
 public:
     static const size_t LOOT_CAPACITY;
@@ -29,9 +32,11 @@ public:
     
     virtual void onLeftClick(Client &client) override;
     virtual void onRightClick(Client &client) override;
+    virtual void createWindow(Client &client) override;
     virtual void draw(const Client &client) const;
     virtual void update(double delta) override;
     virtual const Texture &cursor(const Client &client) const override;
+    virtual void onInventoryUpdate() override;
 };
 
 #endif

@@ -348,7 +348,7 @@ void Client::handleMessage(const std::string &msg){
             if (serial == 0)
                 _inventoryWindow->forceRefresh();
             else
-                object->refreshWindow();
+                object->onInventoryUpdate();
             break;
         }
 

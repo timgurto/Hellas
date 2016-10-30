@@ -170,8 +170,15 @@ void ClientObject::onRightClick(Client &client){
     }
 
     // Create window, if necessary
-    if (_window == nullptr)
+    if (_window == nullptr){
         createWindow(client);
+        if (_window != nullptr)
+            client.addWindow(_window);
+    }
+
+    // Watch object
+    if (objType.containerSlots() > 0 || objType.merchantSlots() > 0)
+        client.watchObject(*this);
 
     if (_window != nullptr) {
         // Determine placement: center around object, but keep entirely on screen.
@@ -201,11 +208,9 @@ void ClientObject::createWindow(Client &client){
         px_t x = BUTTON_GAP, y = 0;
         px_t winWidth = 0;
         _window = new Window(Rect(0, 0, 0, 0), objType.name());
-        client.addWindow(_window);
 
         // Merchant setup
         if (isMerchant){
-            client.watchObject(*this);
             static const px_t
                 QUANTITY_WIDTH = 20,
                 NAME_WIDTH = 100,
@@ -273,7 +278,6 @@ void ClientObject::createWindow(Client &client){
         _window->resize(winWidth, y);
 
     } else if (!userHasAccess() && isMerchant) {
-        client.watchObject(*this);
         // Draw trade window
         static const px_t
             GAP = 2,
@@ -296,7 +300,6 @@ void ClientObject::createWindow(Client &client){
         static const px_t
             HEIGHT = toInt(ROW_HEIGHT * NUM_ROWS);
         _window = new Window(Rect(0, 0, WIDTH, HEIGHT), objType.name());
-        client.addWindow(_window);
         List *list = new List(Rect(0, 0, WIDTH, HEIGHT), ROW_HEIGHT);
         _window->addChild(list);
         for (size_t i = 0; i != objType.merchantSlots(); ++i){
@@ -349,7 +352,7 @@ void ClientObject::draw(const Client &client) const{
     }
 }
 
-void ClientObject::refreshWindow() {
+void ClientObject::onInventoryUpdate() {
     if (_window != nullptr)
         _window->forceRefresh();
 }

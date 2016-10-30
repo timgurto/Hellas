@@ -20,7 +20,6 @@ class ClientObject : public Entity{
     size_t _serial;
     std::string _owner;
     ClientItem::vect_t _container;
-    Window *_window; // For containers, etc.
     std::vector<ClientMerchantSlot> _merchantSlots;
     // Used for either the trade screen, or the merchant setup screen.
     std::vector<Element *> _merchantSlotElements;
@@ -29,6 +28,9 @@ class ClientObject : public Entity{
     std::vector<TextBox *> _wareQtyBoxes;
     std::vector<TextBox *> _priceQtyBoxes;
     bool _beingGathered;
+
+protected:
+    Window *_window; // For containers, etc; opens when the object is nearby and right-clicked.
 
 public:
     ClientObject(const ClientObject &rhs);
@@ -69,7 +71,7 @@ public:
 
     void playGatherSound() const;
 
-    void refreshWindow();
+    virtual void onInventoryUpdate();
     void hideWindow();
 
 

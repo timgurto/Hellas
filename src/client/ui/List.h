@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef LIST_H
 #define LIST_H
 
@@ -42,8 +40,6 @@ private:
     static void scrollDown(Element &e, const Point &mousePos) { scrollDownRaw(e); }
 
 protected:
-    px_t childHeight() const { return _childHeight; }
-
     Element *_content; // Holds the list items themselves, and moves up and down to "scroll".
 
 public:
@@ -56,6 +52,9 @@ public:
     void scrollToBottom();
     bool isScrolledToBottom() const { return _scrolledToBottom; }
     bool isScrollBarVisible() const { return _scrollBar->visible(); }
+    px_t scrollPos() const { return _content->rect().y; }
+    void scrollPos(px_t newPos);
+    px_t childHeight() const { return _childHeight; }
 
     size_t size() const { return _content->children().size(); }
 

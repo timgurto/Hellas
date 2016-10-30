@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #ifndef PICTURE_H
 #define PICTURE_H
 
@@ -13,6 +11,7 @@ class Picture : public Element{
 
 public:
     Picture(const Rect &rect, const Texture &srcTexture);
+    Picture(px_t x, px_t y, const Texture &srcTexture); // x and y only; get w/h from texture
 
     void changeTexture(const Texture &srcTexture = Texture());
 };

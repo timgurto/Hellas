@@ -18,6 +18,7 @@
 #include "ui/ChoiceList.h"
 #include "ui/Container.h"
 #include "ui/ItemSelector.h"
+#include "ui/TakeContainer.h"
 #include "ui/Window.h"
 #include "../Args.h"
 #include "../Point.h"
@@ -315,6 +316,7 @@ private:
     friend void LogSDL::operator()(const std::string &message, const Color &color);
     friend class ItemSelector;
     friend void Window::hideWindow(void *window);
+    friend void TakeContainer::take(void *data);
     friend class ClientTestInterface;
 };
 
