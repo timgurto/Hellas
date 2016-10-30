@@ -16,9 +16,7 @@
 #include "ParticleProfile.h"
 #include "Terrain.h"
 #include "ui/ChoiceList.h"
-#include "ui/Container.h"
 #include "ui/ItemSelector.h"
-#include "ui/TakeContainer.h"
 #include "ui/Window.h"
 #include "../Args.h"
 #include "../Point.h"
@@ -63,7 +61,13 @@ public:
     static const px_t TILE_W, TILE_H;
     static const double MOVEMENT_SPEED;
 
+    enum SpecialSerial{
+        INVENTORY = 0,
+        GEAR = 1,
+    };
     static const size_t INVENTORY_SIZE;
+    static const size_t GEAR_SLOTS;
+
     static const px_t ACTION_DISTANCE;
 
     static LogSDL &debug() { return *_debugInstance; }
@@ -136,6 +140,9 @@ private:
     Window *_inventoryWindow;
     void initializeInventoryWindow();
     Texture _constructionFootprint;
+
+    Window *_gearWindow;
+    void initializeGearWindow();
 
     windows_t _windows;
     void addWindow(Window *window);
@@ -255,7 +262,7 @@ private:
     // Information about the state of the world
     size_t _mapX, _mapY;
     std::vector<std::vector<size_t> > _map;
-    ClientItem::vect_t _inventory;
+    ClientItem::vect_t _inventory, _gear;
     std::map<std::string, Avatar*> _otherUsers; // For lookup by name
     std::map<size_t, ClientObject*> _objects; // For lookup by serial
 
@@ -316,7 +323,7 @@ private:
     friend void LogSDL::operator()(const std::string &message, const Color &color);
     friend class ItemSelector;
     friend void Window::hideWindow(void *window);
-    friend void TakeContainer::take(void *data);
+    friend class TakeContainer;
     friend class ClientTestInterface;
 };
 

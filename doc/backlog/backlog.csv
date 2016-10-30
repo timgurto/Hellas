@@ -30,29 +30,28 @@ issue,description,value,effort,type,blockedBy,done
 169,NPCs can die,13,3,Feature,,TRUE
 170,Attack stat,8,1,Feature,,TRUE
 171,NPC loot,13,34,Feature,,TRUE
-172,Critter run-away AI,5,34,Feature,
-173,Animal that fights back,21,21,Feature,
-174,Player death,13,5,Feature,173
-175,NPC spawning,5,21,Feature,
-176,PVP,13,3,Feature,
-177,Character has gear slots,13,21,Feature,
-178,Items can match gear slots,8,3,Feature,177
-179,Gear can have stats,13,8,Feature,178
-180,Gear visible on character,34,21,Aesthetics,178
-182,Make use of Winsock modular,8,21,Code quality,
-183,Linux support,21,13,Code quality,182
-184,NPC idling AI,8,21,Feature,
-185,Python client with text interface,34,21,Feature,
-186,Random Python AI,8,13,Feature,189
-187,Woodcutter Python AI,13,55,Feature,189
-188,Merchant Python AI,5,55,Feature,189
+172,Critter run-away AI,5,34,Feature,,
+173,Animal that fights back,21,21,Feature,,
+174,Player death,13,5,Feature,173,
+175,NPC spawning,5,21,Feature,,
+176,PVP,13,3,Feature,,
+177,Character has gear slots,13,21,Feature,,TRUE
+178,Items can match gear slots,8,3,Feature,,
+179,Gear can have stats,13,8,Feature,178,
+180,Gear visible on character,34,21,Aesthetics,178,
+182,Make use of Winsock modular,8,21,Code quality,,
+183,Linux support,21,13,Code quality,182,
+184,NPC idling AI,8,21,Feature,,
+185,Python client with text interface,34,21,Feature,,
+186,Random Python AI,8,13,Feature,189,
+187,Woodcutter Python AI,13,55,Feature,189,
+188,Merchant Python AI,5,55,Feature,189,
 189,Auto-login for Python client,8,13,Feature,185,
 190,Release scrollbar on mouse up,5,2,Bug,,
 191,Allow external clients to connect,55,13,Feature,,TRUE
 192,isLocationValid() only checks one point against one terrain tile/chunk,8,2,Bug,,
 193,Move client colors to config file instead of hardcoding,5,2,Code quality,,
 194,Players can move through small objects,13,2,Bug,,TRUE
-197,Move gatherable functionality to ABC,3,8,Code quality,,
 198,"Only save map data once, on generation",3,1,Performance,,TRUE
 199,Empty objects reported as not empty when attempting to dismantle,21,2,Bug,,TRUE
 200,Test: objects can be gathered,5,13,Code quality,,TRUE
@@ -81,3 +80,5 @@ issue,description,value,effort,type,blockedBy,done
 223,Remove useItem info from Container class; move it into Client object,1,2,Code quality,,
 224,Specialized loot window,2,3,Aesthetics,,TRUE
 225,Use polymorphism instead of classTag,3,3,Code quality,,
+226,Right-click to equip gear,5,2,Feature,,
+227,Shift + right-click to loot all,5,2,Feature,,

@@ -146,7 +146,7 @@ void Container::rightMouseUp(Element &e, const Point &mousePos){
     } else if (slot != NO_SLOT) { // Right-clicked a slot
         const ClientItem *item = container._linked[slot].first;
         if (item != nullptr){ // Slot is not empty
-            if (container._serial == 0) { // User's inventory
+            if (container._serial == Client::INVENTORY) {
                 if (item->constructsObject() != nullptr) { // Can construct item
                     useSlot = slot;
                     useContainer = &container;

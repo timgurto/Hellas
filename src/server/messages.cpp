@@ -233,14 +233,18 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             ServerItem::vect_t *container;
             Object *pObj = nullptr;
-            if (serial == 0)
-                container = &user->inventory();
-            else {
-                pObj = findObject(serial);
-                if (!isObjectInRange(client, *user, pObj))
-                    break;
-                container = &pObj->container();
+            bool breakMsg = false;
+            switch(serial){
+                case INVENTORY: container = &user->inventory(); break;
+                case GEAR:      container = &user->gear();      break;
+                default:
+                    pObj = findObject(serial);
+                    if (!isObjectInRange(client, *user, pObj))
+                        breakMsg = true;;
+                    container = &pObj->container();
             }
+            if (breakMsg)
+                break;
 
             if (slot >= container->size()) {
                 sendMessage(client, SV_INVALID_SLOT);
@@ -250,13 +254,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (containerSlot.second != 0) {
                 containerSlot.first = nullptr;
                 containerSlot.second = 0;
-                if (serial == 0)
-                    sendInventoryMessage(*user, slot);
-                else{
+
+                // Alert relevant users
+                if (serial == INVENTORY || serial == GEAR)
+                    sendInventoryMessage(*user, slot, serial);
+                else
                     for (auto username : pObj->watchers())
                          if (pObj->userHasAccess(username))
-                            sendInventoryMessage(*_usersByName[username], slot, pObj);
-                }
+                            sendInventoryMessage(*_usersByName[username], slot, *pObj);
             }
             break;
         }
@@ -276,22 +281,29 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             Object
                 *pObj1 = nullptr,
                 *pObj2 = nullptr;
-            if (obj1 == 0)
-                containerFrom = &user->inventory();
-            else {
-                pObj1 = findObject(obj1);
-                if (!isObjectInRange(client, *user, pObj1))
-                    break;
-                containerFrom = &pObj1->container();
+            bool breakMsg = false;
+            switch (obj1){
+                case INVENTORY: containerFrom = &user->inventory(); break;
+                case GEAR:      containerFrom = &user->gear();      break;
+                default:
+                    pObj1 = findObject(obj1);
+                    if (!isObjectInRange(client, *user, pObj1))
+                        breakMsg = true;
+                    containerFrom = &pObj1->container();
             }
-            if (obj2 == 0)
-                containerTo = &user->inventory();
-            else {
-                pObj2 = findObject(obj2);
-                if (!isObjectInRange(client, *user, pObj2))
-                    break;
-                containerTo = &pObj2->container();
+            if (breakMsg)
+                break;
+            switch (obj2){
+                case INVENTORY: containerTo = &user->inventory(); break;
+                case GEAR:      containerTo = &user->gear();      break;
+                default:
+                    pObj2 = findObject(obj2);
+                    if (!isObjectInRange(client, *user, pObj2))
+                        breakMsg = true;
+                    containerFrom = &pObj2->container();
             }
+            if (breakMsg)
+                break;
 
             if (slot1 >= containerFrom->size() || slot2 >= containerTo->size()) {
                 sendMessage(client, SV_INVALID_SLOT);
@@ -312,22 +324,20 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             slotTo = slotFrom;
             slotFrom = temp;
 
-            if (obj1 == 0)
-                sendInventoryMessage(*user, slot1);
-            if (obj2 == 0)
-                sendInventoryMessage(*user, slot2);
-            
-            // Alert watchers
-            if (obj1 != 0) {
+            // Alert relevant users
+            if (obj1 == INVENTORY || obj1 == GEAR)
+                sendInventoryMessage(*user, slot1, obj1);
+            else
                 for (auto username : pObj1->watchers())
                     if (pObj1->userHasAccess(username))
-                        sendInventoryMessage(*_usersByName[username], slot1, pObj1);
-            }
-            if (obj2 != 0) {
+                        sendInventoryMessage(*_usersByName[username], slot1, *pObj1);
+            if (obj2 == INVENTORY || obj2 == GEAR)
+                sendInventoryMessage(*user, slot2, obj2);
+            else
                 for (auto username : pObj2->watchers())
                     if (pObj2->userHasAccess(username))
-                        sendInventoryMessage(*_usersByName[username], slot2, pObj2);
-            }
+                        sendInventoryMessage(*_usersByName[username], slot2, *pObj2);
+
             break;
         }
 
@@ -375,7 +385,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             // Alert watchers
             for (auto username : pObj->watchers())
                 if (pObj->userHasAccess(username))
-                    sendInventoryMessage(*_usersByName[username], slotNum, pObj);
+                    sendInventoryMessage(*_usersByName[username], slotNum, *pObj);
 
             // Alert nearby users if NPC has no loot left
             if (pObj->classTag() == 'n' && pObj->isContainerEmpty())
@@ -546,7 +556,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (obj->userHasAccess(user->name())){
                 size_t slots = obj->container().size();
                 for (size_t i = 0; i != slots; ++i)
-                    sendInventoryMessage(*user, i, obj);
+                    sendInventoryMessage(*user, i, *obj);
             }
 
             // Add as watcher
@@ -580,7 +590,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             user->cancelAction();
             Object *obj;
-            if (serial == 0)
+            if (serial == INVENTORY || serial == GEAR)
                 obj = nullptr;
             else {
                 obj = findObject(serial);
@@ -664,16 +674,31 @@ void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
     _socket.sendMessage(oss.str(), dstSocket);
 }
 
-void Server::sendInventoryMessage(const User &user, size_t slot, const Object *obj) const{
-    const ServerItem::vect_t &container = (obj == nullptr) ? user.inventory() : obj->container();
-    if (slot >= container.size()) {
+void Server::sendInventoryMessageInner(const User &user, size_t serial, size_t slot,
+                                      const ServerItem::vect_t &itemVect) const{
+    if (slot >= itemVect.size()){
         sendMessage(user.socket(), SV_INVALID_SLOT);
         return;
     }
-    size_t serial = obj == nullptr ? 0 : obj->serial();
-    const auto &containerSlot = container[slot];
+    const auto &containerSlot = itemVect[slot];
     std::string itemID = containerSlot.first ? containerSlot.first->id() : "none";
     sendMessage(user.socket(), SV_INVENTORY, makeArgs(serial, slot, itemID, containerSlot.second));
+}
+
+void Server::sendInventoryMessage(const User &user, size_t slot, const Object &obj) const{
+    sendInventoryMessageInner(user, obj.serial(), slot, obj.container());
+}
+
+// Special serials only
+void Server::sendInventoryMessage(const User &user, size_t slot, size_t serial) const{
+    const ServerItem::vect_t *container = nullptr;
+    switch (serial){
+        case INVENTORY: container = &user.inventory();  break;
+        case GEAR:      container = &user.gear();       break;
+        default:
+            assert(false);
+    }
+    sendInventoryMessageInner(user, serial, slot, *container);
 }
 
 void Server::sendMerchantSlotMessage(const User &user, const Object &obj, size_t slot) const{

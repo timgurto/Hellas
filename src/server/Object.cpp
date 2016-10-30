@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #include <cassert>
 
 #include "Object.h"
@@ -15,13 +13,6 @@ _numUsersGathering(0)
     assert(type);
     if (type->yield()) {
         type->yield().instantiate(_contents);
-
-        // Print contents
-        //Server::debug() << "New " << type->id() << " contains "
-        //                << _contents.totalQuantity() << " items:";
-        //for (auto &pair : _contents)
-        //    Server::debug() << " " << pair.second << "*" << pair.first->id();
-        //Server::debug() << Log::endl;
     }
 
     if (type->containerSlots() != 0)
@@ -57,7 +48,7 @@ bool Object::compareYThenSerial::operator()( const Object *a, const Object *b){
 }
 
 size_t Object::generateSerial() {
-    static size_t currentSerial = 1; // Serial 0 is unavailable, and has special meaning.
+    static size_t currentSerial = Server::STARTING_SERIAL;
     return currentSerial++;
 }
 
@@ -128,7 +119,7 @@ void Object::removeItems(const ItemSet &items) {
     for (const std::string &username : _watchers) {
         const User &user = Server::instance().getUserByName(username);
         for (size_t slotNum : invSlotsChanged) {
-            Server::instance().sendInventoryMessage(user, slotNum, this);
+            Server::instance().sendInventoryMessage(user, slotNum, *this);
         }
     }
 }
@@ -170,7 +161,7 @@ void Object::giveItem(const ServerItem *item, size_t qty){
     for (const std::string &username : _watchers){
         const User &user = Server::instance().getUserByName(username);
         for (size_t slot : changedSlots)
-            Server::instance().sendInventoryMessage(user, slot, this);
+            Server::instance().sendInventoryMessage(user, slot, *this);
     }
 }
 

@@ -10,7 +10,7 @@ class User;
 
 // A server-side representation of an in-game object
 class Object{
-    size_t _serial; // Starts at 1; 0 is reserved.
+    size_t _serial;
     Point _location;
     const ObjectType *_type;
     std::string _owner;

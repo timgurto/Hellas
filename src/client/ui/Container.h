@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef CONTAINER_H
 #define CONTAINER_H
 
@@ -41,8 +39,8 @@ class Container : public Element{
     size_t getSlot(const Point &mousePos) const;
 
 public:
-    Container(size_t rows, size_t cols, ClientItem::vect_t &linked, size_t serial = 0,
-              px_t x = 0, px_t y = 0);
+    Container(size_t rows, size_t cols, ClientItem::vect_t &linked,
+              size_t serial = Client::INVENTORY, px_t x = 0, px_t y = 0);
     
     static const ClientItem *getDragItem();
     static const ClientItem *getUseItem();

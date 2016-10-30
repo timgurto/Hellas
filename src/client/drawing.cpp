@@ -1,8 +1,7 @@
-// (C) 2016 Tim Gurto
-
 #include "Client.h"
 #include "ClientNPC.h"
 #include "Renderer.h"
+#include "ui/Container.h"
 
 extern Renderer renderer;
 

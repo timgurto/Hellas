@@ -48,6 +48,12 @@ public:
 
     mutable LogConsole _debug;
 
+    enum SpecialSerial{
+        INVENTORY = 0,
+        GEAR = 1,
+
+        STARTING_SERIAL
+    };
 
     // Const Searches/queries
     size_t findTile(const Point &p) const; // Find the tile type at the specified location.
@@ -79,8 +85,10 @@ private:
                      const std::string &args = "") const;
     void broadcast(MessageCode msgCode, const std::string &args); // Send a command to all users
     void handleMessage(const Socket &client, const std::string &msg);
-    // obj==nullptr implies the user's inventory, instead of an object's.
-    void sendInventoryMessage(const User &user, size_t slot, const Object *obj = nullptr) const;
+    void sendInventoryMessageInner(const User &user, size_t serial, size_t slot,
+                                   const ServerItem::vect_t &itemVect) const;
+    void sendInventoryMessage(const User &user, size_t slot, const Object &obj) const;
+    void sendInventoryMessage(const User &user, size_t slot, size_t serial) const;
     void sendMerchantSlotMessage(const User &user, const Object &obj, size_t slot) const;
     void sendObjectInfo(const User &user, const Object &object) const;
 

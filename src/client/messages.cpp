@@ -1,6 +1,8 @@
 #include <cassert>
+
 #include "Client.h"
 #include "ClientNPC.h"
+#include "ui/Container.h"
 
 static void readString(std::istream &iss, std::string &str, char delim = MSG_DELIM){
     if (iss.peek() == delim) {
@@ -326,16 +328,18 @@ void Client::handleMessage(const std::string &msg){
 
             ClientItem::vect_t *container;
             ClientObject *object = nullptr;
-            if (serial == 0)
-                container = &_inventory;
-            else {
-                auto it = _objects.find(serial);
-                if (it == _objects.end()) {
-                    _debug("Received inventory of nonexistent object; ignored.", Color::MMO_RED);
-                    break;
-                }
-                object = it->second;
-                container = &object->container();
+            switch(serial){
+                case INVENTORY: container = &_inventory;    break;
+                case GEAR:      container = &_gear;         break;
+                default:
+                    auto it = _objects.find(serial);
+                    if (it == _objects.end()) {
+                        _debug("Received inventory of nonexistent object; ignored.",
+                               Color::MMO_RED);
+                        break;
+                    }
+                    object = it->second;
+                    container = &object->container();
             }
             if (slot >= container->size()) {
                 _debug("Received item in invalid inventory slot; ignored.", Color::MMO_RED);
@@ -345,10 +349,13 @@ void Client::handleMessage(const std::string &msg){
             invSlot.first = item;
             invSlot.second = quantity;
             _recipeList->markChanged();
-            if (serial == 0)
-                _inventoryWindow->forceRefresh();
-            else
-                object->onInventoryUpdate();
+            switch(serial){
+                case INVENTORY: _inventoryWindow->forceRefresh();   break;
+                case GEAR:      _gearWindow->forceRefresh();        break;
+                default:
+                    object->onInventoryUpdate();
+            }
+
             break;
         }
 

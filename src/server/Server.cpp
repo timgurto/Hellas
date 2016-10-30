@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #include <cassert>
 #include <fstream>
 #include <iostream>
@@ -285,7 +283,13 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // Send him his inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         if (newUser.inventory(i).first != nullptr)
-            sendInventoryMessage(newUser, i);
+            sendInventoryMessage(newUser, i, INVENTORY);
+    }
+
+    // Send him his gear
+    for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
+        if (newUser.gear(i).first != nullptr)
+            sendInventoryMessage(newUser, i, GEAR);
     }
 
     // Add new user to list

@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef USER_H
 #define USER_H
 
@@ -54,7 +52,7 @@ private:
     Point _actionLocation; // Construct
     NPC *_actionNPC; // Attack
 
-    ServerItem::vect_t _inventory;
+    ServerItem::vect_t _inventory, _gear;
 
     ms_t _lastLocUpdate; // Time that the last CL_LOCATION was received
     ms_t _lastContact;
@@ -72,11 +70,24 @@ public:
     const Socket &socket() const { return _socket; }
     const Point &location() const { return _location; }
     void location(const Point &loc) { _location = loc; }
-    const std::pair<const ServerItem *, size_t> &inventory(size_t index) const;
-    std::pair<const ServerItem *, size_t> &inventory(size_t index);
+    NPC *targetNPC() const { return _actionNPC; }
+
+    // Inventory
+    const std::pair<const ServerItem *, size_t> &inventory(size_t index) const
+            { return _inventory[index]; }
+    std::pair<const ServerItem *, size_t> &inventory(size_t index)
+            { return _inventory[index]; }
     ServerItem::vect_t &inventory() { return _inventory; }
     const ServerItem::vect_t &inventory() const { return _inventory; }
-    NPC *targetNPC() const { return _actionNPC; }
+
+    // Gear
+    const std::pair<const ServerItem *, size_t> &gear(size_t index) const
+            { return _gear[index]; }
+    std::pair<const ServerItem *, size_t> &gear(size_t index)
+            { return _gear[index]; }
+    ServerItem::vect_t &gear() { return _gear; }
+    const ServerItem::vect_t &gear() const { return _gear; }
+
 
     virtual health_t maxHealth() const override { return MAX_HEALTH; }
 
@@ -106,8 +117,9 @@ public:
     void finishAction(); // An action has just ended; clean up the state.
 
     std::string makeLocationCommand() const;
-
+    
     static const size_t INVENTORY_SIZE;
+    static const size_t GEAR_SLOTS;
 
     static const ObjectType OBJECT_TYPE;
 

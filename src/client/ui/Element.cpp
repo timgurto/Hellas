@@ -1,7 +1,6 @@
-// (C) 2015-2016 Tim Gurto
-
 #include <cassert>
 
+#include "Container.h"
 #include "Element.h"
 #include "Window.h"
 #include "../Client.h"

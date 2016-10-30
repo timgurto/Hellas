@@ -58,6 +58,7 @@ const px_t Client::CULL_DISTANCE = 320;
 const px_t Client::CULL_HYSTERESIS_DISTANCE = 50;
 
 const size_t Client::INVENTORY_SIZE = 10;
+const size_t Client::GEAR_SLOTS = 4;
 
 const int Client::PLAYER_ACTION_CHANNEL = 0;
 
@@ -81,6 +82,7 @@ _recipeList(nullptr),
 _detailsPane(nullptr),
 _craftingWindow(nullptr),
 _inventoryWindow(nullptr),
+_gearWindow(nullptr),
 
 _connectionStatus(TRYING),
 
@@ -221,9 +223,11 @@ _debug("client.log"){
 
     Avatar::image("Images/man.png");
 
-    // Player's inventory
+    // Player's inventory/gear
     for (size_t i = 0; i != INVENTORY_SIZE; ++i)
         _inventory.push_back(std::make_pair<const ClientItem *, size_t>(nullptr, 0));
+    for (size_t i = 0; i != GEAR_SLOTS; ++i)
+        _gear.push_back(std::make_pair<const ClientItem *, size_t>(nullptr, 0));
 
     // Randomize player name if not supplied
     if (cmdLineArgs.contains("username"))
@@ -240,8 +244,10 @@ _debug("client.log"){
 
     initializeCraftingWindow();
     initializeInventoryWindow();
+    initializeGearWindow();
     addWindow(_craftingWindow);
     addWindow(_inventoryWindow);
+    addWindow(_gearWindow);
     
     // Initialize cast bar
     const Rect

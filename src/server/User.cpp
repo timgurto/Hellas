@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #include <cassert>
 #include <sstream>
 
@@ -13,6 +11,7 @@
 #include "../util.h"
 
 const size_t User::INVENTORY_SIZE = 10;
+const size_t User::GEAR_SLOTS = 4;
 
 const ObjectType User::OBJECT_TYPE(Rect(-5, -2, 10, 4));
 
@@ -38,6 +37,7 @@ _actionLocation(0, 0),
 _actionNPC(nullptr),
 
 _inventory(INVENTORY_SIZE),
+_gear(GEAR_SLOTS),
 _lastLocUpdate(SDL_GetTicks()),
 _lastContact(SDL_GetTicks()){
     for (size_t i = 0; i != INVENTORY_SIZE; ++i)
@@ -60,14 +60,6 @@ bool User::compareYThenSerial::operator()( const User *a, const User *b){
     if (a->_location.y != b->_location.y)
         return a->_location.y < b->_location.y;
     return a->_socket < b->_socket; // Just need something unique.
-}
-
-const std::pair<const ServerItem *, size_t> &User::inventory(size_t index) const{
-    return _inventory[index];
-}
-
-std::pair<const ServerItem *, size_t> &User::inventory(size_t index){
-    return _inventory[index];
 }
 
 std::string User::makeLocationCommand() const{
@@ -264,7 +256,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity){
         if (spaceAvailable > 0) {
             size_t qtyInThisSlot = min(spaceAvailable, quantity);
             _inventory[i].second += qtyInThisSlot;
-            Server::instance().sendInventoryMessage(*this, i);
+            Server::instance().sendInventoryMessage(*this, i, Server::INVENTORY);
             quantity -= qtyInThisSlot;
         }
         if (quantity == 0)
@@ -278,7 +270,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity){
         size_t qtyInThisSlot = min(item->stackSize(), quantity);
         _inventory[i].first = item;
         _inventory[i].second = qtyInThisSlot;
-        Server::instance().sendInventoryMessage(*this, i);
+        Server::instance().sendInventoryMessage(*this, i, Server::INVENTORY);
         quantity -= qtyInThisSlot;
         if (quantity == 0)
             return 0;
@@ -400,7 +392,7 @@ void User::removeItems(const ItemSet &items) {
     for (size_t slotNum : invSlotsChanged) {
         const std::pair<const ServerItem *, size_t> &slot = _inventory[slotNum];
         std::string id = slot.first ? slot.first->id() : "none";
-        Server::instance().sendInventoryMessage(*this, slotNum);
+        Server::instance().sendInventoryMessage(*this, slotNum, Server::INVENTORY);
     }
 }
 
@@ -481,7 +473,7 @@ void User::update(ms_t timeElapsed){
         --slot.second;
         if (slot.second == 0)
             slot.first = nullptr;
-        server.sendInventoryMessage(*this, _actionSlot);
+        server.sendInventoryMessage(*this, _actionSlot, Server::INVENTORY);
         break;
     }
 

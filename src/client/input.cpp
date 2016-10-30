@@ -1,6 +1,7 @@
 #include "Client.h"
 #include "Particle.h"
 #include "Renderer.h"
+#include "ui/Container.h"
 #include "ui/TextBox.h"
 
 extern Renderer renderer;
