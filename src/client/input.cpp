@@ -135,6 +135,12 @@ void Client::handleInput(double delta){
                     _chatLog->toggleVisibility();
                     break;
 
+                case SDLK_g:
+                    _gearWindow->toggleVisibility();
+                    removeWindow(_gearWindow);
+                    addWindow(_gearWindow);
+                    break;
+
                 case SDLK_i:
                     _inventoryWindow->toggleVisibility();
                     removeWindow(_inventoryWindow);

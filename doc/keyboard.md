@@ -11,6 +11,7 @@ Key       | Action
 `Enter`   | Begin typing a chat message or command, or send a completed message to the server
 `/`       | Begin typing a command, with the `/` automatically included
 `c`       | Open/close crafting window
+`g`       | Open/close gear window
 `i`       | Open/close inventory
 `l`       | Open/close chat log
 `r`       | Reply to last person who whispered
