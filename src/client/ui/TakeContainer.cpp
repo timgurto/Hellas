@@ -19,8 +19,17 @@ _list(new List(rect, Element::ITEM_HEIGHT + 2)){
 void TakeContainer::repopulate(){
     px_t oldScroll = _list->scrollPos();
 
+    // Find the highest non-empty slot, to exclude all subsequent slots
+    int lastNonEmptySlot = _linked.size() - 1;
+    for (; lastNonEmptySlot >= 0; --lastNonEmptySlot)
+        if (_linked[lastNonEmptySlot].first != nullptr)
+            break;
+
+    if (lastNonEmptySlot == -1)
+        return;
+
     _list->clearChildren();
-    for (size_t i = 0; i != _linked.size(); ++i) {
+    for (int i = 0; i <= lastNonEmptySlot; ++i) {
         auto &slot = _linked[i];
         Element *dummy = new Element;
         _list->addChild(dummy);
