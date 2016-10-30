@@ -7,7 +7,7 @@
 
 extern Renderer renderer;
 
-const px_t Container::GAP = 0;
+const px_t Container::DEFAULT_GAP = 0;
 
 // TODO: find better alternative.
 const size_t Container::NO_SLOT = 999;
@@ -21,17 +21,19 @@ const Container *Container::useContainer = nullptr;
 Texture Container::_highlight;
 
 Container::Container(size_t rows, size_t cols, ClientItem::vect_t &linked, size_t serial,
-                     px_t x, px_t y):
+                     px_t x, px_t y, px_t gap, bool solidBackground):
 Element(Rect(x, y,
-             cols * (Client::ICON_SIZE + GAP + 2) + GAP,
-             rows * (Client::ICON_SIZE + GAP + 2) + GAP + 1)),
+             cols * (Client::ICON_SIZE + gap + 2) + gap,
+             rows * (Client::ICON_SIZE + gap + 2) + gap + 1)),
 _rows(rows),
 _cols(cols),
 _linked(linked),
 _serial(serial),
 _mouseOverSlot(NO_SLOT),
 _leftMouseDownSlot(NO_SLOT),
-_rightMouseDownSlot(NO_SLOT){
+_rightMouseDownSlot(NO_SLOT),
+_gap(gap),
+_solidBackground(solidBackground){
     if (!_highlight)
         _highlight = Texture(std::string("Images/Items/highlight.png"));
 
@@ -39,8 +41,8 @@ _rightMouseDownSlot(NO_SLOT){
         const px_t
             x = i % cols,
             y = i / cols;
-        const Rect slotRect = Rect(x * (Client::ICON_SIZE + GAP + 2) + GAP,
-                                   y * (Client::ICON_SIZE + GAP + 2) + GAP + 1,
+        const Rect slotRect = Rect(x * (Client::ICON_SIZE + _gap + 2),
+                                   y * (Client::ICON_SIZE + _gap + 2) + 1,
                                    Client::ICON_SIZE + 2, Client::ICON_SIZE + 2);
         addChild(new ShadowBox(slotRect, true));
     }
@@ -57,11 +59,13 @@ void Container::refresh(){
         const px_t
             x = i % _cols,
             y = i / _cols;
-        const Rect slotRect = Rect(x * (Client::ICON_SIZE + GAP + 2) + GAP,
-                                   y * (Client::ICON_SIZE + GAP + 2) + GAP + 1,
+        const Rect slotRect = Rect(x * (Client::ICON_SIZE + _gap + 2),
+                                   y * (Client::ICON_SIZE + _gap + 2) + 1,
                                    Client::ICON_SIZE + 2, Client::ICON_SIZE + 2);
-        static const Rect SLOT_BACKGROUND_OFFSET = Rect(1, 1, -2, -2);
-        renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
+        if (_solidBackground){
+            static const Rect SLOT_BACKGROUND_OFFSET = Rect(1, 1, -2, -2);
+            renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
+        }
         if (dragSlot != i || dragContainer != this) { // Don't draw an item being moved by the mouse.
             const std::pair<const ClientItem *, size_t> &slot = _linked[i];
             if (slot.first != nullptr){
@@ -83,8 +87,13 @@ size_t Container::getSlot(const Point &mousePos) const{
     if (!collision(mousePos, Rect(0, 0, width(), height())))
         return NO_SLOT;
     size_t
-        x = static_cast<size_t>((mousePos.x - GAP) / (Client::ICON_SIZE + GAP + 2)),
-        y = static_cast<size_t>((mousePos.y - GAP - 1) / (Client::ICON_SIZE + GAP + 2));
+        x = static_cast<size_t>((mousePos.x) / (Client::ICON_SIZE + _gap + 2)),
+        y = static_cast<size_t>((mousePos.y - 1) / (Client::ICON_SIZE + _gap + 2));
+    // Check inside gaps
+    if (mousePos.x - x * (Client::ICON_SIZE + _gap + 2) > Client::ICON_SIZE + 2)
+        return NO_SLOT;
+    if (mousePos.y - y * (Client::ICON_SIZE + _gap + 2) > Client::ICON_SIZE + 2)
+        return NO_SLOT;
     size_t slot = y * _cols + x;
     if (slot >= _linked.size())
         return NO_SLOT;

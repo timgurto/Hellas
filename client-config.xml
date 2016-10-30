@@ -3,4 +3,5 @@
 <gameFont filename="poh_pixels.ttf" size=16 height=11 offset=2 />
 <castBar y=300 w=150 h=11 />
 <server hostDirectory="http://timgurto.com/mmo-server-ip.txt" port="8888"/>
+<gearWindow width=39 height=42 grid=0 gridY=0 gap=3 rows=2 cols=2 />
 </root>

@@ -143,6 +143,7 @@ private:
 
     Window *_gearWindow;
     void initializeGearWindow();
+    Texture _gearWindowBackground;
 
     windows_t _windows;
     void addWindow(Window *window);

@@ -83,6 +83,7 @@ _detailsPane(nullptr),
 _craftingWindow(nullptr),
 _inventoryWindow(nullptr),
 _gearWindow(nullptr),
+_gearWindowBackground(std::string("Images/gearWindow.png"), Color::MAGENTA),
 
 _connectionStatus(TRYING),
 
