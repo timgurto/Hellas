@@ -313,12 +313,21 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             auto
                 &slotFrom = (*containerFrom)[slot1],
                 &slotTo = (*containerTo)[slot2];
+            assert(slotFrom.first != nullptr);
             
             if (pObj1 != nullptr && pObj1->classTag() == 'n' && slotTo.first != nullptr ||
                 pObj2 != nullptr && pObj2->classTag() == 'n' && slotFrom.first != nullptr){
                     sendMessage(client, SV_NPC_SWAP);
                     break;
             }
+
+            // Check gear-slot compatibility
+            if (obj1 == GEAR && slotTo.first != nullptr && slotTo.first->gearSlot() != slot1 ||
+                obj2 == GEAR && slotFrom.first != nullptr && slotFrom.first->gearSlot() != slot2){
+                    sendMessage(client, SV_NOT_GEAR);
+                    break;
+            }
+
             // Perform the swap
             auto temp = slotTo;
             slotTo = slotFrom;

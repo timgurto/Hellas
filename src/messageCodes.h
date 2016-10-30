@@ -266,6 +266,9 @@ enum MessageCode{
     // The user tried to take an item from himself
     SV_TAKE_SELF = 934,
 
+    // The user tried to equip an item into a gear slot with which it doesn't compatible.
+    SV_NOT_GEAR = 935,
+
 
 
     NO_CODE

@@ -93,3 +93,4 @@ Code | Name                         | Syntax                               | Des
 932  | `SV_NPC_DEAD`                | &laquo;932&raquo;                    | "You tried to perform an action on an NPC, but it's dead"
 933  | `SV_NPC_SWAP`                | &laquo;933&raquo;                    | "You tried to put an item into an NPC"
 934  | `SV_TAKE_SELF`               | &laquo;934&raquo;                    | "You tried to take an item from yourself"
+935  | `SV_NOT_GEAR`                | &laquo;935&raquo;                    | "You tried to equip an item in an incompatible gear slot."

@@ -50,4 +50,10 @@ Client only:
     id="bone"
     name="Bone"
     stackSize=10 />
+
+<item
+    id="hat"
+    name="Leather Cap"
+    gearSlot=0 />
+    
 </root>

@@ -146,6 +146,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_NPC_DEAD:
         case SV_NPC_SWAP:
         case SV_TAKE_SELF:
+        case SV_NOT_GEAR:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
@@ -677,6 +678,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_NPC_DEAD] = "That NPC is dead.";
     _errorMessages[SV_NPC_SWAP] = "You can't put items inside an NPC.";
     _errorMessages[SV_TAKE_SELF] = "You can't take an item from yourself.";
+    _errorMessages[SV_NOT_GEAR] = "That item can't be used in that equipment slot.";
 }
 
 void Client::performCommand(const std::string &commandString){

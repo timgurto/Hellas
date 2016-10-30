@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #ifndef ITEM_H
 #define ITEM_H
 
@@ -11,6 +9,7 @@ class Item{
 protected:
     std::string _id; // The no-space, unique name used in data files
     std::set<std::string> _classes;
+    size_t _gearSlot;
 
 public:
     Item(const std::string &id);
@@ -18,6 +17,8 @@ public:
 
     const std::string &id() const { return _id; }
     const std::set<std::string> &classes() const { return _classes; }
+    void gearSlot(size_t slot) { _gearSlot = slot; }
+    size_t gearSlot() const { return _gearSlot; }
     
     bool operator<(const Item &rhs) const { return _id < rhs._id; }
     

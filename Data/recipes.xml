@@ -1,19 +1,29 @@
 <root>
+
 <recipe
     id="axe" time=10000 product="axe" >
     <material id="wood" quantity=3 />
 </recipe>
+
 <recipe
     id="chest" time=10000 product="chest" >
     <material id="wood" quantity=5 />
     <tool name="set square" />
 </recipe>
+
 <recipe
     id="setSquare" time=10000 product="setSquare" >
     <material id="wood" quantity=2 />
 </recipe>
+
 <recipe
     id="tradeCart" time=10000 product="tradeCart" >
     <material id="wood" quantity=4 />
 </recipe>
+
+<recipe
+    id="hat" time=10000 product="hat" >
+    <material id="hide" quantity=2 />
+</recipe>
+
 </root>

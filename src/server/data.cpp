@@ -202,6 +202,8 @@ void Server::loadData(const std::string &path){
                 else
                     item.constructsObject(*(_objectTypes.insert(new ObjectType(s)).first));
             }
+            n = User::GEAR_SLOTS; // Default; won't match any slot.
+            xr.findAttr(elem, "gearSlot", n); item.gearSlot(n);
 
             for (auto child : xr.getChildren("class", elem))
                 if (xr.findAttr(child, "name", s)) item.addClass(s);
