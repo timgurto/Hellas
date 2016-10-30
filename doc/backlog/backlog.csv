@@ -52,8 +52,6 @@ issue,description,value,effort,type,blockedBy,done
 192,isLocationValid() only checks one point against one terrain tile/chunk,8,2,Bug,,
 193,Move client colors to config file instead of hardcoding,5,2,Code quality,,
 194,Players can move through small objects,13,2,Bug,,TRUE
-195,Move object inventory to ABC,3,8,Code quality,,
-196,Move merchant slots to ABC,3,8,Code quality,,
 197,Move gatherable functionality to ABC,3,8,Code quality,,
 198,"Only save map data once, on generation",3,1,Performance,,TRUE
 199,Empty objects reported as not empty when attempting to dismantle,21,2,Bug,,TRUE
@@ -78,7 +76,8 @@ issue,description,value,effort,type,blockedBy,done
 218,Add homesteading and tile property rights,13,55,Feature,209,
 219,Find mechanics to encourage town construction,13,21,Feature,,
 220,Find mechanics to encourage specialization,13,21,Feature,,
-221,Design Ancient Greece game,55,55,Feature,209
-222,Stacks of the same item can be combined,5,5,Bug,
-223,Remove useItem info from Container class; move it into Client object,1,2,Code quality,
-224,Specialized loot window,3,3,Aesthetics,
+221,Design Ancient Greece game,55,55,Feature,209,
+222,Stacks of the same item can be combined,5,5,Bug,,
+223,Remove useItem info from Container class; move it into Client object,1,2,Code quality,,
+224,Specialized loot window,2,3,Aesthetics,,TRUE
+225,Use polymorphism instead of classTag,3,3,Code quality,,
