@@ -19,6 +19,8 @@ size_t Container::useSlot = NO_SLOT;
 const Container *Container::useContainer = nullptr;
 
 Texture Container::_highlight;
+Texture Container::_highlightGood;
+Texture Container::_highlightBad;
 
 Container::Container(size_t rows, size_t cols, ClientItem::vect_t &linked, size_t serial,
                      px_t x, px_t y, px_t gap, bool solidBackground):
@@ -34,8 +36,11 @@ _leftMouseDownSlot(NO_SLOT),
 _rightMouseDownSlot(NO_SLOT),
 _gap(gap),
 _solidBackground(solidBackground){
-    if (!_highlight)
+    if (!_highlight){
         _highlight = Texture(std::string("Images/Items/highlight.png"), Color::MAGENTA);
+        _highlightGood = Texture(std::string("Images/Items/highlightGood.png"), Color::MAGENTA);
+        _highlightBad = Texture(std::string("Images/Items/highlightBad.png"), Color::MAGENTA);
+    }
 
     for (size_t i = 0; i != _linked.size(); ++i) {
         const px_t
@@ -77,8 +82,15 @@ void Container::refresh(){
                 }
             }
         }
+
+        // Highlight moused-over slot
         if (_mouseOverSlot == i) {
             _highlight.draw(slotRect.x + 1, slotRect.y + 1);
+
+        // Indicate matching gear slot if an item is being dragged
+        } else if (_serial == Client::GEAR && dragContainer != nullptr){
+            size_t itemSlot = dragContainer->_linked[dragSlot].first->gearSlot();
+            (i == itemSlot ? _highlightGood : _highlightBad).draw(slotRect.x + 1, slotRect.y + 1);
         }
     }
 }
@@ -117,11 +129,13 @@ void Container::leftMouseUp(Element &e, const Point &mousePos){
                                                                    container._serial, slot));
             dragSlot = NO_SLOT;
             dragContainer = nullptr;
+            Client::_instance->onChangeDragItem();
 
         // Dragging to same container/slot; do nothing.
         } else if (slot == dragSlot && &container == dragContainer) {
             dragSlot = NO_SLOT;
             dragContainer = nullptr;
+            Client::_instance->onChangeDragItem();
             container.markChanged();
 
         // Same container and slot that mouse went down on and slot isn't empty: start dragging.
@@ -129,6 +143,7 @@ void Container::leftMouseUp(Element &e, const Point &mousePos){
                     container._linked[slot].first) {
             dragSlot = slot;
             dragContainer = &container;
+            Client::_instance->onChangeDragItem();
             container.markChanged();
         }
     }
@@ -147,6 +162,7 @@ void Container::rightMouseUp(Element &e, const Point &mousePos){
     if (dragSlot != NO_SLOT) { // Cancel dragging
         dragSlot = NO_SLOT;
         dragContainer = nullptr;
+        Client::_instance->onChangeDragItem();
         container.markChanged();
     }
     if (useSlot != NO_SLOT) { // Right-clicked instead of used: cancel use
@@ -198,6 +214,7 @@ void Container::dropItem() {
         dragSlot = NO_SLOT;
         dragContainer->markChanged();
         dragContainer = nullptr;
+        Client::_instance->onChangeDragItem();
     }
 }
 

@@ -400,4 +400,6 @@ void Element::toggleVisibilityOf(void *element){
 void Element::cleanup(){
     transparentBackground = Texture();
     Container::_highlight = Texture();
+    Container::_highlightGood = Texture();
+    Container::_highlightBad = Texture();
 }

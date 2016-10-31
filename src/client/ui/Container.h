@@ -22,7 +22,10 @@ class Container : public Element{
 
     static const size_t NO_SLOT;
 
-    static Texture _highlight; // Emphasizes any slot the mouse is over.
+    static Texture
+        _highlight, // Emphasizes any slot the mouse is over.
+        _highlightGood, // Used to indicate matching gear slots.
+        _highlightBad;
 
     static size_t dragSlot; // The slot currently being dragged from.
     static const Container *dragContainer; // The container currently being dragged from.

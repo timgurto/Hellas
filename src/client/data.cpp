@@ -74,6 +74,9 @@ void Client::loadData(const std::string &path){
             else
                 item.icon(id);
 
+            size_t gearSlot = GEAR_SLOTS; // Default; won't match any slot.
+            xr.findAttr(elem, "gearSlot", gearSlot); item.gearSlot(gearSlot);
+
             if (xr.findAttr(elem, "constructs", s)){
                 // Create dummy ObjectType if necessary
                 auto pair = _objectTypes.insert(new ClientObjectType(s));

@@ -144,6 +144,7 @@ private:
     Window *_gearWindow;
     void initializeGearWindow();
     Texture _gearWindowBackground;
+    void onChangeDragItem(){ _gearWindow->forceRefresh(); }
 
     windows_t _windows;
     void addWindow(Window *window);
