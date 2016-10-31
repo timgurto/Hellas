@@ -8,7 +8,15 @@
 
 // Objects that can engage in combat, and that are AI-driven
 class NPC : public Object, public Combatant {
+    enum State {
+        IDLE,
+        CHASE,
+        ATTACK,
+    };
+
     ms_t _corpseTime; // How long this combatant has been a corpse.
+    State _state;
+
 
 public:
     static const ms_t CORPSE_TIME; // How long dead combatants remain as corpse objects.
@@ -30,6 +38,7 @@ public:
     virtual char classTag() const override { return 'n'; }
 
     virtual void update(ms_t timeElapsed);
+    void processAI(ms_t timeElapsed);
 };
 
 #endif

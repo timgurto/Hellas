@@ -55,7 +55,7 @@ public:
 
     // Const Searches/queries
     size_t findTile(const Point &p) const; // Find the tile type at the specified location.
-    std::list<const User*> findUsersInArea(Point loc, double squareRadius = CULL_DISTANCE) const;
+    std::list<User*> findUsersInArea(Point loc, double squareRadius = CULL_DISTANCE) const;
     const ObjectType *findObjectTypeByName(const std::string &id) const; // Linear complexity
 
     // Checks whether the object is within range of the user.  If not, a relevant error message is
@@ -158,6 +158,7 @@ private:
     
     friend void NPC::onHealthChange();
     friend void NPC::onDeath();
+    friend void NPC::processAI(ms_t timeElapsed);
 
     friend class ServerTestInterface;
 

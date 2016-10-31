@@ -36,6 +36,7 @@ public:
     virtual ~Object(){}
 
     const Point &location() const { return _location; }
+    void location(const Point &loc) { _location = loc; }
     size_t serial() const { return _serial; }
     void serial(size_t s) { _serial = s; }
     const ObjectType *type() const { return _type; }
