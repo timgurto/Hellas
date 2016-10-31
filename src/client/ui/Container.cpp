@@ -76,9 +76,17 @@ void Container::refresh(){
             if (slot.first != nullptr){
                 slot.first->icon().draw(slotRect.x + 1, slotRect.y + 1);
                 if (slot.second > 1){
-                    Texture label(font(), makeArgs(slot.second), FONT_COLOR);
-                    label.draw(slotRect.x + slotRect.w - label.width() - 1,
-                               slotRect.y + slotRect.h - label.height() + 1 + textOffset);
+                    Texture
+                        label(font(), makeArgs(slot.second), FONT_COLOR),
+                        labelOutline(font(), makeArgs(slot.second), Color::MMO_OUTLINE);
+                    px_t
+                        x = slotRect.x + slotRect.w - label.width() - 1,
+                        y = slotRect.y + slotRect.h - label.height() + 1 + textOffset;
+                    labelOutline.draw(x-1, y);
+                    labelOutline.draw(x+1, y);
+                    labelOutline.draw(x, y-1);
+                    labelOutline.draw(x, y+1);
+                    label.draw(x, y);
                 }
             }
         }
