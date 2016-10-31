@@ -122,6 +122,21 @@ void Container::leftMouseUp(Element &e, const Point &mousePos){
     Container &container = dynamic_cast<Container &>(e);
     size_t slot = container.getSlot(mousePos);
     if (slot != NO_SLOT) { // Clicked a valid slot
+        size_t mouseDownSlot = container._leftMouseDownSlot;
+        container._leftMouseDownSlot = NO_SLOT;
+
+        // Enforce gear slots
+        if (dragContainer != nullptr){
+            if (dragContainer->_serial == Client::GEAR){ // From gear slot
+                const ClientItem *item = container._linked[slot].first;
+                if (item != nullptr && item->gearSlot() != dragSlot)
+                    return;
+            } else if (container._serial == Client::GEAR){ // To gear slot
+                const ClientItem *item = dragContainer->_linked[dragSlot].first;
+                if (item != nullptr && item->gearSlot() != slot)
+                    return;
+            }
+        }
 
         // Different container/slot: finish dragging.
         if ((dragContainer != &container || dragSlot != slot) && dragSlot != NO_SLOT) { 
@@ -139,15 +154,13 @@ void Container::leftMouseUp(Element &e, const Point &mousePos){
             container.markChanged();
 
         // Same container and slot that mouse went down on and slot isn't empty: start dragging.
-        } else if (container._leftMouseDownSlot == slot && 
-                    container._linked[slot].first) {
+        } else if (mouseDownSlot == slot &&  container._linked[slot].first) {
             dragSlot = slot;
             dragContainer = &container;
             Client::_instance->onChangeDragItem();
             container.markChanged();
         }
     }
-    container._leftMouseDownSlot = NO_SLOT;
 }
 
 void Container::rightMouseDown(Element &e, const Point &mousePos){
