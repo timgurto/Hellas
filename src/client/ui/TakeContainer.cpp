@@ -37,10 +37,14 @@ void TakeContainer::repopulate(){
             Button *button = new Button(Rect(0, 0, dummy->width(), dummy->height()), "",
                                         take, &_slots[i]);
             dummy->addChild(button);
-            button->addChild(new Picture(0, 0, slot.first->icon()));
+            button->addChild(new Picture(1, 1, slot.first->icon()));
             px_t labX = Client::ICON_SIZE + 2;
             button->addChild(new Label(Rect(labX, 0, dummy->width() - labX, dummy->height()),
                                        slot.first->name(), LEFT_JUSTIFIED, CENTER_JUSTIFIED));
+            if (slot.second > 1)
+                button->addChild(new Label(Rect(labX, 0, dummy->width() - labX, dummy->height()),
+                                           std::string("x") + toString(slot.second) + " ",
+                                           RIGHT_JUSTIFIED, CENTER_JUSTIFIED));
         }
     }
 
