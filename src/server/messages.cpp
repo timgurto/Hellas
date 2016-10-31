@@ -360,15 +360,19 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             ServerItem::vect_t *container;
             Object *pObj = nullptr;
 
-            if (obj == 0) {
+            if (obj == INVENTORY) {
                 sendMessage(client, SV_TAKE_SELF);
                 break;
             }
 
-            pObj = findObject(obj);
-            if (!isObjectInRange(client, *user, pObj))
-                break;
-            container = &pObj->container();
+            if (obj == GEAR)
+                container = &user->gear();
+            else {
+                pObj = findObject(obj);
+                if (!isObjectInRange(client, *user, pObj))
+                    break;
+                container = &pObj->container();
+            }
 
             if (slotNum >= container->size()) {
                 sendMessage(client, SV_INVALID_SLOT);
@@ -391,15 +395,18 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 slot.second = 0;
             }
             
-            // Alert watchers
-            for (auto username : pObj->watchers())
-                if (pObj->userHasAccess(username))
-                    sendInventoryMessage(*_usersByName[username], slotNum, *pObj);
+            if (obj == GEAR){ // Tell user about his empty gear slot
+                sendInventoryMessage(*user, slotNum, GEAR);
+            } else { // Alert watchers
+                for (auto username : pObj->watchers())
+                    if (pObj->userHasAccess(username))
+                        sendInventoryMessage(*_usersByName[username], slotNum, *pObj);
 
-            // Alert nearby users if NPC has no loot left
-            if (pObj->classTag() == 'n' && pObj->isContainerEmpty())
-                for (auto user : findUsersInArea(pObj->location()))
-                    sendMessage(user->socket(), SV_NOT_LOOTABLE, makeArgs(pObj->serial()));
+                // Alert nearby users if NPC has no loot left
+                if (pObj->classTag() == 'n' && pObj->isContainerEmpty())
+                    for (auto user : findUsersInArea(pObj->location()))
+                        sendMessage(user->socket(), SV_NOT_LOOTABLE, makeArgs(pObj->serial()));
+            }
 
             break;
         }
