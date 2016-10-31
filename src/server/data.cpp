@@ -32,21 +32,36 @@ bool Server::readUserData(User &user){
                << " was moved due to an invalid location." << Log::endl;
     user.location(p);
 
-    for (auto elem : xr.getChildren("inventory")) {
-        for (auto slotElem : xr.getChildren("slot", elem)) {
-            int slot; std::string id; int qty;
-            if (!xr.findAttr(slotElem, "slot", slot)) continue;
-            if (!xr.findAttr(slotElem, "id", id)) continue;
-            if (!xr.findAttr(slotElem, "quantity", qty)) continue;
+    elem = xr.findChild("inventory");
+    for (auto slotElem : xr.getChildren("slot", elem)) {
+        int slot; std::string id; int qty;
+        if (!xr.findAttr(slotElem, "slot", slot)) continue;
+        if (!xr.findAttr(slotElem, "id", id)) continue;
+        if (!xr.findAttr(slotElem, "quantity", qty)) continue;
 
-            std::set<ServerItem>::const_iterator it = _items.find(id);
-            if (it == _items.end()) {
-                _debug("Invalid user data (inventory item).  Removing item.", Color::RED);
-                continue;
-            }
-            user.inventory(slot) =
-                std::make_pair<const ServerItem *, size_t>(&*it, static_cast<size_t>(qty));
+        std::set<ServerItem>::const_iterator it = _items.find(id);
+        if (it == _items.end()) {
+            _debug("Invalid user data (inventory item).  Removing item.", Color::RED);
+            continue;
         }
+        user.inventory(slot) =
+            std::make_pair<const ServerItem *, size_t>(&*it, static_cast<size_t>(qty));
+    }
+
+    elem = xr.findChild("gear");
+    for (auto slotElem : xr.getChildren("slot", elem)) {
+        int slot; std::string id; int qty;
+        if (!xr.findAttr(slotElem, "slot", slot)) continue;
+        if (!xr.findAttr(slotElem, "id", id)) continue;
+        if (!xr.findAttr(slotElem, "quantity", qty)) continue;
+
+        std::set<ServerItem>::const_iterator it = _items.find(id);
+        if (it == _items.end()) {
+            _debug("Invalid user data (gear item).  Removing item.", Color::RED);
+            continue;
+        }
+        user.gear(slot) =
+            std::make_pair<const ServerItem *, size_t>(&*it, static_cast<size_t>(qty));
     }
 
     elem = xr.findChild("stats");
@@ -69,6 +84,17 @@ void Server::writeUserData(const User &user) const{
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         const std::pair<const ServerItem *, size_t> &slot = user.inventory(i);
         if (slot.first) {
+            auto slotElement = xw.addChild("slot", e);
+            xw.setAttr(slotElement, "slot", i);
+            xw.setAttr(slotElement, "id", slot.first->id());
+            xw.setAttr(slotElement, "quantity", slot.second);
+        }
+    }
+
+    e = xw.addChild("gear");
+    for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
+        const std::pair<const ServerItem *, size_t> &slot = user.gear(i);
+        if (slot.first != nullptr) {
             auto slotElement = xw.addChild("slot", e);
             xw.setAttr(slotElement, "slot", i);
             xw.setAttr(slotElement, "id", slot.first->id());
