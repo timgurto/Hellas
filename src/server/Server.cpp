@@ -514,7 +514,7 @@ void Server::generateWorld(){
             addObject(tradeCart, loc);
         }
 
-    // Critters
+    // NPCs
     const ObjectType *const critterObj = findObjectTypeByName("critter");
     if (critterObj != nullptr){
         const NPCType *const critter = dynamic_cast<const NPCType *const>(critterObj);
@@ -524,6 +524,17 @@ void Server::generateWorld(){
                 loc = mapRand();
             } while (!isLocationValid(loc, *critter));
             addObject(new NPC(critter, loc));
+        }
+    }
+    const ObjectType *const boarObj = findObjectTypeByName("boar");
+    if (critterObj != nullptr){
+        const NPCType *const boar = dynamic_cast<const NPCType *const>(boarObj);
+        for (int i = 0; i != 10; ++i) {
+            Point loc;
+            do {
+                loc = mapRand();
+            } while (!isLocationValid(loc, *boar));
+            addObject(new NPC(boar, loc));
         }
     }
 
