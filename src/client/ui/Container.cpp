@@ -35,7 +35,7 @@ _rightMouseDownSlot(NO_SLOT),
 _gap(gap),
 _solidBackground(solidBackground){
     if (!_highlight)
-        _highlight = Texture(std::string("Images/Items/highlight.png"));
+        _highlight = Texture(std::string("Images/Items/highlight.png"), Color::MAGENTA);
 
     for (size_t i = 0; i != _linked.size(); ++i) {
         const px_t
