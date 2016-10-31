@@ -1,12 +1,12 @@
-// (C) 2016 Tim Gurto
-
 #include <cassert>
 
 #include "Combatant.h"
 #include "Server.h"
 
 Combatant::Combatant(health_t health):
-_health(health)
+_health(health),
+_attackTimer(0),
+_target(nullptr)
 {}
 
 health_t Combatant::reduceHealth(health_t damage){
@@ -18,7 +18,30 @@ health_t Combatant::reduceHealth(health_t damage){
         _health -= damage;
 
     if (_health == 0)
-        kill();
+        onDeath();
 
     return _health;
+}
+
+void Combatant::updateCombat(ms_t timeElapsed){
+    if (_attackTimer > timeElapsed)
+        _attackTimer -= timeElapsed;
+    else
+        _attackTimer = 0;
+
+    assert(target()->health() > 0);
+
+    if (_attackTimer > 0)
+        return;
+
+    // Check if within range
+    if (distance(hitbox(), target()->hitbox()) <= Server::ACTION_DISTANCE){
+
+        // Reduce target health (to minimum 0)
+        health_t remaining = target()->reduceHealth(attack());
+        target()->onHealthChange();
+
+        // Reset timer
+        _attackTimer = attackTime();
+    }
 }

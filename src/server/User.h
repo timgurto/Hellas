@@ -42,15 +42,12 @@ private:
 
     Action _action;
     ms_t _actionTime; // Time remaining on current action.
-    // Independent timer for attacks, to avoid instant attacks via action cancellation.
-    ms_t _attackTime;
     // Information used when action completes:
     Object *_actionObject; // Gather, deconstruct
     const Recipe *_actionRecipe; // Craft
     const ObjectType *_actionObjectType; // Construct
     size_t _actionSlot; // Construct
     Point _actionLocation; // Construct
-    NPC *_actionNPC; // Attack
 
     ServerItem::vect_t _inventory, _gear;
 
@@ -70,7 +67,6 @@ public:
     const Socket &socket() const { return _socket; }
     const Point &location() const { return _location; }
     void location(const Point &loc) { _location = loc; }
-    NPC *targetNPC() const { return _actionNPC; }
 
     // Inventory
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const
@@ -88,8 +84,11 @@ public:
     ServerItem::vect_t &gear() { return _gear; }
     const ServerItem::vect_t &gear() const { return _gear; }
 
-
     virtual health_t maxHealth() const override { return MAX_HEALTH; }
+    virtual health_t attack() const override { return ATTACK_DAMAGE; }
+    virtual ms_t attackTime() const override { return ATTACK_TIME; }
+    virtual Rect hitbox() const override { return collisionRect(); }
+    virtual const Point &getLocation() const override { return location(); }
 
     const Rect collisionRect() const;
 

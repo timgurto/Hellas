@@ -19,10 +19,17 @@ void NPC::update(ms_t timeElapsed){
     }
 }
 
-void NPC::kill(){
+void NPC::onHealthChange(){
+    const Server &server = *Server::_instance;
+    for (const User *user: server.findUsersInArea(location()))
+        server.sendMessage(user->socket(), SV_NPC_HEALTH, makeArgs(serial(), health()));
+}
+
+void NPC::onDeath(){
     _corpseTime = CORPSE_TIME;
-    Server::_instance->forceUntarget(*this);
+    Server &server = *Server::_instance;
+    server.forceUntarget(*this);
     npcType()->lootTable().instantiate(_container);
-    for (const User *user : Server::_instance->findUsersInArea(location()))
-        Server::_instance->sendMessage(user->socket(), SV_LOOTABLE, makeArgs(serial()));
+    for (const User *user : server.findUsersInArea(location()))
+        server.sendMessage(user->socket(), SV_LOOTABLE, makeArgs(serial()));
 }

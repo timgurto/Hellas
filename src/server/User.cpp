@@ -28,13 +28,11 @@ _location(loc),
 
 _action(NO_ACTION),
 _actionTime(0),
-_attackTime(0),
 _actionObject(nullptr),
 _actionRecipe(nullptr),
 _actionObjectType(nullptr),
 _actionSlot(INVENTORY_SIZE),
 _actionLocation(0, 0),
-_actionNPC(nullptr),
 
 _inventory(INVENTORY_SIZE),
 _gear(GEAR_SLOTS),
@@ -327,8 +325,8 @@ void User::beginDeconstructing(Object &obj){
 }
 
 void User::targetNPC(NPC *npc){
-    _actionNPC = npc;
-    if (_actionNPC == nullptr){
+    target(npc);
+    if (npc == nullptr){
         cancelAction();
         return;
     }
@@ -405,39 +403,15 @@ void User::update(ms_t timeElapsed){
     else
         _actionTime = 0;
 
-    if (_attackTime > timeElapsed)
-        _attackTime -= timeElapsed;
-    else
-        _attackTime = 0;
-
-    Server &server = *Server::_instance;
-
-
     // Attack actions:
-
     if (_action == ATTACK){
-        assert(_actionNPC->health() > 0);
-
-        if (_attackTime > 0)
-            return;
-
-        // Check if within range
-        if (distance(collisionRect(), _actionNPC->collisionRect()) <= Server::ACTION_DISTANCE){
-
-            // Reduce target health (to minimum 0)
-            health_t remaining = _actionNPC->reduceHealth(ATTACK_DAMAGE);
-            for (const User *user: server.findUsersInArea(_actionNPC->location()))
-                server.sendMessage(user->socket(), SV_NPC_HEALTH,
-                                   makeArgs(_actionNPC->serial(), remaining));
-
-            // Reset timer
-            _attackTime = ATTACK_TIME;
-        }
+        updateCombat(timeElapsed);
         return;
     }
 
 
     // Non-attack actions:
+    Server &server = *Server::_instance;
 
     if (_actionTime > 0) // Action hasn't finished yet.
         return;

@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #ifndef SERVER_H
 #define SERVER_H
 
@@ -157,8 +155,9 @@ private:
     friend void Object::giveItem(const ServerItem *item, size_t qty);
     friend void Object::incrementGatheringUsers(const User *userToSkip);
     friend void Object::decrementGatheringUsers(const User *userToSkip);
-
-    friend void NPC::kill();
+    
+    friend void NPC::onHealthChange();
+    friend void NPC::onDeath();
 
     friend class ServerTestInterface;
 
