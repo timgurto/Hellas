@@ -144,6 +144,7 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName)\data-server</ObjectFileName>
     </ClCompile>
     <ClCompile Include="src\server\LootTable.cpp" />
+    <ClCompile Include="src\server\pathfinding.cpp" />
     <ClCompile Include="src\server\ServerItem.cpp" />
     <ClCompile Include="src\server\ItemSet.cpp" />
     <ClCompile Include="src\server\LogConsole.cpp" />

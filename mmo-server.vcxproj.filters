@@ -103,6 +103,9 @@
     <ClCompile Include="src\server\LootTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\server\pathfinding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h">
