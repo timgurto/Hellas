@@ -276,8 +276,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             ServerItem::vect_t
-                *containerFrom,
-                *containerTo;
+                *containerFrom = nullptr,
+                *containerTo = nullptr;
             Object
                 *pObj1 = nullptr,
                 *pObj2 = nullptr;
