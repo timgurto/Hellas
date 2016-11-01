@@ -77,9 +77,6 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (user->action() != User::ATTACK)
                 user->cancelAction();
             user->updateLocation(Point(x, y));
-            for (const User *userP : findUsersInArea(user->location()))
-                if (userP != user)
-                    sendMessage(userP->socket(), SV_LOCATION, user->makeLocationCommand());
             break;
         }
 

@@ -9,12 +9,12 @@
 const px_t Server::COLLISION_CHUNK_SIZE = 100;
 
 bool Server::isLocationValid(const Point &loc, const ObjectType &type,
-                             const Object *thisObject, const User *thisUser){
+                             const Object *thisObject){
     Rect rect = type.collisionRect() + loc;
-    return isLocationValid(rect, thisObject, thisUser);
+    return isLocationValid(rect, thisObject);
 }
 
-bool Server::isLocationValid(const Rect &rect, const Object *thisObject, const User *thisUser){
+bool Server::isLocationValid(const Rect &rect, const Object *thisObject){
     const px_t
         right = rect.x + rect.w,
         bottom = rect.y + rect.h;
@@ -34,19 +34,13 @@ bool Server::isLocationValid(const Rect &rect, const Object *thisObject, const U
     if (!terrain.isTraversable())
         return false;
 
-    // Users
-    for (const auto &user : _users) {
-        if (&user == thisUser)
-            continue;
-        if (rect.collides(user.location() + User::OBJECT_TYPE.collisionRect()))
-            return false;
-    }
-
     // Objects
     auto superChunk = getCollisionSuperChunk(rectCenter);
     for (CollisionChunk *chunk : superChunk)
         for (const auto &ret : chunk->objects()) {
             const Object *pObj = ret.second;
+            if (pObj == thisObject)
+                continue;
             if (rect.collides(pObj->collisionRect()))
                 return false;
         }

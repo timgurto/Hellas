@@ -82,3 +82,4 @@ issue,description,value,effort,type,blockedBy,done
 225,Use polymorphism instead of classTag,3,3,Code quality,,
 226,Right-click to equip gear,5,2,Feature,,
 227,Shift + right-click to loot all,5,2,Feature,,
+228,Close client on single Esc press when disconnected,3,1,Bug,,

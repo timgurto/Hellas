@@ -397,6 +397,22 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_OBJECT_LOCATION:
+        {
+            int serial;
+            double x, y;
+            singleMsg >> serial >> del >> x >> del >> y >> del;
+            if (del != MSG_END)
+                break;
+            std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
+            if (it == _objects.end()) {
+                _debug("Server removed an object we didn't know about.", Color::MMO_HIGHLIGHT);
+                break; // We didn't know about this object
+            }
+            it->second->location(Point(x, y));
+            break;
+        }
+
         case SV_REMOVE_OBJECT:
         case SV_OBJECT_OUT_OF_RANGE:
         {

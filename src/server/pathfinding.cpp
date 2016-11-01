@@ -44,7 +44,7 @@ void Object::updateLocation(const Point &dest){
             testPoint.x = xDeltaPositive ? (testPoint.x) + ACCURACY : (testPoint.x - ACCURACY);
         } while ((xDeltaPositive ? (testPoint.x <= interpolated.x) :
                                    (testPoint.x >= interpolated.x)) &&
-                 server.isLocationValid(testPoint, *type(), nullptr, userPtr));
+                 server.isLocationValid(testPoint, *type(), this));
         const bool yDeltaPositive = _location.y < interpolated.y;
         testPoint.x = newDest.x; // Keep it valid for y testing.
         do {
@@ -52,7 +52,7 @@ void Object::updateLocation(const Point &dest){
             testPoint.y = yDeltaPositive ? (testPoint.y + ACCURACY) : (testPoint.y - ACCURACY);
         } while ((yDeltaPositive ? (testPoint.y <= interpolated.y) :
                                    (testPoint.y >= interpolated.y)) &&
-                 server.isLocationValid(testPoint, *type(), nullptr, userPtr));
+                 server.isLocationValid(testPoint, *type(), this));
     }
 
     // At this point, the new location has been finalized.  Now new information must be propagated.
@@ -114,6 +114,15 @@ void Object::updateLocation(const Point &dest){
         }
     }
 
+    // Tell nearby users that it has moved
+    for (const User *userP : server.findUsersInArea(location()))
+        if (userP != this)
+            if (classTag() == 'u')
+                server.sendMessage(userP->socket(), SV_LOCATION, makeArgs(newDest.x, newDest.y));
+            else
+                server.sendMessage(userP->socket(), SV_OBJECT_LOCATION,
+                                   makeArgs(serial(), newDest.x, newDest.y));
+
     // Tell any users it has moved away from to forget about it.
    auto loUserX = server._usersByX.lower_bound(&User(Point(forgetLeft, 0)));
    auto hiUserX = server._usersByX.upper_bound(&User(Point(forgetRight, 0)));
@@ -159,7 +168,7 @@ void Object::updateLocation(const Point &dest){
         server._objectsByY.erase(this);
 
     _location = newDest;
-
+    
     // Re-insert into location-indexed trees
     if (classTag() == 'u'){
         if (newDest.x != oldLoc.x)

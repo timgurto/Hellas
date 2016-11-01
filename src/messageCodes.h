@@ -143,6 +143,10 @@ enum MessageCode{
     // Arguments: serial, health
     SV_NPC_HEALTH = 127,
 
+    // The location of an object
+    // Arguments: serial, x, y
+    SV_OBJECT_LOCATION = 128,
+
     // The user has begun an action
     // Arguments: time
     SV_ACTION_STARTED = 130,
