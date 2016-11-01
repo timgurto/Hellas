@@ -225,7 +225,7 @@ void User::update(ms_t timeElapsed){
 
     // Attack actions:
     if (_action == ATTACK){
-        updateCombat(timeElapsed);
+        Combatant::update(timeElapsed);
         return;
     }
 
@@ -299,4 +299,9 @@ void User::update(ms_t timeElapsed){
 
 const Rect User::collisionRect() const{
     return OBJECT_TYPE.collisionRect() + location();
+}
+
+void User::onHealthChange(){
+    const Server &server = *Server::_instance;
+    server.sendMessage(socket(), SV_HEALTH, makeArgs(health()));
 }

@@ -74,13 +74,16 @@ void NPC::processAI(ms_t timeElapsed){
 
     // Act
     switch(_state){
+    case IDLE:
+        break;
+
     case CHASE:
         // Move towards player
         updateLocation(target()->location());
         break;
 
-    case IDLE:
     case ATTACK:
+        Combatant::update(timeElapsed);
         break;
     }
 }

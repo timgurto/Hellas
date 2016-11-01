@@ -24,7 +24,7 @@ health_t Combatant::reduceHealth(health_t damage){
     return _health;
 }
 
-void Combatant::updateCombat(ms_t timeElapsed){
+void Combatant::update(ms_t timeElapsed){
     if (_attackTimer > timeElapsed)
         _attackTimer -= timeElapsed;
     else

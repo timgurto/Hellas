@@ -34,7 +34,7 @@ public:
     virtual void onHealthChange() {}; // Probably alerting relevant users.
     virtual void onDeath() {}; // Anything that needs to happen upon death.
 
-    void updateCombat(ms_t timeElapsed);
+    virtual void update(ms_t timeElapsed) override;
 };
 
 #endif

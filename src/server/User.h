@@ -88,6 +88,8 @@ public:
     virtual double speed() const override { return MOVEMENT_SPEED; }
 
     virtual char classTag() const override { return 'u'; }
+    
+    virtual void onHealthChange() override;
 
     const Rect collisionRect() const;
 

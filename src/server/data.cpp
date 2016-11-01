@@ -191,8 +191,9 @@ void Server::loadData(const std::string &path){
                 if (xr.findAttr(objClass, "name", s))
                     nt->addClass(s);
 
-            if (xr.findAttr(elem, "health", n))
-                nt->maxHealth(n);
+            if (xr.findAttr(elem, "health", n)) nt->maxHealth(n);
+            if (xr.findAttr(elem, "attack", n)) nt->attack(n);
+            if (xr.findAttr(elem, "attackTime", n)) nt->attackTime(n);
 
             for (auto loot : xr.getChildren("loot", elem)){
                 if (!xr.findAttr(loot, "id", s))

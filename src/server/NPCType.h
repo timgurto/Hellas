@@ -18,7 +18,9 @@ public:
     void maxHealth(health_t hp) { _maxHealth = hp; }
     health_t maxHealth() const { return _maxHealth; }
     health_t attack() const { return _attack; }
+    void attack(health_t damage) { _attack = damage; }
     ms_t attackTime() const { return _attackTime; }
+    void attackTime(ms_t time) { _attackTime = time; }
     const LootTable &lootTable() const { return _lootTable; }
 
     virtual char classTag() const override { return 'n'; }

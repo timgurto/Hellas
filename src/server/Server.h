@@ -139,26 +139,10 @@ private:
     void forceUntarget(const Object &obj, const User *userToExclude = nullptr); 
     void removeObject(Object &obj, const User *userToExclude = nullptr);
     void gatherObject (size_t serial, User &user);
-    friend void User::update(ms_t timeElapsed);
-    friend void User::removeItems(const ItemSet &items);
-    friend void User::cancelAction();
 
-    friend size_t User::giveItem(const ServerItem *item, size_t quantity);
-
-    friend bool User::hasTool(const std::string &className) const;
-    friend bool User::hasTools(const std::set<std::string> &classes) const;
-
-    friend void Object::markForRemoval();
-    friend void Object::removeItems(const ItemSet &items);
-    friend void Object::giveItem(const ServerItem *item, size_t qty);
-    friend void Object::incrementGatheringUsers(const User *userToSkip);
-    friend void Object::decrementGatheringUsers(const User *userToSkip);
-    friend void Object::updateLocation(const Point &dest);
-    
-    friend void NPC::onHealthChange();
-    friend void NPC::onDeath();
-    friend void NPC::processAI(ms_t timeElapsed);
-
+    friend class Object;
+    friend class User;
+    friend class NPC;
     friend class ServerTestInterface;
 
     NPC &addNPC(const NPCType *type, const Point &location); 

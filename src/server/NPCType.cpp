@@ -3,7 +3,9 @@
 
 NPCType::NPCType(const std::string &id, health_t maxHealth):
 ObjectType(id),
-_maxHealth(maxHealth)
+_maxHealth(maxHealth),
+_attack(0),
+_attackTime(0)
 {
     containerSlots(NPC::LOOT_CAPACITY);
 }
