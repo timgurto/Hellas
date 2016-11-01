@@ -300,7 +300,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                     pObj2 = findObject(obj2);
                     if (!isObjectInRange(client, *user, pObj2))
                         breakMsg = true;
-                    containerFrom = &pObj2->container();
+                    containerTo = &pObj2->container();
             }
             if (breakMsg)
                 break;
