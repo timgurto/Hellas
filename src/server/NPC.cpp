@@ -54,16 +54,16 @@ void NPC::processAI(ms_t timeElapsed){
         break;
 
     case CHASE:
-        if (distance(location(), target()->getLocation()) > VIEW_RANGE){
+        if (distance(location(), target()->location()) > VIEW_RANGE){
             _state = IDLE;
             target(nullptr);
-        } else  if (distance(location(), target()->getLocation()) <= ATTACK_RANGE){
+        } else  if (distance(location(), target()->location()) <= ATTACK_RANGE){
             _state = ATTACK;
         }
         break;
 
     case ATTACK:
-        if (distance(location(), target()->getLocation()) > ATTACK_RANGE){
+        if (distance(location(), target()->location()) > ATTACK_RANGE){
             _state = CHASE;
         } else  if (target()->health() == 0){
             _state = IDLE;

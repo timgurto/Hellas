@@ -87,8 +87,6 @@ public:
     virtual health_t maxHealth() const override { return MAX_HEALTH; }
     virtual health_t attack() const override { return ATTACK_DAMAGE; }
     virtual ms_t attackTime() const override { return ATTACK_TIME; }
-    virtual Rect hitbox() const override { return collisionRect(); }
-    virtual const Point &getLocation() const override { return location(); }
 
     const Rect collisionRect() const;
 

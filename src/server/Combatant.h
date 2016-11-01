@@ -19,8 +19,6 @@ public:
     virtual health_t maxHealth() const = 0;
     virtual health_t attack() const = 0;
     virtual ms_t attackTime() const = 0;
-    virtual Rect hitbox() const = 0;
-    virtual const Point &getLocation() const = 0;
     Combatant *target() const { return _target; }
     void target(Combatant *p) { _target = p; }
 

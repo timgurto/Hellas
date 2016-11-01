@@ -36,7 +36,7 @@ void Combatant::updateCombat(ms_t timeElapsed){
         return;
 
     // Check if within range
-    if (distance(hitbox(), target()->hitbox()) <= Server::ACTION_DISTANCE){
+    if (distance(collisionRect(), target()->collisionRect()) <= Server::ACTION_DISTANCE){
 
         // Reduce target health (to minimum 0)
         health_t remaining = target()->reduceHealth(attack());
