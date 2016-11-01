@@ -398,6 +398,7 @@ void Client::handleMessage(const std::string &msg){
         }
 
         case SV_REMOVE_OBJECT:
+        case SV_OBJECT_OUT_OF_RANGE:
         {
             int serial;
             singleMsg >> serial >> del;

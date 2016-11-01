@@ -8,7 +8,8 @@ Object::Object(const ObjectType *type, const Point &loc):
 _serial(generateSerial()),
 _location(loc),
 _type(type),
-_numUsersGathering(0)
+_numUsersGathering(0),
+_lastLocUpdate(SDL_GetTicks())
 {
     assert(type);
     if (type->yield()) {

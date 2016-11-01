@@ -13,7 +13,11 @@ class Combatant : public Object{
 
 public:
     Combatant(const ObjectType *type, const Point &loc, health_t health = 0);
-    Combatant(){} // For lookup dummies only.
+
+    // For lookup dummies
+    Combatant(){}
+    Combatant(const Point &loc): Object(loc){}
+
     virtual ~Combatant(){}
 
     virtual health_t maxHealth() const = 0;

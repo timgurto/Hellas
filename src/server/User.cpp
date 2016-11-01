@@ -12,6 +12,8 @@ const health_t User::MAX_HEALTH = 100;
 const health_t User::ATTACK_DAMAGE = 8;
 const ms_t User::ATTACK_TIME = 1000;
 
+const double User::MOVEMENT_SPEED = 80;
+
 User::User(const std::string &name, const Point &loc, const Socket &socket):
 Combatant(&OBJECT_TYPE, loc, MAX_HEALTH),
 
@@ -28,7 +30,6 @@ _actionLocation(0, 0),
 
 _inventory(INVENTORY_SIZE),
 _gear(GEAR_SLOTS),
-_lastLocUpdate(SDL_GetTicks()),
 _lastContact(SDL_GetTicks()){
     for (size_t i = 0; i != INVENTORY_SIZE; ++i)
         _inventory[i] = std::make_pair<const ServerItem *, size_t>(0, 0);
@@ -38,22 +39,22 @@ User::User(const Socket &rhs):
 _socket(rhs){}
 
 User::User(const Point &loc):
-_location(loc){}
+Combatant(loc){}
 
 bool User::compareXThenSerial::operator()( const User *a, const User *b){
-    if (a->_location.x != b->_location.x)
-        return a->_location.x < b->_location.x;
+    if (a->location().x != b->location().x)
+        return a->location().x < b->location().x;
     return a->_socket < b->_socket; // Just need something unique.
 }
 
 bool User::compareYThenSerial::operator()( const User *a, const User *b){
-    if (a->_location.y != b->_location.y)
-        return a->_location.y < b->_location.y;
+    if (a->location().y != b->location().y)
+        return a->location().y < b->location().y;
     return a->_socket < b->_socket; // Just need something unique.
 }
 
 std::string User::makeLocationCommand() const{
-    return makeArgs(_name, _location.x, _location.y);
+    return makeArgs(_name, location().x, location().y);
 }
 
 void User::contact(){
@@ -171,7 +172,7 @@ bool User::hasTool(const std::string &className) const{
     }
 
     // Check nearby objects
-    auto superChunk = Server::_instance->getCollisionSuperChunk(_location);
+    auto superChunk = Server::_instance->getCollisionSuperChunk(location());
     for (CollisionChunk *chunk : superChunk)
         for (const auto &ret : chunk->objects()) {
             const Object *pObj = ret.second;
@@ -297,5 +298,5 @@ void User::update(ms_t timeElapsed){
 }
 
 const Rect User::collisionRect() const{
-    return OBJECT_TYPE.collisionRect() + _location;
+    return OBJECT_TYPE.collisionRect() + location();
 }

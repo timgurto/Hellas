@@ -106,6 +106,10 @@ enum MessageCode{
     // Arguments: username
     SV_USER_OUT_OF_RANGE = 111,
 
+    // An object has moved far away from you, and you will stop getting updates from him.
+    // Arguments: serial
+    SV_OBJECT_OUT_OF_RANGE = 112,
+
     // The map size
     // Arguments: x, y
     SV_MAP_SIZE = 120,

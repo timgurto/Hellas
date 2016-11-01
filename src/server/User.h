@@ -34,11 +34,12 @@ public:
         ATTACK_DAMAGE;
     static const ms_t
         ATTACK_TIME;
+    static const double
+        MOVEMENT_SPEED;
 
 private:
     std::string _name;
     Socket _socket;
-    Point _location;
 
     Action _action;
     ms_t _actionTime; // Time remaining on current action.
@@ -51,7 +52,6 @@ private:
 
     ServerItem::vect_t _inventory, _gear;
 
-    ms_t _lastLocUpdate; // Time that the last CL_LOCATION was received
     ms_t _lastContact;
     ms_t _latency;
 
@@ -65,8 +65,6 @@ public:
 
     const std::string &name() const { return _name; }
     const Socket &socket() const { return _socket; }
-    const Point &location() const { return _location; }
-    void location(const Point &loc) { _location = loc; }
 
     // Inventory
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const
@@ -87,6 +85,9 @@ public:
     virtual health_t maxHealth() const override { return MAX_HEALTH; }
     virtual health_t attack() const override { return ATTACK_DAMAGE; }
     virtual ms_t attackTime() const override { return ATTACK_TIME; }
+    virtual double speed() const override { return MOVEMENT_SPEED; }
+
+    virtual char classTag() const override { return 'u'; }
 
     const Rect collisionRect() const;
 
@@ -123,13 +124,6 @@ public:
     void contact();
     bool alive() const; // Whether the client has contacted the server recently enough
 
-    /*
-    Determine whether the proposed new location is legal, considering movement speed and
-    time elapsed, and checking for collisions.
-    Set location to the new, legal location.
-    */
-    void updateLocation(const Point &dest);
-
     // Return value: 0 if there was room for all items, otherwise the remainder.
     size_t giveItem(const ServerItem *item, size_t quantity = 1);
 
@@ -139,6 +133,8 @@ public:
     struct compareYThenSerial{ bool operator()( const User *a, const User *b); };
     typedef std::set<const User*, User::compareXThenSerial> byX_t;
     typedef std::set<const User*, User::compareYThenSerial> byY_t;
+
+    void registerLocUpdate();
 };
 
 #endif

@@ -29,7 +29,6 @@ public:
     static const ms_t CLIENT_TIMEOUT; // How much radio silence before we drop a client
     static const ms_t MAX_TIME_BETWEEN_LOCATION_UPDATES;
 
-    static const double MOVEMENT_SPEED; // per second
     static const px_t ACTION_DISTANCE; // How close a character must be to interact with an object
     static const px_t CULL_DISTANCE; // Users only get information within a circle with this radius.
 
@@ -143,7 +142,6 @@ private:
     friend void User::update(ms_t timeElapsed);
     friend void User::removeItems(const ItemSet &items);
     friend void User::cancelAction();
-    friend void User::updateLocation(const Point &dest);
 
     friend size_t User::giveItem(const ServerItem *item, size_t quantity);
 
@@ -155,6 +153,7 @@ private:
     friend void Object::giveItem(const ServerItem *item, size_t qty);
     friend void Object::incrementGatheringUsers(const User *userToSkip);
     friend void Object::decrementGatheringUsers(const User *userToSkip);
+    friend void Object::updateLocation(const Point &dest);
     
     friend void NPC::onHealthChange();
     friend void NPC::onDeath();

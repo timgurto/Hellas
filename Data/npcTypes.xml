@@ -31,7 +31,6 @@ Server only:
     id="boar"
     name="Wild boar"
 	maxHealth=40
-    attack=10
     xDrawOffset=-11
     yDrawOffset=-13 >
     <collisionRect x=-9 y=-4 w=18 h=7 />

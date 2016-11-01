@@ -19,6 +19,8 @@ class Object{
 
     size_t _numUsersGathering; // The number of users gathering from this object.
 
+    ms_t _lastLocUpdate; // Time that the location was last updated; used to determine max distance
+
     // Users watching this object for changes to inventory or merchant slots
     std::set<std::string> _watchers;
 
@@ -56,6 +58,8 @@ public:
     void decrementGatheringUsers(const User *userToSkip = nullptr);
     size_t numUsersGathering() const { return _numUsersGathering; }
 
+    virtual double speed() const { return 0; } // movement per second
+
     bool isContainerEmpty() const;
 
     virtual char classTag() const { return 'o'; }
@@ -63,6 +67,13 @@ public:
     virtual void update(ms_t timeElapsed) { }
     // Add this object to a list, for removal after all objects are updated.
     void markForRemoval();
+
+    /*
+    Determine whether the proposed new location is legal, considering movement speed and
+    time elapsed, and checking for collisions.
+    Set location to the new, legal location.
+    */
+    void updateLocation(const Point &dest);
 
     // Randomly choose an item type for the user to gather.
     const ServerItem *chooseGatherItem() const;
