@@ -1,17 +1,19 @@
 #ifndef COMBATANT_H
 #define COMBATANT_H
 
+#include "Object.h"
 #include "../Rect.h"
 #include "../types.h"
 
 // Abstract class describing something that can participate in combat with another Combatant.
-class Combatant{
+class Combatant : public Object{
     health_t _health;
     ms_t _attackTimer;
     Combatant *_target;
 
 public:
-    Combatant(health_t health = 0);
+    Combatant(const ObjectType *type, const Point &loc, health_t health = 0);
+    Combatant(){} // For lookup dummies only.
     virtual ~Combatant(){}
 
     virtual health_t maxHealth() const = 0;

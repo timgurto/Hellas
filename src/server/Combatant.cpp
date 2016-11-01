@@ -3,7 +3,8 @@
 #include "Combatant.h"
 #include "Server.h"
 
-Combatant::Combatant(health_t health):
+Combatant::Combatant(const ObjectType *type, const Point &loc, health_t health):
+Object(type, loc),
 _health(health),
 _attackTimer(0),
 _target(nullptr)

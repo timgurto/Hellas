@@ -7,7 +7,7 @@
 #include "../Point.h"
 
 // Objects that can engage in combat, and that are AI-driven
-class NPC : public Object, public Combatant {
+class NPC : public Combatant {
     enum State {
         IDLE,
         CHASE,

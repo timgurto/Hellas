@@ -5,8 +5,7 @@ const ms_t NPC::CORPSE_TIME = 600000; // 10 minutes
 const size_t NPC::LOOT_CAPACITY = 8;
 
 NPC::NPC(const NPCType *type, const Point &loc):
-Object(type, loc),
-Combatant(type->maxHealth()),
+Combatant(type, loc, type->maxHealth()),
 _state(IDLE){}
 
 void NPC::update(ms_t timeElapsed){

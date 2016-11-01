@@ -13,11 +13,10 @@ const health_t User::ATTACK_DAMAGE = 8;
 const ms_t User::ATTACK_TIME = 1000;
 
 User::User(const std::string &name, const Point &loc, const Socket &socket):
-Combatant(MAX_HEALTH),
+Combatant(&OBJECT_TYPE, loc, MAX_HEALTH),
 
 _name(name),
 _socket(socket),
-_location(loc),
 
 _action(NO_ACTION),
 _actionTime(0),
