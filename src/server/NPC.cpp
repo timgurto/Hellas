@@ -44,6 +44,8 @@ void NPC::processAI(ms_t timeElapsed){
     // Transition if necessary
     switch(_state){
     case IDLE:
+        if (attack() == 0) // NPCs that can't attack won't try.
+            break;
         for (User *user : Server::_instance->findUsersInArea(location(), VIEW_RANGE)){
             if (distance(location(), user->location()) <= VIEW_RANGE){
                 target(dynamic_cast<Combatant *>(user));
