@@ -16,9 +16,9 @@ void NPC::update(ms_t timeElapsed){
             _corpseTime -= timeElapsed;
         else
             markForRemoval();
+    } else {
+        processAI(timeElapsed);
     }
-
-    processAI(timeElapsed);
 }
 
 void NPC::onHealthChange(){
