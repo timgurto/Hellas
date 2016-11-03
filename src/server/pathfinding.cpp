@@ -34,7 +34,7 @@ void Object::updateLocation(const Point &dest){
     } else {
         journeyRect.h += displacementY;
     }
-    if (!server.isLocationValid(journeyRect, *type(), this)) {
+    if (!server.isLocationValid(journeyRect, this)) {
         newDest = _location;
         static const double ACCURACY = 0.5;
         Point testPoint = _location;
