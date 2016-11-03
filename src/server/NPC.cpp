@@ -89,3 +89,7 @@ void NPC::processAI(ms_t timeElapsed){
         break;
     }
 }
+
+bool NPC::collides() const{
+    return Object::collides() && health() > 0;
+}

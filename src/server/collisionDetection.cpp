@@ -49,6 +49,8 @@ bool Server::isLocationValid(const Rect &rect, const Object *thisObject){
             const Object *pObj = ret.second;
             if (pObj == thisObject)
                 continue;
+            if (!pObj->collides())
+                continue;
 
             // Allow collisions between users and users/NPCs
             /*if (thisObject != nullptr && thisObject->classTag() == 'u' &&

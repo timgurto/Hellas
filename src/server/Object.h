@@ -57,6 +57,7 @@ public:
     void incrementGatheringUsers(const User *userToSkip = nullptr);
     void decrementGatheringUsers(const User *userToSkip = nullptr);
     size_t numUsersGathering() const { return _numUsersGathering; }
+    virtual bool collides() const { return _type->collides(); }
 
     virtual double speed() const { return 0; } // movement per second
 
