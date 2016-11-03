@@ -34,6 +34,14 @@ bool Server::isLocationValid(const Rect &rect, const Object *thisObject){
     if (!terrain.isTraversable())
         return false;
 
+    // Users
+    for (const auto *user : findUsersInArea(rectCenter)) {
+        if (user == thisObject)
+            continue;
+        if (rect.collides(user->collisionRect()))
+            return false;
+    }
+
     // Objects
     auto superChunk = getCollisionSuperChunk(rectCenter);
     for (CollisionChunk *chunk : superChunk)
@@ -42,10 +50,10 @@ bool Server::isLocationValid(const Rect &rect, const Object *thisObject){
             if (pObj == thisObject)
                 continue;
 
-            // No collision between users and users/NPCs
-            if (thisObject != nullptr && thisObject->classTag() == 'u' &&
+            // Allow collisions between users and users/NPCs
+            /*if (thisObject != nullptr && thisObject->classTag() == 'u' &&
                 (pObj->classTag() == 'u' || pObj->classTag() == 'n'))
-                    continue;
+                    continue;*/
 
             if (rect.collides(pObj->collisionRect()))
                 return false;

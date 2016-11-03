@@ -47,6 +47,18 @@ void ClientNPC::draw(const Client &client) const{
         renderer.setDrawColor(BACKGROUND_COLOR);
         renderer.fillRect(Rect(x + barLength, y, BAR_TOTAL_LENGTH - barLength, BAR_HEIGHT) + offset);
     }
+
+    if (isDebug()) {
+        renderer.setDrawColor(Color::WHITE);
+        renderer.drawRect(collisionRect() + client.offset());
+        renderer.setDrawColor(Color::YELLOW);
+        renderer.fillRect(Rect(location().x + client.offset().x,
+                                location().y + client.offset().y - 1,
+                                1, 3));
+        renderer.fillRect(Rect(location().x + client.offset().x - 1,
+                               location().y + client.offset().y,
+                               3, 1));
+    }
 }
 
 void ClientNPC::update(double delta){

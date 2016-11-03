@@ -6,7 +6,7 @@
 const size_t User::INVENTORY_SIZE = 10;
 const size_t User::GEAR_SLOTS = 4;
 
-const ObjectType User::OBJECT_TYPE(Rect(-5, -2, 10, 4));
+ObjectType User::OBJECT_TYPE("__clientObjectType__");
 
 const health_t User::MAX_HEALTH = 100;
 const health_t User::ATTACK_DAMAGE = 8;
@@ -31,6 +31,9 @@ _actionLocation(0, 0),
 _inventory(INVENTORY_SIZE),
 _gear(GEAR_SLOTS),
 _lastContact(SDL_GetTicks()){
+    if (!OBJECT_TYPE.collides()){
+        OBJECT_TYPE.collisionRect(Rect(-5, -2, 10, 4));
+    }
     for (size_t i = 0; i != INVENTORY_SIZE; ++i)
         _inventory[i] = std::make_pair<const ServerItem *, size_t>(0, 0);
 }

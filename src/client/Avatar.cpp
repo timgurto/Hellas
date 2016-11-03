@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #include "Avatar.h"
 #include "Client.h"
 #include "Renderer.h"
@@ -26,7 +24,7 @@ void Avatar::draw(const Client &client) const{
     Entity::draw(client);
 
     if (isDebug()) {
-        renderer.setDrawColor(Color::GREY_2);
+        renderer.setDrawColor(Color::WHITE);
         renderer.drawRect(_collisionRect + location() + client.offset());
     }
 

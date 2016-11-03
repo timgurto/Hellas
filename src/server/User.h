@@ -121,7 +121,7 @@ public:
     static const size_t INVENTORY_SIZE;
     static const size_t GEAR_SLOTS;
 
-    static const ObjectType OBJECT_TYPE;
+    static ObjectType OBJECT_TYPE;
 
     void contact();
     bool alive() const; // Whether the client has contacted the server recently enough

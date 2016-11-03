@@ -35,7 +35,6 @@ class ObjectType{
 
 public:
     ObjectType(const std::string &id);
-    ObjectType(const Rect &collisionRect); // Anonymous object type used for collision testing.
 
     virtual ~ObjectType(){}
 

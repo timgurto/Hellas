@@ -340,7 +340,7 @@ void ClientObject::draw(const Client &client) const{
     type()->drawAt(location() + client.offset());
 
     if (isDebug()) {
-        renderer.setDrawColor(Color::GREY_2);
+        renderer.setDrawColor(Color::WHITE);
         renderer.drawRect(collisionRect() + client.offset());
         renderer.setDrawColor(Color::YELLOW);
         renderer.fillRect(Rect(location().x + client.offset().x,
