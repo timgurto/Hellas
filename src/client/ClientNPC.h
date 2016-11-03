@@ -25,6 +25,7 @@ public:
     void health(health_t n) { _health = n; }
     bool lootable() const { return _lootable; }
     void lootable(bool b) { _lootable = b; }
+    virtual bool isFlat() const override;
 
     const ClientNPCType *npcType() const { return dynamic_cast<const ClientNPCType *>(type()); }
 

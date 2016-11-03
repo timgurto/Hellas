@@ -42,6 +42,7 @@ public:
     virtual const Texture &image() const { return _type->image(); }
     void markForRemoval() { _toRemove = true; }
     bool markedForRemoval() const { return _toRemove; }
+    virtual bool isFlat() const { return _type->isFlat(); }
 
     virtual char classTag() const { return 'e'; }
 

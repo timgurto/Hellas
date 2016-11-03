@@ -72,7 +72,7 @@ void Client::draw() const{
     auto bottom = _entities.upper_bound(&bottomEntity);
     // Flat entities
     for (auto it = top; it != bottom; ++it) {
-        if ((*it)->type()->isFlat()) {
+        if ((*it)->isFlat()) {
             // Cull by x
             double x = (*it)->location().x;
             if (x >= leftX && x <= rightX)
@@ -81,7 +81,7 @@ void Client::draw() const{
     }
     // Non-flat entities
     for (auto it = top; it != bottom; ++it) {
-        if (!(*it)->type()->isFlat()) {
+        if (!(*it)->isFlat()) {
             // Cull by x
             double x = (*it)->location().x;
             if (x >= leftX && x <= rightX)

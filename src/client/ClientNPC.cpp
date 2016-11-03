@@ -107,3 +107,7 @@ void ClientNPC::onInventoryUpdate(){
     assert(_lootContainer != nullptr);
     _lootContainer->repopulate();
 }
+
+bool ClientNPC::isFlat() const{
+    return Entity::isFlat() || health() == 0;
+}
