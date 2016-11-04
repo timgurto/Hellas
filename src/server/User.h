@@ -90,6 +90,7 @@ public:
     virtual char classTag() const override { return 'u'; }
     
     virtual void onHealthChange() override;
+    virtual void onDeath() override;
 
     const Rect collisionRect() const;
 

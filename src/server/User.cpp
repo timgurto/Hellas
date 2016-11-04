@@ -308,3 +308,9 @@ void User::onHealthChange(){
     const Server &server = *Server::_instance;
     server.sendMessage(socket(), SV_HEALTH, makeArgs(health()));
 }
+
+void User::onDeath(){
+    // Each game would need to implement this depending on preferred mechanics.
+    health(maxHealth());
+    onHealthChange();
+}
