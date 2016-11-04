@@ -122,6 +122,7 @@
     <ClCompile Include="src\server\User.cpp" />
     <ClCompile Include="src\server\Yield.cpp" />
     <ClCompile Include="src\Socket.cpp" />
+    <ClCompile Include="src\Stats.cpp" />
     <ClCompile Include="src\util.cpp" />
     <ClCompile Include="src\XmlReader.cpp" />
     <ClCompile Include="src\XmlWriter.cpp" />

@@ -163,6 +163,7 @@
     <ClCompile Include="src\server\User.cpp" />
     <ClCompile Include="src\server\Yield.cpp" />
     <ClCompile Include="src\Socket.cpp" />
+    <ClCompile Include="src\Stats.cpp" />
     <ClCompile Include="src\testing\ClientTestInterface.cpp" />
     <ClCompile Include="src\testing\ServerTestInterface.cpp" />
     <ClCompile Include="src\testing\test-graphics.cpp" />

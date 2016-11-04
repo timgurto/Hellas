@@ -63,6 +63,7 @@ bool Server::readUserData(User &user){
         user.gear(slot) =
             std::make_pair<const ServerItem *, size_t>(&*it, static_cast<size_t>(qty));
     }
+    user.updateStats();
 
     elem = xr.findChild("stats");
     unsigned n;
@@ -229,6 +230,17 @@ void Server::loadData(const std::string &path){
                 else
                     item.constructsObject(*(_objectTypes.insert(new ObjectType(s)).first));
             }
+
+            auto statsElem = xr.findChild("stats", elem);
+            if (statsElem != nullptr){
+                StatsMod stats;
+                xr.findAttr(statsElem, "health", stats.health);
+                xr.findAttr(statsElem, "attack", stats.attack);
+                xr.findAttr(statsElem, "attackTime", stats.attackTime);
+                xr.findAttr(statsElem, "speed", stats.speed);
+                item.stats(stats);
+            }
+
             n = User::GEAR_SLOTS; // Default; won't match any slot.
             xr.findAttr(elem, "gearSlot", n); item.gearSlot(n);
 

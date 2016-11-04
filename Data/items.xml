@@ -6,6 +6,7 @@ Both:
  - class
  - constructs
  - stackSize
+ - stats
 
 Client only:
  - name
@@ -54,6 +55,10 @@ Client only:
 <item
     id="hat"
     name="Leather Cap"
-    gearSlot=0 />
+    gearSlot=0 >
+    <stats
+        health=-50
+    />
+</item>
     
 </root>

@@ -330,6 +330,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             slotTo = slotFrom;
             slotFrom = temp;
 
+            // Update stats if gear was changed
+            if (obj1 == GEAR || obj2 == GEAR)
+                user->updateStats();
+
             // Alert relevant users
             if (obj1 == INVENTORY || obj1 == GEAR)
                 sendInventoryMessage(*user, slot1, obj1);

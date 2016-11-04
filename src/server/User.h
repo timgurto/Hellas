@@ -44,6 +44,8 @@ private:
     size_t _actionSlot; // Construct
     Point _actionLocation; // Construct
 
+    Stats _stats; // Memoized stats, after gear etc.  Calculated with updateStats();
+
     ServerItem::vect_t _inventory, _gear;
 
     ms_t _lastContact;
@@ -59,6 +61,7 @@ public:
 
     const std::string &name() const { return _name; }
     const Socket &socket() const { return _socket; }
+    const Stats &stats() const;
 
     // Inventory getters/setters
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const
@@ -78,10 +81,11 @@ public:
 
     static void init();
 
-    virtual health_t maxHealth() const override { return BASE_STATS.health; }
-    virtual health_t attack() const override { return BASE_STATS.attack; }
-    virtual ms_t attackTime() const override { return BASE_STATS.attackTime; }
-    virtual double speed() const override { return BASE_STATS.speed; }
+    void updateStats();
+    virtual health_t maxHealth() const override { return _stats.health; }
+    virtual health_t attack() const override { return _stats.attack; }
+    virtual ms_t attackTime() const override { return _stats.attackTime; }
+    virtual double speed() const override { return _stats.speed; }
 
     virtual char classTag() const override { return 'u'; }
     

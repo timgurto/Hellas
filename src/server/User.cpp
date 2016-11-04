@@ -26,7 +26,8 @@ _actionLocation(0, 0),
 
 _inventory(INVENTORY_SIZE),
 _gear(GEAR_SLOTS),
-_lastContact(SDL_GetTicks()){
+_lastContact(SDL_GetTicks()),
+_stats(BASE_STATS){
     if (!OBJECT_TYPE.collides()){
         OBJECT_TYPE.collisionRect(Rect(-5, -2, 10, 4));
     }
@@ -316,4 +317,22 @@ void User::onDeath(){
     // Each game would need to implement this depending on preferred mechanics.
     health(maxHealth());
     onHealthChange();
+}
+
+void User::updateStats(){
+    health_t oldMaxHealth = maxHealth();
+
+    _stats = BASE_STATS;
+    for (size_t i = 0; i != GEAR_SLOTS; ++i){
+        const ServerItem *item = _gear[i].first;
+        if (item != nullptr)
+            _stats &= item->stats();
+    }
+
+    // Special case: health must change to reflect new max health
+    int healthDecrease = oldMaxHealth - maxHealth();
+    if (healthDecrease > 0 && healthDecrease > static_cast<int>(health()))
+        health(1); // Implicit rule: changing gear can never kill you, only reduce you to 1 health.
+    else
+        reduceHealth(healthDecrease);
 }
