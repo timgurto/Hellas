@@ -320,7 +320,6 @@ void User::onDeath(){
 }
 
 void User::updateStats(){
-    Server::instance().debug() << "(before) Health: " << health() << "/" << maxHealth() << Log::endl;
     health_t oldMaxHealth = maxHealth();
 
     _stats = BASE_STATS;

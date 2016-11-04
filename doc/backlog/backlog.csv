@@ -11,7 +11,7 @@ issue,description,value,effort,type,blockedBy,done
 128,"Use forward declarations where possible, to reduce unnecessary #includes",3,8,Code quality,,
 129,"Add grass objects, which grow naturally on grass tiles",5,21,Feature,,
 130,Make trees drop branches over time,5,21,Feature,,
-137,Allow a recipe to create multiple item types,5,13,Feature,,
+137,Allow a recipe to create multiple item types,5,8,Feature,,
 138,Use set::count() and map::count() to test set membership,2,2,Code quality,,
 140,Move appropriate configuration details into config file,5,34,Code quality,,
 145,Document UI interface,13,8,Documentation,,
@@ -31,13 +31,13 @@ issue,description,value,effort,type,blockedBy,done
 170,Attack stat,8,1,Feature,,TRUE
 171,NPC loot,13,34,Feature,,TRUE
 172,Critter run-away AI,5,34,Feature,,
-173,Animal that fights back,21,21,Feature,,
-174,Player death,13,5,Feature,173,
+173,Animal that fights back,21,21,Feature,,TRUE
+174,Player death,13,5,Feature,,TRUE
 175,NPC spawning,5,21,Feature,,
 176,PVP,13,3,Feature,,
 177,Character has gear slots,13,21,Feature,,TRUE
 178,Items can match gear slots,8,3,Feature,,TRUE
-179,Gear can have stats,13,8,Feature,,
+179,Gear can have stats,13,8,Feature,,TRUE
 180,Gear visible on character,34,21,Aesthetics,,
 182,Make use of Winsock modular,8,21,Code quality,,
 183,Linux support,21,13,Code quality,182,
@@ -83,3 +83,5 @@ issue,description,value,effort,type,blockedBy,done
 226,Right-click to equip gear,5,2,Feature,,
 227,Shift + right-click to loot all,5,2,Feature,,
 228,Close client on single Esc press when disconnected,3,1,Bug,,
+229,Thorough and consistent tooltips,13,21,Aesthetics,,
+230,Display stats in client,13,2,Aesthetics,,

@@ -57,7 +57,7 @@ Client only:
     name="Leather Cap"
     gearSlot=0 >
     <stats
-        health=-50
+        attack=5
     />
 </item>
     
