@@ -198,6 +198,9 @@
     <ClInclude Include="src\server\LootTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Stats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

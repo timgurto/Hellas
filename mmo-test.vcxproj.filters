@@ -473,5 +473,8 @@
     <ClInclude Include="src\client\ui\TakeContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Stats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

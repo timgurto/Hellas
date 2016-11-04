@@ -58,6 +58,8 @@ _dataLoaded(false){
     if (Socket::debug == nullptr)
         Socket::debug = &_debug;
 
+    User::init();
+
     _debug("Server initialized");
 
     // Socket details

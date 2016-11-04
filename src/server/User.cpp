@@ -8,14 +8,10 @@ const size_t User::GEAR_SLOTS = 4;
 
 ObjectType User::OBJECT_TYPE("__clientObjectType__");
 
-const health_t User::MAX_HEALTH = 100;
-const health_t User::ATTACK_DAMAGE = 8;
-const ms_t User::ATTACK_TIME = 1000;
-
-const double User::MOVEMENT_SPEED = 80;
+Stats User::BASE_STATS;
 
 User::User(const std::string &name, const Point &loc, const Socket &socket):
-Combatant(&OBJECT_TYPE, loc, MAX_HEALTH),
+Combatant(&OBJECT_TYPE, loc, BASE_STATS.health),
 
 _name(name),
 _socket(socket),
@@ -43,6 +39,13 @@ _socket(rhs){}
 
 User::User(const Point &loc):
 Combatant(loc){}
+
+void User::init(){
+    BASE_STATS.health = 100;
+    BASE_STATS.attack = 8;
+    BASE_STATS.attackTime = 1000;
+    BASE_STATS.speed = 80.0;
+}
 
 bool User::compareXThenSerial::operator()( const User *a, const User *b){
     if (a->location().x != b->location().x)

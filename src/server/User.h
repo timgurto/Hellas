@@ -11,6 +11,7 @@
 #include "ServerItem.h"
 #include "../Point.h"
 #include "../Socket.h"
+#include "../Stats.h"
 
 class NPC;
 class Server;
@@ -28,14 +29,7 @@ public:
         NO_ACTION
     };
 
-    // Stats
-    static const health_t
-        MAX_HEALTH,
-        ATTACK_DAMAGE;
-    static const ms_t
-        ATTACK_TIME;
-    static const double
-        MOVEMENT_SPEED;
+    static Stats BASE_STATS;
 
 private:
     std::string _name;
@@ -66,7 +60,7 @@ public:
     const std::string &name() const { return _name; }
     const Socket &socket() const { return _socket; }
 
-    // Inventory
+    // Inventory getters/setters
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const
             { return _inventory[index]; }
     std::pair<const ServerItem *, size_t> &inventory(size_t index)
@@ -74,7 +68,7 @@ public:
     ServerItem::vect_t &inventory() { return _inventory; }
     const ServerItem::vect_t &inventory() const { return _inventory; }
 
-    // Gear
+    // Gear getters/setters
     const std::pair<const ServerItem *, size_t> &gear(size_t index) const
             { return _gear[index]; }
     std::pair<const ServerItem *, size_t> &gear(size_t index)
@@ -82,10 +76,12 @@ public:
     ServerItem::vect_t &gear() { return _gear; }
     const ServerItem::vect_t &gear() const { return _gear; }
 
-    virtual health_t maxHealth() const override { return MAX_HEALTH; }
-    virtual health_t attack() const override { return ATTACK_DAMAGE; }
-    virtual ms_t attackTime() const override { return ATTACK_TIME; }
-    virtual double speed() const override { return MOVEMENT_SPEED; }
+    static void init();
+
+    virtual health_t maxHealth() const override { return BASE_STATS.health; }
+    virtual health_t attack() const override { return BASE_STATS.attack; }
+    virtual ms_t attackTime() const override { return BASE_STATS.attackTime; }
+    virtual double speed() const override { return BASE_STATS.speed; }
 
     virtual char classTag() const override { return 'u'; }
     
