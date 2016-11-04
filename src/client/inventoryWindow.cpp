@@ -43,7 +43,4 @@ void Client::initializeGearWindow(){
     Container *gearContainer = new Container(rows, cols, _gear, GEAR, x, y, gap, false);
     _gearWindow->addChild(new Picture(0, 0, _gearWindowBackground));
     _gearWindow->addChild(gearContainer);
-
-
-    _gearWindow->show();
 }
