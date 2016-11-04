@@ -301,6 +301,8 @@ void Server::removeUser(const std::set<User>::iterator &it){
         if (userP != &*it)
             sendMessage(userP->socket(), SV_USER_DISCONNECTED, it->name());
 
+    forceUntarget(*it);
+
     // Save user data
     writeUserData(*it);
 
@@ -313,8 +315,8 @@ void Server::removeUser(const std::set<User>::iterator &it){
 
 void Server::removeUser(const Socket &socket){
     const std::set<User>::iterator it = _users.find(socket);
-    if (it != _users.end())
-        removeUser(it);
+    assert (it != _users.end());
+    removeUser(it);
 }
 
 std::list<User *> Server::findUsersInArea(Point loc, double squareRadius) const{
@@ -344,14 +346,15 @@ bool Server::isObjectInRange(const Socket &client, const User &user, const Objec
     return true;
 }
 
-void Server::forceUntarget(const Object &obj, const User *userToExclude){
-    size_t serial = obj.serial();
+void Server::forceUntarget(const Object &target, const User *userToExclude){
+    // Fix users targeting the object
+    size_t serial = target.serial();
     for (const User &userConst : _users) {
         User & user = const_cast<User &>(userConst);
         if (&user == userToExclude)
             continue;
-        if (obj.classTag() == 'n'){
-            const NPC &npc = dynamic_cast<const NPC &>(obj);
+        if (target.classTag() == 'n'){
+            const NPC &npc = dynamic_cast<const NPC &>(target);
             if (user.action() == User::ATTACK && user.target() == &npc) {
                 user.finishAction();
                 continue;
@@ -360,6 +363,16 @@ void Server::forceUntarget(const Object &obj, const User *userToExclude){
         if (user.action() == User::GATHER && user.actionObject()->serial() == serial) {
             sendMessage(user.socket(), SV_DOESNT_EXIST);
             user.cancelAction();
+        }
+    }
+
+    // Fix NPCs targeting the object
+    for (const Object *pObj : _objects) {
+        Object &obj = *const_cast<Object *>(pObj);
+        if (obj.classTag() == 'n'){
+            NPC &npc = dynamic_cast<NPC &>(obj);
+            if (npc.target() == &target)
+                npc.target(nullptr);
         }
     }
 }
