@@ -134,16 +134,11 @@ void Server::checkSockets(){
             const int charsRead = recv(raw, buffer, BUFFER_SIZE, 0);
             if (charsRead == SOCKET_ERROR) {
                 int err = WSAGetLastError();
-                if (err == WSAECONNRESET) {
-                    // Client disconnected
-                    _debug << "Client " << raw << " disconnected" << Log::endl;
-                    removeUser(raw);
-                    closesocket(raw);
-                    _clientSockets.erase(it++);
-                    continue;
-                } else {
-                    _debug << Color::RED << "Error receiving message: " << err << Log::endl;
-                }
+                _debug << "Client " << raw << " disconnected; error code: " << err << Log::endl;
+                removeUser(raw);
+                closesocket(raw);
+                _clientSockets.erase(it++);
+                continue;
             } else if (charsRead == 0) {
                 // Client disconnected
                 _debug << "Client " << raw << " disconnected" << Log::endl;
