@@ -63,7 +63,6 @@ bool Server::readUserData(User &user){
         user.gear(slot) =
             std::make_pair<const ServerItem *, size_t>(&*it, static_cast<size_t>(qty));
     }
-    user.updateStats();
 
     elem = xr.findChild("stats");
     unsigned n;

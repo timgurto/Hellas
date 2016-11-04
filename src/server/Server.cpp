@@ -288,6 +288,9 @@ void Server::addUser(const Socket &socket, const std::string &name){
             sendInventoryMessage(newUser, i, GEAR);
     }
 
+    // Calculate and send him his stats
+    newUser.updateStats();
+
     // Add new user to list
     std::set<User>::const_iterator it = _users.insert(newUser).first;
     _usersByName[name] = &*it;
