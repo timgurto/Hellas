@@ -12,6 +12,8 @@ class Args{
 public:
     void init(int argc, char* argv[]);
     bool contains(const std::string &key) const;
+    
+    void add(const std::string &key, const std::string &value = "");
 
     // These functions will return "" or 0 if the key is not found, so use contains() first for accuracy.
     std::string getString(const std::string &key) const;

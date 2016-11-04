@@ -21,6 +21,10 @@ void Args::init(int argc, char* argv[]){
     }
 }
 
+void Args::add(const std::string &key, const std::string &value){
+    _args[key] = value;
+}
+
 bool Args::contains(const std::string &key) const{
     return _args.find(key) != _args.end();
 }
