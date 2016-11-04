@@ -320,7 +320,7 @@ _debug("client.log"){
     playerDisplay->addChild(_usernameDisplay);
     static const unsigned MAX_HEALTH = 100;
     playerDisplay->addChild(new ProgressBar<health_t>(
-            Rect(2, PLAYER_H - BAR_HEIGHT - 2, PLAYER_W - 4, BAR_HEIGHT), _health, MAX_HEALTH,
+            Rect(2, PLAYER_H - BAR_HEIGHT - 2, PLAYER_W - 4, BAR_HEIGHT), _health, _stats.health,
             Color::MMO_L_GREEN));
     addUI(playerDisplay);
     

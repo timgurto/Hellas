@@ -320,6 +320,7 @@ void User::onDeath(){
 }
 
 void User::updateStats(){
+    Server::instance().debug() << "(before) Health: " << health() << "/" << maxHealth() << Log::endl;
     health_t oldMaxHealth = maxHealth();
 
     _stats = BASE_STATS;
@@ -335,4 +336,10 @@ void User::updateStats(){
         health(1); // Implicit rule: changing gear can never kill you, only reduce you to 1 health.
     else
         reduceHealth(healthDecrease);
+    if (healthDecrease != 0)
+        onHealthChange();
+
+    const Server &server = *Server::_instance;
+    server.sendMessage(socket(), SV_STATS, makeArgs(_stats.health, _stats.attack,
+                                                    _stats.attackTime, _stats.speed));
 }

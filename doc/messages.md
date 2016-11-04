@@ -60,6 +60,7 @@ Code | Name                      | Syntax                                       
 153  | `SV_LOOTABLE`             | &laquo;153&#8226;serial&raquo;                                                 | "NPC #`serial` has loot available."
 154  | `SV_LOOTABLE`             | &laquo;154&#8226;serial&raquo;                                                 | "NPC #`serial` had loot, but doesn't any more."
 160  | `SV_HEALTH`               | &laquo;160&#8226;hp&raquo;                                                     | "You have `hp` health"
+161  | `SV_STATS`                | &laquo;160&#8226;maxHealth&#8226;attack&#8226;attackTime&#8226;speed&raquo;    | "Your up-to-date stats are as described."
 200  | `SV_SAY`                  | &laquo;200&#8226;username&#8226;message&raquo;                                 | "User `username` said '`message`'."
 201  | `SV_WHISPER`              | &laquo;201&#8226;username&#8226;message&raquo;                                 | "User `username` said '`message` to you'."
 

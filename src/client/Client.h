@@ -55,6 +55,7 @@ public:
     const Texture &cursorContainer() const { return _cursorContainer; }
     const Texture &cursorAttack() const { return _cursorAttack; }
 
+    // Sound channels
     static const int PLAYER_ACTION_CHANNEL;
 
     static const px_t ICON_SIZE;
@@ -109,6 +110,8 @@ private:
 
     // Whether the user has the specified item(s).
     bool playerHasItem(const Item *item, size_t quantity = 1) const;
+    
+    Stats _stats; // The user's stats
 
     void initializeCraftingWindow();
     bool _haveMatsFilter, _haveToolsFilter, _classOr, _matOr;

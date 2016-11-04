@@ -174,6 +174,10 @@ enum MessageCode{
     // Arguments: hp
     SV_HEALTH = 160,
 
+    // The user's stats
+    // Arguments: max health, attack, attack time, speed
+    SV_STATS = 161,
+
     // "User ... has said ...".
     // Arguments: username, message
     SV_SAY = 200,

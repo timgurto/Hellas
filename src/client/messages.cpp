@@ -555,6 +555,15 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_STATS:
+        {
+            singleMsg >> _stats.health >> del >> _stats.attack >> del >> _stats.attackTime >> del
+                      >> _stats.speed >> del;
+            if (del != MSG_END)
+                break;
+            break;
+        }
+
         case SV_MERCHANT_SLOT:
         {
             size_t serial, slot, wareQty, priceQty;
