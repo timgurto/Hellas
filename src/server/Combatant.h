@@ -29,7 +29,7 @@ public:
     health_t health() const { return _health; }
     void health(health_t health) { _health = health; }
 
-    void reduceHealth(health_t damage);
+    void reduceHealth(int damage);
 
     virtual void onHealthChange() {}; // Probably alerting relevant users.
     virtual void onDeath() {}; // Anything that needs to happen upon death.

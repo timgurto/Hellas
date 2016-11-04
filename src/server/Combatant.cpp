@@ -10,8 +10,8 @@ _attackTimer(0),
 _target(nullptr)
 {}
 
-void Combatant::reduceHealth(health_t damage){
-    if (damage >= _health) {
+void Combatant::reduceHealth(int damage){
+    if (damage >= static_cast<int>(_health)) {
         _health = 0;
         onDeath();
     } else if (damage != 0) {
