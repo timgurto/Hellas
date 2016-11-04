@@ -10,18 +10,13 @@ _attackTimer(0),
 _target(nullptr)
 {}
 
-health_t Combatant::reduceHealth(health_t damage){
-    assert (_health > 0);
-
-    if (damage >= _health)
+void Combatant::reduceHealth(health_t damage){
+    if (damage >= _health) {
         _health = 0;
-    else
-        _health -= damage;
-
-    if (_health == 0)
         onDeath();
-
-    return _health;
+    } else if (damage != 0) {
+        _health -= damage;
+    }
 }
 
 void Combatant::update(ms_t timeElapsed){
@@ -39,7 +34,7 @@ void Combatant::update(ms_t timeElapsed){
     if (distance(collisionRect(), target()->collisionRect()) <= Server::ACTION_DISTANCE){
 
         // Reduce target health (to minimum 0)
-        health_t remaining = target()->reduceHealth(attack());
+        target()->reduceHealth(attack());
         target()->onHealthChange();
 
         // Reset timer

@@ -40,6 +40,8 @@ void NPC::processAI(ms_t timeElapsed){
     static const px_t
         VIEW_RANGE = 50,
         ATTACK_RANGE = 5;
+    double distToTarget = (target() == nullptr) ? 0 :
+            distance(collisionRect(), target()->collisionRect());
 
     // Transition if necessary
     switch(_state){
@@ -47,7 +49,7 @@ void NPC::processAI(ms_t timeElapsed){
         if (attack() == 0) // NPCs that can't attack won't try.
             break;
         for (User *user : Server::_instance->findUsersInArea(location(), VIEW_RANGE)){
-            if (distance(location(), user->location()) <= VIEW_RANGE){
+            if (distance(collisionRect(), user->collisionRect()) <= VIEW_RANGE){
                 target(dynamic_cast<Combatant *>(user));
                 _state = CHASE;
                 break;
@@ -58,10 +60,10 @@ void NPC::processAI(ms_t timeElapsed){
     case CHASE:
         if (target() == nullptr) {
             _state = IDLE;
-        } else if (distance(location(), target()->location()) > VIEW_RANGE){
+        } else if (distToTarget > VIEW_RANGE){
             _state = IDLE;
             target(nullptr);
-        } else  if (distance(location(), target()->location()) <= ATTACK_RANGE){
+        } else  if (distToTarget <= ATTACK_RANGE){
             _state = ATTACK;
         }
         break;
@@ -69,7 +71,7 @@ void NPC::processAI(ms_t timeElapsed){
     case ATTACK:
         if (target() == nullptr){
             _state = IDLE;
-        } else if (distance(location(), target()->location()) > ATTACK_RANGE){
+        } else if (distToTarget > ATTACK_RANGE){
             _state = CHASE;
         } else  if (target()->health() == 0){
             _state = IDLE;
