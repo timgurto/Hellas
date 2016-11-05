@@ -75,13 +75,16 @@ issue,description,value,effort,type,blockedBy,done
 218,Add homesteading and tile property rights,13,55,Feature,209,
 219,Find mechanics to encourage town construction,13,21,Feature,,
 220,Find mechanics to encourage specialization,13,21,Feature,,
-221,Design Ancient Greece game,55,55,Feature,209,
 222,Stacks of the same item can be combined,5,5,Bug,,
 223,Remove useItem info from Container class; move it into Client object,1,2,Code quality,,
 224,Specialized loot window,2,3,Aesthetics,,TRUE
-225,Use polymorphism instead of classTag,3,3,Code quality,,
-226,Right-click to equip gear,5,2,Feature,,
-227,Shift + right-click to loot all,5,2,Feature,,
-228,Close client on single Esc press when disconnected,3,1,Bug,,
-229,Thorough and consistent tooltips,13,21,Aesthetics,,
-230,Display stats in client,13,2,Aesthetics,,
+225,Use polymorphism instead of classTag,3,3,Code quality
+226,Right-click to equip gear,5,2,Feature
+227,Shift + right-click to loot all,5,2,Feature
+228,Close client on single Esc press when disconnected,3,1,Bug
+229,Thorough and consistent tooltips,13,21,Aesthetics
+230,Display stats in client,13,2,Aesthetics
+231,Player can get stuck against terrain or NPCs,34,5,Bug
+232,NPCs get stuck on each other due to linear pathfinding,21,8,Bug
+234,Fail more gracefully and informatively when can't connect to server,3,5,Aesthetics
+235,Maintain aspect ratio,2,5,Bug
