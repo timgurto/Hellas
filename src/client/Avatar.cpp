@@ -29,8 +29,8 @@ void Avatar::draw(const Client &client) const{
     }
 
     // Draw username
-    const Color &color = Color::MMO_L_SKIN;
-    const Color &outline = Color::MMO_GREY;
+    const Color &color = Color::PLAYER_NAME;
+    const Color &outline = Color::PLAYER_NAME_OUTLINE;
     if (_name != client.username()) {
         const Texture nameTexture(client.defaultFont(), _name, outline);
         Point p = location() + client.offset();

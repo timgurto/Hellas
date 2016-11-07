@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef COLOR_H
 #define COLOR_H
 
@@ -16,21 +14,42 @@ public:
     static const Color YELLOW;
     static const Color WHITE;
 
-    static const Color MMO_OUTLINE;
-    static const Color MMO_HIGHLIGHT;
-    static const Color MMO_L_GREEN;
-    static const Color MMO_GREEN;
-    static const Color MMO_D_GREEN;
-    static const Color MMO_L_BLUE;
-    static const Color MMO_BLUE;
-    static const Color MMO_D_BLUE;
-    static const Color MMO_L_GREY;
-    static const Color MMO_GREY;
-    static const Color MMO_PURPLE;
-    static const Color MMO_RED;
-    static const Color MMO_D_SKIN;
-    static const Color MMO_SKIN;
-    static const Color MMO_L_SKIN;
+    static Color
+        WARNING,
+        FAILURE,
+        SUCCESS,
+
+        CHAT_LOG_BACKGROUND,
+        SAY,
+        WHISPER,
+
+        DEFAULT_DRAW,
+        FONT,
+        FONT_OUTLINE,
+
+        TOOLTIP_FONT,
+        TOOLTIP_BACKGROUND,
+        TOOLTIP_BORDER,
+
+        ELEMENT_BACKGROUND,
+        ELEMENT_SHADOW_DARK,
+        ELEMENT_SHADOW_LIGHT,
+        ELEMENT_FONT,
+        CONTAINER_SLOT_BACKGROUND,
+
+        FOOTPRINT_GOOD,
+        FOOTPRINT_BAD,
+        IN_RANGE,
+        OUT_OF_RANGE,
+        HEALTH_BAR,
+        HEALTH_BAR_BACKGROUND,
+        HEALTH_BAR_OUTLINE,
+        CAST_BAR_FONT,
+        PERFORMANCE_FONT,
+        PROGRESS_BAR,
+        PROGRESS_BAR_BACKGROUND,
+        PLAYER_NAME,
+        PLAYER_NAME_OUTLINE;
 
     static const Color GREY_2;
     static const Color GREY_4;

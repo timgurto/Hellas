@@ -1,12 +1,10 @@
-// (C) 2015 Tim Gurto
-
 #include "Client.h"
 #include "LogSDL.h"
 #include "ui/Label.h"
 #include "ui/List.h"
 
 LogSDL::LogSDL(const std::string &logFileName):
-_compilationColor(Color::MMO_L_GREY){
+_compilationColor(Color::FONT){
     if (!logFileName.empty()) {
         _logFile.open(logFileName);
     }
@@ -34,11 +32,11 @@ LogSDL &LogSDL::operator<<(const LogSpecial &val) {
     case endl:
         operator()(_oss.str(), _compilationColor);
         _oss.str("");
-        _compilationColor = Color::MMO_L_GREY; // reset color for next compilation
+        _compilationColor = Color::FONT; // reset color for next compilation
         break;
 
     case uncolor:
-        _compilationColor = Color::MMO_L_GREY;
+        _compilationColor = Color::FONT;
         break;
     }
     return *this;

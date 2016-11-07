@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #ifndef TOOLTIP_BUILDER_H
 #define TOOLTIP_BUILDER_H
 
@@ -18,11 +16,7 @@ class TooltipBuilder{
 
     static const px_t PADDING;
     static TTF_Font *_defaultFont;
-    static Color DEFAULT_COLOR;
-    static Color BACKGROUND_COLOR;
     const static px_t DEFAULT_MAX_WIDTH;
-
-    static bool initialized;
 
 public:
     TooltipBuilder();
@@ -30,7 +24,7 @@ public:
     const static px_t NO_WRAP;
 
     void setFont(TTF_Font *font = nullptr); // Default: default font
-    void setColor(const Color &color = DEFAULT_COLOR);
+    void setColor(const Color &color = Color::TOOLTIP_FONT);
     void addLine(const std::string &line);
     void addGap();
     Texture publish();

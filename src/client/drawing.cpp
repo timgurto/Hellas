@@ -7,7 +7,7 @@ extern Renderer renderer;
 
 void Client::draw() const{
     if (!_loggedIn || !_loaded){
-        renderer.setDrawColor(Color::MMO_OUTLINE);
+        renderer.setDrawColor();
         renderer.clear();
         _chatLog->draw();
         renderer.present();
@@ -15,7 +15,7 @@ void Client::draw() const{
     }
 
     // Background
-    renderer.setDrawColor(Color::MMO_OUTLINE); // TODO: Revert to BLUE_HELL
+    renderer.setDrawColor(); // TODO: Revert to BLUE_HELL
     renderer.clear();
 
     // Map
@@ -108,7 +108,7 @@ void Client::draw() const{
         const ClientObjectType *ot = Container::getUseItem()->constructsObject();
         Rect footprintRect = ot->collisionRect() + _mouse - _offset;
         if (distance(playerCollisionRect(), footprintRect) <= Client::ACTION_DISTANCE) {
-            renderer.setDrawColor(Color::MMO_GREY);
+            renderer.setDrawColor(Color::FOOTPRINT_GOOD);
             renderer.fillRect(footprintRect + _offset);
 
             const Rect &drawRect = ot->drawRect();
@@ -119,7 +119,7 @@ void Client::draw() const{
             _constructionFootprint.draw(x, y);
             _constructionFootprint.setAlpha();
         } else {
-            renderer.setDrawColor(Color::MMO_RED);
+            renderer.setDrawColor(Color::FOOTPRINT_BAD);
             renderer.fillRect(footprintRect + _offset);
         }
     }

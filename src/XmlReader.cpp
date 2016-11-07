@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #include <set>
 #include <sstream>
 
@@ -53,6 +51,22 @@ bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, std::string &val)
     const char *const cStrVal = elem->Attribute(attr);
     if (cStrVal != nullptr) {
         val = cStrVal;
+        return true;
+    }
+    return false;
+}
+
+bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, Color &val){
+    const char *const cStrVal = elem->Attribute(attr);
+    if (cStrVal != nullptr){
+        std::istringstream iss(cStrVal);
+        Uint32 color;
+        iss >> std::hex >> color;
+        Uint8
+            b = color % 0x100,
+            g = color >> 8 % 0x100,
+            r = color >> 16 % 100;
+        val = Color(r, g, b);
         return true;
     }
     return false;

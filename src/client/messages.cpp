@@ -34,7 +34,7 @@ void Client::handleMessage(const std::string &msg){
         if (iss.peek() != MSG_START) {
             iss.get(buffer, BUFFER_SIZE, MSG_START);
             _debug << "Read " << iss.gcount() << " characters." << Log::endl;
-            _debug << Color::MMO_RED << "Malformed message; discarded \""
+            _debug << Color::FAILURE << "Malformed message; discarded \""
                    << buffer << "\"" << Log::endl;
             if (iss.eof()) {
                 break;
@@ -56,7 +56,7 @@ void Client::handleMessage(const std::string &msg){
         //_debug(buffer, Color::CYAN);
         singleMsg >> del >> msgCode >> del;
         _messagesReceived.push_back(MessageCode(msgCode));
-        Color errorMessageColor = Color::MMO_RED;
+        Color errorMessageColor = Color::FAILURE;
 
         switch(msgCode) {
 
@@ -68,7 +68,7 @@ void Client::handleMessage(const std::string &msg){
             _loggedIn = true;
             _timeSinceConnectAttempt = 0;
             _lastPingSent = _lastPingReply = _time;
-            _debug("Successfully logged in to server", Color::MMO_L_GREEN);
+            _debug("Successfully logged in to server", Color::SUCCESS);
             break;
         }
 
@@ -105,7 +105,7 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
             _invalidUsername = true;
-            _debug << Color::MMO_RED << "The user " << _username
+            _debug << Color::FAILURE << "The user " << _username
                    << " is already connected to the server." << Log::endl;
             break;
 
@@ -113,13 +113,13 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
             _invalidUsername = true;
-            _debug << Color::MMO_RED << "The username " << _username << " is invalid." << Log::endl;
+            _debug << Color::FAILURE << "The username " << _username << " is invalid." << Log::endl;
             break;
 
         case SV_SERVER_FULL:
             _socket = Socket();
             _loggedIn = false;
-            _debug(_errorMessages[msgCode], Color::MMO_RED);
+            _debug(_errorMessages[msgCode], Color::FAILURE);
             break;
 
         case SV_TOO_FAR:
@@ -134,7 +134,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_NO_PRICE:
         case SV_MERCHANT_INVENTORY_FULL:
         case SV_NOT_EMPTY:
-            errorMessageColor = Color::MMO_HIGHLIGHT; // Yellow above, red below
+            errorMessageColor = Color::WARNING; // Yellow above, red below
         case SV_INVALID_USER:
         case SV_INVALID_ITEM:
         case SV_CANNOT_CRAFT:
@@ -165,7 +165,7 @@ void Client::handleMessage(const std::string &msg){
             if (first == 'a' || first == 'e' || first == 'i' ||
                 first == 'o' || first == 'u')
                 msg += 'n';
-            _debug(msg + ' ' + reqItemClass + " to do that.", Color::MMO_HIGHLIGHT);
+            _debug(msg + ' ' + reqItemClass + " to do that.", Color::WARNING);
             startAction(0);
             break;
         }
@@ -216,7 +216,7 @@ void Client::handleMessage(const std::string &msg){
                 size_t index;
                 singleMsg >> index >> del;
                 if (index > _terrain.size()) {
-                    _debug << Color::MMO_RED << "Invalid terrain type receved ("
+                    _debug << Color::FAILURE << "Invalid terrain type receved ("
                            << index << "); aborted." << Log::endl;
                     break;
                 }
@@ -320,7 +320,7 @@ void Client::handleMessage(const std::string &msg){
             if (quantity > 0) {
                 std::set<ClientItem>::const_iterator it = _items.find(itemID);
                 if (it == _items.end()) {
-                    _debug << Color::MMO_RED << "Unknown inventory item \"" << itemID
+                    _debug << Color::FAILURE << "Unknown inventory item \"" << itemID
                            << "\"announced; ignored.";
                     break;
                 }
@@ -335,15 +335,14 @@ void Client::handleMessage(const std::string &msg){
                 default:
                     auto it = _objects.find(serial);
                     if (it == _objects.end()) {
-                        _debug("Received inventory of nonexistent object; ignored.",
-                               Color::MMO_RED);
+                        _debug("Received inventory of nonexistent object; ignored.", Color::FAILURE);
                         break;
                     }
                     object = it->second;
                     container = &object->container();
             }
             if (slot >= container->size()) {
-                _debug("Received item in invalid inventory slot; ignored.", Color::MMO_RED);
+                _debug("Received item in invalid inventory slot; ignored.", Color::FAILURE);
                 break;
             }
             auto &invSlot = (*container)[slot];
@@ -376,7 +375,7 @@ void Client::handleMessage(const std::string &msg){
                 ClientObjectType *dummy = new ClientObjectType(type);
                 const Client::objectTypes_t::const_iterator it = _objectTypes.find(dummy);
                 if (it == _objectTypes.end()){
-                    _debug("Received object of invalid type; ignored.", Color::MMO_RED);
+                    _debug("Received object of invalid type; ignored.", Color::FAILURE);
                     break;
                 }
                 ClientObject *obj;
@@ -406,7 +405,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()) {
-                _debug("Server removed an object we didn't know about.", Color::MMO_HIGHLIGHT);
+                _debug("Server removed an object we didn't know about.", Color::WARNING);
                 break; // We didn't know about this object
             }
             it->second->location(Point(x, y));
@@ -422,7 +421,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const std::map<size_t, ClientObject*>::const_iterator it = _objects.find(serial);
             if (it == _objects.end()){
-                _debug("Server removed an object we didn't know about.", Color::MMO_HIGHLIGHT);
+                _debug("Server removed an object we didn't know about.", Color::WARNING);
                 break; // We didn't know about this object
             }
             if (it->second == _currentMouseOverEntity)
@@ -445,7 +444,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()){
-                _debug("Received ownership info for an unknown object.", Color::MMO_RED);
+                _debug("Received ownership info for an unknown object.", Color::FAILURE);
                 break;
             }
             (it->second)->owner(name);
@@ -460,7 +459,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()){
-                _debug("Received info about an unknown object.", Color::MMO_RED);
+                _debug("Received info about an unknown object.", Color::FAILURE);
                 break;
             }
             (it->second)->beingGathered(true);
@@ -475,7 +474,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()){
-                _debug("Received info about an unknown object.", Color::MMO_RED);
+                _debug("Received info about an unknown object.", Color::FAILURE);
                 break;
             }
             (it->second)->beingGathered(false);
@@ -490,11 +489,11 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()){
-                _debug("Received health info for an unknown object.", Color::MMO_RED);
+                _debug("Received health info for an unknown object.", Color::FAILURE);
                 break;
             }
             if (it->second->classTag() != 'n'){
-                _debug("Received health info for a non-NPC object.", Color::MMO_RED);
+                _debug("Received health info for a non-NPC object.", Color::FAILURE);
             }
             ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
             npc.health(health);
@@ -514,11 +513,11 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()){
-                _debug("Received loot info for an unknown object.", Color::MMO_RED);
+                _debug("Received loot info for an unknown object.", Color::FAILURE);
                 break;
             }
             if (it->second->classTag() != 'n'){
-                _debug("Received loot info for a non-NPC object.", Color::MMO_RED);
+                _debug("Received loot info for a non-NPC object.", Color::FAILURE);
             }
             ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
             npc.lootable(true);
@@ -533,11 +532,11 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()){
-                _debug("Received loot info for an unknown object.", Color::MMO_RED);
+                _debug("Received loot info for an unknown object.", Color::FAILURE);
                 break;
             }
             if (it->second->classTag() != 'n'){
-                _debug("Received loot info for a non-NPC object.", Color::MMO_RED);
+                _debug("Received loot info for a non-NPC object.", Color::FAILURE);
             }
             ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
             npc.lootable(false);
@@ -575,13 +574,13 @@ void Client::handleMessage(const std::string &msg){
                 return;
             auto objIt = _objects.find(serial);
             if (objIt == _objects.end()){
-                _debug("Info received about unknown object.", Color::MMO_RED);
+                _debug("Info received about unknown object.", Color::FAILURE);
                 break;
             }
             ClientObject &obj = const_cast<ClientObject &>(*objIt->second);
             size_t slots = obj.objectType()->merchantSlots();
             if (slot >= slots){
-                _debug("Received invalid merchant slot.", Color::MMO_RED);
+                _debug("Received invalid merchant slot.", Color::FAILURE);
                 break;
             }
             if (ware.empty() || price.empty()){
@@ -590,12 +589,12 @@ void Client::handleMessage(const std::string &msg){
             }
             auto wareIt = _items.find(ware);
             if (wareIt == _items.end()){
-                _debug("Received merchant slot describing invalid item", Color::MMO_RED);
+                _debug("Received merchant slot describing invalid item", Color::FAILURE);
                 break;
             }
             auto priceIt = _items.find(price);
             if (priceIt == _items.end()){
-                _debug("Received merchant slot describing invalid item", Color::MMO_RED);
+                _debug("Received merchant slot describing invalid item", Color::FAILURE);
                 break;
             }
             obj.setMerchantSlot(slot, ClientMerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty));
@@ -628,11 +627,11 @@ void Client::handleMessage(const std::string &msg){
         }
 
         default:
-            _debug << Color::MMO_RED << "Unhandled message: " << msg << Log::endl;
+            _debug << Color::FAILURE << "Unhandled message: " << msg << Log::endl;
         }
 
         if (del != MSG_END && !iss.eof()) {
-            _debug << Color::MMO_RED << "Bad message ending. code=" << msgCode
+            _debug << Color::FAILURE << "Bad message ending. code=" << msgCode
                    << "; remaining message = " << del << singleMsg.str() << Log::endl;
         }
 
@@ -714,7 +713,7 @@ void Client::performCommand(const std::string &commandString){
     iss >> c;
     if (c != '/') {
         assert(false);
-        _debug("Commands must begin with '/'.", Color::MMO_RED);
+        _debug("Commands must begin with '/'.", Color::FAILURE);
         return;
     }
 
@@ -784,5 +783,5 @@ void Client::performCommand(const std::string &commandString){
         return;
     }
 
-    _debug("Unknown command.", Color::MMO_RED);
+    _debug("Unknown command.", Color::FAILURE);
 }

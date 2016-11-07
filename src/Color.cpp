@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #include "Color.h"
 #include "util.h"
 
@@ -12,21 +10,42 @@ const Color Color::MAGENTA(0xff, 0x00, 0xff);
 const Color Color::YELLOW (0xff, 0xff, 0x00);
 const Color Color::WHITE  (0xff, 0xff, 0xff);
 
-const Color Color::MMO_OUTLINE  (0x2d, 0x28, 0x33);
-const Color Color::MMO_HIGHLIGHT(0xF2, 0xF2, 0x54);
-const Color Color::MMO_L_GREEN  (0x56, 0xAD, 0x62);
-const Color Color::MMO_GREEN    (0x3A, 0x75, 0x4C);
-const Color Color::MMO_D_GREEN  (0x22, 0x44, 0x32);
-const Color Color::MMO_L_BLUE   (0x47, 0x63, 0x6D);
-const Color Color::MMO_BLUE     (0x30, 0x41, 0x56);
-const Color Color::MMO_D_BLUE   (0x1E, 0x22, 0x42);
-const Color Color::MMO_GREY     (0x60, 0x5B, 0x66);
-const Color Color::MMO_L_GREY   (0x99, 0x99, 0x99);
-const Color Color::MMO_PURPLE   (0x6D, 0x47, 0x62);
-const Color Color::MMO_RED      (0xAA, 0x60, 0x55);
-const Color Color::MMO_D_SKIN   (0xBA, 0x86, 0x6A);
-const Color Color::MMO_SKIN     (0xC9, 0xAA, 0x7E);
-const Color Color::MMO_L_SKIN   (0xDB, 0xCF, 0x99);
+Color
+    Color::WARNING,
+    Color::FAILURE,
+    Color::SUCCESS,
+
+    Color::CHAT_LOG_BACKGROUND,
+    Color::SAY,
+    Color::WHISPER,
+
+    Color::DEFAULT_DRAW,
+    Color::FONT,
+    Color::FONT_OUTLINE,
+
+    Color::TOOLTIP_FONT,
+    Color::TOOLTIP_BACKGROUND,
+    Color::TOOLTIP_BORDER,
+
+    Color::ELEMENT_BACKGROUND,
+    Color::ELEMENT_SHADOW_DARK,
+    Color::ELEMENT_SHADOW_LIGHT,
+    Color::ELEMENT_FONT,
+    Color::CONTAINER_SLOT_BACKGROUND,
+
+    Color::FOOTPRINT_GOOD,
+    Color::FOOTPRINT_BAD,
+    Color::IN_RANGE,
+    Color::OUT_OF_RANGE,
+    Color::HEALTH_BAR,
+    Color::HEALTH_BAR_BACKGROUND,
+    Color::HEALTH_BAR_OUTLINE,
+    Color::CAST_BAR_FONT,
+    Color::PERFORMANCE_FONT,
+    Color::PROGRESS_BAR,
+    Color::PROGRESS_BAR_BACKGROUND,
+    Color::PLAYER_NAME,
+    Color::PLAYER_NAME_OUTLINE;
 
 const Color Color::GREY_2 (0x80, 0x80, 0x80);
 const Color Color::GREY_4 (0x40, 0x40, 0x40);

@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #ifndef PROGRESS_BAR_H
 #define PROGRESS_BAR_H
 
@@ -25,8 +23,8 @@ private:
 
 public:
     ProgressBar(const Rect &rect, const T &numerator, const T &denominator,
-               const Color&barColor = Color::MMO_PURPLE,
-               const Color &backgroundColor = Color::MMO_D_BLUE);
+               const Color&barColor = Color::PROGRESS_BAR,
+               const Color &backgroundColor = Color::PROGRESS_BAR_BACKGROUND);
 };
 
 

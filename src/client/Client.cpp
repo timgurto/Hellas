@@ -163,6 +163,38 @@ _debug("client.log"){
     xr.findAttr(elem, "width", chatW);
     xr.findAttr(elem, "height", chatH);
 
+    elem = xr.findChild("colors");
+    xr.findAttr(elem, "warning", Color::WARNING);
+    xr.findAttr(elem, "failure", Color::FAILURE);
+    xr.findAttr(elem, "success", Color::SUCCESS);
+    xr.findAttr(elem, "chatLogBackground", Color::CHAT_LOG_BACKGROUND);
+    xr.findAttr(elem, "say", Color::SAY);
+    xr.findAttr(elem, "whisper", Color::WHISPER);
+    xr.findAttr(elem, "defaultDraw", Color::DEFAULT_DRAW);
+    xr.findAttr(elem, "font", Color::FONT);
+    xr.findAttr(elem, "fontOutline", Color::FONT_OUTLINE);
+    xr.findAttr(elem, "tooltipFont", Color::TOOLTIP_FONT);
+    xr.findAttr(elem, "tooltipBackground", Color::TOOLTIP_BACKGROUND);
+    xr.findAttr(elem, "tooltipBorder", Color::TOOLTIP_BORDER);
+    xr.findAttr(elem, "elementBackground", Color::ELEMENT_BACKGROUND);
+    xr.findAttr(elem, "elementShadowDark", Color::ELEMENT_SHADOW_DARK);
+    xr.findAttr(elem, "elementShadowLight", Color::ELEMENT_SHADOW_LIGHT);
+    xr.findAttr(elem, "elementFont", Color::ELEMENT_FONT);
+    xr.findAttr(elem, "containerSlotBackground", Color::CONTAINER_SLOT_BACKGROUND);
+    xr.findAttr(elem, "footprintGood", Color::FOOTPRINT_GOOD);
+    xr.findAttr(elem, "footprintBad", Color::FOOTPRINT_BAD);
+    xr.findAttr(elem, "inRange", Color::IN_RANGE);
+    xr.findAttr(elem, "outOfRange", Color::OUT_OF_RANGE);
+    xr.findAttr(elem, "healthBar", Color::HEALTH_BAR);
+    xr.findAttr(elem, "healthBarBackground", Color::HEALTH_BAR_BACKGROUND);
+    xr.findAttr(elem, "healthBarOutline", Color::HEALTH_BAR_OUTLINE);
+    xr.findAttr(elem, "performanceFont", Color::CAST_BAR_FONT);
+    xr.findAttr(elem, "castBarFont", Color::PERFORMANCE_FONT);
+    xr.findAttr(elem, "progressBar", Color::PROGRESS_BAR);
+    xr.findAttr(elem, "progressBarBackground", Color::PROGRESS_BAR_BACKGROUND);
+    xr.findAttr(elem, "playerName", Color::PLAYER_NAME);
+    xr.findAttr(elem, "playerNameOutline", Color::PLAYER_NAME_OUTLINE);
+
     std::string fontFile = "poh_pixels.ttf";
     int fontSize = 16;
     elem = xr.findChild("gameFont");
@@ -181,6 +213,9 @@ _debug("client.log"){
     xr.findAttr(elem, "h", castBarH);
 
 
+    _debug << Color::FONT;
+
+
     Element::initialize();
 
     // Initialize chat log
@@ -189,13 +224,13 @@ _debug("client.log"){
     _chatLog = new List(Rect(0, 0, chatW, chatH - _chatTextBox->height()));
     _chatTextBox->rect(0, _chatLog->height());
     _chatTextBox->hide();
-    _chatContainer->addChild(new ColorBlock(_chatLog->rect(), Color::MMO_OUTLINE));
+    _chatContainer->addChild(new ColorBlock(_chatLog->rect(), Color::CHAT_LOG_BACKGROUND));
     _chatContainer->addChild(_chatLog);
     _chatContainer->addChild(_chatTextBox);
 
     addUI(_chatContainer);
-    SAY_COLOR = Color::MMO_L_GREY;
-    WHISPER_COLOR = Color::MMO_PURPLE;
+    SAY_COLOR = Color::SAY;
+    WHISPER_COLOR = Color::WHISPER;
 
     initializeMessageNames();
 
@@ -207,7 +242,7 @@ _debug("client.log"){
 
     int ret = (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 512) < 0);
     if (ret < 0){
-        _debug("SDL_mixer failed to initialize.", Color::MMO_RED);
+        _debug("SDL_mixer failed to initialize.", Color::FAILURE);
     } else {
         _debug("SDL_mixer initialized.");
     }
@@ -254,7 +289,7 @@ _debug("client.log"){
     const Rect
         CAST_BAR_RECT(SCREEN_X/2 - castBarW/2, castBarY, castBarW, castBarH),
         CAST_BAR_DIMENSIONS(0, 0, castBarW, castBarH);
-    static const Color CAST_BAR_LABEL_COLOR = Color::MMO_L_GREY;
+    static const Color CAST_BAR_LABEL_COLOR = Color::CAST_BAR_FONT;
     _castBar = new Element(CAST_BAR_RECT);
     _castBar->addChild(new ProgressBar<ms_t>(CAST_BAR_DIMENSIONS, _actionTimer, _actionLength));
     LinkedLabel<std::string> *castBarLabel = new LinkedLabel<std::string>(CAST_BAR_DIMENSIONS,
@@ -299,8 +334,8 @@ _debug("client.log"){
     LinkedLabel<ms_t> *lat = new LinkedLabel<ms_t>(
         Rect(0, HARDWARE_STATS_LABEL_HEIGHT, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT),
         _latency, "", "ms", Label::RIGHT_JUSTIFIED);
-    fps->setColor(Color::MMO_HIGHLIGHT);
-    lat->setColor(Color::MMO_HIGHLIGHT);
+    fps->setColor(Color::PERFORMANCE_FONT);
+    lat->setColor(Color::PERFORMANCE_FONT);
     hardwareStats->addChild(fps);
     hardwareStats->addChild(lat);
     addUI(hardwareStats);
@@ -321,7 +356,7 @@ _debug("client.log"){
     static const unsigned MAX_HEALTH = 100;
     playerDisplay->addChild(new ProgressBar<health_t>(
             Rect(2, PLAYER_H - BAR_HEIGHT - 2, PLAYER_W - 4, BAR_HEIGHT), _health, _stats.health,
-            Color::MMO_L_GREEN));
+            Color::HEALTH_BAR));
     addUI(playerDisplay);
     
     // Initialize target display
@@ -338,7 +373,7 @@ _debug("client.log"){
             Element::CENTER_JUSTIFIED));
     _targetDisplay->addChild(new ProgressBar<health_t>(
             Rect(2, TARGET_H - BAR_HEIGHT - 2, TARGET_W - 4, BAR_HEIGHT),
-            _targetNPCHealth, _targetNPCMaxHealth, Color::MMO_L_GREEN));
+            _targetNPCHealth, _targetNPCMaxHealth, Color::HEALTH_BAR));
     _targetDisplay->hide();
     addUI(_targetDisplay);
 }
@@ -390,10 +425,10 @@ void Client::checkSocket(){
                               cmdLineArgs.getInt("server-port") :
                               htons(8888);
         if (connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
-            _debug << Color::MMO_RED << "Connection error: " << WSAGetLastError() << Log::endl;
+            _debug << Color::FAILURE << "Connection error: " << WSAGetLastError() << Log::endl;
             _connectionStatus = CONNECTION_ERROR;
         } else {
-            _debug("Connected to server", Color::MMO_L_GREEN);
+            _debug("Connected to server", Color::SUCCESS);
             // Announce player name
             sendMessage(CL_I_AM, _username);
             sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
@@ -408,7 +443,7 @@ void Client::checkSocket(){
     static timeval selectTimeout = {0, 10000};
     int activity = select(0, &readFDs, nullptr, nullptr, &selectTimeout);
     if (activity == SOCKET_ERROR) {
-        _debug << Color::MMO_RED << "Error polling sockets: " << WSAGetLastError() << Log::endl;
+        _debug << Color::FAILURE << "Error polling sockets: " << WSAGetLastError() << Log::endl;
         return;
     }
     if (FD_ISSET(_socket.getRaw(), &readFDs)) {
@@ -446,7 +481,7 @@ void Client::run(){
 
         // Ensure server connectivity
         if (_loggedIn && _time - _lastPingReply > SERVER_TIMEOUT) {
-            _debug("Disconnected from server", Color::MMO_RED);
+            _debug("Disconnected from server", Color::FAILURE);
             _socket = Socket();
             _loggedIn = false;
         }

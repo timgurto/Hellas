@@ -4,4 +4,43 @@
 <castBar y=300 w=150 h=11 />
 <server hostDirectory="http://timgurto.com/mmo-server-ip.txt" port="8888"/>
 <gearWindow width=39 height=42 grid=0 gridY=0 gap=3 rows=2 cols=2 />
+
+<colors
+    warning="F2F254"
+    failure="AA6055"
+    success="56AD62"
+    
+    chatLogBackground="2D2833"
+    say="999999"
+    whisper="6D4762"
+    
+    defaultDraw="2D2833"
+    font="999999"
+    fontOutline="2D2833"
+    
+    tooltipFont="56AD62"
+    tooltipBackground="1E2242"
+    tooltipBorder="999999"
+    
+    elementBackground="304156"
+    elementShadowDark="1E2242"
+    elementShadowLight="47636D"
+    elementFont="999999"
+    containerSlotBackground="2D2833"
+    
+    footprintGood="605866"
+    footprintBad="AA6055"
+    inRange="56AD62"
+    outOfRange="C9AA7E"
+    healthBar="56AD62"
+    healthBarBackground="AA6055"
+    healthBarOutline="2D2833"
+    performanceFont="F2F254"
+    castBarFont="999999"
+    progressBar="6D4762"
+    progressBarBackground="1E2242"
+    playerName="DBCF99"
+    playerNameOutline="605866"
+>
+</colors>
 </root>

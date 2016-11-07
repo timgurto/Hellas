@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef LOG_SDL_H
 #define LOG_SDL_H
 
@@ -18,7 +16,7 @@ class LogSDL : public Log{
 public:
     LogSDL(const std::string &logFileName = "");
     ~LogSDL() override;
-    void operator()(const std::string &message, const Color &color = Color::MMO_L_GREY) override;
+    void operator()(const std::string &message, const Color &color = Color::FONT) override;
 
     template<typename T>
     LogSDL &operator<<(const T &val) {

@@ -36,15 +36,11 @@ void ClientNPC::draw(const Client &client) const{
         double
             x = location().x - toInt(BAR_TOTAL_LENGTH / 2),
             y = drawRect().y - BAR_GAP - BAR_HEIGHT;
-        static const Color
-            OUTLINE = Color::MMO_OUTLINE,
-            COLOR = Color::MMO_L_GREEN,
-            BACKGROUND_COLOR = Color::MMO_RED;
-        renderer.setDrawColor(Color::MMO_OUTLINE);
+        renderer.setDrawColor(Color::HEALTH_BAR_OUTLINE);
         renderer.drawRect(Rect(x-1 + offset.x, y-1 + offset.y, BAR_TOTAL_LENGTH + 2, BAR_HEIGHT + 2));
-        renderer.setDrawColor(COLOR);
+        renderer.setDrawColor(Color::HEALTH_BAR);
         renderer.fillRect(Rect(x, y, barLength, BAR_HEIGHT) + offset);
-        renderer.setDrawColor(BACKGROUND_COLOR);
+        renderer.setDrawColor(Color::HEALTH_BAR_BACKGROUND);
         renderer.fillRect(Rect(x + barLength, y, BAR_TOTAL_LENGTH - barLength, BAR_HEIGHT) + offset);
     }
 

@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #include <sstream>
 
 #include "Renderer.h"
@@ -7,22 +5,14 @@
 
 extern Renderer renderer;
 
-bool TooltipBuilder::initialized = false;
-
 const px_t TooltipBuilder::PADDING = 4; // Margins, and the height of gaps between lines.
 TTF_Font *TooltipBuilder::_defaultFont = nullptr;
-Color TooltipBuilder::DEFAULT_COLOR;
-Color TooltipBuilder::BACKGROUND_COLOR;
 const px_t TooltipBuilder::DEFAULT_MAX_WIDTH = 150;
 const px_t TooltipBuilder::NO_WRAP = 0;
 
 TooltipBuilder::TooltipBuilder()
 {
-    if (!initialized) {
-        DEFAULT_COLOR = Color::MMO_L_GREEN;
-        BACKGROUND_COLOR = Color::MMO_D_BLUE;
-    }
-    _color = DEFAULT_COLOR;
+    _color = Color::TOOLTIP_FONT;
 
     if (_defaultFont == nullptr)
         _defaultFont = TTF_OpenFont("04B_03__.TTF", 8);
@@ -69,7 +59,7 @@ Texture TooltipBuilder::publish(){
     // Create background
     Texture background(totalWidth, totalHeight);
     background.setRenderTarget();
-    renderer.setDrawColor(BACKGROUND_COLOR);
+    renderer.setDrawColor(Color::TOOLTIP_BACKGROUND);
     renderer.clear();
     background.setAlpha(0xbf);
 
@@ -79,7 +69,7 @@ Texture TooltipBuilder::publish(){
     background.draw();
 
     // Draw border
-    renderer.setDrawColor(Color::MMO_L_GREY);
+    renderer.setDrawColor(Color::TOOLTIP_BORDER);
     renderer.drawRect(Rect(0, 0, totalWidth, totalHeight));
 
     // Draw text

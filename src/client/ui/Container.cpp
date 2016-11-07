@@ -59,7 +59,7 @@ _solidBackground(solidBackground){
 }
 
 void Container::refresh(){
-    renderer.setDrawColor(Color::MMO_OUTLINE);
+    renderer.setDrawColor(Color::CONTAINER_SLOT_BACKGROUND);
     for (size_t i = 0; i != _linked.size(); ++i) {
         const px_t
             x = i % _cols,
@@ -78,7 +78,7 @@ void Container::refresh(){
                 if (slot.second > 1){
                     Texture
                         label(font(), makeArgs(slot.second), FONT_COLOR),
-                        labelOutline(font(), makeArgs(slot.second), Color::MMO_OUTLINE);
+                        labelOutline(font(), toString(slot.second), Color::FONT_OUTLINE);
                     px_t
                         x = slotRect.x + slotRect.w - label.width() - 1,
                         y = slotRect.y + slotRect.h - label.height() + 1 + textOffset;

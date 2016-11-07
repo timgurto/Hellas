@@ -1,11 +1,11 @@
-// (C) 2015-2016 Tim Gurto
-
 #ifndef XML_READER_H
 #define XML_READER_H
 
 #include <set>
 #include <string>
 #include <tinyxml.h>
+
+#include "Color.h"
 
 class NormalVariable;
 struct Rect;
@@ -44,6 +44,7 @@ public:
         return false;
     }
     static bool findAttr(TiXmlElement *elem, const char *attr, std::string &val);
+    static bool findAttr(TiXmlElement *elem, const char *attr, Color &val); // Hex string -> Color
 
     /*
     If a child exists with the specified name, attempt to read its 'mean' and 'sd' attributes into

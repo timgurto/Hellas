@@ -48,10 +48,10 @@ Element::~Element(){
 }
 
 void Element::initialize(){
-    BACKGROUND_COLOR = Color::MMO_BLUE;
-    SHADOW_LIGHT = Color::MMO_L_BLUE;
-    SHADOW_DARK = Color::MMO_D_BLUE;
-    FONT_COLOR = Color::MMO_L_GREY;
+    BACKGROUND_COLOR = Color::ELEMENT_BACKGROUND;
+    SHADOW_LIGHT = Color::ELEMENT_SHADOW_LIGHT;
+    SHADOW_DARK = Color::ELEMENT_SHADOW_DARK;
+    FONT_COLOR = Color::ELEMENT_FONT;
 
     ITEM_HEIGHT = max(Client::ICON_SIZE, TEXT_HEIGHT);
     Window::HEADING_HEIGHT = TEXT_HEIGHT + 3;

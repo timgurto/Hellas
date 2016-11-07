@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef RENDERER_H
 #define RENDERER_H
 
@@ -45,7 +43,7 @@ public:
     void drawTexture(SDL_Texture *srcTex, const Rect &dstRect);
     void drawTexture(SDL_Texture *srcTex, const Rect &dstRect, const Rect &srcRect);
 
-    void setDrawColor(const Color &color = Color::MMO_OUTLINE);
+    void setDrawColor(const Color &color = Color::DEFAULT_DRAW);
     void clear();
     void present();
 

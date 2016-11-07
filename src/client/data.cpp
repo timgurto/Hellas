@@ -103,7 +103,7 @@ void Client::loadData(const std::string &path){
                 continue; // product is mandatory.
             auto it = _items.find(s);
             if (it == _items.end()) {
-                _debug << Color::MMO_RED << "Skipping recipe with invalid product " << s << Log::endl;
+                _debug << Color::FAILURE << "Skipping recipe with invalid product " << s << Log::endl;
                 continue;
             }
             recipe.product(&*it);
@@ -114,7 +114,7 @@ void Client::loadData(const std::string &path){
                 if (xr.findAttr(child, "id", s)) {
                     auto it = _items.find(ClientItem(s));
                     if (it == _items.end()) {
-                        _debug << Color::MMO_RED << "Skipping invalid recipe material " << s << Log::endl;
+                        _debug << Color::FAILURE << "Skipping invalid recipe material " << s << Log::endl;
                         continue;
                     }
                     recipe.addMaterial(&*it, matQty);
