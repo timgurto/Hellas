@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F587C0B6-1063-43A4-BB6F-F512036EF518}</ProjectGuid>
     <RootNamespace>mmo</RootNamespace>
-    <ProjectName>mmo-server</ProjectName>
+    <ProjectName>server</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">

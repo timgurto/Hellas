@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mmo-client", "mmo-client.vcxproj", "{29C08517-04F7-4347-A804-23EDF7F4C606}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "client", "client.vcxproj", "{29C08517-04F7-4347-A804-23EDF7F4C606}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mmo-server", "mmo-server.vcxproj", "{F587C0B6-1063-43A4-BB6F-F512036EF518}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "server", "server.vcxproj", "{F587C0B6-1063-43A4-BB6F-F512036EF518}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mmo-test", "mmo-test.vcxproj", "{294EE75E-5C8D-4EA3-BBD1-545374329693}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test.vcxproj", "{294EE75E-5C8D-4EA3-BBD1-545374329693}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
