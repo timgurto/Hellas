@@ -21,7 +21,6 @@ issue,description,value,effort,type,blockedBy,done
 152,Prevent gathering/deconstructing when object has an inventory,34,2,Bug,,TRUE
 154,Allow giving away or begging for goods via trade,8,5,Feature,,
 156,Fix ambiguity of Object::removeItem() and Object::removeItems(),2,2,Code quality,,
-160,Cull terrain,21,13,Performance,,
 161,Cull players,34,8,Performance,,TRUE
 162,Cull objects,55,8,Performance,,TRUE
 163,Create generic particle system,8,8,Aesthetics,,TRUE
@@ -42,11 +41,6 @@ issue,description,value,effort,type,blockedBy,done
 182,Make use of Winsock modular,8,21,Code quality,,
 183,Linux support,21,13,Code quality,182,
 184,NPC idling AI,8,21,Feature,,
-185,Python client with text interface,34,21,Feature,,
-186,Random Python AI,8,13,Feature,189,
-187,Woodcutter Python AI,13,55,Feature,189,
-188,Merchant Python AI,5,55,Feature,189,
-189,Auto-login for Python client,8,13,Feature,185,
 190,Release scrollbar on mouse up,5,2,Bug,,
 191,Allow external clients to connect,55,13,Feature,,TRUE
 192,isLocationValid() only checks one point against one terrain tile/chunk,8,2,Bug,,
@@ -72,19 +66,61 @@ issue,description,value,effort,type,blockedBy,done
 215,"Blood particles for attacking and death, that remain for a time",5,5,Aesthetics,,
 216,Allow nonexistent data files (for tests),2,2,Code quality,,TRUE
 217,Sounds for attacking and death,8,8,Aesthetics,,
-218,Add homesteading and tile property rights,13,55,Feature,209,
-219,Find mechanics to encourage town construction,13,21,Feature,,
-220,Find mechanics to encourage specialization,13,21,Feature,,
 222,Stacks of the same item can be combined,5,5,Bug,,
 223,Remove useItem info from Container class; move it into Client object,1,2,Code quality,,
 224,Specialized loot window,2,3,Aesthetics,,TRUE
-225,Use polymorphism instead of classTag,3,3,Code quality
-226,Right-click to equip gear,5,2,Feature
-227,Shift + right-click to loot all,5,2,Feature
-228,Close client on single Esc press when disconnected,3,1,Bug
-229,Thorough and consistent tooltips,13,21,Aesthetics
-230,Display stats in client,13,2,Aesthetics
-231,Player can get stuck against terrain or NPCs,34,5,Bug
-232,NPCs get stuck on each other due to linear pathfinding,21,8,Bug
-234,Fail more gracefully and informatively when can't connect to server,3,5,Aesthetics
-235,Maintain aspect ratio,2,5,Bug
+225,Use polymorphism instead of classTag,3,3,Code quality,,
+226,Right-click to equip gear,5,2,Feature,,
+227,Shift + right-click to loot all,5,2,Feature,,
+228,Close client on single Esc press when disconnected,3,1,Bug,,
+229,Thorough and consistent tooltips,13,21,Aesthetics,,
+230,Display stats in client,13,2,Aesthetics,,
+231,Player can get stuck against terrain or NPCs,34,5,Bug,,
+232,NPCs get stuck on each other due to linear pathfinding,21,8,Bug,,
+234,Fail more gracefully and informatively when can't connect to server,3,5,Aesthetics,,
+235,Maintain aspect ratio,2,5,Bug,
+236,Vehicle objects,34,8,Feature,
+237,A boat that's restricted to water,21,5,Feature,236
+238,Choose map scale,5,3,Feature,
+239,Make full map,21,89,Feature,238
+240,"Server loads map from data file, rather than generating it",13,3,Code quality,280
+241,"Client loads map from data file, not via server messages",21,3,Performance,280
+242,Player 'factions' for ownership,5,34,Feature,
+243,Heavy objects that prevent player movement,5,3,Feature,
+244,Energy bar used up by attacking,5,3,Feature,
+245,Food that restores energy,13,5,Feature,244
+246,Each player can build one 'shrine'-class object,21,5,Feature,
+247,Buffs,13,13,Feature,
+248,A shrine that grants a buff,3,8,Feature,247
+249,A shrine that sets one's spawn point,13,8,Feature,
+250,A road object that affects movement speed,5,5,Feature,247
+251,A hoe constructs a farm plot without being consumed,3,3,Feature,
+252,"Seeds, that are constructed on top of a farm-plot object",3,5,Feature,
+253,A crop object that grows over time,5,5,Feature,
+254,Terrain types have fertility property,2,2,Feature,
+255,Fertility affects crop viability,5,5,Feature,254
+256,Containers may allow 'heavy' objects or not,13,5,Feature,243
+257,Rocks and sticks spawn gradually,13,5,Feature,
+258,Direct player trading,3,8,Feature,
+259,Players/factions can fight over object ownership,34,21,Feature,242
+260,More detailed permissions on objects,5,13,Feature,
+261,Objects can combine loot tables,13,8,Feature,
+262,A shrine that grants items,8,5,Feature,
+263,Talents/skills,89,89,Feature,273
+264,An object that affects terrain fertility,5,8,Feature,254
+265,NPCs can have skills/abilities,13,13,Feature,263
+266,Players must learn recipes,8,13,Feature,
+267,Set bonuses for gear,13,8,Feature,
+268,Learning skills might require tools,8,3,Feature,263
+269,XP and leveling,21,5,Feature,
+270,Grouped players get bonus XP,21,3,Feature,269
+271,Quests,8,34,Feature,
+272,Items that start quests,5,5,Feature,
+273,Player classes,13,3,Feature,
+274,Class-restricted gear,13,3,Feature,273
+275,Flags showing faction ownership,5,5,Feature,
+276,Some tools objects have a cooldown,21,5,Feature,
+277,Rare NPCs with better loot,21,8,Feature,
+278,Using shrines requires animal sacrifice,8,8,Feature,
+279,Containers may be restricted by item class,5,5,Feature,
+280,Make test map,5,3,Feature,
