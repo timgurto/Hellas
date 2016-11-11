@@ -28,8 +28,29 @@ data$color = cols[data$typeID]
 vals = c(1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144)
 data$roi = match(data$value, vals) - match(data$effort, vals)
 
-minROI = min(data$roi)
-maxROI = max(data$roi)
+data$done = !is.na(data$done)
+minROI = NULL
+maxROI = NULL
+for (i in 1:length(data$roi)){
+    if (!data$done[i]){
+        if (is.null(minROI))
+            minROI = data$roi[i]
+        else if (data$roi[i] < minROI)
+            minROI = data$roi[i]
+        if (is.null(maxROI))
+            maxROI = data$roi[i]
+        else if (data$roi[i] > maxROI)
+            maxROI = data$roi[i]
+    }
+}
+#for (i in 1:length(data$roi)){
+#    if (data$done[i]){
+#        if (data$roi[i] < minROI)
+#            data$roi = minROI
+#        else if (data$roi[i] > maxROI)
+#            data$roi = maxROI
+#    }
+#}
 roiRange = maxROI - minROI + 1
 roiPalette = colorRampPalette(brewer.pal(11, "RdYlGn"))
 paletteSize = roiRange;
@@ -155,7 +176,6 @@ for (v in 1:(numVals-1)){
 #	}
 #}
 
-data$done = !is.na(data$done)
 
 for (i in 1:length(data$roi)){
 	if (!data$done[i]) {
@@ -214,8 +234,11 @@ for (i in 1:length(data$roi)){
     text = c(text, fieldStr("typeColor", cols[data$type[i]]))
     text = c(text, fieldNum("value", data$value[i]))
     text = c(text, fieldNum("effort", data$effort[i]))
-    text = c(text, fieldNum("roi", data$roi[i]))
-    text = c(text, fieldStr("roiColor", roiCols[data$roi[i]+10]))
+    roi = data$roi[i]
+    text = c(text, fieldNum("roi", roi))
+    roiForColor = min(roi, maxROI)
+    roiForColor = max(roiForColor, minROI)
+    text = c(text, fieldStr("roiColor", roiCols[roiForColor+10]))
     text = c(text, fieldNum("done", if (data$done[i]) "true" else "false"))
     
     if (!is.na(data$blockedBy[i])){
