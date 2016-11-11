@@ -22,6 +22,36 @@ Server only:
 -->
 
 <objectType
+    id="stick"
+    name="Stick"
+    xDrawOffset=-10
+    yDrawOffset=-4
+    canGather=1
+    gatherTime=1000 >
+    <yield id="stick" />
+</objectType>
+
+<objectType
+    id="rock"
+    name="Rock"
+    xDrawOffset=-5
+    yDrawOffset=-5
+    canGather=1
+    gatherTime=1000 >
+    <yield id="rock" />
+</objectType>
+
+<objectType
+    id="grass"
+    name="Grass"
+    xDrawOffset=-7
+    yDrawOffset=-8
+    canGather=1
+    gatherTime=1000 >
+    <yield id="grass" initialMean=1.8 initialSD=0.6 gatherMean=10 />
+</objectType>
+
+<objectType
     id="tree"
     name="Tree"
     xDrawOffset=-23
@@ -31,22 +61,26 @@ Server only:
     gatherParticles="tree"
     gatherReq="axe"
     gatherTime=3000 >
-    <yield id="wood" initialMean=6 initialSD=0.8 />
+    <yield id="log" initialMean=6 initialSD=1 />
+    <yield id="stick" initialMean=5 initialSD=2 />
     <collisionRect x=-7 y=-3 w=16 h=6 />
 </objectType>
 
 <objectType
-    id="branch"
-    gatherTime=1000
-    name="Branch"
-    xDrawOffset=-9
-    yDrawOffset=-9
+    id="surfaceTin"
+    name="Surface Tin"
+    xDrawOffset=-14
+    yDrawOffset=-11
     canGather=1
+    gatherParticles="tin"
+    gatherReq="pick"
+    gatherTime=3000
     isFlat=1 >
-    <yield id="wood" />
+    <yield id="tinOre" initialMean=4 initialSD=1.5 />
+    <yield id="rock" initialMean=1.5 initialSD=2 />
 </objectType>
 
-<objectType
+<!--objectType
     id="chest"
     name="Wooden chest"
     xDrawOffset=-12
@@ -71,5 +105,5 @@ Server only:
     <collisionRect x=-13 y=-4 w=25 h=8 />
     <class name="set square" />
     <container slots=5 />
-</objectType>
+</objectType-->
 </root>

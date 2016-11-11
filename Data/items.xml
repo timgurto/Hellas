@@ -13,28 +13,57 @@ Client only:
 -->
 
 <item
-    id="wood"
-    name="Wood"
-    stackSize=5
+    id="stick"
+    name="Stick"
+    stackSize=10
 />
 
 <item
-    id="axe"
-    name="Wooden axe" >
+    id="rock"
+    name="Rock"
+    stackSize=10
+/>
+
+<item
+    id="grass"
+    name="Grass"
+    stackSize=20
+/>
+
+<item
+    id="sharpenedStone"
+    name="Sharpened stone" >
+</item>
+
+<item
+    id="stoneAxe"
+    name="Stone axe" >
     <class name="axe" />
 </item>
 
 <item
+    id="stonePick"
+    name="Stone pick" >
+    <class name="pick" />
+</item>
+
+<item
+    id="log"
+    name="Log"
+    stackSize=5
+/>
+
+<item
+    id="tinOre"
+    name="Tin ore"
+    stackSize=10
+/>
+
+<!--item
     id="chest"
     name="Wooden chest"
     constructs="chest" >
     <class name="container"/>
-</item>
-
-<item
-    id="setSquare"
-    name="Set square" >
-    <class name="set square"/>
 </item>
 
 <item
@@ -43,22 +72,12 @@ Client only:
     constructs="tradeCart" />
 
 <item
-    id="hide"
-    name="Hide"
-    stackSize=5 />
-
-<item
-    id="bone"
-    name="Bone"
-    stackSize=10 />
-
-<item
     id="hat"
     name="Leather Cap"
     gearSlot=0 >
     <stats
         attack=5
     />
-</item>
+</item-->
     
 </root>

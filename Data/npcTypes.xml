@@ -27,7 +27,7 @@ Server only:
     <loot id="bone" > <normal mean=1 sd=0.5 /> </loot>
 </npcType>
 
-<npcType
+<!--npcType
     id="boar"
     name="Wild boar"
 	maxHealth=40
@@ -38,6 +38,6 @@ Server only:
     <collisionRect x=-9 y=-4 w=18 h=7 />
     <loot id="hide" />
     <loot id="bone" > <normal mean=2 sd=0.7 /> </loot>
-</npcType>
+</npcType-->
 
 </root>

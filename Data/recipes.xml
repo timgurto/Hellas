@@ -1,19 +1,28 @@
 <root>
 
 <recipe
-    id="axe" time=10000 product="axe" >
-    <material id="wood" quantity=3 />
+    id="sharpenedStone" time=10000 product="sharpenedStone" >
+    <material id="rock" quantity=2 />
 </recipe>
 
 <recipe
+    id="stoneAxe" time=10000 product="stoneAxe" >
+    <material id="sharpenedStone" />
+    <material id="grass" />
+    <material id="stick" />
+</recipe>
+
+<recipe
+    id="stonePick" time=10000 product="stonePick" >
+    <material id="sharpenedStone" />
+    <material id="grass" />
+    <material id="stick" />
+</recipe>
+
+<!--recipe
     id="chest" time=10000 product="chest" >
     <material id="wood" quantity=5 />
     <tool name="set square" />
-</recipe>
-
-<recipe
-    id="setSquare" time=10000 product="setSquare" >
-    <material id="wood" quantity=2 />
 </recipe>
 
 <recipe
@@ -24,6 +33,6 @@
 <recipe
     id="hat" time=10000 product="hat" >
     <material id="hide" quantity=2 />
-</recipe>
+</recipe-->
 
 </root>

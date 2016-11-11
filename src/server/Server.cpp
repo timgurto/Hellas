@@ -494,19 +494,9 @@ void Server::generateWorld(){
                 _map[x][y] = WATER;
         }
 
-    const ObjectType *const branch = findObjectTypeByName("branch");
-    if (branch != nullptr)
-        for (int i = 0; i != 30; ++i){
-            Point loc;
-            do {
-                loc = mapRand();
-            } while (!isLocationValid(loc, *branch));
-            addObject(branch, loc);
-        }
-
     const ObjectType *const tree = findObjectTypeByName("tree");
     if (tree != nullptr)
-        for (int i = 0; i != 10; ++i) {
+        for (int i = 0; i != 10; ++i){
             Point loc;
             do {
                 loc = mapRand();
@@ -514,24 +504,44 @@ void Server::generateWorld(){
             addObject(tree, loc);
         }
 
-    const ObjectType *const chest = findObjectTypeByName("chest");
-    if (chest != nullptr)
-        for (int i = 0; i != 10; ++i) {
+    const ObjectType *const surfaceTin = findObjectTypeByName("surfaceTin");
+    if (surfaceTin != nullptr)
+        for (int i = 0; i != 10; ++i){
             Point loc;
             do {
                 loc = mapRand();
-            } while (!isLocationValid(loc, *chest));
-            addObject(chest, loc);
+            } while (!isLocationValid(loc, *surfaceTin));
+            addObject(surfaceTin, loc);
         }
 
-    const ObjectType *const tradeCart = findObjectTypeByName("tradeCart");
-    if (tradeCart != nullptr)
-        for (int i = 0; i != 20; ++i) {
+    const ObjectType *const rock = findObjectTypeByName("rock");
+    if (rock != nullptr)
+        for (int i = 0; i != 50; ++i){
             Point loc;
             do {
                 loc = mapRand();
-            } while (!isLocationValid(loc, *tradeCart));
-            addObject(tradeCart, loc);
+            } while (!isLocationValid(loc, *rock));
+            addObject(rock, loc);
+        }
+
+    const ObjectType *const stick = findObjectTypeByName("stick");
+    if (stick != nullptr)
+        for (int i = 0; i != 50; ++i) {
+            Point loc;
+            do {
+                loc = mapRand();
+            } while (!isLocationValid(loc, *stick));
+            addObject(stick, loc);
+        }
+
+    const ObjectType *const grass = findObjectTypeByName("grass");
+    if (grass != nullptr)
+        for (int i = 0; i != 250; ++i) {
+            Point loc;
+            do {
+                loc = mapRand();
+            } while (!isLocationValid(loc, *grass));
+            addObject(grass, loc);
         }
 
     // NPCs
@@ -544,17 +554,6 @@ void Server::generateWorld(){
                 loc = mapRand();
             } while (!isLocationValid(loc, *critter));
             addObject(new NPC(critter, loc));
-        }
-    }
-    const ObjectType *const boarObj = findObjectTypeByName("boar");
-    if (critterObj != nullptr){
-        const NPCType *const boar = dynamic_cast<const NPCType *const>(boarObj);
-        for (int i = 0; i != 10; ++i) {
-            Point loc;
-            do {
-                loc = mapRand();
-            } while (!isLocationValid(loc, *boar));
-            addObject(new NPC(boar, loc));
         }
     }
 
