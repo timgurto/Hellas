@@ -22,7 +22,8 @@ Rect Entity::drawRect() const {
 }
 
 void Entity::draw(const Client &client) const{
-    image().draw(drawRect() + client.offset());
+    (client.currentMouseOverEntity() == this ? highlightImage() : image())
+        .draw(drawRect() + client.offset());
 }
 
 double Entity::bottomEdge() const{

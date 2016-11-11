@@ -45,7 +45,9 @@ Color
     Color::PROGRESS_BAR,
     Color::PROGRESS_BAR_BACKGROUND,
     Color::PLAYER_NAME,
-    Color::PLAYER_NAME_OUTLINE;
+    Color::PLAYER_NAME_OUTLINE,
+    Color::OUTLINE,
+    Color::HIGHLIGHT_OUTLINE;
 
 const Color Color::GREY_2 (0x80, 0x80, 0x80);
 const Color Color::GREY_4 (0x40, 0x40, 0x40);

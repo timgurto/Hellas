@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <SDL_image.h>
@@ -60,6 +58,24 @@ _programEndMarker(false){
     }
     _raw = renderer.createTextureFromSurface(surface);
     SDL_FreeSurface(surface);
+    if (_raw != nullptr)
+        addRef();
+    const int ret = SDL_QueryTexture(_raw, nullptr, nullptr, &_w, &_h);
+    if (ret != 0) {
+        removeRef();
+    _raw = 0;
+    }
+}
+
+Texture::Texture(SDL_Surface *surface):
+_raw(nullptr),
+_w(0),
+_h(0),
+_validTarget(false),
+_programEndMarker(false){
+    if (surface == nullptr)
+        return;
+    _raw = renderer.createTextureFromSurface(surface);
     if (_raw != nullptr)
         addRef();
     const int ret = SDL_QueryTexture(_raw, nullptr, nullptr, &_w, &_h);

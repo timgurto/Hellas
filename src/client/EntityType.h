@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef ENTITY_TYPE_H
 #define ENTITY_TYPE_H
 
@@ -11,7 +9,7 @@
 
 // Describes a class of Entities, the "instances" of which share common properties
 class EntityType{
-    Texture _image;
+    Texture _image, _imageHighlight;
     Rect _drawRect; // Where to draw the image, relative to its location
     bool _isFlat; // Whether these objects appear flat, i.e., are drawn behind all other entities.
 
@@ -23,6 +21,7 @@ public:
 
     void image(const std::string &filename);
     const Texture &image() const { return _image; }
+    const Texture &highlightImage() const { return _imageHighlight; }
     const Rect &drawRect() const { return _drawRect; }
     void drawRect(const Rect &rect) { _drawRect = rect; }
     bool isFlat() const { return _isFlat; }
@@ -30,9 +29,9 @@ public:
     px_t width() const { return _drawRect.w; }
     px_t height() const { return _drawRect.h; }
 
-    virtual char classTag() const { return 'e'; }
+    void setHighlightImage(const std::string &imageFile);
 
-    void drawAt(const Point &loc) const;
+    virtual char classTag() const { return 'e'; }
 };
 
 #endif

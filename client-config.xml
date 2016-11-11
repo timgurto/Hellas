@@ -41,6 +41,9 @@
     progressBarBackground="413168"
     playerName="2C6777"
     playerNameOutline="170A33"
+    
+    outline = "170A33"
+    highlightOutline = "E5E5E5"
 >
 </colors>
 </root>

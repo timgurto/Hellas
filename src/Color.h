@@ -49,7 +49,10 @@ public:
         PROGRESS_BAR,
         PROGRESS_BAR_BACKGROUND,
         PLAYER_NAME,
-        PLAYER_NAME_OUTLINE;
+        PLAYER_NAME_OUTLINE,
+
+        OUTLINE,
+        HIGHLIGHT_OUTLINE;
 
     static const Color GREY_2;
     static const Color GREY_4;

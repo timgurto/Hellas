@@ -194,6 +194,8 @@ _debug("client.log"){
     xr.findAttr(elem, "progressBarBackground", Color::PROGRESS_BAR_BACKGROUND);
     xr.findAttr(elem, "playerName", Color::PLAYER_NAME);
     xr.findAttr(elem, "playerNameOutline", Color::PLAYER_NAME_OUTLINE);
+    xr.findAttr(elem, "outline", Color::OUTLINE);
+    xr.findAttr(elem, "highlightOutline", Color::HIGHLIGHT_OUTLINE);
 
     std::string fontFile = "poh_pixels.ttf";
     int fontSize = 16;

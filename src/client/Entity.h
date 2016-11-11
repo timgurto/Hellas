@@ -40,6 +40,7 @@ public:
     bool needsTooltipRefresh() { return _needsTooltipRefresh; }
     const Texture &tooltip() const { return _tooltip; }
     virtual const Texture &image() const { return _type->image(); }
+    virtual const Texture &highlightImage() const { return _type->highlightImage(); }
     void markForRemoval() { _toRemove = true; }
     bool markedForRemoval() const { return _toRemove; }
     virtual bool isFlat() const { return _type->isFlat(); }
