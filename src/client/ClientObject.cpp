@@ -326,32 +326,6 @@ void ClientObject::playGatherSound() const {
     }
 }
 
-void ClientObject::draw(const Client &client) const{
-    assert(type());
-    // Highilght moused-over entity
-    if (this == client.currentMouseOverEntity()) {
-        if (distance(collisionRect(), client.playerCollisionRect()) <= Client::ACTION_DISTANCE)
-            renderer.setDrawColor(Color::IN_RANGE);
-        else
-            renderer.setDrawColor(Color::OUT_OF_RANGE);
-        renderer.drawRect(collisionRect() + Rect(-1, -1, 2, 2) + client.offset());
-    }
-
-    Entity::draw(client);
-
-    if (isDebug()) {
-        renderer.setDrawColor(Color::WHITE);
-        renderer.drawRect(collisionRect() + client.offset());
-        renderer.setDrawColor(Color::YELLOW);
-        renderer.fillRect(Rect(location().x + client.offset().x,
-                                location().y + client.offset().y - 1,
-                                1, 3));
-        renderer.fillRect(Rect(location().x + client.offset().x - 1,
-                               location().y + client.offset().y,
-                               3, 1));
-    }
-}
-
 void ClientObject::onInventoryUpdate() {
     if (_window != nullptr)
         _window->forceRefresh();

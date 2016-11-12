@@ -57,7 +57,6 @@ public:
     virtual char classTag() const override { return 'o'; }
 
     virtual void update(double delta) override;
-    virtual void draw(const Client &client) const;
     virtual const Texture &cursor(const Client &client) const override;
 
     Rect collisionRect() const { return objectType()->collisionRect() + location(); }

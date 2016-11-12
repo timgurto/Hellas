@@ -19,8 +19,10 @@ void ClientNPC::draw(const Client &client) const{
     const Point &offset = client.offset();
 
     // Draw the sprite here, rather than calling Entity::draw()
-    const Texture image = _health > 0 ? type()->image() : npcType()->corpseImage();
-    image.draw(location() + offset + type()->drawRect());
+    if (health() > 0)
+        ClientObject::draw(client);
+    else
+        npcType()->corpseImage().draw(location() + offset + type()->drawRect());
 
     // Draw health bar if damaged or targeted
     if (health() == 0)
