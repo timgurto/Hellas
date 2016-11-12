@@ -301,8 +301,11 @@ void Server::addUser(const Socket &socket, const std::string &name){
     _usersByName[name] = &*it;
 
     // Add user to location-indexed trees
-    _usersByX.insert(&*it);
-    _usersByY.insert(&*it);
+    const User *userP = &*it;
+    _usersByX.insert(userP);
+    _usersByY.insert(userP);
+    _objectsByX.insert(userP);
+    _objectsByY.insert(userP);
 }
 
 void Server::removeUser(const std::set<User>::iterator &it){
