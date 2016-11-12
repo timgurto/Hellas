@@ -16,28 +16,23 @@ _lootContainer(nullptr)
 {}
 
 void ClientNPC::draw(const Client &client) const{
-    const Point &offset = client.offset();
-
-    // Draw the sprite here, rather than calling Entity::draw()
-    if (health() > 0)
-        ClientObject::draw(client);
-    else
-        npcType()->corpseImage().draw(location() + offset + type()->drawRect());
+    ClientObject::draw(client);
 
     // Draw health bar if damaged or targeted
     if (health() == 0)
         return;
     if (client.targetNPC() == this || client.currentMouseOverEntity() == this ||
-        _health < npcType()->maxHealth()){
+        health() < npcType()->maxHealth()){
         static const px_t
             BAR_TOTAL_LENGTH = 10,
             BAR_HEIGHT = 2,
             BAR_GAP = 0; // Gap between the bar and the top of the sprite
         px_t
-            barLength = toInt(1.0 * BAR_TOTAL_LENGTH * _health / npcType()->maxHealth());
+            barLength = toInt(1.0 * BAR_TOTAL_LENGTH * health() / npcType()->maxHealth());
         double
             x = location().x - toInt(BAR_TOTAL_LENGTH / 2),
             y = drawRect().y - BAR_GAP - BAR_HEIGHT;
+    const Point &offset = client.offset();
         renderer.setDrawColor(Color::HEALTH_BAR_OUTLINE);
         renderer.drawRect(Rect(x-1 + offset.x, y-1 + offset.y, BAR_TOTAL_LENGTH + 2, BAR_HEIGHT + 2));
         renderer.setDrawColor(Color::HEALTH_BAR);
@@ -94,7 +89,7 @@ void ClientNPC::createWindow(Client &client){
 }
 
 const Texture &ClientNPC::cursor(const Client &client) const{
-    if (_health > 0)
+    if (health() > 0)
         return client.cursorAttack();
     if (lootable())
         return  client.cursorContainer();
@@ -108,4 +103,12 @@ void ClientNPC::onInventoryUpdate(){
 
 bool ClientNPC::isFlat() const{
     return Entity::isFlat() || health() == 0;
+}
+
+const Texture &ClientNPC::image() const{
+    return (health() > 0) ? ClientObject::image() : npcType()->corpseImage();
+}
+
+const Texture &ClientNPC::highlightImage() const{
+    return (health() > 0) ? ClientObject::highlightImage() : npcType()->corpseHighlightImage();
 }

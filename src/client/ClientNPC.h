@@ -20,7 +20,9 @@ public:
     static const size_t LOOT_CAPACITY;
 
     ClientNPC(size_t serial, const ClientNPCType *type = nullptr, const Point &loc = Point());
-
+    
+    virtual const Texture &image() const;
+    virtual const Texture &highlightImage() const;
     health_t health() const { return _health; }
     void health(health_t n) { _health = n; }
     bool lootable() const { return _lootable; }

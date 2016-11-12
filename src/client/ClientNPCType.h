@@ -7,16 +7,16 @@
 
 class ClientNPCType : public ClientObjectType{
     health_t _maxHealth;
-    Texture _corpseImage;
+    Texture _corpseImage, _corpseHighlightImage;
 
 public:
     ClientNPCType(const std::string &id, health_t maxHealth);
 
     health_t maxHealth() const { return _maxHealth; }
     void maxHealth(health_t n) { _maxHealth = n; }
-    void corpseImage(const std::string &filename)
-            { _corpseImage = Texture(filename, Color::MAGENTA); }
+    void corpseImage(const std::string &filename);
     const Texture &corpseImage() const { return _corpseImage; }
+    const Texture &corpseHighlightImage() const { return _corpseHighlightImage; }
 
     virtual char classTag() const override { return 'n'; }
 };
