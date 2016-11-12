@@ -53,3 +53,7 @@ std::vector<std::string> Avatar::getTooltipMessages(const Client &client) const 
     text.push_back("Player");
     return text;
 }
+
+void Avatar::cleanup(){
+    _entityType = EntityType();
+}

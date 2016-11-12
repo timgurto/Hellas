@@ -385,7 +385,7 @@ Client::~Client(){
     Element::cleanup();
     if (_defaultFont != nullptr)
         TTF_CloseFont(_defaultFont);
-    Avatar::image("");
+    Avatar::cleanup();
     for (const Entity *entityConst : _entities) {
         Entity *entity = const_cast<Entity *>(entityConst);
         if (entity != &_character)

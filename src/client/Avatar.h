@@ -31,6 +31,8 @@ public:
     virtual void update(double delta) override;
     virtual std::vector<std::string> getTooltipMessages(const Client &client) const override;
 
+    static void cleanup();
+
 private:
     /*
     Get the next location towards destination, with distance determined by
