@@ -15,6 +15,7 @@ public:
 
     Uint32 getPixel(px_t x, px_t y) const;
     void setPixel(px_t x, px_t y, Uint32 color);
+    void swapColors(Uint32 fromColor, Uint32 toColor);
 
     SDL_Texture *toTexture() const;
 };

@@ -12,17 +12,10 @@ _maxHealth(maxHealth)
 void ClientNPCType::corpseImage(const std::string &filename){
     _corpseImage = Texture(filename, Color::MAGENTA);
 
+    // Set corpse highlight image
     Surface corpseHighlightSurface(filename, Color::MAGENTA);
     if (!corpseHighlightSurface)
         return;
-
-    // Recolor edges
-    for (px_t x = 0; x != _corpseImage.width(); ++x)
-        for (px_t y = 0; y != _corpseImage.height(); ++y){
-            if (corpseHighlightSurface.getPixel(x, y) == Color::OUTLINE)
-                corpseHighlightSurface.setPixel(x, y, Color::HIGHLIGHT_OUTLINE);
-        }
-
-    // Convert to Texture
+    corpseHighlightSurface.swapColors(Color::OUTLINE, Color::HIGHLIGHT_OUTLINE);
     _corpseHighlightImage = Texture(corpseHighlightSurface);
 }

@@ -18,15 +18,7 @@ void EntityType::setHighlightImage(const std::string &imageFile){
     Surface highlightSurface(imageFile, Color::MAGENTA);
     if (!highlightSurface)
         return;
-
-    // Recolor edges
-    for (px_t x = 0; x != _drawRect.w; ++x)
-        for (px_t y = 0; y != _drawRect.h; ++y){
-            if (highlightSurface.getPixel(x, y) == Color::OUTLINE)
-                highlightSurface.setPixel(x, y, Color::HIGHLIGHT_OUTLINE);
-        }
-
-    // Convert to Texture
+    highlightSurface.swapColors(Color::OUTLINE, Color::HIGHLIGHT_OUTLINE);
     _imageHighlight = Texture(highlightSurface);
 }
 

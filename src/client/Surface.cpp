@@ -89,3 +89,10 @@ void Surface::setPixel(px_t x, px_t y, Uint32 color){
             break;
     }
 }
+
+void Surface::swapColors(Uint32 fromColor, Uint32 toColor){
+    for (size_t x = 0; x != _raw->w; ++x)
+        for (size_t y = 0; y != _raw->h; ++y)
+            if (getPixel(x, y) == fromColor)
+                setPixel(x, y, toColor);
+}
