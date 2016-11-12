@@ -19,9 +19,12 @@ White       E5E5E5
 Light green 62BA6C
 Green       357F51
 Dark green  154434
-Light blue  2C6777
-Blue        1F3C60
-Dark blue   161B4C
+Light teal  2C6777
+Teal        1F3C60
+Dark teal   161B4C
+Light blue  3478D8
+Blue        394FB2
+Dark blue   3C388C
 -->
 <colors
     warning="E8CE94"
@@ -57,7 +60,7 @@ Dark blue   161B4C
     castBarFont="E5E5E5"
     progressBar="8778A5"
     progressBarBackground="413168"
-    playerName="2C6777"
+    playerName="3478D8"
     playerNameOutline="170A33"
     
     outline = "170A33"
