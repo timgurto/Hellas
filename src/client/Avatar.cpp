@@ -29,17 +29,15 @@ void Avatar::draw(const Client &client) const{
     }
 
     // Draw username
-    const Color &color = Color::PLAYER_NAME;
-    const Color &outline = Color::PLAYER_NAME_OUTLINE;
     if (_name != client.username()) {
-        const Texture nameTexture(client.defaultFont(), _name, outline);
+        const Texture outlineTexture(client.defaultFont(), _name, Color::PLAYER_NAME_OUTLINE);
         Point p = location() + client.offset();
         p.y -= 60;
-        p.x -= nameTexture.width() / 2;
-        for (int x = -1; x <= 1; x += 2)
-            for (int y = -1; y <= 1; y += 2)
-                nameTexture.draw(p + Point(x, y));
-        Texture(client.defaultFont(), _name, color).draw(p);
+        p.x -= outlineTexture.width() / 2;
+        for (int x = -1; x <= 1; ++x)
+            for (int y = -1; y <= 1; ++y)
+                outlineTexture.draw(p + Point(x, y));
+        Texture(client.defaultFont(), _name, Color::PLAYER_NAME).draw(p);
     }
 }
 
