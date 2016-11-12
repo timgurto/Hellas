@@ -1,10 +1,8 @@
-#include <SDL.h>
-#include <SDL_ttf.h>
-#include <SDL_image.h>
 #include <cassert>
 
 #include "../Color.h"
 #include "Renderer.h"
+#include "Surface.h"
 #include "Texture.h"
 
 extern Renderer renderer;
@@ -50,38 +48,34 @@ _programEndMarker(false){
         return;
     assert (renderer);
 
-    SDL_Surface *const surface = IMG_Load(filename.c_str());
-    if (surface == nullptr)
+    Surface surface(filename, colorKey);
+    if (!surface)
         return;
-    if (&colorKey != &Color::NO_KEY) {
-        SDL_SetColorKey(surface, SDL_TRUE, colorKey);
-    }
-    _raw = renderer.createTextureFromSurface(surface);
-    SDL_FreeSurface(surface);
+    _raw = surface.toTexture();
     if (_raw != nullptr)
         addRef();
     const int ret = SDL_QueryTexture(_raw, nullptr, nullptr, &_w, &_h);
     if (ret != 0) {
         removeRef();
-    _raw = 0;
+        _raw = 0;
     }
 }
 
-Texture::Texture(SDL_Surface *surface):
+Texture::Texture(const Surface &surface):
 _raw(nullptr),
 _w(0),
 _h(0),
 _validTarget(false),
 _programEndMarker(false){
-    if (surface == nullptr)
+    if (!surface)
         return;
-    _raw = renderer.createTextureFromSurface(surface);
+    _raw = surface.toTexture();
     if (_raw != nullptr)
         addRef();
     const int ret = SDL_QueryTexture(_raw, nullptr, nullptr, &_w, &_h);
     if (ret != 0) {
         removeRef();
-    _raw = 0;
+        _raw = 0;
     }
 }
 
@@ -96,14 +90,17 @@ _programEndMarker(false){
     if (font == nullptr)
         return;
 
-    SDL_Surface *const surface = TTF_RenderText_Solid(font, text.c_str(), color);
-    if (surface == nullptr)
+    Surface surface(font, text, color);
+    if (!surface)
         return;
-    _raw = renderer.createTextureFromSurface(surface);
-    SDL_FreeSurface(surface);
-    SDL_QueryTexture(_raw, nullptr, nullptr, &_w, &_h);
+    _raw = surface.toTexture();
     if (_raw != nullptr)
         addRef();
+    const int ret = SDL_QueryTexture(_raw, nullptr, nullptr, &_w, &_h);
+    if (ret != 0) {
+        removeRef();
+        _raw = 0;
+    }
 }
 
 Texture::Texture(const Texture &rhs):

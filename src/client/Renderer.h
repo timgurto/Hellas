@@ -59,9 +59,6 @@ public:
 
     void pushRenderTarget(Texture &target);
     void popRenderTarget();
-    
-    static Uint32 getPixel(SDL_Surface *surface, px_t x, px_t y);
-    static void setPixel(SDL_Surface *surface, px_t x, px_t y, Uint32 color);
 };
 
 #endif

@@ -9,6 +9,8 @@
 #include "../Color.h"
 #include "../Point.h"
 
+class Surface;
+
 // A wrapper class for SDL_Texture, which also provides related functionality
 class Texture{
     SDL_Texture *_raw;
@@ -28,7 +30,7 @@ public:
     Texture();
     Texture(px_t width, px_t height); // Create a blank texture, which can be rendered to
     Texture(const std::string &filename, const Color &colorKey = Color::NO_KEY);
-    Texture(SDL_Surface *surface);
+    Texture(const Surface &surface);
     Texture(TTF_Font *font, const std::string &text, const Color &color = Color::FONT);
     ~Texture();
 

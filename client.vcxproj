@@ -117,6 +117,7 @@
     <ClCompile Include="src\client\Particle.cpp" />
     <ClCompile Include="src\client\ParticleProfile.cpp" />
     <ClCompile Include="src\client\Renderer.cpp" />
+    <ClCompile Include="src\client\Surface.cpp" />
     <ClCompile Include="src\Client\Terrain.cpp" />
     <ClCompile Include="src\client\Texture.cpp" />
     <ClCompile Include="src\client\TooltipBuilder.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="src\client\Particle.h" />
     <ClInclude Include="src\client\ParticleProfile.h" />
     <ClInclude Include="src\client\Renderer.h" />
+    <ClInclude Include="src\client\Surface.h" />
     <ClInclude Include="src\Client\Terrain.h" />
     <ClInclude Include="src\client\Texture.h" />
     <ClInclude Include="src\client\TooltipBuilder.h" />
