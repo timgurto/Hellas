@@ -5,12 +5,30 @@
 <server hostDirectory="http://timgurto.com/mmo-server-ip.txt" port="8888"/>
 <gearWindow width=39 height=42 grid=0 gridY=0 gap=3 rows=2 cols=2 />
 
+<!--
+Yellow      FFFFB2
+Light skin  E8CE94
+Skin        CE9B79
+Dark skin   BA6C62
+Red         A34C5C
+Purple      772C67
+Dark purple 170A33
+Dark grey   413168
+Light grey  8778A5
+White       E5E5E5
+Light green 62BA6C
+Green       357F51
+Dark green  154434
+Light blue  2C6777
+Blue        1F3C60
+Dark blue   161B4C
+-->
 <colors
     warning="E8CE94"
     failure="A34C5C"
     success="62BA6C"
     
-    chatLogBackground="170A33"
+    chatLogBackground="413168"
     say="E5E5E5"
     whisper="CE9B79"
     

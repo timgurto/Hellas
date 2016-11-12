@@ -144,13 +144,18 @@ void Object::updateLocation(const Point &dest){
 
 
     // Tell nearby users that it has moved
+    std::string args;
+    if (classTag() == 'u')
+        args = makeArgs(dynamic_cast<const User *>(this)->name(), newDest.x, newDest.y);
+    else
+        args = makeArgs(serial(), newDest.x, newDest.y);
     for (const User *userP : server.findUsersInArea(location()))
-        if (userP != this)
+        if (userP != this){
             if (classTag() == 'u')
-                server.sendMessage(userP->socket(), SV_LOCATION, makeArgs(newDest.x, newDest.y));
+                server.sendMessage(userP->socket(), SV_LOCATION, args);
             else
-                server.sendMessage(userP->socket(), SV_OBJECT_LOCATION,
-                                   makeArgs(serial(), newDest.x, newDest.y));
+                server.sendMessage(userP->socket(), SV_OBJECT_LOCATION, args);
+        }
 
     // Tell any users it has moved away from to forget about it.
    auto loX = server._usersByX.lower_bound(&User(Point(forgetLeft, 0)));

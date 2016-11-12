@@ -731,6 +731,13 @@ void Server::sendMerchantSlotMessage(const User &user, const Object &obj, size_t
 }
 
 void Server::sendObjectInfo(const User &user, const Object &object) const{
+    if (object.classTag() == 'u'){
+        const User &userToSend = dynamic_cast<const User &>(object);
+        sendMessage(user.socket(), SV_LOCATION, makeArgs(userToSend.name(), object.location().x,
+                                                         object.location().y));
+        return;
+    }
+
     sendMessage(user.socket(), SV_OBJECT, makeArgs(object.serial(),
                                                    object.location().x, object.location().y,
                                                    object.type()->id()));
