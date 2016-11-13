@@ -7,6 +7,11 @@
     <material id="stick" />
 </recipe>
 
+<recipe
+    id="oven" time=10000 product="oven" >
+    <material id="rock" quantity=10/>
+</recipe>
+
 <!--recipe
     id="chest" time=10000 product="chest" >
     <material id="wood" quantity=5 />

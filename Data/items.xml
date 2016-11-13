@@ -31,11 +31,6 @@ Client only:
 />
 
 <item
-    id="sharpenedStone"
-    name="Sharpened stone" >
-</item>
-
-<item
     id="stoneAxe"
     name="Stone axe" >
     <class name="axe" />
@@ -65,19 +60,13 @@ Client only:
     stackSize=5
 />
 
+<item
+    id="oven"
+    name="Oven"
+    constructs="oven" />
+/>
+
 <!--item
-    id="chest"
-    name="Wooden chest"
-    constructs="chest" >
-    <class name="container"/>
-</item>
-
-<item
-    id="tradeCart"
-    name="Trade Cart"
-    constructs="tradeCart" />
-
-<item
     id="hat"
     name="Leather Cap"
     gearSlot=0 >

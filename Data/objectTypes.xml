@@ -78,6 +78,15 @@ Server only:
     <yield id="rock" initialMean=1.5 initialSD=2 />
 </objectType>
 
+<objectType
+    id="oven"
+    name="Oven"
+    xDrawOffset=-14
+    yDrawOffset=-17 >
+    <collisionRect x=-13 y=-7 w=26 h=11 />
+    <class name="oven" />
+</objectType>
+
 <!--objectType
     id="chest"
     name="Wooden chest"
