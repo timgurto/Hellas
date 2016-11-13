@@ -80,5 +80,11 @@ Client only:
         health=5
     />
 </item>
+
+<item
+    id="smallPot"
+    name="Small pot"
+    constructs="smallPot"
+/>
     
 </root>

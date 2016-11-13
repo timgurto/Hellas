@@ -130,3 +130,5 @@ issue,description,value,effort,type,blockedBy,done
 284,Send nearby users' health values,5,3,Feature
 285,An object that can transform with inventory + button push,13,8,Feature
 286,Non-NPC objects always collide with each other,5,2,Feature
+287,Allow specification of minimum yields,5,3,Bug
+288,Tool requirements not enforced for crafting,13,3,Bug

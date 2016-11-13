@@ -81,10 +81,11 @@ Server only:
 <objectType
     id="oven"
     name="Oven"
+    constructionTime=1000
     xDrawOffset=-14
     yDrawOffset=-17 >
     <collisionRect x=-13 y=-7 w=26 h=11 />
-    <class name="oven" />
+    <class name="kiln1" />
 </objectType>
 
 <objectType
@@ -97,17 +98,25 @@ Server only:
     <yield id="crudeClay" initialMean=3.5 initialSD=1 />
 </objectType>
 
+<objectType
+    id="smallPot"
+    name="Small Pot"
+    xDrawOffset=-8
+    yDrawOffset=-15
+    constructionTime=1000
+    deconstructs="smallPot"
+    deconstructionTime=1000 >
+    <collisionRect x=-8 y=-5 w=16 h=10 />
+    <container slots=1 />
+</objectType>
+
 <!--objectType
     id="chest"
     name="Wooden chest"
     xDrawOffset=-12
-    yDrawOffset=-10
-    constructionTime=2000
-    deconstructs="chest"
-    deconstructionTime=1000 >
+    yDrawOffset=-10>
     <collisionRect x=-12 y=-5 w=25 h=12 />
     <class name="set square" />
-    <container slots=10 />
 </objectType>
 
 <objectType
