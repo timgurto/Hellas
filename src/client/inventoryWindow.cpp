@@ -6,7 +6,7 @@
 
 void Client::initializeInventoryWindow(){
     static const px_t
-        COLS = 4,
+        COLS = 5,
         ROWS = (Client::INVENTORY_SIZE - 1) / COLS + 1;
     Container *inventory = new Container(ROWS, COLS, _inventory, INVENTORY);
     const px_t
