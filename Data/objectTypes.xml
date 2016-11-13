@@ -67,16 +67,14 @@ Server only:
 </objectType>
 
 <objectType
-    id="surfaceTin"
-    name="Surface Tin"
+    id="tin"
+    name="Tin deposit"
     xDrawOffset=-14
     yDrawOffset=-11
     canGather=1
-    gatherParticles="tin"
-    gatherReq="pick"
     gatherTime=3000
     isFlat=1 >
-    <yield id="tinOre" initialMean=4 initialSD=1.5 />
+    <yield id="tin" initialMean=4 initialSD=1.5 />
     <yield id="rock" initialMean=1.5 initialSD=2 />
 </objectType>
 

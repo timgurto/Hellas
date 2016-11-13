@@ -1,21 +1,9 @@
 <root>
 
 <recipe
-    id="sharpenedStone" time=10000 product="sharpenedStone" >
-    <material id="rock" quantity=2 />
-</recipe>
-
-<recipe
     id="stoneAxe" time=10000 product="stoneAxe" >
-    <material id="sharpenedStone" />
-    <material id="grass" />
-    <material id="stick" />
-</recipe>
-
-<recipe
-    id="stonePick" time=10000 product="stonePick" >
-    <material id="sharpenedStone" />
-    <material id="grass" />
+    <material id="rock" />
+    <material id="grass" quantity=2 />
     <material id="stick" />
 </recipe>
 

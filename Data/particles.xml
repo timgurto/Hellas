@@ -1,6 +1,6 @@
 <root>
 
-<!particleProfile
+<particleProfile
     id="tree"
     particlesPerSecond=7>
     <particlesPerHit mean=5 sd=1 />

@@ -42,21 +42,27 @@ Client only:
 </item>
 
 <item
-    id="stonePick"
-    name="Stone pick" >
-    <class name="pick" />
-</item>
-
-<item
     id="log"
     name="Log"
     stackSize=5
 />
 
 <item
-    id="tinOre"
-    name="Tin ore"
+    id="tin"
+    name="Tin"
     stackSize=10
+/>
+
+<item
+    id="bone"
+    name="Bone"
+    stackSize=10
+/>
+
+<item
+    id="hide"
+    name="Animal hide"
+    stackSize=5
 />
 
 <!--item

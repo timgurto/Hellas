@@ -507,7 +507,7 @@ void Server::generateWorld(){
             addObject(tree, loc);
         }
 
-    const ObjectType *const surfaceTin = findObjectTypeByName("surfaceTin");
+    const ObjectType *const surfaceTin = findObjectTypeByName("tin");
     if (surfaceTin != nullptr)
         for (int i = 0; i != 10; ++i){
             Point loc;
