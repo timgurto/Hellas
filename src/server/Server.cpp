@@ -440,7 +440,8 @@ void Server::generateWorld(){
         STONE = 1,
         ROAD = 2,
         WATER = 4,
-        DEEP_WATER = 3;
+        DEEP_WATER = 3,
+        CLAY=5;
 
     // Grass by default
     _map = std::vector<std::vector<size_t> >(_mapX);
@@ -482,6 +483,7 @@ void Server::generateWorld(){
     }
 
     // River: randomish line
+    std::vector<std::pair<size_t, size_t> > clayDeposits;
     const Point
         start(rand() % _mapX, rand() % _mapY),
         end(rand() % _mapX, rand() % _mapY);
@@ -493,9 +495,29 @@ void Server::generateWorld(){
             double dist = distance(thisTile, start, end) + randDouble() * 2 - 1;
             if (dist <= 0.5)
                 _map[x][y] = DEEP_WATER;
-            else if (dist <= 2)
+            else if (dist <= 2) {
                 _map[x][y] = WATER;
+                // Randomly place clay patches
+                if (rand() % 12 == 0)
+                    clayDeposits.push_back(std::make_pair(x, y));
+            }
         }
+
+    // Clay in circles
+    for (const auto &loc : clayDeposits){
+        for (size_t x = 0; x != _mapX; ++x)
+            for (size_t y = 0; y != _mapY; ++y) {
+                size_t &thisTerrain = _map[x][y];
+                if (thisTerrain == WATER || thisTerrain == DEEP_WATER)
+                    continue;
+                Point thisTile(x, y);
+                if (y % 2 == 1)
+                    thisTile.x -= .5;
+                const double dist = distance(Point(loc.first, loc.second), thisTile);
+                if (dist <= 4)
+                    thisTerrain = CLAY;
+            }
+    }
 
     const ObjectType *const tree = findObjectTypeByName("tree");
     if (tree != nullptr)
