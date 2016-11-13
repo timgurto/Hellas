@@ -74,7 +74,7 @@ Server only:
     canGather=1
     gatherTime=3000
     isFlat=1 >
-    <yield id="tin" initialMean=4 initialSD=1.5 />
+    <yield id="tin" initialMean=4.5 initialSD=1.5 />
     <yield id="rock" initialMean=1.5 initialSD=2 />
 </objectType>
 
@@ -85,6 +85,16 @@ Server only:
     yDrawOffset=-17 >
     <collisionRect x=-13 y=-7 w=26 h=11 />
     <class name="oven" />
+</objectType>
+
+<objectType
+    id="clay"
+    name="Clay"
+    xDrawOffset=-7
+    yDrawOffset=-7
+    canGather=1
+    gatherTime=3000 >
+    <yield id="crudeClay" initialMean=3.5 initialSD=1 />
 </objectType>
 
 <!--objectType

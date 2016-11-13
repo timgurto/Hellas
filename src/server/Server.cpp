@@ -517,7 +517,7 @@ void Server::generateWorld(){
                 if (y % 2 == 1)
                     thisTile.x -= .5;
                 const double dist = distance(Point(loc.first, loc.second), thisTile);
-                if (dist <= 3)
+                if (dist <= 3.5)
                     thisTerrain = CLAY;
             }
     }
@@ -539,6 +539,7 @@ void Server::generateWorld(){
      - Grass, near tree: stick
      - Grass, otherwise: grass
      - Stone: rock/tin
+     - Clay: clay
     */
     size_t objects = 200;
     for (size_t i = 0; i != objects; ++i){
@@ -564,6 +565,10 @@ void Server::generateWorld(){
                 typeName = "tin";
             else
                 typeName = "rock";
+            break;
+
+        case CLAY:
+            typeName = "clay";
             break;
 
         default:

@@ -61,6 +61,12 @@ Client only:
 />
 
 <item
+    id="crudeClay"
+    name="Crude clay"
+    stackSize=10
+/>
+
+<item
     id="oven"
     name="Oven"
     constructs="oven"
