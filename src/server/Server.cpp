@@ -270,7 +270,10 @@ void Server::addUser(const Socket &socket, const std::string &name){
     auto hiX = _objectsByX.upper_bound(&Object(Point(loc.x + CULL_DISTANCE, 0)));
     for (auto it = loX; it != hiX; ++it){
         const Object &obj = **it;
-        assert (obj.type() != nullptr);
+        if (obj.type() == nullptr){
+            _debug("Null-type object skipped", Color::RED);
+            continue;
+        }
         if (abs(obj.location().y - loc.y) > CULL_DISTANCE) // Cull y
             continue;
         sendObjectInfo(newUser, obj);
@@ -514,11 +517,12 @@ void Server::generateWorld(){
                 if (y % 2 == 1)
                     thisTile.x -= .5;
                 const double dist = distance(Point(loc.first, loc.second), thisTile);
-                if (dist <= 4)
+                if (dist <= 3)
                     thisTerrain = CLAY;
             }
     }
 
+    std::vector<const Object *> trees;
     const ObjectType *const tree = findObjectTypeByName("tree");
     if (tree != nullptr)
         for (int i = 0; i != 10; ++i){
@@ -526,48 +530,54 @@ void Server::generateWorld(){
             do {
                 loc = mapRand();
             } while (!isLocationValid(loc, *tree));
-            addObject(tree, loc);
+            Object &obj = addObject(tree, loc);
+            trees.push_back(&obj);
         }
 
-    const ObjectType *const surfaceTin = findObjectTypeByName("tin");
-    if (surfaceTin != nullptr)
-        for (int i = 0; i != 10; ++i){
-            Point loc;
-            do {
-                loc = mapRand();
-            } while (!isLocationValid(loc, *surfaceTin));
-            addObject(surfaceTin, loc);
+    /*
+    Random objects:
+     - Grass, near tree: stick
+     - Grass, otherwise: grass
+     - Stone: rock/tin
+    */
+    size_t objects = 200;
+    for (size_t i = 0; i != objects; ++i){
+        Point loc(mapRand());
+        auto coords = getTileCoords(loc);
+        size_t terrain = _map[coords.first][coords.second];
+
+        std::string typeName;
+        switch(terrain){
+        case GRASS:
+            for (auto tree : trees){
+                if (distance(loc, tree->location()) <= 100){
+                    typeName = "stick";
+                    break;
+                }
+            }
+            if (typeName.empty())
+                typeName = "grass";
+            break;
+
+        case STONE:
+            if (rand() % 20 == 0)
+                typeName = "tin";
+            else
+                typeName = "rock";
+            break;
+
+        default:
+            ++objects;
+            continue;
         }
 
-    const ObjectType *const rock = findObjectTypeByName("rock");
-    if (rock != nullptr)
-        for (int i = 0; i != 50; ++i){
-            Point loc;
-            do {
-                loc = mapRand();
-            } while (!isLocationValid(loc, *rock));
-            addObject(rock, loc);
+        const ObjectType &type = *findObjectTypeByName(typeName);
+        if (!isLocationValid(loc, type)){
+            ++objects;
+            continue;
         }
-
-    const ObjectType *const stick = findObjectTypeByName("stick");
-    if (stick != nullptr)
-        for (int i = 0; i != 50; ++i) {
-            Point loc;
-            do {
-                loc = mapRand();
-            } while (!isLocationValid(loc, *stick));
-            addObject(stick, loc);
-        }
-
-    const ObjectType *const grass = findObjectTypeByName("grass");
-    if (grass != nullptr)
-        for (int i = 0; i != 250; ++i) {
-            Point loc;
-            do {
-                loc = mapRand();
-            } while (!isLocationValid(loc, *grass));
-            addObject(grass, loc);
-        }
+        addObject(&type, loc);
+    }
 
     // NPCs
     const ObjectType *const critterObj = findObjectTypeByName("critter");

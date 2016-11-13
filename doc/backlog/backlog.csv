@@ -129,3 +129,4 @@ issue,description,value,effort,type,blockedBy,done
 283,Color mouse-over outline based on whether in range,8,3,Aesthetics
 284,Send nearby users' health values,5,3,Feature
 285,An object that can transform with inventory + button push,13,8,Feature
+286,Non-NPC objects always collide with each other,5,2,Feature
