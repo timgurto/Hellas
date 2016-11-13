@@ -21,7 +21,7 @@
     id="smallPot" time=20000 product="smallPot" >
     <material id="crudeClay" quantity=4/>
     <material id="log" />
-    <tool id="kiln1" />
+    <tool class="kiln1" />
 </recipe>
 
 </root>
