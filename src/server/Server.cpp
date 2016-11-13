@@ -559,6 +559,17 @@ void Server::generateWorld(){
             addObject(new NPC(critter, loc));
         }
     }
+    const ObjectType *const boarObj = findObjectTypeByName("boar");
+    if (boarObj != nullptr){
+        const NPCType *const boar = dynamic_cast<const NPCType *const>(boarObj);
+        for (int i = 0; i != 5; ++i) {
+            Point loc;
+            do {
+                loc = mapRand();
+            } while (!isLocationValid(loc, *boar));
+            addObject(new NPC(boar, loc));
+        }
+    }
 
     saveMap(); // Save data to xml file.
 }

@@ -1,7 +1,7 @@
 <root>
 
 <recipe
-    id="stoneAxe" time=10000 product="stoneAxe" >
+    id="stoneAxe" time=6000 product="stoneAxe" >
     <material id="rock" />
     <material id="grass" quantity=2 />
     <material id="stick" />
@@ -12,20 +12,9 @@
     <material id="rock" quantity=10/>
 </recipe>
 
-<!--recipe
-    id="chest" time=10000 product="chest" >
-    <material id="wood" quantity=5 />
-    <tool name="set square" />
-</recipe>
-
 <recipe
-    id="tradeCart" time=10000 product="tradeCart" >
-    <material id="wood" quantity=4 />
+    id="hideCloak" time=3000 product="hideCloak" >
+    <material id="hide" quantity=2/>
 </recipe>
-
-<recipe
-    id="hat" time=10000 product="hat" >
-    <material id="hide" quantity=2 />
-</recipe-->
 
 </root>

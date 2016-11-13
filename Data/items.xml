@@ -63,16 +63,16 @@ Client only:
 <item
     id="oven"
     name="Oven"
-    constructs="oven" />
+    constructs="oven"
 />
 
-<!--item
-    id="hat"
-    name="Leather Cap"
-    gearSlot=0 >
+<item
+    id="hideCloak"
+    name="Hide cloak"
+    gearSlot=3 >
     <stats
-        attack=5
+        health=5
     />
-</item-->
+</item>
     
 </root>
