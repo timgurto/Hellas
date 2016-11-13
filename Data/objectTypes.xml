@@ -94,7 +94,8 @@ Server only:
     xDrawOffset=-7
     yDrawOffset=-7
     canGather=1
-    gatherTime=3000 >
+    gatherTime=3000
+    isFlat=1 >
     <yield id="crudeClay" initialMean=3.5 initialSD=1 />
 </objectType>
 

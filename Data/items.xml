@@ -32,8 +32,12 @@ Client only:
 
 <item
     id="stoneAxe"
-    name="Stone axe" >
+    name="Stone axe"
+    gearSlot=6 >
     <class name="axe" />
+    <stats
+        attack=5
+    />
 </item>
 
 <item
