@@ -74,7 +74,7 @@ issue,description,value,effort,type,blockedBy,done
 227,Shift + right-click to loot all,5,2,Feature,,
 228,Close client on single Esc press when disconnected,3,1,Bug,,
 229,Thorough and consistent tooltips,13,21,Aesthetics,,
-230,Display stats in client,13,2,Aesthetics,,
+230,Display stats in client,13,2,Aesthetics,,TRUE
 231,Player can get stuck against terrain or NPCs,34,5,Bug,,
 232,NPCs get stuck on each other due to linear pathfinding,21,8,Bug,,
 234,Fail more gracefully and informatively when can't connect to server,3,5,Aesthetics,,

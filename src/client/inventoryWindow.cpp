@@ -2,6 +2,8 @@
 #include "../XmlReader.h"
 #include "../server/User.h"
 #include "ui/Container.h"
+#include "ui/Label.h"
+#include "ui/LinkedLabel.h"
 #include "ui/Window.h"
 
 void Client::initializeInventoryWindow(){
@@ -38,9 +40,39 @@ void Client::initializeGearWindow(){
         xr.findAttr(elem, "rows", rows);
         xr.findAttr(elem, "cols", cols);
     }
+    static const px_t
+        STATS_WIDTH = 90,
+        STAT_X_GAP = 2;
 
-    _gearWindow = new Window(Rect(100, 100, w, h), "Gear");
+    _gearWindow = new Window(Rect(100, 100, w + STATS_WIDTH + 2 * STAT_X_GAP, h), "Gear");
     Container *gearContainer = new Container(rows, cols, _gear, GEAR, x, y, gap, false);
     _gearWindow->addChild(new Picture(0, 0, _gearWindowBackground));
     _gearWindow->addChild(gearContainer);
+
+    // Stats display
+    Rect labelRect(w + STAT_X_GAP, 0, STATS_WIDTH, Element::TEXT_HEIGHT);
+
+    _gearWindow->addChild(new Label(labelRect, "Health"));
+    _gearWindow->addChild(new LinkedLabel<health_t>(labelRect, _health,
+                                                    "", "", Element::RIGHT_JUSTIFIED));
+    
+    labelRect.y += Element::TEXT_HEIGHT;
+    _gearWindow->addChild(new Label(labelRect, "Max health"));
+    _gearWindow->addChild(new LinkedLabel<health_t>(labelRect, _stats.health,
+                                                    "", "", Element::RIGHT_JUSTIFIED));
+    
+    labelRect.y += Element::TEXT_HEIGHT;
+    _gearWindow->addChild(new Label(labelRect, "Damage"));
+    _gearWindow->addChild(new LinkedLabel<health_t>(labelRect, _stats.attack,
+                                                    "", "", Element::RIGHT_JUSTIFIED));
+    
+    labelRect.y += Element::TEXT_HEIGHT;
+    _gearWindow->addChild(new Label(labelRect, "Attack time"));
+    _gearWindow->addChild(new LinkedLabel<ms_t>(labelRect, _stats.attackTime,
+                                                    "", "ms", Element::RIGHT_JUSTIFIED));
+    
+    labelRect.y += Element::TEXT_HEIGHT;
+    _gearWindow->addChild(new Label(labelRect, "Speed"));
+    _gearWindow->addChild(new LinkedLabel<double>(labelRect, _stats.speed,
+                                                    "", "", Element::RIGHT_JUSTIFIED));
 }
