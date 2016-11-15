@@ -14,9 +14,7 @@ void Object::updateLocation(const Point &dest){
     const double maxLegalDistance = min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES,
                                         timeElapsed + 100) / 1000.0 * speed();
     double distanceToMove = min(maxLegalDistance, distance(_location, dest));
-    Point newDest = distanceToMove <= maxLegalDistance ?
-                    dest :
-                    interpolate(_location, dest, maxLegalDistance);
+    Point newDest = interpolate(_location, dest, distanceToMove);
 
     const User *userPtr = nullptr;
     if (classTag() == 'u')

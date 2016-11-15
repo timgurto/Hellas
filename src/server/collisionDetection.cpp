@@ -34,7 +34,7 @@ bool Server::isLocationValid(const Rect &rect, const Object *thisObject){
         for (size_t y = topLeftTerrain.second; y <= bottomRightTerrain.second; ++y){
             const TerrainType &terrain = _terrain[_map[x][y]];
             if (!terrain.isTraversable())
-                {_debug(rect, Color::RED);return false;}
+                return false;
         }
 
     // Users
