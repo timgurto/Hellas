@@ -39,8 +39,16 @@ void Object::updateLocation(const Point &dest){
         static const double ACCURACY = 0.5;
         Point displacementNorm(rawDisplacement.x / distanceToMove * ACCURACY,
                                rawDisplacement.y / distanceToMove * ACCURACY);
-        for (double segment = ACCURACY; segment <= maxLegalDistance; segment += ACCURACY){
-            Point testDest = newDest + displacementNorm;
+        for (double segment = ACCURACY; segment <= distanceToMove; segment += ACCURACY){
+            Point testDest = newDest;
+            testDest.x += displacementNorm.x;
+            if (!server.isLocationValid(testDest, *type(), this))
+                break;
+            newDest = testDest;
+        }
+        for (double segment = ACCURACY; segment <= distanceToMove; segment += ACCURACY){
+            Point testDest = newDest;
+            testDest.y += displacementNorm.y;
             if (!server.isLocationValid(testDest, *type(), this))
                 break;
             newDest = testDest;
