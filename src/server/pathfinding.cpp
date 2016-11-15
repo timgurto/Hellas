@@ -2,6 +2,7 @@
 #include "Server.h"
 
 void Object::updateLocation(const Point &dest){
+    Server &server = *Server::_instance;
     const ms_t newTime = SDL_GetTicks();
     ms_t timeElapsed = newTime - _lastLocUpdate;
     _lastLocUpdate = newTime;
@@ -9,10 +10,11 @@ void Object::updateLocation(const Point &dest){
     // Max legal distance: straight line
     const double maxLegalDistance = min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES,
                                         timeElapsed + 100) / 1000.0 * speed();
-    Point interpolated = interpolate(_location, dest, maxLegalDistance);
 
-    Point newDest = interpolated;
-    Server &server = *Server::_instance;
+    double distanceToMove = min(maxLegalDistance, distance(_location, dest));
+    Point newDest = distanceToMove <= maxLegalDistance ?
+                    dest :
+                    interpolate(_location, dest, maxLegalDistance);
 
     const User *userPtr = nullptr;
     if (classTag() == 'u')
@@ -37,22 +39,14 @@ void Object::updateLocation(const Point &dest){
     if (!server.isLocationValid(journeyRect, this)) {
         newDest = _location;
         static const double ACCURACY = 0.5;
-        Point testPoint = _location;
-        const bool xDeltaPositive = _location.x < interpolated.x;
-        do {
-            newDest.x = testPoint.x;
-            testPoint.x = xDeltaPositive ? (testPoint.x) + ACCURACY : (testPoint.x - ACCURACY);
-        } while ((xDeltaPositive ? (testPoint.x <= interpolated.x) :
-                                   (testPoint.x >= interpolated.x)) &&
-                 server.isLocationValid(testPoint, *type(), this));
-        const bool yDeltaPositive = _location.y < interpolated.y;
-        testPoint.x = newDest.x; // Keep it valid for y testing.
-        do {
-            newDest.y = testPoint.y;
-            testPoint.y = yDeltaPositive ? (testPoint.y + ACCURACY) : (testPoint.y - ACCURACY);
-        } while ((yDeltaPositive ? (testPoint.y <= interpolated.y) :
-                                   (testPoint.y >= interpolated.y)) &&
-                 server.isLocationValid(testPoint, *type(), this));
+        Point displacementNorm(displacementX / distanceToMove * ACCURACY,
+                               displacementY / distanceToMove * ACCURACY);
+        for (double segment = ACCURACY; segment <= maxLegalDistance; segment += ACCURACY){
+            Point testDest = newDest + displacementNorm;
+            if (!server.isLocationValid(testDest, this))
+                break;
+            newDest = testDest;
+        }
     }
 
     // At this point, the new location has been finalized.  Now new information must be propagated.
