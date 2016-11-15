@@ -1,8 +1,11 @@
+#include <cassert>
+
 #include "Object.h"
 #include "Server.h"
 
 void Object::updateLocation(const Point &dest){
     Server &server = *Server::_instance;
+    assert(server.isLocationValid(collisionRect(), this));
     const ms_t newTime = SDL_GetTicks();
     ms_t timeElapsed = newTime - _lastLocUpdate;
     _lastLocUpdate = newTime;
@@ -10,7 +13,6 @@ void Object::updateLocation(const Point &dest){
     // Max legal distance: straight line
     const double maxLegalDistance = min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES,
                                         timeElapsed + 100) / 1000.0 * speed();
-
     double distanceToMove = min(maxLegalDistance, distance(_location, dest));
     Point newDest = distanceToMove <= maxLegalDistance ?
                     dest :
@@ -20,36 +22,33 @@ void Object::updateLocation(const Point &dest){
     if (classTag() == 'u')
         userPtr = dynamic_cast<const User *>(this);
 
-    int
-        displacementX = toInt(newDest.x - _location.x),
-        displacementY = toInt(newDest.y - _location.y);
+    Point rawDisplacement(newDest.x - _location.x,
+                          newDest.y - _location.y);
+    px_t
+        displacementX = ceil(abs(rawDisplacement.x)),
+        displacementY = ceil(abs(rawDisplacement.y));
     Rect journeyRect = collisionRect();
-    if (displacementX < 0) {
-        journeyRect.x += displacementX;
-        journeyRect.w -= displacementX;
-    } else {
-        journeyRect.w += displacementX;
-    }
-    if (displacementY < 0) {
-        journeyRect.y += displacementY;
-        journeyRect.h -= displacementY;
-    } else {
-        journeyRect.h += displacementY;
-    }
+    if (rawDisplacement.x < 0)
+        journeyRect.x -= displacementX;
+    journeyRect.w += displacementX;
+    if (rawDisplacement.y < 0)
+        journeyRect.y -= displacementY;
+    journeyRect.h += displacementY;
     if (!server.isLocationValid(journeyRect, this)) {
         newDest = _location;
         static const double ACCURACY = 0.5;
-        Point displacementNorm(displacementX / distanceToMove * ACCURACY,
-                               displacementY / distanceToMove * ACCURACY);
+        Point displacementNorm(rawDisplacement.x / distanceToMove * ACCURACY,
+                               rawDisplacement.y / distanceToMove * ACCURACY);
         for (double segment = ACCURACY; segment <= maxLegalDistance; segment += ACCURACY){
             Point testDest = newDest + displacementNorm;
-            if (!server.isLocationValid(testDest, this))
+            if (!server.isLocationValid(testDest, *type(), this))
                 break;
             newDest = testDest;
         }
     }
 
     // At this point, the new location has been finalized.  Now new information must be propagated.
+    assert(server.isLocationValid(newDest, *type(), this));
 
     double left, right, top, bottom; // Area newly visible
     double forgetLeft, forgetRight, forgetTop, forgetBottom; // Area newly invisible

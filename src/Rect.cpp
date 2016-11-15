@@ -1,5 +1,7 @@
 // (C) 2015 Tim Gurto
 
+#include <iostream>
+
 #include "Point.h"
 #include "Rect.h"
 #include "types.h"
@@ -76,4 +78,18 @@ double distance(const Rect &lhs, const Rect &rhs){
         return aT - bB;
     else
         return 0;
+}
+
+std::ostream &operator<<(std::ostream &lhs, const Rect &rhs){
+    lhs << "x=" << rhs.x
+        << " y=" << rhs.y
+        << " w=" << rhs.w
+        << " h=" << rhs.h;
+    return lhs;
+}
+
+Rect::operator std::string() const{
+    std::ostringstream oss;
+    oss << *this;
+    return oss.str();
 }

@@ -3,6 +3,8 @@
 #ifndef RECT_H
 #define RECT_H
 
+#include <string>
+
 #include "types.h"
 
 struct Point;
@@ -17,9 +19,12 @@ struct Rect {
     Rect(const Point &rhs);
 
     bool collides(const Rect &rhs) const;
+
+    operator std::string() const;
 };
 
 Rect operator+(const Rect &lhs, const Rect &rhs);
+std::ostream &operator<<(std::ostream &lhs, const Rect &rhs);
 
 double distance(const Rect &lhs, const Rect &rhs); // Shortest distance between two rectangles
 

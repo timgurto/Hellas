@@ -27,14 +27,18 @@ bool Server::isLocationValid(const Rect &rect, const Object *thisObject){
         return false;
 
     // Terrain
-    CollisionChunk chunk = getCollisionChunk(Point(rect));
-    Point rectCenter(rect.x + rect.w / 2, rect.y + rect.h / 2);
-    auto coords = getTileCoords(rectCenter);
-    const TerrainType &terrain = _terrain[_map[coords.first][coords.second]];
-    if (!terrain.isTraversable())
-        return false;
+    auto topLeftTerrain = getTileCoords(rect);
+    auto bottomRightTerrain = getTileCoords(Point(right, bottom));
+
+    for (size_t x = topLeftTerrain.first; x <= bottomRightTerrain.first; ++x)
+        for (size_t y = topLeftTerrain.second; y <= bottomRightTerrain.second; ++y){
+            const TerrainType &terrain = _terrain[_map[x][y]];
+            if (!terrain.isTraversable())
+                {_debug(rect, Color::RED);return false;}
+        }
 
     // Users
+    Point rectCenter(rect.x + rect.w / 2, rect.y + rect.h / 2);
     for (const auto *user : findUsersInArea(rectCenter)) {
         if (user == thisObject)
             continue;
