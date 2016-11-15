@@ -17,24 +17,18 @@ Server only:
 -->
 
 <npcType
-    id="critter"
-    name="Critter"
+    id="critter" name="Critter"
 	maxHealth=20
-    xDrawOffset=-11
-    yDrawOffset=-13 >
+    xDrawOffset=-11 yDrawOffset=-13 >
     <collisionRect x=-9 y=-4 w=18 h=7 />
     <loot id="hide" />
     <loot id="bone" > <normal mean=1 sd=0.5 /> </loot>
 </npcType>
 
 <npcType
-    id="boar"
-    name="Wild boar"
-	maxHealth=40
-    attack=5
-    attackTime=700
-    xDrawOffset=-11
-    yDrawOffset=-13 >
+    id="boar" name="Wild boar"
+	maxHealth=40 attack=5 attackTime=700
+    xDrawOffset=-11 yDrawOffset=-13 >
     <collisionRect x=-9 y=-4 w=18 h=7 />
     <loot id="hide" />
     <loot id="bone" > <normal mean=2 sd=0.7 /> </loot>

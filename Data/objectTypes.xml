@@ -22,91 +22,65 @@ Server only:
 -->
 
 <objectType
-    id="stick"
-    name="Stick"
-    xDrawOffset=-10
-    yDrawOffset=-4
-    canGather=1
-    gatherTime=1000 >
+    id="stick" name="Stick"
+    xDrawOffset=-10 yDrawOffset=-4
+    canGather=1 gatherTime=1000 >
     <yield id="stick" />
 </objectType>
 
 <objectType
-    id="rock"
-    name="Rock"
-    xDrawOffset=-5
-    yDrawOffset=-5
-    canGather=1
-    gatherTime=1000 >
+    id="rock" name="Rock"
+    xDrawOffset=-5 yDrawOffset=-5
+    canGather=1 gatherTime=1000 >
     <yield id="rock" />
 </objectType>
 
 <objectType
-    id="grass"
-    name="Grass"
-    xDrawOffset=-7
-    yDrawOffset=-8
-    canGather=1
-    gatherTime=1000 >
+    id="grass" name="Grass"
+    xDrawOffset=-7 yDrawOffset=-8
+    canGather=1 gatherTime=1000 >
     <yield id="grass" initialMean=1.8 initialSD=0.6 gatherMean=10 />
 </objectType>
 
 <objectType
-    id="tree"
-    name="Tree"
-    xDrawOffset=-23
-    yDrawOffset=-57
-    canGather=1
-    gatherSound="chop-pause"
-    gatherParticles="tree"
-    gatherReq="axe"
-    gatherTime=3000 >
+    id="tree" name="Tree"
+    xDrawOffset=-23 yDrawOffset=-57
+    canGather=1 gatherSound="chop-pause" gatherParticles="tree" gatherReq="axe" gatherTime=3000 >
     <yield id="log" initialMean=6 initialSD=1 />
     <yield id="stick" initialMean=5 initialSD=2 />
     <collisionRect x=-7 y=-3 w=16 h=6 />
 </objectType>
 
 <objectType
-    id="tin"
-    name="Tin deposit"
-    xDrawOffset=-14
-    yDrawOffset=-11
-    canGather=1
-    gatherTime=3000
+    id="tin" name="Tin deposit"
+    xDrawOffset=-14 yDrawOffset=-11
+    canGather=1 gatherTime=3000
     isFlat=1 >
     <yield id="tin" initialMean=4.5 initialSD=1.5 />
     <yield id="rock" initialMean=1.5 initialSD=2 />
 </objectType>
 
 <objectType
-    id="oven"
-    name="Oven"
-    constructionTime=1000
-    xDrawOffset=-14
-    yDrawOffset=-17 >
+    id="oven" name="Oven"
+    xDrawOffset=-14 yDrawOffset=-17
+    constructionTime=1000 >
     <collisionRect x=-13 y=-7 w=26 h=11 />
     <class name="kiln1" />
 </objectType>
 
 <objectType
-    id="clay"
-    name="Clay"
-    xDrawOffset=-7
-    yDrawOffset=-7
-    canGather=1
-    gatherTime=3000
+    id="clay" name="Clay"
+    xDrawOffset=-7 yDrawOffset=-7
+    canGather=1 gatherTime=3000
     isFlat=1 >
     <yield id="crudeClay" initialMean=3.5 initialSD=1 />
 </objectType>
 
 <objectType
-    id="smallPot"
-    name="Small Pot"
-    xDrawOffset=-8
-    yDrawOffset=-15
+    id="smallPot" name="Small Pot"
+    xDrawOffset=-8 yDrawOffset=-15
     constructionTime=1000
-    deconstructs="smallPot"
-    deconstructionTime=1000 >
+    deconstructs="smallPot" deconstructionTime=1000 >
     <collisionRect x=-8 y=-5 w=16 h=10 />
     <container slots=1 />
 </objectType>
