@@ -132,3 +132,8 @@ issue,description,value,effort,type,blockedBy,done
 286,Non-NPC objects always collide with each other,5,2,Feature,,
 287,Allow specification of minimum yields,5,3,Bug,,
 288,Tool requirements not enforced for crafting,13,3,Bug,,TRUE
+289,Sounds for crafting,5,2,Aesthetics,,
+290,Particles for crafting,5,2,Aesthetics,,
+291,Allow tool objects to show an in-use image/animation,3,3,Aesthetics,,
+292,"Use doubles, not ints, in Rect class",3,2,Code quality,,
+293,Tool requirements not showing up in crafting window,5,1,Bug,,

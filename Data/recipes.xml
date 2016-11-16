@@ -24,4 +24,11 @@
     <tool class="kiln1" />
 </recipe>
 
+<recipe
+    id="tinBar" time=20000 product="tinBar" >
+    <material id="tin" quantity=5/>
+    <material id="log" />
+    <tool class="kiln1" />
+</recipe>
+
 </root>
