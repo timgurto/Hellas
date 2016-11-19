@@ -61,6 +61,15 @@ Server only:
 </objectType>
 
 <objectType
+    id="copper" name="Copper deposit"
+    xDrawOffset=-14 yDrawOffset=-11
+    canGather=1 gatherTime=3000 gatherReq="pick"
+    isFlat=1 >
+    <yield id="copper" initialMean=4.5 initialSD=1.5 />
+    <yield id="rock" initialMean=1.5 initialSD=2 />
+</objectType>
+
+<objectType
     id="oven" name="Oven"
     xDrawOffset=-14 yDrawOffset=-17
     constructionTime=1000 >
@@ -86,15 +95,6 @@ Server only:
 </objectType>
 
 <!--objectType
-    id="chest"
-    name="Wooden chest"
-    xDrawOffset=-12
-    yDrawOffset=-10>
-    <collisionRect x=-12 y=-5 w=25 h=12 />
-    <class name="set square" />
-</objectType>
-
-<objectType
     id="tradeCart"
     name="Trade Cart"
     xDrawOffset=-13

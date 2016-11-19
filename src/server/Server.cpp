@@ -538,7 +538,7 @@ void Server::generateWorld(){
     Random objects:
      - Grass, near tree: stick
      - Grass, otherwise: grass
-     - Stone: rock/tin
+     - Stone: rock/tin/copper
      - Clay: clay
     */
     size_t objects = 200;
@@ -561,11 +561,16 @@ void Server::generateWorld(){
             break;
 
         case STONE:
-            if (rand() % 20 == 0)
+        {
+            unsigned random = rand() % 20;
+            if (random == 0)
                 typeName = "tin";
+            else if (random == 1)
+                typeName = "copper";
             else
                 typeName = "rock";
             break;
+        }
 
         case CLAY:
             typeName = "clay";

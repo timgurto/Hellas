@@ -16,7 +16,8 @@ Client only:
 <item id="rock"         name="Rock"             stackSize=10 />
 <item id="grass"        name="Grass"            stackSize=20 />
 <item id="log"          name="Log"              stackSize=5 />
-<item id="tin"          name="Tin"              stackSize=10 />
+<item id="tin"          name="Tin Ore"          stackSize=10 />
+<item id="copper"       name="Copper Ore"       stackSize=10 />
 <item id="bone"         name="Bone"             stackSize=10 />
 <item id="hide"         name="Animal hide"      stackSize=5 />
 <item id="crudeClay"    name="Crude clay"       stackSize=10 />
