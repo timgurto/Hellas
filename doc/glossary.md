@@ -26,6 +26,10 @@
 
 **gather**, when the user performs an action on an object in order to extract items from it.  Some objects can be gathered multiple times before they disappear.
 
+**gear**, an item that can be worn by the character in a special slot, and that may provide bonuses to the character's stats
+
+**gear slot**, one of a set of slots in a special container that each user has access to, in addition to his inventory.  Each gear slot is numbered, and only items specifying that slot number may be equipped in that slot.
+
 **material**, an item required by a recipe.  When the recipe is used to craft an item, the materials disappear.
 
 **merchant object**, an object that allows exchanging one item type for another.  Merchant objects also necessarily have inventory space, with which to collect payment.
