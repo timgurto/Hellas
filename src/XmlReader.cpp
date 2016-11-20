@@ -34,6 +34,8 @@ bool XmlReader::newFile(const std::string &filename){
 
 std::set<TiXmlElement *> XmlReader::getChildren(const std::string &val, TiXmlElement *elem) {
     std::set<TiXmlElement *> children;
+    if (elem == nullptr)
+        return children;
     for (TiXmlElement *child = elem->FirstChildElement(); child; child = child->NextSiblingElement())
         if (val == child->Value())
             children.insert(child);
@@ -41,6 +43,8 @@ std::set<TiXmlElement *> XmlReader::getChildren(const std::string &val, TiXmlEle
 }
 
 TiXmlElement *XmlReader::findChild(const std::string &val, TiXmlElement *elem){
+    if (elem == nullptr)
+        return false;
     for (TiXmlElement *child = elem->FirstChildElement(); child; child = child->NextSiblingElement())
         if (val == child->Value())
             return child;
@@ -48,6 +52,8 @@ TiXmlElement *XmlReader::findChild(const std::string &val, TiXmlElement *elem){
 }
 
 bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, std::string &val){
+    if (elem == nullptr)
+        return false;
     const char *const cStrVal = elem->Attribute(attr);
     if (cStrVal != nullptr) {
         val = cStrVal;
@@ -57,6 +63,8 @@ bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, std::string &val)
 }
 
 bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, Color &val){
+    if (elem == nullptr)
+        return false;
     const char *const cStrVal = elem->Attribute(attr);
     if (cStrVal != nullptr){
         std::istringstream iss(cStrVal);
