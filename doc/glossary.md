@@ -18,7 +18,7 @@
 
 **deconstruct**, when the user transforms an appropriate object into an item in his inventory
 
-**item**, something which exists virtually in-game, located in players' or objects' inventories
+**item**, something which exists virtually in-game, located in players' or objects' inventories (cf. *object*)
 
 **element**, (client only) a part of the GUI, possibly containing child elements
 
@@ -28,11 +28,11 @@
 
 **material**, an item required by a recipe.  When the recipe is used to craft an item, the materials disappear.
 
-**merchant object**, an object that allows exchanging one item type for another.  Merchant objects also necessarily have inventory space.
+**merchant object**, an object that allows exchanging one item type for another.  Merchant objects also necessarily have inventory space, with which to collect payment.
 
 **merchant slot**, one of many potential transaction slots configured in a merchant object
 
-**object**, something which exists physically in-game, with a location and functionality
+**object**, something which has a physical manifestation in-game, with a location and functionality (cf. *item*)
 
 **owner**, the user who owns an object.  Only an object's owner can access its inventory.  An object with no owner specified is accessible to all users.
 
@@ -41,6 +41,10 @@
 **product**, the item created by a recipe
 
 **server**, the *program* which manages the state of the game world and connects to clients
+
+**swap**, when a user exchanges the item in one container slot with another.  The container might be an object, or his inventory, or the gear he is wearing.
+
+**take**, when a user attempts to take an item from a container slot (an object or his gear) into his inventory, without swapping another into its place.
 
 **terminal**, a generic term for server or client
 

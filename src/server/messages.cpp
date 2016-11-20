@@ -396,9 +396,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 slot.second = 0;
             }
             
-            if (obj == GEAR){ // Tell user about his empty gear slot
+            if (obj == GEAR){ // Tell user about his empty gear slot, and updated stats
                 sendInventoryMessage(*user, slotNum, GEAR);
-            } else { // Alert watchers
+                user->updateStats();
+
+            } else { // Alert object's watchers
                 for (auto username : pObj->watchers())
                     if (pObj->userHasAccess(username))
                         sendInventoryMessage(*_usersByName[username], slotNum, *pObj);
