@@ -10,6 +10,16 @@ Both:
 
 Client only:
  - name
+ 
+ Gear slots:
+ 0 head
+ 1 jewelry
+ 2 body
+ 3 shoulders
+ 4 hands
+ 5 feet
+ 6 right hand
+ 7 left hand
 -->
 
 <item id="stick"        name="Stick"            stackSize=10 />
