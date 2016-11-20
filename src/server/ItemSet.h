@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef ITEM_SET_H
 #define ITEM_SET_H
 
@@ -26,8 +24,8 @@ public:
     void set(const Item *item, size_t quantity = 1);
     bool contains(const ItemSet &rhs) const; // Subset
     bool contains(const Item *item, size_t qty = 1) const;
-    bool contains(const std::string &className);
-    bool contains(const std::set<std::string> &classes);
+    bool contains(const std::string &tagName);
+    bool contains(const std::set<std::string> &tags);
     size_t totalQuantity() const { return _totalQty; }
     void add(const Item *item, size_t qty = 1);
     void remove(const Item *item, size_t qty = 1);

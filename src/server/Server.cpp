@@ -621,9 +621,9 @@ Point Server::mapRand() const{
                  randDouble() * _mapY * TILE_H);
 }
 
-bool Server::itemIsClass(const ServerItem *item, const std::string &className) const{
+bool Server::itemIsTag(const ServerItem *item, const std::string &tagName) const{
     assert (item);
-    return item->isClass(className);
+    return item->isTag(tagName);
 }
 
 const ObjectType *Server::findObjectTypeByName(const std::string &id) const{

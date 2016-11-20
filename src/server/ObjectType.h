@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef OBJECT_TYPE_H
 #define OBJECT_TYPE_H
 
@@ -31,7 +29,7 @@ class ObjectType{
     bool _collides; // false by default; true if any collisionRect is specified.
     Rect _collisionRect; // Relative to position
 
-    std::set<std::string> _classes;
+    std::set<std::string> _tags;
 
 public:
     ObjectType(const std::string &id);
@@ -56,7 +54,7 @@ public:
     bool collides() const { return _collides; }
     const Rect &collisionRect() const { return _collisionRect; }
     void collisionRect(const Rect &r) { _collisionRect = r; _collides = true; }
-    bool isClass( const std::string &className) const;
+    bool isTag( const std::string &tagName) const;
     const ServerItem *deconstructsItem() const { return _deconstructsItem; }
     void deconstructsItem(const ServerItem *item) { _deconstructsItem = item; }
     ms_t deconstructionTime() const { return _deconstructionTime; }
@@ -67,7 +65,7 @@ public:
     void addYield(const ServerItem *item,
                   double initMean, double initSD,
                   double gatherMean, double gatherSD);
-    void addClass(const std::string &className);
+    void addTag(const std::string &tagName);
 };
 
 #endif

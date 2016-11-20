@@ -581,10 +581,10 @@ bool Client::playerHasItem(const Item *item, size_t quantity) const{
     return false;
 }
 
-//bool Client::playerHasTool(const std::string &className) const{
+//bool Client::playerHasTool(const std::string &tagName) const{
 //    // Check inventory
 //    for (std::pair<const Item *, size_t> slot : _inventory)
-//        if slot.first->isClass(className)
+//        if slot.first->isTag(tagName)
 //            return true;
 //
 //    //Check nearby objects

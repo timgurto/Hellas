@@ -161,9 +161,9 @@ void Server::loadData(const std::string &path){
             Rect r;
             if (xr.findRectChild("collisionRect", elem, r))
                 ot->collisionRect(r);
-            for (auto objClass :xr.getChildren("class", elem))
-                if (xr.findAttr(objClass, "name", s))
-                    ot->addClass(s);
+            for (auto objTag :xr.getChildren("tag", elem))
+                if (xr.findAttr(objTag, "name", s))
+                    ot->addTag(s);
             auto container = xr.findChild("container", elem);
             if (container != nullptr) {
                 if (xr.findAttr(container, "slots", n)) ot->containerSlots(n);
@@ -187,9 +187,9 @@ void Server::loadData(const std::string &path){
             Rect r;
             if (xr.findRectChild("collisionRect", elem, r))
                 nt->collisionRect(r);
-            for (auto objClass :xr.getChildren("class", elem))
-                if (xr.findAttr(objClass, "name", s))
-                    nt->addClass(s);
+            for (auto objTag :xr.getChildren("class", elem))
+                if (xr.findAttr(objTag, "name", s))
+                    nt->addTag(s);
 
             if (xr.findAttr(elem, "health", n)) nt->maxHealth(n);
             if (xr.findAttr(elem, "attack", n)) nt->attack(n);
@@ -243,8 +243,8 @@ void Server::loadData(const std::string &path){
             n = User::GEAR_SLOTS; // Default; won't match any slot.
             xr.findAttr(elem, "gearSlot", n); item.gearSlot(n);
 
-            for (auto child : xr.getChildren("class", elem))
-                if (xr.findAttr(child, "name", s)) item.addClass(s);
+            for (auto child : xr.getChildren("tag", elem))
+                if (xr.findAttr(child, "name", s)) item.addTag(s);
         
             std::pair<std::set<ServerItem>::iterator, bool> ret = _items.insert(item);
             if (!ret.second) {

@@ -155,17 +155,17 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_ITEM_NEEDED:
         {
-            std::string reqItemClass;
-            readString(singleMsg, reqItemClass, MSG_END);
+            std::string reqItemTag;
+            readString(singleMsg, reqItemTag, MSG_END);
             singleMsg >> del;
             if (del != MSG_END)
                 break;
             std::string msg = "You need a";
-            const char first = reqItemClass.front();
+            const char first = reqItemTag.front();
             if (first == 'a' || first == 'e' || first == 'i' ||
                 first == 'o' || first == 'u')
                 msg += 'n';
-            _debug(msg + ' ' + reqItemClass + " to do that.", Color::WARNING);
+            _debug(msg + ' ' + reqItemTag + " to do that.", Color::WARNING);
             startAction(0);
             break;
         }

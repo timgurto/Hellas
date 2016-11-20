@@ -39,7 +39,7 @@ public:
     static const Server &instance(){ return *_instance; }
     static LogConsole &debug(){ return *_debugInstance; }
 
-    bool itemIsClass(const ServerItem *item, const std::string &className) const;
+    bool itemIsTag(const ServerItem *item, const std::string &tagName) const;
 
     const User &getUserByName(const std::string &username) const;
 

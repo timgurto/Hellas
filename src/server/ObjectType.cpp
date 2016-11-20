@@ -16,10 +16,10 @@ void ObjectType::addYield(const ServerItem *item, double initMean, double initSD
     _yield.addItem(item, initMean, initSD, gatherMean, gatherSD);
 }
 
-void ObjectType::addClass(const std::string &className){
-    _classes.insert(className);
+void ObjectType::addTag(const std::string &tagName){
+    _tags.insert(tagName);
 }
 
-bool ObjectType::isClass( const std::string &className) const{
-    return _classes.find(className) != _classes.end();
+bool ObjectType::isTag( const std::string &tagName) const{
+    return _tags.find(tagName) != _tags.end();
 }

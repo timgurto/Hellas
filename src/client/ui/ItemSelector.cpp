@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #include "ItemSelector.h"
 #include "Label.h"
 #include "Line.h"
@@ -109,9 +107,9 @@ bool ItemSelector::itemMatchesFilter(const ClientItem &item, const std::string &
     if (item.name().find(filter) != std::string::npos)
         return true;
 
-    // Class matches
-    for (const std::string &className : item.classes())
-        if (className.find(filter) != std::string::npos)
+    // Tag matches
+    for (const std::string &tagName : item.tags())
+        if (tagName.find(filter) != std::string::npos)
             return true;
 
     return false;

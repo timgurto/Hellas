@@ -3,7 +3,7 @@
 <!--
 Both:
  - id
- - class
+ - tag
  - constructs
  - stackSize
  - stats
@@ -36,12 +36,12 @@ Client only:
 <item id="oven"         name="Oven"             constructs="oven" />
 
 <item id="stoneAxe" name="Stone axe"    gearSlot=6 >
-    <class name="axe" />
+    <tag name="axe" />
     <stats attack=1 />
 </item>
 
 <item id="tinPick" name="Tin pickaxe"    gearSlot=6 >
-    <class name="pick" />
+    <tag name="pick" />
     <stats attack=3 />
 </item>
 
@@ -50,7 +50,7 @@ Client only:
 </item>
 
 <item id="pickMould" name="Pickaxe mould" >
-    <class name="pickMould" />
+    <tag name="pickMould" />
 </item>
 
 </root>

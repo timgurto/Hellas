@@ -1,14 +1,12 @@
-// (C) 2016 Tim Gurto
-
 #include "Item.h"
 
 Item::Item(const std::string &id):
 _id(id){}
 
-void Item::addClass(const std::string &className){
-    _classes.insert(className);
+void Item::addTag(const std::string &tagName){
+    _tags.insert(tagName);
 }
 
-bool Item::isClass(const std::string &className) const{
-    return _classes.find(className) != _classes.end();
+bool Item::isTag(const std::string &tagName) const{
+    return _tags.find(tagName) != _tags.end();
 }

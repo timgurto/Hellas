@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #include <SDL.h>
 #include <SDL_mixer.h>
 
@@ -17,7 +15,7 @@ _gatherParticles(nullptr)
 {}
 
 ClientObjectType::~ClientObjectType(){
-    // TODO: wrap sound functionality in class that properly handeles copies.
+    // TODO: wrap sound functionality in class that properly handles copies.
     /*if (_gatherSound != nullptr)
         Mix_FreeChunk(_gatherSound);*/
 }

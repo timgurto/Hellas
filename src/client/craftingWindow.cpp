@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #include <cassert>
 
 #include "Client.h"
@@ -17,13 +15,13 @@ void Client::initializeCraftingWindow(){
     for (const Recipe &recipe : _recipes) {
         for (auto matPair : recipe.materials())
             _matFilters[toClientItem(matPair.first)] = false;
-        for (const std::string &className : recipe.product()->classes())
-            _classFilters[className] = false;
+        for (const std::string &tagName : recipe.product()->tags())
+            _tagFilters[tagName] = false;
     }
     _haveMatsFilter = true;
-    _classOr = _matOr = false;
+    _tagOr = _matOr = false;
     _haveToolsFilter = true;
-    _classFilterSelected = _matFilterSelected = false;
+    _tagFilterSelected = _matFilterSelected = false;
 
 
     // Set up crafting window
@@ -65,29 +63,29 @@ void Client::initializeCraftingWindow(){
     static const px_t
         TOTAL_FILTERS_HEIGHT = CONTENT_H - y - 4 * Element::TEXT_HEIGHT - LINE_GAP,
         //TOTAL_FILTERS_HEIGHT = CRAFTING_WINDOW_H - PANE_GAP/2 - y - 4 * Element::TEXT_HEIGHT - LINE_GAP,
-        CLASS_LIST_HEIGHT = TOTAL_FILTERS_HEIGHT / 2,
-        MATERIALS_LIST_HEIGHT = TOTAL_FILTERS_HEIGHT - CLASS_LIST_HEIGHT;
+        TAG_LIST_HEIGHT = TOTAL_FILTERS_HEIGHT / 2,
+        MATERIALS_LIST_HEIGHT = TOTAL_FILTERS_HEIGHT - TAG_LIST_HEIGHT;
 
-    // Class filters
+    // Tag filters
     filterPane->addChild(new Label(Rect(0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT),
-                                   "Item class:"));
+                                   "Item tag:"));
     y += Element::TEXT_HEIGHT;
-    List *const classList = new List(Rect(0, y, FILTERS_PANE_W, CLASS_LIST_HEIGHT),
+    List *const tagList = new List(Rect(0, y, FILTERS_PANE_W, TAG_LIST_HEIGHT),
                                      Element::TEXT_HEIGHT);
-    filterPane->addChild(classList);
-    for (std::map<std::string, bool>::iterator it = _classFilters.begin();
-         it != _classFilters.end(); ++it)
-        classList->addChild(new CheckBox(Rect(0, 0, FILTERS_PANE_W, Element::TEXT_HEIGHT),
+    filterPane->addChild(tagList);
+    for (std::map<std::string, bool>::iterator it = _tagFilters.begin();
+         it != _tagFilters.end(); ++it)
+        tagList->addChild(new CheckBox(Rect(0, 0, FILTERS_PANE_W, Element::TEXT_HEIGHT),
                                          it->second, it->first));
-    y += CLASS_LIST_HEIGHT;
+    y += TAG_LIST_HEIGHT;
 
-    pCB = new CheckBox(Rect(0, y, FILTERS_PANE_W/4, Element::TEXT_HEIGHT), _classOr, "Any");
-    pCB->setTooltip("Only show recipes whose product is at least one of the selected classes.");
+    pCB = new CheckBox(Rect(0, y, FILTERS_PANE_W/4, Element::TEXT_HEIGHT), _tagOr, "Any");
+    pCB->setTooltip("Only show recipes whose product has at least one of the selected tags.");
     filterPane->addChild(pCB);
 
-    pCB = new CheckBox(Rect(FILTERS_PANE_W/2, y, FILTERS_PANE_W/4, Element::TEXT_HEIGHT), _classOr,
+    pCB = new CheckBox(Rect(FILTERS_PANE_W/2, y, FILTERS_PANE_W/4, Element::TEXT_HEIGHT), _tagOr,
                        "All", true);
-    pCB->setTooltip("Only show recipes whose product is all of the selected classes.");
+    pCB->setTooltip("Only show recipes whose product has all of the selected tags.");
     filterPane->addChild(pCB);
 
     y += Element::TEXT_HEIGHT;
@@ -196,26 +194,26 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     // Icon
     pane.addChild(new Picture(Rect(0, y, ICON_SIZE, ICON_SIZE), product.icon()));
 
-    // Class list
+    // Tag list
     px_t x = ICON_SIZE + CheckBox::GAP;
-    size_t classesRemaining = product.classes().size();
+    size_t tagsRemaining = product.tags().size();
     const px_t minLineY = y + ICON_SIZE;
-    for (const std::string &className : product.classes()) {
-        std::string text = className;
-        if (--classesRemaining > 0)
+    for (const std::string &tagName : product.tags()) {
+        std::string text = tagName;
+        if (--tagsRemaining > 0)
             text += ", ";
-        Label *const classLabel = new Label(Rect(0, 0, 0, Element::TEXT_HEIGHT), text);
-        classLabel->matchW();
-        classLabel->refresh();
-        const px_t width = classLabel->rect().w;
+        Label *const tagLabel = new Label(Rect(0, 0, 0, Element::TEXT_HEIGHT), text);
+        tagLabel->matchW();
+        tagLabel->refresh();
+        const px_t width = tagLabel->rect().w;
         static const px_t SPACE_WIDTH = 4;
         if (x + width - SPACE_WIDTH > paneRect.w) {
             x = ICON_SIZE + CheckBox::GAP;
             y += Element::TEXT_HEIGHT;
         }
-        classLabel->rect(x, y);
+        tagLabel->rect(x, y);
         x += width;
-        pane.addChild(classLabel);
+        pane.addChild(tagLabel);
     }
     y += Element::TEXT_HEIGHT;
     if (y < minLineY)
@@ -271,10 +269,10 @@ void Client::populateRecipesList(Element &e){
             break;
         }
     }
-    _instance->_classFilterSelected = false;
-    for (const std::pair<std::string, bool> &filter : _instance->_classFilters) {
+    _instance->_tagFilterSelected = false;
+    for (const std::pair<std::string, bool> &filter : _instance->_tagFilters) {
         if (filter.second) {
-            _instance->_classFilterSelected = true;
+            _instance->_tagFilterSelected = true;
             break;
         }
     }
@@ -338,31 +336,31 @@ bool Client::recipeMatchesFilters(const Recipe &recipe) const{
         }
     }
 
-    // Class filters
-    bool classFilterMatched = !_classFilterSelected || !_classOr;
-    if (_classFilterSelected) {
+    // Tag filters
+    bool tagFilterMatched = !_tagFilterSelected || !_tagOr;
+    if (_tagFilterSelected) {
         /*
-        "Or": check that the item matches any active class filter.
-        Faster to iterate through item's classes, rather than all filters.
+        "Or": check that the item matches any active tag filter.
+        Faster to iterate through item's tags, rather than all filters.
         */
-        auto classes = recipe.product()->classes();
-        if (_classOr) {
-            for (const std::string &className : classes) {
-                if (_classFilters.find(className)->second) {
-                        classFilterMatched = true;
+        auto tags = recipe.product()->tags();
+        if (_tagOr) {
+            for (const std::string &tagName : tags) {
+                if (_tagFilters.find(tagName)->second) {
+                        tagFilterMatched = true;
                         break;
                 }
             }
         // "And": check that all active filters apply to the item.
         } else {
-            for (const std::pair<std::string, bool> &classFilter : _classFilters) {
-                if (!classFilter.second) // Filter is not active
+            for (const std::pair<std::string, bool> &tagFilter : _tagFilters) {
+                if (!tagFilter.second) // Filter is not active
                     continue;
-                if (classes.find(classFilter.first) == classes.end())
+                if (tags.find(tagFilter.first) == tags.end())
                     return false;
             }
         }
     }
 
-    return matsFilterMatched && classFilterMatched;
+    return matsFilterMatched && tagFilterMatched;
 }

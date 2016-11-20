@@ -171,10 +171,10 @@ bool User::hasItems(const ItemSet &items) const{
     return false;
 }
 
-bool User::hasTool(const std::string &className) const{
+bool User::hasTool(const std::string &tagName) const{
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         const ServerItem *item = _inventory[i].first;
-        if (item && item->isClass(className))
+        if (item && item->isTag(tagName))
             return true;
     }
 
@@ -183,7 +183,7 @@ bool User::hasTool(const std::string &className) const{
     for (CollisionChunk *chunk : superChunk)
         for (const auto &ret : chunk->objects()) {
             const Object *pObj = ret.second;
-            if (pObj->type()->isClass(className) &&
+            if (pObj->type()->isTag(tagName) &&
                 distance(pObj->collisionRect(), collisionRect()) < Server::ACTION_DISTANCE)
                 return true;
         }
@@ -192,8 +192,8 @@ bool User::hasTool(const std::string &className) const{
 }
 
 bool User::hasTools(const std::set<std::string> &classes) const{
-    for (const std::string &className : classes)
-        if (!hasTool(className))
+    for (const std::string &tagName : classes)
+        if (!hasTool(tagName))
             return false;
     return true;
 }

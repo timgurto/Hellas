@@ -10,7 +10,7 @@
 class Item{
 protected:
     std::string _id; // The no-space, unique name used in data files
-    std::set<std::string> _classes;
+    std::set<std::string> _tags;
     size_t _gearSlot;
     StatsMod _stats; // If gear, the impact it has on its wearer's stats.
 
@@ -19,7 +19,7 @@ public:
     virtual ~Item(){}
 
     const std::string &id() const { return _id; }
-    const std::set<std::string> &classes() const { return _classes; }
+    const std::set<std::string> &tags() const { return _tags; }
     void gearSlot(size_t slot) { _gearSlot = slot; }
     size_t gearSlot() const { return _gearSlot; }
     void stats(const StatsMod &stats) { _stats = stats; }
@@ -29,9 +29,9 @@ public:
     
     typedef std::vector<std::pair<const Item *, size_t> > vect_t;
 
-    void addClass(const std::string &className);
-    bool hasClasses() const { return _classes.size() > 0; }
-    bool isClass(const std::string &className) const;
+    void addTag(const std::string &tagName);
+    bool hasTags() const { return _tags.size() > 0; }
+    bool isTag(const std::string &tagName) const;
 };
 
 #endif

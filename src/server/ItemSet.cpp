@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #include <cassert>
 
 #include "ItemSet.h"
@@ -79,15 +77,15 @@ bool ItemSet::contains(const Item *item, size_t qty) const{
     return (it->second >= qty);
 }
 
-bool ItemSet::contains(const std::string &className){
+bool ItemSet::contains(const std::string &tagName){
     for (auto pair : _set)
-        if (pair.first->classes().find(className) != pair.first->classes().end())
+        if (pair.first->tags().find(tagName) != pair.first->tags().end())
             return true;
     return false;
 }
 
-bool ItemSet::contains(const std::set<std::string> &classes){
-    for (const std::string &name : classes)
+bool ItemSet::contains(const std::set<std::string> &tags){
+    for (const std::string &name : tags)
         if (!contains(name))
             return false;
     return true;

@@ -10,8 +10,6 @@
 
 **character**, the *avatar* which represents a user in-game
 
-**class**, a category to which an item or object belongs, implying functionality.  For example, cutting down a tree might require a user either to have an "axe"-class item in his inventory, or to be near an "axe"-class object.  An item or object can have one or many classes, or none at all.
-
 **client**, the *program* which connects to the server
 
 **construct**, when the user transforms an appropriate item from his inventory into an object
@@ -46,9 +44,11 @@
 
 **server**, the *program* which manages the state of the game world and connects to clients
 
-**swap**, when a user exchanges the item in one container slot with another.  The container might be an object, or his inventory, or the gear he is wearing.
+**swap**, when a user exchanges the item in one container slot with another.  The container might be an object, or his inventory, or the gear he is wearing (cf. *take*)
 
-**take**, when a user attempts to take an item from a container slot (an object or his gear) into his inventory, without swapping another into its place.
+**tag**, a category to which an item or object belongs, implying functionality.  For example, cutting down a tree might require a user either to have an "axe"-tagged item in his inventory, or to be near an "axe"-tagged object.  An item or object can have one or many tag, or none at all.
+
+**take**, when a user attempts to take an item from a container slot (an object or his gear) into his inventory, without swapping another into its place (cf. *swap*)
 
 **terminal**, a generic term for server or client
 

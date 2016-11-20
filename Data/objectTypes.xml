@@ -18,7 +18,7 @@ Client only:
 Server only:
  - constructionTimer
  - gatherReq
- - class
+ - tag
 -->
 
 <objectType
@@ -74,7 +74,7 @@ Server only:
     xDrawOffset=-14 yDrawOffset=-17
     constructionTime=1000 >
     <collisionRect x=-13 y=-7 w=26 h=11 />
-    <class name="kiln1" />
+    <tag name="kiln1" />
 </objectType>
 
 <objectType
@@ -104,7 +104,7 @@ Server only:
     deconstructionTime=1000
     merchantSlots=2 >
     <collisionRect x=-13 y=-4 w=25 h=8 />
-    <class name="set square" />
+    <tag name="set square" />
     <container slots=5 />
 </objectType-->
 </root>

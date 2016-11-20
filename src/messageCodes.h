@@ -233,7 +233,7 @@ enum MessageCode{
     SV_CANNOT_CONSTRUCT = 919,
 
     // The user tried to perform an action but does not have the requisite item
-    // Arguments: requiredItemClass
+    // Arguments: requiredItemTag
     SV_ITEM_NEEDED = 920,
 
     // The user tried to perform an action at an occupied location

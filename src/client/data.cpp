@@ -66,8 +66,8 @@ void Client::loadData(const std::string &path){
                 continue; // ID and name are mandatory.
             ClientItem item(id, name);
             std::string s;
-            for (auto child : xr.getChildren("class", elem))
-                if (xr.findAttr(child, "name", s)) item.addClass(s);
+            for (auto child : xr.getChildren("tag", elem))
+                if (xr.findAttr(child, "name", s)) item.addTag(s);
 
             if (xr.findAttr(elem, "iconFile", s))
                 item.icon(s);

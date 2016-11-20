@@ -114,15 +114,15 @@ private:
     Stats _stats; // The user's stats
 
     void initializeCraftingWindow();
-    bool _haveMatsFilter, _haveToolsFilter, _classOr, _matOr;
+    bool _haveMatsFilter, _haveToolsFilter, _tagOr, _matOr;
     static const px_t HEADING_HEIGHT; // The height of windows' section headings
     static const px_t LINE_GAP; // The total height occupied by a line and its surrounding spacing
     const Recipe *_activeRecipe; // The recipe currently selected, if any
     static void startCrafting(void *data); // Called when the "Craft" button is clicked.
     // Populated at load time, after _items
-    std::map<std::string, bool> _classFilters;
+    std::map<std::string, bool> _tagFilters;
     std::map<const ClientItem *, bool> _matFilters;
-    mutable bool _classFilterSelected, _matFilterSelected; // Whether any filters have been selected
+    mutable bool _tagFilterSelected, _matFilterSelected; // Whether any filters have been selected
     bool recipeMatchesFilters(const Recipe &recipe) const;
     // Called when filters pane is clicked.
     static void populateRecipesList(Element &e);
