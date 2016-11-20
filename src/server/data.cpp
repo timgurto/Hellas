@@ -16,7 +16,18 @@ bool Server::readUserData(User &user){
     if (!xr)
         return false;
 
-    auto elem = xr.findChild("location");
+    auto elem = xr.findChild("general");
+    std::string className;
+    if (!xr.findAttr(elem, "class", className))
+        return false;
+    auto it = User::CLASS_CODES.find(className);
+    if (it == User::CLASS_CODES.end()){
+        _debug << Color::RED << "Invalid class (" << className
+               << ") specified; creating new character." << Log::endl;
+    }
+    user.setClass(it->second);
+
+    elem = xr.findChild("location");
     Point p;
     if (elem == nullptr || !xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
             _debug("Invalid user data (location)", Color::RED);
@@ -76,7 +87,10 @@ bool Server::readUserData(User &user){
 void Server::writeUserData(const User &user) const{
     XmlWriter xw(std::string("Users/") + user.name() + ".usr");
 
-    auto e = xw.addChild("location");
+    auto e = xw.addChild("general");
+    xw.setAttr(e, "class", User::CLASS_NAMES[user.getClass()]);
+
+    e = xw.addChild("location");
     xw.setAttr(e, "x", user.location().x);
     xw.setAttr(e, "y", user.location().y);
 

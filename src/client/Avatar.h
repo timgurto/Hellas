@@ -7,6 +7,7 @@
 
 #include "Entity.h"
 #include "../Point.h"
+#include "../server/User.h"
 
 // The client-side representation of a user, including the player
 class Avatar : public Entity{
@@ -15,6 +16,7 @@ class Avatar : public Entity{
 
     Point _destination;
     std::string _name;
+    User::Class _class;
 
 public:
     Avatar(const std::string &name = "", const Point &location = 0);

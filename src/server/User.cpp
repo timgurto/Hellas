@@ -10,6 +10,9 @@ ObjectType User::OBJECT_TYPE("__clientObjectType__");
 
 Stats User::BASE_STATS;
 
+std::map<User::Class, std::string> User::CLASS_NAMES;
+std::map<std::string, User::Class> User::CLASS_CODES;
+
 User::User(const std::string &name, const Point &loc, const Socket &socket):
 Combatant(&OBJECT_TYPE, loc, BASE_STATS.health),
 
@@ -46,6 +49,13 @@ void User::init(){
     BASE_STATS.attack = 8;
     BASE_STATS.attackTime = 1000;
     BASE_STATS.speed = 80.0;
+    
+    CLASS_NAMES[SOLDIER] = "soldier";
+    CLASS_NAMES[MAGUS] = "magus";
+    CLASS_NAMES[PRIEST] = "priest";
+
+    for (auto &pair : CLASS_NAMES)
+        CLASS_CODES[pair.second] = pair.first;
 }
 
 bool User::compareXThenSerial::operator()( const User *a, const User *b){

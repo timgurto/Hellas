@@ -29,11 +29,23 @@ public:
         NO_ACTION
     };
 
+    enum Class{
+        SOLDIER,
+        MAGUS,
+        PRIEST,
+
+        NUM_CLASSES
+    };
+    static std::map<Class, std::string> CLASS_NAMES;
+    static std::map<std::string, Class> CLASS_CODES;
+
     static Stats BASE_STATS;
 
 private:
     std::string _name;
     Socket _socket;
+
+    Class _class;
 
     Action _action;
     ms_t _actionTime; // Time remaining on current action.
@@ -62,6 +74,8 @@ public:
     const std::string &name() const { return _name; }
     const Socket &socket() const { return _socket; }
     const Stats &stats() const;
+    void setClass(Class c) { _class = c; }
+    Class getClass() const { return _class; }
 
     // Inventory getters/setters
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const

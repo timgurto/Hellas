@@ -229,6 +229,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
     User newUser(name, 0, socket);
     const bool userExisted = readUserData(newUser);
     if (!userExisted) {
+        newUser.setClass(User::Class(rand() % User::NUM_CLASSES));
         do {
             newUser.location(mapRand());
         } while (!isLocationValid(newUser.location(), User::OBJECT_TYPE));

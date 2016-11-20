@@ -106,26 +106,26 @@ issue,description,value,effort,type,blockedBy,done
 260,More detailed permissions on objects,5,13,Feature,
 261,Objects can combine loot tables,13,8,Feature,
 262,A shrine that grants items,8,5,Feature,
-263,Talents/skills,89,89,Feature,273
+263,Talents/skills,89,89,Feature,
 264,An object that affects terrain fertility,5,8,Feature,254
 265,NPCs can have skills/abilities,13,13,Feature,263
 266,Players must learn recipes,8,13,Feature,
-267,Set bonuses for gear,13,8,Feature,
-268,Learning skills might require tools,8,3,Feature,263
-269,XP and leveling,21,5,Feature,
-270,Grouped players get bonus XP,21,3,Feature,269
-271,Quests,8,34,Feature,
-272,Items that start quests,5,5,Feature,
-273,Player classes,13,3,Feature,
-274,Class-restricted gear,13,3,Feature,273
-275,Flags showing faction ownership,5,5,Aesthetics,
-276,Some tools objects have a cooldown,21,5,Feature,
-277,Rare NPCs with better loot,21,8,Feature,
-278,Using shrines requires animal sacrifice,8,8,Feature,
-279,Containers may be restricted by item class,5,5,Feature,
-280,Make test map,5,3,Feature,
-281,"Recipes, objects and loot tables may point to deleted ServerItems",8,2,Bug,
-282,Use collisionRects even on non-colliding objects,5,2,Bug,
+267,Set bonuses for gear,13,8,Feature,,
+268,Learning skills might require tools,8,3,Feature,263,
+269,XP and leveling,21,5,Feature,,
+270,Grouped players get bonus XP,21,3,Feature,269,
+271,Quests,8,34,Feature,,
+272,Items that start quests,5,5,Feature,,
+273,Player classes,13,3,Feature,,TRUE
+274,Class-restricted gear,13,3,Feature,,
+275,Flags showing faction ownership,5,5,Aesthetics,,
+276,Some tools objects have a cooldown,21,5,Feature,,
+277,Rare NPCs with better loot,21,8,Feature,,
+278,Using shrines requires animal sacrifice,8,8,Feature,,
+279,Containers may be restricted by item class,5,5,Feature,,
+280,Make test map,5,3,Feature,,
+281,"Recipes, objects and loot tables may point to deleted ServerItems",8,2,Bug,,
+282,Use collisionRects even on non-colliding objects,5,2,Bug,,
 283,Color mouse-over outline based on whether in range,8,3,Aesthetics,,
 284,Send nearby users' health values,5,3,Feature,,
 285,An object that can transform with inventory + button push,13,8,Feature,,
