@@ -127,6 +127,8 @@ private:
     size_t _mapX, _mapY; // Number of tiles in each dimension.
     std::vector<std::vector<size_t>> _map;
     std::pair<size_t, size_t> getTileCoords(const Point &p) const;
+    size_t Server::getTileYCoord(double y) const;
+    size_t Server::getTileXCoord(double x, size_t yTile) const;
 
     // World data
     std::vector<TerrainType> _terrain;

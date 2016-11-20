@@ -1,5 +1,6 @@
 // (C) 2015 Tim Gurto
 
+#include <cassert>
 #include <list>
 #include <utility>
 
@@ -8,8 +9,7 @@
 
 const px_t Server::COLLISION_CHUNK_SIZE = 100;
 
-bool Server::isLocationValid(const Point &loc, const ObjectType &type,
-                             const Object *thisObject){
+bool Server::isLocationValid(const Point &loc, const ObjectType &type, const Object *thisObject){
     Rect rect = type.collisionRect() + loc;
     return isLocationValid(rect, thisObject);
 }
@@ -19,23 +19,46 @@ bool Server::isLocationValid(const Rect &rect, const Object *thisObject){
         right = rect.x + rect.w,
         bottom = rect.y + rect.h;
     // Map edges
-    const px_t
+    static const px_t
         xLimit = _mapX * Server::TILE_W - Server::TILE_W/2,
         yLimit = _mapY * Server::TILE_H;
     if (rect.x < 0 || right > xLimit ||
         rect.y < 0 || bottom > yLimit)
-        return false;
+            return false;
 
     // Terrain
-    auto topLeftTerrain = getTileCoords(rect);
-    auto bottomRightTerrain = getTileCoords(Point(right, bottom));
-
-    for (size_t x = topLeftTerrain.first; x <= bottomRightTerrain.first; ++x)
-        for (size_t y = topLeftTerrain.second; y <= bottomRightTerrain.second; ++y){
-            const TerrainType &terrain = _terrain[_map[x][y]];
+    size_t
+        tileTop = getTileYCoord(rect.y),
+        tileBottom = getTileYCoord(bottom);
+    assert(tileBottom >= tileTop);
+    if (tileTop == tileBottom){
+        size_t
+            tileLeft = getTileXCoord(rect.x, tileTop),
+            tileRight = getTileXCoord(right, tileTop);
+        for (size_t x = tileLeft; x <= tileRight; ++x){
+            const TerrainType &terrain = _terrain[_map[x][tileTop]];
             if (!terrain.isTraversable())
                 return false;
         }
+    } else {
+        size_t
+            tileLeftEven = getTileXCoord(rect.x, 0),
+            tileLeftOdd =  getTileXCoord(rect.x, 1),
+            tileRightEven = getTileXCoord(right, 0),
+            tileRightOdd =  getTileXCoord(right, 1);
+        for (size_t y = tileTop; y <= tileBottom; ++y){
+            bool yIsEven = y % 2 == 0;
+            size_t
+                tileLeft  = yIsEven ? tileLeftEven :  tileLeftOdd,
+                tileRight = yIsEven ? tileRightEven : tileRightOdd;
+            assert(tileRight >= tileLeft);
+            for (size_t x = tileLeft; x <= tileRight; ++x){
+                const TerrainType &terrain = _terrain[_map[x][y]];
+                if (!terrain.isTraversable())
+                    return false;
+            }
+        }
+    }
 
     // Users
     Point rectCenter(rect.x + rect.w / 2, rect.y + rect.h / 2);
@@ -68,22 +91,33 @@ bool Server::isLocationValid(const Rect &rect, const Object *thisObject){
     return true;
 }
 
+size_t Server::getTileYCoord(double y) const{
+    size_t yTile = static_cast<size_t>(y / TILE_H);
+    if (yTile >= _mapY) {
+        _debug << Color::RED << "Invalid location; clipping y from " << yTile << " to " << _mapY-1
+               << ". original co-ord=" << y << Log::endl;
+        yTile = _mapY-1;
+    }
+    return yTile;
+}
+
+size_t Server::getTileXCoord(double x, size_t yTile) const{
+    double originalX = x;
+    if (yTile % 2 == 1)
+        x += TILE_W / 2;
+    size_t xTile = static_cast<size_t>(x / TILE_W);
+    if (xTile >= _mapX) {
+        _debug << Color::RED << "Invalid location; clipping x from " << originalX << " to "
+               << _mapX-1 << ". original co-ord=" << x << Log::endl;
+        xTile = _mapX-1;
+    }
+    return xTile;
+}
+
 std::pair<size_t, size_t> Server::getTileCoords(const Point &p) const{
-    size_t y = static_cast<size_t>(p.y / TILE_H);
-    if (y >= _mapY) {
-        _debug << Color::RED << "Invalid location; clipping y from " << y << " to " << _mapY-1
-               << ". original co-ord=" << p.y << Log::endl;
-        y = _mapY-1;
-    }
-    double rawX = p.x;
-    if (y % 2 == 1)
-        rawX += TILE_W/2;
-    size_t x = static_cast<size_t>(rawX / TILE_W);
-    if (x >= _mapX) {
-        _debug << Color::RED << "Invalid location; clipping x from " << x << " to " << _mapX-1
-               << ". original co-ord=" << p.x << Log::endl;
-        x = _mapX-1;
-    }
+    size_t
+        y = getTileYCoord(p.y),
+        x = getTileXCoord(p.x, y);
     return std::make_pair(x, y);
 }
 

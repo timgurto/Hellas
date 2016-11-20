@@ -10,6 +10,8 @@ void Object::updateLocation(const Point &dest){
     ms_t timeElapsed = newTime - _lastLocUpdate;
     _lastLocUpdate = newTime;
 
+    assert(server.isLocationValid(_location, *type(), this));
+
     // Max legal distance: straight line
     const double maxLegalDistance = min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES,
                                         timeElapsed + 100) / 1000.0 * speed();
@@ -23,8 +25,8 @@ void Object::updateLocation(const Point &dest){
     Point rawDisplacement(newDest.x - _location.x,
                           newDest.y - _location.y);
     px_t
-        displacementX = ceil(abs(rawDisplacement.x)),
-        displacementY = ceil(abs(rawDisplacement.y));
+        displacementX = toInt(ceil(abs(rawDisplacement.x))),
+        displacementY = toInt(ceil(abs(rawDisplacement.y)));
     Rect journeyRect = collisionRect();
     if (rawDisplacement.x < 0)
         journeyRect.x -= displacementX;
@@ -34,6 +36,7 @@ void Object::updateLocation(const Point &dest){
     journeyRect.h += displacementY;
     if (!server.isLocationValid(journeyRect, this)) {
         newDest = _location;
+        assert(server.isLocationValid(newDest, *type(), this));
         static const double ACCURACY = 0.5;
         Point displacementNorm(rawDisplacement.x / distanceToMove * ACCURACY,
                                rawDisplacement.y / distanceToMove * ACCURACY);

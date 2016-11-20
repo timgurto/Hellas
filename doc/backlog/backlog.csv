@@ -125,7 +125,7 @@ issue,description,value,effort,type,blockedBy,done
 279,Containers may be restricted by item class,5,5,Feature,
 280,Make test map,5,3,Feature,
 281,"Recipes, objects and loot tables may point to deleted ServerItems",8,2,Bug,
-282,Non-colliding objects have a single point of contact,5,2,Bug,
+282,Use collisionRects even on non-colliding objects,5,2,Bug,
 283,Color mouse-over outline based on whether in range,8,3,Aesthetics,,
 284,Send nearby users' health values,5,3,Feature,,
 285,An object that can transform with inventory + button push,13,8,Feature,,
