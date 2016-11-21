@@ -5,11 +5,12 @@
 
 extern Renderer renderer;
 
-EntityType Avatar::_entityType(Rect(-9, -39));
-Rect Avatar::_collisionRect(-5, -2, 10, 4);
+const Rect Avatar::DRAW_RECT(-9, -39, 20, 40);
+const Rect Avatar::COLLISION_RECT(-5, -2, 10, 4);
+std::map<std::string, EntityType> Avatar::_classes;
 
 Avatar::Avatar(const std::string &name, const Point &location):
-Entity(&_entityType, location),
+Entity(&_classes[""], location),
 _name(name){}
 
 Point Avatar::interpolatedLocation(double delta){
@@ -25,7 +26,7 @@ void Avatar::draw(const Client &client) const{
 
     if (isDebug()) {
         renderer.setDrawColor(Color::WHITE);
-        renderer.drawRect(_collisionRect + location() + client.offset());
+        renderer.drawRect(COLLISION_RECT + location() + client.offset());
     }
 
     // Draw username
@@ -53,5 +54,12 @@ std::vector<std::string> Avatar::getTooltipMessages(const Client &client) const 
 }
 
 void Avatar::cleanup(){
-    _entityType = EntityType();
+    _classes.clear();
+}
+
+void Avatar::setClass(const std::string &c){
+    _class = c;
+    if (_classes.find(c) == _classes.end())
+        _classes[c] = EntityType(DRAW_RECT, std::string("Images/" + c + ".png"));
+    type(&_classes[c]);
 }

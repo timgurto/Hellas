@@ -37,6 +37,7 @@ public:
     bool yChanged() const { return _yChanged; }
     void yChanged(bool val) { _yChanged = val; }
     const EntityType *type() const { return _type; }
+    void type(const EntityType *et) { _type = et; }
     bool needsTooltipRefresh() { return _needsTooltipRefresh; }
     const Texture &tooltip() const { return _tooltip; }
     virtual const Texture &image() const { return _type->image(); }

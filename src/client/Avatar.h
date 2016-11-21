@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef AVATAR_H
 #define AVATAR_H
 
@@ -11,8 +9,8 @@
 
 // The client-side representation of a user, including the player
 class Avatar : public Entity{
-    static EntityType _entityType;
-    static Rect _collisionRect;
+    static std::map<std::string, EntityType> _classes;
+    static const Rect COLLISION_RECT, DRAW_RECT;
 
     Point _destination;
     std::string _name;
@@ -21,14 +19,12 @@ class Avatar : public Entity{
 public:
     Avatar(const std::string &name = "", const Point &location = 0);
 
-    static void image(const std::string &filename) { _entityType.image(filename); }
     void name(const std::string &newName) { _name = newName; }
     const std::string &name() const { return _name; }
     const Point &destination() const { return _destination; }
     void destination(const Point &dst) { _destination = dst; }
-    static const EntityType &entityType() { return _entityType; }
-    static const Rect &collisionRect() { return _collisionRect; }
-    void setClass(const std::string &c) { _class = c; }
+    const Rect &collisionRect() const { return COLLISION_RECT + location(); }
+    void setClass(const std::string &c);
     const std::string &getClass() const { return _class; }
 
     virtual void draw(const Client &client) const override;

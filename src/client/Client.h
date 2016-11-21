@@ -44,8 +44,7 @@ public:
     const Point &offset() const { return _intOffset; }
     const std::string &username() const { return _username; }
     const Entity *currentMouseOverEntity() const { return _currentMouseOverEntity; }
-    Rect playerCollisionRect() const { return _character.location() +
-                                              Avatar::collisionRect(); }
+    Rect playerCollisionRect() const { return _character.collisionRect(); }
     void targetNPC(const ClientNPC *npc, bool aggressive = false);
     const ClientNPC *targetNPC() const { return _targetNPC; }
     bool aggressive() const { return _aggressive; }
@@ -167,7 +166,6 @@ private:
     std::string _lastWhisperer; // The username of the last person to whisper, for fast replying.
 
     std::string _username;
-    std::string _class;
     Avatar _character; // Describes the user's character
     Stats _stats; // The user's stats
     size_t _health; // The character's health

@@ -259,8 +259,6 @@ _debug("client.log"){
 
     _entities.insert(&_character);
 
-    Avatar::image("Images/man.png");
-
     // Player's inventory/gear
     for (size_t i = 0; i != INVENTORY_SIZE; ++i)
         _inventory.push_back(std::make_pair<const ClientItem *, size_t>(nullptr, 0));

@@ -318,7 +318,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             Avatar *newUser = nullptr;
             if (username == _username) {
-                _class = className;
+                _character.setClass(className);
             } else {
                 if (_otherUsers.find(_username) == _otherUsers.end()) {
                     _debug("Class received for an unknown user.  Ignoring.", Color::FAILURE);

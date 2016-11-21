@@ -59,7 +59,7 @@ void Client::initializeGearWindow(){
     // Class
     labelRect.y += Element::TEXT_HEIGHT;
     _gearWindow->addChild(new LinkedLabel<std::string>
-            (labelRect, _class, "", "", Element::CENTER_JUSTIFIED));
+            (labelRect, _character.getClass(), "", "", Element::CENTER_JUSTIFIED));
     
 
     labelRect.y += Element::TEXT_HEIGHT;

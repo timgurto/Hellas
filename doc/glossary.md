@@ -10,6 +10,8 @@
 
 **character**, the *avatar* which represents a user in-game
 
+**class**, the archetype that a character follows.  Class affects appearance.
+
 **client**, the *program* which connects to the server
 
 **construct**, when the user transforms an appropriate item from his inventory into an object
