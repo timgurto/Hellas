@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #ifndef LINKED_LABEL_H
 #define LINKED_LABEL_H
 
@@ -21,6 +19,7 @@ public:
 
 private:
     virtual void checkIfChanged() override;
+    void updateText();
 };
 
 template<typename T>
@@ -32,14 +31,12 @@ _val(val),
 _lastCheckedVal(val),
 _prefix(prefix),
 _suffix(suffix)
-{}
+{
+    updateText();
+}
 
 template<typename T>
-void LinkedLabel<T>::checkIfChanged(){
-    if (_val != _lastCheckedVal) {
-        _lastCheckedVal = _val;
-
-        // Update text
+void LinkedLabel<T>::updateText(){
         std::ostringstream oss;
         if (!_prefix.empty())
             oss << _prefix;
@@ -47,6 +44,14 @@ void LinkedLabel<T>::checkIfChanged(){
         if (!_suffix.empty())
             oss << _suffix;
         _text = oss.str();
+}
+
+template<typename T>
+void LinkedLabel<T>::checkIfChanged(){
+    if (_val != _lastCheckedVal) {
+        _lastCheckedVal = _val;
+        
+        updateText();
 
         markChanged();
         Label::checkIfChanged();
