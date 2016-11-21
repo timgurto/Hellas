@@ -110,8 +110,6 @@ private:
 
     // Whether the user has the specified item(s).
     bool playerHasItem(const Item *item, size_t quantity = 1) const;
-    
-    Stats _stats; // The user's stats
 
     void initializeCraftingWindow();
     bool _haveMatsFilter, _haveToolsFilter, _tagOr, _matOr;
@@ -158,19 +156,20 @@ private:
     Element *_castBar;
     Label *_usernameDisplay;
 
+    // Chat
     Element *_chatContainer;
     List *_chatLog;
     TextBox *_chatTextBox;
     void addChatMessage(const std::string &msg, const Color &color = Color::FONT);
-
     static Color
         SAY_COLOR,
         WHISPER_COLOR;
-
     std::string _lastWhisperer; // The username of the last person to whisper, for fast replying.
 
-
+    std::string _username;
+    std::string _class;
     Avatar _character; // Describes the user's character
+    Stats _stats; // The user's stats
     size_t _health; // The character's health
     Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.
 
@@ -201,7 +200,6 @@ private:
     Socket _socket;
     TTF_Font *_defaultFont;
     px_t _defaultFontOffset; // Vertical offset for game text
-    std::string _username;
 
     // Mouse stuff
     Point _mouse; // Mouse position

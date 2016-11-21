@@ -54,6 +54,7 @@ Code | Name                      | Syntax                                       
 128  | `SV_OBJECT_LOCATION`      | &laquo;128&#8226;serial&#8226;x&#8226;y&raquo;                                 | "Object #`serial` is now located at (`x`,`y`)"
 130  | `SV_ACTION_STARTED`       | &laquo;130&#8226;time&raquo;                                                   | "You have begun an action that will take `t` milliseconds"
 131  | `SV_ACTION_FINISHED`      | &laquo;131&raquo;                                                              | "You have completed an action"
+131  | `SV_CLASS`                | &laquo;132&#8226;username&#8226;className&raquo;                               | "User `username` is a `className`"
 150  | `SV_OWNER`                | &laquo;150&#8226;serial&#8226;owner&raquo;                                     | "Object #`serial` is owned by `owner`"
 151  | `SV_GATHERING_OBJECT`     | &laquo;151&#8226;serial&raquo;                                                 | "Object #`serial` is being gathered"
 152  | `SV_NOT_GATHERING_OBJECT` | &laquo;152&#8226;serial&raquo;                                                 | "Object #`serial` is no longer being gathered"

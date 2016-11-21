@@ -308,6 +308,26 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_CLASS:
+        {
+            std::string username, className;
+            singleMsg >> username >> del;
+            readString(singleMsg, className, MSG_END);
+            singleMsg >> del;
+            if (del != MSG_END)
+                break;
+            Avatar *newUser = nullptr;
+            if (username == _username) {
+                _class = className;
+            } else {
+                if (_otherUsers.find(_username) == _otherUsers.end()) {
+                    _debug("Class received for an unknown user.  Ignoring.", Color::FAILURE);
+                    break;
+                }
+                _otherUsers[_username]->setClass(className);
+            }
+        }
+
         case SV_INVENTORY:
         {
             size_t serial, slot, quantity;

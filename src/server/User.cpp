@@ -50,9 +50,9 @@ void User::init(){
     BASE_STATS.attackTime = 1000;
     BASE_STATS.speed = 80.0;
     
-    CLASS_NAMES[SOLDIER] = "soldier";
-    CLASS_NAMES[MAGUS] = "magus";
-    CLASS_NAMES[PRIEST] = "priest";
+    CLASS_NAMES[SOLDIER] = "Soldier";
+    CLASS_NAMES[MAGUS] =   "Magus";
+    CLASS_NAMES[PRIEST] =  "Priest";
 
     for (auto &pair : CLASS_NAMES)
         CLASS_CODES[pair.second] = pair.first;

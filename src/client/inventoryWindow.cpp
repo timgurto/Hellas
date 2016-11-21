@@ -51,7 +51,18 @@ void Client::initializeGearWindow(){
 
     // Stats display
     Rect labelRect(w + STAT_X_GAP, 0, STATS_WIDTH, Element::TEXT_HEIGHT);
+    
+    // Username
+    _gearWindow->addChild(new LinkedLabel<std::string>
+            (labelRect, _username, "", "", Element::CENTER_JUSTIFIED));
 
+    // Class
+    labelRect.y += Element::TEXT_HEIGHT;
+    _gearWindow->addChild(new LinkedLabel<std::string>
+            (labelRect, _class, "", "", Element::CENTER_JUSTIFIED));
+    
+
+    labelRect.y += Element::TEXT_HEIGHT;
     _gearWindow->addChild(new Label(labelRect, "Health"));
     _gearWindow->addChild(new LinkedLabel<health_t>(labelRect, _health,
                                                     "", "", Element::RIGHT_JUSTIFIED));

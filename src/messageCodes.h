@@ -53,10 +53,13 @@ enum MessageCode{
 
     // "I want to swap the items in container slots ... and ...". 
     // An object serial of 0 denotes the user's inventory.
+    // An object serial of 1 denotes the user's gear.
     // Arguments: serial1, slot1, serial2, slot2
     CL_SWAP_ITEMS = 31,
 
     // "I want to take the item in container slot ..."
+    // An object serial of 1 denotes the user's gear.
+    // Arguments: serial, slot
     CL_TAKE_ITEM = 32,
 
     // "I want to set object ...'s merchant slot ... to the following:
@@ -153,6 +156,10 @@ enum MessageCode{
 
     // The user has completed an action
     SV_ACTION_FINISHED = 131,
+
+    // A user's class
+    // Arguments: username, classname
+    SV_CLASS = 132,
 
     // An object has an owner
     // Arguments: serial, owner

@@ -76,6 +76,7 @@ public:
     const Stats &stats() const;
     void setClass(Class c) { _class = c; }
     Class getClass() const { return _class; }
+    const std::string &className() const { return CLASS_NAMES[_class]; }
 
     // Inventory getters/setters
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const

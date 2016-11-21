@@ -763,3 +763,12 @@ void Server::sendObjectInfo(const User &user, const Object &object) const{
     if (object.numUsersGathering() > 0)
         sendMessage(user.socket(), SV_GATHERING_OBJECT, makeArgs(object.serial()));
 }
+
+void Server::sendUserInfo(const User &user, const User &userToDescribe) const{
+    // Location
+    sendMessage(user.socket(), SV_LOCATION, userToDescribe.makeLocationCommand());
+
+    // Class
+    sendMessage(user.socket(), SV_CLASS,
+            makeArgs(userToDescribe.name(), userToDescribe.className()));
+}

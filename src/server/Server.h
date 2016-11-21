@@ -88,6 +88,7 @@ private:
     void sendInventoryMessage(const User &user, size_t slot, size_t serial) const;
     void sendMerchantSlotMessage(const User &user, const Object &obj, size_t slot) const;
     void sendObjectInfo(const User &user, const Object &object) const;
+    void sendUserInfo(const User &user, const User &userToDescribe) const;
 
     // Clients
     // All connected sockets, including those without registered users

@@ -245,6 +245,9 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // Send him his own location
     sendMessage(newUser.socket(), SV_LOCATION, newUser.makeLocationCommand());
 
+    // Send him his class
+    sendMessage(newUser.socket(), SV_CLASS, makeArgs(name, newUser.className()));
+
     // Send him his health
     sendMessage(newUser.socket(), SV_HEALTH, makeArgs(newUser.health()));
 
@@ -259,10 +262,10 @@ void Server::addUser(const Socket &socket, const std::string &name){
     }
 
     for (const User *userP : findUsersInArea(newUser.location())){
-        // Send him the locations of other nearby users
-        sendMessage(newUser.socket(), SV_LOCATION, userP->makeLocationCommand());
-        // Send nearby others this user's location
-        sendMessage(userP->socket(), SV_LOCATION, newUser.makeLocationCommand());
+        // Send him information about other nearby users
+        sendUserInfo(newUser, *userP);
+        // Send nearby others this user's information
+        sendUserInfo(*userP, newUser);
     }
 
     // Send him object details

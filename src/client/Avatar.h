@@ -16,7 +16,7 @@ class Avatar : public Entity{
 
     Point _destination;
     std::string _name;
-    User::Class _class;
+    std::string _class;
 
 public:
     Avatar(const std::string &name = "", const Point &location = 0);
@@ -28,6 +28,8 @@ public:
     void destination(const Point &dst) { _destination = dst; }
     static const EntityType &entityType() { return _entityType; }
     static const Rect &collisionRect() { return _collisionRect; }
+    void setClass(const std::string &c) { _class = c; }
+    const std::string &getClass() const { return _class; }
 
     virtual void draw(const Client &client) const override;
     virtual void update(double delta) override;
