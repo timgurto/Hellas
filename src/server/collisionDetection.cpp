@@ -19,7 +19,7 @@ bool Server::isLocationValid(const Rect &rect, const Object *thisObject){
         right = rect.x + rect.w,
         bottom = rect.y + rect.h;
     // Map edges
-    static const px_t
+    const px_t
         xLimit = _mapX * Server::TILE_W - Server::TILE_W/2,
         yLimit = _mapY * Server::TILE_H;
     if (rect.x < 0 || right > xLimit ||
