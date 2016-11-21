@@ -3,7 +3,17 @@
 <gameFont filename="poh_pixels.ttf" size=16 height=11 offset=2 />
 <castBar y=300 w=150 h=11 />
 <server hostDirectory="http://timgurto.com/mmo-server-ip.txt" port="8888"/>
+
 <gearWindow width=36 height=72 gridX=0 gridY=-1 gap=0 rows=4 cols=2 />
+<gearDisplay> 9,39
+    <slot num=0 midX=-1 midY=-36 <!-- head       -->/>
+    <slot num=2 midX=0  midY=-30 <!-- body       -->/>
+    <slot num=3 midX=-3 midY=-33 <!-- shoulders  -->/>
+    <slot num=4 midX=-6 midY=-19 <!-- hands      -->/>
+    <slot num=5 midX=-4 midY=-2  <!-- feet       -->/>
+    <slot num=6 midX=-6 midY=-16 <!-- right hand -->/>
+    <slot num=7 midX=6  midY=-18 <!-- left hand  -->/>
+</gearDisplay>
 
 <!--
 Yellow      FFFFB2
@@ -65,6 +75,5 @@ Dark blue   3C388C
     
     outline = "170A33"
     highlightOutline = "E5E5E5"
->
-</colors>
+/>
 </root>

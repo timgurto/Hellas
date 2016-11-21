@@ -37,7 +37,7 @@ issue,description,value,effort,type,blockedBy,done
 177,Character has gear slots,13,21,Feature,,TRUE
 178,Items can match gear slots,8,3,Feature,,TRUE
 179,Gear can have stats,13,8,Feature,,TRUE
-180,Gear visible on character,34,21,Aesthetics,,
+180,Gear visible on character,34,8,Aesthetics,,
 182,Make use of Winsock modular,8,21,Code quality,,
 183,Linux support,21,13,Code quality,182,
 184,NPC idling AI,8,21,Feature,,
