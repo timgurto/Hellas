@@ -23,6 +23,13 @@ Point Avatar::interpolatedLocation(double delta){
 
 void Avatar::draw(const Client &client) const{
     Entity::draw(client);
+    
+    // Draw gear
+    if (this == &client._character)
+        for (size_t i = 0; i != Client::GEAR_SLOTS; ++i){
+            if (client._gear[i].first != nullptr)
+                client._gear[i].first->draw(location());
+        }
 
     if (isDebug()) {
         renderer.setDrawColor(Color::WHITE);

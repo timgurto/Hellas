@@ -1,18 +1,18 @@
 <root>
-<chatLog width=150 height=100  />
+<chatLog width=150 height=100 />
 <gameFont filename="poh_pixels.ttf" size=16 height=11 offset=2 />
 <castBar y=300 w=150 h=11 />
 <server hostDirectory="http://timgurto.com/mmo-server-ip.txt" port="8888"/>
 
 <gearWindow width=36 height=72 gridX=0 gridY=-1 gap=0 rows=4 cols=2 />
-<gearDisplay> 9,39
-    <slot num=0 midX=-1 midY=-36 <!-- head       -->/>
-    <slot num=2 midX=0  midY=-30 <!-- body       -->/>
-    <slot num=3 midX=-3 midY=-33 <!-- shoulders  -->/>
-    <slot num=4 midX=-6 midY=-19 <!-- hands      -->/>
-    <slot num=5 midX=-4 midY=-2  <!-- feet       -->/>
-    <slot num=6 midX=-6 midY=-16 <!-- right hand -->/>
-    <slot num=7 midX=6  midY=-18 <!-- left hand  -->/>
+<gearDisplay>
+    <slot num=0 midX=-1 midY=-36 drawOrder=7/> <!-- head       -->
+    <slot num=2 midX=0  midY=-30 drawOrder=2/> <!-- body       -->
+    <slot num=3 midX=-3 midY=-33 drawOrder=1/> <!-- shoulders  -->
+    <slot num=4 midX=-6 midY=-19 drawOrder=5/> <!-- hands      -->
+    <slot num=5 midX=-4 midY=-2  drawOrder=6/> <!-- feet       -->
+    <slot num=6 midX=-6 midY=-16 drawOrder=3/> <!-- right hand -->
+    <slot num=7 midX=6  midY=-18 drawOrder=4/> <!-- left hand  -->
 </gearDisplay>
 
 <!--
@@ -73,7 +73,7 @@ Dark blue   3C388C
     playerName="3478D8"
     playerNameOutline="170A33"
     
-    outline = "170A33"
-    highlightOutline = "E5E5E5"
+    outline="170A33"
+    highlightOutline="E5E5E5"
 />
 </root>

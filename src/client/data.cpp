@@ -73,6 +73,18 @@ void Client::loadData(const std::string &path){
                 item.icon(s);
             else
                 item.icon(id);
+            if (xr.findAttr(elem, "gearFile", s))
+                item.gearImage(s);
+            else
+                item.gearImage(id);
+
+            auto offset = xr.findChild("offset", elem);
+            if (offset != nullptr){
+                px_t x=0, y=1;
+                xr.findAttr(offset, "x", x);
+                xr.findAttr(offset, "y", y);
+                item.drawRect(x, y);
+            }
 
             size_t gearSlot = GEAR_SLOTS; // Default; won't match any slot.
             xr.findAttr(elem, "gearSlot", gearSlot); item.gearSlot(gearSlot);

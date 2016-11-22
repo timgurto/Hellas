@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef CLIENT_ITEM_H
 #define CLIENT_ITEM_H
 
@@ -14,6 +12,8 @@ class ClientObjectType;
 class ClientItem : public Item{
     std::string _name;
     Texture _icon;
+    Texture _gearImage;
+    Rect _drawRect;
 
     // The object that this item can construct
     const ClientObjectType *_constructsObject;
@@ -23,12 +23,16 @@ public:
 
     const std::string &name() const { return _name; }
     const Texture &icon() const { return _icon; }
+    void icon(const std::string &filename);
+    void gearImage(const std::string &filename);
+    void drawRect(px_t x, px_t y) { _drawRect.x = x; _drawRect.y = y; }
 
     typedef std::vector<std::pair<const ClientItem *, size_t> > vect_t;
 
-    void icon(const std::string &filename);
     void constructsObject(const ClientObjectType *obj) { _constructsObject = obj; }
     const ClientObjectType *constructsObject() const { return _constructsObject; }
+
+    void draw(const Point &loc) const;
 };
 
 const ClientItem *toClientItem(const Item *item);

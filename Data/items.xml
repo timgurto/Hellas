@@ -11,6 +11,8 @@ Both:
 Client only:
  - name
  - offset
+ - iconFile
+ - gearFile
  
  Gear slots:
  0 head
