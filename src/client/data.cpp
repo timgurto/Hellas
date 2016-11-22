@@ -80,10 +80,10 @@ void Client::loadData(const std::string &path){
 
             auto offset = xr.findChild("offset", elem);
             if (offset != nullptr){
-                px_t x=0, y=1;
-                xr.findAttr(offset, "x", x);
-                xr.findAttr(offset, "y", y);
-                item.drawRect(x, y);
+                Point drawLoc;
+                xr.findAttr(offset, "x", drawLoc.x);
+                xr.findAttr(offset, "y", drawLoc.y);
+                item.drawLoc(drawLoc);
             }
 
             size_t gearSlot = GEAR_SLOTS; // Default; won't match any slot.

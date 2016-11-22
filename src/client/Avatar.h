@@ -5,7 +5,6 @@
 
 #include "Entity.h"
 #include "../Point.h"
-#include "../server/User.h"
 
 // The client-side representation of a user, including the player
 class Avatar : public Entity{

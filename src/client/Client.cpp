@@ -219,6 +219,7 @@ _debug("client.log"){
 
 
     Element::initialize();
+    ClientItem::init();
 
     // Initialize chat log
     _chatContainer = new Element(Rect(0, SCREEN_Y - chatH, chatW, chatH));

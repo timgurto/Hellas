@@ -26,9 +26,10 @@ void Avatar::draw(const Client &client) const{
     
     // Draw gear
     if (this == &client._character)
-        for (size_t i = 0; i != Client::GEAR_SLOTS; ++i){
-            if (client._gear[i].first != nullptr)
-                client._gear[i].first->draw(location());
+        for (const auto &pair : ClientItem::drawOrder()){
+            const ClientItem *item = client._gear[pair.second].first;
+            if (item != nullptr)
+                item->draw(location());
         }
 
     if (isDebug()) {

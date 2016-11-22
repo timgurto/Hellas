@@ -7,6 +7,7 @@
 <gearWindow width=36 height=72 gridX=0 gridY=-1 gap=0 rows=4 cols=2 />
 <gearDisplay>
     <slot num=0 midX=-1 midY=-36 drawOrder=7/> <!-- head       -->
+                                               <!-- jewelry    -->
     <slot num=2 midX=0  midY=-30 drawOrder=2/> <!-- body       -->
     <slot num=3 midX=-3 midY=-33 drawOrder=1/> <!-- shoulders  -->
     <slot num=4 midX=-6 midY=-19 drawOrder=5/> <!-- hands      -->

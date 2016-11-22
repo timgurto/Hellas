@@ -13,10 +13,13 @@ class ClientItem : public Item{
     std::string _name;
     Texture _icon;
     Texture _gearImage;
-    Rect _drawRect;
+    Point _drawLoc;
 
     // The object that this item can construct
     const ClientObjectType *_constructsObject;
+
+    static std::map<int, size_t> gearDrawOrder;
+    static std::vector<Point> gearOffsets;
 
 public:
     ClientItem(const std::string &id, const std::string &name = "");
@@ -25,7 +28,8 @@ public:
     const Texture &icon() const { return _icon; }
     void icon(const std::string &filename);
     void gearImage(const std::string &filename);
-    void drawRect(px_t x, px_t y) { _drawRect.x = x; _drawRect.y = y; }
+    void drawLoc(const Point &loc) { _drawLoc = loc; }
+    static const std::map<int, size_t> &drawOrder() { return gearDrawOrder; }
 
     typedef std::vector<std::pair<const ClientItem *, size_t> > vect_t;
 
@@ -33,6 +37,8 @@ public:
     const ClientObjectType *constructsObject() const { return _constructsObject; }
 
     void draw(const Point &loc) const;
+
+    static void init();
 };
 
 const ClientItem *toClientItem(const Item *item);
