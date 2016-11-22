@@ -115,6 +115,7 @@ _usernameDisplay(nullptr),
 _aggressive(false),
 _basePassive(std::string("Images/targetPassive.png"), Color::MAGENTA),
 _baseAggressive(std::string("Images/targetAggressive.png"), Color::MAGENTA),
+_inventory(INVENTORY_SIZE, std::make_pair(nullptr, 0)),
 
 _time(SDL_GetTicks()),
 _timeElapsed(0),
@@ -259,12 +260,6 @@ _debug("client.log"){
     renderer.setDrawColor();
 
     _entities.insert(&_character);
-
-    // Player's inventory/gear
-    for (size_t i = 0; i != INVENTORY_SIZE; ++i)
-        _inventory.push_back(std::make_pair<const ClientItem *, size_t>(nullptr, 0));
-    for (size_t i = 0; i != GEAR_SLOTS; ++i)
-        _gear.push_back(std::make_pair<const ClientItem *, size_t>(nullptr, 0));
 
     // Randomize player name if not supplied
     if (cmdLineArgs.contains("username"))

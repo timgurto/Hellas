@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "ClientItem.h"
 #include "Entity.h"
 #include "../Point.h"
 
@@ -14,6 +15,7 @@ class Avatar : public Entity{
     Point _destination;
     std::string _name;
     std::string _class;
+    ClientItem::vect_t _gear;
 
 public:
     Avatar(const std::string &name = "", const Point &location = 0);
@@ -25,6 +27,8 @@ public:
     const Rect &collisionRect() const { return COLLISION_RECT + location(); }
     void setClass(const std::string &c);
     const std::string &getClass() const { return _class; }
+    const ClientItem::vect_t &gear() const { return _gear; }
+    ClientItem::vect_t &gear() { return _gear; }
 
     virtual void draw(const Client &client) const override;
     virtual void update(double delta) override;

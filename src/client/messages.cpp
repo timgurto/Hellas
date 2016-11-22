@@ -351,7 +351,7 @@ void Client::handleMessage(const std::string &msg){
             ClientObject *object = nullptr;
             switch(serial){
                 case INVENTORY: container = &_inventory;    break;
-                case GEAR:      container = &_gear;         break;
+                case GEAR:      container = &_character.gear();         break;
                 default:
                     auto it = _objects.find(serial);
                     if (it == _objects.end()) {
