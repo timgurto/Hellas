@@ -40,7 +40,7 @@ void Avatar::draw(const Client &client) const{
 
     // Draw username
     if (_name != client.username()) {
-        const Texture outlineTexture(client.defaultFont(), _name, Color::PLAYER_NAME_OUTLINE);
+        const Texture outlineTexture(client.defaultFont(), _name + "-" + _class, Color::PLAYER_NAME_OUTLINE);
         Point p = location() + client.offset();
         p.y -= 60;
         p.x -= outlineTexture.width() / 2;

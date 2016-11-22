@@ -161,6 +161,10 @@ enum MessageCode{
     // Arguments: username, classname
     SV_CLASS = 132,
 
+    // A user's gear
+    // Arguments: username, id
+    SV_GEAR = 133,
+
     // An object has an owner
     // Arguments: serial, owner
     SV_OWNER = 150,

@@ -316,7 +316,6 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del;
             if (del != MSG_END)
                 break;
-            Avatar *newUser = nullptr;
             if (username == _username) {
                 _character.setClass(className);
             } else {
@@ -326,6 +325,38 @@ void Client::handleMessage(const std::string &msg){
                 }
                 _otherUsers[_username]->setClass(className);
             }
+            break;
+        }
+
+        case SV_GEAR:
+        {
+            std::string username, id;
+            singleMsg >> username >> del;
+            readString(singleMsg, id, MSG_END);
+            singleMsg >> del;
+            if (del != MSG_END)
+                break;
+            if (username == _username) {
+                _debug("Own gear info received by wrong channel.  Ignoring.", Color::FAILURE);
+                break;
+            }
+            if (_otherUsers.find(_username) == _otherUsers.end()) {
+                _debug("Gear received for an unknown user.  Ignoring.", Color::FAILURE);
+                break;
+            }
+            const auto it = _items.find(id);
+            if (it == _items.end()){
+                _debug << Color::FAILURE << "Unknown gear received (" << id << ").  Ignoring."
+                       << Log::endl;
+                break;
+            }
+            const ClientItem &item = *it;
+            if (item.gearSlot() >= GEAR_SLOTS){
+                _debug("Gear info received for a non-gear item.  Ignoring.", Color::FAILURE);
+                break;
+            }
+            _otherUsers[_username]->gear()[item.gearSlot()].first = &item;
+            break;
         }
 
         case SV_INVENTORY:

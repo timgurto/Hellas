@@ -771,4 +771,9 @@ void Server::sendUserInfo(const User &user, const User &userToDescribe) const{
     // Class
     sendMessage(user.socket(), SV_CLASS,
             makeArgs(userToDescribe.name(), userToDescribe.className()));
+
+    // Gear
+    for (const auto &pair : userToDescribe.gear())
+        if (pair.first != nullptr)
+            sendMessage(user.socket(), SV_GEAR, makeArgs(userToDescribe.name(), pair.first->id()));
 }
