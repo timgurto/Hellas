@@ -10,6 +10,7 @@ Both:
 
 Client only:
  - name
+ - offset
  
  Gear slots:
  0 head
@@ -38,6 +39,7 @@ Client only:
 <item id="stoneAxe" name="Stone axe"    gearSlot=6 >
     <tag name="axe" />
     <stats attack=1 />
+    <offset x=-5 y=1 />
 </item>
 
 <item id="tinPick" name="Tin pickaxe"    gearSlot=6 >
@@ -47,6 +49,7 @@ Client only:
 
 <item id="hideCloak" name="Hide cloak"  gearSlot=3 >
     <stats health=5 />
+    <offset x=-4 y=-1 />
 </item>
 
 <item id="pickMould" name="Pickaxe mould" >
