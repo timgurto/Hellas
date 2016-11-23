@@ -112,22 +112,20 @@ void Object::updateLocation(const Point &dest){
         }
         for (const Object *objP : nearbyObjects){
             server.sendObjectInfo(*userPtr, *objP);
-            if (objP->classTag() == 'u')
-                server.sendUserInfo(*userPtr, *dynamic_cast<const User *>(objP));
         }
 
-
-    // Non-user: tell newly nearby users that it exists
-    } else {
-       auto loX = server._usersByX.lower_bound(&User(Point(left, 0)));
-       auto hiX = server._usersByX.upper_bound(&User(Point(right, 0)));
-       auto loY = server._usersByY.lower_bound(&User(Point(0, top)));
-       auto hiY = server._usersByY.upper_bound(&User(Point(0, bottom)));
-
-        std::list<const User *> nearbyUsers;
+    }
+    
+    // Assemble list of newly nearby users (used at the end of this function)
+    std::list<const User *> newlyNearbyUsers;
+    {
+        auto loX = server._usersByX.lower_bound(&User(Point(left, 0)));
+        auto hiX = server._usersByX.upper_bound(&User(Point(right, 0)));
+        auto loY = server._usersByY.lower_bound(&User(Point(0, top)));
+        auto hiY = server._usersByY.upper_bound(&User(Point(0, bottom)));
         for (auto it = loX; it != hiX; ++it){
             if (abs((*it)->location().y - newDest.y) <= Server::CULL_DISTANCE)
-                nearbyUsers.push_back(*it);
+                newlyNearbyUsers.push_back(*it);
         }
         for (auto it = loY; it != hiY; ++it){
             double objX = (*it)->location().x;
@@ -139,15 +137,9 @@ void Object::updateLocation(const Point &dest){
                     continue;
             }
             if (abs(objX - newDest.x) <= Server::CULL_DISTANCE)
-                nearbyUsers.push_back(*it);
-        }
-        for (const User *userP : nearbyUsers){
-            server.sendObjectInfo(*userP, *this);
-            if (classTag() == 'u')
-                server.sendUserInfo(*userP, *userPtr);
+                newlyNearbyUsers.push_back(*it);
         }
     }
-
 
     // Tell nearby users that it has moved
     std::string args;
@@ -164,28 +156,30 @@ void Object::updateLocation(const Point &dest){
         }
 
     // Tell any users it has moved away from to forget about it.
-   auto loX = server._usersByX.lower_bound(&User(Point(forgetLeft, 0)));
-   auto hiX = server._usersByX.upper_bound(&User(Point(forgetRight, 0)));
-   auto loY = server._usersByY.lower_bound(&User(Point(0, forgetTop)));
-   auto hiY = server._usersByY.upper_bound(&User(Point(0, forgetBottom)));
    std::list<const User *> usersToForget;
-    for (auto it = loX; it != hiX; ++it){
-        double userY = (*it)->location().y;
-        if (userY - _location.y <= Server::CULL_DISTANCE)
-            usersToForget.push_back(*it);
-    }
-    for (auto it = loY; it != hiY; ++it){
-        double userX = (*it)->location().x;
-        if (newDest.x > _location.x){ // Don't count users twice.
-            if (userX < forgetLeft)
-                continue;
-        } else {
-            if (userX > forgetRight)
-                continue;
+   {
+       auto loX = server._usersByX.lower_bound(&User(Point(forgetLeft, 0)));
+       auto hiX = server._usersByX.upper_bound(&User(Point(forgetRight, 0)));
+       auto loY = server._usersByY.lower_bound(&User(Point(0, forgetTop)));
+       auto hiY = server._usersByY.upper_bound(&User(Point(0, forgetBottom)));
+        for (auto it = loX; it != hiX; ++it){
+            double userY = (*it)->location().y;
+            if (userY - _location.y <= Server::CULL_DISTANCE)
+                usersToForget.push_back(*it);
         }
-        if (abs(userX - _location.x) <= Server::CULL_DISTANCE)
-            usersToForget.push_back(*it);
-    }
+        for (auto it = loY; it != hiY; ++it){
+            double userX = (*it)->location().x;
+            if (newDest.x > _location.x){ // Don't count users twice.
+                if (userX < forgetLeft)
+                    continue;
+            } else {
+                if (userX > forgetRight)
+                    continue;
+            }
+            if (abs(userX - _location.x) <= Server::CULL_DISTANCE)
+                usersToForget.push_back(*it);
+        }
+   }
     for (const User *userP : usersToForget){
         if (classTag() == 'u')
             server.sendMessage(userP->socket(), SV_USER_OUT_OF_RANGE, userP->name());
@@ -221,5 +215,10 @@ void Object::updateLocation(const Point &dest){
     if (newDest.y != oldLoc.y)
         server._objectsByY.insert(this);
 
+
+    // Tell newly nearby users that it exists
+    for (const User *userP : newlyNearbyUsers){
+        server.sendObjectInfo(*userP, *this);
+    }
 
 }

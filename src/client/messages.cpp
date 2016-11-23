@@ -319,11 +319,11 @@ void Client::handleMessage(const std::string &msg){
             if (username == _username) {
                 _character.setClass(className);
             } else {
-                if (_otherUsers.find(_username) == _otherUsers.end()) {
+                if (_otherUsers.find(username) == _otherUsers.end()) {
                     _debug("Class received for an unknown user.  Ignoring.", Color::FAILURE);
                     break;
                 }
-                _otherUsers[_username]->setClass(className);
+                _otherUsers[username]->setClass(className);
             }
             break;
         }
@@ -340,7 +340,7 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Own gear info received by wrong channel.  Ignoring.", Color::FAILURE);
                 break;
             }
-            if (_otherUsers.find(_username) == _otherUsers.end()) {
+            if (_otherUsers.find(username) == _otherUsers.end()) {
                 _debug("Gear received for an unknown user.  Ignoring.", Color::FAILURE);
                 break;
             }
@@ -355,7 +355,7 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Gear info received for a non-gear item.  Ignoring.", Color::FAILURE);
                 break;
             }
-            _otherUsers[_username]->gear()[item.gearSlot()].first = &item;
+            _otherUsers[username]->gear()[item.gearSlot()].first = &item;
             break;
         }
 
