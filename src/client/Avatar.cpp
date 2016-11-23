@@ -26,12 +26,11 @@ void Avatar::draw(const Client &client) const{
     Entity::draw(client);
     
     // Draw gear
-    if (this == &client._character)
-        for (const auto &pair : ClientItem::drawOrder()){
-            const ClientItem *item = _gear[pair.second].first;
-            if (item != nullptr)
-                item->draw(location());
-        }
+    for (const auto &pair : ClientItem::drawOrder()){
+        const ClientItem *item = _gear[pair.second].first;
+        if (item != nullptr)
+            item->draw(location());
+    }
 
     if (isDebug()) {
         renderer.setDrawColor(Color::WHITE);
