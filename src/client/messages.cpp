@@ -345,6 +345,13 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Gear received for an unknown user.  Ignoring.", Color::FAILURE);
                 break;
             }
+
+            // Handle empty id (item was unequipped)
+            if (id == ""){
+                _otherUsers[username]->gear()[slot].first = nullptr;
+                break;
+            }
+
             const auto it = _items.find(id);
             if (it == _items.end()){
                 _debug << Color::FAILURE << "Unknown gear received (" << id << ").  Ignoring."
