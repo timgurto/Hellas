@@ -196,6 +196,9 @@ void Container::rightMouseUp(Element &e, const Point &mousePos){
                 if (item->constructsObject() != nullptr) { // Can construct item
                     useSlot = slot;
                     useContainer = &container;
+                } else if (item->gearSlot() < Client::GEAR_SLOTS){
+                    Client::_instance->sendMessage(CL_SWAP_ITEMS,
+                            makeArgs(Client::INVENTORY, slot, Client::GEAR, item->gearSlot()));
                 }
             } else { // An object: take item
                 Client::_instance->sendMessage(CL_TAKE_ITEM, makeArgs(container._serial, slot));
