@@ -217,8 +217,7 @@ void Object::updateLocation(const Point &dest){
 
 
     // Tell newly nearby users that it exists
-    for (const User *userP : newlyNearbyUsers){
+    for (const User *userP : newlyNearbyUsers)
         server.sendObjectInfo(*userP, *this);
-    }
 
 }

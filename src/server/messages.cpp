@@ -336,20 +336,22 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 // Update this player's stats
                 user->updateStats();
 
-                // Alert nearby users of the new appearance
+                // Alert nearby users of the new equipment
+                // Assumption: gear can only match a single gear slot.
+                std::string gearID = "";
+                size_t gearSlot;
+                if (obj1 == GEAR) {
+                    gearSlot = slot1;
+                    if (slotFrom.first != nullptr)
+                        gearID = slotFrom.first->id();
+                } else {
+                    gearSlot = slot2;
+                    if (slotTo.first != nullptr)
+                        gearID = slotTo.first->id();
+                }
                 for (const User *otherUser : findUsersInArea(user->location())){
-                    // Assumption: gear can only match a single gear slot.
-                    std::string gearID = "";
-                    size_t gearSlot;
-                    if (obj1 == GEAR) {
-                        gearSlot = slot1;
-                        if (slotFrom.first != nullptr)
-                            gearID = slotFrom.first->id();
-                    } else {
-                        gearSlot = slot2;
-                        if (slotTo.first != nullptr)
-                            gearID = slotTo.first->id();
-                    }
+                    if (otherUser == user)
+                        continue;
                     sendMessage(otherUser->socket(), SV_GEAR, makeArgs(
                             user->name(), gearSlot, gearID));
                 }
