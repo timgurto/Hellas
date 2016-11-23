@@ -112,6 +112,8 @@ void Object::updateLocation(const Point &dest){
         }
         for (const Object *objP : nearbyObjects){
             server.sendObjectInfo(*userPtr, *objP);
+            if (objP->classTag() == 'u')
+                server.sendUserInfo(*userPtr, *dynamic_cast<const User *>(objP));
         }
 
 
@@ -141,6 +143,8 @@ void Object::updateLocation(const Point &dest){
         }
         for (const User *userP : nearbyUsers){
             server.sendObjectInfo(*userP, *this);
+            if (classTag() == 'u')
+                server.sendUserInfo(*userP, *userPtr);
         }
     }
 
