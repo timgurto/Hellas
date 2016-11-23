@@ -772,7 +772,9 @@ void Server::sendUserInfo(const User &user, const User &userToDescribe) const{
             makeArgs(userToDescribe.name(), userToDescribe.className()));
 
     // Gear
-    for (const auto &pair : userToDescribe.gear())
-        if (pair.first != nullptr)
-            sendMessage(user.socket(), SV_GEAR, makeArgs(userToDescribe.name(), pair.first->id()));
+    for (size_t i = 0; i != User::GEAR_SLOTS; ++i){
+        const ServerItem *item = userToDescribe.gear(i).first;
+        if (item != nullptr)
+            sendMessage(user.socket(), SV_GEAR, makeArgs(userToDescribe.name(), i, item->id()));
+    }
 }

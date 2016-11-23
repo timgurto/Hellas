@@ -162,7 +162,7 @@ enum MessageCode{
     SV_CLASS = 132,
 
     // A user's gear
-    // Arguments: username, id
+    // Arguments: username, slot, id
     SV_GEAR = 133,
 
     // An object has an owner

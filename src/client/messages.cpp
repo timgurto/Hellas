@@ -331,7 +331,8 @@ void Client::handleMessage(const std::string &msg){
         case SV_GEAR:
         {
             std::string username, id;
-            singleMsg >> username >> del;
+            size_t slot;
+            singleMsg >> username >> del >> slot >> del;
             readString(singleMsg, id, MSG_END);
             singleMsg >> del;
             if (del != MSG_END)
@@ -355,7 +356,7 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Gear info received for a non-gear item.  Ignoring.", Color::FAILURE);
                 break;
             }
-            _otherUsers[username]->gear()[item.gearSlot()].first = &item;
+            _otherUsers[username]->gear()[slot].first = &item;
             break;
         }
 
