@@ -47,6 +47,7 @@ Client only:
 <item id="tinPick" name="Tin pickaxe"    gearSlot=6 >
     <tag name="pick" />
     <stats attack=3 />
+    <offset x=-3 y=0 />
 </item>
 
 <item id="hideCloak" name="Hide cloak"  gearSlot=3 >
