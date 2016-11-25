@@ -439,8 +439,6 @@ void Server::gatherObject(size_t serial, User &user){
 }
 
 void Server::generateWorld(){
-    _mapX = 30;
-    _mapY = 30;
 
     static const char
         GRASS = 0,
@@ -449,82 +447,6 @@ void Server::generateWorld(){
         WATER = 4,
         DEEP_WATER = 3,
         CLAY=5;
-
-    // Grass by default
-    _map = std::vector<std::vector<size_t> >(_mapX);
-    for (size_t x = 0; x != _mapX; ++x){
-        _map[x] = std::vector<size_t>(_mapY);
-        for (size_t y = 0; y != _mapY; ++y)
-            _map[x][y] = GRASS;
-    }
-
-    // Stone in circles
-    for (int i = 0; i != 5; ++i) {
-        const size_t centerX = rand() % _mapX;
-        const size_t centerY = rand() % _mapY;
-        for (size_t x = 0; x != _mapX; ++x)
-            for (size_t y = 0; y != _mapY; ++y) {
-                Point thisTile(x, y);
-                if (y % 2 == 1)
-                    thisTile.x -= .5;
-                const double dist = distance(Point(centerX, centerY), thisTile);
-                if (dist <= 4)
-                    _map[x][y] = STONE;
-            }
-    }
-
-    // Roads
-    for (int i = 0; i != 2; ++i) {
-        const Point
-            start(rand() % _mapX, rand() % _mapY),
-            end(rand() % _mapX, rand() % _mapY);
-        for (size_t x = 0; x != _mapX; ++x)
-            for (size_t y = 0; y != _mapY; ++y) {
-                Point thisTile(x, y);
-                if (y % 2 == 1)
-                    thisTile.x -= .5;
-                double dist = distance(thisTile, start, end);
-                if (dist <= 1)
-                    _map[x][y] = ROAD;
-            }
-    }
-
-    // River: randomish line
-    std::vector<std::pair<size_t, size_t> > clayDeposits;
-    const Point
-        start(rand() % _mapX, rand() % _mapY),
-        end(rand() % _mapX, rand() % _mapY);
-    for (size_t x = 0; x != _mapX; ++x)
-        for (size_t y = 0; y != _mapY; ++y) {
-            Point thisTile(x, y);
-            if (y % 2 == 1)
-                thisTile.x -= .5;
-            double dist = distance(thisTile, start, end) + randDouble() * 2 - 1;
-            if (dist <= 0.5)
-                _map[x][y] = DEEP_WATER;
-            else if (dist <= 2) {
-                _map[x][y] = WATER;
-                // Randomly place clay patches
-                if (rand() % 12 == 0)
-                    clayDeposits.push_back(std::make_pair(x, y));
-            }
-        }
-
-    // Clay in circles
-    for (const auto &loc : clayDeposits){
-        for (size_t x = 0; x != _mapX; ++x)
-            for (size_t y = 0; y != _mapY; ++y) {
-                size_t &thisTerrain = _map[x][y];
-                if (thisTerrain == WATER || thisTerrain == DEEP_WATER)
-                    continue;
-                Point thisTile(x, y);
-                if (y % 2 == 1)
-                    thisTile.x -= .5;
-                const double dist = distance(Point(loc.first, loc.second), thisTile);
-                if (dist <= 3.5)
-                    thisTerrain = CLAY;
-            }
-    }
 
     std::vector<const Object *> trees;
     const ObjectType *const tree = findObjectTypeByName("tree");
@@ -616,8 +538,6 @@ void Server::generateWorld(){
             addObject(new NPC(boar, loc));
         }
     }
-
-    saveMap(); // Save data to xml file.
 }
 
 Point Server::mapRand() const{

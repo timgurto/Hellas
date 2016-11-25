@@ -319,14 +319,10 @@ void Server::loadData(const std::string &path){
             ++it;
     }
 
-    std::ifstream fs;
-    // Detect/load state
+    // Map
+    bool mapSuccessful = false;
     do {
-        if (cmdLineArgs.contains("new"))
-            break;
-
-        // Map
-        xr.newFile("World/map.world");
+        xr.newFile("Data/map.xml");
         if (!xr)
             break;
         auto elem = xr.findChild("size");
@@ -350,6 +346,16 @@ void Server::loadData(const std::string &path){
                 _map[x][y] = rowTerrain[x] - '0';
             }
         }
+        mapSuccessful = true;
+    } while (false);
+    if (!mapSuccessful)
+        _debug("Failed to load map.", Color::RED);
+
+    std::ifstream fs;
+    // Detect/load state
+    do {
+        if (cmdLineArgs.contains("new"))
+            break;
 
         // Objects
         xr.newFile("World/objects.world");
@@ -461,27 +467,9 @@ void Server::loadData(const std::string &path){
         return;
     } while (false);
 
-    _debug("No/invalid world data detected; generating new world.", Color::YELLOW);
+    _debug("Generating new objects.", Color::YELLOW);
     generateWorld();
     _dataLoaded = true;
-}
-
-void Server::saveMap(){
-    // Map
-    XmlWriter xw("World/map.world");
-    auto e = xw.addChild("size");
-    xw.setAttr(e, "x", _mapX);
-    xw.setAttr(e, "y", _mapY);
-    for (size_t y = 0; y != _mapY; ++y){
-        auto row = xw.addChild("row");
-        xw.setAttr(row, "y", y);
-        std::string rowTerrain = "";
-        for (size_t x = 0; x != _mapX; ++x){
-            rowTerrain += _map[x][y] + '0';
-        }
-        xw.setAttr(row, "terrain", rowTerrain);
-    }
-    xw.publish();
 }
 
 void Server::saveData(const objects_t &objects){
