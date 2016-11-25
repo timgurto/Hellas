@@ -341,14 +341,13 @@ void Server::loadData(const std::string &path){
             size_t y;
             if (!xr.findAttr(row, "y", y) || y >= _mapY)
                 break;
-            for (auto tile : xr.getChildren("tile", row)) {
-                size_t x;
-                if (!xr.findAttr(tile, "x", x) || x >= _mapX)
+            std::string rowTerrain;
+                if (!xr.findAttr(row, "terrain", rowTerrain))
                     break;
-                int index;
-                if (!xr.findAttr(tile, "terrain", index))
+            for (size_t x = 0; x != rowTerrain.size(); ++x){
+                if (x > _mapX)
                     break;
-                _map[x][y] = index;
+                _map[x][y] = rowTerrain[x] - '0';
             }
         }
 
@@ -476,11 +475,11 @@ void Server::saveMap(){
     for (size_t y = 0; y != _mapY; ++y){
         auto row = xw.addChild("row");
         xw.setAttr(row, "y", y);
+        std::string rowTerrain = "";
         for (size_t x = 0; x != _mapX; ++x){
-            auto tile = xw.addChild("tile", row);
-            xw.setAttr(tile, "x", x);
-            xw.setAttr(tile, "terrain", _map[x][y]);
+            rowTerrain += _map[x][y] + '0';
         }
+        xw.setAttr(row, "terrain", rowTerrain);
     }
     xw.publish();
 }

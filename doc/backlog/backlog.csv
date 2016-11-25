@@ -137,3 +137,4 @@ issue,description,value,effort,type,blockedBy,done
 291,Allow tool objects to show an in-use image/animation,3,3,Aesthetics,,
 292,"Use doubles, not ints, in Rect class",3,2,Code quality,,
 293,Tool requirements not showing up in crafting window,5,1,Bug,,TRUE
+294,Prevent landlocked gear outlines,,,Aesthetics,,
