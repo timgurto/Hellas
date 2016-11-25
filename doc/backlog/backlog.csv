@@ -82,7 +82,7 @@ issue,description,value,effort,type,blockedBy,done
 236,Vehicle objects,34,8,Feature,,
 237,A boat that's restricted to water,21,5,Feature,236,
 238,Choose map scale,5,3,Feature,,
-239,Make full map,21,89,Feature,238,
+239,Make full map,21,89,Feature,238,TRUE
 240,"Server loads map from data file, rather than generating it",13,3,Code quality,,TRUE
 241,"Client loads map from data file, not via server messages",21,3,Performance,,TRUE
 242,Player 'factions' for ownership,5,34,Feature,,
@@ -138,3 +138,4 @@ issue,description,value,effort,type,blockedBy,done
 292,"Use doubles, not ints, in Rect class",3,2,Code quality,,
 293,Tool requirements not showing up in crafting window,5,1,Bug,,TRUE
 294,Prevent landlocked gear outlines,,,Aesthetics,,
+295,Make client connection failures more clean,,,Aesthetics,,
