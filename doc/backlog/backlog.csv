@@ -83,8 +83,8 @@ issue,description,value,effort,type,blockedBy,done
 237,A boat that's restricted to water,21,5,Feature,236,
 238,Choose map scale,5,3,Feature,,
 239,Make full map,21,89,Feature,238,
-240,"Server loads map from data file, rather than generating it",13,3,Code quality,280,TRUE
-241,"Client loads map from data file, not via server messages",21,3,Performance,,
+240,"Server loads map from data file, rather than generating it",13,3,Code quality,,TRUE
+241,"Client loads map from data file, not via server messages",21,3,Performance,,TRUE
 242,Player 'factions' for ownership,5,34,Feature,,
 243,Heavy objects that prevent player movement,5,3,Feature,,
 244,Energy bar used up by attacking,5,3,Feature,,
@@ -123,7 +123,7 @@ issue,description,value,effort,type,blockedBy,done
 277,Rare NPCs with better loot,21,8,Feature,,
 278,Using shrines requires animal sacrifice,8,8,Feature,,
 279,Containers may be restricted by item class,5,5,Feature,,
-280,Make test map,5,3,Feature,,
+280,Make test map,5,3,Feature,,TRUE
 281,"Recipes, objects and loot tables may point to deleted ServerItems",8,2,Bug,,
 282,Use collisionRects even on non-colliding objects,5,2,Bug,,
 283,Color mouse-over outline based on whether in range,8,3,Aesthetics,,

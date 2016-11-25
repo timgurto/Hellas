@@ -113,15 +113,6 @@ enum MessageCode{
     // Arguments: serial
     SV_OBJECT_OUT_OF_RANGE = 112,
 
-    // The map size
-    // Arguments: x, y
-    SV_MAP_SIZE = 120,
-
-    // Terrain details
-    // Arguments: starting x, starting y, number in row[, terrain ID] * n
-    // e.g. 10, 10, 3, 0, 0, 0 for co-ordinates (10,10) to (13,10)
-    SV_TERRAIN = 121,
-
     // The location of a user
     // Arguments: username, x, y
     SV_LOCATION = 122,

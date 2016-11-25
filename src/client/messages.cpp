@@ -189,48 +189,6 @@ void Client::handleMessage(const std::string &msg){
             startAction(0); // Effectively, hide the cast bar.
             break;
 
-        case SV_MAP_SIZE:
-        {
-            size_t x, y;
-            singleMsg >> x >> del >> y >> del;
-            if (del != MSG_END)
-                break;
-            _mapX = x;
-            _mapY = y;
-            _map = std::vector<std::vector<size_t> >(_mapX);
-            for (size_t x = 0; x != _mapX; ++x)
-                _map[x] = std::vector<size_t>(_mapY, 0);
-            break;
-        }
-
-        case SV_TERRAIN:
-        {
-            size_t x, y, n;
-            singleMsg >> x >> del >> y >> del >> n >> del;
-            if (x + n > _mapX)
-                break;
-            if (y > _mapY)
-                break;
-            std::vector<size_t> terrain;
-            for (size_t i = 0; i != n; ++i) {
-                size_t index;
-                singleMsg >> index >> del;
-                if (index > _terrain.size()) {
-                    _debug << Color::FAILURE << "Invalid terrain type receved ("
-                           << index << "); aborted." << Log::endl;
-                    break;
-                }
-                terrain.push_back(index);
-            }
-            if (del != MSG_END)
-                break;
-            if (terrain.size() != n)
-                break;
-            for (size_t i = 0; i != n; ++i)
-                _map[x+i][y] = terrain[i];
-            break;
-        }
-
         case SV_LOCATION:
         {
             std::string name;

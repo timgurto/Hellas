@@ -219,5 +219,37 @@ void Client::loadData(const std::string &path){
             }
         }
 
+    // Map
+    bool mapSuccessful = false;
+    do {
+        xr.newFile("Data/map.xml");
+        if (!xr)
+            break;
+        auto elem = xr.findChild("size");
+        if (elem == nullptr || !xr.findAttr(elem, "x", _mapX) || !xr.findAttr(elem, "y", _mapY)) {
+            _debug("Map size missing or incomplete.", Color::FAILURE);
+            break;
+        }
+        _map = std::vector<std::vector<size_t> >(_mapX);
+        for (size_t x = 0; x != _mapX; ++x)
+            _map[x] = std::vector<size_t>(_mapY, 0);
+        for (auto row : xr.getChildren("row")) {
+            size_t y;
+            if (!xr.findAttr(row, "y", y) || y >= _mapY)
+                break;
+            std::string rowTerrain;
+                if (!xr.findAttr(row, "terrain", rowTerrain))
+                    break;
+            for (size_t x = 0; x != rowTerrain.size(); ++x){
+                if (x > _mapX)
+                    break;
+                _map[x][y] = rowTerrain[x] - '0';
+            }
+        }
+        mapSuccessful = true;
+    } while (false);
+    if (!mapSuccessful)
+        _debug("Failed to load map.", Color::FAILURE);
+
     _dataLoaded = true;
 }

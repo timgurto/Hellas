@@ -43,8 +43,6 @@ Code | Name                      | Syntax                                       
 110  | `SV_USER_DISCONNECTED`    | &laquo;110&#8226;username&raquo;                                               | "User `username` has disconnected"
 111  | `SV_USER_OUT_OF_RANGE`    | &laquo;111&#8226;username&raquo;                                               | "User `username` has moved away from you, and you will stop receiving updates from him"
 112  | `SV_OBJECT_OUT_OF_RANGE`  | &laquo;112&#8226;serial&raquo;                                                 | "Object #`serial` has moved away from you, and you will stop receiving updates from it"
-120  | `SV_MAP_SIZE`             | &laquo;120&#8226;x&#8226;y&raquo;                                              | "The map size is `x`&times;`y`"
-121  | `SV_TERRAIN`              | &laquo;121&#8226;x&#8226;y&#8226;n&#8226;t0&#8226;t1&#8226;t2&#8226;...&raquo; | A package of map details.  "The `n` horizontal map tiles starting from (`x`,`y`) are of types `t0`, `t1`, ..."
 122  | `SV_LOCATION`             | &laquo;122&#8226;username&#8226;x&#8226;y&raquo;                               | "User `username` is located at (`x`,`y`)"
 123  | `SV_INVENTORY`            | &laquo;123&#8226;slot&#8226;type&#8226;quantity&raquo;                         | "Your inventory slot #`slot` contains a stack of `quantity` `type`s"
 124  | `SV_OBJECT`               | &laquo;124&#8226;serial&#8226;x&#8226;y&#8226;type&raquo;                      | "Object #`serial` is located at (`x`,`y`), and is a `type`"

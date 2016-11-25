@@ -251,16 +251,6 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // Send him his health
     sendMessage(newUser.socket(), SV_HEALTH, makeArgs(newUser.health()));
 
-    // Send new user the map
-    sendMessage(newUser.socket(), SV_MAP_SIZE, makeArgs(_mapX, _mapY));
-    for (size_t y = 0; y != _mapY; ++y){
-        std::ostringstream oss;
-        oss << "0," << y << "," << _mapX;
-        for (size_t x = 0; x != _mapX; ++x)
-            oss << "," << _map[x][y];
-        sendMessage(newUser.socket(), SV_TERRAIN, oss.str());
-    }
-
     for (const User *userP : findUsersInArea(newUser.location())){
         // Send him information about other nearby users
         sendUserInfo(newUser, *userP);
