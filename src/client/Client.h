@@ -147,8 +147,9 @@ private:
     void onChangeDragItem(){ _gearWindow->forceRefresh(); }
 
     Window *_mapWindow;
-    Picture *_charPin;
     Texture _mapImage;
+    Texture _charPinImage;
+    Picture *_charPin;
     void initializeMapWindow();
     void updateMapWindow();
 

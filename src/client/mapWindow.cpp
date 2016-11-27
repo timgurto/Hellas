@@ -11,20 +11,24 @@ void Client::initializeMapWindow(){
                             "Map");
     _mapWindow->addChild(new Picture(0, 0, _mapImage));
     _charPinImage = Texture("Images/mapPinRed.png", Color::MAGENTA);
-    updateMapWindow();
+    _charPin = new Picture(0, 0, _charPinImage);
+    _mapWindow->addChild(_charPin);
 }
 
 void Client::updateMapWindow(){
+    static const double
+        MAP_FACTOR_X = 1.0 * _mapX * TILE_W / _mapImage.width(),
+        MAP_FACTOR_Y = 1.0 * _mapY * TILE_H / _mapImage.height();
     static px_t
-        prevLocX = toInt(_character.location().x),
-        prevLocY = toInt(_character.location().y);
-    static Point prevLoc = _character.location();
+        prevLocX = 0,
+        prevLocY = 0;
     px_t
-        locX = _character.location().x,
-        locY = _character.location().y;
+        locX = toInt(_character.location().x / MAP_FACTOR_X),
+        locY =toInt( _character.location().y / MAP_FACTOR_Y);
 
     if (prevLocX != locX || prevLocY != locY){
-
+        _charPin->rect(locX - _charPin->width() / 2,
+                       locY - _charPin->height() / 2);
         prevLocX = locX;
         prevLocY = locY;
     }

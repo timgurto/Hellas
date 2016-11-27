@@ -68,6 +68,7 @@ void Client::handleMessage(const std::string &msg){
             _loggedIn = true;
             _timeSinceConnectAttempt = 0;
             _lastPingSent = _lastPingReply = _time;
+            _charPin->setTooltip(_username);
             _debug("Successfully logged in to server", Color::SUCCESS);
             break;
         }
@@ -209,6 +210,7 @@ void Client::handleMessage(const std::string &msg){
                     _pendingCharLoc = p;
                 }
                 updateOffset();
+                updateMapWindow();
                 _connectionStatus = LOADED;
                 _loaded = true;
                 _tooltipNeedsRefresh = true;
