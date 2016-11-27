@@ -1,5 +1,6 @@
 VERSION 5.00
 Begin VB.Form Form1 
+   AutoRedraw      =   -1  'True
    Caption         =   "Form1"
    ClientHeight    =   9645
    ClientLeft      =   165
@@ -56,10 +57,9 @@ Function draw()
         For y = 1 To mapHeight
             Dim color As Long
             color = terrainColors(map(x, y))
-            picMap.PSet (x, y), color
+            picMap.PSet (x * Screen.TwipsPerPixelX, y * Screen.TwipsPerPixelY), color
         Next y
     Next x
-    
 End Function
 
 Private Sub Form_Load()
