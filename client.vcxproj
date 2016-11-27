@@ -112,6 +112,7 @@
     <ClCompile Include="src\client\ClientItem.cpp" />
     <ClCompile Include="src\client\main.cpp" />
     <ClCompile Include="src\client\LogSDL.cpp" />
+    <ClCompile Include="src\client\mapWindow.cpp" />
     <ClCompile Include="src\client\messages.cpp" />
     <ClCompile Include="src\client\ClientNPCType.cpp" />
     <ClCompile Include="src\client\Particle.cpp" />

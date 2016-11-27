@@ -277,9 +277,11 @@ _debug("client.log"){
     initializeCraftingWindow();
     initializeInventoryWindow();
     initializeGearWindow();
+    initializeMapWindow();
     addWindow(_craftingWindow);
     addWindow(_inventoryWindow);
     addWindow(_gearWindow);
+    addWindow(_mapWindow);
     
     // Initialize cast bar
     const Rect
@@ -300,7 +302,7 @@ _debug("client.log"){
     static const px_t
         MENU_BUTTON_W = 50,
         MENU_BUTTON_H = 13,
-        NUM_BUTTONS = 4;
+        NUM_BUTTONS = 5;
     Element *menuBar = new Element(Rect(SCREEN_X/2 - MENU_BUTTON_W * NUM_BUTTONS / 2,
                                         SCREEN_Y - MENU_BUTTON_H,
                                         MENU_BUTTON_W * NUM_BUTTONS,
@@ -313,6 +315,8 @@ _debug("client.log"){
                                  Element::toggleVisibilityOf, _gearWindow));
     menuBar->addChild(new Button(Rect(MENU_BUTTON_W * 3, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Chat",
                                  Element::toggleVisibilityOf, _chatContainer));
+    menuBar->addChild(new Button(Rect(MENU_BUTTON_W * 4, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Map",
+                                 Element::toggleVisibilityOf, _mapWindow));
     addUI(menuBar);
 
     // Initialize FPS/latency display

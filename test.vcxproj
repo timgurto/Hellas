@@ -106,6 +106,7 @@
     <ClCompile Include="src\client\input.cpp" />
     <ClCompile Include="src\client\inventoryWindow.cpp" />
     <ClCompile Include="src\client\LogSDL.cpp" />
+    <ClCompile Include="src\client\mapWindow.cpp" />
     <ClCompile Include="src\client\messages.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)messages-client</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)messages-client</ObjectFileName>

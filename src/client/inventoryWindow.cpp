@@ -14,8 +14,8 @@ void Client::initializeInventoryWindow(){
     const px_t
         HEIGHT = inventory->height(),
         WIDTH = inventory->width(),
-        LEFT = 640 - WIDTH - 1,
-        TOP = 360 - HEIGHT - 16;
+        LEFT = SCREEN_X - WIDTH - 1,
+        TOP = SCREEN_Y - HEIGHT - 16;
 
     _inventoryWindow = new Window(Rect(LEFT, TOP, WIDTH, HEIGHT), "Inventory");
     inventory->id("inventory");

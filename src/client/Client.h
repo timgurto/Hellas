@@ -146,6 +146,10 @@ private:
     Texture _gearWindowBackground;
     void onChangeDragItem(){ _gearWindow->forceRefresh(); }
 
+    Window *_mapWindow;
+    Texture _mapImage;
+    void initializeMapWindow();
+
     windows_t _windows;
     void addWindow(Window *window);
     void removeWindow(Window *window); // Linear time
