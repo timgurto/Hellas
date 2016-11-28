@@ -12,7 +12,7 @@ Public Function strToColor(str As String) As Long
     strToColor = Val(r) + Val(g) + Val(b)
 End Function
 
-Public Function bind(ByRef n As Integer, min As Integer, max As Integer)
+Public Function bind(ByRef n As Long, min As Long, max As Long)
     If n > max Then
         n = max
     ElseIf n < min Then

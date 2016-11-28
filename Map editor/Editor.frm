@@ -1,42 +1,42 @@
 VERSION 5.00
 Begin VB.Form Form1 
    Caption         =   "Form1"
-   ClientHeight    =   9930
+   ClientHeight    =   9135
    ClientLeft      =   165
    ClientTop       =   735
    ClientWidth     =   11460
    DrawWidth       =   4684
    LinkTopic       =   "Form1"
-   ScaleHeight     =   9930
+   ScaleHeight     =   9135
    ScaleWidth      =   11460
    StartUpPosition =   3  'Windows Default
    Begin VB.PictureBox picMap 
       AutoRedraw      =   -1  'True
       BackColor       =   &H00FF8080&
-      Height          =   7215
-      Left            =   1440
-      ScaleHeight     =   477
+      Height          =   7560
+      Left            =   0
+      ScaleHeight     =   500
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   573
+      ScaleWidth      =   581
       TabIndex        =   0
-      Top             =   1560
-      Width           =   8655
+      Top             =   0
+      Width           =   8775
    End
    Begin VB.Label lblOffset 
       Caption         =   "Offset: "
       Height          =   255
-      Left            =   120
+      Left            =   1200
       TabIndex        =   2
-      Top             =   360
-      Width           =   1215
+      Top             =   8880
+      Width           =   1695
    End
    Begin VB.Label lblZoom 
       Caption         =   "2x zoom"
       Height          =   255
-      Left            =   120
+      Left            =   0
       TabIndex        =   1
-      Top             =   120
-      Width           =   1215
+      Top             =   8880
+      Width           =   1095
    End
    Begin VB.Menu mnuLoad 
       Caption         =   "&Load"
@@ -72,11 +72,11 @@ Option Explicit
 Dim DATA_PATH As String
 Dim terrainColors() As Long
 Dim map() As Integer
-Dim mapW As Integer 'in tiles
-Dim mapH As Integer
+Dim mapW As Long 'in tiles
+Dim mapH As Long
 Dim offsetX As Long
 Dim offsetY As Long
-Dim zoom As Integer 'pixels per tile, default=2
+Dim zoom As Long 'pixels per tile, default=2
 
 Function zoomIn()
     zoom = zoom * 2
@@ -121,18 +121,18 @@ Function draw()
     picMap.Cls
     picMap.AutoRedraw = True
     
-    Dim minX As Integer
-    Dim minY As Integer
-    Dim maxX As Integer
-    Dim maxY As Integer
+    Dim minX As Long
+    Dim minY As Long
+    Dim maxX As Long
+    Dim maxY As Long
     minX = offsetX / zoom
     minY = offsetY / zoom
     maxX = minX + picMap.ScaleWidth / zoom
     maxY = minY + picMap.ScaleHeight / zoom
     bind minX, 0, mapW
-    bind minY, 0, mapW
+    bind minY, 0, mapH
     bind maxX, 0, mapW
-    bind maxY, 0, mapW
+    bind maxY, 0, mapH
     
     Dim X As Integer
     Dim Y As Integer
@@ -161,6 +161,14 @@ Private Sub Form_Load()
     
     picMap.Cls
     mnuLoadAll_Click
+End Sub
+
+Private Sub Form_Resize()
+    lblZoom.Top = Form1.height - 945
+    lblOffset.Top = Form1.height - 945
+    picMap.width = Form1.width
+    picMap.height = lblZoom.Top
+    draw
 End Sub
 
 Private Sub mnuLoadAll_Click()
