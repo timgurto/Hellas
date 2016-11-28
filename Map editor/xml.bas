@@ -1,4 +1,4 @@
-Attribute VB_Name = "Module1"
+Attribute VB_Name = "XML"
 Option Explicit
 
 Public Function printError(ByRef xDoc As DOMDocument)

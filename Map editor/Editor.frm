@@ -1,24 +1,26 @@
 VERSION 5.00
 Begin VB.Form Form1 
-   AutoRedraw      =   -1  'True
    Caption         =   "Form1"
-   ClientHeight    =   9645
+   ClientHeight    =   9930
    ClientLeft      =   165
    ClientTop       =   735
    ClientWidth     =   11460
+   DrawWidth       =   4684
    LinkTopic       =   "Form1"
-   ScaleHeight     =   9645
+   ScaleHeight     =   9930
    ScaleWidth      =   11460
    StartUpPosition =   3  'Windows Default
    Begin VB.PictureBox picMap 
+      AutoRedraw      =   -1  'True
       BackColor       =   &H00FF8080&
-      Height          =   3735
+      Height          =   7215
       Left            =   1440
-      ScaleHeight     =   3675
-      ScaleWidth      =   7155
+      ScaleHeight     =   477
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   573
       TabIndex        =   0
       Top             =   1560
-      Width           =   7215
+      Width           =   8655
    End
    Begin VB.Menu mnuLoad 
       Caption         =   "&Load"
@@ -33,6 +35,14 @@ Begin VB.Form Form1
       End
       Begin VB.Menu mnuLoadAll 
          Caption         =   "&All"
+         Shortcut        =   ^L
+      End
+   End
+   Begin VB.Menu mnuMisc 
+      Caption         =   "&Misc"
+      Begin VB.Menu mnuRefresh 
+         Caption         =   "&Refresh"
+         Shortcut        =   ^R
       End
    End
 End
@@ -46,20 +56,28 @@ Option Explicit
 Dim DATA_PATH As String
 Dim terrainColors() As Long
 Dim map() As Integer
-Dim mapWidth As Integer
-Dim mapHeight As Integer
-
+Dim mapW As Integer 'in tiles
+Dim mapH As Integer
 
 Function draw()
+    picMap.Cls
+    picMap.AutoRedraw = True
+    
     Dim x As Integer
     Dim y As Integer
-    For x = 1 To mapWidth
-        For y = 1 To mapHeight
+    For x = 1 To mapW
+        For y = 1 To mapH
+            Dim X1 As Long
+            Dim Y1 As Long
+            X1 = x * 2 + IIf(y Mod 2 = 0, 1, 0) - 1
+            Y1 = y * 2 - 1
             Dim color As Long
             color = terrainColors(map(x, y))
-            picMap.PSet (x * Screen.TwipsPerPixelX, y * Screen.TwipsPerPixelY), color
+            picMap.Line (X1, Y1)-(X1 + 1, Y1 + 1), color, BF
         Next y
     Next x
+    
+    picMap.Refresh
 End Function
 
 Private Sub Form_Load()
@@ -68,7 +86,6 @@ Private Sub Form_Load()
     DATA_PATH = DATA_PATH & "Data\"
     
     picMap.Cls
-
 End Sub
 
 Private Sub mnuLoadAll_Click()
@@ -84,9 +101,9 @@ Private Sub mnuLoadMap_Click()
     Set root = xDoc.documentElement
     Dim size As IXMLDOMNode
     Set size = root.selectSingleNode("size")
-    mapWidth = CInt(size.Attributes.getNamedItem("x").nodeValue)
-    mapHeight = CInt(size.Attributes.getNamedItem("y").nodeValue)
-    ReDim map(mapWidth, mapHeight)
+    mapW = CInt(size.Attributes.getNamedItem("x").nodeValue)
+    mapH = CInt(size.Attributes.getNamedItem("y").nodeValue)
+    ReDim map(mapW, mapH)
     
     Dim row As IXMLDOMNode
     For Each row In root.selectNodes("row")
@@ -95,12 +112,13 @@ Private Sub mnuLoadMap_Click()
         Dim tiles As String
         tiles = row.Attributes.getNamedItem("terrain").nodeValue
         Dim x As Integer
-        For x = 1 To mapWidth
+        For x = 1 To mapW
             map(x, y) = Mid(tiles, x, 1)
         Next x
     Next
-    
+        
     draw
+    
 End Sub
 
 Private Sub mnuLoadTerrain_Click()
@@ -120,4 +138,8 @@ Private Sub mnuLoadTerrain_Click()
         index = terrain.Attributes.getNamedItem("index").nodeValue
         terrainColors(index) = strToColor(colorString)
     Next
+End Sub
+
+Private Sub mnuRefresh_Click()
+    draw
 End Sub

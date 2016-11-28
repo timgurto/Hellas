@@ -1,4 +1,4 @@
-Attribute VB_Name = "Module2"
+Attribute VB_Name = "Util"
 Option Explicit
 
 Public Function strToColor(str As String) As Long
