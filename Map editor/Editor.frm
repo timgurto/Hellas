@@ -22,6 +22,22 @@ Begin VB.Form Form1
       Top             =   1560
       Width           =   8655
    End
+   Begin VB.Label lblOffset 
+      Caption         =   "Offset: "
+      Height          =   255
+      Left            =   120
+      TabIndex        =   2
+      Top             =   360
+      Width           =   1215
+   End
+   Begin VB.Label lblZoom 
+      Caption         =   "2x zoom"
+      Height          =   255
+      Left            =   120
+      TabIndex        =   1
+      Top             =   120
+      Width           =   1215
+   End
    Begin VB.Menu mnuLoad 
       Caption         =   "&Load"
       Begin VB.Menu mnuLoadMap 
@@ -62,7 +78,46 @@ Dim offsetX As Long
 Dim offsetY As Long
 Dim zoom As Integer 'pixels per tile, default=2
 
+Function zoomIn()
+    zoom = zoom * 2
+    draw
+End Function
+
+Function zoomOut()
+    If zoom >= 2 Then
+        zoom = zoom / 2
+    End If
+    draw
+End Function
+
+Function panLeft()
+    offsetX = offsetX - 100
+    If offsetX < 0 Then offsetX = 0
+    draw
+End Function
+
+Function panRight()
+    offsetX = offsetX + 100
+    If offsetX + picMap.ScaleWidth > mapW * zoom Then offsetX = mapW * zoom - picMap.ScaleWidth
+    draw
+End Function
+
+Function panUp()
+    offsetY = offsetY - 100
+    If offsetY < 0 Then offsetY = 0
+    draw
+End Function
+
+Function panDown()
+    offsetY = offsetY + 100
+    If offsetY + picMap.ScaleHeight > mapH * zoom Then offsetY = mapH * zoom - picMap.ScaleHeight
+    draw
+End Function
+
 Function draw()
+    lblZoom.Caption = zoom & "x zoom"
+    lblOffset.Caption = "Offset: " & offsetX & ", " & offsetY
+
     picMap.Cls
     picMap.AutoRedraw = True
     
@@ -70,8 +125,8 @@ Function draw()
     Dim minY As Integer
     Dim maxX As Integer
     Dim maxY As Integer
-    minX = -offsetX / zoom
-    minY = -offsetY / zoom
+    minX = offsetX / zoom
+    minY = offsetY / zoom
     maxX = minX + picMap.ScaleWidth / zoom
     maxY = minY + picMap.ScaleHeight / zoom
     bind minX, 0, mapW
@@ -79,19 +134,20 @@ Function draw()
     bind maxX, 0, mapW
     bind maxY, 0, mapW
     
-    Dim x As Integer
-    Dim y As Integer
-    For x = minX To maxX
-        For y = minY To maxY
+    Dim X As Integer
+    Dim Y As Integer
+    Dim rectSize As Integer
+    For X = minX To maxX
+        For Y = minY To maxY
             Dim X1 As Long
             Dim Y1 As Long
-            X1 = x * 2 + IIf(y Mod 2 = 0, 1, 0) - 1 + offsetX
-            Y1 = y * 2 - 1 + offsetY
+            X1 = X * zoom + IIf(Y Mod 2 = 0, zoom / 2, 0) - 1 - offsetX
+            Y1 = Y * zoom - 1 - offsetY
             Dim color As Long
-            color = terrainColors(map(x, y))
-            picMap.Line (X1, Y1)-(X1 + 1, Y1 + 1), color, BF
-        Next y
-    Next x
+            color = terrainColors(map(X, Y))
+            picMap.Line (X1, Y1)-(X1 + (zoom - 1), Y1 + (zoom - 1)), color, BF
+        Next Y
+    Next X
     
     picMap.Refresh
 End Function
@@ -104,6 +160,7 @@ Private Sub Form_Load()
     zoom = 2
     
     picMap.Cls
+    mnuLoadAll_Click
 End Sub
 
 Private Sub mnuLoadAll_Click()
@@ -125,14 +182,14 @@ Private Sub mnuLoadMap_Click()
     
     Dim row As IXMLDOMNode
     For Each row In root.selectNodes("row")
-        Dim y As Integer
-        y = row.Attributes.getNamedItem("y").nodeValue
+        Dim Y As Integer
+        Y = row.Attributes.getNamedItem("y").nodeValue
         Dim tiles As String
         tiles = row.Attributes.getNamedItem("terrain").nodeValue
-        Dim x As Integer
-        For x = 1 To mapW
-            map(x, y) = Mid(tiles, x, 1)
-        Next x
+        Dim X As Integer
+        For X = 1 To mapW
+            map(X, Y) = Mid(tiles, X, 1)
+        Next X
     Next
         
     draw
@@ -161,3 +218,22 @@ End Sub
 Private Sub mnuRefresh_Click()
     draw
 End Sub
+
+Private Sub picMap_KeyDown(KeyCode As Integer, Shift As Integer)
+    Select Case KeyCode
+    Case vbKeyPageDown, vbKeyAdd
+        zoomIn
+    Case vbKeyPageUp, vbKeySubtract
+        zoomOut
+    Case vbKeyUp
+        panUp
+    Case vbKeyDown
+        panDown
+    Case vbKeyLeft
+        panLeft
+    Case vbKeyRight
+        panRight
+    
+    End Select
+End Sub
+
