@@ -58,19 +58,35 @@ Dim terrainColors() As Long
 Dim map() As Integer
 Dim mapW As Integer 'in tiles
 Dim mapH As Integer
+Dim offsetX As Long
+Dim offsetY As Long
+Dim zoom As Integer 'pixels per tile, default=2
 
 Function draw()
     picMap.Cls
     picMap.AutoRedraw = True
     
+    Dim minX As Integer
+    Dim minY As Integer
+    Dim maxX As Integer
+    Dim maxY As Integer
+    minX = -offsetX / zoom
+    minY = -offsetY / zoom
+    maxX = minX + picMap.ScaleWidth / zoom
+    maxY = minY + picMap.ScaleHeight / zoom
+    bind minX, 0, mapW
+    bind minY, 0, mapW
+    bind maxX, 0, mapW
+    bind maxY, 0, mapW
+    
     Dim x As Integer
     Dim y As Integer
-    For x = 1 To mapW
-        For y = 1 To mapH
+    For x = minX To maxX
+        For y = minY To maxY
             Dim X1 As Long
             Dim Y1 As Long
-            X1 = x * 2 + IIf(y Mod 2 = 0, 1, 0) - 1
-            Y1 = y * 2 - 1
+            X1 = x * 2 + IIf(y Mod 2 = 0, 1, 0) - 1 + offsetX
+            Y1 = y * 2 - 1 + offsetY
             Dim color As Long
             color = terrainColors(map(x, y))
             picMap.Line (X1, Y1)-(X1 + 1, Y1 + 1), color, BF
@@ -84,6 +100,8 @@ Private Sub Form_Load()
     DATA_PATH = App.Path
     DATA_PATH = Left(DATA_PATH, InStrRev(DATA_PATH, "\"))
     DATA_PATH = DATA_PATH & "Data\"
+    
+    zoom = 2
     
     picMap.Cls
 End Sub
