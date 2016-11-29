@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Begin VB.Form Form1 
    Caption         =   "Form1"
    ClientHeight    =   9135
@@ -10,6 +11,28 @@ Begin VB.Form Form1
    ScaleHeight     =   9135
    ScaleWidth      =   11460
    StartUpPosition =   3  'Windows Default
+   Begin MSComctlLib.StatusBar statusBar 
+      Align           =   2  'Align Bottom
+      Height          =   255
+      Left            =   0
+      TabIndex        =   1
+      Top             =   8880
+      Width           =   11460
+      _ExtentX        =   20214
+      _ExtentY        =   450
+      _Version        =   393216
+      BeginProperty Panels {8E3867A5-8586-11D1-B16A-00C0F0283628} 
+         NumPanels       =   2
+         BeginProperty Panel1 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
+            Object.Width           =   1764
+            MinWidth        =   1764
+            Picture         =   "Editor.frx":0000
+         EndProperty
+         BeginProperty Panel2 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
+            Picture         =   "Editor.frx":0352
+         EndProperty
+      EndProperty
+   End
    Begin VB.PictureBox picMap 
       AutoRedraw      =   -1  'True
       BackColor       =   &H00FF8080&
@@ -21,22 +44,6 @@ Begin VB.Form Form1
       TabIndex        =   0
       Top             =   0
       Width           =   8775
-   End
-   Begin VB.Label lblOffset 
-      Caption         =   "Offset: "
-      Height          =   255
-      Left            =   1200
-      TabIndex        =   2
-      Top             =   8880
-      Width           =   1695
-   End
-   Begin VB.Label lblZoom 
-      Caption         =   "2x zoom"
-      Height          =   255
-      Left            =   0
-      TabIndex        =   1
-      Top             =   8880
-      Width           =   1095
    End
    Begin VB.Menu mnuLoad 
       Caption         =   "&Load"
@@ -78,6 +85,11 @@ Dim offsetX As Long
 Dim offsetY As Long
 Dim zoom As Long 'pixels per tile, default=2
 
+Dim cursorX As Long 'The pixel being moused-over
+Dim cursorY As Long
+Dim locX As Long 'The map location being moused-over (accounting for offset and zoom)
+Dim locY As Long
+
 Function zoomIn()
     zoom = zoom * 2
     draw
@@ -114,9 +126,16 @@ Function panDown()
     draw
 End Function
 
+Function updateLoc()
+    locX = (cursorX + offsetX) * 32 / zoom
+    locY = (cursorY + offsetY) * 32 / zoom
+
+    statusBar.Panels(2).Text = locX & ", " & locY
+End Function
+
 Function draw()
-    lblZoom.Caption = zoom & "x zoom"
-    lblOffset.Caption = "Offset: " & offsetX & ", " & offsetY
+    statusBar.Panels(1).Text = zoom & "x"
+    updateLoc
 
     picMap.Cls
     picMap.AutoRedraw = True
@@ -164,10 +183,10 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub Form_Resize()
-    lblZoom.Top = Form1.height - 945
-    lblOffset.Top = Form1.height - 945
+    statusBar.Top = Form1.height - 945
+    'statusBar.Width = Form1.width
     picMap.width = Form1.width
-    picMap.height = lblZoom.Top
+    picMap.height = statusBar.Top
     draw
 End Sub
 
@@ -245,3 +264,8 @@ Private Sub picMap_KeyDown(KeyCode As Integer, Shift As Integer)
     End Select
 End Sub
 
+Private Sub picMap_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    cursorX = X
+    cursorY = Y
+    updateLoc
+End Sub
