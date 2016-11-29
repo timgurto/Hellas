@@ -1,6 +1,7 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Begin VB.Form Form1 
+   AutoRedraw      =   -1  'True
    Caption         =   "Form1"
    ClientHeight    =   9135
    ClientLeft      =   165
@@ -36,6 +37,8 @@ Begin VB.Form Form1
    Begin VB.PictureBox picMap 
       AutoRedraw      =   -1  'True
       BackColor       =   &H00FF8080&
+      DrawStyle       =   5  'Transparent
+      ForeColor       =   &H00C0FFFF&
       Height          =   7560
       Left            =   0
       ScaleHeight     =   500
@@ -81,14 +84,22 @@ Dim terrainColors() As Long
 Dim map() As Integer
 Dim mapW As Long 'in tiles
 Dim mapH As Long
-Dim offsetX As Long
+Dim offsetX As Long 'in map pixels
 Dim offsetY As Long
-Dim zoom As Long 'pixels per tile, default=2
+Dim zoom As Double 'pixels per tile, default=1
 
 Dim cursorX As Long 'The pixel being moused-over
 Dim cursorY As Long
 Dim locX As Long 'The map location being moused-over (accounting for offset and zoom)
 Dim locY As Long
+
+Dim mapDC As Long
+Dim mapBM As Long
+Dim oldMapDC As Long
+Dim mapWP As Long
+Dim mapHP As Long
+
+
 
 Function zoomIn()
     zoom = zoom * 2
@@ -96,39 +107,37 @@ Function zoomIn()
 End Function
 
 Function zoomOut()
-    If zoom >= 2 Then
-        zoom = zoom / 2
-    End If
+    zoom = zoom / 2
     draw
 End Function
 
 Function panLeft()
-    offsetX = offsetX - 100
+    offsetX = offsetX - 100 / zoom
     If offsetX < 0 Then offsetX = 0
     draw
 End Function
 
 Function panRight()
-    offsetX = offsetX + 100
+    offsetX = offsetX + 100 / zoom
     If offsetX + picMap.ScaleWidth > mapW * zoom Then offsetX = mapW * zoom - picMap.ScaleWidth
     draw
 End Function
 
 Function panUp()
-    offsetY = offsetY - 100
+    offsetY = offsetY - 100 / zoom
     If offsetY < 0 Then offsetY = 0
     draw
 End Function
 
 Function panDown()
-    offsetY = offsetY + 100
+    offsetY = offsetY + 100 / zoom
     If offsetY + picMap.ScaleHeight > mapH * zoom Then offsetY = mapH * zoom - picMap.ScaleHeight
     draw
 End Function
 
 Function updateLoc()
-    locX = (cursorX + offsetX) * 32 / zoom
-    locY = (cursorY + offsetY) * 32 / zoom
+    locX = (cursorX + offsetX) * 16 / zoom '16, not 32, because tiles are represented by 2x2 pixels and not 1x1.
+    locY = (cursorY + offsetY) * 16 / zoom
 
     statusBar.Panels(2).Text = locX & ", " & locY
 End Function
@@ -139,61 +148,96 @@ Function draw()
 
     picMap.Cls
     picMap.AutoRedraw = True
-    
-    Dim minX As Long
-    Dim minY As Long
-    Dim maxX As Long
-    Dim maxY As Long
-    minX = offsetX / zoom
-    minY = offsetY / zoom
-    maxX = minX + picMap.ScaleWidth / zoom
-    maxY = minY + picMap.ScaleHeight / zoom
-    bind minX, 0, mapW
-    bind minY, 0, mapH
-    bind maxX, 0, mapW
-    bind maxY, 0, mapH
-    
-    Dim X As Integer
-    Dim Y As Integer
-    Dim rectSize As Integer
-    For X = minX To maxX
-        For Y = minY To maxY
-            Dim X1 As Long
-            Dim Y1 As Long
-            X1 = X * zoom + IIf(Y Mod 2 = 0, zoom / 2, 0) - 1 - offsetX
-            Y1 = Y * zoom - 1 - offsetY
-            Dim color As Long
-            color = terrainColors(map(X, Y))
-            picMap.Line (X1, Y1)-(X1 + (zoom - 1), Y1 + (zoom - 1)), color, BF
-        Next Y
-    Next X
+
+    StretchBlt _
+            picMap.hDC, 0, 0, picMap.width, picMap.height, _
+            mapDC, offsetX, offsetY, picMap.width * 2 / zoom, picMap.height * 2 / zoom, _
+            SRCCOPY
     
     picMap.Refresh
+
 End Function
 
 Private Sub Form_Load()
     DATA_PATH = App.Path
-    DATA_PATH = Left(DATA_PATH, InStrRev(DATA_PATH, "\"))
+    DATA_PATH = left(DATA_PATH, InStrRev(DATA_PATH, "\"))
     DATA_PATH = DATA_PATH & "Data\"
     
     zoom = 2
     
-    picMap.Cls
     mnuLoadAll_Click
 End Sub
 
 Private Sub Form_Resize()
-    statusBar.Top = Form1.height - 945
-    'statusBar.Width = Form1.width
+    statusBar.top = Form1.height - 945
     picMap.width = Form1.width
-    picMap.height = statusBar.Top
+    picMap.height = statusBar.top
     draw
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+  SelectObject mapDC, oldMapDC
+  DeleteObject mapBM
+  DeleteDC mapDC
 End Sub
 
 Private Sub mnuLoadAll_Click()
     mnuLoadTerrain_Click
     mnuLoadMap_Click
 End Sub
+
+Function generateMapImage()
+    ' In case this isn't the first time it's been generated
+    If mapBM <> 0 Then
+        SelectObject mapDC, oldMapDC
+        DeleteObject mapBM
+        DeleteDC mapDC
+    End If
+    
+    mapWP = mapW * 2 + 1
+    mapHP = mapH * 2
+
+    mapDC = CreateCompatibleDC(GetDC(0))
+    mapBM = CreateCompatibleBitmap(GetDC(0), mapWP, mapHP)
+    oldMapDC = SelectObject(mapDC, mapBM)
+    
+    ' Create terrain pens
+    Dim numTerrains As Integer
+    numTerrains = UBound(terrainColors)
+    Dim pens() As Long
+    ReDim pens(numTerrains)
+    Dim i As Integer
+    For i = 1 To numTerrains
+        pens(i) = CreatePen(vbSolid, 0, terrainColors(i))
+    Next i
+    
+    ' Draw terrain
+    Dim x As Integer
+    Dim y As Integer
+    For x = 1 To mapW
+        For y = 1 To mapH
+            Dim X1 As Long
+            Dim Y1 As Long
+            X1 = x * 2 + IIf(y Mod 2 = 0, 1, 0) - 1 - offsetX
+            Y1 = y * 2 - 1 - offsetY
+            Dim color As Long
+            color = terrainColors(map(x, y))
+            SelectObject mapDC, pens(map(x, y))
+            'If map(x, y) = 0 Then
+                'Dim pen As Long
+                'pen = CreatePen(vbSolid, 1, color)
+                Rectangle mapDC, X1, Y1, X1 + 2, Y1 + 2
+                'DeleteObject pen
+            'End If
+        Next y
+    Next x
+    
+    'Delete terrain pens
+    For i = 1 To numTerrains
+        DeleteObject pens(i)
+    Next i
+
+End Function
 
 Private Sub mnuLoadMap_Click()
     Dim xDoc As DOMDocument
@@ -209,15 +253,17 @@ Private Sub mnuLoadMap_Click()
     
     Dim row As IXMLDOMNode
     For Each row In root.selectNodes("row")
-        Dim Y As Integer
-        Y = row.Attributes.getNamedItem("y").nodeValue
+        Dim y As Integer
+        y = row.Attributes.getNamedItem("y").nodeValue
         Dim tiles As String
         tiles = row.Attributes.getNamedItem("terrain").nodeValue
-        Dim X As Integer
-        For X = 1 To mapW
-            map(X, Y) = Mid(tiles, X, 1)
-        Next X
+        Dim x As Integer
+        For x = 1 To mapW
+            map(x, y) = Mid(tiles, x, 1)
+        Next x
     Next
+    
+    generateMapImage
         
     draw
     
@@ -264,8 +310,8 @@ Private Sub picMap_KeyDown(KeyCode As Integer, Shift As Integer)
     End Select
 End Sub
 
-Private Sub picMap_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    cursorX = X
-    cursorY = Y
+Private Sub picMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    cursorX = x
+    cursorY = y
     updateLoc
 End Sub
