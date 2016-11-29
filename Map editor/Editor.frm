@@ -99,39 +99,56 @@ Dim oldMapDC As Long
 Dim mapWP As Long
 Dim mapHP As Long
 
-
+Function clipOffset()
+    If offsetX <= 0 Then
+        offsetX = 0
+    ElseIf offsetX > mapWP - picMap.ScaleWidth / (zoom / 2) Then
+        offsetX = mapWP - picMap.ScaleWidth / (zoom / 2)
+    End If
+    If offsetY <= 0 Then
+        offsetY = 0
+    ElseIf offsetY > mapHP - picMap.ScaleHeight / (zoom / 2) Then
+        offsetY = mapHP - picMap.ScaleHeight / (zoom / 2)
+    End If
+    
+    ' Center if map is smaller than screen
+    If picMap.ScaleWidth / (zoom / 2) > mapWP Then offsetX = (mapWP - picMap.ScaleWidth / (zoom / 2)) / 2
+    If picMap.ScaleHeight / (zoom / 2) > mapHP Then offsetY = (mapHP - picMap.ScaleHeight / (zoom / 2)) / 2
+End Function
 
 Function zoomIn()
     zoom = zoom * 2
+    clipOffset
     draw
 End Function
 
 Function zoomOut()
     zoom = zoom / 2
+    clipOffset
     draw
 End Function
 
 Function panLeft()
     offsetX = offsetX - 100 / zoom
-    If offsetX < 0 Then offsetX = 0
+    clipOffset
     draw
 End Function
 
 Function panRight()
     offsetX = offsetX + 100 / zoom
-    If offsetX + picMap.ScaleWidth > mapW * zoom Then offsetX = mapW * zoom - picMap.ScaleWidth
+    clipOffset
     draw
 End Function
 
 Function panUp()
     offsetY = offsetY - 100 / zoom
-    If offsetY < 0 Then offsetY = 0
+    clipOffset
     draw
 End Function
 
 Function panDown()
     offsetY = offsetY + 100 / zoom
-    If offsetY + picMap.ScaleHeight > mapH * zoom Then offsetY = mapH * zoom - picMap.ScaleHeight
+    clipOffset
     draw
 End Function
 
@@ -150,9 +167,9 @@ Function draw()
     picMap.AutoRedraw = True
 
     StretchBlt _
-            picMap.hDC, 0, 0, picMap.width, picMap.height, _
-            mapDC, offsetX, offsetY, picMap.width * 2 / zoom, picMap.height * 2 / zoom, _
-            SRCCOPY
+            picMap.hdc, 0, 0, picMap.ScaleWidth, picMap.ScaleHeight, _
+            mapDC, offsetX, offsetY, picMap.ScaleWidth * 2 / zoom, picMap.ScaleHeight * 2 / zoom, _
+            vbSrcCopy
     
     picMap.Refresh
 
@@ -205,9 +222,9 @@ Function generateMapImage()
     Dim numTerrains As Integer
     numTerrains = UBound(terrainColors)
     Dim pens() As Long
-    ReDim pens(numTerrains)
+    ReDim pens(0 To numTerrains)
     Dim i As Integer
-    For i = 1 To numTerrains
+    For i = 0 To numTerrains
         pens(i) = CreatePen(vbSolid, 0, terrainColors(i))
     Next i
     
@@ -315,3 +332,5 @@ Private Sub picMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     cursorY = y
     updateLoc
 End Sub
+
+
