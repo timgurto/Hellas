@@ -118,12 +118,16 @@ End Function
 
 Function zoomIn()
     zoom = zoom * 2
+    offsetX = offsetX + picMap.ScaleWidth / (zoom / 2) / 2
+    offsetY = offsetY + picMap.ScaleHeight / (zoom / 2) / 2
     clipOffset
     draw
 End Function
 
 Function zoomOut()
     zoom = zoom / 2
+    offsetX = offsetX - picMap.ScaleWidth / (zoom / 2) / 4
+    offsetY = offsetY - picMap.ScaleHeight / (zoom / 2) / 4
     clipOffset
     draw
 End Function
