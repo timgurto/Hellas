@@ -23,7 +23,7 @@ Begin VB.Form Form1
       _ExtentY        =   450
       _Version        =   393216
       BeginProperty Panels {8E3867A5-8586-11D1-B16A-00C0F0283628} 
-         NumPanels       =   2
+         NumPanels       =   3
          BeginProperty Panel1 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             Object.Width           =   1764
             MinWidth        =   1764
@@ -31,6 +31,9 @@ Begin VB.Form Form1
          EndProperty
          BeginProperty Panel2 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             Picture         =   "Editor.frx":0352
+         EndProperty
+         BeginProperty Panel3 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
+            Picture         =   "Editor.frx":06A4
          EndProperty
       EndProperty
    End
@@ -133,34 +136,38 @@ Function zoomOut()
 End Function
 
 Function panLeft()
-    offsetX = offsetX - 100 / zoom
+    offsetX = offsetX - 200 / zoom
     clipOffset
     draw
 End Function
 
 Function panRight()
-    offsetX = offsetX + 100 / zoom
+    offsetX = offsetX + 200 / zoom
     clipOffset
     draw
 End Function
 
 Function panUp()
-    offsetY = offsetY - 100 / zoom
+    offsetY = offsetY - 200 / zoom
     clipOffset
     draw
 End Function
 
 Function panDown()
-    offsetY = offsetY + 100 / zoom
+    offsetY = offsetY + 200 / zoom
     clipOffset
     draw
 End Function
 
 Function updateLoc()
-    locX = (cursorX + offsetX) * 16 / zoom '16, not 32, because tiles are represented by 2x2 pixels and not 1x1.
-    locY = (cursorY + offsetY) * 16 / zoom
-
-    statusBar.Panels(2).Text = locX & ", " & locY
+    locX = offsetX * 16 + cursorX / (zoom) * 32 - 16
+    locY = offsetY * 16 + cursorY / (zoom) * 32
+    Dim tileX, tileY As Long
+    tileY = locY \ 32
+    tileX = IIf(tileY Mod 2 = 0, locX + 16, locX) \ 32
+    
+    statusBar.Panels(2).Text = tileX & ", " & tileY
+    statusBar.Panels(3).Text = locX & ", " & locY
 End Function
 
 Function draw()
@@ -239,8 +246,8 @@ Function generateMapImage()
         For y = 1 To mapH
             Dim X1 As Long
             Dim Y1 As Long
-            X1 = x * 2 + IIf(y Mod 2 = 0, 1, 0) - 1 - offsetX
-            Y1 = y * 2 - 1 - offsetY
+            X1 = (x - 1) * 2 + IIf(y Mod 2 = 0, 1, 0) - offsetX
+            Y1 = (y - 1) * 2 - offsetY
             Dim color As Long
             color = terrainColors(map(x, y))
             SelectObject mapDC, pens(map(x, y))
