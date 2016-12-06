@@ -16,15 +16,17 @@ class Spawner{
     const ObjectType *_type; // What it spawns
     size_t _quantity; // How many to maintain.  Default: 1
 
-    //Time between an object being removed, and its replacement spawning.  Default: 0
+    // Time between an object being removed, and its replacement spawning.  Default: 0
+    // In the case of an NPC, this timer starts on death, rather than on the corpse despawning.
     ms_t _respawnTime;
 
     std::set<size_t> _terrainWhitelist; // Only applies if nonempty
     std::queue<ms_t> _respawnQueue; // The times at which new objects should spawn
 
 public:
-    Spawner(const Point &location, const ObjectType *type);
+    Spawner(const Point &location = Point(), const ObjectType *type = nullptr);
 
+    const ObjectType *type() const { return _type; }
     void radius(double r) { _radius = r; }
     void quantity(size_t qty) { _quantity = qty; }
     size_t quantity() const { return _quantity; }

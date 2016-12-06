@@ -139,3 +139,5 @@ issue,description,value,effort,type,blockedBy,done
 293,Tool requirements not showing up in crafting window,5,1,Bug,,TRUE
 294,Prevent landlocked gear outlines,,,Aesthetics,,
 295,Make client connection failures more clean,,,Aesthetics,,
+296,Load map in client before connecting,,,Performance,,
+297,Make findObjectTypeByName() logarithmic in complexity,,,Performance,,

@@ -322,8 +322,18 @@ void Server::loadData(const std::string &path){
     if (xr.newFile("Data/spawnPoints.xml")){
         for (auto elem : xr.getChildren("spawnPoint")) {
             std::string id;
-            if (!xr.findAttr(elem, "id", id)) {
+            if (!xr.findAttr(elem, "type", id)) {
                 _debug("Skipping importing NPC with no type.", Color::RED);
+                continue;
+            }
+
+            size_t index;
+            if (!xr.findAttr(elem, "index", index)){
+                _debug("Skipping importing NPC with no index.", Color::RED);
+                continue;
+            }
+            if (_spawners.find(index) != _spawners.end()){
+                _debug << "Skipping importing NPC with duplicate index " << index << Log::endl;
                 continue;
             }
 
@@ -352,7 +362,7 @@ void Server::loadData(const std::string &path){
             for (auto terrain : xr.getChildren("allowedTerrain", elem))
                 if (xr.findAttr(terrain, "index", n)) s.allowTerrain(n);
 
-            _spawners.push_back(s);
+            _spawners[index] = s;
         }
     }
 

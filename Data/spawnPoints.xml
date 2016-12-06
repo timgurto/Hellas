@@ -2,12 +2,14 @@
 
 <!--
 Required:
- - id
+ - index
+ - type
  - location
 -->
 
 <spawnPoint
-    id="tree"
+    index=0
+    type="tree"
     quantity=3
     radius=278
     respawnTime=2000 >
@@ -16,7 +18,8 @@ Required:
 </spawnPoint>
 
 <spawnPoint
-    id="rock"
+    index=1
+    type="rock"
     quantity=10
     xCenter=36037 yCenter=28946
     radius=278

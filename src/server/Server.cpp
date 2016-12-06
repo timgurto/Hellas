@@ -531,9 +531,12 @@ void Server::spawnInitialObjects(){
 
 
     // From spawners
-    for (Spawner &spawner : _spawners)
+    for (auto &pair: _spawners){
+        Spawner &spawner = pair.second;
+        assert(spawner.type() != nullptr);
         for (size_t i = 0; i != spawner.quantity(); ++i)
             spawner.spawn(*this);
+    }
 }
 
 Point Server::mapRand() const{
