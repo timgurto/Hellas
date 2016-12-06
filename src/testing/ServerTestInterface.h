@@ -19,6 +19,7 @@ public:
     Server::objects_t &objects() { return _server._objects; }
     std::set<ServerItem> &items() { return _server._items; }
     std::set<User> &users() { return _server._users; }
+    std::map<size_t, Spawner> &spawners() { return _server._spawners; }
 
     // 1x1, terrain = 0
     static const std::vector<std::vector<size_t> > TINY_MAP;

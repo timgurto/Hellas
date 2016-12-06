@@ -319,28 +319,32 @@ void Server::loadData(const std::string &path){
     }
 
     // Spawners
-    if (xr.newFile("Data/spawnPoints.xml")){
+    if (xr.newFile(path + "/spawnPoints.xml")){
         for (auto elem : xr.getChildren("spawnPoint")) {
             std::string id;
             if (!xr.findAttr(elem, "type", id)) {
-                _debug("Skipping importing NPC with no type.", Color::RED);
+                _debug("Skipping importing spawner with no type.", Color::RED);
                 continue;
             }
 
             size_t index;
             if (!xr.findAttr(elem, "index", index)){
-                _debug("Skipping importing NPC with no index.", Color::RED);
+                _debug("Skipping importing spawner with no index.", Color::RED);
                 continue;
             }
             if (_spawners.find(index) != _spawners.end()){
-                _debug << "Skipping importing NPC with duplicate index " << index << Log::endl;
+                _debug << "Skipping importing spawner with duplicate index " << index << Log::endl;
+                continue;
+            }
+            if (index == 0){
+                _debug("Skipping importing spawner with forbidden index 0.", Color::RED);
                 continue;
             }
 
             Point p;
             auto loc = xr.findChild("location", elem);
             if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
-                _debug("Skipping importing object with invalid/no location", Color::RED);
+                _debug("Skipping importing spawner with invalid/no location", Color::RED);
                 continue;
             }
 

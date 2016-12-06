@@ -2,13 +2,13 @@
 
 <!--
 Required:
- - index
+ - index (must be unique)
  - type
  - location
 -->
 
 <spawnPoint
-    index=0
+    index=1
     type="tree"
     quantity=3
     radius=278
@@ -18,7 +18,7 @@ Required:
 </spawnPoint>
 
 <spawnPoint
-    index=1
+    index=2
     type="rock"
     quantity=10
     xCenter=36037 yCenter=28946

@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #ifndef TEST_H
 #define TEST_H
 
@@ -16,6 +14,7 @@ public:
 
 private:
     std::string _description;
+
     testFun_t _fun;
     bool _slow;
     
@@ -38,9 +37,19 @@ public:
 
 #define TOKEN_CONCAT_2(a, b) a ## b
 #define TOKEN_CONCAT(a, b) TOKEN_CONCAT_2(a, b)
-#define TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) (name, false, false, [](){
-#define SLOW_TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) (name, true, false, [](){
-#define ONLY_TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) (name, false, true, [](){
+
+#define SLOW true
+#define FAST false
+#define IN_SUBSET true
+#define NOT_IN_SUBSET false
+
+#define TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) \
+            (name, FAST, NOT_IN_SUBSET, [](){
+#define SLOW_TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) \
+            (name, SLOW, NOT_IN_SUBSET, [](){
+#define ONLY_TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) \
+            (name, FAST, IN_SUBSET, [](){
+
 #define TEND });
 
 #define REPEAT_FOR_MS(TIME_TO_REPEAT) \
