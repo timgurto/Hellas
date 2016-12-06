@@ -203,9 +203,14 @@ void Server::run(){
             objP->update(timeElapsed);
 
         // Clean up dead objects
-        for (Object *objP : _objectsToRemove)
+        for (Object *objP : _objectsToRemove){
             removeObject(*objP);
+        }
         _objectsToRemove.clear();
+
+        // Update spawners
+        for (auto &pair : _spawners)
+            pair.second.update(_time);
 
         // Deal with any messages from the server
         while (!_messages.empty()){
@@ -388,6 +393,8 @@ void Server::forceUntarget(const Object &target, const User *userToExclude){
 }
 
 void Server::removeObject(Object &obj, const User *userToExclude){
+    obj.onRemove();
+
     // Ensure no other users are targeting this object, as it will be removed.
     forceUntarget(obj, userToExclude);
 
@@ -535,7 +542,7 @@ void Server::spawnInitialObjects(){
         Spawner &spawner = pair.second;
         assert(spawner.type() != nullptr);
         for (size_t i = 0; i != spawner.quantity(); ++i)
-            spawner.spawn(*this);
+            spawner.spawn();
     }
 }
 

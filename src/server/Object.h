@@ -74,6 +74,8 @@ public:
     // Add this object to a list, for removal after all objects are updated.
     void markForRemoval();
 
+    virtual void onRemove();
+
     /*
     Determine whether the proposed new location is legal, considering movement speed and
     time elapsed, and checking for collisions.

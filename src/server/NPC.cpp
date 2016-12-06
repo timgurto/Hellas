@@ -34,6 +34,16 @@ void NPC::onDeath(){
     npcType()->lootTable().instantiate(_container);
     for (const User *user : server.findUsersInArea(location()))
         server.sendMessage(user->socket(), SV_LOOTABLE, makeArgs(serial()));
+
+    /*
+    Schedule a respawn, if this NPC came from a spawner.
+    For non-NPCs, this happens in onRemove().  The object's _spawner is cleared afterwards to avoid
+    onRemove() from doing so here.
+    */
+    if (spawner() != nullptr){
+        spawner()->scheduleSpawn();
+        spawner(nullptr);
+    }
 }
 
 void NPC::processAI(ms_t timeElapsed){

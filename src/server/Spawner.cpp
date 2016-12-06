@@ -10,8 +10,9 @@ Spawner::Spawner(size_t index, const Point &location, const ObjectType *type):
     _quantity(1),
     _respawnTime(0){}
 
-void Spawner::spawn(Server &server){
+void Spawner::spawn(){
     static const size_t MAX_ATTEMPTS = 20;
+    Server &server = *Server::_instance;
 
     for (size_t attempt = 0; attempt != MAX_ATTEMPTS; ++attempt){
 
@@ -41,9 +42,21 @@ void Spawner::spawn(Server &server){
                       server.addNPC(dynamic_cast<const NPCType *>(_type), p) :
                       server.addObject(_type, p);
         obj.spawner(this);
-
+        return;
     }
 
     server._debug << Color::YELLOW << "Failed to spawn object " << _type->id() << "." << Log::endl;
+    scheduleSpawn();
 }
 
+void Spawner::scheduleSpawn(){
+    Log &d = Server::_instance->_debug;
+    _spawnSchedule.push_back(SDL_GetTicks() + _respawnTime);
+}
+
+void Spawner::update(ms_t currentTime){
+    while (!_spawnSchedule.empty() && _spawnSchedule.front() <= currentTime){
+        _spawnSchedule.pop_front();
+        spawn();
+    }
+}

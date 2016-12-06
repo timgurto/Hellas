@@ -1,7 +1,7 @@
 #ifndef SPAWNER_H
 #define SPAWNER_H
 
-#include <queue>
+#include <list>
 #include <set>
 
 #include "../Point.h"
@@ -22,7 +22,7 @@ class Spawner{
     ms_t _respawnTime;
 
     std::set<size_t> _terrainWhitelist; // Only applies if nonempty
-    std::queue<ms_t> _respawnQueue; // The times at which new objects should spawn
+    std::list<ms_t> _spawnSchedule; // The times at which new objects should spawn
 
 public:
     Spawner(size_t index = 0, const Point &location = Point(), const ObjectType *type = nullptr);
@@ -35,7 +35,10 @@ public:
     void respawnTime(ms_t t) { _respawnTime = t; }
     void allowTerrain(size_t n) { _terrainWhitelist.insert(n); }
 
-    void spawn(Server &server); // Attempt to add a new object.
+    void spawn(); // Attempt to add a new object.
+    // Add a spawn job to the queue.  After _respawnTime, spawn() will be called.
+    void scheduleSpawn();
+    void update(ms_t currentTime); // Act on any scheduled spawns that are due.
 };
 
 #endif

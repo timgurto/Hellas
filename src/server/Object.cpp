@@ -209,3 +209,8 @@ void Object::decrementGatheringUsers(const User *userToSkip){
                 server.sendMessage(user->socket(), SV_NOT_GATHERING_OBJECT, makeArgs(_serial));
     }
 }
+
+void Object::onRemove(){
+    if (_spawner != nullptr)
+        _spawner->scheduleSpawn();
+}
