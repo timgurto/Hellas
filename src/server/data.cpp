@@ -355,7 +355,7 @@ void Server::loadData(const std::string &path){
                 continue;
             }
 
-            Spawner s(p, type);
+            Spawner s(index, p, type);
 
             size_t n;
             if (xr.findAttr(elem, "quantity", n)) s.quantity(n);
@@ -437,6 +437,7 @@ void Server::loadData(const std::string &path){
 
             size_t n;
             if (xr.findAttr(elem, "owner", s)) obj.owner(s);
+            if (xr.findAttr(elem, "spawner", n)) obj.spawner(n);
 
             ItemSet contents;
             for (auto content : xr.getChildren("gatherable", elem)) {
@@ -547,6 +548,9 @@ void Server::saveData(const objects_t &objects){
 
         if (!obj->owner().empty())
             xw.setAttr(e, "owner", obj->owner());
+
+        if (obj->spawner() != 0)
+            xw.setAttr(e, "spawner", obj->spawner());
 
         auto loc = xw.addChild("location", e);
         xw.setAttr(loc, "x", obj->location().x);

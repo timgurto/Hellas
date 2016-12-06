@@ -1,7 +1,8 @@
 #include "Server.h"
 #include "Spawner.h"
 
-Spawner::Spawner(const Point &location, const ObjectType *type):
+Spawner::Spawner(size_t index, const Point &location, const ObjectType *type):
+    _index(index),
     _location(location),
     _type(type),
 
@@ -36,11 +37,10 @@ void Spawner::spawn(Server &server){
             continue;
 
         // Add object;
-        if (_type->classTag() == 'n')
-            server.addNPC(dynamic_cast<const NPCType *>(_type), p);
-        else
-            server.addObject(_type, p);
-        return;
+        Object &obj = _type->classTag() == 'n' ?
+                      server.addNPC(dynamic_cast<const NPCType *>(_type), p) :
+                      server.addObject(_type, p);
+        obj.spawner(_index);
 
     }
 
