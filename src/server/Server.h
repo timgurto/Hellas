@@ -14,6 +14,7 @@
 #include "Object.h"
 #include "Recipe.h"
 #include "ServerItem.h"
+#include "Spawner.h"
 #include "TerrainType.h"
 #include "User.h"
 #include "../Args.h"
@@ -135,6 +136,7 @@ private:
     std::set<ServerItem> _items;
     std::set<Recipe> _recipes;
     std::set<const ObjectType *> _objectTypes;
+    std::vector<Spawner> _spawners;
 
     std::list<Object *> _objectsToRemove; // Emptied every tick.
     // Force all users to untarget an object

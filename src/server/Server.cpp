@@ -541,12 +541,10 @@ bool Server::itemIsTag(const ServerItem *item, const std::string &tagName) const
 }
 
 const ObjectType *Server::findObjectTypeByName(const std::string &id) const{
-    auto it = std::find_if(_objectTypes.begin(), _objectTypes.end(),
-                           [id](const ObjectType *ot){ return ot->id() == id; });
-    if (it != _objectTypes.end())
-        return *it;
-    else
-        return nullptr;
+    for (const ObjectType *type : _objectTypes)
+        if (type->id() == id)
+            return type;
+    return nullptr;
 }
 
 Object &Server::addObject(const ObjectType *type, const Point &location, const User *owner){

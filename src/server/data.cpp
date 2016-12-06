@@ -4,7 +4,6 @@
 #endif
 
 #include "NPCType.h"
-#include "NPC.h"
 #include "Server.h"
 #include "../XmlReader.h"
 #include "../XmlWriter.h"
@@ -317,6 +316,44 @@ void Server::loadData(const std::string &path){
             _items.erase(temp);
         } else
             ++it;
+    }
+
+    // Spawners
+    if (xr.newFile("Data/spawnPoints.xml")){
+        for (auto elem : xr.getChildren("spawnPoint")) {
+            std::string id;
+            if (!xr.findAttr(elem, "id", id)) {
+                _debug("Skipping importing NPC with no type.", Color::RED);
+                continue;
+            }
+
+            Point p;
+            auto loc = xr.findChild("location", elem);
+            if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
+                _debug("Skipping importing object with invalid/no location", Color::RED);
+                continue;
+            }
+
+            const ObjectType *type = findObjectTypeByName(id);
+            if (type == nullptr){
+                _debug << Color::RED << "Skipping importing spawner for unknown objects \"" << id
+                        << "\"." << Log::endl;
+                continue;
+            }
+
+            Spawner s(p, type);
+
+            size_t n;
+            if (xr.findAttr(elem, "quantity", n)) s.quantity(n);
+            if (xr.findAttr(elem, "respawnTime", n)) s.respawnTime(n);
+            double d;
+            if (xr.findAttr(elem, "range", d)) s.range(d);
+
+            for (auto terrain : xr.getChildren("allowedTerrain", elem))
+                if (xr.findAttr(terrain, "index", n)) s.allowTerrain(n);
+
+            _spawners.push_back(s);
+        }
     }
 
     // Map
