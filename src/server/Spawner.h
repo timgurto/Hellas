@@ -10,7 +10,7 @@ class ObjectType;
 
 class Spawner{
     Point _location;
-    double _range; // Default: 0
+    double _radius; // Default: 0
     const ObjectType *_type; // What it spawns
     size_t _quantity; // How many to maintain.  Default: 1
 
@@ -23,7 +23,7 @@ class Spawner{
 public:
     Spawner(const Point &location, const ObjectType *type);
 
-    void range(double r) { _range = r; }
+    void radius(double r) { _radius = r; }
     void quantity(size_t qty) { _quantity = qty; }
     void respawnTime(ms_t t) { _respawnTime = t; }
     void allowTerrain(size_t n) { _terrainWhitelist.push_back(n); }

@@ -428,7 +428,7 @@ void Server::gatherObject(size_t serial, User &user){
 #endif
 }
 
-void Server::generateWorld(){
+void Server::spawnInitialObjects(){
 
     static const char
         GRASS = 0,

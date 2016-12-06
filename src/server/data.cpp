@@ -347,7 +347,7 @@ void Server::loadData(const std::string &path){
             if (xr.findAttr(elem, "quantity", n)) s.quantity(n);
             if (xr.findAttr(elem, "respawnTime", n)) s.respawnTime(n);
             double d;
-            if (xr.findAttr(elem, "range", d)) s.range(d);
+            if (xr.findAttr(elem, "radius", d)) s.radius(d);
 
             for (auto terrain : xr.getChildren("allowedTerrain", elem))
                 if (xr.findAttr(terrain, "index", n)) s.allowTerrain(n);
@@ -505,7 +505,7 @@ void Server::loadData(const std::string &path){
     } while (false);
 
     _debug("Generating new objects.", Color::YELLOW);
-    generateWorld();
+    spawnInitialObjects();
     _dataLoaded = true;
 }
 

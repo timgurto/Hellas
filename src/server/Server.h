@@ -55,6 +55,9 @@ public:
 
     // Const Searches/queries
     size_t findTile(const Point &p) const; // Find the tile type at the specified location.
+    std::pair<size_t, size_t> getTileCoords(const Point &p) const;
+    size_t Server::getTileYCoord(double y) const;
+    size_t Server::getTileXCoord(double x, size_t yTile) const;
     std::list<User*> findUsersInArea(Point loc, double squareRadius = CULL_DISTANCE) const;
     const ObjectType *findObjectTypeByName(const std::string &id) const; // Linear complexity
 
@@ -122,14 +125,11 @@ private:
     void loadData(const std::string &path = "Data"); // Attempt to load data from files.
     bool _dataLoaded; // If false when run() is called, load default data.
     static void saveData(const objects_t &objects);
-    void generateWorld(); // Randomly generate a new world.
+    void spawnInitialObjects();
 
     Point mapRand() const; // Return a random point on the map.
     size_t _mapX, _mapY; // Number of tiles in each dimension.
     std::vector<std::vector<size_t>> _map;
-    std::pair<size_t, size_t> getTileCoords(const Point &p) const;
-    size_t Server::getTileYCoord(double y) const;
-    size_t Server::getTileXCoord(double x, size_t yTile) const;
 
     // World data
     std::vector<TerrainType> _terrain;

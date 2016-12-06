@@ -9,7 +9,7 @@ Required:
 <spawnPoint
     id="tree"
     quantity=3
-    range=278
+    radius=278
     respawnTime=2000 >
     <location x=36037 y=28946 />
     <allowedTerrain id="0" />
@@ -19,7 +19,7 @@ Required:
     id="rock"
     quantity=10
     xCenter=36037 yCenter=28946
-    range=278
+    radius=278
     respawnTime=2000 >
     <location x=36037 y=28946 />
 </spawnPoint>
