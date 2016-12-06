@@ -148,6 +148,7 @@ private:
     friend class User;
     friend class NPC;
     friend class ServerTestInterface;
+    friend class Spawner;
 
     NPC &addNPC(const NPCType *type, const Point &location); 
     Object &addObject (const ObjectType *type, const Point &location, const User *owner = nullptr);

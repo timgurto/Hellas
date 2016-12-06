@@ -528,6 +528,12 @@ void Server::spawnInitialObjects(){
             addObject(new NPC(boar, loc));
         }
     }
+
+
+    // From spawners
+    for (Spawner &spawner : _spawners)
+        for (size_t i = 0; i != spawner.quantity(); ++i)
+            spawner.spawn(*this);
 }
 
 Point Server::mapRand() const{

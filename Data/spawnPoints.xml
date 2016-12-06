@@ -12,7 +12,7 @@ Required:
     radius=278
     respawnTime=2000 >
     <location x=36037 y=28946 />
-    <allowedTerrain id="0" />
+    <allowedTerrain index="0" />
 </spawnPoint>
 
 <spawnPoint

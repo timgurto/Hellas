@@ -2,10 +2,12 @@
 #define SPAWNER_H
 
 #include <queue>
+#include <set>
 
 #include "../Point.h"
 #include "../util.h"
 
+class Server;
 class ObjectType;
 
 class Spawner{
@@ -17,7 +19,7 @@ class Spawner{
     //Time between an object being removed, and its replacement spawning.  Default: 0
     ms_t _respawnTime;
 
-    std::vector<size_t> _terrainWhitelist; // Only applies if nonempty
+    std::set<size_t> _terrainWhitelist; // Only applies if nonempty
     std::queue<ms_t> _respawnQueue; // The times at which new objects should spawn
 
 public:
@@ -25,8 +27,11 @@ public:
 
     void radius(double r) { _radius = r; }
     void quantity(size_t qty) { _quantity = qty; }
+    size_t quantity() const { return _quantity; }
     void respawnTime(ms_t t) { _respawnTime = t; }
-    void allowTerrain(size_t n) { _terrainWhitelist.push_back(n); }
+    void allowTerrain(size_t n) { _terrainWhitelist.insert(n); }
+
+    void spawn(Server &server); // Attempt to add a new object.
 };
 
 #endif
