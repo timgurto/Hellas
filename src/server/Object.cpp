@@ -8,7 +8,7 @@ Object::Object(const ObjectType *type, const Point &loc):
 _serial(generateSerial()),
 _location(loc),
 _type(type),
-_spawner(NO_SPAWNER),
+_spawner(nullptr),
 _numUsersGathering(0),
 _lastLocUpdate(SDL_GetTicks())
 {

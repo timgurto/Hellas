@@ -299,9 +299,3 @@ TEST("Thin objects block movement")
 
     return true;
 TEND
-
-TEST("Spawner with index=0")
-    ServerTestInterface s;
-    s.loadData("testing/data/spawner_0");
-    return s.spawners().empty();
-TEND

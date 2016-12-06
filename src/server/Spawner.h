@@ -27,6 +27,7 @@ class Spawner{
 public:
     Spawner(size_t index = 0, const Point &location = Point(), const ObjectType *type = nullptr);
 
+    size_t index() const { return _index; }
     const ObjectType *type() const { return _type; }
     void radius(double r) { _radius = r; }
     void quantity(size_t qty) { _quantity = qty; }

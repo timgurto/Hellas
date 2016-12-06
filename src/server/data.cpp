@@ -336,10 +336,6 @@ void Server::loadData(const std::string &path){
                 _debug << "Skipping importing spawner with duplicate index " << index << Log::endl;
                 continue;
             }
-            if (index == 0){
-                _debug("Skipping importing spawner with forbidden index 0.", Color::RED);
-                continue;
-            }
 
             Point p;
             auto loc = xr.findChild("location", elem);
@@ -435,9 +431,14 @@ void Server::loadData(const std::string &path){
 
             Object &obj = addObject(type, p, nullptr);
 
-            size_t n;
             if (xr.findAttr(elem, "owner", s)) obj.owner(s);
-            if (xr.findAttr(elem, "spawner", n)) obj.spawner(n);
+
+            size_t n;
+            if (xr.findAttr(elem, "spawner", n)){
+                auto it = _spawners.find(n);
+                if (it != _spawners.end())
+                    obj.spawner(&it->second);
+            }
 
             ItemSet contents;
             for (auto content : xr.getChildren("gatherable", elem)) {
@@ -513,6 +514,13 @@ void Server::loadData(const std::string &path){
             }
 
             NPC &npc= addNPC(type, p);
+
+            size_t n;
+            if (xr.findAttr(elem, "spawner", n)){
+                auto it = _spawners.find(n);
+                if (it != _spawners.end())
+                    npc.spawner(&it->second);
+            }
         }
 
         _dataLoaded = true;
@@ -549,8 +557,8 @@ void Server::saveData(const objects_t &objects){
         if (!obj->owner().empty())
             xw.setAttr(e, "owner", obj->owner());
 
-        if (obj->spawner() != 0)
-            xw.setAttr(e, "spawner", obj->spawner());
+        if (obj->spawner() != nullptr)
+            xw.setAttr(e, "spawner", obj->spawner()->index());
 
         auto loc = xw.addChild("location", e);
         xw.setAttr(loc, "x", obj->location().x);

@@ -40,7 +40,7 @@ void Spawner::spawn(Server &server){
         Object &obj = _type->classTag() == 'n' ?
                       server.addNPC(dynamic_cast<const NPCType *>(_type), p) :
                       server.addObject(_type, p);
-        obj.spawner(_index);
+        obj.spawner(this);
 
     }
 

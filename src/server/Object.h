@@ -6,6 +6,7 @@
 #include "ItemSet.h"
 #include "../Point.h"
 
+class Spawner;
 class User;
 
 // A server-side representation of an in-game object
@@ -17,8 +18,7 @@ class Object{
     ItemSet _contents; // Remaining contents, which can be gathered
     std::vector<MerchantSlot> _merchantSlots;
 
-    static const size_t NO_SPAWNER = 0;
-    size_t _spawner; // The serial of the Spawner that created this object, or NO_SPAWNER if none.
+    Spawner *_spawner; // The Spawner that created this object, if any.
 
     size_t _numUsersGathering; // The number of users gathering from this object.
 
@@ -56,8 +56,8 @@ public:
     const std::vector<MerchantSlot> &merchantSlots() const { return _merchantSlots; }
     const MerchantSlot &merchantSlot(size_t slot) const { return _merchantSlots[slot]; }
     MerchantSlot &merchantSlot(size_t slot) { return _merchantSlots[slot]; }
-    size_t spawner() const { return _spawner; }
-    void spawner(size_t index) { _spawner = index; }
+    Spawner *spawner() const { return _spawner; }
+    void spawner(Spawner *p) { _spawner = p; }
     const std::set<std::string> &watchers() const { return _watchers; }
     void incrementGatheringUsers(const User *userToSkip = nullptr);
     void decrementGatheringUsers(const User *userToSkip = nullptr);
