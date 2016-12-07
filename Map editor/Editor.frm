@@ -3,23 +3,191 @@ Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Begin VB.Form Form1 
    AutoRedraw      =   -1  'True
    Caption         =   "Form1"
-   ClientHeight    =   9135
+   ClientHeight    =   16650
    ClientLeft      =   165
    ClientTop       =   735
-   ClientWidth     =   11460
+   ClientWidth     =   22590
    DrawWidth       =   4684
    LinkTopic       =   "Form1"
-   ScaleHeight     =   9135
-   ScaleWidth      =   11460
+   ScaleHeight     =   16650
+   ScaleWidth      =   22590
    StartUpPosition =   3  'Windows Default
+   WindowState     =   2  'Maximized
+   Begin VB.PictureBox picSettings 
+      Height          =   7335
+      Index           =   1
+      Left            =   3240
+      ScaleHeight     =   7275
+      ScaleWidth      =   3195
+      TabIndex        =   5
+      Top             =   360
+      Width           =   3255
+      Begin VB.TextBox txtSpawnTime 
+         Height          =   285
+         Left            =   1200
+         TabIndex        =   15
+         Text            =   "10"
+         Top             =   4200
+         Width           =   735
+      End
+      Begin VB.TextBox txtSpawnRadius 
+         Height          =   285
+         Left            =   1200
+         TabIndex        =   16
+         Text            =   "100"
+         Top             =   3960
+         Width           =   735
+      End
+      Begin VB.TextBox txtSpawnQuantity 
+         Height          =   285
+         Left            =   1200
+         TabIndex        =   14
+         Text            =   "1"
+         Top             =   3720
+         Width           =   735
+      End
+      Begin VB.ListBox List1 
+         Height          =   510
+         Left            =   120
+         Style           =   1  'Checkbox
+         TabIndex        =   12
+         Top             =   4920
+         Width           =   2175
+      End
+      Begin VB.PictureBox picSpawnPreview 
+         Height          =   2895
+         Left            =   120
+         ScaleHeight     =   2835
+         ScaleWidth      =   2835
+         TabIndex        =   8
+         Top             =   720
+         Width           =   2895
+      End
+      Begin VB.ComboBox cmbSpawnType 
+         Height          =   315
+         Left            =   120
+         TabIndex        =   7
+         Text            =   "Combo1"
+         Top             =   360
+         Width           =   2895
+      End
+      Begin VB.Label Label6 
+         Caption         =   "Terrain whitelist"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   13
+         Top             =   4680
+         Width           =   1215
+      End
+      Begin VB.Label Label5 
+         Caption         =   "Respawn (m):"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   11
+         Top             =   4200
+         Width           =   975
+      End
+      Begin VB.Label Label4 
+         Caption         =   "Radius:"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   10
+         Top             =   3960
+         Width           =   975
+      End
+      Begin VB.Label Label3 
+         Caption         =   "Quantity:"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   9
+         Top             =   3720
+         Width           =   975
+      End
+      Begin VB.Label Label2 
+         Caption         =   "Object type:"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   6
+         Top             =   120
+         Width           =   1095
+      End
+   End
+   Begin VB.PictureBox picSettings 
+      Height          =   7335
+      Index           =   0
+      Left            =   0
+      ScaleHeight     =   7275
+      ScaleWidth      =   3195
+      TabIndex        =   3
+      Top             =   360
+      Width           =   3255
+      Begin VB.Label Label1 
+         Caption         =   "(Terrain)"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   4
+         Top             =   2160
+         Width           =   1575
+      End
+   End
+   Begin MSComctlLib.TabStrip tabs 
+      Height          =   375
+      Left            =   0
+      TabIndex        =   2
+      Top             =   0
+      Width           =   3255
+      _ExtentX        =   5741
+      _ExtentY        =   661
+      MultiRow        =   -1  'True
+      Style           =   1
+      ImageList       =   "tabImages"
+      _Version        =   393216
+      BeginProperty Tabs {1EFB6598-857C-11D1-B16A-00C0F0283628} 
+         NumTabs         =   2
+         BeginProperty Tab1 {1EFB659A-857C-11D1-B16A-00C0F0283628} 
+            Caption         =   "Terrain"
+            Key             =   "tabTerrain"
+            ImageVarType    =   2
+            ImageIndex      =   1
+         EndProperty
+         BeginProperty Tab2 {1EFB659A-857C-11D1-B16A-00C0F0283628} 
+            Caption         =   "Spawn points"
+            Key             =   "tabSpawn"
+            ImageVarType    =   2
+            ImageIndex      =   2
+         EndProperty
+      EndProperty
+   End
+   Begin MSComctlLib.ImageList tabImages 
+      Left            =   18720
+      Top             =   15240
+      _ExtentX        =   1005
+      _ExtentY        =   1005
+      BackColor       =   -2147483643
+      ImageWidth      =   16
+      ImageHeight     =   16
+      MaskColor       =   12632256
+      _Version        =   393216
+      BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
+         NumListImages   =   2
+         BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "Editor.frx":0000
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "Editor.frx":0352
+            Key             =   ""
+         EndProperty
+      EndProperty
+   End
    Begin MSComctlLib.StatusBar statusBar 
       Align           =   2  'Align Bottom
       Height          =   255
       Left            =   0
       TabIndex        =   1
-      Top             =   8880
-      Width           =   11460
-      _ExtentX        =   20214
+      Top             =   16395
+      Width           =   22590
+      _ExtentX        =   39846
       _ExtentY        =   450
       _Version        =   393216
       BeginProperty Panels {8E3867A5-8586-11D1-B16A-00C0F0283628} 
@@ -27,13 +195,13 @@ Begin VB.Form Form1
          BeginProperty Panel1 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             Object.Width           =   1764
             MinWidth        =   1764
-            Picture         =   "Editor.frx":0000
+            Picture         =   "Editor.frx":06A4
          EndProperty
          BeginProperty Panel2 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
-            Picture         =   "Editor.frx":0352
+            Picture         =   "Editor.frx":09F6
          EndProperty
          BeginProperty Panel3 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
-            Picture         =   "Editor.frx":06A4
+            Picture         =   "Editor.frx":0D48
          EndProperty
       EndProperty
    End
@@ -42,14 +210,14 @@ Begin VB.Form Form1
       BackColor       =   &H00FF8080&
       DrawStyle       =   5  'Transparent
       ForeColor       =   &H00C0FFFF&
-      Height          =   7560
-      Left            =   0
-      ScaleHeight     =   500
+      Height          =   2760
+      Left            =   19560
+      ScaleHeight     =   180
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   581
+      ScaleWidth      =   173
       TabIndex        =   0
-      Top             =   0
-      Width           =   8775
+      Top             =   13320
+      Width           =   2655
    End
    Begin VB.Menu mnuLoad 
       Caption         =   "&Load"
@@ -178,7 +346,7 @@ Function draw()
     picMap.AutoRedraw = True
 
     StretchBlt _
-            picMap.hdc, 0, 0, picMap.ScaleWidth, picMap.ScaleHeight, _
+            picMap.hDC, 0, 0, picMap.ScaleWidth, picMap.ScaleHeight, _
             mapDC, offsetX, offsetY, picMap.ScaleWidth * 2 / zoom, picMap.ScaleHeight * 2 / zoom, _
             vbSrcCopy
     
@@ -188,18 +356,35 @@ End Function
 
 Private Sub Form_Load()
     DATA_PATH = App.Path
-    DATA_PATH = left(DATA_PATH, InStrRev(DATA_PATH, "\"))
+    DATA_PATH = Left(DATA_PATH, InStrRev(DATA_PATH, "\"))
     DATA_PATH = DATA_PATH & "Data\"
     
     zoom = 2
     
-    mnuLoadAll_Click
+    tabs.SelectedItem = tabs.tabs(2)
+    picSettings(1).ZOrder 0
+    'mnuLoadAll_Click
+    
+    
 End Sub
 
 Private Sub Form_Resize()
-    statusBar.top = Form1.height - 945
-    picMap.width = Form1.width
-    picMap.height = statusBar.top
+    statusBar.Top = Me.height - 945
+    Dim i As Integer
+    For i = 1 To picSettings.Count
+        With picSettings(i - 1)
+            .Left = 0
+            .Top = tabs.Top + tabs.height
+            .height = statusBar.Top - .Top
+            .width = tabs.width
+        End With
+    Next i
+    With picMap
+        .Top = 0
+        .Left = picSettings(0).width
+        .width = Me.width - .Left
+        .height = statusBar.Top
+    End With
     draw
 End Sub
 
@@ -345,3 +530,10 @@ Private Sub picMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 End Sub
 
 
+Private Sub tabs_Click()
+    picSettings(tabs.SelectedItem.index - 1).ZOrder 0
+End Sub
+
+Private Sub txtSpawnQuantity_Validate(Cancel As Boolean)
+    Cancel = Not IsNumeric(txtSpawnQuantity_Validate.Text)
+End Sub
