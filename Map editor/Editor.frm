@@ -465,16 +465,16 @@ Private Sub mnuLoadMap_Click()
     Set root = xDoc.documentElement
     Dim size As IXMLDOMNode
     Set size = root.selectSingleNode("size")
-    mapW = CInt(size.Attributes.getNamedItem("x").nodeValue)
-    mapH = CInt(size.Attributes.getNamedItem("y").nodeValue)
+    mapW = getAttr(size, "x")
+    mapH = getAttr(size, "y")
     ReDim map(mapW, mapH)
     
     Dim row As IXMLDOMNode
     For Each row In root.selectNodes("row")
         Dim y As Integer
-        y = row.Attributes.getNamedItem("y").nodeValue
+        y = getAttr(row, "y")
         Dim tiles As String
-        tiles = row.Attributes.getNamedItem("terrain").nodeValue
+        tiles = getAttrString(row, "terrain")
         Dim x As Integer
         For x = 1 To mapW
             map(x, y) = Mid(tiles, x, 1)
@@ -501,12 +501,12 @@ Private Sub mnuLoadSpawnPoints_Click()
     i = 1
     For Each entry In entries
         With spawnPoints(i)
-            .type = CStr(entry.Attributes.getNamedItem("type").nodeValue)
-            .quantity = entry.Attributes.getNamedItem("quantity").nodeValue
-            .radius = entry.Attributes.getNamedItem("radius").nodeValue
-            .respawnTime = entry.Attributes.getNamedItem("respawnTime").nodeValue
-            .x = entry.Attributes.getNamedItem("x").nodeValue
-            .y = entry.Attributes.getNamedItem("y").nodeValue
+            .type = getAttrString(entry, "type")
+            .quantity = getAttr(entry, "quantity")
+            .radius = getAttr(entry, "radius")
+            .respawnTime = getAttr(entry, "respawnTime")
+            .x = getAttr(entry, "x")
+            .y = getAttr(entry, "y")
             Dim terrains As IXMLDOMNodeList
             Set terrains = entry.selectNodes("allowedTerrain")
             ReDim .terrainWhitelist(terrains.length)
@@ -514,7 +514,7 @@ Private Sub mnuLoadSpawnPoints_Click()
             Dim j As Integer
             j = 1
             For Each terrain In entry.selectNodes("allowedTerrain")
-                .terrainWhitelist(j) = terrain.Attributes.getNamedItem("index").nodeValue
+                .terrainWhitelist(j) = getAttr(terrain, "index")
                 j = j + 1
             Next
         End With
@@ -535,8 +535,8 @@ Private Sub mnuLoadTerrain_Click()
     For Each terrain In entries
         Dim colorString As String
         Dim index As Integer
-        colorString = CStr(terrain.Attributes.getNamedItem("color").nodeValue)
-        index = terrain.Attributes.getNamedItem("index").nodeValue
+        colorString = getAttrString(terrain, "color")
+        index = getAttr(terrain, "index")
         terrainColors(index) = strToColor(colorString)
     Next
 End Sub
