@@ -21,10 +21,18 @@ Required:
     index=2
     type="rock"
     quantity=10
-    xCenter=36037 yCenter=28946
     radius=278
     respawnTime=2000 >
-    <location x=36037 y=28946 />
+    <location x=36000 y=28946 />
+</spawnPoint>
+
+<spawnPoint
+    index=3
+    type="critter"
+    quantity=5
+    radius=278
+    respawnTime=10000 >
+    <location x=36037 y=28970 />
 </spawnPoint>
 
 </root>

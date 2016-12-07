@@ -32,7 +32,7 @@ issue,description,value,effort,type,blockedBy,done
 172,Critter run-away AI,5,34,Feature,,
 173,Animal that fights back,21,21,Feature,,TRUE
 174,Player death,13,5,Feature,,TRUE
-175,NPC spawning,5,21,Feature,,
+175,NPC spawning,5,21,Feature,,TRUE
 176,PVP,13,3,Feature,,
 177,Character has gear slots,13,21,Feature,,TRUE
 178,Items can match gear slots,8,3,Feature,,TRUE
@@ -94,22 +94,22 @@ issue,description,value,effort,type,blockedBy,done
 248,A shrine that grants a buff,3,8,Feature,247,
 249,A shrine that sets one's spawn point,13,8,Feature,,
 250,A road object that affects movement speed,5,5,Feature,247,
-251,A hoe constructs a farm plot without being consumed,3,3,Feature,
-252,"Seeds, that are constructed on top of a farm-plot object",3,5,Feature,
-253,A crop object that grows over time,5,5,Feature,
-254,Terrain types have fertility property,2,2,Feature,
-255,Fertility affects crop viability,5,5,Feature,254
-256,Containers may allow 'heavy' objects or not,13,5,Feature,243
-257,Rocks and sticks spawn gradually,13,5,Feature,
-258,Direct player trading,3,8,Feature,
-259,Players/factions can fight over object ownership,34,21,Feature,242
-260,More detailed permissions on objects,5,13,Feature,
-261,Objects can combine loot tables,13,8,Feature,
-262,A shrine that grants items,8,5,Feature,
-263,Talents/skills,89,89,Feature,
-264,An object that affects terrain fertility,5,8,Feature,254
-265,NPCs can have skills/abilities,13,13,Feature,263
-266,Players must learn recipes,8,13,Feature,
+251,A hoe constructs a farm plot without being consumed,3,3,Feature,,
+252,"Seeds, that are constructed on top of a farm-plot object",3,5,Feature,,
+253,A crop object that grows over time,5,5,Feature,,
+254,Terrain types have fertility property,2,2,Feature,,
+255,Fertility affects crop viability,5,5,Feature,254,
+256,Containers may allow 'heavy' objects or not,13,5,Feature,243,
+257,Rocks and sticks spawn gradually,13,5,Feature,,TRUE
+258,Direct player trading,3,8,Feature,,
+259,Players/factions can fight over object ownership,34,21,Feature,242,
+260,More detailed permissions on objects,5,13,Feature,,
+261,Objects can combine loot tables,13,8,Feature,,
+262,A shrine that grants items,8,5,Feature,,
+263,Talents/skills,89,89,Feature,,
+264,An object that affects terrain fertility,5,8,Feature,254,
+265,NPCs can have skills/abilities,13,13,Feature,263,
+266,Players must learn recipes,8,13,Feature,,
 267,Set bonuses for gear,13,8,Feature,,
 268,Learning skills might require tools,8,3,Feature,263,
 269,XP and leveling,21,5,Feature,,
@@ -137,7 +137,7 @@ issue,description,value,effort,type,blockedBy,done
 291,Allow tool objects to show an in-use image/animation,3,3,Aesthetics,,
 292,"Use doubles, not ints, in Rect class",3,2,Code quality,,
 293,Tool requirements not showing up in crafting window,5,1,Bug,,TRUE
-294,Prevent landlocked gear outlines,,,Aesthetics,,
-295,Make client connection failures more clean,,,Aesthetics,,
-296,Load map in client before connecting,,,Performance,,
-297,Make findObjectTypeByName() logarithmic in complexity,,,Performance,,
+294,Prevent landlocked gear outlines,5,5,Aesthetics,,
+295,Make client connection failures more clean,8,5,Aesthetics,,
+296,Load map in client before connecting,2,1,Performance,,
+297,Make findObjectTypeByName() logarithmic in complexity,3,2,Performance,,
