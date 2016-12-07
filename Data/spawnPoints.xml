@@ -12,8 +12,8 @@ Required:
     type="tree"
     quantity=3
     radius=278
-    respawnTime=2000 >
-    <location x=36037 y=28946 />
+    respawnTime=2000
+    x=36037 y=28946 >
     <allowedTerrain index="0" />
 </spawnPoint>
 
@@ -22,17 +22,15 @@ Required:
     type="rock"
     quantity=10
     radius=278
-    respawnTime=2000 >
-    <location x=36000 y=28946 />
-</spawnPoint>
+    respawnTime=2000
+    x=36000 y=28946 />
 
 <spawnPoint
     index=3
     type="critter"
     quantity=5
     radius=278
-    respawnTime=10000 >
-    <location x=36037 y=28970 />
-</spawnPoint>
+    respawnTime=10000
+    x=36037 y=28970 />
 
 </root>

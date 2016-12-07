@@ -338,8 +338,7 @@ void Server::loadData(const std::string &path){
             }
 
             Point p;
-            auto loc = xr.findChild("location", elem);
-            if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
+            if (!xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
                 _debug("Skipping importing spawner with invalid/no location", Color::RED);
                 continue;
             }
