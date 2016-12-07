@@ -9,3 +9,13 @@ Public Type Bitmap
     width As Long
     height As Long
 End Type
+
+Public Type SpawnPoint
+    type As String
+    quantity As Integer
+    radius As Integer
+    respawnTime As Long
+    x As Long
+    y As Long
+    terrainWhitelist() As Integer
+End Type

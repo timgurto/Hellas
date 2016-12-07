@@ -227,6 +227,9 @@ Begin VB.Form Form1
       Begin VB.Menu mnuLoadTerrain 
          Caption         =   "&Terrain"
       End
+      Begin VB.Menu mnuLoadSpawnPoints 
+         Caption         =   "&Spawn points"
+      End
       Begin VB.Menu mnuGap1 
          Caption         =   "-"
       End
@@ -252,6 +255,7 @@ Option Explicit
 
 Dim DATA_PATH As String
 Dim terrainColors() As Long
+Dim spawnPoints() As SpawnPoint
 Dim map() As Integer
 Dim mapW As Long 'in tiles
 Dim mapH As Long
@@ -394,11 +398,6 @@ Private Sub Form_Unload(Cancel As Integer)
   DeleteDC mapDC
 End Sub
 
-Private Sub mnuLoadAll_Click()
-    mnuLoadTerrain_Click
-    mnuLoadMap_Click
-End Sub
-
 Function generateMapImage()
     ' In case this isn't the first time it's been generated
     If mapBM <> 0 Then
@@ -452,6 +451,12 @@ Function generateMapImage()
 
 End Function
 
+Private Sub mnuLoadAll_Click()
+    mnuLoadTerrain_Click
+    mnuLoadMap_Click
+    mnuLoadSpawnPoints_Click
+End Sub
+
 Private Sub mnuLoadMap_Click()
     Dim xDoc As DOMDocument
     Set xDoc = loadXML(DATA_PATH & "map.xml")
@@ -480,6 +485,41 @@ Private Sub mnuLoadMap_Click()
         
     draw
     
+End Sub
+
+Private Sub mnuLoadSpawnPoints_Click()
+    Dim xDoc As DOMDocument
+    Set xDoc = loadXML(DATA_PATH & "spawnPoints.xml")
+    
+    Dim root As IXMLDOMNode
+    Set root = xDoc.documentElement
+    Dim entries As IXMLDOMNodeList
+    Set entries = root.selectNodes("spawnPoint")
+    ReDim spawnPoints(entries.length)
+    Dim entry As IXMLDOMNode
+    Dim i As Integer
+    i = 1
+    For Each entry In entries
+        With spawnPoints(i)
+            .type = CStr(entry.Attributes.getNamedItem("type").nodeValue)
+            .quantity = entry.Attributes.getNamedItem("quantity").nodeValue
+            .radius = entry.Attributes.getNamedItem("radius").nodeValue
+            .respawnTime = entry.Attributes.getNamedItem("respawnTime").nodeValue
+            .x = entry.Attributes.getNamedItem("x").nodeValue
+            .y = entry.Attributes.getNamedItem("y").nodeValue
+            Dim terrains As IXMLDOMNodeList
+            Set terrains = entry.selectNodes("allowedTerrain")
+            ReDim .terrainWhitelist(terrains.length)
+            Dim terrain As IXMLDOMNode
+            Dim j As Integer
+            j = 1
+            For Each terrain In entry.selectNodes("allowedTerrain")
+                .terrainWhitelist(j) = terrain.Attributes.getNamedItem("index").nodeValue
+                j = j + 1
+            Next
+        End With
+        i = i + 1
+    Next
 End Sub
 
 Private Sub mnuLoadTerrain_Click()

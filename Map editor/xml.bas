@@ -21,8 +21,14 @@ Public Function loadXML(ByVal filename As String) As DOMDocument
     Set xDoc = New DOMDocument
     Dim ret As Boolean
     ret = xDoc.Load(filename)
-    If Not ret Then printError (xDoc)
+    If Not ret Then printError xDoc
     Set loadXML = xDoc
 End Function
 
+Public Function getAttr(ByRef node As IXMLDOMNode, name As String) As Double
+    getAttr = node.Attributes.getNamedItem(name).nodeValue
+End Function
 
+Public Function getAttrString(ByRef node As IXMLDOMNode, name As String) As String
+    getAttrString = CStr(node.Attributes.getNamedItem(name).nodeValue)
+End Function
