@@ -13,7 +13,7 @@ End Type
 Public Type SpawnPoint
     type As String
     quantity As Integer
-    radius As Integer
+    radius As Long
     respawnTime As Long
     x As Long
     y As Long

@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
-Begin VB.Form Form1 
+Begin VB.Form frmEditor 
    AutoRedraw      =   -1  'True
    Caption         =   "Form1"
    ClientHeight    =   16650
@@ -208,7 +208,6 @@ Begin VB.Form Form1
    Begin VB.PictureBox picMap 
       AutoRedraw      =   -1  'True
       BackColor       =   &H00FF8080&
-      DrawStyle       =   5  'Transparent
       ForeColor       =   &H00C0FFFF&
       Height          =   2760
       Left            =   19560
@@ -246,7 +245,7 @@ Begin VB.Form Form1
       End
    End
 End
-Attribute VB_Name = "Form1"
+Attribute VB_Name = "frmEditor"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -259,9 +258,9 @@ Dim spawnPoints() As SpawnPoint
 Dim map() As Integer
 Dim mapW As Long 'in tiles
 Dim mapH As Long
-Dim offsetX As Long 'in map pixels
-Dim offsetY As Long
-Dim zoom As Double 'pixels per tile, default=1
+Public offsetX As Long 'in picMap pixels
+Public offsetY As Long
+Public zoom As Double 'pixels per tile, default=1
 
 Dim cursorX As Long 'The pixel being moused-over
 Dim cursorY As Long
@@ -349,10 +348,19 @@ Function draw()
     picMap.Cls
     picMap.AutoRedraw = True
 
+    ' Map
     StretchBlt _
             picMap.hDC, 0, 0, picMap.ScaleWidth, picMap.ScaleHeight, _
             mapDC, offsetX, offsetY, picMap.ScaleWidth * 2 / zoom, picMap.ScaleHeight * 2 / zoom, _
             vbSrcCopy
+
+    'Spawn points
+    Dim i As Integer
+    For i = 1 To UBound(spawnPoints)
+        With spawnPoints(i)
+            picMap.Circle (convertX(.x), convertY(.y)), convertLength(.radius), vbWhite
+        End With
+    Next i
     
     picMap.Refresh
 
@@ -367,9 +375,7 @@ Private Sub Form_Load()
     
     tabs.SelectedItem = tabs.tabs(2)
     picSettings(1).ZOrder 0
-    'mnuLoadAll_Click
-    
-    
+    mnuLoadAll_Click
 End Sub
 
 Private Sub Form_Resize()
@@ -482,8 +488,6 @@ Private Sub mnuLoadMap_Click()
     Next
     
     generateMapImage
-        
-    draw
     
 End Sub
 
