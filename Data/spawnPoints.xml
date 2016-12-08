@@ -1,36 +1,5 @@
 <root>
-
-<!--
-Required:
- - index (must be unique)
- - type
- - location
--->
-
-<spawnPoint
-    index="1"
-    type="tree"
-    quantity="3"
-    radius="278"
-    respawnTime="2000"
-    x="36037" y="28946" >
-    <allowedTerrain index="0" />
-</spawnPoint>
-
-<spawnPoint
-    index="2"
-    type="rock"
-    quantity="10"
-    radius="278"
-    respawnTime="2000"
-    x="36000" y="28946" />
-
-<spawnPoint
-    index="3"
-    type="critter"
-    quantity="5"
-    radius="278"
-    respawnTime="10000"
-    x="36037" y="28970" />
-
+<spawnPoint index="1" type="tree" quantity="3" radius="278" respawnTime="2000" x="36037" y="28946" > <allowedTerrain index="0" /> </spawnPoint>
+<spawnPoint index="2" type="rock" quantity="10" radius="278" respawnTime="2000" x="36000" y="28946" />
+<spawnPoint index="3" type="critter" quantity="5" radius="278" respawnTime="10000" x="36037" y="28970" />
 </root>

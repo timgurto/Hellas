@@ -234,14 +234,27 @@ Begin VB.Form frmEditor
       End
       Begin VB.Menu mnuLoadAll 
          Caption         =   "&All"
-         Shortcut        =   ^L
+         Shortcut        =   ^O
+      End
+   End
+   Begin VB.Menu mnuSave 
+      Caption         =   "&Save"
+      Begin VB.Menu mnuSaveSpawnPoints 
+         Caption         =   "&Spawn points"
+      End
+      Begin VB.Menu mnuGap2 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuSaveAll 
+         Caption         =   "&All"
+         Shortcut        =   ^S
       End
    End
    Begin VB.Menu mnuMisc 
       Caption         =   "&Misc"
       Begin VB.Menu mnuRefresh 
-         Caption         =   "&Refresh"
-         Shortcut        =   ^R
+         Caption         =   "&Refresh map"
+         Shortcut        =   {F5}
       End
    End
 End
@@ -547,6 +560,46 @@ End Sub
 
 Private Sub mnuRefresh_Click()
     draw
+End Sub
+
+Private Sub mnuSaveAll_Click()
+    mnuSaveSpawnPoints_Click
+End Sub
+
+Private Sub writeAttr(name As String, attr As Variant)
+    Print #1, " " & name & "=" & """" & attr & """";
+End Sub
+
+Private Sub mnuSaveSpawnPoints_Click()
+    Open DATA_PATH + "spawnPoints.xml" For Output As #1
+    Print #1, "<root>"
+    Dim i As Integer
+    For i = 1 To UBound(spawnPoints)
+        With spawnPoints(i)
+            Print #1, "<spawnPoint";
+            writeAttr "index", i
+            writeAttr "type", .type
+            writeAttr "quantity", .quantity
+            writeAttr "radius", .radius
+            writeAttr "respawnTime", .respawnTime
+            writeAttr "x", .x
+            writeAttr "y", .y
+            If UBound(.terrainWhitelist) = 0 Then
+                Print #1, " />"
+            Else
+                Print #1, " >";
+                Dim j As Integer
+                For j = 1 To UBound(.terrainWhitelist)
+                    Print #1, " <allowedTerrain";
+                    writeAttr "index", .terrainWhitelist(j)
+                    Print #1, " />";
+                Next j
+                Print #1, " </spawnPoint>"
+            End If
+        End With
+    Next i
+    Print #1, "</root>"
+    Close #1
 End Sub
 
 Private Sub picMap_KeyDown(KeyCode As Integer, Shift As Integer)
