@@ -226,6 +226,9 @@ Begin VB.Form frmEditor
       Begin VB.Menu mnuLoadTerrain 
          Caption         =   "&Terrain"
       End
+      Begin VB.Menu mnuObjects 
+         Caption         =   "&Objects and NPCs"
+      End
       Begin VB.Menu mnuLoadSpawnPoints 
          Caption         =   "&Spawn points"
       End
@@ -268,6 +271,7 @@ Option Explicit
 Dim DATA_PATH As String
 Dim terrainColors() As Long
 Dim spawnPoints() As SpawnPoint
+Dim objectTypes() As ObjectType
 Dim map() As Integer
 Dim mapW As Long 'in tiles
 Dim mapH As Long
@@ -473,6 +477,7 @@ End Function
 Private Sub mnuLoadAll_Click()
     mnuLoadTerrain_Click
     mnuLoadMap_Click
+    mnuObjects_Click
     mnuLoadSpawnPoints_Click
 End Sub
 
@@ -502,6 +507,27 @@ Private Sub mnuLoadMap_Click()
     
     generateMapImage
     
+End Sub
+
+Private Sub mnuObjects_Click()
+    Dim xDoc As DOMDocument
+    Set xDoc = loadXML(DATA_PATH & "objectTypes.xml")
+    
+    Dim root As IXMLDOMNode
+    Set root = xDoc.documentElement
+    Dim entries As IXMLDOMNodeList
+    Set entries = root.selectNodes("objectType")
+    ReDim objectTypes(entries.length)
+    Dim entry As IXMLDOMNode
+    Dim i As Integer
+    i = 1
+    For Each entry In entries
+        With objectTypes(i)
+            .id = getAttrString(entry, "id")
+            .name = getAttrString(entry, "name")
+        End With
+        i = i + 1
+    Next
 End Sub
 
 Private Sub mnuLoadSpawnPoints_Click()

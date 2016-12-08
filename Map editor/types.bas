@@ -19,3 +19,8 @@ Public Type SpawnPoint
     y As Long
     terrainWhitelist() As Integer
 End Type
+
+Public Type ObjectType
+    id As String
+    name As String
+End Type
