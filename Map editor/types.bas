@@ -11,7 +11,7 @@ Public Type Bitmap
 End Type
 
 Public Type SpawnPoint
-    type As String
+    type As Integer
     quantity As Integer
     radius As Long
     respawnTime As Long

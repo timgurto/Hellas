@@ -289,6 +289,7 @@ Dim mapBM As Long
 Dim oldMapDC As Long
 Dim mapWP As Long
 Dim mapHP As Long
+Dim drawFont As Long
 
 Function clipOffset()
     If offsetX <= 0 Then
@@ -364,6 +365,10 @@ Function draw()
 
     picMap.Cls
     picMap.AutoRedraw = True
+    
+    ' Push
+    Dim oldFont As Long
+    oldFont = SelectObject(picMap.hDC, drawFont)
 
     ' Map
     StretchBlt _
@@ -371,22 +376,38 @@ Function draw()
             mapDC, offsetX, offsetY, picMap.ScaleWidth * 2 / zoom, picMap.ScaleHeight * 2 / zoom, _
             vbSrcCopy
 
-    'Spawn points
+    ' Spawn points
     Dim i As Integer
     For i = 1 To UBound(spawnPoints)
         With spawnPoints(i)
             picMap.Circle (convertX(.x), convertY(.y)), convertLength(.radius), vbWhite
+            Dim name As String
+            name = objectTypes(.type).name
+            TextOut picMap.hDC, convertX(.x) - Len(name) / 2 * 6, convertY(.y) - 4.5, name, Len(name)
+            
         End With
     Next i
     
+    ' Pop
+    SelectObject picMap.hDC, oldFont
+    
     picMap.Refresh
 
+End Function
+
+Private Function findObjectType(id As String) As Integer
+    Dim i As Integer
+    For i = 1 To UBound(objectTypes)
+        If objectTypes(i).id = id Then findObjectType = i
+    Next i
 End Function
 
 Private Sub Form_Load()
     DATA_PATH = App.Path
     DATA_PATH = Left(DATA_PATH, InStrRev(DATA_PATH, "\"))
     DATA_PATH = DATA_PATH & "Data\"
+    
+    drawFont = CreateFont(9, 6, 400, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Dina")
     
     zoom = 2
     
@@ -419,6 +440,7 @@ Private Sub Form_Unload(Cancel As Integer)
   SelectObject mapDC, oldMapDC
   DeleteObject mapBM
   DeleteDC mapDC
+  DeleteObject drawFont
 End Sub
 
 Function generateMapImage()
@@ -528,6 +550,21 @@ Private Sub mnuObjects_Click()
         End With
         i = i + 1
     Next
+    
+    Set xDoc = loadXML(DATA_PATH & "npcTypes.xml")
+    Set root = xDoc.documentElement
+    Set entries = root.selectNodes("npcType")
+    Dim oldSize As Integer
+    oldSize = UBound(objectTypes)
+    ReDim Preserve objectTypes(oldSize + entries.length)
+    For Each entry In entries
+        With objectTypes(i)
+            .id = getAttrString(entry, "id")
+            .name = getAttrString(entry, "name")
+        End With
+        i = i + 1
+    Next
+    
 End Sub
 
 Private Sub mnuLoadSpawnPoints_Click()
@@ -544,7 +581,7 @@ Private Sub mnuLoadSpawnPoints_Click()
     i = 1
     For Each entry In entries
         With spawnPoints(i)
-            .type = getAttrString(entry, "type")
+            .type = findObjectType(getAttrString(entry, "type"))
             .quantity = getAttr(entry, "quantity")
             .radius = getAttr(entry, "radius")
             .respawnTime = getAttr(entry, "respawnTime")
