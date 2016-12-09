@@ -66,8 +66,8 @@ Begin VB.Form frmEditor
       Begin VB.ComboBox cmbSpawnType 
          Height          =   315
          Left            =   120
+         Style           =   2  'Dropdown List
          TabIndex        =   7
-         Text            =   "Combo1"
          Top             =   360
          Width           =   2895
       End
@@ -388,6 +388,11 @@ Function draw()
         End With
     Next i
     
+    ' Prospective spawn point
+    If tabs.SelectedItem.index = 2 Then ' 2 = Spawn points
+        picMap.Circle (convertX(locX), convertY(locY)), convertLength(Val(txtSpawnRadius.Text)), vbYellow
+    End If
+    
     ' Pop
     SelectObject picMap.hDC, oldFont
     
@@ -565,6 +570,12 @@ Private Sub mnuObjects_Click()
         i = i + 1
     Next
     
+    ' Populate stuff
+    For i = 1 To UBound(objectTypes)
+        cmbSpawnType.AddItem (objectTypes(i).name)
+    Next i
+    cmbSpawnType.ListIndex = 0
+    
 End Sub
 
 Private Sub mnuLoadSpawnPoints_Click()
@@ -641,13 +652,13 @@ Private Sub mnuSaveSpawnPoints_Click()
         With spawnPoints(i)
             Print #1, "<spawnPoint";
             writeAttr "index", i
-            writeAttr "type", .type
+            writeAttr "type", objectTypes(.type).id
             writeAttr "quantity", .quantity
             writeAttr "radius", .radius
             writeAttr "respawnTime", .respawnTime
             writeAttr "x", .x
             writeAttr "y", .y
-            If UBound(.terrainWhitelist) = 0 Then
+            If Not ArrayExists(ArrPtr(.terrainWhitelist)) Then
                 Print #1, " />"
             Else
                 Print #1, " >";
@@ -655,7 +666,7 @@ Private Sub mnuSaveSpawnPoints_Click()
                 For j = 1 To UBound(.terrainWhitelist)
                     Print #1, " <allowedTerrain";
                     writeAttr "index", .terrainWhitelist(j)
-                    Print #1, " />";
+                    Print #1, " />"
                 Next j
                 Print #1, " </spawnPoint>"
             End If
@@ -663,6 +674,25 @@ Private Sub mnuSaveSpawnPoints_Click()
     Next i
     Print #1, "</root>"
     Close #1
+End Sub
+
+Private Sub picMap_Click()
+    If tabs.SelectedItem.index = 2 Then ' 2 = Spawn points
+        Dim NewIndex As Integer
+        NewIndex = UBound(spawnPoints) + 1
+        ReDim Preserve spawnPoints(NewIndex)
+        Dim sp As SpawnPoint
+        With sp
+            .type = cmbSpawnType.ListIndex + 1
+            .quantity = txtSpawnQuantity.Text
+            .radius = txtSpawnRadius.Text
+            .respawnTime = txtSpawnTime.Text
+            .x = locX
+            .y = locY
+        End With
+        spawnPoints(NewIndex) = sp
+        draw
+    End If
 End Sub
 
 Private Sub picMap_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -687,6 +717,8 @@ Private Sub picMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     cursorX = x
     cursorY = y
     updateLoc
+    
+    draw
 End Sub
 
 
@@ -695,5 +727,5 @@ Private Sub tabs_Click()
 End Sub
 
 Private Sub txtSpawnQuantity_Validate(Cancel As Boolean)
-    Cancel = Not IsNumeric(txtSpawnQuantity_Validate.Text)
+    Cancel = Not IsNumeric(txtSpawnQuantity.Text)
 End Sub
