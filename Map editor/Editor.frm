@@ -686,7 +686,7 @@ Private Sub picMap_Click()
             .type = cmbSpawnType.ListIndex + 1
             .quantity = txtSpawnQuantity.Text
             .radius = txtSpawnRadius.Text
-            .respawnTime = txtSpawnTime.Text
+            .respawnTime = txtSpawnTime.Text * 60 * 1000
             .x = locX
             .y = locY
         End With
