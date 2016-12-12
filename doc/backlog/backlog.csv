@@ -79,8 +79,7 @@ issue,description,value,effort,type,blockedBy,done
 232,NPCs get stuck on each other due to linear pathfinding,21,8,Bug,,
 234,Fail more gracefully and informatively when can't connect to server,3,5,Aesthetics,,
 235,Maintain aspect ratio,2,5,Bug,,
-236,Vehicle objects,34,8,Feature,,
-237,A boat that's restricted to water,21,5,Feature,236,
+237,A boat that's restricted to water,21,5,Feature,299,
 238,Choose map scale,5,3,Feature,,
 239,Make full map,21,89,Feature,238,TRUE
 240,"Server loads map from data file, rather than generating it",13,3,Code quality,,TRUE
@@ -115,7 +114,7 @@ issue,description,value,effort,type,blockedBy,done
 269,XP and leveling,21,5,Feature,,
 270,Grouped players get bonus XP,21,3,Feature,269,
 271,Quests,8,34,Feature,,
-272,Items that start quests,5,5,Feature,,
+272,Items that start quests,5,5,Feature,271,
 273,Player classes,13,3,Feature,,TRUE
 274,Class-restricted gear,13,3,Feature,,
 275,Flags showing faction ownership,5,5,Aesthetics,,
@@ -141,3 +140,8 @@ issue,description,value,effort,type,blockedBy,done
 295,Make client connection failures more clean,8,5,Aesthetics,,
 296,Load map in client before connecting,2,1,Performance,,
 297,Make findObjectTypeByName() logarithmic in complexity,3,2,Performance,,
+298,Make spawners' queues persistent,5,2,Bug,,
+299,"A 'handcart' vehicle that a player can mount, drive, and dismount",21,8,Feature,,
+300,Users are drawn inside (front+back) of vehicles,2,3,Aesthetics
+301,Vehicles 'log off' with their drivers,5,5,Bug
+302,Vehicles can have different speeds,5,2,Feature
