@@ -23,17 +23,17 @@ Code | Name                     | Syntax                                        
 22   | `CL_CONSTRUCT`           | &laquo;22&#8226;slot&#8226;x&#8226;y&raquo;                          | "I want to construct the item in inventory slot #`slot`, at location (`x`,`y`)"
 23   | `CL_GATHER`              | &laquo;23&#8226;serial&raquo;                                        | "I want to gather object #`serial`"
 24   | `CL_DECONSTRUCT`         | &laquo;23&#8226;serial&raquo;                                        | "I want to deconstruct object #`serial`"
-25   | `CL_TRADE`               | &laquo;32&#8226;serial&#8226;slot&raquo;                             | "I want to trade using object #`serial`'s merchant slot #`slot`.
-30   | `CL_DROP`                | &laquo;30&#8226;serial&#8226;slot&raquo;                             | "I want to drop object #`serial`'s item #`slot`."<br>A serial of `0` uses the user's inventory.
-31   | `CL_SWAP_ITEMS`          | &laquo;31&#8226;serial1&#8226;slot1&#8226;serial2&#8226;slot2&raquo; | "I want to swap object #`serial1`'s item #`slot1` with object #`serial2`'s item #`slot2`"<br>A serial of `0` uses the user's inventory.
-32   | `CL_SWAP_ITEMS`          | &laquo;32&#8226;serial&#8226;slot&raquo;                             | "I want to take object #`serial1`'s item #`slot1`
+25   | `CL_TRADE`               | &laquo;32&#8226;serial&#8226;slot&raquo;                             | "I want to trade using object #`serial`'s merchant slot #`slot`"
+30   | `CL_DROP`                | &laquo;30&#8226;serial&#8226;slot&raquo;                             | "I want to drop object #`serial`'s item #`slot`."<br>A serial of `0` uses the user's inventory"
+31   | `CL_SWAP_ITEMS`          | &laquo;31&#8226;serial1&#8226;slot1&#8226;serial2&#8226;slot2&raquo; | "I want to swap object #`serial1`'s item #`slot1` with object #`serial2`'s item #`slot2`"<br>A serial of `0` uses the user's inventory."
+32   | `CL_SWAP_ITEMS`          | &laquo;32&#8226;serial&#8226;slot&raquo;                             | "I want to take object #`serial1`'s item #`slot1`"
 33   | `CL_SET_MERCHANT_SLOT`   | &laquo;33&#8226;serial&#8226;slot&#8226;ware&#8226;wareQty&#8226;price&#8226;priceQty&raquo; | "I want to set object #`serial`'s merchant slot #`slot` to sell `wareQty` `ware`s for `priceQty` `price`s"
-34   | `CL_CLEAR_MERCHANT_SLOT` | &laquo;34&#8226;serial&#8226;slot                                    | "I want to clear object #`serial`'s merchant slot #`slot`.
-40   | `CL_START_WATCHIMG`      | &laquo;40&#8226;serial&raquo;                                        | "Tell me the details of object #`serial`'s inventory and merchant slots, and alert me of any changes."
-41   | `CL_STOP_WATCHING`       | &laquo;41&#8226;serial&raquo;                                        | "Stop alerting me of changes to object #`serial`."
-50   | `CL_TARGET`              | &laquo;50&#8226;serial&raquo;                                        | "I am targeting NPC #`serial`."
-60   | `CL_SAY`                 | &laquo;60&#8226;message&raquo;                                       | "I want to say '`message`' to everybody."
-61   | `CL_WHISPER`             | &laquo;61&#8226;username&#8226;message&raquo;                        | "I want to say '`message`' to user `username`."
+34   | `CL_CLEAR_MERCHANT_SLOT` | &laquo;34&#8226;serial&#8226;slot&raquo;                             | "I want to clear object #`serial`'s merchant slot #`slot`"
+40   | `CL_START_WATCHIMG`      | &laquo;40&#8226;serial&raquo;                                        | "Tell me the details of object #`serial`'s inventory and merchant slots, and alert me of any changes"
+41   | `CL_STOP_WATCHING`       | &laquo;41&#8226;serial&raquo;                                        | "Stop alerting me of changes to object #`serial`"
+50   | `CL_TARGET`              | &laquo;50&#8226;serial&raquo;                                        | "I am targeting NPC #`serial`"
+60   | `CL_SAY`                 | &laquo;60&#8226;message&raquo;                                       | "I want to say '`message`' to everybody"
+61   | `CL_WHISPER`             | &laquo;61&#8226;username&#8226;message&raquo;                        | "I want to say '`message`' to user `username`"
 
 #### Server commands                                        
 Code | Name                      | Syntax                                                                         | Description
@@ -57,12 +57,12 @@ Code | Name                      | Syntax                                       
 150  | `SV_OWNER`                | &laquo;150&#8226;serial&#8226;owner&raquo;                                     | "Object #`serial` is owned by `owner`"
 151  | `SV_GATHERING_OBJECT`     | &laquo;151&#8226;serial&raquo;                                                 | "Object #`serial` is being gathered"
 152  | `SV_NOT_GATHERING_OBJECT` | &laquo;152&#8226;serial&raquo;                                                 | "Object #`serial` is no longer being gathered"
-153  | `SV_LOOTABLE`             | &laquo;153&#8226;serial&raquo;                                                 | "NPC #`serial` has loot available."
-154  | `SV_LOOTABLE`             | &laquo;154&#8226;serial&raquo;                                                 | "NPC #`serial` had loot, but doesn't any more."
+153  | `SV_LOOTABLE`             | &laquo;153&#8226;serial&raquo;                                                 | "NPC #`serial` has loot available"
+154  | `SV_NOT_LOOTABLE`         | &laquo;154&#8226;serial&raquo;                                                 | "NPC #`serial` had loot, but doesn't any more"
 160  | `SV_HEALTH`               | &laquo;160&#8226;hp&raquo;                                                     | "You have `hp` health"
-161  | `SV_STATS`                | &laquo;160&#8226;maxHealth&#8226;attack&#8226;attackTime&#8226;speed&raquo;    | "Your up-to-date stats are as described."
-200  | `SV_SAY`                  | &laquo;200&#8226;username&#8226;message&raquo;                                 | "User `username` said '`message`'."
-201  | `SV_WHISPER`              | &laquo;201&#8226;username&#8226;message&raquo;                                 | "User `username` said '`message` to you'."
+161  | `SV_STATS`                | &laquo;160&#8226;maxHealth&#8226;attack&#8226;attackTime&#8226;speed&raquo;    | "Your up-to-date stats are as described"
+200  | `SV_SAY`                  | &laquo;200&#8226;username&#8226;message&raquo;                                 | "User `username` said '`message`'"
+201  | `SV_WHISPER`              | &laquo;201&#8226;username&#8226;message&raquo;                                 | "User `username` said '`message`' to you"
 
 #### Warnings and errors                                          
 Code | Name                         | Syntax                               | Description
@@ -96,4 +96,4 @@ Code | Name                         | Syntax                               | Des
 932  | `SV_NPC_DEAD`                | &laquo;932&raquo;                    | "You tried to perform an action on an NPC, but it's dead"
 933  | `SV_NPC_SWAP`                | &laquo;933&raquo;                    | "You tried to put an item into an NPC"
 934  | `SV_TAKE_SELF`               | &laquo;934&raquo;                    | "You tried to take an item from yourself"
-935  | `SV_NOT_GEAR`                | &laquo;935&raquo;                    | "You tried to equip an item in an incompatible gear slot."
+935  | `SV_NOT_GEAR`                | &laquo;935&raquo;                    | "You tried to equip an item in an incompatible gear slot"
