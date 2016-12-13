@@ -37,6 +37,7 @@ Client only:
 <item id="tinBar"       name="Tin Bar"          stackSize=10 />
 <item id="smallPot"     name="Small pot"        constructs="smallPot" />
 <item id="oven"         name="Oven"             constructs="oven" />
+<item id="handCart"     name="Hand Cart"        constructs="handCart" />
 
 <item id="stoneAxe" name="Stone axe"    gearSlot=6 >
     <tag name="axe" />

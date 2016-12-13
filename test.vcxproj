@@ -95,6 +95,7 @@
     <ClCompile Include="src\client\ClientNPCType.cpp" />
     <ClCompile Include="src\client\ClientObject.cpp" />
     <ClCompile Include="src\client\ClientObjectType.cpp" />
+    <ClCompile Include="src\client\ClientVehicle.cpp" />
     <ClCompile Include="src\client\craftingWindow.cpp" />
     <ClCompile Include="src\client\data.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName)\data-client</ObjectFileName>
@@ -165,6 +166,7 @@
     <ClCompile Include="src\server\Spawner.cpp" />
     <ClCompile Include="src\server\TerrainType.cpp" />
     <ClCompile Include="src\server\User.cpp" />
+    <ClCompile Include="src\server\Vehicle.cpp" />
     <ClCompile Include="src\server\Yield.cpp" />
     <ClCompile Include="src\Socket.cpp" />
     <ClCompile Include="src\Stats.cpp" />
@@ -196,6 +198,8 @@
     <ClInclude Include="src\client\ClientNPCType.h" />
     <ClInclude Include="src\client\ClientObject.h" />
     <ClInclude Include="src\client\ClientObjectType.h" />
+    <ClInclude Include="src\client\ClientVehicle.h" />
+    <ClInclude Include="src\client\ClientVehicleType.h" />
     <ClInclude Include="src\client\Entity.h" />
     <ClInclude Include="src\client\EntityType.h" />
     <ClInclude Include="src\client\LogSDL.h" />
@@ -247,6 +251,8 @@
     <ClInclude Include="src\server\Spawner.h" />
     <ClInclude Include="src\server\TerrainType.h" />
     <ClInclude Include="src\server\User.h" />
+    <ClInclude Include="src\server\Vehicle.h" />
+    <ClInclude Include="src\server\VehicleType.h" />
     <ClInclude Include="src\server\Yield.h" />
     <ClInclude Include="src\Socket.h" />
     <ClInclude Include="src\Stats.h" />

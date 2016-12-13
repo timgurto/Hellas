@@ -121,6 +121,7 @@
     <ClCompile Include="src\server\Spawner.cpp" />
     <ClCompile Include="src\server\TerrainType.cpp" />
     <ClCompile Include="src\server\User.cpp" />
+    <ClCompile Include="src\server\Vehicle.cpp" />
     <ClCompile Include="src\server\Yield.cpp" />
     <ClCompile Include="src\Socket.cpp" />
     <ClCompile Include="src\Stats.cpp" />
@@ -157,6 +158,8 @@
     <ClInclude Include="src\server\Spawner.h" />
     <ClInclude Include="src\server\TerrainType.h" />
     <ClInclude Include="src\server\User.h" />
+    <ClInclude Include="src\server\Vehicle.h" />
+    <ClInclude Include="src\server\VehicleType.h" />
     <ClInclude Include="src\server\Yield.h" />
     <ClInclude Include="src\Socket.h" />
     <ClInclude Include="src\Stats.h" />

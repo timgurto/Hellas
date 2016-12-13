@@ -14,6 +14,7 @@ class NPCType : public ObjectType{
 
 public:
     NPCType(const std::string &id, health_t maxHealth);
+    virtual ~NPCType(){}
     
     void maxHealth(health_t hp) { _maxHealth = hp; }
     health_t maxHealth() const { return _maxHealth; }

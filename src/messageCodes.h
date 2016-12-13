@@ -71,6 +71,10 @@ enum MessageCode{
     // Arguments: serial, slot
     CL_CLEAR_MERCHANT_SLOT = 34,
 
+    // "I want to mount or dismount vehicle ..."
+    // Arguments: serial
+    CL_TOGGLE_MOUNT = 35,
+
     // "Tell me what's inside object ..., and let me know of changes in the future". 
     // Arguments: serial
     CL_START_WATCHING = 40,
@@ -171,6 +175,14 @@ enum MessageCode{
 
     // An NPC can no longer be looted
     SV_NOT_LOOTABLE = 154,
+
+    // A vehicle has a driver.
+    // Arguments: serial, username
+    SV_MOUNTED = 155,
+
+    // A vehicle is no longer being driven.
+    // Arguments: serial, username
+    SV_UNMOUNTED = 156,
 
     // The user's health value
     // Arguments: hp
@@ -282,6 +294,12 @@ enum MessageCode{
 
     // The user tried to equip an item into a gear slot with which it doesn't compatible.
     SV_NOT_GEAR = 935,
+
+    // The user tried to mount a non-vehicle object.
+    SV_NOT_VEHICLE = 936,
+
+    // The user tried to mount a vehicle that already has a driver.
+    SV_VEHICLE_OCCUPIED = 937,
 
 
 

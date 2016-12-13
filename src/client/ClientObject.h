@@ -35,7 +35,7 @@ protected:
 public:
     ClientObject(const ClientObject &rhs);
     // Serial only: create dummy object, for set searches
-    ClientObject(size_t serial, const EntityType *type = nullptr, const Point &loc = Point());
+    ClientObject(size_t serial, const ClientObjectType *type = nullptr, const Point &loc = Point());
     virtual ~ClientObject();
 
     bool operator<(const ClientObject &rhs) const { return _serial < rhs._serial; }

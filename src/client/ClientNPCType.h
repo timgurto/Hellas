@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #ifndef CLIENT_NPC_TYPE_H
 #define CLIENT_NPC_TYPE_H
 
@@ -11,6 +9,7 @@ class ClientNPCType : public ClientObjectType{
 
 public:
     ClientNPCType(const std::string &id, health_t maxHealth);
+    virtual ~ClientNPCType(){}
 
     health_t maxHealth() const { return _maxHealth; }
     void maxHealth(health_t n) { _maxHealth = n; }

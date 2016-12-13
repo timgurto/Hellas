@@ -1,5 +1,6 @@
 #include "Client.h"
 #include "ClientNPCType.h"
+#include "ClientVehicleType.h"
 #include "ParticleProfile.h"
 #include "../XmlReader.h"
 
@@ -58,7 +59,46 @@ void Client::loadData(const std::string &path){
             _particleProfiles.insert(profile);
         }
 
-    // Load Items
+    // Object types
+    if (xr.newFile(path + "/objectTypes.xml"))
+        for (auto elem : xr.getChildren("objectType")) {
+            std::string s; int n;
+            if (!xr.findAttr(elem, "id", s))
+                continue;
+            ClientObjectType *cot;
+            if (xr.findAttr(elem, "isVehicle", n) == 1)
+                cot = new ClientVehicleType(s);
+            else
+                cot = new ClientObjectType(s);
+            xr.findAttr(elem, "imageFile", s); // If no explicit imageFile, s will still == id
+            cot->image(std::string("Images/Objects/") + s + ".png");
+            if (xr.findAttr(elem, "name", s)) cot->name(s);
+            Rect drawRect(0, 0, cot->width(), cot->height());
+            bool
+                xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
+                ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
+            if (xSet || ySet)
+                cot->drawRect(drawRect);
+            if (xr.getChildren("yield", elem).size() > 0) cot->canGather(true);
+            if (xr.findAttr(elem, "deconstructs", s)) cot->canDeconstruct(true);
+
+            auto container = xr.findChild("container", elem);
+            if (container != nullptr) {
+                if (xr.findAttr(container, "slots", n)) cot->containerSlots(n);
+            }
+
+            if (xr.findAttr(elem, "merchantSlots", n)) cot->merchantSlots(n);
+
+            if (xr.findAttr(elem, "isFlat", n) && n != 0) cot->isFlat(true);
+            if (xr.findAttr(elem, "gatherSound", s))
+                cot->gatherSound(std::string("Sounds/") + s + ".wav");
+            if (xr.findAttr(elem, "gatherParticles", s)) cot->gatherParticles(findParticleProfile(s));
+            Rect r;
+            if (xr.findRectChild("collisionRect", elem, r)) cot->collisionRect(r);
+            _objectTypes.insert(cot);
+        }
+
+    // Items
     if (xr.newFile(path + "/items.xml"))
         for (auto elem : xr.getChildren("item")) {
             std::string id, name;
@@ -140,46 +180,6 @@ void Client::loadData(const std::string &path){
             }
         
             _recipes.insert(recipe);
-        }
-
-    // Object types
-    if (xr.newFile(path + "/objectTypes.xml"))
-        for (auto elem : xr.getChildren("objectType")) {
-            std::string s; int n;
-            if (!xr.findAttr(elem, "id", s))
-                continue;
-            ClientObjectType *cot = new ClientObjectType(s);
-            xr.findAttr(elem, "imageFile", s); // If no explicit imageFile, s will still == id
-            cot->image(std::string("Images/Objects/") + s + ".png");
-            if (xr.findAttr(elem, "name", s)) cot->name(s);
-            Rect drawRect(0, 0, cot->width(), cot->height());
-            bool
-                xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
-                ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
-            if (xSet || ySet)
-                cot->drawRect(drawRect);
-            if (xr.getChildren("yield", elem).size() > 0) cot->canGather(true);
-            if (xr.findAttr(elem, "deconstructs", s)) cot->canDeconstruct(true);
-        
-            auto container = xr.findChild("container", elem);
-            if (container != nullptr) {
-                if (xr.findAttr(container, "slots", n)) cot->containerSlots(n);
-            }
-
-            if (xr.findAttr(elem, "merchantSlots", n)) cot->merchantSlots(n);
-
-            if (xr.findAttr(elem, "isFlat", n) && n != 0) cot->isFlat(true);
-            if (xr.findAttr(elem, "gatherSound", s))
-                cot->gatherSound(std::string("Sounds/") + s + ".wav");
-            if (xr.findAttr(elem, "gatherParticles", s)) cot->gatherParticles(findParticleProfile(s));
-            Rect r;
-            if (xr.findRectChild("collisionRect", elem, r)) cot->collisionRect(r);
-            auto pair = _objectTypes.insert(cot);
-            if (!pair.second) {
-                ClientObjectType &type = const_cast<ClientObjectType &>(**pair.first);
-                type = *cot;
-                delete cot;
-            }
         }
 
     // NPC types

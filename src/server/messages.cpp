@@ -1,5 +1,6 @@
 #include <cassert>
 #include "Server.h"
+#include "Vehicle.h"
 #include "../messageCodes.h"
 
 void Server::handleMessage(const Socket &client, const std::string &msg){
@@ -76,6 +77,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             if (user->action() != User::ATTACK)
                 user->cancelAction();
+            if (user->driving())
+                break;
             user->updateLocation(Point(x, y));
             break;
         }
@@ -576,6 +579,47 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             // Alert watchers
             for (auto username : obj->watchers())
                 sendMerchantSlotMessage(*_usersByName[username], *obj, slot);
+            break;
+        }
+
+        case CL_TOGGLE_MOUNT:
+        {
+            size_t serial;
+            iss >> serial >> del;
+            if (del != MSG_END)
+                return;
+            Object *obj = findObject(serial);
+            if (!isObjectInRange(client, *user, obj))
+                break;
+            if (!obj->userHasAccess(user->name())){
+                sendMessage(client, SV_NO_PERMISSION);
+                break;
+            }
+            if (obj->classTag() != 'v'){
+                sendMessage(client, SV_NOT_VEHICLE);
+                break;
+            }
+            Vehicle *v = dynamic_cast<Vehicle *>(obj);
+            if (!v->driver().empty() && v->driver() != user->name()){
+                sendMessage(client, SV_VEHICLE_OCCUPIED);
+                break;
+            }
+
+            if (v->driver() == user->name()) {
+                v->driver("");
+                user->driving(false);
+                // Alert nearby users (including the previous driver)
+                for (const User *u : findUsersInArea(user->location()))
+                    sendMessage(u->socket(), SV_UNMOUNTED, makeArgs(serial, user->name()));
+            } else {
+                v->driver(user->name());
+                user->driving(true);
+                // Alert nearby users (including the new driver)
+                for (const User *u : findUsersInArea(user->location()))
+                    sendMessage(u->socket(), SV_MOUNTED, makeArgs(serial, user->name()));
+            }
+
+
             break;
         }
 

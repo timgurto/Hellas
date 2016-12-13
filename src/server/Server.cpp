@@ -17,6 +17,8 @@
 #include "Recipe.h"
 #include "Server.h"
 #include "User.h"
+#include "Vehicle.h"
+#include "VehicleType.h"
 #include "../Socket.h"
 #include "../messageCodes.h"
 #include "../util.h"
@@ -564,7 +566,9 @@ const ObjectType *Server::findObjectTypeByName(const std::string &id) const{
 }
 
 Object &Server::addObject(const ObjectType *type, const Point &location, const User *owner){
-    Object *newObj = new Object(type, location);
+    Object *newObj = type->classTag() == 'v' ?
+            new Vehicle(dynamic_cast<const VehicleType *>(type), location) :
+            new Object(type, location);
     if (owner != nullptr)
         newObj->owner(owner->name());
     return addObject(newObj);

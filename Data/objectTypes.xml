@@ -7,6 +7,7 @@ Both:
  - yield
  - collisionRect
  - deconstructs
+ - isVehicle
 
 Client only:
  - name
@@ -94,17 +95,17 @@ Server only:
     <container slots="1" />
 </objectType>
 
-<!--objectType
-    id="tradeCart"
-    name="Trade Cart"
+<objectType
+    id="handCart"
+    name="Hand Cart"
     xDrawOffset="-13"
     yDrawOffset="-16"
     constructionTime="4000"
-    deconstructs="tradeCart"
+    deconstructs="thandCart"
     deconstructionTime="1000"
-    merchantSlots="2" >
+    isVehicle="1" >
     <collisionRect x="-13" y="-4" w="25" h="8" />
-    <tag name="set square" />
-    <container slots="5" />
-</objectType-->
+    <container slots="8" />
+</objectType>
+
 </root>

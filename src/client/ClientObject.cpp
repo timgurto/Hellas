@@ -3,6 +3,7 @@
 
 #include "ClientNPC.h"
 #include "ClientObject.h"
+#include "ClientVehicle.h"
 #include "Client.h"
 #include "Particle.h"
 #include "Renderer.h"
@@ -26,7 +27,7 @@ _container(rhs._container),
 _window(nullptr),
 _beingGathered(rhs._beingGathered){}
 
-ClientObject::ClientObject(size_t serialArg, const EntityType *type, const Point &loc):
+ClientObject::ClientObject(size_t serialArg, const ClientObjectType *type, const Point &loc):
 Entity(type, loc),
 _serial(serialArg),
 _window(nullptr),
@@ -266,12 +267,25 @@ void ClientObject::createWindow(Client &client){
 
         // Deconstruct button
         if (objType.canDeconstruct()){
+            x = BUTTON_GAP;
             y += BUTTON_GAP;
-            Button *deconstructButton = new Button(Rect(0, y, BUTTON_WIDTH, BUTTON_HEIGHT),
+            Button *deconstructButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT),
                                                     "Dismantle", startDeconstructing, this);
             _window->addChild(deconstructButton);
-            // x += BUTTON_GAP + BUTTON_WIDTH;
             y += BUTTON_GAP + BUTTON_HEIGHT;
+            x += BUTTON_GAP + BUTTON_WIDTH;
+            winWidth = max(winWidth, x);
+        }
+
+        // Mount/dismount button
+        if (objType.classTag() == 'v'){
+            x = BUTTON_GAP;
+            y += BUTTON_GAP;
+            Button *mountButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), "Enter/exit",
+                                                    ClientVehicle::mountOrDismount, this);
+            _window->addChild(mountButton);
+            y += BUTTON_GAP + BUTTON_HEIGHT;
+            x += BUTTON_GAP + BUTTON_WIDTH;
             winWidth = max(winWidth, x);
         }
 

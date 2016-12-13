@@ -329,6 +329,7 @@ private:
     friend class ClientObject;
     friend class ClientItem;
     friend class ClientNPC;
+    friend class ClientVehicle;
     friend void LogSDL::operator()(const std::string &message, const Color &color);
     friend class ItemSelector;
     friend void Window::hideWindow(void *window);

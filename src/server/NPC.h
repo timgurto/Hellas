@@ -23,6 +23,7 @@ public:
     static const size_t LOOT_CAPACITY; // The size of the container.
 
     NPC(const NPCType *type, const Point &loc); // Generates a new serial
+    virtual ~NPC(){}
 
     const NPCType *npcType() const { return dynamic_cast<const NPCType *>(type()); }
 

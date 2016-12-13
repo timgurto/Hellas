@@ -12,7 +12,8 @@ std::map<std::string, EntityType> Avatar::_classes;
 Avatar::Avatar(const std::string &name, const Point &location):
 Entity(&_classes[""], location),
 _name(name),
-_gear(Client::GEAR_SLOTS, std::make_pair(nullptr, 0)){}
+_gear(Client::GEAR_SLOTS, std::make_pair(nullptr, 0)),
+_driving(false){}
 
 Point Avatar::interpolatedLocation(double delta){
     if (_destination == location())
@@ -23,6 +24,9 @@ Point Avatar::interpolatedLocation(double delta){
 }
 
 void Avatar::draw(const Client &client) const{
+    if (_driving)
+        return;
+
     Entity::draw(client);
     
     // Draw gear

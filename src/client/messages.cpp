@@ -135,6 +135,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_NO_PRICE:
         case SV_MERCHANT_INVENTORY_FULL:
         case SV_NOT_EMPTY:
+        case SV_VEHICLE_OCCUPIED:
             errorMessageColor = Color::WARNING; // Yellow above, red below
         case SV_INVALID_USER:
         case SV_INVALID_ITEM:
@@ -148,6 +149,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_NPC_SWAP:
         case SV_TAKE_SELF:
         case SV_NOT_GEAR:
+        case SV_NOT_VEHICLE:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
@@ -573,6 +575,48 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_MOUNTED:
+        {
+            size_t serial;
+            std::string user;
+            singleMsg >> serial >> del;
+            readString(singleMsg, user, MSG_END);
+            singleMsg >> del;
+            if (del != MSG_END)
+                break;
+            if (user == _username)
+                _character.driving(true);
+            else{
+                auto it = _otherUsers.find(user);
+                if (it == _otherUsers.end())
+                    _debug("Received vehicle info for an unknown user", Color::FAILURE);
+                else
+                    it->second->driving(true);
+            }
+            break;
+        }
+
+        case SV_UNMOUNTED:
+        {
+            size_t serial;
+            std::string user;
+            singleMsg >> serial >> del;
+            readString(singleMsg, user, MSG_END);
+            singleMsg >> del;
+            if (del != MSG_END)
+                break;
+            if (user == _username)
+                _character.driving(false);
+            else{
+                auto it = _otherUsers.find(user);
+                if (it == _otherUsers.end())
+                    _debug("Received vehicle info for an unknown user", Color::FAILURE);
+                else
+                    it->second->driving(false);
+            }
+            break;
+        }
+
         case SV_STATS:
         {
             singleMsg >> _stats.health >> del >> _stats.attack >> del >> _stats.attackTime >> del
@@ -723,6 +767,8 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_NPC_SWAP] = "You can't put items inside an NPC.";
     _errorMessages[SV_TAKE_SELF] = "You can't take an item from yourself.";
     _errorMessages[SV_NOT_GEAR] = "That item can't be used in that equipment slot.";
+    _errorMessages[SV_NOT_VEHICLE] = "That isn't a vehicle.";
+    _errorMessages[SV_VEHICLE_OCCUPIED] = "That vehicle is already occupied.";
 }
 
 void Client::performCommand(const std::string &commandString){

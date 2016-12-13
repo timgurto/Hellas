@@ -27,6 +27,8 @@ _actionObjectType(nullptr),
 _actionSlot(INVENTORY_SIZE),
 _actionLocation(0, 0),
 
+_driving(false),
+
 _inventory(INVENTORY_SIZE),
 _gear(GEAR_SLOTS),
 _lastContact(SDL_GetTicks()),

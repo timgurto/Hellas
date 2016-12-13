@@ -56,6 +56,8 @@ private:
     size_t _actionSlot; // Construct
     Point _actionLocation; // Construct
 
+    bool _driving; // Whether the user is currently driving a vehicle
+
     Stats _stats; // Memoized stats, after gear etc.  Calculated with updateStats();
 
     ServerItem::vect_t _inventory, _gear;
@@ -68,6 +70,7 @@ public:
     User(const std::string &name, const Point &loc, const Socket &socket);
     User(const Socket &rhs); // for use with set::find(), allowing find-by-socket
     User(const Point &loc); // for use with set::find(), allowing find-by-location
+    virtual ~User(){}
 
     bool operator<(const User &rhs) const { return _socket < rhs._socket; }
 
@@ -77,6 +80,8 @@ public:
     void setClass(Class c) { _class = c; }
     Class getClass() const { return _class; }
     const std::string &className() const { return CLASS_NAMES[_class]; }
+    bool driving() const { return _driving; }
+    void driving(bool b) { _driving = b; }
 
     // Inventory getters/setters
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const

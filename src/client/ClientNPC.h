@@ -20,6 +20,7 @@ public:
     static const size_t LOOT_CAPACITY;
 
     ClientNPC(size_t serial, const ClientNPCType *type = nullptr, const Point &loc = Point());
+    virtual ~ClientNPC(){}
     
     virtual const Texture &image() const;
     virtual const Texture &highlightImage() const;

@@ -17,6 +17,8 @@ class Avatar : public Entity{
     std::string _class;
     ClientItem::vect_t _gear;
 
+    bool _driving;
+
 public:
     Avatar(const std::string &name = "", const Point &location = 0);
 
@@ -29,6 +31,7 @@ public:
     const std::string &getClass() const { return _class; }
     const ClientItem::vect_t &gear() const { return _gear; }
     ClientItem::vect_t &gear() { return _gear; }
+    void driving(bool b) { _driving = b; }
 
     virtual void draw(const Client &client) const override;
     virtual void update(double delta) override;

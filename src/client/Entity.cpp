@@ -66,6 +66,9 @@ void Entity::refreshTooltip(const Client &client){
     for (; it != textStrings.end(); ++it)
         tb.addLine(*it);
 
+    if (isDebug())
+        tb.addLine(std::string("Class tag: ") + classTag());
+
     _tooltip = tb.publish();
 }
 

@@ -5,6 +5,7 @@
 
 #include "NPCType.h"
 #include "Server.h"
+#include "VehicleType.h"
 #include "../XmlReader.h"
 #include "../XmlWriter.h"
 
@@ -148,9 +149,14 @@ void Server::loadData(const std::string &path){
             std::string id;
             if (!xr.findAttr(elem, "id", id))
                 continue;
-            ObjectType *ot = new ObjectType(id);
+            ObjectType *ot = nullptr;
+            int n;
+            if (xr.findAttr(elem, "isVehicle", n) == 1) 
+                ot = new VehicleType(id);
+            else
+                ot = new ObjectType(id);
 
-            std::string s; int n;
+            std::string s;
             if (xr.findAttr(elem, "gatherTime", n)) ot->gatherTime(n);
             if (xr.findAttr(elem, "constructionTime", n)) ot->constructionTime(n);
             if (xr.findAttr(elem, "gatherReq", s)) ot->gatherReq(s);
