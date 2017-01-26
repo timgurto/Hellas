@@ -77,8 +77,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             if (user->action() != User::ATTACK)
                 user->cancelAction();
-            if (user->driving()){
-                sendMessage(user->socket(), SV_LOCATION, user->makeLocationCommand());
+            if (user->isDriving()){
+                // Move vehicle and user together
+                Vehicle &vehicle = dynamic_cast<Vehicle &>(*findObject(user->driving()));
+                vehicle.updateLocation(Point(x, y));
+                user->updateLocation(vehicle.location());
                 break;
             }
             user->updateLocation(Point(x, y));
@@ -609,13 +612,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
             if (v->driver() == user->name()) {
                 v->driver("");
-                user->driving(false);
+                user->driving(0);
                 // Alert nearby users (including the previous driver)
                 for (const User *u : findUsersInArea(user->location()))
                     sendMessage(u->socket(), SV_UNMOUNTED, makeArgs(serial, user->name()));
             } else {
                 v->driver(user->name());
-                user->driving(true);
+                user->driving(v->serial());
                 // Alert nearby users (including the new driver)
                 for (const User *u : findUsersInArea(user->location()))
                     sendMessage(u->socket(), SV_MOUNTED, makeArgs(serial, user->name()));

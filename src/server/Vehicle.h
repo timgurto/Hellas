@@ -7,6 +7,7 @@ class VehicleType;
 
 class Vehicle : public Object{
     std::string _driver;
+    static const double SPEED;
 
 public:
     Vehicle(const VehicleType *type, const Point &loc);
@@ -16,6 +17,7 @@ public:
     void driver(const std::string &username) { _driver = username; }
 
     virtual char classTag() const override { return 'v'; }
+    virtual double speed() const override { return SPEED; }
 };
 
 #endif

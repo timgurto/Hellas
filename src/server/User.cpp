@@ -27,7 +27,7 @@ _actionObjectType(nullptr),
 _actionSlot(INVENTORY_SIZE),
 _actionLocation(0, 0),
 
-_driving(false),
+_driving(0),
 
 _inventory(INVENTORY_SIZE),
 _gear(GEAR_SLOTS),

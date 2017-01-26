@@ -15,6 +15,12 @@ bool Server::isLocationValid(const Point &loc, const ObjectType &type, const Obj
 }
 
 bool Server::isLocationValid(const Rect &rect, const Object *thisObject){
+    // A user in a vehicle is unrestricted; the vehicle's restrictions will dictate his location.
+    if (thisObject != nullptr &&
+        thisObject->classTag() == 'u' &&
+        dynamic_cast<const User*>(thisObject)->isDriving())
+            return true;
+
     const px_t
         right = rect.x + rect.w,
         bottom = rect.y + rect.h;
@@ -64,6 +70,8 @@ bool Server::isLocationValid(const Rect &rect, const Object *thisObject){
     Point rectCenter(rect.x + rect.w / 2, rect.y + rect.h / 2);
     for (const auto *user : findUsersInArea(rectCenter)) {
         if (user == thisObject)
+            continue;
+        if (user->isDriving()) // The vehicle he is driving will be checked instead.
             continue;
         if (rect.collides(user->collisionRect()))
             return false;

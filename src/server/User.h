@@ -56,7 +56,7 @@ private:
     size_t _actionSlot; // Construct
     Point _actionLocation; // Construct
 
-    bool _driving; // Whether the user is currently driving a vehicle
+    size_t _driving; // The serial of the vehicle this user is currently driving; 0 if none.
 
     Stats _stats; // Memoized stats, after gear etc.  Calculated with updateStats();
 
@@ -80,8 +80,9 @@ public:
     void setClass(Class c) { _class = c; }
     Class getClass() const { return _class; }
     const std::string &className() const { return CLASS_NAMES[_class]; }
-    bool driving() const { return _driving; }
-    void driving(bool b) { _driving = b; }
+    size_t driving() const { return _driving; }
+    void driving(size_t serial) { _driving = serial; }
+    bool isDriving() const { return _driving != 0; }
 
     // Inventory getters/setters
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const
