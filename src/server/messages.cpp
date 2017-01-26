@@ -77,8 +77,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             if (user->action() != User::ATTACK)
                 user->cancelAction();
-            if (user->driving())
+            if (user->driving()){
+                sendMessage(user->socket(), SV_LOCATION, user->makeLocationCommand());
                 break;
+            }
             user->updateLocation(Point(x, y));
             break;
         }
