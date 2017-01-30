@@ -32,6 +32,7 @@ public:
     const ClientItem::vect_t &gear() const { return _gear; }
     ClientItem::vect_t &gear() { return _gear; }
     void driving(bool b) { _driving = b; }
+    bool isDriving() const { return _driving; }
 
     virtual void draw(const Client &client) const override;
     virtual void update(double delta) override;

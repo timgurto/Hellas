@@ -388,9 +388,10 @@ void Client::handleInput(double delta){
             right = keyboardState[SDL_SCANCODE_RIGHT] == SDL_PRESSED ||
                     keyboardState[SDL_SCANCODE_D] == SDL_PRESSED;
         if (up != down || left != right) {
-            static const double DIAG_SPEED = MOVEMENT_SPEED / SQRT_2;
+            const double SPEED = _character.isDriving() ? VEHICLE_SPEED : MOVEMENT_SPEED;
+            const double DIAG_SPEED = SPEED / SQRT_2;
             const double
-                dist = delta * MOVEMENT_SPEED,
+                dist = delta * SPEED,
                 diagDist = delta * DIAG_SPEED;
             Point newLoc = _pendingCharLoc;
             if (up != down) {
