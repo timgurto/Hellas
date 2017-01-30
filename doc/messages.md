@@ -101,4 +101,4 @@ Code | Name                         | Syntax                               | Des
 934  | `SV_TAKE_SELF`               | &laquo;934&raquo;                    | "You tried to take an item from yourself"
 935  | `SV_NOT_GEAR`                | &laquo;935&raquo;                    | "You tried to equip an item in an incompatible gear slot"
 936  | `SV_NOT_VEHICLE              | &laquo;936&raquo;                    | "You tried to enter an object that isn't a vehicle"
-937  | `SV_VEHICLE_OCCUPIED         | &laquo;937&raquo;                    | "You tried to enter a vehicle that already has a driver"
+937  | `SV_VEHICLE_OCCUPIED         | &laquo;937&raquo;                    | "That action requires the vehicle to be empty"

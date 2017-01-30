@@ -112,7 +112,7 @@ issue,description,value,effort,type,blockedBy,done
 267,Set bonuses for gear,13,8,Feature,,
 268,Learning skills might require tools,8,3,Feature,263,
 269,XP and leveling,21,5,Feature,,
-270,Grouped players get bonus XP,21,3,Feature,269,
+270,Grouped players get bonus XP,21,8,Feature,269,
 271,Quests,8,34,Feature,,
 272,Items that start quests,5,5,Feature,271,
 273,Player classes,13,3,Feature,,TRUE
@@ -127,7 +127,7 @@ issue,description,value,effort,type,blockedBy,done
 282,Use collisionRects even on non-colliding objects,5,2,Bug,,
 283,Color mouse-over outline based on whether in range,8,3,Aesthetics,,
 284,Send nearby users' health values,5,3,Feature,,
-285,An object that can transform with inventory + button push,13,8,Feature,,
+285,"An object that can transform with inventory + button push (e.g., construction site)",13,8,Feature,,
 286,Non-NPC objects always collide with each other,5,2,Feature,,
 287,Allow specification of minimum yields,5,3,Bug,,
 288,Tool requirements not enforced for crafting,13,3,Bug,,TRUE
@@ -142,6 +142,9 @@ issue,description,value,effort,type,blockedBy,done
 297,Make findObjectTypeByName() logarithmic in complexity,3,2,Performance,,
 298,Make spawners' queues persistent,5,2,Bug,,
 299,"A 'handcart' vehicle that a player can mount, drive, and dismount",21,8,Feature,,
-300,Users are drawn inside (front+back) of vehicles,2,3,Aesthetics
-301,Vehicles 'log off' with their drivers,5,5,Bug
-302,Vehicles can have different speeds,5,2,Feature
+300,Users are drawn inside (front+back) of vehicles,2,3,Aesthetics,
+301,Vehicles 'log off' with their drivers,5,5,Bug,
+302,Vehicles can have different speeds,5,2,Feature,
+303,Smoother vehicle movement,3,3,Aesthetics,
+304,Prevent fast travel via vehicle-hopping,2,5,Bug,
+305,Tutorial island,55,13,Feature,237

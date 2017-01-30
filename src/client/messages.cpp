@@ -774,7 +774,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_TAKE_SELF] = "You can't take an item from yourself.";
     _errorMessages[SV_NOT_GEAR] = "That item can't be used in that equipment slot.";
     _errorMessages[SV_NOT_VEHICLE] = "That isn't a vehicle.";
-    _errorMessages[SV_VEHICLE_OCCUPIED] = "That vehicle is already occupied.";
+    _errorMessages[SV_VEHICLE_OCCUPIED] = "You can't do that to an occupied vehicle.";
 }
 
 void Client::performCommand(const std::string &commandString){

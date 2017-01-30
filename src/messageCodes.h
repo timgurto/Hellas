@@ -298,7 +298,7 @@ enum MessageCode{
     // The user tried to mount a non-vehicle object.
     SV_NOT_VEHICLE = 936,
 
-    // The user tried to mount a vehicle that already has a driver.
+    // The user tried to perform an action on an occupied vehicle
     SV_VEHICLE_OCCUPIED = 937,
 
 

@@ -224,6 +224,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_NOT_EMPTY);
                 break;
             }
+            // Check that it isn't an occupied vehicle
+            if (obj->classTag() == 'v' && !dynamic_cast<const Vehicle *>(obj)->driver().empty()){
+                sendMessage(client, SV_VEHICLE_OCCUPIED);
+                break;
+            }
 
             user->beginDeconstructing(*obj);
             sendMessage(client, SV_ACTION_STARTED, makeArgs(obj->type()->deconstructionTime()));
