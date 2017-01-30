@@ -7,5 +7,6 @@ ClientObject(serial, type, loc){}
 void ClientVehicle::mountOrDismount(void *object){
     const ClientVehicle &obj = *static_cast<const ClientVehicle *>(object);
     Client &client = *Client::_instance;
-    client.sendMessage(CL_TOGGLE_MOUNT, makeArgs(obj.serial()));
+    if (obj._driver.empty()) // No driver
+        client.sendMessage(CL_MOUNT, makeArgs(obj.serial()));
 }

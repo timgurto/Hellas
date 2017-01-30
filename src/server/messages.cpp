@@ -592,7 +592,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
-        case CL_TOGGLE_MOUNT:
+        case CL_MOUNT:
         {
             size_t serial;
             iss >> serial >> del;
@@ -615,22 +615,45 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
 
-            if (v->driver() == user->name()) {
-                v->driver("");
-                user->driving(0);
-                // TODO: find a location to set down user
-                // Alert nearby users (including the previous driver)
-                for (const User *u : findUsersInArea(user->location()))
-                    sendMessage(u->socket(), SV_UNMOUNTED, makeArgs(serial, user->name()));
-            } else {
-                v->driver(user->name());
-                user->driving(v->serial());
-                user->updateLocation(v->location());
-                // Alert nearby users (including the new driver)
-                for (const User *u : findUsersInArea(user->location()))
-                    sendMessage(u->socket(), SV_MOUNTED, makeArgs(serial, user->name()));
-            }
+            v->driver(user->name());
+            user->driving(v->serial());
+            user->updateLocation(v->location());
+            // Alert nearby users (including the new driver)
+            for (const User *u : findUsersInArea(user->location()))
+                sendMessage(u->socket(), SV_MOUNTED, makeArgs(serial, user->name()));
 
+            break;
+        }
+
+        case CL_DISMOUNT:
+        {
+            Point target;
+            iss >> target.x >> del >> target.y >> del;
+            if (del != MSG_END)
+                return;
+            if (!user->isDriving()){
+                sendMessage(client, SV_NO_VEHICLE);
+                break;
+            }
+            if (distance(target, user->location()) > ACTION_DISTANCE){
+                sendMessage(client, SV_TOO_FAR);
+                break;
+            }
+            if (!isLocationValid(target, User::OBJECT_TYPE)){
+                sendMessage(client, SV_BLOCKED);
+                break;
+            }
+            size_t serial = user->driving();
+            Object *obj = findObject(serial);
+            Vehicle *v = dynamic_cast<Vehicle *>(obj);
+
+            // Move him before dismounting him, to avoid unnecessary collision/distance checks
+            user->updateLocation(target);
+
+            v->driver("");
+            user->driving(0);
+            for (const User *u : findUsersInArea(user->location()))
+                sendMessage(u->socket(), SV_UNMOUNTED, makeArgs(serial, user->name()));
 
             break;
         }

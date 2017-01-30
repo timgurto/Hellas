@@ -136,6 +136,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_MERCHANT_INVENTORY_FULL:
         case SV_NOT_EMPTY:
         case SV_VEHICLE_OCCUPIED:
+        case SV_NO_VEHICLE:
             errorMessageColor = Color::WARNING; // Yellow above, red below
         case SV_INVALID_USER:
         case SV_INVALID_ITEM:
@@ -599,6 +600,7 @@ void Client::handleMessage(const std::string &msg){
                 else
                     it->second->driving(true);
             }
+
             break;
         }
 
@@ -740,6 +742,8 @@ void Client::initializeMessageNames(){
     _messageCommands["stopWatching"] = CL_STOP_WATCHING;
     _messageCommands["target"] = CL_TARGET;
     _messageCommands["take"] = CL_TAKE_ITEM;
+    _messageCommands["mount"] = CL_MOUNT;
+    _messageCommands["dismount"] = CL_DISMOUNT;
 
     _messageCommands["say"] = CL_SAY;
     _messageCommands["s"] = CL_SAY;
@@ -775,6 +779,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_NOT_GEAR] = "That item can't be used in that equipment slot.";
     _errorMessages[SV_NOT_VEHICLE] = "That isn't a vehicle.";
     _errorMessages[SV_VEHICLE_OCCUPIED] = "You can't do that to an occupied vehicle.";
+    _errorMessages[SV_NO_VEHICLE] = "You are not in a vehicle.";
 }
 
 void Client::performCommand(const std::string &commandString){
@@ -854,5 +859,5 @@ void Client::performCommand(const std::string &commandString){
         return;
     }
 
-    _debug("Unknown command.", Color::FAILURE);
+    _debug << Color::FAILURE << "Unknown command: " << command << Log::endl;
 }

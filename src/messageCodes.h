@@ -71,9 +71,13 @@ enum MessageCode{
     // Arguments: serial, slot
     CL_CLEAR_MERCHANT_SLOT = 34,
 
-    // "I want to mount or dismount vehicle ..."
+    // "I want to mount vehicle ..."
     // Arguments: serial
-    CL_TOGGLE_MOUNT = 35,
+    CL_MOUNT = 35,
+
+    // "I want to dismount my vehicle, to location (..., ...)"
+    // Arguments: x, y
+    CL_DISMOUNT = 36,
 
     // "Tell me what's inside object ..., and let me know of changes in the future". 
     // Arguments: serial
@@ -300,6 +304,9 @@ enum MessageCode{
 
     // The user tried to perform an action on an occupied vehicle
     SV_VEHICLE_OCCUPIED = 937,
+
+    // The user tried to perform an action on an occupied vehicle
+    SV_NO_VEHICLE = 938,
 
 
 
