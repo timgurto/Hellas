@@ -182,10 +182,11 @@ void ClientObject::onRightClick(Client &client){
         client.watchObject(*this);
 
     if (_window != nullptr) {
-        // Determine placement: center around object, but keep entirely on screen.
+        // Determine placement: below object, but keep entirely on screen.
         px_t x = toInt(location().x - _window->width() / 2 + client.offset().x);
         x = max(0, min(x, Client::SCREEN_X - _window->width()));
-        px_t y = toInt(location().y - _window->height() / 2 + client.offset().y);
+        static const px_t WINDOW_GAP_FROM_OBJECT = 20;
+        px_t y = toInt(location().y + WINDOW_GAP_FROM_OBJECT / 2 + client.offset().y);
         y = max(0, min(y, Client::SCREEN_Y - _window->height()));
         _window->rect(x, y);
 
