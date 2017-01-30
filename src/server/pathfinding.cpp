@@ -12,47 +12,55 @@ void Object::updateLocation(const Point &dest){
 
     assert(server.isLocationValid(_location, *type(), this));
 
-    // Max legal distance: straight line
-    const double maxLegalDistance = min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES,
-                                        timeElapsed + 100) / 1000.0 * speed();
-    double distanceToMove = min(maxLegalDistance, distance(_location, dest));
-    Point newDest = interpolate(_location, dest, distanceToMove);
-
     const User *userPtr = nullptr;
     if (classTag() == 'u')
         userPtr = dynamic_cast<const User *>(this);
 
-    Point rawDisplacement(newDest.x - _location.x,
-                          newDest.y - _location.y);
-    px_t
-        displacementX = toInt(ceil(abs(rawDisplacement.x))),
-        displacementY = toInt(ceil(abs(rawDisplacement.y)));
-    Rect journeyRect = collisionRect();
-    if (rawDisplacement.x < 0)
-        journeyRect.x -= displacementX;
-    journeyRect.w += displacementX;
-    if (rawDisplacement.y < 0)
-        journeyRect.y -= displacementY;
-    journeyRect.h += displacementY;
-    if (!server.isLocationValid(journeyRect, this)) {
-        newDest = _location;
-        assert(server.isLocationValid(newDest, *type(), this));
-        static const double ACCURACY = 0.5;
-        Point displacementNorm(rawDisplacement.x / distanceToMove * ACCURACY,
-                               rawDisplacement.y / distanceToMove * ACCURACY);
-        for (double segment = ACCURACY; segment <= distanceToMove; segment += ACCURACY){
-            Point testDest = newDest;
-            testDest.x += displacementNorm.x;
-            if (!server.isLocationValid(testDest, *type(), this))
-                break;
-            newDest = testDest;
-        }
-        for (double segment = ACCURACY; segment <= distanceToMove; segment += ACCURACY){
-            Point testDest = newDest;
-            testDest.y += displacementNorm.y;
-            if (!server.isLocationValid(testDest, *type(), this))
-                break;
-            newDest = testDest;
+    // Max legal distance: straight line
+    double requestedDistance = distance(_location, dest);
+    double distanceToMove;
+    Point newDest;
+    if (classTag() == 'u' && userPtr->isDriving()){
+        distanceToMove = requestedDistance;
+        newDest = dest;
+    } else {
+        const double maxLegalDistance = min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES,
+                                            timeElapsed + 100) / 1000.0 * speed();
+        distanceToMove = min(maxLegalDistance, requestedDistance);
+        newDest = interpolate(_location, dest, distanceToMove);
+
+        Point rawDisplacement(newDest.x - _location.x,
+                              newDest.y - _location.y);
+        px_t
+            displacementX = toInt(ceil(abs(rawDisplacement.x))),
+            displacementY = toInt(ceil(abs(rawDisplacement.y)));
+        Rect journeyRect = collisionRect();
+        if (rawDisplacement.x < 0)
+            journeyRect.x -= displacementX;
+        journeyRect.w += displacementX;
+        if (rawDisplacement.y < 0)
+            journeyRect.y -= displacementY;
+        journeyRect.h += displacementY;
+        if (!server.isLocationValid(journeyRect, this)) {
+            newDest = _location;
+            assert(server.isLocationValid(newDest, *type(), this));
+            static const double ACCURACY = 0.5;
+            Point displacementNorm(rawDisplacement.x / distanceToMove * ACCURACY,
+                                   rawDisplacement.y / distanceToMove * ACCURACY);
+            for (double segment = ACCURACY; segment <= distanceToMove; segment += ACCURACY){
+                Point testDest = newDest;
+                testDest.x += displacementNorm.x;
+                if (!server.isLocationValid(testDest, *type(), this))
+                    break;
+                newDest = testDest;
+            }
+            for (double segment = ACCURACY; segment <= distanceToMove; segment += ACCURACY){
+                Point testDest = newDest;
+                testDest.y += displacementNorm.y;
+                if (!server.isLocationValid(testDest, *type(), this))
+                    break;
+                newDest = testDest;
+            }
         }
     }
 

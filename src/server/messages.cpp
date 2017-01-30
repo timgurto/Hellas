@@ -613,12 +613,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (v->driver() == user->name()) {
                 v->driver("");
                 user->driving(0);
+                // TODO: find a location to set down user
                 // Alert nearby users (including the previous driver)
                 for (const User *u : findUsersInArea(user->location()))
                     sendMessage(u->socket(), SV_UNMOUNTED, makeArgs(serial, user->name()));
             } else {
                 v->driver(user->name());
                 user->driving(v->serial());
+                user->updateLocation(v->location());
                 // Alert nearby users (including the new driver)
                 for (const User *u : findUsersInArea(user->location()))
                     sendMessage(u->socket(), SV_MOUNTED, makeArgs(serial, user->name()));
