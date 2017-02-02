@@ -40,7 +40,7 @@ public:
     const Socket &socket() const;
     TTF_Font *defaultFont() const;
 
-    const Entity &character() const { return _character; }
+    const Avatar &character() const { return _character; }
     const Point &offset() const { return _intOffset; }
     const std::string &username() const { return _username; }
     const Entity *currentMouseOverEntity() const { return _currentMouseOverEntity; }

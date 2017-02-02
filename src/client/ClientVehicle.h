@@ -5,7 +5,6 @@
 #include "ClientVehicleType.h"
 
 class ClientVehicle : public ClientObject{
-    std::string _driver;
 
 public:
     ClientVehicle(size_t serial, const ClientVehicleType *type = nullptr,

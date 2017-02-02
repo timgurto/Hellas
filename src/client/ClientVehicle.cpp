@@ -7,6 +7,6 @@ ClientObject(serial, type, loc){}
 void ClientVehicle::mountOrDismount(void *object){
     const ClientVehicle &obj = *static_cast<const ClientVehicle *>(object);
     Client &client = *Client::_instance;
-    if (obj._driver.empty()) // No driver
+    if (!client.character().isDriving()) // Not currently driving anything: attempt to mount
         client.sendMessage(CL_MOUNT, makeArgs(obj.serial()));
 }
