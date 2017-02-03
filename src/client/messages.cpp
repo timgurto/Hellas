@@ -592,7 +592,6 @@ void Client::handleMessage(const std::string &msg){
                 SV_LOCATION, sending us on top of the vehicle.
                 */
                 _pendingCharLoc = _character.destination();
-                //_character.destination(_character.location());
             }else{
                 auto it = _otherUsers.find(user);
                 if (it == _otherUsers.end())
@@ -613,9 +612,15 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del;
             if (del != MSG_END)
                 break;
-            if (user == _username)
+            if (user == _username){
                 _character.driving(false);
-            else{
+                _isDismounting = false;
+                /*
+                Cancel any requested movement; assumes that this message was preceded by
+                SV_LOCATION, sending us to the dismount location.
+                */
+                _pendingCharLoc = _character.destination();
+            }else{
                 auto it = _otherUsers.find(user);
                 if (it == _otherUsers.end())
                     _debug("Received vehicle info for an unknown user", Color::FAILURE);

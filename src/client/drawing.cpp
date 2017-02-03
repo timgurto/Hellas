@@ -122,6 +122,17 @@ void Client::draw() const{
             renderer.setDrawColor(Color::FOOTPRINT_BAD);
             renderer.fillRect(footprintRect + _offset);
         }
+    } else if (_isDismounting){
+        const EntityType &charType = *_character.type();
+        Rect footprintRect = Avatar::collisionRectRaw() + _mouse - _offset;
+        if (distance(playerCollisionRect(), footprintRect) <= Client::ACTION_DISTANCE) {
+            charType.image().setAlpha(0x7f);
+            charType.image().draw(_mouse + charType.drawRect());
+            charType.image().setAlpha();
+        } else {
+            renderer.setDrawColor(Color::FOOTPRINT_BAD);
+            renderer.fillRect(footprintRect + _offset);
+        }
     }
 
     // Cull distance

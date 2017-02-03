@@ -141,7 +141,7 @@ issue,description,value,effort,type,blockedBy,done
 296,Load map in client before connecting,2,1,Performance,,
 297,Make findObjectTypeByName() logarithmic in complexity,3,2,Performance,,
 298,Make spawners' queues persistent,5,2,Bug,,
-299,"A 'handcart' vehicle that a player can mount, drive, and dismount",21,8,Feature,,
+299,"A 'handcart' vehicle that a player can mount, drive, and dismount",21,8,Feature,,TRUE
 300,Users are drawn inside (front+back) of vehicles,2,3,Aesthetics,
 301,Vehicles 'log off' with their drivers,5,5,Bug,
 302,Vehicles can have different speeds,5,2,Feature,

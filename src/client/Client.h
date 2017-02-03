@@ -48,6 +48,8 @@ public:
     void targetNPC(const ClientNPC *npc, bool aggressive = false);
     const ClientNPC *targetNPC() const { return _targetNPC; }
     bool aggressive() const { return _aggressive; }
+    bool isDismounting() const { return _isDismounting; }
+    void attemptDismount() { _isDismounting = true; }
     
     const Texture &cursorNormal() const { return _cursorNormal; }
     const Texture &cursorGather() const { return _cursorGather; }
@@ -107,6 +109,8 @@ private:
         _cursorContainer,
         _cursorAttack;
     const Texture *_currentCursor;
+
+    bool _isDismounting; // Whether the user is looking for a dismount location.
 
     // Whether the user has the specified item(s).
     bool playerHasItem(const Item *item, size_t quantity = 1) const;

@@ -252,13 +252,22 @@ void Client::handleInput(double delta){
                     break;
                 }
 
+                // Dismount
+                else if (_isDismounting){
+                    px_t
+                        x = toInt(_mouse.x - offset().x),
+                        y = toInt(_mouse.y - offset().y);
+                    sendMessage(CL_DISMOUNT, makeArgs(x, y));
+                    break;
+                }
+
                 // Propagate event to windows
                 bool mouseUpOnWindow = false;
                 for (Window *window : _windows)
                     if (window->visible() && collision(_mouse, window->rect())) {
                         window->onLeftMouseUp(_mouse);
-                        mouseUpOnWindow = true;
-                        break;
+                            mouseUpOnWindow = true;
+                            break;
                     }
                 // Propagate event to UI elements
                 for (Element *element : _ui)
@@ -319,6 +328,9 @@ void Client::handleInput(double delta){
                     break;
                 } else
                     _constructionFootprint = Texture();
+
+                if (_isDismounting)
+                    _isDismounting = false;
 
                 if (mouseUpOnWindow)
                     break;

@@ -27,6 +27,7 @@ public:
     const Point &destination() const { return _destination; }
     void destination(const Point &dst) { _destination = dst; }
     const Rect &collisionRect() const { return COLLISION_RECT + location(); }
+    static const Rect &collisionRectRaw() { return COLLISION_RECT; }
     void setClass(const std::string &c);
     const std::string &getClass() const { return _class; }
     const ClientItem::vect_t &gear() const { return _gear; }
