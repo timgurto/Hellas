@@ -635,7 +635,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_NO_VEHICLE);
                 break;
             }
-            if (distance(target, user->location()) > ACTION_DISTANCE){
+            Rect dstRect = user->type()->collisionRect() + target;
+            if (distance(dstRect, user->collisionRect()) > ACTION_DISTANCE){
                 sendMessage(client, SV_TOO_FAR);
                 break;
             }
