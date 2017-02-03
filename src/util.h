@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef UTIL_H
 #define UTIL_H
 
@@ -24,7 +22,7 @@ inline int toInt(double d){
         return static_cast<int>(d - .5);
 }
 
-inline double randDouble(){ return static_cast<double>(rand()) / RAND_MAX; }
+inline double randDouble(){ return (1.0 * rand()) / RAND_MAX; }
 
 template<typename T>
 void pushBackMultiple(std::vector<T> &vec, const T &val, size_t count){

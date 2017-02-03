@@ -237,9 +237,16 @@ void Server::addUser(const Socket &socket, const std::string &name){
     const bool userExisted = readUserData(newUser);
     if (!userExisted) {
         newUser.setClass(User::Class(rand() % User::NUM_CLASSES));
+        static const Point SPAWN_LOC(39370, 20100);
+        static const double SPAWN_RANGE = 50;
+        Point newLoc;
+        size_t attempts = 0;
         do {
-            newUser.location(mapRand());
-        } while (!isLocationValid(newUser.location(), User::OBJECT_TYPE));
+            _debug << "Attempt #" << ++attempts << " at placing new user" << Log::endl;
+            newLoc.x = (randDouble() * 2 - 1) * SPAWN_RANGE + SPAWN_LOC.x;
+            newLoc.y = (randDouble() * 2 - 1) * SPAWN_RANGE + SPAWN_LOC.y;
+        } while (!isLocationValid(newLoc, User::OBJECT_TYPE));
+        newUser.location(newLoc);
         _debug << "New";
     } else {
         _debug << "Existing";
