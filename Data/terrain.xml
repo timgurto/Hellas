@@ -18,4 +18,5 @@ Client only:
 <terrain index="6" color="62BA6C" imageFile="lightGrass" />
 <terrain index="7" color="FFFFB2" imageFile="sand" />
 <terrain index="8" color="413168" imageFile="mountain" isTraversable="0" />
+<terrain index="9" color="3478D8" imageFile="water" isTraversable="0" frames="32" frameTime="324" />
 </root>
