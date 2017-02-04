@@ -79,7 +79,7 @@ issue,description,value,effort,type,blockedBy,done
 232,NPCs get stuck on each other due to linear pathfinding,21,8,Bug,,
 234,Fail more gracefully and informatively when can't connect to server,3,5,Aesthetics,,
 235,Maintain aspect ratio,2,5,Bug,,
-237,A boat that's restricted to water,21,5,Feature,299,
+237,A boat that's restricted to water,21,5,Feature,307,
 238,Choose map scale,5,3,Feature,,
 239,Make full map,21,89,Feature,238,TRUE
 240,"Server loads map from data file, rather than generating it",13,3,Code quality,,TRUE
@@ -148,3 +148,6 @@ issue,description,value,effort,type,blockedBy,done
 303,Smoother vehicle movement,3,3,Aesthetics,
 304,Prevent fast travel via vehicle-hopping,2,5,Bug,
 305,Tutorial island,55,13,Feature,237
+306,Prevent building/gathering/combat? when mounted,5,2,Bug,
+307,"Make terrain white/blacklists per object, not per spawn point",8,2,Feature,
+308,Server can't handle client timing out,34,8,Bug,

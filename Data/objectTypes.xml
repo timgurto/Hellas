@@ -108,4 +108,13 @@ Server only:
     <container slots="8" />
 </objectType>
 
+<objectType
+    id="driftwood"
+    name="Driftwood"
+    xDrawOffset="-9"
+    yDrawOffset="-4"
+    canGather="1" gatherTime="1500" >
+    <yield id="driftwood" initialMean="1.5" initialSD="0.2" />
+</objectType>
+
 </root>
