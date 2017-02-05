@@ -123,7 +123,6 @@ void Server::writeUserData(const User &user) const{
 }
 
 void Server::loadData(const std::string &path){
-    _terrain.clear();
     _objectTypes.clear();
     _items.clear();
     _recipes.clear();
@@ -138,7 +137,6 @@ void Server::loadData(const std::string &path){
                 continue;
             int isTraversable = 1;
             xr.findAttr(elem, "isTraversable", isTraversable);
-            _terrain[index] = TerrainType(isTraversable != 0);
         }
 
     // Object types

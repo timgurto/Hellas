@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #ifndef TERRAIN_H
 #define TERRAIN_H
 
@@ -9,15 +7,13 @@
 
 class Terrain{
     std::vector<Texture> _images;
-    bool _isTraversable;
     size_t _frames;
     size_t _frame;
     ms_t _frameTime;
     ms_t _frameTimer;
 
 public:
-    Terrain(const std::string &imageFile = "", bool isTraversable = true, size_t frames = 1,
-            ms_t frameTime = 0);
+    Terrain(const std::string &imageFile = "", size_t frames = 1, ms_t frameTime = 0);
 
     void draw(const Rect &loc, const Rect &srcRect) const;
     void draw(px_t x, px_t y) const;

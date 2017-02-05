@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #include <cassert>
 #include <sstream>
 
@@ -7,8 +5,7 @@
 #include "Terrain.h"
 #include "../util.h"
 
-Terrain::Terrain(const std::string &imageFile, bool isTraversable, size_t frames, ms_t frameTime):
-_isTraversable(isTraversable),
+Terrain::Terrain(const std::string &imageFile, size_t frames, ms_t frameTime):
 _frames(frames),
 _frame(0),
 _frameTime(frameTime),

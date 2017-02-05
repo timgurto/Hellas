@@ -3,10 +3,11 @@
 <!--
 Both:
  - index
- - isTraversable
 
 Client only:
  - imageFile
+ - frames (default: 1)
+ - frameTime (default: N/A)
 
 Editor only:
  - color
@@ -14,11 +15,11 @@ Editor only:
 
 <terrain index="G" color="357F51" imageFile="grass" />
 <terrain index="o" color="8778A5" imageFile="stone" />
-<terrain index="W" color="1F3C60" imageFile="deepWater" isTraversable="0" frames="32" frameTime="200" />
-<terrain index="w" color="394FB2" imageFile="water" isTraversable="0" frames="32" frameTime="200" />
+<terrain index="W" color="1F3C60" imageFile="deepWater" frames="32" frameTime="200" />
+<terrain index="w" color="394FB2" imageFile="water" frames="32" frameTime="200" />
 <terrain index="c" color="000000" imageFile="clay" />
 <terrain index="g" color="62BA6C" imageFile="lightGrass" />
 <terrain index="s" color="FFFFB2" imageFile="sand" />
-<terrain index="M" color="413168" imageFile="mountain" isTraversable="0" />
-<terrain index="t" color="3478D8" imageFile="water" isTraversable="0" frames="32" frameTime="200" />
+<terrain index="M" color="413168" imageFile="mountain"  />
+<terrain index="t" color="3478D8" imageFile="water" frames="32" frameTime="200" />
 </root>

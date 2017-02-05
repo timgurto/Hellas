@@ -15,7 +15,7 @@
 #include "Recipe.h"
 #include "ServerItem.h"
 #include "Spawner.h"
-#include "TerrainType.h"
+#include "TerrainList.h"
 #include "User.h"
 #include "../Args.h"
 #include "../messageCodes.h"
@@ -132,7 +132,6 @@ private:
     std::vector<std::vector<char>> _map;
 
     // World data
-    std::map<char, TerrainType> _terrain;
     std::set<ServerItem> _items;
     std::set<Recipe> _recipes;
     std::set<const ObjectType *> _objectTypes;
@@ -159,9 +158,13 @@ private:
     CollisionGrid _collisionGrid;
     CollisionChunk &getCollisionChunk(const Point &p);
     std::list<CollisionChunk *> getCollisionSuperChunk(const Point &p);
+
+    // thisObject = object to omit from collision detection (usually "this", to avoid self-collision)
     bool isLocationValid(const Point &loc, const ObjectType &type,
+                         const Object *thisObject = nullptr); // Deduces allowed terrain from type
+    bool isLocationValid(const Rect &rect, const Object *thisObject); // Deduces allowed terrain from thisObject
+    bool isLocationValid(const Rect &rect, const TerrainList &allowedTerrain,
                          const Object *thisObject = nullptr);
-    bool isLocationValid(const Rect &rect, const Object *thisObject = nullptr);
 
     bool readUserData(User &user); // true: save data existed
     void writeUserData(const User &user) const;

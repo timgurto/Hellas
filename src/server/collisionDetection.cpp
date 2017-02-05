@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #include <cassert>
 #include <list>
 #include <utility>
@@ -11,10 +9,15 @@ const px_t Server::COLLISION_CHUNK_SIZE = 100;
 
 bool Server::isLocationValid(const Point &loc, const ObjectType &type, const Object *thisObject){
     Rect rect = type.collisionRect() + loc;
-    return isLocationValid(rect, thisObject);
+    return isLocationValid(rect, type.allowedTerrain(), thisObject);
 }
 
 bool Server::isLocationValid(const Rect &rect, const Object *thisObject){
+    return isLocationValid(rect, thisObject->type()->allowedTerrain(), thisObject);
+}
+
+bool Server::isLocationValid(const Rect &rect, const TerrainList &allowedTerrain,
+                             const Object *thisObject){
     // A user in a vehicle is unrestricted; the vehicle's restrictions will dictate his location.
     if (thisObject != nullptr &&
         thisObject->classTag() == 'u' &&
@@ -42,8 +45,8 @@ bool Server::isLocationValid(const Rect &rect, const Object *thisObject){
             tileLeft = getTileXCoord(rect.x, tileTop),
             tileRight = getTileXCoord(right, tileTop);
         for (size_t x = tileLeft; x <= tileRight; ++x){
-            const TerrainType &terrain = _terrain[_map[x][tileTop]];
-            if (!terrain.isTraversable())
+
+            if (!allowedTerrain.allows(_map[x][tileTop]))
                 return false;
         }
     } else {
@@ -58,11 +61,9 @@ bool Server::isLocationValid(const Rect &rect, const Object *thisObject){
                 tileLeft  = yIsEven ? tileLeftEven :  tileLeftOdd,
                 tileRight = yIsEven ? tileRightEven : tileRightOdd;
             assert(tileRight >= tileLeft);
-            for (size_t x = tileLeft; x <= tileRight; ++x){
-                const TerrainType &terrain = _terrain[_map[x][y]];
-                if (!terrain.isTraversable())
+            for (size_t x = tileLeft; x <= tileRight; ++x)
+                if (!allowedTerrain.allows(_map[x][y]))
                     return false;
-            }
         }
     }
 

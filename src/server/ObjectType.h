@@ -5,6 +5,7 @@
 
 #include "../Rect.h"
 #include "../types.h"
+#include "TerrainList.h"
 #include "Yield.h"
 
 class ServerItem;
@@ -30,6 +31,8 @@ class ObjectType{
     Rect _collisionRect; // Relative to position
 
     std::set<std::string> _tags;
+
+    const TerrainList *_allowedTerrain;
 
 public:
     ObjectType(const std::string &id);
@@ -59,6 +62,7 @@ public:
     void deconstructsItem(const ServerItem *item) { _deconstructsItem = item; }
     ms_t deconstructionTime() const { return _deconstructionTime; }
     void deconstructionTime(ms_t t) { _deconstructionTime = t; }
+    const TerrainList &allowedTerrain() const { return *_allowedTerrain; }
 
     bool operator<(const ObjectType &rhs) const { return _id < rhs._id; }
 
