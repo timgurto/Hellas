@@ -23,11 +23,15 @@ bool TerrainList::allows(char terrain) const{
 }
 
 void TerrainList::setDefault(const std::string &id){
+    _default = findList(id);
+}
+
+const TerrainList *TerrainList::findList(const std::string &id) {
     auto it = _lists.find(id);
     if (it == _lists.end())
-        _default = nullptr;
+        return nullptr;
     else
-        _default = &it->second;
+        return &it->second;
 }
 
 const TerrainList &TerrainList::defaultList(){

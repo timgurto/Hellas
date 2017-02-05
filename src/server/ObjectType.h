@@ -63,6 +63,7 @@ public:
     ms_t deconstructionTime() const { return _deconstructionTime; }
     void deconstructionTime(ms_t t) { _deconstructionTime = t; }
     const TerrainList &allowedTerrain() const;
+    void allowedTerrain(const std::string &id){ _allowedTerrain = TerrainList::findList(id); }
 
     bool operator<(const ObjectType &rhs) const { return _id < rhs._id; }
 

@@ -113,7 +113,8 @@ Server only:
     name="Driftwood"
     xDrawOffset="-9"
     yDrawOffset="-4"
-    canGather="1" gatherTime="1500" >
+    canGather="1" gatherTime="1500"
+    allowedTerrain="tutorialDriftwood" >
     <yield id="driftwood" initialMean="1.5" initialSD="0.2" />
 </objectType>
 

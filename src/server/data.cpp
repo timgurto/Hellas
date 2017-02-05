@@ -208,6 +208,8 @@ void Server::loadData(const std::string &path){
             if (container != nullptr) {
                 if (xr.findAttr(container, "slots", n)) ot->containerSlots(n);
             }
+            if (xr.findAttr(elem, "allowedTerrain", s))
+                ot->allowedTerrain(s);
         
             _objectTypes.insert(ot);
         }
@@ -230,6 +232,8 @@ void Server::loadData(const std::string &path){
             for (auto objTag :xr.getChildren("class", elem))
                 if (xr.findAttr(objTag, "name", s))
                     nt->addTag(s);
+            if (xr.findAttr(elem, "allowedTerrain", s))
+                nt->allowedTerrain(s);
 
             if (xr.findAttr(elem, "health", n)) nt->maxHealth(n);
             if (xr.findAttr(elem, "attack", n)) nt->attack(n);

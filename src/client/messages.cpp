@@ -768,7 +768,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_EMPTY_SLOT] = "That inventory slot is empty.";
     _errorMessages[SV_INVALID_SLOT] = "That is not a valid inventory slot.";
     _errorMessages[SV_CANNOT_CONSTRUCT] = "That item cannot be constructed.";
-    _errorMessages[SV_BLOCKED] = "That location is already occupied.";
+    _errorMessages[SV_BLOCKED] = "That location is unsuitable for that action.";
     _errorMessages[SV_NO_PERMISSION] = "You do not have permission to do that.";
     _errorMessages[SV_NOT_MERCHANT] = "That is not a merchant object.";
     _errorMessages[SV_INVALID_MERCHANT_SLOT] = "That is not a valid merchant slot.";
