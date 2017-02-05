@@ -9,7 +9,9 @@ _deconstructionTime(0),
 _gatherReq("none"),
 _containerSlots(0),
 _merchantSlots(0),
-_collides(false){}
+_collides(false),
+_allowedTerrain(nullptr)
+{}
 
 void ObjectType::addYield(const ServerItem *item, double initMean, double initSD, double gatherMean,
                           double gatherSD){
@@ -22,4 +24,11 @@ void ObjectType::addTag(const std::string &tagName){
 
 bool ObjectType::isTag( const std::string &tagName) const{
     return _tags.find(tagName) != _tags.end();
+}
+
+const TerrainList &ObjectType::allowedTerrain() const{
+    if (_allowedTerrain == nullptr)
+        return TerrainList::defaultList();
+    else
+        return *_allowedTerrain;
 }

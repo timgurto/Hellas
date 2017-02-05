@@ -1,14 +1,29 @@
 #ifndef TERRAIN_LIST_H
 #define TERRAIN_LIST_H
 
+#include <map>
+#include <set>
+#include <string>
+
 /*
 Describes an allowed set of terrain types.  Each object type will specify one, which dictates what
 map tiles are valid locations for obejcts of that type.
 */
 
 class TerrainList{
+    static std::map<std::string, TerrainList> _lists;
+
+    std::set<char> _list;
+    bool _isWhitelist; // true if whitelist; false if blacklist.
+
 public:
-    bool allows(char terrain) const { return true; }
+    void allow(char terrain);
+    void forbid(char terrain);
+    bool allows(char terrain) const;
+
+    static void addList(const std::string &id,  TerrainList &list) { _lists[id] = list; }
+    static const TerrainList &findList(const std::string &id) { return _lists.at(id); }
+    static const TerrainList &defaultList() { return _lists.begin()->second; }
 };
 
 #endif

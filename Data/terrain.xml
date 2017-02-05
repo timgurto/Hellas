@@ -1,25 +1,40 @@
 <root>
 
 <!--
-Both:
- - index
-
-Client only:
- - imageFile
- - frames (default: 1)
- - frameTime (default: N/A)
-
-Editor only:
- - color
+          Server Client Editor
+index       *      *      *
+id          *      *
+color                     *
+imageFile          *
+frames             *
+frameTime          *
 -->
 
-<terrain index="G" color="357F51" imageFile="grass" />
-<terrain index="o" color="8778A5" imageFile="stone" />
-<terrain index="W" color="1F3C60" imageFile="deepWater" frames="32" frameTime="200" />
-<terrain index="w" color="394FB2" imageFile="water" frames="32" frameTime="200" />
-<terrain index="c" color="000000" imageFile="clay" />
-<terrain index="g" color="62BA6C" imageFile="lightGrass" />
-<terrain index="s" color="FFFFB2" imageFile="sand" />
-<terrain index="M" color="413168" imageFile="mountain"  />
-<terrain index="t" color="3478D8" imageFile="water" frames="32" frameTime="200" />
+<terrain index="G" id="grass"         color="357F51" />
+<terrain index="o" id="stone"         color="8778A5" />
+<terrain index="W" id="deepWater"     color="1F3C60"                   frames="32" frameTime="200" />
+<terrain index="w" id="water"         color="394FB2"                   frames="32" frameTime="200" />
+<terrain index="c" id="clay"          color="000000" />
+<terrain index="g" id="lightGrass"    color="62BA6C" />
+<terrain index="s" id="sand"          color="FFFFB2" />
+<terrain index="M" id="mountain"      color="413168" />
+<terrain index="t" id="tutorialWater" color="3478D8" imageFile="water" frames="32" frameTime="200" />
+
+<!--
+Default list applies to player avatars, and to all objects unless otherwise specified.
+Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only (for a whitelist); not both.
+-->
+
+<list id="land" default="true" >
+    <forbid id="water" />
+    <forbid id="deepWater" />
+    <forbid id="tutorialWater" />
+    <forbid id="mountain" />
+</list>
+
+<list id="water" >
+    <allow id="water" />
+    <allow id="deepWater" />
+</list>
+
 </root>

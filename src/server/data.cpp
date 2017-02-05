@@ -128,16 +128,38 @@ void Server::loadData(const std::string &path){
     _recipes.clear();
     _objects.clear();
 
-    // Load terrain
+    // Load terrain lists
     XmlReader xr(path + "/terrain.xml");
-    if (xr)
+    std::map<std::string, char> terrainCodes; // For easier lookup when compiling lists below.
+    if (xr){
         for (auto elem : xr.getChildren("terrain")) {
             char index;
+            std::string id;
             if (!xr.findAttr(elem, "index", index))
                 continue;
-            int isTraversable = 1;
-            xr.findAttr(elem, "isTraversable", isTraversable);
+            if (!xr.findAttr(elem, "id", id))
+                continue;
+            terrainCodes[id] = index;
         }
+
+        for (auto elem : xr.getChildren("list")){
+            std::string id;
+            if (!xr.findAttr(elem, "id", id))
+                continue;
+            TerrainList tl;
+            for (auto terrain : xr.getChildren("allow", elem)){
+                std::string s;
+                if (xr.findAttr(terrain, "id", s) && terrainCodes.find(s) != terrainCodes.end())
+                    tl.allow(terrainCodes[s]);
+            }
+            for (auto terrain : xr.getChildren("forbid", elem)){
+                std::string s;
+                if (xr.findAttr(terrain, "id", s) && terrainCodes.find(s) != terrainCodes.end())
+                    tl.forbid(terrainCodes[s]);
+            }
+            TerrainList::addList(id, tl);
+        }
+    }
 
     // Object types
     if (xr.newFile(path + "/objectTypes.xml"))

@@ -62,7 +62,7 @@ public:
     void deconstructsItem(const ServerItem *item) { _deconstructsItem = item; }
     ms_t deconstructionTime() const { return _deconstructionTime; }
     void deconstructionTime(ms_t t) { _deconstructionTime = t; }
-    const TerrainList &allowedTerrain() const { return *_allowedTerrain; }
+    const TerrainList &allowedTerrain() const;
 
     bool operator<(const ObjectType &rhs) const { return _id < rhs._id; }
 

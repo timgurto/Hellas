@@ -164,6 +164,7 @@
     <ClCompile Include="src\server\Recipe.cpp" />
     <ClCompile Include="src\server\Server.cpp" />
     <ClCompile Include="src\server\Spawner.cpp" />
+    <ClCompile Include="src\server\TerrainList.cpp" />
     <ClCompile Include="src\server\User.cpp" />
     <ClCompile Include="src\server\Vehicle.cpp" />
     <ClCompile Include="src\server\Yield.cpp" />

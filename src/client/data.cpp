@@ -19,8 +19,9 @@ void Client::loadData(const std::string &path){
             if (!xr.findAttr(elem, "index", index))
                 continue;
             std::string fileName;
-            if (!xr.findAttr(elem, "imageFile", fileName))
+            if (!xr.findAttr(elem, "id", fileName))
                 continue;
+            xr.findAttr(elem, "imageFile", fileName); // Supercedes id if present.
             int isTraversable = 1;
             xr.findAttr(elem, "isTraversable", isTraversable);
             int frames = 1, frameTime = 0;
