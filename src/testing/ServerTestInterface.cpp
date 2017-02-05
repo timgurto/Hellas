@@ -6,7 +6,7 @@
 #include "ServerTestInterface.h"
 #include "Test.h"
 
-const std::vector<std::vector<size_t> > ServerTestInterface::TINY_MAP(1, std::vector<size_t>(1,0));
+const std::vector<std::vector<char> > ServerTestInterface::TINY_MAP(1, std::vector<char>(1,0));
 
 void ServerTestInterface::run(){
     Server &server = _server;
@@ -19,7 +19,7 @@ void ServerTestInterface::stop(){
     WAIT_UNTIL (!_server._running);
 }
 
-void ServerTestInterface::setMap(const std::vector<std::vector<size_t> > &map){
+void ServerTestInterface::setMap(const std::vector<std::vector<char> > &map){
     assert(map.size() > 0);
     _server._mapX = map.size();
 

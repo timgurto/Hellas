@@ -15,7 +15,7 @@ void Client::loadData(const std::string &path){
     XmlReader xr(path + "/terrain.xml");
     if (xr)
         for (auto elem : xr.getChildren("terrain")) {
-            int index;
+            char index;
             if (!xr.findAttr(elem, "index", index))
                 continue;
             std::string fileName;
@@ -23,8 +23,6 @@ void Client::loadData(const std::string &path){
                 continue;
             int isTraversable = 1;
             xr.findAttr(elem, "isTraversable", isTraversable);
-            if (index >= static_cast<int>(_terrain.size()))
-                _terrain.resize(index+1);
             int frames = 1, frameTime = 0;
             xr.findAttr(elem, "frames", frames);
             xr.findAttr(elem, "frameTime", frameTime);
@@ -230,9 +228,9 @@ void Client::loadData(const std::string &path){
             _debug("Map size missing or incomplete.", Color::FAILURE);
             break;
         }
-        _map = std::vector<std::vector<size_t> >(_mapX);
+        _map = std::vector<std::vector<char> >(_mapX);
         for (size_t x = 0; x != _mapX; ++x)
-            _map[x] = std::vector<size_t>(_mapY, 0);
+            _map[x] = std::vector<char>(_mapY, 0);
         for (auto row : xr.getChildren("row")) {
             size_t y;
             if (!xr.findAttr(row, "y", y) || y >= _mapY)
@@ -243,7 +241,7 @@ void Client::loadData(const std::string &path){
             for (size_t x = 0; x != rowTerrain.size(); ++x){
                 if (x > _mapX)
                     break;
-                _map[x][y] = rowTerrain[x] - '0';
+                _map[x][y] = rowTerrain[x];
             }
         }
         mapSuccessful = true;

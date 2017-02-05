@@ -151,3 +151,5 @@ issue,description,value,effort,type,blockedBy,done
 306,Prevent building/gathering/combat? when mounted,5,2,Bug,
 307,"Make terrain white/blacklists per object, not per spawn point",8,2,Feature,
 308,Server can't handle client timing out,34,8,Bug,
+309,Replace const casts with map::at(),3,1,Code quality,
+310,Prevent clipping in getTileCoords() due to random coord at map edge,1,1,Bug,

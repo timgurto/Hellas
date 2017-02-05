@@ -21,7 +21,7 @@ class Spawner{
     // In the case of an NPC, this timer starts on death, rather than on the corpse despawning.
     ms_t _respawnTime;
 
-    std::set<size_t> _terrainWhitelist; // Only applies if nonempty
+    std::set<char> _terrainWhitelist; // Only applies if nonempty
     std::list<ms_t> _spawnSchedule; // The times at which new objects should spawn
 
 public:
@@ -33,7 +33,7 @@ public:
     void quantity(size_t qty) { _quantity = qty; }
     size_t quantity() const { return _quantity; }
     void respawnTime(ms_t t) { _respawnTime = t; }
-    void allowTerrain(size_t n) { _terrainWhitelist.insert(n); }
+    void allowTerrain(char c) { _terrainWhitelist.insert(c); }
 
     void spawn(); // Attempt to add a new object.
     // Add a spawn job to the queue.  After _respawnTime, spawn() will be called.

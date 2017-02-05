@@ -12,14 +12,13 @@ Editor only:
  - color
 -->
 
-<terrain index="0" color="357F51" imageFile="grass" />
-<terrain index="1" color="8778A5" imageFile="stone" />
-<terrain index="2" color="000000" imageFile="road" />
-<terrain index="3" color="1F3C60" imageFile="deepWater" isTraversable="0" frames="32" frameTime="200" />
-<terrain index="4" color="394FB2" imageFile="water" isTraversable="0" frames="32" frameTime="200" />
-<terrain index="5" color="000000" imageFile="clay" />
-<terrain index="6" color="62BA6C" imageFile="lightGrass" />
-<terrain index="7" color="FFFFB2" imageFile="sand" />
-<terrain index="8" color="413168" imageFile="mountain" isTraversable="0" />
-<terrain index="9" color="3478D8" imageFile="water" isTraversable="0" frames="32" frameTime="200" />
+<terrain index="G" color="357F51" imageFile="grass" />
+<terrain index="o" color="8778A5" imageFile="stone" />
+<terrain index="W" color="1F3C60" imageFile="deepWater" isTraversable="0" frames="32" frameTime="200" />
+<terrain index="w" color="394FB2" imageFile="water" isTraversable="0" frames="32" frameTime="200" />
+<terrain index="c" color="000000" imageFile="clay" />
+<terrain index="g" color="62BA6C" imageFile="lightGrass" />
+<terrain index="s" color="FFFFB2" imageFile="sand" />
+<terrain index="M" color="413168" imageFile="mountain" isTraversable="0" />
+<terrain index="t" color="3478D8" imageFile="water" isTraversable="0" frames="32" frameTime="200" />
 </root>

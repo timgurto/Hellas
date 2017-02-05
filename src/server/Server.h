@@ -129,10 +129,10 @@ private:
 
     Point mapRand() const; // Return a random point on the map.
     size_t _mapX, _mapY; // Number of tiles in each dimension.
-    std::vector<std::vector<size_t>> _map;
+    std::vector<std::vector<char>> _map;
 
     // World data
-    std::vector<TerrainType> _terrain;
+    std::map<char, TerrainType> _terrain;
     std::set<ServerItem> _items;
     std::set<Recipe> _recipes;
     std::set<const ObjectType *> _objectTypes;

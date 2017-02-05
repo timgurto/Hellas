@@ -447,12 +447,11 @@ void Server::gatherObject(size_t serial, User &user){
 void Server::spawnInitialObjects(){
 
     static const char
-        GRASS = 0,
-        STONE = 1,
-        ROAD = 2,
-        WATER = 4,
-        DEEP_WATER = 3,
-        CLAY=5;
+        GRASS = 'g',
+        STONE = 'o',
+        WATER = 'w',
+        DEEP_WATER = 'W',
+        CLAY='c';
 
     std::vector<const Object *> trees;
     const ObjectType *const tree = findObjectTypeByName("tree");

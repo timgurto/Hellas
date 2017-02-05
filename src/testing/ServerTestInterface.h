@@ -22,9 +22,9 @@ public:
     std::map<size_t, Spawner> &spawners() { return _server._spawners; }
 
     // 1x1, terrain = 0
-    static const std::vector<std::vector<size_t> > TINY_MAP;
+    static const std::vector<std::vector<char> > TINY_MAP;
 
-    void setMap(const std::vector<std::vector<size_t> > &map = TINY_MAP);
+    void setMap(const std::vector<std::vector<char> > &map = TINY_MAP);
     void addObject(const std::string &typeName, const Point &loc);
     void addNPC(const std::string &typeName, const Point &loc);
 

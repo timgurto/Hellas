@@ -263,7 +263,7 @@ private:
     // Game data
     void loadData(const std::string &path = "Data");
     bool _dataLoaded; // If false when run() is called, load default data.
-    std::vector<Terrain> _terrain;
+    std::map<char, Terrain> _terrain;
     std::set<ClientItem> _items;
     std::set<Recipe> _recipes;
     typedef std::set<const ClientObjectType*, ClientObjectType::ptrCompare> objectTypes_t;
@@ -274,7 +274,7 @@ private:
 
     // Information about the state of the world
     size_t _mapX, _mapY;
-    std::vector<std::vector<size_t> > _map;
+    std::vector<std::vector<char> > _map;
     ClientItem::vect_t _inventory;
     std::map<std::string, Avatar*> _otherUsers; // For lookup by name
     std::map<size_t, ClientObject*> _objects; // For lookup by serial

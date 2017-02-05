@@ -188,7 +188,7 @@ void Client::drawTooltip() const{
 
 void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const{
     if (isDebug()) {
-        _terrain[_map[x][y]].draw(xLoc, yLoc);
+        _terrain.at(_map[x][y]).draw(xLoc, yLoc);
         return;
     }
 
@@ -250,33 +250,33 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const{
     }
 
     // Half-alpha base tile
-    _terrain[tileID].setHalfAlpha();
+    _terrain.at(tileID).setHalfAlpha();
     if (yOdd && x == 0) {
-        _terrain[tileID].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-        _terrain[tileID].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+        _terrain.at(tileID).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+        _terrain.at(tileID).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
     } else if (!yOdd && x == _mapX-1) {
-        _terrain[tileID].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-        _terrain[tileID].draw(drawLoc + TOP_LEFT, TOP_LEFT);
+        _terrain.at(tileID).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+        _terrain.at(tileID).draw(drawLoc + TOP_LEFT, TOP_LEFT);
     } else {
-        _terrain[tileID].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-        _terrain[tileID].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-        _terrain[tileID].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-        _terrain[tileID].draw(drawLoc + TOP_LEFT, TOP_LEFT);
+        _terrain.at(tileID).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+        _terrain.at(tileID).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+        _terrain.at(tileID).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+        _terrain.at(tileID).draw(drawLoc + TOP_LEFT, TOP_LEFT);
     }
-    _terrain[tileID].setQuarterAlpha();
+    _terrain.at(tileID).setQuarterAlpha();
 
     // Quarter-alpha L, R, E, F, G, H tiles
     if (!yOdd || x != 0) {
-        _terrain[L].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-        _terrain[L].draw(drawLoc + TOP_LEFT, TOP_LEFT);
-        _terrain[G].draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-        _terrain[H].draw(drawLoc + TOP_LEFT, TOP_LEFT);
+        _terrain.at(L).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+        _terrain.at(L).draw(drawLoc + TOP_LEFT, TOP_LEFT);
+        _terrain.at(G).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+        _terrain.at(H).draw(drawLoc + TOP_LEFT, TOP_LEFT);
     }
     if (yOdd || x != _mapX-1) {
-        _terrain[R].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-        _terrain[R].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-        _terrain[E].draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-        _terrain[F].draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+        _terrain.at(R).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+        _terrain.at(R).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+        _terrain.at(E).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+        _terrain.at(F).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
     }
 
     /*if (!_terrain[tileID].isTraversable()) {

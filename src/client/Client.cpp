@@ -547,8 +547,8 @@ void Client::run(){
         }
 
         // Update terrain animation
-        for (Terrain &terrain : _terrain)
-            terrain.advanceTime(_timeElapsed);
+        for (auto &terrainPair : _terrain)
+            terrainPair.second.advanceTime(_timeElapsed);
 
         if (_mouseMoved)
             checkMouseOver();
