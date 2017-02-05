@@ -158,6 +158,9 @@ void Server::loadData(const std::string &path){
                     tl.forbid(terrainCodes[s]);
             }
             TerrainList::addList(id, tl);
+            size_t default = 0;
+            if (xr.findAttr(elem, "default", default) && default == 1)
+                TerrainList::setDefault(id);
         }
     }
 

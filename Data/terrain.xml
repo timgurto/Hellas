@@ -25,7 +25,7 @@ Default list applies to player avatars, and to all objects unless otherwise spec
 Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only (for a whitelist); not both.
 -->
 
-<list id="land" default="true" >
+<list id="land" default="1" >
     <forbid id="water" />
     <forbid id="deepWater" />
     <forbid id="tutorialWater" />
