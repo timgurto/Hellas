@@ -32,12 +32,7 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
     <forbid id="mountain" />
 </list>
 
-<list id="tutorialDriftwood" >
-    <forbid id="water" />
-    <forbid id="deepWater" />
-</list>
-
-<list id="tutorialRaft" >
+<list id="tutorialWater" >
     <allow id="tutorialWater" />
 </list>
 

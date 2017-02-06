@@ -1,9 +1,5 @@
 <root>
-<spawnPoint index="1" type="tree" quantity="3" radius="278" respawnTime="2000" x="36037" y="28946" > <allowedTerrain index="G" /> </spawnPoint>
-<spawnPoint index="2" type="rock" quantity="10" radius="278" respawnTime="2000" x="36000" y="28946" />
-<spawnPoint index="3" type="critter" quantity="5" radius="278" respawnTime="10000" x="36037" y="28970" />
-<spawnPoint index="4" type="driftwood" quantity="20" radius="150" respawnTime="20000" x="39219" y="19872" /> 
-<spawnPoint index="5" type="driftwood" quantity="20" radius="150" respawnTime="20000" x="39134" y="20046" /> 
-<spawnPoint index="6" type="driftwood" quantity="20" radius="150" respawnTime="20000" x="39176" y="20242" /> 
-<spawnPoint index="7" type="tutorialCritter" quantity="20" radius="384" respawnTime="20000" x="39360" y="20128" /> 
+<spawnPoint index="1" type="seaweed" quantity="400" radius="1200" respawnTime="600000" x="39269" y="19686" />
+<spawnPoint index="2" type="tutorialCritter" quantity="20" radius="350" respawnTime="15000" x="39390" y="20092" />
+<spawnPoint index="3" type="driftwood" quantity="20" radius="350" respawnTime="15000" x="39390" y="20092" />
 </root>

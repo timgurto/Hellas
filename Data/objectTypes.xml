@@ -109,34 +109,37 @@ Server only:
 </objectType>
 
 <objectType
-    id="driftwood"
-    name="Driftwood"
+    id="driftwood" name="Driftwood"
     xDrawOffset="-9"
     yDrawOffset="-4"
-    canGather="1" gatherTime="1500"
-    allowedTerrain="tutorialDriftwood" >
+    canGather="1" gatherTime="1500" >
     <yield id="driftwood" initialMean="1.5" initialSD="0.2" />
 </objectType>
 
 <objectType
-    id="raft"
-    name="Driftwood Raft"
+    id="raft" name="Driftwood Raft"
     xDrawOffset="-17"
     yDrawOffset="-11"
     constructionTime="4000"
     deconstructs="raft"
     deconstructionTime="1000"
-    allowedTerrain="tutorialRaft"
+    allowedTerrain="tutorialWater"
     isVehicle="1" >
     <collisionRect x="-15" y="-10" w="30" h="20" />
 </objectType>
 
 <objectType
-    id="ropeStore"
-    name="Rope store"
+    id="ropeStore" name="Rope store"
     xDrawOffset="-11"
     yDrawOffset="-9"
     merchantSlots="1"
+/>
+
+<objectType
+    id="seaweed" name="Seaweed"
+    imageFile="grass"
+    xDrawOffset="-7" yDrawOffset="-8"
+    allowedTerrain="tutorialWater"
 />
 
 </root>
