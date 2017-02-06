@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmEditor 
    AutoRedraw      =   -1  'True
    Caption         =   "Form1"
@@ -269,7 +269,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Dim DATA_PATH As String
-Dim terrainColors() As Long
+Dim terrainColors(256) As Long
 Dim spawnPoints() As SpawnPoint
 Dim objectTypes() As ObjectType
 Dim map() As Integer
@@ -528,7 +528,7 @@ Private Sub mnuLoadMap_Click()
         tiles = getAttrString(row, "terrain")
         Dim x As Integer
         For x = 1 To mapW
-            map(x, y) = Mid(tiles, x, 1)
+            map(x, y) = Asc(Mid(tiles, x, 1))
         Next x
     Next
     
@@ -598,16 +598,6 @@ Private Sub mnuLoadSpawnPoints_Click()
             .respawnTime = getAttr(entry, "respawnTime")
             .x = getAttr(entry, "x")
             .y = getAttr(entry, "y")
-            Dim terrains As IXMLDOMNodeList
-            Set terrains = entry.selectNodes("allowedTerrain")
-            ReDim .terrainWhitelist(terrains.length)
-            Dim terrain As IXMLDOMNode
-            Dim j As Integer
-            j = 1
-            For Each terrain In entry.selectNodes("allowedTerrain")
-                .terrainWhitelist(j) = getAttr(terrain, "index")
-                j = j + 1
-            Next
         End With
         i = i + 1
     Next
@@ -621,14 +611,13 @@ Private Sub mnuLoadTerrain_Click()
     Set root = xDoc.documentElement
     Dim entries As IXMLDOMNodeList
     Set entries = root.selectNodes("terrain")
-    ReDim terrainColors(entries.length)
     Dim terrain As IXMLDOMNode
     For Each terrain In entries
         Dim colorString As String
-        Dim index As Integer
+        Dim index As String
         colorString = getAttrString(terrain, "color")
-        index = getAttr(terrain, "index")
-        terrainColors(index) = strToColor(colorString)
+        index = getAttrString(terrain, "index")
+        terrainColors(Asc(index)) = strToColor(colorString)
     Next
 End Sub
 
@@ -658,18 +647,7 @@ Private Sub mnuSaveSpawnPoints_Click()
             writeAttr "respawnTime", .respawnTime
             writeAttr "x", .x
             writeAttr "y", .y
-            If Not ArrayExists(ArrPtr(.terrainWhitelist)) Then
-                Print #1, " />"
-            Else
-                Print #1, " >";
-                Dim j As Integer
-                For j = 1 To UBound(.terrainWhitelist)
-                    Print #1, " <allowedTerrain";
-                    writeAttr "index", .terrainWhitelist(j)
-                    Print #1, " />"
-                Next j
-                Print #1, " </spawnPoint>"
-            End If
+            Print #1, " />"
         End With
     Next i
     Print #1, "</root>"

@@ -17,7 +17,6 @@ Public Type SpawnPoint
     respawnTime As Long
     x As Long
     y As Long
-    terrainWhitelist() As Integer
 End Type
 
 Public Type ObjectType
