@@ -1,0 +1,8 @@
+<root>
+
+<object id="ropeStore">
+    <location x="39427" y="20275" />
+    <merchant slot="0" wareItem="rope" wareQty="1" priceItem="coins" priceQty="25" />
+</object>
+
+</root>

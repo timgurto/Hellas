@@ -442,11 +442,12 @@ void Server::loadData(const std::string &path){
     std::ifstream fs;
     // Detect/load state
     do {
-        if (cmdLineArgs.contains("new"))
-            break;
 
         // Objects
-        xr.newFile("World/objects.world");
+        if (cmdLineArgs.contains("new"))
+            xr.newFile("Data/staticObjects.xml");
+        else
+            xr.newFile("World/Objects.world");
         if (!xr)
             break;
         for (auto elem : xr.getChildren("object")) {
@@ -529,6 +530,9 @@ void Server::loadData(const std::string &path){
             }
         }
 
+        if (cmdLineArgs.contains("new"))
+            break;
+
         // NPCs
         xr.newFile("World/npcs.world");
         if (!xr)
@@ -567,6 +571,14 @@ void Server::loadData(const std::string &path){
         _dataLoaded = true;
         return;
     } while (false);
+
+    // If execution reaches here, a fresh map will be generated.
+
+    // Static objects
+    xr.newFile("data/staticObjects.xml");
+    if (xr){
+        for (auto elem : xr.getChildren("object"))
+    }
 
     _debug("Generating new objects.", Color::YELLOW);
     spawnInitialObjects();
