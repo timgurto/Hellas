@@ -24,6 +24,7 @@ class ObjectType{
 
     size_t _containerSlots;
     size_t _merchantSlots;
+    bool _bottomlessMerchant; // Bottomless: never runs out, uses no inventory space.
 
     Yield _yield; // If gatherable.
 
@@ -46,6 +47,8 @@ public:
     void containerSlots(size_t n) { _containerSlots = n; }
     size_t merchantSlots() const { return _merchantSlots; }
     void merchantSlots(size_t n) { _merchantSlots = n; }
+    bool bottomlessMerchant() const { return _bottomlessMerchant; }
+    void bottomlessMerchant(bool b) { _bottomlessMerchant = b; }
 
     virtual char classTag() const { return 'o'; }
 

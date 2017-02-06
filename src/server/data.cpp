@@ -200,6 +200,7 @@ void Server::loadData(const std::string &path){
                 ot->addYield(&*itemIt, initMean, initSD, gatherMean, gatherSD);
             }
             if (xr.findAttr(elem, "merchantSlots", n)) ot->merchantSlots(n);
+            if (xr.findAttr(elem, "bottomlessMerchant", n)) ot->bottomlessMerchant(n == 1);
             Rect r;
             if (xr.findRectChild("collisionRect", elem, r))
                 ot->collisionRect(r);

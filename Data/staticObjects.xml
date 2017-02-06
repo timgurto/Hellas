@@ -1,8 +1,8 @@
 <root>
 
-<object id="ropeStore">
+<object id="ropeStore" owner="Gaia">
     <location x="39427" y="20275" />
-    <merchant slot="0" wareItem="rope" wareQty="1" priceItem="coins" priceQty="25" />
+    <merchant slot="0" wareItem="rope" wareQty="1" priceItem="coins" priceQty="10" />
 </object>
 
 </root>

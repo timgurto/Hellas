@@ -133,6 +133,7 @@ Server only:
     xDrawOffset="-11"
     yDrawOffset="-9"
     merchantSlots="1"
+    bottomlessMerchant="1"
 />
 
 <objectType

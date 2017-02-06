@@ -9,6 +9,7 @@ _deconstructionTime(0),
 _gatherReq("none"),
 _containerSlots(0),
 _merchantSlots(0),
+_bottomlessMerchant(false),
 _collides(false),
 _allowedTerrain(nullptr)
 {}

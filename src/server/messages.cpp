@@ -475,12 +475,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
 
-            // Check that object has items in stock
-            if (mSlot.ware() > obj->container()){
-                sendMessage(client, SV_NO_WARE);
-                break;
-            }
-
+            const ServerItem *wareItem = toServerItem(mSlot.wareItem);
             // Check that user has price
             if (mSlot.price() > user->inventory()){
                 sendMessage(client, SV_NO_PRICE);
@@ -488,26 +483,36 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
 
             // Check that user has inventory space
-            const ServerItem *wareItem = toServerItem(mSlot.wareItem);
             if (!vectHasSpace(user->inventory(), wareItem, mSlot.wareQty)){
                 sendMessage(client, SV_INVENTORY_FULL);
                 break;
             }
 
-            // Check that object has inventory space
-            if (!vectHasSpace(obj->container(), wareItem, mSlot.wareQty)){
-                sendMessage(client, SV_MERCHANT_INVENTORY_FULL);
-                break;
+            bool bottomless = obj->type()->bottomlessMerchant();
+            if (!bottomless){
+                // Check that object has items in stock
+                if (mSlot.ware() > obj->container()){
+                    sendMessage(client, SV_NO_WARE);
+                    break;
+                }
+
+                // Check that object has inventory space
+                if (!vectHasSpace(obj->container(), wareItem, mSlot.wareQty)){
+                    sendMessage(client, SV_MERCHANT_INVENTORY_FULL);
+                    break;
+                }
             }
 
             // Take price from user
             user->removeItems(mSlot.price());
 
-            // Take ware from object
-            obj->removeItems(mSlot.ware());
+            if  (!bottomless){
+                // Take ware from object
+                obj->removeItems(mSlot.ware());
 
-            // Give price to object
-            obj->giveItem(toServerItem(mSlot.priceItem), mSlot.priceQty);
+                // Give price to object
+                obj->giveItem(toServerItem(mSlot.priceItem), mSlot.priceQty);
+            }
 
             // Give ware to user
             user->giveItem(wareItem, mSlot.wareQty);
