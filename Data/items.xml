@@ -39,6 +39,9 @@ Client only:
 <item id="smallPot"     name="Small pot"        constructs="smallPot" />
 <item id="oven"         name="Oven"             constructs="oven" />
 <item id="handCart"     name="Hand Cart"        constructs="handCart" />
+<item id="raft"         name="Driftwood Raft"   constructs="raft" />
+<item id="coins"        name="Gold Coins"       stackSize=100 />
+<item id="rope"         name="Rope"             stackSize=10 />
 
 <item id="stoneAxe" name="Stone axe"    gearSlot=6 >
     <tag name="axe" />

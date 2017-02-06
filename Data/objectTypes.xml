@@ -118,4 +118,25 @@ Server only:
     <yield id="driftwood" initialMean="1.5" initialSD="0.2" />
 </objectType>
 
+<objectType
+    id="raft"
+    name="Driftwood Raft"
+    xDrawOffset="-17"
+    yDrawOffset="-11"
+    constructionTime="4000"
+    deconstructs="raft"
+    deconstructionTime="1000"
+    allowedTerrain="tutorialRaft"
+    isVehicle="1" >
+    <collisionRect x="-15" y="-10" w="30" h="20" />
+</objectType>
+
+<objectType
+    id="ropeStore"
+    name="Rope store"
+    xDrawOffset="-11"
+    yDrawOffset="-9"
+    merchantSlots="1"
+/>
+
 </root>

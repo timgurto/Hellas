@@ -165,7 +165,9 @@ void Server::loadData(const std::string &path){
     }
 
     // Object types
-    if (xr.newFile(path + "/objectTypes.xml"))
+    if (!xr.newFile(path + "/objectTypes.xml"))
+        _debug("Failed to load objectTypes.xml", Color::FAILURE);
+    else
         for (auto elem : xr.getChildren("objectType")) {
             std::string id;
             if (!xr.findAttr(elem, "id", id))
@@ -215,7 +217,9 @@ void Server::loadData(const std::string &path){
         }
 
     // NPC types
-    if (xr.newFile(path + "/npcTypes.xml"))
+    if (!xr.newFile(path + "/npcTypes.xml"))
+        _debug("Failed to load npcTypes.xml", Color::FAILURE);
+    else
         for (auto elem : xr.getChildren("npcType")) {
             std::string id;
             if (!xr.findAttr(elem, "id", id)) // No ID: skip
@@ -253,7 +257,9 @@ void Server::loadData(const std::string &path){
         }
 
     // Items
-    if (xr.newFile(path + "/items.xml"))
+    if (!xr.newFile(path + "/items.xml"))
+        _debug("Failed to load items.xml", Color::FAILURE);
+    else
         for (auto elem : xr.getChildren("item")) {
             std::string id, name;
             if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name))
@@ -298,7 +304,9 @@ void Server::loadData(const std::string &path){
         }
 
     // Recipes
-    if (xr.newFile(path + "/recipes.xml"))
+    if (!xr.newFile(path + "/recipes.xml"))
+        _debug("Failed to load recipes.xml", Color::FAILURE);
+    else
         for (auto elem : xr.getChildren("recipe")) {
             std::string id, name;
             if (!xr.findAttr(elem, "id", id))
@@ -350,7 +358,9 @@ void Server::loadData(const std::string &path){
     }
 
     // Spawners
-    if (xr.newFile(path + "/spawnPoints.xml")){
+    if (!xr.newFile(path + "/spawnPoints.xml"))
+        _debug("Failed to load spawnPoints.xml", Color::FAILURE);
+    else{
         for (auto elem : xr.getChildren("spawnPoint")) {
             std::string id;
             if (!xr.findAttr(elem, "type", id)) {
