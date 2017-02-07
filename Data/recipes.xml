@@ -49,7 +49,7 @@
 <recipe
     id="raft" time=6000 product="raft" >
     <material id="driftwood" quantity=8 />
-    <material id="rope" quantity=5 />
+    <material id="rope" quantity=3 />
 </recipe>
 
 </root>

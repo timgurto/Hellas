@@ -40,7 +40,7 @@ Client only:
 <item id="oven"         name="Oven"             constructs="oven" />
 <item id="handCart"     name="Hand Cart"        constructs="handCart" />
 <item id="raft"         name="Driftwood Raft"   constructs="raft" />
-<item id="coins"        name="Gold Coins"       stackSize=100 />
+<item id="coins"        name="Copper Coins"     stackSize=100 />
 <item id="rope"         name="Rope"             stackSize=10 />
 
 <item id="stoneAxe" name="Stone axe"    gearSlot=6 >
