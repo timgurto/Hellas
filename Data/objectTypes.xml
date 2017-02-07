@@ -131,11 +131,12 @@ Server only:
 
 <objectType
     id="ropeStore" name="Rope store"
-    xDrawOffset="-11"
-    yDrawOffset="-9"
+    xDrawOffset="-20"
+    yDrawOffset="-35"
     merchantSlots="1"
-    bottomlessMerchant="1"
-/>
+    bottomlessMerchant="1" >
+    <collisionRect x="-16" y="-7" w="30" h="10" />
+</objectType>
 
 <objectType
     id="seaweed" name="Seaweed"
