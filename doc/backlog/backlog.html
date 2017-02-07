@@ -64,6 +64,7 @@
 <h1>MMO&mdash;Product Backlog</h1>
 
 <input type="checkbox" id="showDone" onChange='applyOptions();'>Show 'done' items</input>
+<input type="checkbox" id="useFilter" onChange='applyOptions();'>Show only filtered items</input>
 
 <p>
 <table id="backlog">
@@ -75,6 +76,7 @@
         <td onClick='sortByEffort();'>Effort</td>
         <td onClick='sortByROI();'>log<sub>&phi;</sub>(ROI)</td>
         <td>Notes</td>
+        <td>Filter</td>
     </tr>
 </table>
 
@@ -143,6 +145,12 @@
         });
         refreshTable();
     }
+    
+    function prepareData(){
+        for (i in PBIs){
+            PBI.filter = false;
+        }
+    }
 
     function refreshTable(){
         var table = document.getElementById("backlog");
@@ -155,7 +163,7 @@
         var PBI = PBIs[i]
             var row = table.insertRow(-1);
 			if (PBI.done)
-				row.className = "doneRow";
+				row.className += " doneRow";
             
             var cell = row.insertCell(-1);
             cell.innerHTML = '<a name="' + PBI.issue + '" href="https://github.com/timgurto/mmo/issues/' +
@@ -193,15 +201,34 @@
             if (PBI.hasOwnProperty("refine"))
                 cell.innerHTML += '<span class="refine" title="Consider refining">&#9879;</span>';
             cell.className = "Notes";
+            
+            cell = row.insertCell(-1);
+            var checkboxCell = '<input type="checkbox" id="filter" onChange="toggleFilter(' + i + '); refreshTable();" ';
+            if (PBI.filter)
+                checkboxCell += ' checked ';
+            else
+                row.className += " notFiltered";
+            checkboxCell += '>';
+            cell.innerHTML += checkboxCell;
         }
         applyOptions();
     }
     
     function applyOptions(){
         if ($("#showDone").is(':checked'))
-            $(".doneRow").show('fast');
+            $(".doneRow").show();
+            
+        if ($("#useFilter").is(':checked'))
+            $(".notFiltered").hide();
         else
-            $(".doneRow").hide('fast');
+            $(".notFiltered").show();
+            
+        if (!$("#showDone").is(':checked'))
+            $(".doneRow").hide();
+    }
+    
+    function toggleFilter(i){
+        PBIs[i].filter = !(PBIs[i].filter);
     }
     
     refreshTable();
