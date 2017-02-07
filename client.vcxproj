@@ -103,6 +103,7 @@
     <ClCompile Include="src\client\ClientObject.cpp" />
     <ClCompile Include="src\client\ClientObjectType.cpp" />
     <ClCompile Include="src\client\ClientVehicle.cpp" />
+    <ClCompile Include="src\client\ClientVehicleType.cpp" />
     <ClCompile Include="src\client\craftingWindow.cpp" />
     <ClCompile Include="src\client\data.cpp" />
     <ClCompile Include="src\client\drawing.cpp" />

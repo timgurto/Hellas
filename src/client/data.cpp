@@ -2,6 +2,7 @@
 #include "ClientNPCType.h"
 #include "ClientVehicleType.h"
 #include "ParticleProfile.h"
+#include "ClientVehicleType.h"
 #include "../XmlReader.h"
 
 void Client::loadData(const std::string &path){
@@ -94,6 +95,19 @@ void Client::loadData(const std::string &path){
             if (xr.findAttr(elem, "gatherParticles", s)) cot->gatherParticles(findParticleProfile(s));
             Rect r;
             if (xr.findRectChild("collisionRect", elem, r)) cot->collisionRect(r);
+
+            if (cot->classTag() == 'v'){
+                auto driver = xr.findChild("driver", elem);
+                if (driver != nullptr){
+                    ClientVehicleType &vt = dynamic_cast<ClientVehicleType &>(*cot);
+                    vt.drawDriver(true);
+                    Point offset;
+                    xr.findAttr(driver, "x", offset.x);
+                    xr.findAttr(driver, "y", offset.y);
+                    vt.driverOffset(offset);
+                }
+            }
+
             _objectTypes.insert(cot);
         }
 

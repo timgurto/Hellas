@@ -2,7 +2,9 @@
 #include "ClientVehicle.h"
 
 ClientVehicle::ClientVehicle(size_t serial, const ClientVehicleType *type, const Point &loc):
-ClientObject(serial, type, loc){}
+ClientObject(serial, type, loc),
+_driver(nullptr)
+{}
 
 void ClientVehicle::mountOrDismount(void *object){
     const ClientVehicle &obj = *static_cast<const ClientVehicle *>(object);
@@ -15,4 +17,17 @@ void ClientVehicle::mountOrDismount(void *object){
     // Currently driving: attempt to dismount
     else
         client.attemptDismount();
+}
+
+void ClientVehicle::draw(const Client &client) const{
+    ClientObject::draw(client);
+
+    // Draw driver
+    const ClientVehicleType &cvt = dynamic_cast<const ClientVehicleType &>(*type());
+    if (cvt.drawDriver() && driver() != nullptr){
+        Avatar copy = *driver();
+        copy.location(location() + cvt.driverOffset());
+        copy.driving(false);
+        copy.draw(client);
+    }
 }

@@ -1,7 +1,9 @@
 #include <cassert>
 
 #include "Client.h"
+#include "ClientObject.h"
 #include "ClientNPC.h"
+#include "ClientVehicle.h"
 #include "ui/Container.h"
 
 static void readString(std::istream &iss, std::string &str, char delim = MSG_DELIM){
@@ -94,6 +96,18 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const std::map<std::string, Avatar*>::iterator it = _otherUsers.find(name);
             if (it != _otherUsers.end()) {
+
+                // Remove as driver from vehicle
+                if (it->second->isDriving())
+                    for (auto &objPair : _objects)
+                        if (objPair.second->classTag() == 'v'){
+                            ClientVehicle &v = dynamic_cast<ClientVehicle &>(*objPair.second);
+                            if (v.driver() == it->second){
+                                v.driver(nullptr);
+                                break;
+                            }
+                        }
+
                 removeEntity(it->second);
                 _otherUsers.erase(it);
             }
@@ -408,6 +422,13 @@ void Client::handleMessage(const std::string &msg){
                     obj = new ClientNPC(serial, npcType, Point(x, y));
                     break;
                 }
+                case 'v':
+                {
+                    const ClientVehicleType *vehicleType =
+                            static_cast<const ClientVehicleType *>(*it);
+                    obj = new ClientVehicle(serial, vehicleType, Point(x, y));
+                    break;
+                }
                 case 'o':
                 default:
                     obj = new ClientObject(serial, *it, Point(x, y));
@@ -585,8 +606,9 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del;
             if (del != MSG_END)
                 break;
+            Avatar *userP = nullptr;
             if (user == _username) {
-                _character.driving(true);
+                userP = &_character;
                 /*
                 Cancel any requested movement; assumes that this message was preceded by
                 SV_LOCATION, sending us on top of the vehicle.
@@ -597,9 +619,16 @@ void Client::handleMessage(const std::string &msg){
                 if (it == _otherUsers.end())
                     _debug("Received vehicle info for an unknown user", Color::FAILURE);
                 else
-                    it->second->driving(true);
+                    userP = it->second;
             }
-
+            userP->driving(true);
+            auto pairIt = _objects.find(serial);
+            if (pairIt == _objects.end())
+                _debug("Received driver info for an unknown vehicle", Color::FAILURE);
+            else{
+                ClientVehicle *v = dynamic_cast<ClientVehicle *>(pairIt->second);
+                v->driver(userP);
+            }
             break;
         }
 
@@ -612,8 +641,9 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del;
             if (del != MSG_END)
                 break;
+            Avatar *userP = nullptr;
             if (user == _username){
-                _character.driving(false);
+                userP = &_character;
                 _isDismounting = false;
                 /*
                 Cancel any requested movement; assumes that this message was preceded by
@@ -625,7 +655,15 @@ void Client::handleMessage(const std::string &msg){
                 if (it == _otherUsers.end())
                     _debug("Received vehicle info for an unknown user", Color::FAILURE);
                 else
-                    it->second->driving(false);
+                    userP = it->second;
+            }
+            userP->driving(false);
+            auto pairIt = _objects.find(serial);
+            if (pairIt == _objects.end())
+                _debug("Received driver info for an unknown vehicle", Color::FAILURE);
+            else{
+                ClientVehicle *v = dynamic_cast<ClientVehicle *>(pairIt->second);
+                v->driver(nullptr);
             }
             break;
         }
