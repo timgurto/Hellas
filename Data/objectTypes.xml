@@ -118,14 +118,14 @@ Server only:
 
 <objectType
     id="raft" name="Driftwood Raft"
-    xDrawOffset="-17"
+    xDrawOffset="-16"
     yDrawOffset="-11"
     constructionTime="4000"
     deconstructs="raft"
     deconstructionTime="1000"
     allowedTerrain="tutorialWater"
     isVehicle="1" >
-    <collisionRect x="-15" y="-10" w="30" h="20" />
+    <collisionRect x="-14" y="-10" w="30" h="20" />
 </objectType>
 
 <objectType
