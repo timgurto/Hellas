@@ -254,6 +254,8 @@ _debug("client.log"){
         _debug("SDL_mixer initialized.");
     }
 
+    loadData();
+
     // Resolve default server IP
     elem = xr.findChild("server");
     std::string serverHostDirectory;
@@ -460,9 +462,6 @@ void Client::checkSocket(){
 }
 
 void Client::run(){
-    if (!_dataLoaded)
-        loadData();
-
     _running = true;
 
     ms_t timeAtLastTick = SDL_GetTicks();

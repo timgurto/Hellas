@@ -138,7 +138,7 @@ issue,description,value,effort,type,blockedBy,done
 293,Tool requirements not showing up in crafting window,5,1,Bug,,TRUE
 294,Prevent landlocked gear outlines,5,5,Aesthetics,,
 295,Make client connection failures more clean,8,5,Aesthetics,,
-296,Load map in client before connecting,2,1,Performance,,
+296,Load map in client before connecting,2,1,Performance,,TRUE
 297,Make findObjectTypeByName() logarithmic in complexity,3,2,Performance,,
 298,Make spawners' queues persistent,5,2,Bug,,
 299,"A 'handcart' vehicle that a player can mount, drive, and dismount",21,8,Feature,,TRUE
@@ -147,7 +147,7 @@ issue,description,value,effort,type,blockedBy,done
 302,Vehicles can have different speeds,5,2,Feature,,
 303,Smoother vehicle movement,3,3,Aesthetics,,
 304,Prevent fast travel via vehicle-hopping,2,5,Bug,,
-305,Tutorial island,55,13,Feature,237,TRUE
+305,Tutorial island,55,13,Feature,,TRUE
 307,"Make terrain white/blacklists per object, not per spawn point",8,2,Feature,,TRUE
 308,Server can't handle client timing out,34,8,Bug,,
 309,Replace const casts with map::at(),3,1,Code quality,,
