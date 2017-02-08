@@ -17,15 +17,18 @@ ParticleProfile::~ParticleProfile(){
         delete variety;
 }
 
-void ParticleProfile::addVariety(const std::string &imageFile, const Rect &drawRect){
-    _varieties.push_back(new EntityType(drawRect, "Images/Particles/" + imageFile + ".png"));
+void ParticleProfile::addVariety(const std::string &imageFile, const Rect &drawRect, size_t count){
+    EntityType *particleType = new EntityType(drawRect, "Images/Particles/" + imageFile + ".png");
+    _varieties.push_back(particleType); // _varieties owns the pointers.
+    for (size_t i = 0; i != count; ++i)
+        _pool.push_back(particleType);
 }
 
 Particle *ParticleProfile::instantiate(const Point &location) const{
     // Choose random variety
-    assert (!_varieties.empty());
-    size_t varietyIndex = rand() % _varieties.size();
-    const EntityType &variety = *_varieties[varietyIndex];
+    assert (!_pool.empty());
+    size_t index = rand() % _pool.size();
+    const EntityType &variety = *_pool[index];
 
     // Choose random direction, then set location
     double angle = 2 * PI * randDouble();

@@ -51,9 +51,11 @@ void Client::loadData(const std::string &path){
             for (auto variety : xr.getChildren("variety", elem)){
                 if (!xr.findAttr(variety, "imageFile", s))
                     continue; // No image file specified; skip
+                size_t count = 1;
+                xr.findAttr(variety, "count", count);
                 Rect rect;
                 xr.findRectChild("drawRect", variety, rect);
-                profile->addVariety(s, rect);
+                profile->addVariety(s, rect, count);
             }
 
             _particleProfiles.insert(profile);

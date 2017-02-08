@@ -19,7 +19,7 @@ class ParticleProfile{
         _velocity,
         _fallSpeed,
         _lifespan; // The particle will disappear after this time, or when its altitude hits 0
-    std::vector<const EntityType *> _varieties;
+    std::vector<const EntityType *> _varieties, _pool;
 
 public:
     static const double DEFAULT_GRAVITY; // px/s/s
@@ -47,7 +47,7 @@ public:
     Register a new EntityType with the client describing a variety of particle.  Also, save it to
     _varieties so that it might be chosen when a new Particle is created.
     */
-    void addVariety(const std::string &imageFile, const Rect &drawRect);
+    void addVariety(const std::string &imageFile, const Rect &drawRect, size_t count = 1);
 
     /*
     Create a new particle and return its pointer.  The caller takes responsibility for freeing it.
