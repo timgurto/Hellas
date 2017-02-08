@@ -27,4 +27,17 @@
     <variety imageFile="sparkleSmall2"> <drawRect x=0 y=0 w=1 h=1 /> </variety>
 </particleProfile>
 
+<particleProfile
+    id="combatDamage">
+    <particlesPerHit mean=6 sd=2 />
+    <lifespan mean=10000 sd=1000 />
+    <distance mean=5 sd=0 />
+    <altitude mean=8 sd=4 />
+    <velocity mean=15 sd=3 />
+    <fallSpeed mean=0 sd=2 />
+    <variety imageFile="gib"> <drawRect x=-1 y=-1 w=2 h=2 /> </variety>
+    <variety imageFile="blood" count="3"> <drawRect x=0 y=0 w=1 h=1 /> </variety>
+</particleProfile>
+
+
 </root>

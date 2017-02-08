@@ -526,7 +526,8 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_NPC_HEALTH:
         {
-            int serial, health;
+            size_t serial;
+            health_t health;
             singleMsg >> serial >> del >> health >> del;
             if (del != MSG_END)
                 break;
@@ -539,6 +540,8 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Received health info for a non-NPC object.", Color::FAILURE);
             }
             ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
+            if (health < npc.health()) // NPC has taken damage
+                addParticles("combatDamage", npc.location());
             npc.health(health);
             if (_targetNPC == &npc){
                 _targetNPCHealth = health;
@@ -593,6 +596,8 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> health >> del;
             if (del != MSG_END)
                 break;
+            if (health < _health)
+                addParticles("combatDamage", _character.location());
             _health = health;
             break;
         }
