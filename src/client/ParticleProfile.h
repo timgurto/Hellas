@@ -18,12 +18,12 @@ class ParticleProfile{
         _altitude,
         _velocity,
         _fallSpeed,
-        _lifespan; // The particle will disappear after this time, or when its altitude hits 0
+        _lifespan; // The particle will disappear after this time
     std::vector<const EntityType *> _varieties, _pool;
 
 public:
     static const double DEFAULT_GRAVITY; // px/s/s
-    static const ms_t DEFAULT_LIFESPAN;
+    static const ms_t DEFAULT_LIFESPAN_MEAN, DEFAULT_LIFESPAN_SD;
 
     ParticleProfile(const std::string &id);
     ~ParticleProfile();

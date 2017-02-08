@@ -4,13 +4,14 @@
 #include "ParticleProfile.h"
 
 const double ParticleProfile::DEFAULT_GRAVITY = 100.0;
-const ms_t ParticleProfile::DEFAULT_LIFESPAN = 10000;
+const ms_t ParticleProfile::DEFAULT_LIFESPAN_MEAN = 60000;
+const ms_t ParticleProfile::DEFAULT_LIFESPAN_SD = 10000;
 
 ParticleProfile::ParticleProfile(const std::string &id):
 _id(id),
 _particlesPerSecond(0),
 _gravity(DEFAULT_GRAVITY),
-_lifespan(DEFAULT_LIFESPAN, 0){}
+_lifespan(DEFAULT_LIFESPAN_MEAN, DEFAULT_LIFESPAN_SD){}
 
 ParticleProfile::~ParticleProfile(){
     for (const EntityType *variety : _varieties)

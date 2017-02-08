@@ -19,8 +19,8 @@ _lifespan(lifespan)
 void Particle::update(double delta){
     _altitude -= _fallSpeed * delta;
     if (_altitude < 0){
-        markForRemoval();
-        return;
+        _altitude = 0;
+        _velocity = Point();
     }
     _fallSpeed += _gravity * delta;
 

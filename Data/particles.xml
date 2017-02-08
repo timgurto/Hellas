@@ -2,8 +2,8 @@
 
 <particleProfile
     id="tree"
-    particlesPerSecond=7>
-    <particlesPerHit mean=5 sd=1 />
+    particlesPerSecond=4>
+    <particlesPerHit mean=3 sd=1 />
     <distance mean=5 sd=0 />
     <altitude mean=20 sd=4 />
     <velocity mean=15 sd=3 />
@@ -30,7 +30,6 @@
 <particleProfile
     id="combatDamage">
     <particlesPerHit mean=6 sd=2 />
-    <lifespan mean=10000 sd=1000 />
     <distance mean=5 sd=0 />
     <altitude mean=8 sd=4 />
     <velocity mean=15 sd=3 />

@@ -2,8 +2,5 @@
 <spawnPoint index="1" type="seaweed" quantity="400" radius="1200" respawnTime="600000" x="39269" y="19686" />
 <spawnPoint index="2" type="tutorialCritter" quantity="20" radius="350" respawnTime="15000" x="39390" y="20092" />
 <spawnPoint index="3" type="driftwood" quantity="20" radius="350" respawnTime="15000" x="39390" y="20092" />
-<spawnPoint index="4" type="stick" quantity="1" radius="100" respawnTime="600000" x="39482" y="19414" />
-<spawnPoint index="5" type="stick" quantity="1" radius="100" respawnTime="600000" x="39696" y="19241" />
-<spawnPoint index="6" type="stick" quantity="1" radius="100" respawnTime="600000" x="39482" y="19144" />
 <spawnPoint index="7" type="boar" quantity="100" radius="200" respawnTime="600" x="39504" y="19348" />
 </root>
