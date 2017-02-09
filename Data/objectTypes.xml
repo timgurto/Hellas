@@ -25,7 +25,8 @@ Server only:
 <objectType
     id="stick" name="Stick"
     xDrawOffset="-10" yDrawOffset="-4"
-    canGather="1" gatherTime="1000" >
+    canGather="1" gatherTime="1000"
+    allowedTerrain="denseVeg" >
     <yield id="stick" />
 </objectType>
 
@@ -39,14 +40,16 @@ Server only:
 <objectType
     id="grass" name="Grass"
     xDrawOffset="-7" yDrawOffset="-8"
-    canGather="1" gatherTime="1000" >
+    canGather="1" gatherTime="1000"
+    allowedTerrain="grass" >
     <yield id="grass" initialMean="1.8" initialSD="0.6" gatherMean="10" />
 </objectType>
 
 <objectType
     id="tree" name="Tree"
     xDrawOffset="-23" yDrawOffset="-57"
-    canGather="1" gatherSound="chop-pause" gatherParticles="tree" gatherReq="axe" gatherTime="3000" >
+    canGather="1" gatherSound="chop-pause" gatherParticles="tree" gatherReq="axe" gatherTime="3000"
+    allowedTerrain="denseVeg" >
     <yield id="log" initialMean="6" initialSD="1" />
     <yield id="stick" initialMean="5" initialSD="2" />
     <collisionRect x="-7" y="-3" w="16" h="6" />
@@ -56,7 +59,8 @@ Server only:
     id="tin" name="Tin deposit"
     xDrawOffset="-14" yDrawOffset="-11"
     canGather="1" gatherTime="3000"
-    isFlat="1" >
+    isFlat="1"
+    allowedTerrain="stone" >
     <yield id="tin" initialMean="4.5" initialSD="1.5" />
     <yield id="rock" initialMean="1.5" initialSD="2" />
 </objectType>
@@ -65,7 +69,8 @@ Server only:
     id="copper" name="Copper deposit"
     xDrawOffset="-14" yDrawOffset="-11"
     canGather="1" gatherTime="3000" gatherReq="pick"
-    isFlat="1" >
+    isFlat="1"
+    allowedTerrain="stone" >
     <yield id="copper" initialMean="4.5" initialSD="1.5" />
     <yield id="rock" initialMean="1.5" initialSD="2" />
 </objectType>
@@ -80,7 +85,7 @@ Server only:
 
 <objectType
     id="clay" name="Clay"
-    xDrawOffset="-7" yDrawOffset="-7"
+    xDrawOffset="-7" yDrawOffset="-8"
     canGather="1" gatherTime="3000"
     isFlat="1" >
     <yield id="crudeClay" initialMean="3.5" initialSD="1" />
@@ -113,7 +118,7 @@ Server only:
     xDrawOffset="-9"
     yDrawOffset="-4"
     canGather="1" gatherTime="1500" >
-    <yield id="driftwood" initialMean="1.5" initialSD="0.2" />
+    <yield id="driftwood" />
 </objectType>
 
 <objectType

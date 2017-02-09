@@ -62,7 +62,7 @@ issue,description,value,effort,type,blockedBy,done
 212,Prevent movement from interrupting attacking,13,2,Bug,,TRUE
 213,Avoid multiple data loads for custom server data,5,1,Code quality,,TRUE
 214,Prefix abstract-class names with I,2,1,Code quality,,
-215,"Blood particles for attacking and death, that remain for a time",5,5,Aesthetics,,
+215,"Blood particles for attacking and death, that remain for a time",5,5,Aesthetics,,TRUE
 216,Allow nonexistent data files (for tests),2,2,Code quality,,TRUE
 217,Sounds for attacking and death,8,8,Aesthetics,,
 222,Stacks of the same item can be combined,5,5,Bug,,
@@ -151,3 +151,4 @@ issue,description,value,effort,type,blockedBy,done
 308,Server can't handle client timing out,34,8,Bug,,
 309,Replace const casts with map::at(),3,1,Code quality,,
 310,Prevent clipping in getTileCoords() due to random coord at map edge,1,1,Bug,,
+311,Prevent mouse-over events on particles and decorations,,,Bug,,

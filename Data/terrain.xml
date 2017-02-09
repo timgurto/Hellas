@@ -36,4 +36,17 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
     <allow id="tutorialWater" />
 </list>
 
+<list id="stone" >
+    <allow id="stone" />
+</list>
+
+<list id="denseVeg" >
+    <allow id="grass" />
+</list>
+
+<list id="grass" >
+    <allow id="grass" />
+    <allow id="lightGrass" />
+</list>
+
 </root>
