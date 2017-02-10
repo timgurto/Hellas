@@ -341,6 +341,14 @@ void Element::setTooltip(const std::string &text){
     _tooltip = TooltipBuilder::basicTooltip(text);
 }
 
+void Element::setTooltip(const Texture &tooltip){
+    _tooltip = tooltip;
+}
+
+void Element::clearTooltip(){
+    _tooltip = Texture();;
+}
+
 void Element::draw(){
     if (!_visible)
         return;

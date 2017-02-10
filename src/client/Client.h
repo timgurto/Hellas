@@ -258,7 +258,6 @@ private:
     ms_t _timeSinceLocUpdate; // Time since a CL_LOCATION was sent
     // Location has changed (local or official), and tooltip may have changed.
     bool _tooltipNeedsRefresh;
-    Texture getInventoryTooltip() const; // Generate tooltip for the inventory
 
     // Game data
     void loadData(const std::string &path = "Data");

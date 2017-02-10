@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #include <SDL.h>
 #include <list>
 
@@ -127,6 +125,8 @@ public:
     void id(const std::string &id) { _id = id; }
     const children_t &children() const { return _children; }
     void setTooltip(const std::string &text); // Add a simple tooltip.
+    void setTooltip(const Texture &tooltip); // Add a complex tooltip.
+    void clearTooltip();
     static const Texture *tooltip() { return _currentTooltip; }
 
     void show();

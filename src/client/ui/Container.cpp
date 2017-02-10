@@ -101,6 +101,16 @@ void Container::refresh(){
             (i == itemSlot ? _highlightGood : _highlightBad).draw(slotRect.x + 1, slotRect.y + 1);
         }
     }
+
+    // Item tooltip
+    if (_mouseOverSlot != NO_SLOT){
+        const ClientItem *item = _linked[_mouseOverSlot].first;
+        if (item == nullptr)
+            clearTooltip();
+        else
+            setTooltip(item->name());
+
+    }
 }
 
 size_t Container::getSlot(const Point &mousePos) const{
