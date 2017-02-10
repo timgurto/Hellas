@@ -200,8 +200,12 @@ void ClientObject::createWindow(Client &client){
 
     bool
         hasContainer = objType.containerSlots() > 0,
-        isMerchant = objType.merchantSlots() > 0;
-    if (userHasAccess() && (hasContainer || isMerchant || objType.canDeconstruct())){
+        isMerchant = objType.merchantSlots() > 0,
+        isVehicle = classTag() == 'v';;
+    if (userHasAccess() && (hasContainer ||
+                            isMerchant ||
+                            isVehicle ||
+                            objType.canDeconstruct())){
         static const size_t COLS = 8;
         static const px_t
             WINDOW_WIDTH = Container(1, 8, _container).width(),
@@ -280,7 +284,7 @@ void ClientObject::createWindow(Client &client){
         }
 
         // Mount/dismount button
-        if (objType.classTag() == 'v'){
+        if (isVehicle){
             x = BUTTON_GAP;
             y += BUTTON_GAP;
             Button *mountButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), "Enter/exit",
