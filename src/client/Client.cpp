@@ -60,6 +60,7 @@ const px_t Client::CULL_HYSTERESIS_DISTANCE = 50;
 
 const size_t Client::INVENTORY_SIZE = 20;
 const size_t Client::GEAR_SLOTS = 8;
+std::vector<std::string> Client::GEAR_SLOT_NAMES;
 
 const int Client::PLAYER_ACTION_CHANNEL = 0;
 
@@ -185,6 +186,10 @@ _debug("client.log"){
     xr.findAttr(elem, "elementShadowLight", Color::ELEMENT_SHADOW_LIGHT);
     xr.findAttr(elem, "elementFont", Color::ELEMENT_FONT);
     xr.findAttr(elem, "containerSlotBackground", Color::CONTAINER_SLOT_BACKGROUND);
+    xr.findAttr(elem, "itemName", Color::ITEM_NAME);
+    xr.findAttr(elem, "itemStats", Color::ITEM_STATS);
+    xr.findAttr(elem, "itemInstructions", Color::ITEM_INSTRUCTIONS);
+    xr.findAttr(elem, "itemTags", Color::ITEM_TAGS);
     xr.findAttr(elem, "footprintGood", Color::FOOTPRINT_GOOD);
     xr.findAttr(elem, "footprintBad", Color::FOOTPRINT_BAD);
     xr.findAttr(elem, "inRange", Color::IN_RANGE);

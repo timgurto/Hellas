@@ -33,6 +33,11 @@ Color
     Color::ELEMENT_FONT,
     Color::CONTAINER_SLOT_BACKGROUND,
 
+    Color::ITEM_NAME,
+    Color::ITEM_STATS,
+    Color::ITEM_INSTRUCTIONS,
+    Color::ITEM_TAGS,
+
     Color::FOOTPRINT_GOOD,
     Color::FOOTPRINT_BAD,
     Color::IN_RANGE,

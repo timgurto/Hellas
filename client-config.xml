@@ -60,6 +60,11 @@ Dark blue   3C388C
     elementFont="E5E5E5"
     containerSlotBackground="161B4C"
     
+    itemName="E5E5E5"
+    itemStats="E8CE94"
+    itemInstructions="62BA6C"
+    itemTags="E5E5E5"
+    
     footprintGood="E5E5E5"
     footprintBad="A34C5C"
     inRange="E5E5E5"

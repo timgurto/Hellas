@@ -31,6 +31,11 @@ public:
         TOOLTIP_BACKGROUND,
         TOOLTIP_BORDER,
 
+        ITEM_NAME,
+        ITEM_STATS,
+        ITEM_INSTRUCTIONS,
+        ITEM_TAGS,
+
         ELEMENT_BACKGROUND,
         ELEMENT_SHADOW_DARK,
         ELEMENT_SHADOW_LIGHT,

@@ -26,6 +26,16 @@ void Client::initializeInventoryWindow(){
 
 void Client::initializeGearWindow(){
     XmlReader xr("client-config.xml");
+
+    GEAR_SLOT_NAMES.push_back("Head");
+    GEAR_SLOT_NAMES.push_back("Jewelry");
+    GEAR_SLOT_NAMES.push_back("Body");
+    GEAR_SLOT_NAMES.push_back("Shoulders");
+    GEAR_SLOT_NAMES.push_back("Hands");
+    GEAR_SLOT_NAMES.push_back("Feet");
+    GEAR_SLOT_NAMES.push_back("Right hand");
+    GEAR_SLOT_NAMES.push_back("Left hand");
+
     px_t
         x = 0, y = 0,
         w = 0, h = 0,

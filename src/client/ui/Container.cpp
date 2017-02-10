@@ -108,7 +108,7 @@ void Container::refresh(){
         if (item == nullptr)
             clearTooltip();
         else
-            setTooltip(item->name());
+            setTooltip(item->tooltip());
 
     }
 }

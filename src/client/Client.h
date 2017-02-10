@@ -150,6 +150,7 @@ private:
     void initializeGearWindow();
     Texture _gearWindowBackground;
     void onChangeDragItem(){ _gearWindow->forceRefresh(); }
+    static std::vector<std::string> GEAR_SLOT_NAMES;
 
     Window *_mapWindow;
     Texture _mapImage;

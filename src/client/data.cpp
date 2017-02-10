@@ -141,6 +141,16 @@ void Client::loadData(const std::string &path){
                 item.drawLoc(drawLoc);
             }
 
+            auto statsElem = xr.findChild("stats", elem);
+            if (statsElem != nullptr){
+                StatsMod stats;
+                xr.findAttr(statsElem, "health", stats.health);
+                xr.findAttr(statsElem, "attack", stats.attack);
+                xr.findAttr(statsElem, "attackTime", stats.attackTime);
+                xr.findAttr(statsElem, "speed", stats.speed);
+                item.stats(stats);
+            }
+
             size_t gearSlot = GEAR_SLOTS; // Default; won't match any slot.
             xr.findAttr(elem, "gearSlot", gearSlot); item.gearSlot(gearSlot);
 

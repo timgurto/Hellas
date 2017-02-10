@@ -1,5 +1,6 @@
 #include "Client.h"
 #include "ClientItem.h"
+#include "TooltipBuilder.h"
 #include "../XmlReader.h"
 
 std::map<int, size_t> ClientItem::gearDrawOrder;
@@ -58,4 +59,70 @@ void ClientItem::init(){
         if (xr.findAttr(slot, "drawOrder", order))
             gearDrawOrder[order] = slotNum;
     }
+}
+
+std::string multiplicativeToString(double d){
+    d -= 1;
+    d *= 100;
+    return toString(toInt(d)) + "%";
+}
+
+const Texture &ClientItem::tooltip() const{
+    if (_tooltip)
+        return _tooltip;
+
+    TooltipBuilder tb;
+    tb.setColor(Color::ITEM_NAME);
+    tb.addLine(_name);
+
+    // Gear slot/stats
+    if (_gearSlot != Client::GEAR_SLOTS){
+        tb.addGap();
+        tb.setColor(Color::ITEM_STATS);
+        tb.addLine("Gear: " + Client::GEAR_SLOT_NAMES[_gearSlot]);
+        if (_stats.health > 0)
+            tb.addLine("+" + toString(_stats.health) + " health");
+        if (_stats.attack > 0)
+            tb.addLine("+" + toString(_stats.attack) + " attack");
+        if (_stats.attackTime != 1)
+            tb.addLine("+" + multiplicativeToString(1/_stats.attackTime));
+        if (_stats.speed != 1)
+            tb.addLine("+" + multiplicativeToString(_stats.speed));
+    }
+
+    // Tags
+    if (hasTags()){
+        tb.addGap();
+        tb.setColor(Color::ITEM_TAGS);
+        for (const std::string &tag : tags())
+            tb.addLine(tag);
+    }
+    
+    // Construction
+    if (_constructsObject != nullptr){
+        tb.addGap();
+        tb.setColor(Color::ITEM_INSTRUCTIONS);
+        tb.addLine(std::string("Right-click to place ") + _constructsObject->name());
+
+        // TODO: object tags
+        // TODO: vehicle
+
+        if (_constructsObject->containerSlots() > 0){
+            tb.setColor(Color::ITEM_STATS);
+            tb.addLine("  Container: " + toString(_constructsObject->containerSlots()) + " slots");
+        }
+
+        if (_constructsObject->merchantSlots() > 0){
+            tb.setColor(Color::ITEM_STATS);
+            tb.addLine("  Merchant: " + toString(_constructsObject->merchantSlots()) + " slots");
+        }
+    }
+
+
+
+
+
+    
+    _tooltip = tb.publish();
+    return _tooltip;
 }

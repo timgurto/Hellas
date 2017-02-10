@@ -14,6 +14,7 @@ class ClientItem : public Item{
     Texture _icon;
     Texture _gearImage;
     Point _drawLoc;
+    mutable Texture _tooltip;
 
     // The object that this item can construct
     const ClientObjectType *_constructsObject;
@@ -35,6 +36,8 @@ public:
 
     void constructsObject(const ClientObjectType *obj) { _constructsObject = obj; }
     const ClientObjectType *constructsObject() const { return _constructsObject; }
+
+    const Texture &tooltip() const; // Getter; creates tooltip on first call.
 
     void draw(const Point &loc) const;
 
