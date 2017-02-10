@@ -1,6 +1,7 @@
 #include "Avatar.h"
 #include "Client.h"
 #include "Renderer.h"
+#include "TooltipBuilder.h"
 #include "../util.h"
 
 extern Renderer renderer;
@@ -67,4 +68,29 @@ void Avatar::setClass(const std::string &c){
     if (_classes.find(c) == _classes.end())
         _classes[c] = EntityType(DRAW_RECT, std::string("Images/" + c + ".png"));
     type(&_classes[c]);
+}
+
+const Texture &Avatar::tooltip() const{
+    if (_tooltip)
+        return _tooltip;
+
+    // Name
+    TooltipBuilder tb;
+    tb.setColor(Color::ITEM_NAME);
+    tb.addLine(_name);
+
+    // Class
+    tb.addGap();
+    tb.setColor(Color::ITEM_TAGS);
+    tb.addLine(getClass());
+
+    // Debug info
+    /*if (isDebug()){
+        tb.addGap();
+        tb.setColor(Color::ITEM_TAGS);
+        tb.addLine("");
+    }*/
+
+    _tooltip = tb.publish();
+    return _tooltip;
 }

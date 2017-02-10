@@ -413,6 +413,8 @@ const Texture &ClientObject::tooltip() const{
 
     const ClientObjectType &ot = *objectType();
 
+    bool isContainer = ot.containerSlots() > 0 && classTag() != 'n';
+
     // Name
     TooltipBuilder tb;
     tb.setColor(Color::ITEM_NAME);
@@ -424,13 +426,6 @@ const Texture &ClientObject::tooltip() const{
         tb.setColor(Color::ITEM_TAGS);
         tb.addLine("Serial: " + toString(_serial));
         tb.addLine("Class tag: " + toString(classTag()));
-    }
-
-    // Player?
-    if (classTag() == 'a'){
-        tb.addGap();
-        tb.setColor(Color::ITEM_TAGS);
-        tb.addLine("Player");
     }
 
     // Owner
@@ -460,7 +455,7 @@ const Texture &ClientObject::tooltip() const{
         tb.addLine("Can dismantle");
     }
 
-    if (ot.containerSlots() > 0){
+    if (isContainer){
         if (!stats) {stats = true; tb.addGap(); }
         tb.addLine("Container: " + toString(ot.containerSlots()) + " slots");
     }
@@ -480,11 +475,20 @@ const Texture &ClientObject::tooltip() const{
 
     // Any actions available?
     if (ot.merchantSlots() > 0 || userHasAccess() && (classTag() == 'v' ||
-                                                      ot.containerSlots() > 0 ||
+                                                      isContainer ||
                                                       ot.canDeconstruct())){
         tb.addGap();
         tb.setColor(Color::ITEM_INSTRUCTIONS);
         tb.addLine(std::string("Right-click for controls"));
+    }
+
+    else if (classTag() == 'n'){
+        tb.addGap();
+        tb.setColor(Color::ITEM_INSTRUCTIONS);
+        const ClientNPC &npc = dynamic_cast<const ClientNPC &>(*this);
+        bool alive = npc.health() > 0;
+        if (alive) tb.addLine("Right-click to attack");
+        else if (npc.lootable()) tb.addLine("Right-click to loot");
     }
 
     else if (ot.canGather()){

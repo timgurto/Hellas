@@ -18,6 +18,9 @@ class Entity{
 
     bool _toRemove; // No longer draw or update, and remove when possible.
 
+protected:
+    mutable Texture _tooltip;
+
 public:
     Entity(const EntityType *type, const Point &location);
     virtual ~Entity(){}
@@ -44,6 +47,8 @@ public:
     virtual void onLeftClick(Client &client) {}
     virtual void onRightClick(Client &client) {}
     virtual const Texture &cursor(const Client &client) const;
+    virtual const Texture &tooltip() const { return _tooltip; }
+    void refreshTooltip() const { _tooltip = Texture(); }
 
     double bottomEdge() const;
     bool collision(const Point &p) const;

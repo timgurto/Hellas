@@ -28,7 +28,6 @@ class ClientObject : public Entity{
     std::vector<TextBox *> _wareQtyBoxes;
     std::vector<TextBox *> _priceQtyBoxes;
     bool _beingGathered;
-    mutable Texture _tooltip;
 
 protected:
     Window *_window; // For containers, etc; opens when the object is nearby and right-clicked.
@@ -59,7 +58,7 @@ public:
 
     virtual void update(double delta) override;
     virtual const Texture &cursor(const Client &client) const override;
-    const Texture &tooltip() const; // Getter; creates tooltip on first call.
+    const Texture &tooltip() const override; // Getter; creates tooltip on first call.
 
     Rect collisionRect() const { return objectType()->collisionRect() + location(); }
 

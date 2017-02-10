@@ -491,6 +491,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             }
             (it->second)->owner(name);
+            (it->second)->refreshTooltip();
             break;
         }
 
@@ -548,6 +549,7 @@ void Client::handleMessage(const std::string &msg){
                 if (health == 0)
                     _aggressive = false;
             }
+            npc.refreshTooltip();
             break;
         }
 
@@ -567,6 +569,7 @@ void Client::handleMessage(const std::string &msg){
             }
             ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
             npc.lootable(true);
+            npc.refreshTooltip();
             break;
         }
 
@@ -586,6 +589,7 @@ void Client::handleMessage(const std::string &msg){
             }
             ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
             npc.lootable(false);
+            npc.refreshTooltip();
             npc.hideWindow();
             break;
         }

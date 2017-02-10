@@ -159,10 +159,9 @@ void Client::drawTooltip() const{
     const Texture *tooltip;
     if (Element::tooltip() != nullptr)
         tooltip = Element::tooltip();
-    else if (_currentMouseOverEntity != nullptr && !_mouseOverWindow &&
-             _currentMouseOverEntity->classTag() != 'e')
-        tooltip = &dynamic_cast<const ClientObject *>(_currentMouseOverEntity)->tooltip();
-    else
+    else if (_currentMouseOverEntity != nullptr && !_mouseOverWindow){
+        tooltip = &_currentMouseOverEntity->tooltip();
+    } else
         return;
 
     if (tooltip != nullptr) {

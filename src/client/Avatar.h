@@ -37,7 +37,7 @@ public:
 
     virtual void draw(const Client &client) const override;
     virtual void update(double delta) override;
-    virtual char classTag() const override { return 'a'; }
+    const Texture &tooltip() const override; // Getter; creates tooltip on first call.
 
     static void cleanup();
 
