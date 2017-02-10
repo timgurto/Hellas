@@ -7,6 +7,7 @@
 #include "Client.h"
 #include "Particle.h"
 #include "Renderer.h"
+#include "TooltipBuilder.h"
 #include "ui/Button.h"
 #include "ui/Container.h"
 #include "ui/ItemSelector.h"
@@ -324,16 +325,6 @@ void ClientObject::createWindow(Client &client){
     }
 }
 
-std::vector<std::string> ClientObject::getTooltipMessages(const Client &client) const {
-    std::vector<std::string> text;
-    text.push_back(objectType()->name());
-    if (isDebug())
-        text.push_back("Serial: " + toString(_serial));
-    if (!_owner.empty())
-        text.push_back(std::string("Owned by ") + _owner);
-    return text;
-}
-
 void ClientObject::playGatherSound() const {
     Mix_Chunk *sound = objectType()->gatherSound();
     if (sound != nullptr) {
@@ -411,7 +402,98 @@ const Texture &ClientObject::cursor(const Client &client) const {
     const ClientObjectType &ot = *objectType();
     if (ot.canGather())
         return client.cursorGather();
-    if (ot.containerSlots() > 0)
+    if (ot.containerSlots() > 0 || ot.merchantSlots() > 0)
         return client.cursorContainer();
     return client.cursorNormal();
+}
+
+const Texture &ClientObject::tooltip() const{
+    if (_tooltip)
+        return _tooltip;
+
+    const ClientObjectType &ot = *objectType();
+
+    // Name
+    TooltipBuilder tb;
+    tb.setColor(Color::ITEM_NAME);
+    tb.addLine(ot.name());
+
+    // Debug info
+    if (isDebug()){
+        tb.addGap();
+        tb.setColor(Color::ITEM_TAGS);
+        tb.addLine("Serial: " + toString(_serial));
+        tb.addLine("Class tag: " + toString(classTag()));
+    }
+
+    // Player?
+    if (classTag() == 'a'){
+        tb.addGap();
+        tb.setColor(Color::ITEM_TAGS);
+        tb.addLine("Player");
+    }
+
+    // Owner
+    if (!owner().empty()){
+        tb.addGap();
+        tb.setColor(Color::ITEM_TAGS);
+        tb.addLine("Owned by " + (owner() == Client::_instance->username() ? "you" : owner()));
+    }
+
+    // Stats
+    bool stats = false;
+    tb.setColor(Color::ITEM_STATS);
+
+    if (classTag() == 'v'){
+        if (!stats) {stats = true; tb.addGap(); }
+        tb.addLine("Vehicle");
+    }
+
+    if (ot.canGather()){
+        if (!stats) {stats = true; tb.addGap(); }
+        tb.addLine("Gatherable");
+        // TODO: Gather req.
+    }
+
+    if (ot.canDeconstruct()){
+        if (!stats) {stats = true; tb.addGap(); }
+        tb.addLine("Can dismantle");
+    }
+
+    if (ot.containerSlots() > 0){
+        if (!stats) {stats = true; tb.addGap(); }
+        tb.addLine("Container: " + toString(ot.containerSlots()) + " slots");
+    }
+
+    if (ot.merchantSlots() > 0){
+        if (!stats) {stats = true; tb.addGap(); }
+        tb.addLine("Merchant: " + toString(ot.merchantSlots()) + " slots");
+    }
+
+    // Tags
+    if (ot.hasTags()){
+        tb.addGap();
+        tb.setColor(Color::ITEM_TAGS);
+        for (const std::string &tag : ot.tags())
+            tb.addLine(tag);
+    }
+
+    // Any actions available?
+    if (ot.merchantSlots() > 0 || userHasAccess() && (classTag() == 'v' ||
+                                                      ot.containerSlots() > 0 ||
+                                                      ot.canDeconstruct())){
+        tb.addGap();
+        tb.setColor(Color::ITEM_INSTRUCTIONS);
+        tb.addLine(std::string("Right-click for controls"));
+    }
+
+    else if (ot.canGather()){
+        tb.addGap();
+        tb.setColor(Color::ITEM_INSTRUCTIONS);
+        tb.addLine(std::string("Right-click to gather"));
+    }
+
+
+    _tooltip = tb.publish();
+    return _tooltip;
 }

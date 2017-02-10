@@ -37,7 +37,7 @@ public:
 
     virtual void draw(const Client &client) const override;
     virtual void update(double delta) override;
-    virtual std::vector<std::string> getTooltipMessages(const Client &client) const override;
+    virtual char classTag() const override { return 'a'; }
 
     static void cleanup();
 

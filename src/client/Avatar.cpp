@@ -58,13 +58,6 @@ void Avatar::update(double delta){
     location(interpolatedLocation(delta));
 }
 
-std::vector<std::string> Avatar::getTooltipMessages(const Client &client) const {
-    std::vector<std::string> text;
-    text.push_back(_name);
-    text.push_back("Player");
-    return text;
-}
-
 void Avatar::cleanup(){
     _classes.clear();
 }

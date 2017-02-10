@@ -15,15 +15,8 @@ class Entity{
     bool _yChanged; // y co-ordinate has changed, and the entity must be reordered.
     const EntityType *_type;
     Point _location;
-    bool _needsTooltipRefresh;
-    virtual std::vector<std::string> getTooltipMessages(const Client &client) const {
-        return std::vector<std::string>();
-    }
 
     bool _toRemove; // No longer draw or update, and remove when possible.
-
-protected:
-    Texture _tooltip;
 
 public:
     Entity(const EntityType *type, const Point &location);
@@ -38,8 +31,6 @@ public:
     void yChanged(bool val) { _yChanged = val; }
     const EntityType *type() const { return _type; }
     void type(const EntityType *et) { _type = et; }
-    bool needsTooltipRefresh() { return _needsTooltipRefresh; }
-    const Texture &tooltip() const { return _tooltip; }
     virtual const Texture &image() const { return _type->image(); }
     virtual const Texture &highlightImage() const { return _type->highlightImage(); }
     void markForRemoval() { _toRemove = true; }
@@ -53,8 +44,6 @@ public:
     virtual void onLeftClick(Client &client) {}
     virtual void onRightClick(Client &client) {}
     virtual const Texture &cursor(const Client &client) const;
-
-    void refreshTooltip(const Client &client);
 
     double bottomEdge() const;
     bool collision(const Point &p) const;

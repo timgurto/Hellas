@@ -13,7 +13,6 @@ Entity::Entity(const EntityType *type, const Point &location):
 _yChanged(false),
 _type(type),
 _location(location),
-_needsTooltipRefresh(false),
 _toRemove(false){}
 
 Rect Entity::drawRect() const {
@@ -42,34 +41,6 @@ void Entity::location(const Point &loc){
 
 bool Entity::collision(const Point &p) const{
     return ::collision(p, drawRect());
-}
-
-void Entity::refreshTooltip(const Client &client){
-    _needsTooltipRefresh = false;
-
-    std::vector<std::string> textStrings = getTooltipMessages(client);
-    if (textStrings.empty()) {
-        _tooltip = Texture();
-        return;
-    }
-
-    std::vector<std::string>::const_iterator it = textStrings.begin();
-    TooltipBuilder tb;
-    tb.setColor();
-    tb.addLine(*it);
-    tb.setColor();
-    ++it;
-
-    if (it != textStrings.end())
-        tb.addGap();
-
-    for (; it != textStrings.end(); ++it)
-        tb.addLine(*it);
-
-    if (isDebug())
-        tb.addLine(std::string("Class tag: ") + classTag());
-
-    _tooltip = tb.publish();
 }
 
 const Texture &Entity::cursor(const Client &client) const {

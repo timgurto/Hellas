@@ -127,8 +127,6 @@ Server only:
     xDrawOffset="-16"
     yDrawOffset="-11"
     constructionTime="4000"
-    deconstructs="raft"
-    deconstructionTime="1000"
     allowedTerrain="tutorialWater"
     isVehicle="1" >
     <driver x="0" y="0" />

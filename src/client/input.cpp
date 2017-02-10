@@ -463,12 +463,6 @@ void Client::checkMouseOver(){
     _currentMouseOverEntity = getEntityAtMouse();
     if (_currentMouseOverEntity == nullptr)
         return;
-    if (_currentMouseOverEntity != oldMouseOverEntity ||
-        _currentMouseOverEntity->needsTooltipRefresh() ||
-        _tooltipNeedsRefresh) {
-        _currentMouseOverEntity->refreshTooltip(*this);
-        _tooltipNeedsRefresh = false;
-    }
     
     // Set cursor
     _currentCursor = &_currentMouseOverEntity->cursor(*this);
