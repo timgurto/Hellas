@@ -89,6 +89,10 @@ void Client::loadData(const std::string &path){
                 if (xr.findAttr(container, "slots", n)) cot->containerSlots(n);
             }
 
+            for (auto objTag :xr.getChildren("tag", elem))
+                if (xr.findAttr(objTag, "name", s))
+                    cot->addTag(s);
+
             if (xr.findAttr(elem, "merchantSlots", n)) cot->merchantSlots(n);
 
             if (xr.findAttr(elem, "isFlat", n) && n != 0) cot->isFlat(true);

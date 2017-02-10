@@ -104,8 +104,11 @@ const Texture &ClientItem::tooltip() const{
         tb.setColor(Color::ITEM_INSTRUCTIONS);
         tb.addLine(std::string("Right-click to place ") + _constructsObject->name());
 
-        // TODO: object tags
-        // TODO: vehicle
+        // Vehicle?
+        if (_constructsObject->classTag() == 'v'){
+            tb.setColor(Color::ITEM_STATS);
+            tb.addLine("  Vehicle");
+        }
 
         if (_constructsObject->containerSlots() > 0){
             tb.setColor(Color::ITEM_STATS);
@@ -115,6 +118,13 @@ const Texture &ClientItem::tooltip() const{
         if (_constructsObject->merchantSlots() > 0){
             tb.setColor(Color::ITEM_STATS);
             tb.addLine("  Merchant: " + toString(_constructsObject->merchantSlots()) + " slots");
+        }
+
+        // Tags
+        if (_constructsObject->hasTags()){
+            tb.setColor(Color::ITEM_TAGS);
+            for (const std::string &tag : _constructsObject->tags())
+                tb.addLine("  " + tag);
         }
     }
 

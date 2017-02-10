@@ -1,8 +1,7 @@
-// (C) 2015-2016 Tim Gurto
-
 #ifndef CLIENT_OBJECT_TYPE_H
 #define CLIENT_OBJECT_TYPE_H
 
+#include <set>
 #include <string>
 
 #include "EntityType.h"
@@ -24,6 +23,7 @@ class ClientObjectType : public EntityType{
     Mix_Chunk *_gatherSound;
     Rect _collisionRect;
     const ParticleProfile *_gatherParticles;
+    std::set<std::string> _tags;
 
 public:
     ClientObjectType(const std::string &id);
@@ -45,8 +45,12 @@ public:
     void collisionRect(const Rect &r) { _collisionRect = r; }
     const ParticleProfile *gatherParticles() const { return _gatherParticles; }
     void gatherParticles(const ParticleProfile *profile) { _gatherParticles = profile; }
+    bool hasTags() const { return !_tags.empty(); }
+    const std::set<std::string> &tags() const { return _tags; }
 
     virtual char classTag() const override { return 'o'; }
+
+    void addTag(const std::string &tagName){ _tags.insert(tagName); }
 
     struct ptrCompare{
         bool operator()(const ClientObjectType *lhs, const ClientObjectType *rhs){
