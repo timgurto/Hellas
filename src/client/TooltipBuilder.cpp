@@ -61,7 +61,7 @@ Texture TooltipBuilder::publish(){
     background.setRenderTarget();
     renderer.setDrawColor(Color::TOOLTIP_BACKGROUND);
     renderer.clear();
-    background.setAlpha(0xbf);
+    background.setAlpha(0xdf);
 
     // Draw background
     Texture ret = Texture(totalWidth, totalHeight);

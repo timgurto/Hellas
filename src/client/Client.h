@@ -116,7 +116,7 @@ private:
     bool playerHasItem(const Item *item, size_t quantity = 1) const;
 
     void initializeCraftingWindow();
-    bool _haveMatsFilter, _haveToolsFilter, _tagOr, _matOr;
+    bool _haveMatsFilter, _haveToolsFilter, _tagOr, _matOr, _haveSomeMatsFilter;
     static const px_t HEADING_HEIGHT; // The height of windows' section headings
     static const px_t LINE_GAP; // The total height occupied by a line and its surrounding spacing
     const Recipe *_activeRecipe; // The recipe currently selected, if any

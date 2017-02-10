@@ -18,7 +18,8 @@ void Client::initializeCraftingWindow(){
         for (const std::string &tagName : recipe.product()->tags())
             _tagFilters[tagName] = false;
     }
-    _haveMatsFilter = true;
+    _haveMatsFilter = false;
+    _haveSomeMatsFilter = true;
     _tagOr = _matOr = false;
     _haveToolsFilter = true;
     _tagFilterSelected = _matFilterSelected = false;
@@ -52,9 +53,13 @@ void Client::initializeCraftingWindow(){
     filterPane->addChild(new Label(Rect(0, 0, FILTERS_PANE_W, HEADING_HEIGHT),
                                    "Filters", Element::CENTER_JUSTIFIED));
     px_t y = HEADING_HEIGHT;
-    CheckBox *pCB = new CheckBox(Rect(0, y, FILTERS_PANE_W / 2, Element::TEXT_HEIGHT),
-                                 _haveMatsFilter, "Have materials:");
+    CheckBox *pCB = new CheckBox(Rect(0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT),
+                                 _haveMatsFilter, "Have all materials");
     pCB->setTooltip("Only show recipes for which you have the materials");
+    filterPane->addChild(pCB);
+    y += Element::TEXT_HEIGHT;
+    pCB = new CheckBox(Rect(0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT),
+                       _haveSomeMatsFilter, "Have some materials");
     filterPane->addChild(pCB);
     y += Element::TEXT_HEIGHT;
     filterPane->addChild(new Line(0, y + LINE_GAP/2, FILTERS_PANE_W));
@@ -302,11 +307,20 @@ void Client::populateRecipesList(Element &e){
 }
 
 bool Client::recipeMatchesFilters(const Recipe &recipe) const{
-    // "Have materials" filter
+    // "Have materials" filters
     if (_haveMatsFilter) {
         for (const std::pair<const Item *, size_t> &materialsNeeded : recipe.materials())
             if (!playerHasItem(materialsNeeded.first, materialsNeeded.second))
                 return false;
+    } else if (_haveSomeMatsFilter) {
+        bool haveSomeMats = false;
+        for (const std::pair<const Item *, size_t> &materialsNeeded : recipe.materials())
+            if (playerHasItem(materialsNeeded.first, 1)){
+                haveSomeMats = true;
+                break;
+            }
+        if (!haveSomeMats)
+            return false;
     }
 
     // Material filters
