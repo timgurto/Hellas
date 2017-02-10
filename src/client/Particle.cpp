@@ -1,7 +1,7 @@
 #include "Particle.h"
 #include "../util.h"
 
-const EntityType Particle::ENTITY_TYPE; // The default constructor will suffice.
+const EntityType Particle::ENTITY_TYPE(EntityType::DECORATION);
 
 Particle::Particle(const Point &loc, const Texture &image, const Rect &drawRect,
                    const Point &velocity, double startingAltitude, double startingFallSpeed,

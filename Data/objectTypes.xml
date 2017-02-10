@@ -15,6 +15,7 @@ Client only:
  - yDrawOffset
  - isFlat
  - gatherSound
+ - isDecoration (no tooltip)
 
 Server only:
  - constructionTimer
@@ -147,6 +148,7 @@ Server only:
     imageFile="grass"
     xDrawOffset="-7" yDrawOffset="-8"
     allowedTerrain="tutorialWater"
+    isDecoration="1"
 />
 
 </root>

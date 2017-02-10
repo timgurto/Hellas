@@ -437,7 +437,9 @@ Entity *Client::getEntityAtMouse(){
         lowerBound = _entities.lower_bound(&topEntity),
         upperBound = _entities.upper_bound(&bottomEntity);
     for (auto it = lowerBound; it != upperBound; ++it) {
-        if (*it != &_character &&(*it)->collision(mouseOffset))
+        if (*it != &_character && // Skip the player's character
+                !(*it)->type()->isDecoration() && // Skip decorations
+                (*it)->collision(mouseOffset)) // Check collision
             mouseOverIt = it;
     }
     if (mouseOverIt != _entities.end())

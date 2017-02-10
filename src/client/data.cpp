@@ -96,6 +96,7 @@ void Client::loadData(const std::string &path){
             if (xr.findAttr(elem, "merchantSlots", n)) cot->merchantSlots(n);
 
             if (xr.findAttr(elem, "isFlat", n) && n != 0) cot->isFlat(true);
+            if (xr.findAttr(elem, "isDecoration", n) && n != 0) cot->isDecoration(true);
             if (xr.findAttr(elem, "gatherSound", s))
                 cot->gatherSound(std::string("Sounds/") + s + ".wav");
             if (xr.findAttr(elem, "gatherParticles", s)) cot->gatherParticles(findParticleProfile(s));
