@@ -711,6 +711,8 @@ void Client::dropItemOnConfirmation(size_t serial, size_t slot, const ClientItem
         addWindow(_confirmationWindow);
     } else {
         _confirmationWindowText->changeText(windowText);
+        removeWindow(_confirmationWindow);
+        addWindow(_confirmationWindow);
     }
     _confirmationWindow->show();
 }
