@@ -8,6 +8,7 @@ Both:
  - collisionRect
  - deconstructs
  - isVehicle
+ - gatherReq
 
 Client only:
  - name
@@ -19,7 +20,6 @@ Client only:
 
 Server only:
  - constructionTimer
- - gatherReq
  - tag
 -->
 

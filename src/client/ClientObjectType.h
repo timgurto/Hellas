@@ -17,6 +17,7 @@ class ClientObjectType : public EntityType{
     std::string _id;
     std::string _name;
     bool _canGather; // Whether this represents objects that can be gathered
+    std::string _gatherReq; // An item thus tagged is required to gather this object.
     bool _canDeconstruct; // Whether these objects can be deconstructed into items
     size_t _containerSlots;
     size_t _merchantSlots;
@@ -33,6 +34,8 @@ public:
     void name(const std::string &s) { _name = s; }
     bool canGather() const { return _canGather; }
     void canGather(bool b) { _canGather = b; }
+    const std::string &gatherReq() const { return _gatherReq; }
+    void gatherReq(const std::string &req) { _gatherReq = req; }
     bool canDeconstruct() const { return _canDeconstruct; }
     void canDeconstruct(bool b) { _canDeconstruct = b; }
     size_t containerSlots() const { return _containerSlots; }

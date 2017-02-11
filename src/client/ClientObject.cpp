@@ -450,8 +450,10 @@ const Texture &ClientObject::tooltip() const{
 
     if (ot.canGather()){
         if (!stats) {stats = true; tb.addGap(); }
-        tb.addLine("Gatherable");
-        // TODO: Gather req.
+        std::string text = "Gatherable";
+        if (!ot.gatherReq().empty())
+            text += " (requires " + ot.gatherReq() + ")";
+        tb.addLine(text);
     }
 
     if (ot.canDeconstruct()){
