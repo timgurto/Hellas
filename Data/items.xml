@@ -25,39 +25,39 @@ Client only:
  7 left hand
 -->
 
-<item id="stick"        name="Stick"            stackSize=10 />
-<item id="rock"         name="Rock"             stackSize=10 />
-<item id="grass"        name="Grass"            stackSize=20 />
-<item id="log"          name="Log"              stackSize=5 />
-<item id="tin"          name="Tin Ore"          stackSize=10 />
-<item id="copper"       name="Copper Ore"       stackSize=10 />
-<item id="bone"         name="Bone"             stackSize=10 />
-<item id="hide"         name="Animal hide"      stackSize=5 />
-<item id="crudeClay"    name="Crude clay"       stackSize=10 />
-<item id="tinBar"       name="Tin Bar"          stackSize=10 />
-<item id="driftwood"    name="Driftwood"        stackSize=10 />
+<item id="stick"        name="Stick"            stackSize="10" />
+<item id="rock"         name="Rock"             stackSize="10" />
+<item id="grass"        name="Grass"            stackSize="20" />
+<item id="log"          name="Log"              stackSize="5" />
+<item id="tin"          name="Tin Ore"          stackSize="10" />
+<item id="copper"       name="Copper Ore"       stackSize="10" />
+<item id="bone"         name="Bone"             stackSize="10" />
+<item id="hide"         name="Animal hide"      stackSize="5" />
+<item id="crudeClay"    name="Crude clay"       stackSize="10" />
+<item id="tinBar"       name="Tin Bar"          stackSize="10" />
+<item id="driftwood"    name="Driftwood"        stackSize="10" />
 <item id="smallPot"     name="Small Pot"        constructs="smallPot" />
 <item id="oven"         name="Oven"             constructs="oven" />
 <item id="handCart"     name="Hand Cart"        constructs="handCart" />
 <item id="raft"         name="Driftwood Raft"   constructs="raft" />
-<item id="coins"        name="Copper Coins"     stackSize=100 />
-<item id="rope"         name="Rope"             stackSize=10 />
+<item id="coins"        name="Copper Coins"     stackSize="100" />
+<item id="rope"         name="Rope"             stackSize="10" />
 
-<item id="stoneAxe" name="Stone axe"    gearSlot=6 >
+<item id="stoneAxe" name="Stone axe"    gearSlot="6" >
     <tag name="axe" />
-    <stats attack=1 />
-    <offset x=-5 y=1 />
+    <stats attack="1" />
+    <offset x="-5" y="1" />
 </item>
 
-<item id="tinPick" name="Tin pickaxe"    gearSlot=6 >
+<item id="tinPick" name="Tin pickaxe"    gearSlot="6" >
     <tag name="pick" />
-    <stats attack=3 />
-    <offset x=-3 y=0 />
+    <stats attack="3" />
+    <offset x="-3" y="0" />
 </item>
 
-<item id="hideCloak" name="Hide cloak"  gearSlot=3 >
-    <stats health=5 />
-    <offset x=-4 y=-1 />
+<item id="hideCloak" name="Hide cloak"  gearSlot="3" >
+    <stats health="5" />
+    <offset x="-4" y="-1" />
 </item>
 
 <item id="pickMould" name="Pickaxe mould" >

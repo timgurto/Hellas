@@ -1,45 +1,45 @@
 <root>
 
 <recipe
-    id="stoneAxe" time=4000 product="stoneAxe" >
+    id="stoneAxe" time="4000" product="stoneAxe" >
     <material id="rock" />
-    <material id="grass" quantity=2 />
+    <material id="grass" quantity="2" />
     <material id="stick" />
 </recipe>
 
 <recipe
-    id="oven" time=6000 product="oven" >
-    <material id="rock" quantity=10/>
+    id="oven" time="6000" product="oven" >
+    <material id="rock" quantity="10"/>
 </recipe>
 
 <recipe
-    id="hideCloak" time=4000 product="hideCloak" >
-    <material id="hide" quantity=2/>
+    id="hideCloak" time="4000" product="hideCloak" >
+    <material id="hide" quantity="2"/>
 </recipe>
 
 <recipe
-    id="smallPot" time=12000 product="smallPot" >
-    <material id="crudeClay" quantity=4/>
+    id="smallPot" time="12000" product="smallPot" >
+    <material id="crudeClay" quantity="4"/>
     <material id="log" />
     <tool class="kiln1" />
 </recipe>
 
 <recipe
-    id="pickMould" time=12000 product="pickMould" >
-    <material id="crudeClay" quantity=2/>
+    id="pickMould" time="12000" product="pickMould" >
+    <material id="crudeClay" quantity="2"/>
     <material id="log" />
     <tool class="kiln1" />
 </recipe>
 
 <recipe
-    id="tinBar" time=12000 product="tinBar" >
-    <material id="tin" quantity=5/>
+    id="tinBar" time="12000" product="tinBar" >
+    <material id="tin" quantity="5"/>
     <material id="log" />
     <tool class="kiln1" />
 </recipe>
 
 <recipe
-    id="tinPick" time=4000 product="tinPick" >
+    id="tinPick" time="4000" product="tinPick" >
     <material id="tinBar" />
     <material id="log" />
     <material id="stick" />
@@ -47,9 +47,9 @@
 </recipe>
 
 <recipe
-    id="raft" time=4000 product="raft" >
-    <material id="driftwood" quantity=8 />
-    <material id="rope" quantity=3 />
+    id="raft" time="4000" product="raft" >
+    <material id="driftwood" quantity="8" />
+    <material id="rope" quantity="3" />
 </recipe>
 
 </root>
