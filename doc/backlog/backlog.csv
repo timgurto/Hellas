@@ -72,7 +72,7 @@ issue,description,value,effort,type,blockedBy,done
 226,Right-click to equip gear,5,2,Feature,,TRUE
 227,Shift + right-click to loot all,5,2,Feature,,
 228,Close client on single Esc press when disconnected,3,1,Bug,,
-229,Thorough and consistent tooltips,13,21,Aesthetics,,
+229,Thorough and consistent tooltips,13,21,Aesthetics,,TRUE
 230,Display stats in client,13,2,Aesthetics,,TRUE
 231,Player can get stuck against terrain or NPCs,34,5,Bug,,TRUE
 232,NPCs get stuck on each other due to linear pathfinding,21,8,Bug,,
@@ -154,8 +154,8 @@ issue,description,value,effort,type,blockedBy,done
 311,Prevent mouse-over events on particles and decorations,3,3,Bug,,TRUE
 312,Allow actual dragging from containers,8,5,Feature,,
 313,Use the word 'destroy' in confirmation window,2,1,Aesthetics,,
-314,Fix item tooltips,21,5,Feature,,TRUE
 315,Allow decorations without tooltips,2,3,Aesthetics,,TRUE
 316,Find a way of hiding recipes,8,5,Aesthetics,,TRUE
-317,Fix stat-window height,8,1,Bug,,
-318,Let window titles expand window width,3,1,Bug
+317,Fix stat-window height,8,1,Bug,,TRUE
+318,Let window titles expand window width,3,1,Bug,,
+319,Mouse-down events are propagating to multiple windows,5,2,Bug
