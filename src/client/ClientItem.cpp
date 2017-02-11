@@ -85,9 +85,9 @@ const Texture &ClientItem::tooltip() const{
         if (_stats.attack > 0)
             tb.addLine("+" + toString(_stats.attack) + " attack");
         if (_stats.attackTime != 1)
-            tb.addLine("+" + multiplicativeToString(1/_stats.attackTime));
+            tb.addLine("+" + multiplicativeToString(1/_stats.attackTime) + " attack speed");
         if (_stats.speed != 1)
-            tb.addLine("+" + multiplicativeToString(_stats.speed));
+            tb.addLine("+" + multiplicativeToString(_stats.speed) + " run speed");
     }
 
     // Tags
