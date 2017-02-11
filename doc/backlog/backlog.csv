@@ -153,7 +153,7 @@ issue,description,value,effort,type,blockedBy,done
 310,Prevent clipping in getTileCoords() due to random coord at map edge,1,1,Bug,,
 311,Prevent mouse-over events on particles and decorations,3,3,Bug,,TRUE
 312,Allow actual dragging from containers,8,5,Feature,,
-313,Use the word 'destroy' in confirmation window,2,1,Aesthetics,,
+313,Use the word 'destroy' in confirmation window,2,1,Aesthetics,,TRUE
 315,Allow decorations without tooltips,2,3,Aesthetics,,TRUE
 316,Find a way of hiding recipes,8,5,Aesthetics,,TRUE
 317,Fix stat-window height,8,1,Bug,,TRUE

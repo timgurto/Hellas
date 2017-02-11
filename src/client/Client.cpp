@@ -680,7 +680,7 @@ void Client::unwatchObject(ClientObject &obj){
 void Client::dropItemOnConfirmation(size_t serial, size_t slot, const ClientItem *item){
     _serialToDrop = serial;
     _slotToDrop = slot;
-    std::string windowText = "Are you sure you want to drop ";
+    std::string windowText = "Are you sure you want to destroy ";
     windowText += item->name() + "?";
 
     _messageToConfirm = MSG_START + toString(CL_DROP) + MSG_DELIM + makeArgs(serial, slot) +

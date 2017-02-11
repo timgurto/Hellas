@@ -124,7 +124,7 @@ Server only:
 </objectType>
 
 <objectType
-    id="raft" name="Driftwood Raft"
+    id="raft" name="Raft"
     xDrawOffset="-16"
     yDrawOffset="-11"
     constructionTime="4000"
