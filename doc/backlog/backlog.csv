@@ -77,7 +77,7 @@ issue,description,value,effort,type,blockedBy,done
 231,Player can get stuck against terrain or NPCs,34,5,Bug,,TRUE
 232,NPCs get stuck on each other due to linear pathfinding,21,8,Bug,,
 234,Fail more gracefully and informatively when can't connect to server,3,5,Aesthetics,,
-235,Maintain aspect ratio,2,5,Bug,,
+235,Maintain aspect ratio,2,5,Bug,,TRUE
 237,A boat that's restricted to water,21,5,Feature,,TRUE
 238,Choose map scale,5,3,Feature,,TRUE
 239,Make full map,21,89,Feature,,TRUE

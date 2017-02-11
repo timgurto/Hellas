@@ -53,8 +53,6 @@ public:
     void fillRect(const Rect &dstRect);
     void fill();
 
-    void setScale(float x, float y);
-
     void updateSize();
 
     void pushRenderTarget(Texture &target);

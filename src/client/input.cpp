@@ -168,8 +168,10 @@ void Client::handleInput(double delta){
             break;
 
         case SDL_MOUSEMOTION: {
-            _mouse.x = e.motion.x * SCREEN_X / static_cast<double>(renderer.width());
-            _mouse.y = e.motion.y * SCREEN_Y / static_cast<double>(renderer.height());
+            px_t x, y;
+            SDL_GetMouseState(&x, &y);
+            _mouse.x = x * SCREEN_X / static_cast<double>(renderer.width());
+            _mouse.y = y * SCREEN_Y / static_cast<double>(renderer.height());
             _mouseMoved = true;
                 
             Element::resetTooltip();
@@ -373,8 +375,6 @@ void Client::handleInput(double delta){
             case SDL_WINDOWEVENT_MAXIMIZED:
             case SDL_WINDOWEVENT_RESTORED:
                 renderer.updateSize();
-                renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
-                                    static_cast<float>(renderer.height()) / SCREEN_Y);
                 for (Window *window : _windows)
                     window->forceRefresh();
                 for (Element *element : _ui)

@@ -149,9 +149,6 @@ void Client::initializeCraftingWindow(){
     _detailsPane = new Element(Rect(DETAILS_PANE_X, CONTENT_Y, DETAILS_PANE_W, CONTENT_H));
     _craftingWindow->addChild(_detailsPane);
     selectRecipe(*_detailsPane, Point()); // Fill details pane initially
-
-    renderer.setScale(static_cast<float>(renderer.width()) / SCREEN_X,
-                      static_cast<float>(renderer.height()) / SCREEN_Y);
 }
 
 void Client::selectRecipe(Element &e, const Point &mousePos){

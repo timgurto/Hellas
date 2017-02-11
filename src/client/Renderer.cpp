@@ -46,6 +46,8 @@ void Renderer::init(){
 
     SDL_GetRendererOutputSize(_renderer, &_w, &_h);
 
+    SDL_RenderSetLogicalSize(_renderer, 640, 360);
+
     _valid = true;
 }
 
@@ -109,10 +111,6 @@ void Renderer::fill(){
 
 void Renderer::setRenderTarget() const{
     SDL_SetRenderTarget(_renderer, 0);
-}
-
-void Renderer::setScale(float x, float y){
-    SDL_RenderSetScale(_renderer, x, y);
 }
 
 void Renderer::updateSize(){
