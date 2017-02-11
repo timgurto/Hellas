@@ -19,13 +19,41 @@
 
 <recipe
     id="smallPot" time="12000" product="smallPot" >
-    <material id="crudeClay" quantity="4"/>
+    <material id="crudeClay" quantity="2"/>
     <material id="log" />
     <tool class="kiln1" />
 </recipe>
 
 <recipe
+    id="mediumPot" time="12000" product="mediumPot" >
+    <material id="charcoal" />
+    <material id="clay" quantity="3" />
+    <tool id="kiln1" />
+</recipe>
+
+<recipe
+    id="largePot" time="12000" product="largePot" >
+    <material id="charcoal" />
+    <material id="clay" quantity="5" />
+    <tool id="kiln2" />
+</recipe>
+
+<recipe
     id="pickMould" time="12000" product="pickMould" >
+    <material id="crudeClay" quantity="2"/>
+    <material id="log" />
+    <tool class="kiln1" />
+</recipe>
+
+<recipe
+    id="pipeMould" time="12000" product="pipeMould" >
+    <material id="crudeClay" quantity="2"/>
+    <material id="log" />
+    <tool class="kiln1" />
+</recipe>
+
+<recipe
+    id="sawMould" time="12000" product="sawMould" >
     <material id="crudeClay" quantity="2"/>
     <material id="log" />
     <tool class="kiln1" />
@@ -47,9 +75,68 @@
 </recipe>
 
 <recipe
+    id="tinSaw" time="4000" product="tinSaw" >
+    <material id="tinBar" />
+    <material id="log" />
+    <material id="stick" />
+    <tool class="kiln1" />
+</recipe>
+
+<recipe
+    id="tinPipe" time="4000" product="tinPipe" >
+    <material id="tinBar" />
+    <material id="log" />
+    <tool class="kiln1" />
+</recipe>
+
+<recipe
     id="raft" time="4000" product="raft" >
     <material id="driftwood" quantity="8" />
     <material id="rope" quantity="3" />
+</recipe>
+
+<recipe
+    id="elutriator" time="4000" product="elutriator" >
+    <material id="smallPot" />
+    <material id="tinPipe" />
+</recipe>
+
+<recipe
+    id="clay" time="1500" product="clay" >
+    <material id="crudeClay" quantity="2" />
+    <tool id="elutriator" />
+</recipe>
+
+<recipe
+    id="charcoal" time="12000" product="charcoal" >
+    <material id="log" quantity="2" />
+    <tool id="kiln1" />
+</recipe>
+
+<recipe
+    id="ceramicSlab" time="12000" product="ceramicSlab" >
+    <material id="charcoal" />
+    <material id="clay" quantity="8" />
+    <tool id="kiln1" />
+</recipe>
+
+<recipe
+    id="kiln" time="12000" product="kiln" >
+    <material id="charcoal" />
+    <material id="ceramicSlab" quantity="4" />
+    <tool id="kiln1" />
+</recipe>
+
+<recipe
+    id="lumber" time="3000" product="lumber" >
+    <material id="log" />
+    <tool id="saw" />
+</recipe>
+
+<recipe
+    id="handCart" time="3000" product="handCart" >
+    <material id="lumber" quantity="8" />
+    <tool id="saw" />
 </recipe>
 
 </root>

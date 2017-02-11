@@ -103,6 +103,20 @@ Server only:
 </objectType>
 
 <objectType
+    id="mediumPot" name="Medium Pot"
+    constructionTime="1000"
+    deconstructs="mediumPot" deconstructionTime="1000" >
+    <container slots="4" />
+</objectType>
+
+<objectType
+    id="largePot" name="Large Pot"
+    constructionTime="1000"
+    deconstructs="largePot" deconstructionTime="1000" >
+    <container slots="10" />
+</objectType>
+
+<objectType
     id="handCart"
     name="Hand Cart"
     xDrawOffset="-13"
@@ -113,6 +127,7 @@ Server only:
     isVehicle="1" >
     <collisionRect x="-13" y="-4" w="25" h="8" />
     <container slots="8" />
+    <merchant slots="1" />
 </objectType>
 
 <objectType
@@ -149,6 +164,27 @@ Server only:
     xDrawOffset="-7" yDrawOffset="-8"
     allowedTerrain="tutorialWater"
     isDecoration="1"
-/>
+    />
+
+<objectType
+    id="elutriator" name="Elutriator"
+    constructionTime="1000"
+    deconstructs="elutriator" deconstructionTime="1000" >
+    <tag name="elutriator" />
+</objectType>
+
+<objectType
+    id="kiln" name="Kiln"
+    constructionTime="1000"
+    deconstructs="kiln" deconstructionTime="1000" >
+    <tag name="kiln1" />
+    <tag name="kiln2" />
+</objectType>
+
+<objectType
+    id="post" name="Post"
+    constructionTime="1000"
+    deconstructs="lumber" deconstructionTime="1000" >
+</objectType>
 
 </root>

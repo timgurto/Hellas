@@ -36,32 +36,58 @@ Client only:
 <item id="crudeClay"    name="Crude clay"       stackSize="10" />
 <item id="tinBar"       name="Tin Bar"          stackSize="10" />
 <item id="driftwood"    name="Driftwood"        stackSize="10" />
+<item id="coins"        name="Copper Coins"     stackSize="100" />
+<item id="rope"         name="Rope"             stackSize="10" />
+<item id="charcoal"     name="Charcoal"         stackSize="10" />
+
 <item id="smallPot"     name="Small Pot"        constructs="smallPot" />
+<item id="mediumPot"    name="Medium Pot"       constructs="mediumPot" />
+<item id="large Pot"    name="Large Pot"        constructs="largePot" />
 <item id="oven"         name="Oven"             constructs="oven" />
 <item id="handCart"     name="Hand Cart"        constructs="handCart" />
 <item id="raft"         name="Driftwood Raft"   constructs="raft" />
-<item id="coins"        name="Copper Coins"     stackSize="100" />
-<item id="rope"         name="Rope"             stackSize="10" />
+<item id="elutriator"   name="Elutriator"       constructs="elutriator" />
+<item id="kiln"         name="Kiln"             constructs="kiln" />
+<item id="lumber"       name="Lumber"         constructs="post" />
 
-<item id="stoneAxe" name="Stone axe"    gearSlot="6" >
+<item id="ceramicSlab"  name="Ceramic Slab" />
+
+<item id="stoneAxe" name="Stone Axe" gearSlot="6" >
     <tag name="axe" />
     <stats attack="1" />
     <offset x="-5" y="1" />
 </item>
 
-<item id="tinPick" name="Tin pickaxe"    gearSlot="6" >
+<item id="tinPick" name="Tin Pickaxe" gearSlot="6" >
     <tag name="pick" />
     <stats attack="3" />
     <offset x="-3" y="0" />
 </item>
 
-<item id="hideCloak" name="Hide cloak"  gearSlot="3" >
+<item id="tinPipe" name="Tin Pipe" gearSlot="6" >
+    <stats attack="1" />
+</item>
+
+<item id="tinSaw" name="Tin Saw" gearSlot="6" >
+    <tag name="saw" />
+    <stats attackTime="0.5" />
+</item>
+
+<item id="hideCloak" name="Hide Cloak" gearSlot="3" >
     <stats health="5" />
     <offset x="-4" y="-1" />
 </item>
 
-<item id="pickMould" name="Pickaxe mould" >
+<item id="pickMould" name="Pickaxe Mould" >
     <tag name="pickMould" />
+</item>
+
+<item id="pipeMould" name="Pipe Mould" >
+    <tag name="pipeMould" />
+</item>
+
+<item id="sawMould" name="Saw Mould" >
+    <tag name="sawMould" />
 </item>
 
 </root>
