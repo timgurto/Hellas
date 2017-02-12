@@ -75,6 +75,7 @@ Client only:
 <item id="tinSaw" name="Tin Saw" gearSlot="6" >
     <tag name="saw" />
     <stats attackTime="0.5" />
+    <offset x="-7" y="-1" />
 </item>
 
 <item id="hideCloak" name="Hide Cloak" gearSlot="3" >
