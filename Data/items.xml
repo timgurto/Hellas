@@ -34,6 +34,7 @@ Client only:
 <item id="bone"         name="Bone"             stackSize="10" />
 <item id="hide"         name="Animal hide"      stackSize="5" />
 <item id="crudeClay"    name="Crude clay"       stackSize="10" />
+<item id="clay"         name="clay"             stackSize="10" />
 <item id="tinBar"       name="Tin Bar"          stackSize="10" />
 <item id="driftwood"    name="Driftwood"        stackSize="10" />
 <item id="coins"        name="Copper Coins"     stackSize="100" />
@@ -42,13 +43,13 @@ Client only:
 
 <item id="smallPot"     name="Small Pot"        constructs="smallPot" />
 <item id="mediumPot"    name="Medium Pot"       constructs="mediumPot" />
-<item id="large Pot"    name="Large Pot"        constructs="largePot" />
+<item id="largePot"    name="Large Pot"        constructs="largePot" />
 <item id="oven"         name="Oven"             constructs="oven" />
 <item id="handCart"     name="Hand Cart"        constructs="handCart" />
 <item id="raft"         name="Driftwood Raft"   constructs="raft" />
 <item id="elutriator"   name="Elutriator"       constructs="elutriator" />
 <item id="kiln"         name="Kiln"             constructs="kiln" />
-<item id="lumber"       name="Lumber"         constructs="post" />
+<item id="lumber"       name="Lumber"           stackSize="10" constructs="post" />
 
 <item id="ceramicSlab"  name="Ceramic Slab" />
 
