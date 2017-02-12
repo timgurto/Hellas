@@ -90,6 +90,13 @@
 </recipe>
 
 <recipe
+    id="tinHelmet" time="4000" product="tinHelmet" >
+    <material id="tinBar" quantity="2" />
+    <material id="log" />
+    <tool class="kiln1" />
+</recipe>
+
+<recipe
     id="raft" time="4000" product="raft" >
     <material id="driftwood" quantity="8" />
     <material id="rope" quantity="3" />

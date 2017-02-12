@@ -9,7 +9,7 @@ issue,description,value,effort,type,blockedBy,done
 100,Optimize container types for faster iteration,2,2,Performance,,
 101,Change dynamic_casts that don't check their result to static_cast or check for nullptr,2,2,Code quality,,
 128,"Use forward declarations where possible, to reduce unnecessary #includes",3,8,Code quality,,
-129,"Add grass objects, which grow naturally on grass tiles",5,21,Feature,,
+129,"Add grass objects, which grow naturally on grass tiles",5,21,Feature,,TRUE
 137,Allow a recipe to create multiple item types,5,8,Feature,,
 138,Use set::count() and map::count() to test set membership,2,2,Code quality,,
 140,Move appropriate configuration details into config file,5,34,Code quality,,
@@ -159,3 +159,7 @@ issue,description,value,effort,type,blockedBy,done
 317,Fix stat-window height,8,1,Bug,,TRUE
 318,Let window titles expand window width,3,1,Bug,,
 319,Mouse-down events are propagating to multiple windows,5,2,Bug
+320,Right-clicking doesn't cancel dragging,3,2,Bug
+321,"Require tools, gather-req items, etc. to be equipped",3,2,Feature
+322,Tools can modify crafting/gathering speed,3,3,Feature
+323,Weird inventory-window behaviour when new item tooltips are generated,,,Bug
