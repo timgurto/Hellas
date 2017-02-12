@@ -58,7 +58,7 @@ const px_t Client::ACTION_DISTANCE = 30;
 const px_t Client::CULL_DISTANCE = 320;
 const px_t Client::CULL_HYSTERESIS_DISTANCE = 50;
 
-const size_t Client::INVENTORY_SIZE = 20;
+const size_t Client::INVENTORY_SIZE = 80;
 const size_t Client::GEAR_SLOTS = 8;
 std::vector<std::string> Client::GEAR_SLOT_NAMES;
 
