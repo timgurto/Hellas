@@ -95,7 +95,7 @@ Server only:
 
 <objectType
     id="smallPot" name="Small Pot"
-    xDrawOffset="-8" yDrawOffset="-15"
+    xDrawOffset="-8" yDrawOffset="-16"
     constructionTime="1000"
     deconstructs="smallPot" deconstructionTime="1000" >
     <collisionRect x="-8" y="-5" w="16" h="10" />
@@ -104,7 +104,7 @@ Server only:
 
 <objectType
     id="mediumPot" name="Medium Pot"
-    xDrawOffset="-18" yDrawOffset="-27"
+    xDrawOffset="-19" yDrawOffset="-27"
     constructionTime="1000"
     deconstructs="mediumPot" deconstructionTime="1000" >
     <collisionRect x="-13" y="-4" w="25" h="6" />
