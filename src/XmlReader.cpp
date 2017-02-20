@@ -62,23 +62,25 @@ bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, std::string &val)
     return false;
 }
 
-bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, Color &val){
-    if (elem == nullptr)
+#ifndef NO_SDL
+    bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, Color &val){
+        if (elem == nullptr)
+            return false;
+        const char *const cStrVal = elem->Attribute(attr);
+        if (cStrVal != nullptr){
+            std::istringstream iss(cStrVal);
+            Uint32 color;
+            iss >> std::hex >> color;
+            Uint8
+                b = color % 0x100,
+                g = color >> 8 % 0x100,
+                r = color >> 16 % 100;
+            val = Color(r, g, b);
+            return true;
+        }
         return false;
-    const char *const cStrVal = elem->Attribute(attr);
-    if (cStrVal != nullptr){
-        std::istringstream iss(cStrVal);
-        Uint32 color;
-        iss >> std::hex >> color;
-        Uint8
-            b = color % 0x100,
-            g = color >> 8 % 0x100,
-            r = color >> 16 % 100;
-        val = Color(r, g, b);
-        return true;
     }
-    return false;
-}
+#endif
 
 bool XmlReader::findNormVarChild(const std::string &val, TiXmlElement *elem,
                                         double &mean, double &sd){
