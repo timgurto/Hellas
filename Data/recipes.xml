@@ -67,11 +67,19 @@
 </recipe>
 
 <recipe
+    id="copperBar" time="12000" product="copperBar" >
+    <material id="copper" quantity="5"/>
+    <material id="charcoal" />
+    <tool class="kiln2" />
+</recipe>
+
+<recipe
     id="tinPick" time="4000" product="tinPick" >
     <material id="tinBar" />
     <material id="log" />
     <material id="stick" />
     <tool class="kiln1" />
+    <tool class="pickMould" />
 </recipe>
 
 <recipe
@@ -80,6 +88,7 @@
     <material id="log" />
     <material id="stick" />
     <tool class="kiln1" />
+    <tool class="sawMould" />
 </recipe>
 
 <recipe
@@ -87,6 +96,7 @@
     <material id="tinBar" />
     <material id="log" />
     <tool class="kiln1" />
+    <tool class="pipeMould" />
 </recipe>
 
 <recipe
@@ -131,7 +141,6 @@
     id="kiln" time="12000" product="kiln" >
     <material id="charcoal" />
     <material id="ceramicSlab" quantity="4" />
-    <tool class="kiln1" />
 </recipe>
 
 <recipe

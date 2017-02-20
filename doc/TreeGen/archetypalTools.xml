@@ -1,6 +1,13 @@
 <root>
 
-<tool id="axe" archetype="item_stoneAxe" />
-<tool id="pick" archetype="item_tinPick" />
+<tool id="axe"          archetype="item_stoneAxe" />
+<tool id="elutriator"   archetype="object_elutriator" />
+<tool id="kiln1"        archetype="object_oven" />
+<tool id="kiln2"        archetype="object_kiln" />
+<tool id="pick"         archetype="item_tinPick" />
+<tool id="pickMould"    archetype="item_pickMould" />
+<tool id="pipeMould"    archetype="item_pipeMould" />
+<tool id="saw"          archetype="item_tinSaw" />
+<tool id="sawMould"     archetype="item_sawMould" />
 
 </root>
