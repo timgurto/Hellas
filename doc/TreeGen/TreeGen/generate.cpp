@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <queue>
 #include <XmlReader.h>
 
 int main(){
@@ -118,8 +119,43 @@ int main(){
                     map.insert(std::make_pair(s, product));
                 } else
                     map.insert(std::make_pair(it->second, product));
+            }
         }
+    }
+
+    // Remove shortcuts and loops
+    for (auto edgeIt = map.begin(); edgeIt != map.end(); ){
+        /*
+        This is one edge.  We want to figure out if there's a longer path here
+        (i.e., this path doesn't add any new information about progress requirements).
+        */
+        bool shouldDelete = false;
+        std::queue<const std::string> queue;
+        std::string &target = edgeIt->second;
+
+        // Populate queue initially with all direct children
+        auto vals = map.equal_range(edgeIt->first);
+        for (auto it = vals.first; it != vals.second; ++it)
+            if (it->second != target)
+                queue.push(it->second);
+
+        // New nodes to check will be added here.  Effectively it will be a breadth-first search.
+        while (!queue.empty() && !shouldDelete){
+            std::string nextParent = queue.front();
+            queue.pop();
+            auto vals = map.equal_range(nextParent);
+            for (auto it = vals.first; it != vals.second; ++it){
+                if (it->second == target){
+                    // Mark the edge for removal
+                    shouldDelete = true;
+                    break;
+                }
+            }
         }
+        auto nextIt = edgeIt; ++nextIt;
+        if (shouldDelete)
+            map.erase(edgeIt);
+        edgeIt = nextIt;
     }
 
 

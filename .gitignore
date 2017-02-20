@@ -35,3 +35,5 @@ doc/backlog/jquery-3.1.0.min.js
 Images/map2.pdn
 *.frx
 doc/TreeGen/TreeGen/TreeGen.vcxproj.filters
+doc/tree.svg
+doc/TreeGen/tree.gv
