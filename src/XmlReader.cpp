@@ -1,9 +1,12 @@
 #include <set>
 #include <sstream>
 
+#include "XmlReader.h"
+
+#ifndef NO_SDL
 #include "NormalVariable.h"
 #include "Rect.h"
-#include "XmlReader.h"
+#endif // NO_SDL
 
 XmlReader::XmlReader(const char *filename):
 _root(nullptr){
@@ -63,24 +66,23 @@ bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, std::string &val)
 }
 
 #ifndef NO_SDL
-    bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, Color &val){
-        if (elem == nullptr)
-            return false;
-        const char *const cStrVal = elem->Attribute(attr);
-        if (cStrVal != nullptr){
-            std::istringstream iss(cStrVal);
-            Uint32 color;
-            iss >> std::hex >> color;
-            Uint8
-                b = color % 0x100,
-                g = color >> 8 % 0x100,
-                r = color >> 16 % 100;
-            val = Color(r, g, b);
-            return true;
-        }
+bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, Color &val){
+    if (elem == nullptr)
         return false;
+    const char *const cStrVal = elem->Attribute(attr);
+    if (cStrVal != nullptr){
+        std::istringstream iss(cStrVal);
+        Uint32 color;
+        iss >> std::hex >> color;
+        Uint8
+            b = color % 0x100,
+            g = color >> 8 % 0x100,
+            r = color >> 16 % 100;
+        val = Color(r, g, b);
+        return true;
     }
-#endif
+    return false;
+}
 
 bool XmlReader::findNormVarChild(const std::string &val, TiXmlElement *elem,
                                         double &mean, double &sd){
@@ -102,3 +104,4 @@ bool XmlReader::findRectChild(const std::string &val, TiXmlElement *elem, Rect &
     if (!XmlReader::findAttr(child, "h", rect.h)) rect.h = 0;
     return true;
 }
+#endif // NO_SDL

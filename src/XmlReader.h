@@ -7,10 +7,9 @@
 
 #ifndef NO_SDL
 #include "Color.h"
-#endif
-
 class NormalVariable;
 struct Rect;
+#endif // NO_SDL
 
 // Wrapper class for TinyXml functionality
 class XmlReader{
@@ -48,7 +47,6 @@ public:
     static bool findAttr(TiXmlElement *elem, const char *attr, std::string &val);
 #ifndef NO_SDL
     static bool findAttr(TiXmlElement *elem, const char *attr, Color &val); // Hex string -> Color
-#endif
 
     /*
     If a child exists with the specified name, attempt to read its 'mean' and 'sd' attributes into
@@ -66,6 +64,7 @@ public:
     Return value: whether or not the child was found.
     */
     static bool findRectChild(const std::string &val, TiXmlElement *elem, Rect &rect);
+#endif //NO_SDL
 };
 
 #endif

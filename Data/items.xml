@@ -36,6 +36,7 @@ Client only:
 <item id="crudeClay"    name="Crude Clay"       stackSize="10" />
 <item id="clay"         name="Clay"             stackSize="10" />
 <item id="tinBar"       name="Tin Bar"          stackSize="10" />
+<item id="copperBar"    name="Copper Bar"       stackSize="10" />
 <item id="driftwood"    name="Driftwood"        stackSize="10" />
 <item id="coins"        name="Copper Coins"     stackSize="100" />
 <item id="rope"         name="Rope"             stackSize="10" />

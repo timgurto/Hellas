@@ -1,0 +1,6 @@
+<root>
+
+<tool id="axe" archetype="item_stoneAxe" />
+<tool id="pick" archetype="item_tinPick" />
+
+</root>

@@ -85,7 +85,7 @@ Server only:
 </objectType>
 
 <objectType
-    id="clay" name="Clay"
+    id="clay" name="Clay Deposit"
     xDrawOffset="-12" yDrawOffset="-12"
     canGather="1" gatherTime="3000"
     isFlat="1" >
@@ -177,8 +177,7 @@ Server only:
 
 <objectType
     id="kiln" name="Kiln"
-    constructionTime="1000"
-    deconstructs="kiln" deconstructionTime="1000" >
+    constructionTime="1000" >
     <tag name="kiln1" />
     <tag name="kiln2" />
 </objectType>
