@@ -10,4 +10,7 @@
 <tool id="saw"          archetype="item_tinSaw" />
 <tool id="sawMould"     archetype="item_sawMould" />
 
+<blacklist parent="object_copper"   child="item_rock" />
+<blacklist parent="object_tree"   child="item_stick" />
+
 </root>

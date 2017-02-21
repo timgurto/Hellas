@@ -4,10 +4,22 @@
 #include <queue>
 #include <XmlReader.h>
 
+struct Path{
+    std::string child;
+    std::vector<std::string> parents;
+
+    Path(const std::string &startNode):
+        child(startNode)
+    {
+        parents.push_back(startNode);
+    }
+};
+
 int main(){
     std::multimap<std::string, std::string> map; // map[a] = b: a -> b
     std::map<std::string, std::string> tools;
     std::map<std::string, std::string> nodes; // id -> label
+    std::map<std::string, std::string> blacklist;
     const std::string dataPath = "../../Data";
 
     // Load tools
@@ -17,6 +29,14 @@ int main(){
         if (!xr.findAttr(elem, "id", id)) continue;
         if (!xr.findAttr(elem, "archetype", archetype)) continue;
         tools[id] = archetype;
+    }
+
+    // Load blacklist
+    for (auto elem : xr.getChildren("blacklist")){
+        std::string parent, child;
+        if (!xr.findAttr(elem, "parent", parent)) continue;
+        if (!xr.findAttr(elem, "child", child)) continue;
+        blacklist[parent] = child;
     }
 
     // Load items
@@ -123,14 +143,26 @@ int main(){
         }
     }
 
-    // Remove shortcuts and loops
+    // Remove blacklisted items
+    for (auto edge : blacklist){
+        auto vals = map.equal_range(edge.first);
+        for (auto it = vals.first; it != vals.second; ++it)
+            if (it->second == edge.second){
+                map.erase(it);
+                break;
+            }
+    }
+
+
+    // Remove shortcuts
     for (auto edgeIt = map.begin(); edgeIt != map.end(); ){
         /*
         This is one edge.  We want to figure out if there's a longer path here
         (i.e., this path doesn't add any new information about progress requirements).
         */
         bool shouldDelete = false;
-        std::queue<const std::string> queue;
+        std::queue<std::string> queue;
+        std::set<std::string> nodesFound;
         std::string &target = edgeIt->second;
 
         // Populate queue initially with all direct children
@@ -149,6 +181,9 @@ int main(){
                     // Mark the edge for removal
                     shouldDelete = true;
                     break;
+                } else if (nodesFound.find(it->second) != nodesFound.end()){
+                    queue.push(it->second);
+                    nodesFound.insert(it->second);
                 }
             }
         }
@@ -159,9 +194,64 @@ int main(){
     }
 
 
-    // Publiah
+    // Remove loops
+    // First, find set of nodes that start edges but don't finish them (i.e., the roots of the tree).
+    std::set<std::string> starts, ends;
+    for (auto &edge : map){
+        starts.insert(edge.first);
+        ends.insert(edge.second);
+    }
+    for (const std::string &endNode : ends){
+        starts.erase(endNode);
+    }
+
+    // Next, do a BFS from each to find loops.  Remove those final edges.
+    std::set<std::pair<std::string, std::string> > trashCan;
+    for (const std::string &startNode : starts){
+        //std::cout << "Root node: " << startNode << std::endl;
+        std::queue<Path> queue;
+        queue.push(Path(startNode));
+        bool loopFound = false;
+        while (!queue.empty() && !loopFound){
+            Path nextPath = queue.front();
+            queue.pop();
+            auto vals = map.equal_range(nextPath.child);
+            for (auto it = vals.first; it != vals.second; ++it){
+                std::string child = it->second;
+                // If this child is already a parent
+                if (std::find(nextPath.parents.begin(), nextPath.parents.end(), child) != nextPath.parents.end()){
+                    std::cout << "Loop found; marked for removal:" << std::endl << "  ";
+                    for (const std::string &parent : nextPath.parents)
+                        std::cout << parent << " -> ";
+                    std::cout << child << std::endl;
+                    // Mark the edge for removal
+                    trashCan.insert(*it);
+                } else {
+                    Path p = nextPath;
+                    p.parents.push_back(child);
+                    p.child = child;
+                    queue.push(p);
+                }
+            }
+        }
+        for (auto pair : trashCan){
+            auto vals = map.equal_range(pair.first);
+            for (auto it = vals.first; it != vals.second; ++it){
+                if (it->second == pair.second){
+                    map.erase(it);
+                    break;
+                }
+            }
+        }
+    }
+
+
+
+    // Publish
     std::ofstream f("tree.gv");
     f << "digraph {";
+
+    // Non-"root" nodes
     for (auto &node : nodes)
         f << node.first << " [label=\"" << node.second << "\"]" << std::endl;
 
