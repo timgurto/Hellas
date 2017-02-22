@@ -6,6 +6,7 @@
 #include "../XmlReader.h"
 
 void Client::loadData(const std::string &path){
+    drawLoadingScreen("Clearing old data", 0.611);
     _terrain.clear();
     _items.clear();
     _recipes.clear();
@@ -13,6 +14,7 @@ void Client::loadData(const std::string &path){
     _objects.clear();
 
     // Load terrain
+    drawLoadingScreen("Loading terrain", 0.622);
     XmlReader xr(path + "/terrain.xml");
     if (xr)
         for (auto elem : xr.getChildren("terrain")) {
@@ -32,6 +34,7 @@ void Client::loadData(const std::string &path){
         }
 
     // Particles
+    drawLoadingScreen("Loading particles", 0.633);
     if (xr.newFile(path + "/particles.xml"))
         for (auto elem : xr.getChildren("particleProfile")) {
             std::string s;
@@ -62,6 +65,7 @@ void Client::loadData(const std::string &path){
         }
 
     // Object types
+    drawLoadingScreen("Loading objects", 0.644);
     if (xr.newFile(path + "/objectTypes.xml"))
         for (auto elem : xr.getChildren("objectType")) {
             std::string s; int n;
@@ -120,6 +124,7 @@ void Client::loadData(const std::string &path){
         }
 
     // Items
+    drawLoadingScreen("Loading items", 0.656);
     if (xr.newFile(path + "/items.xml"))
         for (auto elem : xr.getChildren("item")) {
             std::string id, name;
@@ -174,6 +179,7 @@ void Client::loadData(const std::string &path){
         }
 
     // Recipes
+    drawLoadingScreen("Loading recipes", 0.667);
     if (xr.newFile(path + "/recipes.xml"))
         for (auto elem : xr.getChildren("recipe")) {
             std::string id, name;
@@ -214,6 +220,7 @@ void Client::loadData(const std::string &path){
         }
 
     // NPC types
+    drawLoadingScreen("Loading creatures", 0.678);
     if (xr.newFile(path + "/npcTypes.xml"))
         for (auto elem : xr.getChildren("npcType")) {
             std::string s;
@@ -251,6 +258,7 @@ void Client::loadData(const std::string &path){
         }
 
     // Map
+    drawLoadingScreen("Loading map", 0.689);
     bool mapSuccessful = false;
     do {
         xr.newFile("Data/map.xml");
