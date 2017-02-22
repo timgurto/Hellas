@@ -284,3 +284,10 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const{
         renderer.drawRect(drawLoc + FULL);
     }*/
 }
+
+void Client::drawLoadingScreen() const{
+    Texture loadingImage(std::string("Images/loading.png"));
+    loadingImage.draw();
+
+    renderer.present();
+}

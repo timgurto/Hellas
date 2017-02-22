@@ -153,6 +153,8 @@ _serialToDrop(0),
 _slotToDrop(Container::NO_SLOT),
 
 _debug("client.log"){
+    drawLoadingScreen();
+
     isClient = true;
     _instance = this;
     _debugInstance = &_debug;
