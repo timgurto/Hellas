@@ -112,6 +112,7 @@
     <ClCompile Include="src\client\input.cpp" />
     <ClCompile Include="src\client\inventoryWindow.cpp" />
     <ClCompile Include="src\client\ClientItem.cpp" />
+    <ClCompile Include="src\client\loginScreen.cpp" />
     <ClCompile Include="src\client\main.cpp" />
     <ClCompile Include="src\client\LogSDL.cpp" />
     <ClCompile Include="src\client\mapWindow.cpp" />

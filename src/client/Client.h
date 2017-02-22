@@ -34,6 +34,8 @@ public:
     Client();
     ~Client();
     void run();
+    void gameLoop();
+    void loginScreenLoop(); // Alternative game loop to run()
 
     static bool isClient;
 

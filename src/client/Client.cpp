@@ -470,101 +470,104 @@ void Client::checkSocket(){
 
 void Client::run(){
     _running = true;
-
     ms_t timeAtLastTick = SDL_GetTicks();
     while (_loop) {
         _time = SDL_GetTicks();
 
-        // Send ping
-        if (_loggedIn && _time - _lastPingSent > PING_FREQUENCY) {
-            sendMessage(CL_PING, makeArgs(_time));
-            _lastPingSent = _time;
-        }
-
         _timeElapsed = _time - timeAtLastTick;
         if (_timeElapsed > MAX_TICK_LENGTH)
             _timeElapsed = MAX_TICK_LENGTH;
-        const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
         timeAtLastTick = _time;
         _fps = toInt(1000.0 / _timeElapsed);
 
-        // Ensure server connectivity
-        if (_loggedIn && _time - _lastPingReply > SERVER_TIMEOUT) {
-            _debug("Disconnected from server", Color::FAILURE);
-            _socket = Socket();
-            _loggedIn = false;
-        }
-
-        if (!_loggedIn) {
-            _timeSinceConnectAttempt += _timeElapsed;
-
-        } else { // Update server with current location
-            const bool atTarget = _pendingCharLoc == _character.location();
-            if (atTarget)
-                _timeSinceLocUpdate = 0;
-            else {
-                _timeSinceLocUpdate += _timeElapsed;
-                if (_timeSinceLocUpdate > TIME_BETWEEN_LOCATION_UPDATES){
-                    sendMessage(CL_LOCATION, makeArgs(_pendingCharLoc.x, _pendingCharLoc.y));
-                    _tooltipNeedsRefresh = true;
-                    _timeSinceLocUpdate = 0;
-                }
-            }
-        }
-
-        // Deal with any messages from the server
-        if (!_messages.empty()){
-            handleMessage(_messages.front());
-            _messages.pop();
-        }
-
-        handleInput(delta);
-        
-        // Update entities
-        std::vector<Entity *> entitiesToReorder;
-        for (Entity::set_t::iterator it = _entities.begin(); it != _entities.end(); ) {
-            Entity::set_t::iterator next = it;
-            ++next;
-            Entity *const toUpdate = *it;
-            if (toUpdate->markedForRemoval()){
-                _entities.erase(it);
-                it = next;
-                continue;
-            }
-            toUpdate->update(delta);
-            if (toUpdate->yChanged()) {
-                // Entity has moved up or down, and must be re-ordered in set.
-                entitiesToReorder.push_back(toUpdate);
-                _entities.erase(it);
-                toUpdate->yChanged(false);
-            }
-            it = next;
-        }
-        for (Entity *entity : entitiesToReorder)
-            _entities.insert(entity);
-        entitiesToReorder.clear();
-
-        updateOffset();
-
-        // Update cast bar
-        if (_actionLength > 0) {
-            _actionTimer = min(_actionTimer + _timeElapsed, _actionLength);
-            _castBar->show();
-        }
-
-        // Update terrain animation
-        for (auto &terrainPair : _terrain)
-            terrainPair.second.advanceTime(_timeElapsed);
-
-        if (_mouseMoved)
-            checkMouseOver();
-
-        checkSocket();
-        // Draw
-        draw();
-        SDL_Delay(5);
+        if (_loggedIn)
+            gameLoop();
+        else
+            loginScreenLoop();
     }
-    _running  = false;
+    _running = false;
+}
+
+void Client::gameLoop(){
+    const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
+
+    // Send ping
+    if (_time - _lastPingSent > PING_FREQUENCY) {
+        sendMessage(CL_PING, makeArgs(_time));
+        _lastPingSent = _time;
+    }
+
+    // Ensure server connectivity
+    if (_time - _lastPingReply > SERVER_TIMEOUT) {
+        _debug("Disconnected from server", Color::FAILURE);
+        _socket = Socket();
+        _loggedIn = false;
+    }
+
+    // Update server with current location
+    const bool atTarget = _pendingCharLoc == _character.location();
+    if (atTarget)
+        _timeSinceLocUpdate = 0;
+    else {
+        _timeSinceLocUpdate += _timeElapsed;
+        if (_timeSinceLocUpdate > TIME_BETWEEN_LOCATION_UPDATES){
+            sendMessage(CL_LOCATION, makeArgs(_pendingCharLoc.x, _pendingCharLoc.y));
+            _tooltipNeedsRefresh = true;
+            _timeSinceLocUpdate = 0;
+        }
+    }
+
+    // Deal with any messages from the server
+    if (!_messages.empty()){
+        handleMessage(_messages.front());
+        _messages.pop();
+    }
+
+    handleInput(delta);
+        
+    // Update entities
+    std::vector<Entity *> entitiesToReorder;
+    for (Entity::set_t::iterator it = _entities.begin(); it != _entities.end(); ) {
+        Entity::set_t::iterator next = it;
+        ++next;
+        Entity *const toUpdate = *it;
+        if (toUpdate->markedForRemoval()){
+            _entities.erase(it);
+            it = next;
+            continue;
+        }
+        toUpdate->update(delta);
+        if (toUpdate->yChanged()) {
+            // Entity has moved up or down, and must be re-ordered in set.
+            entitiesToReorder.push_back(toUpdate);
+            _entities.erase(it);
+            toUpdate->yChanged(false);
+        }
+        it = next;
+    }
+    for (Entity *entity : entitiesToReorder)
+        _entities.insert(entity);
+    entitiesToReorder.clear();
+
+    updateOffset();
+
+    // Update cast bar
+    if (_actionLength > 0) {
+        _actionTimer = min(_actionTimer + _timeElapsed, _actionLength);
+        _castBar->show();
+    }
+
+    // Update terrain animation
+    for (auto &terrainPair : _terrain)
+        terrainPair.second.advanceTime(_timeElapsed);
+
+    if (_mouseMoved)
+        checkMouseOver();
+
+    checkSocket();
+    // Draw
+    draw();
+    SDL_Delay(5);
 }
 
 void Client::startCrafting(void *data){

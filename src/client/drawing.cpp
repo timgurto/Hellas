@@ -286,6 +286,9 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const{
 }
 
 void Client::drawLoadingScreen() const{
+    renderer.setDrawColor();
+    renderer.clear();
+
     Texture loadingImage(std::string("Images/loading.png"));
     loadingImage.draw();
 
