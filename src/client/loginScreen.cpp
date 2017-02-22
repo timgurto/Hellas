@@ -149,7 +149,7 @@ void Client::handleLoginInput(double delta){
             case SDL_WINDOWEVENT_MAXIMIZED:
             case SDL_WINDOWEVENT_RESTORED:
                 renderer.updateSize();
-                for (Element *element : _ui)
+                for (Element *element : _loginUI)
                     element->forceRefresh();
                 break;
             }
