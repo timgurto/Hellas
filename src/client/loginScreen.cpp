@@ -16,7 +16,8 @@ void Client::loginScreenLoop(){
     // Draw
     renderer.setDrawColor();
     renderer.clear();
-    Texture(std::string("Images/login.png")).draw();
+    _loginBack.draw();
+    _loginFront.draw(_loginFrontOffset);
     renderer.present();
 
     SDL_Delay(5);

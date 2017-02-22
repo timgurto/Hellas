@@ -4,6 +4,11 @@
 <castBar y=300 w=150 h=11 />
 <server hostDirectory="http://timgurto.com/mmo-server-ip.txt" port="8888"/>
 
+<loginScreen
+    frontX=133
+    frontY=277
+/>
+
 <gearWindow width=36 height=80 gridX=0 gridY=-1 gap=0 rows=4 cols=2 />
 <gearDisplay>
     <slot num=0 midX=-1 midY=-36 drawOrder=7/> <!-- head       -->

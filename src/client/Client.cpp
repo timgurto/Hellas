@@ -132,6 +132,9 @@ _fps(0),
 _invalidUsername(false),
 _loggedIn(false),
 
+_loginFront(std::string("Images/loginFront.png"), Color::MAGENTA),
+_loginBack(std::string("Images/loginBack.png")),
+
 _health(0),
 
 _loaded(false),
@@ -224,6 +227,10 @@ _debug("client.log"){
     xr.findAttr(elem, "y", castBarY);
     xr.findAttr(elem, "w", castBarW);
     xr.findAttr(elem, "h", castBarH);
+
+    elem = xr.findChild("loginScreen");
+    xr.findAttr(elem, "frontX", _loginFrontOffset.x);
+    xr.findAttr(elem, "frontY", _loginFrontOffset.y);
 
 
     _debug << Color::FONT;

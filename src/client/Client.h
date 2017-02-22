@@ -186,6 +186,10 @@ private:
     size_t _health; // The character's health
     Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.
 
+    // Login screen
+    Point _loginFrontOffset;
+    Texture _loginFront, _loginBack;
+
     // These are superficial, and relate only to the cast bar.
     ms_t _actionTimer; // How long the character has been performing the current action.
     ms_t _actionLength; // How long the current action should take.
