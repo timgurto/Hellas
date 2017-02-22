@@ -153,7 +153,8 @@ _serialToDrop(0),
 _slotToDrop(Container::NO_SLOT),
 
 _debug("client.log"){
-    drawLoadingScreen();
+    _defaultFont = TTF_OpenFont("poh_pixels.ttf", 16);
+    drawLoadingScreen("Reading configuration file", 0.1);
 
     isClient = true;
     _instance = this;
@@ -208,11 +209,14 @@ _debug("client.log"){
     xr.findAttr(elem, "outline", Color::OUTLINE);
     xr.findAttr(elem, "highlightOutline", Color::HIGHLIGHT_OUTLINE);
 
+    drawLoadingScreen("Applying settings", 0.2);
     std::string fontFile = "poh_pixels.ttf";
     int fontSize = 16;
     elem = xr.findChild("gameFont");
     xr.findAttr(elem, "filename", fontFile);
     xr.findAttr(elem, "size", fontSize);
+    if (_defaultFont != nullptr)
+        TTF_CloseFont(_defaultFont);
     _defaultFont = TTF_OpenFont(fontFile.c_str(), fontSize);
     Element::font(_defaultFont);
     xr.findAttr(elem, "offset", _defaultFontOffset);
@@ -232,11 +236,12 @@ _debug("client.log"){
 
     _debug << Color::FONT;
 
-
+    drawLoadingScreen("Initializing classes", 0.3);
     Element::initialize();
     ClientItem::init();
 
     // Initialize chat log
+    drawLoadingScreen("Initializing chat log", 0.4);
     _chatContainer = new Element(Rect(0, SCREEN_Y - chatH, chatW, chatH));
     _chatTextBox = new TextBox(Rect(0, chatH, chatW));
     _chatLog = new List(Rect(0, 0, chatW, chatH - _chatTextBox->height()));
@@ -257,17 +262,20 @@ _debug("client.log"){
     _debug << cmdLineArgs << Log::endl;
     if (Socket::debug == nullptr)
         Socket::debug = &_debug;
-
+    
+    drawLoadingScreen("Initializing audio", 0.5);
     int ret = (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 512) < 0);
     if (ret < 0){
         _debug("SDL_mixer failed to initialize.", Color::FAILURE);
     } else {
         _debug("SDL_mixer initialized.");
     }
-
+    
+    drawLoadingScreen("Loading data", 0.6);
     loadData();
 
     // Resolve default server IP
+    drawLoadingScreen("Finding server", 0.7);
     elem = xr.findChild("server");
     std::string serverHostDirectory;
     xr.findAttr(elem, "hostDirectory", serverHostDirectory);
@@ -289,7 +297,8 @@ _debug("client.log"){
     SDL_StopTextInput();
 
     Element::absMouse = &_mouse;
-
+    
+    drawLoadingScreen("Initializing UI", 0.8);
     initializeCraftingWindow();
     initializeInventoryWindow();
     initializeGearWindow();
@@ -392,8 +401,11 @@ _debug("client.log"){
             _targetNPCHealth, _targetNPCMaxHealth, Color::HEALTH_BAR));
     _targetDisplay->hide();
     addUI(_targetDisplay);
-
+    
+    drawLoadingScreen("Initializing login screen", 0.9);
     initLoginScreen();
+
+    drawLoadingScreen("", 1);
 }
 
 Client::~Client(){

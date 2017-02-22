@@ -285,12 +285,32 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const{
     }*/
 }
 
-void Client::drawLoadingScreen() const{
-    renderer.setDrawColor();
+void Client::drawLoadingScreen(const std::string &msg, double progress) const{
+    static const Color
+        BACKGROUND = Color(0x3C, 0x38, 0x8C),
+        FOREGROUND = Color(0xE5, 0xE5, 0xE5);
+
+    renderer.setDrawColor(BACKGROUND);
     renderer.clear();
 
-    Texture loadingImage(std::string("Images/loading.png"));
-    loadingImage.draw();
+    Texture mainText(_defaultFont, "LOADING", FOREGROUND);
+    Texture message(_defaultFont, msg + " . . .", FOREGROUND);
+
+    static const px_t
+        Y_MAIN = 160,
+        Y_MSG = 180,
+        Y_BAR = 195,
+        BAR_LENGTH = 80,
+        BAR_HEIGHT = 5,
+        X_BAR = (SCREEN_X - BAR_LENGTH) / 2;
+    static px_t
+        X_MAIN = (SCREEN_X - mainText.width()) / 2;
+
+    mainText.draw(X_MAIN, Y_MAIN);
+    message.draw((SCREEN_X - message.width()) / 2, Y_MSG);
+    renderer.setDrawColor(FOREGROUND);
+    renderer.drawRect(Rect(X_BAR, Y_BAR, BAR_LENGTH, BAR_HEIGHT));
+    renderer.fillRect(Rect(X_BAR, Y_BAR, toInt(BAR_LENGTH * progress), BAR_HEIGHT));
 
     renderer.present();
 }

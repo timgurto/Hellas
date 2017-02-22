@@ -242,7 +242,9 @@ private:
     void handleLoginInput(double delta);
 
 
-    void drawLoadingScreen() const;
+    void drawLoadingScreen(const std::string &msg, double progress) const;
+
+
     void draw() const;
     mutable bool _drawingFinished; // Set to true after every redraw.
     void drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const;
