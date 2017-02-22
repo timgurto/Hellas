@@ -189,6 +189,10 @@ private:
     // Login screen
     Point _loginFrontOffset;
     Texture _loginFront, _loginBack;
+    ui_t _loginUI;
+    void initLoginScreen();
+    void cleanUpLoginScreen();
+    void drawLoginScreen() const;
 
     // These are superficial, and relate only to the cast bar.
     ms_t _actionTimer; // How long the character has been performing the current action.
@@ -235,6 +239,7 @@ private:
     friend void ClientObject::startDeconstructing(void *object);
 
     void handleInput(double delta);
+    void handleLoginInput(double delta);
 
 
     void drawLoadingScreen() const;

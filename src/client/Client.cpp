@@ -132,9 +132,6 @@ _fps(0),
 _invalidUsername(false),
 _loggedIn(false),
 
-_loginFront(std::string("Images/loginFront.png"), Color::MAGENTA),
-_loginBack(std::string("Images/loginBack.png")),
-
 _health(0),
 
 _loaded(false),
@@ -395,10 +392,13 @@ _debug("client.log"){
             _targetNPCHealth, _targetNPCMaxHealth, Color::HEALTH_BAR));
     _targetDisplay->hide();
     addUI(_targetDisplay);
+
+    initLoginScreen();
 }
 
 Client::~Client(){
     SDL_ShowCursor(SDL_ENABLE);
+    cleanUpLoginScreen();
     Element::cleanup();
     if (_defaultFont != nullptr)
         TTF_CloseFont(_defaultFont);
