@@ -107,12 +107,6 @@
 </recipe>
 
 <recipe
-    id="raft" time="4000" product="raft" >
-    <material id="driftwood" quantity="8" />
-    <material id="rope" quantity="3" />
-</recipe>
-
-<recipe
     id="elutriator" time="4000" product="elutriator" >
     <material id="smallPot" />
     <material id="tinPipe" />

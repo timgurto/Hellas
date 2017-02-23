@@ -133,42 +133,6 @@ Server only:
 </objectType>
 
 <objectType
-    id="driftwood" name="Driftwood"
-    xDrawOffset="-9"
-    yDrawOffset="-4"
-    canGather="1" gatherTime="1500" >
-    <yield id="driftwood" />
-</objectType>
-
-<objectType
-    id="raft" name="Raft"
-    xDrawOffset="-16"
-    yDrawOffset="-11"
-    constructionTime="4000"
-    allowedTerrain="tutorialWater"
-    isVehicle="1" >
-    <driver x="0" y="0" />
-    <collisionRect x="-14" y="-10" w="30" h="20" />
-</objectType>
-
-<objectType
-    id="ropeStore" name="Rope store"
-    xDrawOffset="-20"
-    yDrawOffset="-35"
-    merchantSlots="1"
-    bottomlessMerchant="1" >
-    <collisionRect x="-16" y="-7" w="30" h="10" />
-</objectType>
-
-<objectType
-    id="seaweed" name="Seaweed"
-    imageFile="grass"
-    xDrawOffset="-7" yDrawOffset="-8"
-    allowedTerrain="tutorialWater"
-    isDecoration="1"
-/>
-
-<objectType
     id="elutriator" name="Elutriator"
     constructionTime="1000"
     deconstructs="elutriator" deconstructionTime="1000" >

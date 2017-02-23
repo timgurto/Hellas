@@ -22,7 +22,6 @@ Server only:
     xDrawOffset="-11" yDrawOffset="-13" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
     <loot id="hide" />
-    <loot id="bone" > <normal mean="1" sd="0.5" /> </loot>
 </npcType>
 
 <npcType
@@ -32,14 +31,6 @@ Server only:
     <collisionRect x="-9" y="-4" w="18" h="7" />
     <loot id="hide" />
     <loot id="bone" > <normal mean="2" sd="0.7" /> </loot>
-</npcType>
-
-<npcType
-    id="tutorialCritter" name="Critter" imageFile="critter"
-	maxHealth="20"
-    xDrawOffset="-11" yDrawOffset="-13" >
-    <collisionRect x="-9" y="-4" w="18" h="7" />
-    <loot id="coins" > <normal mean="6" sd="2" /> </loot>
 </npcType>
 
 </root>

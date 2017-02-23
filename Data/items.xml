@@ -37,9 +37,6 @@ Client only:
 <item id="clay"         name="Clay"             stackSize="10" />
 <item id="tinBar"       name="Tin Bar"          stackSize="10" />
 <item id="copperBar"    name="Copper Bar"       stackSize="10" />
-<item id="driftwood"    name="Driftwood"        stackSize="10" />
-<item id="coins"        name="Copper Coins"     stackSize="100" />
-<item id="rope"         name="Rope"             stackSize="10" />
 <item id="charcoal"     name="Charcoal"         stackSize="10" />
 
 <item id="smallPot"     name="Small Pot"        constructs="smallPot" />
@@ -47,7 +44,6 @@ Client only:
 <item id="largePot"     name="Large Pot"        constructs="largePot" />
 <item id="oven"         name="Oven"             constructs="oven" />
 <item id="handCart"     name="Hand Cart"        constructs="handCart" />
-<item id="raft"         name="Driftwood Raft"   constructs="raft" />
 <item id="elutriator"   name="Elutriator"       constructs="elutriator" />
 <item id="kiln"         name="Kiln"             constructs="kiln" />
 <item id="lumber"       name="Lumber"           stackSize="10" constructs="post" />

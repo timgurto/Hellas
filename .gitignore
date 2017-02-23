@@ -37,3 +37,5 @@ Images/map2.pdn
 doc/TreeGen/TreeGen/TreeGen.vcxproj.filters
 doc/tree.svg
 doc/TreeGen/tree.gv
+doc/crafting.gv
+doc/crafting.svg
