@@ -238,7 +238,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
     const bool userExisted = readUserData(newUser);
     if (!userExisted) {
         newUser.setClass(User::Class(rand() % User::NUM_CLASSES));
-        static const Point SPAWN_LOC(39370, 20100);
+        static const Point SPAWN_LOC(51256, 16192);
         static const double SPAWN_RANGE = 50;
         Point newLoc;
         size_t attempts = 0;
