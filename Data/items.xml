@@ -38,7 +38,7 @@ Client only:
 
 <item id="smallPot"     name="Small Pot"        constructs="smallPot" />
 <item id="mediumPot"    name="Medium Pot"       constructs="mediumPot" />
-<item id="largePot"     name="Large Pot"        constructs="largePot" />
+<!--item id="largePot"     name="Large Pot"        constructs="largePot" /-->
 <item id="oven"         name="Oven"             constructs="oven" />
 <item id="handCart"     name="Hand Cart"        constructs="handCart" />
 <item id="elutriator"   name="Elutriator"       constructs="elutriator" />

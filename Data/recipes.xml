@@ -147,7 +147,7 @@
 <recipe
     id="kiln" time="12000" product="kiln" >
     <material id="charcoal" />
-    <material id="brick" quantity="10" />
+    <material id="brick" quantity="20" />
 </recipe>
 
 <recipe

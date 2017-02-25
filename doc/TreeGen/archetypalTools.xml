@@ -9,8 +9,20 @@
 <tool id="pipeMould"    archetype="item_pipeMould" />
 <tool id="saw"          archetype="item_tinSaw" />
 <tool id="sawMould"     archetype="item_sawMould" />
+<tool id="scaleMould"   archetype="item_scaleMould" />
 
 <blacklist parent="object_copper"   child="item_rock" />
 <blacklist parent="object_tree"   child="item_stick" />
+<blacklist parent="item_charcoal"   child="item_copperBar" />
+<blacklist parent="item_log"   child="item_lumber" />
+<blacklist parent="item_crudeClay"   child="item_clay" />
+
+
+<blacklist parent="object_largePot"   child="item_largePot" />
+<blacklist parent="object_mediumPot"   child="item_mediumPot" />
+<blacklist parent="object_smallPot"   child="item_smallPot" />
+<blacklist parent="object_elutriator"   child="item_elutriator" />
+<blacklist parent="object_handCart"   child="item_handCart" />
+<blacklist parent="object_post"   child="item_lumber" />
 
 </root>

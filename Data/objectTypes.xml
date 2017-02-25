@@ -110,12 +110,12 @@ Server only:
     <container slots="4" />
 </objectType>
 
-<objectType
+<!--objectType
     id="largePot" name="Large Pot"
     constructionTime="1000"
     deconstructs="largePot" deconstructionTime="1000" >
     <container slots="10" />
-</objectType>
+</objectType-->
 
 <objectType
     id="handCart"
