@@ -58,14 +58,15 @@ Texture TooltipBuilder::publish(){
 
     // Create background
     Texture background(totalWidth, totalHeight);
-    background.setRenderTarget();
+    renderer.pushRenderTarget(background);
     renderer.setDrawColor(Color::TOOLTIP_BACKGROUND);
     renderer.clear();
     background.setAlpha(0xdf);
+    renderer.popRenderTarget();
 
     // Draw background
     Texture ret = Texture(totalWidth, totalHeight);
-    ret.setRenderTarget();
+    renderer.pushRenderTarget(ret);
     background.draw();
 
     // Draw border
@@ -84,7 +85,7 @@ Texture TooltipBuilder::publish(){
     }
 
     ret.setBlend(SDL_BLENDMODE_BLEND);
-    renderer.setRenderTarget();
+    renderer.popRenderTarget();
     return ret;
 }
 

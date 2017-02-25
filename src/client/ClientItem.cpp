@@ -129,10 +129,6 @@ const Texture &ClientItem::tooltip() const{
     }
 
 
-
-
-
-    
     _tooltip = tb.publish();
     return _tooltip;
 }
