@@ -9,6 +9,8 @@ static bool tryToConnect = false;
 
 static TextBox *nameBox;
 
+static void quit(void*);
+
 void Client::loginScreenLoop(){
     const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
     _timeSinceConnectAttempt += _timeElapsed;
@@ -98,6 +100,11 @@ void Client::login(void *){
     tryToConnect = true;
 }
 
+void exit(void *data){
+    bool &loop = *reinterpret_cast<bool *>(data);
+    loop = false;
+}
+
 void Client::initLoginScreen(){
     // UI elements
     static const px_t
@@ -123,6 +130,9 @@ void Client::initLoginScreen(){
     Y += Element::TEXT_HEIGHT + GAP;
 
     _loginUI.push_back(new Button(Rect(BUTTON_X, Y, BUTTON_W, BUTTON_HEIGHT), "Login", login));
+
+    _loginUI.push_back(new Button(Rect(SCREEN_X - BUTTON_W - GAP, SCREEN_Y - BUTTON_HEIGHT - GAP,
+                                       BUTTON_W, BUTTON_HEIGHT), "Quit", exit, &_loop));
     
 
     // Images
