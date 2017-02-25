@@ -33,4 +33,12 @@ Server only:
     <loot id="bone" > <normal mean="2" sd="0.7" /> </loot>
 </npcType>
 
+<npcType
+    id="bandit" name="Bandit"
+	maxHealth="500" attack="100" attackTime="100"
+    xDrawOffset="-11" yDrawOffset="-39" >
+    <collisionRect x="-5" y="-2" w="10" h="4" />
+    <loot id="bone" />
+</npcType>
+
 </root>
