@@ -193,6 +193,8 @@ private:
     void initLoginScreen();
     void cleanUpLoginScreen();
     void drawLoginScreen() const;
+    std::list<Particle*> _loginParticles;
+    void updateLoginParticles(double delta);
 
     // These are superficial, and relate only to the cast bar.
     ms_t _actionTimer; // How long the character has been performing the current action.

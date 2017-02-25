@@ -12,6 +12,7 @@ class ParticleProfile{
     std::string _id;
     double _particlesPerSecond; // For gathering, crafting
     double _gravity;
+    bool _noZDimension; // Do not use a virtual z dimension.
     NormalVariable
         _particlesPerHit, // For attacking
         _distance,
@@ -36,6 +37,7 @@ public:
     void fallSpeed(double mean, double sd) { _fallSpeed = NormalVariable(mean, sd); }
     void lifespan(double mean, double sd) { _lifespan = NormalVariable(mean, sd); }
     void gravityuModifer(double mod) { _gravity *= mod; }
+    void noZDimension() { _noZDimension = true; }
 
     struct ptrCompare{
         bool operator()(const ParticleProfile *lhs, const ParticleProfile *rhs){

@@ -1,4 +1,5 @@
 #include "Client.h"
+#include "Particle.h"
 
 extern Renderer renderer;
 
@@ -20,9 +21,36 @@ void Client::loginScreenLoop(){
 
     handleLoginInput(delta);
 
+    updateLoginParticles(delta);
+
     drawLoginScreen();
 
     SDL_Delay(5);
+}
+
+void Client::updateLoginParticles(double delta){
+    // Update existing particles
+    for (auto it = _loginParticles.begin(); it != _loginParticles.end();){
+        (*it)->update(delta);
+        auto nextIterator = it; ++nextIterator;
+        if ((*it)->markedForRemoval())
+            _loginParticles.erase(it);
+        it = nextIterator;
+    }
+
+    // Add new particles
+    static const ParticleProfile *profile = findParticleProfile("loginFire");
+    if (profile == nullptr)
+        return;
+    static const Point
+        LEFT_BRAZIER(153, 281),
+        RIGHT_BRAZIER(480, 282);
+    size_t qty = profile->numParticlesContinuous(delta);
+    for (size_t i = 0; i != qty; ++i) {
+        Particle *p = profile->instantiate(LEFT_BRAZIER);
+        _loginParticles.push_back(profile->instantiate(LEFT_BRAZIER));
+        _loginParticles.push_back(profile->instantiate(RIGHT_BRAZIER));
+    }
 }
 
 void Client::drawLoginScreen() const{
@@ -31,6 +59,12 @@ void Client::drawLoginScreen() const{
 
     // Background
     _loginBack.draw();
+
+    // Particles
+    for (auto particle : _loginParticles)
+        particle->draw(*this);
+
+    // Braziers
     _loginFront.draw(_loginFrontOffset);
 
     // UI

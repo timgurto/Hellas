@@ -41,9 +41,10 @@ void Client::loadData(const std::string &path){
             if (!xr.findAttr(elem, "id", s)) // No ID: skip
                 continue;
             ParticleProfile *profile = new ParticleProfile(s);
-            double mean, sd;
+            double mean, sd, n;
             if (xr.findAttr(elem, "particlesPerSecond", mean)) profile->particlesPerSecond(mean);
             if (xr.findAttr(elem, "gravityModifier", mean)) profile->gravityuModifer(mean);
+            if (xr.findAttr(elem, "noZDimension", n) && n != 0) profile->noZDimension();
             if (xr.findNormVarChild("particlesPerHit", elem, mean, sd)) profile->particlesPerHit(mean, sd);
             if (xr.findNormVarChild("distance", elem, mean, sd)) profile->distance(mean, sd);
             if (xr.findNormVarChild("altitude", elem, mean, sd)) profile->altitude(mean, sd);

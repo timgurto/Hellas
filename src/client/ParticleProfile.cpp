@@ -11,7 +11,9 @@ ParticleProfile::ParticleProfile(const std::string &id):
 _id(id),
 _particlesPerSecond(0),
 _gravity(DEFAULT_GRAVITY),
-_lifespan(DEFAULT_LIFESPAN_MEAN, DEFAULT_LIFESPAN_SD){}
+_lifespan(DEFAULT_LIFESPAN_MEAN, DEFAULT_LIFESPAN_SD),
+_noZDimension(false)
+{}
 
 ParticleProfile::~ParticleProfile(){
     for (const EntityType *variety : _varieties)
@@ -31,7 +33,7 @@ Particle *ParticleProfile::instantiate(const Point &location) const{
     size_t index = rand() % _pool.size();
     const EntityType &variety = *_pool[index];
 
-    // Choose random direction, then set location
+    // Choose random position, then set location
     double angle = 2 * PI * randDouble();
     double distance = _distance.generate();
     Point locationOffset(cos(angle) * distance, sin(angle) * distance);
@@ -41,6 +43,11 @@ Particle *ParticleProfile::instantiate(const Point &location) const{
     angle = 2 * PI * randDouble();
     double velocity = _velocity.generate();
     Point startingVelocity(cos(angle) * velocity, sin(angle) * velocity);
+
+    if (_noZDimension){
+        startingLoc.y = location.y;
+        startingVelocity.y = 0;
+    }
 
 
     return new Particle(startingLoc, variety.image(), variety.drawRect(), startingVelocity,
