@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #ifndef RECIPE_H
 #define RECIPE_H
 
@@ -16,6 +14,7 @@ class Recipe{
     ItemSet _materials;
     std::set<std::string> _tools; // Tools required for crafting
     const Item *_product;
+    size_t _quantity; // Quantity produced
     ms_t _time;
 
 public:
@@ -28,6 +27,8 @@ public:
     const std::set<std::string> & tools() const { return _tools; }
     const Item *product() const { return _product; }
     void product(const Item *item) { _product = item; }
+    size_t quantity() const { return _quantity; }
+    void quantity(size_t n) { _quantity = n; }
     ms_t time() const { return _time; }
     void time(ms_t time) { _time = time; }
 

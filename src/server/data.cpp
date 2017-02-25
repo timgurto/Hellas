@@ -324,6 +324,7 @@ void Server::loadData(const std::string &path){
             }
             recipe.product(&*it);
 
+            if (xr.findAttr(elem, "quantity", n)) recipe.quantity(n);
             if (xr.findAttr(elem, "time", n)) recipe.time(n);
 
             for (auto child : xr.getChildren("material", elem)) {

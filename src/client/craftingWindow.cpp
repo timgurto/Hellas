@@ -189,8 +189,11 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     const ClientItem &product = *toClientItem(recipe.product());
 
     // Title
-    pane.addChild(new Label(Rect(0, 0, paneRect.w, HEADING_HEIGHT),
-                            toClientItem(recipe.product())->name(), Element::CENTER_JUSTIFIED));
+    std::string titleText = toClientItem(recipe.product())->name();
+    if (recipe.quantity() > 1)
+        titleText += " (x" + makeArgs(recipe.quantity()) + ")";
+    pane.addChild(new Label(Rect(0, 0, paneRect.w, HEADING_HEIGHT), titleText,
+                            Element::CENTER_JUSTIFIED));
     px_t y = HEADING_HEIGHT;
 
     // Icon

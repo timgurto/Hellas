@@ -197,6 +197,9 @@ void Client::loadData(const std::string &path){
             }
             recipe.product(&*it);
 
+            size_t n;
+            if (xr.findAttr(elem, "quantity", n)) recipe.quantity(n);
+
             for (auto child : xr.getChildren("material", elem)) {
                 int matQty = 1;
                 xr.findAttr(child, "quantity", matQty);

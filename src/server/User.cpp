@@ -273,13 +273,13 @@ void User::update(ms_t timeElapsed){
     case CRAFT:
     {
         const ServerItem *product = toServerItem(_actionRecipe->product());
-        if (!vectHasSpace(_inventory, product)) {
+        if (!vectHasSpace(_inventory, product, _actionRecipe->quantity())) {
             server.sendMessage(_socket, SV_INVENTORY_FULL);
             cancelAction();
             return;
         }
-        // Give user his newly crafted item
-        giveItem(product, 1);
+        // Give user his newly crafted items
+        giveItem(product, _actionRecipe->quantity());
         // Remove materials from user's inventory
         removeItems(_actionRecipe->materials());
         break;
