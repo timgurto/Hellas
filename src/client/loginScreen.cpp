@@ -99,6 +99,7 @@ void Client::login(void *){
     nameBox->text(username);
     _instance->_username = username;
     tryToConnect = true;
+    SDL_StopTextInput();
 }
 
 void exit(void *data){
