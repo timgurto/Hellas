@@ -40,7 +40,7 @@
 
 <particleProfile
     id="loginFire"
-    particlesPerSecond=600
+    particlesPerSecond=1000
     gravityModifier=0
     noZDimension=1
     >
@@ -59,7 +59,7 @@
     <variety imageFile="loginFire3"> <drawRect x=-2 y=-2 w=5 h=5 /> </variety>
     <variety imageFile="loginFire3"> <drawRect x=-2 y=-2 w=5 h=5 /> </variety>
     <variety imageFile="loginFire3"> <drawRect x=-2 y=-2 w=5 h=5 /> </variety>
-    <variety imageFile="loginFire0"> <drawRect x=-3 y=-3 w=7 h=7 /> </variety>
+    <variety imageFile="loginFire3"> <drawRect x=-2 y=-2 w=5 h=5 /> </variety>
 </particleProfile>
 
 
