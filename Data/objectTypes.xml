@@ -41,10 +41,9 @@ Server only:
 <objectType
     id="grass" name="Grass"
     xDrawOffset="-7" yDrawOffset="-8"
-    canGather="1" gatherTime="1000"
-    allowedTerrain="grass" >
-    <yield id="grass" initialMean="1.8" initialSD="0.6" gatherMean="10" />
-</objectType>
+    allowedTerrain="grass"
+    decoration="1"
+/>
 
 <objectType
     id="tree" name="Tree"
@@ -80,7 +79,7 @@ Server only:
     id="oven" name="Oven"
     xDrawOffset="-14" yDrawOffset="-17"
     constructionTime="1000" >
-    <collisionRect x="-13" y="-7" w="26" h="11" />
+    <collisionRect x="-13" y="-9" w="24" h="11" />
     <tag name="kiln1" />
 </objectType>
 
@@ -134,14 +133,20 @@ Server only:
 
 <objectType
     id="elutriator" name="Elutriator"
+    xDrawOffset="-15"
+    yDrawOffset="-21"
     constructionTime="1000"
     deconstructs="elutriator" deconstructionTime="1000" >
     <tag name="elutriator" />
+    <collisionRect x="-15" y="-4" w="31" h="8" />
 </objectType>
 
 <objectType
     id="kiln" name="Kiln"
+    xDrawOffset="-13"
+    yDrawOffset="-26"
     constructionTime="1000" >
+    <collisionRect x="-12" y="-4" w="27" h="10" />
     <tag name="kiln1" />
     <tag name="kiln2" />
 </objectType>

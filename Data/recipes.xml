@@ -3,18 +3,12 @@
 <recipe
     id="stoneAxe" time="4000" product="stoneAxe" >
     <material id="rock" />
-    <material id="grass" quantity="2" />
     <material id="stick" />
 </recipe>
 
 <recipe
     id="oven" time="6000" product="oven" >
     <material id="rock" quantity="10"/>
-</recipe>
-
-<recipe
-    id="hideCloak" time="4000" product="hideCloak" >
-    <material id="hide" quantity="2"/>
 </recipe>
 
 <recipe
@@ -31,12 +25,12 @@
     <tool class="kiln1" />
 </recipe>
 
-<recipe
+<!--recipe
     id="largePot" time="12000" product="largePot" >
     <material id="charcoal" />
     <material id="clay" quantity="5" />
     <tool id="kiln2" />
-</recipe>
+</recipe-->
 
 <recipe
     id="pickMould" time="12000" product="pickMould" >
@@ -54,6 +48,13 @@
 
 <recipe
     id="sawMould" time="12000" product="sawMould" >
+    <material id="crudeClay" quantity="2"/>
+    <material id="log" />
+    <tool class="kiln1" />
+</recipe>
+
+<recipe
+    id="scaleMould" time="12000" product="scaleMould" >
     <material id="crudeClay" quantity="2"/>
     <material id="log" />
     <tool class="kiln1" />
@@ -100,15 +101,27 @@
 </recipe>
 
 <recipe
-    id="tinHelmet" time="4000" product="tinHelmet" >
-    <material id="tinBar" quantity="2" />
+    id="tinScale" time="4000" product="tinScale" quantity="6" >
+    <material id="tinBar" />
     <material id="log" />
     <tool class="kiln1" />
+    <tool class="scaleMould" />
+</recipe>
+
+<recipe
+    id="tinLamellar" time="4000" product="tinLamellar" >
+    <material id="tinScale" quantity="20" />
+</recipe>
+
+<recipe
+    id="leatherShield" time="4000" product="leatherShield" >
+    <material id="hide" quantity="2" />
+    <material id="lumber" quantity="1" />
 </recipe>
 
 <recipe
     id="elutriator" time="4000" product="elutriator" >
-    <material id="smallPot" />
+    <material id="smallPot" quantity="2" />
     <material id="tinPipe" />
 </recipe>
 
@@ -125,16 +138,16 @@
 </recipe>
 
 <recipe
-    id="ceramicSlab" time="12000" product="ceramicSlab" >
+    id="brick" time="12000" product="brick" >
     <material id="charcoal" />
-    <material id="clay" quantity="8" />
+    <material id="clay" quantity="4" />
     <tool class="kiln1" />
 </recipe>
 
 <recipe
     id="kiln" time="12000" product="kiln" >
     <material id="charcoal" />
-    <material id="ceramicSlab" quantity="4" />
+    <material id="brick" quantity="10" />
 </recipe>
 
 <recipe
