@@ -1,10 +1,13 @@
 #include "Client.h"
 #include "Particle.h"
+#include "ui/Label.h"
+#include "ui/TextBox.h"
 
 extern Renderer renderer;
 
 static bool tryToConnect = false;
-static void login(void *);
+
+static TextBox *nameBox;
 
 void Client::loginScreenLoop(){
     const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
@@ -77,21 +80,52 @@ void Client::drawLoginScreen() const{
     renderer.present();
 }
 
-void login(void *){
+void Client::login(void *){
+    for (char c : nameBox->text()){
+        if ((c < 'A' || c > 'Z') &&
+            (c < 'a' || c > 'z')){
+            nameBox->text("Letters only, please");
+            return;
+        }
+    }
+    if (nameBox->text().empty()){
+        nameBox->text("At least 1 letter, please");
+        return;
+    }
+    std::string username = nameBox->text();
+    nameBox->text(username);
+    _instance->_username = username;
     tryToConnect = true;
 }
 
 void Client::initLoginScreen(){
+    // UI elements
     static const px_t
-        BUTTON_W = 150,
+        BUTTON_W = 100,
         BUTTON_HEIGHT = 20,
-        BUTTON_X = (SCREEN_X - BUTTON_W) / 2,
-        BUTTON_Y = (SCREEN_Y - BUTTON_HEIGHT) / 2;
+        SCREEN_MID_X = 335,
+        BUTTON_X = SCREEN_MID_X - BUTTON_W / 2,
+        GAP = 20;
+    px_t
+        Y = (SCREEN_Y - BUTTON_HEIGHT) / 2;
 
-    Button *loginButton = new Button(Rect(BUTTON_X, BUTTON_Y, BUTTON_W, BUTTON_HEIGHT),
-                                     "Connect", login);
-    _loginUI.push_back(loginButton);
+    _loginUI.push_back(new Label(Rect(BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT),
+                                 "Name:", Element::CENTER_JUSTIFIED));
+    Y += Element::TEXT_HEIGHT;
+
+    nameBox = new TextBox(Rect(BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT));
+    nameBox->text(_username);
+    TextBox::focus(nameBox);
+    _loginUI.push_back(nameBox);
+
+    SDL_StartTextInput();
+
+    Y += Element::TEXT_HEIGHT + GAP;
+
+    _loginUI.push_back(new Button(Rect(BUTTON_X, Y, BUTTON_W, BUTTON_HEIGHT), "Login", login));
     
+
+    // Images
     _loginFront = Texture(std::string("Images/loginFront.png"), Color::MAGENTA);
     _loginBack = Texture(std::string("Images/loginBack.png"));
 }
@@ -110,29 +144,34 @@ void Client::handleLoginInput(double delta){
             _loop = false;
             break;
 
-        case SDL_KEYDOWN:
-            // Regular key input
+        case SDL_TEXTINPUT:
+            TextBox::addText(e.text.text);
+            break;
 
+        case SDL_KEYDOWN:
             switch(e.key.keysym.sym) {
 
             case SDLK_ESCAPE:
                 _loop = false;
                 break;
 
+            case SDLK_BACKSPACE:
+                TextBox::backspace();
+                break;
+
             case SDLK_RETURN:
             case SDLK_KP_ENTER:
+                login(nullptr);
                 break;
             }
-        break;
+            break;
 
         case SDL_MOUSEMOTION: {
             px_t x, y;
             SDL_GetMouseState(&x, &y);
             _mouse.x = x * SCREEN_X / static_cast<double>(renderer.width());
             _mouse.y = y * SCREEN_Y / static_cast<double>(renderer.height());
-            _mouseMoved = true;
                 
-            Element::resetTooltip();
             for (Element *element : _loginUI)
                 if (element->visible())
                     element->onMouseMove(_mouse);

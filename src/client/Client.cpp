@@ -288,11 +288,11 @@ _debug("client.log"){
     // Randomize player name if not supplied
     if (cmdLineArgs.contains("username"))
         _username = cmdLineArgs.getString("username");
-    else
+    else if (isDebug())
         for (int i = 0; i != 3; ++i)
             _username.push_back('a' + rand() % 26);
-    _debug << "Player name: " << _username << Log::endl;
-    _character.name(_username);
+    else
+        _username = "";
 
     SDL_StopTextInput();
 
@@ -464,6 +464,7 @@ void Client::checkSocket(){
             sendMessage(CL_I_AM, _username);
             sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
             _connectionStatus = CONNECTED;
+            _character.name(_username);
             _usernameDisplay->changeText(_username);
         }
     }
