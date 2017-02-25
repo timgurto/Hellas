@@ -35,7 +35,8 @@ void Renderer::init(){
     const px_t screenH = cmdLineArgs.contains("height") ? cmdLineArgs.getInt("height") : 720;
 
     _window = SDL_CreateWindow("Client", screenX, screenY, screenW, screenH,
-                               SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+                               SDL_WINDOW_SHOWN | (isDebug() ? SDL_WINDOW_RESIZABLE :
+                                                               SDL_WINDOW_FULLSCREEN));
     if (_window == nullptr)
         return;
 
