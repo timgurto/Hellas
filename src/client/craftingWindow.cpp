@@ -4,6 +4,7 @@
 #include "Renderer.h"
 #include "ui/Button.h"
 #include "ui/CheckBox.h"
+#include "ui/ColorBlock.h"
 #include "ui/Element.h"
 #include "ui/Label.h"
 #include "ui/Line.h"
@@ -199,30 +200,12 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     // Icon
     pane.addChild(new Picture(Rect(0, y, ICON_SIZE, ICON_SIZE), product.icon()));
 
-    // Tag list
+    // Tooltip
     px_t x = ICON_SIZE + CheckBox::GAP;
-    size_t tagsRemaining = product.tags().size();
-    const px_t minLineY = y + ICON_SIZE;
-    for (const std::string &tagName : product.tags()) {
-        std::string text = tagName;
-        if (--tagsRemaining > 0)
-            text += ", ";
-        Label *const tagLabel = new Label(Rect(0, 0, 0, Element::TEXT_HEIGHT), text);
-        tagLabel->matchW();
-        tagLabel->refresh();
-        const px_t width = tagLabel->rect().w;
-        static const px_t SPACE_WIDTH = 4;
-        if (x + width - SPACE_WIDTH > paneRect.w) {
-            x = ICON_SIZE + CheckBox::GAP;
-            y += Element::TEXT_HEIGHT;
-        }
-        tagLabel->rect(x, y);
-        x += width;
-        pane.addChild(tagLabel);
-    }
-    y += Element::TEXT_HEIGHT;
-    if (y < minLineY)
-        y = minLineY;
+    Picture *tooltip = new Picture(x, y, product.tooltip());
+    pane.addChild(new ColorBlock(tooltip->rect(), Color::OUTLINE));
+    pane.addChild(tooltip);
+    y += tooltip->height();
 
     // Divider
     pane.addChild(new Line(0, y + LINE_GAP/2, paneRect.w));
@@ -247,6 +230,7 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
         if (qty > 1)
             entryText += " x" + toString(qty);
         Element *const entry = new Element(Rect(0, 0, paneRect.w, ICON_SIZE));
+        entry->setTooltip(mat.tooltip());
         matsList->addChild(entry);
         entry->addChild(new Picture(Rect(0, 0, ICON_SIZE, ICON_SIZE), mat.icon()));
         entry->addChild(new Label(Rect(ICON_SIZE + CheckBox::GAP, 0, paneRect.w, ICON_SIZE),

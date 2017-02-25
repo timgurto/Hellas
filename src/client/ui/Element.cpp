@@ -346,7 +346,7 @@ void Element::setTooltip(const Texture &tooltip){
 }
 
 void Element::clearTooltip(){
-    _tooltip = Texture();;
+    _tooltip = Texture();
 }
 
 void Element::draw(){
