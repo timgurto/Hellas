@@ -4,6 +4,7 @@
 #include "ui/TextBox.h"
 
 extern Renderer renderer;
+extern Args cmdLineArgs;
 
 static bool tryToConnect = false;
 
@@ -134,6 +135,15 @@ void Client::initLoginScreen(){
     _loginUI.push_back(new Button(Rect(SCREEN_X - BUTTON_W - GAP, SCREEN_Y - BUTTON_HEIGHT - GAP,
                                        BUTTON_W, BUTTON_HEIGHT), "Quit", exit, &_loop));
     
+    std::string serverIP;
+    if (cmdLineArgs.contains("server-ip"))
+        serverIP = cmdLineArgs.getString("server-ip");
+    else{
+        serverIP = _defaultServerAddress;
+    }
+    _loginUI.push_back(new Label(Rect(GAP, SCREEN_Y -  Element::TEXT_HEIGHT - GAP,
+                                      200, Element::TEXT_HEIGHT),
+                                 "Server: " + serverIP));
 
     // Images
     _loginFront = Texture(std::string("Images/loginFront.png"), Color::MAGENTA);
