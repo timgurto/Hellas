@@ -223,7 +223,7 @@ void Server::run(){
 
         checkSockets();
 
-        SDL_Delay(10);
+        SDL_Delay(1);
     }
 
     // Save all user data
