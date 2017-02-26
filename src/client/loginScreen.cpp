@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "Client.h"
 #include "Particle.h"
 #include "ui/Label.h"
@@ -96,6 +98,7 @@ void Client::login(void *){
         return;
     }
     std::string username = nameBox->text();
+    std::transform(username.begin(), username.end(), username.begin(), tolower);
     nameBox->text(username);
     _instance->_username = username;
     tryToConnect = true;
