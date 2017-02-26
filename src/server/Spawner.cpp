@@ -11,7 +11,7 @@ Spawner::Spawner(size_t index, const Point &location, const ObjectType *type):
     _respawnTime(0){}
 
 void Spawner::spawn(){
-    static const size_t MAX_ATTEMPTS = 20;
+    static const size_t MAX_ATTEMPTS = 50;
     Server &server = *Server::_instance;
 
     for (size_t attempt = 0; attempt != MAX_ATTEMPTS; ++attempt){
