@@ -524,6 +524,25 @@ void Client::handleMessage(const std::string &msg){
             (it->second)->beingGathered(false);
             break;
         }
+        
+        case SV_RECIPES:
+        case SV_NEW_RECIPES:
+        {
+            int n;
+            singleMsg >> n >> del;
+            for (size_t i = 0; i != n; ++i){
+                std::string recipe;
+                readString(singleMsg, recipe, i == n - 1 ? MSG_END : MSG_DELIM);
+                singleMsg >> del;
+                _knownRecipes.insert(recipe);
+            }
+            if (msgCode == SV_NEW_RECIPES)
+                _debug << "You have discovered " << n
+                       << " new recipe" << (n > 1 ? "s" : "")
+                       << "!" << Log::endl;
+            _recipeList->markChanged();
+            break;
+        }
 
         case SV_NPC_HEALTH:
         {

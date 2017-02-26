@@ -56,6 +56,8 @@ private:
     size_t _actionSlot; // Construct
     Point _actionLocation; // Construct
 
+    std::set<std::string> _knownRecipes;;
+
     size_t _driving; // The serial of the vehicle this user is currently driving; 0 if none.
 
     Stats _stats; // Memoized stats, after gear etc.  Calculated with updateStats();
@@ -83,6 +85,9 @@ public:
     size_t driving() const { return _driving; }
     void driving(size_t serial) { _driving = serial; }
     bool isDriving() const { return _driving != 0; }
+    const std::set<std::string> &knownRecipes() const { return _knownRecipes; }
+    void addRecipe(const std::string &id) { _knownRecipes.insert(id); }
+    void unlockRecipes(const Item *item); // Checks whether this item unlocks any new recipes.
 
     // Inventory getters/setters
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const

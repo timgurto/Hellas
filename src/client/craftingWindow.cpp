@@ -20,7 +20,6 @@ void Client::initializeCraftingWindow(){
             _tagFilters[tagName] = false;
     }
     _haveMatsFilter = false;
-    _haveSomeMatsFilter = true;
     _tagOr = _matOr = false;
     _haveToolsFilter = true;
     _tagFilterSelected = _matFilterSelected = false;
@@ -57,10 +56,6 @@ void Client::initializeCraftingWindow(){
     CheckBox *pCB = new CheckBox(Rect(0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT),
                                  _haveMatsFilter, "Have all materials");
     pCB->setTooltip("Only show recipes for which you have the materials");
-    filterPane->addChild(pCB);
-    y += Element::TEXT_HEIGHT;
-    pCB = new CheckBox(Rect(0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT),
-                       _haveSomeMatsFilter, "Have some materials");
     filterPane->addChild(pCB);
     y += Element::TEXT_HEIGHT;
     filterPane->addChild(new Line(0, y + LINE_GAP/2, FILTERS_PANE_W));
@@ -269,8 +264,11 @@ void Client::populateRecipesList(Element &e){
     ChoiceList &recipesList = dynamic_cast<ChoiceList &>(e);
     recipesList.clearChildren();
 
+    const std::set<std::string> knownRecipes = Client::_instance->_knownRecipes;
     for (const Recipe &recipe : _instance->_recipes) {
-        if (!_instance->recipeMatchesFilters(recipe))
+        if (knownRecipes.find(recipe.id()) == knownRecipes.end()) // User doesn't know it yet
+            continue;
+        if (!_instance->recipeMatchesFilters(recipe)) // Excluded by filters
             continue;
         const ClientItem &product = *toClientItem(recipe.product());
         Element *const recipeElement = new Element(Rect());
@@ -296,15 +294,6 @@ bool Client::recipeMatchesFilters(const Recipe &recipe) const{
         for (const std::pair<const Item *, size_t> &materialsNeeded : recipe.materials())
             if (!playerHasItem(materialsNeeded.first, materialsNeeded.second))
                 return false;
-    } else if (_haveSomeMatsFilter) {
-        bool haveSomeMats = false;
-        for (const std::pair<const Item *, size_t> &materialsNeeded : recipe.materials())
-            if (playerHasItem(materialsNeeded.first, 1)){
-                haveSomeMats = true;
-                break;
-            }
-        if (!haveSomeMats)
-            return false;
     }
 
     // Material filters

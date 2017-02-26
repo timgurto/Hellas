@@ -289,9 +289,9 @@ void Server::addUser(const Socket &socket, const std::string &name){
     }
 
     // For easier testing/debugging: grant full stacks of everything
-    if (isDebug() && !userExisted)
+    /*if (isDebug() && !userExisted)
         for (const ServerItem &item : _items)
-            newUser.giveItem(&item, item.stackSize());
+            newUser.giveItem(&item, item.stackSize());*/
 
     // Send him his inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
@@ -303,6 +303,15 @@ void Server::addUser(const Socket &socket, const std::string &name){
     for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
         if (newUser.gear(i).first != nullptr)
             sendInventoryMessage(newUser, i, GEAR);
+    }
+
+    // Send him the recipes he knows
+    if (newUser.knownRecipes().size() > 0){
+        std::string args = makeArgs(newUser.knownRecipes().size());
+        for (const std::string &id : newUser.knownRecipes()){
+            args = makeArgs(args, id);
+        }
+        sendMessage(newUser.socket(), SV_RECIPES, args);
     }
 
     // Calculate and send him his stats

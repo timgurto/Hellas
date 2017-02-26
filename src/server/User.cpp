@@ -85,34 +85,56 @@ bool User::alive() const{
 }
 
 size_t User::giveItem(const ServerItem *item, size_t quantity){
+    size_t remaining = quantity;
+
     // First pass: partial stacks
     for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
         if (_inventory[i].first != item)
             continue;
         size_t spaceAvailable = item->stackSize() - _inventory[i].second;
         if (spaceAvailable > 0) {
-            size_t qtyInThisSlot = min(spaceAvailable, quantity);
+            size_t qtyInThisSlot = min(spaceAvailable, remaining);
             _inventory[i].second += qtyInThisSlot;
             Server::instance().sendInventoryMessage(*this, i, Server::INVENTORY);
-            quantity -= qtyInThisSlot;
+            remaining -= qtyInThisSlot;
         }
-        if (quantity == 0)
-            return 0;
+        if (remaining == 0)
+            break;
     }
 
     // Second pass: empty slots
-    for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
-        if (_inventory[i].first != nullptr)
-            continue;
-        size_t qtyInThisSlot = min(item->stackSize(), quantity);
-        _inventory[i].first = item;
-        _inventory[i].second = qtyInThisSlot;
-        Server::instance().sendInventoryMessage(*this, i, Server::INVENTORY);
-        quantity -= qtyInThisSlot;
-        if (quantity == 0)
-            return 0;
+    if (remaining > 0){
+        for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
+            if (_inventory[i].first != nullptr)
+                continue;
+            size_t qtyInThisSlot = min(item->stackSize(), remaining);
+            _inventory[i].first = item;
+            _inventory[i].second = qtyInThisSlot;
+            Server::instance().sendInventoryMessage(*this, i, Server::INVENTORY);
+            remaining -= qtyInThisSlot;
+            if (remaining == 0)
+                break;
+        }
     }
-    return quantity;
+    if (remaining < quantity)
+        unlockRecipes(item);
+    return remaining;
+}
+
+void User::unlockRecipes(const Item *item){
+    std::set<const std::string> newRecipes;
+    for (const std::string &id : Server::instance()._recipeLocks[item->id()])
+        if (_knownRecipes.find(id) == _knownRecipes.end()){
+            newRecipes.insert(id);
+            _knownRecipes.insert(id);
+        }
+            
+    if (!newRecipes.empty()){ // New recipes unlocked!
+        std::string args = makeArgs(newRecipes.size());
+        for (const std::string &id : newRecipes)
+            args = makeArgs(args, id);
+        Server::instance().sendMessage(_socket, SV_NEW_RECIPES, args);
+    }
 }
 
 void User::cancelAction() {

@@ -75,6 +75,12 @@ bool Server::readUserData(User &user){
             std::make_pair<const ServerItem *, size_t>(&*it, static_cast<size_t>(qty));
     }
 
+    elem = xr.findChild("knownRecipes");
+    for (auto slotElem : xr.getChildren("recipe", elem)){
+        std::string id;
+        if (xr.findAttr(slotElem, "id", id)) user.addRecipe(id);
+    }
+
     elem = xr.findChild("stats");
     unsigned n;
     if (xr.findAttr(elem, "health", n))
@@ -114,6 +120,12 @@ void Server::writeUserData(const User &user) const{
             xw.setAttr(slotElement, "id", slot.first->id());
             xw.setAttr(slotElement, "quantity", slot.second);
         }
+    }
+
+    e = xw.addChild("knownRecipes");
+    for (const std::string &id : user.knownRecipes()){
+        auto slotElement = xw.addChild("recipe", e);
+        xw.setAttr(slotElement, "id", id);
     }
 
     e = xw.addChild("stats");
@@ -328,15 +340,22 @@ void Server::loadData(const std::string &path){
             if (xr.findAttr(elem, "time", n)) recipe.time(n);
 
             for (auto child : xr.getChildren("material", elem)) {
-                int matQty = 1;
-                xr.findAttr(child, "quantity", matQty);
-                if (xr.findAttr(child, "id", s)) {
-                    auto it = _items.find(ServerItem(s));
+                int quantity = 1;
+                std::string matID;
+                // Quantity
+                xr.findAttr(child, "quantity", quantity);
+                if (xr.findAttr(child, "id", matID)) {
+                    auto it = _items.find(ServerItem(matID));
                     if (it == _items.end()) {
-                        _debug << Color::RED << "Skipping invalid recipe material " << s << Log::endl;
+                        _debug << Color::RED << "Skipping invalid recipe material " << matID << Log::endl;
                         continue;
                     }
-                    recipe.addMaterial(&*it, matQty);
+                    recipe.addMaterial(&*it, quantity);
+
+                    // Locks
+                    int unlocks = 0;
+                    if (xr.findAttr(child, "unlocks", unlocks) && unlocks != 0)
+                        _recipeLocks[matID].insert(id);
                 }
             }
 

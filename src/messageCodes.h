@@ -164,6 +164,14 @@ enum MessageCode{
     // Arguments: username, slot, id
     SV_GEAR = 133,
 
+    // The recipes a user knows
+    // Arguments: quantity, id1, id2, ...
+    SV_RECIPES = 134,
+
+    // New recipes a user has just learned
+    // Arguments: quantity, id1, id2, ...
+    SV_NEW_RECIPES = 135,
+
     // An object has an owner
     // Arguments: serial, owner
     SV_OWNER = 150,
