@@ -42,15 +42,15 @@
 <spawnPoint index="41" type="bandit" quantity="10" radius="500" respawnTime="1200000" x="43700" y="20708" />
 <spawnPoint index="42" type="bandit" quantity="10" radius="500" respawnTime="1200000" x="43388" y="21536" />
 <spawnPoint index="43" type="bandit" quantity="400" radius="2000" respawnTime="1200000" x="41556" y="23292" />
-<spawnPoint index="44" type="rock" quantity="30" radius="1000" respawnTime="600000" x="50932" y="17280" />
-<spawnPoint index="45" type="rock" quantity="30" radius="1000" respawnTime="600000" x="49396" y="17464" />
-<spawnPoint index="46" type="rock" quantity="30" radius="1000" respawnTime="600000" x="49256" y="16232" />
-<spawnPoint index="47" type="rock" quantity="30" radius="1000" respawnTime="600000" x="49884" y="15152" />
-<spawnPoint index="48" type="tree" quantity="30" radius="2000" respawnTime="600000" x="50280" y="15684" />
-<spawnPoint index="49" type="tree" quantity="30" radius="1000" respawnTime="600000" x="51148" y="15308" />
-<spawnPoint index="50" type="tree" quantity="30" radius="1000" respawnTime="600000" x="52564" y="16796" />
-<spawnPoint index="51" type="tree" quantity="30" radius="1000" respawnTime="600000" x="54332" y="17496" />
-<spawnPoint index="52" type="tree" quantity="30" radius="1000" respawnTime="600000" x="53488" y="17244" />
+<spawnPoint index="44" type="rock" quantity="50" radius="1000" respawnTime="600000" x="50932" y="17280" />
+<spawnPoint index="45" type="rock" quantity="50" radius="1000" respawnTime="600000" x="49396" y="17464" />
+<spawnPoint index="46" type="rock" quantity="50" radius="1000" respawnTime="600000" x="49256" y="16232" />
+<spawnPoint index="47" type="rock" quantity="50" radius="1000" respawnTime="600000" x="49884" y="15152" />
+<spawnPoint index="48" type="tree" quantity="50" radius="2000" respawnTime="600000" x="50280" y="15684" />
+<spawnPoint index="49" type="tree" quantity="50" radius="1000" respawnTime="600000" x="51148" y="15308" />
+<spawnPoint index="50" type="tree" quantity="50" radius="1000" respawnTime="600000" x="52564" y="16796" />
+<spawnPoint index="51" type="tree" quantity="50" radius="1000" respawnTime="600000" x="54332" y="17496" />
+<spawnPoint index="52" type="tree" quantity="50" radius="1000" respawnTime="600000" x="53488" y="17244" />
 <spawnPoint index="53" type="clay" quantity="10" radius="500" respawnTime="600000" x="49148" y="14160" />
 <spawnPoint index="54" type="clay" quantity="10" radius="500" respawnTime="600000" x="51588" y="14176" />
 <spawnPoint index="55" type="stick" quantity="20" radius="500" respawnTime="600000" x="50908" y="14524" />
@@ -67,4 +67,8 @@
 <spawnPoint index="66" type="clay" quantity="400" radius="10000" respawnTime="600000" x="49144" y="32608" />
 <spawnPoint index="67" type="tin" quantity="200" radius="10000" respawnTime="600000" x="49248" y="32848" />
 <spawnPoint index="68" type="tin" quantity="20" radius="4000" respawnTime="600000" x="46396" y="26072" />
+<spawnPoint index="69" type="copper" quantity="10" radius="1000" respawnTime="600000" x="45048" y="28664" />
+<spawnPoint index="70" type="copper" quantity="10" radius="1000" respawnTime="600000" x="47168" y="31952" />
+<spawnPoint index="71" type="copper" quantity="10" radius="1000" respawnTime="600000" x="49096" y="27576" />
+<spawnPoint index="72" type="copper" quantity="10" radius="1000" respawnTime="600000" x="43352" y="26280" />
 </root>
