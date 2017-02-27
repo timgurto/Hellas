@@ -614,7 +614,7 @@ void Server::saveData(const objects_t &objects){
 #endif
     XmlWriter xw("World/objects.world");
     for (const Object *obj : objects) {
-        if (obj->classTag() != 'o')
+        if (obj->classTag() == 'n')
             continue;
         if (obj->type() == nullptr)
             continue;
