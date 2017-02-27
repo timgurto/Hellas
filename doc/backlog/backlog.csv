@@ -162,4 +162,21 @@ issue,description,value,effort,type,blockedBy,done
 320,Right-clicking doesn't cancel dragging,3,2,Bug
 321,"Require tools, gather-req items, etc. to be equipped",3,2,Feature
 322,Tools can modify crafting/gathering speed,3,3,Feature
-323,Weird inventory-window behaviour when new item tooltips are generated,,,Bug
+324,Reduce calls to findUsersInArea() in NPC AI,5,8,Performance
+326,Use simple font for everything,5,2,Aesthetics
+327,Include only known-recipe info in filters,3,3,Aesthetics
+328,Fix jumpy movement when laggy,8,13,Aesthetics
+329,Make mountains more explicit,2,3,Aesthetics
+330,Use simpler walls in login screen,1,2,Aesthetics
+331,Lower horizon in login screen,2,2,Aesthetics
+332,Distant players aren't being removed,13,5,Bug
+333,Add esc menu to release client,5,5,Aesthetics
+334,Remove brown tree particles,2,1,Aesthetics
+335,Calculate highlight borders by adjacency to magenta (sausage man),3,3,Aesthetics
+336,Give tool classes better names,5,1,Aesthetics
+337,Remove 'can …' tooltips when player has no permissions,3,2,Bug
+338,Moulds should unlock recipes,3,1,Feature
+339,Allow combining/splitting stacks,8,3,Feature
+340,Allow crafting if removing the ingredients will make room,5,3,Feature
+341,Make players and objects more visible on map,13,5,Feature
+342,Allow tools to unlock recipes,3,2,Feature
