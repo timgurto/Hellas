@@ -289,9 +289,9 @@ void Server::addUser(const Socket &socket, const std::string &name){
     }
 
     // For easier testing/debugging: grant full stacks of everything
-    /*if (isDebug() && !userExisted)
+    if (isDebug() && !userExisted)
         for (const ServerItem &item : _items)
-            newUser.giveItem(&item, item.stackSize());*/
+            newUser.giveItem(&item, item.stackSize());
 
     // Send him his inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {

@@ -3,7 +3,7 @@
 #include "Server.h"
 #include "User.h"
 
-const size_t User::INVENTORY_SIZE = 10;
+const size_t User::INVENTORY_SIZE = 80;
 const size_t User::GEAR_SLOTS = 8;
 
 ObjectType User::OBJECT_TYPE("__clientObjectType__");
