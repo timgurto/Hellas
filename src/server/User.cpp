@@ -128,6 +128,12 @@ void User::unlockRecipes(const Item *item){
             newRecipes.insert(id);
             _knownRecipes.insert(id);
         }
+    for (const std::string &tag : item->tags())
+        for (const std::string &id : Server::instance()._recipeToolLocks[tag])
+            if (_knownRecipes.find(id) == _knownRecipes.end()){
+                newRecipes.insert(id);
+                _knownRecipes.insert(id);
+            }
             
     if (!newRecipes.empty()){ // New recipes unlocked!
         std::string args = makeArgs(newRecipes.size());

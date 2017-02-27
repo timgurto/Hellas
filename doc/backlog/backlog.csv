@@ -174,9 +174,9 @@ issue,description,value,effort,type,blockedBy,done
 334,Remove brown tree particles,2,1,Aesthetics,,
 335,Calculate highlight borders by adjacency to magenta (sausage man),3,3,Aesthetics,,
 336,Give tool classes better names,5,1,Aesthetics,,TRUE
-337,Remove 'can …' tooltips when player has no permissions,3,2,Bug
-338,Moulds should unlock recipes,3,1,Feature
-339,Allow combining/splitting stacks,8,3,Feature
-340,Allow crafting if removing the ingredients will make room,5,3,Feature
-341,Make players and objects more visible on map,13,5,Feature
-342,Allow tools to unlock recipes,3,2,Feature
+337,Remove 'can ...' tooltips when player has no permissions,3,2,Bug,,
+338,Moulds should unlock recipes,3,1,Feature,342,TRUE
+339,Allow combining/splitting stacks,8,3,Feature,,
+340,Allow crafting if removing the ingredients will make room,5,3,Feature,,
+341,Make players and objects more visible on map,13,5,Feature,,
+342,Allow tools to unlock recipes,5,2,Bug,,TRUE

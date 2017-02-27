@@ -362,6 +362,11 @@ void Server::loadData(const std::string &path){
             for (auto child : xr.getChildren("tool", elem)) {
                 if (xr.findAttr(child, "class", s)) {
                     recipe.addTool(s);
+
+                    // Locks
+                    int unlocks = 0;
+                    if (xr.findAttr(child, "unlocks", unlocks) && unlocks != 0)
+                        _recipeToolLocks[s].insert(id);
                 }
             }
         

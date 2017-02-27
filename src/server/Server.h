@@ -136,7 +136,9 @@ private:
     std::set<Recipe> _recipes;
     std::set<const ObjectType *> _objectTypes;
     std::map<size_t, Spawner> _spawners;
-    mutable std::map<std::string, std::set<std::string> > _recipeLocks; // item id -> recipe ids
+    mutable std::map<std::string, std::set<std::string> >
+        _recipeLocks, // item id -> recipe ids
+        _recipeToolLocks; // item tag -> recipe ids
 
     std::list<Object *> _objectsToRemove; // Emptied every tick.
     // Force all users to untarget an object
