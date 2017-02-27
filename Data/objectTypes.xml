@@ -80,7 +80,7 @@ Server only:
     xDrawOffset="-14" yDrawOffset="-17"
     constructionTime="1000" >
     <collisionRect x="-13" y="-9" w="24" h="11" />
-    <tag name="kiln1" />
+    <tag name="oven" />
 </objectType>
 
 <objectType
@@ -147,8 +147,8 @@ Server only:
     yDrawOffset="-26"
     constructionTime="1000" >
     <collisionRect x="-12" y="-4" w="27" h="10" />
-    <tag name="kiln1" />
-    <tag name="kiln2" />
+    <tag name="oven" />
+    <tag name="kiln" />
 </objectType>
 
 <objectType
