@@ -476,7 +476,6 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
 
-            const ServerItem *wareItem = toServerItem(mSlot.wareItem);
             // Check that user has price
             if (mSlot.price() > user->inventory()){
                 sendMessage(client, SV_NO_PRICE);
@@ -484,7 +483,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
 
             // Check that user has inventory space
-            if (!vectHasSpace(user->inventory(), wareItem, mSlot.wareQty)){
+            const ServerItem *priceItem = toServerItem(mSlot.priceItem);
+            if (!vectHasSpace(user->inventory(), priceItem, mSlot.wareQty)){
                 sendMessage(client, SV_INVENTORY_FULL);
                 break;
             }
@@ -498,7 +498,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 }
 
                 // Check that object has inventory space
-                if (!vectHasSpace(obj->container(), wareItem, mSlot.wareQty)){
+                if (!vectHasSpace(obj->container(), priceItem, mSlot.priceQty)){
                     sendMessage(client, SV_MERCHANT_INVENTORY_FULL);
                     break;
                 }
@@ -516,6 +516,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
 
             // Give ware to user
+            const ServerItem *wareItem = toServerItem(mSlot.wareItem);
             user->giveItem(wareItem, mSlot.wareQty);
 
             break;
