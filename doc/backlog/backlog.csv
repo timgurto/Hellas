@@ -92,7 +92,7 @@ issue,description,value,effort,type,blockedBy,done
 248,A shrine that grants a buff,3,8,Feature,247,
 249,A shrine that sets one's spawn point,13,8,Feature,,
 250,A road object that affects movement speed,5,5,Feature,247,
-251,A hoe constructs a farm plot without being consumed,3,3,Feature,,
+251,A hoe constructs a farm plot without being consumed,3,1,Feature,285,
 252,"Seeds, that are constructed on top of a farm-plot object",3,5,Feature,,
 253,A crop object that grows over time,5,5,Feature,,
 254,Terrain types have fertility property,2,2,Feature,,
@@ -107,13 +107,8 @@ issue,description,value,effort,type,blockedBy,done
 263,Talents/skills,89,89,Feature,,
 264,An object that affects terrain fertility,5,8,Feature,254,
 265,NPCs can have skills/abilities,13,13,Feature,263,
-266,Players must learn recipes,8,13,Feature,,
 267,Set bonuses for gear,13,8,Feature,,
 268,Learning skills might require tools,8,3,Feature,263,
-269,XP and leveling,21,5,Feature,,
-270,Grouped players get bonus XP,21,8,Feature,269,
-271,Quests,8,34,Feature,,
-272,Items that start quests,5,5,Feature,271,
 273,Player classes,13,3,Feature,,TRUE
 274,Class-restricted gear,13,3,Feature,,
 275,Flags showing faction ownership,5,5,Aesthetics,,
@@ -126,7 +121,7 @@ issue,description,value,effort,type,blockedBy,done
 282,Use collisionRects even on non-colliding objects,5,2,Bug,,
 283,Color mouse-over outline based on whether in range,8,3,Aesthetics,,
 284,Send nearby users' health values,5,3,Feature,,
-285,"An object that can transform with inventory + button push (e.g., construction site)",13,8,Feature,,
+285,Construction sites,13,8,Feature,,
 286,Non-NPC objects always collide with each other,5,2,Feature,,
 287,Allow specification of minimum yields,5,3,Bug,,
 288,Tool requirements not enforced for crafting,13,3,Bug,,TRUE
@@ -159,7 +154,7 @@ issue,description,value,effort,type,blockedBy,done
 317,Fix stat-window height,8,1,Bug,,TRUE
 318,Let window titles expand window width,3,1,Bug,,
 319,Mouse-down events are propagating to multiple windows,5,2,Bug,,
-320,Right-clicking doesn't cancel dragging,3,2,Bug,,
+320,Right-clicking doesn't cancel dragging,3,2,Bug,312,
 321,"Require tools, gather-req items, etc. to be equipped",3,2,Feature,,
 322,Tools can modify crafting/gathering speed,3,3,Feature,,
 324,Reduce calls to findUsersInArea() in NPC AI,5,8,Performance,,
@@ -172,11 +167,11 @@ issue,description,value,effort,type,blockedBy,done
 332,Distant players aren't being removed,13,5,Bug,,
 333,Add esc menu to release client,5,5,Aesthetics,,
 334,Remove brown tree particles,2,1,Aesthetics,,
-335,Calculate highlight borders by adjacency to magenta (sausage man),3,3,Aesthetics,,
+335,Calculate highlight borders by adjacency to magenta (sausage man),1,3,Aesthetics,,
 336,Give tool classes better names,5,1,Aesthetics,,TRUE
 337,Remove 'can ...' tooltips when player has no permissions,3,2,Bug,,
 338,Moulds should unlock recipes,3,1,Feature,342,TRUE
-339,Allow combining/splitting stacks,8,3,Feature,,
+339,A stack can be split,8,3,Feature,,
 340,Allow crafting if removing the ingredients will make room,5,3,Feature,,
 341,Make players and objects more visible on map,13,5,Feature,,
 342,Allow tools to unlock recipes,5,2,Bug,,TRUE
