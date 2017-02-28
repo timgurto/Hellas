@@ -536,11 +536,39 @@ void Client::handleMessage(const std::string &msg){
                 singleMsg >> del;
                 _knownRecipes.insert(recipe);
             }
-            if (msgCode == SV_NEW_RECIPES)
-                _debug << "You have discovered " << n
-                       << " new recipe" << (n > 1 ? "s" : "")
-                       << "!" << Log::endl;
+            if (msgCode == SV_NEW_RECIPES){
+                _debug << "You have discovered ";
+                if (n == 1)
+                    _debug << "a new recipe";
+                else
+                    _debug << n << " new recipes";
+                _debug << "!" << Log::endl;
+            }
+
             _recipeList->markChanged();
+            break;
+        }
+        
+        case SV_CONSTRUCTIONS:
+        case SV_NEW_CONSTRUCTIONS:
+        {
+            int n;
+            singleMsg >> n >> del;
+            for (size_t i = 0; i != n; ++i){
+                std::string recipe;
+                readString(singleMsg, recipe, i == n - 1 ? MSG_END : MSG_DELIM);
+                singleMsg >> del;
+                _knownConstructions.insert(recipe);
+            }
+            if (msgCode == SV_NEW_RECIPES){
+                _debug << "You have discovered ";
+                if (n == 1)
+                    _debug << "a new construction";
+                else
+                    _debug << n << " new constructions";
+                _debug << "!" << Log::endl;
+            }
+            // TODO: Update relevant UI list
             break;
         }
 

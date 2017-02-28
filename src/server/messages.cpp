@@ -379,7 +379,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                         sendInventoryMessage(*_usersByName[username], slot1, *pObj1);
             if (obj2 == INVENTORY || obj2 == GEAR){
                 sendInventoryMessage(*user, slot2, obj2);
-                user->unlockRecipes(slotTo.first);
+                user->unlockStuff(slotTo.first);
             } else
                 for (auto username : pObj2->watchers())
                     if (pObj2->userHasAccess(username))

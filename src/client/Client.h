@@ -143,7 +143,9 @@ private:
     Element *_detailsPane;
 
     Window *_craftingWindow;
-    std::set<std::string> _knownRecipes;
+    std::set<std::string>
+        _knownRecipes,
+        _knownConstructions;
 
     Window *_inventoryWindow;
     void initializeInventoryWindow();

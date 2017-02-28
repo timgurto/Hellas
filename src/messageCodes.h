@@ -172,6 +172,14 @@ enum MessageCode{
     // Arguments: quantity, id1, id2, ...
     SV_NEW_RECIPES = 135,
 
+    // The constructions a user knows
+    // Arguments: quantity, id1, id2, ...
+    SV_CONSTRUCTIONS = 136,
+
+    // New constructions a user has just learned
+    // Arguments: quantity, id1, id2, ...
+    SV_NEW_CONSTRUCTIONS = 137,
+
     // An object has an owner
     // Arguments: serial, owner
     SV_OWNER = 150,

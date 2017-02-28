@@ -81,6 +81,12 @@ bool Server::readUserData(User &user){
         if (xr.findAttr(slotElem, "id", id)) user.addRecipe(id);
     }
 
+    elem = xr.findChild("knownConstructions");
+    for (auto slotElem : xr.getChildren("construction", elem)){
+        std::string id;
+        if (xr.findAttr(slotElem, "id", id)) user.addConstruction(id);
+    }
+
     elem = xr.findChild("stats");
     unsigned n;
     if (xr.findAttr(elem, "health", n))
@@ -125,6 +131,12 @@ void Server::writeUserData(const User &user) const{
     e = xw.addChild("knownRecipes");
     for (const std::string &id : user.knownRecipes()){
         auto slotElement = xw.addChild("recipe", e);
+        xw.setAttr(slotElement, "id", id);
+    }
+
+    e = xw.addChild("knownConstructions");
+    for (const std::string &id : user.knownConstructions()){
+        auto slotElement = xw.addChild("construction", e);
         xw.setAttr(slotElement, "id", id);
     }
 
