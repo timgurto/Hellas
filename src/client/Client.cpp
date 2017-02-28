@@ -300,10 +300,12 @@ _debug("client.log"){
     
     drawLoadingScreen("Initializing UI", 0.8);
     initializeCraftingWindow();
+    initializeBuildWindow();
     initializeInventoryWindow();
     initializeGearWindow();
     initializeMapWindow();
     addWindow(_craftingWindow);
+    addWindow(_buildWindow);
     addWindow(_inventoryWindow);
     addWindow(_gearWindow);
     addWindow(_mapWindow);
@@ -327,20 +329,22 @@ _debug("client.log"){
     static const px_t
         MENU_BUTTON_W = 50,
         MENU_BUTTON_H = 13,
-        NUM_BUTTONS = 5;
+        NUM_BUTTONS = 6;
     Element *menuBar = new Element(Rect(SCREEN_X/2 - MENU_BUTTON_W * NUM_BUTTONS / 2,
                                         SCREEN_Y - MENU_BUTTON_H,
                                         MENU_BUTTON_W * NUM_BUTTONS,
                                         MENU_BUTTON_H));
-    menuBar->addChild(new Button(Rect(0, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Crafting",
+    menuBar->addChild(new Button(Rect(0, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Build",
+                                 Element::toggleVisibilityOf, _buildWindow));
+    menuBar->addChild(new Button(Rect(MENU_BUTTON_W, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Craft",
                                  Element::toggleVisibilityOf, _craftingWindow));
-    menuBar->addChild(new Button(Rect(MENU_BUTTON_W, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Inventory",
+    menuBar->addChild(new Button(Rect(MENU_BUTTON_W * 2, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Inventory",
                                  Element::toggleVisibilityOf, _inventoryWindow));
-    menuBar->addChild(new Button(Rect(MENU_BUTTON_W * 2, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Gear",
+    menuBar->addChild(new Button(Rect(MENU_BUTTON_W * 3, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Gear",
                                  Element::toggleVisibilityOf, _gearWindow));
-    menuBar->addChild(new Button(Rect(MENU_BUTTON_W * 3, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Chat",
+    menuBar->addChild(new Button(Rect(MENU_BUTTON_W * 4, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Chat",
                                  Element::toggleVisibilityOf, _chatContainer));
-    menuBar->addChild(new Button(Rect(MENU_BUTTON_W * 4, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Map",
+    menuBar->addChild(new Button(Rect(MENU_BUTTON_W * 5, 0, MENU_BUTTON_W, MENU_BUTTON_H), "Map",
                                  Element::toggleVisibilityOf, _mapWindow));
     addUI(menuBar);
 

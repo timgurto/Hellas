@@ -142,10 +142,13 @@ private:
     ChoiceList *_recipeList;
     Element *_detailsPane;
 
-    Window *_craftingWindow;
+    Window 
+        *_craftingWindow,
+        *_buildWindow;
     std::set<std::string>
         _knownRecipes,
         _knownConstructions;
+    void initializeBuildWindow();
 
     Window *_inventoryWindow;
     void initializeInventoryWindow();

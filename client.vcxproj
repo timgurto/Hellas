@@ -97,6 +97,7 @@
   <ItemGroup>
     <ClCompile Include="src\Args.cpp" />
     <ClCompile Include="src\client\Avatar.cpp" />
+    <ClCompile Include="src\client\buildWindow.cpp" />
     <ClCompile Include="src\client\Client.cpp" />
     <ClCompile Include="src\client\ClientMerchantSlot.cpp" />
     <ClCompile Include="src\client\ClientNPC.cpp" />

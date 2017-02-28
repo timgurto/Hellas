@@ -7,11 +7,6 @@
 </recipe>
 
 <recipe
-    id="oven" time="6000" product="oven" >
-    <material id="rock" quantity="10" unlocks="1" />
-</recipe>
-
-<recipe
     id="smallPot" time="12000" product="smallPot" >
     <material id="crudeClay" quantity="2" unlocks="1" />
     <material id="log" />
