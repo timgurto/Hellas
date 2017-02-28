@@ -91,6 +91,8 @@ public:
     void removeItems(const ItemSet &items); // From _container; inventory
     void giveItem(const ServerItem *item, size_t qty = 1); // To _container; inventory
 
+    ItemSet _remainingMaterials; // The remaining construction costs, if relevant.
+
     bool userHasAccess(const std::string &username) const;
     
     void addWatcher(const std::string &username);

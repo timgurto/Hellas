@@ -77,10 +77,11 @@ Server only:
 
 <objectType
     id="oven" name="Oven"
-    xDrawOffset="-14" yDrawOffset="-17"
-    constructionTime="1000" >
+    xDrawOffset="-14" yDrawOffset="-17" >
     <collisionRect x="-13" y="-9" w="24" h="11" />
     <tag name="oven" />
+    <material id="rock" quantity="10" />
+    <unlockedBy id="rock" />
 </objectType>
 
 <objectType

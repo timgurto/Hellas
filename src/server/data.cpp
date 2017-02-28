@@ -200,6 +200,8 @@ void Server::loadData(const std::string &path){
                 ot->deconstructsItem(&*itemIt);
             }
             if (xr.findAttr(elem, "deconstructionTime", n)) ot->deconstructionTime(n);
+
+            // Gathering yields
             for (auto yield : xr.getChildren("yield", elem)) {
                 if (!xr.findAttr(yield, "id", s))
                     continue;
@@ -211,18 +213,46 @@ void Server::loadData(const std::string &path){
                 std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
                 ot->addYield(&*itemIt, initMean, initSD, gatherMean, gatherSD);
             }
+
+            // Merchant
             if (xr.findAttr(elem, "merchantSlots", n)) ot->merchantSlots(n);
             if (xr.findAttr(elem, "bottomlessMerchant", n)) ot->bottomlessMerchant(n == 1);
+
             Rect r;
             if (xr.findRectChild("collisionRect", elem, r))
                 ot->collisionRect(r);
+
+            // Tags
             for (auto objTag :xr.getChildren("tag", elem))
                 if (xr.findAttr(objTag, "name", s))
                     ot->addTag(s);
+
+            // Construction site
+            for (auto objMat : xr.getChildren("material", elem)){
+                if (!xr.findAttr(objMat, "id", s))
+                    continue;
+                auto it = _items.find(s);
+                if (it == _items.end()){
+                    _debug("Invalid construction material specified; skipping");
+                    continue;
+                }
+                n = 1;
+                xr.findAttr(objMat, "quantity", n);
+                ot->addMaterial(&*it, n);
+            }
+            for (auto objUnlock : xr.getChildren("unlockedBy", elem)){
+                if (xr.findAttr(objUnlock, "id", s))
+                    _constructionLocks[s].insert(id);
+
+            }
+
+            // Container
             auto container = xr.findChild("container", elem);
             if (container != nullptr) {
                 if (xr.findAttr(container, "slots", n)) ot->containerSlots(n);
             }
+
+            // Terrain restrictions
             if (xr.findAttr(elem, "allowedTerrain", s))
                 ot->allowedTerrain(s);
         

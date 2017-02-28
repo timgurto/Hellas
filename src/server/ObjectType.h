@@ -35,6 +35,8 @@ class ObjectType{
 
     const TerrainList *_allowedTerrain;
 
+    ItemSet _materials; // The necessary materials, if this needs to be constructed in-place.
+
 public:
     ObjectType(const std::string &id);
 
@@ -67,6 +69,8 @@ public:
     void deconstructionTime(ms_t t) { _deconstructionTime = t; }
     const TerrainList &allowedTerrain() const;
     void allowedTerrain(const std::string &id){ _allowedTerrain = TerrainList::findList(id); }
+    void addMaterial(const Item *material, size_t quantity) { _materials.add(material, quantity); }
+    bool needsConstruction() const { return !_materials.isEmpty(); }
 
     bool operator<(const ObjectType &rhs) const { return _id < rhs._id; }
 
