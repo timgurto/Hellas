@@ -252,10 +252,13 @@ void Client::handleInput(double delta){
                     prepareAction(std::string("Constructing ") +
                                   _inventory[Container::useSlot].first->name());
                     break;
-                }
+
+                // Construct without item
+                } else if (_selectedConstruction != nullptr){
+
 
                 // Dismount
-                else if (_isDismounting){
+                } else if (_isDismounting){
                     px_t
                         x = toInt(_mouse.x - offset().x),
                         y = toInt(_mouse.y - offset().y);

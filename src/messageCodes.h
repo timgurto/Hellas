@@ -32,19 +32,23 @@ enum MessageCode{
 
     // "I want to construct the item in inventory slot ..., at location ..."
     // Arguments: slot, x, y
-    CL_CONSTRUCT = 22,
+    CL_CONSTRUCT_ITEM = 22,
+
+    // "I want to construct object ..., at location ..."
+    // Arguments: id, x, y
+    CL_CONSTRUCT = 23,
 
     // "I want to pick up an object"
     // Arguments: serial
-    CL_GATHER = 23,
+    CL_GATHER = 24,
 
     // "I want to deconstruct an object"
     // Arguments: serial
-    CL_DECONSTRUCT = 24,
+    CL_DECONSTRUCT = 25,
 
     // "I want to trade using merchant slot ... in object ..."
     // Arguments: serial, slot
-    CL_TRADE = 25,
+    CL_TRADE = 26,
 
     // "I want to drop the item in object ...'s slot ..."
     // An object serial of 0 denotes the user's inventory.

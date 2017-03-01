@@ -118,6 +118,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
         case CL_CONSTRUCT:
         {
+            break;
+        }
+
+        case CL_CONSTRUCT_ITEM:
+        {
             size_t slot;
             double x, y;
             iss >> slot >> del >> x >> del >> y >> del;
