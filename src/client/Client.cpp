@@ -89,6 +89,10 @@ _inventoryWindow(nullptr),
 _gearWindow(nullptr),
 _gearWindowBackground(std::string("Images/gearWindow.png"), Color::MAGENTA),
 
+_buildWindow(nullptr),
+_buildList(nullptr),
+_selectedConstruction(nullptr),
+
 _connectionStatus(TRYING),
 
 _actionTimer(0),

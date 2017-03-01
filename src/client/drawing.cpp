@@ -105,7 +105,9 @@ void Client::draw() const{
 
     // Used item
     if (_constructionFootprint) {
-        const ClientObjectType *ot = Container::getUseItem()->constructsObject();
+        const ClientObjectType *ot = _selectedConstruction == nullptr ?
+                                     Container::getUseItem()->constructsObject() :
+                                     _selectedConstruction;
         Rect footprintRect = ot->collisionRect() + _mouse - _offset;
         if (distance(playerCollisionRect(), footprintRect) <= Client::ACTION_DISTANCE) {
             renderer.setDrawColor(Color::FOOTPRINT_GOOD);
@@ -122,6 +124,7 @@ void Client::draw() const{
             renderer.setDrawColor(Color::FOOTPRINT_BAD);
             renderer.fillRect(footprintRect + _offset);
         }
+        // TODO: Show message explaining controls
     } else if (_isDismounting){
         const EntityType &charType = *_character.type();
         Rect footprintRect = Avatar::collisionRectRaw() + _mouse - _offset;

@@ -148,7 +148,12 @@ private:
     std::set<std::string>
         _knownRecipes,
         _knownConstructions;
+
     void initializeBuildWindow();
+    ChoiceList *_buildList;
+    static void populateBuildList(Element &list);
+    static void chooseConstruction(Element &e, const Point &mousePos);
+    const ClientObjectType *_selectedConstruction;
 
     Window *_inventoryWindow;
     void initializeInventoryWindow();

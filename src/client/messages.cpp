@@ -568,7 +568,7 @@ void Client::handleMessage(const std::string &msg){
                     _debug << n << " new constructions";
                 _debug << "!" << Log::endl;
             }
-            // TODO: Update relevant UI list
+            _buildList->markChanged();
             break;
         }
 

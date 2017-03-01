@@ -1,31 +1,47 @@
 #include <cassert>
 
 #include "Client.h"
+#include "ui/Label.h"
 
 extern Renderer renderer;
 
 void Client::initializeBuildWindow(){
-    _buildWindow = new Window(Rect(100, 50, 50, 150), "Construction");
-
-    /*
-
     static const px_t
-        FILTERS_PANE_W = 150,
-        RECIPES_PANE_W = 160,
-        DETAILS_PANE_W = 150,
-        PANE_GAP = 6,
-        FILTERS_PANE_X = PANE_GAP / 2,
-        RECIPES_PANE_X = FILTERS_PANE_X + FILTERS_PANE_W + PANE_GAP,
-        DETAILS_PANE_X = RECIPES_PANE_X + RECIPES_PANE_W + PANE_GAP,
-        CRAFTING_WINDOW_W = DETAILS_PANE_X + DETAILS_PANE_W + PANE_GAP/2,
+        BUTTON_WIDTH = 80,
+        BUTTON_HEIGHT = Element::TEXT_HEIGHT,
+        WIN_HEIGHT = toInt(7.5 * BUTTON_HEIGHT);
 
-        CONTENT_H = 200,
-        CONTENT_Y = PANE_GAP/2,
-        CRAFTING_WINDOW_H = CONTENT_Y + CONTENT_H + PANE_GAP/2;
+    _buildWindow = new Window(Rect(100, 50, BUTTON_WIDTH, WIN_HEIGHT), "Construction");
+    _buildList = new ChoiceList(Rect(0, 0, BUTTON_WIDTH, WIN_HEIGHT), BUTTON_HEIGHT);
+    _buildWindow->addChild(_buildList);
+    _buildList->setPreRefreshFunction(populateBuildList, _buildList);
+}
 
-    _craftingWindow = new Window(Rect(100, 50, CRAFTING_WINDOW_W, CRAFTING_WINDOW_H), "Crafting");
-    _craftingWindow->addChild(new Line(RECIPES_PANE_X - PANE_GAP/2, CONTENT_Y,
-                                       CONTENT_H, Element::VERTICAL));
-    _craftingWindow->addChild(new Line(DETAILS_PANE_X - PANE_GAP/2, CONTENT_Y,
-                                       CONTENT_H, Element::VERTICAL));*/
+void Client::populateBuildList(Element &e){
+    const Client &client = *Client::_instance;
+    ChoiceList &list = dynamic_cast<ChoiceList &>(e);
+    list.clearChildren();
+    for (const std::string &id : client._knownConstructions){
+        const ClientObjectType *ot = *client._objectTypes.find(&ClientObjectType(id));
+        Element *listElement = new Element(Rect());
+        list.addChild(listElement);
+        listElement->addChild(new Label(Rect(2, 0, listElement->width(), listElement->height()),
+                                       ot->name()));
+        listElement->setLeftMouseUpFunction(chooseConstruction);
+        listElement->id(id);
+    }
+    list.verifyBoxes();
+}
+
+void Client::chooseConstruction(Element &e, const Point &mousePos){
+    Client &client = *Client::_instance;
+    const std::string selectedID = client._buildList->getSelected();
+    if (selectedID.empty()){
+        client._selectedConstruction = nullptr;
+        client._constructionFootprint = Texture();
+    } else {
+        const ClientObjectType *ot = *client._objectTypes.find(&ClientObjectType(selectedID));
+        client._selectedConstruction = ot;
+        client._constructionFootprint = ot->image();
+    }
 }
