@@ -201,20 +201,57 @@ void ClientObject::createWindow(Client &client){
     bool
         hasContainer = objType.containerSlots() > 0,
         isMerchant = objType.merchantSlots() > 0,
-        isVehicle = classTag() == 'v';;
+        isVehicle = classTag() == 'v';
     if (userHasAccess() && (hasContainer ||
                             isMerchant ||
                             isVehicle ||
-                            objType.canDeconstruct())){
+                            objType.canDeconstruct() ||
+                            isBeingConstructed() )){
         static const size_t COLS = 8;
         static const px_t
             WINDOW_WIDTH = Container(1, 8, _container).width(),
             BUTTON_HEIGHT = 15,
             BUTTON_WIDTH = 60,
-            BUTTON_GAP = 1;
-        px_t x = BUTTON_GAP, y = 0;
-        px_t winWidth = 0;
-        _window = new Window(Rect(0, 0, 0, 0), objType.name());
+            BUTTON_GAP = 1,
+            GAP = 2;
+        px_t
+            x = BUTTON_GAP,
+            y = 0;
+        px_t
+            winWidth = WINDOW_WIDTH;
+        _window = new Window(Rect(0, 0, WINDOW_WIDTH, 0), objType.name());
+
+        // Construction site
+        if (isBeingConstructed()){
+            _window->addChild(new Label(Rect(x, y, WINDOW_WIDTH, Element::TEXT_HEIGHT),
+                                        "Under construction"));
+            y += Element::TEXT_HEIGHT + GAP;
+
+            // 1. Required materials
+            _window->addChild(new Label(Rect(x, y, WINDOW_WIDTH, Element::TEXT_HEIGHT),
+                                        "Remaining materials required:"));
+            y += Element::TEXT_HEIGHT;
+            for (const auto &pair : constructionMaterials()){
+                // Quantity
+                static const px_t
+                    QTY_WIDTH = 20;
+                _window->addChild(new Label(Rect(x, y, QTY_WIDTH, Client::ICON_SIZE),
+                                            makeArgs(pair.second),
+                                            Element::RIGHT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+                x += QTY_WIDTH + GAP;
+                // Icon
+                const ClientItem &item = *dynamic_cast<const ClientItem *>(pair.first);
+                _window->addChild(new Picture(x, y, item.icon()));
+                x += Client::ICON_SIZE + GAP;
+                // Name
+                _window->addChild(new Label(Rect(x, y, WINDOW_WIDTH, Client::ICON_SIZE),
+                                            item.name(),
+                                            Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+                y += Client::ICON_SIZE + GAP;
+            }
+
+            // 2. Dropbox
+        }
 
         // Merchant setup
         if (isMerchant){
