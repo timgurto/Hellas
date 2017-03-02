@@ -422,7 +422,10 @@ const Texture &ClientObject::tooltip() const{
     // Name
     TooltipBuilder tb;
     tb.setColor(Color::ITEM_NAME);
-    tb.addLine(ot.name());
+    std::string title = ot.name();
+    if (isBeingConstructed())
+        title += " (under construction)";
+    tb.addLine(title);
 
     // Debug info
     if (isDebug()){
