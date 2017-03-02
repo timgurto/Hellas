@@ -208,6 +208,10 @@ enum MessageCode{
     // Arguments: serial, username
     SV_UNMOUNTED = 156,
 
+    // The remaining materials required to construct an object
+    // Arguments: serial, n, id1, quantity1, id2, quantity2, ...
+    SV_CONSTRUCTION_MATERIALS = 157,
+
     // The user's health value
     // Arguments: hp
     SV_HEALTH = 160,

@@ -26,6 +26,7 @@ public:
     bool contains(const Item *item, size_t qty = 1) const;
     bool contains(const std::string &tagName);
     bool contains(const std::set<std::string> &tags);
+    size_t numTypes() const { return _set.size(); }
     size_t totalQuantity() const { return _totalQty; }
     void add(const Item *item, size_t qty = 1);
     void remove(const Item *item, size_t qty = 1);

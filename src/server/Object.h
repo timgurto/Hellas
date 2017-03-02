@@ -27,6 +27,8 @@ class Object{
     // Users watching this object for changes to inventory or merchant slots
     std::set<std::string> _watchers;
 
+    ItemSet _remainingMaterials; // The remaining construction costs, if relevant.
+
 protected:
     static size_t generateSerial();
 
@@ -62,8 +64,10 @@ public:
     void incrementGatheringUsers(const User *userToSkip = nullptr);
     void decrementGatheringUsers(const User *userToSkip = nullptr);
     size_t numUsersGathering() const { return _numUsersGathering; }
-    virtual bool collides() const { return _type->collides(); }
+    bool isBeingBuilt() const { return !_remainingMaterials.isEmpty(); }
+    const ItemSet &remainingMaterials() const { return _remainingMaterials; }
 
+    virtual bool collides() const { return _type->collides(); }
     virtual double speed() const { return 0; } // movement per second
 
     bool isContainerEmpty() const;
@@ -90,8 +94,6 @@ public:
     void removeItem(const ServerItem *item, size_t qty); // From _contents; gathering
     void removeItems(const ItemSet &items); // From _container; inventory
     void giveItem(const ServerItem *item, size_t qty = 1); // To _container; inventory
-
-    ItemSet _remainingMaterials; // The remaining construction costs, if relevant.
 
     bool userHasAccess(const std::string &username) const;
     

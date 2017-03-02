@@ -871,6 +871,15 @@ void Server::sendMerchantSlotMessage(const User &user, const Object &obj, size_t
         sendMessage(user.socket(), SV_MERCHANT_SLOT, makeArgs(obj.serial(), slot, "", 0, "", 0));
 }
 
+void Server::sendConstructionMaterialsMessage(const User &user, const Object &obj) const{
+    size_t n = obj.remainingMaterials().numTypes();
+    std::string args = makeArgs(obj.serial(), n);
+    for (const auto &pair : obj.remainingMaterials()){
+        args = makeArgs(args, pair.first->id(), pair.second);
+    }
+    sendMessage(user.socket(), SV_CONSTRUCTION_MATERIALS, args);
+}
+
 void Server::sendObjectInfo(const User &user, const Object &object) const{
     if (object.classTag() == 'u'){
         const User &userToDescribe = dynamic_cast<const User &>(object);
@@ -900,6 +909,12 @@ void Server::sendObjectInfo(const User &user, const Object &object) const{
     // Being gathered
     if (object.numUsersGathering() > 0)
         sendMessage(user.socket(), SV_GATHERING_OBJECT, makeArgs(object.serial()));
+
+    // Construction materials
+    if (object.isBeingBuilt()){
+        _debug("Sending construction-materials message");
+        sendConstructionMaterialsMessage(user, object);
+    }
 }
 
 void Server::sendUserInfo(const User &user, const User &userToDescribe) const{

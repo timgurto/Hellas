@@ -70,7 +70,7 @@ public:
     const TerrainList &allowedTerrain() const;
     void allowedTerrain(const std::string &id){ _allowedTerrain = TerrainList::findList(id); }
     void addMaterial(const Item *material, size_t quantity) { _materials.add(material, quantity); }
-    bool needsConstruction() const { return !_materials.isEmpty(); }
+    const ItemSet &materials() const { return _materials; }
 
     bool operator<(const ObjectType &rhs) const { return _id < rhs._id; }
 

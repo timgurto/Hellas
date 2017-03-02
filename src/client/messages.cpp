@@ -617,6 +617,7 @@ void Client::handleMessage(const std::string &msg){
             }
             if (it->second->classTag() != 'n'){
                 _debug("Received loot info for a non-NPC object.", Color::FAILURE);
+                break;
             }
             ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
             npc.lootable(true);
@@ -637,11 +638,40 @@ void Client::handleMessage(const std::string &msg){
             }
             if (it->second->classTag() != 'n'){
                 _debug("Received loot info for a non-NPC object.", Color::FAILURE);
+                break;
             }
             ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
             npc.lootable(false);
             npc.refreshTooltip();
             npc.hideWindow();
+            break;
+        }
+
+        case SV_CONSTRUCTION_MATERIALS:
+        {
+            int serial, n;
+            ItemSet set;
+            std::string temp = singleMsg.str();
+            singleMsg >> serial >> del >> n >> del;
+            auto it = _objects.find(serial);
+            if (it == _objects.end()){
+                _debug("Received construction-material info for unknown object");
+                break;
+            }
+            ClientObject &obj = *it->second;
+            for (size_t i = 0; i != n; ++i){
+                std::string id;
+                readString(singleMsg, id);
+                const auto it = _items.find(id);
+                if (it == _items.end()){
+                    _debug("Received invalid construction-material info.", Color::FAILURE);
+                    break;
+                }
+                size_t qty;
+                singleMsg >> del >> qty >> del;
+                set.add(&*it, qty);
+            }
+            obj.constructionMaterials(set);
             break;
         }
 

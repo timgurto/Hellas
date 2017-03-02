@@ -336,9 +336,9 @@ void User::update(ms_t timeElapsed){
     {
         // Create object
         server.addObject(_actionObjectType, _actionLocation, this);
-        // Remove item from user's inventory
         if (_actionSlot == INVENTORY_SIZE) // Constructing an object without an item
             break;
+        // Remove item from user's inventory
         std::pair<const ServerItem *, size_t> &slot = _inventory[_actionSlot];
         assert(slot.first->constructsObject() == _actionObjectType);
         --slot.second;

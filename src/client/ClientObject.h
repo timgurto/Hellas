@@ -28,6 +28,7 @@ class ClientObject : public Entity{
     std::vector<TextBox *> _wareQtyBoxes;
     std::vector<TextBox *> _priceQtyBoxes;
     bool _beingGathered;
+    ItemSet _constructionMaterials; // The required materials, if it's being constructed.
 
 protected:
     Window *_window; // For containers, etc; opens when the object is nearby and right-clicked.
@@ -53,6 +54,9 @@ public:
     const Window *window() const { return _window; }
     void beingGathered(bool b) { _beingGathered = b; }
     bool beingGathered() const { return _beingGathered; }
+    const ItemSet &constructionMaterials() const { return _constructionMaterials; }
+    void constructionMaterials(const ItemSet &set) { _constructionMaterials = set; }
+    bool isBeingConstructed() const { return !_constructionMaterials.isEmpty(); }
 
     virtual char classTag() const override { return 'o'; }
 

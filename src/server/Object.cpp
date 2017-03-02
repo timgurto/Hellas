@@ -10,7 +10,8 @@ _location(loc),
 _type(type),
 _spawner(nullptr),
 _numUsersGathering(0),
-_lastLocUpdate(SDL_GetTicks())
+_lastLocUpdate(SDL_GetTicks()),
+_remainingMaterials(type->materials())
 {
     assert(type);
     if (type->yield()) {
