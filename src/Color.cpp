@@ -40,6 +40,7 @@ Color
 
     Color::FOOTPRINT_GOOD,
     Color::FOOTPRINT_BAD,
+    Color::FOOTPRINT,
     Color::IN_RANGE,
     Color::OUT_OF_RANGE,
     Color::HEALTH_BAR,

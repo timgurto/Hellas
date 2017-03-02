@@ -507,3 +507,12 @@ const Texture &ClientObject::tooltip() const{
     _tooltip = tb.publish();
     return _tooltip;
 }
+
+void ClientObject::draw(const Client &client) const{
+    if (isBeingConstructed()){
+        renderer.setDrawColor(Color::FOOTPRINT);
+        renderer.fillRect(drawRect() + client.offset());
+    } else {
+        Entity::draw(client);
+    }
+}

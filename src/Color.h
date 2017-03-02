@@ -44,6 +44,7 @@ public:
 
         FOOTPRINT_GOOD,
         FOOTPRINT_BAD,
+        FOOTPRINT,
         IN_RANGE,
         OUT_OF_RANGE,
         HEALTH_BAR,

@@ -199,6 +199,7 @@ _debug("client.log"){
     xr.findAttr(elem, "itemTags", Color::ITEM_TAGS);
     xr.findAttr(elem, "footprintGood", Color::FOOTPRINT_GOOD);
     xr.findAttr(elem, "footprintBad", Color::FOOTPRINT_BAD);
+    xr.findAttr(elem, "footprint", Color::FOOTPRINT);
     xr.findAttr(elem, "inRange", Color::IN_RANGE);
     xr.findAttr(elem, "outOfRange", Color::OUT_OF_RANGE);
     xr.findAttr(elem, "healthBar", Color::HEALTH_BAR);

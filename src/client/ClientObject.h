@@ -63,6 +63,7 @@ public:
     virtual void update(double delta) override;
     virtual const Texture &cursor(const Client &client) const override;
     const Texture &tooltip() const override; // Getter; creates tooltip on first call.
+    virtual void draw(const Client &client) const;
 
     Rect collisionRect() const { return objectType()->collisionRect() + location(); }
 

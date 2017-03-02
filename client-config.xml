@@ -72,6 +72,7 @@ Dark blue   3C388C
     
     footprintGood="E5E5E5"
     footprintBad="A34C5C"
+    footprint="772C67"
     inRange="E5E5E5"
     outOfRange="A34C5C"
     healthBar="62BA6C"
