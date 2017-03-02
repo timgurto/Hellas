@@ -272,7 +272,6 @@ void Client::handleInput(double delta){
                     sendMessage(CL_CONSTRUCT_ITEM, makeArgs(Container::useSlot, x, y));
                     prepareAction(std::string("Constructing ") +
                                   _inventory[Container::useSlot].first->name());
-                    Container::useSlot = Container::NO_SLOT;
                     break;
 
                 // Construct without item
