@@ -138,8 +138,9 @@ public:
 
     void beginCrafting(const Recipe &item); // Configure user to craft an item
 
-    // Configure user to construct an item
-    void beginConstructing(const ObjectType &obj, const Point &location, size_t slot);
+    // Configure user to construct an item, or an object from no item
+    void beginConstructing(const ObjectType &obj, const Point &location,
+                           size_t slot = INVENTORY_SIZE);
 
     // Configure user to deconstruct an object
     void beginDeconstructing(Object &obj);

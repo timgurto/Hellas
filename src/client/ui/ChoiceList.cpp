@@ -179,3 +179,10 @@ void ChoiceList::refresh(){
     List::refresh();
     _boxLayer->rect(_content->rect());
 }
+
+void ChoiceList::clearSelection() {
+    _selectedID = "";
+    _selectedBox->hide();
+    _mouseDownBox->hide();
+    markChanged();
+}

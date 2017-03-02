@@ -33,6 +33,7 @@ public:
     virtual void refresh() override;
 
     const std::string &getSelected() { return _selectedID; }
+    void clearSelection();
 
     void verifyBoxes(); // Call after changing the list's contents.
 };

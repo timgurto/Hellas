@@ -90,16 +90,15 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
         case CL_CRAFT:
         {
-            std::string id;
             iss.get(buffer, BUFFER_SIZE, MSG_END);
-            id = std::string(buffer);
+            std::string id(buffer);
             iss >> del;
             if (del != MSG_END)
                 return;
             user->cancelAction();
             const std::set<Recipe>::const_iterator it = _recipes.find(id);
-            if (it == _recipes.end()) {
-                sendMessage(client, SV_INVALID_ITEM);
+            if (user->knownRecipes().find(id) == user->knownRecipes().end()){
+                sendMessage(client, SV_UNKNOWN_RECIPE);
                 break;
             }
             ItemSet remaining;
@@ -118,6 +117,31 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
         case CL_CONSTRUCT:
         {
+            double x, y;
+            iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            std::string id(buffer);
+            iss >> del >> x >> del >> y >> del;
+            if (del != MSG_END)
+                return;
+            user->cancelAction();
+            if (user->knownConstructions().find(id) == user->knownConstructions().end()){
+                sendMessage(client, SV_UNKNOWN_CONSTRUCTION);
+                break;
+            }
+            const ObjectType &objType = *findObjectTypeByName(id);
+            const Point location(x, y);
+            if (distance(user->collisionRect(), objType.collisionRect() + location) >
+                ACTION_DISTANCE) {
+                sendMessage(client, SV_TOO_FAR);
+                break;
+            }
+            if (!isLocationValid(location, objType)) {
+                sendMessage(client, SV_BLOCKED);
+                break;
+            }
+            user->beginConstructing(objType, location);
+            sendMessage(client, SV_ACTION_STARTED,
+                        makeArgs(objType.constructionTime()));
             break;
         }
 

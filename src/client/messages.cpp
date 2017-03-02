@@ -165,6 +165,8 @@ void Client::handleMessage(const std::string &msg){
         case SV_TAKE_SELF:
         case SV_NOT_GEAR:
         case SV_NOT_VEHICLE:
+        case SV_UNKNOWN_RECIPE:
+        case SV_UNKNOWN_CONSTRUCTION:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
@@ -195,9 +197,11 @@ void Client::handleMessage(const std::string &msg){
                 break;
             startAction(time);
 
-            // If crafting, hide footprint now that it has successfully started.
-            Container::clearUseItem();
-            _constructionFootprint = Texture();
+            // If constructing, hide footprint now that it has successfully started.
+            if (!_selectedConstruction){
+                Container::clearUseItem();
+                _constructionFootprint = Texture();
+            }
 
             break;
 
@@ -830,6 +834,7 @@ void Client::initializeMessageNames(){
     _messageCommands["cancel"] = CL_CANCEL_ACTION;
     _messageCommands["craft"] = CL_CRAFT;
     _messageCommands["constructItem"] = CL_CONSTRUCT_ITEM;
+    _messageCommands["construct"] = CL_CONSTRUCT;
     _messageCommands["gather"] = CL_GATHER;
     _messageCommands["deconstruct"] = CL_DECONSTRUCT;
     _messageCommands["drop"] = CL_DROP;
@@ -879,6 +884,8 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_NOT_VEHICLE] = "That isn't a vehicle.";
     _errorMessages[SV_VEHICLE_OCCUPIED] = "You can't do that to an occupied vehicle.";
     _errorMessages[SV_NO_VEHICLE] = "You are not in a vehicle.";
+    _errorMessages[SV_UNKNOWN_RECIPE] = "You don't know that recipe.";
+    _errorMessages[SV_UNKNOWN_CONSTRUCTION] = "You don't know how to construct that object.";
 }
 
 void Client::performCommand(const std::string &commandString){

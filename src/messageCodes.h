@@ -328,6 +328,12 @@ enum MessageCode{
     // The user tried to perform an action on an occupied vehicle
     SV_NO_VEHICLE = 938,
 
+    // The user tried to craft using a recipe he doesn't know
+    SV_UNKNOWN_RECIPE = 939,
+
+    // The user tried to construct something that he doesn't know about
+    SV_UNKNOWN_CONSTRUCTION = 940,
+
 
 
     NO_CODE

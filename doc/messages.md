@@ -106,4 +106,6 @@ Code | Name                         | Syntax                               | Des
 935  | `SV_NOT_GEAR`                | &laquo;935&raquo;                    | "You tried to equip an item in an incompatible gear slot"
 936  | `SV_NOT_VEHICLE              | &laquo;936&raquo;                    | "You tried to enter an object that isn't a vehicle"
 937  | `SV_VEHICLE_OCCUPIED         | &laquo;937&raquo;                    | "That action requires the vehicle to be empty"
-938  | `SV_NO_VEHICLE               | &laquo;937&raquo;                    | "You tried to dismount while not driving a vehicle"
+938  | `SV_NO_VEHICLE               | &laquo;938&raquo;                    | "You tried to dismount while not driving a vehicle"
+939  | `SV_UNKNOWN_RECIPE           | &laquo;939&raquo;                    | "You tried to craft using a recipe you don't know"
+940  | `SV_UNKNOWN_CONSTRUCTION     | &laquo;940&raquo;                    | "You tried to construct an object without knowing how"

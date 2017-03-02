@@ -243,29 +243,6 @@ void Client::handleInput(double delta){
             case SDL_BUTTON_LEFT: {
                 _leftMouseDown = false;
 
-                // Construct item
-                if (Container::getUseItem()) {
-                    px_t
-                        x = toInt(_mouse.x - offset().x),
-                        y = toInt(_mouse.y - offset().y);
-                    sendMessage(CL_CONSTRUCT, makeArgs(Container::useSlot, x, y));
-                    prepareAction(std::string("Constructing ") +
-                                  _inventory[Container::useSlot].first->name());
-                    break;
-
-                // Construct without item
-                } else if (_selectedConstruction != nullptr){
-
-
-                // Dismount
-                } else if (_isDismounting){
-                    px_t
-                        x = toInt(_mouse.x - offset().x),
-                        y = toInt(_mouse.y - offset().y);
-                    sendMessage(CL_DISMOUNT, makeArgs(x, y));
-                    break;
-                }
-
                 // Propagate event to windows
                 bool mouseUpOnWindow = false;
                 for (Window *window : _windows)
@@ -287,6 +264,36 @@ void Client::handleInput(double delta){
                 if (mouseUpOnWindow)
                     break;
 
+                // Construct item
+                if (Container::getUseItem()) {
+                    px_t
+                        x = toInt(_mouse.x - offset().x),
+                        y = toInt(_mouse.y - offset().y);
+                    sendMessage(CL_CONSTRUCT_ITEM, makeArgs(Container::useSlot, x, y));
+                    prepareAction(std::string("Constructing ") +
+                                  _inventory[Container::useSlot].first->name());
+                    Container::useSlot = Container::NO_SLOT;
+                    break;
+
+                // Construct without item
+                } else if (_selectedConstruction != nullptr){
+                    px_t
+                        x = toInt(_mouse.x - offset().x),
+                        y = toInt(_mouse.y - offset().y);
+                    sendMessage(CL_CONSTRUCT, makeArgs(_selectedConstruction->id(), x, y));
+                    prepareAction(std::string("Constructing ") + _selectedConstruction->name());
+                    break;
+
+                // Dismount
+                } else if (_isDismounting){
+                    px_t
+                        x = toInt(_mouse.x - offset().x),
+                        y = toInt(_mouse.y - offset().y);
+                    sendMessage(CL_DISMOUNT, makeArgs(x, y));
+                    //_isDismounting = false;
+                    break;
+                }
+
                 // Dragged item onto map -> drop.
                 if (!mouseUpOnWindow && Container::getDragItem() != nullptr) {
                     Container::dropItem();
@@ -307,6 +314,9 @@ void Client::handleInput(double delta){
                 _rightMouseDown = false;
                 Container::useContainer = nullptr;
                 Container::useSlot = Container::NO_SLOT;
+                _selectedConstruction = nullptr;
+                _constructionFootprint = Texture();
+                _buildList->clearSelection();
 
                 // Propagate event to windows
                 bool mouseUpOnWindow = false;

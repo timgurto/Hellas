@@ -30,6 +30,7 @@ public:
     ClientObjectType(const std::string &id);
     virtual ~ClientObjectType();
 
+    const std::string &id() const { return _id; }
     const std::string &name() const { return _name; }
     void name(const std::string &s) { _name = s; }
     bool canGather() const { return _canGather; }

@@ -3,7 +3,7 @@
 ObjectType::ObjectType(const std::string &id):
 _id(id),
 _gatherTime(0),
-_constructionTime(0),
+_constructionTime(1000),
 _deconstructsItem(nullptr),
 _deconstructionTime(0),
 _gatherReq("none"),
