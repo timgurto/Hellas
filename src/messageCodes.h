@@ -338,6 +338,9 @@ enum MessageCode{
     // The user tried to construct something that he doesn't know about
     SV_UNKNOWN_CONSTRUCTION = 940,
 
+    // The user tried to add the wrong building material to a site
+    SV_WRONG_MATERIAL = 941,
+
 
 
     NO_CODE

@@ -110,3 +110,4 @@ Code | Name                         | Syntax                               | Des
 938  | `SV_NO_VEHICLE               | &laquo;938&raquo;                    | "You tried to dismount while not driving a vehicle"
 939  | `SV_UNKNOWN_RECIPE           | &laquo;939&raquo;                    | "You tried to craft using a recipe you don't know"
 940  | `SV_UNKNOWN_CONSTRUCTION     | &laquo;940&raquo;                    | "You tried to construct an object without knowing how"
+941  | `SV_WRONG_MATERIAL           | &laquo;941&raquo;                    | "You tried to add the wrong item to a construction site"

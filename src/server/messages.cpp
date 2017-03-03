@@ -344,7 +344,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (breakMsg)
                 break;
 
-            if (slot1 >= containerFrom->size() || slot2 >= containerTo->size()) {
+            bool isConstructionMaterial =
+                    pObj2->isBeingBuilt() &&
+                    slot2 == 0;
+
+            if (slot1 >= containerFrom->size() ||
+                slot2 >= containerTo->size() && !isConstructionMaterial) {
                 sendMessage(client, SV_INVALID_SLOT);
                 break;
             }
@@ -353,6 +358,32 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 &slotFrom = (*containerFrom)[slot1],
                 &slotTo = (*containerTo)[slot2];
             assert(slotFrom.first != nullptr);
+
+            if (isConstructionMaterial){
+                size_t
+                    qtyInSlot = slotFrom.second,
+                    qtyNeeded = pObj2->remainingMaterials()[slotFrom.first],
+                    qtyToTake = min(qtyInSlot, qtyNeeded);
+
+                if (qtyNeeded == 0){
+                    sendMessage(client, SV_WRONG_MATERIAL);
+                    break;
+                }
+
+                // Remove from object requirements
+                pObj2->remainingMaterials().remove(slotFrom.first, qtyToTake);
+                for (auto username : pObj2->watchers())
+                    if (pObj2->userHasAccess(username))
+                        sendConstructionMaterialsMessage(*_usersByName[username], *pObj2);
+
+                // Remove items from user
+                slotFrom.second -= qtyToTake;
+                if (slotFrom.second == 0)
+                    slotFrom.first = nullptr;
+                sendInventoryMessage(*user, slot1, obj1);
+
+                break;
+            }
             
             if (pObj1 != nullptr && pObj1->classTag() == 'n' && slotTo.first != nullptr ||
                 pObj2 != nullptr && pObj2->classTag() == 'n' && slotFrom.first != nullptr){

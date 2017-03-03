@@ -29,6 +29,7 @@ class ClientObject : public Entity{
     std::vector<TextBox *> _priceQtyBoxes;
     bool _beingGathered;
     ItemSet _constructionMaterials; // The required materials, if it's being constructed.
+    ClientItem::vect_t _dropbox; // A slot where construction materials can be added.
 
 protected:
     Window *_window; // For containers, etc; opens when the object is nearby and right-clicked.
@@ -68,7 +69,6 @@ public:
     Rect collisionRect() const { return objectType()->collisionRect() + location(); }
 
     virtual void onRightClick(Client &client) override;
-    virtual void createWindow(Client &client);
     static void startDeconstructing(void *object);
     static void trade(void *serialAndSlot);
     static void sendMerchantSlot(void *serialAndSlot);
@@ -77,6 +77,7 @@ public:
 
     virtual void onInventoryUpdate();
     void hideWindow();
+    virtual void createWindow(Client &client);
 
 
     bool userHasAccess() const;

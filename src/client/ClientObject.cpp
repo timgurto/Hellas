@@ -32,7 +32,9 @@ ClientObject::ClientObject(size_t serialArg, const ClientObjectType *type, const
 Entity(type, loc),
 _serial(serialArg),
 _window(nullptr),
-_beingGathered(false){
+_beingGathered(false),
+_dropbox(1)
+{
     if (type != nullptr) { // i.e., not a serial-only search dummy
         const size_t
             containerSlots = objectType()->containerSlots(),
@@ -219,10 +221,14 @@ void ClientObject::createWindow(Client &client){
             y = 0;
         px_t
             winWidth = WINDOW_WIDTH;
-        _window = new Window(Rect(0, 0, WINDOW_WIDTH, 0), objType.name());
+        if (_window != nullptr){
+            _window->clearChildren();
+        } else
+            _window = new Window(Rect(0, 0, WINDOW_WIDTH, 0), objType.name());
 
         // Construction site
         if (isBeingConstructed()){
+            client.watchObject(*this);
             _window->addChild(new Label(Rect(x, y, WINDOW_WIDTH, Element::TEXT_HEIGHT),
                                         "Under construction"));
             y += Element::TEXT_HEIGHT + GAP;
@@ -248,9 +254,21 @@ void ClientObject::createWindow(Client &client){
                                             item.name(),
                                             Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
                 y += Client::ICON_SIZE + GAP;
+                x = BUTTON_GAP;
             }
 
             // 2. Dropbox
+            static const px_t
+                DROPBOX_LABEL_W = 60;
+            Container *dropbox = new Container(1, 1, _dropbox, _serial, x, y);
+            _window->addChild(new Label(Rect(x, y, DROPBOX_LABEL_W, dropbox->height()),
+                                        "Add materials:",
+                                        Element::RIGHT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+            x += DROPBOX_LABEL_W + GAP;
+            dropbox->rect(x, y);
+            _window->addChild(dropbox);
+            y += dropbox->height() + GAP;
+            x = BUTTON_GAP;
         }
 
         // Merchant setup
@@ -363,6 +381,9 @@ void ClientObject::createWindow(Client &client){
             _merchantSlotElements[i] = new Element();
             list->addChild(_merchantSlotElements[i]);
         }
+    } else if (_window != nullptr){
+        _window->hide();
+        client.removeWindow(_window);
     }
 }
 

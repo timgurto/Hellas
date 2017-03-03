@@ -151,6 +151,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_NOT_EMPTY:
         case SV_VEHICLE_OCCUPIED:
         case SV_NO_VEHICLE:
+        case SV_WRONG_MATERIAL:
             errorMessageColor = Color::WARNING; // Yellow above, red below
         case SV_INVALID_USER:
         case SV_INVALID_ITEM:
@@ -672,6 +673,7 @@ void Client::handleMessage(const std::string &msg){
                 set.add(&*it, qty);
             }
             obj.constructionMaterials(set);
+            obj.createWindow(*this);
             break;
         }
 
@@ -916,6 +918,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_NO_VEHICLE] = "You are not in a vehicle.";
     _errorMessages[SV_UNKNOWN_RECIPE] = "You don't know that recipe.";
     _errorMessages[SV_UNKNOWN_CONSTRUCTION] = "You don't know how to construct that object.";
+    _errorMessages[SV_WRONG_MATERIAL] = "The construction site doesn't need that.";
 }
 
 void Client::performCommand(const std::string &commandString){
