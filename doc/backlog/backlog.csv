@@ -92,7 +92,7 @@ issue,description,value,effort,type,blockedBy,done
 248,A shrine that grants a buff,3,8,Feature,247,
 249,A shrine that sets one's spawn point,13,8,Feature,,
 250,A road object that affects movement speed,5,5,Feature,247,
-251,A hoe constructs a farm plot without being consumed,3,1,Feature,285,
+251,A hoe constructs a farm plot without being consumed,3,1,Feature,285,TRUE
 252,"Seeds, that are constructed on top of a farm-plot object",3,5,Feature,,
 253,A crop object that grows over time,5,5,Feature,,
 254,Terrain types have fertility property,2,2,Feature,,

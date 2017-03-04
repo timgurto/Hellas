@@ -163,4 +163,13 @@ Server only:
     <collisionRect x="-4" y="-4" w="8" h="8" />
 </objectType>
 
+<objectType
+    id="figCrop0" name="Fig Crop"
+    xDrawOffset="-4"
+    yDrawOffset="-47"
+    constructionTime="10000"
+    constructionReq = "hoe" >
+    <unlockedBy id="figSeeds" />
+</objectType>
+
 </root>

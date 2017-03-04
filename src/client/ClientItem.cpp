@@ -103,6 +103,8 @@ const Texture &ClientItem::tooltip() const{
         tb.addGap();
         tb.setColor(Color::ITEM_INSTRUCTIONS);
         tb.addLine(std::string("Right-click to place ") + _constructsObject->name());
+        if (!_constructsObject->constructionReq().empty())
+        tb.addLine("(Requires " + _constructsObject->constructionReq() + ")");
 
         // Vehicle?
         if (_constructsObject->classTag() == 'v'){

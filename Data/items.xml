@@ -43,11 +43,14 @@ Client only:
 <item id="lumber"       name="Lumber"           stackSize="10" constructs="post" />
 <item id="brick"        name="Brick"            stackSize="5" />
 
+<item id="figSeeds"     name="Fig Seeds"        constructs="figCrop0"       stackSize="10"/>
+
 <item id="tinPipe"      name="Tin Pipe" />
 
 <item id="stick" name="Stick" stackSize="10" gearSlot="6" >
     <stats attack="1"/>
     <offset x="-8" y="-1" />
+    <tag name="hoe" />
 </item>
 
 <item id="rock" name="Rock" stackSize="10" gearSlot="6" >

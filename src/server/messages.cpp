@@ -178,6 +178,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_BLOCKED);
                 break;
             }
+            const std::string constructionReq = objType.constructionReq();
+            if (!(constructionReq.empty() || user->hasTool(constructionReq))) {
+                sendMessage(client, SV_ITEM_NEEDED, constructionReq);
+                break;
+            }
             user->beginConstructing(objType, location, slot);
             sendMessage(client, SV_ACTION_STARTED,
                         makeArgs(objType.constructionTime()));

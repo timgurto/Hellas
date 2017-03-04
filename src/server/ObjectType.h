@@ -13,7 +13,8 @@ class ServerItem;
 // Describes a class of Objects, the "instances" of which share common properties
 class ObjectType{
     std::string _id;
-    ms_t _gatherTime;
+
+    std::string _constructionReq;
     ms_t _constructionTime;
 
     const ServerItem *_deconstructsItem; // Item gained when this object is deconstructed
@@ -21,6 +22,7 @@ class ObjectType{
 
     // To gather from objects of this type, a user must have an item of the following class.
     std::string _gatherReq;
+    ms_t _gatherTime;
 
     size_t _containerSlots;
     size_t _merchantSlots;
@@ -45,6 +47,8 @@ public:
     void gatherTime(ms_t t) { _gatherTime = t; }
     const std::string &gatherReq() const { return _gatherReq; }
     void gatherReq(const std::string &req) { _gatherReq = req; }
+    const std::string &constructionReq() const { return _constructionReq; }
+    void constructionReq(const std::string &req) { _constructionReq = req; }
     size_t containerSlots() const { return _containerSlots; }
     void containerSlots(size_t n) { _containerSlots = n; }
     size_t merchantSlots() const { return _merchantSlots; }

@@ -207,6 +207,7 @@ void Server::loadData(const std::string &path){
             if (xr.findAttr(elem, "gatherTime", n)) ot->gatherTime(n);
             if (xr.findAttr(elem, "constructionTime", n)) ot->constructionTime(n);
             if (xr.findAttr(elem, "gatherReq", s)) ot->gatherReq(s);
+            if (xr.findAttr(elem, "constructionReq", s)) ot->constructionReq(s);
             if (xr.findAttr(elem, "deconstructs", s)){
                 std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
                 ot->deconstructsItem(&*itemIt);

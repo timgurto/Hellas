@@ -106,6 +106,7 @@ void Client::loadData(const std::string &path){
                 cot->gatherSound(std::string("Sounds/") + s + ".wav");
             if (xr.findAttr(elem, "gatherParticles", s)) cot->gatherParticles(findParticleProfile(s));
             if (xr.findAttr(elem, "gatherReq", s)) cot->gatherReq(s);
+            if (xr.findAttr(elem, "constructionReq", s)) cot->constructionReq(s);
             Rect r;
             if (xr.findRectChild("collisionRect", elem, r)) cot->collisionRect(r);
 
