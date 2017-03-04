@@ -251,7 +251,8 @@ bool User::hasTool(const std::string &tagName) const{
     for (CollisionChunk *chunk : superChunk)
         for (const auto &ret : chunk->objects()) {
             const Object *pObj = ret.second;
-            if (pObj->type()->isTag(tagName) &&
+            if (!pObj->isBeingBuilt() &&
+                pObj->type()->isTag(tagName) &&
                 distance(pObj->collisionRect(), collisionRect()) < Server::ACTION_DISTANCE)
                 return true;
         }
