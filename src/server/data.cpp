@@ -243,14 +243,10 @@ void Server::loadData(const std::string &path){
             for (auto objMat : xr.getChildren("material", elem)){
                 if (!xr.findAttr(objMat, "id", s))
                     continue;
-                auto it = _items.find(s);
-                if (it == _items.end()){
-                    _debug("Invalid construction material specified; skipping");
-                    continue;
-                }
+                std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
                 n = 1;
                 xr.findAttr(objMat, "quantity", n);
-                ot->addMaterial(&*it, n);
+                ot->addMaterial(&*itemIt, n);
             }
             for (auto objUnlock : xr.getChildren("unlockedBy", elem)){
                 if (xr.findAttr(objUnlock, "id", s))

@@ -121,7 +121,7 @@ issue,description,value,effort,type,blockedBy,done
 282,Use collisionRects even on non-colliding objects,5,2,Bug,,
 283,Color mouse-over outline based on whether in range,8,3,Aesthetics,,
 284,Send nearby users' health values,5,3,Feature,,
-285,Construction sites,13,8,Feature,,
+285,Construction sites,13,8,Feature,,TRUE
 286,Non-NPC objects always collide with each other,5,2,Feature,,
 287,Allow specification of minimum yields,5,3,Bug,,
 288,Tool requirements not enforced for crafting,13,3,Bug,,TRUE
@@ -158,7 +158,7 @@ issue,description,value,effort,type,blockedBy,done
 321,"Require tools, gather-req items, etc. to be equipped",3,2,Feature,,
 322,Tools can modify crafting/gathering speed,3,3,Feature,,
 324,Reduce calls to findUsersInArea() in NPC AI,5,8,Performance,,
-326,Use simple font for everything,5,2,Aesthetics,,
+326,Use simple font for everything,5,2,Aesthetics,,TRUE
 327,Include only known-recipe info in filters,3,3,Aesthetics,,
 328,Fix jumpy movement when laggy,8,13,Aesthetics,,
 329,Make mountains more explicit,2,3,Aesthetics,,
@@ -174,5 +174,5 @@ issue,description,value,effort,type,blockedBy,done
 339,A stack can be split,8,3,Feature,,
 340,Allow crafting if removing the ingredients will make room,5,3,Feature,,
 341,Make players and objects more visible on map,13,5,Feature,,
-342,Allow tools to unlock recipes,5,2,Bug,,TRUE
-345,Load map in login-screen background,,,Performance,,
+342,Generic unlock system. Item/crafting/construction -> recipe/construction,5,3,Bug,,TRUE
+345,Load map in login-screen background,5,5,Performance,,

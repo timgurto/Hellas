@@ -140,21 +140,9 @@
 </recipe>
 
 <recipe
-    id="kiln" time="12000" product="kiln" >
-    <material id="charcoal" />
-    <material id="brick" quantity="20" unlocks="1" />
-</recipe>
-
-<recipe
     id="lumber" time="3000" product="lumber" >
     <material id="log" />
     <tool class="saw" unlocks="1" />
-</recipe>
-
-<recipe
-    id="handCart" time="3000" product="handCart" >
-    <material id="lumber" quantity="8" unlocks="1" />
-    <tool class="saw" />
 </recipe>
 
 </root>

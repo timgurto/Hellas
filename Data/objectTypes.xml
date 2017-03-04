@@ -120,16 +120,16 @@ Server only:
 
 <objectType
     id="handCart"
-    name="Hand Cart"
+    name="Trade Cart"
     xDrawOffset="-13"
     yDrawOffset="-16"
     constructionTime="4000"
-    deconstructs="handCart"
-    deconstructionTime="1000"
     merchantSlots="1"
     isVehicle="1" >
     <collisionRect x="-13" y="-4" w="25" h="8" />
-    <container slots="8" />
+    <container slots="2" />
+    <material id="lumber" quantity="8" />
+    <unlockedBy id="lumber" />
 </objectType>
 
 <objectType
@@ -150,6 +150,8 @@ Server only:
     <collisionRect x="-12" y="-4" w="27" h="10" />
     <tag name="oven" />
     <tag name="kiln" />
+    <material id="brick" quantity="20" />
+    <unlockedBy id="brick" />
 </objectType>
 
 <objectType
