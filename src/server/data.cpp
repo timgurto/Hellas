@@ -596,6 +596,18 @@ void Server::loadData(const std::string &path){
                 xr.findAttr(merchant, "priceQty", priceQty);
                 obj.merchantSlot(slot) = MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty);
             }
+
+            for (auto material : xr.getChildren("material", elem)){
+                if (!xr.findAttr(material, "id", s))
+                    continue;
+                if (!xr.findAttr(material, "qty", n))
+                    continue;
+                auto it = _items.find(s);
+                if (it == _items.end())
+                    continue;
+                obj.remainingMaterials().set(&*it, n);
+            }
+
         }
 
         if (cmdLineArgs.contains("new"))
@@ -641,12 +653,6 @@ void Server::loadData(const std::string &path){
     } while (false);
 
     // If execution reaches here, a fresh map will be generated.
-
-    // Static objects
-    xr.newFile("data/staticObjects.xml");
-    if (xr){
-        for (auto elem : xr.getChildren("object"))
-    }
 
     _debug("Generating new objects.", Color::YELLOW);
     spawnInitialObjects();
@@ -705,6 +711,12 @@ void Server::saveData(const objects_t &objects){
             xw.setAttr(mSlotE, "wareQty", mSlots[i].wareQty);
             xw.setAttr(mSlotE, "priceItem", mSlots[i].priceItem->id());
             xw.setAttr(mSlotE, "priceQty", mSlots[i].priceQty);
+        }
+
+        for (const auto &pair : obj->remainingMaterials()){
+            auto matE = xw.addChild("material", e);
+            xw.setAttr(matE, "id", pair.first->id());
+            xw.setAttr(matE, "qty", pair.second);
         }
     }
     xw.publish();
