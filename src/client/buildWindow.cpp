@@ -1,13 +1,14 @@
 #include <cassert>
 
 #include "Client.h"
+#include "TooltipBuilder.h"
 #include "ui/Label.h"
 
 extern Renderer renderer;
 
 void Client::initializeBuildWindow(){
     static const px_t
-        BUTTON_WIDTH = 80,
+        BUTTON_WIDTH = 100,
         BUTTON_HEIGHT = Element::TEXT_HEIGHT,
         WIN_HEIGHT = toInt(7.5 * BUTTON_HEIGHT);
 
@@ -29,6 +30,19 @@ void Client::populateBuildList(Element &e){
                                        ot->name()));
         listElement->setLeftMouseUpFunction(chooseConstruction);
         listElement->id(id);
+
+        // Tooltip
+        TooltipBuilder tb;
+        tb.setColor(Color::ITEM_NAME);
+        tb.addLine(ot->name());
+        tb.addGap();
+        tb.setColor(Color::ITEM_STATS);
+        tb.addLine("Materials:");
+        for (const auto &material : ot->materials()){
+            const ClientItem &item = *dynamic_cast<const ClientItem *>(material.first);
+            tb.addLine(makeArgs(material.second) + "x " + item.name());
+        }
+        listElement->setTooltip(tb.publish());
     }
     list.verifyBoxes();
 }

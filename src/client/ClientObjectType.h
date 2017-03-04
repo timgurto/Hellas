@@ -4,8 +4,10 @@
 #include <set>
 #include <string>
 
+#include "ClientItem.h"
 #include "EntityType.h"
 #include "Texture.h"
+#include "../server/ItemSet.h"
 #include "../Point.h"
 #include "../util.h"
 
@@ -26,6 +28,7 @@ class ClientObjectType : public EntityType{
     Rect _collisionRect;
     const ParticleProfile *_gatherParticles;
     std::set<std::string> _tags;
+    ItemSet _materials;
 
 public:
     ClientObjectType(const std::string &id);
@@ -52,6 +55,8 @@ public:
     void collisionRect(const Rect &r) { _collisionRect = r; }
     const ParticleProfile *gatherParticles() const { return _gatherParticles; }
     void gatherParticles(const ParticleProfile *profile) { _gatherParticles = profile; }
+    void addMaterial(const ClientItem *item, size_t qty) { _materials.set(item, qty); }
+    const ItemSet &materials() const { return _materials; }
     bool hasTags() const { return !_tags.empty(); }
     const std::set<std::string> &tags() const { return _tags; }
 

@@ -252,7 +252,6 @@ void Server::loadData(const std::string &path){
             for (auto objUnlock : xr.getChildren("unlockedBy", elem)){
                 if (xr.findAttr(objUnlock, "id", s))
                     _constructionLocks[s].insert(id);
-
             }
 
             // Container

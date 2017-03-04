@@ -110,6 +110,15 @@ void Client::loadData(const std::string &path){
             Rect r;
             if (xr.findRectChild("collisionRect", elem, r)) cot->collisionRect(r);
 
+            for (auto objMat : xr.getChildren("material", elem)){
+                if (!xr.findAttr(objMat, "id", s))
+                    continue;
+                std::set<ClientItem>::const_iterator itemIt = _items.insert(ClientItem(s)).first;
+                n = 1;
+                xr.findAttr(objMat, "quantity", n);
+                cot->addMaterial(&*itemIt, n);
+            }
+
             if (cot->classTag() == 'v'){
                 auto driver = xr.findChild("driver", elem);
                 if (driver != nullptr){
