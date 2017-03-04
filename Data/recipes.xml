@@ -140,9 +140,45 @@
 </recipe>
 
 <recipe
-    id="lumber" time="3000" product="lumber" >
+    id="lumber" time="4000" product="lumber" >
     <material id="log" />
     <tool class="saw" unlocks="1" />
+</recipe>
+
+<recipe
+    id="boneNeedle" time="4000" product="boneNeedle" >
+    <material id="bone" unlocks="1" />
+    <tool class="sharpener" />
+</recipe>
+
+<recipe
+    id="flaxThread" time="4000" product="flaxThread" >
+    <material id="flax" quantity="2" unlocks="1" />
+</recipe>
+
+<recipe
+    id="flaxCloth" time="4000" product="flaxCloth" >
+    <material id="flaxThread" quantity="5" unlocks="1" />
+    <tool class="needle" />
+</recipe>
+
+<recipe
+    id="tannin" time="10000" product="tannin" >
+    <material id="smallPot" unlocks="1" />
+    <material id="log" unlocks="1" />
+</recipe>
+
+<recipe
+    id="leather" time="10000" product="leather" quantity="2" >
+    <material id="hide" unlocks="1" />
+    <tool id="tannin" unlocks="1" />
+</recipe>
+
+<recipe
+    id="linothorax" time="10000" product="linothorax" >
+    <material id="linenCloth" quantity="12" />
+    <material id="fat" quantity="11" unlocks="1" />
+    <material id="linenThread" quantity="11" />
 </recipe>
 
 </root>

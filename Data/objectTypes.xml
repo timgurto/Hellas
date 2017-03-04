@@ -151,6 +151,7 @@ Server only:
     <tag name="oven" />
     <tag name="kiln" />
     <material id="brick" quantity="20" />
+    <material id="crudeClay" quantity="12" />
     <unlockedBy id="brick" />
 </objectType>
 
@@ -165,11 +166,26 @@ Server only:
 
 <objectType
     id="figCrop0" name="Fig Crop"
-    xDrawOffset="-4"
-    yDrawOffset="-47"
     constructionTime="10000"
     constructionReq = "hoe" >
     <unlockedBy id="figSeeds" />
+    <yield id="fig" initialMean="5" initialSD="1" />
+    <yield id="figSeeds" initialMean="1.2" initialSD="0.5" />
+</objectType>
+
+<objectType
+    id="flaxCrop0" name="Flax Crop"
+    constructionTime="10000"
+    constructionReq = "hoe" >
+    <unlockedBy id="flaxSeeds" />
+    <yield id="flax" initialMean="5" initialSD="1" />
+    <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" />
+</objectType>
+
+<objectType
+    id="tannin" name="Pot of Tannin"
+    constructionTime="1000" >
+    <tag name="tannin" />
 </objectType>
 
 </root>
