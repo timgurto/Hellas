@@ -205,8 +205,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_DOESNT_EXIST);
                 break;
             }
-            assert (obj->type());
+            assert (obj->type() != nullptr);
             // Check that the user meets the requirements
+            if (obj->isBeingBuilt()){
+                sendMessage(client, SV_UNDER_CONSTRUCTION);
+                break;
+            }
             if (!obj->userHasAccess(user->name())){
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
@@ -235,7 +239,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             user->cancelAction();
             Object *obj = findObject(serial);
             if (!isObjectInRange(client, *user, obj)) {
-                sendMessage(client, SV_DOESNT_EXIST);
+                sendMessage(client, SV_TOO_FAR);
+                break;
+            }
+            if (obj->isBeingBuilt()){
+                sendMessage(client, SV_UNDER_CONSTRUCTION);
                 break;
             }
             assert (obj->type());
@@ -470,6 +478,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 if (!isObjectInRange(client, *user, pObj))
                     break;
                 container = &pObj->container();
+                
+                if (pObj->isBeingBuilt()){
+                    sendMessage(client, SV_UNDER_CONSTRUCTION);
+                    break;
+                }
             }
 
             if (slotNum >= container->size()) {
@@ -522,6 +535,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             Object *obj = findObject(serial);
             if (!isObjectInRange(client, *user, obj))
                 break;
+            if (obj->isBeingBuilt()){
+                sendMessage(client, SV_UNDER_CONSTRUCTION);
+                break;
+            }
             size_t slots = obj->type()->merchantSlots();
             if (slots == 0){
                 sendMessage(client, SV_NOT_MERCHANT);
@@ -597,6 +614,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             Object *obj = findObject(serial);
             if (!isObjectInRange(client, *user, obj))
                 break;
+            if (obj->isBeingBuilt()){
+                sendMessage(client, SV_UNDER_CONSTRUCTION);
+                break;
+            }
             if (!obj->userHasAccess(user->name())){
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
@@ -638,6 +659,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             Object *obj = findObject(serial);
             if (!isObjectInRange(client, *user, obj))
                 break;
+            if (obj->isBeingBuilt()){
+                sendMessage(client, SV_UNDER_CONSTRUCTION);
+                break;
+            }
             if (!obj->userHasAccess(user->name())){
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
@@ -668,6 +693,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             Object *obj = findObject(serial);
             if (!isObjectInRange(client, *user, obj))
                 break;
+            if (obj->isBeingBuilt()){
+                sendMessage(client, SV_UNDER_CONSTRUCTION);
+                break;
+            }
             if (!obj->userHasAccess(user->name())){
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
@@ -786,6 +815,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 if (obj == nullptr) {
                     user->targetNPC(nullptr);
                     sendMessage(client, SV_DOESNT_EXIST);
+                    break;
+                }
+                if (obj->isBeingBuilt()){
+                    sendMessage(client, SV_UNDER_CONSTRUCTION);
                     break;
                 }
                 if (obj->classTag() != 'n'){

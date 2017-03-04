@@ -168,6 +168,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_NOT_VEHICLE:
         case SV_UNKNOWN_RECIPE:
         case SV_UNKNOWN_CONSTRUCTION:
+        case SV_UNDER_CONSTRUCTION:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
@@ -919,6 +920,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_UNKNOWN_RECIPE] = "You don't know that recipe.";
     _errorMessages[SV_UNKNOWN_CONSTRUCTION] = "You don't know how to construct that object.";
     _errorMessages[SV_WRONG_MATERIAL] = "The construction site doesn't need that.";
+    _errorMessages[SV_UNDER_CONSTRUCTION] = "That object is still under construction.";
 }
 
 void Client::performCommand(const std::string &commandString){

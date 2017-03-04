@@ -341,6 +341,9 @@ enum MessageCode{
     // The user tried to add the wrong building material to a site
     SV_WRONG_MATERIAL = 941,
 
+    // The user tried to use an object that is still under construction
+    SV_UNDER_CONSTRUCTION = 942,
+
 
 
     NO_CODE

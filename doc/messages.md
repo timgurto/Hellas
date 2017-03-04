@@ -111,3 +111,4 @@ Code | Name                         | Syntax                               | Des
 939  | `SV_UNKNOWN_RECIPE           | &laquo;939&raquo;                    | "You tried to craft using a recipe you don't know"
 940  | `SV_UNKNOWN_CONSTRUCTION     | &laquo;940&raquo;                    | "You tried to construct an object without knowing how"
 941  | `SV_WRONG_MATERIAL           | &laquo;941&raquo;                    | "You tried to add the wrong item to a construction site"
+942  | `SV_UNDER_CONSTRUCTION       | &laquo;942&raquo;                    | "That object is still under construction"
