@@ -675,6 +675,7 @@ void Client::handleMessage(const std::string &msg){
             }
             obj.constructionMaterials(set);
             obj.createWindow(*this);
+            obj.refreshTooltip();
             break;
         }
 
