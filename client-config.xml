@@ -1,6 +1,7 @@
 <root>
 <chatLog width=150 height=100 />
-<gameFont filename="poh_pixels.ttf" size=16 height=11 offset=2 />
+<defaultFont filename="AdvoCut.ttf" size=10 height=11 offset=2 />
+<gameFont filename="AdvoCut.ttf" size=10 height=11 offset=2 />
 <castBar y=300 w=150 h=11 />
 <server hostDirectory="http://timgurto.com/mmo-server-ip.txt" port="8888"/>
 

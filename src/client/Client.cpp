@@ -157,7 +157,7 @@ _serialToDrop(0),
 _slotToDrop(Container::NO_SLOT),
 
 _debug("client.log"){
-    _defaultFont = TTF_OpenFont("poh_pixels.ttf", 16);
+    _defaultFont = TTF_OpenFont("AdvoCut.ttf", 10);
     drawLoadingScreen("Reading configuration file", 0.1);
 
     isClient = true;
@@ -215,8 +215,8 @@ _debug("client.log"){
     xr.findAttr(elem, "highlightOutline", Color::HIGHLIGHT_OUTLINE);
 
     drawLoadingScreen("Applying settings", 0.2);
-    std::string fontFile = "poh_pixels.ttf";
-    int fontSize = 16;
+    std::string fontFile = "AdvoCut.ttf";
+    int fontSize = 10;
     elem = xr.findChild("gameFont");
     xr.findAttr(elem, "filename", fontFile);
     xr.findAttr(elem, "size", fontSize);

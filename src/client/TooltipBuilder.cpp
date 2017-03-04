@@ -15,7 +15,7 @@ TooltipBuilder::TooltipBuilder()
     _color = Color::TOOLTIP_FONT;
 
     if (_defaultFont == nullptr)
-        _defaultFont = TTF_OpenFont("04B_03__.TTF", 8);
+        _defaultFont = TTF_OpenFont("AdvoCut.ttf", 10);
     _font = _defaultFont;
 }
 
