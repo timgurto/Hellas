@@ -47,17 +47,22 @@ void Client::updateLoginParticles(double delta){
     }
 
     // Add new particles
-    static const ParticleProfile *profile = findParticleProfile("loginFire");
-    if (profile == nullptr)
-        return;
+    std::vector<const ParticleProfile *> profiles;
+    profiles.push_back(findParticleProfile("loginFireLarge"));
+    profiles.push_back(findParticleProfile("loginFire"));
     static const Point
         LEFT_BRAZIER(153, 281),
         RIGHT_BRAZIER(480, 282);
-    size_t qty = profile->numParticlesContinuous(delta);
-    for (size_t i = 0; i != qty; ++i) {
-        Particle *p = profile->instantiate(LEFT_BRAZIER);
-        _loginParticles.push_back(profile->instantiate(LEFT_BRAZIER));
-        _loginParticles.push_back(profile->instantiate(RIGHT_BRAZIER));
+
+    for (const ParticleProfile *profile : profiles){
+        if (profile == nullptr)
+            continue;
+        size_t qty = profile->numParticlesContinuous(delta);
+        for (size_t i = 0; i != qty; ++i) {
+            Particle *p = profile->instantiate(LEFT_BRAZIER);
+            _loginParticles.push_back(profile->instantiate(LEFT_BRAZIER));
+            _loginParticles.push_back(profile->instantiate(RIGHT_BRAZIER));
+        }
     }
 }
 
