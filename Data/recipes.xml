@@ -74,6 +74,7 @@
     <material id="tinBar" />
     <material id="log" />
     <material id="stick" />
+    <material id="leather" />
     <tool class="oven" />
     <tool class="pickMould" unlocks="1" />
 </recipe>
@@ -106,12 +107,19 @@
 <recipe
     id="tinLamellar" time="4000" product="tinLamellar" >
     <material id="tinScale" quantity="20" unlocks="1" />
+    <material id="leather" quantity="2" />
 </recipe>
 
 <recipe
     id="leatherShield" time="4000" product="leatherShield" >
-    <material id="hide" quantity="2" unlocks="1" />
+    <material id="leather" quantity="4" unlocks="1" />
     <material id="lumber" quantity="1" unlocks="1" />
+</recipe>
+
+<recipe
+    id="leatherLamellar" time="4000" product="leatherLamellar" >
+    <material id="leatherScale" quantity="20" unlocks="1" />
+    <material id="linenThread" quantity="11" />
 </recipe>
 
 <recipe
@@ -152,13 +160,13 @@
 </recipe>
 
 <recipe
-    id="flaxThread" time="4000" product="flaxThread" >
+    id="linenThread" time="4000" product="linenThread" >
     <material id="flax" quantity="2" unlocks="1" />
 </recipe>
 
 <recipe
-    id="flaxCloth" time="4000" product="flaxCloth" >
-    <material id="flaxThread" quantity="5" unlocks="1" />
+    id="linenCloth" time="4000" product="linenCloth" >
+    <material id="linenThread" quantity="5" linenCloth="1" />
     <tool class="needle" />
 </recipe>
 
@@ -171,14 +179,43 @@
 <recipe
     id="leather" time="10000" product="leather" quantity="2" >
     <material id="hide" unlocks="1" />
-    <tool id="tannin" unlocks="1" />
+    <tool class="tannin" unlocks="1" />
+    <tool class="stretchingFrame" unlocks="1" />
+</recipe>
+
+<recipe
+    id="leatherScale" time="10000" product="leatherScale" quantity="2" >
+    <material id="leather" unlocks="1" />
 </recipe>
 
 <recipe
     id="linothorax" time="10000" product="linothorax" >
     <material id="linenCloth" quantity="12" />
     <material id="fat" quantity="11" unlocks="1" />
-    <material id="linenThread" quantity="11" />
+    <material id="linenThread" quantity="1" />
+</recipe>
+
+<recipe
+    id="skullCap" time="10000" product="skullCap" >
+    <material id="leather" quantity="4" unlocks="1"/>
+    <material id="linenThread" quantity="1" />
+</recipe>
+
+<recipe
+    id="leatherCloak" time="10000" product="leatherCloak" >
+    <material id="leather" quantity="2" unlocks="1"/>
+    <material id="linenThread" quantity="1" />
+</recipe>
+
+<recipe
+    id="sandals" time="10000" product="sandals" >
+    <material id="leather" quantity="4" unlocks="1"/>
+    <material id="linenThread" quantity="1" />
+</recipe>
+
+<recipe
+    id="rope" time="4000" product="rope" >
+    <material id="flax" quantity="3" unlocks="1"/>
 </recipe>
 
 </root>

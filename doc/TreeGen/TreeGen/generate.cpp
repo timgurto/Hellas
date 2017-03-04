@@ -19,7 +19,7 @@ int main(){
     std::multimap<std::string, std::string> map; // map[a] = b: a -> b
     std::map<std::string, std::string> tools;
     std::map<std::string, std::string> nodes; // id -> label
-    std::map<std::string, std::string> blacklist;
+    std::set<std::pair<std::string, std::string> > blacklist;
     const std::string dataPath = "../../Data";
 
     // Load tools
@@ -34,9 +34,15 @@ int main(){
     // Load blacklist
     for (auto elem : xr.getChildren("blacklist")){
         std::string parent, child;
-        if (!xr.findAttr(elem, "parent", parent)) continue;
-        if (!xr.findAttr(elem, "child", child)) continue;
-        blacklist[parent] = child;
+        if (!xr.findAttr(elem, "parent", parent)){
+            std::cout << "Blacklist item had no parent; ignored" << std::endl;
+            continue;
+        }
+        if (!xr.findAttr(elem, "child", child)){
+            std::cout << "Blacklist item had no child; ignored" << std::endl;
+            continue;
+        }
+        blacklist.insert(std::make_pair(parent, child));
     }
 
     // Load items
@@ -81,13 +87,30 @@ int main(){
                 } else
                     map.insert(std::make_pair(it->second, label));
             }
+
+            if (xr.findAttr(elem, "constructionReq", s)){
+                auto it = tools.find(s);
+                if (it == tools.end()){
+                    std::cerr << "Tool class is missing archetype: " << s << std::endl;
+                    map.insert(std::make_pair(s, label));
+                } else
+                    map.insert(std::make_pair(it->second, label));
+            }
+
             if (xr.findAttr(elem, "deconstructs", s)){
                 map.insert(std::make_pair(label, "item_" + s));
             }
+
             for (auto yield : xr.getChildren("yield", elem)) {
                 if (!xr.findAttr(yield, "id", s))
                     continue;
                 map.insert(std::make_pair(label, "item_" + s));
+            }
+
+            for (auto yield : xr.getChildren("material", elem)) {
+                if (!xr.findAttr(yield, "id", s))
+                    continue;
+                map.insert(std::make_pair("item_" + s, label));
             }
         }
     }
@@ -130,8 +153,8 @@ int main(){
                 if (xr.findAttr(material, "id", s))
                     map.insert(std::make_pair("item_" + s, product));
 
-            for (auto material : xr.getChildren("tool", elem)){
-                if (!xr.findAttr(material, "class", s))
+            for (auto tool : xr.getChildren("tool", elem)){
+                if (!xr.findAttr(tool, "class", s))
                     continue;
                 auto it = tools.find(s);
                 if (it == tools.end()){
@@ -145,9 +168,12 @@ int main(){
 
     // Remove blacklisted items
     for (auto edge : blacklist){
-        auto vals = map.equal_range(edge.first);
+        const std::string
+            &parent = edge.first,
+            &child = edge.second;
+        auto vals = map.equal_range(parent);
         for (auto it = vals.first; it != vals.second; ++it)
-            if (it->second == edge.second){
+            if (it->second == child){
                 map.erase(it);
                 break;
             }
@@ -266,7 +292,7 @@ int main(){
         std::string
             id = node.first,
             name = node.second,
-            image = "<img src=\"" + imagePath + "\"/>",
+            image = "", //"<img src=\"" + imagePath + "\"/>",
             fullNode = node.first + " [label=<<table border='0' cellborder='0'><tr><td>" + image + "</td></tr><tr><td>" + name + "</td></tr></table>>]";
         f << fullNode << std::endl;
     }

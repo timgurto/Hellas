@@ -41,6 +41,7 @@ Client only:
 <item id="fat"          name="Animal Fat"       stackSize="10" />
 <item id="leather"      name="Leather"          stackSize="10" />
 <item id="leatherScale" name="Leather Scale"    stackSize="10" />
+<item id="rope"         name="Rope"             stackSize="10" />
 
 <item id="smallPot"     name="Small Pot"        constructs="smallPot" />
 <item id="mediumPot"    name="Medium Pot"       constructs="mediumPot" />
@@ -104,12 +105,25 @@ Client only:
     <offset x="-6" y="-4" />
 </item>
 
-<item id="leatherLamellar" name="Tin Lamellar" gearSlot="2" >
+<item id="leatherLamellar" name="Leather Lamellar" gearSlot="2" >
     <stats health="5" />
+</item>
+
+<item id="skullCap" name="Skull Cap" gearSlot="0" >
+    <stats health="3" />
+</item>
+
+<item id="leatherCloak" name="leather Cloak" gearSlot="3" >
+    <stats health="2" />
 </item>
 
 <item id="leatherShield" name="Wooden Shield" gearSlot="7" >
     <stats health="6" />
+    <offset x="-4" y="-10" />
+</item>
+
+<item id="sandals" name="Sandals" gearSlot="5" >
+    <stats health="2" speed="1.1" />
     <offset x="-4" y="-10" />
 </item>
 

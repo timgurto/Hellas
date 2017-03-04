@@ -38,12 +38,12 @@ Server only:
     <yield id="rock" />
 </objectType>
 
-<objectType
+<!--objectType
     id="grass" name="Grass"
     xDrawOffset="-7" yDrawOffset="-8"
     allowedTerrain="grass"
     decoration="1"
-/>
+/-->
 
 <objectType
     id="tree" name="Tree"
@@ -145,8 +145,7 @@ Server only:
 <objectType
     id="kiln" name="Kiln"
     xDrawOffset="-13"
-    yDrawOffset="-26"
-    constructionTime="1000" >
+    yDrawOffset="-26" >
     <collisionRect x="-12" y="-4" w="27" h="10" />
     <tag name="oven" />
     <tag name="kiln" />
@@ -186,6 +185,14 @@ Server only:
     id="tannin" name="Pot of Tannin"
     constructionTime="1000" >
     <tag name="tannin" />
+</objectType>
+
+<objectType
+    id="stretchingFrame" name="Stretching Frame" >
+    <tag name="stretchingFrame" />
+    <material id="log" quantity="2" />
+    <material id="rope" quantity="4" />
+    <unlockedBy id="rope" />
 </objectType>
 
 </root>

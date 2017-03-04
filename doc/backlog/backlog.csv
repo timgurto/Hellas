@@ -176,3 +176,4 @@ issue,description,value,effort,type,blockedBy,done
 341,Make players and objects more visible on map,13,5,Feature,,
 342,Generic unlock system. Item/crafting/construction -> recipe/construction,5,3,Bug,,TRUE
 345,Load map in login-screen background,5,5,Performance,,
+346,"Use gear-slot names, not numbers, in items.xml",5,2,Code quality,,
