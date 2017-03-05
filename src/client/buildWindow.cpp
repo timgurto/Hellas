@@ -23,25 +23,24 @@ void Client::initializeBuildWindow(){
     y += GAP;
     _buildList = new ChoiceList(Rect(0, y, BUTTON_WIDTH, WIN_HEIGHT - y), BUTTON_HEIGHT);
     _buildWindow->addChild(_buildList);
-    _buildList->setPreRefreshFunction(populateBuildList, _buildList);
 }
 
-void Client::populateBuildList(Element &e){
-    const Client &client = *Client::_instance;
-    ChoiceList &list = dynamic_cast<ChoiceList &>(e);
-    list.clearChildren();
-    for (const std::string &id : client._knownConstructions){
-        const ClientObjectType *ot = *client._objectTypes.find(&ClientObjectType(id));
+void Client::populateBuildList(){
+    _debug("Populating build list");
+    _buildList->clearChildren();
+    for (const std::string &id : _knownConstructions){
+        const ClientObjectType *ot = *_objectTypes.find(&ClientObjectType(id));
         Element *listElement = new Element(Rect());
-        list.addChild(listElement);
+        _buildList->addChild(listElement);
         Label *label = new Label(Rect(2, 0, listElement->width(), listElement->height()),
                                  ot->name());
-        label->setTooltip(ot->materialsTooltip());
         listElement->addChild(label);
         listElement->setLeftMouseUpFunction(chooseConstruction);
         listElement->id(id);
+        listElement->setTooltip(ot->materialsTooltip());
     }
-    list.verifyBoxes();
+    _buildList->verifyBoxes();
+    _buildList->markChanged();
 }
 
 void Client::chooseConstruction(Element &e, const Point &mousePos){

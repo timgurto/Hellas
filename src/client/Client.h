@@ -151,7 +151,7 @@ private:
 
     void initializeBuildWindow();
     ChoiceList *_buildList;
-    static void populateBuildList(Element &list);
+    void populateBuildList();
     static void chooseConstruction(Element &e, const Point &mousePos);
     const ClientObjectType *_selectedConstruction;
     bool _multiBuild;

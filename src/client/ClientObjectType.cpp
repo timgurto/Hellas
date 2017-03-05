@@ -20,8 +20,10 @@ ClientObjectType::~ClientObjectType(){
     // TODO: wrap sound functionality in class that properly handles copies.
     /*if (_gatherSound != nullptr)
         Mix_FreeChunk(_gatherSound);*/
-    if (_materialsTooltip != nullptr)
+    if (_materialsTooltip != nullptr){
         delete _materialsTooltip;
+        _materialsTooltip = nullptr;
+    }
 }
 
 void ClientObjectType::gatherSound(const std::string &filename){
