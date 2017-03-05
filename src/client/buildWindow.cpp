@@ -2,7 +2,9 @@
 
 #include "Client.h"
 #include "TooltipBuilder.h"
+#include "ui/CheckBox.h"
 #include "ui/Label.h"
+#include "ui/Line.h"
 
 extern Renderer renderer;
 
@@ -10,10 +12,16 @@ void Client::initializeBuildWindow(){
     static const px_t
         BUTTON_WIDTH = 100,
         BUTTON_HEIGHT = Element::TEXT_HEIGHT,
-        WIN_HEIGHT = toInt(7.5 * BUTTON_HEIGHT);
+        WIN_HEIGHT = toInt(10.5 * BUTTON_HEIGHT);
 
     _buildWindow = new Window(Rect(100, 50, BUTTON_WIDTH, WIN_HEIGHT), "Construction");
-    _buildList = new ChoiceList(Rect(0, 0, BUTTON_WIDTH, WIN_HEIGHT), BUTTON_HEIGHT);
+    static const px_t GAP = 2;
+    _buildWindow->addChild(new CheckBox(Rect(0, GAP, BUTTON_WIDTH, Element::TEXT_HEIGHT),
+                                        _multiBuild, "Build multiple"));
+    px_t y = Element::TEXT_HEIGHT + GAP;
+    _buildWindow->addChild(new Line(0, y, BUTTON_WIDTH));
+    y += GAP;
+    _buildList = new ChoiceList(Rect(0, y, BUTTON_WIDTH, WIN_HEIGHT - y), BUTTON_HEIGHT);
     _buildWindow->addChild(_buildList);
     _buildList->setPreRefreshFunction(populateBuildList, _buildList);
 }

@@ -92,6 +92,7 @@ _gearWindowBackground(std::string("Images/gearWindow.png"), Color::MAGENTA),
 _buildWindow(nullptr),
 _buildList(nullptr),
 _selectedConstruction(nullptr),
+_multiBuild(false),
 
 _connectionStatus(TRYING),
 

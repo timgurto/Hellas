@@ -154,6 +154,7 @@ private:
     static void populateBuildList(Element &list);
     static void chooseConstruction(Element &e, const Point &mousePos);
     const ClientObjectType *_selectedConstruction;
+    bool _multiBuild;
 
     Window *_inventoryWindow;
     void initializeInventoryWindow();
