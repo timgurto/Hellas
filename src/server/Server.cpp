@@ -349,8 +349,10 @@ void Server::removeUser(const std::set<User>::iterator &it){
 
 void Server::removeUser(const Socket &socket){
     const std::set<User>::iterator it = _users.find(socket);
-    assert (it != _users.end()); // FIXME this occasionally fails
-    removeUser(it);
+    if (it != _users.end())
+        removeUser(it);
+    else
+        _debug("User was already removed", Color::RED);
 }
 
 std::list<User *> Server::findUsersInArea(Point loc, double squareRadius) const{
