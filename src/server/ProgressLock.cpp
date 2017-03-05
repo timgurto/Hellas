@@ -59,7 +59,7 @@ void ProgressLock::registerStagedLocks(){
     }
 }
 
-void ProgressLock::triggerUnlocks(const User &user, Type triggerType, const void *trigger){
+void ProgressLock::triggerUnlocks(User &user, Type triggerType, const void *trigger){
     const locks_t &locks = locksByType[triggerType];
     auto toUnlock = locks.equal_range(trigger);
 
@@ -69,12 +69,18 @@ void ProgressLock::triggerUnlocks(const User &user, Type triggerType, const void
 
     for (auto it = toUnlock.first; it != toUnlock.second; ++it){
         const ProgressLock &lock = it->second;
-        switch (lock._effectType)
-        case RECIPE:{
-            newRecipes.insert(reinterpret_cast<const Recipe *>(lock._effect)->id());
+        std::string id;
+        switch (lock._effectType){
+        case RECIPE:
+            id = reinterpret_cast<const Recipe *>(lock._effect)->id();
+            newRecipes.insert(id);
+            user.addRecipe(id);
             break;
         case CONSTRUCTION:
-            newBuilds.insert(reinterpret_cast<const ObjectType *>(lock._effect)->id());
+             id = reinterpret_cast<const ObjectType *>(lock._effect)->id();
+            newBuilds.insert(id);
+            user.addConstruction(id);
+            break;
         default:
             ;
         }

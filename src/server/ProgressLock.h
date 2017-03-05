@@ -36,7 +36,7 @@ public:
     ProgressLock(Type triggerType, Type effectType);
 
     static void registerStagedLocks();
-    static void triggerUnlocks(const User &user, Type triggerType, const void *trigger);
+    static void triggerUnlocks(User &user, Type triggerType, const void *trigger);
 
     friend class ProgressLockStaging;
 };
