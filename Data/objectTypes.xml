@@ -166,7 +166,6 @@ Server only:
     id="figCrop0" name="Fig Crop"
     constructionTime="10000"
     constructionReq = "hoe" >
-    <unlockedBy id="figSeeds" />
     <yield id="fig" initialMean="5" initialSD="1" />
     <yield id="figSeeds" initialMean="1.2" initialSD="0.5" />
 </objectType>
@@ -175,7 +174,6 @@ Server only:
     id="flaxCrop0" name="Flax Crop"
     constructionTime="10000"
     constructionReq = "hoe" >
-    <unlockedBy id="flaxSeeds" />
     <yield id="flax" initialMean="5" initialSD="1" />
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" />
 </objectType>
