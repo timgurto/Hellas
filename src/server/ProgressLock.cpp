@@ -26,6 +26,9 @@ void ProgressLock::registerStagedLocks(){
                     lock._trigger = &*it;
                 break;
             }
+            case CONSTRUCTION:
+                lock._trigger = server.findObjectTypeByName(staged._trigger);
+                break;
             default:
                 ;
         }
