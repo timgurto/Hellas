@@ -152,6 +152,7 @@
     </ClCompile>
     <ClCompile Include="src\server\LootTable.cpp" />
     <ClCompile Include="src\server\pathfinding.cpp" />
+    <ClCompile Include="src\server\ProgressLock.cpp" />
     <ClCompile Include="src\server\ServerItem.cpp" />
     <ClCompile Include="src\server\ItemSet.cpp" />
     <ClCompile Include="src\server\LogConsole.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="src\server\CollisionChunk.h" />
     <ClInclude Include="src\server\Combatant.h" />
     <ClInclude Include="src\server\LootTable.h" />
+    <ClInclude Include="src\server\ProgressLock.h" />
     <ClInclude Include="src\server\ServerItem.h" />
     <ClInclude Include="src\server\ItemSet.h" />
     <ClInclude Include="src\server\LogConsole.h" />

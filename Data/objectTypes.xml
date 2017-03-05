@@ -81,7 +81,7 @@ Server only:
     <collisionRect x="-13" y="-9" w="24" h="11" />
     <tag name="oven" />
     <material id="rock" quantity="10" />
-    <unlockedBy id="rock" />
+    <unlockedBy item="rock" />
 </objectType>
 
 <objectType
@@ -128,7 +128,7 @@ Server only:
     <collisionRect x="-13" y="-4" w="25" h="8" />
     <container slots="2" />
     <material id="lumber" quantity="8" />
-    <unlockedBy id="lumber" />
+    <unlockedBy item="lumber" />
 </objectType>
 
 <objectType
@@ -150,7 +150,7 @@ Server only:
     <tag name="kiln" />
     <material id="brick" quantity="20" />
     <material id="crudeClay" quantity="12" />
-    <unlockedBy id="brick" />
+    <unlockedBy item="brick" />
 </objectType>
 
 <objectType
@@ -189,7 +189,7 @@ Server only:
     <tag name="stretchingFrame" />
     <material id="log" quantity="2" />
     <material id="rope" quantity="4" />
-    <unlockedBy id="rope" />
+    <unlockedBy item="rope" />
 </objectType>
 
 </root>

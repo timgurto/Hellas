@@ -1,5 +1,6 @@
 #include <cassert>
 
+#include "ProgressLock.h"
 #include "Server.h"
 #include "User.h"
 
@@ -117,49 +118,8 @@ size_t User::giveItem(const ServerItem *item, size_t quantity){
         }
     }
     if (remaining < quantity)
-        unlockStuff(item);
+        ProgressLock::triggerUnlocks(*this, ProgressLock::ITEM, item);
     return remaining;
-}
-
-void User::unlockStuff(const Item *item){
-    const Server &server = Server::instance();
-
-    // Recipes unlocked by an item
-    std::set<const std::string> newRecipes;
-    for (const std::string &id : server._recipeLocks[item->id()])
-        if (_knownRecipes.find(id) == _knownRecipes.end()){
-            newRecipes.insert(id);
-            _knownRecipes.insert(id);
-        }
-    // Recipes unlocked by a tool
-    for (const std::string &tag : item->tags())
-        for (const std::string &id : server._recipeToolLocks[tag])
-            if (_knownRecipes.find(id) == _knownRecipes.end()){
-                newRecipes.insert(id);
-                _knownRecipes.insert(id);
-            }
-            
-    if (!newRecipes.empty()){ // New recipes unlocked!
-        std::string args = makeArgs(newRecipes.size());
-        for (const std::string &id : newRecipes)
-            args = makeArgs(args, id);
-        server.sendMessage(_socket, SV_NEW_RECIPES, args);
-    }
-
-
-    // Object constructions unlocked by an item
-    std::set<const std::string> newConstructions;
-    for (const std::string &id : server._constructionLocks[item->id()])
-        if (_knownConstructions.find(id) == _knownConstructions.end()){
-            newConstructions.insert(id);
-            _knownConstructions.insert(id);
-        }
-    if (!newConstructions.empty()){ // New constructions unlocked!
-        std::string args = makeArgs(newConstructions.size());
-        for (const std::string &id : newConstructions)
-            args = makeArgs(args, id);
-        server.sendMessage(_socket, SV_NEW_CONSTRUCTIONS, args);
-    }
 }
 
 void User::cancelAction() {

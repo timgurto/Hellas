@@ -91,7 +91,6 @@ public:
     void addRecipe(const std::string &id) { _knownRecipes.insert(id); }
     const std::set<std::string> &knownConstructions() const { return _knownConstructions; }
     void addConstruction(const std::string &id) { _knownConstructions.insert(id); }
-    void unlockStuff(const Item *item); // Checks whether this item unlocks anything.
 
     // Inventory getters/setters
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const

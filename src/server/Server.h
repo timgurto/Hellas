@@ -137,10 +137,6 @@ private:
     std::set<Recipe> _recipes;
     std::set<const ObjectType *> _objectTypes;
     std::map<size_t, Spawner> _spawners;
-    mutable std::map<std::string, std::set<std::string> >
-        _recipeLocks, // item id -> recipe ids
-        _recipeToolLocks, // item tag -> recipe ids
-        _constructionLocks; // item tag -> object ids
 
     std::list<Object *> _objectsToRemove; // Emptied every tick.
     // Force all users to untarget an object
@@ -153,6 +149,7 @@ private:
     friend class NPC;
     friend class ServerTestInterface;
     friend class Spawner;
+    friend class ProgressLock;
 
     NPC &addNPC(const NPCType *type, const Point &location); 
     Object &addObject (const ObjectType *type, const Point &location, const User *owner = nullptr);

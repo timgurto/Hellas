@@ -1,4 +1,6 @@
 #include <cassert>
+
+#include "ProgressLock.h"
 #include "Server.h"
 #include "Vehicle.h"
 #include "../messageCodes.h"
@@ -452,7 +454,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                         sendInventoryMessage(*_usersByName[username], slot1, *pObj1);
             if (obj2 == INVENTORY || obj2 == GEAR){
                 sendInventoryMessage(*user, slot2, obj2);
-                user->unlockStuff(slotTo.first);
+                ProgressLock::triggerUnlocks(*user, ProgressLock::ITEM, slotTo.first);
             } else
                 for (auto username : pObj2->watchers())
                     if (pObj2->userHasAccess(username))

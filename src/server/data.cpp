@@ -4,6 +4,7 @@
 #endif
 
 #include "NPCType.h"
+#include "ProgressLock.h"
 #include "Server.h"
 #include "VehicleType.h"
 #include "../XmlReader.h"
@@ -249,9 +250,12 @@ void Server::loadData(const std::string &path){
                 xr.findAttr(objMat, "quantity", n);
                 ot->addMaterial(&*itemIt, n);
             }
-            for (auto objUnlock : xr.getChildren("unlockedBy", elem)){
-                if (xr.findAttr(objUnlock, "id", s))
-                    _constructionLocks[s].insert(id);
+
+            for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
+                if (xr.findAttr(unlockedBy, "item", s))
+                    ProgressLockStaging(ProgressLock::ITEM, s, ProgressLock::CONSTRUCTION, id).stage();
+                else if (xr.findAttr(unlockedBy, "construction", s))
+                    ProgressLockStaging(ProgressLock::CONSTRUCTION, s, ProgressLock::CONSTRUCTION, id).stage();
             }
 
             // Container
@@ -389,27 +393,26 @@ void Server::loadData(const std::string &path){
                         continue;
                     }
                     recipe.addMaterial(&*it, quantity);
-
-                    // Locks
-                    int unlocks = 0;
-                    if (xr.findAttr(child, "unlocks", unlocks) && unlocks != 0)
-                        _recipeLocks[matID].insert(id);
                 }
             }
 
             for (auto child : xr.getChildren("tool", elem)) {
                 if (xr.findAttr(child, "class", s)) {
                     recipe.addTool(s);
-
-                    // Locks
-                    int unlocks = 0;
-                    if (xr.findAttr(child, "unlocks", unlocks) && unlocks != 0)
-                        _recipeToolLocks[s].insert(id);
                 }
+            }
+
+            for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
+                if (xr.findAttr(unlockedBy, "item", s))
+                    ProgressLockStaging(ProgressLock::ITEM, s, ProgressLock::RECIPE, id).stage();
+                else if (xr.findAttr(unlockedBy, "construction", s))
+                    ProgressLockStaging(ProgressLock::CONSTRUCTION, s, ProgressLock::RECIPE, id).stage();
             }
         
             _recipes.insert(recipe);
         }
+
+    ProgressLock::registerStagedLocks();
 
     // Remove invalid items referred to by objects/recipes
     for (auto it = _items.begin(); it != _items.end(); ){
