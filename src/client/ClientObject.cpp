@@ -67,7 +67,7 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
     _merchantSlots[i] = mSlotArg;
     ClientMerchantSlot &mSlot = _merchantSlots[i];
 
-    if (_window == nullptr)
+    if (_window == nullptr || isBeingConstructed())
         return;
     assert(_merchantSlotElements[i] != nullptr);
 
