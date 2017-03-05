@@ -201,8 +201,11 @@ void Client::handleMessage(const std::string &msg){
 
             // If constructing, hide footprint now that it has successfully started.
             if (_selectedConstruction != nullptr && !_multiBuild){
-                Container::clearUseItem();
                 _buildList->clearSelection();
+                _constructionFootprint = Texture();
+                _selectedConstruction = nullptr;
+            } else if (Container::getUseItem() != nullptr){
+                Container::clearUseItem();
                 _constructionFootprint = Texture();
             }
 
