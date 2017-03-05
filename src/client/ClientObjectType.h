@@ -29,6 +29,7 @@ class ClientObjectType : public EntityType{
     const ParticleProfile *_gatherParticles;
     std::set<std::string> _tags;
     ItemSet _materials;
+    mutable Texture *_materialsTooltip;
 
 public:
     ClientObjectType(const std::string &id);
@@ -59,6 +60,7 @@ public:
     const ItemSet &materials() const { return _materials; }
     bool hasTags() const { return !_tags.empty(); }
     const std::set<std::string> &tags() const { return _tags; }
+    const Texture &materialsTooltip() const;
 
     virtual char classTag() const override { return 'o'; }
 

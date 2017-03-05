@@ -26,23 +26,12 @@ void Client::populateBuildList(Element &e){
         const ClientObjectType *ot = *client._objectTypes.find(&ClientObjectType(id));
         Element *listElement = new Element(Rect());
         list.addChild(listElement);
-        listElement->addChild(new Label(Rect(2, 0, listElement->width(), listElement->height()),
-                                       ot->name()));
+        Label *label = new Label(Rect(2, 0, listElement->width(), listElement->height()),
+                                 ot->name());
+        label->setTooltip(ot->materialsTooltip());
+        listElement->addChild(label);
         listElement->setLeftMouseUpFunction(chooseConstruction);
         listElement->id(id);
-
-        // Tooltip
-        TooltipBuilder tb;
-        tb.setColor(Color::ITEM_NAME);
-        tb.addLine(ot->name());
-        tb.addGap();
-        tb.setColor(Color::ITEM_STATS);
-        tb.addLine("Materials:");
-        for (const auto &material : ot->materials()){
-            const ClientItem &item = *dynamic_cast<const ClientItem *>(material.first);
-            tb.addLine(makeArgs(material.second) + "x " + item.name());
-        }
-        listElement->setTooltip(tb.publish());
     }
     list.verifyBoxes();
 }

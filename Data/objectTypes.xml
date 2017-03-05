@@ -123,7 +123,6 @@ Server only:
     name="Trade Cart"
     xDrawOffset="-13"
     yDrawOffset="-16"
-    constructionTime="4000"
     merchantSlots="1"
     isVehicle="1" >
     <collisionRect x="-13" y="-4" w="25" h="8" />
