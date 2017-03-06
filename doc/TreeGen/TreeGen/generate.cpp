@@ -48,18 +48,18 @@ int main(){
     std::map<std::string, std::string> nodes; // id -> label
     std::set<Edge > blacklist;
 
-    std::string colorScheme = "rdylgn8";
+    std::string colorScheme = "rdylgn10";
     std::map<EdgeType, size_t> edgeColors;
     // Weak: light colors
-    edgeColors[UNLOCK_ON_ACQUIRE] = 1; // Weakest, since you can trade for stuff.
-    edgeColors[GATHER_REQ] = 2;
+    edgeColors[GATHER] = 1;
+    edgeColors[UNLOCK_ON_ACQUIRE] = 2; // Weak, since you can trade for the item.
     edgeColors[CONSTRUCT_FROM_ITEM] = 3;
-    edgeColors[GATHER] = 4;
-    edgeColors[LOOT] = 5;
-    // Strong: dark colors
+    edgeColors[LOOT] = 4;
+    edgeColors[GATHER_REQ] = 5;
     edgeColors[UNLOCK_ON_GATHER] = 6;
-    edgeColors[UNLOCK_ON_CONSTRUCT] = 7;
-    edgeColors[UNLOCK_ON_CRAFT] = 8;
+    // Strong: dark colors
+    edgeColors[UNLOCK_ON_CONSTRUCT] = 9;
+    edgeColors[UNLOCK_ON_CRAFT] = 10;
 
     const std::string dataPath = "../../Data";
 
@@ -140,6 +140,10 @@ int main(){
                     edges.insert(Edge("item_" + s, label, UNLOCK_ON_CRAFT));
                 else if (xr.findAttr(unlockBy, "construction", s))
                     edges.insert(Edge("object_" + s, label, UNLOCK_ON_CONSTRUCT));
+                else if (xr.findAttr(unlockBy, "gather", s))
+                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_GATHER));
+                else if (xr.findAttr(unlockBy, "item", s))
+                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_ACQUIRE));
             }
         }
     }
@@ -181,9 +185,13 @@ int main(){
 
             for (auto unlockBy : xr.getChildren("unlockedBy", elem)){
                 if (xr.findAttr(unlockBy, "recipe", s) || xr.findAttr(unlockBy, "item", s))
-                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_ACQUIRE));
+                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_CRAFT));
                 else if (xr.findAttr(unlockBy, "construction", s))
                     edges.insert(Edge("object_" + s, label, UNLOCK_ON_CONSTRUCT));
+                else if (xr.findAttr(unlockBy, "gather", s))
+                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_GATHER));
+                else if (xr.findAttr(unlockBy, "item", s))
+                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_ACQUIRE));
             }
         }
     }

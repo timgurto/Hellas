@@ -4,7 +4,7 @@
     id="stoneAxe" time="4000" product="stoneAxe" >
     <material id="rock" />
     <material id="stick" />
-    <unlockedBy item="stick" />
+    <unlockedBy gather="stick" />
 </recipe>
 
 <recipe
@@ -12,7 +12,7 @@
     <material id="crudeClay" quantity="2" />
     <material id="log" />
     <tool class="oven" />
-    <unlockedBy item="crudeClay" />
+    <unlockedBy gather="crudeClay" />
 </recipe>
 
 <recipe
@@ -43,7 +43,7 @@
     <material id="crudeClay" quantity="2" />
     <material id="log" />
     <tool class="oven" />
-    <unlockedBy item="crudeClay" />
+    <unlockedBy gather="crudeClay" />
 </recipe>
 
 <recipe
@@ -51,7 +51,7 @@
     <material id="crudeClay" quantity="2" />
     <material id="log" />
     <tool class="oven" />
-    <unlockedBy item="log" />
+    <unlockedBy gather="log" />
 </recipe>
 
 <recipe
@@ -67,7 +67,7 @@
     <material id="tin" quantity="5" />
     <material id="log" />
     <tool class="oven" />
-    <unlockedBy item="tin" />
+    <unlockedBy gather="tin" />
 </recipe>
 
 <recipe
@@ -75,7 +75,7 @@
     <material id="copper" quantity="5" />
     <material id="charcoal" />
     <tool class="kiln" />
-    <unlockedBy item="copper" />
+    <unlockedBy gather="copper" />
 </recipe>
 
 <recipe
@@ -179,13 +179,13 @@
     id="boneNeedle" time="4000" product="boneNeedle" >
     <material id="bone" />
     <tool class="sharpener" />
-    <unlockedBy item="bone" />
+    <unlockedBy gather="bone" />
 </recipe>
 
 <recipe
     id="linenThread" time="4000" product="linenThread" >
     <material id="flax" quantity="2" />
-    <unlockedBy item="flax" />
+    <unlockedBy gather="flax" />
 </recipe>
 
 <recipe
@@ -200,7 +200,7 @@
     <material id="smallPot" />
     <material id="log" />
     <unlockedBy recipe="smallPot" />
-    <unlockedBy item="log" />
+    <unlockedBy gather="log" />
 </recipe>
 
 <recipe
@@ -249,7 +249,7 @@
 <recipe
     id="rope" time="4000" product="rope" >
     <material id="flax" quantity="3" />
-    <unlockedBy item="flax" />
+    <unlockedBy gather="flax" />
 </recipe>
 
 </root>
