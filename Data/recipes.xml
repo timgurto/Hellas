@@ -23,12 +23,13 @@
     <unlockedBy recipe="clay" />
 </recipe>
 
-<!--recipe
+<recipe
     id="largePot" time="12000" product="largePot" >
     <material id="charcoal" />
     <material id="clay" quantity="5" />
     <tool id="kiln" />
-</recipe-->
+    <unlockedBy construction="kiln" />
+</recipe>
 
 <recipe
     id="pickMould" time="12000" product="pickMould" >
@@ -67,6 +68,7 @@
     <material id="tin" quantity="5" />
     <material id="log" />
     <tool class="oven" />
+    <tool class="leatherGloves" />
     <unlockedBy gather="tin" />
 </recipe>
 
@@ -75,7 +77,8 @@
     <material id="copper" quantity="5" />
     <material id="charcoal" />
     <tool class="kiln" />
-    <unlockedBy gather="copper" />
+    <tool class="leatherGloves" />
+    <unlockedBy recipe="tinPick" />
 </recipe>
 
 <recipe
@@ -199,17 +202,15 @@
     id="tannin" time="10000" product="tannin" >
     <material id="smallPot" />
     <material id="log" />
+    <material id="rope" />
     <unlockedBy recipe="smallPot" />
-    <unlockedBy gather="log" />
 </recipe>
 
 <recipe
     id="leather" time="10000" product="leather" quantity="2" >
     <material id="hide" />
     <tool class="tannin" />
-    <tool class="stretchingFrame" />
     <unlockedBy recipe="tannin" />
-    <unlockedBy construction="stretchingFrame" />
 </recipe>
 
 <recipe
@@ -226,21 +227,28 @@
 </recipe>
 
 <recipe
-    id="skullCap" time="10000" product="skullCap" >
-    <material id="leather" quantity="4" />
+    id="cloak" time="10000" product="cloak" >
+    <material id="linenCloth" quantity="4" />
     <material id="linenThread" quantity="1" />
-    <unlockedBy recipe="leather" />
+    <unlockedBy recipe="linenCloth" />
 </recipe>
 
 <recipe
-    id="leatherCloak" time="10000" product="leatherCloak" >
-    <material id="leather" quantity="2" />
+    id="skullCap" time="10000" product="skullCap" >
+    <material id="leather" quantity="3" />
     <material id="linenThread" quantity="1" />
     <unlockedBy recipe="leather" />
 </recipe>
 
 <recipe
     id="sandals" time="10000" product="sandals" >
+    <material id="leather" quantity="4" />
+    <material id="linenThread" quantity="1" />
+    <unlockedBy recipe="leather" />
+</recipe>
+
+<recipe
+    id="leatherGloves" time="10000" product="leatherGloves" >
     <material id="leather" quantity="4" />
     <material id="linenThread" quantity="1" />
     <unlockedBy recipe="leather" />

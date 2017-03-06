@@ -51,18 +51,18 @@ int main(int argc, char **argv){
     std::map<std::string, std::string> nodes; // id -> label
     std::set<Edge > blacklist;
 
-    std::string colorScheme = "rdylgn10";
+    std::string colorScheme = "rdylgn6";
     std::map<EdgeType, size_t> edgeColors;
     // Weak: light colors
+    edgeColors[UNLOCK_ON_ACQUIRE] = 1; // Weak, since you can trade for the item.
     edgeColors[GATHER] = 1;
-    edgeColors[UNLOCK_ON_ACQUIRE] = 2; // Weak, since you can trade for the item.
-    edgeColors[CONSTRUCT_FROM_ITEM] = 3;
+    edgeColors[CONSTRUCT_FROM_ITEM] = 2;
+    edgeColors[UNLOCK_ON_GATHER] = 3;
     edgeColors[LOOT] = 4;
     edgeColors[GATHER_REQ] = 5;
-    edgeColors[UNLOCK_ON_GATHER] = 6;
     // Strong: dark colors
-    edgeColors[UNLOCK_ON_CONSTRUCT] = 9;
-    edgeColors[UNLOCK_ON_CRAFT] = 10;
+    edgeColors[UNLOCK_ON_CONSTRUCT] = 6;
+    edgeColors[UNLOCK_ON_CRAFT] = 6;
 
     const std::string dataPath = "../../Data";
 

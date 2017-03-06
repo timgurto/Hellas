@@ -45,7 +45,7 @@ Client only:
 
 <item id="smallPot"     name="Small Pot"        constructs="smallPot" />
 <item id="mediumPot"    name="Medium Pot"       constructs="mediumPot" />
-<!--item id="largePot"     name="Large Pot"        constructs="largePot" /-->
+<item id="largePot"     name="Large Pot"        constructs="largePot" />
 <item id="elutriator"   name="Elutriator"       constructs="elutriator" />
 <item id="tannin"       name="Tannin"           constructs="tannin" />
 <item id="lumber"       name="Lumber"           constructs="post"           stackSize="10" />
@@ -113,7 +113,7 @@ Client only:
     <stats health="3" />
 </item>
 
-<item id="leatherCloak" name="Leather Cloak" gearSlot="3" >
+<item id="cloak" name="Cloak" gearSlot="3" >
     <stats health="2" />
 </item>
 
@@ -124,7 +124,11 @@ Client only:
 
 <item id="sandals" name="Sandals" gearSlot="5" >
     <stats health="2" speed="1.1" />
-    <offset x="-4" y="-10" />
+</item>
+
+<item id="leatherGloves" name="Leather Gloves" gearSlot="4" >
+    <stats health="1" />
+    <tag name="leatherGloves" />
 </item>
 
 <item id="pickMould"    name="Pickaxe Mould" >  <tag name="pickMould" />    </item>
