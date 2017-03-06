@@ -297,27 +297,57 @@ int main(int argc, char **argv){
     }
 
 
+    Uint32 rmask, gmask, bmask, amask;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    rmask = 0xff000000;
+    gmask = 0x00ff0000;
+    bmask = 0x0000ff00;
+    amask = 0x000000ff;
+#else
+    rmask = 0x000000ff;
+    gmask = 0x0000ff00;
+    bmask = 0x00ff0000;
+    amask = 0xff000000;
+#endif
+
 
     // Publish
     std::ofstream f("tree.gv");
     f << "digraph {" << std::endl;
-    f << "node [fontsize=10 shape=box];" << std::endl;
+    f << "node [fontsize=10 shape=none];" << std::endl;
 
     // Nodes
     for (auto &node : nodes){
         std::string imagePath = "../../Images/";
         if (node.first.substr(0, 5) == "item_")
-            imagePath += "items/" + node.first.substr(5);
+            imagePath += "Items/" + node.first.substr(5);
         else if (node.first.substr(0, 4) == "npc_")
             imagePath += "NPCs/" + node.first.substr(4);
         else
             imagePath += "objects/" + node.first.substr(7);
-
         imagePath += ".png";
+
+        // Generate image
+        SDL_Surface *surface = IMG_Load(imagePath.c_str());
+        bool imageExists = surface != nullptr;
+
+        if (imageExists){
+            SDL_SetColorKey(surface, SDL_TRUE, 0xff00ff); // Make magenta transparent
+
+            // Stretch onto canvas
+            static const size_t SCALAR = 2;
+            SDL_Surface *canvas = SDL_CreateRGBSurface(0, surface->w * SCALAR, surface->h * SCALAR, 32, rmask, gmask, bmask, amask);
+            SDL_Rect rect = {0, 0, surface->w * SCALAR, surface->h * SCALAR };
+            SDL_BlitScaled(surface, nullptr, canvas, &rect);
+
+            // Save new image
+            IMG_SavePNG(canvas, ("images/" + node.first + ".png").c_str());
+        }
+
         std::string
             id = node.first,
             name = node.second,
-            image = "", //"<img src=\"" + imagePath + "\"/>",
+            image = "<img src=\"images/" + (imageExists ? node.first : "error") + ".png\"/>",
             fullNode = node.first + " [label=<<table border='0' cellborder='0'><tr><td>" + image + "</td></tr><tr><td>" + name + "</td></tr></table>>]";
         f << fullNode << std::endl;
     }
