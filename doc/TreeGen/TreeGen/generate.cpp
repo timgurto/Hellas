@@ -314,17 +314,22 @@ int main(int argc, char **argv){
     // Publish
     std::ofstream f("tree.gv");
     f << "digraph {" << std::endl;
-    f << "node [fontsize=10 shape=none];" << std::endl;
+    f << "node [fontsize=10];" << std::endl;
 
     // Nodes
     for (auto &node : nodes){
         std::string imagePath = "../../Images/";
-        if (node.first.substr(0, 5) == "item_")
+        std::string shape;
+        if (node.first.substr(0, 5) == "item_"){
             imagePath += "Items/" + node.first.substr(5);
-        else if (node.first.substr(0, 4) == "npc_")
+            shape = "none";
+        }else if (node.first.substr(0, 4) == "npc_"){
             imagePath += "NPCs/" + node.first.substr(4);
-        else
+            shape = "box";
+        }else{
             imagePath += "objects/" + node.first.substr(7);
+            shape = "box";
+        }
         imagePath += ".png";
 
         // Generate image
@@ -348,7 +353,7 @@ int main(int argc, char **argv){
             id = node.first,
             name = node.second,
             image = "<img src=\"images/" + (imageExists ? node.first : "error") + ".png\"/>",
-            fullNode = node.first + " [label=<<table border='0' cellborder='0'><tr><td>" + image + "</td></tr><tr><td>" + name + "</td></tr></table>>]";
+            fullNode = node.first + " [shape=" + shape + " label=<<table border='0' cellborder='0'><tr><td>" + image + "</td></tr><tr><td>" + name + "</td></tr></table>>]";
         f << fullNode << std::endl;
     }
 
