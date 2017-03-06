@@ -4,7 +4,6 @@
     id="stoneAxe" time="4000" product="stoneAxe" >
     <material id="rock" />
     <material id="stick" />
-    <unlockedBy item="rock" />
     <unlockedBy item="stick" />
 </recipe>
 
@@ -36,7 +35,7 @@
     <material id="crudeClay" quantity="2" />
     <material id="log" />
     <tool class="oven" />
-    <unlockedBy item="crudeClay" />
+    <unlockedBy recipe="tinBar" />
 </recipe>
 
 <recipe
@@ -52,7 +51,7 @@
     <material id="crudeClay" quantity="2" />
     <material id="log" />
     <tool class="oven" />
-    <unlockedBy item="crudeClay" />
+    <unlockedBy item="log" />
 </recipe>
 
 <recipe
@@ -60,7 +59,7 @@
     <material id="crudeClay" quantity="2" />
     <material id="log" />
     <tool class="oven" />
-    <unlockedBy item="crudeClay" />
+    <unlockedBy recipe="tinBar" />
 </recipe>
 
 <recipe
@@ -144,6 +143,7 @@
     <material id="smallPot" quantity="2" />
     <material id="tinPipe" />
     <unlockedBy recipe="smallPot" />
+    <unlockedBy recipe="tinPipe" />
 </recipe>
 
 <recipe
@@ -157,7 +157,7 @@
     id="charcoal" time="12000" product="charcoal" >
     <material id="log" quantity="2" />
     <tool class="oven" />
-    <unlockedBy item="log" />
+    <unlockedBy construction="oven" />
 </recipe>
 
 <recipe
@@ -185,7 +185,7 @@
 <recipe
     id="linenThread" time="4000" product="linenThread" >
     <material id="flax" quantity="2" />
-    <unlockedBy construction="flaxCrop0" />
+    <unlockedBy item="flax" />
 </recipe>
 
 <recipe
@@ -200,6 +200,7 @@
     <material id="smallPot" />
     <material id="log" />
     <unlockedBy recipe="smallPot" />
+    <unlockedBy item="log" />
 </recipe>
 
 <recipe
@@ -207,9 +208,7 @@
     <material id="hide" />
     <tool class="tannin" />
     <tool class="stretchingFrame" />
-    <unlockedBy item="hide" />
-    <unlockedBy construction="tannin" />
-    <unlockedBy construction="stretchingFrame" />
+    <unlockedBy recipe="tannin" />
 </recipe>
 
 <recipe
@@ -222,7 +221,6 @@
     id="linothorax" time="10000" product="linothorax" >
     <material id="linenCloth" quantity="12" />
     <material id="linenThread" quantity="1" />
-    <unlockedBy item="fat" />
     <unlockedBy recipe="linenCloth" />
 </recipe>
 
@@ -250,7 +248,7 @@
 <recipe
     id="rope" time="4000" product="rope" >
     <material id="flax" quantity="3" />
-    <unlockedBy construction="flaxCrop0" />
+    <unlockedBy item="flax" />
 </recipe>
 
 </root>
