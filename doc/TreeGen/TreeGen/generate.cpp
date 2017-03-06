@@ -4,6 +4,8 @@
 #include <set>
 #include <queue>
 #include <XmlReader.h>
+#include <SDL.h>
+#include <SDL_image.h>
 
 struct Path{
     std::string child;
@@ -42,7 +44,8 @@ struct Edge{
     }
 };
 
-int main(){
+#undef main
+int main(int argc, char **argv){
     std::set<Edge> edges;
     std::map<std::string, std::string> tools;
     std::map<std::string, std::string> nodes; // id -> label
@@ -324,4 +327,6 @@ int main(){
           << " [colorscheme=\"" << colorScheme << "\", color=" << edgeColors[edge.type] << "]"
           << std::endl;
     f << "}";
+
+    return 0;
 }
