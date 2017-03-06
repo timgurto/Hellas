@@ -398,7 +398,9 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendInventoryMessage(*user, slot1, obj1);
 
                 // Check if this action completed construction
-                if (!pObj2->isBeingBuilt())
+                if (!pObj2->isBeingBuilt() &&
+                        user->knownConstructions().find(pObj2->type()->id())
+                                != user->knownConstructions().end())
                     ProgressLock::triggerUnlocks(*user, ProgressLock::CONSTRUCTION, pObj2->type());
 
                 break;
