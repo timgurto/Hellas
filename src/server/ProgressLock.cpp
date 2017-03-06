@@ -4,35 +4,36 @@
 #include "Server.h"
 
 ProgressLock::locksByType_t ProgressLock::locksByType;
-std::set<ProgressLockStaging> ProgressLock::stagedLocks;
+std::set<ProgressLock> ProgressLock::stagedLocks;
 
-ProgressLock::ProgressLock(Type triggerType, Type effectType):
+ProgressLock::ProgressLock(Type triggerType, const std::string &triggerID,
+                           Type effectType, const std::string &effectID):
 _triggerType(triggerType),
-_trigger(nullptr),
+_triggerID(triggerID),
 _effectType(effectType),
-_effect(nullptr)
+_effectID(effectID)
 {}
 
 void ProgressLock::registerStagedLocks(){
-    for (const ProgressLockStaging &staged : stagedLocks){
-        ProgressLock lock(staged._triggerType, staged._effectType);
+    for (const ProgressLock &stagedLock : stagedLocks){
+        ProgressLock lock = stagedLock;
 
         const Server &server = Server::instance();
-        switch (staged._triggerType){
+        switch (lock._triggerType){
             case ITEM:
             case GATHER:
             {
-                auto it = server._items.find(staged._trigger);
+                auto it = server._items.find(lock._triggerID);
                 if (it != server._items.end())
                     lock._trigger = &*it;
                 break;
             }
             case CONSTRUCTION:
-                lock._trigger = server.findObjectTypeByName(staged._trigger);
+                lock._trigger = server.findObjectTypeByName(lock._triggerID);
                 break;
             case RECIPE:
             {
-                auto it = server._recipes.find(staged._trigger);
+                auto it = server._recipes.find(lock._triggerID);
                 if (it != server._recipes.end())
                     lock._trigger = &*it;
                 break;
@@ -42,27 +43,27 @@ void ProgressLock::registerStagedLocks(){
         }
 
         if (lock._trigger == nullptr){
-            server._debug << Color::RED << "Invalid progress trigger: '" << staged._trigger << "'" << Log::endl;
+            server._debug << Color::RED << "Invalid progress trigger: '" << lock._triggerID << "'" << Log::endl;
             continue;
         }
 
-        switch (staged._effectType){
+        switch (lock._effectType){
         case RECIPE:
         {
-            auto it = server._recipes.find(staged._effect);
+            auto it = server._recipes.find(lock._effectID);
             if (it != server._recipes.end())
                 lock._effect = &*it;
             break;
         }
         case CONSTRUCTION:
-            lock._effect = server.findObjectTypeByName(staged._effect);
+            lock._effect = server.findObjectTypeByName(lock._effectID);
             break;
         default:
             ;
         }
 
         if (lock._effect == nullptr){
-            server._debug << Color::RED << "Invalid progress effect: '" << staged._effect << "'" << Log::endl;
+            server._debug << Color::RED << "Invalid progress effect: '" << lock._effectID << "'" << Log::endl;
             continue;
         }
 
@@ -115,12 +116,12 @@ void ProgressLock::triggerUnlocks(User &user, Type triggerType, const void *trig
 }
 
 // Order doesnt' really matter, as long as it's a proper ordering.
-bool ProgressLockStaging::operator<(const ProgressLockStaging &rhs) const{
+bool ProgressLock::operator<(const ProgressLock &rhs) const{
     if (_triggerType != rhs._triggerType)
         return _triggerType < rhs._triggerType;
     if (_effectType != rhs._effectType)
         return _effectType < rhs._effectType;
-    if (_trigger != rhs._trigger)
-        return _trigger < rhs._trigger;
-    return _effect < rhs._effect;
+    if (_triggerID != rhs._triggerID)
+        return _triggerID < rhs._triggerID;
+    return _effectID < rhs._effectID;
 }

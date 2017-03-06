@@ -27,38 +27,23 @@ private:
     const void
         *_trigger,
         *_effect;
+    std::string
+        _triggerID,
+        _effectID;
 
     static locksByType_t locksByType;
-    static std::set<ProgressLockStaging> stagedLocks;
+    static std::set<ProgressLock> stagedLocks;
     
     bool isValid() const { return _trigger != nullptr; }
 
 public:
-    ProgressLock(Type triggerType, Type effectType);
+    ProgressLock(Type triggerType, const std::string &triggerID,
+                 Type effectType, const std::string &effectID);
 
     static void registerStagedLocks();
     static void triggerUnlocks(User &user, Type triggerType, const void *trigger);
+    void stage() const { stagedLocks.insert(*this); }
 
-    friend class ProgressLockStaging;
-};
-
-// id strings rather than pointers; assembled during data loading and registered at once afterwards.
-class ProgressLockStaging{
-    ProgressLock::Type
-        _triggerType,
-        _effectType;
-    std::string
-        _trigger,
-        _effect;
-
-public:
-    ProgressLockStaging(ProgressLock::Type triggerType, const std::string &trigger,
-                        ProgressLock::Type effectType, const std::string &effect):
-    _triggerType(triggerType), _trigger(trigger), _effectType(effectType), _effect(effect){}
-    void stage() const { ProgressLock::stagedLocks.insert(*this); }
-
-    bool operator<(const ProgressLockStaging &rhs) const;
-
-    friend class ProgressLock;
+    bool ProgressLock::operator<(const ProgressLock &rhs) const;
 };
 #endif
