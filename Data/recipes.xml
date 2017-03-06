@@ -209,6 +209,7 @@
     <tool class="tannin" />
     <tool class="stretchingFrame" />
     <unlockedBy recipe="tannin" />
+    <unlockedBy construction="stretchingFrame" />
 </recipe>
 
 <recipe

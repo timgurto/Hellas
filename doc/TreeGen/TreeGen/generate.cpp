@@ -16,10 +16,25 @@ struct Path{
     }
 };
 
+enum EdgeType{
+    GATHER,
+    CONSTRUCT_FROM_ITEM,
+    GATHER_REQ,
+    LOOT,
+
+    UNLOCK_ON_GATHER,
+    UNLOCK_ON_ACQUIRE,
+    UNLOCK_ON_CRAFT,
+    UNLOCK_ON_CONSTRUCT,
+
+    DEFAULT
+};
+
 struct Edge{
     std::string parent, child;
+    EdgeType type;
     
-    Edge(const std::string &from, const std::string &to): parent(from), child(to) {}
+    Edge(const std::string &from, const std::string &to, EdgeType typeArg): parent(from), child(to), type(typeArg) {}
     bool operator==(const Edge &rhs) const { return parent == rhs.parent && child == rhs.child; }
     bool operator<(const Edge &rhs) const{
         if (parent != rhs.parent) return parent < rhs.parent;
@@ -32,6 +47,20 @@ int main(){
     std::map<std::string, std::string> tools;
     std::map<std::string, std::string> nodes; // id -> label
     std::set<Edge > blacklist;
+
+    std::string colorScheme = "rdylgn8";
+    std::map<EdgeType, size_t> edgeColors;
+    // Weak: light colors
+    edgeColors[UNLOCK_ON_ACQUIRE] = 1; // Weakest, since you can trade for stuff.
+    edgeColors[GATHER_REQ] = 2;
+    edgeColors[CONSTRUCT_FROM_ITEM] = 3;
+    edgeColors[GATHER] = 4;
+    edgeColors[LOOT] = 5;
+    // Strong: dark colors
+    edgeColors[UNLOCK_ON_GATHER] = 6;
+    edgeColors[UNLOCK_ON_CONSTRUCT] = 7;
+    edgeColors[UNLOCK_ON_CRAFT] = 8;
+
     const std::string dataPath = "../../Data";
 
     // Load tools
@@ -54,7 +83,7 @@ int main(){
             std::cout << "Blacklist item had no child; ignored" << std::endl;
             continue;
         }
-        blacklist.insert(Edge(parent, child));
+        blacklist.insert(Edge(parent, child, DEFAULT));
     }
 
     // Load items
@@ -72,7 +101,7 @@ int main(){
                 nodes.insert(std::make_pair(label, s));
 
             if (xr.findAttr(elem, "constructs", s)){
-                    edges.insert(Edge(label, "object_" + s));
+                    edges.insert(Edge(label, "object_" + s, CONSTRUCT_FROM_ITEM));
             }
         }
     }
@@ -95,22 +124,22 @@ int main(){
                 auto it = tools.find(s);
                 if (it == tools.end()){
                     std::cerr << "Tool class is missing archetype: " << s << std::endl;
-                    edges.insert(Edge(s, label));
+                    edges.insert(Edge(s, label, GATHER_REQ));
                 } else
-                    edges.insert(Edge(it->second, label));
+                    edges.insert(Edge(it->second, label, GATHER_REQ));
             }
 
             for (auto yield : xr.getChildren("yield", elem)) {
                 if (!xr.findAttr(yield, "id", s))
                     continue;
-                edges.insert(Edge(label, "item_" + s));
+                edges.insert(Edge(label, "item_" + s, GATHER));
             }
 
-            for (auto yield : xr.getChildren("unlockedBy", elem)){
-                if (xr.findAttr(yield, "recipe", s) || xr.findAttr(yield, "item", s))
-                    edges.insert(Edge("item_" + s, label));
-                else if (xr.findAttr(yield, "construction", s))
-                    edges.insert(Edge("object_" + s, label));
+            for (auto unlockBy : xr.getChildren("unlockedBy", elem)){
+                if (xr.findAttr(unlockBy, "recipe", s) || xr.findAttr(unlockBy, "item", s))
+                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_CRAFT));
+                else if (xr.findAttr(unlockBy, "construction", s))
+                    edges.insert(Edge("object_" + s, label, UNLOCK_ON_CONSTRUCT));
             }
         }
     }
@@ -132,7 +161,7 @@ int main(){
             for (auto loot : xr.getChildren("loot", elem)) {
                 if (!xr.findAttr(loot, "id", s))
                     continue;
-                edges.insert(Edge(label, "item_" + s));
+                edges.insert(Edge(label, "item_" + s, LOOT));
             }
         }
     }
@@ -150,11 +179,11 @@ int main(){
 
             std::string s;
 
-            for (auto yield : xr.getChildren("unlockedBy", elem)){
-                if (xr.findAttr(yield, "recipe", s) || xr.findAttr(yield, "item", s))
-                    edges.insert(Edge("item_" + s, label));
-                else if (xr.findAttr(yield, "construction", s))
-                    edges.insert(Edge("object_" + s, label));
+            for (auto unlockBy : xr.getChildren("unlockedBy", elem)){
+                if (xr.findAttr(unlockBy, "recipe", s) || xr.findAttr(unlockBy, "item", s))
+                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_ACQUIRE));
+                else if (xr.findAttr(unlockBy, "construction", s))
+                    edges.insert(Edge("object_" + s, label, UNLOCK_ON_CONSTRUCT));
             }
         }
     }
@@ -283,6 +312,8 @@ int main(){
     }
 
     for (auto &edge : edges)
-        f << edge.parent << " -> " << edge.child << std::endl;
+        f << edge.parent << " -> " << edge.child
+          << " [colorscheme=\"" << colorScheme << "\", color=" << edgeColors[edge.type] << "]"
+          << std::endl;
     f << "}";
 }
