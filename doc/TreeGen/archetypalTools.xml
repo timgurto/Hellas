@@ -1,10 +1,9 @@
 <root>
 
-<tool id="axe"              archetype="item_stoneAxe" />
+<!--
 <tool id="elutriator"       archetype="object_elutriator" />
 <tool id="oven"             archetype="object_oven" />
 <tool id="kiln"             archetype="object_kiln" />
-<tool id="pick"             archetype="item_tinPick" />
 <tool id="pickMould"        archetype="item_pickMould" />
 <tool id="pipeMould"        archetype="item_pipeMould" />
 <tool id="saw"              archetype="item_tinSaw" />
@@ -15,9 +14,10 @@
 <tool id="needle"           archetype="item_boneNeedle" />
 <tool id="tannin"           archetype="object_tannin" />
 <tool id="stretchingFrame"  archetype="object_stretchingFrame" />
+-->
 
-<blacklist parent="object_copper"  child="item_rock" />
-<blacklist parent="object_tree"    child="item_stick" />
+
+<!--
 <blacklist parent="item_charcoal"  child="item_copperBar" />
 <blacklist parent="item_log"       child="item_lumber" />
 <blacklist parent="item_crudeClay" child="item_clay" />
@@ -33,6 +33,15 @@
 <blacklist parent="object_elutriator" child="item_elutriator" />
 <blacklist parent="object_handCart"   child="item_handCart" />
 <blacklist parent="object_post"       child="item_lumber" />
+-->
+
+<tool id="axe"              archetype="item_stoneAxe" />
+<tool id="pick"             archetype="item_tinPick" />
+
+<blacklist parent="object_tree"    child="item_stick" />
+<blacklist parent="object_copper"  child="item_rock" />
+<blacklist parent="object_tin"     child="item_rock" />
+
 <blacklist parent="object_figCrop0"   child="item_figSeeds" />
 <blacklist parent="object_flaxCrop0"  child="item_flaxSeeds" />
 

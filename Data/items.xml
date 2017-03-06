@@ -113,7 +113,7 @@ Client only:
     <stats health="3" />
 </item>
 
-<item id="leatherCloak" name="leather Cloak" gearSlot="3" >
+<item id="leatherCloak" name="Leather Cloak" gearSlot="3" >
     <stats health="2" />
 </item>
 
