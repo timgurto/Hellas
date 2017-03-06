@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <set>
 #include <queue>
 #include <XmlReader.h>
 
@@ -15,11 +16,22 @@ struct Path{
     }
 };
 
+struct Edge{
+    std::string parent, child;
+    
+    Edge(const std::string &from, const std::string &to): parent(from), child(to) {}
+    bool operator==(const Edge &rhs) const { return parent == rhs.parent && child == rhs.child; }
+    bool operator<(const Edge &rhs) const{
+        if (parent != rhs.parent) return parent < rhs.parent;
+        return child < rhs.child;
+    }
+};
+
 int main(){
-    std::multimap<std::string, std::string> map; // map[a] = b: a -> b
+    std::set<Edge> edges;
     std::map<std::string, std::string> tools;
     std::map<std::string, std::string> nodes; // id -> label
-    std::set<std::pair<std::string, std::string> > blacklist;
+    std::set<Edge > blacklist;
     const std::string dataPath = "../../Data";
 
     // Load tools
@@ -42,7 +54,7 @@ int main(){
             std::cout << "Blacklist item had no child; ignored" << std::endl;
             continue;
         }
-        blacklist.insert(std::make_pair(parent, child));
+        blacklist.insert(Edge(parent, child));
     }
 
     // Load items
@@ -60,7 +72,7 @@ int main(){
                 nodes.insert(std::make_pair(label, s));
 
             if (xr.findAttr(elem, "constructs", s)){
-                    map.insert(std::make_pair(label, "object_" + s));
+                    edges.insert(Edge(label, "object_" + s));
             }
         }
     }
@@ -83,22 +95,22 @@ int main(){
                 auto it = tools.find(s);
                 if (it == tools.end()){
                     std::cerr << "Tool class is missing archetype: " << s << std::endl;
-                    map.insert(std::make_pair(s, label));
+                    edges.insert(Edge(s, label));
                 } else
-                    map.insert(std::make_pair(it->second, label));
+                    edges.insert(Edge(it->second, label));
             }
 
             for (auto yield : xr.getChildren("yield", elem)) {
                 if (!xr.findAttr(yield, "id", s))
                     continue;
-                map.insert(std::make_pair(label, "item_" + s));
+                edges.insert(Edge(label, "item_" + s));
             }
 
             for (auto yield : xr.getChildren("unlockedBy", elem)){
                 if (xr.findAttr(yield, "recipe", s) || xr.findAttr(yield, "item", s))
-                    map.insert(std::make_pair("item_" + s, label));
+                    edges.insert(Edge("item_" + s, label));
                 else if (xr.findAttr(yield, "construction", s))
-                    map.insert(std::make_pair("object_" + s, label));
+                    edges.insert(Edge("object_" + s, label));
             }
         }
     }
@@ -120,7 +132,7 @@ int main(){
             for (auto loot : xr.getChildren("loot", elem)) {
                 if (!xr.findAttr(loot, "id", s))
                     continue;
-                map.insert(std::make_pair(label, "item_" + s));
+                edges.insert(Edge(label, "item_" + s));
             }
         }
     }
@@ -140,29 +152,24 @@ int main(){
 
             for (auto yield : xr.getChildren("unlockedBy", elem)){
                 if (xr.findAttr(yield, "recipe", s) || xr.findAttr(yield, "item", s))
-                    map.insert(std::make_pair("item_" + s, label));
+                    edges.insert(Edge("item_" + s, label));
                 else if (xr.findAttr(yield, "construction", s))
-                    map.insert(std::make_pair("object_" + s, label));
+                    edges.insert(Edge("object_" + s, label));
             }
         }
     }
 
     // Remove blacklisted items
-    for (auto edge : blacklist){
-        const std::string
-            &parent = edge.first,
-            &child = edge.second;
-        auto vals = map.equal_range(parent);
-        for (auto it = vals.first; it != vals.second; ++it)
-            if (it->second == child){
-                map.erase(it);
+    for (auto blacklistedEdge : blacklist)
+        for (auto it = edges.begin(); it != edges.end(); ++it)
+            if (*it == blacklistedEdge){
+                edges.erase(it);
                 break;
             }
-    }
 
 
     // Remove shortcuts
-    for (auto edgeIt = map.begin(); edgeIt != map.end(); ){
+    for (auto edgeIt = edges.begin(); edgeIt != edges.end(); ){
         /*
         This is one edge.  We want to figure out if there's a longer path here
         (i.e., this path doesn't add any new information about progress requirements).
@@ -170,33 +177,32 @@ int main(){
         bool shouldDelete = false;
         std::queue<std::string> queue;
         std::set<std::string> nodesFound;
-        std::string &target = edgeIt->second;
 
         // Populate queue initially with all direct children
-        auto vals = map.equal_range(edgeIt->first);
-        for (auto it = vals.first; it != vals.second; ++it)
-            if (it->second != target)
-                queue.push(it->second);
+        for (const Edge &edge : edges)
+            if (edge.parent == edgeIt->parent && edge.child != edgeIt->child)
+                queue.push(edge.child);
 
         // New nodes to check will be added here.  Effectively it will be a breadth-first search.
         while (!queue.empty() && !shouldDelete){
             std::string nextParent = queue.front();
             queue.pop();
-            auto vals = map.equal_range(nextParent);
-            for (auto it = vals.first; it != vals.second; ++it){
-                if (it->second == target){
+            for (const Edge &edge : edges){
+                if (edge.parent != nextParent)
+                continue;
+                if (edge.child == edgeIt->child){
                     // Mark the edge for removal
                     shouldDelete = true;
                     break;
-                } else if (nodesFound.find(it->second) != nodesFound.end()){
-                    queue.push(it->second);
-                    nodesFound.insert(it->second);
+                } else if (nodesFound.find(edge.child) != nodesFound.end()){
+                    queue.push(edge.child);
+                    nodesFound.insert(edge.child);
                 }
             }
         }
         auto nextIt = edgeIt; ++nextIt;
         if (shouldDelete)
-            map.erase(edgeIt);
+            edges.erase(edgeIt);
         edgeIt = nextIt;
     }
 
@@ -204,16 +210,16 @@ int main(){
     // Remove loops
     // First, find set of nodes that start edges but don't finish them (i.e., the roots of the tree).
     std::set<std::string> starts, ends;
-    for (auto &edge : map){
-        starts.insert(edge.first);
-        ends.insert(edge.second);
+    for (auto &edge : edges){
+        starts.insert(edge.parent);
+        ends.insert(edge.child);
     }
     for (const std::string &endNode : ends){
         starts.erase(endNode);
     }
 
     // Next, do a BFS from each to find loops.  Remove those final edges.
-    std::set<std::pair<std::string, std::string> > trashCan;
+    std::set<Edge > trashCan;
     for (const std::string &startNode : starts){
         //std::cout << "Root node: " << startNode << std::endl;
         std::queue<Path> queue;
@@ -222,9 +228,10 @@ int main(){
         while (!queue.empty() && !loopFound){
             Path nextPath = queue.front();
             queue.pop();
-            auto vals = map.equal_range(nextPath.child);
-            for (auto it = vals.first; it != vals.second; ++it){
-                std::string child = it->second;
+            for (auto it = edges.begin(); it != edges.end(); ++it){
+                if (it->parent != nextPath.child)
+                    continue;
+                std::string child = it->child;
                 // If this child is already a parent
                 if (std::find(nextPath.parents.begin(), nextPath.parents.end(), child) != nextPath.parents.end()){
                     std::cout << "Loop found; marked for removal:" << std::endl << "  ";
@@ -241,15 +248,12 @@ int main(){
                 }
             }
         }
-        for (auto pair : trashCan){
-            auto vals = map.equal_range(pair.first);
-            for (auto it = vals.first; it != vals.second; ++it){
-                if (it->second == pair.second){
-                    map.erase(it);
+        for (auto edgeToDelete : trashCan)
+            for (auto it = edges.begin(); it != edges.end(); ++it)
+                if (*it == edgeToDelete){
+                    edges.erase(edgeToDelete);
                     break;
                 }
-            }
-        }
     }
 
 
@@ -278,7 +282,7 @@ int main(){
         f << fullNode << std::endl;
     }
 
-    for (auto &edge : map)
-        f << edge.first << " -> " << edge.second << std::endl;
+    for (auto &edge : edges)
+        f << edge.parent << " -> " << edge.child << std::endl;
     f << "}";
 }
