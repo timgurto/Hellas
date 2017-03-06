@@ -256,6 +256,10 @@ void Server::loadData(const std::string &path){
                     ProgressLockStaging(ProgressLock::ITEM, s, ProgressLock::CONSTRUCTION, id).stage();
                 else if (xr.findAttr(unlockedBy, "construction", s))
                     ProgressLockStaging(ProgressLock::CONSTRUCTION, s, ProgressLock::CONSTRUCTION, id).stage();
+                else if (xr.findAttr(unlockedBy, "gather", s))
+                    ProgressLockStaging(ProgressLock::GATHER, s, ProgressLock::CONSTRUCTION, id).stage();
+                else if (xr.findAttr(unlockedBy, "recipe", s))
+                    ProgressLockStaging(ProgressLock::RECIPE, s, ProgressLock::CONSTRUCTION, id).stage();
             }
 
             // Container
@@ -407,6 +411,10 @@ void Server::loadData(const std::string &path){
                     ProgressLockStaging(ProgressLock::ITEM, s, ProgressLock::RECIPE, id).stage();
                 else if (xr.findAttr(unlockedBy, "construction", s))
                     ProgressLockStaging(ProgressLock::CONSTRUCTION, s, ProgressLock::RECIPE, id).stage();
+                else if (xr.findAttr(unlockedBy, "gather", s))
+                    ProgressLockStaging(ProgressLock::GATHER, s, ProgressLock::RECIPE, id).stage();
+                else if (xr.findAttr(unlockedBy, "recipe", s))
+                    ProgressLockStaging(ProgressLock::RECIPE, s, ProgressLock::RECIPE, id).stage();
             }
         
             _recipes.insert(recipe);

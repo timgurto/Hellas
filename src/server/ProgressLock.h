@@ -12,9 +12,10 @@ class ProgressLock{
 public:
     enum Type{          //  As trigger      As effect
                         //  ----------      ---------
-        RECIPE,         //  -               Can craft
+        RECIPE,         //  Crafted         Can craft
         CONSTRUCTION,   //  Built           Can build
-        ITEM            //  Acquired        -
+        ITEM,           //  Acquired        -
+        GATHER,         //  Gathered        -
     };
     typedef std::multimap<const void *, ProgressLock> locks_t; // trigger -> lock
     typedef std::map<Type, locks_t> locksByType_t;

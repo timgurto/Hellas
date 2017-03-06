@@ -290,6 +290,8 @@ void User::update(ms_t timeElapsed){
         giveItem(product, _actionRecipe->quantity());
         // Remove materials from user's inventory
         removeItems(_actionRecipe->materials());
+        // Trigger any new unlocks
+        ProgressLock::triggerUnlocks(*this, ProgressLock::RECIPE, _actionRecipe);
         break;
     }
 
@@ -306,6 +308,8 @@ void User::update(ms_t timeElapsed){
         if (slot.second == 0)
             slot.first = nullptr;
         server.sendInventoryMessage(*this, _actionSlot, Server::INVENTORY);
+        // Trigger any new unlocks
+        ProgressLock::triggerUnlocks(*this, ProgressLock::CONSTRUCTION, _actionObjectType);
         break;
     }
 

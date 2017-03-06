@@ -81,7 +81,7 @@ Server only:
     <collisionRect x="-13" y="-9" w="24" h="11" />
     <tag name="oven" />
     <material id="rock" quantity="10" />
-    <unlockedBy item="rock" />
+    <unlockedBy gather="rock" />
 </objectType>
 
 <objectType

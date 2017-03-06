@@ -20,6 +20,7 @@ void ProgressLock::registerStagedLocks(){
         const Server &server = Server::instance();
         switch (staged._triggerType){
             case ITEM:
+            case GATHER:
             {
                 auto it = server._items.find(staged._trigger);
                 if (it != server._items.end())
@@ -29,6 +30,13 @@ void ProgressLock::registerStagedLocks(){
             case CONSTRUCTION:
                 lock._trigger = server.findObjectTypeByName(staged._trigger);
                 break;
+            case RECIPE:
+            {
+                auto it = server._recipes.find(staged._trigger);
+                if (it != server._recipes.end())
+                    lock._trigger = &*it;
+                break;
+            }
             default:
                 ;
         }

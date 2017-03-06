@@ -14,6 +14,7 @@
 #include "NPCType.h"
 #include "Object.h"
 #include "ObjectType.h"
+#include "ProgressLock.h"
 #include "Recipe.h"
 #include "Server.h"
 #include "User.h"
@@ -441,6 +442,8 @@ void Server::gatherObject(size_t serial, User &user){
         sendMessage(user.socket(), SV_INVENTORY_FULL);
         qtyToGive -= remaining;
     }
+    if (remaining < qtyToGive) // User received something: trigger any new unlocks
+        ProgressLock::triggerUnlocks(user, ProgressLock::GATHER, toGive);
     // Remove object if empty
     obj->removeItem(toGive, qtyToGive);
     if (obj->contents().isEmpty()) {
