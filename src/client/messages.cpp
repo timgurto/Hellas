@@ -376,8 +376,8 @@ void Client::handleMessage(const std::string &msg){
             ClientItem::vect_t *container;
             ClientObject *object = nullptr;
             switch(serial){
-                case INVENTORY: container = &_inventory;    break;
-                case GEAR:      container = &_character.gear();         break;
+                case INVENTORY: container = &_inventory;        break;
+                case GEAR:      container = &_character.gear(); break;
                 default:
                     auto it = _objects.find(serial);
                     if (it == _objects.end()) {
@@ -401,6 +401,11 @@ void Client::handleMessage(const std::string &msg){
                 default:
                     object->onInventoryUpdate();
             }
+
+            if (item != nullptr && // It's an actual item
+                (serial == INVENTORY || serial == GEAR) && // You are receiving it
+                _actionTimer > 0) // You were crafting or gathering
+                    item->playDropSound();
 
             break;
         }
