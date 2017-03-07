@@ -360,6 +360,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
 
             bool isConstructionMaterial =
+                    pObj2 != nullptr &&
                     pObj2->isBeingBuilt() &&
                     slot2 == 0;
 
