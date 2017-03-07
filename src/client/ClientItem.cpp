@@ -1,3 +1,5 @@
+#include <SDL_mixer.h>
+
 #include "Client.h"
 #include "ClientItem.h"
 #include "TooltipBuilder.h"
@@ -9,7 +11,9 @@ std::vector<Point> ClientItem::gearOffsets(Client::GEAR_SLOTS);
 ClientItem::ClientItem(const std::string &id, const std::string &name):
 Item(id),
 _name(name),
-_constructsObject(nullptr){}
+_constructsObject(nullptr),
+_dropSound(nullptr)
+{}
 
 void ClientItem::icon(const std::string &filename){
     static const std::string
@@ -133,4 +137,14 @@ const Texture &ClientItem::tooltip() const{
 
     _tooltip = tb.publish();
     return _tooltip;
+}
+
+void ClientItem::dropSound(const std::string &filename){
+    _dropSound = Mix_LoadWAV(filename.c_str());
+}
+
+void ClientItem::playDropSound() const {
+    if (_dropSound != nullptr) {
+        Mix_PlayChannel(Client::PLAYER_ACTION_CHANNEL, _dropSound, 0);
+    }
 }

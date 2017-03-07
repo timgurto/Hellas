@@ -243,12 +243,13 @@ const ClientItem *Container::getUseItem() {
 
 void Container::dropItem() {
     if (dragSlot != NO_SLOT && dragContainer) {
-        Client::_instance->dropItemOnConfirmation(dragContainer->_serial, dragSlot,
-                                                  dragContainer->_linked[dragSlot].first);
+        const ClientItem *item = dragContainer->_linked[dragSlot].first;
+        Client::_instance->dropItemOnConfirmation(dragContainer->_serial, dragSlot, item);
         dragSlot = NO_SLOT;
         dragContainer->markChanged();
         dragContainer = nullptr;
         Client::_instance->onChangeDragItem();
+        item->playDropSound();
     }
 }
 

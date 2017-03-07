@@ -105,11 +105,11 @@ Client only:
     <offset x="-6" y="-4" />
 </item>
 
-<item id="leatherLamellar" name="Leather Lamellar" gearSlot="2" >
+<item id="leatherLamellar" name="Leather Lamellar" gearSlot="2" dropSound="leather" >
     <stats health="5" />
 </item>
 
-<item id="skullCap" name="Skull Cap" gearSlot="0" >
+<item id="skullCap" name="Skull Cap" gearSlot="0" dropSound="leather" >
     <stats health="3" />
 </item>
 
@@ -122,11 +122,11 @@ Client only:
     <offset x="-4" y="-10" />
 </item>
 
-<item id="sandals" name="Sandals" gearSlot="5" >
+<item id="sandals" name="Sandals" gearSlot="5" dropSound="leather" >
     <stats health="2" speed="1.1" />
 </item>
 
-<item id="leatherGloves" name="Leather Gloves" gearSlot="4" >
+<item id="leatherGloves" name="Leather Gloves" gearSlot="4" dropSound="leather" >
     <stats health="1" />
     <tag name="leatherGloves" />
 </item>
