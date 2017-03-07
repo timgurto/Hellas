@@ -37,7 +37,7 @@ const ms_t Server::MAX_TIME_BETWEEN_LOCATION_UPDATES = 300;
 const ms_t Server::SAVE_FREQUENCY = 30000;
 
 const px_t Server::ACTION_DISTANCE = 30;
-const px_t Server::CULL_DISTANCE = 320;
+const px_t Server::CULL_DISTANCE = 350;
 const px_t Server::TILE_W = 32;
 const px_t Server::TILE_H = 32;
 
