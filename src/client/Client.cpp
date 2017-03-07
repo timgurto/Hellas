@@ -270,7 +270,7 @@ _debug("client.log"){
         Socket::debug = &_debug;
     
     drawLoadingScreen("Initializing audio", 0.5);
-    int ret = (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 512) < 0);
+    int ret = (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 512) < 0);
     if (ret < 0){
         _debug("SDL_mixer failed to initialize.", Color::FAILURE);
     } else {

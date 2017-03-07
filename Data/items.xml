@@ -33,14 +33,14 @@ Client only:
 <item id="tinBar"       name="Tin Bar"          stackSize="10" />
 <item id="copperBar"    name="Copper Bar"       stackSize="10" />
 <item id="charcoal"     name="Charcoal"         stackSize="10" />
-<item id="tinScale"     name="Tin Scale"        stackSize="10" />
+<item id="tinScale"     name="Tin Scale"        stackSize="10" dropSound="metalTool" />
 <item id="fig"          name="Fig"              stackSize="10" />
 <item id="flax"         name="Flax"             stackSize="10" />
 <item id="linenThread"  name="Linen Thread"     stackSize="10" />
 <item id="linenCloth"   name="Bolt of Linen"    stackSize="10" />
 <item id="fat"          name="Animal Fat"       stackSize="10" />
-<item id="leather"      name="Leather"          stackSize="10" />
-<item id="leatherScale" name="Leather Scale"    stackSize="10" />
+<item id="leather"      name="Leather"          stackSize="10" dropSound="leather" />
+<item id="leatherScale" name="Leather Scale"    stackSize="10" dropSound="leather" />
 <item id="rope"         name="Rope"             stackSize="10" />
 
 <item id="smallPot"     name="Small Pot"        constructs="smallPot" />
@@ -78,20 +78,20 @@ Client only:
     <offset x="-5" y="1" />
 </item>
 
-<item id="tinPick" name="Tin Pickaxe" gearSlot="6" >
+<item id="tinPick" name="Tin Pickaxe" gearSlot="6" dropSound="metalTool" >
     <tag name="pick" />
     <stats attack="3" />
     <offset x="-3" y="0" />
 </item>
 
-<item id="tinSaw" name="Tin Saw" gearSlot="6" >
+<item id="tinSaw" name="Tin Saw" gearSlot="6" dropSound="metalTool" >
     <tag name="saw" />
     <stats attackTime="0.9" />
     <stats attack="2" />
     <offset x="-7" y="-1" />
 </item>
 
-<item id="hide" name="Animal Hide" gearSlot="3" >
+<item id="hide" name="Animal Hide" gearSlot="3" dropSound="leather" >
     <stats health="1" />
     <offset x="-4" y="-1" />
 </item>
@@ -100,7 +100,7 @@ Client only:
     <stats health="2" />
 </item>
 
-<item id="tinLamellar" name="Tin Lamellar" gearSlot="2" >
+<item id="tinLamellar" name="Tin Lamellar" gearSlot="2" dropSound="chain" >
     <stats health="8" />
     <offset x="-6" y="-4" />
 </item>
@@ -135,6 +135,6 @@ Client only:
 <item id="pipeMould"    name="Pipe Mould" >     <tag name="pipeMould" />    </item>
 <item id="sawMould"     name="Saw Mould" >      <tag name="sawMould" />     </item>
 <item id="scaleMould"   name="Scale Mould" >    <tag name="scaleMould" />   </item>
-<item id="boneNeedle"   name="Bone Needle" >    <tag name="needle" />       </item>
+<item id="boneNeedle"   name="Bone Needle" >    <tag name="needle"      dropSound="metalTool" />    </item>
 
 </root>
