@@ -10,4 +10,9 @@
 <blacklist parent="object_figCrop0"   child="item_figSeeds" />
 <blacklist parent="object_flaxCrop0"  child="item_flaxSeeds" />
 
+<extra parent="item_leatherGloves" child="item_tinBar" />
+<extra parent="item_rope"          child="item_tannin" />
+<extra parent="item_tinBar"        child="item_tinSaw" />
+<extra parent="item_tinBar"        child="item_tinPipe" />
+
 </root>

@@ -23,6 +23,7 @@ enum EdgeType{
     CONSTRUCT_FROM_ITEM,
     GATHER_REQ,
     LOOT,
+    INGREDIENT,
 
     UNLOCK_ON_GATHER,
     UNLOCK_ON_ACQUIRE,
@@ -49,7 +50,7 @@ int main(int argc, char **argv){
     std::set<Edge> edges;
     std::map<std::string, std::string> tools;
     std::map<std::string, std::string> nodes; // id -> label
-    std::set<Edge > blacklist;
+    std::set<Edge > blacklist, extras;
 
     std::string colorScheme = "rdylgn6";
     std::map<EdgeType, size_t> edgeColors;
@@ -87,6 +88,21 @@ int main(int argc, char **argv){
             continue;
         }
         blacklist.insert(Edge(parent, child, DEFAULT));
+    }
+
+    // Load extra edges
+    for (auto elem : xr.getChildren("extra")){
+        std::string parent, child;
+        if (!xr.findAttr(elem, "parent", parent)){
+            std::cout << "Blacklist item had no parent; ignored" << std::endl;
+            continue;
+        }
+        if (!xr.findAttr(elem, "child", child)){
+            std::cout << "Blacklist item had no child; ignored" << std::endl;
+            continue;
+        }
+        Edge e(parent, child, DEFAULT);
+        extras.insert(e);
     }
 
     // Load items
@@ -314,7 +330,8 @@ int main(int argc, char **argv){
     // Publish
     std::ofstream f("tree.gv");
     f << "digraph {" << std::endl;
-    f << "node [fontsize=10];" << std::endl;
+    f << "bgcolor=\"#ffffff00\"" << std::endl;
+    f << "node [fontsize=10 fontname=\"Advocut\" imagescale=true];" << std::endl;
 
     // Nodes
     for (auto &node : nodes){
@@ -361,6 +378,13 @@ int main(int argc, char **argv){
         f << edge.parent << " -> " << edge.child
           << " [colorscheme=\"" << colorScheme << "\", color=" << edgeColors[edge.type] << "]"
           << std::endl;
+
+    // Extra edges
+    for (auto &edge : extras)
+        f << edge.parent << " -> " << edge.child
+          << " [color=black style=dotted constraint=true]"
+          << std::endl;
+
     f << "}";
 
     return 0;
