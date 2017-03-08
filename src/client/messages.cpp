@@ -561,6 +561,7 @@ void Client::handleMessage(const std::string &msg){
             }
 
             _recipeList->markChanged();
+            populateFilters();
             break;
         }
         

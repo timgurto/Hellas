@@ -234,11 +234,24 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
 void Client::populateFilters(){
     const px_t FILTERS_PANE_W = _materialsList->parent()->width();
 
+    // Restrict shown filters to known recipes
+    std::set<std::string> knownTags;
+    for (const Recipe &recipe : _recipes)
+        if (_knownRecipes.find(recipe.id()) != _knownRecipes.end()){ // user knows this recipe
+            for (const std::string &tag : recipe.product()->tags())
+                knownTags.insert(tag);
+            for (const auto &matPair : recipe.materials())
+                knownMats.insert(dynamic_cast<const ClientItem *>(matPair.first));
+        }
+
     // Tags
     _tagList->clearChildren();
-    for (auto it = _tagFilters.begin(); it != _tagFilters.end(); ++it)
+    for (auto &pair : _tagFilters){
+        if (knownTags.find(pair.first) == knownTags.end()) // User doesn't know about this tag yet.
+            continue;
         _tagList->addChild(new CheckBox(Rect(0, 0, FILTERS_PANE_W, Element::TEXT_HEIGHT),
-                                        it->second, it->first));
+                                        pair.second, pair.first));
+    }
 
     // Materials
     _materialsList->clearChildren();
