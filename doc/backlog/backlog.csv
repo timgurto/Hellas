@@ -180,3 +180,5 @@ issue,description,value,effort,type,blockedBy,done
 347,Add fading unlock messages to the top of the screen,3,5,Aesthetics,,
 348,Generate full data website,13,8,Documentation,,
 349,Prevent chat messages being cut off,8,5,Bug,,
+350,Make oven and kiln larger,3,2,Aesthetics,,
+351,Highlight recipes/constructions that might unlock stuff,,,Aesthetics,,

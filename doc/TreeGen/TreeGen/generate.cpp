@@ -36,8 +36,9 @@ enum EdgeType{
 struct Edge{
     std::string parent, child;
     EdgeType type;
+    double chance;
     
-    Edge(const std::string &from, const std::string &to, EdgeType typeArg): parent(from), child(to), type(typeArg) {}
+    Edge(const std::string &from, const std::string &to, EdgeType typeArg, double chanceArg = 1.0): parent(from), child(to), type(typeArg), chance(chanceArg) {}
     bool operator==(const Edge &rhs) const { return parent == rhs.parent && child == rhs.child; }
     bool operator<(const Edge &rhs) const{
         if (parent != rhs.parent) return parent < rhs.parent;
@@ -155,14 +156,16 @@ int main(int argc, char **argv){
             }
 
             for (auto unlockBy : xr.getChildren("unlockedBy", elem)){
+                double chance = 1.0;
+                xr.findAttr(unlockBy, "chance", chance);
                 if (xr.findAttr(unlockBy, "recipe", s) || xr.findAttr(unlockBy, "item", s))
-                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_CRAFT));
+                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_CRAFT, chance));
                 else if (xr.findAttr(unlockBy, "construction", s))
-                    edges.insert(Edge("object_" + s, label, UNLOCK_ON_CONSTRUCT));
+                    edges.insert(Edge("object_" + s, label, UNLOCK_ON_CONSTRUCT, chance));
                 else if (xr.findAttr(unlockBy, "gather", s))
-                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_GATHER));
+                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_GATHER, chance));
                 else if (xr.findAttr(unlockBy, "item", s))
-                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_ACQUIRE));
+                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_ACQUIRE, chance));
             }
         }
     }
@@ -203,14 +206,16 @@ int main(int argc, char **argv){
             std::string s;
 
             for (auto unlockBy : xr.getChildren("unlockedBy", elem)){
+                double chance = 1.0;
+                xr.findAttr(unlockBy, "chance", chance);
                 if (xr.findAttr(unlockBy, "recipe", s) || xr.findAttr(unlockBy, "item", s))
-                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_CRAFT));
+                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_CRAFT, chance));
                 else if (xr.findAttr(unlockBy, "construction", s))
-                    edges.insert(Edge("object_" + s, label, UNLOCK_ON_CONSTRUCT));
+                    edges.insert(Edge("object_" + s, label, UNLOCK_ON_CONSTRUCT, chance));
                 else if (xr.findAttr(unlockBy, "gather", s))
-                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_GATHER));
+                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_GATHER, chance));
                 else if (xr.findAttr(unlockBy, "item", s))
-                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_ACQUIRE));
+                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_ACQUIRE, chance));
             }
         }
     }
@@ -332,6 +337,7 @@ int main(int argc, char **argv){
     f << "digraph {" << std::endl;
     f << "bgcolor=\"#ffffff00\"" << std::endl;
     f << "node [fontsize=10 fontname=\"Advocut\" imagescale=true];" << std::endl;
+    f << "edge [fontsize=10 fontname=\"Advocut\"];" << std::endl;
 
     // Nodes
     for (auto &node : nodes){
@@ -374,10 +380,13 @@ int main(int argc, char **argv){
         f << fullNode << std::endl;
     }
 
-    for (auto &edge : edges)
+    for (auto &edge : edges){
         f << edge.parent << " -> " << edge.child
-          << " [colorscheme=\"" << colorScheme << "\", color=" << edgeColors[edge.type] << "]"
-          << std::endl;
+          << " [colorscheme=\"" << colorScheme << "\", color=" << edgeColors[edge.type];
+        if (edge.chance < 1.0)
+            f << " label=\"" << static_cast<int>(edge.chance*100 + 0.5) << "%\"";
+       f << "]" << std::endl;
+    }
 
     // Extra edges
     for (auto &edge : extras)
