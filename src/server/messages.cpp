@@ -400,10 +400,20 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendInventoryMessage(*user, slot1, obj1);
 
                 // Check if this action completed construction
-                if (!pObj2->isBeingBuilt() &&
-                        user->knownConstructions().find(pObj2->type()->id())
+                if (!pObj2->isBeingBuilt()){
+
+                    // Send to all nearby players, since object appearance will change
+                    for (const User *otherUser : findUsersInArea(user->location())){
+                        if (otherUser == user)
+                            continue;
+                        sendConstructionMaterialsMessage(*otherUser, *pObj2);
+                    }
+                    
+                    // Trigger completing user's unlocks
+                    if (user->knownConstructions().find(pObj2->type()->id())
                                 != user->knownConstructions().end())
-                    ProgressLock::triggerUnlocks(*user, ProgressLock::CONSTRUCTION, pObj2->type());
+                        ProgressLock::triggerUnlocks(*user, ProgressLock::CONSTRUCTION, pObj2->type());
+                }
 
                 break;
             }
