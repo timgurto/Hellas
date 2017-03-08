@@ -377,3 +377,11 @@ void User::updateStats(){
     server.sendMessage(socket(), SV_STATS, makeArgs(_stats.health, _stats.attack,
                                                     _stats.attackTime, _stats.speed));
 }
+
+bool User::knowsConstruction(const std::string &id) const {
+    return _knownConstructions.find(id) != _knownConstructions.end();
+}
+
+bool User::knowsRecipe(const std::string &id) const {
+    return _knownRecipes.find(id) != _knownRecipes.end();
+}

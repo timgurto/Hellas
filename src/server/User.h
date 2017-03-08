@@ -89,8 +89,10 @@ public:
     bool isDriving() const { return _driving != 0; }
     const std::set<std::string> &knownRecipes() const { return _knownRecipes; }
     void addRecipe(const std::string &id) { _knownRecipes.insert(id); }
+    bool knowsRecipe(const std::string &id) const;
     const std::set<std::string> &knownConstructions() const { return _knownConstructions; }
     void addConstruction(const std::string &id) { _knownConstructions.insert(id); }
+    bool knowsConstruction(const std::string &id) const;
 
     // Inventory getters/setters
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const

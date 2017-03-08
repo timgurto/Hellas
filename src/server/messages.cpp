@@ -99,7 +99,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             user->cancelAction();
             const std::set<Recipe>::const_iterator it = _recipes.find(id);
-            if (user->knownRecipes().find(id) == user->knownRecipes().end()){
+            if (!user->knowsRecipe(id)){
                 sendMessage(client, SV_UNKNOWN_RECIPE);
                 break;
             }
@@ -126,7 +126,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             user->cancelAction();
-            if (user->knownConstructions().find(id) == user->knownConstructions().end()){
+            if (!user->knowsConstruction(id)){
                 sendMessage(client, SV_UNKNOWN_CONSTRUCTION);
                 break;
             }
@@ -410,9 +410,9 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                     }
                     
                     // Trigger completing user's unlocks
-                    if (user->knownConstructions().find(pObj2->type()->id())
-                                != user->knownConstructions().end())
-                        ProgressLock::triggerUnlocks(*user, ProgressLock::CONSTRUCTION, pObj2->type());
+                    if (user->knowsConstruction(pObj2->type()->id()))
+                        ProgressLock::triggerUnlocks(
+                                *user, ProgressLock::CONSTRUCTION, pObj2->type());
                 }
 
                 break;

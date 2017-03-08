@@ -92,14 +92,14 @@ void ProgressLock::triggerUnlocks(User &user, Type triggerType, const void *trig
         switch (lock._effectType){
         case RECIPE:
             id = reinterpret_cast<const Recipe *>(lock._effect)->id();
-            if (user.knownRecipes().find(id) != user.knownRecipes().end())
+            if (user.knowsRecipe(id))
                 continue;
             newRecipes.insert(id);
             user.addRecipe(id);
             break;
         case CONSTRUCTION:
              id = reinterpret_cast<const ObjectType *>(lock._effect)->id();
-            if (user.knownConstructions().find(id) != user.knownConstructions().end())
+            if (user.knowsConstruction(id))
                 continue;
             newBuilds.insert(id);
             user.addConstruction(id);
