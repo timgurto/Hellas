@@ -71,13 +71,9 @@ void Client::initializeCraftingWindow(){
     filterPane->addChild(new Label(Rect(0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT),
                                    "Item tag:"));
     y += Element::TEXT_HEIGHT;
-    List *const tagList = new List(Rect(0, y, FILTERS_PANE_W, TAG_LIST_HEIGHT),
+    _tagList = new List(Rect(0, y, FILTERS_PANE_W, TAG_LIST_HEIGHT),
                                      Element::TEXT_HEIGHT);
-    filterPane->addChild(tagList);
-    for (std::map<std::string, bool>::iterator it = _tagFilters.begin();
-         it != _tagFilters.end(); ++it)
-        tagList->addChild(new CheckBox(Rect(0, 0, FILTERS_PANE_W, Element::TEXT_HEIGHT),
-                                         it->second, it->first));
+    filterPane->addChild(_tagList);
     y += TAG_LIST_HEIGHT;
 
     pCB = new CheckBox(Rect(0, y, FILTERS_PANE_W/4, Element::TEXT_HEIGHT), _tagOr, "Any");
@@ -96,20 +92,9 @@ void Client::initializeCraftingWindow(){
     // Material filters
     filterPane->addChild(new Label(Rect(0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT), "Materials:"));
     y += Element::TEXT_HEIGHT;
-    List *const materialsList = new List(Rect(0, y, FILTERS_PANE_W, MATERIALS_LIST_HEIGHT),
+    _materialsList = new List(Rect(0, y, FILTERS_PANE_W, MATERIALS_LIST_HEIGHT),
                                          ICON_SIZE);
-    filterPane->addChild(materialsList);
-    for (auto it = _matFilters.begin(); it != _matFilters.end(); ++it){
-        CheckBox *const mat = new CheckBox(Rect(0, 0, FILTERS_PANE_W, ICON_SIZE), it->second);
-        static const px_t
-            ICON_X = CheckBox::BOX_SIZE + CheckBox::GAP,
-            LABEL_X = ICON_X + ICON_SIZE + CheckBox::GAP,
-            LABEL_W = FILTERS_PANE_W - LABEL_X;
-        mat->addChild(new Picture(Rect(ICON_X, 0, ICON_SIZE, ICON_SIZE), it->first->icon()));
-        mat->addChild(new Label(Rect(LABEL_X, 0, LABEL_W, ICON_SIZE), it->first->name(),
-                                Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
-        materialsList->addChild(mat);
-    }
+    filterPane->addChild(_materialsList);
     y += MATERIALS_LIST_HEIGHT;
     pCB = new CheckBox(Rect(0, y, FILTERS_PANE_W/4, Element::TEXT_HEIGHT), _matOr, "Any");
     pCB->setTooltip("Only show recipes that require at least one of the selected materials.");
@@ -119,6 +104,8 @@ void Client::initializeCraftingWindow(){
                                  "All", true);
     pCB->setTooltip("Only show recipes that require all of the selected materials.");
     filterPane->addChild(pCB);
+
+    populateFilters();
 
     // Recipes
     Element *const recipesPane = new Element(Rect(RECIPES_PANE_X, CONTENT_Y,
@@ -242,6 +229,30 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
         toolsList->addChild(entry);
     }
     pane.markChanged();
+}
+
+void Client::populateFilters(){
+    const px_t FILTERS_PANE_W = _materialsList->parent()->width();
+
+    // Tags
+    _tagList->clearChildren();
+    for (auto it = _tagFilters.begin(); it != _tagFilters.end(); ++it)
+        _tagList->addChild(new CheckBox(Rect(0, 0, FILTERS_PANE_W, Element::TEXT_HEIGHT),
+                                        it->second, it->first));
+
+    // Materials
+    _materialsList->clearChildren();
+    for (auto it = _matFilters.begin(); it != _matFilters.end(); ++it){
+        CheckBox *const mat = new CheckBox(Rect(), it->second);
+        static const px_t
+            ICON_X = CheckBox::BOX_SIZE + CheckBox::GAP,
+            LABEL_X = ICON_X + ICON_SIZE + CheckBox::GAP,
+            LABEL_W = FILTERS_PANE_W - LABEL_X;
+        mat->addChild(new Picture(Rect(ICON_X, 0, ICON_SIZE, ICON_SIZE), it->first->icon()));
+        mat->addChild(new Label(Rect(LABEL_X, 0, LABEL_W, ICON_SIZE), it->first->name(),
+                                Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+        _materialsList->addChild(mat);
+    }
 }
 
 void Client::populateRecipesList(Element &e){

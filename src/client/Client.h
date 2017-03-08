@@ -128,10 +128,14 @@ private:
     std::map<const ClientItem *, bool> _matFilters;
     mutable bool _tagFilterSelected, _matFilterSelected; // Whether any filters have been selected
     bool recipeMatchesFilters(const Recipe &recipe) const;
-    // Called when filters pane is clicked.
+    // Called when filters pane is clicked, or new recipes are unlocked.
     static void populateRecipesList(Element &e);
     // Called when a recipe is selected.
     static void selectRecipe(Element &e, const Point &mousePos);
+    // Called when new recipes are unlocked.
+    void populateFilters();
+    // Called when new construction items are unlocked
+    void populateBuildList();
 
     std::set<ClientObject *> _objectsWatched;
     void watchObject(ClientObject &obj);
@@ -141,6 +145,9 @@ private:
 
     ChoiceList *_recipeList;
     Element *_detailsPane;
+    List
+        *_tagList,
+        *_materialsList;
 
     Window 
         *_craftingWindow,
@@ -151,7 +158,6 @@ private:
 
     void initializeBuildWindow();
     ChoiceList *_buildList;
-    void populateBuildList();
     static void chooseConstruction(Element &e, const Point &mousePos);
     const ClientObjectType *_selectedConstruction;
     bool _multiBuild;

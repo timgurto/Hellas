@@ -129,6 +129,7 @@ public:
     void setTooltip(const Texture &tooltip); // Add a complex tooltip.
     void clearTooltip();
     static const Texture *tooltip() { return _currentTooltip; }
+    const Element *parent() const { return _parent; }
 
     void show();
     void hide();
