@@ -182,7 +182,7 @@
     id="boneNeedle" time="4000" product="boneNeedle" >
     <material id="bone" />
     <tool class="sharpener" />
-    <unlockedBy gather="bone" />
+    <unlockedBy item="bone" />
 </recipe>
 
 <recipe

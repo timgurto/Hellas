@@ -81,7 +81,7 @@ void Container::refresh(){
                         labelOutline(font(), toString(slot.second), Color::FONT_OUTLINE);
                     px_t
                         x = slotRect.x + slotRect.w - label.width() - 1,
-                        y = slotRect.y + slotRect.h - label.height() + 1 + textOffset;
+                        y = slotRect.y + slotRect.h - label.height() + textOffset;
                     labelOutline.draw(x-1, y);
                     labelOutline.draw(x+1, y);
                     labelOutline.draw(x, y-1);

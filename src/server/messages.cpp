@@ -365,7 +365,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                     slot2 == 0;
 
             if (slot1 >= containerFrom->size() ||
-                slot2 >= containerTo->size() && !isConstructionMaterial) {
+                slot2 >= containerTo->size() && !isConstructionMaterial ||
+                isConstructionMaterial && slot2 > 0) {
                 sendMessage(client, SV_INVALID_SLOT);
                 break;
             }

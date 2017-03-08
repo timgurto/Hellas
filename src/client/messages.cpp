@@ -575,7 +575,7 @@ void Client::handleMessage(const std::string &msg){
                 singleMsg >> del;
                 _knownConstructions.insert(recipe);
             }
-            if (msgCode == SV_NEW_RECIPES){
+            if (msgCode == SV_NEW_CONSTRUCTIONS){
                 _debug << "You have discovered ";
                 if (n == 1)
                     _debug << "a new construction";

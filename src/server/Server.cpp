@@ -315,6 +315,15 @@ void Server::addUser(const Socket &socket, const std::string &name){
         sendMessage(newUser.socket(), SV_RECIPES, args);
     }
 
+    // Send him the constructions he knows
+    if (newUser.knownConstructions().size() > 0){
+        std::string args = makeArgs(newUser.knownConstructions().size());
+        for (const std::string &id : newUser.knownConstructions()){
+            args = makeArgs(args, id);
+        }
+        sendMessage(newUser.socket(), SV_CONSTRUCTIONS, args);
+    }
+
     // Calculate and send him his stats
     newUser.updateStats();
 
