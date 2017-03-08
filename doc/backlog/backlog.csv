@@ -159,7 +159,7 @@ issue,description,value,effort,type,blockedBy,done
 322,Tools can modify crafting/gathering speed,3,3,Feature,,
 324,Reduce calls to findUsersInArea() in NPC AI,5,8,Performance,,
 326,Use simple font for everything,5,2,Aesthetics,,TRUE
-327,Include only known-recipe info in filters,3,3,Aesthetics,,
+327,Include only known-recipe info in filters,3,3,Aesthetics,,TRUE
 328,Fix jumpy movement when laggy,8,13,Aesthetics,,
 329,Make mountains more explicit,2,3,Aesthetics,,
 330,Use simpler walls in login screen,1,2,Aesthetics,,TRUE

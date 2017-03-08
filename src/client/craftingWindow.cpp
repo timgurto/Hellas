@@ -236,6 +236,7 @@ void Client::populateFilters(){
 
     // Restrict shown filters to known recipes
     std::set<std::string> knownTags;
+    std::set<const ClientItem *> knownMats;
     for (const Recipe &recipe : _recipes)
         if (_knownRecipes.find(recipe.id()) != _knownRecipes.end()){ // user knows this recipe
             for (const std::string &tag : recipe.product()->tags())
@@ -255,14 +256,16 @@ void Client::populateFilters(){
 
     // Materials
     _materialsList->clearChildren();
-    for (auto it = _matFilters.begin(); it != _matFilters.end(); ++it){
-        CheckBox *const mat = new CheckBox(Rect(), it->second);
+    for (auto &pair : _matFilters){
+        if (knownMats.find(pair.first) == knownMats.end())
+            continue;
+        CheckBox *const mat = new CheckBox(Rect(), pair.second);
         static const px_t
             ICON_X = CheckBox::BOX_SIZE + CheckBox::GAP,
             LABEL_X = ICON_X + ICON_SIZE + CheckBox::GAP,
             LABEL_W = FILTERS_PANE_W - LABEL_X;
-        mat->addChild(new Picture(Rect(ICON_X, 0, ICON_SIZE, ICON_SIZE), it->first->icon()));
-        mat->addChild(new Label(Rect(LABEL_X, 0, LABEL_W, ICON_SIZE), it->first->name(),
+        mat->addChild(new Picture(Rect(ICON_X, 0, ICON_SIZE, ICON_SIZE), pair.first->icon()));
+        mat->addChild(new Label(Rect(LABEL_X, 0, LABEL_W, ICON_SIZE), pair.first->name(),
                                 Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
         _materialsList->addChild(mat);
     }
