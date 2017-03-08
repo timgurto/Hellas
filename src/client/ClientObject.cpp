@@ -181,7 +181,7 @@ void ClientObject::onRightClick(Client &client){
     }
 
     // Watch object
-    if (objType.containerSlots() > 0 || objType.merchantSlots() > 0)
+    if (objType.containerSlots() > 0 || objType.merchantSlots() > 0 || isBeingConstructed())
         client.watchObject(*this);
 
     if (_window != nullptr) {
