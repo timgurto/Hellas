@@ -196,8 +196,13 @@ Server only:
 
 <objectType
     id="flaxCrop0" name="Flax Crop"
+    xDrawOffset="-20"
+    yDrawOffset="-21"
+    isFlat="1"
     constructionTime="10000"
-    constructionReq = "hoe" >
+    constructionReq="hoe"
+    allowedTerrain="denseVeg" >
+    <collisionRect x="-19" y="-20" w="38" h="40" />
     <yield id="flax" initialMean="5" initialSD="1" />
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" />
 </objectType>
