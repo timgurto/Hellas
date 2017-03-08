@@ -42,6 +42,7 @@ Client only:
 <item id="leather"      name="Leather"          stackSize="10" dropSound="leather" />
 <item id="leatherScale" name="Leather Scale"    stackSize="10" dropSound="leather" />
 <item id="rope"         name="Rope"             stackSize="10" />
+<item id="brick"        name="Brick"            stackSize="10" />
 
 <item id="smallPot"     name="Small Pot"        constructs="smallPot" />
 <item id="mediumPot"    name="Medium Pot"       constructs="mediumPot" />
@@ -49,7 +50,6 @@ Client only:
 <item id="elutriator"   name="Elutriator"       constructs="elutriator" />
 <item id="tannin"       name="Tannin"           constructs="tannin" />
 <item id="lumber"       name="Lumber"           constructs="post"           stackSize="10" />
-<item id="brick"        name="Brick"            stackSize="5" />
 
 <item id="figSeeds"     name="Fig Seeds"        constructs="figCrop0"       stackSize="10"/>
 <item id="flaxSeeds"    name="Flax Seeds"       constructs="flaxCrop0"      stackSize="10"/>
