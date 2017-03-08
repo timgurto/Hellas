@@ -252,14 +252,18 @@ void Server::loadData(const std::string &path){
             }
 
             for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
+                double chance = 1.0;
+                xr.findAttr(unlockedBy, "chance", chance);
+                ProgressLock::Type triggerType;
                 if (xr.findAttr(unlockedBy, "item", s))
-                    ProgressLock(ProgressLock::ITEM, s, ProgressLock::CONSTRUCTION, id).stage();
+                    triggerType = ProgressLock::ITEM;
                 else if (xr.findAttr(unlockedBy, "construction", s))
-                    ProgressLock(ProgressLock::CONSTRUCTION, s, ProgressLock::CONSTRUCTION, id).stage();
+                    triggerType = ProgressLock::CONSTRUCTION;
                 else if (xr.findAttr(unlockedBy, "gather", s))
-                    ProgressLock(ProgressLock::GATHER, s, ProgressLock::CONSTRUCTION, id).stage();
+                    triggerType = ProgressLock::GATHER;
                 else if (xr.findAttr(unlockedBy, "recipe", s))
-                    ProgressLock(ProgressLock::RECIPE, s, ProgressLock::CONSTRUCTION, id).stage();
+                    triggerType = ProgressLock::RECIPE;
+                ProgressLock(triggerType, s, ProgressLock::CONSTRUCTION, id, chance).stage();
             }
 
             // Container
@@ -407,14 +411,18 @@ void Server::loadData(const std::string &path){
             }
 
             for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
+                double chance = 1.0;
+                xr.findAttr(unlockedBy, "chance", chance);
+                ProgressLock::Type triggerType;
                 if (xr.findAttr(unlockedBy, "item", s))
-                    ProgressLock(ProgressLock::ITEM, s, ProgressLock::RECIPE, id).stage();
+                    triggerType = ProgressLock::ITEM;
                 else if (xr.findAttr(unlockedBy, "construction", s))
-                    ProgressLock(ProgressLock::CONSTRUCTION, s, ProgressLock::RECIPE, id).stage();
+                    triggerType = ProgressLock::CONSTRUCTION;
                 else if (xr.findAttr(unlockedBy, "gather", s))
-                    ProgressLock(ProgressLock::GATHER, s, ProgressLock::RECIPE, id).stage();
+                    triggerType = ProgressLock::GATHER;
                 else if (xr.findAttr(unlockedBy, "recipe", s))
-                    ProgressLock(ProgressLock::RECIPE, s, ProgressLock::RECIPE, id).stage();
+                    triggerType = ProgressLock::RECIPE;
+                ProgressLock(triggerType, s, ProgressLock::RECIPE, id, chance).stage();
             }
         
             _recipes.insert(recipe);

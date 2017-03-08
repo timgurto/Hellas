@@ -30,6 +30,7 @@ private:
     std::string
         _triggerID,
         _effectID;
+    double _chance; // The chance that the trigger actually causes the effect. (0, 1]
 
     static locksByType_t locksByType;
     static std::set<ProgressLock> stagedLocks;
@@ -38,7 +39,8 @@ private:
 
 public:
     ProgressLock(Type triggerType, const std::string &triggerID,
-                 Type effectType, const std::string &effectID);
+                 Type effectType, const std::string &effectID,
+                 double chance);
 
     static void registerStagedLocks();
     static void triggerUnlocks(User &user, Type triggerType, const void *trigger);

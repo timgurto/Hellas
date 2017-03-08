@@ -7,11 +7,13 @@ ProgressLock::locksByType_t ProgressLock::locksByType;
 std::set<ProgressLock> ProgressLock::stagedLocks;
 
 ProgressLock::ProgressLock(Type triggerType, const std::string &triggerID,
-                           Type effectType, const std::string &effectID):
+                           Type effectType, const std::string &effectID,
+                           double chance):
 _triggerType(triggerType),
 _triggerID(triggerID),
 _effectType(effectType),
-_effectID(effectID)
+_effectID(effectID),
+_chance(chance)
 {}
 
 void ProgressLock::registerStagedLocks(){
@@ -81,15 +83,24 @@ void ProgressLock::triggerUnlocks(User &user, Type triggerType, const void *trig
 
     for (auto it = toUnlock.first; it != toUnlock.second; ++it){
         const ProgressLock &lock = it->second;
+
+        bool shouldUnlock = randDouble() <= lock._chance;
+        if (!shouldUnlock)
+            continue;
+
         std::string id;
         switch (lock._effectType){
         case RECIPE:
             id = reinterpret_cast<const Recipe *>(lock._effect)->id();
+            if (user.knownRecipes().find(id) != user.knownRecipes().end())
+                continue;
             newRecipes.insert(id);
             user.addRecipe(id);
             break;
         case CONSTRUCTION:
              id = reinterpret_cast<const ObjectType *>(lock._effect)->id();
+            if (user.knownConstructions().find(id) != user.knownConstructions().end())
+                continue;
             newBuilds.insert(id);
             user.addConstruction(id);
             break;
