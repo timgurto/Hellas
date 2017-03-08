@@ -8,7 +8,7 @@ issue,description,value,effort,type,blockedBy,done
 95,Fix scroll-bar dragging offset,5,8,Bug,,
 100,Optimize container types for faster iteration,2,2,Performance,,
 101,Change dynamic_casts that don't check their result to static_cast or check for nullptr,2,2,Code quality,,
-128,"Use forward declarations where possible, to reduce unnecessary #includes",3,8,Code quality,,
+128,"Use forward declarations where possible, to reduce unnecessary #includes",3,2,Code quality,,
 129,"Add grass objects, which grow naturally on grass tiles",5,21,Feature,,TRUE
 137,Allow a recipe to create multiple item types,5,8,Feature,,
 138,Use set::count() and map::count() to test set membership,2,2,Code quality,,
@@ -93,7 +93,7 @@ issue,description,value,effort,type,blockedBy,done
 249,A shrine that sets one's spawn point,13,8,Feature,,
 250,A road object that affects movement speed,5,5,Feature,247,
 251,A hoe constructs a farm plot without being consumed,3,1,Feature,285,TRUE
-252,"Seeds, that are constructed on top of a farm-plot object",3,5,Feature,,
+252,"Seeds, that are constructed on top of a farm-plot object",3,5,Feature,,TRUE
 253,A crop object that grows over time,5,5,Feature,,
 254,Terrain types have fertility property,2,2,Feature,,
 255,Fertility affects crop viability,5,5,Feature,254,
@@ -177,3 +177,6 @@ issue,description,value,effort,type,blockedBy,done
 342,Generic unlock system. Item/crafting/construction -> recipe/construction,5,3,Bug,,TRUE
 345,Load map in login-screen background,5,5,Performance,,
 346,"Use gear-slot names, not numbers, in items.xml",5,2,Code quality,,
+347,Add fading unlock messages to the top of the screen,3,5,Aesthetics,,
+348,Generate full data website,13,8,Documentation,,
+349,Prevent chat messages being cut off,8,5,Bug,,
