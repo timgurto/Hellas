@@ -1001,8 +1001,13 @@ void Server::sendObjectInfo(const User &user, const Object &object) const{
 
     // Construction materials
     if (object.isBeingBuilt()){
-        _debug("Sending construction-materials message");
         sendConstructionMaterialsMessage(user, object);
+    }
+
+    // Transform timer
+    if (object.isTransforming()){
+        sendMessage(user.socket(), SV_TRANSFORM_TIME,
+                    makeArgs(object.serial(), object.transformTimer()));
     }
 }
 

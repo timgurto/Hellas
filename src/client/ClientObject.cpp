@@ -33,7 +33,8 @@ Entity(type, loc),
 _serial(serialArg),
 _window(nullptr),
 _beingGathered(false),
-_dropbox(1)
+_dropbox(1),
+_transformTimer(0)
 {
     if (type != nullptr) { // i.e., not a serial-only search dummy
         const size_t
@@ -461,6 +462,15 @@ void ClientObject::update(double delta) {
     // If being gathered, add particles.
     if (beingGathered())
         client.addParticles(objectType()->gatherParticles(), location(), delta);
+
+    // If transforming, reduce timer.
+    if (_transformTimer > 0){
+        ms_t timeElapsed = 1 / delta;
+        if (timeElapsed > _transformTimer)
+            _transformTimer = 0;
+        else
+            _transformTimer -= timeElapsed;
+    }
 }
 
 const Texture &ClientObject::cursor(const Client &client) const {
@@ -579,4 +589,10 @@ void ClientObject::draw(const Client &client) const{
     } else {
         Entity::draw(client);
     }
+}
+
+const Texture &ClientObject::image() const{
+    if (objectType()->transforms())
+        return objectType()->getProgressImage(_transformTimer);
+    return Entity::image();
 }

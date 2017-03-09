@@ -207,7 +207,15 @@ Server only:
     constructionReq="hoe"
     allowedTerrain="denseVeg" >
     <collisionRect x="-19" y="-20" w="38" h="40" />
-    <transform id="flaxCropRipe" time="5000" />>
+    <transform id="flaxCropRipe" time="600000">
+        <progress image="flaxCrop1" />
+        <progress image="flaxCrop2" />
+        <progress image="flaxCrop3" />
+        <progress image="flaxCrop4" />
+        <progress image="flaxCrop5" />
+        <progress image="flaxCrop6" />
+        <progress image="flaxCrop7" />
+    </transform>
 </objectType>
 <objectType id="flaxCropRipe" name="Flax Crop (Ripe)"
     xDrawOffset="-20"

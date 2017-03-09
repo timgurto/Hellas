@@ -828,6 +828,22 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_TRANSFORM_TIME:
+        {
+            size_t serial, remaining;
+            singleMsg >> serial >> del >> remaining >> del;
+            if (del != MSG_END)
+                return;
+            auto objIt = _objects.find(serial);
+            if (objIt == _objects.end()){
+                _debug("Info received about unknown object.", Color::FAILURE);
+                break;
+            }
+            ClientObject &obj = const_cast<ClientObject &>(*objIt->second);
+            obj.transformTimer(remaining);
+            break;
+        }
+
         case SV_SAY:
         {
             std::string username, message;

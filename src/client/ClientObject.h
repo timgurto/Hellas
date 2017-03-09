@@ -30,6 +30,7 @@ class ClientObject : public Entity{
     bool _beingGathered;
     ItemSet _constructionMaterials; // The required materials, if it's being constructed.
     ClientItem::vect_t _dropbox; // A slot where construction materials can be added.
+    ms_t _transformTimer;
 
 protected:
     Window *_window; // For containers, etc; opens when the object is nearby and right-clicked.
@@ -58,6 +59,7 @@ public:
     const ItemSet &constructionMaterials() const { return _constructionMaterials; }
     void constructionMaterials(const ItemSet &set) { _constructionMaterials = set; }
     bool isBeingConstructed() const { return !_constructionMaterials.isEmpty(); }
+    void transformTimer(ms_t remaining) {_transformTimer = remaining; }
 
     virtual char classTag() const override { return 'o'; }
 
@@ -78,6 +80,7 @@ public:
     virtual void onInventoryUpdate();
     void hideWindow();
     virtual void createWindow(Client &client);
+    virtual const Texture &image() const override;
 
 
     bool userHasAccess() const;

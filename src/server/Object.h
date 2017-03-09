@@ -70,6 +70,8 @@ public:
     const ItemSet &remainingMaterials() const { return _remainingMaterials; }
     ItemSet &remainingMaterials() { return _remainingMaterials; }
     void removeMaterial(const ServerItem *item, size_t qty);
+    bool isTransforming() const { return _transformTimer > 0; }
+    ms_t transformTimer() const { return _transformTimer; }
 
     virtual bool collides() const { return _type->collides(); }
     virtual double speed() const { return 0; } // movement per second

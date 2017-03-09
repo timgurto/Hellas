@@ -11,7 +11,8 @@ _containerSlots(0),
 _merchantSlots(0),
 _bottomlessMerchant(false),
 _collides(false),
-_allowedTerrain(nullptr)
+_allowedTerrain(nullptr),
+_transformObject(nullptr)
 {}
 
 void ObjectType::addYield(const ServerItem *item, double initMean, double initSD, double gatherMean,

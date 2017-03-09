@@ -1,6 +1,9 @@
+#include <cassert>
+
 #include <SDL.h>
 #include <SDL_mixer.h>
 
+#include "Client.h"
 #include "ClientObjectType.h"
 #include "TooltipBuilder.h"
 #include "../Color.h"
@@ -13,7 +16,8 @@ _containerSlots(0),
 _merchantSlots(0),
 _gatherSound(nullptr),
 _gatherParticles(nullptr),
-_materialsTooltip(nullptr)
+_materialsTooltip(nullptr),
+_transformTime(0)
 {}
 
 ClientObjectType::~ClientObjectType(){
@@ -45,4 +49,20 @@ const Texture &ClientObjectType::materialsTooltip() const{
         _materialsTooltip = new Texture(tb.publish());
     }
     return *_materialsTooltip;
+}
+
+const Texture &ClientObjectType::getProgressImage(ms_t timeRemaining) const{
+    double progress = 1 - (1.0 * timeRemaining / _transformTime);
+    int index = progress * (_transformImages.size() + 1);
+    Client::debug() << timeRemaining << "/" << _transformTime << " " << progress << " " << index << Log::endl;
+    if (_transformImages.empty() || index < 0)
+        return image();
+    else{
+        index = min<int>(index, _transformImages.size() -1); // Progress may be 100% due to server delay.
+        return _transformImages[index];
+    }
+}
+
+void ClientObjectType::addTransformImage(const std::string &filename){
+    _transformImages.push_back(Texture("Images/Objects/" + filename + ".png", Color::MAGENTA));
 }

@@ -31,6 +31,10 @@ class ClientObjectType : public EntityType{
     ItemSet _materials;
     mutable Texture *_materialsTooltip;
 
+    // To show transformations.  Which image is displayed depends on progress.
+    std::vector<Texture> _transformImages;
+    ms_t _transformTime; // The total length of the transformation.
+
 public:
     ClientObjectType(const std::string &id);
     virtual ~ClientObjectType();
@@ -61,6 +65,11 @@ public:
     bool hasTags() const { return !_tags.empty(); }
     const std::set<std::string> &tags() const { return _tags; }
     const Texture &materialsTooltip() const;
+    bool transforms() const { return _transformTime > 0; }
+    void transformTime(ms_t time) { _transformTime = time; }
+    void addTransformImage(const std::string &filename);
+    
+    const Texture &getProgressImage(ms_t timeRemaining) const;
 
     virtual char classTag() const override { return 'o'; }
 

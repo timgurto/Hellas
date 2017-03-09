@@ -12,7 +12,8 @@ _numUsersGathering(0),
 _lastLocUpdate(SDL_GetTicks()),
 _remainingMaterials(type->materials())
 {
-    setType(type);
+    if (type != nullptr)
+        setType(type);
 }
 
 Object::Object(size_t serial): // For set/map lookup ONLY
@@ -207,7 +208,7 @@ void Object::onRemove(){
 }
 
 void Object::update(ms_t timeElapsed){
-    if (_transformTimer > 0){
+    if (_transformTimer > 0 && type()->transformObject() != nullptr){
         if (timeElapsed > _transformTimer)
             _transformTimer = 0;
         else

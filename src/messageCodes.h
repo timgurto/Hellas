@@ -153,6 +153,10 @@ enum MessageCode{
     // Arguments: serial, x, y
     SV_OBJECT_LOCATION = 128,
 
+    // An object is transforming
+    // Arguments: serial, remaining
+    SV_TRANSFORM_TIME = 129,
+
     // The user has begun an action
     // Arguments: time
     SV_ACTION_STARTED = 130,

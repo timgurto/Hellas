@@ -131,6 +131,16 @@ void Client::loadData(const std::string &path){
                 }
             }
 
+            auto transform = xr.findChild("transform", elem);
+            if (transform){
+                if (xr.findAttr(transform, "time", n))
+                    cot->transformTime(n);
+                for (auto progress : xr.getChildren("progress", transform)){
+                    if (xr.findAttr(progress, "image", s))
+                        cot->addTransformImage(s);
+                }
+            }
+
             _objectTypes.insert(cot);
         }
 

@@ -53,6 +53,7 @@ Code | Name                      | Syntax                                       
 126  | `SV_MERCHANT_SLOT`        | &laquo;126&#8226;serial&#8226;slot&#8226;ware&#8226;wareQty&#8226;price&#8226;priceQty&raquo; | "Object #`serial`'s merchant slot #`slot` is selling `wareQty` `ware`s for `priceQty` `price`s"
 127  | `SV_NPC_HEALTH`           | &laquo;127&#8226;serial&#8226;health&raquo;                                    | "NPC #`serial` has `health` health"
 128  | `SV_OBJECT_LOCATION`      | &laquo;128&#8226;serial&#8226;x&#8226;y&raquo;                                 | "Object #`serial` is now located at (`x`,`y`)"
+129  | `SV_TRANSFORM_TIME`       | &laquo;129&#8226;serial&#8226;remaining&raquo;                                 | "Object #`serial` will transform in `remaining` ms"
 130  | `SV_ACTION_STARTED`       | &laquo;130&#8226;time&raquo;                                                   | "You have begun an action that will take `t` milliseconds"
 131  | `SV_ACTION_FINISHED`      | &laquo;131&raquo;                                                              | "You have completed an action"
 132  | `SV_CLASS`                | &laquo;132&#8226;username&#8226;className&raquo;                               | "User `username` is a `className`"
