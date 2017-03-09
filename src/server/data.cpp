@@ -275,8 +275,32 @@ void Server::loadData(const std::string &path){
             // Terrain restrictions
             if (xr.findAttr(elem, "allowedTerrain", s))
                 ot->allowedTerrain(s);
-        
-            _objectTypes.insert(ot);
+
+            // Transformation
+            auto transform = xr.findChild("transform", elem);
+            if (transform){
+                if (!xr.findAttr(transform, "id", s) ||
+                    !xr.findAttr(transform, "time", n))
+                    continue;
+                const ObjectType *transformObjPtr = findObjectTypeByName(s);
+                if (transformObjPtr == nullptr){
+                    transformObjPtr = new ObjectType(s);
+                    _objectTypes.insert(transformObjPtr);
+                }
+                ot->transform(n, transformObjPtr);
+            }
+
+            bool foundInPlace = false;
+            for (auto it = _objectTypes.begin(); it != _objectTypes.end(); ++it){
+                if ((*it)->id() == ot->id()){
+                    ObjectType &inPlace = *const_cast<ObjectType *>(*it);
+                    inPlace = *ot;
+                    delete ot;
+                    foundInPlace = true;
+                }
+            }
+            if (!foundInPlace)
+                _objectTypes.insert(ot);
         }
 
     // NPC types

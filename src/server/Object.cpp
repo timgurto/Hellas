@@ -7,22 +7,12 @@
 Object::Object(const ObjectType *type, const Point &loc):
 _serial(generateSerial()),
 _location(loc),
-_type(type),
 _spawner(nullptr),
 _numUsersGathering(0),
 _lastLocUpdate(SDL_GetTicks()),
 _remainingMaterials(type->materials())
 {
-    assert(type);
-    if (type->yield()) {
-        type->yield().instantiate(_contents);
-    }
-
-    if (type->containerSlots() != 0)
-        _container = ServerItem::vect_t(type->containerSlots());
-
-    if (type->merchantSlots() != 0)
-        _merchantSlots = std::vector<MerchantSlot>(type->merchantSlots());
+    setType(type);
 }
 
 Object::Object(size_t serial): // For set/map lookup ONLY
@@ -214,4 +204,39 @@ void Object::decrementGatheringUsers(const User *userToSkip){
 void Object::onRemove(){
     if (_spawner != nullptr)
         _spawner->scheduleSpawn();
+}
+
+void Object::update(ms_t timeElapsed){
+    if (_transformTimer > 0){
+        if (timeElapsed > _transformTimer)
+            _transformTimer = 0;
+        else
+            _transformTimer -= timeElapsed;
+
+        if (_transformTimer == 0)
+            setType(type()->transformObject());
+    }
+}
+
+void Object::setType(const ObjectType *type){
+    assert(type != nullptr);
+    _type = type;
+    if (type->yield()) {
+        type->yield().instantiate(_contents);
+    }
+
+    if (type->containerSlots() != 0)
+        _container = ServerItem::vect_t(type->containerSlots());
+
+    if (type->merchantSlots() != 0)
+        _merchantSlots = std::vector<MerchantSlot>(type->merchantSlots());
+
+    if (type->transforms())
+        _transformTimer = type->transformTime();
+
+    // Inform nearby users
+    const Server &server = *Server::_instance;
+    for (const User *user : server.findUsersInArea(_location)){
+        server.sendObjectInfo(*user, *this);
+    }
 }

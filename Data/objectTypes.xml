@@ -187,21 +187,33 @@ Server only:
 </objectType>
 
 <objectType
-    id="figCrop0" name="Fig Crop"
+    id="figCrop" name="Fig Crop"
     constructionTime="10000"
     constructionReq = "hoe" >
+    <transform id="figCropRipe" time="20000"/>
+</objectType>
+<objectType
+    id="figCropRipe" name="Fig Crop (Ripe)"
+    canGather="1" gatherTime="1000" >
     <yield id="fig" initialMean="5" initialSD="1" />
     <yield id="figSeeds" initialMean="1.2" initialSD="0.5" />
 </objectType>
 
-<objectType
-    id="flaxCrop0" name="Flax Crop"
+<objectType id="flaxCrop" name="Flax Crop"
     xDrawOffset="-20"
-    yDrawOffset="-21"
+    yDrawOffset="-34"
     isFlat="1"
     constructionTime="10000"
     constructionReq="hoe"
     allowedTerrain="denseVeg" >
+    <collisionRect x="-19" y="-20" w="38" h="40" />
+    <transform id="flaxCropRipe" time="5000" />>
+</objectType>
+<objectType id="flaxCropRipe" name="Flax Crop (Ripe)"
+    xDrawOffset="-20"
+    yDrawOffset="-34"
+    isFlat="1"
+    canGather="1" gatherTime="1000" >
     <collisionRect x="-19" y="-20" w="38" h="40" />
     <yield id="flax" initialMean="5" initialSD="1" />
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" />

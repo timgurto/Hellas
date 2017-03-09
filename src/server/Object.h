@@ -29,6 +29,8 @@ class Object{
 
     ItemSet _remainingMaterials; // The remaining construction costs, if relevant.
 
+    ms_t _transformTimer; // When this hits zero, it switches types.
+
 protected:
     static size_t generateSerial();
 
@@ -76,9 +78,11 @@ public:
 
     virtual char classTag() const { return 'o'; }
 
-    virtual void update(ms_t timeElapsed) { }
+    virtual void update(ms_t timeElapsed);
     // Add this object to a list, for removal after all objects are updated.
     void markForRemoval();
+
+    void setType(const ObjectType *type); // Set/change ObjectType
 
     virtual void onRemove();
 

@@ -7,8 +7,8 @@
 <blacklist parent="object_copper"  child="item_rock" />
 <blacklist parent="object_tin"     child="item_rock" />
 
-<blacklist parent="object_figCrop0"   child="item_figSeeds" />
-<blacklist parent="object_flaxCrop0"  child="item_flaxSeeds" />
+<blacklist parent="object_figCropRipe"  child="item_figSeeds" />
+<blacklist parent="object_flaxCropRipe" child="item_flaxSeeds" />
 
 <extra parent="item_leatherGloves" child="item_tinBar" />
 <extra parent="item_rope"          child="item_tannin" />

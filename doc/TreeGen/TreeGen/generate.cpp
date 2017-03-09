@@ -24,6 +24,7 @@ enum EdgeType{
     GATHER_REQ,
     LOOT,
     INGREDIENT,
+    TRANSFORM,
 
     UNLOCK_ON_GATHER,
     UNLOCK_ON_ACQUIRE,
@@ -63,6 +64,7 @@ int main(int argc, char **argv){
     edgeColors[LOOT] = 4;
     edgeColors[GATHER_REQ] = 5;
     // Strong: dark colors
+    edgeColors[TRANSFORM] = 6;
     edgeColors[UNLOCK_ON_CONSTRUCT] = 6;
     edgeColors[UNLOCK_ON_CRAFT] = 6;
 
@@ -167,6 +169,10 @@ int main(int argc, char **argv){
                 else if (xr.findAttr(unlockBy, "item", s))
                     edges.insert(Edge("item_" + s, label, UNLOCK_ON_ACQUIRE, chance));
             }
+
+            auto transform = xr.findChild("transform", elem);
+            if (transform && xr.findAttr(transform, "id", s))
+                edges.insert(Edge(label, "object_" + s, TRANSFORM));
         }
     }
 

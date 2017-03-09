@@ -420,33 +420,42 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del;
             if (del != MSG_END)
                 break;
+
+            const ClientObjectType *cot = new ClientObjectType(type);
+            const Client::objectTypes_t::const_iterator typeIt = _objectTypes.find(cot);
+            if (typeIt == _objectTypes.end()){
+                _debug("Received object of invalid type; ignored.", Color::FAILURE);
+                break;
+            }
+            cot = *typeIt;
+
             std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
-            if (it == _objects.end()) {
+            if (it != _objects.end()){
+                // Existing object: update its info.
+                ClientObject &obj = *it->second;
+                obj.location(Point(x, y));
+                obj.type(cot);
+
+            } else {
                 // A new object was added; add entity to list
-                ClientObjectType *dummy = new ClientObjectType(type);
-                const Client::objectTypes_t::const_iterator it = _objectTypes.find(dummy);
-                if (it == _objectTypes.end()){
-                    _debug("Received object of invalid type; ignored.", Color::FAILURE);
-                    break;
-                }
                 ClientObject *obj;
-                switch ((*it)->classTag()){
+                switch (cot->classTag()){
                 case 'n':
                 {
-                    const ClientNPCType *npcType = static_cast<const ClientNPCType *>(*it);
+                    const ClientNPCType *npcType = static_cast<const ClientNPCType *>(cot);
                     obj = new ClientNPC(serial, npcType, Point(x, y));
                     break;
                 }
                 case 'v':
                 {
                     const ClientVehicleType *vehicleType =
-                            static_cast<const ClientVehicleType *>(*it);
+                            static_cast<const ClientVehicleType *>(cot);
                     obj = new ClientVehicle(serial, vehicleType, Point(x, y));
                     break;
                 }
                 case 'o':
                 default:
-                    obj = new ClientObject(serial, *it, Point(x, y));
+                    obj = new ClientObject(serial, cot, Point(x, y));
                 }
                 _entities.insert(obj);
                 _objects[serial] = obj;

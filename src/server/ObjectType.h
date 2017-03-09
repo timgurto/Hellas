@@ -33,6 +33,9 @@ class ObjectType{
     bool _collides; // false by default; true if any collisionRect is specified.
     Rect _collisionRect; // Relative to position
 
+    const ObjectType *_transformObject; // The object type that this becomes over time, if any.
+    ms_t _transformTime; // How long the transformation takes.
+
     std::set<std::string> _tags;
 
     const TerrainList *_allowedTerrain;
@@ -75,6 +78,10 @@ public:
     void allowedTerrain(const std::string &id){ _allowedTerrain = TerrainList::findList(id); }
     void addMaterial(const Item *material, size_t quantity) { _materials.add(material, quantity); }
     const ItemSet &materials() const { return _materials; }
+    void transform(ms_t time, const ObjectType *id) {_transformTime = time; _transformObject = id;}
+    ms_t transformTime() const {return _transformTime; }
+    const ObjectType *transformObject() const {return _transformObject; }
+    bool transforms() const { return _transformObject != nullptr; }
 
     bool operator<(const ObjectType &rhs) const { return _id < rhs._id; }
 

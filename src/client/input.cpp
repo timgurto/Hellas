@@ -277,7 +277,7 @@ void Client::handleInput(double delta){
                         y = toInt(_mouse.y - offset().y);
                     sendMessage(CL_CONSTRUCT_ITEM, makeArgs(Container::useSlot, x, y));
                     prepareAction(std::string("Constructing ") +
-                                  _inventory[Container::useSlot].first->name());
+                                  _inventory[Container::useSlot].first->constructsObject()->name());
                     break;
 
                 // Construct without item
