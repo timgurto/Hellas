@@ -7,6 +7,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+#include "JsonWriter.h"
+
 struct Path{
     std::string child;
     std::vector<std::string> parents;
@@ -112,49 +114,44 @@ int main(int argc, char **argv){
     if (!xr.newFile(dataPath + "/items.xml"))
         std::cerr << "Failed to load items.xml" << std::endl;
     else{
-        std::ofstream f("../web/items.js");
-        f << "items=[\n";
+        JsonWriter jw("items");
         for (auto elem : xr.getChildren("item")) {
-            f << "{\n";
+            jw.nextEntry();
             std::string id;
             if (!xr.findAttr(elem, "id", id))
                 continue;
             std::string label = "item_" + id;
-            f << "id: \"" << id << "\",\n";
+            jw.addAttribute("id", id);
 
             std::string s;
             if (xr.findAttr(elem, "name", s)){
                 nodes.insert(std::make_pair(label, s));
-                f << "name: \"" << s << "\",\n";
+                jw.addAttribute("name", s);
             }
 
             if (xr.findAttr(elem, "constructs", s)){
                     edges.insert(Edge(label, "object_" + s, CONSTRUCT_FROM_ITEM));
             }
-            f << "},\n";
         }
-        f << "];\n";
-        f.close();
     }
 
     // Load objects
     if (!xr.newFile(dataPath + "/objectTypes.xml"))
         std::cerr << "Failed to load objectTypes.xml" << std::endl;
     else{
-        std::ofstream f("../web/objects.js");
-        f << "objects=[\n";
+        JsonWriter jw("objects");
         for (auto elem : xr.getChildren("objectType")) {
-            f << "{\n";
+            jw.nextEntry();
             std::string id;
             if (!xr.findAttr(elem, "id", id))
                 continue;
             std::string label = "object_" + id;
-            f << "id: \"" << id << "\",\n";
+            jw.addAttribute("id", id);
 
             std::string s;
             if (xr.findAttr(elem, "name", s)){
                 nodes.insert(std::make_pair(label, s));
-                f << "name: \"" << s << "\",\n";
+                jw.addAttribute("name", s);
             }
 
             if (xr.findAttr(elem, "gatherReq", s)){
@@ -188,10 +185,7 @@ int main(int argc, char **argv){
             auto transform = xr.findChild("transform", elem);
             if (transform && xr.findAttr(transform, "id", s))
                 edges.insert(Edge(label, "object_" + s, TRANSFORM));
-            f << "},\n";
         }
-        f << "];\n";
-        f.close();
     }
 
     // Load NPCs

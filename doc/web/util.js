@@ -32,4 +32,5 @@ function findByID(collection, id){
         if (entry.id == id)
             return entry;
     }
+    return {};
 }

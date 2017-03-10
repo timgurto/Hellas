@@ -75,11 +75,13 @@
     <ClCompile Include="..\..\..\tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="..\..\..\tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="generate.cpp" />
+    <ClCompile Include="JsonWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\XmlReader.h" />
     <ClInclude Include="..\..\..\tinyxml\tinystr.h" />
     <ClInclude Include="..\..\..\tinyxml\tinyxml.h" />
+    <ClInclude Include="JsonWriter.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
