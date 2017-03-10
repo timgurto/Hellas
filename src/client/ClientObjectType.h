@@ -67,6 +67,7 @@ public:
     const Texture &materialsTooltip() const;
     bool transforms() const { return _transformTime > 0; }
     void transformTime(ms_t time) { _transformTime = time; }
+    ms_t transformTime() const { return _transformTime; }
     void addTransformImage(const std::string &filename);
     
     const Texture &getProgressImage(ms_t timeRemaining) const;

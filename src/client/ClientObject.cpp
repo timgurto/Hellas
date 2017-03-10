@@ -34,7 +34,7 @@ _serial(serialArg),
 _window(nullptr),
 _beingGathered(false),
 _dropbox(1),
-_transformTimer(0)
+_transformTimer(type->transformTime())
 {
     if (type != nullptr) { // i.e., not a serial-only search dummy
         const size_t
@@ -465,7 +465,7 @@ void ClientObject::update(double delta) {
 
     // If transforming, reduce timer.
     if (_transformTimer > 0){
-        ms_t timeElapsed = 1 / delta;
+        ms_t timeElapsed = 1000 * delta;
         if (timeElapsed > _transformTimer)
             _transformTimer = 0;
         else
