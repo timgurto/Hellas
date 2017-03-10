@@ -17,12 +17,11 @@
     </div>
     
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript" src="items.js"></script>
+    <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            var id = getID();
-            var item = findByID(items, id);
+            var item = findItem();
             
             console.log(item);
             document.title = item.name;

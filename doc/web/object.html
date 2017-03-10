@@ -20,12 +20,12 @@
     </div>
     
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="util.js"></script>
+    <script type="text/javascript" src="items.js"></script>
     <script type="text/javascript" src="objects.js"></script>
+    <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            var id = getID();
-            var obj = findByID(objects, id);
+            var obj = findObject();
             
             console.log(obj);
             document.title = obj.name;

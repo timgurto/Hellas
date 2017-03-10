@@ -25,6 +25,14 @@ function getID(){
     return "";
 }
 
+function findObject(id = getID()){
+    return findByID(objects, id);
+}
+
+function findItem(id = getID()){
+    return findByID(items, id);
+}
+
 function findByID(collection, id){
     var i;
     for (i = 0; i < collection.length; ++i){
