@@ -342,8 +342,8 @@ int main(int argc, char **argv){
     std::ofstream f("tree.gv");
     f << "digraph {" << std::endl;
     f << "bgcolor=\"#ffffff00\"" << std::endl;
-    f << "node [fontsize=10 fontname=\"Advocut\" imagescale=true];" << std::endl;
-    f << "edge [fontsize=10 fontname=\"Advocut\"];" << std::endl;
+    f << "node [fontsize=10 fontname=\"Advocut\" imagescale=true fontcolor=\"#999999\" color=\"#999999\"];" << std::endl;
+    f << "edge [fontsize=10 fontname=\"Advocut\" fontcolor=\"#999999\" color=\"#999999\"];" << std::endl;
 
     // Nodes
     for (auto &node : nodes){
@@ -397,7 +397,7 @@ int main(int argc, char **argv){
     // Extra edges
     for (auto &edge : extras)
         f << edge.parent << " -> " << edge.child
-          << " [color=black style=dotted constraint=true]"
+          << " [style=dotted constraint=true]"
           << std::endl;
 
     f << "}";
