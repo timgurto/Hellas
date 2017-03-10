@@ -161,13 +161,17 @@ int main(int argc, char **argv){
                     edges.insert(Edge(s, label, GATHER_REQ));
                 } else
                     edges.insert(Edge(it->second, label, GATHER_REQ));
+                jw.addAttribute("gatherReq", s);
             }
 
+            std::set<std::string> yields;
             for (auto yield : xr.getChildren("yield", elem)) {
                 if (!xr.findAttr(yield, "id", s))
                     continue;
                 edges.insert(Edge(label, "item_" + s, GATHER));
+                yields.insert(s);
             }
+            jw.addArrayAttribute("yield", yields);
 
             for (auto unlockBy : xr.getChildren("unlockedBy", elem)){
                 double chance = 1.0;

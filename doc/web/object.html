@@ -13,6 +13,9 @@
         </div>
         <div class="col-xs-12" id="payload">
             <p>ID: <span id="id"/></span>
+            
+            <h4>Gathering<span id="gatherReq"></span></h4>
+            <ul id="yieldList"></ul>
         </div>
     </div>
     
@@ -28,6 +31,10 @@
             document.title = obj.name;
             $("#title").html(obj.name);
             $("#id").html(obj.id);
+            for (var i = 0; i < obj.yield.length; ++i)
+                $("#yieldList").append( "<li>" + obj.yield[i] + "</li>" );
+            if ("gatherReq" in obj)
+                $("#gatherReq").html(" (requires " + " " + obj.gatherReq + ")");
         });
     </script>
 </body>

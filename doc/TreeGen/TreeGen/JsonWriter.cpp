@@ -31,19 +31,28 @@ void JsonWriter::finishEntry(){
     outputFile << "}," << std::endl;
 }
 
+void JsonWriter::addArrayAttribute(const std::string &attributeName,
+                                   const std::set<std::string> &container){
+    if (container.empty())
+        return;
+    std::ostringstream completeValueString;
+    completeValueString << "[";
+    for (const auto &value : container)
+        completeValueString << formatValue(value) << ",";
+    completeValueString << "]";
+    addAttributeWithoutFormattingValue(attributeName, completeValueString.str());
+}
+
 void JsonWriter::addAttribute(const std::string &attributeName, const std::string &value){
-    std::string formattedValue = '\"' + value + '\"';
-    addAttributeWithFormattedValue(attributeName, formattedValue);
-}
-
-void JsonWriter::addAttribute(const std::string &attributeName, double value){
-    std::ostringstream formattedValue;
-    formattedValue << value;
-    addAttributeWithFormattedValue(attributeName, formattedValue.str());
-}
-
-void JsonWriter::addAttributeWithFormattedValue(const std::string &attributeName,
-                                                const std::string &formattedValue){
     currentEntryIsEmpty = false;
+    addAttributeWithoutFormattingValue(attributeName, formatValue(value));
+}
+
+void JsonWriter::addAttributeWithoutFormattingValue(const std::string &attributeName,
+                                                    const std::string &formattedValue){
     outputFile << "  " << attributeName << ": " << formattedValue << "," << std::endl;
+}
+
+std::string JsonWriter::formatValue(const std::string &value){
+    return '\"' + value + '\"';
 }
