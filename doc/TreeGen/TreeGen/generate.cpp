@@ -383,7 +383,7 @@ int main(int argc, char **argv){
 
     // Publish
     std::ofstream f("tree.gv");
-    f << "digraph {" << std::endl;
+    f << "digraph techTree {" << std::endl;
     f << "bgcolor=\"#ffffff00\"" << std::endl;
     f << "node [fontsize=10 fontname=\"Advocut\" imagescale=true fontcolor=\"#999999\" color=\"#999999\"];" << std::endl;
     f << "edge [fontsize=10 fontname=\"Advocut\" fontcolor=\"#999999\" color=\"#999999\"];" << std::endl;
@@ -392,14 +392,21 @@ int main(int argc, char **argv){
     for (auto &node : nodes){
         std::string imagePath = "../../Images/";
         std::string shape;
+        std::string url;
         if (node.first.substr(0, 5) == "item_"){
-            imagePath += "Items/" + node.first.substr(5);
+            std::string id = node.first.substr(5);
+            url = "item.html?id=" + id;
+            imagePath += "Items/" + id;
             shape = "none";
         }else if (node.first.substr(0, 4) == "npc_"){
-            imagePath += "NPCs/" + node.first.substr(4);
+            std::string id = node.first.substr(4);
+            url = "npc.html?id=" + id;
+            imagePath += "NPCs/" + id;
             shape = "box";
         }else{
-            imagePath += "objects/" + node.first.substr(7);
+            std::string id = node.first.substr(7);
+            url = "object.html?id=" + id;
+            imagePath += "objects/" + id;
             shape = "box";
         }
         imagePath += ".png";
@@ -425,7 +432,12 @@ int main(int argc, char **argv){
             id = node.first,
             name = node.second,
             image = "<img src=\"../web/images/" + (imageExists ? node.first : "error") + ".png\"/>",
-            fullNode = node.first + " [shape=" + shape + " label=<<table border='0' cellborder='0'><tr><td>" + image + "</td></tr><tr><td>" + name + "</td></tr></table>>]";
+            fullNode = node.first + " [shape=" + shape
+                    + " tooltip=\"" + name + "\""
+                    + " label=<<table border='0' cellborder='0'>"
+                    + "<tr><td>" + image + "</td></tr>"
+                    + "<tr><td>" + name + "</td></tr>"
+                    + "</table>> URL=\"" + url + "\"]";
         f << fullNode << std::endl;
     }
 
