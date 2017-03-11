@@ -32,6 +32,11 @@
             <p id="transformTarget"></p>
             <p id="transformTime"></p>
         </div>
+        <div class="col-xs-12 col-sm-3" id="unlocks">
+            <h3>Locked</h3>
+            <p>Construction can be unlocked by:</p>
+            <ul id="unlockList"></ul>
+        </div>
     </div>
     
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -55,7 +60,7 @@
                 if ("gatherReq" in obj)
                     $("#gatherReq").html("Required tool: " + obj.gatherReq);
                 if ("gatherTime" in obj)
-                    $("#gatherTime").html("Takes " + displayAsSeconds(obj.gatherTime));
+                    $("#gatherTime").html("Takes " + displayTimeAsHMS(obj.gatherTime));
                 if ("yield" in obj)
                     $("#yield").html("Yields:");
                 for (var i = 0; i < obj.yield.length; ++i){
@@ -73,7 +78,7 @@
                 if ("constructionReq" in obj)
                     $("#constructionReq").html("Required tool: " + obj.constructionReq);
                 if ("constructionTime" in obj)
-                    $("#constructionTime").html("Takes " + displayAsSeconds(obj.constructionTime));
+                    $("#constructionTime").html("Takes " + displayTimeAsHMS(obj.constructionTime));
             }
             
             // Transformation
@@ -88,10 +93,55 @@
                         + futureObject.name + imageNode(futureObject) + "</a>";
                 $("#transformTarget").html(transformTargetHTML);
                 if ("transformTime" in obj)
-                    $("#transformTime").html("Takes " + displayAsSeconds(obj.transformTime));
+                    $("#transformTime").html("Takes " + displayTimeAsHMS(obj.transformTime));
+            }
+            
+            
+            // Unlocks
+            if (!("unlocks" in obj))
+                $("#unlocks").hide();
+            else{
+                for (var i = 0; i < obj.unlocks.length; ++i){
+                    var listItemHTML = compileUnlockListItem(obj.unlocks[i]);
+                    $("#unlockList").append(listItemHTML);
+                }
             }
             
         });
+
+        var linkPageByType = {
+            craft: "item",
+            construct: "object",
+            gather: "item",
+            acquire: "item",
+        };
+        var prefixByType = {
+            craft: "crafting ",
+            construct: "constructing ",
+            gather: "gathering ",
+            acquire: "receiving "
+        };
+        var suffixByType = {
+            craft: "",
+            construct: "",
+            gather: " from an object",
+            acquire: " from any source",
+        };
+        function compileUnlockListItem(lock){
+            console.log(lock);
+            var source;
+            if (linkPageByType[lock.type] == "item")
+                source = findItem(lock.sourceID);
+            else
+                source = findObject(lock.sourceID);
+            
+            var linkAddress = linkPageByType[lock.type] + ".html?id=" + lock.sourceID;
+            var listText =
+                    '<li>' + prefixByType[lock.type]
+                    + '<a href="' + linkAddress + '">' + source.name + '</a>'
+                    + suffixByType[lock.type] +  '</li>';
+            return listText;
+        }
     </script>
 </body>
 

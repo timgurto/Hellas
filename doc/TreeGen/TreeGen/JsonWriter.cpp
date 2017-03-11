@@ -32,20 +32,25 @@ void JsonWriter::finishEntry(){
 }
 
 void JsonWriter::addArrayAttribute(const std::string &attributeName,
-                                   const std::set<std::string> &container){
+                                   const std::set<std::string> &container,
+                                   bool alreadyFormatted){
     if (container.empty())
         return;
     std::ostringstream completeValueString;
     completeValueString << "[";
-    for (const auto &value : container)
-        completeValueString << formatValue(value) << ",";
+    for (const auto &value : container){
+        std::string formattedValue = alreadyFormatted ? value : formatValue(value);
+        completeValueString << formattedValue << ",";
+    }
     completeValueString << "]";
     addAttributeWithoutFormattingValue(attributeName, completeValueString.str());
 }
 
-void JsonWriter::addAttribute(const std::string &attributeName, const std::string &value){
+void JsonWriter::addAttribute(const std::string &attributeName, const std::string &value,
+                              bool alreadyFormatted){
     currentEntryIsEmpty = false;
-    addAttributeWithoutFormattingValue(attributeName, formatValue(value));
+    std::string formattedValue = alreadyFormatted ? value : formatValue(value);
+    addAttributeWithoutFormattingValue(attributeName, formattedValue);
 }
 
 void JsonWriter::addAttributeWithoutFormattingValue(const std::string &attributeName,

@@ -187,18 +187,25 @@ int main(int argc, char **argv){
             }
             jw.addArrayAttribute("yield", yields);
 
+            std::set<std::string> unlocksForJson;
             for (auto unlockBy : xr.getChildren("unlockedBy", elem)){
                 double chance = 1.0;
                 xr.findAttr(unlockBy, "chance", chance);
-                if (xr.findAttr(unlockBy, "recipe", s) || xr.findAttr(unlockBy, "item", s))
+                if (xr.findAttr(unlockBy, "recipe", s) || xr.findAttr(unlockBy, "item", s)){
                     edges.insert(Edge("item_" + s, label, UNLOCK_ON_CRAFT, chance));
-                else if (xr.findAttr(unlockBy, "construction", s))
+                    unlocksForJson.insert("{type:\"craft\", sourceID:\"" + s + "\"}");
+                } else if (xr.findAttr(unlockBy, "construction", s)){
                     edges.insert(Edge("object_" + s, label, UNLOCK_ON_CONSTRUCT, chance));
-                else if (xr.findAttr(unlockBy, "gather", s))
+                    unlocksForJson.insert("{type:\"construct\", sourceID:\"" + s + "\"}");
+                } else if (xr.findAttr(unlockBy, "gather", s)){
                     edges.insert(Edge("item_" + s, label, UNLOCK_ON_GATHER, chance));
-                else if (xr.findAttr(unlockBy, "item", s))
+                    unlocksForJson.insert("{type:\"gather\", sourceID:\"" + s + "\"}");
+                } else if (xr.findAttr(unlockBy, "item", s)){
                     edges.insert(Edge("item_" + s, label, UNLOCK_ON_ACQUIRE, chance));
+                    unlocksForJson.insert("{type:\"acquire\", sourceID:\"" + s + "\"}");
+                }
             }
+            jw.addArrayAttribute("unlocks", unlocksForJson, true);
 
             auto transform = xr.findChild("transform", elem);
             if (transform && xr.findAttr(transform, "id", s)){

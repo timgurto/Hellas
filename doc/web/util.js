@@ -64,3 +64,8 @@ function displayAsSeconds(ms){
         displayString += seconds + "s"
     return displayString;
 }
+
+function compileUnlockListItem(lock){
+    console.log(lock);
+    return "";
+}
