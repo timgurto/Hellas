@@ -10,7 +10,7 @@ body{
     color: #bbb;
 }
 
-.container{
+.container, .container-fluid{
     background-color: #222;
 }
 
