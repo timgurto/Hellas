@@ -8,34 +8,43 @@
 
 <body>
     <div class="container" id="topLevelContainer">
-        <div class="col-xs-12">
-            <h1 id="title"></h1>
+        <div class="col-xs-12 col-md-2" id="navBar">
+            <a class="btn btn-primary col-xs-2 col-md-12" href="techTree.html">Tech Tree</a>
+            <a class="btn btn-primary col-xs-2 col-md-12" href="objects.html">Objects</a>
+            <a class="btn btn-primary col-xs-2 col-md-12" href="items.html">Items</a>
+            <a class="disabled btn btn-primary col-xs-2 col-md-12" href="npcs.html">NPCs</a>
+            <a class="disabled btn btn-primary col-xs-2 col-md-12" href="tags.html">Tags</a>
         </div>
-        <div class="col-xs-12 col-sm-3" id="general">
-            <p id="image"/>
-            <p>ID: <span id="id"/></span>
-        </div>
-        <div class="col-xs-12 col-sm-3" id="gathering">
-            <h3>Gathering</h3>
-            <p id="gatherReq"></p>
-            <p id="gatherTime"></p>
-            <p id="yield"></p>
-            <ul id="yieldList"></ul>
-        </div>
-        <div class="col-xs-12 col-sm-3" id="construction">
-            <h3>Construction</h3>
-            <p id="constructionReq"></p>
-            <p id="constructionTime"></p>
-        </div>
-        <div class="col-xs-12 col-sm-3" id="transformation">
-            <h3>Transformation</h3>
-            <p id="transformTarget"></p>
-            <p id="transformTime"></p>
-        </div>
-        <div class="col-xs-12 col-sm-3" id="unlocks">
-            <h3>Locked</h3>
-            <p>Construction can be unlocked by:</p>
-            <ul id="unlockList"></ul>
+        <div class="container col-xs-12 col-md-10">
+            <div class="col-xs-12">
+                <h1 id="title"></h1>
+            </div>
+            <div class="col-xs-12 col-md-3" id="general">
+                <p id="image"/>
+                <p>ID: <span id="id"/></span>
+            </div>
+            <div class="col-xs-12 col-md-3" id="gathering">
+                <h3>Gathering</h3>
+                <p id="gatherReq"></p>
+                <p id="gatherTime"></p>
+                <p id="yield"></p>
+                <ul id="yieldList"></ul>
+            </div>
+            <div class="col-xs-12 col-md-3" id="construction">
+                <h3>Construction</h3>
+                <p id="constructionReq"></p>
+                <p id="constructionTime"></p>
+            </div>
+            <div class="col-xs-12 col-md-3" id="transformation">
+                <h3>Transformation</h3>
+                <p id="transformTarget"></p>
+                <p id="transformTime"></p>
+            </div>
+            <div class="col-xs-12 col-md-3" id="unlocks">
+                <h3>Locked</h3>
+                <p>Construction can be unlocked by:</p>
+                <ul id="unlockList"></ul>
+            </div>
         </div>
     </div>
     

@@ -9,11 +9,21 @@
 <body>
 
     <div class="container" id="topLevelContainer">
-        <div class="col-xs-12">
-            <h1 id="title"></h1>
+        <div class="col-xs-12 col-md-2" id="navBar">
+            <a class="btn btn-primary col-xs-2 col-md-12" href="techTree.html">Tech Tree</a>
+            <a class="btn btn-primary col-xs-2 col-md-12" href="objects.html">Objects</a>
+            <a class="btn btn-primary col-xs-2 col-md-12" href="items.html">Items</a>
+            <a class="disabled btn btn-primary col-xs-2 col-md-12" href="npcs.html">NPCs</a>
+            <a class="disabled btn btn-primary col-xs-2 col-md-12" href="tags.html">Tags</a>
         </div>
-        <div class="col-xs-12" id="payload">
-            <p>ID: <span id="id"/></span>
+        <div class="container col-xs-12 col-md-10">
+            <div class="col-xs-12">
+                <h1 id="title"></h1>
+            </div>
+            <div class="col-xs-12 col-md-3" id="general">
+                <p id="image"/>
+                <p>ID: <span id="id"/></span>
+            </div>
         </div>
     </div>
     
@@ -28,6 +38,7 @@
             document.title = item.name;
             $("#title").html(item.name);
             $("#id").html(item.id);
+            $("#image").html(imageNode(item));
         });
     </script>
 </body>

@@ -47,7 +47,7 @@ function imageNode(entry){
     return '<img src="images/' + entry.image + '.png"/>';
 }
 
-function displayAsSeconds(ms){
+function displayTimeAsHMS(ms){
     var displayString = "";
     var seconds = parseInt(ms) / 1000.0;
     if (seconds >= 3600){
@@ -63,9 +63,4 @@ function displayAsSeconds(ms){
     if (seconds > 0)
         displayString += seconds + "s"
     return displayString;
-}
-
-function compileUnlockListItem(lock){
-    console.log(lock);
-    return "";
 }
