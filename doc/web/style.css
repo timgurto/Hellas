@@ -1,6 +1,18 @@
+html{
+    background: #222;
+    background-image: url('background.png'), url('background.png');
+    background-position: left top, right top;
+    background-repeat: no-repeat;
+}
+
 body{
-    background-color: #222;
+    background-color: transparent;
+    //background-color: #222;
     color: #bbb;
+}
+
+.container{
+    background-color: #222;
 }
 
 a {
@@ -9,4 +21,8 @@ a {
 
 a:hover {
     color: white;
+}
+
+#topLevelContainer{
+    height:100%;
 }
