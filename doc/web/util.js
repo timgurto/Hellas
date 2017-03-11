@@ -48,5 +48,19 @@ function imageNode(entry){
 }
 
 function displayAsSeconds(ms){
-    return "" + parseInt(ms) / 1000.0 + "s";
+    var displayString = "";
+    var seconds = parseInt(ms) / 1000.0;
+    if (seconds >= 3600){
+        var hours = parseInt(seconds / 3600);
+        seconds = seconds % 3600;
+        displayString += hours + "h";
+    }
+    if (seconds >= 60){
+        var minutes = parseInt(seconds / 60);
+        seconds = seconds % 60;
+        displayString += minutes + "m";
+    }
+    if (seconds > 0)
+        displayString += seconds + "s"
+    return displayString;
 }

@@ -11,14 +11,26 @@
         <div class="col-xs-12">
             <h1 id="title"></h1>
         </div>
-        <div class="col-xs-12 col-sm-3" id="payload">
-            <p>ID: <span id="id"/></span>
+        <div class="col-xs-12 col-sm-3" id="general">
             <p id="image"/>
-            <h3 id="gathering">Gathering</h3>
+            <p>ID: <span id="id"/></span>
+        </div>
+        <div class="col-xs-12 col-sm-3" id="gathering">
+            <h3>Gathering</h3>
             <p id="gatherReq"></p>
             <p id="gatherTime"></p>
             <p id="yield"></p>
             <ul id="yieldList"></ul>
+        </div>
+        <div class="col-xs-12 col-sm-3" id="construction">
+            <h3>Construction</h3>
+            <p id="constructionReq"></p>
+            <p id="constructionTime"></p>
+        </div>
+        <div class="col-xs-12 col-sm-3" id="transformation">
+            <h3>Transformation</h3>
+            <p id="transformTarget"></p>
+            <p id="transformTime"></p>
         </div>
     </div>
     
@@ -37,20 +49,47 @@
             $("#image").html(imageNode(obj));
             
             // Gathering
-            if ("gatherReq" in obj)
-                $("#gatherReq").html("Requires " + obj.gatherReq);
-            if ("gatherTime" in obj)
-                $("#gatherTime").html("Takes " + displayAsSeconds(obj.gatherTime));
-            if (obj.yield.length > 0)
-                $("#yield").html("Yields:");
-            for (var i = 0; i < obj.yield.length; ++i){
-                var yieldID = obj.yield[i];
-                var linkAddress = "item.html?id=" + yieldID;
-                var yieldItem = findItem(yieldID);
-                console.log(yieldItem);
-                $("#yieldList").append( '<li><a href="' + linkAddress + '">' + imageNode(yieldItem) + yieldItem.name + "</a></li>" );
+            if (!("gatherReq" in obj || "gatherTime" in obj || "yields" in obj))
+                $("#gathering").hide();
+            else {
+                if ("gatherReq" in obj)
+                    $("#gatherReq").html("Required tool: " + obj.gatherReq);
+                if ("gatherTime" in obj)
+                    $("#gatherTime").html("Takes " + displayAsSeconds(obj.gatherTime));
+                if ("yield" in obj)
+                    $("#yield").html("Yields:");
+                for (var i = 0; i < obj.yield.length; ++i){
+                    var yieldID = obj.yield[i];
+                    var linkAddress = "item.html?id=" + yieldID;
+                    var yieldItem = findItem(yieldID);
+                    $("#yieldList").append( '<li><a href="' + linkAddress + '">' + imageNode(yieldItem) + yieldItem.name + "</a></li>" );
+                }
             }
             
+            // Construction
+            if (!("constructionReq" in obj || "constructionTime" in obj))
+                $("#construction").hide();
+            else{
+                if ("constructionReq" in obj)
+                    $("#constructionReq").html("Required tool: " + obj.constructionReq);
+                if ("constructionTime" in obj)
+                    $("#constructionTime").html("Takes " + displayAsSeconds(obj.constructionTime));
+            }
+            
+            // Transformation
+            if (!("transformID" in obj))
+                $("#transformation").hide();
+            else{
+                var futureObject = findObject(obj.transformID)
+                console.log(futureObject);
+                var linkAddress = "object.html?id=" + obj.transformID;
+                var transformTargetHTML =
+                        'Transforms into: <a href="' + linkAddress + '">'
+                        + futureObject.name + imageNode(futureObject) + "</a>";
+                $("#transformTarget").html(transformTargetHTML);
+                if ("transformTime" in obj)
+                    $("#transformTime").html("Takes " + displayAsSeconds(obj.transformTime));
+            }
             
         });
     </script>

@@ -24,6 +24,7 @@ enum EdgeType{
     GATHER,
     CONSTRUCT_FROM_ITEM,
     GATHER_REQ,
+    CONSTRUCTION_REQ,
     LOOT,
     INGREDIENT,
     TRANSFORM,
@@ -65,6 +66,7 @@ int main(int argc, char **argv){
     edgeColors[UNLOCK_ON_GATHER] = 3;
     edgeColors[LOOT] = 4;
     edgeColors[GATHER_REQ] = 5;
+    edgeColors[CONSTRUCTION_REQ] = 5;
     // Strong: dark colors
     edgeColors[TRANSFORM] = 6;
     edgeColors[UNLOCK_ON_CONSTRUCT] = 6;
@@ -166,6 +168,16 @@ int main(int argc, char **argv){
                 jw.addAttribute("gatherReq", s);
             }
 
+            if (xr.findAttr(elem, "constructionReq", s)){
+                auto it = tools.find(s);
+                if (it == tools.end()){
+                    std::cerr << "Tool class is missing archetype: " << s << std::endl;
+                    edges.insert(Edge(s, label, CONSTRUCTION_REQ));
+                } else
+                    edges.insert(Edge(it->second, label, CONSTRUCTION_REQ));
+                jw.addAttribute("constructionReq", s);
+            }
+
             std::set<std::string> yields;
             for (auto yield : xr.getChildren("yield", elem)) {
                 if (!xr.findAttr(yield, "id", s))
@@ -189,10 +201,14 @@ int main(int argc, char **argv){
             }
 
             auto transform = xr.findChild("transform", elem);
-            if (transform && xr.findAttr(transform, "id", s))
+            if (transform && xr.findAttr(transform, "id", s)){
                 edges.insert(Edge(label, "object_" + s, TRANSFORM));
+                jw.addAttribute("transformID", s);
+                if (xr.findAttr(transform, "time", s)) jw.addAttribute("transformTime", s);
+            }
             
             if (xr.findAttr(elem, "gatherTime", s)) jw.addAttribute("gatherTime", s);
+            if (xr.findAttr(elem, "constructionTime", s)) jw.addAttribute("constructionTime", s);
         }
     }
 
