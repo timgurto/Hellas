@@ -42,7 +42,7 @@ doc/crafting.svg
 doc/TreeGen/tree.png
 doc/TreeGen/tree.svg
 Hellas Client/*
-doc/TreeGen/images/*.png
+doc/web/images/*.png
 Sounds/temp/*
 doc/web/objects.js
 doc/web/items.js
