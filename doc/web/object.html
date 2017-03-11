@@ -11,10 +11,13 @@
         <div class="col-xs-12">
             <h1 id="title"></h1>
         </div>
-        <div class="col-xs-12" id="payload">
+        <div class="col-xs-12 col-sm-3" id="payload">
             <p>ID: <span id="id"/></span>
-            
-            <h4>Gathering<span id="gatherReq"></span></h4>
+            <p id="image"/>
+            <h3 id="gathering">Gathering</h3>
+            <p id="gatherReq"></p>
+            <p id="gatherTime"></p>
+            <p id="yield"></p>
             <ul id="yieldList"></ul>
         </div>
     </div>
@@ -31,10 +34,24 @@
             document.title = obj.name;
             $("#title").html(obj.name);
             $("#id").html(obj.id);
-            for (var i = 0; i < obj.yield.length; ++i)
-                $("#yieldList").append( "<li>" + obj.yield[i] + "</li>" );
+            $("#image").html(imageNode(obj));
+            
+            // Gathering
             if ("gatherReq" in obj)
-                $("#gatherReq").html(" (requires " + " " + obj.gatherReq + ")");
+                $("#gatherReq").html("Requires " + obj.gatherReq);
+            if ("gatherTime" in obj)
+                $("#gatherTime").html("Takes " + displayAsSeconds(obj.gatherTime));
+            if (obj.yield.length > 0)
+                $("#yield").html("Yields:");
+            for (var i = 0; i < obj.yield.length; ++i){
+                var yieldID = obj.yield[i];
+                var linkAddress = "item.html?id=" + yieldID;
+                var yieldItem = findItem(yieldID);
+                console.log(yieldItem);
+                $("#yieldList").append( '<li><a href="' + linkAddress + '">' + imageNode(yieldItem) + yieldItem.name + "</a></li>" );
+            }
+            
+            
         });
     </script>
 </body>

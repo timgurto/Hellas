@@ -42,3 +42,11 @@ function findByID(collection, id){
     }
     return {};
 }
+
+function imageNode(entry){
+    return '<img src="images/' + entry.image + '.png"/>';
+}
+
+function displayAsSeconds(ms){
+    return "" + parseInt(ms) / 1000.0 + "s";
+}

@@ -121,6 +121,7 @@ int main(int argc, char **argv){
             if (!xr.findAttr(elem, "id", id))
                 continue;
             std::string label = "item_" + id;
+            jw.addAttribute("image", label);
             jw.addAttribute("id", id);
 
             std::string s;
@@ -146,6 +147,7 @@ int main(int argc, char **argv){
             if (!xr.findAttr(elem, "id", id))
                 continue;
             std::string label = "object_" + id;
+            jw.addAttribute("image", label);
             jw.addAttribute("id", id);
 
             std::string s;
@@ -189,6 +191,8 @@ int main(int argc, char **argv){
             auto transform = xr.findChild("transform", elem);
             if (transform && xr.findAttr(transform, "id", s))
                 edges.insert(Edge(label, "object_" + s, TRANSFORM));
+            
+            if (xr.findAttr(elem, "gatherTime", s)) jw.addAttribute("gatherTime", s);
         }
     }
 
@@ -391,13 +395,13 @@ int main(int argc, char **argv){
             SDL_BlitScaled(surface, nullptr, canvas, &rect);
 
             // Save new image
-            IMG_SavePNG(canvas, ("images/" + node.first + ".png").c_str());
+            IMG_SavePNG(canvas, ("../web/images/" + node.first + ".png").c_str());
         }
 
         std::string
             id = node.first,
             name = node.second,
-            image = "<img src=\"images/" + (imageExists ? node.first : "error") + ".png\"/>",
+            image = "<img src=\"../web/images/" + (imageExists ? node.first : "error") + ".png\"/>",
             fullNode = node.first + " [shape=" + shape + " label=<<table border='0' cellborder='0'><tr><td>" + image + "</td></tr><tr><td>" + name + "</td></tr></table>>]";
         f << fullNode << std::endl;
     }
