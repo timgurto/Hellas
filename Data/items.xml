@@ -51,7 +51,7 @@ Client only:
 <item id="tannin"       name="Tannin"           constructs="tannin" />
 <item id="lumber"       name="Lumber"           constructs="post"           stackSize="10" />
 
-<item id="figSeeds"     name="Fig Seeds"        constructs="figCrop"        stackSize="10"/>
+<item id="figSeeds"     name="Fig Seeds"        constructs="figTree"        stackSize="10"/>
 <item id="flaxSeeds"    name="Flax Seeds"       constructs="flaxCrop"       stackSize="10"/>
 
 <item id="tinPipe"      name="Tin Pipe" />

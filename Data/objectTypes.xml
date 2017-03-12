@@ -187,19 +187,19 @@ Server only:
 </objectType>
 
 <objectType
-    id="figCrop" name="Fig Crop"
+    id="figTree" name="Fig Tree"
     constructionTime="10000"
     constructionReq = "hoe" >
-    <transform id="figCropRipe" time="20000"/>
+    <transform id="figTreeRipe" time="20000"/>
 </objectType>
 <objectType
-    id="figCropRipe" name="Fig Crop (Ripe)"
+    id="figTreeRipe" name="Fig Tree (Ripe)"
     canGather="1" gatherTime="1000" >
     <yield id="fig" initialMean="5" initialSD="1" />
     <yield id="figSeeds" initialMean="1.2" initialSD="0.5" />
 </objectType>
 
-<objectType id="flaxCrop" name="Flax Crop"
+<objectType id="flaxCrop" name="Flax Farm"
     xDrawOffset="-20"
     yDrawOffset="-34"
     isFlat="1"
@@ -217,7 +217,7 @@ Server only:
         <progress image="flaxCrop7" />
     </transform>
 </objectType>
-<objectType id="flaxCropRipe" name="Flax Crop (Ripe)"
+<objectType id="flaxCropRipe" name="Flax Farm (Ripe)"
     xDrawOffset="-20"
     yDrawOffset="-34"
     isFlat="1"
