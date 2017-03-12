@@ -111,6 +111,7 @@ Client only:
 
 <item id="skullCap" name="Skull Cap" gearSlot="0" dropSound="leather" >
     <stats health="3" />
+    <offset x="-3" y="-4" />
 </item>
 
 <item id="cloak" name="Cloak" gearSlot="3" >
