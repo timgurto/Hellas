@@ -34,8 +34,10 @@
                 <h3>Construction</h3>
                 <p id="constructionReq"></p>
                 <p id="constructionTime"></p>
-                <p id="constructsFromItem">Can be constructed from item:</p>
+                <p id="constructsFromItem">Constructed from item:</p>
                 <ul id="constructionItemList"></ul>
+                <p id="constructsFromMats">Constructed with building materials:</p>
+                <ul id="constructionMatsList"></ul>
             </div>
             <div class="col-xs-12 col-md-4" id="transformation">
                 <h3>Transformation</h3>
@@ -81,18 +83,29 @@
             }
             
             // Construction
-            if (!("constructionReq" in obj || "constructionTime" in obj))
+            var itemsThatConstructThisObject = getItemsThatConstructObject(obj.id);
+            if (!("constructionReq" in obj || "constructionTime" in obj || getItemsThatConstructObject.length > 0 || "materials" in obj))
                 $("#construction").hide();
             else{
                 if ("constructionReq" in obj)
                     $("#constructionReq").html("Required tool: " + obj.constructionReq);
-                var itemsThatConstructThisObject = getItemsThatConstructObject(obj.id);
                 if (itemsThatConstructThisObject.length == 0)
                     $("#constructsFromItem").hide();
                 else{
                     for (var i = 0; i < itemsThatConstructThisObject.length; ++i){
                         var item = itemsThatConstructThisObject[i];
                         $("#constructionItemList").append('<li>' + itemLink(item) + '</li');
+                    }
+                }
+                if (!("materials" in obj))
+                    $("#constructsFromMats").hide();
+                else{
+                    for (var i = 0; i < obj.materials.length; ++i){
+                        var item = findItem(obj.materials[i].id);
+                        $("#constructionMatsList").append('<li>'
+                                                            + obj.materials[i].quantity + '&times; '
+                                                            + itemLink(item)
+                                                        + '</li');
                     }
                 }
                 if ("constructionTime" in obj)
