@@ -34,6 +34,8 @@
                 <h3>Construction</h3>
                 <p id="constructionReq"></p>
                 <p id="constructionTime"></p>
+                <p id="constructsFromItem">Can be constructed from item:</p>
+                <ul id="constructionItemList"></ul>
             </div>
             <div class="col-xs-12 col-md-3" id="transformation">
                 <h3>Transformation</h3>
@@ -86,6 +88,15 @@
             else{
                 if ("constructionReq" in obj)
                     $("#constructionReq").html("Required tool: " + obj.constructionReq);
+                var itemsThatConstructThisObject = getItemsThatConstructObject(obj.id);
+                if (itemsThatConstructThisObject.length == 0)
+                    $("#constructsFromItem").hide();
+                else{
+                    for (var i = 0; i < itemsThatConstructThisObject.length; ++i){
+                        var item = itemsThatConstructThisObject[i];
+                        $("#constructionItemList").append('<li><a href="item.html?id=' + item.id + '">' + item.name + '</a></li>')
+                    }
+                }
                 if ("constructionTime" in obj)
                     $("#constructionTime").html("Takes " + displayTimeAsHMS(obj.constructionTime));
             }
@@ -150,6 +161,15 @@
                     + '<a href="' + linkAddress + '">' + source.name + '</a>'
                     + suffixByType[lock.type] +  '</li>';
             return listText;
+        }
+        
+        function getItemsThatConstructObject(objectID){
+            var itemsList = [];
+            for (var i = 0; i < items.length; ++i)
+                if ("constructs" in items[i] && items[i].constructs == objectID)
+                    itemsList.push(items[i]);
+            console.log(itemsList);
+            return itemsList;
         }
     </script>
 </body>

@@ -133,7 +133,8 @@ int main(int argc, char **argv){
             }
 
             if (xr.findAttr(elem, "constructs", s)){
-                    edges.insert(Edge(label, "object_" + s, CONSTRUCT_FROM_ITEM));
+                edges.insert(Edge(label, "object_" + s, CONSTRUCT_FROM_ITEM));
+                jw.addAttribute("constructs", s);
             }
         }
     }
