@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Items</title>
+    <title>Tags</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
     <link href="style.css" rel="stylesheet" type="text/css" />
@@ -17,10 +17,11 @@
             <a class="btn btn-primary col-xs-2 col-md-12" href="tags.html">Tags</a>
         </div>
         <div class="container col-xs-12 col-sm-10">
-            <h1>Items</h1>
-            <div class="col-xs-12 col-md-4" id="col1"></div>
-            <div class="col-xs-12 col-md-4" id="col2"></div>
-            <div class="col-xs-12 col-md-4" id="col3"></div>
+            <h1>Tags</h1>
+            <div class="col-xs-12 col-sm-3" id="col1"></div>
+            <div class="col-xs-12 col-sm-3" id="col2"></div>
+            <div class="col-xs-12 col-sm-3" id="col3"></div>
+            <div class="col-xs-12 col-sm-3" id="col4"></div>
         </div>
     </div>
     
@@ -31,28 +32,39 @@
     <script type="text/javascript">    
         $(document).ready(function(){
         
-            items.sort(sortByName);
+            var tags = new Set([]);
             
-            var itemsPerColumn = parseInt(items.length / 3);
-            var itemsInThisColumn = 0;
+            for (object of objects){
+                if ("tags" in object)
+                    for (tag of object.tags)
+                        tags.add(tag);
+            }
+            
+            for (item of items){
+                if ("tags" in item)
+                    for (tag of item.tags)
+                        tags.add(tag);
+            }
+            
+            tags = Array.from(tags);
+            tags.sort();
+
+            var tagsPerColumn = parseInt(tags.length / 4);
+            var tagsInThisColumn = 0;
             var currentColumn = 1;
-            for (var i = 0; i != items.length; ++i){
-                var item = items[i];
+            for (var i = 0; i != tags.length; ++i){
+                var tag = tags[i];
                 var columnSelector = "#col" + currentColumn;
-                $(columnSelector).append('<p>' + itemLink(item) + '</p>');
+                $(columnSelector).append('<p>' + tagLink(tag) + '<p>');
                 
-                itemsInThisColumn += 1;
-                if (itemsInThisColumn >= itemsPerColumn){
+                tagsInThisColumn += 1;
+                if (tagsInThisColumn >= tagsPerColumn){
                     currentColumn += 1;
-                    itemsInThisColumn = 0;
+                    tagsInThisColumn = 0;
                 }
             }
             
         });
-    
-        function sortByName(a, b){
-            return a.name.localeCompare(b.name);
-        }
     </script>
 </body>
 
