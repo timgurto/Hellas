@@ -39,11 +39,7 @@
             for (var i = 0; i != objects.length; ++i){
                 var obj = objects[i];
                 var columnSelector = "#col" + currentColumn;
-                var objectEntry =
-                        '<p><a href="object.html?id=' + obj.id + '">'
-                        + imageNode(obj)
-                        + '<br>' + obj.name + '</a></p>'
-                $(columnSelector).append(objectEntry);
+                $(columnSelector).append('<p>' + objectLink(obj) + '<p>');
                 
                 objectsInThisColumn += 1;
                 if (objectsInThisColumn > objectsPerColumn){

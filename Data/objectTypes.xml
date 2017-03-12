@@ -156,13 +156,13 @@ Server only:
 <objectType
     id="palisadeEW" name="Palisade E/W" >
     <material id="log" quantity="8" />
-    <unlockedBy recipe="log" chance="0.05" />
+    <unlockedBy gather="log" chance="0.05" />
 </objectType>
 
 <objectType
     id="palisadeNS" name="Palisade N/S" >
     <material id="log" quantity="8" />
-    <unlockedBy recipe="log" chance="0.05" />
+    <unlockedBy gather="log" chance="0.05" />
 </objectType>
 
 <objectType

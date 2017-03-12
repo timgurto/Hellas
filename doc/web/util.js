@@ -64,3 +64,37 @@ function displayTimeAsHMS(ms){
         displayString += seconds + "s"
     return displayString;
 }
+
+function objectLink(object){
+    var linkHTML =
+        '<a href="object.html?id=' + object.id + '">'
+            + object.name
+            + '<br>' + imageNode(object)
+        + '</a>';
+    return linkHTML;
+}
+
+function itemLink(item){
+    var linkHTML = 
+        '<a href="item.html?id=' + item.id + '">'
+            + imageNode(item)
+            + ' ' + item.name
+        + '</a>';
+    return linkHTML;
+}
+
+function compileUnlockListItem(lock){
+    console.log(lock);
+    var link;
+    if (linkPageByType[lock.type] == "item")
+        link = itemLink(findItem(lock.sourceID));
+    else
+        link = objectLink(findObject(lock.sourceID));
+    
+    var linkAddress = linkPageByType[lock.type] + ".html?id=" + lock.sourceID;
+    var listText =
+            '<li>' + prefixByType[lock.type]
+            + '<a href="' + linkAddress + '">' + link + '</a>'
+            + suffixByType[lock.type] +  '</li>';
+    return listText;
+}

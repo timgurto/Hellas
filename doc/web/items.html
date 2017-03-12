@@ -39,11 +39,7 @@
             for (var i = 0; i != items.length; ++i){
                 var item = items[i];
                 var columnSelector = "#col" + currentColumn;
-                var itemEntry =
-                        '<p><a href="item.html?id=' + item.id + '">'
-                        + imageNode(item)
-                        + ' ' + item.name + '</a></p>'
-                $(columnSelector).append(itemEntry);
+                $(columnSelector).append('<p>' + itemLink(item) + '</p>');
                 
                 itemsInThisColumn += 1;
                 if (itemsInThisColumn > itemsPerColumn){
