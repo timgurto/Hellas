@@ -206,7 +206,7 @@ int main(int argc, char **argv){
                     unlocksForJson.insert("{type:\"acquire\", sourceID:\"" + s + "\"}");
                 }
             }
-            jw.addArrayAttribute("unlocks", unlocksForJson, true);
+            jw.addArrayAttribute("unlockedBy", unlocksForJson, true);
 
             auto transform = xr.findChild("transform", elem);
             if (transform && xr.findAttr(transform, "id", s)){

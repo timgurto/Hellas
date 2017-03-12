@@ -104,20 +104,18 @@
                 $("#transformation").hide();
             else{
                 var futureObject = findObject(obj.transformID)
-                console.log(futureObject);
                 var linkAddress = "object.html?id=" + obj.transformID;
                 $("#transformTarget").html('Transforms into:<br>' + objectLink(futureObject));
                 if ("transformTime" in obj)
                     $("#transformTime").html("Takes " + displayTimeAsHMS(obj.transformTime));
             }
             
-            
             // Unlocks
-            if (!("unlocks" in obj))
+            if (!("unlockedBy" in obj))
                 $("#unlocks").hide();
             else{
-                for (var i = 0; i < obj.unlocks.length; ++i){
-                    var listItemHTML = compileUnlockListItem(obj.unlocks[i]);
+                for (var i = 0; i < obj.unlockedBy.length; ++i){
+                    var listItemHTML = compileUnlockListItem(obj.unlockedBy[i]);
                     $("#unlockList").append(listItemHTML);
                 }
             }
@@ -148,7 +146,6 @@
             for (var i = 0; i < items.length; ++i)
                 if ("constructs" in items[i] && items[i].constructs == objectID)
                     itemsList.push(items[i]);
-            console.log(itemsList);
             return itemsList;
         }
     </script>
