@@ -31,9 +31,15 @@
                 <h3>Construction</h3>
                 <p id="constructs"></p>
             </div>
+            <div class="col-xs-12 col-md-4" id="gear">
+                <h3>Gear</h3>
+                <p id="gearSlot"></p>
+                <p id="stats">Stats:</p>
+                <ul id="statsList"></ul>
+            </div>
         </div>
     </div>
-    
+
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="items.js"></script>
     <script type="text/javascript" src="objects.js"></script>
@@ -41,18 +47,18 @@
     <script type="text/javascript">
         $(document).ready(function(){
             var item = findItem();
-            
+
             console.log(item);
             document.title = item.name;
             $("#title").html(item.name);
             $("#id").html(item.id);
             $("#image").html(imageNode(item));
-            
+
             if ("stackSize" in item)
                 $("#stackSize").html("Stack size: " + item.stackSize);
             else
                 $("#stackSize").hide();
-                
+
             // Tags
             if (!("tags" in item))
                 $("#tags").hide();
@@ -60,12 +66,38 @@
                 for (var i = 0; i < item.tags.length; ++i)
                     $("#tagsList").append('<li>' + tagLink(item.tags[i]) + '</li>');
             }
-            
+
             // Construction
             if ("constructs" in item)
                 $("#constructs").html("Constructs:<br>" + objectLink(findObject(item.constructs)));
             else
                 $("#construction").hide();
+
+            // Gear
+            if ("gearSlot" in item){
+                var gearSlotName = {
+                    0: "Head",
+                    1: "Jewelry",
+                    2: "Body",
+                    3: "Shoulders",
+                    4: "Hands",
+                    5: "Feet",
+                    6: "Right hand",
+                    7: "Left hand",
+                };
+                $("#gearSlot").html("Slot: " + gearSlotName[item.gearSlot]);
+                
+                if (!("health" in item || "attack" in item || "speed" in item || "attackSpeed" in item))
+                    $("#stats").hide();
+                else{
+                    if ("health" in item)       $("#statsList").append('<li>+' + item.health + ' health</li>');
+                    if ("attack" in item)       $("#statsList").append('<li>+' + item.attack + ' attack</li>');
+                    if ("speed" in item)        $("#statsList").append('<li>' + scalarToPercent(item.speed) + ' speed</li>');
+                    if ("attackTime" in item)   $("#statsList").append('<li>' + scalarToPercent(1 / item.attackTime) + ' attack speed</li>');
+                        
+                }
+            } else
+                $("#gear").hide();
         });
     </script>
 </body>

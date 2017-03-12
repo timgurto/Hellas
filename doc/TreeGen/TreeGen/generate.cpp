@@ -137,14 +137,21 @@ int main(int argc, char **argv){
                 jw.addAttribute("constructs", s);
             }
 
-            if (xr.findAttr(elem, "stackSize", s))
-                jw.addAttribute("stackSize", s);
-
             std::set<std::string> tags;
             for (auto tag : xr.getChildren("tag", elem))
                 if (xr.findAttr(tag, "name", s))
                     tags.insert(s);
             jw.addArrayAttribute("tags", tags);
+            
+            if (xr.findAttr(elem, "stackSize", s)) jw.addAttribute("stackSize", s);
+            if (xr.findAttr(elem, "gearSlot", s)) jw.addAttribute("gearSlot", s);
+
+            for (auto stat : xr.getChildren("stats", elem)) {
+                if (xr.findAttr(stat, "health", s)) jw.addAttribute("health", s);
+                if (xr.findAttr(stat, "attack", s)) jw.addAttribute("attack", s);
+                if (xr.findAttr(stat, "speed", s)) jw.addAttribute("speed", s);
+                if (xr.findAttr(stat, "attackTime", s)) jw.addAttribute("attackTime", s);
+            }
         }
     }
 

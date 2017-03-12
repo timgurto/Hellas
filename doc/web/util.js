@@ -102,3 +102,9 @@ function compileUnlockListItem(lock){
             + suffixByType[lock.type] +  '</li>';
     return listText;
 }
+
+function scalarToPercent(scalar){
+    var percentage = Math.round((parseFloat(scalar) - 1) * 100);
+    var prefix = percentage < 0 ? '-' : '+';
+    return prefix + percentage + '%';
+}
