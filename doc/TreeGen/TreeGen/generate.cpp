@@ -227,6 +227,12 @@ int main(int argc, char **argv){
             
             if (xr.findAttr(elem, "gatherTime", s)) jw.addAttribute("gatherTime", s);
             if (xr.findAttr(elem, "constructionTime", s)) jw.addAttribute("constructionTime", s);
+
+            std::set<std::string> tags;
+            for (auto tag : xr.getChildren("tag", elem))
+                if (xr.findAttr(tag, "name", s))
+                    tags.insert(s);
+            jw.addArrayAttribute("tags", tags);
         }
     }
 

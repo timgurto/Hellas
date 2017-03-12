@@ -83,6 +83,10 @@ function itemLink(item){
     return linkHTML;
 }
 
+function tagLink(tag){
+    return tag;
+}
+
 function compileUnlockListItem(lock){
     console.log(lock);
     var link;
