@@ -32,30 +32,44 @@
     <script type="text/javascript">    
         $(document).ready(function(){
         
-            var tags = new Set([]);
+            var tags = {}
             
             for (object of objects){
                 if ("tags" in object)
-                    for (tag of object.tags)
-                        tags.add(tag);
+                    for (tag of object.tags){
+                        if (tag in tags)
+                            tags[tag] += 1;
+                        else
+                            tags[tag] = 1;
+                    }
             }
             
             for (item of items){
                 if ("tags" in item)
                     for (tag of item.tags)
-                        tags.add(tag);
+                        if (tag in tags)
+                            tags[tag] += 1;
+                        else
+                            tags[tag] = 1;
             }
             
-            tags = Array.from(tags);
-            tags.sort();
+            console.log(tags);
+            
+            var keys = [];
+            for (var tag in tags)
+                keys.push(tag);
 
-            var tagsPerColumn = parseInt(tags.length / 4);
+            var tagsPerColumn = parseInt(keys.length / 4);
             var tagsInThisColumn = 0;
             var currentColumn = 1;
-            for (var i = 0; i != tags.length; ++i){
-                var tag = tags[i];
+            
+            for (tag of keys){
                 var columnSelector = "#col" + currentColumn;
-                $(columnSelector).append('<p>' + tagLink(tag) + '<p>');
+                var entry = '<p>' + tagLink(tag);
+                if (tags[tag] > 1)
+                    entry += ' (' + tags[tag] + ')';
+                entry += '</p>';
+                $(columnSelector).append(entry);
                 
                 tagsInThisColumn += 1;
                 if (tagsInThisColumn >= tagsPerColumn){
