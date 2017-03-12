@@ -41,6 +41,11 @@
                 <p id="constructsFromMats">Constructed with building materials:</p>
                 <ul id="constructionMatsList"></ul>
             </div>
+            <div class="col-xs-12 col-md-4" id="deconstruction">
+                <h3>Deconstruction</h3>
+                <p id="deconstructs"></p>
+                <p id="deconstructionTime"></p>
+            </div>
             <div class="col-xs-12 col-md-4" id="transformation">
                 <h3>Transformation</h3>
                 <p id="transformTarget"></p>
@@ -59,6 +64,10 @@
                 <h3>Merchant</h3>
                 <p id="merchantSlots"></p>
                 <p id="bottomlessMerchant">Bottomless merchant, meaning the prices paid to it disappear, and the items bought from it are created from nothing.</p>
+            </div>
+            <div class="col-xs-12 col-md-4" id="vehicle">
+                <h3>Vehicle</h3>
+                <p>This object is a vehicle.</p>
             </div>
         </div>
     </div>
@@ -131,6 +140,34 @@
                     $("#constructionTime").html("Takes " + displayTimeAsHMS(obj.constructionTime));
             }
             
+            // Deconstruction
+            if (!("deconstructs" in obj))
+                $("#deconstruction").hide();
+            else{
+                $("#deconstructs").html("Can be dismantled into " + itemLink(findItem(obj.deconstructs)));
+                if ("deconstructionTime" in obj)
+                    $("#deconstructionTime").html("Takes " + displayTimeAsHMS(obj.deconstructionTime));
+                else{
+                    for (var i = 0; i < itemsThatConstructThisObject.length; ++i){
+                        var item = itemsThatConstructThisObject[i];
+                        $("#constructionItemList").append('<li>' + itemLink(item) + '</li');
+                    }
+                }
+                if (!("materials" in obj))
+                    $("#constructsFromMats").hide();
+                else{
+                    for (var i = 0; i < obj.materials.length; ++i){
+                        var item = findItem(obj.materials[i].id);
+                        $("#constructionMatsList").append('<li>'
+                                                            + obj.materials[i].quantity + '&times; '
+                                                            + itemLink(item)
+                                                        + '</li');
+                    }
+                }
+                if ("constructionTime" in obj)
+                    $("#constructionTime").html("Takes " + displayTimeAsHMS(obj.constructionTime));
+            }
+            
             // Transformation
             if (!("transformID" in obj))
                 $("#transformation").hide();
@@ -168,6 +205,10 @@
                 if (!("bottomlessMerchant" in obj))
                     $("#bottomlessMerchant").hide();
             }
+            
+            // Vehicle
+            if (!("isVehicle" in obj))
+                $("#vehicle").hide();
             
         });
 

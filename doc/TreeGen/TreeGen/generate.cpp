@@ -228,7 +228,10 @@ int main(int argc, char **argv){
             if (xr.findAttr(elem, "gatherTime", s)) jw.addAttribute("gatherTime", s);
             if (xr.findAttr(elem, "constructionTime", s)) jw.addAttribute("constructionTime", s);
             if (xr.findAttr(elem, "merchantSlots", s)) jw.addAttribute("merchantSlots", s);
-            if (xr.findAttr(elem, "bottomlessMerchant", s)) jw.addAttribute("bottomlessMerchant", s=="0" ? "false" : "true");
+            if (xr.findAttr(elem, "bottomlessMerchant", s) && s != "0") jw.addAttribute("bottomlessMerchant", "true");
+            if (xr.findAttr(elem, "isVehicle", s) && s != "0") jw.addAttribute("isVehicle", "true");
+            if (xr.findAttr(elem, "deconstructs", s)) jw.addAttribute("deconstructs", s);
+            if (xr.findAttr(elem, "deconstructionTime", s)) jw.addAttribute("deconstructionTime", s);
 
             std::set<std::string> tags;
             for (auto tag : xr.getChildren("tag", elem))
