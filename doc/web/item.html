@@ -23,12 +23,20 @@
             <div class="col-xs-12 col-md-4" id="general">
                 <p id="image"/>
                 <p>ID: <span id="id"/></span>
+                <p id="tags">Tags:</p>
+                <ul id="tagsList"></ul>
+                <p id="stackSize"></p>
+            </div>
+            <div class="col-xs-12 col-md-4" id="construction">
+                <h3>Construction</h3>
+                <p id="constructs"></p>
             </div>
         </div>
     </div>
     
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="items.js"></script>
+    <script type="text/javascript" src="objects.js"></script>
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -39,6 +47,25 @@
             $("#title").html(item.name);
             $("#id").html(item.id);
             $("#image").html(imageNode(item));
+            
+            if ("stackSize" in item)
+                $("#stackSize").html("Stack size: " + item.stackSize);
+            else
+                $("#stackSize").hide();
+                
+            // Tags
+            if (!("tags" in item))
+                $("#tags").hide();
+            else{
+                for (var i = 0; i < item.tags.length; ++i)
+                    $("#tagsList").append('<li>' + tagLink(item.tags[i]) + '</li>');
+            }
+            
+            // Construction
+            if ("constructs" in item)
+                $("#constructs").html("Constructs:<br>" + objectLink(findObject(item.constructs)));
+            else
+                $("#construction").hide();
         });
     </script>
 </body>

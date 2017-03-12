@@ -136,6 +136,15 @@ int main(int argc, char **argv){
                 edges.insert(Edge(label, "object_" + s, CONSTRUCT_FROM_ITEM));
                 jw.addAttribute("constructs", s);
             }
+
+            if (xr.findAttr(elem, "stackSize", s))
+                jw.addAttribute("stackSize", s);
+
+            std::set<std::string> tags;
+            for (auto tag : xr.getChildren("tag", elem))
+                if (xr.findAttr(tag, "name", s))
+                    tags.insert(s);
+            jw.addArrayAttribute("tags", tags);
         }
     }
 
