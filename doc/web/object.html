@@ -51,6 +51,15 @@
                 <p>Construction can be unlocked by:</p>
                 <ul id="unlockList"></ul>
             </div>
+            <div class="col-xs-12 col-md-4" id="container">
+                <h3>Container</h3>
+                <p id="containerSlots"></p>
+            </div>
+            <div class="col-xs-12 col-md-4" id="merchant">
+                <h3>Merchant</h3>
+                <p id="merchantSlots"></p>
+                <p id="bottomlessMerchant">Bottomless merchant, meaning the prices paid to it disappear, and the items bought from it are created from nothing.</p>
+            </div>
         </div>
     </div>
     
@@ -141,6 +150,23 @@
                     var listItemHTML = compileUnlockListItem(obj.unlockedBy[i]);
                     $("#unlockList").append(listItemHTML);
                 }
+            }
+            
+            // Container
+            if (!("containerSlots" in obj))
+                $("#container").hide();
+            else{
+                $("#containerSlots").html(obj.containerSlots + " slot" + (obj.containerSlots == 1 ? "" : "s"));
+            }
+            
+            // Merchant
+            if (!("merchantSlots" in obj || "bottomlessMerchant" in obj))
+                $("#merchant").hide();
+            else{
+                if ("merchantSlots" in obj)
+                    $("#merchantSlots").html(obj.merchantSlots + " slot" + (obj.merchantSlots == 1 ? "" : "s"));
+                if (!("bottomlessMerchant" in obj))
+                    $("#bottomlessMerchant").hide();
             }
             
         });

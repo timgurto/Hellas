@@ -227,12 +227,18 @@ int main(int argc, char **argv){
             
             if (xr.findAttr(elem, "gatherTime", s)) jw.addAttribute("gatherTime", s);
             if (xr.findAttr(elem, "constructionTime", s)) jw.addAttribute("constructionTime", s);
+            if (xr.findAttr(elem, "merchantSlots", s)) jw.addAttribute("merchantSlots", s);
+            if (xr.findAttr(elem, "bottomlessMerchant", s)) jw.addAttribute("bottomlessMerchant", s=="0" ? "false" : "true");
 
             std::set<std::string> tags;
             for (auto tag : xr.getChildren("tag", elem))
                 if (xr.findAttr(tag, "name", s))
                     tags.insert(s);
             jw.addArrayAttribute("tags", tags);
+
+            auto container = xr.findChild("container", elem);
+            if (container && xr.findAttr(container, "slots", s))
+                jw.addAttribute("containerSlots", s);
         }
     }
 
