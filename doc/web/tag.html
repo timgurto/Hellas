@@ -1,0 +1,64 @@
+<html>
+
+<head>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="container" id="topLevelContainer">
+        <div class="col-xs-12 col-md-2" id="navBar">
+            <a class="btn btn-primary col-xs-2 col-md-12" href="index.html">Tech Tree</a>
+            <a class="btn btn-primary col-xs-2 col-md-12" href="objects.html">Objects</a>
+            <a class="btn btn-primary col-xs-2 col-md-12" href="items.html">Items</a>
+            <a class="disabled btn btn-primary col-xs-2 col-md-12" href="npcs.html">NPCs</a>
+            <a class="btn btn-primary col-xs-2 col-md-12" href="tags.html">Tags</a>
+        </div>
+        <div class="container col-xs-12 col-md-10">
+            <div class="col-xs-12">
+                <h1><span id="title"></span> <small>(tag)</small></h1>
+            </div>
+            <div class="col-xs-12 col-md-4" id="objects">
+                <h3>Objects</h3>
+            </div>
+            <div class="col-xs-12 col-md-4" id="items">
+                <h3>Items</h3>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="items.js"></script>
+    <script type="text/javascript" src="objects.js"></script>
+    <script type="text/javascript" src="util.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var tag = getID();
+            
+            document.title = tag;
+            $("#title").html(tag);
+            
+            // Objects
+            var hideObjects = true;;
+            for (object of objects)
+                if ("tags" in object && $.inArray(tag, object.tags) != -1){
+                    $("#objects").append('<p>' + objectLink(object) + '</p>');
+                    hideObjects = false;
+                }
+            if (hideObjects) $("#objects").hide();
+            
+            // Items
+            var hideItems = true;;
+            for (item of items)
+                if ("tags" in item && $.inArray(tag, item.tags) != -1){
+                    $("#items").append('<p>' + itemLink(item) + '</p>');
+                hideItems = false;
+                }
+            if (hideItems) $("#items").hide();
+                    
+        });
+    </script>
+</body>
+
+</html>

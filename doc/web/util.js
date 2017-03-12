@@ -84,7 +84,11 @@ function itemLink(item){
 }
 
 function tagLink(tag){
-    return tag;
+    var linkHTML = 
+        '<a href="tag.html?id=' + tag + '">'
+            + tag
+        + '</a>';
+    return linkHTML;
 }
 
 function compileUnlockListItem(lock){
@@ -108,3 +112,10 @@ function scalarToPercent(scalar){
     var prefix = percentage < 0 ? '-' : '+';
     return prefix + percentage + '%';
 }
+    
+function sortByName(a, b){
+    return a.name.localeCompare(b.name);
+}
+
+objects.sort(sortByName);
+items.sort(sortByName);

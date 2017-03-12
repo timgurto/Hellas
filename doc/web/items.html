@@ -30,9 +30,6 @@
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript">    
         $(document).ready(function(){
-        
-            items.sort(sortByName);
-            
             var itemsPerColumn = parseInt(items.length / 3);
             var itemsInThisColumn = 0;
             var currentColumn = 1;
@@ -47,12 +44,7 @@
                     itemsInThisColumn = 0;
                 }
             }
-            
         });
-    
-        function sortByName(a, b){
-            return a.name.localeCompare(b.name);
-        }
     </script>
 </body>
 
