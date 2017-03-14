@@ -7,7 +7,7 @@ body {
 }
 
 .no-background {
-    background:none;
+    background-image:none;
 }
 
 .container, .container-fluid{
