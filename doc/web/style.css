@@ -1,17 +1,17 @@
-html{
-    background: #222;
+body {
+    background: #222222;
     background-image: url('background.png'), url('background.png');
     background-position: left top, right top;
     background-repeat: no-repeat;
+    color: #bbbbbb;
 }
 
-body{
-    background-color: transparent;
-    color: #bbb;
+.no-background {
+    background:none;
 }
 
 .container, .container-fluid{
-    background-color: #222;
+    background-color: #222222;
 }
 
 a {
