@@ -1,8 +1,9 @@
 <html>
 
 <head>
-    <title>Items</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Items</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
     <link href="style.css" rel="stylesheet" type="text/css" />
@@ -34,7 +35,7 @@
             for (var i = 0; i != items.length; ++i){
                 var item = items[i];
                 var columnSelector = "#col" + currentColumn;
-                var gearMarker = isGear(item) ? " &#128085;" : "";
+                var gearMarker = isGear(item) ? " &#9876;" : "";
                 $(columnSelector).append('<p>' + itemLink(item) + gearMarker + '</p>');
                 
                 itemsInThisColumn += 1;
