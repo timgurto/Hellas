@@ -54,6 +54,7 @@
             var keys = [];
             for (var tag in tags)
                 keys.push(tag);
+            keys.sort();
 
             var tagsPerColumn = parseInt(keys.length / 4);
             var tagsInThisColumn = 0;
