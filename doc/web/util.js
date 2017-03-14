@@ -121,5 +121,13 @@ function isGear(item){
     return "gearSlot" in item;
 }
 
-objects.sort(sortByName);
-items.sort(sortByName);
+function loadNavBar(){
+    $("#navBarGetsLoadedInHere").load("navBar.html");
+}
+
+function loadNavBarAndForceHorizontal(){
+    $("#navBarGetsLoadedInHere").load("navBar.html", function(){
+        $("#navBar").removeClass("col-sm-2");
+        $("#navBar").children().removeClass("col-sm-12");
+    });
+}

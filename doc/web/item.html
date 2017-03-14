@@ -10,13 +10,7 @@
 <body>
 
     <div class="container" id="topLevelContainer"> <!-- consider whether you need the id-->
-        <div class="col-xs-12 col-md-2" id="navBar">
-            <a class="btn btn-primary col-xs-2 col-md-12" href="index.html">Tech Tree</a>
-            <a class="btn btn-primary col-xs-2 col-md-12" href="objects.html">Objects</a>
-            <a class="btn btn-primary col-xs-2 col-md-12" href="items.html">Items</a>
-            <a class="disabled btn btn-primary col-xs-2 col-md-12" href="npcs.html">NPCs</a>
-            <a class="btn btn-primary col-xs-2 col-md-12" href="tags.html">Tags</a>
-        </div>
+        <span id="navBarGetsLoadedInHere"></span>
         <div class="container col-xs-12 col-md-10">
             <div class="col-xs-12">
                 <h1><span id="title"></span> <small>(item)</small></h1>
@@ -47,6 +41,8 @@
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
+            loadNavBar();
+        
             var item = findItem();
 
             document.title = item.name;

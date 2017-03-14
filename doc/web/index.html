@@ -13,13 +13,7 @@
 
 <body class="no-background">
     <div class="container-fluid" id="topLevelContainer">
-        <div class="col-xs-12" id="navBar">
-            <a class="btn btn-primary col-xs-2" href="index.html">Tech Tree</a>
-            <a class="btn btn-primary col-xs-2" href="objects.html">Objects</a>
-            <a class="btn btn-primary col-xs-2" href="items.html">Items</a>
-            <a class="disabled btn btn-primary col-xs-2" href="npcs.html">NPCs</a>
-            <a class="btn btn-primary col-xs-2" href="tags.html">Tags</a>
-        </div>
+        <span id="navBarGetsLoadedInHere"></span>
         <div class="col-xs-12">
             <h1>Hellas<br><small>Game Data</small></h1>
             <img src="tree.svg" usemap="#treeMap" />
@@ -28,8 +22,11 @@
     </div>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript">    
         $(document).ready(function(){
+            loadNavBarAndForceHorizontal();
+            
             $("#treeMap").load("tree.map area");
         });
     </script>
