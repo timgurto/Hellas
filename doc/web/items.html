@@ -37,7 +37,8 @@
             for (var i = 0; i != items.length; ++i){
                 var item = items[i];
                 var columnSelector = "#col" + currentColumn;
-                $(columnSelector).append('<p>' + itemLink(item) + '</p>');
+                var gearMarker = isGear(item) ? " &#128085;" : "";
+                $(columnSelector).append('<p>' + itemLink(item) + gearMarker + '</p>');
                 
                 itemsInThisColumn += 1;
                 if (itemsInThisColumn >= itemsPerColumn){
