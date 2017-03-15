@@ -297,6 +297,7 @@ void Server::loadData(const std::string &path){
                     inPlace = *ot;
                     delete ot;
                     foundInPlace = true;
+                    break;
                 }
             }
             if (!foundInPlace)
