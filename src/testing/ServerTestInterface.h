@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #ifndef SERVER_TEST_INTERFACE_H
 #define SERVER_TEST_INTERFACE_H
 
@@ -22,7 +20,6 @@ public:
     std::set<User> &users() { return _server._users; }
     std::map<size_t, Spawner> &spawners() { return _server._spawners; }
 
-    void loadMinimalData();
     void addObject(const std::string &typeName, const Point &loc);
     void addNPC(const std::string &typeName, const Point &loc);
 

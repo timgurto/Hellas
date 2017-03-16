@@ -562,7 +562,7 @@ void Server::loadData(const std::string &path){
 
         // Objects
         if (cmdLineArgs.contains("new"))
-            xr.newFile("Data/staticObjects.xml");
+            xr.newFile(path + "/staticObjects.xml");
         else
             xr.newFile("World/Objects.world");
         if (!xr)

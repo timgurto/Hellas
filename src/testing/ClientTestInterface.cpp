@@ -1,9 +1,11 @@
-// (C) 2016 Tim Gurto
-
 #include <thread>
 
 #include "ClientTestInterface.h"
 #include "Test.h"
+
+ClientTestInterface::ClientTestInterface(){
+    _client.loadData("testing/data/minimal");
+}
 
 void ClientTestInterface::run(){
     Client &client = _client;

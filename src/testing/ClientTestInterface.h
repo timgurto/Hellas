@@ -13,6 +13,7 @@ public:
     void run();
     void stop();
 
+    ClientTestInterface();
     ~ClientTestInterface(){ stop(); }
 
     bool connected() const { return _client._connectionStatus == Client::CONNECTED; }

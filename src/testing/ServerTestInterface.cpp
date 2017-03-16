@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #include <cassert>
 #include <thread>
 
@@ -7,7 +5,7 @@
 #include "Test.h"
 
 ServerTestInterface::ServerTestInterface(){
-    loadMinimalData();
+    _server.loadData("testing/data/minimal");
     Server::newPlayerSpawnLocation = Point(Server::TILE_W*5, Server::TILE_H*5);
     Server::newPlayerSpawnRange = 0;
 }
@@ -21,10 +19,6 @@ void ServerTestInterface::run(){
 void ServerTestInterface::stop(){
     _server._loop = false;
     WAIT_UNTIL (!_server._running);
-}
-
-void ServerTestInterface::loadMinimalData(){
-    _server.loadData("testing/data/minimal");
 }
 
 void ServerTestInterface::addObject(const std::string &typeName, const Point &loc){
