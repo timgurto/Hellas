@@ -8,6 +8,8 @@
 
 ServerTestInterface::ServerTestInterface(){
     loadMinimalData();
+    Server::newPlayerSpawnLocation = Point(Server::TILE_W*5, Server::TILE_H*5);
+    Server::newPlayerSpawnRange = 0;
 }
 
 void ServerTestInterface::run(){
