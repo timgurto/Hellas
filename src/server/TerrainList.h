@@ -23,6 +23,7 @@ public:
     bool allows(char terrain) const;
 
     static void addList(const std::string &id,  TerrainList &list) { _lists[id] = list; }
+    static void clearLists() { _lists.clear(); }
     static void setDefault(const std::string &id);
     static const TerrainList *findList(const std::string &id);
     static const TerrainList &defaultList();

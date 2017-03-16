@@ -13,6 +13,7 @@ public:
     void run();
     void stop();
 
+    ServerTestInterface();
     ~ServerTestInterface(){ stop(); }
     
     std::set<const ObjectType *> &objectTypes() { return _server._objectTypes; }
@@ -24,6 +25,7 @@ public:
     // 1x1, terrain = 0
     static const std::vector<std::vector<char> > TINY_MAP;
 
+    void loadMinimalData();
     void setMap(const std::vector<std::vector<char> > &map = TINY_MAP);
     void addObject(const std::string &typeName, const Point &loc);
     void addNPC(const std::string &typeName, const Point &loc);

@@ -8,6 +8,11 @@
 
 const std::vector<std::vector<char> > ServerTestInterface::TINY_MAP(1, std::vector<char>(1,0));
 
+ServerTestInterface::ServerTestInterface(){
+    loadMinimalData();
+    setMap(); // A map is absolutely necessary, whether or not one is specified in map.xml
+}
+
 void ServerTestInterface::run(){
     Server &server = _server;
     std::thread([& server](){ server.run(); }).detach();
@@ -17,6 +22,10 @@ void ServerTestInterface::run(){
 void ServerTestInterface::stop(){
     _server._loop = false;
     WAIT_UNTIL (!_server._running);
+}
+
+void ServerTestInterface::loadMinimalData(){
+    _server.loadData("testing/data/minimal");
 }
 
 void ServerTestInterface::setMap(const std::vector<std::vector<char> > &map){

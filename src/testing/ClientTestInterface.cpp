@@ -8,7 +8,9 @@
 void ClientTestInterface::run(){
     Client &client = _client;
     std::thread([& client](){ client.run(); }).detach();
-    WAIT_UNTIL (_client._connectionStatus != Client::TRYING);
+    WAIT_UNTIL (_client._connectionStatus == Client::IN_LOGIN_SCREEN);
+    _client.login(nullptr);
+    WAIT_UNTIL (_client._connectionStatus != Client::TRYING_TO_CONNECT);
 }
 
 void ClientTestInterface::stop(){

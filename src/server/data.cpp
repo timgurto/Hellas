@@ -148,15 +148,13 @@ void Server::writeUserData(const User &user) const{
 }
 
 void Server::loadData(const std::string &path){
-    _objectTypes.clear();
-    _items.clear();
-    _recipes.clear();
     _objects.clear();
 
     // Load terrain lists
     XmlReader xr(path + "/terrain.xml");
     std::map<std::string, char> terrainCodes; // For easier lookup when compiling lists below.
     if (xr){
+        TerrainList::clearLists();
         for (auto elem : xr.getChildren("terrain")) {
             char index;
             std::string id;
@@ -190,9 +188,12 @@ void Server::loadData(const std::string &path){
     }
 
     // Object types
+    bool clearedObjectTypes = false;
     if (!xr.newFile(path + "/objectTypes.xml"))
         _debug("Failed to load objectTypes.xml", Color::FAILURE);
-    else
+    else{
+        _objectTypes.clear();
+        clearedObjectTypes = true;
         for (auto elem : xr.getChildren("objectType")) {
             std::string id;
             if (!xr.findAttr(elem, "id", id))
@@ -303,11 +304,14 @@ void Server::loadData(const std::string &path){
             if (!foundInPlace)
                 _objectTypes.insert(ot);
         }
+    }
 
     // NPC types
     if (!xr.newFile(path + "/npcTypes.xml"))
         _debug("Failed to load npcTypes.xml", Color::FAILURE);
-    else
+    else{
+        if (!clearedObjectTypes)
+            _objectTypes.clear();
         for (auto elem : xr.getChildren("npcType")) {
             std::string id;
             if (!xr.findAttr(elem, "id", id)) // No ID: skip
@@ -343,11 +347,13 @@ void Server::loadData(const std::string &path){
         
             _objectTypes.insert(nt);
         }
+    }
 
     // Items
     if (!xr.newFile(path + "/items.xml"))
         _debug("Failed to load items.xml", Color::FAILURE);
-    else
+    else{
+        _items.clear();
         for (auto elem : xr.getChildren("item")) {
             std::string id, name;
             if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name))
@@ -390,11 +396,13 @@ void Server::loadData(const std::string &path){
                 itemInPlace = item;
             }
         }
+    }
 
     // Recipes
     if (!xr.newFile(path + "/recipes.xml"))
         _debug("Failed to load recipes.xml", Color::FAILURE);
-    else
+    else{
+        _recipes.clear();
         for (auto elem : xr.getChildren("recipe")) {
             std::string id, name;
             if (!xr.findAttr(elem, "id", id))
@@ -452,6 +460,7 @@ void Server::loadData(const std::string &path){
         
             _recipes.insert(recipe);
         }
+    }
 
     ProgressLock::registerStagedLocks();
 
@@ -518,7 +527,7 @@ void Server::loadData(const std::string &path){
     // Map
     bool mapSuccessful = false;
     do {
-        xr.newFile("Data/map.xml");
+        xr.newFile(path + "/map.xml");
         if (!xr)
             break;
         auto elem = xr.findChild("size");
