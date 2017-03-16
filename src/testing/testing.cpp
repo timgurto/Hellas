@@ -19,7 +19,7 @@ int main(int argc, char **argv){
     cmdLineArgs.init(argc, argv);
     cmdLineArgs.add("new");
     cmdLineArgs.add("server-ip", "127.0.0.1");
-    cmdLineArgs.add("debug");
+    cmdLineArgs.add("window");
 
     renderer.init();
 

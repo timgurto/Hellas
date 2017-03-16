@@ -25,6 +25,8 @@
 
 `-width `*`value`* the width of the window
 
+`-window` runs in windowed mode
+
 ### Unit-test arguments
 
 `-skipSlow` skip slow-running tests
