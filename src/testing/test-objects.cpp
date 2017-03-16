@@ -37,7 +37,7 @@ TEST("Load object type naming an invalid item")
     return it == s.items().end();
 TEND
 
-ONLY_TEST("Gather an item from an object")
+TEST("Gather an item from an object")
     ServerTestInterface s;
     s.loadData("testing/data/basic_rock");
     s.run();
