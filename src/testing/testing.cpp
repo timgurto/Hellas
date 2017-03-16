@@ -16,11 +16,12 @@ Renderer renderer;
 int main(int argc, char **argv){
     srand(static_cast<unsigned>(time(0)));
 
-    renderer.init();
-
     cmdLineArgs.init(argc, argv);
     cmdLineArgs.add("new");
     cmdLineArgs.add("server-ip", "127.0.0.1");
+    cmdLineArgs.add("debug");
+
+    renderer.init();
 
     LogConsole log;
     Socket::debug = &log;
