@@ -6,7 +6,7 @@
 
 ServerTestInterface::ServerTestInterface(){
     _server.loadData("testing/data/minimal");
-    Server::newPlayerSpawnLocation = Point(Server::TILE_W*5, Server::TILE_H*5);
+    Server::newPlayerSpawnLocation = Point(10, 10);
     Server::newPlayerSpawnRange = 0;
 }
 
