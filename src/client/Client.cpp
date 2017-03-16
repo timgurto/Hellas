@@ -276,9 +276,6 @@ _debug("client.log"){
     } else {
         _debug("SDL_mixer initialized.");
     }
-    
-    drawLoadingScreen("Loading data", 0.6);
-    loadData();
 
     // Resolve default server IP
     drawLoadingScreen("Finding server", 0.7);
@@ -500,6 +497,11 @@ void Client::checkSocket(){
 }
 
 void Client::run(){
+    if (!_dataLoaded){
+        drawLoadingScreen("Loading data", 0.6);
+        loadData();
+    }
+
     _running = true;
     ms_t timeAtLastTick = SDL_GetTicks();
     while (_loop) {

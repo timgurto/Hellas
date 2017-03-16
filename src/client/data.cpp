@@ -7,16 +7,15 @@
 
 void Client::loadData(const std::string &path){
     drawLoadingScreen("Clearing old data", 0.611);
-    _terrain.clear();
     _items.clear();
     _recipes.clear();
-    _objectTypes.clear();
     _objects.clear();
 
     // Load terrain
     drawLoadingScreen("Loading terrain", 0.622);
     XmlReader xr(path + "/terrain.xml");
-    if (xr)
+    if (xr){
+        _terrain.clear();
         for (auto elem : xr.getChildren("terrain")) {
             char index;
             if (!xr.findAttr(elem, "index", index))
@@ -32,10 +31,12 @@ void Client::loadData(const std::string &path){
             xr.findAttr(elem, "frameTime", frameTime);
             _terrain[index] = Terrain(fileName, frames, frameTime);
         }
+    }
 
     // Particles
     drawLoadingScreen("Loading particles", 0.633);
-    if (xr.newFile(path + "/particles.xml"))
+    if (xr.newFile(path + "/particles.xml")){
+        _particleProfiles.clear();
         for (auto elem : xr.getChildren("particleProfile")) {
             std::string s;
             if (!xr.findAttr(elem, "id", s)) // No ID: skip
@@ -64,10 +65,14 @@ void Client::loadData(const std::string &path){
 
             _particleProfiles.insert(profile);
         }
+    }
 
     // Object types
+    bool objectTypesCleared = false;
     drawLoadingScreen("Loading objects", 0.644);
-    if (xr.newFile(path + "/objectTypes.xml"))
+    if (xr.newFile(path + "/objectTypes.xml")){
+        _objectTypes.clear();
+        objectTypesCleared = true;
         for (auto elem : xr.getChildren("objectType")) {
             std::string s; int n;
             if (!xr.findAttr(elem, "id", s))
@@ -143,10 +148,12 @@ void Client::loadData(const std::string &path){
 
             _objectTypes.insert(cot);
         }
+    }
 
     // Items
     drawLoadingScreen("Loading items", 0.656);
-    if (xr.newFile(path + "/items.xml"))
+    if (xr.newFile(path + "/items.xml")){
+        _items.clear();
         for (auto elem : xr.getChildren("item")) {
             std::string id, name;
             if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name))
@@ -201,10 +208,12 @@ void Client::loadData(const std::string &path){
                 itemInPlace = item;
             }
         }
+    }
 
     // Recipes
     drawLoadingScreen("Loading recipes", 0.667);
-    if (xr.newFile(path + "/recipes.xml"))
+    if (xr.newFile(path + "/recipes.xml")){
+        _recipes.clear();
         for (auto elem : xr.getChildren("recipe")) {
             std::string id, name;
             if (!xr.findAttr(elem, "id", id))
@@ -245,10 +254,13 @@ void Client::loadData(const std::string &path){
         
             _recipes.insert(recipe);
         }
+    }
 
     // NPC types
     drawLoadingScreen("Loading creatures", 0.678);
-    if (xr.newFile(path + "/npcTypes.xml"))
+    if (xr.newFile(path + "/npcTypes.xml")){
+        if (!objectTypesCleared)
+            _objectTypes.clear();
         for (auto elem : xr.getChildren("npcType")) {
             std::string s;
             if (!xr.findAttr(elem, "id", s)) // No ID: skip
@@ -283,12 +295,13 @@ void Client::loadData(const std::string &path){
                 _objectTypes.insert(nt);
             }
         }
+    }
 
     // Map
     drawLoadingScreen("Loading map", 0.689);
     bool mapSuccessful = false;
     do {
-        xr.newFile("Data/map.xml");
+        xr.newFile(path + "/map.xml");
         if (!xr)
             break;
         auto elem = xr.findChild("size");
