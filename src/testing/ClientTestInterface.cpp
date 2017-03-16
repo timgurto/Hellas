@@ -5,6 +5,7 @@
 
 ClientTestInterface::ClientTestInterface(){
     _client.loadData("testing/data/minimal");
+    _client.setRandomUsername();
 }
 
 void ClientTestInterface::run(){

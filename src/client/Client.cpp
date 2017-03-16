@@ -288,14 +288,7 @@ _debug("client.log"){
 
     _entities.insert(&_character);
 
-    // Randomize player name if not supplied
-    if (cmdLineArgs.contains("username"))
-        _username = cmdLineArgs.getString("username");
-    else if (isDebug())
-        for (int i = 0; i != 3; ++i)
-            _username.push_back('a' + rand() % 26);
-    else
-        _username = "";
+    initializeUsername();
 
     SDL_StopTextInput();
 
@@ -408,10 +401,6 @@ _debug("client.log"){
             _targetNPCHealth, _targetNPCMaxHealth, Color::HEALTH_BAR));
     _targetDisplay->hide();
     addUI(_targetDisplay);
-    
-    drawLoadingScreen("Initializing login screen", 0.9);
-    initLoginScreen();
-    _connectionStatus = IN_LOGIN_SCREEN;
 
     drawLoadingScreen("", 1);
 }
@@ -501,6 +490,10 @@ void Client::run(){
         drawLoadingScreen("Loading data", 0.6);
         loadData();
     }
+    
+    drawLoadingScreen("Initializing login screen", 0.9);
+    initLoginScreen();
+    _connectionStatus = IN_LOGIN_SCREEN;
 
     _running = true;
     ms_t timeAtLastTick = SDL_GetTicks();
@@ -852,4 +845,19 @@ void Client::addParticles(const std::string &profileName, const Point &location)
 void Client::addParticles(const std::string &profileName, const Point &location, double delta){
     const ParticleProfile *profile = findParticleProfile(profileName);
     addParticles(profile, location, delta);
+}
+
+void Client::initializeUsername(){
+    if (cmdLineArgs.contains("username"))
+        _username = cmdLineArgs.getString("username");
+    else if (isDebug())
+        setRandomUsername();
+    else
+        _username = "";
+}
+
+void Client::setRandomUsername(){
+    _username.clear();
+    for (int i = 0; i != 3; ++i)
+        _username.push_back('a' + rand() % 26);
 }

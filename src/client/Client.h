@@ -199,6 +199,8 @@ private:
     std::string _lastWhisperer; // The username of the last person to whisper, for fast replying.
 
     std::string _username;
+    void initializeUsername();
+    void setRandomUsername();
     Avatar _character; // Describes the user's character
     Stats _stats; // The user's stats
     size_t _health; // The character's health
