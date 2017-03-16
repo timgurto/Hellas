@@ -340,7 +340,9 @@ private:
     std::vector<MessageCode> _messagesReceived;
     
     enum ConnectionStatus{
-        TRYING,
+        INITIALIZING,
+        IN_LOGIN_SCREEN,
+        TRYING_TO_CONNECT,
         CONNECTED,
         LOGGED_IN,
         LOADED,

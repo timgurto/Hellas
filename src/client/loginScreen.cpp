@@ -106,6 +106,7 @@ void Client::login(void *){
     std::transform(username.begin(), username.end(), username.begin(), tolower);
     nameBox->text(username);
     _instance->_username = username;
+    _instance->_connectionStatus = TRYING_TO_CONNECT;
     tryToConnect = true;
     SDL_StopTextInput();
 }

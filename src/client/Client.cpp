@@ -94,7 +94,7 @@ _buildList(nullptr),
 _selectedConstruction(nullptr),
 _multiBuild(false),
 
-_connectionStatus(TRYING),
+_connectionStatus(INITIALIZING),
 
 _actionTimer(0),
 _actionLength(0),
@@ -414,6 +414,7 @@ _debug("client.log"){
     
     drawLoadingScreen("Initializing login screen", 0.9);
     initLoginScreen();
+    _connectionStatus = IN_LOGIN_SCREEN;
 
     drawLoadingScreen("", 1);
 }
