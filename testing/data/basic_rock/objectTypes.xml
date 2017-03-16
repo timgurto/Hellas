@@ -6,7 +6,7 @@
     xDrawOffset=-20
     yDrawOffset=-20
     canGather=1
-    gatherTime=1
+    gatherTime=100
     isFlat=1	>
     <yield id="stone" initialMean=1 initialSD=0 />
 </objectType>

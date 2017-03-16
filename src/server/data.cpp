@@ -187,6 +187,9 @@ void Server::loadData(const std::string &path){
         }
     }
 
+    if (xr.newFile(path + "/items.xml")) // Early, because object types may insert new items.
+        _items.clear();
+
     // Object types
     bool clearedObjectTypes = false;
     if (!xr.newFile(path + "/objectTypes.xml"))
@@ -353,7 +356,6 @@ void Server::loadData(const std::string &path){
     if (!xr.newFile(path + "/items.xml"))
         _debug("Failed to load items.xml", Color::FAILURE);
     else{
-        _items.clear();
         for (auto elem : xr.getChildren("item")) {
             std::string id, name;
             if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name))
