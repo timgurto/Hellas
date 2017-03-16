@@ -40,7 +40,6 @@ TEND
 ONLY_TEST("Gather an item from an object")
     ServerTestInterface s;
     s.loadData("testing/data/basic_rock");
-    s.setMap();
     s.run();
 
     ClientTestInterface c;
@@ -77,7 +76,6 @@ TEND
 TEST("View merchant slots in window")
     ServerTestInterface s;
     s.loadData("testing/data/merchant");
-    s.setMap();
     s.run();
 
     ClientTestInterface c;
@@ -126,7 +124,6 @@ This is to test the new gather algorithm, which would favor rocks rather than ir
 TEST("Gather chance is by gathers, not quantity")
     ServerTestInterface s;
     s.loadData("testing/data/rare_iron");
-    s.setMap();
     s.run();
 
     ClientTestInterface c;
@@ -167,7 +164,6 @@ TEND
 TEST("Dismantle an object with an inventory")
     ServerTestInterface s;
     s.loadData("testing/data/dismantle");
-    s.setMap();
     s.run();
 
     ClientTestInterface c;
@@ -193,7 +189,6 @@ TEND
 TEST("Place item in object");
     ServerTestInterface s;
     s.loadData("testing/data/dismantle");
-    s.setMap();
     s.run();
 
     ClientTestInterface c;
@@ -241,7 +236,6 @@ TEND
 TEST("Players can attack immediately")
     ServerTestInterface s;
     s.loadData("testing/data/ant");
-    s.setMap();
     s.run();
 
     ClientTestInterface c;
@@ -274,7 +268,6 @@ TEND
 TEST("Thin objects block movement")
     ServerTestInterface s;
     s.loadData("testing/data/thin_wall");
-    s.setMap();
     s.run();
 
     ClientTestInterface c;

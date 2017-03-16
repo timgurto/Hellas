@@ -1,4 +1,13 @@
 <root>
-    <size x="1" y="1" />
-    <row    y="0" terrain = "G" />
+    <size x="10" y="10" />
+    <row    y="0" terrain = "GGGGGGGGGG" />
+    <row    y="1" terrain = "GGGGGGGGGG" />
+    <row    y="2" terrain = "GGGGGGGGGG" />
+    <row    y="3" terrain = "GGGGGGGGGG" />
+    <row    y="4" terrain = "GGGGGGGGGG" />
+    <row    y="5" terrain = "GGGGGGGGGG" />
+    <row    y="6" terrain = "GGGGGGGGGG" />
+    <row    y="7" terrain = "GGGGGGGGGG" />
+    <row    y="8" terrain = "GGGGGGGGGG" />
+    <row    y="9" terrain = "GGGGGGGGGG" />
 </root>

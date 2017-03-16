@@ -22,11 +22,7 @@ public:
     std::set<User> &users() { return _server._users; }
     std::map<size_t, Spawner> &spawners() { return _server._spawners; }
 
-    // 1x1, terrain = 0
-    static const std::vector<std::vector<char> > TINY_MAP;
-
     void loadMinimalData();
-    void setMap(const std::vector<std::vector<char> > &map = TINY_MAP);
     void addObject(const std::string &typeName, const Point &loc);
     void addNPC(const std::string &typeName, const Point &loc);
 

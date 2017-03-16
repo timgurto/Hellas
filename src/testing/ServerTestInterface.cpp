@@ -6,11 +6,8 @@
 #include "ServerTestInterface.h"
 #include "Test.h"
 
-const std::vector<std::vector<char> > ServerTestInterface::TINY_MAP(1, std::vector<char>(1,0));
-
 ServerTestInterface::ServerTestInterface(){
     loadMinimalData();
-    setMap(); // A map is absolutely necessary, whether or not one is specified in map.xml
 }
 
 void ServerTestInterface::run(){
@@ -26,18 +23,6 @@ void ServerTestInterface::stop(){
 
 void ServerTestInterface::loadMinimalData(){
     _server.loadData("testing/data/minimal");
-}
-
-void ServerTestInterface::setMap(const std::vector<std::vector<char> > &map){
-    assert(map.size() > 0);
-    _server._mapX = map.size();
-
-    assert(map[0].size() > 0);
-    _server._mapY = map[0].size();
-    for (auto col : map)
-        assert(col.size() == _server._mapY);
-
-    _server._map = map;
 }
 
 void ServerTestInterface::addObject(const std::string &typeName, const Point &loc){
