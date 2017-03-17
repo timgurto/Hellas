@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #include <iomanip>
 #include <iostream>
 
@@ -34,6 +32,9 @@ int main(int argc, char **argv){
         colorPass  = "\x1B[38;2;0;192;0m",
         colorSkip  = "\x1B[38;2;51;51;51m",
         colorReset = "\x1B[0m";
+
+    if (cmdLineArgs.contains("no-color"))
+        colorStart = colorFail = colorPass = colorSkip = colorReset = "";
 
     size_t
         i = 0,
