@@ -84,6 +84,7 @@ _dataLoaded(false){
 
 Server::~Server(){
     saveData(_objects);
+    _instance = nullptr;
 }
 
 void Server::checkSockets(){

@@ -236,8 +236,9 @@ void Object::setType(const ObjectType *type){
         _transformTimer = type->transformTime();
 
     // Inform nearby users
-    const Server &server = *Server::_instance;
-    for (const User *user : server.findUsersInArea(_location)){
-        server.sendObjectInfo(*user, *this);
+    const Server *server = Server::_instance;
+    if (server != nullptr)
+    for (const User *user : server->findUsersInArea(_location)){
+        server->sendObjectInfo(*user, *this);
     }
 }
