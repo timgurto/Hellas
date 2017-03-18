@@ -29,7 +29,7 @@ void Client::loadData(const std::string &path){
             int frames = 1, frameTime = 0;
             xr.findAttr(elem, "frames", frames);
             xr.findAttr(elem, "frameTime", frameTime);
-            _terrain[index] = Terrain(fileName, frames, frameTime);
+            _terrain[index] = ClientTerrain(fileName, frames, frameTime);
         }
     }
 

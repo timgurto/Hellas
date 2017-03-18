@@ -2,10 +2,10 @@
 #include <sstream>
 
 #include "Client.h"
-#include "Terrain.h"
+#include "ClientTerrain.h"
 #include "../util.h"
 
-Terrain::Terrain(const std::string &imageFile, size_t frames, ms_t frameTime):
+ClientTerrain::ClientTerrain(const std::string &imageFile, size_t frames, ms_t frameTime):
 _frames(frames),
 _frame(0),
 _frameTime(frameTime),
@@ -32,23 +32,23 @@ _frameTimer(frameTime)
         }
 }
 
-void Terrain::draw(const Rect &loc, const Rect &srcRect) const{
+void ClientTerrain::draw(const Rect &loc, const Rect &srcRect) const{
     _images[_frame].draw(loc, srcRect);
 }
 
-void Terrain::draw(px_t x, px_t y) const{
+void ClientTerrain::draw(px_t x, px_t y) const{
     _images[_frame].draw(x, y);
 }
 
-void Terrain::setHalfAlpha() const{
+void ClientTerrain::setHalfAlpha() const{
     _images[_frame].setAlpha(0x7f);
 }
 
-void Terrain::setQuarterAlpha() const{
+void ClientTerrain::setQuarterAlpha() const{
     _images[_frame].setAlpha(0x3f);
 }
 
-void Terrain::advanceTime(ms_t timeElapsed) {
+void ClientTerrain::advanceTime(ms_t timeElapsed) {
     if (_frameTime == 0)
         return;
 

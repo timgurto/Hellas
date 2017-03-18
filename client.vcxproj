@@ -103,6 +103,7 @@
     <ClCompile Include="src\client\ClientNPC.cpp" />
     <ClCompile Include="src\client\ClientObject.cpp" />
     <ClCompile Include="src\client\ClientObjectType.cpp" />
+    <ClCompile Include="src\client\ClientTerrain.cpp" />
     <ClCompile Include="src\client\ClientVehicle.cpp" />
     <ClCompile Include="src\client\ClientVehicleType.cpp" />
     <ClCompile Include="src\client\craftingWindow.cpp" />
@@ -123,7 +124,6 @@
     <ClCompile Include="src\client\ParticleProfile.cpp" />
     <ClCompile Include="src\client\Renderer.cpp" />
     <ClCompile Include="src\client\Surface.cpp" />
-    <ClCompile Include="src\Client\Terrain.cpp" />
     <ClCompile Include="src\client\Texture.cpp" />
     <ClCompile Include="src\client\TooltipBuilder.cpp" />
     <ClCompile Include="src\client\ui\Button.cpp" />
@@ -167,6 +167,7 @@
     <ClInclude Include="src\client\ClientNPC.h" />
     <ClInclude Include="src\client\ClientObject.h" />
     <ClInclude Include="src\client\ClientObjectType.h" />
+    <ClInclude Include="src\client\ClientTerrain.h" />
     <ClInclude Include="src\client\ClientVehicle.h" />
     <ClInclude Include="src\client\ClientVehicleType.h" />
     <ClInclude Include="src\client\Entity.h" />
@@ -178,7 +179,6 @@
     <ClInclude Include="src\client\ParticleProfile.h" />
     <ClInclude Include="src\client\Renderer.h" />
     <ClInclude Include="src\client\Surface.h" />
-    <ClInclude Include="src\Client\Terrain.h" />
     <ClInclude Include="src\client\Texture.h" />
     <ClInclude Include="src\client\TooltipBuilder.h" />
     <ClInclude Include="src\client\ui\Button.h" />

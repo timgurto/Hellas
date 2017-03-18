@@ -14,7 +14,7 @@
 #include "ClientItem.h"
 #include "LogSDL.h"
 #include "ParticleProfile.h"
-#include "Terrain.h"
+#include "ClientTerrain.h"
 #include "ui/ChoiceList.h"
 #include "ui/ItemSelector.h"
 #include "ui/Window.h"
@@ -300,7 +300,7 @@ private:
     // Game data
     void loadData(const std::string &path = "Data");
     bool _dataLoaded; // If false when run() is called, load default data.
-    std::map<char, Terrain> _terrain;
+    std::map<char, ClientTerrain> _terrain;
     std::set<ClientItem> _items;
     std::set<Recipe> _recipes;
     typedef std::set<const ClientObjectType*, ClientObjectType::ptrCompare> objectTypes_t;

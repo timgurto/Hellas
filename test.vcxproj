@@ -119,7 +119,7 @@
     <ClCompile Include="src\client\ParticleProfile.cpp" />
     <ClCompile Include="src\client\Renderer.cpp" />
     <ClCompile Include="src\client\Surface.cpp" />
-    <ClCompile Include="src\client\Terrain.cpp" />
+    <ClCompile Include="src\Client\ClientTerrain.cpp" />
     <ClCompile Include="src\client\Texture.cpp" />
     <ClCompile Include="src\client\TooltipBuilder.cpp" />
     <ClCompile Include="src\client\ui\Button.cpp" />
@@ -180,6 +180,7 @@
     <ClCompile Include="src\testing\test-math.cpp" />
     <ClCompile Include="src\testing\test-networking.cpp" />
     <ClCompile Include="src\testing\test-objects.cpp" />
+    <ClCompile Include="src\testing\test-crafting.cpp" />
     <ClCompile Include="src\testing\test-ui.cpp" />
     <ClCompile Include="src\testing\test-xml.cpp" />
     <ClCompile Include="src\testing\Test.cpp" />
@@ -211,7 +212,7 @@
     <ClInclude Include="src\client\ParticleProfile.h" />
     <ClInclude Include="src\client\Renderer.h" />
     <ClInclude Include="src\client\Surface.h" />
-    <ClInclude Include="src\client\Terrain.h" />
+    <ClInclude Include="src\Client\ClientTerrain.h" />
     <ClInclude Include="src\client\Texture.h" />
     <ClInclude Include="src\client\TooltipBuilder.h" />
     <ClInclude Include="src\client\ui\Button.h" />

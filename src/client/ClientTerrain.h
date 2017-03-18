@@ -5,7 +5,7 @@
 #include "../Rect.h"
 #include "../types.h"
 
-class Terrain{
+class ClientTerrain{
     std::vector<Texture> _images;
     size_t _frames;
     size_t _frame;
@@ -13,7 +13,7 @@ class Terrain{
     ms_t _frameTimer;
 
 public:
-    Terrain(const std::string &imageFile = "", size_t frames = 1, ms_t frameTime = 0);
+    ClientTerrain(const std::string &imageFile = "", size_t frames = 1, ms_t frameTime = 0);
 
     void draw(const Rect &loc, const Rect &srcRect) const;
     void draw(px_t x, px_t y) const;
