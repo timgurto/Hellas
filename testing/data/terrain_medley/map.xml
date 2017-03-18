@@ -1,0 +1,23 @@
+<root>
+    <size x="20" y="20" />
+    <row    y="0" terrain = "abbbcccccccc........" />
+    <row    y="1" terrain = "bbbbccccccc........." />
+    <row    y="2" terrain = "bbbbccccccc........." />
+    <row    y="3" terrain = "cccccccccc.........." />
+    <row    y="4" terrain = "ccccccccc..........." />
+    <row    y="5" terrain = "cccccccc............" />
+    <row    y="6" terrain = "ccccccc............." />
+    <row    y="7" terrain = "cccccc.............." />
+    <row    y="8" terrain = "ccccc..............." />
+    <row    y="9" terrain = "ccc................." />
+    <row   y="10" terrain = "c..................." />
+    <row   y="11" terrain = "...................." />
+    <row   y="12" terrain = "...................." />
+    <row   y="13" terrain = "...................." />
+    <row   y="14" terrain = "...................." />
+    <row   y="15" terrain = "...................." />
+    <row   y="16" terrain = "...................." />
+    <row   y="17" terrain = "...................." />
+    <row   y="18" terrain = "...................." />
+    <row   y="19" terrain = "...................." />
+</root>

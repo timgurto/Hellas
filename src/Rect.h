@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef RECT_H
 #define RECT_H
 
@@ -21,6 +19,8 @@ struct Rect {
     bool collides(const Rect &rhs) const;
 
     operator std::string() const;
+    bool operator==(const Rect &rhs) const;
+    bool operator!=(const Rect &rhs) const;
 };
 
 Rect operator+(const Rect &lhs, const Rect &rhs);

@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #include <iostream>
 
 #include "Point.h"
@@ -92,4 +90,16 @@ Rect::operator std::string() const{
     std::ostringstream oss;
     oss << *this;
     return oss.str();
+}
+
+bool Rect::operator==(const Rect &rhs) const{
+    return
+        x == rhs.x &&
+        y == rhs.y &&
+        w == rhs.w &&
+        h == rhs.h;
+}
+
+bool Rect::operator!=(const Rect &rhs) const{
+    return !(*this == rhs);
 }

@@ -1,0 +1,10 @@
+<root>
+    <terrain index="a" id="a" />
+    <terrain index="b" id="b" />
+    <terrain index="c" id="c" />
+    <terrain index="." id="." />
+    
+    <list id="default" default="1" >
+        <allow id="a" />
+    </list>
+</root>

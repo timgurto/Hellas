@@ -16,6 +16,67 @@ bool Server::isLocationValid(const Rect &rect, const Object *thisObject){
     return isLocationValid(rect, thisObject->type()->allowedTerrain(), thisObject);
 }
 
+Rect Server::getTileRect(size_t x, size_t y){
+    Rect r(
+        static_cast<px_t>(x * TILE_W),
+        static_cast<px_t>(y * TILE_H),
+        TILE_W,
+        TILE_H);
+    if (y % 2 == 0)
+        r.x -= TILE_W / 2;
+    return r;
+}
+
+std::set<char> Server::nearbyTerrainTypes(const Rect &rect, double extraRadius){
+    assert(extraRadius >= 0);
+    std::set<char> tilesInRect;
+    const double
+        left = max(0, rect.x - extraRadius),
+        right = rect.x + rect.w + extraRadius,
+        top = max(0, rect.y - extraRadius),
+        bottom = rect.y + rect.h + extraRadius;
+    size_t
+        tileTop = getTileYCoord(top),
+        tileBottom = getTileYCoord(bottom);
+    assert(tileBottom >= tileTop);
+
+    // Single row
+    if (tileTop == tileBottom){
+        size_t
+            tileLeft = getTileXCoord(rect.x, tileTop),
+            tileRight = getTileXCoord(right, tileTop);
+        for (size_t x = tileLeft; x <= tileRight; ++x)
+            tilesInRect.insert(_map[x][tileTop]);
+
+    // General case
+    } else {
+        size_t
+            tileLeftEven = getTileXCoord(left, 0),
+            tileLeftOdd =  getTileXCoord(left, 1),
+            tileRightEven = getTileXCoord(right, 0),
+            tileRightOdd =  getTileXCoord(right, 1);
+        for (size_t y = tileTop; y <= tileBottom; ++y){
+            bool yIsEven = y % 2 == 0;
+            size_t
+                tileLeft  = yIsEven ? tileLeftEven :  tileLeftOdd,
+                tileRight = yIsEven ? tileRightEven : tileRightOdd;
+            assert(tileRight >= tileLeft);
+            for (size_t x = tileLeft; x <= tileRight; ++x){
+                char terrainIndex = _map[x][y];
+                // Exclude if outside radius
+                if (extraRadius != 0){
+                    if (tilesInRect.find(terrainIndex) != tilesInRect.end())
+                        continue;
+                    if (distance(rect, getTileRect(x, y)) > extraRadius)
+                        continue;
+                }
+                tilesInRect.insert(terrainIndex);
+            }
+        }
+    }
+    return tilesInRect;
+}
+
 bool Server::isLocationValid(const Rect &rect, const TerrainList &allowedTerrain,
                              const Object *thisObject){
     // A user in a vehicle is unrestricted; the vehicle's restrictions will dictate his location.
@@ -36,36 +97,10 @@ bool Server::isLocationValid(const Rect &rect, const TerrainList &allowedTerrain
             return false;
 
     // Terrain
-    size_t
-        tileTop = getTileYCoord(rect.y),
-        tileBottom = getTileYCoord(bottom);
-    assert(tileBottom >= tileTop);
-    if (tileTop == tileBottom){
-        size_t
-            tileLeft = getTileXCoord(rect.x, tileTop),
-            tileRight = getTileXCoord(right, tileTop);
-        for (size_t x = tileLeft; x <= tileRight; ++x){
-
-            if (!allowedTerrain.allows(_map[x][tileTop]))
-                return false;
-        }
-    } else {
-        size_t
-            tileLeftEven = getTileXCoord(rect.x, 0),
-            tileLeftOdd =  getTileXCoord(rect.x, 1),
-            tileRightEven = getTileXCoord(right, 0),
-            tileRightOdd =  getTileXCoord(right, 1);
-        for (size_t y = tileTop; y <= tileBottom; ++y){
-            bool yIsEven = y % 2 == 0;
-            size_t
-                tileLeft  = yIsEven ? tileLeftEven :  tileLeftOdd,
-                tileRight = yIsEven ? tileRightEven : tileRightOdd;
-            assert(tileRight >= tileLeft);
-            for (size_t x = tileLeft; x <= tileRight; ++x)
-                if (!allowedTerrain.allows(_map[x][y]))
-                    return false;
-        }
-    }
+    auto terrainTypesCovered = nearbyTerrainTypes(rect);
+    for (char terrainType : terrainTypesCovered)
+        if (!allowedTerrain.allows(terrainType))
+            return false;
 
     // Users
     Point rectCenter(rect.x + rect.w / 2, rect.y + rect.h / 2);
@@ -101,6 +136,7 @@ bool Server::isLocationValid(const Rect &rect, const TerrainList &allowedTerrain
 }
 
 size_t Server::getTileYCoord(double y) const{
+    assert (y >= 0);
     size_t yTile = static_cast<size_t>(y / TILE_H);
     if (yTile >= _mapY) {
         _debug << Color::RED << "Invalid location; clipping y from " << yTile << " to " << _mapY-1
@@ -111,6 +147,7 @@ size_t Server::getTileYCoord(double y) const{
 }
 
 size_t Server::getTileXCoord(double x, size_t yTile) const{
+    assert (x >= 0);
     double originalX = x;
     if (yTile % 2 == 1)
         x += TILE_W / 2;
