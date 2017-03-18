@@ -452,6 +452,7 @@ void Server::loadData(const std::string &path){
                 }
             }
 
+            bool requiresUnlock = false;
             for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
                 double chance = 1.0;
                 xr.findAttr(unlockedBy, "chance", chance);
@@ -465,7 +466,10 @@ void Server::loadData(const std::string &path){
                 else if (xr.findAttr(unlockedBy, "recipe", s))
                     triggerType = ProgressLock::RECIPE;
                 ProgressLock(triggerType, s, ProgressLock::RECIPE, id, chance).stage();
+                requiresUnlock = true;
             }
+            if (!requiresUnlock)
+                recipe.knownByDefault();
         
             _recipes.insert(recipe);
         }

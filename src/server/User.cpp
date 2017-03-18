@@ -383,5 +383,11 @@ bool User::knowsConstruction(const std::string &id) const {
 }
 
 bool User::knowsRecipe(const std::string &id) const {
+    const Server &server = *Server::_instance;
+    auto it = server._recipes.find(id);
+    if (it == server._recipes.end())
+        return false;
+    if (it->isKnownByDefault())
+        return true;
     return _knownRecipes.find(id) != _knownRecipes.end();
 }

@@ -16,6 +16,7 @@ class Recipe{
     const Item *_product;
     size_t _quantity; // Quantity produced
     ms_t _time;
+    bool _knownByDefault;
 
 public:
     Recipe(const std::string &id); //time = 0, ptrs = nullptr
@@ -31,6 +32,8 @@ public:
     void quantity(size_t n) { _quantity = n; }
     ms_t time() const { return _time; }
     void time(ms_t time) { _time = time; }
+    void knownByDefault() { _knownByDefault = true; }
+    bool isKnownByDefault() const { return _knownByDefault; }
 
     void addMaterial(const Item *item, size_t qty);
     void addTool(const std::string &name);
