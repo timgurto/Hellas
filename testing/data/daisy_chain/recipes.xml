@@ -1,0 +1,6 @@
+<root>
+<recipe
+    id="daisyChain" time="100" product="daisyChain" >
+    <tool class="grass" />
+</recipe>
+</root>

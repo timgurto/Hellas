@@ -68,6 +68,8 @@ public:
     // sent to the client.
     bool isObjectInRange(const Socket &client, const User &user, const Object *obj) const;
 
+    const Terrain *terrainType(char index) const;
+
 private:
 
     static Server *_instance;

@@ -16,3 +16,18 @@ TEST("Recipes can be known by default")
     WAIT_UNTIL (user.action() == User::Action::NO_ACTION) ; // Wait for gathering to finish
     return (user.inventory()[0].first->id() == "box");
 TEND
+
+TEST("Terrain as tool")
+    ServerTestInterface s;
+    s.loadData("testing/data/daisy_chain");
+    s.run();
+    ClientTestInterface c;
+    c.loadData("testing/data/daisy_chain");
+    c.run();
+    WAIT_UNTIL (s.users().size() == 1);
+    const User &user = *s.users().begin();
+    c.sendMessage(CL_CRAFT, "daisyChain");
+    WAIT_UNTIL (user.action() == User::Action::CRAFT) ; // Wait for gathering to start
+    WAIT_UNTIL (user.action() == User::Action::NO_ACTION) ; // Wait for gathering to finish
+    return (user.inventory()[0].first->id() == "daisyChain");
+TEND

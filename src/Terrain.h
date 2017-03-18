@@ -12,6 +12,8 @@ protected:
 public:
     static Terrain *empty();
     static Terrain *withTag(const std::string &tag);
+
+    const std::string &tag() const { return _tag; }
 };
 
 #endif

@@ -206,6 +206,14 @@ bool User::hasTool(const std::string &tagName) const{
             return true;
     }
 
+    // Check nearby terrain
+    Server &server = *Server::_instance;
+    auto nearbyTerrain = server.nearbyTerrainTypes(collisionRect(), Server::ACTION_DISTANCE);
+    for (char terrainType : nearbyTerrain){
+        if (server.terrainType(terrainType)->tag() == tagName)
+            return true;
+    }
+
     // Check nearby objects
     auto superChunk = Server::_instance->getCollisionSuperChunk(location());
     for (CollisionChunk *chunk : superChunk)

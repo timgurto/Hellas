@@ -84,6 +84,8 @@ _dataLoaded(false){
 
 Server::~Server(){
     saveData(_objects);
+    for (auto pair : _terrainTypes)
+        delete pair.second;
     _instance = nullptr;
 }
 
@@ -548,4 +550,9 @@ Object *Server::findObject(const Point &loc){
         return nullptr;
     else
         return *it;
+}
+
+const Terrain *Server::terrainType(char index) const{
+    auto &types = const_cast<std::map<char, Terrain *> &> (_terrainTypes);
+    return types[index];
 }

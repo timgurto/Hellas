@@ -80,15 +80,15 @@ TEST("Distance-to-line with A=B")
     return true;
 TEND
 
-ONLY_TEST("Tile rect 0,0") return (Server::getTileRect(0, 0) == Rect(-16, 0, 32, 32)); TEND
-ONLY_TEST("Tile rect 1,0") return (Server::getTileRect(1, 0) == Rect(16, 0, 32, 32));  TEND
-ONLY_TEST("Tile rect 0,1") return (Server::getTileRect(0, 1) == Rect(0, 32, 32, 32));  TEND
-ONLY_TEST("Tile rect 1,1") return (Server::getTileRect(1, 1) == Rect(32, 32, 32, 32)); TEND
+TEST("Tile rect 0,0") return (Server::getTileRect(0, 0) == Rect(-16, 0, 32, 32)); TEND
+TEST("Tile rect 1,0") return (Server::getTileRect(1, 0) == Rect(16, 0, 32, 32));  TEND
+TEST("Tile rect 0,1") return (Server::getTileRect(0, 1) == Rect(0, 32, 32, 32));  TEND
+TEST("Tile rect 1,1") return (Server::getTileRect(1, 1) == Rect(32, 32, 32, 32)); TEND
 
-ONLY_TEST("Tile rect 5,0") return (Server::getTileRect(4, 0) == Rect(112, 0, 32, 32));   TEND
-ONLY_TEST("Tile rect 5,0") return (Server::getTileRect(5, 0) == Rect(144, 0, 32, 32));   TEND
-ONLY_TEST("Tile rect 0,5") return (Server::getTileRect(0, 4) == Rect(-16, 128, 32, 32)); TEND
-ONLY_TEST("Tile rect 0,5") return (Server::getTileRect(0, 5) == Rect(0, 160, 32, 32));   TEND
+TEST("Tile rect 5,0") return (Server::getTileRect(4, 0) == Rect(112, 0, 32, 32));   TEND
+TEST("Tile rect 5,0") return (Server::getTileRect(5, 0) == Rect(144, 0, 32, 32));   TEND
+TEST("Tile rect 0,5") return (Server::getTileRect(0, 4) == Rect(-16, 128, 32, 32)); TEND
+TEST("Tile rect 0,5") return (Server::getTileRect(0, 5) == Rect(0, 160, 32, 32));   TEND
 
-ONLY_TEST("Tile rect odd Y")  return (Server::getTileRect(7, 5) == Rect(224, 160, 32, 32)); TEND
-ONLY_TEST("Tile rect even Y") return (Server::getTileRect(7, 6) == Rect(208, 192, 32, 32)); TEND
+TEST("Tile rect odd Y")  return (Server::getTileRect(7, 5) == Rect(224, 160, 32, 32)); TEND
+TEST("Tile rect even Y") return (Server::getTileRect(7, 6) == Rect(208, 192, 32, 32)); TEND
