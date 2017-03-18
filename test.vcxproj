@@ -262,6 +262,7 @@
     <ClInclude Include="src\server\Yield.h" />
     <ClInclude Include="src\Socket.h" />
     <ClInclude Include="src\Stats.h" />
+    <ClInclude Include="src\Terrain.h" />
     <ClInclude Include="src\testing\ClientTestInterface.h" />
     <ClInclude Include="src\testing\ServerTestInterface.h" />
     <ClInclude Include="src\testing\Test.h" />

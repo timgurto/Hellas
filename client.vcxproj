@@ -210,6 +210,7 @@
     <ClInclude Include="src\server\Recipe.h" />
     <ClInclude Include="src\Socket.h" />
     <ClInclude Include="src\Stats.h" />
+    <ClInclude Include="src\Terrain.h" />
     <ClInclude Include="src\types.h" />
     <ClInclude Include="src\util.h" />
     <ClInclude Include="src\XmlReader.h" />

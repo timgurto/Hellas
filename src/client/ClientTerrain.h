@@ -1,11 +1,12 @@
-#ifndef TERRAIN_H
-#define TERRAIN_H
+#ifndef CLIENT_TERRAIN_H
+#define CLIENT_TERRAIN_H
 
 #include "Texture.h"
 #include "../Rect.h"
+#include "../Terrain.h"
 #include "../types.h"
 
-class ClientTerrain{
+class ClientTerrain : public Terrain{
     std::vector<Texture> _images;
     size_t _frames;
     size_t _frame;
