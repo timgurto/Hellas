@@ -465,7 +465,7 @@ void ClientObject::update(double delta) {
 
     // If transforming, reduce timer.
     if (_transformTimer > 0){
-        ms_t timeElapsed = 1000 * delta;
+        ms_t timeElapsed = toInt(1000 * delta);
         if (timeElapsed > _transformTimer)
             _transformTimer = 0;
         else
