@@ -20,6 +20,7 @@
 #include "../Args.h"
 #include "../messageCodes.h"
 #include "../Socket.h"
+#include "../Terrain.h"
 
 class Server{
 public:
@@ -139,6 +140,7 @@ private:
     std::set<Recipe> _recipes;
     std::set<const ObjectType *> _objectTypes;
     std::map<size_t, Spawner> _spawners;
+    std::map<char, Terrain*> _terrainTypes;
 
     std::list<Object *> _objectsToRemove; // Emptied every tick.
     // Force all users to untarget an object

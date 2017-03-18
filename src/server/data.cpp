@@ -7,6 +7,7 @@
 #include "ProgressLock.h"
 #include "Server.h"
 #include "VehicleType.h"
+#include "../Terrain.h"
 #include "../XmlReader.h"
 #include "../XmlWriter.h"
 
@@ -157,11 +158,17 @@ void Server::loadData(const std::string &path){
         TerrainList::clearLists();
         for (auto elem : xr.getChildren("terrain")) {
             char index;
-            std::string id;
+            std::string id, tag;
             if (!xr.findAttr(elem, "index", index))
                 continue;
             if (!xr.findAttr(elem, "id", id))
                 continue;
+            Terrain *newTerrain = nullptr;
+            if (xr.findAttr(elem, "tag", tag))
+                newTerrain = Terrain::withTag(tag);
+            else
+                newTerrain = Terrain::empty();
+            _terrainTypes[index] = newTerrain;
             terrainCodes[id] = index;
         }
 
