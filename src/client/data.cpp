@@ -251,6 +251,9 @@ void Client::loadData(const std::string &path){
                     recipe.addTool(s);
                 }
             }
+
+            if (xr.getChildren("unlockedBy", elem).empty())
+                _knownRecipes.insert(id);
         
             _recipes.insert(recipe);
         }

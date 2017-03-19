@@ -31,3 +31,9 @@ MessageCode ClientTestInterface::getNextMessage() const {
     WAIT_UNTIL(_client._messagesReceived.size() > currentSize);
     return _client._messagesReceived.back();
 }
+
+void ClientTestInterface::showCraftingWindow() {
+    _client._craftingWindow->show();
+    WAIT_UNTIL(! _client._craftingWindow->changed());
+
+}

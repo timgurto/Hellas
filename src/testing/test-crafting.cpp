@@ -31,3 +31,15 @@ TEST("Terrain as tool")
     WAIT_UNTIL (user.action() == User::Action::NO_ACTION) ; // Wait for gathering to finish
     return (user.inventory()[0].first->id() == "daisyChain");
 TEND
+
+ONLY_TEST("Client sees default recipes")
+    ServerTestInterface s;
+    s.loadData("testing/data/box_from_nothing");
+    s.run();
+    ClientTestInterface c;
+    c.loadData("testing/data/box_from_nothing");
+    c.run();
+    WAIT_UNTIL (s.users().size() == 1);
+    c.showCraftingWindow();
+    return c.recipeList().size() == 1;
+TEND

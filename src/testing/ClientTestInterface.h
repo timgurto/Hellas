@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #ifndef CLIENT_TEST_INTERFACE_H
 #define CLIENT_TEST_INTERFACE_H
 
@@ -20,6 +18,8 @@ public:
 
     std::map<size_t, ClientObject*> &objects() { return _client._objects; }
     Client::objectTypes_t &objectTypes() { return _client._objectTypes; }
+    const List &recipeList() const { return *_client._recipeList; }
+    void showCraftingWindow();
 
     Client *operator->(){ return &_client; }
     Client &client() { return _client; }
