@@ -118,10 +118,11 @@ void Client::loadData(const std::string &path){
             for (auto objMat : xr.getChildren("material", elem)){
                 if (!xr.findAttr(objMat, "id", s))
                     continue;
-                std::set<ClientItem>::const_iterator itemIt = _items.insert(ClientItem(s)).first;
+                ClientItem &item = _items[s];
+                item = ClientItem(s);
                 n = 1;
                 xr.findAttr(objMat, "quantity", n);
-                cot->addMaterial(&*itemIt, n);
+                cot->addMaterial(&item, n);
             }
 
             if (cot->classTag() == 'v'){
@@ -202,11 +203,7 @@ void Client::loadData(const std::string &path){
                 item.constructsObject(*pair.first);
             }
         
-            std::pair<std::set<ClientItem>::iterator, bool> ret = _items.insert(item);
-            if (!ret.second) {
-                ClientItem &itemInPlace = const_cast<ClientItem &>(*ret.first);
-                itemInPlace = item;
-            }
+            _items[id] = item;
         }
     }
 
@@ -228,7 +225,8 @@ void Client::loadData(const std::string &path){
                 _debug << Color::FAILURE << "Skipping recipe with invalid product " << s << Log::endl;
                 continue;
             }
-            recipe.product(&*it);
+            const ClientItem *item = &it->second;
+            recipe.product(item);
 
             size_t n;
             if (xr.findAttr(elem, "quantity", n)) recipe.quantity(n);
@@ -237,12 +235,13 @@ void Client::loadData(const std::string &path){
                 int matQty = 1;
                 xr.findAttr(child, "quantity", matQty);
                 if (xr.findAttr(child, "id", s)) {
-                    auto it = _items.find(ClientItem(s));
+                    auto it = _items.find(s);
                     if (it == _items.end()) {
                         _debug << Color::FAILURE << "Skipping invalid recipe material " << s << Log::endl;
                         continue;
                     }
-                    recipe.addMaterial(&*it, matQty);
+                    const ClientItem *material = &it->second;
+                    recipe.addMaterial(material, matQty);
                 }
             }
 
@@ -288,11 +287,13 @@ void Client::loadData(const std::string &path){
             if (!pair.second) {
                 // A ClientObjectType is being pointed to by items; they need to point to this instead.
                 const ClientObjectType *dummy = *pair.first;
-                for (const ClientItem &item : _items)
+                for (const auto &pair: _items){
+                    const ClientItem &item = pair.second;
                     if (item.constructsObject() == dummy){
                         ClientItem &nonConstItem = const_cast<ClientItem &>(item);
                         nonConstItem.constructsObject(nt);
                     }
+                }
                 _objectTypes.erase(dummy);
                 delete dummy;
                 _objectTypes.insert(nt);

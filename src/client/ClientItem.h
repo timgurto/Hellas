@@ -25,7 +25,7 @@ class ClientItem : public Item{
     static std::vector<Point> gearOffsets;
 
 public:
-    ClientItem(const std::string &id, const std::string &name = "");
+    ClientItem(const std::string &id = "", const std::string &name = "");
 
     const std::string &name() const { return _name; }
     const Texture &icon() const { return _icon; }

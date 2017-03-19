@@ -72,7 +72,8 @@ void ItemSelector::applyFilter(void *data){
     const std::string &filterText = _filterText->text();
 
     const auto &items = Client::_instance->_items;
-    for (const ClientItem &item : items){
+    for (const auto &pair : Client::_instance->_items){
+        const ClientItem &item = pair.second;
         if (filterText == "" || itemMatchesFilter(item, filterText)){
             // Add item to list
             Element *container = new Element();

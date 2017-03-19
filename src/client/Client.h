@@ -301,7 +301,7 @@ private:
     void loadData(const std::string &path = "Data");
     bool _dataLoaded; // If false when run() is called, load default data.
     std::map<char, ClientTerrain> _terrain;
-    std::set<ClientItem> _items;
+    std::map<std::string, ClientItem> _items;
     std::set<Recipe> _recipes;
     typedef std::set<const ClientObjectType*, ClientObjectType::ptrCompare> objectTypes_t;
     objectTypes_t _objectTypes;

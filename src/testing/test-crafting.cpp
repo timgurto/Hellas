@@ -32,7 +32,7 @@ TEST("Terrain as tool")
     return (user.inventory()[0].first->id() == "daisyChain");
 TEND
 
-ONLY_TEST("Client sees default recipes")
+TEST("Client sees default recipes")
     ServerTestInterface s;
     s.loadData("testing/data/box_from_nothing");
     s.run();

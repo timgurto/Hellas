@@ -345,7 +345,7 @@ void Client::handleMessage(const std::string &msg){
                        << Log::endl;
                 break;
             }
-            const ClientItem &item = *it;
+            const ClientItem &item = it->second;
             if (item.gearSlot() >= GEAR_SLOTS){
                 _debug("Gear info received for a non-gear item.  Ignoring.", Color::FAILURE);
                 break;
@@ -364,13 +364,13 @@ void Client::handleMessage(const std::string &msg){
 
             const ClientItem *item = nullptr;
             if (quantity > 0) {
-                std::set<ClientItem>::const_iterator it = _items.find(itemID);
+                const auto it = _items.find(itemID);
                 if (it == _items.end()) {
                     _debug << Color::FAILURE << "Unknown inventory item \"" << itemID
                            << "\"announced; ignored.";
                     break;
                 }
-                item = &*it;
+                item = &it->second;
             }
 
             ClientItem::vect_t *container;
@@ -690,7 +690,8 @@ void Client::handleMessage(const std::string &msg){
                 }
                 size_t qty;
                 singleMsg >> del >> qty >> del;
-                set.add(&*it, qty);
+                const ClientItem *item = &it->second;
+                set.add(item, qty);
             }
             obj.constructionMaterials(set);
             obj.createWindow(*this);
@@ -819,12 +820,14 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Received merchant slot describing invalid item", Color::FAILURE);
                 break;
             }
+            const ClientItem *wareItem = &wareIt->second;
             auto priceIt = _items.find(price);
             if (priceIt == _items.end()){
                 _debug("Received merchant slot describing invalid item", Color::FAILURE);
                 break;
             }
-            obj.setMerchantSlot(slot, ClientMerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty));
+            const ClientItem *priceItem = &priceIt->second;
+            obj.setMerchantSlot(slot, ClientMerchantSlot(wareItem, wareQty, priceItem, priceQty));
             break;
         }
 
