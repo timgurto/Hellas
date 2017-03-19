@@ -12,8 +12,8 @@ frameTime          *
 
 <terrain index="G" id="grass"         color="357F51" />
 <terrain index="o" id="stone"         color="8778A5" />
-<terrain index="W" id="deepWater"     color="1F3C60"                   frames="32" frameTime="200" />
-<terrain index="w" id="water"         color="394FB2"                   frames="32" frameTime="200" />
+<terrain index="W" id="deepWater"     color="1F3C60"                   frames="32" frameTime="200" tag="water" />
+<terrain index="w" id="water"         color="394FB2"                   frames="32" frameTime="200" tag="water" />
 <terrain index="c" id="clay"          color="000000" />
 <terrain index="g" id="lightGrass"    color="62BA6C" />
 <terrain index="s" id="sand"          color="FFFFB2" />

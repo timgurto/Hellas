@@ -143,7 +143,8 @@
 
 <recipe
     id="elutriator" time="4000" product="elutriator" >
-    <material id="smallPot" quantity="2" />
+    <material id="smallPot" />
+    <material id="water" />
     <material id="tinPipe" />
     <unlockedBy recipe="smallPot" chance="0.2" />
     <unlockedBy recipe="tinPipe" />
@@ -258,6 +259,13 @@
     id="rope" time="4000" product="rope" >
     <material id="flax" quantity="3" />
     <unlockedBy gather="flax" />
+</recipe>
+
+<recipe
+    id="water" time="4000" product="water" >
+    <material id="smallPot" />
+    <tool class="water" />
+    <unlockedBy recipe="smallPot" />
 </recipe>
 
 </root>

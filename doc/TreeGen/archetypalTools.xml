@@ -15,5 +15,6 @@
 <extra parent="item_rope"          child="item_tannin" />
 <extra parent="item_tinBar"        child="item_tinSaw" />
 <extra parent="item_tinBar"        child="item_tinPipe" />
+<extra parent="item_water"         child="object_flaxCrop0" />
 
 </root>

@@ -199,7 +199,7 @@ Server only:
     <yield id="figSeeds" initialMean="1.2" initialSD="0.5" />
 </objectType>
 
-<objectType id="flaxCrop" name="Flax Farm"
+<objectType id="flaxCrop0" name="Flax Farm"
     xDrawOffset="-20"
     yDrawOffset="-34"
     isFlat="1"
@@ -207,17 +207,38 @@ Server only:
     constructionReq="hoe"
     allowedTerrain="denseVeg" >
     <collisionRect x="-19" y="-20" w="38" h="40" />
-    <transform id="flaxCropRipe" time="600000">
-        <progress image="flaxCrop1" />
-        <progress image="flaxCrop2" />
-        <progress image="flaxCrop3" />
-        <progress image="flaxCrop4" />
-        <progress image="flaxCrop5" />
-        <progress image="flaxCrop6" />
-        <progress image="flaxCrop7" />
-    </transform>
+    <material id="water" />
+    <transform id="flaxCrop1" time="2000" />
 </objectType>
-<objectType id="flaxCropRipe" name="Flax Farm (Ripe)"
+<objectType id="flaxCrop1" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1"> <collisionRect x="-19" y="-20" w="38" h="40" />
+    <material id="water" />
+    <transform id="flaxCrop2" time="2000" />
+</objectType>
+<objectType id="flaxCrop2" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1"> <collisionRect x="-19" y="-20" w="38" h="40" />
+    <material id="water" />
+    <transform id="flaxCrop3" time="2000" />
+</objectType>
+<objectType id="flaxCrop3" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1"> <collisionRect x="-19" y="-20" w="38" h="40" />
+    <material id="water" />
+    <transform id="flaxCrop4" time="2000" />
+</objectType>
+<objectType id="flaxCrop4" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1"> <collisionRect x="-19" y="-20" w="38" h="40" />
+    <material id="water" />
+    <transform id="flaxCrop5" time="2000" />
+</objectType>
+<objectType id="flaxCrop5" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1"> <collisionRect x="-19" y="-20" w="38" h="40" />
+    <material id="water" />
+    <transform id="flaxCrop6" time="2000" />
+</objectType>
+<objectType id="flaxCrop6" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1"> <collisionRect x="-19" y="-20" w="38" h="40" />
+    <material id="water" />
+    <transform id="flaxCrop7" time="2000" />
+</objectType>
+<objectType id="flaxCrop7" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1"> <collisionRect x="-19" y="-20" w="38" h="40" />
+    <material id="water" />
+    <transform id="flaxCrop8" time="2000" />
+</objectType>
+<objectType id="flaxCrop8" name="Flax Farm (Ripe)"
     xDrawOffset="-20"
     yDrawOffset="-34"
     isFlat="1"
