@@ -64,3 +64,9 @@ const Texture &ClientObjectType::getProgressImage(ms_t timeRemaining) const{
 void ClientObjectType::addTransformImage(const std::string &filename){
     _transformImages.push_back(Texture("Images/Objects/" + filename + ".png", Color::MAGENTA));
 }
+
+void ClientObjectType::addMaterial(const ClientItem *item, size_t qty) {
+    _materials.set(item, qty);
+    if (!_constructionImage)
+        _constructionImage = Texture("Images/Objects/" + _id + "-construction.png", Color::MAGENTA);
+}

@@ -30,6 +30,7 @@ class ClientObjectType : public EntityType{
     std::set<std::string> _tags;
     ItemSet _materials;
     mutable Texture *_materialsTooltip;
+    Texture _constructionImage; // Shown when the object is under construction.
 
     // To show transformations.  Which image is displayed depends on progress.
     std::vector<Texture> _transformImages;
@@ -60,7 +61,7 @@ public:
     void collisionRect(const Rect &r) { _collisionRect = r; }
     const ParticleProfile *gatherParticles() const { return _gatherParticles; }
     void gatherParticles(const ParticleProfile *profile) { _gatherParticles = profile; }
-    void addMaterial(const ClientItem *item, size_t qty) { _materials.set(item, qty); }
+    void addMaterial(const ClientItem *item, size_t qty);
     const ItemSet &materials() const { return _materials; }
     bool hasTags() const { return !_tags.empty(); }
     const std::set<std::string> &tags() const { return _tags; }
@@ -69,6 +70,7 @@ public:
     void transformTime(ms_t time) { _transformTime = time; }
     ms_t transformTime() const { return _transformTime; }
     void addTransformImage(const std::string &filename);
+    const Texture &constructionImage() const { return _constructionImage; }
     
     const Texture &getProgressImage(ms_t timeRemaining) const;
 

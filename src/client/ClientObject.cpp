@@ -582,16 +582,9 @@ const Texture &ClientObject::tooltip() const{
     return _tooltip;
 }
 
-void ClientObject::draw(const Client &client) const{
-    if (isBeingConstructed()){
-        renderer.setDrawColor(Color::FOOTPRINT);
-        renderer.fillRect(drawRect() + client.offset());
-    } else {
-        Entity::draw(client);
-    }
-}
-
 const Texture &ClientObject::image() const{
+    if (isBeingConstructed())
+        return objectType()->constructionImage();
     if (objectType()->transforms())
         return objectType()->getProgressImage(_transformTimer);
     return Entity::image();
