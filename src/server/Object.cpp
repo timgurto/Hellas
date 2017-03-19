@@ -208,6 +208,9 @@ void Object::onRemove(){
 }
 
 void Object::update(ms_t timeElapsed){
+    if (isBeingBuilt())
+        return;
+
     if (_transformTimer > 0 && type()->transformObject() != nullptr){
         if (timeElapsed > _transformTimer)
             _transformTimer = 0;
