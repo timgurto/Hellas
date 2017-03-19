@@ -235,6 +235,8 @@ void Object::setType(const ObjectType *type){
     if (type->transforms())
         _transformTimer = type->transformTime();
 
+    _remainingMaterials = type->materials();
+
     // Inform nearby users
     const Server *server = Server::_instance;
     if (server != nullptr)
