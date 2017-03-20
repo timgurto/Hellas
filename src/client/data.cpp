@@ -67,6 +67,9 @@ void Client::loadData(const std::string &path){
         }
     }
 
+    if (xr.newFile(path + "/items.xml")) // Early, because object types may insert new items.
+        _items.clear();
+
     // Object types
     bool objectTypesCleared = false;
     drawLoadingScreen("Loading objects", 0.644);
@@ -119,7 +122,6 @@ void Client::loadData(const std::string &path){
                 if (!xr.findAttr(objMat, "id", s))
                     continue;
                 ClientItem &item = _items[s];
-                item = ClientItem(s);
                 n = 1;
                 xr.findAttr(objMat, "quantity", n);
                 cot->addMaterial(&item, n);
@@ -154,7 +156,6 @@ void Client::loadData(const std::string &path){
     // Items
     drawLoadingScreen("Loading items", 0.656);
     if (xr.newFile(path + "/items.xml")){
-        _items.clear();
         for (auto elem : xr.getChildren("item")) {
             std::string id, name;
             if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name))
