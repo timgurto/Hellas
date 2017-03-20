@@ -5,6 +5,7 @@
 
 #include "Client.h"
 #include "ClientObjectType.h"
+#include "Surface.h"
 #include "TooltipBuilder.h"
 #include "../Color.h"
 
@@ -18,7 +19,9 @@ _gatherSound(nullptr),
 _gatherParticles(nullptr),
 _materialsTooltip(nullptr),
 _transformTime(0)
-{}
+{
+    _transformImages.push_back(ImageSet("Images/Objects/" + _id + ".png"));
+}
 
 ClientObjectType::~ClientObjectType(){
     // TODO: wrap sound functionality in class that properly handles copies.
@@ -51,22 +54,29 @@ const Texture &ClientObjectType::materialsTooltip() const{
     return *_materialsTooltip;
 }
 
-const Texture &ClientObjectType::getProgressImage(ms_t timeRemaining) const{
+const ClientObjectType::ImageSet &ClientObjectType::getProgressImage(ms_t timeRemaining) const{
     double progress = 1 - (1.0 * timeRemaining / _transformTime);
-    size_t numFrames = _transformImages.size() + 1;
-    size_t index = static_cast<size_t>(progress * numFrames);
-    if (_transformImages.empty() || index == 0)
-        return image();
+    size_t numFrames = _transformImages.size();
+    size_t index = static_cast<size_t>(progress * numFrames) - 1;
+    if (_transformImages.empty())
+        index = 0;
     index = min<int>(index, _transformImages.size()); // Progress may be 100% due to server delay.
-    return _transformImages[index-1];
+    return _transformImages[index];
 }
 
 void ClientObjectType::addTransformImage(const std::string &filename){
-    _transformImages.push_back(Texture("Images/Objects/" + filename + ".png", Color::MAGENTA));
+    _transformImages.push_back(ImageSet("Images/Objects/" + filename + ".png"));
 }
 
 void ClientObjectType::addMaterial(const ClientItem *item, size_t qty) {
     _materials.set(item, qty);
-    if (!_constructionImage)
-        _constructionImage = Texture("Images/Objects/" + _id + "-construction.png", Color::MAGENTA);
+    if (!_constructionImage.normal)
+        _constructionImage = ImageSet("Images/Objects/" + _id + "-construction.png");
+}
+
+ClientObjectType::ImageSet::ImageSet(const std::string &filename){
+    Surface surface(filename, Color::MAGENTA);
+    normal = Texture(surface);
+    surface.swapColors(Color::OUTLINE, Color::HIGHLIGHT_OUTLINE);
+    highlight = Texture(surface);
 }

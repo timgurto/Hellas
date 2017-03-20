@@ -16,6 +16,13 @@ class ParticleProfile;
 
 // Describes a class of Entities, the "instances" of which share common properties
 class ClientObjectType : public EntityType{
+    struct ImageSet{
+        Texture normal, highlight;
+        ImageSet(){}
+        ImageSet(const std::string &filename);
+    };
+    ImageSet _images;
+
     std::string _id;
     std::string _name;
     bool _canGather; // Whether this represents objects that can be gathered
@@ -30,10 +37,10 @@ class ClientObjectType : public EntityType{
     std::set<std::string> _tags;
     ItemSet _materials;
     mutable Texture *_materialsTooltip;
-    Texture _constructionImage; // Shown when the object is under construction.
+    ImageSet _constructionImage; // Shown when the object is under construction.
 
     // To show transformations.  Which image is displayed depends on progress.
-    std::vector<Texture> _transformImages;
+    std::vector<ImageSet> _transformImages;
     ms_t _transformTime; // The total length of the transformation.
 
 public:
@@ -70,9 +77,9 @@ public:
     void transformTime(ms_t time) { _transformTime = time; }
     ms_t transformTime() const { return _transformTime; }
     void addTransformImage(const std::string &filename);
-    const Texture &constructionImage() const { return _constructionImage; }
+    const ImageSet &constructionImage() const { return _constructionImage; }
     
-    const Texture &getProgressImage(ms_t timeRemaining) const;
+    const ImageSet &getProgressImage(ms_t timeRemaining) const;
 
     virtual char classTag() const override { return 'o'; }
 

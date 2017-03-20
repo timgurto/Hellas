@@ -80,6 +80,7 @@ public:
     void hideWindow();
     virtual void createWindow(Client &client);
     virtual const Texture &image() const override;
+    virtual const Texture &highlightImage() const override;
 
 
     bool userHasAccess() const;

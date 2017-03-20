@@ -584,8 +584,16 @@ const Texture &ClientObject::tooltip() const{
 
 const Texture &ClientObject::image() const{
     if (isBeingConstructed())
-        return objectType()->constructionImage();
+        return objectType()->constructionImage().normal;
     if (objectType()->transforms())
-        return objectType()->getProgressImage(_transformTimer);
+        return objectType()->getProgressImage(_transformTimer).normal;
     return Entity::image();
+}
+
+const Texture &ClientObject::highlightImage() const{
+    if (isBeingConstructed())
+        return objectType()->constructionImage().highlight;
+    if (objectType()->transforms())
+        return objectType()->getProgressImage(_transformTimer).highlight;
+    return Entity::highlightImage();
 }
