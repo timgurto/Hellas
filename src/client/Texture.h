@@ -26,6 +26,8 @@ class Texture{
     Texture(bool programEndMarker) : _programEndMarker(true) {}
     static Texture _programEndMarkerTexture;
 
+    static std::map<const SDL_Texture*, std::string> _descriptions; // To help debug leaks.
+
 public:
     Texture();
     Texture(px_t width, px_t height); // Create a blank texture, which can be rendered to

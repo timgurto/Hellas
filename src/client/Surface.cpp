@@ -17,11 +17,17 @@ _raw(IMG_Load(filename.c_str()))
         return;
     if (&colorKey != &Color::NO_KEY)
         SDL_SetColorKey(_raw, SDL_TRUE, colorKey);
+
+    if (isDebug())
+        _description = filename;
 }
 
 Surface::Surface(TTF_Font *font, const std::string &text, const Color &color):
 _raw(TTF_RenderText_Solid(font, text.c_str(), color))
-{}
+{\
+    if (isDebug())
+        _description = "Text: " + text;
+}
 
 Surface::~Surface(){
     if (_raw != nullptr)

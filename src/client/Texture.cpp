@@ -12,7 +12,9 @@ std::map<SDL_Texture *, size_t> Texture::_refs; // MUST be defined before _progr
 MUST be defined after _refs, so that it is destroyed first.
 This object's d'tor signals that the program has ended.
 */
-Texture Texture::_programEndMarkerTexture(true); 
+Texture Texture::_programEndMarkerTexture(true);
+
+std::map<const SDL_Texture*, std::string> Texture::_descriptions;
 
 int Texture::_numTextures = 0;
 
@@ -36,6 +38,12 @@ _programEndMarker(false){
         addRef();
     else
         _validTarget = false;
+
+    if (isDebug()){
+        std::ostringstream oss;
+        oss << "Blank " << width << 'x' << height;
+        _descriptions[_raw] = oss.str();
+    }
 }
 
 Texture::Texture(const std::string &filename, const Color &colorKey):
@@ -59,6 +67,10 @@ _programEndMarker(false){
         removeRef();
         _raw = 0;
     }
+
+    if (isDebug()){
+        _descriptions[_raw] = filename;
+    }
 }
 
 Texture::Texture(const Surface &surface):
@@ -76,6 +88,10 @@ _programEndMarker(false){
     if (ret != 0) {
         removeRef();
         _raw = 0;
+    }
+
+    if (isDebug()){
+        _descriptions[_raw] = "From surface: " + surface.description();
     }
 }
 
@@ -100,6 +116,10 @@ _programEndMarker(false){
     if (ret != 0) {
         removeRef();
         _raw = 0;
+    }
+
+    if (isDebug()){
+        _descriptions[_raw] = "Text: " + text;
     }
 }
 
@@ -182,6 +202,8 @@ void Texture::removeRef(){
         --_numTextures;
         --_refs[_raw];
         if (_refs[_raw] == 0) {
+            if (isDebug())
+                _descriptions.erase(_raw);
             SDL_DestroyTexture(_raw);
             _refs.erase(_raw);
         }
