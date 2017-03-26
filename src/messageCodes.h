@@ -350,6 +350,14 @@ enum MessageCode{
 
 
 
+    // Debug requests
+
+    // "Give me a full stack of ..."
+    // Arguments: id
+    DG_GIVE = 2000,
+
+
+
     NO_CODE
 };
 

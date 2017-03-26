@@ -896,6 +896,23 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case DG_GIVE:
+        {
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
+            std::string id(buffer);
+            iss >> del;
+            if (del != MSG_END)
+                return;
+            const auto it = _items.find(id);
+            if (it == _items.end()){
+                sendMessage(client, SV_INVALID_ITEM);
+                break;
+            }
+            const ServerItem &item = *it;;
+            user->giveItem(&item, item.stackSize());
+            break;
+        }
+
         default:
             _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
         }

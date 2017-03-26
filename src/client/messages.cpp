@@ -925,6 +925,8 @@ void Client::initializeMessageNames(){
     _messageCommands["s"] = CL_SAY;
     _messageCommands["whisper"] = CL_WHISPER;
     _messageCommands["w"] = CL_WHISPER;
+    
+    _messageCommands["give"] = DG_GIVE;
 
     _errorMessages[SV_TOO_FAR] = "You are too far away to perform that action.";
     _errorMessages[SV_DOESNT_EXIST] = "That object doesn't exist.";
