@@ -19,9 +19,7 @@ _gatherSound(nullptr),
 _gatherParticles(nullptr),
 _materialsTooltip(nullptr),
 _transformTime(0)
-{
-    _transformImages.push_back(ImageSet("Images/Objects/" + _id + ".png"));
-}
+{}
 
 ClientObjectType::~ClientObjectType(){
     // TODO: wrap sound functionality in class that properly handles copies.
@@ -65,6 +63,8 @@ const ClientObjectType::ImageSet &ClientObjectType::getProgressImage(ms_t timeRe
 }
 
 void ClientObjectType::addTransformImage(const std::string &filename){
+    if (_transformImages.empty())
+        _transformImages.push_back(ImageSet("Images/Objects/" + _id + ".png"));
     _transformImages.push_back(ImageSet("Images/Objects/" + filename + ".png"));
 }
 

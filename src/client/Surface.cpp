@@ -24,7 +24,7 @@ _raw(IMG_Load(filename.c_str()))
 
 Surface::Surface(TTF_Font *font, const std::string &text, const Color &color):
 _raw(TTF_RenderText_Solid(font, text.c_str(), color))
-{\
+{
     if (isDebug())
         _description = "Text: " + text;
 }

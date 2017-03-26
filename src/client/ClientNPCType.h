@@ -9,7 +9,7 @@ class ClientNPCType : public ClientObjectType{
 
 public:
     ClientNPCType(const std::string &id, health_t maxHealth);
-    virtual ~ClientNPCType(){}
+    virtual ~ClientNPCType() override{}
 
     health_t maxHealth() const { return _maxHealth; }
     void maxHealth(health_t n) { _maxHealth = n; }

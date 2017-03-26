@@ -45,7 +45,7 @@ class ClientObjectType : public EntityType{
 
 public:
     ClientObjectType(const std::string &id);
-    virtual ~ClientObjectType();
+    virtual ~ClientObjectType() override;
 
     const std::string &id() const { return _id; }
     const std::string &name() const { return _name; }
