@@ -44,6 +44,7 @@ public:
 
     static void registerStagedLocks();
     static void triggerUnlocks(User &user, Type triggerType, const void *trigger);
+    static void unlockAll(User &user);
     void stage() const { stagedLocks.insert(*this); }
 
     bool ProgressLock::operator<(const ProgressLock &rhs) const;

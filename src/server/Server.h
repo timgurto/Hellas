@@ -99,6 +99,8 @@ private:
     void sendConstructionMaterialsMessage(const User &user, const Object &obj) const;
     void sendObjectInfo(const User &user, const Object &object) const;
     void sendUserInfo(const User &user, const User &userToDescribe) const;
+    void sendNewBuildsMessage(const User &user, const std::set<std::string> &ids) const;
+    void sendNewRecipesMessage(const User &user, const std::set<std::string> &ids) const;
 
     // Clients
     // All connected sockets, including those without registered users

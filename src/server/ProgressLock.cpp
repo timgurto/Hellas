@@ -73,11 +73,43 @@ void ProgressLock::registerStagedLocks(){
     }
 }
 
+void ProgressLock::unlockAll(User &user){
+    std::set<ProgressLock> allLocks;
+    for (const auto &pair : locksByType[RECIPE])
+        allLocks.insert(pair.second);
+    for (const auto &pair : locksByType[CONSTRUCTION])
+        allLocks.insert(pair.second);
+    for (const auto &pair : locksByType[ITEM])
+        allLocks.insert(pair.second);
+    for (const auto &pair : locksByType[GATHER])
+        allLocks.insert(pair.second);
+
+    std::set<std::string>
+        newRecipes,
+        newBuilds;
+    for (const ProgressLock &lock : allLocks){
+        const std::string &id = lock._effectID;
+        switch (lock._effectType){
+        case RECIPE:
+            newRecipes.insert(id);
+            user.addRecipe(id);
+            break;
+        case CONSTRUCTION:
+            newBuilds.insert(id);
+            user.addConstruction(id);
+            break;
+        }
+    }
+    const Server &server = Server::instance();
+    server.sendNewBuildsMessage(user, newBuilds);
+    server.sendNewRecipesMessage(user, newRecipes);
+}
+
 void ProgressLock::triggerUnlocks(User &user, Type triggerType, const void *trigger){
     const locks_t &locks = locksByType[triggerType];
     auto toUnlock = locks.equal_range(trigger);
 
-    std::set<const std::string>
+    std::set<std::string>
         newRecipes,
         newBuilds;
 
@@ -110,20 +142,9 @@ void ProgressLock::triggerUnlocks(User &user, Type triggerType, const void *trig
     }
 
     const Server &server = Server::instance();
-            
-    if (!newRecipes.empty()){ // New recipes unlocked!
-        std::string args = makeArgs(newRecipes.size());
-        for (const std::string &id : newRecipes)
-            args = makeArgs(args, id);
-        server.sendMessage(user.socket(), SV_NEW_RECIPES, args);
-    }
+    server.sendNewBuildsMessage(user, newBuilds);
+    server.sendNewRecipesMessage(user, newRecipes);
 
-    if (!newBuilds.empty()){ // New constructions unlocked!
-        std::string args = makeArgs(newBuilds.size());
-        for (const std::string &id : newBuilds)
-            args = makeArgs(args, id);
-        server.sendMessage(user.socket(), SV_NEW_CONSTRUCTIONS, args);
-    }
 }
 
 // Order doesnt' really matter, as long as it's a proper ordering.

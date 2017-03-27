@@ -921,14 +921,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             if (del != MSG_END)
                 return;
-            for (const ServerItem &item : _items){
-                ProgressLock::triggerUnlocks(*user, ProgressLock::RECIPE, &item);
-                ProgressLock::triggerUnlocks(*user, ProgressLock::ITEM, &item);
-                ProgressLock::triggerUnlocks(*user, ProgressLock::GATHER, &item);
-            }
-            for (const ObjectType *objectType : _objectTypes){
-                ProgressLock::triggerUnlocks(*user, ProgressLock::CONSTRUCTION, objectType);
-            }
+            ProgressLock::unlockAll(*user);
             break;
         }
 
@@ -1060,5 +1053,23 @@ void Server::sendUserInfo(const User &user, const User &userToDescribe) const{
         const ServerItem *item = userToDescribe.gear(i).first;
         if (item != nullptr)
             sendMessage(user.socket(), SV_GEAR, makeArgs(userToDescribe.name(), i, item->id()));
+    }
+}
+
+void Server::sendNewBuildsMessage(const User &user, const std::set<std::string> &ids) const{
+    if (!ids.empty()){ // New constructions unlocked!
+        std::string args = makeArgs(ids.size());
+        for (const std::string &id : ids)
+            args = makeArgs(args, id);
+        sendMessage(user.socket(), SV_NEW_CONSTRUCTIONS, args);
+    }
+}
+
+void Server::sendNewRecipesMessage(const User &user, const std::set<std::string> &ids) const{
+    if (!ids.empty()){ // New recipes unlocked!
+        std::string args = makeArgs(ids.size());
+        for (const std::string &id : ids)
+            args = makeArgs(args, id);
+        sendMessage(user.socket(), SV_NEW_RECIPES, args);
     }
 }
