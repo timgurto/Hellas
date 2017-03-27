@@ -435,6 +435,9 @@ void Client::handleMessage(const std::string &msg){
                 ClientObject &obj = *it->second;
                 obj.location(Point(x, y));
                 obj.type(cot);
+                // Redraw window
+                obj.createWindow(*this);
+                obj.refreshTooltip();
 
             } else {
                 // A new object was added; add entity to list
