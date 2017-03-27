@@ -39,6 +39,8 @@ public:
 
     void resize(px_t w, px_t h); // Resize window, so that the content size matches the given dims.
 
+    px_t contentHeight() { return _content->height(); }
+
     virtual void addChild(Element *child) override;
     virtual void clearChildren() override;
     virtual Element *findChild(const std::string id) override;

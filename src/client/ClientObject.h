@@ -86,6 +86,14 @@ public:
     bool userHasAccess() const;
 
     void setMerchantSlot(size_t i, ClientMerchantSlot &mSlot);
+
+private:
+    static const px_t
+        BUTTON_HEIGHT,
+        BUTTON_WIDTH,
+        GAP,
+        BUTTON_GAP;
+    void addConstructionInfoToWindow();
 };
 
 #endif

@@ -21,6 +21,11 @@
 
 extern Renderer renderer;
 
+const px_t ClientObject::BUTTON_HEIGHT = 15;
+const px_t ClientObject::BUTTON_WIDTH = 60;
+const px_t ClientObject::GAP = 2;
+const px_t ClientObject::BUTTON_GAP = 1;
+
 ClientObject::ClientObject(const ClientObject &rhs):
 Entity(rhs),
 _serial(rhs._serial),
@@ -80,7 +85,6 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
     e.clearChildren();
 
     static const px_t // TODO: remove duplicate consts
-        GAP = 2,
         NAME_WIDTH = 100,
         QUANTITY_WIDTH = 20,
         BUTTON_PADDING = 1,
@@ -198,24 +202,68 @@ void ClientObject::onRightClick(Client &client){
     }
 }
 
+void ClientObject::addConstructionInfoToWindow(){
+    px_t
+        x = 0,
+        y = _window->contentHeight();
+    _window->addChild(new Label(Rect(x, y, _window->width(), Element::TEXT_HEIGHT),
+                                "Under construction"));
+    y += Element::TEXT_HEIGHT + GAP;
+
+    // 1. Required materials
+    _window->addChild(new Label(Rect(x, y, _window->width(), Element::TEXT_HEIGHT),
+                                "Remaining materials required:"));
+    y += Element::TEXT_HEIGHT;
+    for (const auto &pair : constructionMaterials()){
+        // Quantity
+        static const px_t
+            QTY_WIDTH = 20;
+        _window->addChild(new Label(Rect(x, y, QTY_WIDTH, Client::ICON_SIZE),
+                                    makeArgs(pair.second),
+                                    Element::RIGHT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+        x += QTY_WIDTH + GAP;
+        // Icon
+        const ClientItem &item = *dynamic_cast<const ClientItem *>(pair.first);
+        _window->addChild(new Picture(x, y, item.icon()));
+        x += Client::ICON_SIZE + GAP;
+        // Name
+        _window->addChild(new Label(Rect(x, y, _window->width(), Client::ICON_SIZE),
+                                    item.name(),
+                                    Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+        y += Client::ICON_SIZE + GAP;
+        x = BUTTON_GAP;
+    }
+
+    // 2. Dropbox
+    static const px_t
+        DROPBOX_LABEL_W = 70;
+    Container *dropbox = new Container(1, 1, _dropbox, _serial, x, y);
+    _window->addChild(new Label(Rect(x, y, DROPBOX_LABEL_W, dropbox->height()),
+                                "Add materials:",
+                                Element::RIGHT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+    x += DROPBOX_LABEL_W + GAP;
+    dropbox->rect(x, y);
+    _window->addChild(dropbox);
+    y += dropbox->height() + GAP;
+
+    _window->resize(_window->width(), y);
+}
+
 void ClientObject::createWindow(Client &client){
     const ClientObjectType &objType = *objectType();
 
     static const size_t COLS = 8;
-    static const px_t
-        WINDOW_WIDTH = Container(1, 8, _container).width(),
-        BUTTON_HEIGHT = 15,
-        BUTTON_WIDTH = 60,
-        BUTTON_GAP = 1,
-        GAP = 2;
+    static const px_t WINDOW_WIDTH = Container(1, COLS, _container).width();
     px_t
         x = BUTTON_GAP,
         y = 0;
     px_t
         winWidth = WINDOW_WIDTH;
 
-    if (_window != nullptr)
+    if (_window != nullptr){
         _window->clearChildren();
+        _window->resize(WINDOW_WIDTH, 0);
+    }
 
     bool
         hasContainer = objType.containerSlots() > 0,
@@ -233,46 +281,8 @@ void ClientObject::createWindow(Client &client){
         // Construction site
         if (isBeingConstructed()){
             client.watchObject(*this);
-            _window->addChild(new Label(Rect(x, y, WINDOW_WIDTH, Element::TEXT_HEIGHT),
-                                        "Under construction"));
-            y += Element::TEXT_HEIGHT + GAP;
-
-            // 1. Required materials
-            _window->addChild(new Label(Rect(x, y, WINDOW_WIDTH, Element::TEXT_HEIGHT),
-                                        "Remaining materials required:"));
-            y += Element::TEXT_HEIGHT;
-            for (const auto &pair : constructionMaterials()){
-                // Quantity
-                static const px_t
-                    QTY_WIDTH = 20;
-                _window->addChild(new Label(Rect(x, y, QTY_WIDTH, Client::ICON_SIZE),
-                                            makeArgs(pair.second),
-                                            Element::RIGHT_JUSTIFIED, Element::CENTER_JUSTIFIED));
-                x += QTY_WIDTH + GAP;
-                // Icon
-                const ClientItem &item = *dynamic_cast<const ClientItem *>(pair.first);
-                _window->addChild(new Picture(x, y, item.icon()));
-                x += Client::ICON_SIZE + GAP;
-                // Name
-                _window->addChild(new Label(Rect(x, y, WINDOW_WIDTH, Client::ICON_SIZE),
-                                            item.name(),
-                                            Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
-                y += Client::ICON_SIZE + GAP;
-                x = BUTTON_GAP;
-            }
-
-            // 2. Dropbox
-            static const px_t
-                DROPBOX_LABEL_W = 70;
-            Container *dropbox = new Container(1, 1, _dropbox, _serial, x, y);
-            _window->addChild(new Label(Rect(x, y, DROPBOX_LABEL_W, dropbox->height()),
-                                        "Add materials:",
-                                        Element::RIGHT_JUSTIFIED, Element::CENTER_JUSTIFIED));
-            x += DROPBOX_LABEL_W + GAP;
-            dropbox->rect(x, y);
-            _window->addChild(dropbox);
-            y += dropbox->height() + GAP;
-            x = BUTTON_GAP;
+            addConstructionInfoToWindow();
+            y = _window->contentHeight();
         
         } else {
 
@@ -281,7 +291,6 @@ void ClientObject::createWindow(Client &client){
                 static const px_t
                     QUANTITY_WIDTH = 20,
                     NAME_WIDTH = 100,
-                    GAP = 2,
                     PANE_WIDTH = Element::ITEM_HEIGHT + QUANTITY_WIDTH + NAME_WIDTH + 2 * GAP,
                     TITLE_HEIGHT = 14,
                     SET_BUTTON_WIDTH = 60,
@@ -362,7 +371,6 @@ void ClientObject::createWindow(Client &client){
     } else if (!userHasAccess() && isMerchant) {
         // Draw trade window
         static const px_t
-            GAP = 2,
             NAME_WIDTH = 100,
             QUANTITY_WIDTH = 20,
             BUTTON_PADDING = 1,
