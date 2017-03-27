@@ -78,7 +78,7 @@ public:
 
     virtual void onInventoryUpdate();
     void hideWindow();
-    virtual void createWindow(Client &client);
+    virtual void assembleWindow(Client &client);
     virtual const Texture &image() const override;
     virtual const Texture &highlightImage() const override;
 
@@ -95,6 +95,7 @@ private:
         BUTTON_GAP;
     void addConstructionToWindow();
     void addMerchantSetupToWindow();
+    void addInventoryToWindow();
 };
 
 #endif

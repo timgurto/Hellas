@@ -436,7 +436,7 @@ void Client::handleMessage(const std::string &msg){
                 obj.location(Point(x, y));
                 obj.type(cot);
                 // Redraw window
-                obj.createWindow(*this);
+                obj.assembleWindow(*this);
                 obj.refreshTooltip();
 
             } else {
@@ -697,7 +697,7 @@ void Client::handleMessage(const std::string &msg){
                 set.add(item, qty);
             }
             obj.constructionMaterials(set);
-            obj.createWindow(*this);
+            obj.assembleWindow(*this);
             obj.refreshTooltip();
             break;
         }

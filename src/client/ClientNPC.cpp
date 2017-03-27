@@ -76,7 +76,7 @@ void ClientNPC::onRightClick(Client &client){
         ClientObject::onRightClick(client);
 }
 
-void ClientNPC::createWindow(Client &client){
+void ClientNPC::assembleWindow(Client &client){
     static const px_t
         WIDTH = 100,
         HEIGHT = 100;

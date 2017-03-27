@@ -180,7 +180,7 @@ void ClientObject::onRightClick(Client &client){
 
     // Create window, if necessary
     if (_window == nullptr){
-        createWindow(client);
+        assembleWindow(client);
         if (_window != nullptr)
             client.addWindow(_window);
     }
@@ -265,9 +265,8 @@ void ClientObject::addMerchantSetupToWindow(){
             ROW_HEIGHT = Element::ITEM_HEIGHT + 4 * GAP;
         static const double
             MAX_ROWS = 5.5;
-        const ClientObjectType &objType = *objectType();
         const px_t
-            LIST_HEIGHT = toInt(ROW_HEIGHT * min(MAX_ROWS, objType.merchantSlots()));
+            LIST_HEIGHT = toInt(ROW_HEIGHT * min(MAX_ROWS, objectType()->merchantSlots()));
         x = GAP;
         _window->addChild(new Label(Rect(x, y, PANE_WIDTH, TITLE_HEIGHT), "Item to sell",
                                     Element::CENTER_JUSTIFIED));
@@ -293,7 +292,7 @@ void ClientObject::addMerchantSetupToWindow(){
         _window->addChild(merchantList);
         y += LIST_HEIGHT;
 
-        for (size_t i = 0; i != objType.merchantSlots(); ++i){
+        for (size_t i = 0; i != objectType()->merchantSlots(); ++i){
             _merchantSlotElements[i] = new Element();
             merchantList->addChild(_merchantSlotElements[i]);
         }
@@ -301,11 +300,27 @@ void ClientObject::addMerchantSetupToWindow(){
     _window->resize(newWidth, y);
 }
 
-void ClientObject::createWindow(Client &client){
+void ClientObject::addInventoryToWindow(){
+    px_t
+        y = _window->contentHeight(),
+        newWidth = _window->width();
+
+    const size_t slots = objectType()->containerSlots();
+    static const size_t COLS = 8;
+    size_t rows = (slots - 1) / COLS + 1;
+    Container *container = new Container(rows, COLS, _container, _serial, 0, y);
+    _window->addChild(container);
+    y += container->height();
+    if (_window->width() < container->width())
+        newWidth = container->width();
+
+    _window->resize(newWidth, y);
+}
+
+void ClientObject::assembleWindow(Client &client){
     const ClientObjectType &objType = *objectType();
 
-    static const size_t COLS = 8;
-    static const px_t WINDOW_WIDTH = Container(1, COLS, _container).width();
+    static const px_t WINDOW_WIDTH = Container(1, 8, _container).width();
     px_t
         x = BUTTON_GAP,
         y = 0;
@@ -347,12 +362,8 @@ void ClientObject::createWindow(Client &client){
             // Inventory container
             if (hasContainer){
                 client.watchObject(*this);
-                const size_t slots = objType.containerSlots();
-                size_t rows = (slots - 1) / COLS + 1;
-                Container *container = new Container(rows, COLS, _container, _serial, 0, y);
-                _window->addChild(container);
-                y += container->height();
-                winWidth = max(winWidth, container->width());
+                addInventoryToWindow();
+                y = _window->contentHeight();
             }
 
             // Deconstruct button
