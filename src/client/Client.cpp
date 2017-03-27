@@ -295,12 +295,10 @@ _debug("client.log"){
     Element::absMouse = &_mouse;
     
     drawLoadingScreen("Initializing UI", 0.8);
-    initializeCraftingWindow();
     initializeBuildWindow();
     initializeInventoryWindow();
     initializeGearWindow();
     initializeMapWindow();
-    addWindow(_craftingWindow);
     addWindow(_buildWindow);
     addWindow(_inventoryWindow);
     addWindow(_gearWindow);
@@ -490,6 +488,8 @@ void Client::run(){
         drawLoadingScreen("Loading data", 0.6);
         loadData();
     }
+    initializeCraftingWindow();
+    addWindow(_craftingWindow);
     
     drawLoadingScreen("Initializing login screen", 0.9);
     initLoginScreen();
