@@ -202,10 +202,11 @@ void ClientObject::onRightClick(Client &client){
     }
 }
 
-void ClientObject::addConstructionInfoToWindow(){
+void ClientObject::addConstructionToWindow(){
     px_t
         x = 0,
         y = _window->contentHeight();
+
     _window->addChild(new Label(Rect(x, y, _window->width(), Element::TEXT_HEIGHT),
                                 "Under construction"));
     y += Element::TEXT_HEIGHT + GAP;
@@ -249,6 +250,57 @@ void ClientObject::addConstructionInfoToWindow(){
     _window->resize(_window->width(), y);
 }
 
+void ClientObject::addMerchantSetupToWindow(){
+    px_t
+        x = 0,
+        y = _window->contentHeight(),
+        newWidth = _window->width();
+
+        static const px_t
+            QUANTITY_WIDTH = 20,
+            NAME_WIDTH = 100,
+            PANE_WIDTH = Element::ITEM_HEIGHT + QUANTITY_WIDTH + NAME_WIDTH + 2 * GAP,
+            TITLE_HEIGHT = 14,
+            SET_BUTTON_WIDTH = 60,
+            ROW_HEIGHT = Element::ITEM_HEIGHT + 4 * GAP;
+        static const double
+            MAX_ROWS = 5.5;
+        const ClientObjectType &objType = *objectType();
+        const px_t
+            LIST_HEIGHT = toInt(ROW_HEIGHT * min(MAX_ROWS, objType.merchantSlots()));
+        x = GAP;
+        _window->addChild(new Label(Rect(x, y, PANE_WIDTH, TITLE_HEIGHT), "Item to sell",
+                                    Element::CENTER_JUSTIFIED));
+        x += PANE_WIDTH + GAP;
+        Line *vertDivider = new Line(x, y, TITLE_HEIGHT + LIST_HEIGHT, Line::VERTICAL);
+        _window->addChild(vertDivider);
+        x += vertDivider->width() + GAP;
+        _window->addChild(new Label(Rect(x, y, PANE_WIDTH, TITLE_HEIGHT), "Price",
+                                    Element::CENTER_JUSTIFIED));
+        x += PANE_WIDTH + GAP;
+        vertDivider = new Line(x, y, TITLE_HEIGHT + LIST_HEIGHT, Line::VERTICAL);
+        _window->addChild(vertDivider);
+        x += 2 * GAP + vertDivider->width() + SET_BUTTON_WIDTH;
+        x += List::ARROW_W;
+        if (_window->width() < x)
+            newWidth = x;
+        y += Element::TEXT_HEIGHT;
+        List *merchantList = new List(Rect(0, y,
+                                           PANE_WIDTH * 2 + GAP * 5 + SET_BUTTON_WIDTH + 6 +
+                                           List::ARROW_W,
+                                           LIST_HEIGHT),
+                                      ROW_HEIGHT);
+        _window->addChild(merchantList);
+        y += LIST_HEIGHT;
+
+        for (size_t i = 0; i != objType.merchantSlots(); ++i){
+            _merchantSlotElements[i] = new Element();
+            merchantList->addChild(_merchantSlotElements[i]);
+        }
+
+    _window->resize(newWidth, y);
+}
+
 void ClientObject::createWindow(Client &client){
     const ClientObjectType &objType = *objectType();
 
@@ -281,52 +333,15 @@ void ClientObject::createWindow(Client &client){
         // Construction site
         if (isBeingConstructed()){
             client.watchObject(*this);
-            addConstructionInfoToWindow();
+            addConstructionToWindow();
             y = _window->contentHeight();
         
         } else {
 
             // Merchant setup
             if (isMerchant){
-                static const px_t
-                    QUANTITY_WIDTH = 20,
-                    NAME_WIDTH = 100,
-                    PANE_WIDTH = Element::ITEM_HEIGHT + QUANTITY_WIDTH + NAME_WIDTH + 2 * GAP,
-                    TITLE_HEIGHT = 14,
-                    SET_BUTTON_WIDTH = 60,
-                    ROW_HEIGHT = Element::ITEM_HEIGHT + 4 * GAP;
-                static const double
-                    MAX_ROWS = 5.5;
-                const px_t
-                    LIST_HEIGHT = toInt(ROW_HEIGHT * min(MAX_ROWS, objType.merchantSlots()));
-                x = GAP;
-                _window->addChild(new Label(Rect(x, y, PANE_WIDTH, TITLE_HEIGHT), "Item to sell",
-                                            Element::CENTER_JUSTIFIED));
-                x += PANE_WIDTH + GAP;
-                Line *vertDivider = new Line(x, y, TITLE_HEIGHT + LIST_HEIGHT, Line::VERTICAL);
-                _window->addChild(vertDivider);
-                x += vertDivider->width() + GAP;
-                _window->addChild(new Label(Rect(x, y, PANE_WIDTH, TITLE_HEIGHT), "Price",
-                                            Element::CENTER_JUSTIFIED));
-                x += PANE_WIDTH + GAP;
-                vertDivider = new Line(x, y, TITLE_HEIGHT + LIST_HEIGHT, Line::VERTICAL);
-                _window->addChild(vertDivider);
-                x += 2 * GAP + vertDivider->width() + SET_BUTTON_WIDTH;
-                x += List::ARROW_W;
-                winWidth = max(winWidth, x);
-                y += Element::TEXT_HEIGHT;
-                List *merchantList = new List(Rect(0, y,
-                                                    PANE_WIDTH * 2 + GAP * 5 + SET_BUTTON_WIDTH + 6 +
-                                                    List::ARROW_W,
-                                                    LIST_HEIGHT),
-                                                ROW_HEIGHT);
-                _window->addChild(merchantList);
-                y += LIST_HEIGHT;
-
-                for (size_t i = 0; i != objType.merchantSlots(); ++i){
-                    _merchantSlotElements[i] = new Element();
-                    merchantList->addChild(_merchantSlotElements[i]);
-                }
+                addMerchantSetupToWindow();
+                y = _window->contentHeight();
             }
 
             // Inventory container

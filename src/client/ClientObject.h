@@ -93,7 +93,8 @@ private:
         BUTTON_WIDTH,
         GAP,
         BUTTON_GAP;
-    void addConstructionInfoToWindow();
+    void addConstructionToWindow();
+    void addMerchantSetupToWindow();
 };
 
 #endif
