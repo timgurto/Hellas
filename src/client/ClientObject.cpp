@@ -334,6 +334,23 @@ void ClientObject::addDeconstructionToWindow(){
     _window->resize(newWidth, y);
 }
 
+void ClientObject::addVehicleToWindow(){
+    px_t
+        x = BUTTON_GAP,
+        y = _window->contentHeight(),
+        newWidth = _window->height();
+    y += BUTTON_GAP;
+    Button *mountButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), "Enter/exit",
+                                            ClientVehicle::mountOrDismount, this);
+    _window->addChild(mountButton);
+    y += BUTTON_GAP + BUTTON_HEIGHT;
+    x += BUTTON_GAP + BUTTON_WIDTH;
+    if (newWidth < x)
+        newWidth = x;
+
+    _window->resize(newWidth, y);
+}
+
 void ClientObject::assembleWindow(Client &client){
     const ClientObjectType &objType = *objectType();
 
@@ -391,14 +408,8 @@ void ClientObject::assembleWindow(Client &client){
 
             // Mount/dismount button
             if (isVehicle){
-                x = BUTTON_GAP;
-                y += BUTTON_GAP;
-                Button *mountButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), "Enter/exit",
-                                                        ClientVehicle::mountOrDismount, this);
-                _window->addChild(mountButton);
-                y += BUTTON_GAP + BUTTON_HEIGHT;
-                x += BUTTON_GAP + BUTTON_WIDTH;
-                winWidth = max(winWidth, x);
+                addVehicleToWindow();
+                y = _window->contentHeight();
             }
 
         }

@@ -97,6 +97,7 @@ private:
     void addMerchantSetupToWindow();
     void addInventoryToWindow();
     void addDeconstructionToWindow();
+    void addVehicleToWindow();
 };
 
 #endif
