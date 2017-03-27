@@ -898,6 +898,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
         case DG_GIVE:
         {
+            if (!isDebug())
+                break;
             iss.get(buffer, BUFFER_SIZE, MSG_END);
             std::string id(buffer);
             iss >> del;
@@ -910,6 +912,23 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
             const ServerItem &item = *it;;
             user->giveItem(&item, item.stackSize());
+            break;
+        }
+
+        case DG_UNLOCK:
+        {
+            if (!isDebug())
+                break;
+            if (del != MSG_END)
+                return;
+            for (const ServerItem &item : _items){
+                ProgressLock::triggerUnlocks(*user, ProgressLock::RECIPE, &item);
+                ProgressLock::triggerUnlocks(*user, ProgressLock::ITEM, &item);
+                ProgressLock::triggerUnlocks(*user, ProgressLock::GATHER, &item);
+            }
+            for (const ObjectType *objectType : _objectTypes){
+                ProgressLock::triggerUnlocks(*user, ProgressLock::CONSTRUCTION, objectType);
+            }
             break;
         }
 

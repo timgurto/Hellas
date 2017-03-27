@@ -356,6 +356,9 @@ enum MessageCode{
     // Arguments: id
     DG_GIVE = 2000,
 
+    // "Unlock everything for me"
+    DG_UNLOCK = 2001,
+
 
 
     NO_CODE
