@@ -98,6 +98,7 @@ private:
     void addInventoryToWindow();
     void addDeconstructionToWindow();
     void addVehicleToWindow();
+    void addMerchantTradeToWindow();
 };
 
 #endif

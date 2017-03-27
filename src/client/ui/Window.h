@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef WINDOW_H
 #define WINDOW_H
 
@@ -38,7 +36,8 @@ public:
     static void drag(Element &e, const Point &mousePos);
 
     void resize(px_t w, px_t h); // Resize window, so that the content size matches the given dims.
-
+    
+    px_t contentWidth() { return _content->width(); }
     px_t contentHeight() { return _content->height(); }
 
     virtual void addChild(Element *child) override;

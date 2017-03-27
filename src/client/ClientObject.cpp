@@ -205,14 +205,18 @@ void ClientObject::onRightClick(Client &client){
 void ClientObject::addConstructionToWindow(){
     px_t
         x = 0,
-        y = _window->contentHeight();
+        y = _window->contentHeight(),
+        newWidth = _window->contentWidth();
+    static const px_t LABEL_W = 140;
 
-    _window->addChild(new Label(Rect(x, y, _window->width(), Element::TEXT_HEIGHT),
+    _window->addChild(new Label(Rect(x, y, LABEL_W, Element::TEXT_HEIGHT),
                                 "Under construction"));
+    if (newWidth < LABEL_W)
+        newWidth = LABEL_W;
     y += Element::TEXT_HEIGHT + GAP;
 
     // 1. Required materials
-    _window->addChild(new Label(Rect(x, y, _window->width(), Element::TEXT_HEIGHT),
+    _window->addChild(new Label(Rect(x, y, LABEL_W, Element::TEXT_HEIGHT),
                                 "Remaining materials required:"));
     y += Element::TEXT_HEIGHT;
     for (const auto &pair : constructionMaterials()){
@@ -228,10 +232,12 @@ void ClientObject::addConstructionToWindow(){
         _window->addChild(new Picture(x, y, item.icon()));
         x += Client::ICON_SIZE + GAP;
         // Name
-        _window->addChild(new Label(Rect(x, y, _window->width(), Client::ICON_SIZE),
+        _window->addChild(new Label(Rect(x, y, LABEL_W, Client::ICON_SIZE),
                                     item.name(),
                                     Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
         y += Client::ICON_SIZE + GAP;
+        if (newWidth < x)
+            newWidth = x;
         x = BUTTON_GAP;
     }
 
@@ -247,14 +253,14 @@ void ClientObject::addConstructionToWindow(){
     _window->addChild(dropbox);
     y += dropbox->height() + GAP;
 
-    _window->resize(_window->width(), y);
+    _window->resize(newWidth, y);
 }
 
 void ClientObject::addMerchantSetupToWindow(){
     px_t
         x = 0,
         y = _window->contentHeight(),
-        newWidth = _window->width();
+        newWidth = _window->contentWidth();
 
         static const px_t
             QUANTITY_WIDTH = 20,
@@ -303,7 +309,7 @@ void ClientObject::addMerchantSetupToWindow(){
 void ClientObject::addInventoryToWindow(){
     px_t
         y = _window->contentHeight(),
-        newWidth = _window->width();
+        newWidth = _window->contentWidth();
 
     const size_t slots = objectType()->containerSlots();
     static const size_t COLS = 8;
@@ -321,7 +327,7 @@ void ClientObject::addDeconstructionToWindow(){
     px_t
         x = BUTTON_GAP,
         y = _window->contentHeight(),
-        newWidth = _window->width();
+        newWidth = _window->contentWidth();
     y += BUTTON_GAP;
     Button *deconstructButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT),
                                             "Dismantle", startDeconstructing, this);
@@ -338,7 +344,7 @@ void ClientObject::addVehicleToWindow(){
     px_t
         x = BUTTON_GAP,
         y = _window->contentHeight(),
-        newWidth = _window->height();
+        newWidth = _window->contentWidth();
     y += BUTTON_GAP;
     Button *mountButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), "Enter/exit",
                                             ClientVehicle::mountOrDismount, this);
@@ -351,99 +357,87 @@ void ClientObject::addVehicleToWindow(){
     _window->resize(newWidth, y);
 }
 
+void ClientObject::addMerchantTradeToWindow(){
+    px_t
+        y = _window->contentHeight(),
+        newWidth = _window->contentWidth();
+
+    static const px_t
+        NAME_WIDTH = 100,
+        QUANTITY_WIDTH = 20,
+        BUTTON_PADDING = 1,
+        BUTTON_LABEL_WIDTH = 45,
+        BUTTON_HEIGHT = Element::ITEM_HEIGHT + 2 * BUTTON_PADDING,
+        ROW_HEIGHT = BUTTON_HEIGHT + 2 * GAP,
+        WIDTH = 2 * Element::ITEM_HEIGHT +
+                2 * NAME_WIDTH +
+                QUANTITY_WIDTH + 
+                BUTTON_LABEL_WIDTH +
+                2 * BUTTON_PADDING +
+                3 * GAP +
+                List::ARROW_W;
+    const double
+        MAX_ROWS = 7.5,
+        NUM_ROWS = objectType()->merchantSlots() < MAX_ROWS ? objectType()->merchantSlots()
+                                                            : MAX_ROWS;
+    static const px_t
+        HEIGHT = toInt(ROW_HEIGHT * NUM_ROWS);
+    List *list = new List(Rect(0, 0, WIDTH, HEIGHT), ROW_HEIGHT);
+    y += list->height();
+    _window->addChild(list);
+    for (size_t i = 0; i != objectType()->merchantSlots(); ++i){
+        _merchantSlotElements[i] = new Element();
+        list->addChild(_merchantSlotElements[i]);
+    }
+    if (newWidth < WIDTH)
+        newWidth = WIDTH;
+
+    _window->resize(newWidth, y);
+}
+
 void ClientObject::assembleWindow(Client &client){
     const ClientObjectType &objType = *objectType();
 
     static const px_t WINDOW_WIDTH = Container(1, 8, _container).width();
-    px_t
-        x = BUTTON_GAP,
-        y = 0;
-    px_t
-        winWidth = WINDOW_WIDTH;
 
     if (_window != nullptr){
         _window->clearChildren();
-        _window->resize(WINDOW_WIDTH, 0);
+        _window->resize(0, 0);
     }
 
     bool
         hasContainer = objType.containerSlots() > 0,
         isMerchant = objType.merchantSlots() > 0,
         isVehicle = classTag() == 'v';
-    if (userHasAccess() && (hasContainer ||
-                            isMerchant ||
+    if (isMerchant ||
+        userHasAccess() && (hasContainer ||
                             isVehicle ||
                             objType.canDeconstruct() ||
                             isBeingConstructed() )){
 
         if (_window == nullptr)
-            _window = new Window(Rect(0, 0, WINDOW_WIDTH, 0), objType.name());
+            _window = new Window(Rect(), objType.name());
 
-        // Construction site
         if (isBeingConstructed()){
             client.watchObject(*this);
             addConstructionToWindow();
-            y = _window->contentHeight();
-        
+
+        } else if (!userHasAccess() && isMerchant) {
+            addMerchantTradeToWindow();
+
         } else {
-
-            // Merchant setup
-            if (isMerchant){
+            if (isMerchant)
                 addMerchantSetupToWindow();
-                y = _window->contentHeight();
-            }
-
-            // Inventory container
             if (hasContainer){
                 client.watchObject(*this);
                 addInventoryToWindow();
-                y = _window->contentHeight();
             }
-
-            // Deconstruct button
-            if (objType.canDeconstruct()){
-                addDeconstructionToWindow();
-                y = _window->contentHeight();
-            }
-
-            // Mount/dismount button
-            if (isVehicle){
+            if (isVehicle)
                 addVehicleToWindow();
-                y = _window->contentHeight();
-            }
-
+            if (objType.canDeconstruct())
+                addDeconstructionToWindow();
         }
 
-        _window->resize(winWidth, y);
-
-    } else if (!userHasAccess() && isMerchant) {
-        // Draw trade window
-        static const px_t
-            NAME_WIDTH = 100,
-            QUANTITY_WIDTH = 20,
-            BUTTON_PADDING = 1,
-            BUTTON_LABEL_WIDTH = 45,
-            BUTTON_HEIGHT = Element::ITEM_HEIGHT + 2 * BUTTON_PADDING,
-            ROW_HEIGHT = BUTTON_HEIGHT + 2 * GAP,
-            WIDTH = 2 * Element::ITEM_HEIGHT +
-                    2 * NAME_WIDTH +
-                    QUANTITY_WIDTH + 
-                    BUTTON_LABEL_WIDTH +
-                    2 * BUTTON_PADDING +
-                    3 * GAP +
-                    List::ARROW_W;
-        const double
-            MAX_ROWS = 7.5,
-            NUM_ROWS = objType.merchantSlots() < MAX_ROWS ? objType.merchantSlots() : MAX_ROWS;
-        static const px_t
-            HEIGHT = toInt(ROW_HEIGHT * NUM_ROWS);
-        _window = new Window(Rect(0, 0, WIDTH, HEIGHT), objType.name());
-        List *list = new List(Rect(0, 0, WIDTH, HEIGHT), ROW_HEIGHT);
-        _window->addChild(list);
-        for (size_t i = 0; i != objType.merchantSlots(); ++i){
-            _merchantSlotElements[i] = new Element();
-            list->addChild(_merchantSlotElements[i]);
-        }
     } else {
         if (_window != nullptr){
             _window->hide();
