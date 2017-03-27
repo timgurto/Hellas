@@ -281,7 +281,7 @@ void ClientObject::addMerchantSetupToWindow(){
         _window->addChild(vertDivider);
         x += 2 * GAP + vertDivider->width() + SET_BUTTON_WIDTH;
         x += List::ARROW_W;
-        if (_window->width() < x)
+        if (newWidth < x)
             newWidth = x;
         y += Element::TEXT_HEIGHT;
         List *merchantList = new List(Rect(0, y,
@@ -311,8 +311,25 @@ void ClientObject::addInventoryToWindow(){
     Container *container = new Container(rows, COLS, _container, _serial, 0, y);
     _window->addChild(container);
     y += container->height();
-    if (_window->width() < container->width())
+    if (newWidth < container->width())
         newWidth = container->width();
+
+    _window->resize(newWidth, y);
+}
+
+void ClientObject::addDeconstructionToWindow(){
+    px_t
+        x = BUTTON_GAP,
+        y = _window->contentHeight(),
+        newWidth = _window->width();
+    y += BUTTON_GAP;
+    Button *deconstructButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT),
+                                            "Dismantle", startDeconstructing, this);
+    _window->addChild(deconstructButton);
+    y += BUTTON_GAP + BUTTON_HEIGHT;
+    x += BUTTON_GAP + BUTTON_WIDTH;
+    if (newWidth < x)
+        newWidth = x;
 
     _window->resize(newWidth, y);
 }
@@ -368,14 +385,8 @@ void ClientObject::assembleWindow(Client &client){
 
             // Deconstruct button
             if (objType.canDeconstruct()){
-                x = BUTTON_GAP;
-                y += BUTTON_GAP;
-                Button *deconstructButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT),
-                                                        "Dismantle", startDeconstructing, this);
-                _window->addChild(deconstructButton);
-                y += BUTTON_GAP + BUTTON_HEIGHT;
-                x += BUTTON_GAP + BUTTON_WIDTH;
-                winWidth = max(winWidth, x);
+                addDeconstructionToWindow();
+                y = _window->contentHeight();
             }
 
             // Mount/dismount button

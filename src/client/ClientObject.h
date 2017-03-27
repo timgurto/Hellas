@@ -96,6 +96,7 @@ private:
     void addConstructionToWindow();
     void addMerchantSetupToWindow();
     void addInventoryToWindow();
+    void addDeconstructionToWindow();
 };
 
 #endif
