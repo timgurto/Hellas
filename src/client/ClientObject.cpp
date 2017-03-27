@@ -201,6 +201,22 @@ void ClientObject::onRightClick(Client &client){
 void ClientObject::createWindow(Client &client){
     const ClientObjectType &objType = *objectType();
 
+    static const size_t COLS = 8;
+    static const px_t
+        WINDOW_WIDTH = Container(1, 8, _container).width(),
+        BUTTON_HEIGHT = 15,
+        BUTTON_WIDTH = 60,
+        BUTTON_GAP = 1,
+        GAP = 2;
+    px_t
+        x = BUTTON_GAP,
+        y = 0;
+    px_t
+        winWidth = WINDOW_WIDTH;
+
+    if (_window != nullptr)
+        _window->clearChildren();
+
     bool
         hasContainer = objType.containerSlots() > 0,
         isMerchant = objType.merchantSlots() > 0,
@@ -210,21 +226,8 @@ void ClientObject::createWindow(Client &client){
                             isVehicle ||
                             objType.canDeconstruct() ||
                             isBeingConstructed() )){
-        static const size_t COLS = 8;
-        static const px_t
-            WINDOW_WIDTH = Container(1, 8, _container).width(),
-            BUTTON_HEIGHT = 15,
-            BUTTON_WIDTH = 60,
-            BUTTON_GAP = 1,
-            GAP = 2;
-        px_t
-            x = BUTTON_GAP,
-            y = 0;
-        px_t
-            winWidth = WINDOW_WIDTH;
-        if (_window != nullptr){
-            _window->clearChildren();
-        } else
+
+        if (_window == nullptr)
             _window = new Window(Rect(0, 0, WINDOW_WIDTH, 0), objType.name());
 
         // Construction site
@@ -385,9 +388,13 @@ void ClientObject::createWindow(Client &client){
             _merchantSlotElements[i] = new Element();
             list->addChild(_merchantSlotElements[i]);
         }
-    } else if (_window != nullptr){
-        _window->hide();
-        client.removeWindow(_window);
+    } else {
+        if (_window != nullptr){
+            _window->hide();
+            client.removeWindow(_window);
+            delete _window;
+            _window = nullptr;
+        }
     }
 }
 
