@@ -21,7 +21,7 @@ class ClientObjectType : public EntityType{
         ImageSet(){}
         ImageSet(const std::string &filename);
     };
-    ImageSet _images;
+    ImageSet _images; // baseline images, identical to Entity::_image and Entity::_highlightImage.
 
     std::string _id;
     std::string _name;
@@ -37,7 +37,7 @@ class ClientObjectType : public EntityType{
     std::set<std::string> _tags;
     ItemSet _materials;
     mutable Texture *_materialsTooltip;
-    ImageSet _constructionImage; // Shown when the object is under construction.
+    ImageSet _constructionImage; // Shown when the object is under construction.\
 
     // To show transformations.  Which image is displayed depends on progress.
     std::vector<ImageSet> _transformImages;

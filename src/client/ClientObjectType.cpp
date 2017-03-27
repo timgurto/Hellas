@@ -10,6 +10,7 @@
 #include "../Color.h"
 
 ClientObjectType::ClientObjectType(const std::string &id):
+EntityType(Rect(), id),
 _id(id),
 _canGather(false),
 _canDeconstruct(false),
@@ -18,7 +19,8 @@ _merchantSlots(0),
 _gatherSound(nullptr),
 _gatherParticles(nullptr),
 _materialsTooltip(nullptr),
-_transformTime(0)
+_transformTime(0),
+_images("Images/Objects/" + id + ".png")
 {}
 
 ClientObjectType::~ClientObjectType(){
@@ -59,12 +61,12 @@ const ClientObjectType::ImageSet &ClientObjectType::getProgressImage(ms_t timeRe
     if (_transformImages.empty())
         index = 0;
     index = min<int>(index, _transformImages.size()); // Progress may be 100% due to server delay.
-    return _transformImages[index];
+    if (index == 0)
+        return _images;
+    return _transformImages[index-1];
 }
 
 void ClientObjectType::addTransformImage(const std::string &filename){
-    if (_transformImages.empty())
-        _transformImages.push_back(ImageSet("Images/Objects/" + _id + ".png"));
     _transformImages.push_back(ImageSet("Images/Objects/" + filename + ".png"));
 }
 
