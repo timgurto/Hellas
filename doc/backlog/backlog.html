@@ -7,6 +7,8 @@
 <style type="text/css">
     body {
         font-family: Helvetica, Arial, Sans;
+        background: #222222;
+        color: #bbbbbb;
     }
 
     .tableHeading{
@@ -31,7 +33,6 @@
     }
     
     .type{
-        font-weight: bold;
     }
     
     .effort{
@@ -53,7 +54,6 @@
 	
     .doneRow td{
         text-decoration:line-through;
-        //color:#999;
     }
 </style>
 
@@ -166,8 +166,7 @@
 				row.className += " doneRow";
             
             var cell = row.insertCell(-1);
-            cell.innerHTML = '<a name="' + PBI.issue + '" href="https://github.com/timgurto/mmo/issues/' +
-                    PBI.issue + '">' + PBI.issue + '</a>';
+            cell.innerHTML = PBI.issue;
             cell.className = "issue";
             
             cell = row.insertCell(-1);

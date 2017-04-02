@@ -4,7 +4,6 @@ issue,description,value,effort,type,blockedBy,done
 72,Move SDL functions and types to a namespace,2,8,Code quality,,
 74,Throw exceptions where appropriate on SDL-function failures,3,8,Code quality,,
 83,"Sort _materials and _craftableItems by name, not ID",8,8,Aesthetics,,
-93,Allow terrain types to be marked as non-blending,1,2,Aesthetics,,
 95,Fix scroll-bar dragging offset,5,8,Bug,,
 100,Optimize container types for faster iteration,2,2,Performance,,
 101,Change dynamic_casts that don't check their result to static_cast or check for nullptr,2,2,Code quality,,
@@ -71,7 +70,7 @@ issue,description,value,effort,type,blockedBy,done
 225,Use polymorphism instead of classTag,3,3,Code quality,,
 226,Right-click to equip gear,5,2,Feature,,TRUE
 227,Shift + right-click to loot all,5,2,Feature,,
-228,Close client on single Esc press when disconnected,3,1,Bug,,
+228,Close client on single Esc press when disconnected,3,1,Bug,,TRUE
 229,Thorough and consistent tooltips,13,21,Aesthetics,,TRUE
 230,Display stats in client,13,2,Aesthetics,,TRUE
 231,Player can get stuck against terrain or NPCs,34,5,Bug,,TRUE
@@ -83,7 +82,7 @@ issue,description,value,effort,type,blockedBy,done
 239,Make full map,21,89,Feature,,TRUE
 240,"Server loads map from data file, rather than generating it",13,3,Code quality,,TRUE
 241,"Client loads map from data file, not via server messages",21,3,Performance,,TRUE
-242,Player 'factions' for ownership,5,34,Feature,,
+242,Cities that can own objects,5,34,Feature,,
 243,Heavy objects that prevent player movement,5,3,Feature,,
 244,Energy bar used up by attacking,5,3,Feature,,
 245,Food that restores energy,13,5,Feature,244,
@@ -92,20 +91,16 @@ issue,description,value,effort,type,blockedBy,done
 248,A shrine that grants a buff,3,8,Feature,247,
 249,A shrine that sets one's spawn point,13,8,Feature,,
 250,A road object that affects movement speed,5,5,Feature,247,
-251,A hoe constructs a farm plot without being consumed,3,1,Feature,285,TRUE
+251,A hoe constructs a farm plot without being consumed,3,1,Feature,,TRUE
 252,"Seeds, that are constructed on top of a farm-plot object",3,5,Feature,,TRUE
 253,A crop object that grows over time,5,5,Feature,,TRUE
-254,Terrain types have fertility property,2,2,Feature,,
-255,Fertility affects crop viability,5,5,Feature,254,
 256,Containers may allow 'heavy' objects or not,13,5,Feature,243,
 257,Rocks and sticks spawn gradually,13,5,Feature,,TRUE
 258,Direct player trading,3,8,Feature,,
 259,Players/factions can fight over object ownership,34,21,Feature,242,
-260,More detailed permissions on objects,5,13,Feature,,
 261,Objects can combine loot tables,13,8,Feature,,
 262,A shrine that grants items,8,5,Feature,,
 263,Talents/skills,89,89,Feature,,
-264,An object that affects terrain fertility,5,8,Feature,254,
 265,NPCs can have skills/abilities,13,13,Feature,263,
 267,Set bonuses for gear,13,8,Feature,,
 268,Learning skills might require tools,8,3,Feature,263,
@@ -166,11 +161,10 @@ issue,description,value,effort,type,blockedBy,done
 331,Lower horizon in login screen,2,2,Aesthetics,,TRUE
 332,Distant players aren't being removed,13,5,Bug,,
 333,Add esc menu to release client,5,5,Aesthetics,,
-334,Remove brown tree particles,2,1,Aesthetics,,
 335,Calculate highlight borders by adjacency to magenta (sausage man),1,3,Aesthetics,,
 336,Give tool classes better names,5,1,Aesthetics,,TRUE
 337,Remove 'can ...' tooltips when player has no permissions,3,2,Bug,,
-338,Moulds should unlock recipes,3,1,Feature,342,TRUE
+338,Moulds should unlock recipes,3,1,Feature,,TRUE
 339,A stack can be split,8,3,Feature,,
 340,Allow crafting if removing the ingredients will make room,5,3,Feature,,
 341,Make players and objects more visible on map,13,5,Feature,,
@@ -180,5 +174,9 @@ issue,description,value,effort,type,blockedBy,done
 347,Add fading unlock messages to the top of the screen,3,5,Aesthetics,,
 348,Generate full data website,13,8,Documentation,,
 349,Prevent chat messages being cut off,8,5,Bug,,
-350,Make oven and kiln larger,3,2,Aesthetics,,
-351,Highlight recipes/constructions that might unlock stuff,,,Aesthetics,,
+350,Make oven and kiln larger,3,2,Aesthetics
+351,Highlight recipes/constructions that might unlock stuff,3,3,Aesthetics
+352,Gear can lose durability,5,5,Feature
+353,Items and objects can be repaired with materials,5,8,Feature
+354,Unique buildings,5,3,Feature
+355,Objects have health,5,8,Feature

@@ -2,10 +2,10 @@ library("RColorBrewer")
 
 circleSize = 1.5
 
-svg("backlog.svg", width=12, height=8)
+svg("backlog.svg", width=12, height=8, bg=NA)
 #png("backlog.png", width=600, height=500, type="cairo", pointsize=13)
 
-par(mar=c(4.1, 4.1, 0, 11))
+par(mar=c(4.1, 4.1, 0, 11), col="#bbbbbb", col.axis="#bbbbbb", col.lab="#bbbbbb", fg="#bbbbbb")
 
 jitter_log <- function(vals, scaler=0.05) {
   noise <- rnorm(length(vals), mean=0, sd=vals*scaler)

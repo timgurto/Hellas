@@ -114,7 +114,10 @@ function scalarToPercent(scalar){
 }
     
 function sortByName(a, b){
-    return a.name.localeCompare(b.name);
+    var nameCompare = a.name.localeCompare(b.name);
+    if (nameCompare != 0)
+        return nameCompare;
+    return a.id.localeCompare(b.id);
 }
 
 function isGear(item){
