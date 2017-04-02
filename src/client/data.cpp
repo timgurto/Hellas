@@ -87,6 +87,7 @@ void Client::loadData(const std::string &path){
                 cot = new ClientObjectType(s);
             xr.findAttr(elem, "imageFile", s); // If no explicit imageFile, s will still == id
             cot->image(std::string("Images/Objects/") + s + ".png");
+            cot->imageSet(std::string("Images/Objects/") + s + ".png");
             if (xr.findAttr(elem, "name", s)) cot->name(s);
             Rect drawRect(0, 0, cot->width(), cot->height());
             bool
@@ -274,6 +275,7 @@ void Client::loadData(const std::string &path){
             ClientNPCType *nt = new ClientNPCType(s, n);
             xr.findAttr(elem, "imageFile", s); // If no explicit imageFile, s will still == id
             nt->image(std::string("Images/NPCs/") + s + ".png");
+            nt->imageSet(std::string("Images/NPCs/") + s + ".png");
             nt->corpseImage(std::string("Images/NPCs/") + s + "-corpse.png");
             if (xr.findAttr(elem, "name", s)) nt->name(s);
             Rect drawRect(0, 0, nt->width(), nt->height());

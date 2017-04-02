@@ -50,6 +50,7 @@ public:
     const std::string &id() const { return _id; }
     const std::string &name() const { return _name; }
     void name(const std::string &s) { _name = s; }
+    void imageSet(const std::string &fileName) { _images = ImageSet(fileName); }
     bool canGather() const { return _canGather; }
     void canGather(bool b) { _canGather = b; }
     const std::string &gatherReq() const { return _gatherReq; }

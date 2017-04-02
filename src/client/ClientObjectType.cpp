@@ -19,8 +19,7 @@ _merchantSlots(0),
 _gatherSound(nullptr),
 _gatherParticles(nullptr),
 _materialsTooltip(nullptr),
-_transformTime(0),
-_images("Images/Objects/" + id + ".png")
+_transformTime(0)
 {}
 
 ClientObjectType::~ClientObjectType(){
