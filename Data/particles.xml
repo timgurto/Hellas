@@ -1,6 +1,29 @@
 <root>
 
 <particleProfile
+    id="wood"
+    particlesPerSecond=4>
+    <particlesPerHit mean=3 sd=1 />
+    <distance mean=5 sd=0 />
+    <altitude mean=20 sd=4 />
+    <velocity mean=15 sd=3 />
+    <fallSpeed mean=0 sd=3 />
+    <variety imageFile="wood0"> <drawRect x=-1 y=-1 w=2 h=2 /> </variety>
+    <variety imageFile="wood1"> <drawRect x=-1 y=-1 w=3 h=3 /> </variety>
+</particleProfile>
+
+<particleProfile
+    id="leaves"
+    particlesPerSecond=4>
+    <particlesPerHit mean=3 sd=1 />
+    <distance mean=5 sd=0 />
+    <altitude mean=20 sd=4 />
+    <velocity mean=15 sd=3 />
+    <fallSpeed mean=0 sd=3 />
+    <variety imageFile="leaves"> <drawRect x=-2 y=-2 w=4 h=4 /> </variety>
+</particleProfile>
+
+<particleProfile
     id="tree"
     particlesPerSecond=4>
     <particlesPerHit mean=3 sd=1 />
