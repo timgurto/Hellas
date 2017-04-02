@@ -454,7 +454,7 @@ void Server::gatherObject(size_t serial, User &user){
         ProgressLock::triggerUnlocks(user, ProgressLock::GATHER, toGive);
     // Remove object if empty
     obj->removeItem(toGive, qtyToGive);
-    if (obj->contents().isEmpty()) {
+    if (obj->contents().isEmpty() && !obj->type()->transformsOnEmpty()) {
         removeObject(*obj, &user);
     } else {
         obj->decrementGatheringUsers();

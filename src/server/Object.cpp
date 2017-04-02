@@ -211,15 +211,21 @@ void Object::update(ms_t timeElapsed){
     if (isBeingBuilt())
         return;
 
-    if (_transformTimer > 0 && type()->transformObject() != nullptr){
-        if (timeElapsed > _transformTimer)
-            _transformTimer = 0;
-        else
-            _transformTimer -= timeElapsed;
+    // Transform
+    if (_transformTimer == 0)
+        return;
+    if (_type->transformObject() == nullptr)
+        return;
+    if (_type->transformsOnEmpty() && !_contents.isEmpty())
+        return;
 
-        if (_transformTimer == 0)
-            setType(type()->transformObject());
-    }
+    if (timeElapsed > _transformTimer)
+        _transformTimer = 0;
+    else
+        _transformTimer -= timeElapsed;
+
+    if (_transformTimer == 0)
+        setType(type()->transformObject());
 }
 
 void Object::setType(const ObjectType *type){

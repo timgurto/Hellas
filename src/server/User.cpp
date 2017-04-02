@@ -283,7 +283,8 @@ void User::update(ms_t timeElapsed){
     // Timer has finished; complete action
     switch(_action){
     case GATHER:
-        server.gatherObject(_actionObject->serial(), *this);
+        if (!_actionObject->contents().isEmpty())
+            server.gatherObject(_actionObject->serial(), *this);
         break;
 
     case CRAFT:

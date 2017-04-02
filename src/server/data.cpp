@@ -300,9 +300,14 @@ void Server::loadData(const std::string &path){
                     transformObjPtr = new ObjectType(s);
                     _objectTypes.insert(transformObjPtr);
                 }
+
                 ms_t time = 0;
                 xr.findAttr(transform, "time", n);
+
                 ot->transform(n, transformObjPtr);
+
+                if (xr.findAttr(transform, "whenEmpty", n) && n != 0)
+                    ot->transformOnEmpty();
             }
 
             bool foundInPlace = false;

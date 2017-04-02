@@ -35,6 +35,7 @@ class ObjectType{
 
     const ObjectType *_transformObject; // The object type that this becomes over time, if any.
     ms_t _transformTime; // How long the transformation takes.
+    bool _transformOnEmpty; // Only begin the transformation once all items have been gathered.
 
     std::set<std::string> _tags;
 
@@ -80,6 +81,8 @@ public:
     const ItemSet &materials() const { return _materials; }
     void transform(ms_t time, const ObjectType *id) {_transformTime = time; _transformObject = id;}
     ms_t transformTime() const {return _transformTime; }
+    void transformOnEmpty() { _transformOnEmpty = true; }
+    bool transformsOnEmpty() const { return _transformOnEmpty; }
     const ObjectType *transformObject() const {return _transformObject; }
     bool transforms() const { return _transformObject != nullptr; }
 
