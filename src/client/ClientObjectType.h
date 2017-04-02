@@ -83,6 +83,7 @@ public:
     const ImageSet &getProgressImage(ms_t timeRemaining) const;
 
     virtual char classTag() const override { return 'o'; }
+    virtual const Texture &image() const override { return _images.normal; }
 
     void addTag(const std::string &tagName){ _tags.insert(tagName); }
 

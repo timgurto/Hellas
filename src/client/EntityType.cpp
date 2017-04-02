@@ -34,7 +34,7 @@ void EntityType::setHighlightImage(const std::string &imageFile){
     _imageHighlight = Texture(highlightSurface);
 }
 
-void EntityType::image(const std::string &imageFile){
+void EntityType::setImage(const std::string &imageFile){
     _image = Texture(imageFile, Color::MAGENTA);
     _drawRect.w = _image.width();
     _drawRect.h = _image.height();

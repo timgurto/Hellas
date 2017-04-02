@@ -421,13 +421,13 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
 
-            const ClientObjectType *cot = new ClientObjectType(type);
-            const Client::objectTypes_t::const_iterator typeIt = _objectTypes.find(cot);
+            const ClientObjectType dummy(type);
+            const Client::objectTypes_t::const_iterator typeIt = _objectTypes.find(&dummy);
             if (typeIt == _objectTypes.end()){
                 _debug("Received object of invalid type; ignored.", Color::FAILURE);
                 break;
             }
-            cot = *typeIt;
+            const ClientObjectType *cot = *typeIt;
 
             std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it != _objects.end()){

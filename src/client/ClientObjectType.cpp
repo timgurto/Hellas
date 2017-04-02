@@ -56,9 +56,10 @@ const Texture &ClientObjectType::materialsTooltip() const{
 const ClientObjectType::ImageSet &ClientObjectType::getProgressImage(ms_t timeRemaining) const{
     double progress = 1 - (1.0 * timeRemaining / _transformTime);
     size_t numFrames = _transformImages.size();
-    size_t index = static_cast<size_t>(progress * numFrames) - 1;
+    int index = static_cast<int>(progress * numFrames) - 1;
     if (_transformImages.empty())
         index = 0;
+    index = max<int>(index, 0);
     index = min<int>(index, _transformImages.size()); // Progress may be 100% due to server delay.
     if (index == 0)
         return _images;

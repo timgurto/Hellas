@@ -25,8 +25,7 @@ public:
 
     virtual ~EntityType(){}
 
-    void image(const std::string &filename);
-    const Texture &image() const { return _image; }
+    void setImage(const std::string &filename);
     const Texture &highlightImage() const { return _imageHighlight; }
     const Rect &drawRect() const { return _drawRect; }
     void drawRect(const Rect &rect) { _drawRect = rect; }
@@ -38,6 +37,7 @@ public:
     px_t height() const { return _drawRect.h; }
 
     void setHighlightImage(const std::string &imageFile);
+    virtual const Texture &image() const { return _image; }
 
     virtual char classTag() const { return 'e'; }
 };
