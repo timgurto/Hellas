@@ -237,6 +237,7 @@ void Server::loadData(const std::string &path){
                 xr.findAttr(yield, "gatherSD", gatherSD);
                 std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
                 ot->addYield(&*itemIt, initMean, initSD, gatherMean, gatherSD);
+                _debug << id << " yields " << s << Log::endl;
             }
 
             // Merchant
@@ -290,14 +291,17 @@ void Server::loadData(const std::string &path){
             // Transformation
             auto transform = xr.findChild("transform", elem);
             if (transform){
-                if (!xr.findAttr(transform, "id", s) ||
-                    !xr.findAttr(transform, "time", n))
+                if (!xr.findAttr(transform, "id", s)){
+                    _debug("Transformation specified without target id; skipping.", Color::FAILURE);
                     continue;
+                }
                 const ObjectType *transformObjPtr = findObjectTypeByName(s);
                 if (transformObjPtr == nullptr){
                     transformObjPtr = new ObjectType(s);
                     _objectTypes.insert(transformObjPtr);
                 }
+                ms_t time = 0;
+                xr.findAttr(transform, "time", n);
                 ot->transform(n, transformObjPtr);
             }
 
