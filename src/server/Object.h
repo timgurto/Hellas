@@ -65,6 +65,7 @@ public:
     const std::set<std::string> &watchers() const { return _watchers; }
     void incrementGatheringUsers(const User *userToSkip = nullptr);
     void decrementGatheringUsers(const User *userToSkip = nullptr);
+    void removeAllGatheringUsers();
     size_t numUsersGathering() const { return _numUsersGathering; }
     bool isBeingBuilt() const { return !_remainingMaterials.isEmpty(); }
     const ItemSet &remainingMaterials() const { return _remainingMaterials; }

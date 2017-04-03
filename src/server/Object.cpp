@@ -202,6 +202,13 @@ void Object::decrementGatheringUsers(const User *userToSkip){
     }
 }
 
+void Object::removeAllGatheringUsers(){
+    const Server &server = *Server::_instance;
+    _numUsersGathering = 0;
+    for (const User *user : server.findUsersInArea(location()))
+        server.sendMessage(user->socket(), SV_NOT_GATHERING_OBJECT, makeArgs(_serial));
+}
+
 void Object::onRemove(){
     if (_spawner != nullptr)
         _spawner->scheduleSpawn();
@@ -230,10 +237,16 @@ void Object::update(ms_t timeElapsed){
 
 void Object::setType(const ObjectType *type){
     assert(type != nullptr);
+
+    Server *server = Server::_instance;
+
     _type = type;
     if (type->yield()) {
         type->yield().instantiate(_contents);
     }
+    
+    server->forceUntarget(*this);
+    removeAllGatheringUsers();
 
     if (type->containerSlots() != 0)
         _container = ServerItem::vect_t(type->containerSlots());
@@ -247,7 +260,6 @@ void Object::setType(const ObjectType *type){
     _remainingMaterials = type->materials();
 
     // Inform nearby users
-    const Server *server = Server::_instance;
     if (server != nullptr)
     for (const User *user : server->findUsersInArea(_location)){
         server->sendObjectInfo(*user, *this);
