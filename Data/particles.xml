@@ -13,14 +13,14 @@
 </particleProfile>
 
 <particleProfile
-    id="leaves"
+    id="figLeaves"
     particlesPerSecond=4>
     <particlesPerHit mean=3 sd=1 />
     <distance mean=5 sd=0 />
     <altitude mean=20 sd=4 />
     <velocity mean=15 sd=3 />
     <fallSpeed mean=0 sd=3 />
-    <variety imageFile="leaves"> <drawRect x=-2 y=-2 w=4 h=4 /> </variety>
+    <variety imageFile="figLeaves"> <drawRect x=-2 y=-2 w=4 h=4 /> </variety>
 </particleProfile>
 
 <particleProfile
