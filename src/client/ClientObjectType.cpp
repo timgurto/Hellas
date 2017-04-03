@@ -56,14 +56,15 @@ const Texture &ClientObjectType::materialsTooltip() const{
 const ClientObjectType::ImageSet &ClientObjectType::getProgressImage(ms_t timeRemaining) const{
     double progress = 1 - (1.0 * timeRemaining / _transformTime);
     size_t numFrames = _transformImages.size();
-    int index = static_cast<int>(progress * numFrames) - 1;
+    int index = static_cast<int>(progress * (numFrames+1)) - 1;
+    Client::debug()(makeArgs(progress, index));
     if (_transformImages.empty())
-        index = 0;
-    index = max<int>(index, 0);
-    index = min<int>(index, _transformImages.size()); // Progress may be 100% due to server delay.
-    if (index == 0)
+        index = -1;
+    index = max<int>(index, -1);
+    index = min<int>(index, _transformImages.size()-1); // Progress may be 100% due to server delay.
+    if (index == -1)
         return _images;
-    return _transformImages[index-1];
+    return _transformImages[index];
 }
 
 void ClientObjectType::addTransformImage(const std::string &filename){
