@@ -14,11 +14,11 @@ const std::string &Node::typePrefix(NodeType type){
     return prefixDict[type];
 }
 
-Node::Node(NodeType type, const ID &id, const std::string &label):
+Node::Node(NodeType type, const ID &id, const NiceName &niceName):
     type(type),
     id(id),
     name(typePrefix(type) + "_" + id),
-    label(label)
+    niceName(niceName)
     {}
 
 Node::Node(Name name):
@@ -106,7 +106,7 @@ void Node::outputAsGraphviz(std::ostream &output) const{
             label = std::string()
                 +"<<table border='0' cellborder='0'>"
                     + "<tr><td>" + image + "</td></tr>"
-                    + "<tr><td>" + name + "</td></tr>"
+                    + "<tr><td>" + niceName + "</td></tr>"
                 + "</table>>",
             fullNode = name + " ["
                     + " shape=" + shape

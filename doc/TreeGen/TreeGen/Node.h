@@ -18,19 +18,19 @@ public:
     typedef std::string Name;
     
 private:
-    typedef std::string Label;
+    typedef std::string NiceName;
 
     ID id;
     NodeType type;
     Name name;
-    Label label;
+    NiceName niceName;
 
     static const std::string &typePrefix(NodeType type);
 
     Node(Name name);
 
 public:
-    Node(NodeType type, const ID &id, const std::string &label);
+    Node(NodeType type, const ID &id, const NiceName &niceName);
     static Node dummy(Name name){
         return Node(name);
     }

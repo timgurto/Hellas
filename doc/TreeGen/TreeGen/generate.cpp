@@ -165,7 +165,7 @@ int main(int argc, char **argv){
 
             ID gatherReq;
             if (xr.findAttr(elem, "gatherReq", gatherReq)){
-                auto it = tools.find(s);
+                auto it = tools.find(gatherReq);
                 if (it == tools.end()){
                     std::cerr << "Tool class is missing archetype: " << gatherReq << std::endl;
                     edges.insert(Edge(gatherReq, name, GATHER_REQ));
@@ -330,7 +330,7 @@ int main(int argc, char **argv){
     }
     std::set<Node::Name> nodesToRemove;
     for (const auto &collapse : collapses)
-        nodesToRemove.insert(collapse.second);
+        nodesToRemove.insert(collapse.first);
     for (const Node::Name &name : nodesToRemove)
         nodes.remove(name);
 
