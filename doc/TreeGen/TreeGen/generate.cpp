@@ -49,6 +49,10 @@ struct Edge{
         return child < rhs.child;
     }
 };
+std::ostream &operator<<(std::ostream &lhs, const Edge &rhs){
+    lhs << rhs.parent << " -> " << rhs.child;
+    return lhs;
+}
 
 #undef main
 int main(int argc, char **argv){
@@ -56,6 +60,7 @@ int main(int argc, char **argv){
     std::map<std::string, std::string> tools;
     std::map<std::string, std::string> nodes; // id -> label
     std::set<Edge > blacklist, extras;
+    std::map<std::string, std::string> collapses;
 
     std::string colorScheme = "rdylgn6";
     std::map<EdgeType, size_t> edgeColors;
@@ -95,6 +100,20 @@ int main(int argc, char **argv){
             continue;
         }
         blacklist.insert(Edge(parent, child, DEFAULT));
+    }
+
+    // Load collapses
+    for (auto elem : xr.getChildren("collapse")){
+        std::string id, into;
+        if (!xr.findAttr(elem, "id", id)){
+            std::cout << "Collapse item had no source; ignored" << std::endl;
+            continue;
+        }
+        if (!xr.findAttr(elem, "into", into)){
+            std::cout << "Collapse item had no target; ignored" << std::endl;
+            continue;
+        }
+        collapses[id] = into;
     }
 
     // Load extra edges
@@ -166,6 +185,7 @@ int main(int argc, char **argv){
             if (!xr.findAttr(elem, "id", id))
                 continue;
             std::string label = "object_" + id;
+
             jw.addAttribute("image", label);
             jw.addAttribute("id", id);
 
@@ -311,13 +331,63 @@ int main(int argc, char **argv){
         }
     }
 
+    // Collapse nodes
+    {
+        std::set<Edge> newEdges;
+        for (auto it = edges.begin(); it != edges.end(); ){
+            auto nextIt = it; ++nextIt;
+            bool edgeNeedsReplacing = false;
+            Edge newEdge = *it;
+            if (collapses.find(it->parent) != collapses.end()){
+                newEdge.parent = collapses[newEdge.parent];
+                edgeNeedsReplacing = true;
+            }
+            if (collapses.find(it->child) != collapses.end()){
+                newEdge.child = collapses[newEdge.child];
+                edgeNeedsReplacing = true;
+            }
+            if (edgeNeedsReplacing){
+                std::cout << "Collapsing edge:" << std::endl
+                          << "            " << *it << std::endl
+                          << "    becomes " << newEdge << std::endl;
+                newEdges.insert(newEdge);
+                edges.erase(it);
+            }
+            it = nextIt;
+        }
+        for (const Edge &newEdge : newEdges){
+            edges.insert(newEdge);
+        }
+    }
+    for (auto it = nodes.begin(); it != nodes.end(); ){
+        auto nextIt = it; ++nextIt;
+        if (collapses.find(it->first) != collapses.end()){
+            std::cout << "Erasing collapsed node " << it->first << std::endl;
+            nodes.erase(it);
+        }
+        it = nextIt;
+    }
+
     // Remove blacklisted items
-    for (auto blacklistedEdge : blacklist)
+    for (auto blacklistedEdge : blacklist){
         for (auto it = edges.begin(); it != edges.end(); ++it)
             if (*it == blacklistedEdge){
+                std::cout << "Removing blacklisted edge: " << *it << std::endl;
                 edges.erase(it);
                 break;
             }
+    }
+
+
+    // Remove self-references
+    for (auto edgeIt = edges.begin(); edgeIt != edges.end(); ){
+        auto nextIt = edgeIt; ++nextIt;
+        if (edgeIt->parent == edgeIt->child){
+            std::cout << "Removing self-referential edge " << *edgeIt << std::endl;
+            edges.erase(edgeIt);
+        }
+        edgeIt = nextIt;
+    }
 
 
     // Remove shortcuts
@@ -344,6 +414,7 @@ int main(int argc, char **argv){
                 continue;
                 if (edge.child == edgeIt->child){
                     // Mark the edge for removal
+                    std::cout << "Removing shortcut: " << edge << std::endl;
                     shouldDelete = true;
                     break;
                 } else if (nodesFound.find(edge.child) != nodesFound.end()){

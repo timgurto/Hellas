@@ -7,9 +7,7 @@
 <blacklist parent="object_tree"     child="item_stick" />
 <blacklist parent="object_copper"   child="item_rock" />
 <blacklist parent="object_tin"      child="item_rock" />
-<blacklist parent="object_figTree1" child="item_stick" />
-<blacklist parent="object_figTree3" child="item_stick" />
-<blacklist parent="object_figTree6" child="item_stick" />
+<blacklist parent="object_figTree8" child="item_stick" />
 
 <blacklist parent="object_figTree8"  child="item_figSeeds" />
 <blacklist parent="object_flaxCrop8" child="item_flaxSeeds" />
@@ -18,6 +16,23 @@
 <extra parent="item_rope"          child="item_tannin" />
 <extra parent="item_tinBar"        child="item_tinSaw" />
 <extra parent="item_tinBar"        child="item_tinPipe" />
-<extra parent="item_water"         child="object_flaxCrop0" />
+<extra parent="item_water"         child="object_flaxCrop8" />
+
+<collapse id="object_figTree0" into="object_figTree8" />
+<collapse id="object_figTree1" into="object_figTree8" />
+<collapse id="object_figTree2" into="object_figTree8" />
+<collapse id="object_figTree3" into="object_figTree8" />
+<collapse id="object_figTree4" into="object_figTree8" />
+<collapse id="object_figTree5" into="object_figTree8" />
+<collapse id="object_figTree6" into="object_figTree8" />
+<collapse id="object_figTree7" into="object_figTree8" />
+<collapse id="object_flaxCrop0" into="object_flaxCrop8" />
+<collapse id="object_flaxCrop1" into="object_flaxCrop8" />
+<collapse id="object_flaxCrop2" into="object_flaxCrop8" />
+<collapse id="object_flaxCrop3" into="object_flaxCrop8" />
+<collapse id="object_flaxCrop4" into="object_flaxCrop8" />
+<collapse id="object_flaxCrop5" into="object_flaxCrop8" />
+<collapse id="object_flaxCrop6" into="object_flaxCrop8" />
+<collapse id="object_flaxCrop7" into="object_flaxCrop8" />
 
 </root>
