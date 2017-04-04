@@ -4,10 +4,11 @@
 #include <set>
 #include <queue>
 #include <XmlReader.h>
-#include <SDL.h>
-#include <SDL_image.h>
 
+#include "Edge.h"
+#include "Node.h"
 #include "JsonWriter.h"
+#include "types.h"
 
 struct Path{
     std::string child;
@@ -20,45 +21,11 @@ struct Path{
     }
 };
 
-enum EdgeType{
-    GATHER,
-    CONSTRUCT_FROM_ITEM,
-    GATHER_REQ,
-    CONSTRUCTION_REQ,
-    LOOT,
-    INGREDIENT,
-    TRANSFORM,
-
-    UNLOCK_ON_GATHER,
-    UNLOCK_ON_ACQUIRE,
-    UNLOCK_ON_CRAFT,
-    UNLOCK_ON_CONSTRUCT,
-
-    DEFAULT
-};
-
-struct Edge{
-    std::string parent, child;
-    EdgeType type;
-    double chance;
-    
-    Edge(const std::string &from, const std::string &to, EdgeType typeArg, double chanceArg = 1.0): parent(from), child(to), type(typeArg), chance(chanceArg) {}
-    bool operator==(const Edge &rhs) const { return parent == rhs.parent && child == rhs.child; }
-    bool operator<(const Edge &rhs) const{
-        if (parent != rhs.parent) return parent < rhs.parent;
-        return child < rhs.child;
-    }
-};
-std::ostream &operator<<(std::ostream &lhs, const Edge &rhs){
-    lhs << rhs.parent << " -> " << rhs.child;
-    return lhs;
-}
-
 #undef main
 int main(int argc, char **argv){
     std::set<Edge> edges;
-    std::map<std::string, std::string> tools;
-    std::map<std::string, std::string> nodes; // id -> label
+    std::map<Tag, Node::Name> tools;
+    Nodes nodes;
     std::set<Edge > blacklist, extras;
     std::map<std::string, std::string> collapses;
 
@@ -82,10 +49,11 @@ int main(int argc, char **argv){
     // Load tools
     XmlReader xr("archetypalTools.xml");
     for (auto elem : xr.getChildren("tool")){
-        std::string id, archetype;
-        if (!xr.findAttr(elem, "id", id)) continue;
+        std::string archetype;
+        Tag tag;
+        if (!xr.findAttr(elem, "id", tag)) continue;
         if (!xr.findAttr(elem, "archetype", archetype)) continue;
-        tools[id] = archetype;
+        tools[tag] = archetype;
     }
 
     // Load blacklist
@@ -138,21 +106,21 @@ int main(int argc, char **argv){
         JsonWriter jw("items");
         for (auto elem : xr.getChildren("item")) {
             jw.nextEntry();
-            std::string id;
+            ID id;
             if (!xr.findAttr(elem, "id", id))
                 continue;
-            std::string label = "item_" + id;
-            jw.addAttribute("image", label);
+            Node::Name name = "item_" + id;
+            jw.addAttribute("image", name);
             jw.addAttribute("id", id);
 
             std::string s;
             if (xr.findAttr(elem, "name", s)){
-                nodes.insert(std::make_pair(label, s));
+                nodes.add(Node(ITEM, id, s));
                 jw.addAttribute("name", s);
             }
 
             if (xr.findAttr(elem, "constructs", s)){
-                edges.insert(Edge(label, "object_" + s, CONSTRUCT_FROM_ITEM));
+                edges.insert(Edge(name, "object_" + s, CONSTRUCT_FROM_ITEM));
                 jw.addAttribute("constructs", s);
             }
 
@@ -181,27 +149,28 @@ int main(int argc, char **argv){
         JsonWriter jw("objects");
         for (auto elem : xr.getChildren("objectType")) {
             jw.nextEntry();
-            std::string id;
+            ID id;
             if (!xr.findAttr(elem, "id", id))
                 continue;
-            std::string label = "object_" + id;
+            Node::Name name = "object_" + id;
 
-            jw.addAttribute("image", label);
+            jw.addAttribute("image", name);
             jw.addAttribute("id", id);
 
             std::string s;
             if (xr.findAttr(elem, "name", s)){
-                nodes.insert(std::make_pair(label, s));
+                nodes.add(Node(OBJECT, id, s));
                 jw.addAttribute("name", s);
             }
 
-            if (xr.findAttr(elem, "gatherReq", s)){
+            ID gatherReq;
+            if (xr.findAttr(elem, "gatherReq", gatherReq)){
                 auto it = tools.find(s);
                 if (it == tools.end()){
-                    std::cerr << "Tool class is missing archetype: " << s << std::endl;
-                    edges.insert(Edge(s, label, GATHER_REQ));
+                    std::cerr << "Tool class is missing archetype: " << gatherReq << std::endl;
+                    edges.insert(Edge(gatherReq, name, GATHER_REQ));
                 } else
-                    edges.insert(Edge(it->second, label, GATHER_REQ));
+                    edges.insert(Edge(it->second, name, GATHER_REQ));
                 jw.addAttribute("gatherReq", s);
             }
 
@@ -209,9 +178,9 @@ int main(int argc, char **argv){
                 auto it = tools.find(s);
                 if (it == tools.end()){
                     std::cerr << "Tool class is missing archetype: " << s << std::endl;
-                    edges.insert(Edge(s, label, CONSTRUCTION_REQ));
+                    edges.insert(Edge(s, name, CONSTRUCTION_REQ));
                 } else
-                    edges.insert(Edge(it->second, label, CONSTRUCTION_REQ));
+                    edges.insert(Edge(it->second, name, CONSTRUCTION_REQ));
                 jw.addAttribute("constructionReq", s);
             }
 
@@ -219,7 +188,7 @@ int main(int argc, char **argv){
             for (auto yield : xr.getChildren("yield", elem)) {
                 if (!xr.findAttr(yield, "id", s))
                     continue;
-                edges.insert(Edge(label, "item_" + s, GATHER));
+                edges.insert(Edge(name, "item_" + s, GATHER));
                 yields.insert(s);
             }
             jw.addArrayAttribute("yield", yields);
@@ -239,16 +208,16 @@ int main(int argc, char **argv){
                 double chance = 1.0;
                 xr.findAttr(unlockBy, "chance", chance);
                 if (xr.findAttr(unlockBy, "recipe", s) || xr.findAttr(unlockBy, "item", s)){
-                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_CRAFT, chance));
+                    edges.insert(Edge("item_" + s, name, UNLOCK_ON_CRAFT, chance));
                     unlocksForJson.insert("{type:\"craft\", sourceID:\"" + s + "\"}");
                 } else if (xr.findAttr(unlockBy, "construction", s)){
-                    edges.insert(Edge("object_" + s, label, UNLOCK_ON_CONSTRUCT, chance));
+                    edges.insert(Edge("object_" + s, name, UNLOCK_ON_CONSTRUCT, chance));
                     unlocksForJson.insert("{type:\"construct\", sourceID:\"" + s + "\"}");
                 } else if (xr.findAttr(unlockBy, "gather", s)){
-                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_GATHER, chance));
+                    edges.insert(Edge("item_" + s, name, UNLOCK_ON_GATHER, chance));
                     unlocksForJson.insert("{type:\"gather\", sourceID:\"" + s + "\"}");
                 } else if (xr.findAttr(unlockBy, "item", s)){
-                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_ACQUIRE, chance));
+                    edges.insert(Edge("item_" + s, name, UNLOCK_ON_ACQUIRE, chance));
                     unlocksForJson.insert("{type:\"acquire\", sourceID:\"" + s + "\"}");
                 }
             }
@@ -256,7 +225,7 @@ int main(int argc, char **argv){
 
             auto transform = xr.findChild("transform", elem);
             if (transform && xr.findAttr(transform, "id", s)){
-                edges.insert(Edge(label, "object_" + s, TRANSFORM));
+                edges.insert(Edge(name, "object_" + s, TRANSFORM));
                 jw.addAttribute("transformID", s);
                 if (xr.findAttr(transform, "time", s)) jw.addAttribute("transformTime", s);
             }
@@ -286,19 +255,19 @@ int main(int argc, char **argv){
         std::cerr << "Failed to load npcTypes.xml" << std::endl;
     else{
         for (auto elem : xr.getChildren("npcType")) {
-            std::string id;
+            ID id;
             if (!xr.findAttr(elem, "id", id))
                 continue;
-            std::string label = "npc_" + id;
+            Node::Name name = "npc_" + id;
 
             std::string s;
             if (xr.findAttr(elem, "name", s))
-                nodes.insert(std::make_pair(label, s));
+                nodes.add(Node(NPC, id, s));
 
             for (auto loot : xr.getChildren("loot", elem)) {
                 if (!xr.findAttr(loot, "id", s))
                     continue;
-                edges.insert(Edge(label, "item_" + s, LOOT));
+                edges.insert(Edge(name, "item_" + s, LOOT));
             }
         }
     }
@@ -309,24 +278,24 @@ int main(int argc, char **argv){
         std::cerr << "Failed to load recipes.xml" << std::endl;
     else{
         for (auto elem : xr.getChildren("recipe")) {
-            std::string product;
+            ID product;
             if (!xr.findAttr(elem, "product", product))
                 continue;
             std::string label = "item_" + product;
 
-            std::string s;
+            ID id;
 
             for (auto unlockBy : xr.getChildren("unlockedBy", elem)){
                 double chance = 1.0;
                 xr.findAttr(unlockBy, "chance", chance);
-                if (xr.findAttr(unlockBy, "recipe", s) || xr.findAttr(unlockBy, "item", s))
-                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_CRAFT, chance));
-                else if (xr.findAttr(unlockBy, "construction", s))
-                    edges.insert(Edge("object_" + s, label, UNLOCK_ON_CONSTRUCT, chance));
-                else if (xr.findAttr(unlockBy, "gather", s))
-                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_GATHER, chance));
-                else if (xr.findAttr(unlockBy, "item", s))
-                    edges.insert(Edge("item_" + s, label, UNLOCK_ON_ACQUIRE, chance));
+                if (xr.findAttr(unlockBy, "recipe", id) || xr.findAttr(unlockBy, "item", id))
+                    edges.insert(Edge("item_" + id, label, UNLOCK_ON_CRAFT, chance));
+                else if (xr.findAttr(unlockBy, "construction", id))
+                    edges.insert(Edge("object_" + id, label, UNLOCK_ON_CONSTRUCT, chance));
+                else if (xr.findAttr(unlockBy, "gather", id))
+                    edges.insert(Edge("item_" + id, label, UNLOCK_ON_GATHER, chance));
+                else if (xr.findAttr(unlockBy, "item", id))
+                    edges.insert(Edge("item_" + id, label, UNLOCK_ON_ACQUIRE, chance));
             }
         }
     }
@@ -359,14 +328,11 @@ int main(int argc, char **argv){
             edges.insert(newEdge);
         }
     }
-    for (auto it = nodes.begin(); it != nodes.end(); ){
-        auto nextIt = it; ++nextIt;
-        if (collapses.find(it->first) != collapses.end()){
-            std::cout << "Erasing collapsed node " << it->first << std::endl;
-            nodes.erase(it);
-        }
-        it = nextIt;
-    }
+    std::set<Node::Name> nodesToRemove;
+    for (const auto &collapse : collapses)
+        nodesToRemove.insert(collapse.second);
+    for (const Node::Name &name : nodesToRemove)
+        nodes.remove(name);
 
     // Remove blacklisted items
     for (auto blacklistedEdge : blacklist){
@@ -480,20 +446,6 @@ int main(int argc, char **argv){
     }
 
 
-    Uint32 rmask, gmask, bmask, amask;
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    rmask = 0xff000000;
-    gmask = 0x00ff0000;
-    bmask = 0x0000ff00;
-    amask = 0x000000ff;
-#else
-    rmask = 0x000000ff;
-    gmask = 0x0000ff00;
-    bmask = 0x00ff0000;
-    amask = 0xff000000;
-#endif
-
-
     // Publish
     std::ofstream f("tree.gv");
     f << "digraph techTree {" << std::endl;
@@ -502,58 +454,9 @@ int main(int argc, char **argv){
     f << "edge [fontsize=10 fontname=\"Advocut\" fontcolor=\"#999999\" color=\"#999999\"];" << std::endl;
 
     // Nodes
-    for (auto &node : nodes){
-        std::string imagePath = "../../Images/";
-        std::string shape;
-        std::string url;
-        if (node.first.substr(0, 5) == "item_"){
-            std::string id = node.first.substr(5);
-            url = "item.html?id=" + id;
-            imagePath += "Items/" + id;
-            shape = "none";
-        }else if (node.first.substr(0, 4) == "npc_"){
-            std::string id = node.first.substr(4);
-            url = "npc.html?id=" + id;
-            imagePath += "NPCs/" + id;
-            shape = "box";
-        }else{
-            std::string id = node.first.substr(7);
-            url = "object.html?id=" + id;
-            imagePath += "objects/" + id;
-            shape = "box";
-        }
-        imagePath += ".png";
+    nodes.outputAsGraphviz(f);
 
-        // Generate image
-        SDL_Surface *surface = IMG_Load(imagePath.c_str());
-        bool imageExists = surface != nullptr;
-
-        if (imageExists){
-            SDL_SetColorKey(surface, SDL_TRUE, 0xff00ff); // Make magenta transparent
-
-            // Stretch onto canvas
-            static const size_t SCALAR = 2;
-            SDL_Surface *canvas = SDL_CreateRGBSurface(0, surface->w * SCALAR, surface->h * SCALAR, 32, rmask, gmask, bmask, amask);
-            SDL_Rect rect = {0, 0, surface->w * SCALAR, surface->h * SCALAR };
-            SDL_BlitScaled(surface, nullptr, canvas, &rect);
-
-            // Save new image
-            IMG_SavePNG(canvas, ("../web/images/" + node.first + ".png").c_str());
-        }
-
-        std::string
-            id = node.first,
-            name = node.second,
-            image = "<img src=\"../web/images/" + (imageExists ? node.first : "error") + ".png\"/>",
-            fullNode = node.first + " [shape=" + shape
-                    + " tooltip=\"" + name + "\""
-                    + " label=<<table border='0' cellborder='0'>"
-                    + "<tr><td>" + image + "</td></tr>"
-                    + "<tr><td>" + name + "</td></tr>"
-                    + "</table>> URL=\"" + url + "\"]";
-        f << fullNode << std::endl;
-    }
-
+    // Edges
     for (auto &edge : edges){
         f << edge.parent << " -> " << edge.child
           << " [colorscheme=\"" << colorScheme << "\", color=" << edgeColors[edge.type];
