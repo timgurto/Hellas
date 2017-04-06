@@ -166,15 +166,20 @@ Server only:
 </objectType>
 
 <objectType
-    id="brickWallEW" name="Brick Wall E/W" >
-    <material id="brick" quantity="8" />
+    id="brickWallEW" name="Brick Wall E/W"
+    xDrawOffset="-60"
+    yDrawOffset="-42" >
+    <collisionRect x="-60" y="-2" w="122" h="6" />
+    <material id="brick" quantity="40" />
     <unlockedBy recipe="brick" chance="0.05" />
+    <unlockedBy construction="brickWallNS" />
 </objectType>
 
 <objectType
     id="brickWallNS" name="Brick Wall N/S" >
-    <material id="brick" quantity="8" />
+    <material id="brick" quantity="40" />
     <unlockedBy recipe="brick" chance="0.05" />
+    <unlockedBy construction="brickWallEW" />
 </objectType>
 
 <objectType
@@ -277,6 +282,15 @@ Server only:
     <collisionRect x="-19" y="-20" w="38" h="40" />
     <yield id="flax" initialMean="5" initialSD="1" />
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" />
+</objectType>
+
+<objectType
+    id="stretchingFrame" name="Stretching Frame"
+    constructionTime="1000" >
+    <material id="stick" quantity="2" />
+    <material id="rope" quantity="2" />
+    <tag name="stretchingFrame" />
+    <unlockedBy recipe="rope" />
 </objectType>
 
 <objectType

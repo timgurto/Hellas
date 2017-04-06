@@ -201,17 +201,18 @@
 
 <recipe
     id="tannin" time="10000" product="tannin" >
-    <material id="smallPot" />
+    <material id="water" />
     <material id="log" />
-    <material id="rope" />
-    <unlockedBy recipe="smallPot" chance="0.2" />
+    <unlockedBy recipe="water" />
 </recipe>
 
 <recipe
     id="leather" time="10000" product="leather" quantity="2" >
     <material id="hide" />
     <tool class="tannin" />
+    <tool class="stretchingFrame" />
     <unlockedBy recipe="tannin" />
+    <unlockedBy construction="stretchingFrame" />
 </recipe>
 
 <recipe
@@ -223,13 +224,6 @@
 <recipe
     id="linothorax" time="10000" product="linothorax" >
     <material id="linenCloth" quantity="12" />
-    <material id="linenThread" quantity="1" />
-    <unlockedBy recipe="linenCloth" chance="0.2" />
-</recipe>
-
-<recipe
-    id="cloak" time="10000" product="cloak" >
-    <material id="linenCloth" quantity="4" />
     <material id="linenThread" quantity="1" />
     <unlockedBy recipe="linenCloth" chance="0.2" />
 </recipe>

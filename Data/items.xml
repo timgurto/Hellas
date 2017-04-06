@@ -37,7 +37,7 @@ Client only:
 <item id="fig"          name="Fig"              stackSize="10" />
 <item id="flax"         name="Flax"             stackSize="10" />
 <item id="linenThread"  name="Linen Thread"     stackSize="10" />
-<item id="linenCloth"   name="Bolt of Linen"    stackSize="10" />
+<item id="linenCloth"   name="Linen Cloth"      stackSize="10" />
 <item id="fat"          name="Animal Fat"       stackSize="10" />
 <item id="leather"      name="Leather"          stackSize="10" dropSound="leather" />
 <item id="leatherScale" name="Leather Scale"    stackSize="10" dropSound="leather" />
@@ -113,10 +113,6 @@ Client only:
 <item id="skullCap" name="Skull Cap" gearSlot="0" dropSound="leather" >
     <stats health="3" />
     <offset x="-3" y="-4" />
-</item>
-
-<item id="cloak" name="Cloak" gearSlot="3" >
-    <stats health="2" />
 </item>
 
 <item id="leatherShield" name="Wooden Shield" gearSlot="7" >

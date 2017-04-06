@@ -12,8 +12,10 @@
 <blacklist parent="object_figTree8"  child="item_figSeeds" />
 <blacklist parent="object_flaxCrop8" child="item_flaxSeeds" />
 
+<blacklist parent="object_brickWallEW" child="object_brickWallNS" />
+<blacklist parent="object_brickWallNS" child="object_brickWallEW" />
+
 <extra parent="item_leatherGloves" child="item_tinBar" />
-<extra parent="item_rope"          child="item_tannin" />
 <extra parent="item_tinBar"        child="item_tinSaw" />
 <extra parent="item_tinBar"        child="item_tinPipe" />
 <extra parent="item_water"         child="object_flaxCrop8" />
