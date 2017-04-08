@@ -18,19 +18,24 @@ public:
     typedef std::string Name;
     
 private:
-    typedef std::string NiceName;
+    typedef std::string DisplayName;
 
     ID id;
     NodeType type;
     Name name;
-    NiceName niceName;
+    DisplayName displayName;
+    ID image;
+    mutable bool imageExists;
 
     static const std::string &typePrefix(NodeType type);
 
     Node(Name name);
 
+
+    void generateImage() const;
+
 public:
-    Node(NodeType type, const ID &id, const NiceName &niceName);
+    Node(NodeType type, const ID &id, const DisplayName &displayName);
     static Node dummy(Name name){
         return Node(name);
     }
@@ -39,6 +44,10 @@ public:
     bool operator<(const Node &rhs) const;
 
     void outputAsGraphviz(std::ostream &output) const;
+
+    void customImage(const ID &imageID){ image = imageID; }
+
+    friend class Nodes;
 };
 
 class Nodes{
@@ -47,6 +56,7 @@ public:
     void add(const Node &node);
     void remove(const Node::Name &name);
     void outputAsGraphviz(std::ostream &output) const;
+    void generateAllImages() const;
 };
 
 #endif

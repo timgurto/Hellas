@@ -153,17 +153,25 @@ int main(int argc, char **argv){
             if (!xr.findAttr(elem, "id", id))
                 continue;
             Node::Name name = "object_" + id;
-
-            jw.addAttribute("image", name);
             jw.addAttribute("id", id);
 
-            std::string s;
-            if (xr.findAttr(elem, "name", s)){
-                nodes.add(Node(OBJECT, id, s));
-                jw.addAttribute("name", s);
-            }
+            std::string displayName = id;
+            xr.findAttr(elem, "name", displayName);
+            Node node(OBJECT, id, displayName);
+            jw.addAttribute("name", displayName);
+
+            ID image;
+            if (xr.findAttr(elem, "imageFile", image)){
+                jw.addAttribute("image", "object_" + image);
+                node.customImage(image);
+            } else
+                jw.addAttribute("image", name);
+
+            nodes.add(node);
+
 
             ID gatherReq;
+            std::string s;
             if (xr.findAttr(elem, "gatherReq", gatherReq)){
                 auto it = tools.find(gatherReq);
                 if (it == tools.end()){
@@ -299,6 +307,9 @@ int main(int argc, char **argv){
             }
         }
     }
+
+    // Generate images, before nodes are deleted
+    nodes.generateAllImages();
 
     // Collapse nodes
     {

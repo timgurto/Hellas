@@ -14,11 +14,13 @@ const std::string &Node::typePrefix(NodeType type){
     return prefixDict[type];
 }
 
-Node::Node(NodeType type, const ID &id, const NiceName &niceName):
+Node::Node(NodeType type, const ID &id, const DisplayName &displayName):
     type(type),
     id(id),
     name(typePrefix(type) + "_" + id),
-    niceName(niceName)
+    image(id),
+    displayName(displayName),
+    imageExists(false)
     {}
 
 Node::Node(Name name):
@@ -52,67 +54,83 @@ void Nodes::outputAsGraphviz(std::ostream &output) const{
 }
 
 void Node::outputAsGraphviz(std::ostream &output) const{
-        std::string imagePath = "../../Images/";
         std::string shape;
         std::string url;
         if (type == ITEM){
             url = "item.html?id=" + id;
-            imagePath += "Items/" + id;
             shape = "none";
         }else if (type == NPC){
             url = "npc.html?id=" + id;
-            imagePath += "NPCs/" + id;
             shape = "box";
         }else{
             url = "object.html?id=" + id;
-            imagePath += "objects/" + id;
             shape = "box";
         }
 
-        imagePath += ".png";
-
-        // Generate image
-        SDL_Surface *surface = IMG_Load(imagePath.c_str());
-        bool imageExists = surface != nullptr;
-
-        if (imageExists){
-            SDL_SetColorKey(surface, SDL_TRUE, 0xff00ff); // Make magenta transparent
-
-        Uint32 rmask, gmask, bmask, amask;
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-        rmask = 0xff000000;
-        gmask = 0x00ff0000;
-        bmask = 0x0000ff00;
-        amask = 0x000000ff;
-#else
-        rmask = 0x000000ff;
-        gmask = 0x0000ff00;
-        bmask = 0x00ff0000;
-        amask = 0xff000000;
-#endif
-
-            // Stretch onto canvas
-            static const size_t SCALAR = 2;
-            SDL_Surface *canvas = SDL_CreateRGBSurface(0, surface->w * SCALAR, surface->h * SCALAR, 32, rmask, gmask, bmask, amask);
-            SDL_Rect rect = {0, 0, surface->w * SCALAR, surface->h * SCALAR };
-            SDL_BlitScaled(surface, nullptr, canvas, &rect);
-
-            // Save new image
-            IMG_SavePNG(canvas, ("../web/images/" + name + ".png").c_str());
-        }
-
         std::string
-            image = "<img src=\"../web/images/" + (imageExists ? name : "error") + ".png\"/>",
-            label = std::string()
+            imageFile = typePrefix(type) + "_" + image,
+            imagePart = "<img src=\"../web/images/" + (imageExists ? imageFile : "error") + ".png\"/>",
+            labelPart = std::string()
                 +"<<table border='0' cellborder='0'>"
-                    + "<tr><td>" + image + "</td></tr>"
-                    + "<tr><td>" + niceName + "</td></tr>"
+                    + "<tr><td>" + imagePart + "</td></tr>"
+                    + "<tr><td>" + displayName + "</td></tr>"
                 + "</table>>",
             fullNode = name + " ["
                     + " shape=" + shape
                     + " tooltip=\"" + name + "\""
-                    + " label=" + label
+                    + " label=" + labelPart
                     + " URL=\"" + url
                 + "\"]";
         output << fullNode << std::endl;
+}
+
+void Nodes::generateAllImages() const{
+    for (const Node &node : set)
+        node.generateImage();
+}
+
+void Node::generateImage() const{
+    std::string imagePath = "../../Images/";
+    if (type == ITEM){
+        imagePath += "Items/" + image;
+    }else if (type == NPC){
+        imagePath += "NPCs/" + image;
+    }else{
+        imagePath += "objects/" + image;
+    }
+
+    imagePath += ".png";
+
+    // Generate image
+    std::cout << "Loading image " << imagePath << std::endl;
+    SDL_Surface *surface = IMG_Load(imagePath.c_str());
+    imageExists = surface != nullptr;
+
+    if (!imageExists)
+        return;
+
+    SDL_SetColorKey(surface, SDL_TRUE, 0xff00ff); // Make magenta transparent
+
+    static const Uint32
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+        rmask = 0xff000000,
+        gmask = 0x00ff0000,
+        bmask = 0x0000ff00,
+        amask = 0x000000ff;
+#else
+        rmask = 0x000000ff,
+        gmask = 0x0000ff00,
+        bmask = 0x00ff0000,
+        amask = 0xff000000;
+#endif
+
+    // Stretch onto canvas
+    static const size_t SCALAR = 2;
+    SDL_Surface *canvas = SDL_CreateRGBSurface(0, surface->w * SCALAR, surface->h * SCALAR, 32, rmask, gmask, bmask, amask);
+    SDL_Rect rect = {0, 0, surface->w * SCALAR, surface->h * SCALAR };
+    SDL_BlitScaled(surface, nullptr, canvas, &rect);
+
+    // Save new image
+    std::string outputImageFileName = typePrefix(type) + "_" + image;
+    IMG_SavePNG(canvas, ("../web/images/" + outputImageFileName + ".png").c_str());
 }
