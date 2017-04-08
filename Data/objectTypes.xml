@@ -170,14 +170,17 @@ Server only:
     xDrawOffset="-60"
     yDrawOffset="-42" >
     <collisionRect x="-60" y="-2" w="122" h="6" />
-    <material id="brick" quantity="40" />
+    <material id="brick" quantity="1" />
     <unlockedBy recipe="brick" chance="0.05" />
     <unlockedBy construction="brickWallNS" />
 </objectType>
 
 <objectType
-    id="brickWallNS" name="Brick Wall N/S" >
-    <material id="brick" quantity="40" />
+    id="brickWallNS" name="Brick Wall N/S"
+    xDrawOffset="-3"
+    yDrawOffset="-101" >
+    <collisionRect x="-3" y="-60" w="8" h="120" />
+    <material id="brick" quantity="1" />
     <unlockedBy recipe="brick" chance="0.05" />
     <unlockedBy construction="brickWallEW" />
 </objectType>
