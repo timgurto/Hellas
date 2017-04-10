@@ -254,7 +254,7 @@ for (i in 1:length(data$roi)){
     text = c(text, fieldNum("roi", roi))
     roiForColor = min(roi, maxROI)
     roiForColor = max(roiForColor, minROI)
-    text = c(text, fieldStr("roiColor", roiCols[roiForColor+10]))
+    text = c(text, fieldStr("roiColor", roiCols[roiForColor+roiMidpoint]))
     text = c(text, fieldNum("done", if (data$done[i]) "true" else "false"))
     
     if (!is.na(data$blockedBy[i])){
