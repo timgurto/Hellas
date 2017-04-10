@@ -14,8 +14,8 @@ issue,description,value,effort,type,blockedBy,done,critical
 13,Players can agree to return to peace,34,8,Feature,12,,TRUE
 14,Two players at war with each other can fight,55,3,Feature,12,,TRUE
 15,Players at war can destroy the other's objects,55,5,Feature,12,,TRUE
-16,A player at war with a city can seek peace from its king,34,8,Feature,145,,TRUE
-17,Two kings can agree to return to peace,34,8,Feature,145,,TRUE
+16,A player at war with a city can seek peace from its king,34,8,Feature,55,,TRUE
+17,Two kings can agree to return to peace,34,8,Feature,55,,TRUE
 18,Each player can build one 'shrine'-class object,34,8,Feature,,,TRUE
 19,Shrines can set player respawn,21,89,Feature,18,,TRUE
 20,Shrine actions require an animal carcass,34,21,Feature,19,,TRUE
@@ -53,6 +53,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 52,NPCs can specify a set of items for their image,34,8,Aesthetics,,,TRUE
 53,NPCs can specify a custom human template image,21,8,Aesthetics,52,,TRUE
 54,A pyramid object that is unique,21,3,Feature,,,TRUE
+55,Players and cities can be at war with each other,34,5,Feature,,,TRUE
 56,Learning some skills requires tools,21,2,Feature,24,,TRUE
 57,Heavy items that prevent player movement,13,3,Feature,,,TRUE
 58,Containers may allow 'heavy' objects or not,13,5,Feature,57,,TRUE
@@ -62,20 +63,21 @@ issue,description,value,effort,type,blockedBy,done,critical
 62,Fix flaky merchant-slot-window test,2,89,Bug,,,
 63,Eating food restores energy,13,3,Feature,93,,
 64,Buffs,13,233,Feature,22,,
-65,NPCs can combine loot tables,5,21,Feature,
-66,NPCs can have skills/abilities,5,144,Feature,22
-67,Set bonuses for gear,13,21,Feature,
-68,Class-restricted gear,8,5,Feature,
-69,Distant players aren't being removed,8,8,Bug,
-70,Make players and objects more visible on map,89,34,Usability,
-71,Finish data website,13,8,Documentation,
-72,"Sort _materials and _craftableItems by name, not ID",5,3,Usability,
-73,Document Texture interface,2,8,Documentation,
-75,NPC idling AI,5,5,Feature,
-76,Sounds for attacking and death,89,3,Aesthetics,
-77,A shrine that grants items,5,34,Feature,19
-78,Release scrollbar on mouse up,5,8,Bug,
-79,Make it more obvious when something is out of range,13,8,Usability,
+65,NPCs can combine loot tables,5,21,Feature,,,
+66,NPCs can have skills/abilities,5,144,Feature,22,,
+67,Set bonuses for gear,13,21,Feature,,,
+68,Class-restricted gear,8,5,Feature,,,
+69,Distant players aren't being removed,8,8,Bug,,,
+70,Make players and objects more visible on map,89,34,Usability,,,
+71,Finish data website,13,8,Documentation,,,
+72,"Sort _materials and _craftableItems by name, not ID",5,3,Usability,,,
+73,Document Texture interface,2,8,Documentation,,,
+74,"When a player joins a city, that city adopts his wars",13,5,Feature,55,,TRUE
+75,NPC idling AI,5,5,Feature,,,
+76,Sounds for attacking and death,89,3,Aesthetics,,,
+77,A shrine that grants items,5,34,Feature,19,,
+78,Release scrollbar on mouse up,5,8,Bug,,,
+79,Make it more obvious when something is out of range,13,8,Usability,,,
 80,Make client connection failures more clean,5,13,Usability,
 81,Allow actual dragging from containers,21,34,Usability,
 82,Fix jumpy movement when laggy,5,34,Aesthetics,
@@ -85,15 +87,16 @@ issue,description,value,effort,type,blockedBy,done,critical
 86,Allow a recipe to create multiple item types,3,34,Feature,
 87,Move appropriate configuration details into config file,2,55,Code quality,
 88,Critter run-away AI,8,13,Feature,
+89,Players can be in a group,34,8,Feature,
 90,Use namespaces for server and client,5,377,Code quality,
 91,Stacks of the same item can be combined,21,13,Usability,
 92,Shift + right-click to loot all,8,3,Usability,
 93,An energy bar that's used up by attacking,13,21,Feature,
 94,A road object that affects movement speed,3,13,Feature,64
 95,Object ownership is clearly visible,5,21,Usability,8
-96,Containers may be restricted by item class,5,5,Feature,
-97,"Use collisionRects even on non-colliding objects, for distance checks",8,5,Bug,
-98,Send nearby users' health values,13,8,Usability,
+96,Containers may be restricted by item class,5,5,Feature
+97,"Use collisionRects even on non-colliding objects, for distance checks",8,5,Bug
+98,Send nearby users' health values,13,8,Usability
 99,Allow specification of minimum yields,8,1,Feature
 100,Sounds for crafting,5,2,Aesthetics
 101,Particles for crafting,5,2,Aesthetics
@@ -107,9 +110,9 @@ issue,description,value,effort,type,blockedBy,done,critical
 109,Allow crafting if removing the ingredients will make room,13,3,Bug
 110,Load map in login-screen background,5,13,Usability
 111,"Use gear-slot names, not numbers, in items.xml",3,5,Code quality
-112,Throw exceptions where appropriate on SDL-function failures,1,5,Code quality
-113,"Use forward declarations where possible, to reduce unnecessary #includes",2,5,Code quality
-114,Use polymorphism instead of classTag,3,144,Code quality
+112,Throw exceptions where appropriate on SDL-function failures,1,5,Code quality,
+113,"Use forward declarations where possible, to reduce unnecessary #includes",2,5,Code quality,
+114,Use polymorphism instead of classTag,3,144,Code quality,
 115,Fail more gracefully and informatively when can't connect to server,5,8,Usability,
 116,A shrine that grants a buff,8,34,Feature,64
 117,Direct player trading,8,233,Feature,
@@ -123,9 +126,9 @@ issue,description,value,effort,type,blockedBy,done,critical
 125,Tools can modify crafting/gathering speed,3,13,Feature,
 126,Remove 'can ...' tooltips when player has no permissions,21,2,Bug,
 127,Add fading unlock messages to the top of the screen,8,13,Usability,
-128,Make oven and kiln larger,5,3,Aesthetics,
-129,Highlight recipes/constructions that might unlock stuff,5,21,Usability,
-130,Document and improve use of various disconnects,2,8,Documentation,
+128,Make oven and kiln larger,5,3,Aesthetics,,,
+129,Highlight recipes/constructions that might unlock stuff,5,21,Usability,,,
+130,Document and improve use of various disconnects,2,8,Documentation,,,
 131,Move SDL functions and types to a namespace,2,5,Code quality,,,
 133,Change dynamic_casts that don't check their result to static_cast or check for nullptr,3,5,Code quality,,,
 134,Use set::count() and map::count() to test set membership,2,3,Code quality,,,
@@ -138,7 +141,4 @@ issue,description,value,effort,type,blockedBy,done,critical
 141,Prevent clipping in getTileCoords() due to random coord at map edge,1,3,Bug,,,
 142,Calculate highlight borders by adjacency to magenta (sausage man),5,13,Aesthetics,,,
 143,Highlight newly unlocked recipes/constructions,13,21,Usability,,,
-143,Declaring war on a player in a city declares war on that city,21,3,Feature,145,,TRUE
-144,"When a player joins a city, that city adopts his wars",13,5,Feature,145,,TRUE
-145,Players and cities can be at war with each other,34,5,Feature,,,TRUE
-146,Players can be in a group,34,8,Feature,,,
+143,Declaring war on a player in a city declares war on that city,21,3,Feature,55,,TRUE

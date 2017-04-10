@@ -28,7 +28,21 @@ data$color = cols[data$typeID]
 vals = c(1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610)
 data$roi = match(data$value, vals) - match(data$effort, vals)
 
-data$done = !is.na(data$done)
+# Done
+for (i in 1:length(data$roi)){
+    if (is.na(data$done[i]))
+        data$done[i] = FALSE
+}
+
+# Ignore blocks when the blocking task is done
+for (i in 1:length(data$roi)){
+    blockingPBI = data$blockedBy[i]
+    if (is.na(blockingPBI))
+        next
+    if (data$done[blockingPBI]) # data is still sorted by issue #
+        data$blockedBy[i] = NA
+}
+
 minROI = NULL
 maxROI = NULL
 for (i in 1:length(data$roi)){
@@ -71,6 +85,7 @@ for (i in 1:roiRange){
 }
 
 # Sort data
+unsortedData <- data
 data <- data[with(data, order(-roi, effort, issue)),]
 
 x = jitter_log(data$effort)
