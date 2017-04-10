@@ -25,7 +25,7 @@ cols[6] = brewer.pal(8, "Set2")[6] # Normal yellow too light
 data$color = cols[data$typeID]
 
 # ROI
-vals = c(1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144)
+vals = c(1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610)
 data$roi = match(data$value, vals) - match(data$effort, vals)
 
 data$done = !is.na(data$done)
@@ -58,15 +58,16 @@ if (roiRange %% 2 == 0){
     paletteSize = paletteSize + 1
 }
 roiColsRaw = roiPalette(paletteSize)
-roiCols = 1:19
-for (i in (-9:minROI + 10)){
+roiCols = 1:22
+roiMidpoint = 13
+for (i in (-12:minROI + roiMidpoint)){ # Deep red at the bottom
     roiCols[i] = roiColsRaw[1]
 }
-for (i in (maxROI:9 +10)){
+for (i in (maxROI:9 +roiMidpoint)){ # Deep green at the top
     roiCols[i] = roiColsRaw[roiRange]
 }
 for (i in 1:roiRange){
-    roiCols[minROI+10 + i - 1] = roiColsRaw[i]
+    roiCols[minROI+roiMidpoint + i - 1] = roiColsRaw[i]
 }
 
 # Sort data
@@ -107,7 +108,7 @@ topVal = vals[numVals]
 secondTopVal = vals[numVals-1]
 topEdge = logHalf(secondTopVal, topVal)
 
-polygon(x=c(1,topVal,topVal,1), y=c(1,1,topVal,topVal), lty=0, col=roiCols[10])
+polygon(x=c(1,topVal,topVal,1), y=c(1,1,topVal,topVal), lty=0, col=roiCols[roiMidpoint])
 
 for (e in 1:(numVals-1)){
     midE = logHalf(vals[e], vals[e+1])
@@ -118,8 +119,8 @@ for (e in 1:(numVals-1)){
             polygon(
                 x=c(midE, nextMidE, nextMidE, midE),
                 y=c(vals[v], vals[v+1], vals[v+2], vals[v+1]),
-                col=roiCols[10+roi],
-                border=roiCols[10+roi]
+                col=roiCols[roiMidpoint+roi],
+                border=roiCols[roiMidpoint+roi]
             )
         }
     }
@@ -127,8 +128,8 @@ for (e in 1:(numVals-1)){
     polygon(
         x=c(midE, nextMidE, nextMidE),
         y=c(vals[1], vals[1], vals[2]),
-        col=roiCols[10+roi],
-        border=roiCols[10+roi]
+        col=roiCols[roiMidpoint+roi],
+        border=roiCols[roiMidpoint+roi]
     )
 }
 
@@ -141,8 +142,8 @@ for (v in 1:(numVals-1)){
             polygon(
                 x=c(vals[e], vals[e+1], vals[e+2], vals[e+1]),
                 y=c(midV, nextMidV, nextMidV, midV),
-                col=roiCols[10+roi],
-                border=roiCols[10+roi]
+                col=roiCols[roiMidpoint+roi],
+                border=roiCols[roiMidpoint+roi]
             )
         }
     }
@@ -150,8 +151,8 @@ for (v in 1:(numVals-1)){
     polygon(
         x=c(vals[1], vals[1], vals[2]),
         y=c(midV, nextMidV, nextMidV),
-        col=roiCols[10+roi],
-        border=roiCols[10+roi]
+        col=roiCols[roiMidpoint+roi],
+        border=roiCols[roiMidpoint+roi]
     )
 }
 
@@ -214,8 +215,8 @@ add_legend(legend=cats, x="topright", fill=cols, inset=c(0.02,0.15))
 dev.off()
 
 
-suggestRefinementAtEV = 400
-suggestRefinementAtEffort = 14
+suggestRefinementAtEV = 800
+suggestRefinementAtEffort = 35
 
 # Write js file
 fieldNum <- function(name, value){

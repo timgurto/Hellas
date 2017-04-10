@@ -1,182 +1,144 @@
-issue,description,value,effort,type,blockedBy,done
-32,Document and improve use of various disconnects,2,5,Documentation,,
-60,Add particle effects when cutting down a tree,13,13,Aesthetics,,TRUE
-72,Move SDL functions and types to a namespace,2,8,Code quality,,
-74,Throw exceptions where appropriate on SDL-function failures,3,8,Code quality,,
-83,"Sort _materials and _craftableItems by name, not ID",8,8,Aesthetics,,
-95,Fix scroll-bar dragging offset,5,8,Bug,,
-100,Optimize container types for faster iteration,2,2,Performance,,
-101,Change dynamic_casts that don't check their result to static_cast or check for nullptr,2,2,Code quality,,
-128,"Use forward declarations where possible, to reduce unnecessary #includes",3,2,Code quality,,
-129,"Add grass objects, which grow naturally on grass tiles",5,21,Feature,,TRUE
-137,Allow a recipe to create multiple item types,5,8,Feature,,
-138,Use set::count() and map::count() to test set membership,2,2,Code quality,,
-140,Move appropriate configuration details into config file,5,34,Code quality,,
-145,Document UI interface,13,8,Documentation,,
-146,Document Texture interface,8,3,Documentation,,
-148,Document XML interface,8,3,Documentation,,TRUE
-149,"Choose gather item based on gathers left, not nominal quantity",8,5,Feature,,TRUE
-152,Prevent gathering/deconstructing when object has an inventory,34,2,Bug,,TRUE
-154,Allow giving away or begging for goods via trade,8,5,Feature,,
-156,Fix ambiguity of Object::removeItem() and Object::removeItems(),2,2,Code quality,,
-161,Cull players,34,8,Performance,,TRUE
-162,Cull objects,55,8,Performance,,TRUE
-163,Create generic particle system,8,8,Aesthetics,,TRUE
-166,Health stat,8,2,Feature,,TRUE
-167,Static critters w/ health,34,13,Feature,,TRUE
-169,NPCs can die,13,3,Feature,,TRUE
-170,Attack stat,8,1,Feature,,TRUE
-171,NPC loot,13,34,Feature,,TRUE
-172,Critter run-away AI,5,34,Feature,,
-173,Animal that fights back,21,21,Feature,,TRUE
-174,Player death,13,5,Feature,,TRUE
-175,NPC spawning,5,21,Feature,,TRUE
-176,PVP,13,3,Feature,,
-177,Character has gear slots,13,21,Feature,,TRUE
-178,Items can match gear slots,8,3,Feature,,TRUE
-179,Gear can have stats,13,8,Feature,,TRUE
-180,Gear visible on character,34,8,Aesthetics,,TRUE
-182,Make use of Winsock modular,8,21,Code quality,,
-183,Linux support,21,13,Code quality,182,
-184,NPC idling AI,8,21,Feature,,
-190,Release scrollbar on mouse up,5,2,Bug,,
-191,Allow external clients to connect,55,13,Feature,,TRUE
-192,isLocationValid() only checks one point against one terrain tile/chunk,8,2,Bug,,TRUE
-193,Move client colors to config file instead of hardcoding,5,2,Code quality,,TRUE
-194,Players can move through small objects,13,2,Bug,,TRUE
-198,"Only save map data once, on generation",3,1,Performance,,TRUE
-199,Empty objects reported as not empty when attempting to dismantle,21,2,Bug,,TRUE
-200,Test: objects can be gathered,5,13,Code quality,,TRUE
-201,Use namespaces for server and client,5,21,Code quality,,
-202,Include finished tasks in backlog,3,3,Documentation,,TRUE
-203,Attack cursor over NPCs,5,1,Aesthetics,,TRUE
-204,Health bars over NPCs,3,1,Aesthetics,,TRUE
-205,Users can have target NPCs,8,2,Feature,,TRUE
-206,Deal constant damage every 1s when close to target,21,8,Feature,,TRUE
-207,Display target name/health in UI,5,2,Aesthetics,,TRUE
-208,Allow aggressive and normal targeting on right/left click,5,2,Feature,,TRUE
-209,Memoize texture for other users' names,1,2,Performance,,
-210,Make client-side NPCs a subclass of ClientObject,5,2,Code quality,,TRUE
-211,Fix flaky merchant-slot-window test,13,13,Bug,,
-212,Prevent movement from interrupting attacking,13,2,Bug,,TRUE
-213,Avoid multiple data loads for custom server data,5,1,Code quality,,TRUE
-214,Prefix abstract-class names with I,2,1,Code quality,,
-215,"Blood particles for attacking and death, that remain for a time",5,5,Aesthetics,,TRUE
-216,Allow nonexistent data files (for tests),2,2,Code quality,,TRUE
-217,Sounds for attacking and death,8,8,Aesthetics,,
-222,Stacks of the same item can be combined,5,5,Bug,,
-223,Remove useItem info from Container class; move it into Client object,1,2,Code quality,,
-224,Specialized loot window,2,3,Aesthetics,,TRUE
-225,Use polymorphism instead of classTag,3,3,Code quality,,
-226,Right-click to equip gear,5,2,Feature,,TRUE
-227,Shift + right-click to loot all,5,2,Feature,,
-228,Close client on single Esc press when disconnected,3,1,Bug,,TRUE
-229,Thorough and consistent tooltips,13,21,Aesthetics,,TRUE
-230,Display stats in client,13,2,Aesthetics,,TRUE
-231,Player can get stuck against terrain or NPCs,34,5,Bug,,TRUE
-232,NPCs get stuck on each other due to linear pathfinding,21,8,Bug,,
-234,Fail more gracefully and informatively when can't connect to server,3,5,Aesthetics,,
-235,Maintain aspect ratio,2,5,Bug,,TRUE
-237,A boat that's restricted to water,21,5,Feature,,TRUE
-238,Choose map scale,5,3,Feature,,TRUE
-239,Make full map,21,89,Feature,,TRUE
-240,"Server loads map from data file, rather than generating it",13,3,Code quality,,TRUE
-241,"Client loads map from data file, not via server messages",21,3,Performance,,TRUE
-242,Cities that can own objects,5,34,Feature,,
-243,Heavy objects that prevent player movement,5,3,Feature,,
-244,Energy bar used up by attacking,5,3,Feature,,
-245,Food that restores energy,13,5,Feature,244,
-246,Each player can build one 'shrine'-class object,21,5,Feature,,
-247,Buffs,13,13,Feature,,
-248,A shrine that grants a buff,3,8,Feature,247,
-249,A shrine that sets one's spawn point,13,8,Feature,,
-250,A road object that affects movement speed,5,5,Feature,247,
-251,A hoe constructs a farm plot without being consumed,3,1,Feature,,TRUE
-252,"Seeds, that are constructed on top of a farm-plot object",3,5,Feature,,TRUE
-253,A crop object that grows over time,5,5,Feature,,TRUE
-256,Containers may allow 'heavy' objects or not,13,5,Feature,243,
-257,Rocks and sticks spawn gradually,13,5,Feature,,TRUE
-258,Direct player trading,3,8,Feature,,
-259,Players/factions can fight over object ownership,34,21,Feature,242,
-261,Objects can combine loot tables,13,8,Feature,,
-262,A shrine that grants items,8,5,Feature,,
-263,Talents/skills,89,89,Feature,,
-265,NPCs can have skills/abilities,13,13,Feature,263,
-267,Set bonuses for gear,13,8,Feature,,
-268,Learning skills might require tools,8,3,Feature,263,
-273,Player classes,13,3,Feature,,TRUE
-274,Class-restricted gear,13,3,Feature,,
-275,Flags showing faction ownership,5,5,Aesthetics,,
-276,Some tools objects have a cooldown,21,5,Feature,,
-277,Rare NPCs with better loot,21,8,Feature,,
-278,Using shrines requires animal sacrifice,8,8,Feature,,
-279,Containers may be restricted by item class,5,5,Feature,,
-280,Make test map,5,3,Feature,,TRUE
-281,"Recipes, objects and loot tables may point to deleted ServerItems",8,2,Bug,,
-282,Use collisionRects even on non-colliding objects,5,2,Bug,,
-283,Color mouse-over outline based on whether in range,8,3,Aesthetics,,
-284,Send nearby users' health values,5,3,Feature,,
-285,Construction sites,13,8,Feature,,TRUE
-286,Non-NPC objects always collide with each other,5,2,Feature,,
-287,Allow specification of minimum yields,5,3,Bug,,
-288,Tool requirements not enforced for crafting,13,3,Bug,,TRUE
-289,Sounds for crafting,5,2,Aesthetics,,
-290,Particles for crafting,5,2,Aesthetics,,
-291,Allow tool objects to show an in-use image/animation,3,3,Aesthetics,,
-292,"Use doubles, not ints, in Rect class",3,2,Code quality,,
-293,Tool requirements not showing up in crafting window,5,1,Bug,,TRUE
-294,Prevent landlocked gear outlines,5,5,Aesthetics,,
-295,Make client connection failures more clean,8,5,Aesthetics,,
-296,Load map in client before connecting,2,1,Performance,,TRUE
-297,Make findObjectTypeByName() logarithmic in complexity,3,2,Performance,,
-298,Make spawners' queues persistent,5,2,Bug,,
-299,"A 'handcart' vehicle that a player can mount, drive, and dismount",21,8,Feature,,TRUE
-300,Users are drawn inside (front+back) of vehicles,2,3,Aesthetics,,
-301,Vehicles 'log off' with their drivers,5,5,Bug,,
-302,Vehicles can have different speeds,5,2,Feature,,
-303,Smoother vehicle movement,3,3,Aesthetics,,
-304,Prevent fast travel via vehicle-hopping,2,5,Bug,,
-305,Tutorial island,55,13,Feature,,TRUE
-307,"Make terrain white/blacklists per object, not per spawn point",8,2,Feature,,TRUE
-308,Server can't handle client timing out,34,8,Bug,,TRUE
-309,Replace const casts with map::at(),3,1,Code quality,,
-310,Prevent clipping in getTileCoords() due to random coord at map edge,1,1,Bug,,
-311,Prevent mouse-over events on particles and decorations,3,3,Bug,,TRUE
-312,Allow actual dragging from containers,8,5,Feature,,
-313,Use the word 'destroy' in confirmation window,2,1,Aesthetics,,TRUE
-315,Allow decorations without tooltips,2,3,Aesthetics,,TRUE
-316,Find a way of hiding recipes,8,5,Aesthetics,,TRUE
-317,Fix stat-window height,8,1,Bug,,TRUE
-318,Let window titles expand window width,3,1,Bug,,
-319,Mouse-down events are propagating to multiple windows,5,2,Bug,,
-320,Right-clicking doesn't cancel dragging,3,2,Bug,312,
-321,"Require tools, gather-req items, etc. to be equipped",3,2,Feature,,
-322,Tools can modify crafting/gathering speed,3,3,Feature,,
-324,Reduce calls to findUsersInArea() in NPC AI,5,8,Performance,,
-326,Use simple font for everything,5,2,Aesthetics,,TRUE
-327,Include only known-recipe info in filters,3,3,Aesthetics,,TRUE
-328,Fix jumpy movement when laggy,8,13,Aesthetics,,
-329,Make mountains more explicit,2,3,Aesthetics,,
-330,Use simpler walls in login screen,1,2,Aesthetics,,TRUE
-331,Lower horizon in login screen,2,2,Aesthetics,,TRUE
-332,Distant players aren't being removed,13,5,Bug,,
-333,Add esc menu to release client,5,5,Aesthetics,,
-335,Calculate highlight borders by adjacency to magenta (sausage man),1,3,Aesthetics,,
-336,Give tool classes better names,5,1,Aesthetics,,TRUE
-337,Remove 'can ...' tooltips when player has no permissions,3,2,Bug,,
-338,Moulds should unlock recipes,3,1,Feature,,TRUE
-339,A stack can be split,8,3,Feature,,
-340,Allow crafting if removing the ingredients will make room,5,3,Feature,,
-341,Make players and objects more visible on map,13,5,Feature,,
-342,Generic unlock system. Item/crafting/construction -> recipe/construction,5,3,Bug,,TRUE
-345,Load map in login-screen background,5,5,Performance,,
-346,"Use gear-slot names, not numbers, in items.xml",5,2,Code quality,,
-347,Add fading unlock messages to the top of the screen,3,5,Aesthetics,,
-348,Generate full data website,13,8,Documentation,,
-349,Prevent chat messages being cut off,8,5,Bug,,
-350,Make oven and kiln larger,3,2,Aesthetics
-351,Highlight recipes/constructions that might unlock stuff,3,3,Aesthetics
-352,Gear can lose durability,5,5,Feature
-353,Items and objects can be repaired with materials,5,8,Feature
-354,Unique buildings,5,3,Feature
-355,Objects have health,5,8,Feature
+issue,description,value,effort,type,blockedBy,done,critical
+1,Each player can be a member of up to one 'city',34,8,Feature,,,TRUE
+2,Cities have names,21,3,Aesthetics,1,,TRUE
+3,A player can found a city by placing a shrine,21,55,Feature,1,,TRUE
+4,The player who starts a city is labelled 'king',5,3,Feature,3,,TRUE
+5,A king can invite new members to a city,21,55,Feature,4,,TRUE
+6,Destroying a city shrine destroys the city,34,13,Feature,3,,TRUE
+7,A player can leave a city,8,8,Feature,1,,TRUE
+8,Cities can own objects,89,5,Feature,1,,TRUE
+9,"If a city owns an object, all members can use it",55,3,Feature,8,,TRUE
+10,A player can cede an object to his city,55,8,Feature,8,,TRUE
+11,A king can grant a city object to a player,34,8,Feature,8,,TRUE
+12,A player can declare war on another player,89,8,Feature,,,TRUE
+13,Players can agree to return to peace,34,8,Feature,12,,TRUE
+14,Two players at war with each other can fight,55,3,Feature,12,,TRUE
+15,Players at war can destroy the other's objects,55,5,Feature,12,,TRUE
+16,A player at war with a city can seek peace from its king,34,8,Feature,145,,TRUE
+17,Two kings can agree to return to peace,34,8,Feature,145,,TRUE
+18,Each player can build one 'shrine'-class object,34,8,Feature,,,TRUE
+19,Shrines can set player respawn,21,89,Feature,18,,TRUE
+20,Shrine actions require an animal carcass,34,21,Feature,19,,TRUE
+21,Design three skill trees for each class,89,377,Feature,,,TRUE
+22,Implement all skills,89,377,Feature,21,,TRUE
+23,Players can use a subset of their class' skills,55,144,Feature,22,,TRUE
+24,Players can learn new skills,55,233,Feature,23,,TRUE
+25,Learning new skills requires the prerequisite skills,34,233,Feature,24,,TRUE
+26,Learning new skills can cost items,21,13,Feature,24,,TRUE
+27,Some items only drop for a single class,13,21,Feature,,,TRUE
+28,Skills can be unlearned,21,21,Feature,23,,TRUE
+29,Objects have health,55,21,Feature,,,TRUE
+30,"Items have durability, affected by combat and use.",34,34,Feature,,,TRUE
+31,Objects can be repaired with specific items,21,34,Feature,29,,TRUE
+32,Object repair can require tools,5,2,Feature,31,,TRUE
+33,Items can be repaired with specific items,21,55,Feature,30,,TRUE
+34,Repairing items can require tools,8,2,Feature,33,,TRUE
+35,"Recipes, objects and loot tables may point to deleted ServerItems",55,8,Feature,,,TRUE
+36,A player's group shows up on the UI,21,13,Usability,35,,TRUE
+37,Grouped players can invite others to their group,21,8,Feature,35,,TRUE
+38,Non-grouped players can invite others to form a group,21,8,Feature,35,,TRUE
+39,Players can leave groups,13,5,Feature,35,,TRUE
+40,"The first player to damage an NPC tags it, until it dies or disengages.",34,5,Feature,,,TRUE
+41,Grouped players share NPC tagging,21,34,Feature,40,,TRUE
+42,A player can be in an alternate 'instance',34,233,Feature,,,TRUE
+43,Instances get terrain from templates,34,55,Feature,42,,TRUE
+44,Instances get spawners from templates,34,89,Feature,42,,TRUE
+45,Instances get static objects from templates,34,55,Feature,42,,TRUE
+46,A player can create and enter a new instance,21,233,Feature,42,,TRUE
+47,Instance entrance happens at a specific point in the world,13,13,Feature,46,,TRUE
+48,Grouped players can enter the same instance,21,34,Feature,42,,TRUE
+49,Instances are destroyed after being empty for (30m?),13,8,Feature,42,,TRUE
+50,Instances have a player cap,21,3,Feature,42,,TRUE
+51,"There's a way to leave instances, to a specific point in the world",8,8,Feature,42,,TRUE
+52,NPCs can specify a set of items for their image,34,8,Aesthetics,,,TRUE
+53,NPCs can specify a custom human template image,21,8,Aesthetics,52,,TRUE
+54,A pyramid object that is unique,21,3,Feature,,,TRUE
+56,Learning some skills requires tools,21,2,Feature,24,,TRUE
+57,Heavy items that prevent player movement,13,3,Feature,,,TRUE
+58,Containers may allow 'heavy' objects or not,13,5,Feature,57,,TRUE
+59,Better NPC pathfinding,21,34,Feature,,,
+60,Some tool objects have a cooldown,5,13,Feature,,,TRUE
+61,Document UI interface,2,8,Documentation,,,
+62,Fix flaky merchant-slot-window test,2,89,Bug,,,
+63,Eating food restores energy,13,3,Feature,93,,
+64,Buffs,13,233,Feature,22,,
+65,NPCs can combine loot tables,5,21,Feature,
+66,NPCs can have skills/abilities,5,144,Feature,22
+67,Set bonuses for gear,13,21,Feature,
+68,Class-restricted gear,8,5,Feature,
+69,Distant players aren't being removed,8,8,Bug,
+70,Make players and objects more visible on map,89,34,Usability,
+71,Finish data website,13,8,Documentation,
+72,"Sort _materials and _craftableItems by name, not ID",5,3,Usability,
+73,Document Texture interface,2,8,Documentation,
+75,NPC idling AI,5,5,Feature,
+76,Sounds for attacking and death,89,3,Aesthetics,
+77,A shrine that grants items,5,34,Feature,19
+78,Release scrollbar on mouse up,5,8,Bug,
+79,Make it more obvious when something is out of range,13,8,Usability,
+80,Make client connection failures more clean,5,13,Usability,
+81,Allow actual dragging from containers,21,34,Usability,
+82,Fix jumpy movement when laggy,5,34,Aesthetics,
+83,A stack can be split,21,34,Usability,
+84,Prevent chat messages being cut off,55,34,Usability,
+85,Fix scroll-bar dragging offset,5,3,Bug,
+86,Allow a recipe to create multiple item types,3,34,Feature,
+87,Move appropriate configuration details into config file,2,55,Code quality,
+88,Critter run-away AI,8,13,Feature,
+90,Use namespaces for server and client,5,377,Code quality,
+91,Stacks of the same item can be combined,21,13,Usability,
+92,Shift + right-click to loot all,8,3,Usability,
+93,An energy bar that's used up by attacking,13,21,Feature,
+94,A road object that affects movement speed,3,13,Feature,64
+95,Object ownership is clearly visible,5,21,Usability,8
+96,Containers may be restricted by item class,5,5,Feature,
+97,"Use collisionRects even on non-colliding objects, for distance checks",8,5,Bug,
+98,Send nearby users' health values,13,8,Usability,
+99,Allow specification of minimum yields,8,1,Feature
+100,Sounds for crafting,5,2,Aesthetics
+101,Particles for crafting,5,2,Aesthetics
+102,Prevent landlocked gear outlines,3,34,Aesthetics
+103,Make spawners' queues persistent,13,5,Bug
+104,Vehicles 'log off' with their drivers,8,144,Bug
+105,Vehicles can have different speeds,5,5,Feature
+106,Mouse-down events are propagating to multiple windows,13,3,Bug
+107,Reduce calls to findUsersInArea() in NPC AI,5,13,Performance
+108,Add esc menu to release client,13,89,Usability
+109,Allow crafting if removing the ingredients will make room,13,3,Bug
+110,Load map in login-screen background,5,13,Usability
+111,"Use gear-slot names, not numbers, in items.xml",3,5,Code quality
+112,Throw exceptions where appropriate on SDL-function failures,1,5,Code quality
+113,"Use forward declarations where possible, to reduce unnecessary #includes",2,5,Code quality
+114,Use polymorphism instead of classTag,3,144,Code quality
+115,Fail more gracefully and informatively when can't connect to server,5,8,Usability,
+116,A shrine that grants a buff,8,34,Feature,64
+117,Direct player trading,8,233,Feature,
+118,Allow tool objects to show an in-use image/animation,8,13,Aesthetics,
+119,"Use doubles, not ints, in Rect class",1,3,Code quality,
+120,Make findObjectTypeByName() logarithmic in complexity,5,8,Performance,
+121,Smoother vehicle movement,5,34,Aesthetics,
+122,Replace const casts with map::at(),3,3,Code quality,
+123,Ensure window titles always fit,5,2,Bug,
+124,Right-clicking doesn't cancel dragging,8,2,Bug,
+125,Tools can modify crafting/gathering speed,3,13,Feature,
+126,Remove 'can ...' tooltips when player has no permissions,21,2,Bug,
+127,Add fading unlock messages to the top of the screen,8,13,Usability,
+128,Make oven and kiln larger,5,3,Aesthetics,
+129,Highlight recipes/constructions that might unlock stuff,5,21,Usability,
+130,Document and improve use of various disconnects,2,8,Documentation,
+131,Move SDL functions and types to a namespace,2,5,Code quality,,,
+133,Change dynamic_casts that don't check their result to static_cast or check for nullptr,3,5,Code quality,,,
+134,Use set::count() and map::count() to test set membership,2,3,Code quality,,,
+135,Fix ambiguity of Object::removeItem() and Object::removeItems(),2,3,Code quality,,,
+136,Users are drawn inside (front+back) of vehicles,5,5,Aesthetics,,,
+137,Prevent fast travel via vehicle-hopping,2,34,Bug,,,
+138,Make mountains more explicit,2,3,Usability,,,
+139,Memoize texture for other users' names,1,3,Performance,,,
+140,Remove useItem info from Container class; move it into Client object,1,13,Code quality,,,
+141,Prevent clipping in getTileCoords() due to random coord at map edge,1,3,Bug,,,
+142,Calculate highlight borders by adjacency to magenta (sausage man),5,13,Aesthetics,,,
+143,Highlight newly unlocked recipes/constructions,13,21,Usability,,,
+143,Declaring war on a player in a city declares war on that city,21,3,Feature,145,,TRUE
+144,"When a player joins a city, that city adopts his wars",13,5,Feature,145,,TRUE
+145,Players and cities can be at war with each other,34,5,Feature,,,TRUE
+146,Players can be in a group,34,8,Feature,,,
