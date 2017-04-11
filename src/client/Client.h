@@ -7,14 +7,15 @@
 #include <set>
 
 #include "Avatar.h"
+#include "ClientItem.h"
 #include "ClientMerchantSlot.h"
 #include "ClientObject.h"
 #include "ClientObjectType.h"
+#include "ClientTerrain.h"
 #include "Entity.h"
-#include "ClientItem.h"
 #include "LogSDL.h"
 #include "ParticleProfile.h"
-#include "ClientTerrain.h"
+#include "SoundProfile.h"
 #include "ui/ChoiceList.h"
 #include "ui/ItemSelector.h"
 #include "ui/Window.h"
@@ -307,6 +308,10 @@ private:
     objectTypes_t _objectTypes;
     typedef std::set<const ParticleProfile*, ParticleProfile::ptrCompare> particleProfiles_t;
     particleProfiles_t _particleProfiles;
+
+    typedef std::set<SoundProfile> soundProfiles_t;
+    soundProfiles_t _soundProfiles;
+    const SoundProfile *findSoundProfile(const std::string &id) const;
     
 
     // Information about the state of the world
@@ -373,6 +378,7 @@ private:
     friend class ClientObject;
     friend class ClientItem;
     friend class ClientNPC;
+    friend class ClientNPCType;
     friend class ClientVehicle;
     friend void LogSDL::operator()(const std::string &message, const Color &color);
     friend class ItemSelector;

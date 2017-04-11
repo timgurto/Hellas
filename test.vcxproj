@@ -118,6 +118,7 @@
     <ClCompile Include="src\client\Particle.cpp" />
     <ClCompile Include="src\client\ParticleProfile.cpp" />
     <ClCompile Include="src\client\Renderer.cpp" />
+    <ClCompile Include="src\client\SoundProfile.cpp" />
     <ClCompile Include="src\client\Surface.cpp" />
     <ClCompile Include="src\Client\ClientTerrain.cpp" />
     <ClCompile Include="src\client\Texture.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="src\client\Particle.h" />
     <ClInclude Include="src\client\ParticleProfile.h" />
     <ClInclude Include="src\client\Renderer.h" />
+    <ClInclude Include="src\client\SoundProfile.h" />
     <ClInclude Include="src\client\Surface.h" />
     <ClInclude Include="src\Client\ClientTerrain.h" />
     <ClInclude Include="src\client\Texture.h" />

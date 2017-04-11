@@ -43,7 +43,7 @@ doc/TreeGen/tree.png
 doc/TreeGen/tree.svg
 Hellas Client/*
 doc/web/images/*.png
-Sounds/temp/*
+Sounds/temp*
 doc/web/objects.js
 doc/web/items.js
 doc/web/tree.png

@@ -861,3 +861,10 @@ void Client::setRandomUsername(){
     for (int i = 0; i != 3; ++i)
         _username.push_back('a' + rand() % 26);
 }
+
+const SoundProfile *Client::findSoundProfile(const std::string &id) const{
+    auto it = _soundProfiles.find(SoundProfile(id));
+    if (it == _soundProfiles.end())
+        return nullptr;
+    return &*it;
+}

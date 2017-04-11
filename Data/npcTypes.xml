@@ -22,6 +22,7 @@ Server only:
     xDrawOffset="-11" yDrawOffset="-13" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
     <loot id="hide" />
+    <sounds id="pig" />
 </npcType>
 
 <npcType
@@ -32,6 +33,7 @@ Server only:
     <loot id="hide" />
     <loot id="bone" > <normal mean="2" sd="0.7" /> </loot>
     <loot id="fat" > <normal mean="0.4" sd="0.5" /> </loot>
+    <sounds id="pig" />
 </npcType>
 
 <!--npcType

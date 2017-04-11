@@ -3,6 +3,8 @@
 #include "ClientVehicleType.h"
 #include "ParticleProfile.h"
 #include "ClientVehicleType.h"
+
+#include "SoundProfile.h"
 #include "../XmlReader.h"
 
 void Client::loadData(const std::string &path){
@@ -64,6 +66,25 @@ void Client::loadData(const std::string &path){
             }
 
             _particleProfiles.insert(profile);
+        }
+    }
+
+    // Sounds
+    drawLoadingScreen("Loading sounds", 0.638);
+    if (xr.newFile(path + "/sounds.xml")){
+        _soundProfiles.clear();
+        for (auto elem : xr.getChildren("soundProfile")) {
+            std::string id;
+            if (!xr.findAttr(elem, "id", id)) // No ID: skip
+                continue;
+            auto resultPair = _soundProfiles.insert(SoundProfile(id));
+            SoundProfile &sp = const_cast<SoundProfile &>(*resultPair.first);
+
+            std::string filename;
+            auto defend = xr.findChild("defend", elem);
+            if (defend && xr.findAttr(defend, "file", filename)) sp.setDefend(filename);
+            auto death = xr.findChild("death", elem);
+            if (death && xr.findAttr(death, "file", filename)) sp.setDeath(filename);
         }
     }
 
@@ -286,6 +307,10 @@ void Client::loadData(const std::string &path){
                 nt->drawRect(drawRect);
             Rect r;
             if (xr.findRectChild("collisionRect", elem, r)) nt->collisionRect(r);
+            auto sounds = xr.findChild("sounds", elem);
+            if (sounds && xr.findAttr(sounds, "id", s))
+                nt->sounds(s);
+
             auto pair = _objectTypes.insert(nt);
             if (!pair.second) {
                 // A ClientObjectType is being pointed to by items; they need to point to this instead.

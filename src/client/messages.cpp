@@ -616,8 +616,15 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Received health info for a non-NPC object.", Color::FAILURE);
             }
             ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
-            if (health < npc.health()) // NPC has taken damage
+            bool tookDamage = health < npc.health();
+            if (tookDamage){
                 addParticles("combatDamage", npc.location());
+                if (npc.sounds() != nullptr)
+                    if (health == 0)
+                        npc.sounds()->playDeath();
+                    else
+                        npc.sounds()->playDefend();
+            }
             npc.health(health);
             if (_targetNPC == &npc){
                 _targetNPCHealth = health;
