@@ -265,6 +265,10 @@ for (i in 1:length(data$roi)){
         data$effort[i] >= suggestRefinementAtEffort){
         text = c(text, fieldStr("refine", "true"))
     }
+    
+    if (!is.na(data$critical[i]) && data$critical[i]){
+        text = c(text, fieldNum("critical", "true"))
+    }
 
     text = c(text, "},")
 }

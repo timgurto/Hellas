@@ -24,6 +24,10 @@
         color: #11bbd4;
     }
     
+    .critical{
+        color: #E2D026;
+    }
+    
     .issue{
         text-align: right;
     }
@@ -199,6 +203,8 @@
                         '" href="#' + PBI.blockedBy + '">&#9888;</span>';
             if (PBI.hasOwnProperty("refine"))
                 cell.innerHTML += '<span class="refine" title="Consider refining">&#9879;</span>';
+            if (PBI.hasOwnProperty("critical"))
+                cell.innerHTML += '<span class="critical" title="Critical feature">&#9733;</span>';
             cell.className = "Notes";
             
             cell = row.insertCell(-1);
