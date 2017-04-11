@@ -308,10 +308,8 @@ private:
     objectTypes_t _objectTypes;
     typedef std::set<const ParticleProfile*, ParticleProfile::ptrCompare> particleProfiles_t;
     particleProfiles_t _particleProfiles;
-
     typedef std::set<SoundProfile> soundProfiles_t;
     soundProfiles_t _soundProfiles;
-    const SoundProfile *findSoundProfile(const std::string &id) const;
     
 
     // Information about the state of the world
@@ -372,6 +370,7 @@ private:
 
     // Searches
     const ParticleProfile *findParticleProfile(const std::string &id);
+    const SoundProfile *findSoundProfile(const std::string &id) const;
 
 
     friend class Container; // Needs to send CL_SWAP_ITEMS messages, and open a confirmation window
@@ -386,6 +385,7 @@ private:
     friend class TakeContainer;
     friend class ClientTestInterface;
     friend class Avatar;
+    friend class SoundProfile;
 };
 
 #endif

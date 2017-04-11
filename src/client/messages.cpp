@@ -621,9 +621,9 @@ void Client::handleMessage(const std::string &msg){
                 addParticles("combatDamage", npc.location());
                 if (npc.sounds() != nullptr)
                     if (health == 0)
-                        npc.sounds()->playDeath();
+                        npc.sounds()->play("death");
                     else
-                        npc.sounds()->playDefend();
+                        npc.sounds()->play("damaged");
             }
             npc.health(health);
             if (_targetNPC == &npc){

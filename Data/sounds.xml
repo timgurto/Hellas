@@ -1,6 +1,6 @@
 <root>
 <soundProfile id="pig" >
-    <defend file="pig0" />
-    <death file="pigDeath0" />
+    <sound type="damaged" file="pig0" />
+    <sound type="death" file="pigDeath0" />
 </soundProfile>
 </root>

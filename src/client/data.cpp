@@ -80,11 +80,13 @@ void Client::loadData(const std::string &path){
             auto resultPair = _soundProfiles.insert(SoundProfile(id));
             SoundProfile &sp = const_cast<SoundProfile &>(*resultPair.first);
 
-            std::string filename;
-            auto defend = xr.findChild("defend", elem);
-            if (defend && xr.findAttr(defend, "file", filename)) sp.setDefend(filename);
-            auto death = xr.findChild("death", elem);
-            if (death && xr.findAttr(death, "file", filename)) sp.setDeath(filename);
+            for (auto sound : xr.getChildren("sound", elem)){
+                std::string type, file;
+                    if (!xr.findAttr(sound, "type", type) ||
+                        !xr.findAttr(sound, "file", file))
+                            continue;
+                sp.set(type, file);
+            }
         }
     }
 
