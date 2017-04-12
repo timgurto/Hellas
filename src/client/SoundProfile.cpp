@@ -10,7 +10,8 @@ bool SoundProfile::operator<(const SoundProfile &rhs) const{
 }
 
 void SoundProfile::set(const std::string &type, std::string &filename){
-    _sounds[type] = Mix_LoadWAV(("Sounds/" + filename + ".wav").c_str());
+    _sounds[type] = Mix_LoadWAV(("Sounds/" + filename + ".ogg").c_str());
+    auto error = Mix_GetError();
 }
 
 void SoundProfile::play(const std::string &type) const{

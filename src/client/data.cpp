@@ -135,7 +135,7 @@ void Client::loadData(const std::string &path){
             if (xr.findAttr(elem, "isFlat", n) && n != 0) cot->isFlat(true);
             if (xr.findAttr(elem, "isDecoration", n) && n != 0) cot->isDecoration(true);
             if (xr.findAttr(elem, "gatherSound", s))
-                cot->gatherSound("Sounds/" + s + ".wav");
+                cot->gatherSound("Sounds/" + s + ".ogg");
             if (xr.findAttr(elem, "gatherParticles", s)) cot->gatherParticles(findParticleProfile(s));
             if (xr.findAttr(elem, "gatherReq", s)) cot->gatherReq(s);
             if (xr.findAttr(elem, "constructionReq", s)) cot->constructionReq(s);
@@ -199,7 +199,7 @@ void Client::loadData(const std::string &path){
                 item.gearImage(id);
 
             if (xr.findAttr(elem, "dropSound", s))
-                item.dropSound("Sounds/" + s + ".wav");
+                item.dropSound("Sounds/" + s + ".ogg");
 
             auto offset = xr.findChild("offset", elem);
             if (offset != nullptr){
