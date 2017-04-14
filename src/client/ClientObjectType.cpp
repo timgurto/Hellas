@@ -1,10 +1,10 @@
 #include <cassert>
 
 #include <SDL.h>
-#include <SDL_mixer.h>
 
 #include "Client.h"
 #include "ClientObjectType.h"
+#include "SoundProfile.h"
 #include "Surface.h"
 #include "TooltipBuilder.h"
 #include "../Color.h"
@@ -16,7 +16,7 @@ _canGather(false),
 _canDeconstruct(false),
 _containerSlots(0),
 _merchantSlots(0),
-_gatherSound(nullptr),
+_sounds(nullptr),
 _gatherParticles(nullptr),
 _materialsTooltip(nullptr),
 _transformTime(0)
@@ -30,10 +30,6 @@ ClientObjectType::~ClientObjectType(){
         delete _materialsTooltip;
         _materialsTooltip = nullptr;
     }
-}
-
-void ClientObjectType::gatherSound(const std::string &filename){
-    _gatherSound = Mix_LoadWAV(filename.c_str());
 }
 
 const Texture &ClientObjectType::materialsTooltip() const{
@@ -82,4 +78,9 @@ ClientObjectType::ImageSet::ImageSet(const std::string &filename){
     normal = Texture(surface);
     surface.swapColors(Color::OUTLINE, Color::HIGHLIGHT_OUTLINE);
     highlight = Texture(surface);
+}
+
+void ClientObjectType::sounds(const std::string &id){
+    const Client &client = *Client::_instance;
+    _sounds = client.findSoundProfile(id);
 }

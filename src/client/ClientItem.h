@@ -8,7 +8,7 @@
 #include "../Item.h"
 
 class ClientObjectType;
-struct Mix_Chunk;
+class SoundProfile;
 
 // The client-side representation of an item type
 class ClientItem : public Item{

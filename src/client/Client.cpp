@@ -62,8 +62,6 @@ const size_t Client::INVENTORY_SIZE = 10;
 const size_t Client::GEAR_SLOTS = 8;
 std::vector<std::string> Client::GEAR_SLOT_NAMES;
 
-const int Client::PLAYER_ACTION_CHANNEL = 0;
-
 Color Client::SAY_COLOR;
 Color Client::WHISPER_COLOR;
 
@@ -71,6 +69,8 @@ bool Client::isClient = false;
 
 std::map<std::string, int> Client::_messageCommands;
 std::map<int, std::string> Client::_errorMessages;
+
+const int Client::MIXING_CHANNELS = 8;
 
 Client::Client():
 _cursorNormal(std::string("Images/Cursors/normal.png"), Color::MAGENTA),
@@ -270,12 +270,13 @@ _debug("client.log"){
         Socket::debug = &_debug;
     
     drawLoadingScreen("Initializing audio", 0.5);
-    int ret = (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 512) < 0);
+    int ret = (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 1, 512) < 0);
     if (ret < 0){
         _debug("SDL_mixer failed to initialize.", Color::FAILURE);
     } else {
         _debug("SDL_mixer initialized.");
     }
+    Mix_AllocateChannels(MIXING_CHANNELS);
 
     // Resolve default server IP
     drawLoadingScreen("Finding server", 0.7);
@@ -673,7 +674,10 @@ void Client::startAction(ms_t actionLength){
     _actionLength = actionLength;
     if (actionLength == 0) {
         _castBar->hide();
-        Mix_HaltChannel(PLAYER_ACTION_CHANNEL);
+        if (_gatheringObject != nullptr && _gatheringObject->objectType()->sounds() != nullptr){
+            _gatheringObject->objectType()->sounds()->stopRepeated("gather", _gatheringObject);
+            _gatheringObject = nullptr;
+        }
     }
 }
 

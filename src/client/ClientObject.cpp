@@ -168,7 +168,10 @@ void ClientObject::onRightClick(Client &client){
     if (objType.canGather() && userHasAccess()) {
         client.sendMessage(CL_GATHER, makeArgs(_serial));
         client.prepareAction(std::string("Gathering ") + objType.name());
-        playGatherSound();
+        if (objType.sounds() != nullptr){
+            objType.sounds()->playRepeated("gather", this);
+            client._gatheringObject = this;
+        }
         return;
     }
     
@@ -445,13 +448,6 @@ void ClientObject::assembleWindow(Client &client){
             delete _window;
             _window = nullptr;
         }
-    }
-}
-
-void ClientObject::playGatherSound() const {
-    Mix_Chunk *sound = objectType()->gatherSound();
-    if (sound != nullptr) {
-        Mix_PlayChannel(Client::PLAYER_ACTION_CHANNEL, sound, -1);
     }
 }
 

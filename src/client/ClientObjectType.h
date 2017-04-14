@@ -11,7 +11,7 @@
 #include "../Point.h"
 #include "../util.h"
 
-struct Mix_Chunk;
+class SoundProfile;
 class ParticleProfile;
 
 // Describes a class of Entities, the "instances" of which share common properties
@@ -31,13 +31,13 @@ class ClientObjectType : public EntityType{
     bool _canDeconstruct; // Whether these objects can be deconstructed into items
     size_t _containerSlots;
     size_t _merchantSlots;
-    Mix_Chunk *_gatherSound;
     Rect _collisionRect;
     const ParticleProfile *_gatherParticles;
     std::set<std::string> _tags;
     ItemSet _materials;
     mutable Texture *_materialsTooltip;
-    ImageSet _constructionImage; // Shown when the object is under construction.\
+    ImageSet _constructionImage; // Shown when the object is under construction.
+    const SoundProfile *_sounds;
 
     // To show transformations.  Which image is displayed depends on progress.
     std::vector<ImageSet> _transformImages;
@@ -63,8 +63,6 @@ public:
     void containerSlots(size_t n) { _containerSlots = n; }
     size_t merchantSlots() const { return _merchantSlots; }
     void merchantSlots(size_t n) { _merchantSlots = n; }
-    void gatherSound(const std::string &filename);
-    Mix_Chunk *gatherSound() const { return _gatherSound; }
     const Rect &collisionRect() const { return _collisionRect; }
     void collisionRect(const Rect &r) { _collisionRect = r; }
     const ParticleProfile *gatherParticles() const { return _gatherParticles; }
@@ -79,6 +77,8 @@ public:
     ms_t transformTime() const { return _transformTime; }
     void addTransformImage(const std::string &filename);
     const ImageSet &constructionImage() const { return _constructionImage; }
+    void sounds(const std::string &id);
+    const SoundProfile *sounds() const { return _sounds; }
     
     const ImageSet &getProgressImage(ms_t timeRemaining) const;
 

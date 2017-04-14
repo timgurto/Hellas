@@ -74,8 +74,6 @@ public:
     static void trade(void *serialAndSlot);
     static void sendMerchantSlot(void *serialAndSlot);
 
-    void playGatherSound() const;
-
     virtual void onInventoryUpdate();
     void hideWindow();
     virtual void assembleWindow(Client &client);

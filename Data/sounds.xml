@@ -12,4 +12,7 @@
 <soundProfile id="metalTool" >
     <sound type="drop" file="metalTool" />
 </soundProfile>
+<soundProfile id="tree" >
+    <sound type="gather" file="chop-pause" />
+</soundProfile>
 </root>

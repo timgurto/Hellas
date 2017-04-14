@@ -15,7 +15,7 @@ Client only:
  - xDrawOffset
  - yDrawOffset
  - isFlat
- - gatherSound
+ - sounds
  - isDecoration (no tooltip)
 
 Server only:
@@ -48,7 +48,7 @@ Server only:
 <objectType
     id="tree" name="Tree"
     xDrawOffset="-23" yDrawOffset="-57"
-    canGather="1" gatherSound="chop-pause" gatherParticles="tree" gatherReq="axe" gatherTime="3000"
+    canGather="1" sounds="tree" gatherParticles="tree" gatherReq="axe" gatherTime="3000"
     allowedTerrain="denseVeg" >
     <yield id="log" initialMean="6" initialSD="1" />
     <yield id="stick" initialMean="5" initialSD="2" />

@@ -59,9 +59,6 @@ public:
     const Texture &cursorContainer() const { return _cursorContainer; }
     const Texture &cursorAttack() const { return _cursorAttack; }
 
-    // Sound channels
-    static const int PLAYER_ACTION_CHANNEL;
-
     static const px_t ICON_SIZE;
     static const px_t TILE_W, TILE_H;
     static const double MOVEMENT_SPEED;
@@ -88,6 +85,8 @@ public:
     static const px_t
         CULL_DISTANCE,
         CULL_HYSTERESIS_DISTANCE;
+
+    static const int MIXING_CHANNELS;
 
 private:
     static Client *_instance;
@@ -224,6 +223,7 @@ private:
     std::string _actionMessage; // A description of the current action.
     void prepareAction(const std::string &msg); // Set up the action, awaiting server confirmation.
     void startAction(ms_t actionLength); // Start the action timer.  If zero, stop the timer.
+    const ClientObject *_gatheringObject; // Used to keep track of gather sounds.
 
     const ClientNPC *_targetNPC;
     std::string _targetNPCName;
@@ -377,6 +377,7 @@ private:
     friend class ClientObject;
     friend class ClientItem;
     friend class ClientNPC;
+    friend class ClientObjectType;
     friend class ClientNPCType;
     friend class ClientVehicle;
     friend void LogSDL::operator()(const std::string &message, const Color &color);
