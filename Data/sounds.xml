@@ -5,12 +5,12 @@
     <sound type="attack" file="bite2" />
     <sound type="attack" file="bite3" />
     <sound type="attack" file="bite4" />
-    <sound type="damaged" file="pig0" />
-    <sound type="damaged" file="pig1" />
-    <sound type="damaged" file="pig2" />
-    <sound type="damaged" file="pig3" />
-    <sound type="damaged" file="pig4" />
-    <sound type="damaged" file="pig5" />
+    <sound type="defend" file="pig0" />
+    <sound type="defend" file="pig1" />
+    <sound type="defend" file="pig2" />
+    <sound type="defend" file="pig3" />
+    <sound type="defend" file="pig4" />
+    <sound type="defend" file="pig5" />
     <sound type="death" file="pigDeath0" />
     <sound type="death" file="pigDeath1" />
     <sound type="death" file="pigDeath2" />
