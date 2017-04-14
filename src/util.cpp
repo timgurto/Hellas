@@ -36,6 +36,12 @@ double distance(const Point &p, const Point &a, const Point &b){
     return numerator / denominator;
 }
 
+Point midpoint(const Point &a, const Point &b){
+    return Point(
+        (a.x + b.x) / 2,
+        (a.y + b.y) / 2);
+}
+
 Point interpolate(const Point &a, const Point &b, double dist){
     const double
         xDelta = b.x - a.x,

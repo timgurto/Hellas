@@ -1,5 +1,10 @@
 <root>
 <soundProfile id="pig" >
+    <sound type="attack" file="bite0" />
+    <sound type="attack" file="bite1" />
+    <sound type="attack" file="bite2" />
+    <sound type="attack" file="bite3" />
+    <sound type="attack" file="bite4" />
     <sound type="damaged" file="pig0" />
     <sound type="damaged" file="pig1" />
     <sound type="damaged" file="pig2" />

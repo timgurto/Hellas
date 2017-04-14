@@ -636,6 +636,33 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_NPC_HIT_PLAYER:
+        {
+            int serial;
+            std::string username;
+            singleMsg >> serial >> del;
+            readString(singleMsg, username, MSG_END);
+            auto objIt = _objects.find(serial);
+            if (objIt == _objects.end()){
+                _debug("Received combat info for an unknown object.", Color::FAILURE);
+                break;
+            }
+            const ClientNPC &attacker = * dynamic_cast<const ClientNPC *>(objIt->second);
+            const Avatar *defender = nullptr;
+            if (username == _username)
+                defender = &character();
+            else{
+                auto userIt = _otherUsers.find(username);
+                if (userIt == _otherUsers.end()){
+                    _debug("Received combat info for an unknown player.", Color::FAILURE);
+                    break;
+                }
+                defender = userIt->second;
+            }
+            if (attacker.npcType()->sounds() != nullptr)
+                attacker.npcType()->sounds()->playOnce("attack");
+        }
+
         case SV_LOOTABLE:
         {
             int serial;

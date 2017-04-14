@@ -33,6 +33,8 @@ void pushBackMultiple(std::vector<T> &vec, const T &val, size_t count){
 double distance(const Point &a, const Point &b);
 double distance(const Point &p, const Point &a, const Point &b); // point P to line AB
 
+Point midpoint(const Point &a, const Point &b);
+
 // Return the point between a and b which is dist from point a,
 // or return b if dist exceeds the distance between a and b.
 Point interpolate(const Point &a, const Point &b, double dist);

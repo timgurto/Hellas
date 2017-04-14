@@ -37,6 +37,29 @@ void Combatant::update(ms_t timeElapsed){
         target()->reduceHealth(attack());
         target()->onHealthChange();
 
+        // Alert nearby clients
+        const Server &server = Server::instance();
+        Point locus = midpoint(location(), target()->location());
+        MessageCode msgCode;
+        std::string args;
+        if (classTag() == 'u' && target()->classTag() == 'n'){
+            msgCode = SV_PLAYER_HIT_NPC;
+            args = makeArgs(
+                    dynamic_cast<const User *>(this)->name(),
+                    dynamic_cast<const NPC *>(target())->serial());
+        } else if (classTag() == 'n' && target()->classTag() == 'u'){
+            msgCode = SV_NPC_HIT_PLAYER;
+            args = makeArgs(
+                    dynamic_cast<const NPC *>(this)->serial(),
+                    dynamic_cast<const User *>(target())->name());
+        } else {
+            assert(false);
+            return;
+        }
+        for (const User *user : server.findUsersInArea(locus)){
+            server.sendMessage(user->socket(), msgCode, args);
+        }
+
         // Reset timer
         _attackTimer = attackTime();
     }

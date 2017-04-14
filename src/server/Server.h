@@ -157,6 +157,7 @@ private:
     friend class Object;
     friend class User;
     friend class NPC;
+    friend class Combatant;
     friend class ServerTestInterface;
     friend class Spawner;
     friend class ProgressLock;

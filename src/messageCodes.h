@@ -188,6 +188,14 @@ enum MessageCode{
     // Arguments: quantity, id1, id2, ...
     SV_NEW_CONSTRUCTIONS = 137,
 
+    // An NPC hit a player
+    // Arguments: serial, username
+    SV_NPC_HIT_PLAYER = 138,
+    
+    // A player hit an NPC
+    // Arguments: username, serial
+    SV_PLAYER_HIT_NPC = 139,
+
     // An object has an owner
     // Arguments: serial, owner
     SV_OWNER = 150,
