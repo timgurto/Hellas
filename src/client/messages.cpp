@@ -406,7 +406,7 @@ void Client::handleMessage(const std::string &msg){
                 (serial == INVENTORY || serial == GEAR) && // You are receiving it
                 _actionTimer > 0) // You were crafting or gathering
                     if (item->sounds() != nullptr)
-                        item->sounds()->play("drop");
+                        item->sounds()->playOnce("drop");
 
             break;
         }
@@ -622,9 +622,9 @@ void Client::handleMessage(const std::string &msg){
                 addParticles("combatDamage", npc.location());
                 if (npc.sounds() != nullptr)
                     if (health == 0)
-                        npc.sounds()->play("death");
+                        npc.sounds()->playOnce("death");
                     else
-                        npc.sounds()->play("damaged");
+                        npc.sounds()->playOnce("damaged");
             }
             npc.health(health);
             if (_targetNPC == &npc){

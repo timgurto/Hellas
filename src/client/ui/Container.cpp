@@ -162,7 +162,7 @@ void Container::leftMouseUp(Element &e, const Point &mousePos){
                                                                    container._serial, slot));
             const ClientItem *item = dragContainer->_linked[dragSlot].first;
             if (item != nullptr && item->sounds() != nullptr)
-                item->sounds()->play("drop");
+                item->sounds()->playOnce("drop");
 
             dragSlot = NO_SLOT;
             dragContainer = nullptr;
@@ -214,12 +214,12 @@ void Container::rightMouseUp(Element &e, const Point &mousePos){
                     Client::_instance->sendMessage(CL_SWAP_ITEMS,
                             makeArgs(Client::INVENTORY, slot, Client::GEAR, item->gearSlot()));
                     if (item->sounds() != nullptr)
-                        item->sounds()->play("drop");
+                        item->sounds()->playOnce("drop");
                 }
             } else { // An object: take item
                 Client::_instance->sendMessage(CL_TAKE_ITEM, makeArgs(container._serial, slot));
                 if (item->sounds() != nullptr)
-                    item->sounds()->play("drop");
+                    item->sounds()->playOnce("drop");
             }
         }
     }
@@ -258,7 +258,7 @@ void Container::dropItem() {
         dragContainer = nullptr;
         Client::_instance->onChangeDragItem();
         if (item->sounds() != nullptr)
-            item->sounds()->play("drop");
+            item->sounds()->playOnce("drop");
     }
 }
 

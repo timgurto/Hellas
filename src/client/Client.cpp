@@ -675,7 +675,7 @@ void Client::startAction(ms_t actionLength){
     if (actionLength == 0) {
         _castBar->hide();
         if (_gatheringObject != nullptr && _gatheringObject->objectType()->sounds() != nullptr){
-            _gatheringObject->objectType()->sounds()->stopRepeated("gather", _gatheringObject);
+            _gatheringObject->objectType()->sounds()->stopLooping("gather", _gatheringObject);
             _gatheringObject = nullptr;
         }
     }

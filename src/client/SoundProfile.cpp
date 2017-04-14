@@ -1,9 +1,7 @@
 #include "Client.h"
 #include "SoundProfile.h"
 
-const SoundProfile::Channel SoundProfile::NO_CHANNEL = -1;
-std::vector<std::pair<std::string, const void *> >
-        SoundProfile::repeatingSounds(static_cast<size_t>(Client::MIXING_CHANNELS));
+SoundsRecord SoundProfile::loopingSounds;
 
 SoundProfile::SoundProfile(const std::string &id):
 _id(id)
@@ -13,39 +11,62 @@ bool SoundProfile::operator<(const SoundProfile &rhs) const{
     return _id < rhs._id;
 }
 
-void SoundProfile::set(const std::string &type, std::string &filename){
+void SoundProfile::set(const SoundType &type, std::string &filename){
     _sounds[type] = Mix_LoadWAV(("Sounds/" + filename + ".ogg").c_str());
-    auto error = Mix_GetError();
 }
 
-void SoundProfile::play(const std::string &type) const{
+void SoundProfile::playOnce(const SoundType &type) const{
+    checkAndPlaySound(type, false);
+}
+
+void SoundProfile::startLooping(const SoundType &type, const void *source) const{
+    Channel channel = checkAndPlaySound(type, true);
+    loopingSounds.set(type, source, channel);
+}
+
+Channel SoundProfile::checkAndPlaySound(const SoundType &type, bool loop) const{
     Mix_Chunk *sound = _sounds.at(type);
     if (sound == nullptr){
         Client::_instance->debug() << Color::WARNING << "\"" << type << "\" sound not found."
                                    << Log::endl;
-        return;
+        return NO_CHANNEL;
     }
-    Mix_PlayChannel(-1, sound, 0);
+    int loopArg = loop ? -1 : 0;
+    return Mix_PlayChannel(-1, sound, loopArg);
 }
 
-void SoundProfile::playRepeated(const std::string &type, const void *source) const{
-    Mix_Chunk *sound = _sounds.at(type);
-    if (sound == nullptr){
-        Client::_instance->debug() << Color::WARNING << "\"" << type << "\" sound not found."
-                                   << Log::endl;
-        return;
-    }
-    Channel channel = Mix_PlayChannel(-1, sound, -1);
-    repeatingSounds[channel] = std::make_pair(type, source);
+void SoundProfile::stopLooping(const SoundType &type, const void *source) const{
+    Channel channel = loopingSounds.getChannel(type, source);
+    Mix_HaltChannel(channel);
+    loopingSounds.unset(channel);
 }
 
-void SoundProfile::stopRepeated(const std::string &type, const void *source) const{
-    for (size_t i = 0; i != Client::MIXING_CHANNELS; ++i){
-        auto &pair = repeatingSounds[i];
-        if (pair.first == type && pair.second == source){
-            Mix_HaltChannel(i);
-            pair = std::make_pair("", nullptr);
-            break;
+
+
+const SoundsRecord::Entry SoundsRecord::Entry::BLANK("", nullptr);
+
+SoundsRecord::SoundsRecord():
+_record(Client::MIXING_CHANNELS, Entry::BLANK)
+{}
+
+void SoundsRecord::set(const SoundType &type, const void *source, Channel channel){
+    if (channel == NO_CHANNEL)
+        return;
+    _record[channel] = Entry(type, source);
+}
+
+Channel SoundsRecord::getChannel(const SoundType &type, const void *source) const{
+    for (Channel channel = 0; channel != Client::MIXING_CHANNELS; ++channel){
+        const Entry &entry = _record[channel];
+        if (entry.source == source && entry.type == type){
+            return channel;
         }
     }
+    return NO_CHANNEL;
+}
+
+void SoundsRecord::unset(Channel channel){
+    if (channel == NO_CHANNEL)
+        return;
+    _record[channel] = Entry::BLANK;
 }

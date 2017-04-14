@@ -169,7 +169,7 @@ void ClientObject::onRightClick(Client &client){
         client.sendMessage(CL_GATHER, makeArgs(_serial));
         client.prepareAction(std::string("Gathering ") + objType.name());
         if (objType.sounds() != nullptr){
-            objType.sounds()->playRepeated("gather", this);
+            objType.sounds()->startLooping("gather", this);
             client._gatheringObject = this;
         }
         return;
