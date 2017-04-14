@@ -19,21 +19,21 @@ Server only:
 <npcType
     id="critter" name="Critter"
 	maxHealth="20"
-    xDrawOffset="-11" yDrawOffset="-13" >
+    xDrawOffset="-11" yDrawOffset="-13"
+    sounds = "pig" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
     <loot id="hide" />
-    <sounds id="pig" />
 </npcType>
 
 <npcType
     id="boar" name="Wild boar"
 	maxHealth="40" attack="5" attackTime="700"
-    xDrawOffset="-11" yDrawOffset="-13" >
+    xDrawOffset="-11" yDrawOffset="-13"
+    sounds = "pig" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
     <loot id="hide" />
     <loot id="bone" > <normal mean="2" sd="0.7" /> </loot>
     <loot id="fat" > <normal mean="0.4" sd="0.5" /> </loot>
-    <sounds id="pig" />
 </npcType>
 
 <!--npcType

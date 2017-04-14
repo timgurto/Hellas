@@ -309,8 +309,8 @@ void Client::loadData(const std::string &path){
                 nt->drawRect(drawRect);
             Rect r;
             if (xr.findRectChild("collisionRect", elem, r)) nt->collisionRect(r);
-            auto sounds = xr.findChild("sounds", elem);
-            if (sounds && xr.findAttr(sounds, "id", s))
+
+            if (xr.findAttr(elem, "sounds", s))
                 nt->sounds(s);
 
             auto pair = _objectTypes.insert(nt);
