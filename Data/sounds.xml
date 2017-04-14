@@ -3,4 +3,13 @@
     <sound type="damaged" file="pig0" />
     <sound type="death" file="pigDeath0" />
 </soundProfile>
+<soundProfile id="leather" >
+    <sound type="drop" file="leather" />
+</soundProfile>
+<soundProfile id="mailArmor" >
+    <sound type="drop" file="chain" />
+</soundProfile>
+<soundProfile id="metalTool" >
+    <sound type="drop" file="metalTool" />
+</soundProfile>
 </root>

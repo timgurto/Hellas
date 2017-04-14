@@ -198,8 +198,8 @@ void Client::loadData(const std::string &path){
             else
                 item.gearImage(id);
 
-            if (xr.findAttr(elem, "dropSound", s))
-                item.dropSound("Sounds/" + s + ".ogg");
+            if (xr.findAttr(elem, "sounds", s))
+                item.sounds(s);
 
             auto offset = xr.findChild("offset", elem);
             if (offset != nullptr){

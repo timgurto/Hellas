@@ -405,7 +405,8 @@ void Client::handleMessage(const std::string &msg){
             if (item != nullptr && // It's an actual item
                 (serial == INVENTORY || serial == GEAR) && // You are receiving it
                 _actionTimer > 0) // You were crafting or gathering
-                    item->playDropSound();
+                    if (item->sounds() != nullptr)
+                        item->sounds()->play("drop");
 
             break;
         }
