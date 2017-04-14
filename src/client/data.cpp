@@ -85,7 +85,7 @@ void Client::loadData(const std::string &path){
                     if (!xr.findAttr(sound, "type", type) ||
                         !xr.findAttr(sound, "file", file))
                             continue;
-                sp.set(type, file);
+                sp.add(type, file);
             }
         }
     }

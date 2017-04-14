@@ -11,8 +11,9 @@ bool SoundProfile::operator<(const SoundProfile &rhs) const{
     return _id < rhs._id;
 }
 
-void SoundProfile::set(const SoundType &type, std::string &filename){
-    _sounds[type] = Mix_LoadWAV(("Sounds/" + filename + ".ogg").c_str());
+void SoundProfile::add(const SoundType &type, std::string &filename){
+    Mix_Chunk *sound = Mix_LoadWAV(("Sounds/" + filename + ".ogg").c_str());
+    _sounds[type].add(sound);
 }
 
 void SoundProfile::playOnce(const SoundType &type) const{
@@ -25,7 +26,8 @@ void SoundProfile::startLooping(const SoundType &type, const void *source) const
 }
 
 Channel SoundProfile::checkAndPlaySound(const SoundType &type, bool loop) const{
-    Mix_Chunk *sound = _sounds.at(type);
+    SoundVariants variants =_sounds.at(type);
+    Mix_Chunk *sound = variants.choose();
     if (sound == nullptr){
         Client::_instance->debug() << Color::WARNING << "\"" << type << "\" sound not found."
                                    << Log::endl;
@@ -39,6 +41,16 @@ void SoundProfile::stopLooping(const SoundType &type, const void *source) const{
     Channel channel = loopingSounds.getChannel(type, source);
     Mix_HaltChannel(channel);
     loopingSounds.unset(channel);
+}
+
+
+
+Mix_Chunk *SoundVariants::choose() const{
+    size_t numChoices = _variants.size();
+    if (numChoices == 0)
+        return nullptr;
+    size_t choiceIndex = rand() % numChoices;
+    return _variants[choiceIndex];
 }
 
 

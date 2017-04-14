@@ -7,6 +7,7 @@
 
 #include <SDL_mixer.h>
 
+class SoundVariants;
 class SoundsRecord;
 
 typedef std::string SoundType;
@@ -16,7 +17,7 @@ const Channel NO_CHANNEL = -1;
 class SoundProfile{
     std::string _id;
 
-    std::map<SoundType, Mix_Chunk *> _sounds;
+    std::map<SoundType, SoundVariants> _sounds;
 
     static SoundsRecord loopingSounds;
 
@@ -27,10 +28,19 @@ public:
 
     bool operator<(const SoundProfile &rhs) const;
 
-    void set(const SoundType &type, std::string &filename);
+    void add(const SoundType &type, std::string &filename);
     void playOnce(const SoundType &type) const;
     void startLooping(const SoundType &type, const void *source) const;
     void stopLooping(const SoundType &type, const void *source) const;
+};
+
+
+
+class SoundVariants{
+    std::vector<Mix_Chunk *> _variants;
+public:
+    void add(Mix_Chunk *sound) { _variants.push_back(sound); }
+    Mix_Chunk *choose() const;
 };
 
 

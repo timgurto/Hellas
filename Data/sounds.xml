@@ -1,7 +1,14 @@
 <root>
 <soundProfile id="pig" >
     <sound type="damaged" file="pig0" />
+    <sound type="damaged" file="pig1" />
+    <sound type="damaged" file="pig2" />
+    <sound type="damaged" file="pig3" />
+    <sound type="damaged" file="pig4" />
+    <sound type="damaged" file="pig5" />
     <sound type="death" file="pigDeath0" />
+    <sound type="death" file="pigDeath1" />
+    <sound type="death" file="pigDeath2" />
 </soundProfile>
 <soundProfile id="leather" >
     <sound type="drop" file="leather" />
