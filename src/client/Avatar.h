@@ -34,10 +34,13 @@ public:
     ClientItem::vect_t &gear() { return _gear; }
     void driving(bool b) { _driving = b; }
     bool isDriving() const { return _driving; }
+    const ClientItem *getRandomArmor() const { return _gear[Item::getRandomArmorSlot()].first; }
 
     virtual void draw(const Client &client) const override;
     virtual void update(double delta) override;
     const Texture &tooltip() const override; // Getter; creates tooltip on first call.
+    void playAttackSound() const; // The player has attacked; play an appropriate sound.
+    void playDefendSound() const; // The player has been attacked; play an appropriate sound.
 
     static void cleanup();
 

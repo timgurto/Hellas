@@ -15,6 +15,8 @@ protected:
     StatsMod _stats; // If gear, the impact it has on its wearer's stats.
 
 public:
+    static const size_t WEAPON_SLOT;
+
     Item(const std::string &id);
     virtual ~Item(){}
 
@@ -32,6 +34,8 @@ public:
     void addTag(const std::string &tagName);
     bool hasTags() const { return _tags.size() > 0; }
     bool isTag(const std::string &tagName) const;
+
+    static size_t getRandomArmorSlot();
 };
 
 #endif

@@ -53,6 +53,7 @@ public:
     bool aggressive() const { return _aggressive; }
     bool isDismounting() const { return _isDismounting; }
     void attemptDismount() { _isDismounting = true; }
+    const SoundProfile *avatarSounds() const { return _avatarSounds; }
     
     const Texture &cursorNormal() const { return _cursorNormal; }
     const Texture &cursorGather() const { return _cursorGather; }
@@ -308,8 +309,10 @@ private:
     objectTypes_t _objectTypes;
     typedef std::set<const ParticleProfile*, ParticleProfile::ptrCompare> particleProfiles_t;
     particleProfiles_t _particleProfiles;
+
     typedef std::set<SoundProfile> soundProfiles_t;
     soundProfiles_t _soundProfiles;
+    const SoundProfile *_avatarSounds;
     
 
     // Information about the state of the world

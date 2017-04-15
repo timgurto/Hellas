@@ -1,6 +1,7 @@
 #include "Avatar.h"
 #include "Client.h"
 #include "Renderer.h"
+#include "SoundProfile.h"
 #include "TooltipBuilder.h"
 #include "../util.h"
 
@@ -93,4 +94,21 @@ const Texture &Avatar::tooltip() const{
 
     _tooltip = tb.publish();
     return _tooltip;
+}
+
+void Avatar::playAttackSound() const{
+    static const size_t WEAPON_SLOT = 6;
+    const ClientItem *weapon = _gear[WEAPON_SLOT].first;
+    const Client &client = *Client::_instance;
+    const SoundProfile *weaponSound = weapon == nullptr ? client.avatarSounds() : weapon->sounds();
+    if (weaponSound != nullptr)
+        weaponSound->playOnce("attack");
+}
+
+void Avatar::playDefendSound() const{
+    const Client &client = *Client::_instance;
+    const ClientItem *armor = getRandomArmor();
+    const SoundProfile *armorSound = armor == nullptr ? client.avatarSounds() : armor->sounds();
+    if (armorSound != nullptr)
+        armorSound->playOnce("defend");
 }

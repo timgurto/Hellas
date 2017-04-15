@@ -80,6 +80,7 @@ _cursorAttack(std::string("Images/Cursors/attack.png"), Color::MAGENTA),
 _currentCursor(&_cursorNormal),
 
 _isDismounting(false),
+_gatheringObject(nullptr),
 
 _activeRecipe(nullptr),
 _recipeList(nullptr),
@@ -156,6 +157,8 @@ _drawingFinished(false),
 
 _serialToDrop(0),
 _slotToDrop(Container::NO_SLOT),
+
+_avatarSounds(nullptr),
 
 _debug("client.log"){
     _defaultFont = TTF_OpenFont("AdvoCut.ttf", 10);

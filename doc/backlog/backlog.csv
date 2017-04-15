@@ -74,7 +74,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 73,Document Texture interface,2,8,Documentation,,,
 74,"When a player joins a city, that city adopts his wars",13,5,Feature,55,,TRUE
 75,NPC idling AI,5,5,Feature,,,
-76,Sounds for attacking and death,89,3,Aesthetics,,,
+76,Sounds for attacking and death,89,3,Aesthetics,,TRUE,
 77,A shrine that grants items,5,34,Feature,19,,
 78,Release scrollbar on mouse up,5,8,Bug,,,
 79,Make it more obvious when something is out of range,13,8,Usability,,,

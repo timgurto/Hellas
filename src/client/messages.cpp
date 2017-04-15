@@ -659,6 +659,7 @@ void Client::handleMessage(const std::string &msg){
                 else
                     sounds->playOnce("defend");
             }
+            attacker->playAttackSound();
             addParticles("combatDamage", defender.location());
         }
 
@@ -690,6 +691,7 @@ void Client::handleMessage(const std::string &msg){
             }
             if (attacker.npcType()->sounds() != nullptr)
                 attacker.npcType()->sounds()->playOnce("attack");
+            defender->playDefendSound();
             addParticles("combatDamage", defender->location());
         }
 

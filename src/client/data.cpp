@@ -79,6 +79,8 @@ void Client::loadData(const std::string &path){
                 continue;
             auto resultPair = _soundProfiles.insert(SoundProfile(id));
             SoundProfile &sp = const_cast<SoundProfile &>(*resultPair.first);
+            if (id == "avatar")
+                _avatarSounds = &sp;
 
             for (auto sound : xr.getChildren("sound", elem)){
                 std::string type, file;
