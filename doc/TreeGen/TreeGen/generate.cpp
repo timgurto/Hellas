@@ -5,6 +5,9 @@
 #include <queue>
 #include <XmlReader.h>
 
+#include <SDL.h>
+#include <SDL_image.h>
+
 #include "Edge.h"
 #include "Node.h"
 #include "JsonWriter.h"
@@ -21,6 +24,8 @@ struct Path{
         parents.push_back(startNode);
     }
 };
+
+bool checkImageExists(std::string filename);
 
 #undef main
 int main(int argc, char **argv){
@@ -135,6 +140,10 @@ int main(int argc, char **argv){
             
             std::set<ID> requiredSounds;
             requiredSounds.insert("drop");
+            std::set<ID> missingImages;
+
+            if (!checkImageExists("Items/" + id))
+                missingImages.insert("icon");
 
             std::string s;
             if (xr.findAttr(elem, "name", s)){
@@ -162,6 +171,9 @@ int main(int argc, char **argv){
                     requiredSounds.insert("attack");
                 else if (isArmor)
                     requiredSounds.insert("defend");
+
+                if (!checkImageExists("Gear/" + id))
+                    missingImages.insert("gear");
             }
 
             for (auto stat : xr.getChildren("stats", elem)) {
@@ -179,6 +191,9 @@ int main(int argc, char **argv){
             } else{
                 jw.addArrayAttribute("soundsMissing", requiredSounds);
             }
+            
+            if (!missingImages.empty())
+                jw.addArrayAttribute("imagesMissing", missingImages);
         }
     }
 
@@ -200,7 +215,7 @@ int main(int argc, char **argv){
             Node node(OBJECT, id, displayName);
             jw.addAttribute("name", displayName);
 
-            ID image;
+            ID image = id;
             if (xr.findAttr(elem, "imageFile", image)){
                 jw.addAttribute("image", "object_" + image);
                 node.customImage(image);
@@ -209,8 +224,13 @@ int main(int argc, char **argv){
 
             nodes.add(node);
 
-            std::set<ID> requiredSounds;
-            std::set<ID> missingParticles;
+            std::set<ID>
+                requiredSounds,
+                missingParticles,
+                missingImages;
+
+            if (!checkImageExists("Objects/" + image))
+                missingImages.insert("normal");
 
             ID gatherReq;
             std::string s;
@@ -257,6 +277,9 @@ int main(int argc, char **argv){
                 materialsForJson.insert("{id:\"" + s + "\", quantity:" + quantity + "}");
             }
             jw.addArrayAttribute("materials", materialsForJson, true);
+            if (!materialsForJson.empty())
+                if (!checkImageExists("Objects/" + image + "-construction"))
+                    missingImages.insert("construction");
 
             std::set<std::string> unlocksForJson;
             for (auto unlockBy : xr.getChildren("unlockedBy", elem)){
@@ -312,9 +335,12 @@ int main(int argc, char **argv){
                 } else
                     jw.addArrayAttribute("soundsMissing", requiredSounds);
             }
-
+            
             if (!missingParticles.empty())
                 jw.addArrayAttribute("particlesMissing", missingParticles);
+            
+            if (!missingImages.empty())
+                jw.addArrayAttribute("imagesMissing", missingImages);
         }
     }
 
@@ -556,4 +582,13 @@ int main(int argc, char **argv){
     f << "}";
 
     return 0;
+}
+
+bool checkImageExists(std::string filename){
+    filename = "../../Images/" + filename + ".png";
+    SDL_Surface *surface = IMG_Load(filename.c_str());
+    if (surface == nullptr)
+        return false;
+    SDL_FreeSurface(surface);
+    return true;
 }

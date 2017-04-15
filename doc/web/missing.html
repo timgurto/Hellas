@@ -16,6 +16,7 @@
             <div class="col-xs-12">
                 <h1>Missing Data</h1>
             </div>
+            <div class="col-xs-12 col-md-4" id="images">       <h2>Images</h2><ul/></div>
             <div class="col-xs-12 col-md-4" id="soundProfiles"><h2>Sound Profiles</h2><ul/></div>
             <div class="col-xs-12 col-md-4" id="sounds">       <h2>Sound Types</h2><ul/></div>
             <div class="col-xs-12 col-md-4" id="particles">    <h2>Particles</h2><ul/></div>
@@ -32,7 +33,7 @@
             loadNavBar();
             
             function appendSoundProfile(link, thing){
-                hideSoundProfiles = false;
+                thereAreMissingSoundProfiles = true;
                 $("#soundProfiles > ul").append(
                         '<li>' +
                             link +
@@ -42,7 +43,7 @@
             }
             
             function appendParticles(link, thing){
-                hideParticles = false;
+                thereAreMissingParticles = true;
                 $("#particles > ul").append(
                         '<li>' +
                             link +
@@ -51,15 +52,28 @@
                 );
             }
             
-            var hideSoundProfiles = true;
-            var hideSounds = true;
-            var hideParticles = true;
+            function appendImages(link, thing){
+                thereAreMissingImages = true;
+                $("#images > ul").append(
+                        '<li>' +
+                            link +
+                            ': ' + buildListFromArray(thing.imagesMissing) +
+                        '</li>'
+                );
+            }
+            
+            var thereAreMissingSoundProfiles = false;
+            var thereAreMissingSounds = false;
+            var thereAreMissingParticles = false;
+            var thereAreMissingImages = false;
             
             for (obj of objects){
                 if ("soundsMissing" in obj)
                     appendSoundProfile(textOnlyObjectLink(obj), obj);
                 if ("particlesMissing" in obj)
                     appendParticles(textOnlyObjectLink(obj), obj);
+                if ("imagesMissing" in obj)
+                    appendImages(textOnlyObjectLink(obj), obj);
             }
                     
             for (item of items){
@@ -67,11 +81,13 @@
                     appendSoundProfile(textOnlyItemLink(item), item);
                 if ("particlesMissing" in item)
                     appendParticles(textOnlyItemLink(item), item);
+                if ("imagesMissing" in item)
+                    appendImages(textOnlyItemLink(item), item);
             }
             
             for (soundProfile of soundProfiles){
                 if ("missingTypes" in soundProfile){
-                    hideSounds = false;
+                    thereAreMissingSounds = true;
                     $("#sounds > ul").append(
                             '<li>' +
                                 soundProfile.id +
@@ -81,12 +97,14 @@
                 }
             }
                 
-            if (hideSoundProfiles)
+            if (!thereAreMissingSoundProfiles)
                 $("#soundProfiles").hide();
-            if (hideSounds)
+            if (!thereAreMissingSounds)
                 $("#sounds").hide();
-            if (hideParticles)
+            if (!thereAreMissingParticles)
                 $("#particles").hide();
+            if (!thereAreMissingImages)
+                $("#images").hide();
         });
     </script>
 </body>
