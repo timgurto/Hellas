@@ -342,7 +342,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 default:
                     pObj1 = findObject(obj1);
                     if (!isObjectInRange(client, *user, pObj1))
+                        sendMessage(client, SV_TOO_FAR);
                         breakMsg = true;
+                    if (!pObj1->userHasAccess(user->name())){
+                        sendMessage(client, SV_NO_PERMISSION);
+                        breakMsg = true;
+                    }
                     containerFrom = &pObj1->container();
             }
             if (breakMsg)
@@ -353,7 +358,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 default:
                     pObj2 = findObject(obj2);
                     if (!isObjectInRange(client, *user, pObj2))
+                        sendMessage(client, SV_TOO_FAR);
                         breakMsg = true;
+                    if (!pObj2->userHasAccess(user->name())){
+                        sendMessage(client, SV_NO_PERMISSION);
+                        breakMsg = true;
+                    }
                     containerTo = &pObj2->container();
             }
             if (breakMsg)
@@ -501,7 +511,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             else {
                 pObj = findObject(obj);
                 if (!isObjectInRange(client, *user, pObj))
+                    sendMessage(client, SV_TOO_FAR);
                     break;
+                if (!pObj->userHasAccess(user->name())){
+                    sendMessage(client, SV_NO_PERMISSION);
+                    break;
+                }
                 container = &pObj->container();
                 
                 if (pObj->isBeingBuilt()){

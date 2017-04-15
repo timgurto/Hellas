@@ -110,22 +110,22 @@ issue,description,value,effort,type,blockedBy,done,critical
 109,Allow crafting if removing the ingredients will make room,13,3,Bug
 110,Load map in login-screen background,5,13,Usability
 111,"Use gear-slot names, not numbers, in items.xml",3,5,Code quality
-112,Throw exceptions where appropriate on SDL-function failures,1,5,Code quality,
-113,"Use forward declarations where possible, to reduce unnecessary #includes",2,5,Code quality,
-114,Use polymorphism instead of classTag,3,144,Code quality,
-115,Fail more gracefully and informatively when can't connect to server,5,8,Usability,
-116,A shrine that grants a buff,8,34,Feature,64
-117,Direct player trading,8,233,Feature,
-118,Allow tool objects to show an in-use image/animation,8,13,Aesthetics,
-119,"Use doubles, not ints, in Rect class",1,3,Code quality,
-120,Make findObjectTypeByName() logarithmic in complexity,5,8,Performance,
-121,Smoother vehicle movement,5,34,Aesthetics,
-122,Replace const casts with map::at(),3,3,Code quality,
-123,Ensure window titles always fit,5,2,Bug,
-124,Right-clicking doesn't cancel dragging,8,2,Bug,
-125,Tools can modify crafting/gathering speed,3,13,Feature,
-126,Remove 'can ...' tooltips when player has no permissions,21,2,Bug,
-127,Add fading unlock messages to the top of the screen,8,13,Usability,
+112,Throw exceptions where appropriate on SDL-function failures,1,5,Code quality,,
+113,"Use forward declarations where possible, to reduce unnecessary #includes",2,5,Code quality,,
+114,Use polymorphism instead of classTag,3,144,Code quality,,
+115,Fail more gracefully and informatively when can't connect to server,5,8,Usability,,
+116,A shrine that grants a buff,8,34,Feature,64,
+117,Direct player trading,8,233,Feature,,
+118,Allow tool objects to show an in-use image/animation,8,13,Aesthetics,,
+119,"Use doubles, not ints, in Rect class",1,3,Code quality,,
+120,Make findObjectTypeByName() logarithmic in complexity,5,8,Performance,,
+121,Smoother vehicle movement,5,34,Aesthetics,,
+122,Replace const casts with map::at(),3,3,Code quality,,
+123,Ensure window titles always fit,5,2,Bug,,
+124,Right-clicking doesn't cancel dragging,8,2,Bug,,
+125,Tools can modify crafting/gathering speed,3,13,Feature,,
+126,Remove 'can ...' tooltips when player has no permissions,21,2,Bug,,TRUE
+127,Add fading unlock messages to the top of the screen,8,13,Usability,,
 128,Make oven and kiln larger,5,3,Aesthetics,,,
 129,Highlight recipes/constructions that might unlock stuff,5,21,Usability,,,
 130,Document and improve use of various disconnects,2,8,Documentation,,,
@@ -142,3 +142,4 @@ issue,description,value,effort,type,blockedBy,done,critical
 142,Calculate highlight borders by adjacency to magenta (sausage man),5,13,Aesthetics,,,
 143,Highlight newly unlocked recipes/constructions,13,21,Usability,,,
 143,Declaring war on a player in a city declares war on that city,21,3,Feature,55,,TRUE
+144,Prevent multiple copies of sounds between SoundProfiles,5,3,Performance

@@ -422,11 +422,15 @@ void ClientObject::assembleWindow(Client &client){
             _window = new Window(Rect(), objType.name());
 
         if (isBeingConstructed()){
-            client.watchObject(*this);
-            addConstructionToWindow();
+            if (userHasAccess()){
+                client.watchObject(*this);
+                addConstructionToWindow();
+            }
 
-        } else if (!userHasAccess() && isMerchant) {
-            addMerchantTradeToWindow();
+        } else if (!userHasAccess()){
+            if (isMerchant){
+                addMerchantTradeToWindow();
+            }
 
         } else {
             if (isMerchant)
@@ -575,22 +579,25 @@ const Texture &ClientObject::tooltip() const{
         tb.addLine("Vehicle");
     }
 
-    if (ot.canGather()){
-        if (!stats) {stats = true; tb.addGap(); }
-        std::string text = "Gatherable";
-        if (!ot.gatherReq().empty())
-            text += " (requires " + ot.gatherReq() + ")";
-        tb.addLine(text);
-    }
+    if (userHasAccess()){
 
-    if (ot.canDeconstruct()){
-        if (!stats) {stats = true; tb.addGap(); }
-        tb.addLine("Can dismantle");
-    }
+        if (ot.canGather()){
+            if (!stats) {stats = true; tb.addGap(); }
+            std::string text = "Gatherable";
+            if (!ot.gatherReq().empty())
+                text += " (requires " + ot.gatherReq() + ")";
+            tb.addLine(text);
+        }
 
-    if (isContainer){
-        if (!stats) {stats = true; tb.addGap(); }
-        tb.addLine("Container: " + toString(ot.containerSlots()) + " slots");
+        if (ot.canDeconstruct()){
+            if (!stats) {stats = true; tb.addGap(); }
+            tb.addLine("Can dismantle");
+        }
+
+        if (isContainer){
+            if (!stats) {stats = true; tb.addGap(); }
+            tb.addLine("Container: " + toString(ot.containerSlots()) + " slots");
+        }
     }
 
     if (ot.merchantSlots() > 0){
@@ -624,7 +631,7 @@ const Texture &ClientObject::tooltip() const{
         else if (npc.lootable()) tb.addLine("Right-click to loot");
     }
 
-    else if (ot.canGather()){
+    else if (userHasAccess() && ot.canGather()){
         tb.addGap();
         tb.setColor(Color::ITEM_INSTRUCTIONS);
         tb.addLine(std::string("Right-click to gather"));
