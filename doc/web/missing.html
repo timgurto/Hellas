@@ -16,14 +16,9 @@
             <div class="col-xs-12">
                 <h1>Missing Data</h1>
             </div>
-            <div class="col-xs-12 col-md-4" id="soundProfiles">
-                <h2>Sound Profiles</h2>
-                <ul/>
-            </div>
-            <div class="col-xs-12 col-md-4" id="sounds">
-                <h2>Sound Types</h2>
-                <ul/>
-            </div>
+            <div class="col-xs-12 col-md-4" id="soundProfiles"><h2>Sound Profiles</h2><ul/></div>
+            <div class="col-xs-12 col-md-4" id="sounds">       <h2>Sound Types</h2><ul/></div>
+            <div class="col-xs-12 col-md-4" id="particles">    <h2>Particles</h2><ul/></div>
         </div>
     </div>
 
@@ -46,17 +41,32 @@
                 );
             }
             
+            function appendParticles(link, thing){
+                hideParticles = false;
+                $("#particles > ul").append(
+                        '<li>' +
+                            link +
+                            ': ' + buildListFromArray(thing.particlesMissing) +
+                        '</li>'
+                );
+            }
+            
             var hideSoundProfiles = true;
             var hideSounds = true;
+            var hideParticles = true;
             
             for (obj of objects){
                 if ("soundsMissing" in obj)
                     appendSoundProfile(textOnlyObjectLink(obj), obj);
+                if ("particlesMissing" in obj)
+                    appendParticles(textOnlyObjectLink(obj), obj);
             }
                     
             for (item of items){
                 if ("soundsMissing" in item)
                     appendSoundProfile(textOnlyItemLink(item), item);
+                if ("particlesMissing" in item)
+                    appendParticles(textOnlyItemLink(item), item);
             }
             
             for (soundProfile of soundProfiles){
@@ -75,6 +85,8 @@
                 $("#soundProfiles").hide();
             if (hideSounds)
                 $("#sounds").hide();
+            if (hideParticles)
+                $("#particles").hide();
         });
     </script>
 </body>

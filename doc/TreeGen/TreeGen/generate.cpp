@@ -210,6 +210,7 @@ int main(int argc, char **argv){
             nodes.add(node);
 
             std::set<ID> requiredSounds;
+            std::set<ID> missingParticles;
 
             ID gatherReq;
             std::string s;
@@ -240,8 +241,11 @@ int main(int argc, char **argv){
                 edges.insert(Edge(name, "item_" + s, GATHER));
                 yields.insert(s);
             }
-            if (!yields.empty())
+            if (!yields.empty()){
                 requiredSounds.insert("gather");
+                if (!xr.findAttr(elem, "gatherParticles", s))
+                    missingParticles.insert("gather");
+            }
             jw.addArrayAttribute("yield", yields);
 
             std::set<std::string> materialsForJson;
@@ -308,6 +312,9 @@ int main(int argc, char **argv){
                 } else
                     jw.addArrayAttribute("soundsMissing", requiredSounds);
             }
+
+            if (!missingParticles.empty())
+                jw.addArrayAttribute("particlesMissing", missingParticles);
         }
     }
 
