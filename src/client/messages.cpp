@@ -661,6 +661,7 @@ void Client::handleMessage(const std::string &msg){
             }
             attacker->playAttackSound();
             addParticles("combatDamage", defender.location());
+            break;
         }
 
         case SV_NPC_HIT_PLAYER:
@@ -693,6 +694,7 @@ void Client::handleMessage(const std::string &msg){
                 attacker.npcType()->sounds()->playOnce("attack");
             defender->playDefendSound();
             addParticles("combatDamage", defender->location());
+            break;
         }
 
         case SV_LOOTABLE:
