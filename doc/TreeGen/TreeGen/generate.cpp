@@ -8,6 +8,7 @@
 #include "Edge.h"
 #include "Node.h"
 #include "JsonWriter.h"
+#include "SoundProfile.h"
 #include "types.h"
 
 struct Path{
@@ -99,6 +100,25 @@ int main(int argc, char **argv){
         extras.insert(e);
     }
 
+    // Load sound profiles
+    std::map<ID, SoundProfile> soundProfiles;
+    if (!xr.newFile(dataPath + "/sounds.xml"))
+        std::cerr << "Failed to load sounds.xml" << std::endl;
+    else{
+        for (auto elem : xr.getChildren("soundProfile")) {
+            ID id;
+            if (!xr.findAttr(elem, "id", id))
+                continue;
+            SoundProfile profile;
+            for (auto sound : xr.getChildren("sound", elem)){
+                std::string soundType;
+                if (xr.findAttr(sound, "type", soundType))
+                    profile.addType(soundType);
+            }
+            soundProfiles[id] = profile;
+        }
+    }
+
     // Load items
     if (!xr.newFile(dataPath + "/items.xml"))
         std::cerr << "Failed to load items.xml" << std::endl;
@@ -112,6 +132,9 @@ int main(int argc, char **argv){
             Node::Name name = "item_" + id;
             jw.addAttribute("image", name);
             jw.addAttribute("id", id);
+            
+            std::set<ID> requiredSounds;
+            requiredSounds.insert("drop");
 
             std::string s;
             if (xr.findAttr(elem, "name", s)){
@@ -131,13 +154,30 @@ int main(int argc, char **argv){
             jw.addArrayAttribute("tags", tags);
             
             if (xr.findAttr(elem, "stackSize", s)) jw.addAttribute("stackSize", s);
-            if (xr.findAttr(elem, "gearSlot", s)) jw.addAttribute("gearSlot", s);
+            if (xr.findAttr(elem, "gearSlot", s)){
+                jw.addAttribute("gearSlot", s);
+                bool isWeapon = (s == "6");
+                bool isArmor = (s == "0" || s == "2" || s == "3" || s == "4" || s == "5" || s == "7");
+                if (isWeapon)
+                    requiredSounds.insert("attack");
+                else if (isArmor)
+                    requiredSounds.insert("defend");
+            }
 
             for (auto stat : xr.getChildren("stats", elem)) {
                 if (xr.findAttr(stat, "health", s)) jw.addAttribute("health", s);
                 if (xr.findAttr(stat, "attack", s)) jw.addAttribute("attack", s);
                 if (xr.findAttr(stat, "speed", s)) jw.addAttribute("speed", s);
                 if (xr.findAttr(stat, "attackTime", s)) jw.addAttribute("attackTime", s);
+            }
+
+            ID sounds;
+            if (xr.findAttr(elem, "sounds", sounds)){
+                SoundProfile &soundProfile = soundProfiles[sounds];
+                for (const std::string &soundType : requiredSounds)
+                    soundProfile.checkType(soundType);
+            } else{
+                jw.addArrayAttribute("soundsMissing", requiredSounds);
             }
         }
     }
@@ -169,6 +209,7 @@ int main(int argc, char **argv){
 
             nodes.add(node);
 
+            std::set<ID> requiredSounds;
 
             ID gatherReq;
             std::string s;
@@ -199,6 +240,8 @@ int main(int argc, char **argv){
                 edges.insert(Edge(name, "item_" + s, GATHER));
                 yields.insert(s);
             }
+            if (!yields.empty())
+                requiredSounds.insert("gather");
             jw.addArrayAttribute("yield", yields);
 
             std::set<std::string> materialsForJson;
@@ -255,6 +298,16 @@ int main(int argc, char **argv){
             auto container = xr.findChild("container", elem);
             if (container && xr.findAttr(container, "slots", s))
                 jw.addAttribute("containerSlots", s);
+
+            if (!requiredSounds.empty()){
+                ID soundProfileID;
+                if (xr.findAttr(elem, "sounds", soundProfileID)){
+                    SoundProfile &soundProfile = soundProfiles[soundProfileID];
+                    for (const std::string &soundType : requiredSounds)
+                        soundProfile.checkType(soundType);
+                } else
+                    jw.addArrayAttribute("soundsMissing", requiredSounds);
+            }
         }
     }
 
@@ -305,6 +358,17 @@ int main(int argc, char **argv){
                 else if (xr.findAttr(unlockBy, "item", id))
                     edges.insert(Edge("item_" + id, label, UNLOCK_ON_ACQUIRE, chance));
             }
+        }
+    }
+
+    // Write sound profiles to JSON
+    {
+        JsonWriter jw("soundProfiles");
+        for (const auto &pair: soundProfiles) {
+            jw.nextEntry();
+            jw.addAttribute("id", pair.first);
+            const SoundProfile &profile = pair.second;
+            jw.addArrayAttribute("missingTypes", profile.getMissingTypes());
         }
     }
 

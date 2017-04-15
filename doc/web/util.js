@@ -65,11 +65,27 @@ function displayTimeAsHMS(ms){
     return displayString;
 }
 
+function textOnlyObjectLink(object){
+    var linkHTML =
+        '<a href="object.html?id=' + object.id + '">'
+            + object.name
+        + '</a>';
+    return linkHTML;
+}
+
 function objectLink(object){
     var linkHTML =
         '<a href="object.html?id=' + object.id + '">'
             + object.name
             + '<br>' + imageNode(object)
+        + '</a>';
+    return linkHTML;
+}
+
+function textOnlyItemLink(item){
+    var linkHTML =
+        '<a href="item.html?id=' + item.id + '">'
+            + item.name
         + '</a>';
     return linkHTML;
 }
@@ -128,9 +144,16 @@ function loadNavBar(){
     $("#navBarGetsLoadedInHere").load("navBar.html");
 }
 
-function loadNavBarAndForceHorizontal(){
-    $("#navBarGetsLoadedInHere").load("navBar.html", function(){
-        $("#navBar").removeClass("col-sm-2");
-        $("#navBar").children().removeClass("col-sm-12");
-    });
+function buildListFromArray(array){
+    var list = "";
+    for (var i = 0; i < array.length; ++i){
+        var entry = array[i];
+        if (i > 0)
+            list += ", ";
+        list += entry;
+    }
+    return list;
 }
+
+objects.sort(sortByName);
+items.sort(sortByName);

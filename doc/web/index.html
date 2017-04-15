@@ -22,9 +22,15 @@
     </div>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript">    
         $(document).ready(function(){
+            function loadNavBarAndForceHorizontal(){
+                $("#navBarGetsLoadedInHere").load("navBar.html", function(){
+                    $("#navBar").removeClass("col-sm-2");
+                    $("#navBar").children().removeClass("col-sm-12");
+                });
+            }
+        
             loadNavBarAndForceHorizontal();
             
             $("#treeMap").load("tree.map area");
