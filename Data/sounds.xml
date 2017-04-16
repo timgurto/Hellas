@@ -36,6 +36,17 @@
     <sound type="drop" file="metalTool" />
 </soundProfile>
 <soundProfile id="tree" >
-    <sound type="gather" file="chop-pause" />
+    <sound type="gather" file="chop0" />
+    <sound type="gather" file="chop1" />
+    <sound type="gather" file="chop2" />
+    <sound type="gather" file="chop3" />
+    <sound type="gather" file="chop4" />
+    <sound type="gather" file="chop5" />
+    <sound type="gather" file="chop6" />
+    <sound type="gather" file="chop7" />
+    <sound type="gather" file="chop8" />
+    <sound type="gather" file="chop9" />
+    <sound type="gather" file="chop10" />
+    <sound type="gather" file="chop11" />
 </soundProfile>
 </root>

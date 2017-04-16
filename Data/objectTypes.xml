@@ -203,7 +203,7 @@ Server only:
     </transform>
 </objectType>
 <objectType id="figTree1" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37"
-    canGather="1" gatherSound="chop-pause" gatherParticles="wood" gatherReq="axe" gatherTime="3000" > <collisionRect x="-13" y="-9" w="26" h="18" />
+    canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="axe" gatherTime="3000" > <collisionRect x="-13" y="-9" w="26" h="18" />
     <yield id="stick" initialMean="3" initialSD="1" />
     <transform id="figTree2" whenEmpty="1" />
 </objectType>
@@ -213,7 +213,7 @@ Server only:
     </transform>
 </objectType>
 <objectType id="figTree3" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37"
-    canGather="1" gatherSound="chop-pause" gatherParticles="wood" gatherReq="axe" gatherTime="3000" > <collisionRect x="-13" y="-9" w="26" h="18" />
+    canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="axe" gatherTime="3000" > <collisionRect x="-13" y="-9" w="26" h="18" />
     <yield id="stick" initialMean="3" initialSD="1" />
     <transform id="figTree4" whenEmpty="1" />
 </objectType>
@@ -224,7 +224,7 @@ Server only:
     <transform id="figTree6" time="600000" />
 </objectType>
 <objectType id="figTree6" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37"
-    canGather="1" gatherSound="chop-pause" gatherParticles="wood" gatherReq="axe" gatherTime="3000" > <collisionRect x="-13" y="-9" w="26" h="18" />
+    canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="axe" gatherTime="3000" > <collisionRect x="-13" y="-9" w="26" h="18" />
     <yield id="stick" initialMean="3" initialSD="1" />
     <transform id="figTree7" whenEmpty="1" />
 </objectType>
