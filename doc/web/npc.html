@@ -56,8 +56,6 @@
             } else
                 $("#loot").hide();
 
-            function ms2s(ms){ return Math.round(0.01 * ms) / 10; }
-
             // Stats
             if (!("health" in npc || "attack" in npc || "attackSpeed" in npc))
             if ("health" in npc)     $("#statsList").append('<li>' + npc.health + ' health</li>');

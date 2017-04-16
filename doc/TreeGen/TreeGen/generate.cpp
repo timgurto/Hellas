@@ -11,6 +11,7 @@
 #include "Edge.h"
 #include "Node.h"
 #include "JsonWriter.h"
+#include "Recipe.h"
 #include "SoundProfile.h"
 #include "types.h"
 
@@ -105,6 +106,7 @@ int main(int argc, char **argv){
         extras.insert(e);
     }
 
+
     // Load sound profiles
     std::map<ID, SoundProfile> soundProfiles;
     if (!xr.newFile(dataPath + "/sounds.xml"))
@@ -124,6 +126,60 @@ int main(int argc, char **argv){
         }
     }
 
+
+    // Load recipes
+    std::map<ID, Recipe> recipes;
+    if (!xr.newFile(dataPath + "/recipes.xml"))
+        std::cerr << "Failed to load recipes.xml" << std::endl;
+    else{
+        for (auto elem : xr.getChildren("recipe")) {
+            ID product;
+            if (!xr.findAttr(elem, "product", product))
+                continue;
+            std::string label = "item_" + product;
+
+            Recipe r;
+
+            for (auto material : xr.getChildren("material", elem)){
+                ID matID;
+                if (!xr.findAttr(material, "id", matID))
+                    continue;
+                std::string qty = "1";
+                xr.findAttr(material, "quantity", qty);
+                std::string matEntry = "{id:\"" + matID + "\", quantity:" + qty + "}";
+                r.ingredients.insert(matEntry);
+            }
+
+            for (auto material : xr.getChildren("tool", elem)){
+                ID tool;
+                if (!xr.findAttr(material, "class", tool))
+                    continue;
+                r.tools.insert(tool);
+            }
+
+            std::string s;
+            if (xr.findAttr(elem, "time", s)) r.time = s;
+            if (xr.findAttr(elem, "quantity", s)) r.quantity = s;
+
+            ID id;
+            for (auto unlockBy : xr.getChildren("unlockedBy", elem)){
+                double chance = 1.0;
+                xr.findAttr(unlockBy, "chance", chance);
+                if (xr.findAttr(unlockBy, "recipe", id) || xr.findAttr(unlockBy, "item", id))
+                    edges.insert(Edge("item_" + id, label, UNLOCK_ON_CRAFT, chance));
+                else if (xr.findAttr(unlockBy, "construction", id))
+                    edges.insert(Edge("object_" + id, label, UNLOCK_ON_CONSTRUCT, chance));
+                else if (xr.findAttr(unlockBy, "gather", id))
+                    edges.insert(Edge("item_" + id, label, UNLOCK_ON_GATHER, chance));
+                else if (xr.findAttr(unlockBy, "item", id))
+                    edges.insert(Edge("item_" + id, label, UNLOCK_ON_ACQUIRE, chance));
+            }
+
+            recipes[product] = r;
+        }
+    }
+
+    
     // Load items
     if (!xr.newFile(dataPath + "/items.xml"))
         std::cerr << "Failed to load items.xml" << std::endl;
@@ -137,6 +193,10 @@ int main(int argc, char **argv){
             Node::Name name = "item_" + id;
             jw.addAttribute("image", name);
             jw.addAttribute("id", id);
+            
+            auto recipeIt = recipes.find(id);
+            if (recipeIt != recipes.end())
+                recipeIt->second.writeToJSON(jw);
             
             std::set<ID> requiredSounds;
             requiredSounds.insert("drop");
@@ -196,6 +256,7 @@ int main(int argc, char **argv){
                 jw.addArrayAttribute("imagesMissing", missingImages);
         }
     }
+
 
     // Load objects
     if (!xr.newFile(dataPath + "/objectTypes.xml"))
@@ -344,6 +405,7 @@ int main(int argc, char **argv){
         }
     }
 
+
     // Load NPCs
     if (!xr.newFile(dataPath + "/npcTypes.xml"))
         std::cerr << "Failed to load npcTypes.xml" << std::endl;
@@ -391,33 +453,6 @@ int main(int argc, char **argv){
         }
     }
 
-
-    // Load recipes
-    if (!xr.newFile(dataPath + "/recipes.xml"))
-        std::cerr << "Failed to load recipes.xml" << std::endl;
-    else{
-        for (auto elem : xr.getChildren("recipe")) {
-            ID product;
-            if (!xr.findAttr(elem, "product", product))
-                continue;
-            std::string label = "item_" + product;
-
-            ID id;
-
-            for (auto unlockBy : xr.getChildren("unlockedBy", elem)){
-                double chance = 1.0;
-                xr.findAttr(unlockBy, "chance", chance);
-                if (xr.findAttr(unlockBy, "recipe", id) || xr.findAttr(unlockBy, "item", id))
-                    edges.insert(Edge("item_" + id, label, UNLOCK_ON_CRAFT, chance));
-                else if (xr.findAttr(unlockBy, "construction", id))
-                    edges.insert(Edge("object_" + id, label, UNLOCK_ON_CONSTRUCT, chance));
-                else if (xr.findAttr(unlockBy, "gather", id))
-                    edges.insert(Edge("item_" + id, label, UNLOCK_ON_GATHER, chance));
-                else if (xr.findAttr(unlockBy, "item", id))
-                    edges.insert(Edge("item_" + id, label, UNLOCK_ON_ACQUIRE, chance));
-            }
-        }
-    }
 
     // Write sound profiles to JSON
     {

@@ -33,12 +33,22 @@
                 <p id="stats">Stats:</p>
                 <ul id="statsList"></ul>
             </div>
+            <div class="col-xs-12 col-md-4" id="crafting">
+                <h3>Crafting</h3>
+                <p id="craftingQty"></p>
+                <p id="craftingTime"></p>
+                <p id="mats">Ingredients:</p>
+                <ul id="matsList"></ul>
+                <p id="tools">Tools:</p>
+                <ul id="toolsList"></ul>
+            </div>
         </div>
     </div>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="items.js"></script>
     <script type="text/javascript" src="objects.js"></script>
+    <script type="text/javascript" src="npcs.js"></script>
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -69,6 +79,42 @@
                 $("#constructs").html("Constructs:<br>" + objectLink(findObject(item.constructs)));
             else
                 $("#construction").hide();
+
+            // Crafting
+            if (!("craftingMats" in item || "craftingTools" in item || "craftingTime" in item || "craftingQty" in item))
+                $("#crafting").hide();
+            else{
+                if ("craftingQty" in item && item.craftingQty > 1) 
+                    $("#craftingQty").html("Makes " + item.craftingQty)
+                    
+                if ("craftingTime" in item) 
+                    $("#craftingTime").html("Takes " + ms2s(item.craftingTime) + "s");
+
+                if (!("craftingMats" in item)){
+                    $("#mats").hide();
+                    $("#matsList").hide();
+                } else {
+                    for (var i = 0; i < item.craftingMats.length; ++i){
+                        var mat = item.craftingMats[i];
+                        $("#matsList").append('<li>'
+                                                + mat.quantity + '&times; '
+                                                + itemLink(findItem(mat.id))
+                                            + '</li>');
+                    }
+                }
+
+                if (!("craftingTools" in item)){
+                    $("#tools").hide();
+                    $("#toolsList").hide();
+                } else {
+                    for (var i = 0; i < item.craftingTools.length; ++i){
+                        var tool = item.craftingTools[i];
+                        $("#toolsList").append('<li>'
+                                                + tagLink(tool)
+                                            + '</li>');
+                    }
+                }
+            }
 
             // Gear
             if ("gearSlot" in item){

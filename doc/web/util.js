@@ -176,5 +176,8 @@ function buildListFromArray(array){
     return list;
 }
 
+function ms2s(ms){ return Math.round(0.01 * ms) / 10; }
+
 objects.sort(sortByName);
+npcs.sort(sortByName);
 items.sort(sortByName);

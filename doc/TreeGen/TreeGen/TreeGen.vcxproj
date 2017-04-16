@@ -86,6 +86,7 @@
     <ClInclude Include="Edge.h" />
     <ClInclude Include="JsonWriter.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="Recipe.h" />
     <ClInclude Include="SoundProfile.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>
