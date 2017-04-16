@@ -4,7 +4,8 @@
 SoundsRecord SoundProfile::loopingSounds;
 
 SoundProfile::SoundProfile(const std::string &id):
-_id(id)
+_id(id),
+_period(0)
 {}
 
 bool SoundProfile::operator<(const SoundProfile &rhs) const{

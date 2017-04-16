@@ -80,7 +80,6 @@ _cursorAttack(std::string("Images/Cursors/attack.png"), Color::MAGENTA),
 _currentCursor(&_cursorNormal),
 
 _isDismounting(false),
-_gatheringObject(nullptr),
 
 _activeRecipe(nullptr),
 _recipeList(nullptr),
@@ -675,13 +674,8 @@ void Client::prepareAction(const std::string &msg){
 void Client::startAction(ms_t actionLength){
     _actionTimer = 0;
     _actionLength = actionLength;
-    if (actionLength == 0) {
+    if (actionLength == 0)
         _castBar->hide();
-        if (_gatheringObject != nullptr && _gatheringObject->objectType()->sounds() != nullptr){
-            _gatheringObject->objectType()->sounds()->stopLooping("gather", _gatheringObject);
-            _gatheringObject = nullptr;
-        }
-    }
 }
 
 void Client::addWindow(Window *window){

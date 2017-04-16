@@ -224,7 +224,6 @@ private:
     std::string _actionMessage; // A description of the current action.
     void prepareAction(const std::string &msg); // Set up the action, awaiting server confirmation.
     void startAction(ms_t actionLength); // Start the action timer.  If zero, stop the timer.
-    const ClientObject *_gatheringObject; // Used to keep track of gather sounds.
 
     const ClientNPC *_targetNPC;
     std::string _targetNPCName;

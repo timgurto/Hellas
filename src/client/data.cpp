@@ -82,6 +82,10 @@ void Client::loadData(const std::string &path){
             if (id == "avatar")
                 _avatarSounds = &sp;
 
+            ms_t period;
+            if (xr.findAttr(elem, "period", period))
+                sp.period(period);
+
             for (auto sound : xr.getChildren("sound", elem)){
                 std::string type, file;
                     if (!xr.findAttr(sound, "type", type) ||

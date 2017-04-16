@@ -27,10 +27,11 @@ class ClientObject : public Entity{
     std::vector<serialSlotPair_t *> _serialSlotPairs;
     std::vector<TextBox *> _wareQtyBoxes;
     std::vector<TextBox *> _priceQtyBoxes;
-    bool _beingGathered;
+    bool _beingGathered; // For aesthetic effects
     ItemSet _constructionMaterials; // The required materials, if it's being constructed.
     ClientItem::vect_t _dropbox; // A slot where construction materials can be added.
     ms_t _transformTimer;
+    ms_t _gatherSoundTimer;
 
 protected:
     Window *_window; // For containers, etc; opens when the object is nearby and right-clicked.
@@ -54,7 +55,7 @@ public:
     const std::vector<Element *> &merchantSlotElements() const
         { return _merchantSlotElements; }
     const Window *window() const { return _window; }
-    void beingGathered(bool b) { _beingGathered = b; }
+    void beingGathered(bool b) { _beingGathered = b; _gatherSoundTimer = 0; }
     bool beingGathered() const { return _beingGathered; }
     const ItemSet &constructionMaterials() const { return _constructionMaterials; }
     void constructionMaterials(const ItemSet &set) { _constructionMaterials = set; }

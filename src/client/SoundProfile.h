@@ -7,6 +7,8 @@
 
 #include <SDL_mixer.h>
 
+#include "../types.h"
+
 class SoundVariants;
 class SoundsRecord;
 
@@ -16,6 +18,7 @@ const Channel NO_CHANNEL = -1;
 
 class SoundProfile{
     std::string _id;
+    ms_t _period;
 
     std::map<SoundType, SoundVariants> _sounds;
 
@@ -25,6 +28,9 @@ class SoundProfile{
 
 public:
     SoundProfile(const std::string &id);
+
+    void period(ms_t p) { _period = p; }
+    ms_t period() const { return _period; }
 
     bool operator<(const SoundProfile &rhs) const;
 

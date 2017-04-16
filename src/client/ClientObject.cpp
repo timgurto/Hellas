@@ -39,7 +39,8 @@ _serial(serialArg),
 _window(nullptr),
 _beingGathered(false),
 _dropbox(1),
-_transformTimer(type->transformTime())
+_transformTimer(type->transformTime()),
+_gatherSoundTimer(0)
 {
     if (type != nullptr) { // i.e., not a serial-only search dummy
         const size_t
@@ -168,10 +169,6 @@ void ClientObject::onRightClick(Client &client){
     if (objType.canGather() && userHasAccess()) {
         client.sendMessage(CL_GATHER, makeArgs(_serial));
         client.prepareAction(std::string("Gathering ") + objType.name());
-        if (objType.sounds() != nullptr){
-            objType.sounds()->startLooping("gather", this);
-            client._gatheringObject = this;
-        }
         return;
     }
     
@@ -515,19 +512,34 @@ bool ClientObject::userHasAccess() const{
 
 void ClientObject::update(double delta) {
     Client &client = *Client::_instance;
+    ms_t timeElapsed = toInt(1000 * delta);
 
-    // If being gathered, add particles.
-    if (beingGathered())
+    // If being gathered, add particles and play sounds.
+    if (beingGathered()){
         client.addParticles(objectType()->gatherParticles(), location(), delta);
+        if (_gatherSoundTimer > timeElapsed)
+            _gatherSoundTimer -= timeElapsed;
+        else{
+            const SoundProfile *sounds = objectType()->sounds();
+            if (sounds != nullptr){
+                // Play sound
+                sounds->playOnce("gather");
+
+                // Restart timer
+                _gatherSoundTimer += objectType()->sounds()->period() - timeElapsed;
+            }
+        }
+    }
 
     // If transforming, reduce timer.
     if (_transformTimer > 0){
-        ms_t timeElapsed = toInt(1000 * delta);
         if (timeElapsed > _transformTimer)
             _transformTimer = 0;
         else
             _transformTimer -= timeElapsed;
     }
+
+    Entity::update(delta);
 }
 
 const Texture &ClientObject::cursor(const Client &client) const {

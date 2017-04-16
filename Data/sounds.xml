@@ -35,7 +35,7 @@
 <soundProfile id="metalTool" >
     <sound type="drop" file="metalTool" />
 </soundProfile>
-<soundProfile id="tree" >
+<soundProfile id="tree" period="1000" >
     <sound type="gather" file="chop0" />
     <sound type="gather" file="chop1" />
     <sound type="gather" file="chop2" />
