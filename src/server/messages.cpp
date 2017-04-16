@@ -510,9 +510,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 container = &user->gear();
             else {
                 pObj = findObject(obj);
-                if (!isObjectInRange(client, *user, pObj))
+                if (!isObjectInRange(client, *user, pObj)){
                     sendMessage(client, SV_TOO_FAR);
                     break;
+                }
                 if (!pObj->userHasAccess(user->name())){
                     sendMessage(client, SV_NO_PERMISSION);
                     break;
