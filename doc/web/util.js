@@ -37,14 +37,18 @@ function findNPC(id = getID()){
     return findByID(npcs, id);
 }
 
-function findByID(collection, id){
+
+function findByCustom(collection, key, keyName){
     var i;
     for (i = 0; i < collection.length; ++i){
         var entry = collection[i];
-        if (entry.id == id)
+        if (entry[keyName] == key)
             return entry;
     }
     return {};
+}
+function findByID(collection, id){
+    return findByCustom(collection, id, "id");
 }
 
 function imageNode(entry){

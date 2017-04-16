@@ -129,6 +129,7 @@ int main(int argc, char **argv){
 
     // Load recipes
     std::map<ID, Recipe> recipes;
+    std::map<ID, std::set<std::string>> materialFor, toolFor;
     if (!xr.newFile(dataPath + "/recipes.xml"))
         std::cerr << "Failed to load recipes.xml" << std::endl;
     else{
@@ -148,6 +149,7 @@ int main(int argc, char **argv){
                 xr.findAttr(material, "quantity", qty);
                 std::string matEntry = "{id:\"" + matID + "\", quantity:" + qty + "}";
                 r.ingredients.insert(matEntry);
+                materialFor[matID].insert(product);
             }
 
             for (auto material : xr.getChildren("tool", elem)){
@@ -155,6 +157,7 @@ int main(int argc, char **argv){
                 if (!xr.findAttr(material, "class", tool))
                     continue;
                 r.tools.insert(tool);
+                toolFor[tool].insert(product);
             }
 
             std::string s;
@@ -179,6 +182,15 @@ int main(int argc, char **argv){
         }
     }
 
+
+    // Crafting Tools
+    JsonWriter jw("tools");
+    for (const auto &pair : toolFor){
+        jw.nextEntry();
+        jw.addAttribute("tag", pair.first);
+        jw.addArrayAttribute("crafting", pair.second);
+    }
+
     
     // Load items
     if (!xr.newFile(dataPath + "/items.xml"))
@@ -197,6 +209,10 @@ int main(int argc, char **argv){
             auto recipeIt = recipes.find(id);
             if (recipeIt != recipes.end())
                 recipeIt->second.writeToJSON(jw);
+
+            auto usedAsMatIt = materialFor.find(id);
+            if (usedAsMatIt != materialFor.end())
+                jw.addArrayAttribute("usedAsMaterial", usedAsMatIt->second);
             
             std::set<ID> requiredSounds;
             requiredSounds.insert("drop");
