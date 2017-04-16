@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Objects</title>
+    <title>NPCs</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
     <link href="style.css" rel="stylesheet" type="text/css" />
@@ -13,7 +13,7 @@
     <div class="container" id="topLevelContainer">
         <span id="navBarGetsLoadedInHere"></span>
         <div class="container col-xs-12 col-sm-10">
-            <h1>Objects</h1>
+            <h1>NPCs</h1>
             <div class="col-xs-12 col-md-4" id="col1"></div>
             <div class="col-xs-12 col-md-4" id="col2"></div>
             <div class="col-xs-12 col-md-4" id="col3"></div>
@@ -29,18 +29,18 @@
         $(document).ready(function(){
             loadNavBar();
         
-            var objectsPerColumn = parseInt(objects.length / 3);
-            var objectsInThisColumn = 0;
+            var npcsPerColumn = parseInt(npcs.length / 3);
+            var npcsInThisColumn = 0;
             var currentColumn = 1;
-            for (var i = 0; i != objects.length; ++i){
-                var obj = objects[i];
+            for (var i = 0; i != npcs.length; ++i){
+                var npc = npcs[i];
                 var columnSelector = "#col" + currentColumn;
-                $(columnSelector).append('<p>' + objectLink(obj) + '<p>');
+                $(columnSelector).append('<p>' + npcLink(npc) + '<p>');
                 
-                objectsInThisColumn += 1;
-                if (objectsInThisColumn >= objectsPerColumn){
+                npcsInThisColumn += 1;
+                if (npcsInThisColumn >= npcsPerColumn){
                     currentColumn += 1;
-                    objectsInThisColumn = 0;
+                    npcsInThisColumn = 0;
                 }
             }
         });

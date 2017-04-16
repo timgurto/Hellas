@@ -1,0 +1,72 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="container" id="topLevelContainer">
+        <span id="navBarGetsLoadedInHere"></span>
+        <div class="container col-xs-12 col-md-10">
+            <div class="col-xs-12">
+                <h1><span id="title"></span> <small>(NPC)</small></h1>
+            </div>
+            <div class="col-xs-12 col-md-4" id="general">
+                <div id="image"></div>
+                <p>ID: <span id="id"/></span></p>
+            </div>
+            <div class="col-xs-12 col-md-4" id="stats">
+                <h3>Stats</h3>
+                <ul id="statsList"></ul>
+            </div>
+            <div class="col-xs-12 col-md-4" id="loot">
+                <h3>Loot</h3>
+                <ul id="lootList"></ul>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="items.js"></script>
+    <script type="text/javascript" src="objects.js"></script>
+    <script type="text/javascript" src="npcs.js"></script>
+    <script type="text/javascript" src="util.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            loadNavBar();
+        
+            var npc = findNPC();
+            
+            console.log(npc);
+            document.title = npc.name;
+            $("#title").html(npc.name);
+            $("#id").html(npc.id);
+            $("#image").html(imageNode(npc));
+            
+            // Loot
+            if ("loot" in npc) {
+                for (var i = 0; i < npc.loot.length; ++i){
+                    var lootItem = findItem(npc.loot[i]);
+                    $("#lootList").append( '<li>' + itemLink(lootItem) + '</li>');
+                }
+            } else
+                $("#loot").hide();
+
+            function ms2s(ms){ return Math.round(0.01 * ms) / 10; }
+
+            // Stats
+            if (!("health" in npc || "attack" in npc || "attackSpeed" in npc))
+            if ("health" in npc)     $("#statsList").append('<li>' + npc.health + ' health</li>');
+            if ("attack" in npc)     $("#statsList").append('<li>' + npc.attack + ' attack</li>');
+            if ("attackTime" in npc) $("#statsList").append('<li>' + ms2s(npc.attackTime) + 's attack time</li>');
+            
+        });
+    </script>
+</body>
+
+</html>
+

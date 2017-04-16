@@ -348,21 +348,46 @@ int main(int argc, char **argv){
     if (!xr.newFile(dataPath + "/npcTypes.xml"))
         std::cerr << "Failed to load npcTypes.xml" << std::endl;
     else{
+        JsonWriter jw("npcs");
         for (auto elem : xr.getChildren("npcType")) {
+            jw.nextEntry();
             ID id;
             if (!xr.findAttr(elem, "id", id))
                 continue;
+            jw.addAttribute("id", id);
             Node::Name name = "npc_" + id;
+            jw.addAttribute("image", name);
 
-            std::string s;
-            if (xr.findAttr(elem, "name", s))
-                nodes.add(Node(NPC, id, s));
+            std::set<std::string> missingImages;
+            if (!checkImageExists("NPCs/" + id))
+                missingImages.insert("normal");
+            if (!checkImageExists("NPCs/" + id + "-corpse"))
+                missingImages.insert("corpse");
 
-            for (auto loot : xr.getChildren("loot", elem)) {
-                if (!xr.findAttr(loot, "id", s))
-                    continue;
-                edges.insert(Edge(name, "item_" + s, LOOT));
+            std::string displayName;
+            if (xr.findAttr(elem, "name", displayName)){
+                nodes.add(Node(NPC, id, displayName));
+                jw.addAttribute("name", displayName);
             }
+
+            std::set<ID> lootList;
+            for (auto loot : xr.getChildren("loot", elem)) {
+                ID lootItem;
+                if (!xr.findAttr(loot, "id", lootItem))
+                    continue;
+                edges.insert(Edge(name, "item_" + lootItem, LOOT));
+                lootList.insert(lootItem);
+            }
+            if (!lootList.empty())
+                jw.addArrayAttribute("loot", lootList);
+
+            std::string stat;
+            if (xr.findAttr(elem, "maxHealth", stat)) jw.addAttribute("health", stat);
+            if (xr.findAttr(elem, "attack", stat)) jw.addAttribute("attack", stat);
+            if (xr.findAttr(elem, "attackTime", stat)) jw.addAttribute("attackTime", stat);
+            
+            if (!missingImages.empty())
+                jw.addArrayAttribute("imagesMissing", missingImages);
         }
     }
 

@@ -33,6 +33,10 @@ function findItem(id = getID()){
     return findByID(items, id);
 }
 
+function findNPC(id = getID()){
+    return findByID(npcs, id);
+}
+
 function findByID(collection, id){
     var i;
     for (i = 0; i < collection.length; ++i){
@@ -78,6 +82,23 @@ function objectLink(object){
         '<a href="object.html?id=' + object.id + '">'
             + object.name
             + '<br>' + imageNode(object)
+        + '</a>';
+    return linkHTML;
+}
+
+function textOnlyNPCLink(npc){
+    var linkHTML =
+        '<a href="npc.html?id=' + npc.id + '">'
+            + npc.name
+        + '</a>';
+    return linkHTML;
+}
+
+function npcLink(npc){
+    var linkHTML =
+        '<a href="npc.html?id=' + npc.id + '">'
+            + npc.name
+            + '<br>' + imageNode(npc)
         + '</a>';
     return linkHTML;
 }

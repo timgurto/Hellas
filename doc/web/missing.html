@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Missing Data</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
     <link href="style.css" rel="stylesheet" type="text/css" />
@@ -26,6 +27,7 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="items.js"></script>
     <script type="text/javascript" src="objects.js"></script>
+    <script type="text/javascript" src="npcs.js"></script>
     <script type="text/javascript" src="soundProfiles.js"></script>
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript">
@@ -74,6 +76,15 @@
                     appendParticles(textOnlyObjectLink(obj), obj);
                 if ("imagesMissing" in obj)
                     appendImages(textOnlyObjectLink(obj), obj);
+            }
+                    
+            for (npc of npcs){
+                if ("soundsMissing" in npc)
+                    appendSoundProfile(textOnlyNPCLink(npc), npc);
+                if ("particlesMissing" in npc)
+                    appendParticles(textOnlyNPCLink(npc), npc);
+                if ("imagesMissing" in npc)
+                    appendImages(textOnlyNPCLink(npc), npc);
             }
                     
             for (item of items){
