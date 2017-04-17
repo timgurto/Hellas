@@ -9,6 +9,35 @@
     <sound type="defend" file="grunt3" />
     <sound type="defend" file="grunt4" />
 </soundProfile>
+<soundProfile id="brick" >
+    <sound type="drop" file="brick" />
+</soundProfile>
+<soundProfile id="bone" >
+    <sound type="drop" file="boneDrop" />
+    <sound type="attack" file="boneThud0" />
+    <sound type="attack" file="boneThud1" />
+    <sound type="attack" file="boneThud2" />
+    <sound type="attack" file="boneThud3" />
+    <sound type="attack" file="boneThud4" />
+    <sound type="attack" file="boneThud5" />
+    <sound type="attack" file="boneThud6" />
+</soundProfile>
+<soundProfile id="ceramic" >
+    <sound type="drop" file="ceramic" />
+</soundProfile>
+<soundProfile id="leather" >
+    <sound type="drop" file="leather" />
+</soundProfile>
+<soundProfile id="mailArmor" >
+    <sound type="drop" file="chain" />
+    <sound type="defend" file="chain" />
+</soundProfile>
+<soundProfile id="metalBar" >
+    <sound type="drop" file="metalBar" />
+</soundProfile>
+<soundProfile id="metalTool" >
+    <sound type="drop" file="metalTool" />
+</soundProfile>
 <soundProfile id="pig" >
     <sound type="attack" file="bite0" />
     <sound type="attack" file="bite1" />
@@ -24,16 +53,6 @@
     <sound type="death" file="pigDeath0" />
     <sound type="death" file="pigDeath1" />
     <sound type="death" file="pigDeath2" />
-</soundProfile>
-<soundProfile id="leather" >
-    <sound type="drop" file="leather" />
-</soundProfile>
-<soundProfile id="mailArmor" >
-    <sound type="drop" file="chain" />
-    <sound type="defend" file="chain" />
-</soundProfile>
-<soundProfile id="metalTool" >
-    <sound type="drop" file="metalTool" />
 </soundProfile>
 <soundProfile id="tree" period="1000" >
     <sound type="gather" file="chop0" />
