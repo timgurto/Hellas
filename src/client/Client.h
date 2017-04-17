@@ -279,6 +279,8 @@ private:
     Point _intOffset; // An integer version of the offset
     void updateOffset(); // Update the offset, when the character moves.
 
+    int _channelsPlaying; // The number of sound channels currently playing sounds; updated on tick
+
     ms_t _time;
     ms_t _timeElapsed; // Time between last two ticks
     ms_t _lastPingReply; // The last time a ping reply was received from the server
@@ -327,6 +329,7 @@ private:
     // Move the entity, and reorder it if necessary
     void setEntityLocation(Entity *entity, const Point &location);
     Entity *_currentMouseOverEntity;
+    size_t _numEntities; // Updated every tick
     
     void addParticles(const ParticleProfile *profile, const Point &location, size_t qty);
     void addParticles(const ParticleProfile *profile, const Point &location); // Single hit

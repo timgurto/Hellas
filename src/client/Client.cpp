@@ -70,7 +70,7 @@ bool Client::isClient = false;
 std::map<std::string, int> Client::_messageCommands;
 std::map<int, std::string> Client::_errorMessages;
 
-const int Client::MIXING_CHANNELS = 8;
+const int Client::MIXING_CHANNELS = 32;
 
 Client::Client():
 _cursorNormal(std::string("Images/Cursors/normal.png"), Color::MAGENTA),
@@ -158,6 +158,9 @@ _serialToDrop(0),
 _slotToDrop(Container::NO_SLOT),
 
 _avatarSounds(nullptr),
+_channelsPlaying(0),
+
+_numEntities(0),
 
 _debug("client.log"){
     _defaultFont = TTF_OpenFont("AdvoCut.ttf", 10);
@@ -347,8 +350,9 @@ _debug("client.log"){
 
     // Initialize FPS/latency display
     static const px_t
-        HARDWARE_STATS_W = 60,
-        HARDWARE_STATS_H = 22,
+        HARDWARE_STATS_W = 100,
+        HARDWARE_STATS_H = 44
+        ,
         HARDWARE_STATS_LABEL_HEIGHT = 11;
     static const Rect
         HARDWARE_STATS_RECT(SCREEN_X - HARDWARE_STATS_W, 0, HARDWARE_STATS_W, HARDWARE_STATS_H);
@@ -360,10 +364,20 @@ _debug("client.log"){
     LinkedLabel<ms_t> *lat = new LinkedLabel<ms_t>(
         Rect(0, HARDWARE_STATS_LABEL_HEIGHT, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT),
         _latency, "", "ms", Label::RIGHT_JUSTIFIED);
+    LinkedLabel<size_t> *numEntities = new LinkedLabel<size_t>(
+        Rect(0, HARDWARE_STATS_LABEL_HEIGHT * 2, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT),
+        _numEntities, "", " entities", Label::RIGHT_JUSTIFIED);
+    LinkedLabel<int> *channels = new LinkedLabel<int>(
+        Rect(0, HARDWARE_STATS_LABEL_HEIGHT * 3, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT),
+        _channelsPlaying, "", "/" + makeArgs(MIXING_CHANNELS) + " channels", Label::RIGHT_JUSTIFIED);
     fps->setColor(Color::PERFORMANCE_FONT);
     lat->setColor(Color::PERFORMANCE_FONT);
+    numEntities->setColor(Color::PERFORMANCE_FONT);
+    channels->setColor(Color::PERFORMANCE_FONT);
     hardwareStats->addChild(fps);
     hardwareStats->addChild(lat);
+    hardwareStats->addChild(numEntities);
+    hardwareStats->addChild(channels);
     addUI(hardwareStats);
 
     // Initialize player display
@@ -585,6 +599,9 @@ void Client::gameLoop(){
         _actionTimer = min(_actionTimer + _timeElapsed, _actionLength);
         _castBar->show();
     }
+
+    _channelsPlaying = Mix_Playing(-1);
+    _numEntities = _entities.size();
 
     // Update terrain animation
     for (auto &terrainPair : _terrain)
