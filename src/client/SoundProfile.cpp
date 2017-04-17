@@ -27,18 +27,18 @@ void SoundProfile::startLooping(const SoundType &type, const void *source) const
 }
 
 Channel SoundProfile::checkAndPlaySound(const SoundType &type, bool loop) const{
-    try {
-        SoundVariants variants =_sounds.at(type);
-        Mix_Chunk *sound = variants.choose();
-        if (sound == nullptr)
-            throw;
-        int loopArg = loop ? -1 : 0;
-        return Mix_PlayChannel(-1, sound, loopArg);
-    } catch (std::exception e) {
+    auto it = _sounds.find(type);
+    if (it == _sounds.end()){
         Client::_instance->debug() << Color::WARNING << "\"" << _id << ":" << type
                                    << "\" sound not found." << Log::endl;
         return NO_CHANNEL;
     }
+    SoundVariants variants = it->second;
+    Mix_Chunk *sound = variants.choose();
+    if (sound == nullptr)
+        throw;
+    int loopArg = loop ? -1 : 0;
+    return Mix_PlayChannel(-1, sound, loopArg);
 }
 
 void SoundProfile::stopLooping(const SoundType &type, const void *source) const{
