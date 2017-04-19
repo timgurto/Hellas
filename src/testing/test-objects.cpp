@@ -151,6 +151,7 @@ TEST("Gather chance is by gathers, not quantity")
 TEND
 
 TEST("Object container empty check")
+    ServerTestInterface s; 
     ObjectType type("box");
     type.containerSlots(5);
     Object obj(&type, Point());
