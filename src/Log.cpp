@@ -7,3 +7,21 @@ _logFileName(logFileName){
         of.close();
     }
 }
+
+bool Log::usingLogFile() const{
+    return _logFileName.empty();
+}
+
+FileAppender Log::logFile() const {
+    return FileAppender(_logFileName);
+}
+
+FileAppender::FileAppender(const std::string &logFileName){
+    if (logFileName.empty())
+        return;
+    _fileStream.open(logFileName, std::ios_base::app);
+}
+
+FileAppender::~FileAppender(){
+    _fileStream.close();
+}

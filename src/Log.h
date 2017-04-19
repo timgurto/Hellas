@@ -28,6 +28,8 @@ log << endl;
     End the current compilation, adding it to the screen.
 */
 
+class FileAppender;
+
 class Log{
 public:
     Log(const std::string &logFileName = "");
@@ -59,26 +61,42 @@ public:
     virtual Log &operator<<(const Color &c) = 0;
 
 protected:
+
     template<typename T>
     void writeToFile(const T &val) const {
-        if (_logFileName.empty())
-            return;
-        std::ofstream of(_logFileName, std::ios_base::app);
-        of << val;
-        of.close();
+        logFile() << val;
     }
     
     template<typename T>
     void writeLineToFile(const T &val) const {
-        if (_logFileName.empty())
-            return;
-        std::ofstream of(_logFileName, std::ios_base::app);
-        of << val << std::endl;
-        of.close();
+        logFile() << val << '\n';
     }
 
 private:
     std::string _logFileName;
+
+    bool usingLogFile() const;
+    FileAppender logFile() const;
 };
+
+
+class FileAppender{
+public:
+    FileAppender(const std::string &filename);
+    ~FileAppender();
+
+    template<typename T>
+    friend FileAppender &operator<<(FileAppender &lhs, const T &rhs);
+
+private:
+    std::ofstream _fileStream;
+};
+
+template<typename T>
+FileAppender &operator<<(FileAppender &lhs, const T &rhs){
+    if (lhs._fileStream.is_open())
+        lhs._fileStream << rhs;
+    return lhs;
+}
 
 #endif
