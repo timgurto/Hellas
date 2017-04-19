@@ -881,6 +881,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_DECLARE_WAR:
+        {
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
+            std::string targetUsername(buffer);
+            iss >> del;
+            if (del != MSG_END)
+                return;
+
+            break;
+        }
+
         case CL_SAY:
         {
             iss.get(buffer, BUFFER_SIZE, MSG_END);

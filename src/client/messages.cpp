@@ -992,6 +992,7 @@ void Client::initializeMessageNames(){
     _messageCommands["take"] = CL_TAKE_ITEM;
     _messageCommands["mount"] = CL_MOUNT;
     _messageCommands["dismount"] = CL_DISMOUNT;
+    _messageCommands["war"] = CL_DECLARE_WAR;
 
     _messageCommands["say"] = CL_SAY;
     _messageCommands["s"] = CL_SAY;

@@ -92,7 +92,12 @@ enum MessageCode{
     CL_STOP_WATCHING = 41,
 
     // "I'm targeting NPC ..."
+    // Arguments: serial
     CL_TARGET = 50,
+
+    // "I want to declare war on ..."
+    // Arguments: username
+    CL_DECLARE_WAR = 51,
 
     // "I want to say ... to everybody". 
     // Arguments: message

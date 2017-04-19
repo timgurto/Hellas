@@ -11,7 +11,6 @@
  - [Glossary of ambiguous terms](glossary.md)  
  - [Client states](clientStates.md)  
  - [Login sequence](login.md)  
- - [Message codes](messages.md)  
  - Code interfaces  
   - :soon: Command-line arguments  
   - :soon: Sockets  

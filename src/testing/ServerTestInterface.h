@@ -19,6 +19,7 @@ public:
     std::set<ServerItem> &items() { return _server._items; }
     std::set<User> &users() { return _server._users; }
     std::map<size_t, Spawner> &spawners() { return _server._spawners; }
+    Wars &wars() { return _server._wars; }
 
     void addObject(const std::string &typeName, const Point &loc);
     void addNPC(const std::string &typeName, const Point &loc);

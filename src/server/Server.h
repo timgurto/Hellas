@@ -17,6 +17,7 @@
 #include "Spawner.h"
 #include "TerrainList.h"
 #include "User.h"
+#include "War.h"
 #include "../Args.h"
 #include "../messageCodes.h"
 #include "../Socket.h"
@@ -131,6 +132,7 @@ private:
     Object::byY_t _objectsByY;
     Object *findObject(size_t serial);
     Object *findObject(const Point &loc);
+    Wars _wars;
 
     void loadData(const std::string &path = "Data"); // Attempt to load data from files.
     bool _dataLoaded; // If false when run() is called, load default data.
