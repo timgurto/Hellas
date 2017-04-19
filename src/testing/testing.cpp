@@ -33,15 +33,19 @@ int main(int argc, char **argv){
         colorPass  = "\x1B[38;2;0;192;0m",
         colorSkip  = "\x1B[38;2;51;51;51m",
         colorReset = "\x1B[0m";
+    const char
+        GLYPH_SQUARE = 254u,
+        GLYPH_DOT = 250u,
+        GLYPH_FULL_BLOCK = 219u;
     char
-        GLYPH_PASS = 254,
-        GLYPH_FAIL = 254,
-        GLYPH_SKIP = 254;
+        glyphPass = GLYPH_SQUARE,
+        glyphFail = GLYPH_SQUARE,
+        glyphSkip = GLYPH_SQUARE;
 
     if (cmdLineArgs.contains("no-color")){
         colorStart = colorFail = colorPass = colorSkip = colorReset = "";
-        GLYPH_FAIL = 219;
-        GLYPH_SKIP = 250;
+        glyphFail = GLYPH_FULL_BLOCK;
+        glyphSkip = GLYPH_DOT;
     }
 
     size_t
@@ -61,17 +65,17 @@ int main(int argc, char **argv){
             << test.description() << gap << std::flush;
         if (test.shouldSkip()) {
             statusColor = &colorSkip;
-            glyph = GLYPH_SKIP;
+            glyph = glyphSkip;
             ++skipped;
         } else {
             bool result = test.fun()();
             if (!result){
                 statusColor = &colorFail;
-                glyph = GLYPH_FAIL;
+                glyph = glyphFail;
                 ++failed;
             } else {
                 statusColor = &colorPass;
-                glyph = GLYPH_PASS;
+                glyph = glyphPass;
                 ++passed;
             }
         }
