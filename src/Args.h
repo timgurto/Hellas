@@ -8,15 +8,17 @@
 // A class to simplify the handling of command-line arguments
 class Args{
 public:
+    typedef std::string Key, Value;
+
     void init(int argc, char* argv[]);
-    bool contains(const std::string &key) const;
+    bool contains(const Key &key) const;
     
-    void add(const std::string &key, const std::string &value = "");
-    void remove(const std::string &key);
+    void add(const Key &key, const Value &value = "");
+    void remove(const Key &key);
 
     // These functions will return "" or 0 if the key is not found, so use contains() first for accuracy.
-    std::string getString(const std::string &key) const;
-    int getInt(const std::string &key) const;
+    std::string getString(const Key &key) const;
+    int getInt(const Key &key) const;
 
     friend std::ostream &operator<<(std::ostream &lhs, const Args &rhs);
 
@@ -27,7 +29,7 @@ private:
     _args["key"] == "value"
     _args["keyOnly"] == ""
     */
-    std::map<std::string, std::string> _args;
+    std::map<Key, Value> _args;
 };
 
 #endif
