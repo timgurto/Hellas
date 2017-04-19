@@ -158,6 +158,9 @@ void Client::initLoginScreen(){
     // Images
     _loginFront = Texture(std::string("Images/loginFront.png"), Color::MAGENTA);
     _loginBack = Texture(std::string("Images/loginBack.png"));
+
+    if (cmdLineArgs.contains("auto-login"))
+        login(nullptr);
 }
 
 void Client::cleanUpLoginScreen(){
