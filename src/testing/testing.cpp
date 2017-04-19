@@ -33,9 +33,16 @@ int main(int argc, char **argv){
         colorPass  = "\x1B[38;2;0;192;0m",
         colorSkip  = "\x1B[38;2;51;51;51m",
         colorReset = "\x1B[0m";
+    char
+        GLYPH_PASS = 254,
+        GLYPH_FAIL = 254,
+        GLYPH_SKIP = 254;
 
-    if (cmdLineArgs.contains("no-color"))
+    if (cmdLineArgs.contains("no-color")){
         colorStart = colorFail = colorPass = colorSkip = colorReset = "";
+        GLYPH_FAIL = 219;
+        GLYPH_SKIP = 250;
+    }
 
     size_t
         i = 0,
@@ -45,6 +52,7 @@ int main(int argc, char **argv){
     for (const Test &test : Test::testContainer()){
         ++i;
         const std::string *statusColor;
+        char glyph;
         size_t gapLength = Test::STATUS_MARGIN - 
                            min(Test::STATUS_MARGIN, test.description().length());
         std::string gap(gapLength, ' ');
@@ -53,18 +61,21 @@ int main(int argc, char **argv){
             << test.description() << gap << std::flush;
         if (test.shouldSkip()) {
             statusColor = &colorSkip;
+            glyph = GLYPH_SKIP;
             ++skipped;
         } else {
             bool result = test.fun()();
             if (!result){
                 statusColor = &colorFail;
+                glyph = GLYPH_FAIL;
                 ++failed;
             } else {
                 statusColor = &colorPass;
+                glyph = GLYPH_PASS;
                 ++passed;
             }
         }
-        std::cout << *statusColor << char(254) << colorReset << std::endl;
+        std::cout << *statusColor << glyph << colorReset << std::endl;
     }
 
     std::cout << "----------" << std::endl
