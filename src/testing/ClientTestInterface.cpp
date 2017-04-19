@@ -3,9 +3,12 @@
 #include "ClientTestInterface.h"
 #include "Test.h"
 
-ClientTestInterface::ClientTestInterface(){
+ClientTestInterface::ClientTestInterface(const std::string &username){
     _client.loadData("testing/data/minimal");
-    _client.setRandomUsername();
+    if (username.empty())
+        _client.setRandomUsername();
+    else
+        _client._username = username;
 }
 
 void ClientTestInterface::run(){
