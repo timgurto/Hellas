@@ -18,6 +18,7 @@ int main(int argc, char **argv){
     cmdLineArgs.add("new");
     cmdLineArgs.add("server-ip", "127.0.0.1");
     cmdLineArgs.add("window");
+    cmdLineArgs.add("quiet");
 
     renderer.init();
 
