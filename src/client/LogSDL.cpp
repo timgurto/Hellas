@@ -1,24 +1,29 @@
+#include <fstream>
+
 #include "Client.h"
 #include "LogSDL.h"
 #include "ui/Label.h"
 #include "ui/List.h"
 
 LogSDL::LogSDL(const std::string &logFileName):
-_compilationColor(Color::FONT){
+_compilationColor(Color::FONT),
+_logFileName(logFileName){
     if (!logFileName.empty()) {
-        _logFile.open(logFileName);
+        std::ofstream of(logFileName);
+        of.close();
     }
 }
 
-LogSDL::~LogSDL(){
-    if (_logFile.is_open())
-        _logFile.close();
+void LogSDL::writeToFile(const std::string &msg) const{
+    if (_logFileName.empty())
+        return;
+    std::ofstream of(_logFileName, std::ios_base::app);
+    of << msg << std::endl;
+    of.close();
 }
 
 void LogSDL::operator()(const std::string &message, const Color &color){
-    if (_logFile.is_open())
-        _logFile << message << std::endl;
-
+    writeToFile(message);
     Client::_instance->addChatMessage(message, color);
 }
 

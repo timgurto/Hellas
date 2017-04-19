@@ -1,7 +1,6 @@
 #ifndef LOG_SDL_H
 #define LOG_SDL_H
 
-#include <fstream>
 #include <list>
 #include <sstream>
 #include <string>
@@ -15,7 +14,6 @@
 class LogSDL : public Log{
 public:
     LogSDL(const std::string &logFileName = "");
-    ~LogSDL() override;
     void operator()(const std::string &message, const Color &color = Color::FONT) override;
 
     template<typename T>
@@ -29,10 +27,12 @@ public:
 
     void draw(px_t x = 0, px_t y = 0) const;
 
+    void writeToFile(const std::string &msg) const;
+
 private:
     std::ostringstream _oss;
     Color _compilationColor; // for use while compiling a message
-    std::ofstream _logFile;
+    std::string _logFileName;
 };
 
 #endif
