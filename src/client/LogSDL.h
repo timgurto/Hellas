@@ -27,12 +27,9 @@ public:
 
     void draw(px_t x = 0, px_t y = 0) const;
 
-    void writeToFile(const std::string &msg) const;
-
 private:
     std::ostringstream _oss;
     Color _compilationColor; // for use while compiling a message
-    std::string _logFileName;
 };
 
 #endif

@@ -1,8 +1,7 @@
-// (C) 2015 Tim Gurto
-
 #ifndef LOG_H
 #define LOG_H
 
+#include <fstream>
 #include <sstream>
 #include <string>
 
@@ -31,6 +30,7 @@ log << endl;
 
 class Log{
 public:
+    Log(const std::string &logFileName = "");
     virtual ~Log(){}
 
     virtual void operator()(const std::string &message, const Color &color = Color::NO_KEY) = 0;
@@ -57,6 +57,28 @@ public:
     virtual Log &operator<<(const LogSpecial &val) = 0;
     // color: set color of current compilation
     virtual Log &operator<<(const Color &c) = 0;
+
+protected:
+    template<typename T>
+    void writeToFile(const T &val) const {
+        if (_logFileName.empty())
+            return;
+        std::ofstream of(_logFileName, std::ios_base::app);
+        of << val;
+        of.close();
+    }
+    
+    template<typename T>
+    void writeLineToFile(const T &val) const {
+        if (_logFileName.empty())
+            return;
+        std::ofstream of(_logFileName, std::ios_base::app);
+        of << val << std::endl;
+        of.close();
+    }
+
+private:
+    std::string _logFileName;
 };
 
 #endif

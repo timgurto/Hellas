@@ -145,6 +145,7 @@
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\curlUtil.cpp" />
     <ClCompile Include="src\Item.cpp" />
+    <ClCompile Include="src\Log.cpp" />
     <ClCompile Include="src\NormalVariable.cpp" />
     <ClCompile Include="src\Point.cpp" />
     <ClCompile Include="src\Rect.cpp" />
