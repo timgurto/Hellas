@@ -285,10 +285,12 @@ _debug("client.log"){
 
     // Resolve default server IP
     drawLoadingScreen("Finding server", 0.7);
-    elem = xr.findChild("server");
-    std::string serverHostDirectory;
-    xr.findAttr(elem, "hostDirectory", serverHostDirectory);
-    _defaultServerAddress = readFromURL(serverHostDirectory);
+    if (!cmdLineArgs.contains("server-ip")){
+        elem = xr.findChild("server");
+        std::string serverHostDirectory;
+        xr.findAttr(elem, "hostDirectory", serverHostDirectory);
+        _defaultServerAddress = readFromURL(serverHostDirectory);
+    }
 
     renderer.setDrawColor();
 
