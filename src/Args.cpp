@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #include <cstdlib>
 
 #include "Args.h"
@@ -23,6 +21,12 @@ void Args::init(int argc, char* argv[]){
 
 void Args::add(const std::string &key, const std::string &value){
     _args[key] = value;
+}
+
+void Args::remove(const std::string &key){
+    auto it = _args.find(key);
+    if (it != _args.end())
+        _args.erase(it);
 }
 
 bool Args::contains(const std::string &key) const{

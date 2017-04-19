@@ -83,7 +83,7 @@ _dataLoaded(false){
 }
 
 Server::~Server(){
-    saveData(_objects);
+    saveData(_objects, _wars);
     for (auto pair : _terrainTypes)
         delete pair.second;
     _instance = nullptr;
@@ -197,9 +197,9 @@ void Server::run(){
                 writeUserData(user);
             }
 #ifdef SINGLE_THREAD
-            saveData(_objects);
+            saveData(_objects, _wars);
 #else
-            std::thread(saveData, _objects).detach();
+            std::thread(saveData, _objects, _wars).detach();
 #endif
             _lastSave = _time;
         }
@@ -464,9 +464,9 @@ void Server::gatherObject(size_t serial, User &user){
         obj->decrementGatheringUsers();
 
 #ifdef SINGLE_THREAD
-    saveData(_objects);
+    saveData(_objects, _wars);
 #else
-    std::thread(saveData, _objects).detach();
+    std::thread(saveData, _objects, _wars).detach();
 #endif
 }
 

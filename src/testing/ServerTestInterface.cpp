@@ -3,11 +3,21 @@
 
 #include "ServerTestInterface.h"
 #include "Test.h"
+#include "../Args.h"
+
+extern Args cmdLineArgs;
 
 ServerTestInterface::ServerTestInterface(){
     _server.loadData("testing/data/minimal");
     Server::newPlayerSpawnLocation = Point(10, 10);
     Server::newPlayerSpawnRange = 0;
+}
+
+ServerTestInterface *ServerTestInterface::KeepOldData(){
+    cmdLineArgs.remove("new");
+    ServerTestInterface *s = new ServerTestInterface;
+    cmdLineArgs.add("new");
+    return s;
 }
 
 void ServerTestInterface::run(){

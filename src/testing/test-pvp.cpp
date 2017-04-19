@@ -4,8 +4,7 @@
 #include "ServerTestInterface.h"
 
 ONLY_TEST("Run a client in a separate process")
-    ServerTestInterface s;
-    s.run();
+    ServerTestInterface s; s.run();
     RemoteClient alice("-username alice");
     WAIT_UNTIL(s.users().size() == 1);
     return true;
@@ -42,4 +41,17 @@ TEND
 ONLY_TEST("No erroneous wars")
     ServerTestInterface s; s.run();
     return ! s.wars().isAtWar("alice", "bob");
+TEND
+
+ONLY_TEST("Wars are persistent")
+    {
+        ServerTestInterface server1;
+        server1.run();
+        server1.wars().declare("alice", "bob");
+    }
+    ServerTestInterface *server2 = ServerTestInterface::KeepOldData();
+    server2->run();
+    bool result = server2->wars().isAtWar("alice", "bob");
+    delete server2;
+    return result;
 TEND

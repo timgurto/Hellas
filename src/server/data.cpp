@@ -719,18 +719,32 @@ void Server::loadData(const std::string &path){
             }
         }
 
+        // Wars
+        xr.newFile("World/wars.world");
+        if (!xr)
+            break;
+        for (auto elem : xr.getChildren("war")) {
+            Wars::Belligerent b1, b2;
+            if (!xr.findAttr(elem, "b1", b1) ||
+                !xr.findAttr(elem, "b2", b2)) {
+                    _debug("Skipping war with insufficient belligerents.", Color::RED);
+                continue;
+            }
+            _wars.declare(b1, b2);
+        }
+
         _dataLoaded = true;
         return;
     } while (false);
 
-    // If execution reaches here, a fresh map will be generated.
+    // If execution reaches here, fresh objects will be generated instead of old ones loaded.
 
     _debug("Generating new objects.", Color::YELLOW);
     spawnInitialObjects();
     _dataLoaded = true;
 }
 
-void Server::saveData(const objects_t &objects){
+void Server::saveData(const objects_t &objects, const Wars &wars){
     // Objects
 #ifndef SINGLE_THREAD
     static std::mutex objectsFileMutex;
@@ -821,5 +835,22 @@ void Server::saveData(const objects_t &objects){
 #ifndef SINGLE_THREAD
     npcsFileMutex.unlock();
 #endif
+
+    // Wars
+#ifndef SINGLE_THREAD
+    static std::mutex warsFileMutex;
+    warsFileMutex.lock();
+#endif
+    xw.newFile("World/wars.world");
+    for (const Wars::Belligerents &belligerents : wars) {
+        auto e = xw.addChild("war");
+        xw.setAttr(e, "b1", belligerents.first);
+        xw.setAttr(e, "b2", belligerents.second);
+    }
+    xw.publish();
+#ifndef SINGLE_THREAD
+    warsFileMutex.unlock();
+#endif
+
 }
 

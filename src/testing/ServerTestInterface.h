@@ -13,6 +13,8 @@ public:
 
     ServerTestInterface();
     ~ServerTestInterface(){ stop(); }
+
+    static ServerTestInterface *KeepOldData();
     
     std::set<const ObjectType *> &objectTypes() { return _server._objectTypes; }
     Server::objects_t &objects() { return _server._objects; }

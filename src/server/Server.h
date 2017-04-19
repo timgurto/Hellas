@@ -136,7 +136,7 @@ private:
 
     void loadData(const std::string &path = "Data"); // Attempt to load data from files.
     bool _dataLoaded; // If false when run() is called, load default data.
-    static void saveData(const objects_t &objects);
+    static void saveData(const objects_t &objects, const Wars &wars);
     void spawnInitialObjects();
 
     Point mapRand() const; // Return a random point on the map.
