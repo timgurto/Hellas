@@ -888,7 +888,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> del;
             if (del != MSG_END)
                 return;
-
+            _wars.declare(user->name(), targetUsername);
             break;
         }
 
