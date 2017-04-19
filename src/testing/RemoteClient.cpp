@@ -1,7 +1,11 @@
 #include "RemoteClient.h"
 
 const std::string RemoteClient::CLIENT_BINARY_PATH = "client-debug.exe";
-const std::string RemoteClient::DEFAULT_ARGS = "-debug -server-ip 127.0.0.1 -auto-login";
+const std::string RemoteClient::DEFAULT_ARGS =
+        "-debug "
+        "-server-ip 127.0.0.1 "
+        "-auto-login "
+        "-data testing/data/minimal ";
 
 RemoteClient::RemoteClient(const std::string &args){
     static const size_t

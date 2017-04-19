@@ -503,7 +503,7 @@ void Client::checkSocket(){
 void Client::run(){
     if (!_dataLoaded){
         drawLoadingScreen("Loading data", 0.6);
-        loadData();
+        loadData(cmdLineArgs.getString("data"));
     }
     initializeCraftingWindow();
     addWindow(_craftingWindow);
