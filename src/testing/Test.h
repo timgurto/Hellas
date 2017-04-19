@@ -53,7 +53,17 @@ public:
 #define TEND });
 
 #define REPEAT_FOR_MS(TIME_TO_REPEAT) \
-    for (ms_t startTime = SDL_GetTicks(); SDL_GetTicks() < startTime + (TIME_TO_REPEAT); )
+        for (ms_t startTime = SDL_GetTicks(); SDL_GetTicks() < startTime + (TIME_TO_REPEAT); )
+#define WAIT_UNTIL_TIMEOUT(x, TIMEOUT) \
+        do { \
+            for (ms_t startTime = SDL_GetTicks(); SDL_GetTicks() < startTime + (TIMEOUT); ) { \
+                if (x) \
+                    break; \
+            } \
+            if (! (x) ) { \
+                return false; \
+            } \
+        } while (0)
 #define WAIT_UNTIL(x) while( ! (x) )
 
 #endif

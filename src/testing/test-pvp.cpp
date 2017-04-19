@@ -31,11 +31,8 @@ ONLY_TEST("Basic declaration of war")
     WAIT_UNTIL(s.users().size() == 1);
 
     alice.sendMessage(CL_DECLARE_WAR, "bob");
-    REPEAT_FOR_MS(500) {
-        if (s.wars().isAtWar("alice", "bob"))
-            return true;
-    }
-    return false;
+    WAIT_UNTIL_TIMEOUT(s.wars().isAtWar("alice", "bob"), 500);
+    return true;
 TEND
 
 ONLY_TEST("No erroneous wars")
