@@ -45,12 +45,12 @@ TestServer &TestServer::operator=(TestServer &rhs){
 void TestServer::run(){
     Server &server = *_server;
     std::thread([& server](){ server.run(); }).detach();
-    WAIT_UNTIL (_server->_running);
+    WAIT_FOREVER_UNTIL (_server->_running);
 }
 
 void TestServer::stop(){
     _server->_loop = false;
-    WAIT_UNTIL (!_server->_running);
+    WAIT_FOREVER_UNTIL (!_server->_running);
 }
 
 void TestServer::addObject(const std::string &typeName, const Point &loc){

@@ -43,29 +43,29 @@ TestClient &TestClient::operator=(TestClient &rhs){
 void TestClient::run(){
     Client &client = *_client;
     std::thread([& client](){ client.run(); }).detach();
-    WAIT_UNTIL (_client->_connectionStatus == Client::IN_LOGIN_SCREEN);
+    WAIT_FOREVER_UNTIL (_client->_connectionStatus == Client::IN_LOGIN_SCREEN);
     _client->login(nullptr);
-    WAIT_UNTIL (_client->_connectionStatus != Client::TRYING_TO_CONNECT);
+    WAIT_FOREVER_UNTIL (_client->_connectionStatus != Client::TRYING_TO_CONNECT);
 }
 
 void TestClient::stop(){
     _client->_loop = false;
-    WAIT_UNTIL (!_client->_running);
+    WAIT_FOREVER_UNTIL (!_client->_running);
 }
 
 void TestClient::waitForRedraw(){
     _client->_drawingFinished = false;
-    WAIT_UNTIL(_client->_drawingFinished);
+    WAIT_FOREVER_UNTIL(_client->_drawingFinished);
 }
 
 MessageCode TestClient::getNextMessage() const {
     size_t currentSize = _client->_messagesReceived.size();
-    WAIT_UNTIL(_client->_messagesReceived.size() > currentSize);
+    WAIT_FOREVER_UNTIL(_client->_messagesReceived.size() > currentSize);
     return _client->_messagesReceived.back();
 }
 
 void TestClient::showCraftingWindow() {
     _client->_craftingWindow->show();
-    WAIT_UNTIL(! _client->_craftingWindow->changed());
+    WAIT_FOREVER_UNTIL(! _client->_craftingWindow->changed());
 
 }

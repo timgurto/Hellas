@@ -64,6 +64,8 @@ public:
                 return false; \
             } \
         } while (0)
-#define WAIT_UNTIL(x) while( ! (x) )
+#define DEFAULT_TIMEOUT (10000)
+#define WAIT_UNTIL(x) WAIT_UNTIL_TIMEOUT((x), (DEFAULT_TIMEOUT))
+#define WAIT_FOREVER_UNTIL(x) while( ! (x) )
 
 #endif
