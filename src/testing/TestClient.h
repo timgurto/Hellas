@@ -8,28 +8,32 @@ class TestClient{
 
 public:
     TestClient(const std::string &username = "");
-    ~TestClient(){ stop(); }
+    ~TestClient();
+
+    // Move constructor/assignment
+    TestClient(TestClient &rhs);
+    TestClient &operator=(TestClient &rhs);
 
     void run();
     void stop();
 
-    bool connected() const { return _client._connectionStatus == Client::CONNECTED; }
+    bool connected() const { return _client->_connectionStatus == Client::CONNECTED; }
 
-    std::map<size_t, ClientObject*> &objects() { return _client._objects; }
-    Client::objectTypes_t &objectTypes() { return _client._objectTypes; }
-    const List &recipeList() const { return *_client._recipeList; }
+    std::map<size_t, ClientObject*> &objects() { return _client->_objects; }
+    Client::objectTypes_t &objectTypes() { return _client->_objectTypes; }
+    const List &recipeList() const { return *_client->_recipeList; }
     void showCraftingWindow();
 
-    Client *operator->(){ return &_client; }
-    Client &client() { return _client; }
-    void loadData(const std::string path){ _client.loadData(path); }
-    void sendMessage(MessageCode code, const std::string &args){ _client.sendMessage(code, args); }
+    Client *operator->(){ return _client; }
+    Client &client() { return *_client; }
+    void loadData(const std::string path){ _client->loadData(path); }
+    void sendMessage(MessageCode code, const std::string &args){ _client->sendMessage(code, args); }
     MessageCode getNextMessage() const;
 
     void waitForRedraw();
 
 private:
-    Client _client;
+    Client *_client;
 };
 
 #endif

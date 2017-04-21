@@ -11,12 +11,12 @@ public:
     static TestServer KeepOldData();
     ~TestServer();
 
-    void run();
-    void stop();
-
     // Move constructor/assignment
     TestServer(TestServer &rhs);
     TestServer &operator=(TestServer &rhs);
+
+    void run();
+    void stop();
     
     std::set<const ObjectType *> &objectTypes() { return _server->_objectTypes; }
     Server::objects_t &objects() { return _server->_objects; }
