@@ -7,7 +7,8 @@
 class TestClient{
 
 public:
-    TestClient(const std::string &username = "");
+    TestClient();
+    static TestClient Username(const std::string &username);
     ~TestClient();
 
     // Move constructor/assignment
@@ -34,6 +35,7 @@ public:
 
 private:
     Client *_client;
+    TestClient(const std::string &username);
 };
 
 #endif

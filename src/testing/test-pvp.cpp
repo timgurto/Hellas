@@ -20,14 +20,14 @@ TEND
 
 ONLY_TEST("Run CTI with custom username")
     TestServer s; s.run();
-    TestClient alice("alice"); alice.run();
+    TestClient alice = TestClient::Username("alice"); alice.run();
     WAIT_UNTIL(s.users().size() == 1);
     return alice->username() == "alice";
 TEND
 
 ONLY_TEST("Basic declaration of war")
     TestServer s; s.run();
-    TestClient alice("alice"); alice.run();
+    TestClient alice = TestClient::Username("alice"); alice.run();
     WAIT_UNTIL(s.users().size() == 1);
 
     alice.sendMessage(CL_DECLARE_WAR, "bob");

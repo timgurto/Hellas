@@ -3,13 +3,20 @@
 #include "TestClient.h"
 #include "Test.h"
 
-TestClient::TestClient(const std::string &username){
-    _client = new Client;
+TestClient::TestClient():
+_client(new Client){
     _client->loadData("testing/data/minimal");
-    if (username.empty())
-        _client->setRandomUsername();
-    else
-        _client->_username = username;
+    _client->setRandomUsername();
+}
+
+TestClient::TestClient(const std::string &username):
+_client(new Client){
+    _client->loadData("testing/data/minimal");
+    _client->_username = username;
+}
+
+TestClient TestClient::Username(const std::string &username){
+    return TestClient(username);
 }
 
 TestClient::~TestClient(){
