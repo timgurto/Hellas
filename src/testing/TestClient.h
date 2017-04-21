@@ -1,18 +1,17 @@
-#ifndef CLIENT_TEST_INTERFACE_H
-#define CLIENT_TEST_INTERFACE_H
+#ifndef TEST_CLIENT_H
+#define TEST_CLIENT_H
 
 #include "../client/Client.h"
 
 // A wrapper of the client, with full access, used for testing.
 class TestClient{
-    Client _client;
 
 public:
-    void run();
-    void stop();
-
     TestClient(const std::string &username = "");
     ~TestClient(){ stop(); }
+
+    void run();
+    void stop();
 
     bool connected() const { return _client._connectionStatus == Client::CONNECTED; }
 
@@ -28,6 +27,9 @@ public:
     MessageCode getNextMessage() const;
 
     void waitForRedraw();
+
+private:
+    Client _client;
 };
 
 #endif

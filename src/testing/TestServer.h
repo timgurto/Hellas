@@ -1,19 +1,18 @@
-#ifndef SERVER_TEST_INTERFACE_H
-#define SERVER_TEST_INTERFACE_H
+#ifndef TEST_SERVER_H
+#define TEST_SERVER_H
 
 #include "../server/Server.h"
 
 // A wrapper of the server, with full access, used for testing.
 class TestServer{
-    Server *_server;
 
 public:
-    void run();
-    void stop();
-
     TestServer();
     static TestServer KeepOldData();
     ~TestServer();
+
+    void run();
+    void stop();
 
     // Move constructor/assignment
     TestServer(TestServer &rhs);
@@ -34,6 +33,9 @@ public:
     void sendMessage(const Socket &socket, MessageCode code, const std::string &args){
         _server->sendMessage(socket, code, args);
     }
+
+private:
+    Server *_server;
 };
 
 #endif
