@@ -178,9 +178,9 @@
     <ClCompile Include="src\Socket.cpp" />
     <ClCompile Include="src\Stats.cpp" />
     <ClCompile Include="src\Terrain.cpp" />
-    <ClCompile Include="src\testing\ClientTestInterface.cpp" />
+    <ClCompile Include="src\testing\TestClient.cpp" />
     <ClCompile Include="src\testing\RemoteClient.cpp" />
-    <ClCompile Include="src\testing\ServerTestInterface.cpp" />
+    <ClCompile Include="src\testing\TestServer.cpp" />
     <ClCompile Include="src\testing\test-graphics.cpp" />
     <ClCompile Include="src\testing\test-math.cpp" />
     <ClCompile Include="src\testing\test-networking.cpp" />
@@ -272,9 +272,9 @@
     <ClInclude Include="src\Socket.h" />
     <ClInclude Include="src\Stats.h" />
     <ClInclude Include="src\Terrain.h" />
-    <ClInclude Include="src\testing\ClientTestInterface.h" />
+    <ClInclude Include="src\testing\TestClient.h" />
     <ClInclude Include="src\testing\RemoteClient.h" />
-    <ClInclude Include="src\testing\ServerTestInterface.h" />
+    <ClInclude Include="src\testing\TestServer.h" />
     <ClInclude Include="src\testing\Test.h" />
     <ClInclude Include="src\types.h" />
     <ClInclude Include="src\util.h" />

@@ -389,7 +389,7 @@ private:
     friend class ItemSelector;
     friend void Window::hideWindow(void *window);
     friend class TakeContainer;
-    friend class ClientTestInterface;
+    friend class TestClient;
     friend class Avatar;
     friend class SoundProfile;
 };

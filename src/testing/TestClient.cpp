@@ -1,9 +1,9 @@
 #include <thread>
 
-#include "ClientTestInterface.h"
+#include "TestClient.h"
 #include "Test.h"
 
-ClientTestInterface::ClientTestInterface(const std::string &username){
+TestClient::TestClient(const std::string &username){
     _client.loadData("testing/data/minimal");
     if (username.empty())
         _client.setRandomUsername();
@@ -11,7 +11,7 @@ ClientTestInterface::ClientTestInterface(const std::string &username){
         _client._username = username;
 }
 
-void ClientTestInterface::run(){
+void TestClient::run(){
     Client &client = _client;
     std::thread([& client](){ client.run(); }).detach();
     WAIT_UNTIL (_client._connectionStatus == Client::IN_LOGIN_SCREEN);
@@ -19,23 +19,23 @@ void ClientTestInterface::run(){
     WAIT_UNTIL (_client._connectionStatus != Client::TRYING_TO_CONNECT);
 }
 
-void ClientTestInterface::stop(){
+void TestClient::stop(){
     _client._loop = false;
     WAIT_UNTIL (!_client._running);
 }
 
-void ClientTestInterface::waitForRedraw(){
+void TestClient::waitForRedraw(){
     _client._drawingFinished = false;
     WAIT_UNTIL(_client._drawingFinished);
 }
 
-MessageCode ClientTestInterface::getNextMessage() const {
+MessageCode TestClient::getNextMessage() const {
     size_t currentSize = _client._messagesReceived.size();
     WAIT_UNTIL(_client._messagesReceived.size() > currentSize);
     return _client._messagesReceived.back();
 }
 
-void ClientTestInterface::showCraftingWindow() {
+void TestClient::showCraftingWindow() {
     _client._craftingWindow->show();
     WAIT_UNTIL(! _client._craftingWindow->changed());
 

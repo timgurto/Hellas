@@ -1,39 +1,39 @@
 #include <cassert>
 #include <thread>
 
-#include "ServerTestInterface.h"
+#include "TestServer.h"
 #include "Test.h"
 #include "../Args.h"
 
 extern Args cmdLineArgs;
 
-ServerTestInterface::ServerTestInterface(){
+TestServer::TestServer(){
     _server = new Server;
     _server->loadData("testing/data/minimal");
     Server::newPlayerSpawnLocation = Point(10, 10);
     Server::newPlayerSpawnRange = 0;
 }
 
-ServerTestInterface ServerTestInterface::KeepOldData(){
+TestServer TestServer::KeepOldData(){
     cmdLineArgs.remove("new");
-    ServerTestInterface s;
+    TestServer s;
     cmdLineArgs.add("new");
     return s;
 }
 
-ServerTestInterface::~ServerTestInterface(){
+TestServer::~TestServer(){
     if (_server == nullptr)
         return;
     stop();
     delete _server;
 }
 
-ServerTestInterface::ServerTestInterface(ServerTestInterface &rhs):
+TestServer::TestServer(TestServer &rhs):
 _server(rhs._server){
     rhs._server = nullptr;
 }
 
-ServerTestInterface &ServerTestInterface::operator=(ServerTestInterface &rhs){
+TestServer &TestServer::operator=(TestServer &rhs){
     if (this == &rhs)
         return *this;
     delete _server;
@@ -42,23 +42,23 @@ ServerTestInterface &ServerTestInterface::operator=(ServerTestInterface &rhs){
     return *this;
 }
 
-void ServerTestInterface::run(){
+void TestServer::run(){
     Server &server = *_server;
     std::thread([& server](){ server.run(); }).detach();
     WAIT_UNTIL (_server->_running);
 }
 
-void ServerTestInterface::stop(){
+void TestServer::stop(){
     _server->_loop = false;
     WAIT_UNTIL (!_server->_running);
 }
 
-void ServerTestInterface::addObject(const std::string &typeName, const Point &loc){
+void TestServer::addObject(const std::string &typeName, const Point &loc){
     const ObjectType *const type = _server->findObjectTypeByName(typeName);
     _server->addObject(type, loc);
 }
 
-void ServerTestInterface::addNPC(const std::string &typeName, const Point &loc){
+void TestServer::addNPC(const std::string &typeName, const Point &loc){
     const ObjectType *const type = _server->findObjectTypeByName(typeName);
     assert(type->classTag() == 'n');
     const NPCType *const npcType = dynamic_cast<const NPCType *const>(type);

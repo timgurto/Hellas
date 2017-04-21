@@ -1,8 +1,8 @@
 #include "Test.h"
-#include "ServerTestInterface.h"
+#include "TestServer.h"
 
 TEST("nearbyTerrainTypes without radius")
-    ServerTestInterface s;
+    TestServer s;
     s.loadData("testing/data/terrain_medley");
     auto set = s->nearbyTerrainTypes(Rect(0, 0, 40, 40));
     if (set.count('a') == 0) return false;
@@ -13,7 +13,7 @@ TEST("nearbyTerrainTypes without radius")
 TEND
 
 TEST("nearbyTerrainTypes with radius")
-    ServerTestInterface s;
+    TestServer s;
     s.loadData("testing/data/terrain_medley");
     auto set = s->nearbyTerrainTypes(Rect(0, 0, 40, 40), 200);
     if (set.count('a') == 0) return false;

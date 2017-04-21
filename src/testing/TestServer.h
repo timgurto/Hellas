@@ -4,20 +4,20 @@
 #include "../server/Server.h"
 
 // A wrapper of the server, with full access, used for testing.
-class ServerTestInterface{
+class TestServer{
     Server *_server;
 
 public:
     void run();
     void stop();
 
-    ServerTestInterface();
-    static ServerTestInterface KeepOldData();
-    ~ServerTestInterface();
+    TestServer();
+    static TestServer KeepOldData();
+    ~TestServer();
 
     // Move constructor/assignment
-    ServerTestInterface(ServerTestInterface &rhs);
-    ServerTestInterface &operator=(ServerTestInterface &rhs);
+    TestServer(TestServer &rhs);
+    TestServer &operator=(TestServer &rhs);
     
     std::set<const ObjectType *> &objectTypes() { return _server->_objectTypes; }
     Server::objects_t &objects() { return _server->_objects; }

@@ -3,46 +3,46 @@
 #include <cstdlib>
 #include <SDL.h>
 
-#include "ClientTestInterface.h"
-#include "ServerTestInterface.h"
+#include "TestClient.h"
+#include "TestServer.h"
 #include "Test.h"
 #include "../client/ClientNPC.h"
 #include "../client/ClientNPCType.h"
 
 TEST("Start and stop server")
-    ServerTestInterface server;
+    TestServer server;
     server.run();
     server.stop();
     return true;
 TEND
 
 TEST("Server::loadData() replaces, not adds")
-    ServerTestInterface s;
+    TestServer s;
     s.loadData("testing/data/basic_rock");
     s.loadData("testing/data/basic_rock");
     return s.objectTypes().size() == 1;
 TEND
 
 TEST("Client::loadData() replaces, not adds")
-    ClientTestInterface c;
+    TestClient c;
     c.loadData("testing/data/basic_rock");
     c.loadData("testing/data/basic_rock");
     return c.objectTypes().size() == 1;
 TEND
 
 TEST("Load object type naming an invalid item")
-    ServerTestInterface s;
+    TestServer s;
     s.loadData("testing/data/fake_item");
     auto it = s.items().find(ServerItem("fakeStone"));
     return it == s.items().end();
 TEND
 
 TEST("Gather an item from an object")
-    ServerTestInterface s;
+    TestServer s;
     s.loadData("testing/data/basic_rock");
     s.run();
 
-    ClientTestInterface c;
+    TestClient c;
     c.loadData("testing/data/basic_rock");
     c.run();
 
@@ -74,11 +74,11 @@ TEST("Gather an item from an object")
 TEND
 
 TEST("View merchant slots in window")
-    ServerTestInterface s;
+    TestServer s;
     s.loadData("testing/data/merchant");
     s.run();
 
-    ClientTestInterface c;
+    TestClient c;
     c.loadData("testing/data/merchant");
     c.run();
 
@@ -122,11 +122,11 @@ One gather worth of 1 million units of iron
 This is to test the new gather algorithm, which would favor rocks rather than iron.
 */
 TEST("Gather chance is by gathers, not quantity")
-    ServerTestInterface s;
+    TestServer s;
     s.loadData("testing/data/rare_iron");
     s.run();
 
-    ClientTestInterface c;
+    TestClient c;
     c.loadData("testing/data/rare_iron");
     c.run();
 
@@ -151,7 +151,7 @@ TEST("Gather chance is by gathers, not quantity")
 TEND
 
 TEST("Object container empty check")
-    ServerTestInterface s; 
+    TestServer s; 
     ObjectType type("box");
     type.containerSlots(5);
     Object obj(&type, Point());
@@ -163,11 +163,11 @@ TEST("Object container empty check")
 TEND
 
 TEST("Dismantle an object with an inventory")
-    ServerTestInterface s;
+    TestServer s;
     s.loadData("testing/data/dismantle");
     s.run();
 
-    ClientTestInterface c;
+    TestClient c;
     c.loadData("testing/data/dismantle");
     c.run();
 
@@ -188,11 +188,11 @@ TEST("Dismantle an object with an inventory")
 TEND
 
 TEST("Place item in object");
-    ServerTestInterface s;
+    TestServer s;
     s.loadData("testing/data/dismantle");
     s.run();
 
-    ClientTestInterface c;
+    TestClient c;
     c.loadData("testing/data/dismantle");
     c.run();
 
@@ -220,7 +220,7 @@ TEST("Place item in object");
 TEND
 
 TEST("Constructible NPC")
-    ClientTestInterface c;
+    TestClient c;
     
     // Load an item that refers to an object type, then an NPC type to define it
     c.loadData("testing/data/construct_an_npc");
@@ -235,11 +235,11 @@ TEST("Constructible NPC")
 TEND
 
 TEST("Players can attack immediately")
-    ServerTestInterface s;
+    TestServer s;
     s.loadData("testing/data/ant");
     s.run();
 
-    ClientTestInterface c;
+    TestClient c;
     c.loadData("testing/data/ant");
     c.run();
 
@@ -267,11 +267,11 @@ TEST("Players can attack immediately")
 TEND
 
 TEST("Thin objects block movement")
-    ServerTestInterface s;
+    TestServer s;
     s.loadData("testing/data/thin_wall");
     s.run();
 
-    ClientTestInterface c;
+    TestClient c;
     c.loadData("testing/data/thin_wall");
     c.run();
 

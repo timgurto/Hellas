@@ -160,7 +160,7 @@ private:
     friend class User;
     friend class NPC;
     friend class Combatant;
-    friend class ServerTestInterface;
+    friend class TestServer;
     friend class Spawner;
     friend class ProgressLock;
 

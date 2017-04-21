@@ -1,12 +1,12 @@
-#include "ClientTestInterface.h"
-#include "ServerTestInterface.h"
+#include "TestClient.h"
+#include "TestServer.h"
 #include "Test.h"
 
 TEST("Recipes can be known by default")
-    ServerTestInterface s;
+    TestServer s;
     s.loadData("testing/data/box_from_nothing");
     s.run();
-    ClientTestInterface c;
+    TestClient c;
     c.loadData("testing/data/box_from_nothing");
     c.run();
     WAIT_UNTIL (s.users().size() == 1);
@@ -18,10 +18,10 @@ TEST("Recipes can be known by default")
 TEND
 
 TEST("Terrain as tool")
-    ServerTestInterface s;
+    TestServer s;
     s.loadData("testing/data/daisy_chain");
     s.run();
-    ClientTestInterface c;
+    TestClient c;
     c.loadData("testing/data/daisy_chain");
     c.run();
     WAIT_UNTIL (s.users().size() == 1);
@@ -33,10 +33,10 @@ TEST("Terrain as tool")
 TEND
 
 TEST("Client sees default recipes")
-    ServerTestInterface s;
+    TestServer s;
     s.loadData("testing/data/box_from_nothing");
     s.run();
-    ClientTestInterface c;
+    TestClient c;
     c.loadData("testing/data/box_from_nothing");
     c.run();
     WAIT_UNTIL (s.users().size() == 1);

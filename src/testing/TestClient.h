@@ -4,15 +4,15 @@
 #include "../client/Client.h"
 
 // A wrapper of the client, with full access, used for testing.
-class ClientTestInterface{
+class TestClient{
     Client _client;
 
 public:
     void run();
     void stop();
 
-    ClientTestInterface(const std::string &username = "");
-    ~ClientTestInterface(){ stop(); }
+    TestClient(const std::string &username = "");
+    ~TestClient(){ stop(); }
 
     bool connected() const { return _client._connectionStatus == Client::CONNECTED; }
 
