@@ -46,9 +46,8 @@ ONLY_TEST("Wars are persistent")
         server1.run();
         server1.wars().declare("alice", "bob");
     }
-    ServerTestInterface *server2 = ServerTestInterface::KeepOldData();
-    server2->run();
-    bool result = server2->wars().isAtWar("alice", "bob");
-    delete server2;
+    ServerTestInterface server2 = ServerTestInterface::KeepOldData();
+    server2.run();
+    bool result = server2.wars().isAtWar("alice", "bob");
     return result;
 TEND
