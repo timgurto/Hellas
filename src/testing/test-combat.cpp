@@ -5,8 +5,6 @@
 
 TEST("Players can attack immediately")
     TestServer s = TestServer::Data("ant");
-    s.run();
-
     TestClient c = TestClient::Data("ant");
 
     //Move user to middle

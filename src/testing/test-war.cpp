@@ -4,7 +4,7 @@
 #include "TestServer.h"
 
 TEST("Basic declaration of war")
-    TestServer s; s.run();
+    TestServer s;
     TestClient alice = TestClient::Username("alice");
     WAIT_UNTIL(s.users().size() == 1);
 
@@ -14,25 +14,22 @@ TEST("Basic declaration of war")
 TEND
 
 TEST("No erroneous wars")
-    TestServer s; s.run();
+    TestServer s;
     return ! s.wars().isAtWar("alice", "bob");
 TEND
 
 TEST("Wars are persistent")
     {
         TestServer server1;
-        server1.run();
         server1.wars().declare("alice", "bob");
     }
     TestServer server2 = TestServer::KeepOldData();
-    server2.run();
     bool result = server2.wars().isAtWar("alice", "bob");
     return result;
 TEND
 
 TEST("Clients are alerted of new wars")
     TestServer s;
-    s.run();
     s.wars().declare("alice", "bob");
 
     TestClient alice = TestClient::Username("alice");

@@ -5,8 +5,6 @@
 
 TEST("View merchant slots in window")
     TestServer s = TestServer::Data("merchant");
-    s.run();
-
     TestClient c = TestClient::Data("merchant");
 
     // Move user to middle
@@ -58,8 +56,6 @@ TEND
 
 TEST("Thin objects block movement")
     TestServer s = TestServer::Data("thin_wall");
-    s.run();
-
     TestClient c = TestClient::Data("thin_wall");
 
     // Move user to middle, below wall

@@ -24,7 +24,6 @@ TEND
 
 TEST("Get spawn point from map file")
     TestServer s = TestServer::Data("spawn_point_37");
-    s.run();
     TestClient c;
     WAIT_UNTIL(s.users().size() == 1);
     const User &user = *s.users().begin();
@@ -33,7 +32,6 @@ TEND
 
 TEST("Get spawn range from map file")
     TestServer s = TestServer::Data("spawn_point_37ish");
-    s.run();
 
     RemoteClient
         c1("-username a"),

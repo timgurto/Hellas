@@ -4,7 +4,6 @@
 
 TEST("Recipes can be known by default")
     TestServer s = TestServer::Data("box_from_nothing");
-    s.run();
     TestClient c = TestClient::Data("box_from_nothing");
     WAIT_UNTIL (s.users().size() == 1);
     const User &user = *s.users().begin();
@@ -16,7 +15,6 @@ TEND
 
 TEST("Terrain as tool")
     TestServer s = TestServer::Data("daisy_chain");
-    s.run();
     TestClient c = TestClient::Data("daisy_chain");
     WAIT_UNTIL (s.users().size() == 1);
     const User &user = *s.users().begin();
@@ -28,7 +26,6 @@ TEND
 
 TEST("Client sees default recipes")
     TestServer s = TestServer::Data("box_from_nothing");
-    s.run();
     TestClient c = TestClient::Data("box_from_nothing");
     WAIT_UNTIL (s.users().size() == 1);
     c.showCraftingWindow();

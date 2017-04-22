@@ -15,9 +15,6 @@ public:
     // Move constructor/assignment
     TestServer(TestServer &rhs);
     TestServer &operator=(TestServer &rhs);
-
-    void run();
-    void stop();
     
     std::set<const ObjectType *> &objectTypes() { return _server->_objectTypes; }
     Server::objects_t &objects() { return _server->_objects; }
@@ -38,6 +35,9 @@ public:
 private:
     Server *_server;
     TestServer(const std::string &dataPath);
+
+    void run();
+    void stop();
 };
 
 #endif

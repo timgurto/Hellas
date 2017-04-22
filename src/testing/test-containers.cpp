@@ -16,8 +16,6 @@ TEND
 
 TEST("Dismantle an object with an inventory")
     TestServer s = TestServer::Data("dismantle");
-    s.run();
-
     TestClient c = TestClient::Data("dismantle");
 
     //Move user to middle
@@ -38,8 +36,6 @@ TEND
 
 TEST("Place item in object");
     TestServer s = TestServer::Data("dismantle");
-    s.run();
-
     TestClient c = TestClient::Data("dismantle");
 
     //Move user to middle
