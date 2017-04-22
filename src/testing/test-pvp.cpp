@@ -18,7 +18,7 @@ ONLY_TEST("Concurrent local and remote clients")
     return true;
 TEND
 
-ONLY_TEST("Run CTI with custom username")
+ONLY_TEST("Run TestClient with custom username")
     TestServer s; s.run();
     TestClient alice = TestClient::Username("alice"); alice.run();
     WAIT_UNTIL(s.users().size() == 1);
@@ -31,7 +31,7 @@ ONLY_TEST("Basic declaration of war")
     WAIT_UNTIL(s.users().size() == 1);
 
     alice.sendMessage(CL_DECLARE_WAR, "bob");
-    WAIT_UNTIL_TIMEOUT(s.wars().isAtWar("alice", "bob"), 500);
+    WAIT_UNTIL(s.wars().isAtWar("alice", "bob"));
     return true;
 TEND
 
@@ -50,4 +50,17 @@ ONLY_TEST("Wars are persistent")
     server2.run();
     bool result = server2.wars().isAtWar("alice", "bob");
     return result;
+TEND
+
+ONLY_TEST("Clients are alerted of new wars")
+    TestServer s;
+    s.run();
+    s.wars().declare("alice", "bob");
+
+    TestClient alice = TestClient::Username("alice"); alice.run();
+    WAIT_UNTIL(s.users().size() == 1);
+
+    alice.sendMessage(CL_DECLARE_WAR, "bob");
+    WAIT_UNTIL(alice->isAtWarWith("bob"));
+    return true;
 TEND

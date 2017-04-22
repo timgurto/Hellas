@@ -54,6 +54,7 @@ public:
     bool isDismounting() const { return _isDismounting; }
     void attemptDismount() { _isDismounting = true; }
     const SoundProfile *avatarSounds() const { return _avatarSounds; }
+    bool isAtWarWith(const std::string &username) const;
     
     const Texture &cursorNormal() const { return _cursorNormal; }
     const Texture &cursorGather() const { return _cursorGather; }
@@ -314,6 +315,8 @@ private:
     typedef std::set<SoundProfile> soundProfiles_t;
     soundProfiles_t _soundProfiles;
     const SoundProfile *_avatarSounds;
+
+    std::set<std::string> _atWarWith;
     
 
     // Information about the state of the world

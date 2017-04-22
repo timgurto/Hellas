@@ -919,6 +919,20 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_AT_WAR_WITH:
+        {
+            std::string username;
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            username = std::string(buffer);
+            singleMsg >> del;
+            if (del != MSG_END)
+                return;
+
+            _atWarWith.insert(username);
+            _debug << "You are now at war with " << username << Log::endl;
+            break;
+        }
+
         case SV_SAY:
         {
             std::string username, message;

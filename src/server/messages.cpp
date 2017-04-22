@@ -889,6 +889,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             _wars.declare(user->name(), targetUsername);
+            sendWarAlertMessages(user->name(), targetUsername);
             break;
         }
 
@@ -1099,4 +1100,14 @@ void Server::sendNewRecipesMessage(const User &user, const std::set<std::string>
             args = makeArgs(args, id);
         sendMessage(user.socket(), SV_NEW_RECIPES, args);
     }
+}
+
+void Server::sendWarAlertMessages(const Wars::Belligerent &b1, const Wars::Belligerent &b2) const{
+    auto
+        user1 = _usersByName.find(b1),
+        user2 = _usersByName.find(b2);
+    if (user1 != _usersByName.end()) // user1 is online
+        sendMessage(user1->second->socket(), SV_AT_WAR_WITH, b2);
+    if (user2 != _usersByName.end()) // user2 is online
+        sendMessage(user2->second->socket(), SV_AT_WAR_WITH, b1);
 }

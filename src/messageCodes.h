@@ -237,6 +237,10 @@ enum MessageCode{
     // Arguments: max health, attack, attack time, speed
     SV_STATS = 161,
 
+    // "You are at war with ..."
+    // Arguments: username
+    SV_AT_WAR_WITH = 162,
+
     // "User ... has said ...".
     // Arguments: username, message
     SV_SAY = 200,

@@ -888,3 +888,10 @@ const SoundProfile *Client::findSoundProfile(const std::string &id) const{
         return nullptr;
     return &*it;
 }
+
+bool Client::isAtWarWith(const std::string &username) const{
+    auto it = _atWarWith.find(username);
+    if (it == _atWarWith.end())
+        return false;
+    return true;
+}

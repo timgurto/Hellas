@@ -102,6 +102,7 @@ private:
     void sendUserInfo(const User &user, const User &userToDescribe) const;
     void sendNewBuildsMessage(const User &user, const std::set<std::string> &ids) const;
     void sendNewRecipesMessage(const User &user, const std::set<std::string> &ids) const;
+    void sendWarAlertMessages(const Wars::Belligerent &b1, const Wars::Belligerent &b2) const;
 
     // Clients
     // All connected sockets, including those without registered users
