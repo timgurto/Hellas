@@ -1,5 +1,5 @@
-#ifndef WAR_H
-#define WAR_H
+#ifndef WARS_H
+#define WARS_H
 
 #include <map>
 #include <string>

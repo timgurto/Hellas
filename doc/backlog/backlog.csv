@@ -13,7 +13,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 12,A player can declare war on another player,89,8,Feature,,TRUE,TRUE
 13,Players can agree to return to peace,34,8,Feature,12,,TRUE
 14,Two players at war with each other can fight,55,3,Feature,12,,TRUE
-15,Players at war can destroy the other's objects,55,5,Feature,12,,TRUE
+15,Players at war can destroy the other's objects,55,5,Feature,29,,TRUE
 16,A player at war with a city can seek peace from its king,34,8,Feature,55,,TRUE
 17,Two kings can agree to return to peace,34,8,Feature,55,,TRUE
 18,Each player can build one 'shrine'-class object,34,8,Feature,,,TRUE

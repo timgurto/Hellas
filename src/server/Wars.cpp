@@ -1,4 +1,4 @@
-#include "War.h"
+#include "Wars.h"
 
 void Wars::declare(const Belligerent &a, const Belligerent &b){
     Belligerents sorted = sortAlphabetically(a, b);

@@ -17,7 +17,7 @@
 #include "Spawner.h"
 #include "TerrainList.h"
 #include "User.h"
-#include "War.h"
+#include "Wars.h"
 #include "../Args.h"
 #include "../messageCodes.h"
 #include "../Socket.h"
