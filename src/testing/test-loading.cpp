@@ -11,29 +11,19 @@ TEST("Read XML file with root only")
     return true;
 TEND
 
-TEST("Server::loadData() replaces, not adds")
-    TestServer s;
-    s.loadData("testing/data/basic_rock");
-    s.loadData("testing/data/basic_rock");
-    return s.objectTypes().size() == 1;
-TEND
-
 TEST("Load object type naming an invalid item")
-    TestServer s;
-    s.loadData("testing/data/fake_item");
+    TestServer s = TestServer::Data("fake_item");
     auto it = s.items().find(ServerItem("fakeStone"));
     return it == s.items().end();
 TEND
 
 TEST("No crash on bad data")
-    TestServer s;
-    s.loadData("testing/data/this_doesnt_exist");
+    TestServer s = TestServer::Data("this_doesnt_exist");
     return true;
 TEND
 
 TEST("Get spawn point from map file")
-    TestServer s;
-    s.loadData("testing/data/spawn_point_37");
+    TestServer s = TestServer::Data("spawn_point_37");
     s.run();
     TestClient c;
     WAIT_UNTIL(s.users().size() == 1);
@@ -42,8 +32,7 @@ TEST("Get spawn point from map file")
 TEND
 
 TEST("Get spawn range from map file")
-    TestServer s;
-    s.loadData("testing/data/spawn_point_37ish");
+    TestServer s = TestServer::Data("spawn_point_37ish");
     s.run();
 
     RemoteClient

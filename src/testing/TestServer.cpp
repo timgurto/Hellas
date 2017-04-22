@@ -12,11 +12,21 @@ TestServer::TestServer(){
     _server->loadData("testing/data/minimal");
 }
 
+TestServer::TestServer(const std::string &dataPath){
+    _server = new Server;
+    _server->loadData("testing/data/minimal");
+    _server->loadData("testing/data/" + dataPath);
+}
+
 TestServer TestServer::KeepOldData(){
     cmdLineArgs.remove("new");
     TestServer s;
     cmdLineArgs.add("new");
     return s;
+}
+
+TestServer TestServer::Data(const std::string &dataPath){
+    return TestServer(dataPath);
 }
 
 TestServer::~TestServer(){

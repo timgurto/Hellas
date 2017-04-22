@@ -3,8 +3,7 @@
 #include "TestServer.h"
 
 TEST("Recipes can be known by default")
-    TestServer s;
-    s.loadData("testing/data/box_from_nothing");
+    TestServer s = TestServer::Data("box_from_nothing");
     s.run();
     TestClient c = TestClient::Data("box_from_nothing");
     WAIT_UNTIL (s.users().size() == 1);
@@ -16,8 +15,7 @@ TEST("Recipes can be known by default")
 TEND
 
 TEST("Terrain as tool")
-    TestServer s;
-    s.loadData("testing/data/daisy_chain");
+    TestServer s = TestServer::Data("daisy_chain");
     s.run();
     TestClient c = TestClient::Data("daisy_chain");
     WAIT_UNTIL (s.users().size() == 1);
@@ -29,8 +27,7 @@ TEST("Terrain as tool")
 TEND
 
 TEST("Client sees default recipes")
-    TestServer s;
-    s.loadData("testing/data/box_from_nothing");
+    TestServer s = TestServer::Data("box_from_nothing");
     s.run();
     TestClient c = TestClient::Data("box_from_nothing");
     WAIT_UNTIL (s.users().size() == 1);

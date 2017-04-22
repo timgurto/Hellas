@@ -9,6 +9,7 @@ class TestServer{
 public:
     TestServer();
     static TestServer KeepOldData();
+    static TestServer Data(const std::string &dataPath);
     ~TestServer();
 
     // Move constructor/assignment
@@ -36,6 +37,7 @@ public:
 
 private:
     Server *_server;
+    TestServer(const std::string &dataPath);
 };
 
 #endif

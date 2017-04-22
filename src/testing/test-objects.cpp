@@ -4,8 +4,7 @@
 #include "../client/ClientNPCType.h"
 
 TEST("View merchant slots in window")
-    TestServer s;
-    s.loadData("testing/data/merchant");
+    TestServer s = TestServer::Data("merchant");
     s.run();
 
     TestClient c = TestClient::Data("merchant");
@@ -44,7 +43,7 @@ TEST("View merchant slots in window")
     return true;;
 TEND
 
-TEST("Constructible NPC")
+TEST("Constructible NPC is loaded as NPC")
     // Load an item that refers to an object type, then an NPC type to define it
     TestClient c = TestClient::Data("construct_an_npc");
 
@@ -58,8 +57,7 @@ TEST("Constructible NPC")
 TEND
 
 TEST("Thin objects block movement")
-    TestServer s;
-    s.loadData("testing/data/thin_wall");
+    TestServer s = TestServer::Data("thin_wall");
     s.run();
 
     TestClient c = TestClient::Data("thin_wall");

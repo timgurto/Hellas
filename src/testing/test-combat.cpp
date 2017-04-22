@@ -4,8 +4,7 @@
 #include "../client/ClientNPC.h"
 
 TEST("Players can attack immediately")
-    TestServer s;
-    s.loadData("testing/data/ant");
+    TestServer s = TestServer::Data("ant");
     s.run();
 
     TestClient c = TestClient::Data("ant");

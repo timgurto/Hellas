@@ -3,8 +3,7 @@
 #include "TestServer.h"
 
 TEST("Gather an item from an object")
-    TestServer s;
-    s.loadData("testing/data/basic_rock");
+    TestServer s = TestServer::Data("basic_rock");
     s.run();
 
     TestClient c = TestClient::Data("basic_rock");
@@ -42,8 +41,7 @@ One gather worth of 1 million units of iron
 This is to test the new gather algorithm, which would favor rocks rather than iron.
 */
 TEST("Gather chance is by gathers, not quantity")
-    TestServer s;
-    s.loadData("testing/data/rare_iron");
+    TestServer s = TestServer::Data("rare_iron");
     s.run();
 
     TestClient c = TestClient::Data("rare_iron");
