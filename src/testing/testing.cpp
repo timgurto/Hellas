@@ -27,6 +27,10 @@ int main(int argc, char **argv){
     if (cmdLineArgs.contains("quiet"))
         log.quiet();
 
+    size_t timesToRepeatEachTest = 1;
+    if (cmdLineArgs.contains("repeat"))
+        timesToRepeatEachTest = cmdLineArgs.getInt("repeat");
+
     std::string
         colorStart = "\x1B[38;2;0;127;127m",
         colorFail  = "\x1B[38;2;255;0;0m",
@@ -54,32 +58,34 @@ int main(int argc, char **argv){
         failed = 0,
         skipped = 0;
     for (const Test &test : Test::testContainer()){
-        ++i;
-        const std::string *statusColor;
-        char glyph;
-        size_t gapLength = Test::STATUS_MARGIN - 
-                           min(Test::STATUS_MARGIN, test.description().length());
-        std::string gap(gapLength, ' ');
-        std::cout
-            << colorStart << std::setw(4) << i << colorReset << ' '
-            << test.description() << gap << std::flush;
-        if (test.shouldSkip()) {
-            statusColor = &colorSkip;
-            glyph = glyphSkip;
-            ++skipped;
-        } else {
-            bool result = test.fun()();
-            if (!result){
-                statusColor = &colorFail;
-                glyph = glyphFail;
-                ++failed;
+        for (size_t timesRepeated = 0; timesRepeated != timesToRepeatEachTest; ++timesRepeated){
+            ++i;
+            const std::string *statusColor;
+            char glyph;
+            size_t gapLength = Test::STATUS_MARGIN - 
+                               min(Test::STATUS_MARGIN, test.description().length());
+            std::string gap(gapLength, ' ');
+            std::cout
+                << colorStart << std::setw(4) << i << colorReset << ' '
+                << test.description() << gap << std::flush;
+            if (test.shouldSkip()) {
+                statusColor = &colorSkip;
+                glyph = glyphSkip;
+                ++skipped;
             } else {
-                statusColor = &colorPass;
-                glyph = glyphPass;
-                ++passed;
+                bool result = test.fun()();
+                if (!result){
+                    statusColor = &colorFail;
+                    glyph = glyphFail;
+                    ++failed;
+                } else {
+                    statusColor = &colorPass;
+                    glyph = glyphPass;
+                    ++passed;
+                }
             }
+            std::cout << *statusColor << glyph << colorReset << std::endl;
         }
-        std::cout << *statusColor << glyph << colorReset << std::endl;
     }
 
     std::cout << "----------" << std::endl
