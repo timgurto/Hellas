@@ -35,14 +35,17 @@ public:
 
     template<typename T>
     static bool findAttr(TiXmlElement *elem, const char *attr, T &val) {
+        if (elem == nullptr)
+            return false;
+
         const char *const cStrVal = elem->Attribute(attr);
-        if (cStrVal != nullptr) {
-            std::string strVal(cStrVal);
-            std::istringstream iss(strVal);
-            iss >> val;
-            return true;
-        }
-        return false;
+        if (cStrVal == nullptr)
+            return false;
+
+        std::string strVal(cStrVal);
+        std::istringstream iss(strVal);
+        iss >> val;
+        return true;
     }
     static bool findAttr(TiXmlElement *elem, const char *attr, std::string &val);
 #ifndef NO_SDL
