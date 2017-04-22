@@ -7,8 +7,7 @@ TEST("Gather an item from an object")
     s.loadData("testing/data/basic_rock");
     s.run();
 
-    TestClient c;
-    c.loadData("testing/data/basic_rock");
+    TestClient c = TestClient::Data("basic_rock");
     c.run();
 
     //Move user to middle
@@ -48,8 +47,7 @@ TEST("Gather chance is by gathers, not quantity")
     s.loadData("testing/data/rare_iron");
     s.run();
 
-    TestClient c;
-    c.loadData("testing/data/rare_iron");
+    TestClient c = TestClient::Data("rare_iron");
     c.run();
 
     //Move user to middle

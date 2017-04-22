@@ -6,8 +6,7 @@ TEST("Recipes can be known by default")
     TestServer s;
     s.loadData("testing/data/box_from_nothing");
     s.run();
-    TestClient c;
-    c.loadData("testing/data/box_from_nothing");
+    TestClient c = TestClient::Data("box_from_nothing");
     c.run();
     WAIT_UNTIL (s.users().size() == 1);
     const User &user = *s.users().begin();
@@ -21,8 +20,7 @@ TEST("Terrain as tool")
     TestServer s;
     s.loadData("testing/data/daisy_chain");
     s.run();
-    TestClient c;
-    c.loadData("testing/data/daisy_chain");
+    TestClient c = TestClient::Data("daisy_chain");
     c.run();
     WAIT_UNTIL (s.users().size() == 1);
     const User &user = *s.users().begin();
@@ -36,8 +34,7 @@ TEST("Client sees default recipes")
     TestServer s;
     s.loadData("testing/data/box_from_nothing");
     s.run();
-    TestClient c;
-    c.loadData("testing/data/box_from_nothing");
+    TestClient c = TestClient::Data("box_from_nothing");
     c.run();
     WAIT_UNTIL (s.users().size() == 1);
     c.showCraftingWindow();

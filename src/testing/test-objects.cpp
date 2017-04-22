@@ -8,8 +8,7 @@ TEST("View merchant slots in window")
     s.loadData("testing/data/merchant");
     s.run();
 
-    TestClient c;
-    c.loadData("testing/data/merchant");
+    TestClient c = TestClient::Data("merchant");
     c.run();
 
     // Move user to middle
@@ -47,10 +46,8 @@ TEST("View merchant slots in window")
 TEND
 
 TEST("Constructible NPC")
-    TestClient c;
-    
     // Load an item that refers to an object type, then an NPC type to define it
-    c.loadData("testing/data/construct_an_npc");
+    TestClient c = TestClient::Data("construct_an_npc");
 
     const ClientObjectType &objType = **c.objectTypes().begin();
     if (objType.classTag() != 'n')
@@ -66,8 +63,7 @@ TEST("Thin objects block movement")
     s.loadData("testing/data/thin_wall");
     s.run();
 
-    TestClient c;
-    c.loadData("testing/data/thin_wall");
+    TestClient c = TestClient::Data("thin_wall");
     c.run();
 
     // Move user to middle, below wall

@@ -19,8 +19,7 @@ TEST("Dismantle an object with an inventory")
     s.loadData("testing/data/dismantle");
     s.run();
 
-    TestClient c;
-    c.loadData("testing/data/dismantle");
+    TestClient c = TestClient::Data("dismantle");
     c.run();
 
     //Move user to middle
@@ -44,8 +43,7 @@ TEST("Place item in object");
     s.loadData("testing/data/dismantle");
     s.run();
 
-    TestClient c;
-    c.loadData("testing/data/dismantle");
+    TestClient c = TestClient::Data("dismantle");
     c.run();
 
     //Move user to middle

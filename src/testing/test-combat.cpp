@@ -8,8 +8,7 @@ TEST("Players can attack immediately")
     s.loadData("testing/data/ant");
     s.run();
 
-    TestClient c;
-    c.loadData("testing/data/ant");
+    TestClient c = TestClient::Data("ant");
     c.run();
 
     //Move user to middle

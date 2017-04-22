@@ -1,3 +1,4 @@
+#include <cassert>
 #include <thread>
 
 #include "TestClient.h"
@@ -9,14 +10,28 @@ _client(new Client){
     _client->setRandomUsername();
 }
 
-TestClient::TestClient(const std::string &username):
+TestClient::TestClient(const std::string &string, StringType type):
 _client(new Client){
-    _client->loadData("testing/data/minimal");
-    _client->_username = username;
+    switch(type){
+    case USERNAME:
+        _client->_username = string;
+        _client->loadData("testing/data/minimal");
+        break;
+    case DATA_PATH:
+        _client->setRandomUsername();
+        _client->loadData("testing/data/" + string);
+        break;
+    default:
+        assert(false);
+    }
 }
 
 TestClient TestClient::Username(const std::string &username){
-    return TestClient(username);
+    return TestClient(username, USERNAME);
+}
+
+TestClient TestClient::Data(const std::string &dataPath){
+    return TestClient(dataPath, DATA_PATH);
 }
 
 TestClient::~TestClient(){

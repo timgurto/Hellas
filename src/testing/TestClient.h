@@ -9,6 +9,7 @@ class TestClient{
 public:
     TestClient();
     static TestClient Username(const std::string &username);
+    static TestClient Data(const std::string &dataPath);
     ~TestClient();
 
     // Move constructor/assignment
@@ -27,7 +28,6 @@ public:
 
     Client *operator->(){ return _client; }
     Client &client() { return *_client; }
-    void loadData(const std::string path){ _client->loadData(path); }
     void sendMessage(MessageCode code, const std::string &args){ _client->sendMessage(code, args); }
     MessageCode getNextMessage() const;
     bool waitForMessage(MessageCode desiredMsg) const;
@@ -35,7 +35,15 @@ public:
 
 private:
     Client *_client;
-    TestClient(const std::string &username);
+
+    enum StringType{
+        USERNAME,
+        DATA_PATH
+    };
+
+    TestClient(const std::string &string, StringType type);
+
+    void loadData(const std::string path){ _client->loadData(path); }
 
     bool TestClient::messageWasReceivedSince(MessageCode desiredMsg, size_t startingIndex) const;
 };
