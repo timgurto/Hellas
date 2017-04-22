@@ -20,7 +20,6 @@ TEST("Dismantle an object with an inventory")
     s.run();
 
     TestClient c = TestClient::Data("dismantle");
-    c.run();
 
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
@@ -44,7 +43,6 @@ TEST("Place item in object");
     s.run();
 
     TestClient c = TestClient::Data("dismantle");
-    c.run();
 
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);

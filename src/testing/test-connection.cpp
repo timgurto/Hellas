@@ -19,7 +19,7 @@ TEND
 
 TEST("Concurrent local and remote clients")
     TestServer s; s.run();
-    TestClient c; c.run();
+    TestClient c;
     RemoteClient alice("-username alice");
     WAIT_UNTIL(s.users().size() == 2);
     return true;
@@ -27,7 +27,7 @@ TEND
 
 TEST("Run TestClient with custom username")
     TestServer s; s.run();
-    TestClient alice = TestClient::Username("alice"); alice.run();
+    TestClient alice = TestClient::Username("alice");
     WAIT_UNTIL(s.users().size() == 1);
     return alice->username() == "alice";
 TEND

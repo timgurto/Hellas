@@ -36,7 +36,6 @@ TEST("Get spawn point from map file")
     s.loadData("testing/data/spawn_point_37");
     s.run();
     TestClient c;
-    c.run();
     WAIT_UNTIL(s.users().size() == 1);
     const User &user = *s.users().begin();
     return user.location() == Point(37, 37);

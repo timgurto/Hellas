@@ -8,14 +8,15 @@ TestClient::TestClient():
 _client(new Client){
     _client->loadData("testing/data/minimal");
     _client->setRandomUsername();
+    run();
 }
 
 TestClient::TestClient(const std::string &string, StringType type):
 _client(new Client){
+    _client->loadData("testing/data/minimal");
     switch(type){
     case USERNAME:
         _client->_username = string;
-        _client->loadData("testing/data/minimal");
         break;
     case DATA_PATH:
         _client->setRandomUsername();
@@ -24,6 +25,7 @@ _client(new Client){
     default:
         assert(false);
     }
+    run();
 }
 
 TestClient TestClient::Username(const std::string &username){

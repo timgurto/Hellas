@@ -9,7 +9,6 @@ TEST("Players can attack immediately")
     s.run();
 
     TestClient c = TestClient::Data("ant");
-    c.run();
 
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);

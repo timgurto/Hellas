@@ -28,7 +28,6 @@ SLOW_TEST("Use socket after cleanup")
         TestServer s;
         TestClient c;
         s.run();
-        c.run();
 
         ret = c.connected(); // false in case of a connection error.
     }

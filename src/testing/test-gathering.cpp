@@ -8,7 +8,6 @@ TEST("Gather an item from an object")
     s.run();
 
     TestClient c = TestClient::Data("basic_rock");
-    c.run();
 
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
@@ -48,7 +47,6 @@ TEST("Gather chance is by gathers, not quantity")
     s.run();
 
     TestClient c = TestClient::Data("rare_iron");
-    c.run();
 
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);

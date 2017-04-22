@@ -16,9 +16,6 @@ public:
     TestClient(TestClient &rhs);
     TestClient &operator=(TestClient &rhs);
 
-    void run();
-    void stop();
-
     bool connected() const { return _client->_connectionStatus == Client::CONNECTED; }
 
     std::map<size_t, ClientObject*> &objects() { return _client->_objects; }
@@ -43,6 +40,8 @@ private:
 
     TestClient(const std::string &string, StringType type);
 
+    void run();
+    void stop();
     void loadData(const std::string path){ _client->loadData(path); }
 
     bool TestClient::messageWasReceivedSince(MessageCode desiredMsg, size_t startingIndex) const;

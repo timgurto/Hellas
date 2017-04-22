@@ -5,7 +5,7 @@
 
 TEST("Basic declaration of war")
     TestServer s; s.run();
-    TestClient alice = TestClient::Username("alice"); alice.run();
+    TestClient alice = TestClient::Username("alice");
     WAIT_UNTIL(s.users().size() == 1);
 
     alice.sendMessage(CL_DECLARE_WAR, "bob");
@@ -35,7 +35,7 @@ TEST("Clients are alerted of new wars")
     s.run();
     s.wars().declare("alice", "bob");
 
-    TestClient alice = TestClient::Username("alice"); alice.run();
+    TestClient alice = TestClient::Username("alice");
     WAIT_UNTIL(s.users().size() == 1);
 
     alice.sendMessage(CL_DECLARE_WAR, "bob");

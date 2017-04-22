@@ -9,7 +9,6 @@ TEST("View merchant slots in window")
     s.run();
 
     TestClient c = TestClient::Data("merchant");
-    c.run();
 
     // Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
@@ -64,7 +63,6 @@ TEST("Thin objects block movement")
     s.run();
 
     TestClient c = TestClient::Data("thin_wall");
-    c.run();
 
     // Move user to middle, below wall
     WAIT_UNTIL(s.users().size() == 1);
