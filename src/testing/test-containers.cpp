@@ -36,7 +36,7 @@ TEST("Dismantle an object with an inventory")
     size_t serial = c.objects().begin()->first;
     c.sendMessage(CL_DECONSTRUCT, makeArgs(serial));
 
-    return c.getNextMessage() == SV_ACTION_STARTED;
+    return c.waitForMessage(SV_ACTION_STARTED);
 TEND
 
 TEST("Place item in object");
@@ -59,8 +59,7 @@ TEST("Place item in object");
 
     // Give user a box item
     user.giveItem(&*s.items().begin());
-    size_t msg = c.getNextMessage();
-    if (msg != SV_INVENTORY)
+    if (!c.waitForMessage(SV_INVENTORY))
         return false;
 
     // Try to put item in object

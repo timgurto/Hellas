@@ -64,6 +64,22 @@ MessageCode TestClient::getNextMessage() const {
     return _client->_messagesReceived.back();
 }
 
+bool TestClient::waitForMessage(MessageCode desiredMsg) const {
+    size_t currentSize = _client->_messagesReceived.size();
+    WAIT_UNTIL (messageWasReceivedSince(desiredMsg, currentSize));
+    return true;
+}
+
+bool TestClient::messageWasReceivedSince(MessageCode desiredMsg, size_t startingIndex) const{
+    const size_t NUM_MESSAGES = _client->_messagesReceived.size();
+    if (startingIndex >= NUM_MESSAGES)
+        return false;
+    for (size_t i = startingIndex; i != NUM_MESSAGES; ++i)
+        if (_client->_messagesReceived[i] == desiredMsg)
+            return true;
+    return false;
+}
+
 void TestClient::showCraftingWindow() {
     _client->_craftingWindow->show();
     WAIT_FOREVER_UNTIL(! _client->_craftingWindow->changed());

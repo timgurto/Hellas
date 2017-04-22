@@ -30,12 +30,14 @@ public:
     void loadData(const std::string path){ _client->loadData(path); }
     void sendMessage(MessageCode code, const std::string &args){ _client->sendMessage(code, args); }
     MessageCode getNextMessage() const;
-
+    bool waitForMessage(MessageCode desiredMsg) const;
     void waitForRedraw();
 
 private:
     Client *_client;
     TestClient(const std::string &username);
+
+    bool TestClient::messageWasReceivedSince(MessageCode desiredMsg, size_t startingIndex) const;
 };
 
 #endif
