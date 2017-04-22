@@ -1,6 +1,6 @@
+#include "Test.h"
 #include "TestClient.h"
 #include "TestServer.h"
-#include "Test.h"
 
 TEST("Recipes can be known by default")
     TestServer s;

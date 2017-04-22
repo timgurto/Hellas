@@ -1,8 +1,6 @@
-// (C) 2016 Tim Gurto
-
+#include "Test.h"
 #include "TestClient.h"
 #include "TestServer.h"
-#include "Test.h"
 #include "../Socket.h"
 #include "../curlUtil.h"
 
