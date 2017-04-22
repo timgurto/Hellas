@@ -41,9 +41,6 @@ const px_t Server::CULL_DISTANCE = 350;
 const px_t Server::TILE_W = 32;
 const px_t Server::TILE_H = 32;
 
-Point Server::newPlayerSpawnLocation(51256, 16192);
-double Server::newPlayerSpawnRange = 50;
-
 Server::Server():
 _time(SDL_GetTicks()),
 _lastTime(_time),
@@ -52,6 +49,8 @@ _loop(false),
 _running(false),
 _mapX(0),
 _mapY(0),
+_newPlayerSpawnLocation(0, 0),
+_newPlayerSpawnRange(0),
 _debug("server.log"),
 _lastSave(_time),
 _dataLoaded(false){
@@ -247,10 +246,15 @@ void Server::addUser(const Socket &socket, const std::string &name){
         newUser.setClass(User::Class(rand() % User::NUM_CLASSES));
         Point newLoc;
         size_t attempts = 0;
+        static const size_t MAX_ATTEMPTS = 1000;
         do {
+            if (attempts > MAX_ATTEMPTS){
+                _debug("Failed to find valid spawn location for user", Color::FAILURE);
+                return;
+            }
             _debug << "Attempt #" << ++attempts << " at placing new user" << Log::endl;
-            newLoc.x = (randDouble() * 2 - 1) * newPlayerSpawnRange + newPlayerSpawnLocation.x;
-            newLoc.y = (randDouble() * 2 - 1) * newPlayerSpawnRange + newPlayerSpawnLocation.y;
+            newLoc.x = (randDouble() * 2 - 1) * _newPlayerSpawnRange + _newPlayerSpawnLocation.x;
+            newLoc.y = (randDouble() * 2 - 1) * _newPlayerSpawnRange + _newPlayerSpawnLocation.y;
         } while (!isLocationValid(newLoc, User::OBJECT_TYPE));
         newUser.location(newLoc);
         _debug << "New";

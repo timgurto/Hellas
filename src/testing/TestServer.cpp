@@ -10,8 +10,6 @@ extern Args cmdLineArgs;
 TestServer::TestServer(){
     _server = new Server;
     _server->loadData("testing/data/minimal");
-    Server::newPlayerSpawnLocation = Point(10, 10);
-    Server::newPlayerSpawnRange = 0;
 }
 
 TestServer TestServer::KeepOldData(){

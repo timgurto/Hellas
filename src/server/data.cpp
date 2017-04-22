@@ -552,11 +552,18 @@ void Server::loadData(const std::string &path){
         xr.newFile(path + "/map.xml");
         if (!xr)
             break;
-        auto elem = xr.findChild("size");
+
+        auto elem = xr.findChild("newPlayerSpawn");
+        xr.findAttr(elem, "x", _newPlayerSpawnLocation.x);
+        xr.findAttr(elem, "y", _newPlayerSpawnLocation.y);
+        xr.findAttr(elem, "range", _newPlayerSpawnRange);
+
+        elem = xr.findChild("size");
         if (elem == nullptr || !xr.findAttr(elem, "x", _mapX) || !xr.findAttr(elem, "y", _mapY)) {
             _debug("Map size missing or incomplete.", Color::RED);
             break;
         }
+
         _map = std::vector<std::vector<char> >(_mapX);
         for (size_t x = 0; x != _mapX; ++x)
             _map[x] = std::vector<char>(_mapY, 0);
