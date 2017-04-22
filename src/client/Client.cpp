@@ -505,7 +505,10 @@ void Client::checkSocket(){
 void Client::run(){
     if (!_dataLoaded){
         drawLoadingScreen("Loading data", 0.6);
-        loadData(cmdLineArgs.getString("data"));
+        if (cmdLineArgs.contains("data"))
+            loadData(cmdLineArgs.getString("data"));
+        else
+            loadData();
     }
     initializeCraftingWindow();
     addWindow(_craftingWindow);
