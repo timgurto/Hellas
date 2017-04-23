@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #include "Socket.h"
 
 Log *Socket::debug = nullptr;
@@ -28,7 +26,18 @@ _lingerTime(0){
 Socket::Socket(const Socket &rhs):
 _raw(rhs._raw),
 _lingerTime(rhs._lingerTime){
+    if (_raw == INVALID_SOCKET)
+        return;
     addRef();
+}
+
+Socket Socket::Empty(){
+    SOCKET invalidSocket = INVALID_SOCKET;
+    return Socket(invalidSocket);
+}
+
+Socket::~Socket(){
+    close();
 }
 
 const Socket &Socket::operator=(const Socket &rhs){
@@ -41,10 +50,6 @@ const Socket &Socket::operator=(const Socket &rhs){
     addRef();
     _lingerTime = rhs._lingerTime;
     return *this;
-}
-
-Socket::~Socket(){
-    close();
 }
 
 void Socket::addRef(){

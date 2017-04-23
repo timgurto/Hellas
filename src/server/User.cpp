@@ -45,7 +45,8 @@ User::User(const Socket &rhs):
 _socket(rhs){}
 
 User::User(const Point &loc):
-Combatant(loc){}
+Combatant(loc),
+_socket(Socket::Empty()){}
 
 void User::init(){
     BASE_STATS.health = 100;

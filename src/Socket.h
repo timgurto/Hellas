@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef SOCKET_H
 #define SOCKET_H
 
@@ -33,8 +31,9 @@ public:
     Socket(const Socket &rhs);
     Socket();
     Socket(SOCKET &rawSocket);
-    const Socket &operator=(const Socket &rhs);
+    static Socket Empty();
     ~Socket();
+    const Socket &operator=(const Socket &rhs);
 
     bool operator==(const Socket &rhs) const { return _raw == rhs._raw; }
     bool operator!=(const Socket &rhs) const { return _raw != rhs._raw; }
