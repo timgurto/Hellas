@@ -17,7 +17,8 @@ TEST("View merchant slots in window")
     WAIT_UNTIL (s.objects().size() == 1);
     WAIT_UNTIL (c.objects().size() == 1);
 
-    auto it = c.objects().begin();
+    auto objects = c.objects();
+    auto it = objects.begin();
     size_t serial = it->first;
     ClientObject *cObj = it->second;
     if (cObj == nullptr)
