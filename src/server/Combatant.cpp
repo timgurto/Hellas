@@ -53,7 +53,6 @@ void Combatant::update(ms_t timeElapsed){
                     dynamic_cast<const NPC *>(this)->serial(),
                     dynamic_cast<const User *>(target())->name());
         } else {
-            assert(false);
             return;
         }
         for (const User *user : server.findUsersInArea(locus)){

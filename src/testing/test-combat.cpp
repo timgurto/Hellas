@@ -1,3 +1,4 @@
+#include "RemoteClient.h"
 #include "Test.h"
 #include "TestServer.h"
 #include "TestClient.h"
@@ -20,11 +21,26 @@ TEST("Players can attack immediately")
     const ClientObject *objP = objects.begin()->second;
     const ClientNPC &ant = dynamic_cast<const ClientNPC &>(*objP);
     size_t serial = ant.serial();
-    c.sendMessage(CL_TARGET, makeArgs(serial));
+    c.sendMessage(CL_TARGET_NPC, makeArgs(serial));
     
     // NPC should be damaged very quickly
     REPEAT_FOR_MS(200)
         if (ant.health() < ant.npcType()->maxHealth())
             return true;
     return false;
+TEND
+
+ONLY_TEST("Players can target each other")
+    TestServer s;
+    TestClient alice = TestClient::Username("alice");
+    RemoteClient bob("-username bob");
+    WAIT_UNTIL(s.users().size() == 2);
+    User
+        &uAlice = s.findUser("alice"),
+        &uBob = s.findUser("bob");
+
+    alice.sendMessage(CL_TARGET_PLAYER, "bob");
+    WAIT_UNTIL(uAlice.target() == &uBob);
+
+    return true;
 TEND

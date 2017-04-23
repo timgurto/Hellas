@@ -1002,7 +1002,8 @@ void Client::initializeMessageNames(){
     _messageCommands["clearMerchantSlot"] = CL_CLEAR_MERCHANT_SLOT;
     _messageCommands["startWatching"] = CL_START_WATCHING;
     _messageCommands["stopWatching"] = CL_STOP_WATCHING;
-    _messageCommands["target"] = CL_TARGET;
+    _messageCommands["targetNPC"] = CL_TARGET_NPC;
+    _messageCommands["targetPlayer"] = CL_TARGET_PLAYER;
     _messageCommands["take"] = CL_TAKE_ITEM;
     _messageCommands["mount"] = CL_MOUNT;
     _messageCommands["dismount"] = CL_DISMOUNT;

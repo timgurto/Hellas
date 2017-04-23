@@ -93,11 +93,15 @@ enum MessageCode{
 
     // "I'm targeting NPC ..."
     // Arguments: serial
-    CL_TARGET = 50,
+    CL_TARGET_NPC = 50,
+
+    // "I'm targeting player ..."
+    // Arguments: username
+    CL_TARGET_PLAYER = 51,
 
     // "I want to declare war on ..."
     // Arguments: username
-    CL_DECLARE_WAR = 51,
+    CL_DECLARE_WAR = 55,
 
     // "I want to say ... to everybody". 
     // Arguments: message

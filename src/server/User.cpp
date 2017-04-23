@@ -171,9 +171,9 @@ void User::beginDeconstructing(Object &obj){
     _actionTime = obj.type()->deconstructionTime();
 }
 
-void User::targetNPC(NPC *npc){
-    target(npc);
-    if (npc == nullptr){
+void User::setTargetAndAttack(Combatant *target){
+    this->target(target);
+    if (target == nullptr){
         cancelAction();
         return;
     }

@@ -818,7 +818,7 @@ void Client::targetNPC(const ClientNPC *npc, bool aggressive){
     _aggressive = aggressive;
 
     if (tellServer){
-        sendMessage(CL_TARGET, makeArgs(serialToSend));
+        sendMessage(CL_TARGET_NPC, makeArgs(serialToSend));
     }
 
     if (npc == nullptr){

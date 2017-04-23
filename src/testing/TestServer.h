@@ -32,6 +32,8 @@ public:
         _server->sendMessage(socket, code, args);
     }
 
+    User &findUser(const std::string &username);
+
 private:
     Server *_server;
     TestServer(const std::string &dataPath);

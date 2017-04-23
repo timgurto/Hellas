@@ -70,7 +70,15 @@ void TestServer::addObject(const std::string &typeName, const Point &loc){
 
 void TestServer::addNPC(const std::string &typeName, const Point &loc){
     const ObjectType *const type = _server->findObjectTypeByName(typeName);
-    assert(type->classTag() == 'n');
+    assert (type->classTag() == 'n');
     const NPCType *const npcType = dynamic_cast<const NPCType *const>(type);
     _server->addNPC(npcType, loc);
+}
+
+User &TestServer::findUser(const std::string &username) {
+    auto usersByName = _server->_usersByName;
+    auto it = usersByName.find(username);
+    assert (it != usersByName.end());
+    User *user = const_cast<User *>(it->second);
+    return *user;
 }

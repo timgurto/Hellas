@@ -129,7 +129,7 @@ public:
     void action(Action a) { _action = a; }
     const Object *actionObject() const { return _actionObject; }
     void beginGathering(Object *object); // Configure user to perform an action on an object
-    void targetNPC(NPC *npc); // Configure user to prepare to attack an NPC
+    void setTargetAndAttack(Combatant *target); // Configure user to prepare to attack an NPC or player
 
     // Whether the user has enough materials to craft a recipe
     bool hasItems(const ItemSet &items) const;

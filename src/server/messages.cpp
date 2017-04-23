@@ -841,7 +841,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
-        case CL_TARGET:
+        case CL_TARGET_NPC:
         {
             size_t serial;
             iss >> serial >> del;
@@ -854,7 +854,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             else {
                 obj = findObject(serial);
                 if (obj == nullptr) {
-                    user->targetNPC(nullptr);
+                    user->setTargetAndAttack(nullptr);
                     sendMessage(client, SV_DOESNT_EXIST);
                     break;
                 }
@@ -863,7 +863,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                     break;
                 }
                 if (obj->classTag() != 'n'){
-                    user->targetNPC(nullptr);
+                    user->setTargetAndAttack(nullptr);
                     sendMessage(client, SV_NOT_NPC);
                     break;
                 }
@@ -871,12 +871,38 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
             NPC *npc = dynamic_cast<NPC *>(obj);
             if (npc != nullptr && npc->health() == 0){
-                user->targetNPC(nullptr);
+                user->setTargetAndAttack(nullptr);
                 sendMessage(client, SV_NPC_DEAD);
                 break;
             }
 
-            user->targetNPC(npc);
+            user->setTargetAndAttack(npc);
+
+            break;
+        }
+
+        case CL_TARGET_PLAYER:
+        {
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
+            std::string targetUsername(buffer);
+            iss >> del;
+            if (del != MSG_END)
+                return;
+            user->cancelAction();
+
+            auto it = _usersByName.find(targetUsername);
+            if (it == _usersByName.end()){
+                sendMessage(client, SV_INVALID_USER);
+                break;
+            }
+            User *targetUser = const_cast<User *>(it->second);
+            if (targetUser->health() == 0){
+                user->setTargetAndAttack(nullptr);
+                sendMessage(client, SV_NPC_DEAD);
+                break;
+            }
+
+            user->setTargetAndAttack(targetUser);
 
             break;
         }
