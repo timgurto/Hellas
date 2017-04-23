@@ -1,7 +1,3 @@
-// (C) 2016 Tim Gurto
-
-#include <iostream>
-
 #include "Test.h"
 #include "../Args.h"
 
@@ -11,10 +7,11 @@ Test::testContainer_t *Test::_testContainer = nullptr;
 bool Test::_runSubset = false;
 const size_t Test::STATUS_MARGIN = 45;
 
-Test::Test(std::string description, bool slow, bool subset, testFun_t fun):
+Test::Test(std::string description, bool slow, bool subset, bool quarantined, testFun_t fun):
 _description(description),
 _fun(fun),
-_slow(slow){
+_slow(slow),
+_quarantined(quarantined){
     if (subset) {
         if (!_runSubset)
             testContainer().clear();
@@ -37,5 +34,9 @@ void Test::signalThrower(int signal){
 }
 
 bool Test::shouldSkip() const{
-    return _slow && cmdLineArgs.contains("skipSlow");
+    if (_quarantined)
+        return true;
+    if (_slow && cmdLineArgs.contains("skipSlow"))
+        return true;
+    return false;
 }

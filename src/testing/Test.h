@@ -17,6 +17,7 @@ private:
 
     testFun_t _fun;
     bool _slow;
+    bool _quarantined;
     
     static testContainer_t *_testContainer;
     static bool _runSubset; // At least one test was defined with ONLY_TEST
@@ -26,7 +27,15 @@ public:
     static testContainer_t &testSubset();
     static const size_t STATUS_MARGIN;
 
-    Test(std::string description, bool slow, bool subset, testFun_t fun);
+    static const bool
+        SLOW = true,
+        FAST = false,
+        IN_SUBSET = true,
+        NOT_IN_SUBSET = false,
+        QUARANTINED = true,
+        NOT_QUARANTINED = false;
+
+    Test(std::string description, bool slow, bool subset, bool quarantined, testFun_t fun);
 
     const std::string &description() const { return _description; }
     testFun_t fun() const { return _fun; }
@@ -38,17 +47,26 @@ public:
 #define TOKEN_CONCAT_2(a, b) a ## b
 #define TOKEN_CONCAT(a, b) TOKEN_CONCAT_2(a, b)
 
-#define SLOW true
-#define FAST false
-#define IN_SUBSET true
-#define NOT_IN_SUBSET false
-
-#define TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) \
-            (name, FAST, NOT_IN_SUBSET, [](){
-#define SLOW_TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) \
-            (name, SLOW, NOT_IN_SUBSET, [](){
-#define ONLY_TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) \
-            (name, FAST, IN_SUBSET, [](){
+#define TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) (name, \
+            Test::FAST, \
+            Test::NOT_IN_SUBSET, \
+            Test::NOT_QUARANTINED, \
+            [](){
+#define SLOW_TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) (name, \
+            Test::SLOW, \
+            Test::NOT_IN_SUBSET, \
+            Test::NOT_QUARANTINED, \
+            [](){
+#define ONLY_TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) (name, \
+            Test::FAST, \
+            Test::IN_SUBSET, \
+            Test::NOT_QUARANTINED, \
+            [](){
+#define QUARANTINED_TEST(name) static Test TOKEN_CONCAT(test_, __COUNTER__) (name, \
+            Test::FAST, \
+            Test::NOT_IN_SUBSET, \
+            Test::QUARANTINED, \
+            [](){
 
 #define TEND });
 
