@@ -154,15 +154,20 @@ Texture::~Texture(){
         Program has ended; only static Textures are being destroyed now.
         Destroy all SDL_Textures before _refs is destroyed, then clear _refs.
         */
-        for (const std::pair<SDL_Texture *, size_t> &ref : _refs)
-            SDL_DestroyTexture(ref.first);
-        _refs.clear();
+        destroyAllRemainingTextures();
         return;
     }
 
     if (_raw != nullptr)
         removeRef();
 }
+
+void Texture::destroyAllRemainingTextures(){
+    for (const std::pair<SDL_Texture *, size_t> &ref : _refs)
+        SDL_DestroyTexture(ref.first);
+    _refs.clear();
+}
+
 
 void Texture::setBlend(SDL_BlendMode mode) const{
     SDL_SetTextureBlendMode(_raw, mode);

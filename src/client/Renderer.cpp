@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include <SDL_ttf.h>
 #include <SDL_image.h>
 
@@ -55,6 +57,7 @@ void Renderer::init(){
 
 Renderer::~Renderer(){
     if (_renderer != nullptr){
+        assert(Texture::numTextures() == 0);
         SDL_DestroyRenderer(_renderer);
         _renderer = nullptr;
     }

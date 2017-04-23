@@ -503,6 +503,7 @@ void Client::checkSocket(){
 }
 
 void Client::run(){
+    _running = true;
     if (!_dataLoaded){
         drawLoadingScreen("Loading data", 0.6);
         if (cmdLineArgs.contains("data"))
@@ -517,7 +518,6 @@ void Client::run(){
     initLoginScreen();
     _connectionStatus = IN_LOGIN_SCREEN;
 
-    _running = true;
     ms_t timeAtLastTick = SDL_GetTicks();
     while (_loop) {
         _time = SDL_GetTicks();

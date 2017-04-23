@@ -34,7 +34,9 @@ public:
     Texture(const std::string &filename, const Color &colorKey = Color::NO_KEY);
     Texture(const Surface &surface);
     Texture(TTF_Font *font, const std::string &text, const Color &color = Color::FONT);
+
     ~Texture();
+    static void destroyAllRemainingTextures();
 
     Texture(const Texture &rhs);
     Texture &operator=(const Texture &rhs);
