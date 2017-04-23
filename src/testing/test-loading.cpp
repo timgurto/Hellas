@@ -3,6 +3,7 @@
 #include "TestClient.h"
 #include "TestServer.h"
 #include "../XmlReader.h"
+#include "../client/ClientNPCType.h"
 
 TEST("Read XML file with root only")
     XmlReader xr("testing/empty.xml");
@@ -46,4 +47,17 @@ TEST("Get spawn range from map file")
             user.location().y > 57)
                 return false;
     return true;
+TEND
+
+TEST("Constructible NPC is loaded as NPC")
+    // Load an item that refers to an object type, then an NPC type to define it
+    TestClient c = TestClient::Data("construct_an_npc");
+
+    const ClientObjectType &objType = **c.objectTypes().begin();
+    if (objType.classTag() != 'n')
+        return false;
+
+    // Check its health (to distinguish it from a plain ClientObject)
+    const ClientNPCType &npcType = dynamic_cast<const ClientNPCType &>(objType);
+    return npcType.maxHealth() == 5;
 TEND
