@@ -13,7 +13,7 @@ TEST("List size")
     return l.size() == 1;
 TEND
 
-TEST("View merchant slots in window")
+QUARANTINED_TEST("View merchant slots in window")
     TestServer s = TestServer::Data("merchant");
     TestClient c = TestClient::Data("merchant");
 
