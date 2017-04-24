@@ -836,6 +836,8 @@ void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
 
     if (newTarget != nullptr && newTarget->health() == 0)
         aggressive = false;
+    else if (newTarget != nullptr && ! isAtWarWith(newTarget->name()))
+        aggressive = false;
 
     // Same target
     if (newTarget == targetAsEntity()){

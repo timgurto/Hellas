@@ -64,7 +64,7 @@ TEST("Peaceful players can't target each other")
     return true;
 TEND
 
-ONLY_TEST("Belliegerents can fight")
+TEST("Belliegerents can fight")
     TestServer s;
     TestClient alice = TestClient::Username("alicex");
     RemoteClient bob("-username bobx");
@@ -86,7 +86,7 @@ ONLY_TEST("Belliegerents can fight")
     return true;
 TEND
 
-ONLY_TEST("Peaceful players can't fight")
+TEST("Peaceful players can't fight")
     TestServer s;
     TestClient alice = TestClient::Username("alice");
     RemoteClient bob("-username bob");
