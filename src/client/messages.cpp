@@ -620,7 +620,7 @@ void Client::handleMessage(const std::string &msg){
             ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
             npc.health(health);
             if (targetAsEntity() == &npc){
-                _targetHealth = health;
+                _target.updateHealth(health);
                 if (health == 0)
                     _aggressive = false;
             }

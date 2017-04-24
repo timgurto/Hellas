@@ -9,6 +9,8 @@
 
 extern Renderer renderer;
 
+const std::string Entity::EMPTY_NAME = "";
+
 Entity::Entity(const EntityType *type, const Point &location):
 _yChanged(false),
 _type(type),

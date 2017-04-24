@@ -26,7 +26,6 @@ public:
     Avatar(const std::string &name = "", const Point &location = 0);
 
     void name(const std::string &newName) { _name = newName; }
-    const std::string &name() const { return _name; }
     const Point &destination() const { return _destination; }
     void destination(const Point &dst) { _destination = dst; }
     const Rect &collisionRect() const { return COLLISION_RECT + location(); }
@@ -44,6 +43,7 @@ public:
     virtual const Texture &tooltip() const override; // Getter; creates tooltip on first call.
     virtual void onLeftClick(Client &client) override;
     virtual void onRightClick(Client &client) override;
+    virtual const std::string &name() const override { return _name; }
     void playAttackSound() const; // The player has attacked; play an appropriate sound.
     void playDefendSound() const; // The player has been attacked; play an appropriate sound.
 

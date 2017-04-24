@@ -10,6 +10,10 @@ _combatant(nullptr)
 void Target::set(const Entity &asEntity, const ClientCombatant &asCombatant){
     _entity = &asEntity;
     _combatant = &asCombatant;
+
+    _name = _entity->name();
+    _health = _combatant->health();
+    _maxHealth = _combatant->maxHealth();
 }
 
 void Target::clear(){

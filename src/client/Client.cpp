@@ -117,9 +117,6 @@ _leftMouseDownEntity(nullptr),
 _rightMouseDown(false),
 _rightMouseDownEntity(nullptr),
 
-_targetName(""),
-_targetHealth(0),
-_targetMaxHealth(0),
 _targetDisplay(nullptr),
 _usernameDisplay(nullptr),
 _aggressive(false),
@@ -412,11 +409,11 @@ _debug("client.log"){
     _targetDisplay->addChild(new ColorBlock(Rect(0, 0, TARGET_W, TARGET_H)));
     _targetDisplay->addChild(new ShadowBox(Rect(0, 0, TARGET_W, TARGET_H)));
     _targetDisplay->addChild(new LinkedLabel<std::string>(
-            Rect(2, 1, TARGET_W - 4, Element::TEXT_HEIGHT), _targetName, "", "",
+            Rect(2, 1, TARGET_W - 4, Element::TEXT_HEIGHT), _target.name(), "", "",
             Element::CENTER_JUSTIFIED));
     _targetDisplay->addChild(new ProgressBar<health_t>(
             Rect(2, TARGET_H - BAR_HEIGHT - 2, TARGET_W - 4, BAR_HEIGHT),
-            _targetHealth, _targetMaxHealth, Color::HEALTH_BAR));
+            _target.health(), _target.maxHealth(), Color::HEALTH_BAR));
     _targetDisplay->hide();
     addUI(_targetDisplay);
 
@@ -830,9 +827,6 @@ void Client::targetAnNPC(const ClientNPC *newTarget, bool aggressive){
         _targetDisplay->hide();
     } else {
         _targetDisplay->show();
-        _targetName = newTarget->npcType()->name();
-        _targetHealth = newTarget->health();
-        _targetMaxHealth = newTarget->maxHealth();
     }
 }
 
@@ -884,9 +878,6 @@ void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
         _targetDisplay->hide();
     } else {
         _targetDisplay->show();
-        _targetName = newTarget->name();
-        _targetHealth = newTarget->health();
-        _targetMaxHealth = newTarget->maxHealth();
     }
 }
 

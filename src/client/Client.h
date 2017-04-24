@@ -232,10 +232,6 @@ private:
     void startAction(ms_t actionLength); // Start the action timer.  If zero, stop the timer.
 
     Target _target;
-    std::string _targetName;
-    health_t
-        _targetHealth,
-        _targetMaxHealth;
     Element *_targetDisplay;
     /*
     Whether the player is targeting aggressively, i.e., will attack when in range.

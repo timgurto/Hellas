@@ -18,6 +18,8 @@ class Entity{
 
     bool _toRemove; // No longer draw or update, and remove when possible.
 
+    static const std::string EMPTY_NAME;
+
 protected:
     mutable Texture _tooltip;
 
@@ -48,6 +50,7 @@ public:
     virtual void onRightClick(Client &client) {}
     virtual const Texture &cursor(const Client &client) const;
     virtual const Texture &tooltip() const { return _tooltip; }
+    virtual const std::string &name() const { return EMPTY_NAME; }
     void refreshTooltip() const { _tooltip = Texture(); }
 
     double bottomEdge() const;
