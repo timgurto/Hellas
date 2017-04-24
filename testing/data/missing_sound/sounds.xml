@@ -1,0 +1,5 @@
+<root>
+<soundProfile id="avatar" >
+    <sound type="attack" file="doesntExist" />
+</soundProfile>
+</root>

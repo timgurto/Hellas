@@ -35,8 +35,11 @@ Channel SoundProfile::checkAndPlaySound(const SoundType &type, bool loop) const{
     }
     SoundVariants variants = it->second;
     Mix_Chunk *sound = variants.choose();
-    if (sound == nullptr)
-        throw;
+    if (sound == nullptr){
+        Client::_instance->debug() << Color::FAILURE << "\"" << _id << ":" << type
+                                   << "\" sound variant not found." << Log::endl;
+        return NO_CHANNEL;
+    }
     int loopArg = loop ? -1 : 0;
     return Mix_PlayChannel(-1, sound, loopArg);
 }
