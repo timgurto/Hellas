@@ -20,7 +20,6 @@
     <sound type="attack" file="boneThud3" />
     <sound type="attack" file="boneThud4" />
     <sound type="attack" file="boneThud5" />
-    <sound type="attack" file="boneThud6" />
 </soundProfile>
 <soundProfile id="ceramic" >
     <sound type="drop" file="ceramic" />
