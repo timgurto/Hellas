@@ -44,3 +44,25 @@ ONLY_TEST("Players can target each other")
 
     return true;
 TEND
+
+ONLY_TEST("Belliegerents can fight")
+    TestServer s;
+    TestClient alice = TestClient::Username("alice");
+    RemoteClient bob("-username bob");
+    WAIT_UNTIL(s.users().size() == 2);
+
+    alice.sendMessage(CL_DECLARE_WAR, "bob");
+
+    User &
+        uAlice = s.findUser("alice"),
+        uBob = s.findUser("bob");
+    while (distance(uAlice.location(), uBob.location()) > Server::ACTION_DISTANCE)
+        uAlice.updateLocation(uBob.location());
+
+    WAIT_UNTIL(alice->isAtWarWith("bob"));
+
+    alice.sendMessage(CL_TARGET_PLAYER, "bob");
+    WAIT_UNTIL(uBob.health() < uBob.maxHealth());
+
+    return true;
+TEND

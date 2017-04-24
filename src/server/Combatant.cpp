@@ -42,18 +42,26 @@ void Combatant::update(ms_t timeElapsed){
         Point locus = midpoint(location(), target()->location());
         MessageCode msgCode;
         std::string args;
-        if (classTag() == 'u' && target()->classTag() == 'n'){
+        char
+            attackerTag = classTag(),
+            defenderTag = target()->classTag();
+        if (attackerTag == 'u' && defenderTag == 'n'){
             msgCode = SV_PLAYER_HIT_NPC;
             args = makeArgs(
                     dynamic_cast<const User *>(this)->name(),
                     dynamic_cast<const NPC *>(target())->serial());
-        } else if (classTag() == 'n' && target()->classTag() == 'u'){
+        } else if (attackerTag == 'n' && defenderTag == 'u'){
             msgCode = SV_NPC_HIT_PLAYER;
             args = makeArgs(
                     dynamic_cast<const NPC *>(this)->serial(),
                     dynamic_cast<const User *>(target())->name());
+        } else if (attackerTag == 'u' && defenderTag == 'u') {
+            msgCode = SV_PLAYER_HIT_PLAYER;
+            args = makeArgs(
+                    dynamic_cast<const User *>(this)->name(),
+                    dynamic_cast<const User *>(target())->name());
         } else {
-            return;
+            assert(false);
         }
         for (const User *user : server.findUsersInArea(locus)){
             server.sendMessage(user->socket(), msgCode, args);

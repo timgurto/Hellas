@@ -698,6 +698,46 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_PLAYER_HIT_PLAYER:
+        {
+            std::string attackerName, defenderName;
+            readString(singleMsg, attackerName);
+            singleMsg >> del;
+            readString(singleMsg, defenderName, MSG_END);
+            singleMsg >> del;
+            if (del != MSG_END)
+                break;
+
+            const Avatar *attacker = nullptr;
+            if (attackerName == _username)
+                attacker = &character();
+            else{
+                auto userIt = _otherUsers.find(attackerName);
+                if (userIt == _otherUsers.end()){
+                    _debug("Received combat info for an unknown attacking player.", Color::FAILURE);
+                    break;
+                }
+                attacker = userIt->second;
+            }
+
+            const Avatar *defender = nullptr;
+            if (defenderName == _username)
+                defender = &character();
+            else{
+                auto userIt = _otherUsers.find(defenderName);
+                if (userIt == _otherUsers.end()){
+                    _debug("Received combat info for an unknown defending player.", Color::FAILURE);
+                    break;
+                }
+                defender = userIt->second;
+            }
+            
+            attacker->playAttackSound();
+            defender->playDefendSound();
+            addParticles("combatDamage", defender->location());
+            break;
+        }
+
         case SV_LOOTABLE:
         {
             int serial;

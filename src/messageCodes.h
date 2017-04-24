@@ -204,6 +204,10 @@ enum MessageCode{
     // A player hit an NPC
     // Arguments: username, serial
     SV_PLAYER_HIT_NPC = 139,
+    
+    // A player hit an another player
+    // Arguments: attacker's username, defender's username
+    SV_PLAYER_HIT_PLAYER = 140,
 
     // An object has an owner
     // Arguments: serial, owner
