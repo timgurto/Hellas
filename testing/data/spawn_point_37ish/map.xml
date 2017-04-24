@@ -1,5 +1,5 @@
 <root>
-    <newPlayerSpawn x="37" y="37" />
+    <newPlayerSpawn x="37" y="37" range="20" />
     <size x="2" y="2" />
     <row    y="0" terrain = "GG" />
     <row    y="1" terrain = "GG" />
