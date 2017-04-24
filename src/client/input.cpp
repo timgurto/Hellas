@@ -65,8 +65,8 @@ void Client::handleInput(double delta){
 
                 case SDLK_ESCAPE:
                 {
-                    if (_targetNPC != nullptr){
-                        targetNPC(nullptr);
+                    if (_target.exists()){
+                        targetAnNPC(nullptr);
                         break;
                     }
 
@@ -309,7 +309,7 @@ void Client::handleInput(double delta){
                     _currentMouseOverEntity == _leftMouseDownEntity)
                     _currentMouseOverEntity->onLeftClick(*this);
                 else
-                    targetNPC(nullptr);
+                    targetAnNPC(nullptr);
                 _leftMouseDownEntity = nullptr;
 
                 break;
@@ -360,7 +360,7 @@ void Client::handleInput(double delta){
                     _currentMouseOverEntity == _rightMouseDownEntity)
                     _currentMouseOverEntity->onRightClick(*this);
                 else
-                    targetNPC(nullptr);
+                    targetAnNPC(nullptr);
                 _rightMouseDownEntity = nullptr;
 
                 break;

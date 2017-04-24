@@ -5,11 +5,14 @@
 
 #include "ClientItem.h"
 #include "Entity.h"
+#include "ClientCombatant.h"
+#include "ClientCombatantType.h"
 #include "../Point.h"
 
 // The client-side representation of a user, including the player
-class Avatar : public Entity{
+class Avatar : public Entity, public ClientCombatant{
     static std::map<std::string, EntityType> _classes;
+    static ClientCombatantType _combatantType;
     static const Rect COLLISION_RECT, DRAW_RECT;
 
     Point _destination;
@@ -38,7 +41,9 @@ public:
 
     virtual void draw(const Client &client) const override;
     virtual void update(double delta) override;
-    const Texture &tooltip() const override; // Getter; creates tooltip on first call.
+    virtual const Texture &tooltip() const override; // Getter; creates tooltip on first call.
+    virtual void onLeftClick(Client &client) override;
+    virtual void onRightClick(Client &client) override;
     void playAttackSound() const; // The player has attacked; play an appropriate sound.
     void playDefendSound() const; // The player has been attacked; play an appropriate sound.
 

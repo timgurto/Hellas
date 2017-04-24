@@ -3,11 +3,11 @@
 
 #include "ClientNPCType.h"
 #include "ClientObject.h"
+#include "ClientCombatant.h"
 
 class TakeContainer;
 
-class ClientNPC : public ClientObject{
-    health_t _health;
+class ClientNPC : public ClientObject, public ClientCombatant{
 
     /*
     True if the NPC is dead and has loot available.  This is used as the loot itself is unknown
@@ -24,8 +24,6 @@ public:
     
     virtual const Texture &image() const;
     virtual const Texture &highlightImage() const;
-    health_t health() const { return _health; }
-    void health(health_t n) { _health = n; }
     bool lootable() const { return _lootable; }
     void lootable(bool b) { _lootable = b; }
     virtual bool isFlat() const override;

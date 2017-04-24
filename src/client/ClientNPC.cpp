@@ -10,7 +10,7 @@ const size_t ClientNPC::LOOT_CAPACITY = 8;
 
 ClientNPC::ClientNPC(size_t serial, const ClientNPCType *type, const Point &loc):
 ClientObject(serial, type, loc),
-_health(type->maxHealth()),
+ClientCombatant(type),
 _lootable(false),
 _lootContainer(nullptr)
 {}
@@ -21,7 +21,7 @@ void ClientNPC::draw(const Client &client) const{
     // Draw health bar if damaged or targeted
     if (health() == 0)
         return;
-    if (client.targetNPC() == this || client.currentMouseOverEntity() == this ||
+    if (client.targetAsEntity() == this || client.currentMouseOverEntity() == this ||
         health() < npcType()->maxHealth()){
         static const px_t
             BAR_TOTAL_LENGTH = 10,
@@ -63,13 +63,13 @@ void ClientNPC::update(double delta){
 }
 
 void ClientNPC::onLeftClick(Client &client){
-    client.targetNPC(this);
+    client.targetAnNPC(this);
     
     // Note: parent class's onLeftClick() not called.
 }
 
 void ClientNPC::onRightClick(Client &client){
-    client.targetNPC(this, true);
+    client.targetAnNPC(this, true);
     
     // Loot window
     if (lootable())

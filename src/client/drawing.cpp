@@ -35,11 +35,11 @@ void Client::draw() const{
         }
     }
 
-    // Base under target NPC
-    if (_targetNPC != nullptr){
+    // Base under target combatant
+    if (_target.exists()){
         const Texture &base = aggressive() ? _baseAggressive : _basePassive;
         static const Point BASE_OFFSET(-15, -10);
-        base.draw(targetNPC()->location() + offset() + BASE_OFFSET);
+        base.draw(_target.entity()->location() + offset() + BASE_OFFSET);
     }
 
     // Character's target and actual location

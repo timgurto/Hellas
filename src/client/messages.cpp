@@ -1,6 +1,7 @@
 #include <cassert>
 
 #include "Client.h"
+#include "ClientCombatant.h"
 #include "ClientObject.h"
 #include "ClientNPC.h"
 #include "ClientVehicle.h"
@@ -271,8 +272,8 @@ void Client::handleMessage(const std::string &msg){
                 for (auto pair : objectsToRemove){
                     if (pair.second == _currentMouseOverEntity)
                         _currentMouseOverEntity = nullptr;
-                    if (pair.second == _targetNPC)
-                        targetNPC(nullptr);
+                    if (pair.second == targetAsEntity())
+                        targetAnNPC(nullptr);
                     removeEntity(pair.second);
                     _objects.erase(_objects.find(pair.first));
                 }
@@ -497,8 +498,8 @@ void Client::handleMessage(const std::string &msg){
             }
             if (it->second == _currentMouseOverEntity)
                 _currentMouseOverEntity = nullptr;
-            if (it->second == _targetNPC)
-                targetNPC(nullptr);
+            if (it->second == targetAsEntity())
+                targetAnNPC(nullptr);
             removeEntity(it->second);
             _objects.erase(it);
             break;
@@ -618,8 +619,8 @@ void Client::handleMessage(const std::string &msg){
             }
             ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
             npc.health(health);
-            if (_targetNPC == &npc){
-                _targetNPCHealth = health;
+            if (targetAsEntity() == &npc){
+                _targetHealth = health;
                 if (health == 0)
                     _aggressive = false;
             }

@@ -7,8 +7,10 @@
 #include <set>
 
 #include "Avatar.h"
+#include "ClientCombatant.h"
 #include "ClientItem.h"
 #include "ClientMerchantSlot.h"
+#include "ClientNPC.h"
 #include "ClientObject.h"
 #include "ClientObjectType.h"
 #include "ClientTerrain.h"
@@ -16,6 +18,7 @@
 #include "LogSDL.h"
 #include "ParticleProfile.h"
 #include "SoundProfile.h"
+#include "Target.h"
 #include "ui/ChoiceList.h"
 #include "ui/ItemSelector.h"
 #include "ui/Window.h"
@@ -27,7 +30,6 @@
 #include "../types.h"
 #include "../server/Recipe.h"
 
-class ClientNPC;
 class TextBox;
 
 class Client{
@@ -48,8 +50,10 @@ public:
     const std::string &username() const { return _username; }
     const Entity *currentMouseOverEntity() const { return _currentMouseOverEntity; }
     Rect playerCollisionRect() const { return _character.collisionRect(); }
-    void targetNPC(const ClientNPC *npc, bool aggressive = false);
-    const ClientNPC *targetNPC() const { return _targetNPC; }
+    void targetAnNPC(const ClientNPC *newTarget, bool aggressive = false);
+    void targetAPlayer(const Avatar *newTarget, bool aggressive = false);
+    const ClientCombatant *targetAsCombatant() const { return _target.combatant(); }
+    const Entity *targetAsEntity() const { return _target.entity(); }
     bool aggressive() const { return _aggressive; }
     bool isDismounting() const { return _isDismounting; }
     void attemptDismount() { _isDismounting = true; }
@@ -65,6 +69,7 @@ public:
     static const px_t TILE_W, TILE_H;
     static const double MOVEMENT_SPEED;
     static const double VEHICLE_SPEED;
+    static const health_t MAX_PLAYER_HEALTH;
 
     enum SpecialSerial{
         INVENTORY = 0,
@@ -226,11 +231,11 @@ private:
     void prepareAction(const std::string &msg); // Set up the action, awaiting server confirmation.
     void startAction(ms_t actionLength); // Start the action timer.  If zero, stop the timer.
 
-    const ClientNPC *_targetNPC;
-    std::string _targetNPCName;
+    Target _target;
+    std::string _targetName;
     health_t
-        _targetNPCHealth,
-        _targetNPCMaxHealth;
+        _targetHealth,
+        _targetMaxHealth;
     Element *_targetDisplay;
     /*
     Whether the player is targeting aggressively, i.e., will attack when in range.

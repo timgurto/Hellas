@@ -5,7 +5,7 @@
 
 ClientNPCType::ClientNPCType(const std::string &id, health_t maxHealth):
 ClientObjectType(id),
-_maxHealth(maxHealth),
+ClientCombatantType(maxHealth),
 _sounds(nullptr)
 {
     containerSlots(ClientNPC::LOOT_CAPACITY);

@@ -10,9 +10,11 @@ extern Renderer renderer;
 const Rect Avatar::DRAW_RECT(-9, -39, 20, 40);
 const Rect Avatar::COLLISION_RECT(-5, -2, 10, 4);
 std::map<std::string, EntityType> Avatar::_classes;
+ClientCombatantType Avatar::_combatantType(Client::MAX_PLAYER_HEALTH);
 
 Avatar::Avatar(const std::string &name, const Point &location):
 Entity(&_classes[""], location),
+ClientCombatant(&_combatantType),
 _name(name),
 _gear(Client::GEAR_SLOTS, std::make_pair(nullptr, 0)),
 _driving(false){}
@@ -111,4 +113,14 @@ void Avatar::playDefendSound() const{
     const SoundProfile *armorSound = armor == nullptr ? client.avatarSounds() : armor->sounds();
     if (armorSound != nullptr)
         armorSound->playOnce("defend");
+}
+
+void Avatar::onLeftClick(Client &client){
+    client.targetAPlayer(this);
+    // Note: parent class's onLeftClick() not called.
+}
+
+void Avatar::onRightClick(Client &client){
+    client.targetAPlayer(this, true);
+    // Note: parent class's onRightClick() not called.
 }

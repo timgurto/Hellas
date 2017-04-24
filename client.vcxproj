@@ -99,6 +99,8 @@
     <ClCompile Include="src\client\Avatar.cpp" />
     <ClCompile Include="src\client\buildWindow.cpp" />
     <ClCompile Include="src\client\Client.cpp" />
+    <ClCompile Include="src\client\ClientCombatant.cpp" />
+    <ClCompile Include="src\client\ClientCombatantType.cpp" />
     <ClCompile Include="src\client\ClientMerchantSlot.cpp" />
     <ClCompile Include="src\client\ClientNPC.cpp" />
     <ClCompile Include="src\client\ClientObject.cpp" />
@@ -125,6 +127,7 @@
     <ClCompile Include="src\client\Renderer.cpp" />
     <ClCompile Include="src\client\SoundProfile.cpp" />
     <ClCompile Include="src\client\Surface.cpp" />
+    <ClCompile Include="src\client\Target.cpp" />
     <ClCompile Include="src\client\Texture.cpp" />
     <ClCompile Include="src\client\TooltipBuilder.cpp" />
     <ClCompile Include="src\client\ui\Button.cpp" />
@@ -166,6 +169,7 @@
     <ClInclude Include="src\Args.h" />
     <ClInclude Include="src\client\Avatar.h" />
     <ClInclude Include="src\client\Client.h" />
+    <ClInclude Include="src\client\ClientCombatantType.h" />
     <ClInclude Include="src\client\ClientMerchantSlot.h" />
     <ClInclude Include="src\client\ClientNPC.h" />
     <ClInclude Include="src\client\ClientObject.h" />
@@ -176,6 +180,7 @@
     <ClInclude Include="src\client\Entity.h" />
     <ClInclude Include="src\client\EntityType.h" />
     <ClInclude Include="src\client\ClientItem.h" />
+    <ClInclude Include="src\client\ClientCombatant.h" />
     <ClInclude Include="src\client\LogSDL.h" />
     <ClInclude Include="src\client\ClientNPCType.h" />
     <ClInclude Include="src\client\Particle.h" />
@@ -183,6 +188,7 @@
     <ClInclude Include="src\client\Renderer.h" />
     <ClInclude Include="src\client\SoundProfile.h" />
     <ClInclude Include="src\client\Surface.h" />
+    <ClInclude Include="src\client\Target.h" />
     <ClInclude Include="src\client\Texture.h" />
     <ClInclude Include="src\client\TooltipBuilder.h" />
     <ClInclude Include="src\client\ui\Button.h" />

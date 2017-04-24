@@ -12,6 +12,7 @@
 #include "Client.h"
 #include "ClientNPC.h"
 #include "EntityType.h"
+#include "ClientCombatant.h"
 #include "LogSDL.h"
 #include "Particle.h"
 #include "TooltipBuilder.h"
@@ -52,6 +53,7 @@ const px_t Client::TILE_W = 32;
 const px_t Client::TILE_H = 32;
 const double Client::MOVEMENT_SPEED = 80;
 const double Client::VEHICLE_SPEED = 20;
+const health_t Client::MAX_PLAYER_HEALTH = 100;
 
 const px_t Client::ACTION_DISTANCE = 30;
 
@@ -115,10 +117,9 @@ _leftMouseDownEntity(nullptr),
 _rightMouseDown(false),
 _rightMouseDownEntity(nullptr),
 
-_targetNPC(nullptr),
-_targetNPCName(""),
-_targetNPCHealth(0),
-_targetNPCMaxHealth(0),
+_targetName(""),
+_targetHealth(0),
+_targetMaxHealth(0),
 _targetDisplay(nullptr),
 _usernameDisplay(nullptr),
 _aggressive(false),
@@ -411,11 +412,11 @@ _debug("client.log"){
     _targetDisplay->addChild(new ColorBlock(Rect(0, 0, TARGET_W, TARGET_H)));
     _targetDisplay->addChild(new ShadowBox(Rect(0, 0, TARGET_W, TARGET_H)));
     _targetDisplay->addChild(new LinkedLabel<std::string>(
-            Rect(2, 1, TARGET_W - 4, Element::TEXT_HEIGHT), _targetNPCName, "", "",
+            Rect(2, 1, TARGET_W - 4, Element::TEXT_HEIGHT), _targetName, "", "",
             Element::CENTER_JUSTIFIED));
     _targetDisplay->addChild(new ProgressBar<health_t>(
             Rect(2, TARGET_H - BAR_HEIGHT - 2, TARGET_W - 4, BAR_HEIGHT),
-            _targetNPCHealth, _targetNPCMaxHealth, Color::HEALTH_BAR));
+            _targetHealth, _targetMaxHealth, Color::HEALTH_BAR));
     _targetDisplay->hide();
     addUI(_targetDisplay);
 
@@ -783,51 +784,109 @@ bool Client::outsideCullRange(const Point &loc, px_t hysteresis) const{
         abs(loc.y - _character.location().y) > testCullDist;
 }
 
-void Client::targetNPC(const ClientNPC *npc, bool aggressive){
+void Client::targetAnNPC(const ClientNPC *newTarget, bool aggressive){
     bool tellServer = false;
-    size_t serialToSend = 0;
+    bool targetExists = false;
 
-    if (npc != nullptr && npc->health() == 0)
+    if (newTarget != nullptr && newTarget->health() == 0)
         aggressive = false;
 
     // Same target
-    if (npc == _targetNPC){
+    if (newTarget == targetAsEntity()){
         if (aggressive != _aggressive){
-            assert(npc != nullptr);
+            assert(newTarget != nullptr);
             tellServer = true;
             if (aggressive) // Switching from passive to aggressive
-                serialToSend = npc->serial();
+                targetExists = true;
         }
     }
 
     // Was aggressive, but switched
     else if (_aggressive){
         tellServer = true;
-        if (npc != nullptr && aggressive)
-            serialToSend = npc->serial();
+        if (newTarget != nullptr && aggressive)
+            targetExists = true;
     }
 
     // New target, aggressive
     else if (aggressive){
-        assert(npc != nullptr);
+        assert(newTarget != nullptr);
         tellServer = true;
-        serialToSend = npc->serial();
+        targetExists = true;
     }
 
-    _targetNPC = npc;
+    if (newTarget == nullptr)
+        _target.clear();
+    else
+        _target.set(*newTarget, *newTarget);
     _aggressive = aggressive;
 
     if (tellServer){
-        sendMessage(CL_TARGET_NPC, makeArgs(serialToSend));
+        size_t serial = targetExists ? newTarget->serial() : 0;
+        sendMessage(CL_TARGET_NPC, makeArgs(serial));
     }
 
-    if (npc == nullptr){
+    if (newTarget == nullptr){
         _targetDisplay->hide();
     } else {
         _targetDisplay->show();
-        _targetNPCName = npc->npcType()->name();
-        _targetNPCHealth = npc->health();
-        _targetNPCMaxHealth = npc->npcType()->maxHealth();
+        _targetName = newTarget->npcType()->name();
+        _targetHealth = newTarget->health();
+        _targetMaxHealth = newTarget->maxHealth();
+    }
+}
+
+void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
+    bool tellServer = false;
+    bool targetExists = false;
+
+    if (newTarget != nullptr && newTarget->health() == 0)
+        aggressive = false;
+
+    // Same target
+    if (newTarget == targetAsEntity()){
+        if (aggressive != _aggressive){
+            assert(newTarget != nullptr);
+            tellServer = true;
+            if (aggressive) // Switching from passive to aggressive
+                targetExists = true;
+        }
+    }
+
+    // Was aggressive, but switched
+    else if (_aggressive){
+        tellServer = true;
+        if (newTarget != nullptr && aggressive)
+            targetExists = true;
+    }
+
+    // New target, aggressive
+    else if (aggressive){
+        assert(newTarget != nullptr);
+        tellServer = true;
+        targetExists = true;
+    }
+
+    if (newTarget == nullptr)
+        _target.clear();
+    else
+        _target.set(*newTarget, *newTarget);
+    _aggressive = aggressive;
+
+    if (tellServer){
+        if (targetExists)
+            sendMessage(CL_TARGET_PLAYER, newTarget->name());
+        else
+            sendMessage(CL_TARGET_NPC, makeArgs(0));
+    }
+
+    if (newTarget == nullptr){
+        _targetDisplay->hide();
+    } else {
+        _targetDisplay->show();
+        _targetName = newTarget->name();
+        _targetHealth = newTarget->health();
+        _targetMaxHealth = newTarget->maxHealth();
     }
 }
 
