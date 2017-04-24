@@ -30,7 +30,23 @@ TEST("Players can attack immediately")
     return false;
 TEND
 
-ONLY_TEST("Players can target each other")
+TEST("Belligerents can target each other")
+    TestServer s;
+    TestClient alice = TestClient::Username("alice");
+    RemoteClient bob("-username bob");
+    WAIT_UNTIL(s.users().size() == 2);
+    User
+        &uAlice = s.findUser("alice"),
+        &uBob = s.findUser("bob");
+
+    alice.sendMessage(CL_DECLARE_WAR, "bob");
+    alice.sendMessage(CL_TARGET_PLAYER, "bob");
+    WAIT_UNTIL(uAlice.target() == &uBob);
+
+    return true;
+TEND
+
+TEST("Peaceful players can't target each other")
     TestServer s;
     TestClient alice = TestClient::Username("alice");
     RemoteClient bob("-username bob");
@@ -40,29 +56,53 @@ ONLY_TEST("Players can target each other")
         &uBob = s.findUser("bob");
 
     alice.sendMessage(CL_TARGET_PLAYER, "bob");
-    WAIT_UNTIL(uAlice.target() == &uBob);
+    REPEAT_FOR_MS(500) {
+        if (uAlice.target() == &uBob)
+            return false;
+    }
 
     return true;
 TEND
 
 ONLY_TEST("Belliegerents can fight")
     TestServer s;
+    TestClient alice = TestClient::Username("alicex");
+    RemoteClient bob("-username bobx");
+    WAIT_UNTIL(s.users().size() == 2);
+
+    alice.sendMessage(CL_DECLARE_WAR, "bobx");
+
+    User
+        &uAlice = s.findUser("alicex"),
+        &uBob = s.findUser("bobx");
+    while (distance(uAlice.location(), uBob.location()) > Server::ACTION_DISTANCE)
+        uAlice.updateLocation(uBob.location());
+
+    WAIT_UNTIL(alice->isAtWarWith("bobx"));
+
+    alice.sendMessage(CL_TARGET_PLAYER, "bobx");
+    WAIT_UNTIL(uBob.health() < uBob.maxHealth());
+
+    return true;
+TEND
+
+ONLY_TEST("Peaceful players can't fight")
+    TestServer s;
     TestClient alice = TestClient::Username("alice");
     RemoteClient bob("-username bob");
     WAIT_UNTIL(s.users().size() == 2);
 
-    alice.sendMessage(CL_DECLARE_WAR, "bob");
-
-    User &
-        uAlice = s.findUser("alice"),
-        uBob = s.findUser("bob");
+    User
+        &uAlice = s.findUser("alice"),
+        &uBob = s.findUser("bob");
     while (distance(uAlice.location(), uBob.location()) > Server::ACTION_DISTANCE)
         uAlice.updateLocation(uBob.location());
 
-    WAIT_UNTIL(alice->isAtWarWith("bob"));
-
     alice.sendMessage(CL_TARGET_PLAYER, "bob");
-    WAIT_UNTIL(uBob.health() < uBob.maxHealth());
+    REPEAT_FOR_MS(500) {
+        if (uBob.health() < uBob.maxHealth())
+            return false;
+    }
 
     return true;
 TEND

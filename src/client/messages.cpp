@@ -170,6 +170,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_UNKNOWN_RECIPE:
         case SV_UNKNOWN_CONSTRUCTION:
         case SV_UNDER_CONSTRUCTION:
+        case SV_AT_PEACE:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
@@ -182,6 +183,7 @@ void Client::handleMessage(const std::string &msg){
             readString(singleMsg, reqItemTag, MSG_END);
             singleMsg >> del;
             if (del != MSG_END)
+
                 break;
             std::string msg = "You need a";
             const char first = reqItemTag.front();
@@ -1092,6 +1094,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_UNKNOWN_CONSTRUCTION] = "You don't know how to construct that object.";
     _errorMessages[SV_WRONG_MATERIAL] = "The construction site doesn't need that.";
     _errorMessages[SV_UNDER_CONSTRUCTION] = "That object is still under construction.";
+    _errorMessages[SV_AT_PEACE] = "You are not at war with that player.";
 }
 
 void Client::performCommand(const std::string &commandString){

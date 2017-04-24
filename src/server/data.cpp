@@ -149,6 +149,7 @@ void Server::writeUserData(const User &user) const{
 }
 
 void Server::loadData(const std::string &path){
+    _debug("Loading data");
     _objects.clear();
 
     // Load terrain lists

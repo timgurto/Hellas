@@ -901,11 +901,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_NPC_DEAD);
                 break;
             }
+            if (! _wars.isAtWar(user->name(), targetUsername)){
+                user->setTargetAndAttack(nullptr);
+                sendMessage(client, SV_AT_PEACE);
+                break;
+            }
 
             user->setTargetAndAttack(targetUser);
 
             break;
         }
+
 
         case CL_DECLARE_WAR:
         {

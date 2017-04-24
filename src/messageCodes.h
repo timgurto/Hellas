@@ -373,6 +373,9 @@ enum MessageCode{
     // The user tried to use an object that is still under construction
     SV_UNDER_CONSTRUCTION = 942,
 
+    // The user tried to attack a player without being at war with him
+    SV_AT_PEACE = 943,
+
 
 
     // Debug requests
