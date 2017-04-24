@@ -172,6 +172,7 @@ void Server::run(){
 
     _loop = true;
     _running = true;
+    _debug("Ready", Color::GREEN);
     while (_loop) {
         _time = SDL_GetTicks();
         const ms_t timeElapsed = _time - _lastTime;

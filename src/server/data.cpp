@@ -237,7 +237,6 @@ void Server::loadData(const std::string &path){
                 xr.findAttr(yield, "gatherSD", gatherSD);
                 std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
                 ot->addYield(&*itemIt, initMean, initSD, gatherMean, gatherSD);
-                _debug << id << " yields " << s << Log::endl;
             }
 
             // Merchant
