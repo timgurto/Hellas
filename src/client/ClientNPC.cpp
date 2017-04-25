@@ -63,13 +63,13 @@ void ClientNPC::update(double delta){
 }
 
 void ClientNPC::onLeftClick(Client &client){
-    client.setTarget(this);
+    client.setTarget(*this);
     
     // Note: parent class's onLeftClick() not called.
 }
 
 void ClientNPC::onRightClick(Client &client){
-    client.setTarget(this, true);
+    client.setTarget(*this, true);
     
     // Loot window
     if (lootable())

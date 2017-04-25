@@ -11,17 +11,10 @@ _panel(nullptr)
 {}
 
 void Target::setAndAlertServer(
-        const Entity *asEntity, const ClientCombatant *asCombatant, bool nowAggressive){
-
+        const Entity &asEntity, const ClientCombatant &asCombatant, bool nowAggressive){
     const Client &client = *Client::_instance;
-
-    if (asEntity == nullptr){
-        clearTarget();
-        return;
-    }
-
-    const ClientCombatant &targetCombatant = *asCombatant;
-    const Entity &targetEntity = *asEntity;
+    const ClientCombatant &targetCombatant = asCombatant;
+    const Entity &targetEntity = asEntity;
 
     if (! targetCombatant.canBeAttackedByPlayer())
         nowAggressive = false;
@@ -33,8 +26,8 @@ void Target::setAndAlertServer(
             client.sendClearTargetMessage();
     }
 
-    _entity = asEntity;
-    _combatant = asCombatant;
+    _entity = &asEntity;
+    _combatant = &asCombatant;
     _aggressive = nowAggressive;
 
     _name = _entity->name();
@@ -44,15 +37,6 @@ void Target::setAndAlertServer(
     _panel->show();
 }
 
-void Target::clearTarget(){
-    const Client &client = *Client::_instance;
-
-    bool serverHasTarget = isAggressive();
-    if (serverHasTarget)
-        client.sendClearTargetMessage();
-    clear();
-}
-
 bool Target::targetIsDifferentFromServer(const Entity &newTarget, bool nowAggressive){
     bool sameTargetAsBefore = &newTarget == _entity;
     bool aggressionLevelChanged = isAggressive() != nowAggressive;
@@ -60,6 +44,12 @@ bool Target::targetIsDifferentFromServer(const Entity &newTarget, bool nowAggres
 }
 
 void Target::clear(){
+    const Client &client = *Client::_instance;
+
+    bool serverHasTarget = isAggressive();
+    if (serverHasTarget)
+        client.sendClearTargetMessage();
+
     _entity = nullptr;
     _combatant = nullptr;
     _aggressive = false;

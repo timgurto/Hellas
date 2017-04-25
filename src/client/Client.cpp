@@ -750,7 +750,6 @@ bool Client::outsideCullRange(const Point &loc, px_t hysteresis) const{
         abs(loc.y - _character.location().y) > testCullDist;
 }
 
-
 const ParticleProfile *Client::findParticleProfile(const std::string &id){
     ParticleProfile dummy(id);
     auto it = _particleProfiles.find(&dummy);

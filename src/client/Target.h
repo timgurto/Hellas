@@ -17,7 +17,7 @@ public:
     Target();
 
     template<typename T>
-    void setAndAlertServer(const T *newTarget, bool nowAggressive){
+    void setAndAlertServer(const T &newTarget, bool nowAggressive){
         setAndAlertServer(newTarget, newTarget, nowAggressive);
     }
 
@@ -52,8 +52,7 @@ private:
     health_t _health, _maxHealth;
 
     void setAndAlertServer(
-            const Entity *asEntity, const ClientCombatant *asCombatant, bool nowAggressive);
-    void clearTarget();
+            const Entity &asEntity, const ClientCombatant &asCombatant, bool nowAggressive);
     bool targetIsDifferentFromServer(const Entity &newTarget, bool nowAggressive);
 
     CombatantPanel *_panel;

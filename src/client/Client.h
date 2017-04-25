@@ -58,9 +58,10 @@ public:
     bool isAtWarWith(const std::string &username) const;
 
     template<typename T>
-    void setTarget(const T *newTarget, bool aggressive = false){
+    void setTarget(const T &newTarget, bool aggressive = false){
         _target.setAndAlertServer(newTarget, aggressive);
     }
+    void clearTarget() { _target.clear(); }
     
     const Texture &cursorNormal() const { return _cursorNormal; }
     const Texture &cursorGather() const { return _cursorGather; }
@@ -240,7 +241,6 @@ private:
     Texture
         _basePassive,
         _baseAggressive;
-    void clearTarget();
 
     bool _loop;
     bool _running; // True while run() is being executed.
