@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include "Test.h"
+#include "testing.h"
 #include "../client/Renderer.h"
 #include "../Args.h"
 #include "../Socket.h"
@@ -74,7 +75,10 @@ int main(int argc, char **argv){
                 glyph = glyphSkip;
                 ++skipped;
             } else {
+                deleteUserFiles();
+
                 bool result = test.fun()();
+
                 if (!result){
                     statusColor = &colorFail;
                     glyph = glyphFail;
@@ -97,4 +101,17 @@ int main(int argc, char **argv){
     std::cout << "." << std::endl;
 
     return 0;
+}
+
+void deleteUserFiles(){
+    WIN32_FIND_DATAW fd;
+    HANDLE hFind = FindFirstFileW(L"testing\\users\\*.usr", &fd);
+    if (hFind != INVALID_HANDLE_VALUE)
+    {
+        do
+        {
+            DeleteFileW((std::wstring(L"testing\\users\\") + fd.cFileName).c_str());
+        } while (FindNextFileW(hFind, &fd));
+        FindClose(hFind);
+    }
 }

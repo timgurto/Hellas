@@ -285,6 +285,7 @@
     <ClInclude Include="src\Terrain.h" />
     <ClInclude Include="src\testing\TestClient.h" />
     <ClInclude Include="src\testing\RemoteClient.h" />
+    <ClInclude Include="src\testing\testing.h" />
     <ClInclude Include="src\testing\TestServer.h" />
     <ClInclude Include="src\testing\Test.h" />
     <ClInclude Include="src\types.h" />
