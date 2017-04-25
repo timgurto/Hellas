@@ -752,87 +752,11 @@ bool Client::outsideCullRange(const Point &loc, px_t hysteresis) const{
 
 
 void Client::targetAnNPC(const ClientNPC *newTarget, bool nowAggressive){
-    if (newTarget == nullptr){
-        clearTarget();
-        return;
-    }
-
-    if (! newTarget->canBeAttackedByPlayer())
-        nowAggressive = false;
-
-    if (targetIsDifferentFromServer(*newTarget, nowAggressive)){
-        if (nowAggressive)
-            newTarget->sendTargetMessage();
-        else
-            sendClearTargetMessage();
-    }
-
-    _target.set(*newTarget, nowAggressive);
+    _target.setAndAlertServer(newTarget, nowAggressive);
 }
 
-void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
-    bool tellServer = false;
-    bool targetExists = false;
-    bool currentlyAggressive = _target.isAggressive();
-
-    if (newTarget != nullptr && ! newTarget->canBeAttackedByPlayer())
-        aggressive = false;
-
-    // Same target
-    if (newTarget == targetAsEntity()){
-        if (aggressive != currentlyAggressive){
-            assert(newTarget != nullptr);
-            tellServer = true;
-            if (aggressive) // Switching from passive to aggressive
-                targetExists = true;
-        }
-    }
-
-    // Was aggressive, but switched
-    else if (currentlyAggressive){
-        tellServer = true;
-        if (newTarget != nullptr && aggressive)
-            targetExists = true;
-    }
-
-    // New target, aggressive
-    else if (aggressive){
-        assert(newTarget != nullptr);
-        tellServer = true;
-        targetExists = true;
-    }
-
-    if (newTarget == nullptr)
-        _target.clear();
-    else
-        _target.set(*newTarget, aggressive);
-    currentlyAggressive = aggressive;
-
-    if (tellServer){
-        if (targetExists)
-            newTarget->sendTargetMessage();
-        else
-            sendMessage(CL_TARGET_NPC, makeArgs(0));
-    }
-
-    if (newTarget == nullptr){
-        _targetDisplay->hide();
-    } else {
-        _targetDisplay->show();
-    }
-}
-
-void Client::clearTarget(){
-    bool serverHasTarget = _target.isAggressive();
-    if (serverHasTarget)
-        sendClearTargetMessage();
-    _target.clear();
-}
-
-bool Client::targetIsDifferentFromServer(const Entity &newTarget, bool nowAggressive){
-    bool sameTargetAsBefore = &newTarget == targetAsEntity();
-    bool aggressionLevelChanged = _target.isAggressive() != nowAggressive;
-    return sameTargetAsBefore || nowAggressive || aggressionLevelChanged;
+void Client::targetAPlayer(const Avatar *newTarget, bool nowAggressive){
+    _target.setAndAlertServer(newTarget, nowAggressive);
 }
 
 

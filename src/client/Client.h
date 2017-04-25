@@ -238,7 +238,6 @@ private:
         _basePassive,
         _baseAggressive;
     void clearTarget();
-    bool targetIsDifferentFromServer(const Entity &newTarget, bool nowAggressive);
 
     bool _loop;
     bool _running; // True while run() is being executed.
@@ -396,6 +395,7 @@ private:
     friend class TestClient;
     friend class Avatar;
     friend class SoundProfile;
+    friend class Target;
 };
 
 #endif
