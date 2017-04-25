@@ -16,9 +16,8 @@ public:
     Target();
 
     template<typename T>
-    void set(const T &target, bool aggressive){
-        setWithBothInterfaces(target, target);
-        _aggressive = aggressive;
+    void set(const T &newTarget, bool nowAggressive){
+        set(newTarget, newTarget, nowAggressive);
     }
 
     void clear();
@@ -48,7 +47,7 @@ private:
     std::string _name;
     health_t _health, _maxHealth;
 
-    void setWithBothInterfaces(const Entity &asEntity, const ClientCombatant &asCombatant);
+    void set(const Entity &asEntity, const ClientCombatant &asCombatant, bool nowAggressive);
 };
 
 #endif

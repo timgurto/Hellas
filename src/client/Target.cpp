@@ -8,9 +8,11 @@ _combatant(nullptr),
 _aggressive(false)
 {}
 
-void Target::setWithBothInterfaces(const Entity &asEntity, const ClientCombatant &asCombatant){
+void Target::set(const Entity &asEntity, const ClientCombatant &asCombatant,
+                                bool nowAggressive){
     _entity = &asEntity;
     _combatant = &asCombatant;
+    _aggressive = nowAggressive;
 
     _name = _entity->name();
     _health = _combatant->health();
