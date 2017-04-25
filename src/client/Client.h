@@ -50,14 +50,17 @@ public:
     const std::string &username() const { return _username; }
     const Entity *currentMouseOverEntity() const { return _currentMouseOverEntity; }
     Rect playerCollisionRect() const { return _character.collisionRect(); }
-    void targetAnNPC(const ClientNPC *newTarget, bool aggressive = false);
-    void targetAPlayer(const Avatar *newTarget, bool aggressive = false);
     const ClientCombatant *targetAsCombatant() const { return _target.combatant(); }
     const Entity *targetAsEntity() const { return _target.entity(); }
     bool isDismounting() const { return _isDismounting; }
     void attemptDismount() { _isDismounting = true; }
     const SoundProfile *avatarSounds() const { return _avatarSounds; }
     bool isAtWarWith(const std::string &username) const;
+
+    template<typename T>
+    void setTarget(const T *newTarget, bool aggressive = false){
+        _target.setAndAlertServer(newTarget, aggressive);
+    }
     
     const Texture &cursorNormal() const { return _cursorNormal; }
     const Texture &cursorGather() const { return _cursorGather; }

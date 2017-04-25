@@ -275,7 +275,7 @@ void Client::handleMessage(const std::string &msg){
                     if (pair.second == _currentMouseOverEntity)
                         _currentMouseOverEntity = nullptr;
                     if (pair.second == targetAsEntity())
-                        targetAnNPC(nullptr);
+                        setTarget<ClientNPC>(nullptr);
                     removeEntity(pair.second);
                     _objects.erase(_objects.find(pair.first));
                 }
@@ -501,7 +501,7 @@ void Client::handleMessage(const std::string &msg){
             if (it->second == _currentMouseOverEntity)
                 _currentMouseOverEntity = nullptr;
             if (it->second == targetAsEntity())
-                targetAnNPC(nullptr);
+                setTarget<ClientNPC>(nullptr);
             removeEntity(it->second);
             _objects.erase(it);
             break;

@@ -116,12 +116,12 @@ void Avatar::playDefendSound() const{
 }
 
 void Avatar::onLeftClick(Client &client){
-    client.targetAPlayer(this);
+    client.setTarget(this);
     // Note: parent class's onLeftClick() not called.
 }
 
 void Avatar::onRightClick(Client &client){
-    client.targetAPlayer(this, true);
+    client.setTarget(this, true);
     // Note: parent class's onRightClick() not called.
 }
 

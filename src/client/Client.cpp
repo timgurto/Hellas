@@ -751,15 +751,6 @@ bool Client::outsideCullRange(const Point &loc, px_t hysteresis) const{
 }
 
 
-void Client::targetAnNPC(const ClientNPC *newTarget, bool nowAggressive){
-    _target.setAndAlertServer(newTarget, nowAggressive);
-}
-
-void Client::targetAPlayer(const Avatar *newTarget, bool nowAggressive){
-    _target.setAndAlertServer(newTarget, nowAggressive);
-}
-
-
 const ParticleProfile *Client::findParticleProfile(const std::string &id){
     ParticleProfile dummy(id);
     auto it = _particleProfiles.find(&dummy);
