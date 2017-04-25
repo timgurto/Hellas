@@ -15,7 +15,11 @@ class Target{
 public:
     Target();
 
-    void set(const Entity &asEntity, const ClientCombatant &asCombatant);
+    template<typename T>
+    void set(const T &target){
+        setWithBothInterfaces(target, target);
+    }
+
     void clear();
 
     const Entity *entity() const { return _entity; }
@@ -42,6 +46,8 @@ private:
     */
     std::string _name;
     health_t _health, _maxHealth;
+
+    void setWithBothInterfaces(const Entity &asEntity, const ClientCombatant &asCombatant);
 };
 
 #endif

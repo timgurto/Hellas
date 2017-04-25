@@ -241,8 +241,14 @@ private:
         _baseAggressive;
     void clearTarget();
     bool targetIsDifferentFromServer(const Entity &newTarget, bool nowAggressive);
-    void setTargetingUI(const Entity &entity, const ClientCombatant &combatant, bool aggressive);
     void clearTargetingUI();
+
+    template <typename T>
+    void setTargetingUI(const T &target, bool aggressive){
+        _target.set(target);
+        aggressive ? _target.makeAggressive() : _target.makePassive();
+        _targetDisplay->show();
+    }
 
     bool _loop;
     bool _running; // True while run() is being executed.

@@ -8,7 +8,7 @@ _combatant(nullptr),
 _aggressive(false)
 {}
 
-void Target::set(const Entity &asEntity, const ClientCombatant &asCombatant){
+void Target::setWithBothInterfaces(const Entity &asEntity, const ClientCombatant &asCombatant){
     _entity = &asEntity;
     _combatant = &asCombatant;
 

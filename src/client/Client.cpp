@@ -797,7 +797,7 @@ void Client::targetAnNPC(const ClientNPC *newTarget, bool nowAggressive){
             sendClearTargetMessage();
     }
 
-    setTargetingUI(*newTarget, *newTarget, nowAggressive);
+    setTargetingUI(*newTarget, nowAggressive);
 }
 
 void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
@@ -835,7 +835,7 @@ void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
     if (newTarget == nullptr)
         _target.clear();
     else
-        _target.set(*newTarget, *newTarget);
+        _target.set(*newTarget);
     currentlyAggressive = aggressive;
 
     if (tellServer){
@@ -863,13 +863,6 @@ bool Client::targetIsDifferentFromServer(const Entity &newTarget, bool nowAggres
     bool sameTargetAsBefore = &newTarget == targetAsEntity();
     bool aggressionLevelChanged = _target.isAggressive() != nowAggressive;
     return sameTargetAsBefore || nowAggressive || aggressionLevelChanged;
-}
-
-void Client::setTargetingUI(const Entity &entity, const ClientCombatant &combatant,
-                            bool aggressive){
-    _target.set(entity, combatant);
-    aggressive ? _target.makeAggressive() : _target.makePassive();
-    _targetDisplay->show();
 }
 
 void Client::clearTargetingUI(){
