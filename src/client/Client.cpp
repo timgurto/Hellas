@@ -782,16 +782,25 @@ bool Client::outsideCullRange(const Point &loc, px_t hysteresis) const{
 }
 
 void Client::targetAnNPC(const ClientNPC *newTarget, bool aggressive){
+    if (newTarget == nullptr){
+        if (_aggressive){ // Clearing the existing target
+            sendMessage(CL_TARGET_NPC, makeArgs(0));
+            _aggressive = false;
+            _target.clear();
+            _targetDisplay->hide();
+        }
+        return;
+    }
+
     bool tellServer = false;
     bool targetExists = false;
 
-    if (newTarget != nullptr && ! newTarget->canBeAttackedByPlayer())
+    if (! newTarget->canBeAttackedByPlayer())
         aggressive = false;
 
     // Same target
     if (newTarget == targetAsEntity()){
         if (aggressive != _aggressive){
-            assert(newTarget != nullptr);
             tellServer = true;
             if (aggressive) // Switching from passive to aggressive
                 targetExists = true;
@@ -801,21 +810,17 @@ void Client::targetAnNPC(const ClientNPC *newTarget, bool aggressive){
     // Was aggressive, but switched
     else if (_aggressive){
         tellServer = true;
-        if (newTarget != nullptr && aggressive)
+        if (aggressive)
             targetExists = true;
     }
 
     // New target, aggressive
     else if (aggressive){
-        assert(newTarget != nullptr);
         tellServer = true;
         targetExists = true;
     }
 
-    if (newTarget == nullptr)
-        _target.clear();
-    else
-        _target.set(*newTarget, *newTarget);
+    _target.set(*newTarget, *newTarget);
     _aggressive = aggressive;
 
     if (tellServer){
@@ -825,11 +830,7 @@ void Client::targetAnNPC(const ClientNPC *newTarget, bool aggressive){
             sendMessage(CL_TARGET_NPC, makeArgs(0));
     }
 
-    if (newTarget == nullptr){
-        _targetDisplay->hide();
-    } else {
-        _targetDisplay->show();
-    }
+    _targetDisplay->show();
 }
 
 void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
