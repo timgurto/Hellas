@@ -352,6 +352,7 @@ private:
     void handleMessage(const std::string &msg);
     void performCommand(const std::string &commandString);
     std::vector<MessageCode> _messagesReceived;
+    void sendClearTargetMessage() const;
     
     enum ConnectionStatus{
         INITIALIZING,

@@ -784,7 +784,7 @@ bool Client::outsideCullRange(const Point &loc, px_t hysteresis) const{
 void Client::targetAnNPC(const ClientNPC *newTarget, bool aggressive){
     if (newTarget == nullptr){
         if (_aggressive){ // Clearing the existing target
-            sendMessage(CL_TARGET_NPC, makeArgs(0));
+            sendClearTargetMessage();
             _aggressive = false;
             _target.clear();
             _targetDisplay->hide();
@@ -827,7 +827,7 @@ void Client::targetAnNPC(const ClientNPC *newTarget, bool aggressive){
         if (targetExists)
             newTarget->sendTargetMessage();
         else
-            sendMessage(CL_TARGET_NPC, makeArgs(0));
+            sendClearTargetMessage();
     }
 
     _targetDisplay->show();

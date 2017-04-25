@@ -1176,3 +1176,7 @@ void Client::performCommand(const std::string &commandString){
 
     _debug << Color::FAILURE << "Unknown command: " << command << Log::endl;
 }
+
+void Client::sendClearTargetMessage() const{
+    sendMessage(CL_TARGET_NPC, makeArgs(0));
+}
