@@ -1,4 +1,5 @@
 <root>
+    <newPlayerSpawn x="10" y="10" />
     <size x="20" y="20" />
     <row    y="0" terrain = "abbbcccccccc........" />
     <row    y="1" terrain = "bbbbccccccc........." />
