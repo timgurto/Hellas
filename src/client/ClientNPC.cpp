@@ -112,3 +112,8 @@ const Texture &ClientNPC::image() const{
 const Texture &ClientNPC::highlightImage() const{
     return (health() > 0) ? ClientObject::highlightImage() : npcType()->corpseHighlightImage();
 }
+
+void ClientNPC::sendTargetMessage() const{
+    const Client &client = *Client::_instance;
+    client.sendMessage(CL_TARGET_NPC, makeArgs(serial()));
+}

@@ -40,6 +40,7 @@ public:
     virtual void update(double delta) override;
     virtual const Texture &cursor(const Client &client) const override;
     virtual void onInventoryUpdate() override;
+    virtual void sendTargetMessage() const override;
 };
 
 #endif

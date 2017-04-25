@@ -819,8 +819,10 @@ void Client::targetAnNPC(const ClientNPC *newTarget, bool aggressive){
     _aggressive = aggressive;
 
     if (tellServer){
-        size_t serial = targetExists ? newTarget->serial() : 0;
-        sendMessage(CL_TARGET_NPC, makeArgs(serial));
+        if (targetExists)
+            newTarget->sendTargetMessage();
+        else
+            sendMessage(CL_TARGET_NPC, makeArgs(0));
     }
 
     if (newTarget == nullptr){
@@ -871,7 +873,7 @@ void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
 
     if (tellServer){
         if (targetExists)
-            sendMessage(CL_TARGET_PLAYER, newTarget->name());
+            newTarget->sendTargetMessage();
         else
             sendMessage(CL_TARGET_NPC, makeArgs(0));
     }

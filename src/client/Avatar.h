@@ -44,6 +44,7 @@ public:
     virtual void onLeftClick(Client &client) override;
     virtual void onRightClick(Client &client) override;
     virtual const std::string &name() const override { return _name; }
+    virtual void sendTargetMessage() const override;
     void playAttackSound() const; // The player has attacked; play an appropriate sound.
     void playDefendSound() const; // The player has been attacked; play an appropriate sound.
 

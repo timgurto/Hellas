@@ -11,9 +11,13 @@ public:
 
     health_t health() const { return _health; }
     void health(health_t n) { _health = n; }
+    bool isAlive() const { return _health > 0; }
+    bool isDead() const { return _health == 0; }
     health_t maxHealth() const { return _type->maxHealth(); }
 
     const Entity *asEntity() const;
+    
+    virtual void sendTargetMessage() const {}
 
 private:
     health_t _health;

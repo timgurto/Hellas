@@ -124,3 +124,8 @@ void Avatar::onRightClick(Client &client){
     client.targetAPlayer(this, true);
     // Note: parent class's onRightClick() not called.
 }
+
+void Avatar::sendTargetMessage() const{
+    const Client &client = *Client::_instance;
+    client.sendMessage(CL_TARGET_PLAYER, _name);
+}
