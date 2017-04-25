@@ -241,9 +241,10 @@ private:
     Texture
         _basePassive,
         _baseAggressive;
-    void Client::setTargetingUI(const Entity &entity, const ClientCombatant &combatant,
-                                bool aggressive);
-    void Client::clearTargetingUI();
+    void clearTarget();
+    bool targetIsDifferentFromServer(const Entity &newTarget, bool nowAggressive);
+    void setTargetingUI(const Entity &entity, const ClientCombatant &combatant, bool aggressive);
+    void clearTargetingUI();
 
     bool _loop;
     bool _running; // True while run() is being executed.
