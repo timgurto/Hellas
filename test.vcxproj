@@ -130,6 +130,7 @@
     <ClCompile Include="src\client\ui\CheckBox.cpp" />
     <ClCompile Include="src\client\ui\ChoiceList.cpp" />
     <ClCompile Include="src\client\ui\ColorBlock.cpp" />
+    <ClCompile Include="src\client\ui\CombatantPanel.cpp" />
     <ClCompile Include="src\client\ui\Container.cpp" />
     <ClCompile Include="src\client\ui\Element.cpp" />
     <ClCompile Include="src\client\ui\ItemSelector.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="src\client\ui\CheckBox.h" />
     <ClInclude Include="src\client\ui\ChoiceList.h" />
     <ClInclude Include="src\client\ui\ColorBlock.h" />
+    <ClInclude Include="src\client\ui\CombatantPanel.h" />
     <ClInclude Include="src\client\ui\Container.h" />
     <ClInclude Include="src\client\ui\Element.h" />
     <ClInclude Include="src\client\ui\ItemSelector.h" />

@@ -9,11 +9,11 @@ class ClientCombatant{
 public:
     ClientCombatant::ClientCombatant(const ClientCombatantType *type);
 
-    health_t health() const { return _health; }
+    const health_t &health() const { return _health; }
     void health(health_t n) { _health = n; }
     bool isAlive() const { return _health > 0; }
     bool isDead() const { return _health == 0; }
-    health_t maxHealth() const { return _type->maxHealth(); }
+    const health_t &maxHealth() const { return _type->maxHealth(); }
     
     virtual void sendTargetMessage() const = 0;
     virtual bool canBeAttackedByPlayer() const { return isAlive(); }

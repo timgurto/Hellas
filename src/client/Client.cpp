@@ -17,6 +17,7 @@
 #include "Particle.h"
 #include "TooltipBuilder.h"
 #include "ui/Button.h"
+#include "ui/CombatantPanel.h"
 #include "ui/Container.h"
 #include "ui/Element.h"
 #include "ui/LinkedLabel.h"
@@ -117,8 +118,6 @@ _leftMouseDownEntity(nullptr),
 _rightMouseDown(false),
 _rightMouseDownEntity(nullptr),
 
-_targetDisplay(nullptr),
-_usernameDisplay(nullptr),
 _basePassive(std::string("Images/targetPassive.png"), Color::MAGENTA),
 _baseAggressive(std::string("Images/targetAggressive.png"), Color::MAGENTA),
 _inventory(INVENTORY_SIZE, std::make_pair(nullptr, 0)),
@@ -379,42 +378,14 @@ _debug("client.log"){
     hardwareStats->addChild(channels);
     addUI(hardwareStats);
 
-    // Initialize player display
-    static const px_t
-        PLAYER_X = 2,
-        PLAYER_Y = 2,
-        PLAYER_W = 60,
-        PLAYER_H = 23,
-        BAR_HEIGHT = 7;
-    Element *playerDisplay = new Element(Rect(PLAYER_X, PLAYER_Y, PLAYER_W, PLAYER_H));
-    playerDisplay->addChild(new ColorBlock(Rect(0, 0, PLAYER_W, PLAYER_H)));
-    playerDisplay->addChild(new ShadowBox(Rect(0, 0, PLAYER_W, PLAYER_H)));
-    _usernameDisplay = new Label(Rect(2, 1, PLAYER_W - 4, Element::TEXT_HEIGHT), "",
-                                 Element::CENTER_JUSTIFIED);
-    playerDisplay->addChild(_usernameDisplay);
-    static const unsigned MAX_HEALTH = 100;
-    playerDisplay->addChild(new ProgressBar<health_t>(
-            Rect(2, PLAYER_H - BAR_HEIGHT - 2, PLAYER_W - 4, BAR_HEIGHT), _health, _stats.health,
-            Color::HEALTH_BAR));
-    addUI(playerDisplay);
-    
-    // Initialize target display
-    static const px_t
-        TARGET_X = PLAYER_X * 2 + PLAYER_W,
-        TARGET_Y = PLAYER_Y,
-        TARGET_W = PLAYER_W,
-        TARGET_H = PLAYER_H;
-    _targetDisplay = new Element(Rect(TARGET_X, TARGET_Y, TARGET_W, TARGET_H));
-    _targetDisplay->addChild(new ColorBlock(Rect(0, 0, TARGET_W, TARGET_H)));
-    _targetDisplay->addChild(new ShadowBox(Rect(0, 0, TARGET_W, TARGET_H)));
-    _targetDisplay->addChild(new LinkedLabel<std::string>(
-            Rect(2, 1, TARGET_W - 4, Element::TEXT_HEIGHT), _target.name(), "", "",
-            Element::CENTER_JUSTIFIED));
-    _targetDisplay->addChild(new ProgressBar<health_t>(
-            Rect(2, TARGET_H - BAR_HEIGHT - 2, TARGET_W - 4, BAR_HEIGHT),
-            _target.health(), _target.maxHealth(), Color::HEALTH_BAR));
-    _targetDisplay->hide();
-    addUI(_targetDisplay);
+    // Initialize player/target panels
+    px_t
+        playerPanelX = CombatantPanel::GAP,
+        playerPanelY = CombatantPanel::GAP;
+    addUI(new CombatantPanel(playerPanelX, playerPanelY,
+            _username, _character.health(), _character.maxHealth()));
+    _target.initializePanel();
+    addUI(_target.panel());
 
     drawLoadingScreen("", 1);
 }
@@ -476,7 +447,6 @@ void Client::checkSocket(){
             sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
             _connectionStatus = CONNECTED;
             _character.name(_username);
-            _usernameDisplay->changeText(_username);
         }
     }
 
@@ -784,7 +754,6 @@ bool Client::outsideCullRange(const Point &loc, px_t hysteresis) const{
 void Client::targetAnNPC(const ClientNPC *newTarget, bool nowAggressive){
     if (newTarget == nullptr){
         clearTarget();
-        _targetDisplay->hide();
         return;
     }
 
@@ -799,7 +768,6 @@ void Client::targetAnNPC(const ClientNPC *newTarget, bool nowAggressive){
     }
 
     _target.set(*newTarget, nowAggressive);
-    _targetDisplay->show();
 }
 
 void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){

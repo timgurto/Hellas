@@ -7,7 +7,7 @@ class ClientCombatantType{
 public:
     ClientCombatantType(health_t maxHealth);
 
-    health_t maxHealth() const { return _maxHealth; }
+    const health_t &maxHealth() const { return _maxHealth; }
     void maxHealth(health_t n) { _maxHealth = n; }
 
 private:

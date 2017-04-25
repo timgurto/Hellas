@@ -5,6 +5,7 @@
 
 #include "ClientCombatant.h"
 #include "Entity.h"
+#include "ui/CombatantPanel.h"
 #include "../types.h"
 
 /*
@@ -35,6 +36,9 @@ public:
 
     void updateHealth(health_t newHealth){ _health = newHealth; }
 
+    void initializePanel();
+    CombatantPanel *panel() { return _panel; }
+
 private:
     const Entity *_entity;
     const ClientCombatant *_combatant;
@@ -48,6 +52,8 @@ private:
     health_t _health, _maxHealth;
 
     void set(const Entity &asEntity, const ClientCombatant &asCombatant, bool nowAggressive);
+
+    CombatantPanel *_panel;
 };
 
 #endif

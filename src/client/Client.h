@@ -192,7 +192,6 @@ private:
     ui_t _ui;
     void addUI(Element *element);
     Element *_castBar;
-    Label *_usernameDisplay;
 
     // Chat
     Element *_chatContainer;
@@ -231,7 +230,6 @@ private:
     void startAction(ms_t actionLength); // Start the action timer.  If zero, stop the timer.
 
     Target _target;
-    Element *_targetDisplay;
     /*
     Whether the player is targeting aggressively, i.e., will attack when in range.
     Used here to decide when to alert server of new targets.
