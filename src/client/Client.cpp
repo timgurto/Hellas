@@ -792,40 +792,33 @@ void Client::targetAnNPC(const ClientNPC *newTarget, bool nowAggressive){
     }
 
     bool tellServer = false;
-    bool targetExists = false;
+    const bool &wasAggressive = _aggressive;
 
     if (! newTarget->canBeAttackedByPlayer())
         nowAggressive = false;
 
     // Same target
     bool sameTargetAsPrevious = newTarget == targetAsEntity();
-    if (sameTargetAsPrevious){
-        bool aggressionLevelChanged = nowAggressive != _aggressive;
-        if (aggressionLevelChanged){
-            tellServer = true;
-            if (nowAggressive) // Switching from passive to aggressive
-                targetExists = true;
-        }
+    bool aggressionLevelChanged = nowAggressive != wasAggressive;
+    if (sameTargetAsPrevious && aggressionLevelChanged){
+        tellServer = true;
     }
 
     // Was aggressive, but switched
-    else if (_aggressive){
+    else if (wasAggressive){
         tellServer = true;
-        if (nowAggressive)
-            targetExists = true;
     }
 
     // New target, aggressive
     else if (nowAggressive){
         tellServer = true;
-        targetExists = true;
     }
 
     _target.set(*newTarget, *newTarget);
     _aggressive = nowAggressive;
 
     if (tellServer){
-        if (targetExists)
+        if (nowAggressive)
             newTarget->sendTargetMessage();
         else
             sendClearTargetMessage();
