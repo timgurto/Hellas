@@ -14,8 +14,6 @@ public:
     bool isAlive() const { return _health > 0; }
     bool isDead() const { return _health == 0; }
     health_t maxHealth() const { return _type->maxHealth(); }
-
-    const Entity *asEntity() const;
     
     virtual void sendTargetMessage() const {}
 
