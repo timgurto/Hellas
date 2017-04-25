@@ -37,7 +37,7 @@ void Client::draw() const{
 
     // Base under target combatant
     if (_target.exists()){
-        const Texture &base = aggressive() ? _baseAggressive : _basePassive;
+        const Texture &base = _target.isAggressive() ? _baseAggressive : _basePassive;
         static const Point BASE_OFFSET(-15, -10);
         base.draw(_target.entity()->location() + offset() + BASE_OFFSET);
     }

@@ -21,6 +21,8 @@ public:
     const Entity *entity() const { return _entity; }
     const ClientCombatant *combatant() const { return _combatant; }
     bool exists() const { return _entity != nullptr; }
+    bool isAggressive() const { return _aggressive; }
+    void setAggression(bool aggressive) { _aggressive = aggressive; }
     
     const std::string &name() const { return _name; }
     const health_t &health() const { return _health; }
@@ -31,6 +33,7 @@ public:
 private:
     const Entity *_entity;
     const ClientCombatant *_combatant;
+    bool _aggressive; // True: will attack when in range.  False: mere selection, client-side only.
 
     /*
     Updated on set().  These are attributes, not functions, because the UI uses LinkedLabels that

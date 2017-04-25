@@ -54,7 +54,6 @@ public:
     void targetAPlayer(const Avatar *newTarget, bool aggressive = false);
     const ClientCombatant *targetAsCombatant() const { return _target.combatant(); }
     const Entity *targetAsEntity() const { return _target.entity(); }
-    bool aggressive() const { return _aggressive; }
     bool isDismounting() const { return _isDismounting; }
     void attemptDismount() { _isDismounting = true; }
     const SoundProfile *avatarSounds() const { return _avatarSounds; }
@@ -237,7 +236,6 @@ private:
     Whether the player is targeting aggressively, i.e., will attack when in range.
     Used here to decide when to alert server of new targets.
     */
-    bool _aggressive;
     Texture
         _basePassive,
         _baseAggressive;

@@ -624,7 +624,7 @@ void Client::handleMessage(const std::string &msg){
             if (targetAsEntity() == &npc){
                 _target.updateHealth(health);
                 if (health == 0)
-                    _aggressive = false;
+                    _target.setAggression(false);
             }
             npc.refreshTooltip();
             break;

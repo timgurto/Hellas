@@ -119,7 +119,6 @@ _rightMouseDownEntity(nullptr),
 
 _targetDisplay(nullptr),
 _usernameDisplay(nullptr),
-_aggressive(false),
 _basePassive(std::string("Images/targetPassive.png"), Color::MAGENTA),
 _baseAggressive(std::string("Images/targetAggressive.png"), Color::MAGENTA),
 _inventory(INVENTORY_SIZE, std::make_pair(nullptr, 0)),
@@ -804,13 +803,14 @@ void Client::targetAnNPC(const ClientNPC *newTarget, bool nowAggressive){
 void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
     bool tellServer = false;
     bool targetExists = false;
+    bool currentlyAggressive = _target.isAggressive();
 
     if (newTarget != nullptr && ! newTarget->canBeAttackedByPlayer())
         aggressive = false;
 
     // Same target
     if (newTarget == targetAsEntity()){
-        if (aggressive != _aggressive){
+        if (aggressive != currentlyAggressive){
             assert(newTarget != nullptr);
             tellServer = true;
             if (aggressive) // Switching from passive to aggressive
@@ -819,7 +819,7 @@ void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
     }
 
     // Was aggressive, but switched
-    else if (_aggressive){
+    else if (currentlyAggressive){
         tellServer = true;
         if (newTarget != nullptr && aggressive)
             targetExists = true;
@@ -836,7 +836,7 @@ void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
         _target.clear();
     else
         _target.set(*newTarget, *newTarget);
-    _aggressive = aggressive;
+    currentlyAggressive = aggressive;
 
     if (tellServer){
         if (targetExists)
@@ -853,7 +853,7 @@ void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
 }
 
 void Client::clearTarget(){
-    bool serverHasTarget = _aggressive;
+    bool serverHasTarget = _target.isAggressive();
     if (serverHasTarget)
         sendClearTargetMessage();
     clearTargetingUI();
@@ -861,19 +861,18 @@ void Client::clearTarget(){
 
 bool Client::targetIsDifferentFromServer(const Entity &newTarget, bool nowAggressive){
     bool sameTargetAsBefore = &newTarget == targetAsEntity();
-    bool aggressionLevelChanged = nowAggressive != _aggressive;
+    bool aggressionLevelChanged = _target.isAggressive() != nowAggressive;
     return sameTargetAsBefore || nowAggressive || aggressionLevelChanged;
 }
 
 void Client::setTargetingUI(const Entity &entity, const ClientCombatant &combatant,
                             bool aggressive){
     _target.set(entity, combatant);
-    _aggressive = aggressive;
+    _target.setAggression(aggressive);
     _targetDisplay->show();
 }
 
 void Client::clearTargetingUI(){
-    _aggressive = false;
     _target.clear();
     _targetDisplay->hide();
 }
