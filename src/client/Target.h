@@ -16,8 +16,9 @@ public:
     Target();
 
     template<typename T>
-    void set(const T &target){
+    void set(const T &target, bool aggressive){
         setWithBothInterfaces(target, target);
+        _aggressive = aggressive;
     }
 
     void clear();

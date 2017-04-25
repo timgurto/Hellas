@@ -784,6 +784,7 @@ bool Client::outsideCullRange(const Point &loc, px_t hysteresis) const{
 void Client::targetAnNPC(const ClientNPC *newTarget, bool nowAggressive){
     if (newTarget == nullptr){
         clearTarget();
+        _targetDisplay->hide();
         return;
     }
 
@@ -797,7 +798,8 @@ void Client::targetAnNPC(const ClientNPC *newTarget, bool nowAggressive){
             sendClearTargetMessage();
     }
 
-    setTargetingUI(*newTarget, nowAggressive);
+    _target.set(*newTarget, nowAggressive);
+    _targetDisplay->show();
 }
 
 void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
@@ -835,7 +837,7 @@ void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
     if (newTarget == nullptr)
         _target.clear();
     else
-        _target.set(*newTarget);
+        _target.set(*newTarget, aggressive);
     currentlyAggressive = aggressive;
 
     if (tellServer){
@@ -856,18 +858,13 @@ void Client::clearTarget(){
     bool serverHasTarget = _target.isAggressive();
     if (serverHasTarget)
         sendClearTargetMessage();
-    clearTargetingUI();
+    _target.clear();
 }
 
 bool Client::targetIsDifferentFromServer(const Entity &newTarget, bool nowAggressive){
     bool sameTargetAsBefore = &newTarget == targetAsEntity();
     bool aggressionLevelChanged = _target.isAggressive() != nowAggressive;
     return sameTargetAsBefore || nowAggressive || aggressionLevelChanged;
-}
-
-void Client::clearTargetingUI(){
-    _target.clear();
-    _targetDisplay->hide();
 }
 
 
