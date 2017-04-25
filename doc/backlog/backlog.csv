@@ -94,22 +94,22 @@ issue,description,value,effort,type,blockedBy,done,critical
 93,An energy bar that's used up by attacking,13,21,Feature,
 94,A road object that affects movement speed,3,13,Feature,64
 95,Object ownership is clearly visible,5,21,Usability,8
-96,Containers may be restricted by item class,5,5,Feature
-97,"Use collisionRects even on non-colliding objects, for distance checks",8,5,Bug
-98,Send nearby users' health values,13,8,Usability
-99,Allow specification of minimum yields,8,1,Feature
-100,Sounds for crafting,5,2,Aesthetics
-101,Particles for crafting,5,2,Aesthetics
-102,Prevent landlocked gear outlines,3,34,Aesthetics
-103,Make spawners' queues persistent,13,5,Bug
-104,Vehicles 'log off' with their drivers,8,144,Bug
-105,Vehicles can have different speeds,5,5,Feature
-106,Mouse-down events are propagating to multiple windows,13,3,Bug
-107,Reduce calls to findUsersInArea() in NPC AI,5,13,Performance
-108,Add esc menu to release client,13,89,Usability
-109,Allow crafting if removing the ingredients will make room,13,3,Bug
-110,Load map in login-screen background,5,13,Usability
-111,"Use gear-slot names, not numbers, in items.xml",3,5,Code quality
+96,Containers may be restricted by item class,5,5,Feature,,
+97,"Use collisionRects even on non-colliding objects, for distance checks",8,5,Bug,,
+98,Send nearby users' health values,13,8,Usability,,
+99,Allow specification of minimum yields,8,1,Feature,,TRUE
+100,Sounds for crafting,5,2,Aesthetics,,
+101,Particles for crafting,5,2,Aesthetics,,
+102,Prevent landlocked gear outlines,3,34,Aesthetics,,
+103,Make spawners' queues persistent,13,5,Bug,,
+104,Vehicles 'log off' with their drivers,8,144,Bug,,
+105,Vehicles can have different speeds,5,5,Feature,,
+106,Mouse-down events are propagating to multiple windows,13,3,Bug,,
+107,Reduce calls to findUsersInArea() in NPC AI,5,13,Performance,,
+108,Add esc menu to release client,13,89,Usability,,
+109,Allow crafting if removing the ingredients will make room,13,3,Bug,,
+110,Load map in login-screen background,5,13,Usability,,
+111,"Use gear-slot names, not numbers, in items.xml",3,5,Code quality,,
 112,Throw exceptions where appropriate on SDL-function failures,1,5,Code quality,,
 113,"Use forward declarations where possible, to reduce unnecessary #includes",2,5,Code quality,,
 114,Use polymorphism instead of classTag,3,144,Code quality,,

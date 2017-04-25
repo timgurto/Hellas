@@ -1,0 +1,10 @@
+<root>
+
+<objectType
+    id="tree"
+    name="Tree"
+    canGather="1" >
+    <yield id="apple" initialMean="0" initialSD="1" initialMin="1"/>
+</objectType>
+
+</root>

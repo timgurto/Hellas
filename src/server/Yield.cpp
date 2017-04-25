@@ -3,13 +3,14 @@
 #include "Yield.h"
 #include "../util.h"
 
-void Yield::addItem(const ServerItem *item, double initMean, double initSD, double gatherMean,
-                    double gatherSD){
+void Yield::addItem(const ServerItem *item, double initMean, double initSD, size_t initMin,
+                    double gatherMean, double gatherSD){
     _entries[item];
     YieldEntry *entry = &_entries[item];
     entry->_initDistribution = NormalVariable(initMean, initSD);
     entry->_gatherDistribution = NormalVariable(gatherMean, gatherSD);
     entry->_gatherMean = gatherMean;
+    entry->_initMin = initMin;
 }
 
 void Yield::instantiate(ItemSet &contents) const{
@@ -19,8 +20,9 @@ void Yield::instantiate(ItemSet &contents) const{
 }
 
 size_t Yield::generateInitialQuantity(const YieldEntry &entry){
-    double d = entry._initDistribution();
-    return toInt(max<double>(0, d));
+    const double raw = entry._initDistribution();
+    const double withMinimum = max<double>(entry._initMin, raw);
+    return toInt(withMinimum);
 }
 
 size_t Yield::generateGatherQuantity(const ServerItem *item) const{

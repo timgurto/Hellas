@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef YIELD_H
 #define YIELD_H
 
@@ -13,6 +11,7 @@
 class Yield{
     struct YieldEntry{
         NormalVariable _initDistribution, _gatherDistribution;
+        size_t _initMin;
         double _gatherMean;
     };
 
@@ -23,7 +22,8 @@ public:
 
     double gatherMean(const ServerItem *item) const;
     
-    void addItem(const ServerItem *item, double initMean = 1, double initSD = 0,
+    void addItem(const ServerItem *item,
+                 double initMean = 1, double initSD = 0, size_t initMin = 0,
                  double gatherMean = 1., double gatherSD = 0);
 
     // Creates a new instance of this Yield, with random init values, in the specified ItemSet

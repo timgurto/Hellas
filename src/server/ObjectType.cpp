@@ -16,9 +16,10 @@ _transformObject(nullptr),
 _transformOnEmpty(false)
 {}
 
-void ObjectType::addYield(const ServerItem *item, double initMean, double initSD, double gatherMean,
-                          double gatherSD){
-    _yield.addItem(item, initMean, initSD, gatherMean, gatherSD);
+void ObjectType::addYield(const ServerItem *item,
+                          double initMean, double initSD, size_t initMin,
+                          double gatherMean, double gatherSD){
+    _yield.addItem(item, initMean, initSD, initMin, gatherMean, gatherSD);
 }
 
 void ObjectType::addTag(const std::string &tagName){

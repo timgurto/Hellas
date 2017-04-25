@@ -89,7 +89,7 @@ public:
     bool operator<(const ObjectType &rhs) const { return _id < rhs._id; }
 
     void addYield(const ServerItem *item,
-                  double initMean, double initSD,
+                  double initMean, double initSD, size_t initMin,
                   double gatherMean, double gatherSD);
     void addTag(const std::string &tagName);
 };

@@ -232,12 +232,14 @@ void Server::loadData(const std::string &path){
                 if (!xr.findAttr(yield, "id", s))
                     continue;
                 double initMean = 1., initSD = 0, gatherMean = 1, gatherSD = 0;
+                size_t initMin = 0;
                 xr.findAttr(yield, "initialMean", initMean);
                 xr.findAttr(yield, "initialSD", initSD);
+                xr.findAttr(yield, "initialMin", initMin);
                 xr.findAttr(yield, "gatherMean", gatherMean);
                 xr.findAttr(yield, "gatherSD", gatherSD);
                 std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
-                ot->addYield(&*itemIt, initMean, initSD, gatherMean, gatherSD);
+                ot->addYield(&*itemIt, initMean, initSD, initMin, gatherMean, gatherSD);
             }
 
             // Merchant

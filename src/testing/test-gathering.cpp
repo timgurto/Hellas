@@ -61,3 +61,12 @@ TEST("Gather chance is by gathers, not quantity")
     const ServerItem &item = *s.items().find(ServerItem("rock"));
     return user.inventory()[0].first == &item;
 TEND
+
+TEST("Minimum yields")
+    TestServer s = TestServer::Data("min_apples");
+    for (auto obj : s.objects())
+        if (obj->contents().isEmpty())
+            return false;
+
+    return true;
+TEND
