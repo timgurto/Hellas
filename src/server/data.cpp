@@ -14,7 +14,7 @@
 extern Args cmdLineArgs;
 
 bool Server::readUserData(User &user){
-    XmlReader xr((std::string("Users/") + user.name() + ".usr").c_str());
+    XmlReader xr((_userFilesPath + user.name() + ".usr").c_str());
     if (!xr)
         return false;
 
@@ -99,7 +99,7 @@ bool Server::readUserData(User &user){
 }
 
 void Server::writeUserData(const User &user) const{
-    XmlWriter xw(std::string("Users/") + user.name() + ".usr");
+    XmlWriter xw(_userFilesPath + user.name() + ".usr");
 
     auto e = xw.addChild("general");
     xw.setAttr(e, "class", User::CLASS_NAMES[user.getClass()]);

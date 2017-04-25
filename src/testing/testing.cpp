@@ -19,6 +19,7 @@ int main(int argc, char **argv){
     cmdLineArgs.add("server-ip", "127.0.0.1");
     cmdLineArgs.add("window");
     cmdLineArgs.add("quiet");
+    cmdLineArgs.add("user-files-path", "testing/users");
 
     renderer.init();
 

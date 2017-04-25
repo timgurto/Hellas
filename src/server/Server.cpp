@@ -52,6 +52,7 @@ _mapY(0),
 _newPlayerSpawnLocation(0, 0),
 _newPlayerSpawnRange(0),
 _debug("server.log"),
+_userFilesPath("Users/"),
 _lastSave(_time),
 _dataLoaded(false){
     _instance = this;
@@ -64,6 +65,10 @@ _dataLoaded(false){
         Socket::debug = &_debug;
 
     User::init();
+
+    if (cmdLineArgs.contains("user-files-path"))
+        _userFilesPath = cmdLineArgs.getString("user-files-path") + "/";
+
 
     _debug("Server initialized");
 
@@ -78,7 +83,7 @@ _dataLoaded(false){
            << ":" << ntohs(serverAddr.sin_port) << Log::endl;
     _socket.listen();
 
-    _debug("Listening for connections");
+    _debug("Ready for connections");
 }
 
 Server::~Server(){
@@ -172,7 +177,7 @@ void Server::run(){
 
     _loop = true;
     _running = true;
-    _debug("Ready", Color::GREEN);
+    _debug("Server is running", Color::GREEN);
     while (_loop) {
         _time = SDL_GetTicks();
         const ms_t timeElapsed = _time - _lastTime;

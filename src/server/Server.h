@@ -110,6 +110,7 @@ private:
     std::set<User> _users; // All connected users
     // Pointers to all connected users, ordered by name for faster lookup
     std::map<std::string, const User *> _usersByName;
+    std::string _userFilesPath;
     void checkSockets();
     /*
     Add the newly logged-in user
