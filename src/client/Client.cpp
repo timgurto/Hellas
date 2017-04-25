@@ -782,21 +782,18 @@ bool Client::outsideCullRange(const Point &loc, px_t hysteresis) const{
 }
 
 void Client::targetAnNPC(const ClientNPC *newTarget, bool nowAggressive){
+    const bool wasAggressive = _aggressive;
+
     if (newTarget == nullptr){
-        if (_aggressive) // Clearing the existing target
+        clearTargetingUI();
+        if (wasAggressive)
             sendClearTargetMessage();
-        _aggressive = false;
-        _target.clear();
-        _targetDisplay->hide();
         return;
     }
-
-    const bool &wasAggressive = _aggressive;
 
     if (! newTarget->canBeAttackedByPlayer())
         nowAggressive = false;
 
-    // Same target
     bool sameTargetAsBefore = newTarget == targetAsEntity();
     bool aggressionLevelChanged = nowAggressive != wasAggressive;
     bool shouldTellServer = sameTargetAsBefore || nowAggressive || aggressionLevelChanged;
@@ -808,9 +805,7 @@ void Client::targetAnNPC(const ClientNPC *newTarget, bool nowAggressive){
             sendClearTargetMessage();
     }
 
-    _target.set(*newTarget, *newTarget);
-    _aggressive = nowAggressive;
-    _targetDisplay->show();
+    setTargetingUI(*newTarget, *newTarget, nowAggressive);
 }
 
 void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
@@ -862,6 +857,19 @@ void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
     } else {
         _targetDisplay->show();
     }
+}
+
+void Client::setTargetingUI(const Entity &entity, const ClientCombatant &combatant,
+                            bool aggressive){
+    _target.set(entity, combatant);
+    _aggressive = aggressive;
+    _targetDisplay->show();
+}
+
+void Client::clearTargetingUI(){
+    _aggressive = false;
+    _target.clear();
+    _targetDisplay->hide();
 }
 
 const ParticleProfile *Client::findParticleProfile(const std::string &id){

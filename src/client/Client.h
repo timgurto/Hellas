@@ -241,6 +241,9 @@ private:
     Texture
         _basePassive,
         _baseAggressive;
+    void Client::setTargetingUI(const Entity &entity, const ClientCombatant &combatant,
+                                bool aggressive);
+    void Client::clearTargetingUI();
 
     bool _loop;
     bool _running; // True while run() is being executed.
@@ -352,6 +355,7 @@ private:
     void handleMessage(const std::string &msg);
     void performCommand(const std::string &commandString);
     std::vector<MessageCode> _messagesReceived;
+
     void sendClearTargetMessage() const;
     
     enum ConnectionStatus{
