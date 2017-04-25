@@ -785,7 +785,7 @@ void Client::targetAnNPC(const ClientNPC *newTarget, bool aggressive){
     bool tellServer = false;
     bool targetExists = false;
 
-    if (newTarget != nullptr && newTarget->health() == 0)
+    if (newTarget != nullptr && ! newTarget->canBeAttackedByPlayer())
         aggressive = false;
 
     // Same target
@@ -836,9 +836,7 @@ void Client::targetAPlayer(const Avatar *newTarget, bool aggressive){
     bool tellServer = false;
     bool targetExists = false;
 
-    if (newTarget != nullptr && newTarget->health() == 0)
-        aggressive = false;
-    else if (newTarget != nullptr && ! isAtWarWith(newTarget->name()))
+    if (newTarget != nullptr && ! newTarget->canBeAttackedByPlayer())
         aggressive = false;
 
     // Same target

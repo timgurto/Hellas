@@ -38,13 +38,18 @@ public:
     bool isDriving() const { return _driving; }
     const ClientItem *getRandomArmor() const { return _gear[Item::getRandomArmorSlot()].first; }
 
+    // From Entity
     virtual void draw(const Client &client) const override;
     virtual void update(double delta) override;
     virtual const Texture &tooltip() const override; // Getter; creates tooltip on first call.
     virtual void onLeftClick(Client &client) override;
     virtual void onRightClick(Client &client) override;
     virtual const std::string &name() const override { return _name; }
+
+    // From ClientCombatant
     virtual void sendTargetMessage() const override;
+    virtual bool canBeAttackedByPlayer() const override;
+
     void playAttackSound() const; // The player has attacked; play an appropriate sound.
     void playDefendSound() const; // The player has been attacked; play an appropriate sound.
 

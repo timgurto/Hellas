@@ -15,7 +15,8 @@ public:
     bool isDead() const { return _health == 0; }
     health_t maxHealth() const { return _type->maxHealth(); }
     
-    virtual void sendTargetMessage() const {}
+    virtual void sendTargetMessage() const = 0;
+    virtual bool canBeAttackedByPlayer() const { return isAlive(); }
 
 private:
     health_t _health;

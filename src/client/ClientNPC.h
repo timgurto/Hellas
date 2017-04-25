@@ -33,6 +33,7 @@ public:
 
     virtual char classTag() const override { return 'n'; }
     
+    // From Entity
     virtual void onLeftClick(Client &client) override;
     virtual void onRightClick(Client &client) override;
     virtual void assembleWindow(Client &client) override;
@@ -40,6 +41,8 @@ public:
     virtual void update(double delta) override;
     virtual const Texture &cursor(const Client &client) const override;
     virtual void onInventoryUpdate() override;
+
+    // From ClientCombatant
     virtual void sendTargetMessage() const override;
 };
 
