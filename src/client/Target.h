@@ -22,7 +22,8 @@ public:
     const ClientCombatant *combatant() const { return _combatant; }
     bool exists() const { return _entity != nullptr; }
     bool isAggressive() const { return _aggressive; }
-    void setAggression(bool aggressive) { _aggressive = aggressive; }
+    void makeAggressive() { _aggressive = true; }
+    void makePassive() { _aggressive = false; }
     
     const std::string &name() const { return _name; }
     const health_t &health() const { return _health; }

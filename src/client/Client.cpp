@@ -868,7 +868,7 @@ bool Client::targetIsDifferentFromServer(const Entity &newTarget, bool nowAggres
 void Client::setTargetingUI(const Entity &entity, const ClientCombatant &combatant,
                             bool aggressive){
     _target.set(entity, combatant);
-    _target.setAggression(aggressive);
+    aggressive ? _target.makeAggressive() : _target.makePassive();
     _targetDisplay->show();
 }
 
