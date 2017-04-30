@@ -60,7 +60,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 59,Better NPC pathfinding,21,34,Feature,,,
 60,Some tool objects have a cooldown,5,13,Feature,,,TRUE
 61,Document UI interface,2,8,Documentation,,,
-62,Fix flaky merchant-slot-window test,2,89,Bug,,,
+62,Fix flaky merchant-slot-window test,2,89,Bug,,TRUE,
 63,Eating food restores energy,13,3,Feature,93,,
 64,Buffs,13,233,Feature,22,,
 65,NPCs can combine loot tables,5,21,Feature,,,
@@ -88,13 +88,12 @@ issue,description,value,effort,type,blockedBy,done,critical
 87,Move appropriate configuration details into config file,2,55,Code quality,
 88,Critter run-away AI,8,13,Feature,
 89,Players can be in a group,34,8,Feature,
-90,Use namespaces for server and client,5,377,Code quality,
 91,Stacks of the same item can be combined,21,13,Usability,
 92,Shift + right-click to loot all,8,3,Usability,
 93,An energy bar that's used up by attacking,13,21,Feature,
 94,A road object that affects movement speed,3,13,Feature,64
 95,Object ownership is clearly visible,5,21,Usability,8
-96,Containers may be restricted by item class,5,5,Feature,,
+96,Containers may be restricted by item class,5,5,Feature,
 97,"Use collisionRects even on non-colliding objects, for distance checks",8,5,Bug,,
 98,Send nearby users' health values,13,8,Usability,,
 99,Allow specification of minimum yields,8,1,Feature,,TRUE
@@ -110,7 +109,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 109,Allow crafting if removing the ingredients will make room,13,3,Bug,,
 110,Load map in login-screen background,5,13,Usability,,
 111,"Use gear-slot names, not numbers, in items.xml",3,5,Code quality,,
-112,Throw exceptions where appropriate on SDL-function failures,1,5,Code quality,,
+112,Use exceptions to check SDL-function failures,1,5,Code quality,,
 113,"Use forward declarations where possible, to reduce unnecessary #includes",2,5,Code quality,,
 114,Use polymorphism instead of classTag,3,144,Code quality,,
 115,Fail more gracefully and informatively when can't connect to server,5,8,Usability,,
@@ -126,7 +125,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 125,Tools can modify crafting/gathering speed,3,13,Feature,,
 126,Remove 'can ...' tooltips when player has no permissions,21,2,Bug,,TRUE
 127,Add fading unlock messages to the top of the screen,8,13,Usability,,
-128,Make oven and kiln larger,5,3,Aesthetics,,,
+128,Make oven and kiln larger,5,3,Aesthetics,,
 129,Highlight recipes/constructions that might unlock stuff,5,21,Usability,,,
 130,Document and improve use of various disconnects,2,8,Documentation,,,
 131,Move SDL functions and types to a namespace,2,5,Code quality,,,
@@ -134,7 +133,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 134,Use set::count() and map::count() to test set membership,2,3,Code quality,,,
 135,Fix ambiguity of Object::removeItem() and Object::removeItems(),2,3,Code quality,,,
 136,Users are drawn inside (front+back) of vehicles,5,5,Aesthetics,,,
-137,Prevent fast travel via vehicle-hopping,2,34,Bug,,,
+137,Prevent fast travel via vehicle-hopping,2,34,Exploit,,,
 138,Make mountains more explicit,2,3,Usability,,,
 139,Memoize texture for other users' names,1,3,Performance,,,
 140,Remove useItem info from Container class; move it into Client object,1,13,Code quality,,,
@@ -142,4 +141,6 @@ issue,description,value,effort,type,blockedBy,done,critical
 142,Calculate highlight borders by adjacency to magenta (sausage man),5,13,Aesthetics,,,
 143,Highlight newly unlocked recipes/constructions,13,21,Usability,,,
 143,Declaring war on a player in a city declares war on that city,21,3,Feature,55,,TRUE
-144,Prevent multiple copies of sounds between SoundProfiles,5,3,Performance
+144,Prevent multiple copies of sounds between SoundProfiles,5,3,Performance,,,
+145,Prevent users from spamming construction sites,5,8,Exploit,
+146,Add toast messages for war events,8,2,Usability,127
