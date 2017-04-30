@@ -31,7 +31,8 @@ Red         A34C5C
 Purple      772C67
 Dark purple 170A33
 Dark grey   413168
-Light grey  8778A5
+Grey        8778A5
+Light grey  C4AAC0
 White       E5E5E5
 Light green 62BA6C
 Green       357F51
@@ -69,12 +70,12 @@ Dark blue   3C388C
     itemName="E5E5E5"
     itemStats="E8CE94"
     itemInstructions="62BA6C"
-    itemTags="E5E5E5"
+    itemTags="C4AAC0"
     
-    footprintGood="E5E5E5"
+    footprintGood="C4AAC0"
     footprintBad="A34C5C"
     footprint="772C67"
-    inRange="E5E5E5"
+    inRange="C4AAC0"
     outOfRange="A34C5C"
     healthBar="62BA6C"
     healthBarBackground="A34C5C"
