@@ -287,8 +287,7 @@ Server only:
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" />
 </objectType>
 
-<objectType
-    id="stretchingFrame" name="Stretching Frame"
+<objectType id="stretchingFrame" name="Stretching Frame"
     constructionTime="1000" >
     <material id="stick" quantity="2" />
     <material id="rope" quantity="2" />
@@ -296,10 +295,11 @@ Server only:
     <unlockedBy recipe="rope" />
 </objectType>
 
-<objectType
-    id="tannin" name="Pot of Tannin"
+<objectType id="tannin" name="Pot of Tannin"
     constructionTime="1000" >
     <tag name="tannin" />
 </objectType>
+
+<objectType id="pyramid" name="Pyramid" />
 
 </root>
