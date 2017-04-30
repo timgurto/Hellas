@@ -42,6 +42,7 @@ class ObjectType{
     const TerrainList *_allowedTerrain;
 
     ItemSet _materials; // The necessary materials, if this needs to be constructed in-place.
+    bool _knownByDefault;
 
 public:
     ObjectType(const std::string &id);
@@ -59,6 +60,8 @@ public:
     void merchantSlots(size_t n) { _merchantSlots = n; }
     bool bottomlessMerchant() const { return _bottomlessMerchant; }
     void bottomlessMerchant(bool b) { _bottomlessMerchant = b; }
+    void knownByDefault() { _knownByDefault = true; }
+    bool isKnownByDefault() const { return _knownByDefault; }
 
     virtual char classTag() const { return 'o'; }
 

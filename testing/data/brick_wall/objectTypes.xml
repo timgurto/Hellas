@@ -1,0 +1,8 @@
+<root>
+
+<objectType
+    id="wall" name="Wall" constructionTime="0" >
+    <material id="brick" quantity="1" />
+</objectType>
+
+</root>

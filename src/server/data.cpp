@@ -264,7 +264,8 @@ void Server::loadData(const std::string &path){
                 xr.findAttr(objMat, "quantity", n);
                 ot->addMaterial(&*itemIt, n);
             }
-
+            
+            bool requiresUnlock = false;
             for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
                 double chance = 1.0;
                 xr.findAttr(unlockedBy, "chance", chance);
@@ -278,7 +279,10 @@ void Server::loadData(const std::string &path){
                 else if (xr.findAttr(unlockedBy, "recipe", s))
                     triggerType = ProgressLock::RECIPE;
                 ProgressLock(triggerType, s, ProgressLock::CONSTRUCTION, id, chance).stage();
+                requiresUnlock = true;
             }
+            if (!requiresUnlock)
+                ot->knownByDefault();
 
             // Container
             auto container = xr.findChild("container", elem);

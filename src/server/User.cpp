@@ -389,15 +389,25 @@ void User::updateStats(){
 }
 
 bool User::knowsConstruction(const std::string &id) const {
-    return _knownConstructions.find(id) != _knownConstructions.end();
+    const Server &server = *Server::_instance;
+    const ObjectType *objectType = server.findObjectTypeByName(id);
+    bool objectTypeExists = (objectType != nullptr);
+    if (!objectTypeExists)
+        return false;
+    if (objectType->isKnownByDefault())
+        return true;
+    bool userKnowsConstruction = _knownConstructions.find(id) != _knownConstructions.end();
+    return userKnowsConstruction;
 }
 
 bool User::knowsRecipe(const std::string &id) const {
     const Server &server = *Server::_instance;
     auto it = server._recipes.find(id);
-    if (it == server._recipes.end())
+    bool recipeExists = (it != server._recipes.end());
+    if (!recipeExists)
         return false;
     if (it->isKnownByDefault())
         return true;
-    return _knownRecipes.find(id) != _knownRecipes.end();
+    bool userKnowsRecipe = _knownRecipes.find(id) != _knownRecipes.end();
+    return userKnowsRecipe;
 }
