@@ -341,9 +341,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 case GEAR:      containerFrom = &user->gear();      break;
                 default:
                     pObj1 = findObject(obj1);
-                    if (!isObjectInRange(client, *user, pObj1))
+                    if (!isObjectInRange(client, *user, pObj1)){
                         sendMessage(client, SV_TOO_FAR);
                         breakMsg = true;
+                    }
                     if (!pObj1->userHasAccess(user->name())){
                         sendMessage(client, SV_NO_PERMISSION);
                         breakMsg = true;
@@ -357,9 +358,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 case GEAR:      containerTo = &user->gear();      break;
                 default:
                     pObj2 = findObject(obj2);
-                    if (!isObjectInRange(client, *user, pObj2))
+                    if (!isObjectInRange(client, *user, pObj2)){
                         sendMessage(client, SV_TOO_FAR);
                         breakMsg = true;
+                    }
                     if (!pObj2->userHasAccess(user->name())){
                         sendMessage(client, SV_NO_PERMISSION);
                         breakMsg = true;
@@ -381,9 +383,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
 
-            auto
-                &slotFrom = (*containerFrom)[slot1],
-                &slotTo = (*containerTo)[slot2];
+            auto &slotFrom = (*containerFrom)[slot1];
             assert(slotFrom.first != nullptr);
 
             if (isConstructionMaterial){
@@ -427,6 +427,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
                 break;
             }
+
+            auto &slotTo = (*containerTo)[slot2];
             
             if (pObj1 != nullptr && pObj1->classTag() == 'n' && slotTo.first != nullptr ||
                 pObj2 != nullptr && pObj2->classTag() == 'n' && slotFrom.first != nullptr){
