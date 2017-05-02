@@ -1,0 +1,8 @@
+<root>
+
+<objectType
+    id="treehouse" name="Treehouse" constructionTime="0" isUnbuildable="1" >
+    <material id="wood" quantity="10" />
+</objectType>
+
+</root>

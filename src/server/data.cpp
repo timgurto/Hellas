@@ -256,6 +256,7 @@ void Server::loadData(const std::string &path){
                     ot->addTag(s);
 
             // Construction site
+            bool needsMaterials = false;
             for (auto objMat : xr.getChildren("material", elem)){
                 if (!xr.findAttr(objMat, "id", s))
                     continue;
@@ -263,9 +264,13 @@ void Server::loadData(const std::string &path){
                 n = 1;
                 xr.findAttr(objMat, "quantity", n);
                 ot->addMaterial(&*itemIt, n);
+                needsMaterials = true;
             }
             if (xr.findAttr(elem, "isUnique", n) == 1)
                 ot->makeUnique();
+            bool isUnbuildable = xr.findAttr(elem, "isUnbuildable", n) == 1;
+            if (isUnbuildable)
+                ot->makeUnbuildable();
             
             bool requiresUnlock = false;
             for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
@@ -283,7 +288,7 @@ void Server::loadData(const std::string &path){
                 ProgressLock(triggerType, s, ProgressLock::CONSTRUCTION, id, chance).stage();
                 requiresUnlock = true;
             }
-            if (!requiresUnlock)
+            if (!requiresUnlock && !isUnbuildable && needsMaterials)
                 ot->knownByDefault();
 
             // Container

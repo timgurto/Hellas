@@ -379,6 +379,9 @@ enum MessageCode{
     // The user tried to construct a unique object that already exists in the world
     SV_UNIQUE_OBJECT = 944,
 
+    // The user tried to construct an object that cannot be constructed
+    SV_UNBUILDABLE = 945,
+
 
 
     // Debug requests

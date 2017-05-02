@@ -135,6 +135,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_UNIQUE_OBJECT);
                 break;
             }
+            if (objType.isUnbuildable()){
+                sendMessage(client, SV_UNBUILDABLE);
+                break;
+            }
             const Point location(x, y);
             if (distance(user->collisionRect(), objType.collisionRect() + location) >
                 ACTION_DISTANCE) {

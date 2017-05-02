@@ -159,6 +159,8 @@ void Client::loadData(const std::string &path){
                 cot->addMaterial(&item, n);
                 canConstruct = true;
             }
+            if (xr.findAttr(elem, "isUnbuildable", n) == 1)
+                canConstruct = false;
             if (canConstruct){
                 bool hasLocks = xr.findChild("unlockedBy", elem) != nullptr;
                 if (! hasLocks)

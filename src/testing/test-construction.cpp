@@ -48,6 +48,7 @@ TEST("Unique objects are unique")
 
     c.sendMessage(CL_CONSTRUCT, makeArgs("throne", 10, 10));
     bool isConstructionRejected = c.waitForMessage(SV_UNIQUE_OBJECT);
+
     if (! isConstructionRejected)
         return false;
     if (s.objects().size() > 1)
@@ -60,5 +61,38 @@ TEST("Constructing invalid object fails gracefully")
     TestServer s;
     TestClient c;
     c.sendMessage(CL_CONSTRUCT, makeArgs("notARealObject", 10, 10));
+    return true;
+TEND
+
+ONLY_TEST("Objects can be unbuildable")
+    TestServer s = TestServer::Data("unbuildable_treehouse");
+    TestClient c = TestClient::Data("unbuildable_treehouse");
+    WAIT_UNTIL (s.users().size() == 1);
+
+    c.sendMessage(CL_CONSTRUCT, makeArgs("treehouse", 10, 10));
+
+    REPEAT_FOR_MS(1200)
+        if (s.objects().size() == 1)
+            return false;
+    return true;
+TEND
+
+TEST("Clients can't see unbuildable constructions")
+    TestServer s = TestServer::Data("unbuildable_treehouse");
+    TestClient c = TestClient::Data("unbuildable_treehouse");
+    WAIT_UNTIL (s.users().size() == 1);
+    
+    return ! c.knowsConstruction("treehouse");
+TEND
+
+TEST("Objects without materials can't be built")
+    TestServer s = TestServer::Data("basic_rock");
+    TestClient c = TestClient::Data("basic_rock");
+    WAIT_UNTIL (s.users().size() == 1);
+    
+    c.sendMessage(CL_CONSTRUCT, makeArgs("rock", 10, 15));
+    REPEAT_FOR_MS(1200)
+        if (s.objects().size() == 1)
+            return false;
     return true;
 TEND

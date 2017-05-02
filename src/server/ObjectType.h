@@ -19,6 +19,7 @@ class ObjectType{
     std::string _constructionReq;
     ms_t _constructionTime;
     bool _isUnique; // Can only exist once at a time in the world.
+    bool _isUnbuildable; // Data suggests it can be built, but direct construction should be blocked.
 
     const ServerItem *_deconstructsItem; // Item gained when this object is deconstructed
     ms_t _deconstructionTime;
@@ -67,6 +68,8 @@ public:
     bool isKnownByDefault() const { return _knownByDefault; }
     void makeUnique() { _isUnique = true; checkUniquenessInvariant(); }
     bool isUnique() const { return _isUnique; }
+    void makeUnbuildable() { _isUnbuildable = true; }
+    bool isUnbuildable() const { return _isUnbuildable; }
     void incrementCounter() const { ++ _numInWorld; checkUniquenessInvariant(); }
     void decrementCounter() const { -- _numInWorld; }
     size_t numInWorld() const { return _numInWorld; }
