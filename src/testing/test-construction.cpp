@@ -38,7 +38,7 @@ TEST("New client doesn't know any locked constructions")
     return ! c.knowsConstruction("table");
 TEND
 
-ONLY_TEST("Unique objects are unique")
+TEST("Unique objects are unique")
     TestServer s = TestServer::Data("unique_throne");
     TestClient c = TestClient::Data("unique_throne");
     WAIT_UNTIL (s.users().size() == 1);
@@ -53,5 +53,12 @@ ONLY_TEST("Unique objects are unique")
     if (s.objects().size() > 1)
         return false;
 
+    return true;
+TEND
+
+TEST("Constructing invalid object fails gracefully")
+    TestServer s;
+    TestClient c;
+    c.sendMessage(CL_CONSTRUCT, makeArgs("notARealObject", 10, 10));
     return true;
 TEND
