@@ -144,3 +144,21 @@ issue,description,value,effort,type,blockedBy,done,critical
 144,Prevent multiple copies of sounds between SoundProfiles,5,3,Performance,,,
 145,Prevent users from spamming construction sites,5,8,Exploit,
 146,Add toast messages for war events,8,2,Usability,127
+147,Make crafting more fun,34,89,Aesthetics,
+148,Make construction more fun,34,89,Aesthetics,
+149,Make chat more fun,21,89,Aesthetics,
+150,Make declarations of war more fun,21,89,Aesthetics,
+151,Make looting more fun,13,89,Aesthetics,
+152,Make containers more fun,13,89,Aesthetics,
+153,Make traveling more fun,34,89,Aesthetics,
+154,Make gathering more fun,34,89,Aesthetics,
+155,Componentize containers,3,5,Code quality,163
+156,Componentize loot,3,5,Code quality,163
+157,Componentize collisions,3,5,Code quality,163
+158,Componentize gathering,3,5,Code quality,163
+159,Componentize construction from item,3,5,Code quality,163
+160,Componentize construction with materials,3,5,Code quality,163
+161,Componentize object transformation,3,5,Code quality,163
+161,Componentize merchant functionality,3,5,Code quality,163
+162,Componentize vehicle functionality,3,5,Code quality,163
+163,Create component system,5,8,Code quality,
