@@ -106,17 +106,19 @@ void Client::loadData(const std::string &path){
         _objectTypes.clear();
         objectTypesCleared = true;
         for (auto elem : xr.getChildren("objectType")) {
-            std::string s; int n;
-            if (!xr.findAttr(elem, "id", s))
+            std::string id;
+            if (!xr.findAttr(elem, "id", id))
                 continue;
+            int n;
             ClientObjectType *cot;
             if (xr.findAttr(elem, "isVehicle", n) == 1)
-                cot = new ClientVehicleType(s);
+                cot = new ClientVehicleType(id);
             else
-                cot = new ClientObjectType(s);
-            xr.findAttr(elem, "imageFile", s); // If no explicit imageFile, s will still == id
-            cot->setImage(std::string("Images/Objects/") + s + ".png");
-            cot->imageSet(std::string("Images/Objects/") + s + ".png");
+                cot = new ClientObjectType(id);
+            xr.findAttr(elem, "imageFile", id); // If no explicit imageFile, s will still == id
+            cot->setImage(std::string("Images/Objects/") + id + ".png");
+            cot->imageSet(std::string("Images/Objects/") + id + ".png");
+            std::string s;
             if (xr.findAttr(elem, "name", s)) cot->name(s);
             Rect drawRect(0, 0, cot->width(), cot->height());
             bool
@@ -147,6 +149,7 @@ void Client::loadData(const std::string &path){
             Rect r;
             if (xr.findRectChild("collisionRect", elem, r)) cot->collisionRect(r);
 
+            bool canConstruct = false;
             for (auto objMat : xr.getChildren("material", elem)){
                 if (!xr.findAttr(objMat, "id", s))
                     continue;
@@ -154,6 +157,12 @@ void Client::loadData(const std::string &path){
                 n = 1;
                 xr.findAttr(objMat, "quantity", n);
                 cot->addMaterial(&item, n);
+                canConstruct = true;
+            }
+            if (canConstruct){
+                bool hasLocks = xr.findChild("unlockedBy") != nullptr;
+                if (! hasLocks)
+                    _knownConstructions.insert(id);
             }
 
             if (cot->classTag() == 'v'){

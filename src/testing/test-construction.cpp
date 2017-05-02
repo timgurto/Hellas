@@ -21,3 +21,11 @@ TEST("Construction materials can be added")
 
     return true;
 TEND
+
+TEST("Client knows about default constructions")
+    TestServer s = TestServer::Data("brick_wall");
+    TestClient c = TestClient::Data("brick_wall");
+    WAIT_UNTIL (s.users().size() == 1);
+
+    return c.knowsConstruction("wall");
+TEND

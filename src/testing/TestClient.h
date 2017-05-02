@@ -22,6 +22,8 @@ public:
     Client::objectTypes_t &objectTypes() { return _client->_objectTypes; }
     const List &recipeList() const { return *_client->_recipeList; }
     void showCraftingWindow();
+    bool knowsConstruction(const std::string &id) const {
+            return _client->_knownConstructions.find(id) != _client->_knownConstructions.end(); }
 
     Client *operator->(){ return _client; }
     Client &client() { return *_client; }
