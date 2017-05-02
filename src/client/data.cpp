@@ -189,7 +189,6 @@ void Client::loadData(const std::string &path){
 
             _objectTypes.insert(cot);
         }
-        populateBuildList();
     }
 
     // Items
@@ -378,6 +377,8 @@ void Client::loadData(const std::string &path){
     } while (false);
     if (!mapSuccessful)
         _debug("Failed to load map.", Color::FAILURE);
+
+    populateBuildList();
 
     _dataLoaded = true;
 }
