@@ -14,8 +14,11 @@ class ServerItem;
 class ObjectType{
     std::string _id;
 
+    mutable size_t _numInWorld;
+
     std::string _constructionReq;
     ms_t _constructionTime;
+    bool _isUnique; // Can only exist once at a time in the world.
 
     const ServerItem *_deconstructsItem; // Item gained when this object is deconstructed
     ms_t _deconstructionTime;
@@ -62,6 +65,11 @@ public:
     void bottomlessMerchant(bool b) { _bottomlessMerchant = b; }
     void knownByDefault() { _knownByDefault = true; }
     bool isKnownByDefault() const { return _knownByDefault; }
+    void makeUnique() { _isUnique = true; checkUniquenessInvariant(); }
+    bool isUnique() const { return _isUnique; }
+    void incrementCounter() const { ++ _numInWorld; checkUniquenessInvariant(); }
+    void decrementCounter() const { -- _numInWorld; }
+    size_t numInWorld() const { return _numInWorld; }
 
     virtual char classTag() const { return 'o'; }
 
@@ -88,6 +96,8 @@ public:
     bool transformsOnEmpty() const { return _transformOnEmpty; }
     const ObjectType *transformObject() const {return _transformObject; }
     bool transforms() const { return _transformObject != nullptr; }
+
+    void checkUniquenessInvariant() const;
 
     bool operator<(const ObjectType &rhs) const { return _id < rhs._id; }
 

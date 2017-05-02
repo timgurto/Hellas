@@ -376,6 +376,9 @@ enum MessageCode{
     // The user tried to attack a player without being at war with him
     SV_AT_PEACE = 943,
 
+    // The user tried to construct a unique object that already exists in the world
+    SV_UNIQUE_OBJECT = 944,
+
 
 
     // Debug requests

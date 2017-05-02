@@ -443,6 +443,8 @@ void Server::removeObject(Object &obj, const User *userToExclude){
     for (const User *userP : findUsersInArea(obj.location()))
         sendMessage(userP->socket(), SV_REMOVE_OBJECT, makeArgs(serial));
 
+    obj.type()->decrementCounter();
+
     getCollisionChunk(obj.location()).removeObject(serial);
     _objectsByX.erase(&obj);
     _objectsByY.erase(&obj);
@@ -536,6 +538,8 @@ Object &Server::addObject(Object *newObj){
     // Add object to x/y index sets
     _objectsByX.insert(*it);
     _objectsByY.insert(*it);
+
+    newObj->type()->incrementCounter();
 
     return const_cast<Object&>(**it);
 }

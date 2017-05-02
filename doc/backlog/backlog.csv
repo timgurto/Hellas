@@ -52,7 +52,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 51,"There's a way to leave instances, to a specific point in the world",8,8,Feature,42,,TRUE
 52,NPCs can specify a set of items for their image,34,8,Aesthetics,,,TRUE
 53,NPCs can specify a custom human template image,21,8,Aesthetics,52,,TRUE
-54,A pyramid object that is unique,21,3,Feature,,,TRUE
+54,A pyramid object that is unique,21,3,Feature,,TRUE,TRUE
 55,Players and cities can be at war with each other,34,5,Feature,,,TRUE
 56,Learning some skills requires tools,21,2,Feature,24,,TRUE
 57,Heavy items that prevent player movement,13,3,Feature,,,TRUE

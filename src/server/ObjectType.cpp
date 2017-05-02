@@ -1,12 +1,15 @@
+#include <cassert>
 #include "ObjectType.h"
 
 ObjectType::ObjectType(const std::string &id):
 _id(id),
+_numInWorld(0),
 _gatherTime(0),
 _constructionTime(1000),
 _deconstructsItem(nullptr),
 _deconstructionTime(0),
 _gatherReq("none"),
+_isUnique(false),
 _containerSlots(0),
 _merchantSlots(0),
 _bottomlessMerchant(false),
@@ -35,4 +38,9 @@ const TerrainList &ObjectType::allowedTerrain() const{
         return TerrainList::defaultList();
     else
         return *_allowedTerrain;
+}
+
+void ObjectType::checkUniquenessInvariant() const{
+    if (_isUnique)
+    assert (_numInWorld <= 1);
 }

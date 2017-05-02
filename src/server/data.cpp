@@ -264,6 +264,8 @@ void Server::loadData(const std::string &path){
                 xr.findAttr(objMat, "quantity", n);
                 ot->addMaterial(&*itemIt, n);
             }
+            if (xr.findAttr(elem, "isUnique", n) == 1)
+                ot->makeUnique();
             
             bool requiresUnlock = false;
             for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {

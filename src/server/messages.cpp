@@ -131,6 +131,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             const ObjectType &objType = *findObjectTypeByName(id);
+            if (objType.isUnique() && objType.numInWorld() == 1){
+                sendMessage(client, SV_UNIQUE_OBJECT);
+                break;
+            }
             const Point location(x, y);
             if (distance(user->collisionRect(), objType.collisionRect() + location) >
                 ACTION_DISTANCE) {

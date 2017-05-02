@@ -294,8 +294,10 @@ Server only:
     <tag name="tannin" />
 </objectType>
 
+<!-- isFlat: Given the sloping shape, all other objects should be drawn above it. -->
 <objectType id="pyramid" name="Pyramid"
     isFlat = "1"
+    isUnique = "1"
     xDrawOffset="-150" yDrawOffset="-150" >
     <collisionRect x="-150" y="-150" w="301" h="301" />
     <material id="brick" quantity="1" />

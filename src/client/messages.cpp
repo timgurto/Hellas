@@ -153,6 +153,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_VEHICLE_OCCUPIED:
         case SV_NO_VEHICLE:
         case SV_WRONG_MATERIAL:
+        case SV_UNIQUE_OBJECT:
             errorMessageColor = Color::WARNING; // Yellow above, red below
         case SV_INVALID_USER:
         case SV_INVALID_ITEM:
@@ -1095,6 +1096,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_WRONG_MATERIAL] = "The construction site doesn't need that.";
     _errorMessages[SV_UNDER_CONSTRUCTION] = "That object is still under construction.";
     _errorMessages[SV_AT_PEACE] = "You are not at war with that player.";
+    _errorMessages[SV_UNIQUE_OBJECT] = "There can be only one.";
 }
 
 void Client::performCommand(const std::string &commandString){
