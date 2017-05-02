@@ -96,7 +96,6 @@ Server only:
 <objectType
     id="smallPot" name="Small Pot"
     xDrawOffset="-8" yDrawOffset="-16"
-    constructionTime="1000"
     deconstructs="smallPot" deconstructionTime="1000" >
     <collisionRect x="-8" y="-5" w="16" h="10" />
     <container slots="1" />
@@ -105,7 +104,6 @@ Server only:
 <objectType
     id="mediumPot" name="Medium Pot"
     xDrawOffset="-19" yDrawOffset="-27"
-    constructionTime="1000"
     deconstructs="mediumPot" deconstructionTime="1000" >
     <collisionRect x="-13" y="-4" w="25" h="6" />
     <container slots="4" />
@@ -113,7 +111,6 @@ Server only:
 
 <objectType
     id="largePot" name="Large Pot"
-    constructionTime="1000"
     deconstructs="largePot" deconstructionTime="1000" >
     <container slots="10" />
 </objectType>
@@ -135,7 +132,6 @@ Server only:
     id="elutriator" name="Elutriator"
     xDrawOffset="-15"
     yDrawOffset="-21"
-    constructionTime="1000"
     deconstructs="elutriator" deconstructionTime="1000" >
     <tag name="elutriator" />
     <collisionRect x="-15" y="-4" w="31" h="8" />
@@ -189,7 +185,6 @@ Server only:
     id="post" name="Post"
     xDrawOffset="-4"
     yDrawOffset="-47"
-    constructionTime="1000"
     deconstructs="lumber" deconstructionTime="1000" >
     <collisionRect x="-4" y="-4" w="8" h="8" />
 </objectType>
@@ -287,8 +282,7 @@ Server only:
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" />
 </objectType>
 
-<objectType id="stretchingFrame" name="Stretching Frame"
-    constructionTime="1000" >
+<objectType id="stretchingFrame" name="Stretching Frame" >
     <material id="stick" quantity="2" />
     <material id="rope" quantity="2" />
     <tag name="stretchingFrame" />
