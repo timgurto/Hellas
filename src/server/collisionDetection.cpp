@@ -5,7 +5,7 @@
 #include "CollisionChunk.h"
 #include "Server.h"
 
-const px_t Server::COLLISION_CHUNK_SIZE = 100;
+const px_t Server::COLLISION_CHUNK_SIZE = 160;
 
 bool Server::isLocationValid(const Point &loc, const ObjectType &type, const Object *thisObject){
     Rect rect = type.collisionRect() + loc;

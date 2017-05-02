@@ -56,9 +56,9 @@ void Client::draw() const{
 
     // Entities, sorted from back to front
     static const px_t
-        DRAW_MARGIN_ABOVE = 50,
-        DRAW_MARGIN_BELOW = 10,
-        DRAW_MARGIN_SIDES = 30;
+        DRAW_MARGIN_ABOVE = 160,
+        DRAW_MARGIN_BELOW = 160,
+        DRAW_MARGIN_SIDES = 160;
     const double
         topY = -offset().y - DRAW_MARGIN_BELOW,
         bottomY = -offset().y + SCREEN_Y + DRAW_MARGIN_ABOVE,

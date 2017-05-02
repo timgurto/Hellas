@@ -58,7 +58,7 @@ const health_t Client::MAX_PLAYER_HEALTH = 100;
 
 const px_t Client::ACTION_DISTANCE = 30;
 
-const px_t Client::CULL_DISTANCE = 350;
+const px_t Client::CULL_DISTANCE = 450; // Just copy Server::CULL_DISTANCE
 const px_t Client::CULL_HYSTERESIS_DISTANCE = 50;
 
 const size_t Client::INVENTORY_SIZE = 10;

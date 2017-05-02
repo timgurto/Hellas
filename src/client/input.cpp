@@ -447,7 +447,7 @@ void Client::handleInput(double delta){
 Entity *Client::getEntityAtMouse(){
     const Point mouseOffset = _mouse - _offset;
     Entity::set_t::iterator mouseOverIt = _entities.end();
-    static const px_t LOOKUP_MARGIN = 30;
+    static const px_t LOOKUP_MARGIN = 320;
     Entity
         topEntity(nullptr, Point(0, mouseOffset.y - LOOKUP_MARGIN)),
         bottomEntity(nullptr, Point(0, mouseOffset.y + LOOKUP_MARGIN));
