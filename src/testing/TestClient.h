@@ -31,6 +31,7 @@ public:
     MessageCode getNextMessage() const;
     bool waitForMessage(MessageCode desiredMsg) const;
     void waitForRedraw();
+    const ChoiceList &uiBuildList() const { return *_client->_buildList; }
 
 private:
     Client *_client;

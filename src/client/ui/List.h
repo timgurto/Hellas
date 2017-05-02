@@ -57,6 +57,7 @@ public:
     px_t childHeight() const { return _childHeight; }
 
     size_t size() const { return _content->children().size(); }
+    bool empty() const { return size() == 0; }
 
     virtual void refresh() override;
 };

@@ -51,3 +51,12 @@ QUARANTINED_TEST("View merchant slots in window")
     c.waitForRedraw();
     return true;;
 TEND
+
+TEST("New client can build default constructions")
+    TestServer s = TestServer::Data("brick_wall");
+    TestClient c = TestClient::Data("brick_wall");
+    WAIT_UNTIL (s.users().size() == 1);
+
+    bool constructionWindowIsEmpty = c.uiBuildList().empty();
+    return ! constructionWindowIsEmpty;
+TEND

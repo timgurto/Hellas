@@ -189,6 +189,7 @@ void Client::loadData(const std::string &path){
 
             _objectTypes.insert(cot);
         }
+        populateBuildList();
     }
 
     // Items
