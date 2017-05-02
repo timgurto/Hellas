@@ -29,3 +29,11 @@ TEST("Client knows about default constructions")
 
     return c.knowsConstruction("wall");
 TEND
+
+TEST("New client doesn't know any locked constructions")
+    TestServer s = TestServer::Data("secret_table");
+    TestClient c = TestClient::Data("secret_table");
+    WAIT_UNTIL (s.users().size() == 1);
+
+    return ! c.knowsConstruction("table");
+TEND

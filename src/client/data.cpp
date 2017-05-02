@@ -160,7 +160,7 @@ void Client::loadData(const std::string &path){
                 canConstruct = true;
             }
             if (canConstruct){
-                bool hasLocks = xr.findChild("unlockedBy") != nullptr;
+                bool hasLocks = xr.findChild("unlockedBy", elem) != nullptr;
                 if (! hasLocks)
                     _knownConstructions.insert(id);
             }
