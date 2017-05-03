@@ -8,7 +8,7 @@ TEST("Thin objects block movement")
 
     // Move user to middle, below wall
     WAIT_UNTIL(s.users().size() == 1);
-    User &user = const_cast<User &>(*s.users().begin());
+    User &user = s.getFirstUser();
     user.updateLocation(Point(10, 15));
 
     // Add wall

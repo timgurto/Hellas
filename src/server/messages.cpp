@@ -126,32 +126,41 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             user->cancelAction();
+            const ObjectType *objType = findObjectTypeByName(id);
+            if (objType == nullptr){
+                sendMessage(client, SV_INVALID_OBJECT);
+                break;
+            }
             if (!user->knowsConstruction(id)){
                 sendMessage(client, SV_UNKNOWN_CONSTRUCTION);
                 break;
             }
-            const ObjectType &objType = *findObjectTypeByName(id);
-            if (objType.isUnique() && objType.numInWorld() == 1){
+            if (objType->isUnique() && objType->numInWorld() == 1){
                 sendMessage(client, SV_UNIQUE_OBJECT);
                 break;
             }
-            if (objType.isUnbuildable()){
+            if (objType->isUnbuildable()){
                 sendMessage(client, SV_UNBUILDABLE);
                 break;
             }
+            bool requiresTool = ! objType->constructionReq().empty();
+            if (requiresTool && ! user->hasTool(objType->constructionReq())){
+                sendMessage(client, SV_NEED_TOOLS);
+                break;
+            }
             const Point location(x, y);
-            if (distance(user->collisionRect(), objType.collisionRect() + location) >
+            if (distance(user->collisionRect(), objType->collisionRect() + location) >
                 ACTION_DISTANCE) {
                 sendMessage(client, SV_TOO_FAR);
                 break;
             }
-            if (!isLocationValid(location, objType)) {
+            if (!isLocationValid(location, *objType)) {
                 sendMessage(client, SV_BLOCKED);
                 break;
             }
-            user->beginConstructing(objType, location);
+            user->beginConstructing(*objType, location);
             sendMessage(client, SV_ACTION_STARTED,
-                        makeArgs(objType.constructionTime()));
+                        makeArgs(objType->constructionTime()));
             break;
         }
 

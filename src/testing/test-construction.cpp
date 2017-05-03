@@ -10,7 +10,7 @@ TEST("Construction materials can be added")
     c.sendMessage(CL_CONSTRUCT, makeArgs("wall", 10, 10));
     WAIT_UNTIL (s.objects().size() == 1);
 
-    User &user = const_cast<User &>(*s.users().begin());
+    User &user = s.getFirstUser();
     user.giveItem(&*s.items().begin());
     if (!c.waitForMessage(SV_INVENTORY))
         return false;
@@ -64,7 +64,7 @@ TEST("Constructing invalid object fails gracefully")
     return true;
 TEND
 
-ONLY_TEST("Objects can be unbuildable")
+TEST("Objects can be unbuildable")
     TestServer s = TestServer::Data("unbuildable_treehouse");
     TestClient c = TestClient::Data("unbuildable_treehouse");
     WAIT_UNTIL (s.users().size() == 1);
@@ -94,5 +94,21 @@ TEST("Objects without materials can't be built")
     REPEAT_FOR_MS(1200)
         if (s.objects().size() == 1)
             return false;
+    return true;
+TEND
+
+TEST("Construction tool requirements are enforced")
+    TestServer s = TestServer::Data("computer");
+    TestClient c = TestClient::Data("computer");
+    WAIT_UNTIL (s.users().size() == 1);
+
+    c.sendMessage(CL_CONSTRUCT, makeArgs("computer", 10, 10));
+    bool isConstructionRejected = c.waitForMessage(SV_NEED_TOOLS);
+
+    if (! isConstructionRejected)
+        return false;
+    if (s.objects().size() > 1)
+        return false;
+
     return true;
 TEND

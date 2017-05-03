@@ -8,7 +8,7 @@ TEST("Gather an item from an object")
 
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
-    User &user = const_cast<User &>(*s.users().begin());
+    User &user = s.getFirstUser();
     user.updateLocation(Point(10, 10));
 
     // Add a single rock
@@ -44,7 +44,7 @@ TEST("Gather chance is by gathers, not quantity")
 
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
-    User &user = const_cast<User &>(*s.users().begin());
+    User &user = s.getFirstUser();
     user.updateLocation(Point(10, 10));
 
     // Add a single iron deposit

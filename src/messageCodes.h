@@ -382,6 +382,9 @@ enum MessageCode{
     // The user tried to construct an object that cannot be constructed
     SV_UNBUILDABLE = 945,
 
+    // The user tried to construct an object type that doesn't exist
+    SV_INVALID_OBJECT = 946,
+
 
 
     // Debug requests

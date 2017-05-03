@@ -172,6 +172,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_UNKNOWN_CONSTRUCTION:
         case SV_UNDER_CONSTRUCTION:
         case SV_AT_PEACE:
+        case SV_INVALID_OBJECT:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
@@ -1097,6 +1098,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_UNDER_CONSTRUCTION] = "That object is still under construction.";
     _errorMessages[SV_AT_PEACE] = "You are not at war with that player.";
     _errorMessages[SV_UNIQUE_OBJECT] = "There can be only one.";
+    _errorMessages[SV_INVALID_OBJECT] = "That is not a valid object type.";
 }
 
 void Client::performCommand(const std::string &commandString){

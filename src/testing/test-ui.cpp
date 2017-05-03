@@ -19,8 +19,8 @@ QUARANTINED_TEST("View merchant slots in window")
 
     // Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
-    const User &user = *s.users().begin();
-    const_cast<User &>(user).updateLocation(Point(10, 10));
+    User &user = s.getFirstUser();
+    user.updateLocation(Point(10, 10));
 
     // Add a single vending machine
     s.addObject("vendingMachine", Point(10, 10));

@@ -37,12 +37,18 @@ const Texture &ClientObjectType::materialsTooltip() const{
         TooltipBuilder tb;
         tb.setColor(Color::ITEM_NAME);
         tb.addLine(_name);
+
         tb.addGap();
         tb.setColor(Color::ITEM_STATS);
         tb.addLine("Materials:");
         for (const auto &material : _materials){
             const ClientItem &item = *dynamic_cast<const ClientItem *>(material.first);
             tb.addLine(makeArgs(material.second) + "x " + item.name());
+        }
+
+        if (! _constructionReq.empty()){
+            tb.addGap();
+            tb.addLine("Requires tool: " + _constructionReq);
         }
         _materialsTooltip = new Texture(tb.publish());
     }

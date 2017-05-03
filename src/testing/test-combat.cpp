@@ -10,7 +10,7 @@ TEST("Players can attack immediately")
 
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
-    User &user = const_cast<User &>(*s.users().begin());
+    User &user = s.getFirstUser();
 
     // Add NPC
     s.addNPC("ant", Point(10, 10));

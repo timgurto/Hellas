@@ -6,7 +6,7 @@ TEST("Recipes can be known by default")
     TestServer s = TestServer::Data("box_from_nothing");
     TestClient c = TestClient::Data("box_from_nothing");
     WAIT_UNTIL (s.users().size() == 1);
-    const User &user = *s.users().begin();
+    User &user = s.getFirstUser();
     c.sendMessage(CL_CRAFT, "box");
     WAIT_UNTIL (user.action() == User::Action::CRAFT) ; // Wait for gathering to start
     WAIT_UNTIL (user.action() == User::Action::NO_ACTION) ; // Wait for gathering to finish
@@ -17,7 +17,7 @@ TEST("Terrain as tool")
     TestServer s = TestServer::Data("daisy_chain");
     TestClient c = TestClient::Data("daisy_chain");
     WAIT_UNTIL (s.users().size() == 1);
-    const User &user = *s.users().begin();
+    User &user = s.getFirstUser();
     c.sendMessage(CL_CRAFT, "daisyChain");
     WAIT_UNTIL (user.action() == User::Action::CRAFT) ; // Wait for gathering to start
     WAIT_UNTIL (user.action() == User::Action::NO_ACTION) ; // Wait for gathering to finish

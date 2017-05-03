@@ -20,7 +20,7 @@ TEST("Dismantle an object with an inventory")
 
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
-    User &user = const_cast<User &>(*s.users().begin());
+    User &user = s.getFirstUser();
     user.updateLocation(Point(10, 10));
 
     // Add a single box
@@ -40,7 +40,7 @@ TEST("Place item in object");
 
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
-    User &user = const_cast<User &>(*s.users().begin());
+    User &user = s.getFirstUser();
     user.updateLocation(Point(10, 10));
 
     // Add a single box

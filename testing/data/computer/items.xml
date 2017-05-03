@@ -1,0 +1,8 @@
+<root>
+
+<item id="circuitboard" name="Circuitboard" />
+<item id="screwdriver" name="Screwdriver">
+    <tag name="screwdriver" />
+</item>
+
+</root>
