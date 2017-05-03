@@ -33,7 +33,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 32,Object repair can require tools,5,2,Feature,31,,TRUE
 33,Items can be repaired with specific items,21,55,Feature,30,,TRUE
 34,Repairing items can require tools,8,2,Feature,33,,TRUE
-35,"Recipes, objects and loot tables may point to deleted ServerItems",55,8,Feature,,,TRUE
+35,"Recipes, objects and loot tables may point to deleted ServerItems",55,8,Bug,,,
 36,A player's group shows up on the UI,21,13,Usability,35,,TRUE
 37,Grouped players can invite others to their group,21,8,Feature,35,,TRUE
 38,Non-grouped players can invite others to form a group,21,8,Feature,35,,TRUE
@@ -53,7 +53,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 52,NPCs can specify a set of items for their image,34,8,Aesthetics,,,TRUE
 53,NPCs can specify a custom human template image,21,8,Aesthetics,52,,TRUE
 54,A pyramid object that is unique,21,3,Feature,,TRUE,TRUE
-55,Players and cities can be at war with each other,34,5,Feature,,,TRUE
+55,Players and cities can be at war with each other,34,5,Feature,1,,TRUE
 56,Learning some skills requires tools,21,2,Feature,24,,TRUE
 57,Heavy items that prevent player movement,13,3,Feature,,,TRUE
 58,Containers may allow 'heavy' objects or not,13,5,Feature,57,,TRUE
