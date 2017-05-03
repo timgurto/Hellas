@@ -196,6 +196,7 @@ Server only:
         <progress image="figTree0a" />
         <progress image="figTree0b" />
     </transform>
+    <material id="figSeeds" />
 </objectType>
 <objectType id="figTree1" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="axe" gatherTime="3000" > <collisionRect x="-13" y="-9" w="26" h="18" />
@@ -242,6 +243,7 @@ Server only:
     allowedTerrain="denseVeg" >
     <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
+    <material id="flaxSeeds" />
     <transform id="flaxCrop1" time="600000" />
 </objectType>
 <objectType id="flaxCrop1" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" />
