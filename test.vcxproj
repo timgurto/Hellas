@@ -149,6 +149,7 @@
     <ClCompile Include="src\NormalVariable.cpp" />
     <ClCompile Include="src\Point.cpp" />
     <ClCompile Include="src\Rect.cpp" />
+    <ClCompile Include="src\server\City.cpp" />
     <ClCompile Include="src\server\CollisionChunk.cpp" />
     <ClCompile Include="src\server\collisionDetection.cpp" />
     <ClCompile Include="src\server\Combatant.cpp" />
@@ -182,6 +183,7 @@
     <ClCompile Include="src\Socket.cpp" />
     <ClCompile Include="src\Stats.cpp" />
     <ClCompile Include="src\Terrain.cpp" />
+    <ClCompile Include="src\testing\test-cities.cpp" />
     <ClCompile Include="src\testing\test-combat.cpp" />
     <ClCompile Include="src\testing\test-connection.cpp" />
     <ClCompile Include="src\testing\test-construction.cpp" />
@@ -262,6 +264,7 @@
     <ClInclude Include="src\NormalVariable.h" />
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\Rect.h" />
+    <ClInclude Include="src\server\City.h" />
     <ClInclude Include="src\server\CollisionChunk.h" />
     <ClInclude Include="src\server\Combatant.h" />
     <ClInclude Include="src\server\LootTable.h" />

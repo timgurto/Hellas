@@ -23,6 +23,7 @@ public:
     std::map<size_t, Spawner> &spawners() { return _server->_spawners; }
     Wars &wars() { return _server->_wars; }
     User &getFirstUser() { return const_cast<User &>(* _server->_users.begin()); }
+    Cities &cities() { return _server->_cities; }
 
     void addObject(const std::string &typeName, const Point &loc);
     void addNPC(const std::string &typeName, const Point &loc);

@@ -759,6 +759,8 @@ void Server::loadData(const std::string &path){
             _wars.declare(b1, b2);
         }
 
+        _cities.readFromXMLFile("World/cities.world");
+
         _dataLoaded = true;
         return;
     } while (false);
@@ -770,7 +772,7 @@ void Server::loadData(const std::string &path){
     _dataLoaded = true;
 }
 
-void Server::saveData(const objects_t &objects, const Wars &wars){
+void Server::saveData(const objects_t &objects, const Wars &wars, const Cities &cities){
     // Objects
 #ifndef SINGLE_THREAD
     static std::mutex objectsFileMutex;
@@ -876,6 +878,16 @@ void Server::saveData(const objects_t &objects, const Wars &wars){
     xw.publish();
 #ifndef SINGLE_THREAD
     warsFileMutex.unlock();
+#endif
+
+    // Cities
+#ifndef SINGLE_THREAD
+    static std::mutex citiesFileMutex;
+    citiesFileMutex.lock();
+#endif
+    cities.writeToXMLFile("World/cities.world");
+#ifndef SINGLE_THREAD
+    citiesFileMutex.unlock();
 #endif
 
 }

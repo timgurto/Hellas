@@ -197,17 +197,25 @@ enum MessageCode{
     // Arguments: quantity, id1, id2, ...
     SV_NEW_CONSTRUCTIONS = 137,
 
+    // The user has just joined a city
+    // Arguments: cityName
+    SV_JOINED_CITY = 138,
+
+    // The user is a member of a city
+    // Arguments: cityName
+    SV_IN_CITY = 139,
+
     // An NPC hit a player
     // Arguments: serial, username
-    SV_NPC_HIT_PLAYER = 138,
+    SV_NPC_HIT_PLAYER = 140,
     
     // A player hit an NPC
     // Arguments: username, serial
-    SV_PLAYER_HIT_NPC = 139,
+    SV_PLAYER_HIT_NPC = 141,
     
     // A player hit an another player
     // Arguments: attacker's username, defender's username
-    SV_PLAYER_HIT_PLAYER = 140,
+    SV_PLAYER_HIT_PLAYER = 142,
 
     // An object has an owner
     // Arguments: serial, owner

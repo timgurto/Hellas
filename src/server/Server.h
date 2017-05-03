@@ -7,6 +7,7 @@
 #include <string>
 #include <utility>
 
+#include "City.h"
 #include "CollisionChunk.h"
 #include "ItemSet.h"
 #include "LogConsole.h"
@@ -135,10 +136,11 @@ private:
     Object *findObject(size_t serial);
     Object *findObject(const Point &loc);
     Wars _wars;
+    Cities _cities;
 
     void loadData(const std::string &path = "Data"); // Attempt to load data from files.
     bool _dataLoaded; // If false when run() is called, load default data.
-    static void saveData(const objects_t &objects, const Wars &wars);
+    static void saveData(const objects_t &objects, const Wars &wars, const Cities &cities);
     void spawnInitialObjects();
 
     Point mapRand() const; // Return a random point on the map.
@@ -158,6 +160,7 @@ private:
     void removeObject(Object &obj, const User *userToExclude = nullptr);
     void gatherObject (size_t serial, User &user);
 
+    friend class City;
     friend class Object;
     friend class User;
     friend class NPC;

@@ -416,6 +416,17 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_JOINED_CITY:
+        case SV_IN_CITY:
+        {
+            std::string cityName;
+            readString(singleMsg, cityName, MSG_END);
+            singleMsg >> del;
+            if (del != MSG_END)
+                break;
+            setCityName(cityName);
+        }
+
         case SV_OBJECT:
         {
             int serial;

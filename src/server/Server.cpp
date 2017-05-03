@@ -87,7 +87,7 @@ _dataLoaded(false){
 }
 
 Server::~Server(){
-    saveData(_objects, _wars);
+    saveData(_objects, _wars, _cities);
     for (auto pair : _terrainTypes)
         delete pair.second;
     _instance = nullptr;
@@ -202,9 +202,9 @@ void Server::run(){
                 writeUserData(user);
             }
 #ifdef SINGLE_THREAD
-            saveData(_objects, _wars);
+            saveData(_objects, _wars, _cities);
 #else
-            std::thread(saveData, _objects, _wars).detach();
+            std::thread(saveData, _objects, _wars, _cities).detach();
 #endif
             _lastSave = _time;
         }
@@ -277,6 +277,11 @@ void Server::addUser(const Socket &socket, const std::string &name){
 
     // Send him his class
     sendMessage(newUser.socket(), SV_CLASS, makeArgs(name, newUser.className()));
+
+    // Send him his city
+    City::Name cityName = _cities.getPlayerCity(name);
+    if (!cityName.empty())
+    sendMessage(newUser.socket(), SV_IN_CITY, cityName);
 
     // Send him his health
     sendMessage(newUser.socket(), SV_HEALTH, makeArgs(newUser.health()));
@@ -476,9 +481,9 @@ void Server::gatherObject(size_t serial, User &user){
         obj->decrementGatheringUsers();
 
 #ifdef SINGLE_THREAD
-    saveData(_objects, _wars);
+    saveData(_objects, _wars, _cities);
 #else
-    std::thread(saveData, _objects, _wars).detach();
+    std::thread(saveData, _objects, _wars, _cities).detach();
 #endif
 }
 
