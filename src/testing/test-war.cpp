@@ -18,7 +18,6 @@ TEST("Basic declaration of war")
 TEND
 
 TEST("No erroneous wars")
-    // Given no server is running
     // When a clean server is started
     TestServer s;
     
@@ -37,8 +36,7 @@ TEST("Wars are persistent")
     TestServer server2 = TestServer::KeepOldData();
 
     // Then Alice and Bob are still at war
-    bool result = server2.wars().isAtWar("alice", "bob");
-    return result;
+    return server2.wars().isAtWar("alice", "bob");
 TEND
 
 TEST("Clients are alerted of new wars")
@@ -51,6 +49,20 @@ TEST("Clients are alerted of new wars")
     alice.sendMessage(CL_DECLARE_WAR, "bob");
 
     // Then Alice is alerted to the new war
+    WAIT_UNTIL(alice->isAtWarWith("bob"));
+    return true;
+TEND
+
+TEST("Clients are told of existing wars on login")
+    // Given Alice and Bob are at war
+    TestServer s;
+    s.wars().declare("alice", "bob");
+
+    // When Alice logs in
+    TestClient alice = TestClient::Username("alice");
+    WAIT_UNTIL(s.users().size() == 1);
+
+    // Then she is told about the war
     WAIT_UNTIL(alice->isAtWarWith("bob"));
     return true;
 TEND

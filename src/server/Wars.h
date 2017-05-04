@@ -3,22 +3,24 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 class Wars{
 public:
     typedef std::string Belligerent;
     typedef std::pair<Belligerent, Belligerent> Belligerents;
+    typedef std::multimap<Belligerent, Belligerent> container_t;
 
     void declare(const Belligerent &a, const Belligerent &b);
     bool isAtWar(const Belligerent &a, const Belligerent &b) const;
+    std::pair<container_t::const_iterator, container_t::const_iterator> getAllWarsInvolving(
+            const Belligerent &a) const;
     
     std::multimap<Belligerent, Belligerent>::const_iterator begin() const { return container.begin(); }
     std::multimap<Belligerent, Belligerent>::const_iterator end() const { return container.end(); }
 
 private:
-    std::multimap<Belligerent, Belligerent> container;
-
-    static Belligerents sortAlphabetically(const Belligerent &a, const Belligerent &b);
+    container_t container;
 };
 
 #endif
