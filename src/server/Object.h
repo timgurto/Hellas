@@ -104,8 +104,6 @@ public:
     void removeItem(const ServerItem *item, size_t qty); // From _contents; gathering
     void removeItems(const ItemSet &items); // From _container; inventory
     void giveItem(const ServerItem *item, size_t qty = 1); // To _container; inventory
-
-    bool userHasAccess(const std::string &username) const;
     
     void addWatcher(const std::string &username);
     void removeWatcher(const std::string &username);

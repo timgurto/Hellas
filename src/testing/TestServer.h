@@ -25,9 +25,10 @@ public:
     Wars &wars() { return _server->_wars; }
     User &getFirstUser();
     Object &getFirstObject();
+    ServerItem &getFirstItem();
     Cities &cities() { return _server->_cities; }
 
-    void addObject(const std::string &typeName, const Point &loc);
+    void addObject(const std::string &typeName, const Point &loc, const User *owner = nullptr);
     void addNPC(const std::string &typeName, const Point &loc);
 
     Server *operator->(){ return _server; }

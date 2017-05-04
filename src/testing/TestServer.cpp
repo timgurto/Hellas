@@ -63,9 +63,9 @@ void TestServer::stop(){
     WAIT_FOREVER_UNTIL (!_server->_running);
 }
 
-void TestServer::addObject(const std::string &typeName, const Point &loc){
+void TestServer::addObject(const std::string &typeName, const Point &loc, const User *owner){
     const ObjectType *const type = _server->findObjectTypeByName(typeName);
-    _server->addObject(type, loc);
+    _server->addObject(type, loc, owner);
 }
 
 void TestServer::addNPC(const std::string &typeName, const Point &loc){
@@ -91,4 +91,9 @@ User &TestServer::getFirstUser() {
 Object &TestServer::getFirstObject() {
     assert(! _server->_objects.empty());
     return const_cast<Object &>(** _server->_objects.begin());
+}
+
+ServerItem &TestServer::getFirstItem() {
+    assert(! _server->_items.empty());
+    return const_cast<ServerItem &>(* _server->_items.begin());
 }

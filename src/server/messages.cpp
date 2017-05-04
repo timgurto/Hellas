@@ -235,7 +235,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_UNDER_CONSTRUCTION);
                 break;
             }
-            if (!obj->userHasAccess(user->name())){
+            if (!obj->permissions().doesUserHaveAccess(user->name())){
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
             }
@@ -271,7 +271,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             assert (obj->type());
-            if (!obj->userHasAccess(user->name())){
+            if (!obj->permissions().doesUserHaveAccess(user->name())){
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
             }
@@ -331,7 +331,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                     sendInventoryMessage(*user, slot, serial);
                 else
                     for (auto username : pObj->watchers())
-                         if (pObj->userHasAccess(username))
+                         if (pObj->permissions().doesUserHaveAccess(username))
                             sendInventoryMessage(*_usersByName[username], slot, *pObj);
             }
             break;
@@ -362,7 +362,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                         sendMessage(client, SV_TOO_FAR);
                         breakMsg = true;
                     }
-                    if (!pObj1->userHasAccess(user->name())){
+                    if (!pObj1->permissions().doesUserHaveAccess(user->name())){
                         sendMessage(client, SV_NO_PERMISSION);
                         breakMsg = true;
                     }
@@ -379,7 +379,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                         sendMessage(client, SV_TOO_FAR);
                         breakMsg = true;
                     }
-                    if (!pObj2->userHasAccess(user->name())){
+                    if (!pObj2->permissions().doesUserHaveAccess(user->name())){
                         sendMessage(client, SV_NO_PERMISSION);
                         breakMsg = true;
                     }
@@ -417,7 +417,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 // Remove from object requirements
                 pObj2->remainingMaterials().remove(slotFrom.first, qtyToTake);
                 for (auto username : pObj2->watchers())
-                    if (pObj2->userHasAccess(username))
+                    if (pObj2->permissions().doesUserHaveAccess(username))
                         sendConstructionMaterialsMessage(*_usersByName[username], *pObj2);
 
                 // Remove items from user
@@ -497,14 +497,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendInventoryMessage(*user, slot1, obj1);
             else
                 for (auto username : pObj1->watchers())
-                    if (pObj1->userHasAccess(username))
+                    if (pObj1->permissions().doesUserHaveAccess(username))
                         sendInventoryMessage(*_usersByName[username], slot1, *pObj1);
             if (obj2 == INVENTORY || obj2 == GEAR){
                 sendInventoryMessage(*user, slot2, obj2);
                 ProgressLock::triggerUnlocks(*user, ProgressLock::ITEM, slotTo.first);
             } else
                 for (auto username : pObj2->watchers())
-                    if (pObj2->userHasAccess(username))
+                    if (pObj2->permissions().doesUserHaveAccess(username))
                         sendInventoryMessage(*_usersByName[username], slot2, *pObj2);
 
             break;
@@ -533,7 +533,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                     sendMessage(client, SV_TOO_FAR);
                     break;
                 }
-                if (!pObj->userHasAccess(user->name())){
+                if (!pObj->permissions().doesUserHaveAccess(user->name())){
                     sendMessage(client, SV_NO_PERMISSION);
                     break;
                 }
@@ -572,7 +572,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
             } else { // Alert object's watchers
                 for (auto username : pObj->watchers())
-                    if (pObj->userHasAccess(username))
+                    if (pObj->permissions().doesUserHaveAccess(username))
                         sendInventoryMessage(*_usersByName[username], slotNum, *pObj);
 
                 // Alert nearby users if NPC has no loot left
@@ -678,7 +678,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_UNDER_CONSTRUCTION);
                 break;
             }
-            if (!obj->userHasAccess(user->name())){
+            if (!obj->permissions().doesUserHaveAccess(user->name())){
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
             }
@@ -723,7 +723,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_UNDER_CONSTRUCTION);
                 break;
             }
-            if (!obj->userHasAccess(user->name())){
+            if (!obj->permissions().doesUserHaveAccess(user->name())){
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
             }
@@ -757,7 +757,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_UNDER_CONSTRUCTION);
                 break;
             }
-            if (!obj->userHasAccess(user->name())){
+            if (!obj->permissions().doesUserHaveAccess(user->name())){
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
             }
@@ -831,7 +831,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMerchantSlotMessage(*user, *obj, i);
 
             // Describe inventory, if user has permission
-            if (obj->userHasAccess(user->name())){
+            if (obj->permissions().doesUserHaveAccess(user->name())){
                 size_t slots = obj->container().size();
                 for (size_t i = 0; i != slots; ++i)
                     sendInventoryMessage(*user, i, *obj);

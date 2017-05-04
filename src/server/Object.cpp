@@ -89,12 +89,6 @@ size_t Object::chooseGatherQuantity(const ServerItem *item) const{
     return qty;
 }
 
-bool Object::userHasAccess(const std::string &username) const{
-    return
-        ! permissions().hasOwner() ||
-        permissions().owner() == username;
-}
-
 void Object::removeItems(const ItemSet &items) {
     std::set<size_t> invSlotsChanged;
     ItemSet remaining = items;
