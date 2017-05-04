@@ -170,7 +170,10 @@
 				row.className += " doneRow";
             
             var cell = row.insertCell(-1);
-            cell.innerHTML = PBI.issue;
+            cell.innerHTML =
+                    '<a name="' + PBI.issue + '">' +
+                        PBI.issue +
+                    '</a>';
             cell.className = "issue";
             
             cell = row.insertCell(-1);
