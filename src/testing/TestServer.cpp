@@ -82,3 +82,13 @@ User &TestServer::findUser(const std::string &username) {
     User *user = const_cast<User *>(it->second);
     return *user;
 }
+
+User &TestServer::getFirstUser() {
+    assert(! _server->_users.empty());
+    return const_cast<User &>(* _server->_users.begin());
+}
+
+Object &TestServer::getFirstObject() {
+    assert(! _server->_objects.empty());
+    return const_cast<Object &>(** _server->_objects.begin());
+}
