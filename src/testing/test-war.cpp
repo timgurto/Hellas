@@ -66,3 +66,17 @@ TEST("Clients are told of existing wars on login")
     WAIT_UNTIL(alice->isAtWarWith("bob"));
     return true;
 TEND
+
+TEST("Wars cannot be redeclared")
+    // Given Alice and Bob are at war, and Alice is logged in
+    TestServer s;
+    TestClient alice = TestClient::Username("alice");
+    s.wars().declare("alice", "bob");
+    WAIT_UNTIL(s.users().size() == 1);
+
+    // When Alice declares war on Bob
+    alice.sendMessage(CL_DECLARE_WAR, "bob");
+
+    // Then she receives an SV_ALREADY_AT_WAR error message
+    return alice.waitForMessage(SV_ALREADY_AT_WAR);
+TEND

@@ -939,6 +939,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> del;
             if (del != MSG_END)
                 return;
+            if (_wars.isAtWar(user->name(), targetUsername)){
+                sendMessage(client, SV_ALREADY_AT_WAR);
+                break;
+            }
             _wars.declare(user->name(), targetUsername);
             sendWarAlertMessages(user->name(), targetUsername);
             break;

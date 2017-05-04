@@ -393,6 +393,9 @@ enum MessageCode{
     // The user tried to construct an object type that doesn't exist
     SV_INVALID_OBJECT = 946,
 
+    // The user tried to declare war on somebody with whom they are already at war.
+    SV_ALREADY_AT_WAR = 947,
+
 
 
     // Debug requests
