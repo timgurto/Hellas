@@ -29,3 +29,12 @@ TEST("Run TestClient with custom username")
     WAIT_UNTIL(s.users().size() == 1);
     return alice->username() == "alice";
 TEND
+
+TEST("Removed users are removed from co-ord indices")
+    TestServer s;
+    {
+        TestClient c;
+    }
+    WAIT_UNTIL(s.users().empty());
+    return s.objectsByX().empty();
+TEND

@@ -91,8 +91,7 @@ TEST("Cities are persistent")
     return true;
 TEND
 
-// Previous users persisting as objects causes this test to crash sometimes.
-QUARANTINED_TEST("Clients are told if in a city on login")
+TEST("Clients are told if in a city on login")
     TestServer server;
     server.cities().createCity("Athens");
     {

@@ -366,6 +366,8 @@ void Server::removeUser(const std::set<User>::iterator &it){
 
     _usersByX.erase(&*it);
     _usersByY.erase(&*it);
+    _objectsByX.erase(&*it);
+    _objectsByY.erase(&*it);
     _usersByName.erase(it->name());
 
     _users.erase(it);
