@@ -25,6 +25,8 @@ public:
     void showCraftingWindow();
     bool knowsConstruction(const std::string &id) const {
             return _client->_knownConstructions.find(id) != _client->_knownConstructions.end(); }
+    const ChoiceList &uiBuildList() const { return *_client->_buildList; }
+    Target target() { return _client->_target; }
 
     Client *operator->(){ return _client; }
     Client &client() { return *_client; }
@@ -32,7 +34,6 @@ public:
     MessageCode getNextMessage() const;
     bool waitForMessage(MessageCode desiredMsg, ms_t timeout = DEFAULT_TIMEOUT) const;
     void waitForRedraw();
-    const ChoiceList &uiBuildList() const { return *_client->_buildList; }
 
 private:
     Client *_client;
