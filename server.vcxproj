@@ -116,6 +116,7 @@
     <ClCompile Include="src\server\NPCType.cpp" />
     <ClCompile Include="src\server\Object.cpp" />
     <ClCompile Include="src\server\ObjectType.cpp" />
+    <ClCompile Include="src\server\Permissions.cpp" />
     <ClCompile Include="src\server\pathfinding.cpp" />
     <ClCompile Include="src\server\ProgressLock.cpp" />
     <ClCompile Include="src\server\Recipe.cpp" />
@@ -158,7 +159,7 @@
     <ClInclude Include="src\server\NPCType.h" />
     <ClInclude Include="src\server\Object.h" />
     <ClInclude Include="src\server\ObjectType.h" />
-    <ClInclude Include="src\server\Owner.h" />
+    <ClInclude Include="src\server\Permissions.h" />
     <ClInclude Include="src\server\ProgressLock.h" />
     <ClInclude Include="src\server\Recipe.h" />
     <ClInclude Include="src\server\Server.h" />

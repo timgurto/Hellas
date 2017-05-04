@@ -1104,8 +1104,9 @@ void Server::sendObjectInfo(const User &user, const Object &object) const{
     }
 
     // Owner
-    if (!object.owner().empty())
-        sendMessage(user.socket(), SV_OWNER, makeArgs(object.serial(), object.owner()));
+    if (! object.permissions().hasOwner())
+        sendMessage(user.socket(), SV_OWNER, makeArgs(object.serial(),
+                                                      object.permissions().owner()));
 
     // Being gathered
     if (object.numUsersGathering() > 0)

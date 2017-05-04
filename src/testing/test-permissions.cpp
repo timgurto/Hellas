@@ -2,7 +2,7 @@
 #include "TestClient.h"
 #include "TestServer.h"
 
-ONLY_TEST("Objects have no owner by default")
+TEST("Objects have no owner by default")
     // When a basic object is created
     TestServer s = TestServer::Data("basic_rock");
     s.addObject("rock", Point(10, 10));
@@ -10,10 +10,10 @@ ONLY_TEST("Objects have no owner by default")
 
     // That object has no owner
     Object &rock = s.getFirstObject();
-    return rock.hasOwner() == false;
+    return ! rock.permissions().hasOwner();
 TEND
 
-ONLY_TEST("Constructing an object grants ownership")
+TEST("Constructing an object grants ownership")
     // Given a logged-in client
     TestServer s = TestServer::Data("brick_wall");
     TestClient c = TestClient::Data("brick_wall");
@@ -25,6 +25,7 @@ ONLY_TEST("Constructing an object grants ownership")
 
     // He is the wall's owner
     Object &wall = s.getFirstObject();
-    return wall.hasOwner();
-    /*&& wall.ownerName() == c->username()*/
+    return
+        wall.permissions().hasOwner() &&
+        wall.permissions().owner() == c->username();
 TEND

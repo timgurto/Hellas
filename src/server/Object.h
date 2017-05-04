@@ -3,7 +3,7 @@
 
 #include "MerchantSlot.h"
 #include "ObjectType.h"
-#include "Owner.h"
+#include "Permissions.h"
 #include "ItemSet.h"
 #include "../Point.h"
 
@@ -15,8 +15,7 @@ class Object{
     size_t _serial;
     Point _location;
     const ObjectType *_type;
-    Owner _owner;
-    std::string _oldOwner;
+    Permissions _permissions;
     ItemSet _contents; // Remaining contents, which can be gathered
     std::vector<MerchantSlot> _merchantSlots;
 
@@ -52,8 +51,6 @@ public:
     size_t serial() const { return _serial; }
     void serial(size_t s) { _serial = s; }
     const ObjectType *type() const { return _type; }
-    const std::string &owner() const { return _oldOwner; }
-    void owner(const std::string &name) { _oldOwner = name; }
     const ItemSet &contents() const { return _contents; }
     void contents(const ItemSet &contents);
     ServerItem::vect_t &container() { return _container; }
@@ -75,7 +72,8 @@ public:
     void removeMaterial(const ServerItem *item, size_t qty);
     bool isTransforming() const { return _transformTimer > 0; }
     ms_t transformTimer() const { return _transformTimer; }
-    bool hasOwner() const { return _owner; }
+    Permissions &permissions() { return _permissions; }
+    const Permissions &permissions() const { return _permissions; }
 
     virtual bool collides() const { return _type->collides(); }
     virtual double speed() const { return 0; } // movement per second

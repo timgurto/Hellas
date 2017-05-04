@@ -91,8 +91,8 @@ size_t Object::chooseGatherQuantity(const ServerItem *item) const{
 
 bool Object::userHasAccess(const std::string &username) const{
     return
-        owner().empty() ||
-        owner() == username;
+        ! permissions().hasOwner() ||
+        permissions().owner() == username;
 }
 
 void Object::removeItems(const ItemSet &items) {
