@@ -191,6 +191,7 @@
     <ClCompile Include="src\testing\test-gathering.cpp" />
     <ClCompile Include="src\testing\test-loading.cpp" />
     <ClCompile Include="src\testing\test-sound.cpp" />
+    <ClCompile Include="src\testing\test-transformation.cpp" />
     <ClCompile Include="src\testing\TestClient.cpp" />
     <ClCompile Include="src\testing\RemoteClient.cpp" />
     <ClCompile Include="src\testing\TestServer.cpp" />

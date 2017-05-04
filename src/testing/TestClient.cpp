@@ -81,9 +81,9 @@ MessageCode TestClient::getNextMessage() const {
     return _client->_messagesReceived.back();
 }
 
-bool TestClient::waitForMessage(MessageCode desiredMsg) const {
+bool TestClient::waitForMessage(MessageCode desiredMsg, ms_t timeout) const {
     size_t currentSize = _client->_messagesReceived.size();
-    WAIT_UNTIL (messageWasReceivedSince(desiredMsg, currentSize));
+    WAIT_UNTIL_TIMEOUT (messageWasReceivedSince(desiredMsg, currentSize), timeout);
     return true;
 }
 

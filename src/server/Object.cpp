@@ -10,7 +10,8 @@ _location(loc),
 _spawner(nullptr),
 _numUsersGathering(0),
 _lastLocUpdate(SDL_GetTicks()),
-_remainingMaterials(type->materials())
+_remainingMaterials(type->materials()),
+_transformTimer(0)
 {
     if (type != nullptr)
         setType(type);

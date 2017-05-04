@@ -1,6 +1,7 @@
 #ifndef TEST_CLIENT_H
 #define TEST_CLIENT_H
 
+#include "Test.h"
 #include "../client/Client.h"
 
 // A wrapper of the client, with full access, used for testing.
@@ -29,7 +30,7 @@ public:
     Client &client() { return *_client; }
     void sendMessage(MessageCode code, const std::string &args){ _client->sendMessage(code, args); }
     MessageCode getNextMessage() const;
-    bool waitForMessage(MessageCode desiredMsg) const;
+    bool waitForMessage(MessageCode desiredMsg, ms_t timeout = DEFAULT_TIMEOUT) const;
     void waitForRedraw();
     const ChoiceList &uiBuildList() const { return *_client->_buildList; }
 
