@@ -167,6 +167,7 @@ private:
     friend class Combatant;
     friend class TestServer;
     friend class Spawner;
+    friend class Permissions;
     friend class ProgressLock;
 
     NPC &addNPC(const NPCType *type, const Point &location); 

@@ -97,12 +97,13 @@ ONLY_TEST("A non-owner cannot access an owned object")
 TEND
 
 ONLY_TEST("A city can own an object")
-    // Given a rock
+    // Given a rock, and a city named Athens
     TestServer s = TestServer::WithData("basic_rock");
+    s.cities().createCity("athens");
     s.addObject("rock", Point(10, 10));
     Object &rock = s.getFirstObject();
 
-    // When its owner is set to the city of Athens
+    // When its owner is set to Athens
     rock.permissions().setCityOwner("athens");
 
     // Then an 'owner()' check matches the city of Athens;
@@ -120,6 +121,7 @@ ONLY_TEST("City ownership is persistent")
     // Given a rock owned by Athens
     {
         TestServer s1 = TestServer::WithData("basic_rock");
+        s1.cities().createCity("athens");
         s1.addObject("rock", Point(10, 10));
         Object &rock = s1.getFirstObject();
         rock.permissions().setCityOwner("athens");
@@ -131,4 +133,60 @@ ONLY_TEST("City ownership is persistent")
     // Then the rock is still owned by Athens
     Object &rock = s2.getFirstObject();
     return rock.permissions().isOwnedByCity("athens");
+TEND
+
+ONLY_TEST("City members can use city objects")
+    // Given a rock owned by Athens;
+    TestServer s = TestServer::WithData("basic_rock");
+    s.cities().createCity("athens");
+    s.addObject("rock", Point(10, 10));
+    Object &rock = s.getFirstObject();
+    rock.permissions().setCityOwner("athens");
+    // And a client, who is a member of Athens
+    TestClient c = TestClient::WithData("basic_rock");
+    WAIT_UNTIL(s.users().size() == 1);
+    User &user = s.getFirstUser();
+    s.cities().addPlayerToCity(user, "athens");
+
+    // When he attempts to gather the rock
+    WAIT_UNTIL (c.objects().size() == 1);
+    size_t serial = c.objects().begin()->first;
+    c.sendMessage(CL_GATHER, makeArgs(serial));
+
+    // Then he gathers;
+    WAIT_UNTIL (user.action() == User::Action::GATHER);
+    WAIT_UNTIL (user.action() == User::Action::NO_ACTION);
+    // And he receives a Rock item;
+    const Item &rockItem = s.getFirstItem();
+    WAIT_UNTIL_TIMEOUT(user.inventory()[0].first == &rockItem, 200);
+    // And the Rock object disappears
+    WAIT_UNTIL_TIMEOUT(s.objects().empty(), 200);
+    return true;
+TEND
+
+ONLY_TEST("Non-members cannot use city objects")
+    // Given a rock owned by Athens;
+    TestServer s = TestServer::WithData("basic_rock");
+    s.cities().createCity("athens");
+    s.addObject("rock", Point(10, 10));
+    Object &rock = s.getFirstObject();
+    rock.permissions().setCityOwner("athens");
+    // And a client, not a member of any city
+    TestClient c = TestClient::WithData("basic_rock");
+    WAIT_UNTIL(s.users().size() == 1);
+
+    // When he attempts to gather the rock
+    WAIT_UNTIL (c.objects().size() == 1);
+    size_t serial = c.objects().begin()->first;
+    c.sendMessage(CL_GATHER, makeArgs(serial));
+
+    // Then the rock remains;
+    REPEAT_FOR_MS(500)
+        if (s.objects().empty())
+            return false;
+    // And his inventory remains empty
+    User &user = s.getFirstUser();
+    if (user.inventory()[0].first != nullptr)
+        return false;
+    return true;
 TEND

@@ -1,4 +1,7 @@
+#include <cassert>
+
 #include "Permissions.h"
+#include "Server.h"
 #include "User.h"
 
 Permissions::Owner::Owner():
@@ -41,7 +44,15 @@ bool Permissions::doesUserHaveAccess(const std::string &username) const{
     case Owner::PLAYER:
         return _owner.name == username;
 
+    case Owner::CITY:
+    {
+        const Cities &cities = Server::instance()._cities;
+        const std::string &playerCity = cities.getPlayerCity(username);
+        return playerCity == _owner.name;
+    }
+
     default:
+        assert(false);
         return false;
     }
 
