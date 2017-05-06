@@ -13,6 +13,9 @@ void Permissions::setPlayerOwner(const std::string &username) {
 }
 
 void Permissions::setCityOwner(const City::Name &cityName) {
+    const Cities &cities = Server::instance()._cities;
+    if (! cities.doesCityExist(cityName))
+        return;
     _owner.type = Owner::CITY;
     _owner.name = cityName;
 }

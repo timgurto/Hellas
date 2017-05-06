@@ -2,7 +2,7 @@
 #include "TestClient.h"
 #include "TestServer.h"
 
-ONLY_TEST("Objects have no owner by default")
+TEST("Objects have no owner by default")
     // When a basic object is created
     TestServer s = TestServer::WithData("basic_rock");
     s.addObject("rock", Point(10, 10));
@@ -13,7 +13,7 @@ ONLY_TEST("Objects have no owner by default")
     return ! rock.permissions().hasOwner();
 TEND
 
-ONLY_TEST("Constructing an object grants ownership")
+TEST("Constructing an object grants ownership")
     // Given a logged-in client
     TestServer s = TestServer::WithData("brick_wall");
     TestClient c = TestClient::WithData("brick_wall");
@@ -30,7 +30,7 @@ ONLY_TEST("Constructing an object grants ownership")
         wall.permissions().isOwnedByPlayer(c->username());
 TEND
 
-ONLY_TEST("Public-access objects")
+TEST("Public-access objects")
     // Given a rock with no owner
     TestServer s = TestServer::WithData("basic_rock");
     TestClient c = TestClient::WithData("basic_rock");
@@ -51,7 +51,7 @@ ONLY_TEST("Public-access objects")
     return true;
 TEND
 
-ONLY_TEST("The owner can access an owned object")
+TEST("The owner can access an owned object")
     // Given a rock owned by a user
     TestServer s = TestServer::WithData("basic_rock");
     TestClient c = TestClient::WithData("basic_rock");
@@ -73,7 +73,7 @@ ONLY_TEST("The owner can access an owned object")
     return true;
 TEND
 
-ONLY_TEST("A non-owner cannot access an owned object")
+TEST("A non-owner cannot access an owned object")
     // Given a rock owned by Alice
     TestServer s = TestServer::WithData("basic_rock");
     s.addObject("rock", Point(10, 10));
@@ -96,7 +96,7 @@ ONLY_TEST("A non-owner cannot access an owned object")
     return true;
 TEND
 
-ONLY_TEST("A city can own an object")
+TEST("A city can own an object")
     // Given a rock, and a city named Athens
     TestServer s = TestServer::WithData("basic_rock");
     s.cities().createCity("athens");
@@ -117,7 +117,7 @@ ONLY_TEST("A city can own an object")
     return true;
 TEND
 
-ONLY_TEST("City ownership is persistent")
+TEST("City ownership is persistent")
     // Given a rock owned by Athens
     {
         TestServer s1 = TestServer::WithData("basic_rock");
@@ -135,7 +135,7 @@ ONLY_TEST("City ownership is persistent")
     return rock.permissions().isOwnedByCity("athens");
 TEND
 
-ONLY_TEST("City members can use city objects")
+TEST("City members can use city objects")
     // Given a rock owned by Athens;
     TestServer s = TestServer::WithData("basic_rock");
     s.cities().createCity("athens");
@@ -164,7 +164,7 @@ ONLY_TEST("City members can use city objects")
     return true;
 TEND
 
-ONLY_TEST("Non-members cannot use city objects")
+TEST("Non-members cannot use city objects")
     // Given a rock owned by Athens;
     TestServer s = TestServer::WithData("basic_rock");
     s.cities().createCity("athens");
@@ -189,4 +189,17 @@ ONLY_TEST("Non-members cannot use city objects")
     if (user.inventory()[0].first != nullptr)
         return false;
     return true;
+TEND
+
+TEST("Non-existent cities can't own objects")
+    // Given a rock, and a server with no cities
+    TestServer s = TestServer::WithData("basic_rock");
+    s.addObject("rock", Point(10, 10));
+
+    // When the rock's owner is set to a nonexistent city "Athens"
+    Object &rock = s.getFirstObject();
+    rock.permissions().setCityOwner("athens");
+
+    // Then the rock has no owner;
+    return ! rock.permissions().hasOwner();
 TEND
