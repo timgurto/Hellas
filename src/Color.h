@@ -55,6 +55,7 @@ public:
         PROGRESS_BAR,
         PROGRESS_BAR_BACKGROUND,
         PLAYER_NAME,
+        HOSTILE_PLAYER_NAME,
         PLAYER_NAME_OUTLINE,
 
         OUTLINE,

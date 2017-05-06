@@ -51,6 +51,7 @@ Color
     Color::PROGRESS_BAR,
     Color::PROGRESS_BAR_BACKGROUND,
     Color::PLAYER_NAME,
+    Color::HOSTILE_PLAYER_NAME,
     Color::PLAYER_NAME_OUTLINE,
     Color::OUTLINE,
     Color::HIGHLIGHT_OUTLINE;
