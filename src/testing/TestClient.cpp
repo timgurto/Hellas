@@ -102,3 +102,8 @@ void TestClient::showCraftingWindow() {
     WAIT_FOREVER_UNTIL(! _client->_craftingWindow->changed());
 
 }
+
+Avatar &TestClient::getFirstOtherUser(){
+    assert(! _client->_otherUsers.empty());
+    return const_cast<Avatar &>(* _client->_otherUsers.begin()->second);
+}

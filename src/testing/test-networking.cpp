@@ -21,7 +21,7 @@ TEST("Read test URL")
             "This is a file for testing web-access accuracy.";
 TEND
 
-SLOW_TEST("Use socket after cleanup")
+TEST("Use socket after cleanup")
     bool ret = true;
     // Run twice: Winsock will be cleaned up after the first iteration.
     for (size_t i = 0; i != 2; ++i){

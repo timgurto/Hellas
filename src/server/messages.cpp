@@ -1129,8 +1129,11 @@ void Server::sendUserInfo(const User &user, const User &userToDescribe) const{
     sendMessage(user.socket(), SV_LOCATION, userToDescribe.makeLocationCommand());
 
     // Class
-    sendMessage(user.socket(), SV_CLASS,
-            makeArgs(userToDescribe.name(), userToDescribe.className()));
+    const std::string &name = userToDescribe.name();
+    sendMessage(user.socket(), SV_CLASS, makeArgs(name, userToDescribe.className()));
+
+    // City
+    sendMessage(user.socket(), SV_IN_CITY, makeArgs(name, _cities.getPlayerCity(name)));
 
     // Gear
     for (size_t i = 0; i != User::GEAR_SLOTS; ++i){

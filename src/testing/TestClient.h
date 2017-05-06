@@ -27,6 +27,9 @@ public:
             return _client->_knownConstructions.find(id) != _client->_knownConstructions.end(); }
     const ChoiceList &uiBuildList() const { return *_client->_buildList; }
     Target target() { return _client->_target; }
+    const std::map<std::string, Avatar*> &otherUsers() const { return _client->_otherUsers; }
+
+    Avatar &getFirstOtherUser();
 
     Client *operator->(){ return _client; }
     Client &client() { return *_client; }

@@ -1,3 +1,4 @@
+#include "RemoteClient.h"
 #include "Test.h"
 #include "TestClient.h"
 #include "TestServer.h"
@@ -104,5 +105,24 @@ TEST("Clients are told if in a city on login")
     TestClient client2 = TestClient::Username("alice");
     WAIT_UNTIL(client2->character().cityName() == "Athens");
 
+    return true;
+TEND
+
+QUARANTINED_TEST("Clients know nearby players' cities")
+    // Given Alice is a member of Athens, and connected to the server
+    TestServer s;
+    s.cities().createCity("Athens");
+    RemoteClient rc("-username alice");
+    WAIT_UNTIL(s.users().size() == 1);
+    User &serverAlice = s.getFirstUser();
+    s.cities().addPlayerToCity(serverAlice, "Athens");
+
+    // When another client connects
+    TestClient c;
+    WAIT_UNTIL(c.otherUsers().size() == 1);
+
+    // Then that client can see that Alice is in Athens
+    const Avatar &clientAlice = c.getFirstOtherUser();
+    WAIT_UNTIL(clientAlice.cityName() == "Athens");
     return true;
 TEND

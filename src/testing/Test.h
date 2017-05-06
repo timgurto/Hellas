@@ -74,11 +74,13 @@ public:
         for (ms_t startTime = SDL_GetTicks(); SDL_GetTicks() < startTime + (TIME_TO_REPEAT); )
 #define WAIT_UNTIL_TIMEOUT(x, TIMEOUT) \
         do { \
+            bool _success = false; \
             for (ms_t startTime = SDL_GetTicks(); SDL_GetTicks() < startTime + (TIMEOUT); ) { \
-                if (x) \
+                _success = x; \
+                if (_success) \
                     break; \
             } \
-            if (! (x) ) { \
+            if (! _success ) { \
                 return false; \
             } \
         } while (0)
