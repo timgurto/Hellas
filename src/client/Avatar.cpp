@@ -159,3 +159,10 @@ bool Avatar::canBeAttackedByPlayer() const{
     const Client &client = *Client::_instance;
     return client.isAtWarWith(_name);
 }
+
+const Texture &Avatar::cursor(const Client &client) const{
+    bool isAtWar = client.isAtWarWith(_name);
+    if (isAtWar && isAlive())
+        return client.cursorAttack();
+    return client.cursorNormal();
+}

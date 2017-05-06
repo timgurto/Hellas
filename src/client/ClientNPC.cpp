@@ -89,7 +89,7 @@ void ClientNPC::assembleWindow(Client &client){
 }
 
 const Texture &ClientNPC::cursor(const Client &client) const{
-    if (health() > 0)
+    if (isAlive())
         return client.cursorAttack();
     if (lootable())
         return  client.cursorContainer();

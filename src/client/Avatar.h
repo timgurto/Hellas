@@ -48,6 +48,7 @@ public:
     virtual void onLeftClick(Client &client) override;
     virtual void onRightClick(Client &client) override;
     virtual const std::string &name() const override { return _name; }
+    virtual const Texture &cursor(const Client &client) const override;
 
     // From ClientCombatant
     virtual void sendTargetMessage() const override;
