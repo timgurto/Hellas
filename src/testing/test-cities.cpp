@@ -16,7 +16,7 @@ TEND
 
 TEST("Add a player to a city")
     TestServer s;
-    TestClient c = TestClient::Username("alice");
+    TestClient c = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
     User &alice = s.getFirstUser();
 
@@ -28,7 +28,7 @@ TEND
 
 TEST("No erroneous city membership")
     TestServer s;
-    TestClient c = TestClient::Username("alice");
+    TestClient c = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
 
     s.cities().createCity("athens");
@@ -38,7 +38,7 @@ TEND
 
 TEST("Cities can't be overwritten")
     TestServer s;
-    TestClient c = TestClient::Username("alice");
+    TestClient c = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
     User &alice = s.getFirstUser();
 
@@ -57,7 +57,7 @@ TEND
 
 TEST("Client is alerted to city membership")
     TestServer s;
-    TestClient c = TestClient::Username("alice");
+    TestClient c = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
     User &alice = s.getFirstUser();
 
@@ -75,14 +75,14 @@ TEND
 TEST("Cities are persistent")
     {
         TestServer server1;
-        TestClient client = TestClient::Username("alice");
+        TestClient client = TestClient::WithUsername("alice");
         WAIT_UNTIL(server1.users().size() == 1);
         User &alice = server1.getFirstUser();
 
         server1.cities().createCity("athens");
         server1.cities().addPlayerToCity(alice, "athens");
     }
-    TestServer server2 = TestServer::KeepOldData();
+    TestServer server2 = TestServer::KeepingOldData();
 
     if (! server2.cities().doesCityExist("athens"))
         return false;
@@ -96,13 +96,13 @@ TEST("Clients are told if in a city on login")
     TestServer server;
     server.cities().createCity("athens");
     {
-        TestClient client1 = TestClient::Username("alice");
+        TestClient client1 = TestClient::WithUsername("alice");
         WAIT_UNTIL(server.users().size() == 1);
         User &alice = server.getFirstUser();
         server.cities().addPlayerToCity(alice, "athens");
     }
 
-    TestClient client2 = TestClient::Username("alice");
+    TestClient client2 = TestClient::WithUsername("alice");
     WAIT_UNTIL(client2->character().cityName() == "athens");
 
     return true;

@@ -4,7 +4,7 @@
 
 ONLY_TEST("Objects have no owner by default")
     // When a basic object is created
-    TestServer s = TestServer::Data("basic_rock");
+    TestServer s = TestServer::WithData("basic_rock");
     s.addObject("rock", Point(10, 10));
     WAIT_UNTIL(s.objects().size() == 1);
 
@@ -15,8 +15,8 @@ TEND
 
 ONLY_TEST("Constructing an object grants ownership")
     // Given a logged-in client
-    TestServer s = TestServer::Data("brick_wall");
-    TestClient c = TestClient::Data("brick_wall");
+    TestServer s = TestServer::WithData("brick_wall");
+    TestClient c = TestClient::WithData("brick_wall");
     WAIT_UNTIL (s.users().size() == 1);
 
     // When he constructs a wall
@@ -32,8 +32,8 @@ TEND
 
 ONLY_TEST("Public-access objects")
     // Given a rock with no owner
-    TestServer s = TestServer::Data("basic_rock");
-    TestClient c = TestClient::Data("basic_rock");
+    TestServer s = TestServer::WithData("basic_rock");
+    TestClient c = TestClient::WithData("basic_rock");
     s.addObject("rock", Point(10, 10));
     WAIT_UNTIL (c.objects().size() == 1);
 
@@ -53,8 +53,8 @@ TEND
 
 ONLY_TEST("The owner can access an owned object")
     // Given a rock owned by a user
-    TestServer s = TestServer::Data("basic_rock");
-    TestClient c = TestClient::Data("basic_rock");
+    TestServer s = TestServer::WithData("basic_rock");
+    TestClient c = TestClient::WithData("basic_rock");
     WAIT_UNTIL(s.users().size() == 1);
     User &user = s.getFirstUser();
     s.addObject("rock", Point(10, 10), &user);
@@ -75,13 +75,13 @@ TEND
 
 ONLY_TEST("A non-owner cannot access an owned object")
     // Given a rock owned by Alice
-    TestServer s = TestServer::Data("basic_rock");
+    TestServer s = TestServer::WithData("basic_rock");
     s.addObject("rock", Point(10, 10));
     Object &rock = s.getFirstObject();
     rock.permissions().setPlayerOwner("alice");
 
     // When a different user attempts to gather it
-    TestClient c = TestClient::Data("basic_rock");
+    TestClient c = TestClient::WithData("basic_rock");
     WAIT_UNTIL (c.objects().size() == 1);
     size_t serial = c.objects().begin()->first;
     c.sendMessage(CL_GATHER, makeArgs(serial));
@@ -98,7 +98,7 @@ TEND
 
 ONLY_TEST("A city can own an object")
     // Given a rock
-    TestServer s = TestServer::Data("basic_rock");
+    TestServer s = TestServer::WithData("basic_rock");
     s.addObject("rock", Point(10, 10));
     Object &rock = s.getFirstObject();
 

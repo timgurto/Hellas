@@ -13,18 +13,18 @@ TEST("Read XML file with root only")
 TEND
 
 TEST("Load object type naming an invalid item")
-    TestServer s = TestServer::Data("fake_item");
+    TestServer s = TestServer::WithData("fake_item");
     auto it = s.items().find(ServerItem("fakeStone"));
     return it == s.items().end();
 TEND
 
 TEST("No crash on bad data")
-    TestServer s = TestServer::Data("this_doesnt_exist");
+    TestServer s = TestServer::WithData("this_doesnt_exist");
     return true;
 TEND
 
 TEST("Get spawn point from map file")
-    TestServer s = TestServer::Data("spawn_point_37");
+    TestServer s = TestServer::WithData("spawn_point_37");
     TestClient c;
     WAIT_UNTIL(s.users().size() == 1);
     const User &user = *s.users().begin();
@@ -32,7 +32,7 @@ TEST("Get spawn point from map file")
 TEND
 
 TEST("Get spawn range from map file")
-    TestServer s = TestServer::Data("spawn_point_37ish");
+    TestServer s = TestServer::WithData("spawn_point_37ish");
 
     RemoteClient
         c1("-username a"),
@@ -51,7 +51,7 @@ TEND
 
 TEST("Constructible NPC is loaded as NPC")
     // Load an item that refers to an object type, then an NPC type to define it
-    TestClient c = TestClient::Data("construct_an_npc");
+    TestClient c = TestClient::WithData("construct_an_npc");
 
     const ClientObjectType &objType = **c.objectTypes().begin();
     if (objType.classTag() != 'n')

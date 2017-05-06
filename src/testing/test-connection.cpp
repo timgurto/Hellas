@@ -25,7 +25,7 @@ TEND
 
 TEST("Run TestClient with custom username")
     TestServer s;
-    TestClient alice = TestClient::Username("alice");
+    TestClient alice = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
     return alice->username() == "alice";
 TEND

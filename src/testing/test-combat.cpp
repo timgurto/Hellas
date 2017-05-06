@@ -5,8 +5,8 @@
 #include "../client/ClientNPC.h"
 
 TEST("Players can attack immediately")
-    TestServer s = TestServer::Data("ant");
-    TestClient c = TestClient::Data("ant");
+    TestServer s = TestServer::WithData("ant");
+    TestClient c = TestClient::WithData("ant");
 
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
@@ -32,7 +32,7 @@ TEND
 
 TEST("Belligerents can target each other")
     TestServer s;
-    TestClient alice = TestClient::Username("alice");
+    TestClient alice = TestClient::WithUsername("alice");
     RemoteClient bob("-username bob");
     WAIT_UNTIL(s.users().size() == 2);
     User
@@ -48,7 +48,7 @@ TEND
 
 TEST("Peaceful players can't target each other")
     TestServer s;
-    TestClient alice = TestClient::Username("alice");
+    TestClient alice = TestClient::WithUsername("alice");
     RemoteClient bob("-username bob");
     WAIT_UNTIL(s.users().size() == 2);
     User
@@ -66,7 +66,7 @@ TEND
 
 TEST("Belliegerents can fight")
     TestServer s;
-    TestClient alice = TestClient::Username("alicex");
+    TestClient alice = TestClient::WithUsername("alicex");
     RemoteClient bob("-username bobx");
     WAIT_UNTIL(s.users().size() == 2);
 
@@ -88,7 +88,7 @@ TEND
 
 TEST("Peaceful players can't fight")
     TestServer s;
-    TestClient alice = TestClient::Username("alice");
+    TestClient alice = TestClient::WithUsername("alice");
     RemoteClient bob("-username bob");
     WAIT_UNTIL(s.users().size() == 2);
 

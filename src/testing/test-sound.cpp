@@ -4,7 +4,7 @@
 
 TEST("A missing sound variabt fails gracefully")
     TestServer s;
-    TestClient c = TestClient::Data("missing_sound");
+    TestClient c = TestClient::WithData("missing_sound");
     WAIT_UNTIL(s.users().size() == 1);
 
     c->character().playAttackSound();

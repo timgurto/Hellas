@@ -3,8 +3,8 @@
 #include "TestServer.h"
 
 TEST("Gather an item from an object")
-    TestServer s = TestServer::Data("basic_rock");
-    TestClient c = TestClient::Data("basic_rock");
+    TestServer s = TestServer::WithData("basic_rock");
+    TestClient c = TestClient::WithData("basic_rock");
 
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
@@ -39,8 +39,8 @@ One gather worth of 1 million units of iron
 This is to test the new gather algorithm, which would favor rocks rather than iron.
 */
 TEST("Gather chance is by gathers, not quantity")
-    TestServer s = TestServer::Data("rare_iron");
-    TestClient c = TestClient::Data("rare_iron");
+    TestServer s = TestServer::WithData("rare_iron");
+    TestClient c = TestClient::WithData("rare_iron");
 
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
@@ -63,7 +63,7 @@ TEST("Gather chance is by gathers, not quantity")
 TEND
 
 TEST("Minimum yields")
-    TestServer s = TestServer::Data("min_apples");
+    TestServer s = TestServer::WithData("min_apples");
     for (auto obj : s.objects())
         if (obj->contents().isEmpty())
             return false;

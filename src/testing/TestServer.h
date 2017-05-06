@@ -8,8 +8,8 @@ class TestServer{
 
 public:
     TestServer();
-    static TestServer KeepOldData();
-    static TestServer Data(const std::string &dataPath);
+    static TestServer KeepingOldData();
+    static TestServer WithData(const std::string &dataPath);
     ~TestServer();
 
     // Move constructor/assignment

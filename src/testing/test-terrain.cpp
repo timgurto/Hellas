@@ -2,7 +2,7 @@
 #include "TestServer.h"
 
 TEST("nearbyTerrainTypes without radius")
-    TestServer s = TestServer::Data("terrain_medley");
+    TestServer s = TestServer::WithData("terrain_medley");
     auto set = s->nearbyTerrainTypes(Rect(0, 0, 40, 40));
     if (set.count('a') == 0) return false;
     if (set.count('b') == 0) return false;
@@ -12,7 +12,7 @@ TEST("nearbyTerrainTypes without radius")
 TEND
 
 TEST("nearbyTerrainTypes with radius")
-    TestServer s = TestServer::Data("terrain_medley");
+    TestServer s = TestServer::WithData("terrain_medley");
     auto set = s->nearbyTerrainTypes(Rect(0, 0, 40, 40), 200);
     if (set.count('a') == 0) return false;
     if (set.count('b') == 0) return false;

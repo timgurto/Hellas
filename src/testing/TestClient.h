@@ -9,8 +9,8 @@ class TestClient{
 
 public:
     TestClient();
-    static TestClient Username(const std::string &username);
-    static TestClient Data(const std::string &dataPath);
+    static TestClient WithUsername(const std::string &username);
+    static TestClient WithData(const std::string &dataPath);
     ~TestClient();
 
     // Move constructor/assignment

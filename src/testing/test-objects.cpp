@@ -3,8 +3,8 @@
 #include "TestServer.h"
 
 TEST("Thin objects block movement")
-    TestServer s = TestServer::Data("thin_wall");
-    TestClient c = TestClient::Data("thin_wall");
+    TestServer s = TestServer::WithData("thin_wall");
+    TestClient c = TestClient::WithData("thin_wall");
 
     // Move user to middle, below wall
     WAIT_UNTIL(s.users().size() == 1);

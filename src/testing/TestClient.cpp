@@ -28,11 +28,11 @@ _client(new Client){
     run();
 }
 
-TestClient TestClient::Username(const std::string &username){
+TestClient TestClient::WithUsername(const std::string &username){
     return TestClient(username, USERNAME);
 }
 
-TestClient TestClient::Data(const std::string &dataPath){
+TestClient TestClient::WithData(const std::string &dataPath){
     return TestClient(dataPath, DATA_PATH);
 }
 

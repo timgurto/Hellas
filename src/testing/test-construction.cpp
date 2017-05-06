@@ -3,8 +3,8 @@
 #include "TestClient.h"
 
 TEST("Construction materials can be added")
-    TestServer s = TestServer::Data("brick_wall");
-    TestClient c = TestClient::Data("brick_wall");
+    TestServer s = TestServer::WithData("brick_wall");
+    TestClient c = TestClient::WithData("brick_wall");
     WAIT_UNTIL (s.users().size() == 1);
 
     c.sendMessage(CL_CONSTRUCT, makeArgs("wall", 10, 10));
@@ -23,24 +23,24 @@ TEST("Construction materials can be added")
 TEND
 
 TEST("Client knows about default constructions")
-    TestServer s = TestServer::Data("brick_wall");
-    TestClient c = TestClient::Data("brick_wall");
+    TestServer s = TestServer::WithData("brick_wall");
+    TestClient c = TestClient::WithData("brick_wall");
     WAIT_UNTIL (s.users().size() == 1);
 
     return c.knowsConstruction("wall");
 TEND
 
 TEST("New client doesn't know any locked constructions")
-    TestServer s = TestServer::Data("secret_table");
-    TestClient c = TestClient::Data("secret_table");
+    TestServer s = TestServer::WithData("secret_table");
+    TestClient c = TestClient::WithData("secret_table");
     WAIT_UNTIL (s.users().size() == 1);
 
     return ! c.knowsConstruction("table");
 TEND
 
 TEST("Unique objects are unique")
-    TestServer s = TestServer::Data("unique_throne");
-    TestClient c = TestClient::Data("unique_throne");
+    TestServer s = TestServer::WithData("unique_throne");
+    TestClient c = TestClient::WithData("unique_throne");
     WAIT_UNTIL (s.users().size() == 1);
 
     c.sendMessage(CL_CONSTRUCT, makeArgs("throne", 10, 10));
@@ -65,8 +65,8 @@ TEST("Constructing invalid object fails gracefully")
 TEND
 
 TEST("Objects can be unbuildable")
-    TestServer s = TestServer::Data("unbuildable_treehouse");
-    TestClient c = TestClient::Data("unbuildable_treehouse");
+    TestServer s = TestServer::WithData("unbuildable_treehouse");
+    TestClient c = TestClient::WithData("unbuildable_treehouse");
     WAIT_UNTIL (s.users().size() == 1);
 
     c.sendMessage(CL_CONSTRUCT, makeArgs("treehouse", 10, 10));
@@ -78,16 +78,16 @@ TEST("Objects can be unbuildable")
 TEND
 
 TEST("Clients can't see unbuildable constructions")
-    TestServer s = TestServer::Data("unbuildable_treehouse");
-    TestClient c = TestClient::Data("unbuildable_treehouse");
+    TestServer s = TestServer::WithData("unbuildable_treehouse");
+    TestClient c = TestClient::WithData("unbuildable_treehouse");
     WAIT_UNTIL (s.users().size() == 1);
     
     return ! c.knowsConstruction("treehouse");
 TEND
 
 TEST("Objects without materials can't be built")
-    TestServer s = TestServer::Data("basic_rock");
-    TestClient c = TestClient::Data("basic_rock");
+    TestServer s = TestServer::WithData("basic_rock");
+    TestClient c = TestClient::WithData("basic_rock");
     WAIT_UNTIL (s.users().size() == 1);
     
     c.sendMessage(CL_CONSTRUCT, makeArgs("rock", 10, 15));
@@ -98,8 +98,8 @@ TEST("Objects without materials can't be built")
 TEND
 
 TEST("Construction tool requirements are enforced")
-    TestServer s = TestServer::Data("computer");
-    TestClient c = TestClient::Data("computer");
+    TestServer s = TestServer::WithData("computer");
+    TestClient c = TestClient::WithData("computer");
     WAIT_UNTIL (s.users().size() == 1);
 
     c.sendMessage(CL_CONSTRUCT, makeArgs("computer", 10, 10));

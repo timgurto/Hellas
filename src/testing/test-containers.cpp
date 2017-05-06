@@ -15,8 +15,8 @@ TEST("Object container empty check")
 TEND
 
 TEST("Dismantle an object with an inventory")
-    TestServer s = TestServer::Data("dismantle");
-    TestClient c = TestClient::Data("dismantle");
+    TestServer s = TestServer::WithData("dismantle");
+    TestClient c = TestClient::WithData("dismantle");
 
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
@@ -35,8 +35,8 @@ TEST("Dismantle an object with an inventory")
 TEND
 
 TEST("Place item in object");
-    TestServer s = TestServer::Data("dismantle");
-    TestClient c = TestClient::Data("dismantle");
+    TestServer s = TestServer::WithData("dismantle");
+    TestClient c = TestClient::WithData("dismantle");
 
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);

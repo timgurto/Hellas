@@ -20,14 +20,14 @@ TestServer::TestServer(const std::string &dataPath){
     run();
 }
 
-TestServer TestServer::KeepOldData(){
+TestServer TestServer::KeepingOldData(){
     cmdLineArgs.remove("new");
     TestServer s;
     cmdLineArgs.add("new");
     return s;
 }
 
-TestServer TestServer::Data(const std::string &dataPath){
+TestServer TestServer::WithData(const std::string &dataPath){
     return TestServer(dataPath);
 }
 

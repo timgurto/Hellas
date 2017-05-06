@@ -6,7 +6,7 @@
 TEST("Basic declaration of war")
     // Given Alice is logged in
     TestServer s;
-    TestClient alice = TestClient::Username("alice");
+    TestClient alice = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
 
     // When Alice sends a CL_DECLARE_WAR message
@@ -33,7 +33,7 @@ TEST("Wars are persistent")
     }
 
     // When a server begins that keeps persistent data
-    TestServer server2 = TestServer::KeepOldData();
+    TestServer server2 = TestServer::KeepingOldData();
 
     // Then Alice and Bob are still at war
     return server2.wars().isAtWar("alice", "bob");
@@ -42,7 +42,7 @@ TEND
 TEST("Clients are alerted of new wars")
     // Given Alice is logged in
     TestServer s;
-    TestClient alice = TestClient::Username("alice");
+    TestClient alice = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
 
     // When Alice declares war on Bob
@@ -59,7 +59,7 @@ TEST("Clients are told of existing wars on login")
     s.wars().declare("alice", "bob");
 
     // When Alice logs in
-    TestClient alice = TestClient::Username("alice");
+    TestClient alice = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
 
     // Then she is told about the war
@@ -70,7 +70,7 @@ TEND
 TEST("Wars cannot be redeclared")
     // Given Alice and Bob are at war, and Alice is logged in
     TestServer s;
-    TestClient alice = TestClient::Username("alice");
+    TestClient alice = TestClient::WithUsername("alice");
     s.wars().declare("alice", "bob");
     WAIT_UNTIL(s.users().size() == 1);
 

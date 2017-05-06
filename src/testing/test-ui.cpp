@@ -26,8 +26,8 @@ TEND
 
 QUARANTINED_TEST("View merchant slots in window")
     // Given a logged-in client and an object with merchant slots
-    TestServer s = TestServer::Data("merchant");
-    TestClient c = TestClient::Data("merchant");
+    TestServer s = TestServer::WithData("merchant");
+    TestClient c = TestClient::WithData("merchant");
     // Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
     User &user = s.getFirstUser();
@@ -62,10 +62,10 @@ TEND
 
 TEST("New client can build default constructions")
     // Given a buildable brick wall object type with no pre-requisites
-    TestServer s = TestServer::Data("brick_wall");
+    TestServer s = TestServer::WithData("brick_wall");
 
     // When a client logs in
-    TestClient c = TestClient::Data("brick_wall");
+    TestClient c = TestClient::WithData("brick_wall");
     WAIT_UNTIL (s.users().size() == 1);
 
     // His construction window contains at least one item
