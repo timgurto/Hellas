@@ -3,18 +3,34 @@
 
 #include <string>
 
+#include "City.h"
+
 class User;
 
 // Manages an object's access permissions
 class Permissions{
 public:
-    void setOwner(const std::string &name);
-    bool hasOwner() const { return ! _ownerName.empty(); }
-    const std::string &owner() const;
+    enum OwnerType{
+        NONE,
+        PLAYER,
+        CITY
+    };
+    struct Owner{
+        Owner();
+        OwnerType type;
+        std::string name;
+    };
+    
+    void setPlayerOwner(const std::string &username);
+    void setCityOwner(const City::Name &cityName);
+    bool hasOwner() const { return ! _owner.name.empty(); }
+    bool isOwnedByPlayer(const std::string &username) const;
+    bool isOwnedByCity(const City::Name &cityName) const;
+    const Owner &owner() const;
     bool doesUserHaveAccess(const std::string &username) const;
 
 private:
-    std::string _ownerName;
+    Owner _owner;
 };
 
 #endif

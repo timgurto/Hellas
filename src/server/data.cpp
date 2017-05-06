@@ -638,7 +638,7 @@ void Server::loadData(const std::string &path){
 
             Object &obj = addObject(type, p, nullptr);
 
-            if (xr.findAttr(elem, "owner", s)) obj.permissions().setOwner(s);
+            if (xr.findAttr(elem, "owner", s)) obj.permissions().setPlayerOwner(s);
 
             size_t n;
             if (xr.findAttr(elem, "spawner", n)){
@@ -795,7 +795,7 @@ void Server::saveData(const objects_t &objects, const Wars &wars, const Cities &
         }
 
         if (! obj->permissions().hasOwner())
-            xw.setAttr(e, "owner", obj->permissions().owner());
+            xw.setAttr(e, "owner", obj->permissions().owner().name);
 
         if (obj->spawner() != nullptr)
             xw.setAttr(e, "spawner", obj->spawner()->index());

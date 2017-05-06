@@ -2,7 +2,7 @@
 #include "TestClient.h"
 #include "TestServer.h"
 
-TEST("Objects have no owner by default")
+ONLY_TEST("Objects have no owner by default")
     // When a basic object is created
     TestServer s = TestServer::Data("basic_rock");
     s.addObject("rock", Point(10, 10));
@@ -13,7 +13,7 @@ TEST("Objects have no owner by default")
     return ! rock.permissions().hasOwner();
 TEND
 
-TEST("Constructing an object grants ownership")
+ONLY_TEST("Constructing an object grants ownership")
     // Given a logged-in client
     TestServer s = TestServer::Data("brick_wall");
     TestClient c = TestClient::Data("brick_wall");
@@ -27,10 +27,10 @@ TEST("Constructing an object grants ownership")
     Object &wall = s.getFirstObject();
     return
         wall.permissions().hasOwner() &&
-        wall.permissions().owner() == c->username();
+        wall.permissions().isOwnedByPlayer(c->username());
 TEND
 
-TEST("Public-access objects")
+ONLY_TEST("Public-access objects")
     // Given a rock with no owner
     TestServer s = TestServer::Data("basic_rock");
     TestClient c = TestClient::Data("basic_rock");
@@ -51,7 +51,7 @@ TEST("Public-access objects")
     return true;
 TEND
 
-TEST("The owner can access an owned object")
+ONLY_TEST("The owner can access an owned object")
     // Given a rock owned by a user
     TestServer s = TestServer::Data("basic_rock");
     TestClient c = TestClient::Data("basic_rock");
@@ -73,12 +73,12 @@ TEST("The owner can access an owned object")
     return true;
 TEND
 
-TEST("A non-owner cannot access an owned object")
+ONLY_TEST("A non-owner cannot access an owned object")
     // Given a rock owned by Alice
     TestServer s = TestServer::Data("basic_rock");
     s.addObject("rock", Point(10, 10));
     Object &rock = s.getFirstObject();
-    rock.permissions().setOwner("alice");
+    rock.permissions().setPlayerOwner("alice");
 
     // When a different user attempts to gather it
     TestClient c = TestClient::Data("basic_rock");
@@ -87,12 +87,31 @@ TEST("A non-owner cannot access an owned object")
     c.sendMessage(CL_GATHER, makeArgs(serial));
 
     // Then the rock remains, and his inventory remains empty
-    REPEAT_FOR_MS(2000)
-        ; 
-    if (s.objects().empty())
-        return false;
+    REPEAT_FOR_MS(500)
+        if (s.objects().empty())
+            return false;
     User &user = s.getFirstUser();
     if (user.inventory()[0].first != nullptr)
         return false;
+    return true;
+TEND
+
+ONLY_TEST("A city can own an object")
+    // Given a rock
+    TestServer s = TestServer::Data("basic_rock");
+    s.addObject("rock", Point(10, 10));
+    Object &rock = s.getFirstObject();
+
+    // When its owner is set to the city of Athens
+    rock.permissions().setCityOwner("athens");
+
+    // Then an 'owner()' check matches the city of Athens;
+    if (! rock.permissions().isOwnedByCity("athens"))
+        return false;
+
+    // And an 'owner()' check doesn't match a player named Athens
+    if (rock.permissions().isOwnedByPlayer("athens"))
+        return false;
+
     return true;
 TEND

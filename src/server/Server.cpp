@@ -526,7 +526,7 @@ Object &Server::addObject(const ObjectType *type, const Point &location, const U
             new Vehicle(dynamic_cast<const VehicleType *>(type), location) :
             new Object(type, location);
     if (owner != nullptr)
-        newObj->permissions().setOwner(owner->name());
+        newObj->permissions().setPlayerOwner(owner->name());
     return addObject(newObj);
 }
 
