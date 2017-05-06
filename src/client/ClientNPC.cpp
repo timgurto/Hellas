@@ -96,14 +96,3 @@ void ClientNPC::sendTargetMessage() const{
     const Client &client = *Client::_instance;
     client.sendMessage(CL_TARGET_NPC, makeArgs(serial()));
 }
-
-bool ClientNPC::shouldDrawHealthBar() const{
-    const Client &client = *Client::_instance;
-    const Entity *pEntity = client.targetAsEntity();
-    if (client.targetAsEntity() == this)
-        return true;
-    if (client.currentMouseOverEntity() == this)
-        return true;
-
-    return ClientCombatant::shouldDrawHealthBar();
-}

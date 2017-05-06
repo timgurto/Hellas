@@ -53,6 +53,7 @@ public:
     // From ClientCombatant
     virtual void sendTargetMessage() const override;
     virtual bool canBeAttackedByPlayer() const override;
+    virtual const Entity *entityPointer() const override { return this; }
 
     void playAttackSound() const; // The player has attacked; play an appropriate sound.
     void playDefendSound() const; // The player has been attacked; play an appropriate sound.

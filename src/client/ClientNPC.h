@@ -44,7 +44,7 @@ public:
 
     // From ClientCombatant
     virtual void sendTargetMessage() const override;
-    virtual bool shouldDrawHealthBar() const override;
+    virtual const Entity *entityPointer() const override { return this; }
 };
 
 #endif

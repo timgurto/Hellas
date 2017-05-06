@@ -79,6 +79,8 @@ void Avatar::draw(const Client &client) const{
         if (shouldDrawCityName)
             cityLabel.draw(cityPosition);
     }
+
+    drawHealthBarIfAppropriate(location(), height());
 }
 
 void Avatar::update(double delta){

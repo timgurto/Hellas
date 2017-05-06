@@ -24,7 +24,6 @@ void ClientCombatant::drawHealthBarIfAppropriate(const Point &objectLocation, px
     double
         x = objectLocation.x - toInt(BAR_TOTAL_LENGTH / 2) + offset.x,
         y = objectLocation.y - objHeight - BAR_GAP - BAR_HEIGHT + offset.y;
-    Client::debug() << x << " " << y << Log::endl;
 
     renderer.setDrawColor(Color::HEALTH_BAR_OUTLINE);
     renderer.drawRect(Rect(x-1, y-1, BAR_TOTAL_LENGTH + 2, BAR_HEIGHT + 2));
@@ -37,9 +36,14 @@ void ClientCombatant::drawHealthBarIfAppropriate(const Point &objectLocation, px
 bool ClientCombatant::shouldDrawHealthBar() const{
     if (! isAlive())
         return false;
-
     bool isDamaged = health() < maxHealth();
     if (isDamaged)
+        return true;
+
+    const Client &client = *Client::_instance;
+    bool selected = client.targetAsCombatant() == this;
+    bool mousedOver = client.currentMouseOverEntity() == entityPointer();
+    if (selected || mousedOver)
         return true;
 
     return false;
