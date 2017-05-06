@@ -18,28 +18,7 @@ _lootContainer(nullptr)
 void ClientNPC::draw(const Client &client) const{
     ClientObject::draw(client);
 
-    // Draw health bar if damaged or targeted
-    if (health() == 0)
-        return;
-    if (client.targetAsEntity() == this || client.currentMouseOverEntity() == this ||
-        health() < npcType()->maxHealth()){
-        static const px_t
-            BAR_TOTAL_LENGTH = 10,
-            BAR_HEIGHT = 2,
-            BAR_GAP = 0; // Gap between the bar and the top of the sprite
-        px_t
-            barLength = toInt(1.0 * BAR_TOTAL_LENGTH * health() / npcType()->maxHealth());
-        double
-            x = location().x - toInt(BAR_TOTAL_LENGTH / 2),
-            y = drawRect().y - BAR_GAP - BAR_HEIGHT;
-    const Point &offset = client.offset();
-        renderer.setDrawColor(Color::HEALTH_BAR_OUTLINE);
-        renderer.drawRect(Rect(x-1 + offset.x, y-1 + offset.y, BAR_TOTAL_LENGTH + 2, BAR_HEIGHT + 2));
-        renderer.setDrawColor(Color::HEALTH_BAR);
-        renderer.fillRect(Rect(x, y, barLength, BAR_HEIGHT) + offset);
-        renderer.setDrawColor(Color::HEALTH_BAR_BACKGROUND);
-        renderer.fillRect(Rect(x + barLength, y, BAR_TOTAL_LENGTH - barLength, BAR_HEIGHT) + offset);
-    }
+    drawHealthBarIfAppropriate(location(), height());
 
     if (isDebug()) {
         renderer.setDrawColor(Color::WHITE);
@@ -116,4 +95,15 @@ const Texture &ClientNPC::highlightImage() const{
 void ClientNPC::sendTargetMessage() const{
     const Client &client = *Client::_instance;
     client.sendMessage(CL_TARGET_NPC, makeArgs(serial()));
+}
+
+bool ClientNPC::shouldDrawHealthBar() const{
+    const Client &client = *Client::_instance;
+    const Entity *pEntity = client.targetAsEntity();
+    if (client.targetAsEntity() == this)
+        return true;
+    if (client.currentMouseOverEntity() == this)
+        return true;
+
+    return ClientCombatant::shouldDrawHealthBar();
 }

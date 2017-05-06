@@ -14,7 +14,9 @@ public:
     bool isAlive() const { return _health > 0; }
     bool isDead() const { return _health == 0; }
     const health_t &maxHealth() const { return _type->maxHealth(); }
+    void drawHealthBarIfAppropriate(const Point &objectLocation, px_t objHeight) const;
     
+    virtual bool shouldDrawHealthBar() const;
     virtual void sendTargetMessage() const = 0;
     virtual bool canBeAttackedByPlayer() const { return isAlive(); }
 

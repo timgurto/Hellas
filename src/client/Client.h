@@ -385,6 +385,7 @@ private:
 
 
     friend class Container; // Needs to send CL_SWAP_ITEMS messages, and open a confirmation window
+    friend class ClientCombatant;
     friend class ClientObject;
     friend class ClientItem;
     friend class ClientNPC;

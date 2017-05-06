@@ -44,6 +44,7 @@ public:
 
     // From ClientCombatant
     virtual void sendTargetMessage() const override;
+    virtual bool shouldDrawHealthBar() const override;
 };
 
 #endif
