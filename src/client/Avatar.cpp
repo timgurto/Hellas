@@ -49,9 +49,8 @@ void Avatar::draw(const Client &client) const{
     if (_name != client.username()) {
         const Client &client = *Client::_instance;
         bool isAtWar = client.isAtWarWith(_name);
-        const Color &nameColor = isAtWar ? Color::HOSTILE_PLAYER_NAME : Color::PLAYER_NAME;
 
-        const Texture nameLabel(client.defaultFont(), _name, nameColor);
+        const Texture nameLabel(client.defaultFont(), _name, nameColor());
         const Texture nameOutline(client.defaultFont(), _name, Color::PLAYER_NAME_OUTLINE);
         Texture cityOutline, cityLabel;
 
@@ -64,7 +63,7 @@ void Avatar::draw(const Client &client) const{
         if (shouldDrawCityName){
             std::string cityText = "of " + _city;
             cityOutline = Texture(client.defaultFont(), cityText, Color::PLAYER_NAME_OUTLINE);
-            cityLabel = Texture(client.defaultFont(), cityText, nameColor);
+            cityLabel = Texture(client.defaultFont(), cityText, nameColor());
             cityPosition.x = location().x + client.offset().x - cityLabel.width() / 2;
             cityPosition.y = namePosition.y;
             namePosition.y -= 11;
@@ -167,4 +166,16 @@ const Texture &Avatar::cursor(const Client &client) const{
     if (isAtWar && isAlive())
         return client.cursorAttack();
     return client.cursorNormal();
+}
+
+bool Avatar::belongsToPlayerCity() const{
+    bool hasNoCity = _city.empty();
+    if (hasNoCity)
+        return false;;
+
+    const Avatar &playerCharacter = Client::_instance->character();
+    if (_city == playerCharacter._city)
+        return true;
+
+    return false;
 }

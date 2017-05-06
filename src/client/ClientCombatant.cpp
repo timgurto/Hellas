@@ -17,7 +17,7 @@ void ClientCombatant::drawHealthBarIfAppropriate(const Point &objectLocation, px
     static const px_t
         BAR_TOTAL_LENGTH = 10,
         BAR_HEIGHT = 2,
-        BAR_GAP = 0; // Gap between the bar and the top of the sprite
+        BAR_GAP = 4; // Gap between the bar and the top of the sprite
     px_t
         barLength = toInt(1.0 * BAR_TOTAL_LENGTH * health() / maxHealth());
     const Point &offset = Client::_instance->offset();
@@ -27,7 +27,7 @@ void ClientCombatant::drawHealthBarIfAppropriate(const Point &objectLocation, px
 
     renderer.setDrawColor(Color::HEALTH_BAR_OUTLINE);
     renderer.drawRect(Rect(x-1, y-1, BAR_TOTAL_LENGTH + 2, BAR_HEIGHT + 2));
-    renderer.setDrawColor(Color::HEALTH_BAR);
+    renderer.setDrawColor(nameColor());
     renderer.fillRect(Rect(x, y, barLength, BAR_HEIGHT));
     renderer.setDrawColor(Color::HEALTH_BAR_BACKGROUND);
     renderer.fillRect(Rect(x + barLength, y, BAR_TOTAL_LENGTH - barLength, BAR_HEIGHT));
@@ -47,4 +47,18 @@ bool ClientCombatant::shouldDrawHealthBar() const{
         return true;
 
     return false;
+}
+
+const Color &ClientCombatant::nameColor() const{
+    if (canBeAttackedByPlayer())
+        return Color::COMBATANT_ENEMY;
+    
+    const ClientCombatant *playerCharacter = &Client::_instance->character();
+    if (this == playerCharacter )
+        return Color::COMBATANT_SELF;
+
+    if (belongsToPlayerCity())
+        return Color::COMBATANT_ALLY;
+
+    return Color::COMBATANT_NEUTRAL;
 }

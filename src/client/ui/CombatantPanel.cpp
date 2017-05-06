@@ -20,5 +20,5 @@ Element(Rect(x, y, WIDTH, HEIGHT))
             name, "", "", Element::CENTER_JUSTIFIED));
     addChild(new ProgressBar<health_t>(
             Rect(2, HEIGHT - BAR_HEIGHT - GAP, WIDTH - 2 * GAP, BAR_HEIGHT),
-            health, maxHealth, Color::HEALTH_BAR));
+            health, maxHealth, Color::COMBATANT_NEUTRAL));
 }

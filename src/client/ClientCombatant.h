@@ -16,10 +16,12 @@ public:
     const health_t &maxHealth() const { return _type->maxHealth(); }
     void drawHealthBarIfAppropriate(const Point &objectLocation, px_t objHeight) const;
     bool shouldDrawHealthBar() const;
+    const Color &nameColor() const;
 
     virtual void sendTargetMessage() const = 0;
     virtual bool canBeAttackedByPlayer() const { return isAlive(); }
     virtual const Entity *entityPointer() const = 0;
+    virtual bool belongsToPlayerCity() const { return false; }
 
 private:
     health_t _health;
