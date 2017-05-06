@@ -201,8 +201,8 @@ enum MessageCode{
     // Arguments: cityName
     SV_JOINED_CITY = 138,
 
-    // The user is a member of a city
-    // Arguments: cityName
+    // A user is a member of a city
+    // Arguments: username, cityName
     SV_IN_CITY = 139,
 
     // An NPC hit a player

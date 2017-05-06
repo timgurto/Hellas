@@ -51,7 +51,7 @@ TEND
 TEST("Default client knows no city membership")
     TestServer s;
     TestClient c;
-    return c->cityName() == "";
+    return c->character().cityName() == "";
 TEND
 
 TEST("Client is alerted to city membership")
@@ -66,7 +66,7 @@ TEST("Client is alerted to city membership")
     bool messageReceived = c.waitForMessage(SV_JOINED_CITY);
     if (! messageReceived)
         return false;
-    WAIT_UNTIL(c->cityName() == "Athens");
+    WAIT_UNTIL(c->character().cityName() == "Athens");
 
     return true;
 TEND
@@ -102,7 +102,7 @@ TEST("Clients are told if in a city on login")
     }
 
     TestClient client2 = TestClient::Username("alice");
-    WAIT_UNTIL(client2->cityName() == "Athens");
+    WAIT_UNTIL(client2->character().cityName() == "Athens");
 
     return true;
 TEND

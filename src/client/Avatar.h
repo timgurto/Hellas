@@ -18,6 +18,7 @@ class Avatar : public Entity, public ClientCombatant{
     Point _destination;
     std::string _name;
     std::string _class;
+    std::string _city;
     ClientItem::vect_t _gear;
 
     bool _driving;
@@ -37,6 +38,8 @@ public:
     void driving(bool b) { _driving = b; }
     bool isDriving() const { return _driving; }
     const ClientItem *getRandomArmor() const { return _gear[Item::getRandomArmorSlot()].first; }
+    void cityName(const std::string &name) { _city = name; }
+    const std::string &cityName() const { return _city; }
 
     // From Entity
     virtual void draw(const Client &client) const override;

@@ -56,8 +56,6 @@ public:
     void attemptDismount() { _isDismounting = true; }
     const SoundProfile *avatarSounds() const { return _avatarSounds; }
     bool isAtWarWith(const std::string &username) const;
-    void setCityName(const std::string &name) { _cityName = name; }
-    const std::string &cityName() const { return _cityName; }
 
     template<typename T>
     void setTarget(const T &newTarget, bool aggressive = false){
@@ -320,7 +318,6 @@ private:
     const SoundProfile *_avatarSounds;
 
     std::set<std::string> _atWarWith;
-    std::string _cityName;
     
 
     // Information about the state of the world

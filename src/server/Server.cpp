@@ -281,7 +281,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // Send him his city
     City::Name cityName = _cities.getPlayerCity(name);
     if (!cityName.empty())
-    sendMessage(newUser.socket(), SV_IN_CITY, cityName);
+    sendMessage(newUser.socket(), SV_IN_CITY, makeArgs(name, cityName));
 
     // Send him his wars
     auto belligerents = _wars.getAllWarsInvolving(name);
