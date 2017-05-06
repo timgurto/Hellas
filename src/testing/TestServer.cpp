@@ -27,6 +27,13 @@ TestServer TestServer::KeepingOldData(){
     return s;
 }
 
+TestServer TestServer::WithDataAndKeepingOldData(const std::string &dataPath){
+    cmdLineArgs.remove("new");
+    TestServer s(dataPath);
+    cmdLineArgs.add("new");
+    return s;
+}
+
 TestServer TestServer::WithData(const std::string &dataPath){
     return TestServer(dataPath);
 }

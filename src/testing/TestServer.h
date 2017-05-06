@@ -10,6 +10,7 @@ public:
     TestServer();
     static TestServer KeepingOldData();
     static TestServer WithData(const std::string &dataPath);
+    static TestServer WithDataAndKeepingOldData(const std::string &dataPath);
     ~TestServer();
 
     // Move constructor/assignment

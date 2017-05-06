@@ -115,3 +115,20 @@ ONLY_TEST("A city can own an object")
 
     return true;
 TEND
+
+ONLY_TEST("City ownership is persistent")
+    // Given a rock owned by Athens
+    {
+        TestServer s1 = TestServer::WithData("basic_rock");
+        s1.addObject("rock", Point(10, 10));
+        Object &rock = s1.getFirstObject();
+        rock.permissions().setCityOwner("athens");
+    }
+
+    // When a new server starts up
+    TestServer s2 = TestServer::WithDataAndKeepingOldData("basic_rock");
+
+    // Then the rock is still owned by Athens
+    Object &rock = s2.getFirstObject();
+    return rock.permissions().isOwnedByCity("athens");
+TEND

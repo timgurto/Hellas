@@ -638,7 +638,19 @@ void Server::loadData(const std::string &path){
 
             Object &obj = addObject(type, p, nullptr);
 
-            if (xr.findAttr(elem, "owner", s)) obj.permissions().setPlayerOwner(s);
+            auto owner = xr.findChild("owner", elem);
+            if (owner){
+                std::string type, name;
+                xr.findAttr(owner, "type", type);
+                xr.findAttr(owner, "name", name);
+                if (type == "player")
+                    obj.permissions().setPlayerOwner(name);
+                else if (type == "city")
+                    obj.permissions().setCityOwner(name);
+                else
+                    _debug << Color::RED << "Skipping bad object owner type \"" << type << "\"."
+                           << Log::endl;
+            }
 
             size_t n;
             if (xr.findAttr(elem, "spawner", n)){
@@ -794,8 +806,23 @@ void Server::saveData(const objects_t &objects, const Wars &wars, const Cities &
             xw.setAttr(contentE, "quantity", content.second);
         }
 
-        if (! obj->permissions().hasOwner())
-            xw.setAttr(e, "owner", obj->permissions().owner().name);
+        if (obj->permissions().hasOwner()){
+            const auto &owner = obj->permissions().owner();
+            std::string ownerType;
+            switch (obj->permissions().owner().type){
+                case owner.PLAYER:
+                    ownerType = "player";
+                    break;
+                case owner.CITY:
+                    ownerType = "city";
+                    break;
+                default:
+                    assert(false);
+            }
+            auto ownerElem = xw.addChild("owner", e);
+            xw.setAttr(ownerElem, "type", ownerType);
+            xw.setAttr(ownerElem, "name", owner.name);
+        }
 
         if (obj->spawner() != nullptr)
             xw.setAttr(e, "spawner", obj->spawner()->index());

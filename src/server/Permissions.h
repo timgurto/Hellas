@@ -10,20 +10,23 @@ class User;
 // Manages an object's access permissions
 class Permissions{
 public:
-    enum OwnerType{
-        NONE,
-        PLAYER,
-        CITY
-    };
     struct Owner{
+        enum Type{
+            NONE,
+            PLAYER,
+            CITY
+        };
         Owner();
-        OwnerType type;
+        Type type;
         std::string name;
+        
+        Owner(const std::string &rhs);
+        operator std::string() const;
     };
     
     void setPlayerOwner(const std::string &username);
     void setCityOwner(const City::Name &cityName);
-    bool hasOwner() const { return ! _owner.name.empty(); }
+    bool hasOwner() const;
     bool isOwnedByPlayer(const std::string &username) const;
     bool isOwnedByCity(const City::Name &cityName) const;
     const Owner &owner() const;

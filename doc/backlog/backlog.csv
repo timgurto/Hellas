@@ -6,7 +6,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 5,A king can invite new members to a city,21,55,Feature,4,,TRUE
 6,Destroying a city shrine destroys the city,34,13,Feature,3,,TRUE
 7,A player can leave a city,8,8,Feature,1,,TRUE
-8,Cities can own objects,89,5,Feature,1,,TRUE
+8,Cities can own objects,89,5,Feature,1,TRUE,TRUE
 9,"If a city owns an object, all members can use it",55,3,Feature,8,,TRUE
 10,A player can cede an object to his city,55,8,Feature,8,,TRUE
 11,A king can grant a city object to a player,34,8,Feature,8,,TRUE
