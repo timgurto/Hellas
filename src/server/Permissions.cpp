@@ -1,4 +1,5 @@
 #include <cassert>
+#include <map>
 
 #include "Permissions.h"
 #include "Server.h"
@@ -6,6 +7,15 @@
 
 Permissions::Owner::Owner():
 type(NONE){}
+
+const std::string &Permissions::Owner::typeString() const{
+    static std::map<Type, std::string> typeStrings;
+    if (typeStrings.empty()){
+        typeStrings[PLAYER] = "player";
+        typeStrings[CITY] = "city";
+    }
+    return typeStrings[type];
+}
 
 void Permissions::setPlayerOwner(const std::string &username) {
     _owner.type = Owner::PLAYER;

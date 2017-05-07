@@ -222,7 +222,7 @@ enum MessageCode{
     SV_PLAYER_HIT_PLAYER = 142,
 
     // An object has an owner
-    // Arguments: serial, owner
+    // Arguments: serial, type ("user"|"city"), name
     SV_OWNER = 150,
 
     // An object is being gathered from

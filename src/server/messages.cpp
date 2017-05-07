@@ -976,6 +976,9 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
 
             obj->permissions().setCityOwner(city);
+            const Permissions::Owner &owner = obj->permissions().owner();
+            for (const User *u : findUsersInArea(obj->location()))
+                sendMessage(u->socket(), SV_OWNER, makeArgs(serial, owner.typeString(), owner.name));
 
             break;
         }
@@ -1136,9 +1139,11 @@ void Server::sendObjectInfo(const User &user, const Object &object) const{
     }
 
     // Owner
-    if (object.permissions().hasOwner())
+    if (object.permissions().hasOwner()){
+        const auto &owner = object.permissions().owner();
         sendMessage(user.socket(), SV_OWNER, makeArgs(object.serial(),
-                                                      object.permissions().owner().name));
+                                                      owner.typeString(), owner.name));
+    }
 
     // Being gathered
     if (object.numUsersGathering() > 0)

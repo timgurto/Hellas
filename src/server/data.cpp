@@ -808,19 +808,8 @@ void Server::saveData(const objects_t &objects, const Wars &wars, const Cities &
 
         if (obj->permissions().hasOwner()){
             const auto &owner = obj->permissions().owner();
-            std::string ownerType;
-            switch (obj->permissions().owner().type){
-                case owner.PLAYER:
-                    ownerType = "player";
-                    break;
-                case owner.CITY:
-                    ownerType = "city";
-                    break;
-                default:
-                    assert(false);
-            }
             auto ownerElem = xw.addChild("owner", e);
-            xw.setAttr(ownerElem, "type", ownerType);
+            xw.setAttr(ownerElem, "type", owner.typeString());
             xw.setAttr(ownerElem, "name", owner.name);
         }
 

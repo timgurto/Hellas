@@ -21,7 +21,7 @@ public:
         std::string name;
         
         Owner(const std::string &rhs);
-        operator std::string() const;
+        const std::string &typeString() const;
     };
     
     void setPlayerOwner(const std::string &username);

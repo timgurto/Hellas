@@ -544,8 +544,10 @@ void Client::handleMessage(const std::string &msg){
         case SV_OWNER:
         {
             int serial;
-            std::string name;
+            std::string type, name;
             singleMsg >> serial >> del;
+            readString(singleMsg, type);
+            singleMsg >> del;
             readString(singleMsg, name, MSG_END);
             singleMsg >> del;
             if (del != MSG_END)
@@ -1087,6 +1089,7 @@ void Client::initializeMessageNames(){
     _messageCommands["mount"] = CL_MOUNT;
     _messageCommands["dismount"] = CL_DISMOUNT;
     _messageCommands["war"] = CL_DECLARE_WAR;
+    _messageCommands["cede"] = CL_CEDE;
 
     _messageCommands["say"] = CL_SAY;
     _messageCommands["s"] = CL_SAY;
