@@ -1005,6 +1005,8 @@ void Client::handleMessage(const std::string &msg){
 
             _atWarWith.insert(username);
             _debug << "You are now at war with " << username << Log::endl;
+
+            _target.refreshHealthBarColor();
             break;
         }
 

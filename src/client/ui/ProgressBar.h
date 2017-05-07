@@ -25,6 +25,7 @@ public:
     ProgressBar(const Rect &rect, const T &numerator, const T &denominator,
                const Color&barColor = Color::PROGRESS_BAR,
                const Color &backgroundColor = Color::PROGRESS_BAR_BACKGROUND);
+    void changeColor(const Color &newColor) { _bar->changeColor(newColor); }
 };
 
 

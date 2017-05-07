@@ -384,8 +384,10 @@ _debug("client.log"){
     px_t
         playerPanelX = CombatantPanel::GAP,
         playerPanelY = CombatantPanel::GAP;
-    addUI(new CombatantPanel(playerPanelX, playerPanelY,
-            _username, _character.health(), _character.maxHealth()));
+    CombatantPanel *playerPanel = new CombatantPanel(playerPanelX, playerPanelY, _username,
+                                                     _character.health(), _character.maxHealth());
+    playerPanel->changeColor(Color::COMBATANT_SELF);
+    addUI(playerPanel);
     _target.initializePanel();
     addUI(_target.panel());
 

@@ -1,7 +1,6 @@
 #include "ColorBlock.h"
 #include "CombatantPanel.h"
 #include "LinkedLabel.h"
-#include "ProgressBar.h"
 #include "ShadowBox.h"
 
 const px_t CombatantPanel::WIDTH = 60;
@@ -18,7 +17,8 @@ Element(Rect(x, y, WIDTH, HEIGHT))
     addChild(new LinkedLabel<std::string>(
             Rect(GAP, 1, WIDTH - 2 * GAP, Element::TEXT_HEIGHT),
             name, "", "", Element::CENTER_JUSTIFIED));
-    addChild(new ProgressBar<health_t>(
+    _healthBar = new ProgressBar<health_t>(
             Rect(2, HEIGHT - BAR_HEIGHT - GAP, WIDTH - 2 * GAP, BAR_HEIGHT),
-            health, maxHealth, Color::COMBATANT_NEUTRAL));
+            health, maxHealth, Color::COMBATANT_NEUTRAL);
+    addChild(_healthBar);
 }

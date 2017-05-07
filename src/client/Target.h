@@ -33,6 +33,7 @@ public:
     const std::string &name() const { return _name; }
     const health_t &health() const { return _health; }
     const health_t &maxHealth() const { return _maxHealth; }
+    void refreshHealthBarColor();
 
     void updateHealth(health_t newHealth){ _health = newHealth; }
 

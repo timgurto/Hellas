@@ -33,8 +33,13 @@ void Target::setAndAlertServer(
     _name = _entity->name();
     _health = _combatant->health();
     _maxHealth = _combatant->maxHealth();
+    refreshHealthBarColor();
 
     _panel->show();
+}
+
+void Target::refreshHealthBarColor(){
+    _panel->changeColor(_combatant->nameColor());
 }
 
 bool Target::targetIsDifferentFromServer(const Entity &newTarget, bool nowAggressive){
