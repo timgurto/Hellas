@@ -39,6 +39,8 @@ void Target::setAndAlertServer(
 }
 
 void Target::refreshHealthBarColor(){
+    if (_combatant == nullptr)
+        return;
     _panel->changeColor(_combatant->nameColor());
 }
 
