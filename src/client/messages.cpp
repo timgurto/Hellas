@@ -173,6 +173,8 @@ void Client::handleMessage(const std::string &msg){
         case SV_UNDER_CONSTRUCTION:
         case SV_AT_PEACE:
         case SV_INVALID_OBJECT:
+        case SV_ALREADY_AT_WAR:
+        case SV_NOT_IN_CITY:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
@@ -1131,6 +1133,8 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_AT_PEACE] = "You are not at war with that player.";
     _errorMessages[SV_UNIQUE_OBJECT] = "There can be only one.";
     _errorMessages[SV_INVALID_OBJECT] = "That is not a valid object type.";
+    _errorMessages[SV_ALREADY_AT_WAR] = "You are already at war with them.";
+    _errorMessages[SV_NOT_IN_CITY] = "You are not in a city.";
 }
 
 void Client::performCommand(const std::string &commandString){

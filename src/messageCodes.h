@@ -91,6 +91,10 @@ enum MessageCode{
     // Arguments: serial
     CL_STOP_WATCHING = 41,
 
+    // "I want to give my object ... to my city". 
+    // Arguments: serial
+    CL_CEDE = 42,
+
     // "I'm targeting NPC ..."
     // Arguments: serial
     CL_TARGET_NPC = 50,
@@ -395,6 +399,9 @@ enum MessageCode{
 
     // The user tried to declare war on somebody with whom they are already at war.
     SV_ALREADY_AT_WAR = 947,
+
+    // The user tried to perform a city action when not in a city.
+    SV_NOT_IN_CITY = 948,
 
 
 

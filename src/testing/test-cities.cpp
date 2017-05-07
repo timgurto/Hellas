@@ -126,3 +126,73 @@ QUARANTINED_TEST("Clients know nearby players' cities")
     WAIT_UNTIL(clientAlice.cityName() == "athens");
     return true;
 TEND
+
+TEST("A player can cede an object to his city")
+    // Given a user in Athens;
+    TestClient c = TestClient::WithData("basic_rock");
+    TestServer s = TestServer::WithData("basic_rock");
+    s.cities().createCity("athens");
+    WAIT_UNTIL(s.users().size() == 1);
+    User &user = s.getFirstUser();
+    s.cities().addPlayerToCity(user, "athens");
+
+    // And an object owned by him
+    s.addObject("rock", Point(10, 10), &user);
+
+    // When he sends a CL_CEDE command
+    WAIT_UNTIL(c.objects().size() == 1);
+    Object &rock = s.getFirstObject();
+    c.sendMessage(CL_CEDE, makeArgs(rock.serial()));
+
+    // Then the object belongs to Athens;
+    WAIT_UNTIL(rock.permissions().isOwnedByCity("athens"));
+
+    // And the object doesn't belong to him.
+    return ! rock.permissions().isOwnedByPlayer(user.name());
+TEND
+
+TEST("A player must be in a city to cede")
+    // Given a user who owns a rock
+    TestClient c = TestClient::WithData("basic_rock");
+    TestServer s = TestServer::WithData("basic_rock");
+    WAIT_UNTIL(s.users().size() == 1);
+    User &user = s.getFirstUser();
+    s.addObject("rock", Point(10, 10), &user);
+
+    // When he sends a CL_CEDE command
+    WAIT_UNTIL(c.objects().size() == 1);
+    Object &rock = s.getFirstObject();
+    c.sendMessage(CL_CEDE, makeArgs(rock.serial()));
+
+    // Then the player receives an error message;
+    if (!c.waitForMessage(SV_NOT_IN_CITY))
+        return false;
+
+    // And the object still belongs to the player
+    return rock.permissions().isOwnedByPlayer(user.name());
+TEND
+
+TEST("A player can only cede his own objects")
+    // Given a user in Athens;
+    TestClient c = TestClient::WithData("basic_rock");
+    TestServer s = TestServer::WithData("basic_rock");
+    s.cities().createCity("athens");
+    WAIT_UNTIL(s.users().size() == 1);
+    User &user = s.getFirstUser();
+    s.cities().addPlayerToCity(user, "athens");
+
+    // And a rock owned by nobody
+    s.addObject("rock", Point(10, 10));
+
+    // When he sends a CL_CEDE command
+    WAIT_UNTIL(c.objects().size() == 1);
+    Object &rock = s.getFirstObject();
+    c.sendMessage(CL_CEDE, makeArgs(rock.serial()));
+    
+    // Then the player receives an error message;
+    if (!c.waitForMessage(SV_NO_PERMISSION, 10000))
+        return false;
+
+    // And the object does not belong to Athens
+    return ! rock.permissions().isOwnedByCity("athens");
+TEND

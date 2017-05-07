@@ -931,7 +931,6 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
-
         case CL_DECLARE_WAR:
         {
             iss.get(buffer, BUFFER_SIZE, MSG_END);
@@ -945,6 +944,39 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
             _wars.declare(user->name(), targetUsername);
             sendWarAlertMessages(user->name(), targetUsername);
+            break;
+        }
+
+        case CL_CEDE:
+        {
+            size_t serial;
+            iss >> serial >> del;
+            if (del != MSG_END)
+                return;
+
+            Object *obj;
+            if (serial == INVENTORY || serial == GEAR)
+                obj = nullptr;
+            else
+                obj = findObject(serial);
+            if (obj == nullptr) {
+                sendMessage(client, SV_DOESNT_EXIST);
+                break;
+            }
+
+            if (!obj->permissions().isOwnedByPlayer(user->name())){
+                sendMessage(client, SV_NO_PERMISSION);
+                break;
+            }
+
+            const City::Name &city = _cities.getPlayerCity(user->name());
+            if (city.empty()){
+                sendMessage(client, SV_NOT_IN_CITY);
+                break;
+            }
+
+            obj->permissions().setCityOwner(city);
+
             break;
         }
 
