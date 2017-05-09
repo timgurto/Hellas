@@ -9,6 +9,7 @@
 #include "Renderer.h"
 #include "TooltipBuilder.h"
 #include "ui/Button.h"
+#include "ui/ConfirmationWindow.h"
 #include "ui/Container.h"
 #include "ui/ItemSelector.h"
 #include "ui/Label.h"
@@ -31,12 +32,14 @@ Entity(rhs),
 _serial(rhs._serial),
 _container(rhs._container),
 _window(nullptr),
+_confirmCedeWindow(nullptr),
 _beingGathered(rhs._beingGathered){}
 
 ClientObject::ClientObject(size_t serialArg, const ClientObjectType *type, const Point &loc):
 Entity(type, loc),
 _serial(serialArg),
 _window(nullptr),
+_confirmCedeWindow(nullptr),
 _beingGathered(false),
 _dropbox(1),
 _transformTimer(type->transformTime()),
@@ -67,6 +70,10 @@ ClientObject::~ClientObject(){
     if (_window != nullptr) {
         Client::_instance->removeWindow(_window);
         delete _window;
+    }
+    if (_confirmCedeWindow != nullptr) {
+        Client::_instance->removeWindow(_confirmCedeWindow);
+        delete _confirmCedeWindow;
     }
 }
 
@@ -401,8 +408,8 @@ void ClientObject::addCedeButtonToWindow(){
         y = _window->contentHeight(),
         newWidth = _window->contentWidth();
     y += BUTTON_GAP;
-    Button *cedeButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT),
-                                    "Cede to City", sendCedeMessage, this);
+    Button *cedeButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), "Cede to City",
+                                    confirmAndCedeObject, this);
     cedeButton->setTooltip("Transfer ownership of this object over to your city");
     _window->addChild(cedeButton);
     y += BUTTON_GAP + BUTTON_HEIGHT;
@@ -413,10 +420,19 @@ void ClientObject::addCedeButtonToWindow(){
     _window->resize(newWidth, y);
 }
 
-void ClientObject::sendCedeMessage(void *objectToCede){
+void ClientObject::confirmAndCedeObject(void *objectToCede){
     assert(objectToCede != nullptr);
-    const ClientObject &obj = * reinterpret_cast<const ClientObject *>(objectToCede);
-    Client::_instance->sendMessage(CL_CEDE, makeArgs(obj.serial()));
+    ClientObject &obj = * reinterpret_cast<ClientObject *>(objectToCede);
+    Client &client = *Client::_instance;
+    std::string confirmationText = "Are you sure you want to cede this " +
+                                   obj.name() + " to your city?";
+    if (obj._confirmCedeWindow != nullptr)
+        client.removeWindow(obj._confirmCedeWindow);
+    else
+        obj._confirmCedeWindow = new ConfirmationWindow(confirmationText, CL_CEDE,
+                                                        makeArgs(obj.serial()));
+    client.addWindow(obj._confirmCedeWindow);
+    obj._confirmCedeWindow->show();
 }
 
 void ClientObject::assembleWindow(Client &client){

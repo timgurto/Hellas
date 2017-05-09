@@ -11,6 +11,7 @@
 #include "../Point.h"
 #include "../util.h"
 
+class ConfirmationWindow;
 class SoundProfile;
 class ParticleProfile;
 

@@ -35,6 +35,7 @@ class ClientObject : public Entity{
 
 protected:
     Window *_window; // For containers, etc; opens when the object is nearby and right-clicked.
+    ConfirmationWindow *_confirmCedeWindow;
 
 public:
     ClientObject(const ClientObject &rhs);
@@ -86,7 +87,7 @@ public:
     bool userHasAccess() const;
 
     void setMerchantSlot(size_t i, ClientMerchantSlot &mSlot);
-    static void sendCedeMessage(void *objectToCede);
+    static void confirmAndCedeObject(void *objectToCede);
 
 private:
     static const px_t

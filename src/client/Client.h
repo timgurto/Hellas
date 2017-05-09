@@ -400,6 +400,7 @@ private:
     friend class Avatar;
     friend class SoundProfile;
     friend class Target;
+    friend class ConfirmationWindow;
 };
 
 #endif
