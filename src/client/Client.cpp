@@ -18,6 +18,7 @@
 #include "TooltipBuilder.h"
 #include "ui/Button.h"
 #include "ui/CombatantPanel.h"
+#include "ui/ConfirmationWindow.h"
 #include "ui/Container.h"
 #include "ui/Element.h"
 #include "ui/LinkedLabel.h"
@@ -145,13 +146,9 @@ _mapX(0), _mapY(0),
 
 _currentMouseOverEntity(nullptr),
 
-_confirmationWindow(nullptr),
-_confirmationWindowText(nullptr),
+_confirmDropItem(nullptr),
 
 _drawingFinished(false),
-
-_serialToDrop(0),
-_slotToDrop(Container::NO_SLOT),
 
 _avatarSounds(nullptr),
 _channelsPlaying(0),
@@ -705,48 +702,16 @@ void Client::unwatchObject(ClientObject &obj){
 }
 
 void Client::dropItemOnConfirmation(size_t serial, size_t slot, const ClientItem *item){
-    _serialToDrop = serial;
-    _slotToDrop = slot;
-    std::string windowText = "Are you sure you want to destroy ";
-    windowText += item->name() + "?";
+    std::string windowText = "Are you sure you want to destroy " + item->name() + "?";
+    std::string msgArgs = makeArgs(serial, slot);
 
-    _messageToConfirm = MSG_START + toString(CL_DROP) + MSG_DELIM + makeArgs(serial, slot) +
-                        MSG_END;
-
-    if (_confirmationWindow == nullptr){
-        static const px_t
-            WINDOW_WIDTH = 200,
-            PADDING = 2,
-            BUTTON_WIDTH = 60,
-            BUTTON_HEIGHT = 15,
-            WINDOW_HEIGHT = BUTTON_HEIGHT + 3 * PADDING + Element::TEXT_HEIGHT,
-            BUTTON_Y = 2 * PADDING + Element::TEXT_HEIGHT;
-        _confirmationWindow = new Window(Rect((SCREEN_X - WINDOW_WIDTH) / 2,
-                                              (SCREEN_Y - WINDOW_HEIGHT) / 2,
-                                              WINDOW_WIDTH, WINDOW_HEIGHT),
-                                         "Confirmation");
-        _confirmationWindowText = new Label(Rect(0, PADDING, WINDOW_WIDTH, Element::TEXT_HEIGHT),
-                                            windowText, Element::CENTER_JUSTIFIED);
-        _confirmationWindow->addChild(_confirmationWindowText);
-        _confirmationWindow->addChild(new Button(Rect((WINDOW_WIDTH - PADDING) / 2 - BUTTON_WIDTH,
-                                                      BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT),
-                                                "OK", sendMessageAndHideConfirmationWindow));
-        _confirmationWindow->addChild(new Button(Rect((WINDOW_WIDTH + PADDING) / 2, BUTTON_Y,
-                                                       BUTTON_WIDTH, BUTTON_HEIGHT),
-                                                 "Cancel",
-                                                 Window::hideWindow, _confirmationWindow));
-        addWindow(_confirmationWindow);
-    } else {
-        _confirmationWindowText->changeText(windowText);
-        removeWindow(_confirmationWindow);
-        addWindow(_confirmationWindow);
+    if (_confirmDropItem != nullptr){
+        removeWindow(_confirmDropItem);
+        delete _confirmDropItem;
     }
-    _confirmationWindow->show();
-}
-
-void Client::sendMessageAndHideConfirmationWindow(void *data){
-    _instance->sendRawMessage(_instance->_messageToConfirm);
-    _instance->_confirmationWindow->hide();
+    _confirmDropItem = new ConfirmationWindow(windowText, CL_DROP, msgArgs);
+    addWindow(_confirmDropItem);
+    _confirmDropItem->show();
 }
 
 bool Client::outsideCullRange(const Point &loc, px_t hysteresis) const{

@@ -367,16 +367,9 @@ private:
     ConnectionStatus _connectionStatus;
     void checkSocket();
 
-    // Confirmation-window stuff
-    Window *_confirmationWindow;
-    Label *_confirmationWindowText;
-    size_t
-        _serialToDrop,
-        _slotToDrop;
-    std::string _messageToConfirm;
+    ConfirmationWindow *_confirmDropItem;
     // Show a confirmation window, then drop item if confirmed
     void dropItemOnConfirmation(size_t serial, size_t slot, const ClientItem *item);
-    static void sendMessageAndHideConfirmationWindow(void *data);
 
 
     // Searches
