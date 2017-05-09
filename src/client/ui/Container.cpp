@@ -257,8 +257,6 @@ void Container::dropItem() {
         dragContainer->markChanged();
         dragContainer = nullptr;
         Client::_instance->onChangeDragItem();
-        if (item->sounds() != nullptr)
-            item->sounds()->playOnce("drop");
     }
 }
 
