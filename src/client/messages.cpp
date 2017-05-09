@@ -56,7 +56,7 @@ void Client::handleMessage(const std::string &msg){
             iss.ignore(); // Throw away ']'
         }
         std::istringstream singleMsg(buffer);
-        //_debug(buffer, Color::CYAN);
+        _debug(buffer, Color::CYAN);
         singleMsg >> del >> msgCode >> del;
         _messagesReceived.push_back(MessageCode(msgCode));
         Color errorMessageColor = Color::FAILURE;
@@ -426,6 +426,7 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
             _character.cityName(cityName);
+            break;
         }
 
         case SV_IN_CITY:
