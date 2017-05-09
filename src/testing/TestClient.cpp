@@ -67,7 +67,12 @@ void TestClient::run(){
 
 void TestClient::stop(){
     _client->_loop = false;
+    _client->_freeze = false;
     WAIT_FOREVER_UNTIL (!_client->_running);
+}
+
+void TestClient::freeze(){
+    _client->_freeze = true;
 }
 
 void TestClient::waitForRedraw(){

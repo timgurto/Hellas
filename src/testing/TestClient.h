@@ -18,6 +18,7 @@ public:
     TestClient &operator=(TestClient &rhs);
 
     bool connected() const { return _client->_connectionStatus == Client::CONNECTED; }
+    void freeze();
 
     std::map<size_t, ClientObject*> &objects() { return _client->_objects; }
     Client::objectTypes_t &objectTypes() { return _client->_objectTypes; }

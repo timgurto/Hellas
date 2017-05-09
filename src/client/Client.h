@@ -244,7 +244,9 @@ private:
 
     bool _loop;
     bool _running; // True while run() is being executed.
+    bool _freeze; // For testing purposes only; should otherwise remain false.
     Socket _socket;
+
     TTF_Font *_defaultFont;
     px_t _defaultFontOffset; // Vertical offset for game text
 

@@ -105,6 +105,7 @@ _actionLength(0),
 
 _loop(true),
 _running(false),
+_freeze(false),
 _socket(),
 _dataLoaded(false),
 
@@ -502,6 +503,9 @@ void Client::run(){
             gameLoop();
         else
             loginScreenLoop();
+
+        while (_freeze)
+            ;
     }
     _running = false;
 }

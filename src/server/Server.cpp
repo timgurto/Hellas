@@ -188,7 +188,11 @@ void Server::run(){
             if (!it->alive()) {
                 _debug << Color::RED << "User " << it->name() << " has timed out." << Log::endl;
                 std::set<User>::iterator next = it; ++next;
-                closesocket(it->socket().getRaw());
+
+                auto socketIt = _clientSockets.find(it->socket());
+                assert(socketIt != _clientSockets.end());
+                _clientSockets.erase(socketIt);
+
                 removeUser(it);
                 it = next;
             } else {

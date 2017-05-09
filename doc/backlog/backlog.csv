@@ -158,9 +158,9 @@ issue,description,value,effort,type,blockedBy,done,critical
 158,Componentize gathering,3,5,Code quality,163
 159,Componentize construction from item,3,5,Code quality,163
 160,Componentize construction with materials,3,5,Code quality,163
-161,Componentize object transformation,3,5,Code quality,163
-161,Componentize merchant functionality,3,5,Code quality,163
-162,Componentize vehicle functionality,3,5,Code quality,163
-163,Create component system,5,8,Code quality,
-164,Server sometimes gets in infinite loop when a client disconnects,144,21,Bug,
-165,Convey NPC difficulty without levels,5,34,Usability,
+161,Componentize object transformation,3,5,Code quality,163,
+161,Componentize merchant functionality,3,5,Code quality,163,
+162,Componentize vehicle functionality,3,5,Code quality,163,
+163,Create component system,5,8,Code quality,,
+164,Server sometimes gets in infinite loop when a client disconnects,144,21,Bug,,TRUE
+165,Convey NPC difficulty without levels,5,34,Usability,,
