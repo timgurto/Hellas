@@ -302,10 +302,12 @@ _debug("client.log"){
     
     drawLoadingScreen("Initializing UI", 0.8);
     initializeBuildWindow();
+    initializeCraftingWindow();
     initializeInventoryWindow();
     initializeGearWindow();
     initializeMapWindow();
     addWindow(_buildWindow);
+    addWindow(_craftingWindow);
     addWindow(_inventoryWindow);
     addWindow(_gearWindow);
     addWindow(_mapWindow);
