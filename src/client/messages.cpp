@@ -557,8 +557,10 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Received ownership info for an unknown object.", Color::FAILURE);
                 break;
             }
-            (it->second)->owner(name);
-            (it->second)->refreshTooltip();
+            ClientObject &obj = *it->second;
+            obj.owner(name);
+            obj.assembleWindow(*this);
+            obj.refreshTooltip();
             break;
         }
 

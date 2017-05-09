@@ -8,7 +8,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 7,A player can leave a city,8,8,Feature,1,,TRUE
 8,Cities can own objects,89,5,Feature,1,TRUE,TRUE
 9,"If a city owns an object, all members can use it",55,3,Feature,8,TRUE,TRUE
-10,A player can cede an object to his city,55,8,Feature,8,,TRUE
+10,A player can cede an object to his city,55,8,Feature,8,TRUE,TRUE
 11,A king can grant a city object to a player,34,8,Feature,8,,TRUE
 12,A player can declare war on another player,89,8,Feature,,TRUE,TRUE
 13,Players can agree to return to peace,34,8,Feature,12,,TRUE
@@ -162,3 +162,5 @@ issue,description,value,effort,type,blockedBy,done,critical
 161,Componentize merchant functionality,3,5,Code quality,163
 162,Componentize vehicle functionality,3,5,Code quality,163
 163,Create component system,5,8,Code quality,
+164,Server sometimes gets in infinite loop when a client disconnects,144,21,Bug,
+165,Convey NPC difficulty without levels,5,34,Usability,

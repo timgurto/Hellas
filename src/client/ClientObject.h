@@ -86,6 +86,7 @@ public:
     bool userHasAccess() const;
 
     void setMerchantSlot(size_t i, ClientMerchantSlot &mSlot);
+    static void sendCedeMessage(void *objectToCede);
 
 private:
     static const px_t
@@ -99,6 +100,7 @@ private:
     void addDeconstructionToWindow();
     void addVehicleToWindow();
     void addMerchantTradeToWindow();
+    void addCedeButtonToWindow();
 };
 
 #endif

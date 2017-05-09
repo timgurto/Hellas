@@ -395,6 +395,30 @@ void ClientObject::addMerchantTradeToWindow(){
     _window->resize(newWidth, y);
 }
 
+void ClientObject::addCedeButtonToWindow(){
+    px_t
+        x = BUTTON_GAP,
+        y = _window->contentHeight(),
+        newWidth = _window->contentWidth();
+    y += BUTTON_GAP;
+    Button *cedeButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT),
+                                    "Cede to City", sendCedeMessage, this);
+    cedeButton->setTooltip("Transfer ownership of this object over to your city");
+    _window->addChild(cedeButton);
+    y += BUTTON_GAP + BUTTON_HEIGHT;
+    x += BUTTON_GAP + BUTTON_WIDTH;
+    if (newWidth < x)
+        newWidth = x;
+
+    _window->resize(newWidth, y);
+}
+
+void ClientObject::sendCedeMessage(void *objectToCede){
+    assert(objectToCede != nullptr);
+    const ClientObject &obj = * reinterpret_cast<const ClientObject *>(objectToCede);
+    Client::_instance->sendMessage(CL_CEDE, makeArgs(obj.serial()));
+}
+
 void ClientObject::assembleWindow(Client &client){
     const ClientObjectType &objType = *objectType();
 
@@ -408,12 +432,15 @@ void ClientObject::assembleWindow(Client &client){
     bool
         hasContainer = objType.containerSlots() > 0,
         isMerchant = objType.merchantSlots() > 0,
-        isVehicle = classTag() == 'v';
+        isVehicle = classTag() == 'v',
+        canCede = (! client.character().cityName().empty()) &&
+                  _owner == client.username();
     if (isMerchant ||
         userHasAccess() && (hasContainer ||
                             isVehicle ||
                             objType.canDeconstruct() ||
-                            isBeingConstructed() )){
+                            isBeingConstructed() ||
+                            canCede)){
 
         if (_window == nullptr)
             _window = new Window(Rect(), objType.name());
@@ -440,7 +467,14 @@ void ClientObject::assembleWindow(Client &client){
                 addVehicleToWindow();
             if (objType.canDeconstruct())
                 addDeconstructionToWindow();
+            if (canCede)
+                addCedeButtonToWindow();
         }
+
+        px_t
+            currentWidth = _window->contentWidth(),
+            currentHeight = _window->contentHeight();
+        _window->resize(currentWidth, currentHeight + BUTTON_GAP);
 
     } else {
         if (_window != nullptr){
