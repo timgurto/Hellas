@@ -507,7 +507,8 @@ void ClientObject::sendMerchantSlot(void *serialAndSlot){
 bool ClientObject::userHasAccess() const{
     return
         _owner.empty() ||
-        _owner == Client::_instance->username();
+        _owner == Client::_instance->username() ||
+        _owner == Client::_instance->character().cityName();
 }
 
 void ClientObject::update(double delta) {
