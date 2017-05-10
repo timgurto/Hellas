@@ -45,8 +45,13 @@ for (i in 1:length(data$roi)){
 
 minROI = NULL
 maxROI = NULL
+minVal = NULL
+maxVal = NULL
+minEffort = NULL
+maxEffort = NULL
 for (i in 1:length(data$roi)){
     if (!data$done[i]){
+    
         if (is.null(minROI))
             minROI = data$roi[i]
         else if (data$roi[i] < minROI)
@@ -55,8 +60,27 @@ for (i in 1:length(data$roi)){
             maxROI = data$roi[i]
         else if (data$roi[i] > maxROI)
             maxROI = data$roi[i]
+    
+        if (is.null(minVal))
+            minVal = data$value[i]
+        else if (data$value[i] < minVal)
+            minVal = data$value[i]
+        if (is.null(maxVal))
+            maxVal = data$value[i]
+        else if (data$value[i] > maxVal)
+            maxVal = data$value[i]
+    
+        if (is.null(minEffort))
+            minEffort = data$effort[i]
+        else if (data$effort[i] < minEffort)
+            minEffort = data$effort[i]
+        if (is.null(maxEffort))
+            maxEffort = data$effort[i]
+        else if (data$effort[i] > maxEffort)
+            maxEffort = data$effort[i]
     }
 }
+
 #for (i in 1:length(data$roi)){
 #    if (data$done[i]){
 #        if (data$roi[i] < minROI)
@@ -72,12 +96,12 @@ if (roiRange %% 2 == 0){
     paletteSize = paletteSize + 1
 }
 roiColsRaw = roiPalette(paletteSize)
-roiCols = 1:22
+roiCols = 1:25
 roiMidpoint = 13
-for (i in (-12:minROI + roiMidpoint)){ # Deep red at the bottom
+for (i in (-13:minROI + roiMidpoint)){ # Deep red at the bottom
     roiCols[i] = roiColsRaw[1]
 }
-for (i in (maxROI:9 +roiMidpoint)){ # Deep green at the top
+for (i in (maxROI:11 +roiMidpoint)){ # Deep green at the top
     roiCols[i] = roiColsRaw[roiRange]
 }
 for (i in 1:roiRange){
@@ -91,20 +115,20 @@ data <- data[with(data, order(-roi, effort, issue)),]
 x = jitter_log(data$effort)
 y = jitter_log(data$value)
 
-maxEffort = max(data$effort)
-maxValue = max(data$value)
+#maxEffort = max(data$effort)
+#maxValue = max(data$value)
 x = sapply(x, function(n) min(c(n, maxEffort)))
 x = sapply(x, function(n) max(c(n, 1)))
-y = sapply(y, function(n) min(c(n, maxValue)))
+y = sapply(y, function(n) min(c(n, maxVal)))
 y = sapply(y, function(n) max(c(n, 1)))
 
 plot(
     NULL, log="xy", xlab="Effort", ylab="Value", axes=FALSE,
     #main="Issue backlog",
-    xlim=c(min(x), max(x)), ylim=c(min(y), max(y))
+    xlim=c(minEffort, maxEffort), ylim=c(minVal, maxVal)
 )
-effortVals = vals[1:match(maxEffort, vals)]
-valueVals = vals[1:match(maxValue, vals)]
+effortVals = vals[match(minEffort, vals):match(maxEffort, vals)]
+valueVals = vals[match(minVal, vals):match(maxVal, vals)]
 axis(1, at=effortVals)
 axis(2, at=valueVals)
 #box()
