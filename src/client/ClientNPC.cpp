@@ -81,7 +81,7 @@ void ClientNPC::onInventoryUpdate(){
 }
 
 bool ClientNPC::isFlat() const{
-    return Entity::isFlat() || health() == 0;
+    return Sprite::isFlat() || health() == 0;
 }
 
 const Texture &ClientNPC::image() const{

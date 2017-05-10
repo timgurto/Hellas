@@ -444,11 +444,11 @@ void Client::handleInput(double delta){
     }
 }
 
-Entity *Client::getEntityAtMouse(){
+Sprite *Client::getEntityAtMouse(){
     const Point mouseOffset = _mouse - _offset;
-    Entity::set_t::iterator mouseOverIt = _entities.end();
+    Sprite::set_t::iterator mouseOverIt = _entities.end();
     static const px_t LOOKUP_MARGIN = 320;
-    Entity
+    Sprite
         topEntity(nullptr, Point(0, mouseOffset.y - LOOKUP_MARGIN)),
         bottomEntity(nullptr, Point(0, mouseOffset.y + LOOKUP_MARGIN));
     auto
@@ -479,7 +479,7 @@ void Client::checkMouseOver(){
         }
 
     // Check if mouse is over an entity
-    const Entity *const oldMouseOverEntity = _currentMouseOverEntity;
+    const Sprite *const oldMouseOverEntity = _currentMouseOverEntity;
     _currentMouseOverEntity = getEntityAtMouse();
     if (_currentMouseOverEntity == nullptr)
         return;

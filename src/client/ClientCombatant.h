@@ -2,7 +2,7 @@
 #define CLIENT_COMBATANT_H
 
 #include "ClientCombatantType.h"
-#include "Entity.h"
+#include "Sprite.h"
 #include "../types.h"
 
 class ClientCombatant{
@@ -20,7 +20,7 @@ public:
 
     virtual void sendTargetMessage() const = 0;
     virtual bool canBeAttackedByPlayer() const { return isAlive(); }
-    virtual const Entity *entityPointer() const = 0;
+    virtual const Sprite *entityPointer() const = 0;
     virtual bool belongsToPlayerCity() const { return false; }
 
 private:

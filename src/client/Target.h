@@ -4,7 +4,7 @@
 #include <string>
 
 #include "ClientCombatant.h"
-#include "Entity.h"
+#include "Sprite.h"
 #include "ui/CombatantPanel.h"
 #include "../types.h"
 
@@ -23,7 +23,7 @@ public:
 
     void clear();
 
-    const Entity *entity() const { return _entity; }
+    const Sprite *entity() const { return _entity; }
     const ClientCombatant *combatant() const { return _combatant; }
     bool exists() const { return _entity != nullptr; }
     bool isAggressive() const { return _aggressive; }
@@ -41,7 +41,7 @@ public:
     CombatantPanel *panel() { return _panel; }
 
 private:
-    const Entity *_entity;
+    const Sprite *_entity;
     const ClientCombatant *_combatant;
     bool _aggressive; // True: will attack when in range.  False: mere selection, client-side only.
 
@@ -53,8 +53,8 @@ private:
     health_t _health, _maxHealth;
 
     void setAndAlertServer(
-            const Entity &asEntity, const ClientCombatant &asCombatant, bool nowAggressive);
-    bool targetIsDifferentFromServer(const Entity &newTarget, bool nowAggressive);
+            const Sprite &asEntity, const ClientCombatant &asCombatant, bool nowAggressive);
+    bool targetIsDifferentFromServer(const Sprite &newTarget, bool nowAggressive);
 
     CombatantPanel *_panel;
 };

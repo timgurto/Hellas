@@ -4,14 +4,14 @@
 #include <string>
 
 #include "ClientItem.h"
-#include "Entity.h"
+#include "Sprite.h"
 #include "ClientCombatant.h"
 #include "ClientCombatantType.h"
 #include "../Point.h"
 
 // The client-side representation of a user, including the player
-class Avatar : public Entity, public ClientCombatant{
-    static std::map<std::string, EntityType> _classes;
+class Avatar : public Sprite, public ClientCombatant{
+    static std::map<std::string, SpriteType> _classes;
     static ClientCombatantType _combatantType;
     static const Rect COLLISION_RECT, DRAW_RECT;
 
@@ -41,7 +41,7 @@ public:
     void cityName(const std::string &name) { _city = name; }
     const std::string &cityName() const { return _city; }
 
-    // From Entity
+    // From Sprite
     virtual void draw(const Client &client) const override;
     virtual void update(double delta) override;
     virtual const Texture &tooltip() const override; // Getter; creates tooltip on first call.
@@ -53,7 +53,7 @@ public:
     // From ClientCombatant
     virtual void sendTargetMessage() const override;
     virtual bool canBeAttackedByPlayer() const override;
-    virtual const Entity *entityPointer() const override { return this; }
+    virtual const Sprite *entityPointer() const override { return this; }
     virtual bool belongsToPlayerCity() const override;
 
     void playAttackSound() const; // The player has attacked; play an appropriate sound.

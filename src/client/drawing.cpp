@@ -65,7 +65,7 @@ void Client::draw() const{
         leftX = -offset().x - DRAW_MARGIN_SIDES,
         rightX = -offset().x + SCREEN_X + DRAW_MARGIN_SIDES;
     // Cull by y
-    Entity
+    Sprite
         topEntity(nullptr, Point(0, topY)),
         bottomEntity(nullptr, Point(0, bottomY));
     auto top = _entities.lower_bound(&topEntity);
@@ -126,7 +126,7 @@ void Client::draw() const{
         }
         // TODO: Show message explaining controls
     } else if (_isDismounting){
-        const EntityType &charType = *_character.type();
+        const SpriteType &charType = *_character.type();
         Rect footprintRect = Avatar::collisionRectRaw() + _mouse - _offset;
         if (distance(playerCollisionRect(), footprintRect) <= Client::ACTION_DISTANCE) {
             charType.image().setAlpha(0x7f);

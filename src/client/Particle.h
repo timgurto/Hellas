@@ -1,16 +1,16 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
-#include "Entity.h"
-#include "EntityType.h"
+#include "Sprite.h"
+#include "SpriteType.h"
 #include "../NormalVariable.h"
 #include "../Point.h"
 
 class Texture;
 
 // An individual particle
-class Particle : public Entity{
-    static const EntityType ENTITY_TYPE;
+class Particle : public Sprite{
+    static const SpriteType ENTITY_TYPE;
 
     const Texture &_image;
     const Rect &_drawRect;

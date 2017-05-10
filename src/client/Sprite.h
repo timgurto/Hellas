@@ -1,19 +1,19 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#ifndef SPRITE_H
+#define SPRITE_H
 
 #include <set>
 #include <vector>
 
-#include "EntityType.h"
+#include "SpriteType.h"
 #include "Texture.h"
 #include "../Point.h"
 
 class Client;
 
 // Handles the graphical and UI side of in-game objects  Abstract class
-class Entity{
+class Sprite{
     bool _yChanged; // y co-ordinate has changed, and the entity must be reordered.
-    const EntityType *_type;
+    const SpriteType *_type;
     Point _location;
 
     bool _toRemove; // No longer draw or update, and remove when possible.
@@ -24,8 +24,8 @@ protected:
     mutable Texture _tooltip;
 
 public:
-    Entity(const EntityType *type, const Point &location);
-    virtual ~Entity(){}
+    Sprite(const SpriteType *type, const Point &location);
+    virtual ~Sprite(){}
 
     const Point &location() const { return _location; }
     void location(const Point &loc); // yChanged() should be checked after changing location.
@@ -34,8 +34,8 @@ public:
     px_t height() const { return _type->height(); }
     bool yChanged() const { return _yChanged; }
     void yChanged(bool val) { _yChanged = val; }
-    const EntityType *type() const { return _type; }
-    void type(const EntityType *et) { _type = et; }
+    const SpriteType *type() const { return _type; }
+    void type(const SpriteType *et) { _type = et; }
     virtual const Texture &image() const { return _type->image(); }
     virtual const Texture &highlightImage() const { return _type->highlightImage(); }
     void markForRemoval() { _toRemove = true; }
@@ -57,7 +57,7 @@ public:
     bool collision(const Point &p) const;
 
     struct ComparePointers{
-        bool operator()(const Entity *lhs, const Entity *rhs) const{
+        bool operator()(const Sprite *lhs, const Sprite *rhs) const{
 
             // 1. location
             double
@@ -71,7 +71,7 @@ public:
         }
     };
 
-    typedef std::set<Entity *, ComparePointers> set_t;
+    typedef std::set<Sprite *, ComparePointers> set_t;
 };
 
 #endif

@@ -28,7 +28,7 @@ const px_t ClientObject::GAP = 2;
 const px_t ClientObject::BUTTON_GAP = 1;
 
 ClientObject::ClientObject(const ClientObject &rhs):
-Entity(rhs),
+Sprite(rhs),
 _serial(rhs._serial),
 _container(rhs._container),
 _window(nullptr),
@@ -36,7 +36,7 @@ _confirmCedeWindow(nullptr),
 _beingGathered(rhs._beingGathered){}
 
 ClientObject::ClientObject(size_t serialArg, const ClientObjectType *type, const Point &loc):
-Entity(type, loc),
+Sprite(type, loc),
 _serial(serialArg),
 _window(nullptr),
 _confirmCedeWindow(nullptr),
@@ -590,7 +590,7 @@ void ClientObject::update(double delta) {
             _transformTimer -= timeElapsed;
     }
 
-    Entity::update(delta);
+    Sprite::update(delta);
 }
 
 const Texture &ClientObject::cursor(const Client &client) const {
@@ -710,7 +710,7 @@ const Texture &ClientObject::image() const{
         return objectType()->constructionImage().normal;
     if (objectType()->transforms())
         return objectType()->getProgressImage(_transformTimer).normal;
-    return Entity::image();
+    return Sprite::image();
 }
 
 const Texture &ClientObject::highlightImage() const{
@@ -718,5 +718,5 @@ const Texture &ClientObject::highlightImage() const{
         return objectType()->constructionImage().highlight;
     if (objectType()->transforms())
         return objectType()->getProgressImage(_transformTimer).highlight;
-    return Entity::highlightImage();
+    return Sprite::highlightImage();
 }

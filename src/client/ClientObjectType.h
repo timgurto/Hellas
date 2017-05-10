@@ -5,7 +5,7 @@
 #include <string>
 
 #include "ClientItem.h"
-#include "EntityType.h"
+#include "SpriteType.h"
 #include "Texture.h"
 #include "../server/ItemSet.h"
 #include "../Point.h"
@@ -16,13 +16,13 @@ class SoundProfile;
 class ParticleProfile;
 
 // Describes a class of Entities, the "instances" of which share common properties
-class ClientObjectType : public EntityType{
+class ClientObjectType : public SpriteType{
     struct ImageSet{
         Texture normal, highlight;
         ImageSet(){}
         ImageSet(const std::string &filename);
     };
-    ImageSet _images; // baseline images, identical to Entity::_image and Entity::_highlightImage.
+    ImageSet _images; // baseline images, identical to Sprite::_image and Sprite::_highlightImage.
 
     std::string _id;
     std::string _name;

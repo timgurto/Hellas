@@ -6,7 +6,7 @@
 
 #include "ClientMerchantSlot.h"
 #include "ClientObjectType.h"
-#include "Entity.h"
+#include "Sprite.h"
 #include "ClientItem.h"
 #include "../Point.h"
 
@@ -16,7 +16,7 @@ class TextBox;
 class Window;
 
 // A client-side description of an object
-class ClientObject : public Entity{
+class ClientObject : public Sprite{
     size_t _serial;
     std::string _owner;
     ClientItem::vect_t _container;

@@ -14,7 +14,7 @@
 #include "ClientObject.h"
 #include "ClientObjectType.h"
 #include "ClientTerrain.h"
-#include "Entity.h"
+#include "Sprite.h"
 #include "LogSDL.h"
 #include "ParticleProfile.h"
 #include "SoundProfile.h"
@@ -48,10 +48,10 @@ public:
     const Avatar &character() const { return _character; }
     const Point &offset() const { return _intOffset; }
     const std::string &username() const { return _username; }
-    const Entity *currentMouseOverEntity() const { return _currentMouseOverEntity; }
+    const Sprite *currentMouseOverEntity() const { return _currentMouseOverEntity; }
     Rect playerCollisionRect() const { return _character.collisionRect(); }
     const ClientCombatant *targetAsCombatant() const { return _target.combatant(); }
-    const Entity *targetAsEntity() const { return _target.entity(); }
+    const Sprite *targetAsEntity() const { return _target.entity(); }
     bool isDismounting() const { return _isDismounting; }
     void attemptDismount() { _isDismounting = true; }
     const SoundProfile *avatarSounds() const { return _avatarSounds; }
@@ -253,16 +253,16 @@ private:
     // Mouse stuff
     Point _mouse; // Mouse position
     bool _mouseMoved;
-    Entity *getEntityAtMouse();
+    Sprite *getEntityAtMouse();
     void checkMouseOver(); // Set state based on window/entity/etc. being moused over.
     bool _mouseOverWindow; // Whether the mouse is over any visible window.
 
     bool _leftMouseDown; // Whether the left mouse button is pressed
-    Entity *_leftMouseDownEntity;
+    Sprite *_leftMouseDownEntity;
     friend void ClientObject::onLeftClick(Client &client);
 
     bool _rightMouseDown;
-    Entity *_rightMouseDownEntity;
+    Sprite *_rightMouseDownEntity;
     friend void ClientObject::onRightClick(Client &client);
     friend void ClientObject::startDeconstructing(void *object);
 
@@ -329,12 +329,12 @@ private:
     std::map<std::string, Avatar*> _otherUsers; // For lookup by name
     std::map<size_t, ClientObject*> _objects; // For lookup by serial
 
-    Entity::set_t _entities;
-    void addEntity(Entity *entity) { _entities.insert(entity); }
-    void removeEntity(Entity *const toRemove); // Remove from _entities, and delete pointer
+    Sprite::set_t _entities;
+    void addEntity(Sprite *entity) { _entities.insert(entity); }
+    void removeEntity(Sprite *const toRemove); // Remove from _entities, and delete pointer
     // Move the entity, and reorder it if necessary
-    void setEntityLocation(Entity *entity, const Point &location);
-    Entity *_currentMouseOverEntity;
+    void setEntityLocation(Sprite *entity, const Point &location);
+    Sprite *_currentMouseOverEntity;
     size_t _numEntities; // Updated every tick
     
     void addParticles(const ParticleProfile *profile, const Point &location, size_t qty);

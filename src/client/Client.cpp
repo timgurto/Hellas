@@ -11,7 +11,7 @@
 
 #include "Client.h"
 #include "ClientNPC.h"
-#include "EntityType.h"
+#include "SpriteType.h"
 #include "ClientCombatant.h"
 #include "LogSDL.h"
 #include "Particle.h"
@@ -401,8 +401,8 @@ Client::~Client(){
     if (_defaultFont != nullptr)
         TTF_CloseFont(_defaultFont);
     Avatar::cleanup();
-    for (const Entity *entityConst : _entities) {
-        Entity *entity = const_cast<Entity *>(entityConst);
+    for (const Sprite *entityConst : _entities) {
+        Sprite *entity = const_cast<Sprite *>(entityConst);
         if (entity != &_character)
             delete entity;
     }
@@ -548,11 +548,11 @@ void Client::gameLoop(){
     handleInput(delta);
         
     // Update entities
-    std::vector<Entity *> entitiesToReorder;
-    for (Entity::set_t::iterator it = _entities.begin(); it != _entities.end(); ) {
-        Entity::set_t::iterator next = it;
+    std::vector<Sprite *> entitiesToReorder;
+    for (Sprite::set_t::iterator it = _entities.begin(); it != _entities.end(); ) {
+        Sprite::set_t::iterator next = it;
         ++next;
-        Entity *const toUpdate = *it;
+        Sprite *const toUpdate = *it;
         if (toUpdate->markedForRemoval()){
             _entities.erase(it);
             it = next;
@@ -560,14 +560,14 @@ void Client::gameLoop(){
         }
         toUpdate->update(delta);
         if (toUpdate->yChanged()) {
-            // Entity has moved up or down, and must be re-ordered in set.
+            // Sprite has moved up or down, and must be re-ordered in set.
             entitiesToReorder.push_back(toUpdate);
             _entities.erase(it);
             toUpdate->yChanged(false);
         }
         it = next;
     }
-    for (Entity *entity : entitiesToReorder)
+    for (Sprite *entity : entitiesToReorder)
         _entities.insert(entity);
     entitiesToReorder.clear();
 
@@ -631,8 +631,8 @@ const Socket &Client::socket() const{
     return _socket;
 }
 
-void Client::removeEntity(Entity *const toRemove){
-    const Entity::set_t::iterator it = _entities.find(toRemove);
+void Client::removeEntity(Sprite *const toRemove){
+    const Sprite::set_t::iterator it = _entities.find(toRemove);
     if (it != _entities.end())
         _entities.erase(it);
     delete toRemove;
@@ -642,10 +642,10 @@ TTF_Font *Client::defaultFont() const{
     return _defaultFont;
 }
 
-void Client::setEntityLocation(Entity *entity, const Point &location){
-    const Entity::set_t::iterator it = _entities.find(entity);
+void Client::setEntityLocation(Sprite *entity, const Point &location){
+    const Sprite::set_t::iterator it = _entities.find(entity);
     if (it == _entities.end()){
-        assert(false); // Entity is not in set.
+        assert(false); // Sprite is not in set.
         return;
     }
     entity->location(location);

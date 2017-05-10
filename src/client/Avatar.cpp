@@ -9,11 +9,11 @@ extern Renderer renderer;
 
 const Rect Avatar::DRAW_RECT(-9, -39, 20, 40);
 const Rect Avatar::COLLISION_RECT(-5, -2, 10, 4);
-std::map<std::string, EntityType> Avatar::_classes;
+std::map<std::string, SpriteType> Avatar::_classes;
 ClientCombatantType Avatar::_combatantType(Client::MAX_PLAYER_HEALTH);
 
 Avatar::Avatar(const std::string &name, const Point &location):
-Entity(&_classes[""], location),
+Sprite(&_classes[""], location),
 ClientCombatant(&_combatantType),
 _name(name),
 _gear(Client::GEAR_SLOTS, std::make_pair(nullptr, 0)),
@@ -31,7 +31,7 @@ void Avatar::draw(const Client &client) const{
     if (_driving)
         return;
 
-    Entity::draw(client);
+    Sprite::draw(client);
     
     // Draw gear
     for (const auto &pair : ClientItem::drawOrder()){
@@ -93,7 +93,7 @@ void Avatar::cleanup(){
 void Avatar::setClass(const std::string &c){
     _class = c;
     if (_classes.find(c) == _classes.end())
-        _classes[c] = EntityType(DRAW_RECT, std::string("Images/" + c + ".png"));
+        _classes[c] = SpriteType(DRAW_RECT, std::string("Images/" + c + ".png"));
     type(&_classes[c]);
 }
 

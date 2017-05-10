@@ -1,12 +1,12 @@
 #include "Particle.h"
 #include "../util.h"
 
-const EntityType Particle::ENTITY_TYPE(EntityType::DECORATION);
+const SpriteType Particle::ENTITY_TYPE(SpriteType::DECORATION);
 
 Particle::Particle(const Point &loc, const Texture &image, const Rect &drawRect,
                    const Point &velocity, double startingAltitude, double startingFallSpeed,
                    double gravity, ms_t lifespan):
-Entity(&ENTITY_TYPE, loc),
+Sprite(&ENTITY_TYPE, loc),
 _image(image),
 _drawRect(drawRect),
 _velocity(velocity),

@@ -111,8 +111,8 @@
     <ClCompile Include="src\client\craftingWindow.cpp" />
     <ClCompile Include="src\client\data.cpp" />
     <ClCompile Include="src\client\drawing.cpp" />
-    <ClCompile Include="src\client\Entity.cpp" />
-    <ClCompile Include="src\client\EntityType.cpp" />
+    <ClCompile Include="src\client\Sprite.cpp" />
+    <ClCompile Include="src\client\SpriteType.cpp" />
     <ClCompile Include="src\client\input.cpp" />
     <ClCompile Include="src\client\inventoryWindow.cpp" />
     <ClCompile Include="src\client\ClientItem.cpp" />
@@ -179,8 +179,8 @@
     <ClInclude Include="src\client\ClientTerrain.h" />
     <ClInclude Include="src\client\ClientVehicle.h" />
     <ClInclude Include="src\client\ClientVehicleType.h" />
-    <ClInclude Include="src\client\Entity.h" />
-    <ClInclude Include="src\client\EntityType.h" />
+    <ClInclude Include="src\client\Sprite.h" />
+    <ClInclude Include="src\client\SpriteType.h" />
     <ClInclude Include="src\client\ClientItem.h" />
     <ClInclude Include="src\client\ClientCombatant.h" />
     <ClInclude Include="src\client\LogSDL.h" />

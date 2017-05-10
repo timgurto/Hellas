@@ -10,7 +10,7 @@
 #include "../Color.h"
 
 ClientObjectType::ClientObjectType(const std::string &id):
-EntityType(Rect(), id),
+SpriteType(Rect(), id),
 _id(id),
 _canGather(false),
 _canDeconstruct(false),

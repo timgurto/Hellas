@@ -1,5 +1,5 @@
-#ifndef ENTITY_TYPE_H
-#define ENTITY_TYPE_H
+#ifndef SPRITE_TYPE_H
+#define SPRITE_TYPE_H
 
 #include <string>
 
@@ -8,7 +8,7 @@
 #include "../util.h"
 
 // Describes a class of Entities, the "instances" of which share common properties
-class EntityType{
+class SpriteType{
     Texture _image, _imageHighlight;
     Rect _drawRect; // Where to draw the image, relative to its location
     bool _isFlat; // Whether these objects appear flat, i.e., are drawn behind all other entities.
@@ -19,11 +19,11 @@ public:
         DECORATION
     };
 
-    EntityType(const Rect &drawRect = Rect(), const std::string &imageFile = "");
-    EntityType(Special special);
-    EntityType(const std::string &id); // For set lookup
+    SpriteType(const Rect &drawRect = Rect(), const std::string &imageFile = "");
+    SpriteType(Special special);
+    SpriteType(const std::string &id); // For set lookup
 
-    virtual ~EntityType(){}
+    virtual ~SpriteType(){}
 
     void setImage(const std::string &filename);
     const Texture &highlightImage() const { return _imageHighlight; }

@@ -16,12 +16,12 @@ _noZDimension(false)
 {}
 
 ParticleProfile::~ParticleProfile(){
-    for (const EntityType *variety : _varieties)
+    for (const SpriteType *variety : _varieties)
         delete variety;
 }
 
 void ParticleProfile::addVariety(const std::string &imageFile, const Rect &drawRect, size_t count){
-    EntityType *particleType = new EntityType(drawRect, "Images/Particles/" + imageFile + ".png");
+    SpriteType *particleType = new SpriteType(drawRect, "Images/Particles/" + imageFile + ".png");
     _varieties.push_back(particleType); // _varieties owns the pointers.
     for (size_t i = 0; i != count; ++i)
         _pool.push_back(particleType);
@@ -31,7 +31,7 @@ Particle *ParticleProfile::instantiate(const Point &location) const{
     // Choose random variety
     assert (!_pool.empty());
     size_t index = rand() % _pool.size();
-    const EntityType &variety = *_pool[index];
+    const SpriteType &variety = *_pool[index];
 
     // Choose random position, then set location
     double angle = 2 * PI * randDouble();

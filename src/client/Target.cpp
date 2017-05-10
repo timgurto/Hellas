@@ -11,10 +11,10 @@ _panel(nullptr)
 {}
 
 void Target::setAndAlertServer(
-        const Entity &asEntity, const ClientCombatant &asCombatant, bool nowAggressive){
+        const Sprite &asEntity, const ClientCombatant &asCombatant, bool nowAggressive){
     const Client &client = *Client::_instance;
     const ClientCombatant &targetCombatant = asCombatant;
-    const Entity &targetEntity = asEntity;
+    const Sprite &targetEntity = asEntity;
 
     if (! targetCombatant.canBeAttackedByPlayer())
         nowAggressive = false;
@@ -44,7 +44,7 @@ void Target::refreshHealthBarColor(){
     _panel->changeColor(_combatant->nameColor());
 }
 
-bool Target::targetIsDifferentFromServer(const Entity &newTarget, bool nowAggressive){
+bool Target::targetIsDifferentFromServer(const Sprite &newTarget, bool nowAggressive){
     bool sameTargetAsBefore = &newTarget == _entity;
     bool aggressionLevelChanged = isAggressive() != nowAggressive;
     return sameTargetAsBefore || nowAggressive || aggressionLevelChanged;

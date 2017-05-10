@@ -33,7 +33,7 @@ public:
 
     virtual char classTag() const override { return 'n'; }
     
-    // From Entity
+    // From Sprite
     virtual void onLeftClick(Client &client) override;
     virtual void onRightClick(Client &client) override;
     virtual void assembleWindow(Client &client) override;
@@ -44,7 +44,7 @@ public:
 
     // From ClientCombatant
     virtual void sendTargetMessage() const override;
-    virtual const Entity *entityPointer() const override { return this; }
+    virtual const Sprite *entityPointer() const override { return this; }
 };
 
 #endif
