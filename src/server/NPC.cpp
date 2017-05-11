@@ -31,7 +31,7 @@ void NPC::onDeath(){
     _corpseTime = CORPSE_TIME;
     Server &server = *Server::_instance;
     server.forceUntarget(*this);
-    npcType()->lootTable().instantiate(_container);
+    npcType()->lootTable().instantiate(container().raw());
     for (const User *user : server.findUsersInArea(location()))
         server.sendMessage(user->socket(), SV_LOOTABLE, makeArgs(serial()));
 

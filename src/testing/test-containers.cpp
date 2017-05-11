@@ -5,13 +5,13 @@
 TEST("Object container empty check")
     TestServer s; 
     ObjectType type("box");
-    type.containerSlots(5);
+    type.container().slots(5);
     Object obj(&type, Point());
-    if (!obj.isContainerEmpty())
+    if (!obj.container().isEmpty())
         return false;
     ServerItem item("rock");
-    obj.container()[1] = std::make_pair(&item, 1);
-    return obj.isContainerEmpty() == false;
+    obj.container().at(1) = std::make_pair(&item, 1);
+    return obj.container().isEmpty() == false;
 TEND
 
 TEST("Dismantle an object with an inventory")

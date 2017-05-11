@@ -11,7 +11,8 @@ _spawner(nullptr),
 _numUsersGathering(0),
 _lastLocUpdate(SDL_GetTicks()),
 _remainingMaterials(type->materials()),
-_transformTimer(0)
+_transformTimer(0),
+_container(nullptr)
 {
     if (type != nullptr)
         setType(type);
@@ -19,12 +20,14 @@ _transformTimer(0)
 
 Object::Object(size_t serial): // For set/map lookup ONLY
 _serial(serial),
-_type(nullptr){}
+_type(nullptr),
+_container(nullptr){}
 
 Object::Object(const Point &loc): // For set/map lookup ONLY
 _location(loc),
 _serial(0),
-_type(nullptr){}
+_type(nullptr),
+_container(nullptr){}
 
 bool Object::compareSerial::operator()( const Object *a, const Object *b){
     return a->_serial < b->_serial;
@@ -89,71 +92,6 @@ size_t Object::chooseGatherQuantity(const ServerItem *item) const{
     return qty;
 }
 
-void Object::removeItems(const ItemSet &items) {
-    std::set<size_t> invSlotsChanged;
-    ItemSet remaining = items;
-    for (size_t i = 0; i != _container.size(); ++i){
-        std::pair<const ServerItem *, size_t> &invSlot = _container[i];
-        if (remaining.contains(invSlot.first)) {
-            size_t itemsToRemove = min(invSlot.second, remaining[invSlot.first]);
-            remaining.remove(invSlot.first, itemsToRemove);
-            _container[i].second -= itemsToRemove;
-            if (_container[i].second == 0)
-                _container[i].first = 0;
-            invSlotsChanged.insert(i);
-            if (remaining.isEmpty())
-                break;
-        }
-    }
-    for (const std::string &username : _watchers) {
-        const User &user = Server::instance().getUserByName(username);
-        for (size_t slotNum : invSlotsChanged) {
-            Server::instance().sendInventoryMessage(user, slotNum, *this);
-        }
-    }
-}
-
-
-
-void Object::giveItem(const ServerItem *item, size_t qty){
-    std::set<size_t> changedSlots;
-    // First pass: partial stacks
-    for (size_t i = 0; i != _container.size(); ++i) {
-        if (_container[i].first != item)
-            continue;
-        size_t spaceAvailable = item->stackSize() - _container[i].second;
-        if (spaceAvailable > 0) {
-            size_t qtyInThisSlot = min(spaceAvailable, qty);
-            _container[i].second += qtyInThisSlot;
-            changedSlots.insert(i);
-            qty -= qtyInThisSlot;
-        }
-        if (qty == 0)
-            break;;
-    }
-
-    // Second pass: empty slots
-    if (qty != 0)
-        for (size_t i = 0; i != _container.size(); ++i) {
-            if (_container[i].first)
-                continue;
-            size_t qtyInThisSlot = min(item->stackSize(), qty);
-            _container[i].first = item;
-            _container[i].second = qtyInThisSlot;
-            changedSlots.insert(i);
-            qty -= qtyInThisSlot;
-            if (qty == 0)
-                break;;
-        }
-    assert(qty == 0);
-
-    for (const std::string &username : _watchers){
-        const User &user = Server::instance().getUserByName(username);
-        for (size_t slot : changedSlots)
-            Server::instance().sendInventoryMessage(user, slot, *this);
-    }
-}
-
 void Object::addWatcher(const std::string &username){
     _watchers.insert(username);
     Server::debug() << username << " is now watching an object." << Log::endl;
@@ -162,13 +100,6 @@ void Object::addWatcher(const std::string &username){
 void Object::removeWatcher(const std::string &username){
     _watchers.erase(username);
     Server::debug() << username << " is no longer watching an object." << Log::endl;
-}
-
-bool Object::isContainerEmpty() const{
-    for (auto pair : _container)
-        if (pair.first != nullptr)
-            return false;
-    return true;
 }
 
 void Object::markForRemoval(){
@@ -243,8 +174,10 @@ void Object::setType(const ObjectType *type){
     server->forceUntarget(*this);
     removeAllGatheringUsers();
 
-    if (type->containerSlots() != 0)
-        _container = ServerItem::vect_t(type->containerSlots());
+    delete _container;
+    if (_type->hasContainer()){
+        _container = _type->container().instantiate(*this);
+    }
 
     if (type->merchantSlots() != 0)
         _merchantSlots = std::vector<MerchantSlot>(type->merchantSlots());
@@ -259,4 +192,10 @@ void Object::setType(const ObjectType *type){
     for (const User *user : server->findUsersInArea(_location)){
         server->sendObjectInfo(*user, *this);
     }
+}
+
+bool Object::isAbleToDeconstruct(const User &user) const{
+    if (_container != nullptr)
+        return _container->isAbleToDeconstruct(user);
+    return true;
 }

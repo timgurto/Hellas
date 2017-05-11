@@ -245,7 +245,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             // Check that it has an inventory
-            if (!obj->container().empty()){
+            if (!obj->container().isEmpty()){
                 sendMessage(client, SV_NOT_EMPTY);
                 break;
             }
@@ -280,9 +280,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_CANNOT_DECONSTRUCT);
                 break;
             }
-            // Check that it has no inventory
-            if (!obj->isContainerEmpty()){
-                sendMessage(client, SV_NOT_EMPTY);
+            if (!obj->isAbleToDeconstruct(*user)){
                 break;
             }
             // Check that it isn't an occupied vehicle
@@ -312,7 +310,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                     pObj = findObject(serial);
                     if (!isObjectInRange(client, *user, pObj))
                         breakMsg = true;;
-                    container = &pObj->container();
+                    container = &pObj->container().raw();
             }
             if (breakMsg)
                 break;
@@ -366,7 +364,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                         sendMessage(client, SV_NO_PERMISSION);
                         breakMsg = true;
                     }
-                    containerFrom = &pObj1->container();
+                    containerFrom = &pObj1->container().raw();
             }
             if (breakMsg)
                 break;
@@ -383,7 +381,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                         sendMessage(client, SV_NO_PERMISSION);
                         breakMsg = true;
                     }
-                    containerTo = &pObj2->container();
+                    containerTo = &pObj2->container().raw();
             }
             if (breakMsg)
                 break;
@@ -537,7 +535,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                     sendMessage(client, SV_NO_PERMISSION);
                     break;
                 }
-                container = &pObj->container();
+                container = &pObj->container().raw();
                 
                 if (pObj->isBeingBuilt()){
                     sendMessage(client, SV_UNDER_CONSTRUCTION);
@@ -576,7 +574,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                         sendInventoryMessage(*_usersByName[username], slotNum, *pObj);
 
                 // Alert nearby users if NPC has no loot left
-                if (pObj->classTag() == 'n' && pObj->isContainerEmpty())
+                if (pObj->classTag() == 'n' && pObj->container().isEmpty())
                     for (auto user : findUsersInArea(pObj->location()))
                         sendMessage(user->socket(), SV_NOT_LOOTABLE, makeArgs(pObj->serial()));
             }
@@ -629,13 +627,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             bool bottomless = obj->type()->bottomlessMerchant();
             if (!bottomless){
                 // Check that object has items in stock
-                if (mSlot.ware() > obj->container()){
+                if (mSlot.ware() > obj->container().raw()){
                     sendMessage(client, SV_NO_WARE);
                     break;
                 }
 
                 // Check that object has inventory space
-                if (!vectHasSpace(obj->container(), priceItem, mSlot.priceQty)){
+                if (!vectHasSpace(obj->container().raw(), priceItem, mSlot.priceQty)){
                     sendMessage(client, SV_MERCHANT_INVENTORY_FULL);
                     break;
                 }
@@ -646,10 +644,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
             if  (!bottomless){
                 // Take ware from object
-                obj->removeItems(mSlot.ware());
+                obj->container().removeItems(mSlot.ware());
 
                 // Give price to object
-                obj->giveItem(toServerItem(mSlot.priceItem), mSlot.priceQty);
+                obj->container().giveItem(toServerItem(mSlot.priceItem), mSlot.priceQty);
             }
 
             // Give ware to user
@@ -832,7 +830,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
             // Describe inventory, if user has permission
             if (obj->permissions().doesUserHaveAccess(user->name())){
-                size_t slots = obj->container().size();
+                size_t slots = obj->type()->container().slots();
                 for (size_t i = 0; i != slots; ++i)
                     sendInventoryMessage(*user, i, *obj);
             }
@@ -1080,7 +1078,7 @@ void Server::sendInventoryMessageInner(const User &user, size_t serial, size_t s
 }
 
 void Server::sendInventoryMessage(const User &user, size_t slot, const Object &obj) const{
-    sendInventoryMessageInner(user, obj.serial(), slot, obj.container());
+    sendInventoryMessageInner(user, obj.serial(), slot, obj.container().raw());
 }
 
 // Special serials only
@@ -1134,7 +1132,7 @@ void Server::sendObjectInfo(const User &user, const Object &object) const{
             sendMessage(user.socket(), SV_NPC_HEALTH, makeArgs(npc.serial(), npc.health()));
 
         // Loot
-        if (!npc.isContainerEmpty())
+        if (!npc.container().isEmpty())
             sendMessage(user.socket(), SV_LOOTABLE, makeArgs(npc.serial()));
     }
 

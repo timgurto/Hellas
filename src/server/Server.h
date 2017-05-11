@@ -72,21 +72,6 @@ public:
 
     const Terrain *terrainType(char index) const;
 
-private:
-
-    static Server *_instance;
-    static LogConsole *_debugInstance;
-
-    static const int MAX_CLIENTS;
-    static const size_t BUFFER_SIZE = 1023;
-
-    ms_t _time, _lastTime;
-
-    Socket _socket;
-
-    bool _loop;
-    bool _running; // True while run() is being executed.
-
     // Messages
     std::queue<std::pair<Socket, std::string> > _messages;
     void sendMessage(const Socket &dstSocket, MessageCode msgCode,
@@ -104,6 +89,21 @@ private:
     void sendNewBuildsMessage(const User &user, const std::set<std::string> &ids) const;
     void sendNewRecipesMessage(const User &user, const std::set<std::string> &ids) const;
     void sendWarAlertMessages(const Wars::Belligerent &b1, const Wars::Belligerent &b2) const;
+
+private:
+
+    static Server *_instance;
+    static LogConsole *_debugInstance;
+
+    static const int MAX_CLIENTS;
+    static const size_t BUFFER_SIZE = 1023;
+
+    ms_t _time, _lastTime;
+
+    Socket _socket;
+
+    bool _loop;
+    bool _running; // True while run() is being executed.
 
     // Clients
     // All connected sockets, including those without registered users

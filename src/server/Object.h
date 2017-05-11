@@ -2,6 +2,7 @@
 #define OBJECT_H
 
 #include "MerchantSlot.h"
+#include "ObjContainer.h"
 #include "ObjectType.h"
 #include "Permissions.h"
 #include "ItemSet.h"
@@ -35,8 +36,6 @@ class Object{
 protected:
     static size_t generateSerial();
 
-    ServerItem::vect_t _container; // Items contained in object
-
 public:
     Object(const ObjectType *type, const Point &loc); // Generates a new serial
 
@@ -53,8 +52,6 @@ public:
     const ObjectType *type() const { return _type; }
     const ItemSet &contents() const { return _contents; }
     void contents(const ItemSet &contents);
-    ServerItem::vect_t &container() { return _container; }
-    const ServerItem::vect_t &container() const { return _container; }
     const Rect collisionRect() const { return _type->collisionRect() + _location;  }
     const std::vector<MerchantSlot> &merchantSlots() const { return _merchantSlots; }
     const MerchantSlot &merchantSlot(size_t slot) const { return _merchantSlots[slot]; }
@@ -75,10 +72,14 @@ public:
     Permissions &permissions() { return _permissions; }
     const Permissions &permissions() const { return _permissions; }
 
+    bool hasContainer() const { return _container != nullptr; }
+    ObjContainer &container() { return *_container; }
+    const ObjContainer &container() const { return *_container; }
+
+    bool isAbleToDeconstruct(const User &user) const;
+
     virtual bool collides() const { return _type->collides(); }
     virtual double speed() const { return 0; } // movement per second
-
-    bool isContainerEmpty() const;
 
     virtual char classTag() const { return 'o'; }
 
@@ -102,8 +103,6 @@ public:
     // Randomly choose a quantity of the above items, between 1 and the object's contents.
     size_t chooseGatherQuantity(const ServerItem *item) const;
     void removeItem(const ServerItem *item, size_t qty); // From _contents; gathering
-    void removeItems(const ItemSet &items); // From _container; inventory
-    void giveItem(const ServerItem *item, size_t qty = 1); // To _container; inventory
     
     void addWatcher(const std::string &username);
     void removeWatcher(const std::string &username);
@@ -113,6 +112,11 @@ public:
     struct compareYThenSerial{ bool operator()( const Object *a, const Object *b); };
     typedef std::set<const Object*, Object::compareXThenSerial> byX_t;
     typedef std::set<const Object*, Object::compareYThenSerial> byY_t;
+
+    friend class ObjContainer; // TODO: Remove once everything is componentized
+
+private:
+    ObjContainer *_container;
 };
 
 #endif

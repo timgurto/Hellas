@@ -294,7 +294,7 @@ void Server::loadData(const std::string &path){
             // Container
             auto container = xr.findChild("container", elem);
             if (container != nullptr) {
-                if (xr.findAttr(container, "slots", n)) ot->containerSlots(n);
+                if (xr.findAttr(container, "slots", n)) ot->container().slots(n);
             }
 
             // Terrain restrictions
@@ -677,11 +677,11 @@ void Server::loadData(const std::string &path){
                     continue;
                 q = 1;
                 xr.findAttr(inventory, "qty", q);
-                if (obj.container().size() <= n) {
+                if (obj.type()->container().slots() <= n) {
                     _debug << Color::RED << "Skipping object with invalid inventory slot." << Log::endl;
                     continue;
                 }
-                auto &invSlot = obj.container()[n];
+                auto &invSlot = obj.container().at(n);
                 invSlot.first = &*_items.find(s);
                 invSlot.second = q;
             }
@@ -821,13 +821,13 @@ void Server::saveData(const objects_t &objects, const Wars &wars, const Cities &
         xw.setAttr(loc, "y", obj->location().y);
 
         const auto container = obj->container();
-        for (size_t i = 0; i != container.size(); ++i) {
-            if (container[i].second == 0)
+        for (size_t i = 0; i != obj->type()->container().slots(); ++i) {
+            if (container.at(i).second == 0)
                 continue;
             auto invSlotE = xw.addChild("inventory", e);
             xw.setAttr(invSlotE, "slot", i);
-            xw.setAttr(invSlotE, "item", container[i].first->id());
-            xw.setAttr(invSlotE, "qty", container[i].second);
+            xw.setAttr(invSlotE, "item", container.at(i).first->id());
+            xw.setAttr(invSlotE, "qty", container.at(i).second);
         }
 
         const auto mSlots = obj->merchantSlots();

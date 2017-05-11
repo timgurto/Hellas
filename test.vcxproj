@@ -159,6 +159,7 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName)\data-server</ObjectFileName>
     </ClCompile>
     <ClCompile Include="src\server\LootTable.cpp" />
+    <ClCompile Include="src\server\ObjContainer.cpp" />
     <ClCompile Include="src\server\pathfinding.cpp" />
     <ClCompile Include="src\server\Permissions.cpp" />
     <ClCompile Include="src\server\ProgressLock.cpp" />
@@ -273,6 +274,7 @@
     <ClInclude Include="src\server\CollisionChunk.h" />
     <ClInclude Include="src\server\Combatant.h" />
     <ClInclude Include="src\server\LootTable.h" />
+    <ClInclude Include="src\server\ObjContainer.h" />
     <ClInclude Include="src\server\Permissions.h" />
     <ClInclude Include="src\server\ProgressLock.h" />
     <ClInclude Include="src\server\ServerItem.h" />

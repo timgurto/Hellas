@@ -3,10 +3,11 @@
 
 #include <string>
 
-#include "../Rect.h"
-#include "../types.h"
+#include "ObjContainer.h"
 #include "TerrainList.h"
 #include "Yield.h"
+#include "../Rect.h"
+#include "../types.h"
 
 class ServerItem;
 
@@ -28,7 +29,6 @@ class ObjectType{
     std::string _gatherReq;
     ms_t _gatherTime;
 
-    size_t _containerSlots;
     size_t _merchantSlots;
     bool _bottomlessMerchant; // Bottomless: never runs out, uses no inventory space.
 
@@ -48,6 +48,10 @@ class ObjectType{
     ItemSet _materials; // The necessary materials, if this needs to be constructed in-place.
     bool _knownByDefault;
 
+
+protected:
+    ObjTypeContainer *_container;
+
 public:
     ObjectType(const std::string &id);
 
@@ -58,8 +62,6 @@ public:
     void gatherReq(const std::string &req) { _gatherReq = req; }
     const std::string &constructionReq() const { return _constructionReq; }
     void constructionReq(const std::string &req) { _constructionReq = req; }
-    size_t containerSlots() const { return _containerSlots; }
-    void containerSlots(size_t n) { _containerSlots = n; }
     size_t merchantSlots() const { return _merchantSlots; }
     void merchantSlots(size_t n) { _merchantSlots = n; }
     bool bottomlessMerchant() const { return _bottomlessMerchant; }
@@ -108,6 +110,11 @@ public:
                   double initMean, double initSD, size_t initMin,
                   double gatherMean, double gatherSD);
     void addTag(const std::string &tagName);
+
+    
+    bool hasContainer() const { return _container != nullptr; }
+    ObjTypeContainer &container() { return *_container; }
+    const ObjTypeContainer &container() const { return *_container; }
 };
 
 #endif

@@ -12,13 +12,13 @@ _gatherReq("none"),
 _isUnique(false),
 _isUnbuildable(false),
 _knownByDefault(false),
-_containerSlots(0),
 _merchantSlots(0),
 _bottomlessMerchant(false),
 _collides(false),
 _allowedTerrain(nullptr),
 _transformObject(nullptr),
-_transformOnEmpty(false)
+_transformOnEmpty(false),
+_container(nullptr)
 {}
 
 void ObjectType::addYield(const ServerItem *item,
