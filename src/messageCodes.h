@@ -403,6 +403,9 @@ enum MessageCode{
     // The user tried to perform a city action when not in a city.
     SV_NOT_IN_CITY = 948,
 
+    // The user tried to manipulate an object's non-existent inventory
+    SV_NO_INVENTORY = 949,
+
 
 
     // Debug requests

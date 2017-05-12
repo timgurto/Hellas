@@ -29,6 +29,7 @@ public:
     const ChoiceList &uiBuildList() const { return *_client->_buildList; }
     Target target() { return _client->_target; }
     const std::map<std::string, Avatar*> &otherUsers() const { return _client->_otherUsers; }
+    ClientItem::vect_t &inventory() { return _client->_inventory; }
 
     Avatar &getFirstOtherUser();
 

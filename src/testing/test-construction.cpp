@@ -3,20 +3,25 @@
 #include "TestClient.h"
 
 TEST("Construction materials can be added")
+    // Given a server and client;
+    // And a 'wall' object type that requires a brick for construction;
     TestServer s = TestServer::WithData("brick_wall");
     TestClient c = TestClient::WithData("brick_wall");
+    // And a brick item in the user's inventory
     WAIT_UNTIL (s.users().size() == 1);
+    User &user = s.getFirstUser();
+    user.giveItem(&*s.items().begin());
+    WAIT_UNTIL(c.inventory()[0].first != nullptr);
 
+    // When the user places a construction site;
     c.sendMessage(CL_CONSTRUCT, makeArgs("wall", 10, 10));
     WAIT_UNTIL (s.objects().size() == 1);
 
-    User &user = s.getFirstUser();
-    user.giveItem(&*s.items().begin());
-    if (!c.waitForMessage(SV_INVENTORY))
-        return false;
-
+    // And gives it his brick
     const Object &wall = **s.objects().begin();
     c.sendMessage(CL_SWAP_ITEMS, makeArgs(Server::INVENTORY, 0, wall.serial(), 0));
+
+    // Then construction has finished
     WAIT_UNTIL(! wall.isBeingBuilt());
 
     return true;

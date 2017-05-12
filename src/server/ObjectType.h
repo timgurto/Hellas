@@ -115,6 +115,7 @@ public:
     bool hasContainer() const { return _container != nullptr; }
     ObjTypeContainer &container() { return *_container; }
     const ObjTypeContainer &container() const { return *_container; }
+    void addContainer(ObjTypeContainer *p) { _container = p; }
 };
 
 #endif

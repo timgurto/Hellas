@@ -294,7 +294,9 @@ void Server::loadData(const std::string &path){
             // Container
             auto container = xr.findChild("container", elem);
             if (container != nullptr) {
-                if (xr.findAttr(container, "slots", n)) ot->container().slots(n);
+                if (xr.findAttr(container, "slots", n)){
+                    ot->addContainer(ObjTypeContainer::WithSlots(n));
+                }
             }
 
             // Terrain restrictions
@@ -671,6 +673,7 @@ void Server::loadData(const std::string &path){
 
             size_t q;
             for (auto inventory : xr.getChildren("inventory", elem)) {
+                assert (obj.hasContainer());
                 if (!xr.findAttr(inventory, "item", s))
                     continue;
                 if (!xr.findAttr(inventory, "slot", n))
@@ -820,14 +823,16 @@ void Server::saveData(const objects_t &objects, const Wars &wars, const Cities &
         xw.setAttr(loc, "x", obj->location().x);
         xw.setAttr(loc, "y", obj->location().y);
 
-        const auto container = obj->container();
-        for (size_t i = 0; i != obj->type()->container().slots(); ++i) {
-            if (container.at(i).second == 0)
-                continue;
-            auto invSlotE = xw.addChild("inventory", e);
-            xw.setAttr(invSlotE, "slot", i);
-            xw.setAttr(invSlotE, "item", container.at(i).first->id());
-            xw.setAttr(invSlotE, "qty", container.at(i).second);
+        if (obj->hasContainer()){
+            const auto &container = obj->container();
+            for (size_t i = 0; i != obj->type()->container().slots(); ++i) {
+                if (container.at(i).second == 0)
+                    continue;
+                auto invSlotE = xw.addChild("inventory", e);
+                xw.setAttr(invSlotE, "slot", i);
+                xw.setAttr(invSlotE, "item", container.at(i).first->id());
+                xw.setAttr(invSlotE, "qty", container.at(i).second);
+            }
         }
 
         const auto mSlots = obj->merchantSlots();

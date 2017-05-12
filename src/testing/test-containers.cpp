@@ -5,7 +5,7 @@
 TEST("Object container empty check")
     TestServer s; 
     ObjectType type("box");
-    type.container().slots(5);
+    type.addContainer(ObjTypeContainer::WithSlots(5));
     Object obj(&type, Point());
     if (!obj.container().isEmpty())
         return false;

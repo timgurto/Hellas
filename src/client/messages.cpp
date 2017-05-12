@@ -175,6 +175,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_INVALID_OBJECT:
         case SV_ALREADY_AT_WAR:
         case SV_NOT_IN_CITY:
+        case SV_NO_INVENTORY:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
@@ -1141,6 +1142,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_INVALID_OBJECT] = "That is not a valid object type.";
     _errorMessages[SV_ALREADY_AT_WAR] = "You are already at war with them.";
     _errorMessages[SV_NOT_IN_CITY] = "You are not in a city.";
+    _errorMessages[SV_NO_INVENTORY] = "That object doesn't have an inventory";
 }
 
 void Client::performCommand(const std::string &commandString){

@@ -245,7 +245,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             // Check that it has an inventory
-            if (!obj->container().isEmpty()){
+            if (obj->hasContainer() && !obj->container().isEmpty()){
                 sendMessage(client, SV_NOT_EMPTY);
                 break;
             }
@@ -308,8 +308,15 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 case GEAR:      container = &user->gear();      break;
                 default:
                     pObj = findObject(serial);
-                    if (!isObjectInRange(client, *user, pObj))
-                        breakMsg = true;;
+                    if (!pObj->hasContainer()){
+                        sendMessage(client, SV_NO_INVENTORY);
+                        breakMsg = true;
+                        break;
+                    }
+                    if (!isObjectInRange(client, *user, pObj)){
+                        breakMsg = true;
+                        break;
+                    }
                     container = &pObj->container().raw();
             }
             if (breakMsg)
@@ -356,6 +363,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 case GEAR:      containerFrom = &user->gear();      break;
                 default:
                     pObj1 = findObject(obj1);
+                    if (!pObj1->hasContainer()){
+                        sendMessage(client, SV_NO_INVENTORY);
+                        breakMsg = true;
+                        break;
+                    }
                     if (!isObjectInRange(client, *user, pObj1)){
                         sendMessage(client, SV_TOO_FAR);
                         breakMsg = true;
@@ -368,11 +380,21 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
             if (breakMsg)
                 break;
+            bool isConstructionMaterial = false;
             switch (obj2){
                 case INVENTORY: containerTo = &user->inventory(); break;
                 case GEAR:      containerTo = &user->gear();      break;
                 default:
                     pObj2 = findObject(obj2);
+                    if (pObj2 != nullptr &&
+                        pObj2->isBeingBuilt() &&
+                        slot2 == 0)
+                            isConstructionMaterial = true;
+                    if (!isConstructionMaterial && !pObj2->hasContainer()){
+                        sendMessage(client, SV_NO_INVENTORY);
+                        breakMsg = true;
+                        break;
+                    }
                     if (!isObjectInRange(client, *user, pObj2)){
                         sendMessage(client, SV_TOO_FAR);
                         breakMsg = true;
@@ -386,13 +408,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (breakMsg)
                 break;
 
-            bool isConstructionMaterial =
-                    pObj2 != nullptr &&
-                    pObj2->isBeingBuilt() &&
-                    slot2 == 0;
-
             if (slot1 >= containerFrom->size() ||
-                slot2 >= containerTo->size() && !isConstructionMaterial ||
+                !isConstructionMaterial && slot2 >= containerTo->size() ||
                 isConstructionMaterial && slot2 > 0) {
                 sendMessage(client, SV_INVALID_SLOT);
                 break;
@@ -527,6 +544,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 container = &user->gear();
             else {
                 pObj = findObject(obj);
+                if (!pObj->hasContainer()){
+                    sendMessage(client, SV_NO_INVENTORY);
+                    break;
+                }
                 if (!isObjectInRange(client, *user, pObj)){
                     sendMessage(client, SV_TOO_FAR);
                     break;
@@ -619,6 +640,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
             // Check that user has inventory space
             const ServerItem *priceItem = toServerItem(mSlot.priceItem);
+            if (!obj->hasContainer()){
+                sendMessage(client, SV_NO_INVENTORY);
+                break;
+            }
             if (!vectHasSpace(user->inventory(), priceItem, mSlot.wareQty)){
                 sendMessage(client, SV_INVENTORY_FULL);
                 break;
@@ -829,10 +854,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMerchantSlotMessage(*user, *obj, i);
 
             // Describe inventory, if user has permission
-            if (obj->permissions().doesUserHaveAccess(user->name())){
-                size_t slots = obj->type()->container().slots();
-                for (size_t i = 0; i != slots; ++i)
-                    sendInventoryMessage(*user, i, *obj);
+            if (obj->hasContainer() &&
+                obj->permissions().doesUserHaveAccess(user->name())){
+                    size_t slots = obj->type()->container().slots();
+                    for (size_t i = 0; i != slots; ++i)
+                        sendInventoryMessage(*user, i, *obj);
             }
 
             // Add as watcher
@@ -1078,6 +1104,10 @@ void Server::sendInventoryMessageInner(const User &user, size_t serial, size_t s
 }
 
 void Server::sendInventoryMessage(const User &user, size_t slot, const Object &obj) const{
+    if (! obj.hasContainer()){
+        assert(false);
+        return;
+    }
     sendInventoryMessageInner(user, obj.serial(), slot, obj.container().raw());
 }
 
@@ -1132,7 +1162,7 @@ void Server::sendObjectInfo(const User &user, const Object &object) const{
             sendMessage(user.socket(), SV_NPC_HEALTH, makeArgs(npc.serial(), npc.health()));
 
         // Loot
-        if (!npc.container().isEmpty())
+        if (npc.hasContainer() && !npc.container().isEmpty())
             sendMessage(user.socket(), SV_LOOTABLE, makeArgs(npc.serial()));
     }
 

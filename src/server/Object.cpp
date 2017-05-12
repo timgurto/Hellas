@@ -195,7 +195,7 @@ void Object::setType(const ObjectType *type){
 }
 
 bool Object::isAbleToDeconstruct(const User &user) const{
-    if (_container != nullptr)
+    if (hasContainer())
         return _container->isAbleToDeconstruct(user);
     return true;
 }

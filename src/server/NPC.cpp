@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "NPC.h"
 #include "Server.h"
 
@@ -31,6 +33,7 @@ void NPC::onDeath(){
     _corpseTime = CORPSE_TIME;
     Server &server = *Server::_instance;
     server.forceUntarget(*this);
+    assert(hasContainer());
     npcType()->lootTable().instantiate(container().raw());
     for (const User *user : server.findUsersInArea(location()))
         server.sendMessage(user->socket(), SV_LOOTABLE, makeArgs(serial()));

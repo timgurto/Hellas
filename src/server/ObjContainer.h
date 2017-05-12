@@ -11,7 +11,6 @@ public:
     static ObjTypeContainer *WithSlots(size_t slots);
     ObjContainer *instantiate(Object &parent) const;
     size_t slots() const { return _slots; }
-    void slots(size_t n) { _slots = n; }
 private:
     size_t _slots;
     ObjTypeContainer(size_t slots);
