@@ -1,5 +1,6 @@
 #include <cassert>
 
+#include "Deconstruction.h"
 #include "ProgressLock.h"
 #include "Server.h"
 #include "Vehicle.h"
@@ -276,7 +277,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             // Check that the object can be deconstructed
-            if (obj->type()->deconstructsItem() == nullptr){
+            if (! obj->hasDeconstruction()){
                 sendMessage(client, SV_CANNOT_DECONSTRUCT);
                 break;
             }
@@ -290,7 +291,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
 
             user->beginDeconstructing(*obj);
-            sendMessage(client, SV_ACTION_STARTED, makeArgs(obj->type()->deconstructionTime()));
+            sendMessage(client, SV_ACTION_STARTED, makeArgs(
+                    obj->deconstruction().timeToDeconstruct()));
             break;
         }
 

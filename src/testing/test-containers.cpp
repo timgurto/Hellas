@@ -15,22 +15,22 @@ TEST("Object container empty check")
 TEND
 
 TEST("Dismantle an object with an inventory")
+    // Given a running server;
     TestServer s = TestServer::WithData("dismantle");
+    // And a user at (10, 10);
     TestClient c = TestClient::WithData("dismantle");
-
-    //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
     User &user = s.getFirstUser();
     user.updateLocation(Point(10, 10));
-
-    // Add a single box
+    // And a box at (10, 10) that is deconstructible and has an empty inventory
     s.addObject("box", Point(10, 10));
     WAIT_UNTIL (c.objects().size() == 1);
 
-    // Deconstruct
+    // When the user tries to deconstruct the box
     size_t serial = c.objects().begin()->first;
     c.sendMessage(CL_DECONSTRUCT, makeArgs(serial));
 
+    // The deconstruction action successfully begins
     return c.waitForMessage(SV_ACTION_STARTED);
 TEND
 

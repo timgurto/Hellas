@@ -3,6 +3,7 @@
 
 #include "MerchantSlot.h"
 #include "Container.h"
+#include "Deconstruction.h"
 #include "ObjectType.h"
 #include "Permissions.h"
 #include "ItemSet.h"
@@ -76,6 +77,10 @@ public:
     Container &container() { return *_container; }
     const Container &container() const { return *_container; }
 
+    bool hasDeconstruction() const { return _deconstruction != nullptr; }
+    Deconstruction &deconstruction() { return *_deconstruction; }
+    const Deconstruction &deconstruction() const { return *_deconstruction; }
+
     bool isAbleToDeconstruct(const User &user) const;
 
     virtual bool collides() const { return _type->collides(); }
@@ -117,6 +122,7 @@ public:
 
 private:
     Container *_container;
+    Deconstruction *_deconstruction;
 };
 
 #endif

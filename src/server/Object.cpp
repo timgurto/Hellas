@@ -12,7 +12,8 @@ _numUsersGathering(0),
 _lastLocUpdate(SDL_GetTicks()),
 _remainingMaterials(type->materials()),
 _transformTimer(0),
-_container(nullptr)
+_container(nullptr),
+_deconstruction(nullptr)
 {
     if (type != nullptr)
         setType(type);
@@ -21,13 +22,15 @@ _container(nullptr)
 Object::Object(size_t serial): // For set/map lookup ONLY
 _serial(serial),
 _type(nullptr),
-_container(nullptr){}
+_container(nullptr),
+_deconstruction(nullptr){}
 
 Object::Object(const Point &loc): // For set/map lookup ONLY
 _location(loc),
 _serial(0),
 _type(nullptr),
-_container(nullptr){}
+_container(nullptr),
+_deconstruction(nullptr){}
 
 bool Object::compareSerial::operator()( const Object *a, const Object *b){
     return a->_serial < b->_serial;
@@ -177,6 +180,10 @@ void Object::setType(const ObjectType *type){
     delete _container;
     if (_type->hasContainer()){
         _container = _type->container().instantiate(*this);
+    }
+    delete _deconstruction;
+    if (_type->hasDeconstruction()){
+        _deconstruction = _type->deconstruction().instantiate(*this);
     }
 
     if (type->merchantSlots() != 0)

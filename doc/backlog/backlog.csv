@@ -33,7 +33,6 @@ issue,description,value,effort,type,blockedBy,done,critical
 32,Object repair can require tools,5,2,Feature,31,,TRUE
 33,Items can be repaired with specific items,21,55,Feature,30,,TRUE
 34,Repairing items can require tools,8,2,Feature,33,,TRUE
-35,"Recipes, objects and loot tables may point to deleted ServerItems",55,8,Bug,,,
 36,A player's group shows up on the UI,21,13,Usability,35,,TRUE
 37,Grouped players can invite others to their group,21,8,Feature,35,,TRUE
 38,Non-grouped players can invite others to form a group,21,8,Feature,35,,TRUE
@@ -78,7 +77,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 77,A shrine that grants items,5,34,Feature,19,,
 78,Release scrollbar on mouse up,5,8,Bug,,,
 79,Make it more obvious when something is out of range,13,8,Usability,,,
-80,Make client connection failures more clean,5,13,Usability,
+80,Make client connection failures more clean,5,13,Usability,,,
 81,Allow actual dragging from containers,21,34,Usability,
 82,Fix jumpy movement when laggy,5,34,Aesthetics,
 83,A stack can be split,21,34,Usability,
@@ -94,7 +93,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 94,A road object that affects movement speed,3,13,Feature,64
 95,Object ownership is clearly visible,5,21,Usability,8
 96,Containers may be restricted by item class,5,5,Feature,
-97,"Use collisionRects even on non-colliding objects, for distance checks",8,5,Bug,,
+97,"Use collisionRects even on non-colliding objects, for distance checks",8,5,Bug,
 98,Send nearby users' health values,13,3,Usability,,
 99,Allow specification of minimum yields,8,1,Feature,,TRUE
 100,Sounds for crafting,5,2,Aesthetics,,
@@ -126,7 +125,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 126,Remove 'can ...' tooltips when player has no permissions,21,2,Bug,,TRUE
 127,Add fading unlock messages to the top of the screen,8,13,Usability,,
 128,Make oven and kiln larger,5,3,Aesthetics,,
-129,Highlight recipes/constructions that might unlock stuff,5,21,Usability,,,
+129,Highlight recipes/constructions that might unlock stuff,5,21,Usability,,
 130,Document and improve use of various disconnects,2,8,Documentation,,,
 131,Move SDL functions and types to a namespace,2,5,Code quality,,,
 133,Change dynamic_casts that don't check their result to static_cast or check for nullptr,3,5,Code quality,,,
@@ -142,7 +141,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 143,Highlight newly unlocked recipes/constructions,13,21,Usability,,,
 143,Declaring war on a player in a city declares war on that city,21,3,Feature,55,,TRUE
 144,Prevent multiple copies of sounds between SoundProfiles,5,3,Performance,,,
-145,Prevent users from spamming construction sites,5,8,Exploit,,
+145,Prevent users from spamming construction sites,5,8,Exploit,,,
 146,Add toast messages for war events,8,2,Usability,127,
 147,Make crafting more fun,34,89,Aesthetics,,
 148,Make construction more fun,34,89,Aesthetics,,

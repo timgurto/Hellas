@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Container.h"
+#include "Deconstruction.h"
 #include "TerrainList.h"
 #include "Yield.h"
 #include "../Rect.h"
@@ -21,9 +22,6 @@ class ObjectType{
     ms_t _constructionTime;
     bool _isUnique; // Can only exist once at a time in the world.
     bool _isUnbuildable; // Data suggests it can be built, but direct construction should be blocked.
-
-    const ServerItem *_deconstructsItem; // Item gained when this object is deconstructed
-    ms_t _deconstructionTime;
 
     // To gather from objects of this type, a user must have an item of the following class.
     std::string _gatherReq;
@@ -51,6 +49,7 @@ class ObjectType{
 
 protected:
     ContainerType *_container;
+    DeconstructionType *_deconstruction;
 
 public:
     ObjectType(const std::string &id);
@@ -87,10 +86,6 @@ public:
     const Rect &collisionRect() const { return _collisionRect; }
     void collisionRect(const Rect &r) { _collisionRect = r; _collides = true; }
     bool isTag( const std::string &tagName) const;
-    const ServerItem *deconstructsItem() const { return _deconstructsItem; }
-    void deconstructsItem(const ServerItem *item) { _deconstructsItem = item; }
-    ms_t deconstructionTime() const { return _deconstructionTime; }
-    void deconstructionTime(ms_t t) { _deconstructionTime = t; }
     const TerrainList &allowedTerrain() const;
     void allowedTerrain(const std::string &id){ _allowedTerrain = TerrainList::findList(id); }
     void addMaterial(const Item *material, size_t quantity) { _materials.add(material, quantity); }
@@ -116,6 +111,11 @@ public:
     ContainerType &container() { return *_container; }
     const ContainerType &container() const { return *_container; }
     void addContainer(ContainerType *p) { _container = p; }
+
+    bool hasDeconstruction() const { return _deconstruction != nullptr; }
+    DeconstructionType &deconstruction() { return *_deconstruction; }
+    const DeconstructionType &deconstruction() const { return *_deconstruction; }
+    void addDeconstruction(DeconstructionType *p) { _deconstruction = p; }
 };
 
 #endif

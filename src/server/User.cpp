@@ -168,7 +168,7 @@ void User::beginConstructing(const ObjectType &obj, const Point &location, size_
 void User::beginDeconstructing(Object &obj){
     _action = DECONSTRUCT;
     _actionObject = &obj;
-    _actionTime = obj.type()->deconstructionTime();
+    _actionTime = obj.deconstruction().timeToDeconstruct();
 }
 
 void User::setTargetAndAttack(Combatant *target){
@@ -326,7 +326,7 @@ void User::update(ms_t timeElapsed){
     case DECONSTRUCT:
     {
         //Check for inventory space
-        const ServerItem *item = _actionObject->type()->deconstructsItem();
+        const ServerItem *item = _actionObject->deconstruction().becomes();
         if (!vectHasSpace(_inventory, item)){
             server.sendMessage(_socket, SV_INVENTORY_FULL);
             cancelAction();

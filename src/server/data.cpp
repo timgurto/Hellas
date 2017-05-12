@@ -221,11 +221,14 @@ void Server::loadData(const std::string &path){
             if (xr.findAttr(elem, "constructionTime", n)) ot->constructionTime(n);
             if (xr.findAttr(elem, "gatherReq", s)) ot->gatherReq(s);
             if (xr.findAttr(elem, "constructionReq", s)) ot->constructionReq(s);
+
             if (xr.findAttr(elem, "deconstructs", s)){
+                ms_t deconstructionTime = 0;
+                xr.findAttr(elem, "deconstructionTime", deconstructionTime);
                 std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
-                ot->deconstructsItem(&*itemIt);
+                ot->addDeconstruction(DeconstructionType::ItemAndTime(
+                        &*itemIt, deconstructionTime));
             }
-            if (xr.findAttr(elem, "deconstructionTime", n)) ot->deconstructionTime(n);
 
             // Gathering yields
             for (auto yield : xr.getChildren("yield", elem)) {
