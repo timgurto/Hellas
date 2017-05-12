@@ -25,7 +25,7 @@ public:
 
     bool isEmpty() const;
     void removeItems(const ItemSet &items);
-    void giveItem(const ServerItem *item, size_t qty = 1);
+    void addItems(const ServerItem *item, size_t qty = 1);
     const std::pair<const ServerItem *, size_t> &at(size_t i) const { return _container[i]; }
     std::pair<const ServerItem *, size_t> &at(size_t i) { return _container[i]; }
 

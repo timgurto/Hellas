@@ -57,7 +57,7 @@ void ObjContainer::removeItems(const ItemSet &items) {
     }
 }
 
-void ObjContainer::giveItem(const ServerItem *item, size_t qty){
+void ObjContainer::addItems(const ServerItem *item, size_t qty){
     std::set<size_t> changedSlots;
     // First pass: partial stacks
     for (size_t i = 0; i != _container.size(); ++i) {

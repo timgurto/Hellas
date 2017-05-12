@@ -672,7 +672,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 obj->container().removeItems(mSlot.ware());
 
                 // Give price to object
-                obj->container().giveItem(toServerItem(mSlot.priceItem), mSlot.priceQty);
+                obj->container().addItems(toServerItem(mSlot.priceItem), mSlot.priceQty);
             }
 
             // Give ware to user
