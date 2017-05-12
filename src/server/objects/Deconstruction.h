@@ -1,7 +1,7 @@
 #ifndef DECONSTRUCTION_H
 #define DECONSTRUCTION_H
 
-#include "../types.h"
+#include "../../types.h"
 
 class Deconstruction;
 class Object;

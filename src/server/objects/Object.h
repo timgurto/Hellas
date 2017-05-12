@@ -1,13 +1,13 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include "MerchantSlot.h"
 #include "Container.h"
 #include "Deconstruction.h"
 #include "ObjectType.h"
-#include "Permissions.h"
-#include "ItemSet.h"
-#include "../Point.h"
+#include "../MerchantSlot.h"
+#include "../ItemSet.h"
+#include "../Permissions.h"
+#include "../../Point.h"
 
 class Spawner;
 class User;

@@ -1,7 +1,7 @@
 #include <cassert>
 
-#include "Object.h"
 #include "Server.h"
+#include "objects/Object.h"
 
 void Object::updateLocation(const Point &dest){
     Server &server = *Server::_instance;

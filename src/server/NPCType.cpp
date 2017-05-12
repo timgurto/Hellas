@@ -1,6 +1,6 @@
 #include "NPC.h"
 #include "NPCType.h"
-#include "Container.h"
+#include "objects/Container.h"
 
 NPCType::NPCType(const std::string &id, health_t maxHealth):
 ObjectType(id),

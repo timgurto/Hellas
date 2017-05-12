@@ -1,7 +1,7 @@
 #ifndef VEHICLE_H
 #define VEHICLE_H
 
-#include "Object.h"
+#include "objects/Object.h"
 
 class VehicleType;
 

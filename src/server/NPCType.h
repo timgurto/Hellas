@@ -2,7 +2,7 @@
 #define NPC_TYPE_H
 
 #include "LootTable.h"
-#include "ObjectType.h"
+#include "objects/ObjectType.h"
 
 // Describes a class of NPCs, a la the ObjectType class.
 class NPCType : public ObjectType{

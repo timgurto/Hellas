@@ -5,10 +5,10 @@
 
 #include "Container.h"
 #include "Deconstruction.h"
-#include "TerrainList.h"
-#include "Yield.h"
-#include "../Rect.h"
-#include "../types.h"
+#include "../TerrainList.h"
+#include "../Yield.h"
+#include "../../Rect.h"
+#include "../../types.h"
 
 class ServerItem;
 

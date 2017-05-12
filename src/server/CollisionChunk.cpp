@@ -1,9 +1,7 @@
-// (C) 2015 Tim Gurto
-
 #include <cassert>
 
 #include "CollisionChunk.h"
-#include "Object.h"
+#include "objects/Object.h"
 
 void CollisionChunk::addObject(const Object *obj){
     _objects[obj->serial()] = obj;

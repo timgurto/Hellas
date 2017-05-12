@@ -1,7 +1,7 @@
 #ifndef VEHICLE_TYPE_H
 #define VEHICLE_TYPE_H
 
-#include "ObjectType.h"
+#include "objects/ObjectType.h"
 
 class User;
 

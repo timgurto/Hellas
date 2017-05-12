@@ -127,7 +127,7 @@ QUARANTINED_TEST("Clients know nearby players' cities")
     return true;
 TEND
 
-TEST("A player can cede an object to his city")
+SLOW_TEST("A player can cede an object to his city")
     // Given a user in Athens;
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");

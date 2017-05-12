@@ -1,8 +1,8 @@
 #include <cassert>
 
 #include "Object.h"
-#include "Server.h"
-#include "../util.h"
+#include "../Server.h"
+#include "../../util.h"
 
 Object::Object(const ObjectType *type, const Point &loc):
 _serial(generateSerial()),

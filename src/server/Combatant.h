@@ -1,7 +1,7 @@
 #ifndef COMBATANT_H
 #define COMBATANT_H
 
-#include "Object.h"
+#include "objects/Object.h"
 #include "../Rect.h"
 #include "../types.h"
 

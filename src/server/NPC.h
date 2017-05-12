@@ -3,7 +3,7 @@
 
 #include "Combatant.h"
 #include "NPCType.h"
-#include "Object.h"
+#include "objects/Object.h"
 #include "../Point.h"
 
 // Objects that can engage in combat, and that are AI-driven

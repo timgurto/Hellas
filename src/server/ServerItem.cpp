@@ -1,7 +1,5 @@
-// (C) 2015-2016 Tim Gurto
-
 #include "ServerItem.h"
-#include "ObjectType.h"
+#include "objects/ObjectType.h"
 
 ServerItem::ServerItem(const std::string &idArg):
 Item(idArg),

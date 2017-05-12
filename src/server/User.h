@@ -7,9 +7,9 @@
 
 #include "City.h"
 #include "Combatant.h"
-#include "Object.h"
 #include "Recipe.h"
 #include "ServerItem.h"
+#include "objects/Object.h"
 #include "../Point.h"
 #include "../Socket.h"
 #include "../Stats.h"

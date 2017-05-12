@@ -1,9 +1,9 @@
 #include <cassert>
 
-#include "Deconstruction.h"
 #include "ProgressLock.h"
 #include "Server.h"
 #include "Vehicle.h"
+#include "objects/Deconstruction.h"
 #include "../messageCodes.h"
 
 void Server::handleMessage(const Socket &client, const std::string &msg){

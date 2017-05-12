@@ -1,7 +1,7 @@
 #ifndef CONTAINER_H
 #define CONTAINER_H
 
-#include "ServerItem.h"
+#include "../ServerItem.h"
 
 class Container;
 class Object;
