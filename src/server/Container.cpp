@@ -1,39 +1,39 @@
 #include <cassert>
 
-#include "ObjContainer.h"
+#include "Container.h"
 #include "Object.h"
 #include "User.h"
 #include "Server.h"
 #include "../util.h"
 
-ObjTypeContainer *ObjTypeContainer::WithSlots(size_t slots) {
-    return new ObjTypeContainer(slots);
+ContainerType *ContainerType::WithSlots(size_t slots) {
+    return new ContainerType(slots);
 }
 
-ObjTypeContainer::ObjTypeContainer(size_t slots):
+ContainerType::ContainerType(size_t slots):
     _slots(slots)
 {}
 
-ObjContainer *ObjTypeContainer::instantiate(Object &parent) const{
-    ObjContainer *p = new ObjContainer(parent);
+Container *ContainerType::instantiate(Object &parent) const{
+    Container *p = new Container(parent);
     p->_container = ServerItem::vect_t(_slots, std::make_pair(nullptr, 0));
     return p;
 }
 
 
 
-ObjContainer::ObjContainer(Object &parent):
+Container::Container(Object &parent):
     _parent(parent)
 {}
 
-bool ObjContainer::isEmpty() const{
+bool Container::isEmpty() const{
     for (auto pair : _container)
         if (pair.first != nullptr)
             return false;
     return true;
 }
 
-void ObjContainer::removeItems(const ItemSet &items) {
+void Container::removeItems(const ItemSet &items) {
     std::set<size_t> invSlotsChanged;
     ItemSet remaining = items;
     for (size_t i = 0; i != _container.size(); ++i){
@@ -57,7 +57,7 @@ void ObjContainer::removeItems(const ItemSet &items) {
     }
 }
 
-void ObjContainer::addItems(const ServerItem *item, size_t qty){
+void Container::addItems(const ServerItem *item, size_t qty){
     std::set<size_t> changedSlots;
     // First pass: partial stacks
     for (size_t i = 0; i != _container.size(); ++i) {
@@ -96,7 +96,7 @@ void ObjContainer::addItems(const ServerItem *item, size_t qty){
     }
 }
 
-bool ObjContainer::isAbleToDeconstruct(const User &user) const{
+bool Container::isAbleToDeconstruct(const User &user) const{
     if (! isEmpty()){
         Server::instance().sendMessage(user.socket(), SV_NOT_EMPTY);
         return false;

@@ -295,7 +295,7 @@ void Server::loadData(const std::string &path){
             auto container = xr.findChild("container", elem);
             if (container != nullptr) {
                 if (xr.findAttr(container, "slots", n)){
-                    ot->addContainer(ObjTypeContainer::WithSlots(n));
+                    ot->addContainer(ContainerType::WithSlots(n));
                 }
             }
 

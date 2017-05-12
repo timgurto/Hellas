@@ -2,7 +2,7 @@
 #define OBJECT_H
 
 #include "MerchantSlot.h"
-#include "ObjContainer.h"
+#include "Container.h"
 #include "ObjectType.h"
 #include "Permissions.h"
 #include "ItemSet.h"
@@ -73,8 +73,8 @@ public:
     const Permissions &permissions() const { return _permissions; }
 
     bool hasContainer() const { return _container != nullptr; }
-    ObjContainer &container() { return *_container; }
-    const ObjContainer &container() const { return *_container; }
+    Container &container() { return *_container; }
+    const Container &container() const { return *_container; }
 
     bool isAbleToDeconstruct(const User &user) const;
 
@@ -113,10 +113,10 @@ public:
     typedef std::set<const Object*, Object::compareXThenSerial> byX_t;
     typedef std::set<const Object*, Object::compareYThenSerial> byY_t;
 
-    friend class ObjContainer; // TODO: Remove once everything is componentized
+    friend class Container; // TODO: Remove once everything is componentized
 
 private:
-    ObjContainer *_container;
+    Container *_container;
 };
 
 #endif

@@ -114,7 +114,7 @@
     <ClCompile Include="src\server\messages.cpp" />
     <ClCompile Include="src\server\NPC.cpp" />
     <ClCompile Include="src\server\NPCType.cpp" />
-    <ClCompile Include="src\server\ObjContainer.cpp" />
+    <ClCompile Include="src\server\Container.cpp" />
     <ClCompile Include="src\server\Object.cpp" />
     <ClCompile Include="src\server\ObjectType.cpp" />
     <ClCompile Include="src\server\Permissions.cpp" />
@@ -158,7 +158,7 @@
     <ClInclude Include="src\server\MerchantSlot.h" />
     <ClInclude Include="src\server\NPC.h" />
     <ClInclude Include="src\server\NPCType.h" />
-    <ClInclude Include="src\server\ObjContainer.h" />
+    <ClInclude Include="src\server\Container.h" />
     <ClInclude Include="src\server\Object.h" />
     <ClInclude Include="src\server\ObjectType.h" />
     <ClInclude Include="src\server\Permissions.h" />

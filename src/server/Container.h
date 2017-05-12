@@ -1,27 +1,27 @@
-#ifndef OBJ_CONTAINER_H
-#define OBJ_CONTAINER_H
+#ifndef CONTAINER_H
+#define CONTAINER_H
 
 #include "ServerItem.h"
 
-class ObjContainer;
+class Container;
 class Object;
 
-class ObjTypeContainer{
+class ContainerType{
 public:
-    static ObjTypeContainer *WithSlots(size_t slots);
-    ObjContainer *instantiate(Object &parent) const;
+    static ContainerType *WithSlots(size_t slots);
+    Container *instantiate(Object &parent) const;
     size_t slots() const { return _slots; }
 private:
     size_t _slots;
-    ObjTypeContainer(size_t slots);
+    ContainerType(size_t slots);
 };
 
 
 class User;
 
-class ObjContainer{
+class Container{
 public:
-    ObjContainer(Object &parent);
+    Container(Object &parent);
 
     bool isEmpty() const;
     void removeItems(const ItemSet &items);
@@ -39,7 +39,7 @@ private:
     ServerItem::vect_t _container; // Items contained in object
     Object &_parent;
 
-    friend class ObjTypeContainer;
+    friend class ContainerType;
 };
 
 #endif

@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "ObjContainer.h"
+#include "Container.h"
 #include "TerrainList.h"
 #include "Yield.h"
 #include "../Rect.h"
@@ -50,7 +50,7 @@ class ObjectType{
 
 
 protected:
-    ObjTypeContainer *_container;
+    ContainerType *_container;
 
 public:
     ObjectType(const std::string &id);
@@ -113,9 +113,9 @@ public:
 
     
     bool hasContainer() const { return _container != nullptr; }
-    ObjTypeContainer &container() { return *_container; }
-    const ObjTypeContainer &container() const { return *_container; }
-    void addContainer(ObjTypeContainer *p) { _container = p; }
+    ContainerType &container() { return *_container; }
+    const ContainerType &container() const { return *_container; }
+    void addContainer(ContainerType *p) { _container = p; }
 };
 
 #endif
