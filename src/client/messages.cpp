@@ -5,7 +5,7 @@
 #include "ClientObject.h"
 #include "ClientNPC.h"
 #include "ClientVehicle.h"
-#include "ui/Container.h"
+#include "ui/ContainerGrid.h"
 
 static void readString(std::istream &iss, std::string &str, char delim = MSG_DELIM){
     if (iss.peek() == delim) {
@@ -212,8 +212,8 @@ void Client::handleMessage(const std::string &msg){
                 _buildList->clearSelection();
                 _constructionFootprint = Texture();
                 _selectedConstruction = nullptr;
-            } else if (Container::getUseItem() != nullptr){
-                Container::clearUseItem();
+            } else if (ContainerGrid::getUseItem() != nullptr){
+                ContainerGrid::clearUseItem();
                 _constructionFootprint = Texture();
             }
 

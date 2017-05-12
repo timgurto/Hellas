@@ -1,7 +1,7 @@
 #include "Client.h"
 #include "Particle.h"
 #include "Renderer.h"
-#include "ui/Container.h"
+#include "ui/ContainerGrid.h"
 #include "ui/TextBox.h"
 
 extern Renderer renderer;
@@ -271,13 +271,13 @@ void Client::handleInput(double delta){
                     break;
 
                 // Construct item
-                if (Container::getUseItem()) {
+                if (ContainerGrid::getUseItem()) {
                     px_t
                         x = toInt(_mouse.x - offset().x),
                         y = toInt(_mouse.y - offset().y);
-                    sendMessage(CL_CONSTRUCT_ITEM, makeArgs(Container::useSlot, x, y));
+                    sendMessage(CL_CONSTRUCT_ITEM, makeArgs(ContainerGrid::useSlot, x, y));
                     prepareAction(std::string("Constructing ") +
-                                  _inventory[Container::useSlot].first->constructsObject()->name());
+                                  _inventory[ContainerGrid::useSlot].first->constructsObject()->name());
                     break;
 
                 // Construct without item
@@ -300,8 +300,8 @@ void Client::handleInput(double delta){
                 }
 
                 // Dragged item onto map -> drop.
-                if (!mouseUpOnWindow && Container::getDragItem() != nullptr) {
-                    Container::dropItem();
+                if (!mouseUpOnWindow && ContainerGrid::getDragItem() != nullptr) {
+                    ContainerGrid::dropItem();
                 }
 
                 // Mouse down and up on same entity: onLeftClick
@@ -317,8 +317,8 @@ void Client::handleInput(double delta){
 
             case SDL_BUTTON_RIGHT:
                 _rightMouseDown = false;
-                Container::useContainer = nullptr;
-                Container::useSlot = Container::NO_SLOT;
+                ContainerGrid::useGrid = nullptr;
+                ContainerGrid::useSlot = ContainerGrid::NO_SLOT;
                 _selectedConstruction = nullptr;
                 _constructionFootprint = Texture();
                 _buildList->clearSelection();
@@ -342,7 +342,7 @@ void Client::handleInput(double delta){
                     }
 
                 // Use item
-                const ClientItem *useItem = Container::getUseItem();
+                const ClientItem *useItem = ContainerGrid::getUseItem();
                 if (useItem != nullptr) {
                     _constructionFootprint = useItem->constructsObject()->image();
                     break;

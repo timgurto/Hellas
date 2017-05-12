@@ -10,7 +10,7 @@
 #include "TooltipBuilder.h"
 #include "ui/Button.h"
 #include "ui/ConfirmationWindow.h"
-#include "ui/Container.h"
+#include "ui/ContainerGrid.h"
 #include "ui/ItemSelector.h"
 #include "ui/Label.h"
 #include "ui/Line.h"
@@ -251,7 +251,7 @@ void ClientObject::addConstructionToWindow(){
     // 2. Dropbox
     static const px_t
         DROPBOX_LABEL_W = 70;
-    Container *dropbox = new Container(1, 1, _dropbox, _serial, x, y);
+    ContainerGrid *dropbox = new ContainerGrid(1, 1, _dropbox, _serial, x, y);
     _window->addChild(new Label(Rect(x, y, DROPBOX_LABEL_W, dropbox->height()),
                                 "Add materials:",
                                 Element::RIGHT_JUSTIFIED, Element::CENTER_JUSTIFIED));
@@ -321,7 +321,7 @@ void ClientObject::addInventoryToWindow(){
     const size_t slots = objectType()->containerSlots();
     static const size_t COLS = 8;
     size_t rows = (slots - 1) / COLS + 1;
-    Container *container = new Container(rows, COLS, _container, _serial, 0, y);
+    ContainerGrid *container = new ContainerGrid(rows, COLS, _container, _serial, 0, y);
     _window->addChild(container);
     y += container->height();
     if (newWidth < container->width())
@@ -438,7 +438,7 @@ void ClientObject::confirmAndCedeObject(void *objectToCede){
 void ClientObject::assembleWindow(Client &client){
     const ClientObjectType &objType = *objectType();
 
-    static const px_t WINDOW_WIDTH = Container(1, 8, _container).width();
+    static const px_t WINDOW_WIDTH = ContainerGrid(1, 8, _container).width();
 
     if (_window != nullptr){
         _window->clearChildren();

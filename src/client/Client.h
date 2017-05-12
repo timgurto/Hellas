@@ -379,7 +379,7 @@ private:
     const SoundProfile *findSoundProfile(const std::string &id) const;
 
 
-    friend class Container; // Needs to send CL_SWAP_ITEMS messages, and open a confirmation window
+    friend class ContainerGrid; // Needs to send CL_SWAP_ITEMS messages, and open a confirmation window
     friend class ClientCombatant;
     friend class ClientObject;
     friend class ClientItem;

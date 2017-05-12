@@ -1,7 +1,7 @@
 #include "Client.h"
 #include "../XmlReader.h"
 #include "../server/User.h"
-#include "ui/Container.h"
+#include "ui/ContainerGrid.h"
 #include "ui/Label.h"
 #include "ui/LinkedLabel.h"
 #include "ui/Window.h"
@@ -10,7 +10,7 @@ void Client::initializeInventoryWindow(){
     static const px_t
         COLS = 5,
         ROWS = (Client::INVENTORY_SIZE - 1) / COLS + 1;
-    Container *inventory = new Container(ROWS, COLS, _inventory, INVENTORY);
+    ContainerGrid *inventory = new ContainerGrid(ROWS, COLS, _inventory, INVENTORY);
     const px_t
         HEIGHT = inventory->height(),
         WIDTH = inventory->width(),
@@ -55,7 +55,7 @@ void Client::initializeGearWindow(){
         STAT_X_GAP = 2;
 
     _gearWindow = new Window(Rect(100, 100, w + STATS_WIDTH + 2 * STAT_X_GAP, h), "Gear");
-    Container *gearContainer = new Container
+    ContainerGrid *gearContainer = new ContainerGrid
             (rows, cols, _character.gear(), GEAR, x, y, gap, false);
     _gearWindow->addChild(new Picture(0, 0, _gearWindowBackground));
     _gearWindow->addChild(gearContainer);

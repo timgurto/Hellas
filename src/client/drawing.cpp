@@ -1,7 +1,7 @@
 #include "Client.h"
 #include "ClientNPC.h"
 #include "Renderer.h"
-#include "ui/Container.h"
+#include "ui/ContainerGrid.h"
 
 extern Renderer renderer;
 
@@ -99,14 +99,14 @@ void Client::draw() const{
 
     // Dragged item
     static const Point MOUSE_ICON_OFFSET(-Client::ICON_SIZE/2, -Client::ICON_SIZE/2);
-    const ClientItem *draggedItem = Container::getDragItem();
+    const ClientItem *draggedItem = ContainerGrid::getDragItem();
     if (draggedItem != nullptr)
         draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
 
     // Used item
     if (_constructionFootprint) {
         const ClientObjectType *ot = _selectedConstruction == nullptr ?
-                                     Container::getUseItem()->constructsObject() :
+                                     ContainerGrid::getUseItem()->constructsObject() :
                                      _selectedConstruction;
         Rect footprintRect = ot->collisionRect() + _mouse - _offset;
         if (distance(playerCollisionRect(), footprintRect) <= Client::ACTION_DISTANCE) {

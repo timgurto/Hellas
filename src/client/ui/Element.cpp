@@ -1,6 +1,6 @@
 #include <cassert>
 
-#include "Container.h"
+#include "ContainerGrid.h"
 #include "Element.h"
 #include "Window.h"
 #include "../Client.h"
@@ -407,7 +407,7 @@ void Element::toggleVisibilityOf(void *element){
 
 void Element::cleanup(){
     transparentBackground = Texture();
-    Container::_highlight = Texture();
-    Container::_highlightGood = Texture();
-    Container::_highlightBad = Texture();
+    ContainerGrid::_highlight = Texture();
+    ContainerGrid::_highlightGood = Texture();
+    ContainerGrid::_highlightBad = Texture();
 }

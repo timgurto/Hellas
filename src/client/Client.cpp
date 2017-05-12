@@ -19,7 +19,7 @@
 #include "ui/Button.h"
 #include "ui/CombatantPanel.h"
 #include "ui/ConfirmationWindow.h"
-#include "ui/Container.h"
+#include "ui/ContainerGrid.h"
 #include "ui/Element.h"
 #include "ui/LinkedLabel.h"
 #include "ui/ProgressBar.h"

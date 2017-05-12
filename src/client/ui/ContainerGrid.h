@@ -1,12 +1,12 @@
-#ifndef CONTAINER_H
-#define CONTAINER_H
+#ifndef CONTAINER_GRID_H
+#define CONTAINER_GRID_H
 
 #include "Element.h"
 #include "../Client.h"
 #include "../ClientItem.h"
 
 // A grid that allows access to a collection of items
-class Container : public Element{
+class ContainerGrid : public Element{
     static const px_t DEFAULT_GAP;
 
     size_t _rows, _cols;
@@ -28,10 +28,10 @@ class Container : public Element{
         _highlightBad;
 
     static size_t dragSlot; // The slot currently being dragged from.
-    static const Container *dragContainer; // The container currently being dragged from.
+    static const ContainerGrid *dragGrid; // The container currently being dragged from.
     
     static size_t useSlot; // The slot whose item is currently being "used" (after right-clicking)
-    static const Container *useContainer;
+    static const ContainerGrid *useGrid;
 
     virtual void refresh() override;
     
@@ -44,9 +44,9 @@ class Container : public Element{
     size_t getSlot(const Point &mousePos) const;
 
 public:
-    Container(size_t rows, size_t cols, ClientItem::vect_t &linked,
-              size_t serial = Client::INVENTORY, px_t x = 0, px_t y = 0, px_t gap = DEFAULT_GAP,
-              bool solidBackground = true);
+    ContainerGrid(size_t rows, size_t cols, ClientItem::vect_t &linked,
+                  size_t serial = Client::INVENTORY, px_t x = 0, px_t y = 0,
+                  px_t gap = DEFAULT_GAP, bool solidBackground = true);
     
     static const ClientItem *getDragItem();
     static const ClientItem *getUseItem();
