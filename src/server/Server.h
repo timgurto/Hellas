@@ -164,7 +164,7 @@ private:
     friend class Object;
     friend class User;
     friend class NPC;
-    friend class Combatant;
+    friend class Entity;
     friend class TestServer;
     friend class Spawner;
     friend class Permissions;

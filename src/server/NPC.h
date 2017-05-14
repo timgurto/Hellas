@@ -1,13 +1,13 @@
 #ifndef NPC_H
 #define NPC_H
 
-#include "Combatant.h"
+#include "Entity.h"
 #include "NPCType.h"
 #include "objects/Object.h"
 #include "../Point.h"
 
 // Objects that can engage in combat, and that are AI-driven
-class NPC : public Combatant {
+class NPC : public Entity {
     enum State {
         IDLE,
         CHASE,

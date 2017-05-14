@@ -1,16 +1,16 @@
 #include <cassert>
 
-#include "Combatant.h"
+#include "Entity.h"
 #include "Server.h"
 
-Combatant::Combatant(const ObjectType *type, const Point &loc, health_t health):
+Entity::Entity(const ObjectType *type, const Point &loc, health_t health):
 Object(type, loc),
 _health(health),
 _attackTimer(0),
 _target(nullptr)
 {}
 
-void Combatant::reduceHealth(int damage){
+void Entity::reduceHealth(int damage){
     if (damage >= static_cast<int>(_health)) {
         _health = 0;
         onDeath();
@@ -19,7 +19,7 @@ void Combatant::reduceHealth(int damage){
     }
 }
 
-void Combatant::update(ms_t timeElapsed){
+void Entity::update(ms_t timeElapsed){
     if (_attackTimer > timeElapsed)
         _attackTimer -= timeElapsed;
     else

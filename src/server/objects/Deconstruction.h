@@ -11,11 +11,6 @@ class DeconstructionType{
 public:
     static DeconstructionType *ItemAndTime(const ServerItem *item, ms_t timeToDeconstruct);
     Deconstruction *instantiate(Object &parent) const;
-
-    /*const ServerItem *deconstructsItem() const { return _itemThisBecomes; }
-    void deconstructsItem(const ServerItem *item) { _itemThisBecomes = item; }
-    ms_t deconstructionTime() const { return _timeToDeconstruct; }
-    void deconstructionTime(ms_t t) { _timeToDeconstruct = t; }*/
     
 private:
     DeconstructionType(const ServerItem *item, ms_t timeToDeconstruct);

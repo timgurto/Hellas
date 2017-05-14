@@ -104,7 +104,7 @@
     <ClCompile Include="src\server\City.cpp" />
     <ClCompile Include="src\server\CollisionChunk.cpp" />
     <ClCompile Include="src\server\collisionDetection.cpp" />
-    <ClCompile Include="src\server\Combatant.cpp" />
+    <ClCompile Include="src\server\Entity.cpp" />
     <ClCompile Include="src\server\data.cpp" />
     <ClCompile Include="src\server\ItemSet.cpp" />
     <ClCompile Include="src\server\LogConsole.cpp" />
@@ -152,7 +152,7 @@
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\server\City.h" />
     <ClInclude Include="src\server\CollisionChunk.h" />
-    <ClInclude Include="src\server\Combatant.h" />
+    <ClInclude Include="src\server\Entity.h" />
     <ClInclude Include="src\server\ItemSet.h" />
     <ClInclude Include="src\server\LogConsole.h" />
     <ClInclude Include="src\server\LootTable.h" />

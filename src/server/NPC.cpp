@@ -7,7 +7,7 @@ const ms_t NPC::CORPSE_TIME = 600000; // 10 minutes
 const size_t NPC::LOOT_CAPACITY = 8;
 
 NPC::NPC(const NPCType *type, const Point &loc):
-Combatant(type, loc, type->maxHealth()),
+Entity(type, loc, type->maxHealth()),
 _state(IDLE){}
 
 void NPC::update(ms_t timeElapsed){
@@ -63,7 +63,7 @@ void NPC::processAI(ms_t timeElapsed){
             break;
         for (User *user : Server::_instance->findUsersInArea(location(), VIEW_RANGE)){
             if (distance(collisionRect(), user->collisionRect()) <= VIEW_RANGE){
-                target(dynamic_cast<Combatant *>(user));
+                target(dynamic_cast<Entity *>(user));
                 _state = CHASE;
                 break;
             }
@@ -104,7 +104,7 @@ void NPC::processAI(ms_t timeElapsed){
         break;
 
     case ATTACK:
-        Combatant::update(timeElapsed);
+        Entity::update(timeElapsed);
         break;
     }
 }

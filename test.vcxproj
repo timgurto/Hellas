@@ -153,11 +153,11 @@
     <ClCompile Include="src\server\City.cpp" />
     <ClCompile Include="src\server\CollisionChunk.cpp" />
     <ClCompile Include="src\server\collisionDetection.cpp" />
-    <ClCompile Include="src\server\Combatant.cpp" />
     <ClCompile Include="src\server\data.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName)\data-server</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName)\data-server</ObjectFileName>
     </ClCompile>
+    <ClCompile Include="src\server\Entity.cpp" />
     <ClCompile Include="src\server\LootTable.cpp" />
     <ClCompile Include="src\server\objects\Container.cpp" />
     <ClCompile Include="src\server\objects\Deconstruction.cpp" />
@@ -273,7 +273,7 @@
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\server\City.h" />
     <ClInclude Include="src\server\CollisionChunk.h" />
-    <ClInclude Include="src\server\Combatant.h" />
+    <ClInclude Include="src\server\Entity.h" />
     <ClInclude Include="src\server\LootTable.h" />
     <ClInclude Include="src\server\objects\Container.h" />
     <ClInclude Include="src\server\objects\Deconstruction.h" />

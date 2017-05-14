@@ -1,30 +1,30 @@
-#ifndef COMBATANT_H
-#define COMBATANT_H
+#ifndef ENTITY_H
+#define ENTITY_H
 
 #include "objects/Object.h"
 #include "../Rect.h"
 #include "../types.h"
 
-// Abstract class describing something that can participate in combat with another Combatant.
-class Combatant : public Object{
+// Abstract class describing something that can participate in combat with another Entity.
+class Entity : public Object{
     health_t _health;
     ms_t _attackTimer;
-    Combatant *_target;
+    Entity *_target;
 
 public:
-    Combatant(const ObjectType *type, const Point &loc, health_t health = 0);
+    Entity(const ObjectType *type, const Point &loc, health_t health = 0);
 
     // For lookup dummies
-    Combatant(){}
-    Combatant(const Point &loc): Object(loc){}
+    Entity(){}
+    Entity(const Point &loc): Object(loc){}
 
-    virtual ~Combatant(){}
+    virtual ~Entity(){}
 
     virtual health_t maxHealth() const = 0;
     virtual health_t attack() const = 0;
     virtual ms_t attackTime() const = 0;
-    Combatant *target() const { return _target; }
-    void target(Combatant *p) { _target = p; }
+    Entity *target() const { return _target; }
+    void target(Entity *p) { _target = p; }
 
     health_t health() const { return _health; }
     void health(health_t health) { _health = health; }

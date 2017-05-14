@@ -15,7 +15,7 @@ std::map<User::Class, std::string> User::CLASS_NAMES;
 std::map<std::string, User::Class> User::CLASS_CODES;
 
 User::User(const std::string &name, const Point &loc, const Socket &socket):
-Combatant(&OBJECT_TYPE, loc, BASE_STATS.health),
+Entity(&OBJECT_TYPE, loc, BASE_STATS.health),
 
 _name(name),
 _socket(socket),
@@ -45,7 +45,7 @@ User::User(const Socket &rhs):
 _socket(rhs){}
 
 User::User(const Point &loc):
-Combatant(loc),
+Entity(loc),
 _socket(Socket::Empty()){}
 
 void User::init(){
@@ -171,7 +171,7 @@ void User::beginDeconstructing(Object &obj){
     _actionTime = obj.deconstruction().timeToDeconstruct();
 }
 
-void User::setTargetAndAttack(Combatant *target){
+void User::setTargetAndAttack(Entity *target){
     this->target(target);
     if (target == nullptr){
         cancelAction();
@@ -270,7 +270,7 @@ void User::update(ms_t timeElapsed){
 
     // Attack actions:
     if (_action == ATTACK){
-        Combatant::update(timeElapsed);
+        Entity::update(timeElapsed);
         return;
     }
 

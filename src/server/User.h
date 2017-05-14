@@ -6,7 +6,7 @@
 #include <windows.h>
 
 #include "City.h"
-#include "Combatant.h"
+#include "Entity.h"
 #include "Recipe.h"
 #include "ServerItem.h"
 #include "objects/Object.h"
@@ -18,7 +18,7 @@ class NPC;
 class Server;
 
 // Stores information about a single user account for the server
-class User : public Combatant{
+class User : public Entity{
 public:
     enum Action{
         GATHER,
@@ -130,7 +130,7 @@ public:
     void action(Action a) { _action = a; }
     const Object *actionObject() const { return _actionObject; }
     void beginGathering(Object *object); // Configure user to perform an action on an object
-    void setTargetAndAttack(Combatant *target); // Configure user to prepare to attack an NPC or player
+    void setTargetAndAttack(Entity *target); // Configure user to prepare to attack an NPC or player
 
     // Whether the user has enough materials to craft a recipe
     bool hasItems(const ItemSet &items) const;
