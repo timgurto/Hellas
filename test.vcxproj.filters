@@ -1,90 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-  </ItemGroup>
-  <PropertyGroup Label="Globals">
-    <ProjectGuid>{294EE75E-5C8D-4EA3-BBD1-545374329693}</ProjectGuid>
-    <RootNamespace>mmo</RootNamespace>
-    <ProjectName>test</ProjectName>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)</OutDir>
-    <TargetName>$(ProjectName)-debug</TargetName>
-    <LibraryPath>$(SolutionDir)SDL2\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)SDL2\SDL2_image-2.0.0\lib\x86;$(SolutionDir)SDL2\SDL2-2.0.3\lib\x86;$(SolutionDir)libcurl\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)tinyxml;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\include;$(SolutionDir)SDL2\SDL2_image-2.0.0\include;$(SolutionDir)SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)libcurl\include;$(IncludePath)</IncludePath>
-    <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)</OutDir>
-    <TargetName>$(ProjectName)</TargetName>
-    <IncludePath>$(SolutionDir)tinyxml;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\include;$(SolutionDir)SDL2\SDL2_image-2.0.0\include;$(SolutionDir)SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)libcurl\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)SDL2\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)SDL2\SDL2_image-2.0.0\lib\x86;$(SolutionDir)SDL2\SDL2-2.0.3\lib\x86;$(SolutionDir)libcurl\lib;$(LibraryPath)</LibraryPath>
-    <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ObjectFileName>$(IntDir)$(ProjectName)\</ObjectFileName>
-      <ProgramDataBaseFileName>$(IntDir)$(ProjectName)\vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;ws2_32.lib;libcurl_debug.lib</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ObjectFileName>$(IntDir)$(ProjectName)\</ObjectFileName>
-      <ProgramDataBaseFileName>$(IntDir)$(ProjectName)\vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;ws2_32.lib;libcurl.lib</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
-    </Link>
-  </ItemDefinitionGroup>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="src\Args.cpp" />
     <ClCompile Include="src\client\Avatar.cpp" />
@@ -101,20 +16,14 @@
     <ClCompile Include="src\client\ClientVehicle.cpp" />
     <ClCompile Include="src\client\ClientVehicleType.cpp" />
     <ClCompile Include="src\client\craftingWindow.cpp" />
-    <ClCompile Include="src\client\data.cpp">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName)\data-client</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName)\data-client</ObjectFileName>
-    </ClCompile>
+    <ClCompile Include="src\client\data.cpp" />
     <ClCompile Include="src\client\drawing.cpp" />
     <ClCompile Include="src\client\input.cpp" />
     <ClCompile Include="src\client\inventoryWindow.cpp" />
     <ClCompile Include="src\client\loginScreen.cpp" />
     <ClCompile Include="src\client\LogSDL.cpp" />
     <ClCompile Include="src\client\mapWindow.cpp" />
-    <ClCompile Include="src\client\messages.cpp">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)messages-client</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)messages-client</ObjectFileName>
-    </ClCompile>
+    <ClCompile Include="src\client\messages.cpp" />
     <ClCompile Include="src\client\Particle.cpp" />
     <ClCompile Include="src\client\ParticleProfile.cpp" />
     <ClCompile Include="src\client\Renderer.cpp" />
@@ -153,12 +62,7 @@
     <ClCompile Include="src\server\City.cpp" />
     <ClCompile Include="src\server\CollisionChunk.cpp" />
     <ClCompile Include="src\server\collisionDetection.cpp" />
-    <ClCompile Include="src\server\data.cpp">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName)\data-server</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName)\data-server</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\server\Entity.cpp" />
-    <ClCompile Include="src\server\EntityType.cpp" />
+    <ClCompile Include="src\server\data.cpp" />
     <ClCompile Include="src\server\LootTable.cpp" />
     <ClCompile Include="src\server\objects\Container.cpp" />
     <ClCompile Include="src\server\objects\Deconstruction.cpp" />
@@ -171,10 +75,7 @@
     <ClCompile Include="src\server\ItemSet.cpp" />
     <ClCompile Include="src\server\LogConsole.cpp" />
     <ClCompile Include="src\server\MerchantSlot.cpp" />
-    <ClCompile Include="src\server\messages.cpp">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)messages-server</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)messages-server</ObjectFileName>
-    </ClCompile>
+    <ClCompile Include="src\server\messages.cpp" />
     <ClCompile Include="src\server\NPC.cpp" />
     <ClCompile Include="src\server\NPCType.cpp" />
     <ClCompile Include="src\server\Recipe.cpp" />
@@ -218,6 +119,8 @@
     <ClCompile Include="tinyxml\tinyxml.cpp" />
     <ClCompile Include="tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="src\server\Entity.cpp" />
+    <ClCompile Include="src\server\EntityType.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -274,8 +177,6 @@
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\server\City.h" />
     <ClInclude Include="src\server\CollisionChunk.h" />
-    <ClInclude Include="src\server\Entity.h" />
-    <ClInclude Include="src\server\EntityType.h" />
     <ClInclude Include="src\server\LootTable.h" />
     <ClInclude Include="src\server\objects\Container.h" />
     <ClInclude Include="src\server\objects\Deconstruction.h" />
@@ -312,8 +213,7 @@
     <ClInclude Include="src\XmlWriter.h" />
     <ClInclude Include="tinyxml\tinystr.h" />
     <ClInclude Include="tinyxml\tinyxml.h" />
+    <ClInclude Include="src\server\Entity.h" />
+    <ClInclude Include="src\server\EntityType.h" />
   </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
 </Project>

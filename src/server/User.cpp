@@ -15,7 +15,7 @@ std::map<User::Class, std::string> User::CLASS_NAMES;
 std::map<std::string, User::Class> User::CLASS_CODES;
 
 User::User(const std::string &name, const Point &loc, const Socket &socket):
-Entity(&OBJECT_TYPE, loc, BASE_STATS.health),
+Object(&OBJECT_TYPE, loc),
 
 _name(name),
 _socket(socket),
@@ -37,16 +37,20 @@ _stats(BASE_STATS){
     if (!OBJECT_TYPE.collides()){
         OBJECT_TYPE.collisionRect(Rect(-5, -2, 10, 4));
     }
+    health(BASE_STATS.health);
     for (size_t i = 0; i != INVENTORY_SIZE; ++i)
         _inventory[i] = std::make_pair<const ServerItem *, size_t>(0, 0);
 }
 
 User::User(const Socket &rhs):
-_socket(rhs){}
+    Object(nullptr, Point()),
+    _socket(rhs)
+{}
 
 User::User(const Point &loc):
-Entity(loc),
-_socket(Socket::Empty()){}
+    Object(nullptr, loc),
+    _socket(Socket::Empty())
+{}
 
 void User::init(){
     BASE_STATS.health = 100;
@@ -148,7 +152,7 @@ void User::beginGathering(Object *obj){
     _actionObject = obj;
     _actionObject->incrementGatheringUsers();
     assert(obj->type());
-    _actionTime = obj->type()->gatherTime();
+    _actionTime = obj->objType().gatherTime();
 }
 
 void User::beginCrafting(const Recipe &recipe){
@@ -410,4 +414,26 @@ bool User::knowsRecipe(const std::string &id) const {
         return true;
     bool userKnowsRecipe = _knownRecipes.find(id) != _knownRecipes.end();
     return userKnowsRecipe;
+}
+
+void User::sendInfoToClient(const User &targetUser) const {
+    const Server &server = Server::instance();
+    const Socket &client = targetUser.socket();
+
+    // Location
+    server.sendMessage(client, SV_LOCATION, makeLocationCommand());
+
+    // Class
+    server.sendMessage(client, SV_CLASS, makeArgs(_name, className()));
+
+    // City
+    const City::Name city = server._cities.getPlayerCity(_name);
+    server.sendMessage(client, SV_IN_CITY, makeArgs(_name, city));
+
+    // Gear
+    for (size_t i = 0; i != User::GEAR_SLOTS; ++i){
+        const ServerItem *item = gear(i).first;
+        if (item != nullptr)
+            server.sendMessage(client, SV_GEAR, makeArgs(_name, i, item->id()));
+    }
 }

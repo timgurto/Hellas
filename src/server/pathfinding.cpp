@@ -3,7 +3,7 @@
 #include "Server.h"
 #include "objects/Object.h"
 
-void Object::updateLocation(const Point &dest){
+void Entity::updateLocation(const Point &dest){
     Server &server = *Server::_instance;
     assert(server.isLocationValid(collisionRect(), this));
     const ms_t newTime = SDL_GetTicks();
@@ -93,33 +93,43 @@ void Object::updateLocation(const Point &dest){
     }
     
     if (classTag() == 'u'){
-        auto loX = server._objectsByX.lower_bound(&Object(Point(left, 0)));
-        auto hiX = server._objectsByX.upper_bound(&Object(Point(right, 0)));
-        auto loY = server._objectsByY.lower_bound(&Object(Point(0, top)));
-        auto hiY = server._objectsByY.upper_bound(&Object(Point(0, bottom)));
+        auto loX = server._entitiesByX.lower_bound(&Dummy::Location(left, 0));
+        auto hiX = server._entitiesByX.upper_bound(&Dummy::Location(right, 0));
+        auto loY = server._entitiesByY.lower_bound(&Dummy::Location(0, top));
+        auto hiY = server._entitiesByY.upper_bound(&Dummy::Location(0, bottom));
 
         server.sendMessage(userPtr->socket(), SV_LOCATION, makeArgs(userPtr->name(),
                                                                     newDest.x, newDest.y));
         // Tell user about any additional objects he can now see
-        std::list<const Object *> nearbyObjects;
+        std::list<const Entity *> nearbyEntities;
         for (auto it = loX; it != hiX; ++it){
-            if (abs((*it)->location().y - newDest.y) <= Server::CULL_DISTANCE)
-                nearbyObjects.push_back(*it);
+            const Entity &entity = **it;
+            char classTag = entity.classTag();
+            if (classTag == 'u')
+                continue;
+
+            if (abs(entity.location().y - newDest.y) <= Server::CULL_DISTANCE)
+                nearbyEntities.push_back(&entity);
         }
         for (auto it = loY; it != hiY; ++it){
-            double objX = (*it)->location().x;
+            const Entity &entity = **it;
+            char classTag = entity.classTag();
+            if (classTag == 'u')
+                continue;
+
+            double entX = entity.location().x;
             if (newDest.x > _location.x){ // Don't count objects twice
-                if (objX > left)
+                if (entX > left)
                     continue;
             } else {
-                if (objX < right)
+                if (entX < right)
                     continue;
             }
-            if (abs(objX - newDest.x) <= Server::CULL_DISTANCE)
-                nearbyObjects.push_back(*it);
+            if (abs(entX - newDest.x) <= Server::CULL_DISTANCE)
+                nearbyEntities.push_back(&entity);
         }
-        for (const Object *objP : nearbyObjects){
-            server.sendObjectInfo(*userPtr, *objP);
+        for (const Entity *entP : nearbyEntities){
+            entP->sendInfoToClient(*userPtr);
         }
 
     }
@@ -205,9 +215,9 @@ void Object::updateLocation(const Point &dest){
             server._usersByY.erase(userPtr);
     }
     if (newDest.x != oldLoc.x)
-        server._objectsByX.erase(this);
+        server._entitiesByX.erase(this);
     if (newDest.y != oldLoc.y)
-        server._objectsByY.erase(this);
+        server._entitiesByY.erase(this);
 
     _location = newDest;
     
@@ -219,13 +229,13 @@ void Object::updateLocation(const Point &dest){
             server._usersByY.insert(userPtr);
     }
     if (newDest.x != oldLoc.x)
-        server._objectsByX.insert(this);
+        server._entitiesByX.insert(this);
     if (newDest.y != oldLoc.y)
-        server._objectsByY.insert(this);
+        server._entitiesByY.insert(this);
 
 
     // Tell newly nearby users that it exists
     for (const User *userP : newlyNearbyUsers)
-        server.sendObjectInfo(*userP, *this);
+        sendInfoToClient(*userP);
 
 }

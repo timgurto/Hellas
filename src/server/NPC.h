@@ -7,7 +7,7 @@
 #include "../Point.h"
 
 // Objects that can engage in combat, and that are AI-driven
-class NPC : public Entity {
+class NPC : public Object {
     enum State {
         IDLE,
         CHASE,
@@ -37,6 +37,8 @@ public:
     virtual void onDeath() override;
 
     virtual char classTag() const override { return 'n'; }
+
+    virtual void sendInfoToClient(const User &targetUser) const override;
 
     virtual void update(ms_t timeElapsed);
     void processAI(ms_t timeElapsed);

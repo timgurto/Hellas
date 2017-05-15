@@ -56,7 +56,7 @@ TEST("Removed users are removed from co-ord indices")
     WAIT_UNTIL(s.users().empty());
 
     // Then that user is not represented in the x-indexed objects list
-    return s.objectsByX().empty();
+    return s.entitiesByX().empty();
 TEND
 
 SLOW_TEST("Server remains functional with unresponsive client")

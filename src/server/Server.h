@@ -84,8 +84,6 @@ public:
     void sendInventoryMessage(const User &user, size_t slot, size_t serial) const;
     void sendMerchantSlotMessage(const User &user, const Object &obj, size_t slot) const;
     void sendConstructionMaterialsMessage(const User &user, const Object &obj) const;
-    void sendObjectInfo(const User &user, const Object &object) const;
-    void sendUserInfo(const User &user, const User &userToDescribe) const;
     void sendNewBuildsMessage(const User &user, const std::set<std::string> &ids) const;
     void sendNewRecipesMessage(const User &user, const std::set<std::string> &ids) const;
     void sendWarAlertMessages(const Wars::Belligerent &b1, const Wars::Belligerent &b2) const;
@@ -131,8 +129,8 @@ private:
     // World state
     typedef std::set<Object *, Object::compareSerial> objects_t;
     objects_t _objects;
-    Object::byX_t _objectsByX; // This and below are for alerting users only to nearby objects.
-    Object::byY_t _objectsByY;
+    Entity::byX_t _entitiesByX; // This and below are for alerting users only to nearby objects.
+    Entity::byY_t _entitiesByY;
     Object *findObject(size_t serial);
     Object *findObject(const Point &loc);
     Wars _wars;
@@ -181,11 +179,11 @@ private:
     std::list<CollisionChunk *> getCollisionSuperChunk(const Point &p);
 
     // thisObject = object to omit from collision detection (usually "this", to avoid self-collision)
-    bool isLocationValid(const Point &loc, const ObjectType &type,
-                         const Object *thisObject = nullptr); // Deduces allowed terrain from type
-    bool isLocationValid(const Rect &rect, const Object *thisObject); // Deduces allowed terrain from thisObject
+    bool isLocationValid(const Point &loc, const EntityType &type,
+                         const Entity *thisEntity = nullptr); // Deduces allowed terrain from type
+    bool isLocationValid(const Rect &rect, const Entity *thisEntity); // Deduces allowed terrain from thisObject
     bool isLocationValid(const Rect &rect, const TerrainList &allowedTerrain,
-                         const Object *thisObject = nullptr);
+                         const Entity *thisEntity = nullptr);
 
     bool readUserData(User &user); // true: save data existed
     void writeUserData(const User &user) const;

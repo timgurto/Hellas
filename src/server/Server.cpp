@@ -297,24 +297,24 @@ void Server::addUser(const Socket &socket, const std::string &name){
 
     for (const User *userP : findUsersInArea(newUser.location())){
         // Send him information about other nearby users
-        sendUserInfo(newUser, *userP);
+        userP->sendInfoToClient(newUser);
         // Send nearby others this user's information
-        sendUserInfo(*userP, newUser);
+        newUser.sendInfoToClient(*userP);
     }
 
-    // Send him object details
+    // Send him entity details
     const Point &loc = newUser.location();
-    auto loX = _objectsByX.lower_bound(&Object(Point(loc.x - CULL_DISTANCE, 0)));
-    auto hiX = _objectsByX.upper_bound(&Object(Point(loc.x + CULL_DISTANCE, 0)));
+    auto loX = _entitiesByX.lower_bound(&Dummy::Location(loc.x - CULL_DISTANCE, 0));
+    auto hiX = _entitiesByX.upper_bound(&Dummy::Location(loc.x + CULL_DISTANCE, 0));
     for (auto it = loX; it != hiX; ++it){
-        const Object &obj = **it;
-        if (obj.type() == nullptr){
+        const Entity &ent = **it;
+        if (ent.type() == nullptr){
             _debug("Null-type object skipped", Color::RED);
             continue;
         }
-        if (abs(obj.location().y - loc.y) > CULL_DISTANCE) // Cull y
+        if (abs(ent.location().y - loc.y) > CULL_DISTANCE) // Cull y
             continue;
-        sendObjectInfo(newUser, obj);
+        ent.sendInfoToClient(newUser);
     }
 
     // Send him his inventory
@@ -358,8 +358,8 @@ void Server::addUser(const Socket &socket, const std::string &name){
     const User *userP = &*it;
     _usersByX.insert(userP);
     _usersByY.insert(userP);
-    _objectsByX.insert(userP);
-    _objectsByY.insert(userP);
+    _entitiesByX.insert(userP);
+    _entitiesByY.insert(userP);
 }
 
 void Server::removeUser(const std::set<User>::iterator &it){
@@ -375,8 +375,8 @@ void Server::removeUser(const std::set<User>::iterator &it){
 
     _usersByX.erase(&*it);
     _usersByY.erase(&*it);
-    _objectsByX.erase(&*it);
-    _objectsByY.erase(&*it);
+    _entitiesByX.erase(&*it);
+    _entitiesByY.erase(&*it);
     _usersByName.erase(it->name());
 
     _users.erase(it);
@@ -459,11 +459,11 @@ void Server::removeObject(Object &obj, const User *userToExclude){
     for (const User *userP : findUsersInArea(obj.location()))
         sendMessage(userP->socket(), SV_REMOVE_OBJECT, makeArgs(serial));
 
-    obj.type()->decrementCounter();
+    obj.objType().decrementCounter();
 
     getCollisionChunk(obj.location()).removeObject(serial);
-    _objectsByX.erase(&obj);
-    _objectsByY.erase(&obj);
+    _entitiesByX.erase(&obj);
+    _entitiesByY.erase(&obj);
     _objects.erase(&obj);
 
 }
@@ -483,7 +483,7 @@ void Server::gatherObject(size_t serial, User &user){
     // Remove object if empty
     obj->removeItem(toGive, qtyToGive);
     if (obj->contents().isEmpty()){
-        if (obj->type()->transformsOnEmpty()){
+        if (obj->objType().transformsOnEmpty()){
             forceUntarget(*obj);
             obj->removeAllGatheringUsers();
         } else
@@ -545,17 +545,17 @@ Object &Server::addObject(Object *newObj){
 
     // Alert nearby users
     for (const User *userP : findUsersInArea(loc))
-        sendObjectInfo(*userP, *newObj);
+        newObj->sendInfoToClient(*userP);
 
     // Add object to relevant chunk
     if (newObj->type()->collides())
         getCollisionChunk(loc).addObject(*it);
 
     // Add object to x/y index sets
-    _objectsByX.insert(*it);
-    _objectsByY.insert(*it);
+    _entitiesByX.insert(*it);
+    _entitiesByY.insert(*it);
 
-    newObj->type()->incrementCounter();
+    newObj->objType().incrementCounter();
 
     return const_cast<Object&>(**it);
 }
@@ -565,7 +565,8 @@ const User &Server::getUserByName(const std::string &username) const {
 }
 
 Object *Server::findObject(size_t serial){
-    auto it = _objects.find(&Object(serial));
+    Dummy dummy = Dummy::Serial(serial);
+    auto it = _objects.find(dynamic_cast<Object*>(&dummy));
     if (it == _objects.end())
         return nullptr;
     else
@@ -573,7 +574,8 @@ Object *Server::findObject(size_t serial){
 }
 
 Object *Server::findObject(const Point &loc){
-    auto it = _objects.find(&Object(loc));
+    Dummy dummy = Dummy::Location(loc);
+    auto it = _objects.find(dynamic_cast<Object*>(&dummy));
     if (it == _objects.end())
         return nullptr;
     else

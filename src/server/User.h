@@ -18,7 +18,7 @@ class NPC;
 class Server;
 
 // Stores information about a single user account for the server
-class User : public Entity{
+class User : public Object{
 public:
     enum Action{
         GATHER,
@@ -123,6 +123,8 @@ public:
     
     virtual void onHealthChange() override;
     virtual void onDeath() override;
+
+    virtual void sendInfoToClient(const User &targetUser) const override;
 
     const Rect collisionRect() const;
 

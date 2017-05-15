@@ -4,6 +4,7 @@
 #include "Container.h"
 #include "Deconstruction.h"
 #include "ObjectType.h"
+#include "../Entity.h"
 #include "../MerchantSlot.h"
 #include "../ItemSet.h"
 #include "../Permissions.h"
@@ -13,10 +14,7 @@ class Spawner;
 class User;
 
 // A server-side representation of an in-game object
-class Object{
-    size_t _serial;
-    Point _location;
-    const ObjectType *_type;
+class Object : public Entity{
     Permissions _permissions;
     ItemSet _contents; // Remaining contents, which can be gathered
     std::vector<MerchantSlot> _merchantSlots;
@@ -25,8 +23,6 @@ class Object{
 
     size_t _numUsersGathering; // The number of users gathering from this object.
 
-    ms_t _lastLocUpdate; // Time that the location was last updated; used to determine max distance
-
     // Users watching this object for changes to inventory or merchant slots
     std::set<std::string> _watchers;
 
@@ -34,26 +30,14 @@ class Object{
 
     ms_t _transformTimer; // When this hits zero, it switches types.
 
-protected:
-    static size_t generateSerial();
-
 public:
     Object(const ObjectType *type, const Point &loc); // Generates a new serial
-
-    Object(){} // For lookup dummies only.
-    Object(size_t serial); // For set/map lookup; contains only a serial
-    Object(const Point &loc); // For set/map lookup; contains only a location
-
     virtual ~Object(){}
 
-    const Point &location() const { return _location; }
-    void location(const Point &loc) { _location = loc; }
-    size_t serial() const { return _serial; }
-    void serial(size_t s) { _serial = s; }
-    const ObjectType *type() const { return _type; }
+    const ObjectType &objType() const { return * dynamic_cast<const ObjectType *>(type()); }
+
     const ItemSet &contents() const { return _contents; }
     void contents(const ItemSet &contents);
-    const Rect collisionRect() const { return _type->collisionRect() + _location;  }
     const std::vector<MerchantSlot> &merchantSlots() const { return _merchantSlots; }
     const MerchantSlot &merchantSlot(size_t slot) const { return _merchantSlots[slot]; }
     MerchantSlot &merchantSlot(size_t slot) { return _merchantSlots[slot]; }
@@ -83,12 +67,13 @@ public:
 
     bool isAbleToDeconstruct(const User &user) const;
 
-    virtual bool collides() const { return _type->collides(); }
-    virtual double speed() const { return 0; } // movement per second
+    virtual char classTag() const override { return 'o'; }
 
-    virtual char classTag() const { return 'o'; }
+    virtual health_t maxHealth() const override { return 0; }
+    virtual health_t attack() const override { return 0; }
+    virtual ms_t attackTime() const override { return 0; }
 
-    virtual void update(ms_t timeElapsed);
+    virtual void update(ms_t timeElapsed) override;
     // Add this object to a list, for removal after all objects are updated.
     void markForRemoval();
 
@@ -96,12 +81,7 @@ public:
 
     virtual void onRemove();
 
-    /*
-    Determine whether the proposed new location is legal, considering movement speed and
-    time elapsed, and checking for collisions.
-    Set location to the new, legal location.
-    */
-    void updateLocation(const Point &dest);
+    virtual void sendInfoToClient(const User &targetUser) const override;
 
     // Randomly choose an item type for the user to gather.
     const ServerItem *chooseGatherItem() const;
@@ -111,12 +91,6 @@ public:
     
     void addWatcher(const std::string &username);
     void removeWatcher(const std::string &username);
-    
-    struct compareSerial{ bool operator()(const Object *a, const Object *b); };
-    struct compareXThenSerial{ bool operator()( const Object *a, const Object *b); };
-    struct compareYThenSerial{ bool operator()( const Object *a, const Object *b); };
-    typedef std::set<const Object*, Object::compareXThenSerial> byX_t;
-    typedef std::set<const Object*, Object::compareYThenSerial> byY_t;
 
     friend class Container; // TODO: Remove once everything is componentized
 

@@ -19,7 +19,7 @@ public:
     
     std::set<const ObjectType *> &objectTypes() { return _server->_objectTypes; }
     Server::objects_t &objects() { return _server->_objects; }
-    Object::byX_t &objectsByX() { return _server->_objectsByX; }
+    Entity::byX_t &entitiesByX() { return _server->_entitiesByX; }
     std::set<ServerItem> &items() { return _server->_items; }
     std::set<User> &users() { return _server->_users; }
     std::map<size_t, Spawner> &spawners() { return _server->_spawners; }

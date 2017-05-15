@@ -5,11 +5,9 @@
 #include "../../util.h"
 
 Object::Object(const ObjectType *type, const Point &loc):
-_serial(generateSerial()),
-_location(loc),
+Entity(loc, 0),
 _spawner(nullptr),
 _numUsersGathering(0),
-_lastLocUpdate(SDL_GetTicks()),
 _remainingMaterials(type->materials()),
 _transformTimer(0),
 _container(nullptr),
@@ -17,40 +15,6 @@ _deconstruction(nullptr)
 {
     if (type != nullptr)
         setType(type);
-}
-
-Object::Object(size_t serial): // For set/map lookup ONLY
-_serial(serial),
-_type(nullptr),
-_container(nullptr),
-_deconstruction(nullptr){}
-
-Object::Object(const Point &loc): // For set/map lookup ONLY
-_location(loc),
-_serial(0),
-_type(nullptr),
-_container(nullptr),
-_deconstruction(nullptr){}
-
-bool Object::compareSerial::operator()( const Object *a, const Object *b){
-    return a->_serial < b->_serial;
-}
-
-bool Object::compareXThenSerial::operator()( const Object *a, const Object *b){
-    if (a->_location.x != b->_location.x)
-        return a->_location.x < b->_location.x;
-    return a->_serial < b->_serial;
-}
-
-bool Object::compareYThenSerial::operator()( const Object *a, const Object *b){
-    if (a->_location.y != b->_location.y)
-        return a->_location.y < b->_location.y;
-    return a->_serial < b->_serial;
-}
-
-size_t Object::generateSerial() {
-    static size_t currentSerial = Server::STARTING_SERIAL;
-    return currentSerial++;
 }
 
 void Object::contents(const ItemSet &contents){
@@ -72,7 +36,7 @@ const ServerItem *Object::chooseGatherItem() const{
     std::map<const Item *, size_t> gathersRemaining;
     for (auto item : _contents) {
         size_t qtyRemaining = item.second;
-        double gatherSize = type()->yield().gatherMean(toServerItem(item.first));
+        double gatherSize = objType().yield().gatherMean(toServerItem(item.first));
         size_t remaining = static_cast<size_t>(ceil(qtyRemaining / gatherSize));
         gathersRemaining[item.first] = remaining;
         totalGathersRemaining += remaining;
@@ -90,7 +54,7 @@ const ServerItem *Object::chooseGatherItem() const{
 }
 
 size_t Object::chooseGatherQuantity(const ServerItem *item) const{
-    size_t randomQty = _type->yield().generateGatherQuantity(item);
+    size_t randomQty = objType().yield().generateGatherQuantity(item);
     size_t qty = min<size_t>(randomQty, _contents[item]);
     return qty;
 }
@@ -116,7 +80,7 @@ void Object::incrementGatheringUsers(const User *userToSkip){
     if (_numUsersGathering == 1){
         for (const User *user : server.findUsersInArea(location()))
             if (user != userToSkip)
-                server.sendMessage(user->socket(), SV_GATHERING_OBJECT, makeArgs(_serial));
+                server.sendMessage(user->socket(), SV_GATHERING_OBJECT, makeArgs(serial()));
     }
 }
 
@@ -127,7 +91,7 @@ void Object::decrementGatheringUsers(const User *userToSkip){
     if (_numUsersGathering == 0){
         for (const User *user : server.findUsersInArea(location()))
             if (user != userToSkip)
-                server.sendMessage(user->socket(), SV_NOT_GATHERING_OBJECT, makeArgs(_serial));
+                server.sendMessage(user->socket(), SV_NOT_GATHERING_OBJECT, makeArgs(serial()));
     }
 }
 
@@ -135,7 +99,7 @@ void Object::removeAllGatheringUsers(){
     const Server &server = *Server::_instance;
     _numUsersGathering = 0;
     for (const User *user : server.findUsersInArea(location()))
-        server.sendMessage(user->socket(), SV_NOT_GATHERING_OBJECT, makeArgs(_serial));
+        server.sendMessage(user->socket(), SV_NOT_GATHERING_OBJECT, makeArgs(serial()));
 }
 
 void Object::onRemove(){
@@ -150,9 +114,9 @@ void Object::update(ms_t timeElapsed){
     // Transform
     if (_transformTimer == 0)
         return;
-    if (_type->transformObject() == nullptr)
+    if (objType().transformObject() == nullptr)
         return;
-    if (_type->transformsOnEmpty() && !_contents.isEmpty())
+    if (objType().transformsOnEmpty() && !_contents.isEmpty())
         return;
 
     if (timeElapsed > _transformTimer)
@@ -161,7 +125,7 @@ void Object::update(ms_t timeElapsed){
         _transformTimer -= timeElapsed;
 
     if (_transformTimer == 0)
-        setType(type()->transformObject());
+        setType(objType().transformObject());
 }
 
 void Object::setType(const ObjectType *type){
@@ -169,7 +133,8 @@ void Object::setType(const ObjectType *type){
 
     Server *server = Server::_instance;
 
-    _type = type;
+    Entity::type(type);
+
     if (type->yield()) {
         type->yield().instantiate(_contents);
     }
@@ -178,12 +143,12 @@ void Object::setType(const ObjectType *type){
     removeAllGatheringUsers();
 
     delete _container;
-    if (_type->hasContainer()){
-        _container = _type->container().instantiate(*this);
+    if (objType().hasContainer()){
+        _container = objType().container().instantiate(*this);
     }
     delete _deconstruction;
-    if (_type->hasDeconstruction()){
-        _deconstruction = _type->deconstruction().instantiate(*this);
+    if (objType().hasDeconstruction()){
+        _deconstruction = objType().deconstruction().instantiate(*this);
     }
 
     if (type->merchantSlots() != 0)
@@ -196,13 +161,40 @@ void Object::setType(const ObjectType *type){
 
     // Inform nearby users
     if (server != nullptr)
-    for (const User *user : server->findUsersInArea(_location)){
-        server->sendObjectInfo(*user, *this);
-    }
+        for (const User *user : server->findUsersInArea(location()))
+            sendInfoToClient(*user);
 }
 
 bool Object::isAbleToDeconstruct(const User &user) const{
     if (hasContainer())
         return _container->isAbleToDeconstruct(user);
     return true;
+}
+
+void Object::sendInfoToClient(const User &targetUser) const {
+    const Server &server = Server::instance();
+    const Socket &client = targetUser.socket();
+
+    server.sendMessage(client, SV_OBJECT, makeArgs(serial(), location().x, location().y,
+                                                   type()->id()));
+
+    // Owner
+    if (permissions().hasOwner()){
+        const auto &owner = permissions().owner();
+        server.sendMessage(client, SV_OWNER, makeArgs(serial(), owner.typeString(), owner.name));
+    }
+
+    // Being gathered
+    if (numUsersGathering() > 0)
+        server.sendMessage(client, SV_GATHERING_OBJECT, makeArgs(serial()));
+
+    // Construction materials
+    if (isBeingBuilt()){
+        server.sendConstructionMaterialsMessage(targetUser, *this);
+    }
+
+    // Transform timer
+    if (isTransforming()){
+        server.sendMessage(client, SV_TRANSFORM_TIME, makeArgs(serial(), transformTimer()));
+    }
 }

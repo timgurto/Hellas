@@ -3,12 +3,45 @@
 #include "Entity.h"
 #include "Server.h"
 
-Entity::Entity(const ObjectType *type, const Point &loc, health_t health):
-Object(type, loc),
-_health(health),
-_attackTimer(0),
-_target(nullptr)
+Entity::Entity(const Point &loc, health_t health):
+    _serial(generateSerial()),
+    _type(nullptr),
+
+    _location(loc),
+    _lastLocUpdate(SDL_GetTicks()),
+
+    _health(health),
+    _attackTimer(0),
+    _target(nullptr)
 {}
+
+Entity::Entity(size_t serial): // For set/map lookup ONLY
+_serial(serial){}
+
+Entity::Entity(const Point &loc): // For set/map lookup ONLY
+_location(loc),
+_serial(0){}
+
+bool Entity::compareSerial::operator()( const Entity *a, const Entity *b){
+    return a->_serial < b->_serial;
+}
+
+bool Entity::compareXThenSerial::operator()( const Entity *a, const Entity *b){
+    if (a->_location.x != b->_location.x)
+        return a->_location.x < b->_location.x;
+    return a->_serial < b->_serial;
+}
+
+bool Entity::compareYThenSerial::operator()( const Entity *a, const Entity *b){
+    if (a->_location.y != b->_location.y)
+        return a->_location.y < b->_location.y;
+    return a->_serial < b->_serial;
+}
+
+size_t Entity::generateSerial() {
+    static size_t currentSerial = Server::STARTING_SERIAL;
+    return currentSerial++;
+}
 
 void Entity::reduceHealth(int damage){
     if (damage >= static_cast<int>(_health)) {

@@ -240,7 +240,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
             }
-            const std::string &gatherReq = obj->type()->gatherReq();
+            const std::string &gatherReq = obj->objType().gatherReq();
             if (gatherReq != "none" && !user->hasTool(gatherReq)) {
                 sendMessage(client, SV_ITEM_NEEDED, gatherReq);
                 break;
@@ -251,7 +251,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             user->beginGathering(obj);
-            sendMessage(client, SV_ACTION_STARTED, makeArgs(obj->type()->gatherTime()));
+            sendMessage(client, SV_ACTION_STARTED, makeArgs(obj->objType().gatherTime()));
             break;
         }
 
@@ -620,7 +620,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_UNDER_CONSTRUCTION);
                 break;
             }
-            size_t slots = obj->type()->merchantSlots();
+            size_t slots = obj->objType().merchantSlots();
             if (slots == 0){
                 sendMessage(client, SV_NOT_MERCHANT);
                 break;
@@ -651,7 +651,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
 
-            bool bottomless = obj->type()->bottomlessMerchant();
+            bool bottomless = obj->objType().bottomlessMerchant();
             if (!bottomless){
                 // Check that object has items in stock
                 if (mSlot.ware() > obj->container().raw()){
@@ -707,7 +707,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
             }
-            size_t slots = obj->type()->merchantSlots();
+            size_t slots = obj->objType().merchantSlots();
             if (slots == 0){
                 sendMessage(client, SV_NOT_MERCHANT);
                 break;
@@ -752,7 +752,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
             }
-            size_t slots = obj->type()->merchantSlots();
+            size_t slots = obj->objType().merchantSlots();
             if (slots == 0){
                 sendMessage(client, SV_NOT_MERCHANT);
                 break;
@@ -858,7 +858,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             // Describe inventory, if user has permission
             if (obj->hasContainer() &&
                 obj->permissions().doesUserHaveAccess(user->name())){
-                    size_t slots = obj->type()->container().slots();
+                    size_t slots = obj->objType().container().slots();
                     for (size_t i = 0; i != slots; ++i)
                         sendInventoryMessage(*user, i, *obj);
             }
@@ -1144,70 +1144,6 @@ void Server::sendConstructionMaterialsMessage(const User &user, const Object &ob
         args = makeArgs(args, pair.first->id(), pair.second);
     }
     sendMessage(user.socket(), SV_CONSTRUCTION_MATERIALS, args);
-}
-
-void Server::sendObjectInfo(const User &user, const Object &object) const{
-    if (object.classTag() == 'u'){
-        const User &userToDescribe = dynamic_cast<const User &>(object);
-        sendUserInfo(user, userToDescribe);
-        return;
-    }
-
-    sendMessage(user.socket(), SV_OBJECT, makeArgs(object.serial(),
-                                                   object.location().x, object.location().y,
-                                                   object.type()->id()));
-    if (object.classTag() == 'n'){
-        const NPC &npc = dynamic_cast<const NPC &>(object);
-        
-        // Health
-        if (npc.health() < npc.npcType()->maxHealth())
-            sendMessage(user.socket(), SV_NPC_HEALTH, makeArgs(npc.serial(), npc.health()));
-
-        // Loot
-        if (npc.hasContainer() && !npc.container().isEmpty())
-            sendMessage(user.socket(), SV_LOOTABLE, makeArgs(npc.serial()));
-    }
-
-    // Owner
-    if (object.permissions().hasOwner()){
-        const auto &owner = object.permissions().owner();
-        sendMessage(user.socket(), SV_OWNER, makeArgs(object.serial(),
-                                                      owner.typeString(), owner.name));
-    }
-
-    // Being gathered
-    if (object.numUsersGathering() > 0)
-        sendMessage(user.socket(), SV_GATHERING_OBJECT, makeArgs(object.serial()));
-
-    // Construction materials
-    if (object.isBeingBuilt()){
-        sendConstructionMaterialsMessage(user, object);
-    }
-
-    // Transform timer
-    if (object.isTransforming()){
-        sendMessage(user.socket(), SV_TRANSFORM_TIME,
-                    makeArgs(object.serial(), object.transformTimer()));
-    }
-}
-
-void Server::sendUserInfo(const User &user, const User &userToDescribe) const{
-    // Location
-    sendMessage(user.socket(), SV_LOCATION, userToDescribe.makeLocationCommand());
-
-    // Class
-    const std::string &name = userToDescribe.name();
-    sendMessage(user.socket(), SV_CLASS, makeArgs(name, userToDescribe.className()));
-
-    // City
-    sendMessage(user.socket(), SV_IN_CITY, makeArgs(name, _cities.getPlayerCity(name)));
-
-    // Gear
-    for (size_t i = 0; i != User::GEAR_SLOTS; ++i){
-        const ServerItem *item = userToDescribe.gear(i).first;
-        if (item != nullptr)
-            sendMessage(user.socket(), SV_GEAR, makeArgs(userToDescribe.name(), i, item->id()));
-    }
 }
 
 void Server::sendNewBuildsMessage(const User &user, const std::set<std::string> &ids) const{

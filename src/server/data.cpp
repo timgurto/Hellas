@@ -683,7 +683,7 @@ void Server::loadData(const std::string &path){
                     continue;
                 q = 1;
                 xr.findAttr(inventory, "qty", q);
-                if (obj.type()->container().slots() <= n) {
+                if (obj.objType().container().slots() <= n) {
                     _debug << Color::RED << "Skipping object with invalid inventory slot." << Log::endl;
                     continue;
                 }
@@ -828,7 +828,7 @@ void Server::saveData(const objects_t &objects, const Wars &wars, const Cities &
 
         if (obj->hasContainer()){
             const auto &container = obj->container();
-            for (size_t i = 0; i != obj->type()->container().slots(); ++i) {
+            for (size_t i = 0; i != obj->objType().container().slots(); ++i) {
                 if (container.at(i).second == 0)
                     continue;
                 auto invSlotE = xw.addChild("inventory", e);

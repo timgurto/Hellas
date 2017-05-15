@@ -3,17 +3,18 @@
 #include <utility>
 
 #include "CollisionChunk.h"
+#include "Entity.h"
 #include "Server.h"
 
 const px_t Server::COLLISION_CHUNK_SIZE = 160;
 
-bool Server::isLocationValid(const Point &loc, const ObjectType &type, const Object *thisObject){
+bool Server::isLocationValid(const Point &loc, const EntityType &type, const Entity *thisEntity){
     Rect rect = type.collisionRect() + loc;
-    return isLocationValid(rect, type.allowedTerrain(), thisObject);
+    return isLocationValid(rect, type.allowedTerrain(), thisEntity);
 }
 
-bool Server::isLocationValid(const Rect &rect, const Object *thisObject){
-    return isLocationValid(rect, thisObject->type()->allowedTerrain(), thisObject);
+bool Server::isLocationValid(const Rect &rect, const Entity *thisEntity){
+    return isLocationValid(rect, thisEntity->type()->allowedTerrain(), thisEntity);
 }
 
 Rect Server::getTileRect(size_t x, size_t y){
@@ -78,11 +79,11 @@ std::set<char> Server::nearbyTerrainTypes(const Rect &rect, double extraRadius){
 }
 
 bool Server::isLocationValid(const Rect &rect, const TerrainList &allowedTerrain,
-                             const Object *thisObject){
+                             const Entity *thisEntity){
     // A user in a vehicle is unrestricted; the vehicle's restrictions will dictate his location.
-    if (thisObject != nullptr &&
-        thisObject->classTag() == 'u' &&
-        dynamic_cast<const User*>(thisObject)->isDriving())
+    if (thisEntity != nullptr &&
+        thisEntity->classTag() == 'u' &&
+        dynamic_cast<const User*>(thisEntity)->isDriving())
             return true;
 
     const px_t
@@ -105,7 +106,7 @@ bool Server::isLocationValid(const Rect &rect, const TerrainList &allowedTerrain
     // Users
     Point rectCenter(rect.x + rect.w / 2, rect.y + rect.h / 2);
     for (const auto *user : findUsersInArea(rectCenter)) {
-        if (user == thisObject)
+        if (user == thisEntity)
             continue;
         if (user->isDriving()) // The vehicle he is driving will be checked instead.
             continue;
@@ -118,7 +119,7 @@ bool Server::isLocationValid(const Rect &rect, const TerrainList &allowedTerrain
     for (CollisionChunk *chunk : superChunk)
         for (const auto &ret : chunk->objects()) {
             const Object *pObj = ret.second;
-            if (pObj == thisObject)
+            if (pObj == thisEntity)
                 continue;
             if (!pObj->collides())
                 continue;
