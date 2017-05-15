@@ -8,7 +8,6 @@ Object::Object(const ObjectType *type, const Point &loc):
 Entity(loc, 0),
 _spawner(nullptr),
 _numUsersGathering(0),
-_remainingMaterials(type->materials()),
 _transformTimer(0),
 _container(nullptr),
 _deconstruction(nullptr)
