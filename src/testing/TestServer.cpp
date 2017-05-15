@@ -72,6 +72,7 @@ void TestServer::stop(){
 
 void TestServer::addObject(const std::string &typeName, const Point &loc, const User *owner){
     const ObjectType *const type = _server->findObjectTypeByName(typeName);
+    assert(type != nullptr);
     _server->addObject(type, loc, owner);
 }
 

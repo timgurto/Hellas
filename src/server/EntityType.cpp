@@ -1,6 +1,7 @@
 #include "EntityType.h"
 
-EntityType::EntityType():
+EntityType::EntityType(const std::string id):
+    _id(id),
     _collides(false),
     _allowedTerrain(nullptr)
 {}

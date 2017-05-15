@@ -8,7 +8,7 @@
 
 class EntityType{
 public:
-    EntityType();
+    EntityType(const std::string id);
     const std::string &id() const { return _id; }
     bool isTag( const std::string &tagName) const;
     void addTag(const std::string &tagName);
