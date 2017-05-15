@@ -16,6 +16,15 @@ _deconstruction(nullptr)
         setType(type);
 }
 
+Object::Object(size_t serial):
+    Entity(serial)
+{}
+
+Object::Object(const Point &loc):
+    Entity(loc)
+{}
+
+
 void Object::contents(const ItemSet &contents){
     _contents = contents;
 }

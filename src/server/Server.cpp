@@ -565,8 +565,8 @@ const User &Server::getUserByName(const std::string &username) const {
 }
 
 Object *Server::findObject(size_t serial){
-    Dummy dummy = Dummy::Serial(serial);
-    auto it = _objects.find(dynamic_cast<Object*>(&dummy));
+    Object dummy(serial);
+    auto it = _objects.find(&dummy);
     if (it == _objects.end())
         return nullptr;
     else
@@ -574,8 +574,8 @@ Object *Server::findObject(size_t serial){
 }
 
 Object *Server::findObject(const Point &loc){
-    Dummy dummy = Dummy::Location(loc);
-    auto it = _objects.find(dynamic_cast<Object*>(&dummy));
+    Object dummy(loc);
+    auto it = _objects.find(&dummy);
     if (it == _objects.end())
         return nullptr;
     else

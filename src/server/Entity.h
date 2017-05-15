@@ -13,6 +13,8 @@ class Entity {
 
 public:
     Entity(const Point &loc, health_t health);
+    Entity(size_t serial); // TODO make private
+    Entity(const Point &loc); // TODO make private
     
     const EntityType *type() const { return _type; }
     void type(const EntityType *type) { _type = type; }
@@ -84,8 +86,6 @@ private:
 
 
     friend class Dummy;
-    Entity(size_t serial);
-    Entity(const Point &loc);
 };
 
 

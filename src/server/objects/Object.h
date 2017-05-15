@@ -32,6 +32,11 @@ class Object : public Entity{
 
 public:
     Object(const ObjectType *type, const Point &loc); // Generates a new serial
+
+    // Dummies.  TODO: Remove
+    Object(size_t serial);
+    Object(const Point &loc);
+
     virtual ~Object(){}
 
     const ObjectType &objType() const { return * dynamic_cast<const ObjectType *>(type()); }

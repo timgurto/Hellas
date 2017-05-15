@@ -16,11 +16,15 @@ Entity::Entity(const Point &loc, health_t health):
 {}
 
 Entity::Entity(size_t serial): // For set/map lookup ONLY
-_serial(serial){}
+    _type(nullptr),
+    _serial(serial)
+{}
 
 Entity::Entity(const Point &loc): // For set/map lookup ONLY
-_location(loc),
-_serial(0){}
+    _type(nullptr),
+    _location(loc),
+    _serial(0)
+{}
 
 bool Entity::compareSerial::operator()( const Entity *a, const Entity *b){
     return a->_serial < b->_serial;
