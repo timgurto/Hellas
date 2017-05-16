@@ -7,6 +7,7 @@
 #include "../types.h"
 
 class User;
+class XmlWriter;
 
 // Abstract class describing location, movement and combat functions of something in the game world
 class Entity {
@@ -35,6 +36,8 @@ public:
     virtual void update(ms_t timeElapsed);
 
     virtual void sendInfoToClient(const User &targetUser) const = 0;
+
+    virtual void writeToXML(XmlWriter &xw) const {}
 
 
     // Space

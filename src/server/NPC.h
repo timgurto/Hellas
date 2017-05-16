@@ -40,6 +40,8 @@ public:
 
     virtual void sendInfoToClient(const User &targetUser) const override;
 
+    virtual void writeToXML(XmlWriter &xw) const override;
+
     virtual void update(ms_t timeElapsed);
     void processAI(ms_t timeElapsed);
 };

@@ -117,11 +117,11 @@ bool Server::isLocationValid(const Rect &rect, const TerrainList &allowedTerrain
     // Objects
     auto superChunk = getCollisionSuperChunk(rectCenter);
     for (CollisionChunk *chunk : superChunk)
-        for (const auto &ret : chunk->objects()) {
-            const Object *pObj = ret.second;
-            if (pObj == thisEntity)
+        for (const auto &pair : chunk->entities()) {
+            const Entity *pEnt = pair.second;
+            if (pEnt == thisEntity)
                 continue;
-            if (!pObj->collides())
+            if (!pEnt->collides())
                 continue;
 
             // Allow collisions between users and users/NPCs
@@ -129,7 +129,7 @@ bool Server::isLocationValid(const Rect &rect, const TerrainList &allowedTerrain
                 (pObj->classTag() == 'u' || pObj->classTag() == 'n'))
                     continue;*/
 
-            if (rect.collides(pObj->collisionRect()))
+            if (rect.collides(pEnt->collisionRect()))
                 return false;
         }
 

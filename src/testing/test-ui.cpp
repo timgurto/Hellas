@@ -34,7 +34,7 @@ QUARANTINED_TEST("View merchant slots in window")
     user.updateLocation(Point(10, 10));
     // Add a single vending machine
     s.addObject("vendingMachine", Point(10, 10));
-    WAIT_UNTIL (s.objects().size() == 1);
+    WAIT_UNTIL (s.entities().size() == 1);
     WAIT_UNTIL (c.objects().size() == 1);
 
     auto objects = c.objects();

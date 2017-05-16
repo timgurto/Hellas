@@ -1,14 +1,14 @@
 #include <cassert>
 
 #include "CollisionChunk.h"
-#include "objects/Object.h"
+#include "Entity.h"
 
-void CollisionChunk::addObject(const Object *obj){
-    _objects[obj->serial()] = obj;
+void CollisionChunk::addEntity(const Entity *obj){
+    _entities[obj->serial()] = obj;
 }
 
-void CollisionChunk::removeObject(size_t serial){
-    auto it = _objects.find(serial);
-    if (it != _objects.end())
-        _objects.erase(it);
+void CollisionChunk::removeEntity(size_t serial){
+    auto it = _entities.find(serial);
+    if (it != _entities.end())
+        _entities.erase(it);
 }

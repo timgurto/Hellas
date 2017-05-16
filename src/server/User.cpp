@@ -222,8 +222,9 @@ bool User::hasTool(const std::string &tagName) const{
     // Check nearby objects
     auto superChunk = Server::_instance->getCollisionSuperChunk(location());
     for (CollisionChunk *chunk : superChunk)
-        for (const auto &ret : chunk->objects()) {
-            const Object *pObj = ret.second;
+        for (const auto &pair : chunk->entities()) {
+            const Entity *pEnt = pair.second;
+            const Object *pObj = dynamic_cast<const Object *>(pEnt);
             if (!pObj->isBeingBuilt() &&
                 pObj->type()->isTag(tagName) &&
                 distance(pObj->collisionRect(), collisionRect()) < Server::ACTION_DISTANCE)
@@ -339,7 +340,7 @@ void User::update(ms_t timeElapsed){
         // Give user his item
         giveItem(item);
         // Remove object
-        server.removeObject(*_actionObject);
+        server.removeEntity(*_actionObject);
         break;
     }
 

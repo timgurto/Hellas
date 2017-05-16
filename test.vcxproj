@@ -157,6 +157,7 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName)\data-server</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName)\data-server</ObjectFileName>
     </ClCompile>
+    <ClCompile Include="src\server\Entities.cpp" />
     <ClCompile Include="src\server\Entity.cpp" />
     <ClCompile Include="src\server\EntityType.cpp" />
     <ClCompile Include="src\server\LootTable.cpp" />
@@ -274,6 +275,7 @@
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\server\City.h" />
     <ClInclude Include="src\server\CollisionChunk.h" />
+    <ClInclude Include="src\server\Entities.h" />
     <ClInclude Include="src\server\Entity.h" />
     <ClInclude Include="src\server\EntityType.h" />
     <ClInclude Include="src\server\LootTable.h" />

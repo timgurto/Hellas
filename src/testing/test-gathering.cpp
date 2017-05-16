@@ -27,7 +27,7 @@ TEST("Gather an item from an object")
         return false;
 
     //Make sure object no longer exists
-    else if (!s.objects().empty())
+    else if (!s.entities().empty())
         return false;
 
     return true;
@@ -64,9 +64,11 @@ TEND
 
 TEST("Minimum yields")
     TestServer s = TestServer::WithData("min_apples");
-    for (auto obj : s.objects())
+    for (auto entity : s.entities()){
+        const Object *obj = dynamic_cast<const Object *>(entity);
         if (obj->contents().isEmpty())
             return false;
+    }
 
     return true;
 TEND

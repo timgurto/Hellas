@@ -97,8 +97,10 @@ User &TestServer::getFirstUser() {
 }
 
 Object &TestServer::getFirstObject() {
-    assert(! _server->_objects.empty());
-    return const_cast<Object &>(** _server->_objects.begin());
+    assert(! _server->_entities.empty());
+    auto it =_server-> _entities.begin();
+    Entity *ent = *it;
+    return * dynamic_cast<Object *>(ent);
 }
 
 ServerItem &TestServer::getFirstItem() {

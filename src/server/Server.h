@@ -9,6 +9,7 @@
 
 #include "City.h"
 #include "CollisionChunk.h"
+#include "Entities.h"
 #include "ItemSet.h"
 #include "LogConsole.h"
 #include "NPC.h"
@@ -127,18 +128,15 @@ private:
     User::byY_t _usersByY;
 
     // World state
-    typedef std::set<Object *, Object::compareSerial> objects_t;
-    objects_t _objects;
+    Entities _entities; // All entities except Users
     Entity::byX_t _entitiesByX; // This and below are for alerting users only to nearby objects.
     Entity::byY_t _entitiesByY;
-    Object *findObject(size_t serial);
-    Object *findObject(const Point &loc);
     Wars _wars;
     Cities _cities;
 
     void loadData(const std::string &path = "Data"); // Attempt to load data from files.
     bool _dataLoaded; // If false when run() is called, load default data.
-    static void saveData(const objects_t &objects, const Wars &wars, const Cities &cities);
+    static void saveData(const Entities &entities, const Wars &wars, const Cities &cities);
     void spawnInitialObjects();
 
     Point mapRand() const; // Return a random point on the map.
@@ -155,7 +153,7 @@ private:
     std::list<Object *> _objectsToRemove; // Emptied every tick.
     // Force all users to untarget an object
     void forceUntarget(const Object &obj, const User *userToExclude = nullptr); 
-    void removeObject(Object &obj, const User *userToExclude = nullptr);
+    void removeEntity(Object &obj, const User *userToExclude = nullptr);
     void gatherObject (size_t serial, User &user);
 
     friend class City;

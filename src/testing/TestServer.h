@@ -18,7 +18,7 @@ public:
     TestServer &operator=(TestServer &rhs);
     
     std::set<const ObjectType *> &objectTypes() { return _server->_objectTypes; }
-    Server::objects_t &objects() { return _server->_objects; }
+    Entities &entities() { return _server->_entities; }
     Entity::byX_t &entitiesByX() { return _server->_entitiesByX; }
     std::set<ServerItem> &items() { return _server->_items; }
     std::set<User> &users() { return _server->_users; }

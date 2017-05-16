@@ -87,7 +87,7 @@ _dataLoaded(false){
 }
 
 Server::~Server(){
-    saveData(_objects, _wars, _cities);
+    saveData(_entities, _wars, _cities);
     for (auto pair : _terrainTypes)
         delete pair.second;
     _instance = nullptr;
@@ -206,9 +206,9 @@ void Server::run(){
                 writeUserData(user);
             }
 #ifdef SINGLE_THREAD
-            saveData(_objects, _wars, _cities);
+            saveData(_entities, _wars, _cities);
 #else
-            std::thread(saveData, _objects, _wars, _cities).detach();
+            std::thread(saveData, _entities, _wars, _cities).detach();
 #endif
             _lastSave = _time;
         }
@@ -218,12 +218,12 @@ void Server::run(){
             const_cast<User&>(user).update(timeElapsed);
 
         // Update objects
-        for (Object *objP : _objects)
-            objP->update(timeElapsed);
+        for (Entity *entP : _entities)
+            entP->update(timeElapsed);
 
         // Clean up dead objects
         for (Object *objP : _objectsToRemove){
-            removeObject(*objP);
+            removeEntity(*objP);
         }
         _objectsToRemove.clear();
 
@@ -438,17 +438,17 @@ void Server::forceUntarget(const Object &target, const User *userToExclude){
     }
 
     // Fix NPCs targeting the object
-    for (const Object *pObj : _objects) {
-        Object &obj = *const_cast<Object *>(pObj);
-        if (obj.classTag() == 'n'){
-            NPC &npc = dynamic_cast<NPC &>(obj);
+    for (const Entity *pEnt : _entities) {
+        Entity &entity = * const_cast<Entity *>(pEnt);
+        if (entity.classTag() == 'n'){
+            NPC &npc = dynamic_cast<NPC &>(entity);
             if (npc.target() == &target)
                 npc.target(nullptr);
         }
     }
 }
 
-void Server::removeObject(Object &obj, const User *userToExclude){
+void Server::removeEntity(Object &obj, const User *userToExclude){
     obj.onRemove();
 
     // Ensure no other users are targeting this object, as it will be removed.
@@ -461,16 +461,16 @@ void Server::removeObject(Object &obj, const User *userToExclude){
 
     obj.objType().decrementCounter();
 
-    getCollisionChunk(obj.location()).removeObject(serial);
+    getCollisionChunk(obj.location()).removeEntity(serial);
     _entitiesByX.erase(&obj);
     _entitiesByY.erase(&obj);
-    _objects.erase(&obj);
+    _entities.erase(&obj);
 
 }
 
 void Server::gatherObject(size_t serial, User &user){
     // Give item to user
-    Object *obj = findObject(serial);
+    Object *obj = _entities.find<Object>(serial);
     const ServerItem *const toGive = obj->chooseGatherItem();
     size_t qtyToGive = obj->chooseGatherQuantity(toGive);
     const size_t remaining = user.giveItem(toGive, qtyToGive);
@@ -487,14 +487,14 @@ void Server::gatherObject(size_t serial, User &user){
             forceUntarget(*obj);
             obj->removeAllGatheringUsers();
         } else
-            removeObject(*obj, &user);
+            removeEntity(*obj, &user);
     } else
         obj->decrementGatheringUsers();
 
 #ifdef SINGLE_THREAD
     saveData(_objects, _wars, _cities);
 #else
-    std::thread(saveData, _objects, _wars, _cities).detach();
+    std::thread(saveData, _entities, _wars, _cities).detach();
 #endif
 }
 
@@ -540,7 +540,7 @@ NPC &Server::addNPC(const NPCType *type, const Point &location){
 }
 
 Object &Server::addObject(Object *newObj){
-    auto it = _objects.insert(newObj).first;
+    _entities.insert(newObj);
     const Point &loc = newObj->location();
 
     // Alert nearby users
@@ -549,37 +549,19 @@ Object &Server::addObject(Object *newObj){
 
     // Add object to relevant chunk
     if (newObj->type()->collides())
-        getCollisionChunk(loc).addObject(*it);
+        getCollisionChunk(loc).addEntity(newObj);
 
     // Add object to x/y index sets
-    _entitiesByX.insert(*it);
-    _entitiesByY.insert(*it);
+    _entitiesByX.insert(newObj);
+    _entitiesByY.insert(newObj);
 
     newObj->objType().incrementCounter();
 
-    return const_cast<Object&>(**it);
+    return const_cast<Object&>(*newObj);
 }
 
 const User &Server::getUserByName(const std::string &username) const {
     return *_usersByName.find(username)->second;
-}
-
-Object *Server::findObject(size_t serial){
-    Object dummy(serial);
-    auto it = _objects.find(&dummy);
-    if (it == _objects.end())
-        return nullptr;
-    else
-        return *it;
-}
-
-Object *Server::findObject(const Point &loc){
-    Object dummy(loc);
-    auto it = _objects.find(&dummy);
-    if (it == _objects.end())
-        return nullptr;
-    else
-        return *it;
 }
 
 const Terrain *Server::terrainType(char index) const{

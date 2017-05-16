@@ -121,6 +121,7 @@
     <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="src\server\Entity.cpp" />
     <ClCompile Include="src\server\EntityType.cpp" />
+    <ClCompile Include="src\server\Entities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -215,5 +216,6 @@
     <ClInclude Include="tinyxml\tinyxml.h" />
     <ClInclude Include="src\server\Entity.h" />
     <ClInclude Include="src\server\EntityType.h" />
+    <ClInclude Include="src\server\Entities.h" />
   </ItemGroup>
 </Project>

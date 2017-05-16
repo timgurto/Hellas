@@ -150,7 +150,7 @@ void Server::writeUserData(const User &user) const{
 
 void Server::loadData(const std::string &path){
     _debug("Loading data");
-    _objects.clear();
+    _entities.clear();
 
     // Load terrain lists
     XmlReader xr(path + "/terrain.xml");
@@ -613,11 +613,11 @@ void Server::loadData(const std::string &path){
     // Detect/load state
     do {
 
-        // Objects
+        // Entities
         if (cmdLineArgs.contains("new"))
             xr.newFile(path + "/staticObjects.xml");
         else
-            xr.newFile("World/Objects.world");
+            xr.newFile("World/entities.world");
         if (!xr)
             break;
         for (auto elem : xr.getChildren("object")) {
@@ -722,16 +722,8 @@ void Server::loadData(const std::string &path){
                     continue;
                 obj.remainingMaterials().set(&*it, n);
             }
-
         }
 
-        if (cmdLineArgs.contains("new"))
-            break;
-
-        // NPCs
-        xr.newFile("World/npcs.world");
-        if (!xr)
-            break;
         for (auto elem : xr.getChildren("npc")) {
             std::string s;
             if (!xr.findAttr(elem, "id", s)) {
@@ -790,102 +782,87 @@ void Server::loadData(const std::string &path){
     _dataLoaded = true;
 }
 
-void Server::saveData(const objects_t &objects, const Wars &wars, const Cities &cities){
-    // Objects
-#ifndef SINGLE_THREAD
-    static std::mutex objectsFileMutex;
-    objectsFileMutex.lock();
-#endif
-    XmlWriter xw("World/objects.world");
-    for (const Object *obj : objects) {
-        if (obj->classTag() == 'n')
-            continue;
-        if (obj->type() == nullptr)
-            continue;
-        auto e = xw.addChild("object");
+void Object::writeToXML(XmlWriter &xw) const{
+    auto e = xw.addChild("object");
 
-        xw.setAttr(e, "id", obj->type()->id());
+    xw.setAttr(e, "id", type()->id());
 
-        for (auto &content : obj->contents()) {
-            auto contentE = xw.addChild("gatherable", e);
-            xw.setAttr(contentE, "id", content.first->id());
-            xw.setAttr(contentE, "quantity", content.second);
-        }
+    for (auto &content : contents()) {
+        auto contentE = xw.addChild("gatherable", e);
+        xw.setAttr(contentE, "id", content.first->id());
+        xw.setAttr(contentE, "quantity", content.second);
+    }
 
-        if (obj->permissions().hasOwner()){
-            const auto &owner = obj->permissions().owner();
-            auto ownerElem = xw.addChild("owner", e);
-            xw.setAttr(ownerElem, "type", owner.typeString());
-            xw.setAttr(ownerElem, "name", owner.name);
-        }
+    if (permissions().hasOwner()){
+        const auto &owner = permissions().owner();
+        auto ownerElem = xw.addChild("owner", e);
+        xw.setAttr(ownerElem, "type", owner.typeString());
+        xw.setAttr(ownerElem, "name", owner.name);
+    }
 
-        if (obj->spawner() != nullptr)
-            xw.setAttr(e, "spawner", obj->spawner()->index());
+    if (spawner() != nullptr)
+        xw.setAttr(e, "spawner", spawner()->index());
 
-        auto loc = xw.addChild("location", e);
-        xw.setAttr(loc, "x", obj->location().x);
-        xw.setAttr(loc, "y", obj->location().y);
+    auto loc = xw.addChild("location", e);
+    xw.setAttr(loc, "x", location().x);
+    xw.setAttr(loc, "y", location().y);
 
-        if (obj->hasContainer()){
-            const auto &container = obj->container();
-            for (size_t i = 0; i != obj->objType().container().slots(); ++i) {
-                if (container.at(i).second == 0)
-                    continue;
-                auto invSlotE = xw.addChild("inventory", e);
-                xw.setAttr(invSlotE, "slot", i);
-                xw.setAttr(invSlotE, "item", container.at(i).first->id());
-                xw.setAttr(invSlotE, "qty", container.at(i).second);
-            }
-        }
-
-        const auto mSlots = obj->merchantSlots();
-        for (size_t i = 0; i != mSlots.size(); ++i){
-            if (!mSlots[i])
+    if (hasContainer()){
+        for (size_t i = 0; i != objType().container().slots(); ++i) {
+            if (container().at(i).second == 0)
                 continue;
-            auto mSlotE = xw.addChild("merchant", e);
-            xw.setAttr(mSlotE, "slot", i);
-            xw.setAttr(mSlotE, "wareItem", mSlots[i].wareItem->id());
-            xw.setAttr(mSlotE, "wareQty", mSlots[i].wareQty);
-            xw.setAttr(mSlotE, "priceItem", mSlots[i].priceItem->id());
-            xw.setAttr(mSlotE, "priceQty", mSlots[i].priceQty);
-        }
-
-        for (const auto &pair : obj->remainingMaterials()){
-            auto matE = xw.addChild("material", e);
-            xw.setAttr(matE, "id", pair.first->id());
-            xw.setAttr(matE, "qty", pair.second);
+            auto invSlotE = xw.addChild("inventory", e);
+            xw.setAttr(invSlotE, "slot", i);
+            xw.setAttr(invSlotE, "item", container().at(i).first->id());
+            xw.setAttr(invSlotE, "qty", container().at(i).second);
         }
     }
-    xw.publish();
-#ifndef SINGLE_THREAD
-    objectsFileMutex.unlock();
-#endif
 
-    // NPCs
-#ifndef SINGLE_THREAD
-    static std::mutex npcsFileMutex;
-    npcsFileMutex.lock();
-#endif
-    xw.newFile("World/npcs.world");
-    for (const Object *obj : objects) {
-        if (obj->classTag() != 'n')
+    const auto mSlots = merchantSlots();
+    for (size_t i = 0; i != mSlots.size(); ++i){
+        if (!mSlots[i])
             continue;
-        if (obj->type() == nullptr)
-            continue;
-        const NPC &npc = *reinterpret_cast<const NPC *>(obj);
-        auto e = xw.addChild("npc");
-
-        xw.setAttr(e, "id", npc.type()->id());
-
-        auto loc = xw.addChild("location", e);
-        xw.setAttr(loc, "x", npc.location().x);
-        xw.setAttr(loc, "y", npc.location().y);
-
-        xw.setAttr(e, "health", npc.health());
+        auto mSlotE = xw.addChild("merchant", e);
+        xw.setAttr(mSlotE, "slot", i);
+        xw.setAttr(mSlotE, "wareItem", mSlots[i].wareItem->id());
+        xw.setAttr(mSlotE, "wareQty", mSlots[i].wareQty);
+        xw.setAttr(mSlotE, "priceItem", mSlots[i].priceItem->id());
+        xw.setAttr(mSlotE, "priceQty", mSlots[i].priceQty);
     }
+
+    for (const auto &pair : remainingMaterials()){
+        auto matE = xw.addChild("material", e);
+        xw.setAttr(matE, "id", pair.first->id());
+        xw.setAttr(matE, "qty", pair.second);
+    }
+}
+
+void NPC::writeToXML(XmlWriter &xw) const{
+    auto e = xw.addChild("npc");
+
+    xw.setAttr(e, "id", type()->id());
+
+    auto loc = xw.addChild("location", e);
+    xw.setAttr(loc, "x",location().x);
+    xw.setAttr(loc, "y",location().y);
+
+    xw.setAttr(e, "health", health());
+}
+
+void Server::saveData(const Entities &entities, const Wars &wars, const Cities &cities){
+    // Entities
+#ifndef SINGLE_THREAD
+    static std::mutex entitiesFileMutex;
+    entitiesFileMutex.lock();
+#endif
+    XmlWriter xw("World/entities.world");
+
+    for (const Entity *entity : entities)
+        entity->writeToXML(xw);
+
     xw.publish();
 #ifndef SINGLE_THREAD
-    npcsFileMutex.unlock();
+    entitiesFileMutex.unlock();
 #endif
 
     // Wars

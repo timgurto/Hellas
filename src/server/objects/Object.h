@@ -12,6 +12,7 @@
 
 class Spawner;
 class User;
+class XmlWriter;
 
 // A server-side representation of an in-game object
 class Object : public Entity{
@@ -77,6 +78,8 @@ public:
     virtual health_t maxHealth() const override { return 0; }
     virtual health_t attack() const override { return 0; }
     virtual ms_t attackTime() const override { return 0; }
+
+    virtual void writeToXML(XmlWriter &xw) const override;
 
     virtual void update(ms_t timeElapsed) override;
     // Add this object to a list, for removal after all objects are updated.

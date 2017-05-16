@@ -15,10 +15,10 @@ TEST("Construction materials can be added")
 
     // When the user places a construction site;
     c.sendMessage(CL_CONSTRUCT, makeArgs("wall", 10, 10));
-    WAIT_UNTIL (s.objects().size() == 1);
+    WAIT_UNTIL (s.entities().size() == 1);
 
     // And gives it his brick
-    const Object &wall = **s.objects().begin();
+    const Object &wall = s.getFirstObject();
     c.sendMessage(CL_SWAP_ITEMS, makeArgs(Server::INVENTORY, 0, wall.serial(), 0));
 
     // Then construction has finished
@@ -49,14 +49,14 @@ TEST("Unique objects are unique")
     WAIT_UNTIL (s.users().size() == 1);
 
     c.sendMessage(CL_CONSTRUCT, makeArgs("throne", 10, 10));
-    WAIT_UNTIL (s.objects().size() == 1);
+    WAIT_UNTIL (s.entities().size() == 1);
 
     c.sendMessage(CL_CONSTRUCT, makeArgs("throne", 10, 10));
     bool isConstructionRejected = c.waitForMessage(SV_UNIQUE_OBJECT);
 
     if (! isConstructionRejected)
         return false;
-    if (s.objects().size() > 1)
+    if (s.entities().size() > 1)
         return false;
 
     return true;
@@ -77,7 +77,7 @@ TEST("Objects can be unbuildable")
     c.sendMessage(CL_CONSTRUCT, makeArgs("treehouse", 10, 10));
 
     REPEAT_FOR_MS(1200)
-        if (s.objects().size() == 1)
+        if (s.entities().size() == 1)
             return false;
     return true;
 TEND
@@ -97,7 +97,7 @@ TEST("Objects without materials can't be built")
     
     c.sendMessage(CL_CONSTRUCT, makeArgs("rock", 10, 15));
     REPEAT_FOR_MS(1200)
-        if (s.objects().size() == 1)
+        if (s.entities().size() == 1)
             return false;
     return true;
 TEND
@@ -112,7 +112,7 @@ TEST("Construction tool requirements are enforced")
 
     if (! isConstructionRejected)
         return false;
-    if (s.objects().size() > 1)
+    if (s.entities().size() > 1)
         return false;
 
     return true;

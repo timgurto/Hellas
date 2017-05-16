@@ -6,7 +6,7 @@ TEST("Objects have no owner by default")
     // When a basic object is created
     TestServer s = TestServer::WithData("basic_rock");
     s.addObject("rock", Point(10, 10));
-    WAIT_UNTIL(s.objects().size() == 1);
+    WAIT_UNTIL(s.entities().size() == 1);
 
     // Then that object has no owner
     Object &rock = s.getFirstObject();
@@ -21,7 +21,7 @@ TEST("Constructing an object grants ownership")
 
     // When he constructs a wall
     c.sendMessage(CL_CONSTRUCT, makeArgs("wall", 10, 10));
-    WAIT_UNTIL (s.objects().size() == 1);
+    WAIT_UNTIL (s.entities().size() == 1);
 
     // Then he is the wall's owner
     Object &wall = s.getFirstObject();
@@ -45,7 +45,7 @@ TEST("Public-access objects")
     User &user = s.getFirstUser();
     WAIT_UNTIL (user.action() == User::Action::GATHER);
     WAIT_UNTIL (user.action() == User::Action::NO_ACTION);
-    WAIT_UNTIL_TIMEOUT(s.objects().empty(), 200);
+    WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
     const Item &rockItem = s.getFirstItem();
     WAIT_UNTIL_TIMEOUT(user.inventory()[0].first == &rockItem, 200);
     return true;
@@ -67,7 +67,7 @@ TEST("The owner can access an owned object")
     // Then he gathers, receives a rock item, and the object disapears
     WAIT_UNTIL (user.action() == User::Action::GATHER);
     WAIT_UNTIL (user.action() == User::Action::NO_ACTION);
-    WAIT_UNTIL_TIMEOUT(s.objects().empty(), 200);
+    WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
     const Item &rockItem = s.getFirstItem();
     WAIT_UNTIL_TIMEOUT(user.inventory()[0].first == &rockItem, 200);
     return true;
@@ -88,7 +88,7 @@ TEST("A non-owner cannot access an owned object")
 
     // Then the rock remains, and his inventory remains empty
     REPEAT_FOR_MS(500)
-        if (s.objects().empty())
+        if (s.entities().empty())
             return false;
     User &user = s.getFirstUser();
     if (user.inventory()[0].first != nullptr)
@@ -160,7 +160,7 @@ TEST("City members can use city objects")
     const Item &rockItem = s.getFirstItem();
     WAIT_UNTIL_TIMEOUT(user.inventory()[0].first == &rockItem, 200);
     // And the Rock object disappears
-    WAIT_UNTIL_TIMEOUT(s.objects().empty(), 200);
+    WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
     return true;
 TEND
 
@@ -182,7 +182,7 @@ TEST("Non-members cannot use city objects")
 
     // Then the rock remains;
     REPEAT_FOR_MS(500)
-        if (s.objects().empty())
+        if (s.entities().empty())
             return false;
     // And his inventory remains empty
     User &user = s.getFirstUser();

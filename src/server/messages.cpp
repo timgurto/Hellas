@@ -82,7 +82,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 user->cancelAction();
             if (user->isDriving()){
                 // Move vehicle and user together
-                Vehicle &vehicle = dynamic_cast<Vehicle &>(*findObject(user->driving()));
+                size_t vehicleSerial = user->driving();
+                Vehicle &vehicle = * _entities.find<Vehicle>(vehicleSerial);
                 vehicle.updateLocation(Point(x, y));
                 user->updateLocation(vehicle.location());
                 break;
@@ -225,7 +226,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             user->cancelAction();
-            Object *obj = findObject(serial);
+            Object *obj = _entities.find<Object>(serial);
             if (!isObjectInRange(client, *user, obj)) {
                 sendMessage(client, SV_DOESNT_EXIST);
                 break;
@@ -262,7 +263,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             user->cancelAction();
-            Object *obj = findObject(serial);
+            Object *obj = _entities.find<Object>(serial);
             if (!isObjectInRange(client, *user, obj)) {
                 sendMessage(client, SV_TOO_FAR);
                 break;
@@ -309,7 +310,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 case INVENTORY: container = &user->inventory(); break;
                 case GEAR:      container = &user->gear();      break;
                 default:
-                    pObj = findObject(serial);
+                    pObj = _entities.find<Object>(serial);
                     if (!pObj->hasContainer()){
                         sendMessage(client, SV_NO_INVENTORY);
                         breakMsg = true;
@@ -364,7 +365,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 case INVENTORY: containerFrom = &user->inventory(); break;
                 case GEAR:      containerFrom = &user->gear();      break;
                 default:
-                    pObj1 = findObject(obj1);
+                    pObj1 = _entities.find<Object>(obj1);
                     if (!pObj1->hasContainer()){
                         sendMessage(client, SV_NO_INVENTORY);
                         breakMsg = true;
@@ -387,7 +388,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 case INVENTORY: containerTo = &user->inventory(); break;
                 case GEAR:      containerTo = &user->gear();      break;
                 default:
-                    pObj2 = findObject(obj2);
+                    pObj2 = _entities.find<Object>(obj2);
                     if (pObj2 != nullptr &&
                         pObj2->isBeingBuilt() &&
                         slot2 == 0)
@@ -545,7 +546,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (obj == GEAR)
                 container = &user->gear();
             else {
-                pObj = findObject(obj);
+                pObj = _entities.find<Object>(obj);
                 if (!pObj->hasContainer()){
                     sendMessage(client, SV_NO_INVENTORY);
                     break;
@@ -613,7 +614,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
 
             // Check that merchant slot is valid
-            Object *obj = findObject(serial);
+            Object *obj = _entities.find<Object>(serial);
             if (!isObjectInRange(client, *user, obj))
                 break;
             if (obj->isBeingBuilt()){
@@ -696,7 +697,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> del >> priceQty >> del;
             if (del != MSG_END)
                 return;
-            Object *obj = findObject(serial);
+            Object *obj = _entities.find<Object>(serial);
             if (!isObjectInRange(client, *user, obj))
                 break;
             if (obj->isBeingBuilt()){
@@ -741,7 +742,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del >> slot >> del;
             if (del != MSG_END)
                 return;
-            Object *obj = findObject(serial);
+            Object *obj = _entities.find<Object>(serial);
             if (!isObjectInRange(client, *user, obj))
                 break;
             if (obj->isBeingBuilt()){
@@ -775,7 +776,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != MSG_END)
                 return;
-            Object *obj = findObject(serial);
+            Object *obj = _entities.find<Object>(serial);
             if (!isObjectInRange(client, *user, obj))
                 break;
             if (obj->isBeingBuilt()){
@@ -826,7 +827,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             size_t serial = user->driving();
-            Object *obj = findObject(serial);
+            Object *obj = _entities.find<Object>(serial);
             Vehicle *v = dynamic_cast<Vehicle *>(obj);
 
             // Move him before dismounting him, to avoid unnecessary collision/distance checks
@@ -846,7 +847,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != MSG_END)
                 return;
-            Object *obj = findObject(serial);
+            Object *obj = _entities.find<Object>(serial);
             if (!isObjectInRange(client, *user, obj))
                 break;
 
@@ -875,7 +876,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != MSG_END)
                 return;
-            Object *obj = findObject(serial);
+            Object *obj = _entities.find<Object>(serial);
             if (obj == nullptr) {
                 sendMessage(client, SV_DOESNT_EXIST);
                 break;
@@ -897,7 +898,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (serial == INVENTORY || serial == GEAR)
                 obj = nullptr;
             else {
-                obj = findObject(serial);
+                obj = _entities.find<Object>(serial);
                 if (obj == nullptr) {
                     user->setTargetAndAttack(nullptr);
                     sendMessage(client, SV_DOESNT_EXIST);
@@ -984,7 +985,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (serial == INVENTORY || serial == GEAR)
                 obj = nullptr;
             else
-                obj = findObject(serial);
+                obj = _entities.find<Object>(serial);
             if (obj == nullptr) {
                 sendMessage(client, SV_DOESNT_EXIST);
                 break;
