@@ -61,3 +61,23 @@ TEST("Constructible NPC is loaded as NPC")
     const ClientNPCType &npcType = dynamic_cast<const ClientNPCType &>(objType);
     return npcType.maxHealth() == 5;
 TEND
+
+TEST("Object spawners work")
+    // Given a spawner that maintains 3 rocks
+    // When a server runs
+    TestServer s = TestServer::WithData("spawned_rocks");
+
+    // Then there are 3 rocks
+    WAIT_UNTIL(s.entities().size() == 3);
+    return true;
+TEND
+
+TEST("NPC spawners work")
+    // Given a spawner that maintains 3 chickens
+    // When a server runs
+    TestServer s = TestServer::WithData("spawned_chickens");
+
+    // Then there are 3 chickens
+    WAIT_UNTIL(s.entities().size() == 3);
+    return true;
+TEND

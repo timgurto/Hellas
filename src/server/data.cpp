@@ -612,14 +612,13 @@ void Server::loadData(const std::string &path){
     std::ifstream fs;
     // Detect/load state
     do {
+        bool loadExistingData = ! cmdLineArgs.contains("new");
 
         // Entities
-        if (cmdLineArgs.contains("new"))
-            xr.newFile(path + "/staticObjects.xml");
-        else
+        if (loadExistingData)
             xr.newFile("World/entities.world");
-        if (!xr)
-            break;
+        else
+            xr.newFile(path + "/staticObjects.xml");
         for (auto elem : xr.getChildren("object")) {
             std::string s;
             if (!xr.findAttr(elem, "id", s)) {
@@ -755,6 +754,9 @@ void Server::loadData(const std::string &path){
             }
         }
 
+        if (! loadExistingData)
+            break;
+
         // Wars
         xr.newFile("World/wars.world");
         if (!xr)
@@ -772,6 +774,7 @@ void Server::loadData(const std::string &path){
         _cities.readFromXMLFile("World/cities.world");
 
         _dataLoaded = true;
+
         return;
     } while (false);
 

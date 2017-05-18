@@ -1,0 +1,9 @@
+<root>
+
+<npcType
+    id="chicken"
+    name="Chicken"
+	maxHealth="1" >
+</npcType>
+
+</root>
