@@ -26,7 +26,8 @@ Object::Object(const Point &loc):
 {}
 
 Object::~Object(){
-    objType().decrementCounter();
+    if (type() != nullptr)
+        objType().decrementCounter();
 }
 
 
