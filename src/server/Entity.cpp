@@ -75,6 +75,9 @@ void Entity::update(ms_t timeElapsed){
     else
         _attackTimer = 0;
 
+    if (target() == nullptr)
+        return;
+
     assert(target()->health() > 0);
 
     if (_attackTimer > 0)
