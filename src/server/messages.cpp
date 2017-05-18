@@ -894,28 +894,24 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             user->cancelAction();
-            Object *obj;
+            Entity *target;
             if (serial == INVENTORY || serial == GEAR)
-                obj = nullptr;
+                target = nullptr;
             else {
-                obj = _entities.find<Object>(serial);
-                if (obj == nullptr) {
+                target = _entities.find(serial);
+                if (target == nullptr) {
                     user->setTargetAndAttack(nullptr);
                     sendMessage(client, SV_DOESNT_EXIST);
                     break;
                 }
-                if (obj->isBeingBuilt()){
-                    sendMessage(client, SV_UNDER_CONSTRUCTION);
-                    break;
-                }
-                if (obj->classTag() != 'n'){
+                if (target->classTag() != 'n'){
                     user->setTargetAndAttack(nullptr);
                     sendMessage(client, SV_NOT_NPC);
                     break;
                 }
             }
 
-            NPC *npc = dynamic_cast<NPC *>(obj);
+            NPC *npc = dynamic_cast<NPC *>(target);
             if (npc != nullptr && npc->health() == 0){
                 user->setTargetAndAttack(nullptr);
                 sendMessage(client, SV_NPC_DEAD);
