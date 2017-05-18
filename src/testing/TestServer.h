@@ -28,6 +28,7 @@ public:
 
     User &getFirstUser();
     Object &getFirstObject();
+    NPC &getFirstNPC();
     ServerItem &getFirstItem();
 
     void addObject(const std::string &typeName, const Point &loc, const User *owner = nullptr);

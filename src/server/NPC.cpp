@@ -12,15 +12,13 @@ NPC::NPC(const NPCType *type, const Point &loc):
 {}
 
 void NPC::update(ms_t timeElapsed){
-    Entity::update(timeElapsed);
-
     if (health() == 0){
         if (timeElapsed < _corpseTime)
             _corpseTime -= timeElapsed;
         else
             markForRemoval();
     } else {
-        processAI(timeElapsed);
+        processAI(timeElapsed); // May call Entity::update()
     }
 }
 

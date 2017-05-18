@@ -106,3 +106,22 @@ TEST("Peaceful players can't fight")
 
     return true;
 TEND
+
+TEST("Attack rate is respected")
+    // Given a server, with a wolf NPC which hits for 1 damage every 100ms;
+    TestServer s = TestServer::WithData("wolf");
+    s.addNPC("wolf", Point(10, 20));
+
+    // And a nearby user
+    TestClient c;
+    WAIT_UNTIL(s.users().size() == 1);
+    const User &user = s.getFirstUser();
+    health_t before = user.health();
+
+    // When 1050ms elapse
+    REPEAT_FOR_MS(1050);
+
+    // Then the user has taken exactly 10 damage
+    health_t after = user.health();
+    return before - after == 10;
+TEND

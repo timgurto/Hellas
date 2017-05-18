@@ -217,7 +217,7 @@ void Server::run(){
         for (const User &user : _users)
             const_cast<User&>(user).update(timeElapsed);
 
-        // Update objects
+        // Update non-user entities
         for (Entity *entP : _entities)
             entP->update(timeElapsed);
 

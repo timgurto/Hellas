@@ -103,6 +103,13 @@ Object &TestServer::getFirstObject() {
     return * dynamic_cast<Object *>(ent);
 }
 
+NPC &TestServer::getFirstNPC() {
+    assert(! _server->_entities.empty());
+    auto it =_server-> _entities.begin();
+    Entity *ent = *it;
+    return * dynamic_cast<NPC *>(ent);
+}
+
 ServerItem &TestServer::getFirstItem() {
     assert(! _server->_items.empty());
     return const_cast<ServerItem &>(* _server->_items.begin());

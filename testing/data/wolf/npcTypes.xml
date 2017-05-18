@@ -1,0 +1,7 @@
+<root>
+
+<npcType id="wolf" name="Wolf"
+	maxHealth="40" attack="1" attackTime="100" >
+</npcType>
+
+</root>
