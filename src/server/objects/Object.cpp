@@ -5,15 +5,16 @@
 #include "../../util.h"
 
 Object::Object(const ObjectType *type, const Point &loc):
-Entity(loc, 0),
-_spawner(nullptr),
+Entity(type, loc, 0),
 _numUsersGathering(0),
 _transformTimer(0),
 _container(nullptr),
 _deconstruction(nullptr)
 {
-    if (type != nullptr)
+    if (type != nullptr){
         setType(type);
+        objType().incrementCounter();
+    }
 }
 
 Object::Object(size_t serial):
@@ -23,6 +24,10 @@ Object::Object(size_t serial):
 Object::Object(const Point &loc):
     Entity(loc)
 {}
+
+Object::~Object(){
+    objType().decrementCounter();
+}
 
 
 void Object::contents(const ItemSet &contents){
@@ -77,10 +82,6 @@ void Object::removeWatcher(const std::string &username){
     Server::debug() << username << " is no longer watching an object." << Log::endl;
 }
 
-void Object::markForRemoval(){
-    Server::_instance->_objectsToRemove.push_back(this);
-}
-
 void Object::incrementGatheringUsers(const User *userToSkip){
     const Server &server = *Server::_instance;
     ++_numUsersGathering;
@@ -108,11 +109,6 @@ void Object::removeAllGatheringUsers(){
     _numUsersGathering = 0;
     for (const User *user : server.findUsersInArea(location()))
         server.sendMessage(user->socket(), SV_NOT_GATHERING_OBJECT, makeArgs(serial()));
-}
-
-void Object::onRemove(){
-    if (_spawner != nullptr)
-        _spawner->scheduleSpawn();
 }
 
 void Object::update(ms_t timeElapsed){
@@ -147,7 +143,7 @@ void Object::setType(const ObjectType *type){
         type->yield().instantiate(_contents);
     }
     
-    server->forceUntarget(*this);
+    server->forceAllToUntarget(*this);
     removeAllGatheringUsers();
 
     delete _container;

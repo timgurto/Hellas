@@ -2,12 +2,13 @@
 #define NPC_H
 
 #include "Entity.h"
+#include "Loot.h"
 #include "NPCType.h"
 #include "objects/Object.h"
 #include "../Point.h"
 
 // Objects that can engage in combat, and that are AI-driven
-class NPC : public Object {
+class NPC : public Entity {
     enum State {
         IDLE,
         CHASE,
@@ -44,6 +45,9 @@ public:
 
     virtual void update(ms_t timeElapsed);
     void processAI(ms_t timeElapsed);
+
+private:
+    Loot _loot;
 };
 
 #endif

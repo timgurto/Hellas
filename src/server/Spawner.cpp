@@ -38,10 +38,12 @@ void Spawner::spawn(){
             continue;
 
         // Add object;
-        Object &obj = _type->classTag() == 'n' ?
-                      server.addNPC(dynamic_cast<const NPCType *>(_type), p) :
-                      server.addObject(_type, p);
-        obj.spawner(this);
+        Entity *entity;
+        if (_type->classTag() == 'n')
+            entity = &server.addNPC(dynamic_cast<const NPCType *>(_type), p);
+        else
+            entity = &server.addObject(dynamic_cast<const ObjectType *>(_type), p);
+        entity->spawner(this);
         return;
     }
 

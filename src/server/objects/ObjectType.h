@@ -79,8 +79,6 @@ public:
     const ObjectType *transformObject() const {return _transformObject; }
     bool transforms() const { return _transformObject != nullptr; }
 
-    void checkUniquenessInvariant() const;
-
     void addYield(const ServerItem *item,
                   double initMean, double initSD, size_t initMin,
                   double gatherMean, double gatherSD);
@@ -95,6 +93,9 @@ public:
     DeconstructionType &deconstruction() { return *_deconstruction; }
     const DeconstructionType &deconstruction() const { return *_deconstruction; }
     void addDeconstruction(DeconstructionType *p) { _deconstruction = p; }
+
+private:
+    void checkUniquenessInvariant() const;
 };
 
 #endif

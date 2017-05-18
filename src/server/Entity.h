@@ -6,6 +6,7 @@
 #include "../Rect.h"
 #include "../types.h"
 
+class Spawner;
 class User;
 class XmlWriter;
 
@@ -13,14 +14,12 @@ class XmlWriter;
 class Entity {
 
 public:
-    Entity(const Point &loc, health_t health);
+    Entity(const EntityType *type, const Point &loc, health_t health);
     Entity(size_t serial); // TODO make private
     Entity(const Point &loc); // TODO make private
+    virtual ~Entity();
     
     const EntityType *type() const { return _type; }
-    void type(const EntityType *type) { _type = type; }
-
-    virtual ~Entity(){}
 
     virtual char classTag() const = 0;
     
@@ -34,12 +33,16 @@ public:
     void serial(size_t s) { _serial = s; }
 
     virtual void update(ms_t timeElapsed);
+    // Add this entity to a list, for removal after all objects are updated.
+    void markForRemoval();
 
     virtual void sendInfoToClient(const User &targetUser) const = 0;
 
     virtual void writeToXML(XmlWriter &xw) const {}
 
-
+    Spawner *spawner() const { return _spawner; }
+    void spawner(Spawner *p) { _spawner = p; }
+    
     // Space
     const Point &location() const { return _location; }
     void location(const Point &loc) { _location = loc; }
@@ -59,7 +62,6 @@ public:
     void health(health_t health) { _health = health; }
 
     void reduceHealth(int damage);
-
     virtual void onHealthChange() {}; // Probably alerting relevant users.
     virtual void onDeath() {}; // Anything that needs to happen upon death.
 
@@ -70,11 +72,14 @@ public:
     */
     void updateLocation(const Point &dest);
 
+protected:
+    void type(const EntityType *type) { _type = type; }
 
 private:
     static size_t generateSerial();
     const EntityType *_type;
-
+    
+    Spawner *_spawner; // The Spawner that created this entity, if any.
 
     // Space
     size_t _serial;

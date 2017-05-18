@@ -2,10 +2,12 @@
 
 #include "Entity.h"
 #include "Server.h"
+#include "Spawner.h"
 
-Entity::Entity(const Point &loc, health_t health):
+Entity::Entity(const EntityType *type, const Point &loc, health_t health):
+    _type(type),
     _serial(generateSerial()),
-    _type(nullptr),
+    _spawner(nullptr),
 
     _location(loc),
     _lastLocUpdate(SDL_GetTicks()),
@@ -26,6 +28,11 @@ Entity::Entity(const Point &loc): // For set/map lookup ONLY
     _serial(0)
 {}
 
+Entity::~Entity(){
+    if (_spawner != nullptr)
+        _spawner->scheduleSpawn();
+}
+
 bool Entity::compareSerial::operator()( const Entity *a, const Entity *b){
     return a->_serial < b->_serial;
 }
@@ -45,6 +52,10 @@ bool Entity::compareYThenSerial::operator()( const Entity *a, const Entity *b){
 size_t Entity::generateSerial() {
     static size_t currentSerial = Server::STARTING_SERIAL;
     return currentSerial++;
+}
+
+void Entity::markForRemoval(){
+    Server::_instance->_entitiesToRemove.push_back(this);
 }
 
 void Entity::reduceHealth(int damage){

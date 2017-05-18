@@ -7,14 +7,12 @@ const ms_t NPC::CORPSE_TIME = 600000; // 10 minutes
 const size_t NPC::LOOT_CAPACITY = 8;
 
 NPC::NPC(const NPCType *type, const Point &loc):
-    Object(type, loc),
+    Entity(type, loc, type->maxHealth()),
     _state(IDLE)
-{
-    health(maxHealth());
-}
+{}
 
 void NPC::update(ms_t timeElapsed){
-    Object::update(timeElapsed);
+    Entity::update(timeElapsed);
 
     if (health() == 0){
         if (timeElapsed < _corpseTime)
@@ -35,9 +33,9 @@ void NPC::onHealthChange(){
 void NPC::onDeath(){
     _corpseTime = CORPSE_TIME;
     Server &server = *Server::_instance;
-    server.forceUntarget(*this);
-    assert(hasContainer());
-    npcType()->lootTable().instantiate(container().raw());
+    server.forceAllToUntarget(*this);
+
+    npcType()->lootTable().instantiate(_loot);
     for (const User *user : server.findUsersInArea(location()))
         server.sendMessage(user->socket(), SV_LOOTABLE, makeArgs(serial()));
 
@@ -113,7 +111,7 @@ void NPC::processAI(ms_t timeElapsed){
 }
 
 bool NPC::collides() const{
-    return Object::collides() && health() > 0;
+    return Entity::collides() && health() > 0;
 }
 
 void NPC::sendInfoToClient(const User &targetUser) const {
@@ -128,6 +126,6 @@ void NPC::sendInfoToClient(const User &targetUser) const {
         server.sendMessage(client, SV_NPC_HEALTH, makeArgs(serial(), health()));
 
     // Loot
-    if (hasContainer() && !container().isEmpty())
+    if (!_loot.empty())
         server.sendMessage(client, SV_LOOTABLE, makeArgs(serial()));
 }

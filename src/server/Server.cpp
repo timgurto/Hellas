@@ -222,10 +222,10 @@ void Server::run(){
             entP->update(timeElapsed);
 
         // Clean up dead objects
-        for (Object *objP : _objectsToRemove){
-            removeEntity(*objP);
+        for (Entity *entP : _entitiesToRemove){
+            removeEntity(*entP);
         }
-        _objectsToRemove.clear();
+        _entitiesToRemove.clear();
 
         // Update spawners
         for (auto &pair : _spawners)
@@ -368,7 +368,7 @@ void Server::removeUser(const std::set<User>::iterator &it){
         if (userP != &*it)
             sendMessage(userP->socket(), SV_USER_DISCONNECTED, it->name());
 
-    forceUntarget(*it);
+    forceAllToUntarget(*it);
 
     // Save user data
     writeUserData(*it);
@@ -417,7 +417,7 @@ bool Server::isObjectInRange(const Socket &client, const User &user, const Objec
     return true;
 }
 
-void Server::forceUntarget(const Object &target, const User *userToExclude){
+void Server::forceAllToUntarget(const Entity &target, const User *userToExclude){
     // Fix users targeting the object
     size_t serial = target.serial();
     for (const User &userConst : _users) {
@@ -448,23 +448,20 @@ void Server::forceUntarget(const Object &target, const User *userToExclude){
     }
 }
 
-void Server::removeEntity(Object &obj, const User *userToExclude){
-    obj.onRemove();
-
+void Server::removeEntity(Entity &ent, const User *userToExclude){
     // Ensure no other users are targeting this object, as it will be removed.
-    forceUntarget(obj, userToExclude);
+    forceAllToUntarget(ent, userToExclude);
 
     // Alert nearby users of the removal
-    size_t serial = obj.serial();
-    for (const User *userP : findUsersInArea(obj.location()))
+    size_t serial = ent.serial();
+    for (const User *userP : findUsersInArea(ent.location()))
         sendMessage(userP->socket(), SV_REMOVE_OBJECT, makeArgs(serial));
 
-    obj.objType().decrementCounter();
 
-    getCollisionChunk(obj.location()).removeEntity(serial);
-    _entitiesByX.erase(&obj);
-    _entitiesByY.erase(&obj);
-    _entities.erase(&obj);
+    getCollisionChunk(ent.location()).removeEntity(serial);
+    _entitiesByX.erase(&ent);
+    _entitiesByY.erase(&ent);
+    _entities.erase(&ent);
 
 }
 
@@ -484,7 +481,7 @@ void Server::gatherObject(size_t serial, User &user){
     obj->removeItem(toGive, qtyToGive);
     if (obj->contents().isEmpty()){
         if (obj->objType().transformsOnEmpty()){
-            forceUntarget(*obj);
+            forceAllToUntarget(*obj);
             obj->removeAllGatheringUsers();
         } else
             removeEntity(*obj, &user);
@@ -531,33 +528,31 @@ Object &Server::addObject(const ObjectType *type, const Point &location, const U
             new Object(type, location);
     if (owner != nullptr)
         newObj->permissions().setPlayerOwner(owner->name());
-    return addObject(newObj);
+    return dynamic_cast<Object &>(addEntity(newObj));
 }
 
 NPC &Server::addNPC(const NPCType *type, const Point &location){
     NPC *newNPC = new NPC(type, location);
-    return dynamic_cast<NPC &>(addObject(newNPC));
+    return dynamic_cast<NPC &>(addEntity(newNPC));
 }
 
-Object &Server::addObject(Object *newObj){
-    _entities.insert(newObj);
-    const Point &loc = newObj->location();
+Entity &Server::addEntity(Entity *newEntity){
+    _entities.insert(newEntity);
+    const Point &loc = newEntity->location();
 
     // Alert nearby users
     for (const User *userP : findUsersInArea(loc))
-        newObj->sendInfoToClient(*userP);
+        newEntity->sendInfoToClient(*userP);
 
     // Add object to relevant chunk
-    if (newObj->type()->collides())
-        getCollisionChunk(loc).addEntity(newObj);
+    if (newEntity->type()->collides())
+        getCollisionChunk(loc).addEntity(newEntity);
 
     // Add object to x/y index sets
-    _entitiesByX.insert(newObj);
-    _entitiesByY.insert(newObj);
+    _entitiesByX.insert(newEntity);
+    _entitiesByY.insert(newEntity);
 
-    newObj->objType().incrementCounter();
-
-    return const_cast<Object&>(*newObj);
+    return const_cast<Entity&>(*newEntity);
 }
 
 const User &Server::getUserByName(const std::string &username) const {

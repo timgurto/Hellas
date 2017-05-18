@@ -150,10 +150,9 @@ private:
     std::map<size_t, Spawner> _spawners;
     std::map<char, Terrain*> _terrainTypes;
 
-    std::list<Object *> _objectsToRemove; // Emptied every tick.
-    // Force all users to untarget an object
-    void forceUntarget(const Object &obj, const User *userToExclude = nullptr); 
-    void removeEntity(Object &obj, const User *userToExclude = nullptr);
+    std::list<Entity *> _entitiesToRemove; // Emptied every tick.
+    void forceAllToUntarget(const Entity &target, const User *userToExclude = nullptr); 
+    void removeEntity(Entity &ent, const User *userToExclude = nullptr);
     void gatherObject (size_t serial, User &user);
 
     friend class City;
@@ -168,7 +167,7 @@ private:
 
     NPC &addNPC(const NPCType *type, const Point &location); 
     Object &addObject (const ObjectType *type, const Point &location, const User *owner = nullptr);
-    Object &addObject (Object *newObj);
+    Entity &addEntity (Entity *newEntity);
 
     // Collision detection
     static const px_t COLLISION_CHUNK_SIZE;

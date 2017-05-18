@@ -6,6 +6,8 @@
 #include "ServerItem.h"
 #include "../NormalVariable.h"
 
+class Loot;
+
 // Defines the loot chances for a single NPC type, and generates loot.
 class LootTable{
     struct LootEntry{
@@ -19,7 +21,7 @@ public:
     void addItem(const ServerItem *item, double mean = 1, double sd = 0);
 
     // Creates a new instance of this Yield, with random init values, in the specified ItemSet
-    void instantiate(ServerItem::vect_t &container) const;
+    void instantiate(Loot &container) const;
 };
 
 #endif

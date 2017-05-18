@@ -10,7 +10,6 @@
 #include "../Permissions.h"
 #include "../../Point.h"
 
-class Spawner;
 class User;
 class XmlWriter;
 
@@ -19,8 +18,6 @@ class Object : public Entity{
     Permissions _permissions;
     ItemSet _contents; // Remaining contents, which can be gathered
     std::vector<MerchantSlot> _merchantSlots;
-
-    Spawner *_spawner; // The Spawner that created this object, if any.
 
     size_t _numUsersGathering; // The number of users gathering from this object.
 
@@ -38,7 +35,7 @@ public:
     Object(size_t serial);
     Object(const Point &loc);
 
-    virtual ~Object(){}
+    virtual ~Object();
 
     const ObjectType &objType() const { return * dynamic_cast<const ObjectType *>(type()); }
 
@@ -47,8 +44,6 @@ public:
     const std::vector<MerchantSlot> &merchantSlots() const { return _merchantSlots; }
     const MerchantSlot &merchantSlot(size_t slot) const { return _merchantSlots[slot]; }
     MerchantSlot &merchantSlot(size_t slot) { return _merchantSlots[slot]; }
-    Spawner *spawner() const { return _spawner; }
-    void spawner(Spawner *p) { _spawner = p; }
     const std::set<std::string> &watchers() const { return _watchers; }
     void incrementGatheringUsers(const User *userToSkip = nullptr);
     void decrementGatheringUsers(const User *userToSkip = nullptr);
@@ -82,12 +77,8 @@ public:
     virtual void writeToXML(XmlWriter &xw) const override;
 
     virtual void update(ms_t timeElapsed) override;
-    // Add this object to a list, for removal after all objects are updated.
-    void markForRemoval();
 
     void setType(const ObjectType *type); // Set/change ObjectType
-
-    virtual void onRemove();
 
     virtual void sendInfoToClient(const User &targetUser) const override;
 
