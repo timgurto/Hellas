@@ -57,7 +57,7 @@ TEST("The owner can access an owned object")
     TestClient c = TestClient::WithData("basic_rock");
     WAIT_UNTIL(s.users().size() == 1);
     User &user = s.getFirstUser();
-    s.addObject("rock", Point(10, 10), &user);
+    s.addObject("rock", Point(10, 10), user.name());
     WAIT_UNTIL (c.objects().size() == 1);
 
     // When he attempts to gather it

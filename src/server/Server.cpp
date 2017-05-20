@@ -522,12 +522,12 @@ const ObjectType *Server::findObjectTypeByName(const std::string &id) const{
     return nullptr;
 }
 
-Object &Server::addObject(const ObjectType *type, const Point &location, const User *owner){
+Object &Server::addObject(const ObjectType *type, const Point &location, const std::string &owner){
     Object *newObj = type->classTag() == 'v' ?
             new Vehicle(dynamic_cast<const VehicleType *>(type), location) :
             new Object(type, location);
-    if (owner != nullptr)
-        newObj->permissions().setPlayerOwner(owner->name());
+    if (! owner.empty())
+        newObj->permissions().setPlayerOwner(owner);
     return dynamic_cast<Object &>(addEntity(newObj));
 }
 

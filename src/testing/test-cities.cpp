@@ -137,7 +137,7 @@ SLOW_TEST("A player can cede an object to his city")
     s.cities().addPlayerToCity(user, "athens");
 
     // And an object owned by him
-    s.addObject("rock", Point(10, 10), &user);
+    s.addObject("rock", Point(10, 10), user.name());
 
     // When he sends a CL_CEDE command
     WAIT_UNTIL(c.objects().size() == 1);
@@ -157,7 +157,7 @@ TEST("A player must be in a city to cede")
     TestServer s = TestServer::WithData("basic_rock");
     WAIT_UNTIL(s.users().size() == 1);
     User &user = s.getFirstUser();
-    s.addObject("rock", Point(10, 10), &user);
+    s.addObject("rock", Point(10, 10), user.name());
 
     // When he sends a CL_CEDE command
     WAIT_UNTIL(c.objects().size() == 1);

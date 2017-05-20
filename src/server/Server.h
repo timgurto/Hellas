@@ -166,7 +166,8 @@ private:
     friend class ProgressLock;
 
     NPC &addNPC(const NPCType *type, const Point &location); 
-    Object &addObject (const ObjectType *type, const Point &location, const User *owner = nullptr);
+    Object &addObject (const ObjectType *type, const Point &location,
+                       const std::string &owner = "");
     Entity &addEntity (Entity *newEntity);
 
     // Collision detection

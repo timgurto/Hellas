@@ -70,7 +70,8 @@ void TestServer::stop(){
     WAIT_FOREVER_UNTIL (!_server->_running);
 }
 
-void TestServer::addObject(const std::string &typeName, const Point &loc, const User *owner){
+void TestServer::addObject(const std::string &typeName, const Point &loc,
+                           const std::string &owner){
     const ObjectType *const type = _server->findObjectTypeByName(typeName);
     assert(type != nullptr);
     _server->addObject(type, loc, owner);

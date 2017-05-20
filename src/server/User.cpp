@@ -313,7 +313,7 @@ void User::update(ms_t timeElapsed){
     case CONSTRUCT:
     {
         // Create object
-        server.addObject(_actionObjectType, _actionLocation, this);
+        server.addObject(_actionObjectType, _actionLocation, _name);
         if (_actionSlot == INVENTORY_SIZE) // Constructing an object without an item
             break;
         // Remove item from user's inventory
