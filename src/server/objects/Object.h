@@ -66,7 +66,7 @@ public:
 
     virtual char classTag() const override { return 'o'; }
 
-    virtual health_t maxHealth() const override { return 0; }
+    virtual health_t maxHealth() const override { return objType().strength(); }
     virtual health_t attack() const override { return 0; }
     virtual ms_t attackTime() const override { return 0; }
 

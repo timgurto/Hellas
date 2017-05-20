@@ -12,6 +12,20 @@ class ServerItem;
 // Describes a class of Objects, the "instances" of which share common properties
 class ObjectType : public EntityType{
 
+    class Strength{
+    public:
+        Strength();
+        void set(const ServerItem *item, size_t quantity);
+        health_t get() const;
+
+    private:
+        const ServerItem *_item;
+        size_t _quantity;
+        mutable health_t _calculatedStrength;
+        mutable bool _strengthCalculated;
+    };
+    Strength _strength;
+
     mutable size_t _numInWorld;
 
     std::string _constructionReq;
@@ -78,6 +92,8 @@ public:
     bool transformsOnEmpty() const { return _transformOnEmpty; }
     const ObjectType *transformObject() const {return _transformObject; }
     bool transforms() const { return _transformObject != nullptr; }
+    health_t strength() const { return _strength.get(); }
+    void setStrength(const ServerItem *item, size_t quantity);
 
     void addYield(const ServerItem *item,
                   double initMean, double initSD, size_t initMin,

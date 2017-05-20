@@ -39,7 +39,6 @@ for (i in 1:length(data$roi)){
     blockingPBI = data$blockedBy[i]
     if (is.na(blockingPBI))
         next
-    print(i)
     blockingPbiIsDone = data$done[blockingPBI] # data is still sorted by issue #
     if (is.na(blockingPbiIsDone))
         next

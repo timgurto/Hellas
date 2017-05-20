@@ -8,12 +8,6 @@
 #include "Stats.h"
 
 class Item{
-protected:
-    std::string _id; // The no-space, unique name used in data files
-    std::set<std::string> _tags;
-    size_t _gearSlot;
-    StatsMod _stats; // If gear, the impact it has on its wearer's stats.
-
 public:
     static const size_t WEAPON_SLOT;
 
@@ -26,6 +20,8 @@ public:
     size_t gearSlot() const { return _gearSlot; }
     void stats(const StatsMod &stats) { _stats = stats; }
     const StatsMod &stats() const { return _stats; }
+    health_t strength() const { return _strength; }
+    void strength(health_t n) { _strength = n; }
     
     bool operator<(const Item &rhs) const { return _id < rhs._id; }
     
@@ -36,6 +32,15 @@ public:
     bool isTag(const std::string &tagName) const;
 
     static size_t getRandomArmorSlot();
+
+protected:
+    std::string _id; // The no-space, unique name used in data files
+    std::set<std::string> _tags;
+    size_t _gearSlot;
+    StatsMod _stats; // If gear, the impact it has on its wearer's stats.
+
+private:
+    health_t _strength;
 };
 
 #endif

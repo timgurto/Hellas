@@ -5,16 +5,14 @@
 #include "../../util.h"
 
 Object::Object(const ObjectType *type, const Point &loc):
-Entity(type, loc, 0),
+Entity(type, loc, type->strength()),
 _numUsersGathering(0),
 _transformTimer(0),
 _container(nullptr),
 _deconstruction(nullptr)
 {
-    if (type != nullptr){
-        setType(type);
-        objType().incrementCounter();
-    }
+    setType(type);
+    objType().incrementCounter();
 }
 
 Object::Object(size_t serial):

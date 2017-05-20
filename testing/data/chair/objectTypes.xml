@@ -1,0 +1,7 @@
+<root>
+
+<objectType id="chair" name="Chair" >
+    <strength item="wood" quantity="6" />
+</objectType>
+
+</root>

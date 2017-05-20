@@ -3,7 +3,9 @@
 const size_t Item::WEAPON_SLOT = 6;
 
 Item::Item(const std::string &id):
-_id(id){}
+    _id(id),
+    _strength(0)
+{}
 
 void Item::addTag(const std::string &tagName){
     _tags.insert(tagName);

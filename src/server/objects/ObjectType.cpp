@@ -27,3 +27,29 @@ void ObjectType::checkUniquenessInvariant() const{
     if (_isUnique)
     assert (_numInWorld <= 1);
 }
+
+void ObjectType::setStrength(const ServerItem *item, size_t quantity){
+    _strength.set(item, quantity);
+}
+
+ObjectType::Strength::Strength():
+    _item(nullptr),
+    _quantity(0),
+    _strengthCalculated(false),
+    _calculatedStrength(0)
+{}
+
+void ObjectType::Strength::set(const ServerItem *item, size_t quantity){
+    _item = item;
+    _quantity = quantity;
+}
+
+health_t ObjectType::Strength::get() const{
+    if (!_strengthCalculated){
+        if (_item == nullptr)
+            _calculatedStrength = 0;
+        else
+            _calculatedStrength = _item->strength() * _quantity;
+    }
+    return _calculatedStrength;
+}

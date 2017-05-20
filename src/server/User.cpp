@@ -48,7 +48,7 @@ User::User(const Socket &rhs):
 {}
 
 User::User(const Point &loc):
-    Object(nullptr, loc),
+    Object(loc),
     _socket(Socket::Empty())
 {}
 

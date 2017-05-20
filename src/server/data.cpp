@@ -328,6 +328,19 @@ void Server::loadData(const std::string &path){
                     ot->transformOnEmpty();
             }
 
+            // Strength
+            auto strength = xr.findChild("strength", elem);
+            if (strength){
+                if (xr.findAttr(strength, "item", s) &&
+                    xr.findAttr(strength, "quantity", n)){
+                        std::set<ServerItem>::const_iterator itemIt =
+                                _items.insert(ServerItem(s)).first;
+                        ot->setStrength(&*itemIt, n);
+                } else
+                    _debug("Transformation specified without target id; skipping.", Color::FAILURE);
+            }
+
+
             bool foundInPlace = false;
             for (auto it = _objectTypes.begin(); it != _objectTypes.end(); ++it){
                 if ((*it)->id() == ot->id()){
@@ -425,6 +438,8 @@ void Server::loadData(const std::string &path){
 
             for (auto child : xr.getChildren("tag", elem))
                 if (xr.findAttr(child, "name", s)) item.addTag(s);
+
+            if (xr.findAttr(elem, "strength", n)) item.strength(n);
         
             std::pair<std::set<ServerItem>::iterator, bool> ret = _items.insert(item);
             if (!ret.second) {
