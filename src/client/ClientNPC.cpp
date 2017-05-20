@@ -76,8 +76,8 @@ const Texture &ClientNPC::cursor(const Client &client) const{
 }
 
 void ClientNPC::onInventoryUpdate(){
-    assert(_lootContainer != nullptr);
-    _lootContainer->repopulate();
+    if (_lootContainer != nullptr)
+        _lootContainer->repopulate();
 }
 
 bool ClientNPC::isFlat() const{

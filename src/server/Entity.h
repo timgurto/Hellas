@@ -43,6 +43,10 @@ public:
     Spawner *spawner() const { return _spawner; }
     void spawner(Spawner *p) { _spawner = p; }
     
+    const std::set<std::string> &watchers() const { return _watchers; }
+    void addWatcher(const std::string &username);
+    void removeWatcher(const std::string &username);
+    
     // Space
     const Point &location() const { return _location; }
     void location(const Point &loc) { _location = loc; }
@@ -64,6 +68,7 @@ public:
     void reduceHealth(int damage);
     virtual void onHealthChange() {}; // Probably alerting relevant users.
     virtual void onDeath() {}; // Anything that needs to happen upon death.
+    virtual void describeSelfToNewWatcher(const User &watcher) const {}
 
     /*
     Determine whether the proposed new location is legal, considering movement speed and
@@ -80,6 +85,9 @@ private:
     const EntityType *_type;
     
     Spawner *_spawner; // The Spawner that created this entity, if any.
+
+    // Users watching this object for changes to inventory or merchant slots
+    std::set<std::string> _watchers;
 
     // Space
     size_t _serial;
@@ -112,7 +120,7 @@ private:
     virtual health_t maxHealth() const override { return 0; };
     virtual health_t attack() const override { return 0; };
     virtual ms_t attackTime() const override { return 0; };
-    virtual void sendInfoToClient(const User &targetUser) const override{}
+    virtual void sendInfoToClient(const User &targetUser) const override {}
 };
 
 #endif

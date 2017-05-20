@@ -105,10 +105,20 @@ bool TestClient::messageWasReceivedSince(MessageCode desiredMsg, size_t starting
 void TestClient::showCraftingWindow() {
     _client->_craftingWindow->show();
     WAIT_FOREVER_UNTIL(! _client->_craftingWindow->changed());
+}
 
+void TestClient::watchObject(ClientObject &obj){
+    _client->watchObject(obj);
 }
 
 Avatar &TestClient::getFirstOtherUser(){
     assert(! _client->_otherUsers.empty());
     return const_cast<Avatar &>(* _client->_otherUsers.begin()->second);
+}
+
+ClientNPC &TestClient::getFirstNPC() {
+    assert(! _client->_objects.empty());
+    auto it =_client->_objects.begin();
+    ClientObject *obj = it->second;
+    return * dynamic_cast<ClientNPC *>(obj);
 }

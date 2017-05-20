@@ -21,9 +21,6 @@ class Object : public Entity{
 
     size_t _numUsersGathering; // The number of users gathering from this object.
 
-    // Users watching this object for changes to inventory or merchant slots
-    std::set<std::string> _watchers;
-
     ItemSet _remainingMaterials; // The remaining construction costs, if relevant.
 
     ms_t _transformTimer; // When this hits zero, it switches types.
@@ -44,7 +41,6 @@ public:
     const std::vector<MerchantSlot> &merchantSlots() const { return _merchantSlots; }
     const MerchantSlot &merchantSlot(size_t slot) const { return _merchantSlots[slot]; }
     MerchantSlot &merchantSlot(size_t slot) { return _merchantSlots[slot]; }
-    const std::set<std::string> &watchers() const { return _watchers; }
     void incrementGatheringUsers(const User *userToSkip = nullptr);
     void decrementGatheringUsers(const User *userToSkip = nullptr);
     void removeAllGatheringUsers();
@@ -81,15 +77,13 @@ public:
     void setType(const ObjectType *type); // Set/change ObjectType
 
     virtual void sendInfoToClient(const User &targetUser) const override;
+    virtual void describeSelfToNewWatcher(const User &watcher) const override;
 
     // Randomly choose an item type for the user to gather.
     const ServerItem *chooseGatherItem() const;
     // Randomly choose a quantity of the above items, between 1 and the object's contents.
     size_t chooseGatherQuantity(const ServerItem *item) const;
     void removeItem(const ServerItem *item, size_t qty); // From _contents; gathering
-    
-    void addWatcher(const std::string &username);
-    void removeWatcher(const std::string &username);
 
     friend class Container; // TODO: Remove once everything is componentized
 

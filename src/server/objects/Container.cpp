@@ -49,7 +49,7 @@ void Container::removeItems(const ItemSet &items) {
                 break;
         }
     }
-    for (const std::string &username : _parent._watchers) {
+    for (const std::string &username : _parent.watchers()) {
         const User &user = Server::instance().getUserByName(username);
         for (size_t slotNum : invSlotsChanged) {
             Server::instance().sendInventoryMessage(user, slotNum, _parent);
@@ -89,7 +89,7 @@ void Container::addItems(const ServerItem *item, size_t qty){
         }
     assert(qty == 0);
 
-    for (const std::string &username : _parent._watchers){
+    for (const std::string &username : _parent.watchers()){
         const User &user = Server::instance().getUserByName(username);
         for (size_t slot : changedSlots)
             Server::instance().sendInventoryMessage(user, slot, _parent);

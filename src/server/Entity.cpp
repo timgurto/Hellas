@@ -124,3 +124,13 @@ void Entity::update(ms_t timeElapsed){
         _attackTimer = attackTime();
     }
 }
+
+void Entity::addWatcher(const std::string &username){
+    _watchers.insert(username);
+    Server::debug() << username << " is now watching an object." << Log::endl;
+}
+
+void Entity::removeWatcher(const std::string &username){
+    _watchers.erase(username);
+    Server::debug() << username << " is no longer watching an object." << Log::endl;
+}

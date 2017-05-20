@@ -31,8 +31,8 @@ public:
     NPC &getFirstNPC();
     ServerItem &getFirstItem();
 
-    void addObject(const std::string &typeName, const Point &loc, const User *owner = nullptr);
-    void addNPC(const std::string &typeName, const Point &loc);
+    void addObject(const std::string &typeName, const Point &loc = Point(), const User *owner = nullptr);
+    void addNPC(const std::string &typeName, const Point &loc = Point());
 
     Server *operator->(){ return _server; }
     void loadData(const std::string path){ _server->loadData(path); }

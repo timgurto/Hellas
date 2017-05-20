@@ -24,6 +24,7 @@ public:
     Client::objectTypes_t &objectTypes() { return _client->_objectTypes; }
     const List &recipeList() const { return *_client->_recipeList; }
     void showCraftingWindow();
+    void watchObject(ClientObject &obj);
     bool knowsConstruction(const std::string &id) const {
             return _client->_knownConstructions.find(id) != _client->_knownConstructions.end(); }
     const ChoiceList &uiBuildList() const { return *_client->_buildList; }
@@ -32,6 +33,7 @@ public:
     ClientItem::vect_t &inventory() { return _client->_inventory; }
 
     Avatar &getFirstOtherUser();
+    ClientNPC &getFirstNPC();
 
     Client *operator->(){ return _client; }
     Client &client() { return *_client; }

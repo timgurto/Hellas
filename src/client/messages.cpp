@@ -823,6 +823,27 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_LOOT_COUNT:
+        {
+            size_t serial, quantity;
+            singleMsg >> serial >> del >> quantity >> del;
+            if (del != MSG_END)
+                break;
+            const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
+            if (it == _objects.end()){
+                _debug("Received loot info for an unknown object.", Color::FAILURE);
+                break;
+            }
+            if (it->second->classTag() != 'n'){
+                _debug("Received loot info for a non-NPC object.", Color::FAILURE);
+                break;
+            }
+            ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
+            npc.container() = ClientItem::vect_t(quantity, std::make_pair(nullptr, 0));
+            npc.refreshTooltip();
+            break;
+        }
+
         case SV_CONSTRUCTION_MATERIALS:
         {
             int serial, n;

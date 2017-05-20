@@ -127,3 +127,7 @@ void NPC::sendInfoToClient(const User &targetUser) const {
     if (!_loot.empty())
         server.sendMessage(client, SV_LOOTABLE, makeArgs(serial()));
 }
+
+void NPC::describeSelfToNewWatcher(const User &watcher) const{
+    _loot.sendContentsToUser(watcher, serial());
+}

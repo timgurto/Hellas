@@ -401,15 +401,15 @@ std::list<User *> Server::findUsersInArea(Point loc, double squareRadius) const{
     return users;
 }
 
-bool Server::isObjectInRange(const Socket &client, const User &user, const Object *obj) const{
-    // Object doesn't exist
-    if (obj == nullptr) {
+bool Server::isEntityInRange(const Socket &client, const User &user, const Entity *ent) const{
+    // Doesn't exist
+    if (ent == nullptr) {
         sendMessage(client, SV_DOESNT_EXIST);
         return false;
     }
 
     // Check distance from user
-    if (distance(user.collisionRect(), obj->collisionRect()) > ACTION_DISTANCE) {
+    if (distance(user.collisionRect(), ent->collisionRect()) > ACTION_DISTANCE) {
         sendMessage(client, SV_TOO_FAR);
         return false;
     }

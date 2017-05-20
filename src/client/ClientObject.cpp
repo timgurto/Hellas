@@ -162,8 +162,6 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
 }
 
 void ClientObject::onRightClick(Client &client){
-    //Client::debug() << "Right-clicked on object #" << _serial << Log::endl;
-
     const ClientObjectType &objType = *objectType();
 
     // Make sure object is in range

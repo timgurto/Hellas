@@ -227,7 +227,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             user->cancelAction();
             Object *obj = _entities.find<Object>(serial);
-            if (!isObjectInRange(client, *user, obj)) {
+            if (!isEntityInRange(client, *user, obj)) {
                 sendMessage(client, SV_DOESNT_EXIST);
                 break;
             }
@@ -264,7 +264,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             user->cancelAction();
             Object *obj = _entities.find<Object>(serial);
-            if (!isObjectInRange(client, *user, obj)) {
+            if (!isEntityInRange(client, *user, obj)) {
                 sendMessage(client, SV_TOO_FAR);
                 break;
             }
@@ -316,7 +316,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                         breakMsg = true;
                         break;
                     }
-                    if (!isObjectInRange(client, *user, pObj)){
+                    if (!isEntityInRange(client, *user, pObj)){
                         breakMsg = true;
                         break;
                     }
@@ -371,7 +371,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                         breakMsg = true;
                         break;
                     }
-                    if (!isObjectInRange(client, *user, pObj1)){
+                    if (!isEntityInRange(client, *user, pObj1)){
                         sendMessage(client, SV_TOO_FAR);
                         breakMsg = true;
                     }
@@ -398,7 +398,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                         breakMsg = true;
                         break;
                     }
-                    if (!isObjectInRange(client, *user, pObj2)){
+                    if (!isEntityInRange(client, *user, pObj2)){
                         sendMessage(client, SV_TOO_FAR);
                         breakMsg = true;
                     }
@@ -551,7 +551,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                     sendMessage(client, SV_NO_INVENTORY);
                     break;
                 }
-                if (!isObjectInRange(client, *user, pObj)){
+                if (!isEntityInRange(client, *user, pObj)){
                     sendMessage(client, SV_TOO_FAR);
                     break;
                 }
@@ -615,7 +615,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
             // Check that merchant slot is valid
             Object *obj = _entities.find<Object>(serial);
-            if (!isObjectInRange(client, *user, obj))
+            if (!isEntityInRange(client, *user, obj))
                 break;
             if (obj->isBeingBuilt()){
                 sendMessage(client, SV_UNDER_CONSTRUCTION);
@@ -698,7 +698,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             Object *obj = _entities.find<Object>(serial);
-            if (!isObjectInRange(client, *user, obj))
+            if (!isEntityInRange(client, *user, obj))
                 break;
             if (obj->isBeingBuilt()){
                 sendMessage(client, SV_UNDER_CONSTRUCTION);
@@ -743,7 +743,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             Object *obj = _entities.find<Object>(serial);
-            if (!isObjectInRange(client, *user, obj))
+            if (!isEntityInRange(client, *user, obj))
                 break;
             if (obj->isBeingBuilt()){
                 sendMessage(client, SV_UNDER_CONSTRUCTION);
@@ -777,7 +777,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             Object *obj = _entities.find<Object>(serial);
-            if (!isObjectInRange(client, *user, obj))
+            if (!isEntityInRange(client, *user, obj))
                 break;
             if (obj->isBeingBuilt()){
                 sendMessage(client, SV_UNDER_CONSTRUCTION);
@@ -847,25 +847,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != MSG_END)
                 return;
-            Object *obj = _entities.find<Object>(serial);
-            if (!isObjectInRange(client, *user, obj))
+            Entity *ent = _entities.find(serial);
+            if (!isEntityInRange(client, *user, ent))
                 break;
 
-            // Describe merchant slots, if any
-            size_t mSlots = obj->merchantSlots().size();
-            for (size_t i = 0; i != mSlots; ++i)
-                sendMerchantSlotMessage(*user, *obj, i);
+            ent->describeSelfToNewWatcher(*user);
 
-            // Describe inventory, if user has permission
-            if (obj->hasContainer() &&
-                obj->permissions().doesUserHaveAccess(user->name())){
-                    size_t slots = obj->objType().container().slots();
-                    for (size_t i = 0; i != slots; ++i)
-                        sendInventoryMessage(*user, i, *obj);
-            }
-
-            // Add as watcher
-            obj->addWatcher(user->name());
+            ent->addWatcher(user->name());
 
             break;
         }

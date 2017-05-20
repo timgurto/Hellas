@@ -67,9 +67,9 @@ public:
     const ObjectType *findObjectTypeByName(const std::string &id) const; // Linear complexity
     std::set<char> nearbyTerrainTypes(const Rect &rect, double extraRadius = 0);
 
-    // Checks whether the object is within range of the user.  If not, a relevant error message is
+    // Checks whether an entity is within range of a user.  If not, a relevant error message is
     // sent to the client.
-    bool isObjectInRange(const Socket &client, const User &user, const Object *obj) const;
+    bool isEntityInRange(const Socket &client, const User &user, const Entity *ent) const;
 
     const Terrain *terrainType(char index) const;
 

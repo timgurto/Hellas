@@ -1,5 +1,6 @@
 #include "Loot.h"
-
+#include "Server.h"
+#include "User.h"
 #include "../util.h"
 
 bool Loot::empty() const{
@@ -27,4 +28,11 @@ void Loot::add(const ServerItem *item, size_t qty){
         remainingQuantity -= quantityInThisSlot;
         _container.push_back(entry);
     }
+}
+
+void Loot::sendContentsToUser(const User &recipient, size_t serial) const{
+    const Server &server = Server::instance();
+    server.sendMessage(recipient.socket(), SV_LOOT_COUNT, makeArgs(serial, _container.size()));
+    for (size_t i = 0; i != _container.size(); ++i)
+        server.sendInventoryMessageInner(recipient, serial, i, _container);
 }

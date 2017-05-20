@@ -237,17 +237,21 @@ enum MessageCode{
     // An NPC can no longer be looted
     SV_NOT_LOOTABLE = 154,
 
+    // The quantity of loot an NPC has available
+    // Arguments: serial, quantity
+    SV_LOOT_COUNT = 155,
+
     // A vehicle has a driver.
     // Arguments: serial, username
-    SV_MOUNTED = 155,
+    SV_MOUNTED = 156,
 
     // A vehicle is no longer being driven.
     // Arguments: serial, username
-    SV_UNMOUNTED = 156,
+    SV_UNMOUNTED = 176,
 
     // The remaining materials required to construct an object
     // Arguments: serial, n, id1, quantity1, id2, quantity2, ...
-    SV_CONSTRUCTION_MATERIALS = 157,
+    SV_CONSTRUCTION_MATERIALS = 158,
 
     // The user's health value
     // Arguments: hp

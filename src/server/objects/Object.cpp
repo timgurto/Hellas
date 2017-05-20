@@ -73,16 +73,6 @@ size_t Object::chooseGatherQuantity(const ServerItem *item) const{
     return qty;
 }
 
-void Object::addWatcher(const std::string &username){
-    _watchers.insert(username);
-    Server::debug() << username << " is now watching an object." << Log::endl;
-}
-
-void Object::removeWatcher(const std::string &username){
-    _watchers.erase(username);
-    Server::debug() << username << " is no longer watching an object." << Log::endl;
-}
-
 void Object::incrementGatheringUsers(const User *userToSkip){
     const Server &server = *Server::_instance;
     ++_numUsersGathering;
@@ -201,5 +191,22 @@ void Object::sendInfoToClient(const User &targetUser) const {
     // Transform timer
     if (isTransforming()){
         server.sendMessage(client, SV_TRANSFORM_TIME, makeArgs(serial(), transformTimer()));
+    }
+}
+
+void Object::describeSelfToNewWatcher(const User &watcher) const{
+    const Server &server = Server::instance();
+
+    // Describe merchant slots, if any
+    size_t numMerchantSlots = merchantSlots().size();
+    for (size_t i = 0; i != numMerchantSlots; ++i)
+        server.sendMerchantSlotMessage(watcher, *this, i);
+
+    // Describe inventory, if user has permission
+    if (hasContainer() &&
+        permissions().doesUserHaveAccess(watcher.name())){
+            size_t slots = objType().container().slots();
+            for (size_t i = 0; i != slots; ++i)
+                server.sendInventoryMessage(watcher, i, *this);
     }
 }

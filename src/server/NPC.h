@@ -27,6 +27,7 @@ public:
     virtual ~NPC(){}
 
     const NPCType *npcType() const { return dynamic_cast<const NPCType *>(type()); }
+    const Loot &loot() const { return _loot; }
 
     virtual health_t maxHealth() const override { return npcType()->maxHealth(); }
     virtual health_t attack() const override { return npcType()->attack(); }
@@ -40,6 +41,7 @@ public:
     virtual char classTag() const override { return 'n'; }
 
     virtual void sendInfoToClient(const User &targetUser) const override;
+    virtual void describeSelfToNewWatcher(const User &watcher) const override;
 
     virtual void writeToXML(XmlWriter &xw) const override;
 
