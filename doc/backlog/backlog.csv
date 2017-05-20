@@ -27,7 +27,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 26,Learning new skills can cost items,21,13,Feature,24,,TRUE
 27,Some items only drop for a single class,13,21,Feature,,,TRUE
 28,Skills can be unlearned,21,21,Feature,23,,TRUE
-29,Objects have health,55,21,Feature,,,TRUE
+29,Objects have health,55,21,Feature,,TRUE,TRUE
 30,"Items have durability, affected by combat and use.",34,34,Feature,,,TRUE
 31,Objects can be repaired with specific items,21,34,Feature,29,,TRUE
 32,Object repair can require tools,5,2,Feature,31,,TRUE

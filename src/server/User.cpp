@@ -43,7 +43,7 @@ _stats(BASE_STATS){
 }
 
 User::User(const Socket &rhs):
-    Object(nullptr, Point()),
+    Object(Point()),
     _socket(rhs)
 {}
 
