@@ -42,6 +42,7 @@ public:
 
     virtual void sendInfoToClient(const User &targetUser) const override;
     virtual void describeSelfToNewWatcher(const User &watcher) const override;
+    virtual void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const;
 
     virtual void writeToXML(XmlWriter &xw) const override;
 

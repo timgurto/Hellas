@@ -2,6 +2,7 @@
 #define ENTITY_H
 
 #include "EntityType.h"
+#include "ServerItem.h"
 #include "../Point.h"
 #include "../Rect.h"
 #include "../types.h"
@@ -69,6 +70,8 @@ public:
     virtual void onHealthChange() {}; // Probably alerting relevant users.
     virtual void onDeath() {}; // Anything that needs to happen upon death.
     virtual void describeSelfToNewWatcher(const User &watcher) const {}
+    virtual void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const {}
+    virtual ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum, const User &user) { return nullptr; }
 
     /*
     Determine whether the proposed new location is legal, considering movement speed and

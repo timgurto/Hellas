@@ -78,6 +78,8 @@ public:
 
     virtual void sendInfoToClient(const User &targetUser) const override;
     virtual void describeSelfToNewWatcher(const User &watcher) const override;
+    virtual void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const;
+    virtual ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum, const User &user) override;
 
     // Randomly choose an item type for the user to gather.
     const ServerItem *chooseGatherItem() const;

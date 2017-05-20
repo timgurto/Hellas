@@ -59,22 +59,3 @@ TEST("Place item in object");
     // Should be the alert that the object's inventory has changed
     return c.getNextMessage() == SV_INVENTORY;
 TEND
-
-ONLY_TEST("Loot info is sent to client")
-    // Given an NPC that always drops 1 gold
-    TestServer s = TestServer::WithData("goldbug");
-    s.addNPC("goldbug", Point(10, 15));
-
-    // When a user kills it
-    TestClient c = TestClient::WithData("goldbug");
-    WAIT_UNTIL(c.objects().size() == 1);
-    NPC &goldbug = s.getFirstNPC();
-    c.sendMessage(CL_TARGET_NPC, makeArgs(goldbug.serial()));
-    WAIT_UNTIL(goldbug.health() == 0);
-
-    // Then the user can see one item in its the loot window
-    ClientNPC &clientGoldbug = c.getFirstNPC();
-    c.watchObject(clientGoldbug);
-    WAIT_UNTIL(clientGoldbug.container().size() == 1);
-    return true;
-TEND

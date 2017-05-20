@@ -123,6 +123,7 @@
     <ClCompile Include="src\server\EntityType.cpp" />
     <ClCompile Include="src\server\Entities.cpp" />
     <ClCompile Include="src\server\Loot.cpp" />
+    <ClCompile Include="src\testing\test-loot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

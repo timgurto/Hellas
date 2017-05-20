@@ -131,3 +131,11 @@ void NPC::sendInfoToClient(const User &targetUser) const {
 void NPC::describeSelfToNewWatcher(const User &watcher) const{
     _loot.sendContentsToUser(watcher, serial());
 }
+
+void NPC::alertWatcherOnInventoryChange(const User &watcher, size_t slot) const{
+    _loot.sendSingleSlotToUser(watcher, serial(), slot);
+
+    const Server &server = Server::instance();
+    if (_loot.empty())
+        server.sendMessage(watcher.socket(), SV_NOT_LOOTABLE, makeArgs(serial()));
+}

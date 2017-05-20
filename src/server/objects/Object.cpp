@@ -210,3 +210,49 @@ void Object::describeSelfToNewWatcher(const User &watcher) const{
                 server.sendInventoryMessage(watcher, i, *this);
     }
 }
+
+ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum, const User &user){
+    const Server &server = Server::instance();
+    const Socket &socket = user.socket();
+
+    if (! hasContainer()){
+        server.sendMessage(socket, SV_NO_INVENTORY);
+        return nullptr;
+    }
+
+    if (!server.isEntityInRange(socket, user, this))
+        return nullptr;
+
+    if (! permissions().doesUserHaveAccess(user.name())){
+        server.sendMessage(socket, SV_NO_PERMISSION);
+        return nullptr;
+    }
+       
+    if (isBeingBuilt()){
+        server.sendMessage(socket, SV_UNDER_CONSTRUCTION);
+        return nullptr;
+    }
+
+    if (slotNum >= objType().container().slots()) {
+        server.sendMessage(socket, SV_INVALID_SLOT);
+        return nullptr;
+    }
+
+    ServerItem::Slot &slot = container().at(slotNum);
+    if (slot.first == nullptr){
+        server.sendMessage(socket, SV_EMPTY_SLOT);
+        return nullptr;
+    }
+
+    return &slot;
+}
+
+void Object::alertWatcherOnInventoryChange(const User &watcher, size_t slot) const{
+    const Server &server = Server::instance();
+    const std::string &username = watcher.name();
+    if (! permissions().doesUserHaveAccess(username))
+        return;
+    auto &it = server._usersByName.find(username);
+    assert(it != server._usersByName.end());
+    server.sendInventoryMessage(*it->second, slot, *this);
+}

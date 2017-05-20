@@ -530,54 +530,29 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
         case CL_TAKE_ITEM:
         {
-            size_t obj, slotNum;
-            iss >> obj >> del
+            size_t serial, slotNum;
+            iss >> serial >> del
                 >> slotNum >> del;
             if (del != MSG_END)
                 return;
-            ServerItem::vect_t *container;
-            Object *pObj = nullptr;
 
-            if (obj == INVENTORY) {
+            if (serial == INVENTORY) {
                 sendMessage(client, SV_TAKE_SELF);
                 break;
             }
 
-            if (obj == GEAR)
-                container = &user->gear();
+            Entity *pEnt = nullptr;
+            ServerItem::Slot *pSlot;
+            if (serial == GEAR)
+                pSlot = user->getSlotToTakeFromAndSendErrors(slotNum, *user);
             else {
-                pObj = _entities.find<Object>(obj);
-                if (!pObj->hasContainer()){
-                    sendMessage(client, SV_NO_INVENTORY);
-                    break;
-                }
-                if (!isEntityInRange(client, *user, pObj)){
-                    sendMessage(client, SV_TOO_FAR);
-                    break;
-                }
-                if (!pObj->permissions().doesUserHaveAccess(user->name())){
-                    sendMessage(client, SV_NO_PERMISSION);
-                    break;
-                }
-                container = &pObj->container().raw();
-                
-                if (pObj->isBeingBuilt()){
-                    sendMessage(client, SV_UNDER_CONSTRUCTION);
-                    break;
-                }
+                pEnt = _entities.find(serial);
+                pSlot = pEnt->getSlotToTakeFromAndSendErrors(slotNum, *user);
             }
-
-            if (slotNum >= container->size()) {
-                sendMessage(client, SV_INVALID_SLOT);
+            if (pSlot == nullptr)
                 break;
-            }
+            ServerItem::Slot &slot = *pSlot;
 
-            auto &slot = (*container)[slotNum];
-            if (slot.first == nullptr){
-                sendMessage(client, SV_EMPTY_SLOT);
-                break;
-            }
-            
             // Attempt to give item to user
             size_t remainder = user->giveItem(slot.first, slot.second);
             if (remainder > 0){
@@ -588,19 +563,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 slot.second = 0;
             }
             
-            if (obj == GEAR){ // Tell user about his empty gear slot, and updated stats
+            if (serial == GEAR){ // Tell user about his empty gear slot, and updated stats
                 sendInventoryMessage(*user, slotNum, GEAR);
                 user->updateStats();
 
             } else { // Alert object's watchers
-                for (auto username : pObj->watchers())
-                    if (pObj->permissions().doesUserHaveAccess(username))
-                        sendInventoryMessage(*_usersByName[username], slotNum, *pObj);
-
-                // Alert nearby users if NPC has no loot left
-                if (pObj->classTag() == 'n' && pObj->container().isEmpty())
-                    for (auto user : findUsersInArea(pObj->location()))
-                        sendMessage(user->socket(), SV_NOT_LOOTABLE, makeArgs(pObj->serial()));
+                for (auto username : pEnt->watchers())
+                    pEnt->alertWatcherOnInventoryChange(*_usersByName[username], slotNum);
             }
 
             break;

@@ -21,7 +21,8 @@ class ServerItem : public Item{
 public:
     ServerItem(const std::string &id);
 
-    typedef std::vector<std::pair<const ServerItem *, size_t> > vect_t;
+    typedef std::pair<const ServerItem *, size_t> Slot;
+    typedef std::vector<Slot> vect_t;
 
     size_t stackSize() const { return _stackSize; }
     void stackSize(size_t n) { _stackSize = n; }

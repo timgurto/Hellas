@@ -36,3 +36,8 @@ void Loot::sendContentsToUser(const User &recipient, size_t serial) const{
     for (size_t i = 0; i != _container.size(); ++i)
         server.sendInventoryMessageInner(recipient, serial, i, _container);
 }
+
+void Loot::sendSingleSlotToUser(const User &recipient, size_t serial, size_t slot) const{
+    const Server &server = Server::instance();
+    server.sendInventoryMessageInner(recipient, serial, slot, _container);
+}
