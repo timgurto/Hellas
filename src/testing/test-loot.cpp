@@ -19,9 +19,11 @@ ONLY_TEST("Client gets loot info and can loot")
     c.watchObject(clientGoldbug);
     WAIT_UNTIL(clientGoldbug.container().size() == 1);
 
-    // And the server survives a loot request
+    // And the server survives a loot request;
     c.sendMessage(CL_TAKE_ITEM, makeArgs(goldbug.serial(), 0));
-    s.entities();
+
+    // And the client receives the item
+    WAIT_UNTIL(c.inventory()[0].first != nullptr);
 
     return true;
 TEND

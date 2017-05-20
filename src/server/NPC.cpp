@@ -139,3 +139,29 @@ void NPC::alertWatcherOnInventoryChange(const User &watcher, size_t slot) const{
     if (_loot.empty())
         server.sendMessage(watcher.socket(), SV_NOT_LOOTABLE, makeArgs(serial()));
 }
+
+ServerItem::Slot *NPC::getSlotToTakeFromAndSendErrors(size_t slotNum, const User &user){
+    const Server &server = Server::instance();
+    const Socket &socket = user.socket();
+
+    if (_loot.empty()){
+        server.sendMessage(socket, SV_EMPTY_SLOT);
+        return nullptr;
+    }
+
+    if (!server.isEntityInRange(socket, user, this))
+        return nullptr;
+
+    if (! _loot.isValidSlot(slotNum)) {
+        server.sendMessage(socket, SV_INVALID_SLOT);
+        return nullptr;
+    }
+
+    ServerItem::Slot &slot = _loot.at(slotNum);
+    if (slot.first == nullptr){
+        server.sendMessage(socket, SV_EMPTY_SLOT);
+        return nullptr;
+    }
+
+    return &slot;
+}
