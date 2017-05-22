@@ -77,7 +77,7 @@ Dark blue   3C388C
     footprint="772C67"
     inRange="C4AAC0"
     outOfRange="A34C5C"
-    healthBarBackground="A34C5C"
+    healthBarBackground="170A33"
     healthBarOutline="170A33"
     performanceFont="FFFFB2"
     castBarFont="E5E5E5"

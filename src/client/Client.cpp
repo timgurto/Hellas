@@ -366,7 +366,7 @@ _debug("client.log"){
         _latency, "", "ms", Label::RIGHT_JUSTIFIED);
     LinkedLabel<size_t> *numEntities = new LinkedLabel<size_t>(
         Rect(0, HARDWARE_STATS_LABEL_HEIGHT * 2, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT),
-        _numEntities, "", " entities", Label::RIGHT_JUSTIFIED);
+        _numEntities, "", " sprites", Label::RIGHT_JUSTIFIED);
     LinkedLabel<int> *channels = new LinkedLabel<int>(
         Rect(0, HARDWARE_STATS_LABEL_HEIGHT * 3, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT),
         _channelsPlaying, "", "/" + makeArgs(MIXING_CHANNELS) + " channels", Label::RIGHT_JUSTIFIED);

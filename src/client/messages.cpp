@@ -656,17 +656,14 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Received health info for an unknown object.", Color::FAILURE);
                 break;
             }
-            if (it->second->classTag() != 'n'){
-                _debug("Received health info for a non-NPC object.", Color::FAILURE);
-            }
-            ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
-            npc.health(health);
-            if (targetAsEntity() == &npc){
+            ClientObject &obj = *it->second;
+            obj.health(health);
+            if (targetAsEntity() == &obj){
                 _target.updateHealth(health);
                 if (health == 0)
                     _target.makePassive();
             }
-            npc.refreshTooltip();
+            obj.refreshTooltip();
             break;
         }
 
@@ -683,7 +680,7 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Received combat info for an unknown object.", Color::FAILURE);
                 break;
             }
-            const ClientNPC &defender = * dynamic_cast<const ClientNPC *>(objIt->second);
+            const ClientObject &defender = *objIt->second;
             const Avatar *attacker = nullptr;
             if (username == _username)
                 attacker = &character();
@@ -695,7 +692,7 @@ void Client::handleMessage(const std::string &msg){
                 }
                 attacker = userIt->second;
             }
-            const SoundProfile *sounds = defender.npcType()->sounds();
+            const SoundProfile *sounds = defender.objectType()->sounds();
             if (sounds != nullptr){
                 if (defender.health() == 0)
                     sounds->playOnce("death");

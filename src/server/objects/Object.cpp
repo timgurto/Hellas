@@ -203,6 +203,10 @@ void Object::sendInfoToClient(const User &targetUser) const {
     if (isTransforming()){
         server.sendMessage(client, SV_TRANSFORM_TIME, makeArgs(serial(), transformTimer()));
     }
+
+    // Health
+    if (health() < maxHealth())
+        server.sendMessage(client, SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 }
 
 void Object::describeSelfToNewWatcher(const User &watcher) const{

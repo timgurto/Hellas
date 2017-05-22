@@ -26,7 +26,6 @@ public:
     bool lootable() const { return _lootable; }
     void lootable(bool b) { _lootable = b; }
     virtual bool isFlat() const override;
-    const SoundProfile *sounds() const { return npcType()->sounds(); }
 
     const ClientNPCType *npcType() const { return dynamic_cast<const ClientNPCType *>(type()); }
 
