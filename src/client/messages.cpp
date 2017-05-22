@@ -163,7 +163,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_CANNOT_CONSTRUCT:
         case SV_NOT_MERCHANT:
         case SV_INVALID_MERCHANT_SLOT:
-        case SV_NPC_DEAD:
+        case SV_TARGET_DEAD:
         case SV_NPC_SWAP:
         case SV_TAKE_SELF:
         case SV_NOT_GEAR:
@@ -644,7 +644,7 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_NPC_HEALTH:
+        case SV_ENTITY_HEALTH:
         {
             size_t serial;
             health_t health;
@@ -670,7 +670,7 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_PLAYER_HIT_NPC:
+        case SV_PLAYER_HIT_ENTITY:
         {
             std::string username;
             int serial;
@@ -707,7 +707,7 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_NPC_HIT_PLAYER:
+        case SV_ENTITY_HIT_PLAYER:
         {
             int serial;
             std::string username;
@@ -1108,7 +1108,7 @@ void Client::initializeMessageNames(){
     _messageCommands["clearMerchantSlot"] = CL_CLEAR_MERCHANT_SLOT;
     _messageCommands["startWatching"] = CL_START_WATCHING;
     _messageCommands["stopWatching"] = CL_STOP_WATCHING;
-    _messageCommands["targetNPC"] = CL_TARGET_NPC;
+    _messageCommands["targetNPC"] = CL_TARGET_ENTITY;
     _messageCommands["targetPlayer"] = CL_TARGET_PLAYER;
     _messageCommands["take"] = CL_TAKE_ITEM;
     _messageCommands["mount"] = CL_MOUNT;
@@ -1146,8 +1146,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_MERCHANT_INVENTORY_FULL] =
         "The object does not have enough inventory space for that exchange.";
     _errorMessages[SV_NOT_EMPTY] = "That object is not empty.";
-    _errorMessages[SV_NOT_NPC] = "That object is not an NPC.";
-    _errorMessages[SV_NPC_DEAD] = "That NPC is dead.";
+    _errorMessages[SV_TARGET_DEAD] = "That target is dead.";
     _errorMessages[SV_NPC_SWAP] = "You can't put items inside an NPC.";
     _errorMessages[SV_TAKE_SELF] = "You can't take an item from yourself.";
     _errorMessages[SV_NOT_GEAR] = "That item can't be used in that equipment slot.";
@@ -1247,5 +1246,5 @@ void Client::performCommand(const std::string &commandString){
 }
 
 void Client::sendClearTargetMessage() const{
-    sendMessage(CL_TARGET_NPC, makeArgs(0));
+    sendMessage(CL_TARGET_ENTITY, makeArgs(0));
 }

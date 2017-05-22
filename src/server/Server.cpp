@@ -418,26 +418,25 @@ bool Server::isEntityInRange(const Socket &client, const User &user, const Entit
 }
 
 void Server::forceAllToUntarget(const Entity &target, const User *userToExclude){
-    // Fix users targeting the object
+    // Fix users targeting the entity
     size_t serial = target.serial();
-    for (const User &userConst : _users) {
-        User & user = const_cast<User &>(userConst);
+    for (const User &constUser : _users) {
+        User & user = const_cast<User &>(constUser);
         if (&user == userToExclude)
             continue;
-        if (target.classTag() == 'n'){
-            const NPC &npc = dynamic_cast<const NPC &>(target);
-            if (user.action() == User::ATTACK && user.target() == &npc) {
-                user.finishAction();
-                continue;
-            }
+        if (user.action() == User::ATTACK && user.target() == &target) {
+            user.finishAction();
+            user.target(nullptr);
+            continue;
         }
         if (user.action() == User::GATHER && user.actionObject()->serial() == serial) {
             sendMessage(user.socket(), SV_DOESNT_EXIST);
+            user.target(nullptr);
             user.cancelAction();
         }
     }
 
-    // Fix NPCs targeting the object
+    // Fix NPCs targeting the entity
     for (const Entity *pEnt : _entities) {
         Entity &entity = * const_cast<Entity *>(pEnt);
         if (entity.classTag() == 'n'){

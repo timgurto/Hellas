@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "RemoteClient.h"
 #include "Test.h"
 #include "TestServer.h"
@@ -21,7 +23,7 @@ TEST("Players can attack immediately")
     const ClientObject *objP = objects.begin()->second;
     const ClientNPC &ant = dynamic_cast<const ClientNPC &>(*objP);
     size_t serial = ant.serial();
-    c.sendMessage(CL_TARGET_NPC, makeArgs(serial));
+    c.sendMessage(CL_TARGET_ENTITY, makeArgs(serial));
     
     // NPC should be damaged very quickly
     REPEAT_FOR_MS(200)
@@ -124,4 +126,29 @@ TEST("Attack rate is respected")
     // Then the user has taken exactly 10 damage
     health_t after = user.health();
     return before - after == 10;
+TEND
+
+TEST("Belligerents can attack each other's objects")
+    // Given a logged-in user;
+    // And a vase object type with 1 health;
+    TestServer s = TestServer::WithData("vase");
+    TestClient c = TestClient::WithData("vase");
+
+    // And a vase owned by Alice;
+    s.addObject("vase", Point(10, 15), "alice");
+    Object &vase = s.getFirstObject();
+    assert(vase.health() == 1);
+
+    // And that the user is at war with Alice
+    const std::string &username = c.name();
+    s.wars().declare(username, "alice");
+
+    // When he targets the vase
+    WAIT_UNTIL(s.users().size() == 1);
+    c.sendMessage(CL_TARGET_ENTITY, makeArgs(vase.serial()));
+
+    // Then the vase has 0 health
+    WAIT_UNTIL(vase.health() == 0);
+
+    return true;
 TEND

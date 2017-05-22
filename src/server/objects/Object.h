@@ -74,6 +74,9 @@ public:
 
     virtual void update(ms_t timeElapsed) override;
 
+    virtual void onHealthChange() override;
+    virtual void onDeath() override;
+
     void setType(const ObjectType *type); // Set/change ObjectType
 
     virtual void sendInfoToClient(const User &targetUser) const override;

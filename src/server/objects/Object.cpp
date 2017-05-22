@@ -105,20 +105,28 @@ void Object::update(ms_t timeElapsed){
         return;
 
     // Transform
-    if (_transformTimer == 0)
-        return;
-    if (objType().transformObject() == nullptr)
-        return;
-    if (objType().transformsOnEmpty() && !_contents.isEmpty())
-        return;
+    do {
+        if (_transformTimer == 0)
+            break;
+        if (objType().transformObject() == nullptr)
+            break;
+        if (objType().transformsOnEmpty() && !_contents.isEmpty())
+            break;
 
-    if (timeElapsed > _transformTimer)
-        _transformTimer = 0;
-    else
-        _transformTimer -= timeElapsed;
+        if (timeElapsed > _transformTimer)
+            _transformTimer = 0;
+        else
+            _transformTimer -= timeElapsed;
 
-    if (_transformTimer == 0)
-        setType(objType().transformObject());
+        if (_transformTimer == 0)
+            setType(objType().transformObject());
+    } while (false);
+}
+
+void Object::onHealthChange(){
+    const Server &server = *Server::_instance;
+    for (const User *user: server.findUsersInArea(location()))
+        server.sendMessage(user->socket(), SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 }
 
 void Object::setType(const ObjectType *type){
@@ -156,6 +164,11 @@ void Object::setType(const ObjectType *type){
     if (server != nullptr)
         for (const User *user : server->findUsersInArea(location()))
             sendInfoToClient(*user);
+}
+
+void Object::onDeath(){
+    Server &server = *Server::_instance;
+    server.forceAllToUntarget(*this);
 }
 
 bool Object::isAbleToDeconstruct(const User &user) const{

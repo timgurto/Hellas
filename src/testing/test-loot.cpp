@@ -11,7 +11,7 @@ TEST("Client gets loot info and can loot")
     TestClient c = TestClient::WithData("goldbug");
     WAIT_UNTIL(c.objects().size() == 1);
     NPC &goldbug = s.getFirstNPC();
-    c.sendMessage(CL_TARGET_NPC, makeArgs(goldbug.serial()));
+    c.sendMessage(CL_TARGET_ENTITY, makeArgs(goldbug.serial()));
     WAIT_UNTIL(goldbug.health() == 0);
 
     // Then the user can see one item in its the loot window;

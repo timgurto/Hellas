@@ -94,5 +94,5 @@ const Texture &ClientNPC::highlightImage() const{
 
 void ClientNPC::sendTargetMessage() const{
     const Client &client = *Client::_instance;
-    client.sendMessage(CL_TARGET_NPC, makeArgs(serial()));
+    client.sendMessage(CL_TARGET_ENTITY, makeArgs(serial()));
 }

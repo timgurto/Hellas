@@ -844,38 +844,32 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
-        case CL_TARGET_NPC:
+        case CL_TARGET_ENTITY:
         {
             size_t serial;
             iss >> serial >> del;
             if (del != MSG_END)
                 return;
             user->cancelAction();
-            Entity *target;
-            if (serial == INVENTORY || serial == GEAR)
-                target = nullptr;
-            else {
-                target = _entities.find(serial);
-                if (target == nullptr) {
-                    user->setTargetAndAttack(nullptr);
-                    sendMessage(client, SV_DOESNT_EXIST);
-                    break;
-                }
-                if (target->classTag() != 'n'){
-                    user->setTargetAndAttack(nullptr);
-                    sendMessage(client, SV_NOT_NPC);
-                    break;
-                }
-            }
-
-            NPC *npc = dynamic_cast<NPC *>(target);
-            if (npc != nullptr && npc->health() == 0){
+            if (serial == INVENTORY || serial == GEAR){
                 user->setTargetAndAttack(nullptr);
-                sendMessage(client, SV_NPC_DEAD);
                 break;
             }
 
-            user->setTargetAndAttack(npc);
+            Entity *target = _entities.find(serial);
+            if (target == nullptr) {
+                user->setTargetAndAttack(nullptr);
+                sendMessage(client, SV_DOESNT_EXIST);
+                break;
+            }
+
+            if (target->health() == 0){
+                user->setTargetAndAttack(nullptr);
+                sendMessage(client, SV_TARGET_DEAD);
+                break;
+            }
+
+            user->setTargetAndAttack(target);
 
             break;
         }
@@ -897,7 +891,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             User *targetUser = const_cast<User *>(it->second);
             if (targetUser->health() == 0){
                 user->setTargetAndAttack(nullptr);
-                sendMessage(client, SV_NPC_DEAD);
+                sendMessage(client, SV_TARGET_DEAD);
                 break;
             }
             if (! _wars.isAtWar(user->name(), targetUsername)){

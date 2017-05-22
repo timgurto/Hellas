@@ -95,9 +95,9 @@ enum MessageCode{
     // Arguments: serial
     CL_CEDE = 42,
 
-    // "I'm targeting NPC ..."
+    // "I'm targeting entity ..."
     // Arguments: serial
-    CL_TARGET_NPC = 50,
+    CL_TARGET_ENTITY = 50,
 
     // "I'm targeting player ..."
     // Arguments: username
@@ -160,7 +160,7 @@ enum MessageCode{
 
     // The health of an NPC
     // Arguments: serial, health
-    SV_NPC_HEALTH = 127,
+    SV_ENTITY_HEALTH = 127,
 
     // The location of an object
     // Arguments: serial, x, y
@@ -211,11 +211,11 @@ enum MessageCode{
 
     // An NPC hit a player
     // Arguments: serial, username
-    SV_NPC_HIT_PLAYER = 140,
+    SV_ENTITY_HIT_PLAYER = 140,
     
     // A player hit an NPC
     // Arguments: username, serial
-    SV_PLAYER_HIT_NPC = 141,
+    SV_PLAYER_HIT_ENTITY = 141,
     
     // A player hit an another player
     // Arguments: attacker's username, defender's username
@@ -353,11 +353,8 @@ enum MessageCode{
     // The object cannot be removed because it has an inventory of items
     SV_NOT_EMPTY = 930,
 
-    // The object is not an NPC
-    SV_NOT_NPC = 931,
-
     // The NPC is dead
-    SV_NPC_DEAD = 932,
+    SV_TARGET_DEAD = 932,
 
     // The user tried to put an item into an NPC
     SV_NPC_SWAP = 933,

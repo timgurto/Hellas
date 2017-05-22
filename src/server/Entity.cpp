@@ -75,44 +75,45 @@ void Entity::update(ms_t timeElapsed){
     else
         _attackTimer = 0;
 
-    if (target() == nullptr)
+    Entity *pTarget = target();
+    if (pTarget == nullptr)
         return;
 
-    assert(target()->health() > 0);
+    assert(pTarget->health() > 0);
 
     if (_attackTimer > 0)
         return;
 
     // Check if within range
-    if (distance(collisionRect(), target()->collisionRect()) <= Server::ACTION_DISTANCE){
+    if (distance(collisionRect(), pTarget->collisionRect()) <= Server::ACTION_DISTANCE){
 
         // Reduce target health (to minimum 0)
-        target()->reduceHealth(attack());
-        target()->onHealthChange();
+        pTarget->reduceHealth(attack());
+        pTarget->onHealthChange();
 
         // Alert nearby clients
         const Server &server = Server::instance();
-        Point locus = midpoint(location(), target()->location());
+        Point locus = midpoint(location(), pTarget->location());
         MessageCode msgCode;
         std::string args;
         char
             attackerTag = classTag(),
-            defenderTag = target()->classTag();
-        if (attackerTag == 'u' && defenderTag == 'n'){
-            msgCode = SV_PLAYER_HIT_NPC;
+            defenderTag = pTarget->classTag();
+        if (attackerTag == 'u' && defenderTag != 'u'){
+            msgCode = SV_PLAYER_HIT_ENTITY;
             args = makeArgs(
                     dynamic_cast<const User *>(this)->name(),
-                    dynamic_cast<const NPC *>(target())->serial());
-        } else if (attackerTag == 'n' && defenderTag == 'u'){
-            msgCode = SV_NPC_HIT_PLAYER;
+                    pTarget->serial());
+        } else if (attackerTag != 'u' && defenderTag == 'u'){
+            msgCode = SV_ENTITY_HIT_PLAYER;
             args = makeArgs(
-                    dynamic_cast<const NPC *>(this)->serial(),
-                    dynamic_cast<const User *>(target())->name());
+                    serial(),
+                    dynamic_cast<const User *>(pTarget)->name());
         } else if (attackerTag == 'u' && defenderTag == 'u') {
             msgCode = SV_PLAYER_HIT_PLAYER;
             args = makeArgs(
                     dynamic_cast<const User *>(this)->name(),
-                    dynamic_cast<const User *>(target())->name());
+                    dynamic_cast<const User *>(pTarget)->name());
         } else {
             assert(false);
         }

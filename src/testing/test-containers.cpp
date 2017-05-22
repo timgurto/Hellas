@@ -34,7 +34,7 @@ TEST("Dismantle an object with an inventory")
     return c.waitForMessage(SV_ACTION_STARTED);
 TEND
 
-TEST("Place item in object");
+QUARANTINED_TEST("Place item in object");
     TestServer s = TestServer::WithData("dismantle");
     TestClient c = TestClient::WithData("dismantle");
 

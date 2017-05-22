@@ -25,7 +25,7 @@ void NPC::update(ms_t timeElapsed){
 void NPC::onHealthChange(){
     const Server &server = *Server::_instance;
     for (const User *user: server.findUsersInArea(location()))
-        server.sendMessage(user->socket(), SV_NPC_HEALTH, makeArgs(serial(), health()));
+        server.sendMessage(user->socket(), SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 }
 
 void NPC::onDeath(){
@@ -121,7 +121,7 @@ void NPC::sendInfoToClient(const User &targetUser) const {
 
     // Health
     if (health() < maxHealth())
-        server.sendMessage(client, SV_NPC_HEALTH, makeArgs(serial(), health()));
+        server.sendMessage(client, SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 
     // Loot
     if (!_loot.empty())
