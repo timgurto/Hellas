@@ -163,12 +163,24 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
     }
 }
 
+void ClientObject::onLeftClick(Client &client){
+    client.setTarget(*this);
+    
+    // Note: parent class's onLeftClick() not called.
+}
+
 void ClientObject::onRightClick(Client &client){
     const ClientObjectType &objType = *objectType();
 
     // Make sure object is in range
     if (distance(client.playerCollisionRect(), collisionRect()) > Client::ACTION_DISTANCE) {
         client._debug("That object is too far away.", Color::WARNING);
+        return;
+    }
+
+    
+    if (canBeAttackedByPlayer()){
+        client.setTarget(*this, true);
         return;
     }
     

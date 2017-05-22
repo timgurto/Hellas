@@ -40,12 +40,6 @@ void ClientNPC::update(double delta){
         Client::_instance->addParticles("lootSparkles", location(), delta);
 }
 
-void ClientNPC::onLeftClick(Client &client){
-    client.setTarget(*this);
-    
-    // Note: parent class's onLeftClick() not called.
-}
-
 void ClientNPC::onRightClick(Client &client){
     client.setTarget(*this, true);
     

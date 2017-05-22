@@ -73,6 +73,7 @@ public:
 
     Rect collisionRect() const { return objectType()->collisionRect() + location(); }
 
+    virtual void onLeftClick(Client &client) override;
     virtual void onRightClick(Client &client) override;
     static void startDeconstructing(void *object);
     static void trade(void *serialAndSlot);
