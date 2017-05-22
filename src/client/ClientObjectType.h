@@ -41,6 +41,13 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
     ImageSet _constructionImage; // Shown when the object is under construction.
     const SoundProfile *_sounds;
 
+    struct Strength{
+        Strength() : item(nullptr), quantity(0) {}
+        const ClientItem *item;
+        size_t quantity;
+    };
+    Strength _strength;
+
     // To show transformations.  Which image is displayed depends on progress.
     std::vector<ImageSet> _transformImages;
     ms_t _transformTime; // The total length of the transformation.
@@ -81,6 +88,8 @@ public:
     const ImageSet &constructionImage() const { return _constructionImage; }
     void sounds(const std::string &id);
     const SoundProfile *sounds() const { return _sounds; }
+    void strength(const ClientItem *item, size_t quantity) {
+            _strength.item = item; _strength.quantity = quantity; }
     
     const ImageSet &getProgressImage(ms_t timeRemaining) const;
 
@@ -88,6 +97,8 @@ public:
     virtual const Texture &image() const override { return _images.normal; }
 
     void addTag(const std::string &tagName){ _tags.insert(tagName); }
+
+    void calculateAndInitStrength();
 
     struct ptrCompare{
         bool operator()(const ClientObjectType *lhs, const ClientObjectType *rhs){

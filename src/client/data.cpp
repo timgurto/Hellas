@@ -189,6 +189,17 @@ void Client::loadData(const std::string &path){
                 }
             }
 
+            // Strength
+            auto strength = xr.findChild("strength", elem);
+            if (strength){
+                if (xr.findAttr(strength, "item", s) &&
+                    xr.findAttr(strength, "quantity", n)){
+                        ClientItem &item = _items[s];
+                        cot->strength(&item, n);
+                } else
+                    _debug("Transformation specified without target id; skipping.", Color::FAILURE);
+            }
+
             _objectTypes.insert(cot);
         }
     }
@@ -216,6 +227,10 @@ void Client::loadData(const std::string &path){
 
             if (xr.findAttr(elem, "sounds", s))
                 item.sounds(s);
+
+            health_t strength;
+            if (xr.findAttr(elem, "strength", strength))
+                item.strength(strength);
 
             auto offset = xr.findChild("offset", elem);
             if (offset != nullptr){
@@ -246,6 +261,12 @@ void Client::loadData(const std::string &path){
         
             _items[id] = item;
         }
+    }
+
+    // Initialize object-type strengths
+    for (auto *objectType : _objectTypes){
+        auto nonConstType = const_cast<ClientObjectType *>(objectType);
+        nonConstType->calculateAndInitStrength();
     }
 
     // Recipes

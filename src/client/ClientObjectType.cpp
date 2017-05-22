@@ -90,3 +90,9 @@ void ClientObjectType::sounds(const std::string &id){
     const Client &client = *Client::_instance;
     _sounds = client.findSoundProfile(id);
 }
+
+void ClientObjectType::calculateAndInitStrength(){
+    if (_strength.item == nullptr)
+        return;
+    maxHealth(_strength.item->strength() * _strength.quantity);
+}
