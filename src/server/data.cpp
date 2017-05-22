@@ -655,7 +655,7 @@ void Server::loadData(const std::string &path){
                 continue;
             }
 
-            Object &obj = addObject(type, p, nullptr);
+            Object &obj = addObject(type, p, "");
 
             auto owner = xr.findChild("owner", elem);
             if (owner){

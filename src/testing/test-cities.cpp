@@ -151,7 +151,7 @@ SLOW_TEST("A player can cede an object to his city")
     return ! rock.permissions().isOwnedByPlayer(user.name());
 TEND
 
-TEST("A player must be in a city to cede")
+SLOW_TEST("A player must be in a city to cede")
     // Given a user who owns a rock
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");
