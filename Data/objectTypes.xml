@@ -29,6 +29,7 @@ Server only:
     canGather="1" gatherTime="1000"
     allowedTerrain="denseVeg" >
     <yield id="stick" />
+    <strength item="stick" quantity="1" />
 </objectType>
 
 <objectType
@@ -36,6 +37,7 @@ Server only:
     xDrawOffset="-5" yDrawOffset="-5"
     canGather="1" gatherTime="1000" >
     <yield id="rock" />
+    <strength item="rock" quantity="1" />
 </objectType>
 
 <!--objectType
@@ -53,6 +55,7 @@ Server only:
     <yield id="log" initialMean="5.5" initialSD="1" initialMin="1" />
     <yield id="stick" initialMean="5" initialSD="2" />
     <collisionRect x="-7" y="-3" w="16" h="6" />
+    <strength item="log" quantity="6" />
 </objectType>
 
 <objectType
@@ -63,6 +66,7 @@ Server only:
     allowedTerrain="stone" >
     <yield id="tin" initialMean="4.5" initialSD="2" initialMin="1" />
     <yield id="rock" initialMean="1.5" initialSD="2" />
+    <strength item="tin" quantity="5" />
 </objectType>
 
 <objectType
@@ -73,6 +77,7 @@ Server only:
     allowedTerrain="stone" >
     <yield id="copper" initialMean="4.5" initialSD="2" initialMin="1" />
     <yield id="rock" initialMean="1.5" initialSD="2" />
+    <strength item="copper" quantity="5" />
 </objectType>
 
 <objectType
@@ -82,6 +87,7 @@ Server only:
     <tag name="oven" />
     <material id="rock" quantity="10" />
     <unlockedBy gather="rock" />
+    <strength item="rock" quantity="10" />
 </objectType>
 
 <objectType
@@ -91,6 +97,7 @@ Server only:
     isFlat="1" >
     <collisionRect x="-12" y="-2" w="25" h="24" />
     <yield id="crudeClay" initialMean="3.5" initialSD="1" initialMin="1" />
+    <strength item="crudeClay" quantity="3" />
 </objectType>
 
 <objectType
@@ -99,6 +106,7 @@ Server only:
     deconstructs="smallPot" deconstructionTime="1000" >
     <collisionRect x="-8" y="-5" w="16" h="10" />
     <container slots="1" />
+    <strength item="crudeClay" quantity="2" />
 </objectType>
 
 <objectType
@@ -107,12 +115,14 @@ Server only:
     deconstructs="mediumPot" deconstructionTime="1000" >
     <collisionRect x="-13" y="-4" w="25" h="6" />
     <container slots="4" />
+    <strength item="clay" quantity="3" />
 </objectType>
 
 <objectType
     id="largePot" name="Large Pot"
     deconstructs="largePot" deconstructionTime="1000" >
     <container slots="10" />
+    <strength item="clay" quantity="5" />
 </objectType>
 
 <objectType
@@ -126,6 +136,7 @@ Server only:
     <container slots="2" />
     <material id="lumber" quantity="8" />
     <unlockedBy recipe="lumber" />
+    <strength item="lumber" quantity="8" />
 </objectType>
 
 <objectType
@@ -135,6 +146,7 @@ Server only:
     deconstructs="elutriator" deconstructionTime="1000" >
     <tag name="elutriator" />
     <collisionRect x="-15" y="-4" w="31" h="8" />
+    <strength item="crudeClay" quantity="4" />
 </objectType>
 
 <objectType
@@ -147,18 +159,21 @@ Server only:
     <material id="brick" quantity="20" />
     <material id="crudeClay" quantity="12" />
     <unlockedBy recipe="brick" />
+    <strength item="brick" quantity="20" />
 </objectType>
 
 <objectType
     id="palisadeEW" name="Palisade E/W" >
     <material id="log" quantity="8" />
     <unlockedBy gather="log" chance="0.05" />
+    <strength item="log" quantity="8" />
 </objectType>
 
 <objectType
     id="palisadeNS" name="Palisade N/S" >
     <material id="log" quantity="8" />
     <unlockedBy gather="log" chance="0.05" />
+    <strength item="log" quantity="8" />
 </objectType>
 
 <objectType
@@ -166,9 +181,10 @@ Server only:
     xDrawOffset="-60"
     yDrawOffset="-42" >
     <collisionRect x="-60" y="-2" w="122" h="6" />
-    <material id="brick" quantity="1" />
+    <material id="brick" quantity="12" />
     <unlockedBy recipe="brick" chance="0.05" />
     <unlockedBy construction="brickWallNS" />
+    <strength item="brick" quantity="12" />
 </objectType>
 
 <objectType
@@ -179,6 +195,7 @@ Server only:
     <material id="brick" quantity="1" />
     <unlockedBy recipe="brick" chance="0.05" />
     <unlockedBy construction="brickWallEW" />
+    <strength item="brick" quantity="12" />
 </objectType>
 
 <objectType
@@ -187,6 +204,7 @@ Server only:
     yDrawOffset="-47"
     deconstructs="lumber" deconstructionTime="1000" >
     <collisionRect x="-4" y="-4" w="8" h="8" />
+    <strength item="lumber" quantity="1" />
 </objectType>
 
 <objectType id="figTree0" name="Fig Tree" constructionTime="10000" xDrawOffset="-19" yDrawOffset="-37"
@@ -197,38 +215,39 @@ Server only:
         <progress image="figTree0b" />
     </transform>
     <material id="figSeeds" />
+    <strength item="log" quantity="1" />
 </objectType>
 <objectType id="figTree1" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37"
-    canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="axe" gatherTime="3000" > <collisionRect x="-13" y="-9" w="26" h="18" />
+    canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="axe" gatherTime="3000" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <yield id="stick" initialMean="2.5" initialSD="1" initialMin="1" />
     <transform id="figTree2" whenEmpty="1" />
 </objectType>
-<objectType id="figTree2" name="Fig Tree" imageFile="figTree0b" xDrawOffset="-19" yDrawOffset="-37" > <collisionRect x="-13" y="-9" w="26" h="18" />
+<objectType id="figTree2" name="Fig Tree" imageFile="figTree0b" xDrawOffset="-19" yDrawOffset="-37" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <transform id="figTree3" time="600000" >
         <progress image="figTree2a" />
     </transform>
 </objectType>
 <objectType id="figTree3" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37"
-    canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="axe" gatherTime="3000" > <collisionRect x="-13" y="-9" w="26" h="18" />
+    canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="axe" gatherTime="3000" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <yield id="stick" initialMean="2.5" initialSD="1" initialMin="1" />
     <transform id="figTree4" whenEmpty="1" />
 </objectType>
-<objectType id="figTree4" name="Fig Tree" imageFile="figTree2a" xDrawOffset="-19" yDrawOffset="-37" > <collisionRect x="-13" y="-9" w="26" h="18" />
+<objectType id="figTree4" name="Fig Tree" imageFile="figTree2a" xDrawOffset="-19" yDrawOffset="-37" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <transform id="figTree5" time="600000" />
 </objectType>
-<objectType id="figTree5" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37" > <collisionRect x="-13" y="-9" w="26" h="18" />
+<objectType id="figTree5" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <transform id="figTree6" time="600000" />
 </objectType>
 <objectType id="figTree6" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37"
-    canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="axe" gatherTime="3000" > <collisionRect x="-13" y="-9" w="26" h="18" />
+    canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="axe" gatherTime="3000" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <yield id="stick" initialMean="2.5" initialSD="1" initialMin="1" />
     <transform id="figTree7" whenEmpty="1" />
 </objectType>
-<objectType id="figTree7" name="Fig Tree" imageFile="figTree5" xDrawOffset="-19" yDrawOffset="-37" > <collisionRect x="-13" y="-9" w="26" h="18" />
+<objectType id="figTree7" name="Fig Tree" imageFile="figTree5" xDrawOffset="-19" yDrawOffset="-37" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <transform id="figTree8" time="600000" />
 </objectType>
 <objectType id="figTree8" name="Fig Tree (Ripe)" xDrawOffset="-19" yDrawOffset="-37"
-    canGather="1" gatherParticles="figLeaves" gatherTime="1000" > <collisionRect x="-13" y="-9" w="26" h="18" />
+    canGather="1" gatherParticles="figLeaves" gatherTime="1000" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <yield id="fig" initialMean="8" initialSD="2" initialMin="1" />
     <yield id="figSeeds" initialMean="0.4" initialSD="0.1" />
     <transform id="figTree5" whenEmpty="1" />
@@ -245,32 +264,33 @@ Server only:
     <material id="water" />
     <material id="flaxSeeds" />
     <transform id="flaxCrop1" time="600000" />
+    <strength item="flax" quantity="5" />
 </objectType>
-<objectType id="flaxCrop1" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" />
+<objectType id="flaxCrop1" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
     <transform id="flaxCrop2" time="600000" />
 </objectType>
-<objectType id="flaxCrop2" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" />
+<objectType id="flaxCrop2" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
     <transform id="flaxCrop3" time="600000" />
 </objectType>
-<objectType id="flaxCrop3" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" />
+<objectType id="flaxCrop3" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
     <transform id="flaxCrop4" time="600000" />
 </objectType>
-<objectType id="flaxCrop4" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" />
+<objectType id="flaxCrop4" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
     <transform id="flaxCrop5" time="600000" />
 </objectType>
-<objectType id="flaxCrop5" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" />
+<objectType id="flaxCrop5" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
     <transform id="flaxCrop6" time="600000" />
 </objectType>
-<objectType id="flaxCrop6" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" />
+<objectType id="flaxCrop6" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
     <transform id="flaxCrop7" time="600000" />
 </objectType>
-<objectType id="flaxCrop7" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" />
+<objectType id="flaxCrop7" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
     <transform id="flaxCrop8" time="600000" />
 </objectType>
@@ -283,6 +303,7 @@ Server only:
     <collisionRect x="-19" y="-20" w="38" h="40" />
     <yield id="flax" initialMean="5" initialSD="1" initialMin="1" />
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" />
+    <strength item="flax" quantity="5" />
 </objectType>
 
 <objectType id="stretchingFrame" name="Stretching Frame" >
@@ -290,11 +311,13 @@ Server only:
     <material id="rope" quantity="2" />
     <tag name="stretchingFrame" />
     <unlockedBy recipe="rope" />
+    <strength item="rope" quantity="2" />
 </objectType>
 
 <objectType id="tannin" name="Pot of Tannin"
     constructionTime="1000" >
     <tag name="tannin" />
+    <strength item="crudeClay" quantity="2" />
 </objectType>
 
 <!-- isFlat: Given the sloping shape, all other objects should be drawn above it. -->
@@ -304,6 +327,7 @@ Server only:
     xDrawOffset="-150" yDrawOffset="-150" >
     <collisionRect x="-150" y="-150" w="301" h="301" />
     <material id="brick" quantity="1" />
+    <strength item="brick" quantity="1" />
 </objectType>
 
 </root>
