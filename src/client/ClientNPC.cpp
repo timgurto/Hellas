@@ -10,7 +10,6 @@ const size_t ClientNPC::LOOT_CAPACITY = 8;
 
 ClientNPC::ClientNPC(size_t serial, const ClientNPCType *type, const Point &loc):
 ClientObject(serial, type, loc),
-ClientCombatant(type),
 _lootable(false),
 _lootContainer(nullptr)
 {}
@@ -90,9 +89,4 @@ const Texture &ClientNPC::image() const{
 
 const Texture &ClientNPC::highlightImage() const{
     return (health() > 0) ? ClientObject::highlightImage() : npcType()->corpseHighlightImage();
-}
-
-void ClientNPC::sendTargetMessage() const{
-    const Client &client = *Client::_instance;
-    client.sendMessage(CL_TARGET_ENTITY, makeArgs(serial()));
 }

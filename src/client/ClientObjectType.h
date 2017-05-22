@@ -4,6 +4,7 @@
 #include <set>
 #include <string>
 
+#include "ClientCombatantType.h"
 #include "ClientItem.h"
 #include "SpriteType.h"
 #include "Texture.h"
@@ -16,7 +17,7 @@ class SoundProfile;
 class ParticleProfile;
 
 // Describes a class of Entities, the "instances" of which share common properties
-class ClientObjectType : public SpriteType{
+class ClientObjectType : public SpriteType, public ClientCombatantType {
     struct ImageSet{
         Texture normal, highlight;
         ImageSet(){}

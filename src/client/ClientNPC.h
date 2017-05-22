@@ -3,11 +3,10 @@
 
 #include "ClientNPCType.h"
 #include "ClientObject.h"
-#include "ClientCombatant.h"
 
 class TakeContainer;
 
-class ClientNPC : public ClientObject, public ClientCombatant{
+class ClientNPC : public ClientObject {
 
     /*
     True if the NPC is dead and has loot available.  This is used as the loot itself is unknown
@@ -41,10 +40,6 @@ public:
     virtual void update(double delta) override;
     virtual const Texture &cursor(const Client &client) const override;
     virtual void onInventoryUpdate() override;
-
-    // From ClientCombatant
-    virtual void sendTargetMessage() const override;
-    virtual const Sprite *entityPointer() const override { return this; }
 };
 
 #endif

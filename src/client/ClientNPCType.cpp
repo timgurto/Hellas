@@ -3,12 +3,12 @@
 #include "ClientNPCType.h"
 #include "Surface.h"
 
-ClientNPCType::ClientNPCType(const std::string &id, health_t maxHealth):
+ClientNPCType::ClientNPCType(const std::string &id, health_t maxHealthArg):
 ClientObjectType(id),
-ClientCombatantType(maxHealth),
 _sounds(nullptr)
 {
     containerSlots(ClientNPC::LOOT_CAPACITY);
+    maxHealth(maxHealthArg);
 }
 
 void ClientNPCType::corpseImage(const std::string &filename){

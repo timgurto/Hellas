@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string>
 
+#include "ClientCombatant.h"
 #include "ClientMerchantSlot.h"
 #include "ClientObjectType.h"
 #include "Sprite.h"
@@ -16,7 +17,7 @@ class TextBox;
 class Window;
 
 // A client-side description of an object
-class ClientObject : public Sprite{
+class ClientObject : public Sprite, public ClientCombatant {
     size_t _serial;
     std::string _owner;
     ClientItem::vect_t _container;
@@ -82,6 +83,11 @@ public:
     virtual void assembleWindow(Client &client);
     virtual const Texture &image() const override;
     virtual const Texture &highlightImage() const override;
+
+    // From ClientCombatant
+    virtual void sendTargetMessage() const override;
+    virtual const Sprite *entityPointer() const override { return this; }
+    virtual bool canBeAttackedByPlayer() const override;
 
 
     bool userHasAccess() const;

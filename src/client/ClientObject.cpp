@@ -29,6 +29,7 @@ const px_t ClientObject::BUTTON_GAP = 1;
 
 ClientObject::ClientObject(const ClientObject &rhs):
 Sprite(rhs),
+ClientCombatant(rhs.objectType()),
 _serial(rhs._serial),
 _container(rhs._container),
 _window(nullptr),
@@ -37,6 +38,7 @@ _beingGathered(rhs._beingGathered){}
 
 ClientObject::ClientObject(size_t serialArg, const ClientObjectType *type, const Point &loc):
 Sprite(type, loc),
+ClientCombatant(type),
 _serial(serialArg),
 _window(nullptr),
 _confirmCedeWindow(nullptr),
@@ -592,11 +594,19 @@ void ClientObject::update(double delta) {
 }
 
 const Texture &ClientObject::cursor(const Client &client) const {
+    if (canBeAttackedByPlayer())
+        return client.cursorAttack();
+
     const ClientObjectType &ot = *objectType();
-    if (ot.canGather())
-        return client.cursorGather();
-    if (ot.containerSlots() > 0 || ot.merchantSlots() > 0)
+    if (userHasAccess()){
+        if (ot.canGather())
+            return client.cursorGather();
+        if (ot.containerSlots() > 0)
+            return client.cursorContainer();
+    }
+    if (ot.merchantSlots() > 0)
         return client.cursorContainer();
+
     return client.cursorNormal();
 }
 
@@ -717,4 +727,18 @@ const Texture &ClientObject::highlightImage() const{
     if (objectType()->transforms())
         return objectType()->getProgressImage(_transformTimer).highlight;
     return Sprite::highlightImage();
+}
+
+void ClientObject::sendTargetMessage() const{
+    const Client &client = *Client::_instance;
+    client.sendMessage(CL_TARGET_ENTITY, makeArgs(serial()));
+}
+
+bool ClientObject::canBeAttackedByPlayer() const{
+    if (! ClientCombatant::canBeAttackedByPlayer())
+        return false;
+    if (_owner.empty())
+        return false;
+    const Client &client = *Client::_instance;
+    return client.isAtWarWith(_owner);
 }

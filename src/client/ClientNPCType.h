@@ -1,12 +1,11 @@
 #ifndef CLIENT_NPC_TYPE_H
 #define CLIENT_NPC_TYPE_H
 
-#include "ClientCombatantType.h"
 #include "ClientObject.h"
 
 class SoundProfile;
 
-class ClientNPCType : public ClientObjectType, public ClientCombatantType {
+class ClientNPCType : public ClientObjectType {
     Texture _corpseImage, _corpseHighlightImage;
     const SoundProfile *_sounds;
 
