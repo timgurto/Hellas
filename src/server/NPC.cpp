@@ -25,8 +25,9 @@ void NPC::onDeath(){
     server.forceAllToUntarget(*this);
 
     npcType()->lootTable().instantiate(_loot);
-    for (const User *user : server.findUsersInArea(location()))
-        server.sendMessage(user->socket(), SV_LOOTABLE, makeArgs(serial()));
+    if (! _loot.empty())
+        for (const User *user : server.findUsersInArea(location()))
+            server.sendMessage(user->socket(), SV_LOOTABLE, makeArgs(serial()));
 
     /*
     Schedule a respawn, if this NPC came from a spawner.

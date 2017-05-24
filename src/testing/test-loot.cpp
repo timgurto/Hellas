@@ -40,3 +40,26 @@ TEST("Objects have health")
     // It has 30 (6*5) health
     return s.getFirstObject().health() == 30;
 TEND
+
+TEST("Clients discern NPCs with no loot")
+    // Given a server and client;
+    // And an ant NPC type with 1 health and no loot table
+    TestServer s = TestServer::WithData("ant");
+    TestClient c = TestClient::WithData("ant");
+
+    // And an ant NPC exists
+    s.addNPC("ant");
+    WAIT_UNTIL(c.objects().size() == 1);
+
+    // When the ant dies
+    NPC &serverAnt = s.getFirstNPC();
+    serverAnt.reduceHealth(1);
+
+    // The user doesn't believe he can loot it
+    ClientNPC &clientAnt = c.getFirstNPC();
+    REPEAT_FOR_MS(200) {
+        if (clientAnt.lootable())
+            return false;
+    }
+    return true;
+TEND
