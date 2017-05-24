@@ -3,7 +3,6 @@
 #include "NPC.h"
 #include "Server.h"
 
-const ms_t NPC::CORPSE_TIME = 600000; // 10 minutes
 const size_t NPC::LOOT_CAPACITY = 8;
 
 NPC::NPC(const NPCType *type, const Point &loc):
@@ -12,12 +11,7 @@ NPC::NPC(const NPCType *type, const Point &loc):
 {}
 
 void NPC::update(ms_t timeElapsed){
-    if (health() == 0){
-        if (timeElapsed < _corpseTime)
-            _corpseTime -= timeElapsed;
-        else
-            markForRemoval();
-    } else {
+    if (health() > 0){
         processAI(timeElapsed); // May call Entity::update()
     }
 }
@@ -29,7 +23,6 @@ void NPC::onHealthChange(){
 }
 
 void NPC::onDeath(){
-    _corpseTime = CORPSE_TIME;
     Server &server = *Server::_instance;
     server.forceAllToUntarget(*this);
 
@@ -46,6 +39,8 @@ void NPC::onDeath(){
         spawner()->scheduleSpawn();
         spawner(nullptr);
     }
+
+    Entity::onDeath();
 }
 
 void NPC::processAI(ms_t timeElapsed){
@@ -103,9 +98,10 @@ void NPC::processAI(ms_t timeElapsed){
         break;
 
     case ATTACK:
-        Entity::update(timeElapsed);
-        break;
+        break; // Entity::update() will handle it
     }
+      
+    Entity::update(timeElapsed);
 }
 
 bool NPC::collides() const{

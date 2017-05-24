@@ -75,6 +75,14 @@ void Entity::update(ms_t timeElapsed){
     else
         _attackTimer = 0;
 
+    if (health() == 0){
+        if (_corpseTime > timeElapsed)
+            _corpseTime -= timeElapsed;
+        else
+            markForRemoval();
+        return;
+    }
+
     Entity *pTarget = target();
     if (pTarget == nullptr)
         return;
@@ -124,6 +132,17 @@ void Entity::update(ms_t timeElapsed){
         // Reset timer
         _attackTimer = attackTime();
     }
+}
+
+void Entity::onDeath(){
+    if (timeToRemainAsCorpse() == 0)
+        markForRemoval();
+    else
+        startCorpseTimer();
+}
+
+void Entity::startCorpseTimer(){
+    _corpseTime = timeToRemainAsCorpse();
 }
 
 void Entity::addWatcher(const std::string &username){

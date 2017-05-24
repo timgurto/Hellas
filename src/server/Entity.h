@@ -62,13 +62,14 @@ public:
     virtual ms_t attackTime() const = 0;
     Entity *target() const { return _target; }
     void target(Entity *p) { _target = p; }
+    virtual ms_t timeToRemainAsCorpse() const = 0;
 
     health_t health() const { return _health; }
     void health(health_t health) { _health = health; }
 
     void reduceHealth(int damage);
     virtual void onHealthChange() {}; // Probably alerting relevant users.
-    virtual void onDeath() {}; // Anything that needs to happen upon death.
+    virtual void onDeath(); // Anything that needs to happen upon death.
     virtual void describeSelfToNewWatcher(const User &watcher) const {}
     virtual void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const {}
     virtual ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum, const User &user) { return nullptr; }
@@ -102,6 +103,8 @@ private:
     health_t _health;
     ms_t _attackTimer;
     Entity *_target;
+    ms_t _corpseTime; // How much longer this entity should exist as a corpse.
+    void startCorpseTimer();
 
 
     friend class Dummy;
@@ -124,6 +127,7 @@ private:
     virtual health_t attack() const override { return 0; };
     virtual ms_t attackTime() const override { return 0; };
     virtual void sendInfoToClient(const User &targetUser) const override {}
+    virtual ms_t timeToRemainAsCorpse() const override { return 0; }
 };
 
 #endif

@@ -364,9 +364,12 @@ void User::onHealthChange(){
 }
 
 void User::onDeath(){
-    // Each game would need to implement this depending on preferred mechanics.
+    // Handle respawn etc.
     health(maxHealth());
+
     onHealthChange();
+    
+    Entity::onDeath();
 }
 
 void User::updateStats(){

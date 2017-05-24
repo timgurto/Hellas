@@ -118,6 +118,7 @@ public:
     virtual health_t attack() const override { return _stats.attack; }
     virtual ms_t attackTime() const override { return _stats.attackTime; }
     virtual double speed() const override { return _stats.speed; }
+    virtual ms_t timeToRemainAsCorpse() const override { return 0; }
 
     virtual char classTag() const override { return 'u'; }
     

@@ -121,6 +121,8 @@ void Object::update(ms_t timeElapsed){
         if (_transformTimer == 0)
             setType(objType().transformObject());
     } while (false);
+
+    Entity::update(timeElapsed);
 }
 
 void Object::onHealthChange(){
@@ -169,6 +171,8 @@ void Object::setType(const ObjectType *type){
 void Object::onDeath(){
     Server &server = *Server::_instance;
     server.forceAllToUntarget(*this);
+
+    Entity::onDeath();
 }
 
 bool Object::isAbleToDeconstruct(const User &user) const{

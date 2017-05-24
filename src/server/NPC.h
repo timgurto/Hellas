@@ -14,13 +14,10 @@ class NPC : public Entity {
         CHASE,
         ATTACK,
     };
-
-    ms_t _corpseTime; // How long this combatant has been a corpse.
     State _state;
 
 
 public:
-    static const ms_t CORPSE_TIME; // How long dead combatants remain as corpse objects.
     static const size_t LOOT_CAPACITY; // The size of the container.
 
     NPC(const NPCType *type, const Point &loc); // Generates a new serial
@@ -34,6 +31,7 @@ public:
     virtual ms_t attackTime() const override { return npcType()->attackTime(); }
     virtual double speed() const override { return 10; }
     virtual bool collides() const override;
+    virtual ms_t timeToRemainAsCorpse() const override { return 600000; } // 10 minutes
 
     virtual void onHealthChange() override;
     virtual void onDeath() override;
