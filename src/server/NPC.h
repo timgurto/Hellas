@@ -18,8 +18,6 @@ class NPC : public Entity {
 
 
 public:
-    static const size_t LOOT_CAPACITY; // The size of the container.
-
     NPC(const NPCType *type, const Point &loc); // Generates a new serial
     virtual ~NPC(){}
 

@@ -3,8 +3,6 @@
 #include "NPC.h"
 #include "Server.h"
 
-const size_t NPC::LOOT_CAPACITY = 8;
-
 NPC::NPC(const NPCType *type, const Point &loc):
     Entity(type, loc, type->maxHealth()),
     _state(IDLE)
