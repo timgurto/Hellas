@@ -69,7 +69,7 @@ public:
     virtual health_t maxHealth() const override { return objType().strength(); }
     virtual health_t attack() const override { return 0; }
     virtual ms_t attackTime() const override { return 0; }
-    virtual ms_t timeToRemainAsCorpse() const override { return 5000/*43200000*/; } // 12 hours
+    virtual ms_t timeToRemainAsCorpse() const override { return 43200000; } // 12 hours
 
     virtual void writeToXML(XmlWriter &xw) const override;
 
