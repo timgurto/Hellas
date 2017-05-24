@@ -20,9 +20,6 @@ public:
 
     ClientNPC(size_t serial, const ClientNPCType *type = nullptr, const Point &loc = Point());
     virtual ~ClientNPC(){}
-    
-    virtual const Texture &image() const;
-    virtual const Texture &highlightImage() const;
     bool lootable() const { return _lootable; }
     void lootable(bool b) { _lootable = b; }
     virtual bool isFlat() const override;

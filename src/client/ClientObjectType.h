@@ -39,6 +39,7 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
     ItemSet _materials;
     mutable Texture *_materialsTooltip;
     ImageSet _constructionImage; // Shown when the object is under construction.
+    Texture _corpseImage, _corpseHighlightImage;
     const SoundProfile *_sounds;
 
     struct Strength{
@@ -92,6 +93,9 @@ public:
             _strength.item = item; _strength.quantity = quantity; }
     
     const ImageSet &getProgressImage(ms_t timeRemaining) const;
+    void corpseImage(const std::string &filename);
+    const Texture &corpseImage() const { return _corpseImage; }
+    const Texture &corpseHighlightImage() const { return _corpseHighlightImage; }
 
     virtual char classTag() const override { return 'o'; }
     virtual const Texture &image() const override { return _images.normal; }

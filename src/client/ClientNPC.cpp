@@ -76,11 +76,3 @@ void ClientNPC::onInventoryUpdate(){
 bool ClientNPC::isFlat() const{
     return Sprite::isFlat() || health() == 0;
 }
-
-const Texture &ClientNPC::image() const{
-    return (health() > 0) ? ClientObject::image() : npcType()->corpseImage();
-}
-
-const Texture &ClientNPC::highlightImage() const{
-    return (health() > 0) ? ClientObject::highlightImage() : npcType()->corpseHighlightImage();
-}

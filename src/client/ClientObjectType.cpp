@@ -69,6 +69,17 @@ const ClientObjectType::ImageSet &ClientObjectType::getProgressImage(ms_t timeRe
     return _transformImages[index];
 }
 
+void ClientObjectType::corpseImage(const std::string &filename){
+    _corpseImage = Texture(filename, Color::MAGENTA);
+
+    // Set corpse highlight image
+    Surface corpseHighlightSurface(filename, Color::MAGENTA);
+    if (!corpseHighlightSurface)
+        return;
+    corpseHighlightSurface.swapColors(Color::OUTLINE, Color::HIGHLIGHT_OUTLINE);
+    _corpseHighlightImage = Texture(corpseHighlightSurface);
+}
+
 void ClientObjectType::addTransformImage(const std::string &filename){
     _transformImages.push_back(ImageSet("Images/Objects/" + filename + ".png"));
 }

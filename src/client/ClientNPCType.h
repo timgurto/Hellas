@@ -6,15 +6,11 @@
 class SoundProfile;
 
 class ClientNPCType : public ClientObjectType {
-    Texture _corpseImage, _corpseHighlightImage;
 
 public:
     ClientNPCType(const std::string &id, health_t maxHealth);
     virtual ~ClientNPCType() override{}
 
-    void corpseImage(const std::string &filename);
-    const Texture &corpseImage() const { return _corpseImage; }
-    const Texture &corpseHighlightImage() const { return _corpseHighlightImage; }
 
     virtual char classTag() const override { return 'n'; }
 };

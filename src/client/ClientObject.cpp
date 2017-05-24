@@ -726,6 +726,8 @@ const Texture &ClientObject::tooltip() const{
 }
 
 const Texture &ClientObject::image() const{
+    if (health() == 0)
+        return objectType()->corpseImage();
     if (isBeingConstructed())
         return objectType()->constructionImage().normal;
     if (objectType()->transforms())
@@ -734,6 +736,8 @@ const Texture &ClientObject::image() const{
 }
 
 const Texture &ClientObject::highlightImage() const{
+    if (health() == 0)
+        return objectType()->corpseHighlightImage();
     if (isBeingConstructed())
         return objectType()->constructionImage().highlight;
     if (objectType()->transforms())

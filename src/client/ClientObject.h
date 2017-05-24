@@ -69,6 +69,8 @@ public:
     virtual void update(double delta) override;
     virtual const Texture &cursor(const Client &client) const override;
     virtual const std::string &name() const override { return objectType()->name(); }
+    virtual const Texture &image() const override;
+    virtual const Texture &highlightImage() const override;
     const Texture &tooltip() const override; // Getter; creates tooltip on first call.
 
     Rect collisionRect() const { return objectType()->collisionRect() + location(); }
@@ -82,8 +84,6 @@ public:
     virtual void onInventoryUpdate();
     void hideWindow();
     virtual void assembleWindow(Client &client);
-    virtual const Texture &image() const override;
-    virtual const Texture &highlightImage() const override;
 
     // From ClientCombatant
     virtual void sendTargetMessage() const override;
