@@ -22,6 +22,9 @@ public:
     virtual bool canBeAttackedByPlayer() const { return isAlive(); }
     virtual const Sprite *entityPointer() const = 0;
     virtual bool belongsToPlayerCity() const { return false; }
+    virtual const Point &combatantLocation() const = 0;
+
+    void createDamageParticles() const;
 
 private:
     health_t _health;

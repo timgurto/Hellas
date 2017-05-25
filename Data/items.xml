@@ -28,8 +28,8 @@ Client only:
 <item id="log"          name="Log"                               stackSize="5"  strength="4" />
 <item id="tin"          name="Tin Ore"                           stackSize="10" strength="4" />
 <item id="copper"       name="Copper Ore"                        stackSize="10" strength="5" />
-<item id="crudeClay"    name="Crude Clay"                        stackSize="10" strength="2" />
-<item id="clay"         name="Clay"                              stackSize="10" strength="3" />
+<item id="crudeClay"    name="Crude Clay"                        stackSize="10" strength="3" />
+<item id="clay"         name="Clay"                              stackSize="10" strength="5" />
 <item id="tinBar"       name="Tin Bar"        sounds="metalBar"  stackSize="10" />
 <item id="copperBar"    name="Copper Bar"     sounds="metalBar"  stackSize="10" />
 <item id="charcoal"     name="Charcoal"                          stackSize="10" />

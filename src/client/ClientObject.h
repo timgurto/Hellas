@@ -89,6 +89,7 @@ public:
     virtual void sendTargetMessage() const override;
     virtual const Sprite *entityPointer() const override { return this; }
     virtual bool canBeAttackedByPlayer() const override;
+    virtual const Point &combatantLocation() const { return location(); }
 
 
     bool userHasAccess() const;

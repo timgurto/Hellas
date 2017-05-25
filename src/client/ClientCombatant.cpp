@@ -62,3 +62,8 @@ const Color &ClientCombatant::nameColor() const{
 
     return Color::COMBATANT_NEUTRAL;
 }
+
+void ClientCombatant::createDamageParticles() const{
+    Client &client = *Client::_instance;
+    client.addParticles(_type->damageParticles(), combatantLocation());
+}

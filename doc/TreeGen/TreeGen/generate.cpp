@@ -334,6 +334,9 @@ int main(int argc, char **argv){
                 jw.addAttribute("constructionReq", s);
             }
 
+            if (!xr.findAttr(elem, "damageParticles", s))
+                missingParticles.insert("damage");
+
             std::set<std::string> yields;
             for (auto yield : xr.getChildren("yield", elem)) {
                 if (!xr.findAttr(yield, "id", s))

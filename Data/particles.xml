@@ -51,7 +51,7 @@
 </particleProfile>
 
 <particleProfile
-    id="combatDamage">
+    id="blood">
     <particlesPerHit mean=6 sd=2 />
     <distance mean=5 sd=0 />
     <altitude mean=8 sd=4 />

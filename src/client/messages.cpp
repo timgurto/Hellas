@@ -701,7 +701,7 @@ void Client::handleMessage(const std::string &msg){
                     sounds->playOnce("defend");
             }
             attacker->playAttackSound();
-            addParticles("combatDamage", defender.location());
+            defender.createDamageParticles();
             break;
         }
 
@@ -734,7 +734,7 @@ void Client::handleMessage(const std::string &msg){
             if (attacker.npcType()->sounds() != nullptr)
                 attacker.npcType()->sounds()->playOnce("attack");
             defender->playDefendSound();
-            addParticles("combatDamage", defender->location());
+            defender->createDamageParticles();
             break;
         }
 
@@ -774,7 +774,7 @@ void Client::handleMessage(const std::string &msg){
             
             attacker->playAttackSound();
             defender->playDefendSound();
-            addParticles("combatDamage", defender->location());
+            defender->createDamageParticles();
             break;
         }
 
@@ -880,7 +880,7 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
             if (health < _health)
-                addParticles("combatDamage", _character.location());
+                _character.createDamageParticles();
             _health = health;
             break;
         }
