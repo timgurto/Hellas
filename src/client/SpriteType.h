@@ -36,6 +36,8 @@ public:
     px_t width() const { return _drawRect.w; }
     px_t height() const { return _drawRect.h; }
 
+    void setAlpha(Uint8 alpha) { _image.setAlpha(alpha); }
+
     void setHighlightImage(const std::string &imageFile);
     virtual const Texture &image() const { return _image; }
 

@@ -12,7 +12,8 @@ _id(id),
 _particlesPerSecond(0),
 _gravity(DEFAULT_GRAVITY),
 _lifespan(DEFAULT_LIFESPAN_MEAN, DEFAULT_LIFESPAN_SD),
-_noZDimension(false)
+_noZDimension(false),
+_alpha(0xff)
 {}
 
 ParticleProfile::~ParticleProfile(){
@@ -22,6 +23,8 @@ ParticleProfile::~ParticleProfile(){
 
 void ParticleProfile::addVariety(const std::string &imageFile, const Rect &drawRect, size_t count){
     SpriteType *particleType = new SpriteType(drawRect, "Images/Particles/" + imageFile + ".png");
+    if (_alpha != 0xff)
+        particleType->setAlpha(0x7f);
     _varieties.push_back(particleType); // _varieties owns the pointers.
     for (size_t i = 0; i != count; ++i)
         _pool.push_back(particleType);
@@ -39,10 +42,13 @@ Particle *ParticleProfile::instantiate(const Point &location) const{
     Point locationOffset(cos(angle) * distance, sin(angle) * distance);
     Point startingLoc = location + locationOffset;
 
-    // Choose random direction, then set velocity
+    // Initialize velocity from base direction
+    Point startingVelocity = _direction;
+
+    // Modify velocity based on random direction
     angle = 2 * PI * randDouble();
     double velocity = _velocity.generate();
-    Point startingVelocity(cos(angle) * velocity, sin(angle) * velocity);
+    startingVelocity += Point(cos(angle) * velocity, sin(angle) * velocity);
 
     if (_noZDimension){
         startingLoc.y = location.y;

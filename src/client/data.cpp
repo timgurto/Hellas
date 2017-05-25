@@ -44,16 +44,26 @@ void Client::loadData(const std::string &path){
             if (!xr.findAttr(elem, "id", s)) // No ID: skip
                 continue;
             ParticleProfile *profile = new ParticleProfile(s);
-            double mean, sd, n;
+            double mean, sd;
             if (xr.findAttr(elem, "particlesPerSecond", mean)) profile->particlesPerSecond(mean);
             if (xr.findAttr(elem, "gravityModifier", mean)) profile->gravityuModifer(mean);
-            if (xr.findAttr(elem, "noZDimension", n) && n != 0) profile->noZDimension();
             if (xr.findNormVarChild("particlesPerHit", elem, mean, sd)) profile->particlesPerHit(mean, sd);
             if (xr.findNormVarChild("distance", elem, mean, sd)) profile->distance(mean, sd);
             if (xr.findNormVarChild("altitude", elem, mean, sd)) profile->altitude(mean, sd);
             if (xr.findNormVarChild("velocity", elem, mean, sd)) profile->velocity(mean, sd);
             if (xr.findNormVarChild("fallSpeed", elem, mean, sd)) profile->fallSpeed(mean, sd);
             if (xr.findNormVarChild("lifespan", elem, mean, sd)) profile->lifespan(mean, sd);
+            int n;
+            if (xr.findAttr(elem, "noZDimension", n) && n != 0) profile->noZDimension();
+            if (xr.findAttr(elem, "alpha", n) && n != 0xff) profile->alpha(n);
+
+            auto dirE = xr.findChild("direction", elem);
+            if (dirE){
+                Point direction;
+                xr.findAttr(dirE, "x", direction.x);
+                xr.findAttr(dirE, "y", direction.y);
+                profile->direction(direction);
+            }
 
             for (auto variety : xr.getChildren("variety", elem)){
                 if (!xr.findAttr(variety, "imageFile", s))

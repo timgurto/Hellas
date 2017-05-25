@@ -20,6 +20,8 @@ class ParticleProfile{
         _velocity,
         _fallSpeed,
         _lifespan; // The particle will disappear after this time
+    Point _direction;
+    Uint8 _alpha;
     std::vector<const SpriteType *> _varieties, _pool;
 
 public:
@@ -34,10 +36,12 @@ public:
     void distance(double mean, double sd) { _distance = NormalVariable(mean, sd); }
     void altitude(double mean, double sd) { _altitude = NormalVariable(mean, sd); }
     void velocity(double mean, double sd) { _velocity = NormalVariable(mean, sd); }
+    void direction(const Point &p) { _direction = p; }
     void fallSpeed(double mean, double sd) { _fallSpeed = NormalVariable(mean, sd); }
     void lifespan(double mean, double sd) { _lifespan = NormalVariable(mean, sd); }
     void gravityuModifer(double mod) { _gravity *= mod; }
     void noZDimension() { _noZDimension = true; }
+    void alpha(Uint8 n) { _alpha = n; }
 
     struct ptrCompare{
         bool operator()(const ParticleProfile *lhs, const ParticleProfile *rhs){
