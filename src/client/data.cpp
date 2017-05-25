@@ -118,6 +118,7 @@ void Client::loadData(const std::string &path){
             xr.findAttr(elem, "imageFile", id); // If no explicit imageFile, s will still == id
             cot->setImage(std::string("Images/Objects/") + id + ".png");
             cot->imageSet(std::string("Images/Objects/") + id + ".png");
+            cot->corpseImage(std::string("Images/Objects/") + id + "-corpse.png");
             std::string s;
             if (xr.findAttr(elem, "name", s)) cot->name(s);
             Rect drawRect(0, 0, cot->width(), cot->height());

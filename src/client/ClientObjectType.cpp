@@ -71,6 +71,8 @@ const ClientObjectType::ImageSet &ClientObjectType::getProgressImage(ms_t timeRe
 
 void ClientObjectType::corpseImage(const std::string &filename){
     _corpseImage = Texture(filename, Color::MAGENTA);
+    if (!_corpseImage)
+        return;
 
     // Set corpse highlight image
     Surface corpseHighlightSurface(filename, Color::MAGENTA);
