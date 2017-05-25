@@ -407,6 +407,9 @@ enum MessageCode{
     // The user tried to manipulate an object's non-existent inventory
     SV_NO_INVENTORY = 949,
 
+    // That action cannot be performed on a damaged object
+    SV_DAMAGED_OBJECT = 950,
+
 
 
     // Debug requests

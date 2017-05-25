@@ -5,7 +5,7 @@
 #include "../client/ui/List.h"
 #include "../client/ui/Label.h"
 
-TEST("Sizeof empty list")
+TEST("Size of empty list")
     // When a new List element is created
     List l(Rect(0, 0, 100, 100));
 

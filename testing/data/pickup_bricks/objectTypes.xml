@@ -1,0 +1,6 @@
+<root>
+<objectType id="brick" name="Brick"
+    deconstructs="brick" >
+    <strength item="brick" quantity="1" />
+</objectType>
+</root>

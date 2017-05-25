@@ -222,6 +222,7 @@ void Server::loadData(const std::string &path){
             if (xr.findAttr(elem, "gatherReq", s)) ot->gatherReq(s);
             if (xr.findAttr(elem, "constructionReq", s)) ot->constructionReq(s);
 
+            // Deconstruction
             if (xr.findAttr(elem, "deconstructs", s)){
                 ms_t deconstructionTime = 0;
                 xr.findAttr(elem, "deconstructionTime", deconstructionTime);
@@ -275,6 +276,7 @@ void Server::loadData(const std::string &path){
             if (isUnbuildable)
                 ot->makeUnbuildable();
             
+            // Construction locks
             bool requiresUnlock = false;
             for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
                 double chance = 1.0;
