@@ -601,8 +601,19 @@ void ClientObject::update(double delta) {
     }
 
     // If dead, add smoke particles
-    if (isDead() && classTag() != 'n')
-        client.addParticles("smoke", location(), delta);
+    if (isDead() && classTag() != 'n'){
+        Point particleLocation(
+                rand() % collisionRect().w + collisionRect().x,
+                rand() % collisionRect().h + collisionRect().y);
+        const ParticleProfile *smokeProfile = client.findParticleProfile("smoke");
+
+        size_t numParticles = smokeProfile->numParticlesContinuous(delta);
+        static const double PARTICLES_PER_PIXEL = 0.005;
+        size_t area = collisionRect().w * collisionRect().h;
+        numParticles = toInt(numParticles * area * PARTICLES_PER_PIXEL);
+
+        client.addParticles(smokeProfile, particleLocation, numParticles);
+    }
 
     Sprite::update(delta);
 }
