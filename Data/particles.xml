@@ -90,8 +90,7 @@
     id="loginFireLarge"
     particlesPerSecond=200
     gravityModifier=0
-    noZDimension=1
-    >
+    noZDimension=1 >
     <lifespan mean=500 sd=300 />
     <distance mean=0 sd=3 />
     <altitude mean=0 sd=0 />
@@ -103,18 +102,18 @@
 
 <particleProfile
     id="smoke"
-    particlesPerSecond=25
+    particlesPerSecond=8
     gravityModifier=0
-    alpha=127>
+    alpha=127 >
     <lifespan mean=10000 sd=1000 />
     <distance mean=3 sd=3 />
     <altitude mean=0 sd=0 />
     <velocity mean=0 sd=0.5 />
-    <fallSpeed mean=-10 sd=2 />
+    <fallSpeed mean=-15 sd=4 />
     <direction x=2.5 y=1 />
+    <variety imageFile="smoke1" />
     <variety imageFile="smoke2" />
-    <variety imageFile="smoke3" />
-    <variety imageFile="smoke4" count=2 />
+    <variety imageFile="smoke4" />
 </particleProfile>
 
 
