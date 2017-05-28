@@ -875,13 +875,13 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_HEALTH:
         {
-            unsigned health;
-            singleMsg >> health >> del;
+            unsigned newHealth;
+            singleMsg >> newHealth >> del;
             if (del != MSG_END)
                 break;
-            if (health < _health)
+            if (newHealth < _character.health())
                 _character.createDamageParticles();
-            _health = health;
+            _character.health(newHealth);
             break;
         }
 

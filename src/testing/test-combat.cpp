@@ -153,7 +153,7 @@ TEST("Belligerents can attack each other's objects")
     return true;
 TEND
 
-ONLY_TEST("Players can target distant entities")
+TEST("Players can target distant entities")
     // Given a server and client;
     TestServer s = TestServer::WithData("wolf");
     TestClient c = TestClient::WithData("wolf");

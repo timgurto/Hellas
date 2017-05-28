@@ -75,7 +75,7 @@ void Client::initializeGearWindow(){
 
     labelRect.y += Element::TEXT_HEIGHT;
     _gearWindow->addChild(new Label(labelRect, "Health"));
-    _gearWindow->addChild(new LinkedLabel<health_t>(labelRect, _health,
+    _gearWindow->addChild(new LinkedLabel<health_t>(labelRect, _character.health(),
                                                     "", "", Element::RIGHT_JUSTIFIED));
     
     labelRect.y += Element::TEXT_HEIGHT;

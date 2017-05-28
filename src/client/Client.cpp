@@ -135,8 +135,6 @@ _fps(0),
 _invalidUsername(false),
 _loggedIn(false),
 
-_health(0),
-
 _loaded(false),
 
 _timeSinceLocUpdate(0),

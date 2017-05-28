@@ -212,7 +212,6 @@ private:
     void setRandomUsername();
     Avatar _character; // Describes the user's character
     Stats _stats; // The user's stats
-    size_t _health; // The character's health
     Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.
 
     // Login screen
