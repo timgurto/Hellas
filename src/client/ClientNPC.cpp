@@ -76,3 +76,9 @@ void ClientNPC::onInventoryUpdate(){
 bool ClientNPC::isFlat() const{
     return Sprite::isFlat() || health() == 0;
 }
+
+bool ClientNPC::canBeAttackedByPlayer() const{
+    if (! ClientCombatant::canBeAttackedByPlayer())
+        return false;
+    return true;
+}

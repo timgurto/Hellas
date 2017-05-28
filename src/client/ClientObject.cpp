@@ -170,21 +170,19 @@ void ClientObject::onLeftClick(Client &client){
 }
 
 void ClientObject::onRightClick(Client &client){
-    const ClientObjectType &objType = *objectType();
+    if (canBeAttackedByPlayer()){
+        client.setTarget(*this, true);
+        return;
+    }
 
     // Make sure object is in range
     if (distance(client.playerCollisionRect(), collisionRect()) > Client::ACTION_DISTANCE) {
         client._debug("That object is too far away.", Color::WARNING);
         return;
     }
-
-    
-    if (canBeAttackedByPlayer()){
-        client.setTarget(*this, true);
-        return;
-    }
     
     // Gatherable
+    const ClientObjectType &objType = *objectType();
     if (objType.canGather() && userHasAccess()) {
         client.sendMessage(CL_GATHER, makeArgs(_serial));
         client.prepareAction(std::string("Gathering ") + objType.name());

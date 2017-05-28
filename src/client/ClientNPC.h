@@ -27,6 +27,9 @@ public:
     const ClientNPCType *npcType() const { return dynamic_cast<const ClientNPCType *>(type()); }
 
     virtual char classTag() const override { return 'n'; }
+
+    // From ClientCombatant:
+    virtual bool canBeAttackedByPlayer() const override;
     
     // From Sprite
     virtual void onRightClick(Client &client) override;

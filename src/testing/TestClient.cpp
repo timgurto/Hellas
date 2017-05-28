@@ -117,8 +117,9 @@ Avatar &TestClient::getFirstOtherUser(){
 }
 
 ClientNPC &TestClient::getFirstNPC() {
-    assert(! _client->_objects.empty());
-    auto it =_client->_objects.begin();
+    auto objects = _client->_objects;
+    assert(! objects.empty());
+    auto it =objects.begin();
     ClientObject *obj = it->second;
     return * dynamic_cast<ClientNPC *>(obj);
 }

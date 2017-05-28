@@ -152,3 +152,25 @@ TEST("Belligerents can attack each other's objects")
 
     return true;
 TEND
+
+ONLY_TEST("Players can target distant entities")
+    // Given a server and client;
+    TestServer s = TestServer::WithData("wolf");
+    TestClient c = TestClient::WithData("wolf");
+
+    // And a wolf NPC on the other side of the map
+    s.addNPC("wolf", Point(200, 200));
+    WAIT_UNTIL(s.users().size() == 1);
+    const NPC &wolf = s.getFirstNPC();
+    const User &user = s.getFirstUser();
+    assert(distance(wolf.collisionRect(), user.collisionRect()) > Server::ACTION_DISTANCE);
+
+    // When the client attempts to target the wolf
+    WAIT_UNTIL(c.objects().size() == 1);
+    ClientNPC &clientWolf = c.getFirstNPC();
+    clientWolf.onRightClick(c.client());
+
+    // Then his target is set to the wolf
+    WAIT_UNTIL(user.target() == &wolf);
+    return true;
+TEND

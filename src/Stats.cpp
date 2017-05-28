@@ -60,6 +60,3 @@ Stats Stats::operator&(const StatsMod &mod) const{
     stats &= mod;
     return stats;
 }
-
-
-
