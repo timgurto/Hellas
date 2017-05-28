@@ -3,6 +3,7 @@
 <objectType
     id="wall" >
     <collisionRect x=-5 y=0 w=10 h=1 />
+    <strength item="brick" quantity="1" />
 </objectType>
 
 </root>

@@ -103,10 +103,6 @@ void NPC::processAI(ms_t timeElapsed){
     Entity::update(timeElapsed);
 }
 
-bool NPC::collides() const{
-    return Entity::collides() && health() > 0;
-}
-
 void NPC::sendInfoToClient(const User &targetUser) const {
     const Server &server = Server::instance();
     const Socket &client = targetUser.socket();

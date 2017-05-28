@@ -52,7 +52,7 @@ public:
     const Point &location() const { return _location; }
     void location(const Point &loc) { _location = loc; }
     const Rect collisionRect() const { return type()->collisionRect() + _location; }
-    virtual bool collides() const { return type()->collides(); }
+    bool collides() const { return type()->collides() && _health != 0; }
     virtual double speed() const { return 0; } // movement per second
 
 

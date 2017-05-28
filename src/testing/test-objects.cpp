@@ -5,26 +5,54 @@
 #include "TestServer.h"
 
 TEST("Thin objects block movement")
+    // Given a server and client;
     TestServer s = TestServer::WithData("thin_wall");
     TestClient c = TestClient::WithData("thin_wall");
 
-    // Move user to middle, below wall
+    // And a user;
     WAIT_UNTIL(s.users().size() == 1);
     User &user = s.getFirstUser();
     user.updateLocation(Point(10, 15));
 
-    // Add wall
+    // And a wall just above him
     s.addObject("wall", Point(10, 10));
-    WAIT_UNTIL (c.objects().size() == 1);
 
-    // Try to move user up, through the wall
+    // When the user tries to move up, through the wall
     REPEAT_FOR_MS(500) {
         c.sendMessage(CL_LOCATION, makeArgs(10, 5));
+
+        // He fails
         if (user.location().y < 5.5)
             return false;
     }
-
     return true;
+TEND
+
+TEST("Dead objects don't block movement")
+    // Given a server and client;
+    TestServer s = TestServer::WithData("thin_wall");
+    TestClient c = TestClient::WithData("thin_wall");
+
+    // And a user;
+    WAIT_UNTIL(s.users().size() == 1);
+    User &user = s.getFirstUser();
+    user.updateLocation(Point(10, 15));
+
+    // And a wall just above him;
+    s.addObject("wall", Point(10, 10));
+
+    // And that wall is dead
+    s.getFirstObject().reduceHealth(1000000);
+
+    // When the user tries to move up, through the wall
+    REPEAT_FOR_MS(3000) {
+        c.sendMessage(CL_LOCATION, makeArgs(10, 5));
+
+        // He succeeds
+        if (user.location().y < 5.5)
+            return true;
+    }
+    return false;
 TEND
 
 TEST("Damaged objects can't be deconstructed")

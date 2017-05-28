@@ -28,7 +28,6 @@ public:
     virtual health_t attack() const override { return npcType()->attack(); }
     virtual ms_t attackTime() const override { return npcType()->attackTime(); }
     virtual double speed() const override { return 10; }
-    virtual bool collides() const override;
     virtual ms_t timeToRemainAsCorpse() const override { return 600000; } // 10 minutes
 
     virtual void onHealthChange() override;
