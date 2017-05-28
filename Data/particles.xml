@@ -8,8 +8,8 @@
     <altitude mean=20 sd=4 />
     <velocity mean=15 sd=3 />
     <fallSpeed mean=0 sd=3 />
-    <variety imageFile="wood0"> <drawRect x=-1 y=-1 w=2 h=2 /> </variety>
-    <variety imageFile="wood1"> <drawRect x=-1 y=-1 w=3 h=3 /> </variety>
+    <variety imageFile="wood0" />
+    <variety imageFile="wood1" />
 </particleProfile>
 
 <particleProfile
@@ -20,7 +20,7 @@
     <altitude mean=20 sd=4 />
     <velocity mean=15 sd=3 />
     <fallSpeed mean=0 sd=3 />
-    <variety imageFile="figLeaves"> <drawRect x=-2 y=-2 w=4 h=4 /> </variety>
+    <variety imageFile="figLeaves" />
 </particleProfile>
 
 <particleProfile
@@ -31,9 +31,9 @@
     <altitude mean=20 sd=4 />
     <velocity mean=15 sd=3 />
     <fallSpeed mean=0 sd=3 />
-    <variety imageFile="wood0"> <drawRect x=-1 y=-1 w=2 h=2 /> </variety>
-    <variety imageFile="wood1"> <drawRect x=-1 y=-1 w=3 h=3 /> </variety>
-    <variety imageFile="leaves"> <drawRect x=-2 y=-2 w=4 h=4 /> </variety>
+    <variety imageFile="wood0" />
+    <variety imageFile="wood1" />
+    <variety imageFile="leaves" />
 </particleProfile>
 
 <particleProfile
@@ -45,9 +45,9 @@
     <altitude mean=0 sd=0 />
     <velocity mean=0 sd=0 />
     <fallSpeed mean=-10 sd=3 />
-    <variety imageFile="sparkleLarge"> <drawRect x=-1 y=-1 w=3 h=3 /> </variety>
-    <variety imageFile="sparkleSmall1"> <drawRect x=0 y=0 w=1 h=1 /> </variety>
-    <variety imageFile="sparkleSmall2"> <drawRect x=0 y=0 w=1 h=1 /> </variety>
+    <variety imageFile="sparkleLarge" />
+    <variety imageFile="sparkleSmall1" />
+    <variety imageFile="sparkleSmall2" />
 </particleProfile>
 
 <particleProfile
@@ -57,8 +57,8 @@
     <altitude mean=8 sd=4 />
     <velocity mean=15 sd=3 />
     <fallSpeed mean=0 sd=2 />
-    <variety imageFile="gib"> <drawRect x=-1 y=-1 w=2 h=2 /> </variety>
-    <variety imageFile="blood" count="3"> <drawRect x=0 y=0 w=1 h=1 /> </variety>
+    <variety imageFile="gib" />
+    <variety imageFile="blood" count="3" />
 </particleProfile>
 
 <particleProfile
@@ -73,17 +73,17 @@
     <altitude mean=0 sd=0 />
     <velocity mean=0 sd=5 />
     <fallSpeed mean=-40 sd=10 />
-    <variety imageFile="loginFire2"> <drawRect x=0 y=0 w=1 h=1 /> </variety>
-    <variety imageFile="loginFire1"> <drawRect x=-1 y=-1 w=3 h=3 /> </variety>
-    <variety imageFile="loginFire1"> <drawRect x=-1 y=-1 w=3 h=3 /> </variety>
-    <variety imageFile="loginFire1"> <drawRect x=-1 y=-1 w=3 h=3 /> </variety>
-    <variety imageFile="loginFire1"> <drawRect x=-1 y=-1 w=3 h=3 /> </variety>
-    <variety imageFile="loginFire1"> <drawRect x=-1 y=-1 w=3 h=3 /> </variety>
-    <variety imageFile="loginFire1"> <drawRect x=-1 y=-1 w=3 h=3 /> </variety>
-    <variety imageFile="loginFire3"> <drawRect x=-2 y=-2 w=5 h=5 /> </variety>
-    <variety imageFile="loginFire3"> <drawRect x=-2 y=-2 w=5 h=5 /> </variety>
-    <variety imageFile="loginFire3"> <drawRect x=-2 y=-2 w=5 h=5 /> </variety>
-    <variety imageFile="loginFire3"> <drawRect x=-2 y=-2 w=5 h=5 /> </variety>
+    <variety imageFile="loginFire2" />
+    <variety imageFile="loginFire1" />
+    <variety imageFile="loginFire1" />
+    <variety imageFile="loginFire1" />
+    <variety imageFile="loginFire1" />
+    <variety imageFile="loginFire1" />
+    <variety imageFile="loginFire1" />
+    <variety imageFile="loginFire3" />
+    <variety imageFile="loginFire3" />
+    <variety imageFile="loginFire3" />
+    <variety imageFile="loginFire3" />
 </particleProfile>
 
 <particleProfile
@@ -97,8 +97,8 @@
     <altitude mean=0 sd=0 />
     <velocity mean=0 sd=5 />
     <fallSpeed mean=-25 sd=6 />
-    <variety imageFile="loginFireLarge1"> <drawRect x=-3 y=-3 w=7 h=7 /> </variety>
-    <variety imageFile="loginFireLarge2"> <drawRect x=-4 y=-4 w=9 h=9 /> </variety>
+    <variety imageFile="loginFireLarge1" />
+    <variety imageFile="loginFireLarge2" />
 </particleProfile>
 
 <particleProfile
@@ -112,9 +112,9 @@
     <velocity mean=0 sd=0.5 />
     <fallSpeed mean=-10 sd=2 />
     <direction x=2.5 y=1 />
-    <variety imageFile="smoke2"> <drawRect x=-1 y=-1 w=3 h=3 /> </variety>
-    <variety imageFile="smoke3"> <drawRect x=-1 y=-1 w=3 h=3 /> </variety>
-    <variety imageFile="smoke4" count=2 > <drawRect x=-2 y=-2 w=5 h=5 /> </variety>
+    <variety imageFile="smoke2" />
+    <variety imageFile="smoke3" />
+    <variety imageFile="smoke4" count=2 />
 </particleProfile>
 
 

@@ -70,9 +70,7 @@ void Client::loadData(const std::string &path){
                     continue; // No image file specified; skip
                 size_t count = 1;
                 xr.findAttr(variety, "count", count);
-                Rect rect;
-                xr.findRectChild("drawRect", variety, rect);
-                profile->addVariety(s, rect, count);
+                profile->addVariety(s, count);
             }
 
             _particleProfiles.insert(profile);

@@ -53,7 +53,7 @@ public:
     Register a new SpriteType with the client describing a variety of particle.  Also, save it to
     _varieties so that it might be chosen when a new Particle is created.
     */
-    void addVariety(const std::string &imageFile, const Rect &drawRect, size_t count = 1);
+    void addVariety(const std::string &imageFile, size_t count = 1);
 
     /*
     Create a new particle and return its pointer.  The caller takes responsibility for freeing it.
