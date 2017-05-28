@@ -56,6 +56,7 @@ public:
     virtual const Sprite *entityPointer() const override { return this; }
     virtual bool belongsToPlayerCity() const override;
     virtual const Point &combatantLocation() const { return location(); }
+    virtual bool shouldDrawHealthBar() const override;
 
     void playAttackSound() const; // The player has attacked; play an appropriate sound.
     void playDefendSound() const; // The player has been attacked; play an appropriate sound.

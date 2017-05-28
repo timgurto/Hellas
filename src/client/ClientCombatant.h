@@ -15,7 +15,6 @@ public:
     bool isDead() const { return _health == 0; }
     const health_t &maxHealth() const { return _type->maxHealth(); }
     void drawHealthBarIfAppropriate(const Point &objectLocation, px_t objHeight) const;
-    bool shouldDrawHealthBar() const;
     const Color &nameColor() const;
 
     virtual void sendTargetMessage() const = 0;
@@ -23,6 +22,7 @@ public:
     virtual const Sprite *entityPointer() const = 0;
     virtual bool belongsToPlayerCity() const { return false; }
     virtual const Point &combatantLocation() const = 0;
+    virtual bool shouldDrawHealthBar() const;
 
     void createDamageParticles() const;
 

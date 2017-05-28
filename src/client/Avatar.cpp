@@ -179,3 +179,10 @@ bool Avatar::belongsToPlayerCity() const{
 
     return false;
 }
+
+bool Avatar::shouldDrawHealthBar() const{
+    const Client &client = *Client::_instance;
+    if (this == &client.character())
+        return false;
+    return ClientCombatant::shouldDrawHealthBar();
+}
