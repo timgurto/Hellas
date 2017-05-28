@@ -601,7 +601,7 @@ void ClientObject::update(double delta) {
     }
 
     // If dead, add smoke particles
-    if (isDead())
+    if (isDead() && classTag() != 'n')
         client.addParticles("smoke", location(), delta);
 
     Sprite::update(delta);
