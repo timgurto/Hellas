@@ -687,10 +687,7 @@ void Client::addUI(Element *element){
 void Client::addChatMessage(const std::string &msg, const Color &color){
     Label *label = new Label(Rect(), msg);
     label->setColor(color);
-    bool atBottom = _chatLog->isScrolledToBottom() || !_chatLog->isScrollBarVisible();
-    _chatLog->addChild(label);
-    if (atBottom)
-        _chatLog->scrollToBottom();
+    _chatLog->scrollToBottom();
 }
 
 void Client::watchObject(ClientObject &obj){
