@@ -125,8 +125,8 @@ void Entity::update(ms_t timeElapsed){
         } else {
             assert(false);
         }
-        for (const User *user : server.findUsersInArea(locus)){
-            server.sendMessage(user->socket(), msgCode, args);
+        for (const User *userToInform : server.findUsersInArea(locus)){
+            server.sendMessage(userToInform->socket(), msgCode, args);
         }
 
         // Reset timer

@@ -276,26 +276,18 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // Send welcome message
     sendMessage(socket, SV_WELCOME);
 
-    // Send him his own location
-    sendMessage(newUser.socket(), SV_LOCATION, newUser.makeLocationCommand());
-
-    // Send him his class
-    sendMessage(newUser.socket(), SV_CLASS, makeArgs(name, newUser.className()));
-
-    // Send him his city
-    City::Name cityName = _cities.getPlayerCity(name);
-    if (!cityName.empty())
-    sendMessage(newUser.socket(), SV_IN_CITY, makeArgs(name, cityName));
+    // Tell him about himself
+    newUser.sendInfoToClient(newUser);
 
     // Send him his wars
     auto belligerents = _wars.getAllWarsInvolving(name);
     for (auto it = belligerents.first; it != belligerents.second; ++it)
         sendMessage(newUser.socket(), SV_AT_WAR_WITH, it->second);
 
-    // Send him his health
-    sendMessage(newUser.socket(), SV_HEALTH, makeArgs(newUser.health()));
-
     for (const User *userP : findUsersInArea(newUser.location())){
+        if (userP == &newUser)
+            continue;
+
         // Send him information about other nearby users
         userP->sendInfoToClient(newUser);
         // Send nearby others this user's information

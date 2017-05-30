@@ -94,7 +94,7 @@ issue,description,value,effort,type,blockedBy,done,critical
 95,Object ownership is clearly visible,5,21,Usability,8
 96,Containers may be restricted by item class,5,5,Feature,
 97,"Use collisionRects even on non-colliding objects, for distance checks",8,5,Bug,
-98,Send nearby users' health values,13,3,Usability,,
+98,Send nearby users' health values,13,3,Usability,,TRUE
 99,Allow specification of minimum yields,8,1,Feature,,TRUE
 100,Sounds for crafting,5,2,Aesthetics,,
 101,Particles for crafting,5,2,Aesthetics,,

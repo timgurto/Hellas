@@ -846,7 +846,6 @@ void Client::handleMessage(const std::string &msg){
         {
             int serial, n;
             ItemSet set;
-            std::string temp = singleMsg.str();
             singleMsg >> serial >> del >> n >> del;
             auto it = _objects.find(serial);
             if (it == _objects.end()){
@@ -873,15 +872,28 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_HEALTH:
+        case SV_PLAYER_HEALTH:
         {
-            unsigned newHealth;
-            singleMsg >> newHealth >> del;
+            std::string username;
+            health_t newHealth;
+            readString(singleMsg, username, MSG_DELIM);
+            singleMsg >> del >> newHealth >> del;
             if (del != MSG_END)
                 break;
-            if (newHealth < _character.health())
-                _character.createDamageParticles();
-            _character.health(newHealth);
+            Avatar *target = nullptr;
+            if (username == _username)
+                target = &_character;
+            else{
+                auto userIt = _otherUsers.find(username);
+                if (userIt == _otherUsers.end()){
+                    _debug("Received combat info for an unknown defending player.", Color::FAILURE);
+                    break;
+                }
+                target = userIt->second;
+            }
+            if (newHealth < target->health())
+                target->createDamageParticles();
+            target->health(newHealth);
             break;
         }
 

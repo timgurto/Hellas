@@ -174,3 +174,32 @@ TEST("Players can target distant entities")
     WAIT_UNTIL(user.target() == &wolf);
     return true;
 TEND
+
+TEST("Clients receive nearby users' health values")
+    // Given a server and two clients, Alice and Bob;
+    TestServer s;
+    TestClient clientAlice = TestClient::WithUsername("alice");
+    RemoteClient clientBob = RemoteClient("-username bob");
+
+    // And Alice and Bob are at war
+    s.wars().declare("alice", "bob");
+
+    // When Alice is close to Bob;
+    WAIT_UNTIL(s.users().size() == 2);
+    const User
+        &alice = s.findUser("alice"),
+        &bob = s.findUser("bob");
+    while (distance(alice.collisionRect(), bob.collisionRect()) >= Server::ACTION_DISTANCE){
+        clientAlice.sendMessage(CL_LOCATION, makeArgs(bob.location().x, bob.location().y));
+        SDL_Delay(5);
+    }
+
+    // And she attacks him
+    clientAlice.sendMessage(CL_TARGET_PLAYER, "bob");
+
+    // Then Alice sees that Bob is damaged
+    WAIT_UNTIL(clientAlice.otherUsers().size() == 1);
+    const Avatar &localBob = clientAlice.getFirstOtherUser();
+    WAIT_UNTIL(localBob.health() < localBob.maxHealth());
+    return true;
+TEND

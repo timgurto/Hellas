@@ -112,8 +112,9 @@ void TestClient::watchObject(ClientObject &obj){
 }
 
 Avatar &TestClient::getFirstOtherUser(){
-    assert(! _client->_otherUsers.empty());
-    return const_cast<Avatar &>(* _client->_otherUsers.begin()->second);
+    auto otherUsers = _client->_otherUsers;
+    assert(! otherUsers.empty());
+    return const_cast<Avatar &>(* otherUsers.begin()->second);
 }
 
 ClientNPC &TestClient::getFirstNPC() {

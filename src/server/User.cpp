@@ -360,7 +360,8 @@ const Rect User::collisionRect() const{
 
 void User::onHealthChange(){
     const Server &server = *Server::_instance;
-    server.sendMessage(socket(), SV_HEALTH, makeArgs(health()));
+    for (const User *userToInform: server.findUsersInArea(location()))
+        server.sendMessage(userToInform->socket(), SV_PLAYER_HEALTH, makeArgs(_name, health()));
 }
 
 void User::onDeath(){
@@ -424,6 +425,9 @@ void User::sendInfoToClient(const User &targetUser) const {
     const Server &server = Server::instance();
     const Socket &client = targetUser.socket();
 
+    // Health
+    server.sendMessage(client, SV_PLAYER_HEALTH, makeArgs(_name, health()));
+
     // Location
     server.sendMessage(client, SV_LOCATION, makeLocationCommand());
 
@@ -432,7 +436,8 @@ void User::sendInfoToClient(const User &targetUser) const {
 
     // City
     const City::Name city = server._cities.getPlayerCity(_name);
-    server.sendMessage(client, SV_IN_CITY, makeArgs(_name, city));
+    if (! city.empty())
+        server.sendMessage(client, SV_IN_CITY, makeArgs(_name, city));
 
     // Gear
     for (size_t i = 0; i != User::GEAR_SLOTS; ++i){

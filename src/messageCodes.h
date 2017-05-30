@@ -253,9 +253,9 @@ enum MessageCode{
     // Arguments: serial, n, id1, quantity1, id2, quantity2, ...
     SV_CONSTRUCTION_MATERIALS = 158,
 
-    // The user's health value
-    // Arguments: hp
-    SV_HEALTH = 160,
+    // A user's health value
+    // Arguments: username, hp
+    SV_PLAYER_HEALTH = 160,
 
     // The user's stats
     // Arguments: max health, attack, attack time, speed
