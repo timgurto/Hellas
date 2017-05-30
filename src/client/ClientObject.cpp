@@ -601,7 +601,7 @@ void ClientObject::update(double delta) {
     }
 
     // If dead, add smoke particles
-    if (isDead() && classTag() != 'n'){
+    if (isDead() && classTag() != 'n' && collisionRect().w != 0 && collisionRect().h != 0){
         Point particleLocation(
                 rand() % collisionRect().w + collisionRect().x,
                 rand() % collisionRect().h + collisionRect().y);
