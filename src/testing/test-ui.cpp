@@ -79,6 +79,20 @@ TEST("New client has target UI hidden")
     TestClient c;
     WAIT_UNTIL (s.users().size() == 1);
 
-    // His targeting UI is hidden
+    // Then his targeting UI is hidden
     return c.target().panel()->visible() == false;
+TEND
+
+TEST("Chat messages are added to chat log")
+    // Given a logged-in client
+    TestServer s;
+    TestClient c;
+    WAIT_UNTIL (s.users().size() == 1);
+
+    // When he sends a message
+    c.sendMessage(CL_SAY, "asdf");
+
+    // Then his chat log contains at least one message
+    WAIT_UNTIL(c.chatLog()->size() > 0);
+    return true;
 TEND

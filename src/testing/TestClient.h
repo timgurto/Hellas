@@ -32,6 +32,7 @@ public:
     const std::map<std::string, Avatar*> &otherUsers() const { return _client->_otherUsers; }
     ClientItem::vect_t &inventory() { return _client->_inventory; }
     const std::string &name() const { return _client->username(); }
+    const List *chatLog() const { return _client->_chatLog; }
 
     Avatar &getFirstOtherUser();
     ClientNPC &getFirstNPC();

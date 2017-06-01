@@ -687,6 +687,7 @@ void Client::addUI(Element *element){
 void Client::addChatMessage(const std::string &msg, const Color &color){
     Label *label = new Label(Rect(), msg);
     label->setColor(color);
+    _chatLog->addChild(label);
     _chatLog->scrollToBottom();
 }
 
