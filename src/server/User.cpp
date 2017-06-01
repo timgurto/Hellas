@@ -295,16 +295,16 @@ void User::update(ms_t timeElapsed){
 
     case CRAFT:
     {
-        const ServerItem *product = toServerItem(_actionRecipe->product());
-        if (!vectHasSpace(_inventory, product, _actionRecipe->quantity())) {
+        if (! hasRoomToCraft(*_actionRecipe)) {
             server.sendMessage(_socket, SV_INVENTORY_FULL);
             cancelAction();
             return;
         }
-        // Give user his newly crafted items
-        giveItem(product, _actionRecipe->quantity());
         // Remove materials from user's inventory
         removeItems(_actionRecipe->materials());
+        // Give user his newly crafted items
+        const ServerItem *product = toServerItem(_actionRecipe->product());
+        giveItem(product, _actionRecipe->quantity());
         // Trigger any new unlocks
         ProgressLock::triggerUnlocks(*this, ProgressLock::RECIPE, _actionRecipe);
         break;
@@ -352,6 +352,25 @@ void User::update(ms_t timeElapsed){
         server.sendMessage(_socket, SV_ACTION_FINISHED);
         finishAction();
     }
+}
+
+bool User::hasRoomToCraft(const Recipe &recipe) const{
+    size_t slotsFreedByMaterials = 0;
+    ItemSet remainingMaterials = recipe.materials();
+    ServerItem::vect_t inventoryCopy = _inventory;
+    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i){
+        std::pair<const ServerItem *, size_t> &invSlot = inventoryCopy[i];
+        if (remainingMaterials.contains(invSlot.first)) {
+            size_t itemsToRemove = min(invSlot.second, remainingMaterials[invSlot.first]);
+            remainingMaterials.remove(invSlot.first, itemsToRemove);
+            inventoryCopy[i].second -= itemsToRemove;
+            if (inventoryCopy[i].second == 0)
+                inventoryCopy[i].first = nullptr;
+            if (remainingMaterials.isEmpty())
+                break;
+        }
+    }
+    return vectHasSpace(inventoryCopy, toServerItem(recipe.product()), recipe.quantity());
 }
 
 const Rect User::collisionRect() const{

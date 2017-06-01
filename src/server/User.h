@@ -94,6 +94,7 @@ public:
     const std::set<std::string> &knownConstructions() const { return _knownConstructions; }
     void addConstruction(const std::string &id) { _knownConstructions.insert(id); }
     bool knowsConstruction(const std::string &id) const;
+    bool hasRoomToCraft(const Recipe &recipe) const;
 
     // Inventory getters/setters
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const
