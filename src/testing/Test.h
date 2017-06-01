@@ -25,7 +25,6 @@ private:
 public:
     static testContainer_t &testContainer();
     static testContainer_t &testSubset();
-    static const size_t STATUS_MARGIN;
 
     static const bool
         SLOW = true,

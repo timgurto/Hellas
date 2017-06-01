@@ -5,7 +5,6 @@ extern Args cmdLineArgs;
 
 Test::testContainer_t *Test::_testContainer = nullptr;
 bool Test::_runSubset = false;
-const size_t Test::STATUS_MARGIN = 50;
 
 Test::Test(std::string description, bool slow, bool subset, bool quarantined, testFun_t fun):
 _description(description),

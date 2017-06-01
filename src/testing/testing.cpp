@@ -59,17 +59,18 @@ int main(int argc, char **argv){
         passed = 0,
         failed = 0,
         skipped = 0;
+    size_t spaceForName = longestTestName() + 1;
     for (const Test &test : Test::testContainer()){
         for (size_t timesRepeated = 0; timesRepeated != timesToRepeatEachTest; ++timesRepeated){
             ++i;
-            const std::string *statusColor;
-            char glyph;
-            size_t gapLength = Test::STATUS_MARGIN - 
-                               min(Test::STATUS_MARGIN, test.description().length());
+            size_t gapLength = spaceForName - test.description().length();
             std::string gap(gapLength, ' ');
             std::cout
                 << colorStart << std::setw(4) << i << colorReset << ' '
                 << test.description() << gap << std::flush;
+
+            const std::string *statusColor;
+            char glyph;
             if (test.shouldSkip()) {
                 statusColor = &colorSkip;
                 glyph = glyphSkip;
@@ -89,6 +90,7 @@ int main(int argc, char **argv){
                     ++passed;
                 }
             }
+
             std::cout << *statusColor << glyph << colorReset << std::endl;
         }
     }
@@ -101,6 +103,14 @@ int main(int argc, char **argv){
     std::cout << "." << std::endl;
 
     return 0;
+}
+
+size_t longestTestName(){
+    size_t longestName = 0;
+    for (const Test &test : Test::testContainer())
+        if (test.description().size() > longestName)
+            longestName = test.description().size();
+    return longestName;
 }
 
 void deleteUserFiles(){
