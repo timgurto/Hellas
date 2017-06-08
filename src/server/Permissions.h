@@ -20,8 +20,9 @@ public:
         Type type;
         std::string name;
         
-        Owner(const std::string &rhs);
+        Owner(Type type, const std::string &name);
         const std::string &typeString() const;
+        bool operator<(const Owner &rhs) const;
     };
     
     void setPlayerOwner(const std::string &username);

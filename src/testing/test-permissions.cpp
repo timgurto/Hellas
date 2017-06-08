@@ -203,3 +203,16 @@ TEST("Non-existent cities can't own objects")
     // Then the rock has no owner;
     return ! rock.permissions().hasOwner();
 TEND
+
+ONLY_TEST("New objects are added to owner index")
+    // Given a server with rock objects
+    TestServer s = TestServer::WithData("basic_rock");
+
+    // When a rock is added, owned by Alice
+    s.addObject("rock", Point(), "alice");
+
+    // The server's object-owner index knows about it
+    Permissions::Owner owner(Permissions::Owner::PLAYER, "alice");
+    WAIT_UNTIL(s.objectsByOwner().getObjectsWithSpecificOwner(owner).size() == 1);
+    return true;
+TEND

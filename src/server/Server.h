@@ -13,6 +13,7 @@
 #include "ItemSet.h"
 #include "LogConsole.h"
 #include "NPC.h"
+#include "ObjectsByOwner.h"
 #include "Recipe.h"
 #include "ServerItem.h"
 #include "Spawner.h"
@@ -131,6 +132,8 @@ private:
     Entities _entities; // All entities except Users
     Entity::byX_t _entitiesByX; // This and below are for alerting users only to nearby objects.
     Entity::byY_t _entitiesByY;
+    ObjectsByOwner _objectsByOwner;
+    
     Wars _wars;
     Cities _cities;
 

@@ -25,6 +25,7 @@ public:
     std::map<size_t, Spawner> &spawners() { return _server->_spawners; }
     Wars &wars() { return _server->_wars; }
     Cities &cities() { return _server->_cities; }
+    ObjectsByOwner &objectsByOwner() { return _server->_objectsByOwner; }
 
     User &getFirstUser();
     Object &getFirstObject();

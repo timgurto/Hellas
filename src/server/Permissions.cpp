@@ -6,7 +6,12 @@
 #include "User.h"
 
 Permissions::Owner::Owner():
-type(NONE){}
+    type(NONE){}
+
+Permissions::Owner::Owner(Type typeArg, const std::string &nameArg):
+    type(typeArg),
+    name(nameArg)
+{}
 
 const std::string &Permissions::Owner::typeString() const{
     static std::map<Type, std::string> typeStrings;
@@ -15,6 +20,12 @@ const std::string &Permissions::Owner::typeString() const{
         typeStrings[CITY] = "city";
     }
     return typeStrings[type];
+}
+
+bool Permissions::Owner::operator<(const Owner &rhs) const{
+    if (type != rhs.type)
+        return type < rhs.type;
+    return name < rhs.name;
 }
 
 void Permissions::setPlayerOwner(const std::string &username) {

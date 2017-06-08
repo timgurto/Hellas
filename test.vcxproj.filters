@@ -124,6 +124,7 @@
     <ClCompile Include="src\server\Entities.cpp" />
     <ClCompile Include="src\server\Loot.cpp" />
     <ClCompile Include="src\testing\test-loot.cpp" />
+    <ClCompile Include="src\server\ObjectsByOwner.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -220,5 +221,6 @@
     <ClInclude Include="src\server\EntityType.h" />
     <ClInclude Include="src\server\Entities.h" />
     <ClInclude Include="src\server\Loot.h" />
+    <ClInclude Include="src\server\ObjectsByOwner.h" />
   </ItemGroup>
 </Project>

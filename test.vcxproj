@@ -162,6 +162,7 @@
     <ClCompile Include="src\server\EntityType.cpp" />
     <ClCompile Include="src\server\Loot.cpp" />
     <ClCompile Include="src\server\LootTable.cpp" />
+    <ClCompile Include="src\server\ObjectsByOwner.cpp" />
     <ClCompile Include="src\server\objects\Container.cpp" />
     <ClCompile Include="src\server\objects\Deconstruction.cpp" />
     <ClCompile Include="src\server\objects\Object.cpp" />
@@ -282,6 +283,7 @@
     <ClInclude Include="src\server\EntityType.h" />
     <ClInclude Include="src\server\Loot.h" />
     <ClInclude Include="src\server\LootTable.h" />
+    <ClInclude Include="src\server\ObjectsByOwner.h" />
     <ClInclude Include="src\server\objects\Container.h" />
     <ClInclude Include="src\server\objects\Deconstruction.h" />
     <ClInclude Include="src\server\objects\Object.h" />
