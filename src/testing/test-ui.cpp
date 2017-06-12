@@ -96,3 +96,18 @@ TEST("Chat messages are added to chat log")
     WAIT_UNTIL(c.chatLog()->size() > 0);
     return true;
 TEND
+
+TEST("Objects show up on the map when a client logs in")
+    // Given a server with rock objects;
+    TestServer s = TestServer::WithData("basic_rock");
+
+    // And a rock near the user spawn point
+    s.addObject("rock", Point(10, 15));
+
+    // When a client logs in
+    TestClient c = TestClient::WithData("basic_rock");
+
+    // The rock shows up on his map
+    WAIT_UNTIL (c.mapPins().size() == 1);
+    return true;
+TEND

@@ -44,6 +44,7 @@ public:
     MessageCode getNextMessage() const;
     bool waitForMessage(MessageCode desiredMsg, ms_t timeout = DEFAULT_TIMEOUT) const;
     void waitForRedraw();
+    const Element::children_t &mapPins() const { return _client->_mapPins->children(); }
 
 private:
     Client *_client;
