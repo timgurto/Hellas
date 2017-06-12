@@ -19,43 +19,47 @@
         color: red;
         text-decoration: none;
     }
-    
+
     .refine{
         color: #11bbd4;
     }
-    
+
     .critical{
         color: #E2D026;
     }
-    
+
     .issue{
         text-align: right;
     }
-    
+
     .value{
         text-align: right;
     }
-    
+
     .type{
     }
-    
+
     .effort{
         text-align: right;
     }
-    
+
     .roi{
         text-align: center;
     }
-    
+
+    .milestone{
+        text-align: right;
+    }
+
     .notes{
         text-align: center;
     }
-    
+
     td{
         padding-left: 0.4em;
         padding-right: 0.4em;
     }
-	
+
     .doneRow td{
         text-decoration:line-through;
     }
@@ -65,7 +69,7 @@
 
 <body>
 
-<h1>MMO&mdash;Product Backlog</h1>
+<h1>Hellas&mdash;Product Backlog</h1>
 
 <input type="checkbox" id="showDone" onChange='applyOptions();'>Show 'done' items</input>
 <input type="checkbox" id="useFilter" onChange='applyOptions();'>Show only filtered items</input>
@@ -79,6 +83,7 @@
         <td onClick='sortByValue();'>Value</td>
         <td onClick='sortByEffort();'>Effort</td>
         <td onClick='sortByROI();'>log<sub>&phi;</sub>(ROI)</td>
+        <td onClick='sortByMilestone();'>Milestone</td>
         <td>Notes</td>
         <td>Filter</td>
     </tr>
@@ -107,49 +112,56 @@
             value: PBIs[i].description
         });*/
         nameLookup[PBIs[i].issue] = PBIs[i].description;
-        
+
     function sortByIssue(){
         PBIs.sort(function(a, b){
             return a.issue - b.issue;
         });
         refreshTable();
     }
-        
+
     function sortByDescription(){
         PBIs.sort(function(a, b){
             return a.description.localeCompare(b.description);
         });
         refreshTable();
     }
-        
+
     function sortByType(){
         PBIs.sort(function(a, b){
             return a.type.localeCompare(b.type);
         });
         refreshTable();
     }
-        
+
     function sortByValue(){
         PBIs.sort(function(a, b){
             return b.value - a.value;
         });
         refreshTable();
     }
-        
+
     function sortByEffort(){
         PBIs.sort(function(a, b){
             return b.effort - a.effort;
         });
         refreshTable();
     }
-        
+
     function sortByROI(){
         PBIs.sort(function(a, b){
             return b.roi - a.roi;
         });
         refreshTable();
     }
-    
+
+    function sortByMilestone(){
+        PBIs.sort(function(a, b){
+            return a.milestone - b.milestone;
+        });
+        refreshTable();
+    }
+
     function prepareData(){
         for (i in PBIs){
             PBI.filter = false;
@@ -162,43 +174,48 @@
         var i = rows.length;
         while (--i)
             table.deleteRow(i);
-    
+
         for (i in PBIs){
         var PBI = PBIs[i]
             var row = table.insertRow(-1);
 			if (PBI.done)
 				row.className += " doneRow";
-            
+
             var cell = row.insertCell(-1);
             cell.innerHTML =
                     '<a name="' + PBI.issue + '">' +
                         PBI.issue +
                     '</a>';
             cell.className = "issue";
-            
+
             cell = row.insertCell(-1);
             cell.innerHTML = PBI.description;
             cell.className = "description";
-            
+
             cell = row.insertCell(-1);
             cell.innerHTML = PBI.type;
             cell.className = "type";
             cell.style.color = PBI.typeColor;
-            
+
             cell = row.insertCell(-1);
             cell.innerHTML = PBI.value;
             cell.className = "value";
-            
+
             cell = row.insertCell(-1);
             cell.innerHTML = PBI.effort;
             cell.className = "effort";
-            
+
             cell = row.insertCell(-1);
             cell.innerHTML = PBI.roi;
             cell.className = "roi";
             cell.style.backgroundColor = PBI.roiColor;
             cell.style.color = getfg(PBI.roiColor);
-            
+
+            cell = row.insertCell(-1);
+            if (PBI.milestone != 999)
+                cell.innerHTML = PBI.milestone;
+            cell.className = "milestone";
+
             cell = row.insertCell(-1);
             if (PBI.hasOwnProperty("blockedBy"))
                 cell.innerHTML += '<a class="blocked" title="Blocked by: ' +
@@ -209,7 +226,7 @@
             if (PBI.hasOwnProperty("critical"))
                 cell.innerHTML += '<span class="critical" title="Critical feature">&#9733;</span>';
             cell.className = "Notes";
-            
+
             cell = row.insertCell(-1);
             var checkboxCell = '<input type="checkbox" id="filter" onChange="toggleFilter(' + i + '); refreshTable();" ';
             if (PBI.filter)
@@ -221,27 +238,27 @@
         }
         applyOptions();
     }
-    
+
     function applyOptions(){
         if ($("#showDone").is(':checked'))
             $(".doneRow").show();
-            
+
         if ($("#useFilter").is(':checked'))
             $(".notFiltered").hide();
         else
             $(".notFiltered").show();
-            
+
         if (!$("#showDone").is(':checked'))
             $(".doneRow").hide();
     }
-    
+
     function toggleFilter(i){
         PBIs[i].filter = !(PBIs[i].filter);
     }
-    
+
     refreshTable();
     applyOptions();
-        
+
 
 </script>
 

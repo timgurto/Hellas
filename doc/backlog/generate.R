@@ -1,4 +1,5 @@
 library("RColorBrewer")
+#options(warn=2)
 
 circleSize = 1.5
 
@@ -28,10 +29,12 @@ data$color = cols[data$typeID]
 vals = c(1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610)
 data$roi = match(data$value, vals) - match(data$effort, vals)
 
-# Done
+# Initialize NA values
 for (i in 1:length(data$roi)){
     if (is.na(data$done[i]))
         data$done[i] = FALSE
+    if (is.na(data$milestone[i]))
+        data$milestone[i] = 999
 }
 
 # Ignore blocks when the blocking task is done
@@ -54,7 +57,7 @@ minEffort = NULL
 maxEffort = NULL
 for (i in 1:length(data$roi)){
     if (!data$done[i]){
-    
+
         if (is.null(minROI))
             minROI = data$roi[i]
         else if (data$roi[i] < minROI)
@@ -63,7 +66,7 @@ for (i in 1:length(data$roi)){
             maxROI = data$roi[i]
         else if (data$roi[i] > maxROI)
             maxROI = data$roi[i]
-    
+
         if (is.null(minVal))
             minVal = data$value[i]
         else if (data$value[i] < minVal)
@@ -72,7 +75,7 @@ for (i in 1:length(data$roi)){
             maxVal = data$value[i]
         else if (data$value[i] > maxVal)
             maxVal = data$value[i]
-    
+
         if (is.null(minEffort))
             minEffort = data$effort[i]
         else if (data$effort[i] < minEffort)
@@ -113,16 +116,12 @@ for (i in 1:roiRange){
 
 # Sort data
 unsortedData <- data
-data <- data[with(data, order(-roi, effort, issue)),]
+data <- data[with(data, order(milestone, -roi, effort, issue)),]
 
 x = jitter_log(data$effort)
 y = jitter_log(data$value)
 
-#maxEffort = max(data$effort)
-#maxValue = max(data$value)
-x = sapply(x, function(n) min(c(n, maxEffort)))
 x = sapply(x, function(n) max(c(n, 1)))
-y = sapply(y, function(n) min(c(n, maxVal)))
 y = sapply(y, function(n) max(c(n, 1)))
 
 plot(
@@ -130,6 +129,7 @@ plot(
     #main="Issue backlog",
     xlim=c(minEffort, maxEffort), ylim=c(minVal, maxVal)
 )
+
 effortVals = vals[match(minEffort, vals):match(maxEffort, vals)]
 valueVals = vals[match(minVal, vals):match(maxVal, vals)]
 axis(1, at=effortVals)
@@ -237,7 +237,7 @@ for (i in 1:length(data$roi)){
 
 
 add_legend <- function(...) {
-  opar <- par(fig=c(0, 1, 0, 1), oma=c(0, 0, 0, 0), 
+  opar <- par(fig=c(0, 1, 0, 1), oma=c(0, 0, 0, 0),
     mar=c(0, 0, 0, 0), new=TRUE)
   on.exit(par(opar))
   plot(0, 0, type='n', bty='n', xaxt='n', yaxt='n')
@@ -283,7 +283,7 @@ for (i in 1:length(data$roi)){
     roiForColor = max(roiForColor, minROI)
     text = c(text, fieldStr("roiColor", roiCols[roiForColor+roiMidpoint]))
     text = c(text, fieldNum("done", if (data$done[i]) "true" else "false"))
-    
+
     if (!is.na(data$blockedBy[i])){
         text = c(text, fieldNum("blockedBy", data$blockedBy[i]))
     }
@@ -292,10 +292,13 @@ for (i in 1:length(data$roi)){
         data$effort[i] >= suggestRefinementAtEffort){
         text = c(text, fieldStr("refine", "true"))
     }
-    
+
     if (!is.na(data$critical[i]) && data$critical[i]){
         text = c(text, fieldNum("critical", "true"))
     }
+
+    text = c(text, fieldNum("milestone", data$milestone[i]))
+
 
     text = c(text, "},")
 }
