@@ -270,7 +270,7 @@ TEST("A removed object is removed from the object-owner index")
     return true;
 TEND
 
-ONLY_TEST("New ownership is reflected in the object-owner index")
+TEST("New ownership is reflected in the object-owner index")
     // Given a server with rock objects
     TestServer s = TestServer::WithData("basic_rock");
 

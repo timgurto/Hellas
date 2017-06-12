@@ -10,26 +10,28 @@ void Client::initializeMapWindow(){
                                  _mapImage.width(), _mapImage.height()),
                             "Map");
     _mapWindow->addChild(new Picture(0, 0, _mapImage));
-    _charPinImage = Texture("Images/mapPinRed.png", Color::MAGENTA);
-    _charPin = new Picture(0, 0, _charPinImage);
-    _mapWindow->addChild(_charPin);
+
+    _mapPinOutlines = new Element(Rect(0, 0, _mapImage.width(), _mapImage.height()));
+    _mapPins = new Element(Rect(0, 0, _mapImage.width(), _mapImage.height()));
+    _mapWindow->addChild(_mapPinOutlines);
+    _mapWindow->addChild(_mapPins);
 }
 
 void Client::updateMapWindow(){
     static const double
         MAP_FACTOR_X = 1.0 * _mapX * TILE_W / _mapImage.width(),
         MAP_FACTOR_Y = 1.0 * _mapY * TILE_H / _mapImage.height();
-    static px_t
-        prevLocX = 0,
-        prevLocY = 0;
-    px_t
-        locX = toInt(_character.location().x / MAP_FACTOR_X),
-        locY =toInt( _character.location().y / MAP_FACTOR_Y);
+    
+    _mapPins->clearChildren();
+    _mapPinOutlines->clearChildren();
 
-    if (prevLocX != locX || prevLocY != locY){
-        _charPin->rect(locX - _charPin->width() / 2,
-                       locY - _charPin->height() / 2);
-        prevLocX = locX;
-        prevLocY = locY;
+    for (const auto &objPair : _objects){
+        const auto &object = *objPair.second;
+        const Point mapLoc(object.location().x / MAP_FACTOR_X, object.location().y / MAP_FACTOR_Y);
+        static const Rect
+            PIN_RECT(0, 0, 1, 1),
+            OUTLINE_RECT(-1, -1, 3, 3);
+        _mapPinOutlines->addChild(new ColorBlock(OUTLINE_RECT + mapLoc, Color::OUTLINE));
+        _mapPins->addChild(new ColorBlock(PIN_RECT + mapLoc, object.nameColor()));
     }
 }

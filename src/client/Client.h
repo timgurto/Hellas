@@ -184,8 +184,7 @@ private:
 
     Window *_mapWindow;
     Texture _mapImage;
-    Texture _charPinImage;
-    Picture *_charPin;
+    Element *_mapPins, *_mapPinOutlines;
     void initializeMapWindow();
     void updateMapWindow();
 

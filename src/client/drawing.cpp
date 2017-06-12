@@ -18,7 +18,7 @@ void Client::draw() const{
     renderer.setDrawColor(); // TODO: Revert to BLUE_HELL
     renderer.clear();
 
-    // Map
+    // Terrain
     size_t
         xMin = static_cast<size_t>(max<double>(0, -offset().x / TILE_W)),
         xMax = static_cast<size_t>(min<double>(_mapX,
