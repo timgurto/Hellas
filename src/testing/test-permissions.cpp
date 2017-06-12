@@ -204,7 +204,7 @@ TEST("Non-existent cities can't own objects")
     return ! rock.permissions().hasOwner();
 TEND
 
-ONLY_TEST("New objects are added to owner index")
+TEST("New objects are added to owner index")
     // Given a server with rock objects
     TestServer s = TestServer::WithData("basic_rock");
 
@@ -214,5 +214,30 @@ ONLY_TEST("New objects are added to owner index")
     // The server's object-owner index knows about it
     Permissions::Owner owner(Permissions::Owner::PLAYER, "alice");
     WAIT_UNTIL(s.objectsByOwner().getObjectsWithSpecificOwner(owner).size() == 1);
+    return true;
+TEND
+
+TEST("The object-owner index is initially empty")
+    // Given an empty server
+    TestServer s;
+
+    // Then the object-owner index reports no objects belonging to Alice
+    Permissions::Owner owner(Permissions::Owner::PLAYER, "alice");
+    return s.objectsByOwner().getObjectsWithSpecificOwner(owner).size() == 0;
+TEND
+
+TEST("A removed object is removed from the object-owner index")
+    // Given a server
+    TestServer s = TestServer::WithData("basic_rock");
+    // And a rock object owned by Alice
+    s.addObject("rock", Point(), "alice");
+
+    // When the object is removed
+    Object &rock = s.getFirstObject();
+    s.removeEntity(rock);
+
+    // Then the object-owner index reports no objects belonging to Alice
+    Permissions::Owner owner(Permissions::Owner::PLAYER, "alice");
+    WAIT_UNTIL (s.objectsByOwner().getObjectsWithSpecificOwner(owner).size() == 0);
     return true;
 TEND

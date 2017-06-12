@@ -452,6 +452,7 @@ void Server::removeEntity(Entity &ent, const User *userToExclude){
     getCollisionChunk(ent.location()).removeEntity(serial);
     _entitiesByX.erase(&ent);
     _entitiesByY.erase(&ent);
+    delete &ent;
     _entities.erase(&ent);
 
 }
@@ -517,8 +518,10 @@ Object &Server::addObject(const ObjectType *type, const Point &location, const s
     Object *newObj = type->classTag() == 'v' ?
             new Vehicle(dynamic_cast<const VehicleType *>(type), location) :
             new Object(type, location);
-    if (! owner.empty())
+    if (! owner.empty()){
         newObj->permissions().setPlayerOwner(owner);
+        _objectsByOwner.add(Permissions::Owner(Permissions::Owner::PLAYER, owner), newObj);
+    }
     return dynamic_cast<Object &>(addEntity(newObj));
 }
 

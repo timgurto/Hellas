@@ -28,12 +28,24 @@ _client(new Client){
     run();
 }
 
+TestClient::TestClient(const std::string &username, const std::string &dataPath):
+_client(new Client){
+    _client->loadData("testing/data/minimal");
+    _client->loadData("testing/data/" + dataPath);
+    _client->_username = username;
+    run();
+}
+
 TestClient TestClient::WithUsername(const std::string &username){
     return TestClient(username, USERNAME);
 }
 
 TestClient TestClient::WithData(const std::string &dataPath){
     return TestClient(dataPath, DATA_PATH);
+}
+
+TestClient TestClient::WithUsernameAndData(const std::string &username, const std::string &dataPath){
+    return TestClient(username, dataPath);
 }
 
 TestClient::~TestClient(){

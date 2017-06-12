@@ -24,6 +24,11 @@ Object::Object(const Point &loc):
 {}
 
 Object::~Object(){
+    if (permissions().hasOwner()){
+        Server &server = *Server::_instance;
+        server._objectsByOwner.remove(permissions().owner(), this);
+    }
+
     if (type() != nullptr)
         objType().decrementCounter();
 }

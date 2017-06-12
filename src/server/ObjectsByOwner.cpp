@@ -11,3 +11,11 @@ const ObjectsByOwner::ObjectsWithSpecificOwner &ObjectsByOwner::getObjectsWithSp
         return EmptyQueryResult;
     return it->second;
 }
+
+void ObjectsByOwner::ObjectsWithSpecificOwner::add(const Object *obj){
+    container.insert(obj);
+}
+
+void ObjectsByOwner::ObjectsWithSpecificOwner::remove(const Object *obj){
+    container.erase(obj);
+}

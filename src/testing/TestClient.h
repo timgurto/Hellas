@@ -11,6 +11,7 @@ public:
     TestClient();
     static TestClient WithUsername(const std::string &username);
     static TestClient WithData(const std::string &dataPath);
+    static TestClient WithUsernameAndData(const std::string &username, const std::string &dataPath);
     ~TestClient();
 
     // Move constructor/assignment
@@ -53,6 +54,7 @@ private:
     };
 
     TestClient(const std::string &string, StringType type);
+    TestClient(const std::string &username, const std::string &dataPath);
 
     void run();
     void stop();
