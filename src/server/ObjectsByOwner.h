@@ -14,20 +14,19 @@ public:
     bool isObjectOwnedBy(size_t serial, const Permissions::Owner &owner) const;
     const ObjectsWithSpecificOwner &getObjectsWithSpecificOwner(
             const Permissions::Owner &owner) const;
-    void add(const Permissions::Owner &owner, const Object *obj) { container[owner].add(obj); }
-    void remove(const Permissions::Owner &owner, const Object *obj) { container[owner].remove(obj); }
-    bool doesUserOwnObject(const std::string &username, const Object *obj) const;
+    void add(const Permissions::Owner &owner, size_t serial) { container[owner].add(serial); }
+    void remove(const Permissions::Owner &owner, size_t serial) { container[owner].remove(serial); }
 
 private:
     class ObjectsWithSpecificOwner{
     public:
         size_t size() const { return container.size(); }
-        void add(const Object *obj);
-        void remove(const Object *obj);
-        bool isObjectOwned(const Object *obj) const;
+        void add(size_t serial);
+        void remove(size_t serial);
+        bool isObjectOwned(size_t serial) const;
         
     private:
-        std::set<const Object *> container;
+        std::set<size_t> container;
     };
 
     std::map<Permissions::Owner, ObjectsWithSpecificOwner> container;

@@ -12,21 +12,20 @@ const ObjectsByOwner::ObjectsWithSpecificOwner &ObjectsByOwner::getObjectsWithSp
     return it->second;
 }
 
-bool ObjectsByOwner::doesUserOwnObject(const std::string &username, const Object *obj) const{
-    Permissions::Owner owner(Permissions::Owner::PLAYER, username);
+bool ObjectsByOwner::isObjectOwnedBy(size_t serial, const Permissions::Owner &owner) const{
     const auto &hisObjects = getObjectsWithSpecificOwner(owner);
-    return hisObjects.isObjectOwned(obj);
+    return hisObjects.isObjectOwned(serial);
 }
 
-void ObjectsByOwner::ObjectsWithSpecificOwner::add(const Object *obj){
-    container.insert(obj);
+void ObjectsByOwner::ObjectsWithSpecificOwner::add(size_t serial){
+    container.insert(serial);
 }
 
-void ObjectsByOwner::ObjectsWithSpecificOwner::remove(const Object *obj){
-    container.erase(obj);
+void ObjectsByOwner::ObjectsWithSpecificOwner::remove(size_t serial){
+    container.erase(serial);
 }
 
-bool ObjectsByOwner::ObjectsWithSpecificOwner::isObjectOwned(const Object *obj) const{
-    auto it = container.find(obj);
+bool ObjectsByOwner::ObjectsWithSpecificOwner::isObjectOwned(size_t serial) const{
+    auto it = container.find(serial);
     return it != container.end();
 }

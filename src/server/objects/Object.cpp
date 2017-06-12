@@ -26,7 +26,7 @@ Object::Object(const Point &loc):
 Object::~Object(){
     if (permissions().hasOwner()){
         Server &server = *Server::_instance;
-        server._objectsByOwner.remove(permissions().owner(), this);
+        server._objectsByOwner.remove(permissions().owner(), serial());
     }
 
     if (type() != nullptr)

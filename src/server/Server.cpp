@@ -307,12 +307,13 @@ void Server::addUser(const Socket &socket, const std::string &name){
         entitiesToDescribe.insert(entity);
     }
     // (Owned objects)
+    Permissions::Owner owner(Permissions::Owner::PLAYER, name);
     for (auto pEntity : _entities){
         auto pObject = dynamic_cast<const Object *>(pEntity);
         bool notAnObject = pObject == nullptr;
         if (notAnObject)
             continue;
-        if (_objectsByOwner.doesUserOwnObject(name, pObject))
+        if (_objectsByOwner.isObjectOwnedBy(pObject->serial(), owner))
             entitiesToDescribe.insert(pEntity);
     }
     // Send
@@ -535,7 +536,7 @@ Object &Server::addObject(const ObjectType *type, const Point &location, const s
             new Object(type, location);
     if (! owner.empty()){
         newObj->permissions().setPlayerOwner(owner);
-        _objectsByOwner.add(Permissions::Owner(Permissions::Owner::PLAYER, owner), newObj);
+        _objectsByOwner.add(Permissions::Owner(Permissions::Owner::PLAYER, owner), newObj->serial());
     }
     return dynamic_cast<Object &>(addEntity(newObj));
 }
