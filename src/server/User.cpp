@@ -388,8 +388,6 @@ void User::onDeath(){
     health(maxHealth());
 
     onHealthChange();
-    
-    Entity::onDeath();
 }
 
 void User::updateStats(){

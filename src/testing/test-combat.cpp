@@ -203,3 +203,17 @@ TEST("Clients receive nearby users' health values")
     WAIT_UNTIL(localBob.health() < localBob.maxHealth());
     return true;
 TEND
+
+TEST("A player dying doesn't crash the server")
+    // Given a server and client;
+    TestServer s;
+    TestClient c;
+    WAIT_UNTIL(s.users().size() == 1);
+
+    // When the user dies
+    User &user = s.getFirstUser();
+    user.reduceHealth(999999);
+
+    // The server survives
+    return true;
+TEND
