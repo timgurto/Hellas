@@ -12,10 +12,21 @@ const ObjectsByOwner::ObjectsWithSpecificOwner &ObjectsByOwner::getObjectsWithSp
     return it->second;
 }
 
+bool ObjectsByOwner::doesUserOwnObject(const std::string &username, const Object *obj) const{
+    Permissions::Owner owner(Permissions::Owner::PLAYER, username);
+    const auto &hisObjects = getObjectsWithSpecificOwner(owner);
+    return hisObjects.isObjectOwned(obj);
+}
+
 void ObjectsByOwner::ObjectsWithSpecificOwner::add(const Object *obj){
     container.insert(obj);
 }
 
 void ObjectsByOwner::ObjectsWithSpecificOwner::remove(const Object *obj){
     container.erase(obj);
+}
+
+bool ObjectsByOwner::ObjectsWithSpecificOwner::isObjectOwned(const Object *obj) const{
+    auto it = container.find(obj);
+    return it != container.end();
 }

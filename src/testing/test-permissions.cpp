@@ -204,6 +204,34 @@ TEST("Non-existent cities can't own objects")
     return ! rock.permissions().hasOwner();
 TEND
 
+TEST("On login, players are told about their distant objects")
+    // Given an object at (10000,10000) owned by Alice
+    TestServer s = TestServer::WithData("signpost");
+    s.addObject("signpost", Point(10000, 10000), "alice");
+
+    // When Alice logs in
+    TestClient c = TestClient::WithUsernameAndData("alice", "signpost");
+
+    // Alice knows about the object
+    WAIT_UNTIL(c.objects().size() == 1);
+    return true;
+TEND
+
+TEST("On login, players are not told about others' distant objects")
+    // Given an object at (10000,10000) owned by Alice
+    TestServer s = TestServer::WithData("signpost");
+    s.addObject("signpost", Point(10000, 10000), "bob");
+
+    // When Alice logs in
+    TestClient c = TestClient::WithUsernameAndData("alice", "signpost");
+
+    // Alice does not know about the object
+    REPEAT_FOR_MS(500)
+        if (c.objects().size() == 1)
+            return false;
+    return true;
+TEND
+
 TEST("New objects are added to owner index")
     // Given a server with rock objects
     TestServer s = TestServer::WithData("basic_rock");

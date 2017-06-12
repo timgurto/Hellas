@@ -16,6 +16,7 @@ public:
             const Permissions::Owner &owner) const;
     void add(const Permissions::Owner &owner, const Object *obj) { container[owner].add(obj); }
     void remove(const Permissions::Owner &owner, const Object *obj) { container[owner].remove(obj); }
+    bool doesUserOwnObject(const std::string &username, const Object *obj) const;
 
 private:
     class ObjectsWithSpecificOwner{
@@ -23,6 +24,7 @@ private:
         size_t size() const { return container.size(); }
         void add(const Object *obj);
         void remove(const Object *obj);
+        bool isObjectOwned(const Object *obj) const;
         
     private:
         std::set<const Object *> container;

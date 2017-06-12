@@ -295,18 +295,33 @@ void Server::addUser(const Socket &socket, const std::string &name){
     }
 
     // Send him entity details
+    std::set<const Entity *> entitiesToDescribe; // Multiple sources; a set ensures no duplicates.
+    // (Nearby)
     const Point &loc = newUser.location();
     auto loX = _entitiesByX.lower_bound(&Dummy::Location(loc.x - CULL_DISTANCE, 0));
     auto hiX = _entitiesByX.upper_bound(&Dummy::Location(loc.x + CULL_DISTANCE, 0));
     for (auto it = loX; it != hiX; ++it){
-        const Entity &ent = **it;
-        if (ent.type() == nullptr){
+        const Entity *entity = *it;
+        if (abs(entity->location().y - loc.y) > CULL_DISTANCE) // Cull y
+            continue;
+        entitiesToDescribe.insert(entity);
+    }
+    // (Owned objects)
+    for (auto pEntity : _entities){
+        auto pObject = dynamic_cast<const Object *>(pEntity);
+        bool notAnObject = pObject == nullptr;
+        if (notAnObject)
+            continue;
+        if (_objectsByOwner.doesUserOwnObject(name, pObject))
+            entitiesToDescribe.insert(pEntity);
+    }
+    // Send
+    for (const Entity *entity : entitiesToDescribe){
+        if (entity->type() == nullptr){
             _debug("Null-type object skipped", Color::RED);
             continue;
         }
-        if (abs(ent.location().y - loc.y) > CULL_DISTANCE) // Cull y
-            continue;
-        ent.sendInfoToClient(newUser);
+        entity->sendInfoToClient(newUser);
     }
 
     // Send him his inventory
