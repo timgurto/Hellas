@@ -269,3 +269,21 @@ TEST("A removed object is removed from the object-owner index")
     WAIT_UNTIL (s.objectsByOwner().getObjectsWithSpecificOwner(owner).size() == 0);
     return true;
 TEND
+
+ONLY_TEST("New ownership is reflected in the object-owner index")
+    // Given a server with rock objects
+    TestServer s = TestServer::WithData("basic_rock");
+
+    // When a rock is added, owned by Alice;
+    s.addObject("rock", Point(), "alice");
+
+    // And the rock's ownership is changed to Bob;
+    Object &rock = s.getFirstObject();
+    rock.permissions().setPlayerOwner("bob");
+
+    // The server's object-owner index has it under Bob's name, not Alice's
+    Permissions::Owner ownerAlice(Permissions::Owner::PLAYER, "alice");
+    WAIT_UNTIL(s.objectsByOwner().getObjectsWithSpecificOwner(ownerAlice).size() == 0);
+    Permissions::Owner ownerBob(Permissions::Owner::PLAYER, "bob");
+    return s.objectsByOwner().getObjectsWithSpecificOwner(ownerBob).size() == 1;
+TEND

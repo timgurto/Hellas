@@ -29,8 +29,13 @@ bool Permissions::Owner::operator<(const Owner &rhs) const{
 }
 
 void Permissions::setPlayerOwner(const std::string &username) {
+    ObjectsByOwner &ownerIndex = Server::_instance->_objectsByOwner;
+    ownerIndex.remove(_owner, _parent.serial());
+
     _owner.type = Owner::PLAYER;
     _owner.name = username;
+
+    ownerIndex.add(_owner, _parent.serial());
 }
 
 void Permissions::setCityOwner(const City::Name &cityName) {

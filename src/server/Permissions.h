@@ -5,6 +5,7 @@
 
 #include "City.h"
 
+class Object;
 class User;
 
 // Manages an object's access permissions
@@ -25,6 +26,8 @@ public:
         bool operator<(const Owner &rhs) const;
     };
     
+    Permissions(const Object &parent): _parent(parent) {}
+
     void setPlayerOwner(const std::string &username);
     void setCityOwner(const City::Name &cityName);
     bool hasOwner() const;
@@ -35,6 +38,7 @@ public:
 
 private:
     Owner _owner;
+    const Object &_parent;
 };
 
 #endif
