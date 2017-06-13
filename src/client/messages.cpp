@@ -270,12 +270,15 @@ void Client::handleMessage(const std::string &msg){
                 }
             }
 
-            // Forget about objects if out of cull range
-            if (name == _username){ // No need to cull objects when other users move
+            bool shouldTryToCullObjects = name == _username;
+            if (shouldTryToCullObjects){
                 std::list<std::pair<size_t, Sprite *> > objectsToRemove;
-                for (auto pair : _objects)
+                for (auto pair : _objects){
+                    if (pair.second->canAlwaysSee())
+                        continue;
                     if (outsideCullRange(pair.second->location(), CULL_HYSTERESIS_DISTANCE))
                         objectsToRemove.push_back(pair);
+                }
                 for (auto pair : objectsToRemove){
                     if (pair.second == _currentMouseOverEntity)
                         _currentMouseOverEntity = nullptr;

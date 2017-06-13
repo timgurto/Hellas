@@ -571,6 +571,11 @@ bool ClientObject::userHasAccess() const{
         _owner == Client::_instance->character().cityName();
 }
 
+bool ClientObject::canAlwaysSee() const{
+    return
+        _owner == Client::_instance->username();
+}
+
 void ClientObject::update(double delta) {
     Client &client = *Client::_instance;
     ms_t timeElapsed = toInt(1000 * delta);

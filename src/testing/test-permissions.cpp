@@ -287,3 +287,26 @@ TEST("New ownership is reflected in the object-owner index")
     Permissions::Owner ownerBob(Permissions::Owner::PLAYER, "bob");
     return s.objectsByOwner().getObjectsWithSpecificOwner(ownerBob).size() == 1;
 TEND
+
+SLOW_TEST("When a player moves away from his object, he is still aware of it")
+    // Given a server with signpost objects;
+    TestServer s = TestServer::WithData("signpost");
+
+    // And a signpost near the user spawn point that belongs to Alice;
+    s.addObject("signpost", Point(10, 15), "alice");
+
+    // And Alice is logged in
+    TestClient c = TestClient::WithUsernameAndData("alice", "signpost");
+    WAIT_UNTIL(s.users().size() == 1);
+    WAIT_UNTIL(c.objects().size() == 1);
+
+    // When Alice moves out of range of the signpost
+    while (c->character().location().x < 1000){
+        c.sendMessage(CL_LOCATION, makeArgs(1010, 10));
+
+        // Then she is still aware of it
+        if (c.objects().size() == 0)
+            return false;
+        SDL_Delay(5);
+    }
+TEND

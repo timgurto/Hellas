@@ -1,3 +1,5 @@
+#include <mutex>
+
 #include "Socket.h"
 
 Log *Socket::debug = nullptr;
@@ -81,10 +83,15 @@ void Socket::sendMessage(const std::string &msg, const Socket &destSocket) const
     if (!_winsockInitialized)
         return;
 
+    static std::mutex mutex;
+    mutex.lock();
+
     if (send(destSocket.getRaw(), msg.c_str(), (int)msg.length(), 0) < 0) {
         *debug << Color::RED << "Failed to send command \"" << msg
                << "\" to socket " << destSocket.getRaw() << Log::endl;
     }
+
+    mutex.unlock();
 }
 
 void Socket::sendMessage(const std::string &msg) const{

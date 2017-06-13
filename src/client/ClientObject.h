@@ -93,6 +93,7 @@ public:
 
 
     bool userHasAccess() const;
+    bool canAlwaysSee() const;
 
     void setMerchantSlot(size_t i, ClientMerchantSlot &mSlot);
     static void confirmAndCedeObject(void *objectToCede);
