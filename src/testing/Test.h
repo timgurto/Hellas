@@ -67,7 +67,7 @@ public:
             Test::QUARANTINED, \
             [](){
 
-#define TEND });
+#define TEND return true; });
 
 #define REPEAT_FOR_MS(TIME_TO_REPEAT) \
         for (ms_t startTime = SDL_GetTicks(); SDL_GetTicks() < startTime + (TIME_TO_REPEAT); )
@@ -86,5 +86,7 @@ public:
 #define DEFAULT_TIMEOUT (3000)
 #define WAIT_UNTIL(x) WAIT_UNTIL_TIMEOUT((x), (DEFAULT_TIMEOUT))
 #define WAIT_FOREVER_UNTIL(x) while( ! (x) )
+
+#define ENSURE(x) do {if ( ! (x) ) { return false; } } while (false)
 
 #endif

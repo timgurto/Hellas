@@ -6,14 +6,15 @@
 
 // A colored, filled rectangle
 class ColorBlock : public Element {
-    Color _color;
-
 public:
     ColorBlock(const Rect &rect, const Color &color = BACKGROUND_COLOR);
 
     void changeColor(const Color &newColor);
+    const Color &color() const { return _color; }
 
     virtual void refresh() override;
+private:
+    Color _color;
 };
 
 #endif

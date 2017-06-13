@@ -503,6 +503,7 @@ void Client::handleMessage(const std::string &msg){
                 _entities.insert(obj);
                 _objects[serial] = obj;
             }
+
             updateMapWindow();
             break;
         }

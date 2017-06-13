@@ -107,7 +107,30 @@ TEST("Objects show up on the map when a client logs in")
     // When a client logs in
     TestClient c = TestClient::WithData("basic_rock");
 
-    // The rock shows up on his map
+    // The rock shows up on his map (in addition to the user himself)
+    WAIT_UNTIL (c.mapPins().size() == 2);
+TEND
+
+TEST("A player shows up on his own map")
+    // Given a server and client, and a 101x101 map on which players spawn at the center;
+    TestServer s = TestServer::WithData("big_map");
+    TestClient c = TestClient::WithData("big_map");
+
+    // When the client is loaded
+    c.waitForMessage(SV_LOCATION);
+
+    // Then the map has one pin;
     WAIT_UNTIL (c.mapPins().size() == 1);
-    return true;
+
+    // And that pin has the player's color
+    const ColorBlock *pin = dynamic_cast<const ColorBlock *>(*c.mapPins().begin());
+    ENSURE(pin != nullptr);
+    ENSURE(pin->color() == Color::COMBATANT_SELF);
+
+    // And that pin is in the center of the map
+    const px_t
+        midMapX = toInt(c->mapImage().width() / 2.0),
+        midMapY = toInt(c->mapImage().height() / 2.0);
+    const Point mapMidpoint(c->mapImage().width() / 2, c->mapImage().height() / 2);
+    WAIT_UNTIL(pin->rect() == Rect(midMapX, midMapY, 1, 1));
 TEND

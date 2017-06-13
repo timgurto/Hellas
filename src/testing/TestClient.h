@@ -34,6 +34,8 @@ public:
     ClientItem::vect_t &inventory() { return _client->_inventory; }
     const std::string &name() const { return _client->username(); }
     const List *chatLog() const { return _client->_chatLog; }
+    const Element::children_t &mapPins() const { return _client->_mapPins->children(); }
+    const std::vector<std::vector<char> > &map() const { return _client->_map; }
 
     Avatar &getFirstOtherUser();
     ClientNPC &getFirstNPC();
@@ -44,7 +46,6 @@ public:
     MessageCode getNextMessage() const;
     bool waitForMessage(MessageCode desiredMsg, ms_t timeout = DEFAULT_TIMEOUT) const;
     void waitForRedraw();
-    const Element::children_t &mapPins() const { return _client->_mapPins->children(); }
 
 private:
     Client *_client;

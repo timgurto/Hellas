@@ -81,3 +81,16 @@ TEST("NPC spawners work")
     WAIT_UNTIL(s.entities().size() == 3);
     return true;
 TEND
+
+TEST("Clients load map properly")
+    // Given a server and client, with a 101x101 map on which users spawn at the midpoint
+    TestServer s = TestServer::WithData("big_map");
+    TestClient c = TestClient::WithData("big_map");
+
+    // Then the client's map has 101 rows;
+    WAIT_UNTIL(c.map().size() == 101);
+
+    // And the user spawned in the correct place
+    WAIT_UNTIL(c->character().location() == Point(1616, 1616));
+    return true;
+TEND
