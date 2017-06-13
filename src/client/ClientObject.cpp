@@ -573,7 +573,8 @@ bool ClientObject::userHasAccess() const{
 
 bool ClientObject::canAlwaysSee() const{
     return
-        _owner == Client::_instance->username();
+        _owner == Client::_instance->username() ||
+        _owner == Client::_instance->character().cityName();
 }
 
 void ClientObject::update(double delta) {

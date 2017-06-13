@@ -310,3 +310,35 @@ SLOW_TEST("When a player moves away from his object, he is still aware of it")
         SDL_Delay(5);
     }
 TEND
+
+SLOW_TEST("When a player moves away from his city's object, he is still aware of it")
+    // Given a server with signpost objects;
+    TestServer s = TestServer::WithData("signpost");
+
+    // And a city named Athens
+    s.cities().createCity("athens");
+
+    // And a signpost near the user spawn point that belongs to Athens;
+    s.addObject("signpost", Point(10, 15));
+    Object &signpost = s.getFirstObject();
+    signpost.permissions().setCityOwner("athens");
+
+    // And Alice is logged in
+    TestClient c = TestClient::WithUsernameAndData("alice", "signpost");
+
+    // And Alice is a member of Athens
+    WAIT_UNTIL(s.users().size() == 1);
+    User &user = s.getFirstUser();
+    s.cities().addPlayerToCity(user, "athens");
+
+    // When Alice moves out of range of the signpost
+    WAIT_UNTIL(c.objects().size() == 1);
+    while (c->character().location().x < 1000){
+        c.sendMessage(CL_LOCATION, makeArgs(1010, 10));
+
+        // Then she is still aware of it
+        if (c.objects().size() == 0)
+            return false;
+        SDL_Delay(5);
+    }
+TEND
