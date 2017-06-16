@@ -79,3 +79,10 @@ SLOW_TEST("Server remains functional with unresponsive client")
 
     return true;
 TEND
+
+QUARANTINED_TEST("Map with extra row doesn't crash client")
+    TestServer s;
+    TestClient c = TestClient::WithData("abort");
+    REPEAT_FOR_MS(1000)
+        ;
+TEND
