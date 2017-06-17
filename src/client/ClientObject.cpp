@@ -208,12 +208,12 @@ void ClientObject::onRightClick(Client &client){
 
     if (_window != nullptr) {
         // Determine placement: below object, but keep entirely on screen.
-        px_t x = toInt(location().x - _window->width() / 2 + client.offset().x);
-        x = max(0, min(x, Client::SCREEN_X - _window->width()));
+        px_t x = toInt(location().x - _window->Element::width() / 2 + client.offset().x);
+        x = max(0, min(x, Client::SCREEN_X - _window->Element::width()));
         static const px_t WINDOW_GAP_FROM_OBJECT = 20;
         px_t y = toInt(location().y + WINDOW_GAP_FROM_OBJECT / 2 + client.offset().y);
-        y = max(0, min(y, Client::SCREEN_Y - _window->height()));
-        _window->rect(x, y);
+        y = max(0, min(y, Client::SCREEN_Y - _window->Element::height()));
+        _window->setPosition(x, y);
 
         _window->show();
     }
@@ -266,7 +266,7 @@ void ClientObject::addConstructionToWindow(){
                                 "Add materials:",
                                 Element::RIGHT_JUSTIFIED, Element::CENTER_JUSTIFIED));
     x += DROPBOX_LABEL_W + GAP;
-    dropbox->rect(x, y);
+    dropbox->setPosition(x, y);
     _window->addChild(dropbox);
     y += dropbox->height() + GAP;
 

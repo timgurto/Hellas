@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #include <cassert>
 
 #include "ChoiceList.h"
@@ -61,7 +59,7 @@ void ChoiceList::markMouseDown(Element &e, const Point &mousePos){
         list.markChanged();
         return;
     }
-    list._mouseDownBox->rect(0, index * list.childHeight());
+    list._mouseDownBox->setPosition(0, index * list.childHeight());
     list._mouseDownBox->show();
     list.markChanged();
 }
@@ -96,7 +94,7 @@ void ChoiceList::toggle(Element &e, const Point &mousePos){
         list._selectedBox->hide();
     } else {
         list._selectedID = id;
-        list._selectedBox->rect(0, index * list.childHeight());
+        list._selectedBox->setPosition(0, index * list.childHeight());
         list._selectedBox->show();
         list._mouseOverBox->hide();
     }
@@ -123,7 +121,7 @@ void ChoiceList::markMouseOver(Element &e, const Point &mousePos){
     }
     px_t itemY = index * list.childHeight();
     if (list._mouseOverID == list._mouseDownID) {
-        list._mouseDownBox->rect(0, itemY);
+        list._mouseDownBox->setPosition(0, itemY);
         list._mouseDownBox->show();
     } else {
         list._mouseDownBox->hide();
@@ -131,7 +129,7 @@ void ChoiceList::markMouseOver(Element &e, const Point &mousePos){
     if (list._mouseOverID == list._selectedID || list._mouseOverID == list._mouseDownID) {
         list._mouseOverBox->hide();
     } else {
-        list._mouseOverBox->rect(0, itemY);
+        list._mouseOverBox->setPosition(0, itemY);
         list._mouseOverBox->show();
     }
 }

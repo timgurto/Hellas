@@ -71,7 +71,7 @@ void List::updateScrollBar(){
         progress = 1.;
         _scrolledToBottom = true;
     }
-    _cursor->rect(0, toInt(progress * Y_RANGE + Y_MIN));
+    _cursor->setPosition(0, toInt(progress * Y_RANGE + Y_MIN));
     _scrollBar->markChanged();
 
     // Arrow visibility
@@ -148,7 +148,7 @@ void List::mouseMove(Element &e, const Point &mousePos){
             list._scrolledToBottom = true;
         }
         px_t newY = toInt(-progress * (list._content->rect().h - list.rect().h));
-        list._content->rect(0, newY);
+        list._content->setPosition(0, newY);
         list.updateScrollBar();
     }
 }
@@ -158,9 +158,9 @@ void List::scrollUpRaw(Element &e){
     if (list._content->rect().h <= list.rect().h)
         return;
     list._scrolledToBottom = false;
-    list._content->rect(0, list._content->rect().y + SCROLL_AMOUNT);
+    list._content->setPosition(0, list._content->rect().y + SCROLL_AMOUNT);
     if (list._content->rect().y > 0)
-        list._content->rect(0, 0);
+        list._content->setPosition(0, 0);
     list.updateScrollBar();
 }
 
@@ -169,10 +169,10 @@ void List::scrollDownRaw(Element &e){
     if (list._content->rect().h <= list.rect().h)
         return;
     list._scrolledToBottom = false;
-    list._content->rect(0, list._content->rect().y - SCROLL_AMOUNT);
+    list._content->setPosition(0, list._content->rect().y - SCROLL_AMOUNT);
     const px_t minScroll = -(list._content->rect().h - list.rect().h);
     if (list._content->rect().y <= minScroll) {
-        list._content->rect(0, minScroll);
+        list._content->setPosition(0, minScroll);
         list._scrolledToBottom = true;
     }
     list.updateScrollBar();
@@ -182,12 +182,12 @@ void List::scrollToBottom(){
     if (_content->rect().h <= rect().h)
         return;
     const px_t minScroll = -(_content->rect().h - rect().h);
-    _content->rect(0, minScroll);
+    _content->setPosition(0, minScroll);
     _scrolledToBottom = true;
     updateScrollBar();
 }
 
 void List::scrollPos(px_t newPos){
-    _content->rect(0, newPos);
+    _content->setPosition(0, newPos);
     updateScrollBar();
 }

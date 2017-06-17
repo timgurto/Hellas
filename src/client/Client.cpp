@@ -250,7 +250,7 @@ _debug("client.log"){
     _chatContainer = new Element(Rect(0, SCREEN_Y - chatH, chatW, chatH));
     _chatTextBox = new TextBox(Rect(0, chatH, chatW));
     _chatLog = new List(Rect(0, 0, chatW, chatH - _chatTextBox->height()));
-    _chatTextBox->rect(0, _chatLog->height());
+    _chatTextBox->setPosition(0, _chatLog->height());
     _chatTextBox->hide();
     _chatContainer->addChild(new ColorBlock(_chatLog->rect(), Color::CHAT_LOG_BACKGROUND));
     _chatContainer->addChild(_chatLog);

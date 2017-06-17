@@ -13,16 +13,6 @@ class ShadowBox;
 
 // A generic window for the in-game UI.
 class Window : public Element{
-    std::string _title;
-    bool _dragging; // Whether this window is currently being dragged by the mouse.
-    Point _dragOffset; // While dragging, where the mouse is on the window.
-    Element *_content;
-    ColorBlock *_background;
-    ShadowBox *_border;
-    Label *_heading;
-    Line *_headingLine;
-    Button *_closeButton;
-
 public:
     static px_t HEADING_HEIGHT;
     static px_t CLOSE_BUTTON_SIZE;
@@ -36,13 +26,25 @@ public:
     static void drag(Element &e, const Point &mousePos);
 
     void resize(px_t w, px_t h); // Resize window, so that the content size matches the given dims.
+    void width(px_t w) override;
+    void height(px_t h) override;
     
     px_t contentWidth() { return _content->width(); }
     px_t contentHeight() { return _content->height(); }
 
-    virtual void addChild(Element *child) override;
-    virtual void clearChildren() override;
-    virtual Element *findChild(const std::string id) override;
+    void addChild(Element *child) override;
+    void clearChildren() override;
+    Element *findChild(const std::string id) override;
+private:
+    std::string _title;
+    bool _dragging; // Whether this window is currently being dragged by the mouse.
+    Point _dragOffset; // While dragging, where the mouse is on the window.
+    Element *_content;
+    ColorBlock *_background;
+    ShadowBox *_border;
+    Label *_heading;
+    Line *_headingLine;
+    Button *_closeButton;
 };
 
 #endif

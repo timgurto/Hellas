@@ -1,4 +1,3 @@
-// (C) 2015 Tim Gurto
 
 #include <SDL_ttf.h>
 
@@ -65,8 +64,8 @@ void Window::stopDragging(Element &e, const Point &mousePos){
 void Window::drag(Element &e, const Point &mousePos){
     Window &window = dynamic_cast<Window &>(e);
     if (window._dragging) 
-        window.rect(toInt(absMouse->x - window._dragOffset.x),
-                    toInt(absMouse->y - window._dragOffset.y));
+        window.setPosition(toInt(absMouse->x - window._dragOffset.x),
+                           toInt(absMouse->y - window._dragOffset.y));
 }
 
 void Window::hideWindow(void *window){
@@ -87,26 +86,28 @@ Element *Window::findChild(const std::string id){
     return _content->findChild(id);
 }
 
-void Window::resize(px_t w, px_t h){
-    const px_t
-        winW = w + 2,
-        winH = h + 2 + HEADING_HEIGHT;
+void Window::resize(px_t w, px_t h){ // TODO remove
+    width(w);
+    height(h);
+}
 
-    width(winW);
-    height(winH);
-
+void Window::width(px_t w){
     _content->width(w);
-    _content->height(h);
-
     _background->width(w);
-    _background->height(h + HEADING_HEIGHT);
 
-    _heading->width(winW - CLOSE_BUTTON_SIZE);
+    const px_t
+        windowWidth = w + 2,
+        headingWidth = windowWidth - CLOSE_BUTTON_SIZE;
+    _heading->width(headingWidth);
+    _headingLine->width(windowWidth);
+    _closeButton->setPosition(headingWidth, 1);
+    _border->width(windowWidth);
+}
 
-    _headingLine->width(winW);
+void Window::height(px_t h){
+    _content->height(h);
+    px_t windowHeight = h + 2 + HEADING_HEIGHT;
+    _background->height(windowHeight - 2);
+    _border->height(windowHeight);
 
-    _closeButton->rect(winW - CLOSE_BUTTON_SIZE - 1, 1);
-
-    _border->width(winW);
-    _border->height(winH);
 }

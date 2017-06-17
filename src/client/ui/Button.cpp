@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #include "Button.h"
 #include "ColorBlock.h"
 #include "Label.h"
@@ -29,14 +27,14 @@ _depressed(false){
 
 void Button::depress(){
     _shadowBox->setReversed(true);
-    _content->rect(1, 1); // Draw contents at an offset
+    _content->setPosition(1, 1); // Draw contents at an offset
     _depressed = true;
     markChanged();
 }
 
 void Button::release(bool click){
     _shadowBox->setReversed(false);
-    _content->rect(0, 0);
+    _content->setPosition(0, 0);
     if (click && _clickFun != nullptr)
         _clickFun(_clickData);
     _depressed = false;
