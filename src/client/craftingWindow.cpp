@@ -11,6 +11,10 @@
 
 extern Renderer renderer;
 
+void Client::initializeCraftingWindow(Client &client){
+    client.initializeCraftingWindow();
+}
+
 void Client::initializeCraftingWindow(){
     // For crafting filters
     for (const Recipe &recipe : _recipes) {
@@ -40,7 +44,8 @@ void Client::initializeCraftingWindow(){
         CONTENT_Y = PANE_GAP/2,
         CRAFTING_WINDOW_H = CONTENT_Y + CONTENT_H + PANE_GAP/2;
 
-    _craftingWindow = new Window(Rect(100, 50, CRAFTING_WINDOW_W, CRAFTING_WINDOW_H), "Crafting");
+    _craftingWindow->rect(Rect(100, 50, CRAFTING_WINDOW_W, CRAFTING_WINDOW_H));
+    _craftingWindow->setTitle("Crafting");
     _craftingWindow->addChild(new Line(RECIPES_PANE_X - PANE_GAP/2, CONTENT_Y,
                                        CONTENT_H, Element::VERTICAL));
     _craftingWindow->addChild(new Line(DETAILS_PANE_X - PANE_GAP/2, CONTENT_Y,

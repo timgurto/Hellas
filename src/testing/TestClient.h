@@ -36,6 +36,7 @@ public:
     const List *chatLog() const { return _client->_chatLog; }
     const Element::children_t &mapPins() const { return _client->_mapPins->children(); }
     const std::vector<std::vector<char> > &map() const { return _client->_map; }
+    Window *craftingWindow() const { return _client->_craftingWindow; }
 
     Avatar &getFirstOtherUser();
     ClientNPC &getFirstNPC();

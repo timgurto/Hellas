@@ -56,7 +56,7 @@ void ClientNPC::assembleWindow(Client &client){
     Rect winRect = location();
     winRect.w = WIDTH;
     winRect.h = HEIGHT;
-    _window = new Window(winRect, objectType()->name());
+    _window = Window::WithRectAndTitle(winRect, objectType()->name());
     _window->addChild(_lootContainer);
 }
 

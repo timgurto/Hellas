@@ -5,10 +5,10 @@
 
 void Client::initializeMapWindow(){
     _mapImage = Texture(std::string("Images/map.png"));
-    _mapWindow = new Window(Rect((SCREEN_X - _mapImage.width()) / 2,
-                                 (SCREEN_Y - _mapImage.height()) / 2,
-                                 _mapImage.width(), _mapImage.height()),
-                            "Map");
+    _mapWindow = Window::WithRectAndTitle(Rect((SCREEN_X - _mapImage.width()) / 2,
+                                               (SCREEN_Y - _mapImage.height()) / 2,
+                                               _mapImage.width(), _mapImage.height()),
+                                          "Map");
     _mapWindow->addChild(new Picture(0, 0, _mapImage));
 
     _mapPinOutlines = new Element(Rect(0, 0, _mapImage.width(), _mapImage.height()));

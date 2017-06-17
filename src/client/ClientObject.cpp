@@ -469,7 +469,7 @@ void ClientObject::assembleWindow(Client &client){
                             canCede)){
 
         if (_window == nullptr)
-            _window = new Window(Rect(), objType.name());
+            _window = Window::WithRectAndTitle(Rect(), objType.name());
 
         if (isBeingConstructed()){
             if (userHasAccess()){

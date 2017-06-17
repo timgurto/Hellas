@@ -134,3 +134,28 @@ TEST("A player shows up on his own map")
     const Point mapMidpoint(c->mapImage().width() / 2, c->mapImage().height() / 2);
     WAIT_UNTIL(pin->rect() == Rect(midMapX, midMapY, 1, 1));
 TEND
+
+ONLY_TEST("Window start uninitialized")
+    // Given a server and client
+    TestServer s;
+    TestClient c;
+
+    // When the client logs in
+    WAIT_UNTIL(s.users().size() == 1);
+
+    // Then the crafting window is uninitialized
+    return ! c.craftingWindow()->isInitialized();
+TEND
+
+ONLY_TEST("Windows are initialized when used")
+    // Given a server and client
+    TestServer s;
+    TestClient c;
+    WAIT_UNTIL(s.users().size() == 1);
+
+    // When the client opens the crafting window
+    c.craftingWindow()->show();
+
+    // Then it is initializezd
+    WAIT_UNTIL(c.craftingWindow()->isInitialized());
+TEND

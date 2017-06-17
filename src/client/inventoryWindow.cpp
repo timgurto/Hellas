@@ -17,7 +17,7 @@ void Client::initializeInventoryWindow(){
         LEFT = SCREEN_X - WIDTH - 1,
         TOP = SCREEN_Y - HEIGHT - 16;
 
-    _inventoryWindow = new Window(Rect(LEFT, TOP, WIDTH, HEIGHT), "Inventory");
+    _inventoryWindow = Window::WithRectAndTitle(Rect(LEFT, TOP, WIDTH, HEIGHT), "Inventory");
     inventory->id("inventory");
     _inventoryWindow->addChild(inventory);
 
@@ -54,7 +54,8 @@ void Client::initializeGearWindow(){
         STATS_WIDTH = 90,
         STAT_X_GAP = 2;
 
-    _gearWindow = new Window(Rect(100, 100, w + STATS_WIDTH + 2 * STAT_X_GAP, h), "Gear");
+    _gearWindow = Window::WithRectAndTitle(Rect(100, 100, w + STATS_WIDTH + 2 * STAT_X_GAP, h),
+                                           "Gear");
     ContainerGrid *gearContainer = new ContainerGrid
             (rows, cols, _character.gear(), GEAR, x, y, gap, false);
     _gearWindow->addChild(new Picture(0, 0, _gearWindowBackground));

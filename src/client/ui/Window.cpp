@@ -1,3 +1,4 @@
+#include <cassert>
 
 #include <SDL_ttf.h>
 
@@ -8,47 +9,87 @@
 #include "Line.h"
 #include "ShadowBox.h"
 #include "Window.h"
+#include "../Client.h"
 
 px_t Window::HEADING_HEIGHT = 0;
 px_t Window::CLOSE_BUTTON_SIZE = 0;
 
 extern Renderer renderer;
 
-Window::Window(const Rect &rect, const std::string &title):
-Element(Rect(rect.x, rect.y, rect.w + 2, rect.h + 3 + HEADING_HEIGHT)),
-_title(title),
+Window::Window():
+_title(""),
 _dragging(false),
-_content(new Element(Rect(1, HEADING_HEIGHT + 2, rect.w, rect.h))){
-    const Rect windowRect = this->rect();
+_initFunction(nullptr),
+_isInitialized(true)
+{
     hide();
     setLeftMouseUpFunction(&stopDragging);
     setMouseMoveFunction(&drag);
+    addStructuralElements();
+    setPreRefreshFunction(checkInitialized);
+}
 
-    _background = new ColorBlock(Rect(1, 1, windowRect.w - 2, windowRect.h - 2));
+Window *Window::WithRectAndTitle(const Rect &rect, const std::string &title){
+    auto window = new Window;
+
+    window->resize(rect.w, rect.h);
+    window->setPosition(rect.x, rect.y);
+    window->_title = title;
+
+    return window;
+}
+
+Window *Window::InitializeLater(InitFunction function){
+    auto window = new Window;
+
+    window->_initFunction = function;
+    window->_isInitialized = false;
+
+    return window;
+}
+
+void Window::addStructuralElements(){
+    addBackground();
+    addHeading();
+    addBorder();
+    addContent();
+}
+
+void Window::addBackground(){
+    static const px_t UNINIT = 0;
+    _background = new ColorBlock(Rect(1, 1, UNINIT, UNINIT));
     Element::addChild(_background);
+}
 
-    // Heading
-    _heading = new Label(Rect(0, 0,  windowRect.w - CLOSE_BUTTON_SIZE, HEADING_HEIGHT), _title,
-                         CENTER_JUSTIFIED);
+void Window::addHeading(){
+    static const px_t UNINIT = 0;
+    _heading = new Label(Rect(0, 0,  UNINIT, HEADING_HEIGHT), _title, CENTER_JUSTIFIED);
     _heading->setLeftMouseDownFunction(&startDragging, this);
     Element::addChild(_heading);
 
-    _headingLine = new Line(0, HEADING_HEIGHT, windowRect.w);
+    _headingLine = new Line(0, HEADING_HEIGHT, UNINIT);
     _headingLine->setLeftMouseDownFunction(&startDragging, this);
     Element::addChild(_headingLine);
 
-    _closeButton = new Button(Rect(windowRect.w - CLOSE_BUTTON_SIZE - 1, 1,
-                                   CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE),
-                              "", hideWindow, this);
+    _closeButton = new Button(Rect(UNINIT, 1, CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE),
+                                "", hideWindow, this);
     _closeButton->addChild(new Label(Rect(0, 0, CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE), "x",
                                     CENTER_JUSTIFIED, CENTER_JUSTIFIED));
     Element::addChild(_closeButton);
+}
 
-    _border = new ShadowBox(Rect(0, 0, windowRect.w, windowRect.h));
+void Window::addBorder(){
+    static const px_t UNINIT = 0;
+    _border = new ShadowBox(Rect(0, 0, UNINIT, UNINIT));
     Element::addChild(_border);
+}
 
+void Window::addContent(){
+    static const px_t UNINIT = 0;
+    _content = new Element(Rect(1, HEADING_HEIGHT + 2, UNINIT, UNINIT));
     Element::addChild(_content);
 }
+
 
 void Window::startDragging(Element &e, const Point &mousePos){
     Window &window = dynamic_cast<Window &>(e);
@@ -109,5 +150,13 @@ void Window::height(px_t h){
     px_t windowHeight = h + 2 + HEADING_HEIGHT;
     _background->height(windowHeight - 2);
     _border->height(windowHeight);
+}
 
+void Window::checkInitialized(Element &thisWindow){
+    Window &window = dynamic_cast<Window &>(thisWindow);
+    if (window._isInitialized)
+        return;
+    assert(window._initFunction != nullptr);
+    window._initFunction(*Client::_instance);
+    window._isInitialized = true;
 }

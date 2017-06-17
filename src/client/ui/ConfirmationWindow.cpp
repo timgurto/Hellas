@@ -5,11 +5,12 @@
 ConfirmationWindow::ConfirmationWindow(const std::string &windowText, MessageCode msgCode,
                                        const std::string &msgArgs):
 _msgCode(msgCode),
-_msgArgs(msgArgs),
-Window(Rect((Client::SCREEN_X - WINDOW_WIDTH) / 2, (Client::SCREEN_Y - WINDOW_HEIGHT) / 2,
-             WINDOW_WIDTH, WINDOW_HEIGHT),
-       "Confirmation")
+_msgArgs(msgArgs)
 {
+    resize(WINDOW_WIDTH, WINDOW_HEIGHT);
+    setPosition((Client::SCREEN_X - WINDOW_WIDTH) / 2, (Client::SCREEN_Y - WINDOW_HEIGHT) / 2); // TODO add a center() function
+    setTitle("Confirmation");
+
     static const px_t
         PADDING = 2,
         BUTTON_WIDTH = 60,

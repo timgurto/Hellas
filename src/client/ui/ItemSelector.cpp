@@ -39,10 +39,10 @@ _name(new Label(Rect(ITEM_HEIGHT + 1 + GAP, 1, WIDTH, ITEM_HEIGHT), "",
     clickData(&_item);
 
     if (_findItemWindow == nullptr){
-        _findItemWindow = new Window(Rect((Client::SCREEN_X - WINDOW_WIDTH) / 2,
-                                          (Client::SCREEN_Y - WINDOW_HEIGHT) / 2,
-                                          WINDOW_WIDTH, WINDOW_HEIGHT),
-                                     "Find Item");
+        _findItemWindow = Window::WithRectAndTitle(Rect((Client::SCREEN_X - WINDOW_WIDTH) / 2,
+                                                        (Client::SCREEN_Y - WINDOW_HEIGHT) / 2,
+                                                        WINDOW_WIDTH, WINDOW_HEIGHT),
+                                                   "Find Item");
         px_t y = GAP;
         _filterText = new TextBox(Rect(GAP, y, SEARCH_TEXT_WIDTH, SEARCH_BUTTON_HEIGHT));
         _findItemWindow->addChild(_filterText);

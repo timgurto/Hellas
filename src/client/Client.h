@@ -127,7 +127,8 @@ private:
 
     // Whether the user has the specified item(s).
     bool playerHasItem(const Item *item, size_t quantity = 1) const;
-
+    
+    static void initializeCraftingWindow(Client &client);
     void initializeCraftingWindow();
     bool _haveMatsFilter, _haveToolsFilter, _tagOr, _matOr;
     static const px_t HEADING_HEIGHT; // The height of windows' section headings
@@ -395,6 +396,7 @@ private:
     friend class SoundProfile;
     friend class Target;
     friend class ConfirmationWindow;
+    friend class Window;
 };
 
 #endif
