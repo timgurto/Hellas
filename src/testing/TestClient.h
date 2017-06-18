@@ -37,6 +37,7 @@ public:
     const Element::children_t &mapPins() const { return _client->_mapPins->children(); }
     const std::vector<std::vector<char> > &map() const { return _client->_map; }
     Window *craftingWindow() const { return _client->_craftingWindow; }
+    Window *buildWindow() const { return _client->_buildWindow; }
 
     Avatar &getFirstOtherUser();
     ClientNPC &getFirstNPC();

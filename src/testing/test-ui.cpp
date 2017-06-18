@@ -159,3 +159,16 @@ ONLY_TEST("Windows are initialized when used")
     // Then it is initializezd
     WAIT_UNTIL(c.craftingWindow()->isInitialized());
 TEND
+
+ONLY_TEST("A visible window has dimensions")
+    // Given a server and client;
+    TestServer s;
+    TestClient c;
+    WAIT_UNTIL(s.users().size() == 1);
+
+    // When the client opens the build window
+    c.buildWindow()->show();
+
+    // Then the build window has dimensions
+    WAIT_UNTIL_TIMEOUT(c.buildWindow()->Element::width() > 0, 500);
+TEND

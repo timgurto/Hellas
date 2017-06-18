@@ -133,12 +133,14 @@ void Window::resize(px_t w, px_t h){ // TODO remove
 }
 
 void Window::width(px_t w){
-    _content->width(w);
-    _background->width(w);
-
     const px_t
         windowWidth = w + 2,
         headingWidth = windowWidth - CLOSE_BUTTON_SIZE;
+
+    Element::width(windowWidth);
+    _content->width(w);
+    _background->width(w);
+
     _heading->width(headingWidth);
     _headingLine->width(windowWidth);
     _closeButton->setPosition(headingWidth, 1);
@@ -146,8 +148,10 @@ void Window::width(px_t w){
 }
 
 void Window::height(px_t h){
+    const px_t windowHeight = h + 2 + HEADING_HEIGHT;
+
+    Element::height(windowHeight);
     _content->height(h);
-    px_t windowHeight = h + 2 + HEADING_HEIGHT;
     _background->height(windowHeight - 2);
     _border->height(windowHeight);
 }
