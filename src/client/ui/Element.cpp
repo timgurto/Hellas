@@ -366,7 +366,7 @@ void Element::draw(){
     if (!_texture)
         markChanged();
     if (_changed) {
-        if (_preRefresh)
+        if (_preRefresh != nullptr)
             _preRefresh(*_preRefreshElement);
         if (!_texture)
             return;

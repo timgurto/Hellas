@@ -130,6 +130,7 @@ public:
     void clearTooltip();
     static const Texture *tooltip() { return _currentTooltip; }
     const Element *parent() const { return _parent; }
+    const Texture &texture() const { return _texture; }
 
     void show();
     void hide();

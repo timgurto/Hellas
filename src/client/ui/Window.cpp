@@ -34,7 +34,7 @@ Window *Window::WithRectAndTitle(const Rect &rect, const std::string &title){
 
     window->resize(rect.w, rect.h);
     window->setPosition(rect.x, rect.y);
-    window->_title = title;
+    window->setTitle(title);
 
     return window;
 }
@@ -154,6 +154,11 @@ void Window::height(px_t h){
     _content->height(h);
     _background->height(windowHeight - 2);
     _border->height(windowHeight);
+}
+
+void Window::setTitle(const std::string &title){
+    _title = title;
+    _heading->changeText(_title);
 }
 
 void Window::checkInitialized(Element &thisWindow){

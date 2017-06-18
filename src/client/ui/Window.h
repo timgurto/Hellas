@@ -32,11 +32,11 @@ public:
     void resize(px_t w, px_t h); // Resize window, so that the content size matches the given dims.
     void width(px_t w) override;
     void height(px_t h) override;
-
-    void setTitle(const std::string &title) { _title = title; }
+    void setTitle(const std::string &title);
     
     px_t contentWidth() { return _content->width(); }
     px_t contentHeight() { return _content->height(); }
+    const Label *getHeading() const { return _heading; }
 
     void addChild(Element *child) override;
     void clearChildren() override;
