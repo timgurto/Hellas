@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "Client.h"
 #include "ClientNPC.h"
 #include "Renderer.h"
@@ -25,6 +27,8 @@ void Client::draw() const{
                                                1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
         yMin = static_cast<size_t>(max<double>(0, -offset().y / TILE_H)),
         yMax = static_cast<size_t>(min<double>(_mapY, (-offset().y + SCREEN_Y) / TILE_H + 1));
+    assert(xMin <= xMax);
+    assert(yMin <= yMax);
     for (size_t y = yMin; y != yMax; ++y) {
         const px_t yLoc = y * TILE_H + toInt(offset().y);
         for (size_t x = xMin; x != xMax; ++x){
