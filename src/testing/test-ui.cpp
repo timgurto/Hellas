@@ -135,7 +135,7 @@ TEST("A player shows up on his own map")
     WAIT_UNTIL(pin->rect() == Rect(midMapX, midMapY, 1, 1));
 TEND
 
-ONLY_TEST("Windows start uninitialized")
+TEST("Windows start uninitialized")
     // Given a server and client
     TestServer s;
     TestClient c;
@@ -147,7 +147,7 @@ ONLY_TEST("Windows start uninitialized")
     return ! c.craftingWindow()->isInitialized();
 TEND
 
-ONLY_TEST("Windows are initialized when used")
+TEST("Windows are initialized when used")
     // Given a server and client
     TestServer s;
     TestClient c;
@@ -160,7 +160,7 @@ ONLY_TEST("Windows are initialized when used")
     WAIT_UNTIL(c.craftingWindow()->isInitialized());
 TEND
 
-ONLY_TEST("A visible window is fully-formed")
+TEST("A visible window is fully-formed")
     // Given a server and client;
     TestServer s;
     TestClient c;
@@ -170,9 +170,18 @@ ONLY_TEST("A visible window is fully-formed")
     c.buildWindow()->show();
 
     // Then the build window has dimensions;
-    WAIT_UNTIL_TIMEOUT(c.buildWindow()->Element::width() > 0, 500);
+    WAIT_UNTIL(c.buildWindow()->Element::width() > 0);
 
     // And the heading has a texture
-    WAIT_UNTIL_TIMEOUT(c.buildWindow()->getHeading()->texture(), 500);
+    WAIT_UNTIL(c.buildWindow()->getHeading()->texture());
     return true;
+TEND
+
+TEST("Element starts out uninitialized")
+    ENSURE(Element::isInitialized() == false);
+TEND
+
+TEST("Element gets initialized with Client")
+    Client c;
+    WAIT_UNTIL(Element::isInitialized() == true);
 TEND

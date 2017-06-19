@@ -51,6 +51,8 @@ private:
 
     Texture _tooltip; // Optional tooltip
 
+    static bool initialized;
+
 protected:
     static Color
         BACKGROUND_COLOR,
@@ -131,6 +133,7 @@ public:
     static const Texture *tooltip() { return _currentTooltip; }
     const Element *parent() const { return _parent; }
     const Texture &texture() const { return _texture; }
+    static bool isInitialized() { return initialized; }
 
     void show();
     void hide();

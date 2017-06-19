@@ -25,6 +25,8 @@ const Point *Element::absMouse = nullptr;
 
 const Texture *Element::_currentTooltip = nullptr;
 
+bool Element::initialized = false;
+
 Element::Element(const Rect &rect):
 _changed(true),
 _dimensionsChanged(false),
@@ -40,6 +42,7 @@ _mouseMove(nullptr), _mouseMoveElement(nullptr),
 _scrollUp(nullptr), _scrollUpElement(nullptr),
 _scrollDown(nullptr), _scrollDownElement(nullptr),
 _preRefresh(nullptr), _preRefreshElement(nullptr){
+    assert(initialized);
     _texture.setBlend(SDL_BLENDMODE_BLEND);
 }
 
@@ -56,6 +59,8 @@ void Element::initialize(){
     ITEM_HEIGHT = max(Client::ICON_SIZE, TEXT_HEIGHT);
     Window::HEADING_HEIGHT = TEXT_HEIGHT + 3;
     Window::CLOSE_BUTTON_SIZE = TEXT_HEIGHT + 2;
+
+    initialized = true;
 }
 
 void Element::rect(px_t x, px_t y, px_t w, px_t h){

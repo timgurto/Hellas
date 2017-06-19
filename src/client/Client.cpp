@@ -88,7 +88,7 @@ _isDismounting(false),
 _activeRecipe(nullptr),
 _recipeList(nullptr),
 _detailsPane(nullptr),
-_craftingWindow(Window::InitializeLater(initializeCraftingWindow)),
+_craftingWindow(nullptr),
 _inventoryWindow(nullptr),
 _gearWindow(nullptr),
 _gearWindowBackground(std::string("Images/gearWindow.png"), Color::MAGENTA),
@@ -298,6 +298,7 @@ _debug("client.log"){
     
     drawLoadingScreen("Initializing UI", 0.8);
     initializeBuildWindow();
+    _craftingWindow = Window::InitializeLater(initializeCraftingWindow);
     initializeInventoryWindow();
     initializeGearWindow();
     initializeMapWindow();
