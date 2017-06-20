@@ -38,6 +38,7 @@ public:
     const std::vector<std::vector<char> > &map() const { return _client->_map; }
     Window *craftingWindow() const { return _client->_craftingWindow; }
     Window *buildWindow() const { return _client->_buildWindow; }
+    Window *gearWindow() const { return _client->_gearWindow; }
 
     Avatar &getFirstOtherUser();
     ClientNPC &getFirstNPC();

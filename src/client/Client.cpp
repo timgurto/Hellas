@@ -91,7 +91,6 @@ _detailsPane(nullptr),
 _craftingWindow(nullptr),
 _inventoryWindow(nullptr),
 _gearWindow(nullptr),
-_gearWindowBackground(std::string("Images/gearWindow.png"), Color::MAGENTA),
 
 _buildWindow(nullptr),
 _buildList(nullptr),
@@ -300,7 +299,7 @@ _debug("client.log"){
     initializeBuildWindow();
     _craftingWindow = Window::InitializeLater(initializeCraftingWindow);
     initializeInventoryWindow();
-    initializeGearWindow();
+    _gearWindow = Window::InitializeLater(initializeGearWindow);
     initializeMapWindow();
     addWindow(_buildWindow);
     addWindow(_craftingWindow);

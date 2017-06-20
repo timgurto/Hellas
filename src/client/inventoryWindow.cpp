@@ -24,8 +24,12 @@ void Client::initializeInventoryWindow(){
     _inventoryWindow->show();
 }
 
+void Client::initializeGearWindow(Client &client){
+    client.initializeGearWindow();
+}
+
 void Client::initializeGearWindow(){
-    XmlReader xr("client-config.xml");
+    _gearWindowBackground = Texture(std::string("Images/gearWindow.png"), Color::MAGENTA);
 
     GEAR_SLOT_NAMES.push_back("Head");
     GEAR_SLOT_NAMES.push_back("Jewelry");
@@ -40,6 +44,7 @@ void Client::initializeGearWindow(){
         x = 0, y = 0,
         w = 0, h = 0,
         gap = 0, rows = 0, cols = 0;
+    XmlReader xr("client-config.xml");
     auto elem = xr.findChild("gearWindow");
     if (elem != nullptr){
         xr.findAttr(elem, "width", w);
@@ -54,8 +59,8 @@ void Client::initializeGearWindow(){
         STATS_WIDTH = 90,
         STAT_X_GAP = 2;
 
-    _gearWindow = Window::WithRectAndTitle(Rect(100, 100, w + STATS_WIDTH + 2 * STAT_X_GAP, h),
-                                           "Gear");
+    _gearWindow->rect(100, 100, w + STATS_WIDTH + 2 * STAT_X_GAP, h);
+    _gearWindow->setTitle("Gear");
     ContainerGrid *gearContainer = new ContainerGrid
             (rows, cols, _character.gear(), GEAR, x, y, gap, false);
     _gearWindow->addChild(new Picture(0, 0, _gearWindowBackground));

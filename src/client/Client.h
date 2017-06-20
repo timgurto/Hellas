@@ -179,6 +179,7 @@ private:
     Texture _constructionFootprint;
 
     Window *_gearWindow;
+    static void initializeGearWindow(Client &client);
     void initializeGearWindow();
     Texture _gearWindowBackground;
     void onChangeDragItem(){ _gearWindow->forceRefresh(); }

@@ -177,11 +177,15 @@ TEST("A visible window is fully-formed")
     return true;
 TEND
 
-TEST("Element starts out uninitialized")
-    ENSURE(Element::isInitialized() == false);
-TEND
-
-TEST("Element gets initialized with Client")
+QUARANTINED_TEST("Element gets initialized with Client")
+    ENSURE(Element::isInitialized() == false); // Depends on test order.
     Client c;
     WAIT_UNTIL(Element::isInitialized() == true);
+TEND
+
+TEST("Gear window can be viewed")
+    TestServer s;
+    TestClient c;
+    c.gearWindow()->show();
+    WAIT_UNTIL(c.gearWindow()->texture());
 TEND
