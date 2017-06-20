@@ -5,6 +5,7 @@
 #include "Renderer.h"
 #include "ui/ContainerGrid.h"
 
+extern Args cmdLineArgs;
 extern Renderer renderer;
 
 void Client::draw() const{
@@ -293,6 +294,9 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const{
 }
 
 void Client::drawLoadingScreen(const std::string &msg, double progress) const{
+    if (cmdLineArgs.contains("hideLoadingScreen"))
+        return;
+
     static const Color
         BACKGROUND = Color(0x3C, 0x38, 0x8C),
         FOREGROUND = Color(0xE5, 0xE5, 0xE5);

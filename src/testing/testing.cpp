@@ -21,6 +21,7 @@ int main(int argc, char **argv){
     cmdLineArgs.add("window");
     cmdLineArgs.add("quiet");
     cmdLineArgs.add("user-files-path", "testing/users");
+    cmdLineArgs.add("hideLoadingScreen");
 
     renderer.init();
 
