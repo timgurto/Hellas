@@ -405,7 +405,8 @@ void Client::handleMessage(const std::string &msg){
             auto &invSlot = (*container)[slot];
             invSlot.first = item;
             invSlot.second = quantity;
-            _recipeList->markChanged();
+            if (_recipeList != nullptr)
+                _recipeList->markChanged();
             switch(serial){
                 case INVENTORY: _inventoryWindow->forceRefresh();   break;
                 case GEAR:      _gearWindow->forceRefresh();        break;
