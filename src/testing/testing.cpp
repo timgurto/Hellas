@@ -9,8 +9,6 @@
 Args cmdLineArgs;
 Renderer renderer;
 
-static void deleteUserFiles();
-
 int main( int argc, char* argv[] )
 {
     srand(static_cast<unsigned>(time(0)));
@@ -25,22 +23,7 @@ int main( int argc, char* argv[] )
     
     renderer.init();
 
-    deleteUserFiles();
-
     int result = Catch::Session().run( argc, argv );
 
     return ( result < 0xff ? result : 0xff );
-}
-
-void deleteUserFiles(){
-    WIN32_FIND_DATAW fd;
-    HANDLE hFind = FindFirstFileW(L"testing\\users\\*.usr", &fd);
-    if (hFind != INVALID_HANDLE_VALUE)
-    {
-        do
-        {
-            DeleteFileW((std::wstring(L"testing\\users\\") + fd.cFileName).c_str());
-        } while (FindNextFileW(hFind, &fd));
-        FindClose(hFind);
-    }
 }

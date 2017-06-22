@@ -112,7 +112,7 @@ private:
     // Pointers to all connected users, ordered by name for faster lookup
     std::map<std::string, const User *> _usersByName;
     std::string _userFilesPath;
-    void checkSockets();
+    void deleteUserFiles();
     /*
     Add the newly logged-in user
     This happens not once the client connects, but rather when a CL_I_AM message is received.
@@ -120,6 +120,7 @@ private:
     void addUser(const Socket &socket, const std::string &name);
     Point _newPlayerSpawnLocation;
     double _newPlayerSpawnRange;
+    void checkSockets();
 
     // Remove traces of a user who has disconnected.
     void removeUser(const Socket &socket);

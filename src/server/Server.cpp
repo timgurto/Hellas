@@ -67,6 +67,8 @@ _dataLoaded(false){
 
     if (cmdLineArgs.contains("user-files-path"))
         _userFilesPath = cmdLineArgs.getString("user-files-path") + "/";
+    if (cmdLineArgs.contains("new"))
+        deleteUserFiles();
 
 
     _debug("Server initialized");
@@ -571,4 +573,21 @@ const User &Server::getUserByName(const std::string &username) const {
 const Terrain *Server::terrainType(char index) const{
     auto &types = const_cast<std::map<char, Terrain *> &> (_terrainTypes);
     return types[index];
+}
+
+void Server::deleteUserFiles(){
+    WIN32_FIND_DATAW fd;
+    std::wstring path(_userFilesPath.begin(), _userFilesPath.end());
+    std::replace(path.begin(), path.end(), '/', '\\');
+    std::wstring filter = path + L"*.usr";
+    path.c_str();
+    HANDLE hFind = FindFirstFileW(filter.c_str(), &fd);
+    if (hFind != INVALID_HANDLE_VALUE)
+    {
+        do
+        {
+            DeleteFileW((std::wstring(path.c_str()) + fd.cFileName).c_str());
+        } while (FindNextFileW(hFind, &fd));
+        FindClose(hFind);
+    }
 }

@@ -86,3 +86,22 @@ QUARANTINED_TEST("Map with extra row doesn't crash client")
     REPEAT_FOR_MS(1000)
         ;
 TEND
+
+TEST_CASE("New servers clear old user data"){
+    {
+        TestServer s;
+        TestClient c = TestClient::WithUsername("alice");
+        WAIT_UNTIL(s.users().size() == 1);
+        User &alice = s.getFirstUser();
+        CHECK(alice.health() == alice.maxHealth());
+        alice.reduceHealth(1);
+        CHECK(alice.health() < alice.maxHealth());
+    }
+    {
+        TestServer s;
+        TestClient c = TestClient::WithUsername("alice");
+        WAIT_UNTIL(s.users().size() == 1);
+        User &alice = s.getFirstUser();
+        CHECK(alice.health() == alice.maxHealth());
+    }
+}
