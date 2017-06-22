@@ -101,7 +101,7 @@ TEST_CASE("Clients are told if in a city on login"){
     WAIT_UNTIL(client2->character().cityName() == "athens");
 }
 
-TEST_CASE("Clients know nearby players' cities", "[flaky]"){
+TEST_CASE("Clients know nearby players' cities", "[!mayfail]"){
     // Given Alice is a member of Athens, and connected to the server
     TestServer s;
     s.cities().createCity("athens");
@@ -163,7 +163,7 @@ TEST_CASE("A player must be in a city to cede", "[slow]"){
     CHECK(rock.permissions().isOwnedByPlayer(user.name()));
 }
 
-TEST_CASE("A player can only cede his own objects"){
+TEST_CASE("A player can only cede his own objects", "[slow]"){
     // Given a user in Athens;
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");
