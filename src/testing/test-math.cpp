@@ -55,23 +55,9 @@ TEST_CASE("Complex normal variable"){
 }
 
 TEST_CASE("NormalVariable copying"){
-    bool ret = true;
-    
-    auto prevHandler = std::signal(SIGSEGV, Test::signalThrower); // Set signal handler
-    int prevAssertMode = _CrtSetReportMode(_CRT_ASSERT,0); // Disable asserts
-
-    try {
-        NormalVariable nv1;
-        NormalVariable nv2 = nv1;
-        nv1();
-    } catch(int) {
-        ret = false;
-    }
-
-    _CrtSetReportMode(_CRT_ASSERT,prevAssertMode); // Re-enable asserts
-    std::signal(SIGSEGV, prevHandler); // Reset signal handler
-
-    CHECK(ret);
+    NormalVariable nv1;
+    NormalVariable nv2 = nv1;
+    nv1();
 }
 
 TEST_CASE("Distance-to-line with A=B"){

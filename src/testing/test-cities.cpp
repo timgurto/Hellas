@@ -1,42 +1,22 @@
+#include "catch.hpp"
+
 #include "RemoteClient.h"
 #include "Test.h"
 #include "TestClient.h"
 #include "TestServer.h"
 
-TEST("City creation")
+TEST_CASE("City creation"){
     TestServer s;
     s.cities().createCity("athens");
-    return s.cities().doesCityExist("athens");
-TEND
+    CHECK(s.cities().doesCityExist("athens"));
+}
 
-TEST("No erroneous cities")
+TEST_CASE("No erroneous cities"){
     TestServer s;
-    return ! s.cities().doesCityExist("Fakeland");
-TEND
+    CHECK_FALSE(s.cities().doesCityExist("Fakeland"));
+}
 
-TEST("Add a player to a city")
-    TestServer s;
-    TestClient c = TestClient::WithUsername("alice");
-    WAIT_UNTIL(s.users().size() == 1);
-    User &alice = s.getFirstUser();
-
-    s.cities().createCity("athens");
-    s.cities().addPlayerToCity(alice, "athens");
-
-    return s.cities().isPlayerInCity("alice", "athens");
-TEND
-
-TEST("No erroneous city membership")
-    TestServer s;
-    TestClient c = TestClient::WithUsername("alice");
-    WAIT_UNTIL(s.users().size() == 1);
-
-    s.cities().createCity("athens");
-
-    return ! s.cities().isPlayerInCity("alice", "athens");
-TEND
-
-TEST("Cities can't be overwritten")
+TEST_CASE("Add a player to a city"){
     TestServer s;
     TestClient c = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
@@ -45,17 +25,39 @@ TEST("Cities can't be overwritten")
     s.cities().createCity("athens");
     s.cities().addPlayerToCity(alice, "athens");
 
-    s.cities().createCity("athens");
-    return s.cities().isPlayerInCity("alice", "athens");
-TEND
+    CHECK(s.cities().isPlayerInCity("alice", "athens"));
+}
 
-TEST("Default client knows no city membership")
+TEST_CASE("No erroneous city membership"){
+    TestServer s;
+    TestClient c = TestClient::WithUsername("alice");
+    WAIT_UNTIL(s.users().size() == 1);
+
+    s.cities().createCity("athens");
+
+    CHECK_FALSE(s.cities().isPlayerInCity("alice", "athens"));
+}
+
+TEST_CASE("Cities can't be overwritten"){
+    TestServer s;
+    TestClient c = TestClient::WithUsername("alice");
+    WAIT_UNTIL(s.users().size() == 1);
+    User &alice = s.getFirstUser();
+
+    s.cities().createCity("athens");
+    s.cities().addPlayerToCity(alice, "athens");
+
+    s.cities().createCity("athens");
+    CHECK(s.cities().isPlayerInCity("alice", "athens"));
+}
+
+TEST_CASE("Default client knows no city membership"){
     TestServer s;
     TestClient c;
-    return c->character().cityName() == "";
-TEND
+    CHECK(c->character().cityName() == "");
+}
 
-TEST("Client is alerted to city membership")
+TEST_CASE("Client is alerted to city membership"){
     TestServer s;
     TestClient c = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
@@ -65,14 +67,11 @@ TEST("Client is alerted to city membership")
     s.cities().addPlayerToCity(alice, "athens");
 
     bool messageReceived = c.waitForMessage(SV_JOINED_CITY);
-    if (! messageReceived)
-        return false;
+    REQUIRE(messageReceived);
     WAIT_UNTIL(c->character().cityName() == "athens");
+}
 
-    return true;
-TEND
-
-TEST("Cities are persistent")
+TEST_CASE("Cities are persistent"){
     {
         TestServer server1;
         TestClient client = TestClient::WithUsername("alice");
@@ -84,15 +83,11 @@ TEST("Cities are persistent")
     }
     TestServer server2 = TestServer::KeepingOldData();
 
-    if (! server2.cities().doesCityExist("athens"))
-        return false;
-    if (! server2.cities().isPlayerInCity("alice", "athens"))
-        return false;
+    CHECK(server2.cities().doesCityExist("athens"));
+    CHECK(server2.cities().isPlayerInCity("alice", "athens"));
+}
 
-    return true;
-TEND
-
-TEST("Clients are told if in a city on login")
+TEST_CASE("Clients are told if in a city on login"){
     TestServer server;
     server.cities().createCity("athens");
     {
@@ -104,11 +99,9 @@ TEST("Clients are told if in a city on login")
 
     TestClient client2 = TestClient::WithUsername("alice");
     WAIT_UNTIL(client2->character().cityName() == "athens");
+}
 
-    return true;
-TEND
-
-QUARANTINED_TEST("Clients know nearby players' cities")
+TEST_CASE("Clients know nearby players' cities", "[flaky]"){
     // Given Alice is a member of Athens, and connected to the server
     TestServer s;
     s.cities().createCity("athens");
@@ -124,10 +117,9 @@ QUARANTINED_TEST("Clients know nearby players' cities")
     // Then that client can see that Alice is in Athens
     const Avatar &clientAlice = c.getFirstOtherUser();
     WAIT_UNTIL(clientAlice.cityName() == "athens");
-    return true;
-TEND
+}
 
-SLOW_TEST("A player can cede an object to his city")
+TEST_CASE("A player can cede an object to his city", "[slow]"){
     // Given a user in Athens;
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");
@@ -148,10 +140,10 @@ SLOW_TEST("A player can cede an object to his city")
     WAIT_UNTIL(rock.permissions().isOwnedByCity("athens"));
 
     // And the object doesn't belong to him.
-    return ! rock.permissions().isOwnedByPlayer(user.name());
-TEND
+    CHECK_FALSE(rock.permissions().isOwnedByPlayer(user.name()));
+}
 
-SLOW_TEST("A player must be in a city to cede")
+TEST_CASE("A player must be in a city to cede", "[slow]"){
     // Given a user who owns a rock
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");
@@ -165,14 +157,13 @@ SLOW_TEST("A player must be in a city to cede")
     c.sendMessage(CL_CEDE, makeArgs(rock.serial()));
 
     // Then the player receives an error message;
-    if (!c.waitForMessage(SV_NOT_IN_CITY))
-        return false;
+    REQUIRE(c.waitForMessage(SV_NOT_IN_CITY));
 
     // And the object still belongs to the player
-    return rock.permissions().isOwnedByPlayer(user.name());
-TEND
+    CHECK(rock.permissions().isOwnedByPlayer(user.name()));
+}
 
-TEST("A player can only cede his own objects")
+TEST_CASE("A player can only cede his own objects"){
     // Given a user in Athens;
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");
@@ -190,9 +181,8 @@ TEST("A player can only cede his own objects")
     c.sendMessage(CL_CEDE, makeArgs(rock.serial()));
     
     // Then the player receives an error message;
-    if (!c.waitForMessage(SV_NO_PERMISSION, 10000))
-        return false;
+    CHECK(c.waitForMessage(SV_NO_PERMISSION, 10000));
 
     // And the object does not belong to Athens
-    return ! rock.permissions().isOwnedByCity("athens");
-TEND
+    CHECK(! rock.permissions().isOwnedByCity("athens"));
+}

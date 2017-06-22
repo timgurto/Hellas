@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "catch.hpp"
+
 #include "../Args.h"
 #include "../types.h"
 
@@ -79,9 +81,7 @@ public:
                 if (_success) \
                     break; \
             } \
-            if (! _success ) { \
-                return false; \
-            } \
+            REQUIRE (_success ); \
         } while (0)
 #define DEFAULT_TIMEOUT (3000)
 #define WAIT_UNTIL(x) WAIT_UNTIL_TIMEOUT((x), (DEFAULT_TIMEOUT))
