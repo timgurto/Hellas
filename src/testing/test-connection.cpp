@@ -1,14 +1,13 @@
 #include "RemoteClient.h"
-#include "Test.h"
 #include "TestClient.h"
 #include "TestServer.h"
+#include "testing.h"
 
-TEST("Start and stop server")
+TEST_CASE("Start and stop server"){
     TestServer server;
-    return true;
-TEND
+}
 
-TEST("Run a client in a separate process")
+TEST_CASE("Run a client in a separate process"){
     // Given a server
     TestServer s;
 
@@ -17,10 +16,9 @@ TEST("Run a client in a separate process")
 
     // Then it successfully logs into the server
     WAIT_UNTIL(s.users().size() == 1);
-    return true;
-TEND
+}
 
-TEST("Concurrent local and remote clients")
+TEST_CASE("Concurrent local and remote clients"){
     // Given a server
     TestServer s;
 
@@ -30,10 +28,9 @@ TEST("Concurrent local and remote clients")
 
     // Then both successfully log into the server
     WAIT_UNTIL(s.users().size() == 2);
-    return true;
-TEND
+}
 
-TEST("Run TestClient with custom username")
+TEST_CASE("Run TestClient with custom username"){
     // Given a server
     TestServer s;
 
@@ -42,10 +39,10 @@ TEST("Run TestClient with custom username")
     WAIT_UNTIL(s.users().size() == 1);
 
     // Then the client logs in with that username
-    return alice->username() == "alice";
-TEND
+    CHECK(alice->username() == "alice");
+}
 
-TEST("Removed users are removed from co-ord indices")
+TEST_CASE("Removed users are removed from co-ord indices"){
     //Given a server
     TestServer s;
 
@@ -56,10 +53,10 @@ TEST("Removed users are removed from co-ord indices")
     WAIT_UNTIL(s.users().empty());
 
     // Then that user is not represented in the x-indexed objects list
-    return s.entitiesByX().empty();
-TEND
+    CHECK(s.entitiesByX().empty());
+}
 
-SLOW_TEST("Server remains functional with unresponsive client")
+TEST_CASE("Server remains functional with unresponsive client", "[.slow]"){
     // Given a server and client
     TestServer s;
     {
@@ -76,16 +73,13 @@ SLOW_TEST("Server remains functional with unresponsive client")
     // Then the server can still accept connections
     TestClient goodClient;
     WAIT_UNTIL(s.users().size() == 1);
+}
 
-    return true;
-TEND
-
-QUARANTINED_TEST("Map with extra row doesn't crash client")
+TEST_CASE("Map with extra row doesn't crash client", "[.flaky]"){
     TestServer s;
     TestClient c = TestClient::WithData("abort");
-    REPEAT_FOR_MS(1000)
-        ;
-TEND
+    REPEAT_FOR_MS(1000);
+}
 
 TEST_CASE("New servers clear old user data"){
     {

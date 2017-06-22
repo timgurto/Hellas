@@ -1,8 +1,6 @@
-#include <csignal>
-#include <cstdlib>
 #include <SDL.h>
 
-#include "Test.h"
+#include "testing.h"
 #include "../Color.h"
 #include "../Point.h"
 #include "../NormalVariable.h"
@@ -67,16 +65,16 @@ TEST_CASE("Distance-to-line with A=B"){
 }
 
 TEST_CASE("getTileRect() behaves as expected"){
-CHECK(Server::getTileRect(0, 0) == Rect(-16, 0, 32, 32));
-CHECK(Server::getTileRect(1, 0) == Rect(16, 0, 32, 32));
-CHECK(Server::getTileRect(0, 1) == Rect(0, 32, 32, 32));
-CHECK(Server::getTileRect(1, 1) == Rect(32, 32, 32, 32));
+    CHECK(Server::getTileRect(0, 0) == Rect(-16, 0, 32, 32));
+    CHECK(Server::getTileRect(1, 0) == Rect(16, 0, 32, 32));
+    CHECK(Server::getTileRect(0, 1) == Rect(0, 32, 32, 32));
+    CHECK(Server::getTileRect(1, 1) == Rect(32, 32, 32, 32));
 
-CHECK(Server::getTileRect(4, 0) == Rect(112, 0, 32, 32));
-CHECK(Server::getTileRect(5, 0) == Rect(144, 0, 32, 32));
-CHECK(Server::getTileRect(0, 4) == Rect(-16, 128, 32, 32));
-CHECK(Server::getTileRect(0, 5) == Rect(0, 160, 32, 32));
+    CHECK(Server::getTileRect(4, 0) == Rect(112, 0, 32, 32));
+    CHECK(Server::getTileRect(5, 0) == Rect(144, 0, 32, 32));
+    CHECK(Server::getTileRect(0, 4) == Rect(-16, 128, 32, 32));
+    CHECK(Server::getTileRect(0, 5) == Rect(0, 160, 32, 32));
 
-CHECK(Server::getTileRect(7, 5) == Rect(224, 160, 32, 32));
-CHECK(Server::getTileRect(7, 6) == Rect(208, 192, 32, 32));
+    CHECK(Server::getTileRect(7, 5) == Rect(224, 160, 32, 32));
+    CHECK(Server::getTileRect(7, 6) == Rect(208, 192, 32, 32));
 }

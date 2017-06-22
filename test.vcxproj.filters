@@ -110,7 +110,6 @@
     <ClCompile Include="src\testing\test-war.cpp" />
     <ClCompile Include="src\testing\test-terrain.cpp" />
     <ClCompile Include="src\testing\test-ui.cpp" />
-    <ClCompile Include="src\testing\Test.cpp" />
     <ClCompile Include="src\testing\testing.cpp" />
     <ClCompile Include="src\util.cpp" />
     <ClCompile Include="src\XmlReader.cpp" />
@@ -209,7 +208,6 @@
     <ClInclude Include="src\testing\TestClient.h" />
     <ClInclude Include="src\testing\RemoteClient.h" />
     <ClInclude Include="src\testing\TestServer.h" />
-    <ClInclude Include="src\testing\Test.h" />
     <ClInclude Include="src\types.h" />
     <ClInclude Include="src\util.h" />
     <ClInclude Include="src\XmlReader.h" />
@@ -221,5 +219,6 @@
     <ClInclude Include="src\server\Entities.h" />
     <ClInclude Include="src\server\Loot.h" />
     <ClInclude Include="src\server\ObjectsByOwner.h" />
+    <ClInclude Include="src\testing\testing.h" />
   </ItemGroup>
 </Project>

@@ -1,10 +1,8 @@
-#include <cassert>
-
-#include "Test.h"
 #include "TestClient.h"
 #include "TestServer.h"
+#include "testing.h"
 
-TEST("Thin objects block movement")
+TEST_CASE("Thin objects block movement"){
     // Given a server and client;
     TestServer s = TestServer::WithData("thin_wall");
     TestClient c = TestClient::WithData("thin_wall");
@@ -20,15 +18,14 @@ TEST("Thin objects block movement")
     // When the user tries to move up, through the wall
     REPEAT_FOR_MS(500) {
         c.sendMessage(CL_LOCATION, makeArgs(10, 5));
-
-        // He fails
-        if (user.location().y < 5.5)
-            return false;
+        SDL_Delay(5);
     }
-    return true;
-TEND
 
-TEST("Dead objects don't block movement")
+    // He fails
+    CHECK(user.location().y > 5.5);
+}
+
+TEST_CASE("Dead objects don't block movement"){
     // Given a server and client;
     TestServer s = TestServer::WithData("thin_wall");
     TestClient c = TestClient::WithData("thin_wall");
@@ -50,12 +47,12 @@ TEST("Dead objects don't block movement")
 
         // He succeeds
         if (user.location().y < 5.5)
-            return true;
+            break;
     }
-    return false;
-TEND
+    CHECK(user.location().y < 5.5);;
+}
 
-TEST("Damaged objects can't be deconstructed")
+TEST_CASE("Damaged objects can't be deconstructed"){
     // Given a server and client;
     // And a 'brick' object type with 2 health;
     TestServer s = TestServer::WithData("pickup_bricks");
@@ -65,15 +62,12 @@ TEST("Damaged objects can't be deconstructed")
     s.addObject("brick", Point(10, 15));
     Object &brick = s.getFirstObject();
     brick.reduceHealth(1);
-    assert(brick.health() == 1);
+    REQUIRE(brick.health() == 1);
 
     // When the user tries to deconstruct the brick
     c.sendMessage(CL_DECONSTRUCT, makeArgs(brick.serial()));
 
     // Then the object still exists
-    REPEAT_FOR_MS(100)
-        if (s.entities().empty())
-            return false;
-
-    return true;
-TEND
+    REPEAT_FOR_MS(100);
+    CHECK_FALSE(s.entities().empty());
+}

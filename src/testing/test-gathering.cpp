@@ -1,8 +1,8 @@
-#include "Test.h"
 #include "TestClient.h"
 #include "TestServer.h"
+#include "testing.h"
 
-TEST("Gather an item from an object")
+TEST_CASE("Gather an item from an object"){
     TestServer s = TestServer::WithData("basic_rock");
     TestClient c = TestClient::WithData("basic_rock");
 
@@ -23,22 +23,18 @@ TEST("Gather an item from an object")
 
     //Make sure user has item
     const Item &item = *s.items().begin();
-    if (user.inventory()[0].first != &item)
-        return false;
+    CHECK(user.inventory()[0].first == &item);
 
     //Make sure object no longer exists
-    else if (!s.entities().empty())
-        return false;
-
-    return true;
-TEND
+    CHECK(s.entities().empty());
+}
 
 /*
 One gather worth of 1 million units of iron
 1000 gathers worth of single rocks
 This is to test the new gather algorithm, which would favor rocks rather than iron.
 */
-TEST("Gather chance is by gathers, not quantity")
+TEST_CASE("Gather chance is by gathers, not quantity"){
     TestServer s = TestServer::WithData("rare_iron");
     TestClient c = TestClient::WithData("rare_iron");
 
@@ -59,16 +55,13 @@ TEST("Gather chance is by gathers, not quantity")
 
     //Make sure user has a rock, and not the iron
     const ServerItem &item = *s.items().find(ServerItem("rock"));
-    return user.inventory()[0].first == &item;
-TEND
+    CHECK(user.inventory()[0].first == &item);
+}
 
-TEST("Minimum yields")
+TEST_CASE("Minimum yields"){
     TestServer s = TestServer::WithData("min_apples");
     for (auto entity : s.entities()){
         const Object *obj = dynamic_cast<const Object *>(entity);
-        if (obj->contents().isEmpty())
-            return false;
+        CHECK_FALSE(obj->contents().isEmpty());
     }
-
-    return true;
-TEND
+}

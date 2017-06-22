@@ -1,9 +1,7 @@
-#include "catch.hpp"
-
 #include "RemoteClient.h"
-#include "Test.h"
 #include "TestClient.h"
 #include "TestServer.h"
+#include "testing.h"
 
 TEST_CASE("City creation"){
     TestServer s;
@@ -101,7 +99,7 @@ TEST_CASE("Clients are told if in a city on login"){
     WAIT_UNTIL(client2->character().cityName() == "athens");
 }
 
-TEST_CASE("Clients know nearby players' cities", "[!mayfail]"){
+TEST_CASE("Clients know nearby players' cities", "[.flaky]"){
     // Given Alice is a member of Athens, and connected to the server
     TestServer s;
     s.cities().createCity("athens");
@@ -119,7 +117,7 @@ TEST_CASE("Clients know nearby players' cities", "[!mayfail]"){
     WAIT_UNTIL(clientAlice.cityName() == "athens");
 }
 
-TEST_CASE("A player can cede an object to his city", "[slow]"){
+TEST_CASE("A player can cede an object to his city", "[.slow]"){
     // Given a user in Athens;
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");
@@ -143,7 +141,7 @@ TEST_CASE("A player can cede an object to his city", "[slow]"){
     CHECK_FALSE(rock.permissions().isOwnedByPlayer(user.name()));
 }
 
-TEST_CASE("A player must be in a city to cede", "[slow]"){
+TEST_CASE("A player must be in a city to cede", "[.slow]"){
     // Given a user who owns a rock
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");
@@ -163,7 +161,7 @@ TEST_CASE("A player must be in a city to cede", "[slow]"){
     CHECK(rock.permissions().isOwnedByPlayer(user.name()));
 }
 
-TEST_CASE("A player can only cede his own objects", "[slow]"){
+TEST_CASE("A player can only cede his own objects", "[.slow]"){
     // Given a user in Athens;
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");

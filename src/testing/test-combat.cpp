@@ -1,11 +1,7 @@
-#include <cassert>
-
-#include "catch.hpp"
-
 #include "RemoteClient.h"
-#include "Test.h"
 #include "TestServer.h"
 #include "TestClient.h"
+#include "testing.h"
 #include "../client/ClientNPC.h"
 
 TEST_CASE("Players can attack immediately"){
@@ -97,7 +93,7 @@ TEST_CASE("Peaceful players can't fight"){
     CHECK (uBob.health() == uBob.maxHealth());
 }
 
-TEST_CASE("Attack rate is respected", "[!mayfail]"){
+TEST_CASE("Attack rate is respected", "[.flaky]"){
     // Given a server, with a wolf NPC which hits for 1 damage every 100ms;
     TestServer s = TestServer::WithData("wolf");
     s.addNPC("wolf", Point(10, 20));
@@ -125,7 +121,7 @@ TEST_CASE("Belligerents can attack each other's objects"){
     // And a vase owned by Alice;
     s.addObject("vase", Point(10, 15), "alice");
     Object &vase = s.getFirstObject();
-    assert(vase.health() == 1);
+    REQUIRE(vase.health() == 1);
 
     // And that the user is at war with Alice
     const std::string &username = c.name();
@@ -149,7 +145,7 @@ TEST_CASE("Players can target distant entities"){
     WAIT_UNTIL(s.users().size() == 1);
     const NPC &wolf = s.getFirstNPC();
     const User &user = s.getFirstUser();
-    assert(distance(wolf.collisionRect(), user.collisionRect()) > Server::ACTION_DISTANCE);
+    REQUIRE(distance(wolf.collisionRect(), user.collisionRect()) > Server::ACTION_DISTANCE);
 
     // When the client attempts to target the wolf
     WAIT_UNTIL(c.objects().size() == 1);

@@ -1,8 +1,8 @@
-#include "Test.h"
 #include "TestClient.h"
 #include "TestServer.h"
+#include "testing.h"
 
-TEST("Objects have no owner by default")
+TEST_CASE("Objects have no owner by default"){
     // When a basic object is created
     TestServer s = TestServer::WithData("basic_rock");
     s.addObject("rock", Point(10, 10));
@@ -10,10 +10,10 @@ TEST("Objects have no owner by default")
 
     // Then that object has no owner
     Object &rock = s.getFirstObject();
-    return ! rock.permissions().hasOwner();
-TEND
+    CHECK_FALSE(rock.permissions().hasOwner());
+}
 
-TEST("Constructing an object grants ownership")
+TEST_CASE("Constructing an object grants ownership"){
     // Given a logged-in client
     TestServer s = TestServer::WithData("brick_wall");
     TestClient c = TestClient::WithData("brick_wall");
@@ -25,12 +25,11 @@ TEST("Constructing an object grants ownership")
 
     // Then he is the wall's owner
     Object &wall = s.getFirstObject();
-    return
-        wall.permissions().hasOwner() &&
-        wall.permissions().isOwnedByPlayer(c->username());
-TEND
+    CHECK(wall.permissions().hasOwner());
+    CHECK(wall.permissions().isOwnedByPlayer(c->username()));
+}
 
-TEST("Public-access objects")
+TEST_CASE("Public-access objects"){
     // Given a rock with no owner
     TestServer s = TestServer::WithData("basic_rock");
     TestClient c = TestClient::WithData("basic_rock");
@@ -48,10 +47,9 @@ TEST("Public-access objects")
     WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
     const Item &rockItem = s.getFirstItem();
     WAIT_UNTIL_TIMEOUT(user.inventory()[0].first == &rockItem, 200);
-    return true;
-TEND
+}
 
-TEST("The owner can access an owned object")
+TEST_CASE("The owner can access an owned object"){
     // Given a rock owned by a user
     TestServer s = TestServer::WithData("basic_rock");
     TestClient c = TestClient::WithData("basic_rock");
@@ -70,10 +68,9 @@ TEST("The owner can access an owned object")
     WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
     const Item &rockItem = s.getFirstItem();
     WAIT_UNTIL_TIMEOUT(user.inventory()[0].first == &rockItem, 200);
-    return true;
-TEND
+}
 
-TEST("A non-owner cannot access an owned object")
+TEST_CASE("A non-owner cannot access an owned object"){
     // Given a rock owned by Alice
     TestServer s = TestServer::WithData("basic_rock");
     s.addObject("rock", Point(10, 10));
@@ -85,18 +82,15 @@ TEST("A non-owner cannot access an owned object")
     WAIT_UNTIL (c.objects().size() == 1);
     size_t serial = c.objects().begin()->first;
     c.sendMessage(CL_GATHER, makeArgs(serial));
+    REPEAT_FOR_MS(500);
 
     // Then the rock remains, and his inventory remains empty
-    REPEAT_FOR_MS(500)
-        if (s.entities().empty())
-            return false;
+    CHECK_FALSE(s.entities().empty());
     User &user = s.getFirstUser();
-    if (user.inventory()[0].first != nullptr)
-        return false;
-    return true;
-TEND
+    CHECK(user.inventory()[0].first == nullptr);
+}
 
-TEST("A city can own an object")
+TEST_CASE("A city can own an object"){
     // Given a rock, and a city named Athens
     TestServer s = TestServer::WithData("basic_rock");
     s.cities().createCity("athens");
@@ -107,17 +101,13 @@ TEST("A city can own an object")
     rock.permissions().setCityOwner("athens");
 
     // Then an 'owner()' check matches the city of Athens;
-    if (! rock.permissions().isOwnedByCity("athens"))
-        return false;
+    CHECK(rock.permissions().isOwnedByCity("athens"));
 
     // And an 'owner()' check doesn't match a player named Athens
-    if (rock.permissions().isOwnedByPlayer("athens"))
-        return false;
+    CHECK_FALSE(rock.permissions().isOwnedByPlayer("athens"));
+}
 
-    return true;
-TEND
-
-TEST("City ownership is persistent")
+TEST_CASE("City ownership is persistent"){
     // Given a rock owned by Athens
     {
         TestServer s1 = TestServer::WithData("basic_rock");
@@ -132,10 +122,10 @@ TEST("City ownership is persistent")
 
     // Then the rock is still owned by Athens
     Object &rock = s2.getFirstObject();
-    return rock.permissions().isOwnedByCity("athens");
-TEND
+    CHECK(rock.permissions().isOwnedByCity("athens"));
+}
 
-TEST("City members can use city objects")
+TEST_CASE("City members can use city objects"){
     // Given a rock owned by Athens;
     TestServer s = TestServer::WithData("basic_rock");
     s.cities().createCity("athens");
@@ -161,10 +151,9 @@ TEST("City members can use city objects")
     WAIT_UNTIL_TIMEOUT(user.inventory()[0].first == &rockItem, 200);
     // And the Rock object disappears
     WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
-    return true;
-TEND
+}
 
-TEST("Non-members cannot use city objects")
+TEST_CASE("Non-members cannot use city objects"){
     // Given a rock owned by Athens;
     TestServer s = TestServer::WithData("basic_rock");
     s.cities().createCity("athens");
@@ -179,19 +168,17 @@ TEST("Non-members cannot use city objects")
     WAIT_UNTIL (c.objects().size() == 1);
     size_t serial = c.objects().begin()->first;
     c.sendMessage(CL_GATHER, makeArgs(serial));
+    REPEAT_FOR_MS(500);
 
     // Then the rock remains;
-    REPEAT_FOR_MS(500)
-        if (s.entities().empty())
-            return false;
+    CHECK_FALSE(s.entities().empty());
+
     // And his inventory remains empty
     User &user = s.getFirstUser();
-    if (user.inventory()[0].first != nullptr)
-        return false;
-    return true;
-TEND
+    CHECK(user.inventory()[0].first == nullptr);
+}
 
-TEST("Non-existent cities can't own objects")
+TEST_CASE("Non-existent cities can't own objects"){
     // Given a rock, and a server with no cities
     TestServer s = TestServer::WithData("basic_rock");
     s.addObject("rock", Point(10, 10));
@@ -201,10 +188,10 @@ TEST("Non-existent cities can't own objects")
     rock.permissions().setCityOwner("athens");
 
     // Then the rock has no owner;
-    return ! rock.permissions().hasOwner();
-TEND
+    CHECK_FALSE(rock.permissions().hasOwner());
+}
 
-TEST("On login, players are told about their distant objects")
+TEST_CASE("On login, players are told about their distant objects"){
     // Given an object at (10000,10000) owned by Alice
     TestServer s = TestServer::WithData("signpost");
     s.addObject("signpost", Point(10000, 10000), "alice");
@@ -214,25 +201,23 @@ TEST("On login, players are told about their distant objects")
 
     // Alice knows about the object
     WAIT_UNTIL(c.objects().size() == 1);
-    return true;
-TEND
+}
 
-TEST("On login, players are not told about others' distant objects")
+TEST_CASE("On login, players are not told about others' distant objects", "[.flaky]"){
     // Given an object at (10000,10000) owned by Alice
     TestServer s = TestServer::WithData("signpost");
     s.addObject("signpost", Point(10000, 10000), "bob");
 
     // When Alice logs in
     TestClient c = TestClient::WithUsernameAndData("alice", "signpost");
+    WAIT_UNTIL_TIMEOUT(s.users().size() == 1, 10000);
 
     // Alice does not know about the object
-    REPEAT_FOR_MS(500)
-        if (c.objects().size() == 1)
-            return false;
-    return true;
-TEND
+    REPEAT_FOR_MS(500);
+    CHECK(c.objects().empty());
+}
 
-TEST("New objects are added to owner index")
+TEST_CASE("New objects are added to owner index"){
     // Given a server with rock objects
     TestServer s = TestServer::WithData("basic_rock");
 
@@ -242,19 +227,18 @@ TEST("New objects are added to owner index")
     // The server's object-owner index knows about it
     Permissions::Owner owner(Permissions::Owner::PLAYER, "alice");
     WAIT_UNTIL(s.objectsByOwner().getObjectsWithSpecificOwner(owner).size() == 1);
-    return true;
-TEND
+}
 
-TEST("The object-owner index is initially empty")
+TEST_CASE("The object-owner index is initially empty"){
     // Given an empty server
     TestServer s;
 
     // Then the object-owner index reports no objects belonging to Alice
     Permissions::Owner owner(Permissions::Owner::PLAYER, "alice");
-    return s.objectsByOwner().getObjectsWithSpecificOwner(owner).size() == 0;
-TEND
+    CHECK(s.objectsByOwner().getObjectsWithSpecificOwner(owner).size() == 0);
+}
 
-TEST("A removed object is removed from the object-owner index")
+TEST_CASE("A removed object is removed from the object-owner index"){
     // Given a server
     TestServer s = TestServer::WithData("basic_rock");
     // And a rock object owned by Alice
@@ -267,10 +251,9 @@ TEST("A removed object is removed from the object-owner index")
     // Then the object-owner index reports no objects belonging to Alice
     Permissions::Owner owner(Permissions::Owner::PLAYER, "alice");
     WAIT_UNTIL (s.objectsByOwner().getObjectsWithSpecificOwner(owner).size() == 0);
-    return true;
-TEND
+}
 
-TEST("New ownership is reflected in the object-owner index")
+TEST_CASE("New ownership is reflected in the object-owner index"){
     // Given a server with rock objects
     TestServer s = TestServer::WithData("basic_rock");
 
@@ -285,10 +268,10 @@ TEST("New ownership is reflected in the object-owner index")
     Permissions::Owner ownerAlice(Permissions::Owner::PLAYER, "alice");
     WAIT_UNTIL(s.objectsByOwner().getObjectsWithSpecificOwner(ownerAlice).size() == 0);
     Permissions::Owner ownerBob(Permissions::Owner::PLAYER, "bob");
-    return s.objectsByOwner().getObjectsWithSpecificOwner(ownerBob).size() == 1;
-TEND
+    CHECK(s.objectsByOwner().getObjectsWithSpecificOwner(ownerBob).size() == 1);
+}
 
-SLOW_TEST("When a player moves away from his object, he is still aware of it")
+TEST_CASE("When a player moves away from his object, he is still aware of it", "[.slow]"){
     // Given a server with signpost objects;
     TestServer s = TestServer::WithData("signpost");
 
@@ -306,12 +289,13 @@ SLOW_TEST("When a player moves away from his object, he is still aware of it")
 
         // Then she is still aware of it
         if (c.objects().size() == 0)
-            return false;
+            break;
         SDL_Delay(5);
     }
-TEND
+    CHECK(c.objects().size() == 1);
+}
 
-SLOW_TEST("When a player moves away from his city's object, he is still aware of it")
+TEST_CASE("When a player moves away from his city's object, he is still aware of it", "[.slow]"){
     // Given a server with signpost objects;
     TestServer s = TestServer::WithData("signpost");
 
@@ -338,7 +322,8 @@ SLOW_TEST("When a player moves away from his city's object, he is still aware of
 
         // Then she is still aware of it
         if (c.objects().size() == 0)
-            return false;
+            break;
         SDL_Delay(5);
     }
-TEND
+    CHECK(c.objects().size() == 1);
+}

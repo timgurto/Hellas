@@ -1,19 +1,19 @@
-#include "Test.h"
 #include "TestClient.h"
 #include "TestServer.h"
+#include "testing.h"
 #include "../client/ClientNPCType.h"
 #include "../client/ui/List.h"
 #include "../client/ui/Label.h"
 
-TEST("Size of empty list")
+TEST_CASE("Size of empty list"){
     // When a new List element is created
     List l(Rect(0, 0, 100, 100));
 
     // Then its size is 0
-    return l.size() == 0;
-TEND
+    CHECK(l.size() == 0);
+}
 
-TEST("Size of nonempty list")
+TEST_CASE("Size of nonempty list"){
     // Given an empty List element
     List l(Rect(0, 0, 100, 100));
 
@@ -21,10 +21,10 @@ TEST("Size of nonempty list")
     l.addChild(new Label(Rect(), "asdf"));
 
     // Then its size is 1
-    return l.size() == 1;
-TEND
+    CHECK(l.size() == 1);
+}
 
-QUARANTINED_TEST("View merchant slots in window")
+TEST_CASE("View merchant slots in window", "[.flaky]"){
     // Given a logged-in client and an object with merchant slots
     TestServer s = TestServer::WithData("merchant");
     TestClient c = TestClient::WithData("merchant");
@@ -41,8 +41,7 @@ QUARANTINED_TEST("View merchant slots in window")
     auto it = objects.begin();
     size_t serial = it->first;
     ClientObject *cObj = it->second;
-    if (cObj == nullptr)
-        return false;
+    REQUIRE(cObj != nullptr);
 
     // When the client opens the object's window
     cObj->onRightClick(c.client());
@@ -57,10 +56,9 @@ QUARANTINED_TEST("View merchant slots in window")
 
     // Then the client successfully redraws without crashing
     c.waitForRedraw();
-    return true;;
-TEND
+}
 
-TEST("New client can build default constructions")
+TEST_CASE("New client can build default constructions"){
     // Given a buildable brick wall object type with no pre-requisites
     TestServer s = TestServer::WithData("brick_wall");
 
@@ -69,21 +67,20 @@ TEST("New client can build default constructions")
     WAIT_UNTIL (s.users().size() == 1);
 
     // His construction window contains at least one item
-    bool constructionWindowIsEmpty = c.uiBuildList().empty();
-    return ! constructionWindowIsEmpty;
-TEND
+    CHECK_FALSE(c.uiBuildList().empty());
+}
 
-TEST("New client has target UI hidden")
+TEST_CASE("New client has target UI hidden"){
     // When a client logs in
     TestServer s;
     TestClient c;
     WAIT_UNTIL (s.users().size() == 1);
 
     // Then his targeting UI is hidden
-    return c.target().panel()->visible() == false;
-TEND
+    CHECK_FALSE(c.target().panel()->visible());
+}
 
-TEST("Chat messages are added to chat log")
+TEST_CASE("Chat messages are added to chat log"){
     // Given a logged-in client
     TestServer s;
     TestClient c;
@@ -94,10 +91,9 @@ TEST("Chat messages are added to chat log")
 
     // Then his chat log contains at least one message
     WAIT_UNTIL(c.chatLog()->size() > 0);
-    return true;
-TEND
+}
 
-TEST("Objects show up on the map when a client logs in")
+TEST_CASE("Objects show up on the map when a client logs in"){
     // Given a server with rock objects;
     TestServer s = TestServer::WithData("basic_rock");
 
@@ -109,23 +105,23 @@ TEST("Objects show up on the map when a client logs in")
 
     // The rock shows up on his map (in addition to the user himself)
     WAIT_UNTIL (c.mapPins().size() == 2);
-TEND
+}
 
-TEST("A player shows up on his own map")
+TEST_CASE("A player shows up on his own map"){
     // Given a server and client, and a 101x101 map on which players spawn at the center;
     TestServer s = TestServer::WithData("big_map");
     TestClient c = TestClient::WithData("big_map");
 
     // When the client is loaded
-    c.waitForMessage(SV_LOCATION);
+    CHECK(c.waitForMessage(SV_LOCATION));
 
     // Then the map has one pin;
     WAIT_UNTIL (c.mapPins().size() == 1);
 
     // And that pin has the player's color
     const ColorBlock *pin = dynamic_cast<const ColorBlock *>(*c.mapPins().begin());
-    ENSURE(pin != nullptr);
-    ENSURE(pin->color() == Color::COMBATANT_SELF);
+    CHECK(pin != nullptr);
+    CHECK(pin->color() == Color::COMBATANT_SELF);
 
     // And that pin is in the center of the map
     const px_t
@@ -133,9 +129,9 @@ TEST("A player shows up on his own map")
         midMapY = toInt(c->mapImage().height() / 2.0);
     const Point mapMidpoint(c->mapImage().width() / 2, c->mapImage().height() / 2);
     WAIT_UNTIL(pin->rect() == Rect(midMapX, midMapY, 1, 1));
-TEND
+}
 
-TEST("Windows start uninitialized")
+TEST_CASE("Windows start uninitialized"){
     // Given a server and client
     TestServer s;
     TestClient c;
@@ -144,10 +140,10 @@ TEST("Windows start uninitialized")
     WAIT_UNTIL(s.users().size() == 1);
 
     // Then the crafting window is uninitialized
-    return ! c.craftingWindow()->isInitialized();
-TEND
+    CHECK_FALSE(c.craftingWindow()->isInitialized());
+}
 
-TEST("Windows are initialized when used")
+TEST_CASE("Windows are initialized when used"){
     // Given a server and client
     TestServer s;
     TestClient c;
@@ -158,9 +154,9 @@ TEST("Windows are initialized when used")
 
     // Then it is initializezd
     WAIT_UNTIL(c.craftingWindow()->isInitialized());
-TEND
+}
 
-TEST("A visible window is fully-formed")
+TEST_CASE("A visible window is fully-formed"){
     // Given a server and client;
     TestServer s;
     TestClient c;
@@ -174,18 +170,17 @@ TEST("A visible window is fully-formed")
 
     // And the heading has a texture
     WAIT_UNTIL(c.buildWindow()->getHeading()->texture());
-    return true;
-TEND
+}
 
-QUARANTINED_TEST("Element gets initialized with Client")
-    ENSURE(Element::isInitialized() == false); // Depends on test order.
+TEST_CASE("Element gets initialized with Client", "[.flaky]"){
+    CHECK(Element::isInitialized() == false); // Depends on test order.
     Client c;
     WAIT_UNTIL(Element::isInitialized() == true);
-TEND
+}
 
-TEST("Gear window can be viewed")
+TEST_CASE("Gear window can be viewed"){
     TestServer s;
     TestClient c;
     c.gearWindow()->show();
     WAIT_UNTIL(c.gearWindow()->texture());
-TEND
+}

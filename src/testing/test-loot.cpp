@@ -1,8 +1,8 @@
-#include "Test.h"
 #include "TestClient.h"
 #include "TestServer.h"
+#include "testing.h"
 
-TEST("Client gets loot info and can loot")
+TEST_CASE("Client gets loot info and can loot"){
     // Given an NPC that always drops 1 gold
     TestServer s = TestServer::WithData("goldbug");
     s.addNPC("goldbug", Point(10, 15));
@@ -24,11 +24,9 @@ TEST("Client gets loot info and can loot")
 
     // And the client receives the item
     WAIT_UNTIL(c.inventory()[0].first != nullptr);
+}
 
-    return true;
-TEND
-
-TEST("Objects have health")
+TEST_CASE("Objects have health"){
     // Given a running server;
     // And a chair object type with the strength of 6 wood;
     // And a wood item with 5 health
@@ -38,10 +36,10 @@ TEST("Objects have health")
     s.addObject("chair");
 
     // It has 30 (6*5) health
-    return s.getFirstObject().health() == 30;
-TEND
+    CHECK(s.getFirstObject().health() == 30);
+}
 
-TEST("Clients discern NPCs with no loot")
+TEST_CASE("Clients discern NPCs with no loot"){
     // Given a server and client;
     // And an ant NPC type with 1 health and no loot table
     TestServer s = TestServer::WithData("ant");
@@ -57,9 +55,6 @@ TEST("Clients discern NPCs with no loot")
 
     // The user doesn't believe he can loot it
     ClientNPC &clientAnt = c.getFirstNPC();
-    REPEAT_FOR_MS(200) {
-        if (clientAnt.lootable())
-            return false;
-    }
-    return true;
-TEND
+    REPEAT_FOR_MS(200);
+    CHECK_FALSE(clientAnt.lootable());
+}

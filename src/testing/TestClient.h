@@ -1,7 +1,7 @@
 #ifndef TEST_CLIENT_H
 #define TEST_CLIENT_H
 
-#include "Test.h"
+#include "testing.h"
 #include "../client/Client.h"
 
 // A wrapper of the client, with full access, used for testing.
