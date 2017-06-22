@@ -81,7 +81,7 @@ public:
                 if (_success) \
                     break; \
             } \
-            REQUIRE (_success ); \
+            REQUIRE (x); \
         } while (0)
 #define DEFAULT_TIMEOUT (3000)
 #define WAIT_UNTIL(x) WAIT_UNTIL_TIMEOUT((x), (DEFAULT_TIMEOUT))

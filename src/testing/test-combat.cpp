@@ -1,12 +1,14 @@
 #include <cassert>
 
+#include "catch.hpp"
+
 #include "RemoteClient.h"
 #include "Test.h"
 #include "TestServer.h"
 #include "TestClient.h"
 #include "../client/ClientNPC.h"
 
-TEST("Players can attack immediately")
+TEST_CASE("Players can attack immediately"){
     TestServer s = TestServer::WithData("ant");
     TestClient c = TestClient::WithData("ant");
 
@@ -26,13 +28,10 @@ TEST("Players can attack immediately")
     c.sendMessage(CL_TARGET_ENTITY, makeArgs(serial));
     
     // NPC should be damaged very quickly
-    REPEAT_FOR_MS(200)
-        if (ant.health() < ant.npcType()->maxHealth())
-            return true;
-    return false;
-TEND
+    WAIT_UNTIL(ant.health() < ant.npcType()->maxHealth());
+}
 
-TEST("Belligerents can target each other")
+TEST_CASE("Belligerents can target each other"){
     TestServer s;
     TestClient alice = TestClient::WithUsername("alice");
     RemoteClient bob("-username bob");
@@ -44,11 +43,9 @@ TEST("Belligerents can target each other")
     alice.sendMessage(CL_DECLARE_WAR, "bob");
     alice.sendMessage(CL_TARGET_PLAYER, "bob");
     WAIT_UNTIL(uAlice.target() == &uBob);
+}
 
-    return true;
-TEND
-
-TEST("Peaceful players can't target each other")
+TEST_CASE("Peaceful players can't target each other"){
     TestServer s;
     TestClient alice = TestClient::WithUsername("alice");
     RemoteClient bob("-username bob");
@@ -58,15 +55,11 @@ TEST("Peaceful players can't target each other")
         &uBob = s.findUser("bob");
 
     alice.sendMessage(CL_TARGET_PLAYER, "bob");
-    REPEAT_FOR_MS(500) {
-        if (uAlice.target() == &uBob)
-            return false;
-    }
+    REPEAT_FOR_MS(500);
+    CHECK_FALSE(uAlice.target() == &uBob);
+}
 
-    return true;
-TEND
-
-TEST("Belliegerents can fight")
+TEST_CASE("Belliegerents can fight"){
     TestServer s;
     TestClient alice = TestClient::WithUsername("alicex");
     RemoteClient bob("-username bobx");
@@ -84,11 +77,9 @@ TEST("Belliegerents can fight")
 
     alice.sendMessage(CL_TARGET_PLAYER, "bobx");
     WAIT_UNTIL(uBob.health() < uBob.maxHealth());
+}
 
-    return true;
-TEND
-
-TEST("Peaceful players can't fight")
+TEST_CASE("Peaceful players can't fight"){
     TestServer s;
     TestClient alice = TestClient::WithUsername("alice");
     RemoteClient bob("-username bob");
@@ -101,15 +92,12 @@ TEST("Peaceful players can't fight")
         uAlice.updateLocation(uBob.location());
 
     alice.sendMessage(CL_TARGET_PLAYER, "bob");
-    REPEAT_FOR_MS(500) {
-        if (uBob.health() < uBob.maxHealth())
-            return false;
-    }
+    REPEAT_FOR_MS(500);
 
-    return true;
-TEND
+    CHECK (uBob.health() == uBob.maxHealth());
+}
 
-TEST("Attack rate is respected")
+TEST_CASE("Attack rate is respected", "[!mayfail]"){
     // Given a server, with a wolf NPC which hits for 1 damage every 100ms;
     TestServer s = TestServer::WithData("wolf");
     s.addNPC("wolf", Point(10, 20));
@@ -125,10 +113,10 @@ TEST("Attack rate is respected")
 
     // Then the user has taken exactly 10 damage
     health_t after = user.health();
-    return before - after == 10;
-TEND
+    CHECK(after == before - 10);
+}
 
-TEST("Belligerents can attack each other's objects")
+TEST_CASE("Belligerents can attack each other's objects"){
     // Given a logged-in user;
     // And a vase object type with 1 health;
     TestServer s = TestServer::WithData("vase");
@@ -149,11 +137,9 @@ TEST("Belligerents can attack each other's objects")
 
     // Then the vase has 0 health
     WAIT_UNTIL(vase.health() == 0);
+}
 
-    return true;
-TEND
-
-TEST("Players can target distant entities")
+TEST_CASE("Players can target distant entities"){
     // Given a server and client;
     TestServer s = TestServer::WithData("wolf");
     TestClient c = TestClient::WithData("wolf");
@@ -172,10 +158,9 @@ TEST("Players can target distant entities")
 
     // Then his target is set to the wolf
     WAIT_UNTIL(user.target() == &wolf);
-    return true;
-TEND
+}
 
-TEST("Clients receive nearby users' health values")
+TEST_CASE("Clients receive nearby users' health values"){
     // Given a server and two clients, Alice and Bob;
     TestServer s;
     TestClient clientAlice = TestClient::WithUsername("alice");
@@ -201,10 +186,9 @@ TEST("Clients receive nearby users' health values")
     WAIT_UNTIL(clientAlice.otherUsers().size() == 1);
     const Avatar &localBob = clientAlice.getFirstOtherUser();
     WAIT_UNTIL(localBob.health() < localBob.maxHealth());
-    return true;
-TEND
+}
 
-TEST("A player dying doesn't crash the server")
+TEST_CASE("A player dying doesn't crash the server"){
     // Given a server and client;
     TestServer s;
     TestClient c;
@@ -215,5 +199,5 @@ TEST("A player dying doesn't crash the server")
     user.reduceHealth(999999);
 
     // The server survives
-    return true;
-TEND
+    s.nop();
+}

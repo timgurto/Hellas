@@ -43,6 +43,8 @@ public:
         _server->sendMessage(socket, code, args);
     }
 
+    void nop(){ _server->mapX(); }
+
     User &findUser(const std::string &username);
 
 private:
