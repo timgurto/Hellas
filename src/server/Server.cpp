@@ -61,8 +61,7 @@ _dataLoaded(false){
         _debug.quiet();
 
     _debug << cmdLineArgs << Log::endl;
-    if (Socket::debug == nullptr)
-        Socket::debug = &_debug;
+    Socket::debug = &_debug;
 
     User::init();
 
