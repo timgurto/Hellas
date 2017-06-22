@@ -1,0 +1,7 @@
+<root>
+<recipe
+    id="bread" time="10" product="bread" >
+    <material id="flour" />
+    <unlockedBy item="flour" />
+</recipe>
+</root>

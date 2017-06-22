@@ -621,9 +621,10 @@ void Client::handleMessage(const std::string &msg){
                     _debug << n << " new recipes";
                 _debug << "!" << Log::endl;
             }
-
-            _recipeList->markChanged();
-            populateFilters();
+            if (_recipeList != nullptr){
+                _recipeList->markChanged();
+                populateFilters();
+            }
             break;
         }
         

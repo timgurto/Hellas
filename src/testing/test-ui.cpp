@@ -184,3 +184,16 @@ TEST_CASE("Gear window can be viewed"){
     c.gearWindow()->show();
     WAIT_UNTIL(c.gearWindow()->texture());
 }
+
+TEST_CASE("New clients survive recipe unlocks"){
+    // Given a client and server
+    TestServer s = TestServer::WithData("secret_bread");
+    TestClient c = TestClient::WithData("secret_bread");
+    WAIT_UNTIL(s.users().size() == 1);
+
+    // When the server alerts the client to a recipe unlock
+    s.sendMessage(s.getFirstUser().socket(), SV_NEW_RECIPES, makeArgs(1, "asdf"));
+
+    // The client receives it.
+    CHECK(c.waitForMessage(SV_NEW_RECIPES));
+}

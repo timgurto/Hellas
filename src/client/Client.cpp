@@ -92,6 +92,9 @@ _craftingWindow(nullptr),
 _inventoryWindow(nullptr),
 _gearWindow(nullptr),
 
+_tagList(nullptr),
+_materialsList(nullptr),
+
 _buildWindow(nullptr),
 _buildList(nullptr),
 _selectedConstruction(nullptr),
