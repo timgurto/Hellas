@@ -53,6 +53,8 @@ public:
     void fillRect(const Rect &dstRect);
     void fill();
 
+    Color getPixel(px_t x, px_t y) const;
+
     void updateSize();
 
     void pushRenderTarget(Texture &target);

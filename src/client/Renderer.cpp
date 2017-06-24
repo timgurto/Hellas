@@ -137,3 +137,30 @@ SDL_Rect Renderer::rectToSDL(const Rect &rect){
     SDL_Rect r = {rect.x, rect.y, rect.w, rect.h};
     return r;
 }
+
+Color Renderer::getPixel(px_t x, px_t y) const{
+    px_t logicalW, logicalH;
+    SDL_RenderGetLogicalSize(_renderer, &logicalW, &logicalH);
+
+    double
+        scaleW = 1.0 * _w / logicalW,
+        scaleH = 1.0 * _h / logicalH;
+    x = toInt(x * scaleW);
+    y = toInt(y * scaleH);
+
+    SDL_Surface *windowSurface = SDL_GetWindowSurface(_window);
+
+    Uint32 pixel;
+
+    const SDL_Rect rect = {x, y, 1, 1};
+    auto pitch = 4;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    const auto pixelFormat = SDL_PIXELFORMAT_ARGB8888;
+#else
+    const auto pixelFormat = SDL_PIXELFORMAT_ABGR8888;
+#endif
+
+    SDL_RenderReadPixels(_renderer, &rect, pixelFormat, &pixel, pitch);
+
+    return pixel;
+}
