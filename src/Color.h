@@ -1,6 +1,8 @@
 #ifndef COLOR_H
 #define COLOR_H
 
+#include <iostream>
+
 #include "SDL.h"
 
 class Color{
@@ -91,5 +93,7 @@ private:
 };
 
 Color operator+(const Color &lhs, const Color &rhs);
+
+std::ostream & operator << (std::ostream &lhs, const Color &rhs);
 
 #endif

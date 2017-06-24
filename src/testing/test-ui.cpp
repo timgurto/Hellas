@@ -7,6 +7,7 @@
 
 TEST_CASE("Size of empty list"){
     // When a new List element is created
+    TestClient c;
     List l(Rect(0, 0, 100, 100));
 
     // Then its size is 0
@@ -15,6 +16,7 @@ TEST_CASE("Size of empty list"){
 
 TEST_CASE("Size of nonempty list"){
     // Given an empty List element
+    TestClient c;
     List l(Rect(0, 0, 100, 100));
 
     // When an element is added
@@ -93,7 +95,7 @@ TEST_CASE("Chat messages are added to chat log"){
     WAIT_UNTIL(c.chatLog()->size() > 0);
 }
 
-TEST_CASE("Objects show up on the map when a client logs in"){
+TEST_CASE("Objects show up on the map when a client logs in", "[map]"){
     // Given a server with rock objects;
     TestServer s = TestServer::WithData("basic_rock");
 
@@ -107,13 +109,14 @@ TEST_CASE("Objects show up on the map when a client logs in"){
     WAIT_UNTIL (c.mapPins().size() == 2);
 }
 
-TEST_CASE("A player shows up on his own map"){
+TEST_CASE("A player shows up on his own map", "[map]"){
     // Given a server and client, and a 101x101 map on which players spawn at the center;
     TestServer s = TestServer::WithData("big_map");
     TestClient c = TestClient::WithData("big_map");
 
     // When the client is loaded
     CHECK(c.waitForMessage(SV_LOCATION));
+
 
     // Then the map has one pin;
     WAIT_UNTIL (c.mapPins().size() == 1);
@@ -123,12 +126,37 @@ TEST_CASE("A player shows up on his own map"){
     CHECK(pin != nullptr);
     CHECK(pin->color() == Color::COMBATANT_SELF);
 
-    // And that pin is in the center of the map
+    // And that pin is 1x1 and in the center of the map;
     const px_t
         midMapX = toInt(c->mapImage().width() / 2.0),
         midMapY = toInt(c->mapImage().height() / 2.0);
     const Point mapMidpoint(c->mapImage().width() / 2, c->mapImage().height() / 2);
     WAIT_UNTIL(pin->rect() == Rect(midMapX, midMapY, 1, 1));
+
+
+    // And the map has one pin outline;
+    WAIT_UNTIL (c.mapPinOutlines().size() == 1);
+
+    // And that pin has the outline color
+    const ColorBlock *outline = dynamic_cast<const ColorBlock *>(*c.mapPinOutlines().begin());
+    CHECK(outline != nullptr);
+    CHECK(outline->color() == Color::OUTLINE);
+
+    // And that pin is 3x3 and in the center of the map;
+    CHECK(outline->rect() == Rect(midMapX-1, midMapY-1, 3, 3));
+
+
+    // And pixels of the player's color and border color are in the correct places
+    c.mapWindow()->show();
+    REPEAT_FOR_MS(100);
+    px_t
+        xInScreen = midMapX + toInt(c.mapWindow()->position().x) + 1,
+        yInScreen = midMapY + toInt(c.mapWindow()->position().y) + 2 + Window::HEADING_HEIGHT;
+
+    CHECK(renderer.getPixel(xInScreen, yInScreen) == Color::COMBATANT_SELF);
+    CHECK(renderer.getPixel(xInScreen-1, yInScreen) == Color::OUTLINE);;
+
+    // And there's a dark pixel where the outline should be
 }
 
 TEST_CASE("Windows start uninitialized"){
@@ -173,9 +201,9 @@ TEST_CASE("A visible window is fully-formed"){
 }
 
 TEST_CASE("Element gets initialized with Client", "[.flaky]"){
-    CHECK(Element::isInitialized() == false); // Depends on test order.
+    CHECK_FALSE(Element::isInitialized()); // Depends on test order.
     Client c;
-    WAIT_UNTIL(Element::isInitialized() == true);
+    WAIT_UNTIL(Element::isInitialized());
 }
 
 TEST_CASE("Gear window can be viewed"){

@@ -154,3 +154,8 @@ Color operator+(const Color &lhs, const Color &rhs){
                  static_cast<Uint8>(g),
                  static_cast<Uint8>(b));
 }
+
+std::ostream & operator << (std::ostream &lhs, const Color &rhs){
+    lhs << std::hex << static_cast<Uint32>(rhs) << std::dec;
+    return lhs;
+}

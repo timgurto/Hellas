@@ -38,4 +38,5 @@ void Client::updateMapWindow(){
 
     const Point mapLoc(_character.location().x / MAP_FACTOR_X, _character.location().y / MAP_FACTOR_Y);
     _mapPins->addChild(new ColorBlock(PIN_RECT + mapLoc, Color::COMBATANT_SELF));
+    _mapPinOutlines->addChild(new ColorBlock(OUTLINE_RECT + mapLoc, Color::OUTLINE));
 }

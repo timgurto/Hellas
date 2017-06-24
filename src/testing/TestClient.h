@@ -35,10 +35,12 @@ public:
     const std::string &name() const { return _client->username(); }
     const List *chatLog() const { return _client->_chatLog; }
     const Element::children_t &mapPins() const { return _client->_mapPins->children(); }
+    const Element::children_t &mapPinOutlines() const { return _client->_mapPinOutlines->children(); }
     const std::vector<std::vector<char> > &map() const { return _client->_map; }
     Window *craftingWindow() const { return _client->_craftingWindow; }
     Window *buildWindow() const { return _client->_buildWindow; }
     Window *gearWindow() const { return _client->_gearWindow; }
+    Window *mapWindow() const { return _client->_mapWindow; }
 
     Avatar &getFirstOtherUser();
     ClientNPC &getFirstNPC();

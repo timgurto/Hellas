@@ -63,7 +63,6 @@ protected:
     children_t _children;
 
     Texture _texture; // A memoized image of the element, redrawn only when necessary.
-    Point position() const { return Point(_rect.x, _rect.y); }
     virtual void checkIfChanged(); // Allows elements to update their changed status.
 
     static void resetTooltip(); // To be called once, when the mouse moves.
@@ -115,6 +114,7 @@ public:
     static TTF_Font *font() { return _font; }
     static void font(TTF_Font *newFont) { _font = newFont; }
     const Rect &rect() const { return _rect; }
+    Point position() const { return Point(_rect.x, _rect.y); }
     void setPosition(px_t x, px_t y);
     void rect(const Rect &rhs);
     void rect(px_t x, px_t y, px_t w, px_t h);
