@@ -18,25 +18,29 @@ void Client::initializeMapWindow(){
 }
 
 void Client::updateMapWindow(){
-    const double
-        MAP_FACTOR_X = 1.0 * _mapX * TILE_W / _mapImage.width(),
-        MAP_FACTOR_Y = 1.0 * _mapY * TILE_H / _mapImage.height();
     
     _mapPins->clearChildren();
     _mapPinOutlines->clearChildren();
 
+    for (const auto &objPair : _objects){
+        const auto &object = *objPair.second;
+        addMapPin(object.location(), object.nameColor());
+    }
+
+    addMapPin(_character.location(), Color::COMBATANT_SELF);
+}
+
+void Client::addMapPin(const Point &position, const Color &color){
     static const Rect
         PIN_RECT(0, 0, 1, 1),
         OUTLINE_RECT(-1, -1, 3, 3);
 
-    for (const auto &objPair : _objects){
-        const auto &object = *objPair.second;
-        const Point mapLoc(object.location().x / MAP_FACTOR_X, object.location().y / MAP_FACTOR_Y);
-        _mapPinOutlines->addChild(new ColorBlock(OUTLINE_RECT + mapLoc, Color::OUTLINE));
-        _mapPins->addChild(new ColorBlock(PIN_RECT + mapLoc, object.nameColor()));
-    }
+    const double
+        MAP_FACTOR_X = 1.0 * _mapX * TILE_W / _mapImage.width(),
+        MAP_FACTOR_Y = 1.0 * _mapY * TILE_H / _mapImage.height();
 
-    const Point mapLoc(_character.location().x / MAP_FACTOR_X, _character.location().y / MAP_FACTOR_Y);
-    _mapPins->addChild(new ColorBlock(PIN_RECT + mapLoc, Color::COMBATANT_SELF));
-    _mapPinOutlines->addChild(new ColorBlock(OUTLINE_RECT + mapLoc, Color::OUTLINE));
+    Point positionInMap(position.x / MAP_FACTOR_X, position.y / MAP_FACTOR_Y);
+
+    _mapPins->addChild(new ColorBlock(PIN_RECT + positionInMap, color));
+    _mapPinOutlines->addChild(new ColorBlock(OUTLINE_RECT + positionInMap, Color::OUTLINE));
 }

@@ -190,6 +190,7 @@ private:
     Element *_mapPins, *_mapPinOutlines;
     void initializeMapWindow();
     void updateMapWindow();
+    void addMapPin(const Point &position, const Color &color);
 
     windows_t _windows;
     void addWindow(Window *window);
