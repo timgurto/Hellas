@@ -15,19 +15,24 @@ void Client::initializeMapWindow(){
     _mapPins = new Element(Rect(0, 0, _mapImage.width(), _mapImage.height()));
     _mapWindow->addChild(_mapPinOutlines);
     _mapWindow->addChild(_mapPins);
+
+    _mapWindow->setPreRefreshFunction(updateMapWindow);
 }
 
-void Client::updateMapWindow(){
-    
-    _mapPins->clearChildren();
-    _mapPinOutlines->clearChildren();
+void Client::updateMapWindow(Element &){
+    Client &client = *Client::_instance;
 
-    for (const auto &objPair : _objects){
+    client._mapPins->clearChildren();
+    client._mapPinOutlines->clearChildren();
+
+    for (const auto &objPair : client._objects){
         const auto &object = *objPair.second;
-        addMapPin(object.location(), object.nameColor());
+        client.addMapPin(object.location(), object.nameColor());
     }
 
-    addMapPin(_character.location(), Color::COMBATANT_SELF);
+    client.addMapPin(client._character.location(), Color::COMBATANT_SELF);
+
+    client._debug << "Updated map; " << client._mapPins->children().size() << " pins" << Log::endl;
 }
 
 void Client::addMapPin(const Point &position, const Color &color){

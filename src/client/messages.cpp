@@ -56,7 +56,7 @@ void Client::handleMessage(const std::string &msg){
             iss.ignore(); // Throw away ']'
         }
         std::istringstream singleMsg(buffer);
-        _debug(buffer, Color::CYAN);
+        //_debug(buffer, Color::CYAN);
         singleMsg >> del >> msgCode >> del;
         _messagesReceived.push_back(MessageCode(msgCode));
         Color errorMessageColor = Color::FAILURE;
@@ -245,7 +245,7 @@ void Client::handleMessage(const std::string &msg){
                     _pendingCharLoc = p;
                 }
                 updateOffset();
-                updateMapWindow();
+                _mapWindow->markChanged();
                 _connectionStatus = LOADED;
                 _loaded = true;
                 _tooltipNeedsRefresh = true;
@@ -508,7 +508,7 @@ void Client::handleMessage(const std::string &msg){
                 _objects[serial] = obj;
             }
 
-            updateMapWindow();
+            _mapWindow->markChanged();
             break;
         }
 

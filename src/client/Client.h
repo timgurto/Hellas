@@ -189,7 +189,7 @@ private:
     Texture _mapImage;
     Element *_mapPins, *_mapPinOutlines;
     void initializeMapWindow();
-    void updateMapWindow();
+    static void updateMapWindow(Element &);
     void addMapPin(const Point &position, const Color &color);
 
     windows_t _windows;
