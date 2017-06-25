@@ -206,7 +206,7 @@ TEST_CASE("Element gets initialized with Client", "[.flaky]"){
     WAIT_UNTIL(Element::isInitialized());
 }
 
-TEST_CASE("Gear window can be viewed"){
+TEST_CASE("Gear window can be viewed","[gear]"){
     TestServer s;
     TestClient c;
     c.gearWindow()->show();
@@ -224,4 +224,15 @@ TEST_CASE("New clients survive recipe unlocks"){
 
     // The client receives it.
     CHECK(c.waitForMessage(SV_NEW_RECIPES));
+}
+
+TEST_CASE("Gear-slot names are initialized once", "[tooltip][gear][inventory]"){
+    {
+        TestClient c;
+        WAIT_UNTIL(! Client::GEAR_SLOT_NAMES.empty());
+    }
+    {
+        TestClient c2;
+        CHECK(Client::GEAR_SLOT_NAMES.size() == 8);
+    }
 }

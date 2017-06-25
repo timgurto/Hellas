@@ -297,6 +297,8 @@ _debug("client.log"){
     SDL_StopTextInput();
 
     Element::absMouse = &_mouse;
+
+    initializeGearSlotNames();
     
     drawLoadingScreen("Initializing UI", 0.8);
     initializeBuildWindow();
@@ -392,6 +394,19 @@ _debug("client.log"){
     addUI(_target.panel());
 
     drawLoadingScreen("", 1);
+}
+
+void Client::initializeGearSlotNames(){
+    if (! GEAR_SLOT_NAMES.empty())
+        return;
+    GEAR_SLOT_NAMES.push_back("Head");
+    GEAR_SLOT_NAMES.push_back("Jewelry");
+    GEAR_SLOT_NAMES.push_back("Body");
+    GEAR_SLOT_NAMES.push_back("Shoulders");
+    GEAR_SLOT_NAMES.push_back("Hands");
+    GEAR_SLOT_NAMES.push_back("Feet");
+    GEAR_SLOT_NAMES.push_back("Right hand");
+    GEAR_SLOT_NAMES.push_back("Left hand");
 }
 
 Client::~Client(){

@@ -31,15 +31,6 @@ void Client::initializeGearWindow(Client &client){
 void Client::initializeGearWindow(){
     _gearWindowBackground = Texture(std::string("Images/gearWindow.png"), Color::MAGENTA);
 
-    GEAR_SLOT_NAMES.push_back("Head");
-    GEAR_SLOT_NAMES.push_back("Jewelry");
-    GEAR_SLOT_NAMES.push_back("Body");
-    GEAR_SLOT_NAMES.push_back("Shoulders");
-    GEAR_SLOT_NAMES.push_back("Hands");
-    GEAR_SLOT_NAMES.push_back("Feet");
-    GEAR_SLOT_NAMES.push_back("Right hand");
-    GEAR_SLOT_NAMES.push_back("Left hand");
-
     px_t
         x = 0, y = 0,
         w = 0, h = 0,

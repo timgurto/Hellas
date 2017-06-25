@@ -98,6 +98,8 @@ public:
         CULL_HYSTERESIS_DISTANCE;
 
     static const int MIXING_CHANNELS;
+    
+    static std::vector<std::string> GEAR_SLOT_NAMES;
 
 private:
     static Client *_instance;
@@ -124,6 +126,8 @@ private:
     const Texture *_currentCursor;
 
     bool _isDismounting; // Whether the user is looking for a dismount location.
+
+    static void initializeGearSlotNames();
 
     // Whether the user has the specified item(s).
     bool playerHasItem(const Item *item, size_t quantity = 1) const;
@@ -183,7 +187,6 @@ private:
     void initializeGearWindow();
     Texture _gearWindowBackground;
     void onChangeDragItem(){ _gearWindow->forceRefresh(); }
-    static std::vector<std::string> GEAR_SLOT_NAMES;
 
     Window *_mapWindow;
     Texture _mapImage;
