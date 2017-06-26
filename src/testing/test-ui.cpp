@@ -96,14 +96,18 @@ TEST_CASE("Chat messages are added to chat log"){
 }
 
 TEST_CASE("Objects show up on the map when a client logs in", "[map]"){
-    // Given a server with rock objects;
+    // Given a server and client with rock objects;
     TestServer s = TestServer::WithData("basic_rock");
+    TestClient c = TestClient::WithData("basic_rock");
 
     // And a rock near the user spawn point
     s.addObject("rock", Point(10, 15));
+    
+    // When the client finds out his location;
+    CHECK(c.waitForMessage(SV_LOCATION));
 
-    // When a client logs in
-    TestClient c = TestClient::WithData("basic_rock");
+    // And he opens his map window
+    c.mapWindow()->show();
 
     // The rock shows up on his map (in addition to the user himself)
     WAIT_UNTIL (c.mapPins().size() == 2);
@@ -114,12 +118,15 @@ TEST_CASE("A player shows up on his own map", "[map]"){
     TestServer s = TestServer::WithData("big_map");
     TestClient c = TestClient::WithData("big_map");
 
-    // When the client is loaded
+    // When the client finds out his location;
     CHECK(c.waitForMessage(SV_LOCATION));
+
+    // And he opens his map window
+    c.mapWindow()->show();
 
 
     // Then the map has one pin;
-    WAIT_UNTIL (c.mapPins().size() == 1);
+    WAIT_UNTIL(c.mapPins().size() == 1);
 
     // And that pin has the player's color
     const ColorBlock *pin = dynamic_cast<const ColorBlock *>(*c.mapPins().begin());
@@ -142,21 +149,17 @@ TEST_CASE("A player shows up on his own map", "[map]"){
     CHECK(outline != nullptr);
     CHECK(outline->color() == Color::OUTLINE);
 
-    // And that pin is 3x3 and in the center of the map;
+    // And that outline is 3x3 and in the center of the map;
     CHECK(outline->rect() == Rect(midMapX-1, midMapY-1, 3, 3));
 
 
     // And pixels of the player's color and border color are in the correct places
-    c.mapWindow()->show();
     REPEAT_FOR_MS(100);
     px_t
         xInScreen = midMapX + toInt(c.mapWindow()->position().x) + 1,
         yInScreen = midMapY + toInt(c.mapWindow()->position().y) + 2 + Window::HEADING_HEIGHT;
-
     CHECK(renderer.getPixel(xInScreen, yInScreen) == Color::COMBATANT_SELF);
-    CHECK(renderer.getPixel(xInScreen-1, yInScreen) == Color::OUTLINE);;
-
-    // And there's a dark pixel where the outline should be
+    CHECK(renderer.getPixel(xInScreen-1, yInScreen) == Color::OUTLINE);
 }
 
 TEST_CASE("Windows start uninitialized"){
