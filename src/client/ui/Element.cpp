@@ -51,6 +51,9 @@ Element::~Element(){
 }
 
 void Element::initialize(){
+    if (initialized)
+        return;
+
     BACKGROUND_COLOR = Color::ELEMENT_BACKGROUND;
     SHADOW_LIGHT = Color::ELEMENT_SHADOW_LIGHT;
     SHADOW_DARK = Color::ELEMENT_SHADOW_DARK;

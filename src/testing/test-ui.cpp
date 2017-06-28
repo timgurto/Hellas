@@ -7,7 +7,7 @@
 
 TEST_CASE("Size of empty list"){
     // When a new List element is created
-    TestClient c;
+    Element::initialize();
     List l(Rect(0, 0, 100, 100));
 
     // Then its size is 0
@@ -16,7 +16,7 @@ TEST_CASE("Size of empty list"){
 
 TEST_CASE("Size of nonempty list"){
     // Given an empty List element
-    TestClient c;
+    Element::initialize();
     List l(Rect(0, 0, 100, 100));
 
     // When an element is added
