@@ -3,6 +3,7 @@
 
 #include "EntityType.h"
 #include "ServerItem.h"
+#include "../Message.h"
 #include "../Point.h"
 #include "../Rect.h"
 #include "../types.h"
@@ -73,6 +74,9 @@ public:
     virtual void describeSelfToNewWatcher(const User &watcher) const {}
     virtual void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const {}
     virtual ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum, const User &user) { return nullptr; }
+    virtual void onOutOfRange(const Entity &rhs) const {} // This will be called for both entities.
+    virtual Message outOfRangeMessage() const { return Message(); };
+    virtual bool shouldAlwaysBeKnownToUser(const User &user) const { return false; }
 
     /*
     Determine whether the proposed new location is legal, considering movement speed and

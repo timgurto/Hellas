@@ -115,18 +115,23 @@ public:
     static void init();
 
     void updateStats();
-    virtual health_t maxHealth() const override { return _stats.health; }
-    virtual health_t attack() const override { return _stats.attack; }
-    virtual ms_t attackTime() const override { return _stats.attackTime; }
-    virtual double speed() const override { return _stats.speed; }
-    virtual ms_t timeToRemainAsCorpse() const override { return 0; }
+    health_t maxHealth() const override { return _stats.health; }
+    health_t attack() const override { return _stats.attack; }
+    ms_t attackTime() const override { return _stats.attackTime; }
+    double speed() const override { return _stats.speed; }
+    ms_t timeToRemainAsCorpse() const override { return 0; }
 
-    virtual char classTag() const override { return 'u'; }
+    bool shouldAlwaysBeAwareOf(const Entity &entity) const;
+
+    char classTag() const override { return 'u'; }
     
-    virtual void onHealthChange() override;
-    virtual void onDeath() override;
+    void onHealthChange() override;
+    void onDeath() override;
 
-    virtual void sendInfoToClient(const User &targetUser) const override;
+    void sendInfoToClient(const User &targetUser) const override;
+
+    void onOutOfRange(const Entity &rhs) const override;
+    Message outOfRangeMessage() const override;
 
     const Rect collisionRect() const;
 

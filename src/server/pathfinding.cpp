@@ -173,36 +173,35 @@ void Entity::updateLocation(const Point &dest){
                 server.sendMessage(userP->socket(), SV_OBJECT_LOCATION, args);
         }
 
-    // Tell any users it has moved away from to forget about it.
-    std::list<const User *> usersToForget;
+    // Tell any users it has moved away from to forget about it, and forget about any such entities.
+    std::list<const Entity *> newlyDistantEntities;
     {
-        auto loX = server._usersByX.lower_bound(&User(Point(forgetLeft, 0)));
-        auto hiX = server._usersByX.upper_bound(&User(Point(forgetRight, 0)));
-        auto loY = server._usersByY.lower_bound(&User(Point(0, forgetTop)));
-        auto hiY = server._usersByY.upper_bound(&User(Point(0, forgetBottom)));
+        auto loX = server._entitiesByX.lower_bound(&Dummy::Location(Point(forgetLeft, 0)));
+        auto hiX = server._entitiesByX.upper_bound(&Dummy::Location(Point(forgetRight, 0)));
+        auto loY = server._entitiesByY.lower_bound(&Dummy::Location(Point(0, forgetTop)));
+        auto hiY = server._entitiesByY.upper_bound(&Dummy::Location(Point(0, forgetBottom)));
         for (auto it = loX; it != hiX; ++it){
-            double userY = (*it)->location().y;
-            if (userY - _location.y <= Server::CULL_DISTANCE)
-                usersToForget.push_back(*it);
+            double entityY = (*it)->location().y;
+            if (entityY - _location.y <= Server::CULL_DISTANCE)
+                newlyDistantEntities.push_back(*it);
         }
         for (auto it = loY; it != hiY; ++it){
-            double userX = (*it)->location().x;
+            double entityX = (*it)->location().x;
             if (newDest.x > _location.x){ // Don't count users twice.
-                if (userX < forgetLeft)
+                if (entityX < forgetLeft)
                     continue;
             } else {
-                if (userX > forgetRight)
+                if (entityX > forgetRight)
                     continue;
             }
-            if (abs(userX - _location.x) <= Server::CULL_DISTANCE)
-                usersToForget.push_back(*it);
+            if (abs(entityX - _location.x) <= Server::CULL_DISTANCE)
+                newlyDistantEntities.push_back(*it);
         }
     }
-    for (const User *userP : usersToForget){
-        if (classTag() == 'u')
-            server.sendMessage(userP->socket(), SV_USER_OUT_OF_RANGE, userP->name());
-        else
-            server.sendMessage(userP->socket(), SV_OBJECT_OUT_OF_RANGE, makeArgs(serial()));
+
+    for (const Entity *pEntity : newlyDistantEntities){
+        pEntity->onOutOfRange(*this);
+        onOutOfRange(*pEntity);
     }
 
     Point oldLoc = _location;

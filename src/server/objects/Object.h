@@ -66,24 +66,26 @@ public:
 
     virtual char classTag() const override { return 'o'; }
 
-    virtual health_t maxHealth() const override { return objType().strength(); }
-    virtual health_t attack() const override { return 0; }
-    virtual ms_t attackTime() const override { return 0; }
-    virtual ms_t timeToRemainAsCorpse() const override { return 43200000; } // 12 hours
+    health_t maxHealth() const override { return objType().strength(); }
+    health_t attack() const override { return 0; }
+    ms_t attackTime() const override { return 0; }
+    ms_t timeToRemainAsCorpse() const override { return 43200000; } // 12 hours
 
-    virtual void writeToXML(XmlWriter &xw) const override;
+    void writeToXML(XmlWriter &xw) const override;
 
-    virtual void update(ms_t timeElapsed) override;
+    void update(ms_t timeElapsed) override;
 
-    virtual void onHealthChange() override;
-    virtual void onDeath() override;
+    void onHealthChange() override;
+    void onDeath() override;
 
     void setType(const ObjectType *type); // Set/change ObjectType
 
-    virtual void sendInfoToClient(const User &targetUser) const override;
-    virtual void describeSelfToNewWatcher(const User &watcher) const override;
-    virtual void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const;
-    virtual ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum, const User &user) override;
+    void sendInfoToClient(const User &targetUser) const override;
+    void describeSelfToNewWatcher(const User &watcher) const override;
+    void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const;
+    ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum, const User &user) override;
+    Message outOfRangeMessage() const override;
+    bool shouldAlwaysBeKnownToUser(const User &user) const override;
 
     // Randomly choose an item type for the user to gather.
     const ServerItem *chooseGatherItem() const;

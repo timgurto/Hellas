@@ -92,6 +92,9 @@ public:
     void sendNewRecipesMessage(const User &user, const std::set<std::string> &ids) const;
     void sendWarAlertMessages(const Wars::Belligerent &b1, const Wars::Belligerent &b2) const;
 
+    // Getters
+    const Cities &cities() const { return _cities; }
+
 private:
 
     static Server *_instance;

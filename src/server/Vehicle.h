@@ -16,8 +16,8 @@ public:
     const std::string &driver() const { return _driver; }
     void driver(const std::string &username) { _driver = username; }
     
-    virtual char classTag() const override { return 'v'; }
-    virtual double speed() const override { return SPEED; }
+    char classTag() const override { return 'v'; }
+    double speed() const override { return SPEED; }
 };
 
 #endif

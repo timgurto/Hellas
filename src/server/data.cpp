@@ -612,7 +612,6 @@ void Server::loadData(const std::string &path){
             size_t y;
             if (!xr.findAttr(row, "y", y) || y >= _mapY)
                 break;
-            _debug << "Reading row " << y << Log::endl;
             std::string rowTerrain;
                 if (!xr.findAttr(row, "terrain", rowTerrain))
                     break;

@@ -463,3 +463,16 @@ void User::sendInfoToClient(const User &targetUser) const {
             server.sendMessage(client, SV_GEAR, makeArgs(_name, i, item->id()));
     }
 }
+
+void User::onOutOfRange(const Entity &rhs) const{
+    if (rhs.shouldAlwaysBeKnownToUser(*this))
+        return;
+
+    const Server &server = *Server::_instance;
+    auto message = rhs.outOfRangeMessage();
+    server.sendMessage(socket(), message.code, message.args);
+}
+
+Message User::outOfRangeMessage() const{
+    return Message(SV_USER_OUT_OF_RANGE, name());
+}

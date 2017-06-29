@@ -71,3 +71,27 @@ TEST_CASE("Damaged objects can't be deconstructed"){
     REPEAT_FOR_MS(100);
     CHECK_FALSE(s.entities().empty());
 }
+
+TEST_CASE("Out-of-range objects are forgotten", "[.slow][culling][only]"){
+    // Given a server and client with signpost objects;
+    TestServer s = TestServer::WithData("signpost");
+    TestClient c = TestClient::WithData("signpost");
+
+    // And a signpost near the user spawn
+    s.addObject("signpost", Point(10, 15));
+
+    // And the client is aware of it
+    WAIT_UNTIL(s.users().size() == 1);
+    WAIT_UNTIL(c.objects().size() == 1);
+
+    // When the client moves out of range of the signpost
+    while (c->character().location().x < 1000){
+        c.sendMessage(CL_LOCATION, makeArgs(1010, 10));
+
+        // Then he is no longer aware of it
+        if (c.objects().size() == 0)
+            break;
+        SDL_Delay(5);
+    }
+    CHECK(c.objects().size() == 0);
+}

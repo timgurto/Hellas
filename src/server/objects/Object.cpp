@@ -283,3 +283,17 @@ void Object::alertWatcherOnInventoryChange(const User &watcher, size_t slot) con
     assert(it != server._usersByName.end());
     server.sendInventoryMessage(*it->second, slot, *this);
 }
+
+Message Object::outOfRangeMessage() const{
+    return Message(SV_OBJECT_OUT_OF_RANGE, makeArgs(serial()));
+}
+
+bool Object::shouldAlwaysBeKnownToUser(const User &user) const{
+    if (permissions().isOwnedByPlayer(user.name()))
+        return true;
+    const Server &server = *Server::_instance;
+    const auto &city = server.cities().getPlayerCity(user.name());
+    if (!city.empty() && permissions().isOwnedByCity(city))
+        return true;
+    return false;
+}
