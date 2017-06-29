@@ -41,6 +41,8 @@ public:
     static const px_t TILE_W, TILE_H;
     const size_t mapX() const { return _mapX; }
     const size_t mapY() const { return _mapY; }
+    typedef std::vector<std::vector<char>> Map;
+    const Map &map() { return _map; }
 
     static const Server &instance(){ return *_instance; }
     static LogConsole &debug(){ return *_debugInstance; }
@@ -145,7 +147,7 @@ private:
 
     Point mapRand() const; // Return a random point on the map.
     size_t _mapX, _mapY; // Number of tiles in each dimension.
-    std::vector<std::vector<char>> _map;
+    Map _map;
 
     // World data
     std::set<ServerItem> _items;

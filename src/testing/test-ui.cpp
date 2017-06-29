@@ -229,7 +229,7 @@ TEST_CASE("New clients survive recipe unlocks"){
     CHECK(c.waitForMessage(SV_NEW_RECIPES));
 }
 
-TEST_CASE("Gear-slot names are initialized once", "[tooltip][gear][inventory]"){
+TEST_CASE("Gear-slot names are initialized once", "[.slow][tooltip][gear][inventory]"){
     {
         TestClient c;
         WAIT_UNTIL(! Client::GEAR_SLOT_NAMES.empty());

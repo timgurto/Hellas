@@ -191,19 +191,21 @@ TEST_CASE("Non-existent cities can't own objects"){
     CHECK_FALSE(rock.permissions().hasOwner());
 }
 
-TEST_CASE("On login, players are told about their distant objects"){
+TEST_CASE("On login, players are told about their distant objects", "[.flaky][culling]"){
     // Given an object at (10000,10000) owned by Alice
     TestServer s = TestServer::WithData("signpost");
     s.addObject("signpost", Point(10000, 10000), "alice");
 
     // When Alice logs in
     TestClient c = TestClient::WithUsernameAndData("alice", "signpost");
+    WAIT_UNTIL_TIMEOUT(s.users().size() == 1, 10000);
 
     // Alice knows about the object
-    WAIT_UNTIL(c.objects().size() == 1);
+    REPEAT_FOR_MS(500);
+    CHECK(c.objects().size() == 1);
 }
 
-TEST_CASE("On login, players are not told about others' distant objects", "[.flaky]"){
+TEST_CASE("On login, players are not told about others' distant objects", "[.flaky][culling]"){
     // Given an object at (10000,10000) owned by Alice
     TestServer s = TestServer::WithData("signpost");
     s.addObject("signpost", Point(10000, 10000), "bob");
@@ -271,7 +273,7 @@ TEST_CASE("New ownership is reflected in the object-owner index"){
     CHECK(s.objectsByOwner().getObjectsWithSpecificOwner(ownerBob).size() == 1);
 }
 
-TEST_CASE("When a player moves away from his object, he is still aware of it", "[.slow]"){
+TEST_CASE("When a player moves away from his object, he is still aware of it", "[.slow][culling]"){
     // Given a server with signpost objects;
     TestServer s = TestServer::WithData("signpost");
 
@@ -295,7 +297,8 @@ TEST_CASE("When a player moves away from his object, he is still aware of it", "
     CHECK(c.objects().size() == 1);
 }
 
-TEST_CASE("When a player moves away from his city's object, he is still aware of it", "[.slow]"){
+TEST_CASE("When a player moves away from his city's object, he is still aware of it",
+          "[.slow][culling]"){
     // Given a server with signpost objects;
     TestServer s = TestServer::WithData("signpost");
 
