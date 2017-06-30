@@ -442,11 +442,11 @@ void User::sendInfoToClient(const User &targetUser) const {
     const Server &server = Server::instance();
     const Socket &client = targetUser.socket();
 
-    // Health
-    server.sendMessage(client, SV_PLAYER_HEALTH, makeArgs(_name, health()));
-
     // Location
     server.sendMessage(client, SV_LOCATION, makeLocationCommand());
+
+    // Health
+    server.sendMessage(client, SV_PLAYER_HEALTH, makeArgs(_name, health()));
 
     // Class
     server.sendMessage(client, SV_CLASS, makeArgs(_name, className()));

@@ -99,7 +99,7 @@ TEST_CASE("Clients are told if in a city on login"){
     WAIT_UNTIL(client2->character().cityName() == "athens");
 }
 
-TEST_CASE("Clients know nearby players' cities", "[.flaky]"){
+TEST_CASE("Clients know nearby players' cities", "[.flaky][remote]"){
     // Given Alice is a member of Athens, and connected to the server
     TestServer s;
     s.cities().createCity("athens");

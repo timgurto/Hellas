@@ -7,7 +7,7 @@ TEST_CASE("Start and stop server"){
     TestServer server;
 }
 
-TEST_CASE("Run a client in a separate process"){
+TEST_CASE("Run a client in a separate process" "[remote]"){
     // Given a server
     TestServer s;
 
@@ -18,7 +18,7 @@ TEST_CASE("Run a client in a separate process"){
     WAIT_UNTIL(s.users().size() == 1);
 }
 
-TEST_CASE("Concurrent local and remote clients"){
+TEST_CASE("Concurrent local and remote clients", "[remote]"){
     // Given a server
     TestServer s;
 

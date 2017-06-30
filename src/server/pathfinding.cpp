@@ -234,7 +234,11 @@ void Entity::updateLocation(const Point &dest){
 
 
     // Tell newly nearby users that it exists
-    for (const User *userP : newlyNearbyUsers)
+    for (const User *userP : newlyNearbyUsers){
         sendInfoToClient(*userP);
-
+        if (classTag() == 'u'){
+            User &thisUser = dynamic_cast<User&>(*this);
+            userP->sendInfoToClient(thisUser);
+        }
+    }
 }

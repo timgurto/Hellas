@@ -113,7 +113,7 @@ TEST_CASE("Objects show up on the map when a client logs in", "[map]"){
     WAIT_UNTIL (c.mapPins().size() == 2);
 }
 
-TEST_CASE("A player shows up on his own map", "[map]"){
+TEST_CASE("A player shows up on his own map", "[.flaky][map]"){
     // Given a server and client, and a 101x101 map on which players spawn at the center;
     TestServer s = TestServer::WithData("big_map");
     TestClient c = TestClient::WithData("big_map");

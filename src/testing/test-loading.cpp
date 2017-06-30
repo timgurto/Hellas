@@ -29,7 +29,7 @@ TEST_CASE("Get spawn point from map file"){
     CHECK(user.location() == Point(37, 37));
 }
 
-TEST_CASE("Get spawn range from map file"){
+TEST_CASE("Get spawn range from map file" "[remote]"){
     TestServer s = TestServer::WithData("spawn_point_37ish");
 
     RemoteClient

@@ -31,6 +31,33 @@ TEST_CASE("On login, players are not told about others' distant objects", "[.fla
     CHECK(c.objects().empty());
 }
 
+TEST_CASE("When one user approaches another, he finds out about him", "[.slow][culling][remote]"){
+    // Given a server with a large map;
+    TestServer s = TestServer::WithData("signpost");
+
+    // And a client at (10, 10);
+    TestClient c = TestClient::WithData("signpost");
+    WAIT_UNTIL(s.users().size() == 1);
+
+    // And a client at (1000, 10);
+    s.changePlayerSpawn(Point(1000, 10));
+    RemoteClient rc("-data testing/data/signpost");
+    WAIT_UNTIL(s.users().size() == 2);
+    REPEAT_FOR_MS(500);
+    CHECK(c.otherUsers().size() == 0);
+
+    // When the first moves within range of the second
+    while (c->character().location().x < 900){
+        c.sendMessage(CL_LOCATION, makeArgs(1000, 10));
+
+        // Then he becomes aware of him
+        if (c.otherUsers().size() == 1)
+            break;
+        SDL_Delay(5);
+    }
+    CHECK(c.otherUsers().size() == 1);
+}
+
 TEST_CASE("When a player moves away from his object, he is still aware of it", "[.slow][culling]"){
     // Given a server with signpost objects;
     TestServer s = TestServer::WithData("signpost");

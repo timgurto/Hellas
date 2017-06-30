@@ -5,7 +5,7 @@ const std::string RemoteClient::DEFAULT_ARGS =
         "-debug "
         "-server-ip 127.0.0.1 "
         "-auto-login "
-        "-data testing/data/minimal "
+        "-load-test-data-first "
         "-hideLoadingScreen ";
 
 RemoteClient::RemoteClient(const std::string &args){

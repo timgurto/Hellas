@@ -492,9 +492,15 @@ void Client::run(){
     _running = true;
     if (!_dataLoaded){
         drawLoadingScreen("Loading data", 0.6);
+        bool shouldLoadDefaultData = true;
+        if (cmdLineArgs.contains("load-test-data-first")){
+            loadData("testing/data/minimal");
+            shouldLoadDefaultData = false;
+        }
         if (cmdLineArgs.contains("data"))
             loadData(cmdLineArgs.getString("data"));
-        else
+            shouldLoadDefaultData = false;
+        if (shouldLoadDefaultData)
             loadData();
     }
     

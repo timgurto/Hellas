@@ -42,6 +42,8 @@ public:
     void sendMessage(const Socket &socket, MessageCode code, const std::string &args){
         _server->sendMessage(socket, code, args);
     }
+    void changePlayerSpawn(const Point &location, double range = 0){
+        _server->_newPlayerSpawnLocation = location; _server->_newPlayerSpawnRange = range; }
 
     void nop(){ _server->mapX(); }
 
