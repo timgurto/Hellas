@@ -810,3 +810,9 @@ bool Client::isAtWarWith(const std::string &username) const{
         return false;
     return true;
 }
+
+void Client::addUser(const std::string &name, const Point &location){
+    auto pUser= new Avatar(name, location);
+    _otherUsers[name] = pUser;
+    _entities.insert(pUser);
+}

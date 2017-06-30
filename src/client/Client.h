@@ -341,6 +341,7 @@ private:
     void setEntityLocation(Sprite *entity, const Point &location);
     Sprite *_currentMouseOverEntity;
     size_t _numEntities; // Updated every tick
+    void addUser(const std::string &name, const Point &location);
     
     void addParticles(const ParticleProfile *profile, const Point &location, size_t qty);
     void addParticles(const ParticleProfile *profile, const Point &location); // Single hit

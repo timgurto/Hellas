@@ -251,12 +251,9 @@ void Client::handleMessage(const std::string &msg){
                 _tooltipNeedsRefresh = true;
                 _mouseMoved = true;
             } else {
-                if (_otherUsers.find(name) == _otherUsers.end()) {
-                    // Create new Avatar
-                    newUser = new Avatar(name, p);
-                    _otherUsers[name] = newUser;
-                    _entities.insert(newUser);
-                }
+                if (_otherUsers.find(name) == _otherUsers.end())
+                    addUser(name, p);
+
                 _otherUsers[name]->destination(p);
             }
 
