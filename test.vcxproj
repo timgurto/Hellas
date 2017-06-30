@@ -198,6 +198,7 @@
     <ClCompile Include="src\testing\test-connection.cpp" />
     <ClCompile Include="src\testing\test-construction.cpp" />
     <ClCompile Include="src\testing\test-containers.cpp" />
+    <ClCompile Include="src\testing\test-culling.cpp" />
     <ClCompile Include="src\testing\test-gathering.cpp" />
     <ClCompile Include="src\testing\test-loading.cpp" />
     <ClCompile Include="src\testing\test-loot.cpp" />
