@@ -225,7 +225,7 @@ void Client::handleMessage(const std::string &msg){
             startAction(0); // Effectively, hide the cast bar.
             break;
 
-        case SV_LOCATION:
+        case SV_LOCATION: // Also the de-facto new-user announcement
         {
             std::string name;
             double x, y;
@@ -302,6 +302,8 @@ void Client::handleMessage(const std::string &msg){
                     removeEntity(avatar);
                 }
             }
+
+            _mapWindow->markChanged();
 
             break;
         }

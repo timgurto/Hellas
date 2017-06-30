@@ -1,3 +1,4 @@
+#include "RemoteClient.h"
 #include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
@@ -160,6 +161,23 @@ TEST_CASE("A player shows up on his own map", "[.flaky][map]"){
         yInScreen = midMapY + toInt(c.mapWindow()->position().y) + 2 + Window::HEADING_HEIGHT;
     CHECK(renderer.getPixel(xInScreen, yInScreen) == Color::COMBATANT_SELF);
     CHECK(renderer.getPixel(xInScreen-1, yInScreen) == Color::OUTLINE);
+}
+
+TEST_CASE("Other players show up on the map", "[map][remote]"){
+
+    // Given a server and two clients
+    TestServer s;
+    TestClient c;
+    RemoteClient rc;
+
+    // When both clients log in;
+    WAIT_UNTIL(s.users().size() == 2);
+
+    // And the first client opens his map
+    c.mapWindow()->show();
+
+    // Then there are two pins visible
+    WAIT_UNTIL(c.mapPins().size() == 2);
 }
 
 TEST_CASE("Windows start uninitialized"){

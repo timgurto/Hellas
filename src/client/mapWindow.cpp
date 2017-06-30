@@ -30,6 +30,11 @@ void Client::updateMapWindow(Element &){
         client.addMapPin(object.location(), object.nameColor());
     }
 
+    for (const auto &pair : client._otherUsers){
+        const auto &avatar = *pair.second;
+        client.addMapPin(avatar.location(), avatar.nameColor());
+    }
+
     client.addMapPin(client._character.location(), Color::COMBATANT_SELF);
 
     client._debug << "Updated map; " << client._mapPins->children().size() << " pins" << Log::endl;
