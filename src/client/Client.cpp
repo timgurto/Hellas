@@ -497,9 +497,10 @@ void Client::run(){
             loadData("testing/data/minimal");
             shouldLoadDefaultData = false;
         }
-        if (cmdLineArgs.contains("data"))
+        if (cmdLineArgs.contains("data")){
             loadData(cmdLineArgs.getString("data"));
             shouldLoadDefaultData = false;
+        }
         if (shouldLoadDefaultData)
             loadData();
     }
