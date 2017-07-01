@@ -125,6 +125,7 @@
     <ClCompile Include="src\testing\test-loot.cpp" />
     <ClCompile Include="src\server\ObjectsByOwner.cpp" />
     <ClCompile Include="src\testing\test-culling.cpp" />
+    <ClCompile Include="src\testing\test-map.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
