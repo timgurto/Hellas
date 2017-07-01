@@ -3,7 +3,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Basic declaration of war"){
+TEST_CASE("Basic declaration of war", "[war]"){
     // Given Alice is logged in
     TestServer s;
     TestClient alice = TestClient::WithUsername("alice");
@@ -16,7 +16,7 @@ TEST_CASE("Basic declaration of war"){
     WAIT_UNTIL(s.wars().isAtWar("alice", "bob"));
 }
 
-TEST_CASE("No erroneous wars"){
+TEST_CASE("No erroneous wars", "[war]"){
     // When a clean server is started
     TestServer s;
     
@@ -24,7 +24,7 @@ TEST_CASE("No erroneous wars"){
     CHECK_FALSE(s.wars().isAtWar("alice", "bob"));
 }
 
-TEST_CASE("Wars are persistent"){
+TEST_CASE("Wars are persistent", "[war]"){
     // Given Alice and Bob are at war, and there is no server running
     {
         TestServer server1;
@@ -38,7 +38,7 @@ TEST_CASE("Wars are persistent"){
     CHECK(server2.wars().isAtWar("alice", "bob"));
 }
 
-TEST_CASE("Clients are alerted of new wars"){
+TEST_CASE("Clients are alerted of new wars", "[war]"){
     // Given Alice is logged in
     TestServer s;
     TestClient alice = TestClient::WithUsername("alice");
@@ -51,7 +51,7 @@ TEST_CASE("Clients are alerted of new wars"){
     WAIT_UNTIL(alice->isAtWarWith("bob"));
 }
 
-TEST_CASE("Clients are told of existing wars on login"){
+TEST_CASE("Clients are told of existing wars on login", "[war]"){
     // Given Alice and Bob are at war
     TestServer s;
     s.wars().declare("alice", "bob");
@@ -64,7 +64,7 @@ TEST_CASE("Clients are told of existing wars on login"){
     WAIT_UNTIL(alice->isAtWarWith("bob"));
 }
 
-TEST_CASE("Wars cannot be redeclared"){
+TEST_CASE("Wars cannot be redeclared", "[war]"){
     // Given Alice and Bob are at war, and Alice is logged in
     TestServer s;
     TestClient alice = TestClient::WithUsername("alice");

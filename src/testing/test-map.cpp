@@ -51,7 +51,7 @@ TEST_CASE("A player shows up on his own map", "[.flaky][map]"){
     // And the map has one pin outline;
     WAIT_UNTIL (c.mapPinOutlines().size() == 1);
 
-    // And that pin has the outline color
+    // And that outline has the outline color
     const ColorBlock *outline = dynamic_cast<const ColorBlock *>(*c.mapPinOutlines().begin());
     CHECK(outline != nullptr);
     CHECK(outline->color() == Color::OUTLINE);
@@ -70,7 +70,6 @@ TEST_CASE("A player shows up on his own map", "[.flaky][map]"){
 }
 
 TEST_CASE("Other players show up on the map", "[map][remote]"){
-
     // Given a server and two clients
     TestServer s;
     TestClient c;
@@ -84,4 +83,36 @@ TEST_CASE("Other players show up on the map", "[map][remote]"){
 
     // Then there are two pins visible
     WAIT_UNTIL(c.mapPins().size() == 2);
+}
+
+TEST_CASE("When a player declares war, his map pin changes color", "[map][remote][war]"){
+    // Given a server with two clients;
+    TestServer s;
+    TestClient c;
+    RemoteClient c2("-username secunda");
+
+    // And the first has his map open;
+    WAIT_UNTIL(s.users().size() == 1);
+    c.mapWindow()->show();
+
+    // And sees two map pins
+    WAIT_UNTIL(c.mapPins().size() == 2);
+
+    // When the first declares war on the second
+    c.sendMessage(CL_DECLARE_WAR, "secunda");
+    WAIT_UNTIL(c.isAtWarWith("secunda"));
+
+    // Then his map has one blue pin and one red pin
+    bool
+        bluePinExists = false,
+        redPinExists = false;
+    for (const auto *elemPin : c.mapPins()){
+        const auto &pin = dynamic_cast<const ColorBlock &>(*elemPin);
+        if (pin.color() == Color::COMBATANT_SELF)
+            bluePinExists = true;
+        else if (pin.color() == Color::COMBATANT_ENEMY)
+            redPinExists = true;
+    }
+    CHECK(bluePinExists);
+    CHECK(redPinExists);
 }
