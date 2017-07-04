@@ -794,13 +794,11 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Received loot info for an unknown object.", Color::FAILURE);
                 break;
             }
-            if (it->second->classTag() != 'n'){
-                _debug("Received loot info for a non-NPC object.", Color::FAILURE);
-                break;
-            }
-            ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
-            npc.lootable(true);
-            npc.refreshTooltip();
+            ClientObject &object = *it->second;
+
+            object.lootable(true);
+            object.refreshTooltip();
+
             break;
         }
 
@@ -815,14 +813,12 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Received loot info for an unknown object.", Color::FAILURE);
                 break;
             }
-            if (it->second->classTag() != 'n'){
-                _debug("Received loot info for a non-NPC object.", Color::FAILURE);
-                break;
-            }
-            ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
-            npc.lootable(false);
-            npc.refreshTooltip();
-            npc.hideWindow();
+            ClientObject &object = *it->second;
+
+            object.lootable(false);
+            object.refreshTooltip();
+            object.hideWindow();
+
             break;
         }
 
@@ -837,13 +833,11 @@ void Client::handleMessage(const std::string &msg){
                 _debug("Received loot info for an unknown object.", Color::FAILURE);
                 break;
             }
-            if (it->second->classTag() != 'n'){
-                _debug("Received loot info for a non-NPC object.", Color::FAILURE);
-                break;
-            }
-            ClientNPC &npc = dynamic_cast<ClientNPC &>(*it->second);
-            npc.container() = ClientItem::vect_t(quantity, std::make_pair(nullptr, 0));
-            npc.refreshTooltip();
+            ClientObject &object = *it->second;
+
+            object.container() = ClientItem::vect_t(quantity, std::make_pair(nullptr, 0));
+            object.refreshTooltip();
+
             break;
         }
 

@@ -17,6 +17,8 @@ class ObjectType : public EntityType{
         Strength();
         void set(const ServerItem *item, size_t quantity);
         health_t get() const;
+        const ServerItem *item() const { return _item; }
+        size_t quantity() const { return _quantity; }
 
     private:
         const ServerItem *_item;
@@ -94,6 +96,8 @@ public:
     bool transforms() const { return _transformObject != nullptr; }
     health_t strength() const { return _strength.get(); }
     void setStrength(const ServerItem *item, size_t quantity);
+    std::pair<const ServerItem *, size_t> strengthPair() const {
+            return std::make_pair(_strength.item(), _strength.quantity()); }
 
     void addYield(const ServerItem *item,
                   double initMean, double initSD, size_t initMin,

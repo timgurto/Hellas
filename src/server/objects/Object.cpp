@@ -180,6 +180,8 @@ void Object::onDeath(){
     Server &server = *Server::_instance;
     server.forceAllToUntarget(*this);
 
+    populateLoot();
+
     Entity::onDeath();
 }
 
@@ -221,6 +223,29 @@ void Object::sendInfoToClient(const User &targetUser) const {
         server.sendMessage(client, SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 }
 
+void Object::populateLoot(){
+    const auto &strengthPair = objType().strengthPair();
+    const ServerItem *strengthItem = objType().strengthPair().first;
+    size_t strengthQty = objType().strengthPair().second;
+
+    if (strengthItem == nullptr)
+        return;
+
+    static const double MATERIAL_LOOT_CHANCE = 0.5;
+    size_t lootQuantity = 0;
+    for (size_t i = 0; i != strengthQty; ++i)
+        if (randDouble() < MATERIAL_LOOT_CHANCE)
+            ++lootQuantity;
+    if (lootQuantity == 0)
+        return;
+
+    _loot.add(strengthItem, lootQuantity);
+
+    const Server &server = Server::instance();
+    for (const User *user : server.findUsersInArea(location()))
+        server.sendMessage(user->socket(), SV_LOOTABLE, makeArgs(serial()));
+}
+
 void Object::describeSelfToNewWatcher(const User &watcher) const{
     const Server &server = Server::instance();
 
@@ -236,13 +261,16 @@ void Object::describeSelfToNewWatcher(const User &watcher) const{
             for (size_t i = 0; i != slots; ++i)
                 server.sendInventoryMessage(watcher, i, *this);
     }
+
+    _loot.sendContentsToUser(watcher, serial());
 }
 
 ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum, const User &user){
     const Server &server = Server::instance();
     const Socket &socket = user.socket();
 
-    if (! hasContainer()){
+    auto hasLoot = ! _loot.empty();
+    if (! (hasLoot || hasContainer())){
         server.sendMessage(socket, SV_NO_INVENTORY);
         return nullptr;
     }
@@ -260,28 +288,43 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum, const U
         return nullptr;
     }
 
+    if (hasLoot){
+        ServerItem::Slot &slot = _loot.at(slotNum);
+        if (slot.first == nullptr){
+            server.sendMessage(socket, SV_EMPTY_SLOT);
+            return nullptr;
+        }
+        return &slot;
+    }
+
     if (slotNum >= objType().container().slots()) {
         server.sendMessage(socket, SV_INVALID_SLOT);
         return nullptr;
     }
 
+    assert(hasContainer());
     ServerItem::Slot &slot = container().at(slotNum);
     if (slot.first == nullptr){
         server.sendMessage(socket, SV_EMPTY_SLOT);
         return nullptr;
     }
-
     return &slot;
 }
 
 void Object::alertWatcherOnInventoryChange(const User &watcher, size_t slot) const{
     const Server &server = Server::instance();
-    const std::string &username = watcher.name();
-    if (! permissions().doesUserHaveAccess(username))
-        return;
-    auto &it = server._usersByName.find(username);
-    assert(it != server._usersByName.end());
-    server.sendInventoryMessage(*it->second, slot, *this);
+
+    if (! _loot.empty()){
+        _loot.sendSingleSlotToUser(watcher, serial(), slot);
+
+    } else {
+        const std::string &username = watcher.name();
+        if (! permissions().doesUserHaveAccess(username))
+            return;
+        if (! hasContainer())
+            return;
+        server.sendInventoryMessage(watcher, slot, *this);
+    }
 }
 
 Message Object::outOfRangeMessage() const{

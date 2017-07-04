@@ -2,16 +2,13 @@
 
 #include "Client.h"
 #include "ClientNPC.h"
-#include "ui/TakeContainer.h"
 
 extern Renderer renderer;
 
 const size_t ClientNPC::LOOT_CAPACITY = 8;
 
 ClientNPC::ClientNPC(size_t serial, const ClientNPCType *type, const Point &loc):
-ClientObject(serial, type, loc),
-_lootable(false),
-_lootContainer(nullptr)
+ClientObject(serial, type, loc)
 {}
 
 void ClientNPC::draw(const Client &client) const{
@@ -32,14 +29,6 @@ void ClientNPC::draw(const Client &client) const{
     }
 }
 
-void ClientNPC::update(double delta){
-    ClientObject::update(delta);
-
-    // Loot sparkles
-    if (lootable())
-        Client::_instance->addParticles("lootSparkles", location(), delta);
-}
-
 void ClientNPC::onRightClick(Client &client){
     client.setTarget(*this, true);
     
@@ -48,29 +37,12 @@ void ClientNPC::onRightClick(Client &client){
         ClientObject::onRightClick(client);
 }
 
-void ClientNPC::assembleWindow(Client &client){
-    static const px_t
-        WIDTH = 100,
-        HEIGHT = 100;
-    _lootContainer = new TakeContainer(container(), serial(), Rect(0, 0, WIDTH, HEIGHT));
-    Rect winRect = location();
-    winRect.w = WIDTH;
-    winRect.h = HEIGHT;
-    _window = Window::WithRectAndTitle(winRect, objectType()->name());
-    _window->addChild(_lootContainer);
-}
-
 const Texture &ClientNPC::cursor(const Client &client) const{
     if (isAlive())
         return client.cursorAttack();
     if (lootable())
         return  client.cursorContainer();
     return client.cursorNormal();
-}
-
-void ClientNPC::onInventoryUpdate(){
-    if (_lootContainer != nullptr)
-        _lootContainer->repopulate();
 }
 
 bool ClientNPC::isFlat() const{

@@ -13,6 +13,7 @@
 
 class Element;
 struct MerchantSlot;
+class TakeContainer;
 class TextBox;
 class Window;
 
@@ -33,6 +34,13 @@ class ClientObject : public Sprite, public ClientCombatant {
     ClientItem::vect_t _dropbox; // A slot where construction materials can be added.
     ms_t _transformTimer;
     ms_t _gatherSoundTimer;
+
+    /*
+    True if the NPC is dead and has loot available.  This is used as the loot itself is unknown
+    until a user opens the container.
+    */
+    bool _lootable;
+    TakeContainer *_lootContainer;
 
 protected:
     Window *_window; // For containers, etc; opens when the object is nearby and right-clicked.
@@ -63,6 +71,8 @@ public:
     void constructionMaterials(const ItemSet &set) { _constructionMaterials = set; }
     bool isBeingConstructed() const { return !_constructionMaterials.isEmpty(); }
     void transformTimer(ms_t remaining) {_transformTimer = remaining; }
+    bool lootable() const { return _lootable; }
+    void lootable(bool b) { _lootable = b; }
 
     virtual char classTag() const override { return 'o'; }
 

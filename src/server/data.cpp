@@ -406,8 +406,8 @@ void Server::loadData(const std::string &path){
         _debug("Failed to load items.xml", Color::FAILURE);
     else{
         for (auto elem : xr.getChildren("item")) {
-            std::string id, name;
-            if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name))
+            std::string id;
+            if (!xr.findAttr(elem, "id", id))
                 continue; // ID and name are mandatory.
             ServerItem item(id);
 

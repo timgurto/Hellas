@@ -32,7 +32,6 @@
 
 extern Args cmdLineArgs;
 
-// TODO: Move all client functionality to a namespace, rather than a class.
 Client *Client::_instance = nullptr;
 
 LogSDL *Client::_debugInstance = nullptr;

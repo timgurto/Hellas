@@ -18,7 +18,7 @@ void Client::draw() const{
     }
 
     // Background
-    renderer.setDrawColor(); // TODO: Revert to BLUE_HELL
+    renderer.setDrawColor();
     renderer.clear();
 
     // Terrain

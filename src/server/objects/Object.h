@@ -5,6 +5,7 @@
 #include "Deconstruction.h"
 #include "ObjectType.h"
 #include "../Entity.h"
+#include "../Loot.h"
 #include "../MerchantSlot.h"
 #include "../ItemSet.h"
 #include "../Permissions.h"
@@ -98,6 +99,9 @@ public:
 private:
     Container *_container;
     Deconstruction *_deconstruction;
+
+    Loot _loot;
+    void populateLoot();
 };
 
 #endif

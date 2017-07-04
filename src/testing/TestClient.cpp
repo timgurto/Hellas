@@ -138,3 +138,10 @@ ClientNPC &TestClient::getFirstNPC() {
     ClientObject *obj = it->second;
     return * dynamic_cast<ClientNPC *>(obj);
 }
+
+ClientObject &TestClient::getFirstObject() {
+    auto objects = _client->_objects;
+    assert(! objects.empty());
+    auto it =objects.begin();
+    return *it->second;
+}

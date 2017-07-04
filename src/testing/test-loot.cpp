@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Client gets loot info and can loot"){
+TEST_CASE("Client gets loot info and can loot", "[loot]"){
     // Given an NPC that always drops 1 gold
     TestServer s = TestServer::WithData("goldbug");
     s.addNPC("goldbug", Point(10, 15));
@@ -26,7 +26,7 @@ TEST_CASE("Client gets loot info and can loot"){
     WAIT_UNTIL(c.inventory()[0].first != nullptr);
 }
 
-TEST_CASE("Objects have health"){
+TEST_CASE("Objects have health", "[strength]"){
     // Given a running server;
     // And a chair object type with the strength of 6 wood;
     // And a wood item with 5 health
@@ -39,7 +39,7 @@ TEST_CASE("Objects have health"){
     CHECK(s.getFirstObject().health() == 30);
 }
 
-TEST_CASE("Clients discern NPCs with no loot"){
+TEST_CASE("Clients discern NPCs with no loot", "[loot]"){
     // Given a server and client;
     // And an ant NPC type with 1 health and no loot table
     TestServer s = TestServer::WithData("ant");
@@ -57,4 +57,33 @@ TEST_CASE("Clients discern NPCs with no loot"){
     ClientNPC &clientAnt = c.getFirstNPC();
     REPEAT_FOR_MS(200);
     CHECK_FALSE(clientAnt.lootable());
+}
+
+TEST_CASE("Chance for strength-items as loot from objects", "[loot][strength]"){
+    // Given a running server and client;
+    // And a snowflake item with 1 health;
+    // And a snowman object type made of 1000 snowflakes;
+    TestServer s = TestServer::WithData("snowman");
+    TestClient c = TestClient::WithData("snowman");
+    WAIT_UNTIL(s.users().size() == 1);
+
+    // And a snowman exists
+    s.addObject("snowman", Point(10, 15));
+
+    // When the snowman is destroyed
+    Object &snowman = s.getFirstObject();
+    snowman.reduceHealth(9999);
+
+    // Then the client finds out that it's lootable
+    WAIT_UNTIL(c.objects().size() == 1);
+    ClientObject &clientSnowman = c.getFirstObject();
+    c.waitForMessage(SV_LOOTABLE);
+
+    CHECK(clientSnowman.lootable());
+
+    c.watchObject(clientSnowman);
+    WAIT_UNTIL(clientSnowman.container().size() > 0);
+
+    c.sendMessage(CL_TAKE_ITEM, makeArgs(snowman.serial(), 0));
+    WAIT_UNTIL(c.inventory()[0].first != nullptr);
 }

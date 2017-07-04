@@ -66,7 +66,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 66,NPCs can have skills/abilities,5,144,Feature,22,,,3
 67,Set bonuses for gear,13,21,Feature,,,,
 68,Class-restricted gear,8,5,Feature,,,,
-69,Distant players aren't being removed,8,8,Bug,,,,1
+69,Distant players aren't being removed,8,8,Bug,,TRUE,,1
 70,Make players and objects more visible on map,89,34,Usability,,TRUE,,1
 71,Finish data website,13,8,Documentation,,,,
 72,"Sort _materials and _craftableItems by name, not ID",5,3,Usability,,,,
@@ -172,7 +172,9 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 173,Interact with target via keyboard,5,2,Usability,172,,,2
 174,Interact with nearest target if none selected on interact-key,8,5,Usability,173,,,2
 175,Click to move,8,3,Usability,,,,2
-176,Use Catch for tests,3,5,Code quality,,,,
+176,Use Catch for tests,3,5,Code quality,,TRUE,,
 177,Add fireball ability for magus,8,13,Feature,178,,,1
 178,Add heal ability for priest,5,34,Feature,,,,1
 179,Add taunt ability for warrior,5,21,Feature,178,,,1
+180,"Update map pins at limited frequency, e.g., 1s",2,5,Performance,,,,
+181,Send object-movement updates to owner and city's members,5,3,Bug,,,,

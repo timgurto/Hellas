@@ -14,6 +14,7 @@
 #include "ui/ItemSelector.h"
 #include "ui/Label.h"
 #include "ui/Line.h"
+#include "ui/TakeContainer.h"
 #include "ui/TextBox.h"
 #include "ui/Window.h"
 #include "../Color.h"
@@ -45,7 +46,9 @@ _confirmCedeWindow(nullptr),
 _beingGathered(false),
 _dropbox(1),
 _transformTimer(type->transformTime()),
-_gatherSoundTimer(0)
+_gatherSoundTimer(0),
+_lootable(false),
+_lootContainer(nullptr)
 {
     if (type != nullptr) { // i.e., not a serial-only search dummy
         const size_t
@@ -455,6 +458,20 @@ void ClientObject::assembleWindow(Client &client){
         _window->resize(0, 0);
     }
 
+    if (lootable()){
+        static const px_t
+            WIDTH = 100,
+            HEIGHT = 100;
+        _lootContainer = new TakeContainer(container(), serial(), Rect(0, 0, WIDTH, HEIGHT));
+        Rect winRect = location();
+        winRect.w = WIDTH;
+        winRect.h = HEIGHT;
+        _window = Window::WithRectAndTitle(winRect, objectType()->name());
+        _window->addChild(_lootContainer);
+
+        return;
+    }
+
     bool
         hasContainer = objType.containerSlots() > 0,
         isMerchant = objType.merchantSlots() > 0,
@@ -513,6 +530,8 @@ void ClientObject::assembleWindow(Client &client){
 }
 
 void ClientObject::onInventoryUpdate() {
+    if (_lootContainer != nullptr)
+        _lootContainer->repopulate();
     if (_window != nullptr)
         _window->forceRefresh();
 }
@@ -620,6 +639,10 @@ void ClientObject::update(double delta) {
 
         client.addParticles(smokeProfile, particleLocation, numParticles);
     }
+
+    // Loot sparkles
+    if (lootable())
+        Client::_instance->addParticles("lootSparkles", location(), delta);
 
     Sprite::update(delta);
 }

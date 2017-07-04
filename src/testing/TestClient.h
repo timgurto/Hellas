@@ -45,6 +45,7 @@ public:
 
     Avatar &getFirstOtherUser();
     ClientNPC &getFirstNPC();
+    ClientObject &getFirstObject();
 
     Client *operator->(){ return _client; }
     Client &client() { return *_client; }
