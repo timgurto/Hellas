@@ -126,6 +126,7 @@
     <ClCompile Include="src\server\ObjectsByOwner.cpp" />
     <ClCompile Include="src\testing\test-culling.cpp" />
     <ClCompile Include="src\testing\test-map.cpp" />
+    <ClCompile Include="src\server\objects\ObjectLoot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -222,5 +223,6 @@
     <ClInclude Include="src\server\Loot.h" />
     <ClInclude Include="src\server\ObjectsByOwner.h" />
     <ClInclude Include="src\testing\testing.h" />
+    <ClInclude Include="src\server\objects\ObjectLoot.h" />
   </ItemGroup>
 </Project>

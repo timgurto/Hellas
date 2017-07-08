@@ -3,6 +3,7 @@
 
 #include "Container.h"
 #include "Deconstruction.h"
+#include "ObjectLoot.h"
 #include "ObjectType.h"
 #include "../Entity.h"
 #include "../Loot.h"
@@ -19,6 +20,7 @@ class Object : public Entity{
     Permissions _permissions;
     ItemSet _contents; // Remaining contents, which can be gathered
     std::vector<MerchantSlot> _merchantSlots;
+    ObjectLoot _loot;
 
     size_t _numUsersGathering; // The number of users gathering from this object.
 
@@ -54,7 +56,7 @@ public:
     ms_t transformTimer() const { return _transformTimer; }
     Permissions &permissions() { return _permissions; }
     const Permissions &permissions() const { return _permissions; }
-    const Loot &loot() const { return _loot; }
+    const ObjectLoot &loot() const { return _loot; }
 
     bool hasContainer() const { return _container != nullptr; }
     Container &container() { return *_container; }
@@ -100,11 +102,6 @@ public:
 private:
     Container *_container;
     Deconstruction *_deconstruction;
-
-    Loot _loot;
-    void populateLoot();
-    void addStrengthItemsToLoot();
-    void addContainerItemsToLoot();
 };
 
 #endif

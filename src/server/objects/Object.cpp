@@ -10,7 +10,8 @@ _numUsersGathering(0),
 _transformTimer(0),
 _container(nullptr),
 _deconstruction(nullptr),
-_permissions(*this)
+_permissions(*this),
+_loot(*this)
 {
     setType(type);
     objType().incrementCounter();
@@ -18,12 +19,14 @@ _permissions(*this)
 
 Object::Object(size_t serial):
     Entity(serial),
-    _permissions(*this)
+    _permissions(*this),
+    _loot(*this)
 {}
 
 Object::Object(const Point &loc):
     Entity(loc),
-    _permissions(*this)
+    _permissions(*this),
+    _loot(*this)
 {}
 
 Object::~Object(){
@@ -180,7 +183,7 @@ void Object::onDeath(){
     Server &server = *Server::_instance;
     server.forceAllToUntarget(*this);
 
-    populateLoot();
+    _loot.populate();
 
     if (hasContainer())
         container().removeAll();
@@ -224,44 +227,6 @@ void Object::sendInfoToClient(const User &targetUser) const {
     // Health
     if (health() < maxHealth())
         server.sendMessage(client, SV_ENTITY_HEALTH, makeArgs(serial(), health()));
-}
-
-void Object::populateLoot(){
-    addStrengthItemsToLoot();
-    addContainerItemsToLoot();
-
-    // Alert nearby users of loot
-    if (_loot.empty())
-        return;
-    const Server &server = Server::instance();
-    for (const User *user : server.findUsersInArea(location()))
-        server.sendMessage(user->socket(), SV_LOOTABLE, makeArgs(serial()));
-}
-
-void Object::addStrengthItemsToLoot(){
-    static const double MATERIAL_LOOT_CHANCE = 0.5;
-
-    const auto &strengthPair = objType().strengthPair();
-    const ServerItem *strengthItem = objType().strengthPair().first;
-    size_t strengthQty = objType().strengthPair().second;
-
-    if (strengthItem == nullptr)
-        return;
-
-    size_t lootQuantity = 0;
-    for (size_t i = 0; i != strengthQty; ++i)
-        if (randDouble() < MATERIAL_LOOT_CHANCE)
-            ++lootQuantity;
-
-    _loot.add(strengthItem, lootQuantity);
-}
-
-void Object::addContainerItemsToLoot(){
-    static const double CONTAINER_LOOT_CHANCE = 0.5;
-    if (hasContainer()){
-        auto lootFromContainer = container().generateLootWithChance(CONTAINER_LOOT_CHANCE);
-        _loot.add(lootFromContainer);
-    }
 }
 
 void Object::describeSelfToNewWatcher(const User &watcher) const{
