@@ -54,6 +54,7 @@ public:
     ms_t transformTimer() const { return _transformTimer; }
     Permissions &permissions() { return _permissions; }
     const Permissions &permissions() const { return _permissions; }
+    const Loot &loot() const { return _loot; }
 
     bool hasContainer() const { return _container != nullptr; }
     Container &container() { return *_container; }
@@ -102,6 +103,8 @@ private:
 
     Loot _loot;
     void populateLoot();
+    void addStrengthItemsToLoot();
+    void addContainerItemsToLoot();
 };
 
 #endif

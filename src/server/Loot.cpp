@@ -30,6 +30,13 @@ void Loot::add(const ServerItem *item, size_t qty){
     }
 }
 
+void Loot::add(const ItemSet &items){
+    for (const auto &pair : items){
+        const auto *pItem = dynamic_cast<const ServerItem *>(pair.first);
+        add(pItem, pair.second);
+    }
+}
+
 void Loot::sendContentsToUser(const User &recipient, size_t serial) const{
     const Server &server = Server::instance();
     server.sendMessage(recipient.socket(), SV_LOOT_COUNT, makeArgs(serial, _container.size()));

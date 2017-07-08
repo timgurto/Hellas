@@ -182,6 +182,9 @@ void Object::onDeath(){
 
     populateLoot();
 
+    if (hasContainer())
+        container().removeAll();
+
     Entity::onDeath();
 }
 
@@ -224,6 +227,20 @@ void Object::sendInfoToClient(const User &targetUser) const {
 }
 
 void Object::populateLoot(){
+    addStrengthItemsToLoot();
+    addContainerItemsToLoot();
+
+    // Alert nearby users of loot
+    if (_loot.empty())
+        return;
+    const Server &server = Server::instance();
+    for (const User *user : server.findUsersInArea(location()))
+        server.sendMessage(user->socket(), SV_LOOTABLE, makeArgs(serial()));
+}
+
+void Object::addStrengthItemsToLoot(){
+    static const double MATERIAL_LOOT_CHANCE = 0.5;
+
     const auto &strengthPair = objType().strengthPair();
     const ServerItem *strengthItem = objType().strengthPair().first;
     size_t strengthQty = objType().strengthPair().second;
@@ -231,19 +248,20 @@ void Object::populateLoot(){
     if (strengthItem == nullptr)
         return;
 
-    static const double MATERIAL_LOOT_CHANCE = 0.5;
     size_t lootQuantity = 0;
     for (size_t i = 0; i != strengthQty; ++i)
         if (randDouble() < MATERIAL_LOOT_CHANCE)
             ++lootQuantity;
-    if (lootQuantity == 0)
-        return;
 
     _loot.add(strengthItem, lootQuantity);
+}
 
-    const Server &server = Server::instance();
-    for (const User *user : server.findUsersInArea(location()))
-        server.sendMessage(user->socket(), SV_LOOTABLE, makeArgs(serial()));
+void Object::addContainerItemsToLoot(){
+    static const double CONTAINER_LOOT_CHANCE = 0.5;
+    if (hasContainer()){
+        auto lootFromContainer = container().generateLootWithChance(CONTAINER_LOOT_CHANCE);
+        _loot.add(lootFromContainer);
+    }
 }
 
 void Object::describeSelfToNewWatcher(const User &watcher) const{

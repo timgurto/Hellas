@@ -2,7 +2,7 @@
 #include "TestClient.h"
 #include "testing.h"
 
-TEST_CASE("Object container empty check"){
+TEST_CASE("Object container empty check", "[container]"){
     TestServer s; 
     ObjectType type("box");
     type.addContainer(ContainerType::WithSlots(5));
@@ -13,7 +13,7 @@ TEST_CASE("Object container empty check"){
     CHECK_FALSE(obj.container().isEmpty());
 }
 
-TEST_CASE("Dismantle an object with an inventory", "[.flaky]"){
+TEST_CASE("Dismantle an object with an inventory", "[.flaky][container]"){
     // Given a running server;
     TestServer s = TestServer::WithData("dismantle");
     // And a user at (10, 10);
@@ -33,7 +33,7 @@ TEST_CASE("Dismantle an object with an inventory", "[.flaky]"){
     CHECK(c.waitForMessage(SV_ACTION_STARTED));
 }
 
-TEST_CASE("Place item in object", "[.flaky]"){
+TEST_CASE("Place item in object", "[.flaky][container]"){
     TestServer s = TestServer::WithData("dismantle");
     TestClient c = TestClient::WithData("dismantle");
 

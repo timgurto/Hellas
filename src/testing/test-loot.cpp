@@ -59,7 +59,7 @@ TEST_CASE("Clients discern NPCs with no loot", "[loot]"){
     CHECK_FALSE(clientAnt.lootable());
 }
 
-TEST_CASE("Chance for strength-items as loot from objects", "[loot][strength]"){
+TEST_CASE("Chance for strength-items as loot from object", "[loot][strength]"){
     // Given a running server and client;
     // And a snowflake item with 1 health;
     // And a snowman object type made of 1000 snowflakes;
@@ -86,4 +86,53 @@ TEST_CASE("Chance for strength-items as loot from objects", "[loot][strength]"){
 
     c.sendMessage(CL_TAKE_ITEM, makeArgs(snowman.serial(), 0));
     WAIT_UNTIL(c.inventory()[0].first != nullptr);
+}
+
+TEST_CASE("Looting from a container", "[loot][container]"){
+    // Given a running server and client;
+    // And a chest object type with 10 container slots;
+    // And a gold item that stacks to 100;
+    TestServer s = TestServer::WithData("chest_of_gold");
+    TestClient c = TestClient::WithData("chest_of_gold");
+    WAIT_UNTIL(s.users().size() == 1);
+
+    // And a chest exists;
+    s.addObject("chest", Point(10, 15));
+        auto &chest = s.getFirstObject();
+
+    SECTION("Container contents can be looted"){
+
+        // And the chest is full of gold;
+        const auto &gold = s.getFirstItem();
+        chest.container().addItems(&gold, 1000);
+
+        // And the chest is destroyed
+        chest.reduceHealth(9999);
+        REQUIRE_FALSE(chest.loot().empty());
+
+        // When he loots every slot
+        c.waitForMessage(SV_LOOTABLE);
+        for (size_t i = 0; i != 10; ++i)
+            c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), i));
+
+        // Then he gets some gold;
+        WAIT_UNTIL(c.inventory()[0].first != nullptr);
+
+        // And he doesn't get all of it
+        WAIT_UNTIL(chest.container().isEmpty());
+        ItemSet thousandGold;
+        thousandGold.add(&gold, 1000);
+        CHECK_FALSE(s.getFirstUser().hasItems(thousandGold));
+    }
+
+    SECTION("An empty container yields no loot"){
+        // When the chest is destroyed
+        chest.reduceHealth(9999);
+
+        // Then he can't loot it
+        REPEAT_FOR_MS(200);
+        c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
+        REPEAT_FOR_MS(200);
+        CHECK(c.inventory()[0].first == nullptr);
+    }
 }

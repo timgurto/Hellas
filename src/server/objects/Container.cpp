@@ -57,6 +57,20 @@ void Container::removeItems(const ItemSet &items) {
     }
 }
 
+void Container::removeAll(){
+    for (size_t i = 0; i != _container.size(); ++i){
+        std::pair<const ServerItem *, size_t> &invSlot = _container[i];
+        invSlot.first = nullptr;
+        invSlot.second = 0;
+    }
+    for (const std::string &username : _parent.watchers()) {
+        const User &user = Server::instance().getUserByName(username);
+        for (size_t slotNum = 0; slotNum != _container.size(); ++slotNum) {
+            Server::instance().sendInventoryMessage(user, slotNum, _parent);
+        }
+    }
+}
+
 void Container::addItems(const ServerItem *item, size_t qty){
     std::set<size_t> changedSlots;
     // First pass: partial stacks
@@ -77,7 +91,7 @@ void Container::addItems(const ServerItem *item, size_t qty){
     // Second pass: empty slots
     if (qty != 0)
         for (size_t i = 0; i != _container.size(); ++i) {
-            if (_container[i].first)
+            if (_container[i].first != nullptr)
                 continue;
             size_t qtyInThisSlot = min(item->stackSize(), qty);
             _container[i].first = item;
@@ -102,4 +116,24 @@ bool Container::isAbleToDeconstruct(const User &user) const{
         return false;
     }
     return true;
+}
+
+ItemSet Container::generateLootWithChance(double chance) const{
+    ItemSet loot;
+
+    for (size_t slot = 0; slot != _container.size(); ++slot) {
+        const auto *pItem = _container[slot].first;
+        if (pItem == nullptr)
+            continue;
+        size_t qty = 0;
+        auto numInSlot = _container[slot].second;
+        for (size_t i = 0; i != numInSlot; ++i){
+            if (randDouble() < chance)
+                ++qty;
+        }
+        if (qty > 0)
+            loot.add(pItem, qty);
+    }
+
+    return loot;
 }

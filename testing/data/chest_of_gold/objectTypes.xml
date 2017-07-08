@@ -1,0 +1,7 @@
+<root>
+
+<objectType id="chest" name="Chest" >
+    <container slots="10" />
+</objectType>
+
+</root>

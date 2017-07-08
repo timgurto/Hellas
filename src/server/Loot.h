@@ -10,6 +10,7 @@ class Loot{
 public:
     bool empty() const;
     void add(const ServerItem *item, size_t qty);
+    void add(const ItemSet &items);
     void sendContentsToUser(const User &recipient, size_t serial) const;
     void sendSingleSlotToUser(const User &recipient, size_t serial, size_t slot) const;
     bool isValidSlot(size_t slot) const { return _container.size() > slot; }

@@ -244,3 +244,10 @@ TEST_CASE("New ownership is reflected in the object-owner index"){
     Permissions::Owner ownerBob(Permissions::Owner::PLAYER, "bob");
     CHECK(s.objectsByOwner().getObjectsWithSpecificOwner(ownerBob).size() == 1);
 }
+
+TEST_CASE("The first player to attack an object tags it"){
+    // Given a client and server with rock objects;
+    // And a rock object owned by Alice;
+    // When the client attacks it
+    // Then the client can loot it
+}
