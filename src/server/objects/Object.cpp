@@ -264,11 +264,6 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum, const U
 
     if (!server.isEntityInRange(socket, user, this))
         return nullptr;
-
-    if (! permissions().doesUserHaveAccess(user.name())){
-        server.sendMessage(socket, SV_NO_PERMISSION);
-        return nullptr;
-    }
        
     if (isBeingBuilt()){
         server.sendMessage(socket, SV_UNDER_CONSTRUCTION);
@@ -282,6 +277,11 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum, const U
             return nullptr;
         }
         return &slot;
+    }
+
+    if (! permissions().doesUserHaveAccess(user.name())){
+        server.sendMessage(socket, SV_NO_PERMISSION);
+        return nullptr;
     }
 
     if (slotNum >= objType().container().slots()) {

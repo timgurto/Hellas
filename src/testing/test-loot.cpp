@@ -98,12 +98,13 @@ TEST_CASE("Looting from a container", "[loot][container]"){
 
     // And a chest exists;
     s.addObject("chest", Point(10, 15));
-        auto &chest = s.getFirstObject();
+
+    auto &chest = s.getFirstObject();
+    const auto &gold = s.getFirstItem();
 
     SECTION("Container contents can be looted"){
 
         // And the chest is full of gold;
-        const auto &gold = s.getFirstItem();
         chest.container().addItems(&gold, 1000);
 
         // And the chest is destroyed
@@ -118,7 +119,7 @@ TEST_CASE("Looting from a container", "[loot][container]"){
         // Then he gets some gold;
         WAIT_UNTIL(c.inventory()[0].first != nullptr);
 
-        // And he doesn't get all of it
+        // And he doesn't get all 1000
         WAIT_UNTIL(chest.container().isEmpty());
         ItemSet thousandGold;
         thousandGold.add(&gold, 1000);
@@ -134,5 +135,24 @@ TEST_CASE("Looting from a container", "[loot][container]"){
         c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
         REPEAT_FOR_MS(200);
         CHECK(c.inventory()[0].first == nullptr);
+    }
+
+    SECTION(" An owned container can be looted from"){
+        // And the chest has an owner
+        chest.permissions().setPlayerOwner("alice");
+
+        // And the chest contains gold;
+        chest.container().addItems(&gold, 100);
+
+        // And the chest is destroyed
+        chest.reduceHealth(9999);
+        REQUIRE_FALSE(chest.loot().empty());
+
+        // When he loots it
+        c.waitForMessage(SV_LOOTABLE);
+        c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
+
+        // Then he gets some gold;
+        WAIT_UNTIL(c.inventory()[0].first != nullptr);
     }
 }
