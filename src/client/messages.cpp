@@ -785,27 +785,17 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_LOOTABLE:
         {
-            int serial;
+            size_t serial;
             singleMsg >> serial >> del;
             if (del != MSG_END)
                 break;
-            const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
-            if (it == _objects.end()){
-                _debug("Received loot info for an unknown object.", Color::FAILURE);
-                break;
-            }
-            ClientObject &object = *it->second;
-
-            object.lootable(true);
-            object.assembleWindow(*this);
-            object.refreshTooltip();
-
-            break;
+            
+            handle_SV_LOOTABLE(serial);
         }
 
         case SV_NOT_LOOTABLE:
         {
-            int serial;
+            size_t serial;
             singleMsg >> serial >> del;
             if (del != MSG_END)
                 break;
@@ -1087,6 +1077,22 @@ void Client::handleMessage(const std::string &msg){
         iss.peek();
     }
 }
+
+
+void Client::handle_SV_LOOTABLE(size_t serial){
+    const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
+    if (it == _objects.end()){
+        _debug("Received loot info for an unknown object.", Color::FAILURE);
+        return;
+    }
+    ClientObject &object = *it->second;
+
+    object.lootable(true);
+    object.assembleWindow(*this);
+    object.refreshTooltip();
+}
+
+
 
 void Client::sendRawMessage(const std::string &msg) const{
     _socket.sendMessage(msg);

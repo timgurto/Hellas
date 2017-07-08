@@ -361,6 +361,8 @@ private:
     void performCommand(const std::string &commandString);
     std::vector<MessageCode> _messagesReceived;
 
+    void handle_SV_LOOTABLE(size_t serial);
+
     void sendClearTargetMessage() const;
     
     enum ConnectionStatus{
