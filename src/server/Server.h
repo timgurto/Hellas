@@ -92,6 +92,8 @@ public:
     void sendNewRecipesMessage(const User &user, const std::set<std::string> &ids) const;
     void sendWarAlertMessages(const Wars::Belligerent &b1, const Wars::Belligerent &b2) const;
 
+    void handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum);
+
     // Getters
     const Cities &cities() const { return _cities; }
 

@@ -540,42 +540,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
 
-            if (serial == INVENTORY) {
-                sendMessage(client, SV_TAKE_SELF);
-                break;
-            }
-
-            Entity *pEnt = nullptr;
-            ServerItem::Slot *pSlot;
-            if (serial == GEAR)
-                pSlot = user->getSlotToTakeFromAndSendErrors(slotNum, *user);
-            else {
-                pEnt = _entities.find(serial);
-                pSlot = pEnt->getSlotToTakeFromAndSendErrors(slotNum, *user);
-            }
-            if (pSlot == nullptr)
-                break;
-            ServerItem::Slot &slot = *pSlot;
-
-            // Attempt to give item to user
-            size_t remainder = user->giveItem(slot.first, slot.second);
-            if (remainder > 0){
-                slot.second = remainder;
-                sendMessage(client, SV_INVENTORY_FULL);
-            } else {
-                slot.first = nullptr;
-                slot.second = 0;
-            }
-            
-            if (serial == GEAR){ // Tell user about his empty gear slot, and updated stats
-                sendInventoryMessage(*user, slotNum, GEAR);
-                user->updateStats();
-
-            } else { // Alert object's watchers
-                for (auto username : pEnt->watchers())
-                    pEnt->alertWatcherOnInventoryChange(*_usersByName[username], slotNum);
-            }
-
+            handle_CL_TAKE_ITEM(*user, serial, slotNum);
             break;
         }
 
@@ -1026,6 +991,45 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         }
     }
 }
+
+void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum){
+    if (serial == INVENTORY) {
+        sendMessage(user.socket(), SV_TAKE_SELF);
+        return;
+    }
+
+    Entity *pEnt = nullptr;
+    ServerItem::Slot *pSlot;
+    if (serial == GEAR)
+        pSlot = user.getSlotToTakeFromAndSendErrors(slotNum, user);
+    else {
+        pEnt = _entities.find(serial);
+        pSlot = pEnt->getSlotToTakeFromAndSendErrors(slotNum, user);
+    }
+    if (pSlot == nullptr)
+        return;
+    ServerItem::Slot &slot = *pSlot;
+
+    // Attempt to give item to user
+    size_t remainder = user.giveItem(slot.first, slot.second);
+    if (remainder > 0){
+        slot.second = remainder;
+        sendMessage(user.socket(), SV_INVENTORY_FULL);
+    } else {
+        slot.first = nullptr;
+        slot.second = 0;
+    }
+            
+    if (serial == GEAR){ // Tell user about his empty gear slot, and updated stats
+        sendInventoryMessage(user, slotNum, GEAR);
+        user.updateStats();
+
+    } else { // Alert object's watchers
+        for (auto username : pEnt->watchers())
+            pEnt->alertWatcherOnInventoryChange(*_usersByName[username], slotNum);
+    }
+}
+
 
 void Server::broadcast(MessageCode msgCode, const std::string &args){
     for (const User &user : _users){
