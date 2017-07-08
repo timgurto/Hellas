@@ -797,6 +797,7 @@ void Client::handleMessage(const std::string &msg){
             ClientObject &object = *it->second;
 
             object.lootable(true);
+            object.assembleWindow(*this);
             object.refreshTooltip();
 
             break;

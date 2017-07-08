@@ -102,28 +102,38 @@ TEST_CASE("Looting from a container", "[loot][container]"){
     auto &chest = s.getFirstObject();
     const auto &gold = s.getFirstItem();
 
-    SECTION("Container contents can be looted"){
-
+    SECTION("Some container contents can be looted"){
         // And the chest is full of gold;
         chest.container().addItems(&gold, 1000);
 
         // And the chest is destroyed
         chest.reduceHealth(9999);
         REQUIRE_FALSE(chest.loot().empty());
-
-        // When he loots every slot
         c.waitForMessage(SV_LOOTABLE);
-        for (size_t i = 0; i != 10; ++i)
-            c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), i));
 
-        // Then he gets some gold;
-        WAIT_UNTIL(c.inventory()[0].first != nullptr);
+        SECTION("Users can receive loot"){
+            // When he loots every slot
+            for (size_t i = 0; i != 10; ++i)
+                c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), i));
 
-        // And he doesn't get all 1000
-        WAIT_UNTIL(chest.container().isEmpty());
-        ItemSet thousandGold;
-        thousandGold.add(&gold, 1000);
-        CHECK_FALSE(s.getFirstUser().hasItems(thousandGold));
+            // Then he gets some gold;
+            WAIT_UNTIL(c.inventory()[0].first != nullptr);
+
+            // And he doesn't get all 1000
+            WAIT_UNTIL(chest.container().isEmpty());
+            ItemSet thousandGold;
+            thousandGold.add(&gold, 1000);
+            CHECK_FALSE(s.getFirstUser().hasItems(thousandGold));
+        }
+
+        SECTION("The loot window is populated"){
+            // When he right clicks on the chest
+            auto &clientChest = c.getFirstObject();
+            clientChest.onRightClick(c.client());
+
+            // Then it shows the loot window
+            WAIT_UNTIL(clientChest.lootContainer() != nullptr);
+        }
     }
 
     SECTION("An empty container yields no loot"){
@@ -152,7 +162,7 @@ TEST_CASE("Looting from a container", "[loot][container]"){
         c.waitForMessage(SV_LOOTABLE);
         c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
 
-        // Then he gets some gold;
+        // Then he gets some gold
         WAIT_UNTIL(c.inventory()[0].first != nullptr);
     }
 }

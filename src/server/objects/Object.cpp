@@ -295,6 +295,7 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum, const U
         server.sendMessage(socket, SV_EMPTY_SLOT);
         return nullptr;
     }
+
     return &slot;
 }
 

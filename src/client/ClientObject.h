@@ -73,6 +73,7 @@ public:
     void transformTimer(ms_t remaining) {_transformTimer = remaining; }
     bool lootable() const { return _lootable; }
     void lootable(bool b) { _lootable = b; }
+    const TakeContainer *lootContainer() { return _lootContainer; }
 
     virtual char classTag() const override { return 'o'; }
 
