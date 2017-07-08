@@ -362,6 +362,7 @@ private:
     std::vector<MessageCode> _messagesReceived;
 
     void handle_SV_LOOTABLE(size_t serial);
+    void handle_SV_INVENTORY(size_t serial, size_t slot, const std::string &itemID, size_t quantity);
 
     void sendClearTargetMessage() const;
     

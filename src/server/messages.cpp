@@ -785,14 +785,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != MSG_END)
                 return;
-            Entity *ent = _entities.find(serial);
-            if (!isEntityInRange(client, *user, ent))
-                break;
-
-            ent->describeSelfToNewWatcher(*user);
-
-            ent->addWatcher(user->name());
-
+            handle_CL_START_WATCHING(*user, serial);
             break;
         }
 
@@ -990,6 +983,15 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
         }
     }
+}
+
+void Server::handle_CL_START_WATCHING(User &user, size_t serial){
+    Entity *ent = _entities.find(serial);
+    if (!isEntityInRange(user.socket(), user, ent))
+        return;
+
+    ent->describeSelfToNewWatcher(user);
+    ent->addWatcher(user.name());
 }
 
 void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum){

@@ -371,54 +371,8 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> serial >> del >> slot >> del >> itemID >> del >> quantity >> del;
             if (del != MSG_END)
                 break;
-
-            const ClientItem *item = nullptr;
-            if (quantity > 0) {
-                const auto it = _items.find(itemID);
-                if (it == _items.end()) {
-                    _debug << Color::FAILURE << "Unknown inventory item \"" << itemID
-                           << "\"announced; ignored.";
-                    break;
-                }
-                item = &it->second;
-            }
-
-            ClientItem::vect_t *container;
-            ClientObject *object = nullptr;
-            switch(serial){
-                case INVENTORY: container = &_inventory;        break;
-                case GEAR:      container = &_character.gear(); break;
-                default:
-                    auto it = _objects.find(serial);
-                    if (it == _objects.end()) {
-                        _debug("Received inventory of nonexistent object; ignored.", Color::FAILURE);
-                        break;
-                    }
-                    object = it->second;
-                    container = &object->container();
-            }
-            if (slot >= container->size()) {
-                _debug("Received item in invalid inventory slot; ignored.", Color::FAILURE);
-                break;
-            }
-            auto &invSlot = (*container)[slot];
-            invSlot.first = item;
-            invSlot.second = quantity;
-            if (_recipeList != nullptr)
-                _recipeList->markChanged();
-            switch(serial){
-                case INVENTORY: _inventoryWindow->forceRefresh();   break;
-                case GEAR:      _gearWindow->forceRefresh();        break;
-                default:
-                    object->onInventoryUpdate();
-            }
-
-            if (item != nullptr && // It's an actual item
-                (serial == INVENTORY || serial == GEAR) && // You are receiving it
-                _actionTimer > 0) // You were crafting or gathering
-                    if (item->sounds() != nullptr)
-                        item->sounds()->playOnce("drop");
-
+            
+            handle_SV_INVENTORY(serial, slot, itemID, quantity);
             break;
         }
 
@@ -1090,6 +1044,56 @@ void Client::handle_SV_LOOTABLE(size_t serial){
     object.lootable(true);
     object.assembleWindow(*this);
     object.refreshTooltip();
+}
+
+void Client::handle_SV_INVENTORY(size_t serial, size_t slot, const std::string &itemID,
+                                 size_t quantity){
+    const ClientItem *item = nullptr;
+    if (quantity > 0) {
+        const auto it = _items.find(itemID);
+        if (it == _items.end()) {
+            _debug << Color::FAILURE << "Unknown inventory item \"" << itemID
+                    << "\"announced; ignored.";
+            return;
+        }
+        item = &it->second;
+    }
+
+    ClientItem::vect_t *container;
+    ClientObject *object = nullptr;
+    switch(serial){
+        case INVENTORY: container = &_inventory;        break;
+        case GEAR:      container = &_character.gear(); break;
+        default:
+            auto it = _objects.find(serial);
+            if (it == _objects.end()) {
+                _debug("Received inventory of nonexistent object; ignored.", Color::FAILURE);
+                break;
+            }
+            object = it->second;
+            container = &object->container();
+    }
+    if (slot >= container->size()) {
+        _debug("Received item in invalid inventory slot; ignored.", Color::FAILURE);
+        return;
+    }
+    auto &invSlot = (*container)[slot];
+    invSlot.first = item;
+    invSlot.second = quantity;
+    if (_recipeList != nullptr)
+        _recipeList->markChanged();
+    switch(serial){
+        case INVENTORY: _inventoryWindow->forceRefresh();   break;
+        case GEAR:      _gearWindow->forceRefresh();        break;
+        default:
+            object->onInventoryUpdate();
+    }
+
+    if (item != nullptr && // It's an actual item
+        (serial == INVENTORY || serial == GEAR) && // You are receiving it
+        _actionTimer > 0) // You were crafting or gathering
+            if (item->sounds() != nullptr)
+                item->sounds()->playOnce("drop");
 }
 
 
