@@ -6,7 +6,9 @@
 NPC::NPC(const NPCType *type, const Point &loc):
     Entity(type, loc, type->maxHealth()),
     _state(IDLE)
-{}
+{
+    _loot.reset(new Loot);
+}
 
 void NPC::update(ms_t timeElapsed){
     if (health() > 0){
@@ -24,8 +26,8 @@ void NPC::onDeath(){
     Server &server = *Server::_instance;
     server.forceAllToUntarget(*this);
 
-    npcType()->lootTable().instantiate(_loot);
-    if (! _loot.empty())
+    npcType()->lootTable().instantiate(*_loot);
+    if (! _loot->empty())
         for (const User *user : server.findUsersInArea(location()))
             server.sendMessage(user->socket(), SV_LOOTABLE, makeArgs(serial()));
 
@@ -115,19 +117,19 @@ void NPC::sendInfoToClient(const User &targetUser) const {
         server.sendMessage(client, SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 
     // Loot
-    if (!_loot.empty())
+    if (!_loot->empty())
         server.sendMessage(client, SV_LOOTABLE, makeArgs(serial()));
 }
 
 void NPC::describeSelfToNewWatcher(const User &watcher) const{
-    _loot.sendContentsToUser(watcher, serial());
+    _loot->sendContentsToUser(watcher, serial());
 }
 
 void NPC::alertWatcherOnInventoryChange(const User &watcher, size_t slot) const{
-    _loot.sendSingleSlotToUser(watcher, serial(), slot);
+    _loot->sendSingleSlotToUser(watcher, serial(), slot);
 
     const Server &server = Server::instance();
-    if (_loot.empty())
+    if (_loot->empty())
         server.sendMessage(watcher.socket(), SV_NOT_LOOTABLE, makeArgs(serial()));
 }
 
@@ -135,7 +137,7 @@ ServerItem::Slot *NPC::getSlotToTakeFromAndSendErrors(size_t slotNum, const User
     const Server &server = Server::instance();
     const Socket &socket = user.socket();
 
-    if (_loot.empty()){
+    if (_loot->empty()){
         server.sendMessage(socket, SV_EMPTY_SLOT);
         return nullptr;
     }
@@ -143,12 +145,12 @@ ServerItem::Slot *NPC::getSlotToTakeFromAndSendErrors(size_t slotNum, const User
     if (!server.isEntityInRange(socket, user, this))
         return nullptr;
 
-    if (! _loot.isValidSlot(slotNum)) {
+    if (! _loot->isValidSlot(slotNum)) {
         server.sendMessage(socket, SV_INVALID_SLOT);
         return nullptr;
     }
 
-    ServerItem::Slot &slot = _loot.at(slotNum);
+    ServerItem::Slot &slot = _loot->at(slotNum);
     if (slot.first == nullptr){
         server.sendMessage(socket, SV_EMPTY_SLOT);
         return nullptr;

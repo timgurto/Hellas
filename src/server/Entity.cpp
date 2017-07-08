@@ -14,20 +14,23 @@ Entity::Entity(const EntityType *type, const Point &loc, health_t health):
 
     _health(health),
     _attackTimer(0),
-    _target(nullptr)
+    _target(nullptr),
+    _loot(nullptr)
 {}
 
 Entity::Entity(size_t serial): // For set/map lookup ONLY
     _type(nullptr),
     _serial(serial),
-    _spawner(nullptr)
+    _spawner(nullptr),
+    _loot(nullptr)
 {}
 
 Entity::Entity(const Point &loc): // For set/map lookup ONLY
     _type(nullptr),
     _location(loc),
     _serial(0),
-    _spawner(nullptr)
+    _spawner(nullptr),
+    _loot(nullptr)
 {}
 
 Entity::~Entity(){

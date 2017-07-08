@@ -17,7 +17,7 @@ public:
     std::pair<const ServerItem *, size_t> &at(size_t i) { return _container[i]; }
 
 
-private:
+private :
     ServerItem::vect_t _container;
 
 };

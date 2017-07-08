@@ -1,7 +1,11 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include <cassert>
+#include <memory>
+
 #include "EntityType.h"
+#include "Loot.h"
 #include "ServerItem.h"
 #include "../Message.h"
 #include "../Point.h"
@@ -77,6 +81,8 @@ public:
     virtual void onOutOfRange(const Entity &rhs) const {} // This will be called for both entities.
     virtual Message outOfRangeMessage() const { return Message(); };
     virtual bool shouldAlwaysBeKnownToUser(const User &user) const { return false; }
+    
+    const Loot &loot() const { assert(_loot != nullptr); return *_loot; }
 
     /*
     Determine whether the proposed new location is legal, considering movement speed and
@@ -87,6 +93,7 @@ public:
 
 protected:
     void type(const EntityType *type) { _type = type; }
+    std::shared_ptr<Loot> _loot;
 
 private:
     static size_t generateSerial();

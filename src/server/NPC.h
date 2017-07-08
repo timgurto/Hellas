@@ -2,7 +2,6 @@
 #define NPC_H
 
 #include "Entity.h"
-#include "Loot.h"
 #include "NPCType.h"
 #include "objects/Object.h"
 #include "../Point.h"
@@ -22,7 +21,6 @@ public:
     virtual ~NPC(){}
 
     const NPCType *npcType() const { return dynamic_cast<const NPCType *>(type()); }
-    const Loot &loot() const { return _loot; }
 
     virtual health_t maxHealth() const override { return npcType()->maxHealth(); }
     virtual health_t attack() const override { return npcType()->attack(); }
@@ -44,9 +42,6 @@ public:
 
     virtual void update(ms_t timeElapsed);
     void processAI(ms_t timeElapsed);
-
-private:
-    Loot _loot;
 };
 
 #endif

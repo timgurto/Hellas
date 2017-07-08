@@ -1,32 +1,31 @@
 #include <cassert>
 
 #include "Object.h"
+#include "ObjectLoot.h"
 #include "../Server.h"
 #include "../../util.h"
 
 Object::Object(const ObjectType *type, const Point &loc):
-Entity(type, loc, type->strength()),
-_numUsersGathering(0),
-_transformTimer(0),
-_container(nullptr),
-_deconstruction(nullptr),
-_permissions(*this),
-_loot(*this)
+    Entity(type, loc, type->strength()),
+    _numUsersGathering(0),
+    _transformTimer(0),
+    _container(nullptr),
+    _deconstruction(nullptr),
+    _permissions(*this)
 {
     setType(type);
     objType().incrementCounter();
+    _loot.reset(new ObjectLoot(*this));
 }
 
 Object::Object(size_t serial):
     Entity(serial),
-    _permissions(*this),
-    _loot(*this)
+    _permissions(*this)
 {}
 
 Object::Object(const Point &loc):
     Entity(loc),
-    _permissions(*this),
-    _loot(*this)
+    _permissions(*this)
 {}
 
 Object::~Object(){
@@ -183,12 +182,17 @@ void Object::onDeath(){
     Server &server = *Server::_instance;
     server.forceAllToUntarget(*this);
 
-    _loot.populate();
+    populateLoot();
 
     if (hasContainer())
         container().removeAll();
 
     Entity::onDeath();
+}
+
+void Object::populateLoot(){
+    auto &objLoot = static_cast<ObjectLoot &>(*_loot);
+        objLoot.populate();
 }
 
 bool Object::isAbleToDeconstruct(const User &user) const{
@@ -245,14 +249,14 @@ void Object::describeSelfToNewWatcher(const User &watcher) const{
                 server.sendInventoryMessage(watcher, i, *this);
     }
 
-    _loot.sendContentsToUser(watcher, serial());
+    _loot->sendContentsToUser(watcher, serial());
 }
 
 ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum, const User &user){
     const Server &server = Server::instance();
     const Socket &socket = user.socket();
 
-    auto hasLoot = ! _loot.empty();
+    auto hasLoot = ! _loot->empty();
     if (! (hasLoot || hasContainer())){
         server.sendMessage(socket, SV_NO_INVENTORY);
         return nullptr;
@@ -272,7 +276,7 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum, const U
     }
 
     if (hasLoot){
-        ServerItem::Slot &slot = _loot.at(slotNum);
+        ServerItem::Slot &slot = _loot->at(slotNum);
         if (slot.first == nullptr){
             server.sendMessage(socket, SV_EMPTY_SLOT);
             return nullptr;
@@ -297,8 +301,8 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum, const U
 void Object::alertWatcherOnInventoryChange(const User &watcher, size_t slot) const{
     const Server &server = Server::instance();
 
-    if (! _loot.empty()){
-        _loot.sendSingleSlotToUser(watcher, serial(), slot);
+    if (! _loot->empty()){
+        _loot->sendSingleSlotToUser(watcher, serial(), slot);
 
     } else {
         const std::string &username = watcher.name();
