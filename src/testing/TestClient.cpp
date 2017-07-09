@@ -145,3 +145,18 @@ ClientObject &TestClient::getFirstObject() {
     auto it =objects.begin();
     return *it->second;
 }
+
+void TestClient::simulateClick(const Point &position){
+    const auto oldPosition = _client->_mouse;
+    _client->_mouse = position;
+    _client->onMouseMove();
+
+    SDL_Event mouseDownEvent, mouseUpEvent;
+    mouseDownEvent.type = SDL_MOUSEBUTTONDOWN;
+    mouseUpEvent.type = SDL_MOUSEBUTTONUP;
+    mouseDownEvent.button.button = mouseUpEvent.button.button = SDL_BUTTON_LEFT;
+
+    SDL_PushEvent(&mouseDownEvent);
+    SDL_PushEvent(&mouseUpEvent);
+
+}

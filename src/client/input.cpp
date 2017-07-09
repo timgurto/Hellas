@@ -178,18 +178,8 @@ void Client::handleInput(double delta){
             SDL_GetMouseState(&x, &y);
             _mouse.x = x * SCREEN_X / static_cast<double>(renderer.width());
             _mouse.y = y * SCREEN_Y / static_cast<double>(renderer.height());
-            _mouseMoved = true;
-                
-            Element::resetTooltip();
-            for (Window *window : _windows)
-                if (window->visible())
-                    window->onMouseMove(_mouse);
-            for (Element *element : _ui)
-                if (element->visible())
-                    element->onMouseMove(_mouse);
 
-            if (!_loaded)
-                break;
+            onMouseMove();
 
             break;
         }
@@ -442,6 +432,19 @@ void Client::handleInput(double delta){
             _mouseMoved = true;
         }
     }
+}
+
+void Client::onMouseMove(){
+    _mouseMoved = true;
+                
+    Element::resetTooltip();
+    for (Window *window : _windows)
+        if (window->visible())
+            window->onMouseMove(_mouse);
+
+    for (Element *element : _ui)
+        if (element->visible())
+            element->onMouseMove(_mouse);
 }
 
 Sprite *Client::getEntityAtMouse(){

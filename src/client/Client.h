@@ -273,6 +273,7 @@ private:
 
     void handleInput(double delta);
     void handleLoginInput(double delta);
+    void onMouseMove();
 
 
     void drawLoadingScreen(const std::string &msg, double progress) const;

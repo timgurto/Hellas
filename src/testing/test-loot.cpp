@@ -130,7 +130,7 @@ TEST_CASE("Looting from a container", "[loot][container][only]"){
             CHECK_FALSE(s.getFirstUser().hasItems(thousandGold));
         }
 
-        SECTION("The loot window is populated"){
+        SECTION("The loot window works"){
             // When he right clicks on the chest
             clientChest.onRightClick(c.client());
 
@@ -140,8 +140,18 @@ TEST_CASE("Looting from a container", "[loot][container][only]"){
             // And the window has volume;
             CHECK(clientChest.window()->contentWidth() > 0);
 
-            // And one item is listed
+            // And at least one item is listed;
             WAIT_UNTIL(clientChest.lootContainer()->size() > 0);
+
+            // And the user can loot using this window
+            Point buttonPos =
+                clientChest.window()->rect() +
+                Point(0, Window::HEADING_HEIGHT) +
+                clientChest.lootContainer()->rect() +
+                Point(5, 5);
+            c.simulateClick(buttonPos);
+
+            WAIT_UNTIL(c.inventory()[0].first != nullptr);
         }
     }
 

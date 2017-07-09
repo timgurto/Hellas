@@ -53,6 +53,7 @@ public:
     MessageCode getNextMessage() const;
     bool waitForMessage(MessageCode desiredMsg, ms_t timeout = DEFAULT_TIMEOUT) const;
     void waitForRedraw();
+    void simulateClick(const Point &position);
 
 private:
     Client *_client;
