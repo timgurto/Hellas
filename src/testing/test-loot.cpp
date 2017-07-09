@@ -1,6 +1,7 @@
 #include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
+#include "../client/ui/TakeContainer.h"
 
 TEST_CASE("Client gets loot info and can loot", "[loot]"){
     // Given an NPC that always drops 1 gold
@@ -88,7 +89,7 @@ TEST_CASE("Chance for strength-items as loot from object", "[loot][strength]"){
     WAIT_UNTIL(c.inventory()[0].first != nullptr);
 }
 
-TEST_CASE("Looting from a container", "[loot][container]"){
+TEST_CASE("Looting from a container", "[loot][container][only]"){
     // Given a running server and client;
     // And a chest object type with 10 container slots;
     // And a gold item that stacks to 100;
@@ -111,6 +112,9 @@ TEST_CASE("Looting from a container", "[loot][container]"){
         REQUIRE_FALSE(chest.loot().empty());
         c.waitForMessage(SV_LOOTABLE);
 
+        auto &clientChest = c.getFirstObject();
+        WAIT_UNTIL(clientChest.lootable());
+
         SECTION("Users can receive loot"){
             // When he loots every slot
             for (size_t i = 0; i != 10; ++i)
@@ -128,11 +132,16 @@ TEST_CASE("Looting from a container", "[loot][container]"){
 
         SECTION("The loot window is populated"){
             // When he right clicks on the chest
-            auto &clientChest = c.getFirstObject();
             clientChest.onRightClick(c.client());
 
-            // Then it shows the loot window
+            // Then it shows the loot window;
             WAIT_UNTIL(clientChest.lootContainer() != nullptr);
+
+            // And the window has volume;
+            CHECK(clientChest.window()->contentWidth() > 0);
+
+            // And one item is listed
+            WAIT_UNTIL(clientChest.lootContainer()->size() > 0);
         }
     }
 

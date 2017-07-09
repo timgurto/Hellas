@@ -34,8 +34,8 @@ public:
     void height(px_t h) override;
     void setTitle(const std::string &title);
     
-    px_t contentWidth() { return _content->width(); }
-    px_t contentHeight() { return _content->height(); }
+    px_t contentWidth() const { return _content->width(); }
+    px_t contentHeight() const { return _content->height(); }
     const Label *getHeading() const { return _heading; }
 
     void addChild(Element *child) override;

@@ -173,10 +173,7 @@ void ClientObject::onLeftClick(Client &client){
 }
 
 void ClientObject::onRightClick(Client &client){
-    if (canBeAttackedByPlayer()){
-        client.setTarget(*this, true);
-        return;
-    }
+    client.setTarget(*this, canBeAttackedByPlayer());
 
     // Make sure object is in range
     if (distance(client.playerCollisionRect(), collisionRect()) > Client::ACTION_DISTANCE) {
@@ -199,14 +196,15 @@ void ClientObject::onRightClick(Client &client){
     }
 
     // Create window, if necessary
-    if (_window == nullptr){
+    else {
         assembleWindow(client);
         if (_window != nullptr)
             client.addWindow(_window);
     }
 
     // Watch object
-    if (objType.containerSlots() > 0 || objType.merchantSlots() > 0 || isBeingConstructed())
+    if (objType.containerSlots() > 0 || objType.merchantSlots() > 0 || isBeingConstructed() ||
+        _lootable)
         client.watchObject(*this);
 
     if (_window != nullptr) {
@@ -466,7 +464,10 @@ void ClientObject::assembleWindow(Client &client){
         Rect winRect = location();
         winRect.w = WIDTH;
         winRect.h = HEIGHT;
-        _window = Window::WithRectAndTitle(winRect, objectType()->name());
+        if (_window == nullptr)
+            _window = Window::WithRectAndTitle(winRect, objectType()->name());
+        else
+            _window->resize(WIDTH, HEIGHT);
         _window->addChild(_lootContainer);
 
         return;
@@ -519,13 +520,14 @@ void ClientObject::assembleWindow(Client &client){
             currentHeight = _window->contentHeight();
         _window->resize(currentWidth, currentHeight + BUTTON_GAP);
 
-    } else {
-        if (_window != nullptr){
-            _window->hide();
-            client.removeWindow(_window);
-            delete _window;
-            _window = nullptr;
-        }
+        return;
+    }
+
+    if (_window != nullptr){
+        _window->hide();
+        client.removeWindow(_window);
+        delete _window;
+        _window = nullptr;
     }
 }
 

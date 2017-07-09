@@ -71,6 +71,7 @@ public:
 
     health_t health() const { return _health; }
     void health(health_t health) { _health = health; }
+    bool isDead() const { return _health == 0; }
 
     void reduceHealth(int damage);
     virtual void onHealthChange() {}; // Probably alerting relevant users.

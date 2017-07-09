@@ -302,8 +302,11 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum, const U
 void Object::alertWatcherOnInventoryChange(const User &watcher, size_t slot) const{
     const Server &server = Server::instance();
 
-    if (! _loot->empty()){
+    if (isDead()){ // Assume this is regarding loot
         _loot->sendSingleSlotToUser(watcher, serial(), slot);
+
+        if (_loot->empty())
+            server.sendMessage(watcher.socket(), SV_NOT_LOOTABLE, makeArgs(serial()));
 
     } else {
         const std::string &username = watcher.name();

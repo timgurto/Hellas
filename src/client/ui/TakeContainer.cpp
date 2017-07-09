@@ -1,6 +1,9 @@
+#include <cassert>
 #include <utility>
 
 #include "Button.h"
+#include "ColorBlock.h"
+#include "Label.h"
 #include "List.h"
 #include "TakeContainer.h"
 #include "../Client.h"
@@ -10,12 +13,13 @@ _linked(linked),
 _serial(serial),
 Element(rect),
 _list(new List(rect, Element::ITEM_HEIGHT + 2)){
+    assert(_serial != 0);
+
     addChild(_list);
     for (size_t i = 0; i != _linked.size(); ++i)
         _slots[i] = std::make_pair(_serial, i);
 }
-#include "ColorBlock.h"
-#include "Label.h"
+
 void TakeContainer::repopulate(){
     px_t oldScroll = _list->scrollPos();
 
