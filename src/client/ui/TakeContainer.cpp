@@ -11,12 +11,13 @@
 TakeContainer::TakeContainer(ClientItem::vect_t &linked, size_t serial, const Rect &rect):
 _linked(linked),
 _serial(serial),
+_slots(LOOT_CAPACITY),
 Element(rect),
 _list(new List(rect, Element::ITEM_HEIGHT + 2)){
     assert(_serial != 0);
 
     addChild(_list);
-    for (size_t i = 0; i != _linked.size(); ++i)
+    for (size_t i = 0; i != LOOT_CAPACITY; ++i)
         _slots[i] = std::make_pair(_serial, i);
 }
 

@@ -5,8 +5,6 @@
 
 extern Renderer renderer;
 
-const size_t ClientNPC::LOOT_CAPACITY = 8;
-
 ClientNPC::ClientNPC(size_t serial, const ClientNPCType *type, const Point &loc):
 ClientObject(serial, type, loc)
 {}

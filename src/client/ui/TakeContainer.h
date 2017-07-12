@@ -17,6 +17,8 @@ public:
     // Send a CL_TAKE message.  data: a pair containing the serial and slot.
     static void take(void *data);
 
+    static const size_t LOOT_CAPACITY = 8;
+
 private:
     ClientItem::vect_t &_linked;
     size_t _serial; // The serial of the object with this container.
@@ -24,7 +26,7 @@ private:
     List *_list;
 
     typedef std::pair<size_t, size_t> slot_t;
-    std::map<size_t, slot_t> _slots; // slot -> serial/slot pairs, for button functions
+    std::vector<slot_t> _slots; // slot -> serial/slot pairs, for button functions
 };
 
 #endif

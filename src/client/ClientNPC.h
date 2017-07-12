@@ -7,8 +7,6 @@
 class ClientNPC : public ClientObject {
 
 public:
-    static const size_t LOOT_CAPACITY;
-
     ClientNPC(size_t serial, const ClientNPCType *type = nullptr, const Point &loc = Point());
     ~ClientNPC(){}
     bool isFlat() const override;

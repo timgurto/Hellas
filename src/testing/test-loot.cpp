@@ -82,11 +82,32 @@ TEST_CASE("Chance for strength-items as loot from object", "[loot][strength]"){
 
     CHECK(clientSnowman.lootable());
 
-    c.watchObject(clientSnowman);
-    WAIT_UNTIL(clientSnowman.container().size() > 0);
+    SECTION("Looting works"){
+        c.watchObject(clientSnowman);
+        WAIT_UNTIL(clientSnowman.container().size() > 0);
 
-    c.sendMessage(CL_TAKE_ITEM, makeArgs(snowman.serial(), 0));
-    WAIT_UNTIL(c.inventory()[0].first != nullptr);
+        c.sendMessage(CL_TAKE_ITEM, makeArgs(snowman.serial(), 0));
+        WAIT_UNTIL(c.inventory()[0].first != nullptr);
+    }
+
+    SECTION("The loot window works"){
+        // When he right-clicks on the chest
+        clientSnowman.onRightClick(c.client());
+
+        // And the loot window appears
+        WAIT_UNTIL(clientSnowman.lootContainer() != nullptr);
+        WAIT_UNTIL(clientSnowman.lootContainer()->size() > 0);
+
+        // Then the user can loot using this window
+        Point buttonPos =
+            clientSnowman.window()->rect() +
+            Point(0, Window::HEADING_HEIGHT) +
+            clientSnowman.lootContainer()->rect() +
+            Point(5, 5);
+        c.simulateClick(buttonPos);
+
+        WAIT_UNTIL(c.inventory()[0].first != nullptr);
+    }
 }
 
 TEST_CASE("Looting from a container", "[loot][container][only]"){
@@ -131,7 +152,7 @@ TEST_CASE("Looting from a container", "[loot][container][only]"){
         }
 
         SECTION("The loot window works"){
-            // When he right clicks on the chest
+            // When he right-clicks on the chest
             clientChest.onRightClick(c.client());
 
             // Then it shows the loot window;
@@ -166,7 +187,7 @@ TEST_CASE("Looting from a container", "[loot][container][only]"){
         CHECK(c.inventory()[0].first == nullptr);
     }
 
-    SECTION(" An owned container can be looted from"){
+    SECTION("An owned container can be looted from"){
         // And the chest has an owner
         chest.permissions().setPlayerOwner("alice");
 

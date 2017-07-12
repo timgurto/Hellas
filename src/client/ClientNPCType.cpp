@@ -6,7 +6,6 @@
 ClientNPCType::ClientNPCType(const std::string &id, health_t maxHealthArg):
 ClientObjectType(id)
 {
-    containerSlots(ClientNPC::LOOT_CAPACITY);
     maxHealth(maxHealthArg);
     Client &client = *Client::_instance;
     damageParticles(client.findParticleProfile("blood"));
