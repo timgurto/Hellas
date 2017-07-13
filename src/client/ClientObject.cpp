@@ -660,7 +660,7 @@ const Texture &ClientObject::cursor(const Client &client) const {
         if (ot.containerSlots() > 0)
             return client.cursorContainer();
     }
-    if (ot.merchantSlots() > 0)
+    if (lootable() || ot.merchantSlots() > 0)
         return client.cursorContainer();
 
     return client.cursorNormal();

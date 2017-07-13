@@ -17,9 +17,6 @@ public:
 
     // From ClientCombatant:
     bool canBeAttackedByPlayer() const override;
-    
-    // From Sprite
-    const Texture &cursor(const Client &client) const override;
 };
 
 #endif

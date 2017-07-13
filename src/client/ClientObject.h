@@ -78,7 +78,6 @@ public:
     virtual char classTag() const override { return 'o'; }
 
     virtual void update(double delta) override;
-    virtual const Texture &cursor(const Client &client) const override;
     virtual const std::string &name() const override { return objectType()->name(); }
     virtual const Texture &image() const override;
     virtual const Texture &highlightImage() const override;
@@ -103,6 +102,7 @@ public:
     virtual const Point &combatantLocation() const { return location(); }
 
     // From Sprite
+    const Texture &cursor(const Client &client) const override;
     void draw(const Client &client) const;
 
 
