@@ -820,3 +820,13 @@ void ClientObject::draw(const Client &client) const{
                                3, 1));
     }
 }
+
+const Color &ClientObject::nameColor() const{
+    if (belongsToPlayerCity())
+        return Color::COMBATANT_ALLY;
+
+    if (belongsToPlayer())
+        return Color::COMBATANT_SELF;
+
+    return ClientCombatant::nameColor();
+}

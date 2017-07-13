@@ -100,6 +100,7 @@ public:
     virtual const Sprite *entityPointer() const override { return this; }
     virtual bool canBeAttackedByPlayer() const override;
     virtual const Point &combatantLocation() const { return location(); }
+    virtual const Color &nameColor() const override;
 
     // From Sprite
     const Texture &cursor(const Client &client) const override;

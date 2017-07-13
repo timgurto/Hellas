@@ -163,7 +163,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 164,Server sometimes gets in infinite loop when a client disconnects,144,21,Bug,,TRUE,,
 165,Convey NPC difficulty without levels,5,34,Usability,,,,3
 166,Design trapped-container tech tree,8,34,Content,171,,,
-167,Loot random item(s?) on container destruction,55,5,Feature,15,,,1
+167,Loot random item(s?) on container destruction,55,5,Feature,15,TRUE,,1
 168,"On PvP kill, steal skill (they lose random leaf skill, you gain items that pay for it)",34,21,Feature,26,,,2
 169,Add a spectrum of container strengths,13,13,Content,,,,
 170,An object that appears to have a different type to enemies,5,5,Feature,,,,
@@ -178,3 +178,4 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 179,Add taunt ability for warrior,5,21,Feature,178,,,1
 180,"Update map pins at limited frequency, e.g., 1s",2,5,Performance,,,,
 181,Send object-movement updates to owner and city's members,5,3,Bug,,,,
+182,Maintain only one set of scroll-bar triangle images,2,2,Performance,,,,

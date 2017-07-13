@@ -172,3 +172,13 @@ TEST_CASE("Gear-slot names are initialized once", "[.slow][tooltip][gear][invent
         CHECK(Client::GEAR_SLOT_NAMES.size() == 8);
     }
 }
+
+TEST_CASE("A player's objects are the appropriate color", "[ownership]"){
+    TestServer s = TestServer::WithData("basic_rock");
+    TestClient c = TestClient::WithUsernameAndData("alice", "basic_rock");
+
+    s.addObject("rock", Point(10, 15), "alice");
+    
+    WAIT_UNTIL(c.objects().size() == 1);
+    CHECK(c.getFirstObject().nameColor() == Color::COMBATANT_SELF);
+}

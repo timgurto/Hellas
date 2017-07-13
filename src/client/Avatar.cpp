@@ -186,3 +186,10 @@ bool Avatar::shouldDrawHealthBar() const{
         return false;
     return ClientCombatant::shouldDrawHealthBar();
 }
+
+const Color &Avatar::nameColor() const{    
+    if (this == &Client::_instance->character() )
+        return Color::COMBATANT_SELF;
+
+    return ClientCombatant::nameColor();
+}

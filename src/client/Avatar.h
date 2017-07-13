@@ -57,6 +57,7 @@ public:
     virtual bool belongsToPlayerCity() const override;
     virtual const Point &combatantLocation() const { return location(); }
     virtual bool shouldDrawHealthBar() const override;
+    virtual const Color &nameColor() const override;
 
     void playAttackSound() const; // The player has attacked; play an appropriate sound.
     void playDefendSound() const; // The player has been attacked; play an appropriate sound.

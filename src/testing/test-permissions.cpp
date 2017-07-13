@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Objects have no owner by default"){
+TEST_CASE("Objects have no owner by default", "[ownership]"){
     // When a basic object is created
     TestServer s = TestServer::WithData("basic_rock");
     s.addObject("rock", Point(10, 10));
@@ -13,7 +13,7 @@ TEST_CASE("Objects have no owner by default"){
     CHECK_FALSE(rock.permissions().hasOwner());
 }
 
-TEST_CASE("Constructing an object grants ownership"){
+TEST_CASE("Constructing an object grants ownership", "[ownership]"){
     // Given a logged-in client
     TestServer s = TestServer::WithData("brick_wall");
     TestClient c = TestClient::WithData("brick_wall");
@@ -29,7 +29,7 @@ TEST_CASE("Constructing an object grants ownership"){
     CHECK(wall.permissions().isOwnedByPlayer(c->username()));
 }
 
-TEST_CASE("Public-access objects"){
+TEST_CASE("Public-access objects", "[ownership]"){
     // Given a rock with no owner
     TestServer s = TestServer::WithData("basic_rock");
     TestClient c = TestClient::WithData("basic_rock");
@@ -49,7 +49,7 @@ TEST_CASE("Public-access objects"){
     WAIT_UNTIL_TIMEOUT(user.inventory()[0].first == &rockItem, 200);
 }
 
-TEST_CASE("The owner can access an owned object"){
+TEST_CASE("The owner can access an owned object", "[ownership]"){
     // Given a rock owned by a user
     TestServer s = TestServer::WithData("basic_rock");
     TestClient c = TestClient::WithData("basic_rock");
@@ -70,7 +70,7 @@ TEST_CASE("The owner can access an owned object"){
     WAIT_UNTIL_TIMEOUT(user.inventory()[0].first == &rockItem, 200);
 }
 
-TEST_CASE("A non-owner cannot access an owned object"){
+TEST_CASE("A non-owner cannot access an owned object", "[ownership]"){
     // Given a rock owned by Alice
     TestServer s = TestServer::WithData("basic_rock");
     s.addObject("rock", Point(10, 10));
@@ -191,7 +191,7 @@ TEST_CASE("Non-existent cities can't own objects"){
     CHECK_FALSE(rock.permissions().hasOwner());
 }
 
-TEST_CASE("New objects are added to owner index"){
+TEST_CASE("New objects are added to owner index", "[ownership]"){
     // Given a server with rock objects
     TestServer s = TestServer::WithData("basic_rock");
 
@@ -212,7 +212,7 @@ TEST_CASE("The object-owner index is initially empty"){
     CHECK(s.objectsByOwner().getObjectsWithSpecificOwner(owner).size() == 0);
 }
 
-TEST_CASE("A removed object is removed from the object-owner index"){
+TEST_CASE("A removed object is removed from the object-owner index", "[ownership]"){
     // Given a server
     TestServer s = TestServer::WithData("basic_rock");
     // And a rock object owned by Alice
@@ -227,7 +227,7 @@ TEST_CASE("A removed object is removed from the object-owner index"){
     WAIT_UNTIL (s.objectsByOwner().getObjectsWithSpecificOwner(owner).size() == 0);
 }
 
-TEST_CASE("New ownership is reflected in the object-owner index"){
+TEST_CASE("New ownership is reflected in the object-owner index", "[ownership]"){
     // Given a server with rock objects
     TestServer s = TestServer::WithData("basic_rock");
 

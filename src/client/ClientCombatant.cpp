@@ -54,13 +54,6 @@ bool ClientCombatant::shouldDrawHealthBar() const{
 const Color &ClientCombatant::nameColor() const{
     if (canBeAttackedByPlayer())
         return Color::COMBATANT_ENEMY;
-    
-    const ClientCombatant *playerCharacter = &Client::_instance->character();
-    if (this == playerCharacter )
-        return Color::COMBATANT_SELF;
-
-    if (belongsToPlayerCity())
-        return Color::COMBATANT_ALLY;
 
     return Color::COMBATANT_NEUTRAL;
 }
