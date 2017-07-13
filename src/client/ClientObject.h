@@ -74,6 +74,8 @@ public:
     bool lootable() const { return _lootable; }
     void lootable(bool b) { _lootable = b; }
     const TakeContainer *lootContainer() { return _lootContainer; }
+    bool belongsToPlayer() const;
+    bool belongsToPlayerCity() const;
 
     virtual char classTag() const override { return 'o'; }
 

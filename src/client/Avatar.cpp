@@ -168,7 +168,7 @@ const Texture &Avatar::cursor(const Client &client) const{
     return client.cursorNormal();
 }
 
-bool Avatar::belongsToPlayerCity() const{
+bool Avatar::isInPlayersCity() const{
     bool hasNoCity = _city.empty();
     if (hasNoCity)
         return false;;

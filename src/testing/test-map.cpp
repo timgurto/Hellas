@@ -20,7 +20,7 @@ TEST_CASE("Objects show up on the map when a client logs in", "[map]"){
     WAIT_UNTIL (c.mapPins().size() == 2);
 }
 
-TEST_CASE("A player shows up on his own map", "[.flaky][map]"){
+TEST_CASE("A player shows up on his own map", "[.flaky][map][color]"){
     // Given a server and client, and a 101x101 map on which players spawn at the center;
     TestServer s = TestServer::WithData("big_map");
     TestClient c = TestClient::WithData("big_map");
@@ -85,7 +85,7 @@ TEST_CASE("Other players show up on the map", "[map][remote]"){
     WAIT_UNTIL(c.mapPins().size() == 2);
 }
 
-TEST_CASE("When a player declares war, his map pin changes color", "[map][remote][war]"){
+TEST_CASE("When a player declares war, his map pin changes color", "[map][remote][war][color]"){
     // Given a server with two clients;
     TestServer s;
     TestClient c;

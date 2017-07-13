@@ -20,8 +20,6 @@ public:
     virtual void sendTargetMessage() const = 0;
     virtual bool canBeAttackedByPlayer() const { return isAlive(); }
     virtual const Sprite *entityPointer() const = 0;
-    virtual bool belongsToPlayer() const { return false; }
-    virtual bool belongsToPlayerCity() const { return false; }
     virtual const Point &combatantLocation() const = 0;
     virtual bool shouldDrawHealthBar() const;
 

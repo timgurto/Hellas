@@ -40,6 +40,7 @@ public:
     const ClientItem *getRandomArmor() const { return _gear[Item::getRandomArmorSlot()].first; }
     void cityName(const std::string &name) { _city = name; }
     const std::string &cityName() const { return _city; }
+    bool isInPlayersCity() const;
 
     // From Sprite
     virtual void draw(const Client &client) const override;
@@ -54,7 +55,6 @@ public:
     virtual void sendTargetMessage() const override;
     virtual bool canBeAttackedByPlayer() const override;
     virtual const Sprite *entityPointer() const override { return this; }
-    virtual bool belongsToPlayerCity() const override;
     virtual const Point &combatantLocation() const { return location(); }
     virtual bool shouldDrawHealthBar() const override;
     virtual const Color &nameColor() const override;

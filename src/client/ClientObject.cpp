@@ -830,3 +830,13 @@ const Color &ClientObject::nameColor() const{
 
     return ClientCombatant::nameColor();
 }
+
+bool ClientObject::belongsToPlayer() const{
+    const Avatar &playerCharacter = Client::_instance->character();
+    return owner() == playerCharacter.name();
+}
+
+bool ClientObject::belongsToPlayerCity() const{
+    const Avatar &playerCharacter = Client::_instance->character();
+    return owner() == playerCharacter.cityName();
+}
