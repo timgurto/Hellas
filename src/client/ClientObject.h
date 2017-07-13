@@ -102,6 +102,9 @@ public:
     virtual bool canBeAttackedByPlayer() const override;
     virtual const Point &combatantLocation() const { return location(); }
 
+    // From Sprite
+    void draw(const Client &client) const;
+
 
     bool userHasAccess() const;
     bool canAlwaysSee() const;

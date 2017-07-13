@@ -19,7 +19,6 @@ public:
     bool canBeAttackedByPlayer() const override;
     
     // From Sprite
-    void draw(const Client &client) const;
     const Texture &cursor(const Client &client) const override;
 };
 

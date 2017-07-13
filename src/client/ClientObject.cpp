@@ -802,3 +802,21 @@ bool ClientObject::canBeAttackedByPlayer() const{
     const Client &client = *Client::_instance;
     return client.isAtWarWith(_owner);
 }
+
+void ClientObject::draw(const Client &client) const{
+    Sprite::draw(client);
+
+    drawHealthBarIfAppropriate(location(), height());
+
+    if (isDebug()) {
+        renderer.setDrawColor(Color::WHITE);
+        renderer.drawRect(collisionRect() + client.offset());
+        renderer.setDrawColor(Color::YELLOW);
+        renderer.fillRect(Rect(location().x + client.offset().x,
+                                location().y + client.offset().y - 1,
+                                1, 3));
+        renderer.fillRect(Rect(location().x + client.offset().x - 1,
+                               location().y + client.offset().y,
+                               3, 1));
+    }
+}
