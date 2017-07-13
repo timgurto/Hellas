@@ -231,6 +231,10 @@ void Object::sendInfoToClient(const User &targetUser) const {
     // Health
     if (health() < maxHealth())
         server.sendMessage(client, SV_ENTITY_HEALTH, makeArgs(serial(), health()));
+
+    // Lootable
+    if (_loot != nullptr && !_loot->empty())
+        server.sendMessage(client, SV_LOOTABLE, makeArgs(serial()));
 }
 
 void Object::describeSelfToNewWatcher(const User &watcher) const{

@@ -206,3 +206,24 @@ TEST_CASE("Looting from a container", "[loot][container][only]"){
         WAIT_UNTIL(c.inventory()[0].first != nullptr);
     }
 }
+
+TEST_CASE("New users are alerted to lootable objects", "[loot]"){
+    // Given a running server;
+    // And a snowflake item with 1 health;
+    // And a snowman object type made of 1000 snowflakes;
+    TestServer s = TestServer::WithData("snowman");
+
+    // And a snowman exists;
+    s.addObject("snowman", Point(10, 15));
+
+    // And the snowman is dead
+    Object &snowman = s.getFirstObject();
+    snowman.reduceHealth(9999);
+
+    // When a client logs in
+    TestClient c = TestClient::WithData("snowman");
+    WAIT_UNTIL(s.users().size() == 1);
+
+    // Then the client finds out that it's lootable
+    CHECK(c.waitForMessage(SV_LOOTABLE));
+}
