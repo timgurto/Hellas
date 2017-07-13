@@ -23,9 +23,6 @@ _transformTime(0)
 {}
 
 ClientObjectType::~ClientObjectType(){
-    // TODO: wrap sound functionality in class that properly handles copies.
-    /*if (_gatherSound != nullptr)
-        Mix_FreeChunk(_gatherSound);*/
     if (_materialsTooltip != nullptr){
         delete _materialsTooltip;
         _materialsTooltip = nullptr;

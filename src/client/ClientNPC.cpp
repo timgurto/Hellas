@@ -27,14 +27,6 @@ void ClientNPC::draw(const Client &client) const{
     }
 }
 
-void ClientNPC::onRightClick(Client &client){
-    client.setTarget(*this, true);
-    
-    // Loot window
-    if (lootable())
-        ClientObject::onRightClick(client);
-}
-
 const Texture &ClientNPC::cursor(const Client &client) const{
     if (isAlive())
         return client.cursorAttack();
