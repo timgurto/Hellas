@@ -283,7 +283,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // Send him his wars
     auto belligerents = _wars.getAllWarsInvolving(name);
     for (auto it = belligerents.first; it != belligerents.second; ++it)
-        sendMessage(newUser.socket(), SV_AT_WAR_WITH, it->second);
+        sendMessage(newUser.socket(), SV_AT_WAR_WITH, it->second.name);
 
     for (const User *userP : findUsersInArea(newUser.location())){
         if (userP == &newUser)

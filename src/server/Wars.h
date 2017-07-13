@@ -7,7 +7,22 @@
 
 class Wars{
 public:
-    typedef std::string Belligerent;
+    struct Belligerent{
+        enum Type{
+            CITY,
+            PLAYER
+        };
+
+        Type type;
+        std::string name;
+        
+        Belligerent(const std::string &name = "", Type type = PLAYER): type(type), name(name) {}
+        Belligerent(const char *name, Type type = PLAYER): type(type), name(name) {}
+
+        bool operator==(const Belligerent &rhs) const;
+        bool operator<(const Belligerent &rhs) const;
+    };
+
     typedef std::pair<Belligerent, Belligerent> Belligerents;
     typedef std::multimap<Belligerent, Belligerent> container_t;
 

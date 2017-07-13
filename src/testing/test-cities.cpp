@@ -3,18 +3,18 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("City creation"){
+TEST_CASE("City creation", "[city]"){
     TestServer s;
     s.cities().createCity("athens");
     CHECK(s.cities().doesCityExist("athens"));
 }
 
-TEST_CASE("No erroneous cities"){
+TEST_CASE("No erroneous cities", "[city]"){
     TestServer s;
     CHECK_FALSE(s.cities().doesCityExist("Fakeland"));
 }
 
-TEST_CASE("Add a player to a city"){
+TEST_CASE("Add a player to a city", "[city]"){
     TestServer s;
     TestClient c = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
@@ -26,7 +26,7 @@ TEST_CASE("Add a player to a city"){
     CHECK(s.cities().isPlayerInCity("alice", "athens"));
 }
 
-TEST_CASE("No erroneous city membership"){
+TEST_CASE("No erroneous city membership", "[city]"){
     TestServer s;
     TestClient c = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
@@ -36,7 +36,7 @@ TEST_CASE("No erroneous city membership"){
     CHECK_FALSE(s.cities().isPlayerInCity("alice", "athens"));
 }
 
-TEST_CASE("Cities can't be overwritten"){
+TEST_CASE("Cities can't be overwritten", "[city]"){
     TestServer s;
     TestClient c = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
@@ -49,13 +49,13 @@ TEST_CASE("Cities can't be overwritten"){
     CHECK(s.cities().isPlayerInCity("alice", "athens"));
 }
 
-TEST_CASE("Default client knows no city membership"){
+TEST_CASE("Default client knows no city membership", "[city]"){
     TestServer s;
     TestClient c;
     CHECK(c->character().cityName() == "");
 }
 
-TEST_CASE("Client is alerted to city membership"){
+TEST_CASE("Client is alerted to city membership", "[city]"){
     TestServer s;
     TestClient c = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
@@ -69,7 +69,7 @@ TEST_CASE("Client is alerted to city membership"){
     WAIT_UNTIL(c->character().cityName() == "athens");
 }
 
-TEST_CASE("Cities are persistent"){
+TEST_CASE("Cities are persistent", "[city]"){
     {
         TestServer server1;
         TestClient client = TestClient::WithUsername("alice");
@@ -85,7 +85,7 @@ TEST_CASE("Cities are persistent"){
     CHECK(server2.cities().isPlayerInCity("alice", "athens"));
 }
 
-TEST_CASE("Clients are told if in a city on login"){
+TEST_CASE("Clients are told if in a city on login", "[city]"){
     TestServer server;
     server.cities().createCity("athens");
     {
@@ -99,7 +99,7 @@ TEST_CASE("Clients are told if in a city on login"){
     WAIT_UNTIL(client2->character().cityName() == "athens");
 }
 
-TEST_CASE("Clients know nearby players' cities", "[.flaky][remote]"){
+TEST_CASE("Clients know nearby players' cities", "[.flaky][remote][city]"){
     // Given Alice is a member of Athens, and connected to the server
     TestServer s;
     s.cities().createCity("athens");
@@ -117,7 +117,7 @@ TEST_CASE("Clients know nearby players' cities", "[.flaky][remote]"){
     WAIT_UNTIL(clientAlice.cityName() == "athens");
 }
 
-TEST_CASE("A player can cede an object to his city", "[.slow]"){
+TEST_CASE("A player can cede an object to his city", "[.slow][city]"){
     // Given a user in Athens;
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");
@@ -141,7 +141,7 @@ TEST_CASE("A player can cede an object to his city", "[.slow]"){
     CHECK_FALSE(rock.permissions().isOwnedByPlayer(user.name()));
 }
 
-TEST_CASE("A player must be in a city to cede", "[.slow]"){
+TEST_CASE("A player must be in a city to cede", "[.slow][city]"){
     // Given a user who owns a rock
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");
@@ -161,7 +161,7 @@ TEST_CASE("A player must be in a city to cede", "[.slow]"){
     CHECK(rock.permissions().isOwnedByPlayer(user.name()));
 }
 
-TEST_CASE("A player can only cede his own objects", "[.slow]"){
+TEST_CASE("A player can only cede his own objects", "[.slow][city]"){
     // Given a user in Athens;
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");

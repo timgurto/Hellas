@@ -1,5 +1,15 @@
 #include "Wars.h"
 
+bool Wars::Belligerent::operator<(const Belligerent &rhs) const{
+    if (name != rhs.name)
+        return name < rhs.name;
+    return type < rhs.type;
+}
+
+bool Wars::Belligerent::operator==(const Belligerent &rhs) const{
+    return name == rhs.name && type == rhs.type;
+}
+
 void Wars::declare(const Belligerent &a, const Belligerent &b){
     container.insert(std::make_pair(a, b));
     container.insert(std::make_pair(b, a));

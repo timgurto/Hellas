@@ -780,8 +780,8 @@ void Server::loadData(const std::string &path){
             break;
         for (auto elem : xr.getChildren("war")) {
             Wars::Belligerent b1, b2;
-            if (!xr.findAttr(elem, "b1", b1) ||
-                !xr.findAttr(elem, "b2", b2)) {
+            if (!xr.findAttr(elem, "b1", b1.name) ||
+                !xr.findAttr(elem, "b2", b2.name)) {
                     _debug("Skipping war with insufficient belligerents.", Color::RED);
                 continue;
             }
@@ -893,8 +893,8 @@ void Server::saveData(const Entities &entities, const Wars &wars, const Cities &
     xw.newFile("World/wars.world");
     for (const Wars::Belligerents &belligerents : wars) {
         auto e = xw.addChild("war");
-        xw.setAttr(e, "b1", belligerents.first);
-        xw.setAttr(e, "b2", belligerents.second);
+        xw.setAttr(e, "b1", belligerents.first.name);
+        xw.setAttr(e, "b2", belligerents.second.name);
     }
     xw.publish();
 #ifndef SINGLE_THREAD

@@ -90,7 +90,7 @@ public:
     void sendConstructionMaterialsMessage(const User &user, const Object &obj) const;
     void sendNewBuildsMessage(const User &user, const std::set<std::string> &ids) const;
     void sendNewRecipesMessage(const User &user, const std::set<std::string> &ids) const;
-    void sendWarAlertMessages(const Wars::Belligerent &b1, const Wars::Belligerent &b2) const;
+    void alertUserToWar(const std::string &username, const Wars::Belligerent &otherBelligerent) const;
 
     // Getters
     const Cities &cities() const { return _cities; }

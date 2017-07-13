@@ -77,3 +77,21 @@ TEST_CASE("Wars cannot be redeclared", "[war]"){
     // Then she receives an SV_ALREADY_AT_WAR error message
     CHECK(alice.waitForMessage(SV_ALREADY_AT_WAR));
 }
+
+TEST_CASE("A player can be at war with a city", "[war][city]"){
+    // Given a running server;
+    TestServer s;
+
+    // And a city named Athens;
+    s.cities().createCity("athens");
+
+    // And a user named Alice
+    TestClient c = TestClient::WithUsername("alice");
+    WAIT_UNTIL(s.users().size() == 1);
+
+    // When a war is declared between Alice and Athens
+    s.wars().declare("alice", "athens");
+
+    // Then they are considered to be at war.
+    CHECK(s.wars().isAtWar("alice", "athens"));
+}
