@@ -39,6 +39,8 @@ bool ClientCombatant::shouldDrawHealthBar() const{
     bool isDamaged = health() < maxHealth();
     if (isDamaged)
         return true;
+    if (canBeAttackedByPlayer())
+        return true;
 
     const Client &client = *Client::_instance;
     bool selected = client.targetAsCombatant() == this;
