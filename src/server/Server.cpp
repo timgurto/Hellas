@@ -531,6 +531,12 @@ const ObjectType *Server::findObjectTypeByName(const std::string &id) const{
     return nullptr;
 }
 
+const User Server::findUserByName(const std::string name) const{
+    auto it = _usersByName.find(name);
+    assert(it != _usersByName.end());
+    return *(it->second);
+}
+
 Object &Server::addObject(const ObjectType *type, const Point &location, const std::string &owner){
     Object *newObj = type->classTag() == 'v' ?
             new Vehicle(dynamic_cast<const VehicleType *>(type), location) :

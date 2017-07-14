@@ -27,7 +27,7 @@ public:
     typedef std::multimap<Belligerent, Belligerent> container_t;
 
     void declare(const Belligerent &a, const Belligerent &b);
-    bool isAtWar(const Belligerent &a, const Belligerent &b) const;
+    bool isAtWar(Belligerent a, Belligerent b) const;
     std::pair<container_t::const_iterator, container_t::const_iterator> getAllWarsInvolving(
             const Belligerent &a) const;
     
@@ -36,6 +36,8 @@ public:
 
 private:
     container_t container;
+
+    static void changePlayerBelligerentToHisCity(Belligerent &belligerent);
 };
 
 #endif

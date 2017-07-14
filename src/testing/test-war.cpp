@@ -95,3 +95,28 @@ TEST_CASE("A player can be at war with a city", "[war][city]"){
     // Then they are considered to be at war.
     CHECK(s.wars().isAtWar("alice", "athens"));
 }
+
+TEST_CASE("A player at war with a city is at war with its members", "[war][city][remote]"){
+    // Given a running server;
+    TestServer s;
+
+    // And a city named Athens;
+    s.cities().createCity("athens");
+
+    // And a user, Alice, who is a member of Athens;
+    RemoteClient alice("-username alice");
+    WAIT_UNTIL(s.users().size() == 1);
+    s.cities().addPlayerToCity(s.getFirstUser(), "athens");
+
+    // And a user, Bob
+    TestClient bob = TestClient::WithUsername("bob");
+
+    // When Bob and Athens go to war
+    Wars::Belligerent
+        b1("bob", Wars::Belligerent::PLAYER),
+        b2("athens", Wars::Belligerent::CITY);
+    s.wars().declare(b1, b2);
+
+    // Then Bob is at war with Alice
+    CHECK(s.wars().isAtWar("alice", "bob"));
+}
