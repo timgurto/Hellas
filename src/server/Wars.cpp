@@ -11,9 +11,24 @@ bool Wars::Belligerent::operator==(const Belligerent &rhs) const{
     return name == rhs.name && type == rhs.type;
 }
 
+void Wars::Belligerent::alertToWarWith(const Belligerent rhs) const{
+    const Server &server = Server::instance();
+
+    if (type == PLAYER)
+        server.alertUserToWar(name, rhs);
+    else{
+        const auto members = server.cities().membersOf(name);
+        for (const auto &member : members)
+            server.alertUserToWar(member, rhs);
+    }
+}
+
 void Wars::declare(const Belligerent &a, const Belligerent &b){
     container.insert(std::make_pair(a, b));
     container.insert(std::make_pair(b, a));
+
+    a.alertToWarWith(b);
+    b.alertToWarWith(a);
 }
 
 bool Wars::isAtWar(Belligerent a, Belligerent b) const{
@@ -42,7 +57,7 @@ void Wars::changePlayerBelligerentToHisCity(Belligerent &belligerent){
 }
 
 std::pair<Wars::container_t::const_iterator, Wars::container_t::const_iterator>
-        Wars::getAllWarsInvolving(const Belligerent &a) const{
-
+        Wars::getAllWarsInvolving(Belligerent a) const{
+    changePlayerBelligerentToHisCity(a);
     return container.equal_range(a);
 }

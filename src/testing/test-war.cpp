@@ -108,15 +108,32 @@ TEST_CASE("A player at war with a city is at war with its members", "[war][city]
     WAIT_UNTIL(s.users().size() == 1);
     s.cities().addPlayerToCity(s.getFirstUser(), "athens");
 
-    // And a user, Bob
-    TestClient bob = TestClient::WithUsername("bob");
-
-    // When Bob and Athens go to war
+    // When new user Bob and Athens go to war
+    TestClient *bob;
     Wars::Belligerent
         b1("bob", Wars::Belligerent::PLAYER),
         b2("athens", Wars::Belligerent::CITY);
-    s.wars().declare(b1, b2);
+
+    SECTION("Bob logs in, then declares war"){
+        bob = new TestClient(TestClient::WithUsername("bob"));
+        WAIT_UNTIL(s.users().size() == 2);
+        s.wars().declare(b1, b2);
+    }
+
+    SECTION("War is declared, then Bob logs in"){
+        s.wars().declare(b1, b2);
+        WAIT_UNTIL(s.wars().isAtWar(b1, b2));
+        bob = new TestClient(TestClient::WithUsername("bob"));
+    }
 
     // Then Bob is at war with Alice
     CHECK(s.wars().isAtWar("alice", "bob"));
+
+    // And Bob knows this
+    REPEAT_FOR_MS(200);
+    CHECK(bob->isAtWarWith("alice"));
+
+    delete bob;
 }
+
+// Persistence

@@ -106,3 +106,13 @@ void Cities::readFromXMLFile(const std::string &filename){
         }
     }
 }
+
+const City::Members &Cities::membersOf(const std::string &cityName) const{
+    auto it = _container.find(cityName);
+    bool cityExists = it != _container.end();
+    if (! cityExists){
+        Server::debug()("Can't fetch members of a city that doesn't exist", Color::FAILURE);
+        assert(false);
+    }
+    return it->second.members();
+}

@@ -13,7 +13,8 @@ public:
 
     City(const Name &name);
 
-    const std::set<std::string> members() const { return _members; }
+    typedef std::set<std::string> Members;
+    const Members &members() const { return _members; }
     
     void addAndAlertPlayer(const User &user);
     void addPlayerWithoutAlerting(const std::string &username);
@@ -21,7 +22,7 @@ public:
 
 private:
     Name _name;
-    std::set<std::string> _members;
+    Members _members;
 };
 
 class Cities{
@@ -32,6 +33,7 @@ public:
     void addPlayerToCity(const User &user, const City::Name &cityName);
     bool isPlayerInCity(const std::string &username, const City::Name &cityName) const;
     const City::Name &getPlayerCity(const std::string &username) const;
+    const City::Members &membersOf(const std::string &cityName) const;
     
     void writeToXMLFile(const std::string &filename) const;
     void readFromXMLFile(const std::string &filename);

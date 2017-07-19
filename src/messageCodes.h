@@ -263,7 +263,11 @@ enum MessageCode{
 
     // "You are at war with ..."
     // Arguments: username
-    SV_AT_WAR_WITH = 162,
+    SV_AT_WAR_WITH_PLAYER = 162,
+
+    // "You are at war with ..."
+    // Arguments: city name
+    SV_AT_WAR_WITH_CITY = 163,
 
     // "User ... has said ...".
     // Arguments: username, message

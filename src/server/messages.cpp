@@ -879,8 +879,6 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             _wars.declare(user->name(), targetUsername);
-            alertUserToWar(user->name(), targetUsername);
-            alertUserToWar(targetUsername, user->name());
             break;
         }
 
@@ -1125,6 +1123,10 @@ void Server::sendNewRecipesMessage(const User &user, const std::set<std::string>
 
 void Server::alertUserToWar(const std::string &username, const Wars::Belligerent &otherBelligerent) const{
     auto it = _usersByName.find(username);
-    if (it != _usersByName.end()) // user1 is online
-        sendMessage(it->second->socket(), SV_AT_WAR_WITH, otherBelligerent.name);
+    if (it == _usersByName.end()) // user1 is offline
+        return;
+
+    const MessageCode code = otherBelligerent.type == Wars::Belligerent::CITY ?
+            SV_AT_WAR_WITH_CITY : SV_AT_WAR_WITH_PLAYER;
+    sendMessage(it->second->socket(), code, otherBelligerent.name);
 }

@@ -977,17 +977,21 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_AT_WAR_WITH:
+        case SV_AT_WAR_WITH_PLAYER:
+        case SV_AT_WAR_WITH_CITY:
         {
-            std::string username;
+            std::string name;
             singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
-            username = std::string(buffer);
+            name = std::string(buffer);
             singleMsg >> del;
             if (del != MSG_END)
                 return;
 
-            _atWarWith.insert(username);
-            _debug << "You are now at war with " << username << Log::endl;
+            if (msgCode == SV_AT_WAR_WITH_PLAYER)
+                _atWarWithPlayer.insert(name);
+            else
+                _atWarWithCity.insert(name);
+            _debug << "You are now at war with " << name << Log::endl;
 
             _target.refreshHealthBarColor();
             _mapWindow->markChanged();

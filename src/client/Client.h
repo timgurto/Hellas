@@ -324,8 +324,10 @@ private:
     typedef std::set<SoundProfile> soundProfiles_t;
     soundProfiles_t _soundProfiles;
     const SoundProfile *_avatarSounds;
-
-    std::set<std::string> _atWarWith;
+    
+    // Your wars, or if you're in a city, your city's wars
+    std::set<std::string> _atWarWithPlayer;
+    std::set<std::string> _atWarWithCity;
     
 
     // Information about the state of the world
