@@ -38,30 +38,39 @@ TEST_CASE("Wars are persistent", "[war]"){
     CHECK(server2.wars().isAtWar("alice", "bob"));
 }
 
-TEST_CASE("Clients are alerted of new wars", "[war]"){
+TEST_CASE("Clients are alerted of new wars", "[war][remote]"){
     // Given Alice is logged in
     TestServer s;
     TestClient alice = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
 
+    // And Bob is logged in
+    RemoteClient rcBob("-username bob");
+    WAIT_UNTIL(s.users().size() == 2);
+
     // When Alice declares war on Bob
     alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "bob");
 
     // Then Alice is alerted to the new war
-    WAIT_UNTIL(alice->isAtWarWith("bob"));
+    WAIT_UNTIL(alice.otherUsers().size() == 1);
+    auto bob = alice.getFirstOtherUser();
+    WAIT_UNTIL(alice->isAtWarWith(bob));
 }
 
-TEST_CASE("Clients are told of existing wars on login", "[war]"){
+TEST_CASE("Clients are told of existing wars on login", "[war][remote]"){
     // Given Alice and Bob are at war
     TestServer s;
     s.wars().declare("alice", "bob");
 
-    // When Alice logs in
+    // When Alice and Bob log in
     TestClient alice = TestClient::WithUsername("alice");
+    RemoteClient rcBob("-username bob");
     WAIT_UNTIL(s.users().size() == 1);
 
     // Then she is told about the war
-    WAIT_UNTIL(alice->isAtWarWith("bob"));
+    WAIT_UNTIL(alice.otherUsers().size() == 1);
+    auto bob = alice.getFirstOtherUser();
+    WAIT_UNTIL(alice->isAtWarWith(bob));
 }
 
 TEST_CASE("Wars cannot be redeclared", "[war]"){

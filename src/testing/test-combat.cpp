@@ -69,7 +69,9 @@ TEST_CASE("Belliegerents can fight" "[remote]"){
     while (distance(uAlice.location(), uBob.location()) > Server::ACTION_DISTANCE)
         uAlice.updateLocation(uBob.location());
 
-    WAIT_UNTIL(alice->isAtWarWith("bobx"));
+    WAIT_UNTIL(alice.otherUsers().size() == 1);
+    const auto &bob = alice.getFirstOtherUser();
+    WAIT_UNTIL(alice->isAtWarWith(bob));
 
     alice.sendMessage(CL_TARGET_PLAYER, "bobx");
     WAIT_UNTIL(uBob.health() < uBob.maxHealth());
