@@ -105,7 +105,7 @@ enum MessageCode{
 
     // "I want to declare war on ..."
     // Arguments: username
-    CL_DECLARE_WAR = 55,
+    CL_DECLARE_WAR_ON_PLAYER = 55,
 
     // "I want to say ... to everybody". 
     // Arguments: message

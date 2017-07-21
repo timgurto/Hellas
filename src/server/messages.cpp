@@ -867,7 +867,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
-        case CL_DECLARE_WAR:
+        case CL_DECLARE_WAR_ON_PLAYER:
         {
             iss.get(buffer, BUFFER_SIZE, MSG_END);
             std::string targetUsername(buffer);

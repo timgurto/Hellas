@@ -9,8 +9,8 @@ TEST_CASE("Basic declaration of war", "[war]"){
     TestClient alice = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
 
-    // When Alice sends a CL_DECLARE_WAR message
-    alice.sendMessage(CL_DECLARE_WAR, "bob");
+    // When Alice sends a CL_DECLARE_WAR_ON_PLAYER message
+    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "bob");
 
     // Then Alice and Bob go to war
     WAIT_UNTIL(s.wars().isAtWar("alice", "bob"));
@@ -45,7 +45,7 @@ TEST_CASE("Clients are alerted of new wars", "[war]"){
     WAIT_UNTIL(s.users().size() == 1);
 
     // When Alice declares war on Bob
-    alice.sendMessage(CL_DECLARE_WAR, "bob");
+    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "bob");
 
     // Then Alice is alerted to the new war
     WAIT_UNTIL(alice->isAtWarWith("bob"));
@@ -72,7 +72,7 @@ TEST_CASE("Wars cannot be redeclared", "[war]"){
     WAIT_UNTIL(s.users().size() == 1);
 
     // When Alice declares war on Bob
-    alice.sendMessage(CL_DECLARE_WAR, "bob");
+    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "bob");
 
     // Then she receives an SV_ALREADY_AT_WAR error message
     CHECK(alice.waitForMessage(SV_ALREADY_AT_WAR));

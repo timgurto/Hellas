@@ -36,7 +36,7 @@ TEST_CASE("Belligerents can target each other" "[remote]"){
         &uAlice = s.findUser("alice"),
         &uBob = s.findUser("bob");
 
-    alice.sendMessage(CL_DECLARE_WAR, "bob");
+    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "bob");
     alice.sendMessage(CL_TARGET_PLAYER, "bob");
     WAIT_UNTIL(uAlice.target() == &uBob);
 }
@@ -61,7 +61,7 @@ TEST_CASE("Belliegerents can fight" "[remote]"){
     RemoteClient bob("-username bobx");
     WAIT_UNTIL(s.users().size() == 2);
 
-    alice.sendMessage(CL_DECLARE_WAR, "bobx");
+    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "bobx");
 
     User
         &uAlice = s.findUser("alicex"),

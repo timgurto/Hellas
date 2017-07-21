@@ -1138,7 +1138,7 @@ void Client::initializeMessageNames(){
     _messageCommands["take"] = CL_TAKE_ITEM;
     _messageCommands["mount"] = CL_MOUNT;
     _messageCommands["dismount"] = CL_DISMOUNT;
-    _messageCommands["war"] = CL_DECLARE_WAR;
+    _messageCommands["war"] = CL_DECLARE_WAR_ON_PLAYER;
     _messageCommands["cede"] = CL_CEDE;
 
     _messageCommands["say"] = CL_SAY;
