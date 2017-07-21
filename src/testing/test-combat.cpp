@@ -56,24 +56,31 @@ TEST_CASE("Peaceful players can't target each other" "[remote]"){
 }
 
 TEST_CASE("Belliegerents can fight" "[remote]"){
+    // Given a server, Alice, and Bob
     TestServer s;
-    TestClient alice = TestClient::WithUsername("alicex");
-    RemoteClient bob("-username bobx");
+    TestClient alice = TestClient::WithUsername("alice");
+    RemoteClient rcBob("-username bob");
     WAIT_UNTIL(s.users().size() == 2);
 
-    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "bobx");
+    // And Alice is at war with Bob
+    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "bob");
 
+    // When Alice moves within range of Bob
     User
-        &uAlice = s.findUser("alicex"),
-        &uBob = s.findUser("bobx");
+        &uAlice = s.findUser("alice"),
+        &uBob = s.findUser("bob");
     while (distance(uAlice.location(), uBob.location()) > Server::ACTION_DISTANCE)
         uAlice.updateLocation(uBob.location());
 
+    // And Alice knows that the war has successfully been declared
     WAIT_UNTIL(alice.otherUsers().size() == 1);
     const auto &bob = alice.getFirstOtherUser();
     WAIT_UNTIL(alice->isAtWarWith(bob));
 
-    alice.sendMessage(CL_TARGET_PLAYER, "bobx");
+    // And Alice targets Bob
+    alice.sendMessage(CL_TARGET_PLAYER, "bob");
+
+    // Then Bob loses health
     WAIT_UNTIL(uBob.health() < uBob.maxHealth());
 }
 
