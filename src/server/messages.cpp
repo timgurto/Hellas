@@ -868,17 +868,22 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         }
 
         case CL_DECLARE_WAR_ON_PLAYER:
+        case CL_DECLARE_WAR_ON_CITY:
         {
             iss.get(buffer, BUFFER_SIZE, MSG_END);
-            std::string targetUsername(buffer);
+            std::string targetName(buffer);
             iss >> del;
             if (del != MSG_END)
                 return;
-            if (_wars.isAtWar(user->name(), targetUsername)){
+            Wars::Belligerent::Type targetType = msgCode == CL_DECLARE_WAR_ON_PLAYER ?
+                    Wars::Belligerent::PLAYER :
+                    Wars::Belligerent::CITY;
+            Wars::Belligerent target(targetName, targetType);
+            if (_wars.isAtWar(user->name(), target)){
                 sendMessage(client, SV_ALREADY_AT_WAR);
                 break;
             }
-            _wars.declare(user->name(), targetUsername);
+            _wars.declare(user->name(), target);
             break;
         }
 

@@ -145,4 +145,22 @@ TEST_CASE("A player at war with a city is at war with its members", "[war][city]
     delete bob;
 }
 
-// Persistence
+TEST_CASE("Players can declare war on cities", "[war][city]"){
+    // Given a running server;
+    TestServer s;
+
+    // And a city named Athens;
+    s.cities().createCity("athens");
+
+    // And a user, Alice;
+    TestClient alice = TestClient::WithUsername("alice");
+
+    // When Alice declares war on Athens
+    alice.sendMessage(CL_DECLARE_WAR_ON_CITY, "athens");
+
+    // Then they are at war
+    Wars::Belligerent
+        b1("alice", Wars::Belligerent::PLAYER),
+        b2("athens", Wars::Belligerent::CITY);
+    WAIT_UNTIL(s.wars().isAtWar(b1, b2));
+}
