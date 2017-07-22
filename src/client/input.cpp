@@ -265,6 +265,8 @@ void Client::handleInput(double delta){
                         break;
                     }
 
+                hideTargetMenu();
+
                 if (mouseUpOnWindow)
                     break;
 

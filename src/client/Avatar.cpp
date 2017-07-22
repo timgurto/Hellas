@@ -207,6 +207,4 @@ void Avatar::declareWar(void *pUsername){
     const std::string &username = * reinterpret_cast<const std::string *>(pUsername);
     Client &client = *Client::_instance;
     client.sendMessage(CL_DECLARE_WAR_ON_PLAYER, username);
-
-    client.hideTargetMenu();
 }
