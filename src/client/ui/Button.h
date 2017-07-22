@@ -27,6 +27,8 @@ private:
     bool _mouseButtonDown;
     bool _depressed;
 
+    bool _enabled; // False: greyed out; can't be clicked.
+
     void depress();
     void release(bool click); // click: whether, on release, the button's _clickFun will be called.
 
@@ -44,6 +46,9 @@ public:
     
     void width(px_t w) override;
     void height(px_t h) override;
+
+    void enable() { _enabled = true; }
+    void disable() { _enabled = false; }
 };
 
 #endif

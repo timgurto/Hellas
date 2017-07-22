@@ -194,8 +194,13 @@ const Color &Avatar::nameColor() const{
 }
 
 void Avatar::addMenuButtons(List &menu) const{
+    const Client &client = *Client::_instance;
+
     void *pUsername = const_cast<std::string *>(&_name);
-    menu.addChild(new Button(0, "Declare war", declareWar, pUsername));
+    Button *declareWarButton = new Button(0, "Declare war", declareWar, pUsername);
+    if (client.isAtWarWith(*this))
+        declareWarButton->disable();
+    menu.addChild(declareWarButton);
 }
 
 void Avatar::declareWar(void *pUsername){

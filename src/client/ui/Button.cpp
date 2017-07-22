@@ -15,7 +15,8 @@ _caption(nullptr),
 _clickFun(clickFunction),
 _clickData(clickData),
 _mouseButtonDown(false),
-_depressed(false){
+_depressed(false),
+_enabled(true){
     Element::addChild(_background);
     Element::addChild(_content);
     Element::addChild(_border);
@@ -52,12 +53,18 @@ void Button::release(bool click){
 
 void Button::mouseDown(Element &e, const Point &mousePos){
     Button &button = dynamic_cast<Button&>(e);
+    if (!button._enabled)
+        return;
+
     button._mouseButtonDown = true;
     button.depress();
 }
 
 void Button::mouseUp(Element &e, const Point &mousePos){
     Button &button = dynamic_cast<Button&>(e);
+    if (!button._enabled)
+        return;
+
     button._mouseButtonDown = false;
     if (button._depressed) {
         bool click = collision(mousePos, Rect(0, 0, button.rect().w, button.rect().h));
@@ -67,6 +74,9 @@ void Button::mouseUp(Element &e, const Point &mousePos){
 
 void Button::mouseMove(Element &e, const Point &mousePos){
     Button &button = dynamic_cast<Button&>(e);
+    if (!button._enabled)
+        return;
+
     if (collision(mousePos, Rect(0, 0, button.rect().w, button.rect().h))) {
         if (button._mouseButtonDown && !button._depressed)
             button.depress();
