@@ -116,3 +116,13 @@ void Button::height(px_t h){
     if (_caption != nullptr)
         _caption->height(h);
 }
+
+void Button::enable(){
+    _enabled = true;
+    _caption->setColor(FONT_COLOR);
+}
+
+void Button::disable(){
+    _enabled = false;
+    _caption->setColor(Color::DISABLED_TEXT);
+}

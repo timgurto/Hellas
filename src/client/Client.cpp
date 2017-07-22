@@ -186,6 +186,7 @@ _debug("client.log"){
     xr.findAttr(elem, "defaultDraw", Color::DEFAULT_DRAW);
     xr.findAttr(elem, "font", Color::FONT);
     xr.findAttr(elem, "fontOutline", Color::FONT_OUTLINE);
+    xr.findAttr(elem, "disabledText", Color::DISABLED_TEXT);
     xr.findAttr(elem, "tooltipFont", Color::TOOLTIP_FONT);
     xr.findAttr(elem, "tooltipBackground", Color::TOOLTIP_BACKGROUND);
     xr.findAttr(elem, "tooltipBorder", Color::TOOLTIP_BORDER);

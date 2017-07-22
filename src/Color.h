@@ -28,6 +28,7 @@ public:
         DEFAULT_DRAW,
         FONT,
         FONT_OUTLINE,
+        DISABLED_TEXT,
 
         TOOLTIP_FONT,
         TOOLTIP_BACKGROUND,

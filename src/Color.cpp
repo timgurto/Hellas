@@ -22,6 +22,7 @@ Color
     Color::DEFAULT_DRAW,
     Color::FONT,
     Color::FONT_OUTLINE,
+    Color::DISABLED_TEXT,
 
     Color::TOOLTIP_FONT,
     Color::TOOLTIP_BACKGROUND,

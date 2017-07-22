@@ -47,8 +47,8 @@ public:
     void width(px_t w) override;
     void height(px_t h) override;
 
-    void enable() { _enabled = true; }
-    void disable() { _enabled = false; }
+    void enable();
+    void disable();
 };
 
 #endif
