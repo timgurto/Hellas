@@ -58,7 +58,9 @@ public:
     const Point &combatantLocation() const { return location(); }
     bool shouldDrawHealthBar() const override;
     const Color &nameColor() const override;
+
     void addMenuButtons(List &menu) const override;
+    static void declareWar(void *pUsername);
 
     void playAttackSound() const; // The player has attacked; play an appropriate sound.
     void playDefendSound() const; // The player has been attacked; play an appropriate sound.
