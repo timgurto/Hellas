@@ -90,7 +90,7 @@ TEST_CASE("A non-owner cannot access an owned object", "[ownership]"){
     CHECK(user.inventory()[0].first == nullptr);
 }
 
-TEST_CASE("A city can own an object"){
+TEST_CASE("A city can own an object", "[city][ownership]"){
     // Given a rock, and a city named Athens
     TestServer s = TestServer::WithData("basic_rock");
     s.cities().createCity("athens");
@@ -107,7 +107,7 @@ TEST_CASE("A city can own an object"){
     CHECK_FALSE(rock.permissions().isOwnedByPlayer("athens"));
 }
 
-TEST_CASE("City ownership is persistent"){
+TEST_CASE("City ownership is persistent", "[city][ownership][persistence]"){
     // Given a rock owned by Athens
     {
         TestServer s1 = TestServer::WithData("basic_rock");
@@ -125,7 +125,7 @@ TEST_CASE("City ownership is persistent"){
     CHECK(rock.permissions().isOwnedByCity("athens"));
 }
 
-TEST_CASE("City members can use city objects"){
+TEST_CASE("City members can use city objects", "[city][ownership]"){
     // Given a rock owned by Athens;
     TestServer s = TestServer::WithData("basic_rock");
     s.cities().createCity("athens");
@@ -153,7 +153,7 @@ TEST_CASE("City members can use city objects"){
     WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
 }
 
-TEST_CASE("Non-members cannot use city objects"){
+TEST_CASE("Non-members cannot use city objects", "[city][ownership]"){
     // Given a rock owned by Athens;
     TestServer s = TestServer::WithData("basic_rock");
     s.cities().createCity("athens");
@@ -178,7 +178,7 @@ TEST_CASE("Non-members cannot use city objects"){
     CHECK(user.inventory()[0].first == nullptr);
 }
 
-TEST_CASE("Non-existent cities can't own objects"){
+TEST_CASE("Non-existent cities can't own objects", "[city][ownership]"){
     // Given a rock, and a server with no cities
     TestServer s = TestServer::WithData("basic_rock");
     s.addObject("rock", Point(10, 10));

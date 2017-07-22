@@ -69,7 +69,7 @@ TEST_CASE("Client is alerted to city membership", "[city]"){
     WAIT_UNTIL(c->character().cityName() == "athens");
 }
 
-TEST_CASE("Cities are persistent", "[city]"){
+TEST_CASE("Cities are persistent", "[city][persistence]"){
     {
         TestServer server1;
         TestClient client = TestClient::WithUsername("alice");

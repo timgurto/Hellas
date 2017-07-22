@@ -24,7 +24,7 @@ TEST_CASE("No erroneous wars", "[war]"){
     CHECK_FALSE(s.wars().isAtWar("alice", "bob"));
 }
 
-TEST_CASE("Wars are persistent", "[war]"){
+TEST_CASE("Wars are persistent", "[war][persistence]"){
     // Given Alice and Bob are at war, and there is no server running
     {
         TestServer server1;
