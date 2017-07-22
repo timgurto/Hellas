@@ -69,8 +69,12 @@ void Wars::writeToXMLFile(const std::string &filename) const{
     XmlWriter xw(filename);
     for (const Wars::Belligerents &belligerents : container) {
         auto e = xw.addChild("war");
-        xw.setAttr(e, "b1", belligerents.first.name);
-        xw.setAttr(e, "b2", belligerents.second.name);
+        xw.setAttr(e, "name1", belligerents.first.name);
+        if (belligerents.first.type == Belligerent::CITY)
+            xw.setAttr(e, "isCity1", 1);
+        xw.setAttr(e, "name2", belligerents.second.name);
+        if (belligerents.second.type == Belligerent::CITY)
+            xw.setAttr(e, "isCity2", 1);
     }
     xw.publish();
 }
@@ -83,11 +87,16 @@ void Wars::readFromXMLFile(const std::string &filename){
     }
     for (auto elem : xr.getChildren("war")) {
         Wars::Belligerent b1, b2;
-        if (!xr.findAttr(elem, "b1", b1.name) ||
-            !xr.findAttr(elem, "b2", b2.name)) {
+        if (!xr.findAttr(elem, "name1", b1.name) ||
+            !xr.findAttr(elem, "name2", b2.name)) {
                 Server::debug()("Skipping war with insufficient belligerents.", Color::RED);
-            continue;
+                continue;
         }
+        int n;
+        if (xr.findAttr(elem, "isCity1", n) && n != 0)
+            b1.type = Belligerent::CITY;
+        if (xr.findAttr(elem, "isCity2", n) && n != 0)
+            b2.type = Belligerent::CITY;
         declare(b1, b2);
     }
 }

@@ -170,3 +170,26 @@ TEST_CASE("Players can declare war on cities", "[war][city]"){
         b2("athens", Wars::Belligerent::CITY);
     WAIT_UNTIL(s.wars().isAtWar(b1, b2));
 }
+
+TEST_CASE("Wars involving cities are persistent", "[persistence][city][war]"){
+    Wars::Belligerent
+        b1("alice", Wars::Belligerent::PLAYER),
+        b2("athens", Wars::Belligerent::CITY);
+
+    {
+        // Given a city named Athens;
+        TestServer server1;
+        server1.cities().createCity("athens");
+
+        // And Alice and Athens are at war;
+        server1.wars().declare(b1, b2);
+
+        // And there is no server running
+    }
+
+    // When a server begins that keeps persistent data
+    TestServer server2 = TestServer::KeepingOldData();
+
+    // Then Alice and Athens are still at war
+    CHECK(server2.wars().isAtWar(b1, b2));
+}

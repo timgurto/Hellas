@@ -788,8 +788,8 @@ void Server::loadData(const std::string &path){
             _wars.declare(b1, b2);
         }
 
-        _wars.readFromXMLFile("World/wars.world");
         _cities.readFromXMLFile("World/cities.world");
+        _wars.readFromXMLFile("World/wars.world");
 
         _dataLoaded = true;
 
