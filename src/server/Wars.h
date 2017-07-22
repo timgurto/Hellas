@@ -35,6 +35,9 @@ public:
     
     std::multimap<Belligerent, Belligerent>::const_iterator begin() const { return container.begin(); }
     std::multimap<Belligerent, Belligerent>::const_iterator end() const { return container.end(); }
+    
+    void writeToXMLFile(const std::string &filename) const;
+    void readFromXMLFile(const std::string &filename);
 
 private:
     container_t container;

@@ -1,5 +1,8 @@
 #include "Server.h"
 #include "Wars.h"
+#include "../XmlReader.h"
+#include "../XmlWriter.h"
+
 
 bool Wars::Belligerent::operator<(const Belligerent &rhs) const{
     if (name != rhs.name)
@@ -60,4 +63,31 @@ std::pair<Wars::container_t::const_iterator, Wars::container_t::const_iterator>
         Wars::getAllWarsInvolving(Belligerent a) const{
     changePlayerBelligerentToHisCity(a);
     return container.equal_range(a);
+}
+
+void Wars::writeToXMLFile(const std::string &filename) const{
+    XmlWriter xw(filename);
+    for (const Wars::Belligerents &belligerents : container) {
+        auto e = xw.addChild("war");
+        xw.setAttr(e, "b1", belligerents.first.name);
+        xw.setAttr(e, "b2", belligerents.second.name);
+    }
+    xw.publish();
+}
+
+void Wars::readFromXMLFile(const std::string &filename){
+    XmlReader xr(filename);
+    if (! xr){
+        Server::debug()("Failed to load data from " + filename, Color::FAILURE);
+        return;
+    }
+    for (auto elem : xr.getChildren("war")) {
+        Wars::Belligerent b1, b2;
+        if (!xr.findAttr(elem, "b1", b1.name) ||
+            !xr.findAttr(elem, "b2", b2.name)) {
+                Server::debug()("Skipping war with insufficient belligerents.", Color::RED);
+            continue;
+        }
+        declare(b1, b2);
+    }
 }
