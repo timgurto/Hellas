@@ -27,7 +27,7 @@ TEST_CASE("Players can attack immediately"){
     WAIT_UNTIL(ant.health() < ant.npcType()->maxHealth());
 }
 
-TEST_CASE("Belligerents can target each other" "[remote]"){
+TEST_CASE("Belligerents can target each other", "[remote]"){
     TestServer s;
     TestClient alice = TestClient::WithUsername("alice");
     RemoteClient bob("-username bob");
@@ -41,7 +41,7 @@ TEST_CASE("Belligerents can target each other" "[remote]"){
     WAIT_UNTIL(uAlice.target() == &uBob);
 }
 
-TEST_CASE("Peaceful players can't target each other" "[remote]"){
+TEST_CASE("Peaceful players can't target each other", "[remote]"){
     TestServer s;
     TestClient alice = TestClient::WithUsername("alice");
     RemoteClient bob("-username bob");
@@ -55,7 +55,7 @@ TEST_CASE("Peaceful players can't target each other" "[remote]"){
     CHECK_FALSE(uAlice.target() == &uBob);
 }
 
-TEST_CASE("Belliegerents can fight" "[remote]"){
+TEST_CASE("Belliegerents can fight", "[remote]"){
     // Given a server, Alice, and Bob
     TestServer s;
     TestClient alice = TestClient::WithUsername("alice");
@@ -84,7 +84,7 @@ TEST_CASE("Belliegerents can fight" "[remote]"){
     WAIT_UNTIL(uBob.health() < uBob.maxHealth());
 }
 
-TEST_CASE("Peaceful players can't fight" "[remote]"){
+TEST_CASE("Peaceful players can't fight", "[remote]"){
     TestServer s;
     TestClient alice = TestClient::WithUsername("alice");
     RemoteClient bob("-username bob");
@@ -165,7 +165,7 @@ TEST_CASE("Players can target distant entities"){
     WAIT_UNTIL(user.target() == &wolf);
 }
 
-TEST_CASE("Clients receive nearby users' health values" "[remote]"){
+TEST_CASE("Clients receive nearby users' health values", "[remote]"){
     // Given a server and two clients, Alice and Bob;
     TestServer s;
     TestClient clientAlice = TestClient::WithUsername("alice");
