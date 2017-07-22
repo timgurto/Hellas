@@ -1,13 +1,14 @@
-// (C) 2015-2016 Tim Gurto
-
 #ifndef BUTTON_H
 #define BUTTON_H
 
 #include <string>
 
 #include "Element.h"
-#include "ShadowBox.h"
 #include "../../Point.h"
+
+class ColorBlock;
+class Label;
+class ShadowBox;
 
 // A button which can be clicked, showing visible feedback and performing a function.
 class Button : public Element{
@@ -16,7 +17,9 @@ public:
 
 private:
     Element *_content;
-    ShadowBox *_shadowBox;
+    ColorBlock *_background;
+    ShadowBox *_border;
+    Label *_caption;
 
     clickFun_t _clickFun;
     void *_clickData; // Data passed to _clickFun().
@@ -38,6 +41,9 @@ public:
     virtual void addChild(Element *child) override;
     virtual void clearChildren() override;
     virtual Element *findChild(const std::string id) override;
+    
+    void width(px_t w) override;
+    void height(px_t h) override;
 };
 
 #endif
