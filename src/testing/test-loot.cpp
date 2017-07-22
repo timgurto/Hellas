@@ -131,7 +131,7 @@ TEST_CASE("Looting from a container", "[loot][container][only]"){
         // And the chest is destroyed
         chest.reduceHealth(9999);
         REQUIRE_FALSE(chest.loot().empty());
-        c.waitForMessage(SV_LOOTABLE);
+        REQUIRE(c.waitForMessage(SV_LOOTABLE));
 
         auto &clientChest = c.getFirstObject();
         WAIT_UNTIL(clientChest.lootable());
