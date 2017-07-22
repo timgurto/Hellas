@@ -63,6 +63,7 @@ public:
         _target.setAndAlertServer(newTarget, aggressive);
     }
     void clearTarget() { _target.clear(); }
+    void hideTargetMenu(){ _target.hideMenu(); }
     
     const Texture &cursorNormal() const { return _cursorNormal; }
     const Texture &cursorGather() const { return _cursorGather; }

@@ -6,9 +6,8 @@
 #include "ClientCombatant.h"
 #include "Sprite.h"
 #include "ui/CombatantPanel.h"
+#include "ui/List.h"
 #include "../types.h"
-
-class List;
 
 class Target{
 public:
@@ -41,6 +40,7 @@ public:
     List *menu() { return _menu; }
 
     static void openMenu(Element &e, const Point &mousePos);
+    void hideMenu(){ _menu->hide(); }
 
 private:
     /*

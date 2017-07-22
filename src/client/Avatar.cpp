@@ -200,6 +200,8 @@ void Avatar::addMenuButtons(List &menu) const{
 
 void Avatar::declareWar(void *pUsername){
     const std::string &username = * reinterpret_cast<const std::string *>(pUsername);
-    const Client &client = *Client::_instance;
+    Client &client = *Client::_instance;
     client.sendMessage(CL_DECLARE_WAR_ON_PLAYER, username);
+
+    client.hideTargetMenu();
 }
