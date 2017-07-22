@@ -24,7 +24,7 @@ class Avatar : public Sprite, public ClientCombatant{
     bool _driving;
 
 public:
-    Avatar(const std::string &name = "", const Point &location = 0);
+    Avatar(const std::string &name, const Point &location);
 
     void name(const std::string &newName) { _name = newName; }
     const Point &destination() const { return _destination; }

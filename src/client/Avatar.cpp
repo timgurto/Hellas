@@ -48,7 +48,6 @@ void Avatar::draw(const Client &client) const{
     // Draw username
     if (_name != client.username()) {
         const Client &client = *Client::_instance;
-        bool isAtWar = client.isAtWarWith(_name);
 
         const Texture nameLabel(client.defaultFont(), _name, nameColor());
         const Texture nameOutline(client.defaultFont(), _name, Color::PLAYER_NAME_OUTLINE);
@@ -158,12 +157,11 @@ bool Avatar::canBeAttackedByPlayer() const{
     if (! ClientCombatant::canBeAttackedByPlayer())
         return false;
     const Client &client = *Client::_instance;
-    return client.isAtWarWith(_name);
+    return client.isAtWarWith(*this);
 }
 
 const Texture &Avatar::cursor(const Client &client) const{
-    bool isAtWar = client.isAtWarWith(_name);
-    if (isAtWar && isAlive())
+    if (canBeAttackedByPlayer())
         return client.cursorAttack();
     return client.cursorNormal();
 }

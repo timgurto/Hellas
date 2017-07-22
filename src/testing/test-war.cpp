@@ -118,31 +118,37 @@ TEST_CASE("A player at war with a city is at war with its members", "[war][city]
     s.cities().addPlayerToCity(s.getFirstUser(), "athens");
 
     // When new user Bob and Athens go to war
-    TestClient *bob;
     Wars::Belligerent
         b1("bob", Wars::Belligerent::PLAYER),
         b2("athens", Wars::Belligerent::CITY);
 
-    SECTION("Bob logs in, then declares war"){
-        bob = new TestClient(TestClient::WithUsername("bob"));
+    SECTION("Bob logs in, then war is declared"){
+        TestClient bob = TestClient::WithUsername("bob");
         WAIT_UNTIL(s.users().size() == 2);
         s.wars().declare(b1, b2);
+        
+        // Then Bob is at war with Alice;
+        CHECK(s.wars().isAtWar("alice", "bob"));
+
+        // And Bob knows that he's at war with Alice
+        WAIT_UNTIL(bob.otherUsers().size() == 1);
+        const auto &cAlice = bob.getFirstOtherUser();
+        WAIT_UNTIL(bob.isAtWarWith(cAlice));
     }
 
     SECTION("War is declared, then Bob logs in"){
         s.wars().declare(b1, b2);
         WAIT_UNTIL(s.wars().isAtWar(b1, b2));
-        bob = new TestClient(TestClient::WithUsername("bob"));
+        TestClient bob = TestClient::WithUsername("bob");
+        
+        // Then Bob is at war with Alice;
+        CHECK(s.wars().isAtWar("alice", "bob"));
+
+        // And Bob knows that he's at war with Alice
+        WAIT_UNTIL(bob.otherUsers().size() == 1);
+        const auto &cAlice = bob.getFirstOtherUser();
+        WAIT_UNTIL(bob.isAtWarWith(cAlice));
     }
-
-    // Then Bob is at war with Alice
-    CHECK(s.wars().isAtWar("alice", "bob"));
-
-    // And Bob knows this
-    REPEAT_FOR_MS(200);
-    CHECK(bob->isAtWarWith("alice"));
-
-    delete bob;
 }
 
 TEST_CASE("Players can declare war on cities", "[war][city]"){

@@ -41,7 +41,7 @@ public:
     Window *buildWindow() const { return _client->_buildWindow; }
     Window *gearWindow() const { return _client->_gearWindow; }
     Window *mapWindow() const { return _client->_mapWindow; }
-    bool isAtWarWith(const std::string &username) const { return _client->isAtWarWith(username); }
+    bool isAtWarWith(const Avatar &user) const { return _client->isAtWarWith(user); }
 
     Avatar &getFirstOtherUser();
     ClientNPC &getFirstNPC();

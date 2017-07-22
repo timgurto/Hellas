@@ -100,7 +100,11 @@ TEST_CASE("When a player declares war, his map pin changes color", "[map][remote
 
     // When the first declares war on the second;
     c.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "secunda");
-    WAIT_UNTIL(c.isAtWarWith("secunda"));
+
+    // And the war is confirmed to him;
+    WAIT_UNTIL(c.otherUsers().size() == 1);
+    const auto &secunda = c.getFirstOtherUser();
+    WAIT_UNTIL(c.isAtWarWith(secunda));
 
     // And the map refreshes
     REPEAT_FOR_MS(200);
