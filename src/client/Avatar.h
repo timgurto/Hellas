@@ -43,21 +43,22 @@ public:
     bool isInPlayersCity() const;
 
     // From Sprite
-    virtual void draw(const Client &client) const override;
-    virtual void update(double delta) override;
-    virtual const Texture &tooltip() const override; // Getter; creates tooltip on first call.
-    virtual void onLeftClick(Client &client) override;
-    virtual void onRightClick(Client &client) override;
-    virtual const std::string &name() const override { return _name; }
-    virtual const Texture &cursor(const Client &client) const override;
+    void draw(const Client &client) const override;
+    void update(double delta) override;
+    const Texture &tooltip() const override; // Getter; creates tooltip on first call.
+    void onLeftClick(Client &client) override;
+    void onRightClick(Client &client) override;
+    const std::string &name() const override { return _name; }
+    const Texture &cursor(const Client &client) const override;
 
     // From ClientCombatant
-    virtual void sendTargetMessage() const override;
-    virtual bool canBeAttackedByPlayer() const override;
-    virtual const Sprite *entityPointer() const override { return this; }
-    virtual const Point &combatantLocation() const { return location(); }
-    virtual bool shouldDrawHealthBar() const override;
-    virtual const Color &nameColor() const override;
+    void sendTargetMessage() const override;
+    bool canBeAttackedByPlayer() const override;
+    const Sprite *entityPointer() const override { return this; }
+    const Point &combatantLocation() const { return location(); }
+    bool shouldDrawHealthBar() const override;
+    const Color &nameColor() const override;
+    void addMenuButtons(List &menu) const override;
 
     void playAttackSound() const; // The player has attacked; play an appropriate sound.
     void playDefendSound() const; // The player has been attacked; play an appropriate sound.

@@ -246,6 +246,7 @@ private:
     Texture
         _basePassive,
         _baseAggressive;
+    bool _rightMouseDownWasOnUI;
 
     bool _loop;
     bool _running; // True while run() is being executed.

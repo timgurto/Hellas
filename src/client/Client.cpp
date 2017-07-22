@@ -121,6 +121,7 @@ _leftMouseDown(false),
 _leftMouseDownEntity(nullptr),
 _rightMouseDown(false),
 _rightMouseDownEntity(nullptr),
+_rightMouseDownWasOnUI(false),
 
 _basePassive(std::string("Images/targetPassive.png"), Color::MAGENTA),
 _baseAggressive(std::string("Images/targetAggressive.png"), Color::MAGENTA),
@@ -390,8 +391,14 @@ _debug("client.log"){
                                                      _character.health(), _character.maxHealth());
     playerPanel->changeColor(Color::COMBATANT_SELF);
     addUI(playerPanel);
+    /*
+    initializeMenu) must be called before initializePanel(); otherwise the right-click menu won't
+    work.
+    */
+    _target.initializeMenu();
     _target.initializePanel();
     addUI(_target.panel());
+    addUI(_target.menu());
 
     drawLoadingScreen("", 1);
 }

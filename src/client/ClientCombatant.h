@@ -5,6 +5,8 @@
 #include "Sprite.h"
 #include "../types.h"
 
+class List;
+
 class ClientCombatant{
 public:
     ClientCombatant::ClientCombatant(const ClientCombatantType *type);
@@ -22,6 +24,8 @@ public:
     virtual const Sprite *entityPointer() const = 0;
     virtual const Point &combatantLocation() const = 0;
     virtual bool shouldDrawHealthBar() const;
+
+    virtual void addMenuButtons(List &menu) const{}
 
     void createDamageParticles() const;
 

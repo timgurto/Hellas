@@ -8,10 +8,8 @@
 #include "ui/CombatantPanel.h"
 #include "../types.h"
 
-/*
-Both pointers should contain the same value.  Having both is necessary because reinterpret_cast
-doesn't appear to work.
-*/
+class List;
+
 class Target{
 public:
     Target();
@@ -39,10 +37,19 @@ public:
 
     void initializePanel();
     CombatantPanel *panel() { return _panel; }
+    void initializeMenu();
+    List *menu() { return _menu; }
+
+    static void openMenu(Element &e, const Point &mousePos);
 
 private:
+    /*
+    Both pointers should contain the same value.  Having both is necessary because reinterpret_cast
+    doesn't appear to work.
+    */
     const Sprite *_entity;
     const ClientCombatant *_combatant;
+
     bool _aggressive; // True: will attack when in range.  False: mere selection, client-side only.
 
     /*
@@ -57,6 +64,8 @@ private:
     bool targetIsDifferentFromServer(const Sprite &newTarget, bool nowAggressive);
 
     CombatantPanel *_panel;
+
+    List *_menu;
 };
 
 #endif

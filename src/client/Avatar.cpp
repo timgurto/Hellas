@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "SoundProfile.h"
 #include "TooltipBuilder.h"
+#include "ui/List.h"
 #include "../util.h"
 
 extern Renderer renderer;
@@ -190,4 +191,8 @@ const Color &Avatar::nameColor() const{
         return Color::COMBATANT_SELF;
 
     return ClientCombatant::nameColor();
+}
+
+void Avatar::addMenuButtons(List &menu) const{
+    menu.addChild(new Button(0, "Declare war"));
 }

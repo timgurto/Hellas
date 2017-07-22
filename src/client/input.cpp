@@ -219,14 +219,22 @@ void Client::handleInput(double delta){
 
             case SDL_BUTTON_RIGHT:
                 // Send onRightMouseDown to all visible windows
+                _rightMouseDownWasOnUI = false;
                 for (Window *window : _windows)
-                    if (window->visible())
+                    if (window->visible()){
                         window->onRightMouseDown(_mouse);
+                        _rightMouseDownWasOnUI = true;
+                    }
                 for (Element *element : _ui)
-                    if (element->visible() && collision(_mouse, element->rect()))
+                    if (element->visible() && collision(_mouse, element->rect())){
                         element->onRightMouseDown(_mouse);
+                        _rightMouseDownWasOnUI = true;
+                    }
 
-                _rightMouseDownEntity = getEntityAtMouse();
+                if (! _rightMouseDownWasOnUI)
+                    _rightMouseDownEntity = getEntityAtMouse();
+                else
+                    _rightMouseDownEntity = nullptr;
                 break;
             }
             break;
@@ -342,7 +350,7 @@ void Client::handleInput(double delta){
                 if (_isDismounting)
                     _isDismounting = false;
 
-                if (mouseUpOnWindow)
+                if (mouseUpOnWindow || _rightMouseDownWasOnUI)
                     break;
 
                 // Mouse down and up on same entity: onRightClick

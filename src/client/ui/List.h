@@ -45,9 +45,9 @@ protected:
 public:
     List(const Rect &rect, px_t childHeight = Element::TEXT_HEIGHT);
 
-    virtual void addChild(Element *child) override;
-    virtual void clearChildren() override;
-    virtual Element *findChild(const std::string id) override;
+    void addChild(Element *child) override;
+    void clearChildren() override;
+    Element *findChild(const std::string id) override;
 
     void scrollToBottom();
     bool isScrolledToBottom() const { return _scrolledToBottom; }

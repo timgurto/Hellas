@@ -7,7 +7,8 @@ Target::Target() :
 _entity(nullptr),
 _combatant(nullptr),
 _aggressive(false),
-_panel(nullptr)
+_panel(nullptr),
+_menu(nullptr)
 {}
 
 void Target::setAndAlertServer(
@@ -62,6 +63,7 @@ void Target::clear(){
     _aggressive = false;
 
     _panel->hide();
+    _menu->hide();
 }
 
 void Target::initializePanel(){
@@ -70,4 +72,29 @@ void Target::initializePanel(){
         Y = CombatantPanel::GAP;
     _panel = new CombatantPanel(X, Y, _name, _health, _maxHealth);
     _panel->hide();
+    _panel->setRightMouseDownFunction(openMenu, _menu);
+}
+
+void Target::initializeMenu(){
+    static const px_t
+        WIDTH = 80,
+        ITEM_HEIGHT = 15;
+    _menu = new List(Rect(_menu->absMouse->x, _menu->absMouse->y, WIDTH, 50));
+    _menu->hide();
+}
+
+void Target::openMenu(Element &e, const Point &mousePos){
+    List &menu = dynamic_cast<List &>(e);
+    menu.setPosition(
+            toInt(menu.absMouse->x),
+            toInt(menu.absMouse->y));
+
+    menu.clearChildren();
+    
+    Client &client = *Client::_instance;
+    client.targetAsCombatant()->addMenuButtons(menu);
+
+    if (!menu.empty())
+        menu.show();
+
 }
