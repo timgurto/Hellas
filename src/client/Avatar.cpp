@@ -197,14 +197,27 @@ void Avatar::addMenuButtons(List &menu) const{
     const Client &client = *Client::_instance;
 
     void *pUsername = const_cast<std::string *>(&_name);
-    Button *declareWarButton = new Button(0, "Declare war", declareWar, pUsername);
-    if (client.isAtWarWith(*this))
-        declareWarButton->disable();
-    menu.addChild(declareWarButton);
+    Button *playerWarButton = new Button(0, "Declare war", declareWarAgainstPlayer, pUsername);
+    if (client.isAtWarWithPlayerDirectly(_name))
+        playerWarButton->disable();
+    menu.addChild(playerWarButton);
+
+    void *pCityName = const_cast<std::string *>(&_city);
+    Button *cityWarButton = new Button(0, "Declare war (city)", declareWarAgainstCity,
+            pUsername);
+    if (_city.empty() || client.isAtWarWithCityDirectly(_city))
+        cityWarButton->disable();
+    menu.addChild(cityWarButton);
 }
 
-void Avatar::declareWar(void *pUsername){
+void Avatar::declareWarAgainstPlayer(void *pUsername){
     const std::string &username = * reinterpret_cast<const std::string *>(pUsername);
     Client &client = *Client::_instance;
     client.sendMessage(CL_DECLARE_WAR_ON_PLAYER, username);
+}
+
+void Avatar::declareWarAgainstCity(void *pCityName){
+    const std::string &cityName = * reinterpret_cast<const std::string *>(pCityName);
+    Client &client = *Client::_instance;
+    client.sendMessage(CL_DECLARE_WAR_ON_CITY, cityName);
 }

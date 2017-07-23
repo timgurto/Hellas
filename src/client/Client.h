@@ -55,7 +55,13 @@ public:
     bool isDismounting() const { return _isDismounting; }
     void attemptDismount() { _isDismounting = true; }
     const SoundProfile *avatarSounds() const { return _avatarSounds; }
+
     bool isAtWarWith(const Avatar &user) const;
+    bool isAtWarWithPlayerDirectly(const std::string &username) const{
+        return _atWarWithPlayer.find(username) != _atWarWithPlayer.end(); }
+    bool isAtWarWithCityDirectly(const std::string &cityName) const{
+        return _atWarWithCity.find(cityName) != _atWarWithCity.end(); }
+
     const Texture &mapImage() const { return _mapImage; }
 
     template<typename T>

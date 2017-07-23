@@ -77,8 +77,8 @@ void Target::initializePanel(){
 
 void Target::initializeMenu(){
     static const px_t
-        WIDTH = 80,
-        ITEM_HEIGHT = 15;
+        WIDTH = 120,
+        ITEM_HEIGHT = 20;
     _menu = new List(Rect(_menu->absMouse->x, _menu->absMouse->y, WIDTH, 50));
     _menu->hide();
 }

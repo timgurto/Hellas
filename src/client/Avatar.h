@@ -60,7 +60,8 @@ public:
     const Color &nameColor() const override;
 
     void addMenuButtons(List &menu) const override;
-    static void declareWar(void *pUsername);
+    static void declareWarAgainstPlayer(void *pUsername);
+    static void declareWarAgainstCity(void *pCityName);
 
     void playAttackSound() const; // The player has attacked; play an appropriate sound.
     void playDefendSound() const; // The player has been attacked; play an appropriate sound.
