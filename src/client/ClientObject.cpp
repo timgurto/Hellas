@@ -800,10 +800,7 @@ bool ClientObject::canBeAttackedByPlayer() const{
     if (_owner.empty())
         return false;
     const Client &client = *Client::_instance;
-    auto it = client._otherUsers.find(_owner);
-    if (it == client._otherUsers.end())
-        return false;
-    return client.isAtWarWith(*it->second);
+    return client.isAtWarWith(_owner);;
 }
 
 void ClientObject::draw(const Client &client) const{

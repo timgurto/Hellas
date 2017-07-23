@@ -193,3 +193,37 @@ TEST_CASE("Wars involving cities are persistent", "[persistence][city][war]"){
     // Then Alice and Athens are still at war
     CHECK(server2.wars().isAtWar(b1, b2));
 }
+
+TEST_CASE("The objects of an offline enemy in an enemy city can be attacked", "[.slow][city][war][remote]"){
+    // Given a server with rock objects;
+    TestServer s = TestServer::WithData("chair");
+
+    // And a city named Athens;
+    s.cities().createCity("athens");
+
+    // And Bob is a member of Athens;
+    {
+        RemoteClient bob("-username bob -data testing/data/chair");
+        WAIT_UNTIL(s.users().size() == 1);
+        s.cities().addPlayerToCity(s.getFirstUser(), "athens");
+
+    // And Bob is offline
+    }
+    WAIT_UNTIL(s.users().size() == 0);
+
+    // And a rock owned by Bob;
+    s.addObject("chair", Point(15,15), "bob");
+
+    // And a player, Alice;
+    TestClient alice = TestClient::WithUsernameAndData("alice", "chair");
+
+    // And Alice is at war with Athens
+    s.wars().declare("alice", Wars::Belligerent("athens", Wars::Belligerent::CITY));
+
+    // When Alice becomes aware of the rock
+    WAIT_UNTIL(alice.objects().size() == 1);
+
+    // Then Alice can attack the rock
+    const auto &rock = alice.getFirstObject();
+    WAIT_UNTIL(rock.canBeAttackedByPlayer());
+}

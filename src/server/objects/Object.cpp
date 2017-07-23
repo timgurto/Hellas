@@ -212,6 +212,13 @@ void Object::sendInfoToClient(const User &targetUser) const {
     if (permissions().hasOwner()){
         const auto &owner = permissions().owner();
         server.sendMessage(client, SV_OWNER, makeArgs(serial(), owner.typeString(), owner.name));
+        
+        // In case the owner is unknown to the client, tell him the owner's city
+        if (owner.type == owner.PLAYER){
+            std::string ownersCity = server.cities().getPlayerCity(owner.name);
+            if (! ownersCity.empty())
+                server.sendMessage(client, SV_IN_CITY, makeArgs(owner.name, ownersCity));
+        }
     }
 
     // Being gathered

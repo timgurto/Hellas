@@ -396,15 +396,7 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del;
             if (del != MSG_END)
                 break;
-            if (username == _username){
-                _character.cityName(cityName);
-                break;
-            }
-            if (_otherUsers.find(username) == _otherUsers.end()) {
-                _debug("City received for an unknown user.  Ignoring.", Color::FAILURE);
-                break;
-            }
-            _otherUsers[username]->cityName(cityName);
+            handle_SV_IN_CITY(username, cityName);
         }
 
         case SV_OBJECT:
@@ -1098,6 +1090,19 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot, const std::string &
         _actionTimer > 0) // You were crafting or gathering
             if (item->sounds() != nullptr)
                 item->sounds()->playOnce("drop");
+}
+
+void Client::handle_SV_IN_CITY(const std::string &username, const std::string &cityName){
+    if (username == _username){
+        _character.cityName(cityName);
+        return;
+    }
+    // Unknown user; add to lightweight city registry
+    _userCities[username] = cityName;
+    if (_otherUsers.find(username) == _otherUsers.end()) {
+        return;
+    }
+    _otherUsers[username]->cityName(cityName);
 }
 
 

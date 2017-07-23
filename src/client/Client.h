@@ -57,6 +57,7 @@ public:
     const SoundProfile *avatarSounds() const { return _avatarSounds; }
 
     bool isAtWarWith(const Avatar &user) const;
+    bool isAtWarWith(const std::string &username) const;
     bool isAtWarWithPlayerDirectly(const std::string &username) const{
         return _atWarWithPlayer.find(username) != _atWarWithPlayer.end(); }
     bool isAtWarWithCityDirectly(const std::string &cityName) const{
@@ -333,10 +334,6 @@ private:
     soundProfiles_t _soundProfiles;
     const SoundProfile *_avatarSounds;
     
-    // Your wars, or if you're in a city, your city's wars
-    std::set<std::string> _atWarWithPlayer;
-    std::set<std::string> _atWarWithCity;
-    
 
     // Information about the state of the world
     size_t _mapX, _mapY;
@@ -353,6 +350,12 @@ private:
     Sprite *_currentMouseOverEntity;
     size_t _numEntities; // Updated every tick
     void addUser(const std::string &name, const Point &location);
+    
+    // Your wars, or if you're in a city, your city's wars
+    std::set<std::string> _atWarWithPlayer;
+    std::set<std::string> _atWarWithCity;
+
+    std::map<std::string, std::string> _userCities; // Username -> city name
     
     void addParticles(const ParticleProfile *profile, const Point &location, size_t qty);
     void addParticles(const ParticleProfile *profile, const Point &location); // Single hit
@@ -374,6 +377,7 @@ private:
 
     void handle_SV_LOOTABLE(size_t serial);
     void handle_SV_INVENTORY(size_t serial, size_t slot, const std::string &itemID, size_t quantity);
+    void handle_SV_IN_CITY(const std::string &username, const std::string &cityName);
 
     void sendClearTargetMessage() const;
     

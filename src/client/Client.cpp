@@ -812,11 +812,20 @@ const SoundProfile *Client::findSoundProfile(const std::string &id) const{
     return &*it;
 }
 
-bool Client::isAtWarWith(const Avatar &user) const{
-    if (! user.cityName().empty())
-        return _atWarWithCity.find(user.cityName()) != _atWarWithCity.end();
+bool Client::isAtWarWith(const std::string &username) const{
+    std::string cityName = "";
+    auto it = _userCities.find(username);
+    if (it != _userCities.end())
+        cityName = it->second;
+
+    if (! cityName.empty())
+        return _atWarWithCity.find(cityName) != _atWarWithCity.end();
     else
-        return _atWarWithPlayer.find(user.name()) != _atWarWithPlayer.end();
+        return _atWarWithPlayer.find(username) != _atWarWithPlayer.end();
+}
+
+bool Client::isAtWarWith(const Avatar &user) const{
+    return isAtWarWith(user.name());
 }
 
 void Client::addUser(const std::string &name, const Point &location){
