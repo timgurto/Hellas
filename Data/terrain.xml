@@ -10,15 +10,45 @@ frames             *
 frameTime          *
 -->
 
-<terrain index="G" id="grass"         color="357F51" />
-<terrain index="o" id="stone"         color="8778A5" />
-<terrain index="W" id="deepWater"     color="1F3C60"                   frames="32" frameTime="200" tag="water" />
-<terrain index="w" id="water"         color="394FB2"                   frames="32" frameTime="200" tag="water" />
-<terrain index="c" id="clay"          color="000000" />
-<terrain index="g" id="lightGrass"    color="62BA6C" />
-<terrain index="s" id="sand"          color="FFFFB2" />
-<terrain index="M" id="mountain"      color="413168" />
-<terrain index="t" id="tutorialWater" color="3478D8" imageFile="water" frames="32" frameTime="200" />
+<terrain index="a" id="normal"          color="E8CE94" />
+<terrain index="b" id="fertile"         color="62BA6C" />
+<terrain index="c" id="rocky"           color="C4AAC0" />
+<terrain index="d" id="mountain"        color="8778A5" />
+<terrain index="e" id="plains"          color="00CC00" />
+<terrain index="f" id="plainsFertile"   color="00FF00" />
+<terrain index="g" id="plainsRocky"     color="009900" />
+<terrain index="h" id="plainsMountain"  color="006600" />
+<terrain index="i" id="forest"          color="00CC54" />
+<terrain index="j" id="forestFertile"   color="00FF6A" />
+<terrain index="k" id="forestRocky"     color="00993D" />
+<terrain index="l" id="forestMountain"  color="006628" />
+<terrain index="m" id="rich"            color="CCAA00" />
+<terrain index="n" id="richFertile"     color="FFD400" />
+<terrain index="o" id="richRocky"       color="997F00" />
+<terrain index="p" id="richMountain"    color="665500" />
+<terrain index="q" id="snow"            color="FFFFFF" />
+<terrain index="r" id="snowRocky"       color="CCCCCC" />
+<terrain index="s" id="snowMountain"    color="999999" />
+<terrain index="t" id="swamp"           color="CC06CC" />
+<terrain index="u" id="swampFertile"    color="FF07FF" />
+<terrain index="x" id="desert"          color="FFFF7F" />
+<terrain index="y" id="desertRocky"     color="CCCC66" />
+<terrain index="z" id="desertMountain"  color="99994C" />
+<terrain index="A" id="beach"           color="00FFFF" />
+<terrain index="C" id="beachRocky"      color="00CCCC" />
+<terrain index="D" id="beachMountain"   color="009999" />
+<terrain index="E" id="ruins"           color="CC0066" />
+<terrain index="F" id="ruinsFertile"    color="FF007F" />
+<terrain index="G" id="ruinsRocky"      color="99004C" />
+<terrain index="H" id="ruinsMountain"   color="660033" />
+<terrain index="J" id="caveRocky"       color="CC6600" />
+<terrain index="K" id="caveMountain"    color="994C00" />
+<terrain index="L" id="nile"            color="7F00FF" />
+<terrain index="M" id="nileFertile"     color="6600CC" />
+<terrain index="N" id="volcanoRocky"    color="FF0000" />
+<terrain index="O" id="volcanoMountain" color="CC0000" />
+<terrain index="P" id="water"           color="0000FF" frames="32" frameTime="200" />
+<terrain index="Q" id="deepWater"       color="0000CC" frames="32" frameTime="200" />
 
 <!--
 Default list applies to player avatars, and to all objects unless otherwise specified.
@@ -29,6 +59,14 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
     <forbid id="water" />
     <forbid id="deepWater" />
     <forbid id="mountain" />
+    <forbid id="plainsMountain" />
+    <forbid id="forestMountain" />
+    <forbid id="richMountain" />
+    <forbid id="desertMountain" />
+    <forbid id="beachMountain" />
+    <forbid id="ruinsMountain" />
+    <forbid id="caveMountain" />
+    <forbid id="volcanoMountain" />
 </list>
 
 <list id="stone" >
