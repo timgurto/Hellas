@@ -29,6 +29,7 @@
     <script type="text/javascript" src="objects.js"></script>
     <script type="text/javascript" src="npcs.js"></script>
     <script type="text/javascript" src="soundProfiles.js"></script>
+    <script type="text/javascript" src="terrains.js"></script>
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -64,6 +65,15 @@
                 );
             }
             
+            function appendTextImage(name){
+                thereAreMissingImages = true;
+                $("#images > ul").append(
+                        '<li>' +
+                            name +
+                        '</li>'
+                );
+            }
+            
             var thereAreMissingSoundProfiles = false;
             var thereAreMissingSounds = false;
             var thereAreMissingParticles = false;
@@ -94,6 +104,11 @@
                     appendParticles(textOnlyItemLink(item), item);
                 if ("imagesMissing" in item)
                     appendImages(textOnlyItemLink(item), item);
+            }
+            
+            for (terrain of terrains){
+                if ("image" in terrain)
+                appendTextImage(terrain["image"] + ": terrain");
             }
             
             for (soundProfile of soundProfiles){

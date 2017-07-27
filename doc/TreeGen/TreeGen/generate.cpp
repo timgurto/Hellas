@@ -127,6 +127,25 @@ int main(int argc, char **argv){
     }
 
 
+    // Load terrain
+    std::map<ID, size_t> terrain;
+    if (!xr.newFile(dataPath + "/terrain.xml"))
+        std::cerr << "Failed to load terrain.xml" << std::endl;
+    else{
+
+        for (auto elem : xr.getChildren("terrain")) {
+            ID id;
+            if (!xr.findAttr(elem, "id", id))
+                continue;
+
+            size_t frames = 1;
+            xr.findAttr(elem, "frames", frames);
+
+            terrain[id] = frames;
+        }
+    }
+
+
     // Load recipes
     std::map<ID, Recipe> recipes;
     std::map<ID, std::set<std::string>> materialFor, toolFor;
@@ -484,6 +503,33 @@ int main(int argc, char **argv){
             jw.addAttribute("id", pair.first);
             const SoundProfile &profile = pair.second;
             jw.addArrayAttribute("missingTypes", profile.getMissingTypes());
+        }
+    }
+
+    // Write missing terrain to JSON
+    {
+        JsonWriter jw("terrains");
+        for (const auto &pair: terrain) {
+            // Check that image(s) exists
+            if (pair.second == 1){
+                if (!checkImageExists("Terrain/" + pair.first)){
+                    jw.nextEntry();
+                    jw.addAttribute("image", pair.first);
+                }
+            } else {
+                for (size_t i = 0; i != pair.second; ++i){
+                    std::ostringstream filename;
+                    filename << pair.first;
+                    if (i < 10)
+                        filename << "0";
+                    filename << i;
+
+                    if (!checkImageExists("Terrain/" + filename.str())){
+                        jw.nextEntry();
+                        jw.addAttribute("image", filename.str());
+                    }
+                }
+            }
         }
     }
 
