@@ -53,3 +53,5 @@ doc/web/npcs.js
 doc/web/tools.js
 doc/web/soundProfiles.js
 doc/web/terrains.js
+*.db
+*.opendb
