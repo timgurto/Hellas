@@ -174,8 +174,8 @@ public:
 
     void update(ms_t timeElapsed);
 
-    struct compareXThenSerial{ bool operator()( const User *a, const User *b); };
-    struct compareYThenSerial{ bool operator()( const User *a, const User *b); };
+    struct compareXThenSerial{ bool operator()( const User *a, const User *b) const; };
+    struct compareYThenSerial{ bool operator()( const User *a, const User *b) const; };
     typedef std::set<const User*, User::compareXThenSerial> byX_t;
     typedef std::set<const User*, User::compareYThenSerial> byY_t;
 

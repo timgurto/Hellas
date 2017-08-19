@@ -29,9 +29,9 @@ public:
 
     virtual char classTag() const = 0;
     
-    struct compareSerial{ bool operator()(const Entity *a, const Entity *b); };
-    struct compareXThenSerial{ bool operator()( const Entity *a, const Entity *b); };
-    struct compareYThenSerial{ bool operator()( const Entity *a, const Entity *b); };
+    struct compareSerial{ bool operator()(const Entity *a, const Entity *b) const; };
+    struct compareXThenSerial{ bool operator()( const Entity *a, const Entity *b) const; };
+    struct compareYThenSerial{ bool operator()( const Entity *a, const Entity *b) const; };
     typedef std::set<const Entity*, Entity::compareXThenSerial> byX_t;
     typedef std::set<const Entity*, Entity::compareYThenSerial> byY_t;
 

@@ -105,7 +105,7 @@ public:
     void calculateAndInitStrength();
 
     struct ptrCompare{
-        bool operator()(const ClientObjectType *lhs, const ClientObjectType *rhs){
+        bool operator()(const ClientObjectType *lhs, const ClientObjectType *rhs) const{
             return lhs->_id < rhs->_id;
         }
     };

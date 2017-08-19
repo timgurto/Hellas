@@ -44,7 +44,7 @@ public:
     void alpha(Uint8 n) { _alpha = n; }
 
     struct ptrCompare{
-        bool operator()(const ParticleProfile *lhs, const ParticleProfile *rhs){
+        bool operator()(const ParticleProfile *lhs, const ParticleProfile *rhs) const{
             return lhs->_id < rhs->_id;
         }
     };

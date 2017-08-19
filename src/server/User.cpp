@@ -66,13 +66,13 @@ void User::init(){
         CLASS_CODES[pair.second] = pair.first;
 }
 
-bool User::compareXThenSerial::operator()( const User *a, const User *b){
+bool User::compareXThenSerial::operator()( const User *a, const User *b) const{
     if (a->location().x != b->location().x)
         return a->location().x < b->location().x;
     return a->_socket < b->_socket; // Just need something unique.
 }
 
-bool User::compareYThenSerial::operator()( const User *a, const User *b){
+bool User::compareYThenSerial::operator()( const User *a, const User *b) const{
     if (a->location().y != b->location().y)
         return a->location().y < b->location().y;
     return a->_socket < b->_socket; // Just need something unique.

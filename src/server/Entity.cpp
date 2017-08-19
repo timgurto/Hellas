@@ -38,17 +38,17 @@ Entity::~Entity(){
         _spawner->scheduleSpawn();
 }
 
-bool Entity::compareSerial::operator()( const Entity *a, const Entity *b){
+bool Entity::compareSerial::operator()( const Entity *a, const Entity *b) const{
     return a->_serial < b->_serial;
 }
 
-bool Entity::compareXThenSerial::operator()( const Entity *a, const Entity *b){
+bool Entity::compareXThenSerial::operator()( const Entity *a, const Entity *b) const{
     if (a->_location.x != b->_location.x)
         return a->_location.x < b->_location.x;
     return a->_serial < b->_serial;
 }
 
-bool Entity::compareYThenSerial::operator()( const Entity *a, const Entity *b){
+bool Entity::compareYThenSerial::operator()( const Entity *a, const Entity *b) const{
     if (a->_location.y != b->_location.y)
         return a->_location.y < b->_location.y;
     return a->_serial < b->_serial;
