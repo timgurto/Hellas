@@ -29,7 +29,7 @@ public:
     void name(const std::string &newName) { _name = newName; }
     const Point &destination() const { return _destination; }
     void destination(const Point &dst) { _destination = dst; }
-    const Rect &collisionRect() const { return COLLISION_RECT + location(); }
+    const Rect collisionRect() const { return COLLISION_RECT + location(); }
     static const Rect &collisionRectRaw() { return COLLISION_RECT; }
     void setClass(const std::string &c);
     const std::string &getClass() const { return _class; }
