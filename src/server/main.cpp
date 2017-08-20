@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #include <cassert>
 #include <ctime>
 #include <cstdlib>
@@ -8,6 +6,8 @@
 
 #include "Server.h"
 #include "../Args.h"
+
+extern "C" { FILE __iob_func[3] = { *stdin,*stdout,*stderr }; }
 
 Args cmdLineArgs;
 

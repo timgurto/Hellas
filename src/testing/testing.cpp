@@ -6,6 +6,8 @@
 #include "../Args.h"
 #include "../client/Renderer.h"
 
+extern "C" { FILE __iob_func[3] = { *stdin,*stdout,*stderr }; }
+
 Args cmdLineArgs;
 Renderer renderer;
 

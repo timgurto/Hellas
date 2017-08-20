@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #include <cassert>
 #include <ctime>
 #include <cstdlib>
@@ -10,6 +8,8 @@
 #include "Renderer.h"
 #include "Texture.h"
 #include "../Args.h"
+
+extern "C" { FILE __iob_func[3] = { *stdin,*stdout,*stderr }; }
 
 Args cmdLineArgs; // MUST be defined before renderer
 Renderer renderer; // MUST be defined after cmdLineArgs
