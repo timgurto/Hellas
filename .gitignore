@@ -55,3 +55,5 @@ doc/web/soundProfiles.js
 doc/web/terrains.js
 *.db
 *.opendb
+*.iobj
+*.ipdb
