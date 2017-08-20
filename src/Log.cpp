@@ -13,7 +13,7 @@ bool Log::usingLogFile() const{
 }
 
 FileAppender Log::logFile() const {
-    return FileAppender(_logFileName);
+    return {_logFileName};
 }
 
 FileAppender::FileAppender(const std::string &logFileName){
