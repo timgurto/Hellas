@@ -208,7 +208,7 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const{
     */
     const Rect drawLoc(xLoc, yLoc, 0, 0);
     const bool yOdd = (y % 2 == 1);
-    size_t tileID, L, R, E, F, G, H;
+    char tileID, L, R, E, F, G, H;
     tileID = _map[x][y];
     R = x == _mapX-1 ? tileID : _map[x+1][y];
     L = x == 0 ? tileID : _map[x-1][y];

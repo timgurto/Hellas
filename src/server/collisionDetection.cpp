@@ -168,7 +168,7 @@ std::pair<size_t, size_t> Server::getTileCoords(const Point &p) const{
     return std::make_pair(x, y);
 }
 
-size_t Server::findTile(const Point &p) const{
+char Server::findTile(const Point &p) const{
     auto coords = getTileCoords(p);
     return _map[coords.first][coords.second];
 }

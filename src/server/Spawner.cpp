@@ -28,7 +28,7 @@ void Spawner::spawn(){
 
         // Check terrain whitelist
         if (!_terrainWhitelist.empty()){
-            size_t terrain = server.findTile(p);
+            char terrain = server.findTile(p);
             if (_terrainWhitelist.find(terrain) == _terrainWhitelist.end())
                 continue;
         }

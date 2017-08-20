@@ -61,7 +61,7 @@ public:
     };
 
     // Const Searches/queries
-    size_t findTile(const Point &p) const; // Find the tile type at the specified location.
+    char findTile(const Point &p) const; // Find the tile type at the specified location.
     std::pair<size_t, size_t> getTileCoords(const Point &p) const;
     size_t Server::getTileYCoord(double y) const;
     size_t Server::getTileXCoord(double x, size_t yTile) const;
