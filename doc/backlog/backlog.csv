@@ -182,3 +182,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 183,Animate lava under volcano terrain,13,2,Aesthetics,,,,
 184,Require map to be explored,21,21,Feature,,,,
 185,"Add terrain-specific weather particles, like leaves or rain",13,8,Aesthetics,,,,
+186,Add gear preview to web docs,,,Documentation,,,,
+187,Add unlock info to web docs,,,Documentation,,,,
+188,Add transform images to web docs,,,Documentation,,,,
+189,"Add recipes using the item, to web docs",,,Documentation,,,,
