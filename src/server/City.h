@@ -15,8 +15,9 @@ public:
 
     typedef std::set<std::string> Members;
     const Members &members() const { return _members; }
-    
+
     void addAndAlertPlayer(const User &user);
+    void removeAndAlertPlayer(const User &user);
     void addPlayerWithoutAlerting(const std::string &username);
     bool isPlayerAMember(const std::string &username) const;
 
@@ -31,6 +32,7 @@ public:
     bool doesCityExist(const City::Name &cityName) const;
 
     void addPlayerToCity(const User &user, const City::Name &cityName);
+    void removeUserFromCity(const User &user, const City::Name &cityName);
     bool isPlayerInCity(const std::string &username, const City::Name &cityName) const;
     const City::Name &getPlayerCity(const std::string &username) const;
     const City::Members &membersOf(const std::string &cityName) const;

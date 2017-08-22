@@ -1045,7 +1045,12 @@ void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
 }
 
 void Server::handle_CL_LEAVE_CITY(User &user) {
-    sendMessage(user.socket(), SV_NOT_IN_CITY);
+    auto city = _cities.getPlayerCity(user.name());
+    if (city.empty()) {
+        sendMessage(user.socket(), SV_NOT_IN_CITY);
+        return;
+    }
+    _cities.removeUserFromCity(user, city);
 }
 
 

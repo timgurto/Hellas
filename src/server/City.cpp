@@ -9,9 +9,13 @@ City::City(const Name &name = ""):
 _name(name)
 {}
 
-void City::addAndAlertPlayer(const User &user){
+void City::addAndAlertPlayer(const User &user) {
     _members.insert(user.name());
     Server::instance().sendMessage(user.socket(), SV_JOINED_CITY, _name);
+}
+
+void City::removeAndAlertPlayer(const User &user) {
+    _members.erase(user.name());
 }
 
 void City::addPlayerWithoutAlerting(const std::string &username){
@@ -40,13 +44,18 @@ bool Cities::doesCityExist(const City::Name &cityName) const {
 void Cities::addPlayerToCity(const User &user, const City::Name &cityName){
     auto it = _container.find(cityName);
     bool cityExists = it != _container.end();
-    if (! cityExists){
-        Server::debug()("Can't add player to a city that doesn't exist", Color::FAILURE);
-        return;
-    }
+    assert(cityExists);
     City &city = it->second;
     city.addAndAlertPlayer(user);
     _usersToCities[user.name()] = cityName;
+}
+
+void Cities::removeUserFromCity(const User &user, const City::Name &cityName) {
+    auto it = _container.find(cityName);
+    bool cityExists = it != _container.end();
+    assert(cityExists);
+    City &city = it->second;
+    city.removeAndAlertPlayer(user);
 }
 
 bool Cities::isPlayerInCity(const std::string &username, const City::Name &cityName) const{
