@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("No erroneous transform messages on login"){
+TEST_CASE("No erroneous transform messages on login", "[.flaky-vs2015]"){
     TestServer s = TestServer::WithData("basic_rock");
     s.addObject("rock", Point(20,20));
     TestClient c = TestClient::WithData("basic_rock");

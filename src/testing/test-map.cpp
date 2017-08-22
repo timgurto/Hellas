@@ -2,7 +2,7 @@
 #include "TestClient.h"
 #include "TestServer.h"
 
-TEST_CASE("Objects show up on the map when a client logs in", "[map]"){
+TEST_CASE("Objects show up on the map when a client logs in", "[map][.flaky-vs2015]"){
     // Given a server and client with rock objects;
     TestServer s = TestServer::WithData("basic_rock");
     TestClient c = TestClient::WithData("basic_rock");

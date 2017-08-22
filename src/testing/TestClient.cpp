@@ -108,6 +108,8 @@ bool TestClient::waitForMessage(MessageCode desiredMsg, ms_t timeout) const {
 
 bool TestClient::messageWasReceivedSince(MessageCode desiredMsg, size_t startingIndex) const{
     const size_t NUM_MESSAGES = _client->_messagesReceived.size();
+    if (NUM_MESSAGES > 10000)
+        FAIL("Number of messages received was catastrophically high (probably uninitialized)");
     if (startingIndex >= NUM_MESSAGES)
         return false;
     for (size_t i = startingIndex; i != NUM_MESSAGES; ++i)

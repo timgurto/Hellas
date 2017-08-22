@@ -22,7 +22,7 @@ _valid(false){
             return;
         ret = TTF_Init();
         if (ret < 0)
-            return;
+            assert(false);
         ret = IMG_Init(IMG_INIT_PNG);
     }
     ++_count;

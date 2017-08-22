@@ -55,7 +55,7 @@ TEST_CASE("Default client knows no city membership", "[city]"){
     CHECK(c->character().cityName() == "");
 }
 
-TEST_CASE("Client is alerted to city membership", "[city]"){
+TEST_CASE("Client is alerted to city membership", "[city][.flaky-vs2015]"){
     TestServer s;
     TestClient c = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);

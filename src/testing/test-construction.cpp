@@ -41,7 +41,7 @@ TEST_CASE("New client doesn't know any locked constructions"){
     CHECK_FALSE(c.knowsConstruction("table"));
 }
 
-TEST_CASE("Unique objects are unique"){
+TEST_CASE("Unique objects are unique", "[.flaky-vs2015]"){
     TestServer s = TestServer::WithData("unique_throne");
     TestClient c = TestClient::WithData("unique_throne");
     WAIT_UNTIL (s.users().size() == 1);
@@ -91,7 +91,7 @@ TEST_CASE("Objects without materials can't be built"){
     CHECK(s.entities().size() == 0);
 }
 
-TEST_CASE("Construction tool requirements are enforced"){
+TEST_CASE("Construction tool requirements are enforced", "[.flaky-vs2015]"){
     TestServer s = TestServer::WithData("computer");
     TestClient c = TestClient::WithData("computer");
     WAIT_UNTIL (s.users().size() == 1);
