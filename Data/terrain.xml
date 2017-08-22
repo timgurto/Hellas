@@ -10,45 +10,47 @@ frames             *
 frameTime          *
 -->
 
-<terrain index="a" id="normal"          color="E8CE94" />
-<terrain index="b" id="fertile"         color="62BA6C" />
-<terrain index="c" id="rocky"           color="C4AAC0" />
-<terrain index="d" id="mountain"        color="8778A5" />
-<terrain index="e" id="plains"          color="00CC00" />
-<terrain index="f" id="plainsFertile"   color="00FF00" />
-<terrain index="g" id="plainsRocky"     color="009900" />
-<terrain index="h" id="plainsMountain"  color="006600" />
-<terrain index="i" id="forest"          color="00CC54" />
-<terrain index="j" id="forestFertile"   color="00FF6A" />
-<terrain index="k" id="forestRocky"     color="00993D" />
-<terrain index="l" id="forestMountain"  color="006628" />
-<terrain index="m" id="rich"            color="CCAA00" />
-<terrain index="n" id="richFertile"     color="FFD400" />
-<terrain index="o" id="richRocky"       color="997F00" />
-<terrain index="p" id="richMountain"    color="665500" />
-<terrain index="q" id="snow"            color="FFFFFF" />
-<terrain index="r" id="snowRocky"       color="CCCCCC" />
-<terrain index="s" id="snowMountain"    color="999999" />
-<terrain index="t" id="swamp"           color="CC06CC" />
-<terrain index="u" id="swampFertile"    color="FF07FF" />
-<terrain index="x" id="desert"          color="FFFF7F" />
-<terrain index="y" id="desertRocky"     color="CCCC66" />
-<terrain index="z" id="desertMountain"  color="99994C" />
-<terrain index="A" id="beach"           color="00FFFF" />
-<terrain index="C" id="beachRocky"      color="00CCCC" />
-<terrain index="D" id="beachMountain"   color="009999" />
-<terrain index="E" id="ruins"           color="CC0066" />
-<terrain index="F" id="ruinsFertile"    color="FF007F" />
-<terrain index="G" id="ruinsRocky"      color="99004C" />
-<terrain index="H" id="ruinsMountain"   color="660033" />
-<terrain index="J" id="caveRocky"       color="CC6600" />
-<terrain index="K" id="caveMountain"    color="994C00" />
-<terrain index="L" id="nile"            color="7F00FF" />
-<terrain index="M" id="nileFertile"     color="6600CC" />
-<terrain index="N" id="volcanoRocky"    color="FF0000" />
-<terrain index="O" id="volcanoMountain" color="CC0000" />
-<terrain index="P" id="water"           color="0000FF" frames="32" frameTime="200" />
-<terrain index="Q" id="deepWater"       color="0000CC" frames="32" frameTime="200" />
+<terrain index="a" id="normal"          color="9BAE77" />
+<terrain index="b" id="fertile"         color="659A63" />
+<terrain index="c" id="rocky"           color="B09AB0" />
+<terrain index="d" id="mountain"        color="A7898F" />
+<terrain index="e" id="plains"          color="5D9A62" />
+<terrain index="f" id="plainsFertile"   color="2B6647" />
+<terrain index="g" id="plainsRocky"     color="83928F" />
+<terrain index="h" id="plainsMountain"  color="617B7C" />
+<terrain index="i" id="forest"          color="87715B" />
+<terrain index="j" id="forestFertile"   color="2F5E44" />
+<terrain index="k" id="forestRocky"     color="6D7B81" />
+<terrain index="l" id="forestMountain"  color="4D5862" />
+<terrain index="m" id="rich"            color="A1C882" />
+<terrain index="n" id="richFertile"     color="7D9166" />
+<terrain index="o" id="richRocky"       color="89958C" />
+<terrain index="p" id="richMountain"    color="655884" />
+<terrain index="q" id="snow"            color="E5E4E4" />
+<terrain index="r" id="snowRocky"       color="CDC0CE" />
+<terrain index="s" id="snowMountain"    color="7F6D92" />
+<terrain index="t" id="swamp"           color="3D7C6D" />
+<terrain index="u" id="swampFertile"    color="396F78" />
+<terrain index="x" id="desert"          color="F3F3CA" />
+<terrain index="y" id="desertRocky"     color="E3D7B4" />
+<terrain index="z" id="desertMountain"  color="B3A19C" />
+<terrain index="S" id="beachCoast"      color="6893D7" />
+<terrain index="A" id="beach"           color="F3E9AD" />
+<terrain index="C" id="beachRocky"      color="AF9C99" />
+<terrain index="D" id="beachMountain"   color="705F89" />
+<terrain index="E" id="ruins"           color="C7B4B8" />
+<terrain index="F" id="ruinsFertile"    color="91969E" />
+<terrain index="G" id="ruinsRocky"      color="A896B2" />
+<terrain index="H" id="ruinsMountain"   color="7B6A92" />
+<terrain index="J" id="caveRocky"       color="5F5283" />
+<terrain index="K" id="caveMountain"    color="302A5D" />
+<terrain index="L" id="nile"            color="A8CB88" />
+<terrain index="M" id="nileFertile"     color="405D60" />
+<terrain index="R" id="volcanoFertile"  color="384F61" />
+<terrain index="N" id="volcanoRocky"    color="392354" />
+<terrain index="O" id="volcanoMountain" color="52234E" />
+<terrain index="P" id="water"           color="5870C1" frames="32" frameTime="200" />
+<terrain index="Q" id="deepWater"       color="45617C" frames="32" frameTime="200" />
 
 <!--
 Default list applies to player avatars, and to all objects unless otherwise specified.
