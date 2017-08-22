@@ -197,11 +197,12 @@ TEST_CASE("A player can leave a city", "[city]") {
     s.cities().addPlayerToCity(user, "athens");
     WAIT_UNTIL(s.cities().isPlayerInCity("alice", "athens"));
 
-    // When the user sends a leave-city message
+    // When Alice sends a leave-city message
     c.sendMessage(CL_LEAVE_CITY);
 
-    // Then the player is not in a city;
+    // Then Alice is not in a city;
     WAIT_UNTIL(!s.cities().isPlayerInCity("alice", "athens"));
+    CHECK(s.cities().getPlayerCity("alice").empty());
 }
 
 TEST_CASE("A player can't leave a city if not in one", "[city]") {

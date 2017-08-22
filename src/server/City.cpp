@@ -56,6 +56,7 @@ void Cities::removeUserFromCity(const User &user, const City::Name &cityName) {
     assert(cityExists);
     City &city = it->second;
     city.removeAndAlertPlayer(user);
+    _usersToCities.erase(user.name());
 }
 
 bool Cities::isPlayerInCity(const std::string &username, const City::Name &cityName) const{
