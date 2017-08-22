@@ -57,3 +57,4 @@ doc/web/terrains.js
 *.opendb
 *.iobj
 *.ipdb
+*.enc
