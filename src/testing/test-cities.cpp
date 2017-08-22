@@ -161,7 +161,7 @@ TEST_CASE("A player must be in a city to cede", "[.slow][city]"){
     CHECK(rock.permissions().isOwnedByPlayer(user.name()));
 }
 
-TEST_CASE("A player can only cede his own objects", "[.slow][city]"){
+TEST_CASE("A player can only cede his own objects", "[.slow][city]") {
     // Given a user in Athens;
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");
@@ -177,10 +177,26 @@ TEST_CASE("A player can only cede his own objects", "[.slow][city]"){
     WAIT_UNTIL(c.objects().size() == 1);
     Object &rock = s.getFirstObject();
     c.sendMessage(CL_CEDE, makeArgs(rock.serial()));
-    
+
     // Then the player receives an error message;
     CHECK(c.waitForMessage(SV_NO_PERMISSION, 10000));
 
     // And the object does not belong to Athens
-    CHECK(! rock.permissions().isOwnedByCity("athens"));
+    CHECK_FALSE(rock.permissions().isOwnedByCity("athens"));
+}
+
+TEST_CASE("A player can leave a city", "[city]") {
+    // Given a user named Alice;
+    auto c = TestClient::WithUsername("alice");
+    auto s = TestServer{};
+    WAIT_UNTIL(s.users().size() == 1);
+    auto &user = s.getFirstUser();
+
+    // Who is a member of Athens
+    s.cities().createCity("athens");
+    s.cities().addPlayerToCity(user, "athens");
+    WAIT_UNTIL(s.cities().isPlayerInCity("alice", "athens"));
+
+    // When the user sends a leave-city message
+    c.sendMessage(CL_LEAVE_CITY);
 }

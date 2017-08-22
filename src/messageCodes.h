@@ -83,17 +83,20 @@ enum MessageCode{
     // Arguments: x, y
     CL_DISMOUNT = 36,
 
-    // "Tell me what's inside object ..., and let me know of changes in the future". 
+    // "Tell me what's inside object ..., and let me know of changes in the future".
     // Arguments: serial
     CL_START_WATCHING = 40,
 
-    // "I'm no longer interested in updates from object ...". 
+    // "I'm no longer interested in updates from object ...".
     // Arguments: serial
     CL_STOP_WATCHING = 41,
 
-    // "I want to give my object ... to my city". 
+    // "I want to give my object ... to my city".
     // Arguments: serial
     CL_CEDE = 42,
+
+    // "I want to leave my city".
+    CL_LEAVE_CITY = 45,
 
     // "I'm targeting entity ..."
     // Arguments: serial
