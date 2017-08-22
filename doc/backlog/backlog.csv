@@ -62,7 +62,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 62,Fix flaky merchant-slot-window test,2,89,Bug,,TRUE,,
 63,Eating food restores energy,13,3,Feature,93,,,1
 64,Buffs,13,233,Feature,22,,,3
-65,NPCs can combine loot tables,5,21,Feature,,,,3
+65,NPCs can combine loot tables,5,8,Feature,,,,3
 66,NPCs can have skills/abilities,5,144,Feature,22,,,3
 67,Set bonuses for gear,13,21,Feature,,,,
 68,Class-restricted gear,8,5,Feature,,,,
@@ -179,3 +179,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 181,Send object-movement updates to owner and city's members,5,3,Bug,,,,
 182,Maintain only one set of scroll-bar triangle images,2,2,Performance,,,,
 182,"Add fake latency by default, for testing",55,34,Usability,,,,1
+183,Animate lava under volcano terrain,13,2,Aesthetics,,,,
+184,Require map to be explored,21,21,Feature,,,,
+185,"Add terrain-specific weather particles, like leaves or rain",13,8,Aesthetics,,,,
