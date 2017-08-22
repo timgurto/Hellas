@@ -16,6 +16,7 @@ void City::addAndAlertPlayer(const User &user) {
 
 void City::removeAndAlertPlayer(const User &user) {
     _members.erase(user.name());
+    Server::instance().sendMessage(user.socket(), SV_NO_CITY);
 }
 
 void City::addPlayerWithoutAlerting(const std::string &username){

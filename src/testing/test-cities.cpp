@@ -192,10 +192,13 @@ TEST_CASE("A player can leave a city", "[city]") {
     WAIT_UNTIL(s.users().size() == 1);
     auto &user = s.getFirstUser();
 
-    // Who is a member of Athens
+    // Who is a member of Athens;
     s.cities().createCity("athens");
     s.cities().addPlayerToCity(user, "athens");
     WAIT_UNTIL(s.cities().isPlayerInCity("alice", "athens"));
+
+    // And who knows it
+    WAIT_UNTIL(c.cityName() == "athens");
 
     // When Alice sends a leave-city message
     c.sendMessage(CL_LEAVE_CITY);
@@ -203,6 +206,9 @@ TEST_CASE("A player can leave a city", "[city]") {
     // Then Alice is not in a city;
     WAIT_UNTIL(!s.cities().isPlayerInCity("alice", "athens"));
     CHECK(s.cities().getPlayerCity("alice").empty());
+
+    // And the user knows it
+    WAIT_UNTIL(c.cityName().empty());
 }
 
 TEST_CASE("A player can't leave a city if not in one", "[city]") {

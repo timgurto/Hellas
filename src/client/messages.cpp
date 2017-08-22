@@ -387,6 +387,14 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_NO_CITY:
+        {
+            if (del != MSG_END)
+                break;
+            _character.cityName("");
+            break;
+        }
+
         case SV_IN_CITY:
         {
             std::string username, cityName;
