@@ -58,8 +58,8 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
 -->
 
 <list id="land" default="1" >
-    <!--forbid id="water" />
-    <forbid id="deepWater" /-->
+    <forbid id="water" />
+    <forbid id="deepWater" />
     <forbid id="mountain" />
     <forbid id="plainsMountain" />
     <forbid id="forestMountain" />
