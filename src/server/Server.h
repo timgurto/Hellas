@@ -201,6 +201,7 @@ private:
 
     void handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum);
     void handle_CL_START_WATCHING(User &user, size_t serial);
+    void handle_CL_LEAVE_CITY(User &user);
 };
 
 #endif

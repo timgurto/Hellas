@@ -887,6 +887,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_LEAVE_CITY:
+        {
+            if (del != MSG_END)
+                return;
+            handle_CL_LEAVE_CITY(*user);
+            break;
+        }
+
         case CL_CEDE:
         {
             size_t serial;
@@ -998,7 +1006,7 @@ void Server::handle_CL_START_WATCHING(User &user, size_t serial){
     ent->addWatcher(user.name());
 }
 
-void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum){
+void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
     if (serial == INVENTORY) {
         sendMessage(user.socket(), SV_TAKE_SELF);
         return;
@@ -1018,15 +1026,15 @@ void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum){
 
     // Attempt to give item to user
     size_t remainder = user.giveItem(slot.first, slot.second);
-    if (remainder > 0){
+    if (remainder > 0) {
         slot.second = remainder;
         sendMessage(user.socket(), SV_INVENTORY_FULL);
     } else {
         slot.first = nullptr;
         slot.second = 0;
     }
-            
-    if (serial == GEAR){ // Tell user about his empty gear slot, and updated stats
+
+    if (serial == GEAR) { // Tell user about his empty gear slot, and updated stats
         sendInventoryMessage(user, slotNum, GEAR);
         user.updateStats();
 
@@ -1034,6 +1042,10 @@ void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum){
         for (auto username : pEnt->watchers())
             pEnt->alertWatcherOnInventoryChange(*_usersByName[username], slotNum);
     }
+}
+
+void Server::handle_CL_LEAVE_CITY(User &user) {
+    sendMessage(user.socket(), SV_NOT_IN_CITY);
 }
 
 

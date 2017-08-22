@@ -200,3 +200,17 @@ TEST_CASE("A player can leave a city", "[city]") {
     // When the user sends a leave-city message
     c.sendMessage(CL_LEAVE_CITY);
 }
+
+TEST_CASE("A player can't leave a city if not in one", "[city]") {
+    // Given a user;
+    auto c = TestClient{};
+    auto s = TestServer{};
+    WAIT_UNTIL(s.users().size() == 1);
+    auto &user = s.getFirstUser();
+
+    // When the user sends a leave-city message
+    c.sendMessage(CL_LEAVE_CITY);
+
+    // Then the player receives an error message;
+    CHECK(c.waitForMessage(SV_NOT_IN_CITY));
+}
