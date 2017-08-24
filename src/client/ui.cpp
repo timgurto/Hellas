@@ -17,6 +17,16 @@ void Client::initUI() {
     ClientItem::init();
 
     // Initialize chat log
+    initChatLog();
+    initializeGearSlotNames();
+    initCastBar();
+    initMenuBar();
+    initPerformanceDisplay();
+    initPlayerPanels();
+
+}
+
+void Client::initChatLog() {
     drawLoadingScreen("Initializing chat log", 0.4);
     _chatContainer = new Element(Rect(0, SCREEN_Y - _config.chatH, _config.chatW, _config.chatH));
     _chatTextBox = new TextBox(Rect(0, _config.chatH, _config.chatW));
@@ -30,9 +40,9 @@ void Client::initUI() {
     addUI(_chatContainer);
     SAY_COLOR = Color::SAY;
     WHISPER_COLOR = Color::WHISPER;
+}
 
-    initializeGearSlotNames();
-
+void Client::initWindows() {
     drawLoadingScreen("Initializing UI", 0.8);
     initializeBuildWindow();
     _craftingWindow = Window::InitializeLater(initializeCraftingWindow);
@@ -44,8 +54,9 @@ void Client::initUI() {
     addWindow(_inventoryWindow);
     addWindow(_gearWindow);
     addWindow(_mapWindow);
+}
 
-    // Initialize cast bar
+void Client::initCastBar() {
     const Rect
         CAST_BAR_RECT(SCREEN_X / 2 - _config.castBarW / 2, _config.castBarY,
             _config.castBarW, _config.castBarH),
@@ -60,8 +71,9 @@ void Client::initUI() {
     _castBar->addChild(castBarLabel);
     _castBar->hide();
     addUI(_castBar);
+}
 
-    // Initialize menu bar
+void Client::initMenuBar() {
     static const px_t
         MENU_BUTTON_W = 12,
         MENU_BUTTON_H = 12,
@@ -101,8 +113,9 @@ void Client::initUI() {
     button->setTooltip("Map (M)");
     menuBar->addChild(button);
     addUI(menuBar);
+}
 
-    // Initialize FPS/latency display
+void Client::initPerformanceDisplay() {
     static const px_t
         HARDWARE_STATS_W = 100,
         HARDWARE_STATS_H = 44,
@@ -132,8 +145,9 @@ void Client::initUI() {
     hardwareStats->addChild(numEntities);
     hardwareStats->addChild(channels);
     addUI(hardwareStats);
+}
 
-    // Initialize player/target panels
+void Client::initPlayerPanels() {
     px_t
         playerPanelX = CombatantPanel::GAP,
         playerPanelY = CombatantPanel::GAP;

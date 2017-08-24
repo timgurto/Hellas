@@ -214,6 +214,12 @@ private:
     void addUI(Element *element);
     Element *_castBar;
     void initUI();
+        void initChatLog();
+        void initWindows();
+        void initCastBar();
+        void initMenuBar();
+        void initPerformanceDisplay();
+        void initPlayerPanels();
 
     // Chat
     Element *_chatContainer;
