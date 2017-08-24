@@ -200,8 +200,12 @@ TEST_CASE("A player can leave a city", "[city]") {
     // And who knows it
     WAIT_UNTIL(c.cityName() == "athens");
 
-    // When Alice sends a leave-city message
-    c.sendMessage(CL_LEAVE_CITY);
+    SECTION("When Alice sends a leave-city message") {
+        c.sendMessage(CL_LEAVE_CITY);
+    }
+    SECTION("When Alice enters \" / cquit\" into the chat") {
+        c.performCommand("/cquit");
+    }
 
     // Then Alice is not in a city;
     WAIT_UNTIL(!s.cities().isPlayerInCity("alice", "athens"));

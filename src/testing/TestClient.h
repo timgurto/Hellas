@@ -50,6 +50,7 @@ public:
 
     Client *operator->(){ return _client; }
     Client &client() { return *_client; }
+    void performCommand(const std::string &command) { _client->performCommand(command); }
     void sendMessage(MessageCode code, const std::string &args = ""){ _client->sendMessage(code, args); }
     MessageCode getNextMessage() const;
     bool waitForMessage(MessageCode desiredMsg, ms_t timeout = DEFAULT_TIMEOUT) const;
