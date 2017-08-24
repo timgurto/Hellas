@@ -132,6 +132,7 @@
     <ClCompile Include="src\client\Target.cpp" />
     <ClCompile Include="src\client\Texture.cpp" />
     <ClCompile Include="src\client\TooltipBuilder.cpp" />
+    <ClCompile Include="src\client\ui.cpp" />
     <ClCompile Include="src\client\ui\Button.cpp" />
     <ClCompile Include="src\client\ui\CheckBox.cpp" />
     <ClCompile Include="src\client\ui\ChoiceList.cpp" />

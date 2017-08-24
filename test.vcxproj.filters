@@ -128,6 +128,7 @@
     <ClCompile Include="src\testing\test-map.cpp" />
     <ClCompile Include="src\server\objects\ObjectLoot.cpp" />
     <ClCompile Include="src\client\ClientConfig.cpp" />
+    <ClCompile Include="src\client\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

@@ -213,6 +213,7 @@ private:
     ui_t _ui;
     void addUI(Element *element);
     Element *_castBar;
+    void initUI();
 
     // Chat
     Element *_chatContainer;
