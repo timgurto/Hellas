@@ -8,6 +8,7 @@
 
 #include "Avatar.h"
 #include "ClientCombatant.h"
+#include "ClientConfig.h"
 #include "ClientItem.h"
 #include "ClientMerchantSlot.h"
 #include "ClientNPC.h"
@@ -116,6 +117,8 @@ private:
     static std::map<std::string, int> _messageCommands;
     static std::map<int, std::string> _errorMessages;
     static void initializeMessageNames();
+
+    ClientConfig _config;
 
     std::string _defaultServerAddress;
 
@@ -229,7 +232,6 @@ private:
     Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.
 
     // Login screen
-    Point _loginFrontOffset;
     Texture _loginFront, _loginBack;
     ui_t _loginUI;
     void initLoginScreen();
@@ -262,7 +264,6 @@ private:
     Socket _socket;
 
     TTF_Font *_defaultFont;
-    px_t _defaultFontOffset; // Vertical offset for game text
 
     // Mouse stuff
     Point _mouse; // Mouse position

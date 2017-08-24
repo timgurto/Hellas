@@ -112,7 +112,6 @@ _socket(),
 _dataLoaded(false),
 
 _defaultFont(nullptr),
-_defaultFontOffset(0),
 
 _mouse(0,0),
 _mouseMoved(false),
@@ -165,85 +164,17 @@ _debug("client.log"){
     _instance = this;
     _debugInstance = &_debug;
 
+    _config.loadFromFile("client-config.xml");
+    
 
-    // Read config file
-    XmlReader xr("client-config.xml");
 
-    px_t
-        chatW = 150,
-        chatH = 100;
-    auto elem = xr.findChild("chatLog");
-    xr.findAttr(elem, "width", chatW);
-    xr.findAttr(elem, "height", chatH);
-
-    elem = xr.findChild("colors");
-    xr.findAttr(elem, "warning", Color::WARNING);
-    xr.findAttr(elem, "failure", Color::FAILURE);
-    xr.findAttr(elem, "success", Color::SUCCESS);
-    xr.findAttr(elem, "chatLogBackground", Color::CHAT_LOG_BACKGROUND);
-    xr.findAttr(elem, "say", Color::SAY);
-    xr.findAttr(elem, "whisper", Color::WHISPER);
-    xr.findAttr(elem, "defaultDraw", Color::DEFAULT_DRAW);
-    xr.findAttr(elem, "font", Color::FONT);
-    xr.findAttr(elem, "fontOutline", Color::FONT_OUTLINE);
-    xr.findAttr(elem, "disabledText", Color::DISABLED_TEXT);
-    xr.findAttr(elem, "tooltipFont", Color::TOOLTIP_FONT);
-    xr.findAttr(elem, "tooltipBackground", Color::TOOLTIP_BACKGROUND);
-    xr.findAttr(elem, "tooltipBorder", Color::TOOLTIP_BORDER);
-    xr.findAttr(elem, "elementBackground", Color::ELEMENT_BACKGROUND);
-    xr.findAttr(elem, "elementShadowDark", Color::ELEMENT_SHADOW_DARK);
-    xr.findAttr(elem, "elementShadowLight", Color::ELEMENT_SHADOW_LIGHT);
-    xr.findAttr(elem, "elementFont", Color::ELEMENT_FONT);
-    xr.findAttr(elem, "containerSlotBackground", Color::CONTAINER_SLOT_BACKGROUND);
-    xr.findAttr(elem, "itemName", Color::ITEM_NAME);
-    xr.findAttr(elem, "itemStats", Color::ITEM_STATS);
-    xr.findAttr(elem, "itemInstructions", Color::ITEM_INSTRUCTIONS);
-    xr.findAttr(elem, "itemTags", Color::ITEM_TAGS);
-    xr.findAttr(elem, "footprintGood", Color::FOOTPRINT_GOOD);
-    xr.findAttr(elem, "footprintBad", Color::FOOTPRINT_BAD);
-    xr.findAttr(elem, "footprint", Color::FOOTPRINT);
-    xr.findAttr(elem, "inRange", Color::IN_RANGE);
-    xr.findAttr(elem, "outOfRange", Color::OUT_OF_RANGE);
-    xr.findAttr(elem, "healthBarBackground", Color::HEALTH_BAR_BACKGROUND);
-    xr.findAttr(elem, "healthBarOutline", Color::HEALTH_BAR_OUTLINE);
-    xr.findAttr(elem, "performanceFont", Color::CAST_BAR_FONT);
-    xr.findAttr(elem, "castBarFont", Color::PERFORMANCE_FONT);
-    xr.findAttr(elem, "progressBar", Color::PROGRESS_BAR);
-    xr.findAttr(elem, "progressBarBackground", Color::PROGRESS_BAR_BACKGROUND);
-    xr.findAttr(elem, "combatantSelf", Color::COMBATANT_SELF);
-    xr.findAttr(elem, "combatantAlly", Color::COMBATANT_ALLY);
-    xr.findAttr(elem, "combatantNeutral", Color::COMBATANT_NEUTRAL);
-    xr.findAttr(elem, "combatantEnemy", Color::COMBATANT_ENEMY);
-    xr.findAttr(elem, "playerNameOutline", Color::PLAYER_NAME_OUTLINE);
-    xr.findAttr(elem, "outline", Color::OUTLINE);
-    xr.findAttr(elem, "highlightOutline", Color::HIGHLIGHT_OUTLINE);
-
-    drawLoadingScreen("Applying settings", 0.2);
-    std::string fontFile = "AdvoCut.ttf";
-    int fontSize = 10;
-    elem = xr.findChild("gameFont");
-    xr.findAttr(elem, "filename", fontFile);
-    xr.findAttr(elem, "size", fontSize);
     if (_defaultFont != nullptr)
         TTF_CloseFont(_defaultFont);
-    _defaultFont = TTF_OpenFont(fontFile.c_str(), fontSize);
+    _defaultFont = TTF_OpenFont(_config.fontFile.c_str(), _config.fontSize);
+    assert(_defaultFont != nullptr);
     Element::font(_defaultFont);
-    xr.findAttr(elem, "offset", _defaultFontOffset);
-    Element::textOffset = _defaultFontOffset;
-    xr.findAttr(elem, "height", Element::TEXT_HEIGHT);
-
-    px_t castBarY = 300, castBarW = 150, castBarH = 11;
-    elem = xr.findChild("castBar");
-    xr.findAttr(elem, "y", castBarY);
-    xr.findAttr(elem, "w", castBarW);
-    xr.findAttr(elem, "h", castBarH);
-
-    elem = xr.findChild("loginScreen");
-    xr.findAttr(elem, "frontX", _loginFrontOffset.x);
-    xr.findAttr(elem, "frontY", _loginFrontOffset.y);
-
-
-    _debug << Color::FONT;
+    Element::textOffset = _config.fontOffset;
+    Element::TEXT_HEIGHT = _config.textHeight;
 
     drawLoadingScreen("Initializing classes", 0.3);
     Element::initialize();
@@ -251,9 +182,9 @@ _debug("client.log"){
 
     // Initialize chat log
     drawLoadingScreen("Initializing chat log", 0.4);
-    _chatContainer = new Element(Rect(0, SCREEN_Y - chatH, chatW, chatH));
-    _chatTextBox = new TextBox(Rect(0, chatH, chatW));
-    _chatLog = new List(Rect(0, 0, chatW, chatH - _chatTextBox->height()));
+    _chatContainer = new Element(Rect(0, SCREEN_Y - _config.chatH, _config.chatW, _config.chatH));
+    _chatTextBox = new TextBox(Rect(0, _config.chatH, _config.chatW));
+    _chatLog = new List(Rect(0, 0, _config.chatW, _config.chatH - _chatTextBox->height()));
     _chatTextBox->setPosition(0, _chatLog->height());
     _chatTextBox->hide();
     _chatContainer->addChild(new ColorBlock(_chatLog->rect(), Color::CHAT_LOG_BACKGROUND));
@@ -284,10 +215,7 @@ _debug("client.log"){
     // Resolve default server IP
     drawLoadingScreen("Finding server", 0.7);
     if (!cmdLineArgs.contains("server-ip")){
-        elem = xr.findChild("server");
-        std::string serverHostDirectory;
-        xr.findAttr(elem, "hostDirectory", serverHostDirectory);
-        _defaultServerAddress = readFromURL(serverHostDirectory);
+        _defaultServerAddress = readFromURL(_config.serverHostDirectory);
     }
 
     renderer.setDrawColor();
@@ -316,8 +244,9 @@ _debug("client.log"){
     
     // Initialize cast bar
     const Rect
-        CAST_BAR_RECT(SCREEN_X/2 - castBarW/2, castBarY, castBarW, castBarH),
-        CAST_BAR_DIMENSIONS(0, 0, castBarW, castBarH);
+        CAST_BAR_RECT(SCREEN_X/2 - _config.castBarW/2, _config.castBarY,
+                _config.castBarW, _config.castBarH),
+        CAST_BAR_DIMENSIONS(0, 0, _config.castBarW, _config.castBarH);
     static const Color CAST_BAR_LABEL_COLOR = Color::CAST_BAR_FONT;
     _castBar = new Element(CAST_BAR_RECT);
     _castBar->addChild(new ProgressBar<ms_t>(CAST_BAR_DIMENSIONS, _actionTimer, _actionLength));

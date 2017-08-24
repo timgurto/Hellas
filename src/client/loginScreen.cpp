@@ -78,7 +78,7 @@ void Client::drawLoginScreen() const{
         particle->draw(*this);
 
     // Braziers
-    _loginFront.draw(_loginFrontOffset);
+    _loginFront.draw(_config.loginFrontOffset);
 
     // UI
     for (Element *element : _loginUI)
