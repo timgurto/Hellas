@@ -380,6 +380,7 @@ private:
     std::queue<std::string> _messages;
     std::string _partialMessage;
     void sendRawMessage(const std::string &msg = "") const;
+    static std::string compileMessage(MessageCode msgCode, const std::string &args = "");
     void sendMessage(MessageCode msgCode, const std::string &args = "") const;
     void handleMessage(const std::string &msg);
     void performCommand(const std::string &commandString);

@@ -1120,15 +1120,17 @@ void Client::sendRawMessage(const std::string &msg) const{
 }
 
 void Client::sendMessage(MessageCode msgCode, const std::string &args) const{
-    // Compile message
+    auto message = compileMessage(msgCode, args);
+    sendRawMessage(message);
+}
+
+std::string Client::compileMessage(MessageCode msgCode, const std::string &args) {
     std::ostringstream oss;
     oss << MSG_START << msgCode;
     if (args != "")
         oss << MSG_DELIM << args;
     oss << MSG_END;
-
-    // Send message
-    sendRawMessage(oss.str());
+    return oss.str();
 }
 
 void Client::initializeMessageNames(){    
