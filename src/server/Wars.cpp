@@ -27,8 +27,10 @@ void Wars::Belligerent::alertToWarWith(const Belligerent rhs) const{
 }
 
 void Wars::declare(const Belligerent &a, const Belligerent &b){
-    container.insert(std::make_pair(a, b));
-    container.insert(std::make_pair(b, a));
+    if (!isAtWar(a, b))
+        container.insert(std::make_pair(a, b));
+    if (!isAtWar(b, a))
+        container.insert(std::make_pair(b, a));
 
     a.alertToWarWith(b);
     b.alertToWarWith(a);
