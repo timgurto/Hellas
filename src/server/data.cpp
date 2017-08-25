@@ -275,6 +275,9 @@ void Server::loadData(const std::string &path){
             bool isUnbuildable = xr.findAttr(elem, "isUnbuildable", n) == 1;
             if (isUnbuildable)
                 ot->makeUnbuildable();
+
+            if (xr.findAttr(elem, "playerUnique", s))
+                ot->makeUniquePerPlayer(s);
             
             // Construction locks
             bool requiresUnlock = false;

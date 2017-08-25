@@ -51,6 +51,8 @@ class ObjectType : public EntityType{
     ItemSet _materials; // The necessary materials, if this needs to be constructed in-place.
     bool _knownByDefault;
 
+    std::string _playerUniqueCategory; // Assumption: up to one category per object type.
+
 
 protected:
     ContainerType *_container;
@@ -79,6 +81,8 @@ public:
     void incrementCounter() const { ++ _numInWorld; checkUniquenessInvariant(); }
     void decrementCounter() const { -- _numInWorld; }
     size_t numInWorld() const { return _numInWorld; }
+    void makeUniquePerPlayer(const std::string &category) { _playerUniqueCategory = category; }
+    bool isPlayerUnique() const { return !_playerUniqueCategory.empty(); }
 
     virtual char classTag() const override { return 'o'; }
 

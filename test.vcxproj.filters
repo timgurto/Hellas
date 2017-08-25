@@ -130,6 +130,7 @@
     <ClCompile Include="src\client\ClientConfig.cpp" />
     <ClCompile Include="src\client\ui.cpp" />
     <ClCompile Include="src\client\socialWindow.cpp" />
+    <ClCompile Include="src\testing\test-altars.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

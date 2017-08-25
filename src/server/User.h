@@ -59,7 +59,8 @@ private:
 
     std::set<std::string>
         _knownRecipes,
-        _knownConstructions;
+        _knownConstructions,
+        _playerUniqueCategoriesOwned;
 
     size_t _driving; // The serial of the vehicle this user is currently driving; 0 if none.
 
@@ -127,6 +128,7 @@ public:
     
     void onHealthChange() override;
     void onDeath() override;
+    void onNewOwnedObject(const ObjectType &type);
 
     void sendInfoToClient(const User &targetUser) const override;
 
