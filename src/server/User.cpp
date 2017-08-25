@@ -390,6 +390,11 @@ void User::onDeath(){
     onHealthChange();
 }
 
+void User::onNewOwnedObject(const ObjectType & type) const {
+    if (type.isPlayerUnique())
+        this->_playerUniqueCategoriesOwned.insert(type.playerUniqueCategory());
+}
+
 void User::updateStats(){
     health_t oldMaxHealth = maxHealth();
 

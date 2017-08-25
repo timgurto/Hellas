@@ -141,7 +141,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_UNIQUE_OBJECT);
                 break;
             }
-            if (objType->isPlayerUnique()) {
+            if (objType->isPlayerUnique() && user->hasPlayerUnique(objType->playerUniqueCategory())) {
                 break;
             }
             if (objType->isUnbuildable()){

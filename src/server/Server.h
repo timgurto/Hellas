@@ -49,7 +49,7 @@ public:
 
     bool itemIsTag(const ServerItem *item, const std::string &tagName) const;
 
-    const User &getUserByName(const std::string &username) const;
+    const User *getUserByName(const std::string &username) const;
 
     mutable LogConsole _debug;
 
@@ -116,7 +116,7 @@ private:
     std::set<Socket> _clientSockets;
     std::set<User> _users; // All connected users
     // Pointers to all connected users, ordered by name for faster lookup
-    std::map<std::string, const User *> _usersByName;
+    mutable std::map<std::string, const User *> _usersByName;
     std::string _userFilesPath;
     void deleteUserFiles();
     /*

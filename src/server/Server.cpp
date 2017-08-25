@@ -314,12 +314,17 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // (Owned objects)
     Permissions::Owner owner(Permissions::Owner::PLAYER, name);
     for (auto pEntity : _entities){
-        auto pObject = dynamic_cast<const Object *>(pEntity);
+        auto *pObject = dynamic_cast<const Object *>(pEntity);
+
         bool notAnObject = pObject == nullptr;
         if (notAnObject)
             continue;
-        if (_objectsByOwner.isObjectOwnedBy(pObject->serial(), owner))
+
+        bool newUserOwnsThisObject = _objectsByOwner.isObjectOwnedBy(pObject->serial(), owner);
+        if (newUserOwnsThisObject) {
             entitiesToDescribe.insert(pEntity);
+            newUser.onNewOwnedObject(pObject->objType());
+        }
     }
     // Send
     for (const Entity *entity : entitiesToDescribe){
@@ -548,6 +553,10 @@ Object &Server::addObject(const ObjectType *type, const Point &location, const s
     if (! owner.empty()){
         newObj->permissions().setPlayerOwner(owner);
         _objectsByOwner.add(Permissions::Owner(Permissions::Owner::PLAYER, owner), newObj->serial());
+        
+        const auto *user = this->getUserByName(owner);
+        if (user != nullptr)
+            user->onNewOwnedObject(*type);
     }
     return dynamic_cast<Object &>(addEntity(newObj));
 }
@@ -576,8 +585,11 @@ Entity &Server::addEntity(Entity *newEntity){
     return const_cast<Entity&>(*newEntity);
 }
 
-const User &Server::getUserByName(const std::string &username) const {
-    return *_usersByName.find(username)->second;
+const User *Server::getUserByName(const std::string &username) const {
+    auto it = _usersByName.find(username);
+    if (it == _usersByName.end())
+        return nullptr;
+    return _usersByName.find(username)->second;
 }
 
 const Terrain *Server::terrainType(char index) const{

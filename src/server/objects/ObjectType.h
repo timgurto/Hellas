@@ -83,6 +83,7 @@ public:
     size_t numInWorld() const { return _numInWorld; }
     void makeUniquePerPlayer(const std::string &category) { _playerUniqueCategory = category; }
     bool isPlayerUnique() const { return !_playerUniqueCategory.empty(); }
+    const std::string &playerUniqueCategory() const { return _playerUniqueCategory; }
 
     virtual char classTag() const override { return 'o'; }
 

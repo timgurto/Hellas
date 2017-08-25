@@ -50,7 +50,7 @@ void Container::removeItems(const ItemSet &items) {
         }
     }
     for (const std::string &username : _parent.watchers()) {
-        const User &user = Server::instance().getUserByName(username);
+        const auto &user = *Server::instance().getUserByName(username);
         for (size_t slotNum : invSlotsChanged) {
             Server::instance().sendInventoryMessage(user, slotNum, _parent);
         }
@@ -64,7 +64,7 @@ void Container::removeAll(){
         invSlot.second = 0;
     }
     for (const std::string &username : _parent.watchers()) {
-        const User &user = Server::instance().getUserByName(username);
+        const User &user = *Server::instance().getUserByName(username);
         for (size_t slotNum = 0; slotNum != _container.size(); ++slotNum) {
             Server::instance().sendInventoryMessage(user, slotNum, _parent);
         }
@@ -103,9 +103,9 @@ void Container::addItems(const ServerItem *item, size_t qty){
         }
     assert(qty == 0);
 
-    for (const std::string &username : _parent.watchers()){
-        const User &user = Server::instance().getUserByName(username);
-        for (size_t slot : changedSlots)
+    for (const auto &username : _parent.watchers()){
+        const auto &user = *Server::instance().getUserByName(username);
+        for (auto slot : changedSlots)
             Server::instance().sendInventoryMessage(user, slot, _parent);
     }
 }

@@ -59,8 +59,8 @@ private:
 
     std::set<std::string>
         _knownRecipes,
-        _knownConstructions,
-        _playerUniqueCategoriesOwned;
+        _knownConstructions;
+    mutable std::set<std::string> _playerUniqueCategoriesOwned;
 
     size_t _driving; // The serial of the vehicle this user is currently driving; 0 if none.
 
@@ -95,6 +95,9 @@ public:
     void addConstruction(const std::string &id) { _knownConstructions.insert(id); }
     bool knowsConstruction(const std::string &id) const;
     bool hasRoomToCraft(const Recipe &recipe) const;
+    bool hasPlayerUnique(const std::string &category) const {
+        return _playerUniqueCategoriesOwned.find(category) != _playerUniqueCategoriesOwned.end();
+    }
 
     // Inventory getters/setters
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const
@@ -125,7 +128,7 @@ public:
     
     void onHealthChange() override;
     void onDeath() override;
-    void onNewOwnedObject(const ObjectType &type);
+    void onNewOwnedObject(const ObjectType &type) const;
 
     void sendInfoToClient(const User &targetUser) const override;
 
