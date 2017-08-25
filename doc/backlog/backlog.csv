@@ -5,7 +5,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 4,The player who starts a city is labelled 'king',5,3,Feature,3,,TRUE,1
 5,A king can invite new members to a city,21,55,Feature,4,,TRUE,1
 6,Destroying a city shrine destroys the city,34,13,Feature,3,,TRUE,1
-7,A player can leave a city,8,8,Feature,1,,TRUE,1
+7,A player can leave a city,8,8,Feature,1,TRUE,TRUE,1
 8,Cities can own objects,89,5,Feature,1,TRUE,TRUE,
 9,"If a city owns an object, all members can use it",55,3,Feature,8,TRUE,TRUE,
 10,A player can cede an object to his city,55,8,Feature,8,TRUE,TRUE,
@@ -182,7 +182,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 183,Animate lava under volcano terrain,13,2,Aesthetics,,,,
 184,Require map to be explored,21,21,Feature,,,,
 185,"Add terrain-specific weather particles, like leaves or rain",13,8,Aesthetics,,,,
-186,Add gear preview to web docs,,,Documentation,,,,
-187,Add unlock info to web docs,,,Documentation,,,,
-188,Add transform images to web docs,,,Documentation,,,,
-189,"Add recipes using the item, to web docs",,,Documentation,,,,
+186,Add gear preview to web docs,13,13,Documentation,,,,
+187,Add unlock info to web docs,8,5,Documentation,,,,
+188,Add transform images to web docs,3,34,Documentation,,,,
+189,"Add recipes using the item, to web docs",13,5,Documentation,,,,
