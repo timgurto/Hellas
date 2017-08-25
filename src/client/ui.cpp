@@ -45,6 +45,7 @@ void Client::initChatLog() {
 void Client::initWindows() {
     drawLoadingScreen("Initializing UI", 0.8);
     initializeBuildWindow();
+    populateBuildList();
     _craftingWindow = Window::InitializeLater(initializeCraftingWindow);
     initializeInventoryWindow();
     _gearWindow = Window::InitializeLater(initializeGearWindow);

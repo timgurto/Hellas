@@ -27,6 +27,7 @@ void Client::initializeBuildWindow(){
 }
 
 void Client::populateBuildList(){
+    assert(_buildList != nullptr);
     _buildList->clearChildren();
     for (const std::string &id : _knownConstructions){
         const ClientObjectType *ot = *_objectTypes.find(&ClientObjectType(id));
