@@ -218,6 +218,8 @@ private:
         void initWindows();
         void initCastBar();
         void initMenuBar();
+        void addButtonToMenu(Element *menuBar, size_t index, Element *toToggle,
+                const std::string iconFile, const std::string tooltip = "");
         void initPerformanceDisplay();
         void initPlayerPanels();
 

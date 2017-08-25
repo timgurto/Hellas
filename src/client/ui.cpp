@@ -84,37 +84,28 @@ void Client::initMenuBar() {
         SCREEN_Y - MENU_BUTTON_H,
         MENU_BUTTON_W * NUM_BUTTONS,
         MENU_BUTTON_H));
-    Button *button = new Button(Rect(0, 0, MENU_BUTTON_W, MENU_BUTTON_H), "",
-        Element::toggleVisibilityOf, _buildWindow);
-    button->addChild(new Picture(2, 2, { "Images/UI/icon-build.png", Color::MAGENTA }));
-    button->setTooltip("Build window (B)");
-    menuBar->addChild(button);
-    button = new Button(Rect(MENU_BUTTON_W, 0, MENU_BUTTON_W, MENU_BUTTON_H), "",
-        Element::toggleVisibilityOf, _craftingWindow);
-    button->addChild(new Picture(2, 2, { "Images/UI/icon-crafting.png", Color::MAGENTA }));
-    button->setTooltip("Crafting window (C)");
-    menuBar->addChild(button);
-    button = new Button(Rect(MENU_BUTTON_W * 2, 0, MENU_BUTTON_W, MENU_BUTTON_H), "",
-        Element::toggleVisibilityOf, _inventoryWindow);
-    button->addChild(new Picture(2, 2, { "Images/UI/icon-inventory.png", Color::MAGENTA }));
-    button->setTooltip("Inventory window (I)");
-    menuBar->addChild(button);
-    button = new Button(Rect(MENU_BUTTON_W * 3, 0, MENU_BUTTON_W, MENU_BUTTON_H), "",
-        Element::toggleVisibilityOf, _gearWindow);
-    button->addChild(new Picture(2, 2, { "Images/UI/icon-gear.png", Color::MAGENTA }));
-    button->setTooltip("Gear window (G)");
-    menuBar->addChild(button);
-    button = new Button(Rect(MENU_BUTTON_W * 4, 0, MENU_BUTTON_W, MENU_BUTTON_H), "",
-        Element::toggleVisibilityOf, _chatContainer);
-    button->addChild(new Picture(2, 2, { "Images/UI/icon-chat.png", Color::MAGENTA }));
-    button->setTooltip("Toggle chat log");
-    menuBar->addChild(button);
-    button = new Button(Rect(MENU_BUTTON_W * 5, 0, MENU_BUTTON_W, MENU_BUTTON_H), "",
-        Element::toggleVisibilityOf, _mapWindow);
-    button->addChild(new Picture(2, 2, { "Images/UI/icon-map.png", Color::MAGENTA }));
-    button->setTooltip("Map (M)");
-    menuBar->addChild(button);
+
+    addButtonToMenu(menuBar, 0, _buildWindow, "icon-build.png", "Build window (B)");
+    addButtonToMenu(menuBar, 1, _craftingWindow, "icon-crafting.png", "Crafting window (C)");
+    addButtonToMenu(menuBar, 2, _inventoryWindow, "icon-inventory.png", "Inventory window (I)");
+    addButtonToMenu(menuBar, 3, _gearWindow, "icon-gear.png", "Gear window (G)");
+    addButtonToMenu(menuBar, 4, _chatContainer, "icon-chat.png", "Toggle chat log");
+    addButtonToMenu(menuBar, 5, _mapWindow, "icon-map.png", "Map (M)");
+
     addUI(menuBar);
+}
+
+void Client::addButtonToMenu(Element *menuBar, size_t index, Element *toToggle,
+        const std::string iconFile, const std::string tooltip) {
+    static const px_t
+        MENU_BUTTON_W = 12,
+        MENU_BUTTON_H = 12;
+
+    Button *button = new Button(Rect(MENU_BUTTON_W * index, 0, MENU_BUTTON_W, MENU_BUTTON_H), "",
+        Element::toggleVisibilityOf, toToggle);
+    button->addChild(new Picture(2, 2, { "Images/UI/" + iconFile, Color::MAGENTA }));
+    button->setTooltip(tooltip);
+    menuBar->addChild(button);
 }
 
 void Client::initPerformanceDisplay() {
