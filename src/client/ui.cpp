@@ -79,7 +79,7 @@ void Client::initMenuBar() {
     static const px_t
         MENU_BUTTON_W = 12,
         MENU_BUTTON_H = 12,
-        NUM_BUTTONS = 6;
+        NUM_BUTTONS = 7;
     Element *menuBar = new Element(Rect(SCREEN_X / 2 - MENU_BUTTON_W * NUM_BUTTONS / 2,
         SCREEN_Y - MENU_BUTTON_H,
         MENU_BUTTON_W * NUM_BUTTONS,
@@ -89,8 +89,9 @@ void Client::initMenuBar() {
     addButtonToMenu(menuBar, 1, _craftingWindow, "icon-crafting.png", "Crafting window (C)");
     addButtonToMenu(menuBar, 2, _inventoryWindow, "icon-inventory.png", "Inventory window (I)");
     addButtonToMenu(menuBar, 3, _gearWindow, "icon-gear.png", "Gear window (G)");
-    addButtonToMenu(menuBar, 4, _chatContainer, "icon-chat.png", "Toggle chat log");
-    addButtonToMenu(menuBar, 5, _mapWindow, "icon-map.png", "Map (M)");
+    addButtonToMenu(menuBar, 4, nullptr, "icon-social.png", "Social window");
+    addButtonToMenu(menuBar, 5, _chatContainer, "icon-chat.png", "Toggle chat log");
+    addButtonToMenu(menuBar, 6, _mapWindow, "icon-map.png", "Map (M)");
 
     addUI(menuBar);
 }
