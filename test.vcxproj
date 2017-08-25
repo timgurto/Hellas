@@ -122,6 +122,7 @@
     <ClCompile Include="src\client\Particle.cpp" />
     <ClCompile Include="src\client\ParticleProfile.cpp" />
     <ClCompile Include="src\client\Renderer.cpp" />
+    <ClCompile Include="src\client\socialWindow.cpp" />
     <ClCompile Include="src\client\SoundProfile.cpp" />
     <ClCompile Include="src\client\Sprite.cpp" />
     <ClCompile Include="src\client\SpriteType.cpp" />
