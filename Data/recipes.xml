@@ -262,4 +262,11 @@
     <unlockedBy recipe="smallPot" />
 </recipe>
 
+<recipe
+	id="woodenStatue" time="10000" product="woodenStatue" >
+	<material id="log" />
+    <tool class="axe" />
+    <unlockedBy gather="log" chance="0.1" />
+</recipe>
+
 </root>
