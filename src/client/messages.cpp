@@ -245,8 +245,7 @@ void Client::handleMessage(const std::string &msg){
                     _pendingCharLoc = p;
                 }
                 updateOffset();
-                if (_mapWindow != nullptr)
-                    _mapWindow->markChanged();
+                _mapWindow->markChanged();
                 _connectionStatus = LOADED;
                 _loaded = true;
                 _tooltipNeedsRefresh = true;
@@ -301,8 +300,7 @@ void Client::handleMessage(const std::string &msg){
                 }
             }
 
-            if (_mapWindow != nullptr)
-                _mapWindow->markChanged();
+            _mapWindow->markChanged();
 
             break;
         }
@@ -463,8 +461,7 @@ void Client::handleMessage(const std::string &msg){
                 _objects[serial] = obj;
             }
 
-            if (_mapWindow != nullptr)
-                _mapWindow->markChanged();
+            _mapWindow->markChanged();
             break;
         }
 
@@ -997,9 +994,7 @@ void Client::handleMessage(const std::string &msg){
             _debug << "You are now at war with " << name << Log::endl;
 
             _target.refreshHealthBarColor();
-
-            if (_mapWindow != nullptr)
-                _mapWindow->markChanged();
+            _mapWindow->markChanged();
             break;
         }
 

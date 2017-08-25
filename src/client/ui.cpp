@@ -18,6 +18,7 @@ void Client::initUI() {
 
     // Initialize chat log
     initChatLog();
+    initWindows();
     initializeGearSlotNames();
     initCastBar();
     initMenuBar();
