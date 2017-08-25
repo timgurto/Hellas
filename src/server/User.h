@@ -82,7 +82,6 @@ public:
 
     const std::string &name() const { return _name; }
     const Socket &socket() const { return _socket; }
-    const Stats &stats() const;
     void setClass(Class c) { _class = c; }
     Class getClass() const { return _class; }
     const std::string &className() const { return CLASS_NAMES[_class]; }
@@ -121,8 +120,6 @@ public:
     ms_t attackTime() const override { return _stats.attackTime; }
     double speed() const override { return _stats.speed; }
     ms_t timeToRemainAsCorpse() const override { return 0; }
-
-    bool shouldAlwaysBeAwareOf(const Entity &entity) const;
 
     char classTag() const override { return 'u'; }
     
@@ -180,8 +177,6 @@ public:
     struct compareYThenSerial{ bool operator()( const User *a, const User *b) const; };
     typedef std::set<const User*, User::compareXThenSerial> byX_t;
     typedef std::set<const User*, User::compareYThenSerial> byY_t;
-
-    void registerLocUpdate();
 };
 
 #endif
