@@ -125,7 +125,7 @@ void Node::generateImage() const{
 #endif
 
     // Stretch onto canvas
-    static const size_t SCALAR = 2;
+    static const int SCALAR = 2;
     SDL_Surface *canvas = SDL_CreateRGBSurface(0, surface->w * SCALAR, surface->h * SCALAR, 32, rmask, gmask, bmask, amask);
     SDL_Rect rect = {0, 0, surface->w * SCALAR, surface->h * SCALAR };
     SDL_BlitScaled(surface, nullptr, canvas, &rect);
