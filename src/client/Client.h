@@ -206,6 +206,9 @@ private:
     static void updateMapWindow(Element &);
     void addMapPin(const Point &position, const Color &color);
 
+    Window *_socialWindow;
+    void initializeSocialWindow();
+
     windows_t _windows;
     void addWindow(Window *window);
     void removeWindow(Window *window); // Linear time
@@ -382,6 +385,7 @@ private:
     void sendRawMessage(const std::string &msg = "") const;
     static std::string compileMessage(MessageCode msgCode, const std::string &args = "");
     void sendMessage(MessageCode msgCode, const std::string &args = "") const;
+    static void sendRawMessageStatic(void *data);
     void handleMessage(const std::string &msg);
     void performCommand(const std::string &commandString);
     std::vector<MessageCode> _messagesReceived;

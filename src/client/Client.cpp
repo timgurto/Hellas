@@ -90,6 +90,7 @@ _detailsPane(nullptr),
 _craftingWindow(nullptr),
 _inventoryWindow(nullptr),
 _gearWindow(nullptr),
+_socialWindow(nullptr),
 _mapWindow(nullptr),
 
 _tagList(nullptr),

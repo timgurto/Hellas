@@ -1133,6 +1133,12 @@ std::string Client::compileMessage(MessageCode msgCode, const std::string &args)
     return oss.str();
 }
 
+void Client::sendRawMessageStatic(void *data){
+    auto &client = *_instance;
+    auto *message = reinterpret_cast<const std::string *>(data);
+    client.sendRawMessage(*message);
+}
+
 void Client::initializeMessageNames(){    
     _messageCommands["location"] = CL_LOCATION;
     _messageCommands["cancel"] = CL_CANCEL_ACTION;
