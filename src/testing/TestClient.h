@@ -47,6 +47,7 @@ public:
     Avatar &getFirstOtherUser();
     ClientNPC &getFirstNPC();
     ClientObject &getFirstObject();
+    const ClientObjectType &getFirstObjectType();
 
     Client *operator->(){ return _client; }
     Client &client() { return *_client; }

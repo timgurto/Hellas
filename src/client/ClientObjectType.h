@@ -91,6 +91,7 @@ public:
     const SoundProfile *sounds() const { return _sounds; }
     void strength(const ClientItem *item, size_t quantity) {
             _strength.item = item; _strength.quantity = quantity; }
+    bool isPlayerUnique() const { return false; }
     
     const ImageSet &getProgressImage(ms_t timeRemaining) const;
     void corpseImage(const std::string &filename);

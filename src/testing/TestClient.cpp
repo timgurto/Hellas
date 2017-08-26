@@ -148,6 +148,13 @@ ClientObject &TestClient::getFirstObject() {
     return *it->second;
 }
 
+const ClientObjectType & TestClient::getFirstObjectType() {
+    auto types = _client->_objectTypes;
+    assert(!types.empty());
+    auto it = types.begin();
+    return **it;
+}
+
 void TestClient::simulateClick(const Point &position){
     const auto oldPosition = _client->_mouse;
     _client->_mouse = position;

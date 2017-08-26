@@ -478,7 +478,8 @@ void ClientObject::assembleWindow(Client &client){
         isMerchant = objType.merchantSlots() > 0,
         isVehicle = classTag() == 'v',
         canCede = (! client.character().cityName().empty()) &&
-                  _owner == client.username();
+                  _owner == client.username() &&
+                  !objType.isPlayerUnique();
     if (isMerchant ||
         userHasAccess() && (hasContainer ||
                             isVehicle ||
