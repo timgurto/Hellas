@@ -13,7 +13,7 @@ Client only:
  - offset
  - iconFile
  - gearFile
- 
+
  Gear slots:
  0 head
  1 jewelry
@@ -58,82 +58,101 @@ Client only:
 <item id="tinPipe"      name="Tin Pipe" />
 <item id="water"        name="Water Vessel"   sounds="ceramic"/>
 
-<item id="stick" name="Stick" stackSize="10" gearSlot="6" strength="1" >
-    <stats attack="1"/>
-    <offset x="-8" y="-1" />
-    <tag name="hoe" />
-</item>
-
-<item id="rock" name="Rock" stackSize="10" gearSlot="6" strength="3" >
-    <stats attack="1"/>
-    <offset x="-3" />
-    <tag name="sharpener" />
-</item>
-
-<item id="bone" name="Bone" stackSize="10" gearSlot="6" sounds="bone" >
-    <stats attack="1"/>
-</item>
-
-<item id="stoneAxe" name="Stone Axe" gearSlot="6" >
-    <tag name="axe" />
-    <stats attack="1" />
-    <offset x="-5" y="1" />
-</item>
-
-<item id="tinPick" name="Tin Pickaxe" gearSlot="6" sounds="metalTool" >
-    <tag name="pick" />
-    <stats attack="3" />
-    <offset x="-3" y="0" />
-</item>
-
-<item id="tinSaw" name="Tin Saw" gearSlot="6" sounds="metalTool" >
-    <tag name="saw" />
-    <stats attackTime="0.9" />
-    <stats attack="2" />
-    <offset x="-7" y="-1" />
-</item>
-
-<item id="hide" name="Animal Hide" gearSlot="3" sounds="leather" >
-    <stats health="1" />
-    <offset x="-4" y="-1" />
-</item>
-
-<item id="linothorax" name="Linothorax Armor" gearSlot="2" >
-    <stats health="2" />
-</item>
-
-<item id="tinLamellar" name="Tin Lamellar" gearSlot="2" sounds="mailArmor" >
-    <stats health="8" />
-    <offset x="-6" y="-4" />
-</item>
-
-<item id="leatherLamellar" name="Leather Lamellar" gearSlot="2" sounds="leather" >
-    <stats health="5" />
-</item>
-
-<item id="skullCap" name="Skull Cap" gearSlot="0" sounds="leather" >
-    <stats health="3" />
-    <offset x="-3" y="-4" />
-</item>
-
-<item id="leatherShield" name="Wooden Shield" gearSlot="7" >
-    <stats health="6" />
-    <offset x="-4" y="-10" />
-</item>
-
-<item id="sandals" name="Sandals" gearSlot="5" sounds="leather" >
-    <stats health="2" speed="1.1" />
-</item>
-
-<item id="leatherGloves" name="Leather Gloves" gearSlot="4" sounds="leather" >
-    <stats health="1" />
-    <tag name="leatherGloves" />
-</item>
-
 <item id="pickMould"    name="Pickaxe Mould" sounds="ceramic" > <tag name="pickMould" />    </item>
 <item id="pipeMould"    name="Pipe Mould"    sounds="ceramic" > <tag name="pipeMould" />    </item>
 <item id="sawMould"     name="Saw Mould"     sounds="ceramic" > <tag name="sawMould" />     </item>
 <item id="scaleMould"   name="Scale Mould"   sounds="ceramic" > <tag name="scaleMould" />   </item>
 <item id="boneNeedle"   name="Bone Needle"   sounds="ceramic" > <tag name="needle"      sounds="metalTool" />    </item>
+
+<item id="stick" name="Stick" stackSize="10" gearSlot="6" strength="1" >
+    <stats attack="3"/>
+    <offset x="-8" y="-1" />
+    <tag name="hoe" />
+</item>
+
+<item id="rock" name="Rock" stackSize="10" gearSlot="6" strength="3" >
+    <stats attack="3"/>
+    <offset x="-3" />
+    <tag name="sharpener" />
+</item>
+
+<item id="bone" name="Bone" stackSize="10" gearSlot="6" sounds="bone" >
+    <stats attack="5"/>
+</item>
+
+<!-- Tools -->
+	<!-- Saws -->
+		<item id="tinSaw" name="Tin Saw" gearSlot="6" sounds="metalTool" >
+			<tag name="saw" />
+			<stats attackTime="0.9" />
+			<stats attack="6" />
+			<offset x="-7" y="-1" />
+		</item>
+
+	<!-- Pickaxes -->
+		<item id="tinPick" name="Tin Pickaxe" gearSlot="6" sounds="metalTool" >
+			<tag name="pick" />
+			<stats attack="6" />
+			<offset x="-3" y="0" />
+		</item>
+
+	<!-- Axes -->
+		<item id="stoneAxe" name="Stone Axe" gearSlot="6" >
+			<tag name="axe" />
+			<stats attack="5" />
+			<offset x="-5" y="1" />
+		</item>
+
+<!-- Weapons -->
+	<!-- Spears -->
+
+	<!-- Swords -->
+
+<!-- Armor -->
+	<!-- Head -->
+	<item id="skullCap" name="Skull Cap" gearSlot="0" sounds="leather" >
+		<stats health="9" />
+		<offset x="-3" y="-4" />
+	</item>
+	
+	<!-- Shoulders -->
+		<item id="hide" name="Animal Hide" gearSlot="3" sounds="leather" >
+			<stats health="3" />
+			<offset x="-4" y="-1" />
+		</item>
+	
+	<!-- Body -->
+		<!-- Lamellar -->
+			<item id="leatherLamellar" name="Leather Lamellar" gearSlot="2" sounds="leather" >
+				<stats health="13" />
+			</item>
+			<item id="tinLamellar" name="Tin Lamellar" gearSlot="2" sounds="mailArmor" >
+				<stats health="20" />
+				<offset x="-6" y="-4" />
+			</item>
+			
+		<!-- Hauberk -->
+		
+		<!-- Cuirass -->
+			<item id="linothorax" name="Linothorax Armor" gearSlot="2" >
+				<stats health="6" />
+			</item>
+	
+	<!-- Hands -->
+	<item id="leatherGloves" name="Leather Gloves" gearSlot="4" sounds="leather" >
+		<stats health="3" />
+		<tag name="leatherGloves" />
+	</item>
+	
+	<!-- Feet -->
+	<item id="sandals" name="Sandals" gearSlot="5" sounds="leather" >
+		<stats health="7" speed="1.1" />
+	</item>
+	
+	<!-- Left hand -->
+	<item id="leatherShield" name="Wooden Shield" gearSlot="7" >
+		<stats health="18" />
+		<offset x="-4" y="-10" />
+	</item>
 
 </root>

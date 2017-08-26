@@ -185,4 +185,4 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 186,Add gear preview to web docs,13,13,Documentation,,,,
 187,Add unlock info to web docs,8,5,Documentation,,,,
 188,Add transform images to web docs,3,34,Documentation,,,,
-189,"Add recipes using the item, to web docs",13,5,Documentation,,,,
+189,"Add recipes using the item, to web docs",13,5,Documentation,,TRUE,,
