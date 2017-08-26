@@ -142,6 +142,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             if (objType->isPlayerUnique() && user->hasPlayerUnique(objType->playerUniqueCategory())) {
+                sendMessage(client, SV_PLAYER_UNIQUE_OBJECT, objType->playerUniqueCategory());
                 break;
             }
             if (objType->isUnbuildable()){
@@ -1049,6 +1050,7 @@ void Server::handle_CL_CEDE(User &user, size_t serial) {
     }
 
     if (obj->objType().isPlayerUnique()) {
+        sendMessage(user.socket(), SV_CANNOT_CEDE);
         return;
     }
 

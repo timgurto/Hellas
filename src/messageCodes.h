@@ -424,6 +424,13 @@ enum MessageCode{
     // That action cannot be performed on a damaged object
     SV_DAMAGED_OBJECT = 950,
 
+    // The user tried to build a second user-unique object
+    // Arguments: category
+    SV_PLAYER_UNIQUE_OBJECT = 951,
+
+    // The user tried to cede an uncedable object
+    SV_CANNOT_CEDE = 952,
+
 
 
     // Debug requests

@@ -17,9 +17,11 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
 
         // And tries to get a readhead wife
         c.sendMessage(CL_CONSTRUCT, makeArgs("redhead", 10, 15));
-        REPEAT_FOR_MS(100);
 
-        // Then there is still only one in the world
+        // Then Bob receives an error message,
+        c.waitForMessage(SV_PLAYER_UNIQUE_OBJECT);
+
+        // And there is still only one in the world
         CHECK(s.entities().size() == 1);
     }
 
@@ -52,9 +54,11 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
         // And tries to give his wife to Athens
         auto &wife = s.getFirstObject();
         c.sendMessage(CL_CEDE, makeArgs(wife.serial()));
-        REPEAT_FOR_MS(100);
 
-        // Then the wife still belongs to him
+        // Then Bob receives an error message,
+        c.waitForMessage(SV_CANNOT_CEDE);
+
+        // And the wife still belongs to him
         CHECK(wife.permissions().isOwnedByPlayer("bob"));
     }
 }
