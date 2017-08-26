@@ -1033,13 +1033,9 @@ void Server::handle_CL_LEAVE_CITY(User &user) {
 void Server::handle_CL_CEDE(User &user, size_t serial) {
     Object *obj;
     if (serial == INVENTORY || serial == GEAR)
-        obj = nullptr;
-    else
-        obj = _entities.find<Object>(serial);
-    if (obj == nullptr) {
         sendMessage(user.socket(), SV_DOESNT_EXIST);
         return;
-    }
+    obj = _entities.find<Object>(serial);
 
     if (!obj->permissions().isOwnedByPlayer(user.name())) {
         sendMessage(user.socket(), SV_NO_PERMISSION);
@@ -1049,6 +1045,10 @@ void Server::handle_CL_CEDE(User &user, size_t serial) {
     const City::Name &city = _cities.getPlayerCity(user.name());
     if (city.empty()) {
         sendMessage(user.socket(), SV_NOT_IN_CITY);
+        return;
+    }
+
+    if (obj->objType().isPlayerUnique()) {
         return;
     }
 
