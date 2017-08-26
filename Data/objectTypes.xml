@@ -51,7 +51,7 @@ Server only:
 <objectType
     id="tree" name="Tree"
     xDrawOffset="-23" yDrawOffset="-57"
-    canGather="1" sounds="tree" gatherParticles="tree" damageParticles="tree" gatherReq="axe" gatherTime="3000"
+    canGather="1" sounds="tree" gatherParticles="tree" damageParticles="tree" gatherReq="woodcutting" gatherTime="3000"
     allowedTerrain="denseVeg" >
     <yield id="log" initialMean="5.5" initialSD="1" initialMin="1" />
     <yield id="stick" initialMean="5" initialSD="2" />
@@ -73,7 +73,7 @@ Server only:
 <objectType
     id="copper" name="Copper deposit"
     xDrawOffset="-14" yDrawOffset="-11"
-    canGather="1" gatherTime="3000" gatherReq="pick"
+    canGather="1" gatherTime="3000" gatherReq="mining"
     isFlat="1"
     allowedTerrain="stone" >
     <yield id="copper" initialMean="4.5" initialSD="2" initialMin="1" />
@@ -85,7 +85,7 @@ Server only:
     id="oven" name="Oven"
     xDrawOffset="-14" yDrawOffset="-17" >
     <collisionRect x="-13" y="-9" w="24" h="11" />
-    <tag name="oven" />
+    <tag name="smelting1" />
     <material id="rock" quantity="10" />
     <unlockedBy gather="rock" />
     <strength item="rock" quantity="10" />
@@ -140,7 +140,7 @@ Server only:
     id="elutriator" name="Elutriator"
     xDrawOffset="-15" yDrawOffset="-21"
     deconstructs="elutriator" deconstructionTime="1000" >
-    <tag name="elutriator" />
+    <tag name="clayRefinement" />
     <collisionRect x="-15" y="-4" w="31" h="8" />
     <strength item="crudeClay" quantity="4" />
 </objectType>
@@ -150,8 +150,8 @@ Server only:
     xDrawOffset="-13"
     yDrawOffset="-26" >
     <collisionRect x="-12" y="-4" w="27" h="10" />
-    <tag name="oven" />
-    <tag name="kiln" />
+    <tag name="smelting1" />
+    <tag name="smelting2" />
     <material id="brick" quantity="20" />
     <material id="crudeClay" quantity="12" />
     <unlockedBy recipe="brick" />
@@ -206,7 +206,7 @@ Server only:
 
 <objectType
     id="wildFigTree" name="Wild Fig Tree"
-    canGather="1" gatherReq="knife" gatherTime="3000"
+    canGather="1" gatherReq="harvesting" gatherTime="3000"
     allowedTerrain="denseVeg" >
     <yield id="figSeeds" initialMean="1.2" initialSD="0.5" initialMin="1" />
 </objectType>
@@ -221,7 +221,7 @@ Server only:
     <strength item="log" quantity="1" />
 </objectType>
 <objectType id="figTree1" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37"
-    canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="axe" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
+    canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <yield id="stick" initialMean="2.5" initialSD="1" initialMin="1" />
     <transform id="figTree2" whenEmpty="1" />
 </objectType>
@@ -231,7 +231,7 @@ Server only:
     </transform>
 </objectType>
 <objectType id="figTree3" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37"
-    canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="axe" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
+    canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <yield id="stick" initialMean="2.5" initialSD="1" initialMin="1" />
     <transform id="figTree4" whenEmpty="1" />
 </objectType>
@@ -242,7 +242,7 @@ Server only:
     <transform id="figTree6" time="120000" />
 </objectType>
 <objectType id="figTree6" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37"
-    canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="axe" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
+    canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <yield id="stick" initialMean="2.5" initialSD="1" initialMin="1" />
     <transform id="figTree7" whenEmpty="1" />
 </objectType>
@@ -258,7 +258,7 @@ Server only:
 
 <objectType
     id="wildFlax" name="Wild Flax"
-    canGather="1" gatherReq="knife" gatherTime="3000"
+    canGather="1" gatherReq="harvesting" gatherTime="3000"
     allowedTerrain="denseVeg" >
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" initialMin="1" />
 </objectType>
@@ -267,7 +267,7 @@ Server only:
     yDrawOffset="-34"
     isFlat="1"
     constructionTime="10000"
-    constructionReq="hoe"
+    constructionReq="planting"
     allowedTerrain="denseVeg" >
     <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
@@ -319,14 +319,14 @@ Server only:
     damageParticles="wood" >
     <material id="stick" quantity="2" />
     <material id="rope" quantity="2" />
-    <tag name="stretchingFrame" />
+    <tag name="leatherStretching" />
     <unlockedBy recipe="rope" />
     <strength item="rope" quantity="2" />
 </objectType>
 
 <objectType id="tannin" name="Pot of Tannin"
     constructionTime="1000" >
-    <tag name="tannin" />
+    <tag name="tanning" />
     <strength item="crudeClay" quantity="2" />
 </objectType>
 

@@ -67,18 +67,18 @@ Client only:
 <item id="sawMould"     name="Saw Mould"      sounds="ceramic" >   <tag name="sawMould" />   </item>
 <item id="scaleMould"   name="Scale Mould"    sounds="ceramic" >   <tag name="scaleMould" /> </item>
 <item id="spearMould"   name="Spear Mould"    sounds="ceramic" >   <tag name="spearMould" /> </item>
-<item id="boneNeedle"   name="Bone Needle"    sounds="metalTool" > <tag name="needle" />     </item>
+<item id="boneNeedle"   name="Bone Needle"    sounds="metalTool" > <tag name="sewing" />     </item>
 
 <item id="stick" name="Stick" stackSize="10" gearSlot="6" strength="1" >
     <stats attack="3"/>
     <offset x="-8" y="-1" />
-    <tag name="hoe" />
+    <tag name="planting" />
 </item>
 
 <item id="rock" name="Rock" stackSize="10" gearSlot="6" strength="3" >
     <stats attack="3"/>
     <offset x="-3" />
-    <tag name="sharpener" />
+    <tag name="grinding" />
 </item>
 
 <item id="bone" name="Bone" stackSize="10" gearSlot="6" sounds="bone" >
@@ -88,54 +88,57 @@ Client only:
 <!-- Tools -->
 	<!-- Saws -->
 		<item id="tinSaw" name="Tin Saw" gearSlot="6" sounds="metalTool" >
-			<tag name="saw" />
+			<tag name="carpentry" />
 			<stats attackTime="0.9" />
 			<stats attack="6" />
 			<offset x="-7" y="-1" />
 		</item>
 		<item id="copperSaw" name="Copper Saw" gearSlot="6" sounds="metalTool" >
-			<tag name="saw" />
+			<tag name="carpentry" />
 			<stats attackTime="0.9" />
 			<stats attack="9" />
 		</item>
 
 	<!-- Pickaxes -->
 		<item id="tinPick" name="Tin Pickaxe" gearSlot="6" sounds="metalTool" >
-			<tag name="pick" />
+			<tag name="mining" />
 			<stats attack="6" />
 			<offset x="-3" y="0" />
 		</item>
 		<item id="copperPick" name="Copper Pickaxe" gearSlot="6" sounds="metalTool" >
-			<tag name="pick" />
+			<tag name="mining" />
 			<stats attack="9" />
 		</item>
 
 	<!-- Knives -->
 		<item id="stoneKnife" name="Stone Knife" gearSlot="6" >
-			<tag name="knife" />
+			<tag name="carving" />
+			<tag name="harvesting" />
 			<stats attack="4" />
 		</item>
 		<item id="tinKnife" name="Tin Knife" gearSlot="6" >
-			<tag name="knife" />
+			<tag name="carving" />
+			<tag name="harvesting" />
 			<stats attack="7" />
 		</item>
 		<item id="copperKnife" name="Copper Knife" gearSlot="6" >
-			<tag name="knife" />
+			<tag name="carving" />
+			<tag name="harvesting" />
 			<stats attack="10" />
 		</item>
 
 	<!-- Axes -->
 		<item id="stoneAxe" name="Stone Axe" gearSlot="6" >
-			<tag name="axe" />
+			<tag name="woodcutting" />
 			<stats attack="5" />
 			<offset x="-5" y="1" />
 		</item>
 		<item id="tinAxe" name="Tin Axe" gearSlot="6" sounds="metalTool" >
-			<tag name="axe" />
+			<tag name="woodcutting" />
 			<stats attack="8" />
 		</item>
 		<item id="copperAxe" name="Copper Axe" gearSlot="6" sounds="metalTool" >
-			<tag name="axe" />
+			<tag name="woodcutting" />
 			<stats attack="11" />
 		</item>
 
@@ -201,7 +204,7 @@ Client only:
 	<!-- Hands -->
 	<item id="leatherGloves" name="Leather Gloves" gearSlot="4" sounds="leather" >
 		<stats health="3" />
-		<tag name="leatherGloves" />
+		<tag name="fireHandling" />
 	</item>
 	
 	<!-- Feet -->

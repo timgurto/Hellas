@@ -1,9 +1,10 @@
 <root>
 
-<tool id="knife"            archetype="item_stoneKnife" />
-<tool id="axe"              archetype="item_stoneAxe" />
-<tool id="pick"             archetype="item_tinPick" />
-<tool id="hoe"              archetype="item_stick" />
+<tool id="carving"		archetype="item_stoneKnife" />
+<tool id="harvesting"   archetype="item_stoneKnife" />
+<tool id="woodcutting"  archetype="item_stoneAxe" />
+<tool id="mining"       archetype="item_tinPick" />
+<tool id="planting"     archetype="item_stick" />
 
 <blacklist parent="object_tree"     child="item_stick" />
 <blacklist parent="object_copper"   child="item_rock" />
