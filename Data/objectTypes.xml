@@ -332,11 +332,10 @@ Server only:
     <strength item="log" quantity="1" />
 </objectType>
 
-<objectType id="respawnAltar" name="Respawn Altar"
+<objectType id="respawnAltar" name="Respawn Altar" playerUnique="altar"
     damageParticles="wood" >
     <material id="woodenStatue" />
     <material id="rock" quantity="8" />
-    <tag name="altar" />
     <unlockedBy recipe="woodenStatue" />
     <strength item="rock" quantity="8" />
 </objectType>
