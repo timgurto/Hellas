@@ -904,33 +904,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != MSG_END)
                 return;
-
-            Object *obj;
-            if (serial == INVENTORY || serial == GEAR)
-                obj = nullptr;
-            else
-                obj = _entities.find<Object>(serial);
-            if (obj == nullptr) {
-                sendMessage(client, SV_DOESNT_EXIST);
-                break;
-            }
-
-            if (!obj->permissions().isOwnedByPlayer(user->name())){
-                sendMessage(client, SV_NO_PERMISSION);
-                break;
-            }
-
-            const City::Name &city = _cities.getPlayerCity(user->name());
-            if (city.empty()){
-                sendMessage(client, SV_NOT_IN_CITY);
-                break;
-            }
-
-            obj->permissions().setCityOwner(city);
-            const Permissions::Owner &owner = obj->permissions().owner();
-            for (const User *u : findUsersInArea(obj->location()))
-                sendMessage(u->socket(), SV_OWNER, makeArgs(serial, owner.typeString(), owner.name));
-
+            handle_CL_CEDE(*user, serial);
             break;
         }
 
@@ -1054,6 +1028,34 @@ void Server::handle_CL_LEAVE_CITY(User &user) {
         return;
     }
     _cities.removeUserFromCity(user, city);
+}
+
+void Server::handle_CL_CEDE(User &user, size_t serial) {
+    Object *obj;
+    if (serial == INVENTORY || serial == GEAR)
+        obj = nullptr;
+    else
+        obj = _entities.find<Object>(serial);
+    if (obj == nullptr) {
+        sendMessage(user.socket(), SV_DOESNT_EXIST);
+        return;
+    }
+
+    if (!obj->permissions().isOwnedByPlayer(user.name())) {
+        sendMessage(user.socket(), SV_NO_PERMISSION);
+        return;
+    }
+
+    const City::Name &city = _cities.getPlayerCity(user.name());
+    if (city.empty()) {
+        sendMessage(user.socket(), SV_NOT_IN_CITY);
+        return;
+    }
+
+    obj->permissions().setCityOwner(city);
+    const Permissions::Owner &owner = obj->permissions().owner();
+    for (const User *u : findUsersInArea(obj->location()))
+        sendMessage(u->socket(), SV_OWNER, makeArgs(serial, owner.typeString(), owner.name));
 }
 
 
