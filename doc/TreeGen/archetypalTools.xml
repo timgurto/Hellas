@@ -14,6 +14,8 @@
 
 <blacklist parent="object_brickWallEW" child="object_brickWallNS" />
 <blacklist parent="object_brickWallNS" child="object_brickWallEW" />
+<blacklist parent="object_palisadeEW" child="object_palisadeNS" />
+<blacklist parent="object_palisadeNS" child="object_palisadeEW" />
 
 <extra parent="item_leatherGloves" child="item_tinBar" />
 <extra parent="item_tinBar"        child="item_tinSaw" />

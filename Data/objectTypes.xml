@@ -163,6 +163,7 @@ Server only:
     damageParticles="wood" >
     <material id="log" quantity="8" />
     <unlockedBy gather="log" chance="0.05" />
+    <unlockedBy construction="palisadeNS" />
     <strength item="log" quantity="8" />
 </objectType>
 
@@ -171,6 +172,7 @@ Server only:
     damageParticles="wood" >
     <material id="log" quantity="8" />
     <unlockedBy gather="log" chance="0.05" />
+    <unlockedBy construction="palisadeEW" />
     <strength item="log" quantity="8" />
 </objectType>
 
