@@ -65,5 +65,5 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
 
 TEST_CASE("Clients can discern player uniqueness", "[player-unique]") {
     auto c = TestClient::WithData("wives");
-    c.getFirstObjectType().isPlayerUnique();
+    CHECK(c.getFirstObjectType().isPlayerUnique());
 }

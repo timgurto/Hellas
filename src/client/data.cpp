@@ -149,7 +149,6 @@ void Client::loadData(const std::string &path){
                     cot->addTag(s);
 
             if (xr.findAttr(elem, "merchantSlots", n)) cot->merchantSlots(n);
-
             if (xr.findAttr(elem, "isFlat", n) && n != 0) cot->isFlat(true);
             if (xr.findAttr(elem, "isDecoration", n) && n != 0) cot->isDecoration(true);
             if (xr.findAttr(elem, "sounds", s)) cot->sounds(s);
@@ -157,6 +156,7 @@ void Client::loadData(const std::string &path){
             if (xr.findAttr(elem, "damageParticles", s)) cot->damageParticles(findParticleProfile(s));
             if (xr.findAttr(elem, "gatherReq", s)) cot->gatherReq(s);
             if (xr.findAttr(elem, "constructionReq", s)) cot->constructionReq(s);
+            if (xr.findAttr(elem, "playerUnique", s)) cot->makePlayerUnique();
             Rect r;
             if (xr.findRectChild("collisionRect", elem, r)) cot->collisionRect(r);
 

@@ -41,6 +41,7 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
     ImageSet _constructionImage; // Shown when the object is under construction.
     Texture _corpseImage, _corpseHighlightImage;
     const SoundProfile *_sounds;
+    bool _isPlayerUnique = false;
 
     struct Strength{
         Strength() : item(nullptr), quantity(0) {}
@@ -91,7 +92,8 @@ public:
     const SoundProfile *sounds() const { return _sounds; }
     void strength(const ClientItem *item, size_t quantity) {
             _strength.item = item; _strength.quantity = quantity; }
-    bool isPlayerUnique() const { return false; }
+    bool isPlayerUnique() const { return _isPlayerUnique; }
+    void makePlayerUnique() { _isPlayerUnique = true; }
     
     const ImageSet &getProgressImage(ms_t timeRemaining) const;
     void corpseImage(const std::string &filename);

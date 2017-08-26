@@ -4,7 +4,6 @@
 	constructionTime="1"
 	playerUnique="wife" >
     <material id="engagementRing" />
-    <playerUnique name="wife" />
 </objectType>
 
 <objectType id="redhead"

@@ -16,7 +16,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 15,Players at war can destroy the other's objects,55,5,Feature,29,TRUE,TRUE,
 16,A player at war with a city can seek peace from its king,34,8,Feature,55,,TRUE,1
 17,Two kings can agree to return to peace,34,8,Feature,55,,TRUE,1
-18,Each player can build one 'shrine'-class object,34,8,Feature,,,TRUE,1
+18,Each player can build one 'shrine'-class object,34,8,Feature,,TRUE,TRUE,1
 19,Shrines can set player respawn,21,89,Feature,18,,TRUE,1
 20,Shrine actions require an animal carcass,34,21,Feature,19,,TRUE,1
 21,Design three skill trees for each class,89,377,Feature,178,,TRUE,2
