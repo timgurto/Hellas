@@ -1,5 +1,6 @@
 <root>
 
+<tool id="knife"            archetype="item_stoneKnife" />
 <tool id="axe"              archetype="item_stoneAxe" />
 <tool id="pick"             archetype="item_tinPick" />
 <tool id="hoe"              archetype="item_stick" />

@@ -8,6 +8,13 @@
 </recipe>
 
 <recipe
+    id="stoneKnife" time="4000" product="stoneKnife" >
+    <material id="rock" quantity="2"/>
+    <tool class="sharpener"/>
+    <unlockedBy gather="rock" />
+</recipe>
+
+<recipe
     id="smallPot" time="12000" product="smallPot" >
     <material id="crudeClay" quantity="2" />
     <material id="log" />
@@ -225,6 +232,7 @@
     id="linothorax" time="10000" product="linothorax" >
     <material id="linenCloth" quantity="12" />
     <material id="linenThread" quantity="1" />
+    <material id="fat" quantity="8" />
     <unlockedBy recipe="linenCloth" chance="0.2" />
 </recipe>
 
@@ -265,7 +273,7 @@
 <recipe
 	id="woodenStatue" time="10000" product="woodenStatue" >
 	<material id="log" />
-    <tool class="axe" />
+    <tool class="knife" />
     <unlockedBy gather="log" chance="0.1" />
 </recipe>
 

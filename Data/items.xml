@@ -96,6 +96,12 @@ Client only:
 			<offset x="-3" y="0" />
 		</item>
 
+	<!-- Knives -->
+		<item id="stoneKnife" name="Stone Knife" gearSlot="6" >
+			<tag name="knife" />
+			<stats attack="4" />
+		</item>
+
 	<!-- Axes -->
 		<item id="stoneAxe" name="Stone Axe" gearSlot="6" >
 			<tag name="axe" />
