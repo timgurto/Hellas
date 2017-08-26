@@ -154,8 +154,9 @@ int main(int argc, char **argv){
     else{
         for (auto elem : xr.getChildren("recipe")) {
             ID product;
-            if (!xr.findAttr(elem, "product", product))
+            if (!xr.findAttr(elem, "id", product))
                 continue;
+            xr.findAttr(elem, "product", product);
             std::string label = "item_" + product;
 
             Recipe r;
