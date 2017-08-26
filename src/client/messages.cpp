@@ -176,6 +176,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_ALREADY_AT_WAR:
         case SV_NOT_IN_CITY:
         case SV_NO_INVENTORY:
+        case SV_CANNOT_CEDE:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
@@ -188,7 +189,6 @@ void Client::handleMessage(const std::string &msg){
             readString(singleMsg, reqItemTag, MSG_END);
             singleMsg >> del;
             if (del != MSG_END)
-
                 break;
             std::string msg = "You need a";
             const char first = reqItemTag.front();
@@ -196,6 +196,18 @@ void Client::handleMessage(const std::string &msg){
                 first == 'o' || first == 'u')
                 msg += 'n';
             _debug(msg + ' ' + reqItemTag + " to do that.", Color::WARNING);
+            startAction(0);
+            break;
+        }
+
+        case SV_PLAYER_UNIQUE_OBJECT:
+        {
+            std::string category;
+            readString(singleMsg, category, MSG_END);
+            singleMsg >> del;
+            if (del != MSG_END)
+                break;
+            _debug("You may only own a single " + category + " object", Color::WARNING);
             startAction(0);
             break;
         }
@@ -1209,8 +1221,9 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_INVALID_OBJECT] = "That is not a valid object type.";
     _errorMessages[SV_ALREADY_AT_WAR] = "You are already at war with them.";
     _errorMessages[SV_NOT_IN_CITY] = "You are not in a city.";
-    _errorMessages[SV_NO_INVENTORY] = "That object doesn't have an inventory";
-    _errorMessages[SV_DAMAGED_OBJECT] = "You can't do that while the object is damaged";
+    _errorMessages[SV_NO_INVENTORY] = "That object doesn't have an inventory.";
+    _errorMessages[SV_DAMAGED_OBJECT] = "You can't do that while the object is damaged.";
+    _errorMessages[SV_CANNOT_CEDE] = "You can't cede that to your city.";
 }
 
 void Client::performCommand(const std::string &commandString){
