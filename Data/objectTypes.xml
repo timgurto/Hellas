@@ -204,6 +204,12 @@ Server only:
     <strength item="lumber" quantity="1" />
 </objectType>
 
+<objectType
+    id="wildFigTree" name="Wild Fig Tree"
+    canGather="1" gatherReq="knife" gatherTime="3000"
+    allowedTerrain="denseVeg" >
+    <yield id="figSeeds" initialMean="1.2" initialSD="0.5" initialMin="1" />
+</objectType>
 <objectType id="figTree0" name="Fig Tree" constructionTime="10000" xDrawOffset="-19" yDrawOffset="-37"
     allowedTerrain="grass" >
     <collisionRect x="-13" y="-9" w="26" h="18" />
@@ -250,6 +256,12 @@ Server only:
     <transform id="figTree5" whenEmpty="1" />
 </objectType>
 
+<objectType
+    id="wildFlax" name="Wild Flax"
+    canGather="1" gatherReq="knife" gatherTime="3000"
+    allowedTerrain="denseVeg" >
+    <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" initialMin="1" />
+</objectType>
 <objectType id="flaxCrop0" name="Flax Farm"
     xDrawOffset="-20"
     yDrawOffset="-34"
