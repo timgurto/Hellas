@@ -1,6 +1,6 @@
 <root>
 <recipe
-    id="cookedMeat" time="100" product="cookedMeat" >
+    id="cookedMeat" time="100" >
     <material id="meat" />
 </recipe>
 </root>

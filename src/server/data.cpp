@@ -465,16 +465,16 @@ void Server::loadData(const std::string &path){
                 continue; // ID is mandatory.
             Recipe recipe(id);
 
-            std::string s; int n;
-            if (!xr.findAttr(elem, "product", s))
-                continue; // product is mandatory.
-            auto it = _items.find(s);
+            std::string product = id;
+            xr.findAttr(elem, "product", product);
+            auto it = _items.find(product);
             if (it == _items.end()) {
-                _debug << Color::RED << "Skipping recipe with invalid product " << s << Log::endl;
+                _debug << Color::RED << "Skipping recipe with invalid product " << product << Log::endl;
                 continue;
             }
             recipe.product(&*it);
 
+            int n;
             if (xr.findAttr(elem, "quantity", n)) recipe.quantity(n);
             if (xr.findAttr(elem, "time", n)) recipe.time(n);
 
@@ -493,9 +493,10 @@ void Server::loadData(const std::string &path){
                 }
             }
 
+            std::string tag;
             for (auto child : xr.getChildren("tool", elem)) {
-                if (xr.findAttr(child, "class", s)) {
-                    recipe.addTool(s);
+                if (xr.findAttr(child, "class", tag)) {
+                    recipe.addTool(tag);
                 }
             }
 
@@ -504,15 +505,16 @@ void Server::loadData(const std::string &path){
                 double chance = 1.0;
                 xr.findAttr(unlockedBy, "chance", chance);
                 ProgressLock::Type triggerType;
-                if (xr.findAttr(unlockedBy, "item", s))
+                std::string triggerID;
+                if (xr.findAttr(unlockedBy, "item", triggerID))
                     triggerType = ProgressLock::ITEM;
-                else if (xr.findAttr(unlockedBy, "construction", s))
+                else if (xr.findAttr(unlockedBy, "construction", triggerID))
                     triggerType = ProgressLock::CONSTRUCTION;
-                else if (xr.findAttr(unlockedBy, "gather", s))
+                else if (xr.findAttr(unlockedBy, "gather", triggerID))
                     triggerType = ProgressLock::GATHER;
-                else if (xr.findAttr(unlockedBy, "recipe", s))
+                else if (xr.findAttr(unlockedBy, "recipe", triggerID))
                     triggerType = ProgressLock::RECIPE;
-                ProgressLock(triggerType, s, ProgressLock::RECIPE, id, chance).stage();
+                ProgressLock(triggerType, triggerID, ProgressLock::RECIPE, id, chance).stage();
                 requiresUnlock = true;
             }
             if (!requiresUnlock)
