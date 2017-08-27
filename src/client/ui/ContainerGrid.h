@@ -52,7 +52,6 @@ public:
     static const ClientItem *getUseItem();
     static void dropItem(); // Drop the item currently being dragged.
 
-    static void clearDragItem();
     static void clearUseItem();
 
     friend Client;
