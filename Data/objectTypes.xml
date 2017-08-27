@@ -23,8 +23,7 @@ Server only:
  - tag
 -->
 
-<objectType
-    id="stick" name="Stick"
+<objectType id="stick" name="Stick"
     xDrawOffset="-10" yDrawOffset="-4"
     canGather="1" gatherTime="1000"
     damageParticles="wood"
@@ -33,8 +32,7 @@ Server only:
     <strength item="stick" quantity="1" />
 </objectType>
 
-<objectType
-    id="rock" name="Rock"
+<objectType id="rock" name="Rock"
     xDrawOffset="-5" yDrawOffset="-5"
     canGather="1" gatherTime="1000" >
     <yield id="rock" />
@@ -48,8 +46,7 @@ Server only:
     decoration="1"
 /-->
 
-<objectType
-    id="tree" name="Tree"
+<objectType id="tree" name="Tree"
     xDrawOffset="-23" yDrawOffset="-57"
     canGather="1" sounds="tree" gatherParticles="tree" damageParticles="tree" gatherReq="woodcutting" gatherTime="3000"
     allowedTerrain="denseVeg" >
@@ -59,8 +56,7 @@ Server only:
     <strength item="log" quantity="6" />
 </objectType>
 
-<objectType
-    id="tin" name="Tin deposit"
+<objectType id="tin" name="Tin deposit"
     xDrawOffset="-14" yDrawOffset="-11"
     canGather="1" gatherTime="3000"
     isFlat="1"
@@ -70,8 +66,7 @@ Server only:
     <strength item="tin" quantity="5" />
 </objectType>
 
-<objectType
-    id="copper" name="Copper deposit"
+<objectType id="copper" name="Copper deposit"
     xDrawOffset="-14" yDrawOffset="-11"
     canGather="1" gatherTime="3000" gatherReq="mining"
     isFlat="1"
@@ -81,8 +76,7 @@ Server only:
     <strength item="copper" quantity="5" />
 </objectType>
 
-<objectType
-    id="oven" name="Oven"
+<objectType id="oven" name="Oven"
     xDrawOffset="-14" yDrawOffset="-17" >
     <collisionRect x="-13" y="-9" w="24" h="11" />
     <tag name="smelting1" />
@@ -90,63 +84,7 @@ Server only:
     <unlockedBy gather="rock" />
     <strength item="rock" quantity="10" />
 </objectType>
-
-<objectType
-    id="clay" name="Clay Deposit"
-    xDrawOffset="-12" yDrawOffset="-12"
-    canGather="1" gatherTime="3000"
-    isFlat="1" >
-    <collisionRect x="-12" y="-2" w="25" h="24" />
-    <yield id="crudeClay" initialMean="3.5" initialSD="1" initialMin="1" />
-    <strength item="crudeClay" quantity="3" />
-</objectType>
-
-<objectType
-    id="smallPot" name="Small Pot"
-    xDrawOffset="-8" yDrawOffset="-16"
-    deconstructs="smallPot" deconstructionTime="1000" >
-    <collisionRect x="-8" y="-5" w="16" h="10" />
-    <container slots="1" />
-    <strength item="crudeClay" quantity="2" />
-</objectType>
-
-<objectType
-    id="mediumPot" name="Medium Pot"
-    xDrawOffset="-19" yDrawOffset="-27"
-    deconstructs="mediumPot" deconstructionTime="1000" >
-    <collisionRect x="-13" y="-4" w="25" h="6" />
-    <container slots="4" />
-    <strength item="clay" quantity="3" />
-</objectType>
-
-<objectType
-    id="largePot" name="Large Pot"
-    deconstructs="largePot" deconstructionTime="1000" >
-    <container slots="10" />
-    <strength item="clay" quantity="5" />
-</objectType>
-
-<objectType id="handCart" name="Trade Cart"
-    xDrawOffset="-13" yDrawOffset="-16"
-    merchantSlots="1" isVehicle="1" damageParticles="wood"    >
-    <collisionRect x="-13" y="-4" w="25" h="8" />
-    <container slots="2" />
-    <material id="lumber" quantity="8" />
-    <unlockedBy recipe="lumber" />
-    <strength item="lumber" quantity="8" />
-</objectType>
-
-<objectType
-    id="elutriator" name="Elutriator"
-    xDrawOffset="-15" yDrawOffset="-21"
-    deconstructs="elutriator" deconstructionTime="1000" >
-    <tag name="clayRefinement" />
-    <collisionRect x="-15" y="-4" w="31" h="8" />
-    <strength item="crudeClay" quantity="4" />
-</objectType>
-
-<objectType
-    id="kiln" name="Kiln"
+<objectType id="kiln" name="Kiln"
     xDrawOffset="-13"
     yDrawOffset="-26" >
     <collisionRect x="-12" y="-4" w="27" h="10" />
@@ -158,17 +96,61 @@ Server only:
     <strength item="brick" quantity="20" />
 </objectType>
 
-<objectType
-    id="palisadeEW" name="Palisade E/W"
+<objectType id="clay" name="Clay Deposit"
+    xDrawOffset="-12" yDrawOffset="-12"
+    canGather="1" gatherTime="3000"
+    isFlat="1" >
+    <collisionRect x="-12" y="-2" w="25" h="24" />
+    <yield id="crudeClay" initialMean="3.5" initialSD="1" initialMin="1" />
+    <strength item="crudeClay" quantity="3" />
+</objectType>
+
+<objectType id="smallPot" name="Small Pot"
+    xDrawOffset="-8" yDrawOffset="-16"
+    deconstructs="smallPot" deconstructionTime="1000" >
+    <collisionRect x="-8" y="-5" w="16" h="10" />
+    <container slots="1" />
+    <strength item="crudeClay" quantity="2" />
+</objectType>
+<objectType id="mediumPot" name="Medium Pot"
+    xDrawOffset="-19" yDrawOffset="-27"
+    deconstructs="mediumPot" deconstructionTime="1000" >
+    <collisionRect x="-13" y="-4" w="25" h="6" />
+    <container slots="4" />
+    <strength item="clay" quantity="3" />
+</objectType>
+<!--objectType id="largePot" name="Large Pot"
+    deconstructs="largePot" deconstructionTime="1000" >
+    <container slots="10" />
+    <strength item="clay" quantity="5" />
+</objectType-->
+
+<objectType id="handCart" name="Trade Cart"
+    xDrawOffset="-13" yDrawOffset="-16"
+    merchantSlots="1" isVehicle="1" damageParticles="wood"    >
+    <collisionRect x="-13" y="-4" w="25" h="8" />
+    <container slots="2" />
+    <material id="lumber" quantity="8" />
+    <unlockedBy recipe="lumber" />
+    <strength item="lumber" quantity="8" />
+</objectType>
+
+<objectType id="elutriator" name="Elutriator"
+    xDrawOffset="-15" yDrawOffset="-21"
+    deconstructs="elutriator" deconstructionTime="1000" >
+    <tag name="clayRefinement" />
+    <collisionRect x="-15" y="-4" w="31" h="8" />
+    <strength item="crudeClay" quantity="4" />
+</objectType>
+
+<objectType id="palisadeEW" name="Palisade E/W"
     damageParticles="wood" >
     <material id="log" quantity="8" />
     <unlockedBy gather="log" chance="0.05" />
     <unlockedBy construction="palisadeNS" />
     <strength item="log" quantity="8" />
 </objectType>
-
-<objectType
-    id="palisadeNS" name="Palisade N/S"
+<objectType id="palisadeNS" name="Palisade N/S"
     damageParticles="wood" >
     <material id="log" quantity="8" />
     <unlockedBy gather="log" chance="0.05" />
@@ -176,8 +158,7 @@ Server only:
     <strength item="log" quantity="8" />
 </objectType>
 
-<objectType
-    id="brickWallEW" name="Brick Wall E/W"
+<objectType id="brickWallEW" name="Brick Wall E/W"
     xDrawOffset="-60" yDrawOffset="-42" >
     <collisionRect x="-60" y="-2" w="122" h="6" />
     <material id="brick" quantity="12" />
@@ -185,9 +166,7 @@ Server only:
     <unlockedBy construction="brickWallNS" />
     <strength item="brick" quantity="12" />
 </objectType>
-
-<objectType
-    id="brickWallNS" name="Brick Wall N/S"
+<objectType id="brickWallNS" name="Brick Wall N/S"
     xDrawOffset="-3" yDrawOffset="-101" >
     <collisionRect x="-3" y="-60" w="8" h="120" />
     <material id="brick" quantity="1" />
@@ -196,16 +175,14 @@ Server only:
     <strength item="brick" quantity="12" />
 </objectType>
 
-<objectType
-    id="post" name="Post"
+<objectType id="post" name="Post"
     xDrawOffset="-4" yDrawOffset="-47"
     deconstructs="lumber" deconstructionTime="1000" damageParticles="wood" >
     <collisionRect x="-4" y="-4" w="8" h="8" />
     <strength item="lumber" quantity="1" />
 </objectType>
 
-<objectType
-    id="wildFigTree" name="Wild Fig Tree"
+<objectType id="wildFigTree" name="Wild Fig Tree"
     canGather="1" gatherReq="harvesting" gatherTime="3000"
     allowedTerrain="denseVeg" >
     <yield id="figSeeds" initialMean="1.2" initialSD="0.5" initialMin="1" />
@@ -256,8 +233,7 @@ Server only:
     <transform id="figTree5" whenEmpty="1" />
 </objectType>
 
-<objectType
-    id="wildFlax" name="Wild Flax"
+<objectType id="wildFlax" name="Wild Flax"
     canGather="1" gatherReq="harvesting" gatherTime="3000"
     allowedTerrain="denseVeg" >
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" initialMin="1" />
@@ -315,13 +291,41 @@ Server only:
     <strength item="flax" quantity="5" />
 </objectType>
 
-<objectType id="stretchingFrame" name="Stretching Frame"
-    damageParticles="wood" >
+<objectType id="stretchingFrame" name="Stretching Frame" >
     <material id="stick" quantity="2" />
     <material id="rope" quantity="2" />
     <tag name="leatherStretching" />
     <unlockedBy recipe="rope" />
     <strength item="rope" quantity="2" />
+</objectType>
+
+<objectType id="lathe" name="Lathe" >
+    <material id="lumber" quantity="4" />
+    <material id="rope" quantity="2" />
+    <material id="tinTube" quantity="2" />
+    <tag name="woodTurning" />
+    <unlockedBy recipe="tinTube" />
+    <strength item="tinTube" quantity="2" />
+</objectType>
+
+<objectType id="grindstone" name="Grindstone" >
+    <material id="lumber" quantity="4" />
+    <material id="rope" quantity="2" />
+    <material id="tinTube" quantity="1" />
+    <material id="rock" quantity="1" />
+    <tag name="grinding1" />
+    <tag name="grinding2" />
+    <unlockedBy recipe="tinTube" />
+    <strength item="tinTube" quantity="2" />
+</objectType>
+
+<objectType id="copperAnvil" name="Copper Anvil"
+    constructionReq="hammering" >
+    <material id="copperBar" quantity="8" />
+    <tag name="anvil1" />
+    <unlockedBy recipe="copperBar" chance="0.1" />
+    <unlockedBy recipe="copperHammer" />
+    <strength item="copperBar" quantity="8" />
 </objectType>
 
 <objectType id="tannin" name="Pot of Tannin"
@@ -331,14 +335,14 @@ Server only:
 </objectType>
 
 <!-- isFlat: Given the sloping shape, all other objects should be drawn above it. -->
-<objectType id="pyramid" name="Pyramid"
+<!--objectType id="pyramid" name="Pyramid"
     isFlat = "1"
     isUnique = "1"
     xDrawOffset="-150" yDrawOffset="-150" >
     <collisionRect x="-150" y="-150" w="301" h="301" />
     <material id="brick" quantity="1" />
     <strength item="brick" quantity="1" />
-</objectType>
+</objectType-->
 
 <objectType id="woodenStatue" name="Wooden Statue"
     deconstructs="woodenStatue" deconstructionTime="1000"

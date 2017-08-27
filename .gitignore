@@ -58,3 +58,6 @@ doc/web/terrains.js
 *.iobj
 *.ipdb
 *.enc
+*.nativecodeanalysis.xml
+*.lastcodeanalysissucceeded
+*.nativecodeanalysis.all.xml

@@ -1,4 +1,5 @@
 <root>
+
 <tag id="axeMould"   name="Axe Casting" />
 <tag id="knifeMould" name="Knife Casting" />
 <tag id="pickMould"  name="Pick Casting" />
@@ -12,12 +13,18 @@
 <tag id="clayRefinement"    name="Clay Refinement" />
 <tag id="fireHandling"      name="Fire Safety" />
 <tag id="grinding"          name="Grinding" />
-<tag id="harvesting"        name="Harvesting" />
+<tag id="harvesting"        name="Foraging" />
 <tag id="leatherStretching" name="Hide Preparation" />
 <tag id="mining"            name="Mining" />
 <tag id="planting"          name="Planting" />
 <tag id="sewing"            name="Sewing" />
+<tag id="hammering"         name="Hammering" />
 <tag id="smelting1"         name="Tin Smelting" />
 <tag id="smelting2"         name="Copper Smelting" />
 <tag id="tanning"           name="Tanning" />
+<tag id="woodTurning"       name="Wood Turning" />
+
+<tag id="waterSource"   name="Water Source" />
+<tag id="anvil"        name="Metalworking" />
+
 </root>

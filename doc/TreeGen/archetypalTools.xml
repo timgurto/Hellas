@@ -5,6 +5,8 @@
 <tool id="woodcutting"  archetype="item_stoneAxe" />
 <tool id="mining"       archetype="item_tinPick" />
 <tool id="planting"     archetype="item_stick" />
+<tool id="hammering"    archetype="item_copperHammer" />
+<tool id="anvil"        archetype="object_copperAnvil" />
 
 <blacklist parent="object_tree"     child="item_stick" />
 <blacklist parent="object_copper"   child="item_rock" />
@@ -21,7 +23,7 @@
 
 <extra parent="item_leatherGloves" child="item_tinBar" />
 <extra parent="item_tinBar"        child="item_tinSaw" />
-<extra parent="item_tinBar"        child="item_tinPipe" />
+<extra parent="item_tinBar"        child="item_tinTube" />
 <extra parent="item_water"         child="object_flaxCrop8" />
 
 <collapse id="object_figTree0" into="object_figTree8" />
