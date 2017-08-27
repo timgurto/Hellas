@@ -348,7 +348,7 @@ void ClientObject::addDeconstructionToWindow(){
         newWidth = _window->contentWidth();
     y += BUTTON_GAP;
     Button *deconstructButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT),
-                                            "Dismantle", startDeconstructing, this);
+                                            "Pick up as item", startDeconstructing, this);
     _window->addChild(deconstructButton);
     y += BUTTON_GAP + BUTTON_HEIGHT;
     x += BUTTON_GAP + BUTTON_WIDTH;
@@ -721,7 +721,7 @@ const Texture &ClientObject::tooltip() const{
 
         if (ot.canDeconstruct()){
             if (!stats) {stats = true; tb.addGap(); }
-            tb.addLine("Can dismantle");
+            tb.addLine("Can pick up as item");
         }
 
         if (isContainer){
