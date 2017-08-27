@@ -19,6 +19,7 @@
 #include "LogSDL.h"
 #include "ParticleProfile.h"
 #include "SoundProfile.h"
+#include "Tag.h"
 #include "Target.h"
 #include "ui/ChoiceList.h"
 #include "ui/ItemSelector.h"
@@ -56,6 +57,7 @@ public:
     bool isDismounting() const { return _isDismounting; }
     void attemptDismount() { _isDismounting = true; }
     const SoundProfile *avatarSounds() const { return _avatarSounds; }
+    const std::string &tagName(const std::string &id) const { return _tagNames[id]; }
 
     bool isAtWarWith(const Avatar &user) const;
     bool isAtWarWith(const std::string &username) const;
@@ -342,6 +344,7 @@ private:
     objectTypes_t _objectTypes;
     typedef std::set<const ParticleProfile*, ParticleProfile::ptrCompare> particleProfiles_t;
     particleProfiles_t _particleProfiles;
+    TagNames _tagNames;
 
     typedef std::set<SoundProfile> soundProfiles_t;
     soundProfiles_t _soundProfiles;

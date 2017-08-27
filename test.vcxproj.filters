@@ -131,6 +131,7 @@
     <ClCompile Include="src\client\ui.cpp" />
     <ClCompile Include="src\client\socialWindow.cpp" />
     <ClCompile Include="src\testing\test-altars.cpp" />
+    <ClCompile Include="src\client\Tag.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -229,5 +230,6 @@
     <ClInclude Include="src\testing\testing.h" />
     <ClInclude Include="src\server\objects\ObjectLoot.h" />
     <ClInclude Include="src\client\ClientConfig.h" />
+    <ClInclude Include="src\client\Tag.h" />
   </ItemGroup>
 </Project>

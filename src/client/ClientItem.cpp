@@ -73,6 +73,8 @@ const Texture &ClientItem::tooltip() const{
     if (_tooltip)
         return _tooltip;
 
+    const auto &client = *Client::_instance;
+
     TooltipBuilder tb;
     tb.setColor(Color::ITEM_NAME);
     tb.addLine(_name);
@@ -106,7 +108,7 @@ const Texture &ClientItem::tooltip() const{
         tb.setColor(Color::ITEM_INSTRUCTIONS);
         tb.addLine(std::string("Right-click to place ") + _constructsObject->name());
         if (!_constructsObject->constructionReq().empty())
-        tb.addLine("(Requires " + _constructsObject->constructionReq() + ")");
+        tb.addLine("(Requires " + client.tagName(_constructsObject->constructionReq()) + ")");
 
         // Vehicle?
         if (_constructsObject->classTag() == 'v'){
@@ -128,7 +130,7 @@ const Texture &ClientItem::tooltip() const{
         if (_constructsObject->hasTags()){
             tb.setColor(Color::ITEM_TAGS);
             for (const std::string &tag : _constructsObject->tags())
-                tb.addLine("  " + tag);
+                tb.addLine("  " + client.tagName(tag));
         }
     }
 

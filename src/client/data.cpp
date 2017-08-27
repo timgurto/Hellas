@@ -105,6 +105,8 @@ void Client::loadData(const std::string &path){
         }
     }
 
+    _tagNames.readFromXMLFile(path + "/tags.xml");
+
     if (xr.newFile(path + "/items.xml")) // Early, because object types may insert new items.
         _items.clear();
 

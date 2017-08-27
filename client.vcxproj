@@ -130,6 +130,7 @@
     <ClCompile Include="src\client\Renderer.cpp" />
     <ClCompile Include="src\client\SoundProfile.cpp" />
     <ClCompile Include="src\client\Surface.cpp" />
+    <ClCompile Include="src\client\Tag.cpp" />
     <ClCompile Include="src\client\Target.cpp" />
     <ClCompile Include="src\client\Texture.cpp" />
     <ClCompile Include="src\client\TooltipBuilder.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="src\client\Renderer.h" />
     <ClInclude Include="src\client\SoundProfile.h" />
     <ClInclude Include="src\client\Surface.h" />
+    <ClInclude Include="src\client\Tag.h" />
     <ClInclude Include="src\client\Target.h" />
     <ClInclude Include="src\client\Texture.h" />
     <ClInclude Include="src\client\TooltipBuilder.h" />

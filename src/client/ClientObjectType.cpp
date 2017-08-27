@@ -30,6 +30,8 @@ ClientObjectType::~ClientObjectType(){
 }
 
 const Texture &ClientObjectType::materialsTooltip() const{
+    const auto &client = *Client::_instance;
+
     if (_materialsTooltip == nullptr){
         TooltipBuilder tb;
         tb.setColor(Color::ITEM_NAME);
@@ -45,7 +47,7 @@ const Texture &ClientObjectType::materialsTooltip() const{
 
         if (! _constructionReq.empty()){
             tb.addGap();
-            tb.addLine("Requires tool: " + _constructionReq);
+            tb.addLine("Requires tool: " + client.tagName(_constructionReq));
         }
         _materialsTooltip = new Texture(tb.publish());
     }

@@ -671,6 +671,8 @@ const Texture &ClientObject::tooltip() const{
     if (_tooltip)
         return _tooltip;
 
+    const auto &client = *Client::_instance;
+
     const ClientObjectType &ot = *objectType();
 
     bool isContainer = ot.containerSlots() > 0 && classTag() != 'n';
@@ -713,7 +715,7 @@ const Texture &ClientObject::tooltip() const{
             if (!stats) {stats = true; tb.addGap(); }
             std::string text = "Gatherable";
             if (!ot.gatherReq().empty())
-                text += " (requires " + ot.gatherReq() + ")";
+                text += " (requires " + client.tagName(ot.gatherReq()) + ")";
             tb.addLine(text);
         }
 
@@ -738,7 +740,7 @@ const Texture &ClientObject::tooltip() const{
         tb.addGap();
         tb.setColor(Color::ITEM_TAGS);
         for (const std::string &tag : ot.tags())
-            tb.addLine(tag);
+            tb.addLine(client.tagName(tag));
     }
 
     // Any actions available?

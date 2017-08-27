@@ -140,6 +140,8 @@ void Client::initializeCraftingWindow(){
 }
 
 void Client::selectRecipe(Element &e, const Point &mousePos){
+    const auto &client = *Client::_instance;
+
     if (!collision(mousePos, Rect(0, 0, e.rect().w, e.rect().h)))
         return;
     Element &pane = *_instance->_detailsPane;
@@ -230,13 +232,16 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     pane.addChild(toolsList);
     for (const std::string &tool : recipe.tools()) {
         static const px_t TOOL_MARGIN = 5;
-        Label *entry = new Label(Rect(TOOL_MARGIN, 0, paneRect.w - TOOL_MARGIN, Element::TEXT_HEIGHT), tool);
+        Label *entry = new Label(Rect(TOOL_MARGIN, 0, paneRect.w - TOOL_MARGIN, Element::TEXT_HEIGHT),
+                client.tagName(tool));
         toolsList->addChild(entry);
     }
     pane.markChanged();
 }
 
 void Client::populateFilters(){
+    const auto &client = *Client::_instance;
+
     const px_t FILTERS_PANE_W = _materialsList->parent()->width();
 
     // Restrict shown filters to known recipes
@@ -256,7 +261,7 @@ void Client::populateFilters(){
         if (knownTags.find(pair.first) == knownTags.end()) // User doesn't know about this tag yet.
             continue;
         _tagList->addChild(new CheckBox(Rect(0, 0, FILTERS_PANE_W, Element::TEXT_HEIGHT),
-                                        pair.second, pair.first));
+                                        pair.second, client.tagName(pair.first)));
     }
 
     // Materials
