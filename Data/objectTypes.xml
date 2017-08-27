@@ -357,12 +357,22 @@ Server only:
     <strength item="tinBar" quantity="5" />
 </objectType-->
 
-<objectType id="respawnAltar" name="Respawn Altar" playerUnique="altar"
-    damageParticles="wood" >
+<!--objectType id="respawnAltar" name="Respawn Altar" playerUnique="altar"
+    constructionTime="0" damageParticles="wood" >
     <material id="woodenStatue" />
     <material id="rock" quantity="8" />
     <unlockedBy recipe="woodenStatue" />
     <strength item="rock" quantity="8" />
+</objectType-->
+<objectType id="cityAltar" name="Foundation Altar"
+    constructionTime="0" playerUnique="altar" >
+    <!--material id="tinStatue" />
+    <material id="brick" quantity="8" />
+    <unlockedBy recipe="tinStatue" />
+    <strength item="brick" quantity="8" /-->
+    
+    <material id="rock" />
+    <strength item="brick" quantity="8" />
 </objectType>
 
 </root>
