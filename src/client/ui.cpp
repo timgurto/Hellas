@@ -47,7 +47,6 @@ void Client::initWindows() {
     drawLoadingScreen("Initializing UI", 0.8);
 
     initializeBuildWindow();
-    populateBuildList();
     addWindow(_buildWindow);
 
     _craftingWindow = Window::InitializeLater(initializeCraftingWindow);

@@ -418,5 +418,8 @@ void Client::loadData(const std::string &path){
     if (!mapSuccessful)
         _debug("Failed to load map.", Color::FAILURE);
 
+
+    populateBuildList();
+
     _dataLoaded = true;
 }
