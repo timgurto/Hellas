@@ -140,13 +140,9 @@
     <material id="crudeClay" quantity="2" />
     <material id="log" />
     <tool class="smelting1" />
-    <unlockedBy loot="bone" chance="0.2" />
+    <unlockedBy item="bone" chance="0.2" />
     <unlockedBy recipe="copperBar" chance="0.05" />
 </recipe>
-
-
-    <unlockedBy loot="bone" chance="0.2" />
-    <unlockedBy construction="forge" />
 
 <recipe id="tinBar"
 	time="12000" >

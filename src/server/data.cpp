@@ -514,6 +514,8 @@ void Server::loadData(const std::string &path){
                     triggerType = ProgressLock::GATHER;
                 else if (xr.findAttr(unlockedBy, "recipe", triggerID))
                     triggerType = ProgressLock::RECIPE;
+                else
+                    assert(false);
                 ProgressLock(triggerType, triggerID, ProgressLock::RECIPE, id, chance).stage();
                 requiresUnlock = true;
             }
