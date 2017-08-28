@@ -6,7 +6,8 @@
 
 const std::string & TagNames::operator[](const std::string & id) const {
     auto it = container_.find(id);
-    assert(it != container_.end());
+    if (it == container_.end())
+        return id;
     return it->second;
 }
 
