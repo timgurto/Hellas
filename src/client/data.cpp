@@ -296,9 +296,8 @@ void Client::loadData(const std::string &path){
                 continue; // ID is mandatory.
             Recipe recipe(id);
 
-            std::string s;
-            if (!xr.findAttr(elem, "product", s))
-                continue; // product is mandatory.
+            std::string s = id;
+            xr.findAttr(elem, "product", s);
             auto it = _items.find(s);
             if (it == _items.end()) {
                 _debug << Color::FAILURE << "Skipping recipe with invalid product " << s << Log::endl;
