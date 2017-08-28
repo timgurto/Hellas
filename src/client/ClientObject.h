@@ -126,6 +126,7 @@ private:
     void addInventoryToWindow();
     void addDeconstructionToWindow();
     void addVehicleToWindow();
+    void addActionToWindow();
     void addMerchantTradeToWindow();
     void addCedeButtonToWindow();
 };

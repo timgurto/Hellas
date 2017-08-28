@@ -166,6 +166,14 @@ void Client::loadData(const std::string &path){
                 cot->addTag(s + " (1 per player)");
             }
 
+            auto action = xr.findChild("action", elem);
+            if (action != nullptr) {
+                auto pAction = new ClientObjectAction;
+                xr.findAttr(action, "label", pAction->label);
+                xr.findAttr(action, "tooltip", pAction->tooltip);
+                cot->action(pAction);
+            }
+
             bool canConstruct = false;
             for (auto objMat : xr.getChildren("material", elem)){
                 if (!xr.findAttr(objMat, "id", s))

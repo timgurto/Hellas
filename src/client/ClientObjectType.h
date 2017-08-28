@@ -6,6 +6,7 @@
 
 #include "ClientCombatantType.h"
 #include "ClientItem.h"
+#include "ClientObjectAction.h"
 #include "SpriteType.h"
 #include "Texture.h"
 #include "../server/ItemSet.h"
@@ -54,6 +55,8 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
     std::vector<ImageSet> _transformImages;
     ms_t _transformTime; // The total length of the transformation.
 
+    ClientObjectAction *_action = nullptr;
+
 public:
     ClientObjectType(const std::string &id);
     virtual ~ClientObjectType() override;
@@ -94,6 +97,9 @@ public:
             _strength.item = item; _strength.quantity = quantity; }
     bool isPlayerUnique() const { return _isPlayerUnique; }
     void makePlayerUnique() { _isPlayerUnique = true; }
+    void action(ClientObjectAction *pAction) { _action = pAction; }
+    const ClientObjectAction &action() const { return *_action; }
+    bool hasAction() const { return _action != nullptr; }
     
     const ImageSet &getProgressImage(ms_t timeRemaining) const;
     void corpseImage(const std::string &filename);

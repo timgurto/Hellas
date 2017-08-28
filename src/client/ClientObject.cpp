@@ -358,15 +358,35 @@ void ClientObject::addDeconstructionToWindow(){
     _window->resize(newWidth, y);
 }
 
-void ClientObject::addVehicleToWindow(){
+void ClientObject::addVehicleToWindow() {
     px_t
         x = BUTTON_GAP,
         y = _window->contentHeight(),
         newWidth = _window->contentWidth();
     y += BUTTON_GAP;
     Button *mountButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), "Enter/exit",
-                                            ClientVehicle::mountOrDismount, this);
+        ClientVehicle::mountOrDismount, this);
     _window->addChild(mountButton);
+    y += BUTTON_GAP + BUTTON_HEIGHT;
+    x += BUTTON_GAP + BUTTON_WIDTH;
+    if (newWidth < x)
+        newWidth = x;
+
+    _window->resize(newWidth, y);
+}
+
+void ClientObject::addActionToWindow() {
+    px_t
+        x = BUTTON_GAP,
+        y = _window->contentHeight(),
+        newWidth = _window->contentWidth();
+    y += BUTTON_GAP;
+    const auto &action = objectType()->action();
+    Button *button = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), action.label);
+    if (!action.tooltip.empty())
+        button->setTooltip(action.tooltip);
+    _window->addChild(button);
+
     y += BUTTON_GAP + BUTTON_HEIGHT;
     x += BUTTON_GAP + BUTTON_WIDTH;
     if (newWidth < x)
@@ -483,6 +503,7 @@ void ClientObject::assembleWindow(Client &client){
     if (isMerchant ||
         userHasAccess() && (hasContainer ||
                             isVehicle ||
+                            objType.hasAction() ||
                             objType.canDeconstruct() ||
                             isBeingConstructed() ||
                             canCede)){
@@ -510,6 +531,8 @@ void ClientObject::assembleWindow(Client &client){
             }
             if (isVehicle)
                 addVehicleToWindow();
+            if (objType.hasAction())
+                addActionToWindow();
             if (objType.canDeconstruct())
                 addDeconstructionToWindow();
             if (canCede)
