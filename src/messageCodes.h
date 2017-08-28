@@ -114,13 +114,17 @@ enum MessageCode{
     // Arguments: city name
     CL_DECLARE_WAR_ON_CITY = 56,
 
+    // "I want to perform object ...'s action"
+    // Arguments: serial
+    CL_PERFORM_OBJECT_ACTION = 60,
+
     // "I want to say ... to everybody". 
     // Arguments: message
-    CL_SAY = 60,
+    CL_SAY = 70,
 
     // "I want to say ... to ...". 
     // Arguments: username, message
-    CL_WHISPER = 61,
+    CL_WHISPER = 71,
 
 
 
@@ -430,6 +434,9 @@ enum MessageCode{
 
     // The user tried to cede an uncedable object
     SV_CANNOT_CEDE = 952,
+
+    // The user tried to perform an action with an object that has none.
+    SV_NO_ACTION = 953,
 
 
 

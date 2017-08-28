@@ -909,6 +909,16 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_PERFORM_OBJECT_ACTION:
+        {
+            size_t serial;
+            iss >> serial >> del;
+            if (del != MSG_END)
+                return;
+            handle_CL_PERFORM_OBJECT_ACTION(*user, serial);
+            break;
+        }
+
         case CL_SAY:
         {
             iss.get(buffer, BUFFER_SIZE, MSG_END);
@@ -1032,11 +1042,11 @@ void Server::handle_CL_LEAVE_CITY(User &user) {
 }
 
 void Server::handle_CL_CEDE(User &user, size_t serial) {
-    Object *obj;
-    if (serial == INVENTORY || serial == GEAR)
+    if (serial == INVENTORY || serial == GEAR) {
         sendMessage(user.socket(), SV_DOESNT_EXIST);
         return;
-    obj = _entities.find<Object>(serial);
+    }
+    auto *obj = _entities.find<Object>(serial);
 
     if (!obj->permissions().isOwnedByPlayer(user.name())) {
         sendMessage(user.socket(), SV_NO_PERMISSION);
@@ -1058,6 +1068,27 @@ void Server::handle_CL_CEDE(User &user, size_t serial) {
     const Permissions::Owner &owner = obj->permissions().owner();
     for (const User *u : findUsersInArea(obj->location()))
         sendMessage(u->socket(), SV_OWNER, makeArgs(serial, owner.typeString(), owner.name));
+}
+
+void Server::handle_CL_PERFORM_OBJECT_ACTION(User & user, size_t serial) {
+    if (serial == INVENTORY || serial == GEAR) {
+        sendMessage(user.socket(), SV_DOESNT_EXIST);
+        return;
+    }
+    auto *obj = _entities.find<Object>(serial);
+
+    if (!obj->permissions().isOwnedByPlayer(user.name())) {
+        sendMessage(user.socket(), SV_NO_PERMISSION);
+        return;
+    }
+
+    const auto &objType = obj->objType();
+    if (!objType.hasAction()) {
+        sendMessage(user.socket(), SV_NO_ACTION);
+        return;
+    }
+
+    objType.action().function(*obj, user);
 }
 
 

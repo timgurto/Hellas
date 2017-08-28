@@ -170,6 +170,7 @@
     <ClCompile Include="src\server\Loot.cpp" />
     <ClCompile Include="src\server\LootTable.cpp" />
     <ClCompile Include="src\server\ObjectsByOwner.cpp" />
+    <ClCompile Include="src\server\objects\Action.cpp" />
     <ClCompile Include="src\server\objects\Container.cpp" />
     <ClCompile Include="src\server\objects\Deconstruction.cpp" />
     <ClCompile Include="src\server\objects\Object.cpp" />
@@ -245,6 +246,7 @@
     <ClInclude Include="src\client\ClientNPC.h" />
     <ClInclude Include="src\client\ClientNPCType.h" />
     <ClInclude Include="src\client\ClientObject.h" />
+    <ClInclude Include="src\client\ClientObjectAction.h" />
     <ClInclude Include="src\client\ClientObjectType.h" />
     <ClInclude Include="src\client\ClientVehicle.h" />
     <ClInclude Include="src\client\ClientVehicleType.h" />
@@ -296,6 +298,7 @@
     <ClInclude Include="src\server\Loot.h" />
     <ClInclude Include="src\server\LootTable.h" />
     <ClInclude Include="src\server\ObjectsByOwner.h" />
+    <ClInclude Include="src\server\objects\Action.h" />
     <ClInclude Include="src\server\objects\Container.h" />
     <ClInclude Include="src\server\objects\Deconstruction.h" />
     <ClInclude Include="src\server\objects\Object.h" />

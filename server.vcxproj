@@ -118,6 +118,7 @@
     <ClCompile Include="src\server\NPC.cpp" />
     <ClCompile Include="src\server\NPCType.cpp" />
     <ClCompile Include="src\server\ObjectsByOwner.cpp" />
+    <ClCompile Include="src\server\objects\Action.cpp" />
     <ClCompile Include="src\server\objects\Container.cpp" />
     <ClCompile Include="src\server\objects\Deconstruction.cpp" />
     <ClCompile Include="src\server\objects\Object.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="src\server\NPC.h" />
     <ClInclude Include="src\server\NPCType.h" />
     <ClInclude Include="src\server\ObjectsByOwner.h" />
+    <ClInclude Include="src\server\objects\Action.h" />
     <ClInclude Include="src\server\objects\Container.h" />
     <ClInclude Include="src\server\objects\Deconstruction.h" />
     <ClInclude Include="src\server\objects\Object.h" />

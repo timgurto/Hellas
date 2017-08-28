@@ -382,7 +382,8 @@ void ClientObject::addActionToWindow() {
         newWidth = _window->contentWidth();
     y += BUTTON_GAP;
     const auto &action = objectType()->action();
-    Button *button = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), action.label);
+    Button *button = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), action.label,
+        performAction, this);
     if (!action.tooltip.empty())
         button->setTooltip(action.tooltip);
     _window->addChild(button);
@@ -393,6 +394,14 @@ void ClientObject::addActionToWindow() {
         newWidth = x;
 
     _window->resize(newWidth, y);
+}
+
+void ClientObject::performAction(void *object) {
+    assert(object != nullptr);
+    ClientObject &obj = *reinterpret_cast<ClientObject *>(object);
+    Client &client = *Client::_instance;
+
+    client.sendMessage(CL_PERFORM_OBJECT_ACTION, makeArgs(obj.serial()));
 }
 
 void ClientObject::addMerchantTradeToWindow(){

@@ -1,6 +1,7 @@
 #ifndef OBJECT_TYPE_H
 #define OBJECT_TYPE_H
 
+#include "Action.h"
 #include "Container.h"
 #include "Deconstruction.h"
 #include "../EntityType.h"
@@ -53,10 +54,10 @@ class ObjectType : public EntityType{
 
     std::string _playerUniqueCategory; // Assumption: up to one category per object type.
 
-
 protected:
     ContainerType *_container;
     DeconstructionType *_deconstruction;
+    Action *_action;
 
 public:
     ObjectType(const std::string &id);
@@ -118,6 +119,10 @@ public:
     DeconstructionType &deconstruction() { return *_deconstruction; }
     const DeconstructionType &deconstruction() const { return *_deconstruction; }
     void addDeconstruction(DeconstructionType *p) { _deconstruction = p; }
+
+    void action(Action *pAction) { _action = pAction; }
+    const Action &action() const { return *_action; }
+    bool hasAction() const { return _action != nullptr; }
 
 private:
     void checkUniquenessInvariant() const;

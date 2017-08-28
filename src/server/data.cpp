@@ -345,6 +345,26 @@ void Server::loadData(const std::string &path){
                     _debug("Transformation specified without target id; skipping.", Color::FAILURE);
             }
 
+            // Action
+            auto action = xr.findChild("action", elem);
+            if (action != nullptr) {
+                std::string target;
+                if (!xr.findAttr(action, "target", target)) {
+                    _debug("Skipping action with missing target", Color::RED);
+                    continue;
+                }
+                auto it = Action::functionMap.find(target);
+                if (it == Action::functionMap.end()) {
+                    _debug << Color::RED << "Action target " << target <<
+                        "() doesn't exist; skipping" << Log::endl;
+                    continue;
+                }
+
+                auto *pAction = new Action;
+                pAction->function = it->second;
+                ot->action(pAction);
+            }
+
 
             bool foundInPlace = false;
             for (auto it = _objectTypes.begin(); it != _objectTypes.end(); ++it){

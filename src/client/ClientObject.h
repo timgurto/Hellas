@@ -113,7 +113,7 @@ public:
     bool canAlwaysSee() const;
 
     void setMerchantSlot(size_t i, ClientMerchantSlot &mSlot);
-    static void confirmAndCedeObject(void *objectToCede);
+    
 
 private:
     static const px_t
@@ -127,8 +127,10 @@ private:
     void addDeconstructionToWindow();
     void addVehicleToWindow();
     void addActionToWindow();
+        static void performAction(void *object);
     void addMerchantTradeToWindow();
     void addCedeButtonToWindow();
+        static void confirmAndCedeObject(void *objectToCede);
 };
 
 #endif
