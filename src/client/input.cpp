@@ -221,7 +221,7 @@ void Client::handleInput(double delta){
                 // Send onRightMouseDown to all visible windows
                 _rightMouseDownWasOnUI = false;
                 for (Window *window : _windows)
-                    if (window->visible()){
+                    if (window->visible() && collision(_mouse, window->rect())){
                         window->onRightMouseDown(_mouse);
                         _rightMouseDownWasOnUI = true;
                     }
