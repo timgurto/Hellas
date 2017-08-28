@@ -100,3 +100,36 @@ TEST_CASE("Construction tool requirements are enforced", "[.flaky-vs2015]"){
     CHECK(c.waitForMessage(SV_NEED_TOOLS));
     CHECK(s.entities().size() == 0);
 }
+
+TEST_CASE("Construction progress is persistent", "[persistence]") {
+    // Given a new brick wall object with no materials added, owned by Alice
+    {
+        auto s = TestServer::WithData("brick_wall");
+        s.addObject("wall", { 10, 10 }, "alice");
+
+        // And Alice has a brick
+        auto c = TestClient::WithUsernameAndData("alice", "brick_wall");
+        WAIT_UNTIL(s.users().size() == 1);
+        auto &alice = s.getFirstUser();
+        const auto *brick = &s.getFirstItem();
+        alice.giveItem(brick);
+
+        // When Alice adds a brick to the construction site
+        const auto &wall = s.getFirstObject();
+        c.sendMessage(CL_SWAP_ITEMS, makeArgs(Server::INVENTORY, 0, wall.serial(), 0));
+
+        // And the construction finishes
+        WAIT_UNTIL(!wall.isBeingBuilt());
+
+        // And the server restarts
+    }
+    {
+        auto s = TestServer::WithDataAndKeepingOldData("brick_wall");
+
+        // Then the wall is still complete
+        REPEAT_FOR_MS(100);
+        WAIT_UNTIL(s.entities().size() == 1);
+        const auto &wall = s.getFirstObject();
+        CHECK(!wall.isBeingBuilt());
+    }
+}

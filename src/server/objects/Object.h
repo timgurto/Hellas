@@ -50,6 +50,7 @@ public:
     const ItemSet &remainingMaterials() const { return _remainingMaterials; }
     ItemSet &remainingMaterials() { return _remainingMaterials; }
     void removeMaterial(const ServerItem *item, size_t qty);
+    void clearMaterialsRequired() { _remainingMaterials.clear(); }
     bool isTransforming() const { return _transformTimer > 0; }
     ms_t transformTimer() const { return _transformTimer; }
     Permissions &permissions() { return _permissions; }

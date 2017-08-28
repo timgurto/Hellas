@@ -755,6 +755,7 @@ void Server::loadData(const std::string &path){
                 obj.merchantSlot(slot) = MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty);
             }
 
+            obj.clearMaterialsRequired();
             for (auto material : xr.getChildren("material", elem)){
                 if (!xr.findAttr(material, "id", s))
                     continue;

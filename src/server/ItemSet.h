@@ -20,6 +20,7 @@ public:
     // Subtraction: remove rhs from lhs, with a floor of zero rather than a concept of negatives.
     const ItemSet &operator-=(const ItemSet &rhs);
     size_t operator[](const Item *key) const;
+    void clear() { _set.clear(); _totalQty = 0; }
 
     void set(const Item *item, size_t quantity = 1);
     bool contains(const ItemSet &rhs) const; // Subset
