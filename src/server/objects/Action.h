@@ -13,5 +13,3 @@ struct Action {
 
     Function function = nullptr;
 };
-
-void createCityWithRandomName(const Object &obj, User &performer);

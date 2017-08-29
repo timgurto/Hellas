@@ -44,7 +44,7 @@ public:
     typedef std::vector<std::vector<char>> Map;
     const Map &map() { return _map; }
 
-    static const Server &instance(){ return *_instance; }
+    static Server &instance(){ return *_instance; }
     static LogConsole &debug(){ return *_debugInstance; }
 
     bool itemIsTag(const ServerItem *item, const std::string &tagName) const;
@@ -95,6 +95,9 @@ public:
 
     // Getters
     const Cities &cities() const { return _cities; }
+
+    // Action functions
+    static void createCityWithRandomName(const Object &obj, User &performer);
 
 private:
 

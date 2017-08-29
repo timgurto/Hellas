@@ -1,7 +1,7 @@
 issue,description,value,effort,type,blockedBy,done,critical,milestone
 1,Each player can be a member of up to one 'city',34,8,Feature,,TRUE,TRUE,
 2,Cities have names,21,3,Aesthetics,1,TRUE,TRUE,
-3,A player can found a city by placing a shrine,21,55,Feature,1,,TRUE,1
+3,A player can found a city by placing a shrine,21,55,Feature,1,TRUE,TRUE,1
 4,The player who starts a city is labelled 'king',5,3,Feature,3,,TRUE,1
 5,A king can invite new members to a city,21,55,Feature,4,,TRUE,1
 6,Destroying a city shrine destroys the city,34,13,Feature,3,,TRUE,1
@@ -71,7 +71,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 71,Finish data website,13,8,Documentation,,,,
 72,"Sort _materials and _craftableItems by name, not ID",5,3,Usability,,,,
 73,Document Texture interface,2,8,Documentation,,,,
-74,"When a player joins a city, that city adopts his wars",13,5,Feature,55,,TRUE,1
+74,"When a player joins a city, that city adopts his wars",13,5,Feature,55,TRUE,TRUE,1
 75,NPC idling AI,5,5,Feature,,,,3
 76,Sounds for attacking and death,89,3,Aesthetics,,TRUE,,
 77,A shrine that grants items,5,34,Feature,19,,,
