@@ -47,37 +47,33 @@ void Avatar::draw(const Client &client) const{
     }
 
     // Draw username
-    if (_name != client.username()) {
-        const Client &client = *Client::_instance;
+    const Texture nameLabel(client.defaultFont(), _name, nameColor());
+    const Texture nameOutline(client.defaultFont(), _name, Color::PLAYER_NAME_OUTLINE);
+    Texture cityOutline, cityLabel;
 
-        const Texture nameLabel(client.defaultFont(), _name, nameColor());
-        const Texture nameOutline(client.defaultFont(), _name, Color::PLAYER_NAME_OUTLINE);
-        Texture cityOutline, cityLabel;
+    Point namePosition = location() + client.offset();
+    namePosition.y -= 60;
+    namePosition.x -= nameLabel.width() / 2;
 
-        Point namePosition = location() + client.offset();
-        namePosition.y -= 60;
-        namePosition.x -= nameLabel.width() / 2;
-
-        Point cityPosition;
-        bool shouldDrawCityName = ! _city.empty();
-        if (shouldDrawCityName){
-            std::string cityText = "of " + _city;
-            cityOutline = Texture(client.defaultFont(), cityText, Color::PLAYER_NAME_OUTLINE);
-            cityLabel = Texture(client.defaultFont(), cityText, nameColor());
-            cityPosition.x = location().x + client.offset().x - cityLabel.width() / 2;
-            cityPosition.y = namePosition.y;
-            namePosition.y -= 11;
-        }
-        for (int x = -1; x <= 1; ++x)
-            for (int y = -1; y <= 1; ++y){
-                nameOutline.draw(namePosition + Point(x, y));
-                if (shouldDrawCityName)
-                    cityOutline.draw(cityPosition + Point(x, y));
-            }
-        nameLabel.draw(namePosition);
-        if (shouldDrawCityName)
-            cityLabel.draw(cityPosition);
+    Point cityPosition;
+    bool shouldDrawCityName = ! _city.empty();
+    if (shouldDrawCityName){
+        std::string cityText = "of " + _city;
+        cityOutline = Texture(client.defaultFont(), cityText, Color::PLAYER_NAME_OUTLINE);
+        cityLabel = Texture(client.defaultFont(), cityText, nameColor());
+        cityPosition.x = location().x + client.offset().x - cityLabel.width() / 2;
+        cityPosition.y = namePosition.y;
+        namePosition.y -= 11;
     }
+    for (int x = -1; x <= 1; ++x)
+        for (int y = -1; y <= 1; ++y){
+            nameOutline.draw(namePosition + Point(x, y));
+            if (shouldDrawCityName)
+                cityOutline.draw(cityPosition + Point(x, y));
+        }
+    nameLabel.draw(namePosition);
+    if (shouldDrawCityName)
+        cityLabel.draw(cityPosition);
 
     drawHealthBarIfAppropriate(location(), height());
 }
