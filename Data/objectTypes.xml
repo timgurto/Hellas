@@ -197,7 +197,7 @@ Server only:
     <material id="figSeeds" />
     <strength item="log" quantity="1" />
 </objectType>
-<objectType id="figTree1" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37"
+<objectType id="figTree1" name="Fig Tree (overgrown)" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <yield id="stick" initialMean="2.5" initialSD="1" initialMin="1" />
     <transform id="figTree2" whenEmpty="1" />
@@ -207,7 +207,7 @@ Server only:
         <progress image="figTree2a" />
     </transform>
 </objectType>
-<objectType id="figTree3" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37"
+<objectType id="figTree3" name="Fig Tree (overgrown)" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <yield id="stick" initialMean="2.5" initialSD="1" initialMin="1" />
     <transform id="figTree4" whenEmpty="1" />
@@ -218,7 +218,7 @@ Server only:
 <objectType id="figTree5" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <transform id="figTree6" time="120000" />
 </objectType>
-<objectType id="figTree6" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37"
+<objectType id="figTree6" name="Fig Tree (overgrown)" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <yield id="stick" initialMean="2.5" initialSD="1" initialMin="1" />
     <transform id="figTree7" whenEmpty="1" />
@@ -359,9 +359,9 @@ Server only:
 
 <objectType id="respawnAltar" name="Altar to Hermes"
     constructionTime="0" damageParticles="wood" playerUnique="altar" >
-    <material id="woodenStatue" />
+    <!--material id="woodenStatue" /-->
     <material id="rock" quantity="8" />
-    <unlockedBy recipe="woodenStatue" />
+    <!--unlockedBy recipe="woodenStatue" /-->
     <strength item="rock" quantity="8" />
     <action label="Worship" tooltip="Set this location as your respawn point upon death" />
 </objectType>

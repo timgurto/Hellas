@@ -172,9 +172,9 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 174,Interact with nearest target if none selected on interact-key,8,5,Usability,173,,,2
 175,Click to move,8,3,Usability,,,,2
 176,Use Catch for tests,3,5,Code quality,,TRUE,,
-177,Add fireball ability for magus,8,13,Feature,178,,,1
-178,Add heal ability for priest,5,34,Feature,,,,1
-179,Add taunt ability for warrior,5,21,Feature,178,,,1
+177,Add fireball ability for magus,8,13,Feature,178,,,2
+178,Add heal ability for priest,5,34,Feature,,,,2
+179,Add taunt ability for warrior,5,21,Feature,178,,,2
 180,"Update map pins at limited frequency, e.g., 1s",2,5,Performance,,,,
 181,Send object-movement updates to owner and city's members,5,3,Bug,,,,
 182,Maintain only one set of scroll-bar triangle images,2,2,Performance,,,,
