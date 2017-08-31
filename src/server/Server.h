@@ -97,7 +97,7 @@ public:
     const Cities &cities() const { return _cities; }
 
     // Action functions
-    static void createCityWithRandomName(const Object &obj, User &performer);
+    static void createCityWithRandomName(const Object &obj, User &performer, const std::string &textArg);
 
 private:
 
@@ -206,7 +206,7 @@ private:
     void handle_CL_START_WATCHING(User &user, size_t serial);
     void handle_CL_LEAVE_CITY(User &user);
     void handle_CL_CEDE(User &user, size_t serial);
-    void handle_CL_PERFORM_OBJECT_ACTION(User &user, size_t serial);
+    void handle_CL_PERFORM_OBJECT_ACTION(User &user, size_t serial, const std::string &textArg);
 };
 
 #endif

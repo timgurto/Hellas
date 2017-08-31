@@ -418,7 +418,11 @@ void ClientObject::performAction(void *object) {
     ClientObject &obj = *reinterpret_cast<ClientObject *>(object);
     Client &client = *Client::_instance;
 
-    client.sendMessage(CL_PERFORM_OBJECT_ACTION, makeArgs(obj.serial()));
+    auto textArg = std::string{"_"};
+    if (obj._actionTextEntry != nullptr)
+        textArg = obj._actionTextEntry->text();
+
+    client.sendMessage(CL_PERFORM_OBJECT_ACTION, makeArgs(obj.serial(), textArg));
 }
 
 void ClientObject::addMerchantTradeToWindow(){

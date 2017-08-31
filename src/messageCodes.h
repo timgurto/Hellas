@@ -114,8 +114,8 @@ enum MessageCode{
     // Arguments: city name
     CL_DECLARE_WAR_ON_CITY = 56,
 
-    // "I want to perform object ...'s action"
-    // Arguments: serial
+    // "I want to perform object ...'s action with argument ..."
+    // Arguments: serial, textArg
     CL_PERFORM_OBJECT_ACTION = 60,
 
     // "I want to say ... to everybody". 

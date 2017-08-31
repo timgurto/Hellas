@@ -913,9 +913,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         {
             size_t serial;
             iss >> serial >> del;
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
+            auto textArg = std::string{ buffer };
+            iss >> del;
             if (del != MSG_END)
                 return;
-            handle_CL_PERFORM_OBJECT_ACTION(*user, serial);
+            handle_CL_PERFORM_OBJECT_ACTION(*user, serial, textArg);
             break;
         }
 
@@ -1070,7 +1073,7 @@ void Server::handle_CL_CEDE(User &user, size_t serial) {
         sendMessage(u->socket(), SV_OWNER, makeArgs(serial, owner.typeString(), owner.name));
 }
 
-void Server::handle_CL_PERFORM_OBJECT_ACTION(User & user, size_t serial) {
+void Server::handle_CL_PERFORM_OBJECT_ACTION(User & user, size_t serial, const std::string &textArg) {
     if (serial == INVENTORY || serial == GEAR) {
         sendMessage(user.socket(), SV_DOESNT_EXIST);
         return;
@@ -1088,7 +1091,7 @@ void Server::handle_CL_PERFORM_OBJECT_ACTION(User & user, size_t serial) {
         return;
     }
 
-    objType.action().function(*obj, user);
+    objType.action().function(*obj, user, textArg);
 }
 
 

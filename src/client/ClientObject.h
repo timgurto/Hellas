@@ -9,6 +9,7 @@
 #include "ClientObjectType.h"
 #include "Sprite.h"
 #include "ClientItem.h"
+#include "ui/TextBox.h"
 #include "../Point.h"
 
 class Element;
