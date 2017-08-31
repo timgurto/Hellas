@@ -368,7 +368,7 @@ Server only:
 <objectType id="cityAltar" name="Altar to Athena"
     xDrawOffset="-14" yDrawOffset="-22"
     constructionTime="0" playerUnique="altar" >
-    <action label="Worship" tooltip="Found a city" />
+    <action label="Worship" target="createCityWithRandomName" tooltip="Found a city" textInput="City name" />
     <!--material id="tinStatue" />
     <material id="brick" quantity="8" />
     <unlockedBy recipe="tinStatue" />

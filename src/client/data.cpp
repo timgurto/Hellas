@@ -171,6 +171,7 @@ void Client::loadData(const std::string &path){
                 auto pAction = new ClientObjectAction;
                 xr.findAttr(action, "label", pAction->label);
                 xr.findAttr(action, "tooltip", pAction->tooltip);
+                xr.findAttr(action, "textInput", pAction->textInput);
                 cot->action(pAction);
             }
 

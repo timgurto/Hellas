@@ -42,6 +42,8 @@ class ClientObject : public Sprite, public ClientCombatant {
     bool _lootable;
     TakeContainer *_lootContainer;
 
+    TextBox *_actionTextEntry = nullptr;
+
 protected:
     Window *_window; // For containers, etc; opens when the object is nearby and right-clicked.
     ConfirmationWindow *_confirmCedeWindow;

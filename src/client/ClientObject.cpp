@@ -382,12 +382,29 @@ void ClientObject::addActionToWindow() {
         newWidth = _window->contentWidth();
     y += BUTTON_GAP;
     const auto &action = objectType()->action();
+
+    // Text input
+    if (!action.textInput.empty()){
+        const auto LABEL_WIDTH = px_t{ 50 };
+        auto *label = new Label({ x, y, LABEL_WIDTH, 13 }, action.textInput);
+        _window->addChild(label);
+        x += LABEL_WIDTH + BUTTON_GAP;
+
+        _actionTextEntry = new TextBox({ x, y, 50, 13 });
+        _window->addChild(_actionTextEntry);
+        y += 13 + BUTTON_GAP;
+        x += 50;
+        if (newWidth < x)
+            newWidth = x;
+    }
+
+    // Button
+    x = BUTTON_GAP;
     Button *button = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), action.label,
         performAction, this);
     if (!action.tooltip.empty())
         button->setTooltip(action.tooltip);
     _window->addChild(button);
-
     y += BUTTON_GAP + BUTTON_HEIGHT;
     x += BUTTON_GAP + BUTTON_WIDTH;
     if (newWidth < x)
