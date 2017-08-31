@@ -402,9 +402,12 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_NO_CITY:
         {
+            std::string username;
+            readString(singleMsg, username, MSG_END);
+            singleMsg >> del;
             if (del != MSG_END)
                 break;
-            _character.cityName("");
+            handle_SV_NO_CITY(username);
             break;
         }
 
@@ -418,6 +421,18 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
             handle_SV_IN_CITY(username, cityName);
+        }
+
+        case SV_KING:
+        {
+            _debug("Received SV_KING");
+            std::string username;
+            readString(singleMsg, username, MSG_END);
+            singleMsg >> del;
+            if (del != MSG_END)
+                break;
+            handle_SV_KING(username);
+            break;
         }
 
         case SV_OBJECT:
@@ -1113,8 +1128,8 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot, const std::string &
                 item->sounds()->playOnce("drop");
 }
 
-void Client::handle_SV_IN_CITY(const std::string &username, const std::string &cityName){
-    if (username == _username){
+void Client::handle_SV_IN_CITY(const std::string &username, const std::string &cityName) {
+    if (username == _username) {
         _character.cityName(cityName);
         return;
     }
@@ -1124,6 +1139,29 @@ void Client::handle_SV_IN_CITY(const std::string &username, const std::string &c
         return;
     }
     _otherUsers[username]->cityName(cityName);
+}
+
+void Client::handle_SV_NO_CITY(const std::string &username) {
+    if (username == _username) {
+        _character.cityName("");
+        return;
+    }
+    auto userIt = _otherUsers.find(username);
+    if (userIt == _otherUsers.end())
+        return;
+    userIt->second->cityName("");
+}
+
+void Client::handle_SV_KING(const std::string username) {
+    _debug("Handling SV_KING");
+    if (username == _username){
+        _character.setAsKing();
+        return;
+    }
+    auto userIt = _otherUsers.find(username);
+    if (userIt == _otherUsers.end())
+        return;
+    userIt->second->setAsKing();
 }
 
 

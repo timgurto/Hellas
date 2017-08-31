@@ -7,6 +7,19 @@
 
 class User;
 
+
+class Kings {
+public:
+    using Username = std::string;
+
+    void add(const Username &newKing) { _container.insert(newKing); }
+    bool isPlayerAKing(const Username &user) const { return _container.find(user) != _container.end(); }
+
+private:
+    std::set<Username> _container;
+};
+
+
 class City{
 public:
     typedef std::string Name;
@@ -16,8 +29,8 @@ public:
     typedef std::set<std::string> Members;
     const Members &members() const { return _members; }
 
-    void addAndAlertPlayer(const User &user);
-    void removeAndAlertPlayer(const User &user);
+    void addAndAlertPlayers(const User &user);
+    void removeAndAlertPlayers(const User &user);
     void addPlayerWithoutAlerting(const std::string &username);
     bool isPlayerAMember(const std::string &username) const;
 
@@ -25,6 +38,7 @@ private:
     Name _name;
     Members _members;
 };
+
 
 class Cities{
 public:

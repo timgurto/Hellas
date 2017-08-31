@@ -33,6 +33,7 @@ void Avatar::draw(const Client &client) const{
         return;
 
     Sprite::draw(client);
+
     
     // Draw gear
     for (const auto &pair : ClientItem::drawOrder()){
@@ -56,9 +57,13 @@ void Avatar::draw(const Client &client) const{
     namePosition.x -= nameLabel.width() / 2;
 
     Point cityPosition;
-    bool shouldDrawCityName = ! _city.empty();
+    bool shouldDrawCityName = (! _city.empty()) && (_name != client.username());
     if (shouldDrawCityName){
-        std::string cityText = "of " + _city;
+        client._debug << "Drawing " << _name << "; king = " << (_isKing ? "true" : "false") << Log::endl;
+        auto cityText = std::string{};
+        if (_isKing)
+            cityText = "King ";
+        cityText += "of " + _city;
         cityOutline = Texture(client.defaultFont(), cityText, Color::PLAYER_NAME_OUTLINE);
         cityLabel = Texture(client.defaultFont(), cityText, nameColor());
         cityPosition.x = location().x + client.offset().x - cityLabel.width() / 2;

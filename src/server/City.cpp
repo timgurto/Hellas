@@ -9,14 +9,15 @@ City::City(const Name &name = ""):
 _name(name)
 {}
 
-void City::addAndAlertPlayer(const User &user) {
+void City::addAndAlertPlayers(const User &user) {
     _members.insert(user.name());
     Server::instance().sendMessage(user.socket(), SV_JOINED_CITY, _name);
+    Server::instance().broadcastToArea(user.location(), SV_IN_CITY, makeArgs(user.name(), _name));
 }
 
-void City::removeAndAlertPlayer(const User &user) {
+void City::removeAndAlertPlayers(const User &user) {
     _members.erase(user.name());
-    Server::instance().sendMessage(user.socket(), SV_NO_CITY);
+    Server::instance().broadcastToArea(user.location(), SV_NO_CITY, user.name());
 }
 
 void City::addPlayerWithoutAlerting(const std::string &username){
@@ -47,7 +48,7 @@ void Cities::addPlayerToCity(const User &user, const City::Name &cityName){
     bool cityExists = it != _container.end();
     assert(cityExists);
     City &city = it->second;
-    city.addAndAlertPlayer(user);
+    city.addAndAlertPlayers(user);
     _usersToCities[user.name()] = cityName;
 }
 
@@ -56,7 +57,7 @@ void Cities::removeUserFromCity(const User &user, const City::Name &cityName) {
     bool cityExists = it != _container.end();
     assert(cityExists);
     City &city = it->second;
-    city.removeAndAlertPlayer(user);
+    city.removeAndAlertPlayers(user);
     _usersToCities.erase(user.name());
 }
 

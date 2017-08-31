@@ -20,6 +20,7 @@ class Avatar : public Sprite, public ClientCombatant{
     std::string _class;
     std::string _city;
     ClientItem::vect_t _gear;
+    bool _isKing = false;
 
     bool _driving;
 
@@ -41,6 +42,7 @@ public:
     void cityName(const std::string &name) { _city = name; }
     const std::string &cityName() const { return _city; }
     bool isInPlayersCity() const;
+    void setAsKing() { _isKing = true; }
 
     // From Sprite
     void draw(const Client &client) const override;

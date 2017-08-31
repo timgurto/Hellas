@@ -2,10 +2,10 @@
 #include "../Server.h"
 
 Action::FunctionMap Action::functionMap = {
-    {"createCityWithRandomName", Server::createCityWithRandomName }
+    {"createCityWithRandomName", Server::createCity }
 };
 
-void Server::createCityWithRandomName(const Object & obj, User & performer,
+void Server::createCity(const Object & obj, User & performer,
         const std::string &textArg) {
     auto &server = Server::instance();
 
@@ -14,4 +14,6 @@ void Server::createCityWithRandomName(const Object & obj, User & performer,
 
     server._cities.createCity(textArg);
     server._cities.addPlayerToCity(performer, textArg);
+
+    server.makePlayerAKing(performer);
 }

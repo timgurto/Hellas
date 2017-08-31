@@ -461,6 +461,10 @@ void User::sendInfoToClient(const User &targetUser) const {
     if (! city.empty())
         server.sendMessage(client, SV_IN_CITY, makeArgs(_name, city));
 
+    // King?
+    if (server._kings.isPlayerAKing(_name))
+        server.sendMessage(client, SV_KING, _name);
+
     // Gear
     for (size_t i = 0; i != User::GEAR_SLOTS; ++i){
         const ServerItem *item = gear(i).first;

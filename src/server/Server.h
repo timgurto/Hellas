@@ -49,7 +49,6 @@ public:
 
     bool itemIsTag(const ServerItem *item, const std::string &tagName) const;
 
-    const User *getUserByName(const std::string &username) const;
 
     mutable LogConsole _debug;
 
@@ -69,7 +68,7 @@ public:
     std::list<User*> findUsersInArea(Point loc, double squareRadius = CULL_DISTANCE) const;
     const ObjectType *findObjectTypeByName(const std::string &id) const; // Linear complexity
     std::set<char> nearbyTerrainTypes(const Rect &rect, double extraRadius = 0);
-    const User findUserByName(const std::string name) const;
+    const User *getUserByName(const std::string &username) const;
 
     // Checks whether an entity is within range of a user.  If not, a relevant error message is
     // sent to the client.
@@ -82,6 +81,7 @@ public:
     void sendMessage(const Socket &dstSocket, MessageCode msgCode,
                      const std::string &args = "") const;
     void broadcast(MessageCode msgCode, const std::string &args); // Send a command to all users
+    void broadcastToArea(const Point &location, MessageCode msgCode, const std::string &args);
     void handleMessage(const Socket &client, const std::string &msg);
     void sendInventoryMessageInner(const User &user, size_t serial, size_t slot,
                                    const ServerItem::vect_t &itemVect) const;
@@ -97,7 +97,9 @@ public:
     const Cities &cities() const { return _cities; }
 
     // Action functions
-    static void createCityWithRandomName(const Object &obj, User &performer, const std::string &textArg);
+    static void createCity(const Object &obj, User &performer, const std::string &textArg);
+
+    void makePlayerAKing(const User &user);
 
 private:
 
@@ -146,6 +148,7 @@ private:
     
     Wars _wars;
     Cities _cities;
+    Kings _kings;
 
     void loadData(const std::string &path = "Data"); // Attempt to load data from files.
     bool _dataLoaded; // If false when run() is called, load default data.

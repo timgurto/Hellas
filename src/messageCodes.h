@@ -221,7 +221,12 @@ enum MessageCode{
     SV_IN_CITY = 139,
 
     // A user is not a member of a city
+    // Arguments: username
     SV_NO_CITY = 145,
+
+    // A user is a king
+    // Arguments: username
+    SV_KING = 146,
 
     // An NPC hit a player
     // Arguments: serial, username

@@ -2,7 +2,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 1,Each player can be a member of up to one 'city',34,8,Feature,,TRUE,TRUE,
 2,Cities have names,21,3,Aesthetics,1,TRUE,TRUE,
 3,A player can found a city by placing a shrine,21,55,Feature,1,TRUE,TRUE,1
-4,The player who starts a city is labelled 'king',5,3,Feature,3,,TRUE,1
+4,The player who starts a city is labelled 'king',5,3,Feature,3,TRUE,TRUE,1
 5,A king can invite new members to a city,21,55,Feature,4,,TRUE,1
 6,Destroying a city shrine destroys the city,34,13,Feature,3,,TRUE,1
 7,A player can leave a city,8,8,Feature,1,TRUE,TRUE,1

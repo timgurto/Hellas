@@ -396,6 +396,8 @@ private:
     void handle_SV_LOOTABLE(size_t serial);
     void handle_SV_INVENTORY(size_t serial, size_t slot, const std::string &itemID, size_t quantity);
     void handle_SV_IN_CITY(const std::string &username, const std::string &cityName);
+    void handle_SV_NO_CITY(const std::string &cityName);
+    void handle_SV_KING(const std::string username);
 
     void sendClearTargetMessage() const;
     
