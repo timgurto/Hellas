@@ -165,6 +165,12 @@ void Client::handleInput(double delta){
                     addWindow(_mapWindow);
                     break;
 
+                case SDLK_o:
+                    _socialWindow->toggleVisibility();
+                    removeWindow(_socialWindow);
+                    addWindow(_socialWindow);
+                    break;
+
                 case SDLK_r:
                     if (!_lastWhisperer.empty()) {
                         if (!SDL_IsTextInputActive())

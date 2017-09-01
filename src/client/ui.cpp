@@ -99,7 +99,7 @@ void Client::initMenuBar() {
     addButtonToMenu(menuBar, 1, _craftingWindow, "icon-crafting.png", "Crafting window (C)");
     addButtonToMenu(menuBar, 2, _inventoryWindow, "icon-inventory.png", "Inventory window (I)");
     addButtonToMenu(menuBar, 3, _gearWindow, "icon-gear.png", "Gear window (G)");
-    addButtonToMenu(menuBar, 4, _socialWindow, "icon-social.png", "Social window");
+    addButtonToMenu(menuBar, 4, _socialWindow, "icon-social.png", "Social window (O)");
     addButtonToMenu(menuBar, 5, _chatContainer, "icon-chat.png", "Toggle chat log");
     addButtonToMenu(menuBar, 6, _mapWindow, "icon-map.png", "Map (M)");
     addButtonToMenu(menuBar, 7, _helpWindow, "icon-help.png", "Help (H)");

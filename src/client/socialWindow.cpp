@@ -12,7 +12,7 @@ void Client::initializeSocialWindow() {
         WIN_HEIGHT = BUTTON_HEIGHT + 2 * GAP;
 
     _socialWindow = Window::WithRectAndTitle(
-        Rect(WIN_WIDTH, WIN_HEIGHT, BUTTON_WIDTH, WIN_HEIGHT), "Social");
+        Rect(400, 100, WIN_WIDTH, WIN_HEIGHT), "Social");
 
     if (_character.cityName().empty() || _character._isKing)
         return;
