@@ -112,7 +112,7 @@
     <material id="crudeClay" quantity="2" />
     <material id="log" />
     <tool class="smelting1" />
-    <unlockedBy gather="crudeClay" chance="0.2" />
+    <unlockedBy gather="crudeClay" chance="0.1" />
 </recipe>
 <recipe id="sawMould"
 	time="12000" >
