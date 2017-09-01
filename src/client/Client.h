@@ -211,6 +211,9 @@ private:
     Window *_socialWindow = nullptr;
     void initializeSocialWindow();
 
+    Window *_helpWindow = nullptr;
+    void initializeHelpWindow();
+
     windows_t _windows;
     void addWindow(Window *window);
     void removeWindow(Window *window); // Linear time

@@ -147,6 +147,12 @@ void Client::handleInput(double delta){
                     addWindow(_gearWindow);
                     break;
 
+                case SDLK_h:
+                    _helpWindow->toggleVisibility();
+                    removeWindow(_helpWindow);
+                    addWindow(_helpWindow);
+                    break;
+
                 case SDLK_i:
                     _inventoryWindow->toggleVisibility();
                     removeWindow(_inventoryWindow);

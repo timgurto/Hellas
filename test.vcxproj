@@ -110,6 +110,7 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName)\data-client</ObjectFileName>
     </ClCompile>
     <ClCompile Include="src\client\drawing.cpp" />
+    <ClCompile Include="src\client\helpWindow.cpp" />
     <ClCompile Include="src\client\input.cpp" />
     <ClCompile Include="src\client\inventoryWindow.cpp" />
     <ClCompile Include="src\client\loginScreen.cpp" />

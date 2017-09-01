@@ -63,6 +63,9 @@ void Client::initWindows() {
 
     initializeMapWindow();
     addWindow(_mapWindow);
+
+    initializeHelpWindow();
+    addWindow(_helpWindow);
 }
 
 void Client::initCastBar() {
@@ -86,7 +89,7 @@ void Client::initMenuBar() {
     static const px_t
         MENU_BUTTON_W = 12,
         MENU_BUTTON_H = 12,
-        NUM_BUTTONS = 7;
+        NUM_BUTTONS = 8;
     Element *menuBar = new Element(Rect(SCREEN_X / 2 - MENU_BUTTON_W * NUM_BUTTONS / 2,
         SCREEN_Y - MENU_BUTTON_H,
         MENU_BUTTON_W * NUM_BUTTONS,
@@ -99,6 +102,7 @@ void Client::initMenuBar() {
     addButtonToMenu(menuBar, 4, _socialWindow, "icon-social.png", "Social window");
     addButtonToMenu(menuBar, 5, _chatContainer, "icon-chat.png", "Toggle chat log");
     addButtonToMenu(menuBar, 6, _mapWindow, "icon-map.png", "Map (M)");
+    addButtonToMenu(menuBar, 7, _helpWindow, "icon-help.png", "Help (H)");
 
     addUI(menuBar);
 }

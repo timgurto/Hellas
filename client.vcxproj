@@ -113,6 +113,7 @@
     <ClCompile Include="src\client\craftingWindow.cpp" />
     <ClCompile Include="src\client\data.cpp" />
     <ClCompile Include="src\client\drawing.cpp" />
+    <ClCompile Include="src\client\helpWindow.cpp" />
     <ClCompile Include="src\client\socialWindow.cpp" />
     <ClCompile Include="src\client\Sprite.cpp" />
     <ClCompile Include="src\client\SpriteType.cpp" />
