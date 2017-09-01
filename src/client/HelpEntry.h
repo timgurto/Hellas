@@ -19,6 +19,8 @@ public:
     }
     const std::string &name() const { return _name; }
 
+    bool operator<(const HelpEntry &rhs) const { return _name < rhs._name; }
+
 private:
     std::string _id;
     std::string _name;
@@ -26,4 +28,4 @@ private:
     std::vector<Paragraph> _paragraphs;
 };
 
-using HelpEntries = std::vector<HelpEntry>;
+using HelpEntries = std::set<HelpEntry>;

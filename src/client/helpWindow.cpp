@@ -52,6 +52,6 @@ void loadHelpEntries(HelpEntries &entries) {
             xr.findAttr(elem, "heading", heading);
             newEntry.addParagraph(heading, text);
         }
-        entries.push_back(newEntry);
+        entries.insert(newEntry);
     }
 }
