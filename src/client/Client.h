@@ -172,43 +172,43 @@ private:
 
     bool outsideCullRange(const Point &loc, px_t hysteresis = 0) const;
 
-    ChoiceList *_recipeList;
-    Element *_detailsPane;
+    ChoiceList *_recipeList = nullptr;
+    Element *_detailsPane = nullptr;
     List
-        *_tagList,
-        *_materialsList;
+        *_tagList = nullptr,
+        *_materialsList = nullptr;
 
     Window 
-        *_craftingWindow,
-        *_buildWindow;
+        *_craftingWindow = nullptr,
+        *_buildWindow = nullptr;
     std::set<std::string>
         _knownRecipes,
         _knownConstructions;
 
     void initializeBuildWindow();
-    ChoiceList *_buildList;
+    ChoiceList *_buildList = nullptr;
     static void chooseConstruction(Element &e, const Point &mousePos);
     const ClientObjectType *_selectedConstruction;
     bool _multiBuild;
 
-    Window *_inventoryWindow;
+    Window *_inventoryWindow = nullptr;
     void initializeInventoryWindow();
     Texture _constructionFootprint;
 
-    Window *_gearWindow;
+    Window *_gearWindow = nullptr;
     static void initializeGearWindow(Client &client);
     void initializeGearWindow();
     Texture _gearWindowBackground;
     void onChangeDragItem(){ _gearWindow->forceRefresh(); }
 
-    Window *_mapWindow;
+    Window *_mapWindow = nullptr;
     Texture _mapImage;
     Element *_mapPins, *_mapPinOutlines;
     void initializeMapWindow();
     static void updateMapWindow(Element &);
     void addMapPin(const Point &position, const Color &color);
 
-    Window *_socialWindow;
+    Window *_socialWindow = nullptr;
     void initializeSocialWindow();
 
     windows_t _windows;

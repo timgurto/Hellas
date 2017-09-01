@@ -85,19 +85,7 @@ _character("", 0),
 _isDismounting(false),
 
 _activeRecipe(nullptr),
-_recipeList(nullptr),
-_detailsPane(nullptr),
-_craftingWindow(nullptr),
-_inventoryWindow(nullptr),
-_gearWindow(nullptr),
-_socialWindow(nullptr),
-_mapWindow(nullptr),
 
-_tagList(nullptr),
-_materialsList(nullptr),
-
-_buildWindow(nullptr),
-_buildList(nullptr),
 _selectedConstruction(nullptr),
 _multiBuild(false),
 
