@@ -1,0 +1,23 @@
+<root>
+
+<entry name="Altars" id="altars">
+    <paragraph text="Altars are special [objects] that grant special abilities to players.  Each player may own only a single altar at any given time." />
+</entry>
+
+<entry name="Cities" id="cities">
+    <paragraph text="A city is a group of players who " />
+    <paragraph heading="Foundation" text="Blah blah [altar|altars]." />
+    <paragraph heading="City objects" text="See [Objects|objects]." />
+</entry>
+
+<entry name="Diplomacy" id="diplomacy">
+    <paragraph text="At any given time, two players are at peace or at war.  When at war, " />
+    <paragraph text="Personal wars" />
+    <paragraph text="Cities at war" />
+</entry>
+
+<entry name="Objects" id="objects">
+    <paragraph heading="Ownership" text="Objects can be owned by individual players or [cities], or be unowned." />
+</entry>
+
+</root>

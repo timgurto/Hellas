@@ -15,10 +15,11 @@
 #include "ClientObject.h"
 #include "ClientObjectType.h"
 #include "ClientTerrain.h"
-#include "Sprite.h"
+#include "HelpEntry.h"
 #include "LogSDL.h"
 #include "ParticleProfile.h"
 #include "SoundProfile.h"
+#include "Sprite.h"
 #include "Tag.h"
 #include "Target.h"
 #include "ui/ChoiceList.h"
@@ -213,6 +214,7 @@ private:
 
     Window *_helpWindow = nullptr;
     void initializeHelpWindow();
+    HelpEntries _helpEntries;
 
     windows_t _windows;
     void addWindow(Window *window);
