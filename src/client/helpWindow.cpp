@@ -60,11 +60,15 @@ void loadHelpEntries(HelpEntries &entries) {
         auto newEntry = HelpEntry{ id, name };
 
         for (auto paragraph : xr.getChildren("paragraph", elem)) {
-            std::string text, heading;
+            auto order = size_t{};
+            if (!xr.findAttr(paragraph, "order", order))
+                continue;
+            auto text = std::string{};
             if (!xr.findAttr(paragraph, "text", text))
                 continue;
+            auto heading = std::string{ "" };
             xr.findAttr(paragraph, "heading", heading);
-            newEntry.addParagraph(heading, text);
+            newEntry.addParagraph(order, heading, text);
         }
         entries.add(newEntry);
     }

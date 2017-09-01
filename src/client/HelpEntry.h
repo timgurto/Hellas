@@ -9,6 +9,9 @@ class List;
 struct Paragraph {
     std::string heading;
     std::string text;
+    size_t order;
+
+    bool operator<(const Paragraph &rhs) const { return order < rhs.order; }
 };
 
 class HelpEntry {
@@ -19,14 +22,14 @@ public:
 
     bool operator<(const HelpEntry &rhs) const { return _name < rhs._name; }
 
-    void addParagraph(const std::string &heading, const std::string &text);
+    void addParagraph(size_t order, const std::string &heading, const std::string &text);
     void draw(List *page) const;
 
 private:
     std::string _id;
     std::string _name;
 
-    std::vector<Paragraph> _paragraphs;
+    std::set<Paragraph> _paragraphs;
 };
 
 class HelpEntries {

@@ -2,11 +2,12 @@
 #include "ui/Label.h"
 #include "ui/List.h"
 
-void HelpEntry::addParagraph(const std::string &heading, const std::string &text) {
+void HelpEntry::addParagraph(size_t order, const std::string &heading, const std::string &text) {
     Paragraph p;
+    p.order = order;
     p.heading = heading;
     p.text = text;
-    _paragraphs.push_back(p);
+    _paragraphs.insert(p);
 }
 
 void HelpEntry::draw(List * page) const {
