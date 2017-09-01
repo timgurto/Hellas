@@ -39,6 +39,8 @@ Color
     Color::ITEM_INSTRUCTIONS,
     Color::ITEM_TAGS,
 
+    Color::HELP_TEXT_HEADING,
+
     Color::FOOTPRINT_GOOD,
     Color::FOOTPRINT_BAD,
     Color::FOOTPRINT,

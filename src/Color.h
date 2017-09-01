@@ -39,6 +39,8 @@ public:
         ITEM_INSTRUCTIONS,
         ITEM_TAGS,
 
+        HELP_TEXT_HEADING,
+
         ELEMENT_BACKGROUND,
         ELEMENT_SHADOW_DARK,
         ELEMENT_SHADOW_LIGHT,

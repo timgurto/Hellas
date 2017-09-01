@@ -14,8 +14,11 @@ void HelpEntry::draw(List * page) const {
     page->clearChildren();
     for (const auto &paragraph : _paragraphs) {
         if (!paragraph.heading.empty()) {
-            page->addChild(new Element);
-            page->addChild(new Label({}, paragraph.heading));
+            if (_paragraphs.size() > 1)
+                page->addChild(new Element);
+            auto *heading = new Label({}, paragraph.heading);
+            heading->setColor(Color::HELP_TEXT_HEADING);
+            page->addChild(heading);
         }
         page->addChild(new Label({}, paragraph.text));
     }
