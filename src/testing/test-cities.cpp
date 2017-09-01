@@ -228,3 +228,29 @@ TEST_CASE("A player can't leave a city if not in one", "[city]") {
     // Then the player receives an error message;
     CHECK(c.waitForMessage(SV_NOT_IN_CITY));
 }
+
+TEST_CASE("A king can't leave his city", "[city][king]") {
+    // Given a user named Alice;
+    auto c = TestClient::WithUsername("alice");
+    auto s = TestServer{};
+    WAIT_UNTIL(s.users().size() == 1);
+    auto &user = s.getFirstUser();
+
+    // Who is a member of Athens;
+    s.cities().createCity("athens");
+    s.cities().addPlayerToCity(user, "athens");
+    WAIT_UNTIL(s.cities().isPlayerInCity("alice", "athens"));
+
+    // And is a king
+    s->makePlayerAKing(user);
+
+    // When Alice sends a leave-city message
+    c.sendMessage(CL_LEAVE_CITY);
+
+    // Then Alice receives an error message;
+    CHECK(c.waitForMessage(SV_KING_CANNOT_LEAVE_CITY));
+
+    // And Alice is still in Athens
+    REPEAT_FOR_MS(100);
+    CHECK(s.cities().isPlayerInCity("alice", "athens"));
+}

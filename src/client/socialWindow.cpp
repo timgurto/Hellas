@@ -14,6 +14,8 @@ void Client::initializeSocialWindow() {
     _socialWindow = Window::WithRectAndTitle(
         Rect(WIN_WIDTH, WIN_HEIGHT, BUTTON_WIDTH, WIN_HEIGHT), "Social");
 
+    if (_character.cityName().empty() || _character._isKing)
+        return;
     static auto LEAVE_CITY_MESSAGE = compileMessage(CL_LEAVE_CITY);
     _socialWindow->addChild(new Button({ GAP, GAP, BUTTON_WIDTH, BUTTON_HEIGHT }, "Leave city",
             sendRawMessageStatic, &LEAVE_CITY_MESSAGE));

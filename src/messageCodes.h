@@ -443,6 +443,9 @@ enum MessageCode{
     // The user tried to perform an action with an object that has none.
     SV_NO_ACTION = 953,
 
+    // The user tried to leave a city while being its king.
+    SV_KING_CANNOT_LEAVE_CITY,
+
 
 
     // Debug requests

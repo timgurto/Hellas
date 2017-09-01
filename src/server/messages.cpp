@@ -1041,6 +1041,10 @@ void Server::handle_CL_LEAVE_CITY(User &user) {
         sendMessage(user.socket(), SV_NOT_IN_CITY);
         return;
     }
+    if (_kings.isPlayerAKing(user.name())) {
+        sendMessage(user.socket(), SV_KING_CANNOT_LEAVE_CITY);
+        return;
+    }
     _cities.removeUserFromCity(user, city);
 }
 

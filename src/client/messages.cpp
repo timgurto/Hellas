@@ -178,6 +178,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_NO_INVENTORY:
         case SV_CANNOT_CEDE:
         case SV_NO_ACTION:
+        case SV_KING_CANNOT_LEAVE_CITY:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
@@ -1264,6 +1265,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_DAMAGED_OBJECT] = "You can't do that while the object is damaged.";
     _errorMessages[SV_CANNOT_CEDE] = "You can't cede that to your city.";
     _errorMessages[SV_NO_ACTION] = "That object has no action to perform.";
+    _errorMessages[SV_KING_CANNOT_LEAVE_CITY] = "A king cannot leave his city.";
 }
 
 void Client::performCommand(const std::string &commandString){
