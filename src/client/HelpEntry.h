@@ -4,6 +4,8 @@
 #include <set>
 #include <vector>
 
+class List;
+
 struct Paragraph {
     std::string heading;
     std::string text;
@@ -18,6 +20,8 @@ public:
     bool operator<(const HelpEntry &rhs) const { return _name < rhs._name; }
 
     void addParagraph(const std::string &heading, const std::string &text);
+    void draw(List *page) const;
+
 private:
     std::string _id;
     std::string _name;
@@ -33,6 +37,8 @@ public:
 
     Container::const_iterator begin() const { return _container.begin(); }
     Container::const_iterator end() const { return _container.end(); }
+
+    void draw(const std::string &entryName, List *page) const;
 
 private:
     Container _container;

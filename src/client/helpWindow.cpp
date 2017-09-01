@@ -1,4 +1,5 @@
 #include "Client.h"
+#include "ui/Line.h"
 #include "../XmlReader.h"
 
 extern Renderer renderer;
@@ -10,7 +11,7 @@ void Client::initializeHelpWindow() {
     loadHelpEntries(_helpEntries);
 
     const px_t
-        WIN_WIDTH = 400,
+        WIN_WIDTH = 350,
         WIN_HEIGHT = 250,
         WIN_X = (640 - WIN_WIDTH) / 2,
         WIN_Y = (360 - WIN_HEIGHT) / 2;
@@ -20,7 +21,7 @@ void Client::initializeHelpWindow() {
 
     // Topic list
     const px_t
-        TOPIC_W = 100,
+        TOPIC_W = 60,
         TOPIC_BORDER = 2,
         TOPIC_GAP = 2;
     auto *topicList = new List({ TOPIC_BORDER, TOPIC_BORDER,
@@ -29,8 +30,21 @@ void Client::initializeHelpWindow() {
     for (auto &entry : _helpEntries) {
         topicList->addChild(new Label({}, entry.name()));
     }
-
     _helpWindow->addChild(topicList);
+
+    // Divider
+    const px_t
+        LINE_X = TOPIC_W + TOPIC_BORDER * 2;
+    _helpWindow->addChild(new Line(LINE_X, 0, WIN_HEIGHT, Element::VERTICAL));
+
+    // Help text
+    const px_t
+        TEXT_X = LINE_X + 2,
+        TEXT_W = WIN_WIDTH - TEXT_X;
+    auto *helpText = new List({ TEXT_X, 0, TEXT_W, WIN_HEIGHT });
+    _helpWindow->addChild(helpText);
+
+    _helpEntries.draw("Cities", helpText);
 }
 
 void loadHelpEntries(HelpEntries &entries) {
@@ -45,13 +59,13 @@ void loadHelpEntries(HelpEntries &entries) {
             continue;
         auto newEntry = HelpEntry{ id, name };
 
-        for (auto elem : xr.getChildren("paragraph")) {
+        for (auto paragraph : xr.getChildren("paragraph", elem)) {
             std::string text, heading;
-            if (!xr.findAttr(elem, "text", text))
+            if (!xr.findAttr(paragraph, "text", text))
                 continue;
-            xr.findAttr(elem, "heading", heading);
+            xr.findAttr(paragraph, "heading", heading);
             newEntry.addParagraph(heading, text);
         }
-        entries.insert(newEntry);
+        entries.add(newEntry);
     }
 }

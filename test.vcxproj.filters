@@ -134,6 +134,7 @@
     <ClCompile Include="src\client\Tag.cpp" />
     <ClCompile Include="src\server\objects\Action.cpp" />
     <ClCompile Include="src\client\helpWindow.cpp" />
+    <ClCompile Include="src\client\HelpEntry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
