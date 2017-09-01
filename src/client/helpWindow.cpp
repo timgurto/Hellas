@@ -39,9 +39,12 @@ void Client::initializeHelpWindow() {
 
     // Help text
     const px_t
-        TEXT_X = LINE_X + 2,
-        TEXT_W = WIN_WIDTH - TEXT_X;
-    auto *helpText = new List({ TEXT_X, 0, TEXT_W, WIN_HEIGHT });
+        TEXT_GAP = 2,
+        TEXT_X = LINE_X + 2 + TEXT_GAP,
+        TEXT_Y = TEXT_GAP,
+        TEXT_W = WIN_WIDTH - TEXT_X - TEXT_GAP,
+        TEXT_H = WIN_HEIGHT - TEXT_GAP;
+    auto *helpText = new List({ TEXT_X, TEXT_Y, TEXT_W, TEXT_H });
     _helpWindow->addChild(helpText);
 
     _helpEntries.draw("Cities", helpText);
