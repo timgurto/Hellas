@@ -1,16 +1,21 @@
 <root>
 
 <entry name="Altars" id="altars">
-    <paragraph order=1 text="Altars are special [objects] that grant special abilities to players.  Each player may own only a single altar at any given time." />
+    <paragraph order=1  text="Altars are special [objects] that grant special benefits to players.  Each player may own only a single altar at any given time." />
+    <paragraph order=2  heading="Worshipping" 
+                        text="To gain the benefit of an altar, right-click the altar and click the 'Worship' button." />
+    <paragraph order=3  text="This requires that you have [permission|permissions] to use it.  Each time you worship at a shrine, it also costs you an animal carcass." />
+    <paragraph order=4  heading="Uniqueness"
+                        text="Because each player is limited to a single altar under his ownership, altars are the only objects that cannot be ceded to one's city." />
 </entry>
 
 <entry name="Cities" id="cities">
-    <paragraph order=1 text="A city is a group of players who " />
+    <paragraph order=1 text="A city is a group of players who join together in a single diplomatic unit.  A player's city is displayed underneath their name." />
     <paragraph order=2 heading="Foundation" text="Blah blah [altar|altars]." />
     <paragraph order=3 heading="City objects" text="See [Objects|objects]." />
 </entry>
 
-<entry name="Diplomacy" id="diplomacy">
+<entry name="War" id="diplomacy">
     <paragraph order=1 text="At any given time, two players are at peace or at war.  When at war, " />
     <paragraph order=2 text="Personal wars" />
     <paragraph order=3 text="Cities at war" />

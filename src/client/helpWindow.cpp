@@ -47,7 +47,7 @@ void Client::initializeHelpWindow() {
     auto *helpText = new List({ TEXT_X, TEXT_Y, TEXT_W, TEXT_H });
     _helpWindow->addChild(helpText);
 
-    _helpEntries.draw("Cities", helpText);
+    _helpEntries.draw("Altars", helpText);
 }
 
 void loadHelpEntries(HelpEntries &entries) {

@@ -9,30 +9,72 @@ void HelpEntry::addParagraph(size_t order, const std::string &heading, const std
     p.text = text;
     _paragraphs.insert(p);
 }
+class Words {
+public:
+    void addWordsFromString(const std::string &paragraph, Color color = Color::FONT) {
+        auto iss = std::istringstream(paragraph);
+        while (iss) {
+            auto word = std::string{};
+            iss >> word;
+            auto *label = new Label{ {0, 0, 0, Element::TEXT_HEIGHT}, word };
+            label->matchW();
+            if (color != Color::FONT)
+                label->setColor(color);
+            label->refresh();
+            _container.push_back(label);
+        }
+    }
+    void addNewLine(){ _container.push_back(nullptr); }
+    void addBlankLine() { addNewLine(); addNewLine(); }
+
+    void setIn(List *page) const {
+        auto x = px_t{ 0 };
+        auto *line = new Element();
+        for (auto *word : _container) {
+            // New line, instead of a word
+            if (word == nullptr) {
+                page->addChild(line);
+                line = new Element();
+                x = 0;
+                return;
+            }
+
+            x += word->width();
+            if (x > page->width()) {
+                page->addChild(line);
+                line = new Element();
+                x = word->width();
+            }
+            word->setPosition(x - word->width(), 0);
+            line->addChild(word);
+        }
+    }
+
+private:
+    std::vector<Label*> _container; // nullptr = new line
+};
 
 void HelpEntry::draw(List * page) const {
+    // Compile words list
+    Words words;
+    bool pageIsEmpty = true;
+    for (const auto &paragraph : _paragraphs) {
+        if (!paragraph.heading.empty()) {
+            if (!pageIsEmpty)
+                words.addBlankLine();
+            words.addWordsFromString(paragraph.heading, Color::HELP_TEXT_HEADING);
+        }
+
+        words.addWordsFromString(paragraph.text);
+        pageIsEmpty = false;
+    }
+
     page->clearChildren();
     auto *title = new Label({}, "-- " + _name + " --",  Element::CENTER_JUSTIFIED);
     title->setColor(Color::HELP_TEXT_HEADING);
     page->addChild(title);
     page->addChild(new Element);
-
-    bool pageIsEmpty = true;
-
-    for (const auto &paragraph : _paragraphs) {
-        // Draw heading
-        if (!paragraph.heading.empty()) {
-            if (!pageIsEmpty)
-                page->addChild(new Element);
-            auto *heading = new Label({}, paragraph.heading);
-            heading->setColor(Color::HELP_TEXT_HEADING);
-            page->addChild(heading);
-        }
-
-        // Draw paragraph
-        page->addChild(new Label({}, paragraph.text));
-        pageIsEmpty = false;
-    }
+    words.setIn(page);
 }
 
 void HelpEntries::draw(const std::string & entryName, List * page) const {
