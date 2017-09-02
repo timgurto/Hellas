@@ -16,6 +16,8 @@ public:
         while (iss) {
             auto word = std::string{};
             iss >> word;
+            if (word.back() == '.')
+                word += " "; // Not perfect, but will increase space between sentences.
             auto *label = new Label{ {0, 0, 0, Element::TEXT_HEIGHT}, word };
             label->matchW();
             if (color != Color::FONT)
