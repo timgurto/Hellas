@@ -54,6 +54,7 @@ public:
             line->addChild(word);
             x += word->width();
         }
+        page->addChild(line);
     }
 
 private:
