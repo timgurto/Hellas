@@ -95,7 +95,6 @@ void HelpEntry::draw(List * page) const {
     auto *title = new Label({}, "-- " + _name + " --",  Element::CENTER_JUSTIFIED);
     title->setColor(Color::HELP_TEXT_HEADING);
     page->addChild(title);
-    page->addChild(new Element);
     words.setIn(page);
 }
 
