@@ -101,6 +101,9 @@ void ChoiceList::toggle(Element &e, const Point &mousePos){
     list._mouseDownID = EMPTY_STR;
     list._mouseDownBox->hide();
     list.markChanged();
+
+    if (list.onSelect != nullptr)
+        list.onSelect();
 }
 
 void ChoiceList::markMouseOver(Element &e, const Point &mousePos){

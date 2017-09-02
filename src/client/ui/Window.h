@@ -40,7 +40,7 @@ public:
 
     void addChild(Element *child) override;
     void clearChildren() override;
-    Element *findChild(const std::string id) override;
+    Element *findChild(const std::string id) const override;
     bool isInitialized() const { return _initFunction == nullptr || _isInitialized; }
 
 protected:

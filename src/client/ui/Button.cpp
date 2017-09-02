@@ -95,7 +95,7 @@ void Button::clearChildren(){
     markChanged();
 }
 
-Element *Button::findChild(const std::string id){
+Element *Button::findChild(const std::string id) const{
     return _content->findChild(id);
 }
 

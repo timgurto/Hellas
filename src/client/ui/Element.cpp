@@ -330,7 +330,7 @@ void Element::clearChildren(){
     markChanged();
 }
 
-Element *Element::findChild(const std::string id){
+Element *Element::findChild(const std::string id) const{
     // Check this level first
     for (Element *child : _children)
         if (child->_id == id)

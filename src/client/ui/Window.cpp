@@ -123,7 +123,7 @@ void Window::clearChildren(){
     markChanged();
 }
 
-Element *Window::findChild(const std::string id){
+Element *Window::findChild(const std::string id) const{
     return _content->findChild(id);
 }
 

@@ -144,7 +144,7 @@ public:
 
     virtual void addChild(Element *child);
     virtual void clearChildren(); // Delete all children
-    virtual Element *findChild(const std::string id); // Find a child by ID, or nullptr if not found.
+    virtual Element *findChild(const std::string id) const; // Find a child by ID, or nullptr if not found.
 
     // To be called during refresh.
     void makeBackgroundTransparent();

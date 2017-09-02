@@ -47,7 +47,7 @@ public:
 
     void addChild(Element *child) override;
     void clearChildren() override;
-    Element *findChild(const std::string id) override;
+    Element *findChild(const std::string id) const override;
 
     void scrollToBottom();
     bool isScrolledToBottom() const { return _scrolledToBottom; }

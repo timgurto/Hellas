@@ -1,6 +1,7 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+#include <cassert>
 #include <queue>
 #include <string>
 #include <map>
@@ -39,6 +40,9 @@ class Client{
 public:
     Client();
     ~Client();
+
+    static const Client &instance() { assert(_instance != nullptr); return *_instance; }
+
     void run();
     void gameLoop();
     void loginScreenLoop(); // Alternative game loop to run()
@@ -59,6 +63,8 @@ public:
     void attemptDismount() { _isDismounting = true; }
     const SoundProfile *avatarSounds() const { return _avatarSounds; }
     const std::string &tagName(const std::string &id) const { return _tagNames[id]; }
+    const HelpEntries &helpEntries() const { return _helpEntries; }
+    const Window &helpWindow() const { return *_helpWindow; }
 
     bool isAtWarWith(const Avatar &user) const;
     bool isAtWarWith(const std::string &username) const;

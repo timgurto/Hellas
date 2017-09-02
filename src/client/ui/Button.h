@@ -42,7 +42,7 @@ public:
     void clickData(void *data = nullptr) { _clickData = data; }
     virtual void addChild(Element *child) override;
     virtual void clearChildren() override;
-    virtual Element *findChild(const std::string id) override;
+    virtual Element *findChild(const std::string id) const override;
     
     void width(px_t w) override;
     void height(px_t h) override;

@@ -116,7 +116,7 @@ void List::clearChildren(){
     markChanged();
 }
 
-Element *List::findChild(const std::string id){
+Element *List::findChild(const std::string id) const{
     return _content->findChild(id);
 }
 

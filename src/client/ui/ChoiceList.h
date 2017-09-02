@@ -1,5 +1,3 @@
-// (C) 2015-2016 Tim Gurto
-
 #ifndef CHOICE_LIST_H
 #define CHOICE_LIST_H
 
@@ -36,6 +34,8 @@ public:
     void clearSelection();
 
     void verifyBoxes(); // Call after changing the list's contents.
+
+    void (*onSelect)() = nullptr;
 };
 
 #endif
