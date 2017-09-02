@@ -28,6 +28,9 @@ public:
     void addBlankLine() { addNewLine(); addNewLine(); }
 
     void setIn(List *page) const {
+        const px_t
+            SPACE = 3;
+
         auto x = px_t{ 0 };
         auto *line = new Element();
         for (auto *word : _container) {
@@ -39,14 +42,17 @@ public:
                 return;
             }
 
-            x += word->width();
-            if (x > page->width()) {
+            auto lineWidthIncludingThisWord = x + word->width() + SPACE;
+            if (lineWidthIncludingThisWord > page->width()) {
                 page->addChild(line);
                 line = new Element();
-                x = word->width();
+                x = 0;
             }
-            word->setPosition(x - word->width(), 0);
+            if (x > 0)
+                x += SPACE;
+            word->setPosition(x, 0);
             line->addChild(word);
+            x += word->width();
         }
     }
 
