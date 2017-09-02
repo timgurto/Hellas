@@ -1,6 +1,56 @@
 <root>
 
-<entry name="Altars" id="altars">
+<entry name="Combat" id="0">
+    <paragraph order=1  text="Players can engage in combat with enemy players, and with NPCs.  To attack an enemy, first target it by right-clicking on it.  Once targeted, whenever you are close enough to the enemy, you will automatically strike it at regular intervals." />
+</entry>
+
+<entry name="Player stats" id="0">
+    <paragraph order=1  text="There are a number of player stats that impact effectiveness in combat.  They can be modified by equipping gear.  These stats are:" />
+    <paragraph order=2  text="Health: the total damage that can be received before dying." />
+    <paragraph order=3  text="Attack: the amount of damage done by one strike." />
+    <paragraph order=4  text="Attack time: how long you must wait between strikes.  Gear will modify this by way of a multiplier." />
+    <paragraph order=5  text="Speed: how fast you walk.  Gear will modify this by way of a multiplier." />
+</entry>
+
+<entry name="Objects" id="0">
+    <paragraph order=1  text="Objects are non-living things that exist in the world and have a specific location and shape.  Some occur naturally, such as trees; others can be created by players.  The two means for players to create objects are 'placement' and 'construction'." />
+    <paragraph order=2  heading="Placement"
+                        text="Some items can be placed into the world as objects.  If an item has this ability, then its tooltip will include 'Right click to place <Object>'." />
+    <paragraph order=3  text="To place an object, right-click the item in your inventory.  The mouse cursor will now show a footprint of how large the object will be.  Click on the ground to place it; note that placement may take some time, depending on the object.  The placement area must be clear of any obstacles, and close to the player; the footprint will turn red if it is too far away.  It must also be a terrain type that is compatible with the object." />
+    <paragraph order=4  heading="Construction"
+                        text="Some objects can be constructed from scratch.  A construction site is designated, and then materials must be added before the object is fully functional." />
+    <paragraph order=5  text="To construct an object, press 'B' or click on the 'Build window' button on the toolbar.  This will bring up a list of all construction projects that you can undertake.  Click on one, then place the construction site just as you would when placing an object, as described above." />
+    <paragraph order=6  text="Once a construction site has been designated, materials can be added.  Right-click on the site, and you will see a list of items required to complete the object.  To add an item, move it from your inventory into the item slot in the object window." />
+    <paragraph order=7  heading="Ownership"
+                        text="Objects can be owned by individual players or cities, or be unowned.  An object's owner can be seen in the tooltip when the mouse cursor is over it." />
+    <paragraph order=8  text="Naturally occuring objects are unowned.  When a player creates an object, it will automatically be owned by him." />
+    <paragraph order=9  heading="The object window"
+                        text="If an object has any actions available, they can be accessed through the object window.  To bring up an object window, make sure you are close to the object in question and right-click on it." />
+</entry>
+
+<entry name="Items" id="0">
+    <paragraph order=1  text="asdf" />
+</entry>
+
+<entry name="Cities" id="0">
+    <paragraph order=1  text="A city is a group of players who are joined together in a single diplomatic unit.  A player's city is displayed underneath their name.  When a new player begins, he is not in any city." />
+    <paragraph order=2  heading="Foundation"
+                        text="A city can be founded at an Altar of Athena.  The altar's object window allows the new city's name to be entered.  The player who worships at the altar will become King, and the city will stand only as long as his Altar of Athena does." />
+    <paragraph order=3  heading="City objects"
+                        text="Just as objects can be owned by a player, they can instead be owned by a city.  A city-owned object is accessible by all members of the city.  In order for an object to come under the ownership of a city, a player must cede one of his own objects to his city." />
+    <paragraph order=4  text="To cede an object, use the 'Cede to City' button in the object window.  An object can only be ceded if it belongs to the player, it is not an Altar, and the player is in a city." />
+    <paragraph order=5  heading="Leaving a city"
+                        text="To leave your city, open the Social window with 'O' or the button on the toolbar.  Then, click the 'Leave city' button." />
+    <paragraph order=6  text="Note that a king cannot leave his city." />
+</entry>
+
+<entry name="War" id="0">
+    <paragraph order=1  text="At any given time, two players are at peace or at war.  When at war, " />
+    <paragraph order=2  text="Personal wars" />
+    <paragraph order=3  text="Cities at war" />
+</entry>
+
+<entry name="Altars" id="0">
     <paragraph order=1  text="Altars are objects that grant special benefits to players.  Each player may own only a single altar at any given time." />
     <paragraph order=2  heading="Worshipping" 
                         text="To gain the benefit of an altar, right-click the altar and click the 'Worship' button." />
@@ -9,20 +59,8 @@
                         text="Because each player is limited to a single altar under his ownership, altars are the only objects that cannot be ceded to one's city." />
 </entry>
 
-<entry name="Cities" id="cities">
-    <paragraph order=1 text="A city is a group of players who join together in a single diplomatic unit.  A player's city is displayed underneath their name." />
-    <paragraph order=2 heading="Foundation" text="Blah blah altar." />
-    <paragraph order=3 heading="City objects" text="See Objects." />
-</entry>
-
-<entry name="War" id="diplomacy">
-    <paragraph order=1 text="At any given time, two players are at peace or at war.  When at war, " />
-    <paragraph order=2 text="Personal wars" />
-    <paragraph order=3 text="Cities at war" />
-</entry>
-
-<entry name="Objects" id="objects">
-    <paragraph order=1 heading="Ownership" text="Objects can be owned by individual players or [cities], or be unowned." />
+<entry name="Unlocking" id="0">
+    <paragraph order=1  text="asdf" />
 </entry>
 
 </root>

@@ -54,11 +54,11 @@ void Client::initializeHelpWindow() {
 
     // Help text
     const px_t
-        TEXT_GAP = 2,
+        TEXT_GAP = 1,
         TEXT_X = LINE_X + 2 + TEXT_GAP,
         TEXT_Y = TEXT_GAP,
         TEXT_W = WIN_WIDTH - TEXT_X - TEXT_GAP,
-        TEXT_H = WIN_HEIGHT - TEXT_GAP;
+        TEXT_H = WIN_HEIGHT - TEXT_GAP * 2;
     auto *helpText = new List({ TEXT_X, TEXT_Y, TEXT_W, TEXT_H });
     helpText->id("helpText");
     _helpWindow->addChild(helpText);
