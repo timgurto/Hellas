@@ -24,6 +24,12 @@ public:
             _container.push_back(label);
         }
     }
+    void addTab() {
+        auto *label = new Label({ 0, 0, 0, Element::TEXT_HEIGHT }, "    " );
+        label->matchW();
+        label->refresh();
+        _container.push_back(label);
+    }
     void addNewLine(){ _container.push_back(nullptr); }
     void addBlankLine() { addNewLine(); addNewLine(); }
 
@@ -66,15 +72,19 @@ void HelpEntry::draw(List * page) const {
     Words words;
     bool pageIsEmpty = true;
     for (const auto &paragraph : _paragraphs) {
+        bool isFirstParagraphInBlock = true;
         if (!paragraph.heading.empty()) {
             if (!pageIsEmpty)
                 words.addBlankLine();
             else
                 words.addNewLine();
             words.addWordsFromString(paragraph.heading, Color::HELP_TEXT_HEADING);
-        }
+        } else
+            isFirstParagraphInBlock = false;
 
         words.addNewLine();
+        if (!isFirstParagraphInBlock && !pageIsEmpty)
+            words.addTab();
         words.addWordsFromString(paragraph.text);
         pageIsEmpty = false;
     }
