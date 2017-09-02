@@ -39,7 +39,7 @@ public:
                 page->addChild(line);
                 line = new Element();
                 x = 0;
-                return;
+                continue;
             }
 
             auto lineWidthIncludingThisWord = x + word->width() + SPACE;
