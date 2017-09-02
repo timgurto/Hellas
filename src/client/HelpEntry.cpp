@@ -69,6 +69,7 @@ void HelpEntry::draw(List * page) const {
             if (!pageIsEmpty)
                 words.addBlankLine();
             words.addWordsFromString(paragraph.heading, Color::HELP_TEXT_HEADING);
+            words.addNewLine();
         }
 
         words.addWordsFromString(paragraph.text);
