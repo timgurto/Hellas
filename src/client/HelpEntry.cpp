@@ -43,7 +43,7 @@ public:
             }
 
             auto lineWidthIncludingThisWord = x + word->width() + SPACE;
-            if (lineWidthIncludingThisWord > page->width()) {
+            if (lineWidthIncludingThisWord > page->width() - List::ARROW_W) {
                 page->addChild(line);
                 line = new Element();
                 x = 0;
