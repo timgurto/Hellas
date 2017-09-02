@@ -72,7 +72,10 @@ void showTopic() {
         assert(false);
     const auto &selectedTopic = topicList->getSelected();
     const auto &helpEntries = Client::instance().helpEntries();
-    helpEntries.draw(selectedTopic, helpText);
+    if (selectedTopic.empty())
+        helpText->clearChildren();
+    else
+        helpEntries.draw(selectedTopic, helpText);
 }
 
 void loadHelpEntries(HelpEntries &entries) {
