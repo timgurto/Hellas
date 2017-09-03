@@ -598,3 +598,11 @@ void Server::makePlayerAKing(const User &user) {
     _kings.add(user.name());
     this->broadcastToArea(user.location(), SV_KING, user.name());
 }
+
+void Server::killAllObjectsOwnedBy(const Permissions::Owner & owner) {
+    const auto &serials = _objectsByOwner.getObjectsWithSpecificOwner(owner);
+    for (auto serial : serials) {
+        auto *object = _entities.find<Object>(serial);
+        object->reduceHealth(object->health());
+    }
+}

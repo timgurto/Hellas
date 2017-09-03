@@ -45,6 +45,8 @@ public:
     void createCity(const City::Name &cityName);
     bool doesCityExist(const City::Name &cityName) const;
 
+    void destroyCity(const City::Name &cityName);
+
     void addPlayerToCity(const User &user, const City::Name &cityName);
     void removeUserFromCity(const User &user, const City::Name &cityName);
     bool isPlayerInCity(const std::string &username, const City::Name &cityName) const;

@@ -8,9 +8,12 @@
     <paragraph order=4  text="A player can change his respawn point by worshipping at an Altar to Hermes." />
 </entry>
 
-<entry order=2 name="Stats"    >
-    <paragraph order=1  text="There are a number of player stats that impact effectiveness in combat.  They can be modified by equipping gear.  These stats are:" />
-    <paragraph order=2  text="Health: the total damage that can be received before dying." />
+<entry order=2 name="Gear"    >
+    <paragraph order=1  text="Many items can be equipped by players to increase their effectiveness in combat." />
+    <paragraph order=2  heading="The gear window"
+                        text="The gear window shows all gear being worn by the user, and summarises the total stats from all pieces.  The gear window can be accessed with the 'G' key or the button on the taskbar." />
+    <paragraph order=2  heading="Stats"
+                        text="Health: the total damage that can be received before dying." />
     <paragraph order=3  text="Attack: the amount of damage done by one strike." />
     <paragraph order=4  text="Attack time: how long you must wait between strikes.  Gear will modify this by way of a multiplier." />
     <paragraph order=5  text="Speed: how fast you walk.  Gear will modify this by way of a multiplier." />
@@ -28,9 +31,10 @@
     <paragraph order=7  heading="Gathering"
                         text=""
     <paragraph order=8  heading="Ownership"
-                        text="Objects can be owned by individual players or cities, or be unowned.  An object's owner can be seen in the tooltip when the mouse cursor is over it." />
+                        text="Objects can be owned by individual players or cities, or be unowned.  An object's owner can be seen in the tooltip when the mouse cursor is over it.  Many of an object's actions are available only to its owner." />
     <paragraph order=9  text="Naturally occuring objects are unowned.  When a player creates an object, it will automatically be owned by him." />
-    <paragraph order=10 heading="The object window"
+    <paragraph order=10 text="If an object is owned by a city, then all citizens of that city can use the object." />
+    <paragraph order=11 heading="The object window"
                         text="If an object has any actions available, they can be accessed through the object window.  To bring up an object window, make sure you are close to the object in question and right-click on it." />
 </entry>
 
@@ -48,6 +52,8 @@
     <paragraph order=5  heading="Leaving a city"
                         text="To leave your city, open the Social window with 'O' or the button on the toolbar.  Then, click the 'Leave city' button." />
     <paragraph order=6  text="Note that a king cannot leave his city." />
+    <paragraph order=7  heading="Destruction"
+                        text="If a city's Altar to Athena is destroyed, then the city is destroyed.  All citizens become citiless, and all city objects crumble into ruin." />
 </entry>
 
 <entry order=6 name="War"    >
@@ -61,7 +67,7 @@
     <paragraph order=2  heading="Worshipping" 
                         text="To gain the benefit of an altar, right-click the altar and click the 'Worship' button.  This requires that you have permission to use it." />
     <paragraph order=3  heading="Uniqueness"
-                        text="Because each player is limited to a single altar under his ownership, altars are the only objects that cannot be ceded to one's city." />
+                        text="Because each player is limited to a single altar under his ownership, altars are the only objects that cannot be ceded to one's city.  Instead, all citizens of a city can worship at any altar owned by a fellow citizen, making all altars effectively city objects." />
     <paragraph order=4  heading="Altar types"
                         text="The Altar to Athena is used to found a new city, and remains the heart of that city." />
     <paragraph order=5  text="The Altar to Hermes is used to change a player's respawn point." />

@@ -57,7 +57,9 @@ class ObjectType : public EntityType{
 protected:
     ContainerType *_container;
     DeconstructionType *_deconstruction;
-    Action *_action;
+
+    Action *_action = nullptr;
+    CallbackAction *_onDestroy = nullptr;
 
 public:
     ObjectType(const std::string &id);
@@ -121,8 +123,11 @@ public:
     void addDeconstruction(DeconstructionType *p) { _deconstruction = p; }
 
     void action(Action *pAction) { _action = pAction; }
+    void onDestroy(CallbackAction *pAction) { _onDestroy = pAction; }
     const Action &action() const { return *_action; }
+    const CallbackAction &onDestroy() const { return *_onDestroy; }
     bool hasAction() const { return _action != nullptr; }
+    bool hasOnDestroy() const { return _onDestroy != nullptr; }
 
 private:
     void checkUniquenessInvariant() const;

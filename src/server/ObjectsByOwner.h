@@ -24,9 +24,13 @@ private:
         void add(size_t serial);
         void remove(size_t serial);
         bool isObjectOwned(size_t serial) const;
+
+        using Container = std::set<size_t>;
+        Container::const_iterator begin() const { return container.begin(); }
+        Container::const_iterator end() const { return container.end(); }
         
     private:
-        std::set<size_t> container;
+        Container container;
     };
 
     std::map<Permissions::Owner, ObjectsWithSpecificOwner> container;

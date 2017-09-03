@@ -187,6 +187,9 @@ void Object::onDeath(){
     if (hasContainer())
         container().removeAll();
 
+    if (objType().hasOnDestroy())
+        objType().onDestroy().function(*this);
+
     Entity::onDeath();
 }
 

@@ -365,6 +365,26 @@ void Server::loadData(const std::string &path){
                 ot->action(pAction);
             }
 
+            // onDestroy callback
+            auto onDestroy = xr.findChild("onDestroy", elem);
+            if (onDestroy != nullptr) {
+                std::string target;
+                if (!xr.findAttr(onDestroy, "target", target)) {
+                    _debug("Skipping onDestroy with missing target", Color::RED);
+                    continue;
+                }
+                auto it = CallbackAction::functionMap.find(target);
+                if (it == CallbackAction::functionMap.end()) {
+                    _debug << Color::RED << "CallbackAction target " << target <<
+                        "() doesn't exist; skipping" << Log::endl;
+                    continue;
+                }
+
+                auto *pAction = new CallbackAction;
+                pAction->function = it->second;
+                ot->onDestroy(pAction);
+            }
+
 
             bool foundInPlace = false;
             for (auto it = _objectTypes.begin(); it != _objectTypes.end(); ++it){

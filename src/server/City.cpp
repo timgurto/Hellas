@@ -43,6 +43,23 @@ bool Cities::doesCityExist(const City::Name &cityName) const {
     return _container.find(cityName) != _container.end();
 }
 
+void Cities::destroyCity(const City::Name & cityName) {
+    // Kill all city objects
+    auto city = Permissions::Owner(Permissions::Owner::CITY, cityName);
+    Server::instance().killAllObjectsOwnedBy(city);
+
+    // Remove all citizens
+    auto citizenNames = membersOf(cityName);
+    for (const auto &citizenName : citizenNames) {
+        const auto *citizen = Server::instance().getUserByName(citizenName);
+        if (citizen == nullptr)
+            continue;
+        removeUserFromCity(*citizen, cityName);
+    }
+
+    // Remove city
+}
+
 void Cities::addPlayerToCity(const User &user, const City::Name &cityName){
     auto it = _container.find(cityName);
     bool cityExists = it != _container.end();
@@ -124,7 +141,8 @@ const City::Members &Cities::membersOf(const std::string &cityName) const{
     bool cityExists = it != _container.end();
     if (! cityExists){
         Server::debug()("Can't fetch members of a city that doesn't exist", Color::FAILURE);
-        assert(false);
+        //assert(false);
+        return{};
     }
     return it->second.members();
 }

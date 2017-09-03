@@ -600,6 +600,11 @@ const SoundProfile *Client::findSoundProfile(const std::string &id) const{
 }
 
 bool Client::isAtWarWith(const std::string &username) const{
+    // Cities
+    if (_atWarWithCity.find(username) != _atWarWithCity.end())
+        return true;
+
+    // Players
     std::string cityName = "";
     auto it = _userCities.find(username);
     if (it != _userCities.end())

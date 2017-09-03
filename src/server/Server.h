@@ -99,8 +99,12 @@ public:
     // Action functions
     static void createCity(const Object &obj, User &performer, const std::string &textArg);
     static void setRespawnPoint(const Object &obj, User &performer, const std::string &textArg);
+    // Callback-action functions
+    static void destroyCity(const Object & obj);
 
     void makePlayerAKing(const User &user);
+
+    void killAllObjectsOwnedBy(const Permissions::Owner &owner);
 
 private:
 

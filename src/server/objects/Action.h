@@ -13,3 +13,13 @@ struct Action {
 
     Function function = nullptr;
 };
+
+// More specific functions for certain stimuli.
+struct CallbackAction {
+    using Function = void(*)(const Object &obj);
+    using FunctionMap = std::map<std::string, Function>;
+
+    static FunctionMap functionMap;
+
+    Function function = nullptr;
+};
