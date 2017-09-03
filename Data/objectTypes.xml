@@ -144,14 +144,18 @@ Server only:
 </objectType-->
 
 <objectType id="palisadeEW" name="Palisade E/W"
-    damageParticles="wood" >
+    damageParticles="wood" 
+    xDrawOffset="-60" yDrawOffset="-42" >
+    <collisionRect x="-60" y="-2" w="122" h="6" />
     <material id="log" quantity="8" />
     <unlockedBy gather="log" chance="0.05" />
     <unlockedBy construction="palisadeNS" />
     <strength item="log" quantity="8" />
 </objectType>
 <objectType id="palisadeNS" name="Palisade N/S"
-    damageParticles="wood" >
+    damageParticles="wood" 
+    xDrawOffset="-3" yDrawOffset="-101" >
+    <collisionRect x="-3" y="-60" w="8" h="120" />
     <material id="log" quantity="8" />
     <unlockedBy gather="log" chance="0.05" />
     <unlockedBy construction="palisadeEW" />
@@ -245,7 +249,9 @@ Server only:
 
 <objectType id="wildFlax" name="Wild Flax"
     canGather="1" gatherTime="3000"
-    allowedTerrain="denseVeg" >
+    allowedTerrain="denseVeg" 
+    xDrawOffset="-10" yDrawOffset="-10">
+    <collisionRect x="-10" y="-10" w="20" h="20" />
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" initialMin="1" />
     <strength item="flax" quantity="5" />
 </objectType>
@@ -304,7 +310,9 @@ Server only:
 </objectType>
 
 <objectType id="stretchingFrame" name="Stretching Frame"
-    constructionTime="0" >
+    constructionTime="0" 
+    xDrawOffset="-10" yDrawOffset="-10">
+    <collisionRect x="-10" y="-10" w="20" h="20" />
     <material id="stick" quantity="2" />
     <material id="rope" quantity="2" />
     <tag name="leatherStretching" />
@@ -344,7 +352,9 @@ Server only:
 </objectType-->
 
 <objectType id="tannin" name="Pot of Tannin"
-    constructionTime="1000" >
+    constructionTime="1000" 
+    xDrawOffset="-10" yDrawOffset="-10">
+    <collisionRect x="-10" y="-10" w="20" h="20" />
     <tag name="tanning" />
     <strength item="crudeClay" quantity="2" />
 </objectType>

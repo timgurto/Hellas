@@ -1,7 +1,7 @@
 <root>
 
 <size x="400" y="400" />
-<newPlayerSpawn x="7904" y="2304" range=50 />
+<newPlayerSpawn x="7904" y="2304" range="50" />
 
 <row    y="0" terrain = "ccccccccaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaPPPPPPPPPPPPaaaaaaaaaaaammmaaooooooooooooooooommmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnPPnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnPPPPPPPPPPPPPnnnnnnnnnnnnnnn" />
 <row    y="1" terrain = "ccccccccaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaPPPPPPPPPPPPaaaaaaaaaaaaaaaaoooooooooommmmoooommmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnPPnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnPPPPPPPPPPPPPPPnnnnnnnnnnnnn" />

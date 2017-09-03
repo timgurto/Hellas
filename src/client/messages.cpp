@@ -36,9 +36,9 @@ void Client::handleMessage(const std::string &msg){
         // Discard malformed data
         if (iss.peek() != MSG_START) {
             iss.get(buffer, BUFFER_SIZE, MSG_START);
-            _debug << "Read " << iss.gcount() << " characters." << Log::endl;
+            /*_debug << "Read " << iss.gcount() << " characters." << Log::endl;
             _debug << Color::FAILURE << "Malformed message; discarded \""
-                   << buffer << "\"" << Log::endl;
+                   << buffer << "\"" << Log::endl;*/
             if (iss.eof()) {
                 break;
             }
@@ -339,7 +339,7 @@ void Client::handleMessage(const std::string &msg){
                 _character.setClass(className);
             } else {
                 if (_otherUsers.find(username) == _otherUsers.end()) {
-                    _debug("Class received for an unknown user.  Ignoring.", Color::FAILURE);
+                    //_debug("Class received for an unknown user.  Ignoring.", Color::FAILURE);
                     break;
                 }
                 _otherUsers[username]->setClass(className);
@@ -357,11 +357,11 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
             if (username == _username) {
-                _debug("Own gear info received by wrong channel.  Ignoring.", Color::FAILURE);
+                //_debug("Own gear info received by wrong channel.  Ignoring.", Color::FAILURE);
                 break;
             }
             if (_otherUsers.find(username) == _otherUsers.end()) {
-                _debug("Gear received for an unknown user.  Ignoring.", Color::FAILURE);
+                //_debug("Gear received for an unknown user.  Ignoring.", Color::FAILURE);
                 break;
             }
 
@@ -511,7 +511,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()) {
-                _debug("Server removed an object we didn't know about.", Color::WARNING);
+                //_debug("Server removed an object we didn't know about.", Color::WARNING);
                 break; // We didn't know about this object
             }
             it->second->location(Point(x, y));
@@ -527,7 +527,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const std::map<size_t, ClientObject*>::const_iterator it = _objects.find(serial);
             if (it == _objects.end()){
-                _debug("Server removed an object we didn't know about.", Color::WARNING);
+                //_debug("Server removed an object we didn't know about.", Color::WARNING);
                 break; // We didn't know about this object
             }
             if (it->second == _currentMouseOverEntity)
@@ -552,7 +552,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()){
-                _debug("Received ownership info for an unknown object.", Color::FAILURE);
+                //_debug("Received ownership info for an unknown object.", Color::FAILURE);
                 break;
             }
             ClientObject &obj = *it->second;
@@ -570,7 +570,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()){
-                _debug("Received info about an unknown object.", Color::FAILURE);
+                //_debug("Received info about an unknown object.", Color::FAILURE);
                 break;
             }
             (it->second)->beingGathered(true);
@@ -585,7 +585,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()){
-                _debug("Received info about an unknown object.", Color::FAILURE);
+                //_debug("Received info about an unknown object.", Color::FAILURE);
                 break;
             }
             (it->second)->beingGathered(false);
@@ -650,7 +650,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()){
-                _debug("Received health info for an unknown object.", Color::FAILURE);
+                //_debug("Received health info for an unknown object.", Color::FAILURE);
                 break;
             }
             ClientObject &obj = *it->second;
@@ -674,7 +674,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             auto objIt = _objects.find(serial);
             if (objIt == _objects.end()){
-                _debug("Received combat info for an unknown object.", Color::FAILURE);
+                //_debug("Received combat info for an unknown object.", Color::FAILURE);
                 break;
             }
             const ClientObject &defender = *objIt->second;
@@ -684,7 +684,7 @@ void Client::handleMessage(const std::string &msg){
             else{
                 auto userIt = _otherUsers.find(username);
                 if (userIt == _otherUsers.end()){
-                    _debug("Received combat info for an unknown player.", Color::FAILURE);
+                    //_debug("Received combat info for an unknown player.", Color::FAILURE);
                     break;
                 }
                 attacker = userIt->second;
@@ -712,7 +712,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             auto objIt = _objects.find(serial);
             if (objIt == _objects.end()){
-                _debug("Received combat info for an unknown object.", Color::FAILURE);
+                //_debug("Received combat info for an unknown object.", Color::FAILURE);
                 break;
             }
             const ClientNPC &attacker = * dynamic_cast<const ClientNPC *>(objIt->second);
@@ -722,7 +722,7 @@ void Client::handleMessage(const std::string &msg){
             else{
                 auto userIt = _otherUsers.find(username);
                 if (userIt == _otherUsers.end()){
-                    _debug("Received combat info for an unknown player.", Color::FAILURE);
+                    //_debug("Received combat info for an unknown player.", Color::FAILURE);
                     break;
                 }
                 defender = userIt->second;
@@ -750,7 +750,7 @@ void Client::handleMessage(const std::string &msg){
             else{
                 auto userIt = _otherUsers.find(attackerName);
                 if (userIt == _otherUsers.end()){
-                    _debug("Received combat info for an unknown attacking player.", Color::FAILURE);
+                    //_debug("Received combat info for an unknown attacking player.", Color::FAILURE);
                     break;
                 }
                 attacker = userIt->second;
@@ -762,7 +762,7 @@ void Client::handleMessage(const std::string &msg){
             else{
                 auto userIt = _otherUsers.find(defenderName);
                 if (userIt == _otherUsers.end()){
-                    _debug("Received combat info for an unknown defending player.", Color::FAILURE);
+                    //_debug("Received combat info for an unknown defending player.", Color::FAILURE);
                     break;
                 }
                 defender = userIt->second;
@@ -792,7 +792,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()){
-                _debug("Received loot info for an unknown object.", Color::FAILURE);
+                //_debug("Received loot info for an unknown object.", Color::FAILURE);
                 break;
             }
             ClientObject &object = *it->second;
@@ -812,7 +812,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
             if (it == _objects.end()){
-                _debug("Received loot info for an unknown object.", Color::FAILURE);
+                //_debug("Received loot info for an unknown object.", Color::FAILURE);
                 break;
             }
             ClientObject &object = *it->second;
@@ -830,7 +830,7 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> serial >> del >> n >> del;
             auto it = _objects.find(serial);
             if (it == _objects.end()){
-                _debug("Received construction-material info for unknown object");
+                //_debug("Received construction-material info for unknown object");
                 break;
             }
             ClientObject &obj = *it->second;
@@ -867,7 +867,7 @@ void Client::handleMessage(const std::string &msg){
             else{
                 auto userIt = _otherUsers.find(username);
                 if (userIt == _otherUsers.end()){
-                    _debug("Received combat info for an unknown defending player.", Color::FAILURE);
+                    //_debug("Received combat info for an unknown defending player.", Color::FAILURE);
                     break;
                 }
                 target = userIt->second;
@@ -898,14 +898,14 @@ void Client::handleMessage(const std::string &msg){
             }else{
                 auto it = _otherUsers.find(user);
                 if (it == _otherUsers.end())
-                    _debug("Received vehicle info for an unknown user", Color::FAILURE);
+                    ;//_debug("Received vehicle info for an unknown user", Color::FAILURE);
                 else
                     userP = it->second;
             }
             userP->driving(true);
             auto pairIt = _objects.find(serial);
             if (pairIt == _objects.end())
-                _debug("Received driver info for an unknown vehicle", Color::FAILURE);
+                ;//_debug("Received driver info for an unknown vehicle", Color::FAILURE);
             else{
                 ClientVehicle *v = dynamic_cast<ClientVehicle *>(pairIt->second);
                 v->driver(userP);
@@ -934,14 +934,14 @@ void Client::handleMessage(const std::string &msg){
             }else{
                 auto it = _otherUsers.find(user);
                 if (it == _otherUsers.end())
-                    _debug("Received vehicle info for an unknown user", Color::FAILURE);
+                    ;//_debug("Received vehicle info for an unknown user", Color::FAILURE);
                 else
                     userP = it->second;
             }
             userP->driving(false);
             auto pairIt = _objects.find(serial);
             if (pairIt == _objects.end())
-                _debug("Received driver info for an unknown vehicle", Color::FAILURE);
+                ;// _debug("Received driver info for an unknown vehicle", Color::FAILURE);
             else{
                 ClientVehicle *v = dynamic_cast<ClientVehicle *>(pairIt->second);
                 v->driver(nullptr);
@@ -969,7 +969,7 @@ void Client::handleMessage(const std::string &msg){
                 return;
             auto objIt = _objects.find(serial);
             if (objIt == _objects.end()){
-                _debug("Info received about unknown object.", Color::FAILURE);
+                //_debug("Info received about unknown object.", Color::FAILURE);
                 break;
             }
             ClientObject &obj = const_cast<ClientObject &>(*objIt->second);
@@ -1006,7 +1006,7 @@ void Client::handleMessage(const std::string &msg){
                 return;
             auto objIt = _objects.find(serial);
             if (objIt == _objects.end()){
-                _debug("Info received about unknown object.", Color::FAILURE);
+                //_debug("Info received about unknown object.", Color::FAILURE);
                 break;
             }
             ClientObject &obj = const_cast<ClientObject &>(*objIt->second);
@@ -1061,7 +1061,7 @@ void Client::handleMessage(const std::string &msg){
         }
 
         default:
-            _debug << Color::FAILURE << "Unhandled message: " << msg << Log::endl;
+            ;//_debug << Color::FAILURE << "Unhandled message: " << msg << Log::endl;
         }
 
         if (del != MSG_END && !iss.eof()) {
@@ -1077,7 +1077,7 @@ void Client::handleMessage(const std::string &msg){
 void Client::handle_SV_LOOTABLE(size_t serial){
     const std::map<size_t, ClientObject*>::iterator it = _objects.find(serial);
     if (it == _objects.end()){
-        _debug("Received loot info for an unknown object.", Color::FAILURE);
+        //_debug("Received loot info for an unknown object.", Color::FAILURE);
         return;
     }
     ClientObject &object = *it->second;
@@ -1108,14 +1108,14 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot, const std::string &
         default:
             auto it = _objects.find(serial);
             if (it == _objects.end()) {
-                _debug("Received inventory of nonexistent object; ignored.", Color::FAILURE);
+                //_debug("Received inventory of nonexistent object; ignored.", Color::FAILURE);
                 break;
             }
             object = it->second;
             container = &object->container();
     }
     if (slot >= container->size()) {
-        _debug("Received item in invalid inventory slot; ignored.", Color::FAILURE);
+        //_debug("Received item in invalid inventory slot; ignored.", Color::FAILURE);
         return;
     }
     auto &invSlot = (*container)[slot];

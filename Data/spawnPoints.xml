@@ -1,2 +1,25 @@
 <root>
+<spawnPoint index="1" type="stick" quantity="50" radius="1500" respawnTime="60000" x="9488" y="3784" />
+<spawnPoint index="2" type="stick" quantity="50" radius="1500" respawnTime="60000" x="8736" y="2040" />
+<spawnPoint index="3" type="stick" quantity="50" radius="1500" respawnTime="60000" x="10608" y="6768" />
+<spawnPoint index="4" type="stick" quantity="50" radius="1500" respawnTime="60000" x="8416" y="9264" />
+<spawnPoint index="5" type="tree" quantity="20" radius="1500" respawnTime="60000" x="8880" y="1920" />
+<spawnPoint index="6" type="tree" quantity="20" radius="1500" respawnTime="60000" x="9560" y="3800" />
+<spawnPoint index="7" type="tree" quantity="20" radius="1500" respawnTime="60000" x="10976" y="6936" />
+<spawnPoint index="8" type="tree" quantity="20" radius="1500" respawnTime="60000" x="8560" y="9440" />
+<spawnPoint index="9" type="tin" quantity="20" radius="1500" respawnTime="60000" x="9000" y="6448" />
+<spawnPoint index="10" type="tin" quantity="20" radius="1500" respawnTime="60000" x="7240" y="5072" />
+<spawnPoint index="11" type="clay" quantity="20" radius="1500" respawnTime="60000" x="8072" y="3496" />
+<spawnPoint index="12" type="clay" quantity="20" radius="1000" respawnTime="60000" x="5664" y="6296" />
+<spawnPoint index="13" type="clay" quantity="20" radius="1000" respawnTime="60000" x="10592" y="6800" />
+<spawnPoint index="14" type="clay" quantity="20" radius="1000" respawnTime="60000" x="6648" y="11176" />
+<spawnPoint index="15" type="clay" quantity="20" radius="1000" respawnTime="60000" x="5000" y="11336" />
+<spawnPoint index="16" type="wildFlax" quantity="20" radius="1500" respawnTime="60000" x="8448" y="2928" />
+<spawnPoint index="17" type="wildFlax" quantity="20" radius="1500" respawnTime="60000" x="6832" y="7736" />
+<spawnPoint index="18" type="wildFlax" quantity="20" radius="1500" respawnTime="60000" x="3792" y="9344" />
+<spawnPoint index="19" type="critter" quantity="20" radius="1000" respawnTime="60000" x="9048" y="2440" />
+<spawnPoint index="20" type="boar" quantity="20" radius="1500" respawnTime="60000" x="7264" y="6456" />
+<spawnPoint index="21" type="boar" quantity="20" radius="1000" respawnTime="60000" x="7880" y="4448" />
+<spawnPoint index="22" type="boar" quantity="20" radius="1000" respawnTime="60000" x="9040" y="5112" />
+<spawnPoint index="23" type="boar" quantity="20" radius="1000" respawnTime="60000" x="8640" y="7416" />
 </root>
