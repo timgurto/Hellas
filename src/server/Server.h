@@ -98,6 +98,7 @@ public:
 
     // Action functions
     static void createCity(const Object &obj, User &performer, const std::string &textArg);
+    static void setRespawnPoint(const Object &obj, User &performer, const std::string &textArg);
 
     void makePlayerAKing(const User &user);
 

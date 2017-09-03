@@ -370,18 +370,20 @@ Server only:
 </objectType-->
 
 <objectType id="respawnAltar" name="Altar to Hermes"
+    xDrawOffset="-14" yDrawOffset="-22"
     constructionTime="0" damageParticles="wood" playerUnique="altar" >
+    <collisionRect x="-15" y="-4" w="30" h="8" />
     <!--material id="woodenStatue" /-->
     <material id="rock" quantity="8" />
     <!--unlockedBy recipe="woodenStatue" /-->
     <strength item="rock" quantity="8" />
-    <action label="Worship" tooltip="Set this location as your respawn point upon death" />
+    <action label="Worship" target="setRespawnPoint" tooltip="Set this location as your respawn point upon death" />
     <unlockedBy recipe="woodenStatue" />
 </objectType>
 <objectType id="cityAltar" name="Altar to Athena"
     xDrawOffset="-14" yDrawOffset="-22"
     constructionTime="0" playerUnique="altar" >
-    <action label="Worship" target="createCityWithRandomName" tooltip="Found a city" textInput="City name" />
+    <action label="Worship" target="createCity" tooltip="Found a city" textInput="City name" />
     <!--material id="tinStatue" />
     <material id="brick" quantity="8" />
     <unlockedBy recipe="tinStatue" />

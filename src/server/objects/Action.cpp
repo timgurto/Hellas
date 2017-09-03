@@ -2,7 +2,8 @@
 #include "../Server.h"
 
 Action::FunctionMap Action::functionMap = {
-    {"createCityWithRandomName", Server::createCity }
+    { "createCity", Server::createCity },
+    { "setRespawnPoint", Server::setRespawnPoint }
 };
 
 void Server::createCity(const Object & obj, User & performer,
@@ -16,4 +17,9 @@ void Server::createCity(const Object & obj, User & performer,
     server._cities.addPlayerToCity(performer, textArg);
 
     server.makePlayerAKing(performer);
+}
+
+void Server::setRespawnPoint(const Object & obj, User & performer,
+        const std::string &textArg) {
+    performer.respawnPoint(obj.location());
 }

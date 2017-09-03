@@ -17,7 +17,7 @@ std::map<std::string, User::Class> User::CLASS_CODES;
 Point User::newPlayerSpawn = {};
 double User::spawnRadius = 0;
 
-User::User(const std::string &name, const Point &loc, const Socket &socket):
+User::User(const std::string &name, const Point &loc, const Socket &socket) :
 Object(&OBJECT_TYPE, loc),
 
 _name(name),
@@ -30,6 +30,8 @@ _actionRecipe(nullptr),
 _actionObjectType(nullptr),
 _actionSlot(INVENTORY_SIZE),
 _actionLocation(0, 0),
+
+_respawnPoint(newPlayerSpawn),
 
 _driving(0),
 
@@ -502,8 +504,8 @@ void User::moveToSpawnPoint() {
             return;
         }
         server._debug << "Attempt #" << ++attempts << " at placing new user" << Log::endl;
-        newLoc.x = (randDouble() * 2 - 1) * spawnRadius + newPlayerSpawn.x;
-        newLoc.y = (randDouble() * 2 - 1) * spawnRadius + newPlayerSpawn.y;
+        newLoc.x = (randDouble() * 2 - 1) * spawnRadius + _respawnPoint.x;
+        newLoc.y = (randDouble() * 2 - 1) * spawnRadius + _respawnPoint.y;
     } while (!server.isLocationValid(newLoc, User::OBJECT_TYPE));
     auto oldLoc = location();
     location(newLoc);
