@@ -66,7 +66,7 @@ Server only:
     <strength item="tin" quantity="5" />
 </objectType>
 
-<objectType id="copper" name="Copper deposit"
+<!--objectType id="copper" name="Copper deposit"
     xDrawOffset="-14" yDrawOffset="-11"
     canGather="1" gatherTime="3000" gatherReq="mining"
     isFlat="1"
@@ -74,7 +74,7 @@ Server only:
     <yield id="copper" initialMean="4.5" initialSD="2" initialMin="1" />
     <yield id="rock" initialMean="1.5" initialSD="2" />
     <strength item="copper" quantity="5" />
-</objectType>
+</objectType-->
 
 <objectType id="oven" name="Oven"
     xDrawOffset="-14" yDrawOffset="-17" >
@@ -84,7 +84,7 @@ Server only:
     <unlockedBy gather="rock" />
     <strength item="rock" quantity="10" />
 </objectType>
-<objectType id="kiln" name="Kiln"
+<!--objectType id="kiln" name="Kiln"
     xDrawOffset="-13"
     yDrawOffset="-26" >
     <collisionRect x="-12" y="-4" w="27" h="10" />
@@ -94,7 +94,7 @@ Server only:
     <material id="crudeClay" quantity="12" />
     <unlockedBy recipe="brick" />
     <strength item="brick" quantity="20" />
-</objectType>
+</objectType-->
 
 <objectType id="clay" name="Clay Deposit"
     xDrawOffset="-12" yDrawOffset="-12"
@@ -112,14 +112,14 @@ Server only:
     <container slots="1" />
     <strength item="crudeClay" quantity="2" />
 </objectType>
-<objectType id="mediumPot" name="Medium Pot"
+<!--objectType id="mediumPot" name="Medium Pot"
     xDrawOffset="-19" yDrawOffset="-27"
     deconstructs="mediumPot" deconstructionTime="1000" >
     <collisionRect x="-13" y="-4" w="25" h="6" />
     <container slots="4" />
     <strength item="clay" quantity="3" />
 </objectType>
-<!--objectType id="largePot" name="Large Pot"
+<objectType id="largePot" name="Large Pot"
     deconstructs="largePot" deconstructionTime="1000" >
     <container slots="10" />
     <strength item="clay" quantity="5" />
@@ -135,13 +135,13 @@ Server only:
     <strength item="lumber" quantity="8" />
 </objectType>
 
-<objectType id="elutriator" name="Elutriator"
+<!--objectType id="elutriator" name="Elutriator"
     xDrawOffset="-15" yDrawOffset="-21"
     deconstructs="elutriator" deconstructionTime="1000" >
     <tag name="clayRefinement" />
     <collisionRect x="-15" y="-4" w="31" h="8" />
     <strength item="crudeClay" quantity="4" />
-</objectType>
+</objectType-->
 
 <objectType id="palisadeEW" name="Palisade E/W"
     damageParticles="wood" >
@@ -158,7 +158,7 @@ Server only:
     <strength item="log" quantity="8" />
 </objectType>
 
-<objectType id="brickWallEW" name="Brick Wall E/W"
+<!--objectType id="brickWallEW" name="Brick Wall E/W"
     xDrawOffset="-60" yDrawOffset="-42" >
     <collisionRect x="-60" y="-2" w="122" h="6" />
     <material id="brick" quantity="12" />
@@ -173,7 +173,7 @@ Server only:
     <unlockedBy recipe="brick" chance="0.05" />
     <unlockedBy construction="brickWallEW" />
     <strength item="brick" quantity="12" />
-</objectType>
+</objectType-->
 
 <objectType id="post" name="Post"
     xDrawOffset="-4" yDrawOffset="-47"
@@ -182,10 +182,11 @@ Server only:
     <strength item="lumber" quantity="1" />
 </objectType>
 
-<objectType id="wildFigTree" name="Wild Fig Tree"
-    canGather="1" gatherReq="harvesting" gatherTime="3000"
+<!--objectType id="wildFigTree" name="Wild Fig Tree"
+    canGather="1" gatherTime="3000"
     allowedTerrain="denseVeg" >
     <yield id="figSeeds" initialMean="1.2" initialSD="0.5" initialMin="1" />
+    <strength item="log" quantity="1" />
 </objectType>
 <objectType id="figTree0" name="Fig Tree" constructionTime="10000" xDrawOffset="-19" yDrawOffset="-37"
     allowedTerrain="grass" >
@@ -195,48 +196,58 @@ Server only:
         <progress image="figTree0b" />
     </transform>
     <material id="figSeeds" />
+    <unlockedBy gather="figSeeds" />
     <strength item="log" quantity="1" />
 </objectType>
 <objectType id="figTree1" name="Fig Tree (overgrown)" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <yield id="stick" initialMean="2.5" initialSD="1" initialMin="1" />
     <transform id="figTree2" whenEmpty="1" />
+    <strength item="log" quantity="1" />
 </objectType>
 <objectType id="figTree2" name="Fig Tree" imageFile="figTree0b" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <transform id="figTree3" time="120000" >
         <progress image="figTree2a" />
     </transform>
+    <strength item="log" quantity="1" />
 </objectType>
 <objectType id="figTree3" name="Fig Tree (overgrown)" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <yield id="stick" initialMean="2.5" initialSD="1" initialMin="1" />
     <transform id="figTree4" whenEmpty="1" />
+    <strength item="log" quantity="1" />
 </objectType>
 <objectType id="figTree4" name="Fig Tree" imageFile="figTree2a" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <transform id="figTree5" time="120000" />
+    <strength item="log" quantity="1" />
 </objectType>
 <objectType id="figTree5" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <transform id="figTree6" time="120000" />
+    <strength item="log" quantity="1" />
 </objectType>
 <objectType id="figTree6" name="Fig Tree (overgrown)" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <yield id="stick" initialMean="2.5" initialSD="1" initialMin="1" />
     <transform id="figTree7" whenEmpty="1" />
+    <strength item="log" quantity="1" />
 </objectType>
 <objectType id="figTree7" name="Fig Tree" imageFile="figTree5" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <transform id="figTree8" time="120000" />
+    <strength item="log" quantity="1" />
 </objectType>
 <objectType id="figTree8" name="Fig Tree (Ripe)" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1" gatherParticles="figLeaves" gatherTime="1000" damageParticles="figLeaves" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
     <yield id="fig" initialMean="8" initialSD="2" initialMin="1" />
     <yield id="figSeeds" initialMean="0.4" initialSD="0.1" />
     <transform id="figTree5" whenEmpty="1" />
-</objectType>
+    <strength item="log" quantity="1" />
+</objectType-->
 
 <objectType id="wildFlax" name="Wild Flax"
-    canGather="1" gatherReq="harvesting" gatherTime="3000"
+    canGather="1" gatherTime="3000"
     allowedTerrain="denseVeg" >
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" initialMin="1" />
+    <strength item="flax" quantity="5" />
 </objectType>
 <objectType id="flaxCrop0" name="Flax Farm"
     xDrawOffset="-20"
@@ -248,36 +259,37 @@ Server only:
     <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <material id="flaxSeeds" />
-    <transform id="flaxCrop1" time="120000" />
+    <transform id="flaxCrop1" time="60000" />
+    <unlockedBy gather="flaxSeeds" />
     <strength item="flax" quantity="5" />
 </objectType>
 <objectType id="flaxCrop1" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
-    <transform id="flaxCrop2" time="120000" />
+    <transform id="flaxCrop2" time="60000" />
 </objectType>
 <objectType id="flaxCrop2" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
-    <transform id="flaxCrop3" time="120000" />
+    <transform id="flaxCrop3" time="60000" />
 </objectType>
 <objectType id="flaxCrop3" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
-    <transform id="flaxCrop4" time="120000" />
+    <transform id="flaxCrop4" time="60000" />
 </objectType>
 <objectType id="flaxCrop4" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
-    <transform id="flaxCrop5" time="120000" />
+    <transform id="flaxCrop5" time="60000" />
 </objectType>
 <objectType id="flaxCrop5" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
-    <transform id="flaxCrop6" time="120000" />
+    <transform id="flaxCrop6" time="60000" />
 </objectType>
 <objectType id="flaxCrop6" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
-    <transform id="flaxCrop7" time="120000" />
+    <transform id="flaxCrop7" time="60000" />
 </objectType>
 <objectType id="flaxCrop7" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isFlat="1" isUnbuildable="1"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
-    <transform id="flaxCrop8" time="120000" />
+    <transform id="flaxCrop8" time="60000" />
 </objectType>
 <objectType id="flaxCrop8" name="Flax Farm (Ripe)"
     xDrawOffset="-20"
@@ -300,7 +312,7 @@ Server only:
     <strength item="rope" quantity="2" />
 </objectType>
 
-<objectType id="lathe" name="Lathe"
+<!--objectType id="lathe" name="Lathe"
     constructionTime="0" >
     <material id="lumber" quantity="4" />
     <material id="rope" quantity="2" />
@@ -329,7 +341,7 @@ Server only:
     <unlockedBy recipe="copperBar" chance="0.1" />
     <unlockedBy recipe="copperHammer" />
     <strength item="copperBar" quantity="8" />
-</objectType>
+</objectType-->
 
 <objectType id="tannin" name="Pot of Tannin"
     constructionTime="1000" >
@@ -347,12 +359,12 @@ Server only:
     <strength item="brick" quantity="1" />
 </objectType-->
 
-<objectType id="woodenStatue" name="Wooden Statue"
+<!--objectType id="woodenStatue" name="Wooden Statue"
     constructionTime="0" deconstructs="woodenStatue" deconstructionTime="1000"
     damageParticles="wood" >
     <strength item="log" quantity="1" />
 </objectType>
-<!--objectType id="tinStatue" name="Tin Statue"
+<objectType id="tinStatue" name="Tin Statue"
     constructionTime="0" deconstructs="tinStatue" deconstructionTime="1000" >
     <strength item="tinBar" quantity="5" />
 </objectType-->
@@ -364,6 +376,7 @@ Server only:
     <!--unlockedBy recipe="woodenStatue" /-->
     <strength item="rock" quantity="8" />
     <action label="Worship" tooltip="Set this location as your respawn point upon death" />
+    <unlockedBy recipe="woodenStatue" />
 </objectType>
 <objectType id="cityAltar" name="Altar to Athena"
     xDrawOffset="-14" yDrawOffset="-22"
@@ -376,7 +389,7 @@ Server only:
     
     <collisionRect x="-15" y="-4" w="30" h="8" />
     <material id="rock" />
-    <strength item="brick" quantity="8" />
+    <strength item="tin" quantity="15" />
 </objectType>
 
 </root>

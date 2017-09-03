@@ -23,7 +23,7 @@
 
 <extra parent="item_leatherGloves" child="item_tinBar" />
 <extra parent="item_tinBar"        child="item_tinSaw" />
-<extra parent="item_tinBar"        child="item_tinTube" />
+<!--extra parent="item_tinBar"        child="item_tinTube" /-->
 <extra parent="item_water"         child="object_flaxCrop8" />
 
 <collapse id="object_figTree0" into="object_figTree8" />
