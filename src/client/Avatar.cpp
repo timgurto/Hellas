@@ -228,6 +228,19 @@ void Avatar::addMenuButtons(List &menu) const{
     }
     cityWarButton->setTooltip(tooltipText);
     menu.addChild(cityWarButton);
+
+    Button *recruitButton = new Button(0, "Recruit" , recruit, pUsername);
+    if (!_city.empty()) {
+        recruitButton->disable();
+        tooltipText = _name + " is already in a city.";
+    } else if (client.character().cityName().empty()) {
+        recruitButton->disable();
+        tooltipText = "You are not in a city.";
+    } else {
+        tooltipText = "Recruit " + _name + " into the city of " + client.character().cityName() + ".";
+    }
+    recruitButton->setTooltip(tooltipText);
+    menu.addChild(recruitButton);
 }
 
 void Avatar::declareWarAgainstPlayer(void *pUsername){
@@ -236,8 +249,14 @@ void Avatar::declareWarAgainstPlayer(void *pUsername){
     client.sendMessage(CL_DECLARE_WAR_ON_PLAYER, username);
 }
 
-void Avatar::declareWarAgainstCity(void *pCityName){
-    const std::string &cityName = * reinterpret_cast<const std::string *>(pCityName);
+void Avatar::declareWarAgainstCity(void *pCityName) {
+    const std::string &cityName = *reinterpret_cast<const std::string *>(pCityName);
     Client &client = *Client::_instance;
     client.sendMessage(CL_DECLARE_WAR_ON_CITY, cityName);
+}
+
+void Avatar::recruit(void *pUsername) {
+    const std::string &username = *reinterpret_cast<const std::string *>(pUsername);
+    Client &client = *Client::_instance;
+    client.sendMessage(CL_RECRUIT, username);
 }

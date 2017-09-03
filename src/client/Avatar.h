@@ -64,6 +64,7 @@ public:
     void addMenuButtons(List &menu) const override;
     static void declareWarAgainstPlayer(void *pUsername);
     static void declareWarAgainstCity(void *pCityName);
+    static void recruit(void *pUsername);
 
     void playAttackSound() const; // The player has attacked; play an appropriate sound.
     void playDefendSound() const; // The player has been attacked; play an appropriate sound.

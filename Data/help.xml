@@ -38,16 +38,12 @@
                         text="If an object has any actions available, they can be accessed through the object window.  To bring up an object window, make sure you are close to the object in question and right-click on it." />
 </entry>
 
-<entry order=4 name="Items"    >
-    <paragraph order=1  text="asdf" />
-</entry>
-
 <entry order=5 name="Cities"    >
     <paragraph order=1  text="A city is a group of players who are joined together in a single diplomatic unit.  A player's city is displayed underneath their name.  When a new player begins, he is not in any city." />
     <paragraph order=2  heading="Foundation"
                         text="A city can be founded at an Altar to Athena.  The altar's object window allows the new city's name to be entered.  The player who worships at the altar will become King, and the city will stand only as long as his Altar to Athena does." />
     <paragraph order=2  heading="Recruitment"
-                        text="Any member of a city can recruit new members." />
+                        text="Any member of a city can recruit new members.  To recruit a player to your city, click on him, right-click on the target panel at the top of the screen, and click 'Recruit'." />
     <paragraph order=3  heading="City objects"
                         text="Just as objects can be owned by a player, they can instead be owned by a city.  A city-owned object is accessible by all members of the city.  In order for an object to come under the ownership of a city, a player must cede one of his own objects to his city." />
     <paragraph order=4  text="To cede an object, use the 'Cede to City' button in the object window.  An object can only be ceded if it belongs to the player, it is not an Altar, and the player is in a city." />
@@ -59,7 +55,7 @@
 </entry>
 
 <entry order=6 name="War"    >
-    <paragraph order=1  text="At any given time, two players are at peace or at war.  When at war, " />
+    <paragraph order=1  text="At any given time, two players are either at peace or at war.  When at war, " />
     <paragraph order=2  text="Personal wars" />
     <paragraph order=3  text="Cities at war" />
 </entry>
