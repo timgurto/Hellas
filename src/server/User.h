@@ -71,6 +71,8 @@ private:
     ms_t _lastContact;
     ms_t _latency;
 
+    Point _respawnPoint;
+
 
 public:
     User(const std::string &name, const Point &loc, const Socket &socket);
@@ -98,6 +100,8 @@ public:
     bool hasPlayerUnique(const std::string &category) const {
         return _playerUniqueCategoriesOwned.find(category) != _playerUniqueCategoriesOwned.end();
     }
+    const Point &respawnPoint() const { return _respawnPoint; }
+    void respawnPoint(const Point &loc) { _respawnPoint = loc; }
 
     // Inventory getters/setters
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const
@@ -175,6 +179,10 @@ public:
     size_t giveItem(const ServerItem *item, size_t quantity = 1);
 
     void update(ms_t timeElapsed);
+
+    static Point newPlayerSpawn;
+    static double spawnRadius;
+    void moveToSpawnPoint();
 
     struct compareXThenSerial{ bool operator()( const User *a, const User *b) const; };
     struct compareYThenSerial{ bool operator()( const User *a, const User *b) const; };

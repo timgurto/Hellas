@@ -240,6 +240,7 @@ void Client::handleMessage(const std::string &msg){
             break;
 
         case SV_LOCATION: // Also the de-facto new-user announcement
+        case SV_LOCATION_INSTANT:
         {
             std::string name;
             double x, y;
@@ -249,6 +250,10 @@ void Client::handleMessage(const std::string &msg){
             Avatar *newUser = nullptr;
             const Point p(x, y);
             if (name == _username) {
+                if (msgCode == SV_LOCATION_INSTANT) {
+                    _pendingCharLoc = p;
+                    setEntityLocation(&_character, p);
+                }
                 if (p.x == _character.location().x)
                     _pendingCharLoc.x = p.x;
                 if (p.y == _character.location().y)
@@ -269,6 +274,8 @@ void Client::handleMessage(const std::string &msg){
                     addUser(name, p);
 
                 _otherUsers[name]->destination(p);
+                if (msgCode == SV_LOCATION_INSTANT)
+                    setEntityLocation(_otherUsers[name], p);
             }
 
             // Unwatch objects if out of range

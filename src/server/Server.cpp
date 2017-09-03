@@ -49,8 +49,6 @@ _loop(false),
 _running(false),
 _mapX(0),
 _mapY(0),
-_newPlayerSpawnLocation(0, 0),
-_newPlayerSpawnRange(0),
 _debug("server.log"),
 _userFilesPath("Users/"),
 _lastSave(_time),
@@ -255,19 +253,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
     const bool userExisted = readUserData(newUser);
     if (!userExisted) {
         newUser.setClass(User::Class(rand() % User::NUM_CLASSES));
-        Point newLoc;
-        size_t attempts = 0;
-        static const size_t MAX_ATTEMPTS = 1000;
-        do {
-            if (attempts > MAX_ATTEMPTS){
-                _debug("Failed to find valid spawn location for user", Color::FAILURE);
-                return;
-            }
-            _debug << "Attempt #" << ++attempts << " at placing new user" << Log::endl;
-            newLoc.x = (randDouble() * 2 - 1) * _newPlayerSpawnRange + _newPlayerSpawnLocation.x;
-            newLoc.y = (randDouble() * 2 - 1) * _newPlayerSpawnRange + _newPlayerSpawnLocation.y;
-        } while (!isLocationValid(newLoc, User::OBJECT_TYPE));
-        newUser.location(newLoc);
+        newUser.moveToSpawnPoint();
         _debug << "New";
     } else {
         _debug << "Existing";

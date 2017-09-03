@@ -617,14 +617,14 @@ void Server::loadData(const std::string &path){
 
         auto elem = xr.findChild("newPlayerSpawn");
 
-        if (! xr.findAttr(elem, "x", _newPlayerSpawnLocation.x) ||
-            ! xr.findAttr(elem, "y", _newPlayerSpawnLocation.y)){
+        if (! xr.findAttr(elem, "x", User::newPlayerSpawn.x) ||
+            ! xr.findAttr(elem, "y", User::newPlayerSpawn.y)){
                 _debug("New-player spawn point missing or incomplete.", Color::RED);
                 break;
         }
 
-        if (! xr.findAttr(elem, "range", _newPlayerSpawnRange))
-            _newPlayerSpawnRange = 0;
+        if (! xr.findAttr(elem, "range", User::spawnRadius))
+            User::spawnRadius = 0;
 
         elem = xr.findChild("size");
         if (elem == nullptr || !xr.findAttr(elem, "x", _mapX) || !xr.findAttr(elem, "y", _mapY)) {

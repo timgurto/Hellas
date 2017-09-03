@@ -43,7 +43,7 @@ public:
         _server->sendMessage(socket, code, args);
     }
     void changePlayerSpawn(const Point &location, double range = 0){
-        _server->_newPlayerSpawnLocation = location; _server->_newPlayerSpawnRange = range; }
+        User::newPlayerSpawn = location; User::spawnRadius = range; }
 
     void nop(){ _server->mapX(); }
 

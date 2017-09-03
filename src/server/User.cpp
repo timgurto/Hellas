@@ -14,6 +14,9 @@ Stats User::BASE_STATS;
 std::map<User::Class, std::string> User::CLASS_NAMES;
 std::map<std::string, User::Class> User::CLASS_CODES;
 
+Point User::newPlayerSpawn = {};
+double User::spawnRadius = 0;
+
 User::User(const std::string &name, const Point &loc, const Socket &socket):
 Object(&OBJECT_TYPE, loc),
 
@@ -385,8 +388,9 @@ void User::onHealthChange(){
 
 void User::onDeath(){
     // Handle respawn etc.
-    health(maxHealth());
+    moveToSpawnPoint();
 
+    health(maxHealth());
     onHealthChange();
 }
 
@@ -484,4 +488,26 @@ void User::onOutOfRange(const Entity &rhs) const{
 
 Message User::outOfRangeMessage() const{
     return Message(SV_USER_OUT_OF_RANGE, name());
+}
+
+void User::moveToSpawnPoint() {
+    Server &server = Server::instance();
+
+    Point newLoc;
+    size_t attempts = 0;
+    static const size_t MAX_ATTEMPTS = 1000;
+    do {
+        if (attempts > MAX_ATTEMPTS) {
+            server._debug("Failed to find valid spawn location for user", Color::FAILURE);
+            return;
+        }
+        server._debug << "Attempt #" << ++attempts << " at placing new user" << Log::endl;
+        newLoc.x = (randDouble() * 2 - 1) * spawnRadius + newPlayerSpawn.x;
+        newLoc.y = (randDouble() * 2 - 1) * spawnRadius + newPlayerSpawn.y;
+    } while (!server.isLocationValid(newLoc, User::OBJECT_TYPE));
+    auto oldLoc = location();
+    location(newLoc);
+
+    server.broadcastToArea(oldLoc, SV_LOCATION_INSTANT, makeArgs(name(), location().x, location().y));
+    server.broadcastToArea(location(), SV_LOCATION_INSTANT, makeArgs(name(), location().x, location().y));
 }

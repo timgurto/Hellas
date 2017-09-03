@@ -129,8 +129,6 @@ private:
     This happens not once the client connects, but rather when a CL_I_AM message is received.
     */
     void addUser(const Socket &socket, const std::string &name);
-    Point _newPlayerSpawnLocation;
-    double _newPlayerSpawnRange;
     void checkSockets();
 
     // Remove traces of a user who has disconnected.
