@@ -179,6 +179,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_CANNOT_CEDE:
         case SV_NO_ACTION:
         case SV_KING_CANNOT_LEAVE_CITY:
+        case SV_ALREADY_IN_CITY:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
@@ -405,6 +406,7 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
             _character.cityName(cityName);
+            _debug("You have joined the city of " + cityName);
             break;
         }
 
@@ -1220,6 +1222,7 @@ void Client::initializeMessageNames(){
     _messageCommands["cityWar"] = CL_DECLARE_WAR_ON_CITY;
     _messageCommands["cede"] = CL_CEDE;
     _messageCommands["cquit"] = CL_LEAVE_CITY;
+    _messageCommands["recruit"] = CL_RECRUIT;
 
     _messageCommands["say"] = CL_SAY;
     _messageCommands["s"] = CL_SAY;
@@ -1272,6 +1275,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_CANNOT_CEDE] = "You can't cede that to your city.";
     _errorMessages[SV_NO_ACTION] = "That object has no action to perform.";
     _errorMessages[SV_KING_CANNOT_LEAVE_CITY] = "A king cannot leave his city.";
+    _errorMessages[SV_ALREADY_IN_CITY] = "That player is already in a city.";
 }
 
 void Client::performCommand(const std::string &commandString){

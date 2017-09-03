@@ -922,6 +922,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_RECRUIT:
+        {
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
+            auto username = std::string{ buffer };
+            iss >> del;
+            if (del != MSG_END)
+                return;
+            handle_CL_RECRUIT(*user, username);
+            break;
+        }
+
         case CL_SAY:
         {
             iss.get(buffer, BUFFER_SIZE, MSG_END);
@@ -1096,6 +1107,25 @@ void Server::handle_CL_PERFORM_OBJECT_ACTION(User & user, size_t serial, const s
     }
 
     objType.action().function(*obj, user, textArg);
+}
+
+void Server::handle_CL_RECRUIT(User &user, const std::string & username) {
+    const auto &cityName = _cities.getPlayerCity(user.name());
+    if (cityName.empty()) {
+        sendMessage(user.socket(), SV_NOT_IN_CITY);
+        return;
+    }
+    if (!_cities.getPlayerCity(username).empty()) {
+        sendMessage(user.socket(), SV_ALREADY_IN_CITY);
+        return;
+    }
+    const auto *pTargetUser = getUserByName(username);
+    if (pTargetUser == nullptr) {
+        sendMessage(user.socket(), SV_INVALID_USER);
+        return;
+    }
+
+    _cities.addPlayerToCity(*pTargetUser, cityName);
 }
 
 

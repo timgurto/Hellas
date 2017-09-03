@@ -106,6 +106,10 @@ enum MessageCode{
     // Arguments: username
     CL_TARGET_PLAYER = 51,
 
+    // "I want player ... to join my city"
+    // Arguments: username
+    CL_RECRUIT = 52,
+
     // "I want to declare war on ..."
     // Arguments: username
     CL_DECLARE_WAR_ON_PLAYER = 55,
@@ -448,7 +452,10 @@ enum MessageCode{
     SV_NO_ACTION = 953,
 
     // The user tried to leave a city while being its king.
-    SV_KING_CANNOT_LEAVE_CITY,
+    SV_KING_CANNOT_LEAVE_CITY = 954,
+
+    // The user tried to recruit a citizen of another city.
+    SV_ALREADY_IN_CITY = 955,
 
 
 

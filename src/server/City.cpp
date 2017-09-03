@@ -141,8 +141,7 @@ const City::Members &Cities::membersOf(const std::string &cityName) const{
     bool cityExists = it != _container.end();
     if (! cityExists){
         Server::debug()("Can't fetch members of a city that doesn't exist", Color::FAILURE);
-        //assert(false);
-        return{};
+        assert(false);
     }
     return it->second.members();
 }

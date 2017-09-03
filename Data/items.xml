@@ -34,8 +34,8 @@ Client only:
 <!--item id="copperBar"    name="Copper Bar"     sounds="metalBar"  stackSize="10" strength="10"/>
 <item id="tinRing"      name="Tin Ring"                          stackSize="1000" />
 <item id="copperRing"   name="Copper Ring"                       stackSize="1000" />
-<item id="charcoal"     name="Charcoal"                          stackSize="10" strength="3"/-->
-<item id="fig"          name="Fig"                               stackSize="10" />
+<item id="charcoal"     name="Charcoal"                          stackSize="10" strength="3"/>
+<item id="fig"          name="Fig"                               stackSize="10" /-->
 <item id="flax"         name="Flax"                              stackSize="10" strength="1" />
 <item id="linenThread"  name="Linen Thread"                      stackSize="10" />
 <!--item id="linenCloth"   name="Linen Cloth"                       stackSize="10" /-->
@@ -55,7 +55,7 @@ Client only:
 <item id="woodenStatue" name="Wooden Statue"  />
 <item id="lumber"       name="Lumber"                            constructs="post"           stackSize="10" strength="4" />
 
-<item id="figSeeds"     name="Fig Seeds"                         constructs="figTree0"       stackSize="10"/>
+<!--item id="figSeeds"     name="Fig Seeds"                         constructs="figTree0"       stackSize="10"/-->
 <item id="flaxSeeds"    name="Flax Seeds"                        constructs="flaxCrop0"      stackSize="10"/>
 
 <!--item id="tinTube"      name="Tin Tube" />
