@@ -433,7 +433,6 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_KING:
         {
-            _debug("Received SV_KING");
             std::string username;
             readString(singleMsg, username, MSG_END);
             singleMsg >> del;
@@ -1161,7 +1160,6 @@ void Client::handle_SV_NO_CITY(const std::string &username) {
 }
 
 void Client::handle_SV_KING(const std::string username) {
-    _debug("Handling SV_KING");
     if (username == _username){
         _character.setAsKing();
         return;
@@ -1219,6 +1217,7 @@ void Client::initializeMessageNames(){
     _messageCommands["mount"] = CL_MOUNT;
     _messageCommands["dismount"] = CL_DISMOUNT;
     _messageCommands["war"] = CL_DECLARE_WAR_ON_PLAYER;
+    _messageCommands["cityWar"] = CL_DECLARE_WAR_ON_CITY;
     _messageCommands["cede"] = CL_CEDE;
     _messageCommands["cquit"] = CL_LEAVE_CITY;
 

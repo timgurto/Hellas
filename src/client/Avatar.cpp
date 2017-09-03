@@ -57,7 +57,7 @@ void Avatar::draw(const Client &client) const{
     namePosition.x -= nameLabel.width() / 2;
 
     Point cityPosition;
-    bool shouldDrawCityName = (! _city.empty()) && (_name != client.username());
+    bool shouldDrawCityName = (! _city.empty()) /*&& (_name != client.username())*/;
     if (shouldDrawCityName){
         client._debug << "Drawing " << _name << "; king = " << (_isKing ? "true" : "false") << Log::endl;
         auto cityText = std::string{};
