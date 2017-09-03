@@ -1,10 +1,11 @@
 <root>
 
-<entry name="Combat" id="0">
-    <paragraph order=1  text="Players can engage in combat with enemy players, and with NPCs.  To attack an enemy, first target it by right-clicking on it.  Once targeted, whenever you are close enough to the enemy, you will automatically strike it at regular intervals." />
+<entry order=1 name="Combat"    >
+    <paragraph order=1  text="Players can engage in combat with enemy players and objects, and with NPCs.  To attack an enemy, first target it by right-clicking on it.  Once targeted, whenever you are close enough to the enemy, you will automatically strike it at regular intervals." />
+    <paragraph order=1  text="It is not necessary to have a weapon equipped in order to attack an enemy." />
 </entry>
 
-<entry name="Player stats" id="0">
+<entry order=2 name="Stats"    >
     <paragraph order=1  text="There are a number of player stats that impact effectiveness in combat.  They can be modified by equipping gear.  These stats are:" />
     <paragraph order=2  text="Health: the total damage that can be received before dying." />
     <paragraph order=3  text="Attack: the amount of damage done by one strike." />
@@ -12,14 +13,14 @@
     <paragraph order=5  text="Speed: how fast you walk.  Gear will modify this by way of a multiplier." />
 </entry>
 
-<entry name="Objects" id="0">
+<entry order=3 name="Objects"    >
     <paragraph order=1  text="Objects are non-living things that exist in the world and have a specific location and shape.  Some occur naturally, such as trees; others can be created by players.  The two means for players to create objects are 'placement' and 'construction'." />
     <paragraph order=2  heading="Placement"
                         text="Some items can be placed into the world as objects.  If an item has this ability, then its tooltip will include 'Right click to place <Object>'." />
     <paragraph order=3  text="To place an object, right-click the item in your inventory.  The mouse cursor will now show a footprint of how large the object will be.  Click on the ground to place it; note that placement may take some time, depending on the object.  The placement area must be clear of any obstacles, and close to the player; the footprint will turn red if it is too far away.  It must also be a terrain type that is compatible with the object." />
     <paragraph order=4  heading="Construction"
                         text="Some objects can be constructed from scratch.  A construction site is designated, and then materials must be added before the object is fully functional." />
-    <paragraph order=5  text="To construct an object, press 'B' or click on the 'Build window' button on the toolbar.  This will bring up a list of all construction projects that you can undertake.  Click on one, then place the construction site just as you would when placing an object, as described above." />
+    <paragraph order=5  text="To construct an object, press 'B' or click on the 'Build window' button on the toolbar.  This will bring up a list of all construction projects that you have unlocked.  Click on one, then place the construction site just as you would when placing an object, as described above." />
     <paragraph order=6  text="Once a construction site has been designated, materials can be added.  Right-click on the site, and you will see a list of items required to complete the object.  To add an item, move it from your inventory into the item slot in the object window." />
     <paragraph order=7  heading="Ownership"
                         text="Objects can be owned by individual players or cities, or be unowned.  An object's owner can be seen in the tooltip when the mouse cursor is over it." />
@@ -28,11 +29,11 @@
                         text="If an object has any actions available, they can be accessed through the object window.  To bring up an object window, make sure you are close to the object in question and right-click on it." />
 </entry>
 
-<entry name="Items" id="0">
+<entry order=4 name="Items"    >
     <paragraph order=1  text="asdf" />
 </entry>
 
-<entry name="Cities" id="0">
+<entry order=5 name="Cities"    >
     <paragraph order=1  text="A city is a group of players who are joined together in a single diplomatic unit.  A player's city is displayed underneath their name.  When a new player begins, he is not in any city." />
     <paragraph order=2  heading="Foundation"
                         text="A city can be founded at an Altar of Athena.  The altar's object window allows the new city's name to be entered.  The player who worships at the altar will become King, and the city will stand only as long as his Altar of Athena does." />
@@ -44,22 +45,21 @@
     <paragraph order=6  text="Note that a king cannot leave his city." />
 </entry>
 
-<entry name="War" id="0">
+<entry order=6 name="War"    >
     <paragraph order=1  text="At any given time, two players are at peace or at war.  When at war, " />
     <paragraph order=2  text="Personal wars" />
     <paragraph order=3  text="Cities at war" />
 </entry>
 
-<entry name="Altars" id="0">
+<entry order=7 name="Altars"    >
     <paragraph order=1  text="Altars are objects that grant special benefits to players.  Each player may own only a single altar at any given time." />
     <paragraph order=2  heading="Worshipping" 
-                        text="To gain the benefit of an altar, right-click the altar and click the 'Worship' button." />
-    <paragraph order=3  text="This requires that you have permission to use it.  Each time you worship at a shrine, it also costs you an animal carcass." />
+                        text="To gain the benefit of an altar, right-click the altar and click the 'Worship' button.  This requires that you have permission to use it." />
     <paragraph order=4  heading="Uniqueness"
                         text="Because each player is limited to a single altar under his ownership, altars are the only objects that cannot be ceded to one's city." />
 </entry>
 
-<entry name="Unlocking" id="0">
+<entry order=8 name="Unlocking"    >
     <paragraph order=1  text="asdf" />
 </entry>
 

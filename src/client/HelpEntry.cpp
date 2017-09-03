@@ -99,8 +99,10 @@ void HelpEntry::draw(List * page) const {
 }
 
 void HelpEntries::draw(const std::string & entryName, List * page) const {
-    auto it = _container.find({ "", entryName });
-    if (it == _container.end())
-        return;
-    it->draw(page);
+    for (const auto &entry : _container) {
+        if (entry.name() == entryName) {
+            entry.draw(page);
+            return;
+        }
+    }
 }

@@ -16,17 +16,17 @@ struct Paragraph {
 
 class HelpEntry {
 public:
-    HelpEntry(const std::string &id, const std::string &name) : _id(id), _name(name) {}
+    HelpEntry(size_t order, const std::string &name) : _order(order), _name(name) {}
 
     const std::string &name() const { return _name; }
 
-    bool operator<(const HelpEntry &rhs) const { return _name < rhs._name; }
+    bool operator<(const HelpEntry &rhs) const { return _order < rhs._order; }
 
     void addParagraph(size_t order, const std::string &heading, const std::string &text);
     void draw(List *page) const;
 
 private:
-    std::string _id;
+    size_t _order;
     std::string _name;
 
     std::set<Paragraph> _paragraphs;
