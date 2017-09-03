@@ -63,12 +63,18 @@ void Entity::markForRemoval(){
     Server::_instance->_entitiesToRemove.push_back(this);
 }
 
+void Entity::broadcastHealth() const {
+    Server::_instance->broadcastToArea(_location, SV_ENTITY_HEALTH, makeArgs(_serial, _health));
+}
+
 void Entity::reduceHealth(int damage){
     if (damage >= static_cast<int>(_health)) {
         _health = 0;
+        broadcastHealth();
         onDeath();
     } else if (damage != 0) {
         _health -= damage;
+        broadcastHealth();
     }
 }
 

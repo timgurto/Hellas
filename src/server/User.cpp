@@ -513,3 +513,8 @@ void User::moveToSpawnPoint() {
     server.broadcastToArea(oldLoc, SV_LOCATION_INSTANT, makeArgs(name(), location().x, location().y));
     server.broadcastToArea(location(), SV_LOCATION_INSTANT, makeArgs(name(), location().x, location().y));
 }
+
+void User::broadcastHealth() const {
+    Server::_instance->broadcastToArea(location(), SV_PLAYER_HEALTH,
+        makeArgs(_name, health()));
+}

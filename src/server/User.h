@@ -184,6 +184,8 @@ public:
     static double spawnRadius;
     void moveToSpawnPoint();
 
+    void broadcastHealth() const override;
+
     struct compareXThenSerial{ bool operator()( const User *a, const User *b) const; };
     struct compareYThenSerial{ bool operator()( const User *a, const User *b) const; };
     typedef std::set<const User*, User::compareXThenSerial> byX_t;
