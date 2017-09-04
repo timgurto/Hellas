@@ -225,11 +225,14 @@ bool User::hasTool(const std::string &tagName) const{
     }
 
     // Check nearby objects
+    // Note that checking collision chunks means ignoring non-colliding objects.
     auto superChunk = Server::_instance->getCollisionSuperChunk(location());
     for (CollisionChunk *chunk : superChunk)
         for (const auto &pair : chunk->entities()) {
             const Entity *pEnt = pair.second;
             const Object *pObj = dynamic_cast<const Object *>(pEnt);
+            if (pObj == nullptr)
+                continue;
             if (!pObj->isBeingBuilt() &&
                 pObj->type()->isTag(tagName) &&
                 distance(pObj->collisionRect(), collisionRect()) < Server::ACTION_DISTANCE)

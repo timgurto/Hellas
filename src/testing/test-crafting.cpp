@@ -17,7 +17,7 @@ TEST_CASE("Recipes can be known by default"){
     CHECK(itemInFirstSlot->id() == "box");
 }
 
-TEST_CASE("Terrain as tool"){
+TEST_CASE("Terrain as tool", "[tool]"){
     TestServer s = TestServer::WithData("daisy_chain");
     TestClient c = TestClient::WithData("daisy_chain");
     WAIT_UNTIL (s.users().size() == 1);
@@ -53,7 +53,7 @@ TEST_CASE("Crafting is allowed if materials will vacate a slot"){
     User &u = s.getFirstUser();
     const ServerItem &meat = *s.items().find(ServerItem("meat"));
     u.giveItem(&meat, User::INVENTORY_SIZE);
-    
+
     // When he tries to craft cooked meat
     c.sendMessage(CL_CRAFT, "cookedMeat");
     WAIT_UNTIL (u.action() == User::Action::CRAFT) ; // Wait for gathering to start
@@ -63,4 +63,20 @@ TEST_CASE("Crafting is allowed if materials will vacate a slot"){
     const ServerItem *itemInFirstSlot = u.inventory()[0].first;
     REQUIRE(itemInFirstSlot != nullptr);
     CHECK(itemInFirstSlot->id() == "cookedMeat");
+}
+
+TEST_CASE("NPCs don't cause tool checks to crash", "[tool][crash]") {
+    // Given a server and client with an NPC type defined;
+    auto s = TestServer::WithData("wolf");
+    auto c = TestClient::WithData("wolf");
+    WAIT_UNTIL(s.users().size() == 1);
+    const auto &user = s.getFirstUser();
+
+    // And an NPC;
+    s.addNPC("wolf", user.location() + Point{ 0,5 });
+
+    // When hasTool() is called
+    user.hasTool("fakeTool");
+
+    // Then the server doesn't crash
 }
