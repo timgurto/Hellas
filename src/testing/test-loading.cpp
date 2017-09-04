@@ -76,7 +76,7 @@ TEST_CASE("NPC spawners work"){
     WAIT_UNTIL(s.entities().size() == 3);
 }
 
-TEST_CASE("Clients load map properly"){
+TEST_CASE("Clients load map properly") {
     // Given a server and client, with a 101x101 map on which users spawn at the midpoint
     TestServer s = TestServer::WithData("big_map");
     TestClient c = TestClient::WithData("big_map");
@@ -86,4 +86,10 @@ TEST_CASE("Clients load map properly"){
 
     // And the user spawned in the correct place
     WAIT_UNTIL(c->character().location() == Point(1616, 1616));
+}
+
+TEST_CASE("Help text is valid XML") {
+    auto c = TestClient{};
+    const auto &helpTextEntries = c->helpEntries();
+    CHECK(helpTextEntries.begin() != helpTextEntries.end());
 }
