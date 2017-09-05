@@ -36,8 +36,6 @@ void Client::updateMapWindow(Element &){
     }
 
     client.addMapPin(client._character.location(), Color::COMBATANT_SELF);
-
-    client._debug << "Updated map; " << client._mapPins->children().size() << " pins" << Log::endl;
 }
 
 void Client::addMapPin(const Point &position, const Color &color){
