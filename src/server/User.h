@@ -182,7 +182,7 @@ public:
 
     static Point newPlayerSpawn;
     static double spawnRadius;
-    void moveToSpawnPoint();
+    void moveToSpawnPoint(bool isNewPlayer = false);
 
     void broadcastHealth() const override;
 

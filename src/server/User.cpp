@@ -495,7 +495,7 @@ Message User::outOfRangeMessage() const{
     return Message(SV_USER_OUT_OF_RANGE, name());
 }
 
-void User::moveToSpawnPoint() {
+void User::moveToSpawnPoint(bool isNewPlayer) {
     Server &server = Server::instance();
 
     Point newLoc;
@@ -512,6 +512,9 @@ void User::moveToSpawnPoint() {
     } while (!server.isLocationValid(newLoc, User::OBJECT_TYPE));
     auto oldLoc = location();
     location(newLoc);
+
+    if (isNewPlayer)
+        return;
 
     server.broadcastToArea(oldLoc, SV_LOCATION_INSTANT, makeArgs(name(), location().x, location().y));
     server.broadcastToArea(location(), SV_LOCATION_INSTANT, makeArgs(name(), location().x, location().y));

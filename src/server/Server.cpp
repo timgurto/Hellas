@@ -253,7 +253,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
     const bool userExisted = readUserData(newUser);
     if (!userExisted) {
         newUser.setClass(User::Class(rand() % User::NUM_CLASSES));
-        newUser.moveToSpawnPoint();
+        newUser.moveToSpawnPoint(true);
         _debug << "New";
     } else {
         _debug << "Existing";
