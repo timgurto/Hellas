@@ -162,7 +162,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 163,Generalize object components,5,8,Code quality,,,,
 164,Server sometimes gets in infinite loop when a client disconnects,144,21,Bug,,TRUE,,
 165,Convey NPC difficulty without levels,5,34,Usability,,,,3
-166,Design trapped-container tech tree,8,34,Content,171,,,
 167,Loot random item(s?) on container destruction,55,5,Feature,15,TRUE,,1
 168,"On PvP kill, steal skill (they lose random leaf skill, you gain items that pay for it)",34,21,Feature,26,,,2
 169,Add a spectrum of container strengths,13,13,Content,,,,
@@ -178,11 +177,22 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 180,"Update map pins at limited frequency, e.g., 1s",2,5,Performance,,,,
 181,Send object-movement updates to owner and city's members,5,3,Bug,,,,
 182,Maintain only one set of scroll-bar triangle images,2,2,Performance,,,,
-182,"Add fake latency by default, for testing",55,34,Usability,,,,1
-183,Animate lava under volcano terrain,13,2,Aesthetics,,,,
-184,Require map to be explored,21,21,Feature,,,,
-185,"Add terrain-specific weather particles, like leaves or rain",13,8,Aesthetics,,,,
-186,Add gear preview to web docs,13,13,Documentation,,,,
-187,Add unlock info to web docs,8,5,Documentation,,,,
-188,Add transform images to web docs,3,34,Documentation,,,,
-189,"Add recipes using the item, to web docs",13,5,Documentation,,TRUE,,
+183,"Add fake latency by default, for testing",55,34,Usability,,,,1
+184,Animate lava under volcano terrain,13,2,Aesthetics,,,,
+185,Require map to be explored,21,21,Feature,,,,
+186,"Add terrain-specific weather particles, like leaves or rain",13,8,Aesthetics,,,,
+187,Add gear preview to web docs,13,13,Documentation,,,,
+188,Add unlock info to web docs,8,5,Documentation,,,,
+189,Add transform images to web docs,3,34,Documentation,,,,
+190,"Add recipes using the item, to web docs",13,5,Documentation,,TRUE,,
+191,Make city ownership persistent,21,21,Bug,,,,1
+192,Fix allowed-terrain lists for objects,8,5,Bug,,,,1
+193,Make kingship persistent,13,5,Bug,,,,1
+194,Ensure fellow citizens can be seen on the map,13,21,Bug,,,,1
+195,Make NPC movement smooth,5,13,Aesthetics,,,,
+196,Container slots are sometimes invisible or broken,89,21,Bug,,,,1
+197,Allow ceding of unfinished objects,21,5,Feature,,,,1
+198,"Unowned-object colors sometimes green, sometimes grey",5,13,Bug,,,,
+199,Provide list of online players,13,13,Usability,,,,
+200,Make login screen behave on disconnect,8,21,Usability,,,,1
+201,Lower object names,8,2,Aesthetics,,,,1
