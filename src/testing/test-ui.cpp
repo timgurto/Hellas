@@ -149,7 +149,7 @@ TEST_CASE("Gear window can be viewed","[gear]"){
     WAIT_UNTIL(c.gearWindow()->texture());
 }
 
-TEST_CASE("New clients survive recipe unlocks", "[.flaky-vs2015]"){
+TEST_CASE("New clients survive recipe unlocks", ""){
     // Given a client and server
     TestServer s = TestServer::WithData("secret_bread");
     TestClient c = TestClient::WithData("secret_bread");

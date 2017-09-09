@@ -73,7 +73,7 @@ TEST_CASE("Clients are told of existing wars on login", "[war][remote]"){
     WAIT_UNTIL(alice->isAtWarWith(bob));
 }
 
-TEST_CASE("Wars cannot be redeclared", "[war][.flaky-vs2015"){
+TEST_CASE("Wars cannot be redeclared", "[war]"){
     // Given Alice and Bob are at war, and Alice is logged in
     TestServer s;
     TestClient alice = TestClient::WithUsername("alice");

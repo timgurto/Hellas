@@ -60,7 +60,7 @@ TEST_CASE("Clients discern NPCs with no loot", "[loot]"){
     CHECK_FALSE(clientAnt.lootable());
 }
 
-TEST_CASE("Chance for strength-items as loot from object", "[loot][strength][.flaky-vs2015]"){
+TEST_CASE("Chance for strength-items as loot from object", "[loot][strength]"){
     // Given a running server and client;
     // And a snowflake item with 1 health;
     // And a snowman object type made of 1000 snowflakes;
@@ -110,7 +110,7 @@ TEST_CASE("Chance for strength-items as loot from object", "[loot][strength][.fl
     }
 }
 
-TEST_CASE("Looting from a container", "[loot][container][only][.flaky-vs2015]"){
+TEST_CASE("Looting from a container", "[loot][container][only]"){
     // Given a running server and client;
     // And a chest object type with 10 container slots;
     // And a gold item that stacks to 100;
@@ -207,7 +207,7 @@ TEST_CASE("Looting from a container", "[loot][container][only][.flaky-vs2015]"){
     }
 }
 
-TEST_CASE("New users are alerted to lootable objects", "[loot][.flaky-vs2015]"){
+TEST_CASE("New users are alerted to lootable objects", "[loot]"){
     // Given a running server;
     // And a snowflake item with 1 health;
     // And a snowman object type made of 1000 snowflakes;
