@@ -30,7 +30,10 @@ void Client::populateBuildList(){
     assert(_buildList != nullptr);
     _buildList->clearChildren();
     for (const std::string &id : _knownConstructions){
-        const ClientObjectType *ot = *_objectTypes.find(&ClientObjectType(id));
+        auto it = _objectTypes.find(&ClientObjectType(id));
+        if (it == _objectTypes.end())
+            continue;
+        const auto ot = *it;
         Element *listElement = new Element(Rect());
         _buildList->addChild(listElement);
         Label *label = new Label(Rect(2, 0, listElement->width(), listElement->height()),
