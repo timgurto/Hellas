@@ -71,6 +71,7 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="items.js"></script>
     <script type="text/javascript" src="objects.js"></script>
+    <script type="text/javascript" src="tags.js"></script>
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -89,7 +90,7 @@
                 $("#tags").hide();
             else{
                 for (var i = 0; i < obj.tags.length; ++i)
-                    $("#tagsList").append('<li>' + tagLink(obj.tags[i]) + '</li>');
+                    $("#tagsList").append('<li>' + tagLink(findTag(obj.tags[i])) + '</li>');
             }
             
             // Gathering
@@ -97,7 +98,7 @@
                 $("#gathering").hide();
             else {
                 if ("gatherReq" in obj)
-                    $("#gatherReq").html("Required tool: " + tagLink(obj.gatherReq));
+                    $("#gatherReq").html("Required tool: " + tagLink(findTag(obj.gatherReq)));
                 if ("gatherTime" in obj)
                     $("#gatherTime").html("Takes " + displayTimeAsHMS(obj.gatherTime));
                 if ("yield" in obj)
@@ -114,7 +115,7 @@
                 $("#construction").hide();
             else{
                 if ("constructionReq" in obj)
-                    $("#constructionReq").html("Required tool: " + tagLink(obj.constructionReq));
+                    $("#constructionReq").html("Required tool: " + tagLink(findTag(obj.constructionReq)));
                 if (itemsThatConstructThisObject.length == 0)
                     $("#constructsFromItem").hide();
                 else{

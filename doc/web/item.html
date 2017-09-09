@@ -53,6 +53,7 @@
     <script type="text/javascript" src="items.js"></script>
     <script type="text/javascript" src="objects.js"></script>
     <script type="text/javascript" src="npcs.js"></script>
+    <script type="text/javascript" src="tags.js"></script>
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -75,7 +76,7 @@
                 $("#tags").hide();
             else{
                 for (var i = 0; i < item.tags.length; ++i)
-                    $("#tagsList").append('<li>' + tagLink(item.tags[i]) + '</li>');
+                    $("#tagsList").append('<li>' + tagLink(findTag(item.tags[i])) + '</li>');
             }
 
             // Construction
@@ -114,7 +115,7 @@
                     for (var i = 0; i < item.craftingTools.length; ++i){
                         var tool = item.craftingTools[i];
                         $("#toolsList").append('<li>'
-                                                + tagLink(tool)
+                                                + tagLink(findTag(tool))
                                             + '</li>');
                     }
                 }

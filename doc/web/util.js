@@ -37,6 +37,10 @@ function findNPC(id = getID()){
     return findByID(npcs, id);
 }
 
+function findTag(id = getID()){
+    return findByID(tags, id);
+}
+
 
 function findByCustom(collection, key, keyName){
     var i;
@@ -126,8 +130,8 @@ function itemLink(item){
 
 function tagLink(tag){
     var linkHTML = 
-        '<a href="tag.html?id=' + tag + '">'
-            + tag
+        '<a href="tag.html?id=' + tag.id + '">'
+            + tag.name
         + '</a>';
     return linkHTML;
 }

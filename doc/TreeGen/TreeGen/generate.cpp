@@ -35,6 +35,7 @@ int main(int argc, char **argv){
     Nodes nodes;
     std::set<Edge > blacklist, extras;
     std::map<std::string, std::string> collapses;
+    std::map<std::string, std::string> tagNames;
 
     std::string colorScheme = "rdylgn6";
     std::map<EdgeType, size_t> edgeColors;
@@ -178,6 +179,7 @@ int main(int argc, char **argv){
                     continue;
                 r.tools.insert(tool);
                 toolFor[tool].insert(product);
+                tagNames[tool] = tool;
             }
 
             std::string s;
@@ -254,8 +256,10 @@ int main(int argc, char **argv){
 
             std::set<std::string> tags;
             for (auto tag : xr.getChildren("tag", elem))
-                if (xr.findAttr(tag, "name", s))
+                if (xr.findAttr(tag, "name", s)) {
                     tags.insert(s);
+                    tagNames[s] = s;
+                }
             jw.addArrayAttribute("tags", tags);
             
             if (xr.findAttr(elem, "stackSize", s)) jw.addAttribute("stackSize", s);
@@ -342,6 +346,7 @@ int main(int argc, char **argv){
                 } else
                     edges.insert(Edge(it->second, name, GATHER_REQ));
                 jw.addAttribute("gatherReq", s);
+                tagNames[s] = s;
             }
 
             if (xr.findAttr(elem, "constructionReq", s)){
@@ -352,6 +357,7 @@ int main(int argc, char **argv){
                 } else
                     edges.insert(Edge(it->second, name, CONSTRUCTION_REQ));
                 jw.addAttribute("constructionReq", s);
+                tagNames[s] = s;
             }
 
             if (!xr.findAttr(elem, "damageParticles", s))
@@ -421,8 +427,10 @@ int main(int argc, char **argv){
 
             std::set<std::string> tags;
             for (auto tag : xr.getChildren("tag", elem))
-                if (xr.findAttr(tag, "name", s))
+                if (xr.findAttr(tag, "name", s)) {
                     tags.insert(s);
+                    tagNames[s] = s;
+                }
             jw.addArrayAttribute("tags", tags);
 
             auto container = xr.findChild("container", elem);
@@ -492,6 +500,36 @@ int main(int argc, char **argv){
             
             if (!missingImages.empty())
                 jw.addArrayAttribute("imagesMissing", missingImages);
+        }
+    }
+
+
+    // Load tag names
+    if (!xr.newFile(dataPath + "/tags.xml"))
+        std::cerr << "Failed to load tags.xml" << std::endl;
+    else {
+        for (auto elem : xr.getChildren("tag")) {
+            ID id;
+            if (!xr.findAttr(elem, "id", id))
+                continue;
+
+            std::string name;
+            if (!xr.findAttr(elem, "name", name))
+                continue;
+
+            tagNames[id] = name;
+        }
+    }
+
+
+    // Write tag names to JSON
+    {
+        JsonWriter jw("tags");
+        for (auto &pair : tagNames) {
+            jw.nextEntry();
+
+            jw.addAttribute("id", pair.first);
+            jw.addAttribute("name", pair.second);
         }
     }
 

@@ -33,20 +33,21 @@
     <script type="text/javascript" src="objects.js"></script>
     <script type="text/javascript" src="npcs.js"></script>
     <script type="text/javascript" src="tools.js"></script>
+    <script type="text/javascript" src="tags.js"></script>
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             loadNavBar();
         
-            var tag = getID();
+            var tag = findTag();
             
-            document.title = tag;
-            $("#title").html(tag);
+            document.title = tag.name;
+            $("#title").html(tag.name);
             
             // Objects
             var hideObjects = true;;
             for (object of objects)
-                if ("tags" in object && $.inArray(tag, object.tags) != -1){
+                if ("tags" in object && $.inArray(tag.id, object.tags) != -1){
                     $("#objects").append('<p>' + objectLink(object) + '</p>');
                     hideObjects = false;
                 }
@@ -55,14 +56,14 @@
             // Items
             var hideItems = true;;
             for (item of items)
-                if ("tags" in item && $.inArray(tag, item.tags) != -1){
+                if ("tags" in item && $.inArray(tag.id, item.tags) != -1){
                     $("#items").append('<p>' + itemLink(item) + '</p>');
                 hideItems = false;
                 }
             if (hideItems) $("#items").hide();
             
             // Crafting
-            var tool = findByCustom(tools, tag, "tag");
+            var tool = findByCustom(tools, tag.id, "tag");
             if (!("crafting" in tool))
                 $("#crafting").hide();
             else{

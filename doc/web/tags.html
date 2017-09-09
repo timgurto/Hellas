@@ -24,6 +24,7 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="items.js"></script>
     <script type="text/javascript" src="objects.js"></script>
+    <script type="text/javascript" src="tags.js"></script>
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript">    
         $(document).ready(function(){
@@ -63,7 +64,7 @@
             
             for (tag of keys){
                 var columnSelector = "#col" + currentColumn;
-                var entry = '<p>' + tagLink(tag);
+                var entry = '<p>' + tagLink(findTag(tag));
                 if (tags[tag] > 1)
                     entry += ' (' + tags[tag] + ')';
                 entry += '</p>';
