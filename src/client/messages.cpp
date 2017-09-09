@@ -58,7 +58,11 @@ void Client::handleMessage(const std::string &msg){
         std::istringstream singleMsg(buffer);
         //_debug(buffer, Color::CYAN);
         singleMsg >> del >> msgCode >> del;
+
+        _messagesReceivedMutex.lock();
         _messagesReceived.push_back(MessageCode(msgCode));
+        _messagesReceivedMutex.unlock();
+
         Color errorMessageColor = Color::FAILURE;
 
         switch(msgCode) {
