@@ -117,8 +117,10 @@ MessageCode TestClient::getNextMessage() const {
 }
 
 bool TestClient::waitForMessage(MessageCode desiredMsg, ms_t timeout) const {
-    std::lock_guard<std::mutex> guard(_client->_messagesReceivedMutex);
+    _client->_messagesReceivedMutex.lock();
     size_t currentSize = _client->_messagesReceived.size();
+    _client->_messagesReceivedMutex.unlock();
+
     for (ms_t startTime = SDL_GetTicks(); SDL_GetTicks() < startTime + timeout; ){
         if (messageWasReceivedSince(desiredMsg, currentSize))
             return true;
@@ -127,6 +129,7 @@ bool TestClient::waitForMessage(MessageCode desiredMsg, ms_t timeout) const {
 }
 
 bool TestClient::messageWasReceivedSince(MessageCode desiredMsg, size_t startingIndex) const{
+    std::lock_guard<std::mutex> guard(_client->_messagesReceivedMutex);
     const size_t NUM_MESSAGES = _client->_messagesReceived.size();
     if (NUM_MESSAGES > _client->_messagesReceived.size())
         FAIL("Message-count inconsistency");
