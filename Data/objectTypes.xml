@@ -218,7 +218,7 @@
 </objectType>
 
 <objectType id="wildFlax" name="Wild Flax"
-    canGather="1" gatherTime="3000"
+    canGather="1" gatherTime="3000" gatherReq="foraging"
     allowedTerrain="denseVeg" 
     xDrawOffset="-10" yDrawOffset="-10">
     <collisionRect x="-10" y="-10" w="20" h="20" />

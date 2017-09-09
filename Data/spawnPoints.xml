@@ -22,4 +22,11 @@
 <spawnPoint index="21" type="boar" quantity="20" radius="1000" respawnTime="60000" x="7880" y="4448" />
 <spawnPoint index="22" type="boar" quantity="20" radius="1000" respawnTime="60000" x="9040" y="5112" />
 <spawnPoint index="23" type="boar" quantity="20" radius="1000" respawnTime="60000" x="8640" y="7416" />
+<spawnPoint index="24" type="rock" quantity="50" radius="1500" respawnTime="60000" x="7388" y="4372" />
+<spawnPoint index="25" type="rock" quantity="50" radius="1500" respawnTime="60000" x="8184" y="5936" />
+<spawnPoint index="26" type="rock" quantity="50" radius="1500" respawnTime="60000" x="9304" y="6800" />
+<spawnPoint index="27" type="rock" quantity="50" radius="1500" respawnTime="60000" x="6032" y="9292" />
+<spawnPoint index="28" type="copper" quantity="20" radius="1000" respawnTime="60000" x="5976" y="9160" />
+<spawnPoint index="29" type="copper" quantity="20" radius="1000" respawnTime="60000" x="2140" y="9524" />
+<spawnPoint index="30" type="copper" quantity="20" radius="1000" respawnTime="60000" x="5640" y="7832" />
 </root>

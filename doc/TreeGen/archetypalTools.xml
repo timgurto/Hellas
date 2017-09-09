@@ -1,12 +1,33 @@
 <root>
 
-<tool id="carving"		archetype="item_stoneKnife" />
-<tool id="harvesting"   archetype="item_stoneKnife" />
+<tool id="carving"      archetype="item_stoneKnife" />
+<tool id="foraging"     archetype="item_stoneKnife" />
 <tool id="woodcutting"  archetype="item_stoneAxe" />
 <tool id="mining"       archetype="item_tinPick" />
 <tool id="planting"     archetype="item_stick" />
 <tool id="hammering"    archetype="item_copperHammer" />
-<tool id="anvil"        archetype="object_copperAnvil" />
+<tool id="carpentry"    archetype="item_tinSaw" />
+<tool id="fireHandling" archetype="item_leatherGloves" />
+<tool id="sewing"       archetype="item_boneNeedle" />
+
+<tool id="grinding1"         archetype="item_rock" />
+<tool id="grinding2"         archetype="object_grindstone" />
+<tool id="anvil1"            archetype="object_copperAnvil" />
+<tool id="smelting1"         archetype="object_oven" />
+<tool id="smelting2"         archetype="object_kiln" />
+<tool id="clayRefinement"    archetype="object_elutriator" />
+<tool id="tanning"           archetype="object_tannin" />
+<tool id="leatherStretching" archetype="object_stretchingFrame" />
+<tool id="woodTurning"       archetype="object_lathe" />
+
+<tool id="axeMould"     archetype="item_axeMould" />
+<tool id="hammerMould"  archetype="item_hammerMould" />
+<tool id="knifeMould"   archetype="item_knifeMould" />
+<tool id="pickMould"    archetype="item_pickMould" />
+<tool id="sawMould"     archetype="item_sawMould" />
+<tool id="scaleMould"   archetype="item_scaleMould" />
+<tool id="spearMould"   archetype="item_spearMould" />
+<tool id="tubeMould"    archetype="item_tubeMould" />
 
 <blacklist parent="object_tree"     child="item_stick" />
 <blacklist parent="object_copper"   child="item_rock" />
@@ -23,7 +44,7 @@
 
 <extra parent="item_leatherGloves" child="item_tinBar" />
 <extra parent="item_tinBar"        child="item_tinSaw" />
-<!--extra parent="item_tinBar"        child="item_tinTube" /-->
+<extra parent="item_tinBar"        child="item_tinTube" />
 <extra parent="item_water"         child="object_flaxCrop8" />
 
 <collapse id="object_figTree0" into="object_figTree8" />

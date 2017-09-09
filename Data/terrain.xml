@@ -49,8 +49,8 @@ frameTime          *
 <terrain index="R" id="volcanoFertile"  color="384F61" />
 <terrain index="N" id="volcanoRocky"    color="392354" />
 <terrain index="O" id="volcanoMountain" color="52234E" />
-<terrain index="P" id="water"           color="5870C1" frames="32" frameTime="200" />
-<terrain index="Q" id="deepWater"       color="45617C" frames="32" frameTime="200" />
+<terrain index="P" id="water"           color="5870C1" frames="32" frameTime="200" tag="waterSource" />
+<terrain index="Q" id="deepWater"       color="45617C" frames="32" frameTime="200" tag="waterSource" />
 
 <!--
 Default list applies to player avatars, and to all objects unless otherwise specified.
