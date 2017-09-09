@@ -1,28 +1,5 @@
 <root>
 
-<!--
-Both:
- - id
- - container
- - yield
- - collisionRect
- - deconstructs
- - isVehicle
- - gatherReq
-
-Client only:
- - name
- - xDrawOffset
- - yDrawOffset
- - isFlat
- - sounds
- - isDecoration (no tooltip)
-
-Server only:
- - constructionTimer
- - tag
--->
-
 <objectType id="stick" name="Stick"
     xDrawOffset="-10" yDrawOffset="-4"
     canGather="1" gatherTime="1000"
@@ -38,13 +15,6 @@ Server only:
     <yield id="rock" />
     <strength item="rock" quantity="1" />
 </objectType>
-
-<!--objectType
-    id="grass" name="Grass"
-    xDrawOffset="-7" yDrawOffset="-8"
-    allowedTerrain="grass"
-    decoration="1"
-/-->
 
 <objectType id="tree" name="Tree"
     xDrawOffset="-23" yDrawOffset="-57"
@@ -66,7 +36,7 @@ Server only:
     <strength item="tin" quantity="5" />
 </objectType>
 
-<!--objectType id="copper" name="Copper deposit"
+<objectType id="copper" name="Copper deposit"
     xDrawOffset="-14" yDrawOffset="-11"
     canGather="1" gatherTime="3000" gatherReq="mining"
     isFlat="1"
@@ -74,7 +44,7 @@ Server only:
     <yield id="copper" initialMean="4.5" initialSD="2" initialMin="1" />
     <yield id="rock" initialMean="1.5" initialSD="2" />
     <strength item="copper" quantity="5" />
-</objectType-->
+</objectType>
 
 <objectType id="oven" name="Oven"
     xDrawOffset="-14" yDrawOffset="-17" >
@@ -84,7 +54,7 @@ Server only:
     <unlockedBy gather="rock" />
     <strength item="rock" quantity="10" />
 </objectType>
-<!--objectType id="kiln" name="Kiln"
+<objectType id="kiln" name="Kiln"
     xDrawOffset="-13"
     yDrawOffset="-26" >
     <collisionRect x="-12" y="-4" w="27" h="10" />
@@ -94,7 +64,7 @@ Server only:
     <material id="crudeClay" quantity="12" />
     <unlockedBy recipe="brick" />
     <strength item="brick" quantity="20" />
-</objectType-->
+</objectType>
 
 <objectType id="clay" name="Clay Deposit"
     xDrawOffset="-12" yDrawOffset="-12"
@@ -112,7 +82,7 @@ Server only:
     <container slots="1" />
     <strength item="crudeClay" quantity="2" />
 </objectType>
-<!--objectType id="mediumPot" name="Medium Pot"
+<objectType id="mediumPot" name="Medium Pot"
     xDrawOffset="-19" yDrawOffset="-27"
     deconstructs="mediumPot" deconstructionTime="1000" >
     <collisionRect x="-13" y="-4" w="25" h="6" />
@@ -123,7 +93,7 @@ Server only:
     deconstructs="largePot" deconstructionTime="1000" >
     <container slots="10" />
     <strength item="clay" quantity="5" />
-</objectType-->
+</objectType>
 
 <objectType id="handCart" name="Trade Cart"
     xDrawOffset="-13" yDrawOffset="-16"
@@ -135,13 +105,13 @@ Server only:
     <strength item="lumber" quantity="8" />
 </objectType>
 
-<!--objectType id="elutriator" name="Elutriator"
+<objectType id="elutriator" name="Elutriator"
     xDrawOffset="-15" yDrawOffset="-21"
     deconstructs="elutriator" deconstructionTime="1000" >
     <tag name="clayRefinement" />
     <collisionRect x="-15" y="-4" w="31" h="8" />
     <strength item="crudeClay" quantity="4" />
-</objectType-->
+</objectType>
 
 <objectType id="palisadeEW" name="Palisade E/W"
     damageParticles="wood" 
@@ -162,7 +132,7 @@ Server only:
     <strength item="log" quantity="8" />
 </objectType>
 
-<!--objectType id="brickWallEW" name="Brick Wall E/W"
+<objectType id="brickWallEW" name="Brick Wall E/W"
     xDrawOffset="-60" yDrawOffset="-42" >
     <collisionRect x="-60" y="-2" w="122" h="6" />
     <material id="brick" quantity="12" />
@@ -177,7 +147,7 @@ Server only:
     <unlockedBy recipe="brick" chance="0.05" />
     <unlockedBy construction="brickWallEW" />
     <strength item="brick" quantity="12" />
-</objectType-->
+</objectType>
 
 <objectType id="post" name="Post"
     xDrawOffset="-4" yDrawOffset="-47"
@@ -186,8 +156,8 @@ Server only:
     <strength item="lumber" quantity="1" />
 </objectType>
 
-<!--objectType id="wildFigTree" name="Wild Fig Tree"
-    canGather="1" gatherTime="3000"
+<objectType id="wildFigTree" name="Wild Fig Tree"
+    canGather="1" gatherTime="3000" gatherReq="gathering"
     allowedTerrain="denseVeg" >
     <yield id="figSeeds" initialMean="1.2" initialSD="0.5" initialMin="1" />
     <strength item="log" quantity="1" />
@@ -245,7 +215,7 @@ Server only:
     <yield id="figSeeds" initialMean="0.4" initialSD="0.1" />
     <transform id="figTree5" whenEmpty="1" />
     <strength item="log" quantity="1" />
-</objectType-->
+</objectType>
 
 <objectType id="wildFlax" name="Wild Flax"
     canGather="1" gatherTime="3000"
@@ -320,7 +290,7 @@ Server only:
     <strength item="rope" quantity="2" />
 </objectType>
 
-<!--objectType id="lathe" name="Lathe"
+<objectType id="lathe" name="Lathe"
     constructionTime="0" >
     <material id="lumber" quantity="4" />
     <material id="rope" quantity="2" />
@@ -349,7 +319,7 @@ Server only:
     <unlockedBy recipe="copperBar" chance="0.1" />
     <unlockedBy recipe="copperHammer" />
     <strength item="copperBar" quantity="8" />
-</objectType-->
+</objectType>
 
 <objectType id="tannin" name="Pot of Tannin"
     constructionTime="1000" 
@@ -360,16 +330,16 @@ Server only:
 </objectType>
 
 <!-- isFlat: Given the sloping shape, all other objects should be drawn above it. -->
-<!--objectType id="pyramid" name="Pyramid"
+<objectType id="pyramid" name="Pyramid"
     isFlat = "1"
     isUnique = "1"
     xDrawOffset="-150" yDrawOffset="-150" >
     <collisionRect x="-150" y="-150" w="301" h="301" />
     <material id="brick" quantity="1" />
     <strength item="brick" quantity="1" />
-</objectType-->
+</objectType>
 
-<!--objectType id="woodenStatue" name="Wooden Statue"
+<objectType id="woodenStatue" name="Wooden Statue"
     constructionTime="0" deconstructs="woodenStatue" deconstructionTime="1000"
     damageParticles="wood" >
     <strength item="log" quantity="1" />
@@ -377,7 +347,7 @@ Server only:
 <objectType id="tinStatue" name="Tin Statue"
     constructionTime="0" deconstructs="tinStatue" deconstructionTime="1000" >
     <strength item="tinBar" quantity="5" />
-</objectType-->
+</objectType>
 
 <objectType id="respawnAltar" name="Altar to Hermes"
     xDrawOffset="-14" yDrawOffset="-22"
@@ -394,10 +364,10 @@ Server only:
     constructionTime="0" playerUnique="altar" >
     <action label="Worship" target="createCity" tooltip="Found a city" textInput="City name" />
     <onDestroy target="destroyCity" />
-    <!--material id="tinStatue" />
+    <material id="tinStatue" />
     <material id="brick" quantity="8" />
     <unlockedBy recipe="tinStatue" />
-    <strength item="brick" quantity="8" /-->
+    <strength item="brick" quantity="8" />
     
     <collisionRect x="-15" y="-4" w="30" h="8" />
     <material id="rock" />
