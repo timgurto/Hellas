@@ -1,232 +1,230 @@
 <root>
 
-<recipe id="stoneAxe"
-	time="4000" >
-    <material id="rock" />
-    <material id="stick" />
-    <tool class="grinding1" />
-    <unlockedBy gather="stick" />
-</recipe>
-<recipe id="tinAxe"
-	time="4000" >
-    <material id="tinBar" />
-    <material id="log" />
-    <material id="stick" />
-    <material id="leather" />
-    <tool class="smelting1" />
-    <tool class="axeMould" />
-    <tool class="grinding2" />
-    <unlockedBy recipe="axeMould" />
-</recipe>
-<recipe id="copperAxe"
-	time="4000" >
-    <material id="copperBar" />
-    <material id="charcoal" />
-    <material id="stick" />
-    <material id="leather" />
-    <tool class="smelting2" />
-    <tool class="axeMould" />
-    <tool class="grinding2" />
-    <unlockedBy recipe="tinAxe" chance="0.2" />
-    <unlockedBy recipe="copperBar" chance="0.2" />
-</recipe>
+<!-- Axes -->
+    <recipe id="stoneAxe"
+        time="4000" >
+        <material id="rock" />
+        <material id="stick" />
+        <tool class="grinding1" />
+        <unlockedBy gather="stick" />
+    </recipe>
+    <recipe id="tinAxe"
+        time="4000" >
+        <material id="tinBar" />
+        <material id="log" />
+        <material id="stick" />
+        <material id="leather" />
+        <tool class="smelting1" />
+        <tool class="axeMould" />
+        <tool class="grinding2" />
+        <unlockedBy recipe="axeMould" />
+    </recipe>
+    <recipe id="copperAxe"
+        time="4000" >
+        <material id="copperBar" />
+        <material id="charcoal" />
+        <material id="stick" />
+        <material id="leather" />
+        <tool class="smelting2" />
+        <tool class="axeMould" />
+        <tool class="grinding2" />
+        <unlockedBy recipe="tinAxe" chance="0.2" />
+        <unlockedBy recipe="copperBar" chance="0.2" />
+    </recipe>
 
-<recipe id="stoneKnife"
-	time="4000" >
-    <material id="rock" quantity="2"/>
-    <tool class="grinding1" />
-    <unlockedBy gather="rock" />
-</recipe>
-<recipe id="tinKnife"
-	time="4000" >
-    <material id="tinBar" />
-    <material id="log" />
-    <material id="stick" />
-    <material id="leather" />
-    <tool class="smelting1" />
-    <tool class="knifeMould" />
-    <tool class="grinding2" />
-    <unlockedBy recipe="knifeMould" />
-</recipe>
-<recipe id="copperKnife"
-	time="4000" >
-    <material id="copperBar" />
-    <material id="charcoal" />
-    <material id="stick" />
-    <material id="leather" />
-    <tool class="smelting2" />
-    <tool class="knifeMould" />
-    <tool class="grinding2" />
-    <unlockedBy recipe="tinKnife" chance="0.2" />
-    <unlockedBy recipe="copperBar" chance="0.2" />
-</recipe>
+<!-- Knives -->
+    <recipe id="stoneKnife"
+        time="4000" >
+        <material id="rock" quantity="2"/>
+        <tool class="grinding1" />
+        <unlockedBy gather="rock" />
+    </recipe>
+    <recipe id="tinKnife"
+        time="4000" >
+        <material id="tinBar" />
+        <material id="log" />
+        <material id="stick" />
+        <material id="leather" />
+        <tool class="smelting1" />
+        <tool class="knifeMould" />
+        <tool class="grinding2" />
+        <unlockedBy recipe="knifeMould" />
+    </recipe>
+    <recipe id="copperKnife"
+        time="4000" >
+        <material id="copperBar" />
+        <material id="charcoal" />
+        <material id="stick" />
+        <material id="leather" />
+        <tool class="smelting2" />
+        <tool class="knifeMould" />
+        <tool class="grinding2" />
+        <unlockedBy recipe="tinKnife" chance="0.2" />
+        <unlockedBy recipe="copperBar" chance="0.2" />
+    </recipe>
 
-<recipe id="smallPot"
-	time="12000" >
-    <material id="crudeClay" quantity="2" />
-    <material id="log" />
-    <tool class="smelting1" />
-    <unlockedBy gather="crudeClay" />
-</recipe>
-<recipe id="mediumPot"
-	time="12000" >
-    <material id="charcoal" />
-    <material id="clay" quantity="3" />
-    <tool class="smelting1" />
-    <unlockedBy recipe="clay" />
-</recipe>
-<recipe id="largePot"
-	time="12000" >
-    <material id="charcoal" />
-    <material id="clay" quantity="5" />
-    <tool id="kiln" />
-    <unlockedBy construction="kiln" />
-</recipe>
+<!-- Pots -->
+    <recipe id="smallPot"
+        time="12000" >
+        <material id="crudeClay" quantity="2" />
+        <material id="log" />
+        <tool class="smelting1" />
+        <unlockedBy gather="crudeClay" />
+    </recipe>
+    <recipe id="mediumPot"
+        time="12000" >
+        <material id="charcoal" />
+        <material id="clay" quantity="3" />
+        <tool class="smelting1" />
+        <unlockedBy recipe="clay" />
+    </recipe>
+    <recipe id="largePot"
+        time="12000" >
+        <material id="charcoal" />
+        <material id="clay" quantity="5" />
+        <tool id="kiln" />
+        <unlockedBy construction="kiln" />
+    </recipe>
 
-<recipe id="pickMould"
-	time="12000" >
-    <material id="crudeClay" quantity="2" />
-    <material id="log" />
-    <tool class="smelting1" />
-    <unlockedBy recipe="tinBar" chance="0.2" />
-</recipe>
-<recipe id="knifeMould"
-	time="12000" >
-    <material id="crudeClay" quantity="2" />
-    <material id="log" />
-    <tool class="smelting1" />
-    <unlockedBy recipe="stoneKnife" chance="0.3" />
-    <unlockedBy recipe="woodenStatue" chance="0.1" />
-    <unlockedBy recipe="pole1" chance="0.1" />
-    <unlockedBy gather="figSeeds" chance="0.05" />
-    <unlockedBy gather="flaxSeeds" chance="0.05" />
-</recipe>
-<recipe id="axeMould"
-	time="12000" >
-    <material id="crudeClay" quantity="2" />
-    <material id="log" />
-    <tool class="smelting1" />
-    <unlockedBy gather="log" chance="0.05" />
-</recipe>
-<recipe id="tubeMould"
-	time="12000" >
-    <material id="crudeClay" quantity="2" />
-    <material id="log" />
-    <tool class="smelting1" />
-    <unlockedBy gather="crudeClay" chance="0.1" />
-</recipe>
-<recipe id="sawMould"
-	time="12000" >
-    <material id="crudeClay" quantity="2" />
-    <material id="log" />
-    <tool class="smelting1" />
-    <unlockedBy gather="log" />
-</recipe>
-<recipe id="scaleMould"
-	time="12000" >
-    <material id="crudeClay" quantity="2" />
-    <material id="log" />
-    <tool class="smelting1" />
-    <unlockedBy recipe="leatherScale" chance="0.2" />
-</recipe>
-<recipe id="spearMould"
-	time="12000" >
-    <material id="crudeClay" quantity="2" />
-    <material id="log" />
-    <tool class="smelting1" />
-    <unlockedBy construction="lathe" />
-    <unlockedBy recipe="pole1" chance="0.2" />
-    <unlockedBy recipe="tinKnife" chance="0.2" />
-</recipe>
-<recipe id="hammerMould"
-	time="12000" >
-    <material id="crudeClay" quantity="2" />
-    <material id="log" />
-    <tool class="smelting1" />
-    <unlockedBy item="bone" chance="0.2" />
-    <unlockedBy recipe="copperBar" chance="0.05" />
-</recipe>
+<!-- Moulds-->
+    <recipe id="pickMould"
+        time="12000" >
+        <material id="crudeClay" quantity="2" />
+        <material id="log" />
+        <tool class="smelting1" />
+        <unlockedBy recipe="tinBar" chance="0.2" />
+    </recipe>
+    <recipe id="knifeMould"
+        time="12000" >
+        <material id="crudeClay" quantity="2" />
+        <material id="log" />
+        <tool class="smelting1" />
+        <unlockedBy recipe="stoneKnife" chance="0.3" />
+        <unlockedBy recipe="woodenStatue" chance="0.1" />
+        <unlockedBy recipe="pole1" chance="0.1" />
+        <unlockedBy gather="figSeeds" chance="0.05" />
+        <unlockedBy gather="flaxSeeds" chance="0.05" />
+    </recipe>
+    <recipe id="axeMould"
+        time="12000" >
+        <material id="crudeClay" quantity="2" />
+        <material id="log" />
+        <tool class="smelting1" />
+        <unlockedBy gather="log" chance="0.05" />
+    </recipe>
+    <recipe id="tubeMould"
+        time="12000" >
+        <material id="crudeClay" quantity="2" />
+        <material id="log" />
+        <tool class="smelting1" />
+        <unlockedBy gather="crudeClay" chance="0.1" />
+    </recipe>
+    <recipe id="sawMould"
+        time="12000" >
+        <material id="crudeClay" quantity="2" />
+        <material id="log" />
+        <tool class="smelting1" />
+        <unlockedBy gather="log" />
+    </recipe>
+    <recipe id="scaleMould"
+        time="12000" >
+        <material id="crudeClay" quantity="2" />
+        <material id="log" />
+        <tool class="smelting1" />
+        <unlockedBy recipe="leatherScale" chance="0.2" />
+    </recipe>
+    <recipe id="spearMould"
+        time="12000" >
+        <material id="crudeClay" quantity="2" />
+        <material id="log" />
+        <tool class="smelting1" />
+        <unlockedBy construction="lathe" />
+        <unlockedBy recipe="pole1" chance="0.2" />
+        <unlockedBy recipe="tinKnife" chance="0.2" />
+    </recipe>
+    <recipe id="hammerMould"
+        time="12000" >
+        <material id="crudeClay" quantity="2" />
+        <material id="log" />
+        <tool class="smelting1" />
+        <unlockedBy item="bone" chance="0.2" />
+        <unlockedBy recipe="copperBar" chance="0.05" />
+    </recipe>
 
-<recipe id="tinBar"
-	time="12000" >
-    <material id="tin" quantity="5" />
-    <material id="log" />
-    <tool class="smelting1" />
-    <tool class="fireHandling" />
-    <unlockedBy gather="tin" />
-</recipe>
-<recipe id="copperBar"
-	time="12000" >
-    <material id="copper" quantity="5" />
-    <material id="charcoal" />
-    <tool class="smelting2" />
-    <tool class="fireHandling" />
-    <unlockedBy recipe="tinPick" />
-    <unlockedBy gather="copper" />
-</recipe>
+<!-- Metal bars -->
+    <recipe id="tinBar"
+        time="12000" >
+        <material id="tin" quantity="5" />
+        <material id="log" />
+        <tool class="smelting1" />
+        <tool class="fireHandling" />
+        <unlockedBy gather="tin" />
+    </recipe>
+    <recipe id="copperBar"
+        time="12000" >
+        <material id="copper" quantity="5" />
+        <material id="charcoal" />
+        <tool class="smelting2" />
+        <tool class="fireHandling" />
+        <unlockedBy recipe="tinPick" />
+        <unlockedBy gather="copper" />
+    </recipe>
 
-<recipe id="tinPick"
-	time="4000" >
-    <material id="tinBar" />
-    <material id="log" />
-    <material id="stick" />
-    <material id="leather" />
-    <tool class="smelting1" />
-    <tool class="pickMould" />
-    <unlockedBy recipe="pickMould" />
-</recipe>
-<recipe id="copperPick"
-	time="4000" >
-    <material id="copperBar" />
-    <material id="charcoal" />
-    <material id="stick" />
-    <material id="leather" />
-    <tool class="smelting2" />
-    <tool class="pickMould" />
-    <unlockedBy recipe="tinPick" chance="0.2" />
-    <unlockedBy recipe="copperBar" chance="0.1" />
-</recipe>
+<!-- Picks -->
+    <recipe id="tinPick"
+        time="4000" >
+        <material id="tinBar" />
+        <material id="log" />
+        <material id="stick" />
+        <material id="leather" />
+        <tool class="smelting1" />
+        <tool class="pickMould" />
+        <unlockedBy recipe="pickMould" />
+    </recipe>
+    <recipe id="copperPick"
+        time="4000" >
+        <material id="copperBar" />
+        <material id="charcoal" />
+        <material id="stick" />
+        <material id="leather" />
+        <tool class="smelting2" />
+        <tool class="pickMould" />
+        <unlockedBy recipe="tinPick" chance="0.2" />
+        <unlockedBy recipe="copperBar" chance="0.1" />
+    </recipe>
 
-<recipe id="copperHammer"
-	time="4000" >
-    <material id="copperBar" />
-    <material id="charcoal" />
-    <material id="stick" />
-    <material id="leather" />
-    <tool class="smelting2" />
-    <tool class="hammerMould" />
-    <unlockedBy recipe="hammerMould" />
-</recipe>
+<!-- Hammers -->
+    <recipe id="copperHammer"
+        time="4000" >
+        <material id="copperBar" />
+        <material id="charcoal" />
+        <material id="stick" />
+        <material id="leather" />
+        <tool class="smelting2" />
+        <tool class="hammerMould" />
+        <unlockedBy recipe="hammerMould" />
+    </recipe>
 
-<recipe id="tinSaw"
-	time="4000" >
-    <material id="tinBar" />
-    <material id="log" />
-    <material id="stick" />
-    <tool class="smelting1" />
-    <tool class="sawMould" />
-    <unlockedBy recipe="sawMould" />
-</recipe>
-<recipe id="copperSaw"
-	time="4000" >
-    <material id="copperBar" />
-    <material id="charcoal" />
-    <material id="stick" />
-    <tool class="smelting2" />
-    <tool class="sawMould" />
-    <unlockedBy recipe="tinSaw" chance="0.2" />
-    <unlockedBy recipe="copperBar" chance="0.1" />
-</recipe>
-
-<recipe id="tinSpear"
-	time="4000" >
-    <material id="tinBar" />
-    <material id="log" />
-    <material id="stick" />
-    <tool class="smelting1" />
-    <tool class="spearMould" />
-    <unlockedBy recipe="spearMould" />
-</recipe>
+<!-- Saws -->
+    <recipe id="tinSaw"
+        time="4000" >
+        <material id="tinBar" />
+        <material id="log" />
+        <material id="stick" />
+        <tool class="smelting1" />
+        <tool class="sawMould" />
+        <unlockedBy recipe="sawMould" />
+    </recipe>
+    <recipe id="copperSaw"
+        time="4000" >
+        <material id="copperBar" />
+        <material id="charcoal" />
+        <material id="stick" />
+        <tool class="smelting2" />
+        <tool class="sawMould" />
+        <unlockedBy recipe="tinSaw" chance="0.2" />
+        <unlockedBy recipe="copperBar" chance="0.1" />
+    </recipe>
 
 <recipe
     id="tinTube" time="4000" >
@@ -237,84 +235,102 @@
     <unlockedBy recipe="tubeMould" />
 </recipe>
 
-<recipe
-    id="leatherScale" time="10000" quantity="2" >
-    <material id="leather" />
-    <unlockedBy recipe="leather" chance="0.2" />
-</recipe>
-<recipe
-    id="tinScale" time="10000" quantity="6" >
-    <material id="tinBar" />
-    <material id="log" />
-    <tool class="smelting1" />
-    <tool class="scaleMould" />
-    <unlockedBy recipe="tinBar" chance="0.1" />
-    <unlockedBy recipe="scaleMould" />
-</recipe>
-<recipe
-    id="copperScale" time="10000" quantity="6" >
-    <material id="copperBar" />
-    <material id="charcoal" />
-    <tool class="smelting2" />
-    <tool class="scaleMould" />
-    <unlockedBy recipe="tinScale" chance="0.2" />
-    <unlockedBy recipe="copperBar" chance="0.1" />
-</recipe>
+<!-- Scales/lamellar -->
+    <recipe
+        id="leatherScale" time="10000" quantity="2" >
+        <material id="leather" />
+        <unlockedBy recipe="leather" chance="0.2" />
+    </recipe>
+    <recipe
+        id="tinScale" time="10000" quantity="6" >
+        <material id="tinBar" />
+        <material id="log" />
+        <tool class="smelting1" />
+        <tool class="scaleMould" />
+        <unlockedBy recipe="tinBar" chance="0.1" />
+        <unlockedBy recipe="scaleMould" />
+    </recipe>
+    <recipe
+        id="copperScale" time="10000" quantity="6" >
+        <material id="copperBar" />
+        <material id="charcoal" />
+        <tool class="smelting2" />
+        <tool class="scaleMould" />
+        <unlockedBy recipe="tinScale" chance="0.2" />
+        <unlockedBy recipe="copperBar" chance="0.1" />
+    </recipe>
+    <recipe
+        id="leatherLamellar" time="4000" >
+        <material id="leatherScale" quantity="20" />
+        <material id="linenThread" quantity="11" />
+        <unlockedBy recipe="leatherScale" />
+    </recipe>
+    <recipe
+        id="tinLamellar" time="4000" >
+        <material id="tinScale" quantity="20" />
+        <material id="leather" quantity="2" />
+        <unlockedBy recipe="tinScale" />
+    </recipe>
+    <recipe
+        id="copperLamellar" time="4000" >
+        <material id="copperScale" quantity="20" />
+        <material id="leather" quantity="2" />
+        <unlockedBy recipe="copperScale" />
+    </recipe>
 
-<recipe
-    id="leatherLamellar" time="4000" >
-    <material id="leatherScale" quantity="20" />
-    <material id="linenThread" quantity="11" />
-    <unlockedBy recipe="leatherScale" />
-</recipe>
-<recipe
-    id="tinLamellar" time="4000" >
-    <material id="tinScale" quantity="20" />
-    <material id="leather" quantity="2" />
-    <unlockedBy recipe="tinScale" />
-</recipe>
-<recipe
-    id="copperLamellar" time="4000" >
-    <material id="copperScale" quantity="20" />
-    <material id="leather" quantity="2" />
-    <unlockedBy recipe="copperScale" />
-</recipe>
+<!-- Poles/Spears -->
+    <recipe
+        id="pole1" time="10000" >
+        <material id="lumber" />
+        <tool class="carving" />
+        <unlockedBy gather="log" chance="0.05" />
+        <unlockedBy recipe="stoneKnife" chance="0.1" />
+        <unlockedBy recipe="tinKnife" chance="0.3" />
+        <unlockedBy recipe="copperKnife" chance="0.7" />
+    </recipe>
+    <recipe
+        id="pole2" time="10000" >
+        <material id="lumber" />
+        <tool class="carving" />
+        <tool class="woodTurning" />
+        <unlockedBy construction="lathe" />
+    </recipe>
+    <recipe
+        id="tinSpear" time="4000" >
+        <material id="tinBar" />
+        <material id="log" />
+        <material id="pole1" />
+        <tool class="smelting1" />
+        <tool class="spearMould" />
+        <unlockedBy recipe="spearMould" />
+        <unlockedBy recipe="pole1" />
+    </recipe>
+    <recipe
+        id="copperSpear" time="4000" >
+        <material id="copperBar" />
+        <material id="charcoal" />
+        <material id="pole2" />
+        <tool class="smelting2" />
+        <tool class="spearMould" />
+        <unlockedBy recipe="tinSpear" chance="0.05" />
+        <unlockedBy recipe="pole2" />
+    </recipe>
 
-<recipe
-    id="tinSpear" time="4000" >
-    <material id="tinBar" />
-    <material id="log" />
-    <material id="pole1" />
-    <tool class="smelting1" />
-    <tool class="spearMould" />
-    <unlockedBy recipe="spearMould" />
-    <unlockedBy recipe="pole1" />
-</recipe>
-<recipe
-    id="copperSpear" time="4000" >
-    <material id="copperBar" />
-    <material id="charcoal" />
-    <material id="pole2" />
-    <tool class="smelting2" />
-    <tool class="spearMould" />
-    <unlockedBy recipe="tinSpear" chance="0.05" />
-    <unlockedBy recipe="pole2" />
-</recipe>
-
-<recipe
-    id="copperSword" time="4000" >
-    <material id="copperBar" />
-    <material id="charcoal" />
-    <material id="pole2" />
-    <tool class="hammering" />
-    <tool class="smelting2" />
-    <tool class="anvil1" />
-    <tool class="grinding2" />
-    <unlockedBy recipe="copperBar" chance="0.05" />
-    <unlockedBy recipe="copperHammer" chance="0.1" />
-    <unlockedBy construction="copperAnvil" chance="0.1" />
-    <unlockedBy construction="grindstone" chance="0.1" />
-</recipe>
+<!-- Swords -->
+    <recipe
+        id="copperSword" time="4000" >
+        <material id="copperBar" />
+        <material id="charcoal" />
+        <material id="pole2" />
+        <tool class="hammering" />
+        <tool class="smelting2" />
+        <tool class="anvil1" />
+        <tool class="grinding2" />
+        <unlockedBy recipe="copperBar" chance="0.05" />
+        <unlockedBy recipe="copperHammer" chance="0.1" />
+        <unlockedBy construction="copperAnvil" chance="0.1" />
+        <unlockedBy construction="grindstone" chance="0.1" />
+    </recipe>
 
 <recipe id="copperCuirass"
     time="4000" >
@@ -354,56 +370,57 @@
     <unlockedBy construction="copperAnvil" chance="0.1" />
 </recipe>
 
-<recipe id="tinRing"
-    time="10000" quantity="40" >
-    <material id="tinBar" />
-    <material id="log" />
-    <tool class="hammering" />
-    <tool class="smelting1" />
-    <tool class="anvil1" />
-    <unlockedBy recipe="tinBar" chance="0.05" />
-    <unlockedBy recipe="copperHammer" chance="0.1" />
-    <unlockedBy construction="copperAnvil" chance="0.1" />
-</recipe>
-<recipe id="copperRing"
-    time="10000" quantity="40" >
-    <material id="tinBar" />
-    <material id="log" />
-    <tool class="hammering" />
-    <tool class="smelting2" />
-    <tool class="anvil1" />
-    <unlockedBy recipe="tinRing" chance="0.05" />
-</recipe>
+<!-- Rings/mail -->
+    <recipe id="tinRing"
+        time="10000" quantity="40" >
+        <material id="tinBar" />
+        <material id="log" />
+        <tool class="hammering" />
+        <tool class="smelting1" />
+        <tool class="anvil1" />
+        <unlockedBy recipe="tinBar" chance="0.05" />
+        <unlockedBy recipe="copperHammer" chance="0.1" />
+        <unlockedBy construction="copperAnvil" chance="0.1" />
+    </recipe>
+    <recipe id="copperRing"
+        time="10000" quantity="40" >
+        <material id="tinBar" />
+        <material id="log" />
+        <tool class="hammering" />
+        <tool class="smelting2" />
+        <tool class="anvil1" />
+        <unlockedBy recipe="tinRing" chance="0.05" />
+    </recipe>
+    <recipe id="tinHauberk"
+        time="4000" >
+        <material id="tinRing" quantity="200" />
+        <material id="leather" quantity="2" />
+        <unlockedBy recipe="tinRing" />
+    </recipe>
+    <recipe id="copperHauberk"
+        time="4000" >
+        <material id="copperRing" quantity="200" />
+        <material id="leather" quantity="2" />
+        <unlockedBy recipe="copperRing" />
+    </recipe>
 
-<recipe id="tinHauberk"
-    time="4000" >
-    <material id="tinRing" quantity="200" />
-    <material id="leather" quantity="2" />
-    <unlockedBy recipe="tinRing" />
-</recipe>
-<recipe id="copperHauberk"
-    time="4000" >
-    <material id="copperRing" quantity="200" />
-    <material id="leather" quantity="2" />
-    <unlockedBy recipe="copperRing" />
-</recipe>
-
-<recipe
-    id="leatherShield" time="4000" >
-    <material id="leather" quantity="4" />
-    <material id="lumber" quantity="1" />
-    <unlockedBy recipe="lumber" chance="0.2" />
-    <unlockedBy recipe="leather" chance="0.2" />
-</recipe>
-<recipe id="tinShield"
-    time="4000" >
-    <material id="tinBar" quantity="2" />
-    <material id="log" />
-    <tool class="hammering" />
-    <tool class="smelting1" />
-    <tool class="anvil1" />
-    <unlockedBy recipe="leatherShield" chance="0.2" />
-</recipe>
+<!-- Shields -->
+    <recipe
+        id="leatherShield" time="4000" >
+        <material id="leather" quantity="4" />
+        <material id="lumber" quantity="1" />
+        <unlockedBy recipe="lumber" chance="0.2" />
+        <unlockedBy recipe="leather" chance="0.2" />
+    </recipe>
+    <recipe id="tinShield"
+        time="4000" >
+        <material id="tinBar" quantity="2" />
+        <material id="log" />
+        <tool class="hammering" />
+        <tool class="smelting1" />
+        <tool class="anvil1" />
+        <unlockedBy recipe="leatherShield" chance="0.2" />
+    </recipe>
 
 <recipe
     id="elutriator" time="4000" >
@@ -461,6 +478,7 @@
     <material id="linenThread" quantity="5" linenCloth="1" />
     <tool class="sewing" />
     <unlockedBy recipe="linenThread" />
+    <unlockedBy recipe="boneNeedle" />
 </recipe>
 
 <recipe
@@ -521,40 +539,24 @@
     <unlockedBy recipe="smallPot" />
 </recipe>
 
-<recipe
-    id="woodenStatue" time="10000" >
-    <material id="log" />
-    <tool class="carving" />
-    <unlockedBy gather="log" chance="0.05" />
-    <unlockedBy recipe="stoneKnife" chance="0.1" />
-    <unlockedBy recipe="tinKnife" chance="0.3" />
-    <unlockedBy recipe="copperKnife" chance="0.7" />
-</recipe>
-<recipe
-    id="tinStatue" time="10000" >
-    <material id="tinBar" quantity="5" />
-    <material id="log" />
-    <tool class="smelting1" />
-    <tool class="grinding2" />
-    <unlockedBy recipe="woodenStatue" chance="0.2" />
-    <unlockedBy recipe="tinBar" chance="0.05" />
-</recipe>
-
-<recipe
-    id="pole1" time="10000" >
-    <material id="lumber" />
-    <tool class="carving" />
-    <unlockedBy gather="log" chance="0.05" />
-    <unlockedBy recipe="stoneKnife" chance="0.1" />
-    <unlockedBy recipe="tinKnife" chance="0.3" />
-    <unlockedBy recipe="copperKnife" chance="0.7" />
-</recipe>
-<recipe
-    id="pole2" time="10000" >
-    <material id="lumber" />
-    <tool class="carving" />
-    <tool class="woodTurning" />
-    <unlockedBy construction="lathe" />
-</recipe>
+<!-- Statues -->
+    <recipe
+        id="woodenStatue" time="10000" >
+        <material id="log" />
+        <tool class="carving" />
+        <unlockedBy gather="log" chance="0.05" />
+        <unlockedBy recipe="stoneKnife" chance="0.1" />
+        <unlockedBy recipe="tinKnife" chance="0.3" />
+        <unlockedBy recipe="copperKnife" chance="0.7" />
+    </recipe>
+    <recipe
+        id="tinStatue" time="10000" >
+        <material id="tinBar" quantity="5" />
+        <material id="log" />
+        <tool class="smelting1" />
+        <tool class="grinding2" />
+        <unlockedBy recipe="woodenStatue" chance="0.2" />
+        <unlockedBy recipe="tinBar" chance="0.05" />
+    </recipe>
 
 </root>
