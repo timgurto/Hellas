@@ -905,5 +905,7 @@ bool ClientObject::belongsToPlayer() const{
 
 bool ClientObject::belongsToPlayerCity() const{
     const Avatar &playerCharacter = Client::_instance->character();
+    if (playerCharacter.cityName().empty())
+        return false;
     return owner() == playerCharacter.cityName();
 }
