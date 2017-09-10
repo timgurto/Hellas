@@ -1,7 +1,7 @@
 <root>
 
 <tool id="carving"      archetype="item_stoneKnife" />
-<tool id="foraging"     archetype="item_stoneKnife" />
+<tool id="harvesting"   archetype="item_stoneKnife" />
 <tool id="woodcutting"  archetype="item_stoneAxe" />
 <tool id="mining"       archetype="item_tinPick" />
 <tool id="planting"     archetype="item_stick" />

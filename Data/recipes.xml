@@ -522,13 +522,22 @@
 </recipe>
 
 <recipe
-	id="woodenStatue" time="10000" >
-	<material id="log" />
+    id="woodenStatue" time="10000" >
+    <material id="log" />
     <tool class="carving" />
     <unlockedBy gather="log" chance="0.05" />
-    <unlockedBy gather="stoneKnife" chance="0.1" />
-    <unlockedBy gather="tinKnife" chance="0.3" />
-    <unlockedBy gather="copperKnife" chance="0.7" />
+    <unlockedBy recipe="stoneKnife" chance="0.1" />
+    <unlockedBy recipe="tinKnife" chance="0.3" />
+    <unlockedBy recipe="copperKnife" chance="0.7" />
+</recipe>
+<recipe
+    id="tinStatue" time="10000" >
+    <material id="tinBar" quantity="5" />
+    <material id="log" />
+    <tool class="smelting1" />
+    <tool class="grinding2" />
+    <unlockedBy recipe="woodenStatue" chance="0.2" />
+    <unlockedBy recipe="tinBar" chance="0.05" />
 </recipe>
 
 <recipe

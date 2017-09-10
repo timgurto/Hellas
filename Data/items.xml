@@ -70,7 +70,7 @@
 <item id="rock" name="Rock" stackSize="10" gearSlot="6" strength="3" >
     <stats attack="3"/>
     <offset x="-3" />
-    <tag name="grinding" />
+    <tag name="grinding1" />
 </item>
 
 <item id="bone" name="Bone" stackSize="10" gearSlot="6" sounds="bone" >

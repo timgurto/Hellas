@@ -4,14 +4,15 @@
     xDrawOffset="-10" yDrawOffset="-4"
     canGather="1" gatherTime="1000"
     damageParticles="wood"
-    allowedTerrain="denseVeg" >
+    allowedTerrain="sticks" >
     <yield id="stick" />
     <strength item="stick" quantity="1" />
 </objectType>
 
 <objectType id="rock" name="Rock"
     xDrawOffset="-5" yDrawOffset="-5"
-    canGather="1" gatherTime="1000" >
+    canGather="1" gatherTime="1000"
+    allowedTerrain="rocks">
     <yield id="rock" />
     <strength item="rock" quantity="1" />
 </objectType>
@@ -19,7 +20,7 @@
 <objectType id="tree" name="Tree"
     xDrawOffset="-23" yDrawOffset="-57"
     canGather="1" sounds="tree" gatherParticles="tree" damageParticles="tree" gatherReq="woodcutting" gatherTime="3000"
-    allowedTerrain="denseVeg" >
+    allowedTerrain="fertile" >
     <yield id="log" initialMean="5.5" initialSD="1" initialMin="1" />
     <yield id="stick" initialMean="5" initialSD="2" />
     <collisionRect x="-7" y="-3" w="16" h="6" />
@@ -30,7 +31,7 @@
     xDrawOffset="-14" yDrawOffset="-11"
     canGather="1" gatherTime="3000"
     isFlat="1"
-    allowedTerrain="stone" >
+    allowedTerrain="rocks" >
     <yield id="tin" initialMean="4.5" initialSD="2" initialMin="1" />
     <yield id="rock" initialMean="1.5" initialSD="2" />
     <strength item="tin" quantity="5" />
@@ -40,7 +41,7 @@
     xDrawOffset="-14" yDrawOffset="-11"
     canGather="1" gatherTime="3000" gatherReq="mining"
     isFlat="1"
-    allowedTerrain="stone" >
+    allowedTerrain="rocks" >
     <yield id="copper" initialMean="4.5" initialSD="2" initialMin="1" />
     <yield id="rock" initialMean="1.5" initialSD="2" />
     <strength item="copper" quantity="5" />
@@ -69,7 +70,8 @@
 <objectType id="clay" name="Clay Deposit"
     xDrawOffset="-12" yDrawOffset="-12"
     canGather="1" gatherTime="3000"
-    isFlat="1" >
+    isFlat="1"
+    allowedTerrain="fertile" >
     <collisionRect x="-12" y="-2" w="25" h="24" />
     <yield id="crudeClay" initialMean="3.5" initialSD="1" initialMin="1" />
     <strength item="crudeClay" quantity="3" />
@@ -157,13 +159,13 @@
 </objectType>
 
 <objectType id="wildFigTree" name="Wild Fig Tree"
-    canGather="1" gatherTime="3000" gatherReq="gathering"
-    allowedTerrain="denseVeg" >
+    canGather="1" gatherTime="3000" gatherReq="harvesting"
+    allowedTerrain="fertile" >
     <yield id="figSeeds" initialMean="1.2" initialSD="0.5" initialMin="1" />
     <strength item="log" quantity="1" />
 </objectType>
 <objectType id="figTree0" name="Fig Tree" constructionTime="10000" xDrawOffset="-19" yDrawOffset="-37"
-    allowedTerrain="grass" >
+    allowedTerrain="fertile" >
     <collisionRect x="-13" y="-9" w="26" h="18" />
     <transform id="figTree1" time="120000" >
         <progress image="figTree0a" />
@@ -218,8 +220,8 @@
 </objectType>
 
 <objectType id="wildFlax" name="Wild Flax"
-    canGather="1" gatherTime="3000" gatherReq="foraging"
-    allowedTerrain="denseVeg" 
+    canGather="1" gatherTime="3000" gatherReq="harvesting"
+    allowedTerrain="fertile" 
     xDrawOffset="-10" yDrawOffset="-10">
     <collisionRect x="-10" y="-10" w="20" h="20" />
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" initialMin="1" />
@@ -231,7 +233,7 @@
     isFlat="1"
     constructionTime="10000"
     constructionReq="planting"
-    allowedTerrain="denseVeg" >
+    allowedTerrain="fertile" >
     <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <material id="flaxSeeds" />

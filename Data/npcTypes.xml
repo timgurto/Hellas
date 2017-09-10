@@ -1,21 +1,5 @@
 <root>
 
-<!--
-Both:
- - id
- - collisionRect
- - maxHealth
- - loot
-
-Client only:
- - name
- - xDrawOffset
- - yDrawOffset
-
-Server only:
- - class
--->
-
 <npcType
     id="critter" name="Critter"
 	maxHealth="20"

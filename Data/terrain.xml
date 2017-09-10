@@ -71,17 +71,22 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
     <forbid id="volcanoMountain" />
 </list>
 
-<list id="stone" >
-    <allow id="stone" />
+<list id="sticks" >
+    <allow id="normal" />
+    <allow id="fertile" />
 </list>
 
-<list id="denseVeg" >
-    <allow id="grass" />
+<list id="rocks" >
+    <allow id="normal" />
+    <allow id="rocky" />
 </list>
 
-<list id="grass" >
-    <allow id="grass" />
-    <allow id="lightGrass" />
+<list id="rocky" >
+    <allow id="rocky" />
+</list>
+
+<list id="fertile" >
+    <allow id="fertile" />
 </list>
 
 </root>
