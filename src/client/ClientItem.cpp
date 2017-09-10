@@ -99,7 +99,7 @@ const Texture &ClientItem::tooltip() const{
         tb.addGap();
         tb.setColor(Color::ITEM_TAGS);
         for (const std::string &tag : tags())
-            tb.addLine(tag);
+            tb.addLine(client.tagName(tag));
     }
     
     // Construction
