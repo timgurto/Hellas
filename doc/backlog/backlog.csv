@@ -190,7 +190,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 193,Make kingship persistent,13,5,Bug,,,,1
 194,Ensure fellow citizens can be seen on the map,13,21,Bug,,,,1
 195,Make NPC movement smooth,5,13,Aesthetics,,,,
-196,Container slots are sometimes invisible or broken,89,21,Bug,,,,1
+196,Container slots are sometimes invisible or broken,89,21,Bug,,TRUE,,1
 197,Allow ceding of unfinished objects,21,5,Feature,,,,1
 198,"Unowned-object colors sometimes green, sometimes grey",5,13,Bug,,TRUE,,
 199,Provide list of online players,13,13,Usability,,,,

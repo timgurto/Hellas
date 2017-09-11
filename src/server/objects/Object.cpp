@@ -263,7 +263,8 @@ void Object::describeSelfToNewWatcher(const User &watcher) const{
                 server.sendInventoryMessage(watcher, i, *this);
     }
 
-    _loot->sendContentsToUser(watcher, serial());
+    if (isDead())
+        _loot->sendContentsToUser(watcher, serial());
 }
 
 ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum, const User &user){

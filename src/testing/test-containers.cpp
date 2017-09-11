@@ -33,13 +33,13 @@ TEST_CASE("Dismantle an object with an inventory", "[.flaky][container]"){
     CHECK(c.waitForMessage(SV_ACTION_STARTED));
 }
 
-TEST_CASE("Place item in object", "[.flaky][container]"){
+TEST_CASE("Place item in object", "[.flaky][container]") {
     TestServer s = TestServer::WithData("dismantle");
     TestClient c = TestClient::WithData("dismantle");
 
     // Add a single box
     s.addObject("box", Point(10, 10));
-    WAIT_UNTIL (c.objects().size() == 1);
+    WAIT_UNTIL(c.objects().size() == 1);
 
     // Give user a box item
     User &user = s.getFirstUser();
@@ -52,4 +52,22 @@ TEST_CASE("Place item in object", "[.flaky][container]"){
 
     // Should be the alert that the object's inventory has changed
     CHECK(c.waitForMessage(SV_INVENTORY));
+}
+
+TEST_CASE("Client-side containers don't spontaneously clear", "[container]") {
+    // Given a server and client, and a "box" container object,
+    auto s = TestServer::WithData("dismantle");
+    auto c = TestClient::WithData("dismantle");
+    WAIT_UNTIL(s.users().size() == 1);
+    auto username = c.name();
+
+    // And a single box belonging to the user
+    s.addObject("box", Point(10, 10), username);
+    WAIT_UNTIL(c.objects().size() == 1);
+
+    // When some time passes
+    REPEAT_FOR_MS(100);
+
+    // Then the client-side box still has container slots
+    CHECK_FALSE(c.getFirstObject().container().empty());
 }
