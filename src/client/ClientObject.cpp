@@ -349,7 +349,7 @@ void ClientObject::addDeconstructionToWindow(){
         newWidth = _window->contentWidth();
     y += BUTTON_GAP;
     Button *deconstructButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT),
-                                            "Pick up as item", startDeconstructing, this);
+                                            "Pick up", startDeconstructing, this);
     _window->addChild(deconstructButton);
     y += BUTTON_GAP + BUTTON_HEIGHT;
     x += BUTTON_GAP + BUTTON_WIDTH;
