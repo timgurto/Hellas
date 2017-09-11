@@ -866,7 +866,7 @@ void ClientObject::draw(const Client &client) const{
     const Texture nameOutline(client.defaultFont(), objectType()->name(), Color::PLAYER_NAME_OUTLINE);
     Point namePosition = location() + client.offset();
     namePosition.y -= height();
-    namePosition.y -= 10;
+    namePosition.y -= 16;
     namePosition.x -= nameLabel.width() / 2;
     for (int x = -1; x <= 1; ++x)
         for (int y = -1; y <= 1; ++y)
