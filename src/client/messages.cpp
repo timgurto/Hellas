@@ -197,12 +197,13 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del;
             if (del != MSG_END)
                 break;
+            reqItemTag = tagName(reqItemTag);
             std::string msg = "You need a";
             const char first = reqItemTag.front();
-            if (first == 'a' || first == 'e' || first == 'i' ||
-                first == 'o' || first == 'u')
+            auto vowels = std::string{ "AaEeIiOoUu" };
+            if (vowels.find(first) != vowels.npos)
                 msg += 'n';
-            _debug(msg + ' ' + reqItemTag + " to do that.", Color::WARNING);
+            _debug(msg + ' ' + reqItemTag + " tool to do that.", Color::WARNING);
             startAction(0);
             break;
         }
