@@ -199,7 +199,8 @@ void ClientObject::onRightClick(Client &client){
     // Create window, if necessary
     else {
         assembleWindow(client);
-        client.addWindow(_window);
+        if (_window != nullptr)
+            client.addWindow(_window);
     }
 
     // Watch object
