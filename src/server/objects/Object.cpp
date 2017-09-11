@@ -6,7 +6,7 @@
 #include "../../util.h"
 
 Object::Object(const ObjectType *type, const Point &loc):
-    Entity(type, loc, type->strength()),
+    Entity(type, loc, type->strength() > 0 ? type->strength() : 1),
     _numUsersGathering(0),
     _transformTimer(0),
     _container(nullptr),
