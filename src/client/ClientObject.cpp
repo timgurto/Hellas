@@ -50,23 +50,24 @@ _gatherSoundTimer(0),
 _lootable(false),
 _lootContainer(nullptr)
 {
-    if (type != nullptr) { // i.e., not a serial-only search dummy
-        const size_t
-            containerSlots = objectType()->containerSlots(),
-            merchantSlots = objectType()->merchantSlots();
-        _container = ClientItem::vect_t(containerSlots);
-        _merchantSlots = std::vector<ClientMerchantSlot>(merchantSlots);
-        _merchantSlotElements = std::vector<Element *>(merchantSlots, nullptr);
-        _serialSlotPairs = std::vector<serialSlotPair_t *>(merchantSlots, nullptr);
-        for (size_t i = 0; i != merchantSlots; ++i){
-            serialSlotPair_t *pair = new serialSlotPair_t();
-            pair->first = _serial;
-            pair->second = i;
-            _serialSlotPairs[i] = pair;
-        }
-        _wareQtyBoxes = std::vector<TextBox *>(merchantSlots, nullptr);
-        _priceQtyBoxes = std::vector<TextBox *>(merchantSlots, nullptr);
+    if (type == nullptr) // i.e., a serial-only search dummy
+        return;
+
+    const size_t
+        containerSlots = objectType()->containerSlots(),
+        merchantSlots = objectType()->merchantSlots();
+    _container = ClientItem::vect_t(containerSlots);
+    _merchantSlots = std::vector<ClientMerchantSlot>(merchantSlots);
+    _merchantSlotElements = std::vector<Element *>(merchantSlots, nullptr);
+    _serialSlotPairs = std::vector<serialSlotPair_t *>(merchantSlots, nullptr);
+    for (size_t i = 0; i != merchantSlots; ++i){
+        serialSlotPair_t *pair = new serialSlotPair_t();
+        pair->first = _serial;
+        pair->second = i;
+        _serialSlotPairs[i] = pair;
     }
+    _wareQtyBoxes = std::vector<TextBox *>(merchantSlots, nullptr);
+    _priceQtyBoxes = std::vector<TextBox *>(merchantSlots, nullptr);
 }
 
 ClientObject::~ClientObject(){
