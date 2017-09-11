@@ -58,7 +58,6 @@ const ClientObjectType::ImageSet &ClientObjectType::getProgressImage(ms_t timeRe
     double progress = 1 - (1.0 * timeRemaining / _transformTime);
     size_t numFrames = _transformImages.size();
     int index = static_cast<int>(progress * (numFrames+1)) - 1;
-    Client::debug()(makeArgs(progress, index));
     if (_transformImages.empty())
         index = -1;
     index = max<int>(index, -1);
