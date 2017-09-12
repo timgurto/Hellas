@@ -23,6 +23,7 @@
 #include "../Socket.h"
 #include "../messageCodes.h"
 #include "../util.h"
+#include "../version.h"
 
 extern Args cmdLineArgs;
 
@@ -57,6 +58,8 @@ _dataLoaded(false){
     _debugInstance = &_debug;
     if (cmdLineArgs.contains("quiet"))
         _debug.quiet();
+
+    _debug("Server v" VERSION);
 
     _debug << cmdLineArgs << Log::endl;
     Socket::debug = &_debug;

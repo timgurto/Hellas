@@ -2,6 +2,7 @@
 
 #include "Client.h"
 #include "Particle.h"
+#include "../version.h"
 #include "ui/Label.h"
 #include "ui/TextBox.h"
 
@@ -144,16 +145,20 @@ void Client::initLoginScreen(){
 
     _loginUI.push_back(new Button(Rect(SCREEN_X - BUTTON_W - GAP, SCREEN_Y - BUTTON_HEIGHT - GAP,
                                        BUTTON_W, BUTTON_HEIGHT), "Quit", exit, &_loop));
-    
+
     std::string serverIP;
     if (cmdLineArgs.contains("server-ip"))
         serverIP = cmdLineArgs.getString("server-ip");
-    else{
+    else {
         serverIP = _defaultServerAddress;
     }
-    _loginUI.push_back(new Label(Rect(GAP, SCREEN_Y -  Element::TEXT_HEIGHT - GAP,
-                                      200, Element::TEXT_HEIGHT),
-                                 "Server: " + serverIP));
+    auto serverAddressY = SCREEN_Y - Element::TEXT_HEIGHT - GAP;
+    _loginUI.push_back(new Label(Rect(GAP, serverAddressY, 200, Element::TEXT_HEIGHT),
+        "Server: " + serverIP));
+
+    auto clientVersionY = serverAddressY - Element::TEXT_HEIGHT - 2;
+    _loginUI.push_back(new Label(Rect(GAP, clientVersionY, 200, Element::TEXT_HEIGHT),
+            "Client version: " VERSION));
 
     // Images
     _loginFront = Texture(std::string("Images/loginFront.png"), Color::MAGENTA);
