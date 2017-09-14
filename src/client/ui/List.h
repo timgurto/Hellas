@@ -32,6 +32,8 @@ private:
     void updateScrollBar(); // Update the appearance of the scroll bar.
     bool _scrolledToBottom;
 
+    bool _shouldScrollToTopOnClear = true;
+
     static void cursorMouseDown(Element &e, const Point &mousePos);
     static void mouseMove(Element &e, const Point &mousePos);
     static void scrollUpRaw(Element &e);
@@ -55,6 +57,7 @@ public:
     px_t scrollPos() const { return _content->rect().y; }
     void scrollPos(px_t newPos);
     px_t childHeight() const { return _childHeight; }
+    void doNotScrollToTopOnClear() { _shouldScrollToTopOnClear = false; }
 
     size_t size() const { return _content->children().size(); }
     bool empty() const { return size() == 0; }

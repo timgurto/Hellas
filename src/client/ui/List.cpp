@@ -113,7 +113,8 @@ void List::addChild(Element *child){
 void List::clearChildren(){
     _content->clearChildren();
     _content->height(0);
-    scrollPos(0);
+    if (_shouldScrollToTopOnClear)
+        scrollPos(0);
     markChanged();
 }
 
