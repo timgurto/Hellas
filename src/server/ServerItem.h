@@ -18,6 +18,9 @@ class ServerItem : public Item{
     // The object that this item can construct
     const ObjectType *_constructsObject;
 
+    // An item returned to the user after this is used as a construction material
+    const ServerItem *_returnsOnConstruction = nullptr;
+
 public:
     ServerItem(const std::string &id);
 
@@ -28,6 +31,8 @@ public:
     void stackSize(size_t n) { _stackSize = n; }
     void constructsObject(const ObjectType *obj) { _constructsObject = obj; }
     const ObjectType *constructsObject() const { return _constructsObject; }
+    const ServerItem *returnsOnConstruction() const { return _returnsOnConstruction; }
+    void returnsOnConstruction(const ServerItem *item) { _returnsOnConstruction = item; }
     bool valid() const { return _stackSize > 0; }
 };
 

@@ -440,6 +440,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                     break;
                 }
 
+                auto itemToReturn = slotFrom.first->returnsOnConstruction();
+
                 // Remove from object requirements
                 pObj2->remainingMaterials().remove(slotFrom.first, qtyToTake);
                 for (auto username : pObj2->watchers())
@@ -467,6 +469,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                         ProgressLock::triggerUnlocks(
                                 *user, ProgressLock::CONSTRUCTION, pObj2->type());
                 }
+
+                // Return an item to the user, if required.
+                if (itemToReturn != nullptr)
+                    user->giveItem(itemToReturn);
 
                 break;
             }

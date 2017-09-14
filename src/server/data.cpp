@@ -454,18 +454,30 @@ void Server::loadData(const std::string &path){
                 continue; // ID and name are mandatory.
             ServerItem item(id);
 
-            std::string s; int n;
-            if (xr.findAttr(elem, "stackSize", n))
-                item.stackSize(n);
-            else
-                item.stackSize(1);
-            if (xr.findAttr(elem, "constructs", s)){
+            auto stackSize = 1;
+            xr.findAttr(elem, "stackSize", stackSize);
+            item.stackSize(stackSize);
+
+            std::string s;
+            if (xr.findAttr(elem, "constructs", s)) {
                 // Create dummy ObjectType if necessary
                 const ObjectType *ot = findObjectTypeByName(s);
                 if (ot != nullptr)
                     item.constructsObject(ot);
                 else
                     item.constructsObject(*(_objectTypes.insert(new ObjectType(s)).first));
+            }
+
+            if (xr.findAttr(elem, "returnsOnConstruction", s)) {
+                if (stackSize > 1) {
+                    _debug("Skipping return-on-construct item for stackable material", Color::RED);
+                    continue;
+                }
+
+                // Create dummy Item if necessary
+                auto dummy = ServerItem{ s };
+                const auto *itemToReturn = &*_items.insert(dummy).first;
+                item.returnsOnConstruction(itemToReturn);
             }
 
             auto statsElem = xr.findChild("stats", elem);
@@ -478,6 +490,7 @@ void Server::loadData(const std::string &path){
                 item.stats(stats);
             }
 
+            int n;
             n = User::GEAR_SLOTS; // Default; won't match any slot.
             xr.findAttr(elem, "gearSlot", n); item.gearSlot(n);
 

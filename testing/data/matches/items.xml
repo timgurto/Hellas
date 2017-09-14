@@ -1,0 +1,4 @@
+<root>
+<item id="matches" name="Matches" returnsOnConstruction="matchbox" />
+<item id="matchbox" name="Matchbox"/>
+</root>

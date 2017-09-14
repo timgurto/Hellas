@@ -2,7 +2,7 @@
 #include "TestClient.h"
 #include "testing.h"
 
-TEST_CASE("Construction materials can be added"){
+TEST_CASE("Construction materials can be added", "[construction]"){
     // Given a server and client;
     // And a 'wall' object type that requires a brick for construction;
     TestServer s = TestServer::WithData("brick_wall");
@@ -25,7 +25,7 @@ TEST_CASE("Construction materials can be added"){
     WAIT_UNTIL(! wall.isBeingBuilt());
 }
 
-TEST_CASE("Client knows about default constructions"){
+TEST_CASE("Client knows about default constructions", "[construction]"){
     TestServer s = TestServer::WithData("brick_wall");
     TestClient c = TestClient::WithData("brick_wall");
     WAIT_UNTIL (s.users().size() == 1);
@@ -33,7 +33,7 @@ TEST_CASE("Client knows about default constructions"){
     CHECK(c.knowsConstruction("wall"));
 }
 
-TEST_CASE("New client doesn't know any locked constructions"){
+TEST_CASE("New client doesn't know any locked constructions", "[construction]"){
     TestServer s = TestServer::WithData("secret_table");
     TestClient c = TestClient::WithData("secret_table");
     WAIT_UNTIL (s.users().size() == 1);
@@ -41,7 +41,7 @@ TEST_CASE("New client doesn't know any locked constructions"){
     CHECK_FALSE(c.knowsConstruction("table"));
 }
 
-TEST_CASE("Unique objects are unique", ""){
+TEST_CASE("Unique objects are unique"){
     TestServer s = TestServer::WithData("unique_throne");
     TestClient c = TestClient::WithData("unique_throne");
     WAIT_UNTIL (s.users().size() == 1);
@@ -56,7 +56,7 @@ TEST_CASE("Unique objects are unique", ""){
     CHECK(s.entities().size() == 1);
 }
 
-TEST_CASE("Constructing invalid object fails gracefully"){
+TEST_CASE("Constructing invalid object fails gracefully", "[construction]"){
     TestServer s;
     TestClient c;
     c.sendMessage(CL_CONSTRUCT, makeArgs("notARealObject", 10, 10));
@@ -73,7 +73,7 @@ TEST_CASE("Objects can be unbuildable"){
     CHECK(s.entities().size() == 0);
 }
 
-TEST_CASE("Clients can't see unbuildable constructions"){
+TEST_CASE("Clients can't see unbuildable constructions", "[construction]"){
     TestServer s = TestServer::WithData("unbuildable_treehouse");
     TestClient c = TestClient::WithData("unbuildable_treehouse");
     WAIT_UNTIL (s.users().size() == 1);
@@ -81,7 +81,7 @@ TEST_CASE("Clients can't see unbuildable constructions"){
     CHECK_FALSE(c.knowsConstruction("treehouse"));
 }
 
-TEST_CASE("Objects without materials can't be built"){
+TEST_CASE("Objects without materials can't be built", "[construction]"){
     TestServer s = TestServer::WithData("basic_rock");
     TestClient c = TestClient::WithData("basic_rock");
     WAIT_UNTIL (s.users().size() == 1);
@@ -91,7 +91,7 @@ TEST_CASE("Objects without materials can't be built"){
     CHECK(s.entities().size() == 0);
 }
 
-TEST_CASE("Construction tool requirements are enforced", ""){
+TEST_CASE("Construction tool requirements are enforced", "[construction]"){
     TestServer s = TestServer::WithData("computer");
     TestClient c = TestClient::WithData("computer");
     WAIT_UNTIL (s.users().size() == 1);
@@ -101,7 +101,7 @@ TEST_CASE("Construction tool requirements are enforced", ""){
     CHECK(s.entities().size() == 0);
 }
 
-TEST_CASE("Construction progress is persistent", "[persistence]") {
+TEST_CASE("Construction progress is persistent", "[persistence][construction]") {
     // Given a new brick wall object with no materials added, owned by Alice
     {
         auto s = TestServer::WithData("brick_wall");
@@ -132,4 +132,30 @@ TEST_CASE("Construction progress is persistent", "[persistence]") {
         const auto &wall = s.getFirstObject();
         CHECK(!wall.isBeingBuilt());
     }
+}
+
+TEST_CASE("A construction material can 'return' an item", "[construction]") {
+    // Given a server and client;
+    // And a 'fire' object type that requires matches;
+    // And matches return a matchbox when used for construction
+    auto s = TestServer::WithData("matches");
+    auto c = TestClient::WithData("matches");
+    // And matches are in the user's inventory
+    WAIT_UNTIL(s.users().size() == 1);
+    auto &user = s.getFirstUser();
+    auto &matches = *s.items().find(ServerItem{ "matches" });
+    user.giveItem(&matches);
+    WAIT_UNTIL(c.inventory()[0].first != nullptr);
+
+    // When the user places a fire construction site;
+    c.sendMessage(CL_CONSTRUCT, makeArgs("fire", 10, 10));
+    WAIT_UNTIL(s.entities().size() == 1);
+
+    // And gives it his matches
+    const Object &fire = s.getFirstObject();
+    c.sendMessage(CL_SWAP_ITEMS, makeArgs(Server::INVENTORY, 0, fire.serial(), 0));
+
+    // Then he receives a matchbox
+    const auto &pItem = user.inventory()[0].first;
+    WAIT_UNTIL(pItem != nullptr && pItem->id() == "matchbox");
 }
