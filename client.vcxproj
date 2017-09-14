@@ -167,6 +167,7 @@
     <ClCompile Include="src\Stats.cpp" />
     <ClCompile Include="src\Terrain.cpp" />
     <ClCompile Include="src\util.cpp" />
+    <ClCompile Include="src\versionUtil.cpp" />
     <ClCompile Include="src\XmlReader.cpp" />
     <ClCompile Include="src\XmlWriter.cpp" />
     <ClCompile Include="tinyxml\tinystr.cpp" />
@@ -239,6 +240,7 @@
     <ClInclude Include="src\types.h" />
     <ClInclude Include="src\util.h" />
     <ClInclude Include="src\version.h" />
+    <ClInclude Include="src\versionUtil.h" />
     <ClInclude Include="src\XmlReader.h" />
     <ClInclude Include="src\XmlWriter.h" />
     <ClInclude Include="tinyxml\tinyxml.h" />

@@ -135,6 +135,7 @@
     <ClCompile Include="src\server\objects\Action.cpp" />
     <ClCompile Include="src\client\helpWindow.cpp" />
     <ClCompile Include="src\client\HelpEntry.cpp" />
+    <ClCompile Include="src\versionUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -236,5 +237,7 @@
     <ClInclude Include="src\client\Tag.h" />
     <ClInclude Include="src\server\objects\Action.h" />
     <ClInclude Include="src\client\ClientObjectAction.h" />
+    <ClInclude Include="src\versionUtil.h" />
+    <ClInclude Include="src\version.h" />
   </ItemGroup>
 </Project>

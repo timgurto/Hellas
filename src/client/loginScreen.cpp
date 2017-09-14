@@ -2,7 +2,7 @@
 
 #include "Client.h"
 #include "Particle.h"
-#include "../version.h"
+#include "../versionUtil.h"
 #include "ui/Label.h"
 #include "ui/TextBox.h"
 
@@ -158,7 +158,7 @@ void Client::initLoginScreen(){
 
     auto clientVersionY = serverAddressY - Element::TEXT_HEIGHT - 2;
     _loginUI.push_back(new Label(Rect(GAP, clientVersionY, 200, Element::TEXT_HEIGHT),
-            "Client version: " VERSION));
+            "Client version: " + version()));
 
     // Images
     _loginFront = Texture(std::string("Images/loginFront.png"), Color::MAGENTA);
