@@ -47,7 +47,8 @@ void Spawner::spawn(){
         return;
     }
 
-    server._debug << Color::YELLOW << "Failed to spawn object " << _type->id() << "." << Log::endl;
+    server._debug << Color::YELLOW << "Failed to spawn object " << _type->id() <<
+        " from spawner #" << _index << "." << Log::endl;
     scheduleSpawn();
 }
 
