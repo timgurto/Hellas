@@ -111,7 +111,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 112,Use exceptions to check SDL-function failures,1,5,Code quality,,,,
 113,"Use forward declarations where possible, to reduce unnecessary #includes",2,5,Code quality,,,,
 114,Use polymorphism instead of classTag,3,144,Code quality,,,,
-115,Fail more gracefully and informatively when can't connect to server,5,8,Usability,,,,1
 116,A shrine that grants a buff,8,34,Feature,64,,,
 117,Direct player trading,8,233,Feature,,,,
 118,Allow tool objects to show an in-use image/animation,8,13,Aesthetics,,,,
@@ -191,7 +190,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 194,Ensure fellow citizens can be seen on the map,13,21,Bug,,,,
 195,Make NPC movement smooth,5,13,Aesthetics,,,,
 196,Container slots are sometimes invisible or broken,89,21,Bug,,TRUE,,1
-197,Allow ceding of unfinished objects,21,5,Feature,,,,1
+197,Allow ceding of unfinished objects,21,5,Feature,,TRUE,,1
 198,"Unowned-object colors sometimes green, sometimes grey",5,13,Bug,,TRUE,,
 199,Provide list of online players,13,13,Usability,,,,
 200,Make login screen behave on disconnect,8,21,Usability,,,,
