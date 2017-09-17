@@ -499,7 +499,7 @@
 
 <recipe
     id="linothorax" time="10000" >
-    <material id="linenCloth" quantity="12" />
+    <material id="linenCloth" quantity="8" />
     <material id="linenThread" quantity="1" />
     <material id="fat" quantity="8" />
     <unlockedBy recipe="linenCloth" chance="0.2" />
