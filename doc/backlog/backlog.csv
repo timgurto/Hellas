@@ -75,10 +75,10 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 75,NPC idling AI,5,5,Feature,,,,3
 76,Sounds for attacking and death,89,3,Aesthetics,,TRUE,,
 77,A shrine that grants items,5,34,Feature,19,,,
-78,Release scrollbar on mouse up,5,8,Bug,,,,1
+78,Release scrollbar on mouse up,5,8,Bug,,,,
 79,Make it more obvious when something is out of range,13,8,Usability,,,,1
 80,Make client connection failures more clean,5,13,Usability,,,,1
-81,Allow actual dragging from containers,21,34,Usability,,,,1
+81,Allow actual dragging from containers,21,34,Usability,,,,
 82,Fix jumpy movement when laggy,5,34,Aesthetics,,,,
 83,A stack can be split,21,34,Usability,,,,1
 84,Prevent chat messages being cut off,55,34,Usability,,,,1
@@ -102,7 +102,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 103,Make spawners' queues persistent,13,5,Bug,,,,
 104,Vehicles 'log off' with their drivers,8,144,Bug,,,,
 105,Vehicles can have different speeds,5,5,Feature,,,,
-106,Mouse-down events are propagating to multiple windows,13,3,Bug,,,,1
+106,Mouse-down events are propagating to multiple windows,13,3,Bug,,,,
 107,Reduce calls to findUsersInArea() in NPC AI,5,13,Performance,,,,
 108,Add esc menu to release client,13,89,Usability,,,,1
 109,Allow crafting if removing the ingredients will make room,13,3,Bug,,TRUE,,
@@ -120,7 +120,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 121,Smoother vehicle movement,5,34,Aesthetics,,,,
 122,Replace const casts with map::at(),3,3,Code quality,,,,
 123,Ensure window titles always fit,5,2,Bug,,,,
-124,Right-clicking doesn't cancel dragging,8,2,Bug,,,,1
+124,Right-clicking doesn't cancel dragging,8,2,Bug,,,,
 125,Tools can modify crafting/gathering speed,3,13,Feature,,,,
 126,Remove 'can ...' tooltips when player has no permissions,21,2,Bug,,TRUE,,
 127,Add fading unlock messages to the top of the screen,8,13,Usability,,,,1
@@ -186,14 +186,19 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 189,Add transform images to web docs,3,34,Documentation,,,,
 190,"Add recipes using the item, to web docs",13,5,Documentation,,TRUE,,
 191,Make city ownership persistent,21,21,Bug,,,,1
-192,Fix allowed-terrain lists for objects,8,5,Bug,,,,1
+192,Fix allowed-terrain lists for objects,8,5,Bug,,TRUE,,1
 193,Make kingship persistent,13,5,Bug,,,,1
-194,Ensure fellow citizens can be seen on the map,13,21,Bug,,,,1
+194,Ensure fellow citizens can be seen on the map,13,21,Bug,,,,
 195,Make NPC movement smooth,5,13,Aesthetics,,,,
 196,Container slots are sometimes invisible or broken,89,21,Bug,,TRUE,,1
 197,Allow ceding of unfinished objects,21,5,Feature,,,,1
 198,"Unowned-object colors sometimes green, sometimes grey",5,13,Bug,,TRUE,,
 199,Provide list of online players,13,13,Usability,,,,
-200,Make login screen behave on disconnect,8,21,Usability,,,,1
-201,Lower object names,8,2,Aesthetics,,TRUE,,1
-202,Give back a small pot after constructing with a water vessel,21,21,Feature,,,,1
+200,Make login screen behave on disconnect,8,21,Usability,,,,
+201,Lower object names,8,2,Aesthetics,,TRUE,,
+202,Give back a small pot after constructing with a water vessel,21,21,Feature,,TRUE,,
+203,Prevent object updates from interrupting crafting,5,3,Bug,,,,
+204,Prevent passive selection from interrupting crafting,5,3,Bug,,,,
+205,NPCs are never culled once discovered,8,3,Bug,,,,
+206,Objects are not culled on respawn/teleport,8,5,Bug,,,,
+207,Hide object names unless hostile,13,1,Usability,,,,
