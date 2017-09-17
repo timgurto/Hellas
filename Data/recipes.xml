@@ -82,7 +82,7 @@
         time="12000" >
         <material id="charcoal" />
         <material id="clay" quantity="5" />
-        <tool id="kiln" />
+        <tool id="smelting2" />
         <unlockedBy construction="kiln" />
     </recipe>
 
