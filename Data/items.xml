@@ -28,9 +28,9 @@
 <item id="linenCloth"   name="Linen Cloth"                       stackSize="10" />
 <item id="fat"          name="Animal Fat"                        stackSize="10" />
 <item id="leather"      name="Leather"        sounds="leather"   stackSize="10" />
-<item id="leatherScale" name="Leather Scale"  sounds="leather"   stackSize="10" />
-<item id="tinScale"     name="Tin Scale"      sounds="metalTool" stackSize="10" />
-<item id="copperScale"  name="Copper Scale"   sounds="metalTool" stackSize="10" />
+<item id="leatherScale" name="Leather Scale"  sounds="leather"   stackSize="50" />
+<item id="tinScale"     name="Tin Scale"      sounds="metalTool" stackSize="50" />
+<item id="copperScale"  name="Copper Scale"   sounds="metalTool" stackSize="50" />
 <item id="rope"         name="Rope"                              stackSize="10" strength="2" />
 <item id="brick"        name="Brick"          sounds="brick"     stackSize="10" strength="6" />
 
