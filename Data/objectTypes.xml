@@ -321,7 +321,8 @@
 </objectType>
 
 <objectType id="tannin" name="Pot of Tannin"
-    constructionTime="1000" 
+    constructionTime="1000"
+    deconstructs="tannin"
     xDrawOffset="-10" yDrawOffset="-10">
     <collisionRect x="-10" y="-10" w="20" h="20" />
     <tag name="tanning" />
