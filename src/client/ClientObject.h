@@ -105,11 +105,12 @@ public:
     virtual const Sprite *entityPointer() const override { return this; }
     virtual bool canBeAttackedByPlayer() const override;
     virtual const Point &combatantLocation() const { return location(); }
-    virtual const Color &nameColor() const override;
+    const Color &healthBarColor() const override { return nameColor(); }
 
     // From Sprite
     const Texture &cursor(const Client &client) const override;
-    void draw(const Client &client) const;
+    virtual const Color &nameColor() const override;
+    virtual bool shouldDrawName() const override;
 
 
     bool userHasAccess() const;

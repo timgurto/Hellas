@@ -47,7 +47,12 @@ void Avatar::draw(const Client &client) const{
         renderer.drawRect(COLLISION_RECT + location() + client.offset());
     }
 
-    // Draw username
+    drawHealthBarIfAppropriate(location(), height());
+}
+
+void Avatar::drawName() const {
+    const auto &client = Client::instance();
+
     const Texture nameLabel(client.defaultFont(), _name, nameColor());
     const Texture nameOutline(client.defaultFont(), _name, Color::PLAYER_NAME_OUTLINE);
     Texture cityOutline, cityLabel;
@@ -57,8 +62,8 @@ void Avatar::draw(const Client &client) const{
     namePosition.x -= nameLabel.width() / 2;
 
     Point cityPosition;
-    bool shouldDrawCityName = (! _city.empty()) /*&& (_name != client.username())*/;
-    if (shouldDrawCityName){
+    bool shouldDrawCityName = (!_city.empty()) /*&& (_name != client.username())*/;
+    if (shouldDrawCityName) {
         auto cityText = std::string{};
         if (_isKing)
             cityText = "King ";
@@ -70,7 +75,7 @@ void Avatar::draw(const Client &client) const{
         namePosition.y -= 11;
     }
     for (int x = -1; x <= 1; ++x)
-        for (int y = -1; y <= 1; ++y){
+        for (int y = -1; y <= 1; ++y) {
             nameOutline.draw(namePosition + Point(x, y));
             if (shouldDrawCityName)
                 cityOutline.draw(cityPosition + Point(x, y));
@@ -78,8 +83,6 @@ void Avatar::draw(const Client &client) const{
     nameLabel.draw(namePosition);
     if (shouldDrawCityName)
         cityLabel.draw(cityPosition);
-
-    drawHealthBarIfAppropriate(location(), height());
 }
 
 void Avatar::update(double delta){
@@ -190,7 +193,10 @@ const Color &Avatar::nameColor() const{
     if (this == &Client::_instance->character() )
         return Color::COMBATANT_SELF;
 
-    return ClientCombatant::nameColor();
+    if (canBeAttackedByPlayer())
+        return Color::COMBATANT_ENEMY;
+
+    return Sprite::nameColor();
 }
 
 void Avatar::addMenuButtons(List &menu) const{

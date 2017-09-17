@@ -44,13 +44,16 @@ public:
 
     virtual char classTag() const { return 'e'; }
 
-    virtual void draw(const Client &client) const;
+    virtual void draw(const Client &client) const; // Includes name, but not health bar.
+    virtual void drawName() const;
     virtual void update(double delta) {}
     virtual void onLeftClick(Client &client) {}
     virtual void onRightClick(Client &client) {}
     virtual const Texture &cursor(const Client &client) const;
     virtual const Texture &tooltip() const { return _tooltip; }
+    virtual bool shouldDrawName() const { return false; }
     virtual const std::string &name() const { return EMPTY_NAME; }
+    virtual const Color &nameColor() const { return Color::COMBATANT_NEUTRAL; }
     void refreshTooltip() const { _tooltip = Texture(); }
 
     double bottomEdge() const;

@@ -24,9 +24,25 @@ Rect Sprite::drawRect() const {
 
 void Sprite::draw(const Client &client) const{
     const Texture &imageToDraw = client.currentMouseOverEntity() == this ? highlightImage() : image();
-    if (!imageToDraw)
-        return;
-    imageToDraw.draw(drawRect() + client.offset());
+    if (imageToDraw)
+        imageToDraw.draw(drawRect() + client.offset());
+
+    if (shouldDrawName())
+        drawName();
+}
+
+void Sprite::drawName() const {
+    const auto &client = Client::instance();
+    const auto nameLabel = Texture{ client.defaultFont(), name(), nameColor() };
+    const auto nameOutline = Texture{ client.defaultFont(), name(), Color::PLAYER_NAME_OUTLINE };
+    auto namePosition = location() + client.offset();
+    namePosition.y -= height();
+    namePosition.y -= 16;
+    namePosition.x -= nameLabel.width() / 2;
+    for (int x = -1; x <= 1; ++x)
+        for (int y = -1; y <= 1; ++y)
+            nameOutline.draw(namePosition + Point(x, y));
+    nameLabel.draw(namePosition);
 }
 
 double Sprite::bottomEdge() const{

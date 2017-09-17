@@ -201,4 +201,4 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 204,Prevent passive selection from interrupting crafting,5,3,Bug,,,,
 205,NPCs are never culled once discovered,8,3,Bug,,,,
 206,Objects are not culled on respawn/teleport,8,5,Bug,,,,
-207,Hide object names unless hostile,13,1,Usability,,,,
+207,Hide object names unless hostile,13,1,Usability,,TRUE,,

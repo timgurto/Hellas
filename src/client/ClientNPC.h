@@ -17,6 +17,9 @@ public:
 
     // From ClientCombatant:
     bool canBeAttackedByPlayer() const override;
+
+    // From Sprite:
+    bool shouldDrawName() const override { return true; }
 };
 
 #endif

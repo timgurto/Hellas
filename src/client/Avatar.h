@@ -27,7 +27,6 @@ class Avatar : public Sprite, public ClientCombatant{
 public:
     Avatar(const std::string &name, const Point &location);
 
-    void name(const std::string &newName) { _name = newName; }
     const Point &destination() const { return _destination; }
     void destination(const Point &dst) { _destination = dst; }
     const Rect collisionRect() const { return COLLISION_RECT + location(); }
@@ -46,12 +45,16 @@ public:
 
     // From Sprite
     void draw(const Client &client) const override;
+    void drawName() const override;
     void update(double delta) override;
     const Texture &tooltip() const override; // Getter; creates tooltip on first call.
     void onLeftClick(Client &client) override;
     void onRightClick(Client &client) override;
     const std::string &name() const override { return _name; }
     const Texture &cursor(const Client &client) const override;
+    void name(const std::string &newName) { _name = newName; }
+    bool shouldDrawName() const override { return true; }
+    const Color &nameColor() const override;
 
     // From ClientCombatant
     void sendTargetMessage() const override;
@@ -59,7 +62,7 @@ public:
     const Sprite *entityPointer() const override { return this; }
     const Point &combatantLocation() const { return location(); }
     bool shouldDrawHealthBar() const override;
-    const Color &nameColor() const override;
+    const Color &healthBarColor() const override { return nameColor(); }
 
     void addMenuButtons(List &menu) const override;
     static void declareWarAgainstPlayer(void *pUsername);

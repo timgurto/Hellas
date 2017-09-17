@@ -860,35 +860,6 @@ bool ClientObject::canBeAttackedByPlayer() const{
     return client.isAtWarWith(_owner);
 }
 
-void ClientObject::draw(const Client &client) const{
-    Sprite::draw(client);
-
-    const Texture nameLabel(client.defaultFont(), objectType()->name(), nameColor());
-    const Texture nameOutline(client.defaultFont(), objectType()->name(), Color::PLAYER_NAME_OUTLINE);
-    Point namePosition = location() + client.offset();
-    namePosition.y -= height();
-    namePosition.y -= 16;
-    namePosition.x -= nameLabel.width() / 2;
-    for (int x = -1; x <= 1; ++x)
-        for (int y = -1; y <= 1; ++y)
-            nameOutline.draw(namePosition + Point(x, y));
-    nameLabel.draw(namePosition);
-
-    drawHealthBarIfAppropriate(location(), height());
-
-    if (isDebug()) {
-        renderer.setDrawColor(Color::WHITE);
-        renderer.drawRect(collisionRect() + client.offset());
-        renderer.setDrawColor(Color::YELLOW);
-        renderer.fillRect(Rect(location().x + client.offset().x,
-                                location().y + client.offset().y - 1,
-                                1, 3));
-        renderer.fillRect(Rect(location().x + client.offset().x - 1,
-                               location().y + client.offset().y,
-                               3, 1));
-    }
-}
-
 const Color &ClientObject::nameColor() const{
     if (belongsToPlayerCity())
         return Color::COMBATANT_ALLY;
@@ -896,7 +867,17 @@ const Color &ClientObject::nameColor() const{
     if (belongsToPlayer())
         return Color::COMBATANT_SELF;
 
-    return ClientCombatant::nameColor();
+    if (canBeAttackedByPlayer())
+        return Color::COMBATANT_ENEMY;
+
+    return Sprite::nameColor();
+}
+
+bool ClientObject::shouldDrawName() const {
+    const auto &client = Client::instance();
+    if (client.currentMouseOverEntity() == this)
+        return true;
+    return false;
 }
 
 bool ClientObject::belongsToPlayer() const{

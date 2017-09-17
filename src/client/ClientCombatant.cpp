@@ -27,7 +27,7 @@ void ClientCombatant::drawHealthBarIfAppropriate(const Point &objectLocation, px
 
     renderer.setDrawColor(Color::HEALTH_BAR_OUTLINE);
     renderer.drawRect(Rect(x-1, y-1, BAR_TOTAL_LENGTH + 2, BAR_HEIGHT + 2));
-    renderer.setDrawColor(nameColor());
+    renderer.setDrawColor(healthBarColor());
     renderer.fillRect(Rect(x, y, barLength, BAR_HEIGHT));
     renderer.setDrawColor(Color::HEALTH_BAR_BACKGROUND);
     renderer.fillRect(Rect(x + barLength, y, BAR_TOTAL_LENGTH - barLength, BAR_HEIGHT));
@@ -49,13 +49,6 @@ bool ClientCombatant::shouldDrawHealthBar() const{
         return true;
 
     return false;
-}
-
-const Color &ClientCombatant::nameColor() const{
-    if (canBeAttackedByPlayer())
-        return Color::COMBATANT_ENEMY;
-
-    return Color::COMBATANT_NEUTRAL;
 }
 
 void ClientCombatant::createDamageParticles() const{

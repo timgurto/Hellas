@@ -42,7 +42,7 @@ void Target::setAndAlertServer(
 void Target::refreshHealthBarColor(){
     if (_combatant == nullptr)
         return;
-    _panel->changeColor(_combatant->nameColor());
+    _panel->changeColor(_entity->nameColor());
 }
 
 bool Target::targetIsDifferentFromServer(const Sprite &newTarget, bool nowAggressive){
