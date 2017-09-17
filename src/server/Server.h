@@ -32,6 +32,9 @@ public:
     ~Server();
     void run();
 
+    static const u_short DEBUG_PORT = 8888;
+    static const u_short PRODUCTION_PORT = 8889;
+
     static const ms_t CLIENT_TIMEOUT; // How much radio silence before we drop a client
     static const ms_t MAX_TIME_BETWEEN_LOCATION_UPDATES;
 

@@ -131,6 +131,8 @@ private:
     ClientConfig _config;
 
     std::string _defaultServerAddress;
+    static const u_short DEBUG_PORT = 8888;
+    static const u_short PRODUCTION_PORT = 8889;
 
     static const ms_t MAX_TICK_LENGTH;
     static const ms_t SERVER_TIMEOUT; // How long the client will wait for a ping reply

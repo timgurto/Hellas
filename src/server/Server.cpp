@@ -78,7 +78,11 @@ _dataLoaded(false){
     sockaddr_in serverAddr;
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_addr.s_addr = INADDR_ANY;
-    serverAddr.sin_port = htons(8888);
+#ifdef _DEBUG
+    serverAddr.sin_port = htons(DEBUG_PORT);
+#else
+    serverAddr.sin_port = htons(PRODUCTION_PORT);
+#endif
 
     _socket.bind(serverAddr);
     _debug << "Server address: " << inet_ntoa(serverAddr.sin_addr)
