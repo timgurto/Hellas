@@ -36,7 +36,6 @@
     <recipe id="stoneKnife"
         time="4000" >
         <material id="rock" quantity="2"/>
-        <tool class="grinding1" />
         <unlockedBy gather="rock" />
     </recipe>
     <recipe id="tinKnife"
