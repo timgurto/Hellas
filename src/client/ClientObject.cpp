@@ -704,6 +704,11 @@ void ClientObject::update(double delta) {
     Sprite::update(delta);
 }
 
+void ClientObject::draw(const Client & client) const {
+    Sprite::draw(client);
+    drawHealthBarIfAppropriate(location(), height());
+}
+
 const Texture &ClientObject::cursor(const Client &client) const {
     if (canBeAttackedByPlayer())
         return client.cursorAttack();

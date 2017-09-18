@@ -108,6 +108,7 @@ public:
     const Color &healthBarColor() const override { return nameColor(); }
 
     // From Sprite
+    void draw(const Client &client) const override;
     const Texture &cursor(const Client &client) const override;
     virtual const Color &nameColor() const override;
     virtual bool shouldDrawName() const override;
