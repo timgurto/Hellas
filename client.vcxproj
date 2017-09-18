@@ -58,12 +58,12 @@
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <ObjectFileName>$(IntDir)$(ProjectName)\</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)$(ProjectName)\vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-      <PreprocessorDefinitions>CURL_STATICLIB;%(PreprocessorDefinitions);DEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CURL_STATICLIB;%(PreprocessorDefinitions);DEBUG;_DEBUG</PreprocessorDefinitions>
       <DisableSpecificWarnings>4074;4217</DisableSpecificWarnings>
     </ClCompile>
     <Link>
