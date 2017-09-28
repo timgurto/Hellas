@@ -85,6 +85,10 @@ void Client::drawLoginScreen() const{
     for (Element *element : _loginUI)
         element->draw();
 
+    // Windows
+    for (windows_t::const_reverse_iterator it = _windows.rbegin(); it != _windows.rend(); ++it)
+        (*it)->draw();
+
     // Cursor
     _currentCursor->draw(_mouse);
 
@@ -174,6 +178,7 @@ void Client::cleanUpLoginScreen(){
 }
 
 void Client::handleLoginInput(double delta){
+    auto mouseEventWasOnWindow = false;
     static SDL_Event e;
     while (SDL_PollEvent(&e) != 0) {
         std::ostringstream oss;
@@ -213,6 +218,9 @@ void Client::handleLoginInput(double delta){
             for (Element *element : _loginUI)
                 if (element->visible())
                     element->onMouseMove(_mouse);
+            for (Window *window : _windows)
+                if (window->visible())
+                    window->onMouseMove(_mouse);
 
             break;
         }
@@ -220,15 +228,35 @@ void Client::handleLoginInput(double delta){
         case SDL_MOUSEBUTTONDOWN:
             switch (e.button.button) {
             case SDL_BUTTON_LEFT:
+                for (Window *window : _windows)
+                    if (window->visible() && collision(_mouse, window->rect())) {
+                        window->onLeftMouseDown(_mouse);
+                        mouseEventWasOnWindow = true;
+                        break;
+                    }
+                if (mouseEventWasOnWindow)
+                    break;
                 for (Element *element : _loginUI)
-                    if (element->visible() && collision(_mouse, element->rect()))
+                    if (element->visible() && collision(_mouse, element->rect())) {
                         element->onLeftMouseDown(_mouse);
+                        mouseEventWasOnWindow = true;
+                    }
                 break;
 
             case SDL_BUTTON_RIGHT:
+                for (Window *window : _windows)
+                    if (window->visible() && collision(_mouse, window->rect())) {
+                        window->onRightMouseDown(_mouse);
+                        mouseEventWasOnWindow = true;
+                        break;
+                    }
+                if (mouseEventWasOnWindow)
+                    break;
                 for (Element *element : _loginUI)
-                    if (element->visible() && collision(_mouse, element->rect()))
+                    if (element->visible() && collision(_mouse, element->rect())){
                         element->onRightMouseDown(_mouse);
+                        mouseEventWasOnWindow = true;
+                    }
                 break;
             }
             break;
@@ -236,14 +264,31 @@ void Client::handleLoginInput(double delta){
         case SDL_MOUSEBUTTONUP:
             switch (e.button.button) {
             case SDL_BUTTON_LEFT:
+                for (Window *window : _windows)
+                    if (window->visible() && collision(_mouse, window->rect())) {
+                        window->onLeftMouseUp(_mouse);
+                        mouseEventWasOnWindow = true;
+                        break;
+                    }
+                if (mouseEventWasOnWindow)
+                    break;
                 for (Element *element : _loginUI)
                     if (element->visible() && collision(_mouse, element->rect())) {
                         element->onLeftMouseUp(_mouse);
+                        mouseEventWasOnWindow = true;
                         break;
                     }
                 break;
 
             case SDL_BUTTON_RIGHT:
+                for (Window *window : _windows)
+                    if (window->visible() && collision(_mouse, window->rect())) {
+                        window->onRightMouseUp(_mouse);
+                        mouseEventWasOnWindow = true;
+                        break;
+                    }
+                if (mouseEventWasOnWindow)
+                    break;
                 for (Element *element : _loginUI)
                     if (element->visible() && collision(_mouse, element->rect())) {
                         element->onRightMouseUp(_mouse);

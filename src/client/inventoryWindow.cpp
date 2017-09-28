@@ -20,8 +20,6 @@ void Client::initializeInventoryWindow(){
     _inventoryWindow = Window::WithRectAndTitle(Rect(LEFT, TOP, WIDTH, HEIGHT), "Inventory");
     inventory->id("inventory");
     _inventoryWindow->addChild(inventory);
-
-    _inventoryWindow->show();
 }
 
 void Client::initializeGearWindow(Client &client){
