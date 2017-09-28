@@ -120,6 +120,8 @@ public:
     
     static std::vector<std::string> GEAR_SLOT_NAMES;
 
+    void infoWindow(const std::string &text);
+
 private:
     static Client *_instance;
     static LogSDL *_debugInstance;
@@ -455,6 +457,7 @@ private:
     friend class SoundProfile;
     friend class Target;
     friend class ConfirmationWindow;
+    friend class InfoWindow;
     friend class Window;
 };
 

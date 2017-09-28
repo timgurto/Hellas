@@ -35,3 +35,28 @@ void ConfirmationWindow::sendMessageAndHideWindow(void *thisConfWindow){
     Client::_instance->sendMessage(window->_msgCode, window->_msgArgs);
     window->hide();
 }
+
+InfoWindow::InfoWindow(const std::string & windowText) {
+    resize(WINDOW_WIDTH, WINDOW_HEIGHT);
+    setPosition((Client::SCREEN_X - WINDOW_WIDTH) / 2, (Client::SCREEN_Y - WINDOW_HEIGHT) / 2); // TODO add a center() function
+    setTitle("Info");
+
+    static const px_t
+        PADDING = 2,
+        BUTTON_WIDTH = 60,
+        BUTTON_HEIGHT = 15,
+        BUTTON_Y = 2 * PADDING + Element::TEXT_HEIGHT;
+
+    addChild(new Label(Rect(0, PADDING, WINDOW_WIDTH, Element::TEXT_HEIGHT),
+        windowText, Element::CENTER_JUSTIFIED));
+    px_t
+        middle = WINDOW_WIDTH / 2,
+        okButtonX = middle - BUTTON_WIDTH / 2;
+    addChild(new Button(Rect(okButtonX, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT),
+        "OK", hideWindow, this));
+}
+
+void InfoWindow::deleteWindow(void *thisWindow) {
+    auto *window = reinterpret_cast<Window *>(thisWindow);
+    Client::_instance->removeWindow(window);
+}
