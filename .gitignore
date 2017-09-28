@@ -63,3 +63,4 @@ doc/web/terrains.js
 *.nativecodeanalysis.all.xml
 doc/web/tags.js
 src/version.h
+Releases/*
