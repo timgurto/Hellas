@@ -308,6 +308,10 @@ enum MessageCode{
 
     // Errors and warnings
 
+    // The client version differs from the server version
+    // Argument: server version
+    SV_WRONG_VERSION = 904,
+
     // The client has attempted to connect with a username already in use
     SV_DUPLICATE_USERNAME = 900,
 

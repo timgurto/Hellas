@@ -53,6 +53,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
             // Check that version matches
             if (clientVersion != version()) {
+                sendMessage(client, SV_WRONG_VERSION, version());
                 break;
             }
 

@@ -7,6 +7,7 @@
 #include "ClientVehicle.h"
 #include "ui/ConfirmationWindow.h"
 #include "ui/ContainerGrid.h"
+#include "../versionUtil.h"
 
 using namespace std::string_literals;
 
@@ -120,6 +121,18 @@ void Client::handleMessage(const std::string &msg){
             }
             if (msgCode == SV_USER_DISCONNECTED)
                 _debug << name << " disconnected." << Log::endl;
+            break;
+        }
+
+        case SV_WRONG_VERSION:
+        {
+            auto serverVersion = ""s;
+            readString(singleMsg, serverVersion, MSG_END);
+            singleMsg >> del;
+            if (del != MSG_END)
+                break;
+            infoWindow("Version mismatch. Server: v"s + serverVersion + "; client: v"s + version());
+
             break;
         }
 
