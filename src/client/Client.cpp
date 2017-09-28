@@ -27,6 +27,7 @@
 #include "../curlUtil.h"
 #include "../messageCodes.h"
 #include "../util.h"
+#include "../versionUtil.h"
 #include "../server/User.h"
 
 extern Args cmdLineArgs;
@@ -262,7 +263,7 @@ void Client::checkSocket(){
         } else {
             _debug("Connected to server", Color::SUCCESS);
             // Announce player name
-            sendMessage(CL_I_AM, _username);
+            sendMessage(CL_I_AM, makeArgs(_username, version()));
             sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
             _connectionStatus = CONNECTED;
             _character.name(_username);

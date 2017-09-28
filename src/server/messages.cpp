@@ -5,6 +5,7 @@
 #include "Vehicle.h"
 #include "objects/Deconstruction.h"
 #include "../messageCodes.h"
+#include "../versionUtil.h"
 
 void Server::handleMessage(const Socket &client, const std::string &msg){
     _debug(msg);
@@ -41,12 +42,19 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
         case CL_I_AM:
         {
-            std::string name;
+            iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            auto name = std::string(buffer);
+            iss >> del;
             iss.get(buffer, BUFFER_SIZE, MSG_END);
-            name = std::string(buffer);
+            auto clientVersion = std::string(buffer);
             iss >> del;
             if (del != MSG_END)
                 return;
+
+            // Check that version matches
+            if (clientVersion != version()) {
+                break;
+            }
 
             // Check that username is valid
             bool invalid = false;

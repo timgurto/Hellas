@@ -14,9 +14,9 @@ enum MessageCode{
     // Arguments: time sent
     CL_PING = 0,
 
-    // "My name is ..."
+    // "My name is ... and my client version is ..."
     // This has the effect of registering the user with the server.
-    // Arguments: username
+    // Arguments: username, version
     CL_I_AM = 1,
 
     // "My location has changed, and is now ..."
