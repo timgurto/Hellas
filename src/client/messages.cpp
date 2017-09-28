@@ -5,7 +5,10 @@
 #include "ClientObject.h"
 #include "ClientNPC.h"
 #include "ClientVehicle.h"
+#include "ui/ConfirmationWindow.h"
 #include "ui/ContainerGrid.h"
+
+using namespace std::string_literals;
 
 static void readString(std::istream &iss, std::string &str, char delim = MSG_DELIM){
     if (iss.peek() == delim) {
@@ -124,21 +127,20 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
             _invalidUsername = true;
-            _debug << Color::FAILURE << "The user " << _username
-                   << " is already connected to the server." << Log::endl;
+            infoWindow("The user "s + _username + " is already connected to the server."s);
             break;
 
         case SV_INVALID_USERNAME:
             if (del != MSG_END)
                 break;
             _invalidUsername = true;
-            _debug << Color::FAILURE << "The username " << _username << " is invalid." << Log::endl;
+            infoWindow("The username "s + _username + " is invalid."s);
             break;
 
         case SV_SERVER_FULL:
             _socket = Socket();
             _loggedIn = false;
-            _debug(_errorMessages[msgCode], Color::FAILURE);
+            infoWindow("The server is full; attempting reconnection.");
             break;
 
         case SV_TOO_FAR:
@@ -1203,7 +1205,7 @@ void Client::sendRawMessageStatic(void *data){
     client.sendRawMessage(*message);
 }
 
-void Client::initializeMessageNames(){    
+void Client::initializeMessageNames(){
     _messageCommands["location"] = CL_LOCATION;
     _messageCommands["cancel"] = CL_CANCEL_ACTION;
     _messageCommands["craft"] = CL_CRAFT;
@@ -1243,7 +1245,6 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_NEED_MATERIALS] = "You do not have the materials neded to create that item.";
     _errorMessages[SV_NEED_TOOLS] = "You do not have the tools needed to create that item.";
     _errorMessages[SV_ACTION_INTERRUPTED] = "Action interrupted.";
-    _errorMessages[SV_SERVER_FULL] = "The server is full.  Attempting reconnection...";
     _errorMessages[SV_INVALID_USER] = "That user doesn't exist.";
     _errorMessages[SV_INVALID_ITEM] = "That is not a real item.";
     _errorMessages[SV_CANNOT_CRAFT] = "That item cannot be crafted.";
