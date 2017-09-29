@@ -281,8 +281,8 @@
 
 <objectType id="stretchingFrame" name="Stretching Frame"
     constructionTime="0" 
-    xDrawOffset="-10" yDrawOffset="-10">
-    <collisionRect x="-10" y="-10" w="20" h="20" />
+    xDrawOffset="-10" yDrawOffset="-9">
+    <collisionRect x="-10" y="-9" w="20" h="17" />
     <material id="stick" quantity="2" />
     <material id="rope" quantity="2" />
     <tag name="leatherStretching" />
