@@ -12,14 +12,14 @@
 
 <gearWindow width=36 height=80 gridX=0 gridY=-1 gap=0 rows=4 cols=2 />
 <gearDisplay>
-    <slot num=0 midX=-1 midY=-36 drawOrder=7/> <!-- head       -->
+    <slot num=0 midX=-1 midY=-36 drawOrder=5/> <!-- head       -->
                                                <!-- jewelry    -->
     <slot num=2 midX=0  midY=-30 drawOrder=2/> <!-- body       -->
     <slot num=3 midX=-3 midY=-33 drawOrder=1/> <!-- shoulders  -->
-    <slot num=4 midX=-6 midY=-19 drawOrder=5/> <!-- hands      -->
-    <slot num=5 midX=-4 midY=-2  drawOrder=6/> <!-- feet       -->
-    <slot num=6 midX=-6 midY=-16 drawOrder=3/> <!-- right hand -->
-    <slot num=7 midX=6  midY=-18 drawOrder=4/> <!-- left hand  -->
+    <slot num=4 midX=-6 midY=-19 drawOrder=3/> <!-- hands      -->
+    <slot num=5 midX=-4 midY=-2  drawOrder=4/> <!-- feet       -->
+    <slot num=6 midX=-6 midY=-16 drawOrder=6/> <!-- right hand -->
+    <slot num=7 midX=6  midY=-18 drawOrder=7/> <!-- left hand  -->
 </gearDisplay>
 
 <!--

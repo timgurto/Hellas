@@ -211,7 +211,7 @@
 	<!-- Feet -->
 	<item id="sandals" name="Sandals" gearSlot="5" sounds="leather" >
 		<stats health="7" speed="1.1" />
-        <offset x="-1" y="-4" />
+        <offset x="-1" y="-5" />
 	</item>
 	<item id="copperGreaves" name="Copper Greaves" gearSlot="5" >
 		<stats health="14" />
