@@ -75,6 +75,7 @@
 
 <item id="bone" name="Bone" stackSize="10" gearSlot="6" sounds="bone" >
     <stats attack="5"/>
+	<offset x="-6" y="-15" />
 </item>
 
 <!-- Tools -->
@@ -174,6 +175,7 @@
 		<!-- Lamellar -->
 			<item id="leatherLamellar" name="Leather Lamellar" gearSlot="2" sounds="leather" >
 				<stats health="13" />
+				<offset x="-6" y="-4" />
 			</item>
 			<item id="tinLamellar" name="Tin Lamellar" gearSlot="2" sounds="mailArmor" >
 				<stats health="20" />
@@ -202,12 +204,14 @@
 	<!-- Hands -->
 	<item id="leatherGloves" name="Leather Gloves" gearSlot="4" sounds="leather" >
 		<stats health="3" />
+        <offset x="-2" y="1" />
 		<tag name="fireHandling" />
 	</item>
 	
 	<!-- Feet -->
 	<item id="sandals" name="Sandals" gearSlot="5" sounds="leather" >
 		<stats health="7" speed="1.1" />
+        <offset x="-1" y="-4" />
 	</item>
 	<item id="copperGreaves" name="Copper Greaves" gearSlot="5" >
 		<stats health="14" />
