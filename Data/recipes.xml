@@ -261,7 +261,7 @@
     <recipe
         id="leatherLamellar" time="4000" >
         <material id="leatherScale" quantity="20" />
-        <material id="linenThread" quantity="11" />
+        <material id="linenThread" quantity="1" />
         <unlockedBy recipe="leatherScale" />
     </recipe>
     <recipe
