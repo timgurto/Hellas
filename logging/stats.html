@@ -1,3 +1,4 @@
+<meta http-equiv="refresh" content="0.5" >
 <html>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
@@ -6,12 +7,36 @@
 </head>
 
 <body>
-    <p>Version: <span id="par" /></p>
+    <p>Version: <span id="version" /></p>
+    <p>Uptime: <span id="time" /></p>
 </body>
 
 <script type="text/javascript" src="stats.js"></script>
 <script type="text/javascript">
-    $("#par").html(stats.version);
+    function make2Digits(n){
+        return ("0" + n).slice(-2)
+    }
+
+    function timeDisplay(ms){
+        var s = Math.round(ms/1000);
+        var m = Math.floor(s/60); s = s % 60;
+        var h = Math.floor(m/60); m = m % 60;
+        var d = Math.floor(h/24); h = h % 24;
+        
+        var formattedTime = "";
+        if (d != 0)
+            formattedTime += d + ":";
+        if (d != 0 || h != 0)
+            formattedTime += make2Digits(h) + ":";
+        if (d != 0 || h != 0 || m != 0)
+            formattedTime += make2Digits(m) + ":";
+        formattedTime += make2Digits(s);
+        
+        return  formattedTime;
+    }
+
+    $("#version").html(stats.version);
+    $("#time").html(timeDisplay(stats.time));
 </script>
 
 </html>

@@ -629,6 +629,7 @@ void Server::publishStats(const Server * server) {
         << "stats = {\n"
         << "\n"
         << "version: \"" << version() << "\",\n"
+        << "time: " << server->_time << ",\n"
         << "\n"
         << "};\n";
 }
