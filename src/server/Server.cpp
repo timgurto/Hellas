@@ -633,7 +633,15 @@ void Server::publishStats(const Server * server) {
 
         statsFile << "users: [";
         for (const auto pair : server->_usersByName) {
-            statsFile << "\"" << pair.second->name() << "\",";
+            const auto &user = *pair.second;
+            statsFile
+                << "{"
+                << "name: \"" << user.name() << "\","
+                << "x: \"" << user.location().x << "\","
+                << "y: \"" << user.location().y << "\","
+                << "city: \"" << server->_cities.getPlayerCity(user.name()) << "\","
+                << "isKing: " << server->_kings.isPlayerAKing(user.name()) << ","
+                << "},";
         }
         statsFile << "],\n";
 

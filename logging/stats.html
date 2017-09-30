@@ -10,11 +10,17 @@
     <h1>Hellas server</h1>
 
     <h2>Stats</h2>
-    <p>Version: <span id="version" class="data" /></p>
-    <p>Uptime: <span id="time" class="data" /></p>
+    <p><span class="heading"> Version:</span> <span id="version" class="data" /></p>
+    <p><span class="heading"> Uptime:</span> <span id="time" class="data" /></p>
     
     <h2>Users</h2>
-    <table id="users" class="data" />
+    <table id="users" >
+    <tr>
+        <td class="heading">Username</td>
+        <td class="heading">City</td>
+        <td class="heading">Location</td>
+    </tr>
+    </table>
 </body>
 
 <script type="text/javascript" src="stats.js"></script>
@@ -41,18 +47,26 @@
         return  formattedTime;
     }
     
-    function makeTableFromArray(array){
-        var html = "<table>";
-        for(var i = 0; i < array.length; i++)
-            html += "<tr><td>" + array[i] + "</td></tr>";
-        html += "</table>"
+    function makeUserRow(user){
+        var cells = "";
+        cells += "<td>" + user.name + "</td>";
+        
+        var cityText = user.city;
+        if (user.isKing)
+            cityText = cityText + " <span class='king'>&#x265B;</span>";
+        cells += "<td>" + cityText + "</td>";
+        
+        cells += "<td>" + Math.round(user.x) + ", " + Math.round(user.y) + "</td>";
+        
+        return cells;
     }
 
     $("#version").html(stats.version);
     $("#time").html(timeDisplay(stats.time));
     
     for (var i = 0; i < stats.users.length; ++i)
-        $("#users").append('<tr><td>' + stats.users[i] + '</td></tr>');
+        //$("#users").append('<tr><td>' + stats.users[i] + '</td></tr>');
+        $("#users").append("<tr>" + makeUserRow(stats.users[i]) + "</tr>");
         
 </script>
 

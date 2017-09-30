@@ -5,9 +5,13 @@ body {
 }
 
 h1, h2 {
+    color: #CE9B79;
+}
+
+.heading {
     color: #62BA6C;
 }
 
-.data {
-    color: white;
+.king {
+    color: gold;
 }
