@@ -207,8 +207,12 @@ private:
 
     bool readUserData(User &user); // true: save data existed
     void writeUserData(const User &user) const;
-    static const ms_t SAVE_FREQUENCY;
+    static const ms_t SAVE_FREQUENCY = 30000;
     ms_t _lastSave;
+
+    static void publishStats(const Server *server);
+    static const ms_t PUBLISH_STATS_FREQUENCY = 1000;
+    ms_t _timeStatsLastPublished;
 
 
     void handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum);

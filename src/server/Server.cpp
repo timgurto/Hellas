@@ -35,8 +35,6 @@ const int Server::MAX_CLIENTS = 20;
 const ms_t Server::CLIENT_TIMEOUT = 10000;
 const ms_t Server::MAX_TIME_BETWEEN_LOCATION_UPDATES = 300;
 
-const ms_t Server::SAVE_FREQUENCY = 30000;
-
 const px_t Server::ACTION_DISTANCE = 30;
 const px_t Server::CULL_DISTANCE = 450;
 const px_t Server::TILE_W = 32;
@@ -53,6 +51,7 @@ _mapY(0),
 _debug("server.log"),
 _userFilesPath("Users/"),
 _lastSave(_time),
+_timeStatsLastPublished(_time),
 _dataLoaded(false){
     _instance = this;
     _debugInstance = &_debug;
@@ -217,6 +216,16 @@ void Server::run(){
             std::thread(saveData, _entities, _wars, _cities).detach();
 #endif
             _lastSave = _time;
+        }
+
+        // Publish stats
+        if (_time - _timeStatsLastPublished >= PUBLISH_STATS_FREQUENCY) {
+#ifdef SINGLE_THREAD
+            publishStats(this);
+#else
+            std::thread(publishStats, this).detach();
+#endif
+            _timeStatsLastPublished = _time;
         }
 
         // Update users
@@ -612,4 +621,14 @@ void Server::killAllObjectsOwnedBy(const Permissions::Owner & owner) {
         auto *object = _entities.find<Object>(serial);
         object->reduceHealth(object->health());
     }
+}
+
+void Server::publishStats(const Server * server) {
+    auto statsFile = std::ofstream{ "logging/stats.js" };
+    statsFile
+        << "stats = {\n"
+        << "\n"
+        << "version: \"" << version() << "\",\n"
+        << "\n"
+        << "};\n";
 }
