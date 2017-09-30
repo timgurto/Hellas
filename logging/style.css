@@ -3,3 +3,11 @@ body {
     color: #bbbbbb;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
+h1, h2 {
+    color: #62BA6C;
+}
+
+.data {
+    color: white;
+}

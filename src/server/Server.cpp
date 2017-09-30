@@ -625,11 +625,18 @@ void Server::killAllObjectsOwnedBy(const Permissions::Owner & owner) {
 
 void Server::publishStats(const Server * server) {
     auto statsFile = std::ofstream{ "logging/stats.js" };
+    statsFile << "stats = {\n\n";
+
+    statsFile << "version: \"" << version() << "\",\n";
+
+        statsFile << "time: " << server->_time << ",\n";
+
+        statsFile << "users: [";
+        for (const auto pair : server->_usersByName) {
+            statsFile << "\"" << pair.second->name() << "\",";
+        }
+        statsFile << "],\n";
+
     statsFile
-        << "stats = {\n"
-        << "\n"
-        << "version: \"" << version() << "\",\n"
-        << "time: " << server->_time << ",\n"
-        << "\n"
-        << "};\n";
+        << "\n};\n";
 }

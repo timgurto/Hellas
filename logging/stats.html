@@ -7,8 +7,14 @@
 </head>
 
 <body>
-    <p>Version: <span id="version" /></p>
-    <p>Uptime: <span id="time" /></p>
+    <h1>Hellas server</h1>
+
+    <h2>Stats</h2>
+    <p>Version: <span id="version" class="data" /></p>
+    <p>Uptime: <span id="time" class="data" /></p>
+    
+    <h2>Users</h2>
+    <table id="users" class="data" />
 </body>
 
 <script type="text/javascript" src="stats.js"></script>
@@ -34,9 +40,20 @@
         
         return  formattedTime;
     }
+    
+    function makeTableFromArray(array){
+        var html = "<table>";
+        for(var i = 0; i < array.length; i++)
+            html += "<tr><td>" + array[i] + "</td></tr>";
+        html += "</table>"
+    }
 
     $("#version").html(stats.version);
     $("#time").html(timeDisplay(stats.time));
+    
+    for (var i = 0; i < stats.users.length; ++i)
+        $("#users").append('<tr><td>' + stats.users[i] + '</td></tr>');
+        
 </script>
 
 </html>
