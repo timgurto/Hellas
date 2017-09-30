@@ -18,18 +18,24 @@ bool Server::readUserData(User &user){
     if (!xr)
         return false;
 
-    auto elem = xr.findChild("general");
-    std::string className;
-    if (!xr.findAttr(elem, "class", className))
-        return false;
-    auto it = User::CLASS_CODES.find(className);
-    if (it == User::CLASS_CODES.end()){
-        _debug << Color::RED << "Invalid class (" << className
-               << ") specified; creating new character." << Log::endl;
-    }
-    user.setClass(it->second);
+    {
+        auto elem = xr.findChild("general");
+        std::string className;
+        if (!xr.findAttr(elem, "class", className))
+            return false;
+        auto it = User::CLASS_CODES.find(className);
+        if (it == User::CLASS_CODES.end()) {
+            _debug << Color::RED << "Invalid class (" << className
+                << ") specified; creating new character." << Log::endl;
+        }
+        user.setClass(it->second);
 
-    elem = xr.findChild("location");
+        auto n = 0;
+        if (xr.findAttr(elem, "isKing", n) && n == 1)
+            makePlayerAKing(user);
+    }
+
+    auto elem = xr.findChild("location");
     Point p;
     if (elem == nullptr || !xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
             _debug("Invalid user data (location)", Color::RED);
@@ -94,9 +100,6 @@ bool Server::readUserData(User &user){
     if (xr.findAttr(elem, "health", n))
         user.health(n);
 
-    if (xr.findAttr(elem, "isKing", n) && n == 1)
-        makePlayerAKing(user);
-
     return true;
 
 }
@@ -106,6 +109,8 @@ void Server::writeUserData(const User &user) const{
 
     auto e = xw.addChild("general");
     xw.setAttr(e, "class", User::CLASS_NAMES[user.getClass()]);
+    if (_kings.isPlayerAKing(user.name()))
+        xw.setAttr(e, "isKing", 1);
 
     e = xw.addChild("location");
     xw.setAttr(e, "x", user.location().x);
@@ -147,9 +152,6 @@ void Server::writeUserData(const User &user) const{
 
     e = xw.addChild("stats");
     xw.setAttr(e, "health", user.health());
-
-    if (_kings.isPlayerAKing(user.name()))
-        xw.setAttr(e, "isKing", 1);
 
     xw.publish();
 }
