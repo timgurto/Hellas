@@ -94,6 +94,9 @@ bool Server::readUserData(User &user){
     if (xr.findAttr(elem, "health", n))
         user.health(n);
 
+    if (xr.findAttr(elem, "isKing", n) && n == 1)
+        makePlayerAKing(user);
+
     return true;
 
 }
@@ -144,6 +147,9 @@ void Server::writeUserData(const User &user) const{
 
     e = xw.addChild("stats");
     xw.setAttr(e, "health", user.health());
+
+    if (_kings.isPlayerAKing(user.name()))
+        xw.setAttr(e, "isKing", 1);
 
     xw.publish();
 }

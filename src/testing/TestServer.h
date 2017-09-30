@@ -26,6 +26,7 @@ public:
     Wars &wars() { return _server->_wars; }
     Cities &cities() { return _server->_cities; }
     ObjectsByOwner &objectsByOwner() { return _server->_objectsByOwner; }
+    Kings &kings() { return _server->_kings; }
 
     User &getFirstUser();
     Object &getFirstObject();

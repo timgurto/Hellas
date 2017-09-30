@@ -254,3 +254,26 @@ TEST_CASE("A king can't leave his city", "[city][king]") {
     REPEAT_FOR_MS(100);
     CHECK(s.cities().isPlayerInCity("alice", "athens"));
 }
+
+TEST_CASE("Kingship is persistent", "[king]") {
+    // Given a user named Alice;
+    {
+        auto c = TestClient::WithUsername("alice");
+        auto s = TestServer{};
+        WAIT_UNTIL(s.users().size() == 1);
+        auto &user = s.getFirstUser();
+
+        // Who is a king
+        s->makePlayerAKing(user);
+
+        // When the server restarts
+    }
+    {
+        auto c = TestClient::WithUsername("alice");
+        auto s = TestServer::KeepingOldData();
+        WAIT_UNTIL(s.users().size() == 1);
+
+        // Then Alice is still a king
+        WAIT_UNTIL(s.kings().isPlayerAKing("alice"));
+    }
+}
