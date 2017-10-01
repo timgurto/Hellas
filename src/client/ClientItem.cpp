@@ -17,7 +17,7 @@ void ClientItem::icon(const std::string &filename){
     static const std::string
         prefix = "Images/Items/",
         suffix = ".png";
-    _icon = Texture(prefix + filename + suffix, Color::MAGENTA);
+    _icon = Texture(prefix + filename + suffix);
 }
 
 void ClientItem::gearImage(const std::string &filename){
