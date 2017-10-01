@@ -211,7 +211,7 @@ private:
     ms_t _lastSave;
 
     static void publishStats(const Server *server);
-    static const ms_t PUBLISH_STATS_FREQUENCY = 1000;
+    static const ms_t PUBLISH_STATS_FREQUENCY = 2000;
     ms_t _timeStatsLastPublished;
 
 

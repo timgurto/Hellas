@@ -1,4 +1,4 @@
-<meta http-equiv="refresh" content="0.5" >
+<meta http-equiv="refresh" content="5" >
 <html>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
@@ -19,6 +19,7 @@
         <td class="heading">Username</td>
         <td class="heading">City</td>
         <td class="heading">Location</td>
+        <td class="heading">Inventory</td>
     </tr>
     </table>
 </body>
@@ -37,12 +38,12 @@
         
         var formattedTime = "";
         if (d != 0)
-            formattedTime += d + ":";
+            formattedTime += d + "d ";
         if (d != 0 || h != 0)
-            formattedTime += make2Digits(h) + ":";
+            formattedTime += h + "h ";
         if (d != 0 || h != 0 || m != 0)
-            formattedTime += make2Digits(m) + ":";
-        formattedTime += make2Digits(s);
+            formattedTime += m + "m ";
+        formattedTime += s + "s";
         
         return  formattedTime;
     }
@@ -58,6 +59,17 @@
         
         cells += "<td>" + Math.round(user.x) + ", " + Math.round(user.y) + "</td>";
         
+        var inventoryText = "";
+        for (var i = 0; i < user.inventory.length; ++i){
+            var id = user.inventory[i].id;
+            var qty = user.inventory[i].qty;
+            var icon = "<img width='16px'/>";
+            if (id != "")
+                icon = "<img width='16px' src='../Images/Items/" + id + ".png'>";
+            inventoryText += icon;
+        }
+        cells += "<td>" + inventoryText + "</td>";
+        
         return cells;
     }
 
@@ -65,7 +77,6 @@
     $("#time").html(timeDisplay(stats.time));
     
     for (var i = 0; i < stats.users.length; ++i)
-        //$("#users").append('<tr><td>' + stats.users[i] + '</td></tr>');
         $("#users").append("<tr>" + makeUserRow(stats.users[i]) + "</tr>");
         
 </script>

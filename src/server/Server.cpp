@@ -25,6 +25,8 @@
 #include "../util.h"
 #include "../versionUtil.h"
 
+using namespace std::string_literals;
+
 extern Args cmdLineArgs;
 
 Server *Server::_instance = nullptr;
@@ -632,16 +634,25 @@ void Server::publishStats(const Server * server) {
         statsFile << "time: " << server->_time << ",\n";
 
         statsFile << "users: [";
-        for (const auto pair : server->_usersByName) {
-            const auto &user = *pair.second;
+        for (const auto userEntry : server->_usersByName) {
+            const auto &user = *userEntry.second;
             statsFile
-                << "{"
+                << "\n{"
                 << "name: \"" << user.name() << "\","
                 << "x: \"" << user.location().x << "\","
                 << "y: \"" << user.location().y << "\","
                 << "city: \"" << server->_cities.getPlayerCity(user.name()) << "\","
                 << "isKing: " << server->_kings.isPlayerAKing(user.name()) << ","
-                << "},";
+
+                << "inventory: [";
+            for (auto inventorySlot : user.inventory()) {
+                auto id = inventorySlot.first != nullptr ? inventorySlot.first->id() : ""s;
+                statsFile << "{id:\"" << id << "\", qty:" << inventorySlot.second << "},";
+            }
+            statsFile << "],";
+
+            statsFile
+                << "},\n";
         }
         statsFile << "],\n";
 
