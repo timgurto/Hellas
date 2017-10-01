@@ -342,7 +342,9 @@
 
 <objectType id="woodenStatue" name="Wooden Statue"
     constructionTime="0" deconstructs="woodenStatue" deconstructionTime="1000"
+    xDrawOffset="-12" yDrawOffset="-16"
     damageParticles="wood" >
+    <collisionRect x="-12" y="-3" w="24" h="7" />
     <strength item="log" quantity="1" />
 </objectType>
 <objectType id="tinStatue" name="Tin Statue"
@@ -351,9 +353,9 @@
 </objectType>
 
 <objectType id="respawnAltar" name="Altar to Hermes"
-    xDrawOffset="-14" yDrawOffset="-22"
+    xDrawOffset="-13" yDrawOffset="-57"
     constructionTime="0" damageParticles="wood" playerUnique="altar" >
-    <collisionRect x="-15" y="-4" w="30" h="8" />
+    <collisionRect x="-13" y="-7" w="28" h="13" />
     <material id="woodenStatue" />
     <material id="rock" quantity="8" />
     <strength item="rock" quantity="8" />
