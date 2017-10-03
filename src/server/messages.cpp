@@ -1150,7 +1150,7 @@ void Server::broadcast(MessageCode msgCode, const std::string &args){
     }
 }
 
-void Server::broadcastToArea(const Point & location, MessageCode msgCode, const std::string & args) {
+void Server::broadcastToArea(const Point & location, MessageCode msgCode, const std::string & args) const {
     for (const User *user : this->findUsersInArea(location)) {
         sendMessage(user->socket(), msgCode, args);
     }
