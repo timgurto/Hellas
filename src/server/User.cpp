@@ -405,6 +405,8 @@ void User::onNewOwnedObject(const ObjectType & type) const {
 }
 
 void User::updateStats(){
+    const Server &server = *Server::_instance;
+
     health_t oldMaxHealth = maxHealth();
 
     _stats = BASE_STATS;
@@ -416,16 +418,20 @@ void User::updateStats(){
 
     // Special case: health must change to reflect new max health
     int healthDecrease = oldMaxHealth - maxHealth();
-    if (healthDecrease > 0 && healthDecrease > static_cast<int>(health()))
+    if (healthDecrease != 0) {
+        // Alert nearby users to new max health
+        server.broadcastToArea(location(), SV_MAX_HEALTH, makeArgs(_name, maxHealth()));
+    }
+    if (healthDecrease > 0 && healthDecrease > static_cast<int>(health())) {
         health(1); // Implicit rule: changing gear can never kill you, only reduce you to 1 health.
-    else
-        reduceHealth(healthDecrease);
-    if (healthDecrease != 0)
         onHealthChange();
+    } else {
+        reduceHealth(healthDecrease);
+    }
 
-    const Server &server = *Server::_instance;
-    server.sendMessage(socket(), SV_STATS, makeArgs(_stats.health, _stats.attack,
-                                                    _stats.attackTime, _stats.speed));
+
+    server.sendMessage(socket(), SV_YOUR_STATS, makeArgs(_stats.health, _stats.attack,
+                                                         _stats.attackTime, _stats.speed));
 }
 
 bool User::knowsConstruction(const std::string &id) const {

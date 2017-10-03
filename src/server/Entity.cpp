@@ -76,6 +76,8 @@ void Entity::reduceHealth(int damage){
         _health -= damage;
         broadcastHealth();
     }
+
+    assert(_health <= this->maxHealth());
 }
 
 void Entity::update(ms_t timeElapsed){

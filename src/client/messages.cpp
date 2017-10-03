@@ -969,12 +969,24 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_STATS:
+        case SV_YOUR_STATS:
         {
             singleMsg >> _stats.health >> del >> _stats.attack >> del >> _stats.attackTime >> del
-                      >> _stats.speed >> del;
+                >> _stats.speed >> del;
             if (del != MSG_END)
                 break;
+            break;
+        }
+
+        case SV_MAX_HEALTH:
+        {
+            auto username = ""s;
+            readString(singleMsg, username);
+            auto newMaxHealth = health_t{};
+            singleMsg >> del >> newMaxHealth >> del;
+            if (del != MSG_END)
+                break;
+            handle_SV_MAX_HEALTH(username, newMaxHealth);
             break;
         }
 
@@ -1155,6 +1167,18 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot, const std::string &
         _actionTimer > 0) // You were crafting or gathering
             if (item->sounds() != nullptr)
                 item->sounds()->playOnce("drop");
+}
+
+void Client::handle_SV_MAX_HEALTH(const std::string & username, health_t newMaxHealth) {
+    if (username == _username) {
+        _character.maxHealth(newMaxHealth);
+        return;
+    }
+    auto it = _otherUsers.find(username);
+    if (it == _otherUsers.end()) {
+        return;
+    }
+    it->second->maxHealth(newMaxHealth);
 }
 
 void Client::handle_SV_IN_CITY(const std::string &username, const std::string &cityName) {

@@ -1,6 +1,8 @@
 #ifndef CLIENT_COMBATANT_H
 #define CLIENT_COMBATANT_H
 
+#include <cassert>
+
 #include "ClientCombatantType.h"
 #include "Sprite.h"
 #include "../types.h"
@@ -12,10 +14,11 @@ public:
     ClientCombatant::ClientCombatant(const ClientCombatantType *type);
 
     const health_t &health() const { return _health; }
-    void health(health_t n) { _health = n; }
+    void health(health_t n) { _health = n; assert(_health <= this->maxHealth()); }
     bool isAlive() const { return _health > 0; }
     bool isDead() const { return _health == 0; }
-    const health_t &maxHealth() const { return _type->maxHealth(); }
+    const health_t &maxHealth() const { return _maxHealth; }
+    void maxHealth(health_t newMax) { _maxHealth = newMax; }
     void drawHealthBarIfAppropriate(const Point &objectLocation, px_t objHeight) const;
 
     virtual void sendTargetMessage() const = 0;
@@ -30,8 +33,9 @@ public:
     void createDamageParticles() const;
 
 private:
-    health_t _health;
     const ClientCombatantType *_type;
+    health_t _maxHealth;
+    health_t _health;
 };
 
 #endif
