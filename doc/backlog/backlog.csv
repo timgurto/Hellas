@@ -221,7 +221,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 230,Allow destroying one's own objects,13,8,Feature,,,,
 231,Under-construction objects get full loot on destruction,21,3,Bug,,,,
 232,Under-construction objects can't be looted on destruction,8,2,Bug,,,,
-233,"Object loot should be 5%, not 50%",21,1,Bug,,,,
+233,"Object loot should be 5%, not 50%",21,1,Bug,,TRUE,,
 234,Make allowed-terrain more intuitive for construction,8,8,Usability,,,,
 235,"Give ovens a fueled state, and remove fuel from recipes",13,5,Content,,,,
 236,Prevent construction near respawn altars,3,8,Exploit,,,,

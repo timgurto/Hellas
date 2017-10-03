@@ -19,7 +19,7 @@ void ObjectLoot::populate(){
 }
 
 void ObjectLoot::addStrengthItemsToLoot(){
-    static const double MATERIAL_LOOT_CHANCE = 0.5;
+    static const double MATERIAL_LOOT_CHANCE = 0.05;
 
     const auto &strengthPair = _parent.objType().strengthPair();
     const ServerItem *strengthItem = strengthPair.first;
@@ -37,7 +37,7 @@ void ObjectLoot::addStrengthItemsToLoot(){
 }
 
 void ObjectLoot::addContainerItemsToLoot(){
-    static const double CONTAINER_LOOT_CHANCE = 0.5;
+    static const double CONTAINER_LOOT_CHANCE = 0.05;
     if (_parent.hasContainer()){
         auto lootFromContainer = _parent.container().generateLootWithChance(CONTAINER_LOOT_CHANCE);
         add(lootFromContainer);
