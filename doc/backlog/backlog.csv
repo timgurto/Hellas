@@ -60,10 +60,10 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 60,Some tool objects have a cooldown,5,13,Feature,,,TRUE,
 61,Document UI interface,2,8,Documentation,,,,
 62,Fix flaky merchant-slot-window test,2,89,Bug,,TRUE,,
-63,Eating food restores energy,13,3,Feature,93,,,1
+63,Eating food restores energy,13,3,Feature,93,,,2
 64,Buffs,13,233,Feature,22,,,3
-65,NPCs can combine loot tables,5,8,Feature,,,,3
-66,NPCs can have skills/abilities,5,144,Feature,22,,,3
+65,NPCs can combine loot tables,5,8,Feature,,,,
+66,NPCs can have skills/abilities,34,144,Feature,22,,,3
 67,Set bonuses for gear,13,21,Feature,,,,
 68,Class-restricted gear,8,5,Feature,,,,
 69,Distant players aren't being removed,8,8,Bug,,TRUE,,1
@@ -72,24 +72,24 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 72,"Sort _materials and _craftableItems by name, not ID",5,3,Usability,,,,
 73,Document Texture interface,2,8,Documentation,,,,
 74,"When a player joins a city, that city adopts his wars",13,5,Feature,55,TRUE,TRUE,1
-75,NPC idling AI,5,5,Feature,,,,3
+75,NPC idling AI,5,5,Feature,,,,
 76,Sounds for attacking and death,89,3,Aesthetics,,TRUE,,
 77,A shrine that grants items,5,34,Feature,19,,,
 78,Release scrollbar on mouse up,5,8,Bug,,,,
-79,Make it more obvious when something is out of range,13,8,Usability,,,,1
-80,Make client connection failures more clean,5,13,Usability,,,,1
+79,Make it more obvious when something is out of range,13,8,Usability,,,,
+80,Make client connection failures more clean,5,13,Usability,,,,
 81,Allow actual dragging from containers,21,34,Usability,,,,
 82,Fix jumpy movement when laggy,5,34,Aesthetics,,,,
-83,A stack can be split,21,34,Usability,,,,1
-84,Prevent chat messages being cut off,55,34,Usability,,,,1
+83,A stack can be split,21,34,Usability,,,,
+84,Prevent chat messages being cut off,55,34,Usability,,,,
 85,Fix scroll-bar dragging offset,5,3,Bug,,,,
 86,Allow a recipe to create multiple item types,3,34,Feature,,,,
 87,Move appropriate configuration details into config file,2,55,Code quality,,,,
 88,Critter run-away AI,8,13,Feature,,,,3
 89,Players can be in a group,34,8,Feature,,,,3
-91,Stacks of the same item can be combined,21,13,Usability,,,,1
-92,Shift + right-click to loot all,8,3,Usability,,,,3
-93,An energy bar that's used up by attacking,13,21,Feature,,,,1
+91,Stacks of the same item can be combined,21,13,Usability,,,,
+92,Shift + right-click to loot all,8,3,Usability,,,,
+93,An energy bar that's used up by attacking,13,21,Feature,,,,2
 94,A road object that affects movement speed,3,13,Feature,64,,,
 95,Object ownership is clearly visible,5,21,Usability,8,TRUE,,1
 96,Containers may be restricted by item class,5,5,Feature,,,,
@@ -104,7 +104,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 105,Vehicles can have different speeds,5,5,Feature,,,,
 106,Mouse-down events are propagating to multiple windows,13,3,Bug,,,,
 107,Reduce calls to findUsersInArea() in NPC AI,5,13,Performance,,,,
-108,Add esc menu to release client,13,89,Usability,,,,1
+108,Add esc menu to release client,34,13,Usability,,,,
 109,Allow crafting if removing the ingredients will make room,13,3,Bug,,TRUE,,
 110,Load map in login-screen background,5,13,Usability,,,,
 111,"Use gear-slot names, not numbers, in items.xml",3,5,Code quality,,,,
@@ -122,9 +122,9 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 124,Right-clicking doesn't cancel dragging,8,2,Bug,,,,
 125,Tools can modify crafting/gathering speed,3,13,Feature,,,,
 126,Remove 'can ...' tooltips when player has no permissions,21,2,Bug,,TRUE,,
-127,Add fading unlock messages to the top of the screen,8,13,Usability,,,,1
+127,Add fading unlock messages to the top of the screen,8,13,Usability,,,,
 128,Make oven and kiln larger,5,3,Aesthetics,,,,
-129,Highlight recipes/constructions that might unlock stuff,5,21,Usability,,,,1
+129,Highlight recipes/constructions that might unlock stuff,5,21,Usability,,,,
 131,Move SDL functions and types to a namespace,2,5,Code quality,,,,
 133,Change dynamic_casts that don't check their result to static_cast or check for nullptr,3,5,Code quality,,,,
 134,Use set::count() and map::count() to test set membership,2,3,Code quality,,,,
@@ -136,11 +136,11 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 140,Remove useItem info from Container class; move it into Client object,1,13,Code quality,,,,
 141,Prevent clipping in getTileCoords() due to random coord at map edge,1,3,Bug,,,,
 142,Calculate highlight borders by adjacency to magenta (sausage man),5,13,Aesthetics,,,,
-143,Highlight newly unlocked recipes/constructions,13,21,Usability,,,,1
-143,Declaring war on a player in a city declares war on that city,21,3,Feature,55,TRUE,TRUE,1
+132,Highlight newly unlocked recipes/constructions,13,21,Usability,,,,
+143,Declaring war on a player in a city declares war on that city,21,3,Feature,55,TRUE,TRUE,
 144,Prevent multiple copies of sounds between SoundProfiles,5,3,Performance,,,,
 145,Prevent users from spamming construction sites,5,8,Exploit,,,,
-146,Add toast messages for war events,8,2,Usability,127,,,1
+146,Add toast messages for war events,8,2,Usability,127,,,
 147,Make crafting more fun,34,89,Aesthetics,,,,
 148,Make construction more fun,34,89,Aesthetics,,,,
 149,Make chat more fun,21,89,Aesthetics,,,,
@@ -165,10 +165,10 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 168,"On PvP kill, steal skill (they lose random leaf skill, you gain items that pay for it)",34,21,Feature,26,,,2
 169,Add a spectrum of container strengths,13,13,Content,,,,
 171,An item that damages the containing object's attacker,13,8,Feature,,,,
-172,Select target via keyboard,3,8,Usability,,,,2
-173,Interact with target via keyboard,5,2,Usability,172,,,2
-174,Interact with nearest target if none selected on interact-key,8,5,Usability,173,,,2
-175,Click to move,8,3,Usability,,,,2
+172,Select target via keyboard,3,8,Usability,,,,
+173,Interact with target via keyboard,5,2,Usability,172,,,
+174,Interact with nearest target if none selected on interact-key,8,5,Usability,173,,,
+175,Click to move,8,3,Usability,,,,
 176,Use Catch for tests,3,5,Code quality,,TRUE,,
 177,Add fireball ability for magus,8,13,Feature,178,,,2
 178,Add heal ability for priest,5,34,Feature,,,,2
@@ -176,8 +176,8 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 180,"Update map pins at limited frequency, e.g., 1s",2,5,Performance,,,,
 181,Send object-movement updates to owner and city's members,5,3,Bug,,,,
 182,Maintain only one set of scroll-bar triangle images,2,2,Performance,,,,
-183,"Add fake latency by default, for testing",55,34,Usability,,,,1
-184,Animate lava under volcano terrain,13,2,Aesthetics,,,,
+183,"Add fake latency by default, for testing",55,34,Usability,,,,
+184,Animate lava under volcano terrain,13,3,Aesthetics,,,,
 185,Require map to be explored,21,21,Feature,,,,
 186,"Add terrain-specific weather particles, like leaves or rain",13,8,Aesthetics,,,,
 187,Add gear preview to web docs,13,13,Documentation,,,,
@@ -186,7 +186,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 190,"Add recipes using the item, to web docs",13,5,Documentation,,TRUE,,
 191,Make city ownership persistent,21,21,Bug,,,,1
 192,Fix allowed-terrain lists for objects,8,5,Bug,,TRUE,,1
-193,Make kingship persistent,13,5,Bug,,,,1
+193,Make kingship persistent,13,5,Bug,,TRUE,,1
 194,Ensure fellow citizens can be seen on the map,13,21,Bug,,,,
 195,Make NPC movement smooth,5,13,Aesthetics,,,,
 196,Container slots are sometimes invisible or broken,89,21,Bug,,TRUE,,1
@@ -201,3 +201,30 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 205,NPCs are never culled once discovered,8,3,Bug,,,,
 206,Objects are not culled on respawn/teleport,8,5,Bug,,,,
 207,Hide object names unless hostile,13,1,Usability,,TRUE,,
+208,Fix disappearing tooltips; appears to get worse over time,21,8,Bug,,,,
+209,'Too far away to perform that action' spam,8,2,Bug,,,,
+210,Create different tool name for pottery,3,1,Aesthetics,,,,
+211,Non-killers alerted to loot are not alerted to no loot,8,3,Bug,,,,
+212,Stop 'Action interrupted' when spamming right-click on an NPC,3,2,Usability,,,,
+213,Health can exceed maximum,55,3,Bug,,,,
+218,Add recipe for water vessel -> small pot,8,1,Content,,,,
+219,Trade is blocked if inventory is full but result would fit,13,3,Bug,,,,
+220,Space check on trade doesn't account for existing stacks,13,2,Bug,,,,
+221,Space check on trade doesn't account for items' stack size,13,2,Bug,,,,
+222,Add placeholder images for items/objects,21,5,Usability,,,,
+223,Limit ware selection to items in container,8,13,Usability,,,,
+224,Don't require 'set' button for trade slots,8,8,Usability,,,,
+225,find-item search doesn't work for more than 1 character,8,3,Bug,,,,
+226,"Avoid window overlap if possible, for object windows",13,13,Usability,,,,
+227,Allow trees to be planted,5,8,Content,,,,
+228,Add container contents to object tooltips,34,13,Usability,,,,
+230,Allow destroying one's own objects,13,8,Feature,,,,
+231,Under-construction objects get full loot on destruction,21,3,Bug,,,,
+232,Under-construction objects can't be looted on destruction,8,2,Bug,,,,
+233,"Object loot should be 5%, not 50%",21,1,Bug,,,,
+234,Make allowed-terrain more intuitive for construction,8,8,Usability,,,,
+235,"Give ovens a fueled state, and remove fuel from recipes",13,5,Content,,,,
+236,Prevent construction near respawn altars,3,8,Exploit,,,,
+237,Make players more clear on map,34,3,Usability,,,,
+238,Show time remaining until objects transform,5,3,Usability,,,,
+239,Add coinage,21,3,Content,235,,,
