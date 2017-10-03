@@ -16,7 +16,7 @@ public:
     size_t size() const { return _container.size(); }
     bool empty() const { return size() == 0; }
     void insert(Entity *p) { _container.insert(p); }
-    void erase(Entity *p) { _container.erase(p); }
+    size_t erase(Entity *p) { return _container.erase(p); }
     iterator begin() const { return _container.begin(); }
     iterator end() const { return _container.end(); }
     

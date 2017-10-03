@@ -482,9 +482,9 @@ void Server::removeEntity(Entity &ent, const User *userToExclude){
     getCollisionChunk(ent.location()).removeEntity(serial);
     _entitiesByX.erase(&ent);
     _entitiesByY.erase(&ent);
+    auto numRemoved = _entities.erase(&ent);
     delete &ent;
-    _entities.erase(&ent);
-
+    assert(numRemoved == 1);
 }
 
 void Server::gatherObject(size_t serial, User &user){
