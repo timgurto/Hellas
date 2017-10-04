@@ -8,6 +8,8 @@
 #include "ItemSet.h"
 #include "../types.h"
 
+using namespace std::string_literals;
+
 // Couples materials with products that players can craft.
 class Recipe{
     std::string _id;
@@ -17,6 +19,7 @@ class Recipe{
     size_t _quantity; // Quantity produced
     ms_t _time;
     bool _knownByDefault;
+    std::string _name = ""s; // Default: product name.  Not used on server.
 
 public:
     Recipe(const std::string &id); //time = 0, ptrs = nullptr
@@ -34,6 +37,8 @@ public:
     void time(ms_t time) { _time = time; }
     void knownByDefault() { _knownByDefault = true; }
     bool isKnownByDefault() const { return _knownByDefault; }
+    void name(const std::string &recipeName) { _name = recipeName; }
+    const std::string &name() const { return _name; }
 
     void addMaterial(const Item *item, size_t qty);
     void addTool(const std::string &name);

@@ -538,7 +538,7 @@
     <unlockedBy recipe="smallPot" />
 </recipe>
 <recipe
-    id="waterReverse" product="smallPot" time="4000" >
+    id="emptyWaterVessel" name="Empty water vessel" product="smallPot" time="4000" >
     <material id="water" />
     <unlockedBy recipe="water" />
 </recipe>

@@ -315,7 +315,7 @@ void Client::populateRecipesList(Element &e){
         static const px_t NAME_X = ICON_SIZE + CheckBox::GAP + 1;
         recipeElement->addChild(new Label(Rect(NAME_X, 0, recipeElement->rect().w - NAME_X,
                                                ICON_SIZE + 2),
-                                          product.name(),
+                                          recipe.name(),
                                           Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
         recipeElement->setLeftMouseUpFunction(selectRecipe);
         recipeElement->id(recipe.id());

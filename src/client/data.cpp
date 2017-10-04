@@ -300,7 +300,7 @@ void Client::loadData(const std::string &path){
     if (xr.newFile(path + "/recipes.xml")){
         _recipes.clear();
         for (auto elem : xr.getChildren("recipe")) {
-            std::string id, name;
+            std::string id;
             if (!xr.findAttr(elem, "id", id))
                 continue; // ID is mandatory.
             Recipe recipe(id);
@@ -314,6 +314,10 @@ void Client::loadData(const std::string &path){
             }
             const ClientItem *item = &it->second;
             recipe.product(item);
+
+            auto name = item->name();
+            xr.findAttr(elem, "name", name);
+            recipe.name(name);
 
             size_t n;
             if (xr.findAttr(elem, "quantity", n)) recipe.quantity(n);
