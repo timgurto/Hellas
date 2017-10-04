@@ -225,6 +225,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 234,Make allowed-terrain more intuitive for construction,8,8,Usability,,,,
 235,"Give ovens a fueled state, and remove fuel from recipes",13,5,Content,,,,
 236,Prevent construction near respawn altars,3,8,Exploit,,,,
-237,Make players more clear on map,34,3,Usability,,,,
+237,Make players more clear on map,34,3,Usability,,TRUE,,
 238,Show time remaining until objects transform,5,3,Usability,,,,
 239,Add coinage,21,3,Content,235,,,

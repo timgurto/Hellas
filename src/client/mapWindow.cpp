@@ -35,20 +35,41 @@ void Client::updateMapWindow(Element &){
         client.addMapPin(avatar.location(), avatar.nameColor());
     }
 
-    client.addMapPin(client._character.location(), Color::COMBATANT_SELF);
+    client.addOutlinedMapPin(client._character.location(), Color::COMBATANT_SELF);
 }
 
-void Client::addMapPin(const Point &position, const Color &color){
+void Client::addMapPin(const Point &worldPosition, const Color &color){
     static const Rect
         PIN_RECT(0, 0, 1, 1),
         OUTLINE_RECT(-1, -1, 3, 3);
 
+    auto mapPosition = convertToMapPosition(worldPosition);
+
+    _mapPins->addChild(new ColorBlock(PIN_RECT + mapPosition, color));
+    _mapPinOutlines->addChild(new ColorBlock(OUTLINE_RECT + mapPosition, Color::OUTLINE));
+}
+
+void Client::addOutlinedMapPin(const Point &worldPosition, const Color &color) {
+    static const Rect
+        PIN_RECT(0, 0, 1, 1),
+        OUTLINE_RECT_H(-2, -1, 5, 3),
+        OUTLINE_RECT_V(-1, -2, 3, 5),
+        BORDER_RECT_H(-1, 0, 3, 1),
+        BORDER_RECT_V(0, -1, 1, 3);
+
+    auto mapPosition = convertToMapPosition(worldPosition);
+
+    _mapPins->addChild(new ColorBlock(BORDER_RECT_H + mapPosition, Color::WHITE));
+    _mapPins->addChild(new ColorBlock(BORDER_RECT_V + mapPosition, Color::WHITE));
+    _mapPins->addChild(new ColorBlock(PIN_RECT + mapPosition, color));
+    _mapPinOutlines->addChild(new ColorBlock(OUTLINE_RECT_H + mapPosition, Color::OUTLINE));
+    _mapPinOutlines->addChild(new ColorBlock(OUTLINE_RECT_V + mapPosition, Color::OUTLINE));
+}
+
+Point Client::convertToMapPosition(const Point &worldPosition) const{
     const double
         MAP_FACTOR_X = 1.0 * _mapX * TILE_W / _mapImage.width(),
         MAP_FACTOR_Y = 1.0 * _mapY * TILE_H / _mapImage.height();
 
-    Point positionInMap(position.x / MAP_FACTOR_X, position.y / MAP_FACTOR_Y);
-
-    _mapPins->addChild(new ColorBlock(PIN_RECT + positionInMap, color));
-    _mapPinOutlines->addChild(new ColorBlock(OUTLINE_RECT + positionInMap, Color::OUTLINE));
+    return{ worldPosition.x / MAP_FACTOR_X, worldPosition.y / MAP_FACTOR_Y };
 }

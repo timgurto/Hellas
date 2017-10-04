@@ -218,7 +218,9 @@ private:
     Element *_mapPins, *_mapPinOutlines;
     void initializeMapWindow();
     static void updateMapWindow(Element &);
-    void addMapPin(const Point &position, const Color &color);
+    void Client::addMapPin(const Point &worldPosition, const Color &color);
+    void Client::addOutlinedMapPin(const Point &worldPosition, const Color &color);
+    Point Client::convertToMapPosition(const Point &worldPosition) const;
 
     Window *_socialWindow = nullptr;
     void initializeSocialWindow();
