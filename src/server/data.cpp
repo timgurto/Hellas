@@ -843,20 +843,6 @@ void Server::loadData(const std::string &path){
         if (! loadExistingData)
             break;
 
-        // Wars
-        xr.newFile("World/wars.world");
-        if (!xr)
-            break;
-        for (auto elem : xr.getChildren("war")) {
-            Wars::Belligerent b1, b2;
-            if (!xr.findAttr(elem, "b1", b1.name) ||
-                !xr.findAttr(elem, "b2", b2.name)) {
-                    _debug("Skipping war with insufficient belligerents.", Color::RED);
-                continue;
-            }
-            _wars.declare(b1, b2);
-        }
-
         _cities.readFromXMLFile("World/cities.world");
         _wars.readFromXMLFile("World/wars.world");
 
