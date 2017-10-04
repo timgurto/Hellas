@@ -207,7 +207,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 211,Non-killers alerted to loot are not alerted to no loot,8,3,Bug,,,,
 212,Stop 'Action interrupted' when spamming right-click on an NPC,3,2,Usability,,,,
 213,Health can exceed maximum,55,3,Bug,,TRUE,,
-218,Add recipe for water vessel -> small pot,8,1,Content,,,,
+218,Add recipe for water vessel -> small pot,8,1,Content,,TRUE,,
 219,Trade is blocked if inventory is full but result would fit,13,3,Bug,,,,
 220,Space check on trade doesn't account for existing stacks,13,2,Bug,,,,
 221,Space check on trade doesn't account for items' stack size,13,2,Bug,,,,

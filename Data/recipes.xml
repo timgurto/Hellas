@@ -537,6 +537,11 @@
     <tool class="waterSource" />
     <unlockedBy recipe="smallPot" />
 </recipe>
+<recipe
+    id="waterReverse" product="smallPot" time="4000" >
+    <material id="water" />
+    <unlockedBy recipe="water" />
+</recipe>
 
 <!-- Statues -->
     <recipe
