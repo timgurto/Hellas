@@ -95,6 +95,10 @@ enum MessageCode{
     // Arguments: serial
     CL_CEDE = 42,
 
+    // "I want to grant my city's object ... to citizen ...".
+    // Arguments: serial, username
+    CL_GRANT = 43,
+
     // "I want to leave my city".
     CL_LEAVE_CITY = 45,
 

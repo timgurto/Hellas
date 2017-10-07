@@ -245,6 +245,32 @@ TEST_CASE("New ownership is reflected in the object-owner index", "[ownership]")
     CHECK(s.objectsByOwner().getObjectsWithSpecificOwner(ownerBob).size() == 1);
 }
 
+TEST_CASE("Objects can be granted to citizens", "[city][ownership]") {
+    // Given a Rock object type;
+    auto s = TestServer::WithData("basic_rock");
+
+    // And a city, Athens;
+    s.cities().createCity("athens");
+
+    // And its king, Alice;
+    auto c = TestClient::WithUsernameAndData("alice", "basic_rock");
+    WAIT_UNTIL(s.users().size() == 1);
+    auto &alice = s.getFirstUser();
+    s.cities().addPlayerToCity(alice, "athens");
+    s->makePlayerAKing(alice);
+
+    // And a rock owned by Athens;
+    s.addObject("rock");
+    auto &rock = s.getFirstObject();
+    rock.permissions().setCityOwner("athens");
+
+    // When Alice tries to grant the rock to herself
+    c.sendMessage(CL_GRANT, makeArgs(rock.serial(), "alice"));
+    
+    // Then the rock belongs to Alice
+    WAIT_UNTIL(rock.permissions().isOwnedByPlayer("alice"));
+}
+
 TEST_CASE("The first player to attack an object tags it"){
     // Given a client and server with rock objects;
     // And a rock object owned by Alice;

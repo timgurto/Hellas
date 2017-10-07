@@ -924,6 +924,19 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_GRANT:
+        {
+            auto serial = size_t{};
+            iss >> serial >> del;
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
+            auto username = std::string{ buffer };
+            iss >> del;
+            if (del != MSG_END)
+                return;
+            handle_CL_GRANT(serial, username);
+            break;
+        }
+
         case CL_PERFORM_OBJECT_ACTION:
         {
             size_t serial;
@@ -1101,6 +1114,11 @@ void Server::handle_CL_CEDE(User &user, size_t serial) {
     const Permissions::Owner &owner = obj->permissions().owner();
     for (const User *u : findUsersInArea(obj->location()))
         sendMessage(u->socket(), SV_OWNER, makeArgs(serial, owner.typeString(), owner.name));
+}
+
+void Server::handle_CL_GRANT(size_t serial, std::string username) {
+    auto *obj = _entities.find<Object>(serial);
+    obj->permissions().setPlayerOwner(username);
 }
 
 void Server::handle_CL_PERFORM_OBJECT_ACTION(User & user, size_t serial, const std::string &textArg) {
