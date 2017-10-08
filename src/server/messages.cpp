@@ -1122,6 +1122,10 @@ void Server::handle_CL_GRANT(User &user, size_t serial, std::string username) {
         sendMessage(user.socket(), SV_NO_PERMISSION);
         return;
     }
+    if (!_kings.isPlayerAKing(user.name())) {
+        sendMessage(user.socket(), SV_NOT_A_KING);
+        return;
+    }
     obj->permissions().setPlayerOwner(username);
 }
 

@@ -199,6 +199,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_NO_ACTION:
         case SV_KING_CANNOT_LEAVE_CITY:
         case SV_ALREADY_IN_CITY:
+        case SV_NOT_A_KING:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
@@ -1319,6 +1320,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_NO_ACTION] = "That object has no action to perform.";
     _errorMessages[SV_KING_CANNOT_LEAVE_CITY] = "A king cannot leave his city.";
     _errorMessages[SV_ALREADY_IN_CITY] = "That player is already in a city.";
+    _errorMessages[SV_NOT_A_KING] = "Only a king can do that.";
 }
 
 void Client::performCommand(const std::string &commandString){

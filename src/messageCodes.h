@@ -469,6 +469,9 @@ enum MessageCode{
     // The user tried to recruit a citizen of another city.
     SV_ALREADY_IN_CITY = 955,
 
+    // Only a king can perform that action
+    SV_NOT_A_KING = 966,
+
 
 
     // Debug requests
