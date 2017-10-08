@@ -69,8 +69,8 @@ public:
     void target(Entity *p) { _target = p; }
     virtual ms_t timeToRemainAsCorpse() const = 0;
 
-    health_t health() const { return _health; }
-    void health(health_t health) { _health = health; assert(_health <= this->maxHealth()); }
+    health_t health() const { assert(_health <= this->maxHealth()); return _health; }
+    void health(health_t health) { _health = health; }
     bool isDead() const { return _health == 0; }
 
     virtual void broadcastHealth() const;

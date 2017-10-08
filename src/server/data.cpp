@@ -95,11 +95,6 @@ bool Server::readUserData(User &user){
         if (xr.findAttr(slotElem, "id", id)) user.addConstruction(id);
     }
 
-    elem = xr.findChild("stats");
-    unsigned n;
-    if (xr.findAttr(elem, "health", n))
-        user.health(n);
-
     return true;
 
 }
@@ -149,9 +144,6 @@ void Server::writeUserData(const User &user) const{
         auto slotElement = xw.addChild("construction", e);
         xw.setAttr(slotElement, "id", id);
     }
-
-    e = xw.addChild("stats");
-    xw.setAttr(e, "health", user.health());
 
     xw.publish();
 }

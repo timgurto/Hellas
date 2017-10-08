@@ -14,7 +14,7 @@ public:
     ClientCombatant::ClientCombatant(const ClientCombatantType *type);
 
     const health_t &health() const { return _health; }
-    void health(health_t n) { _health = n; assert(_health <= this->maxHealth()); }
+    void health(health_t n) { _health = n; }
     bool isAlive() const { return _health > 0; }
     bool isDead() const { return _health == 0; }
     const health_t &maxHealth() const { return _maxHealth; }

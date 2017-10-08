@@ -275,6 +275,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
         _debug << "New";
     } else {
         _debug << "Existing";
+        newUser.updateStats();
     }
     _debug << " user, " << name << " has logged in." << Log::endl;
 
