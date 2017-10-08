@@ -95,7 +95,6 @@ const City::Name &Cities::getPlayerCity(const std::string &username) const{
     if (it == _usersToCities.end())
         return BLANK;
     return it->second;
-
 }
 
 void Cities::writeToXMLFile(const std::string &filename) const{

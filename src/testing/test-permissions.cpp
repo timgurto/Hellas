@@ -245,7 +245,7 @@ TEST_CASE("New ownership is reflected in the object-owner index", "[ownership]")
     CHECK(s.objectsByOwner().getObjectsWithSpecificOwner(ownerBob).size() == 1);
 }
 
-TEST_CASE("Objects can be granted to citizens", "[king][city][ownership]") {
+TEST_CASE("Objects can be granted to citizens", "[king][city][ownership][grant]") {
     // Given a Rock object type;
     auto s = TestServer::WithData("basic_rock");
 
@@ -259,7 +259,7 @@ TEST_CASE("Objects can be granted to citizens", "[king][city][ownership]") {
     s.cities().addPlayerToCity(alice, "athens");
     s->makePlayerAKing(alice);
 
-    // And a rock
+    // And a rock, owned by Athens
     s.addObject("rock");
     auto &rock = s.getFirstObject();
     rock.permissions().setCityOwner("athens");
@@ -271,7 +271,7 @@ TEST_CASE("Objects can be granted to citizens", "[king][city][ownership]") {
     WAIT_UNTIL(rock.permissions().isOwnedByPlayer("alice"));
 }
 
-TEST_CASE("Non kings can't grant objects", "[king][city][ownership]") {
+TEST_CASE("Non kings can't grant objects", "[king][city][ownership][grant]") {
     // Given a Rock object type;
     auto s = TestServer::WithData("basic_rock");
 
@@ -284,7 +284,7 @@ TEST_CASE("Non kings can't grant objects", "[king][city][ownership]") {
     auto &alice = s.getFirstUser();
     s.cities().addPlayerToCity(alice, "athens");
 
-    // And a rock
+    // And a rock, owned by Athens
     s.addObject("rock");
     auto &rock = s.getFirstObject();
     rock.permissions().setCityOwner("athens");
@@ -299,7 +299,7 @@ TEST_CASE("Non kings can't grant objects", "[king][city][ownership]") {
     CHECK(rock.permissions().isOwnedByCity("athens"));
 }
 
-TEST_CASE("Unowned objects cannot be granted", "[city][ownership]") {
+TEST_CASE("Unowned objects cannot be granted", "[city][ownership][grant]") {
     // Given a Rock object type;
     auto s = TestServer::WithData("basic_rock");
 
@@ -326,6 +326,37 @@ TEST_CASE("Unowned objects cannot be granted", "[city][ownership]") {
 
     // And the rock is still unowned
     CHECK_FALSE(rock.permissions().hasOwner());
+}
+
+TEST_CASE("Only objects owned by your city can be granted", "[king][city][ownership][grant]") {
+    // Given a Rock object type;
+    auto s = TestServer::WithData("basic_rock");
+
+    // And two cities, Athens and Sparts;
+    s.cities().createCity("athens");
+    s.cities().createCity("sparta");
+
+    // And Alice, Athens' king;
+    auto c = TestClient::WithUsernameAndData("alice", "basic_rock");
+    WAIT_UNTIL(s.users().size() == 1);
+    auto &alice = s.getFirstUser();
+    s.cities().addPlayerToCity(alice, "athens");
+    s->makePlayerAKing(alice);
+
+    // And a rock, owned by Sparta
+    s.addObject("rock");
+    auto &rock = s.getFirstObject();
+    rock.permissions().setCityOwner("sparta");
+
+    // When Alice tries to grant the rock to herself
+    WAIT_UNTIL(s.users().size() == 1);
+    c.sendMessage(CL_GRANT, makeArgs(rock.serial(), "alice"));
+
+    // Then Alice receives an error message;
+    c.waitForMessage(SV_NO_PERMISSION);
+
+    // And the rock is still owned by the city
+    CHECK(rock.permissions().isOwnedByCity("sparta"));
 }
 
 TEST_CASE("The first player to attack an object tags it"){
