@@ -464,14 +464,14 @@ void ClientObject::addMerchantTradeToWindow(){
     _window->resize(newWidth, y);
 }
 
-void ClientObject::addCedeButtonToWindow(){
+void ClientObject::addCedeButtonToWindow() {
     px_t
         x = BUTTON_GAP,
         y = _window->contentHeight(),
         newWidth = _window->contentWidth();
     y += BUTTON_GAP;
-    Button *cedeButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), "Cede to City",
-                                    confirmAndCedeObject, this);
+    Button *cedeButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), "Cede to city",
+        confirmAndCedeObject, this);
     cedeButton->setTooltip("Transfer ownership of this object over to your city");
     _window->addChild(cedeButton);
     y += BUTTON_GAP + BUTTON_HEIGHT;
@@ -482,19 +482,50 @@ void ClientObject::addCedeButtonToWindow(){
     _window->resize(newWidth, y);
 }
 
-void ClientObject::confirmAndCedeObject(void *objectToCede){
+void ClientObject::confirmAndCedeObject(void *objectToCede) {
     assert(objectToCede != nullptr);
-    ClientObject &obj = * reinterpret_cast<ClientObject *>(objectToCede);
+    ClientObject &obj = *reinterpret_cast<ClientObject *>(objectToCede);
     Client &client = *Client::_instance;
     std::string confirmationText = "Are you sure you want to cede this " +
-                                   obj.name() + " to your city?";
+        obj.name() + " to your city?";
     if (obj._confirmCedeWindow != nullptr)
         client.removeWindow(obj._confirmCedeWindow);
     else
         obj._confirmCedeWindow = new ConfirmationWindow(confirmationText, CL_CEDE,
-                                                        makeArgs(obj.serial()));
+            makeArgs(obj.serial()));
     client.addWindow(obj._confirmCedeWindow);
     obj._confirmCedeWindow->show();
+}
+
+void ClientObject::addGrantButtonToWindow() {
+    px_t
+        x = BUTTON_GAP,
+        y = _window->contentHeight(),
+        newWidth = _window->contentWidth();
+    y += BUTTON_GAP;
+    Button *grantButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), "Grant to citizen",
+        getInputAndGrantObject, this);
+    grantButton->setTooltip("Transfer ownership of this object over to a member of your city");
+    _window->addChild(grantButton);
+    y += BUTTON_GAP + BUTTON_HEIGHT;
+    x += BUTTON_GAP + BUTTON_WIDTH;
+    if (newWidth < x)
+        newWidth = x;
+
+    _window->resize(newWidth, y);
+}
+
+void ClientObject::getInputAndGrantObject(void *objectToGrant) {
+    assert(objectToGrant != nullptr);
+    ClientObject &obj = *reinterpret_cast<ClientObject *>(objectToGrant);
+    Client &client = *Client::_instance;
+    auto windowText = "Please enter the name of the new owner:"s;
+    if (obj._grantWindow != nullptr)
+        client.removeWindow(obj._grantWindow);
+    else
+        obj._grantWindow = new InputWindow(windowText, CL_GRANT, makeArgs(obj.serial()));
+    client.addWindow(obj._grantWindow);
+    obj._grantWindow->show();
 }
 
 void ClientObject::assembleWindow(Client &client){
@@ -530,14 +561,17 @@ void ClientObject::assembleWindow(Client &client){
         isVehicle = classTag() == 'v',
         canCede = (! client.character().cityName().empty()) &&
                   (_owner == client.username()) &&
-                  (!objType.isPlayerUnique());
+                  (!objType.isPlayerUnique()),
+        canGrant = (client.character().isKing() &&
+                    _owner == client.character().cityName());
     if (isMerchant ||
         userHasAccess() && (hasContainer ||
                             isVehicle ||
                             objType.hasAction() ||
                             objType.canDeconstruct() ||
                             isBeingConstructed() ||
-                            canCede)){
+                            canCede ||
+                            canGrant)){
 
         if (_window == nullptr)
             _window = Window::WithRectAndTitle(Rect(), objType.name());
@@ -568,6 +602,8 @@ void ClientObject::assembleWindow(Client &client){
                 addDeconstructionToWindow();
             if (canCede)
                 addCedeButtonToWindow();
+            if (canGrant)
+                addGrantButtonToWindow();
         }
 
         px_t

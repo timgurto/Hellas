@@ -9,6 +9,7 @@
 #include "ClientObjectType.h"
 #include "Sprite.h"
 #include "ClientItem.h"
+#include "ui/ConfirmationWindow.h"
 #include "ui/TextBox.h"
 #include "../Point.h"
 
@@ -48,6 +49,7 @@ class ClientObject : public Sprite, public ClientCombatant {
 protected:
     Window *_window; // For containers, etc; opens when the object is nearby and right-clicked.
     ConfirmationWindow *_confirmCedeWindow;
+    InputWindow *_grantWindow = nullptr;
 
 public:
     ClientObject(const ClientObject &rhs);
@@ -136,6 +138,8 @@ private:
     void addMerchantTradeToWindow();
     void addCedeButtonToWindow();
         static void confirmAndCedeObject(void *objectToCede);
+    void addGrantButtonToWindow();
+        static void getInputAndGrantObject(void *objectToCede);
 };
 
 #endif

@@ -4,6 +4,8 @@
 #include "Element.h"
 #include "Window.h"
 
+class TextBox;
+
 class ConfirmationWindow : public Window {
 public:
     ConfirmationWindow(const std::string &windowText, MessageCode msgCode,
@@ -31,6 +33,19 @@ private:
         WINDOW_HEIGHT = 32;
 
     static void deleteWindow(void *thisWindow);
+};
+
+class InputWindow : public Window {
+public:
+    InputWindow(const std::string &windowText, MessageCode msgCode,
+        const std::string &msgArgs);
+
+private:
+    MessageCode _msgCode;
+    std::string _msgArgs;
+    TextBox *_textBox;
+
+    static void sendMessageWithInputAndHideWindow(void *thisInputWindow);
 };
 
 #endif

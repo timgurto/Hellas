@@ -461,6 +461,7 @@ private:
     friend class Target;
     friend class ConfirmationWindow;
     friend class InfoWindow;
+    friend class InputWindow;
     friend class Window;
 };
 

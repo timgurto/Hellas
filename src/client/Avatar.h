@@ -42,6 +42,7 @@ public:
     const std::string &cityName() const { return _city; }
     bool isInPlayersCity() const;
     void setAsKing() { _isKing = true; }
+    bool isKing() const { return _isKing; }
 
     // From Sprite
     void draw(const Client &client) const override;

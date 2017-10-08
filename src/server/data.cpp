@@ -754,7 +754,10 @@ void Server::loadData(const std::string &path){
                     continue;
                 n = 1;
                 xr.findAttr(content, "quantity", n);
-                contents.set(&*_items.find(s), n);
+                auto it = _items.find(s);
+                if (it == _items.end())
+                    continue;
+                contents.set(&*it, n);
             }
             obj.contents(contents);
 
