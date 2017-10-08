@@ -1111,9 +1111,6 @@ void Server::handle_CL_CEDE(User &user, size_t serial) {
     }
 
     obj->permissions().setCityOwner(city);
-    const Permissions::Owner &owner = obj->permissions().owner();
-    for (const User *u : findUsersInArea(obj->location()))
-        sendMessage(u->socket(), SV_OWNER, makeArgs(serial, owner.typeString(), owner.name));
 }
 
 void Server::handle_CL_GRANT(User &user, size_t serial, std::string username) {

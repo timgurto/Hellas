@@ -68,7 +68,7 @@ _msgArgs(msgArgs)
 {
     const px_t
         WINDOW_WIDTH = 300,
-        WINDOW_HEIGHT = 45,
+        WINDOW_HEIGHT = 48,
         PADDING = 2,
         BUTTON_WIDTH = 60,
         BUTTON_HEIGHT = 15;
