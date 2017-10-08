@@ -259,16 +259,40 @@ TEST_CASE("Objects can be granted to citizens", "[city][ownership]") {
     s.cities().addPlayerToCity(alice, "athens");
     s->makePlayerAKing(alice);
 
-    // And a rock owned by Athens;
+    // And a rock
     s.addObject("rock");
     auto &rock = s.getFirstObject();
     rock.permissions().setCityOwner("athens");
 
     // When Alice tries to grant the rock to herself
     c.sendMessage(CL_GRANT, makeArgs(rock.serial(), "alice"));
-    
-    // Then the rock belongs to Alice
+
+    // Then the rock's ownership is as expected
     WAIT_UNTIL(rock.permissions().isOwnedByPlayer("alice"));
+
+}
+
+TEST_CASE("Unowned objects cannot be granted", "[city][ownership]") {
+    // Given a Rock object type;
+    auto s = TestServer::WithData("basic_rock");
+
+    // And a user, Alice;
+    auto c = TestClient::WithUsernameAndData("alice", "basic_rock");
+    
+    // And an unowned rock
+    s.addObject("rock");
+
+    // When Alice tries to grant the rock to herself
+    WAIT_UNTIL(s.users().size() == 1);
+    auto &rock = s.getFirstObject();
+    c.sendMessage(CL_GRANT, makeArgs(rock.serial(), "alice"));
+
+    // Then Alice receives an error message;
+    c.waitForMessage(SV_NO_PERMISSION);
+
+    // And the rock is still unowned
+    CHECK_FALSE(rock.permissions().hasOwner());
+
 }
 
 TEST_CASE("The first player to attack an object tags it"){
