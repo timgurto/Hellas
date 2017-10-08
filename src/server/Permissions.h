@@ -35,6 +35,7 @@ public:
     bool isOwnedByCity(const City::Name &cityName) const;
     const Owner &owner() const;
     bool doesUserHaveAccess(const std::string &username) const;
+    void alertNearbyUsersToNewOwner() const;
 
 private:
     Owner _owner;

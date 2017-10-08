@@ -36,6 +36,8 @@ void Permissions::setPlayerOwner(const std::string &username) {
     _owner.name = username;
 
     ownerIndex.add(_owner, _parent.serial());
+
+    alertNearbyUsersToNewOwner();
 }
 
 void Permissions::setCityOwner(const City::Name &cityName) {
@@ -49,6 +51,8 @@ void Permissions::setCityOwner(const City::Name &cityName) {
     _owner.name = cityName;
 
     ownerIndex.add(_owner, _parent.serial());
+
+    alertNearbyUsersToNewOwner();
 }
 
 bool Permissions::hasOwner() const{
@@ -63,7 +67,6 @@ bool Permissions::isOwnedByPlayer(const std::string &username) const{
 bool Permissions::isOwnedByCity(const City::Name &cityName) const{
     return _owner.type == Owner::CITY &&
            _owner.name == cityName;
-
 }
 
 const Permissions::Owner &Permissions::owner() const {
@@ -89,5 +92,10 @@ bool Permissions::doesUserHaveAccess(const std::string &username) const{
         assert(false);
         return false;
     }
+}
 
+void Permissions::alertNearbyUsersToNewOwner() const {
+    auto &server = *Server::_instance;
+    server.broadcastToArea(_parent.location(), SV_OWNER,
+            makeArgs(_parent.serial(), _owner.typeString(), _owner.name));
 }

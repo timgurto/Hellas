@@ -359,6 +359,23 @@ TEST_CASE("Only objects owned by your city can be granted", "[king][city][owners
     CHECK(rock.permissions().isOwnedByCity("sparta"));
 }
 
+TEST_CASE("New object permissions are propagated to clients", "[ownership]") {
+    // Given a Rock object type;
+    auto s = TestServer::WithData("basic_rock");
+    auto c = TestClient::WithData("basic_rock");
+
+    // And an unowned rock
+    s.addObject("rock");
+    WAIT_UNTIL(c.objects().size() == 1);
+
+    // When the rock's owner is set to the user
+    auto &rock = s.getFirstObject();
+    rock.permissions().setPlayerOwner(c->username());
+
+    // Then he finds out
+    WAIT_UNTIL(c.getFirstObject().belongsToPlayer());
+}
+
 TEST_CASE("The first player to attack an object tags it"){
     // Given a client and server with rock objects;
     // And a rock object owned by Alice;
