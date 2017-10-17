@@ -1065,6 +1065,8 @@ void Client::handleMessage(const std::string &msg){
 
             _target.refreshHealthBarColor();
             _mapWindow->markChanged();
+
+            populateWarsList();
             break;
         }
 

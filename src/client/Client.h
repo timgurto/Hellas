@@ -222,8 +222,11 @@ private:
     void Client::addOutlinedMapPin(const Point &worldPosition, const Color &color);
     Point Client::convertToMapPosition(const Point &worldPosition) const;
 
+    // Social window
     Window *_socialWindow = nullptr;
     void initializeSocialWindow();
+    List *_warsList = nullptr;
+    void populateWarsList();
 
     Window *_helpWindow = nullptr;
     void initializeHelpWindow();

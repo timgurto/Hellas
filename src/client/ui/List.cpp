@@ -115,6 +115,8 @@ void List::clearChildren(){
     _content->height(0);
     if (_shouldScrollToTopOnClear)
         scrollPos(0);
+    else
+        ; // TODO: make sure the list is either at the top, or longer than its space.
     markChanged();
 }
 
