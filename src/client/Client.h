@@ -226,6 +226,8 @@ private:
     Window *_socialWindow = nullptr;
     void initializeSocialWindow();
     List *_warsList = nullptr;
+    Element *_citySection = nullptr;
+    void refreshCitySection();
     void populateWarsList();
 
     Window *_helpWindow = nullptr;

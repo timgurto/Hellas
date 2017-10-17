@@ -439,6 +439,7 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
             handle_SV_NO_CITY(username);
+
             break;
         }
 
@@ -1187,6 +1188,7 @@ void Client::handle_SV_MAX_HEALTH(const std::string & username, health_t newMaxH
 void Client::handle_SV_IN_CITY(const std::string &username, const std::string &cityName) {
     if (username == _username) {
         _character.cityName(cityName);
+        refreshCitySection();
         return;
     }
     // Unknown user; add to lightweight city registry
@@ -1200,6 +1202,7 @@ void Client::handle_SV_IN_CITY(const std::string &username, const std::string &c
 void Client::handle_SV_NO_CITY(const std::string &username) {
     if (username == _username) {
         _character.cityName("");
+        refreshCitySection();
         return;
     }
     auto userIt = _otherUsers.find(username);
