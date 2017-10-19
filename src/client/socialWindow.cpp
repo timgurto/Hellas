@@ -24,6 +24,18 @@ void Client::initializeSocialWindow() {
     _socialWindow->addChild(new Line{ 0, y, WIN_WIDTH });
     y += 2 + GAP;
 
+    {
+        const auto
+            NAME_W = 80_px;
+
+        auto warsHeadings = new Element({ 0, y, WIN_WIDTH, WAR_ROW_HEIGHT });
+        auto nameLabel = new Label({ GAP, 0, NAME_W, WAR_ROW_HEIGHT }, "Belligerent");
+        nameLabel->setColor(Color::HELP_TEXT_HEADING);
+        warsHeadings->addChild(nameLabel);
+        _socialWindow->addChild(warsHeadings);
+        y += warsHeadings->height();
+    }
+
     const px_t
         WARS_HEIGHT = 100;
     _warsList = new List{ {0, y, WIN_WIDTH, WARS_HEIGHT }, WAR_ROW_HEIGHT };
