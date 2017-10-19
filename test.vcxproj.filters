@@ -136,6 +136,7 @@
     <ClCompile Include="src\client\helpWindow.cpp" />
     <ClCompile Include="src\client\HelpEntry.cpp" />
     <ClCompile Include="src\versionUtil.cpp" />
+    <ClCompile Include="src\types.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

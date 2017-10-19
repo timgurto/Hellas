@@ -3,19 +3,19 @@
 
 extern Renderer renderer;
 
-static const px_t
-    GAP = 2,
-    WIN_WIDTH = 150,
-    BUTTON_WIDTH = 100,
-    BUTTON_HEIGHT = 15;
+static const auto
+    GAP = 2_px,
+    WIN_WIDTH = 150_px,
+    BUTTON_WIDTH = 100_px,
+    BUTTON_HEIGHT = 15_px;
 
 void Client::initializeSocialWindow() {
     _socialWindow = Window::WithRectAndTitle( { 400, 100, WIN_WIDTH, 0 }, "Social");
 
     auto y = GAP;
 
-    const px_t
-        CITY_SECTION_HEIGHT = 30;
+    const auto
+        CITY_SECTION_HEIGHT = 30_px;
     _citySection = new Element{ { 0, y, WIN_WIDTH, CITY_SECTION_HEIGHT } };
     _socialWindow->addChild(_citySection);
     y += _citySection->height() + GAP;
@@ -37,7 +37,7 @@ void Client::initializeSocialWindow() {
 
 void Client::refreshCitySection() {
     _citySection->clearChildren();
-    auto y = px_t{ 0 };
+    auto y = 0_px;
 
     bool isInCity = !_character.cityName().empty();
     auto cityString = ""s;

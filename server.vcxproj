@@ -140,6 +140,7 @@
     <ClCompile Include="src\Socket.cpp" />
     <ClCompile Include="src\Stats.cpp" />
     <ClCompile Include="src\Terrain.cpp" />
+    <ClCompile Include="src\types.cpp" />
     <ClCompile Include="src\util.cpp" />
     <ClCompile Include="src\versionUtil.cpp" />
     <ClCompile Include="src\XmlReader.cpp" />

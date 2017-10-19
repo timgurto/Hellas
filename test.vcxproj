@@ -228,6 +228,7 @@
     <ClCompile Include="src\testing\test-terrain.cpp" />
     <ClCompile Include="src\testing\test-ui.cpp" />
     <ClCompile Include="src\testing\testing.cpp" />
+    <ClCompile Include="src\types.cpp" />
     <ClCompile Include="src\util.cpp" />
     <ClCompile Include="src\versionUtil.cpp" />
     <ClCompile Include="src\XmlReader.cpp" />
