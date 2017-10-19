@@ -227,6 +227,8 @@ Client::~Client(){
     for (Window *window : _windows)
         delete window;
 
+    cleanupSocialWindow();
+
     for (Element *element : _ui)
         delete element;
     Mix_Quit();

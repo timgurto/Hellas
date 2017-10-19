@@ -52,6 +52,11 @@ void Client::initializeSocialWindow() {
     populateWarsList();
 }
 
+void Client::cleanupSocialWindow() {
+    cityIcon = {};
+    playerIcon = {};
+}
+
 void Client::refreshCitySection() {
     _citySection->clearChildren();
     auto y = 0_px;
