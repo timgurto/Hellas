@@ -7,7 +7,7 @@ static const px_t
     GAP = 2,
     WIN_WIDTH = 150,
     BUTTON_WIDTH = 100,
-    BUTTON_HEIGHT = Element::TEXT_HEIGHT;
+    BUTTON_HEIGHT = 15;
 
 void Client::initializeSocialWindow() {
     _socialWindow = Window::WithRectAndTitle( { 400, 100, WIN_WIDTH, 0 }, "Social");
