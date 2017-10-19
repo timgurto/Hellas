@@ -10,8 +10,12 @@ static const auto
     BUTTON_HEIGHT = 15_px,
     WAR_ROW_HEIGHT = 15_px;
 
+static Texture cityIcon, playerIcon;
+
 void Client::initializeSocialWindow() {
     _socialWindow = Window::WithRectAndTitle( { 400, 100, WIN_WIDTH, 0 }, "Social");
+    cityIcon = { "Images/ui/city.png"s };
+    playerIcon = { "Images/ui/player.png"s };
 
     auto y = GAP;
 
@@ -69,11 +73,21 @@ void Client::refreshCitySection() {
     }
 }
 
-Element *createWarRow(const std::string &name) {
+enum BelligerentType {
+    CITY,
+    PLAYER
+};
+
+Element *createWarRow(const std::string &name, BelligerentType belligerentType) {
     const auto
+        ICON_W = 12,
         NAME_W = 80_px;
     auto row = new Element;
     auto x = px_t{ GAP };
+
+    const auto &icon = belligerentType == CITY ? cityIcon : playerIcon;
+    row->addChild(new Picture{ {x, 1, icon.width(), icon.height()}, icon });
+    x += ICON_W;
 
     row->addChild(new Label{ { x, 0, NAME_W, WAR_ROW_HEIGHT } , name });
     x += NAME_W;
@@ -84,7 +98,7 @@ Element *createWarRow(const std::string &name) {
 void Client::populateWarsList() {
     _warsList->clearChildren();
     for (const auto &city : _atWarWithCity)
-        _warsList->addChild(createWarRow(city));
+        _warsList->addChild(createWarRow(city, CITY));
     for (const auto &player : _atWarWithPlayer)
-        _warsList->addChild(createWarRow(player));
+        _warsList->addChild(createWarRow(player, PLAYER));
 }
