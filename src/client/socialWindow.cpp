@@ -7,7 +7,8 @@ static const auto
     GAP = 2_px,
     WIN_WIDTH = 150_px,
     BUTTON_WIDTH = 100_px,
-    BUTTON_HEIGHT = 15_px;
+    BUTTON_HEIGHT = 15_px,
+    WAR_ROW_HEIGHT = 15_px;
 
 void Client::initializeSocialWindow() {
     _socialWindow = Window::WithRectAndTitle( { 400, 100, WIN_WIDTH, 0 }, "Social");
@@ -25,7 +26,7 @@ void Client::initializeSocialWindow() {
 
     const px_t
         WARS_HEIGHT = 100;
-    _warsList = new List{ {0, y, WIN_WIDTH, WARS_HEIGHT } };
+    _warsList = new List{ {0, y, WIN_WIDTH, WARS_HEIGHT }, WAR_ROW_HEIGHT };
     _socialWindow->addChild(_warsList);
     y += WARS_HEIGHT + GAP;
 
@@ -49,16 +50,29 @@ void Client::refreshCitySection() {
     y += Element::TEXT_HEIGHT + GAP;
 
     if (isInCity && !_character._isKing) {
+        // Static, so that the button still has something to point to after this function exits
         static auto LEAVE_CITY_MESSAGE = compileMessage(CL_LEAVE_CITY);
         _citySection->addChild(new Button{ { GAP, y, BUTTON_WIDTH, BUTTON_HEIGHT }, "Leave city"s,
             sendRawMessageStatic, &LEAVE_CITY_MESSAGE });
     }
 }
 
+Element *createWarRow(const std::string &name) {
+    const auto
+        NAME_W = 80_px;
+    auto row = new Element;
+    auto x = px_t{ GAP };
+
+    row->addChild(new Label{ { x, 0, NAME_W, WAR_ROW_HEIGHT } , name });
+    x += NAME_W;
+
+    return row;
+}
+
 void Client::populateWarsList() {
     _warsList->clearChildren();
     for (const auto &city : _atWarWithCity)
-        _warsList->addChild(new Label{ {}, city });
+        _warsList->addChild(createWarRow(city));
     for (const auto &player : _atWarWithPlayer)
-        _warsList->addChild(new Label{ {}, player });
+        _warsList->addChild(createWarRow(player));
 }
