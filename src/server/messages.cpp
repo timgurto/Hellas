@@ -51,11 +51,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
 
+#ifndef _DEBUG
             // Check that version matches
             if (clientVersion != version()) {
                 sendMessage(client, SV_WRONG_VERSION, version());
                 break;
             }
+#endif
 
             // Check that username is valid
             bool invalid = false;
