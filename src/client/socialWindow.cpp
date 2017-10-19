@@ -13,7 +13,7 @@ static const auto
 static Texture cityIcon, playerIcon;
 
 void Client::initializeSocialWindow() {
-    _socialWindow = Window::WithRectAndTitle( { 400, 100, WIN_WIDTH, 0 }, "Social");
+    _socialWindow = Window::WithRectAndTitle( { 400, 100, WIN_WIDTH, 0 }, "Social"s);
     cityIcon = { "Images/ui/city.png"s };
     playerIcon = { "Images/ui/player.png"s };
 
@@ -28,17 +28,8 @@ void Client::initializeSocialWindow() {
     _socialWindow->addChild(new Line{ 0, y, WIN_WIDTH });
     y += 2 + GAP;
 
-    {
-        const auto
-            NAME_W = 80_px;
-
-        auto warsHeadings = new Element({ 0, y, WIN_WIDTH, WAR_ROW_HEIGHT });
-        auto nameLabel = new Label({ GAP, 0, NAME_W, WAR_ROW_HEIGHT }, "Belligerent");
-        nameLabel->setColor(Color::HELP_TEXT_HEADING);
-        warsHeadings->addChild(nameLabel);
-        _socialWindow->addChild(warsHeadings);
-        y += warsHeadings->height();
-    }
+    _socialWindow->addChild(new Label{ {GAP, y, WIN_WIDTH, WAR_ROW_HEIGHT}, "Wars:"s });
+    y += WAR_ROW_HEIGHT;
 
     const px_t
         WARS_HEIGHT = 100;

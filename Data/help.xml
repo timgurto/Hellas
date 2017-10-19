@@ -56,8 +56,13 @@
 
 <entry order="6" name="War"    >
     <paragraph order="1"  text="At any given time, two players are either at peace or at war.  When at war, " />
-    <paragraph order="2"  text="Personal wars" />
+    <paragraph order="2"  text="Personal wars; may be resumed on leaving your city." />
     <paragraph order="3"  text="Cities at war" />
+    <paragraph order="4"  heading="Managing wars"
+                        text="Your active wars can be managed in the Social window.  Open this window by pressing 'O' or clicking the 'Social window' button on the toolbar.  The bottom section of this window lists all of your active wars."/>
+    <paragraph order="5"  heading="Active and inactive wars"
+                        text="Every war is either active or inactive.  An active war means that the belligerents can fight each other, whereas an inactive war is effectively a truce.  A war is inactive if at least one of the belligerents is a player, and that player is in a city; the city's diplomatic state takes precedence."/>
+    <paragraph order="6" text="For example, if Domos is at war with Timos, they can fight.  If Domos then joins a city, then that personal war takes a back seat; the players can fight only if Domos's city is at war with Timos.  The personal war is resumed if Domos leaves his city."/>
 </entry>
 
 <entry order="7" name="Altars"    >
