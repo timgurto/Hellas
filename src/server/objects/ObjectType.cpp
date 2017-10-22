@@ -46,10 +46,11 @@ void ObjectType::Strength::set(const ServerItem *item, size_t quantity){
 
 health_t ObjectType::Strength::get() const{
     if (!_strengthCalculated){
-        if (_item == nullptr)
-            _calculatedStrength = 0;
+        if (_item == nullptr || _item->strength() == 0)
+            _calculatedStrength = 1;
         else
             _calculatedStrength = _item->strength() * _quantity;
+        _strengthCalculated = true;
     }
     return _calculatedStrength;
 }
