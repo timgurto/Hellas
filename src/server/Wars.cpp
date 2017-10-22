@@ -77,24 +77,29 @@ void Wars::changePlayerBelligerentToHisCity(Belligerent &belligerent){
     belligerent.name = playerCity;
 }
 
-std::set<Wars::Belligerent> Wars::getEnemiesOfPlayer(const std::string &username) const{
-    auto player = Belligerent{ username };
-    changePlayerBelligerentToHisCity(player);
+void Wars::sendWarsToUser(const User & user, const Server & server) const {
+    auto userAsBelligerent = Belligerent{ user.name() };
+    changePlayerBelligerentToHisCity(userAsBelligerent);
 
     auto enemies = std::set<Belligerent>{};
     for (const auto &war : container) {
         auto otherBelligerent = Belligerent{};
-        if (war.b1() == player)
+        if (war.b1() == userAsBelligerent)
             otherBelligerent = war.b2();
-        else if (war.b2() == player)
+        else if (war.b2() == userAsBelligerent)
             otherBelligerent = war.b1();
         else
             continue;
         if (otherBelligerent.type == Belligerent::PLAYER)
             changePlayerBelligerentToHisCity(otherBelligerent);
+
         enemies.insert(otherBelligerent);
     }
-    return enemies;
+    for (auto &enemy : enemies) {
+        const MessageCode code = enemy.type == Wars::Belligerent::CITY ?
+            SV_AT_WAR_WITH_CITY : SV_AT_WAR_WITH_PLAYER;
+        server.sendMessage(user.socket(), code, enemy.name);
+    }
 }
 
 void Wars::writeToXMLFile(const std::string &filename) const{

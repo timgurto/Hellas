@@ -279,19 +279,9 @@ void Server::addUser(const Socket &socket, const std::string &name){
     }
     _debug << " user, " << name << " has logged in." << Log::endl;
 
-    // Send welcome message
     sendMessage(socket, SV_WELCOME);
-
-    // Tell him about himself
     newUser.sendInfoToClient(newUser);
-
-    // Send him his wars
-    auto enemies = _wars.getEnemiesOfPlayer(name);
-    for (const auto &enemy : enemies){
-        const MessageCode code = enemy.type == Wars::Belligerent::CITY ?
-                SV_AT_WAR_WITH_CITY : SV_AT_WAR_WITH_PLAYER;
-        sendMessage(newUser.socket(), code, enemy.name);
-    }
+    _wars.sendWarsToUser(newUser, *this);
 
     for (const User *userP : findUsersInArea(newUser.location())){
         if (userP == &newUser)

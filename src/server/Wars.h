@@ -41,7 +41,7 @@ public:
 
     void declare(const Belligerent &a, const Belligerent &b);
     bool isAtWar(Belligerent a, Belligerent b) const;
-    std::set<Belligerent> getEnemiesOfPlayer(const std::string &username) const;
+    void sendWarsToUser(const User &user, const Server &server) const;
     
     /*std::multimap<Belligerent, Belligerent>::const_iterator begin() const { return container.begin(); }
     std::multimap<Belligerent, Belligerent>::const_iterator end() const { return container.end(); }*/
