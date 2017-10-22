@@ -205,7 +205,7 @@ void Client::initializeGearSlotNames(){
     GEAR_SLOT_NAMES.push_back("Left hand");
 }
 
-Client::~Client(){
+Client::~Client() {
     SDL_ShowCursor(SDL_ENABLE);
     cleanUpLoginScreen();
     Element::cleanup();
@@ -214,8 +214,9 @@ Client::~Client(){
     Avatar::cleanup();
     for (const Sprite *entityConst : _entities) {
         Sprite *entity = const_cast<Sprite *>(entityConst);
-        if (entity != &_character)
-            delete entity;
+        if (entity == &_character)
+            continue;
+        delete entity;
     }
 
     for (const ClientObjectType *type : _objectTypes)

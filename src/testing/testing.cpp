@@ -25,7 +25,7 @@ int main( int argc, char* argv[] )
     
     renderer.init();
 
-    int result = Catch::Session().run( argc, argv );
+    auto result = Catch::Session().run( argc, argv );
 
     return ( result < 0xff ? result : 0xff );
 }

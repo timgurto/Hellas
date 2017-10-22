@@ -81,6 +81,10 @@ ClientObject::~ClientObject(){
         Client::_instance->removeWindow(_confirmCedeWindow);
         delete _confirmCedeWindow;
     }
+    if (_grantWindow != nullptr) {
+        Client::_instance->removeWindow(_grantWindow);
+        delete _grantWindow;
+    }
 }
 
 void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){

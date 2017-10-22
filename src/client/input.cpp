@@ -217,11 +217,10 @@ void Client::handleInput(double delta){
                     SDL_StartTextInput();
 
                 // Bring top clicked window to front
-                for (windows_t::iterator it = _windows.begin(); it != _windows.end(); ++it) {
-                    Window &window = **it;
-                    if (window.visible() && collision(_mouse, window.rect())) {
-                        _windows.erase(it); // Invalidates iterator.
-                        addWindow(&window);
+                for (auto *window : _windows) {
+                    if (window->visible() && collision(_mouse, window->rect())) {
+                        removeWindow(window);
+                        addWindow(window);
                         break;
                     }
                 }
