@@ -4,21 +4,21 @@
 #include "../XmlWriter.h"
 
 
-bool Wars::Belligerent::operator<(const Belligerent &rhs) const{
+bool Belligerent::operator<(const Belligerent &rhs) const{
     if (name != rhs.name)
         return name < rhs.name;
     return type < rhs.type;
 }
 
-bool Wars::Belligerent::operator==(const Belligerent &rhs) const {
+bool Belligerent::operator==(const Belligerent &rhs) const {
     return name == rhs.name && type == rhs.type;
 }
 
-bool Wars::Belligerent::operator!=(const Belligerent &rhs) const {
+bool Belligerent::operator!=(const Belligerent &rhs) const {
     return ! (*this == rhs);
 }
 
-void Wars::Belligerent::alertToWarWith(const Belligerent rhs) const{
+void Belligerent::alertToWarWith(const Belligerent rhs) const{
     const Server &server = Server::instance();
 
     if (type == PLAYER)
@@ -96,7 +96,7 @@ void Wars::sendWarsToUser(const User & user, const Server & server) const {
         enemies.insert(otherBelligerent);
     }
     for (auto &enemy : enemies) {
-        const MessageCode code = enemy.type == Wars::Belligerent::CITY ?
+        const MessageCode code = enemy.type == Belligerent::CITY ?
             SV_AT_WAR_WITH_CITY : SV_AT_WAR_WITH_PLAYER;
         server.sendMessage(user.socket(), code, enemy.name);
     }
@@ -123,7 +123,7 @@ void Wars::readFromXMLFile(const std::string &filename){
         return;
     }
     for (auto elem : xr.getChildren("war")) {
-        Wars::Belligerent b1, b2;
+        Belligerent b1, b2;
         if (!xr.findAttr(elem, "name1", b1.name) ||
             !xr.findAttr(elem, "name2", b2.name)) {
                 Server::debug()("Skipping war with insufficient belligerents.", Color::RED);

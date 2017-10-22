@@ -896,10 +896,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> del;
             if (del != MSG_END)
                 return;
-            Wars::Belligerent::Type targetType = msgCode == CL_DECLARE_WAR_ON_PLAYER ?
-                    Wars::Belligerent::PLAYER :
-                    Wars::Belligerent::CITY;
-            Wars::Belligerent target(targetName, targetType);
+            Belligerent::Type targetType = msgCode == CL_DECLARE_WAR_ON_PLAYER ?
+                    Belligerent::PLAYER :
+                    Belligerent::CITY;
+            Belligerent target(targetName, targetType);
             if (_wars.isAtWar(user->name(), target)){
                 sendMessage(client, SV_ALREADY_AT_WAR);
                 break;
@@ -1280,12 +1280,12 @@ void Server::sendNewRecipesMessage(const User &user, const std::set<std::string>
     }
 }
 
-void Server::alertUserToWar(const std::string &username, const Wars::Belligerent &otherBelligerent) const{
+void Server::alertUserToWar(const std::string &username, const Belligerent &otherBelligerent) const{
     auto it = _usersByName.find(username);
     if (it == _usersByName.end()) // user1 is offline
         return;
 
-    const MessageCode code = otherBelligerent.type == Wars::Belligerent::CITY ?
+    const MessageCode code = otherBelligerent.type == Belligerent::CITY ?
             SV_AT_WAR_WITH_CITY : SV_AT_WAR_WITH_PLAYER;
     sendMessage(it->second->socket(), code, otherBelligerent.name);
 }

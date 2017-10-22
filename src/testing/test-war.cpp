@@ -118,9 +118,9 @@ TEST_CASE("A player at war with a city is at war with its members", "[war][city]
     s.cities().addPlayerToCity(s.getFirstUser(), "athens");
 
     // When new user Bob and Athens go to war
-    Wars::Belligerent
-        b1("bob", Wars::Belligerent::PLAYER),
-        b2("athens", Wars::Belligerent::CITY);
+    Belligerent
+        b1("bob", Belligerent::PLAYER),
+        b2("athens", Belligerent::CITY);
 
     SECTION("Bob logs in, then war is declared"){
         TestClient bob = TestClient::WithUsername("bob");
@@ -165,16 +165,16 @@ TEST_CASE("Players can declare war on cities", "[war][city]"){
     alice.sendMessage(CL_DECLARE_WAR_ON_CITY, "athens");
 
     // Then they are at war
-    Wars::Belligerent
-        b1("alice", Wars::Belligerent::PLAYER),
-        b2("athens", Wars::Belligerent::CITY);
+    Belligerent
+        b1("alice", Belligerent::PLAYER),
+        b2("athens", Belligerent::CITY);
     WAIT_UNTIL(s.wars().isAtWar(b1, b2));
 }
 
 TEST_CASE("Wars involving cities are persistent", "[persistence][city][war]"){
-    Wars::Belligerent
-        b1("alice", Wars::Belligerent::PLAYER),
-        b2("athens", Wars::Belligerent::CITY);
+    Belligerent
+        b1("alice", Belligerent::PLAYER),
+        b2("athens", Belligerent::CITY);
 
     {
         // Given a city named Athens;
@@ -218,7 +218,7 @@ TEST_CASE("The objects of an offline enemy in an enemy city can be attacked", "[
     TestClient alice = TestClient::WithUsernameAndData("alice", "chair");
 
     // And Alice is at war with Athens
-    s.wars().declare("alice", Wars::Belligerent("athens", Wars::Belligerent::CITY));
+    s.wars().declare("alice", Belligerent("athens", Belligerent::CITY));
 
     // When Alice becomes aware of the rock
     WAIT_UNTIL(alice.objects().size() == 1);
@@ -231,7 +231,7 @@ TEST_CASE("The objects of an offline enemy in an enemy city can be attacked", "[
 TEST_CASE("A player is alerted when he sues for peace", "[war][peace]") {
     // Given Alice and Bob are at war
     auto s = TestServer{};
-    s.wars().declare({ "alice", Wars::Belligerent::PLAYER }, { "bob", Wars::Belligerent::PLAYER });
+    s.wars().declare({ "alice", Belligerent::PLAYER }, { "bob", Belligerent::PLAYER });
 
     // When Alice sues for peace
     auto c = TestClient::WithUsername("alice");
@@ -245,7 +245,7 @@ TEST_CASE("A player is alerted when he sues for peace", "[war][peace]") {
 /*TEST_CASE("Peace proposals are persistent", "[war][peace][persistence]") {
     // Given Alice and Bob are at war
     auto s = TestServer{};
-    s.wars().declare({ "alice", Wars::Belligerent::PLAYER }, { "bob", Wars::Belligerent::PLAYER });
+    s.wars().declare({ "alice", Belligerent::PLAYER }, { "bob", Belligerent::PLAYER });
 
     {
         // When Alice sues for peace
