@@ -32,19 +32,19 @@ void Wars::Belligerent::alertToWarWith(const Belligerent rhs) const{
 
 Wars::War::War(const Belligerent & b1, const Belligerent & b2) {
     if (b1 < b2) {
-        _b1 = b1;
-        _b2 = b2;
+        this->b1 = b1;
+        this->b2 = b2;
     } else if (b2 < b1) {
-        _b1 = b2;
-        _b2 = b1;
+        this->b1 = b2;
+        this->b2 = b1;
     } else
         assert(false);
 }
 
 bool Wars::War::operator<(const War & rhs) const {
-    if (_b1 != rhs._b1)
-        return _b1 < rhs._b1;
-    return _b2 < rhs._b2;
+    if (b1 != rhs.b1)
+        return b1 < rhs.b1;
+    return b2 < rhs.b2;
 }
 
 void Wars::declare(const Belligerent &a, const Belligerent &b){
@@ -84,10 +84,10 @@ void Wars::sendWarsToUser(const User & user, const Server & server) const {
     auto enemies = std::set<Belligerent>{};
     for (const auto &war : container) {
         auto otherBelligerent = Belligerent{};
-        if (war.b1() == userAsBelligerent)
-            otherBelligerent = war.b2();
-        else if (war.b2() == userAsBelligerent)
-            otherBelligerent = war.b1();
+        if (war.b1 == userAsBelligerent)
+            otherBelligerent = war.b2;
+        else if (war.b2 == userAsBelligerent)
+            otherBelligerent = war.b1;
         else
             continue;
         if (otherBelligerent.type == Belligerent::PLAYER)
@@ -106,11 +106,11 @@ void Wars::writeToXMLFile(const std::string &filename) const{
     XmlWriter xw(filename);
     for (const auto &war : container) {
         auto e = xw.addChild("war");
-        xw.setAttr(e, "name1", war.b1().name);
-        if (war.b1().type == Belligerent::CITY)
+        xw.setAttr(e, "name1", war.b1.name);
+        if (war.b1.type == Belligerent::CITY)
             xw.setAttr(e, "isCity1", 1);
-        xw.setAttr(e, "name2", war.b2().name);
-        if (war.b2().type == Belligerent::CITY)
+        xw.setAttr(e, "name2", war.b2.name);
+        if (war.b2.type == Belligerent::CITY)
             xw.setAttr(e, "isCity2", 1);
     }
     xw.publish();

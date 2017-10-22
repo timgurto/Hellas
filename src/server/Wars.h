@@ -6,6 +6,7 @@
 #include <vector>
 
 class Wars{
+    struct War;
 public:
     struct Belligerent{
         enum Type{
@@ -26,16 +27,6 @@ public:
         void alertToWarWith(const Belligerent rhs) const;
     };
 
-    class War {
-    public:
-        War(const Belligerent &b1, const Belligerent &b2);
-        const Belligerent &b1() const { return _b1; }
-        const Belligerent &b2() const { return _b2; }
-        bool operator<(const War &rhs) const;
-    private:
-        Belligerent _b1, _b2; // b1 < b2
-    };
-
     //typedef std::pair<Belligerent, Belligerent> Belligerents;
     typedef std::set<War> container_t;
 
@@ -51,6 +42,12 @@ public:
 
 private:
     container_t container;
+
+    struct War {
+        War(const Belligerent &b1, const Belligerent &b2);
+        bool operator<(const War &rhs) const;
+        Belligerent b1, b2; // b1 < b2
+    };
 
     static void changePlayerBelligerentToHisCity(Belligerent &belligerent);
 };
