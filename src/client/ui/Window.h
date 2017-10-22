@@ -20,10 +20,11 @@ public:
 
     typedef void (*InitFunction)(Client &);
 
-    static Window *InitializeLater(InitFunction function);
+    static Window *InitializeLater(InitFunction function, const std::string &title);
     static Window *WithRectAndTitle(const Rect &rect, const std::string &title);
 
     static void hideWindow(void *window);
+    const std::string &title() const { return _title; }
 
     static void startDragging(Element &e, const Point &mousePos);
     static void stopDragging(Element &e, const Point &mousePos);

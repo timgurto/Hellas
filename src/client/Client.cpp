@@ -499,6 +499,7 @@ void Client::startAction(ms_t actionLength){
 
 void Client::addWindow(Window *window){
     assert(window != nullptr);
+    assert(!window->title().empty());
     _windows.push_front(window);
 }
 

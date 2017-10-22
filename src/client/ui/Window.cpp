@@ -39,8 +39,9 @@ Window *Window::WithRectAndTitle(const Rect &rect, const std::string &title){
     return window;
 }
 
-Window *Window::InitializeLater(InitFunction function){
+Window *Window::InitializeLater(InitFunction function, const std::string &title){
     auto window = new Window;
+    window->setTitle(title);
 
     window->_initFunction = function;
     window->_isInitialized = false;

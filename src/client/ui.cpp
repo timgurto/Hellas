@@ -49,13 +49,13 @@ void Client::initWindows() {
     initializeBuildWindow();
     addWindow(_buildWindow);
 
-    _craftingWindow = Window::InitializeLater(initializeCraftingWindow);
+    _craftingWindow = Window::InitializeLater(initializeCraftingWindow, "Crafting (uninitialised)");
     addWindow(_craftingWindow);
 
     initializeInventoryWindow();
     addWindow(_inventoryWindow);
 
-    _gearWindow = Window::InitializeLater(initializeGearWindow);
+    _gearWindow = Window::InitializeLater(initializeGearWindow, "Gear (uninitialised)");
     addWindow(_gearWindow);
 
     initializeSocialWindow();
