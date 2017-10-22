@@ -30,7 +30,7 @@ void Belligerent::alertToWarWith(const Belligerent rhs) const{
     }
 }
 
-Wars::War::War(const Belligerent & b1, const Belligerent & b2) {
+War::War(const Belligerent & b1, const Belligerent & b2) {
     if (b1 < b2) {
         this->b1 = b1;
         this->b2 = b2;
@@ -41,7 +41,7 @@ Wars::War::War(const Belligerent & b1, const Belligerent & b2) {
         assert(false);
 }
 
-bool Wars::War::operator<(const War & rhs) const {
+bool War::operator<(const War & rhs) const {
     if (b1 != rhs.b1)
         return b1 < rhs.b1;
     return b2 < rhs.b2;

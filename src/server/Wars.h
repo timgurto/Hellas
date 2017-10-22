@@ -25,8 +25,17 @@ struct Belligerent {
     void alertToWarWith(const Belligerent rhs) const;
 };
 
+class War {
+    War(const Belligerent &b1, const Belligerent &b2);
+    Belligerent b1, b2; // b1 < b2
+
+    friend class Wars;
+
+public:
+    bool operator<(const War &rhs) const;
+};
+
 class Wars{
-    struct War;
 public:
     typedef std::set<War> container_t;
 
@@ -39,12 +48,6 @@ public:
 
 private:
     container_t container;
-
-    struct War {
-        War(const Belligerent &b1, const Belligerent &b2);
-        bool operator<(const War &rhs) const;
-        Belligerent b1, b2; // b1 < b2
-    };
 
     static void changePlayerBelligerentToHisCity(Belligerent &belligerent);
 };
