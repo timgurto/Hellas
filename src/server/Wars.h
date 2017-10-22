@@ -20,21 +20,31 @@ public:
         Belligerent(const char *name, Type type = PLAYER): type(type), name(name) {}
 
         bool operator==(const Belligerent &rhs) const;
+        bool operator!=(const Belligerent &rhs) const;
         bool operator<(const Belligerent &rhs) const;
 
         void alertToWarWith(const Belligerent rhs) const;
     };
 
-    typedef std::pair<Belligerent, Belligerent> Belligerents;
-    typedef std::multimap<Belligerent, Belligerent> container_t;
+    class War {
+    public:
+        War(const Belligerent &b1, const Belligerent &b2);
+        const Belligerent &b1() const { return _b1; }
+        const Belligerent &b2() const { return _b2; }
+        bool operator<(const War &rhs) const;
+    private:
+        Belligerent _b1, _b2; // b1 < b2
+    };
+
+    //typedef std::pair<Belligerent, Belligerent> Belligerents;
+    typedef std::set<War> container_t;
 
     void declare(const Belligerent &a, const Belligerent &b);
     bool isAtWar(Belligerent a, Belligerent b) const;
-    std::pair<container_t::const_iterator, container_t::const_iterator> getAllWarsInvolving(
-            Belligerent a) const;
+    std::set<Belligerent> getEnemiesOfPlayer(const std::string &username) const;
     
-    std::multimap<Belligerent, Belligerent>::const_iterator begin() const { return container.begin(); }
-    std::multimap<Belligerent, Belligerent>::const_iterator end() const { return container.end(); }
+    /*std::multimap<Belligerent, Belligerent>::const_iterator begin() const { return container.begin(); }
+    std::multimap<Belligerent, Belligerent>::const_iterator end() const { return container.end(); }*/
     
     void writeToXMLFile(const std::string &filename) const;
     void readFromXMLFile(const std::string &filename);

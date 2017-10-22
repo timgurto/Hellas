@@ -10,8 +10,12 @@ bool Wars::Belligerent::operator<(const Belligerent &rhs) const{
     return type < rhs.type;
 }
 
-bool Wars::Belligerent::operator==(const Belligerent &rhs) const{
+bool Wars::Belligerent::operator==(const Belligerent &rhs) const {
     return name == rhs.name && type == rhs.type;
+}
+
+bool Wars::Belligerent::operator!=(const Belligerent &rhs) const {
+    return ! (*this == rhs);
 }
 
 void Wars::Belligerent::alertToWarWith(const Belligerent rhs) const{
@@ -26,11 +30,27 @@ void Wars::Belligerent::alertToWarWith(const Belligerent rhs) const{
     }
 }
 
+Wars::War::War(const Belligerent & b1, const Belligerent & b2) {
+    if (b1 < b2) {
+        _b1 = b1;
+        _b2 = b2;
+    } else if (b2 < b1) {
+        _b1 = b2;
+        _b2 = b1;
+    } else
+        assert(false);
+}
+
+bool Wars::War::operator<(const War & rhs) const {
+    if (_b1 != rhs._b1)
+        return _b1 < rhs._b1;
+    return _b2 < rhs._b2;
+}
+
 void Wars::declare(const Belligerent &a, const Belligerent &b){
-    if (!isAtWar(a, b))
-        container.insert(std::make_pair(a, b));
-    if (!isAtWar(b, a))
-        container.insert(std::make_pair(b, a));
+    if (isAtWar(a, b))
+        return;
+    container.insert({ a, b });
 
     a.alertToWarWith(b);
     b.alertToWarWith(a);
@@ -40,12 +60,8 @@ bool Wars::isAtWar(Belligerent a, Belligerent b) const{
     changePlayerBelligerentToHisCity(a);
     changePlayerBelligerentToHisCity(b);
 
-    auto matches = container.equal_range(a);
-    for (auto it = matches.first; it != matches.second; ++it){
-        if (it->second == b)
-            return true;
-    }
-    return false;
+    auto warExists = container.find({ a, b }) != container.end();
+    return warExists;
 }
 
 void Wars::changePlayerBelligerentToHisCity(Belligerent &belligerent){
@@ -61,21 +77,35 @@ void Wars::changePlayerBelligerentToHisCity(Belligerent &belligerent){
     belligerent.name = playerCity;
 }
 
-std::pair<Wars::container_t::const_iterator, Wars::container_t::const_iterator>
-        Wars::getAllWarsInvolving(Belligerent a) const{
-    changePlayerBelligerentToHisCity(a);
-    return container.equal_range(a);
+std::set<Wars::Belligerent> Wars::getEnemiesOfPlayer(const std::string &username) const{
+    auto player = Belligerent{ username };
+    changePlayerBelligerentToHisCity(player);
+
+    auto enemies = std::set<Belligerent>{};
+    for (const auto &war : container) {
+        auto otherBelligerent = Belligerent{};
+        if (war.b1() == player)
+            otherBelligerent = war.b2();
+        else if (war.b2() == player)
+            otherBelligerent = war.b1();
+        else
+            continue;
+        if (otherBelligerent.type == Belligerent::PLAYER)
+            changePlayerBelligerentToHisCity(otherBelligerent);
+        enemies.insert(otherBelligerent);
+    }
+    return enemies;
 }
 
 void Wars::writeToXMLFile(const std::string &filename) const{
     XmlWriter xw(filename);
-    for (const Wars::Belligerents &belligerents : container) {
+    for (const auto &war : container) {
         auto e = xw.addChild("war");
-        xw.setAttr(e, "name1", belligerents.first.name);
-        if (belligerents.first.type == Belligerent::CITY)
+        xw.setAttr(e, "name1", war.b1().name);
+        if (war.b1().type == Belligerent::CITY)
             xw.setAttr(e, "isCity1", 1);
-        xw.setAttr(e, "name2", belligerents.second.name);
-        if (belligerents.second.type == Belligerent::CITY)
+        xw.setAttr(e, "name2", war.b2().name);
+        if (war.b2().type == Belligerent::CITY)
             xw.setAttr(e, "isCity2", 1);
     }
     xw.publish();

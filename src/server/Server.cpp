@@ -286,9 +286,8 @@ void Server::addUser(const Socket &socket, const std::string &name){
     newUser.sendInfoToClient(newUser);
 
     // Send him his wars
-    auto belligerents = _wars.getAllWarsInvolving(name);
-    for (auto it = belligerents.first; it != belligerents.second; ++it){
-        const auto &enemy = it->second;
+    auto enemies = _wars.getEnemiesOfPlayer(name);
+    for (const auto &enemy : enemies){
         const MessageCode code = enemy.type == Wars::Belligerent::CITY ?
                 SV_AT_WAR_WITH_CITY : SV_AT_WAR_WITH_PLAYER;
         sendMessage(newUser.socket(), code, enemy.name);
