@@ -908,6 +908,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_SUE_FOR_PEACE_WITH_PLAYER:
+        {
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
+            auto targetName = std::string{ buffer };
+            iss >> del;
+            if (del != MSG_END)
+                return;
+            handle_CL_SUE_FOR_PEACE_WITH_PLAYER(*user, targetName);
+            break;
+        }
+
         case CL_LEAVE_CITY:
         {
             if (del != MSG_END)
@@ -1167,6 +1178,10 @@ void Server::handle_CL_RECRUIT(User &user, const std::string & username) {
     }
 
     _cities.addPlayerToCity(*pTargetUser, cityName);
+}
+
+void Server::handle_CL_SUE_FOR_PEACE_WITH_PLAYER(User & user, const std::string & name) {
+    sendMessage(user.socket(), SV_YOU_PROPOSED_PEACE);
 }
 
 

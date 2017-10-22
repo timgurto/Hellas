@@ -115,12 +115,14 @@ enum MessageCode{
     CL_RECRUIT = 52,
 
     // "I want to declare war on ..."
-    // Arguments: username
+    // Arguments: name
     CL_DECLARE_WAR_ON_PLAYER = 55,
-
-    // "I want to declare war on ..."
-    // Arguments: city name
     CL_DECLARE_WAR_ON_CITY = 56,
+
+    // "I want to propose peace with ..."
+    // Arguments: other belligerent's name
+    CL_SUE_FOR_PEACE_WITH_PLAYER = 57,
+    //CL_SUE_FOR_PEACE_WITH_CITY = 58,
 
     // "I want to perform object ...'s action with argument ..."
     // Arguments: serial, textArg
@@ -297,12 +299,13 @@ enum MessageCode{
     SV_MAX_HEALTH = 164,
 
     // "You are at war with ..."
-    // Arguments: username
+    // Arguments: name
     SV_AT_WAR_WITH_PLAYER = 162,
-
-    // "You are at war with ..."
-    // Arguments: city name
     SV_AT_WAR_WITH_CITY = 163,
+
+    // "You have sued for peace with ... "
+    // Arguments: name
+    SV_YOU_PROPOSED_PEACE = 164,
 
     // "User ... has said ...".
     // Arguments: username, message

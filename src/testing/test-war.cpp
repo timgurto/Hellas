@@ -227,3 +227,17 @@ TEST_CASE("The objects of an offline enemy in an enemy city can be attacked", "[
     const auto &rock = alice.getFirstObject();
     WAIT_UNTIL(rock.canBeAttackedByPlayer());
 }
+
+TEST_CASE("A player is alerted when he sues for peace", "[war][peace]") {
+    // Given Alice and Bob are at war
+    auto s = TestServer{};
+    s.wars().declare({ "alice", Wars::Belligerent::PLAYER }, { "bob", Wars::Belligerent::PLAYER });
+
+    // When Alice sues for peace
+    auto c = TestClient::WithUsername("alice");
+    WAIT_UNTIL(s.users().size() == 1);
+    c.sendMessage(CL_SUE_FOR_PEACE_WITH_PLAYER);
+
+    // Then Alice is alerted
+    CHECK(c.waitForMessage(SV_YOU_PROPOSED_PEACE));
+}
