@@ -118,12 +118,16 @@ void Wars::writeToXMLFile(const std::string &filename) const{
     XmlWriter xw(filename);
     for (const auto &war : container) {
         auto e = xw.addChild("war");
+
         xw.setAttr(e, "name1", war.b1.name);
         if (war.b1.type == Belligerent::CITY)
             xw.setAttr(e, "isCity1", 1);
         xw.setAttr(e, "name2", war.b2.name);
         if (war.b2.type == Belligerent::CITY)
             xw.setAttr(e, "isCity2", 1);
+
+        /*if (war.peaceState != War::NO_PEACE_PROPOSED)
+            xw.setAttr(e, "peaceProposedBy", war.peaceState);*/
     }
     xw.publish();
 }
@@ -146,6 +150,19 @@ void Wars::readFromXMLFile(const std::string &filename){
             b1.type = Belligerent::CITY;
         if (xr.findAttr(elem, "isCity2", n) && n != 0)
             b2.type = Belligerent::CITY;
+
         declare(b1, b2);
+
+        /*auto peaceState = War::NO_PEACE_PROPOSED;
+        if (xr.findAttr(elem, "peaceProposedBy", n)) {
+            switch (n) {
+            case 1:
+                belligerent1SuesForPeace(b1, b2);
+            case 2:
+                belligerent2SuesForPeace(b1, b2);
+            default:
+                assert(false);
+            }
+        }*/
     }
 }
