@@ -101,6 +101,8 @@ void Wars::sendWarsToUser(const User & user, const Server & server) const {
         if (war.b1 == userAsBelligerent && war.peaceState == War::PEACE_PROPOSED_BY_B1 ||
             war.b2 == userAsBelligerent && war.peaceState == War::PEACE_PROPOSED_BY_B2)
             server.sendMessage(user.socket(), SV_YOU_PROPOSED_PEACE, otherBelligerent.name);
+        else if (war.peaceState != War::NO_PEACE_PROPOSED)
+            server.sendMessage(user.socket(), SV_PEACE_WAS_PROPOSED_TO_YOU, otherBelligerent.name);
     }
 }
 

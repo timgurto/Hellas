@@ -272,13 +272,22 @@ TEST_CASE("Users are alerted to peace proposals on login", "[war][peace]") {
         WAIT_UNTIL(s.users().size() == 1);
         c.sendMessage(CL_SUE_FOR_PEACE_WITH_PLAYER, "bob");
 
-        // And disconnects and reconnects
+        // And disconnects
     }
-    {
+
+    SECTION("Alice logs in") {
         auto c = TestClient::WithUsername("alice");
         WAIT_UNTIL(s.users().size() == 1);
 
         // Then Alice is alerted
         CHECK(c.waitForMessage(SV_YOU_PROPOSED_PEACE));
+    }
+
+    SECTION("Bob logs in") {
+        auto c = TestClient::WithUsername("bob");
+        WAIT_UNTIL(s.users().size() == 1);
+
+        // Then Bob is alerted
+        CHECK(c.waitForMessage(SV_PEACE_WAS_PROPOSED_TO_YOU));
     }
 }
