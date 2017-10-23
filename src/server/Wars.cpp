@@ -81,7 +81,6 @@ void Wars::sendWarsToUser(const User & user, const Server & server) const {
     auto userAsBelligerent = Belligerent{ user.name() };
     changePlayerBelligerentToHisCity(userAsBelligerent);
 
-    auto enemies = std::set<Belligerent>{};
     for (const auto &war : container) {
         auto otherBelligerent = Belligerent{};
         if (war.b1 == userAsBelligerent)
@@ -90,16 +89,27 @@ void Wars::sendWarsToUser(const User & user, const Server & server) const {
             otherBelligerent = war.b1;
         else
             continue;
-        if (otherBelligerent.type == Belligerent::PLAYER)
-            changePlayerBelligerentToHisCity(otherBelligerent);
+        if (otherBelligerent.type == Belligerent::PLAYER) {
+            auto otherBelligerentIsInCity = !server.cities().getPlayerCity(otherBelligerent.name).empty();
+            if (otherBelligerentIsInCity)
+                continue;
+        }
 
-        enemies.insert(otherBelligerent);
-    }
-    for (auto &enemy : enemies) {
-        const MessageCode code = enemy.type == Belligerent::CITY ?
+        const MessageCode code = otherBelligerent.type == Belligerent::CITY ?
             SV_AT_WAR_WITH_CITY : SV_AT_WAR_WITH_PLAYER;
-        server.sendMessage(user.socket(), code, enemy.name);
+        server.sendMessage(user.socket(), code, otherBelligerent.name);
+        if (war.b1 == userAsBelligerent && war.peaceState == War::PEACE_PROPOSED_BY_B1 ||
+            war.b2 == userAsBelligerent && war.peaceState == War::PEACE_PROPOSED_BY_B2)
+            server.sendMessage(user.socket(), SV_YOU_PROPOSED_PEACE, otherBelligerent.name);
     }
+}
+
+void Wars::sueForPeace(const Belligerent &proposer, const Belligerent &enemy) {
+    auto it = container.find({ proposer, enemy });
+    if (it == container.end())
+        assert(false);
+    auto &war = const_cast<War &>(*it);
+    war.peaceState = war.b1 == proposer ? War::PEACE_PROPOSED_BY_B1 : War::PEACE_PROPOSED_BY_B2;
 }
 
 void Wars::writeToXMLFile(const std::string &filename) const{

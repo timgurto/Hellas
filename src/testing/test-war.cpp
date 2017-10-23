@@ -242,7 +242,7 @@ TEST_CASE("A player is alerted when he sues for peace", "[war][peace]") {
     CHECK(c.waitForMessage(SV_YOU_PROPOSED_PEACE));
 }
 
-/*TEST_CASE("Peace proposals are persistent", "[war][peace][persistence]") {
+TEST_CASE("Users are alerted to peace proposals on login", "[war][peace]") {
     // Given Alice and Bob are at war
     auto s = TestServer{};
     s.wars().declare({ "alice", Belligerent::PLAYER }, { "bob", Belligerent::PLAYER });
@@ -251,7 +251,7 @@ TEST_CASE("A player is alerted when he sues for peace", "[war][peace]") {
         // When Alice sues for peace
         auto c = TestClient::WithUsername("alice");
         WAIT_UNTIL(s.users().size() == 1);
-        c.sendMessage(CL_SUE_FOR_PEACE_WITH_PLAYER);
+        c.sendMessage(CL_SUE_FOR_PEACE_WITH_PLAYER, "bob");
 
         // And disconnects and reconnects
     }
@@ -262,4 +262,4 @@ TEST_CASE("A player is alerted when he sues for peace", "[war][peace]") {
         // Then Alice is alerted
         CHECK(c.waitForMessage(SV_YOU_PROPOSED_PEACE));
     }
-}*/
+}

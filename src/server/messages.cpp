@@ -1181,6 +1181,7 @@ void Server::handle_CL_RECRUIT(User &user, const std::string & username) {
 }
 
 void Server::handle_CL_SUE_FOR_PEACE_WITH_PLAYER(User & user, const std::string & name) {
+    _wars.sueForPeace(user.name(), { name, Belligerent::PLAYER });
     sendMessage(user.socket(), SV_YOU_PROPOSED_PEACE);
 }
 

@@ -26,8 +26,15 @@ struct Belligerent {
 };
 
 class War {
+    enum PeaceState{
+        NO_PEACE_PROPOSED = 0,
+        PEACE_PROPOSED_BY_B1 = 1,
+        PEACE_PROPOSED_BY_B2 = 2
+    };
+
     War(const Belligerent &b1, const Belligerent &b2);
     Belligerent b1, b2; // b1 < b2
+    PeaceState peaceState = NO_PEACE_PROPOSED;
 
     friend class Wars;
 
@@ -42,6 +49,7 @@ public:
     void declare(const Belligerent &a, const Belligerent &b);
     bool isAtWar(Belligerent a, Belligerent b) const;
     void sendWarsToUser(const User &user, const Server &server) const;
+    void Wars::sueForPeace(const Belligerent &proposer, const Belligerent &enemy);
     
     void writeToXMLFile(const std::string &filename) const;
     void readFromXMLFile(const std::string &filename);
