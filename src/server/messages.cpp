@@ -1183,6 +1183,11 @@ void Server::handle_CL_RECRUIT(User &user, const std::string & username) {
 void Server::handle_CL_SUE_FOR_PEACE_WITH_PLAYER(User & user, const std::string & name) {
     _wars.sueForPeace(user.name(), { name, Belligerent::PLAYER });
     sendMessage(user.socket(), SV_YOU_PROPOSED_PEACE);
+
+    auto it = _usersByName.find(name);
+    if (it == _usersByName.end())
+        return;
+    sendMessage(it->second->socket(), SV_PEACE_WAS_PROPOSED_TO_YOU);
 }
 
 
@@ -1200,15 +1205,18 @@ void Server::broadcastToArea(const Point & location, MessageCode msgCode, const 
 
 void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
                          const std::string &args) const{
-    // Compile message
+    auto message = compileMessage(msgCode, args);
+    _socket.sendMessage(message, dstSocket);
+}
+
+std::string Server::compileMessage(MessageCode msgCode, const std::string &args) {
     std::ostringstream oss;
     oss << MSG_START << msgCode;
     if (args != "")
         oss << MSG_DELIM << args;
     oss << MSG_END;
 
-    // Send message
-    _socket.sendMessage(oss.str(), dstSocket);
+    return oss.str();
 }
 
 void Server::sendInventoryMessageInner(const User &user, size_t serial, size_t slot,

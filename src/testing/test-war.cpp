@@ -236,10 +236,29 @@ TEST_CASE("A player is alerted when he sues for peace", "[war][peace]") {
     // When Alice sues for peace
     auto c = TestClient::WithUsername("alice");
     WAIT_UNTIL(s.users().size() == 1);
-    c.sendMessage(CL_SUE_FOR_PEACE_WITH_PLAYER);
+    c.sendMessage(CL_SUE_FOR_PEACE_WITH_PLAYER, "bob");
 
     // Then Alice is alerted
     CHECK(c.waitForMessage(SV_YOU_PROPOSED_PEACE));
+}
+
+TEST_CASE("The enemy is alerted when peace is proposed", "[war][peace][remote]") {
+    // Given Alice and Bob are at war
+    auto s = TestServer{};
+    s.wars().declare({ "alice", Belligerent::PLAYER }, { "bob", Belligerent::PLAYER });
+
+    // And Alice is logged in
+    auto c = TestClient::WithUsername("alice");
+    WAIT_UNTIL(s.users().size() == 1);
+
+    // When Bob logs in and sues for peace
+    auto rc = RemoteClient{ "-username bob" };
+    WAIT_UNTIL(s.users().size() == 2);
+    auto &bob = s.findUser("bob");
+    s->handleMessage(bob.socket(), s->compileMessage(CL_SUE_FOR_PEACE_WITH_PLAYER, "alice"));
+
+    // Then Alice is alerted
+    CHECK(c.waitForMessage(SV_PEACE_WAS_PROPOSED_TO_YOU));
 }
 
 TEST_CASE("Users are alerted to peace proposals on login", "[war][peace]") {

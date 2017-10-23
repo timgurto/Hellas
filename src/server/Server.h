@@ -81,6 +81,7 @@ public:
 
     // Messages
     std::queue<std::pair<Socket, std::string> > _messages;
+    static std::string compileMessage(MessageCode msgCode, const std::string &args);
     void sendMessage(const Socket &dstSocket, MessageCode msgCode,
                      const std::string &args = "") const;
     void broadcast(MessageCode msgCode, const std::string &args); // Send a command to all users

@@ -303,9 +303,13 @@ enum MessageCode{
     SV_AT_WAR_WITH_PLAYER = 162,
     SV_AT_WAR_WITH_CITY = 163,
 
-    // "You have sued for peace with ... "
+    // "You have sued for peace with ..."
     // Arguments: name
     SV_YOU_PROPOSED_PEACE = 164,
+
+    // "... has sued for peace with you"
+    // Arguments: name
+    SV_PEACE_WAS_PROPOSED_TO_YOU = 165,
 
     // "User ... has said ...".
     // Arguments: username, message
