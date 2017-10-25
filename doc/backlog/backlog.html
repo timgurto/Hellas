@@ -115,7 +115,16 @@
 
     
     function sortBy(compare){
-        PBIs.sort(compare);
+        for (i in PBIs){
+            PBIs[i].positionBeforeSort = i;
+        }
+        function sortFunction(a, b){
+            var rawComparison = compare(a, b)
+            if (rawComparison != 0)
+                return rawComparison;
+            return a.positionBeforeSort - b.positionBeforeSort;
+        }
+        PBIs.sort(sortFunction);
         refreshTable();
     }
     
