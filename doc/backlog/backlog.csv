@@ -19,14 +19,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 18,Each player can build one 'shrine'-class object,34,8,Feature,,TRUE,TRUE,1
 19,Shrines can set player respawn,21,89,Feature,18,TRUE,TRUE,1
 20,Shrine actions require an animal carcass,34,21,Feature,19,,TRUE,1
-21,Design three skill trees for each class,89,377,Feature,178,,TRUE,2
-22,Implement all skills,89,377,Feature,21,,TRUE,2
-23,Players can use a subset of their class' skills,55,144,Feature,22,,TRUE,2
-24,Players can learn new skills,55,233,Feature,23,,TRUE,2
-25,Learning new skills requires the prerequisite skills,34,233,Feature,24,,TRUE,2
-26,Learning new skills can cost items,21,13,Feature,24,,TRUE,2
-27,Some items only drop for a single class,13,21,Feature,,,TRUE,
-28,Skills can be unlearned,21,21,Feature,23,,TRUE,2
 29,Objects have health,55,21,Feature,,TRUE,TRUE,
 30,"Items have durability, affected by combat and use.",34,34,Feature,,,TRUE,
 31,Objects can be repaired with specific items,21,34,Feature,29,,TRUE,
@@ -53,14 +45,12 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 53,NPCs can specify a custom human template image,21,8,Aesthetics,52,,TRUE,
 54,A pyramid object that is unique,21,3,Feature,,TRUE,TRUE,
 55,Players and cities can be at war with each other,34,5,Feature,1,TRUE,TRUE,1
-56,Learning some skills requires tools,21,2,Feature,24,,TRUE,2
 57,Heavy items that prevent player movement,13,3,Feature,,,TRUE,
 58,Containers may allow 'heavy' objects or not,13,5,Feature,57,,TRUE,
 59,Better NPC pathfinding,21,34,Feature,,,,3
 60,Some tool objects have a cooldown,5,13,Feature,,,TRUE,
 61,Document UI interface,2,8,Documentation,,,,
 62,Fix flaky merchant-slot-window test,2,89,Bug,,TRUE,,
-63,Eating food restores energy,13,3,Feature,93,,,2
 64,Buffs,13,233,Feature,22,,,3
 65,NPCs can combine loot tables,5,8,Feature,,,,
 66,NPCs can have skills/abilities,34,144,Feature,22,,,3
@@ -89,7 +79,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 89,Players can be in a group,34,8,Feature,,,,3
 91,Stacks of the same item can be combined,21,13,Usability,,,,
 92,Shift + right-click to loot all,8,3,Usability,,,,
-93,An energy bar that's used up by attacking,13,21,Feature,,,,2
 94,A road object that affects movement speed,3,13,Feature,64,,,
 95,Object ownership is clearly visible,5,21,Usability,8,TRUE,,1
 96,Containers may be restricted by item class,5,5,Feature,,,,
@@ -162,7 +151,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 164,Server sometimes gets in infinite loop when a client disconnects,144,21,Bug,,TRUE,,
 165,Convey NPC difficulty without levels,5,34,Usability,,,,3
 167,Loot random item(s?) on container destruction,55,5,Feature,15,TRUE,,1
-168,"On PvP kill, steal skill (they lose random leaf skill, you gain items that pay for it)",34,21,Feature,26,,,2
 169,Add a spectrum of container strengths,13,13,Content,,,,
 171,An item that damages the containing object's attacker,13,8,Feature,,,,
 172,Select target via keyboard,3,8,Usability,,,,
@@ -170,9 +158,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 174,Interact with nearest target if none selected on interact-key,8,5,Usability,173,,,
 175,Click to move,8,3,Usability,,,,
 176,Use Catch for tests,3,5,Code quality,,TRUE,,
-177,Add fireball ability for magus,8,13,Feature,178,,,2
-178,Add heal ability for priest,5,34,Feature,,,,2
-179,Add taunt ability for warrior,5,21,Feature,178,,,2
 180,"Update map pins at limited frequency, e.g., 1s",2,5,Performance,,,,
 181,Send object-movement updates to owner and city's members,5,3,Bug,,,,
 182,Maintain only one set of scroll-bar triangle images,2,2,Performance,,,,
@@ -234,3 +219,95 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 243,Pots can't be ceded,34,8,Bug,,,,
 244,Enforce lower-case player/city names,3,2,Usability,,,,
 245,Display names with first letter capitalised,5,2,Aesthetics,244,,,
+246,A 'fireball' command that damages target by constant,34,5,Feature,,,,2
+247,Fireballs consume an energy stat,13,8,Feature,246,,,2
+248,A visible energy bar,13,5,Usability,247,,,2
+249,Animated projectile for fireball,21,8,Aesthetics,246,,,2
+250,Fireball has interruptible cast time,2,8,Feature,246,,,2
+251,Fireball casting particles,1,3,Aesthetics,250,,,2
+252,Fireball impact particles,21,3,Aesthetics,249,,,2
+253,Fireball projectile particles,3,3,Aesthetics,249,,,2
+254,Fireball launch particles,3,3,Aesthetics,250,,,2
+255,Fireball impact sound,21,3,Aesthetics,249,,,2
+256,Fireball casting sound,1,5,Aesthetics,250,,,2
+257,Fireball launch sound,8,3,Aesthetics,250,,,2
+259,Fireball damage modified by magic-damage stat,3,2,Feature,246,,,2
+260,Energy-regen stat,3,2,Feature,247,,,2
+261,Health-regen stat,3,5,Feature,,,,2
+262,Fireball mitigated by fire-resistance stat,3,3,Feature,246,,,2
+263,Chance for fireballs to crit,8,2,Feature,246,,,2
+264,Crit-chance stat,3,2,Feature,264,,,2
+265,A second spell,21,5,Feature,246,,,2
+266,Global cooldown for spells,3,13,Feature,265,,,2
+267,Random characters get +health buff,2,2,Feature,265,,,2
+268,Buffs expire,2,5,Feature,267,,,2
+269,Buffs can be cast on target (no longer random),21,5,Feature,267,,,2
+270,Buffs can be dismissed,1,5,Feature,267,,,2
+271,Buffs can be restricted to self,2,5,Feature,269,,,2
+272,A -resistance debuff (can't be dismissed),3,5,Feature,270,,,2
+273,DoT debuff,13,5,Feature,267,,,2
+274,Stun debuff,3,8,Feature,267,,,2
+275,Spell to summon a friendly NPC,2,5,Feature,265,,,2
+276,Healing spell,13,5,Feature,265,,,2
+277,HoT buff,2,5,Feature,267,,,2
+278,Spells are class-specific,2,5,Feature,265,,,2
+279,A spell hotbar,13,8,Usability,265,,,2
+280,Hotbar can be rearranged,2,21,Usability,279,,,2
+281,Hotbar can include recipes,1,13,Usability,280,,,2
+282,Hotbar can include constructions,1,13,Usability,280,,,2
+283,"Spells must be learned, with commands",3,3,Feature,265,,,2
+284,A window with buttons to learn spells,3,5,Usability,283,,,2
+285,Learning spells can cost items,3,8,Feature,283,,,2
+286,Learning spells can require a tool,2,5,Feature,283,,,2
+287,Spells can have pre-requisite spells,2,3,Feature,283,,,2
+288,"On death, lose a leaf skill",5,13,Feature,287,,,2
+289,"On death, drop part of a leaf spell's cost",2,13,Feature,287,,,2
+290,Spell-learning items are n-unique,2,8,Feature,285,,,2
+291,Spell-learning items are soulbound,5,8,Feature,285,,,2
+292,Learning spells costs food,3,8,Feature,285,,,2
+293,Food restores energy/health,8,8,Feature,247,,,2
+294,Hotbar can include right-clickable items,2,13,Usability,280,,,2
+295,Spells laid out in trees,3,34,Usability,287,,,2
+296,An options window and checkbox to automatically re-learn skills,1,5,Usability,288,,,2
+297,Auto-relearn is a persistent setting,1,5,Usability,296,,,2
+298,Leaf skills can be unlearned,5,21,Feature,287,,,2
+299,Skill tree can include passive stats,5,13,Feature,295,,,2
+300,Skill tree can include recipes,2,13,Feature,295,,,2
+301,Skill tree can include constructions,2,13,Feature,295,,,2
+302,Ranged weapons,21,5,Feature,,,,2
+303,Projectiles for ranged weapons,5,5,Feature,302,,,2
+304,Chance for spells/attacks to miss,5,2,Feature,246,,,2
+305,Hit-chance stat,3,2,Feature,304,,,2
+306,A melee-range spell,3,5,Feature,265,,,2
+307,Non-ranged damage can be blocked (reduced by k),5,5,Feature,306,,,2
+308,Block-chance stat,5,2,Feature,307,,,2
+309,Block-value stat,3,2,Feature,307,,,2
+310,Physical-damage stat,3,2,Feature,,,,2
+311,Water/air/earth-resistance stats,3,2,Feature,262,,,2
+312,Armour-class stat,5,8,Feature,,,,2
+313,NPCs have threat tables to dictate target,13,34,Feature,,,,2
+314,Threat % stat,2,3,Feature,313,,,2
+315,Threat-drop spell,3,5,Feature,313,,,2
+316,Taunt spell,3,5,Feature,313,,,2
+317,Fire-elemental-damage stat,2,8,Feature,262,,,2
+318,Water/earth/air-elemental-damage stats,2,2,Feature,317,,,2
+319,Gather-yield % stat,1,3,Feature,,,,2
+320,A buff to take damage for target,2,8,Feature,267,,,2
+321,Fear debuff,3,8,Feature,267,,,2
+322,Channeled +ep5 ability,3,8,Feature,250,,,2
+323,Cast/channel-interrupt spell,3,13,Feature,322,,,2
+324,Energy-drain spell,2,8,Feature,322,,,2
+325,AoE spell,21,8,Feature,265,,,2
+327,"Spells to cure curse, sleep, stun, fear",2,8,Feature,267,,,2
+328,Resurrect spell,5,13,Feature,265,,,2
+329,An object that gives nearby players a buff,3,8,Feature,267,,,2
+330,Damage-shield buff,5,8,Feature,267,,,2
+331,Spell-reflect buff,2,13,Feature,267,,,2
+332,Curse/sleep/stun/fear-resistance stats,2,3,Feature,326,,,2
+333,Cap number of learned spells,3,2,Feature,283,,,2
+334,Design Zealot trees,8,8,Content,,,,2
+335,Find suitable names for abilities,34,21,Aesthetics,334,,,2
+336,Inherent spells per class,8,8,Feature,283,,,2
+337,A spell that does extra threat,3,5,Feature,313,,,2
+338,Spell icons,13,34,Aesthetics,335,,,2
+339,Display buffs in UI,13,5,Usability,267,,,2
