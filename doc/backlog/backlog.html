@@ -77,13 +77,13 @@
 <p>
 <table id="backlog">
     <tr class="tableHeading">
-        <td onClick='sortByIssue();'>Issue</td>
-        <td onClick='sortByDescription();'>Description</td>
-        <td onClick='sortByType();'>Type</td>
-        <td onClick='sortByValue();'>Value</td>
-        <td onClick='sortByEffort();'>Effort</td>
-        <td onClick='sortByROI();'>log<sub>&phi;</sub>(ROI)</td>
-        <td onClick='sortByMilestone();'>Milestone</td>
+        <td onClick='sortBy(compareIssue);'>Issue</td>
+        <td onClick='sortBy(compareDescription);'>Description</td>
+        <td onClick='sortBy(compareType);'>Type</td>
+        <td onClick='sortBy(compareValue);'>Value</td>
+        <td onClick='sortBy(compareEffort);'>Effort</td>
+        <td onClick='sortBy(compareROI);'>log<sub>&phi;</sub>(ROI)</td>
+        <td onClick='sortBy(compareMilestone);'>Milestone</td>
         <td>Notes</td>
         <td>Filter</td>
     </tr>
@@ -113,54 +113,19 @@
         });*/
         nameLookup[PBIs[i].issue] = PBIs[i].description;
 
-    function sortByIssue(){
-        PBIs.sort(function(a, b){
-            return a.issue - b.issue;
-        });
+    
+    function sortBy(compare){
+        PBIs.sort(compare);
         refreshTable();
     }
-
-    function sortByDescription(){
-        PBIs.sort(function(a, b){
-            return a.description.localeCompare(b.description);
-        });
-        refreshTable();
-    }
-
-    function sortByType(){
-        PBIs.sort(function(a, b){
-            return a.type.localeCompare(b.type);
-        });
-        refreshTable();
-    }
-
-    function sortByValue(){
-        PBIs.sort(function(a, b){
-            return b.value - a.value;
-        });
-        refreshTable();
-    }
-
-    function sortByEffort(){
-        PBIs.sort(function(a, b){
-            return b.effort - a.effort;
-        });
-        refreshTable();
-    }
-
-    function sortByROI(){
-        PBIs.sort(function(a, b){
-            return b.roi - a.roi;
-        });
-        refreshTable();
-    }
-
-    function sortByMilestone(){
-        PBIs.sort(function(a, b){
-            return a.milestone - b.milestone;
-        });
-        refreshTable();
-    }
+    
+    function compareIssue(a, b){ return a.issue - b.issue; }
+    function compareDescription(a, b){ return a.description.localeCompare(b.description) }
+    function compareType(a, b){ return a.type.localeCompare(b.type); }
+    function compareValue(a, b){ return b.value - a.value; }
+    function compareEffort(a, b){ return b.effort - a.effort; }
+    function compareROI(a, b){ return b.roi - a.roi; }
+    function compareMilestone(a, b){ return a.milestone - b.milestone; }
 
     function prepareData(){
         for (i in PBIs){
