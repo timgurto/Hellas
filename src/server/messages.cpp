@@ -974,9 +974,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
-        case CL_FIREBALL:
+        case CL_CAST:
         {
-            handle_CL_FIREBALL(*user);
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
+            auto spellID = std::string{ buffer };
+            iss >> del;
+            if (del != MSG_END)
+                return;
+            handle_CL_CAST(*user, spellID);
         }
 
         case CL_SAY:
@@ -1195,11 +1200,12 @@ void Server::handle_CL_SUE_FOR_PEACE_WITH_PLAYER(User & user, const std::string 
     sendMessage(it->second->socket(), SV_PEACE_WAS_PROPOSED_TO_YOU);
 }
 
-void Server::handle_CL_FIREBALL(User & user) {
+void Server::handle_CL_CAST(User & user, const std::string &spellID) {
     auto target = user.target();
     if (target == nullptr)
         return;
-    target->reduceHealth(10);
+    if (spellID == "fireball")
+        target->reduceHealth(10);
 }
 
 

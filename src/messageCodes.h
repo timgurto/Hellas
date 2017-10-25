@@ -128,8 +128,9 @@ enum MessageCode{
     // Arguments: serial, textArg
     CL_PERFORM_OBJECT_ACTION = 60,
 
-    // Cast a fireball at target
-    CL_FIREBALL = 70,
+    // Cast a spell
+    // Arguments: spell ID
+    CL_CAST = 70,
 
     // "I want to say ... to everybody". 
     // Arguments: message
