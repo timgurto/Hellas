@@ -115,17 +115,25 @@
 
     
     function sortBy(compare){
-        for (i in PBIs){
-            PBIs[i].positionBeforeSort = i;
+        var shouldReverseSort = compare == lastCompareUsed;
+        // Allow reversing the last sort while staying stable
+        if (! shouldReverseSort){
+            for (i in PBIs){
+                PBIs[i].positionBeforeSort = i;
+            }
         }
         function sortFunction(a, b){
             var rawComparison = compare(a, b)
+            if (shouldReverseSort)
+                rawComparison = - rawComparison;
             if (rawComparison != 0)
                 return rawComparison;
             return a.positionBeforeSort - b.positionBeforeSort;
         }
         PBIs.sort(sortFunction);
         refreshTable();
+        
+        lastCompareUsed = compare
     }
     
     function compareIssue(a, b){ return a.issue - b.issue; }
@@ -230,6 +238,7 @@
         PBIs[i].filter = !(PBIs[i].filter);
     }
 
+    lastCompareUsed = null;
     refreshTable();
     applyOptions();
 
