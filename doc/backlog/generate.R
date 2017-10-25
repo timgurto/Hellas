@@ -38,10 +38,19 @@ for (i in 1:length(data$roi)){
 }
 
 # Ignore blocks when the blocking task is done
+issue2Index <- vector(mode="integer", length=data$issue[length(data$roi)])
 for (i in 1:length(data$roi)){
-    blockingPBI = data$blockedBy[i]
+    issueNum = data$issue[i]
+    issue2Index[issueNum] = i
+}
+for (i in 1:length(data$roi)){
+    blockingPBI = issue2Index[data$blockedBy[i]]
+
     if (is.na(blockingPBI))
         next
+    if (blockingPBI == 0)
+        next # Blocked by a deleted PBI
+
     blockingPbiIsDone = data$done[blockingPBI] # data is still sorted by issue #
     if (is.na(blockingPbiIsDone))
         next
