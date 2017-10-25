@@ -39,7 +39,7 @@ public:
     void direction(const Point &p) { _direction = p; }
     void fallSpeed(double mean, double sd) { _fallSpeed = NormalVariable(mean, sd); }
     void lifespan(double mean, double sd) { _lifespan = NormalVariable(mean, sd); }
-    void gravityuModifer(double mod) { _gravity *= mod; }
+    void gravityModifer(double mod) { _gravity *= mod; }
     void noZDimension() { _noZDimension = true; }
     void alpha(Uint8 n) { _alpha = n; }
 

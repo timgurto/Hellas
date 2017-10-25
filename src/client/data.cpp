@@ -46,7 +46,7 @@ void Client::loadData(const std::string &path){
             ParticleProfile *profile = new ParticleProfile(s);
             double mean, sd;
             if (xr.findAttr(elem, "particlesPerSecond", mean)) profile->particlesPerSecond(mean);
-            if (xr.findAttr(elem, "gravityModifier", mean)) profile->gravityuModifer(mean);
+            if (xr.findAttr(elem, "gravityModifier", mean)) profile->gravityModifer(mean);
             if (xr.findNormVarChild("particlesPerHit", elem, mean, sd)) profile->particlesPerHit(mean, sd);
             if (xr.findNormVarChild("distance", elem, mean, sd)) profile->distance(mean, sd);
             if (xr.findNormVarChild("altitude", elem, mean, sd)) profile->altitude(mean, sd);
