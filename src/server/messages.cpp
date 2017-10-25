@@ -974,6 +974,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_FIREBALL:
+        {
+            handle_CL_FIREBALL(*user);
+        }
+
         case CL_SAY:
         {
             iss.get(buffer, BUFFER_SIZE, MSG_END);
@@ -1188,6 +1193,13 @@ void Server::handle_CL_SUE_FOR_PEACE_WITH_PLAYER(User & user, const std::string 
     if (it == _usersByName.end())
         return;
     sendMessage(it->second->socket(), SV_PEACE_WAS_PROPOSED_TO_YOU);
+}
+
+void Server::handle_CL_FIREBALL(User & user) {
+    auto target = user.target();
+    if (target == nullptr)
+        return;
+    target->reduceHealth(10);
 }
 
 

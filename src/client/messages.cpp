@@ -1273,6 +1273,7 @@ void Client::initializeMessageNames(){
     _messageCommands["cede"] = CL_CEDE;
     _messageCommands["cquit"] = CL_LEAVE_CITY;
     _messageCommands["recruit"] = CL_RECRUIT;
+    _messageCommands["f"] = CL_FIREBALL;
 
     _messageCommands["say"] = CL_SAY;
     _messageCommands["s"] = CL_SAY;

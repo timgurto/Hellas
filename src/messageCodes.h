@@ -128,13 +128,16 @@ enum MessageCode{
     // Arguments: serial, textArg
     CL_PERFORM_OBJECT_ACTION = 60,
 
+    // Cast a fireball at target
+    CL_FIREBALL = 70,
+
     // "I want to say ... to everybody". 
     // Arguments: message
-    CL_SAY = 70,
+    CL_SAY = 90,
 
     // "I want to say ... to ...". 
     // Arguments: username, message
-    CL_WHISPER = 71,
+    CL_WHISPER = 91,
 
 
 

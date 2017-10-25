@@ -224,6 +224,7 @@ private:
     void handle_CL_PERFORM_OBJECT_ACTION(User &user, size_t serial, const std::string &textArg);
     void handle_CL_RECRUIT(User &user, const std::string &username);
     void handle_CL_SUE_FOR_PEACE_WITH_PLAYER(User &user, const std::string &name);
+    void handle_CL_FIREBALL(User &user);
 };
 
 #endif

@@ -219,7 +219,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 243,Pots can't be ceded,34,8,Bug,,,,
 244,Enforce lower-case player/city names,3,2,Usability,,,,
 245,Display names with first letter capitalised,5,2,Aesthetics,244,,,
-246,A 'fireball' command that damages target by constant,34,5,Feature,,,,2
+246,A 'fireball' command that damages target by constant,34,5,Feature,,TRUE,,2
 247,Fireballs consume an energy stat,13,8,Feature,246,,,2
 248,A visible energy bar,13,5,Usability,247,,,2
 249,Animated projectile for fireball,21,8,Aesthetics,246,,,2
