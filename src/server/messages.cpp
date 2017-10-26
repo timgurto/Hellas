@@ -1220,12 +1220,13 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
         else if (roll < 10)
             outcome = MISS;
 
-        if (outcome == MISS)
-            return;
+        if (outcome == HIT){
+            auto damage = outcome == CRIT ? health_t{ 10 } : health_t{ 5 };
+            target->reduceHealth(damage);
+        }
 
-        auto damage = outcome == CRIT ? health_t{ 10 } : health_t{ 5 };
+        auto msgCode = (outcome == MISS ? SV_SPELL_MISS : SV_SPELL_HIT);
 
-        target->reduceHealth(damage);
         const auto
             &src = user.location(),
             &dst = target->location();
@@ -1234,9 +1235,8 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
         auto usersToAlert = findUsersInArea(src);
         auto usersNearDest = findUsersInArea(dst);
         usersToAlert.insert(usersNearDest.begin(), usersNearDest.end());
-
         for (auto user : usersToAlert)
-            sendMessage(user->socket(), SV_SPELL_HIT, args);
+            sendMessage(user->socket(), msgCode, args);
     }
 }
 

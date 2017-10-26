@@ -427,7 +427,8 @@ private:
     void handle_SV_IN_CITY(const std::string &username, const std::string &cityName);
     void handle_SV_NO_CITY(const std::string &cityName);
     void handle_SV_KING(const std::string username);
-    void handle_SPELL_HIT(const Point &src, const Point &dst);
+    void handle_SV_SPELL_HIT(const Point &src, const Point &dst);
+    void handle_SV_SPELL_MISS(const Point &src, const Point &dst);
 
     void sendClearTargetMessage() const;
     

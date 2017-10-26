@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #include <cassert>
 #include <cmath>
 
@@ -60,6 +58,25 @@ Point interpolate(const Point &a, const Point &b, double dist){
         yNorm = yDelta / lengthAB;
     return Point(a.x + xNorm * dist,
                  a.y + yNorm * dist);
+}
+
+Point extrapolate(const Point & a, const Point & b, double dist) {
+    const double
+        xDelta = b.x - a.x,
+        yDelta = b.y - a.y;
+    if (xDelta == 0 && yDelta == 0)
+        return a;
+    const double lengthAB = sqrt(xDelta * xDelta + yDelta * yDelta);
+    assert(lengthAB > 0);
+
+    if (dist <= lengthAB)
+        // Target point is within interval
+        return b;
+
+    const double
+        xNorm = xDelta / lengthAB,
+        yNorm = yDelta / lengthAB;
+    return{ a.x + xNorm * dist, a.y + yNorm * dist };
 }
 
 bool collision(const Point &point, const Rect &rect){

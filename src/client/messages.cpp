@@ -1077,7 +1077,16 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> x1 >> del >> y1 >> del >> x2 >> del >> y2 >> del;
             if (del != MSG_END)
                 break;
-            handle_SPELL_HIT({ x1, y1 }, { x2, y2 });
+            handle_SV_SPELL_HIT({ x1, y1 }, { x2, y2 });
+        }
+
+        case SV_SPELL_MISS:
+        {
+            double x1, y1, x2, y2;
+            singleMsg >> x1 >> del >> y1 >> del >> x2 >> del >> y2 >> del;
+            if (del != MSG_END)
+                break;
+            handle_SV_SPELL_MISS({ x1, y1 }, { x2, y2 });
         }
 
         case SV_SAY:
@@ -1231,12 +1240,18 @@ void Client::handle_SV_KING(const std::string username) {
     userIt->second->setAsKing();
 }
 
-void Client::handle_SPELL_HIT(const Point &src, const Point &dst) {
-    const auto &fireballProjectile = **_projectileTypes.find(& Projectile::Type::Dummy("fireball"));
+void Client::handle_SV_SPELL_HIT(const Point &src, const Point &dst) {
+    const auto &fireballProjectile = **_projectileTypes.find(&Projectile::Type::Dummy("fireball"));
     addEntity(new Projectile(fireballProjectile, src, dst));
 
     auto sounds = findSoundProfile("fireball");
     sounds->playOnce("impact");
+}
+
+void Client::handle_SV_SPELL_MISS(const Point &src, const Point &dst) {
+    const auto &fireballProjectile = **_projectileTypes.find(&Projectile::Type::Dummy("fireball"));
+    auto pointPastDest = extrapolate(src, dst, 2000);
+    addEntity(new Projectile(fireballProjectile, src, pointPastDest));
 }
 
 

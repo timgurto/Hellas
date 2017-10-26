@@ -39,6 +39,9 @@ Point midpoint(const Point &a, const Point &b);
 // or return b if dist exceeds the distance between a and b.
 Point interpolate(const Point &a, const Point &b, double dist);
 
+// dist must exceed the distance between a and b.
+Point extrapolate(const Point &a, const Point &b, double dist);
+
 inline int str2int(const std::string str) {
     std::istringstream iss(str);
     int i;

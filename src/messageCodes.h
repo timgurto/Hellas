@@ -315,9 +315,10 @@ enum MessageCode{
     // Arguments: name
     SV_PEACE_WAS_PROPOSED_TO_YOU = 165,
 
-    // Details of a spell hit.  This is purely so that the client can illustrate it.
+    // The outcome of a spellcast.  This is purely so that the client can illustrate it.
     // Arguments: from x, from y, to x, to y
     SV_SPELL_HIT = 180,
+    SV_SPELL_MISS = 181,
 
     // "User ... has said ...".
     // Arguments: username, message
