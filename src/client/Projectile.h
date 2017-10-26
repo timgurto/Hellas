@@ -15,8 +15,8 @@ public:
     virtual void update(double delta) override;
 
 private:
-    const Type &spriteType() const { return * dynamic_cast<const Type *>(this->type()); }
-    double speed() const { return spriteType().speed; }
+    const Type &projectileType() const { return * dynamic_cast<const Type *>(this->type()); }
+    double speed() const { return projectileType().speed; }
 
     Point _end;
 
@@ -36,5 +36,6 @@ public:
 
         std::string id;
         double speed = 0;
+        std::string particlesAtEnd = {};
     };
 };

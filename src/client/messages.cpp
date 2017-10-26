@@ -1235,13 +1235,6 @@ void Client::handle_SPELL_HIT(const Point &src, const Point &dst) {
     const auto &fireballProjectile = **_projectileTypes.find(& Projectile::Type::Dummy("fireball"));
     addEntity(new Projectile(fireballProjectile, src, dst));
 
-    auto dummy = ParticleProfile{ "fire" };
-    auto it = _particleProfiles.find(&dummy);
-    if (it == _particleProfiles.end())
-        return;
-    auto *impactParticles = *it;
-    addParticles(impactParticles, dst);
-
     auto sounds = findSoundProfile("fireball");
     sounds->playOnce("impact");
 }

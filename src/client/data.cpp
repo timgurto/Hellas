@@ -94,6 +94,7 @@ void Client::loadData(const std::string &path){
             Projectile::Type *projectile = new Projectile::Type(id, drawRect);
 
             xr.findAttr(elem, "speed", projectile->speed);
+            xr.findAttr(elem, "particlesAtEnd", projectile->particlesAtEnd);
 
             _projectileTypes.insert(projectile);
         }

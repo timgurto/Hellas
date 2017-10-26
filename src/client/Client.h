@@ -43,7 +43,7 @@ public:
     Client();
     ~Client();
 
-    static const Client &instance() { assert(_instance != nullptr); return *_instance; }
+    static Client &instance() { assert(_instance != nullptr); return *_instance; }
 
     void run();
     void gameLoop();
@@ -460,6 +460,7 @@ private:
     friend class ClientNPC;
     friend class ClientObjectType;
     friend class ClientNPCType;
+    friend class Projectile;
     friend class ClientVehicle;
     friend void LogSDL::operator()(const std::string &message, const Color &color);
     friend class ItemSelector;
