@@ -2,6 +2,8 @@
 
 #include "Sprite.h"
 
+using namespace std::string_literals;
+
 // A sprite that travels in a straight line before disappearing.
 class Projectile : public Sprite {
 public:
@@ -22,10 +24,10 @@ private:
 public:
     class Type : public SpriteType {
     public:
-        Type(const std::string &id, double speed, const Rect &drawRect, const std::string &imageFile) :
-            SpriteType(drawRect, imageFile), _id(id), _speed(speed) {
+        Type(const std::string &id, double speed, const Rect &drawRect) :
+            SpriteType(drawRect, "Images/projectiles/"s +id + ".png"s), _id(id), _speed(speed) {
         }
-        static Type Dummy(const std::string &id) { return Type{ id, 0, {}, {} }; }
+        static Type Dummy(const std::string &id) { return Type{ id, 0, {} }; }
 
         struct ptrCompare {
             bool operator()(const Type *lhs, const Type *rhs) const {

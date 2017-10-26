@@ -79,10 +79,26 @@ void Client::loadData(const std::string &path){
     Avatar::_combatantType.damageParticles(findParticleProfile("blood"));
 
     // Projectiles
-    _projectileTypes.clear();
-    auto fireball = new Projectile::Type("fireball"s, 1000, { -6, -27, 14, 35 },
-        "Images/projectiles/fireball.png"s);
-    _projectileTypes.insert(fireball);
+    if (xr.newFile(path + "/projectiles.xml")) {
+        _projectileTypes.clear();
+        for (auto elem : xr.getChildren("projectile")) {
+
+            auto id = ""s;
+            if (!xr.findAttr(elem, "id", id))
+                continue;
+
+            auto speed = double{};
+            if (!xr.findAttr(elem, "speed", speed))
+                continue;
+
+            auto drawRect = Rect{};
+            if (!xr.findRectChild("drawRect", elem, drawRect))
+                continue;
+
+            Projectile::Type *projectile = new Projectile::Type(id, speed, drawRect);
+            _projectileTypes.insert(projectile);
+        }
+    }
 
     // Sounds
     drawLoadingScreen("Loading sounds", 0.638);

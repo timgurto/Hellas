@@ -1,0 +1,7 @@
+<root>
+
+<projectile id="fireball" speed=1000>
+    <drawRect x=-6 y=-27, w=14, h=35 />
+</projectile>
+
+</root>
