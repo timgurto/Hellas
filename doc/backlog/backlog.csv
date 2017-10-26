@@ -227,7 +227,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 252,Fireball impact particles,21,3,Aesthetics,249,TRUE,,2
 253,Fireball projectile particles,3,3,Aesthetics,249,,,2
 254,Fireball launch particles,3,3,Aesthetics,250,,,2
-255,Fireball impact sound,21,3,Aesthetics,249,,,2
+255,Fireball impact sound,21,3,Aesthetics,249,TRUE,,2
 256,Fireball casting sound,1,5,Aesthetics,250,,,2
 257,Fireball launch sound,8,3,Aesthetics,250,,,2
 259,Fireball damage modified by magic-damage stat,3,2,Feature,246,,,2

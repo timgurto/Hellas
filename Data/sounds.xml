@@ -67,4 +67,7 @@
     <sound type="gather" file="chop10" />
     <sound type="gather" file="chop11" />
 </soundProfile>
+<soundProfile id="fireball" >
+    <sound type="impact" file="ignite" />
+</soundProfile>
 </root>

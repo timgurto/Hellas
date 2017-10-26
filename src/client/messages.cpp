@@ -1236,6 +1236,9 @@ void Client::handle_SPELL_HIT(const Point &location) {
         return;
     auto *impactParticles = *it;
     addParticles(impactParticles, location);
+
+    auto sounds = findSoundProfile("fireball");
+    sounds->playOnce("impact");
 }
 
 
