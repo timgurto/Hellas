@@ -87,15 +87,14 @@ void Client::loadData(const std::string &path){
             if (!xr.findAttr(elem, "id", id))
                 continue;
 
-            auto speed = double{};
-            if (!xr.findAttr(elem, "speed", speed))
-                continue;
-
             auto drawRect = Rect{};
             if (!xr.findRectChild("drawRect", elem, drawRect))
                 continue;
 
-            Projectile::Type *projectile = new Projectile::Type(id, speed, drawRect);
+            Projectile::Type *projectile = new Projectile::Type(id, drawRect);
+
+            xr.findAttr(elem, "speed", projectile->speed);
+
             _projectileTypes.insert(projectile);
         }
     }
