@@ -1207,14 +1207,20 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
 
     enum SpellResult {
         HIT,
-        CRIT
+        CRIT,
+        MISS
     };
 
     if (spellID == "fireball") {
         auto outcome = HIT;
-        auto roll= rand() % 100;
+        auto roll = rand() % 100;
         if (roll < 5)
             outcome = CRIT;
+        else if (roll < 10)
+            outcome = MISS;
+
+        if (outcome == MISS)
+            return;
 
         auto damage = outcome == CRIT ? health_t{ 10 } : health_t{ 5 };
 
