@@ -137,6 +137,7 @@
     <ClCompile Include="src\client\HelpEntry.cpp" />
     <ClCompile Include="src\versionUtil.cpp" />
     <ClCompile Include="src\types.cpp" />
+    <ClCompile Include="src\client\Projectile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -240,5 +241,6 @@
     <ClInclude Include="src\client\ClientObjectAction.h" />
     <ClInclude Include="src\versionUtil.h" />
     <ClInclude Include="src\version.h" />
+    <ClInclude Include="src\client\Projectile.h" />
   </ItemGroup>
 </Project>

@@ -20,6 +20,7 @@
 #include "HelpEntry.h"
 #include "LogSDL.h"
 #include "ParticleProfile.h"
+#include "Projectile.h"
 #include "SoundProfile.h"
 #include "Sprite.h"
 #include "Tag.h"
@@ -368,6 +369,8 @@ private:
     objectTypes_t _objectTypes;
     typedef std::set<const ParticleProfile*, ParticleProfile::ptrCompare> particleProfiles_t;
     particleProfiles_t _particleProfiles;
+    typedef std::set<const Projectile::Type*, Projectile::Type::ptrCompare> projectileTypes_t;
+    projectileTypes_t _projectileTypes;
     TagNames _tagNames;
 
     typedef std::set<SoundProfile> soundProfiles_t;
@@ -424,7 +427,7 @@ private:
     void handle_SV_IN_CITY(const std::string &username, const std::string &cityName);
     void handle_SV_NO_CITY(const std::string &cityName);
     void handle_SV_KING(const std::string username);
-    void handle_SPELL_HIT(const Point &location);
+    void handle_SPELL_HIT(const Point &src, const Point &dst);
 
     void sendClearTargetMessage() const;
     

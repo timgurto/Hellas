@@ -68,7 +68,7 @@ public:
     size_t Server::getTileYCoord(double y) const;
     size_t Server::getTileXCoord(double x, size_t yTile) const;
     static Rect getTileRect(size_t x, size_t y);
-    std::list<User*> findUsersInArea(Point loc, double squareRadius = CULL_DISTANCE) const;
+    std::set<User*> findUsersInArea(Point loc, double squareRadius = CULL_DISTANCE) const;
     const ObjectType *findObjectTypeByName(const std::string &id) const; // Linear complexity
     std::set<char> nearbyTerrainTypes(const Rect &rect, double extraRadius = 0);
     const User *getUserByName(const std::string &username) const;

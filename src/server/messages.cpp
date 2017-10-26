@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cassert>
 
 #include "ProgressLock.h"
@@ -1225,8 +1226,17 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
         auto damage = outcome == CRIT ? health_t{ 10 } : health_t{ 5 };
 
         target->reduceHealth(damage);
-        auto &impactLocation = target->location();
-        broadcastToArea(impactLocation, SV_SPELL_HIT, makeArgs(impactLocation.x, impactLocation.y));
+        const auto
+            &src = user.location(),
+            &dst = target->location();
+        auto args = makeArgs(src.x, src.y, dst.x, dst.y);
+
+        auto usersToAlert = findUsersInArea(src);
+        auto usersNearDest = findUsersInArea(dst);
+        usersToAlert.insert(usersNearDest.begin(), usersNearDest.end());
+
+        for (auto user : usersToAlert)
+            sendMessage(user->socket(), SV_SPELL_HIT, args);
     }
 }
 

@@ -1072,11 +1072,13 @@ void Client::handleMessage(const std::string &msg){
         }
 
         case SV_SPELL_HIT:
-            double x, y;
-            singleMsg >> x >> del >> y >> del;
+        {
+            double x1, y1, x2, y2;
+            singleMsg >> x1 >> del >> y1 >> del >> x2 >> del >> y2 >> del;
             if (del != MSG_END)
                 break;
-            handle_SPELL_HIT({ x, y });
+            handle_SPELL_HIT({ x1, y1 }, { x2, y2 });
+        }
 
         case SV_SAY:
         {
@@ -1229,13 +1231,16 @@ void Client::handle_SV_KING(const std::string username) {
     userIt->second->setAsKing();
 }
 
-void Client::handle_SPELL_HIT(const Point &location) {
+void Client::handle_SPELL_HIT(const Point &src, const Point &dst) {
+    const auto &fireballProjectile = **_projectileTypes.find(& Projectile::Type::Dummy("fireball"));
+    addEntity(new Projectile(fireballProjectile, src, dst));
+
     auto dummy = ParticleProfile{ "fire" };
     auto it = _particleProfiles.find(&dummy);
     if (it == _particleProfiles.end())
         return;
     auto *impactParticles = *it;
-    addParticles(impactParticles, location);
+    addParticles(impactParticles, dst);
 
     auto sounds = findSoundProfile("fireball");
     sounds->playOnce("impact");

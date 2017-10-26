@@ -402,13 +402,13 @@ void Server::removeUser(const Socket &socket){
         _debug("User was already removed", Color::RED);
 }
 
-std::list<User *> Server::findUsersInArea(Point loc, double squareRadius) const{
-    std::list<User *> users;
+std::set<User *> Server::findUsersInArea(Point loc, double squareRadius) const{
+    std::set<User *> users;
     auto loX = _usersByX.lower_bound(&User(Point(loc.x - squareRadius, 0)));
     auto hiX = _usersByX.upper_bound(&User(Point(loc.x + squareRadius, 0)));
     for (auto it = loX; it != hiX; ++it)
         if (abs(loc.y - (*it)->location().y) <= squareRadius)
-            users.push_back(const_cast<User *>(*it));
+            users.insert(const_cast<User *>(*it));
 
     return users;
 }
