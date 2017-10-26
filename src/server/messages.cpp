@@ -1205,7 +1205,13 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
     if (target == nullptr)
         return;
     if (spellID == "fireball") {
-        target->reduceHealth(10);
+        auto damage = health_t{ 5 };
+
+        // Crit
+        if (rand() % 20 == 0)
+            damage *= 2;
+
+        target->reduceHealth(damage);
         auto &impactLocation = target->location();
         broadcastToArea(impactLocation, SV_SPELL_HIT, makeArgs(impactLocation.x, impactLocation.y));
     }
