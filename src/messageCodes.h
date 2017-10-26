@@ -315,6 +315,9 @@ enum MessageCode{
     // Arguments: name
     SV_PEACE_WAS_PROPOSED_TO_YOU = 165,
 
+    // "A fireball has hit you"
+    SV_SPELL_HIT = 180,
+
     // "User ... has said ...".
     // Arguments: username, message
     SV_SAY = 200,

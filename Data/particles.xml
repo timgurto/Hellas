@@ -116,5 +116,22 @@
     <variety imageFile="smoke4" />
 </particleProfile>
 
+<particleProfile
+    id="fire"
+    particlesPerSecond=200
+    gravityModifier=-4
+    alpha=127
+    >
+    <particlesPerHit mean=500 sd=10 />
+    <lifespan mean=200 sd=50 />
+    <distance mean=0 sd=10 />
+    <altitude mean=20 sd=3 />
+    <velocity mean=10 sd=5 />
+    <variety imageFile="loginFire1" />
+    <variety imageFile="loginFire2" />
+    <variety imageFile="loginFire3" />
+</particleProfile>
+
+
 
 </root>

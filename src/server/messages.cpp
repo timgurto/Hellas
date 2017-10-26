@@ -1204,8 +1204,10 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
     auto target = user.target();
     if (target == nullptr)
         return;
-    if (spellID == "fireball")
+    if (spellID == "fireball") {
         target->reduceHealth(10);
+        sendMessage(user.socket(), SV_SPELL_HIT);
+    }
 }
 
 

@@ -1071,6 +1071,9 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_SPELL_HIT:
+            handle_SPELL_HIT();
+
         case SV_SAY:
         {
             std::string username, message;
@@ -1220,6 +1223,15 @@ void Client::handle_SV_KING(const std::string username) {
     if (userIt == _otherUsers.end())
         return;
     userIt->second->setAsKing();
+}
+
+void Client::handle_SPELL_HIT() {
+    auto dummy = ParticleProfile{ "fire" };
+    auto it = _particleProfiles.find(&dummy);
+    if (it == _particleProfiles.end())
+        return;
+    auto *impactParticles = *it;
+    addParticles(impactParticles, _character.location());
 }
 
 
