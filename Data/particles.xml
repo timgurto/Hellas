@@ -127,9 +127,11 @@
     <distance mean=0 sd=10 />
     <altitude mean=20 sd=3 />
     <velocity mean=10 sd=5 />
-    <variety imageFile="loginFire1" />
-    <variety imageFile="loginFire2" />
-    <variety imageFile="loginFire3" />
+    <variety imageFile="loginFire1" count=5 />
+    <variety imageFile="loginFire2" count=5 />
+    <variety imageFile="loginFire3" count=5 />
+    <variety imageFile="loginFireLarge1" />
+    <variety imageFile="loginFireLarge2" />
 </particleProfile>
 
 

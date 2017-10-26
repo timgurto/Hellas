@@ -315,7 +315,8 @@ enum MessageCode{
     // Arguments: name
     SV_PEACE_WAS_PROPOSED_TO_YOU = 165,
 
-    // "A fireball has hit you"
+    // "A fireball has hit at location ..."
+    // Arguments: x, y
     SV_SPELL_HIT = 180,
 
     // "User ... has said ...".

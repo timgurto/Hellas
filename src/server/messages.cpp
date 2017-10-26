@@ -1206,7 +1206,7 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
         return;
     if (spellID == "fireball") {
         target->reduceHealth(10);
-        sendMessage(user.socket(), SV_SPELL_HIT);
+        sendMessage(user.socket(), SV_SPELL_HIT, makeArgs(target->location().x, target->location().y));
     }
 }
 
