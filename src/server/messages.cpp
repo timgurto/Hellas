@@ -1204,12 +1204,19 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
     auto target = user.target();
     if (target == nullptr)
         return;
-    if (spellID == "fireball") {
-        auto damage = health_t{ 5 };
 
-        // Crit
-        if (rand() % 20 == 0)
-            damage *= 2;
+    enum SpellResult {
+        HIT,
+        CRIT
+    };
+
+    if (spellID == "fireball") {
+        auto outcome = HIT;
+        auto roll= rand() % 100;
+        if (roll < 5)
+            outcome = CRIT;
+
+        auto damage = outcome == CRIT ? health_t{ 10 } : health_t{ 5 };
 
         target->reduceHealth(damage);
         auto &impactLocation = target->location();
