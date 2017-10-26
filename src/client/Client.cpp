@@ -219,10 +219,12 @@ Client::~Client() {
         delete entity;
     }
 
-    for (const ClientObjectType *type : _objectTypes)
+    for (auto type : _objectTypes)
         delete type;
-    for (const ParticleProfile *profile : _particleProfiles)
+    for (auto profile : _particleProfiles)
         delete profile;
+    for (auto projectileType : _projectileTypes)
+        delete projectileType;
 
     // Some entities will destroy their own windows, and remove them from this list.
     for (Window *window : _windows)
