@@ -16,7 +16,7 @@ public:
 
 private:
     const Type &spriteType() const { return * dynamic_cast<const Type *>(this->type()); }
-    double speed() const { return spriteType().speed(); }
+    double speed() const { return spriteType()._speed; }
 
     Point _end;
 
@@ -35,7 +35,7 @@ public:
             }
         };
 
-        double speed() const { return _speed; }
+        friend class Projectile;
 
     private:
         std::string _id;
