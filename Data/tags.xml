@@ -21,6 +21,9 @@
 <tag id="planting"          name="Planting" />
 <tag id="sewing"            name="Sewing" />
 <tag id="hammering"         name="Hammering" />
+<tag id="pottery1"          name="Basic Pottery" />
+<tag id="pottery2"          name="Advanced Pottery" />
+<tag id="charcoalMaking"    name="Charcoal Making" />
 <tag id="smelting1"         name="Tin Smelting" />
 <tag id="smelting2"         name="Copper Smelting" />
 <tag id="tanning"           name="Tanning" />
