@@ -17,6 +17,7 @@
 #include "Recipe.h"
 #include "ServerItem.h"
 #include "Spawner.h"
+#include "Spell.h"
 #include "TerrainList.h"
 #include "User.h"
 #include "Wars.h"
@@ -172,6 +173,7 @@ private:
     std::set<const ObjectType *> _objectTypes;
     std::map<size_t, Spawner> _spawners;
     std::map<char, Terrain*> _terrainTypes;
+    Spells _spells;
 
     std::list<Entity *> _entitiesToRemove; // Emptied every tick.
     void forceAllToUntarget(const Entity &target, const User *userToExclude = nullptr); 

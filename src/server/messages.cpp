@@ -1206,6 +1206,11 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
     if (target == nullptr)
         return;
 
+    auto it = _spells.find(spellID);
+    if (it == _spells.end())
+        return;
+    const auto &spell = *it->second;
+
     // Apply damage
     enum SpellResult {
         HIT,
@@ -1220,15 +1225,7 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
     else if (roll < 10)
         outcome = MISS;
 
-    auto damage = health_t{ 0 };
-    if (spellID == "fireball"s)
-        damage = 10;
-    else if (spellID == "green"s)
-        damage = 5;
-    else {
-        return;
-    }
-
+    auto damage = spell.damage;
     if (outcome == CRIT)
         damage *= 2;
 

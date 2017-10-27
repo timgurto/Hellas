@@ -185,6 +185,7 @@
     <ClInclude Include="src\server\Server.h" />
     <ClInclude Include="src\server\ServerItem.h" />
     <ClInclude Include="src\server\Spawner.h" />
+    <ClInclude Include="src\server\Spell.h" />
     <ClInclude Include="src\server\TerrainList.h" />
     <ClInclude Include="src\server\User.h" />
     <ClInclude Include="src\server\Vehicle.h" />

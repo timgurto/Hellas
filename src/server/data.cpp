@@ -579,6 +579,21 @@ void Server::loadData(const std::string &path){
         }
     }
 
+    // Spells
+    if (!xr.newFile(path + "/spells.xml"))
+        _debug("Failed to load spells.xml", Color::FAILURE);
+    else {
+        for (auto elem : xr.getChildren("spell")) {
+            std::string id;
+            if (!xr.findAttr(elem, "id", id))
+                continue; // ID and name are mandatory.
+            auto newSpell = new Spell;
+            _spells[id] = newSpell;
+
+            xr.findAttr(elem, "damage", newSpell->damage);
+        }
+    }
+
     ProgressLock::registerStagedLocks();
 
     // Remove invalid items referred to by objects/recipes
