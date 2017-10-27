@@ -21,11 +21,20 @@ ParticleProfile::~ParticleProfile(){
         delete variety;
 }
 
-void ParticleProfile::addVariety(const std::string &imageFile, size_t count){
+void ParticleProfile::addVariety(const std::string &imageFile, size_t count, const Rect &drawRect) {
+    SpriteType *particleType = new SpriteType(drawRect, "Images/Particles/" + imageFile + ".png");
+    if (_alpha != 0xff)
+        particleType->setAlpha(0x7f);
+    _varieties.push_back(particleType); // _varieties owns the pointers.
+    for (size_t i = 0; i != count; ++i)
+        _pool.push_back(particleType);
+}
+
+void ParticleProfile::addVariety(const std::string &imageFile, size_t count) {
     SpriteType *particleType = new SpriteType(Rect(), "Images/Particles/" + imageFile + ".png");
     Rect editedRect = particleType->drawRect();
-    editedRect.x = -particleType->width()/2;
-    editedRect.y = -particleType->height()/2;
+    editedRect.x = -particleType->width() / 2;
+    editedRect.y = -particleType->height() / 2;
     particleType->drawRect(editedRect);
     if (_alpha != 0xff)
         particleType->setAlpha(0x7f);
