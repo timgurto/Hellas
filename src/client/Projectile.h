@@ -14,11 +14,15 @@ public:
 
     virtual void update(double delta) override;
 
+    using onReachDestination_t = void (*)(const Point &destination);
+    void onReachDestination(onReachDestination_t f) { _onReachDestination = f; }
+
 private:
     const Type &projectileType() const { return * dynamic_cast<const Type *>(this->type()); }
     double speed() const { return projectileType().speed; }
 
     Point _end;
+    onReachDestination_t _onReachDestination = nullptr;
 
 
 public:

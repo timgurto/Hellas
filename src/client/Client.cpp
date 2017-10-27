@@ -644,3 +644,10 @@ void Client::infoWindow(const std::string & text) {
     addWindow(window);
     window->show();
 }
+
+void Client::onSpellHit(const Point &location) {
+    instance().addParticles("fire"s, location);
+
+    auto sounds = instance().findSoundProfile("fireball"s);
+    sounds->playOnce("impact"s);
+}

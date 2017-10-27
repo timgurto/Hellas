@@ -1242,10 +1242,9 @@ void Client::handle_SV_KING(const std::string username) {
 
 void Client::handle_SV_SPELL_HIT(const Point &src, const Point &dst) {
     const auto &fireballProjectile = **_projectileTypes.find(&Projectile::Type::Dummy("fireball"));
-    addEntity(new Projectile(fireballProjectile, src, dst));
-
-    auto sounds = findSoundProfile("fireball");
-    sounds->playOnce("impact");
+    auto projectile = new Projectile(fireballProjectile, src, dst);
+    projectile->onReachDestination(onSpellHit);
+    addEntity(projectile);
 }
 
 void Client::handle_SV_SPELL_MISS(const Point &src, const Point &dst) {

@@ -431,6 +431,8 @@ private:
     void handle_SV_SPELL_MISS(const Point &src, const Point &dst);
 
     void sendClearTargetMessage() const;
+
+    static void onSpellHit(const Point &location);
     
     enum ConnectionStatus{
         INITIALIZING,

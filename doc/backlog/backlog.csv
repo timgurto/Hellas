@@ -221,7 +221,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 246,A 'fireball' command that damages target by constant,34,5,Feature,,TRUE,,2
 247,Fireballs consume an energy stat,13,8,Feature,246,,,2
 248,A visible energy bar,13,5,Usability,247,,,2
-249,Animated projectile for fireball,21,8,Aesthetics,246,,,2
+249,Animated projectile for fireball,21,8,Aesthetics,246,TRUE,,2
 250,Fireball has interruptible cast time,2,8,Feature,246,,,2
 251,Fireball casting particles,1,3,Aesthetics,250,,,2
 252,Fireball impact particles,21,3,Aesthetics,249,TRUE,,2
