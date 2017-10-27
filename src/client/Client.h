@@ -16,6 +16,7 @@
 #include "ClientNPC.h"
 #include "ClientObject.h"
 #include "ClientObjectType.h"
+#include "ClientSpell.h"
 #include "ClientTerrain.h"
 #include "HelpEntry.h"
 #include "LogSDL.h"
@@ -372,6 +373,7 @@ private:
     typedef std::set<const Projectile::Type*, Projectile::Type::ptrCompare> projectileTypes_t;
     projectileTypes_t _projectileTypes;
     TagNames _tagNames;
+    ClientSpells _spells;
 
     typedef std::set<SoundProfile> soundProfiles_t;
     soundProfiles_t _soundProfiles;

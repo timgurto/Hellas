@@ -225,6 +225,8 @@ Client::~Client() {
         delete profile;
     for (auto projectileType : _projectileTypes)
         delete projectileType;
+    for (const auto &spellPair : _spells)
+        delete spellPair.second;
 
     // Some entities will destroy their own windows, and remove them from this list.
     for (Window *window : _windows)

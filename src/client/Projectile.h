@@ -30,7 +30,7 @@ private:
 public:
     struct Type : public SpriteType {
         Type(const std::string &id, const Rect &drawRect) :
-            SpriteType(drawRect, "Images/projectiles/"s +id + ".png"s) {
+            SpriteType(drawRect, "Images/projectiles/"s +id + ".png"s), id(id) {
         }
         static Type Dummy(const std::string &id) { return Type{ id, {} }; }
 

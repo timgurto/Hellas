@@ -1245,16 +1245,28 @@ void Client::handle_SV_KING(const std::string username) {
 }
 
 void Client::handle_SV_SPELL_HIT(const std::string &spellID, const Point &src, const Point &dst) {
-    const auto &projectileType = **_projectileTypes.find(&Projectile::Type::Dummy(spellID));
-    auto projectile = new Projectile(projectileType, src, dst);
-    projectile->onReachDestination(onSpellHit, spellID);
-    addEntity(projectile);
+    auto it = _spells.find(spellID);
+    if (it == _spells.end())
+        return;
+    const auto &spell = *it->second;
+
+    if (spell.projectile != nullptr) {
+        auto projectile = new Projectile(*spell.projectile, src, dst);
+        projectile->onReachDestination(onSpellHit, spellID);
+        addEntity(projectile);
+    }
 }
 
 void Client::handle_SV_SPELL_MISS(const std::string &spellID, const Point &src, const Point &dst) {
-    const auto &projectileType = **_projectileTypes.find(&Projectile::Type::Dummy(spellID));
-    auto pointPastDest = extrapolate(src, dst, 2000);
-    addEntity(new Projectile(projectileType, src, pointPastDest));
+    auto it = _spells.find(spellID);
+    if (it == _spells.end())
+        return;
+    const auto &spell = *it->second;
+
+    if (spell.projectile != nullptr) {
+        auto pointPastDest = extrapolate(src, dst, 2000);
+        addEntity(new Projectile(*spell.projectile, src, pointPastDest));
+    }
 }
 
 

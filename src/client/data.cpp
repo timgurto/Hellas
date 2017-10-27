@@ -127,6 +127,28 @@ void Client::loadData(const std::string &path){
         }
     }
 
+    // Spells
+    if (!xr.newFile(path + "/spells.xml"))
+        _debug("Failed to load spells.xml", Color::FAILURE);
+    else {
+        for (auto elem : xr.getChildren("spell")) {
+            std::string id;
+            if (!xr.findAttr(elem, "id", id))
+                continue; // ID and name are mandatory.
+            auto newSpell = new ClientSpell;
+            _spells[id] = newSpell;
+
+            auto projectileType = ""s;
+            if (xr.findAttr(elem, "projectile", projectileType)) {
+                auto dummy = Projectile::Type{ projectileType, {} };
+                auto it = _projectileTypes.find(&dummy);
+                if (it != _projectileTypes.end())
+                    newSpell->projectile = *it;
+            }
+
+        }
+    }
+
     _tagNames.readFromXMLFile(path + "/tags.xml");
 
     if (xr.newFile(path + "/items.xml")) // Early, because object types may insert new items.
