@@ -1,6 +1,12 @@
 <root>
 
-<spell id="fireball" damage=10 projectile="fireball" sounds="fireball"/>
-<spell id="green" damage=5 projectile="green"/>
+<spell id="fireball"
+    damage=10
+    projectile="fireball" sounds="fireball"> <particles impact="fire" />
+</spell>
+<spell id="green"
+    damage=5
+    projectile="green"> <particles impact="green" />
+</spell>
 
 </root>

@@ -120,8 +120,7 @@
     id="fire"
     particlesPerSecond=200
     gravityModifier=-4
-    alpha=127
-    >
+    alpha=127 >
     <particlesPerHit mean=500 sd=10 />
     <lifespan mean=200 sd=50 />
     <distance mean=0 sd=10 />
@@ -136,8 +135,7 @@
 
 <particleProfile
     id="green"
-    particlesPerSecond=200
-    >
+    particlesPerSecond=200 >
     <particlesPerHit mean=500 sd=10 />
     <distance mean=0 sd=10 />
     <altitude mean=20 sd=3 />

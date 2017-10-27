@@ -134,7 +134,7 @@ void Client::loadData(const std::string &path){
         for (auto elem : xr.getChildren("spell")) {
             std::string id;
             if (!xr.findAttr(elem, "id", id))
-                continue; // ID and name are mandatory.
+                continue; // ID is mandatory.
             auto newSpell = new ClientSpell;
             _spells[id] = newSpell;
 
@@ -151,6 +151,16 @@ void Client::loadData(const std::string &path){
                 auto profile = findSoundProfile(sounds);
                 if (profile != nullptr)
                     newSpell->sounds = profile;
+            }
+
+            auto particles = xr.findChild("particles", elem);
+            if (particles) {
+                auto profileName = ""s;
+                if (xr.findAttr(particles, "impact", profileName)) {
+                    auto profile = findParticleProfile(profileName);
+                    if (profile != nullptr)
+                        newSpell->impactParticles = profile;
+                }
             }
         }
     }
