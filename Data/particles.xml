@@ -133,16 +133,4 @@
     <variety imageFile="loginFireLarge2" />
 </particleProfile>
 
-<particleProfile
-    id="green"
-    particlesPerSecond=200 >
-    <particlesPerHit mean=500 sd=10 />
-    <distance mean=0 sd=10 />
-    <altitude mean=20 sd=3 />
-    <velocity mean=10 sd=5 />
-    <variety imageFile="green" />
-</particleProfile>
-
-
-
 </root>
