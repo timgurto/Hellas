@@ -73,6 +73,7 @@
 
 <input type="checkbox" id="showDone" onChange='applyOptions();'>Show 'done' items</input>
 <input type="checkbox" id="useFilter" onChange='applyOptions();'>Show only filtered items</input>
+<input type="checkbox" id="hideBlocked" onChange='applyOptions();'>Hide blocked items</input>
 
 <p>
 <table id="backlog">
@@ -199,10 +200,12 @@
             cell.className = "milestone";
 
             cell = row.insertCell(-1);
-            if (PBI.hasOwnProperty("blockedBy"))
+            if (PBI.hasOwnProperty("blockedBy")){
                 cell.innerHTML += '<a class="blocked" title="Blocked by: ' +
                         nameLookup[PBI.blockedBy] +
                         '" href="#' + PBI.blockedBy + '">&#9888;</span>';
+                row.className += " blockedRow";
+            }
             if (PBI.hasOwnProperty("refine"))
                 cell.innerHTML += '<span class="refine" title="Consider refining">&#9879;</span>';
             if (PBI.hasOwnProperty("critical"))
@@ -232,6 +235,9 @@
 
         if (!$("#showDone").is(':checked'))
             $(".doneRow").hide();
+
+        if ($("#hideBlocked").is(':checked'))
+            $(".blockedRow").hide();
     }
 
     function toggleFilter(i){
