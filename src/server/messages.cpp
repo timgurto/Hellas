@@ -1206,38 +1206,49 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
     if (target == nullptr)
         return;
 
+    // Apply damage
     enum SpellResult {
         HIT,
         CRIT,
         MISS
     };
 
-    if (spellID == "fireball") {
-        auto outcome = HIT;
-        auto roll = rand() % 100;
-        if (roll < 5)
-            outcome = CRIT;
-        else if (roll < 10)
-            outcome = MISS;
+    auto outcome = HIT;
+    auto roll = rand() % 100;
+    if (roll < 5)
+        outcome = CRIT;
+    else if (roll < 10)
+        outcome = MISS;
 
-        if (outcome == HIT){
-            auto damage = outcome == CRIT ? health_t{ 10 } : health_t{ 5 };
-            target->reduceHealth(damage);
-        }
-
-        auto msgCode = (outcome == MISS ? SV_SPELL_MISS : SV_SPELL_HIT);
-
-        const auto
-            &src = user.location(),
-            &dst = target->location();
-        auto args = makeArgs(src.x, src.y, dst.x, dst.y);
-
-        auto usersToAlert = findUsersInArea(src);
-        auto usersNearDest = findUsersInArea(dst);
-        usersToAlert.insert(usersNearDest.begin(), usersNearDest.end());
-        for (auto user : usersToAlert)
-            sendMessage(user->socket(), msgCode, args);
+    auto damage = health_t{ 0 };
+    if (spellID == "fireball"s)
+        damage = 10;
+    else if (spellID == "green"s)
+        damage = 5;
+    else {
+        return;
     }
+
+    if (outcome == CRIT)
+        damage *= 2;
+
+    if (outcome != MISS)
+        target->reduceHealth(damage);
+
+
+    // Broadcast spellcast
+    auto msgCode = (outcome == MISS ? SV_SPELL_MISS : SV_SPELL_HIT);
+
+    const auto
+        &src = user.location(),
+        &dst = target->location();
+    auto args = makeArgs(spellID, src.x, src.y, dst.x, dst.y);
+
+    auto usersToAlert = findUsersInArea(src);
+    auto usersNearDest = findUsersInArea(dst);
+    usersToAlert.insert(usersNearDest.begin(), usersNearDest.end());
+    for (auto user : usersToAlert)
+        sendMessage(user->socket(), msgCode, args);
 }
 
 

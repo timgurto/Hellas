@@ -1051,9 +1051,8 @@ void Client::handleMessage(const std::string &msg){
         case SV_AT_WAR_WITH_PLAYER:
         case SV_AT_WAR_WITH_CITY:
         {
-            std::string name;
             singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
-            name = std::string(buffer);
+            auto name = std::string{ buffer };
             singleMsg >> del;
             if (del != MSG_END)
                 return;
@@ -1072,21 +1071,26 @@ void Client::handleMessage(const std::string &msg){
         }
 
         case SV_SPELL_HIT:
-        {
-            double x1, y1, x2, y2;
-            singleMsg >> x1 >> del >> y1 >> del >> x2 >> del >> y2 >> del;
-            if (del != MSG_END)
-                break;
-            handle_SV_SPELL_HIT({ x1, y1 }, { x2, y2 });
-        }
-
         case SV_SPELL_MISS:
         {
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            auto id = std::string{ buffer };
+            singleMsg >> del;
+
             double x1, y1, x2, y2;
             singleMsg >> x1 >> del >> y1 >> del >> x2 >> del >> y2 >> del;
+
             if (del != MSG_END)
                 break;
-            handle_SV_SPELL_MISS({ x1, y1 }, { x2, y2 });
+
+            switch (msgCode) {
+            case SV_SPELL_HIT:
+                handle_SV_SPELL_HIT(id, { x1, y1 }, { x2, y2 });
+                break;
+            case SV_SPELL_MISS:
+                handle_SV_SPELL_MISS(id, { x1, y1 }, { x2, y2 });
+                break;
+            }
         }
 
         case SV_SAY:
@@ -1240,19 +1244,18 @@ void Client::handle_SV_KING(const std::string username) {
     userIt->second->setAsKing();
 }
 
-void Client::handle_SV_SPELL_HIT(const Point &src, const Point &dst) {
-    const auto &fireballProjectile = **_projectileTypes.find(&Projectile::Type::Dummy("fireball"));
-    auto projectile = new Projectile(fireballProjectile, src, dst);
-    projectile->onReachDestination(onSpellHit);
+void Client::handle_SV_SPELL_HIT(const std::string &spellID, const Point &src, const Point &dst) {
+    const auto &projectileType = **_projectileTypes.find(&Projectile::Type::Dummy(spellID));
+    auto projectile = new Projectile(projectileType, src, dst);
+    projectile->onReachDestination(onSpellHit, spellID);
     addEntity(projectile);
 }
 
-void Client::handle_SV_SPELL_MISS(const Point &src, const Point &dst) {
-    const auto &fireballProjectile = **_projectileTypes.find(&Projectile::Type::Dummy("fireball"));
+void Client::handle_SV_SPELL_MISS(const std::string &spellID, const Point &src, const Point &dst) {
+    const auto &projectileType = **_projectileTypes.find(&Projectile::Type::Dummy(spellID));
     auto pointPastDest = extrapolate(src, dst, 2000);
-    addEntity(new Projectile(fireballProjectile, src, pointPastDest));
+    addEntity(new Projectile(projectileType, src, pointPastDest));
 }
-
 
 
 void Client::sendRawMessage(const std::string &msg) const{

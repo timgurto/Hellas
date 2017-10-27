@@ -3,5 +3,8 @@
 <projectile id="fireball" speed=500>
     <drawRect x=-6 y=-27, w=14, h=35 />
 </projectile>
+<projectile id="green" speed=100>
+    <drawRect x=-6 y=-27, w=14, h=35 />
+</projectile>
 
 </root>

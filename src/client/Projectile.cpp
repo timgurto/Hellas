@@ -8,7 +8,7 @@ void Projectile::update(double delta) {
 
     if (reachedTarget) {
         if (_onReachDestination != nullptr)
-            _onReachDestination(_end);
+            _onReachDestination(_end, _onReachDestinationArg);
         markForRemoval();
         return;
     }

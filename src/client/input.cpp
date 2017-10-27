@@ -181,6 +181,14 @@ void Client::handleInput(double delta){
                     _chatTextBox->text(std::string("/whisper ") + _lastWhisperer + " ");
                     }
                     break;
+
+                case SDLK_1:
+                    performCommand("/cast fireball"s);
+                    break;
+                case SDLK_2:
+                    performCommand("/cast green"s);
+                    break;
+
                 }
             }
             break;

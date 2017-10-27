@@ -427,12 +427,12 @@ private:
     void handle_SV_IN_CITY(const std::string &username, const std::string &cityName);
     void handle_SV_NO_CITY(const std::string &cityName);
     void handle_SV_KING(const std::string username);
-    void handle_SV_SPELL_HIT(const Point &src, const Point &dst);
-    void handle_SV_SPELL_MISS(const Point &src, const Point &dst);
+    void handle_SV_SPELL_HIT(const std::string &spellID, const Point &src, const Point &dst);
+    void handle_SV_SPELL_MISS(const std::string &spellID, const Point &src, const Point &dst);
 
     void sendClearTargetMessage() const;
 
-    static void onSpellHit(const Point &location);
+    static void onSpellHit(const Point &location, const std::string &spellID);
     
     enum ConnectionStatus{
         INITIALIZING,

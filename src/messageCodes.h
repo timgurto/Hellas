@@ -316,7 +316,7 @@ enum MessageCode{
     SV_PEACE_WAS_PROPOSED_TO_YOU = 165,
 
     // The outcome of a spellcast.  This is purely so that the client can illustrate it.
-    // Arguments: from x, from y, to x, to y
+    // Arguments: spell ID, from x, from y, to x, to y
     SV_SPELL_HIT = 180,
     SV_SPELL_MISS = 181,
 
