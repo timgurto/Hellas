@@ -186,6 +186,7 @@ void Client::handleInput(double delta){
                     performCommand("/cast fireball"s);
                     break;
                 case SDLK_2:
+                    performCommand("/cast heal"s);
                     break;
 
                 }

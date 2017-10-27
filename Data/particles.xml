@@ -118,10 +118,9 @@
 
 <particleProfile
     id="fire"
-    particlesPerSecond=200
     gravityModifier=-4
     alpha=127 >
-    <particlesPerHit mean=500 sd=10 />
+    <particlesPerHit mean=500 sd=100 />
     <lifespan mean=200 sd=50 />
     <distance mean=0 sd=10 />
     <altitude mean=20 sd=3 />
@@ -131,6 +130,18 @@
     <variety imageFile="loginFire3" count=5 />
     <variety imageFile="loginFireLarge1" />
     <variety imageFile="loginFireLarge2" />
+</particleProfile>
+
+<particleProfile
+    id="lightRays"
+    gravityModifier=0 >
+    <particlesPerHit mean=200 sd=40 />
+    <lifespan mean=500 sd=150 />
+    <distance mean=0 sd=5 />
+    <velocity mean=7 sd=3 />
+    <variety imageFile="ray0"> <drawRect x=-2 y=-33 w=5 h=35 /> </variety>
+    <variety imageFile="ray1L"> <drawRect x=-3 y=-62 w=7 h=64 /> </variety>
+    <variety imageFile="ray1R"> <drawRect x=-3 y=-62 w=7 h=64 /> </variety>
 </particleProfile>
 
 </root>

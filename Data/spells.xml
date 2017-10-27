@@ -4,6 +4,9 @@
     damage=10
     projectile="fireball" sounds="fireball"> <particles impact="fire" />
 </spell>
+<spell id="heal"
+    healing=1
+    > <particles impact="lightRays" />
 </spell>
 
 </root>
