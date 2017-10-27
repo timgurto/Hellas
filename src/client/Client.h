@@ -408,6 +408,8 @@ private:
     void addParticles(const std::string &profileName, const Point &location); // Single hit
     void addParticles(const std::string &profileName, const Point &location, double delta);  // /s
 
+    static void onSpellHit(const Point &location, const void *spell);
+
 
     mutable LogSDL _debug;
 
@@ -433,8 +435,6 @@ private:
     void handle_SV_SPELL_MISS(const std::string &spellID, const Point &src, const Point &dst);
 
     void sendClearTargetMessage() const;
-
-    static void onSpellHit(const Point &location, const std::string &spellID);
     
     enum ConnectionStatus{
         INITIALIZING,

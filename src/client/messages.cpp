@@ -1252,7 +1252,7 @@ void Client::handle_SV_SPELL_HIT(const std::string &spellID, const Point &src, c
 
     if (spell.projectile != nullptr) {
         auto projectile = new Projectile(*spell.projectile, src, dst);
-        projectile->onReachDestination(onSpellHit, spellID);
+        projectile->onReachDestination(onSpellHit, &spell);
         addEntity(projectile);
     }
 }

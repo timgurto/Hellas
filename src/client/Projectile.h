@@ -14,8 +14,8 @@ public:
 
     virtual void update(double delta) override;
 
-    using onReachDestination_t = void (*)(const Point &destination, const std::string &arg);
-    void onReachDestination(onReachDestination_t f, const std::string &arg)
+    using onReachDestination_t = void (*)(const Point &destination, const void *arg);
+    void onReachDestination(onReachDestination_t f, const void *arg = nullptr)
             { _onReachDestination = f; _onReachDestinationArg = arg; }
 
 private:
@@ -23,14 +23,14 @@ private:
     double speed() const { return projectileType().speed; }
 
     Point _end;
-    std::string _onReachDestinationArg = {};
+    const void *_onReachDestinationArg = nullptr;
     onReachDestination_t _onReachDestination = nullptr;
 
 
 public:
     struct Type : public SpriteType {
         Type(const std::string &id, const Rect &drawRect) :
-            SpriteType(drawRect, "Images/projectiles/"s +id + ".png"s), id(id) {
+            SpriteType(drawRect, "Images/projectiles/"s + id + ".png"s), id(id) {
         }
         static Type Dummy(const std::string &id) { return Type{ id, {} }; }
 

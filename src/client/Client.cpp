@@ -647,10 +647,11 @@ void Client::infoWindow(const std::string & text) {
     window->show();
 }
 
-void Client::onSpellHit(const Point &location, const std::string &spellID) {
-    instance().addParticles(spellID, location);
+void Client::onSpellHit(const Point &location, const void *data) {
+    auto &spell = *reinterpret_cast<const ClientSpell *>(data);
+    if (spell.projectile != nullptr)
+        instance().addParticles("fireball", location);
 
-    auto sounds = instance().findSoundProfile(spellID);
-    if (sounds != nullptr)
-        sounds->playOnce("impact"s);
+    if (spell.sounds != nullptr)
+        spell.sounds->playOnce("impact"s);
 }

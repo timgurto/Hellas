@@ -146,6 +146,12 @@ void Client::loadData(const std::string &path){
                     newSpell->projectile = *it;
             }
 
+            auto sounds = ""s;
+            if (xr.findAttr(elem, "sounds", sounds)) {
+                auto profile = findSoundProfile(sounds);
+                if (profile != nullptr)
+                    newSpell->sounds = profile;
+            }
         }
     }
 

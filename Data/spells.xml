@@ -1,6 +1,6 @@
 <root>
 
-<spell id="fireball" damage=10 projectile="fireball"/>
+<spell id="fireball" damage=10 projectile="fireball" sounds="fireball"/>
 <spell id="green" damage=5 projectile="green"/>
 
 </root>
