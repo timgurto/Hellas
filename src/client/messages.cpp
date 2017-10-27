@@ -1254,7 +1254,8 @@ void Client::handle_SV_SPELL_HIT(const std::string &spellID, const Point &src, c
         auto projectile = new Projectile(*spell.projectile, src, dst);
         projectile->onReachDestination(onSpellHit, &spell);
         addEntity(projectile);
-    }
+    } else
+        onSpellHit(dst, &spell);
 }
 
 void Client::handle_SV_SPELL_MISS(const std::string &spellID, const Point &src, const Point &dst) {
