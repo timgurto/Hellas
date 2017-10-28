@@ -15,6 +15,9 @@ class Button : public Element{
 public:
     typedef void (*clickFun_t)(void *data);
 
+    void depress();
+    void release(bool click); // click: whether, on release, the button's _clickFun will be called.
+
 private:
     Element *_content;
     ColorBlock *_background;
@@ -28,9 +31,6 @@ private:
     bool _depressed;
 
     bool _enabled; // False: greyed out; can't be clicked.
-
-    void depress();
-    void release(bool click); // click: whether, on release, the button's _clickFun will be called.
 
     static void mouseDown(Element &e, const Point &mousePos);
     static void mouseUp(Element &e, const Point &mousePos);

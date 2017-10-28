@@ -183,13 +183,26 @@ void Client::handleInput(double delta){
                     break;
 
                 case SDLK_1:
-                    performCommand("/cast fireball"s);
+                    if (_hotbarButtons[0]) _hotbarButtons[0]->depress();
                     break;
                 case SDLK_2:
-                    performCommand("/cast heal"s);
+                    if (_hotbarButtons[1]) _hotbarButtons[1]->depress();
                     break;
 
                 }
+
+
+            }
+            break;
+
+        case SDL_KEYUP:
+            switch (e.key.keysym.sym) {
+            case SDLK_1:
+                if (_hotbarButtons[0]) _hotbarButtons[0]->release(true);
+                break;
+            case SDLK_2:
+                if (_hotbarButtons[1]) _hotbarButtons[1]->release(true);
+                break;
             }
             break;
 

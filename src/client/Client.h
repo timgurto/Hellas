@@ -245,6 +245,7 @@ private:
     void addUI(Element *element);
     Element *_castBar;
     Element *_hotbar = nullptr;
+    std::vector<Button*> _hotbarButtons = { 10, nullptr };
     void initUI();
         void initChatLog();
         void initWindows();

@@ -96,17 +96,17 @@ void Client::initHotbar() {
 void Client::populateHotbar() {
     _hotbar->clearChildren();
 
-    auto x = 0_px;
+    auto i = 0;
     for (auto &pair : _spells) {
         const auto &spell = *pair.second;
         void *castMessageVoidPtr = const_cast<void*>(
             reinterpret_cast<const void*>(&spell.castMessage()));
-        auto button = new Button({ x, 0, 18, 18 }, {}, sendRawMessageStatic, castMessageVoidPtr);
+        auto button = new Button({ i * 18, 0, 18, 18 }, {}, sendRawMessageStatic, castMessageVoidPtr);
         button->addChild(new ColorBlock({ 0,  0, 18, 18 }, Color::OUTLINE));
         button->addChild(new Picture(1, 1, spell.icon()));
         _hotbar->addChild(button);
-
-        x += 18;
+        _hotbarButtons[i] = button;
+        ++i;
     }
 }
 
