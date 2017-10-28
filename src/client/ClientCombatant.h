@@ -13,12 +13,12 @@ class ClientCombatant{
 public:
     ClientCombatant::ClientCombatant(const ClientCombatantType *type);
 
-    const health_t &health() const { return _health; }
-    void health(health_t n) { _health = n; }
+    const Hitpoints &health() const { return _health; }
+    void health(Hitpoints n) { _health = n; }
     bool isAlive() const { return _health > 0; }
     bool isDead() const { return _health == 0; }
-    const health_t &maxHealth() const { return _maxHealth; }
-    void maxHealth(health_t newMax) { _maxHealth = newMax; }
+    const Hitpoints &maxHealth() const { return _maxHealth; }
+    void maxHealth(Hitpoints newMax) { _maxHealth = newMax; }
     void drawHealthBarIfAppropriate(const Point &objectLocation, px_t objHeight) const;
 
     virtual void sendTargetMessage() const = 0;
@@ -34,8 +34,8 @@ public:
 
 private:
     const ClientCombatantType *_type;
-    health_t _maxHealth;
-    health_t _health;
+    Hitpoints _maxHealth;
+    Hitpoints _health;
 };
 
 #endif

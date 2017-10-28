@@ -2,7 +2,7 @@
 #include "NPCType.h"
 #include "objects/Container.h"
 
-NPCType::NPCType(const std::string &id, health_t maxHealth):
+NPCType::NPCType(const std::string &id, Hitpoints maxHealth):
 ObjectType(id),
 _maxHealth(maxHealth),
 _attack(0),

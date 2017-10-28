@@ -666,7 +666,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_ENTITY_HEALTH:
         {
             size_t serial;
-            health_t health;
+            Hitpoints health;
             singleMsg >> serial >> del >> health >> del;
             if (del != MSG_END)
                 break;
@@ -878,7 +878,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_PLAYER_HEALTH:
         {
             std::string username;
-            health_t newHealth;
+            Hitpoints newHealth;
             readString(singleMsg, username, MSG_DELIM);
             singleMsg >> del >> newHealth >> del;
             if (del != MSG_END)
@@ -986,7 +986,7 @@ void Client::handleMessage(const std::string &msg){
         {
             auto username = ""s;
             readString(singleMsg, username);
-            auto newMaxHealth = health_t{};
+            auto newMaxHealth = Hitpoints{};
             singleMsg >> del >> newMaxHealth >> del;
             if (del != MSG_END)
                 break;
@@ -1197,7 +1197,7 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot, const std::string &
                 item->sounds()->playOnce("drop");
 }
 
-void Client::handle_SV_MAX_HEALTH(const std::string & username, health_t newMaxHealth) {
+void Client::handle_SV_MAX_HEALTH(const std::string & username, Hitpoints newMaxHealth) {
     if (username == _username) {
         _character.maxHealth(newMaxHealth);
         return;

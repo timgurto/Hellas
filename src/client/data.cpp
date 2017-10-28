@@ -318,7 +318,7 @@ void Client::loadData(const std::string &path){
             if (xr.findAttr(elem, "sounds", s))
                 item.sounds(s);
 
-            health_t strength;
+            Hitpoints strength;
             if (xr.findAttr(elem, "strength", strength))
                 item.strength(strength);
 

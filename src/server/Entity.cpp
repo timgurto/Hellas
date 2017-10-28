@@ -5,7 +5,7 @@
 #include "Spawner.h"
 #include "../util.h"
 
-Entity::Entity(const EntityType *type, const Point &loc, health_t health):
+Entity::Entity(const EntityType *type, const Point &loc, Hitpoints health):
     _type(type),
     _serial(generateSerial()),
     _spawner(nullptr),
@@ -81,7 +81,7 @@ void Entity::reduceHealth(int damage) {
     assert(_health <= this->maxHealth());
 }
 
-void Entity::healBy(health_t amount) {
+void Entity::healBy(Hitpoints amount) {
     auto newHealth = min(health() + amount, maxHealth());
     _health = newHealth;
     broadcastHealth();

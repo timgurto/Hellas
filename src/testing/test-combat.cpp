@@ -111,13 +111,13 @@ TEST_CASE("Attack rate is respected", "[.flaky]"){
     TestClient c;
     WAIT_UNTIL(s.users().size() == 1);
     const User &user = s.getFirstUser();
-    health_t before = user.health();
+    Hitpoints before = user.health();
 
     // When 1050ms elapse
     REPEAT_FOR_MS(1050);
 
     // Then the user has taken exactly 10 damage
-    health_t after = user.health();
+    Hitpoints after = user.health();
     CHECK(after == before - 10);
 }
 

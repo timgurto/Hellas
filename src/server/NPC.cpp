@@ -112,7 +112,7 @@ void NPC::sendInfoToClient(const User &targetUser) const {
     server.sendMessage(client, SV_OBJECT, makeArgs(serial(), location().x, location().y,
                                                    type()->id()));
 
-    // Health
+    // Hitpoints
     if (health() < maxHealth())
         server.sendMessage(client, SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 

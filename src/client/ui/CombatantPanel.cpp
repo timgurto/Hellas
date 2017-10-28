@@ -9,7 +9,7 @@ const px_t CombatantPanel::BAR_HEIGHT = 7;
 const px_t CombatantPanel::GAP = 2;
 
 CombatantPanel::CombatantPanel(px_t x, px_t y, const std::string &name,
-                               const health_t &health, const health_t &maxHealth):
+                               const Hitpoints &health, const Hitpoints &maxHealth):
 Element(Rect(x, y, WIDTH, HEIGHT))
 {
     addChild(new ColorBlock(Rect(0, 0, WIDTH, HEIGHT)));
@@ -17,7 +17,7 @@ Element(Rect(x, y, WIDTH, HEIGHT))
     addChild(new LinkedLabel<std::string>(
             Rect(GAP, 1, WIDTH - 2 * GAP, Element::TEXT_HEIGHT),
             name, "", "", Element::CENTER_JUSTIFIED));
-    _healthBar = new ProgressBar<health_t>(
+    _healthBar = new ProgressBar<Hitpoints>(
             Rect(2, HEIGHT - BAR_HEIGHT - GAP, WIDTH - 2 * GAP, BAR_HEIGHT),
             health, maxHealth, Color::COMBATANT_NEUTRAL);
     addChild(_healthBar);

@@ -28,11 +28,11 @@ public:
     void makePassive() { _aggressive = false; }
     
     const std::string &name() const { return _name; }
-    const health_t &health() const { return _health; }
-    const health_t &maxHealth() const { return _maxHealth; }
+    const Hitpoints &health() const { return _health; }
+    const Hitpoints &maxHealth() const { return _maxHealth; }
     void refreshHealthBarColor();
 
-    void updateHealth(health_t newHealth){ _health = newHealth; }
+    void updateHealth(Hitpoints newHealth){ _health = newHealth; }
 
     void initializePanel();
     CombatantPanel *panel() { return _panel; }
@@ -57,7 +57,7 @@ private:
     contain data references.
     */
     std::string _name;
-    health_t _health, _maxHealth;
+    Hitpoints _health, _maxHealth;
 
     void setAndAlertServer(
             const Sprite &asEntity, const ClientCombatant &asCombatant, bool nowAggressive);

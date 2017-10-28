@@ -22,8 +22,8 @@ public:
 
     const NPCType *npcType() const { return dynamic_cast<const NPCType *>(type()); }
 
-    virtual health_t maxHealth() const override { return npcType()->maxHealth(); }
-    virtual health_t attack() const override { return npcType()->attack(); }
+    virtual Hitpoints maxHealth() const override { return npcType()->maxHealth(); }
+    virtual Hitpoints attack() const override { return npcType()->attack(); }
     virtual ms_t attackTime() const override { return npcType()->attackTime(); }
     virtual double speed() const override { return 10; }
     virtual ms_t timeToRemainAsCorpse() const override { return 600000; } // 10 minutes

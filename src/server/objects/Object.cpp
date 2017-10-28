@@ -238,7 +238,7 @@ void Object::sendInfoToClient(const User &targetUser) const {
         server.sendMessage(client, SV_TRANSFORM_TIME, makeArgs(serial(), transformTimer()));
     }
 
-    // Health
+    // Hitpoints
     if (health() < maxHealth())
         server.sendMessage(client, SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 

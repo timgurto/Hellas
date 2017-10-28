@@ -69,18 +69,18 @@ void Client::initializeGearWindow(){
     
 
     labelRect.y += Element::TEXT_HEIGHT;
-    _gearWindow->addChild(new Label(labelRect, "Health"));
-    _gearWindow->addChild(new LinkedLabel<health_t>(labelRect, _character.health(),
+    _gearWindow->addChild(new Label(labelRect, "Hitpoints"));
+    _gearWindow->addChild(new LinkedLabel<Hitpoints>(labelRect, _character.health(),
                                                     "", "", Element::RIGHT_JUSTIFIED));
     
     labelRect.y += Element::TEXT_HEIGHT;
     _gearWindow->addChild(new Label(labelRect, "Max health"));
-    _gearWindow->addChild(new LinkedLabel<health_t>(labelRect, _stats.health,
+    _gearWindow->addChild(new LinkedLabel<Hitpoints>(labelRect, _stats.health,
                                                     "", "", Element::RIGHT_JUSTIFIED));
     
     labelRect.y += Element::TEXT_HEIGHT;
     _gearWindow->addChild(new Label(labelRect, "Damage"));
-    _gearWindow->addChild(new LinkedLabel<health_t>(labelRect, _stats.attack,
+    _gearWindow->addChild(new LinkedLabel<Hitpoints>(labelRect, _stats.attack,
                                                     "", "", Element::RIGHT_JUSTIFIED));
     
     labelRect.y += Element::TEXT_HEIGHT;

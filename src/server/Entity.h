@@ -20,7 +20,7 @@ class XmlWriter;
 class Entity {
 
 public:
-    Entity(const EntityType *type, const Point &loc, health_t health);
+    Entity(const EntityType *type, const Point &loc, Hitpoints health);
     Entity(size_t serial); // TODO make private
     Entity(const Point &loc); // TODO make private
     virtual ~Entity();
@@ -62,21 +62,21 @@ public:
 
 
     // Combat
-    virtual health_t maxHealth() const = 0;
-    virtual health_t attack() const = 0;
+    virtual Hitpoints maxHealth() const = 0;
+    virtual Hitpoints attack() const = 0;
     virtual ms_t attackTime() const = 0;
     Entity *target() const { return _target; }
     void target(Entity *p) { _target = p; }
     virtual ms_t timeToRemainAsCorpse() const = 0;
 
-    health_t health() const { assert(_health <= this->maxHealth()); return _health; }
-    void health(health_t health) { _health = health; }
+    Hitpoints health() const { assert(_health <= this->maxHealth()); return _health; }
+    void health(Hitpoints health) { _health = health; }
     bool isDead() const { return _health == 0; }
 
     virtual void broadcastHealth() const;
 
     void reduceHealth(int damage);
-    void healBy(health_t amount);
+    void healBy(Hitpoints amount);
     virtual void onHealthChange() {}; // Probably alerting relevant users.
     virtual void onDeath(); // Anything that needs to happen upon death.
     virtual void describeSelfToNewWatcher(const User &watcher) const {}
@@ -115,7 +115,7 @@ private:
 
 
     // Combat
-    health_t _health;
+    Hitpoints _health;
     ms_t _attackTimer;
     Entity *_target;
     ms_t _corpseTime; // How much longer this entity should exist as a corpse.
@@ -138,8 +138,8 @@ private:
 
     // Necessary overrides to make this a concrete class
     virtual char classTag() const override { return 'd'; }
-    virtual health_t maxHealth() const override { return 0; };
-    virtual health_t attack() const override { return 0; };
+    virtual Hitpoints maxHealth() const override { return 0; };
+    virtual Hitpoints attack() const override { return 0; };
     virtual ms_t attackTime() const override { return 0; };
     virtual void sendInfoToClient(const User &targetUser) const override {}
     virtual ms_t timeToRemainAsCorpse() const override { return 0; }

@@ -11,7 +11,7 @@
 class CombatantPanel : public Element{
 public:
     CombatantPanel(px_t x, px_t y,
-                   const std::string &name, const health_t &health, const health_t &maxHealth);
+                   const std::string &name, const Hitpoints &health, const Hitpoints &maxHealth);
 
     void changeColor(const Color &newColor) { _healthBar->changeColor(newColor); }
 
@@ -22,7 +22,7 @@ public:
         GAP;
 
 private:
-     ProgressBar<health_t> *_healthBar;
+     ProgressBar<Hitpoints> *_healthBar;
 };
 
 #endif

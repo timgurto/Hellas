@@ -407,7 +407,7 @@ void User::onNewOwnedObject(const ObjectType & type) const {
 void User::updateStats(){
     const Server &server = *Server::_instance;
 
-    health_t oldMaxHealth = maxHealth();
+    Hitpoints oldMaxHealth = maxHealth();
 
     _stats = BASE_STATS;
     for (size_t i = 0; i != GEAR_SLOTS; ++i){
@@ -465,7 +465,7 @@ void User::sendInfoToClient(const User &targetUser) const {
     // Location
     server.sendMessage(client, SV_LOCATION, makeLocationCommand());
 
-    // Health
+    // Hitpoints
     server.sendMessage(client, SV_PLAYER_HEALTH, makeArgs(_name, health()));
 
     // Class

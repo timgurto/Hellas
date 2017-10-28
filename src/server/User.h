@@ -122,8 +122,8 @@ public:
     static void init();
 
     void updateStats();
-    health_t maxHealth() const override { return _stats.health; }
-    health_t attack() const override { return _stats.attack; }
+    Hitpoints maxHealth() const override { return _stats.health; }
+    Hitpoints attack() const override { return _stats.attack; }
     ms_t attackTime() const override { return _stats.attackTime; }
     double speed() const override { return _stats.speed; }
     ms_t timeToRemainAsCorpse() const override { return 0; }

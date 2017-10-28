@@ -8,7 +8,7 @@ class SoundProfile;
 class ClientNPCType : public ClientObjectType {
 
 public:
-    ClientNPCType(const std::string &id, health_t maxHealth);
+    ClientNPCType(const std::string &id, Hitpoints maxHealth);
     virtual ~ClientNPCType() override{}
 
 

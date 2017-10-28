@@ -5,7 +5,7 @@ _maxHealth(0),
 _damageParticles(nullptr)
 {}
 
-ClientCombatantType::ClientCombatantType(health_t maxHealth):
+ClientCombatantType::ClientCombatantType(Hitpoints maxHealth):
 _maxHealth(maxHealth),
 _damageParticles(nullptr)
 {}

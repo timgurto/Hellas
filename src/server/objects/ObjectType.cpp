@@ -44,7 +44,7 @@ void ObjectType::Strength::set(const ServerItem *item, size_t quantity){
     _quantity = quantity;
 }
 
-health_t ObjectType::Strength::get() const{
+Hitpoints ObjectType::Strength::get() const{
     if (!_strengthCalculated){
         if (_item == nullptr || _item->strength() == 0)
             _calculatedStrength = 1;

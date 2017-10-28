@@ -3,7 +3,7 @@
 #include "ClientNPCType.h"
 #include "Surface.h"
 
-ClientNPCType::ClientNPCType(const std::string &id, health_t maxHealthArg):
+ClientNPCType::ClientNPCType(const std::string &id, Hitpoints maxHealthArg):
 ClientObjectType(id)
 {
     maxHealth(maxHealthArg);

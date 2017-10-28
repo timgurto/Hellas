@@ -17,14 +17,14 @@ class ObjectType : public EntityType{
     public:
         Strength();
         void set(const ServerItem *item, size_t quantity);
-        health_t get() const;
+        Hitpoints get() const;
         const ServerItem *item() const { return _item; }
         size_t quantity() const { return _quantity; }
 
     private:
         const ServerItem *_item;
         size_t _quantity;
-        mutable health_t _calculatedStrength;
+        mutable Hitpoints _calculatedStrength;
         mutable bool _strengthCalculated;
     };
     Strength _strength;
@@ -102,7 +102,7 @@ public:
     bool transformsOnEmpty() const { return _transformOnEmpty; }
     const ObjectType *transformObject() const {return _transformObject; }
     bool transforms() const { return _transformObject != nullptr; }
-    health_t strength() const { return _strength.get(); }
+    Hitpoints strength() const { return _strength.get(); }
     void setStrength(const ServerItem *item, size_t quantity);
     std::pair<const ServerItem *, size_t> strengthPair() const {
             return std::make_pair(_strength.item(), _strength.quantity()); }

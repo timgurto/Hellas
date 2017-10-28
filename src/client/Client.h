@@ -94,7 +94,7 @@ public:
     static const px_t TILE_W, TILE_H;
     static const double MOVEMENT_SPEED;
     static const double VEHICLE_SPEED;
-    static const health_t MAX_PLAYER_HEALTH;
+    static const Hitpoints MAX_PLAYER_HEALTH;
 
     enum SpecialSerial{
         INVENTORY = 0,
@@ -433,7 +433,7 @@ private:
 
     void handle_SV_LOOTABLE(size_t serial);
     void handle_SV_INVENTORY(size_t serial, size_t slot, const std::string &itemID, size_t quantity);
-    void handle_SV_MAX_HEALTH(const std::string &username, health_t newMaxHealth);
+    void handle_SV_MAX_HEALTH(const std::string &username, Hitpoints newMaxHealth);
     void handle_SV_IN_CITY(const std::string &username, const std::string &cityName);
     void handle_SV_NO_CITY(const std::string &cityName);
     void handle_SV_KING(const std::string username);

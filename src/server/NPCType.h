@@ -6,20 +6,20 @@
 
 // Describes a class of NPCs, a la the ObjectType class.
 class NPCType : public ObjectType{
-    health_t _maxHealth;
-    health_t _attack;
+    Hitpoints _maxHealth;
+    Hitpoints _attack;
     ms_t _attackTime;
 
     LootTable _lootTable;
 
 public:
-    NPCType(const std::string &id, health_t maxHealth);
+    NPCType(const std::string &id, Hitpoints maxHealth);
     virtual ~NPCType(){}
     
-    void maxHealth(health_t hp) { _maxHealth = hp; }
-    health_t maxHealth() const { return _maxHealth; }
-    health_t attack() const { return _attack; }
-    void attack(health_t damage) { _attack = damage; }
+    void maxHealth(Hitpoints hp) { _maxHealth = hp; }
+    Hitpoints maxHealth() const { return _maxHealth; }
+    Hitpoints attack() const { return _attack; }
+    void attack(Hitpoints damage) { _attack = damage; }
     ms_t attackTime() const { return _attackTime; }
     void attackTime(ms_t time) { _attackTime = time; }
     const LootTable &lootTable() const { return _lootTable; }

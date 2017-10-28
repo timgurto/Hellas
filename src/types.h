@@ -9,5 +9,5 @@ px_t operator"" _px(unsigned long long x);
 // Time, in milliseconds
 typedef Uint32 ms_t;
 
-// Hitpoints
-typedef unsigned health_t;
+// Combat
+using Hitpoints = unsigned;

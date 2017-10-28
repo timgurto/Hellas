@@ -7,7 +7,7 @@ struct StatsMod;
 
 // Describes base-level player stats.
 struct Stats{
-    health_t
+    Hitpoints
         health,
         attack;
 

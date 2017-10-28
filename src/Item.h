@@ -20,8 +20,8 @@ public:
     size_t gearSlot() const { return _gearSlot; }
     void stats(const StatsMod &stats) { _stats = stats; }
     const StatsMod &stats() const { return _stats; }
-    health_t strength() const { return _strength; }
-    void strength(health_t n) { _strength = n; }
+    Hitpoints strength() const { return _strength; }
+    void strength(Hitpoints n) { _strength = n; }
     
     bool operator<(const Item &rhs) const { return _id < rhs._id; }
     
@@ -40,7 +40,7 @@ protected:
     StatsMod _stats; // If gear, the impact it has on its wearer's stats.
 
 private:
-    health_t _strength;
+    Hitpoints _strength;
 };
 
 #endif
