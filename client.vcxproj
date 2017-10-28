@@ -107,6 +107,7 @@
     <ClCompile Include="src\client\ClientNPC.cpp" />
     <ClCompile Include="src\client\ClientObject.cpp" />
     <ClCompile Include="src\client\ClientObjectType.cpp" />
+    <ClCompile Include="src\client\ClientSpell.cpp" />
     <ClCompile Include="src\client\ClientTerrain.cpp" />
     <ClCompile Include="src\client\ClientVehicle.cpp" />
     <ClCompile Include="src\client\ClientVehicleType.cpp" />

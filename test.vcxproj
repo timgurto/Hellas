@@ -102,6 +102,7 @@
     <ClCompile Include="src\client\ClientNPCType.cpp" />
     <ClCompile Include="src\client\ClientObject.cpp" />
     <ClCompile Include="src\client\ClientObjectType.cpp" />
+    <ClCompile Include="src\client\ClientSpell.cpp" />
     <ClCompile Include="src\client\ClientVehicle.cpp" />
     <ClCompile Include="src\client\ClientVehicleType.cpp" />
     <ClCompile Include="src\client\craftingWindow.cpp" />
@@ -195,6 +196,7 @@
     <ClCompile Include="src\server\Recipe.cpp" />
     <ClCompile Include="src\server\Server.cpp" />
     <ClCompile Include="src\server\Spawner.cpp" />
+    <ClCompile Include="src\server\Spell.cpp" />
     <ClCompile Include="src\server\TerrainList.cpp" />
     <ClCompile Include="src\server\User.cpp" />
     <ClCompile Include="src\server\Vehicle.cpp" />
@@ -253,6 +255,7 @@
     <ClInclude Include="src\client\ClientObject.h" />
     <ClInclude Include="src\client\ClientObjectAction.h" />
     <ClInclude Include="src\client\ClientObjectType.h" />
+    <ClInclude Include="src\client\ClientSpell.h" />
     <ClInclude Include="src\client\ClientVehicle.h" />
     <ClInclude Include="src\client\ClientVehicleType.h" />
     <ClInclude Include="src\client\LogSDL.h" />
@@ -321,6 +324,7 @@
     <ClInclude Include="src\server\Recipe.h" />
     <ClInclude Include="src\server\Server.h" />
     <ClInclude Include="src\server\Spawner.h" />
+    <ClInclude Include="src\server\Spell.h" />
     <ClInclude Include="src\server\TerrainList.h" />
     <ClInclude Include="src\server\User.h" />
     <ClInclude Include="src\server\Vehicle.h" />

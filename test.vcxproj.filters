@@ -138,6 +138,8 @@
     <ClCompile Include="src\versionUtil.cpp" />
     <ClCompile Include="src\types.cpp" />
     <ClCompile Include="src\client\Projectile.cpp" />
+    <ClCompile Include="src\server\Spell.cpp" />
+    <ClCompile Include="src\client\ClientSpell.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -242,5 +244,7 @@
     <ClInclude Include="src\versionUtil.h" />
     <ClInclude Include="src\version.h" />
     <ClInclude Include="src\client\Projectile.h" />
+    <ClInclude Include="src\server\Spell.h" />
+    <ClInclude Include="src\client\ClientSpell.h" />
   </ItemGroup>
 </Project>

@@ -139,7 +139,7 @@ void Client::loadData(const std::string &path){
             std::string id;
             if (!xr.findAttr(elem, "id", id))
                 continue; // ID is mandatory.
-            auto newSpell = new ClientSpell;
+            auto newSpell = new ClientSpell(id);
             _spells[id] = newSpell;
 
             auto projectileType = ""s;

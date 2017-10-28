@@ -16,11 +16,11 @@ void Client::initUI() {
     Element::initialize();
     ClientItem::init();
 
-    // Initialize chat log
     initChatLog();
     initWindows();
     initializeGearSlotNames();
     initCastBar();
+    initHotbar();
     initMenuBar();
     initPerformanceDisplay();
     initPlayerPanels();
@@ -85,15 +85,36 @@ void Client::initCastBar() {
     addUI(_castBar);
 }
 
+void Client::initHotbar() {
+    const auto
+        NUM_BUTTONS = 10;
+    _hotbar = new Element({ 0, 0, NUM_BUTTONS * 18, 18 });
+    _hotbar->setPosition((SCREEN_X - _hotbar->width()) / 2, SCREEN_Y - _hotbar->height());
+    addUI(_hotbar);
+}
+
+void Client::populateHotbar() {
+    _hotbar->clearChildren();
+
+    auto x = 0_px;
+    for (auto &pair : _spells) {
+        const auto &spell = *pair.second;
+        void *castMessageVoidPtr = const_cast<void*>(
+            reinterpret_cast<const void*>(&spell.castMessage()));
+        auto button = new Button({ x, 0, 18, 18 }, {}, sendRawMessageStatic, castMessageVoidPtr);
+        _hotbar->addChild(button);
+
+        x += 18;
+    }
+}
+
 void Client::initMenuBar() {
     static const px_t
         MENU_BUTTON_W = 12,
         MENU_BUTTON_H = 12,
         NUM_BUTTONS = 8;
-    Element *menuBar = new Element(Rect(SCREEN_X / 2 - MENU_BUTTON_W * NUM_BUTTONS / 2,
-        SCREEN_Y - MENU_BUTTON_H,
-        MENU_BUTTON_W * NUM_BUTTONS,
-        MENU_BUTTON_H));
+    Element *menuBar = new Element({ _hotbar->rect().x + _hotbar->width(), SCREEN_Y - MENU_BUTTON_H,
+            MENU_BUTTON_W * NUM_BUTTONS, MENU_BUTTON_H });
 
     addButtonToMenu(menuBar, 0, _buildWindow, "icon-build.png", "Build window (B)");
     addButtonToMenu(menuBar, 1, _craftingWindow, "icon-crafting.png", "Crafting window (C)");

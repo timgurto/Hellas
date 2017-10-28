@@ -312,6 +312,8 @@ void Client::run(){
         if (shouldLoadDefaultData)
             loadData();
     }
+
+    populateHotbar();
     
     drawLoadingScreen("Initializing login screen", 0.9);
     initLoginScreen();
