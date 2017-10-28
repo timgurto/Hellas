@@ -897,6 +897,8 @@ void Client::handleMessage(const std::string &msg){
             if (newHealth < target->health())
                 target->createDamageParticles();
             target->health(newHealth);
+            if (targetAsEntity() == target)
+                _target.updateHealth(newHealth);
             break;
         }
 
