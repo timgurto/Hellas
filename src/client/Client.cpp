@@ -649,9 +649,9 @@ void Client::infoWindow(const std::string & text) {
 
 void Client::onSpellHit(const Point &location, const void *data) {
     auto &spell = *reinterpret_cast<const ClientSpell *>(data);
-    if (spell.impactParticles != nullptr)
-        instance().addParticles(spell.impactParticles, location);
+    if (spell.impactParticles())
+        instance().addParticles(spell.impactParticles(), location);
 
-    if (spell.sounds != nullptr)
-        spell.sounds->playOnce("impact"s);
+    if (spell.sounds())
+        spell.sounds()->playOnce("impact"s);
 }

@@ -147,14 +147,14 @@ void Client::loadData(const std::string &path){
                 auto dummy = Projectile::Type{ projectileType, {} };
                 auto it = _projectileTypes.find(&dummy);
                 if (it != _projectileTypes.end())
-                    newSpell->projectile = *it;
+                    newSpell->projectile(*it);
             }
 
             auto sounds = ""s;
             if (xr.findAttr(elem, "sounds", sounds)) {
                 auto profile = findSoundProfile(sounds);
                 if (profile != nullptr)
-                    newSpell->sounds = profile;
+                    newSpell->sounds(profile);
             }
 
             auto particles = xr.findChild("particles", elem);
@@ -163,7 +163,7 @@ void Client::loadData(const std::string &path){
                 if (xr.findAttr(particles, "impact", profileName)) {
                     auto profile = findParticleProfile(profileName);
                     if (profile != nullptr)
-                        newSpell->impactParticles = profile;
+                        newSpell->impactParticles(profile);
                 }
             }
         }

@@ -1252,8 +1252,8 @@ void Client::handle_SV_SPELL_HIT(const std::string &spellID, const Point &src, c
         return;
     const auto &spell = *it->second;
 
-    if (spell.projectile != nullptr) {
-        auto projectile = new Projectile(*spell.projectile, src, dst);
+    if (spell.projectile()) {
+        auto projectile = new Projectile(*spell.projectile(), src, dst);
         projectile->onReachDestination(onSpellHit, &spell);
         addEntity(projectile);
     } else
@@ -1266,9 +1266,9 @@ void Client::handle_SV_SPELL_MISS(const std::string &spellID, const Point &src, 
         return;
     const auto &spell = *it->second;
 
-    if (spell.projectile != nullptr) {
+    if (spell.projectile()) {
         auto pointPastDest = extrapolate(src, dst, 2000);
-        addEntity(new Projectile(*spell.projectile, src, pointPastDest));
+        addEntity(new Projectile(*spell.projectile(), src, pointPastDest));
     }
 }
 
