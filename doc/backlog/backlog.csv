@@ -250,7 +250,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 276,Healing spell,13,5,Feature,265,TRUE,,2
 277,HoT buff,2,5,Feature,267,,,2
 278,Spells are class-specific,2,5,Feature,265,,,2
-279,A spell hotbar,13,8,Usability,265,,,2
+279,A spell hotbar,13,8,Usability,265,TRUE,,2
 280,Hotbar can be rearranged,2,21,Usability,279,,,2
 281,Hotbar can include recipes,1,13,Usability,280,,,2
 282,Hotbar can include constructions,1,13,Usability,280,,,2

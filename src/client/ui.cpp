@@ -102,6 +102,8 @@ void Client::populateHotbar() {
         void *castMessageVoidPtr = const_cast<void*>(
             reinterpret_cast<const void*>(&spell.castMessage()));
         auto button = new Button({ x, 0, 18, 18 }, {}, sendRawMessageStatic, castMessageVoidPtr);
+        button->addChild(new ColorBlock({ 0,  0, 18, 18 }, Color::OUTLINE));
+        button->addChild(new Picture(1, 1, spell.icon()));
         _hotbar->addChild(button);
 
         x += 18;

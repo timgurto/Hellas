@@ -16,12 +16,14 @@ public:
     void impactParticles(const ParticleProfile *p) { _impactParticles = p; }
     const ParticleProfile *impactParticles() const { return _impactParticles; }
     const std::string &castMessage() const { return _castMessage; }
+    const Texture &icon() const { return _icon; }
 
 private:
     const Projectile::Type *_projectile = nullptr;
     const SoundProfile *_sounds = nullptr;
     const ParticleProfile *_impactParticles = nullptr;
     std::string _castMessage;
+    Texture _icon;
 };
 
 using ClientSpells = std::map<std::string, ClientSpell *>;
