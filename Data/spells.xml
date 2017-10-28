@@ -1,12 +1,12 @@
 <root>
 
 <spell id="fireball"
-    damage=10
-    projectile="fireball" sounds="fireball"> <particles impact="fire" />
+    projectile="fireball" sounds="fireball">
+    <particles impact="fire" />
+    <function name="doDirectDamage" a=10 />
 </spell>
-<spell id="heal"
-    healing=1
-    > <particles impact="lightRays" />
+<spell id="heal">
+    <particles impact="lightRays" />
 </spell>
 
 </root>

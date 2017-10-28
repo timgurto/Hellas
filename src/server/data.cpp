@@ -590,7 +590,14 @@ void Server::loadData(const std::string &path){
             auto newSpell = new Spell;
             _spells[id] = newSpell;
 
-            xr.findAttr(elem, "damage", newSpell->damage);
+            auto functionElem = xr.findChild("function", elem);
+            if (functionElem) {
+                auto functionName = ""s;
+                if (xr.findAttr(functionElem, "name", functionName))
+                    newSpell->setFunction(functionName);
+                auto arg = int{};
+                if (xr.findAttr(functionElem, "a", arg)) newSpell->addArg(arg);
+            }
         }
     }
 

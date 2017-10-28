@@ -1211,30 +1211,14 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
         return;
     const auto &spell = *it->second;
 
-    // Apply damage
-    enum SpellResult {
-        HIT,
-        CRIT,
-        MISS
-    };
-
-    auto outcome = HIT;
-    auto roll = rand() % 100;
-    if (roll < 5)
-        outcome = CRIT;
-    else if (roll < 10)
-        outcome = MISS;
-
-    auto damage = spell.damage;
-    if (outcome == CRIT)
-        damage *= 2;
-
-    if (outcome != MISS)
-        target->reduceHealth(damage);
-
+    auto outcome = spell.performAction(user, *target);
+    if (outcome == Spell::FAIL) {
+        _debug("Spell "s + spellID + " has no action specified."s, Color::FAILURE);
+        return;
+    }
 
     // Broadcast spellcast
-    auto msgCode = (outcome == MISS ? SV_SPELL_MISS : SV_SPELL_HIT);
+    auto msgCode = (outcome == Spell::MISS ? SV_SPELL_MISS : SV_SPELL_HIT);
 
     const auto
         &src = user.location(),

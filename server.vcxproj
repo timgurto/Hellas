@@ -132,6 +132,7 @@
     <ClCompile Include="src\server\Server.cpp" />
     <ClCompile Include="src\server\ServerItem.cpp" />
     <ClCompile Include="src\server\Spawner.cpp" />
+    <ClCompile Include="src\server\Spell.cpp" />
     <ClCompile Include="src\server\TerrainList.cpp" />
     <ClCompile Include="src\server\User.cpp" />
     <ClCompile Include="src\server\Vehicle.cpp" />
