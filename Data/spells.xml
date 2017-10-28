@@ -5,7 +5,8 @@
     <particles impact="fire" />
     <function name="doDirectDamage" a=10 />
 </spell>
-<spell id="heal">
+<spell id="heal"
+    sounds="heal" >
     <function name="heal" a=40 />
     <particles impact="lightRays" />
 </spell>

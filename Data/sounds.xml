@@ -82,4 +82,8 @@
     <sound type="impact" file="ignite" />
 </soundProfile>
 
+<soundProfile id="heal" >
+    <sound type="impact" file="choir" />
+</soundProfile>
+
 </root>

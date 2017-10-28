@@ -247,7 +247,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 273,DoT debuff,13,5,Feature,267,,,2
 274,Stun debuff,3,8,Feature,267,,,2
 275,Spell to summon a friendly NPC,2,5,Feature,265,,,2
-276,Healing spell,13,5,Feature,265,,,2
+276,Healing spell,13,5,Feature,265,TRUE,,2
 277,HoT buff,2,5,Feature,267,,,2
 278,Spells are class-specific,2,5,Feature,265,,,2
 279,A spell hotbar,13,8,Usability,265,,,2
