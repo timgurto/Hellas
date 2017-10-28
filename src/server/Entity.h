@@ -76,6 +76,7 @@ public:
     virtual void broadcastHealth() const;
 
     void reduceHealth(int damage);
+    void healBy(health_t amount);
     virtual void onHealthChange() {}; // Probably alerting relevant users.
     virtual void onDeath(); // Anything that needs to happen upon death.
     virtual void describeSelfToNewWatcher(const User &watcher) const {}

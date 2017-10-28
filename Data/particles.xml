@@ -134,7 +134,8 @@
 
 <particleProfile
     id="lightRays"
-    gravityModifier=0 >
+    gravityModifier=0
+    alpha=127 >
     <particlesPerHit mean=200 sd=40 />
     <lifespan mean=500 sd=150 />
     <distance mean=0 sd=5 />

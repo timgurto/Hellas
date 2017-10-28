@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "Server.h"
 #include "Spawner.h"
+#include "../util.h"
 
 Entity::Entity(const EntityType *type, const Point &loc, health_t health):
     _type(type),
@@ -67,7 +68,7 @@ void Entity::broadcastHealth() const {
     Server::_instance->broadcastToArea(_location, SV_ENTITY_HEALTH, makeArgs(_serial, _health));
 }
 
-void Entity::reduceHealth(int damage){
+void Entity::reduceHealth(int damage) {
     if (damage >= static_cast<int>(_health)) {
         _health = 0;
         broadcastHealth();
@@ -78,6 +79,12 @@ void Entity::reduceHealth(int damage){
     }
 
     assert(_health <= this->maxHealth());
+}
+
+void Entity::healBy(health_t amount) {
+    auto newHealth = min(health() + amount, maxHealth());
+    _health = newHealth;
+    broadcastHealth();
 }
 
 void Entity::update(ms_t timeElapsed){

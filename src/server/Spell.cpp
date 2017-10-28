@@ -36,3 +36,18 @@ Spell::Outcome Spell::doDirectDamage(Entity &caster, Entity &target, const Args 
 
     return outcome;
 }
+
+Spell::Outcome Spell::heal(Entity &caster, Entity &target, const Args &args) {
+    auto outcome = HIT;
+    auto roll = rand() % 100;
+    if (roll < 5)
+        outcome = CRIT;
+
+    auto amountToHeal = args[0];
+    if (outcome == CRIT)
+        amountToHeal *= 2;
+
+    target.healBy(amountToHeal);
+
+    return outcome;
+}

@@ -6,6 +6,7 @@
     <function name="doDirectDamage" a=10 />
 </spell>
 <spell id="heal">
+    <function name="heal" a=40 />
     <particles impact="lightRays" />
 </spell>
 

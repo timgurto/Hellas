@@ -32,6 +32,7 @@ private:
     static FunctionMap functionMap;
 
     static Outcome doDirectDamage(Entity &caster, Entity &target, const Args &args);
+    static Outcome heal(Entity &caster, Entity &target, const Args &args);
 };
 
 using Spells = std::map<std::string, Spell *>;
