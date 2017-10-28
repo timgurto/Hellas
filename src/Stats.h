@@ -11,6 +11,9 @@ struct Stats{
         health,
         attack;
 
+    Energy
+        energy;
+
     ms_t
         attackTime;
 

@@ -30,9 +30,12 @@ public:
     const std::string &name() const { return _name; }
     const Hitpoints &health() const { return _health; }
     const Hitpoints &maxHealth() const { return _maxHealth; }
+    const Energy &energy() const { return _energy; }
+    const Energy &maxEnergy() const { return _energy; }
     void refreshHealthBarColor();
 
-    void updateHealth(Hitpoints newHealth){ _health = newHealth; }
+    void updateHealth(Hitpoints newHealth) { _health = newHealth; }
+    void updateEnergy(Energy newEnergy) { _energy = newEnergy; }
 
     void initializePanel();
     CombatantPanel *panel() { return _panel; }
@@ -58,6 +61,7 @@ private:
     */
     std::string _name;
     Hitpoints _health, _maxHealth;
+    Energy _energy, _maxEnergy;
 
     void setAndAlertServer(
             const Sprite &asEntity, const ClientCombatant &asCombatant, bool nowAggressive);

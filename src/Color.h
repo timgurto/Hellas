@@ -62,6 +62,7 @@ public:
         COMBATANT_ALLY,
         COMBATANT_NEUTRAL,
         COMBATANT_ENEMY,
+        ENERGY,
         PLAYER_NAME_OUTLINE,
 
         OUTLINE,

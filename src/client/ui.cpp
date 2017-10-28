@@ -180,7 +180,7 @@ void Client::initPlayerPanels() {
         playerPanelX = CombatantPanel::GAP,
         playerPanelY = CombatantPanel::GAP;
     CombatantPanel *playerPanel = new CombatantPanel(playerPanelX, playerPanelY, _username,
-        _character.health(), _character.maxHealth());
+        _character.health(), _character.maxHealth(), _character.energy(), _character.maxEnergy());
     playerPanel->changeColor(Color::COMBATANT_SELF);
     addUI(playerPanel);
     /*

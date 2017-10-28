@@ -123,6 +123,7 @@ public:
 
     void updateStats();
     Hitpoints maxHealth() const override { return _stats.health; }
+    Energy maxEnergy() const override { return _stats.energy; }
     Hitpoints attack() const override { return _stats.attack; }
     ms_t attackTime() const override { return _stats.attackTime; }
     double speed() const override { return _stats.speed; }

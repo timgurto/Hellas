@@ -8,7 +8,9 @@ extern Renderer renderer;
 ClientCombatant::ClientCombatant(const ClientCombatantType *type):
 _type(type),
 _maxHealth(_type->maxHealth()),
-_health(_maxHealth)
+_health(_maxHealth),
+_maxEnergy(_type->maxEnergy()),
+_energy(_maxEnergy)
 {}
 
 void ClientCombatant::drawHealthBarIfAppropriate(const Point &objectLocation, px_t objHeight) const{

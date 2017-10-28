@@ -56,6 +56,7 @@ Color
     Color::COMBATANT_ALLY,
     Color::COMBATANT_NEUTRAL,
     Color::COMBATANT_ENEMY,
+    Color::ENERGY,
     Color::PLAYER_NAME_OUTLINE,
     Color::OUTLINE,
     Color::HIGHLIGHT_OUTLINE;

@@ -63,6 +63,7 @@ public:
 
     // Combat
     virtual Hitpoints maxHealth() const = 0;
+    virtual Energy maxEnergy() const { return 0; }
     virtual Hitpoints attack() const = 0;
     virtual ms_t attackTime() const = 0;
     Entity *target() const { return _target; }
@@ -70,6 +71,7 @@ public:
     virtual ms_t timeToRemainAsCorpse() const = 0;
 
     Hitpoints health() const { assert(_health <= this->maxHealth()); return _health; }
+    Hitpoints energy() const { assert(_energy <= this->maxEnergy()); return _energy; }
     void health(Hitpoints health) { _health = health; }
     bool isDead() const { return _health == 0; }
 
@@ -116,6 +118,7 @@ private:
 
     // Combat
     Hitpoints _health;
+    Energy _energy;
     ms_t _attackTimer;
     Entity *_target;
     ms_t _corpseTime; // How much longer this entity should exist as a corpse.

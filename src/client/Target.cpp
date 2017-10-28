@@ -34,6 +34,8 @@ void Target::setAndAlertServer(
     _name = _entity->name();
     _health = _combatant->health();
     _maxHealth = _combatant->maxHealth();
+    _energy = _combatant->energy();
+    _maxEnergy = _combatant->maxEnergy();
     refreshHealthBarColor();
 
     _panel->show();
@@ -70,7 +72,7 @@ void Target::initializePanel(){
     static const px_t
         X = CombatantPanel::WIDTH + 2 * CombatantPanel::GAP,
         Y = CombatantPanel::GAP;
-    _panel = new CombatantPanel(X, Y, _name, _health, _maxHealth);
+    _panel = new CombatantPanel(X, Y, _name, _health, _maxHealth, _energy, _maxEnergy);
     _panel->hide();
     _panel->setRightMouseDownFunction(openMenu, _menu);
 }

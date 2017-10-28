@@ -15,9 +15,11 @@ public:
 
     const Hitpoints &health() const { return _health; }
     void health(Hitpoints n) { _health = n; }
+    const Energy &energy() const { return _energy; }
     bool isAlive() const { return _health > 0; }
     bool isDead() const { return _health == 0; }
     const Hitpoints &maxHealth() const { return _maxHealth; }
+    const Energy &maxEnergy() const { return _maxEnergy; }
     void maxHealth(Hitpoints newMax) { _maxHealth = newMax; }
     void drawHealthBarIfAppropriate(const Point &objectLocation, px_t objHeight) const;
 
@@ -34,8 +36,8 @@ public:
 
 private:
     const ClientCombatantType *_type;
-    Hitpoints _maxHealth;
-    Hitpoints _health;
+    Hitpoints _maxHealth, _health;
+    Energy _maxEnergy, _energy;
 };
 
 #endif

@@ -47,6 +47,7 @@ void ClientConfig::loadFromFile(const std::string &filename) {
     xr.findAttr(elem, "combatantAlly", Color::COMBATANT_ALLY);
     xr.findAttr(elem, "combatantNeutral", Color::COMBATANT_NEUTRAL);
     xr.findAttr(elem, "combatantEnemy", Color::COMBATANT_ENEMY);
+    xr.findAttr(elem, "energy", Color::ENERGY);
     xr.findAttr(elem, "playerNameOutline", Color::PLAYER_NAME_OUTLINE);
     xr.findAttr(elem, "outline", Color::OUTLINE);
     xr.findAttr(elem, "highlightOutline", Color::HIGHLIGHT_OUTLINE);
