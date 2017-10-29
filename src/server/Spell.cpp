@@ -77,8 +77,11 @@ Spell::Outcome Spell::doDirectDamage(Entity &caster, Entity &target, const Args 
     if (outcome == CRIT)
         damage *= 2;
 
-    if (outcome != MISS)
+    if (outcome != MISS) {
         target.reduceHealth(damage);
+        target.onHealthChange();
+        target.onAttackedBy(caster);
+    }
 
     return outcome;
 }

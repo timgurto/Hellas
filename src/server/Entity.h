@@ -84,6 +84,8 @@ public:
     virtual void onHealthChange() {}; // Probably alerting relevant users.
     virtual void onEnergyChange() {}; // Probably alerting relevant users.
     virtual void onDeath(); // Anything that needs to happen upon death.
+    virtual void onAttackedBy(Entity &attacker) {}; // If the entity needs to react to an attack.
+
     virtual void describeSelfToNewWatcher(const User &watcher) const {}
     virtual void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const {}
     virtual ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum, const User &user) { return nullptr; }

@@ -44,10 +44,15 @@ void NPC::onDeath(){
     Entity::onDeath();
 }
 
+void NPC::onAttackedBy(Entity &attacker) {
+    _recentAttacker = &attacker;
+}
+
 void NPC::processAI(ms_t timeElapsed){
-    static const px_t
-        VIEW_RANGE = 50,
-        ATTACK_RANGE = 5;
+    const auto
+        VIEW_RANGE = 50_px,
+        CONTINUE_ATTACKING_RANGE = 210_px, // Assumption: this is farther than any ranged attack/spell.
+        ATTACK_RANGE = 5_px;
     double distToTarget = (target() == nullptr) ? 0 :
             distance(collisionRect(), target()->collisionRect());
 
@@ -56,6 +61,16 @@ void NPC::processAI(ms_t timeElapsed){
     case IDLE:
         if (attack() == 0) // NPCs that can't attack won't try.
             break;
+
+        // React to recent attacker
+        if (_recentAttacker != nullptr) {
+            target(_recentAttacker);
+            _state = CHASE;
+            _recentAttacker = nullptr;
+            break;
+        }
+
+        // Look for nearby users to attack
         for (User *user : Server::_instance->findUsersInArea(location(), VIEW_RANGE)){
             if (distance(collisionRect(), user->collisionRect()) <= VIEW_RANGE){
                 target(dynamic_cast<Entity *>(user));
@@ -66,22 +81,56 @@ void NPC::processAI(ms_t timeElapsed){
         break;
 
     case CHASE:
+        // React to recent attacker
+        if (_recentAttacker != nullptr) {
+            target(_recentAttacker);
+            _state = CHASE;
+            _recentAttacker = nullptr;
+            break;
+        }
+
+        // Target has disappeared
         if (target() == nullptr) {
             _state = IDLE;
-        } else if (distToTarget > VIEW_RANGE){
+            break;
+        }
+        
+        // Target has run out of range: give up
+        if (distToTarget > CONTINUE_ATTACKING_RANGE) {
             _state = IDLE;
             target(nullptr);
-        } else  if (distToTarget <= ATTACK_RANGE){
+            break;
+        }
+        
+        // Target is enough for me to attack
+        if (distToTarget <= ATTACK_RANGE) {
             _state = ATTACK;
         }
         break;
 
     case ATTACK:
-        if (target() == nullptr){
-            _state = IDLE;
-        } else if (distToTarget > ATTACK_RANGE){
+        // React to recent attacker
+        if (_recentAttacker != nullptr) {
+            target(_recentAttacker);
             _state = CHASE;
-        } else  if (target()->health() == 0){
+            _recentAttacker = nullptr;
+            break;
+        }
+
+        // Target has disappeared
+        if (target() == nullptr) {
+            _state = IDLE;
+            break;
+        }
+
+        // Target has run out of attack range: chase
+        if (distToTarget > ATTACK_RANGE) {
+            _state = CHASE;
+            break;
+        }
+
+        // Target is dead
+        if (target()->health() == 0){
             _state = IDLE;
             target(nullptr);
         }

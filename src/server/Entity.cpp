@@ -117,6 +117,9 @@ void Entity::update(ms_t timeElapsed){
         pTarget->reduceHealth(attack());
         pTarget->onHealthChange();
 
+        // Give target opportunity to react
+        pTarget->onAttackedBy(*this);
+
         // Alert nearby clients
         const Server &server = Server::instance();
         Point locus = midpoint(location(), pTarget->location());

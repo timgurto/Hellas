@@ -14,7 +14,7 @@ class NPC : public Entity {
         ATTACK,
     };
     State _state;
-
+    Entity *_recentAttacker = nullptr;
 
 public:
     NPC(const NPCType *type, const Point &loc); // Generates a new serial
@@ -29,19 +29,20 @@ public:
     ms_t timeToRemainAsCorpse() const override { return 600000; } // 10 minutes
     bool canBeAttackedBy(const User &user) const override { return true; }
 
-    virtual void onHealthChange() override;
-    virtual void onDeath() override;
+    void onHealthChange() override;
+    void onDeath() override;
+    void onAttackedBy(Entity &attacker) override;
 
-    virtual char classTag() const override { return 'n'; }
+    char classTag() const override { return 'n'; }
 
-    virtual void sendInfoToClient(const User &targetUser) const override;
-    virtual void describeSelfToNewWatcher(const User &watcher) const override;
-    virtual void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const;
-    virtual ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum, const User &user) override;
+    void sendInfoToClient(const User &targetUser) const override;
+    void describeSelfToNewWatcher(const User &watcher) const override;
+    void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const;
+    ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum, const User &user) override;
 
-    virtual void writeToXML(XmlWriter &xw) const override;
+    void writeToXML(XmlWriter &xw) const override;
 
-    virtual void update(ms_t timeElapsed);
+    void update(ms_t timeElapsed);
     void processAI(ms_t timeElapsed);
 };
 
