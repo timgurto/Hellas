@@ -39,8 +39,8 @@ void ClientConfig::loadFromFile(const std::string &filename) {
     xr.findAttr(elem, "outOfRange", Color::OUT_OF_RANGE);
     xr.findAttr(elem, "healthBarBackground", Color::HEALTH_BAR_BACKGROUND);
     xr.findAttr(elem, "healthBarOutline", Color::HEALTH_BAR_OUTLINE);
-    xr.findAttr(elem, "performanceFont", Color::CAST_BAR_FONT);
-    xr.findAttr(elem, "castBarFont", Color::PERFORMANCE_FONT);
+    xr.findAttr(elem, "performanceFont", Color::PERFORMANCE_FONT);
+    xr.findAttr(elem, "castBarFont", Color::CAST_BAR_FONT);
     xr.findAttr(elem, "progressBar", Color::PROGRESS_BAR);
     xr.findAttr(elem, "progressBarBackground", Color::PROGRESS_BAR_BACKGROUND);
     xr.findAttr(elem, "combatantSelf", Color::COMBATANT_SELF);
