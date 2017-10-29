@@ -1271,7 +1271,7 @@ void Server::handle_CL_SUE_FOR_PEACE_WITH_PLAYER(User & user, const std::string 
 void Server::handle_CL_CAST(User & user, const std::string &spellID) {
     auto target = user.target();
     if (target == nullptr)
-        return;
+        target = &user; // If no target, cast spell on self.
 
     auto it = _spells.find(spellID);
     if (it == _spells.end())
