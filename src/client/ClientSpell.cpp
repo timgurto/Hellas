@@ -21,6 +21,11 @@ const Texture &ClientSpell::tooltip() const {
     tb.setColor(Color::ITEM_NAME);
     tb.addLine(_name);
 
+    tb.addGap();
+
+    tb.setColor(Color::ITEM_STATS);
+    tb.addLine("Energy cost: "s + toString(_cost));
+
     _tooltip = tb.publish();
     return _tooltip;
 }

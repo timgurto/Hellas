@@ -19,6 +19,7 @@ public:
     const Texture &icon() const { return _icon; }
     const Texture &tooltip() const;
     void name(const std::string &s) { _name = s; }
+    void cost(Energy c) { _cost = c; }
 
 private:
     const Projectile::Type *_projectile = nullptr;
@@ -27,7 +28,8 @@ private:
     std::string _castMessage;
     Texture _icon;
     mutable Texture _tooltip = {};
-    std::string _name;
+    std::string _name = {};
+    Energy _cost = 0;
 };
 
 using ClientSpells = std::map<std::string, ClientSpell *>;

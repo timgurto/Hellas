@@ -143,8 +143,10 @@ void Client::loadData(const std::string &path){
             _spells[id] = newSpell;
 
             auto name = ""s;
-            if (xr.findAttr(elem, "name", name))
-                newSpell->name(name);
+            if (xr.findAttr(elem, "name", name)) newSpell->name(name);
+
+            auto cost = Energy{};
+            if (xr.findAttr(elem, "cost", cost)) newSpell->cost(cost);
 
             auto aesthetics = xr.findChild("aesthetics", elem);
             if (aesthetics) {
