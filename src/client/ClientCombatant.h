@@ -16,11 +16,13 @@ public:
     const Hitpoints &health() const { return _health; }
     void health(Hitpoints n) { _health = n; }
     const Energy &energy() const { return _energy; }
+    void energy(Energy n) { _energy = n; }
     bool isAlive() const { return _health > 0; }
     bool isDead() const { return _health == 0; }
     const Hitpoints &maxHealth() const { return _maxHealth; }
     const Energy &maxEnergy() const { return _maxEnergy; }
     void maxHealth(Hitpoints newMax) { _maxHealth = newMax; }
+    void maxEnergy(Energy newMax) { _maxEnergy = newMax; }
     void drawHealthBarIfAppropriate(const Point &objectLocation, px_t objHeight) const;
 
     virtual void sendTargetMessage() const = 0;

@@ -303,9 +303,17 @@ enum MessageCode{
     // Arguments: username, hp
     SV_PLAYER_HEALTH = 161,
 
+    // A user's energy value
+    // Arguments: username, energy
+    SV_PLAYER_ENERGY = 162,
+
     // A user's max health
     // Arguments: username, max health
-    SV_MAX_HEALTH = 162,
+    SV_MAX_HEALTH = 163,
+
+    // A user's max energy
+    // Arguments: username, max energy
+    SV_MAX_ENERGY = 164,
 
     // "You are at war with ..."
     // Arguments: name

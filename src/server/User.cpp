@@ -4,14 +4,15 @@
 #include "Server.h"
 #include "User.h"
 
-const size_t User::INVENTORY_SIZE = 10;
-const size_t User::GEAR_SLOTS = 8;
-
 ObjectType User::OBJECT_TYPE("__clientObjectType__");
 
 Stats User::BASE_STATS;
 
-std::map<User::Class, std::string> User::CLASS_NAMES;
+std::map<User::Class, std::string> User::CLASS_NAMES = {
+    { SOLDIER, "Soldier" },
+    { MAGUS, "Magus" },
+    { PRIEST, "Priest" }
+};
 std::map<std::string, User::Class> User::CLASS_CODES;
 
 Point User::newPlayerSpawn = {};
@@ -43,6 +44,7 @@ _stats(BASE_STATS){
         OBJECT_TYPE.collisionRect(Rect(-5, -2, 10, 4));
     }
     health(BASE_STATS.health);
+    energy(BASE_STATS.energy);
     for (size_t i = 0; i != INVENTORY_SIZE; ++i)
         _inventory[i] = std::make_pair<const ServerItem *, size_t>(0, 0);
 }
@@ -63,10 +65,6 @@ void User::init(){
     BASE_STATS.attack = 8;
     BASE_STATS.attackTime = 1000;
     BASE_STATS.speed = 80.0;
-    
-    CLASS_NAMES[SOLDIER] = "Soldier";
-    CLASS_NAMES[MAGUS] =   "Magus";
-    CLASS_NAMES[PRIEST] =  "Priest";
 
     for (auto &pair : CLASS_NAMES)
         CLASS_CODES[pair.second] = pair.first;
@@ -467,7 +465,12 @@ void User::sendInfoToClient(const User &targetUser) const {
     server.sendMessage(client, SV_LOCATION, makeLocationCommand());
 
     // Hitpoints
+    server.sendMessage(client, SV_MAX_HEALTH, makeArgs(_name, maxHealth()));
     server.sendMessage(client, SV_PLAYER_HEALTH, makeArgs(_name, health()));
+
+    // Energy
+    server.sendMessage(client, SV_MAX_ENERGY, makeArgs(_name, maxEnergy()));
+    server.sendMessage(client, SV_PLAYER_ENERGY, makeArgs(_name, energy()));
 
     // Class
     server.sendMessage(client, SV_CLASS, makeArgs(_name, className()));

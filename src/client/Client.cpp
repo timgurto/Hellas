@@ -82,7 +82,7 @@ _cursorContainer(std::string("Images/Cursors/container.png"), Color::MAGENTA),
 _cursorAttack(std::string("Images/Cursors/attack.png"), Color::MAGENTA),
 _currentCursor(&_cursorNormal),
 
-_character("", 0),
+_character({}, {}),
 _isDismounting(false),
 
 _activeRecipe(nullptr),

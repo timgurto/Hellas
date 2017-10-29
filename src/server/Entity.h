@@ -71,8 +71,9 @@ public:
     virtual ms_t timeToRemainAsCorpse() const = 0;
 
     Hitpoints health() const { assert(_health <= this->maxHealth()); return _health; }
-    Hitpoints energy() const { assert(_energy <= this->maxEnergy()); return _energy; }
+    Energy energy() const { assert(_energy <= this->maxEnergy()); return _energy; }
     void health(Hitpoints health) { _health = health; }
+    void energy(Energy energy) { _energy = energy; }
     bool isDead() const { return _health == 0; }
 
     virtual void broadcastHealth() const;

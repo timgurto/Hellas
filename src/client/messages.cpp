@@ -886,9 +886,9 @@ void Client::handleMessage(const std::string &msg){
             Avatar *target = nullptr;
             if (username == _username)
                 target = &_character;
-            else{
+            else {
                 auto userIt = _otherUsers.find(username);
-                if (userIt == _otherUsers.end()){
+                if (userIt == _otherUsers.end()) {
                     //_debug("Received combat info for an unknown defending player.", Color::FAILURE);
                     break;
                 }
@@ -899,6 +899,31 @@ void Client::handleMessage(const std::string &msg){
             target->health(newHealth);
             if (targetAsEntity() == target)
                 _target.updateHealth(newHealth);
+            break;
+        }
+
+        case SV_PLAYER_ENERGY:
+        {
+            std::string username;
+            auto newEnergy = Energy{};
+            readString(singleMsg, username, MSG_DELIM);
+            singleMsg >> del >> newEnergy >> del;
+            if (del != MSG_END)
+                break;
+            Avatar *target = nullptr;
+            if (username == _username)
+                target = &_character;
+            else {
+                auto userIt = _otherUsers.find(username);
+                if (userIt == _otherUsers.end()) {
+                    //_debug("Received combat info for an unknown defending player.", Color::FAILURE);
+                    break;
+                }
+                target = userIt->second;
+            }
+            target->energy(newEnergy);
+            if (targetAsEntity() == target)
+                _target.updateEnergy(newEnergy);
             break;
         }
 
@@ -991,6 +1016,18 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
             handle_SV_MAX_HEALTH(username, newMaxHealth);
+            break;
+        }
+
+        case SV_MAX_ENERGY:
+        {
+            auto username = ""s;
+            readString(singleMsg, username);
+            auto newMaxEnergy = Energy{};
+            singleMsg >> del >> newMaxEnergy >> del;
+            if (del != MSG_END)
+                break;
+            handle_SV_MAX_ENERGY(username, newMaxEnergy);
             break;
         }
 
@@ -1207,6 +1244,18 @@ void Client::handle_SV_MAX_HEALTH(const std::string & username, Hitpoints newMax
         return;
     }
     it->second->maxHealth(newMaxHealth);
+}
+
+void Client::handle_SV_MAX_ENERGY(const std::string & username, Energy newMaxEnergy) {
+    if (username == _username) {
+        _character.maxEnergy(newMaxEnergy);
+        return;
+    }
+    auto it = _otherUsers.find(username);
+    if (it == _otherUsers.end()) {
+        return;
+    }
+    it->second->maxEnergy(newMaxEnergy);
 }
 
 void Client::handle_SV_IN_CITY(const std::string &username, const std::string &cityName) {

@@ -168,8 +168,8 @@ public:
 
     std::string makeLocationCommand() const;
     
-    static const size_t INVENTORY_SIZE;
-    static const size_t GEAR_SLOTS;
+    static const size_t INVENTORY_SIZE = 10;
+    static const size_t GEAR_SLOTS = 8;
 
     static ObjectType OBJECT_TYPE;
 
