@@ -148,6 +148,15 @@ void Client::loadData(const std::string &path){
             auto cost = Energy{};
             if (xr.findAttr(elem, "cost", cost)) newSpell->cost(cost);
 
+            auto functionElem = xr.findChild("function", elem);
+            if (functionElem) {
+                auto functionName = ""s;
+                if (xr.findAttr(functionElem, "name", functionName))
+                    newSpell->effectName(functionName);
+                auto arg = int{};
+                if (xr.findAttr(functionElem, "a", arg)) newSpell->addEffectArg(arg);
+            }
+
             auto aesthetics = xr.findChild("aesthetics", elem);
             if (aesthetics) {
                 auto profileName = ""s;

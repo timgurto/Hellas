@@ -1,4 +1,5 @@
 #include <cassert>
+#include <sstream>
 
 #include "Client.h"
 #include "ClientSpell.h"
@@ -26,6 +27,20 @@ const Texture &ClientSpell::tooltip() const {
     tb.setColor(Color::ITEM_STATS);
     tb.addLine("Energy cost: "s + toString(_cost));
 
+    tb.setColor(Color::ITEM_INSTRUCTIONS);
+    tb.addLine(createEffectDescription());
+
     _tooltip = tb.publish();
     return _tooltip;
+}
+
+std::string ClientSpell::createEffectDescription() const {
+    std::ostringstream oss;
+
+    if (_effectName == "doDirectDamage")
+        oss << "Deals " << _effectArgs[0] << " damage to target.";
+    else if (_effectName == "heal")
+        oss << "Restores " << _effectArgs[0] << " health to target.";
+
+    return oss.str();
 }

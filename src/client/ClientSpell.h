@@ -20,6 +20,8 @@ public:
     const Texture &tooltip() const;
     void name(const std::string &s) { _name = s; }
     void cost(Energy c) { _cost = c; }
+    void effectName(const std::string effect) { _effectName = effect; }
+    void addEffectArg(int arg) { _effectArgs.push_back(arg); }
 
 private:
     const Projectile::Type *_projectile = nullptr;
@@ -30,6 +32,11 @@ private:
     mutable Texture _tooltip = {};
     std::string _name = {};
     Energy _cost = 0;
+
+    std::string _effectName = {};
+    std::vector<int> _effectArgs = {};
+
+    std::string createEffectDescription() const;
 };
 
 using ClientSpells = std::map<std::string, ClientSpell *>;
