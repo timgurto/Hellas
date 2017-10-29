@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Entity.h"
+#include "../Podes.h"
 #include "../types.h"
 
 class Spell {
@@ -32,6 +33,7 @@ public:
 
     void canTarget(TargetType type) { _validTargets[type] = true; }
     void cost(Energy e) { _cost = e; }
+    void range(Podes r) { _range = r.toPixels(); }
 
 private:
     using Args = std::vector<int>;
@@ -46,8 +48,8 @@ private:
     static Outcome doDirectDamage(Entity &caster, Entity &target, const Args &args);
     static Outcome heal(Entity &caster, Entity &target, const Args &args);
 
-
     Energy _cost = 0;
+    px_t _range = 0;
 
     using ValidTargets = std::vector<bool>;
     ValidTargets _validTargets = ValidTargets(NUM_TARGET_TYPES, false);

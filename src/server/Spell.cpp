@@ -31,8 +31,7 @@ Spell::Outcome Spell::performAction(Entity &caster, Entity &target) const {
     }
 
     // Range check
-    const auto SPELL_RANGE = 200_px; // Must be reconciled with NPCs' CONTINUE_ATTACKING_RANGE
-    if (distance(caster.location(), target.location()) > SPELL_RANGE) {
+    if (distance(caster.location(), target.location()) > _range) {
         if (casterAsUser)
             server.sendMessage(casterAsUser->socket(), SV_TOO_FAR);
         return FAIL;

@@ -162,6 +162,7 @@
     <ClCompile Include="src\Item.cpp" />
     <ClCompile Include="src\Log.cpp" />
     <ClCompile Include="src\NormalVariable.cpp" />
+    <ClCompile Include="src\Podes.cpp" />
     <ClCompile Include="src\Point.cpp" />
     <ClCompile Include="src\Rect.cpp" />
     <ClCompile Include="src\server\ItemSet.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\messageCodes.h" />
     <ClInclude Include="src\NormalVariable.h" />
+    <ClInclude Include="src\Podes.h" />
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\server\ItemSet.h" />

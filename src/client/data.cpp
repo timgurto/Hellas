@@ -5,6 +5,7 @@
 #include "ClientVehicleType.h"
 
 #include "SoundProfile.h"
+#include "../Podes.h"
 #include "../XmlReader.h"
 
 void Client::loadData(const std::string &path){
@@ -147,6 +148,9 @@ void Client::loadData(const std::string &path){
 
             auto cost = Energy{};
             if (xr.findAttr(elem, "cost", cost)) newSpell->cost(cost);
+
+            auto range = Podes{0};
+            if (xr.findAttr(elem, "range", range)) newSpell->range(range);
 
             auto functionElem = xr.findChild("function", elem);
             if (functionElem) {

@@ -51,8 +51,10 @@ void NPC::onAttackedBy(Entity &attacker) {
 void NPC::processAI(ms_t timeElapsed){
     const auto
         VIEW_RANGE = 50_px,
-        CONTINUE_ATTACKING_RANGE = 210_px, // Assumption: this is farther than any ranged attack/spell.
-        ATTACK_RANGE = 5_px;
+        ATTACK_RANGE = 5_px,
+        // Assumption: this is farther than any ranged attack/spell can reach.
+        CONTINUE_ATTACKING_RANGE = Podes{ 35 }.toPixels(); 
+
     double distToTarget = (target() == nullptr) ? 0 :
             distance(collisionRect(), target()->collisionRect());
 

@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Projectile.h"
+#include "../Podes.h"
 
 class ClientSpell {
 public:
@@ -22,6 +23,7 @@ public:
     void cost(Energy c) { _cost = c; }
     void effectName(const std::string effect) { _effectName = effect; }
     void addEffectArg(int arg) { _effectArgs.push_back(arg); }
+    void range(Podes r) { _range = r; }
 
 private:
     const Projectile::Type *_projectile = nullptr;
@@ -32,6 +34,7 @@ private:
     mutable Texture _tooltip = {};
     std::string _name = {};
     Energy _cost = 0;
+    Podes _range = 0;
 
     std::string _effectName = {};
     std::vector<int> _effectArgs = {};

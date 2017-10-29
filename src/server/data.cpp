@@ -7,6 +7,7 @@
 #include "ProgressLock.h"
 #include "Server.h"
 #include "VehicleType.h"
+#include "../Podes.h"
 #include "../Terrain.h"
 #include "../XmlReader.h"
 #include "../XmlWriter.h"
@@ -593,6 +594,10 @@ void Server::loadData(const std::string &path){
             auto cost = Energy{};
             if (xr.findAttr(elem, "cost", cost))
                 newSpell->cost(cost);
+
+            auto range = Podes{0};
+            if (xr.findAttr(elem, "range", range))
+                newSpell->range(range);
 
             auto functionElem = xr.findChild("function", elem);
             if (functionElem) {
