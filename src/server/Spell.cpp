@@ -25,12 +25,11 @@ Spell::Outcome Spell::performAction(Entity &caster, Entity &target) const {
     }
 
     // Energy check
-    auto cost = Energy{ 30 };
-    if (caster.energy() < cost) {
+    if (caster.energy() < _cost) {
         // TODO: Send message
         return FAIL;
     }
-    auto newEnergy = caster.energy() - cost;
+    auto newEnergy = caster.energy() - _cost;
     caster.energy(newEnergy);
     caster.onEnergyChange();
 

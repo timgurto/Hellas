@@ -30,7 +30,8 @@ public:
     Outcome performAction(Entity &caster, Entity &target) const;
         bool isTargetValid(const Entity &caster, const Entity &target) const;
 
-    void setCanTarget(TargetType type) { _validTargets[type] = true; }
+    void canTarget(TargetType type) { _validTargets[type] = true; }
+    void cost(Energy e) { _cost = e; }
 
 private:
     using Args = std::vector<int>;
@@ -42,11 +43,14 @@ private:
     using FunctionMap = std::map<std::string, Function>;
     static FunctionMap functionMap;
 
-    using ValidTargets = std::vector<bool>;
-    ValidTargets _validTargets = ValidTargets(NUM_TARGET_TYPES, false);
-
     static Outcome doDirectDamage(Entity &caster, Entity &target, const Args &args);
     static Outcome heal(Entity &caster, Entity &target, const Args &args);
+
+
+    Energy _cost = 0;
+
+    using ValidTargets = std::vector<bool>;
+    ValidTargets _validTargets = ValidTargets(NUM_TARGET_TYPES, false);
 };
 
 using Spells = std::map<std::string, Spell *>;

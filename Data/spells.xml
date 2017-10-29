@@ -1,11 +1,11 @@
 <root>
 
-<spell id="fireball" >
+<spell id="fireball" cost=20 >
     <aesthetics projectile="fireball" sounds="fireball" impactParticles="fire" />
     <targets enemy=1 />
     <function name="doDirectDamage" a=10 />
 </spell>
-<spell id="heal" >
+<spell id="heal" cost=25 >
     <aesthetics sounds="heal" impactParticles="lightRays" />
     <targets friendly=1 self=1 />
     <function name="heal" a=40 />

@@ -590,6 +590,10 @@ void Server::loadData(const std::string &path){
             auto newSpell = new Spell;
             _spells[id] = newSpell;
 
+            auto cost = Energy{};
+            if (xr.findAttr(elem, "cost", cost))
+                newSpell->cost(cost);
+
             auto functionElem = xr.findChild("function", elem);
             if (functionElem) {
                 auto functionName = ""s;
@@ -603,11 +607,11 @@ void Server::loadData(const std::string &path){
             if (validTargets) {
                 auto val = 0;
                 if (xr.findAttr(validTargets, "self", val) && val != 0)
-                    newSpell->setCanTarget(Spell::SELF);
+                    newSpell->canTarget(Spell::SELF);
                 if (xr.findAttr(validTargets, "friendly", val) && val != 0)
-                    newSpell->setCanTarget(Spell::FRIENDLY);
+                    newSpell->canTarget(Spell::FRIENDLY);
                 if (xr.findAttr(validTargets, "enemy", val) && val != 0)
-                    newSpell->setCanTarget(Spell::ENEMY);
+                    newSpell->canTarget(Spell::ENEMY);
             }
         }
     }
