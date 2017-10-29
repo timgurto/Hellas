@@ -22,6 +22,11 @@ Spell::Outcome Spell::performAction(Entity &caster, Entity &target) const {
         }
     }
 
+    if (target.isDead()){
+        //TODO: send message
+        return FAIL;
+    }
+
     // Energy check
     auto cost = Energy{ 30 };
     if (caster.energy() < cost) {
