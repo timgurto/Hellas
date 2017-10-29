@@ -78,6 +78,7 @@ public:
     void update(ms_t timeElapsed) override;
 
     void onHealthChange() override;
+    void onEnergyChange() override;
     void onDeath() override;
 
     void setType(const ObjectType *type); // Set/change ObjectType

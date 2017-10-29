@@ -141,6 +141,12 @@ void Object::onHealthChange(){
         server.sendMessage(user->socket(), SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 }
 
+void Object::onEnergyChange() {
+    const Server &server = *Server::_instance;
+    for (const User *user : server.findUsersInArea(location()))
+        server.sendMessage(user->socket(), SV_ENTITY_ENERGY, makeArgs(serial(), energy()));
+}
+
 void Object::setType(const ObjectType *type){
     assert(type != nullptr);
 

@@ -130,8 +130,9 @@ public:
     ms_t timeToRemainAsCorpse() const override { return 0; }
 
     char classTag() const override { return 'u'; }
-    
+
     void onHealthChange() override;
+    void onEnergyChange() override;
     void onDeath() override;
     void onNewOwnedObject(const ObjectType &type) const;
 

@@ -390,6 +390,12 @@ void User::onHealthChange(){
         server.sendMessage(userToInform->socket(), SV_PLAYER_HEALTH, makeArgs(_name, health()));
 }
 
+void User::onEnergyChange() {
+    const Server &server = *Server::_instance;
+    for (const User *userToInform : server.findUsersInArea(location()))
+        server.sendMessage(userToInform->socket(), SV_PLAYER_ENERGY, makeArgs(_name, energy()));
+}
+
 void User::onDeath(){
     // Handle respawn etc.
     moveToSpawnPoint();

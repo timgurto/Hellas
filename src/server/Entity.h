@@ -81,6 +81,7 @@ public:
     void reduceHealth(int damage);
     void healBy(Hitpoints amount);
     virtual void onHealthChange() {}; // Probably alerting relevant users.
+    virtual void onEnergyChange() {}; // Probably alerting relevant users.
     virtual void onDeath(); // Anything that needs to happen upon death.
     virtual void describeSelfToNewWatcher(const User &watcher) const {}
     virtual void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const {}

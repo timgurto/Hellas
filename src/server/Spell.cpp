@@ -11,6 +11,16 @@ void Spell::setFunction(const std::string & functionName) {
 Spell::Outcome Spell::performAction(Entity &caster, Entity &target) const {
     if (_function == nullptr)
         return FAIL;
+
+    // Energy check
+    auto cost = Energy{ 30 };
+    if (caster.energy() < cost) {
+        return FAIL;
+    }
+    auto newEnergy = caster.energy() - cost;
+    caster.energy(newEnergy);
+    caster.onEnergyChange();
+
     return _function(caster, target, _args);
 }
 

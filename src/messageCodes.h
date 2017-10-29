@@ -191,6 +191,10 @@ enum MessageCode{
     // Arguments: serial, health
     SV_ENTITY_HEALTH,
 
+    // The energy of an NPC
+    // Arguments: serial, energy
+    SV_ENTITY_ENERGY,
+
     // The location of an object
     // Arguments: serial, x, y
     SV_OBJECT_LOCATION,
