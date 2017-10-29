@@ -834,33 +834,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != MSG_END)
                 return;
-            user->cancelAction();
-            if (serial == INVENTORY || serial == GEAR){
-                user->setTargetAndAttack(nullptr);
-                break;
-            }
 
-            auto target = _entities.find(serial);
-            if (target == nullptr) {
-                user->setTargetAndAttack(nullptr);
-                sendMessage(client, SV_DOESNT_EXIST);
-                break;
-            }
-
-            if (target->health() == 0){
-                user->setTargetAndAttack(nullptr);
-                sendMessage(client, SV_TARGET_DEAD);
-                break;
-            }
-
-            if (!target->canBeAttackedBy(*user)) {
-                user->setTargetAndAttack(nullptr);
-                sendMessage(client, SV_NO_PERMISSION);
-                break;
-            }
-
-            user->setTargetAndAttack(target);
-
+            handle_CL_TARGET_ENTITY(*user, serial);
             break;
         }
 
@@ -871,26 +846,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> del;
             if (del != MSG_END)
                 return;
-            user->cancelAction();
 
-            auto it = _usersByName.find(targetUsername);
-            if (it == _usersByName.end()){
-                sendMessage(client, SV_INVALID_USER);
-                break;
-            }
-            User *targetUser = const_cast<User *>(it->second);
-            if (targetUser->health() == 0){
-                user->setTargetAndAttack(nullptr);
-                sendMessage(client, SV_TARGET_DEAD);
-                break;
-            }
-            if (! _wars.isAtWar(user->name(), targetUsername)){
-                user->setTargetAndAttack(nullptr);
-                sendMessage(client, SV_AT_PEACE);
-                break;
-            }
-
-            user->setTargetAndAttack(targetUser);
+            handle_CL_TARGET_PLAYER(*user, targetUsername);
 
             break;
         }
@@ -1143,7 +1100,7 @@ void Server::handle_CL_CEDE(User &user, size_t serial) {
     obj->permissions().setCityOwner(city);
 }
 
-void Server::handle_CL_GRANT(User &user, size_t serial, std::string username) {
+void Server::handle_CL_GRANT(User &user, size_t serial, const std::string &username) {
     auto *obj = _entities.find<Object>(serial);
     auto playerCity = cities().getPlayerCity(user.name());
     if (!obj->permissions().isOwnedByCity(playerCity)) {
@@ -1176,6 +1133,59 @@ void Server::handle_CL_PERFORM_OBJECT_ACTION(User & user, size_t serial, const s
     }
 
     objType.action().function(*obj, user, textArg);
+}
+
+void Server::handle_CL_TARGET_ENTITY(User & user, size_t serial) {
+    user.cancelAction();
+    if (serial == INVENTORY || serial == GEAR) {
+        user.setTargetAndAttack(nullptr);
+        return;
+    }
+
+    auto target = _entities.find(serial);
+    if (target == nullptr) {
+        user.setTargetAndAttack(nullptr);
+        sendMessage(user.socket(), SV_DOESNT_EXIST);
+        return;
+    }
+
+    if (target->health() == 0) {
+        user.setTargetAndAttack(nullptr);
+        sendMessage(user.socket(), SV_TARGET_DEAD);
+        return;
+    }
+
+    if (!target->canBeAttackedBy(user)) {
+        user.setTargetAndAttack(nullptr);
+        sendMessage(user.socket(), SV_AT_PEACE);
+        return;
+    }
+
+    user.setTargetAndAttack(target);
+}
+
+void Server::handle_CL_TARGET_PLAYER(User & user, const std::string & targetUsername) {
+
+    user.cancelAction();
+
+    auto it = _usersByName.find(targetUsername);
+    if (it == _usersByName.end()) {
+        sendMessage(user.socket(), SV_INVALID_USER);
+        return;
+    }
+    User *targetUser = const_cast<User *>(it->second);
+    if (targetUser->health() == 0) {
+        user.setTargetAndAttack(nullptr);
+        sendMessage(user.socket(), SV_TARGET_DEAD);
+        return;
+    }
+    if (!_wars.isAtWar(user.name(), targetUsername)) {
+        user.setTargetAndAttack(nullptr);
+        sendMessage(user.socket(), SV_AT_PEACE);
+        return;
+    }
+
+    user.setTargetAndAttack(targetUser);
 }
 
 void Server::handle_CL_RECRUIT(User &user, const std::string & username) {

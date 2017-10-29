@@ -60,6 +60,9 @@ bool Wars::isAtWar(Belligerent a, Belligerent b) const{
     changePlayerBelligerentToHisCity(a);
     changePlayerBelligerentToHisCity(b);
 
+    if (a == b)
+        return false;
+
     auto warExists = container.find({ a, b }) != container.end();
     return warExists;
 }
