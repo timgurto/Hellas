@@ -85,6 +85,7 @@ void Client::initializeGearWindow(){
     auto y = labelRect.y;
     addStat("Max health", _stats.health, {}, y, _gearWindow);
     addStat("Max energy", _stats.energy, {}, y, _gearWindow);
+    addStat("Health regen", _stats.hps, "/s", y, _gearWindow);
     addStat("Energy regen", _stats.eps, "/s", y, _gearWindow);
     addStat("Weapon damage", _stats.attack, {}, y, _gearWindow);
     addStat("Speed", _stats.speed, {}, y, _gearWindow);

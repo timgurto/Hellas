@@ -62,6 +62,7 @@ User::User(const Point &loc):
 void User::init(){
     BASE_STATS.health = 100;
     BASE_STATS.energy = 100;
+    BASE_STATS.hps = 1;
     BASE_STATS.eps = 1;
     BASE_STATS.attack = 8;
     BASE_STATS.attackTime = 1000;
@@ -369,6 +370,12 @@ void User::update(ms_t timeElapsed){
 }
 
 void User::regen() {
+    auto newHealth = min(health() + _stats.hps, _stats.health);
+    if (newHealth > health()) {
+        health(newHealth);
+        onHealthChange();
+    }
+
     auto newEnergy = min(energy() + _stats.eps, _stats.energy);
     if (newEnergy > energy()) {
         energy(newEnergy);
@@ -455,14 +462,19 @@ void User::updateStats(){
     }
 
 
-    server.sendMessage(socket(), SV_YOUR_STATS, makeArgs(
-        _stats.health,
-        _stats.energy,
-        _stats.eps,
-        _stats.attack,
-        _stats.attackTime,
-        _stats.speed
-    ));
+    auto args = makeArgs(
+        makeArgs(
+            _stats.health,
+            _stats.energy,
+            _stats.hps,
+            _stats.eps
+        ), makeArgs(
+            _stats.attack,
+            _stats.attackTime,
+            _stats.speed
+        )
+    );
+    server.sendMessage(socket(), SV_YOUR_STATS, args);
 }
 
 bool User::knowsConstruction(const std::string &id) const {

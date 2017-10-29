@@ -9,6 +9,7 @@ struct StatsMod;
 struct Stats{
     Hitpoints
         health,
+        hps,
         attack;
 
     Energy
