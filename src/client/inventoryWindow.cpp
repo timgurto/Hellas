@@ -26,11 +26,24 @@ void Client::initializeGearWindow(Client &client){
     client.initializeGearWindow();
 }
 
+template<typename T>
+static void addStat(const std::string &label, const T &value, const std::string &suffix, px_t &y,
+    Element *gearWindow) {
+    const auto
+        X = 38_px,
+        W = 90_px;
+    auto labelRect = Rect{ X, y, W, Element::TEXT_HEIGHT };
+    gearWindow->addChild(new Label(labelRect, label));
+    gearWindow->addChild(new LinkedLabel<T>(labelRect, value, {}, suffix, Element::RIGHT_JUSTIFIED));
+
+    y += Element::TEXT_HEIGHT;
+}
+
 void Client::initializeGearWindow(){
     _gearWindowBackground = Texture(std::string("Images/gearWindow.png"), Color::MAGENTA);
 
     px_t
-        x = 0, y = 0,
+        gridX = 0, gridY = 0,
         w = 0, h = 0,
         gap = 0, rows = 0, cols = 0;
     XmlReader xr("client-config.xml");
@@ -38,8 +51,8 @@ void Client::initializeGearWindow(){
     if (elem != nullptr){
         xr.findAttr(elem, "width", w);
         xr.findAttr(elem, "height", h);
-        xr.findAttr(elem, "gridX", x);
-        xr.findAttr(elem, "gridY", y);
+        xr.findAttr(elem, "gridX", gridX);
+        xr.findAttr(elem, "gridY", gridY);
         xr.findAttr(elem, "gap", gap);
         xr.findAttr(elem, "rows", rows);
         xr.findAttr(elem, "cols", cols);
@@ -51,7 +64,7 @@ void Client::initializeGearWindow(){
     _gearWindow->rect(100, 100, w + STATS_WIDTH + 2 * STAT_X_GAP, h);
     _gearWindow->setTitle("Gear");
     ContainerGrid *gearContainer = new ContainerGrid
-            (rows, cols, _character.gear(), GEAR, x, y, gap, false);
+            (rows, cols, _character.gear(), GEAR, gridX, gridY, gap, false);
     _gearWindow->addChild(new Picture(0, 0, _gearWindowBackground));
     _gearWindow->addChild(gearContainer);
 
@@ -69,31 +82,13 @@ void Client::initializeGearWindow(){
     labelRect.y += Element::TEXT_HEIGHT;
 
     // Stats
-    _gearWindow->addChild(new Label(labelRect, "Max health"));
-    _gearWindow->addChild(new LinkedLabel<Hitpoints>(labelRect, _stats.health,
-                                                     "", "", Element::RIGHT_JUSTIFIED));
-    labelRect.y += Element::TEXT_HEIGHT;
+    auto y = labelRect.y;
+    addStat("Max health", _stats.health, {}, y, _gearWindow);
+    addStat("Max energy", _stats.energy, {}, y, _gearWindow);
+    addStat("Energy regen", _stats.eps, "/s", y, _gearWindow);
+    addStat("Weapon damage", _stats.attack, {}, y, _gearWindow);
+    addStat("Speed", _stats.speed, {}, y, _gearWindow);
 
-    _gearWindow->addChild(new Label(labelRect, "Max energy"));
-    _gearWindow->addChild(new LinkedLabel<Hitpoints>(labelRect, _stats.energy,
-                                                     "", "", Element::RIGHT_JUSTIFIED));
-    labelRect.y += Element::TEXT_HEIGHT;
-
-    _gearWindow->addChild(new Label(labelRect, "Energy regen"));
-    _gearWindow->addChild(new LinkedLabel<Hitpoints>(labelRect, _stats.eps,
-                                                     "", "/s", Element::RIGHT_JUSTIFIED));
-    labelRect.y += Element::TEXT_HEIGHT;
-
-    _gearWindow->addChild(new Label(labelRect, "Damage"));
-    _gearWindow->addChild(new LinkedLabel<Hitpoints>(labelRect, _stats.attack,
-                                                    "", "", Element::RIGHT_JUSTIFIED));
-    labelRect.y += Element::TEXT_HEIGHT;
-
-    _gearWindow->addChild(new Label(labelRect, "Speed"));
-    _gearWindow->addChild(new LinkedLabel<double>(labelRect, _stats.speed,
-                                                    "", "", Element::RIGHT_JUSTIFIED));
-    labelRect.y += Element::TEXT_HEIGHT;
-
-    labelRect.y += 2;
-    _gearWindow->height(labelRect.y);
+    y += 2;
+    _gearWindow->height(y);
 }
