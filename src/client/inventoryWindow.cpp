@@ -61,35 +61,34 @@ void Client::initializeGearWindow(){
     // Username
     _gearWindow->addChild(new LinkedLabel<std::string>
             (labelRect, _username, "", "", Element::CENTER_JUSTIFIED));
+    labelRect.y += Element::TEXT_HEIGHT;
 
     // Class
-    labelRect.y += Element::TEXT_HEIGHT;
     _gearWindow->addChild(new LinkedLabel<std::string>
-            (labelRect, _character.getClass(), "", "", Element::CENTER_JUSTIFIED));
-    
+            (labelRect, _character.getClass(), "", "", Element::CENTER_JUSTIFIED));    
+    labelRect.y += Element::TEXT_HEIGHT;
 
-    labelRect.y += Element::TEXT_HEIGHT;
-    _gearWindow->addChild(new Label(labelRect, "Hitpoints"));
-    _gearWindow->addChild(new LinkedLabel<Hitpoints>(labelRect, _character.health(),
-                                                    "", "", Element::RIGHT_JUSTIFIED));
-    
-    labelRect.y += Element::TEXT_HEIGHT;
+    // Stats
     _gearWindow->addChild(new Label(labelRect, "Max health"));
     _gearWindow->addChild(new LinkedLabel<Hitpoints>(labelRect, _stats.health,
                                                     "", "", Element::RIGHT_JUSTIFIED));
-    
     labelRect.y += Element::TEXT_HEIGHT;
+
+    _gearWindow->addChild(new Label(labelRect, "Max energy"));
+    _gearWindow->addChild(new LinkedLabel<Hitpoints>(labelRect, _stats.energy,
+                                                                "", "", Element::RIGHT_JUSTIFIED));
+    labelRect.y += Element::TEXT_HEIGHT;
+
     _gearWindow->addChild(new Label(labelRect, "Damage"));
     _gearWindow->addChild(new LinkedLabel<Hitpoints>(labelRect, _stats.attack,
                                                     "", "", Element::RIGHT_JUSTIFIED));
-    
     labelRect.y += Element::TEXT_HEIGHT;
-    _gearWindow->addChild(new Label(labelRect, "Attack time"));
-    _gearWindow->addChild(new LinkedLabel<ms_t>(labelRect, _stats.attackTime,
-                                                    "", "ms", Element::RIGHT_JUSTIFIED));
-    
-    labelRect.y += Element::TEXT_HEIGHT;
+
     _gearWindow->addChild(new Label(labelRect, "Speed"));
     _gearWindow->addChild(new LinkedLabel<double>(labelRect, _stats.speed,
                                                     "", "", Element::RIGHT_JUSTIFIED));
+    labelRect.y += Element::TEXT_HEIGHT;
+
+
+    _gearWindow->height(labelRect.y);
 }

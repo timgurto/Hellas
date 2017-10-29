@@ -1000,8 +1000,12 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_YOUR_STATS:
         {
-            singleMsg >> _stats.health >> del >> _stats.attack >> del >> _stats.attackTime >> del
-                >> _stats.speed >> del;
+            singleMsg >> _stats.health
+                >> del >> _stats.energy
+                >> del >> _stats.attack
+                >> del >> _stats.attackTime
+                >> del >> _stats.speed
+                >> del;
             if (del != MSG_END)
                 break;
             break;

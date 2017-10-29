@@ -440,7 +440,7 @@ void User::updateStats(){
     }
 
 
-    server.sendMessage(socket(), SV_YOUR_STATS, makeArgs(_stats.health, _stats.attack,
+    server.sendMessage(socket(), SV_YOUR_STATS, makeArgs(_stats.health, _stats.energy, _stats.attack,
                                                          _stats.attackTime, _stats.speed));
 }
 
