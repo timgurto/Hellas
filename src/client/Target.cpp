@@ -38,6 +38,11 @@ void Target::setAndAlertServer(
     _maxEnergy = _combatant->maxEnergy();
     refreshHealthBarColor();
 
+    if (_maxEnergy == 0)
+        _panel->hideEnergyBar();
+    else
+        _panel->showEnergyBar();
+
     _panel->show();
 }
 

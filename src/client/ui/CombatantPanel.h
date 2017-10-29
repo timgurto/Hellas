@@ -15,16 +15,19 @@ public:
         const Energy &energy, const Energy &maxEnergy);
 
     void changeColor(const Color &newColor) { _healthBar->changeColor(newColor); }
+    void showEnergyBar();
+    void hideEnergyBar();
 
     static const px_t
-        WIDTH,
-        HEIGHT,
-        BAR_HEIGHT,
-        GAP;
+        WIDTH = 60,
+        HEIGHT = 40,
+        BAR_HEIGHT = 7,
+        GAP = 2;
 
 private:
     ProgressBar<Hitpoints> *_healthBar;
     ProgressBar<Energy> *_energyBar;
 };
+
 
 #endif

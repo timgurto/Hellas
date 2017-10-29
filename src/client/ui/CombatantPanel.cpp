@@ -3,11 +3,6 @@
 #include "LinkedLabel.h"
 #include "ShadowBox.h"
 
-const px_t CombatantPanel::WIDTH = 60;
-const px_t CombatantPanel::HEIGHT = 40;
-const px_t CombatantPanel::BAR_HEIGHT = 7;
-const px_t CombatantPanel::GAP = 2;
-
 CombatantPanel::CombatantPanel(px_t panelX, px_t panelY, const std::string &name,
     const Hitpoints &health, const Hitpoints &maxHealth,
     const Energy &energy, const Energy &maxEnergy):
@@ -34,4 +29,18 @@ CombatantPanel::CombatantPanel(px_t panelX, px_t panelY, const std::string &name
     y += BAR_HEIGHT + GAP;
 
     this->height(y);
+}
+
+void CombatantPanel::showEnergyBar() {
+    if (!_energyBar->visible()) {
+        _energyBar->show();
+        height(height() + BAR_HEIGHT + GAP);
+    }
+}
+
+void CombatantPanel::hideEnergyBar() {
+    if (_energyBar->visible()) {
+        _energyBar->hide();
+        height(height() - BAR_HEIGHT - GAP);
+    }
 }
