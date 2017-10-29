@@ -142,14 +142,6 @@ void Client::loadData(const std::string &path){
             auto newSpell = new ClientSpell(id);
             _spells[id] = newSpell;
 
-            auto projectileType = ""s;
-            if (xr.findAttr(elem, "projectile", projectileType)) {
-                auto dummy = Projectile::Type{ projectileType, {} };
-                auto it = _projectileTypes.find(&dummy);
-                if (it != _projectileTypes.end())
-                    newSpell->projectile(*it);
-            }
-
             auto sounds = ""s;
             if (xr.findAttr(elem, "sounds", sounds)) {
                 auto profile = findSoundProfile(sounds);
@@ -157,10 +149,21 @@ void Client::loadData(const std::string &path){
                     newSpell->sounds(profile);
             }
 
-            auto particles = xr.findChild("particles", elem);
-            if (particles) {
+            auto aesthetics = xr.findChild("aesthetics", elem);
+            if (aesthetics) {
                 auto profileName = ""s;
-                if (xr.findAttr(particles, "impact", profileName)) {
+                if (xr.findAttr(aesthetics, "projectile", profileName)) {
+                    auto dummy = Projectile::Type{ profileName, {} };
+                    auto it = _projectileTypes.find(&dummy);
+                    if (it != _projectileTypes.end())
+                        newSpell->projectile(*it);
+                }
+                if (xr.findAttr(aesthetics, "sounds", profileName)) {
+                    auto profile = findSoundProfile(profileName);
+                    if (profile != nullptr)
+                        newSpell->sounds(profile);
+                }
+                if (xr.findAttr(aesthetics, "impactParticles", profileName)) {
                     auto profile = findParticleProfile(profileName);
                     if (profile != nullptr)
                         newSpell->impactParticles(profile);
