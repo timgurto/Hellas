@@ -63,7 +63,7 @@ bool Target::targetIsDifferentFromServer(const Sprite &newTarget, bool nowAggres
 void Target::clear(){
     const Client &client = *Client::_instance;
 
-    bool serverHasTarget = isAggressive();
+    bool serverHasTarget = _entity != nullptr;
     if (serverHasTarget)
         client.sendClearTargetMessage();
 
