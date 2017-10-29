@@ -224,6 +224,10 @@ private:
     void handle_CL_CEDE(User &user, size_t serial);
     void handle_CL_GRANT(User &user, size_t serial, const std::string &username);
     void handle_CL_PERFORM_OBJECT_ACTION(User &user, size_t serial, const std::string &textArg);
+    void handle_CL_TARGET_ENTITY(User &user, size_t serial);
+    void handle_CL_TARGET_PLAYER(User &user, const std::string &username);
+    void handle_CL_SELECT_ENTITY(User &user, size_t serial);
+    void handle_CL_SELECT_PLAYER(User &user, const std::string &username);
     void handle_CL_RECRUIT(User &user, const std::string &username);
     void handle_CL_SUE_FOR_PEACE_WITH_PLAYER(User &user, const std::string &name);
     void handle_CL_CAST(User & user, const std::string &spellID);

@@ -104,6 +104,7 @@ public:
 
     // From ClientCombatant
     virtual void sendTargetMessage() const override;
+    virtual void sendSelectMessage() const override;
     virtual const Sprite *entityPointer() const override { return this; }
     virtual bool canBeAttackedByPlayer() const override;
     virtual const Point &combatantLocation() const { return location(); }

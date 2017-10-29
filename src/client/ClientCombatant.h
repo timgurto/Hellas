@@ -26,6 +26,7 @@ public:
     void drawHealthBarIfAppropriate(const Point &objectLocation, px_t objHeight) const;
 
     virtual void sendTargetMessage() const = 0;
+    virtual void sendSelectMessage() const = 0;
     virtual bool canBeAttackedByPlayer() const { return isAlive(); }
     virtual const Sprite *entityPointer() const = 0;
     virtual const Point &combatantLocation() const = 0;

@@ -24,8 +24,10 @@ void Target::setAndAlertServer(
         if (nowAggressive)
             targetCombatant.sendTargetMessage();
         else
-            client.sendClearTargetMessage();
+            targetCombatant.sendSelectMessage();
     }
+
+
 
     _entity = &asEntity;
     _combatant = &asCombatant;
@@ -55,7 +57,7 @@ void Target::refreshHealthBarColor(){
 bool Target::targetIsDifferentFromServer(const Sprite &newTarget, bool nowAggressive){
     bool sameTargetAsBefore = &newTarget == _entity;
     bool aggressionLevelChanged = isAggressive() != nowAggressive;
-    return !sameTargetAsBefore || nowAggressive || aggressionLevelChanged;
+    return !sameTargetAsBefore || aggressionLevelChanged;
 }
 
 void Target::clear(){

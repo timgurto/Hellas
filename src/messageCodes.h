@@ -110,6 +110,14 @@ enum MessageCode{
     // Arguments: username
     CL_TARGET_PLAYER,
 
+    // "I have entity ... slected"
+    // Arguments: serial
+    CL_SELECT_ENTITY,
+
+    // "I have player ... slected"
+    // Arguments: username
+    CL_SELECT_PLAYER,
+
     // "I want player ... to join my city"
     // Arguments: username
     CL_RECRUIT,

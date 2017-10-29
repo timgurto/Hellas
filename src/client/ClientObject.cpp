@@ -891,9 +891,14 @@ const Texture &ClientObject::highlightImage() const{
     return Sprite::highlightImage();
 }
 
-void ClientObject::sendTargetMessage() const{
+void ClientObject::sendTargetMessage() const {
     const Client &client = *Client::_instance;
     client.sendMessage(CL_TARGET_ENTITY, makeArgs(serial()));
+}
+
+void ClientObject::sendSelectMessage() const {
+    const Client &client = *Client::_instance;
+    client.sendMessage(CL_SELECT_ENTITY, makeArgs(serial()));
 }
 
 bool ClientObject::canBeAttackedByPlayer() const{

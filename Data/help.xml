@@ -1,6 +1,12 @@
 <root>
 
-<entry order="1" name="Combat"    >
+<entry order="10" name="Controls"    >
+    <paragraph order="1"  heading="Mouse"
+                        text="Left-click on an object, NPC or player to select it.  Right-click to target it.  When something is selected or targeted, you can see its health and energy levels at the top of the screen, and you can cast spells on it." />
+    <paragraph order="2"  text="The difference between selecting and targeting is that you can only target enemies, and if you are within range, you will automatically attack your target." />
+</entry>
+
+<entry order="20" name="Combat"    >
     <paragraph order="1"  text="Players can engage in combat with enemy players and objects, and with NPCs.  To attack an enemy, first target it by right-clicking on it.  Once targeted, whenever you are close enough to the enemy, you will automatically strike it at regular intervals." />
     <paragraph order="2"  text="It is not necessary to have a weapon equipped in order to attack an enemy." />
     <paragraph order="3"  heading="Death"
@@ -8,7 +14,7 @@
     <paragraph order="4"  text="A player can change his respawn point by worshipping at an Altar to Hermes." />
 </entry>
 
-<entry order="2" name="Gear"    >
+<entry order="30" name="Gear"    >
     <paragraph order="1"  text="Many items can be equipped by players to increase their effectiveness in combat." />
     <paragraph order="2"  heading="The gear window"
                         text="The gear window shows all gear being worn by the user, and summarises the total stats from all pieces.  The gear window can be accessed with the 'G' key or the button on the taskbar." />
@@ -19,7 +25,7 @@
     <paragraph order="5"  text="Speed: how fast you walk.  Gear will modify this by way of a multiplier." />
 </entry>
 
-<entry order="3" name="Objects"    >
+<entry order="40" name="Objects"    >
     <paragraph order="1"  text="Objects are non-living things that exist in the world and have a specific location and shape.  Some occur naturally, such as trees; others can be created by players.  The two means for players to create objects are 'placement' and 'construction'." />
     <paragraph order="2"  heading="Placement"
                         text="Some items can be placed into the world as objects.  If an item has this ability, then its tooltip will include 'Right click to place (Object)'." />
@@ -38,7 +44,7 @@
                         text="If an object has any actions available, they can be accessed through the object window.  To bring up an object window, make sure you are close to the object in question and right-click on it." />
 </entry>
 
-<entry order="5" name="Cities"    >
+<entry order="50" name="Cities"    >
     <paragraph order="1"  text="A city is a group of players who are joined together in a single diplomatic unit.  A player's city is displayed underneath their name.  When a new player begins, he is not in any city." />
     <paragraph order="2"  heading="Foundation"
                         text="A city can be founded at an Altar to Athena.  The altar's object window allows the new city's name to be entered.  The player who worships at the altar will become King, and the city will stand only as long as his Altar to Athena does." />
@@ -54,7 +60,7 @@
                         text="If a city's Altar to Athena is destroyed, then the city is destroyed.  All citizens become citiless, and all city objects crumble into ruin." />
 </entry>
 
-<entry order="6" name="War"    >
+<entry order="60" name="War"    >
     <paragraph order="1"  text="At any given time, two players are either at peace or at war.  When at war, " />
     <paragraph order="2"  text="Personal wars; may be resumed on leaving your city." />
     <paragraph order="3"  text="Cities at war" />
@@ -65,7 +71,7 @@
     <paragraph order="6" text="For example, if Domos is at war with Timos, they can fight.  If Domos then joins a city, then that personal war takes a back seat; the players can fight only if Domos's city is at war with Timos.  The personal war is resumed if Domos leaves his city."/>
 </entry>
 
-<entry order="7" name="Altars"    >
+<entry order="70" name="Altars"    >
     <paragraph order="1"  text="Altars are objects that grant special benefits to players.  Each player may own only a single altar at any given time." />
     <paragraph order="2"  heading="Worshipping" 
                         text="To gain the benefit of an altar, right-click the altar and click the 'Worship' button.  This requires that you have permission to use it." />
@@ -76,7 +82,7 @@
     <paragraph order="5"  text="The Altar to Hermes is used to change a player's respawn point." />
 </entry>
 
-<entry order="8" name="Unlocking"    >
+<entry order="80" name="Unlocking"    >
     <paragraph order="1"  text="asdf" />
 </entry>
 

@@ -1,6 +1,7 @@
 #include <string>
 
 #include "Spell.h"
+#include "User.h"
 
 void Spell::setFunction(const std::string & functionName) {
     auto it = functionMap.find(functionName);
@@ -12,9 +13,19 @@ Spell::Outcome Spell::performAction(Entity &caster, Entity &target) const {
     if (_function == nullptr)
         return FAIL;
 
+    // Target check
+    if (caster.classTag() == 'u') {
+        const auto &asUser = dynamic_cast<User &>(caster);
+        if (!target.canBeAttackedBy(asUser)) {
+            // TODO: Send message
+            return FAIL;
+        }
+    }
+
     // Energy check
     auto cost = Energy{ 30 };
     if (caster.energy() < cost) {
+        // TODO: Send message
         return FAIL;
     }
     auto newEnergy = caster.energy() - cost;

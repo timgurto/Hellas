@@ -152,9 +152,14 @@ void Avatar::onRightClick(Client &client){
     // Note: parent class's onRightClick() not called.
 }
 
-void Avatar::sendTargetMessage() const{
+void Avatar::sendTargetMessage() const {
     const Client &client = *Client::_instance;
     client.sendMessage(CL_TARGET_PLAYER, _name);
+}
+
+void Avatar::sendSelectMessage() const {
+    const Client &client = *Client::_instance;
+    client.sendMessage(CL_SELECT_PLAYER, _name);
 }
 
 bool Avatar::canBeAttackedByPlayer() const{

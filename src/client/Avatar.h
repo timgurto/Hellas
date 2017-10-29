@@ -59,6 +59,7 @@ public:
 
     // From ClientCombatant
     void sendTargetMessage() const override;
+    void sendSelectMessage() const override;
     bool canBeAttackedByPlayer() const override;
     const Sprite *entityPointer() const override { return this; }
     const Point &combatantLocation() const { return location(); }

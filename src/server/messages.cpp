@@ -848,7 +848,29 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
 
             handle_CL_TARGET_PLAYER(*user, targetUsername);
+            break;
+        }
 
+        case CL_SELECT_ENTITY:
+        {
+            size_t serial;
+            iss >> serial >> del;
+            if (del != MSG_END)
+                return;
+
+            handle_CL_SELECT_ENTITY(*user, serial);
+            break;
+        }
+
+        case CL_SELECT_PLAYER:
+        {
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
+            std::string targetUsername(buffer);
+            iss >> del;
+            if (del != MSG_END)
+                return;
+
+            handle_CL_SELECT_PLAYER(*user, targetUsername);
             break;
         }
 
@@ -1165,7 +1187,6 @@ void Server::handle_CL_TARGET_ENTITY(User & user, size_t serial) {
 }
 
 void Server::handle_CL_TARGET_PLAYER(User & user, const std::string & targetUsername) {
-
     user.cancelAction();
 
     auto it = _usersByName.find(targetUsername);
@@ -1186,6 +1207,36 @@ void Server::handle_CL_TARGET_PLAYER(User & user, const std::string & targetUser
     }
 
     user.setTargetAndAttack(targetUser);
+}
+
+void Server::handle_CL_SELECT_ENTITY(User & user, size_t serial) {
+    user.cancelAction();
+
+    if (serial == INVENTORY || serial == GEAR) {
+        user.setTargetAndAttack(nullptr);
+        return;
+    }
+
+    auto target = _entities.find(serial);
+    if (target == nullptr) {
+        user.setTargetAndAttack(nullptr);
+        sendMessage(user.socket(), SV_DOESNT_EXIST);
+        return;
+    }
+
+    user.target(target);
+}
+
+void Server::handle_CL_SELECT_PLAYER(User & user, const std::string & targetUsername) {
+    user.cancelAction();
+
+    auto it = _usersByName.find(targetUsername);
+    if (it == _usersByName.end()) {
+        sendMessage(user.socket(), SV_INVALID_USER);
+        return;
+    }
+    User *targetUser = const_cast<User *>(it->second);
+    user.target(targetUser);
 }
 
 void Server::handle_CL_RECRUIT(User &user, const std::string & username) {
