@@ -281,12 +281,18 @@ void User::update(ms_t timeElapsed){
     else
         _actionTime = 0;
 
+    // Regen
+    _timeSinceRegen += timeElapsed;
+    while (_timeSinceRegen > 1000) {
+        regen();
+        _timeSinceRegen -= 1000;
+    }
+
     // Attack actions:
     if (_action == ATTACK){
         Entity::update(timeElapsed);
         return;
     }
-
 
     // Non-attack actions:
     Server &server = *Server::_instance;
@@ -359,6 +365,14 @@ void User::update(ms_t timeElapsed){
     if (_action != ATTACK){ // ATTACK is a repeating action.
         server.sendMessage(_socket, SV_ACTION_FINISHED);
         finishAction();
+    }
+}
+
+void User::regen() {
+    auto newEnergy = min(energy() + _stats.eps, _stats.energy);
+    if (newEnergy > energy()) {
+        energy(newEnergy);
+        onEnergyChange();
     }
 }
 

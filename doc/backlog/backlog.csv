@@ -231,7 +231,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 256,Fireball casting sound,1,5,Aesthetics,250,,,2
 257,Fireball launch sound,8,3,Aesthetics,250,,,2
 259,Fireball damage modified by magic-damage stat,3,2,Feature,246,,,2
-260,Energy-regen stat,3,2,Feature,247,,,2
+260,Energy-regen stat,3,2,Feature,247,TRUE,,2
 261,Health-regen stat,3,5,Feature,,,,2
 262,Fireball mitigated by fire-resistance stat,3,3,Feature,246,,,2
 263,Chance for fireballs to crit,8,2,Feature,246,TRUE,,2

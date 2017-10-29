@@ -73,6 +73,8 @@ private:
 
     Point _respawnPoint;
 
+    ms_t _timeSinceRegen = 0;
+
 
 public:
     User(const std::string &name, const Point &loc, const Socket &socket);
@@ -182,6 +184,7 @@ public:
     size_t giveItem(const ServerItem *item, size_t quantity = 1);
 
     void update(ms_t timeElapsed);
+    void regen();
 
     static Point newPlayerSpawn;
     static double spawnRadius;
