@@ -1038,7 +1038,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
 void Server::handle_CL_START_WATCHING(User &user, size_t serial){
     Entity *ent = _entities.find(serial);
-    if (!isEntityInRange(user.socket(), user, ent))
+    if (!isEntityInRange(user.socket(), user, ent, true))
         return;
 
     ent->describeSelfToNewWatcher(user);

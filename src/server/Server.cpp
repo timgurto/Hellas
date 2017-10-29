@@ -415,16 +415,19 @@ std::set<User *> Server::findUsersInArea(Point loc, double squareRadius) const{
     return users;
 }
 
-bool Server::isEntityInRange(const Socket &client, const User &user, const Entity *ent) const{
+bool Server::isEntityInRange(const Socket &client, const User &user, const Entity *ent,
+    bool suppressErrorMessages) const{
     // Doesn't exist
     if (ent == nullptr) {
-        sendMessage(client, SV_DOESNT_EXIST);
+        if (!suppressErrorMessages)
+            sendMessage(client, SV_DOESNT_EXIST);
         return false;
     }
 
     // Check distance from user
     if (distance(user.collisionRect(), ent->collisionRect()) > ACTION_DISTANCE) {
-        sendMessage(client, SV_TOO_FAR);
+        if (!suppressErrorMessages)
+            sendMessage(client, SV_TOO_FAR);
         return false;
     }
 

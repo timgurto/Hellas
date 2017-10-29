@@ -76,7 +76,8 @@ public:
 
     // Checks whether an entity is within range of a user.  If not, a relevant error message is
     // sent to the client.
-    bool isEntityInRange(const Socket &client, const User &user, const Entity *ent) const;
+    bool isEntityInRange(const Socket &client, const User &user, const Entity *ent,
+        bool suppressErrorMessages = false) const;
 
     const Terrain *terrainType(char index) const;
 

@@ -186,7 +186,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 206,Objects are not culled on respawn/teleport,8,5,Bug,,,,
 207,Hide object names unless hostile,13,1,Usability,,TRUE,,
 208,Fix disappearing tooltips; appears to get worse over time,21,8,Bug,,,,
-209,'Too far away to perform that action' spam,8,2,Bug,,,,
+209,'Too far away to perform that action' spam,8,2,Bug,TRUE,,,
 210,Create different tool name for pottery,3,1,Aesthetics,,TRUE,,
 211,Non-killers alerted to loot are not alerted to no loot,8,3,Bug,,,,
 212,Stop 'Action interrupted' when spamming right-click on an NPC,3,2,Usability,,,,
