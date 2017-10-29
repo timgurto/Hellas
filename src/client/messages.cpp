@@ -1002,6 +1002,7 @@ void Client::handleMessage(const std::string &msg){
         {
             singleMsg >> _stats.health
                 >> del >> _stats.energy
+                >> del >> _stats.eps
                 >> del >> _stats.attack
                 >> del >> _stats.attackTime
                 >> del >> _stats.speed

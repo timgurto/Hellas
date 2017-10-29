@@ -12,7 +12,8 @@ struct Stats{
         attack;
 
     Energy
-        energy;
+        energy,
+        eps;
 
     ms_t
         attackTime;

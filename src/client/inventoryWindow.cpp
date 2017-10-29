@@ -71,12 +71,17 @@ void Client::initializeGearWindow(){
     // Stats
     _gearWindow->addChild(new Label(labelRect, "Max health"));
     _gearWindow->addChild(new LinkedLabel<Hitpoints>(labelRect, _stats.health,
-                                                    "", "", Element::RIGHT_JUSTIFIED));
+                                                     "", "", Element::RIGHT_JUSTIFIED));
     labelRect.y += Element::TEXT_HEIGHT;
 
     _gearWindow->addChild(new Label(labelRect, "Max energy"));
     _gearWindow->addChild(new LinkedLabel<Hitpoints>(labelRect, _stats.energy,
-                                                                "", "", Element::RIGHT_JUSTIFIED));
+                                                     "", "", Element::RIGHT_JUSTIFIED));
+    labelRect.y += Element::TEXT_HEIGHT;
+
+    _gearWindow->addChild(new Label(labelRect, "Energy regen"));
+    _gearWindow->addChild(new LinkedLabel<Hitpoints>(labelRect, _stats.eps,
+                                                     "", "/s", Element::RIGHT_JUSTIFIED));
     labelRect.y += Element::TEXT_HEIGHT;
 
     _gearWindow->addChild(new Label(labelRect, "Damage"));
@@ -89,6 +94,6 @@ void Client::initializeGearWindow(){
                                                     "", "", Element::RIGHT_JUSTIFIED));
     labelRect.y += Element::TEXT_HEIGHT;
 
-
+    labelRect.y += 2;
     _gearWindow->height(labelRect.y);
 }

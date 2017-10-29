@@ -62,6 +62,7 @@ User::User(const Point &loc):
 void User::init(){
     BASE_STATS.health = 100;
     BASE_STATS.energy = 100;
+    BASE_STATS.eps = 1;
     BASE_STATS.attack = 8;
     BASE_STATS.attackTime = 1000;
     BASE_STATS.speed = 80.0;
@@ -440,8 +441,14 @@ void User::updateStats(){
     }
 
 
-    server.sendMessage(socket(), SV_YOUR_STATS, makeArgs(_stats.health, _stats.energy, _stats.attack,
-                                                         _stats.attackTime, _stats.speed));
+    server.sendMessage(socket(), SV_YOUR_STATS, makeArgs(
+        _stats.health,
+        _stats.energy,
+        _stats.eps,
+        _stats.attack,
+        _stats.attackTime,
+        _stats.speed
+    ));
 }
 
 bool User::knowsConstruction(const std::string &id) const {
