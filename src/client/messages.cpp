@@ -1136,6 +1136,7 @@ void Client::handleMessage(const std::string &msg){
                 handle_SV_SPELL_MISS(id, { x1, y1 }, { x2, y2 });
                 break;
             }
+            break;
         }
 
         case SV_SAY:
