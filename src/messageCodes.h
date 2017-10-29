@@ -258,6 +258,11 @@ enum MessageCode{
     // Arguments: attacker's username, defender's username
     SV_PLAYER_HIT_PLAYER = 142,
 
+    // The outcome of a spellcast.  This is purely so that the client can illustrate it.
+    // Arguments: spell ID, from x, from y, to x, to y
+    SV_SPELL_HIT = 143,
+    SV_SPELL_MISS = 144,
+
     // An object has an owner
     // Arguments: serial, type ("user"|"city"), name
     SV_OWNER = 150,
@@ -284,41 +289,36 @@ enum MessageCode{
 
     // A vehicle is no longer being driven.
     // Arguments: serial, username
-    SV_UNMOUNTED = 176,
+    SV_UNMOUNTED = 157,
 
     // The remaining materials required to construct an object
     // Arguments: serial, n, id1, quantity1, id2, quantity2, ...
     SV_CONSTRUCTION_MATERIALS = 158,
 
-    // A user's health value
-    // Arguments: username, hp
-    SV_PLAYER_HEALTH = 160,
-
     // The user's stats
     // Arguments: max health, attack, attack time, speed
-    SV_YOUR_STATS = 161,
+    SV_YOUR_STATS = 160,
+
+    // A user's health value
+    // Arguments: username, hp
+    SV_PLAYER_HEALTH = 161,
 
     // A user's max health
     // Arguments: username, max health
-    SV_MAX_HEALTH = 164,
+    SV_MAX_HEALTH = 162,
 
     // "You are at war with ..."
     // Arguments: name
-    SV_AT_WAR_WITH_PLAYER = 162,
-    SV_AT_WAR_WITH_CITY = 163,
+    SV_AT_WAR_WITH_PLAYER = 170,
+    SV_AT_WAR_WITH_CITY = 171,
 
     // "You have sued for peace with ..."
     // Arguments: name
-    SV_YOU_PROPOSED_PEACE = 164,
+    SV_YOU_PROPOSED_PEACE = 172,
 
     // "... has sued for peace with you"
     // Arguments: name
-    SV_PEACE_WAS_PROPOSED_TO_YOU = 165,
-
-    // The outcome of a spellcast.  This is purely so that the client can illustrate it.
-    // Arguments: spell ID, from x, from y, to x, to y
-    SV_SPELL_HIT = 180,
-    SV_SPELL_MISS = 181,
+    SV_PEACE_WAS_PROPOSED_TO_YOU = 173,
 
     // "User ... has said ...".
     // Arguments: username, message
