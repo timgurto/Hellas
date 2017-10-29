@@ -172,7 +172,8 @@ void Client::handleMessage(const std::string &msg){
         case SV_NO_VEHICLE:
         case SV_WRONG_MATERIAL:
         case SV_UNIQUE_OBJECT:
-        case SV_DAMAGED_OBJECT:
+        case SV_INVALID_SPELL_TARGET:
+        case SV_NOT_ENOUGH_ENERGY:
             errorMessageColor = Color::WARNING; // Yellow above, red below
         case SV_INVALID_USER:
         case SV_INVALID_ITEM:
@@ -1432,6 +1433,8 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_KING_CANNOT_LEAVE_CITY] = "A king cannot leave his city.";
     _errorMessages[SV_ALREADY_IN_CITY] = "That player is already in a city.";
     _errorMessages[SV_NOT_A_KING] = "Only a king can do that.";
+    _errorMessages[SV_INVALID_SPELL_TARGET] = "Invalid spell target.";
+    _errorMessages[SV_NOT_ENOUGH_ENERGY] = "You don't have enough energy.";
 }
 
 void Client::performCommand(const std::string &commandString){

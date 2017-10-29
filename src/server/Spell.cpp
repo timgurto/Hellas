@@ -1,5 +1,6 @@
 #include <string>
 
+#include "Server.h"
 #include "Spell.h"
 #include "User.h"
 
@@ -13,22 +14,29 @@ Spell::Outcome Spell::performAction(Entity &caster, Entity &target) const {
     if (_function == nullptr)
         return FAIL;
 
+    const Server &server = Server::instance();
+    const auto *casterAsUser = dynamic_cast<const User *>(&caster);
+
     // Target check
     if (!isTargetValid(caster, target)) {
-        // TODO: Send message
+        if (casterAsUser)
+            server.sendMessage(casterAsUser->socket(), SV_INVALID_SPELL_TARGET);
         return FAIL;
     }
 
     if (target.isDead()){
-        //TODO: send message
+        if (casterAsUser)
+            server.sendMessage(casterAsUser->socket(), SV_TARGET_DEAD);
         return FAIL;
     }
 
     // Energy check
     if (caster.energy() < _cost) {
-        // TODO: Send message
+        if (casterAsUser)
+            server.sendMessage(casterAsUser->socket(), SV_NOT_ENOUGH_ENERGY);
         return FAIL;
     }
+
     auto newEnergy = caster.energy() - _cost;
     caster.energy(newEnergy);
     caster.onEnergyChange();

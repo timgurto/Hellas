@@ -435,6 +435,12 @@ enum MessageCode{
     // The NPC is dead
     SV_TARGET_DEAD,
 
+    // You can't cast that spell at that target
+    SV_INVALID_SPELL_TARGET,
+
+    // You don't have enough energy to cast that
+    SV_NOT_ENOUGH_ENERGY,
+
     // The user tried to put an item into an NPC
     SV_NPC_SWAP,
 
