@@ -17,6 +17,8 @@ public:
     const ParticleProfile *impactParticles() const { return _impactParticles; }
     const std::string &castMessage() const { return _castMessage; }
     const Texture &icon() const { return _icon; }
+    const Texture &tooltip() const;
+    void name(const std::string &s) { _name = s; }
 
 private:
     const Projectile::Type *_projectile = nullptr;
@@ -24,6 +26,8 @@ private:
     const ParticleProfile *_impactParticles = nullptr;
     std::string _castMessage;
     Texture _icon;
+    mutable Texture _tooltip = {};
+    std::string _name;
 };
 
 using ClientSpells = std::map<std::string, ClientSpell *>;

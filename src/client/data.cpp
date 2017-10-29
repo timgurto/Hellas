@@ -142,12 +142,9 @@ void Client::loadData(const std::string &path){
             auto newSpell = new ClientSpell(id);
             _spells[id] = newSpell;
 
-            auto sounds = ""s;
-            if (xr.findAttr(elem, "sounds", sounds)) {
-                auto profile = findSoundProfile(sounds);
-                if (profile != nullptr)
-                    newSpell->sounds(profile);
-            }
+            auto name = ""s;
+            if (xr.findAttr(elem, "name", name))
+                newSpell->name(name);
 
             auto aesthetics = xr.findChild("aesthetics", elem);
             if (aesthetics) {
