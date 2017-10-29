@@ -598,6 +598,17 @@ void Server::loadData(const std::string &path){
                 auto arg = int{};
                 if (xr.findAttr(functionElem, "a", arg)) newSpell->addArg(arg);
             }
+
+            auto validTargets = xr.findChild("targets", elem);
+            if (validTargets) {
+                auto val = 0;
+                if (xr.findAttr(validTargets, "self", val) && val != 0)
+                    newSpell->setCanTarget(Spell::SELF);
+                if (xr.findAttr(validTargets, "friendly", val) && val != 0)
+                    newSpell->setCanTarget(Spell::FRIENDLY);
+                if (xr.findAttr(validTargets, "enemy", val) && val != 0)
+                    newSpell->setCanTarget(Spell::ENEMY);
+            }
         }
     }
 

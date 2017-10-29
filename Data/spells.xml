@@ -2,10 +2,12 @@
 
 <spell id="fireball" >
     <aesthetics projectile="fireball" sounds="fireball" impactParticles="fire" />
+    <targets enemy=1 />
     <function name="doDirectDamage" a=10 />
 </spell>
 <spell id="heal" >
     <aesthetics sounds="heal" impactParticles="lightRays" />
+    <targets friendly=1 self=1 />
     <function name="heal" a=40 />
 </spell>
 

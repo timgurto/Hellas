@@ -14,12 +14,9 @@ Spell::Outcome Spell::performAction(Entity &caster, Entity &target) const {
         return FAIL;
 
     // Target check
-    if (caster.classTag() == 'u') {
-        const auto &asUser = dynamic_cast<User &>(caster);
-        if (!target.canBeAttackedBy(asUser)) {
-            // TODO: Send message
-            return FAIL;
-        }
+    if (!isTargetValid(caster, target)) {
+        // TODO: Send message
+        return FAIL;
     }
 
     if (target.isDead()){
@@ -38,6 +35,22 @@ Spell::Outcome Spell::performAction(Entity &caster, Entity &target) const {
     caster.onEnergyChange();
 
     return _function(caster, target, _args);
+}
+
+bool Spell::isTargetValid(const Entity &caster, const Entity &target) const {
+
+    if (caster.classTag() != 'u')
+        return false; // For now, forbid non-user casters
+
+    if (&caster == &target)
+        return _validTargets[SELF];
+
+    const auto &casterAsUser = dynamic_cast<const User &>(caster);
+
+    if (target.canBeAttackedBy(casterAsUser))
+        return _validTargets[ENEMY];
+
+    return _validTargets[FRIENDLY];
 }
 
 Spell::FunctionMap Spell::functionMap = {

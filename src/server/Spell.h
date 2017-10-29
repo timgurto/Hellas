@@ -16,10 +16,21 @@ public:
         MISS
     };
 
+    enum TargetType {
+        SELF,
+        FRIENDLY,
+        ENEMY,
+
+        NUM_TARGET_TYPES
+    };
+
     void setFunction(const std::string &functionName);
     void addArg(int arg) { _args.push_back(arg); }
 
     Outcome performAction(Entity &caster, Entity &target) const;
+        bool isTargetValid(const Entity &caster, const Entity &target) const;
+
+    void setCanTarget(TargetType type) { _validTargets[type] = true; }
 
 private:
     using Args = std::vector<int>;
@@ -30,6 +41,9 @@ private:
 
     using FunctionMap = std::map<std::string, Function>;
     static FunctionMap functionMap;
+
+    using ValidTargets = std::vector<bool>;
+    ValidTargets _validTargets = ValidTargets(NUM_TARGET_TYPES, false);
 
     static Outcome doDirectDamage(Entity &caster, Entity &target, const Args &args);
     static Outcome heal(Entity &caster, Entity &target, const Args &args);
