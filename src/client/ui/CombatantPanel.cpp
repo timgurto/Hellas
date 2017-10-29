@@ -24,7 +24,7 @@ CombatantPanel::CombatantPanel(px_t panelX, px_t panelY, const std::string &name
     y += BAR_HEIGHT + GAP;
 
     _energyBar = new ProgressBar<Hitpoints>({ GAP, y, ELEMENT_WIDTH, BAR_HEIGHT },
-        energy, maxEnergy, Color::COMBATANT_NEUTRAL);
+        energy, maxEnergy, Color::ENERGY);
     addChild(_energyBar);
     y += BAR_HEIGHT + GAP;
 
