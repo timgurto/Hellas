@@ -273,6 +273,13 @@ void User::removeItems(const ItemSet &items) {
 }
 
 void User::update(ms_t timeElapsed){
+    // Regen
+    _timeSinceRegen += timeElapsed;
+    while (_timeSinceRegen > 1000) {
+        regen();
+        _timeSinceRegen -= 1000;
+    }
+
     if (_action == NO_ACTION)
         return;
 
@@ -280,13 +287,6 @@ void User::update(ms_t timeElapsed){
         _actionTime -= timeElapsed;
     else
         _actionTime = 0;
-
-    // Regen
-    _timeSinceRegen += timeElapsed;
-    while (_timeSinceRegen > 1000) {
-        regen();
-        _timeSinceRegen -= 1000;
-    }
 
     // Attack actions:
     if (_action == ATTACK){
