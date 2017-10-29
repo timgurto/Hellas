@@ -69,6 +69,7 @@ public:
     Entity *target() const { return _target; }
     void target(Entity *p) { _target = p; }
     virtual ms_t timeToRemainAsCorpse() const = 0;
+    virtual bool canBeAttackedBy(const User &user) const = 0;
 
     Hitpoints health() const { assert(_health <= this->maxHealth()); return _health; }
     Energy energy() const { assert(_energy <= this->maxEnergy()); return _energy; }
@@ -142,12 +143,13 @@ private:
     Dummy(const Point &loc) : Entity(loc) {}
 
     // Necessary overrides to make this a concrete class
-    virtual char classTag() const override { return 'd'; }
-    virtual Hitpoints maxHealth() const override { return 0; };
-    virtual Hitpoints attack() const override { return 0; };
-    virtual ms_t attackTime() const override { return 0; };
-    virtual void sendInfoToClient(const User &targetUser) const override {}
-    virtual ms_t timeToRemainAsCorpse() const override { return 0; }
+    char classTag() const override { return 'd'; }
+    Hitpoints maxHealth() const override { return 0; };
+    Hitpoints attack() const override { return 0; };
+    ms_t attackTime() const override { return 0; };
+    void sendInfoToClient(const User &targetUser) const override {}
+    ms_t timeToRemainAsCorpse() const override { return 0; }
+    bool canBeAttackedBy(const User &) const override { return false; }
 };
 
 #endif

@@ -128,6 +128,7 @@ public:
     ms_t attackTime() const override { return _stats.attackTime; }
     double speed() const override { return _stats.speed; }
     ms_t timeToRemainAsCorpse() const override { return 0; }
+    bool canBeAttackedBy(const User &user) const override;
 
     char classTag() const override { return 'u'; }
 

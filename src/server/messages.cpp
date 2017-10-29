@@ -840,7 +840,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
 
-            Entity *target = _entities.find(serial);
+            auto target = _entities.find(serial);
             if (target == nullptr) {
                 user->setTargetAndAttack(nullptr);
                 sendMessage(client, SV_DOESNT_EXIST);
@@ -850,6 +850,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (target->health() == 0){
                 user->setTargetAndAttack(nullptr);
                 sendMessage(client, SV_TARGET_DEAD);
+                break;
+            }
+
+            if (!target->canBeAttackedBy(*user)) {
+                user->setTargetAndAttack(nullptr);
+                sendMessage(client, SV_NO_PERMISSION);
                 break;
             }
 

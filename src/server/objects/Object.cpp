@@ -199,6 +199,18 @@ void Object::onDeath(){
     Entity::onDeath();
 }
 
+bool Object::canBeAttackedBy(const User &user) const {
+    if (!_permissions.hasOwner())
+        return false;
+
+    auto type = _permissions.owner().type == Permissions::Owner::CITY ?
+        Belligerent::CITY : Belligerent::PLAYER;
+    auto asBelligerent = Belligerent{ _permissions.owner().name, type };
+
+    const auto &server = Server::instance();
+    return server._wars.isAtWar(asBelligerent, { user.name() });
+}
+
 void Object::populateLoot(){
     auto &objLoot = static_cast<ObjectLoot &>(*_loot);
         objLoot.populate();

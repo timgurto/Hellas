@@ -384,6 +384,11 @@ const Rect User::collisionRect() const{
     return OBJECT_TYPE.collisionRect() + location();
 }
 
+bool User::canBeAttackedBy(const User & user) const {
+    const Server &server = *Server::_instance;
+    return server._wars.isAtWar({ _name }, { user._name });
+}
+
 void User::onHealthChange(){
     const Server &server = *Server::_instance;
     for (const User *userToInform: server.findUsersInArea(location()))

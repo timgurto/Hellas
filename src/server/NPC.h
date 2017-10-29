@@ -22,11 +22,12 @@ public:
 
     const NPCType *npcType() const { return dynamic_cast<const NPCType *>(type()); }
 
-    virtual Hitpoints maxHealth() const override { return npcType()->maxHealth(); }
-    virtual Hitpoints attack() const override { return npcType()->attack(); }
-    virtual ms_t attackTime() const override { return npcType()->attackTime(); }
-    virtual double speed() const override { return 10; }
-    virtual ms_t timeToRemainAsCorpse() const override { return 600000; } // 10 minutes
+    Hitpoints maxHealth() const override { return npcType()->maxHealth(); }
+    Hitpoints attack() const override { return npcType()->attack(); }
+    ms_t attackTime() const override { return npcType()->attackTime(); }
+    double speed() const override { return 10; }
+    ms_t timeToRemainAsCorpse() const override { return 600000; } // 10 minutes
+    bool canBeAttackedBy(const User &user) const override { return true; }
 
     virtual void onHealthChange() override;
     virtual void onDeath() override;

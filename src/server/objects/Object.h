@@ -80,6 +80,7 @@ public:
     void onHealthChange() override;
     void onEnergyChange() override;
     void onDeath() override;
+    bool canBeAttackedBy(const User &) const override;
 
     void setType(const ObjectType *type); // Set/change ObjectType
 
