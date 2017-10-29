@@ -140,6 +140,7 @@
     <ClCompile Include="src\client\Projectile.cpp" />
     <ClCompile Include="src\server\Spell.cpp" />
     <ClCompile Include="src\client\ClientSpell.cpp" />
+    <ClCompile Include="src\client\ui\OutlinedLabel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -246,5 +247,6 @@
     <ClInclude Include="src\client\Projectile.h" />
     <ClInclude Include="src\server\Spell.h" />
     <ClInclude Include="src\client\ClientSpell.h" />
+    <ClInclude Include="src\client\ui\OutlinedLabel.h" />
   </ItemGroup>
 </Project>

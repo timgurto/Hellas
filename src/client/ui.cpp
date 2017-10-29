@@ -1,6 +1,7 @@
 #include <cassert>
 
 #include "Client.h"
+#include "ui/OutlinedLabel.h"
 #include "ui/TextBox.h"
 
 void Client::initUI() {
@@ -104,6 +105,8 @@ void Client::populateHotbar() {
         auto button = new Button({ i * 18, 0, 18, 18 }, {}, sendRawMessageStatic, castMessageVoidPtr);
         button->addChild(new ColorBlock({ 0,  0, 18, 18 }, Color::OUTLINE));
         button->addChild(new Picture(1, 1, spell.icon()));
+        button->addChild(new OutlinedLabel({ 0, -1, 19, 18 }, toString((i + 1) % 10),
+            Element::RIGHT_JUSTIFIED));
         _hotbar->addChild(button);
         _hotbarButtons[i] = button;
         ++i;
