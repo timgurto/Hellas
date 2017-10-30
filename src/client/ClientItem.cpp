@@ -92,6 +92,10 @@ const Texture &ClientItem::tooltip() const{
             tb.addLine("+" + toString(_stats.hps) + " health per second");
         if (_stats.eps > 0)
             tb.addLine("+" + toString(_stats.eps) + " energy per second");
+        if (_stats.hit > 0)
+            tb.addLine("+" + toString(_stats.hit) + "% hit");
+        if (_stats.crit > 0)
+            tb.addLine("+" + toString(_stats.crit) + "% crit");
         if (_stats.attack > 0)
             tb.addLine("+" + toString(_stats.attack) + " attack");
         if (_stats.attackTime != 1)

@@ -1005,6 +1005,8 @@ void Client::handleMessage(const std::string &msg){
                 >> del >> _stats.energy
                 >> del >> _stats.hps
                 >> del >> _stats.eps
+                >> del >> _stats.hit
+                >> del >> _stats.crit
                 >> del >> _stats.attack
                 >> del >> _stats.attackTime
                 >> del >> _stats.speed

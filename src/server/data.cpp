@@ -488,6 +488,8 @@ void Server::loadData(const std::string &path){
                 xr.findAttr(statsElem, "energy", stats.energy);
                 xr.findAttr(statsElem, "hps", stats.hps);
                 xr.findAttr(statsElem, "eps", stats.eps);
+                xr.findAttr(statsElem, "hit", stats.hit);
+                xr.findAttr(statsElem, "crit", stats.crit);
                 xr.findAttr(statsElem, "attack", stats.attack);
                 xr.findAttr(statsElem, "attackTime", stats.attackTime);
                 xr.findAttr(statsElem, "speed", stats.speed);

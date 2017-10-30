@@ -64,6 +64,8 @@ void User::init(){
     BASE_STATS.energy = 100;
     BASE_STATS.hps = 1;
     BASE_STATS.eps = 1;
+    BASE_STATS.hit = 0;
+    BASE_STATS.crit = 5;
     BASE_STATS.attack = 8;
     BASE_STATS.attackTime = 1000;
     BASE_STATS.speed = 80.0;
@@ -474,7 +476,9 @@ void User::updateStats(){
             _stats.health,
             _stats.energy,
             _stats.hps,
-            _stats.eps
+            _stats.eps,
+            _stats.hit,
+            _stats.crit
         ), makeArgs(
             _stats.attack,
             _stats.attackTime,

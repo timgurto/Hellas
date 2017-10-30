@@ -16,6 +16,10 @@ struct Stats{
         energy = 0,
         eps = 0;
 
+    Percentage
+        crit = 0,
+        hit = 0;
+
     ms_t
         attackTime = 0;
 
@@ -38,6 +42,9 @@ struct StatsMod{
         attack = 0,
         energy = 0,
         eps = 0;
+    Percentage
+        crit = 0,
+        hit = 0;
 
     // Multiplicative
     double

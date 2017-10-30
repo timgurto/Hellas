@@ -239,6 +239,8 @@
             energy="5"
             hps="5"
             eps="5"
+            hit="5"
+            crit="5"
         />
 	</item>
 

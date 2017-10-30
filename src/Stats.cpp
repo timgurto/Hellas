@@ -8,6 +8,8 @@ Stats &Stats::operator+=(const Stats &rhs){
     energy += rhs.energy;
     hps += rhs.hps;
     eps += rhs.eps;
+    hit += rhs.hit;
+    crit += rhs.crit;
     attack += rhs.attack;
     attackTime += rhs.attackTime;
     speed += rhs.speed;
@@ -41,6 +43,16 @@ const Stats &Stats::operator&=(const StatsMod &mod){
         eps = 0;
     else
         eps += mod.eps;
+
+    if (mod.hit < 0 && -mod.hit > static_cast<int>(hit))
+        hit = 0;
+    else
+        hit += mod.hit;
+
+    if (mod.crit < 0 && -mod.crit > static_cast<int>(crit))
+        crit = 0;
+    else
+        crit += mod.crit;
 
     if (mod.attack < 0 && -mod.attack > static_cast<int>(attack))
         attack = 0;
