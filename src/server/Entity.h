@@ -78,9 +78,8 @@ public:
     void energy(Energy energy) { _energy = energy; }
     bool isDead() const { return _health == 0; }
 
-    virtual void broadcastHealth() const;
-
     void reduceHealth(int damage);
+    void reduceEnergy(Energy amount);
     void healBy(Hitpoints amount);
     virtual void onHealthChange() {}; // Probably alerting relevant users.
     virtual void onEnergyChange() {}; // Probably alerting relevant users.

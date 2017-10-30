@@ -66,27 +66,29 @@ void Entity::markForRemoval(){
     Server::_instance->_entitiesToRemove.push_back(this);
 }
 
-void Entity::broadcastHealth() const {
-    Server::_instance->broadcastToArea(_location, SV_ENTITY_HEALTH, makeArgs(_serial, _health));
-}
-
 void Entity::reduceHealth(int damage) {
     if (damage >= static_cast<int>(_health)) {
         _health = 0;
-        broadcastHealth();
+        onHealthChange();
         onDeath();
     } else if (damage != 0) {
         _health -= damage;
-        broadcastHealth();
+        onHealthChange();
     }
 
     assert(_health <= this->maxHealth());
 }
 
+void Entity::reduceEnergy(Energy amount) {
+    assert(amount <= _energy);
+    _energy -= amount;
+    onEnergyChange();
+}
+
 void Entity::healBy(Hitpoints amount) {
     auto newHealth = min(health() + amount, maxHealth());
     _health = newHealth;
-    broadcastHealth();
+    onHealthChange();
 }
 
 void Entity::update(ms_t timeElapsed){
@@ -117,7 +119,6 @@ void Entity::update(ms_t timeElapsed){
 
         // Reduce target health (to minimum 0)
         pTarget->reduceHealth(attack());
-        pTarget->onHealthChange();
 
         // Give target opportunity to react
         pTarget->onAttackedBy(*this);

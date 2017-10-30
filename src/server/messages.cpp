@@ -1299,11 +1299,8 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
         targets.insert(target);
     }
 
-    if (spell.isAoE()) {
-        auto newEnergy = user.energy() - spell.cost();
-        user.energy(newEnergy);
-        user.onEnergyChange();
-    }
+    if (spell.isAoE())
+        user.reduceEnergy(spell.cost());
 
     for (auto target : targets){
 
@@ -1313,11 +1310,8 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
             continue;
         }
 
-        if (!spell.isAoE()) { // The spell succeeded, and there should be only one iteration.
-            auto newEnergy = user.energy() - spell.cost();
-            user.energy(newEnergy);
-            user.onEnergyChange();
-        }
+        if (!spell.isAoE()) // The spell succeeded, and there should be only one iteration.
+            user.reduceEnergy(spell.cost());
 
         // Broadcast spellcast
         auto msgCode = (outcome == Spell::MISS ? SV_SPELL_MISS : SV_SPELL_HIT);

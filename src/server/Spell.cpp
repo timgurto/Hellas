@@ -77,7 +77,6 @@ Spell::Outcome Spell::doDirectDamage(Entity &caster, Entity &target, const Args 
 
     if (outcome != MISS) {
         target.reduceHealth(damage);
-        target.onHealthChange();
         target.onAttackedBy(caster);
     }
 
