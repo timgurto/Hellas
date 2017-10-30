@@ -29,8 +29,10 @@ void SoundProfile::startLooping(const SoundType &type, const void *source) const
 Channel SoundProfile::checkAndPlaySound(const SoundType &type, bool loop) const{
     auto it = _sounds.find(type);
     if (it == _sounds.end()){
+#ifdef _DEBUG
         Client::_instance->debug() << Color::WARNING << "\"" << _id << ":" << type
                                    << "\" sound not found." << Log::endl;
+#endif
         return NO_CHANNEL;
     }
     SoundVariants variants = it->second;
