@@ -145,4 +145,15 @@
     <variety imageFile="ray1R"> <drawRect x=-3 y=-62 w=7 h=64 /> </variety>
 </particleProfile>
 
+<particleProfile
+    id="heavyBlood">
+    <particlesPerHit mean=20 sd=4 />
+    <distance mean=5 sd=0 />
+    <altitude mean=8 sd=4 />
+    <velocity mean=15 sd=3 />
+    <fallSpeed mean=0 sd=2 />
+    <variety imageFile="gib" />
+    <variety imageFile="blood" count="2" />
+</particleProfile>
+
 </root>

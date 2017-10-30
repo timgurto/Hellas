@@ -11,6 +11,7 @@
     <function name="heal" a=40 />
 </spell>
 <spell id="whirlwind" name="Whirlwind" cost=60 radius=10 >
+    <aesthetics impactParticles="heavyBlood" />
     <targets enemy=1 />
     <function name="doDirectDamage" a=10 />
 </spell>
