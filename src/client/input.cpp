@@ -188,6 +188,9 @@ void Client::handleInput(double delta){
                 case SDLK_2:
                     if (_hotbarButtons[1]) _hotbarButtons[1]->depress();
                     break;
+                case SDLK_3:
+                    if (_hotbarButtons[2]) _hotbarButtons[2]->depress();
+                    break;
 
                 }
 
@@ -202,6 +205,9 @@ void Client::handleInput(double delta){
                 break;
             case SDLK_2:
                 if (_hotbarButtons[1]) _hotbarButtons[1]->release(true);
+                break;
+            case SDLK_3:
+                if (_hotbarButtons[2]) _hotbarButtons[2]->release(true);
                 break;
             }
             break;
