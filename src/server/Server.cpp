@@ -415,6 +415,17 @@ std::set<User *> Server::findUsersInArea(Point loc, double squareRadius) const{
     return users;
 }
 
+std::set<Entity*> Server::findEntitiesInArea(Point loc, double squareRadius) const {
+    std::set<Entity *> entities;
+    auto loX = _entitiesByX.lower_bound(&Dummy::Location({ loc.x - squareRadius, 0 }));
+    auto hiX = _entitiesByX.upper_bound(&Dummy::Location({ loc.x + squareRadius, 0 }));
+    for (auto it = loX; it != hiX; ++it)
+        if (abs(loc.y - (*it)->location().y) <= squareRadius)
+            entities.insert(const_cast<Entity *>(*it));
+
+    return entities;
+}
+
 bool Server::isEntityInRange(const Socket &client, const User &user, const Entity *ent,
     bool suppressErrorMessages) const{
     // Doesn't exist

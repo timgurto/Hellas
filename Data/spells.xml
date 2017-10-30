@@ -10,5 +10,9 @@
     <targets friendly=1 self=1 />
     <function name="heal" a=40 />
 </spell>
+<spell id="whirlwind" name="Whirlwind" cost=60 radius=10 >
+    <targets enemy=1 />
+    <function name="doDirectDamage" a=10 />
+</spell>
 
 </root>

@@ -33,7 +33,11 @@ public:
 
     void canTarget(TargetType type) { _validTargets[type] = true; }
     void cost(Energy e) { _cost = e; }
+    Energy cost() const { return _cost; }
     void range(Podes r) { _range = r.toPixels(); }
+    void radius(Podes r) { _range = r.toPixels(); _targetsInArea = true; }
+    px_t range() const { return _range; }
+    bool isAoE() const { return _targetsInArea; }
 
 private:
     using Args = std::vector<int>;
@@ -50,6 +54,7 @@ private:
 
     Energy _cost = 0;
     px_t _range = 0;
+    bool _targetsInArea = false;
 
     using ValidTargets = std::vector<bool>;
     ValidTargets _validTargets = ValidTargets(NUM_TARGET_TYPES, false);

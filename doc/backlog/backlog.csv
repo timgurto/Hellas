@@ -296,7 +296,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 322,Channeled +ep5 ability,3,8,Feature,250,,,2
 323,Cast/channel-interrupt spell,3,13,Feature,322,,,2
 324,Energy-drain spell,2,8,Feature,322,,,2
-325,AoE spell,21,8,Feature,265,,,2
+325,AoE spell,21,8,Feature,265,TRUE,,2
 327,"Spells to cure curse, sleep, stun, fear",2,8,Feature,267,,,2
 328,Resurrect spell,5,13,Feature,265,,,2
 329,An object that gives nearby players a buff,3,8,Feature,267,,,2

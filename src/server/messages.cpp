@@ -1278,25 +1278,60 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
         return;
     const auto &spell = *it->second;
 
-    auto outcome = spell.performAction(user, *target);
-    if (outcome == Spell::FAIL) {
-        _debug("Spell "s + spellID + " has no action specified."s, Color::FAILURE);
+    // Energy check
+    if (user.energy() < spell.cost()) {
+        sendMessage(user.socket(), SV_NOT_ENOUGH_ENERGY);
         return;
     }
 
-    // Broadcast spellcast
-    auto msgCode = (outcome == Spell::MISS ? SV_SPELL_MISS : SV_SPELL_HIT);
+    auto usersNearCaster = findUsersInArea(user.location());
 
-    const auto
-        &src = user.location(),
-        &dst = target->location();
-    auto args = makeArgs(spellID, src.x, src.y, dst.x, dst.y);
+    auto targets = std::set<Entity*>{};
+    if (spell.isAoE()) {
+        targets = findEntitiesInArea(user.location(), spell.range());
+        auto nearbyUsers =  findUsersInArea(user.location(), spell.range());
+        for (auto user : nearbyUsers)
+            targets.insert(user);
+    } else {
+        auto target = user.target();
+        if (target == nullptr)
+            target = &user;
+        targets.insert(target);
+    }
 
-    auto usersToAlert = findUsersInArea(src);
-    auto usersNearDest = findUsersInArea(dst);
-    usersToAlert.insert(usersNearDest.begin(), usersNearDest.end());
-    for (auto user : usersToAlert)
-        sendMessage(user->socket(), msgCode, args);
+    if (spell.isAoE()) {
+        auto newEnergy = user.energy() - spell.cost();
+        user.energy(newEnergy);
+        user.onEnergyChange();
+    }
+
+    for (auto target : targets){
+
+        auto outcome = spell.performAction(user, *target);
+        if (outcome == Spell::FAIL) {
+            _debug("Spell "s + spellID + " failed."s, Color::FAILURE);
+            continue;
+        }
+
+        if (!spell.isAoE()) { // The spell succeeded, and there should be only one iteration.
+            auto newEnergy = user.energy() - spell.cost();
+            user.energy(newEnergy);
+            user.onEnergyChange();
+        }
+
+        // Broadcast spellcast
+        auto msgCode = (outcome == Spell::MISS ? SV_SPELL_MISS : SV_SPELL_HIT);
+
+        const auto
+            &src = user.location(),
+            &dst = target->location();
+        auto args = makeArgs(spellID, src.x, src.y, dst.x, dst.y);
+
+        auto usersToAlert = findUsersInArea(dst);
+        usersToAlert.insert(usersNearCaster.begin(), usersNearCaster.end());
+        for (auto user : usersToAlert)
+            sendMessage(user->socket(), msgCode, args);
+    }
 }
 
 

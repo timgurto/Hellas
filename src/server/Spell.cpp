@@ -17,36 +17,27 @@ Spell::Outcome Spell::performAction(Entity &caster, Entity &target) const {
     const Server &server = Server::instance();
     const auto *casterAsUser = dynamic_cast<const User *>(&caster);
 
+    auto skipWarnings = _targetsInArea; // Since there may be many targets, not all valid.
+
     // Target check
     if (!isTargetValid(caster, target)) {
-        if (casterAsUser)
+        if (casterAsUser && !skipWarnings)
             server.sendMessage(casterAsUser->socket(), SV_INVALID_SPELL_TARGET);
         return FAIL;
     }
 
     if (target.isDead()){
-        if (casterAsUser)
+        if (casterAsUser && !skipWarnings)
             server.sendMessage(casterAsUser->socket(), SV_TARGET_DEAD);
         return FAIL;
     }
 
     // Range check
     if (distance(caster.location(), target.location()) > _range) {
-        if (casterAsUser)
+        if (casterAsUser && !skipWarnings)
             server.sendMessage(casterAsUser->socket(), SV_TOO_FAR);
         return FAIL;
     }
-
-    // Energy check
-    if (caster.energy() < _cost) {
-        if (casterAsUser)
-            server.sendMessage(casterAsUser->socket(), SV_NOT_ENOUGH_ENERGY);
-        return FAIL;
-    }
-
-    auto newEnergy = caster.energy() - _cost;
-    caster.energy(newEnergy);
-    caster.onEnergyChange();
 
     return _function(caster, target, _args);
 }

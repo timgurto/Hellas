@@ -602,8 +602,8 @@ void Server::loadData(const std::string &path){
                 newSpell->cost(cost);
 
             auto range = Podes{0};
-            if (xr.findAttr(elem, "range", range))
-                newSpell->range(range);
+            if (xr.findAttr(elem, "range", range)) newSpell->range(range);
+            else if (xr.findAttr(elem, "radius", range)) newSpell->radius(range);
 
             auto functionElem = xr.findChild("function", elem);
             if (functionElem) {
