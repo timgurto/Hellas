@@ -186,7 +186,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 206,Objects are not culled on respawn/teleport,8,5,Bug,,,,
 207,Hide object names unless hostile,13,1,Usability,,TRUE,,
 208,Fix disappearing tooltips; appears to get worse over time,21,8,Bug,,,,
-209,'Too far away to perform that action' spam,8,2,Bug,TRUE,,,
+209,'Too far away to perform that action' spam,8,2,Bug,,TRUE,,
 210,Create different tool name for pottery,3,1,Aesthetics,,TRUE,,
 211,Non-killers alerted to loot are not alerted to no loot,8,3,Bug,,,,
 212,Stop 'Action interrupted' when spamming right-click on an NPC,3,2,Usability,,,,
@@ -229,7 +229,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 254,Fireball launch particles,3,3,Aesthetics,249,,,2
 255,Fireball impact sound,21,3,Aesthetics,249,TRUE,,2
 256,Fireball casting sound,1,5,Aesthetics,250,,,2
-257,Fireball launch sound,8,3,Aesthetics,249,,,2
+257,Fireball launch sound,8,3,Aesthetics,249,TRUE,,2
 259,Fireball damage modified by magic-damage stat,3,2,Feature,246,,,2
 260,Energy-regen stat,3,2,Feature,247,TRUE,,2
 261,Health-regen stat,3,5,Feature,,TRUE,,2

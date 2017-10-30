@@ -79,6 +79,7 @@
 </soundProfile>
 
 <soundProfile id="fireball" >
+    <sound type="launch" file="catchFlame" />
     <sound type="impact" file="ignite" />
 </soundProfile>
 
