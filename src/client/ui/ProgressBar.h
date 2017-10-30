@@ -4,6 +4,8 @@
 #include "ColorBlock.h"
 #include "Element.h"
 
+using namespace std::string_literals;
+
 // A partially-filled bar indicating a fractional relationship between two numbers.
 template<typename T>
 class ProgressBar : public Element{
@@ -19,13 +21,24 @@ private:
         _lastNumeratorVal,
         _lastDenominatorVal;
 
-    virtual void checkIfChanged() override;
+    bool _showValuesInTooltip = false;
+
+    void checkIfChanged() override;
+
+    void refresh() override {
+        if (_showValuesInTooltip) {
+            setTooltip(toString(_numerator) + "/"s + toString(_denominator));
+        }
+        Element::refresh();
+    }
 
 public:
     ProgressBar(const Rect &rect, const T &numerator, const T &denominator,
                const Color&barColor = Color::PROGRESS_BAR,
                const Color &backgroundColor = Color::PROGRESS_BAR_BACKGROUND);
     void changeColor(const Color &newColor) { _bar->changeColor(newColor); }
+
+    void showValuesInTooltip() { _showValuesInTooltip = true; }
 };
 
 
