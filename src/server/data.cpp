@@ -485,6 +485,9 @@ void Server::loadData(const std::string &path){
             if (statsElem != nullptr) {
                 StatsMod stats;
                 xr.findAttr(statsElem, "health", stats.health);
+                xr.findAttr(statsElem, "energy", stats.energy);
+                xr.findAttr(statsElem, "hps", stats.hps);
+                xr.findAttr(statsElem, "eps", stats.eps);
                 xr.findAttr(statsElem, "attack", stats.attack);
                 xr.findAttr(statsElem, "attackTime", stats.attackTime);
                 xr.findAttr(statsElem, "speed", stats.speed);

@@ -3,23 +3,11 @@
 #include "Stats.h"
 #include "util.h"
 
-Stats::Stats():
-    health(0),
-    attack(0),
-    attackTime(0),
-    speed(0.0)
-{}
-
-StatsMod::StatsMod():
-    health(0),
-    attack(0),
-
-    attackTime(1.0),
-    speed(1.0)
-{}
-
 Stats &Stats::operator+=(const Stats &rhs){
     health += rhs.health;
+    energy += rhs.energy;
+    hps += rhs.hps;
+    eps += rhs.eps;
     attack += rhs.attack;
     attackTime += rhs.attackTime;
     speed += rhs.speed;
@@ -38,6 +26,21 @@ const Stats &Stats::operator&=(const StatsMod &mod){
         health = 0;
     else
         health += mod.health;
+
+    if (mod.energy < 0 && -mod.energy > static_cast<int>(energy))
+        energy = 0;
+    else
+        energy += mod.energy;
+
+    if (mod.hps < 0 && -mod.hps > static_cast<int>(hps))
+        hps = 0;
+    else
+        hps += mod.hps;
+
+    if (mod.eps < 0 && -mod.eps > static_cast<int>(eps))
+        eps = 0;
+    else
+        eps += mod.eps;
 
     if (mod.attack < 0 && -mod.attack > static_cast<int>(attack))
         attack = 0;

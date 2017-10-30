@@ -8,21 +8,19 @@ struct StatsMod;
 // Describes base-level player stats.
 struct Stats{
     Hitpoints
-        health,
-        hps,
-        attack;
+        health = 0,
+        hps = 0,
+        attack = 0;
 
     Energy
-        energy,
-        eps;
+        energy = 0,
+        eps = 0;
 
     ms_t
-        attackTime;
+        attackTime = 0;
 
     double
-        speed;
-
-    Stats();
+        speed = 0;
     
     Stats &operator+=(const Stats &rhs);
     const Stats operator+(const Stats &rhs) const;
@@ -35,15 +33,16 @@ struct Stats{
 struct StatsMod{
     // Additive
     int
-        health,
-        attack;
+        health = 0,
+        hps = 0,
+        attack = 0,
+        energy = 0,
+        eps = 0;
 
     // Multiplicative
     double
-        attackTime,
-        speed;
-
-    StatsMod();
+        attackTime = 1.0,
+        speed = 1.0;
 };
 
 #endif

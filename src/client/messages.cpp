@@ -1011,6 +1011,8 @@ void Client::handleMessage(const std::string &msg){
                 >> del;
             if (del != MSG_END)
                 break;
+            _character.maxHealth(_stats.health);
+            _character.maxEnergy(_stats.energy);
             break;
         }
 

@@ -231,5 +231,15 @@
 	<item id="tinShield" name="Tin Shield" gearSlot="7" >
 		<stats health="27" />
 	</item>
+	
+	<!-- Test -->
+	<item id="ring" name="Ring" gearSlot="1" >
+		<stats
+            health="5"
+            energy="5"
+            hps="5"
+            eps="5"
+        />
+	</item>
 
 </root>
