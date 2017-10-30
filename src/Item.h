@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "Podes.h"
 #include "Stats.h"
 
 class Item{
@@ -22,6 +23,8 @@ public:
     const StatsMod &stats() const { return _stats; }
     Hitpoints strength() const { return _strength; }
     void strength(Hitpoints n) { _strength = n; }
+    void weaponRange(Podes range) { _weaponRange = range.toPixels(); }
+    px_t weaponRange() const { return _weaponRange; }
     
     bool operator<(const Item &rhs) const { return _id < rhs._id; }
     
@@ -38,6 +41,9 @@ protected:
     std::set<std::string> _tags;
     size_t _gearSlot;
     StatsMod _stats; // If gear, the impact it has on its wearer's stats.
+
+    // If a weapon, how close the holder must be to a target to it.
+    px_t _weaponRange = Podes{ 4 }.toPixels();
 
 private:
     Hitpoints _strength;

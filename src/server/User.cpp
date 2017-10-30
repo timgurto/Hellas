@@ -411,6 +411,13 @@ bool User::canBeAttackedBy(const User & user) const {
     return server._wars.isAtWar({ _name }, { user._name });
 }
 
+px_t User::attackRange() const {
+    const auto weapon = _gear[Item::WEAPON_SLOT].first;
+    if (weapon == nullptr)
+        return Object::attackRange();
+    return weapon->weaponRange();
+}
+
 void User::onHealthChange(){
     const Server &server = *Server::_instance;
     for (const User *userToInform: server.findUsersInArea(location()))

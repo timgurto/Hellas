@@ -37,7 +37,7 @@ const int Server::MAX_CLIENTS = 20;
 const ms_t Server::CLIENT_TIMEOUT = 10000;
 const ms_t Server::MAX_TIME_BETWEEN_LOCATION_UPDATES = 300;
 
-const px_t Server::ACTION_DISTANCE = 30;
+const px_t Server::ACTION_DISTANCE = Podes{ 4 }.toPixels();
 const px_t Server::CULL_DISTANCE = 450;
 const px_t Server::TILE_W = 32;
 const px_t Server::TILE_H = 32;

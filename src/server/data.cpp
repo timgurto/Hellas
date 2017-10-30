@@ -482,13 +482,19 @@ void Server::loadData(const std::string &path){
             }
 
             auto statsElem = xr.findChild("stats", elem);
-            if (statsElem != nullptr){
+            if (statsElem != nullptr) {
                 StatsMod stats;
                 xr.findAttr(statsElem, "health", stats.health);
                 xr.findAttr(statsElem, "attack", stats.attack);
                 xr.findAttr(statsElem, "attackTime", stats.attackTime);
                 xr.findAttr(statsElem, "speed", stats.speed);
                 item.stats(stats);
+            }
+
+            auto weaponElem = xr.findChild("weapon", elem);
+            if (weaponElem != nullptr) {
+                auto range = Podes{};
+                if (xr.findAttr(weaponElem, "range", range)) item.weaponRange(range);
             }
 
             int n;

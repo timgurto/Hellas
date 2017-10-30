@@ -155,6 +155,12 @@
 			<stats attack="17" />
 		</item>
 
+	<!-- Ranged -->
+		<item id="sling" name="Sling" gearSlot="6" >
+            <weapon range="20" />
+            <stats attack="4" />
+		</item>
+
 <!-- Armor -->
 	<!-- Head -->
 	<item id="skullCap" name="Skull Cap" gearSlot="0" sounds="leather" >

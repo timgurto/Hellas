@@ -5,6 +5,8 @@
 #include "Spawner.h"
 #include "../util.h"
 
+const px_t Entity::DEFAULT_ATTACK_RANGE = Podes{ 4 }.toPixels();
+
 Entity::Entity(const EntityType *type, const Point &loc, Hitpoints health):
     _type(type),
     _serial(generateSerial()),
@@ -111,7 +113,7 @@ void Entity::update(ms_t timeElapsed){
         return;
 
     // Check if within range
-    if (distance(collisionRect(), pTarget->collisionRect()) <= Server::ACTION_DISTANCE){
+    if (distance(collisionRect(), pTarget->collisionRect()) <= attackRange()){
 
         // Reduce target health (to minimum 0)
         pTarget->reduceHealth(attack());

@@ -131,6 +131,7 @@ public:
     double speed() const override { return _stats.speed; }
     ms_t timeToRemainAsCorpse() const override { return 0; }
     bool canBeAttackedBy(const User &user) const override;
+    px_t attackRange() const override;
 
     char classTag() const override { return 'u'; }
 

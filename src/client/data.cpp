@@ -355,6 +355,12 @@ void Client::loadData(const std::string &path){
                 item.stats(stats);
             }
 
+            auto weaponElem = xr.findChild("weapon", elem);
+            if (statsElem != nullptr) {
+                auto range = Podes{};
+                if (xr.findAttr(statsElem, "range", range)) item.weaponRange(range);
+            }
+
             size_t gearSlot = GEAR_SLOTS; // Default; won't match any slot.
             xr.findAttr(elem, "gearSlot", gearSlot); item.gearSlot(gearSlot);
 

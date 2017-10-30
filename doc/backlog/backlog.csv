@@ -273,7 +273,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 299,Skill tree can include passive stats,5,13,Feature,295,,,2
 300,Skill tree can include recipes,2,13,Feature,295,,,2
 301,Skill tree can include constructions,2,13,Feature,295,,,2
-302,Ranged weapons,21,5,Feature,,,,2
+302,Ranged weapons,21,5,Feature,,TRUE,,2
 303,Projectiles for ranged weapons,5,5,Feature,302,,,2
 304,Chance for spells/attacks to miss,5,2,Feature,246,TRUE,,2
 305,Hit-chance stat,3,2,Feature,304,,,2

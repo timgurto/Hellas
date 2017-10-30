@@ -6,7 +6,7 @@
 
 class Podes { // 1 Pous = 7 pixels = 1 foot
 public:
-    Podes(int p) :_p(p) {}
+    Podes(int p = 0) :_p(p) {}
     px_t toPixels() const { return _p * 7; }
 private:
     int _p;

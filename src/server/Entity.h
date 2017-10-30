@@ -70,6 +70,7 @@ public:
     void target(Entity *p) { _target = p; }
     virtual ms_t timeToRemainAsCorpse() const = 0;
     virtual bool canBeAttackedBy(const User &user) const = 0;
+    virtual px_t attackRange() const { return DEFAULT_ATTACK_RANGE; }
 
     Hitpoints health() const { assert(_health <= this->maxHealth()); return _health; }
     Energy energy() const { assert(_energy <= this->maxEnergy()); return _energy; }
@@ -107,6 +108,8 @@ protected:
     std::shared_ptr<Loot> _loot;
 
 private:
+    static const px_t DEFAULT_ATTACK_RANGE;
+
     static size_t generateSerial();
     const EntityType *_type;
     
