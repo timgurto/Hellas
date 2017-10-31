@@ -1144,6 +1144,31 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_PLAYER_WAS_HIT:
+        {
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            auto username = std::string{ buffer };
+            singleMsg >> del;
+            if (del != MSG_END)
+                return;
+
+            handle_SV_PLAYER_WAS_HIT(username);
+
+            break;
+        }
+
+        case SV_ENTITY_WAS_HIT:
+        {
+            auto serial = size_t{};
+            singleMsg >> serial >> del;
+            if (del != MSG_END)
+                return;
+
+            handle_SV_ENTITY_WAS_HIT(serial);
+
+            break;
+        }
+
         case SV_SAY:
         {
             std::string username, message;
@@ -1336,6 +1361,34 @@ void Client::handle_SV_SPELL_MISS(const std::string &spellID, const Point &src, 
     if (spell.projectile()) {
         auto pointPastDest = extrapolate(src, dst, 2000);
         addEntity(new Projectile(*spell.projectile(), src, pointPastDest));
+    }
+}
+
+void Client::handle_SV_PLAYER_WAS_HIT(const std::string & username) {
+    Avatar *victim = nullptr;
+    if (username == _username)
+        victim = &_character;
+    else {
+        auto it = _otherUsers.find(username);
+        if (it == _otherUsers.end())
+            return;
+        victim = it->second;
+    }
+    victim->playDefendSound();
+}
+
+void Client::handle_SV_ENTITY_WAS_HIT(size_t serial) {
+    auto objIt = _objects.find(serial);
+    if (objIt == _objects.end()) {
+        return;
+    }
+    const ClientObject &defender = *objIt->second;
+    const SoundProfile *sounds = defender.objectType()->sounds();
+    if (sounds != nullptr) {
+        if (defender.health() == 0)
+            sounds->playOnce("death");
+        else
+            sounds->playOnce("defend");
     }
 }
 

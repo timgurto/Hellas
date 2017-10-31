@@ -275,6 +275,11 @@ enum MessageCode{
     SV_SPELL_HIT,
     SV_SPELL_MISS,
 
+    // Entity was hit by something.
+    // Arguments: username/serial
+    SV_PLAYER_WAS_HIT,
+    SV_ENTITY_WAS_HIT,
+
     // An object has an owner
     // Arguments: serial, type ("user"|"city"), name
     SV_OWNER,

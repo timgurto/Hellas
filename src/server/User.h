@@ -133,6 +133,7 @@ public:
     bool canBeAttackedBy(const User &user) const override;
     px_t attackRange() const override;
     CombatResult generateHit(CombatType type) const override;
+    void sendGotHitMessageTo(const User &user) const override;
 
     char classTag() const override { return 'u'; }
 

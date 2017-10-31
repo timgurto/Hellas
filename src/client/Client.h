@@ -440,6 +440,8 @@ private:
     void handle_SV_KING(const std::string username);
     void handle_SV_SPELL_HIT(const std::string &spellID, const Point &src, const Point &dst);
     void handle_SV_SPELL_MISS(const std::string &spellID, const Point &src, const Point &dst);
+    void handle_SV_PLAYER_WAS_HIT(const std::string &username);
+    void handle_SV_ENTITY_WAS_HIT(size_t serial);
 
     void sendClearTargetMessage() const;
     

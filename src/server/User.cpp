@@ -440,6 +440,10 @@ CombatResult User::generateHit(CombatType type) const {
     return HIT;
 }
 
+void User::sendGotHitMessageTo(const User & user) const {
+    Server::_instance->sendMessage(user.socket(), SV_PLAYER_WAS_HIT, _name);
+}
+
 void User::onHealthChange(){
     const Server &server = *Server::_instance;
     for (const User *userToInform: server.findUsersInArea(location()))

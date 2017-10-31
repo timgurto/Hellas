@@ -72,6 +72,10 @@ bool Entity::combatTypeCanHaveOutcome(CombatType type, CombatResult outcome) {
     return true;
 }
 
+void Entity::sendGotHitMessageTo(const User & user) const {
+    Server::_instance->sendMessage(user.socket(), SV_ENTITY_WAS_HIT, makeArgs(serial()));
+}
+
 void Entity::reduceHealth(int damage) {
     if (damage == 0)
         return;

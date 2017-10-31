@@ -85,6 +85,7 @@ public:
     virtual px_t attackRange() const { return DEFAULT_ATTACK_RANGE; }
     virtual CombatResult generateHit(CombatType type) const { return FAIL; }
         static bool combatTypeCanHaveOutcome(CombatType type, CombatResult outcome);
+    virtual void sendGotHitMessageTo(const User &user) const;
 
     Hitpoints health() const {return _health; }
     Energy energy() const { return _energy; }
