@@ -695,12 +695,6 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del >> serial >> del;
             if (del != MSG_END)
                 break;
-            auto objIt = _objects.find(serial);
-            if (objIt == _objects.end()){
-                //_debug("Received combat info for an unknown object.", Color::FAILURE);
-                break;
-            }
-            const ClientObject &defender = *objIt->second;
             const Avatar *attacker = nullptr;
             if (username == _username)
                 attacker = &character();
@@ -712,15 +706,9 @@ void Client::handleMessage(const std::string &msg){
                 }
                 attacker = userIt->second;
             }
-            const SoundProfile *sounds = defender.objectType()->sounds();
-            if (sounds != nullptr){
-                if (defender.health() == 0)
-                    sounds->playOnce("death");
-                else
-                    sounds->playOnce("defend");
-            }
             attacker->playAttackSound();
-            defender.createDamageParticles();
+
+            handle_SV_ENTITY_WAS_HIT(serial);
             break;
         }
 
@@ -739,21 +727,10 @@ void Client::handleMessage(const std::string &msg){
                 break;
             }
             const ClientNPC &attacker = * dynamic_cast<const ClientNPC *>(objIt->second);
-            const Avatar *defender = nullptr;
-            if (username == _username)
-                defender = &character();
-            else{
-                auto userIt = _otherUsers.find(username);
-                if (userIt == _otherUsers.end()){
-                    //_debug("Received combat info for an unknown player.", Color::FAILURE);
-                    break;
-                }
-                defender = userIt->second;
-            }
             if (attacker.npcType()->sounds() != nullptr)
                 attacker.npcType()->sounds()->playOnce("attack");
-            defender->playDefendSound();
-            defender->createDamageParticles();
+
+            handle_SV_PLAYER_WAS_HIT(username);
             break;
         }
 
@@ -778,22 +755,10 @@ void Client::handleMessage(const std::string &msg){
                 }
                 attacker = userIt->second;
             }
-
-            const Avatar *defender = nullptr;
-            if (defenderName == _username)
-                defender = &character();
-            else{
-                auto userIt = _otherUsers.find(defenderName);
-                if (userIt == _otherUsers.end()){
-                    //_debug("Received combat info for an unknown defending player.", Color::FAILURE);
-                    break;
-                }
-                defender = userIt->second;
-            }
             
             attacker->playAttackSound();
-            defender->playDefendSound();
-            defender->createDamageParticles();
+
+            handle_SV_PLAYER_WAS_HIT(defenderName);
             break;
         }
 
@@ -1375,6 +1340,7 @@ void Client::handle_SV_PLAYER_WAS_HIT(const std::string & username) {
         victim = it->second;
     }
     victim->playDefendSound();
+    victim->createDamageParticles();
 }
 
 void Client::handle_SV_ENTITY_WAS_HIT(size_t serial) {
@@ -1382,14 +1348,15 @@ void Client::handle_SV_ENTITY_WAS_HIT(size_t serial) {
     if (objIt == _objects.end()) {
         return;
     }
-    const ClientObject &defender = *objIt->second;
-    const SoundProfile *sounds = defender.objectType()->sounds();
+    const ClientObject &victim = *objIt->second;
+    const SoundProfile *sounds = victim.objectType()->sounds();
     if (sounds != nullptr) {
-        if (defender.health() == 0)
+        if (victim.health() == 0)
             sounds->playOnce("death");
         else
             sounds->playOnce("defend");
     }
+    victim.createDamageParticles();
 }
 
 
