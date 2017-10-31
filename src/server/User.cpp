@@ -421,20 +421,26 @@ px_t User::attackRange() const {
 }
 
 CombatResult User::generateHit(CombatType type) const {
+    const auto
+        BASE_MISS_CHANCE = Percentage{ 5 },
+        BASE_CRIT_CHANCE = Percentage{ 5 };
+
     auto roll = rand() % 100;
 
     // Miss
+    auto missChance = max(BASE_MISS_CHANCE - _stats.hit, 0);
     if (combatTypeCanHaveOutcome(type, MISS)) {
-        if (roll < 5)
+        if (roll < missChance)
             return MISS;
-        roll -= 5;
+        roll -= missChance;
     }
 
     // Crit
+    auto critChance = BASE_CRIT_CHANCE + _stats.crit;
     if (combatTypeCanHaveOutcome(type, CRIT)) {
-        if (roll < 5)
+        if (roll < critChance)
             return CRIT;
-        roll -= 5;
+        roll -= critChance;
     }
 
     return HIT;
