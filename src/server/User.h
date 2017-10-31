@@ -132,7 +132,7 @@ public:
     ms_t timeToRemainAsCorpse() const override { return 0; }
     bool canBeAttackedBy(const User &user) const override;
     px_t attackRange() const override;
-    CombatResult generateHit() const override;
+    CombatResult generateHit(CombatType type) const override;
 
     char classTag() const override { return 'u'; }
 

@@ -420,14 +420,22 @@ px_t User::attackRange() const {
     return weapon->weaponRange();
 }
 
-CombatResult User::generateHit() const {
+CombatResult User::generateHit(CombatType type) const {
     auto roll = rand() % 100;
 
-    if (roll < 5)
-        return MISS;
+    // Miss
+    if (combatTypeCanHaveOutcome(type, MISS)) {
+        if (roll < 5)
+            return MISS;
+        roll -= 5;
+    }
 
-    else if (roll < 10)
-        return CRIT;
+    // Crit
+    if (combatTypeCanHaveOutcome(type, CRIT)) {
+        if (roll < 5)
+            return CRIT;
+        roll -= 5;
+    }
 
     return HIT;
 }

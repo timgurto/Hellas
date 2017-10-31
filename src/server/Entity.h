@@ -16,6 +16,10 @@ class Spawner;
 class User;
 class XmlWriter;
 
+enum CombatType {
+    DAMAGE,
+    HEAL
+};
 enum CombatResult {
     FAIL,
 
@@ -79,7 +83,8 @@ public:
     virtual ms_t timeToRemainAsCorpse() const = 0;
     virtual bool canBeAttackedBy(const User &user) const = 0;
     virtual px_t attackRange() const { return DEFAULT_ATTACK_RANGE; }
-    virtual CombatResult generateHit() const { return FAIL; }
+    virtual CombatResult generateHit(CombatType type) const { return FAIL; }
+        static bool combatTypeCanHaveOutcome(CombatType type, CombatResult outcome);
 
     Hitpoints health() const {return _health; }
     Energy energy() const { return _energy; }

@@ -64,7 +64,7 @@ Spell::FunctionMap Spell::functionMap = {
 };
 
 CombatResult Spell::doDirectDamage(Entity &caster, Entity &target, const Args &args) {
-    auto outcome = caster.generateHit();
+    auto outcome = caster.generateHit(DAMAGE);
     
     switch (outcome) {
     case CRIT:

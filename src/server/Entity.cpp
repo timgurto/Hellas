@@ -66,6 +66,12 @@ void Entity::markForRemoval(){
     Server::_instance->_entitiesToRemove.push_back(this);
 }
 
+bool Entity::combatTypeCanHaveOutcome(CombatType type, CombatResult outcome) {
+    if (type == HEAL && outcome == MISS)
+        return false;
+    return true;
+}
+
 void Entity::reduceHealth(int damage) {
     if (damage == 0)
         return;
