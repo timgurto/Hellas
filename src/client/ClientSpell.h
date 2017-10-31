@@ -24,6 +24,7 @@ public:
     void effectName(const std::string effect) { _effectName = effect; }
     void addEffectArg(int arg) { _effectArgs.push_back(arg); }
     void range(Podes r) { _range = r; }
+    void radius(Podes r) { _range = r;  _isAoE = true; }
 
 private:
     const Projectile::Type *_projectile = nullptr;
@@ -35,6 +36,7 @@ private:
     std::string _name = {};
     Energy _cost = 0;
     Podes _range = 0;
+    bool _isAoE = false;
 
     std::string _effectName = {};
     std::vector<int> _effectArgs = {};

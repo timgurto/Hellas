@@ -24,7 +24,8 @@ const Texture &ClientSpell::tooltip() const {
 
     tb.setColor(Color::ITEM_STATS);
     tb.addLine("Energy cost: "s + toString(_cost));
-    tb.addLine("Range: "s + toString(_range) + " podes"s);
+    if (!_isAoE)
+        tb.addLine("Range: "s + toString(_range) + " podes"s);
 
     tb.setColor(Color::ITEM_INSTRUCTIONS);
     tb.addLine(createEffectDescription());
@@ -36,8 +37,12 @@ const Texture &ClientSpell::tooltip() const {
 std::string ClientSpell::createEffectDescription() const {
     std::ostringstream oss;
 
+    auto targetString = _isAoE ?
+        "all targets within "s + toString(_range) + " podes"s :
+        "target"s;
+
     if (_effectName == "doDirectDamage")
-        oss << "Deals " << _effectArgs[0] << " damage to target.";
+        oss << "Deals " << _effectArgs[0] << " damage to " << targetString << ".";
 
     else if (_effectName == "heal")
         oss << "Restores " << _effectArgs[0] << " health to target.";

@@ -151,6 +151,7 @@ void Client::loadData(const std::string &path){
 
             auto range = Podes{0};
             if (xr.findAttr(elem, "range", range)) newSpell->range(range);
+            else if (xr.findAttr(elem, "radius", range)) newSpell->radius(range);
 
             auto functionElem = xr.findChild("function", elem);
             if (functionElem) {
