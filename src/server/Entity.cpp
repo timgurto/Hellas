@@ -125,11 +125,24 @@ void Entity::update(ms_t timeElapsed){
     if (_attackTimer > 0)
         return;
 
+    // Reset timer
+    _attackTimer = attackTime();
+
     // Check if within range
     if (distance(collisionRect(), pTarget->collisionRect()) <= attackRange()){
 
-        // Reduce target health (to minimum 0)
-        pTarget->reduceHealth(attack());
+        auto outcome = generateHit(DAMAGE);
+
+        switch (outcome) {
+        case MISS:
+            return;
+        case CRIT:
+            pTarget->reduceHealth(attack() * 2);
+            break;
+        case HIT:
+            pTarget->reduceHealth(attack());
+            break;
+        }
 
         // Give target opportunity to react
         pTarget->onAttackedBy(*this);
@@ -163,9 +176,6 @@ void Entity::update(ms_t timeElapsed){
         for (const User *userToInform : server.findUsersInArea(locus)){
             server.sendMessage(userToInform->socket(), msgCode, args);
         }
-
-        // Reset timer
-        _attackTimer = attackTime();
     }
 }
 
