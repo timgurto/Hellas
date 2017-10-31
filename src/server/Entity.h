@@ -16,6 +16,14 @@ class Spawner;
 class User;
 class XmlWriter;
 
+enum CombatResult {
+    FAIL,
+
+    HIT,
+    CRIT,
+    MISS
+};
+
 // Abstract class describing location, movement and combat functions of something in the game world
 class Entity {
 
@@ -71,6 +79,7 @@ public:
     virtual ms_t timeToRemainAsCorpse() const = 0;
     virtual bool canBeAttackedBy(const User &user) const = 0;
     virtual px_t attackRange() const { return DEFAULT_ATTACK_RANGE; }
+    virtual CombatResult generateHit() const { return FAIL; }
 
     Hitpoints health() const { assert(_health <= this->maxHealth()); return _health; }
     Energy energy() const { assert(_energy <= this->maxEnergy()); return _energy; }

@@ -9,14 +9,6 @@
 
 class Spell {
 public:
-    enum Outcome {
-        FAIL,
-
-        HIT,
-        CRIT,
-        MISS
-    };
-
     enum TargetType {
         SELF,
         FRIENDLY,
@@ -28,7 +20,7 @@ public:
     void setFunction(const std::string &functionName);
     void addArg(int arg) { _args.push_back(arg); }
 
-    Outcome performAction(Entity &caster, Entity &target) const;
+    CombatResult performAction(Entity &caster, Entity &target) const;
         bool isTargetValid(const Entity &caster, const Entity &target) const;
 
     void canTarget(TargetType type) { _validTargets[type] = true; }
@@ -41,7 +33,7 @@ public:
 
 private:
     using Args = std::vector<int>;
-    using Function = Outcome(*)(Entity &caster, Entity &target, const Args &args);
+    using Function = CombatResult(*)(Entity &caster, Entity &target, const Args &args);
 
     Function _function = nullptr;
     Args _args = {};
@@ -49,8 +41,8 @@ private:
     using FunctionMap = std::map<std::string, Function>;
     static FunctionMap functionMap;
 
-    static Outcome doDirectDamage(Entity &caster, Entity &target, const Args &args);
-    static Outcome heal(Entity &caster, Entity &target, const Args &args);
+    static CombatResult doDirectDamage(Entity &caster, Entity &target, const Args &args);
+    static CombatResult heal(Entity &caster, Entity &target, const Args &args);
 
     Energy _cost = 0;
     px_t _range = 0;

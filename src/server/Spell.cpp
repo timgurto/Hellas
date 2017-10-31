@@ -10,7 +10,7 @@ void Spell::setFunction(const std::string & functionName) {
         _function = it->second;
 }
 
-Spell::Outcome Spell::performAction(Entity &caster, Entity &target) const {
+CombatResult Spell::performAction(Entity &caster, Entity &target) const {
     if (_function == nullptr)
         return FAIL;
 
@@ -63,27 +63,24 @@ Spell::FunctionMap Spell::functionMap = {
     { "heal", heal }
 };
 
-Spell::Outcome Spell::doDirectDamage(Entity &caster, Entity &target, const Args &args) {
-    auto outcome = HIT;
-    auto roll = rand() % 100;
-    if (roll < 5)
-        outcome = CRIT;
-    else if (roll < 10)
-        outcome = MISS;
-
-    auto damage = args[0];
-    if (outcome == CRIT)
-        damage *= 2;
-
-    if (outcome != MISS) {
-        target.reduceHealth(damage);
+CombatResult Spell::doDirectDamage(Entity &caster, Entity &target, const Args &args) {
+    auto outcome = caster.generateHit();
+    
+    switch (outcome) {
+    case CRIT:
+        target.reduceHealth(args[0] * 2);
         target.onAttackedBy(caster);
+        break;
+    case HIT:
+        target.reduceHealth(args[0]);
+        target.onAttackedBy(caster);
+        break;
     }
 
     return outcome;
 }
 
-Spell::Outcome Spell::heal(Entity &caster, Entity &target, const Args &args) {
+CombatResult Spell::heal(Entity &caster, Entity &target, const Args &args) {
     auto outcome = HIT;
     auto roll = rand() % 100;
     if (roll < 5)

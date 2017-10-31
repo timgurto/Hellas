@@ -1305,7 +1305,7 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
     for (auto target : targets){
 
         auto outcome = spell.performAction(user, *target);
-        if (outcome == Spell::FAIL) {
+        if (outcome == FAIL) {
             _debug("Spell "s + spellID + " failed."s, Color::FAILURE);
             continue;
         }
@@ -1314,7 +1314,7 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
             user.reduceEnergy(spell.cost());
 
         // Broadcast spellcast
-        auto msgCode = (outcome == Spell::MISS ? SV_SPELL_MISS : SV_SPELL_HIT);
+        auto msgCode = (outcome == MISS ? SV_SPELL_MISS : SV_SPELL_HIT);
 
         const auto
             &src = user.location(),

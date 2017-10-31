@@ -420,6 +420,18 @@ px_t User::attackRange() const {
     return weapon->weaponRange();
 }
 
+CombatResult User::generateHit() const {
+    auto roll = rand() % 100;
+
+    if (roll < 5)
+        return MISS;
+
+    else if (roll < 10)
+        return CRIT;
+
+    return HIT;
+}
+
 void User::onHealthChange(){
     const Server &server = *Server::_instance;
     for (const User *userToInform: server.findUsersInArea(location()))
