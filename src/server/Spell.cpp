@@ -70,17 +70,14 @@ Spell::FunctionMap Spell::functionMap = {
 
 CombatResult Spell::doDirectDamage(Entity &caster, Entity &target, const Args &args) {
     auto outcome = caster.generateHit(DAMAGE);
-    
-    switch (outcome) {
-    case CRIT:
-        target.reduceHealth(args[0] * 2);
-        target.onAttackedBy(caster);
-        break;
-    case HIT:
-        target.reduceHealth(args[0]);
-        target.onAttackedBy(caster);
-        break;
-    }
+    if (outcome == MISS)
+        return MISS;
+
+    auto damage = args[0] + caster.bonusMagicDamage();
+    if (outcome == CRIT)
+        damage *= 2;
+    target.reduceHealth(damage);
+    target.onAttackedBy(caster);
 
     return outcome;
 }

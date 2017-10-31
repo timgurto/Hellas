@@ -86,6 +86,7 @@ public:
     virtual CombatResult generateHit(CombatType type) const { return FAIL; }
         static bool combatTypeCanHaveOutcome(CombatType type, CombatResult outcome);
     virtual void sendGotHitMessageTo(const User &user) const;
+    virtual BonusDamage bonusMagicDamage() const { return 0; }
 
     Hitpoints health() const {return _health; }
     Energy energy() const { return _energy; }

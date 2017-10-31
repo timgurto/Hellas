@@ -10,6 +10,7 @@ Stats &Stats::operator+=(const Stats &rhs){
     eps += rhs.eps;
     hit += rhs.hit;
     crit += rhs.crit;
+    magicDamage += rhs.magicDamage;
     attack += rhs.attack;
     attackTime += rhs.attackTime;
     speed += rhs.speed;
@@ -53,6 +54,8 @@ const Stats &Stats::operator&=(const StatsMod &mod){
         crit = 0;
     else
         crit += mod.crit;
+
+    magicDamage += mod.magicDamage; // Can be negative.
 
     if (mod.attack < 0 && -mod.attack > static_cast<int>(attack))
         attack = 0;

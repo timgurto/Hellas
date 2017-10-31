@@ -12,3 +12,4 @@ typedef Uint32 ms_t;
 using Hitpoints = unsigned;
 using Energy = unsigned;
 using Percentage = short;
+using BonusDamage = int;
