@@ -442,6 +442,7 @@ private:
     void handle_SV_SPELL_MISS(const std::string &spellID, const Point &src, const Point &dst);
     void handle_SV_PLAYER_WAS_HIT(const std::string &username);
     void handle_SV_ENTITY_WAS_HIT(size_t serial);
+    void handle_SV_SHOW_OUTCOME_AT(int msgCode, const Point &loc);
 
     void sendClearTargetMessage() const;
     

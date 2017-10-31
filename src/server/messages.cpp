@@ -1327,6 +1327,17 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
             sendMessage(user->socket(), msgCode, args);
             if (outcome != MISS && spell.shouldPlayDefenseSound())
                 target->sendGotHitMessageTo(*user);
+
+            // Show notable outcomes
+            switch (outcome) {
+            case MISS:
+                sendMessage(user->socket(), SV_SHOW_MISS_AT, makeArgs(dst.x, dst.y));
+                break;
+            case CRIT:
+                sendMessage(user->socket(), SV_SHOW_CRIT_AT, makeArgs(dst.x, dst.y));
+                break;
+
+            }
         }
     }
 }

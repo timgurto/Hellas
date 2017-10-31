@@ -5,6 +5,7 @@
 #include "ClientObject.h"
 #include "ClientNPC.h"
 #include "ClientVehicle.h"
+#include "Particle.h"
 #include "ui/ConfirmationWindow.h"
 #include "ui/ContainerGrid.h"
 #include "../versionUtil.h"
@@ -1134,6 +1135,19 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_SHOW_MISS_AT:
+        case SV_SHOW_CRIT_AT:
+        {
+            auto loc = Point{};
+            singleMsg >> loc.x >> del >> loc.y >> del;
+            if (del != MSG_END)
+                return;
+
+            handle_SV_SHOW_OUTCOME_AT(msgCode, loc);
+
+            break;
+        }
+
         case SV_SAY:
         {
             std::string username, message;
@@ -1357,6 +1371,13 @@ void Client::handle_SV_ENTITY_WAS_HIT(size_t serial) {
             sounds->playOnce("defend");
     }
     victim.createDamageParticles();
+}
+
+void Client::handle_SV_SHOW_OUTCOME_AT(int msgCode, const Point & loc) {
+    switch (msgCode) {
+        case SV_SHOW_MISS_AT: addParticles("miss", loc); break;
+        case SV_SHOW_CRIT_AT: addParticles("crit", loc); break;
+    }
 }
 
 

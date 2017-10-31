@@ -280,6 +280,11 @@ enum MessageCode{
     SV_PLAYER_WAS_HIT,
     SV_ENTITY_WAS_HIT,
 
+    // Something has a noteworthy outcome. Show it.
+    // Arguments: x, y
+    SV_SHOW_MISS_AT,
+    SV_SHOW_CRIT_AT,
+
     // An object has an owner
     // Arguments: serial, type ("user"|"city"), name
     SV_OWNER,
