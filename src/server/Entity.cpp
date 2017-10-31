@@ -134,11 +134,16 @@ void Entity::update(ms_t timeElapsed){
 
     // Check if within range
     if (distance(collisionRect(), pTarget->collisionRect()) <= attackRange()){
+        const Server &server = Server::instance();
+        Point locus = midpoint(location(), pTarget->location());
 
         auto outcome = generateHit(DAMAGE);
 
         switch (outcome) {
         case MISS:
+            for (const User *userToInform : server.findUsersInArea(locus))
+                server.sendMessage(userToInform->socket(), SV_SHOW_MISS_AT, makeArgs(
+                    pTarget->location().x, pTarget->location().y));
             return;
         case CRIT:
             pTarget->reduceHealth(attack() * 2);
@@ -152,8 +157,6 @@ void Entity::update(ms_t timeElapsed){
         pTarget->onAttackedBy(*this);
 
         // Alert nearby clients
-        const Server &server = Server::instance();
-        Point locus = midpoint(location(), pTarget->location());
         MessageCode msgCode;
         std::string args;
         char
@@ -179,6 +182,11 @@ void Entity::update(ms_t timeElapsed){
         }
         for (const User *userToInform : server.findUsersInArea(locus)){
             server.sendMessage(userToInform->socket(), msgCode, args);
+
+            // Show notable outcomes
+            if (outcome == CRIT)
+                server.sendMessage(userToInform->socket(), SV_SHOW_CRIT_AT, makeArgs(
+                    pTarget->location().x, pTarget->location().y));
         }
     }
 }

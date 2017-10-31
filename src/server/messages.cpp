@@ -1336,7 +1336,6 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
             case CRIT:
                 sendMessage(user->socket(), SV_SHOW_CRIT_AT, makeArgs(dst.x, dst.y));
                 break;
-
             }
         }
     }
