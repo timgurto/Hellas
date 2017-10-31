@@ -30,6 +30,7 @@ public:
     void radius(Podes r) { _range = r.toPixels(); _targetsInArea = true; }
     px_t range() const { return _range; }
     bool isAoE() const { return _targetsInArea; }
+    bool shouldPlayDefenseSound() const { return aggressionMap[_function]; }
 
 private:
     using Args = std::vector<int>;
@@ -40,6 +41,8 @@ private:
 
     using FunctionMap = std::map<std::string, Function>;
     static FunctionMap functionMap;
+    using FlagMap = std::map<Function, bool>;
+    static FlagMap aggressionMap; // Ultimately, whether a defense sound should play.
 
     static CombatResult doDirectDamage(Entity &caster, Entity &target, const Args &args);
     static CombatResult heal(Entity &caster, Entity &target, const Args &args);

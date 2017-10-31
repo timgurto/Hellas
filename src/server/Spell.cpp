@@ -58,6 +58,11 @@ bool Spell::isTargetValid(const Entity &caster, const Entity &target) const {
     return _validTargets[FRIENDLY];
 }
 
+Spell::FlagMap Spell::aggressionMap = {
+    { doDirectDamage, true },
+    { heal, false }
+};
+
 Spell::FunctionMap Spell::functionMap = {
     { "doDirectDamage", doDirectDamage },
     { "heal", heal }

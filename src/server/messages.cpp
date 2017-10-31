@@ -1325,7 +1325,7 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
         usersToAlert.insert(usersNearCaster.begin(), usersNearCaster.end());
         for (auto user : usersToAlert) {
             sendMessage(user->socket(), msgCode, args);
-            if (outcome != MISS)
+            if (outcome != MISS && spell.shouldPlayDefenseSound())
                 target->sendGotHitMessageTo(*user);
         }
     }
