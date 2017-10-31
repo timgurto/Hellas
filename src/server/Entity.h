@@ -81,14 +81,14 @@ public:
     virtual px_t attackRange() const { return DEFAULT_ATTACK_RANGE; }
     virtual CombatResult generateHit() const { return FAIL; }
 
-    Hitpoints health() const { assert(_health <= this->maxHealth()); return _health; }
-    Energy energy() const { assert(_energy <= this->maxEnergy()); return _energy; }
+    Hitpoints health() const {return _health; }
+    Energy energy() const { return _energy; }
     void health(Hitpoints health) { _health = health; }
     void energy(Energy energy) { _energy = energy; }
     bool isDead() const { return _health == 0; }
 
     void reduceHealth(int damage);
-    void reduceEnergy(Energy amount);
+    void reduceEnergy(int amount);
     void healBy(Hitpoints amount);
     virtual void onHealthChange() {}; // Probably alerting relevant users.
     virtual void onEnergyChange() {}; // Probably alerting relevant users.

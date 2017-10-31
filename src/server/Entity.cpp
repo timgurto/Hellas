@@ -67,11 +67,13 @@ void Entity::markForRemoval(){
 }
 
 void Entity::reduceHealth(int damage) {
+    if (damage == 0)
+        return;
     if (damage >= static_cast<int>(_health)) {
         _health = 0;
         onHealthChange();
         onDeath();
-    } else if (damage != 0) {
+    } else {
         _health -= damage;
         onHealthChange();
     }
@@ -79,8 +81,11 @@ void Entity::reduceHealth(int damage) {
     assert(_health <= this->maxHealth());
 }
 
-void Entity::reduceEnergy(Energy amount) {
-    assert(amount <= _energy);
+void Entity::reduceEnergy(int amount) {
+    if (amount == 0)
+        return;
+    if (amount > static_cast<int>(_energy))
+        amount = _energy;
     _energy -= amount;
     onEnergyChange();
 }

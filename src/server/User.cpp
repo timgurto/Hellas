@@ -460,7 +460,8 @@ void User::onNewOwnedObject(const ObjectType & type) const {
 void User::updateStats(){
     const Server &server = *Server::_instance;
 
-    Hitpoints oldMaxHealth = maxHealth();
+    auto oldMaxHealth = maxHealth();
+    auto oldMaxEnergy = maxEnergy();
 
     _stats = BASE_STATS;
     for (size_t i = 0; i != GEAR_SLOTS; ++i){
@@ -475,12 +476,19 @@ void User::updateStats(){
         // Alert nearby users to new max health
         server.broadcastToArea(location(), SV_MAX_HEALTH, makeArgs(_name, maxHealth()));
     }
-    if (healthDecrease > 0 && healthDecrease > static_cast<int>(health())) {
-        health(1); // Implicit rule: changing gear can never kill you, only reduce you to 1 health.
-        onHealthChange();
-    } else {
-        reduceHealth(healthDecrease);
+    if (healthDecrease > 0 && healthDecrease > static_cast<int>(health()))
+        // Implicit rule: changing gear can never kill you, only reduce you to 1 health.
+        healthDecrease = health() - 1;
+    reduceHealth(healthDecrease);
+
+    int energyDecrease = oldMaxEnergy - maxEnergy();
+    if (energyDecrease != 0) {
+        // Alert nearby users to new max energy
+        server.broadcastToArea(location(), SV_MAX_ENERGY, makeArgs(_name, maxEnergy()));
     }
+    if (energyDecrease > 0 && energyDecrease >= static_cast<int>(energy()))
+        energyDecrease = energy();
+    reduceEnergy(energyDecrease);
 
 
     auto args = makeArgs(
