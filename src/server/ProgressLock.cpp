@@ -17,8 +17,7 @@ _chance(chance)
 {}
 
 void ProgressLock::registerStagedLocks(){
-    for (const ProgressLock &stagedLock : stagedLocks){
-        ProgressLock lock = stagedLock;
+    for (ProgressLock lock : stagedLocks){
 
         const Server &server = Server::instance();
         switch (lock._triggerType){
