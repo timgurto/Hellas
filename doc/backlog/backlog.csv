@@ -277,7 +277,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 303,Projectiles for ranged weapons,5,5,Feature,302,,,2
 304,Chance for spells/attacks to miss,5,2,Feature,246,TRUE,,2
 305,Hit-chance stat,3,2,Feature,304,TRUE,,2
-306,A melee-range spell,3,5,Feature,265,,,2
+306,A melee-range spell,3,5,Feature,265,TRUE,,2
 307,Non-ranged damage can be blocked (reduced by k),5,5,Feature,306,,,2
 308,Block-chance stat,5,2,Feature,307,,,2
 309,Block-value stat,3,2,Feature,307,,,2

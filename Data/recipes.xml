@@ -156,7 +156,7 @@
         <material id="tin" quantity="5" />
         <material id="log" />
         <tool class="smelting1" />
-        <tool class="fireHandling" />
+        <tool class="gloves" />
         <unlockedBy gather="tin" />
     </recipe>
     <recipe id="copperBar"
@@ -164,7 +164,7 @@
         <material id="copper" quantity="5" />
         <material id="charcoal" />
         <tool class="smelting2" />
-        <tool class="fireHandling" />
+        <tool class="gloves" />
         <unlockedBy recipe="tinPick" />
         <unlockedBy gather="copper" />
     </recipe>
