@@ -43,7 +43,7 @@ protected:
     StatsMod _stats; // If gear, the impact it has on its wearer's stats.
 
     // If a weapon, how close the holder must be to a target to it.
-    px_t _weaponRange = Podes{ 4 }.toPixels();
+    px_t _weaponRange = Podes::MELEE_RANGE.toPixels();
 
 private:
     Hitpoints _strength;

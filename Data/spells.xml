@@ -1,3 +1,5 @@
+<!-- 4 podes = melee range -->
+
 <root>
 
 <spell id="fireball" name="Fireball" cost=20 range=30 >
@@ -10,7 +12,7 @@
     <targets friendly=1 self=1 />
     <function name="heal" a=40 />
 </spell>
-<spell id="whirlwind" name="Whirlwind" cost=60 radius=10 >
+<spell id="whirlwind" name="Whirlwind" cost=60 radius=4 >
     <aesthetics impactParticles="heavyBlood" />
     <targets enemy=1 />
     <function name="doDirectDamage" a=10 />

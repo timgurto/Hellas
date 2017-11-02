@@ -48,7 +48,7 @@ private:
     static CombatResult heal(Entity &caster, Entity &target, const Args &args);
 
     Energy _cost = 0;
-    px_t _range = 0;
+    px_t _range = Podes::MELEE_RANGE.toPixels();
     bool _targetsInArea = false;
 
     using ValidTargets = std::vector<bool>;
