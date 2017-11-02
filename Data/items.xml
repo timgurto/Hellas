@@ -11,6 +11,24 @@
  6 right hand
  7 left hand
 -->
+	
+<!-- Test -->
+<item id="ring" name="Ring" gearSlot="1" >
+    <stats
+        health="5"
+        energy="5"
+        hps="5"
+        eps="5"
+        hit="5"
+        crit="5"
+        magicDamage="5"
+        airResist="5"
+        earthResist="5"
+        fireResist="5"
+        waterResist="5"
+        
+    />
+</item>
 
 <item id="log"          name="Log"                               stackSize="5"  strength="4" />
 <item id="tin"          name="Tin Ore"                           stackSize="10" strength="4" />
@@ -230,19 +248,6 @@
 	</item>
 	<item id="tinShield" name="Tin Shield" gearSlot="7" >
 		<stats health="27" />
-	</item>
-	
-	<!-- Test -->
-	<item id="ring" name="Ring" gearSlot="1" >
-		<stats
-            health="5"
-            energy="5"
-            hps="5"
-            eps="5"
-            hit="5"
-            crit="5"
-            magicDamage="5"
-        />
 	</item>
 
 </root>

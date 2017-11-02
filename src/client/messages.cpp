@@ -974,6 +974,10 @@ void Client::handleMessage(const std::string &msg){
                 >> del >> _stats.hit
                 >> del >> _stats.crit
                 >> del >> _stats.magicDamage
+                >> del >> _stats.airResist
+                >> del >> _stats.earthResist
+                >> del >> _stats.fireResist
+                >> del >> _stats.waterResist
                 >> del >> _stats.attack
                 >> del >> _stats.attackTime
                 >> del >> _stats.speed

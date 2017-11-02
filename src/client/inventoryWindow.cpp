@@ -32,7 +32,7 @@ static void addStat(const std::string &label, const T &value,
     Element *gearWindow) {
     const auto
         X = 38_px,
-        W = 90_px;
+        W = 100_px;
     auto labelRect = Rect{ X, y, W, Element::TEXT_HEIGHT };
     gearWindow->addChild(new Label(labelRect, label));
     gearWindow->addChild(new LinkedLabel<T>(labelRect, value, prefix, suffix,
@@ -60,7 +60,7 @@ void Client::initializeGearWindow(){
         xr.findAttr(elem, "cols", cols);
     }
     static const px_t
-        STATS_WIDTH = 120,
+        STATS_WIDTH = 100,
         STAT_X_GAP = 2;
 
     _gearWindow->rect(100, 100, w + STATS_WIDTH + 2 * STAT_X_GAP, h);
@@ -85,15 +85,19 @@ void Client::initializeGearWindow(){
 
     // Stats
     auto y = labelRect.y;
-    addStat("Max health", _stats.health, {}, {}, y, _gearWindow);
-    addStat("Max energy", _stats.energy, {}, {}, y, _gearWindow);
-    addStat("Health regen", _stats.hps, {}, "/s", y, _gearWindow);
-    addStat("Energy regen", _stats.eps, {}, "/s", y, _gearWindow);
-    addStat("Hit chance", _stats.hit, {}, "%", y, _gearWindow);
-    addStat("Crit chance", _stats.crit, {}, "%", y, _gearWindow);
-    addStat("Magic damage", _stats.magicDamage, "+", {}, y, _gearWindow);
-    addStat("Weapon damage", _stats.attack, {}, {}, y, _gearWindow);
-    addStat("Speed", _stats.speed, {}, {}, y, _gearWindow);
+    addStat("Max health",       _stats.health,      {},     {},     y, _gearWindow);
+    addStat("Max energy",       _stats.energy,      {},     {},     y, _gearWindow);
+    addStat("Health regen",     _stats.hps,         {},     "/s",   y, _gearWindow);
+    addStat("Energy regen",     _stats.eps,         {},     "/s",   y, _gearWindow);
+    addStat("Hit chance",       _stats.hit,         {},     "%",    y, _gearWindow);
+    addStat("Crit chance",      _stats.crit,        {},     "%",    y, _gearWindow);
+    addStat("Air resistance",   _stats.airResist,   {},     "%",    y, _gearWindow);
+    addStat("Earth resistance", _stats.earthResist, {},     "%",    y, _gearWindow);
+    addStat("Fire resistance",  _stats.fireResist,  {},     "%",    y, _gearWindow);
+    addStat("Water resistance", _stats.waterResist, {},     "%",    y, _gearWindow);
+    addStat("Magic damage",     _stats.magicDamage, "+",    {},     y, _gearWindow);
+    addStat("Weapon damage",    _stats.attack,      {},     {},     y, _gearWindow);
+    addStat("Speed",            _stats.speed,       {},     {},     y, _gearWindow);
 
     y += 2;
     _gearWindow->height(y);

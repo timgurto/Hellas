@@ -11,6 +11,10 @@ Stats &Stats::operator+=(const Stats &rhs){
     hit += rhs.hit;
     crit += rhs.crit;
     magicDamage += rhs.magicDamage;
+    airResist += rhs.airResist;
+    earthResist += rhs.earthResist;
+    fireResist += rhs.fireResist;
+    waterResist += rhs.waterResist;
     attack += rhs.attack;
     attackTime += rhs.attackTime;
     speed += rhs.speed;
@@ -56,6 +60,18 @@ const Stats &Stats::operator&=(const StatsMod &mod){
         crit += mod.crit;
 
     magicDamage += mod.magicDamage; // Can be negative.
+
+    airResist += mod.airResist;
+    if (airResist < 0) airResist = 0;
+
+    earthResist += mod.earthResist;
+    if (earthResist < 0) earthResist = 0;
+
+    fireResist += mod.fireResist;
+    if (fireResist < 0) fireResist = 0;
+
+    waterResist += mod.waterResist;
+    if (waterResist < 0) waterResist = 0;
 
     if (mod.attack < 0 && -mod.attack > static_cast<int>(attack))
         attack = 0;

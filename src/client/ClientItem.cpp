@@ -98,6 +98,14 @@ const Texture &ClientItem::tooltip() const{
             tb.addLine("+" + toString(_stats.crit) + "% crit");
         if (_stats.magicDamage > 0)
             tb.addLine("+" + toString(_stats.magicDamage) + " magic damage");
+        if (_stats.airResist > 0)
+            tb.addLine("+" + toString(_stats.airResist) + "% air resistance");
+        if (_stats.earthResist > 0)
+            tb.addLine("+" + toString(_stats.earthResist) + "% earth resistance");
+        if (_stats.fireResist > 0)
+            tb.addLine("+" + toString(_stats.fireResist) + "% fire resistance");
+        if (_stats.waterResist > 0)
+            tb.addLine("+" + toString(_stats.waterResist) + "% water resistance");
         if (_stats.attack > 0)
             tb.addLine("+" + toString(_stats.attack) + " attack");
         if (_stats.attackTime != 1)

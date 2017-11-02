@@ -67,6 +67,10 @@ void User::init(){
     BASE_STATS.hit = 0;
     BASE_STATS.crit = 5;
     BASE_STATS.magicDamage = 0;
+    BASE_STATS.airResist = 0;
+    BASE_STATS.earthResist = 0;
+    BASE_STATS.fireResist = 0;
+    BASE_STATS.waterResist = 0;
     BASE_STATS.attack = 8;
     BASE_STATS.attackTime = 1000;
     BASE_STATS.speed = 80.0;
@@ -523,6 +527,11 @@ void User::updateStats(){
             _stats.crit
         ), makeArgs(
             _stats.magicDamage,
+            _stats.airResist,
+            _stats.earthResist,
+            _stats.fireResist,
+            _stats.waterResist
+        ), makeArgs(
             _stats.attack,
             _stats.attackTime,
             _stats.speed

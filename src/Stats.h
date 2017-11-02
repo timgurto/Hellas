@@ -18,7 +18,11 @@ struct Stats{
 
     Percentage
         crit = 0,
-        hit = 0;
+        hit = 0,
+        airResist = 0,
+        earthResist = 0,
+        fireResist = 0,
+        waterResist = 0;
 
     BonusDamage
         magicDamage = 0;
@@ -49,7 +53,11 @@ struct StatsMod{
         magicDamage = 0;
     Percentage
         crit = 0,
-        hit = 0;
+        hit = 0,
+        airResist = 0,
+        earthResist = 0,
+        fireResist = 0,
+        waterResist = 0;
 
     // Multiplicative
     double
