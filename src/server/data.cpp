@@ -455,9 +455,8 @@ void Server::loadData(const std::string &path){
                 continue; // ID and name are mandatory.
             ServerItem item(id);
 
-            auto stackSize = 1;
-            xr.findAttr(elem, "stackSize", stackSize);
-            item.stackSize(stackSize);
+            auto stackSize = size_t{ 1 };
+            if (xr.findAttr(elem, "stackSize", stackSize)) item.stackSize(stackSize);
 
             std::string s;
             if (xr.findAttr(elem, "constructs", s)) {

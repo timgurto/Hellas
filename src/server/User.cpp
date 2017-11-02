@@ -122,9 +122,12 @@ size_t User::giveItem(const ServerItem *item, size_t quantity){
         for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
             if (_inventory[i].first != nullptr)
                 continue;
+            assert(remaining > 0);
+            assert(item->stackSize() > 0);
             size_t qtyInThisSlot = min(item->stackSize(), remaining);
             _inventory[i].first = item;
             _inventory[i].second = qtyInThisSlot;
+            Server::debug()("Quantity placed in slot: "s + toString(qtyInThisSlot));
             Server::instance().sendInventoryMessage(*this, i, Server::INVENTORY);
             remaining -= qtyInThisSlot;
             if (remaining == 0)

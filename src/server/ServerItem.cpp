@@ -3,7 +3,6 @@
 
 ServerItem::ServerItem(const std::string &idArg):
     Item(idArg),
-    _stackSize(0),
     _constructsObject(nullptr)
 {}
 

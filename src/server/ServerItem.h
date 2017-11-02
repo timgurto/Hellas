@@ -13,7 +13,7 @@ class ObjectType;
 
 // Describes an item type
 class ServerItem : public Item{
-    size_t _stackSize;
+    size_t _stackSize = 1;
 
     // The object that this item can construct
     const ObjectType *_constructsObject;
