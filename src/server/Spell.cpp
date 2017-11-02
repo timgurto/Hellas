@@ -10,6 +10,7 @@ void Spell::setFunction(const std::string & functionName) {
         _function = it->second;
 }
 
+
 CombatResult Spell::performAction(Entity &caster, Entity &target) const {
     if (_function == nullptr)
         return FAIL;

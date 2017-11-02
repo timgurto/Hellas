@@ -22,8 +22,14 @@ const Texture &ClientSpell::tooltip() const {
 
     tb.addGap();
 
+    if (_school.isMagic()) {
+        tb.setColor(_school.color());
+        tb.addLine(_school);
+    }
+
     tb.setColor(Color::ITEM_STATS);
     tb.addLine("Energy cost: "s + toString(_cost));
+    
     if (!_isAoE)
         tb.addLine("Range: "s + toString(_range) + " podes"s);
 
@@ -42,7 +48,7 @@ std::string ClientSpell::createEffectDescription() const {
         "target"s;
 
     if (_effectName == "doDirectDamage")
-        oss << "Deals " << _effectArgs[0] << " damage to " << targetString << ".";
+        oss << "Deals " << _effectArgs[0] << " " + _school + " damage to " << targetString << ".";
 
     else if (_effectName == "heal")
         oss << "Restores " << _effectArgs[0] << " health to target.";

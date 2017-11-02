@@ -168,6 +168,7 @@
     <ClCompile Include="src\server\ItemSet.cpp" />
     <ClCompile Include="src\server\Recipe.cpp" />
     <ClCompile Include="src\Socket.cpp" />
+    <ClCompile Include="src\SpellSchool.cpp" />
     <ClCompile Include="src\Stats.cpp" />
     <ClCompile Include="src\Terrain.cpp" />
     <ClCompile Include="src\types.cpp" />
@@ -244,6 +245,7 @@
     <ClInclude Include="src\server\ItemSet.h" />
     <ClInclude Include="src\server\Recipe.h" />
     <ClInclude Include="src\Socket.h" />
+    <ClInclude Include="src\SpellSchool.h" />
     <ClInclude Include="src\Stats.h" />
     <ClInclude Include="src\Terrain.h" />
     <ClInclude Include="src\types.h" />

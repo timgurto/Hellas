@@ -59,7 +59,12 @@ Color
     Color::ENERGY,
     Color::PLAYER_NAME_OUTLINE,
     Color::OUTLINE,
-    Color::HIGHLIGHT_OUTLINE;
+    Color::HIGHLIGHT_OUTLINE,
+    
+    Color::AIR,
+    Color::EARTH,
+    Color::FIRE,
+    Color::WATER;
 
 const Color Color::GREY_2 (0x80, 0x80, 0x80);
 const Color Color::GREY_4 (0x40, 0x40, 0x40);

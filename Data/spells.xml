@@ -2,7 +2,7 @@
 
 <root>
 
-<spell id="fireball" name="Fireball" cost=20 range=30 >
+<spell id="fireball" name="Fireball" cost=20 range=30 school="fire" >
     <aesthetics projectile="fireball" sounds="fireball" impactParticles="fire" />
     <targets enemy=1 />
     <function name="doDirectDamage" a=10 />

@@ -5,6 +5,7 @@
 
 #include "Entity.h"
 #include "../Podes.h"
+#include "../SpellSchool.h"
 #include "../types.h"
 
 class Spell {
@@ -30,6 +31,7 @@ public:
     void radius(Podes r) { _range = r.toPixels(); _targetsInArea = true; }
     px_t range() const { return _range; }
     bool isAoE() const { return _targetsInArea; }
+    void school(SpellSchool school) { _school = school; }
     bool shouldPlayDefenseSound() const { return aggressionMap[_function]; }
 
 private:
@@ -50,6 +52,7 @@ private:
     Energy _cost = 0;
     px_t _range = Podes::MELEE_RANGE.toPixels();
     bool _targetsInArea = false;
+    SpellSchool _school;
 
     using ValidTargets = std::vector<bool>;
     ValidTargets _validTargets = ValidTargets(NUM_TARGET_TYPES, false);

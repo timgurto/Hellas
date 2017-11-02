@@ -149,6 +149,10 @@ void Client::loadData(const std::string &path){
             auto cost = Energy{};
             if (xr.findAttr(elem, "cost", cost)) newSpell->cost(cost);
 
+            auto school = SpellSchool{};
+            if (xr.findAttr(elem, "school", school))
+                newSpell->school(school);
+
             auto range = Podes{0};
             if (xr.findAttr(elem, "range", range)) newSpell->range(range);
             else if (xr.findAttr(elem, "radius", range)) newSpell->radius(range);

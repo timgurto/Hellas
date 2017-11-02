@@ -66,7 +66,13 @@ public:
         PLAYER_NAME_OUTLINE,
 
         OUTLINE,
-        HIGHLIGHT_OUTLINE;
+        HIGHLIGHT_OUTLINE,
+        
+        AIR,
+        EARTH,
+        FIRE,
+        WATER
+        ;
 
     static const Color GREY_2;
     static const Color GREY_4;

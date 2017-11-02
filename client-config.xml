@@ -95,5 +95,10 @@ Dark blue   3C388C
     
     outline="170A33"
     highlightOutline="E5E5E5"
+    
+    air="C4AAC0"
+    earth="357F51"
+    fire="BA6C62"
+    water="3478D8"
 />
 </root>

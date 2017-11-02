@@ -5,6 +5,7 @@
 
 #include "Projectile.h"
 #include "../Podes.h"
+#include "../SpellSchool.h"
 
 class ClientSpell {
 public:
@@ -25,6 +26,7 @@ public:
     void addEffectArg(int arg) { _effectArgs.push_back(arg); }
     void range(Podes r) { _range = r; }
     void radius(Podes r) { _range = r;  _isAoE = true; }
+    void school(SpellSchool school) { _school = school; }
 
 private:
     const Projectile::Type *_projectile = nullptr;
@@ -37,6 +39,7 @@ private:
     Energy _cost = 0;
     Podes _range = 0;
     bool _isAoE = false;
+    SpellSchool _school;
 
     std::string _effectName = {};
     std::vector<int> _effectArgs = {};

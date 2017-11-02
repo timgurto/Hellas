@@ -140,6 +140,7 @@
     <ClCompile Include="src\server\Wars.cpp" />
     <ClCompile Include="src\server\Yield.cpp" />
     <ClCompile Include="src\Socket.cpp" />
+    <ClCompile Include="src\SpellSchool.cpp" />
     <ClCompile Include="src\Stats.cpp" />
     <ClCompile Include="src\Terrain.cpp" />
     <ClCompile Include="src\types.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="src\server\Wars.h" />
     <ClInclude Include="src\server\Yield.h" />
     <ClInclude Include="src\Socket.h" />
+    <ClInclude Include="src\SpellSchool.h" />
     <ClInclude Include="src\Stats.h" />
     <ClInclude Include="src\Terrain.h" />
     <ClInclude Include="src\types.h" />
