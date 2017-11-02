@@ -59,6 +59,15 @@ bool Spell::isTargetValid(const Entity &caster, const Entity &target) const {
     return _validTargets[FRIENDLY];
 }
 
+Hitpoints Spell::chooseRandomSpellMagnitude(double raw) {
+    const auto STANDARD_DEVIATION_MULTIPLIER = double{ 0.1 };
+    auto sd = raw * STANDARD_DEVIATION_MULTIPLIER;
+    auto bellCurve = NormalVariable{ raw };
+    auto randomMagnitude = bellCurve.generate();
+    Server::debug()("Spell has "s + toString(randomMagnitude) + " "s + toString(toInt(randomMagnitude)) + " magnitude"s);
+    return toInt(randomMagnitude);
+}
+
 Spell::FlagMap Spell::aggressionMap = {
     { doDirectDamage, true },
     { heal, false }
@@ -80,11 +89,7 @@ CombatResult Spell::doDirectDamage(Entity &caster, Entity &target, const Args &a
     if (outcome == CRIT)
         rawDamage *= 2;
 
-    auto sd = rawDamage * 0.15;
-    auto damageBellCurve = NormalVariable{rawDamage};
-    auto randomDamage = damageBellCurve.generate();
-    auto damage = toInt(randomDamage);
-    Server::debug()("Spell doing "s + toString(damage) + " damage"s);
+    auto damage = chooseRandomSpellMagnitude(rawDamage);
 
     target.reduceHealth(damage);
     target.onAttackedBy(caster);
@@ -95,14 +100,13 @@ CombatResult Spell::doDirectDamage(Entity &caster, Entity &target, const Args &a
 CombatResult Spell::heal(Entity &caster, Entity &target, const Args &args) {
     auto outcome = caster.generateHit(HEAL);
 
-    switch (outcome) {
-    case CRIT:
-        target.healBy(args[0] * 2);
-        break;
-    case HIT:
-        target.healBy(args[0]);
-        break;
-    }
+    auto rawAmountToHeal = static_cast<double>(args[0]);
+
+    if (outcome == CRIT)
+        rawAmountToHeal *= 2;
+
+    auto amountToHeal = chooseRandomSpellMagnitude(rawAmountToHeal);
+    target.healBy(amountToHeal);
 
     return outcome;
 }

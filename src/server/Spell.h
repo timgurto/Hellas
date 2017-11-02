@@ -33,6 +33,7 @@ public:
     bool isAoE() const { return _targetsInArea; }
     void school(SpellSchool school) { _school = school; }
     bool shouldPlayDefenseSound() const { return aggressionMap[_function]; }
+    static Hitpoints chooseRandomSpellMagnitude(double raw);
 
 private:
     using Args = std::vector<int>;
