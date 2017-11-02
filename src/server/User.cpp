@@ -458,6 +458,21 @@ void User::sendGotHitMessageTo(const User & user) const {
     Server::_instance->sendMessage(user.socket(), SV_PLAYER_WAS_HIT, _name);
 }
 
+Percentage User::getResistance(SpellSchool school) const {
+    if (school == SpellSchool{ SpellSchool::PHYSICAL })
+        return 0; // TODO: Armor
+    if (school == SpellSchool::AIR)
+        return _stats.airResist;
+    if (school == SpellSchool::EARTH)
+        return _stats.earthResist;
+    if (school == SpellSchool::FIRE)
+        return _stats.fireResist;
+    if (school == SpellSchool::WATER)
+        return _stats.waterResist;
+    assert(false);
+    return 0;
+}
+
 void User::onHealthChange(){
     const Server &server = *Server::_instance;
     for (const User *userToInform: server.findUsersInArea(location()))

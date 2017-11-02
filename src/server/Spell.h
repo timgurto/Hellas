@@ -37,7 +37,7 @@ public:
 
 private:
     using Args = std::vector<int>;
-    using Function = CombatResult(*)(Entity &caster, Entity &target, const Args &args);
+    using Function = CombatResult(*)(const Spell &spell, Entity &caster, Entity &target, const Args &args);
 
     Function _function = nullptr;
     Args _args = {};
@@ -47,8 +47,8 @@ private:
     using FlagMap = std::map<Function, bool>;
     static FlagMap aggressionMap; // Ultimately, whether a defense sound should play.
 
-    static CombatResult doDirectDamage(Entity &caster, Entity &target, const Args &args);
-    static CombatResult heal(Entity &caster, Entity &target, const Args &args);
+    static CombatResult doDirectDamage(const Spell &spell, Entity &caster, Entity &target, const Args &args);
+    static CombatResult heal(const Spell &spell, Entity &caster, Entity &target, const Args &args);
 
     Energy _cost = 0;
     px_t _range = Podes::MELEE_RANGE.toPixels();

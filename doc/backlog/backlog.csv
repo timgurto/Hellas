@@ -233,7 +233,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 259,Fireball damage modified by magic-damage stat,3,2,Feature,246,TRUE,,2
 260,Energy-regen stat,3,2,Feature,247,TRUE,,2
 261,Health-regen stat,3,5,Feature,,TRUE,,2
-262,Fireball mitigated by fire-resistance stat,3,3,Feature,246,,,2
+262,Fireball mitigated by fire-resistance stat,3,3,Feature,246,TRUE,,2
 263,Chance for fireballs to crit,8,2,Feature,246,TRUE,,2
 264,Crit-chance stat,3,2,Feature,263,TRUE,,2
 265,A second spell,21,5,Feature,246,TRUE,,2
@@ -282,7 +282,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 308,Block-chance stat,5,2,Feature,307,,,2
 309,Block-value stat,3,2,Feature,307,,,2
 310,Physical-damage stat,3,2,Feature,,,,2
-311,Water/air/earth-resistance stats,3,2,Feature,262,,,2
+311,Water/air/earth-resistance stats,3,2,Feature,262,TRUE,,2
 312,Armour-class stat,5,8,Feature,,,,2
 313,NPCs have threat tables to dictate target,13,34,Feature,,,,2
 314,Threat % stat,2,3,Feature,313,,,2

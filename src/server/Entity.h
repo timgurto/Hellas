@@ -10,6 +10,7 @@
 #include "../Message.h"
 #include "../Point.h"
 #include "../Rect.h"
+#include "../SpellSchool.h"
 #include "../types.h"
 
 class Spawner;
@@ -87,6 +88,7 @@ public:
         static bool combatTypeCanHaveOutcome(CombatType type, CombatResult outcome);
     virtual void sendGotHitMessageTo(const User &user) const;
     virtual BonusDamage bonusMagicDamage() const { return 0; }
+    virtual Percentage getResistance(SpellSchool school) const { return 0; }
 
     Hitpoints health() const {return _health; }
     Energy energy() const { return _energy; }

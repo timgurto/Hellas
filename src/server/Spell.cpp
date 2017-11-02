@@ -40,7 +40,7 @@ CombatResult Spell::performAction(Entity &caster, Entity &target) const {
         return FAIL;
     }
 
-    return _function(caster, target, _args);
+    return _function(*this, caster, target, _args);
 }
 
 bool Spell::isTargetValid(const Entity &caster, const Entity &target) const {
@@ -64,7 +64,6 @@ Hitpoints Spell::chooseRandomSpellMagnitude(double raw) {
     auto sd = raw * STANDARD_DEVIATION_MULTIPLIER;
     auto bellCurve = NormalVariable{ raw, sd };
     auto randomMagnitude = bellCurve.generate();
-    Server::debug()("Spell has "s + toString(randomMagnitude) + " "s + toString(toInt(randomMagnitude)) + " magnitude"s);
     return toInt(randomMagnitude);
 }
 
@@ -78,7 +77,7 @@ Spell::FunctionMap Spell::functionMap = {
     { "heal", heal }
 };
 
-CombatResult Spell::doDirectDamage(Entity &caster, Entity &target, const Args &args) {
+CombatResult Spell::doDirectDamage(const Spell &spell, Entity &caster, Entity &target, const Args &args) {
     auto outcome = caster.generateHit(DAMAGE);
     if (outcome == MISS)
         return MISS;
@@ -89,6 +88,10 @@ CombatResult Spell::doDirectDamage(Entity &caster, Entity &target, const Args &a
     if (outcome == CRIT)
         rawDamage *= 2;
 
+    auto resistance = target.getResistance(spell._school);
+    auto resistanceMultiplier = (100 - resistance) / 100.0;
+    rawDamage += resistanceMultiplier;
+
     auto damage = chooseRandomSpellMagnitude(rawDamage);
 
     target.reduceHealth(damage);
@@ -97,7 +100,7 @@ CombatResult Spell::doDirectDamage(Entity &caster, Entity &target, const Args &a
     return outcome;
 }
 
-CombatResult Spell::heal(Entity &caster, Entity &target, const Args &args) {
+CombatResult Spell::heal(const Spell &spell, Entity &caster, Entity &target, const Args &args) {
     auto outcome = caster.generateHit(HEAL);
 
     auto rawAmountToHeal = static_cast<double>(args[0]);

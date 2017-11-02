@@ -135,6 +135,7 @@ public:
     CombatResult generateHit(CombatType type) const override;
     void sendGotHitMessageTo(const User &user) const override;
     BonusDamage bonusMagicDamage() const override { return _stats.magicDamage; }
+    Percentage getResistance(SpellSchool school) const override;
 
     char classTag() const override { return 'u'; }
 

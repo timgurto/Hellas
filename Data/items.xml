@@ -11,24 +11,6 @@
  6 right hand
  7 left hand
 -->
-	
-<!-- Test -->
-<item id="ring" name="Ring" gearSlot="1" >
-    <stats
-        health="5"
-        energy="5"
-        hps="5"
-        eps="5"
-        hit="5"
-        crit="5"
-        magicDamage="5"
-        airResist="5"
-        earthResist="5"
-        fireResist="5"
-        waterResist="5"
-        
-    />
-</item>
 
 <item id="log"          name="Log"                               stackSize="5"  strength="4" />
 <item id="tin"          name="Tin Ore"                           stackSize="10" strength="4" />
@@ -188,13 +170,13 @@
 	<item id="copperHelmet" name="Copper Helmet" gearSlot="0" >
 		<stats health="18" />
 	</item>
-	
+
 	<!-- Shoulders -->
 		<item id="hide" name="Animal Hide" gearSlot="3" sounds="leather" >
 			<stats health="3" />
 			<offset x="-4" y="-1" />
 		</item>
-	
+
 	<!-- Body -->
 		<!-- Lamellar -->
 			<item id="leatherLamellar" name="Leather Lamellar" gearSlot="2" sounds="leather" >
@@ -208,7 +190,7 @@
 			<item id="copperLamellar" name="Copper Lamellar" gearSlot="2" sounds="mailArmor" >
 				<stats health="28" />
 			</item>
-			
+
 		<!-- Hauberk -->
 			<item id="tinHauberk" name="Tin Hauberk" gearSlot="2" sounds="mailArmor" >
 				<stats health="22" />
@@ -216,7 +198,7 @@
 			<item id="copperHauberk" name="Copper Hauberk" gearSlot="2" sounds="mailArmor" >
 				<stats health="30" />
 			</item>
-		
+
 		<!-- Cuirass -->
 			<item id="linothorax" name="Linothorax Armor" gearSlot="2" >
 				<stats health="6" />
@@ -224,14 +206,14 @@
 			<item id="copperCuirass" name="Copper Cuirass" gearSlot="2" >
 				<stats health="32" />
 			</item>
-	
+
 	<!-- Hands -->
 	<item id="leatherGloves" name="Leather Gloves" gearSlot="4" sounds="leather" >
 		<stats health="3" />
         <offset x="-2" y="1" />
 		<tag name="gloves" />
 	</item>
-	
+
 	<!-- Feet -->
 	<item id="sandals" name="Sandals" gearSlot="5" sounds="leather" >
 		<stats health="7" speed="1.1" />
@@ -240,7 +222,7 @@
 	<item id="copperGreaves" name="Copper Greaves" gearSlot="5" >
 		<stats health="14" />
 	</item>
-	
+
 	<!-- Left hand -->
 	<item id="leatherShield" name="Wooden Shield" gearSlot="7" >
 		<stats health="18" />
@@ -249,5 +231,23 @@
 	<item id="tinShield" name="Tin Shield" gearSlot="7" >
 		<stats health="27" />
 	</item>
+
+<!-- Test -->
+<item id="ring" name="Ring" gearSlot="1" >
+    <stats
+        health="5"
+        energy="5"
+        hps="5"
+        eps="5"
+        hit="5"
+        crit="5"
+        magicDamage="5"
+        airResist="5"
+        earthResist="5"
+        fireResist="40"
+        waterResist="5"
+
+    />
+</item>
 
 </root>
