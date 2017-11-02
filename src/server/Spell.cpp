@@ -74,9 +74,18 @@ CombatResult Spell::doDirectDamage(Entity &caster, Entity &target, const Args &a
     if (outcome == MISS)
         return MISS;
 
-    auto damage = args[0] + caster.bonusMagicDamage();
+    auto rawDamage = static_cast<double>(args[0]);
+    rawDamage += caster.bonusMagicDamage();
+
     if (outcome == CRIT)
-        damage *= 2;
+        rawDamage *= 2;
+
+    auto sd = rawDamage * 0.15;
+    auto damageBellCurve = NormalVariable{rawDamage};
+    auto randomDamage = damageBellCurve.generate();
+    auto damage = toInt(randomDamage);
+    Server::debug()("Spell doing "s + toString(damage) + " damage"s);
+
     target.reduceHealth(damage);
     target.onAttackedBy(caster);
 
