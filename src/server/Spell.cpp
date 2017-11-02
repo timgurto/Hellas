@@ -62,7 +62,7 @@ bool Spell::isTargetValid(const Entity &caster, const Entity &target) const {
 Hitpoints Spell::chooseRandomSpellMagnitude(double raw) {
     const auto STANDARD_DEVIATION_MULTIPLIER = double{ 0.1 };
     auto sd = raw * STANDARD_DEVIATION_MULTIPLIER;
-    auto bellCurve = NormalVariable{ raw };
+    auto bellCurve = NormalVariable{ raw, sd };
     auto randomMagnitude = bellCurve.generate();
     Server::debug()("Spell has "s + toString(randomMagnitude) + " "s + toString(toInt(randomMagnitude)) + " magnitude"s);
     return toInt(randomMagnitude);
