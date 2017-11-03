@@ -967,16 +967,20 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_YOUR_STATS:
         {
-            singleMsg >> _stats.health
+            singleMsg >> _stats.armor
+                >> del >> _stats.health
                 >> del >> _stats.energy
                 >> del >> _stats.hps
                 >> del >> _stats.eps
                 >> del >> _stats.hit
                 >> del >> _stats.crit
+                >> del >> _stats.critResist
                 >> del >> _stats.dodge
                 >> del >> _stats.block
                 >> del >> _stats.blockValue
                 >> del >> _stats.magicDamage
+                >> del >> _stats.physicalDamage
+                >> del >> _stats.healing
                 >> del >> _stats.airResist
                 >> del >> _stats.earthResist
                 >> del >> _stats.fireResist

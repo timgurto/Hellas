@@ -18,8 +18,10 @@ struct Stats{
         eps = 0;
 
     Percentage
+        armor = 0,
         hit = 0,
         crit = 0,
+        critResist = 0,
         dodge = 0,
         block = 0,
         airResist = 0,
@@ -28,7 +30,9 @@ struct Stats{
         waterResist = 0;
 
     BonusDamage
-        magicDamage = 0;
+        magicDamage = 0,
+        physicalDamage = 0,
+        healing = 0;
 
     ms_t
         attackTime = 0;
@@ -47,6 +51,7 @@ struct Stats{
 struct StatsMod{
     // Additive
     int
+        armor = 0,
         health = 0,
         hps = 0,
         energy = 0,
@@ -54,10 +59,13 @@ struct StatsMod{
         attack = 0,
         blockValue = 0;
     BonusDamage
-        magicDamage = 0;
+        magicDamage = 0,
+        physicalDamage = 0,
+        healing = 0;
     Percentage
         hit = 0,
         crit = 0,
+        critResist = 0,
         dodge = 0,
         block = 0,
         airResist = 0,

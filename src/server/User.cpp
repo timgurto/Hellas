@@ -60,16 +60,20 @@ User::User(const Point &loc):
 {}
 
 void User::init(){
+    BASE_STATS.armor = 0;
     BASE_STATS.health = 100;
     BASE_STATS.energy = 100;
     BASE_STATS.hps = 1;
     BASE_STATS.eps = 1;
     BASE_STATS.hit = 0;
     BASE_STATS.crit = 0;
+    BASE_STATS.critResist = 0;
     BASE_STATS.dodge = 0;
     BASE_STATS.block = 0;
     BASE_STATS.blockValue = 0;
     BASE_STATS.magicDamage = 0;
+    BASE_STATS.physicalDamage = 0;
+    BASE_STATS.healing = 0;
     BASE_STATS.airResist = 0;
     BASE_STATS.earthResist = 0;
     BASE_STATS.fireResist = 0;
@@ -563,17 +567,22 @@ void User::updateStats(){
 
     auto args = makeArgs(
         makeArgs(
+            _stats.armor,
             _stats.health,
             _stats.energy,
             _stats.hps,
-            _stats.eps,
-            _stats.hit,
-            _stats.crit
+            _stats.eps
         ), makeArgs(
+            _stats.hit,
+            _stats.crit,
+            _stats.critResist,
             _stats.dodge,
             _stats.block,
-            _stats.blockValue,
-            _stats.magicDamage
+            _stats.blockValue
+        ), makeArgs(
+            _stats.magicDamage,
+            _stats.physicalDamage,
+            _stats.healing
         ), makeArgs(
             _stats.airResist,
             _stats.earthResist,

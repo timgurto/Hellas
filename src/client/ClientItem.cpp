@@ -84,6 +84,8 @@ const Texture &ClientItem::tooltip() const{
         tb.addGap();
         tb.setColor(Color::ITEM_STATS);
         tb.addLine("Gear: " + Client::GEAR_SLOT_NAMES[_gearSlot]);
+        if (_stats.armor > 0)
+            tb.addLine("+" + toString(_stats.armor) + "% armor");
         if (_stats.health > 0)
             tb.addLine("+" + toString(_stats.health) + " health");
         if (_stats.energy > 0)
@@ -96,6 +98,8 @@ const Texture &ClientItem::tooltip() const{
             tb.addLine("+" + toString(_stats.hit) + "% hit");
         if (_stats.crit > 0)
             tb.addLine("+" + toString(_stats.crit) + "% crit");
+        if (_stats.critResist > 0)
+            tb.addLine("-" + toString(_stats.critResist) + "% chance to be crit");
         if (_stats.dodge > 0)
             tb.addLine("+" + toString(_stats.dodge) + "% dodge");
         if (_stats.block > 0)
@@ -104,6 +108,10 @@ const Texture &ClientItem::tooltip() const{
             tb.addLine("+" + toString(_stats.dodge) + " block value");
         if (_stats.magicDamage > 0)
             tb.addLine("+" + toString(_stats.magicDamage) + " magic damage");
+        if (_stats.physicalDamage > 0)
+            tb.addLine("+" + toString(_stats.physicalDamage) + " physical damage");
+        if (_stats.healing > 0)
+            tb.addLine("+" + toString(_stats.healing) + " healing amount");
         if (_stats.airResist > 0)
             tb.addLine("+" + toString(_stats.airResist) + "% air resistance");
         if (_stats.earthResist > 0)

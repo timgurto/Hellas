@@ -12,6 +12,8 @@ Stats &Stats::operator+=(const Stats &rhs){
     crit += rhs.crit;
     dodge += rhs.dodge;
     magicDamage += rhs.magicDamage;
+    physicalDamage += rhs.physicalDamage;
+    healing += rhs.healing;
     airResist += rhs.airResist;
     earthResist += rhs.earthResist;
     fireResist += rhs.fireResist;
@@ -30,6 +32,9 @@ const Stats Stats::operator+(const Stats &rhs) const{
 }
 
 const Stats &Stats::operator&=(const StatsMod &mod){
+    armor += mod.armor;
+    if (armor < 0) armor = 0;
+
     if (mod.health < 0 && -mod.health > static_cast<int>(health))
         health = 0;
     else
@@ -56,6 +61,9 @@ const Stats &Stats::operator&=(const StatsMod &mod){
     crit += mod.crit;
     if (crit < 0) crit = 0;
 
+    critResist += mod.critResist;
+    if (critResist < 0) critResist = 0;
+
     dodge += mod.dodge;
     if (dodge < 0) dodge = 0;
 
@@ -67,7 +75,10 @@ const Stats &Stats::operator&=(const StatsMod &mod){
     else
         blockValue += mod.blockValue;
 
-    magicDamage += mod.magicDamage; // Can be negative.
+    // Can be negative.
+    magicDamage += mod.magicDamage;
+    physicalDamage += mod.physicalDamage;
+    healing += mod.healing;
 
     airResist += mod.airResist;
     if (airResist < 0) airResist = 0;

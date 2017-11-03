@@ -353,16 +353,20 @@ void Client::loadData(const std::string &path){
             auto statsElem = xr.findChild("stats", elem);
             if (statsElem != nullptr){
                 StatsMod stats;
+                xr.findAttr(statsElem, "armor", stats.armor);
                 xr.findAttr(statsElem, "health", stats.health);
                 xr.findAttr(statsElem, "energy", stats.energy);
                 xr.findAttr(statsElem, "hps", stats.hps);
                 xr.findAttr(statsElem, "eps", stats.eps);
                 xr.findAttr(statsElem, "hit", stats.hit);
                 xr.findAttr(statsElem, "crit", stats.crit);
+                xr.findAttr(statsElem, "critResist", stats.critResist);
                 xr.findAttr(statsElem, "dodge", stats.dodge);
                 xr.findAttr(statsElem, "block", stats.block);
                 xr.findAttr(statsElem, "blockValue", stats.blockValue);
                 xr.findAttr(statsElem, "magicDamage", stats.magicDamage);
+                xr.findAttr(statsElem, "physicalDamage", stats.physicalDamage);
+                xr.findAttr(statsElem, "healing", stats.healing);
                 xr.findAttr(statsElem, "airResist", stats.airResist);
                 xr.findAttr(statsElem, "earthResist", stats.earthResist);
                 xr.findAttr(statsElem, "fireResist", stats.fireResist);

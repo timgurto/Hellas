@@ -85,22 +85,25 @@ void Client::initializeGearWindow(){
 
     // Stats
     auto y = labelRect.y;
-    addStat("Max health",       _stats.health,      {},     {},     y, _gearWindow);
-    addStat("Max energy",       _stats.energy,      {},     {},     y, _gearWindow);
-    addStat("Health regen",     _stats.hps,         {},     "/s",   y, _gearWindow);
-    addStat("Energy regen",     _stats.eps,         {},     "/s",   y, _gearWindow);
-    addStat("Hit chance",       _stats.hit,         {},     "%",    y, _gearWindow);
-    addStat("Crit chance",      _stats.crit,        {},     "%",    y, _gearWindow);
-    addStat("Dodge chance",     _stats.dodge,       {},     "%",    y, _gearWindow);
-    addStat("Block chance",     _stats.block,       {},     "%",    y, _gearWindow);
-    addStat("Block value",      _stats.blockValue,  {},     {},     y, _gearWindow);
-    addStat("Air resistance",   _stats.airResist,   {},     "%",    y, _gearWindow);
-    addStat("Earth resistance", _stats.earthResist, {},     "%",    y, _gearWindow);
-    addStat("Fire resistance",  _stats.fireResist,  {},     "%",    y, _gearWindow);
-    addStat("Water resistance", _stats.waterResist, {},     "%",    y, _gearWindow);
-    addStat("Magic damage",     _stats.magicDamage, "+",    {},     y, _gearWindow);
-    addStat("Weapon damage",    _stats.attack,      {},     {},     y, _gearWindow);
-    addStat("Speed",            _stats.speed,       {},     {},     y, _gearWindow);
+    addStat("Max health",       _stats.health,          {},     {},     y, _gearWindow);
+    addStat("Max energy",       _stats.energy,          {},     {},     y, _gearWindow);
+    addStat("Health regen",     _stats.hps,             {},     "/s",   y, _gearWindow);
+    addStat("Energy regen",     _stats.eps,             {},     "/s",   y, _gearWindow);
+    addStat("Hit chance",       _stats.hit,             {},     "%",    y, _gearWindow);
+    addStat("Crit chance",      _stats.crit,            {},     "%",    y, _gearWindow);
+    addStat("Crit avoidance",   _stats.critResist,      {},     "%",    y, _gearWindow);
+    addStat("Dodge chance",     _stats.dodge,           {},     "%",    y, _gearWindow);
+    addStat("Block chance",     _stats.block,           {},     "%",    y, _gearWindow);
+    addStat("Block value",      _stats.blockValue,      {},     {},     y, _gearWindow);
+    addStat("Air resistance",   _stats.airResist,       {},     "%",    y, _gearWindow);
+    addStat("Earth resistance", _stats.earthResist,     {},     "%",    y, _gearWindow);
+    addStat("Fire resistance",  _stats.fireResist,      {},     "%",    y, _gearWindow);
+    addStat("Water resistance", _stats.waterResist,     {},     "%",    y, _gearWindow);
+    addStat("Physical damage",  _stats.physicalDamage,  "+",    {},     y, _gearWindow);
+    addStat("Magic damage",     _stats.magicDamage,     "+",    {},     y, _gearWindow);
+    addStat("Healing power",    _stats.healing,         "+",    {},     y, _gearWindow);
+    addStat("Weapon damage",    _stats.attack,          {},     {},     y, _gearWindow);
+    addStat("Speed",            _stats.speed,           {},     {},     y, _gearWindow);
 
     y += 2;
     _gearWindow->height(y);
