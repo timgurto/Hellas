@@ -79,8 +79,8 @@ Spell::FunctionMap Spell::functionMap = {
 
 CombatResult Spell::doDirectDamage(const Spell &spell, Entity &caster, Entity &target, const Args &args) {
     auto outcome = caster.generateHit(DAMAGE, spell._range);
-    if (outcome == MISS)
-        return MISS;
+    if (outcome == MISS || outcome == DODGE)
+        return outcome;
 
     auto rawDamage = static_cast<double>(args[0]);
     rawDamage += caster.bonusMagicDamage();

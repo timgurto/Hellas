@@ -1141,6 +1141,7 @@ void Client::handleMessage(const std::string &msg){
         }
 
         case SV_SHOW_MISS_AT:
+        case SV_SHOW_DODGE_AT:
         case SV_SHOW_CRIT_AT:
         {
             auto loc = Point{};
