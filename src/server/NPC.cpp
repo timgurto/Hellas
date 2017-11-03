@@ -16,6 +16,38 @@ void NPC::update(ms_t timeElapsed){
     }
 }
 
+CombatResult NPC::generateHit(CombatType type, px_t range) const {
+    const auto
+        MISS_CHANCE = Percentage{ 5 },
+        DODGE_CHANCE = Percentage{ 5 },
+        CRIT_CHANCE = Percentage{ 5 };
+
+    auto roll = rand() % 100;
+
+    // Miss
+    if (combatTypeCanHaveOutcome(type, MISS, range)) {
+        if (roll < MISS_CHANCE)
+            return MISS;
+        roll -= MISS_CHANCE;
+    }
+
+    // Dodge
+    if (combatTypeCanHaveOutcome(type, DODGE, range)) {
+        if (roll < DODGE_CHANCE)
+            return DODGE;
+        roll -= DODGE_CHANCE;
+    }
+
+    // Crit
+    if (combatTypeCanHaveOutcome(type, CRIT, range)) {
+        if (roll < CRIT_CHANCE)
+            return CRIT;
+        roll -= CRIT_CHANCE;
+    }
+
+    return HIT;
+}
+
 void NPC::onHealthChange(){
     const Server &server = *Server::_instance;
     for (const User *user: server.findUsersInArea(location()))

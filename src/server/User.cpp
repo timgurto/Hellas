@@ -431,7 +431,7 @@ px_t User::attackRange() const {
 CombatResult User::generateHit(CombatType type, px_t range) const {
     const auto
         BASE_MISS_CHANCE = Percentage{ 5 },
-        BASE_DODGE_CHANCE = Percentage{ 50 },
+        BASE_DODGE_CHANCE = Percentage{ 5 },
         BASE_CRIT_CHANCE = Percentage{ 5 };
 
     auto roll = rand() % 100;
