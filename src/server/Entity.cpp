@@ -139,7 +139,7 @@ void Entity::update(ms_t timeElapsed){
         const Server &server = Server::instance();
         Point locus = midpoint(location(), pTarget->location());
 
-        auto outcome = generateHit(DAMAGE, attackRange());
+        auto outcome = generateHitAgainst(*pTarget, DAMAGE, attackRange());
 
         switch (outcome) {
         case MISS:

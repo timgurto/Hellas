@@ -50,20 +50,14 @@ const Stats &Stats::operator&=(const StatsMod &mod){
     else
         eps += mod.eps;
 
-    if (mod.hit < 0 && -mod.hit > static_cast<int>(hit))
-        hit = 0;
-    else
-        hit += mod.hit;
+    hit += mod.hit;
+    if (hit < 0) hit = 0;
 
-    if (mod.crit < 0 && -mod.crit > static_cast<int>(crit))
-        crit = 0;
-    else
-        crit += mod.crit;
+    crit += mod.crit;
+    if (crit < 0) crit = 0;
 
-    if (mod.dodge < 0 && -mod.dodge > static_cast<int>(dodge))
-        dodge = 0;
-    else
-        dodge += mod.dodge;
+    dodge += mod.dodge;
+    if (dodge < 0) dodge = 0;
 
     magicDamage += mod.magicDamage; // Can be negative.
 

@@ -16,10 +16,10 @@ void NPC::update(ms_t timeElapsed){
     }
 }
 
-CombatResult NPC::generateHit(CombatType type, px_t range) const {
+CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type, px_t range) const {
     const auto
         MISS_CHANCE = Percentage{ 5 },
-        DODGE_CHANCE = Percentage{ 5 },
+        BASE_DODGE_CHANCE = Percentage{ 5 },
         CRIT_CHANCE = Percentage{ 5 };
 
     auto roll = rand() % 100;
@@ -32,10 +32,11 @@ CombatResult NPC::generateHit(CombatType type, px_t range) const {
     }
 
     // Dodge
+    auto dodgeChance = BASE_DODGE_CHANCE + target.bonusDodge();
     if (combatTypeCanHaveOutcome(type, DODGE, range)) {
-        if (roll < DODGE_CHANCE)
+        if (roll < dodgeChance)
             return DODGE;
-        roll -= DODGE_CHANCE;
+        roll -= dodgeChance;
     }
 
     // Crit

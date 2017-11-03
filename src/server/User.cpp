@@ -429,7 +429,7 @@ px_t User::attackRange() const {
     return weapon->weaponRange();
 }
 
-CombatResult User::generateHit(CombatType type, px_t range) const {
+CombatResult User::generateHitAgainst(const Entity &target, CombatType type, px_t range) const {
     const auto
         BASE_MISS_CHANCE = Percentage{ 5 },
         BASE_DODGE_CHANCE = Percentage{ 5 },
@@ -447,7 +447,7 @@ CombatResult User::generateHit(CombatType type, px_t range) const {
     }
 
     // Dodge
-    auto dodgeChance = BASE_DODGE_CHANCE;
+    auto dodgeChance = BASE_DODGE_CHANCE + target.bonusDodge();
     if (combatTypeCanHaveOutcome( type, DODGE, range ))
     {
         if (roll < dodgeChance)
