@@ -3,6 +3,7 @@
 #include "../server/User.h"
 #include "ui/ContainerGrid.h"
 #include "ui/Label.h"
+#include "ui/Line.h"
 #include "ui/LinkedLabel.h"
 #include "ui/Window.h"
 
@@ -31,8 +32,8 @@ static void addStat(const std::string &label, const T &value,
     const std::string &prefix, const std::string &suffix, px_t &y,
     Element *gearWindow, Color &lineColor = Element::FONT_COLOR) {
     const auto
-        X = 38_px,
-        W = 100_px;
+        X = 40_px,
+        W = 98_px;
     auto labelRect = Rect{ X, y, W, Element::TEXT_HEIGHT };
     auto nameLabel = new Label(labelRect, label);
     nameLabel->setColor(lineColor);
@@ -42,6 +43,14 @@ static void addStat(const std::string &label, const T &value,
     gearWindow->addChild(valueLabel);
 
     y += Element::TEXT_HEIGHT;
+}
+
+static void addGap(px_t &y, Element *gearWindow){
+    const auto
+        X = 40_px,
+        W = 98_px;
+    gearWindow->addChild(new Line(X-2, y, W+4));
+    y += 2;
 }
 
 void Client::initializeGearWindow(){
@@ -75,16 +84,6 @@ void Client::initializeGearWindow(){
 
     // Stats display
     Rect labelRect(w + STAT_X_GAP, 0, STATS_WIDTH, Element::TEXT_HEIGHT);
-    
-    // Username
-    _gearWindow->addChild(new LinkedLabel<std::string>
-            (labelRect, _username, "", "", Element::CENTER_JUSTIFIED));
-    labelRect.y += Element::TEXT_HEIGHT;
-
-    // Class
-    _gearWindow->addChild(new LinkedLabel<std::string>
-            (labelRect, _character.getClass(), "", "", Element::CENTER_JUSTIFIED));    
-    labelRect.y += Element::TEXT_HEIGHT;
 
     // Stats
     auto y = labelRect.y;
@@ -92,8 +91,13 @@ void Client::initializeGearWindow(){
     addStat("Health regen",     _stats.hps,             {},     "/s",   y, _gearWindow, Color::COMBATANT_SELF);
     addStat("Max energy",       _stats.energy,          {},     {},     y, _gearWindow, Color::ENERGY);
     addStat("Energy regen",     _stats.eps,             {},     "/s",   y, _gearWindow, Color::ENERGY);
+    addGap(y, _gearWindow);
     addStat("Hit chance",       _stats.hit,             {},     "%",    y, _gearWindow);
     addStat("Crit chance",      _stats.crit,            {},     "%",    y, _gearWindow);
+    addStat("Physical damage",  _stats.physicalDamage,  "+",    {},     y, _gearWindow);
+    addStat("Magic damage",     _stats.magicDamage,     "+",    {},     y, _gearWindow);
+    addStat("Healing power",    _stats.healing,         "+",    {},     y, _gearWindow);
+    addGap(y, _gearWindow);
     addStat("Armor",            _stats.armor,           {},     "%",    y, _gearWindow);
     addStat("Crit avoidance",   _stats.critResist,      {},     "%",    y, _gearWindow);
     addStat("Dodge chance",     _stats.dodge,           {},     "%",    y, _gearWindow);
@@ -103,12 +107,12 @@ void Client::initializeGearWindow(){
     addStat("Earth resistance", _stats.earthResist,     {},     "%",    y, _gearWindow, Color::EARTH);
     addStat("Fire resistance",  _stats.fireResist,      {},     "%",    y, _gearWindow, Color::FIRE);
     addStat("Water resistance", _stats.waterResist,     {},     "%",    y, _gearWindow, Color::WATER);
-    addStat("Physical damage",  _stats.physicalDamage,  "+",    {},     y, _gearWindow);
-    addStat("Magic damage",     _stats.magicDamage,     "+",    {},     y, _gearWindow);
-    addStat("Healing power",    _stats.healing,         "+",    {},     y, _gearWindow);
+    addGap(y, _gearWindow);
     addStat("Weapon damage",    _stats.attack,          {},     {},     y, _gearWindow);
     addStat("Speed",            _stats.speed,           {},     {},     y, _gearWindow);
 
     y += 2;
     _gearWindow->height(y);
+
+    _gearWindow->addChild(new Line(w, 0, y, Element::VERTICAL));
 }
