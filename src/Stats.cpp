@@ -10,6 +10,7 @@ Stats &Stats::operator+=(const Stats &rhs){
     eps += rhs.eps;
     hit += rhs.hit;
     crit += rhs.crit;
+    dodge += rhs.dodge;
     magicDamage += rhs.magicDamage;
     airResist += rhs.airResist;
     earthResist += rhs.earthResist;
@@ -58,6 +59,11 @@ const Stats &Stats::operator&=(const StatsMod &mod){
         crit = 0;
     else
         crit += mod.crit;
+
+    if (mod.dodge < 0 && -mod.dodge > static_cast<int>(dodge))
+        dodge = 0;
+    else
+        dodge += mod.dodge;
 
     magicDamage += mod.magicDamage; // Can be negative.
 

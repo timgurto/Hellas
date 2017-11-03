@@ -490,6 +490,7 @@ void Server::loadData(const std::string &path){
                 xr.findAttr(statsElem, "eps", stats.eps);
                 xr.findAttr(statsElem, "hit", stats.hit);
                 xr.findAttr(statsElem, "crit", stats.crit);
+                xr.findAttr(statsElem, "dodge", stats.dodge);
                 xr.findAttr(statsElem, "magicDamage", stats.magicDamage);
                 xr.findAttr(statsElem, "airResist", stats.airResist);
                 xr.findAttr(statsElem, "earthResist", stats.earthResist);

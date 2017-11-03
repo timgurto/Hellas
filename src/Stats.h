@@ -17,8 +17,9 @@ struct Stats{
         eps = 0;
 
     Percentage
-        crit = 0,
         hit = 0,
+        crit = 0,
+        dodge =  0,
         airResist = 0,
         earthResist = 0,
         fireResist = 0,
@@ -52,8 +53,9 @@ struct StatsMod{
     BonusDamage
         magicDamage = 0;
     Percentage
-        crit = 0,
         hit = 0,
+        crit = 0,
+        dodge = 0,
         airResist = 0,
         earthResist = 0,
         fireResist = 0,

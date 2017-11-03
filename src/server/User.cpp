@@ -66,6 +66,7 @@ void User::init(){
     BASE_STATS.eps = 1;
     BASE_STATS.hit = 0;
     BASE_STATS.crit = 5;
+    BASE_STATS.dodge = 5;
     BASE_STATS.magicDamage = 0;
     BASE_STATS.airResist = 0;
     BASE_STATS.earthResist = 0;
@@ -552,6 +553,7 @@ void User::updateStats(){
             _stats.hit,
             _stats.crit
         ), makeArgs(
+            _stats.dodge,
             _stats.magicDamage,
             _stats.airResist,
             _stats.earthResist,
