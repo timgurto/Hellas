@@ -31,6 +31,12 @@ public:
     typedef std::list<Element*> children_t;
     static px_t TEXT_HEIGHT, ITEM_HEIGHT;
 
+    static Color
+        BACKGROUND_COLOR,
+        SHADOW_LIGHT,
+        SHADOW_DARK,
+        FONT_COLOR;
+
 private:
     static TTF_Font *_font;
 
@@ -54,11 +60,6 @@ private:
     static bool initialized;
 
 protected:
-    static Color
-        BACKGROUND_COLOR,
-        SHADOW_LIGHT,
-        SHADOW_DARK,
-        FONT_COLOR;
 
     children_t _children;
 

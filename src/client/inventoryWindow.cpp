@@ -29,14 +29,17 @@ void Client::initializeGearWindow(Client &client){
 template<typename T>
 static void addStat(const std::string &label, const T &value,
     const std::string &prefix, const std::string &suffix, px_t &y,
-    Element *gearWindow) {
+    Element *gearWindow, Color &lineColor = Element::FONT_COLOR) {
     const auto
         X = 38_px,
         W = 100_px;
     auto labelRect = Rect{ X, y, W, Element::TEXT_HEIGHT };
-    gearWindow->addChild(new Label(labelRect, label));
-    gearWindow->addChild(new LinkedLabel<T>(labelRect, value, prefix, suffix,
-        Element::RIGHT_JUSTIFIED));
+    auto nameLabel = new Label(labelRect, label);
+    nameLabel->setColor(lineColor);
+    gearWindow->addChild(nameLabel);
+    auto valueLabel = new LinkedLabel<T>(labelRect, value, prefix, suffix, Element::RIGHT_JUSTIFIED);
+    valueLabel->setColor(lineColor);
+    gearWindow->addChild(valueLabel);
 
     y += Element::TEXT_HEIGHT;
 }
@@ -85,20 +88,21 @@ void Client::initializeGearWindow(){
 
     // Stats
     auto y = labelRect.y;
-    addStat("Max health",       _stats.health,          {},     {},     y, _gearWindow);
-    addStat("Max energy",       _stats.energy,          {},     {},     y, _gearWindow);
-    addStat("Health regen",     _stats.hps,             {},     "/s",   y, _gearWindow);
-    addStat("Energy regen",     _stats.eps,             {},     "/s",   y, _gearWindow);
+    addStat("Max health",       _stats.health,          {},     {},     y, _gearWindow, Color::COMBATANT_SELF);
+    addStat("Health regen",     _stats.hps,             {},     "/s",   y, _gearWindow, Color::COMBATANT_SELF);
+    addStat("Max energy",       _stats.energy,          {},     {},     y, _gearWindow, Color::ENERGY);
+    addStat("Energy regen",     _stats.eps,             {},     "/s",   y, _gearWindow, Color::ENERGY);
     addStat("Hit chance",       _stats.hit,             {},     "%",    y, _gearWindow);
     addStat("Crit chance",      _stats.crit,            {},     "%",    y, _gearWindow);
+    addStat("Armor",            _stats.armor,           {},     "%",    y, _gearWindow);
     addStat("Crit avoidance",   _stats.critResist,      {},     "%",    y, _gearWindow);
     addStat("Dodge chance",     _stats.dodge,           {},     "%",    y, _gearWindow);
     addStat("Block chance",     _stats.block,           {},     "%",    y, _gearWindow);
     addStat("Block value",      _stats.blockValue,      {},     {},     y, _gearWindow);
-    addStat("Air resistance",   _stats.airResist,       {},     "%",    y, _gearWindow);
-    addStat("Earth resistance", _stats.earthResist,     {},     "%",    y, _gearWindow);
-    addStat("Fire resistance",  _stats.fireResist,      {},     "%",    y, _gearWindow);
-    addStat("Water resistance", _stats.waterResist,     {},     "%",    y, _gearWindow);
+    addStat("Air resistance",   _stats.airResist,       {},     "%",    y, _gearWindow, Color::AIR);
+    addStat("Earth resistance", _stats.earthResist,     {},     "%",    y, _gearWindow, Color::EARTH);
+    addStat("Fire resistance",  _stats.fireResist,      {},     "%",    y, _gearWindow, Color::FIRE);
+    addStat("Water resistance", _stats.waterResist,     {},     "%",    y, _gearWindow, Color::WATER);
     addStat("Physical damage",  _stats.physicalDamage,  "+",    {},     y, _gearWindow);
     addStat("Magic damage",     _stats.magicDamage,     "+",    {},     y, _gearWindow);
     addStat("Healing power",    _stats.healing,         "+",    {},     y, _gearWindow);
