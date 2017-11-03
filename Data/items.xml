@@ -227,9 +227,11 @@
 	<item id="leatherShield" name="Wooden Shield" gearSlot="7" >
 		<stats health="18" />
 		<offset x="-4" y="-10" />
+        <tag name="shield" />
 	</item>
 	<item id="tinShield" name="Tin Shield" gearSlot="7" >
 		<stats health="27" />
+        <tag name="shield" />
 	</item>
 
 <!-- Test -->

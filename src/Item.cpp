@@ -1,7 +1,5 @@
 #include "Item.h"
 
-const size_t Item::WEAPON_SLOT = 6;
-
 Item::Item(const std::string &id):
     _id(id),
     _strength(0)

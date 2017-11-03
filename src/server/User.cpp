@@ -429,17 +429,18 @@ px_t User::attackRange() const {
     return weapon->weaponRange();
 }
 
-CombatResult User::generateHitAgainst(const Entity &target, CombatType type, px_t range) const {
+CombatResult User::generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const {
     const auto
         BASE_MISS_CHANCE = Percentage{ 5 },
         BASE_DODGE_CHANCE = Percentage{ 5 },
+        BASE_BLOCK_CHANCE = Percentage{ 5 },
         BASE_CRIT_CHANCE = Percentage{ 5 };
 
     auto roll = rand() % 100;
 
     // Miss
     auto missChance = max( BASE_MISS_CHANCE - _stats.hit, 0 );
-    if (combatTypeCanHaveOutcome( type, MISS, range ))
+    if (combatTypeCanHaveOutcome( type, MISS, school, range))
     {
         if (roll < missChance)
             return MISS;
@@ -448,16 +449,23 @@ CombatResult User::generateHitAgainst(const Entity &target, CombatType type, px_
 
     // Dodge
     auto dodgeChance = BASE_DODGE_CHANCE + target.bonusDodge();
-    if (combatTypeCanHaveOutcome( type, DODGE, range ))
-    {
+    if (combatTypeCanHaveOutcome(type, DODGE, school, range)) {
         if (roll < dodgeChance)
             return DODGE;
         roll -= dodgeChance;
     }
 
+    // Block
+    auto blockChance = BASE_BLOCK_CHANCE;
+    if (target.canBlock() && combatTypeCanHaveOutcome(type, BLOCK, school, range)) {
+        if (roll < blockChance)
+            return BLOCK;
+        roll -= blockChance;
+    }
+
     // Crit
     auto critChance = BASE_CRIT_CHANCE + _stats.crit;
-    if (combatTypeCanHaveOutcome(type, CRIT, range )) {
+    if (combatTypeCanHaveOutcome(type, CRIT, school, range)) {
         if (roll < critChance)
             return CRIT;
         roll -= critChance;
@@ -483,6 +491,13 @@ Percentage User::getResistance(SpellSchool school) const {
         return _stats.waterResist;
     assert(false);
     return 0;
+}
+
+bool User::canBlock() const {
+    auto offhandItem = _gear[Item::OFFHAND_SLOT].first;
+    if (offhandItem == nullptr)
+        return false;
+    return offhandItem->isTag("shield");
 }
 
 void User::onHealthChange(){

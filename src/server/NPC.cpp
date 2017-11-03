@@ -16,16 +16,17 @@ void NPC::update(ms_t timeElapsed){
     }
 }
 
-CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type, px_t range) const {
+CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const {
     const auto
         MISS_CHANCE = Percentage{ 5 },
         BASE_DODGE_CHANCE = Percentage{ 5 },
+        BLOCK_CHANCE = Percentage{ 5 },
         CRIT_CHANCE = Percentage{ 5 };
 
     auto roll = rand() % 100;
 
     // Miss
-    if (combatTypeCanHaveOutcome(type, MISS, range)) {
+    if (combatTypeCanHaveOutcome(type, MISS, school, range)) {
         if (roll < MISS_CHANCE)
             return MISS;
         roll -= MISS_CHANCE;
@@ -33,14 +34,22 @@ CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type, px_t
 
     // Dodge
     auto dodgeChance = BASE_DODGE_CHANCE + target.bonusDodge();
-    if (combatTypeCanHaveOutcome(type, DODGE, range)) {
+    if (combatTypeCanHaveOutcome(type, DODGE, school, range)) {
         if (roll < dodgeChance)
             return DODGE;
         roll -= dodgeChance;
     }
 
+    // Block
+    auto blockChance = BLOCK_CHANCE;
+    if (target.canBlock() && combatTypeCanHaveOutcome(type, BLOCK, school, range)) {
+        if (roll < blockChance)
+            return BLOCK;
+        roll -= blockChance;
+    }
+
     // Crit
-    if (combatTypeCanHaveOutcome(type, CRIT, range)) {
+    if (combatTypeCanHaveOutcome(type, CRIT, school, range)) {
         if (roll < CRIT_CHANCE)
             return CRIT;
         roll -= CRIT_CHANCE;

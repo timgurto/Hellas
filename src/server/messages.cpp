@@ -1322,6 +1322,7 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
             break;
         case HIT:
         case CRIT:
+        case BLOCK:
             spellHit = true;
             break;
         default:
@@ -1345,10 +1346,13 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
             // Show notable outcomes
             switch (outcome) {
             case MISS:
-                sendMessage( user->socket(), SV_SHOW_MISS_AT, makeArgs( dst.x, dst.y ) );
+                sendMessage(user->socket(), SV_SHOW_MISS_AT, makeArgs(dst.x, dst.y));
                 break;
             case DODGE:
-                sendMessage( user->socket(), SV_SHOW_DODGE_AT, makeArgs( dst.x, dst.y ) );
+                sendMessage(user->socket(), SV_SHOW_DODGE_AT, makeArgs(dst.x, dst.y));
+                break;
+            case BLOCK:
+                sendMessage(user->socket(), SV_SHOW_BLOCK_AT, makeArgs(dst.x, dst.y));
                 break;
             case CRIT:
                 sendMessage(user->socket(), SV_SHOW_CRIT_AT, makeArgs(dst.x, dst.y));

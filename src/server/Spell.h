@@ -32,6 +32,7 @@ public:
     px_t range() const { return _range; }
     bool isAoE() const { return _targetsInArea; }
     void school(SpellSchool school) { _school = school; }
+    SpellSchool school() const { return _school; }
     bool shouldPlayDefenseSound() const { return aggressionMap[_function]; }
     static Hitpoints chooseRandomSpellMagnitude(double raw);
 

@@ -10,7 +10,9 @@
 
 class Item{
 public:
-    static const size_t WEAPON_SLOT;
+    static const size_t
+        WEAPON_SLOT = 6,
+        OFFHAND_SLOT = 7;
 
     Item(const std::string &id);
     virtual ~Item(){}

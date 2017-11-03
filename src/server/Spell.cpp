@@ -78,7 +78,7 @@ Spell::FunctionMap Spell::functionMap = {
 };
 
 CombatResult Spell::doDirectDamage(const Spell &spell, Entity &caster, Entity &target, const Args &args) {
-    auto outcome = caster.generateHitAgainst(target, DAMAGE, spell._range);
+    auto outcome = caster.generateHitAgainst(target, DAMAGE, spell.school(), spell._range);
     if (outcome == MISS || outcome == DODGE)
         return outcome;
 
@@ -94,6 +94,14 @@ CombatResult Spell::doDirectDamage(const Spell &spell, Entity &caster, Entity &t
 
     auto damage = chooseRandomSpellMagnitude(rawDamage);
 
+    if (outcome == BLOCK) {
+        const auto BLOCK_AMOUNT = Hitpoints{ 5 };
+        if (BLOCK_AMOUNT >= damage)
+            damage = 0;
+        else
+            damage -= BLOCK_AMOUNT;
+    }
+
     target.reduceHealth(damage);
     target.onAttackedBy(caster);
 
@@ -101,7 +109,7 @@ CombatResult Spell::doDirectDamage(const Spell &spell, Entity &caster, Entity &t
 }
 
 CombatResult Spell::heal(const Spell &spell, Entity &caster, Entity &target, const Args &args) {
-    auto outcome = caster.generateHitAgainst(target, HEAL, spell._range);
+    auto outcome = caster.generateHitAgainst(target, HEAL, spell.school(), spell._range);
 
     auto rawAmountToHeal = static_cast<double>(args[0]);
 

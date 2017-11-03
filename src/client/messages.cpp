@@ -1143,6 +1143,7 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_SHOW_MISS_AT:
         case SV_SHOW_DODGE_AT:
+        case SV_SHOW_BLOCK_AT:
         case SV_SHOW_CRIT_AT:
         {
             auto loc = Point{};
@@ -1383,8 +1384,9 @@ void Client::handle_SV_ENTITY_WAS_HIT(size_t serial) {
 void Client::handle_SV_SHOW_OUTCOME_AT(int msgCode, const Point & loc) {
     switch (msgCode) {
         case SV_SHOW_MISS_AT: addParticles("miss", loc); break;
+        case SV_SHOW_DODGE_AT: addParticles("dodge", loc); break;
+        case SV_SHOW_BLOCK_AT: addParticles("block", loc); break;
         case SV_SHOW_CRIT_AT: addParticles("crit", loc); break;
-        case SV_SHOW_DODGE_AT: addParticles( "dodge", loc ); break;
     }
 }
 

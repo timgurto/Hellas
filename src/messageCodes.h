@@ -284,6 +284,7 @@ enum MessageCode{
     // Arguments: x, y
     SV_SHOW_MISS_AT,
     SV_SHOW_DODGE_AT,
+    SV_SHOW_BLOCK_AT,
     SV_SHOW_CRIT_AT,
 
     // An object has an owner

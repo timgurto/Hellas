@@ -66,11 +66,15 @@ void Entity::markForRemoval(){
     Server::_instance->_entitiesToRemove.push_back(this);
 }
 
-bool Entity::combatTypeCanHaveOutcome(CombatType type, CombatResult outcome, px_t range) {
+bool Entity::combatTypeCanHaveOutcome(CombatType type, CombatResult outcome, SpellSchool school,
+        px_t range) {
     if (type == HEAL && outcome == MISS)
         return false;
     if (outcome == DODGE && range > Podes::MELEE_RANGE)
         return false;
+    if (outcome == BLOCK && school.isMagic())
+        return false;
+
     return true;
 }
 
@@ -139,26 +143,47 @@ void Entity::update(ms_t timeElapsed){
         const Server &server = Server::instance();
         Point locus = midpoint(location(), pTarget->location());
 
-        auto outcome = generateHitAgainst(*pTarget, DAMAGE, attackRange());
+        auto outcome = generateHitAgainst(*pTarget, DAMAGE, SpellSchool::PHYSICAL, attackRange());
 
         switch (outcome) {
+        // These cases return
         case MISS:
             for (const User *userToInform : server.findUsersInArea( locus ))
                 server.sendMessage( userToInform->socket(), SV_SHOW_MISS_AT, makeArgs(
                     pTarget->location().x, pTarget->location().y ) );
             return;
         case DODGE:
-            for (const User *userToInform : server.findUsersInArea( locus ))
-                server.sendMessage( userToInform->socket(), SV_SHOW_DODGE_AT, makeArgs(
-                    pTarget->location().x, pTarget->location().y ) );
+            for (const User *userToInform : server.findUsersInArea(locus))
+                server.sendMessage(userToInform->socket(), SV_SHOW_DODGE_AT, makeArgs(
+                    pTarget->location().x, pTarget->location().y));
             return;
+
+        // These cases continue on
         case CRIT:
-            pTarget->reduceHealth(attack() * 2);
+            for (const User *userToInform : server.findUsersInArea(locus))
+                server.sendMessage(userToInform->socket(), SV_SHOW_CRIT_AT, makeArgs(
+                    pTarget->location().x, pTarget->location().y));
             break;
-        case HIT:
-            pTarget->reduceHealth(attack());
+        case BLOCK:
+            for (const User *userToInform : server.findUsersInArea(locus))
+                server.sendMessage(userToInform->socket(), SV_SHOW_BLOCK_AT, makeArgs(
+                    pTarget->location().x, pTarget->location().y));
             break;
         }
+
+        auto damage = attack();
+        if (outcome == CRIT)
+            damage *= 2;
+
+        else if (outcome == BLOCK) {
+            const auto BLOCK_AMOUNT = Hitpoints{ 5 };
+            if (BLOCK_AMOUNT >= damage)
+                damage = 0;
+            else
+                damage -= BLOCK_AMOUNT;
+        }
+
+        pTarget->reduceHealth(damage);
 
         // Give target opportunity to react
         pTarget->onAttackedBy(*this);
