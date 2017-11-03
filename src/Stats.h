@@ -10,7 +10,8 @@ struct Stats{
     Hitpoints
         health = 0,
         hps = 0,
-        attack = 0;
+        attack = 0,
+        blockValue = 0;
 
     Energy
         energy = 0,
@@ -19,7 +20,8 @@ struct Stats{
     Percentage
         hit = 0,
         crit = 0,
-        dodge =  0,
+        dodge = 0,
+        block = 0,
         airResist = 0,
         earthResist = 0,
         fireResist = 0,
@@ -47,15 +49,17 @@ struct StatsMod{
     int
         health = 0,
         hps = 0,
-        attack = 0,
         energy = 0,
-        eps = 0;
+        eps = 0,
+        attack = 0,
+        blockValue = 0;
     BonusDamage
         magicDamage = 0;
     Percentage
         hit = 0,
         crit = 0,
         dodge = 0,
+        block = 0,
         airResist = 0,
         earthResist = 0,
         fireResist = 0,

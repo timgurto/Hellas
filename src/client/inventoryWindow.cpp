@@ -92,6 +92,8 @@ void Client::initializeGearWindow(){
     addStat("Hit chance",       _stats.hit,         {},     "%",    y, _gearWindow);
     addStat("Crit chance",      _stats.crit,        {},     "%",    y, _gearWindow);
     addStat("Dodge chance",     _stats.dodge,       {},     "%",    y, _gearWindow);
+    addStat("Block chance",     _stats.block,       {},     "%",    y, _gearWindow);
+    addStat("Block value",      _stats.blockValue,  {},     {},     y, _gearWindow);
     addStat("Air resistance",   _stats.airResist,   {},     "%",    y, _gearWindow);
     addStat("Earth resistance", _stats.earthResist, {},     "%",    y, _gearWindow);
     addStat("Fire resistance",  _stats.fireResist,  {},     "%",    y, _gearWindow);

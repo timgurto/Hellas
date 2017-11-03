@@ -360,6 +360,8 @@ void Client::loadData(const std::string &path){
                 xr.findAttr(statsElem, "hit", stats.hit);
                 xr.findAttr(statsElem, "crit", stats.crit);
                 xr.findAttr(statsElem, "dodge", stats.dodge);
+                xr.findAttr(statsElem, "block", stats.block);
+                xr.findAttr(statsElem, "blockValue", stats.blockValue);
                 xr.findAttr(statsElem, "magicDamage", stats.magicDamage);
                 xr.findAttr(statsElem, "airResist", stats.airResist);
                 xr.findAttr(statsElem, "earthResist", stats.earthResist);

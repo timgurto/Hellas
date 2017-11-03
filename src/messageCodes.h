@@ -320,7 +320,7 @@ enum MessageCode{
     SV_CONSTRUCTION_MATERIALS,
 
     // The user's stats
-    // Arguments: max health, energy, hps, eps, hit, crit, dodge, magicDamage,
+    // Arguments: max health, energy, hps, eps, hit, crit, dodge, block, blockValue, magicDamage,
     // airResist, earthResist, fireResist, waterResist, attack, attack time, speed
     SV_YOUR_STATS,
 

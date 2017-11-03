@@ -59,6 +59,14 @@ const Stats &Stats::operator&=(const StatsMod &mod){
     dodge += mod.dodge;
     if (dodge < 0) dodge = 0;
 
+    block += mod.block;
+    if (block < 0) block = 0;
+
+    if (mod.blockValue < 0 && -mod.blockValue > static_cast<int>(blockValue))
+        blockValue = 0;
+    else
+        blockValue += mod.blockValue;
+
     magicDamage += mod.magicDamage; // Can be negative.
 
     airResist += mod.airResist;

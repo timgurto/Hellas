@@ -244,10 +244,12 @@
         hit="5"
         crit="5"
         dodge="5"
+        block="5"
+        blockValue="5"
         magicDamage="5"
         airResist="5"
         earthResist="5"
-        fireResist="40"
+        fireResist="5"
         waterResist="5"
     />
 </item>

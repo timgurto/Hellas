@@ -98,6 +98,10 @@ const Texture &ClientItem::tooltip() const{
             tb.addLine("+" + toString(_stats.crit) + "% crit");
         if (_stats.dodge > 0)
             tb.addLine("+" + toString(_stats.dodge) + "% dodge");
+        if (_stats.block > 0)
+            tb.addLine("+" + toString(_stats.dodge) + "% block");
+        if (_stats.blockValue > 0)
+            tb.addLine("+" + toString(_stats.dodge) + " block value");
         if (_stats.magicDamage > 0)
             tb.addLine("+" + toString(_stats.magicDamage) + " magic damage");
         if (_stats.airResist > 0)

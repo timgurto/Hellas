@@ -65,8 +65,10 @@ void User::init(){
     BASE_STATS.hps = 1;
     BASE_STATS.eps = 1;
     BASE_STATS.hit = 0;
-    BASE_STATS.crit = 5;
-    BASE_STATS.dodge = 5;
+    BASE_STATS.crit = 0;
+    BASE_STATS.dodge = 0;
+    BASE_STATS.block = 0;
+    BASE_STATS.blockValue = 0;
     BASE_STATS.magicDamage = 0;
     BASE_STATS.airResist = 0;
     BASE_STATS.earthResist = 0;
@@ -569,7 +571,10 @@ void User::updateStats(){
             _stats.crit
         ), makeArgs(
             _stats.dodge,
-            _stats.magicDamage,
+            _stats.block,
+            _stats.blockValue,
+            _stats.magicDamage
+        ), makeArgs(
             _stats.airResist,
             _stats.earthResist,
             _stats.fireResist,
