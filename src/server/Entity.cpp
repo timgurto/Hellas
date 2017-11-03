@@ -175,12 +175,12 @@ void Entity::update(ms_t timeElapsed){
         if (outcome == CRIT)
             damage *= 2;
 
-        else if (outcome == BLOCK) {
-            const auto BLOCK_AMOUNT = Hitpoints{ 5 };
-            if (BLOCK_AMOUNT >= damage)
+        if (outcome == BLOCK) {
+            auto blockAmount = pTarget->blockValue();
+            if (blockAmount >= damage)
                 damage = 0;
             else
-                damage -= BLOCK_AMOUNT;
+                damage -= blockAmount;
         }
 
         pTarget->reduceHealth(damage);

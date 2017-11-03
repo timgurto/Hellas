@@ -20,7 +20,7 @@ CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type, Spel
     const auto
         MISS_CHANCE = Percentage{ 5 },
         BASE_DODGE_CHANCE = Percentage{ 5 },
-        BLOCK_CHANCE = Percentage{ 5 },
+        BASE_BLOCK_CHANCE = Percentage{ 5 },
         CRIT_CHANCE = Percentage{ 5 };
 
     auto roll = rand() % 100;
@@ -41,7 +41,7 @@ CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type, Spel
     }
 
     // Block
-    auto blockChance = BLOCK_CHANCE;
+    auto blockChance = BASE_BLOCK_CHANCE + target.bonusBlock();
     if (target.canBlock() && combatTypeCanHaveOutcome(type, BLOCK, school, range)) {
         if (roll < blockChance)
             return BLOCK;

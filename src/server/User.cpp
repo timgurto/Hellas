@@ -458,7 +458,7 @@ CombatResult User::generateHitAgainst(const Entity &target, CombatType type, Spe
     }
 
     // Block
-    auto blockChance = BASE_BLOCK_CHANCE;
+    auto blockChance = BASE_BLOCK_CHANCE + target.bonusBlock();
     if (target.canBlock() && combatTypeCanHaveOutcome(type, BLOCK, school, range)) {
         if (roll < blockChance)
             return BLOCK;

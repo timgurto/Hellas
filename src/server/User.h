@@ -138,6 +138,8 @@ public:
     Percentage getResistance(SpellSchool school) const override;
     Percentage bonusDodge() const override { return _stats.dodge; }
     bool canBlock() const override;
+    Percentage bonusBlock() const override { return _stats.block; }
+    Hitpoints blockValue() const override { return _stats.blockValue; }
 
     char classTag() const override { return 'u'; }
 

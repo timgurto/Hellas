@@ -93,6 +93,8 @@ public:
     virtual Percentage getResistance(SpellSchool school) const { return 0; }
     virtual Percentage bonusDodge() const { return 0; }
     virtual bool canBlock() const { return false; }
+    virtual Percentage bonusBlock() const { return 0; }
+    virtual Hitpoints blockValue() const { return 0; }
 
     Hitpoints health() const {return _health; }
     Energy energy() const { return _energy; }

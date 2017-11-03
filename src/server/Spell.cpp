@@ -95,11 +95,11 @@ CombatResult Spell::doDirectDamage(const Spell &spell, Entity &caster, Entity &t
     auto damage = chooseRandomSpellMagnitude(rawDamage);
 
     if (outcome == BLOCK) {
-        const auto BLOCK_AMOUNT = Hitpoints{ 5 };
-        if (BLOCK_AMOUNT >= damage)
+        auto blockAmount = target.blockValue();
+        if (blockAmount >= damage)
             damage = 0;
         else
-            damage -= BLOCK_AMOUNT;
+            damage -= blockAmount;
     }
 
     target.reduceHealth(damage);
