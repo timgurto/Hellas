@@ -66,10 +66,10 @@ void User::init(){
     BASE_STATS.hps = 1;
     BASE_STATS.eps = 1;
     BASE_STATS.hit = 0;
-    BASE_STATS.crit = 0;
+    BASE_STATS.crit = 5;
     BASE_STATS.critResist = 0;
-    BASE_STATS.dodge = 0;
-    BASE_STATS.block = 0;
+    BASE_STATS.dodge = 5;
+    BASE_STATS.block = 5;
     BASE_STATS.blockValue = 0;
     BASE_STATS.magicDamage = 0;
     BASE_STATS.physicalDamage = 0;
@@ -438,9 +438,9 @@ px_t User::attackRange() const {
 CombatResult User::generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const {
     const auto
         BASE_MISS_CHANCE = Percentage{ 5 },
-        BASE_DODGE_CHANCE = Percentage{ 5 },
-        BASE_BLOCK_CHANCE = Percentage{ 5 },
-        BASE_CRIT_CHANCE = Percentage{ 5 };
+        BASE_DODGE_CHANCE = Percentage{ 0 },
+        BASE_BLOCK_CHANCE = Percentage{ 0 },
+        BASE_CRIT_CHANCE = Percentage{ 0 };
 
     auto roll = rand() % 100;
 
