@@ -26,6 +26,8 @@ enum CombatResult {
 
     HIT,
     CRIT,
+    BLOCK,
+    DODGE,
     MISS
 };
 
@@ -84,8 +86,8 @@ public:
     virtual ms_t timeToRemainAsCorpse() const = 0;
     virtual bool canBeAttackedBy(const User &user) const = 0;
     virtual px_t attackRange() const { return DEFAULT_ATTACK_RANGE; }
-    virtual CombatResult generateHit(CombatType type) const { return FAIL; }
-        static bool combatTypeCanHaveOutcome(CombatType type, CombatResult outcome);
+    virtual CombatResult generateHit(CombatType type, px_t range) const { return FAIL; }
+        static bool combatTypeCanHaveOutcome(CombatType type, CombatResult outcome, px_t range);
     virtual void sendGotHitMessageTo(const User &user) const;
     virtual BonusDamage bonusMagicDamage() const { return 0; }
     virtual Percentage getResistance(SpellSchool school) const { return 0; }

@@ -66,8 +66,10 @@ void Entity::markForRemoval(){
     Server::_instance->_entitiesToRemove.push_back(this);
 }
 
-bool Entity::combatTypeCanHaveOutcome(CombatType type, CombatResult outcome) {
+bool Entity::combatTypeCanHaveOutcome(CombatType type, CombatResult outcome, px_t range) {
     if (type == HEAL && outcome == MISS)
+        return false;
+    if (outcome == DODGE && range > Podes::MELEE_RANGE)
         return false;
     return true;
 }
@@ -137,13 +139,18 @@ void Entity::update(ms_t timeElapsed){
         const Server &server = Server::instance();
         Point locus = midpoint(location(), pTarget->location());
 
-        auto outcome = generateHit(DAMAGE);
+        auto outcome = generateHit(DAMAGE, attackRange());
 
         switch (outcome) {
         case MISS:
-            for (const User *userToInform : server.findUsersInArea(locus))
-                server.sendMessage(userToInform->socket(), SV_SHOW_MISS_AT, makeArgs(
-                    pTarget->location().x, pTarget->location().y));
+            for (const User *userToInform : server.findUsersInArea( locus ))
+                server.sendMessage( userToInform->socket(), SV_SHOW_MISS_AT, makeArgs(
+                    pTarget->location().x, pTarget->location().y ) );
+            return;
+        case DODGE:
+            for (const User *userToInform : server.findUsersInArea( locus ))
+                server.sendMessage( userToInform->socket(), SV_SHOW_DODGE_AT, makeArgs(
+                    pTarget->location().x, pTarget->location().y ) );
             return;
         case CRIT:
             pTarget->reduceHealth(attack() * 2);

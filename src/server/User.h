@@ -132,7 +132,7 @@ public:
     ms_t timeToRemainAsCorpse() const override { return 0; }
     bool canBeAttackedBy(const User &user) const override;
     px_t attackRange() const override;
-    CombatResult generateHit(CombatType type) const override;
+    CombatResult generateHit(CombatType type, px_t range) const override;
     void sendGotHitMessageTo(const User &user) const override;
     BonusDamage bonusMagicDamage() const override { return _stats.magicDamage; }
     Percentage getResistance(SpellSchool school) const override;

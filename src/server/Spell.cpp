@@ -78,7 +78,7 @@ Spell::FunctionMap Spell::functionMap = {
 };
 
 CombatResult Spell::doDirectDamage(const Spell &spell, Entity &caster, Entity &target, const Args &args) {
-    auto outcome = caster.generateHit(DAMAGE);
+    auto outcome = caster.generateHit(DAMAGE, spell._range);
     if (outcome == MISS)
         return MISS;
 
@@ -101,7 +101,7 @@ CombatResult Spell::doDirectDamage(const Spell &spell, Entity &caster, Entity &t
 }
 
 CombatResult Spell::heal(const Spell &spell, Entity &caster, Entity &target, const Args &args) {
-    auto outcome = caster.generateHit(HEAL);
+    auto outcome = caster.generateHit(HEAL, spell._range);
 
     auto rawAmountToHeal = static_cast<double>(args[0]);
 

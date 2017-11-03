@@ -428,24 +428,35 @@ px_t User::attackRange() const {
     return weapon->weaponRange();
 }
 
-CombatResult User::generateHit(CombatType type) const {
+CombatResult User::generateHit(CombatType type, px_t range) const {
     const auto
         BASE_MISS_CHANCE = Percentage{ 5 },
+        BASE_DODGE_CHANCE = Percentage{ 50 },
         BASE_CRIT_CHANCE = Percentage{ 5 };
 
     auto roll = rand() % 100;
 
     // Miss
-    auto missChance = max(BASE_MISS_CHANCE - _stats.hit, 0);
-    if (combatTypeCanHaveOutcome(type, MISS)) {
+    auto missChance = max( BASE_MISS_CHANCE - _stats.hit, 0 );
+    if (combatTypeCanHaveOutcome( type, MISS, range ))
+    {
         if (roll < missChance)
             return MISS;
         roll -= missChance;
     }
 
+    // Dodge
+    auto dodgeChance = BASE_DODGE_CHANCE;
+    if (combatTypeCanHaveOutcome( type, DODGE, range ))
+    {
+        if (roll < dodgeChance)
+            return DODGE;
+        roll -= dodgeChance;
+    }
+
     // Crit
     auto critChance = BASE_CRIT_CHANCE + _stats.crit;
-    if (combatTypeCanHaveOutcome(type, CRIT)) {
+    if (combatTypeCanHaveOutcome(type, CRIT, range )) {
         if (roll < critChance)
             return CRIT;
         roll -= critChance;

@@ -283,6 +283,7 @@ enum MessageCode{
     // Something has a noteworthy outcome. Show it.
     // Arguments: x, y
     SV_SHOW_MISS_AT,
+    SV_SHOW_DODGE_AT,
     SV_SHOW_CRIT_AT,
 
     // An object has an owner

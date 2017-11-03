@@ -11,6 +11,8 @@ public:
 
     static const Podes MELEE_RANGE;
 
+    operator px_t() const { return toPixels(); }
+
 private:
     int _p;
     friend std::ostream &operator << (std::ostream &lhs, Podes rhs);

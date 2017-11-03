@@ -1314,7 +1314,21 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
             user.reduceEnergy(spell.cost());
 
         // Broadcast spellcast
-        auto msgCode = (outcome == MISS ? SV_SPELL_MISS : SV_SPELL_HIT);
+        auto spellHit = bool{};
+        switch (outcome) {
+        case MISS:
+        case DODGE:
+            spellHit = false;
+            break;
+        case HIT:
+        case CRIT:
+            spellHit = true;
+            break;
+        default:
+            assert( false );
+        }
+
+        auto msgCode = spellHit ? SV_SPELL_HIT : SV_SPELL_MISS;
 
         const auto
             &src = user.location(),
@@ -1325,13 +1339,16 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
         usersToAlert.insert(usersNearCaster.begin(), usersNearCaster.end());
         for (auto user : usersToAlert) {
             sendMessage(user->socket(), msgCode, args);
-            if (outcome != MISS && spell.shouldPlayDefenseSound())
+            if (spellHit && spell.shouldPlayDefenseSound())
                 target->sendGotHitMessageTo(*user);
 
             // Show notable outcomes
             switch (outcome) {
             case MISS:
-                sendMessage(user->socket(), SV_SHOW_MISS_AT, makeArgs(dst.x, dst.y));
+                sendMessage( user->socket(), SV_SHOW_MISS_AT, makeArgs( dst.x, dst.y ) );
+                break;
+            case DODGE:
+                sendMessage( user->socket(), SV_SHOW_DODGE_AT, makeArgs( dst.x, dst.y ) );
                 break;
             case CRIT:
                 sendMessage(user->socket(), SV_SHOW_CRIT_AT, makeArgs(dst.x, dst.y));

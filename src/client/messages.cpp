@@ -1382,6 +1382,7 @@ void Client::handle_SV_SHOW_OUTCOME_AT(int msgCode, const Point & loc) {
     switch (msgCode) {
         case SV_SHOW_MISS_AT: addParticles("miss", loc); break;
         case SV_SHOW_CRIT_AT: addParticles("crit", loc); break;
+        case SV_SHOW_DODGE_AT: addParticles( "dodge", loc ); break;
     }
 }
 
