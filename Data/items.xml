@@ -74,7 +74,7 @@
 </item>
 
 <item id="bone" name="Bone" stackSize="10" gearSlot="6" sounds="bone" >
-    <stats attack="4"/>
+    <stats attack="5" attackTime="1.25" />
 	<offset x="-6" y="-15" />
 </item>
 
@@ -103,17 +103,17 @@
 		<item id="stoneKnife" name="Sharpened Stone" gearSlot="6" >
 			<tag name="carving" />
 			<tag name="harvesting" />
-			<stats attack="4" />
+			<stats attack="3" attackTime="0.75" />
 		</item>
 		<item id="tinKnife" name="Tin Knife" gearSlot="6" >
 			<tag name="carving" />
 			<tag name="harvesting" />
-			<stats attack="8" />
+			<stats attack="5" attackTime="0.625" />
 		</item>
 		<item id="copperKnife" name="Copper Knife" gearSlot="6" >
 			<tag name="carving" />
 			<tag name="harvesting" />
-			<stats attack="12" />
+			<stats attack="7" attackTime="0.583333" />
 		</item>
 
 	<!-- Axes -->
@@ -134,7 +134,7 @@
 	<!-- Hammers -->
 		<item id="copperHammer" name="Copper Hammer" gearSlot="6" sounds="metalTool" >
 			<tag name="hammering" />
-			<stats attack="12" />
+			<stats attack="21" attackTime="1.75" />
 		</item>
 
 <!-- Weapons -->

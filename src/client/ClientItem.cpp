@@ -122,8 +122,12 @@ const Texture &ClientItem::tooltip() const{
             tb.addLine("+" + toString(_stats.waterResist) + "% water resistance");
         if (_stats.attack > 0)
             tb.addLine("+" + toString(_stats.attack) + " attack");
-        if (_stats.attackTime != 1)
-            tb.addLine("+" + multiplicativeToString(1/_stats.attackTime) + " attack speed");
+        if (_stats.attackTime != 1) {
+            auto line = multiplicativeToString(1 / _stats.attackTime) + " attack speed";
+            if (_stats.attackTime < 1)
+                line = "+"s + line;
+            tb.addLine(line);
+        }
         if (_stats.speed != 1)
             tb.addLine("+" + multiplicativeToString(_stats.speed) + " run speed");
     }
