@@ -162,16 +162,16 @@ _debug("client.log"){
 
     SDL_ShowCursor(SDL_DISABLE);
 
-    _debug << cmdLineArgs << Log::endl;
+#ifdef _DEBUG
+    _debug << Color::FONT << cmdLineArgs << Log::endl;
     if (Socket::debug == nullptr)
         Socket::debug = &_debug;
+#endif
     
     drawLoadingScreen("Initializing audio", 0.5);
     int ret = (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 1, 512) < 0);
     if (ret < 0){
         _debug("SDL_mixer failed to initialize.", Color::FAILURE);
-    } else {
-        _debug("SDL_mixer initialized.");
     }
     Mix_AllocateChannels(MIXING_CHANNELS);
 
@@ -268,7 +268,9 @@ void Client::checkSocket(){
             _debug << Color::FAILURE << "Connection error: " << WSAGetLastError() << Log::endl;
             _connectionStatus = CONNECTION_ERROR;
         } else {
+#ifdef _DEBUG
             _debug("Connected to server", Color::SUCCESS);
+#endif
             // Announce player name
             sendMessage(CL_I_AM, makeArgs(_username, version()));
             sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
