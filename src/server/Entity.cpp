@@ -171,9 +171,15 @@ void Entity::update(ms_t timeElapsed){
             break;
         }
 
-        auto damage = attack();
+        auto rawDamage = static_cast<double>(attack());
         if (outcome == CRIT)
-            damage *= 2;
+            rawDamage *= 2;
+
+        auto resistance = pTarget->getResistance(SpellSchool::PHYSICAL);
+        auto resistanceMultiplier = (100 - resistance) / 100.0;
+        rawDamage *= resistanceMultiplier;
+
+        auto damage = Spell::chooseRandomSpellMagnitude(rawDamage);
 
         if (outcome == BLOCK) {
             auto blockAmount = pTarget->blockValue();

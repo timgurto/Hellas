@@ -90,7 +90,7 @@ CombatResult Spell::doDirectDamage(const Spell &spell, Entity &caster, Entity &t
 
     auto resistance = target.getResistance(spell._school);
     auto resistanceMultiplier = (100 - resistance) / 100.0;
-    rawDamage += resistanceMultiplier;
+    rawDamage *= resistanceMultiplier;
 
     auto damage = chooseRandomSpellMagnitude(rawDamage);
 

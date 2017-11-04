@@ -485,8 +485,8 @@ void User::sendGotHitMessageTo(const User & user) const {
 }
 
 Percentage User::getResistance(SpellSchool school) const {
-    if (school == SpellSchool{ SpellSchool::PHYSICAL })
-        return 0; // TODO: Armor
+    if (school == SpellSchool::PHYSICAL)
+        return _stats.armor;
     if (school == SpellSchool::AIR)
         return _stats.airResist;
     if (school == SpellSchool::EARTH)
