@@ -89,12 +89,15 @@ public:
     virtual CombatResult generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const { return FAIL; }
         static bool combatTypeCanHaveOutcome(CombatType type, CombatResult outcome, SpellSchool school, px_t range);
     virtual void sendGotHitMessageTo(const User &user) const;
+
     virtual BonusDamage bonusMagicDamage() const { return 0; }
     virtual Percentage getResistance(SpellSchool school) const { return 0; }
     virtual Percentage bonusDodge() const { return 0; }
     virtual bool canBlock() const { return false; }
     virtual Percentage bonusBlock() const { return 0; }
     virtual Hitpoints blockValue() const { return 0; }
+    virtual Hitpoints bonusHealing() const { return 0; }
+    virtual Percentage critResist() const { return 0; }
 
     Hitpoints health() const {return _health; }
     Energy energy() const { return _energy; }

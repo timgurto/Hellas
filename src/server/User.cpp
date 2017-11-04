@@ -470,8 +470,8 @@ CombatResult User::generateHitAgainst(const Entity &target, CombatType type, Spe
     }
 
     // Crit
-    auto critChance = BASE_CRIT_CHANCE + _stats.crit;
-    if (combatTypeCanHaveOutcome(type, CRIT, school, range)) {
+    auto critChance = BASE_CRIT_CHANCE + _stats.crit - target.critResist();
+    if (critChance > 0 && combatTypeCanHaveOutcome(type, CRIT, school, range)) {
         if (roll < critChance)
             return CRIT;
         roll -= critChance;
