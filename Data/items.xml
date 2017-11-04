@@ -82,7 +82,6 @@
 	<!-- Saws -->
 		<item id="tinSaw" name="Tin Saw" sounds="metalTool" >
 			<tag name="carpentry" />
-			<offset x="-7" y="-1" />
 		</item>
 		<item id="copperSaw" name="Copper Saw" sounds="metalTool" >
 			<tag name="carpentry" />
@@ -93,7 +92,6 @@
 	<!-- Pickaxes -->
 		<item id="tinPick" name="Tin Pickaxe" sounds="metalTool" >
 			<tag name="mining" />
-			<offset x="-3" y="0" />
 		</item>
 		<item id="copperPick" name="Copper Pickaxe" sounds="metalTool" >
 			<tag name="mining" />
@@ -103,6 +101,7 @@
 		<item id="stoneKnife" name="Sharpened Stone" gearSlot="6" >
 			<tag name="carving" />
 			<tag name="harvesting" />
+			<offset x="-4" y="-1" />
 			<stats attack="3" attackTime="0.75" />
 		</item>
 		<item id="tinKnife" name="Tin Knife" gearSlot="6" >
