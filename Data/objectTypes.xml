@@ -52,7 +52,6 @@
     <collisionRect x="-13" y="-9" w="24" h="15" />
     <tag name="smelting1" />
     <tag name="pottery1" />
-    <tag name="potteryMaking" />
     <material id="rock" quantity="10" />
     <unlockedBy gather="rock" />
     <strength item="rock" quantity="10" />
