@@ -57,6 +57,8 @@ private:
 
     Texture _tooltip; // Optional tooltip
 
+    Uint8 _alpha = SDL_ALPHA_OPAQUE;
+
     static bool initialized;
 
 protected:
@@ -135,6 +137,7 @@ public:
     const Element *parent() const { return _parent; }
     const Texture &texture() const { return _texture; }
     static bool isInitialized() { return initialized; }
+    void setAlpha(Uint8 alpha);
 
     void show();
     void hide();

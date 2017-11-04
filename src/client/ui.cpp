@@ -35,7 +35,11 @@ void Client::initChatLog() {
     _chatLog = new List(Rect(0, 0, _config.chatW, _config.chatH - _chatTextBox->height()));
     _chatTextBox->setPosition(0, _chatLog->height());
     _chatTextBox->hide();
-    _chatContainer->addChild(new ColorBlock(_chatLog->rect(), Color::CHAT_LOG_BACKGROUND));
+
+    auto background = new ColorBlock(_chatLog->rect(), Color::CHAT_LOG_BACKGROUND);
+    background->setAlpha(0x7f);
+    _chatContainer->addChild(background);
+
     _chatContainer->addChild(_chatLog);
     _chatContainer->addChild(_chatTextBox);
 

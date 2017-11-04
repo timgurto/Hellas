@@ -384,7 +384,8 @@ void Element::draw(){
         refresh();
         drawChildren();
         renderer.popRenderTarget();
-
+        if (_alpha != SDL_ALPHA_OPAQUE)
+            _texture.setAlpha(_alpha);
         _changed = false;
     }
     _texture.setBlend(SDL_BLENDMODE_BLEND);
@@ -415,6 +416,11 @@ void Element::makeBackgroundTransparent(){
 void Element::toggleVisibilityOf(void *element){
     Element *e = static_cast<Element *>(element);
     e->toggleVisibility();
+}
+
+void Element::setAlpha(Uint8 alpha) {
+    _alpha = alpha;
+    markChanged();
 }
 
 void Element::cleanup(){
