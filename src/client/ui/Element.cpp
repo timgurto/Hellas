@@ -420,8 +420,8 @@ void Element::toggleVisibilityOf(void *element){
 
 void Element::setAlpha(Uint8 alpha) {
     // Currently broken; behaves strangely on some window events.
-    /*_alpha = alpha;
-    markChanged();*/
+    _alpha = alpha;
+    markChanged();
 }
 
 void Element::cleanup(){
