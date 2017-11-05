@@ -225,6 +225,11 @@
         <tag name="shield" />
 	</item>
 
+    <item id="horn" name="Horn" gearSlot="7" >
+		<stats hps="3" eps="2" />
+		<offset x="0" y="-3" />
+    </item>
+
 <!-- Test -->
 <item id="ring" name="Ring" gearSlot="1" >
     <stats

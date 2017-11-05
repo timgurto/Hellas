@@ -1,23 +1,32 @@
 <root>
 
-<npcType
+<!--npcType
     id="critter" name="Critter"
 	maxHealth="20"
     xDrawOffset="-11" yDrawOffset="-13"
     sounds = "pig" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
-    <loot id="bone" />
+    <loot id="bone" > <normal mean="0.4" sd="0.5" /> </loot>
+</npcType-->
+
+<npcType
+    id="goat" name="Goat"
+	maxHealth="60" attack="10" attackTime="1000"
+    xDrawOffset="-17" yDrawOffset="-28" >
+    <collisionRect x="-15" y="-4" w="31" h="7" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+    <loot id="fat" > <normal mean="0.4" sd="0.5" /> </loot>
+    <loot id="horn" > <normal mean="0.2" sd="0.5" /> </loot>
 </npcType>
 
 <npcType
     id="boar" name="Wild boar"
-	maxHealth="40" attack="5" attackTime="700"
+	maxHealth="100" attack="14" attackTime="700"
     xDrawOffset="-11" yDrawOffset="-13"
     sounds = "pig" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
-    <loot id="hide" />
-    <loot id="bone" > <normal mean="2" sd="0.7" /> </loot>
-    <loot id="fat" > <normal mean="0.4" sd="0.5" /> </loot>
+    <loot id="hide" > <normal mean="0.4" sd="0.5" /> </loot>
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
 </npcType>
 
 <!--npcType
