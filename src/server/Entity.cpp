@@ -220,11 +220,6 @@ void Entity::update(ms_t timeElapsed){
         }
         for (const User *userToInform : server.findUsersInArea(locus)){
             server.sendMessage(userToInform->socket(), msgCode, args);
-
-            // Show notable outcomes
-            if (outcome == CRIT)
-                server.sendMessage(userToInform->socket(), SV_SHOW_CRIT_AT, makeArgs(
-                    pTarget->location().x, pTarget->location().y));
         }
     }
 }
