@@ -183,6 +183,7 @@ void Server::checkSockets(){
 void Server::run(){
     if (!_dataLoaded)
         loadData();
+    spawnInitialObjects();
 
     _loop = true;
     _running = true;
@@ -247,8 +248,8 @@ void Server::run(){
         _entitiesToRemove.clear();
 
         // Update spawners
-        for (auto &pair : _spawners)
-            pair.second.update(_time);
+        for (auto &spawner : _spawners)
+            spawner.update(_time);
 
         // Deal with any messages from the server
         while (!_messages.empty()){
@@ -526,8 +527,7 @@ void Server::gatherObject(size_t serial, User &user){
 
 void Server::spawnInitialObjects(){
     // From spawners
-    for (auto &pair: _spawners){
-        Spawner &spawner = pair.second;
+    for (auto &spawner: _spawners){
         assert(spawner.type() != nullptr);
         for (size_t i = 0; i != spawner.quantity(); ++i)
             spawner.spawn();

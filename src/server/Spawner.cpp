@@ -1,8 +1,7 @@
 #include "Server.h"
 #include "Spawner.h"
 
-Spawner::Spawner(size_t index, const Point &location, const ObjectType *type):
-    _index(index),
+Spawner::Spawner(const Point &location, const ObjectType *type):
     _location(location),
     _type(type),
 
@@ -47,8 +46,7 @@ void Spawner::spawn(){
         return;
     }
 
-    server._debug << Color::YELLOW << "Failed to spawn object " << _type->id() <<
-        " from spawner #" << _index << "." << Log::endl;
+    server._debug << Color::YELLOW << "Failed to spawn object " << Log::endl;
     scheduleSpawn();
 }
 

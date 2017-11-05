@@ -173,7 +173,7 @@ private:
     std::set<ServerItem> _items;
     std::set<Recipe> _recipes;
     std::set<const ObjectType *> _objectTypes;
-    std::map<size_t, Spawner> _spawners;
+    std::vector<Spawner> _spawners;
     std::map<char, Terrain*> _terrainTypes;
     Spells _spells;
 

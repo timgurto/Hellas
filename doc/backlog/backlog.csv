@@ -214,7 +214,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 239,Add coinage,21,3,Content,235,,,
 240,XML-verifying git hook,21,34,Code quality,,,,
 241,Can't build an altar if I have a zero-health one,34,3,Bug,,TRUE,,
-242,Make object health and respawn timers persistent,21,5,Bug,,,,
+242,Make object health and respawn timers persistent,21,5,Bug,,TRUE,,
 243,Pots can't be ceded,34,8,Bug,,,,
 244,Enforce lower-case player/city names,3,2,Usability,,,,
 245,Display names with first letter capitalised,5,2,Aesthetics,244,,,

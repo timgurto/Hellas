@@ -11,7 +11,6 @@ class Server;
 class ObjectType;
 
 class Spawner{
-    size_t _index;
     Point _location;
     double _radius; // Default: 0
     const ObjectType *_type; // What it spawns
@@ -25,9 +24,8 @@ class Spawner{
     std::list<ms_t> _spawnSchedule; // The times at which new objects should spawn
 
 public:
-    Spawner(size_t index = 0, const Point &location = Point(), const ObjectType *type = nullptr);
+    Spawner(const Point &location = Point(), const ObjectType *type = nullptr);
 
-    size_t index() const { return _index; }
     const ObjectType *type() const { return _type; }
     void radius(double r) { _radius = r; }
     void quantity(size_t qty) { _quantity = qty; }

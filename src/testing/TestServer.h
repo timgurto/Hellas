@@ -22,7 +22,7 @@ public:
     Entity::byX_t &entitiesByX() { return _server->_entitiesByX; }
     std::set<ServerItem> &items() { return _server->_items; }
     std::set<User> &users() { return _server->_users; }
-    std::map<size_t, Spawner> &spawners() { return _server->_spawners; }
+    std::vector<Spawner> &spawners() { return _server->_spawners; }
     Wars &wars() { return _server->_wars; }
     Cities &cities() { return _server->_cities; }
     ObjectsByOwner &objectsByOwner() { return _server->_objectsByOwner; }

@@ -671,16 +671,6 @@ void Server::loadData(const std::string &path){
                 continue;
             }
 
-            size_t index;
-            if (!xr.findAttr(elem, "index", index)){
-                _debug("Skipping importing spawner with no index.", Color::RED);
-                continue;
-            }
-            if (_spawners.find(index) != _spawners.end()){
-                _debug << "Skipping importing spawner with duplicate index " << index << Log::endl;
-                continue;
-            }
-
             Point p;
             if (!xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
                 _debug("Skipping importing spawner with invalid/no location", Color::RED);
@@ -694,7 +684,7 @@ void Server::loadData(const std::string &path){
                 continue;
             }
 
-            Spawner s(index, p, type);
+            Spawner s(p, type);
 
             size_t n;
             if (xr.findAttr(elem, "quantity", n)) s.quantity(n);
@@ -706,7 +696,7 @@ void Server::loadData(const std::string &path){
             for (auto terrain : xr.getChildren("allowedTerrain", elem))
                 if (xr.findAttr(terrain, "index", c)) s.allowTerrain(c);
 
-            _spawners[index] = s;
+            _spawners.push_back(s);
         }
     }
 
@@ -803,12 +793,6 @@ void Server::loadData(const std::string &path){
             }
 
             size_t n;
-            if (xr.findAttr(elem, "spawner", n)){
-                auto it = _spawners.find(n);
-                if (it != _spawners.end())
-                    obj.spawner(&it->second);
-            }
-
             ItemSet contents;
             for (auto content : xr.getChildren("gatherable", elem)) {
                 if (!xr.findAttr(content, "id", s))
@@ -895,13 +879,6 @@ void Server::loadData(const std::string &path){
             }
 
             NPC &npc= addNPC(type, p);
-
-            size_t n;
-            if (xr.findAttr(elem, "spawner", n)){
-                auto it = _spawners.find(n);
-                if (it != _spawners.end())
-                    npc.spawner(&it->second);
-            }
         }
 
         if (! loadExistingData)
@@ -918,11 +895,13 @@ void Server::loadData(const std::string &path){
     // If execution reaches here, fresh objects will be generated instead of old ones loaded.
 
     _debug("Generating new objects.", Color::YELLOW);
-    spawnInitialObjects();
     _dataLoaded = true;
 }
 
 void Object::writeToXML(XmlWriter &xw) const{
+    if (spawner() != nullptr)
+        return; // Spawned objects are not persistent.
+
     auto e = xw.addChild("object");
 
     xw.setAttr(e, "id", type()->id());
@@ -939,9 +918,6 @@ void Object::writeToXML(XmlWriter &xw) const{
         xw.setAttr(ownerElem, "type", owner.typeString());
         xw.setAttr(ownerElem, "name", owner.name);
     }
-
-    if (spawner() != nullptr)
-        xw.setAttr(e, "spawner", spawner()->index());
 
     auto loc = xw.addChild("location", e);
     xw.setAttr(loc, "x", location().x);
