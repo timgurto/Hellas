@@ -974,7 +974,8 @@ void Server::saveData(const Entities &entities, const Wars &wars, const Cities &
     XmlWriter xw("World/entities.world");
 
     for (const Entity *entity : entities)
-        entity->writeToXML(xw);
+        if (entity->spawner() == nullptr)
+            entity->writeToXML(xw);
 
     xw.publish();
 #ifndef SINGLE_THREAD
