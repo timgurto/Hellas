@@ -319,6 +319,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
         bool newUserOwnsThisObject = _objectsByOwner.isObjectOwnedBy(pObject->serial(), owner);
         if (newUserOwnsThisObject) {
             entitiesToDescribe.insert(pEntity);
+            if (! pObject->isDead())
             newUser.onNewOwnedObject(pObject->objType());
         }
     }

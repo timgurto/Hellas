@@ -61,6 +61,22 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
         // And the wife still belongs to him
         CHECK(wife.permissions().isOwnedByPlayer("bob"));
     }
+
+    SECTION("If Bob's wife dies he can get a new one") {
+        // Given Bob's wife is dead
+        auto &firstWife = s.getFirstObject();
+        firstWife.reduceHealth(firstWife.health());
+
+        // When Bob logs in,
+        auto c = TestClient::WithUsernameAndData("bob", "wives");
+        WAIT_UNTIL(s.users().size() == 1);
+
+        // And tries to get a readhead wife
+        c.sendMessage(CL_CONSTRUCT, makeArgs("redhead", 10, 15));
+
+        // Then there are two wives
+        WAIT_UNTIL(s.entities().size() == 2);
+    }
 }
 
 TEST_CASE("Clients can discern player uniqueness", "[player-unique]") {

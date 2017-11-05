@@ -531,6 +531,12 @@ void User::onNewOwnedObject(const ObjectType & type) const {
         this->_playerUniqueCategoriesOwned.insert(type.playerUniqueCategory());
 }
 
+void User::onDestroyedOwnedObject(const ObjectType &type) const {
+    if (!type.isPlayerUnique())
+        return;
+    this->_playerUniqueCategoriesOwned.erase(type.playerUniqueCategory());
+}
+
 void User::updateStats(){
     const Server &server = *Server::_instance;
 

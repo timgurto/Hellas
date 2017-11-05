@@ -150,6 +150,7 @@ public:
     void onEnergyChange() override;
     void onDeath() override;
     void onNewOwnedObject(const ObjectType &type) const;
+    void onDestroyedOwnedObject(const ObjectType &type) const;
 
     void sendInfoToClient(const User &targetUser) const override;
 

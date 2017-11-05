@@ -33,9 +33,6 @@ Object::~Object(){
         Server &server = *Server::_instance;
         server._objectsByOwner.remove(permissions().owner(), serial());
     }
-
-    if (type() != nullptr)
-        objType().decrementCounter();
 }
 
 
@@ -195,6 +192,16 @@ void Object::onDeath(){
 
     if (objType().hasOnDestroy())
         objType().onDestroy().function(*this);
+
+    if (type() != nullptr)
+        objType().decrementCounter();
+
+    if (_permissions.hasOwner() && _permissions.owner().type == Permissions::Owner::PLAYER) {
+        auto username = _permissions.owner().name;
+        const auto user = server.getUserByName(username);
+        if (user != nullptr)
+            user->onDestroyedOwnedObject(objType());
+    }
 
     Entity::onDeath();
 }
