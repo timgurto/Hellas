@@ -64,7 +64,7 @@ void Client::initializeGearWindow(){
     const auto
         rows = 8, cols = 1;
 
-    _gearWindow->rect(100, 100, w + STATS_WIDTH + 2 * STAT_X_GAP, h);
+    _gearWindow->rect(0, 37, w + STATS_WIDTH + 2 * STAT_X_GAP, h);
     _gearWindow->setTitle("Gear and Stats");
     ContainerGrid *gearContainer = new ContainerGrid
             (rows, cols, _character.gear(), GEAR, gridX, gridY, gap, false);
