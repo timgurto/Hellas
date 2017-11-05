@@ -256,14 +256,17 @@ void Client::checkSocket(){
         sockaddr_in serverAddr;
         serverAddr.sin_addr.s_addr = inet_addr(serverIP.c_str());
         serverAddr.sin_family = AF_INET;
+
+        // Select server port
 #ifdef _DEBUG
-        auto defaultPort = DEBUG_PORT;
+        auto port = DEBUG_PORT;
 #else
-        auto defaultPort = PRODUCTION_PORT;
+        auto port = PRODUCTION_PORT;
 #endif
-        serverAddr.sin_port = cmdLineArgs.contains("server-port") ?
-                              cmdLineArgs.getInt("server-port") :
-                              htons(defaultPort);
+        if (cmdLineArgs.contains("server-port"))
+            port = cmdLineArgs.getInt("server-port");
+        serverAddr.sin_port = htons(port);
+
         if (connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
             _debug << Color::FAILURE << "Connection error: " << WSAGetLastError() << Log::endl;
             _connectionStatus = CONNECTION_ERROR;

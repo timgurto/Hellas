@@ -79,11 +79,16 @@ _dataLoaded(false){
     sockaddr_in serverAddr;
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_addr.s_addr = INADDR_ANY;
+
+    // Select port
 #ifdef _DEBUG
-    serverAddr.sin_port = htons(DEBUG_PORT);
+    auto port = DEBUG_PORT;
 #else
-    serverAddr.sin_port = htons(PRODUCTION_PORT);
+    auto port = PRODUCTION_PORT;
 #endif
+    if (cmdLineArgs.contains("port"))
+        port = cmdLineArgs.getInt("port");
+    serverAddr.sin_port = htons(port);
 
     _socket.bind(serverAddr);
     _debug << "Server address: " << inet_ntoa(serverAddr.sin_addr)
