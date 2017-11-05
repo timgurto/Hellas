@@ -109,7 +109,10 @@ void Node::generateImage() const{
     if (!imageExists)
         return;
 
-    SDL_SetColorKey(surface, SDL_TRUE, 0xff00ff); // Make magenta transparent
+    if (type == ITEM)
+        SDL_SetSurfaceBlendMode(surface, SDL_BLENDMODE_NONE); // Image has alpha channel
+    else
+        SDL_SetColorKey(surface, SDL_TRUE, 0xff00ff); // Make magenta transparent
 
     static const Uint32
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
