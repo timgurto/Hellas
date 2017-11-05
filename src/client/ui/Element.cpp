@@ -394,7 +394,7 @@ void Element::draw(){
 
 void Element::forceRefresh(){
     if (_parent == nullptr)
-        transparentBackground = Texture();
+        transparentBackground = {};
     _changed = true;
     for (Element *child : _children)
         child->forceRefresh();
@@ -419,8 +419,9 @@ void Element::toggleVisibilityOf(void *element){
 }
 
 void Element::setAlpha(Uint8 alpha) {
-    _alpha = alpha;
-    markChanged();
+    // Currently broken; behaves strangely on some window events.
+    /*_alpha = alpha;
+    markChanged();*/
 }
 
 void Element::cleanup(){
