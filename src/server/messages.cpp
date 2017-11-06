@@ -515,9 +515,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 auto roomInDest = slotTo.first->stackSize() - slotTo.second;
                 if (roomInDest == 0)
                     break;
+
                 auto qtyToMove = min(roomInDest, slotFrom.second);
                 slotFrom.second -= qtyToMove;
                 slotTo.second += qtyToMove;
+                if (slotFrom.second == 0)
+                    slotFrom.first = nullptr;
                 shouldPerformNormalSwap = false;
 
             } while (false);
