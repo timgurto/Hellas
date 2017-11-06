@@ -158,6 +158,7 @@
 	</item>
 	<item id="copperHelmet" name="Copper Helmet" gearSlot="0" >
 		<stats armor="4" health="13" />
+		<offset x="-3" y="-5" />
 	</item>
 
 	<!-- Shoulders -->

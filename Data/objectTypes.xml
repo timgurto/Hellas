@@ -50,6 +50,7 @@
 <objectType id="oven" name="Oven"
     xDrawOffset="-14" yDrawOffset="-17" >
     <collisionRect x="-13" y="-9" w="24" h="15" />
+    <tag name="charcoalMaking" />
     <tag name="smelting1" />
     <tag name="pottery1" />
     <material id="rock" quantity="10" />
