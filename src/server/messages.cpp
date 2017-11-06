@@ -504,35 +504,46 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                     break;
             }
 
-            // Perform the swap
-            auto temp = slotTo;
-            slotTo = slotFrom;
-            slotFrom = temp;
+            // Combine stack, if identical types
+            auto identicalItems = slotFrom.first == slotTo.first;
+            auto roomInDest = slotTo.first->stackSize() - slotTo.second;
+            if (identicalItems && roomInDest > 0) {
+                auto qtyToMove = min(roomInDest, slotFrom.second);
+                slotFrom.second -= qtyToMove;
+                slotTo.second += qtyToMove;
 
-            // If gear was changed
-            if (obj1 == GEAR || obj2 == GEAR) {
+            } else {
 
-                // Update this player's stats
-                user->updateStats();
+                // Perform the swap
+                auto temp = slotTo;
+                slotTo = slotFrom;
+                slotFrom = temp;
 
-                // Alert nearby users of the new equipment
-                // Assumption: gear can only match a single gear slot.
-                std::string gearID = "";
-                size_t gearSlot;
-                if (obj1 == GEAR) {
-                    gearSlot = slot1;
-                    if (slotFrom.first != nullptr)
-                        gearID = slotFrom.first->id();
-                } else {
-                    gearSlot = slot2;
-                    if (slotTo.first != nullptr)
-                        gearID = slotTo.first->id();
-                }
-                for (const User *otherUser : findUsersInArea(user->location())){
-                    if (otherUser == user)
-                        continue;
-                    sendMessage(otherUser->socket(), SV_GEAR, makeArgs(
+                // If gear was changed
+                if (obj1 == GEAR || obj2 == GEAR) {
+
+                    // Update this player's stats
+                    user->updateStats();
+
+                    // Alert nearby users of the new equipment
+                    // Assumption: gear can only match a single gear slot.
+                    std::string gearID = "";
+                    size_t gearSlot;
+                    if (obj1 == GEAR) {
+                        gearSlot = slot1;
+                        if (slotFrom.first != nullptr)
+                            gearID = slotFrom.first->id();
+                    } else {
+                        gearSlot = slot2;
+                        if (slotTo.first != nullptr)
+                            gearID = slotTo.first->id();
+                    }
+                    for (const User *otherUser : findUsersInArea(user->location())) {
+                        if (otherUser == user)
+                            continue;
+                        sendMessage(otherUser->socket(), SV_GEAR, makeArgs(
                             user->name(), gearSlot, gearID));
+                    }
                 }
             }
 

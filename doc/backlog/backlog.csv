@@ -76,7 +76,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 87,Move appropriate configuration details into config file,2,55,Code quality,,,,
 88,Critter run-away AI,8,13,Feature,,,,3
 89,Players can be in a group,34,8,Feature,,,,3
-91,Stacks of the same item can be combined,21,13,Usability,,,,
+91,Stacks of the same item can be combined,21,13,Usability,,TRUE,,
 92,Shift + right-click to loot all,8,3,Usability,,,,
 94,A road object that affects movement speed,3,13,Feature,329,,,
 95,Object ownership is clearly visible,5,21,Usability,8,TRUE,,1
