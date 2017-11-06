@@ -505,14 +505,24 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
 
             // Combine stack, if identical types
-            auto identicalItems = slotFrom.first == slotTo.first;
-            auto roomInDest = slotTo.first->stackSize() - slotTo.second;
-            if (identicalItems && roomInDest > 0) {
+            auto shouldPerformNormalSwap = true;
+            do {
+                if (slotFrom.first == nullptr || slotTo.first == nullptr)
+                    break;
+                auto identicalItems = slotFrom.first == slotTo.first;
+                if (!identicalItems)
+                    break;
+                auto roomInDest = slotTo.first->stackSize() - slotTo.second;
+                if (roomInDest == 0)
+                    break;
                 auto qtyToMove = min(roomInDest, slotFrom.second);
                 slotFrom.second -= qtyToMove;
                 slotTo.second += qtyToMove;
+                shouldPerformNormalSwap = false;
 
-            } else {
+            } while (false);
+
+            if (shouldPerformNormalSwap){
 
                 // Perform the swap
                 auto temp = slotTo;
