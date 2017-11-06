@@ -103,9 +103,9 @@ const Texture &ClientItem::tooltip() const{
         if (_stats.dodge > 0)
             tb.addLine("+" + toString(_stats.dodge) + "% dodge");
         if (_stats.block > 0)
-            tb.addLine("+" + toString(_stats.dodge) + "% block");
+            tb.addLine("+" + toString(_stats.block) + "% block");
         if (_stats.blockValue > 0)
-            tb.addLine("+" + toString(_stats.dodge) + " block value");
+            tb.addLine("+" + toString(_stats.blockValue) + " block value");
         if (_stats.magicDamage > 0)
             tb.addLine("+" + toString(_stats.magicDamage) + " magic damage");
         if (_stats.physicalDamage > 0)
