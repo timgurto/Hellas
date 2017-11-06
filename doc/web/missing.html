@@ -30,6 +30,7 @@
     <script type="text/javascript" src="npcs.js"></script>
     <script type="text/javascript" src="soundProfiles.js"></script>
     <script type="text/javascript" src="terrains.js"></script>
+    <script type="text/javascript" src="spells.js"></script>
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -104,6 +105,13 @@
                     appendParticles(textOnlyItemLink(item), item);
                 if ("imagesMissing" in item)
                     appendImages(textOnlyItemLink(item), item);
+            }
+                    
+            for (spell of spells){
+                if ("soundsMissing" in item)
+                    appendSoundProfile(spell.name, spell);
+                if ("particlesMissing" in item)
+                    appendParticles(spell.name, spell);
             }
             
             for (terrain of terrains){

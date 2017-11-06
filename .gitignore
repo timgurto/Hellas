@@ -65,3 +65,4 @@ doc/web/tags.js
 src/version.h
 client-publish/*
 logging/stats.js
+doc/web/spells.js
