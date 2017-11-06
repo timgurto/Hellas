@@ -61,8 +61,8 @@ User::User(const Point &loc):
 
 void User::init(){
     BASE_STATS.armor = 0;
-    BASE_STATS.health = 100;
-    BASE_STATS.energy = 100;
+    BASE_STATS.health = 50;
+    BASE_STATS.energy = 50;
     BASE_STATS.hps = 1;
     BASE_STATS.eps = 1;
     BASE_STATS.hit = 0;
@@ -78,7 +78,7 @@ void User::init(){
     BASE_STATS.earthResist = 0;
     BASE_STATS.fireResist = 0;
     BASE_STATS.waterResist = 0;
-    BASE_STATS.attack = 8;
+    BASE_STATS.attack = 5;
     BASE_STATS.attackTime = 1000;
     BASE_STATS.speed = 80.0;
 
