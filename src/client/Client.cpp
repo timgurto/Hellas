@@ -54,7 +54,7 @@ const px_t Client::TILE_W = 32;
 const px_t Client::TILE_H = 32;
 const double Client::MOVEMENT_SPEED = 80;
 const double Client::VEHICLE_SPEED = 20;
-const Hitpoints Client::MAX_PLAYER_HEALTH = 100;
+const Hitpoints Client::MAX_PLAYER_HEALTH = 50;
 
 const px_t Client::ACTION_DISTANCE = 30;
 
