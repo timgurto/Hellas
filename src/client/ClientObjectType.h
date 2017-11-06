@@ -85,7 +85,7 @@ public:
     const ItemSet &materials() const { return _materials; }
     bool hasTags() const { return !_tags.empty(); }
     const std::set<std::string> &tags() const { return _tags; }
-    const Texture &materialsTooltip() const;
+    const Texture &constructionTooltip() const;
     bool transforms() const { return _transformTime > 0; }
     void transformTime(ms_t time) { _transformTime = time; }
     ms_t transformTime() const { return _transformTime; }

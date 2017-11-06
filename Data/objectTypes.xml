@@ -150,7 +150,7 @@
 <objectType id="brickWallNS" name="Brick Wall N/S"
     xDrawOffset="-3" yDrawOffset="-101" >
     <collisionRect x="-3" y="-60" w="8" h="120" />
-    <material id="brick" quantity="1" />
+    <material id="brick" quantity="12" />
     <unlockedBy recipe="brick" chance="0.05" />
     <unlockedBy construction="brickWallEW" />
     <strength item="brick" quantity="12" />

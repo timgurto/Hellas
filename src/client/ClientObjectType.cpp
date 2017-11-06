@@ -29,7 +29,7 @@ ClientObjectType::~ClientObjectType(){
     }
 }
 
-const Texture &ClientObjectType::materialsTooltip() const{
+const Texture &ClientObjectType::constructionTooltip() const{
     const auto &client = *Client::_instance;
 
     if (_materialsTooltip == nullptr){
@@ -37,9 +37,41 @@ const Texture &ClientObjectType::materialsTooltip() const{
         tb.setColor(Color::ITEM_NAME);
         tb.addLine(_name);
 
+        auto gapDrawn = false;
+        if (canGather()) {
+            if (!gapDrawn) { gapDrawn = true; tb.addGap(); }
+            std::string text = "Gatherable";
+            if (!gatherReq().empty())
+                text += " (requires " + client.tagName(gatherReq()) + ")";
+            tb.addLine(text);
+        }
+
+        if (canDeconstruct()) {
+            if (!gapDrawn) { gapDrawn = true; tb.addGap(); }
+            tb.addLine("Can pick up as item");
+        }
+
+        if (containerSlots() > 0) {
+            if (!gapDrawn) { gapDrawn = true; tb.addGap(); }
+            tb.addLine("Container: " + toString(containerSlots()) + " slots");
+        }
+
+        if (merchantSlots() > 0) {
+            if (!gapDrawn) { gapDrawn = true; tb.addGap(); }
+            tb.addLine("Merchant: " + toString(merchantSlots()) + " slots");
+        }
+
+        // Tags
+        if (hasTags()) {
+            tb.addGap();
+            tb.setColor(Color::ITEM_TAGS);
+            for (const std::string &tag : tags())
+                tb.addLine(client.tagName(tag));
+        }
+
         tb.addGap();
         tb.setColor(Color::ITEM_STATS);
-        tb.addLine("Materials:");
+        tb.addLine("Construction materials:");
         for (const auto &material : _materials){
             const ClientItem &item = *dynamic_cast<const ClientItem *>(material.first);
             tb.addLine(makeArgs(material.second) + "x " + item.name());
@@ -49,6 +81,7 @@ const Texture &ClientObjectType::materialsTooltip() const{
             tb.addGap();
             tb.addLine("Requires tool: " + client.tagName(_constructionReq));
         }
+
         _materialsTooltip = new Texture(tb.publish());
     }
     return *_materialsTooltip;

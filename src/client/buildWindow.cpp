@@ -41,7 +41,7 @@ void Client::populateBuildList(){
         listElement->addChild(label);
         listElement->setLeftMouseUpFunction(chooseConstruction);
         listElement->id(id);
-        listElement->setTooltip(ot->materialsTooltip());
+        listElement->setTooltip(ot->constructionTooltip());
     }
     _buildList->verifyBoxes();
     _buildList->markChanged();
