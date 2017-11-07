@@ -380,7 +380,7 @@
     </recipe>
     <recipe id="tinShield"
         time="4000" >
-        <material id="tinBar" quantity="2" /
+        <material id="tinBar" quantity="2" />
         <tool class="hammering" />
         <tool class="smelting1" />
         <tool class="anvil1" />
