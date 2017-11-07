@@ -23,7 +23,7 @@
 <spawnPoint type="rock" quantity="50" radius="1500" respawnTime="60000" x="8184" y="5936" />
 <spawnPoint type="rock" quantity="50" radius="1500" respawnTime="60000" x="9304" y="6800" />
 <spawnPoint type="rock" quantity="50" radius="1500" respawnTime="60000" x="6032" y="9292" />
-<spawnPoint type="copper" quantity="20" radius="1000" respawnTime="60000" x="5976" y="9160" />
-<spawnPoint type="copper" quantity="20" radius="1000" respawnTime="60000" x="2140" y="9524" />
-<spawnPoint type="copper" quantity="20" radius="1000" respawnTime="60000" x="5640" y="7832" />
+<spawnPoint type="copper" quantity="10" radius="1000" respawnTime="60000" x="5976" y="9160" />
+<spawnPoint type="copper" quantity="10" radius="1000" respawnTime="60000" x="2140" y="9524" />
+<spawnPoint type="copper" quantity="10" radius="1000" respawnTime="60000" x="5640" y="7832" />
 </root>
