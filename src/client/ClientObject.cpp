@@ -941,3 +941,9 @@ bool ClientObject::belongsToPlayerCity() const{
         return false;
     return owner() == playerCharacter.cityName();
 }
+
+std::string ClientObject::additionalTextInName() const {
+    if (_transformTimer > 0)
+        return "("s + msAsTimeDisplay(_transformTimer) + " remaining)"s;
+    return{};
+}

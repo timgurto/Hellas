@@ -1,9 +1,12 @@
 #include <cassert>
 #include <cmath>
+#include <sstream>
 
 #include "Args.h"
 #include "Point.h"
 #include "util.h"
+
+using namespace std::string_literals;
 
 extern Args cmdLineArgs;
 
@@ -85,4 +88,19 @@ bool collision(const Point &point, const Rect &rect){
         point.x < rect.x + rect.w &&
         point.y > rect.y &&
         point.y < rect.y + rect.h;
+}
+
+std::string msAsTimeDisplay(ms_t t) {
+    auto remaining = t / 1000;
+    auto seconds = remaining % 60; remaining /= 60;
+    auto minutes = remaining % 60; remaining /= 60;
+    auto hours = remaining % 24; remaining /= 24;
+    auto days = remaining;
+
+    auto oss = std::ostringstream{};
+    if (days > 0) oss << days << "d "s;
+    if (hours > 0) oss << hours << "h "s;
+    if (minutes > 0) oss << minutes << "m "s;
+    if (seconds > 0) oss << seconds << "s "s;
+    return oss.str();
 }

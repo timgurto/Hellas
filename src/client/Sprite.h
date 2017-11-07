@@ -41,6 +41,7 @@ public:
     void markForRemoval() { _toRemove = true; }
     bool markedForRemoval() const { return _toRemove; }
     virtual bool isFlat() const { return _type->isFlat(); }
+    virtual std::string additionalTextInName() const { return{}; }
 
     virtual char classTag() const { return 'e'; }
 

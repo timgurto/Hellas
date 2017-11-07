@@ -33,8 +33,13 @@ void Sprite::draw(const Client &client) const{
 
 void Sprite::drawName() const {
     const auto &client = Client::instance();
-    const auto nameLabel = Texture{ client.defaultFont(), name(), nameColor() };
-    const auto nameOutline = Texture{ client.defaultFont(), name(), Color::PLAYER_NAME_OUTLINE };
+
+    auto text = name();
+    if (!additionalTextInName().empty())
+        text += " "s + additionalTextInName();
+
+    const auto nameLabel = Texture{ client.defaultFont(), text, nameColor() };
+    const auto nameOutline = Texture{ client.defaultFont(), text, Color::PLAYER_NAME_OUTLINE };
     auto namePosition = location() + client.offset();
     namePosition.y -= height();
     namePosition.y -= 16;

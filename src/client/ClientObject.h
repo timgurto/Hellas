@@ -81,6 +81,7 @@ public:
     const TakeContainer *lootContainer() { return _lootContainer; }
     bool belongsToPlayer() const;
     bool belongsToPlayerCity() const;
+    std::string additionalTextInName() const override;
 
     virtual char classTag() const override { return 'o'; }
 
