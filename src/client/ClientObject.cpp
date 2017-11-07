@@ -694,6 +694,9 @@ bool ClientObject::canAlwaysSee() const{
 }
 
 void ClientObject::update(double delta) {
+    if (this->isBeingConstructed())
+        return;
+
     Client &client = *Client::_instance;
     ms_t timeElapsed = toInt(1000 * delta);
 
@@ -740,8 +743,6 @@ void ClientObject::update(double delta) {
     // Loot sparkles
     if (lootable())
         Client::_instance->addParticles("lootSparkles", location(), delta);
-
-    Sprite::update(delta);
 }
 
 void ClientObject::draw(const Client & client) const {
@@ -943,7 +944,7 @@ bool ClientObject::belongsToPlayerCity() const{
 }
 
 std::string ClientObject::additionalTextInName() const {
-    if (_transformTimer > 0)
+    if (_transformTimer > 0 && ! this->isBeingConstructed())
         return "("s + msAsTimeDisplay(_transformTimer) + " remaining)"s;
     return{};
 }
