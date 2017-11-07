@@ -126,7 +126,7 @@ void Object::update(ms_t timeElapsed){
             _transformTimer -= timeElapsed;
 
         if (_transformTimer == 0)
-            setType(objType().transformObject());
+            setType(objType().transformObject(), objType().skipConstructionOnTransform());
     } while (false);
 
     Entity::update(timeElapsed);
@@ -144,7 +144,7 @@ void Object::onEnergyChange() {
         server.sendMessage(user->socket(), SV_ENTITY_ENERGY, makeArgs(serial(), energy()));
 }
 
-void Object::setType(const ObjectType *type){
+void Object::setType(const ObjectType *type, bool skipConstruction){
     assert(type != nullptr);
 
     Server *server = Server::_instance;
@@ -173,7 +173,8 @@ void Object::setType(const ObjectType *type){
     if (type->transforms())
         _transformTimer = type->transformTime();
 
-    _remainingMaterials = type->materials();
+    if (! skipConstruction)
+        _remainingMaterials = type->materials();
 
     // Inform nearby users
     if (server != nullptr)

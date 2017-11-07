@@ -333,6 +333,9 @@ void Server::loadData(const std::string &path){
 
                 if (xr.findAttr(transform, "whenEmpty", n) && n != 0)
                     ot->transformOnEmpty();
+
+                if (xr.findAttr(transform, "skipConstruction", n) && n != 0)
+                    ot->skipConstructionOnTransform(true);
             }
 
             // Strength

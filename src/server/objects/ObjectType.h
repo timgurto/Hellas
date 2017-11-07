@@ -45,9 +45,10 @@ class ObjectType : public EntityType{
 
     Yield _yield; // If gatherable.
 
-    const ObjectType *_transformObject; // The object type that this becomes over time, if any.
-    ms_t _transformTime; // How long the transformation takes.
-    bool _transformOnEmpty; // Only begin the transformation once all items have been gathered.
+    const ObjectType *_transformObject = nullptr; // The object type that this becomes over time, if any.
+    ms_t _transformTime = 0; // How long the transformation takes.
+    bool _transformOnEmpty = false; // Begin the transformation only once all items have been gathered.
+    bool _skipConstructionOnTransform = false; // If true, the new object will be fully constructed
 
     ItemSet _materials; // The necessary materials, if this needs to be constructed in-place.
     bool _knownByDefault;
@@ -102,6 +103,8 @@ public:
     bool transformsOnEmpty() const { return _transformOnEmpty; }
     const ObjectType *transformObject() const {return _transformObject; }
     bool transforms() const { return _transformObject != nullptr; }
+    void skipConstructionOnTransform(bool b) { _skipConstructionOnTransform = b; }
+    bool skipConstructionOnTransform() const { return _skipConstructionOnTransform; }
     Hitpoints strength() const { return _strength.get(); }
     void setStrength(const ServerItem *item, size_t quantity);
     std::pair<const ServerItem *, size_t> strengthPair() const {

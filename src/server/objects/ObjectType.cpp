@@ -12,8 +12,6 @@ ObjectType::ObjectType(const std::string &id):
     _knownByDefault(false),
     _merchantSlots(0),
     _bottomlessMerchant(false),
-    _transformObject(nullptr),
-    _transformOnEmpty(false),
     _container(nullptr)
 {}
 
