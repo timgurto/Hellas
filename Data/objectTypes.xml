@@ -60,7 +60,8 @@
     <transform id="extinguishedOven" time="30000" />
 </objectType>
 <objectType id="extinguishedOven" name="Extinguished Oven"
-    xDrawOffset="-14" yDrawOffset="-17" >
+    xDrawOffset="-14" yDrawOffset="-17"
+    isUnbuildable="1" >
     <collisionRect x="-13" y="-9" w="24" h="15" />
     <material id="log" />
     <strength item="rock" quantity="10" />
@@ -82,7 +83,8 @@
     <transform id="extinguishedKiln" time="45000" />
 </objectType>
 <objectType id="extinguishedKiln" name="Extinguished Kiln"
-    xDrawOffset="-13" yDrawOffset="-26" >
+    xDrawOffset="-13" yDrawOffset="-26"
+    isUnbuildable="1" >
     <collisionRect x="-12" y="-4" w="27" h="10" />
     <material id="charcoal" />
     <transform id="kiln" time="1" skipConstruction="1" />
