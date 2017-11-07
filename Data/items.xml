@@ -105,11 +105,13 @@
 		<item id="tinKnife" name="Tin Knife" gearSlot="6" >
 			<tag name="carving" />
 			<tag name="harvesting" />
+			<offset x="-6" y="-3" />
 			<stats attack="4" attackTime="0.8" />
 		</item>
 		<item id="copperKnife" name="Copper Knife" gearSlot="6" >
 			<tag name="carving" />
 			<tag name="harvesting" />
+			<offset x="-6" y="-3" />
 			<stats attack="5" attackTime="0.625" />
 		</item>
 
@@ -132,6 +134,7 @@
 		<item id="copperHammer" name="Copper Hammer" gearSlot="6" sounds="metalTool" >
 			<tag name="hammering" />
 			<stats attack="14" attackTime="1.75" />
+			<offset x="-8" y="-1" />
 		</item>
 
 <!-- Weapons -->
