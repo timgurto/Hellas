@@ -54,12 +54,20 @@
     <tag name="smelting1" />
     <tag name="pottery1" />
     <material id="rock" quantity="10" />
+    <material id="log" />
     <unlockedBy gather="rock" />
     <strength item="rock" quantity="10" />
+    <transform id="extinguishedOven" time="30000" />
+</objectType>
+<objectType id="extinguishedOven" name="Extinguished Oven"
+    xDrawOffset="-14" yDrawOffset="-17" >
+    <collisionRect x="-13" y="-9" w="24" h="15" />
+    <material id="log" />
+    <strength item="rock" quantity="10" />
+    <transform id="oven" time="1" skipConstruction="1" />
 </objectType>
 <objectType id="kiln" name="Kiln"
-    xDrawOffset="-13"
-    yDrawOffset="-26" >
+    xDrawOffset="-13" yDrawOffset="-26" >
     <collisionRect x="-12" y="-4" w="27" h="10" />
     <tag name="smelting1" />
     <tag name="smelting2" />
@@ -68,8 +76,16 @@
     <tag name="charcoalMaking" />
     <material id="brick" quantity="20" />
     <material id="crudeClay" quantity="12" />
+    <material id="charcoal" />
     <unlockedBy recipe="brick" />
     <strength item="brick" quantity="20" />
+    <transform id="extinguishedKiln" time="45000" />
+</objectType>
+<objectType id="extinguishedKiln" name="Extinguished Kiln"
+    xDrawOffset="-13" yDrawOffset="-26" >
+    <collisionRect x="-12" y="-4" w="27" h="10" />
+    <material id="charcoal" />
+    <transform id="kiln" time="1" skipConstruction="1" />
 </objectType>
 
 <objectType id="clay" name="Clay Deposit"
