@@ -102,5 +102,6 @@ std::string msAsTimeDisplay(ms_t t) {
     if (hours > 0) oss << hours << "h "s;
     if (minutes > 0) oss << minutes << "m "s;
     if (seconds > 0) oss << seconds << "s "s;
-    return oss.str();
+    auto timeDisplay = oss.str();
+    return timeDisplay.substr(0, timeDisplay.size() - 1); // Remove trailing space
 }
