@@ -192,6 +192,7 @@
 			</item>
 			<item id="copperCuirass" name="Copper Cuirass" gearSlot="2" >
 				<stats armor="4" critResist="1" />
+                <offset x="-3" y="-4c" />
 			</item>
 
 		<!-- Leather -->
