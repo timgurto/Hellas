@@ -654,7 +654,11 @@ void Server::publishStats(const Server * server) {
                 << "x: \"" << user.location().x << "\","
                 << "y: \"" << user.location().y << "\","
                 << "city: \"" << server->_cities.getPlayerCity(user.name()) << "\","
-                << "isKing: " << server->_kings.isPlayerAKing(user.name()) << ",";
+                << "isKing: " << server->_kings.isPlayerAKing(user.name()) << ","
+                << "health: " << user.health() << ","
+                << "maxHealth: " << user.maxHealth() << ","
+                << "energy: " << user.energy() << ","
+                << "maxEnergy: " << user.maxEnergy() << ",";
 
             statsFile
                 << "inventory: [";

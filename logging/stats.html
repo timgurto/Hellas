@@ -1,4 +1,3 @@
-<meta http-equiv="refresh" content="1" >
 <html>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
@@ -16,11 +15,13 @@
     <h2>Users</h2>
     <table id="users" >
     <tr>
-        <td class="heading">Username</td>
-        <td class="heading">City</td>
+        <td class="heading">Name</td>
+        <td class="heading">Health</td>
+        <td class="heading">Energy</td>
         <td class="heading">Location</td>
         <td class="heading">Gear</td>
         <td class="heading">Inventory</td>
+        <td class="heading">City</td>
     </tr>
     </table>
 </body>
@@ -53,10 +54,11 @@
         var cells = "";
         cells += "<td>" + user.name + "</td>";
         
-        var cityText = user.city;
-        if (user.isKing)
-            cityText = cityText + " <span class='king'>&#x265B;</span>";
-        cells += "<td>" + cityText + "</td>";
+        var healthText = "";
+        cells += "<td>" + makeBar(user.health, user.maxHealth, "#3478D8") + "</td>";
+        
+        var energyText = "";
+        cells += "<td>" + makeBar(user.energy, user.maxEnergy, "#E8CE94") + "</td>";
         
         cells += "<td>" + Math.round(user.x) + ", " + Math.round(user.y) + "</td>";
         
@@ -82,7 +84,30 @@
         }
         cells += "<td>" + inventoryText + "</td>";
         
+        var cityText = user.city;
+        if (user.isKing)
+            cityText = cityText + " <span class='king'>&#x265B;</span>";
+        cells += "<td>" + cityText + "</td>";
+        
         return cells;
+    }
+    
+    function makeBar(val, max, color){
+        var barWRaw = 100;
+        var barHRaw = 15;
+        var fillWRaw = 1.0 * val / max * 100;
+        
+        var barW = barWRaw.toString();
+        var barH = barHRaw.toString();
+        var fillW = fillWRaw.toString();
+        var fillH = (barHRaw - 2).toString();
+        
+        var ret =
+            '<svg width="' + barW + '" height="' + barH + '">' +
+            '<rect width="' + barW + '" height="' + barH + '" class="barOutline" />' +
+            '<rect x="1" y="1" width="' + fillW + '" height="' + fillH + '" style="fill:' + color + '" />' +
+            '</svg>'
+        return ret;
     }
 
     $("#version").html(stats.version);
@@ -91,6 +116,9 @@
     for (var i = 0; i < stats.users.length; ++i)
         $("#users").append("<tr>" + makeUserRow(stats.users[i]) + "</tr>");
         
+</script>
+<script type="text/javascript">
+  setTimeout(function () { location.reload(true); }, 500);
 </script>
 
 </html>

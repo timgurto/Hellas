@@ -15,3 +15,8 @@ h1, h2 {
 .king {
     color: gold;
 }
+
+.barOutline {
+    stroke-width: 1;
+    stroke: #bbbbbb;
+}
