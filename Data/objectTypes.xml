@@ -87,6 +87,7 @@
     isUnbuildable="1" >
     <collisionRect x="-12" y="-4" w="27" h="10" />
     <material id="charcoal" />
+    <strength item="brick" quantity="20" />
     <transform id="kiln" time="1" skipConstruction="1" />
 </objectType>
 
