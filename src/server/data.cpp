@@ -300,6 +300,8 @@ void Server::loadData(const std::string &path){
             }
             if (!requiresUnlock && !isUnbuildable && needsMaterials)
                 ot->knownByDefault();
+            if (needsMaterials && !isUnbuildable)
+                ++_numBuildableObjects;
 
             // Container
             auto container = xr.findChild("container", elem);

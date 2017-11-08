@@ -16,12 +16,14 @@
     <table id="users" >
     <tr>
         <td class="heading">Name</td>
+        <td class="heading">City</td>
         <td class="heading">Health</td>
         <td class="heading">Energy</td>
         <td class="heading">Location</td>
         <td class="heading">Gear</td>
         <td class="heading">Inventory</td>
-        <td class="heading">City</td>
+        <td class="heading">Recipes</td>
+        <td class="heading">Constructions</td>
     </tr>
     </table>
 </body>
@@ -54,11 +56,14 @@
         var cells = "";
         cells += "<td>" + user.name + "</td>";
         
-        var healthText = "";
-        cells += "<td>" + makeBar(user.health, user.maxHealth, "#3478D8") + "</td>";
+        var cityText = user.city;
+        if (user.isKing)
+            cityText = cityText + " <span class='king'>&#x265B;</span>";
+        cells += "<td>" + cityText + "</td>";
         
-        var energyText = "";
-        cells += "<td>" + makeBar(user.energy, user.maxEnergy, "#E8CE94") + "</td>";
+        cells += makeBarCell(user.health, user.maxHealth, "#3478D8");
+        
+        cells += makeBarCell(user.energy, user.maxEnergy, "#E8CE94");
         
         cells += "<td>" + Math.round(user.x) + ", " + Math.round(user.y) + "</td>";
         
@@ -84,12 +89,15 @@
         }
         cells += "<td>" + inventoryText + "</td>";
         
-        var cityText = user.city;
-        if (user.isKing)
-            cityText = cityText + " <span class='king'>&#x265B;</span>";
-        cells += "<td>" + cityText + "</td>";
+        cells += makeBarCell(user.knownRecipes, stats.recipes, "#bbb");
+        
+        cells += makeBarCell(user.knownConstructions, stats.constructions, "#bbb");
         
         return cells;
+    }
+    
+    function makeBarCell(val, max, color){
+        return "<td>" + makeBar(val, max, color) + "</td>"
     }
     
     function makeBar(val, max, color){

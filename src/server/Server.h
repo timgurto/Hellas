@@ -177,6 +177,8 @@ private:
     std::map<char, Terrain*> _terrainTypes;
     Spells _spells;
 
+    size_t _numBuildableObjects = 0;
+
     std::list<Entity *> _entitiesToRemove; // Emptied every tick.
     void forceAllToUntarget(const Entity &target, const User *userToExclude = nullptr); 
     void removeEntity(Entity &ent, const User *userToExclude = nullptr);

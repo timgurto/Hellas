@@ -645,6 +645,9 @@ void Server::publishStats(const Server * server) {
 
         statsFile << "time: " << server->_time << ",\n";
 
+        statsFile << "recipes: " << server->_recipes.size() << ",\n";
+        statsFile << "constructions: " << server->_numBuildableObjects << ",\n";
+
         statsFile << "users: [";
         for (const auto userEntry : server->_usersByName) {
             const auto &user = *userEntry.second;
@@ -658,7 +661,9 @@ void Server::publishStats(const Server * server) {
                 << "health: " << user.health() << ","
                 << "maxHealth: " << user.maxHealth() << ","
                 << "energy: " << user.energy() << ","
-                << "maxEnergy: " << user.maxEnergy() << ",";
+                << "maxEnergy: " << user.maxEnergy() << ","
+                << "knownRecipes: " << user.knownRecipes().size() << ","
+                << "knownConstructions: " << user.knownConstructions().size() << ",";
 
             statsFile
                 << "inventory: [";
