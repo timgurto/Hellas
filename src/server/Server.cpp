@@ -654,12 +654,21 @@ void Server::publishStats(const Server * server) {
                 << "x: \"" << user.location().x << "\","
                 << "y: \"" << user.location().y << "\","
                 << "city: \"" << server->_cities.getPlayerCity(user.name()) << "\","
-                << "isKing: " << server->_kings.isPlayerAKing(user.name()) << ","
+                << "isKing: " << server->_kings.isPlayerAKing(user.name()) << ",";
 
+            statsFile
                 << "inventory: [";
             for (auto inventorySlot : user.inventory()) {
                 auto id = inventorySlot.first != nullptr ? inventorySlot.first->id() : ""s;
                 statsFile << "{id:\"" << id << "\", qty:" << inventorySlot.second << "},";
+            }
+            statsFile << "],";
+
+            statsFile
+                << "gear: [";
+            for (auto gearSlot : user.gear()) {
+                auto id = gearSlot.first != nullptr ? gearSlot.first->id() : ""s;
+                statsFile << "{id:\"" << id << "\", qty:" << gearSlot.second << "},";
             }
             statsFile << "],";
 

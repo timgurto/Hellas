@@ -1,4 +1,4 @@
-<meta http-equiv="refresh" content="5" >
+<meta http-equiv="refresh" content="1" >
 <html>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
@@ -19,6 +19,7 @@
         <td class="heading">Username</td>
         <td class="heading">City</td>
         <td class="heading">Location</td>
+        <td class="heading">Gear</td>
         <td class="heading">Inventory</td>
     </tr>
     </table>
@@ -58,6 +59,17 @@
         cells += "<td>" + cityText + "</td>";
         
         cells += "<td>" + Math.round(user.x) + ", " + Math.round(user.y) + "</td>";
+        
+        var gearText = "";
+        for (var i = 0; i < user.gear.length; ++i){
+            var id = user.gear[i].id;
+            var qty = user.gear[i].qty;
+            var icon = "<img width='16px'/>";
+            if (id != "")
+                icon = "<img width='16px' src='../Images/Items/" + id + ".png'>";
+            gearText += icon;
+        }
+        cells += "<td>" + gearText + "</td>";
         
         var inventoryText = "";
         for (var i = 0; i < user.inventory.length; ++i){
