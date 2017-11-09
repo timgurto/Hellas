@@ -291,7 +291,7 @@
 <!-- Swords -->
     <recipe
         id="copperSword" time="4000" >
-        <material id="copperBar" qty="5" />
+        <material id="copperBar" quantity="5" />
         <material id="leather" />
         <tool class="hammering" />
         <tool class="smelting2" />
