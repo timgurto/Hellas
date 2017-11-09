@@ -9,6 +9,10 @@ _attack(0),
 _attackTime(0)
 {}
 
-void NPCType::addLoot(const ServerItem *item, double mean, double sd){
-    _lootTable.addItem(item, mean, sd);
+void NPCType::addSimpleLoot(const ServerItem * item, double chance) {
+    _lootTable.addSimpleItem(item, chance);
+}
+
+void NPCType::addNormalLoot(const ServerItem *item, double mean, double sd){
+    _lootTable.addNormalItem(item, mean, sd);
 }

@@ -26,7 +26,8 @@ public:
 
     virtual char classTag() const override { return 'n'; }
 
-    void addLoot(const ServerItem *item, double mean, double sd);
+    void addSimpleLoot(const ServerItem *item, double chance);
+    void addNormalLoot(const ServerItem *item, double mean, double sd);
 
 };
 

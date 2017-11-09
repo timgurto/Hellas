@@ -441,10 +441,14 @@ void Server::loadData(const std::string &path){
                 if (!xr.findAttr(loot, "id", s))
                     continue;
 
-                double mean=1, sd=0;
-                xr.findNormVarChild("normal", loot, mean, sd);
+                double mean = 1, sd = 0;
                 std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
-                nt->addLoot(&*itemIt, mean, sd);
+                if (xr.findAttr(loot, "chance", mean)) {
+                    nt->addSimpleLoot(&*itemIt, mean);
+                }
+                if (xr.findNormVarChild("normal", loot, mean, sd)) {
+                    nt->addNormalLoot(&*itemIt, mean, sd);
+                }
             }
         
             _objectTypes.insert(nt);
