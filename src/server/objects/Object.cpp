@@ -9,8 +9,6 @@ Object::Object(const ObjectType *type, const Point &loc):
     Entity(type, loc, type->strength() > 0 ? type->strength() : 1),
     _numUsersGathering(0),
     _transformTimer(0),
-    _container(nullptr),
-    _deconstruction(nullptr),
     _permissions(*this)
 {
     setType(type);
@@ -162,9 +160,8 @@ void Object::setType(const ObjectType *type, bool skipConstruction){
     if (objType().hasContainer()){
         _container = objType().container().instantiate(*this);
     }
-    delete _deconstruction;
     if (objType().hasDeconstruction()){
-        _deconstruction = objType().deconstruction().instantiate(*this);
+        _deconstruction = { *this, objType().deconstruction() };
     }
 
     if (type->merchantSlots() != 0)

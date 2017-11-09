@@ -60,9 +60,9 @@ public:
     Container &container() { return *_container; }
     const Container &container() const { return *_container; }
 
-    bool hasDeconstruction() const { return _deconstruction != nullptr; }
-    Deconstruction &deconstruction() { return *_deconstruction; }
-    const Deconstruction &deconstruction() const { return *_deconstruction; }
+    bool hasDeconstruction() const { return _deconstruction.exists(); }
+    Deconstruction &deconstruction() { return _deconstruction; }
+    const Deconstruction &deconstruction() const { return _deconstruction; }
 
     bool isAbleToDeconstruct(const User &user) const;
 
@@ -102,8 +102,8 @@ public:
     friend class Container; // TODO: Remove once everything is componentized
 
 private:
-    Container *_container;
-    Deconstruction *_deconstruction;
+    Container *_container = nullptr;
+    Deconstruction _deconstruction{};
 };
 
 #endif

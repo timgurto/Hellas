@@ -10,13 +10,12 @@ class ServerItem;
 class DeconstructionType{
 public:
     static DeconstructionType *ItemAndTime(const ServerItem *item, ms_t timeToDeconstruct);
-    Deconstruction *instantiate(Object &parent) const;
     
 private:
     DeconstructionType(const ServerItem *item, ms_t timeToDeconstruct);
 
-    const ServerItem *_itemThisBecomes;
-    ms_t _timeToDeconstruct;
+    const ServerItem *_itemThisBecomes = nullptr;
+    ms_t _timeToDeconstruct = 0;
 
     friend class Deconstruction;
 };
@@ -24,12 +23,16 @@ private:
 
 class Deconstruction{
 public:
-    const ServerItem *becomes() const { return _type._itemThisBecomes; }
-    ms_t timeToDeconstruct() const { return _type._timeToDeconstruct; }
-private:
+    Deconstruction() {}
     Deconstruction(Object &parent, const DeconstructionType &type);
-    const DeconstructionType &_type;
-    Object &_parent;
+
+    const ServerItem *becomes() const { return _type->_itemThisBecomes; }
+    ms_t timeToDeconstruct() const { return _type->_timeToDeconstruct; }
+    bool exists() const { return _type != nullptr; }
+
+private:
+    const DeconstructionType *_type;
+    Object *_parent = nullptr;
 
     friend class DeconstructionType;
 };
