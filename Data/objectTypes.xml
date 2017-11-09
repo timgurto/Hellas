@@ -321,18 +321,20 @@
     <material id="tinTube" quantity="2" />
     <tag name="woodTurning" />
     <unlockedBy recipe="tinTube" />
-    <strength item="tinTube" quantity="2" />
+    <strength item="tinTube" quantity="2" chance="0.5" />
 </objectType>
 
 <objectType id="grindstone" name="Grindstone"
-    constructionTime="0" >
+    constructionTime="0" 
+    xDrawOffset="-11" yDrawOffset="-21">>
+    <collisionRect x="-11" y="-5" w="22" h="11" />
     <material id="lumber" quantity="4" />
     <material id="rope" quantity="2" />
     <material id="tinTube" quantity="1" />
     <material id="rock" quantity="1" />
     <tag name="grinding1" />
     <tag name="grinding2" />
-    <unlockedBy recipe="tinTube" />
+    <unlockedBy recipe="tinTube" chance="0.5" />
     <strength item="tinTube" quantity="2" />
 </objectType>
 

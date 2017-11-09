@@ -46,7 +46,7 @@
 <item id="figSeeds"     name="Fig Seeds"                         constructs="figTree0"       stackSize="10"/>
 <item id="flaxSeeds"    name="Flax Seeds"                        constructs="flaxCrop0"      stackSize="10"/>
 
-<item id="tinTube"      name="Tin Tube" />
+<item id="tinTube"      name="Tin Tube"     strength="4"/>
 <item id="pole1"		name="Crude Pole" />
 <item id="pole2"		name="Pole" />
 <item id="water"        name="Water Vessel"   sounds="ceramic"  returnsOnConstruction="smallPot" />
