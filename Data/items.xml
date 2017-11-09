@@ -149,6 +149,7 @@
 	<!-- Swords -->
 		<item id="copperSword" name="Short Sword" gearSlot="6" >
 			<stats attack="7" hit="1" />
+            <offset x="-6" y="-8" />
 		</item>
 
 <!-- Armor -->
@@ -215,6 +216,7 @@
 	</item>
 	<item id="copperGreaves" name="Copper Greaves" gearSlot="5" >
 		<stats armor="2" hps="1" />
+        <offset x="-2" y="-10" />
 	</item>
 
 	<!-- Left hand -->
