@@ -355,6 +355,7 @@
         <tool class="hammering" />
         <tool class="smelting2" />
         <tool class="anvil1" />
+        <unlockedBy recipe="copperBar" chance="0.02" />
         <unlockedBy recipe="tinRing" chance="0.05" />
     </recipe>
     <recipe id="tinHauberk"
@@ -378,12 +379,13 @@
         <unlockedBy recipe="lumber" chance="0.1" />
         <unlockedBy recipe="leather" chance="0.1" />
     </recipe>
-    <recipe id="tinShield"
+    <recipe id="copperShield"
         time="4000" >
-        <material id="tinBar" quantity="8" />
+        <material id="copperBar" quantity="8" />
         <tool class="hammering" />
         <tool class="smelting1" />
         <tool class="anvil1" />
+        <unlockedBy recipe="copperBar" chance="0.02" />
         <unlockedBy recipe="leatherShield" chance="0.2" />
     </recipe>
 

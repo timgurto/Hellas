@@ -225,7 +225,7 @@
 		<offset x="-4" y="-10" />
         <tag name="shield" />
 	</item>
-	<item id="tinShield" name="Buckler" gearSlot="7" >
+	<item id="copperShield" name="Buckler" gearSlot="7" >
 		<stats armor="3" block="5" blockValue="5" />
         <tag name="shield" />
 	</item>
