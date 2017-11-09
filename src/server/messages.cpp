@@ -284,36 +284,63 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_TOO_FAR);
                 break;
             }
-            if (obj->isBeingBuilt()){
+            if (obj->isBeingBuilt()) {
                 sendMessage(client, SV_UNDER_CONSTRUCTION);
                 break;
             }
-            assert (obj->type());
-            if (!obj->permissions().doesUserHaveAccess(user->name())){
+            assert(obj->type());
+            if (!obj->permissions().doesUserHaveAccess(user->name())) {
                 sendMessage(client, SV_NO_PERMISSION);
                 break;
             }
             // Check that the object can be deconstructed
-            if (! obj->hasDeconstruction()){
+            if (!obj->hasDeconstruction()) {
                 sendMessage(client, SV_CANNOT_DECONSTRUCT);
                 break;
             }
-            if (obj->health() < obj->maxHealth()){
+            if (obj->health() < obj->maxHealth()) {
                 sendMessage(client, SV_DAMAGED_OBJECT);
                 break;
             }
-            if (!obj->isAbleToDeconstruct(*user)){
+            if (!obj->isAbleToDeconstruct(*user)) {
                 break;
             }
             // Check that it isn't an occupied vehicle
-            if (obj->classTag() == 'v' && !dynamic_cast<const Vehicle *>(obj)->driver().empty()){
+            if (obj->classTag() == 'v' && !dynamic_cast<const Vehicle *>(obj)->driver().empty()) {
                 sendMessage(client, SV_VEHICLE_OCCUPIED);
                 break;
             }
 
             user->beginDeconstructing(*obj);
             sendMessage(client, SV_ACTION_STARTED, makeArgs(
-                    obj->deconstruction().timeToDeconstruct()));
+                obj->deconstruction().timeToDeconstruct()));
+            break;
+        }
+
+        case CL_DEMOLISH:
+        {
+            int serial;
+            iss >> serial >> del;
+            if (del != MSG_END)
+                return;
+            user->cancelAction();
+            Object *obj = _entities.find<Object>(serial);
+            if (!isEntityInRange(client, *user, obj)) {
+                sendMessage(client, SV_TOO_FAR);
+                break;
+            }
+            assert(obj->type());
+            if (!obj->permissions().isOwnedByPlayer(user->name())) {
+                sendMessage(client, SV_NO_PERMISSION);
+                break;
+            }
+            // Check that it isn't an occupied vehicle
+            if (obj->classTag() == 'v' && !dynamic_cast<const Vehicle *>(obj)->driver().empty()) {
+                sendMessage(client, SV_VEHICLE_OCCUPIED);
+                break;
+            }
+
+            obj->kill();
             break;
         }
 

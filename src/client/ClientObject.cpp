@@ -532,6 +532,39 @@ void ClientObject::getInputAndGrantObject(void *objectToGrant) {
     obj._grantWindow->show();
 }
 
+void ClientObject::addDemolishButtonToWindow() {
+    px_t
+        x = BUTTON_GAP,
+        y = _window->contentHeight(),
+        newWidth = _window->contentWidth();
+    y += BUTTON_GAP;
+    Button *demolishButton = new Button({ x, y, BUTTON_WIDTH, BUTTON_HEIGHT }, "Demolish",
+        confirmAndDemolishObject, this);
+    demolishButton->setTooltip("Demolish this object, removing it permanently");
+    _window->addChild(demolishButton);
+    y += BUTTON_GAP + BUTTON_HEIGHT;
+    x += BUTTON_GAP + BUTTON_WIDTH;
+    if (newWidth < x)
+        newWidth = x;
+
+    _window->resize(newWidth, y);
+}
+
+void ClientObject::confirmAndDemolishObject(void * objectToDemolish) {
+    assert(objectToDemolish != nullptr);
+    ClientObject &obj = *reinterpret_cast<ClientObject *>(objectToDemolish);
+    Client &client = *Client::_instance;
+    std::string confirmationText = "Are you sure you want to demolish this " +
+        obj.name() + "? This cannot be undone.";
+    if (obj._confirmDemolishWindow != nullptr)
+        client.removeWindow(obj._confirmDemolishWindow);
+    else
+        obj._confirmDemolishWindow = new ConfirmationWindow(confirmationText, CL_DEMOLISH,
+            makeArgs(obj.serial()));
+    client.addWindow(obj._confirmDemolishWindow);
+    obj._confirmDemolishWindow->show();
+}
+
 void ClientObject::assembleWindow(Client &client){
     const ClientObjectType &objType = *objectType();
 
@@ -567,7 +600,8 @@ void ClientObject::assembleWindow(Client &client){
                   (_owner == client.username()) &&
                   (!objType.isPlayerUnique()),
         canGrant = (client.character().isKing() &&
-                    _owner == client.character().cityName());
+                    _owner == client.character().cityName()),
+        canDemolish = _owner == Client::_instance->username();
     if (isMerchant ||
         userHasAccess() && (hasContainer ||
                             isVehicle ||
@@ -586,6 +620,8 @@ void ClientObject::assembleWindow(Client &client){
                 addConstructionToWindow();
                 if (canCede)
                     addCedeButtonToWindow();
+                if (canDemolish)
+                    addDemolishButtonToWindow();
             }
 
         } else if (!userHasAccess()){
@@ -610,6 +646,8 @@ void ClientObject::assembleWindow(Client &client){
                 addCedeButtonToWindow();
             if (canGrant)
                 addGrantButtonToWindow();
+            if (canDemolish)
+                addDemolishButtonToWindow();
         }
 
         px_t

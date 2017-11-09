@@ -46,6 +46,10 @@ enum MessageCode{
     // Arguments: serial
     CL_DECONSTRUCT,
 
+    // "I want to demolish an object"
+    // Arguments: serial
+    CL_DEMOLISH,
+
     // "I want to trade using merchant slot ... in object ..."
     // Arguments: serial, slot
     CL_TRADE,

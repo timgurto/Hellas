@@ -105,6 +105,7 @@ public:
     void energy(Energy energy) { _energy = energy; }
     bool isDead() const { return _health == 0; }
 
+    void kill() { reduceHealth(health()); }
     void reduceHealth(int damage);
     void reduceEnergy(int amount);
     void healBy(Hitpoints amount);

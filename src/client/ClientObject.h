@@ -49,6 +49,7 @@ class ClientObject : public Sprite, public ClientCombatant {
 protected:
     Window *_window; // For containers, etc; opens when the object is nearby and right-clicked.
     ConfirmationWindow *_confirmCedeWindow;
+    ConfirmationWindow *_confirmDemolishWindow = nullptr;
     InputWindow *_grantWindow = nullptr;
 
 public:
@@ -141,7 +142,9 @@ private:
     void addCedeButtonToWindow();
         static void confirmAndCedeObject(void *objectToCede);
     void addGrantButtonToWindow();
-        static void getInputAndGrantObject(void *objectToCede);
+        static void getInputAndGrantObject(void *objectToGrant);
+    void addDemolishButtonToWindow();
+        static void confirmAndDemolishObject(void *objectToDemolish);
 };
 
 #endif
