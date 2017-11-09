@@ -602,14 +602,15 @@ void ClientObject::assembleWindow(Client &client){
         canGrant = (client.character().isKing() &&
                     _owner == client.character().cityName()),
         canDemolish = _owner == Client::_instance->username();
-    if (isMerchant ||
-        userHasAccess() && (hasContainer ||
-                            isVehicle ||
-                            objType.hasAction() ||
-                            objType.canDeconstruct() ||
-                            isBeingConstructed() ||
-                            canCede ||
-                            canGrant)){
+    if (isAlive() && (
+            isMerchant ||
+            userHasAccess() && (hasContainer ||
+                                isVehicle ||
+                                objType.hasAction() ||
+                                objType.canDeconstruct() ||
+                                isBeingConstructed() ||
+                                canCede ||
+                                canGrant))){
 
         if (_window == nullptr)
             _window = Window::WithRectAndTitle(Rect(), objType.name());
