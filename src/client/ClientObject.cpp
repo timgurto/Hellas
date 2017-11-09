@@ -821,7 +821,9 @@ const Texture &ClientObject::tooltip() const{
     TooltipBuilder tb;
     tb.setColor(Color::ITEM_NAME);
     std::string title = ot.name();
-    if (isBeingConstructed())
+    if (isDead())
+        title += " (ruins)";
+    else if (isBeingConstructed())
         title += " (under construction)";
     tb.addLine(title);
 
@@ -838,6 +840,11 @@ const Texture &ClientObject::tooltip() const{
         tb.addGap();
         tb.setColor(Color::ITEM_TAGS);
         tb.addLine("Owned by " + (owner() == Client::_instance->username() ? "you" : owner()));
+    }
+
+    if (isDead()){
+        _tooltip = tb.publish();
+        return _tooltip;
     }
 
     // Stats

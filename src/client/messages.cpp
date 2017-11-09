@@ -682,6 +682,9 @@ void Client::handleMessage(const std::string &msg){
             }
             ClientObject &obj = *it->second;
             obj.health(health);
+            if (health == 0) {
+                obj.refreshTooltip();
+            }
             if (targetAsEntity() == &obj){
                 _target.updateHealth(health);
                 if (health == 0)
