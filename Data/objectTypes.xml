@@ -32,8 +32,8 @@
     canGather="1" gatherTime="3000"
     isFlat="1"
     allowedTerrain="rocks" >
-    <yield id="tin" initialMean="4.5" initialSD="2" initialMin="1" />
-    <yield id="rock" initialMean="1.5" initialSD="2" />
+    <yield id="tin" initialMean="2.5" initialSD="1" initialMin="1" />
+    <yield id="rock" initialMean="1" initialSD="2" />
     <strength item="tin" quantity="5" />
 </objectType>
 
@@ -42,8 +42,8 @@
     canGather="1" gatherTime="3000" gatherReq="mining"
     isFlat="1"
     allowedTerrain="rocks" >
-    <yield id="copper" initialMean="4.5" initialSD="2" initialMin="1" />
-    <yield id="rock" initialMean="1.5" initialSD="2" />
+    <yield id="copper" initialMean="2.5" initialSD="1" initialMin="1" />
+    <yield id="rock" initialMean="1" initialSD="2" />
     <strength item="copper" quantity="5" />
 </objectType>
 
@@ -340,11 +340,11 @@
     constructionTime="0" constructionReq="hammering"
     xDrawOffset="-11" yDrawOffset="-18" >
     <collisionRect x="-11" y="-5" w="24" h="10" />
-    <material id="copperBar" quantity="8" />
+    <material id="copperBar" quantity="20" />
     <tag name="anvil1" />
     <unlockedBy recipe="copperBar" chance="0.1" />
     <unlockedBy recipe="copperHammer" />
-    <strength item="copperBar" quantity="8" />
+    <strength item="copperBar" quantity="20" />
 </objectType>
 
 <objectType id="tannin" name="Pot of Tannin"
