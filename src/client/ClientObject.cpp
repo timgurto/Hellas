@@ -584,6 +584,8 @@ void ClientObject::assembleWindow(Client &client){
             if (userHasAccess()){
                 client.watchObject(*this);
                 addConstructionToWindow();
+                if (canCede)
+                    addCedeButtonToWindow();
             }
 
         } else if (!userHasAccess()){
