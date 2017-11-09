@@ -5,6 +5,7 @@
 #include <string>
 #include <windows.h>
 
+#include "Buff.h"
 #include "City.h"
 #include "Entity.h"
 #include "Recipe.h"
@@ -75,6 +76,8 @@ private:
 
     ms_t _timeSinceRegen = 0;
 
+    Buffs _buffs;
+
 
 public:
     User(const std::string &name, const Point &loc, const Socket &socket);
@@ -104,6 +107,8 @@ public:
     }
     const Point &respawnPoint() const { return _respawnPoint; }
     void respawnPoint(const Point &loc) { _respawnPoint = loc; }
+    Buffs &buffs() { return _buffs; }
+    const Buffs &buffs() const { return _buffs; }
 
     // Inventory getters/setters
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const

@@ -238,7 +238,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 264,Crit-chance stat,3,2,Feature,263,TRUE,,2
 265,A second spell,21,5,Feature,246,TRUE,,2
 266,Global cooldown for spells,3,13,Feature,265,,,2
-267,Random characters get +health buff,2,2,Feature,265,,,2
+267,Random characters get +health buff,2,2,Feature,265,TRUE,,2
 268,Buffs expire,2,5,Feature,267,,,2
 269,Buffs can be cast on target (no longer random),21,5,Feature,267,,,2
 270,Buffs can be dismissed,1,5,Feature,267,,,2
@@ -281,7 +281,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 307,Non-magicdamage can be blocked (reduced by k),5,5,Feature,306,TRUE,,2
 308,Block-chance stat,5,2,Feature,307,TRUE,,2
 309,Block-value stat,3,2,Feature,307,TRUE,,2
-310,Physical-damage stat,3,2,Feature,,,,2
+310,Physical-damage stat,3,2,Feature,,TRUE,,2
 311,Water/air/earth-resistance stats,3,2,Feature,262,TRUE,,2
 312,Armour-class stat,5,8,Feature,,TRUE,,2
 313,NPCs have threat tables to dictate target,13,34,Feature,,,,2

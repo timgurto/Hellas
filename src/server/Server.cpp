@@ -280,6 +280,8 @@ void Server::addUser(const Socket &socket, const std::string &name){
     if (!userExisted) {
         newUser.setClass(User::Class(rand() % User::NUM_CLASSES));
         newUser.moveToSpawnPoint(true);
+        if (rand() % 2 == 0)
+            newUser.buffs().push_back({ _buffTypes["super"] });
         _debug << "New";
     } else {
         _debug << "Existing";
@@ -288,6 +290,10 @@ void Server::addUser(const Socket &socket, const std::string &name){
     _debug << " user, " << name << " has logged in." << Log::endl;
 
     sendMessage(socket, SV_WELCOME);
+
+    // Calculate and send him his stats
+    newUser.updateStats();
+
     newUser.sendInfoToClient(newUser);
     _wars.sendWarsToUser(newUser, *this);
 
@@ -344,12 +350,6 @@ void Server::addUser(const Socket &socket, const std::string &name){
             sendInventoryMessage(newUser, i, INVENTORY);
     }
 
-    // Send him his gear
-    for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
-        if (newUser.gear(i).first != nullptr)
-            sendInventoryMessage(newUser, i, GEAR);
-    }
-
     // Send him the recipes he knows
     if (newUser.knownRecipes().size() > 0){
         std::string args = makeArgs(newUser.knownRecipes().size());
@@ -367,9 +367,6 @@ void Server::addUser(const Socket &socket, const std::string &name){
         }
         sendMessage(newUser.socket(), SV_CONSTRUCTIONS, args);
     }
-
-    // Calculate and send him his stats
-    newUser.updateStats();
 
     // Add new user to list
     std::set<User>::const_iterator it = _users.insert(newUser).first;

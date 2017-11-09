@@ -7,6 +7,7 @@
 #include <string>
 #include <utility>
 
+#include "Buff.h"
 #include "City.h"
 #include "CollisionChunk.h"
 #include "Entities.h"
@@ -176,6 +177,7 @@ private:
     std::vector<Spawner> _spawners;
     std::map<char, Terrain*> _terrainTypes;
     Spells _spells;
+    BuffTypes _buffTypes;
 
     size_t _numBuildableObjects = 0;
 

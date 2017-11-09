@@ -657,6 +657,12 @@ void Server::loadData(const std::string &path){
         }
     }
 
+    // Buffs
+    _buffTypes.clear();
+    auto superStats = StatsMod{};
+    superStats.health = 100;
+    _buffTypes["super"] = { superStats };
+
     ProgressLock::registerStagedLocks();
 
     // Remove invalid items referred to by objects/recipes

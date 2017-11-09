@@ -544,11 +544,17 @@ void User::updateStats(){
     auto oldMaxEnergy = maxEnergy();
 
     _stats = BASE_STATS;
+
+    // Apply gear
     for (size_t i = 0; i != GEAR_SLOTS; ++i){
         const ServerItem *item = _gear[i].first;
         if (item != nullptr)
             _stats &= item->stats();
     }
+
+    // Apply buffs
+    for (auto &buff : _buffs)
+        buff.applyTo(_stats);
 
     // Special case: health must change to reflect new max health
     int healthDecrease = oldMaxHealth - maxHealth();
