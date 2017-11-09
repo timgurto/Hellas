@@ -864,6 +864,10 @@ void Server::loadData(const std::string &path){
                     continue;
                 obj.remainingMaterials().set(&*it, n);
             }
+
+            auto health = Hitpoints{};
+            if (xr.findAttr(elem, "health", health))
+                obj.health(health);
         }
 
         for (auto elem : xr.getChildren("npc")) {
@@ -931,6 +935,9 @@ void Object::writeToXML(XmlWriter &xw) const{
     auto loc = xw.addChild("location", e);
     xw.setAttr(loc, "x", location().x);
     xw.setAttr(loc, "y", location().y);
+
+    if (health() < maxHealth())
+        xw.setAttr(e, "health", health());
 
     if (hasContainer()){
         for (size_t i = 0; i != objType().container().slots(); ++i) {
