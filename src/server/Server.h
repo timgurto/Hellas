@@ -75,6 +75,7 @@ public:
     const ObjectType *findObjectTypeByName(const std::string &id) const; // Linear complexity
     std::set<char> nearbyTerrainTypes(const Rect &rect, double extraRadius = 0);
     const User *getUserByName(const std::string &username) const;
+    const BuffType *getBuffByName(const Buff::ID &id) const;
 
     // Checks whether an entity is within range of a user.  If not, a relevant error message is
     // sent to the client.

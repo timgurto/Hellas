@@ -643,6 +643,7 @@ void Server::loadData(const std::string &path){
 
                 auto args = Spell::Args{};
                 xr.findAttr(functionElem, "i1", args.i1);
+                xr.findAttr(functionElem, "s1", args.s1);
 
                 newSpell->args(args);
             }

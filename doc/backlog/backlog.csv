@@ -240,7 +240,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 266,Global cooldown for spells,3,13,Feature,265,,,2
 267,Random characters get +health buff,2,2,Feature,265,TRUE,,2
 268,Buffs expire,2,5,Feature,267,,,2
-269,Buffs can be cast on target (no longer random),21,5,Feature,267,,,2
+269,Buffs can be cast on target (no longer random),21,5,Feature,267,TRUE,,2
 270,Buffs can be dismissed,1,5,Feature,267,,,2
 271,Buffs can be restricted to self,2,5,Feature,269,,,2
 272,A -resistance debuff (can't be dismissed),3,5,Feature,270,,,2

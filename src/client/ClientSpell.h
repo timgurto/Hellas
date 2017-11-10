@@ -11,6 +11,7 @@ class ClientSpell {
 public:
     struct Args {
         int i1 = 0;
+        std::string s1{};
     };
 
     ClientSpell(const std::string &id);

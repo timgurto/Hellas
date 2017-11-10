@@ -280,8 +280,6 @@ void Server::addUser(const Socket &socket, const std::string &name){
     if (!userExisted) {
         newUser.setClass(User::Class(rand() % User::NUM_CLASSES));
         newUser.moveToSpawnPoint(true);
-        if (rand() % 2 == 0)
-            newUser.buffs().push_back({ _buffTypes["super"] });
         _debug << "New";
     } else {
         _debug << "Existing";
@@ -597,6 +595,13 @@ const User *Server::getUserByName(const std::string &username) const {
     if (it == _usersByName.end())
         return nullptr;
     return _usersByName.find(username)->second;
+}
+
+const BuffType * Server::getBuffByName(const Buff::ID & id) const {
+    auto it = _buffTypes.find(id);
+    if (it == _buffTypes.end())
+        return nullptr;
+    return &it->second;
 }
 
 const Terrain *Server::terrainType(char index) const{

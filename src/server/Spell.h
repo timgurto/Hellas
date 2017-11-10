@@ -20,6 +20,7 @@ public:
 
     struct Args {
         int i1 = 0;
+        std::string s1{};
     };
 
     void setFunction(const std::string &functionName);
@@ -53,6 +54,7 @@ private:
 
     static CombatResult doDirectDamage(const Spell &spell, Entity &caster, Entity &target);
     static CombatResult heal(const Spell &spell, Entity &caster, Entity &target);
+    static CombatResult buff(const Spell &spell, Entity &caster, Entity &target);
 
     Energy _cost = 0;
     px_t _range = Podes::MELEE_RANGE.toPixels();

@@ -4,6 +4,7 @@
 #include <cassert>
 #include <memory>
 
+#include "Buff.h"
 #include "EntityType.h"
 #include "Loot.h"
 #include "ServerItem.h"
@@ -19,7 +20,8 @@ class XmlWriter;
 
 enum CombatType {
     DAMAGE,
-    HEAL
+    HEAL, // Can crit
+    BUFF // Always hits
 };
 enum CombatResult {
     FAIL,
@@ -89,6 +91,7 @@ public:
     virtual CombatResult generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const { return FAIL; }
         static bool combatTypeCanHaveOutcome(CombatType type, CombatResult outcome, SpellSchool school, px_t range);
     virtual void sendGotHitMessageTo(const User &user) const;
+    virtual void applyBuff(const BuffType &type) {}
 
     virtual BonusDamage bonusMagicDamage() const { return 0; }
     virtual Percentage getResistance(SpellSchool school) const { return 0; }

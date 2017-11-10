@@ -165,6 +165,7 @@ void Client::loadData(const std::string &path){
 
                 auto effectArgs = ClientSpell::Args{};
                 xr.findAttr(functionElem, "i1", effectArgs.i1);
+                xr.findAttr(functionElem, "s1", effectArgs.s1);
 
                 newSpell->effectArgs(effectArgs);
             }

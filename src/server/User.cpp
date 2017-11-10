@@ -484,6 +484,11 @@ void User::sendGotHitMessageTo(const User & user) const {
     Server::_instance->sendMessage(user.socket(), SV_PLAYER_WAS_HIT, _name);
 }
 
+void User::applyBuff(const BuffType & type) {
+    _buffs.push_back({ type });
+    updateStats();
+}
+
 Percentage User::getResistance(SpellSchool school) const {
     if (school == SpellSchool::PHYSICAL)
         return _stats.armor;

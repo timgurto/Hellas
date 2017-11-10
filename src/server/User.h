@@ -139,6 +139,7 @@ public:
     px_t attackRange() const override;
     CombatResult generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const override;
     void sendGotHitMessageTo(const User &user) const override;
+    void applyBuff(const BuffType &type) override;
 
     BonusDamage bonusMagicDamage() const override { return _stats.magicDamage; }
     Percentage getResistance(SpellSchool school) const override;

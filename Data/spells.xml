@@ -1,5 +1,12 @@
 <!-- 4 podes = melee range -->
 
+<!--
+Functions:
+    doDirectDamage (i1 = damage)
+    heal (i1 = amount to heal)
+    buff (s1 = ID of buff to apply)
+-->
+
 <root>
 
 <spell id="fireball" name="Fireball" cost=10 range=30 school="fire" >
@@ -16,6 +23,10 @@
     <aesthetics impactParticles="heavyBlood" />
     <targets enemy=1 />
     <function name="doDirectDamage" i1=5 />
+</spell>
+<spell id="super" name="Super" cost=50 range=25 >
+    <targets friendly=1 self=1 />
+    <function name="buff" s1="super" />
 </spell>
 
 </root>
