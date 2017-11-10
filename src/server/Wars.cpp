@@ -50,6 +50,8 @@ bool War::operator<(const War & rhs) const {
 void Wars::declare(const Belligerent &a, const Belligerent &b){
     if (isAtWar(a, b))
         return;
+    if (a == b)
+        return;
     container.insert({ a, b });
 
     a.alertToWarWith(b);
