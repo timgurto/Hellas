@@ -5,17 +5,17 @@
 <spell id="fireball" name="Fireball" cost=10 range=30 school="fire" >
     <aesthetics projectile="fireball" sounds="fireball" impactParticles="fire" />
     <targets enemy=1 />
-    <function name="doDirectDamage" a=5 />
+    <function name="doDirectDamage" i1=5 />
 </spell>
 <spell id="heal" name="Heal" cost=12 range=25 >
     <aesthetics sounds="heal" impactParticles="lightRays" />
     <targets friendly=1 self=1 />
-    <function name="heal" a=20 />
+    <function name="heal" i1=20 />
 </spell>
 <spell id="whirlwind" name="Whirlwind" cost=30 radius=4 >
     <aesthetics impactParticles="heavyBlood" />
     <targets enemy=1 />
-    <function name="doDirectDamage" a=5 />
+    <function name="doDirectDamage" i1=5 />
 </spell>
 
 </root>

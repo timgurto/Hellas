@@ -162,8 +162,11 @@ void Client::loadData(const std::string &path){
                 auto functionName = ""s;
                 if (xr.findAttr(functionElem, "name", functionName))
                     newSpell->effectName(functionName);
-                auto arg = int{};
-                if (xr.findAttr(functionElem, "a", arg)) newSpell->addEffectArg(arg);
+
+                auto effectArgs = ClientSpell::Args{};
+                xr.findAttr(functionElem, "i1", effectArgs.i1);
+
+                newSpell->effectArgs(effectArgs);
             }
 
             auto aesthetics = xr.findChild("aesthetics", elem);

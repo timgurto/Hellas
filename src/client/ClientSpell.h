@@ -9,6 +9,10 @@
 
 class ClientSpell {
 public:
+    struct Args {
+        int i1 = 0;
+    };
+
     ClientSpell(const std::string &id);
 
     void projectile(const Projectile::Type *p) { _projectile = p; }
@@ -23,7 +27,7 @@ public:
     void name(const std::string &s) { _name = s; }
     void cost(Energy c) { _cost = c; }
     void effectName(const std::string effect) { _effectName = effect; }
-    void addEffectArg(int arg) { _effectArgs.push_back(arg); }
+    void effectArgs(const Args &args) { _effectArgs = args; }
     void range(Podes r) { _range = r; }
     void radius(Podes r) { _range = r;  _isAoE = true; }
     void school(SpellSchool school) { _school = school; }
@@ -42,7 +46,7 @@ private:
     SpellSchool _school;
 
     std::string _effectName = {};
-    std::vector<int> _effectArgs = {};
+    Args _effectArgs = {};
 
     std::string createEffectDescription() const;
 };

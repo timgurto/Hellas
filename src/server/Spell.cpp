@@ -40,7 +40,7 @@ CombatResult Spell::performAction(Entity &caster, Entity &target) const {
         return FAIL;
     }
 
-    return _function(*this, caster, target, _args);
+    return _function(*this, caster, target);
 }
 
 bool Spell::isTargetValid(const Entity &caster, const Entity &target) const {
@@ -77,12 +77,12 @@ Spell::FunctionMap Spell::functionMap = {
     { "heal", heal }
 };
 
-CombatResult Spell::doDirectDamage(const Spell &spell, Entity &caster, Entity &target, const Args &args) {
+CombatResult Spell::doDirectDamage(const Spell &spell, Entity &caster, Entity &target) {
     auto outcome = caster.generateHitAgainst(target, DAMAGE, spell.school(), spell._range);
     if (outcome == MISS || outcome == DODGE)
         return outcome;
 
-    auto rawDamage = static_cast<double>(args[0]);
+    auto rawDamage = static_cast<double>(spell._args.i1);
     rawDamage += caster.bonusMagicDamage();
 
     if (outcome == CRIT)
@@ -108,10 +108,10 @@ CombatResult Spell::doDirectDamage(const Spell &spell, Entity &caster, Entity &t
     return outcome;
 }
 
-CombatResult Spell::heal(const Spell &spell, Entity &caster, Entity &target, const Args &args) {
+CombatResult Spell::heal(const Spell &spell, Entity &caster, Entity &target) {
     auto outcome = caster.generateHitAgainst(target, HEAL, spell.school(), spell._range);
 
-    auto rawAmountToHeal = static_cast<double>(args[0]);
+    auto rawAmountToHeal = static_cast<double>(spell._args.i1);
     rawAmountToHeal += caster.bonusHealing();
 
     if (outcome == CRIT)

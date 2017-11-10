@@ -48,10 +48,10 @@ std::string ClientSpell::createEffectDescription() const {
         "target"s;
 
     if (_effectName == "doDirectDamage")
-        oss << "Deals " << _effectArgs[0] << " damage to " << targetString << ".";
+        oss << "Deals " << _effectArgs.i1 << " damage to " << targetString << ".";
 
     else if (_effectName == "heal")
-        oss << "Restores " << _effectArgs[0] << " health to target.";
+        oss << "Restores " << _effectArgs.i1 << " health to target.";
 
     return oss.str();
 }
