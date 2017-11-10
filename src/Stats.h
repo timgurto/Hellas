@@ -9,12 +9,14 @@ struct StatsMod;
 struct Stats{
     Hitpoints
         health = 0,
-        hps = 0,
         attack = 0,
         blockValue = 0;
 
     Energy
-        energy = 0,
+        energy = 0;
+
+    Regen
+        hps = 0,
         eps = 0;
 
     Percentage

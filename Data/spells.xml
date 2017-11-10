@@ -5,6 +5,7 @@ Functions:
     doDirectDamage (i1 = damage)
     heal (i1 = amount to heal)
     buff (s1 = ID of buff to apply)
+    debuff (s1 = ID of debuff to apply)
 -->
 
 <root>
@@ -27,6 +28,10 @@ Functions:
 <spell id="super" name="Super" cost=10 range=25 >
     <targets friendly=1 self=1 />
     <function name="buff" s1="super" />
+</spell>
+<spell id="poison" name="Poison" cost=10 range=25 >
+    <targets enemy=1 />
+    <function name="debuff" s1="poison" />
 </spell>
 
 </root>

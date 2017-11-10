@@ -70,13 +70,15 @@ Hitpoints Spell::chooseRandomSpellMagnitude(double raw) {
 Spell::FlagMap Spell::aggressionMap = {
     { doDirectDamage, true },
     { heal, false },
-    { buff, false }
+    { buff, false },
+    { debuff, true }
 };
 
 Spell::FunctionMap Spell::functionMap = {
     { "doDirectDamage", doDirectDamage },
     { "heal", heal },
-    { "buff", buff }
+    { "buff", buff },
+    { "debuff", debuff }
 };
 
 CombatResult Spell::doDirectDamage(const Spell &spell, Entity &caster, Entity &target) {
@@ -132,6 +134,19 @@ CombatResult Spell::buff(const Spell & spell, Entity & caster, Entity & target) 
         return FAIL;
 
     target.applyBuff(*buffType);
+
+    return HIT;
+}
+
+CombatResult Spell::debuff(const Spell & spell, Entity & caster, Entity & target) {
+    const auto &server = Server::instance();
+    const auto *debuffType = server.getBuffByName(spell._args.s1);
+    if (debuffType == nullptr)
+        return FAIL;
+
+    auto outcome = caster.generateHitAgainst(target, DEBUFF, spell.school(), spell._range);
+
+    target.applyDebuff(*debuffType);
 
     return HIT;
 }

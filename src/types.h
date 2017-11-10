@@ -13,3 +13,4 @@ using Hitpoints = unsigned;
 using Energy = unsigned;
 using Percentage = short;
 using BonusDamage = int;
+using Regen = int;

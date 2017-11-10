@@ -45,15 +45,9 @@ const Stats &Stats::operator&=(const StatsMod &mod){
     else
         energy += mod.energy;
 
-    if (mod.hps < 0 && -mod.hps > static_cast<int>(hps))
-        hps = 0;
-    else
-        hps += mod.hps;
-
-    if (mod.eps < 0 && -mod.eps > static_cast<int>(eps))
-        eps = 0;
-    else
-        eps += mod.eps;
+    // Can be negative
+    hps += mod.hps;
+    eps += mod.eps;
 
     hit += mod.hit;
     if (hit < 0) hit = 0;

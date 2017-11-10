@@ -68,7 +68,17 @@ void Entity::markForRemoval(){
 
 bool Entity::combatTypeCanHaveOutcome(CombatType type, CombatResult outcome, SpellSchool school,
         px_t range) {
+    /*
+                Miss    Dodge   Block   Crit    Hit
+    Spell               X       X
+    Physical
+    Ranged              X
+    Heal        X       X       X
+    Debuff              X       X       X
+    */
     if (type == HEAL && outcome == MISS)
+        return false;
+    if (type == DEBUFF && outcome != CRIT && outcome != HIT)
         return false;
     if (outcome == DODGE && range > Podes::MELEE_RANGE)
         return false;

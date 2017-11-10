@@ -21,7 +21,7 @@ class XmlWriter;
 enum CombatType {
     DAMAGE,
     HEAL, // Can crit
-    BUFF // Always hits
+    DEBUFF // Can't crit
 };
 enum CombatResult {
     FAIL,
@@ -92,6 +92,7 @@ public:
         static bool combatTypeCanHaveOutcome(CombatType type, CombatResult outcome, SpellSchool school, px_t range);
     virtual void sendGotHitMessageTo(const User &user) const;
     virtual void applyBuff(const BuffType &type) {}
+    virtual void applyDebuff(const BuffType &type) {}
 
     virtual BonusDamage bonusMagicDamage() const { return 0; }
     virtual Percentage getResistance(SpellSchool school) const { return 0; }

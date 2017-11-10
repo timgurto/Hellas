@@ -387,14 +387,16 @@ void User::update(ms_t timeElapsed){
 }
 
 void User::regen() {
-    auto newHealth = min(health() + _stats.hps, _stats.health);
-    if (newHealth > health()) {
+    auto newHealth = max(min<int>(health() + _stats.hps, _stats.health), 0);
+    if (newHealth != health()) {
         health(newHealth);
         onHealthChange();
+        if (isDead())
+            onDeath();
     }
 
-    auto newEnergy = min(energy() + _stats.eps, _stats.energy);
-    if (newEnergy > energy()) {
+    auto newEnergy = max(min<int>(energy() + _stats.eps, _stats.energy), 0);
+    if (newEnergy != energy()) {
         energy(newEnergy);
         onEnergyChange();
     }
@@ -491,6 +493,13 @@ void User::applyBuff(const BuffType & type) {
     updateStats();
 }
 
+void User::applyDebuff(const BuffType & type) {
+    if (_debuffs.find({ type }) != _debuffs.end())
+        return;
+    _debuffs.insert({ type });
+    updateStats();
+}
+
 Percentage User::getResistance(SpellSchool school) const {
     if (school == SpellSchool::PHYSICAL)
         return _stats.armor;
@@ -562,6 +571,10 @@ void User::updateStats(){
     // Apply buffs
     for (auto &buff : _buffs)
         buff.applyTo(_stats);
+
+    // Apply debuffs
+    for (auto &debuff : _debuffs)
+        debuff.applyTo(_stats);
 
     // Special case: health must change to reflect new max health
     int healthDecrease = oldMaxHealth - maxHealth();
