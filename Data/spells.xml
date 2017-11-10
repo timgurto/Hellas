@@ -24,7 +24,7 @@ Functions:
     <targets enemy=1 />
     <function name="doDirectDamage" i1=5 />
 </spell>
-<spell id="super" name="Super" cost=50 range=25 >
+<spell id="super" name="Super" cost=10 range=25 >
     <targets friendly=1 self=1 />
     <function name="buff" s1="super" />
 </spell>

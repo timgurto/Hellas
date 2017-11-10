@@ -1,8 +1,8 @@
 #pragma once
 
 #include <map>
+#include <set>
 #include <string>
-#include <vector>
 
 #include "../Stats.h"
 
@@ -23,12 +23,14 @@ public:
     using ID = std::string;
 
     Buff(const BuffType &type) : _type(type) {}
-    void applyTo(Stats &stats) { stats &= _type.stats(); }
+
+    bool operator<(const Buff &rhs) const { return &_type < &rhs._type; }
+
+    void applyTo(Stats &stats) const { stats &= _type.stats(); }
 
 private:
     const BuffType &_type;
 };
 
-
 using BuffTypes = std::map<Buff::ID, BuffType>;
-using Buffs = std::vector<Buff>;
+using Buffs = std::set<Buff>;

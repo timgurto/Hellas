@@ -485,7 +485,9 @@ void User::sendGotHitMessageTo(const User & user) const {
 }
 
 void User::applyBuff(const BuffType & type) {
-    _buffs.push_back({ type });
+    if (_buffs.find({ type }) != _buffs.end())
+        return;
+    _buffs.insert({ type });
     updateStats();
 }
 
