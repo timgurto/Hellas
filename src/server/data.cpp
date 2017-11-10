@@ -658,10 +658,46 @@ void Server::loadData(const std::string &path){
     }
 
     // Buffs
-    _buffTypes.clear();
-    auto superStats = StatsMod{};
-    superStats.health = 100;
-    _buffTypes["super"] = { superStats };
+    if (!xr.newFile(path + "/buffs.xml"))
+        _debug("Failed to load buffs.xml", Color::FAILURE);
+    else {
+        _buffTypes.clear();
+        for (auto elem : xr.getChildren("buff")) {
+            std::string id;
+            if (!xr.findAttr(elem, "id", id))
+                continue; // ID is mandatory
+            auto newBuff = BuffType{};
+
+            auto statsElem = xr.findChild("stats", elem);
+            if (statsElem != nullptr) {
+                StatsMod stats;
+                xr.findAttr(statsElem, "armor", stats.armor);
+                xr.findAttr(statsElem, "health", stats.health);
+                xr.findAttr(statsElem, "energy", stats.energy);
+                xr.findAttr(statsElem, "hps", stats.hps);
+                xr.findAttr(statsElem, "eps", stats.eps);
+                xr.findAttr(statsElem, "hit", stats.hit);
+                xr.findAttr(statsElem, "crit", stats.crit);
+                xr.findAttr(statsElem, "critResist", stats.critResist);
+                xr.findAttr(statsElem, "dodge", stats.dodge);
+                xr.findAttr(statsElem, "block", stats.block);
+                xr.findAttr(statsElem, "blockValue", stats.blockValue);
+                xr.findAttr(statsElem, "magicDamage", stats.magicDamage);
+                xr.findAttr(statsElem, "physicalDamage", stats.physicalDamage);
+                xr.findAttr(statsElem, "healing", stats.healing);
+                xr.findAttr(statsElem, "airResist", stats.airResist);
+                xr.findAttr(statsElem, "earthResist", stats.earthResist);
+                xr.findAttr(statsElem, "fireResist", stats.fireResist);
+                xr.findAttr(statsElem, "waterResist", stats.waterResist);
+                xr.findAttr(statsElem, "attack", stats.attack);
+                xr.findAttr(statsElem, "attackTime", stats.attackTime);
+                xr.findAttr(statsElem, "speed", stats.speed);
+                newBuff.stats(stats);
+            }
+
+            _buffTypes[id] = newBuff;
+        }
+    }
 
     ProgressLock::registerStagedLocks();
 

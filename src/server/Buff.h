@@ -10,8 +10,8 @@
 class BuffType {
 public:
     BuffType() {}
-    BuffType(const StatsMod &stats) : _stats(stats) {}
 
+    void stats(const StatsMod &stats) { _stats = stats; }
     const StatsMod &stats() const { return _stats; }
 
 private:
