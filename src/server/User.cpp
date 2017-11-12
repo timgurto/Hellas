@@ -375,6 +375,8 @@ void User::update(ms_t timeElapsed){
 		server.sendMessage(_socket, SV_ACTION_FINISHED);
 		finishAction();
 	}
+    regen(timeElapsed);
+
 }
 
 bool User::hasRoomToCraft(const Recipe &recipe) const{

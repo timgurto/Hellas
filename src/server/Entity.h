@@ -87,7 +87,7 @@ public:
     virtual CombatResult generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const { return FAIL; }
         static bool combatTypeCanHaveOutcome(CombatType type, CombatResult outcome, SpellSchool school, px_t range);
     virtual void sendGotHitMessageTo(const User &user) const;
-    void regen();
+    void regen(ms_t timeElapsed);
 
     //Buffs &buffs() { return _buffs; }
     const Buffs &buffs() const { return _buffs; }

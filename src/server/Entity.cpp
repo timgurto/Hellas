@@ -128,12 +128,7 @@ void Entity::healBy(Hitpoints amount) {
 }
 
 void Entity::update(ms_t timeElapsed){
-    // Regen
-    _timeSinceRegen += timeElapsed;
-    while (_timeSinceRegen > 1000) {
-        regen();
-        _timeSinceRegen -= 1000;
-    }
+    regen(timeElapsed);
 
     // Attacking
     if (_attackTimer > timeElapsed)
@@ -281,18 +276,35 @@ void Entity::applyDebuff(const BuffType & type) {
     updateStats();
 }
 
-void Entity::regen() {
-    auto newHealth = max(min<int>(health() + stats().hps, stats().health), 0);
-    if (newHealth != health()) {
-        health(newHealth);
+void Entity::regen(ms_t timeElapsed) {
+    // Regen
+    _timeSinceRegen += timeElapsed;
+    if (_timeSinceRegen < 1000)
+        return;
+
+    _timeSinceRegen -= 1000;
+
+    if (stats().hps != 0) {
+        int rawNewHealth = health() + stats().hps;
+        if (rawNewHealth < 0)
+            health(0);
+        else if (0 + rawNewHealth > static_cast<int>(stats().health) + 0)
+            health(stats().health);
+        else
+            health(rawNewHealth);
         onHealthChange();
         if (isDead())
             onDeath();
     }
 
-    auto newEnergy = max(min<int>(energy() + stats().eps, stats().energy), 0);
-    if (newEnergy != energy()) {
-        energy(newEnergy);
+    if (stats().eps != 0) {
+        int rawNewEnergy = energy() + stats().eps;
+        if (rawNewEnergy < 0)
+            energy(0);
+        else if (rawNewEnergy > static_cast<int>(stats().energy))
+            energy(stats().energy);
+        else
+            energy(rawNewEnergy);
         onEnergyChange();
     }
 }
