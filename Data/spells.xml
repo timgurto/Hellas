@@ -30,6 +30,7 @@ Functions:
     <function name="buff" s1="super" />
 </spell>
 <spell id="poison" name="Poison" cost=10 range=25 >
+    <aesthetics impactParticles="poison" />
     <targets enemy=1 />
     <function name="debuff" s1="poison" />
 </spell>
