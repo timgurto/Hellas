@@ -1,6 +1,7 @@
 #ifndef STATS_H
 #define STATS_H
 
+#include "SpellSchool.h"
 #include "types.h"
 
 struct StatsMod;
@@ -47,6 +48,8 @@ struct Stats{
 
     const Stats &operator&=(const StatsMod &rhs);
     Stats operator&(const StatsMod &mod) const;
+
+    Percentage resistanceByType(SpellSchool school) const;
 };
 
 // Describes modifiers for player stats, e.g. for gear.

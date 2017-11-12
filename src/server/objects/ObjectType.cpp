@@ -13,7 +13,10 @@ ObjectType::ObjectType(const std::string &id):
     _merchantSlots(0),
     _bottomlessMerchant(false),
     _container(nullptr)
-{}
+{
+    if (_baseStats.health == 0)
+        _baseStats.health = 1;
+}
 
 void ObjectType::addYield(const ServerItem *item,
                           double initMean, double initSD, size_t initMin,
@@ -26,8 +29,10 @@ void ObjectType::checkUniquenessInvariant() const{
     assert (_numInWorld <= 1);
 }
 
-void ObjectType::setStrength(const ServerItem *item, size_t quantity){
+void ObjectType::setHealthBasedOnItems(const ServerItem *item, size_t quantity){
     _strength.set(item, quantity);
+    _baseStats.health = _strength.get();
+    assert(_baseStats.health > 0);
 }
 
 ObjectType::Strength::Strength():

@@ -5,6 +5,7 @@
 
 #include "TerrainList.h"
 #include "../Rect.h"
+#include "../Stats.h"
 
 class EntityType{
 public:
@@ -23,6 +24,11 @@ public:
 
 
     // Combat
+    void baseStats(const Stats &stats) { _baseStats = stats; }
+    const Stats &baseStats() const { return _baseStats; }
+
+protected:
+    Stats _baseStats{};
 
 private:
     std::string _id;
@@ -36,9 +42,6 @@ private:
     Rect _collisionRect; // Relative to position
 
     const TerrainList *_allowedTerrain;
-
-
-    // Combat
 };
 
 #endif

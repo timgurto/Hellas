@@ -66,6 +66,7 @@ _dataLoaded(false){
     Socket::debug = &_debug;
 
     User::init();
+    NPCType::init();
 
     if (cmdLineArgs.contains("user-files-path"))
         _userFilesPath = cmdLineArgs.getString("user-files-path") + "/";
@@ -661,9 +662,9 @@ void Server::publishStats(const Server * server) {
                 << "city: \"" << server->_cities.getPlayerCity(user.name()) << "\","
                 << "isKing: " << server->_kings.isPlayerAKing(user.name()) << ","
                 << "health: " << user.health() << ","
-                << "maxHealth: " << user.maxHealth() << ","
+                << "maxHealth: " << user.stats().health << ","
                 << "energy: " << user.energy() << ","
-                << "maxEnergy: " << user.maxEnergy() << ","
+                << "maxEnergy: " << user.stats().energy << ","
                 << "knownRecipes: " << user.knownRecipes().size() << ","
                 << "knownConstructions: " << user.knownConstructions().size() << ",";
 

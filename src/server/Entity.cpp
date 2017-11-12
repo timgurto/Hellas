@@ -7,7 +7,9 @@
 
 const px_t Entity::DEFAULT_ATTACK_RANGE = Podes{ 4 }.toPixels();
 
-Entity::Entity(const EntityType *type, const Point &loc, Hitpoints health):
+Stats Dummy::_stats{};
+
+Entity::Entity(const EntityType *type, const Point &loc):
     _type(type),
     _serial(generateSerial()),
     _spawner(nullptr),
@@ -15,7 +17,10 @@ Entity::Entity(const EntityType *type, const Point &loc, Hitpoints health):
     _location(loc),
     _lastLocUpdate(SDL_GetTicks()),
 
-    _health(health),
+    _stats(type->baseStats()),
+    _health(_stats.health),
+    _energy(_stats.energy),
+
     _attackTimer(0),
     _target(nullptr),
     _loot(nullptr)
@@ -104,7 +109,7 @@ void Entity::reduceHealth(int damage) {
         onHealthChange();
     }
 
-    assert(_health <= this->maxHealth());
+    assert(_health <= this->_stats.health);
 }
 
 void Entity::reduceEnergy(int amount) {
@@ -117,7 +122,7 @@ void Entity::reduceEnergy(int amount) {
 }
 
 void Entity::healBy(Hitpoints amount) {
-    auto newHealth = min(health() + amount, maxHealth());
+    auto newHealth = min(health() + amount, _stats.health);
     _health = newHealth;
     onHealthChange();
 }
@@ -146,7 +151,7 @@ void Entity::update(ms_t timeElapsed){
         return;
 
     // Reset timer
-    _attackTimer = attackTime();
+    _attackTimer = _stats.attackTime;
 
     // Check if within range
     if (distance(collisionRect(), pTarget->collisionRect()) <= attackRange()){
@@ -181,22 +186,21 @@ void Entity::update(ms_t timeElapsed){
             break;
         }
 
-        auto rawDamage = static_cast<double>(attack());
+        auto rawDamage = static_cast<double>(_stats.attack);
         if (outcome == CRIT)
             rawDamage *= 2;
 
-        auto resistance = pTarget->getResistance(SpellSchool::PHYSICAL);
+        auto resistance = pTarget->_stats.resistanceByType(SpellSchool::PHYSICAL);
         auto resistanceMultiplier = (100 - resistance) / 100.0;
         rawDamage *= resistanceMultiplier;
 
         auto damage = Spell::chooseRandomSpellMagnitude(rawDamage);
 
         if (outcome == BLOCK) {
-            auto blockAmount = pTarget->blockValue();
-            if (blockAmount >= damage)
+            if (_stats.blockValue >= damage)
                 damage = 0;
             else
-                damage -= blockAmount;
+                damage -= _stats.blockValue;
         }
 
         pTarget->reduceHealth(damage);

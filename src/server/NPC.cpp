@@ -4,7 +4,7 @@
 #include "Server.h"
 
 NPC::NPC(const NPCType *type, const Point &loc):
-    Entity(type, loc, type->maxHealth()),
+    Entity(type, loc),
     _state(IDLE)
 {
     _loot.reset(new Loot);
@@ -18,10 +18,7 @@ void NPC::update(ms_t timeElapsed){
 
 CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const {
     const auto
-        MISS_CHANCE = Percentage{ 5 },
-        BASE_DODGE_CHANCE = Percentage{ 5 },
-        BASE_BLOCK_CHANCE = Percentage{ 5 },
-        BASE_CRIT_CHANCE = Percentage{ 5 };
+        MISS_CHANCE = Percentage{ 5 };
 
     auto roll = rand() % 100;
 
@@ -33,7 +30,7 @@ CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type, Spel
     }
 
     // Dodge
-    auto dodgeChance = BASE_DODGE_CHANCE + target.bonusDodge();
+    auto dodgeChance = target.stats().dodge;
     if (combatTypeCanHaveOutcome(type, DODGE, school, range)) {
         if (roll < dodgeChance)
             return DODGE;
@@ -41,7 +38,7 @@ CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type, Spel
     }
 
     // Block
-    auto blockChance = BASE_BLOCK_CHANCE + target.bonusBlock();
+    auto blockChance = target.stats().block;
     if (target.canBlock() && combatTypeCanHaveOutcome(type, BLOCK, school, range)) {
         if (roll < blockChance)
             return BLOCK;
@@ -49,7 +46,7 @@ CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type, Spel
     }
 
     // Crit
-    auto critChance = BASE_CRIT_CHANCE - target.critResist();
+    auto critChance = target.stats().critResist;
     if (critChance > 0 && combatTypeCanHaveOutcome(type, CRIT, school, range)) {
         if (roll < critChance)
             return CRIT;
@@ -104,7 +101,7 @@ void NPC::processAI(ms_t timeElapsed){
     // Transition if necessary
     switch(_state){
     case IDLE:
-        if (attack() == 0) // NPCs that can't attack won't try.
+        if (stats().attack == 0) // NPCs that can't attack won't try.
             break;
 
         // React to recent attacker
@@ -207,7 +204,7 @@ void NPC::sendInfoToClient(const User &targetUser) const {
                                                    type()->id()));
 
     // Hitpoints
-    if (health() < maxHealth())
+    if (health() < stats().health)
         server.sendMessage(client, SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 
     // Loot

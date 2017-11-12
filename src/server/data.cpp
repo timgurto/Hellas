@@ -347,9 +347,9 @@ void Server::loadData(const std::string &path){
                     xr.findAttr(strength, "quantity", n)){
                         std::set<ServerItem>::const_iterator itemIt =
                                 _items.insert(ServerItem(s)).first;
-                        ot->setStrength(&*itemIt, n);
+                        ot->setHealthBasedOnItems(&*itemIt, n);
                 } else
-                    _debug("Transformation specified without target id; skipping.", Color::FAILURE);
+                    _debug("Strength specified without item type; skipping.", Color::FAILURE);
             }
 
             // Action
@@ -418,10 +418,7 @@ void Server::loadData(const std::string &path){
             std::string id;
             if (!xr.findAttr(elem, "id", id)) // No ID: skip
                 continue;
-            int n;
-            if (!xr.findAttr(elem, "maxHealth", n)) // No health: skip
-                continue;
-            NPCType *nt = new NPCType(id, n);
+            NPCType *nt = new NPCType(id);
 
             std::string s;
             Rect r;
@@ -433,9 +430,11 @@ void Server::loadData(const std::string &path){
             if (xr.findAttr(elem, "allowedTerrain", s))
                 nt->allowedTerrain(s);
 
-            if (xr.findAttr(elem, "health", n)) nt->maxHealth(n);
-            if (xr.findAttr(elem, "attack", n)) nt->attack(n);
-            if (xr.findAttr(elem, "attackTime", n)) nt->attackTime(n);
+            Stats baseStats = NPCType::BASE_STATS;
+            xr.findAttr(elem, "maxHealth", baseStats.health);
+            xr.findAttr(elem, "attack", baseStats.attack);
+            xr.findAttr(elem, "attackTime", baseStats.attackTime);
+            nt->baseStats(baseStats);
 
             for (auto loot : xr.getChildren("loot", elem)){
                 if (!xr.findAttr(loot, "id", s))
@@ -982,7 +981,7 @@ void Object::writeToXML(XmlWriter &xw) const{
     xw.setAttr(loc, "x", location().x);
     xw.setAttr(loc, "y", location().y);
 
-    if (health() < maxHealth())
+    if (health() < stats().health)
         xw.setAttr(e, "health", health());
 
     if (hasContainer()){

@@ -81,7 +81,7 @@ TEST_CASE("Belliegerents can fight", "[remote]"){
     alice.sendMessage(CL_TARGET_PLAYER, "bob");
 
     // Then Bob loses health
-    WAIT_UNTIL(uBob.health() < uBob.maxHealth());
+    WAIT_UNTIL(uBob.health() < uBob.stats().health);
 }
 
 TEST_CASE("Peaceful players can't fight", "[remote]"){
@@ -99,7 +99,7 @@ TEST_CASE("Peaceful players can't fight", "[remote]"){
     alice.sendMessage(CL_TARGET_PLAYER, "bob");
     REPEAT_FOR_MS(500);
 
-    CHECK (uBob.health() == uBob.maxHealth());
+    CHECK (uBob.health() == uBob.stats().health);
 }
 
 TEST_CASE("Attack rate is respected", "[.flaky]"){

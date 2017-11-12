@@ -6,7 +6,7 @@
 #include "../../util.h"
 
 Object::Object(const ObjectType *type, const Point &loc):
-    Entity(type, loc, type->strength() > 0 ? type->strength() : 1),
+    Entity(type, loc),
     _numUsersGathering(0),
     _transformTimer(0),
     _permissions(*this)
@@ -262,7 +262,7 @@ void Object::sendInfoToClient(const User &targetUser) const {
     }
 
     // Hitpoints
-    if (health() < maxHealth())
+    if (health() < stats().health)
         server.sendMessage(client, SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 
     // Lootable

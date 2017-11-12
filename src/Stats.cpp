@@ -107,3 +107,18 @@ Stats Stats::operator&(const StatsMod &mod) const{
     stats &= mod;
     return stats;
 }
+
+Percentage Stats::resistanceByType(SpellSchool school) const {
+    if (school == SpellSchool::PHYSICAL)
+        return armor;
+    if (school == SpellSchool::AIR)
+        return airResist;
+    if (school == SpellSchool::EARTH)
+        return earthResist;
+    if (school == SpellSchool::FIRE)
+        return fireResist;
+    if (school == SpellSchool::WATER)
+        return waterResist;
+    assert(false);
+    return 0;
+}

@@ -37,7 +37,7 @@ enum CombatResult {
 class Entity {
 
 public:
-    Entity(const EntityType *type, const Point &loc, Hitpoints health);
+    Entity(const EntityType *type, const Point &loc);
     Entity(size_t serial); // TODO make private
     Entity(const Point &loc); // TODO make private
     virtual ~Entity();
@@ -75,14 +75,9 @@ public:
     void location(const Point &loc) { _location = loc; }
     const Rect collisionRect() const { return type()->collisionRect() + _location; }
     bool collides() const { return type()->collides() && _health != 0; }
-    virtual double speed() const { return 0; } // movement per second
 
 
     // Combat
-    virtual Hitpoints maxHealth() const = 0;
-    virtual Energy maxEnergy() const { return 0; }
-    virtual Hitpoints attack() const = 0;
-    virtual ms_t attackTime() const = 0;
     Entity *target() const { return _target; }
     void target(Entity *p) { _target = p; }
     virtual ms_t timeToRemainAsCorpse() const = 0;
@@ -94,17 +89,12 @@ public:
     virtual void applyBuff(const BuffType &type) {}
     virtual void applyDebuff(const BuffType &type) {}
 
-    virtual BonusDamage bonusMagicDamage() const { return 0; }
-    virtual Percentage getResistance(SpellSchool school) const { return 0; }
-    virtual Percentage bonusDodge() const { return 0; }
-    virtual bool canBlock() const { return false; }
-    virtual Percentage bonusBlock() const { return 0; }
-    virtual Hitpoints blockValue() const { return 0; }
-    virtual Hitpoints bonusHealing() const { return 0; }
-    virtual Percentage critResist() const { return 0; }
-
+    const Stats &stats() const { return _stats; }
+    void stats(const Stats &stats) { _stats = stats; }
     Hitpoints health() const {return _health; }
     Energy energy() const { return _energy; }
+    virtual bool canBlock() const { return false; }
+
     void health(Hitpoints health) { _health = health; }
     void energy(Energy energy) { _energy = energy; }
     bool isDead() const { return _health == 0; }
@@ -156,6 +146,7 @@ private:
 
 
     // Combat
+    Stats _stats; // Memoized stats, after gear, buffs, etc.  Calculated with updateStats();
     Hitpoints _health;
     Energy _energy;
     ms_t _attackTimer;
@@ -180,12 +171,10 @@ private:
 
     // Necessary overrides to make this a concrete class
     char classTag() const override { return 'd'; }
-    Hitpoints maxHealth() const override { return 0; };
-    Hitpoints attack() const override { return 0; };
-    ms_t attackTime() const override { return 0; };
     void sendInfoToClient(const User &targetUser) const override {}
     ms_t timeToRemainAsCorpse() const override { return 0; }
     bool canBeAttackedBy(const User &) const override { return false; }
+    static Stats _stats;
 };
 
 #endif

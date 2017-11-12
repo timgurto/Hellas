@@ -2,12 +2,17 @@
 #include "NPCType.h"
 #include "objects/Container.h"
 
-NPCType::NPCType(const std::string &id, Hitpoints maxHealth):
-ObjectType(id),
-_maxHealth(maxHealth),
-_attack(0),
-_attackTime(0)
+Stats NPCType::BASE_STATS{};
+
+NPCType::NPCType(const std::string &id):
+ObjectType(id)
 {}
+
+void NPCType::init() {
+    BASE_STATS.crit = 5;
+    BASE_STATS.dodge = 5;
+    BASE_STATS.speed = 10.0;
+}
 
 void NPCType::addSimpleLoot(const ServerItem * item, double chance) {
     _lootTable.addSimpleItem(item, chance);

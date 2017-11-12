@@ -87,19 +87,19 @@ CombatResult Spell::doDirectDamage(const Spell &spell, Entity &caster, Entity &t
         return outcome;
 
     auto rawDamage = static_cast<double>(spell._args.i1);
-    rawDamage += caster.bonusMagicDamage();
+    rawDamage += caster.stats().magicDamage;
 
     if (outcome == CRIT)
         rawDamage *= 2;
 
-    auto resistance = target.getResistance(spell._school);
+    auto resistance = target.stats().resistanceByType(spell._school);
     auto resistanceMultiplier = (100 - resistance) / 100.0;
     rawDamage *= resistanceMultiplier;
 
     auto damage = chooseRandomSpellMagnitude(rawDamage);
 
     if (outcome == BLOCK) {
-        auto blockAmount = target.blockValue();
+        auto blockAmount = target.stats().blockValue;
         if (blockAmount >= damage)
             damage = 0;
         else
@@ -116,7 +116,7 @@ CombatResult Spell::heal(const Spell &spell, Entity &caster, Entity &target) {
     auto outcome = caster.generateHitAgainst(target, HEAL, spell.school(), spell._range);
 
     auto rawAmountToHeal = static_cast<double>(spell._args.i1);
-    rawAmountToHeal += caster.bonusHealing();
+    rawAmountToHeal += caster.stats().healing;
 
     if (outcome == CRIT)
         rawAmountToHeal *= 2;

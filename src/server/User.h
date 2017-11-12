@@ -41,8 +41,6 @@ public:
     static std::map<Class, std::string> CLASS_NAMES;
     static std::map<std::string, Class> CLASS_CODES;
 
-    static Stats BASE_STATS;
-
 private:
     std::string _name;
     Socket _socket;
@@ -64,8 +62,6 @@ private:
     mutable std::set<std::string> _playerUniqueCategoriesOwned;
 
     size_t _driving; // The serial of the vehicle this user is currently driving; 0 if none.
-
-    Stats _stats; // Memoized stats, after gear etc.  Calculated with updateStats();
 
     ServerItem::vect_t _inventory, _gear;
 
@@ -129,11 +125,6 @@ public:
     static void init();
 
     void updateStats();
-    Hitpoints maxHealth() const override { return _stats.health; }
-    Energy maxEnergy() const override { return _stats.energy; }
-    Hitpoints attack() const override { return _stats.attack; }
-    ms_t attackTime() const override { return _stats.attackTime; }
-    double speed() const override { return _stats.speed; }
     ms_t timeToRemainAsCorpse() const override { return 0; }
     bool canBeAttackedBy(const User &user) const override;
     px_t attackRange() const override;
@@ -141,15 +132,7 @@ public:
     void sendGotHitMessageTo(const User &user) const override;
     void applyBuff(const BuffType &type) override;
     void applyDebuff(const BuffType &type) override;
-
-    BonusDamage bonusMagicDamage() const override { return _stats.magicDamage; }
-    Percentage getResistance(SpellSchool school) const override;
-    Percentage bonusDodge() const override { return _stats.dodge; }
     bool canBlock() const override;
-    Percentage bonusBlock() const override { return _stats.block; }
-    Hitpoints blockValue() const override { return _stats.blockValue; }
-    Hitpoints bonusHealing() const override { return _stats.healing; }
-    Percentage critResist() const override { return _stats.critResist; }
 
     char classTag() const override { return 'u'; }
 

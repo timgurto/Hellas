@@ -22,10 +22,6 @@ public:
 
     const NPCType *npcType() const { return dynamic_cast<const NPCType *>(type()); }
 
-    Hitpoints maxHealth() const override { return npcType()->maxHealth(); }
-    Hitpoints attack() const override { return npcType()->attack(); }
-    ms_t attackTime() const override { return npcType()->attackTime(); }
-    double speed() const override { return 10; }
     ms_t timeToRemainAsCorpse() const override { return 600000; } // 10 minutes
     bool canBeAttackedBy(const User &user) const override { return true; }
     CombatResult generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const override;

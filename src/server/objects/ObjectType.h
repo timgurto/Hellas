@@ -105,8 +105,7 @@ public:
     bool transforms() const { return _transformObject != nullptr; }
     void skipConstructionOnTransform(bool b) { _skipConstructionOnTransform = b; }
     bool skipConstructionOnTransform() const { return _skipConstructionOnTransform; }
-    Hitpoints strength() const { return _strength.get(); }
-    void setStrength(const ServerItem *item, size_t quantity);
+    void setHealthBasedOnItems(const ServerItem *item, size_t quantity);
     std::pair<const ServerItem *, size_t> strengthPair() const {
             return std::make_pair(_strength.item(), _strength.quantity()); }
 

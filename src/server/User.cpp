@@ -6,8 +6,6 @@
 
 ObjectType User::OBJECT_TYPE("__clientObjectType__");
 
-Stats User::BASE_STATS;
-
 std::map<User::Class, std::string> User::CLASS_NAMES = {
     { SOLDIER, "Soldier" },
     { MAGUS, "Magus" },
@@ -38,13 +36,11 @@ _driving(0),
 
 _inventory(INVENTORY_SIZE),
 _gear(GEAR_SLOTS),
-_lastContact(SDL_GetTicks()),
-_stats(BASE_STATS){
+_lastContact(SDL_GetTicks())
+{
     if (!OBJECT_TYPE.collides()){
         OBJECT_TYPE.collisionRect(Rect(-5, -2, 10, 4));
     }
-    health(BASE_STATS.health);
-    energy(BASE_STATS.energy);
     for (size_t i = 0; i != INVENTORY_SIZE; ++i)
         _inventory[i] = std::make_pair<const ServerItem *, size_t>(0, 0);
 }
@@ -60,27 +56,29 @@ User::User(const Point &loc):
 {}
 
 void User::init(){
-    BASE_STATS.armor = 0;
-    BASE_STATS.health = 50;
-    BASE_STATS.energy = 50;
-    BASE_STATS.hps = 1;
-    BASE_STATS.eps = 1;
-    BASE_STATS.hit = 0;
-    BASE_STATS.crit = 5;
-    BASE_STATS.critResist = 0;
-    BASE_STATS.dodge = 5;
-    BASE_STATS.block = 5;
-    BASE_STATS.blockValue = 0;
-    BASE_STATS.magicDamage = 0;
-    BASE_STATS.physicalDamage = 0;
-    BASE_STATS.healing = 0;
-    BASE_STATS.airResist = 0;
-    BASE_STATS.earthResist = 0;
-    BASE_STATS.fireResist = 0;
-    BASE_STATS.waterResist = 0;
-    BASE_STATS.attack = 5;
-    BASE_STATS.attackTime = 1000;
-    BASE_STATS.speed = 80.0;
+    auto baseStats = Stats{};
+    baseStats.armor = 0;
+    baseStats.health = 50;
+    baseStats.energy = 50;
+    baseStats.hps = 1;
+    baseStats.eps = 1;
+    baseStats.hit = 0;
+    baseStats.crit = 5;
+    baseStats.critResist = 0;
+    baseStats.dodge = 5;
+    baseStats.block = 5;
+    baseStats.blockValue = 0;
+    baseStats.magicDamage = 0;
+    baseStats.physicalDamage = 0;
+    baseStats.healing = 0;
+    baseStats.airResist = 0;
+    baseStats.earthResist = 0;
+    baseStats.fireResist = 0;
+    baseStats.waterResist = 0;
+    baseStats.attack = 5;
+    baseStats.attackTime = 1000;
+    baseStats.speed = 80.0;
+    OBJECT_TYPE.baseStats(baseStats);
 
     for (auto &pair : CLASS_NAMES)
         CLASS_CODES[pair.second] = pair.first;
@@ -387,7 +385,7 @@ void User::update(ms_t timeElapsed){
 }
 
 void User::regen() {
-    auto newHealth = max(min<int>(health() + _stats.hps, _stats.health), 0);
+    auto newHealth = max(min<int>(health() + stats().hps, stats().health), 0);
     if (newHealth != health()) {
         health(newHealth);
         onHealthChange();
@@ -395,7 +393,7 @@ void User::regen() {
             onDeath();
     }
 
-    auto newEnergy = max(min<int>(energy() + _stats.eps, _stats.energy), 0);
+    auto newEnergy = max(min<int>(energy() + stats().eps, stats().energy), 0);
     if (newEnergy != energy()) {
         energy(newEnergy);
         onEnergyChange();
@@ -439,15 +437,12 @@ px_t User::attackRange() const {
 
 CombatResult User::generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const {
     const auto
-        BASE_MISS_CHANCE = Percentage{ 5 },
-        BASE_DODGE_CHANCE = Percentage{ 0 },
-        BASE_BLOCK_CHANCE = Percentage{ 0 },
-        BASE_CRIT_CHANCE = Percentage{ 0 };
+        BASE_MISS_CHANCE = Percentage{ 5 };
 
     auto roll = rand() % 100;
 
     // Miss
-    auto missChance = max( BASE_MISS_CHANCE - _stats.hit, 0 );
+    auto missChance = max( BASE_MISS_CHANCE - stats().hit, 0 );
     if (combatTypeCanHaveOutcome( type, MISS, school, range))
     {
         if (roll < missChance)
@@ -456,7 +451,7 @@ CombatResult User::generateHitAgainst(const Entity &target, CombatType type, Spe
     }
 
     // Dodge
-    auto dodgeChance = BASE_DODGE_CHANCE + target.bonusDodge();
+    auto dodgeChance = target.stats().dodge;
     if (combatTypeCanHaveOutcome(type, DODGE, school, range)) {
         if (roll < dodgeChance)
             return DODGE;
@@ -464,7 +459,7 @@ CombatResult User::generateHitAgainst(const Entity &target, CombatType type, Spe
     }
 
     // Block
-    auto blockChance = BASE_BLOCK_CHANCE + target.bonusBlock();
+    auto blockChance = target.stats().block;
     if (target.canBlock() && combatTypeCanHaveOutcome(type, BLOCK, school, range)) {
         if (roll < blockChance)
             return BLOCK;
@@ -472,7 +467,7 @@ CombatResult User::generateHitAgainst(const Entity &target, CombatType type, Spe
     }
 
     // Crit
-    auto critChance = BASE_CRIT_CHANCE + _stats.crit - target.critResist();
+    auto critChance = stats().crit - target.stats().critResist;
     if (critChance > 0 && combatTypeCanHaveOutcome(type, CRIT, school, range)) {
         if (roll < critChance)
             return CRIT;
@@ -500,21 +495,6 @@ void User::applyDebuff(const BuffType & type) {
     updateStats();
 }
 
-Percentage User::getResistance(SpellSchool school) const {
-    if (school == SpellSchool::PHYSICAL)
-        return _stats.armor;
-    if (school == SpellSchool::AIR)
-        return _stats.airResist;
-    if (school == SpellSchool::EARTH)
-        return _stats.earthResist;
-    if (school == SpellSchool::FIRE)
-        return _stats.fireResist;
-    if (school == SpellSchool::WATER)
-        return _stats.waterResist;
-    assert(false);
-    return 0;
-}
-
 bool User::canBlock() const {
     auto offhandItem = _gear[Item::OFFHAND_SLOT].first;
     if (offhandItem == nullptr)
@@ -538,7 +518,7 @@ void User::onDeath(){
     // Handle respawn etc.
     moveToSpawnPoint();
 
-    health(maxHealth());
+    health(stats().health);
     onHealthChange();
 }
 
@@ -556,77 +536,82 @@ void User::onDestroyedOwnedObject(const ObjectType &type) const {
 void User::updateStats(){
     const Server &server = *Server::_instance;
 
-    auto oldMaxHealth = maxHealth();
-    auto oldMaxEnergy = maxEnergy();
+    auto oldMaxHealth = stats().health;
+    auto oldMaxEnergy = stats().energy;
 
-    _stats = BASE_STATS;
+    auto newStats = OBJECT_TYPE.baseStats();
 
     // Apply gear
     for (size_t i = 0; i != GEAR_SLOTS; ++i){
         const ServerItem *item = _gear[i].first;
         if (item != nullptr)
-            _stats &= item->stats();
+            newStats &= item->stats();
     }
 
     // Apply buffs
     for (auto &buff : _buffs)
-        buff.applyTo(_stats);
+        buff.applyTo(newStats);
 
     // Apply debuffs
     for (auto &debuff : _debuffs)
-        debuff.applyTo(_stats);
+        debuff.applyTo(newStats);
 
     // Special case: health must change to reflect new max health
-    int healthDecrease = oldMaxHealth - maxHealth();
+    int healthDecrease = oldMaxHealth - newStats.health;
     if (healthDecrease != 0) {
         // Alert nearby users to new max health
-        server.broadcastToArea(location(), SV_MAX_HEALTH, makeArgs(_name, maxHealth()));
+        server.broadcastToArea(location(), SV_MAX_HEALTH, makeArgs(_name, newStats.health));
     }
-    if (healthDecrease > 0 && healthDecrease > static_cast<int>(health()))
+    int oldHealth = health();
+    if (healthDecrease > 0 && healthDecrease > oldHealth)
         // Implicit rule: changing gear can never kill you, only reduce you to 1 health.
         healthDecrease = health() - 1;
-    reduceHealth(healthDecrease);
+    health(oldHealth - healthDecrease);
 
-    int energyDecrease = oldMaxEnergy - maxEnergy();
+    int energyDecrease = oldMaxEnergy - newStats.energy;
     if (energyDecrease != 0) {
         // Alert nearby users to new max energy
-        server.broadcastToArea(location(), SV_MAX_ENERGY, makeArgs(_name, maxEnergy()));
+        server.broadcastToArea(location(), SV_MAX_ENERGY, makeArgs(_name, newStats.energy));
     }
-    if (energyDecrease > 0 && energyDecrease >= static_cast<int>(energy()))
-        energyDecrease = energy();
-    reduceEnergy(energyDecrease);
+    int oldEnergy = energy();
+    if (energyDecrease > 0 && energyDecrease >= oldEnergy)
+        energy(0);
+    else
+        energy(oldEnergy - energyDecrease);
 
 
     auto args = makeArgs(
         makeArgs(
-            _stats.armor,
-            _stats.health,
-            _stats.energy,
-            _stats.hps,
-            _stats.eps
+            newStats.armor,
+            newStats.health,
+            newStats.energy,
+            newStats.hps,
+            newStats.eps
         ), makeArgs(
-            _stats.hit,
-            _stats.crit,
-            _stats.critResist,
-            _stats.dodge,
-            _stats.block,
-            _stats.blockValue
+            newStats.hit,
+            newStats.crit,
+            newStats.critResist,
+            newStats.dodge,
+            newStats.block,
+            newStats.blockValue
         ), makeArgs(
-            _stats.magicDamage,
-            _stats.physicalDamage,
-            _stats.healing
+            newStats.magicDamage,
+            newStats.physicalDamage,
+            newStats.healing
         ), makeArgs(
-            _stats.airResist,
-            _stats.earthResist,
-            _stats.fireResist,
-            _stats.waterResist
+            newStats.airResist,
+            newStats.earthResist,
+            newStats.fireResist,
+            newStats.waterResist
         ), makeArgs(
-            _stats.attack,
-            _stats.attackTime,
-            _stats.speed
+            newStats.attack,
+            newStats.attackTime,
+            newStats.speed
         )
     );
     server.sendMessage(socket(), SV_YOUR_STATS, args);
+
+    stats(newStats);
 }
 
 bool User::knowsConstruction(const std::string &id) const {
@@ -661,11 +646,11 @@ void User::sendInfoToClient(const User &targetUser) const {
     server.sendMessage(client, SV_LOCATION, makeLocationCommand());
 
     // Hitpoints
-    server.sendMessage(client, SV_MAX_HEALTH, makeArgs(_name, maxHealth()));
+    server.sendMessage(client, SV_MAX_HEALTH, makeArgs(_name, stats().health));
     server.sendMessage(client, SV_PLAYER_HEALTH, makeArgs(_name, health()));
 
     // Energy
-    server.sendMessage(client, SV_MAX_ENERGY, makeArgs(_name, maxEnergy()));
+    server.sendMessage(client, SV_MAX_ENERGY, makeArgs(_name, stats().energy));
     server.sendMessage(client, SV_PLAYER_ENERGY, makeArgs(_name, energy()));
 
     // Class
