@@ -128,6 +128,14 @@ void Entity::healBy(Hitpoints amount) {
 }
 
 void Entity::update(ms_t timeElapsed){
+    // Regen
+    _timeSinceRegen += timeElapsed;
+    while (_timeSinceRegen > 1000) {
+        regen();
+        _timeSinceRegen -= 1000;
+    }
+
+    // Attacking
     if (_attackTimer > timeElapsed)
         _attackTimer -= timeElapsed;
     else
@@ -257,4 +265,34 @@ void Entity::addWatcher(const std::string &username){
 void Entity::removeWatcher(const std::string &username){
     _watchers.erase(username);
     Server::debug() << username << " is no longer watching an object." << Log::endl;
+}
+
+void Entity::applyBuff(const BuffType & type) {
+    if (_buffs.find({ type }) != _buffs.end())
+        return;
+    _buffs.insert({ type });
+    updateStats();
+}
+
+void Entity::applyDebuff(const BuffType & type) {
+    if (_debuffs.find({ type }) != _debuffs.end())
+        return;
+    _debuffs.insert({ type });
+    updateStats();
+}
+
+void Entity::regen() {
+    auto newHealth = max(min<int>(health() + stats().hps, stats().health), 0);
+    if (newHealth != health()) {
+        health(newHealth);
+        onHealthChange();
+        if (isDead())
+            onDeath();
+    }
+
+    auto newEnergy = max(min<int>(energy() + stats().eps, stats().energy), 0);
+    if (newEnergy != energy()) {
+        energy(newEnergy);
+        onEnergyChange();
+    }
 }

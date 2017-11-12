@@ -80,14 +80,20 @@ public:
     // Combat
     Entity *target() const { return _target; }
     void target(Entity *p) { _target = p; }
+    virtual void updateStats() {} // Recalculate _stats based on any modifiers
     virtual ms_t timeToRemainAsCorpse() const = 0;
     virtual bool canBeAttackedBy(const User &user) const = 0;
     virtual px_t attackRange() const { return DEFAULT_ATTACK_RANGE; }
     virtual CombatResult generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const { return FAIL; }
         static bool combatTypeCanHaveOutcome(CombatType type, CombatResult outcome, SpellSchool school, px_t range);
     virtual void sendGotHitMessageTo(const User &user) const;
-    virtual void applyBuff(const BuffType &type) {}
-    virtual void applyDebuff(const BuffType &type) {}
+    void regen();
+
+    //Buffs &buffs() { return _buffs; }
+    const Buffs &buffs() const { return _buffs; }
+    const Buffs &debuffs() const { return _debuffs; }
+    void applyBuff(const BuffType &type);
+    void applyDebuff(const BuffType &type);
 
     const Stats &stats() const { return _stats; }
     void stats(const Stats &stats) { _stats = stats; }
@@ -153,6 +159,9 @@ private:
     Entity *_target;
     ms_t _corpseTime; // How much longer this entity should exist as a corpse.
     void startCorpseTimer();
+    Buffs _buffs, _debuffs;
+
+    ms_t _timeSinceRegen = 0;
 
 
     friend class Dummy;

@@ -249,3 +249,24 @@ ServerItem::Slot *NPC::getSlotToTakeFromAndSendErrors(size_t slotNum, const User
 
     return &slot;
 }
+
+void NPC::updateStats() {
+    const Server &server = *Server::_instance;
+
+    auto oldMaxHealth = stats().health;
+    auto oldMaxEnergy = stats().energy;
+
+    auto newStats = type()->baseStats();
+
+    // Apply buffs
+    for (auto &buff : buffs())
+        buff.applyTo(newStats);
+
+    // Apply debuffs
+    for (auto &debuff : debuffs())
+        debuff.applyTo(newStats);
+
+    // Assumption: max health/energy won't change
+
+    stats(newStats);
+}

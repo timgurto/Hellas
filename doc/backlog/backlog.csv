@@ -242,9 +242,9 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 268,Buffs expire,2,5,Feature,267,,,2
 269,Buffs can be cast on target (no longer random),21,5,Feature,267,TRUE,,2
 270,Buffs can be dismissed,1,5,Feature,267,,,2
-271,Buffs can be restricted to self,2,5,Feature,269,,,2
+271,Buffs can be restricted to self,2,5,Feature,269,TRUE,,2
 272,A -resistance debuff (can't be dismissed),3,5,Feature,270,,,2
-273,DoT debuff,13,5,Feature,267,,,2
+273,DoT debuff,13,5,Feature,267,TRUE,,2
 274,Stun debuff,3,8,Feature,267,,,2
 275,Spell to summon a friendly NPC,2,5,Feature,265,,,2
 276,Healing spell,13,5,Feature,265,TRUE,,2

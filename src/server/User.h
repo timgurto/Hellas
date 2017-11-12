@@ -5,7 +5,6 @@
 #include <string>
 #include <windows.h>
 
-#include "Buff.h"
 #include "City.h"
 #include "Entity.h"
 #include "Recipe.h"
@@ -70,10 +69,6 @@ private:
 
     Point _respawnPoint;
 
-    ms_t _timeSinceRegen = 0;
-
-    Buffs _buffs, _debuffs;
-
 
 public:
     User(const std::string &name, const Point &loc, const Socket &socket);
@@ -103,8 +98,6 @@ public:
     }
     const Point &respawnPoint() const { return _respawnPoint; }
     void respawnPoint(const Point &loc) { _respawnPoint = loc; }
-    Buffs &buffs() { return _buffs; }
-    const Buffs &buffs() const { return _buffs; }
 
     // Inventory getters/setters
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const
@@ -124,14 +117,12 @@ public:
 
     static void init();
 
-    void updateStats();
+    void updateStats() override;
     ms_t timeToRemainAsCorpse() const override { return 0; }
     bool canBeAttackedBy(const User &user) const override;
     px_t attackRange() const override;
     CombatResult generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const override;
     void sendGotHitMessageTo(const User &user) const override;
-    void applyBuff(const BuffType &type) override;
-    void applyDebuff(const BuffType &type) override;
     bool canBlock() const override;
 
     char classTag() const override { return 'u'; }
@@ -187,7 +178,6 @@ public:
     size_t giveItem(const ServerItem *item, size_t quantity = 1);
 
     void update(ms_t timeElapsed);
-    void regen();
 
     static Point newPlayerSpawn;
     static double spawnRadius;
