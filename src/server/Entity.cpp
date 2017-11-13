@@ -267,6 +267,8 @@ void Entity::applyBuff(const BuffType & type) {
         return;
     _buffs.insert({ type });
     updateStats();
+
+    sendBuffMsg(type.id());
 }
 
 void Entity::applyDebuff(const BuffType & type) {
@@ -274,6 +276,18 @@ void Entity::applyDebuff(const BuffType & type) {
         return;
     _debuffs.insert({ type });
     updateStats();
+
+    sendDebuffMsg(type.id());
+}
+
+void Entity::sendBuffMsg(const Buff::ID &buff) const {
+    const Server &server = Server::instance();
+    server.broadcastToArea(_location, SV_ENTITY_GOT_BUFF, makeArgs(_serial, buff));
+}
+
+void Entity::sendDebuffMsg(const Buff::ID &buff) const {
+    const Server &server = Server::instance();
+    server.broadcastToArea(_location, SV_ENTITY_GOT_DEBUFF, makeArgs(_serial, buff));
 }
 
 void Entity::regen(ms_t timeElapsed) {

@@ -669,7 +669,7 @@ void Server::loadData(const std::string &path){
             std::string id;
             if (!xr.findAttr(elem, "id", id))
                 continue; // ID is mandatory
-            auto newBuff = BuffType{};
+            auto newBuff = BuffType{id};
 
             auto statsElem = xr.findChild("stats", elem);
             if (statsElem != nullptr) {

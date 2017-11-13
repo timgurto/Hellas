@@ -9,6 +9,7 @@
 #include <set>
 
 #include "Avatar.h"
+#include "ClientBuff.h"
 #include "ClientCombatant.h"
 #include "ClientConfig.h"
 #include "ClientItem.h"
@@ -77,6 +78,8 @@ public:
         return _atWarWithCity.find(cityName) != _atWarWithCity.end(); }
 
     const Texture &mapImage() const { return _mapImage; }
+
+    const ClientBuffs &buffs() const { return _buffs; }
 
     template<typename T>
     void setTarget(const T &newTarget, bool aggressive = false){
@@ -378,6 +381,7 @@ private:
     projectileTypes_t _projectileTypes;
     TagNames _tagNames;
     ClientSpells _spells;
+    ClientBuffs _buffs;
 
     typedef std::set<SoundProfile> soundProfiles_t;
     soundProfiles_t _soundProfiles;
@@ -443,6 +447,8 @@ private:
     void handle_SV_PLAYER_WAS_HIT(const std::string &username);
     void handle_SV_ENTITY_WAS_HIT(size_t serial);
     void handle_SV_SHOW_OUTCOME_AT(int msgCode, const Point &loc);
+    void handle_SV_ENTITY_GOT_BUFF(int msgCode, size_t serial, const std::string &buffID);
+    void handle_SV_PLAYER_GOT_BUFF(int msgCode, const std::string &username, const std::string &buffID);
 
     void sendClearTargetMessage() const;
     

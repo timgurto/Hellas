@@ -126,6 +126,8 @@ public:
     bool canBlock() const override;
 
     char classTag() const override { return 'u'; }
+    virtual void sendBuffMsg(const Buff::ID &buff) const override;
+    virtual void sendDebuffMsg(const Buff::ID &buff) const override;
 
     void onHealthChange() override;
     void onEnergyChange() override;

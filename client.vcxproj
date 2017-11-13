@@ -100,6 +100,7 @@
     <ClCompile Include="src\client\Avatar.cpp" />
     <ClCompile Include="src\client\buildWindow.cpp" />
     <ClCompile Include="src\client\Client.cpp" />
+    <ClCompile Include="src\client\ClientBuff.cpp" />
     <ClCompile Include="src\client\ClientCombatant.cpp" />
     <ClCompile Include="src\client\ClientCombatantType.cpp" />
     <ClCompile Include="src\client\ClientConfig.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="src\Args.h" />
     <ClInclude Include="src\client\Avatar.h" />
     <ClInclude Include="src\client\Client.h" />
+    <ClInclude Include="src\client\ClientBuff.h" />
     <ClInclude Include="src\client\ClientCombatantType.h" />
     <ClInclude Include="src\client\ClientConfig.h" />
     <ClInclude Include="src\client\ClientMerchantSlot.h" />

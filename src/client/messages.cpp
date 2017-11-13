@@ -1170,6 +1170,43 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_ENTITY_GOT_BUFF:
+        case SV_ENTITY_GOT_DEBUFF:
+        {
+            auto serial = size_t{};
+            singleMsg >> serial >> del;
+
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            auto buffID = ClientBuff::ID{ buffer };
+            singleMsg >> del;
+
+            if (del != MSG_END)
+                return;
+
+            handle_SV_ENTITY_GOT_BUFF(msgCode, serial, buffID);
+
+            break;
+        }
+
+        case SV_PLAYER_GOT_BUFF:
+        case SV_PLAYER_GOT_DEBUFF:
+        {
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            auto username = std::string{ buffer };
+            singleMsg >> del;
+
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            auto buffID = ClientBuff::ID{ buffer };
+            singleMsg >> del;
+
+            if (del != MSG_END)
+                return;
+
+            handle_SV_PLAYER_GOT_BUFF(msgCode, username, buffID);
+
+            break;
+        }
+
         case SV_SAY:
         {
             std::string username, message;
@@ -1402,6 +1439,30 @@ void Client::handle_SV_SHOW_OUTCOME_AT(int msgCode, const Point & loc) {
         case SV_SHOW_BLOCK_AT: addParticles("block", loc); break;
         case SV_SHOW_CRIT_AT: addParticles("crit", loc); break;
     }
+}
+
+void Client::handle_SV_ENTITY_GOT_BUFF(int msgCode, size_t serial, const std::string &buffID) {
+    auto objIt = _objects.find(serial);
+    if (objIt == _objects.end()) {
+        return;
+    }
+
+    objIt->second->addBuffOrDebuff(buffID, msgCode == SV_ENTITY_GOT_BUFF);
+}
+
+void Client::handle_SV_PLAYER_GOT_BUFF(int msgCode, const std::string & username,
+        const std::string &buffID) {
+    Avatar *avatar = nullptr;
+    if (username == _username)
+        avatar = &_character;
+    else {
+        auto it = _otherUsers.find(username);
+        if (it == _otherUsers.end())
+            return;
+        avatar = it->second;
+    }
+
+    avatar->addBuffOrDebuff(buffID, msgCode == SV_ENTITY_GOT_BUFF);
 }
 
 

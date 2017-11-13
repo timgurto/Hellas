@@ -58,3 +58,15 @@ void ClientCombatant::createDamageParticles() const{
     Client &client = *Client::_instance;
     client.addParticles(_type->damageParticles(), combatantLocation());
 }
+
+void ClientCombatant::addBuffOrDebuff(const ClientBuff::ID & buff, bool isBuff) {
+    Client &client = *Client::_instance;
+    auto it = client.buffs().find(buff);
+    if (it == client.buffs().end())
+        return;
+
+    if (isBuff)
+        _buffs.insert(&it->second);
+    else
+        _debuffs.insert(&it->second);
+}

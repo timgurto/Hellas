@@ -675,3 +675,13 @@ void User::moveToSpawnPoint(bool isNewPlayer) {
     server.broadcastToArea(oldLoc, SV_LOCATION_INSTANT, makeArgs(name(), location().x, location().y));
     server.broadcastToArea(location(), SV_LOCATION_INSTANT, makeArgs(name(), location().x, location().y));
 }
+
+void User::sendBuffMsg(const Buff::ID &buff) const {
+    const Server &server = Server::instance();
+    server.broadcastToArea(location(), SV_PLAYER_GOT_BUFF, makeArgs(_name, buff));
+}
+
+void User::sendDebuffMsg(const Buff::ID &buff) const {
+    const Server &server = Server::instance();
+    server.broadcastToArea(location(), SV_PLAYER_GOT_DEBUFF, makeArgs(_name, buff));
+}

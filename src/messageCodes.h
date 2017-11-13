@@ -291,6 +291,13 @@ enum MessageCode{
     SV_SHOW_BLOCK_AT,
     SV_SHOW_CRIT_AT,
 
+    // Something was buffed/debuffed
+    // Arguments: serial/username, buff ID
+    SV_ENTITY_GOT_BUFF,
+    SV_PLAYER_GOT_BUFF,
+    SV_ENTITY_GOT_DEBUFF,
+    SV_PLAYER_GOT_DEBUFF,
+
     // An object has an owner
     // Arguments: serial, type ("user"|"city"), name
     SV_OWNER,

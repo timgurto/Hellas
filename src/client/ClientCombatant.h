@@ -3,6 +3,7 @@
 
 #include <cassert>
 
+#include "ClientBuff.h"
 #include "ClientCombatantType.h"
 #include "Sprite.h"
 #include "../types.h"
@@ -37,10 +38,15 @@ public:
 
     void createDamageParticles() const;
 
+    void addBuffOrDebuff(const ClientBuff::ID &buff, bool isBuff);
+
+    size_t numBuffs() const { return _buffs.size() + _debuffs.size(); }
+
 private:
     const ClientCombatantType *_type;
     Hitpoints _maxHealth, _health;
     Energy _maxEnergy, _energy;
+    std::set<const ClientBuff *> _buffs, _debuffs;
 };
 
 #endif

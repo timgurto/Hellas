@@ -94,6 +94,8 @@ public:
     const Buffs &debuffs() const { return _debuffs; }
     void applyBuff(const BuffType &type);
     void applyDebuff(const BuffType &type);
+    virtual void sendBuffMsg(const Buff::ID &buff) const;
+    virtual void sendDebuffMsg(const Buff::ID &buff) const;
 
     const Stats &stats() const { return _stats; }
     void stats(const Stats &stats) { _stats = stats; }

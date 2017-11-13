@@ -9,13 +9,18 @@
 
 class BuffType {
 public:
+    using ID = std::string;
+
     BuffType() {}
+    BuffType(const ID &id) : _id(id) {}
 
     void stats(const StatsMod &stats) { _stats = stats; }
     const StatsMod &stats() const { return _stats; }
+    const ID &id() const { return _id; }
 
 private:
-    StatsMod _stats = {};
+    StatsMod _stats{};
+    ID _id{};
 };
 
 class Buff {

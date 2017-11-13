@@ -1,4 +1,5 @@
 #include "Client.h"
+#include "ClientBuff.h"
 #include "ClientNPCType.h"
 #include "ClientVehicleType.h"
 #include "ParticleProfile.h"
@@ -190,6 +191,22 @@ void Client::loadData(const std::string &path){
                         newSpell->impactParticles(profile);
                 }
             }
+        }
+    }
+
+    // Buffs
+    if (!xr.newFile(path + "/buffs.xml"))
+        _debug("Failed to load buffs.xml", Color::FAILURE);
+    else {
+        for (auto elem : xr.getChildren("buff")) {
+            std::string id;
+            if (!xr.findAttr(elem, "id", id))
+                continue; // ID is mandatory.
+            auto newBuff = ClientBuff{ id };
+            _buffs[id] = newBuff;
+
+            auto name = ClientBuff::Name{};
+            if (xr.findAttr(elem, "name", name)) newBuff.name(name);
         }
     }
 
