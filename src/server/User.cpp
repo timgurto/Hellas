@@ -526,11 +526,14 @@ void User::updateStats(){
         server.broadcastToArea(location(), SV_MAX_HEALTH, makeArgs(_name, newStats.health));
     }
     int oldHealth = health();
-    if (healthDecrease > 0 && healthDecrease > oldHealth)
-        // Implicit rule: changing gear can never kill you, only reduce you to 1 health.
-        healthDecrease = health() - 1;
+    auto newHealth = oldHealth - healthDecrease;
+    if (newHealth < 1) // Implicit rule: changing gear can never kill you, only reduce you to 1 health.
+        newHealth = 1;
+    else if (newHealth > static_cast<int>(newStats.health))
+        newHealth = newStats.health;
     if (healthDecrease != 0) {
-        reduceHealth(healthDecrease);\
+        health(newHealth);
+        onHealthChange();
     }
 
     int energyDecrease = oldMaxEnergy - newStats.energy;
@@ -539,10 +542,15 @@ void User::updateStats(){
         server.broadcastToArea(location(), SV_MAX_ENERGY, makeArgs(_name, newStats.energy));
     }
     int oldEnergy = energy();
-    if (energyDecrease > 0 && energyDecrease >= oldEnergy)
-        energyDecrease = energy();
-    if (energyDecrease != 0)
-        reduceEnergy(energyDecrease);
+    auto newEnergy = oldEnergy - energyDecrease;
+    if (newEnergy < 1) // Implicit rule: changing gear can never kill you, only reduce you to 1 health.
+        newEnergy = 1;
+    else if (newEnergy > static_cast<int>(newStats.energy))
+        newEnergy = newStats.energy;
+    if (energyDecrease != 0) {
+        health(newEnergy);
+        onEnergyChange();
+    }
 
 
     auto args = makeArgs(
