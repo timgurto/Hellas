@@ -9,12 +9,12 @@ struct StatsMod;
 // Describes base-level player stats.
 struct Stats{
     Hitpoints
-        health = 0,
+        maxHealth = 0,
         attack = 0,
         blockValue = 0;
 
     Energy
-        energy = 0;
+        maxEnergy = 0;
 
     Regen
         hps = 0,
@@ -57,9 +57,9 @@ struct StatsMod{
     // Additive
     int
         armor = 0,
-        health = 0,
+        maxHealth = 0,
         hps = 0,
-        energy = 0,
+        maxEnergy = 0,
         eps = 0,
         attack = 0,
         blockValue = 0;

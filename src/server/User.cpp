@@ -58,8 +58,8 @@ User::User(const Point &loc):
 void User::init(){
     auto baseStats = Stats{};
     baseStats.armor = 0;
-    baseStats.health = 50;
-    baseStats.energy = 50;
+    baseStats.maxHealth = 50;
+    baseStats.maxEnergy = 50;
     baseStats.hit = 0;
     baseStats.crit = 5;
     baseStats.critResist = 0;
@@ -481,7 +481,7 @@ void User::onDeath(){
     // Handle respawn etc.
     moveToSpawnPoint();
 
-    health(stats().health);
+    health(stats().maxHealth);
     onHealthChange();
 }
 
@@ -499,8 +499,8 @@ void User::onDestroyedOwnedObject(const ObjectType &type) const {
 void User::updateStats(){
     const Server &server = *Server::_instance;
 
-    auto oldMaxHealth = stats().health;
-    auto oldMaxEnergy = stats().energy;
+    auto oldMaxHealth = stats().maxHealth;
+    auto oldMaxEnergy = stats().maxEnergy;
 
     auto newStats = OBJECT_TYPE.baseStats();
 
@@ -520,33 +520,33 @@ void User::updateStats(){
         debuff.applyTo(newStats);
 
     // Special case: health must change to reflect new max health
-    int healthDecrease = oldMaxHealth - newStats.health;
+    int healthDecrease = oldMaxHealth - newStats.maxHealth;
     if (healthDecrease != 0) {
         // Alert nearby users to new max health
-        server.broadcastToArea(location(), SV_MAX_HEALTH, makeArgs(_name, newStats.health));
+        server.broadcastToArea(location(), SV_MAX_HEALTH, makeArgs(_name, newStats.maxHealth));
     }
     int oldHealth = health();
     auto newHealth = oldHealth - healthDecrease;
     if (newHealth < 1) // Implicit rule: changing gear can never kill you, only reduce you to 1 health.
         newHealth = 1;
-    else if (newHealth > static_cast<int>(newStats.health))
-        newHealth = newStats.health;
+    else if (newHealth > static_cast<int>(newStats.maxHealth))
+        newHealth = newStats.maxHealth;
     if (healthDecrease != 0) {
         health(newHealth);
         onHealthChange();
     }
 
-    int energyDecrease = oldMaxEnergy - newStats.energy;
+    int energyDecrease = oldMaxEnergy - newStats.maxEnergy;
     if (energyDecrease != 0) {
         // Alert nearby users to new max energy
-        server.broadcastToArea(location(), SV_MAX_ENERGY, makeArgs(_name, newStats.energy));
+        server.broadcastToArea(location(), SV_MAX_ENERGY, makeArgs(_name, newStats.maxEnergy));
     }
     int oldEnergy = energy();
     auto newEnergy = oldEnergy - energyDecrease;
     if (newEnergy < 1) // Implicit rule: changing gear can never kill you, only reduce you to 1 health.
         newEnergy = 1;
-    else if (newEnergy > static_cast<int>(newStats.energy))
-        newEnergy = newStats.energy;
+    else if (newEnergy > static_cast<int>(newStats.maxEnergy))
+        newEnergy = newStats.maxEnergy;
     if (energyDecrease != 0) {
         health(newEnergy);
         onEnergyChange();
@@ -556,8 +556,8 @@ void User::updateStats(){
     auto args = makeArgs(
         makeArgs(
             newStats.armor,
-            newStats.health,
-            newStats.energy,
+            newStats.maxHealth,
+            newStats.maxEnergy,
             newStats.hps,
             newStats.eps
         ), makeArgs(
@@ -619,11 +619,11 @@ void User::sendInfoToClient(const User &targetUser) const {
     server.sendMessage(client, SV_LOCATION, makeLocationCommand());
 
     // Hitpoints
-    server.sendMessage(client, SV_MAX_HEALTH, makeArgs(_name, stats().health));
+    server.sendMessage(client, SV_MAX_HEALTH, makeArgs(_name, stats().maxHealth));
     server.sendMessage(client, SV_PLAYER_HEALTH, makeArgs(_name, health()));
 
     // Energy
-    server.sendMessage(client, SV_MAX_ENERGY, makeArgs(_name, stats().energy));
+    server.sendMessage(client, SV_MAX_ENERGY, makeArgs(_name, stats().maxEnergy));
     server.sendMessage(client, SV_PLAYER_ENERGY, makeArgs(_name, energy()));
 
     // Class

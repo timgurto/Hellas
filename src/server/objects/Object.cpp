@@ -262,7 +262,7 @@ void Object::sendInfoToClient(const User &targetUser) const {
     }
 
     // Hitpoints
-    if (health() < stats().health)
+    if (health() < stats().maxHealth)
         server.sendMessage(client, SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 
     // Lootable

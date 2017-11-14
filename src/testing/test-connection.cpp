@@ -87,15 +87,15 @@ TEST_CASE("New servers clear old user data"){
         TestClient c = TestClient::WithUsername("alice");
         WAIT_UNTIL(s.users().size() == 1);
         User &alice = s.getFirstUser();
-        CHECK(alice.health() == alice.stats().health);
+        CHECK(alice.health() == alice.stats().maxHealth);
         alice.reduceHealth(1);
-        CHECK(alice.health() < alice.stats().health);
+        CHECK(alice.health() < alice.stats().maxHealth);
     }
     {
         TestServer s;
         TestClient c = TestClient::WithUsername("alice");
         WAIT_UNTIL(s.users().size() == 1);
         User &alice = s.getFirstUser();
-        CHECK(alice.health() == alice.stats().health);
+        CHECK(alice.health() == alice.stats().maxHealth);
     }
 }

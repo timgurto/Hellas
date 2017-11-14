@@ -431,7 +431,7 @@ void Server::loadData(const std::string &path){
                 nt->allowedTerrain(s);
 
             Stats baseStats = NPCType::BASE_STATS;
-            xr.findAttr(elem, "maxHealth", baseStats.health);
+            xr.findAttr(elem, "maxHealth", baseStats.maxHealth);
             xr.findAttr(elem, "attack", baseStats.attack);
             xr.findAttr(elem, "attackTime", baseStats.attackTime);
             nt->baseStats(baseStats);
@@ -493,8 +493,8 @@ void Server::loadData(const std::string &path){
             if (statsElem != nullptr) {
                 StatsMod stats;
                 xr.findAttr(statsElem, "armor", stats.armor);
-                xr.findAttr(statsElem, "health", stats.health);
-                xr.findAttr(statsElem, "energy", stats.energy);
+                xr.findAttr(statsElem, "health", stats.maxHealth);
+                xr.findAttr(statsElem, "energy", stats.maxEnergy);
                 xr.findAttr(statsElem, "hps", stats.hps);
                 xr.findAttr(statsElem, "eps", stats.eps);
                 xr.findAttr(statsElem, "hit", stats.hit);
@@ -675,8 +675,8 @@ void Server::loadData(const std::string &path){
             if (statsElem != nullptr) {
                 StatsMod stats;
                 xr.findAttr(statsElem, "armor", stats.armor);
-                xr.findAttr(statsElem, "health", stats.health);
-                xr.findAttr(statsElem, "energy", stats.energy);
+                xr.findAttr(statsElem, "health", stats.maxHealth);
+                xr.findAttr(statsElem, "energy", stats.maxEnergy);
                 xr.findAttr(statsElem, "hps", stats.hps);
                 xr.findAttr(statsElem, "eps", stats.eps);
                 xr.findAttr(statsElem, "hit", stats.hit);
@@ -981,7 +981,7 @@ void Object::writeToXML(XmlWriter &xw) const{
     xw.setAttr(loc, "x", location().x);
     xw.setAttr(loc, "y", location().y);
 
-    if (health() < stats().health)
+    if (health() < stats().maxHealth)
         xw.setAttr(e, "health", health());
 
     if (hasContainer()){

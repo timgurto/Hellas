@@ -298,7 +298,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_CANNOT_DECONSTRUCT);
                 break;
             }
-            if (obj->health() < obj->stats().health) {
+            if (obj->health() < obj->stats().maxHealth) {
                 sendMessage(client, SV_DAMAGED_OBJECT);
                 break;
             }

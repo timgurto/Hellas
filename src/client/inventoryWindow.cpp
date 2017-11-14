@@ -76,9 +76,9 @@ void Client::initializeGearWindow(){
 
     // Stats
     auto y = labelRect.y;
-    addStat("Max health",       _stats.health,          {},     {},     y, _gearWindow, Color::COMBATANT_SELF);
+    addStat("Max health",       _stats.maxHealth,       {},     {},     y, _gearWindow, Color::COMBATANT_SELF);
     addStat("Health regen",     _stats.hps,             {},     "/s",   y, _gearWindow, Color::COMBATANT_SELF);
-    addStat("Max energy",       _stats.energy,          {},     {},     y, _gearWindow, Color::ENERGY);
+    addStat("Max energy",       _stats.maxEnergy,       {},     {},     y, _gearWindow, Color::ENERGY);
     addStat("Energy regen",     _stats.eps,             {},     "/s",   y, _gearWindow, Color::ENERGY);
     addGap(y, _gearWindow);
     addStat("Hit chance",       _stats.hit,             {},     "%",    y, _gearWindow);

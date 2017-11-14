@@ -14,8 +14,8 @@ ObjectType::ObjectType(const std::string &id):
     _bottomlessMerchant(false),
     _container(nullptr)
 {
-    if (_baseStats.health == 0)
-        _baseStats.health = 1;
+    if (_baseStats.maxHealth == 0)
+        _baseStats.maxHealth = 1;
 }
 
 void ObjectType::addYield(const ServerItem *item,
@@ -31,8 +31,8 @@ void ObjectType::checkUniquenessInvariant() const{
 
 void ObjectType::setHealthBasedOnItems(const ServerItem *item, size_t quantity){
     _strength.set(item, quantity);
-    _baseStats.health = _strength.get();
-    assert(_baseStats.health > 0);
+    _baseStats.maxHealth = _strength.get();
+    assert(_baseStats.maxHealth > 0);
 }
 
 ObjectType::Strength::Strength():

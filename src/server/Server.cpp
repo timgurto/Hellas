@@ -662,9 +662,9 @@ void Server::publishStats(const Server * server) {
                 << "city: \"" << server->_cities.getPlayerCity(user.name()) << "\","
                 << "isKing: " << server->_kings.isPlayerAKing(user.name()) << ","
                 << "health: " << user.health() << ","
-                << "maxHealth: " << user.stats().health << ","
+                << "maxHealth: " << user.stats().maxHealth << ","
                 << "energy: " << user.energy() << ","
-                << "maxEnergy: " << user.stats().energy << ","
+                << "maxEnergy: " << user.stats().maxEnergy << ","
                 << "knownRecipes: " << user.knownRecipes().size() << ","
                 << "knownConstructions: " << user.knownConstructions().size() << ",";
 

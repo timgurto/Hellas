@@ -18,8 +18,8 @@ Entity::Entity(const EntityType *type, const Point &loc):
     _lastLocUpdate(SDL_GetTicks()),
 
     _stats(type->baseStats()),
-    _health(_stats.health),
-    _energy(_stats.energy),
+    _health(_stats.maxHealth),
+    _energy(_stats.maxEnergy),
 
     _attackTimer(0),
     _target(nullptr),
@@ -109,7 +109,7 @@ void Entity::reduceHealth(int damage) {
         onHealthChange();
     }
 
-    assert(_health <= this->_stats.health);
+    assert(_health <= this->_stats.maxHealth);
 }
 
 void Entity::reduceEnergy(int amount) {
@@ -122,7 +122,7 @@ void Entity::reduceEnergy(int amount) {
 }
 
 void Entity::healBy(Hitpoints amount) {
-    auto newHealth = min(health() + amount, _stats.health);
+    auto newHealth = min(health() + amount, _stats.maxHealth);
     _health = newHealth;
     onHealthChange();
 }
@@ -302,8 +302,8 @@ void Entity::regen(ms_t timeElapsed) {
         int rawNewHealth = health() + stats().hps;
         if (rawNewHealth < 0)
             health(0);
-        else if (0 + rawNewHealth > static_cast<int>(stats().health) + 0)
-            health(stats().health);
+        else if (0 + rawNewHealth > static_cast<int>(stats().maxHealth) + 0)
+            health(stats().maxHealth);
         else
             health(rawNewHealth);
         onHealthChange();
@@ -315,8 +315,8 @@ void Entity::regen(ms_t timeElapsed) {
         int rawNewEnergy = energy() + stats().eps;
         if (rawNewEnergy < 0)
             energy(0);
-        else if (rawNewEnergy > static_cast<int>(stats().energy))
-            energy(stats().energy);
+        else if (rawNewEnergy > static_cast<int>(stats().maxEnergy))
+            energy(stats().maxEnergy);
         else
             energy(rawNewEnergy);
         onEnergyChange();

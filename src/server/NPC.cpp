@@ -204,7 +204,7 @@ void NPC::sendInfoToClient(const User &targetUser) const {
                                                    type()->id()));
 
     // Hitpoints
-    if (health() < stats().health)
+    if (health() < stats().maxHealth)
         server.sendMessage(client, SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 
     // Loot
@@ -253,8 +253,8 @@ ServerItem::Slot *NPC::getSlotToTakeFromAndSendErrors(size_t slotNum, const User
 void NPC::updateStats() {
     const Server &server = *Server::_instance;
 
-    auto oldMaxHealth = stats().health;
-    auto oldMaxEnergy = stats().energy;
+    auto oldMaxHealth = stats().maxHealth;
+    auto oldMaxEnergy = stats().maxEnergy;
 
     auto newStats = type()->baseStats();
 

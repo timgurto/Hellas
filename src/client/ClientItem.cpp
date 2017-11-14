@@ -86,10 +86,10 @@ const Texture &ClientItem::tooltip() const{
         tb.addLine("Gear: " + Client::GEAR_SLOT_NAMES[_gearSlot]);
         if (_stats.armor > 0)
             tb.addLine("+" + toString(_stats.armor) + "% armor");
-        if (_stats.health > 0)
-            tb.addLine("+" + toString(_stats.health) + " health");
-        if (_stats.energy > 0)
-            tb.addLine("+" + toString(_stats.energy) + " energy");
+        if (_stats.maxHealth > 0)
+            tb.addLine("+" + toString(_stats.maxHealth) + " health");
+        if (_stats.maxEnergy > 0)
+            tb.addLine("+" + toString(_stats.maxEnergy) + " energy");
         if (_stats.hps > 0)
             tb.addLine("+" + toString(_stats.hps) + " health per second");
         if (_stats.eps > 0)

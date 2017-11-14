@@ -376,8 +376,8 @@ void Client::loadData(const std::string &path){
             if (statsElem != nullptr){
                 StatsMod stats;
                 xr.findAttr(statsElem, "armor", stats.armor);
-                xr.findAttr(statsElem, "health", stats.health);
-                xr.findAttr(statsElem, "energy", stats.energy);
+                xr.findAttr(statsElem, "health", stats.maxHealth);
+                xr.findAttr(statsElem, "energy", stats.maxEnergy);
                 xr.findAttr(statsElem, "hps", stats.hps);
                 xr.findAttr(statsElem, "eps", stats.eps);
                 xr.findAttr(statsElem, "hit", stats.hit);

@@ -976,8 +976,8 @@ void Client::handleMessage(const std::string &msg){
         case SV_YOUR_STATS:
         {
             singleMsg >> _stats.armor
-                >> del >> _stats.health
-                >> del >> _stats.energy
+                >> del >> _stats.maxHealth
+                >> del >> _stats.maxEnergy
                 >> del >> _stats.hps
                 >> del >> _stats.eps
                 >> del >> _stats.hit
@@ -999,8 +999,8 @@ void Client::handleMessage(const std::string &msg){
                 >> del;
             if (del != MSG_END)
                 break;
-            _character.maxHealth(_stats.health);
-            _character.maxEnergy(_stats.energy);
+            _character.maxHealth(_stats.maxHealth);
+            _character.maxEnergy(_stats.maxEnergy);
             break;
         }
 

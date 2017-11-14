@@ -4,8 +4,8 @@
 #include "util.h"
 
 Stats &Stats::operator+=(const Stats &rhs){
-    health += rhs.health;
-    energy += rhs.energy;
+    maxHealth += rhs.maxHealth;
+    maxEnergy += rhs.maxEnergy;
     hps += rhs.hps;
     eps += rhs.eps;
     hit += rhs.hit;
@@ -35,15 +35,15 @@ const Stats &Stats::operator&=(const StatsMod &mod){
     armor += mod.armor;
     if (armor < 0) armor = 0;
 
-    if (mod.health < 0 && -mod.health > static_cast<int>(health))
-        health = 0;
+    if (mod.maxHealth < 0 && -mod.maxHealth > static_cast<int>(maxHealth))
+        maxHealth = 0;
     else
-        health += mod.health;
+        maxHealth += mod.maxHealth;
 
-    if (mod.energy < 0 && -mod.energy > static_cast<int>(energy))
-        energy = 0;
+    if (mod.maxEnergy < 0 && -mod.maxEnergy > static_cast<int>(maxEnergy))
+        maxEnergy = 0;
     else
-        energy += mod.energy;
+        maxEnergy += mod.maxEnergy;
 
     // Can be negative
     hps += mod.hps;
