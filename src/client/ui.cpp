@@ -17,13 +17,14 @@ void Client::initUI() {
     Element::initialize();
     ClientItem::init();
 
+    initPerformanceDisplay();
     initChatLog();
     initWindows();
     initializeGearSlotNames();
     initCastBar();
     initHotbar();
+    initBuffsDisplay();
     initMenuBar();
-    initPerformanceDisplay();
     initPlayerPanels();
 
 }
@@ -118,6 +119,31 @@ void Client::populateHotbar() {
     }
 }
 
+void Client::initBuffsDisplay() {
+    const px_t
+        WIDTH = 30,
+        HEIGHT = 300,
+        ROW_HEIGHT = 20;
+    _buffsDisplay = new List({ SCREEN_X - WIDTH, 0, WIDTH, HEIGHT }, ROW_HEIGHT);
+
+    addUI(_buffsDisplay);
+
+    refreshBuffsDisplay();
+}
+
+void Client::refreshBuffsDisplay() {
+    _buffsDisplay->clearChildren();
+
+    for (auto buff : _character.buffs())
+        _buffsDisplay->addChild(assembleBuffEntry(*buff));
+}
+
+Element *Client::assembleBuffEntry(const ClientBuffType &type) {
+    auto e = new Element();
+    e->addChild(new Picture({ 2, 2, 16, 16 }, type.icon()));
+    return e;
+}
+
 void Client::initMenuBar() {
     static const px_t
         MENU_BUTTON_W = 12,
@@ -152,6 +178,9 @@ void Client::addButtonToMenu(Element *menuBar, size_t index, Element *toToggle,
 }
 
 void Client::initPerformanceDisplay() {
+#ifndef _DEBUG
+    return;
+#endif
     static const px_t
         HARDWARE_STATS_W = 100,
         HARDWARE_STATS_H = 44,

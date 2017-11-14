@@ -1462,7 +1462,10 @@ void Client::handle_SV_PLAYER_GOT_BUFF(int msgCode, const std::string & username
         avatar = it->second;
     }
 
-    avatar->addBuffOrDebuff(buffID, msgCode == SV_ENTITY_GOT_BUFF);
+    avatar->addBuffOrDebuff(buffID, msgCode == SV_PLAYER_GOT_BUFF);
+
+    if (avatar == &_character)
+        refreshBuffsDisplay();
 }
 
 

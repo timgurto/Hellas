@@ -249,6 +249,7 @@ private:
     Element *_castBar;
     Element *_hotbar = nullptr;
     std::vector<Button*> _hotbarButtons = { 10, nullptr };
+    List *_buffsDisplay = nullptr;
     void initUI();
         void initChatLog();
         void initWindows();
@@ -260,6 +261,9 @@ private:
         void initPlayerPanels();
         void initHotbar();
             void populateHotbar();
+        void initBuffsDisplay();
+            void refreshBuffsDisplay();
+                static Element *assembleBuffEntry(const ClientBuffType &type);
 
     // Chat
     Element *_chatContainer;

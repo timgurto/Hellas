@@ -41,6 +41,9 @@ public:
     void addBuffOrDebuff(const ClientBuffType::ID &buff, bool isBuff);
 
     size_t numBuffs() const { return _buffs.size() + _debuffs.size(); }
+    using Buffs = std::set<const ClientBuffType *>;
+    const Buffs buffs() const { return _buffs; }
+    const Buffs debuffs() const { return _debuffs; }
 
 private:
     const ClientCombatantType *_type;
