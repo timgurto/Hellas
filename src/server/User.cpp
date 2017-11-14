@@ -640,11 +640,17 @@ void User::sendInfoToClient(const User &targetUser) const {
         server.sendMessage(client, SV_KING, _name);
 
     // Gear
-    for (size_t i = 0; i != User::GEAR_SLOTS; ++i){
+    for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
         const ServerItem *item = gear(i).first;
         if (item != nullptr)
             server.sendMessage(client, SV_GEAR, makeArgs(_name, i, item->id()));
     }
+
+    // Buffs/debuffs
+    for (const auto &buff : buffs())
+        server.sendMessage(client, SV_PLAYER_GOT_BUFF, makeArgs(_name, buff.type()));
+    for (const auto &debuff : debuffs())
+        server.sendMessage(client, SV_PLAYER_GOT_DEBUFF, makeArgs(_name, debuff.type()));
 }
 
 void User::onOutOfRange(const Entity &rhs) const{

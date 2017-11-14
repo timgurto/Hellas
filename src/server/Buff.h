@@ -29,6 +29,8 @@ public:
 
     Buff(const BuffType &type) : _type(type) {}
 
+    const ID &type() const { return _type.id(); }
+
     bool operator<(const Buff &rhs) const { return &_type < &rhs._type; }
 
     void applyTo(Stats &stats) const { stats &= _type.stats(); }

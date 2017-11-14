@@ -268,6 +268,12 @@ void Object::sendInfoToClient(const User &targetUser) const {
     // Lootable
     if (_loot != nullptr && !_loot->empty())
         server.sendMessage(client, SV_LOOTABLE, makeArgs(serial()));
+
+    // Buffs/debuffs
+    for (const auto &buff : buffs())
+        server.sendMessage(client, SV_ENTITY_GOT_BUFF, makeArgs(serial(), buff.type()));
+    for (const auto &debuff : debuffs())
+        server.sendMessage(client, SV_ENTITY_GOT_DEBUFF, makeArgs(serial(), debuff.type()));
 }
 
 void Object::describeSelfToNewWatcher(const User &watcher) const{
