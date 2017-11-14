@@ -482,6 +482,7 @@ void User::onDeath(){
     moveToSpawnPoint();
 
     health(stats().maxHealth);
+    energy(stats().maxEnergy);
     onHealthChange();
 }
 
