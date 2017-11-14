@@ -1177,7 +1177,7 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> serial >> del;
 
             singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
-            auto buffID = ClientBuff::ID{ buffer };
+            auto buffID = ClientBuffType::ID{ buffer };
             singleMsg >> del;
 
             if (del != MSG_END)
@@ -1196,7 +1196,7 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del;
 
             singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
-            auto buffID = ClientBuff::ID{ buffer };
+            auto buffID = ClientBuffType::ID{ buffer };
             singleMsg >> del;
 
             if (del != MSG_END)

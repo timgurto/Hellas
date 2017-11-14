@@ -2,5 +2,5 @@
 
 using namespace std::string_literals;
 
-ClientBuff::ClientBuff(const ID & id) :
+ClientBuffType::ClientBuffType(const ID & id) :
     _icon{ "Images/Spells/"s + id + ".png"s } {}

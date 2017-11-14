@@ -59,10 +59,10 @@ void ClientCombatant::createDamageParticles() const{
     client.addParticles(_type->damageParticles(), combatantLocation());
 }
 
-void ClientCombatant::addBuffOrDebuff(const ClientBuff::ID & buff, bool isBuff) {
+void ClientCombatant::addBuffOrDebuff(const ClientBuffType::ID & buff, bool isBuff) {
     Client &client = *Client::_instance;
-    auto it = client.buffs().find(buff);
-    if (it == client.buffs().end())
+    auto it = client.buffTypes().find(buff);
+    if (it == client.buffTypes().end())
         return;
 
     if (isBuff)

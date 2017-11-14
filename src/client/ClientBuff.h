@@ -2,13 +2,13 @@
 
 #include "Texture.h"
 
-class ClientBuff {
+class ClientBuffType {
 public:
     using ID = std::string;
     using Name = std::string;
 
-    ClientBuff() {}
-    ClientBuff(const ID &id);
+    ClientBuffType() {}
+    ClientBuffType(const ID &id);
     void name(const Name &name) { _name = name; }
 
 private:
@@ -16,4 +16,4 @@ private:
     std::string _name;
 };
 
-using ClientBuffs = std::map<ClientBuff::ID, ClientBuff>;
+using ClientBuffTypes = std::map<ClientBuffType::ID, ClientBuffType>;

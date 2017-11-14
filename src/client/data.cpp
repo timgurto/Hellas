@@ -202,10 +202,10 @@ void Client::loadData(const std::string &path){
             std::string id;
             if (!xr.findAttr(elem, "id", id))
                 continue; // ID is mandatory.
-            auto newBuff = ClientBuff{ id };
-            _buffs[id] = newBuff;
+            auto newBuff = ClientBuffType{ id };
+            _buffTypes[id] = newBuff;
 
-            auto name = ClientBuff::Name{};
+            auto name = ClientBuffType::Name{};
             if (xr.findAttr(elem, "name", name)) newBuff.name(name);
         }
     }
