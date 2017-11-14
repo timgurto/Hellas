@@ -137,11 +137,13 @@ void Client::refreshBuffsDisplay() {
     for (auto buff : _character.buffs())
         _buffsDisplay->addChild(assembleBuffEntry(*buff));
     for (auto buff : _character.debuffs())
-        _buffsDisplay->addChild(assembleBuffEntry(*buff));
+        _buffsDisplay->addChild(assembleBuffEntry(*buff, true));
 }
 
-Element *Client::assembleBuffEntry(const ClientBuffType &type) {
+Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
     auto e = new Element();
+    if (isDebuff)
+        e->addChild(new ColorBlock({ 1, 1, 18, 18 }, Color::COMBATANT_ENEMY));
     e->addChild(new Picture({ 2, 2, 16, 16 }, type.icon()));
     return e;
 }

@@ -263,7 +263,7 @@ private:
             void populateHotbar();
         void initBuffsDisplay();
             void refreshBuffsDisplay();
-                static Element *assembleBuffEntry(const ClientBuffType &type);
+                static Element *assembleBuffEntry(const ClientBuffType &type, bool isDebuff = false);
 
     // Chat
     Element *_chatContainer;
