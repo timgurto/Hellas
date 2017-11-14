@@ -196,8 +196,8 @@
 <particleProfile
     id="heavyBlood">
     <particlesPerHit mean=20 sd=4 />
-    <distance mean=5 sd=0 />
-    <altitude mean=8 sd=4 />
+    <distance mean=10 sd=4 />
+    <altitude mean=20 sd=4 />
     <velocity mean=15 sd=3 />
     <fallSpeed mean=0 sd=2 />
     <variety imageFile="gib" />
@@ -206,9 +206,10 @@
 
 <particleProfile
     id="poison">
-    <particlesPerHit mean=20 sd=4 />
-    <distance mean=5 sd=0 />
-    <altitude mean=8 sd=4 />
+    <lifespan mean=1000 sd=300 />
+    <particlesPerHit mean=40 sd=8 />
+    <distance mean=10 sd=3 />
+    <altitude mean=20 sd=4 />
     <velocity mean=15 sd=3 />
     <fallSpeed mean=0 sd=2 />
     <variety imageFile="poison0" />

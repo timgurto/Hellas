@@ -10,6 +10,7 @@ public:
     ClientBuffType() {}
     ClientBuffType(const ID &id);
     void name(const Name &name) { _name = name; }
+    const Name &name() const { return _name; }
     const Texture &icon() const { return _icon; }
 
 private:

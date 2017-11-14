@@ -145,6 +145,7 @@ Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
     if (isDebuff)
         e->addChild(new ColorBlock({ 1, 1, 18, 18 }, Color::COMBATANT_ENEMY));
     e->addChild(new Picture({ 2, 2, 16, 16 }, type.icon()));
+    e->setTooltip(type.name());
     return e;
 }
 
