@@ -136,6 +136,8 @@ void Client::refreshBuffsDisplay() {
 
     for (auto buff : _character.buffs())
         _buffsDisplay->addChild(assembleBuffEntry(*buff));
+    for (auto buff : _character.debuffs())
+        _buffsDisplay->addChild(assembleBuffEntry(*buff));
 }
 
 Element *Client::assembleBuffEntry(const ClientBuffType &type) {
