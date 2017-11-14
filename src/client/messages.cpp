@@ -1448,6 +1448,9 @@ void Client::handle_SV_ENTITY_GOT_BUFF(int msgCode, size_t serial, const std::st
     }
 
     objIt->second->addBuffOrDebuff(buffID, msgCode == SV_ENTITY_GOT_BUFF);
+
+    if (objIt->second == _target.entity())
+        refreshTargetBuffs();
 }
 
 void Client::handle_SV_PLAYER_GOT_BUFF(int msgCode, const std::string & username,
@@ -1466,6 +1469,9 @@ void Client::handle_SV_PLAYER_GOT_BUFF(int msgCode, const std::string & username
 
     if (avatar == &_character)
         refreshBuffsDisplay();
+
+    if (avatar == _target.entity())
+        refreshTargetBuffs();
 }
 
 

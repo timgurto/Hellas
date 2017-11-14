@@ -250,6 +250,7 @@ private:
     Element *_hotbar = nullptr;
     std::vector<Button*> _hotbarButtons = { 10, nullptr };
     List *_buffsDisplay = nullptr;
+    Element *_targetBuffs = nullptr;
     void initUI();
         void initChatLog();
         void initWindows();
@@ -264,6 +265,8 @@ private:
         void initBuffsDisplay();
             void refreshBuffsDisplay();
                 static Element *assembleBuffEntry(const ClientBuffType &type, bool isDebuff = false);
+        void initTargetBuffs();
+            void refreshTargetBuffs();
 
     // Chat
     Element *_chatContainer;

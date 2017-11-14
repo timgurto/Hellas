@@ -349,6 +349,7 @@ void Client::handleInput(double delta){
                 else
                     clearTarget();
                 _leftMouseDownEntity = nullptr;
+                refreshTargetBuffs();
 
                 break;
             }

@@ -309,4 +309,4 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 336,Inherent spells per class,8,8,Feature,283,,,2
 337,A spell that does extra threat,3,5,Feature,313,,,2
 338,Spell icons,13,34,Aesthetics,335,,,2
-339,Display buffs in UI,13,5,Usability,267,,,2
+339,Display buffs in UI,13,5,Usability,267,TRUE,,2

@@ -26,7 +26,7 @@ void Client::initUI() {
     initBuffsDisplay();
     initMenuBar();
     initPlayerPanels();
-
+    initTargetBuffs();
 }
 
 void Client::initChatLog() {
@@ -147,6 +147,46 @@ Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
     e->addChild(new Picture({ 2, 2, 16, 16 }, type.icon()));
     e->setTooltip(type.name());
     return e;
+}
+
+void Client::initTargetBuffs() {
+    const auto &targetPanelRect = _target.panel()->rect();
+    const auto
+        GAP = 1_px,
+        X = targetPanelRect.x,
+        Y = targetPanelRect.y + targetPanelRect.h + GAP,
+        W = 400,
+        H = 16;
+    _targetBuffs = new Element({ X, Y, W, H });
+
+    addUI(_targetBuffs);
+
+    refreshTargetBuffs();
+}
+
+void Client::refreshTargetBuffs() {
+    _targetBuffs->clearChildren();
+
+    if (!_target.exists())
+        return;
+
+    auto rect = _targetBuffs->rect();
+    rect.y = _target.panel()->rect().y + _target.panel()->rect().h + 1;
+    _targetBuffs->rect(rect);
+
+    auto x = 0_px;
+    for (const auto buff : _target.combatant()->buffs()) {
+        auto icon = new Picture({ x, 0, 16, 16 }, buff->icon());
+        icon->setTooltip(buff->name());
+        _targetBuffs->addChild(icon);
+        x += 17;
+    }
+    for (const auto buff : _target.combatant()->debuffs()) {
+        auto icon = new Picture({ x, 0, 16, 16 }, buff->icon());
+        icon->setTooltip(buff->name());
+        _targetBuffs->addChild(icon);
+        x += 17;
+    }
 }
 
 void Client::initMenuBar() {
