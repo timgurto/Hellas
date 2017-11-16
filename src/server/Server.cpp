@@ -279,7 +279,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
     User newUser(name, 0, socket);
     const bool userExisted = readUserData(newUser);
     if (!userExisted) {
-        newUser.setClass(User::Class(rand() % User::NUM_CLASSES));
+        newUser.setClass(chooseRandomClass());
         newUser.moveToSpawnPoint(true);
         _debug << "New";
     } else {
@@ -446,6 +446,16 @@ bool Server::isEntityInRange(const Socket &client, const User &user, const Entit
     }
 
     return true;
+}
+
+const ClassType & Server::chooseRandomClass() const {
+    auto numClasses = _classes.size();
+    assert(numClasses > 0);
+    auto index = rand() % numClasses;
+    auto it = _classes.begin();
+    for (auto i = 0; i != index; ++i)
+        ++it;
+    return it->second;
 }
 
 void Server::forceAllToUntarget(const Entity &target, const User *userToExclude){

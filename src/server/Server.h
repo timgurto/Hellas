@@ -182,6 +182,8 @@ private:
     BuffTypes _buffTypes;
     ClassTypes _classes;
 
+    const ClassType &chooseRandomClass() const;
+
     size_t _numBuildableObjects = 0;
 
     std::list<Entity *> _entitiesToRemove; // Emptied every tick.

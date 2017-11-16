@@ -23,12 +23,12 @@ bool Server::readUserData(User &user){
 
     {
         auto elem = xr.findChild("general");
-        std::string className;
-        if (!xr.findAttr(elem, "class", className))
+        auto classID = ClassType::ID{};
+        if (!xr.findAttr(elem, "class", classID))
             return false;
-        auto it = User::CLASS_CODES.find(className);
-        if (it == User::CLASS_CODES.end()) {
-            _debug << Color::RED << "Invalid class (" << className
+        auto it = _classes.find(classID);
+        if (it == _classes.end()) {
+            _debug << Color::RED << "Invalid class (" << classID
                 << ") specified; creating new character." << Log::endl;
         }
         user.setClass(it->second);
@@ -106,7 +106,7 @@ void Server::writeUserData(const User &user) const{
     XmlWriter xw(_userFilesPath + user.name() + ".usr");
 
     auto e = xw.addChild("general");
-    xw.setAttr(e, "class", User::CLASS_NAMES[user.getClass()]);
+    xw.setAttr(e, "class", user.getClass().id());
     if (_kings.isPlayerAKing(user.name()))
         xw.setAttr(e, "isKing", 1);
 

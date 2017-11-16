@@ -6,6 +6,7 @@
 #include <windows.h>
 
 #include "City.h"
+#include "Class.h"
 #include "Entity.h"
 #include "Recipe.h"
 #include "ServerItem.h"
@@ -30,21 +31,11 @@ public:
         NO_ACTION
     };
 
-    enum Class{
-        SOLDIER,
-        MAGUS,
-        PRIEST,
-
-        NUM_CLASSES
-    };
-    static std::map<Class, std::string> CLASS_NAMES;
-    static std::map<std::string, Class> CLASS_CODES;
-
 private:
     std::string _name;
     Socket _socket;
 
-    Class _class;
+    const ClassType *_class = nullptr;
 
     Action _action;
     ms_t _actionTime; // Time remaining on current action.
@@ -80,9 +71,8 @@ public:
 
     const std::string &name() const { return _name; }
     const Socket &socket() const { return _socket; }
-    void setClass(Class c) { _class = c; }
-    Class getClass() const { return _class; }
-    const std::string &className() const { return CLASS_NAMES[_class]; }
+    const ClassType &getClass() const { assert (_class);  return *_class; }
+    void setClass(const ClassType &type) { _class = &type; }
     size_t driving() const { return _driving; }
     void driving(size_t serial) { _driving = serial; }
     bool isDriving() const { return _driving != 0; }

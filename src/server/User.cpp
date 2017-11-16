@@ -6,13 +6,6 @@
 
 ObjectType User::OBJECT_TYPE("__clientObjectType__");
 
-std::map<User::Class, std::string> User::CLASS_NAMES = {
-    { SOLDIER, "Soldier" },
-    { MAGUS, "Magus" },
-    { PRIEST, "Priest" }
-};
-std::map<std::string, User::Class> User::CLASS_CODES;
-
 Point User::newPlayerSpawn = {};
 double User::spawnRadius = 0;
 
@@ -77,9 +70,6 @@ void User::init(){
     baseStats.attackTime = 1000;
     baseStats.speed = 80.0;
     OBJECT_TYPE.baseStats(baseStats);
-
-    for (auto &pair : CLASS_NAMES)
-        CLASS_CODES[pair.second] = pair.first;
 }
 
 bool User::compareXThenSerial::operator()( const User *a, const User *b) const{
@@ -628,7 +618,7 @@ void User::sendInfoToClient(const User &targetUser) const {
     server.sendMessage(client, SV_PLAYER_ENERGY, makeArgs(_name, energy()));
 
     // Class
-    server.sendMessage(client, SV_CLASS, makeArgs(_name, className()));
+    server.sendMessage(client, SV_CLASS, makeArgs(_name, getClass().id()));
 
     // City
     const City::Name city = server._cities.getPlayerCity(_name);
