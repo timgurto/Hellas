@@ -23,6 +23,8 @@ public:
         std::string s1{};
     };
 
+    using ID = std::string;
+
     void setFunction(const std::string &functionName);
     void args(const Args &args) { _args = args; }
 
@@ -66,4 +68,4 @@ private:
     ValidTargets _validTargets = ValidTargets(NUM_TARGET_TYPES, false);
 };
 
-using Spells = std::map<std::string, Spell *>;
+using Spells = std::map < Spell::ID , Spell * > ;

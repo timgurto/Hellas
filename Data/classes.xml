@@ -1,0 +1,17 @@
+<root>
+
+<class id="warrior" >
+    <spell id="whirlwind" />
+</class>
+
+<class id="scholar" >
+    <spell id="fireball" />
+    <spell id="poison" />
+</class>
+
+<class id="zealot" >
+    <spell id="heal" />
+    <spell id="super" />
+</class>
+
+</root>

@@ -9,6 +9,7 @@
 
 #include "Buff.h"
 #include "City.h"
+#include "Class.h"
 #include "CollisionChunk.h"
 #include "Entities.h"
 #include "ItemSet.h"
@@ -179,6 +180,7 @@ private:
     std::map<char, Terrain*> _terrainTypes;
     Spells _spells;
     BuffTypes _buffTypes;
+    ClassTypes _classes;
 
     size_t _numBuildableObjects = 0;
 

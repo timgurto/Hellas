@@ -3,6 +3,7 @@
 #include <thread>
 #endif
 
+#include "Class.h"
 #include "NPCType.h"
 #include "ProgressLock.h"
 #include "Server.h"
@@ -699,6 +700,30 @@ void Server::loadData(const std::string &path){
             }
 
             _buffTypes[id] = newBuff;
+        }
+    }
+
+    // Classes
+    if (!xr.newFile(path + "/classes.xml"))
+        _debug("Failed to load classes.xml", Color::FAILURE);
+    else {
+        _classes.clear();
+        for (auto elem : xr.getChildren("class")) {
+            std::string id;
+            if (!xr.findAttr(elem, "id", id))
+                continue; // ID is mandatory
+            auto newClass = ClassType{ id };
+
+            for (auto spell : xr.getChildren("spell", elem)) {
+                if (spell) {
+                    auto spellID = Spell::ID{};
+                    if (!xr.findAttr(spell, "id", spellID))
+                        continue;
+                    newClass.addSpell(spellID);
+                }
+            }
+
+            _classes[id] = newClass;
         }
     }
 
