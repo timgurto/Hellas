@@ -389,6 +389,7 @@ private:
     TagNames _tagNames;
     ClientSpells _spells;
     ClientBuffTypes _buffTypes;
+    ClassInfo::Container _classes;
 
     typedef std::set<SoundProfile> soundProfiles_t;
     soundProfiles_t _soundProfiles;

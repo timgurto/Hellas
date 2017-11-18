@@ -92,6 +92,7 @@
     <ClCompile Include="src\Args.cpp" />
     <ClCompile Include="src\client\Avatar.cpp" />
     <ClCompile Include="src\client\buildWindow.cpp" />
+    <ClCompile Include="src\client\ClassInfo.cpp" />
     <ClCompile Include="src\client\Client.cpp" />
     <ClCompile Include="src\client\ClientBuff.cpp" />
     <ClCompile Include="src\client\ClientCombatant.cpp" />
@@ -248,6 +249,7 @@
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
     <ClInclude Include="src\client\Avatar.h" />
+    <ClInclude Include="src\client\ClassInfo.h" />
     <ClInclude Include="src\client\Client.h" />
     <ClInclude Include="src\client\ClientBuff.h" />
     <ClInclude Include="src\client\ClientCombatant.h" />

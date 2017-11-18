@@ -418,6 +418,27 @@ void Client::loadData(const std::string &path){
         }
     }
 
+    // Classes
+    if (!xr.newFile(path + "/classes.xml"))
+        _debug("Failed to load classes.xml", Color::FAILURE);
+    else {
+        _classes.clear();
+        for (auto elem : xr.getChildren("class")) {
+
+            auto id = ClassInfo::ID{};
+            if (!xr.findAttr(elem, "id", id))
+                continue; // ID is mandatory
+
+            auto name = ClassInfo::Name{};
+            if (!xr.findAttr(elem, "name", name))
+                continue; // Name is mandatory
+
+            auto newClass = ClassInfo{ id, name };
+
+            _classes[id] = newClass;
+        }
+    }
+
     // Initialize object-type strengths
     for (auto *objectType : _objectTypes){
         auto nonConstType = const_cast<ClientObjectType *>(objectType);

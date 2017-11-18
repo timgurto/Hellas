@@ -19,7 +19,9 @@ _toRemove(false){}
 
 Rect Sprite::drawRect() const {
     assert(_type != nullptr);
-    return _type->drawRect() + _location;
+    auto typeDrawRect = _type->drawRect();
+    auto drawRect = typeDrawRect + _location;
+    return drawRect;
 }
 
 void Sprite::draw(const Client &client) const{

@@ -223,7 +223,7 @@ enum MessageCode{
     SV_ACTION_FINISHED,
 
     // A user's class
-    // Arguments: username, classname
+    // Arguments: username, classID
     SV_CLASS,
 
     // A user's gear

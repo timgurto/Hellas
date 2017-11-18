@@ -11,8 +11,10 @@ _drawRect(drawRect),
 _isFlat(false),
 _isDecoration(false)
 {
-    _drawRect.w = _image.width();
-    _drawRect.h = _image.height();
+    if (_image) {
+        _drawRect.w = _image.width();
+        _drawRect.h = _image.height();
+    }
     setHighlightImage(imageFile);
 }
 

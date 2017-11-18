@@ -1,15 +1,15 @@
 <root>
 
-<class id="warrior" >
+<class id="warrior" name="Warrior" >
     <spell id="whirlwind" />
 </class>
 
-<class id="scholar" >
+<class id="scholar" name="Scholar" >
     <spell id="fireball" />
     <spell id="poison" />
 </class>
 
-<class id="zealot" >
+<class id="zealot" name="Zealot" >
     <spell id="heal" />
     <spell id="super" />
 </class>

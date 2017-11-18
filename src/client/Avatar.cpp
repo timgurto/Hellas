@@ -10,11 +10,11 @@ extern Renderer renderer;
 
 const Rect Avatar::DRAW_RECT(-9, -39, 20, 40);
 const Rect Avatar::COLLISION_RECT(-5, -2, 10, 4);
-std::map<std::string, SpriteType> Avatar::_classes;
 ClientCombatantType Avatar::_combatantType(Client::MAX_PLAYER_HEALTH);
+SpriteType Avatar::_spriteType(DRAW_RECT);
 
 Avatar::Avatar(const std::string &name, const Point &location):
-Sprite(&_classes[""], location),
+Sprite(&_spriteType, location),
 ClientCombatant(&_combatantType),
 _name(name),
 _gear(Client::GEAR_SLOTS, std::make_pair(nullptr, 0)),
@@ -89,15 +89,13 @@ void Avatar::update(double delta){
     location(interpolatedLocation(delta));
 }
 
-void Avatar::cleanup(){
-    _classes.clear();
-}
+void Avatar::setClass(const ClassInfo::ID &newClass){
+    const auto &client = Client::instance();
 
-void Avatar::setClass(const std::string &c){
-    _class = c;
-    if (_classes.find(c) == _classes.end())
-        _classes[c] = SpriteType(DRAW_RECT, std::string("Images/" + c + ".png"));
-    type(&_classes[c]);
+    const auto it = client._classes.find(newClass);
+    if (it == client._classes.end())
+        return;
+    _class = &(it->second);
 }
 
 const Texture &Avatar::tooltip() const{
@@ -112,7 +110,7 @@ const Texture &Avatar::tooltip() const{
     // Class
     tb.addGap();
     tb.setColor(Color::ITEM_TAGS);
-    tb.addLine(getClass());
+    tb.addLine(getClass().name());
 
     // Debug info
     /*if (isDebug()){

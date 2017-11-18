@@ -15,8 +15,6 @@ public:
     void addSpell(const Spell::ID &id) { _spells.insert(id); }
     LearnedSpells && instantiateLearnedSpellsList() const;
 
-    const ClassType *random(); // Choose a random class
-
 private:
     ID _id;
     std::set<Spell::ID> _spells;

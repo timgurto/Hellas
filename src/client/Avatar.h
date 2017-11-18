@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "ClassInfo.h"
 #include "ClientItem.h"
 #include "Sprite.h"
 #include "ClientCombatant.h"
@@ -11,13 +12,13 @@
 
 // The client-side representation of a user, including the player
 class Avatar : public Sprite, public ClientCombatant{
-    static std::map<std::string, SpriteType> _classes;
     static ClientCombatantType _combatantType;
+    static SpriteType _spriteType;
     static const Rect COLLISION_RECT, DRAW_RECT;
 
     Point _destination;
     std::string _name;
-    std::string _class;
+    const ClassInfo *_class;
     std::string _city;
     ClientItem::vect_t _gear;
     bool _isKing = false;
@@ -31,8 +32,8 @@ public:
     void destination(const Point &dst) { _destination = dst; }
     const Rect collisionRect() const { return COLLISION_RECT + location(); }
     static const Rect &collisionRectRaw() { return COLLISION_RECT; }
-    void setClass(const std::string &c);
-    const std::string &getClass() const { return _class; }
+    void setClass(const ClassInfo::ID &newClass);
+    const ClassInfo &getClass() const { assert(_class);  return *_class; }
     const ClientItem::vect_t &gear() const { return _gear; }
     ClientItem::vect_t &gear() { return _gear; }
     void driving(bool b) { _driving = b; }
@@ -56,6 +57,8 @@ public:
     void name(const std::string &newName) { _name = newName; }
     bool shouldDrawName() const override { return true; }
     const Color &nameColor() const override;
+    virtual const Texture &image() const override { assert(_class);  return _class->image(); }
+    virtual const Texture &highlightImage() const override { return _class->image(); }
 
     // From ClientCombatant
     void sendTargetMessage() const override;
@@ -73,8 +76,6 @@ public:
 
     void playAttackSound() const; // The player has attacked; play an appropriate sound.
     void playDefendSound() const; // The player has been attacked; play an appropriate sound.
-
-    static void cleanup();
 
     friend class Client;
 
