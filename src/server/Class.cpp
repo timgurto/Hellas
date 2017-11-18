@@ -1,11 +1,15 @@
 #include "Class.h"
 
-LearnedSpells && ClassType::instantiateLearnedSpellsList() const {
-    auto newList = LearnedSpells{};
-    return std::move(newList);
-}
+Class::Class(const ClassType *type) :
+    _type(type)
+{}
 
-Class::Class(const ClassType &type) :
-    _type(type),
-    _learnedSpells(std::move(type.instantiateLearnedSpellsList())) {
+std::string Class::generateKnownSpellsString() const {
+    auto string = ""s;
+    for (const auto &spell : _learnedSpells) {
+        if (!string.empty())
+            string.append(",");
+        string.append(spell);
+    }
+    return string;
 }

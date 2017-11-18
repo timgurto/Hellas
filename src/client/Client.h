@@ -417,6 +417,8 @@ private:
     std::set<std::string> _atWarWithCity;
 
     std::map<std::string, std::string> _userCities; // Username -> city name
+
+    std::set<const ClientSpell *> _knownSpells;
     
     void addParticles(const ParticleProfile *profile, const Point &location, size_t qty);
     void addParticles(const ParticleProfile *profile, const Point &location); // Single hit
@@ -457,6 +459,8 @@ private:
     void handle_SV_SHOW_OUTCOME_AT(int msgCode, const Point &loc);
     void handle_SV_ENTITY_GOT_BUFF(int msgCode, size_t serial, const std::string &buffID);
     void handle_SV_PLAYER_GOT_BUFF(int msgCode, const std::string &username, const std::string &buffID);
+    void handle_SV_KNOWN_SPELLS(const std::set<std::string> && knownSpellIDs);
+    void handle_SV_LEARNED_SPELL(const std::string &spellID);
 
     void sendClearTargetMessage() const;
     

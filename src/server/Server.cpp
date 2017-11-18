@@ -343,6 +343,11 @@ void Server::addUser(const Socket &socket, const std::string &name){
         entity->sendInfoToClient(newUser);
     }
 
+    // Send him his known spells
+    auto knownSpellsString = newUser.getClass().generateKnownSpellsString();
+    sendMessage(newUser.socket(), SV_KNOWN_SPELLS, knownSpellsString);
+
+
     // Send him his inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
         if (newUser.inventory(i).first != nullptr)

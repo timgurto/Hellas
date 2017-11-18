@@ -145,6 +145,7 @@
     <ClCompile Include="src\SpellSchool.cpp" />
     <ClCompile Include="src\client\ClientBuff.cpp" />
     <ClCompile Include="src\client\ClassInfo.cpp" />
+    <ClCompile Include="src\server\Class.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -256,5 +257,6 @@
     <ClInclude Include="src\SpellSchool.h" />
     <ClInclude Include="src\client\ClientBuff.h" />
     <ClInclude Include="src\client\ClassInfo.h" />
+    <ClInclude Include="src\server\Class.h" />
   </ItemGroup>
 </Project>

@@ -618,7 +618,7 @@ void User::sendInfoToClient(const User &targetUser) const {
     server.sendMessage(client, SV_PLAYER_ENERGY, makeArgs(_name, energy()));
 
     // Class
-    server.sendMessage(client, SV_CLASS, makeArgs(_name, getClass().id()));
+    server.sendMessage(client, SV_CLASS, makeArgs(_name, getClass().type().id()));
 
     // City
     const City::Name city = server._cities.getPlayerCity(_name);

@@ -103,16 +103,15 @@ void Client::populateHotbar() {
     _hotbar->clearChildren();
 
     auto i = 0;
-    for (auto &pair : _spells) {
-        const auto &spell = *pair.second;
+    for (auto *spell : _knownSpells) {
         void *castMessageVoidPtr = const_cast<void*>(
-            reinterpret_cast<const void*>(&spell.castMessage()));
+            reinterpret_cast<const void*>(&spell->castMessage()));
         auto button = new Button({ i * 18, 0, 18, 18 }, {}, sendRawMessageStatic, castMessageVoidPtr);
         button->addChild(new ColorBlock({ 0,  0, 18, 18 }, Color::OUTLINE));
-        button->addChild(new Picture(1, 1, spell.icon()));
+        button->addChild(new Picture(1, 1, spell->icon()));
         button->addChild(new OutlinedLabel({ 0, -1, 19, 18 }, toString((i + 1) % 10),
             Element::RIGHT_JUSTIFIED));
-        button->setTooltip(spell.tooltip());
+        button->setTooltip(spell->tooltip());
         _hotbar->addChild(button);
         _hotbarButtons[i] = button;
         ++i;

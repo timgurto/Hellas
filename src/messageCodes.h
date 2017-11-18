@@ -140,6 +140,10 @@ enum MessageCode{
     // Arguments: serial, textArg
     CL_PERFORM_OBJECT_ACTION,
 
+    // I want to learn spell ...
+    // Arguments: ID
+    CL_LEARN_SPELL,
+
     // Cast a spell
     // Arguments: spell ID
     CL_CAST,
@@ -297,6 +301,14 @@ enum MessageCode{
     SV_PLAYER_GOT_BUFF,
     SV_ENTITY_GOT_DEBUFF,
     SV_PLAYER_GOT_DEBUFF,
+
+    // You know the following ... spells: ..., ..., etc.
+    // Arguments: count, id1, id2, id3, ...
+    SV_KNOWN_SPELLS,
+
+    // You just learned spell ...
+    // Arguments: ID
+    SV_LEARNED_SPELL,
 
     // An object has an owner
     // Arguments: serial, type ("user"|"city"), name
@@ -460,6 +472,15 @@ enum MessageCode{
 
     // The NPC is dead
     SV_TARGET_DEAD,
+
+    // You tried to learn an invalid spell
+    SV_INVALID_SPELL,
+
+    // You tried to learn a spell that you already know
+    SV_ALREADY_KNOW_SPELL,
+
+    // You tried to cast a spell that you don't know
+    SV_DONT_KNOW_SPELL,
 
     // You can't cast that spell at that target
     SV_INVALID_SPELL_TARGET,

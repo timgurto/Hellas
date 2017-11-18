@@ -1207,6 +1207,35 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_KNOWN_SPELLS:
+        {
+            auto numSpellsKnown = 0;
+            singleMsg >> numSpellsKnown >> del;
+
+            auto knownSpellIDs = std::set<std::string>{};
+            for (auto i = 0; i != numSpellsKnown; ++i) {
+                singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+                auto spellID = std::string{ buffer };
+                singleMsg >> del;
+
+                knownSpellIDs.insert(spellID);
+            }
+
+            handle_SV_KNOWN_SPELLS(std::move(knownSpellIDs));
+        }
+
+        case SV_LEARNED_SPELL:
+        {
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            auto spellID = std::string{ buffer };
+            singleMsg >> del;
+
+            if (del != MSG_END)
+                return;
+
+            handle_SV_LEARNED_SPELL(spellID);
+        }
+
         case SV_SAY:
         {
             std::string username, message;
@@ -1474,6 +1503,28 @@ void Client::handle_SV_PLAYER_GOT_BUFF(int msgCode, const std::string & username
         refreshTargetBuffs();
 }
 
+void Client::handle_SV_KNOWN_SPELLS(const std::set<std::string>&& knownSpellIDs) {
+    _knownSpells.clear();
+
+    for (const auto &id : knownSpellIDs) {
+        auto it = _spells.find(id);
+        if (it == _spells.end())
+            continue;
+        _knownSpells.insert(it->second);
+    }
+
+    populateHotbar();
+}
+
+void Client::handle_SV_LEARNED_SPELL(const std::string & spellID) {
+    auto it = _spells.find(spellID);
+    if (it == _spells.end())
+        return;
+    _knownSpells.insert(it->second);
+
+    populateHotbar();
+}
+
 
 void Client::sendRawMessage(const std::string &msg) const{
     _socket.sendMessage(msg);
@@ -1524,6 +1575,7 @@ void Client::initializeMessageNames(){
     _messageCommands["cede"] = CL_CEDE;
     _messageCommands["cquit"] = CL_LEAVE_CITY;
     _messageCommands["recruit"] = CL_RECRUIT;
+    _messageCommands["learn"] = CL_LEARN_SPELL;
     _messageCommands["cast"] = CL_CAST;
 
     _messageCommands["say"] = CL_SAY;
@@ -1580,6 +1632,9 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_NOT_A_KING] = "Only a king can do that.";
     _errorMessages[SV_INVALID_SPELL_TARGET] = "Invalid spell target.";
     _errorMessages[SV_NOT_ENOUGH_ENERGY] = "You don't have enough energy.";
+    _errorMessages[SV_INVALID_SPELL] = "That isn't a spell you can learn.";
+    _errorMessages[SV_ALREADY_KNOW_SPELL] = "You already know that spell.";
+    _errorMessages[SV_DONT_KNOW_SPELL] = "You haven't learned that spell.";
 }
 
 void Client::performCommand(const std::string &commandString){

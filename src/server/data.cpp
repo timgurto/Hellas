@@ -106,7 +106,7 @@ void Server::writeUserData(const User &user) const{
     XmlWriter xw(_userFilesPath + user.name() + ".usr");
 
     auto e = xw.addChild("general");
-    xw.setAttr(e, "class", user.getClass().id());
+    xw.setAttr(e, "class", user.getClass().type().id());
     if (_kings.isPlayerAKing(user.name()))
         xw.setAttr(e, "isKing", 1);
 

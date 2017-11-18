@@ -1011,6 +1011,16 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_LEARN_SPELL:
+        {
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
+            auto spellID = std::string{ buffer };
+            iss >> del;
+            if (del != MSG_END)
+                return;
+            handle_CL_LEARN_SPELL(*user, spellID);
+        }
+
         case CL_CAST:
         {
             iss.get(buffer, BUFFER_SIZE, MSG_END);
@@ -1319,6 +1329,21 @@ void Server::handle_CL_SUE_FOR_PEACE_WITH_PLAYER(User & user, const std::string 
     sendMessage(it->second->socket(), SV_PEACE_WAS_PROPOSED_TO_YOU);
 }
 
+void Server::handle_CL_LEARN_SPELL(User & user, const std::string & spellID) {
+    auto spellIsValid = user.getClass().type().isValidSpell(spellID);
+    if (!spellIsValid) {
+        sendMessage(user.socket(), SV_INVALID_SPELL);
+        return;
+    }
+    if (user.getClass().knowsSpell(spellID)) {
+        sendMessage(user.socket(), SV_ALREADY_KNOW_SPELL);
+        return;
+    }
+
+    user.getClass().learnSpell(spellID);
+    sendMessage(user.socket(), SV_LEARNED_SPELL, spellID);
+}
+
 void Server::handle_CL_CAST(User & user, const std::string &spellID) {
     auto target = user.target();
     if (target == nullptr)
@@ -1328,6 +1353,11 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
     if (it == _spells.end())
         return;
     const auto &spell = *it->second;
+
+    if (!user.getClass().knowsSpell(spellID)) {
+        sendMessage(user.socket(), SV_DONT_KNOW_SPELL);
+        return;
+    }
 
     // Energy check
     if (user.energy() < spell.cost()) {

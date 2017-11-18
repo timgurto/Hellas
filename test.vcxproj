@@ -166,6 +166,7 @@
     <ClCompile Include="src\Point.cpp" />
     <ClCompile Include="src\Rect.cpp" />
     <ClCompile Include="src\server\City.cpp" />
+    <ClCompile Include="src\server\Class.cpp" />
     <ClCompile Include="src\server\CollisionChunk.cpp" />
     <ClCompile Include="src\server\collisionDetection.cpp" />
     <ClCompile Include="src\server\data.cpp">
@@ -309,6 +310,7 @@
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\server\City.h" />
+    <ClInclude Include="src\server\Class.h" />
     <ClInclude Include="src\server\CollisionChunk.h" />
     <ClInclude Include="src\server\Entities.h" />
     <ClInclude Include="src\server\Entity.h" />
