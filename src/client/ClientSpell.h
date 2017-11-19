@@ -23,9 +23,11 @@ public:
     void impactParticles(const ParticleProfile *p) { _impactParticles = p; }
     const ParticleProfile *impactParticles() const { return _impactParticles; }
     const std::string &castMessage() const { return _castMessage; }
+    const std::string &learnMessage() const { return _learnMessage; }
     const Texture &icon() const { return _icon; }
     const Texture &tooltip() const;
     void name(const std::string &s) { _name = s; }
+    const std::string &name() const { return _name; }
     void cost(Energy c) { _cost = c; }
     void effectName(const std::string effect) { _effectName = effect; }
     void effectArgs(const Args &args) { _effectArgs = args; }
@@ -37,9 +39,11 @@ private:
     const Projectile::Type *_projectile = nullptr;
     const SoundProfile *_sounds = nullptr;
     const ParticleProfile *_impactParticles = nullptr;
-    std::string _castMessage;
+    std::string _castMessage{};
+    std::string _learnMessage{};
     Texture _icon;
     mutable Texture _tooltip = {};
+    std::string _id = {};
     std::string _name = {};
     Energy _cost = 0;
     Podes _range = 0;

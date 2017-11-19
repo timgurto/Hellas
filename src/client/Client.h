@@ -242,6 +242,7 @@ private:
 
     Window *_classWindow = nullptr;
     void initializeClassWindow();
+    void populateClassWindow();
     std::set<const ClientSpell *> _knownSpells{};
 
     windows_t _windows;

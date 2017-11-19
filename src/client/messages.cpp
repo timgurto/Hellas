@@ -366,6 +366,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             if (username == _username) {
                 _character.setClass(classID);
+                populateClassWindow();
             } else {
                 if (_otherUsers.find(username) == _otherUsers.end()) {
                     //_debug("Class received for an unknown user.  Ignoring.", Color::FAILURE);
