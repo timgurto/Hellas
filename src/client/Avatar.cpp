@@ -89,7 +89,7 @@ void Avatar::update(double delta){
     location(interpolatedLocation(delta));
 }
 
-void Avatar::setClass(const ClassInfo::ID &newClass){
+void Avatar::setClass(const ClassInfo::Name &newClass){
     const auto &client = Client::instance();
 
     const auto it = client._classes.find(newClass);

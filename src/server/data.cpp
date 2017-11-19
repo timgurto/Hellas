@@ -710,7 +710,7 @@ void Server::loadData(const std::string &path){
         _classes.clear();
         for (auto elem : xr.getChildren("class")) {
             std::string id;
-            if (!xr.findAttr(elem, "id", id))
+            if (!xr.findAttr(elem, "name", id))
                 continue; // ID is mandatory
             auto newClass = ClassType{ id };
 

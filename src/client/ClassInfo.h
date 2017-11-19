@@ -10,13 +10,12 @@ class ClientSpell;
 
 class ClassInfo {
 public:
-    using ID = std::string;
     using Name = std::string;
-    using Container = std::map<ID, ClassInfo>;
+    using Container = std::map<Name, ClassInfo>;
     using Spells = std::set<const ClientSpell *>;
 
     ClassInfo() {}
-    ClassInfo(const ID &id, const Name &name);
+    ClassInfo(const Name &name);
 
     void addSpell(const ClientSpell *spell) { _spells.insert(spell); }
 

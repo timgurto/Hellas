@@ -425,15 +425,11 @@ void Client::loadData(const std::string &path){
         _classes.clear();
         for (auto elem : xr.getChildren("class")) {
 
-            auto id = ClassInfo::ID{};
-            if (!xr.findAttr(elem, "id", id))
-                continue; // ID is mandatory
-
             auto name = ClassInfo::Name{};
             if (!xr.findAttr(elem, "name", name))
                 continue; // Name is mandatory
 
-            auto newClass = ClassInfo{ id, name };
+            auto newClass = ClassInfo{ name };
 
             for (auto spellElem : xr.getChildren("spell", elem)) {
                 auto spellID = ""s;
@@ -447,7 +443,7 @@ void Client::loadData(const std::string &path){
                 newClass.addSpell(it->second);
             }
 
-            _classes[id] = std::move(newClass);
+            _classes[name] = std::move(newClass);
         }
     }
 

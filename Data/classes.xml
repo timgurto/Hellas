@@ -1,6 +1,6 @@
 <root>
 
-<class id="soldier" name="Soldier" >
+<class name="Soldier" >
     <spell id="shieldBlock" />
     <!--spell id="highThreat" /-->
     <!--spell id="intervene" /-->
@@ -24,12 +24,12 @@
     <spell id="meditate" />
 </class>
 
-<!--class id="scholar" name="Scholar" >
+<!--class name="Scholar" >
     <spell id="fireball" />
     <spell id="poison" />
 </class>
 
-<class id="zealot" name="Zealot" >
+<class name="Zealot" >
     <spell id="heal" />
     <spell id="super" />
 </class-->

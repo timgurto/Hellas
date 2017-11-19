@@ -32,7 +32,7 @@ public:
     void destination(const Point &dst) { _destination = dst; }
     const Rect collisionRect() const { return COLLISION_RECT + location(); }
     static const Rect &collisionRectRaw() { return COLLISION_RECT; }
-    void setClass(const ClassInfo::ID &newClass);
+    void setClass(const ClassInfo::Name &newClass);
     const ClassInfo &getClass() const { assert(_class);  return *_class; }
     const ClientItem::vect_t &gear() const { return _gear; }
     ClientItem::vect_t &gear() { return _gear; }
