@@ -205,6 +205,9 @@ void Client::handleMessage(const std::string &msg){
         case SV_KING_CANNOT_LEAVE_CITY:
         case SV_ALREADY_IN_CITY:
         case SV_NOT_A_KING:
+        case SV_INVALID_SPELL:
+        case SV_ALREADY_KNOW_SPELL:
+        case SV_DONT_KNOW_SPELL:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);

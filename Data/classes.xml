@@ -1,10 +1,30 @@
 <root>
 
-<class id="warrior" name="Warrior" >
+<class id="soldier" name="Soldier" >
+    <spell id="shieldBlock" />
+    <!--spell id="highThreat" /-->
+    <!--spell id="intervene" /-->
+    <!--spell id="taunt" /-->
+    <!--spell id="armorAura" /-->
+    <spell id="lastStand" />
+
+    <!--spell id="charge" /-->
+    <!--spell id="stun" /-->
+    <spell id="bleed" />
+    <spell id="superHit" />
     <spell id="whirlwind" />
+    <!--spell id="interrupt" /-->
+    <!--spell id="immunityBuff" /-->
+    <spell id="enrage" />
+    
+    <!--spell id="threatDrop" /-->
+    <spell id="airDoT" />
+    <spell id="critResistBuff" />
+    <spell id="airDamage" />
+    <spell id="meditate" />
 </class>
 
-<class id="scholar" name="Scholar" >
+<!--class id="scholar" name="Scholar" >
     <spell id="fireball" />
     <spell id="poison" />
 </class>
@@ -12,6 +32,6 @@
 <class id="zealot" name="Zealot" >
     <spell id="heal" />
     <spell id="super" />
-</class>
+</class-->
 
 </root>

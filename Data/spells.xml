@@ -20,19 +20,56 @@ Functions:
     <targets friendly=1 self=1 />
     <function name="heal" i1=20 />
 </spell>
-<spell id="whirlwind" name="Whirlwind" cost=30 radius=4 >
+<spell id="poison" name="Poison" cost=10 range=30 school="earth" >
+    <aesthetics impactParticles="poison" />
+    <targets enemy=1 />
+    <function name="debuff" s1="poison" />
+</spell>
+
+
+<spell id="shieldBlock" name="Asdf" cost=1 >
+    <targets self=1 />
+    <function name="buff" s1="shieldBlock" />
+</spell>
+<spell id="lastStand" name="Asdf" cost=1 >
+    <targets self=1 />
+    <function name="buff" s1="lastStand" />
+</spell>
+
+<spell id="bleed" name="Lacerate" cost=1 range=30 >
+    <aesthetics impactParticles="heavyBlood" />
+    <targets enemy=1 />
+    <function name="debuff" s1="bleed" />
+</spell>
+<spell id="superHit" name="Asdf" cost=1 range=4 >
+    <targets enemy=1 />
+    <function name="doDirectDamage" i1=5 />
+</spell>
+<spell id="whirlwind" name="Blade Storm" cost=30 radius=4 >
     <aesthetics impactParticles="heavyBlood" />
     <targets enemy=1 />
     <function name="doDirectDamage" i1=5 />
 </spell>
-<spell id="super" name="Super" cost=10 range=25 >
-    <targets friendly=1 self=1 />
-    <function name="buff" s1="super" />
+<spell id="enrage" name="Bloodlust" cost=1 >
+    <targets self=1 />
+    <function name="debuff" s1="enrage" />
 </spell>
-<spell id="poison" name="Poison" cost=10 range=25 >
-    <aesthetics impactParticles="poison" />
+
+<spell id="airDoT" name="Socratic Argument" cost=1 range=30 school="air" >
     <targets enemy=1 />
-    <function name="debuff" s1="poison" />
+    <function name="debuff" s1="airDoT" />
+</spell>
+<spell id="airDamage" name="Rhetoric" cost=1 range=30 school="air" >
+    <targets enemy=1 />
+    <function name="doDirectDamage" i1="5" />
+</spell>
+<spell id="critResistBuff" name="Stoicism" cost=1 >
+    <targets self=1 />
+    <function name="buff" s1="critResistBuff" />
+</spell>
+<spell id="meditate" name="Meditating" >
+    <targets self=1 />
+    <function name="buff" s1="meditate" />
 </spell>
 
 </root>

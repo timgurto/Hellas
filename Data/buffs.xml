@@ -1,11 +1,29 @@
 <root>
 
-<buff id="super">
-    <stats health="100" />
-</buff>
-
 <buff id="poison" name="Poison">
     <stats hps="-10" />
+</buff>
+
+<buff id="shieldBlock" name="Asdf">
+    <stats block="100" />
+</buff>
+<buff id="lastStand" name="Asdf">
+    <stats health="200" />
+</buff>
+<buff id="bleed" name="Bleeding">
+    <stats hps="-5" />
+</buff>
+<buff id="enrage" name="Bloodlust">
+    <stats armor="-100" dodge="-100" crit="50" />
+</buff>
+<buff id="airDoT" name="Socratic Argument">
+    <stats hps="-3" />
+</buff>
+<buff id="critResistBuff" name="Stoicism">
+    <stats critResist="5"  />
+</buff>
+<buff id="meditate" name="Meditating">
+    <stats armor="-100" dodge="-100" hps="5" eps="5" speed="0" />
 </buff>
 
 </root>
