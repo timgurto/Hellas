@@ -146,6 +146,7 @@
     <ClCompile Include="src\client\ClientBuff.cpp" />
     <ClCompile Include="src\client\ClassInfo.cpp" />
     <ClCompile Include="src\server\Class.cpp" />
+    <ClCompile Include="src\client\classWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

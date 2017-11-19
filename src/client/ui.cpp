@@ -72,6 +72,9 @@ void Client::initWindows() {
 
     initializeHelpWindow();
     addWindow(_helpWindow);
+
+    initializeClassWindow();
+    addWindow(_classWindow);
 }
 
 void Client::initCastBar() {

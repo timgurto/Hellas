@@ -240,6 +240,10 @@ private:
     void initializeHelpWindow();
     HelpEntries _helpEntries;
 
+    Window *_classWindow = nullptr;
+    void initializeClassWindow();
+    std::set<const ClientSpell *> _knownSpells{};
+
     windows_t _windows;
     void addWindow(Window *window);
     void removeWindow(Window *window); // Linear time
@@ -417,8 +421,6 @@ private:
     std::set<std::string> _atWarWithCity;
 
     std::map<std::string, std::string> _userCities; // Username -> city name
-
-    std::set<const ClientSpell *> _knownSpells;
     
     void addParticles(const ParticleProfile *profile, const Point &location, size_t qty);
     void addParticles(const ParticleProfile *profile, const Point &location); // Single hit
