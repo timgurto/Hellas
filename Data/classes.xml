@@ -1,27 +1,31 @@
 <root>
 
 <class name="Soldier" >
-    <spell id="shieldBlock" />
-    <!--spell id="highThreat" /-->
-    <!--spell id="intervene" /-->
-    <!--spell id="taunt" /-->
-    <!--spell id="armorAura" /-->
-    <spell id="lastStand" />
-
-    <!--spell id="charge" /-->
-    <!--spell id="stun" /-->
-    <spell id="bleed" />
-    <spell id="superHit" />
-    <spell id="whirlwind" />
-    <!--spell id="interrupt" /-->
-    <!--spell id="immunityBuff" /-->
-    <spell id="enrage" />
-    
-    <!--spell id="threatDrop" /-->
-    <spell id="airDoT" />
-    <spell id="critResistBuff" />
-    <spell id="airDamage" />
-    <spell id="meditate" />
+    <tree name="Hoplite" >
+        <spell id="shieldBlock" />
+        <!--spell id="highThreat" /-->
+        <!--spell id="intervene" /-->
+        <!--spell id="taunt" /-->
+        <!--spell id="armorAura" /-->
+        <spell id="lastStand" />
+    </tree>
+    <tree name="Skirmisher" >
+        <!--spell id="charge" /-->
+        <!--spell id="stun" /-->
+        <spell id="bleed" />
+        <spell id="superHit" />
+        <spell id="whirlwind" />
+        <!--spell id="interrupt" /-->
+        <!--spell id="immunityBuff" /-->
+        <spell id="enrage" />
+    </tree>
+    <tree name="Philosopher" >
+        <!--spell id="threatDrop" /-->
+        <spell id="airDoT" />
+        <spell id="critResistBuff" />
+        <spell id="airDamage" />
+        <spell id="meditate" />
+    </tree>
 </class>
 
 <!--class name="Scholar" >

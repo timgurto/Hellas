@@ -709,21 +709,25 @@ void Server::loadData(const std::string &path){
     else {
         _classes.clear();
         for (auto elem : xr.getChildren("class")) {
-            std::string id;
-            if (!xr.findAttr(elem, "name", id))
+            std::string className;
+            if (!xr.findAttr(elem, "name", className))
                 continue; // ID is mandatory
-            auto newClass = ClassType{ id };
+            auto newClass = ClassType{ className };
 
-            for (auto spell : xr.getChildren("spell", elem)) {
-                if (spell) {
-                    auto spellID = Spell::ID{};
-                    if (!xr.findAttr(spell, "id", spellID))
-                        continue;
-                    newClass.addSpell(spellID);
+            for (auto tree : xr.getChildren("tree", elem)) {
+
+                for (auto spell : xr.getChildren("spell", tree)) {
+                    if (spell) {
+                        auto spellID = Spell::ID{};
+                        if (!xr.findAttr(spell, "id", spellID))
+                            continue;
+                        newClass.addSpell(spellID);
+                    }
                 }
+
             }
 
-            _classes[id] = newClass;
+            _classes[className] = newClass;
         }
     }
 

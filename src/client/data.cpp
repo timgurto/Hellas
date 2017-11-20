@@ -431,16 +431,20 @@ void Client::loadData(const std::string &path){
 
             auto newClass = ClassInfo{ name };
 
-            for (auto spellElem : xr.getChildren("spell", elem)) {
-                auto spellID = ""s;
-                if (!xr.findAttr(spellElem, "id", spellID))
-                    continue;
-                
-                auto it = _spells.find(spellID);
-                if (it == _spells.end())
-                    continue;
+            for (auto tree : xr.getChildren("tree", elem)) {
 
-                newClass.addSpell(it->second);
+                for (auto spellElem : xr.getChildren("spell", tree)) {
+                    auto spellID = ""s;
+                    if (!xr.findAttr(spellElem, "id", spellID))
+                        continue;
+
+                    auto it = _spells.find(spellID);
+                    if (it == _spells.end())
+                        continue;
+
+                    newClass.addSpell(it->second);
+                }
+
             }
 
             _classes[name] = std::move(newClass);
