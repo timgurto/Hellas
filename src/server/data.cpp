@@ -703,7 +703,7 @@ void Server::loadData(const std::string &path){
         }
     }
 
-    // Classes
+    // Classes/talents
     if (!xr.newFile(path + "/classes.xml"))
         _debug("Failed to load classes.xml", Color::FAILURE);
     else {
@@ -716,13 +716,19 @@ void Server::loadData(const std::string &path){
 
             for (auto tree : xr.getChildren("tree", elem)) {
 
-                for (auto spell : xr.getChildren("spell", tree)) {
-                    if (spell) {
-                        auto spellID = Spell::ID{};
-                        if (!xr.findAttr(spell, "id", spellID))
-                            continue;
-                        newClass.addSpell(spellID);
-                    }
+                for (auto talent : xr.getChildren("talent", tree)) {
+                    auto type = ""s;
+                    if (!xr.findAttr(talent, "type", type))
+                        continue;
+
+                    if (type != "spell")
+                        continue;
+
+                    auto spellID = Spell::ID{};
+                    if (!xr.findAttr(talent, "id", spellID))
+                        continue;
+
+                    newClass.addSpell(spellID);
                 }
 
             }
