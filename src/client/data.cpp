@@ -1,3 +1,4 @@
+#include "ClassInfo.h"
 #include "Client.h"
 #include "ClientBuff.h"
 #include "ClientNPCType.h"
@@ -425,13 +426,18 @@ void Client::loadData(const std::string &path){
         _classes.clear();
         for (auto elem : xr.getChildren("class")) {
 
-            auto name = ClassInfo::Name{};
-            if (!xr.findAttr(elem, "name", name))
+            auto className = ClassInfo::Name{};
+            if (!xr.findAttr(elem, "name", className))
                 continue; // Name is mandatory
 
-            auto newClass = ClassInfo{ name };
+            auto newClass = ClassInfo{ className };
 
             for (auto tree : xr.getChildren("tree", elem)) {
+
+                auto treeName = ClassInfo::Name{};
+                if (!xr.findAttr(tree, "name", treeName))
+                    continue; // Name is mandatory
+                newClass.addTree(treeName);
 
                 for (auto spellElem : xr.getChildren("spell", tree)) {
                     auto spellID = ""s;
@@ -443,11 +449,12 @@ void Client::loadData(const std::string &path){
                         continue;
 
                     newClass.addSpell(it->second);
+                    it->second->tree(treeName);
                 }
 
             }
 
-            _classes[name] = std::move(newClass);
+            _classes[className] = std::move(newClass);
         }
     }
 

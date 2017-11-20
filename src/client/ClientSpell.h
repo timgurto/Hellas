@@ -35,6 +35,9 @@ public:
     void radius(Podes r) { _range = r;  _isAoE = true; }
     void school(SpellSchool school) { _school = school; }
 
+    void tree(const std::string &treeName) { _tree = treeName; }
+    const std::string &tree() const { return _tree; }
+
 private:
     const Projectile::Type *_projectile = nullptr;
     const SoundProfile *_sounds = nullptr;
@@ -49,6 +52,8 @@ private:
     Podes _range = 0;
     bool _isAoE = false;
     SpellSchool _school;
+
+    std::string _tree{};
 
     std::string _effectName = {};
     Args _effectArgs = {};
