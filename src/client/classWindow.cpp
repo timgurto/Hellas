@@ -12,9 +12,11 @@ void Client::populateClassWindow() {
     const auto TREE_WIDTH = 150_px;
     auto x = 0_px;
     auto treeElems = std::map<std::string, Element *>{};
+    auto treeY = std::map<std::string, px_t>{};
     for (const auto &tree : classInfo.trees()) {
         auto treeElem = new Element({x, 0, TREE_WIDTH, 300});
         treeElems[tree] = treeElem;
+        treeY[tree] = 18_px;
         _classWindow->addChild(treeElem);
 
         treeElem->addChild(new Label({ 0, 0, TREE_WIDTH, Element::TEXT_HEIGHT }, tree, Element::CENTER_JUSTIFIED));
@@ -22,11 +24,11 @@ void Client::populateClassWindow() {
         x += TREE_WIDTH;
     }
 
-    auto y = 18_px;
     for (const auto spell : classInfo.spells()) {
         auto treeIt = treeElems.find(spell->tree());
         if (treeIt == treeElems.end())
             continue;
+        auto &y = treeY[spell->tree()];
 
         void *learnMessageVoidPtr = const_cast<void*>(
             reinterpret_cast<const void*>(&spell->learnMessage()));
