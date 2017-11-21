@@ -36,7 +36,7 @@
     </tree>
     <tree name="Philosopher" >
         <talent name="Energy" type="stats"> <stats energy="10" /> </talent>
-        <talent name="Fundamental Substance" type="stats"> <stats waterRessist="2" /> </talent>
+        <talent name="Fundamental Substance" type="stats"> <stats waterResist="2" /> </talent>
         <talent name="Health" type="stats"> <stats health="10" /> </talent>
 
         <!--talent type="spell" id="threatDrop" /-->
