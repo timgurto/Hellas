@@ -669,32 +669,33 @@ void Server::loadData(const std::string &path){
             auto newClass = ClassType{ className };
 
             for (auto tree : xr.getChildren("tree", elem)) {
+                for (auto tier : xr.getChildren("tier", tree)) {
 
-                for (auto talent : xr.getChildren("talent", tree)) {
-                    auto type = ""s;
-                    if (!xr.findAttr(talent, "type", type))
-                        continue;
-
-                    auto talentName = ""s;
-                    if (!xr.findAttr(talent, "name", talentName))
-                        continue;
-
-                    if (type == "spell") {
-                        auto spellID = Spell::ID{};
-                        if (!xr.findAttr(talent, "id", spellID))
+                    for (auto talent : xr.getChildren("talent", tier)) {
+                        auto type = ""s;
+                        if (!xr.findAttr(talent, "type", type))
                             continue;
 
-                        newClass.addSpell(talentName, spellID);
-
-                    } else if (type == "stats") {
-                        auto stats = StatsMod{};
-                        if (!xr.findStatsChild("stats", talent, stats))
+                        auto talentName = ""s;
+                        if (!xr.findAttr(talent, "name", talentName))
                             continue;
 
-                        newClass.addStats(talentName, stats);
+                        if (type == "spell") {
+                            auto spellID = Spell::ID{};
+                            if (!xr.findAttr(talent, "id", spellID))
+                                continue;
+
+                            newClass.addSpell(talentName, spellID);
+
+                        } else if (type == "stats") {
+                            auto stats = StatsMod{};
+                            if (!xr.findStatsChild("stats", talent, stats))
+                                continue;
+
+                            newClass.addStats(talentName, stats);
+                        }
                     }
                 }
-
             }
 
             _classes[className] = newClass;

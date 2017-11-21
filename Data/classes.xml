@@ -2,54 +2,72 @@
 
 <class name="Soldier" >
     <tree name="Hoplite" >
-        <talent name="Block" type="stats"> <stats block="3" /> </talent>
-        <talent name="Resistances" type="stats"> <stats airResist="1" earthResist="1" fireResist="1" waterResist="1"  /> </talent>
-
-        <talent name="Shield Block" type="spell" id="shieldBlock" />
-        <talent name="Armor" type="stats"> <stats armor="1" /> </talent>
-        <!--talent type="spell" id="highThreat" /-->
-
-        <!--talent type="spell" id="intervene" /-->
-        <!--talent type="construction" id="trench" /-->
-        <!--talent type="spell" id="taunt" /-->
-
-        <!--talent type="spell" id="armorAura" /-->
-        <talent type="spell" id="reduceHit" />
-
-        <talent name="Last Stand" type="spell" id="lastStand" />
+        <tier>
+            <talent name="Block" type="stats"> <stats block="3" /> </talent>
+            <talent name="Resistances" type="stats"> <stats airResist="1" earthResist="1" fireResist="1" waterResist="1"  /> </talent>
+        </tier>
+        <tier>
+            <talent name="Shield Block" type="spell" id="shieldBlock" />
+            <talent name="Armor" type="stats"> <stats armor="1" /> </talent>
+            <!--talent type="spell" id="highThreat" /-->
+        </tier>
+        <tier>
+            <!--talent type="spell" id="intervene" /-->
+            <!--talent type="construction" id="trench" /-->
+            <!--talent type="spell" id="taunt" /-->
+        </tier>
+        <tier>
+            <!--talent type="spell" id="armorAura" /-->
+            <talent type="spell" id="reduceHit" />
+        </tier>
+        <tier>
+            <talent name="Last Stand" type="spell" id="lastStand" />
+        </tier>
     </tree>
     <tree name="Skirmisher" >
-        <talent name="Crit" type="stats"> <stats crit="1" /> </talent>
-        <talent name="Damage" type="stats"> <stats physicalDamage="2" /> </talent>
-
-        <!--talent type="spell" id="charge" /-->
-        <!--talent type="spell" id="stun" /-->
-        <talent name="Deep Cut" type="spell" id="bleed" />
-
-        <talent name="Super Hit" type="spell" id="superHit" />
-        <talent name="BladeStorm" type="spell" id="whirlwind" />
-
-        <!--talent type="spell" id="interrupt" /-->
-        <!--talent type="spell" id="immunityBuff" /-->
-
-        <talent name="Bloodlust" type="spell" id="enrage" />
+        <tier>
+            <talent name="Crit" type="stats"> <stats crit="1" /> </talent>
+            <talent name="Damage" type="stats"> <stats physicalDamage="2" /> </talent>
+        </tier>
+        <tier>
+            <!--talent type="spell" id="charge" /-->
+            <!--talent type="spell" id="stun" /-->
+            <talent name="Deep Cut" type="spell" id="bleed" />
+        </tier>
+        <tier>
+            <talent name="Super Hit" type="spell" id="superHit" />
+            <talent name="BladeStorm" type="spell" id="whirlwind" />
+        </tier>
+        <tier>
+            <!--talent type="spell" id="interrupt" /-->
+            <!--talent type="spell" id="immunityBuff" /-->
+        </tier>
+        <tier>
+            <talent name="Bloodlust" type="spell" id="enrage" />
+        </tier>
     </tree>
     <tree name="Philosopher" >
-        <talent name="Energy" type="stats"> <stats energy="10" /> </talent>
-        <talent name="Fundamental Substance" type="stats"> <stats waterResist="2" /> </talent>
-        <talent name="Health" type="stats"> <stats health="10" /> </talent>
-
-        <!--talent type="spell" id="threatDrop" /-->
-        <talent name="Socratic Argument" type="spell" id="airDoT" />
-
-        <talent name="EPS" type="stats"> <stats eps="1" /> </talent>
-        <talent name="Rhetoric" type="spell" id="airDamage" />
-        
-        <!--talent type="stats"> <stats gatherYield="1" /> </talent-->
-        <talent name="Stoicism" type="spell" id="critResistBuff" />
-        <!--talent type="construction" id="republicShrine" /-->
-
-        <talent name="Meditate" type="spell" id="meditate" />
+        <tier>
+            <talent name="Energy" type="stats"> <stats energy="10" /> </talent>
+            <talent name="Fundamental Substance" type="stats"> <stats waterResist="2" /> </talent>
+            <talent name="Health" type="stats"> <stats health="10" /> </talent>
+        </tier>
+        <tier>
+            <!--talent type="spell" id="threatDrop" /-->
+            <talent name="Socratic Argument" type="spell" id="airDoT" />
+        </tier>
+        <tier>
+            <talent name="EPS" type="stats"> <stats eps="1" /> </talent>
+            <talent name="Rhetoric" type="spell" id="airDamage" />
+        </tier>
+        <tier>
+            <!--talent type="stats"> <stats gatherYield="1" /> </talent-->
+            <talent name="Stoicism" type="spell" id="critResistBuff" />
+            <!--talent type="construction" id="republicShrine" /-->
+        </tier>
+        <tier>
+            <talent name="Meditate" type="spell" id="meditate" />
+        </tier>
     </tree>
 </class>
 
