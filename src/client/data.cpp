@@ -426,18 +426,24 @@ void Client::loadData(const std::string &path){
                     if (!xr.findAttr(talent, "name", talentName))
                         continue;
 
-                    if (type != "spell")
-                        continue;
+                    if (type == "spell") {
+                        auto spellID = ""s;
+                        if (!xr.findAttr(talent, "id", spellID))
+                            continue;
 
-                    auto spellID = ""s;
-                    if (!xr.findAttr(talent, "id", spellID))
-                        continue;
+                        auto it = _spells.find(spellID);
+                        if (it == _spells.end())
+                            continue;
 
-                    auto it = _spells.find(spellID);
-                    if (it == _spells.end())
-                        continue;
+                        newClass.addSpell(talentName, treeName, it->second);
 
-                    newClass.addSpell(talentName, treeName, it->second);
+                    } else if (type == "stats") {
+                        auto stats = StatsMod{};
+                        if (!xr.findStatsChild("stats", talent, stats))
+                            continue;
+
+                        newClass.addStats(talentName, treeName, stats);
+                    }
                 }
 
             }

@@ -35,7 +35,8 @@ void Client::populateClassWindow() {
         auto learnSpellButton = new Button({ 0, y, 18, 18 }, ""s,
             this->sendRawMessageStatic, learnMessageVoidPtr);
         learnSpellButton->setTooltip(talent.name);
-        learnSpellButton->addChild(new Picture(1, 1, talent.icon));
+        if (talent.icon)
+            learnSpellButton->addChild(new Picture(1, 1, *talent.icon));
 
         treeIt->second->addChild(learnSpellButton);
         y += 18;

@@ -13,6 +13,9 @@
 <buff id="bleed" name="Bleeding">
     <stats hps="-5" />
 </buff>
+<buff id="reduceHit" name="Reduce Hit">
+    <stats hit="-5" />
+</buff>
 <buff id="enrage" name="Bloodlust">
     <stats armor="-100" dodge="-100" crit="50" />
 </buff>

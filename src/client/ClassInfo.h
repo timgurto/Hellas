@@ -6,20 +6,31 @@
 
 #include "ClientSpell.h"
 #include "Texture.h"
+#include "../Stats.h"
 
 struct ClientTalent {
+    enum Type {
+        SPELL,
+        STATS,
+
+        UNINITIALIZED
+    };
+
     using Name = std::string;
     using Tree = std::string;
 
-    ClientTalent(const Name &talentName, const Tree &treeName, const ClientSpell *spell);
+    ClientTalent(const Name &talentName, const Tree &treeName, Type type);
 
     bool operator< (const ClientTalent &rhs) const { return name < rhs.name; }
 
     Name name{};
     Tree tree{};
-    const ClientSpell *spell{ nullptr };
+    Type type{ UNINITIALIZED };
     std::string learnMessage{};
-    const Texture &icon;
+    const Texture *icon{ nullptr };
+
+    const ClientSpell *spell{ nullptr };
+    StatsMod stats{};
 };
 
 class ClassInfo {
@@ -32,11 +43,9 @@ public:
     ClassInfo() {}
     ClassInfo(const Name &name);
 
-    void addSpell(const ClientTalent::Name &talentName, const ClientTalent::Tree &tree, const ClientSpell *spell) {
-            _talents.insert({ talentName, tree, spell }); }
-    void addTree(const Name &name) {
-        _trees.insert(name);
-    }
+    void addSpell(const ClientTalent::Name &talentName, const ClientTalent::Tree &tree, const ClientSpell *spell);
+    void addStats(const ClientTalent::Name &talentName, const ClientTalent::Tree &tree, const StatsMod &stats);
+    void addTree(const Name &name) { _trees.insert(name); }
 
     const Name &name() const { return _name; }
     const Texture &image() const { return _image; }

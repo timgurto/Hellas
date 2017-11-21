@@ -35,6 +35,10 @@ Functions:
     <targets self=1 />
     <function name="buff" s1="lastStand" />
 </spell>
+<spell id="reduceHit" name="Reduce Hit" cost=1 range=4 >
+    <targets enemy=1 />
+    <function name="debuff" s1="reduceHit" />
+</spell>
 
 <spell id="bleed" name="Lacerate" cost=1 range=30 >
     <aesthetics impactParticles="heavyBlood" />
