@@ -8,25 +8,29 @@ public:
 
     enum Type {
         SPELL,
+        STATS,
 
         DUMMY
     };
 
     static Talent Dummy(const Name &name);
     static Talent Spell(const Name &name, const Spell::ID &id);
+    static Talent Stats(const Name &name, const StatsMod &stats);
 
     bool operator<(const Talent &rhs) const;
 
     Type type() const { return _type; }
     const Spell::ID &spellID() const { return _spellID; }
+    const StatsMod &stats() const { return _stats; }
 
 private:
 
     Talent(const Name &name, Type type);
 
-    Name _name;
-    Type _type;
-    Spell::ID _spellID;
+    Name _name{};
+    Type _type{ DUMMY };
+    Spell::ID _spellID{};
+    StatsMod _stats{};
 };
 
 class ClassType {
@@ -37,7 +41,8 @@ public:
 
     const ID &id() const { return _id; }
 
-    void addSpell(const Talent::Name &name, Spell::ID &spellID);
+    void addSpell(const Talent::Name &name, const Spell::ID &spellID);
+    void addStats(const Talent::Name &name, const StatsMod &stats);
     const Talent *findTalent(const Talent::Name &name) const;
 
 private:
@@ -59,6 +64,7 @@ public:
     void takeTalent(const Talent *talent) { _takenTalents.insert(talent); }
     bool knowsSpell(const Spell::ID &spell) const;
     std::string generateKnownSpellsString() const;
+    void applyStatsTo(Stats &baseStats) const;
 
 private:
     const ClassType *_type = nullptr;

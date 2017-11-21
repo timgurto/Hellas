@@ -495,6 +495,9 @@ void User::updateStats(){
 
     auto newStats = OBJECT_TYPE.baseStats();
 
+    // Apply talents
+    getClass().applyStatsTo(newStats);
+
     // Apply gear
     for (size_t i = 0; i != GEAR_SLOTS; ++i){
         const ServerItem *item = _gear[i].first;

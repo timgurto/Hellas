@@ -685,6 +685,13 @@ void Server::loadData(const std::string &path){
                             continue;
 
                         newClass.addSpell(talentName, spellID);
+
+                    } else if (type == "stats") {
+                        auto stats = StatsMod{};
+                        if (!xr.findStatsChild("stats", talent, stats))
+                            continue;
+
+                        newClass.addStats(talentName, stats);
                     }
                 }
 

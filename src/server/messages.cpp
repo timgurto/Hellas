@@ -1346,6 +1346,15 @@ void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName)
 
         userClass.takeTalent(talent);
         sendMessage(user.socket(), SV_LEARNED_SPELL, talent->spellID());
+
+    } else if (talent->type() == Talent::STATS) {
+        if (userClass.hasTalent(talent)) {
+            sendMessage(user.socket(), SV_ALREADY_KNOW_SPELL);
+            return;
+        }
+
+        userClass.takeTalent(talent);
+        user.updateStats();
     }
 }
 
