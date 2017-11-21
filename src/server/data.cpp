@@ -490,32 +490,9 @@ void Server::loadData(const std::string &path){
                 item.returnsOnConstruction(itemToReturn);
             }
 
-            auto statsElem = xr.findChild("stats", elem);
-            if (statsElem != nullptr) {
-                StatsMod stats;
-                xr.findAttr(statsElem, "armor", stats.armor);
-                xr.findAttr(statsElem, "health", stats.maxHealth);
-                xr.findAttr(statsElem, "energy", stats.maxEnergy);
-                xr.findAttr(statsElem, "hps", stats.hps);
-                xr.findAttr(statsElem, "eps", stats.eps);
-                xr.findAttr(statsElem, "hit", stats.hit);
-                xr.findAttr(statsElem, "crit", stats.crit);
-                xr.findAttr(statsElem, "critResist", stats.critResist);
-                xr.findAttr(statsElem, "dodge", stats.dodge);
-                xr.findAttr(statsElem, "block", stats.block);
-                xr.findAttr(statsElem, "blockValue", stats.blockValue);
-                xr.findAttr(statsElem, "magicDamage", stats.magicDamage);
-                xr.findAttr(statsElem, "physicalDamage", stats.physicalDamage);
-                xr.findAttr(statsElem, "healing", stats.healing);
-                xr.findAttr(statsElem, "airResist", stats.airResist);
-                xr.findAttr(statsElem, "earthResist", stats.earthResist);
-                xr.findAttr(statsElem, "fireResist", stats.fireResist);
-                xr.findAttr(statsElem, "waterResist", stats.waterResist);
-                xr.findAttr(statsElem, "attack", stats.attack);
-                xr.findAttr(statsElem, "attackTime", stats.attackTime);
-                xr.findAttr(statsElem, "speed", stats.speed);
+            auto stats = StatsMod{};
+            if (xr.findStatsChild("stats", elem, stats))
                 item.stats(stats);
-            }
 
             auto weaponElem = xr.findChild("weapon", elem);
             if (weaponElem != nullptr) {
@@ -672,32 +649,9 @@ void Server::loadData(const std::string &path){
                 continue; // ID is mandatory
             auto newBuff = BuffType{id};
 
-            auto statsElem = xr.findChild("stats", elem);
-            if (statsElem != nullptr) {
-                StatsMod stats;
-                xr.findAttr(statsElem, "armor", stats.armor);
-                xr.findAttr(statsElem, "health", stats.maxHealth);
-                xr.findAttr(statsElem, "energy", stats.maxEnergy);
-                xr.findAttr(statsElem, "hps", stats.hps);
-                xr.findAttr(statsElem, "eps", stats.eps);
-                xr.findAttr(statsElem, "hit", stats.hit);
-                xr.findAttr(statsElem, "crit", stats.crit);
-                xr.findAttr(statsElem, "critResist", stats.critResist);
-                xr.findAttr(statsElem, "dodge", stats.dodge);
-                xr.findAttr(statsElem, "block", stats.block);
-                xr.findAttr(statsElem, "blockValue", stats.blockValue);
-                xr.findAttr(statsElem, "magicDamage", stats.magicDamage);
-                xr.findAttr(statsElem, "physicalDamage", stats.physicalDamage);
-                xr.findAttr(statsElem, "healing", stats.healing);
-                xr.findAttr(statsElem, "airResist", stats.airResist);
-                xr.findAttr(statsElem, "earthResist", stats.earthResist);
-                xr.findAttr(statsElem, "fireResist", stats.fireResist);
-                xr.findAttr(statsElem, "waterResist", stats.waterResist);
-                xr.findAttr(statsElem, "attack", stats.attack);
-                xr.findAttr(statsElem, "attackTime", stats.attackTime);
-                xr.findAttr(statsElem, "speed", stats.speed);
+            auto stats = StatsMod{};
+            if (xr.findStatsChild("stats", elem, stats))
                 newBuff.stats(stats);
-            }
 
             _buffTypes[id] = newBuff;
         }

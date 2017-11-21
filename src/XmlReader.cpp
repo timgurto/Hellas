@@ -1,6 +1,7 @@
 #include <set>
 #include <sstream>
 
+#include "Stats.h"
 #include "XmlReader.h"
 
 #ifndef NO_SDL
@@ -105,3 +106,32 @@ bool XmlReader::findRectChild(const std::string &val, TiXmlElement *elem, Rect &
     return true;
 }
 #endif // NO_SDL
+
+bool XmlReader::findStatsChild(const std::string & val, TiXmlElement * elem, StatsMod & stats) {
+    TiXmlElement *child = XmlReader::findChild(val, elem);
+    if (child == nullptr)
+        return false;
+    stats = StatsMod{};
+    XmlReader::findAttr(child, "armor", stats.armor);
+    XmlReader::findAttr(child, "health", stats.maxHealth);
+    XmlReader::findAttr(child, "energy", stats.maxEnergy);
+    XmlReader::findAttr(child, "hps", stats.hps);
+    XmlReader::findAttr(child, "eps", stats.eps);
+    XmlReader::findAttr(child, "hit", stats.hit);
+    XmlReader::findAttr(child, "crit", stats.crit);
+    XmlReader::findAttr(child, "critResist", stats.critResist);
+    XmlReader::findAttr(child, "dodge", stats.dodge);
+    XmlReader::findAttr(child, "block", stats.block);
+    XmlReader::findAttr(child, "blockValue", stats.blockValue);
+    XmlReader::findAttr(child, "magicDamage", stats.magicDamage);
+    XmlReader::findAttr(child, "physicalDamage", stats.physicalDamage);
+    XmlReader::findAttr(child, "healing", stats.healing);
+    XmlReader::findAttr(child, "airResist", stats.airResist);
+    XmlReader::findAttr(child, "earthResist", stats.earthResist);
+    XmlReader::findAttr(child, "fireResist", stats.fireResist);
+    XmlReader::findAttr(child, "waterResist", stats.waterResist);
+    XmlReader::findAttr(child, "attack", stats.attack);
+    XmlReader::findAttr(child, "attackTime", stats.attackTime);
+    XmlReader::findAttr(child, "speed", stats.speed);
+    return true;
+}

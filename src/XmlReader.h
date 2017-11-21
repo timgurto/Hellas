@@ -11,6 +11,8 @@ class NormalVariable;
 struct Rect;
 #endif // NO_SDL
 
+struct StatsMod;
+
 // Wrapper class for TinyXml functionality
 class XmlReader{
     TiXmlDocument _doc;
@@ -59,6 +61,7 @@ public:
     */
     static bool findNormVarChild(const std::string &val, TiXmlElement *elem,
                                  double &mean, double &sd);
+
     /*
     If a child exists with the specified name, attempt to read its 'x', 'y', 'w', and 'h'
     attributes into the provided Rect variable.  It will be changed if and only if the child is
@@ -68,6 +71,15 @@ public:
     */
     static bool findRectChild(const std::string &val, TiXmlElement *elem, Rect &rect);
 #endif //NO_SDL
+
+    /*
+    If a child exists with the specified name, attempt to read its 'armor', 'maxHealth', etc.
+    attributes into the provided StatsMod variable.  It will be changed if and only if the child is
+    found.
+    Any missing attributes will be set to their default values.
+    Return value: whether or not the child was found.
+    */
+    static bool findStatsChild(const std::string &val, TiXmlElement *elem, StatsMod &stats);
 };
 
 #endif
