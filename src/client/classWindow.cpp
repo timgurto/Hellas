@@ -24,18 +24,18 @@ void Client::populateClassWindow() {
         x += TREE_WIDTH;
     }
 
-    for (const auto spell : classInfo.spells()) {
-        auto treeIt = treeElems.find(spell->tree());
+    for (const auto &talent : classInfo.talents()) {
+        auto treeIt = treeElems.find(talent.tree);
         if (treeIt == treeElems.end())
             continue;
-        auto &y = treeY[spell->tree()];
+        auto &y = treeY[talent.tree];
 
         void *learnMessageVoidPtr = const_cast<void*>(
-            reinterpret_cast<const void*>(&spell->learnMessage()));
+            reinterpret_cast<const void*>(&talent.learnMessage));
         auto learnSpellButton = new Button({ 0, y, 18, 18 }, ""s,
             this->sendRawMessageStatic, learnMessageVoidPtr);
-        learnSpellButton->setTooltip(spell->name());
-        learnSpellButton->addChild(new Picture(1, 1, spell->icon()));
+        learnSpellButton->setTooltip(talent.name);
+        learnSpellButton->addChild(new Picture(1, 1, talent.icon));
 
         treeIt->second->addChild(learnSpellButton);
         y += 18;

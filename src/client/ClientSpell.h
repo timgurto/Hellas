@@ -7,6 +7,9 @@
 #include "../Podes.h"
 #include "../SpellSchool.h"
 
+class ParticleProfile;
+class SoundProfile;
+
 class ClientSpell {
 public:
     struct Args {
@@ -23,7 +26,6 @@ public:
     void impactParticles(const ParticleProfile *p) { _impactParticles = p; }
     const ParticleProfile *impactParticles() const { return _impactParticles; }
     const std::string &castMessage() const { return _castMessage; }
-    const std::string &learnMessage() const { return _learnMessage; }
     const Texture &icon() const { return _icon; }
     const Texture &tooltip() const;
     void name(const std::string &s) { _name = s; }
@@ -35,15 +37,11 @@ public:
     void radius(Podes r) { _range = r;  _isAoE = true; }
     void school(SpellSchool school) { _school = school; }
 
-    void tree(const std::string &treeName) { _tree = treeName; }
-    const std::string &tree() const { return _tree; }
-
 private:
     const Projectile::Type *_projectile = nullptr;
     const SoundProfile *_sounds = nullptr;
     const ParticleProfile *_impactParticles = nullptr;
     std::string _castMessage{};
-    std::string _learnMessage{};
     Texture _icon;
     mutable Texture _tooltip = {};
     std::string _id = {};
@@ -52,8 +50,6 @@ private:
     Podes _range = 0;
     bool _isAoE = false;
     SpellSchool _school;
-
-    std::string _tree{};
 
     std::string _effectName = {};
     Args _effectArgs = {};

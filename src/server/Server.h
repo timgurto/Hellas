@@ -241,7 +241,7 @@ private:
     void handle_CL_SELECT_PLAYER(User &user, const std::string &username);
     void handle_CL_RECRUIT(User &user, const std::string &username);
     void handle_CL_SUE_FOR_PEACE_WITH_PLAYER(User &user, const std::string &name);
-    void handle_CL_LEARN_SPELL(User & user, const std::string &spellID);
+    void handle_CL_TAKE_TALENT(User & user, const Talent::Name &talent);
     void handle_CL_CAST(User & user, const std::string &spellID);
 };
 

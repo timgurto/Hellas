@@ -721,14 +721,17 @@ void Server::loadData(const std::string &path){
                     if (!xr.findAttr(talent, "type", type))
                         continue;
 
-                    if (type != "spell")
+                    auto talentName = ""s;
+                    if (!xr.findAttr(talent, "name", talentName))
                         continue;
 
-                    auto spellID = Spell::ID{};
-                    if (!xr.findAttr(talent, "id", spellID))
-                        continue;
+                    if (type == "spell") {
+                        auto spellID = Spell::ID{};
+                        if (!xr.findAttr(talent, "id", spellID))
+                            continue;
 
-                    newClass.addSpell(spellID);
+                        newClass.addSpell(talentName, spellID);
+                    }
                 }
 
             }

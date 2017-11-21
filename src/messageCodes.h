@@ -140,9 +140,9 @@ enum MessageCode{
     // Arguments: serial, textArg
     CL_PERFORM_OBJECT_ACTION,
 
-    // I want to learn spell ...
-    // Arguments: ID
-    CL_LEARN_SPELL,
+    // I want to take talent ...
+    // Arguments: talent name
+    CL_TAKE_TALENT,
 
     // Cast a spell
     // Arguments: spell ID
@@ -474,7 +474,7 @@ enum MessageCode{
     SV_TARGET_DEAD,
 
     // You tried to learn an invalid spell
-    SV_INVALID_SPELL,
+    SV_INVALID_TALENT,
 
     // You tried to learn a spell that you already know
     SV_ALREADY_KNOW_SPELL,

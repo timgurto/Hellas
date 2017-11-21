@@ -8,7 +8,6 @@
 ClientSpell::ClientSpell(const std::string &id) :
     _id(id),
     _castMessage(Client::compileMessage(CL_CAST, id)),
-    _learnMessage(Client::compileMessage(CL_LEARN_SPELL, id)),
     _icon("Images/Spells/"s + id + ".png"s){
 }
 

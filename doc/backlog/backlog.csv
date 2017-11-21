@@ -306,7 +306,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 333,Cap number of learned spells,3,2,Feature,283,,,2
 334,Design Zealot trees,8,8,Content,,,,2
 335,Find suitable names for abilities,34,21,Aesthetics,334,,,2
-336,Inherent spells per class,8,8,Feature,283,,,2
 337,A spell that does extra threat,3,5,Feature,313,,,2
 338,Spell icons,13,34,Aesthetics,335,,,2
 339,Display buffs in UI,13,5,Usability,267,TRUE,,2

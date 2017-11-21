@@ -1011,14 +1011,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
-        case CL_LEARN_SPELL:
+        case CL_TAKE_TALENT:
         {
             iss.get(buffer, BUFFER_SIZE, MSG_END);
-            auto spellID = std::string{ buffer };
+            auto talentName = Talent::Name{ buffer };
             iss >> del;
             if (del != MSG_END)
                 return;
-            handle_CL_LEARN_SPELL(*user, spellID);
+            handle_CL_TAKE_TALENT(*user, talentName);
         }
 
         case CL_CAST:
@@ -1329,19 +1329,24 @@ void Server::handle_CL_SUE_FOR_PEACE_WITH_PLAYER(User & user, const std::string 
     sendMessage(it->second->socket(), SV_PEACE_WAS_PROPOSED_TO_YOU);
 }
 
-void Server::handle_CL_LEARN_SPELL(User & user, const std::string & spellID) {
-    auto spellIsValid = user.getClass().type().isValidSpell(spellID);
-    if (!spellIsValid) {
-        sendMessage(user.socket(), SV_INVALID_SPELL);
-        return;
-    }
-    if (user.getClass().knowsSpell(spellID)) {
-        sendMessage(user.socket(), SV_ALREADY_KNOW_SPELL);
+void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName) {
+    auto &userClass = user.getClass();
+    const auto &classType = userClass.type();
+    auto talent = classType.findTalent(talentName);
+    if (talent == nullptr) {
+        sendMessage(user.socket(), SV_INVALID_TALENT);
         return;
     }
 
-    user.getClass().learnSpell(spellID);
-    sendMessage(user.socket(), SV_LEARNED_SPELL, spellID);
+    if (talent->type() == Talent::SPELL) {
+        if (userClass.hasTalent(talent)) {
+            sendMessage(user.socket(), SV_ALREADY_KNOW_SPELL);
+            return;
+        }
+
+        userClass.takeTalent(talent);
+        sendMessage(user.socket(), SV_LEARNED_SPELL, talent->spellID());
+    }
 }
 
 void Server::handle_CL_CAST(User & user, const std::string &spellID) {

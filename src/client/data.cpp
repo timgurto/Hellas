@@ -444,6 +444,10 @@ void Client::loadData(const std::string &path){
                     if (!xr.findAttr(talent, "type", type))
                         continue;
 
+                    auto talentName = ""s;
+                    if (!xr.findAttr(talent, "name", talentName))
+                        continue;
+
                     if (type != "spell")
                         continue;
 
@@ -455,8 +459,7 @@ void Client::loadData(const std::string &path){
                     if (it == _spells.end())
                         continue;
 
-                    newClass.addSpell(it->second);
-                    it->second->tree(treeName);
+                    newClass.addSpell(talentName, treeName, it->second);
                 }
 
             }

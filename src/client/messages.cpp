@@ -205,7 +205,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_KING_CANNOT_LEAVE_CITY:
         case SV_ALREADY_IN_CITY:
         case SV_NOT_A_KING:
-        case SV_INVALID_SPELL:
+        case SV_INVALID_TALENT:
         case SV_ALREADY_KNOW_SPELL:
         case SV_DONT_KNOW_SPELL:
             if (del != MSG_END)
@@ -1579,7 +1579,6 @@ void Client::initializeMessageNames(){
     _messageCommands["cede"] = CL_CEDE;
     _messageCommands["cquit"] = CL_LEAVE_CITY;
     _messageCommands["recruit"] = CL_RECRUIT;
-    _messageCommands["learn"] = CL_LEARN_SPELL;
     _messageCommands["cast"] = CL_CAST;
 
     _messageCommands["say"] = CL_SAY;
@@ -1636,7 +1635,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_NOT_A_KING] = "Only a king can do that.";
     _errorMessages[SV_INVALID_SPELL_TARGET] = "Invalid spell target.";
     _errorMessages[SV_NOT_ENOUGH_ENERGY] = "You don't have enough energy.";
-    _errorMessages[SV_INVALID_SPELL] = "That isn't a spell you can learn.";
+    _errorMessages[SV_INVALID_TALENT] = "That isn't a talent you can take.";
     _errorMessages[SV_ALREADY_KNOW_SPELL] = "You already know that spell.";
     _errorMessages[SV_DONT_KNOW_SPELL] = "You haven't learned that spell.";
 }

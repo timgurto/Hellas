@@ -2,29 +2,29 @@
 
 <class name="Soldier" >
     <tree name="Hoplite" >
-        <talent type="spell" id="shieldBlock" />
+        <talent name="Shield Block" type="spell" id="shieldBlock" />
         <!--talent type="spell" id="highThreat" /-->
         <!--talent type="spell" id="intervene" /-->
         <!--talent type="spell" id="taunt" /-->
         <!--talent type="spell" id="armorAura" /-->
-        <talent type="spell" id="lastStand" />
+        <talent name="Last Stand" type="spell" id="lastStand" />
     </tree>
     <tree name="Skirmisher" >
         <!--talent type="spell" id="charge" /-->
         <!--talent type="spell" id="stun" /-->
-        <talent type="spell" id="bleed" />
-        <talent type="spell" id="superHit" />
-        <talent type="spell" id="whirlwind" />
+        <talent name="Deep Cut" type="spell" id="bleed" />
+        <talent name="Super Hit" type="spell" id="superHit" />
+        <talent name="BladeStorm" type="spell" id="whirlwind" />
         <!--talent type="spell" id="interrupt" /-->
         <!--talent type="spell" id="immunityBuff" /-->
-        <talent type="spell" id="enrage" />
+        <talent name="Bloodlust" type="spell" id="enrage" />
     </tree>
     <tree name="Philosopher" >
         <!--talent type="spell" id="threatDrop" /-->
-        <talent type="spell" id="airDoT" />
-        <talent type="spell" id="critResistBuff" />
-        <talent type="spell" id="airDamage" />
-        <talent type="spell" id="meditate" />
+        <talent name="Socratic Argument" type="spell" id="airDoT" />
+        <talent name="Stoicism" type="spell" id="critResistBuff" />
+        <talent name="Rhetoric" type="spell" id="airDamage" />
+        <talent name="Meditate" type="spell" id="meditate" />
     </tree>
 </class>
 
@@ -35,7 +35,6 @@
 
 <class name="Zealot" >
     <spell id="heal" />
-    <spell id="super" />
 </class-->
 
 </root>
