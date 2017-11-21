@@ -1,8 +1,19 @@
+#include <cassert>
+
 #include "Class.h"
 
 Class::Class(const ClassType *type) :
     _type(type)
 {}
+
+void Class::takeTalent(const Talent * talent) {
+    if (_talentRanks.find(talent) == _talentRanks.end()) {
+        _talentRanks[talent] = 1;
+        return;
+    }
+    assert(talent->type() == Talent::STATS || _talentRanks[talent] == 0);
+    ++_talentRanks[talent];
+}
 
 bool Class::knowsSpell(const Spell::ID & spell) const {
     for (const auto pair : _talentRanks) {
@@ -33,12 +44,13 @@ std::string Class::generateKnownSpellsString() const {
 
 void Class::applyStatsTo(Stats &baseStats) const {
     for (auto pair : _talentRanks) {
-        if (pair.second == 0)
-            continue;
         auto talent = pair.first;
         if (talent->type() != Talent::STATS)
             continue;
-        baseStats &= talent->stats();
+
+        auto rank = pair.second;
+        for (auto i = 0; i != rank; ++i)
+            baseStats &= talent->stats();
     }
 }
 

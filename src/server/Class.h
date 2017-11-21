@@ -61,7 +61,7 @@ public:
     const ClassType &type() const { assert(_type);  return *_type; }
 
     bool hasTalent(const Talent *talent) { return _talentRanks[talent] > 0; }
-    void takeTalent(const Talent *talent) { _talentRanks[talent] = 1; }
+    void takeTalent(const Talent *talent);
     bool knowsSpell(const Spell::ID &spell) const;
     std::string generateKnownSpellsString() const;
     void applyStatsTo(Stats &baseStats) const;
