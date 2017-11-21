@@ -5,18 +5,23 @@ Class::Class(const ClassType *type) :
 {}
 
 bool Class::knowsSpell(const Spell::ID & spell) const {
-    for (const auto talent : _takenTalents) {
+    for (const auto pair : _talentRanks) {
+        auto talent = pair.first;
         if (talent->type() != Talent::SPELL)
             continue;
-        if (talent->spellID() == spell)
-            return true;
+        if (talent->spellID() != spell)
+            continue;
+        return pair.second > 0;
     }
     return false;
 }
 
 std::string Class::generateKnownSpellsString() const {
     auto string = ""s;
-    for (auto talent : _takenTalents) {
+    for (auto pair : _talentRanks) {
+        if (pair.second == 0)
+            continue;
+        auto talent = pair.first;
         if (talent->type() != Talent::SPELL)
             continue;
         if (!string.empty())
@@ -27,7 +32,10 @@ std::string Class::generateKnownSpellsString() const {
 }
 
 void Class::applyStatsTo(Stats &baseStats) const {
-    for (auto talent : _takenTalents) {
+    for (auto pair : _talentRanks) {
+        if (pair.second == 0)
+            continue;
+        auto talent = pair.first;
         if (talent->type() != Talent::STATS)
             continue;
         baseStats &= talent->stats();

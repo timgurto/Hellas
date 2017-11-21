@@ -55,18 +55,18 @@ using ClassTypes = std::map<ClassType::ID, ClassType>;
 // A single user's instance of a ClassType
 class Class {
 public:
-    using TakenTalents = std::set<const Talent *>;
+    using TalentRanks = std::map<const Talent *, unsigned>;
 
     Class(const ClassType *type = nullptr);
     const ClassType &type() const { assert(_type);  return *_type; }
 
-    bool hasTalent(const Talent *talent) const { return _takenTalents.find(talent) != _takenTalents.end(); }
-    void takeTalent(const Talent *talent) { _takenTalents.insert(talent); }
+    bool hasTalent(const Talent *talent) { return _talentRanks[talent] > 0; }
+    void takeTalent(const Talent *talent) { _talentRanks[talent] = 1; }
     bool knowsSpell(const Spell::ID &spell) const;
     std::string generateKnownSpellsString() const;
     void applyStatsTo(Stats &baseStats) const;
 
 private:
     const ClassType *_type = nullptr;
-    TakenTalents _takenTalents{};
+    TalentRanks _talentRanks{};
 };
