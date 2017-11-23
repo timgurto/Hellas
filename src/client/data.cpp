@@ -415,37 +415,42 @@ void Client::loadData(const std::string &path){
                 auto treeName = ClassInfo::Name{};
                 if (!xr.findAttr(tree, "name", treeName))
                     continue; // Name is mandatory
-                newClass.addTree(treeName);
+                newClass.ensureTreeExists(treeName);
 
-                for (auto talent : xr.getChildren("talent", tree)) {
-                    auto type = ""s;
-                    if (!xr.findAttr(talent, "type", type))
-                        continue;
+                auto currentTier = 0;
+                for (auto tier : xr.getChildren("tier", tree)) {
 
-                    auto talentName = ""s;
-                    if (!xr.findAttr(talent, "name", talentName))
-                        continue;
-
-                    if (type == "spell") {
-                        auto spellID = ""s;
-                        if (!xr.findAttr(talent, "id", spellID))
+                    for (auto talent : xr.getChildren("talent", tier)) {
+                        auto type = ""s;
+                        if (!xr.findAttr(talent, "type", type))
                             continue;
 
-                        auto it = _spells.find(spellID);
-                        if (it == _spells.end())
+                        auto talentName = ""s;
+                        if (!xr.findAttr(talent, "name", talentName))
                             continue;
 
-                        newClass.addSpell(talentName, treeName, it->second);
+                        if (type == "spell") {
+                            auto spellID = ""s;
+                            if (!xr.findAttr(talent, "id", spellID))
+                                continue;
 
-                    } else if (type == "stats") {
-                        auto stats = StatsMod{};
-                        if (!xr.findStatsChild("stats", talent, stats))
-                            continue;
+                            auto it = _spells.find(spellID);
+                            if (it == _spells.end())
+                                continue;
 
-                        newClass.addStats(talentName, treeName, stats);
+                            newClass.addSpell(talentName, treeName, currentTier, it->second);
+
+                        } else if (type == "stats") {
+                            auto stats = StatsMod{};
+                            if (!xr.findStatsChild("stats", talent, stats))
+                                continue;
+
+                            newClass.addStats(talentName, treeName, currentTier, stats);
+                        }
                     }
-                }
 
+                    ++currentTier;
+                }
             }
 
             _classes[className] = std::move(newClass);
