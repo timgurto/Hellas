@@ -57,7 +57,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 68,Class-restricted gear,8,5,Feature,,,,
 69,Distant players aren't being removed,8,8,Bug,,TRUE,,1
 70,Make players and objects more visible on map,89,34,Usability,,TRUE,,1
-71,Finish data website,13,8,Documentation,,,,
 72,"Sort _materials and _craftableItems by name, not ID",5,3,Usability,,,,
 73,Document Texture interface,2,8,Documentation,,,,
 74,"When a player joins a city, that city adopts his wars",13,5,Feature,55,TRUE,TRUE,1
@@ -73,7 +72,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 84,Prevent chat messages being cut off,55,34,Usability,,,,
 85,Fix scroll-bar dragging offset,5,3,Bug,,,,
 86,Allow a recipe to create multiple item types,3,34,Feature,,,,
-87,Move appropriate configuration details into config file,2,55,Code quality,,,,
 88,Critter run-away AI,8,13,Feature,,,,3
 89,Players can be in a group,34,8,Feature,,,,3
 91,Stacks of the same item can be combined,21,13,Usability,,TRUE,,
@@ -148,7 +146,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 162,Make vehicle functionality a class owned by object,3,5,Code quality,163,,,
 163,Generalize object components,5,8,Code quality,,,,
 164,Server sometimes gets in infinite loop when a client disconnects,144,21,Bug,,TRUE,,
-165,Convey NPC difficulty without levels,5,34,Usability,,,,3
 167,Loot random item(s?) on container destruction,55,5,Feature,15,TRUE,,1
 169,Add a spectrum of container strengths,13,13,Content,,,,
 171,An item that damages the containing object's attacker,13,8,Feature,,,,
@@ -269,7 +266,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 296,An options window and checkbox to automatically re-learn skills,1,5,Usability,288,,,2
 297,Auto-relearn is a persistent setting,1,5,Usability,296,,,2
 298,Leaf skills can be unlearned,5,21,Feature,287,,,2
-299,Skill tree can include passive stats,5,13,Feature,295,,,2
 300,Skill tree can include recipes,2,13,Feature,295,,,2
 301,Skill tree can include constructions,2,13,Feature,295,,,2
 302,Ranged weapons,21,5,Feature,,TRUE,,2
@@ -308,3 +304,4 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 337,A spell that does extra threat,3,5,Feature,313,,,2
 338,Spell icons,13,34,Aesthetics,335,,,2
 339,Display buffs in UI,13,5,Usability,267,TRUE,,2
+340,Make talents persistent,21,21,Bug,,,,2

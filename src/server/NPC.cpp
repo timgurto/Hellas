@@ -86,6 +86,8 @@ void NPC::onDeath(){
 
 void NPC::onAttackedBy(Entity &attacker) {
     _recentAttacker = &attacker;
+
+    Entity::onAttackedBy(attacker);
 }
 
 void NPC::processAI(ms_t timeElapsed){

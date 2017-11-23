@@ -248,6 +248,11 @@ void Entity::onDeath(){
         startCorpseTimer();
 }
 
+void Entity::onAttackedBy(Entity & attacker) {
+    if (isDead())
+        attacker.onKilled(*this);
+}
+
 void Entity::startCorpseTimer(){
     _corpseTime = timeToRemainAsCorpse();
 }

@@ -14,3 +14,6 @@ using Energy = unsigned;
 using Percentage = short;
 using BonusDamage = int;
 using Regen = int;
+
+using Level = unsigned short;
+using XP = unsigned;

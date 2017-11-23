@@ -9,6 +9,23 @@ ObjectType User::OBJECT_TYPE("__clientObjectType__");
 Point User::newPlayerSpawn = {};
 double User::spawnRadius = 0;
 
+const std::vector<XP> User::XP_PER_LEVEL{
+    // [0] = XP required to get to lvl 1
+    // [59] = XP required to get to lvl 60
+     3000,  7600, 11900, 15900, 19700,
+    23200, 26600, 29800, 32800, 35600,
+    38300, 40900, 43300, 45700, 47900,
+    50000, 52100, 54000, 55900, 57600,
+    59400, 61000, 62600, 64100, 65600,
+    67000, 68400, 69700, 70900, 72200,
+    73300, 74500, 75600, 76700, 77700,
+    78700, 79700, 80600, 81500, 82400,
+    83300, 84100, 84900, 85700, 86500,
+    87300, 88000, 88700, 89400, 90100,
+    90700, 91400, 92000, 92600, 93200,
+    93800, 94400, 94900, 95500, 96000
+};
+
 User::User(const std::string &name, const Point &loc, const Socket &socket) :
 Object(&OBJECT_TYPE, loc),
 
@@ -487,6 +504,10 @@ void User::onDestroyedOwnedObject(const ObjectType &type) const {
     this->_playerUniqueCategoriesOwned.erase(type.playerUniqueCategory());
 }
 
+void User::onKilled(const Entity & victim) {
+    addXP(100);
+}
+
 void User::updateStats(){
     const Server &server = *Server::_instance;
 
@@ -692,4 +713,21 @@ void User::sendBuffMsg(const Buff::ID &buff) const {
 void User::sendDebuffMsg(const Buff::ID &buff) const {
     const Server &server = Server::instance();
     server.broadcastToArea(location(), SV_PLAYER_GOT_DEBUFF, makeArgs(_name, buff));
+}
+
+void User::addXP(XP amount) {
+    _xp += amount;
+
+    const auto maxXpThisLevel = XP_PER_LEVEL[_level];
+    if (_xp >= maxXpThisLevel) {
+        auto surplus = _xp - maxXpThisLevel;
+        ++_level;
+        if (_level < MAX_LEVEL)
+            _xp = surplus;
+    }
+
+
+    Server &server = Server::instance();
+    server.debug() << "Level: " << _level << "; XP: " << _xp << "/" << XP_PER_LEVEL[_level]
+        << "(" << _xp * 100 / XP_PER_LEVEL[_level] << "%)" << Log::endl;
 }

@@ -60,6 +60,12 @@ private:
 
     Point _respawnPoint;
 
+    XP _xp = 0;
+    Level _level = 0;
+    static const Level MAX_LEVEL = 60;
+    static const std::vector<XP> XP_PER_LEVEL;
+    void addXP(XP amount);
+
 
 public:
     User(const std::string &name, const Point &loc, const Socket &socket);
@@ -125,6 +131,7 @@ public:
     void onDeath() override;
     void onNewOwnedObject(const ObjectType &type) const;
     void onDestroyedOwnedObject(const ObjectType &type) const;
+    void onKilled(const Entity &victim) override;
 
     void sendInfoToClient(const User &targetUser) const override;
 
