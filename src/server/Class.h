@@ -56,6 +56,9 @@ using ClassTypes = std::map<ClassType::ID, ClassType>;
 class Class {
 public:
     using TalentRanks = std::map<const Talent *, unsigned>;
+    unsigned talentPointsAllocated = 0; // Updated in takeTalent()
+    static const unsigned TALENT_POINTS_AVAILABLE = 5;
+    bool canTakeATalent() const { return talentPointsAllocated < TALENT_POINTS_AVAILABLE; }
 
     Class(const ClassType *type = nullptr);
     const ClassType &type() const { assert(_type);  return *_type; }

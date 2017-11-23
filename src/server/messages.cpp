@@ -1337,6 +1337,10 @@ void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName)
         sendMessage(user.socket(), SV_INVALID_TALENT);
         return;
     }
+    if (!user.getClass().canTakeATalent()) {
+        sendMessage(user.socket(), SV_NO_TALENT_POINTS);
+        return;
+    }
 
     if (talent->type() == Talent::SPELL) {
         if (userClass.hasTalent(talent)) {

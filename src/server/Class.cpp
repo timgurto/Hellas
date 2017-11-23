@@ -7,6 +7,8 @@ Class::Class(const ClassType *type) :
 {}
 
 void Class::takeTalent(const Talent * talent) {
+    ++talentPointsAllocated;
+
     if (_talentRanks.find(talent) == _talentRanks.end()) {
         _talentRanks[talent] = 1;
         return;

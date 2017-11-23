@@ -258,7 +258,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 284,A window with buttons to learn spells,3,5,Usability,283,TRUE,,2
 285,Learning spells can cost items,3,8,Feature,283,,,2
 286,Learning spells can require a tool,2,5,Feature,283,,,2
-287,Spells can have pre-requisite spells,2,3,Feature,283,,,2
 288,"On death, lose a leaf skill",5,13,Feature,287,,,2
 289,"On death, drop part of a leaf spell's cost",2,13,Feature,287,,,2
 290,Spell-learning items are n-unique,2,8,Feature,285,,,2
@@ -266,7 +265,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 292,Learning spells costs food,3,8,Feature,285,,,2
 293,Food restores energy/health,8,8,Feature,247,,,2
 294,Hotbar can include right-clickable items,2,13,Usability,280,,,2
-295,Spells laid out in trees,3,34,Usability,287,,,2
+295,Spells laid out in trees,3,34,Usability,287,TRUE,,2
 296,An options window and checkbox to automatically re-learn skills,1,5,Usability,288,,,2
 297,Auto-relearn is a persistent setting,1,5,Usability,296,,,2
 298,Leaf skills can be unlearned,5,21,Feature,287,,,2
@@ -303,7 +302,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 330,Damage-shield buff,5,8,Feature,267,,,2
 331,Spell-reflect buff,2,13,Feature,267,,,2
 332,Curse/sleep/stun/fear-resistance stats,2,3,Feature,326,,,2
-333,Cap number of learned spells,3,2,Feature,283,,,2
+333,Cap number of learned spells,3,2,Feature,283,TRUE,,2
 334,Design Zealot trees,8,8,Content,,,,2
 335,Find suitable names for abilities,34,21,Aesthetics,334,,,2
 337,A spell that does extra threat,3,5,Feature,313,,,2

@@ -479,6 +479,9 @@ enum MessageCode{
     // You tried to learn a spell that you already know
     SV_ALREADY_KNOW_SPELL,
 
+    // You don't have any talent points left to allocate
+    SV_NO_TALENT_POINTS,
+
     // You tried to cast a spell that you don't know
     SV_DONT_KNOW_SPELL,
 
