@@ -1,27 +1,59 @@
 #include "Client.h"
 #include "ui/Line.h"
+#include "ui/ProgressBar.h"
 
 void Client::initializeClassWindow() {
-    _classWindow = Window::WithRectAndTitle({ 80, 20, 210, 200 }, "Class"s);
+    const px_t
+        SECTION_GAP = 6,
+        MARGIN = 2,
+        WIN_W = 200,
+        WIN_H = 200,
+        XP_H = 27,
+        TREES_Y = XP_H + SECTION_GAP;
+    _classWindow = Window::WithRectAndTitle({ 80, 20, WIN_W, WIN_H }, "Class"s);
+    const px_t
+        TREES_H = _classWindow->contentHeight() - TREES_Y;
+    _talentTrees = new Element({ 0, TREES_Y, WIN_W, TREES_H });
+    _classWindow->addChild(_talentTrees);
+
+    _classWindow->addChild(new Line(0, XP_H + SECTION_GAP / 2 - 1, WIN_W));
+
+    auto y = MARGIN;
+    _levelLabel = new Label({ MARGIN, MARGIN, WIN_W - 2* MARGIN, Element::TEXT_HEIGHT },
+            {}, Element::CENTER_JUSTIFIED);
+    _classWindow->addChild(_levelLabel);
+    y += Element::TEXT_HEIGHT + MARGIN;
+
+    _xpLabel = new Label({ MARGIN, y, WIN_W / 2 - MARGIN, Element::TEXT_HEIGHT }, {}, Element::RIGHT_JUSTIFIED);
+    _classWindow->addChild(_xpLabel);
+
+    const auto
+        XP_BAR_X = WIN_W / 2 + MARGIN,
+        XP_BAR_W = WIN_W / 2 - MARGIN * 2,
+        XP_BAR_H = 10;
+    _classWindow->addChild(new ProgressBar<XP>({ XP_BAR_X, y, XP_BAR_W, XP_BAR_H }, _xp, _maxXP));
 }
 
 void Client::populateClassWindow() {
-    _classWindow->clearChildren();
+    _levelLabel->changeText("Level "s + toString(_level) + " "s + _character.getClass().name());
+    _xpLabel->changeText(toString(_xp) + "/"s + "100"s + " experience"s);
+
+    _talentTrees->clearChildren();
 
     auto &classInfo = _character.getClass();
 
     const px_t
         GAP = 10,
         TOTAL_GAP_WIDTH = GAP * (classInfo.trees().size()),
-        TREE_WIDTH = (_classWindow->contentWidth() - TOTAL_GAP_WIDTH) / classInfo.trees().size(),
-        TREE_HEIGHT = _classWindow->contentHeight();
+        TREE_WIDTH = (_talentTrees->rect().w - TOTAL_GAP_WIDTH) / classInfo.trees().size(),
+        TREE_HEIGHT = _talentTrees->rect().h;
     auto x = GAP/2;
     auto treeElems = std::map<std::string, Element *>{};
     auto linesDrawn = size_t{ 0 };
     for (auto &tree : classInfo.trees()) {
         auto treeElem = new Element({x, 0, TREE_WIDTH, 300});
         tree.element = treeElem;
-        _classWindow->addChild(treeElem);
+        _talentTrees->addChild(treeElem);
 
         treeElem->addChild(new Label({ 0, 0, TREE_WIDTH, Element::TEXT_HEIGHT }, tree.name,
                 Element::CENTER_JUSTIFIED));
@@ -29,7 +61,7 @@ void Client::populateClassWindow() {
         x += TREE_WIDTH;
 
         if (linesDrawn < classInfo.trees().size() - 1)
-            _classWindow->addChild(new Line(x + (GAP/2) - 1, 0, TREE_HEIGHT, Element::VERTICAL));
+            _talentTrees->addChild(new Line(x + (GAP/2) - 1, 0, TREE_HEIGHT, Element::VERTICAL));
         ++linesDrawn;
 
         x += GAP;

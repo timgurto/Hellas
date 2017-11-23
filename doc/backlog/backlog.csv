@@ -305,3 +305,4 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 338,Spell icons,13,34,Aesthetics,335,,,2
 339,Display buffs in UI,13,5,Usability,267,TRUE,,2
 340,Make talents persistent,21,21,Bug,,,,2
+341,Make level/XP persistent,55,8,Bug,,,,2

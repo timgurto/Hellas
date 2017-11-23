@@ -241,6 +241,9 @@ private:
     HelpEntries _helpEntries;
 
     Window *_classWindow = nullptr;
+    Element *_talentTrees = nullptr;
+    Label *_levelLabel = nullptr;
+    Label *_xpLabel = nullptr;
     void initializeClassWindow();
     void populateClassWindow();
     std::set<const ClientSpell *> _knownSpells{};
@@ -422,6 +425,10 @@ private:
     std::set<std::string> _atWarWithCity;
 
     std::map<std::string, std::string> _userCities; // Username -> city name
+
+    XP _xp = 40;
+    XP _maxXP = 100;
+    Level _level = 0;
     
     void addParticles(const ParticleProfile *profile, const Point &location, size_t qty);
     void addParticles(const ParticleProfile *profile, const Point &location); // Single hit
