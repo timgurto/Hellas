@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <memory>
 #include <set>
 #include <string>
 
@@ -28,7 +29,7 @@ struct ClientTalent {
     Name tree{};
     unsigned tier{ 0 };
     Type type{ UNINITIALIZED };
-    std::string learnMessage{};
+    std::shared_ptr<std::string> learnMessage{};
     const Texture *icon{ nullptr };
 
     const ClientSpell *spell{ nullptr };

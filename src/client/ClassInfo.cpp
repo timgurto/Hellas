@@ -42,13 +42,14 @@ Tree & ClassInfo::findTree(const Tree::Name & name) {
             return tree;
     }
     assert(false);
+    return _trees.front();
 }
 
 ClientTalent::ClientTalent(const Name & talentName, Type type) :
 name(talentName),
 type(type){
     auto &client = Client::instance();
-    learnMessage = Client::compileMessage(CL_TAKE_TALENT, talentName);
+    learnMessage = std::make_shared<std::string>(Client::compileMessage(CL_TAKE_TALENT, talentName));
 }
 
 size_t Tree::numTiers() const {

@@ -35,8 +35,6 @@ void Client::populateClassWindow() {
         x += GAP;
     }
 
-
-
     for (const auto &tree : classInfo.trees()) {
         auto baseY = 18_px;
         auto yDist = 0_px;
@@ -57,7 +55,7 @@ void Client::populateClassWindow() {
             for (const auto &talent : talents) {
 
                 void *learnMessageVoidPtr = const_cast<void*>(
-                    reinterpret_cast<const void*>(&talent.learnMessage));
+                    reinterpret_cast<const void*>(&*talent.learnMessage));
                 auto learnSpellButton = new Button({ x, y, 18, 18 }, ""s,
                     this->sendRawMessageStatic, learnMessageVoidPtr);
                 learnSpellButton->setTooltip(talent.name);
