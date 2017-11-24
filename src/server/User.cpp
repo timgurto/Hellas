@@ -716,6 +716,8 @@ void User::sendDebuffMsg(const Buff::ID &buff) const {
 }
 
 void User::addXP(XP amount) {
+    if (_level == MAX_LEVEL)
+        return;
     _xp += amount;
 
     const auto maxXpThisLevel = XP_PER_LEVEL[_level];
