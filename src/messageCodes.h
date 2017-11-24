@@ -575,6 +575,9 @@ enum MessageCode{
     // "Unlock everything for me"
     DG_UNLOCK,
 
+    // "Give me enough XP to level up"
+    DG_LEVEL,
+
 
 
     NO_CODE

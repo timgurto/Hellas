@@ -1589,6 +1589,7 @@ void Client::initializeMessageNames(){
     
     _messageCommands["give"] = DG_GIVE;
     _messageCommands["unlock"] = DG_UNLOCK;
+    _messageCommands["level"] = DG_LEVEL;
 
     _errorMessages[SV_TOO_FAR] = "You are too far away to perform that action.";
     _errorMessages[SV_DOESNT_EXIST] = "That object doesn't exist.";

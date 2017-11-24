@@ -1091,6 +1091,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case DG_LEVEL:
+        {
+            if (!isDebug())
+                break;
+            if (del != MSG_END)
+                return;
+            auto remainingXP = User::XP_PER_LEVEL[user->level()] - user->xp();
+            user->addXP(remainingXP);
+            break;
+        }
+
         default:
             _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
         }

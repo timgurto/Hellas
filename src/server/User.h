@@ -62,9 +62,6 @@ private:
 
     XP _xp = 0;
     Level _level = 0;
-    static const Level MAX_LEVEL = 60;
-    static const std::vector<XP> XP_PER_LEVEL;
-    void addXP(XP amount);
 
 
 public:
@@ -176,6 +173,12 @@ public:
 
     // Return value: 0 if there was room for all items, otherwise the remainder.
     size_t giveItem(const ServerItem *item, size_t quantity = 1);
+
+    static const Level MAX_LEVEL = 60;
+    static const std::vector<XP> XP_PER_LEVEL;
+    Level level() const { return _level; }
+    XP xp() const { return _xp; }
+    void addXP(XP amount);
 
     void update(ms_t timeElapsed);
 
