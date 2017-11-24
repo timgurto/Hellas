@@ -266,6 +266,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 296,An options window and checkbox to automatically re-learn skills,1,5,Usability,288,,,2
 297,Auto-relearn is a persistent setting,1,5,Usability,296,,,2
 298,Leaf skills can be unlearned,5,21,Feature,287,,,2
+299,Skill tree can include passive stats,5,13,Feature,295,TRUE,,2
 300,Skill tree can include recipes,2,13,Feature,295,,,2
 301,Skill tree can include constructions,2,13,Feature,295,,,2
 302,Ranged weapons,21,5,Feature,,TRUE,,2
