@@ -359,15 +359,17 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_CLASS:
         {
-            std::string username, classID;
-            singleMsg >> username >> del;
-            readString(singleMsg, classID, MSG_END);
-            singleMsg >> del;
+            auto username = ""s, classID = ""s;
+            auto level = Level{};
+            singleMsg >> username >> del >> classID >> del >> level >> del;
             if (del != MSG_END)
                 break;
+
             if (username == _username) {
                 _character.setClass(classID);
+                _level = level;
                 populateClassWindow();
+
             } else {
                 if (_otherUsers.find(username) == _otherUsers.end()) {
                     //_debug("Class received for an unknown user.  Ignoring.", Color::FAILURE);

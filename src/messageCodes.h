@@ -226,8 +226,8 @@ enum MessageCode{
     // The user has completed an action
     SV_ACTION_FINISHED,
 
-    // A user's class
-    // Arguments: username, classID
+    // A user's class and level
+    // Arguments: username, classID, level
     SV_CLASS,
 
     // A user's gear
