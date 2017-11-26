@@ -32,6 +32,9 @@ void Avatar::draw(const Client &client) const{
     if (_driving)
         return;
 
+    if (_class == nullptr)
+        return;
+
     Sprite::draw(client);
 
     

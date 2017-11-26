@@ -15,14 +15,14 @@ class Avatar : public Sprite, public ClientCombatant{
     static ClientCombatantType _combatantType;
     static SpriteType _spriteType;
     static const Rect COLLISION_RECT, DRAW_RECT;
-    Level _level = 0;
+
     Point _destination;
     std::string _name;
-    const ClassInfo *_class;
+    const ClassInfo *_class = nullptr;
     std::string _city;
     ClientItem::vect_t _gear;
     bool _isKing = false;
-
+    Level _level = 0;
     bool _driving;
 
 public:
