@@ -162,6 +162,7 @@
     <ClInclude Include="src\Message.h" />
     <ClInclude Include="src\messageCodes.h" />
     <ClInclude Include="src\NormalVariable.h" />
+    <ClInclude Include="src\Optional.h" />
     <ClInclude Include="src\Podes.h" />
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\Rect.h" />

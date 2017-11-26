@@ -259,5 +259,6 @@
     <ClInclude Include="src\client\ClientBuff.h" />
     <ClInclude Include="src\client\ClassInfo.h" />
     <ClInclude Include="src\server\Class.h" />
+    <ClInclude Include="src\Optional.h" />
   </ItemGroup>
 </Project>
