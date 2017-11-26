@@ -353,6 +353,10 @@ enum MessageCode{
     // Arguments: XP, maxXP
     SV_XP,
 
+    // A player leveled up
+    // Arguments: username
+    SV_LEVEL_UP,
+
     // A user's health value
     // Arguments: username, hp
     SV_PLAYER_HEALTH,

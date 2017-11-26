@@ -46,6 +46,7 @@ public:
     bool isKing() const { return _isKing; }
     Level level() const { return _level; }
     void level(Level l) { _level = l; }
+    void levelUp() { ++_level; }
 
     // From Sprite
     void draw(const Client &client) const override;

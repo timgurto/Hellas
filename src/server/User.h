@@ -64,6 +64,7 @@ private:
     XP _xp = 0;
     Level _level = 0;
     void sendXPMessage() const;
+    void announceLevelUp() const;
 
 
 public:

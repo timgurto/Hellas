@@ -1023,6 +1023,18 @@ void Client::handleMessage(const std::string &msg){
             _xp = xp;
             _maxXP = maxXP;
             populateClassWindow();
+            break;
+        }
+
+        case SV_LEVEL_UP:
+        {
+            auto username = ""s;
+            readString(singleMsg, username, MSG_END);
+            singleMsg >> del;
+            if (del != MSG_END)
+                break;
+            handle_SV_LEVEL_UP(username);
+            break;
         }
 
         case SV_MAX_HEALTH:
@@ -1544,6 +1556,23 @@ void Client::handle_SV_LEARNED_SPELL(const std::string & spellID) {
     _knownSpells.insert(it->second);
 
     populateHotbar();
+}
+
+void Client::handle_SV_LEVEL_UP(const std::string & username) {
+    Avatar *avatar = nullptr;
+    if (username == _username)
+        avatar = &_character;
+    else {
+        auto it = _otherUsers.find(username);
+        if (it == _otherUsers.end())
+            return;
+        avatar = it->second;
+    }
+
+    avatar->levelUp();
+
+    if (username == _username)
+        populateClassWindow();
 }
 
 

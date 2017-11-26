@@ -726,6 +726,11 @@ void User::sendXPMessage() const {
     server.sendMessage(_socket, SV_XP, makeArgs(_xp, XP_PER_LEVEL[_level]));
 }
 
+void User::announceLevelUp() const {
+    const Server &server = Server::instance();
+    server.broadcastToArea(location(), SV_LEVEL_UP, _name);
+}
+
 void User::addXP(XP amount) {
     if (_level == MAX_LEVEL)
         return;
@@ -737,6 +742,8 @@ void User::addXP(XP amount) {
         ++_level;
         if (_level < MAX_LEVEL)
             _xp = surplus;
+
+        announceLevelUp();
     }
     sendXPMessage();
 
