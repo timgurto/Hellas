@@ -38,7 +38,7 @@ void Client::populateClassWindow() {
     _levelLabel->changeText(
         "Level "s + toString(_character.level()) +
         " "s + _character.getClass().name());
-    _xpLabel->changeText(toString(_xp) + "/"s + "100"s + " experience"s);
+    _xpLabel->changeText(toString(_xp) + "/"s + toString(_maxXP) + " experience"s);
 
     _talentTrees->clearChildren();
 

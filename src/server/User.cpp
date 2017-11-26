@@ -630,6 +630,8 @@ void User::sendInfoToClient(const User &targetUser) const {
     const Server &server = Server::instance();
     const Socket &client = targetUser.socket();
 
+    bool isSelf = &targetUser == this;
+
     // Location
     server.sendMessage(client, SV_LOCATION, makeLocationCommand());
 
@@ -643,6 +645,10 @@ void User::sendInfoToClient(const User &targetUser) const {
 
     // Class
     server.sendMessage(client, SV_CLASS, makeArgs(_name, getClass().type().id(), _level));
+
+    // XP
+    if (isSelf)
+        sendXPMessage();
 
     // City
     const City::Name city = server._cities.getPlayerCity(_name);
@@ -715,6 +721,11 @@ void User::sendDebuffMsg(const Buff::ID &buff) const {
     server.broadcastToArea(location(), SV_PLAYER_GOT_DEBUFF, makeArgs(_name, buff));
 }
 
+void User::sendXPMessage() const {
+    const Server &server = Server::instance();
+    server.sendMessage(_socket, SV_XP, makeArgs(_xp, XP_PER_LEVEL[_level]));
+}
+
 void User::addXP(XP amount) {
     if (_level == MAX_LEVEL)
         return;
@@ -727,7 +738,7 @@ void User::addXP(XP amount) {
         if (_level < MAX_LEVEL)
             _xp = surplus;
     }
-
+    sendXPMessage();
 
     Server &server = Server::instance();
     server.debug() << "Level: " << _level << "; XP: " << _xp << "/" << XP_PER_LEVEL[_level]

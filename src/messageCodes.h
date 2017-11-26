@@ -349,6 +349,10 @@ enum MessageCode{
     // airResist, earthResist, fireResist, waterResist, attack, attack time, speed
     SV_YOUR_STATS,
 
+    // The user's XP
+    // Arguments: XP, maxXP
+    SV_XP,
+
     // A user's health value
     // Arguments: username, hp
     SV_PLAYER_HEALTH,

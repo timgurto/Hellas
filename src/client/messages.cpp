@@ -1014,6 +1014,17 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_XP:
+        {
+            auto xp = XP{}, maxXP = XP{};
+            singleMsg >> xp >> del >> maxXP >> del;
+            if (del != MSG_END)
+                break;
+            _xp = xp;
+            _maxXP = maxXP;
+            populateClassWindow();
+        }
+
         case SV_MAX_HEALTH:
         {
             auto username = ""s;
