@@ -367,15 +367,18 @@ void Client::handleMessage(const std::string &msg){
 
             if (username == _username) {
                 _character.setClass(classID);
-                _level = level;
+                _character.level(level);
                 populateClassWindow();
 
             } else {
-                if (_otherUsers.find(username) == _otherUsers.end()) {
+                auto it = _otherUsers.find(username);
+                if (it == _otherUsers.end()) {
                     //_debug("Class received for an unknown user.  Ignoring.", Color::FAILURE);
                     break;
                 }
-                _otherUsers[username]->setClass(classID);
+                auto &otherUser = *it->second;
+                otherUser.setClass(classID);
+                otherUser.level(level);
             }
             break;
         }

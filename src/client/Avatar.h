@@ -15,7 +15,7 @@ class Avatar : public Sprite, public ClientCombatant{
     static ClientCombatantType _combatantType;
     static SpriteType _spriteType;
     static const Rect COLLISION_RECT, DRAW_RECT;
-
+    Level _level = 0;
     Point _destination;
     std::string _name;
     const ClassInfo *_class;
@@ -44,6 +44,8 @@ public:
     bool isInPlayersCity() const;
     void setAsKing() { _isKing = true; }
     bool isKing() const { return _isKing; }
+    Level level() const { return _level; }
+    void level(Level l) { _level = l; }
 
     // From Sprite
     void draw(const Client &client) const override;

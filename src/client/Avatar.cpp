@@ -110,7 +110,7 @@ const Texture &Avatar::tooltip() const{
     // Class
     tb.addGap();
     tb.setColor(Color::ITEM_TAGS);
-    tb.addLine(getClass().name());
+    tb.addLine("Level "s + toString(_level) + " "s + getClass().name());
 
     // Debug info
     /*if (isDebug()){

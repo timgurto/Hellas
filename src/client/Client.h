@@ -428,7 +428,6 @@ private:
 
     XP _xp = 40;
     XP _maxXP = 100;
-    Level _level = 0;
     
     void addParticles(const ParticleProfile *profile, const Point &location, size_t qty);
     void addParticles(const ParticleProfile *profile, const Point &location); // Single hit
