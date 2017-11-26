@@ -1,13 +1,23 @@
 #include <cassert>
 
 #include "Class.h"
+#include "User.h"
 
-Class::Class(const ClassType *type) :
-    _type(type)
+bool Class::canTakeATalent() const {
+    return _talentPointsAllocated < talentPointsAvailable();
+}
+
+int Class::talentPointsAvailable() const {
+    return _owner->level() + 1;
+}
+
+Class::Class(const ClassType &type, const User &owner) :
+    _type(&type),
+    _owner(&owner)
 {}
 
 void Class::takeTalent(const Talent * talent) {
-    ++talentPointsAllocated;
+    ++_talentPointsAllocated;
 
     if (_talentRanks.find(talent) == _talentRanks.end()) {
         _talentRanks[talent] = 1;

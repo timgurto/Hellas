@@ -276,7 +276,14 @@ void Server::run(){
 }
 
 void Server::addUser(const Socket &socket, const std::string &name){
-    User newUser(name, 0, socket);
+    auto newUserToInsert = User{ name, {}, socket };
+
+    // Add new user to list
+    std::set<User>::const_iterator it = _users.insert(newUserToInsert).first;
+    _usersByName[name] = &*it;
+
+    auto &newUser = const_cast<User &>(*it);
+
     const bool userExisted = readUserData(newUser);
     if (!userExisted) {
         newUser.setClass(chooseRandomClass());
@@ -371,10 +378,6 @@ void Server::addUser(const Socket &socket, const std::string &name){
         }
         sendMessage(newUser.socket(), SV_CONSTRUCTIONS, args);
     }
-
-    // Add new user to list
-    std::set<User>::const_iterator it = _users.insert(newUser).first;
-    _usersByName[name] = &*it;
 
     // Add user to location-indexed trees
     const User *userP = &*it;

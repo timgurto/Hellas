@@ -52,16 +52,18 @@ private:
 
 using ClassTypes = std::map<ClassType::ID, ClassType>;
 
+class User;
+
 // A single user's instance of a ClassType
 class Class {
 public:
     using TalentRanks = std::map<const Talent *, unsigned>;
-    unsigned talentPointsAllocated = 0; // Updated in takeTalent()
-    static const unsigned TALENT_POINTS_AVAILABLE = 5;
-    bool canTakeATalent() const { return talentPointsAllocated < TALENT_POINTS_AVAILABLE; }
+    bool canTakeATalent() const;
+    int talentPointsAvailable() const;
 
-    Class(const ClassType *type = nullptr);
-    const ClassType &type() const { assert(_type);  return *_type; }
+    Class() = default;
+    Class(const ClassType &type, const User &owner);
+    const ClassType &type() const { return *_type; }
 
     bool hasTalent(const Talent *talent) { return _talentRanks[talent] > 0; }
     void takeTalent(const Talent *talent);
@@ -70,6 +72,8 @@ public:
     void applyStatsTo(Stats &baseStats) const;
 
 private:
-    const ClassType *_type = nullptr;
+    const ClassType *_type{ nullptr };
     TalentRanks _talentRanks{};
+    int _talentPointsAllocated{ 0 }; // Updated in takeTalent()
+    const User *_owner{ nullptr };
 };

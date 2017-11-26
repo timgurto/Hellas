@@ -11,6 +11,7 @@
 #include "Recipe.h"
 #include "ServerItem.h"
 #include "objects/Object.h"
+#include "../Optional.h"
 #include "../Point.h"
 #include "../Socket.h"
 #include "../Stats.h"
@@ -35,7 +36,7 @@ private:
     std::string _name;
     Socket _socket;
 
-    Class _class;
+    Optional<Class> _class;
 
     Action _action;
     ms_t _actionTime; // Time remaining on current action.
@@ -74,9 +75,9 @@ public:
 
     const std::string &name() const { return _name; }
     const Socket &socket() const { return _socket; }
-    const Class &getClass() const { return _class; }
-    Class &getClass() { return _class; }
-    void setClass(const ClassType &type) { _class = { &type }; }
+    const Class &getClass() const { return _class.value(); }
+    Class &getClass() { return _class.value(); }
+    void setClass(const ClassType &type) { _class = { type, *this }; }
     size_t driving() const { return _driving; }
     void driving(size_t serial) { _driving = serial; }
     bool isDriving() const { return _driving != 0; }
