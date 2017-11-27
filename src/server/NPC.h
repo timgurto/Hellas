@@ -15,7 +15,7 @@ class NPC : public Entity {
     };
     State _state;
     Entity *_recentAttacker = nullptr;
-    Level _level;
+    Level _level{ 0 };
 
 public:
     NPC(const NPCType *type, const Point &loc); // Generates a new serial

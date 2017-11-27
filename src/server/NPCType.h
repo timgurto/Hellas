@@ -8,6 +8,7 @@
 class NPCType : public ObjectType{
 
     LootTable _lootTable;
+    Level _level;
 
 public:
     static Stats BASE_STATS;
@@ -18,6 +19,9 @@ public:
     static void init();
     
     const LootTable &lootTable() const { return _lootTable; }
+    void level(Level l) { _level = l; }
+    Level level() const { return _level; }
+
 
     virtual char classTag() const override { return 'n'; }
 

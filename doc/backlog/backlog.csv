@@ -308,7 +308,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 340,Make talents persistent,21,21,Bug,,,,2
 341,Make level/XP persistent,55,8,Bug,,TRUE,,2
 342,Show levels in target panels,21,5,Usability,,,,2
-343,Give NPCs levels,21,3,Feature,,,,2
+343,Give NPCs levels,21,3,Feature,,TRUE,,2
 344,Modify combat based on level difference,34,5,Feature,,,,2
 345,Make objects always their attacker's level,8,8,Feature,,,,2
 346,"Implement DoTs properly, with combat modifiers, XP, aggro",21,21,Bug,,,,2

@@ -5,7 +5,7 @@
 
 NPC::NPC(const NPCType *type, const Point &loc):
     Entity(type, loc),
-    _level(5),
+    _level(type->level()),
     _state(IDLE)
 {
     _loot.reset(new Loot);
