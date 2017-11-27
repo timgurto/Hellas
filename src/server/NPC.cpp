@@ -5,6 +5,7 @@
 
 NPC::NPC(const NPCType *type, const Point &loc):
     Entity(type, loc),
+    _level(5),
     _state(IDLE)
 {
     _loot.reset(new Loot);
@@ -204,6 +205,9 @@ void NPC::sendInfoToClient(const User &targetUser) const {
 
     server.sendMessage(client, SV_OBJECT, makeArgs(serial(), location().x, location().y,
                                                    type()->id()));
+
+    // Level
+    server.sendMessage(client, SV_NPC_LEVEL, makeArgs(serial(), _level));
 
     // Hitpoints
     if (health() < stats().maxHealth)

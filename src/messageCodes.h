@@ -199,6 +199,10 @@ enum MessageCode{
     // Arguments: serial
     SV_REMOVE_OBJECT,
 
+    // 
+    // Arguments: serial, level
+    SV_NPC_LEVEL,
+
     // Details of an object's merchant slot
     // Arguments: serial, slot, ware, wareQty, price, priceQty
     SV_MERCHANT_SLOT,

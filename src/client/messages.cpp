@@ -576,6 +576,19 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_NPC_LEVEL:
+        {
+            auto serial = size_t{};
+            auto level = Level{};
+            singleMsg >> serial >> del >> level >> del;
+            if (del != MSG_END)
+                break;
+
+            handle_SV_NPC_LEVEL(serial, level);
+
+            break;
+        }
+
         case SV_OWNER:
         {
             int serial;
@@ -1574,6 +1587,15 @@ void Client::handle_SV_LEVEL_UP(const std::string & username) {
 
     if (username == _username)
         populateClassWindow();
+}
+
+void Client::handle_SV_NPC_LEVEL(size_t serial, Level level) {
+    auto objIt = _objects.find(serial);
+    if (objIt == _objects.end()) {
+        return;
+    }
+
+    objIt->second->level(level);
 }
 
 

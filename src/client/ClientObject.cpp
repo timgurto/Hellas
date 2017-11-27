@@ -836,6 +836,13 @@ const Texture &ClientObject::tooltip() const{
         tb.addLine("Class tag: " + toString(classTag()));
     }
 
+    // Level
+    if (classTag() == 'n') {
+        tb.addGap();
+        tb.setColor(Color::ITEM_TAGS);
+        tb.addLine("Level "s + toString(level()));
+    }
+
     // Owner
     if (!owner().empty()){
         tb.addGap();

@@ -471,6 +471,7 @@ private:
     void handle_SV_KNOWN_SPELLS(const std::set<std::string> && knownSpellIDs);
     void handle_SV_LEARNED_SPELL(const std::string &spellID);
     void handle_SV_LEVEL_UP(const std::string &username);
+    void handle_SV_NPC_LEVEL(size_t serial, Level level);
 
     void sendClearTargetMessage() const;
     
