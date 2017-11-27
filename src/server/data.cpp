@@ -33,6 +33,14 @@ bool Server::readUserData(User &user){
         }
         user.setClass(it->second);
 
+        auto level = Level{ 0 };
+        if (xr.findAttr(elem, "level", level))
+            user.level(level);
+
+        auto xp = XP{ 0 };
+        if (xr.findAttr(elem, "xp", xp))
+            user.xp(xp);
+
         auto n = 0;
         if (xr.findAttr(elem, "isKing", n) && n == 1)
             makePlayerAKing(user);
@@ -109,6 +117,8 @@ void Server::writeUserData(const User &user) const{
     xw.setAttr(e, "class", user.getClass().type().id());
     if (_kings.isPlayerAKing(user.name()))
         xw.setAttr(e, "isKing", 1);
+    xw.setAttr(e, "level", user.level());
+    xw.setAttr(e, "xp", user.xp());
 
     e = xw.addChild("location");
     xw.setAttr(e, "x", user.location().x);

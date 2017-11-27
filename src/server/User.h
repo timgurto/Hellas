@@ -180,7 +180,9 @@ public:
     static const Level MAX_LEVEL = 60;
     static const std::vector<XP> XP_PER_LEVEL;
     Level level() const { return _level; }
+    void level(Level l) { _level = l; }
     XP xp() const { return _xp; }
+    void xp(XP newXP) { _xp = newXP; }
     void addXP(XP amount);
 
     void update(ms_t timeElapsed);
