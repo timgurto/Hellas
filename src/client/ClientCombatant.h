@@ -25,6 +25,8 @@ public:
     void maxHealth(Hitpoints newMax) { _maxHealth = newMax; }
     void maxEnergy(Energy newMax) { _maxEnergy = newMax; }
     void drawHealthBarIfAppropriate(const Point &objectLocation, px_t objHeight) const;
+    Level level() const { return _level; }
+    void level(Level l) { _level = l; }
 
     virtual void sendTargetMessage() const = 0;
     virtual void sendSelectMessage() const = 0;
@@ -50,6 +52,7 @@ private:
     Hitpoints _maxHealth, _health;
     Energy _maxEnergy, _energy;
     Buffs _buffs{}, _debuffs{};
+    Level _level{ 0 };
 };
 
 #endif

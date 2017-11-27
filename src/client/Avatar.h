@@ -22,7 +22,6 @@ class Avatar : public Sprite, public ClientCombatant{
     std::string _city;
     ClientItem::vect_t _gear;
     bool _isKing = false;
-    Level _level = 0;
     bool _driving;
 
 public:
@@ -44,9 +43,7 @@ public:
     bool isInPlayersCity() const;
     void setAsKing() { _isKing = true; }
     bool isKing() const { return _isKing; }
-    Level level() const { return _level; }
-    void level(Level l) { _level = l; }
-    void levelUp() { ++_level; }
+    void levelUp() { level( level() + 1); }
 
     // From Sprite
     void draw(const Client &client) const override;
