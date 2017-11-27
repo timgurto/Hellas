@@ -1570,6 +1570,7 @@ void Client::handle_SV_LEVEL_UP(const std::string & username) {
     }
 
     avatar->levelUp();
+    avatar->refreshTooltip();
 
     if (username == _username)
         populateClassWindow();
