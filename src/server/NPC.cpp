@@ -156,8 +156,10 @@ void NPC::processAI(ms_t timeElapsed){
     case ATTACK:
         // React to recent attacker
         if (_recentAttacker != nullptr) {
-            target(_recentAttacker);
-            _state = CHASE;
+            if (target() != _recentAttacker) {
+                target(_recentAttacker);
+                _state = CHASE;
+            }
             _recentAttacker = nullptr;
             break;
         }
