@@ -42,7 +42,7 @@ public:
     void initializeMenu();
     List *menu() { return _menu; }
 
-    static void openMenu(Element &e, const Point &mousePos);
+    static void openMenu(Element &e, const ScreenPoint &mousePos);
     void hideMenu(){ _menu->hide(); }
 
 private:

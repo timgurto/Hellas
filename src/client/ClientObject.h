@@ -55,7 +55,7 @@ protected:
 public:
     ClientObject(const ClientObject &rhs);
     // Serial only: create dummy object, for set searches
-    ClientObject(size_t serial, const ClientObjectType *type = nullptr, const Point &loc = Point());
+    ClientObject(size_t serial, const ClientObjectType *type = nullptr, const MapPoint &loc = MapPoint{});
     virtual ~ClientObject();
 
     bool operator<(const ClientObject &rhs) const { return _serial < rhs._serial; }
@@ -92,7 +92,7 @@ public:
     virtual const Texture &highlightImage() const override;
     const Texture &tooltip() const override; // Getter; creates tooltip on first call.
 
-    Rect collisionRect() const { return objectType()->collisionRect() + location(); }
+    MapRect collisionRect() const { return objectType()->collisionRect() + location(); }
 
     virtual void onLeftClick(Client &client) override;
     virtual void onRightClick(Client &client) override;
@@ -109,7 +109,7 @@ public:
     virtual void sendSelectMessage() const override;
     virtual const Sprite *entityPointer() const override { return this; }
     virtual bool canBeAttackedByPlayer() const override;
-    virtual const Point &combatantLocation() const { return location(); }
+    virtual const MapPoint &combatantLocation() const { return location(); }
     const Color &healthBarColor() const override { return nameColor(); }
 
     // From Sprite

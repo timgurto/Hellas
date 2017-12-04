@@ -1,7 +1,7 @@
 #include "Client.h"
 #include "ClientVehicle.h"
 
-ClientVehicle::ClientVehicle(size_t serial, const ClientVehicleType *type, const Point &loc):
+ClientVehicle::ClientVehicle(size_t serial, const ClientVehicleType *type, const MapPoint &loc):
 ClientObject(serial, type, loc),
 _driver(nullptr)
 {}
@@ -26,7 +26,7 @@ void ClientVehicle::draw(const Client &client) const{
     const ClientVehicleType &cvt = dynamic_cast<const ClientVehicleType &>(*type());
     if (cvt.drawDriver() && driver() != nullptr){
         Avatar copy = *driver();
-        copy.location(location() + cvt.driverOffset());
+        copy.location(location() + toMapPoint(cvt.driverOffset()));
         copy.driving(false);
         copy.draw(client);
     }

@@ -37,9 +37,9 @@ enum CombatResult {
 class Entity {
 
 public:
-    Entity(const EntityType *type, const Point &loc);
+    Entity(const EntityType *type, const MapPoint &loc);
     Entity(size_t serial); // TODO make private
-    Entity(const Point &loc); // TODO make private
+    Entity(const MapPoint &loc); // TODO make private
     virtual ~Entity();
     
     const EntityType *type() const { return _type; }
@@ -71,9 +71,9 @@ public:
     void removeWatcher(const std::string &username);
     
     // Space
-    const Point &location() const { return _location; }
-    void location(const Point &loc) { _location = loc; }
-    const Rect collisionRect() const { return type()->collisionRect() + _location; }
+    const MapPoint &location() const { return _location; }
+    void location(const MapPoint &loc) { _location = loc; }
+    const MapRect collisionRect() const { return type()->collisionRect() + _location; }
     bool collides() const { return type()->collides() && _health != 0; }
 
 
@@ -131,7 +131,7 @@ public:
     time elapsed, and checking for collisions.
     Set location to the new, legal location.
     */
-    void updateLocation(const Point &dest);
+    void updateLocation(const MapPoint &dest);
 
 protected:
     void type(const EntityType *type) { _type = type; }
@@ -150,7 +150,7 @@ private:
 
     // Space
     size_t _serial;
-    Point _location;
+    MapPoint _location;
     ms_t _lastLocUpdate; // Time that the location was last updated; used to determine max distance
 
 
@@ -174,12 +174,12 @@ private:
 class Dummy : public Entity{
 public:
     static Dummy Serial(size_t serial) { return Dummy(serial); }
-    static Dummy Location(const Point &loc) { return Dummy(loc); }
-    static Dummy Location(double x, double y) { return Dummy(Point(x, y)); }
+    static Dummy Location(const MapPoint &loc) { return Dummy(loc); }
+    static Dummy Location(double x, double y) { return Dummy({ x, y }); }
 private:
     friend class Entity;
     Dummy(size_t serial) : Entity(serial) {}
-    Dummy(const Point &loc) : Entity(loc) {}
+    Dummy(const MapPoint &loc) : Entity(loc) {}
 
     // Necessary overrides to make this a concrete class
     char classTag() const override { return 'd'; }

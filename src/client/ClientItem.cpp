@@ -4,7 +4,7 @@
 #include "../XmlReader.h"
 
 std::map<int, size_t> ClientItem::gearDrawOrder;
-std::vector<Point> ClientItem::gearOffsets(Client::GEAR_SLOTS);
+std::vector<ScreenPoint> ClientItem::gearOffsets(Client::GEAR_SLOTS);
 
 ClientItem::ClientItem(const std::string &id, const std::string &name):
 Item(id),
@@ -31,12 +31,16 @@ const ClientItem *toClientItem(const Item *item){
     return dynamic_cast<const ClientItem *>(item);
 }
 
-void ClientItem::draw(const Point &loc) const{
+static ScreenPoint toScreenPoint(const MapPoint &rhs) {
+    return{ toInt(rhs.x), toInt(rhs.y) };
+}
+
+void ClientItem::draw(const MapPoint &loc) const{
     if (_gearSlot <= Client::GEAR_SLOTS && _gearImage){
-        Point drawLoc =
+        ScreenPoint drawLoc =
             _drawLoc +                   // The item's offset
             gearOffsets[_gearSlot] +     // The slot's offset
-            loc +                        // The avatar's location
+            toScreenPoint(loc) +      // The avatar's location
             Client::_instance->offset(); // The overall map offset
         _gearImage.draw(drawLoc);
     }

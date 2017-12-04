@@ -51,7 +51,7 @@ void Client::updateLoginParticles(double delta){
     std::vector<const ParticleProfile *> profiles;
     profiles.push_back(findParticleProfile("loginFireLarge"));
     profiles.push_back(findParticleProfile("loginFire"));
-    static const Point
+    const MapPoint
         LEFT_BRAZIER(153, 281),
         RIGHT_BRAZIER(480, 282);
 
@@ -132,11 +132,11 @@ void Client::initLoginScreen(){
     px_t
         Y = (SCREEN_Y - BUTTON_HEIGHT) / 2;
 
-    _loginUI.push_back(new Label(Rect(BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT),
+    _loginUI.push_back(new Label({ BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT },
                                  "Name:", Element::CENTER_JUSTIFIED));
     Y += Element::TEXT_HEIGHT;
 
-    nameBox = new TextBox(Rect(BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT));
+    nameBox = new TextBox({ BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT });
     nameBox->text(_username);
     TextBox::focus(nameBox);
     _loginUI.push_back(nameBox);
@@ -145,10 +145,10 @@ void Client::initLoginScreen(){
 
     Y += Element::TEXT_HEIGHT + GAP;
 
-    _loginUI.push_back(new Button(Rect(BUTTON_X, Y, BUTTON_W, BUTTON_HEIGHT), "Login", login));
+    _loginUI.push_back(new Button({ BUTTON_X, Y, BUTTON_W, BUTTON_HEIGHT }, "Login", login));
 
-    _loginUI.push_back(new Button(Rect(SCREEN_X - BUTTON_W - GAP, SCREEN_Y - BUTTON_HEIGHT - GAP,
-                                       BUTTON_W, BUTTON_HEIGHT), "Quit", exit, &_loop));
+    _loginUI.push_back(new Button({ SCREEN_X - BUTTON_W - GAP, SCREEN_Y - BUTTON_HEIGHT - GAP,
+                                       BUTTON_W, BUTTON_HEIGHT }, "Quit", exit, &_loop));
 
     std::string serverIP;
     if (cmdLineArgs.contains("server-ip"))
@@ -157,11 +157,11 @@ void Client::initLoginScreen(){
         serverIP = _defaultServerAddress;
     }
     auto serverAddressY = SCREEN_Y - Element::TEXT_HEIGHT - GAP;
-    _loginUI.push_back(new Label(Rect(GAP, serverAddressY, 200, Element::TEXT_HEIGHT),
+    _loginUI.push_back(new Label({ GAP, serverAddressY, 200, Element::TEXT_HEIGHT },
         "Server: " + serverIP));
 
     auto clientVersionY = serverAddressY - Element::TEXT_HEIGHT - 2;
-    _loginUI.push_back(new Label(Rect(GAP, clientVersionY, 200, Element::TEXT_HEIGHT),
+    _loginUI.push_back(new Label({ GAP, clientVersionY, 200, Element::TEXT_HEIGHT },
             "Client version: " + version()));
 
     // Images
@@ -212,8 +212,8 @@ void Client::handleLoginInput(double delta){
         case SDL_MOUSEMOTION: {
             px_t x, y;
             SDL_GetMouseState(&x, &y);
-            _mouse.x = x * SCREEN_X / static_cast<double>(renderer.width());
-            _mouse.y = y * SCREEN_Y / static_cast<double>(renderer.height());
+            _mouse.x = toInt(x * SCREEN_X / static_cast<double>(renderer.width()));
+            _mouse.y = toInt(y * SCREEN_Y / static_cast<double>(renderer.height()));
                 
             for (Element *element : _loginUI)
                 if (element->visible())

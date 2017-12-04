@@ -7,8 +7,8 @@
 
 #ifndef NO_SDL
 #include "Color.h"
-class NormalVariable;
-struct Rect;
+#include "Rect.h"
+class NormalVariable;;
 #endif // NO_SDL
 
 struct StatsMod;
@@ -69,7 +69,17 @@ public:
     Any missing attributes will be assumed to be 0.
     Return value: whether or not the child was found.
     */
-    static bool findRectChild(const std::string &val, TiXmlElement *elem, Rect &rect);
+    template<typename T>
+    static bool findRectChild(const std::string &val, TiXmlElement *elem, Rect<T> &rect) {
+        TiXmlElement *child = XmlReader::findChild(val, elem);
+        if (child == nullptr)
+            return false;
+        if (!XmlReader::findAttr(child, "x", rect.x)) rect.x = 0;
+        if (!XmlReader::findAttr(child, "y", rect.y)) rect.y = 0;
+        if (!XmlReader::findAttr(child, "w", rect.w)) rect.w = 0;
+        if (!XmlReader::findAttr(child, "h", rect.h)) rect.h = 0;
+        return true;
+    }
 #endif //NO_SDL
 
     /*

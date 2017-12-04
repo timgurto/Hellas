@@ -14,15 +14,14 @@ void Client::initializeBuildWindow(){
         BUTTON_HEIGHT = Element::TEXT_HEIGHT,
         WIN_HEIGHT = toInt(10.5 * BUTTON_HEIGHT);
 
-    _buildWindow = Window::WithRectAndTitle(
-            Rect(80, 30, BUTTON_WIDTH, WIN_HEIGHT), "Construction");
+    _buildWindow = Window::WithRectAndTitle( { 80, 30, BUTTON_WIDTH, WIN_HEIGHT }, "Construction");
     static const px_t GAP = 2;
-    _buildWindow->addChild(new CheckBox(Rect(0, GAP, BUTTON_WIDTH, Element::TEXT_HEIGHT),
+    _buildWindow->addChild(new CheckBox({ 0, GAP, BUTTON_WIDTH, Element::TEXT_HEIGHT },
                                         _multiBuild, "Build multiple"));
     px_t y = Element::TEXT_HEIGHT + GAP;
     _buildWindow->addChild(new Line(0, y, BUTTON_WIDTH));
     y += GAP;
-    _buildList = new ChoiceList(Rect(0, y, BUTTON_WIDTH, WIN_HEIGHT - y), BUTTON_HEIGHT);
+    _buildList = new ChoiceList({ 0, y, BUTTON_WIDTH, WIN_HEIGHT - y }, BUTTON_HEIGHT);
     _buildWindow->addChild(_buildList);
 }
 
@@ -34,9 +33,9 @@ void Client::populateBuildList(){
         if (it == _objectTypes.end())
             continue;
         const auto ot = *it;
-        Element *listElement = new Element(Rect());
+        Element *listElement = new Element({});
         _buildList->addChild(listElement);
-        Label *label = new Label(Rect(2, 0, listElement->width(), listElement->height()),
+        Label *label = new Label({ 2, 0, listElement->width(), listElement->height() },
                                  ot->name());
         listElement->addChild(label);
         listElement->setLeftMouseUpFunction(chooseConstruction);
@@ -47,7 +46,7 @@ void Client::populateBuildList(){
     _buildList->markChanged();
 }
 
-void Client::chooseConstruction(Element &e, const Point &mousePos){
+void Client::chooseConstruction(Element &e, const ScreenPoint &mousePos){
     Client &client = *Client::_instance;
     const std::string selectedID = client._buildList->getSelected();
     if (selectedID.empty()){

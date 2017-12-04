@@ -24,7 +24,7 @@ public:
     const Energy &maxEnergy() const { return _maxEnergy; }
     void maxHealth(Hitpoints newMax) { _maxHealth = newMax; }
     void maxEnergy(Energy newMax) { _maxEnergy = newMax; }
-    void drawHealthBarIfAppropriate(const Point &objectLocation, px_t objHeight) const;
+    void drawHealthBarIfAppropriate(const MapPoint &objectLocation, px_t objHeight) const;
     Level level() const { return _level; }
     void level(Level l) { _level = l; }
 
@@ -32,7 +32,7 @@ public:
     virtual void sendSelectMessage() const = 0;
     virtual bool canBeAttackedByPlayer() const { return isAlive(); }
     virtual const Sprite *entityPointer() const = 0;
-    virtual const Point &combatantLocation() const = 0;
+    virtual const MapPoint &combatantLocation() const = 0;
     virtual bool shouldDrawHealthBar() const;
     virtual const Color &healthBarColor() const = 0;
 

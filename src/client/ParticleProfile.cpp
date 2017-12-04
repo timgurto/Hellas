@@ -21,7 +21,7 @@ ParticleProfile::~ParticleProfile(){
         delete variety;
 }
 
-void ParticleProfile::addVariety(const std::string &imageFile, size_t count, const Rect &drawRect) {
+void ParticleProfile::addVariety(const std::string &imageFile, size_t count, const ScreenRect &drawRect) {
     SpriteType *particleType = new SpriteType(drawRect, "Images/Particles/" + imageFile + ".png");
     if (_alpha != 0xff)
         particleType->setAlpha(0x7f);
@@ -31,8 +31,8 @@ void ParticleProfile::addVariety(const std::string &imageFile, size_t count, con
 }
 
 void ParticleProfile::addVariety(const std::string &imageFile, size_t count) {
-    SpriteType *particleType = new SpriteType(Rect(), "Images/Particles/" + imageFile + ".png");
-    Rect editedRect = particleType->drawRect();
+    SpriteType *particleType = new SpriteType({}, "Images/Particles/" + imageFile + ".png");
+    auto editedRect = particleType->drawRect();
     editedRect.x = -particleType->width() / 2;
     editedRect.y = -particleType->height() / 2;
     particleType->drawRect(editedRect);
@@ -43,7 +43,7 @@ void ParticleProfile::addVariety(const std::string &imageFile, size_t count) {
         _pool.push_back(particleType);
 }
 
-Particle *ParticleProfile::instantiate(const Point &location) const{
+Particle *ParticleProfile::instantiate(const MapPoint &location) const{
     // Choose random variety
     assert (!_pool.empty());
     size_t index = rand() % _pool.size();
@@ -52,16 +52,16 @@ Particle *ParticleProfile::instantiate(const Point &location) const{
     // Choose random position, then set location
     double angle = 2 * PI * randDouble();
     double distance = _distance.generate();
-    Point locationOffset(cos(angle) * distance, sin(angle) * distance);
-    Point startingLoc = location + locationOffset;
+    MapPoint locationOffset(cos(angle) * distance, sin(angle) * distance);
+    MapPoint startingLoc = location + locationOffset;
 
     // Initialize velocity from base direction
-    Point startingVelocity = _direction;
+    MapPoint startingVelocity = _direction;
 
     // Modify velocity based on random direction
     angle = 2 * PI * randDouble();
     double velocity = _velocity.generate();
-    startingVelocity += Point(cos(angle) * velocity, sin(angle) * velocity);
+    startingVelocity += {cos(angle) * velocity, sin(angle) * velocity};
 
     if (_noZDimension){
         startingLoc.y = location.y;

@@ -1,63 +1,104 @@
-// (C) 2015 Tim Gurto
-
 #ifndef POINT_H
 #define POINT_H
 
+#include "Rect.h"
 #include "types.h"
-#include "util.h"
 
 // Describes a 2D point
+template<typename T>
 struct Point{
-    double x;
-    double y;
+    T x;
+    T y;
 
-    Point(double xArg = 0, double yArg = 0);
+    Point(T xArg = 0, T yArg = 0) :
+        x(xArg),
+        y(yArg) {
+    }
 
-    Point(const Rect &rect);
+    Point(const Rect<T> &rect) :
+        x(rect.x),
+        y(rect.y) {
+    }
 
-    bool operator==(const Point &rhs) const;
-    Point &operator+=(const Point &rhs);
-    Point &operator-=(const Point &rhs);
-    Point operator+(const Point &rhs) const;
-    Point operator-(const Point &rhs) const;
+    bool operator==(const Point &rhs) const {
+        return
+            abs(x - rhs.x) <= EPSILON &&
+            abs(y - rhs.y) <= EPSILON;
+    }
+
+    Point &operator+=(const Point &rhs) {
+        this->x += rhs.x;
+        this->y += rhs.y;
+        return *this;
+    }
+
+    Point &operator-=(const Point &rhs) {
+        this->x -= rhs.x;
+        this->y -= rhs.y;
+        return *this;
+    }
+
+    Point operator+(const Point &rhs) const {
+        Point ret = *this;
+        ret += rhs;
+        return ret;
+    }
+
+    Point operator-(const Point &rhs) const {
+        Point ret = *this;
+        ret -= rhs;
+        return ret;
+    }
+
+    operator Rect<T>() const {
+        return{ x, y, 0, 0 };
+    }
 
 private:
     static const double EPSILON;
 };
 
-inline Rect operator+(const Rect &lhs, const Point &rhs){
-    Rect r = lhs;
-    r.x += toInt(rhs.x);
-    r.y += toInt(rhs.y);
-    return r;
+template<typename T>
+const double Point<T>::EPSILON = 0.001;
+
+template<typename T>
+Rect<T> operator+(const Rect<T> &lhs, const Point<T> &rhs){
+    return{ lhs.x + rhs.x, lhs.y + rhs.y };
 }
 
-inline Rect operator-(const Rect &lhs, const Point &rhs){
-    Rect r = lhs;
-    r.x -= toInt(rhs.x);
-    r.y -= toInt(rhs.y);
-    return r;
+template<typename T>
+Rect<T> operator-(const Rect<T> &lhs, const Point<T> &rhs){
+    return{ lhs.x - rhs.x, lhs.y - rhs.y };
 }
 
-inline Point operator-(const Point &lhs, const Rect &rhs){
-    Point p = lhs;
-    p.x -= rhs.x;
-    p.y -= rhs.y;
-    return p;
+template<typename T>
+Point<T> operator-(const Point<T> &lhs, const Rect<T> &rhs){
+    return{ lhs.x - rhs.x, lhs.y - rhs.y };
 }
 
-inline Point operator+(const Point &lhs, const Rect &rhs){
-    Point p = lhs;
-    p.x += rhs.x;
-    p.y += rhs.y;
-    return p;
+template<typename T>
+Point<T> operator+(const Point<T> &lhs, const Rect<T> &rhs){
+    return{ lhs.x + rhs.x, lhs.y + rhs.y };
 }
 
-inline Point operator*(const Point &lhs, double rhs){
-    Point p = lhs;
-    p.x *= rhs;
-    p.y *= rhs;
-    return p;
+template<typename T>
+Point<T> operator*(const Point<T> &lhs, T rhs){
+    return{ lhs.x * rhs, lhs.y * rhs };
 }
+
+template<typename T>
+bool collision(const Point<T> &point, const Rect<T> &rect) {
+    return
+        point.x > rect.x &&
+        point.x < rect.x + rect.w &&
+        point.y > rect.y &&
+        point.y < rect.y + rect.h;
+}
+
+using MapPoint = Point<double>;
+using ScreenPoint = Point<px_t>;
+
+MapPoint toMapPoint(const ScreenPoint &rhs);
+ScreenPoint toScreenPoint(const MapPoint &rhs);
 
 #endif

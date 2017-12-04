@@ -15,14 +15,14 @@ bool isDebug(){
     return debug;
 }
 
-double distance(const Point &a, const Point &b){
+double distance(const MapPoint &a, const MapPoint &b){
     double
         xDelta = a.x - b.x,
         yDelta = a.y - b.y;
     return sqrt(xDelta * xDelta + yDelta * yDelta);
 }
 
-double distance(const Point &p, const Point &a, const Point &b){
+double distance(const MapPoint &p, const MapPoint &a, const MapPoint &b){
     if (a == b)
         return distance(p, a);
     double numerator = (b.y - a.y) * p.x -
@@ -37,13 +37,14 @@ double distance(const Point &p, const Point &a, const Point &b){
     return numerator / denominator;
 }
 
-Point midpoint(const Point &a, const Point &b){
-    return Point(
+MapPoint midpoint(const MapPoint &a, const MapPoint &b){
+    return{
         (a.x + b.x) / 2,
-        (a.y + b.y) / 2);
+        (a.y + b.y) / 2
+    };
 }
 
-Point interpolate(const Point &a, const Point &b, double dist){
+MapPoint interpolate(const MapPoint &a, const MapPoint &b, double dist){
     const double
         xDelta = b.x - a.x,
         yDelta = b.y - a.y;
@@ -59,11 +60,10 @@ Point interpolate(const Point &a, const Point &b, double dist){
     const double
         xNorm = xDelta / lengthAB,
         yNorm = yDelta / lengthAB;
-    return Point(a.x + xNorm * dist,
-                 a.y + yNorm * dist);
+    return{ a.x + xNorm * dist, a.y + yNorm * dist };
 }
 
-Point extrapolate(const Point & a, const Point & b, double dist) {
+MapPoint extrapolate(const MapPoint & a, const MapPoint & b, double dist) {
     const double
         xDelta = b.x - a.x,
         yDelta = b.y - a.y;
@@ -80,14 +80,6 @@ Point extrapolate(const Point & a, const Point & b, double dist) {
         xNorm = xDelta / lengthAB,
         yNorm = yDelta / lengthAB;
     return{ a.x + xNorm * dist, a.y + yNorm * dist };
-}
-
-bool collision(const Point &point, const Rect &rect){
-    return
-        point.x > rect.x &&
-        point.x < rect.x + rect.w &&
-        point.y > rect.y &&
-        point.y < rect.y + rect.h;
 }
 
 std::string msAsTimeDisplay(ms_t t) {

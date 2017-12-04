@@ -88,11 +88,11 @@ void Target::initializeMenu(){
     static const px_t
         WIDTH = 120,
         ITEM_HEIGHT = 20;
-    _menu = new List(Rect(_menu->absMouse->x, _menu->absMouse->y, WIDTH, 50));
+    _menu = new List({ _menu->absMouse->x, _menu->absMouse->y, WIDTH, 50 });
     _menu->hide();
 }
 
-void Target::openMenu(Element &e, const Point &mousePos){
+void Target::openMenu(Element &e, const ScreenPoint &mousePos){
     List &menu = dynamic_cast<List &>(e);
     menu.setPosition(
             toInt(menu.absMouse->x),

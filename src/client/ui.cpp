@@ -31,9 +31,9 @@ void Client::initUI() {
 
 void Client::initChatLog() {
     drawLoadingScreen("Initializing chat log", 0.4);
-    _chatContainer = new Element(Rect(0, SCREEN_Y - _config.chatH, _config.chatW, _config.chatH));
-    _chatTextBox = new TextBox(Rect(0, _config.chatH, _config.chatW));
-    _chatLog = new List(Rect(0, 0, _config.chatW, _config.chatH - _chatTextBox->height()));
+    _chatContainer = new Element({ 0, SCREEN_Y - _config.chatH, _config.chatW, _config.chatH });
+    _chatTextBox = new TextBox({ 0, _config.chatH, _config.chatW });
+    _chatLog = new List({ 0, 0, _config.chatW, _config.chatH - _chatTextBox->height() });
     _chatTextBox->setPosition(0, _chatLog->height());
     _chatTextBox->hide();
 
@@ -78,7 +78,7 @@ void Client::initWindows() {
 }
 
 void Client::initCastBar() {
-    const Rect
+    const ScreenRect
         CAST_BAR_RECT(SCREEN_X / 2 - _config.castBarW / 2, _config.castBarY,
             _config.castBarW, _config.castBarH),
         CAST_BAR_DIMENSIONS(0, 0, _config.castBarW, _config.castBarH);
@@ -218,8 +218,8 @@ void Client::addButtonToMenu(Element *menuBar, size_t index, Element *toToggle,
         MENU_BUTTON_W = 12,
         MENU_BUTTON_H = 12;
 
-    Button *button = new Button(Rect(MENU_BUTTON_W * index, 0, MENU_BUTTON_W, MENU_BUTTON_H), "",
-        Element::toggleVisibilityOf, toToggle);
+    Button *button = new Button({ MENU_BUTTON_W * static_cast<px_t>(index), 0,
+        MENU_BUTTON_W, MENU_BUTTON_H }, "", Element::toggleVisibilityOf, toToggle);
     button->addChild(new Picture(2, 2, { "Images/UI/" + iconFile, Color::MAGENTA }));
     button->setTooltip(tooltip);
     menuBar->addChild(button);
@@ -233,21 +233,21 @@ void Client::initPerformanceDisplay() {
         HARDWARE_STATS_W = 100,
         HARDWARE_STATS_H = 44,
         HARDWARE_STATS_LABEL_HEIGHT = 11;
-    static const Rect
+    static const ScreenRect
         HARDWARE_STATS_RECT(SCREEN_X - HARDWARE_STATS_W, 0, HARDWARE_STATS_W, HARDWARE_STATS_H);
-    Element *hardwareStats = new Element(Rect(SCREEN_X - HARDWARE_STATS_W, 0,
-        HARDWARE_STATS_W, HARDWARE_STATS_H));
+    Element *hardwareStats = new Element(
+        { SCREEN_X - HARDWARE_STATS_W, 0, HARDWARE_STATS_W, HARDWARE_STATS_H });
     LinkedLabel<unsigned> *fps = new LinkedLabel<unsigned>(
-        Rect(0, 0, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT),
+        { 0, 0, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT },
         _fps, "", "fps", Label::RIGHT_JUSTIFIED);
     LinkedLabel<ms_t> *lat = new LinkedLabel<ms_t>(
-        Rect(0, HARDWARE_STATS_LABEL_HEIGHT, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT),
+    { 0, HARDWARE_STATS_LABEL_HEIGHT, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT },
         _latency, "", "ms", Label::RIGHT_JUSTIFIED);
     LinkedLabel<size_t> *numEntities = new LinkedLabel<size_t>(
-        Rect(0, HARDWARE_STATS_LABEL_HEIGHT * 2, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT),
+        {0, HARDWARE_STATS_LABEL_HEIGHT * 2, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT},
         _numEntities, "", " sprites", Label::RIGHT_JUSTIFIED);
     LinkedLabel<int> *channels = new LinkedLabel<int>(
-        Rect(0, HARDWARE_STATS_LABEL_HEIGHT * 3, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT),
+        {0, HARDWARE_STATS_LABEL_HEIGHT * 3, HARDWARE_STATS_W, HARDWARE_STATS_LABEL_HEIGHT},
         _channelsPlaying, "", "/" + makeArgs(MIXING_CHANNELS) + " channels", Label::RIGHT_JUSTIFIED);
     fps->setColor(Color::PERFORMANCE_FONT);
     lat->setColor(Color::PERFORMANCE_FONT);

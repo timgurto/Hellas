@@ -18,7 +18,7 @@ TEST_CASE("Renderer pixel data can be read"){
     renderer.setDrawColor(Color::YELLOW);
     renderer.fill();
     renderer.setDrawColor(Color::CYAN);
-    renderer.fillRect(Rect(5, 2, 1, 1));
+    renderer.fillRect({ 5, 2, 1, 1 });
 
     renderer.present();
 

@@ -13,7 +13,7 @@ _maxEnergy(_type->maxEnergy()),
 _energy(_maxEnergy)
 {}
 
-void ClientCombatant::drawHealthBarIfAppropriate(const Point &objectLocation, px_t objHeight) const{
+void ClientCombatant::drawHealthBarIfAppropriate(const MapPoint &objectLocation, px_t objHeight) const{
     if (! shouldDrawHealthBar())
         return;
 
@@ -23,17 +23,17 @@ void ClientCombatant::drawHealthBarIfAppropriate(const Point &objectLocation, px
         BAR_GAP = 4; // Gap between the bar and the top of the sprite
     px_t
         barLength = toInt(1.0 * BAR_TOTAL_LENGTH * health() / maxHealth());
-    const Point &offset = Client::_instance->offset();
-    double
-        x = objectLocation.x - toInt(BAR_TOTAL_LENGTH / 2) + offset.x,
-        y = objectLocation.y - objHeight - BAR_GAP - BAR_HEIGHT + offset.y;
+    const ScreenPoint &offset = Client::_instance->offset();
+    px_t
+        x = toInt(objectLocation.x - BAR_TOTAL_LENGTH / 2 + offset.x),
+        y = toInt(objectLocation.y - objHeight - BAR_GAP - BAR_HEIGHT + offset.y);
 
     renderer.setDrawColor(Color::HEALTH_BAR_OUTLINE);
-    renderer.drawRect(Rect(x-1, y-1, BAR_TOTAL_LENGTH + 2, BAR_HEIGHT + 2));
+    renderer.drawRect({ x - 1, y - 1, BAR_TOTAL_LENGTH + 2, BAR_HEIGHT + 2 });
     renderer.setDrawColor(healthBarColor());
-    renderer.fillRect(Rect(x, y, barLength, BAR_HEIGHT));
+    renderer.fillRect({ x, y, barLength, BAR_HEIGHT });
     renderer.setDrawColor(Color::HEALTH_BAR_BACKGROUND);
-    renderer.fillRect(Rect(x + barLength, y, BAR_TOTAL_LENGTH - barLength, BAR_HEIGHT));
+    renderer.fillRect({ x + barLength, y, BAR_TOTAL_LENGTH - barLength, BAR_HEIGHT });
 }
 
 bool ClientCombatant::shouldDrawHealthBar() const{

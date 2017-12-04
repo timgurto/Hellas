@@ -127,7 +127,7 @@ TEST_CASE("A player can cede an object to his city", "[.slow][city]"){
     s.cities().addPlayerToCity(user, "athens");
 
     // And an object owned by him
-    s.addObject("rock", Point(10, 10), user.name());
+    s.addObject("rock", { 10, 10 }, user.name());
 
     // When he sends a CL_CEDE command
     WAIT_UNTIL(c.objects().size() == 1);
@@ -147,7 +147,7 @@ TEST_CASE("A player must be in a city to cede", "[.slow][city]"){
     TestServer s = TestServer::WithData("basic_rock");
     WAIT_UNTIL(s.users().size() == 1);
     User &user = s.getFirstUser();
-    s.addObject("rock", Point(10, 10), user.name());
+    s.addObject("rock", { 10, 10 }, user.name());
 
     // When he sends a CL_CEDE command
     WAIT_UNTIL(c.objects().size() == 1);
@@ -171,7 +171,7 @@ TEST_CASE("A player can only cede his own objects", "[.slow][city]") {
     s.cities().addPlayerToCity(user, "athens");
 
     // And a rock owned by nobody
-    s.addObject("rock", Point(10, 10));
+    s.addObject("rock", { 10, 10 });
 
     // When he sends a CL_CEDE command
     WAIT_UNTIL(c.objects().size() == 1);

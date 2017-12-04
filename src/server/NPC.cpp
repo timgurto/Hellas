@@ -3,7 +3,7 @@
 #include "NPC.h"
 #include "Server.h"
 
-NPC::NPC(const NPCType *type, const Point &loc):
+NPC::NPC(const NPCType *type, const MapPoint &loc):
     Entity(type, loc),
     _level(type->level()),
     _state(IDLE)

@@ -11,7 +11,7 @@ class ClientVehicle : public ClientObject{
 
 public:
     ClientVehicle(size_t serial, const ClientVehicleType *type = nullptr,
-            const Point &loc = Point());
+        const MapPoint &loc = MapPoint{});
     virtual ~ClientVehicle(){}
 
     const Avatar *driver() const { return _driver; }

@@ -9,10 +9,10 @@ TEST_CASE("Gather an item from an object"){
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
     User &user = s.getFirstUser();
-    user.updateLocation(Point(10, 10));
+    user.updateLocation({ 10, 10 });
 
     // Add a single rock
-    s.addObject("rock", Point(10, 10));
+    s.addObject("rock", { 10, 10 });
     WAIT_UNTIL (c.objects().size() == 1);
 
     //Gather
@@ -41,10 +41,10 @@ TEST_CASE("Gather chance is by gathers, not quantity"){
     //Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
     User &user = s.getFirstUser();
-    user.updateLocation(Point(10, 10));
+    user.updateLocation({ 10, 10 });
 
     // Add a single iron deposit
-    s.addObject("ironDeposit", Point(10, 10));
+    s.addObject("ironDeposit", { 10, 10 });
     WAIT_UNTIL (c.objects().size() == 1);
 
     //Gather

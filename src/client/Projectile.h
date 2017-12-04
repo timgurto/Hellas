@@ -9,12 +9,12 @@ class Projectile : public Sprite {
 public:
     struct Type;
 
-    Projectile(const Type &type, const Point &start, const Point &end) :
+    Projectile(const Type &type, const MapPoint &start, const MapPoint &end) :
         Sprite(&type, start), _end(end) {}
 
     virtual void update(double delta) override;
 
-    using onReachDestination_t = void (*)(const Point &destination, const void *arg);
+    using onReachDestination_t = void (*)(const MapPoint &destination, const void *arg);
     void onReachDestination(onReachDestination_t f, const void *arg = nullptr)
             { _onReachDestination = f; _onReachDestinationArg = arg; }
 
@@ -22,14 +22,14 @@ private:
     const Type &projectileType() const { return * dynamic_cast<const Type *>(this->type()); }
     double speed() const { return projectileType().speed; }
 
-    Point _end;
+    MapPoint _end;
     const void *_onReachDestinationArg = nullptr;
     onReachDestination_t _onReachDestination = nullptr;
 
 
 public:
     struct Type : public SpriteType {
-        Type(const std::string &id, const Rect &drawRect) :
+        Type(const std::string &id, const ScreenRect &drawRect) :
             SpriteType(drawRect, "Images/projectiles/"s + id + ".png"s), id(id) {
         }
         static Type Dummy(const std::string &id) { return Type{ id, {} }; }

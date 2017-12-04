@@ -59,22 +59,22 @@ TEST_CASE("NormalVariable copying"){
 }
 
 TEST_CASE("Distance-to-line with A=B"){
-    Point p(10, 10);
-    Point q(5, 3);
+    MapPoint p(10, 10);
+    MapPoint q(5, 3);
     distance(p, q, q);
 }
 
 TEST_CASE("getTileRect() behaves as expected"){
-    CHECK(Server::getTileRect(0, 0) == Rect(-16, 0, 32, 32));
-    CHECK(Server::getTileRect(1, 0) == Rect(16, 0, 32, 32));
-    CHECK(Server::getTileRect(0, 1) == Rect(0, 32, 32, 32));
-    CHECK(Server::getTileRect(1, 1) == Rect(32, 32, 32, 32));
+    CHECK(Server::getTileRect(0, 0) == MapRect(-16, 0, 32, 32));
+    CHECK(Server::getTileRect(1, 0) == MapRect(16, 0, 32, 32));
+    CHECK(Server::getTileRect(0, 1) == MapRect(0, 32, 32, 32));
+    CHECK(Server::getTileRect(1, 1) == MapRect(32, 32, 32, 32));
 
-    CHECK(Server::getTileRect(4, 0) == Rect(112, 0, 32, 32));
-    CHECK(Server::getTileRect(5, 0) == Rect(144, 0, 32, 32));
-    CHECK(Server::getTileRect(0, 4) == Rect(-16, 128, 32, 32));
-    CHECK(Server::getTileRect(0, 5) == Rect(0, 160, 32, 32));
+    CHECK(Server::getTileRect(4, 0) == MapRect(112, 0, 32, 32));
+    CHECK(Server::getTileRect(5, 0) == MapRect(144, 0, 32, 32));
+    CHECK(Server::getTileRect(0, 4) == MapRect(-16, 128, 32, 32));
+    CHECK(Server::getTileRect(0, 5) == MapRect(0, 160, 32, 32));
 
-    CHECK(Server::getTileRect(7, 5) == Rect(224, 160, 32, 32));
-    CHECK(Server::getTileRect(7, 6) == Rect(208, 192, 32, 32));
+    CHECK(Server::getTileRect(7, 5) == MapRect(224, 160, 32, 32));
+    CHECK(Server::getTileRect(7, 6) == MapRect(208, 192, 32, 32));
 }

@@ -54,9 +54,9 @@ public:
     void setAlpha(Uint8 alpha = 0xff) const;
 
     void draw(px_t x = 0, px_t y = 0) const;
-    void draw(const Point &location) const;
-    void draw(const Rect &location) const;
-    void draw(const Rect &location, const Rect &srcRect) const;
+    void draw(const ScreenPoint &location) const;
+    void draw(const ScreenRect &location) const;
+    void draw(const ScreenRect &location, const ScreenRect &srcRect) const;
 
     /*
     Render to this Texture instead of the renderer.

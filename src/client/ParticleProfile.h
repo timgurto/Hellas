@@ -20,7 +20,7 @@ class ParticleProfile{
         _velocity,
         _fallSpeed,
         _lifespan; // The particle will disappear after this time
-    Point _direction;
+    MapPoint _direction;
     Uint8 _alpha;
     std::vector<const SpriteType *> _varieties, _pool;
 
@@ -36,7 +36,7 @@ public:
     void distance(double mean, double sd) { _distance = NormalVariable(mean, sd); }
     void altitude(double mean, double sd) { _altitude = NormalVariable(mean, sd); }
     void velocity(double mean, double sd) { _velocity = NormalVariable(mean, sd); }
-    void direction(const Point &p) { _direction = p; }
+    void direction(const MapPoint &p) { _direction = p; }
     void fallSpeed(double mean, double sd) { _fallSpeed = NormalVariable(mean, sd); }
     void lifespan(double mean, double sd) { _lifespan = NormalVariable(mean, sd); }
     void gravityModifer(double mod) { _gravity *= mod; }
@@ -53,13 +53,13 @@ public:
     Register a new SpriteType with the client describing a variety of particle.  Also, save it to
     _varieties so that it might be chosen when a new Particle is created.
     */
-    void addVariety(const std::string &imageFile, size_t count, const Rect &drawRect);
+    void addVariety(const std::string &imageFile, size_t count, const ScreenRect &drawRect);
     void addVariety(const std::string &imageFile, size_t count); // Auto draw rect
 
     /*
     Create a new particle and return its pointer.  The caller takes responsibility for freeing it.
     */
-    Particle *instantiate(const Point &location) const;
+    Particle *instantiate(const MapPoint &location) const;
 
     /*
     Conceptually, returns delta * _particlesPerSecond.  However, since we want a whole number, and

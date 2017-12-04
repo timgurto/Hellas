@@ -66,15 +66,15 @@ public:
     };
 
     // Const Searches/queries
-    char findTile(const Point &p) const; // Find the tile type at the specified location.
-    std::pair<size_t, size_t> getTileCoords(const Point &p) const;
+    char findTile(const MapPoint &p) const; // Find the tile type at the specified location.
+    std::pair<size_t, size_t> getTileCoords(const MapPoint &p) const;
     size_t Server::getTileYCoord(double y) const;
     size_t Server::getTileXCoord(double x, size_t yTile) const;
-    static Rect getTileRect(size_t x, size_t y);
-    std::set<User*> findUsersInArea(Point loc, double squareRadius = CULL_DISTANCE) const;
-    std::set<Entity*> findEntitiesInArea(Point loc, double squareRadius = CULL_DISTANCE) const;
+    static MapRect getTileRect(size_t x, size_t y);
+    std::set<User*> findUsersInArea(MapPoint loc, double squareRadius = CULL_DISTANCE) const;
+    std::set<Entity*> findEntitiesInArea(MapPoint loc, double squareRadius = CULL_DISTANCE) const;
     const ObjectType *findObjectTypeByName(const std::string &id) const; // Linear complexity
-    std::set<char> nearbyTerrainTypes(const Rect &rect, double extraRadius = 0);
+    std::set<char> nearbyTerrainTypes(const MapRect &rect, double extraRadius = 0);
     const User *getUserByName(const std::string &username) const;
     const BuffType *getBuffByName(const Buff::ID &id) const;
 
@@ -91,7 +91,7 @@ public:
     void sendMessage(const Socket &dstSocket, MessageCode msgCode,
                      const std::string &args = "") const;
     void broadcast(MessageCode msgCode, const std::string &args); // Send a command to all users
-    void broadcastToArea(const Point &location, MessageCode msgCode, const std::string &args) const;
+    void broadcastToArea(const MapPoint &location, MessageCode msgCode, const std::string &args) const;
     void handleMessage(const Socket &client, const std::string &msg);
     void sendInventoryMessageInner(const User &user, size_t serial, size_t slot,
                                    const ServerItem::vect_t &itemVect) const;
@@ -168,7 +168,7 @@ private:
     static void saveData(const Entities &entities, const Wars &wars, const Cities &cities);
     void spawnInitialObjects();
 
-    Point mapRand() const; // Return a random point on the map.
+    MapPoint mapRand() const; // Return a random point on the map.
     size_t _mapX, _mapY; // Number of tiles in each dimension.
     Map _map;
 
@@ -201,22 +201,22 @@ private:
     friend class Permissions;
     friend class ProgressLock;
 
-    NPC &addNPC(const NPCType *type, const Point &location); 
-    Object &addObject (const ObjectType *type, const Point &location,
+    NPC &addNPC(const NPCType *type, const MapPoint &location);
+    Object &addObject (const ObjectType *type, const MapPoint &location,
                        const std::string &owner = "");
     Entity &addEntity (Entity *newEntity);
 
     // Collision detection
     static const px_t COLLISION_CHUNK_SIZE;
     CollisionGrid _collisionGrid;
-    CollisionChunk &getCollisionChunk(const Point &p);
-    std::list<CollisionChunk *> getCollisionSuperChunk(const Point &p);
+    CollisionChunk &getCollisionChunk(const MapPoint &p);
+    std::list<CollisionChunk *> getCollisionSuperChunk(const MapPoint &p);
 
     // thisObject = object to omit from collision detection (usually "this", to avoid self-collision)
-    bool isLocationValid(const Point &loc, const EntityType &type,
+    bool isLocationValid(const MapPoint &loc, const EntityType &type,
                          const Entity *thisEntity = nullptr); // Deduces allowed terrain from type
-    bool isLocationValid(const Rect &rect, const Entity *thisEntity); // Deduces allowed terrain from thisObject
-    bool isLocationValid(const Rect &rect, const TerrainList &allowedTerrain,
+    bool isLocationValid(const MapRect &rect, const Entity *thisEntity); // Deduces allowed terrain from thisObject
+    bool isLocationValid(const MapRect &rect, const TerrainList &allowedTerrain,
                          const Entity *thisEntity = nullptr);
 
     bool readUserData(User &user); // true: save data existed

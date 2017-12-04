@@ -6,7 +6,7 @@ TEST_CASE("Object container empty check", "[container]"){
     TestServer s; 
     ObjectType type("box");
     type.addContainer(ContainerType::WithSlots(5));
-    Object obj(&type, Point());
+    Object obj(&type, {});
     CHECK(obj.container().isEmpty());
     ServerItem item("rock");
     obj.container().at(1) = std::make_pair(&item, 1);
@@ -20,9 +20,9 @@ TEST_CASE("Dismantle an object with an inventory", "[.flaky][container]"){
     TestClient c = TestClient::WithData("dismantle");
     WAIT_UNTIL (s.users().size() == 1);
     User &user = s.getFirstUser();
-    user.updateLocation(Point(10, 10));
+    user.updateLocation({ 10, 10 });
     // And a box at (10, 10) that is deconstructible and has an empty inventory
-    s.addObject("box", Point(10, 10));
+    s.addObject("box", { 10, 10 });
     WAIT_UNTIL (c.objects().size() == 1);
 
     // When the user tries to deconstruct the box
@@ -38,7 +38,7 @@ TEST_CASE("Place item in object", "[.flaky][container]") {
     TestClient c = TestClient::WithData("dismantle");
 
     // Add a single box
-    s.addObject("box", Point(10, 10));
+    s.addObject("box", { 10, 10 });
     WAIT_UNTIL(c.objects().size() == 1);
 
     // Give user a box item
@@ -62,7 +62,7 @@ TEST_CASE("Client-side containers don't spontaneously clear", "[container]") {
     auto username = c.name();
 
     // And a single box belonging to the user
-    s.addObject("box", Point(10, 10), username);
+    s.addObject("box", { 10, 10 }, username);
     WAIT_UNTIL(c.objects().size() == 1);
 
     // When some time passes

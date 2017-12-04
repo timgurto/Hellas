@@ -21,8 +21,7 @@ void Client::initializeHelpWindow() {
         WIN_X = (640 - WIN_WIDTH) / 2,
         WIN_Y = (360 - WIN_HEIGHT) / 2;
 
-    _helpWindow = Window::WithRectAndTitle(
-        Rect(WIN_X, WIN_Y, WIN_WIDTH, WIN_HEIGHT), "Help");
+    _helpWindow = Window::WithRectAndTitle({ WIN_X, WIN_Y, WIN_WIDTH, WIN_HEIGHT }, "Help");
 
     // Topic list
     const px_t

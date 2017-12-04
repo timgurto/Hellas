@@ -82,11 +82,11 @@ SDL_Texture *Renderer::createTargetableTexture(px_t width, px_t height) const{
                              width, height);
 }
 
-void Renderer::drawTexture(SDL_Texture *srcTex, const Rect &dstRect){
+void Renderer::drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect){
     SDL_RenderCopy(_renderer, srcTex, 0, &rectToSDL(dstRect));
 }
 
-void Renderer::drawTexture(SDL_Texture *srcTex, const Rect &dstRect, const Rect &srcRect){
+void Renderer::drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect, const ScreenRect &srcRect){
     SDL_RenderCopy(_renderer, srcTex, &rectToSDL(srcRect), &rectToSDL(dstRect));
 }
 
@@ -102,11 +102,11 @@ void Renderer::present(){
     SDL_RenderPresent(_renderer);
 }
 
-void Renderer::drawRect(const Rect &dstRect){
+void Renderer::drawRect(const ScreenRect &dstRect){
     SDL_RenderDrawRect(_renderer, &rectToSDL(dstRect));
 }
 
-void Renderer::fillRect(const Rect &dstRect){
+void Renderer::fillRect(const ScreenRect &dstRect){
     SDL_RenderFillRect(_renderer, &rectToSDL(dstRect));
 }
 
@@ -133,7 +133,7 @@ void Renderer::popRenderTarget() {
     _renderTargetsStack.pop();
 }
 
-SDL_Rect Renderer::rectToSDL(const Rect &rect){
+SDL_Rect Renderer::rectToSDL(const ScreenRect &rect){
     SDL_Rect r = {rect.x, rect.y, rect.w, rect.h};
     return r;
 }

@@ -13,10 +13,10 @@ class Particle : public Sprite{
     static const SpriteType ENTITY_TYPE;
 
     const Texture &_image;
-    const Rect &_drawRect;
+    const ScreenRect &_drawRect;
 
     // x and y
-    Point _velocity; // in px/s
+    MapPoint _velocity; // in px/s
 
     // z (height)
     double _altitude;
@@ -26,14 +26,12 @@ class Particle : public Sprite{
     ms_t _lifespan;
 
 public:
-    Particle(const Point &loc, const Texture &image, const Rect &drawRect, const Point &velocity,
+    Particle(const MapPoint &loc, const Texture &image, const ScreenRect &drawRect, const MapPoint &velocity,
              double startingAltitude, double startingFallSpeed, double gravity, ms_t lifespan);
 
-    virtual Rect drawRect() const override;
+    virtual ScreenRect drawRect() const override;
     virtual const Texture &image() const override { return _image; }
     virtual void update(double delta) override;
-
-    static size_t numParticlesToAdd(double delta);
 };
 
 #endif

@@ -6,7 +6,7 @@
 TEST_CASE("Client gets loot info and can loot", "[loot]"){
     // Given an NPC that always drops 1 gold
     TestServer s = TestServer::WithData("goldbug");
-    s.addNPC("goldbug", Point(10, 15));
+    s.addNPC("goldbug", { 10, 15 });
 
     // When a user kills it
     TestClient c = TestClient::WithData("goldbug");
@@ -69,7 +69,7 @@ TEST_CASE("Chance for strength-items as loot from object", "[loot][strength]"){
     WAIT_UNTIL(s.users().size() == 1);
 
     // And a snowman exists
-    s.addObject("snowman", Point(10, 15));
+    s.addObject("snowman", { 10, 15 });
 
     // When the snowman is destroyed
     Object &snowman = s.getFirstObject();
@@ -99,11 +99,11 @@ TEST_CASE("Chance for strength-items as loot from object", "[loot][strength]"){
         WAIT_UNTIL(clientSnowman.lootContainer()->size() > 0);
 
         // Then the user can loot using this window
-        Point buttonPos =
+        ScreenPoint buttonPos =
             clientSnowman.window()->rect() +
-            Point(0, Window::HEADING_HEIGHT) +
+            ScreenRect{0, Window::HEADING_HEIGHT} +
             clientSnowman.lootContainer()->rect() +
-            Point(5, 5);
+            ScreenRect{5, 5};
         c.simulateClick(buttonPos);
 
         WAIT_UNTIL(c.inventory()[0].first != nullptr);
@@ -119,7 +119,7 @@ TEST_CASE("Looting from a container", "[loot][container][only]"){
     WAIT_UNTIL(s.users().size() == 1);
 
     // And a chest exists;
-    s.addObject("chest", Point(10, 15));
+    s.addObject("chest", { 10, 15 });
 
     auto &chest = s.getFirstObject();
     const auto &gold = s.getFirstItem();
@@ -165,11 +165,11 @@ TEST_CASE("Looting from a container", "[loot][container][only]"){
             WAIT_UNTIL(clientChest.lootContainer()->size() > 0);
 
             // And the user can loot using this window
-            Point buttonPos =
+            ScreenPoint buttonPos =
                 clientChest.window()->rect() +
-                Point(0, Window::HEADING_HEIGHT) +
+                ScreenRect{0, Window::HEADING_HEIGHT} +
                 clientChest.lootContainer()->rect() +
-                Point(5, 5);
+                ScreenRect{5, 5};
             c.simulateClick(buttonPos);
 
             WAIT_UNTIL(c.inventory()[0].first != nullptr);
@@ -214,7 +214,7 @@ TEST_CASE("New users are alerted to lootable objects", "[loot]"){
     TestServer s = TestServer::WithData("snowman");
 
     // And a snowman exists;
-    s.addObject("snowman", Point(10, 15));
+    s.addObject("snowman", { 10, 15 });
 
     // And the snowman is dead
     Object &snowman = s.getFirstObject();

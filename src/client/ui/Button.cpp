@@ -5,11 +5,11 @@
 
 extern Renderer renderer;
 
-Button::Button(const Rect &rect, const std::string &caption, clickFun_t clickFunction,
+Button::Button(const ScreenRect &rect, const std::string &caption, clickFun_t clickFunction,
                void *clickData):
 Element(rect),
 _content(new Element(0)),
-_background(new ColorBlock(Rect(1, 1, 0, 0))),
+_background(new ColorBlock({ 1, 1, 0, 0 })),
 _border(new ShadowBox(0)),
 _caption(nullptr),
 _clickFun(clickFunction),
@@ -22,7 +22,7 @@ _enabled(true){
     Element::addChild(_border);
 
     if (!caption.empty()){
-        _caption = new Label(Rect(0, 0, rect.w, rect.h), caption,
+        _caption = new Label({ 0, 0, rect.w, rect.h }, caption,
                 CENTER_JUSTIFIED, CENTER_JUSTIFIED);
         addChild(_caption);
     }
@@ -51,7 +51,7 @@ void Button::release(bool click){
     markChanged();
 }
 
-void Button::mouseDown(Element &e, const Point &mousePos){
+void Button::mouseDown(Element &e, const ScreenPoint &mousePos){
     Button &button = dynamic_cast<Button&>(e);
     if (!button._enabled)
         return;
@@ -60,24 +60,24 @@ void Button::mouseDown(Element &e, const Point &mousePos){
     button.depress();
 }
 
-void Button::mouseUp(Element &e, const Point &mousePos){
+void Button::mouseUp(Element &e, const ScreenPoint &mousePos){
     Button &button = dynamic_cast<Button&>(e);
     if (!button._enabled)
         return;
 
     button._mouseButtonDown = false;
     if (button._depressed) {
-        bool click = collision(mousePos, Rect(0, 0, button.rect().w, button.rect().h));
+        bool click = collision(mousePos, ScreenRect{ 0, 0, button.rect().w, button.rect().h });
         button.release(click);
     }
 }
 
-void Button::mouseMove(Element &e, const Point &mousePos){
+void Button::mouseMove(Element &e, const ScreenPoint &mousePos){
     Button &button = dynamic_cast<Button&>(e);
     if (!button._enabled)
         return;
 
-    if (collision(mousePos, Rect(0, 0, button.rect().w, button.rect().h))) {
+    if (collision(mousePos, ScreenRect{ 0, 0, button.rect().w, button.rect().h })) {
         if (button._mouseButtonDown && !button._depressed)
             button.depress();
     } else {

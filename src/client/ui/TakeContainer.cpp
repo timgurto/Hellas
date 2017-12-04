@@ -8,7 +8,7 @@
 #include "TakeContainer.h"
 #include "../Client.h"
 
-TakeContainer::TakeContainer(ClientItem::vect_t &linked, size_t serial, const Rect &rect):
+TakeContainer::TakeContainer(ClientItem::vect_t &linked, size_t serial, const ScreenRect &rect):
 _linked(linked),
 _serial(serial),
 _slots(LOOT_CAPACITY),
@@ -39,15 +39,15 @@ void TakeContainer::repopulate(){
         Element *dummy = new Element;
         _list->addChild(dummy);
         if (slot.first != nullptr){
-            Button *button = new Button(Rect(0, 0, dummy->width(), dummy->height()), "",
+            Button *button = new Button({ 0, 0, dummy->width(), dummy->height() }, "",
                                         take, &_slots[i]);
             dummy->addChild(button);
             button->addChild(new Picture(1, 1, slot.first->icon()));
             px_t labX = Client::ICON_SIZE + 2;
-            button->addChild(new Label(Rect(labX, 0, dummy->width() - labX, dummy->height()),
+            button->addChild(new Label({ labX, 0, dummy->width() - labX, dummy->height() },
                                        slot.first->name(), LEFT_JUSTIFIED, CENTER_JUSTIFIED));
             if (slot.second > 1)
-                button->addChild(new Label(Rect(labX, 0, dummy->width() - labX, dummy->height()),
+                button->addChild(new Label({ labX, 0, dummy->width() - labX, dummy->height() },
                                            std::string("x") + toString(slot.second) + " ",
                                            RIGHT_JUSTIFIED, CENTER_JUSTIFIED));
         }

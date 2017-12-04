@@ -6,7 +6,7 @@
 
 ObjectType User::OBJECT_TYPE("__clientObjectType__");
 
-Point User::newPlayerSpawn = {};
+MapPoint User::newPlayerSpawn = {};
 double User::spawnRadius = 0;
 
 const std::vector<XP> User::XP_PER_LEVEL{
@@ -26,7 +26,7 @@ const std::vector<XP> User::XP_PER_LEVEL{
     167900, 170900, 173900, 177000, 180000
 };
 
-User::User(const std::string &name, const Point &loc, const Socket &socket) :
+User::User(const std::string &name, const MapPoint &loc, const Socket &socket) :
 Object(&OBJECT_TYPE, loc),
 
 _name(name),
@@ -49,18 +49,18 @@ _gear(GEAR_SLOTS),
 _lastContact(SDL_GetTicks())
 {
     if (!OBJECT_TYPE.collides()){
-        OBJECT_TYPE.collisionRect(Rect(-5, -2, 10, 4));
+        OBJECT_TYPE.collisionRect({ -5, -2, 10, 4 });
     }
     for (size_t i = 0; i != INVENTORY_SIZE; ++i)
         _inventory[i] = std::make_pair<const ServerItem *, size_t>(0, 0);
 }
 
 User::User(const Socket &rhs):
-    Object(Point()),
+    Object(MapPoint{}),
     _socket(rhs)
 {}
 
-User::User(const Point &loc):
+User::User(const MapPoint &loc):
     Object(loc),
     _socket(Socket::Empty())
 {}
@@ -187,7 +187,7 @@ void User::beginCrafting(const Recipe &recipe){
     _actionTime = recipe.time();
 }
 
-void User::beginConstructing(const ObjectType &obj, const Point &location, size_t slot){
+void User::beginConstructing(const ObjectType &obj, const MapPoint &location, size_t slot){
     _action = CONSTRUCT;
     _actionObjectType = &obj;
     _actionTime = obj.constructionTime();
@@ -403,7 +403,7 @@ bool User::hasRoomToCraft(const Recipe &recipe) const{
     return vectHasSpace(inventoryCopy, toServerItem(recipe.product()), recipe.quantity());
 }
 
-const Rect User::collisionRect() const{
+const MapRect User::collisionRect() const{
     return OBJECT_TYPE.collisionRect() + location();
 }
 
@@ -689,7 +689,7 @@ Message User::outOfRangeMessage() const{
 void User::moveToSpawnPoint(bool isNewPlayer) {
     Server &server = Server::instance();
 
-    Point newLoc;
+    MapPoint newLoc;
     size_t attempts = 0;
     static const size_t MAX_ATTEMPTS = 1000;
     do {

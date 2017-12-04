@@ -18,15 +18,15 @@ _msgArgs(msgArgs)
         BUTTON_HEIGHT = 15,
         BUTTON_Y = 2 * PADDING + Element::TEXT_HEIGHT;
 
-    addChild(new Label(Rect(0, PADDING, WINDOW_WIDTH, Element::TEXT_HEIGHT),
+    addChild(new Label({ 0, PADDING, WINDOW_WIDTH, Element::TEXT_HEIGHT },
                        windowText, Element::CENTER_JUSTIFIED));
     px_t
         middle = WINDOW_WIDTH / 2,
         okButtonX = middle - PADDING/2 - BUTTON_WIDTH,
         cancelButtonX = middle + PADDING/2;
-    addChild(new Button(Rect(okButtonX, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT),
+    addChild(new Button({ okButtonX, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT },
                         "OK", sendMessageAndHideWindow, this));
-    addChild(new Button(Rect(cancelButtonX, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT),
+    addChild(new Button({ cancelButtonX, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT },
                         "Cancel", Window::hideWindow, this));
 
 }
@@ -48,12 +48,12 @@ InfoWindow::InfoWindow(const std::string & windowText) {
         BUTTON_HEIGHT = 15,
         BUTTON_Y = 2 * PADDING + Element::TEXT_HEIGHT;
 
-    addChild(new Label(Rect(0, PADDING, WINDOW_WIDTH, Element::TEXT_HEIGHT),
+    addChild(new Label({ 0, PADDING, WINDOW_WIDTH, Element::TEXT_HEIGHT },
         windowText, Element::CENTER_JUSTIFIED));
     px_t
         middle = WINDOW_WIDTH / 2,
         okButtonX = middle - BUTTON_WIDTH / 2;
-    addChild(new Button(Rect(okButtonX, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT),
+    addChild(new Button({ okButtonX, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT },
         "OK", hideWindow, this));
 }
 
@@ -79,8 +79,7 @@ _msgArgs(msgArgs)
 
 
     auto y = PADDING;
-    addChild(new Label(Rect(0, y, WINDOW_WIDTH, Element::TEXT_HEIGHT),
-        windowText, Element::CENTER_JUSTIFIED));
+    addChild(new Label({ 0, y, WINDOW_WIDTH, Element::TEXT_HEIGHT }, windowText, Element::CENTER_JUSTIFIED));
     y += Element::TEXT_HEIGHT + PADDING;
 
     _textBox = new TextBox({ 0, y, WINDOW_WIDTH, Element::TEXT_HEIGHT });
@@ -91,9 +90,9 @@ _msgArgs(msgArgs)
         middle = WINDOW_WIDTH / 2,
         okButtonX = middle - PADDING / 2 - BUTTON_WIDTH,
         cancelButtonX = middle + PADDING / 2;
-    addChild(new Button(Rect(okButtonX, y, BUTTON_WIDTH, BUTTON_HEIGHT),
+    addChild(new Button({ okButtonX, y, BUTTON_WIDTH, BUTTON_HEIGHT },
         "OK", sendMessageWithInputAndHideWindow, this));
-    addChild(new Button(Rect(cancelButtonX, y, BUTTON_WIDTH, BUTTON_HEIGHT),
+        addChild(new Button({ cancelButtonX, y, BUTTON_WIDTH, BUTTON_HEIGHT },
         "Cancel", Window::hideWindow, this));
 }
 

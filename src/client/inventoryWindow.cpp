@@ -18,7 +18,7 @@ void Client::initializeInventoryWindow(){
         LEFT = SCREEN_X - WIDTH - 1,
         TOP = SCREEN_Y - HEIGHT - 16;
 
-    _inventoryWindow = Window::WithRectAndTitle(Rect(LEFT, TOP, WIDTH, HEIGHT), "Inventory");
+    _inventoryWindow = Window::WithRectAndTitle({ LEFT, TOP, WIDTH, HEIGHT }, "Inventory");
     inventory->id("inventory");
     _inventoryWindow->addChild(inventory);
 }
@@ -34,7 +34,7 @@ static void addStat(const std::string &label, const T &value,
     const auto
         X = 2_px,
         W = 98_px;
-    auto labelRect = Rect{ X, y, W, Element::TEXT_HEIGHT };
+    auto labelRect = ScreenRect{ X, y, W, Element::TEXT_HEIGHT };
     auto nameLabel = new Label(labelRect, label);
     nameLabel->setColor(lineColor);
     gearWindow->addChild(nameLabel);
@@ -72,7 +72,7 @@ void Client::initializeGearWindow(){
     _gearWindow->addChild(gearContainer);
 
     // Stats display
-    Rect labelRect(STAT_X_GAP, 0, STATS_WIDTH, Element::TEXT_HEIGHT);
+    auto labelRect = ScreenRect{ STAT_X_GAP, 0, STATS_WIDTH, Element::TEXT_HEIGHT };
 
     // Stats
     auto y = labelRect.y;

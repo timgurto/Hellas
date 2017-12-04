@@ -33,9 +33,9 @@ public:
     NPC &getFirstNPC();
     ServerItem &getFirstItem();
 
-    void addObject(const std::string &typeName, const Point &loc = Point(),
+    void addObject(const std::string &typeName, const MapPoint &loc = MapPoint{},
                    const std::string &owner = "");
-    void addNPC(const std::string &typeName, const Point &loc = Point());
+    void addNPC(const std::string &typeName, const MapPoint &loc = MapPoint{});
     void removeEntity(Entity &entity) { _server->removeEntity(entity); }
 
     Server *operator->(){ return _server; }
@@ -43,7 +43,7 @@ public:
     void sendMessage(const Socket &socket, MessageCode code, const std::string &args){
         _server->sendMessage(socket, code, args);
     }
-    void changePlayerSpawn(const Point &location, double range = 0){
+    void changePlayerSpawn(const MapPoint &location, double range = 0){
         User::newPlayerSpawn = location; User::spawnRadius = range; }
 
     void nop(){ _server->mapX(); }

@@ -34,7 +34,7 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
     bool _canDeconstruct; // Whether these objects can be deconstructed into items
     size_t _containerSlots;
     size_t _merchantSlots;
-    Rect _collisionRect;
+    MapRect _collisionRect;
     const ParticleProfile *_gatherParticles;
     std::set<std::string> _tags;
     ItemSet _materials;
@@ -77,8 +77,8 @@ public:
     void containerSlots(size_t n) { _containerSlots = n; }
     size_t merchantSlots() const { return _merchantSlots; }
     void merchantSlots(size_t n) { _merchantSlots = n; }
-    const Rect &collisionRect() const { return _collisionRect; }
-    void collisionRect(const Rect &r) { _collisionRect = r; }
+    const MapRect &collisionRect() const { return _collisionRect; }
+    void collisionRect(const MapRect &r) { _collisionRect = r; }
     const ParticleProfile *gatherParticles() const { return _gatherParticles; }
     void gatherParticles(const ParticleProfile *profile) { _gatherParticles = profile; }
     void addMaterial(const ClientItem *item, size_t qty);

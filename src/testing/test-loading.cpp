@@ -26,7 +26,7 @@ TEST_CASE("Get spawn point from map file"){
     TestClient c;
     WAIT_UNTIL(s.users().size() == 1);
     const User &user = *s.users().begin();
-    CHECK(user.location() == Point(37, 37));
+    CHECK(user.location() == MapPoint(37, 37));
 }
 
 TEST_CASE("Get spawn range from map file", "[remote]"){
@@ -85,7 +85,7 @@ TEST_CASE("Clients load map properly") {
     WAIT_UNTIL(c.map().size() == 101);
 
     // And the user spawned in the correct place
-    WAIT_UNTIL(c->character().location() == Point(1616, 1616));
+    WAIT_UNTIL(c->character().location() == MapPoint(1616, 1616));
 }
 
 TEST_CASE("Help text is valid XML") {

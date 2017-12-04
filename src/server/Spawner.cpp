@@ -1,7 +1,7 @@
 #include "Server.h"
 #include "Spawner.h"
 
-Spawner::Spawner(const Point &location, const ObjectType *type):
+Spawner::Spawner(const MapPoint &location, const ObjectType *type):
     _location(location),
     _type(type),
 
@@ -16,7 +16,7 @@ void Spawner::spawn(){
     for (size_t attempt = 0; attempt != MAX_ATTEMPTS; ++attempt){
 
         // Choose location
-        Point p = _location;
+        MapPoint p = _location;
         // Random point in circle
         if (_radius != 0){
             double radius = sqrt(randDouble()) * _radius;

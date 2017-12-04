@@ -8,17 +8,17 @@
 
 const px_t Server::COLLISION_CHUNK_SIZE = 160;
 
-bool Server::isLocationValid(const Point &loc, const EntityType &type, const Entity *thisEntity){
-    Rect rect = type.collisionRect() + loc;
+bool Server::isLocationValid(const MapPoint &loc, const EntityType &type, const Entity *thisEntity){
+    auto rect = type.collisionRect() + loc;
     return isLocationValid(rect, type.allowedTerrain(), thisEntity);
 }
 
-bool Server::isLocationValid(const Rect &rect, const Entity *thisEntity){
+bool Server::isLocationValid(const MapRect &rect, const Entity *thisEntity){
     return isLocationValid(rect, thisEntity->type()->allowedTerrain(), thisEntity);
 }
 
-Rect Server::getTileRect(size_t x, size_t y){
-    Rect r(
+MapRect Server::getTileRect(size_t x, size_t y){
+    MapRect r(
         static_cast<px_t>(x * TILE_W),
         static_cast<px_t>(y * TILE_H),
         TILE_W,
@@ -28,7 +28,7 @@ Rect Server::getTileRect(size_t x, size_t y){
     return r;
 }
 
-std::set<char> Server::nearbyTerrainTypes(const Rect &rect, double extraRadius){
+std::set<char> Server::nearbyTerrainTypes(const MapRect &rect, double extraRadius){
     assert(extraRadius >= 0);
     std::set<char> tilesInRect;
     const double
@@ -78,7 +78,7 @@ std::set<char> Server::nearbyTerrainTypes(const Rect &rect, double extraRadius){
     return tilesInRect;
 }
 
-bool Server::isLocationValid(const Rect &rect, const TerrainList &allowedTerrain,
+bool Server::isLocationValid(const MapRect &rect, const TerrainList &allowedTerrain,
                              const Entity *thisEntity){
     // A user in a vehicle is unrestricted; the vehicle's restrictions will dictate his location.
     if (thisEntity != nullptr &&
@@ -86,11 +86,11 @@ bool Server::isLocationValid(const Rect &rect, const TerrainList &allowedTerrain
         dynamic_cast<const User*>(thisEntity)->isDriving())
             return true;
 
-    const px_t
+    const double
         right = rect.x + rect.w,
         bottom = rect.y + rect.h;
     // Map edges
-    const px_t
+    const double
         xLimit = _mapX * Server::TILE_W - Server::TILE_W/2,
         yLimit = _mapY * Server::TILE_H;
     if (rect.x < 0 || right > xLimit ||
@@ -104,7 +104,7 @@ bool Server::isLocationValid(const Rect &rect, const TerrainList &allowedTerrain
             return false;
 
     // Users
-    Point rectCenter(rect.x + rect.w / 2, rect.y + rect.h / 2);
+    MapPoint rectCenter(rect.x + rect.w / 2, rect.y + rect.h / 2);
     for (const auto *user : findUsersInArea(rectCenter)) {
         if (user == thisEntity)
             continue;
@@ -161,26 +161,26 @@ size_t Server::getTileXCoord(double x, size_t yTile) const{
     return xTile;
 }
 
-std::pair<size_t, size_t> Server::getTileCoords(const Point &p) const{
+std::pair<size_t, size_t> Server::getTileCoords(const MapPoint &p) const{
     size_t
         y = getTileYCoord(p.y),
         x = getTileXCoord(p.x, y);
     return std::make_pair(x, y);
 }
 
-char Server::findTile(const Point &p) const{
+char Server::findTile(const MapPoint &p) const{
     auto coords = getTileCoords(p);
     return _map[coords.first][coords.second];
 }
 
-CollisionChunk &Server::getCollisionChunk(const Point &p){
+CollisionChunk &Server::getCollisionChunk(const MapPoint &p){
     size_t
         x = static_cast<size_t>(p.x / COLLISION_CHUNK_SIZE),
         y = static_cast<size_t>(p.y / COLLISION_CHUNK_SIZE);
     return _collisionGrid[x][y];
 }
 
-std::list<CollisionChunk *> Server::getCollisionSuperChunk(const Point &p) {
+std::list<CollisionChunk *> Server::getCollisionSuperChunk(const MapPoint &p) {
     size_t
         x = static_cast<size_t>(p.x / COLLISION_CHUNK_SIZE),
         minX = x - 1,

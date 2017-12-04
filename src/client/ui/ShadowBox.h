@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef SHADOW_BOX_H
 #define SHADOW_BOX_H
 
@@ -12,7 +10,7 @@ class ShadowBox : public Element{
     virtual void refresh() override;
 
 public:
-    ShadowBox(const Rect &rect, bool reversed = false);
+    ShadowBox(const ScreenRect &rect, bool reversed = false);
 
     void setReversed(bool reversed);
 };

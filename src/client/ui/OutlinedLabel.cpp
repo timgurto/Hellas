@@ -1,7 +1,7 @@
 #include "Label.h"
 #include "OutlinedLabel.h"
 
-OutlinedLabel::OutlinedLabel(const Rect &rect, const std::string & text,
+OutlinedLabel::OutlinedLabel(const ScreenRect &rect, const std::string & text,
     Element::Justification justificationH, Element::Justification justificationV):
 Element(rect){
     const auto

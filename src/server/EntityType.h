@@ -17,8 +17,8 @@ public:
 
     // Space
     bool collides() const { return _collides; }
-    const Rect &collisionRect() const { return _collisionRect; }
-    void collisionRect(const Rect &r) { _collisionRect = r; _collides = true; }
+    const MapRect &collisionRect() const { return _collisionRect; }
+    void collisionRect(const MapRect &r) { _collisionRect = r; _collides = true; }
     const TerrainList &allowedTerrain() const;
     void allowedTerrain(const std::string &id){ _allowedTerrain = TerrainList::findList(id); }
 
@@ -39,7 +39,7 @@ private:
 
     // Space
     bool _collides; // false by default; true if any collisionRect is specified.
-    Rect _collisionRect; // Relative to position
+    MapRect _collisionRect; // Relative to position
 
     const TerrainList *_allowedTerrain;
 };

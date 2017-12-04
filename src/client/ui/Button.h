@@ -32,12 +32,12 @@ private:
 
     bool _enabled; // False: greyed out; can't be clicked.
 
-    static void mouseDown(Element &e, const Point &mousePos);
-    static void mouseUp(Element &e, const Point &mousePos);
-    static void mouseMove(Element &e, const Point &mousePos);
+    static void mouseDown(Element &e, const ScreenPoint &mousePos);
+    static void mouseUp(Element &e, const ScreenPoint &mousePos);
+    static void mouseMove(Element &e, const ScreenPoint &mousePos);
 
 public:
-    Button(const Rect &rect, const std::string &caption = "", clickFun_t clickFunction = nullptr,
+    Button(const ScreenRect &rect, const std::string &caption = "", clickFun_t clickFunction = nullptr,
            void *clickData = nullptr);
     void clickData(void *data = nullptr) { _clickData = data; }
     virtual void addChild(Element *child) override;

@@ -57,10 +57,10 @@ public:
     TTF_Font *defaultFont() const;
 
     const Avatar &character() const { return _character; }
-    const Point &offset() const { return _intOffset; }
+    const ScreenPoint &offset() const { return _intOffset; }
     const std::string &username() const { return _username; }
     const Sprite *currentMouseOverEntity() const { return _currentMouseOverEntity; }
-    Rect playerCollisionRect() const { return _character.collisionRect(); }
+    MapRect playerCollisionRect() const { return _character.collisionRect(); }
     const ClientCombatant *targetAsCombatant() const { return _target.combatant(); }
     const Sprite *targetAsEntity() const { return _target.entity(); }
     bool isDismounting() const { return _isDismounting; }
@@ -177,7 +177,7 @@ private:
     // Called when filters pane is clicked, or new recipes are unlocked.
     static void populateRecipesList(Element &e);
     // Called when a recipe is selected.
-    static void selectRecipe(Element &e, const Point &mousePos);
+    static void selectRecipe(Element &e, const ScreenPoint &mousePos);
     // Called when new recipes are unlocked.
     void populateFilters();
     // Called when new construction items are unlocked
@@ -187,7 +187,7 @@ private:
     void watchObject(ClientObject &obj);
     void unwatchObject(ClientObject &obj);
 
-    bool outsideCullRange(const Point &loc, px_t hysteresis = 0) const;
+    bool outsideCullRange(const MapPoint &loc, px_t hysteresis = 0) const;
 
     ChoiceList *_recipeList = nullptr;
     Element *_detailsPane = nullptr;
@@ -204,7 +204,7 @@ private:
 
     void initializeBuildWindow();
     ChoiceList *_buildList = nullptr;
-    static void chooseConstruction(Element &e, const Point &mousePos);
+    static void chooseConstruction(Element &e, const ScreenPoint &mousePos);
     const ClientObjectType *_selectedConstruction;
     bool _multiBuild;
 
@@ -223,9 +223,9 @@ private:
     Element *_mapPins, *_mapPinOutlines;
     void initializeMapWindow();
     static void updateMapWindow(Element &);
-    void Client::addMapPin(const Point &worldPosition, const Color &color);
-    void Client::addOutlinedMapPin(const Point &worldPosition, const Color &color);
-    Point Client::convertToMapPosition(const Point &worldPosition) const;
+    void Client::addMapPin(const MapPoint &worldPosition, const Color &color);
+    void Client::addOutlinedMapPin(const MapPoint &worldPosition, const Color &color);
+    ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const;
 
     // Social window
     Window *_socialWindow = nullptr;
@@ -291,7 +291,7 @@ private:
     void setRandomUsername();
     Avatar _character; // Describes the user's character
     Stats _stats; // The user's stats
-    Point _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.
+    MapPoint _pendingCharLoc; // Where the player has told his character to go. Unconfirmed by server.
 
     // Login screen
     Texture _loginFront, _loginBack;
@@ -328,7 +328,7 @@ private:
     TTF_Font *_defaultFont;
 
     // Mouse stuff
-    Point _mouse; // Mouse position
+    ScreenPoint _mouse; // Mouse position
     bool _mouseMoved;
     Sprite *getEntityAtMouse();
     void checkMouseOver(); // Set state based on window/entity/etc. being moused over.
@@ -357,8 +357,8 @@ private:
     void drawTooltip() const;
     // A tooltip which, if it exists, describes the UI element currently moused over.
     const Texture *_uiTooltip;
-    Point _offset; // An offset for drawing, based on the character's location on the map.
-    Point _intOffset; // An integer version of the offset
+    MapPoint _offset; // An offset for drawing, based on the character's location on the map.
+    ScreenPoint _intOffset; // An integer version of the offset
     void updateOffset(); // Update the offset, when the character moves.
 
     int _channelsPlaying; // The number of sound channels currently playing sounds; updated on tick
@@ -415,10 +415,10 @@ private:
     void addEntity(Sprite *entity) { _entities.insert(entity); }
     void removeEntity(Sprite *const toRemove); // Remove from _entities, and delete pointer
     // Move the entity, and reorder it if necessary
-    void setEntityLocation(Sprite *entity, const Point &location);
+    void setEntityLocation(Sprite *entity, const MapPoint &location);
     Sprite *_currentMouseOverEntity;
     size_t _numEntities; // Updated every tick
-    void addUser(const std::string &name, const Point &location);
+    void addUser(const std::string &name, const MapPoint &location);
     
     // Your wars, or if you're in a city, your city's wars
     std::set<std::string> _atWarWithPlayer;
@@ -429,13 +429,13 @@ private:
     XP _xp = 40;
     XP _maxXP = 100;
     
-    void addParticles(const ParticleProfile *profile, const Point &location, size_t qty);
-    void addParticles(const ParticleProfile *profile, const Point &location); // Single hit
-    void addParticles(const ParticleProfile *profile, const Point &location, double delta);  // /s
-    void addParticles(const std::string &profileName, const Point &location); // Single hit
-    void addParticles(const std::string &profileName, const Point &location, double delta);  // /s
+    void addParticles(const ParticleProfile *profile, const MapPoint &location, size_t qty);
+    void addParticles(const ParticleProfile *profile, const MapPoint &location); // Single hit
+    void addParticles(const ParticleProfile *profile, const MapPoint &location, double delta);  // /s
+    void addParticles(const std::string &profileName, const MapPoint &location); // Single hit
+    void addParticles(const std::string &profileName, const MapPoint &location, double delta);  // /s
 
-    static void onSpellHit(const Point &location, const void *spell);
+    static void onSpellHit(const MapPoint &location, const void *spell);
 
 
     mutable LogSDL _debug;
@@ -461,11 +461,11 @@ private:
     void handle_SV_IN_CITY(const std::string &username, const std::string &cityName);
     void handle_SV_NO_CITY(const std::string &cityName);
     void handle_SV_KING(const std::string username);
-    void handle_SV_SPELL_HIT(const std::string &spellID, const Point &src, const Point &dst);
-    void handle_SV_SPELL_MISS(const std::string &spellID, const Point &src, const Point &dst);
+    void handle_SV_SPELL_HIT(const std::string &spellID, const MapPoint &src, const MapPoint &dst);
+    void handle_SV_SPELL_MISS(const std::string &spellID, const MapPoint &src, const MapPoint &dst);
     void handle_SV_PLAYER_WAS_HIT(const std::string &username);
     void handle_SV_ENTITY_WAS_HIT(size_t serial);
-    void handle_SV_SHOW_OUTCOME_AT(int msgCode, const Point &loc);
+    void handle_SV_SHOW_OUTCOME_AT(int msgCode, const MapPoint &loc);
     void handle_SV_ENTITY_GOT_BUFF(int msgCode, size_t serial, const std::string &buffID);
     void handle_SV_PLAYER_GOT_BUFF(int msgCode, const std::string &username, const std::string &buffID);
     void handle_SV_KNOWN_SPELLS(const std::set<std::string> && knownSpellIDs);

@@ -27,11 +27,11 @@ class Object : public Entity{
     ms_t _transformTimer; // When this hits zero, it switches types.
 
 public:
-    Object(const ObjectType *type, const Point &loc); // Generates a new serial
+    Object(const ObjectType *type, const MapPoint &loc); // Generates a new serial
 
     // Dummies.  TODO: Remove
     Object(size_t serial);
-    Object(const Point &loc);
+    Object(const MapPoint &loc);
 
     virtual ~Object();
 

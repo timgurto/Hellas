@@ -316,7 +316,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
     // Send him entity details
     std::set<const Entity *> entitiesToDescribe; // Multiple sources; a set ensures no duplicates.
     // (Nearby)
-    const Point &loc = newUser.location();
+    const MapPoint &loc = newUser.location();
     auto loX = _entitiesByX.lower_bound(&Dummy::Location(loc.x - CULL_DISTANCE, 0));
     auto hiX = _entitiesByX.upper_bound(&Dummy::Location(loc.x + CULL_DISTANCE, 0));
     for (auto it = loX; it != hiX; ++it){
@@ -415,10 +415,10 @@ void Server::removeUser(const Socket &socket){
         _debug("User was already removed", Color::RED);
 }
 
-std::set<User *> Server::findUsersInArea(Point loc, double squareRadius) const{
+std::set<User *> Server::findUsersInArea(MapPoint loc, double squareRadius) const{
     std::set<User *> users;
-    auto loX = _usersByX.lower_bound(&User(Point(loc.x - squareRadius, 0)));
-    auto hiX = _usersByX.upper_bound(&User(Point(loc.x + squareRadius, 0)));
+    auto loX = _usersByX.lower_bound(&User({ loc.x - squareRadius, 0 }));
+    auto hiX = _usersByX.upper_bound(&User({ loc.x + squareRadius, 0 }));
     for (auto it = loX; it != hiX; ++it)
         if (abs(loc.y - (*it)->location().y) <= squareRadius)
             users.insert(const_cast<User *>(*it));
@@ -426,7 +426,7 @@ std::set<User *> Server::findUsersInArea(Point loc, double squareRadius) const{
     return users;
 }
 
-std::set<Entity*> Server::findEntitiesInArea(Point loc, double squareRadius) const {
+std::set<Entity*> Server::findEntitiesInArea(MapPoint loc, double squareRadius) const {
     std::set<Entity *> entities;
     auto loX = _entitiesByX.lower_bound(&Dummy::Location({ loc.x - squareRadius, 0 }));
     auto hiX = _entitiesByX.upper_bound(&Dummy::Location({ loc.x + squareRadius, 0 }));
@@ -553,9 +553,9 @@ void Server::spawnInitialObjects(){
     }
 }
 
-Point Server::mapRand() const{
-    return Point(randDouble() * (_mapX - 0.5) * TILE_W,
-                 randDouble() * _mapY * TILE_H);
+MapPoint Server::mapRand() const{
+    return{ randDouble() * (_mapX - 0.5) * TILE_W,
+          randDouble() * _mapY * TILE_H };
 }
 
 bool Server::itemIsTag(const ServerItem *item, const std::string &tagName) const{
@@ -570,7 +570,7 @@ const ObjectType *Server::findObjectTypeByName(const std::string &id) const{
     return nullptr;
 }
 
-Object &Server::addObject(const ObjectType *type, const Point &location, const std::string &owner){
+Object &Server::addObject(const ObjectType *type, const MapPoint &location, const std::string &owner){
     Object *newObj = type->classTag() == 'v' ?
             new Vehicle(dynamic_cast<const VehicleType *>(type), location) :
             new Object(type, location);
@@ -585,14 +585,14 @@ Object &Server::addObject(const ObjectType *type, const Point &location, const s
     return dynamic_cast<Object &>(addEntity(newObj));
 }
 
-NPC &Server::addNPC(const NPCType *type, const Point &location){
+NPC &Server::addNPC(const NPCType *type, const MapPoint &location){
     NPC *newNPC = new NPC(type, location);
     return dynamic_cast<NPC &>(addEntity(newNPC));
 }
 
 Entity &Server::addEntity(Entity *newEntity){
     _entities.insert(newEntity);
-    const Point &loc = newEntity->location();
+    const MapPoint &loc = newEntity->location();
 
     // Alert nearby users
     for (const User *userP : findUsersInArea(loc))

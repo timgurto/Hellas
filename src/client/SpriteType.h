@@ -10,7 +10,7 @@
 // Describes a class of Entities, the "instances" of which share common properties
 class SpriteType{
     Texture _image, _imageHighlight;
-    Rect _drawRect; // Where to draw the image, relative to its location
+    ScreenRect _drawRect; // Where to draw the image, relative to its location
     bool _isFlat; // Whether these objects appear flat, i.e., are drawn behind all other entities.
     bool _isDecoration; // Whether this is invisible to mouse events.
 
@@ -19,7 +19,7 @@ public:
         DECORATION
     };
 
-    SpriteType(const Rect &drawRect = Rect(), const std::string &imageFile = "");
+    SpriteType(const ScreenRect &drawRect = {}, const std::string &imageFile = "");
     SpriteType(Special special);
     SpriteType(const std::string &id); // For set lookup
 
@@ -27,8 +27,8 @@ public:
 
     void setImage(const std::string &filename);
     const Texture &highlightImage() const { return _imageHighlight; }
-    const Rect &drawRect() const { return _drawRect; }
-    void drawRect(const Rect &rect) { _drawRect = rect; }
+    const ScreenRect &drawRect() const { return _drawRect; }
+    void drawRect(const ScreenRect &rect) { _drawRect = rect; }
     bool isFlat() const { return _isFlat; }
     void isFlat(bool b) { _isFlat = b; }
     bool isDecoration() const { return _isDecoration; }

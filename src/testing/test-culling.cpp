@@ -6,7 +6,7 @@
 TEST_CASE("On login, players are told about their distant objects", "[.flaky][culling]"){
     // Given an object at (10000,10000) owned by Alice
     TestServer s = TestServer::WithData("signpost");
-    s.addObject("signpost", Point(10000, 10000), "alice");
+    s.addObject("signpost", { 10000, 10000 }, "alice");
 
     // When Alice logs in
     TestClient c = TestClient::WithUsernameAndData("alice", "signpost");
@@ -20,7 +20,7 @@ TEST_CASE("On login, players are told about their distant objects", "[.flaky][cu
 TEST_CASE("On login, players are not told about others' distant objects", "[.flaky][culling]"){
     // Given an object at (10000,10000) owned by Alice
     TestServer s = TestServer::WithData("signpost");
-    s.addObject("signpost", Point(10000, 10000), "bob");
+    s.addObject("signpost", { 10000, 10000 }, "bob");
 
     // When Alice logs in
     TestClient c = TestClient::WithUsernameAndData("alice", "signpost");
@@ -40,7 +40,7 @@ TEST_CASE("When one user approaches another, he finds out about him", "[.slow][c
     WAIT_UNTIL(s.users().size() == 1);
 
     // And a client at (1000, 10);
-    s.changePlayerSpawn(Point(1000, 10));
+    s.changePlayerSpawn({ 1000, 10 });
     RemoteClient rc("-data testing/data/signpost");
     WAIT_UNTIL(s.users().size() == 2);
     REPEAT_FOR_MS(500);
@@ -63,7 +63,7 @@ TEST_CASE("When a player moves away from his object, he is still aware of it", "
     TestServer s = TestServer::WithData("signpost");
 
     // And a signpost near the user spawn point that belongs to Alice;
-    s.addObject("signpost", Point(10, 15), "alice");
+    s.addObject("signpost", { 10, 15 }, "alice");
 
     // And Alice is logged in
     TestClient c = TestClient::WithUsernameAndData("alice", "signpost");
@@ -91,7 +91,7 @@ TEST_CASE("When a player moves away from his city's object, he is still aware of
     s.cities().createCity("athens");
 
     // And a signpost near the user spawn point that belongs to Athens;
-    s.addObject("signpost", Point(10, 15));
+    s.addObject("signpost", { 10, 15 });
     Object &signpost = s.getFirstObject();
     signpost.permissions().setCityOwner("athens");
 

@@ -37,7 +37,7 @@ _window(nullptr),
 _confirmCedeWindow(nullptr),
 _beingGathered(rhs._beingGathered){}
 
-ClientObject::ClientObject(size_t serialArg, const ClientObjectType *type, const Point &loc):
+ClientObject::ClientObject(size_t serialArg, const ClientObjectType *type, const MapPoint &loc):
 Sprite(type, loc),
 ClientCombatant(type),
 _serial(serialArg),
@@ -121,21 +121,21 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
 
     if (userHasAccess()){ // Setup view
         px_t x = GAP;
-        TextBox *textBox = new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT), true);
+        TextBox *textBox = new TextBox({ x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT }, true);
         _wareQtyBoxes[i] = textBox;
         textBox->text(toString(mSlot.wareQty));
         e.addChild(textBox);
         x += QUANTITY_WIDTH + GAP;
         e.addChild(new ItemSelector(mSlot.wareItem, x, BUTTON_TOP));
         x += ICON_SIZE + 2 + NAME_WIDTH + 3 * GAP + 2;
-        textBox = new TextBox(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT), true);
+        textBox = new TextBox({ x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT }, true);
         _priceQtyBoxes[i] = textBox;
         textBox->text(toString(mSlot.priceQty));
         e.addChild(textBox);
         x += QUANTITY_WIDTH + GAP;
         e.addChild(new ItemSelector(mSlot.priceItem, x, BUTTON_TOP));
         x += ICON_SIZE + 2 + NAME_WIDTH + 2 * GAP + 2;
-        e.addChild(new Button(Rect(x, SET_BUTTON_TOP, SET_BUTTON_WIDTH, SET_BUTTON_HEIGHT), "Set",
+        e.addChild(new Button({ x, SET_BUTTON_TOP, SET_BUTTON_WIDTH, SET_BUTTON_HEIGHT }, "Set",
                               sendMerchantSlot, _serialSlotPairs[i]));
 
     } else { // Trade view
@@ -145,28 +145,28 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
 
         // Ware
         px_t x = GAP;
-        e.addChild(new Label(Rect(x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT),
+        e.addChild(new Label({ x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT },
                              toString(mSlot.wareQty), Element::RIGHT_JUSTIFIED));
         x += QUANTITY_WIDTH;
-        e.addChild(new Picture(Rect(x, (ROW_HEIGHT - ICON_SIZE) / 2, ICON_SIZE, ICON_SIZE),
+        e.addChild(new Picture({x, (ROW_HEIGHT - ICON_SIZE) / 2, ICON_SIZE, ICON_SIZE},
                                wareItem->icon()));
         x += ICON_SIZE;
-        e.addChild(new Label(Rect(x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT), wareItem->name()));
+        e.addChild(new Label({ x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT }, wareItem->name()));
         x += NAME_WIDTH + GAP;
     
         // Buy button
-        Button *button = new Button(Rect(x, GAP, BUTTON_WIDTH, BUTTON_HEIGHT), "", trade,
+        Button *button = new Button({ x, GAP, BUTTON_WIDTH, BUTTON_HEIGHT }, "", trade,
                                     _serialSlotPairs[i]);
         e.addChild(button);
         x = BUTTON_PADDING;
-        button->addChild(new Label(Rect(x, BUTTON_TEXT_TOP, BUTTON_LABEL_WIDTH, TEXT_HEIGHT),
+        button->addChild(new Label({ x, BUTTON_TEXT_TOP, BUTTON_LABEL_WIDTH, TEXT_HEIGHT },
                                    std::string("Buy for ") + toString(mSlot.priceQty),
                                    Element::RIGHT_JUSTIFIED));
         x += BUTTON_LABEL_WIDTH;
-        button->addChild(new Picture(Rect(x, BUTTON_PADDING, ICON_SIZE, ICON_SIZE),
+        button->addChild(new Picture({ x, BUTTON_PADDING, ICON_SIZE, ICON_SIZE },
                                      priceItem->icon()));
         x += ICON_SIZE;
-        button->addChild(new Label(Rect(x, BUTTON_TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT),
+        button->addChild(new Label({ x, BUTTON_TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT },
                                    priceItem->name()));
     }
 }
@@ -232,21 +232,21 @@ void ClientObject::addConstructionToWindow(){
         newWidth = _window->contentWidth();
     static const px_t LABEL_W = 140;
 
-    _window->addChild(new Label(Rect(x, y, LABEL_W, Element::TEXT_HEIGHT),
+    _window->addChild(new Label({ x, y, LABEL_W, Element::TEXT_HEIGHT },
                                 "Under construction"));
     if (newWidth < LABEL_W)
         newWidth = LABEL_W;
     y += Element::TEXT_HEIGHT + GAP;
 
     // 1. Required materials
-    _window->addChild(new Label(Rect(x, y, LABEL_W, Element::TEXT_HEIGHT),
+    _window->addChild(new Label({ x, y, LABEL_W, Element::TEXT_HEIGHT },
                                 "Remaining materials required:"));
     y += Element::TEXT_HEIGHT;
     for (const auto &pair : constructionMaterials()){
         // Quantity
         static const px_t
             QTY_WIDTH = 20;
-        _window->addChild(new Label(Rect(x, y, QTY_WIDTH, Client::ICON_SIZE),
+        _window->addChild(new Label({ x, y, QTY_WIDTH, Client::ICON_SIZE },
                                     makeArgs(pair.second),
                                     Element::RIGHT_JUSTIFIED, Element::CENTER_JUSTIFIED));
         x += QTY_WIDTH + GAP;
@@ -255,7 +255,7 @@ void ClientObject::addConstructionToWindow(){
         _window->addChild(new Picture(x, y, item.icon()));
         x += Client::ICON_SIZE + GAP;
         // Name
-        _window->addChild(new Label(Rect(x, y, LABEL_W, Client::ICON_SIZE),
+        _window->addChild(new Label({ x, y, LABEL_W, Client::ICON_SIZE },
                                     item.name(),
                                     Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
         y += Client::ICON_SIZE + GAP;
@@ -268,7 +268,7 @@ void ClientObject::addConstructionToWindow(){
     static const px_t
         DROPBOX_LABEL_W = 70;
     ContainerGrid *dropbox = new ContainerGrid(1, 1, _dropbox, _serial, x, y);
-    _window->addChild(new Label(Rect(x, y, DROPBOX_LABEL_W, dropbox->height()),
+    _window->addChild(new Label({ x, y, DROPBOX_LABEL_W, dropbox->height() },
                                 "Add materials:",
                                 Element::RIGHT_JUSTIFIED, Element::CENTER_JUSTIFIED));
     x += DROPBOX_LABEL_W + GAP;
@@ -297,13 +297,13 @@ void ClientObject::addMerchantSetupToWindow(){
         const px_t
             LIST_HEIGHT = toInt(ROW_HEIGHT * min(MAX_ROWS, objectType()->merchantSlots()));
         x = GAP;
-        _window->addChild(new Label(Rect(x, y, PANE_WIDTH, TITLE_HEIGHT), "Item to sell",
+        _window->addChild(new Label({ x, y, PANE_WIDTH, TITLE_HEIGHT }, "Item to sell",
                                     Element::CENTER_JUSTIFIED));
         x += PANE_WIDTH + GAP;
         Line *vertDivider = new Line(x, y, TITLE_HEIGHT + LIST_HEIGHT, Line::VERTICAL);
         _window->addChild(vertDivider);
         x += vertDivider->width() + GAP;
-        _window->addChild(new Label(Rect(x, y, PANE_WIDTH, TITLE_HEIGHT), "Price",
+        _window->addChild(new Label({ x, y, PANE_WIDTH, TITLE_HEIGHT }, "Price",
                                     Element::CENTER_JUSTIFIED));
         x += PANE_WIDTH + GAP;
         vertDivider = new Line(x, y, TITLE_HEIGHT + LIST_HEIGHT, Line::VERTICAL);
@@ -313,10 +313,9 @@ void ClientObject::addMerchantSetupToWindow(){
         if (newWidth < x)
             newWidth = x;
         y += Element::TEXT_HEIGHT;
-        List *merchantList = new List(Rect(0, y,
-                                           PANE_WIDTH * 2 + GAP * 5 + SET_BUTTON_WIDTH + 6 +
-                                           List::ARROW_W,
-                                           LIST_HEIGHT),
+        List *merchantList = new List({ 0, y,
+                                        PANE_WIDTH * 2 + GAP * 5 + SET_BUTTON_WIDTH + 6 + List::ARROW_W,
+                                        LIST_HEIGHT },
                                       ROW_HEIGHT);
         _window->addChild(merchantList);
         y += LIST_HEIGHT;
@@ -352,7 +351,7 @@ void ClientObject::addDeconstructionToWindow(){
         y = _window->contentHeight(),
         newWidth = _window->contentWidth();
     y += BUTTON_GAP;
-    Button *deconstructButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT),
+    Button *deconstructButton = new Button({ x, y, BUTTON_WIDTH, BUTTON_HEIGHT },
                                             "Pick up", startDeconstructing, this);
     _window->addChild(deconstructButton);
     y += BUTTON_GAP + BUTTON_HEIGHT;
@@ -369,7 +368,7 @@ void ClientObject::addVehicleToWindow() {
         y = _window->contentHeight(),
         newWidth = _window->contentWidth();
     y += BUTTON_GAP;
-    Button *mountButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), "Enter/exit",
+    Button *mountButton = new Button({ x, y, BUTTON_WIDTH, BUTTON_HEIGHT }, "Enter/exit",
         ClientVehicle::mountOrDismount, this);
     _window->addChild(mountButton);
     y += BUTTON_GAP + BUTTON_HEIGHT;
@@ -405,7 +404,7 @@ void ClientObject::addActionToWindow() {
 
     // Button
     x = BUTTON_GAP;
-    Button *button = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), action.label,
+    Button *button = new Button({ x, y, BUTTON_WIDTH, BUTTON_HEIGHT }, action.label,
         performAction, this);
     if (!action.tooltip.empty())
         button->setTooltip(action.tooltip);
@@ -455,7 +454,7 @@ void ClientObject::addMerchantTradeToWindow(){
                                                             : MAX_ROWS;
     static const px_t
         HEIGHT = toInt(ROW_HEIGHT * NUM_ROWS);
-    List *list = new List(Rect(0, 0, WIDTH, HEIGHT), ROW_HEIGHT);
+    List *list = new List({ 0, 0, WIDTH, HEIGHT }, ROW_HEIGHT);
     y += list->height();
     _window->addChild(list);
     for (size_t i = 0; i != objectType()->merchantSlots(); ++i){
@@ -474,7 +473,7 @@ void ClientObject::addCedeButtonToWindow() {
         y = _window->contentHeight(),
         newWidth = _window->contentWidth();
     y += BUTTON_GAP;
-    Button *cedeButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), "Cede to city",
+    Button *cedeButton = new Button({ x, y, BUTTON_WIDTH, BUTTON_HEIGHT }, "Cede to city",
         confirmAndCedeObject, this);
     cedeButton->setTooltip("Transfer ownership of this object over to your city");
     _window->addChild(cedeButton);
@@ -507,7 +506,7 @@ void ClientObject::addGrantButtonToWindow() {
         y = _window->contentHeight(),
         newWidth = _window->contentWidth();
     y += BUTTON_GAP;
-    Button *grantButton = new Button(Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), "Grant to citizen",
+    Button *grantButton = new Button({ x, y, BUTTON_WIDTH, BUTTON_HEIGHT }, "Grant to citizen",
         getInputAndGrantObject, this);
     grantButton->setTooltip("Transfer ownership of this object over to a member of your city");
     _window->addChild(grantButton);
@@ -579,8 +578,8 @@ void ClientObject::assembleWindow(Client &client){
         static const px_t
             WIDTH = 100,
             HEIGHT = 100;
-        _lootContainer = new TakeContainer(container(), serial(), Rect(0, 0, WIDTH, HEIGHT));
-        Rect winRect = location();
+        _lootContainer = new TakeContainer(container(), serial(), { 0, 0, WIDTH, HEIGHT });
+        auto winRect = toScreenRect(location());
         winRect.w = WIDTH;
         winRect.h = HEIGHT;
         if (_window == nullptr)
@@ -613,7 +612,7 @@ void ClientObject::assembleWindow(Client &client){
                                 canGrant))){
 
         if (_window == nullptr)
-            _window = Window::WithRectAndTitle(Rect(), objType.name());
+            _window = Window::WithRectAndTitle({}, objType.name());
 
         if (isBeingConstructed()){
             if (userHasAccess()){
@@ -768,14 +767,15 @@ void ClientObject::update(double delta) {
 
     // If dead, add smoke particles
     if (isDead() && classTag() != 'n' && collisionRect().w != 0 && collisionRect().h != 0){
-        Point particleLocation(
-                rand() % collisionRect().w + collisionRect().x,
-                rand() % collisionRect().h + collisionRect().y);
+
+        auto particleLocation = MapPoint{
+                randDouble() * collisionRect().w + collisionRect().x,
+                randDouble() * collisionRect().h + collisionRect().y };
         const ParticleProfile *smokeProfile = client.findParticleProfile("smoke");
 
         size_t numParticles = smokeProfile->numParticlesContinuous(delta);
         static const double PARTICLES_PER_PIXEL = 0.005;
-        size_t area = collisionRect().w * collisionRect().h;
+        double area = collisionRect().w * collisionRect().h;
         numParticles = toInt(numParticles * area * PARTICLES_PER_PIXEL);
 
         client.addParticles(smokeProfile, particleLocation, numParticles);

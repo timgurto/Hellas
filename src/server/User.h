@@ -45,7 +45,7 @@ private:
     const Recipe *_actionRecipe; // Craft
     const ObjectType *_actionObjectType; // Construct
     size_t _actionSlot; // Construct
-    Point _actionLocation; // Construct
+    MapPoint _actionLocation; // Construct
 
     std::set<std::string>
         _knownRecipes,
@@ -59,7 +59,7 @@ private:
     ms_t _lastContact;
     ms_t _latency;
 
-    Point _respawnPoint;
+    MapPoint _respawnPoint;
 
     XP _xp = 0;
     Level _level = 0;
@@ -68,9 +68,9 @@ private:
 
 
 public:
-    User(const std::string &name, const Point &loc, const Socket &socket);
+    User(const std::string &name, const MapPoint &loc, const Socket &socket);
     User(const Socket &rhs); // for use with set::find(), allowing find-by-socket
-    User(const Point &loc); // for use with set::find(), allowing find-by-location
+    User(const MapPoint &loc); // for use with set::find(), allowing find-by-location
     virtual ~User(){}
 
     bool operator<(const User &rhs) const { return _socket < rhs._socket; }
@@ -93,8 +93,8 @@ public:
     bool hasPlayerUnique(const std::string &category) const {
         return _playerUniqueCategoriesOwned.find(category) != _playerUniqueCategoriesOwned.end();
     }
-    const Point &respawnPoint() const { return _respawnPoint; }
-    void respawnPoint(const Point &loc) { _respawnPoint = loc; }
+    const MapPoint &respawnPoint() const { return _respawnPoint; }
+    void respawnPoint(const MapPoint &loc) { _respawnPoint = loc; }
 
     // Inventory getters/setters
     const std::pair<const ServerItem *, size_t> &inventory(size_t index) const
@@ -138,7 +138,7 @@ public:
     void onOutOfRange(const Entity &rhs) const override;
     Message outOfRangeMessage() const override;
 
-    const Rect collisionRect() const;
+    const MapRect collisionRect() const;
 
     Action action() const { return _action; }
     void action(Action a) { _action = a; }
@@ -155,7 +155,7 @@ public:
     void beginCrafting(const Recipe &item); // Configure user to craft an item
 
     // Configure user to construct an item, or an object from no item
-    void beginConstructing(const ObjectType &obj, const Point &location,
+    void beginConstructing(const ObjectType &obj, const MapPoint &location,
                            size_t slot = INVENTORY_SIZE);
 
     // Configure user to deconstruct an object
@@ -187,7 +187,7 @@ public:
 
     void update(ms_t timeElapsed);
 
-    static Point newPlayerSpawn;
+    static MapPoint newPlayerSpawn;
     static double spawnRadius;
     void moveToSpawnPoint(bool isNewPlayer = false);
 

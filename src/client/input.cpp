@@ -221,8 +221,8 @@ void Client::handleInput(double delta){
         case SDL_MOUSEMOTION: {
             px_t x, y;
             SDL_GetMouseState(&x, &y);
-            _mouse.x = x * SCREEN_X / static_cast<double>(renderer.width());
-            _mouse.y = y * SCREEN_Y / static_cast<double>(renderer.height());
+            _mouse.x = toInt(x * SCREEN_X / static_cast<double>(renderer.width()));
+            _mouse.y = toInt(y * SCREEN_Y / static_cast<double>(renderer.height()));
 
             onMouseMove();
 
@@ -468,7 +468,7 @@ void Client::handleInput(double delta){
             const double
                 dist = delta * SPEED,
                 diagDist = delta * DIAG_SPEED;
-            Point newLoc = _pendingCharLoc;
+            MapPoint newLoc = _pendingCharLoc;
             if (up != down) {
                 if (up && !down)
                     newLoc.y -= (left != right) ? diagDist : dist;
@@ -503,12 +503,12 @@ void Client::onMouseMove(){
 }
 
 Sprite *Client::getEntityAtMouse(){
-    const Point mouseOffset = _mouse - _offset;
+    const MapPoint mouseOffset = toMapPoint(_mouse) -_offset;
     Sprite::set_t::iterator mouseOverIt = _entities.end();
     static const px_t LOOKUP_MARGIN = 320;
     Sprite
-        topEntity(nullptr, Point(0, mouseOffset.y - LOOKUP_MARGIN)),
-        bottomEntity(nullptr, Point(0, mouseOffset.y + LOOKUP_MARGIN));
+        topEntity(nullptr, { 0, mouseOffset.y - LOOKUP_MARGIN }),
+        bottomEntity(nullptr, { 0, mouseOffset.y + LOOKUP_MARGIN });
     auto
         lowerBound = _entities.lower_bound(&topEntity),
         upperBound = _entities.upper_bound(&bottomEntity);

@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #include <cassert>
 
 #include "ShadowBox.h"
@@ -12,11 +10,11 @@ TextBox *TextBox::currentFocus = nullptr;
 const px_t TextBox::HEIGHT = 14;
 const size_t TextBox::MAX_TEXT_LENGTH = 100;
 
-TextBox::TextBox(const Rect &rect, bool numeralsOnly):
-Element(Rect(rect.x, rect.y, rect.w, HEIGHT)),
+TextBox::TextBox(const ScreenRect &rect, bool numeralsOnly):
+Element({rect.x, rect.y, rect.w, HEIGHT}),
 _numeralsOnly(numeralsOnly)
 {
-    addChild(new ShadowBox(Rect(0, 0, rect.w, HEIGHT), true));
+    addChild(new ShadowBox({ 0, 0, rect.w, HEIGHT }, true));
     setLeftMouseDownFunction(&click);
 }
 
@@ -42,7 +40,7 @@ void TextBox::refresh(){
         CURSOR_WIDTH = 1;
     if (currentFocus == this) {
         renderer.setDrawColor(Element::FONT_COLOR);
-        renderer.fillRect(Rect(TEXT_GAP + text.width() + CURSOR_GAP, 1, CURSOR_WIDTH, HEIGHT - 2));
+        renderer.fillRect({ TEXT_GAP + text.width() + CURSOR_GAP, 1, CURSOR_WIDTH, HEIGHT - 2 });
     }
 }
 
@@ -52,7 +50,7 @@ void TextBox::clearFocus(){
     currentFocus = nullptr;
 }
 
-void TextBox::click(Element &e, const Point &mousePos){
+void TextBox::click(Element &e, const ScreenPoint &mousePos){
     TextBox *newFocus = dynamic_cast<TextBox *>(&e);
     if (newFocus == currentFocus)
         return;

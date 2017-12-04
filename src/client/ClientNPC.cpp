@@ -5,7 +5,7 @@
 
 extern Renderer renderer;
 
-ClientNPC::ClientNPC(size_t serial, const ClientNPCType *type, const Point &loc):
+ClientNPC::ClientNPC(size_t serial, const ClientNPCType *type, const MapPoint &loc):
 ClientObject(serial, type, loc)
 {}
 

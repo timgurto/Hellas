@@ -8,7 +8,7 @@ TEST_CASE("Objects show up on the map when a client logs in", "[map]"){
     TestClient c = TestClient::WithData("basic_rock");
 
     // And a rock near the user spawn point
-    s.addObject("rock", Point(10, 15));
+    s.addObject("rock", { 10, 15 });
     
     // When the client finds out his location;
     CHECK(c.waitForMessage(SV_LOCATION));
@@ -44,8 +44,8 @@ TEST_CASE("A player shows up on his own map", "[.flaky][map][color]"){
     const px_t
         midMapX = toInt(c->mapImage().width() / 2.0),
         midMapY = toInt(c->mapImage().height() / 2.0);
-    const Point mapMidpoint(c->mapImage().width() / 2, c->mapImage().height() / 2);
-    WAIT_UNTIL(pin->rect() == Rect(midMapX, midMapY, 1, 1));
+    const MapPoint mapMidpoint(c->mapImage().width() / 2, c->mapImage().height() / 2);
+    WAIT_UNTIL(pin->rect() == ScreenRect(midMapX, midMapY, 1, 1));
 
 
     // And the map has one pin outline;
@@ -57,7 +57,7 @@ TEST_CASE("A player shows up on his own map", "[.flaky][map][color]"){
     CHECK(outline->color() == Color::OUTLINE);
 
     // And that outline is 3x3 and in the center of the map;
-    CHECK(outline->rect() == Rect(midMapX-1, midMapY-1, 3, 3));
+    CHECK(outline->rect() == ScreenRect(midMapX-1, midMapY-1, 3, 3));
 
 
     // And pixels of the player's color and border color are in the correct places

@@ -44,7 +44,7 @@ void Client::initializeCraftingWindow(){
         CONTENT_Y = PANE_GAP/2,
         CRAFTING_WINDOW_H = CONTENT_Y + CONTENT_H + PANE_GAP/2;
 
-    _craftingWindow->rect(Rect(100, 50, CRAFTING_WINDOW_W, CRAFTING_WINDOW_H));
+    _craftingWindow->rect({ 100, 50, CRAFTING_WINDOW_W, CRAFTING_WINDOW_H });
     _craftingWindow->setTitle("Crafting");
     _craftingWindow->addChild(new Line(RECIPES_PANE_X - PANE_GAP/2, CONTENT_Y,
                                        CONTENT_H, Element::VERTICAL));
@@ -52,13 +52,12 @@ void Client::initializeCraftingWindow(){
                                        CONTENT_H, Element::VERTICAL));
 
     // Filters
-    Element *const filterPane = new Element(Rect(FILTERS_PANE_X, CONTENT_Y,
-                                                 FILTERS_PANE_W, CONTENT_H));
+    Element *const filterPane = new Element({ FILTERS_PANE_X, CONTENT_Y, FILTERS_PANE_W, CONTENT_H });
     _craftingWindow->addChild(filterPane);
-    filterPane->addChild(new Label(Rect(0, 0, FILTERS_PANE_W, HEADING_HEIGHT),
+    filterPane->addChild(new Label({ 0, 0, FILTERS_PANE_W, HEADING_HEIGHT },
                                    "Filters", Element::CENTER_JUSTIFIED));
     px_t y = HEADING_HEIGHT;
-    CheckBox *pCB = new CheckBox(Rect(0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT),
+    CheckBox *pCB = new CheckBox({ 0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT },
                                  _haveMatsFilter, "Have all materials");
     pCB->setTooltip("Only show recipes for which you have the materials");
     filterPane->addChild(pCB);
@@ -73,19 +72,19 @@ void Client::initializeCraftingWindow(){
         MATERIALS_LIST_HEIGHT = TOTAL_FILTERS_HEIGHT - TAG_LIST_HEIGHT;
 
     // Tag filters
-    filterPane->addChild(new Label(Rect(0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT),
+    filterPane->addChild(new Label({ 0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT },
                                    "Item tag:"));
     y += Element::TEXT_HEIGHT;
-    _tagList = new List(Rect(0, y, FILTERS_PANE_W, TAG_LIST_HEIGHT),
+    _tagList = new List({ 0, y, FILTERS_PANE_W, TAG_LIST_HEIGHT },
                                      Element::TEXT_HEIGHT);
     filterPane->addChild(_tagList);
     y += TAG_LIST_HEIGHT;
 
-    pCB = new CheckBox(Rect(0, y, FILTERS_PANE_W/4, Element::TEXT_HEIGHT), _tagOr, "Any");
+    pCB = new CheckBox({ 0, y, FILTERS_PANE_W / 4, Element::TEXT_HEIGHT }, _tagOr, "Any");
     pCB->setTooltip("Only show recipes whose product has at least one of the selected tags.");
     filterPane->addChild(pCB);
 
-    pCB = new CheckBox(Rect(FILTERS_PANE_W/2, y, FILTERS_PANE_W/4, Element::TEXT_HEIGHT), _tagOr,
+    pCB = new CheckBox({ FILTERS_PANE_W / 2, y, FILTERS_PANE_W / 4, Element::TEXT_HEIGHT }, _tagOr,
                        "All", true);
     pCB->setTooltip("Only show recipes whose product has all of the selected tags.");
     filterPane->addChild(pCB);
@@ -95,17 +94,17 @@ void Client::initializeCraftingWindow(){
     y += LINE_GAP;
 
     // Material filters
-    filterPane->addChild(new Label(Rect(0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT), "Materials:"));
+    filterPane->addChild(new Label({ 0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT }, "Materials:"));
     y += Element::TEXT_HEIGHT;
-    _materialsList = new List(Rect(0, y, FILTERS_PANE_W, MATERIALS_LIST_HEIGHT),
+    _materialsList = new List({ 0, y, FILTERS_PANE_W, MATERIALS_LIST_HEIGHT },
                                          ICON_SIZE);
     filterPane->addChild(_materialsList);
     y += MATERIALS_LIST_HEIGHT;
-    pCB = new CheckBox(Rect(0, y, FILTERS_PANE_W/4, Element::TEXT_HEIGHT), _matOr, "Any");
+    pCB = new CheckBox({ 0, y, FILTERS_PANE_W / 4, Element::TEXT_HEIGHT }, _matOr, "Any");
     pCB->setTooltip("Only show recipes that require at least one of the selected materials.");
     filterPane->addChild(pCB);
 
-    pCB = new CheckBox(Rect(FILTERS_PANE_W/2, y, FILTERS_PANE_W/4, Element::TEXT_HEIGHT), _matOr,
+    pCB = new CheckBox({ FILTERS_PANE_W / 2, y, FILTERS_PANE_W / 4, Element::TEXT_HEIGHT }, _matOr,
                                  "All", true);
     pCB->setTooltip("Only show recipes that require all of the selected materials.");
     filterPane->addChild(pCB);
@@ -113,41 +112,39 @@ void Client::initializeCraftingWindow(){
     populateFilters();
 
     // Recipes
-    Element *const recipesPane = new Element(Rect(RECIPES_PANE_X, CONTENT_Y,
-                                                  RECIPES_PANE_W, CONTENT_H));
+    Element *const recipesPane = new Element({ RECIPES_PANE_X, CONTENT_Y, RECIPES_PANE_W, CONTENT_H });
     _craftingWindow->addChild(recipesPane);
     
-    recipesPane->addChild(new Label(Rect(0, 0, RECIPES_PANE_W, HEADING_HEIGHT), "Recipes",
+    recipesPane->addChild(new Label({ 0, 0, RECIPES_PANE_W, HEADING_HEIGHT }, "Recipes",
                                     Element::CENTER_JUSTIFIED));
-    _recipeList = new ChoiceList(Rect(0, HEADING_HEIGHT,
-                                      RECIPES_PANE_W, CONTENT_H - HEADING_HEIGHT),
+    _recipeList = new ChoiceList({ 0, HEADING_HEIGHT, RECIPES_PANE_W, CONTENT_H - HEADING_HEIGHT },
                                  ICON_SIZE + 2);
     _recipeList->doNotScrollToTopOnClear();
     recipesPane->addChild(_recipeList);
     // Click on a filter: force recipe list to refresh
-    filterPane->setLeftMouseUpFunction([](Element &e, const Point &mousePos){
+    filterPane->setLeftMouseUpFunction([](Element &e, const ScreenPoint &mousePos){
                                        if (collision(mousePos,
-                                                     Rect(0, 0, e.rect().w, e.rect().h)))
-                                           e.markChanged();
+                                            { 0, 0, e.rect().w, e.rect().h }))
+                                            e.markChanged();
                                    },
                                    _recipeList);
     // Repopulate recipe list before every refresh
     _recipeList->setPreRefreshFunction(populateRecipesList, _recipeList);
 
     // Selected Recipe Details
-    _detailsPane = new Element(Rect(DETAILS_PANE_X, CONTENT_Y, DETAILS_PANE_W, CONTENT_H));
+    _detailsPane = new Element({ DETAILS_PANE_X, CONTENT_Y, DETAILS_PANE_W, CONTENT_H });
     _craftingWindow->addChild(_detailsPane);
-    selectRecipe(*_detailsPane, Point()); // Fill details pane initially
+    selectRecipe(*_detailsPane, {}); // Fill details pane initially
 }
 
-void Client::selectRecipe(Element &e, const Point &mousePos){
+void Client::selectRecipe(Element &e, const ScreenPoint &mousePos){
     const auto &client = *Client::_instance;
 
-    if (!collision(mousePos, Rect(0, 0, e.rect().w, e.rect().h)))
+    if (!collision(mousePos, { 0, 0, e.rect().w, e.rect().h }))
         return;
     Element &pane = *_instance->_detailsPane;
     pane.clearChildren();
-    const Rect &paneRect = pane.rect();
+    const ScreenRect &paneRect = pane.rect();
 
     // Close Button
     static const px_t
@@ -155,8 +152,7 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
         BUTTON_WIDTH = 40,
         BUTTON_GAP = 3,
         BUTTON_Y = paneRect.h - BUTTON_HEIGHT;
-    pane.addChild(new Button(Rect(paneRect.w - BUTTON_WIDTH, BUTTON_Y,
-                                      BUTTON_WIDTH, BUTTON_HEIGHT),
+    pane.addChild(new Button({ paneRect.w - BUTTON_WIDTH, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT },
                              "Close", Window::hideWindow, _instance->_craftingWindow));
 
     // If no recipe selected
@@ -167,8 +163,8 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     }
 
     // Crafting Button
-    pane.addChild(new Button(Rect(paneRect.w - 2*BUTTON_WIDTH - BUTTON_GAP, BUTTON_Y,
-                                      BUTTON_WIDTH, BUTTON_HEIGHT),
+    pane.addChild(new Button({ paneRect.w - 2 * BUTTON_WIDTH - BUTTON_GAP, BUTTON_Y,
+                                      BUTTON_WIDTH, BUTTON_HEIGHT },
                              "Craft", startCrafting, nullptr));
 
     const std::set<Recipe>::const_iterator it = _instance->_recipes.find(selectedID);
@@ -183,12 +179,12 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
     std::string titleText = toClientItem(recipe.product())->name();
     if (recipe.quantity() > 1)
         titleText += " (x" + makeArgs(recipe.quantity()) + ")";
-    pane.addChild(new Label(Rect(0, 0, paneRect.w, HEADING_HEIGHT), titleText,
+    pane.addChild(new Label({ 0, 0, paneRect.w, HEADING_HEIGHT }, titleText,
                             Element::CENTER_JUSTIFIED));
     px_t y = HEADING_HEIGHT;
 
     // Icon
-    pane.addChild(new Picture(Rect(0, y, ICON_SIZE, ICON_SIZE), product.icon()));
+    pane.addChild(new Picture({ 0, y, ICON_SIZE, ICON_SIZE }, product.icon()));
 
     // Tooltip
     px_t x = ICON_SIZE + CheckBox::GAP;
@@ -206,9 +202,9 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
         TOTAL_LIST_SPACE = BUTTON_Y - BUTTON_GAP - y - 2 * Element::TEXT_HEIGHT,
         MATS_LIST_HEIGHT = TOTAL_LIST_SPACE / 2,
         TOOLS_LIST_HEIGHT = TOTAL_LIST_SPACE - MATS_LIST_HEIGHT;
-    pane.addChild(new Label(Rect(0, y, paneRect.w, Element::TEXT_HEIGHT), "Required materials:"));
+    pane.addChild(new Label({ 0, y, paneRect.w, Element::TEXT_HEIGHT }, "Required materials:"));
     y += Element::TEXT_HEIGHT;
-    List *const matsList = new List(Rect(0, y, paneRect.w, MATS_LIST_HEIGHT), ICON_SIZE);
+    List *const matsList = new List({ 0, y, paneRect.w, MATS_LIST_HEIGHT }, ICON_SIZE);
     y += MATS_LIST_HEIGHT;
     pane.addChild(matsList);
     for (const std::pair<const Item *, size_t> & matCost : recipe.materials()) {
@@ -218,20 +214,20 @@ void Client::selectRecipe(Element &e, const Point &mousePos){
         std::string entryText = mat.name();
         if (qty > 1)
             entryText += " x" + toString(qty);
-        Element *const entry = new Element(Rect(0, 0, paneRect.w, ICON_SIZE));
+        Element *const entry = new Element({ 0, 0, paneRect.w, ICON_SIZE });
         entry->setTooltip(mat.tooltip());
         matsList->addChild(entry);
-        entry->addChild(new Picture(Rect(0, 0, ICON_SIZE, ICON_SIZE), mat.icon()));
-        entry->addChild(new Label(Rect(ICON_SIZE + CheckBox::GAP, 0, paneRect.w, ICON_SIZE),
+        entry->addChild(new Picture({ 0, 0, ICON_SIZE, ICON_SIZE }, mat.icon()));
+        entry->addChild(new Label({ ICON_SIZE + CheckBox::GAP, 0, paneRect.w, ICON_SIZE },
                         entryText, Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
     }
-    pane.addChild(new Label(Rect(0, y, paneRect.w, Element::TEXT_HEIGHT), "Required tools:"));
+    pane.addChild(new Label({ 0, y, paneRect.w, Element::TEXT_HEIGHT }, "Required tools:"));
     y += Element::TEXT_HEIGHT;
-    List *const toolsList = new List(Rect(5, y, paneRect.w, TOOLS_LIST_HEIGHT));
+    List *const toolsList = new List({ 5, y, paneRect.w, TOOLS_LIST_HEIGHT });
     pane.addChild(toolsList);
     for (const std::string &tool : recipe.tools()) {
         static const px_t TOOL_MARGIN = 5;
-        Label *entry = new Label(Rect(TOOL_MARGIN, 0, paneRect.w - TOOL_MARGIN, Element::TEXT_HEIGHT),
+        Label *entry = new Label({ TOOL_MARGIN, 0, paneRect.w - TOOL_MARGIN, Element::TEXT_HEIGHT },
                 client.tagName(tool));
         toolsList->addChild(entry);
     }
@@ -259,7 +255,7 @@ void Client::populateFilters(){
     for (auto &pair : _tagFilters){
         if (knownTags.find(pair.first) == knownTags.end()) // User doesn't know about this tag yet.
             continue;
-        _tagList->addChild(new CheckBox(Rect(0, 0, FILTERS_PANE_W, Element::TEXT_HEIGHT),
+        _tagList->addChild(new CheckBox({ 0, 0, FILTERS_PANE_W, Element::TEXT_HEIGHT },
                                         pair.second, client.tagName(pair.first)));
     }
 
@@ -268,13 +264,13 @@ void Client::populateFilters(){
     for (auto &pair : _matFilters){
         if (knownMats.find(pair.first) == knownMats.end())
             continue;
-        CheckBox *const mat = new CheckBox(Rect(), pair.second);
+        CheckBox *const mat = new CheckBox({}, pair.second);
         static const px_t
             ICON_X = CheckBox::BOX_SIZE + CheckBox::GAP,
             LABEL_X = ICON_X + ICON_SIZE + CheckBox::GAP,
             LABEL_W = FILTERS_PANE_W - LABEL_X;
-        mat->addChild(new Picture(Rect(ICON_X, 0, ICON_SIZE, ICON_SIZE), pair.first->icon()));
-        mat->addChild(new Label(Rect(LABEL_X, 0, LABEL_W, ICON_SIZE), pair.first->name(),
+        mat->addChild(new Picture({ ICON_X, 0, ICON_SIZE, ICON_SIZE }, pair.first->icon()));
+        mat->addChild(new Label({ LABEL_X, 0, LABEL_W, ICON_SIZE }, pair.first->name(),
                                 Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
         _materialsList->addChild(mat);
     }
@@ -307,12 +303,12 @@ void Client::populateRecipesList(Element &e){
         if (!_instance->recipeMatchesFilters(recipe)) // Excluded by filters
             continue;
         const ClientItem &product = *toClientItem(recipe.product());
-        Element *const recipeElement = new Element(Rect());
+        Element *const recipeElement = new Element({});
         recipesList.addChild(recipeElement);
-        recipeElement->addChild(new Picture(Rect(1, 1, ICON_SIZE, ICON_SIZE), product.icon()));
+        recipeElement->addChild(new Picture({ 1, 1, ICON_SIZE, ICON_SIZE }, product.icon()));
         static const px_t NAME_X = ICON_SIZE + CheckBox::GAP + 1;
-        recipeElement->addChild(new Label(Rect(NAME_X, 0, recipeElement->rect().w - NAME_X,
-                                               ICON_SIZE + 2),
+        recipeElement->addChild(new Label({ NAME_X, 0, recipeElement->rect().w - NAME_X,
+                                               ICON_SIZE + 2 },
                                           recipe.name(),
                                           Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
         recipeElement->setLeftMouseUpFunction(selectRecipe);
@@ -321,7 +317,7 @@ void Client::populateRecipesList(Element &e){
     const std::string oldSelectedRecipe = recipesList.getSelected();
     recipesList.verifyBoxes();
     if (recipesList.getSelected() != oldSelectedRecipe)
-        selectRecipe(recipesList, Point());
+        selectRecipe(recipesList, {});
 }
 
 bool Client::recipeMatchesFilters(const Recipe &recipe) const{

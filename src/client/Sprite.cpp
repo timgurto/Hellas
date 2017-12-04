@@ -11,16 +11,16 @@ extern Renderer renderer;
 
 const std::string Sprite::EMPTY_NAME = "";
 
-Sprite::Sprite(const SpriteType *type, const Point &location):
+Sprite::Sprite(const SpriteType *type, const MapPoint &location):
 _yChanged(false),
 _type(type),
 _location(location),
 _toRemove(false){}
 
-Rect Sprite::drawRect() const {
+ScreenRect Sprite::drawRect() const {
     assert(_type != nullptr);
     auto typeDrawRect = _type->drawRect();
-    auto drawRect = typeDrawRect + _location;
+    auto drawRect = typeDrawRect + toScreenPoint(_location);
     return drawRect;
 }
 
@@ -42,13 +42,13 @@ void Sprite::drawName() const {
 
     const auto nameLabel = Texture{ client.defaultFont(), text, nameColor() };
     const auto nameOutline = Texture{ client.defaultFont(), text, Color::PLAYER_NAME_OUTLINE };
-    auto namePosition = location() + client.offset();
+    auto namePosition = toScreenPoint(location()) + client.offset();
     namePosition.y -= height();
     namePosition.y -= 16;
     namePosition.x -= nameLabel.width() / 2;
     for (int x = -1; x <= 1; ++x)
         for (int y = -1; y <= 1; ++y)
-            nameOutline.draw(namePosition + Point(x, y));
+            nameOutline.draw(namePosition + ScreenPoint(x, y));
     nameLabel.draw(namePosition);
 }
 
@@ -59,15 +59,15 @@ double Sprite::bottomEdge() const{
         return _location.y;
 }
 
-void Sprite::location(const Point &loc){
+void Sprite::location(const MapPoint &loc){
     const double oldY = _location.y;
     _location = loc;
     if (_location.y != oldY)
         _yChanged = true;
 }
 
-bool Sprite::collision(const Point &p) const{
-    return ::collision(p, drawRect());
+bool Sprite::collision(const MapPoint &p) const{
+    return ::collision(toScreenPoint(p), drawRect());
 }
 
 const Texture &Sprite::cursor(const Client &client) const {

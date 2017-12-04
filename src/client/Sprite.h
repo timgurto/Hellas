@@ -14,7 +14,7 @@ class Client;
 class Sprite{
     bool _yChanged; // y co-ordinate has changed, and the entity must be reordered.
     const SpriteType *_type;
-    Point _location;
+    MapPoint _location;
 
     bool _toRemove; // No longer draw or update, and remove when possible.
 
@@ -24,12 +24,12 @@ protected:
     mutable Texture _tooltip;
 
 public:
-    Sprite(const SpriteType *type, const Point &location);
+    Sprite(const SpriteType *type, const MapPoint &location);
     virtual ~Sprite(){}
 
-    const Point &location() const { return _location; }
-    void location(const Point &loc); // yChanged() should be checked after changing location.
-    virtual Rect drawRect() const;
+    const MapPoint &location() const { return _location; }
+    void location(const MapPoint &loc); // yChanged() should be checked after changing location.
+    virtual ScreenRect drawRect() const;
     px_t width() const { return _type->width(); }
     px_t height() const { return _type->height(); }
     bool yChanged() const { return _yChanged; }
@@ -58,7 +58,7 @@ public:
     void refreshTooltip() const { _tooltip = Texture(); }
 
     double bottomEdge() const;
-    bool collision(const Point &p) const;
+    bool collision(const MapPoint &p) const;
 
     struct ComparePointers{
         bool operator()(const Sprite *lhs, const Sprite *rhs) const{

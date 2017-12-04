@@ -16,7 +16,7 @@ class ClientTerrain : public Terrain{
 public:
     ClientTerrain(const std::string &imageFile = "", size_t frames = 1, ms_t frameTime = 0);
 
-    void draw(const Rect &loc, const Rect &srcRect) const;
+    void draw(const ScreenRect &loc, const ScreenRect &srcRect) const;
     void draw(px_t x, px_t y) const;
 
     void setQuarterAlpha() const;

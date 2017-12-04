@@ -29,7 +29,7 @@ _isInitialized(true)
     setPreRefreshFunction(checkInitialized);
 }
 
-Window *Window::WithRectAndTitle(const Rect &rect, const std::string &title){
+Window *Window::WithRectAndTitle(const ScreenRect &rect, const std::string &title){
     auto window = new Window;
 
     window->resize(rect.w, rect.h);
@@ -58,13 +58,13 @@ void Window::addStructuralElements(){
 
 void Window::addBackground(){
     static const px_t UNINIT = 0;
-    _background = new ColorBlock(Rect(1, 1, UNINIT, UNINIT));
+    _background = new ColorBlock({ 1, 1, UNINIT, UNINIT });
     Element::addChild(_background);
 }
 
 void Window::addHeading(){
     static const px_t UNINIT = 0;
-    _heading = new Label(Rect(0, 0,  UNINIT, HEADING_HEIGHT), _title, CENTER_JUSTIFIED);
+    _heading = new Label({ 0, 0,  UNINIT, HEADING_HEIGHT }, _title, CENTER_JUSTIFIED);
     _heading->setLeftMouseDownFunction(&startDragging, this);
     Element::addChild(_heading);
 
@@ -72,38 +72,38 @@ void Window::addHeading(){
     _headingLine->setLeftMouseDownFunction(&startDragging, this);
     Element::addChild(_headingLine);
 
-    _closeButton = new Button(Rect(UNINIT, 1, CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE),
+    _closeButton = new Button({ UNINIT, 1, CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE },
                                 "", hideWindow, this);
-    _closeButton->addChild(new Label(Rect(0, 0, CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE), "x",
+    _closeButton->addChild(new Label({ 0, 0, CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE }, "x",
                                     CENTER_JUSTIFIED, CENTER_JUSTIFIED));
     Element::addChild(_closeButton);
 }
 
 void Window::addBorder(){
     static const px_t UNINIT = 0;
-    _border = new ShadowBox(Rect(0, 0, UNINIT, UNINIT));
+    _border = new ShadowBox({ 0, 0, UNINIT, UNINIT });
     Element::addChild(_border);
 }
 
 void Window::addContent(){
     static const px_t UNINIT = 0;
-    _content = new Element(Rect(1, HEADING_HEIGHT + 2, UNINIT, UNINIT));
+    _content = new Element({ 1, HEADING_HEIGHT + 2, UNINIT, UNINIT });
     Element::addChild(_content);
 }
 
 
-void Window::startDragging(Element &e, const Point &mousePos){
+void Window::startDragging(Element &e, const ScreenPoint &mousePos){
     Window &window = dynamic_cast<Window &>(e);
-    window._dragOffset = *absMouse - window.rect();
+    window._dragOffset = *absMouse - ScreenPoint{ window.rect() };
     window._dragging = true;
 }
 
-void Window::stopDragging(Element &e, const Point &mousePos){
+void Window::stopDragging(Element &e, const ScreenPoint &mousePos){
     Window &window = dynamic_cast<Window &>(e);
     window._dragging = false;
 }
 
-void Window::drag(Element &e, const Point &mousePos){
+void Window::drag(Element &e, const ScreenPoint &mousePos){
     Window &window = dynamic_cast<Window &>(e);
     if (window._dragging) 
         window.setPosition(toInt(absMouse->x - window._dragOffset.x),

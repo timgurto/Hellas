@@ -70,14 +70,14 @@ void TestServer::stop(){
     WAIT_UNTIL (!_server->_running);
 }
 
-void TestServer::addObject(const std::string &typeName, const Point &loc,
+void TestServer::addObject(const std::string &typeName, const MapPoint &loc,
                            const std::string &owner){
     const ObjectType *const type = _server->findObjectTypeByName(typeName);
     assert(type != nullptr);
     _server->addObject(type, loc, owner);
 }
 
-void TestServer::addNPC(const std::string &typeName, const Point &loc){
+void TestServer::addNPC(const std::string &typeName, const MapPoint &loc){
     const ObjectType *const type = _server->findObjectTypeByName(typeName);
     assert (type->classTag() == 'n');
     const NPCType *const npcType = dynamic_cast<const NPCType *const>(type);

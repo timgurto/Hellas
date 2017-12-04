@@ -24,9 +24,9 @@ Texture ContainerGrid::_highlightBad;
 
 ContainerGrid::ContainerGrid(size_t rows, size_t cols, ClientItem::vect_t &linked, size_t serial,
                              px_t x, px_t y, px_t gap, bool solidBackground):
-Element(Rect(x, y,
-             cols * (Client::ICON_SIZE + gap + 2) + gap,
-             rows * (Client::ICON_SIZE + gap + 2) + gap + 1)),
+    Element({ x, y,
+        static_cast<px_t>(cols) * (Client::ICON_SIZE + gap + 2) + gap,
+        static_cast<px_t>(rows) * (Client::ICON_SIZE + gap + 2) + gap + 1 }),
 _rows(rows),
 _cols(cols),
 _linked(linked),
@@ -46,9 +46,9 @@ _solidBackground(solidBackground){
         const px_t
             x = i % cols,
             y = i / cols;
-        const Rect slotRect = Rect(x * (Client::ICON_SIZE + _gap + 2),
+        const auto slotRect = ScreenRect{ x * (Client::ICON_SIZE + _gap + 2),
                                    y * (Client::ICON_SIZE + _gap + 2) + 1,
-                                   Client::ICON_SIZE + 2, Client::ICON_SIZE + 2);
+                                   Client::ICON_SIZE + 2, Client::ICON_SIZE + 2 };
         addChild(new ShadowBox(slotRect, true));
     }
     setLeftMouseDownFunction(leftMouseDown);
@@ -64,11 +64,11 @@ void ContainerGrid::refresh(){
         const px_t
             x = i % _cols,
             y = i / _cols;
-        const Rect slotRect = Rect(x * (Client::ICON_SIZE + _gap + 2),
+        const auto slotRect = ScreenRect{ x * (Client::ICON_SIZE + _gap + 2),
                                    y * (Client::ICON_SIZE + _gap + 2) + 1,
-                                   Client::ICON_SIZE + 2, Client::ICON_SIZE + 2);
+                                   Client::ICON_SIZE + 2, Client::ICON_SIZE + 2 };
         if (_solidBackground){
-            static const Rect SLOT_BACKGROUND_OFFSET = Rect(1, 1, -2, -2);
+            static const auto SLOT_BACKGROUND_OFFSET = ScreenRect{ 1, 1, -2, -2 };
             renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
         }
         if (dragSlot != i || dragGrid != this) { // Don't draw an item being moved by the mouse.
@@ -113,16 +113,16 @@ void ContainerGrid::refresh(){
     }
 }
 
-size_t ContainerGrid::getSlot(const Point &mousePos) const{
-    if (!collision(mousePos, Rect(0, 0, width(), height())))
+size_t ContainerGrid::getSlot(const ScreenPoint &mousePos) const{
+    if (!collision(mousePos, ScreenRect{ 0, 0, width(), height() }))
         return NO_SLOT;
     size_t
         x = static_cast<size_t>((mousePos.x) / (Client::ICON_SIZE + _gap + 2)),
         y = static_cast<size_t>((mousePos.y - 1) / (Client::ICON_SIZE + _gap + 2));
     // Check inside gaps
-    if (mousePos.x - x * (Client::ICON_SIZE + _gap + 2) > Client::ICON_SIZE + 2)
+    if (mousePos.x - static_cast<px_t>(x) * (Client::ICON_SIZE + _gap + 2) > Client::ICON_SIZE + 2)
         return NO_SLOT;
-    if (mousePos.y - y * (Client::ICON_SIZE + _gap + 2) > Client::ICON_SIZE + 2)
+    if (mousePos.y - static_cast<px_t>(y) * (Client::ICON_SIZE + _gap + 2) > Client::ICON_SIZE + 2)
         return NO_SLOT;
     size_t slot = y * _cols + x;
     if (slot >= _linked.size())
@@ -130,13 +130,13 @@ size_t ContainerGrid::getSlot(const Point &mousePos) const{
     return slot;
 }
 
-void ContainerGrid::leftMouseDown(Element &e, const Point &mousePos){
+void ContainerGrid::leftMouseDown(Element &e, const ScreenPoint &mousePos){
     ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
     size_t slot = grid.getSlot(mousePos);
     grid._leftMouseDownSlot = slot;
 }
 
-void ContainerGrid::leftMouseUp(Element &e, const Point &mousePos){
+void ContainerGrid::leftMouseUp(Element &e, const ScreenPoint &mousePos){
     ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
     size_t slot = grid.getSlot(mousePos);
     if (slot != NO_SLOT) { // Clicked a valid slot
@@ -185,13 +185,13 @@ void ContainerGrid::leftMouseUp(Element &e, const Point &mousePos){
     }
 }
 
-void ContainerGrid::rightMouseDown(Element &e, const Point &mousePos){
+void ContainerGrid::rightMouseDown(Element &e, const ScreenPoint &mousePos){
     ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
     size_t slot = grid.getSlot(mousePos);
     grid._rightMouseDownSlot = slot;
 }
 
-void ContainerGrid::rightMouseUp(Element &e, const Point &mousePos){
+void ContainerGrid::rightMouseUp(Element &e, const ScreenPoint &mousePos){
     ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
     size_t slot = grid.getSlot(mousePos);
     if (dragSlot != NO_SLOT) { // Cancel dragging
@@ -226,7 +226,7 @@ void ContainerGrid::rightMouseUp(Element &e, const Point &mousePos){
     grid._rightMouseDownSlot = NO_SLOT;
 }
 
-void ContainerGrid::mouseMove(Element &e, const Point &mousePos){
+void ContainerGrid::mouseMove(Element &e, const ScreenPoint &mousePos){
     ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
     size_t slot = grid.getSlot(mousePos);
     if (slot != grid._mouseOverSlot) {

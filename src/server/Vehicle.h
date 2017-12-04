@@ -9,7 +9,7 @@ class Vehicle : public Object{
     std::string _driver{};
 
 public:
-    Vehicle(const VehicleType *type, const Point &loc);
+    Vehicle(const VehicleType *type, const MapPoint &loc);
     virtual ~Vehicle(){}
 
     const std::string &driver() const { return _driver; }

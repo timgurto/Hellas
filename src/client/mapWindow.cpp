@@ -5,14 +5,14 @@
 
 void Client::initializeMapWindow(){
     _mapImage = Texture(std::string("Images/map.png"));
-    _mapWindow = Window::WithRectAndTitle(Rect((SCREEN_X - _mapImage.width()) / 2,
+    _mapWindow = Window::WithRectAndTitle({ (SCREEN_X - _mapImage.width()) / 2,
                                                (SCREEN_Y - _mapImage.height()) / 2,
-                                               _mapImage.width(), _mapImage.height()),
+                                               _mapImage.width(), _mapImage.height() },
                                           "Map");
     _mapWindow->addChild(new Picture(0, 0, _mapImage));
 
-    _mapPinOutlines = new Element(Rect(0, 0, _mapImage.width(), _mapImage.height()));
-    _mapPins = new Element(Rect(0, 0, _mapImage.width(), _mapImage.height()));
+    _mapPinOutlines = new Element({ 0, 0, _mapImage.width(), _mapImage.height() });
+    _mapPins = new Element({ 0, 0, _mapImage.width(), _mapImage.height() });
     _mapWindow->addChild(_mapPinOutlines);
     _mapWindow->addChild(_mapPins);
 
@@ -38,8 +38,8 @@ void Client::updateMapWindow(Element &){
     client.addOutlinedMapPin(client._character.location(), Color::COMBATANT_SELF);
 }
 
-void Client::addMapPin(const Point &worldPosition, const Color &color){
-    static const Rect
+void Client::addMapPin(const MapPoint &worldPosition, const Color &color){
+    static const ScreenRect
         PIN_RECT(0, 0, 1, 1),
         OUTLINE_RECT(-1, -1, 3, 3);
 
@@ -49,8 +49,8 @@ void Client::addMapPin(const Point &worldPosition, const Color &color){
     _mapPinOutlines->addChild(new ColorBlock(OUTLINE_RECT + mapPosition, Color::OUTLINE));
 }
 
-void Client::addOutlinedMapPin(const Point &worldPosition, const Color &color) {
-    static const Rect
+void Client::addOutlinedMapPin(const MapPoint &worldPosition, const Color &color) {
+    static const ScreenRect
         PIN_RECT(0, 0, 1, 1),
         OUTLINE_RECT_H(-2, -1, 5, 3),
         OUTLINE_RECT_V(-1, -2, 3, 5),
@@ -66,10 +66,13 @@ void Client::addOutlinedMapPin(const Point &worldPosition, const Color &color) {
     _mapPinOutlines->addChild(new ColorBlock(OUTLINE_RECT_V + mapPosition, Color::OUTLINE));
 }
 
-Point Client::convertToMapPosition(const Point &worldPosition) const{
+ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const{
     const double
         MAP_FACTOR_X = 1.0 * _mapX * TILE_W / _mapImage.width(),
         MAP_FACTOR_Y = 1.0 * _mapY * TILE_H / _mapImage.height();
 
-    return{ worldPosition.x / MAP_FACTOR_X, worldPosition.y / MAP_FACTOR_Y };
+    px_t
+        x = toInt(worldPosition.x / MAP_FACTOR_X),
+        y = toInt(worldPosition.y / MAP_FACTOR_Y);
+    return{ x, y, 0, 0 };
 }

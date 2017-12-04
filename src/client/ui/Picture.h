@@ -10,7 +10,7 @@ class Picture : public Element{
     virtual void refresh() override;
 
 public:
-    Picture(const Rect &rect, const Texture &srcTexture);
+    Picture(const ScreenRect &rect, const Texture &srcTexture);
     Picture(px_t x, px_t y, const Texture &srcTexture); // x and y only; get w/h from texture
 
     void changeTexture(const Texture &srcTexture = Texture());

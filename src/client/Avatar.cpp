@@ -8,19 +8,19 @@
 
 extern Renderer renderer;
 
-const Rect Avatar::DRAW_RECT(-9, -39, 20, 40);
-const Rect Avatar::COLLISION_RECT(-5, -2, 10, 4);
+const ScreenRect Avatar::DRAW_RECT(-9, -39, 20, 40);
+const MapRect Avatar::COLLISION_RECT(-5, -2, 10, 4);
 ClientCombatantType Avatar::_combatantType(Client::MAX_PLAYER_HEALTH);
 SpriteType Avatar::_spriteType(DRAW_RECT);
 
-Avatar::Avatar(const std::string &name, const Point &location):
+Avatar::Avatar(const std::string &name, const MapPoint &location):
 Sprite(&_spriteType, location),
 ClientCombatant(&_combatantType),
 _name(name),
 _gear(Client::GEAR_SLOTS, std::make_pair(nullptr, 0)),
 _driving(false){}
 
-Point Avatar::interpolatedLocation(double delta){
+MapPoint Avatar::interpolatedLocation(double delta){
     if (_destination == location())
         return _destination;;
 
@@ -47,7 +47,7 @@ void Avatar::draw(const Client &client) const{
 
     if (isDebug()) {
         renderer.setDrawColor(Color::WHITE);
-        renderer.drawRect(COLLISION_RECT + location() + client.offset());
+        renderer.drawRect(toScreenRect(COLLISION_RECT + location()) + client.offset());
     }
 
     drawHealthBarIfAppropriate(location(), height());
@@ -60,11 +60,11 @@ void Avatar::drawName() const {
     const Texture nameOutline(client.defaultFont(), _name, Color::PLAYER_NAME_OUTLINE);
     Texture cityOutline, cityLabel;
 
-    Point namePosition = location() + client.offset();
+    ScreenPoint namePosition = toScreenPoint(location()) + client.offset();
     namePosition.y -= 60;
     namePosition.x -= nameLabel.width() / 2;
 
-    Point cityPosition;
+    ScreenPoint cityPosition;
     bool shouldDrawCityName = (!_city.empty()) /*&& (_name != client.username())*/;
     if (shouldDrawCityName) {
         auto cityText = std::string{};
@@ -73,15 +73,15 @@ void Avatar::drawName() const {
         cityText += "of " + _city;
         cityOutline = Texture(client.defaultFont(), cityText, Color::PLAYER_NAME_OUTLINE);
         cityLabel = Texture(client.defaultFont(), cityText, nameColor());
-        cityPosition.x = location().x + client.offset().x - cityLabel.width() / 2;
+        cityPosition.x = toInt(location().x + client.offset().x - cityLabel.width() / 2.0);
         cityPosition.y = namePosition.y;
         namePosition.y -= 11;
     }
     for (int x = -1; x <= 1; ++x)
         for (int y = -1; y <= 1; ++y) {
-            nameOutline.draw(namePosition + Point(x, y));
+            nameOutline.draw(namePosition + ScreenPoint{ x, y });
             if (shouldDrawCityName)
-                cityOutline.draw(cityPosition + Point(x, y));
+                cityOutline.draw(cityPosition + ScreenPoint{ x, y });
         }
     nameLabel.draw(namePosition);
     if (shouldDrawCityName)

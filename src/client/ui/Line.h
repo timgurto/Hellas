@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef LINE_H
 #define LINE_H
 
@@ -12,6 +10,7 @@ class Line : public Element{
     virtual void refresh() override;
 
 public:
+    // TODO: Take a ScreenPoint instead of x and y
     Line(px_t x, px_t y, px_t length, Orientation _orientation = HORIZONTAL); // x,y = top-left corner.
 };
 

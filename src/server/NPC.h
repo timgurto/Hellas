@@ -18,7 +18,7 @@ class NPC : public Entity {
     Level _level{ 0 };
 
 public:
-    NPC(const NPCType *type, const Point &loc); // Generates a new serial
+    NPC(const NPCType *type, const MapPoint &loc); // Generates a new serial
     virtual ~NPC(){}
 
     const NPCType *npcType() const { return dynamic_cast<const NPCType *>(type()); }

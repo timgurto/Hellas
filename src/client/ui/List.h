@@ -14,7 +14,7 @@ public:
         SCROLL_AMOUNT;
 
 protected:
-    static void mouseUp(Element &e, const Point &mousePos);
+    static void mouseUp(Element &e, const ScreenPoint &mousePos);
 
 private:
     bool _mouseDownOnCursor;
@@ -34,18 +34,18 @@ private:
 
     bool _shouldScrollToTopOnClear = true;
 
-    static void cursorMouseDown(Element &e, const Point &mousePos);
-    static void mouseMove(Element &e, const Point &mousePos);
+    static void cursorMouseDown(Element &e, const ScreenPoint &mousePos);
+    static void mouseMove(Element &e, const ScreenPoint &mousePos);
     static void scrollUpRaw(Element &e);
     static void scrollDownRaw(Element &e);
-    static void scrollUp(Element &e, const Point &mousePos) { scrollUpRaw(e); }
-    static void scrollDown(Element &e, const Point &mousePos) { scrollDownRaw(e); }
+    static void scrollUp(Element &e, const ScreenPoint &mousePos) { scrollUpRaw(e); }
+    static void scrollDown(Element &e, const ScreenPoint &mousePos) { scrollDownRaw(e); }
 
 protected:
     Element *_content; // Holds the list items themselves, and moves up and down to "scroll".
 
 public:
-    List(const Rect &rect, px_t childHeight = Element::TEXT_HEIGHT);
+    List(const ScreenRect &rect, px_t childHeight = Element::TEXT_HEIGHT);
 
     void addChild(Element *child) override;
     void clearChildren() override;

@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef CHECK_BOX_H
 #define CHECK_BOX_H
 
@@ -28,9 +26,9 @@ private:
     void depress();
     void release(bool click); // click: whether, on release, the check box will toggle
 
-    static void mouseDown(Element &e, const Point &mousePos);
-    static void mouseUp(Element &e, const Point &mousePos);
-    static void mouseMove(Element &e, const Point &mousePos);
+    static void mouseDown(Element &e, const ScreenPoint &mousePos);
+    static void mouseUp(Element &e, const ScreenPoint &mousePos);
+    static void mouseMove(Element &e, const ScreenPoint &mousePos);
 
     virtual void refresh() override;
 
@@ -39,7 +37,7 @@ public:
         BOX_SIZE,
         GAP; // The gap between box and label, if any.
 
-    CheckBox(const Rect &rect, bool &linkedBool, const std::string &caption = "",
+    CheckBox(const ScreenRect &rect, bool &linkedBool, const std::string &caption = "",
              bool inverse = false);
 };
 

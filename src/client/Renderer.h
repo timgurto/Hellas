@@ -19,7 +19,7 @@ class Renderer{
 
     std::stack<SDL_Texture *> _renderTargetsStack;
 
-    static SDL_Rect rectToSDL(const Rect &rect);
+    static SDL_Rect rectToSDL(const ScreenRect &rect);
 
     friend void Texture::setRenderTarget() const; // Needs access to raw SDL_Renderer
 
@@ -40,8 +40,8 @@ public:
 
     SDL_Texture *createTextureFromSurface(SDL_Surface *surface) const;
     SDL_Texture *createTargetableTexture(px_t width, px_t height) const;
-    void drawTexture(SDL_Texture *srcTex, const Rect &dstRect);
-    void drawTexture(SDL_Texture *srcTex, const Rect &dstRect, const Rect &srcRect);
+    void drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect);
+    void drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect, const ScreenRect &srcRect);
 
     void setDrawColor(const Color &color = Color::DEFAULT_DRAW);
     void clear();
@@ -49,8 +49,8 @@ public:
 
     void setRenderTarget() const; // Render to renderer instead of any Texture that might be set.
 
-    void drawRect(const Rect &dstRect);
-    void fillRect(const Rect &dstRect);
+    void drawRect(const ScreenRect &dstRect);
+    void fillRect(const ScreenRect &dstRect);
     void fill();
 
     Color getPixel(px_t x, px_t y) const;

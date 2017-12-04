@@ -8,7 +8,7 @@
 TEST_CASE("Size of empty list"){
     // When a new List element is created
     Element::initialize();
-    List l(Rect(0, 0, 100, 100));
+    List l({ 0, 0, 100, 100 });
 
     // Then its size is 0
     CHECK(l.size() == 0);
@@ -17,10 +17,10 @@ TEST_CASE("Size of empty list"){
 TEST_CASE("Size of nonempty list"){
     // Given an empty List element
     Element::initialize();
-    List l(Rect(0, 0, 100, 100));
+    List l({ 0, 0, 100, 100 });
 
     // When an element is added
-    l.addChild(new Label(Rect(), "asdf"));
+    l.addChild(new Label({}, "asdf"));
 
     // Then its size is 1
     CHECK(l.size() == 1);
@@ -33,9 +33,9 @@ TEST_CASE("View merchant slots in window", "[.flaky]"){
     // Move user to middle
     WAIT_UNTIL (s.users().size() == 1);
     User &user = s.getFirstUser();
-    user.updateLocation(Point(10, 10));
+    user.updateLocation({ 10, 10 });
     // Add a single vending machine
-    s.addObject("vendingMachine", Point(10, 10));
+    s.addObject("vendingMachine", { 10, 10 });
     WAIT_UNTIL (s.entities().size() == 1);
     WAIT_UNTIL (c.objects().size() == 1);
 
@@ -177,7 +177,7 @@ TEST_CASE("A player's objects are the appropriate color", "[color][ownership]"){
     TestServer s = TestServer::WithData("basic_rock");
     TestClient c = TestClient::WithUsernameAndData("alice", "basic_rock");
 
-    s.addObject("rock", Point(10, 15), "alice");
+    s.addObject("rock", { 10, 15 }, "alice");
     
     WAIT_UNTIL(c.objects().size() == 1);
     const auto &rock = c.getFirstObject();

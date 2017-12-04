@@ -13,7 +13,7 @@ class LinkedLabel : public Label{
     std::string _prefix, _suffix;
 
 public:
-    LinkedLabel(const Rect &rect, const T &val, const std::string &prefix = "",
+    LinkedLabel(const ScreenRect &rect, const T &val, const std::string &prefix = "",
                 const std::string &suffix = "", Justification justificationH = LEFT_JUSTIFIED,
                 Justification justificationV = TOP_JUSTIFIED);
 
@@ -23,7 +23,7 @@ private:
 };
 
 template<typename T>
-LinkedLabel<T>::LinkedLabel(const Rect &rect, const T &val, const std::string &prefix,
+LinkedLabel<T>::LinkedLabel(const ScreenRect &rect, const T &val, const std::string &prefix,
                             const std::string &suffix, Justification justificationH,
                             Justification justificationV):
 Label(rect, "", justificationH, justificationV),

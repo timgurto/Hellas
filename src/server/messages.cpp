@@ -96,11 +96,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 // Move vehicle and user together
                 size_t vehicleSerial = user->driving();
                 Vehicle &vehicle = * _entities.find<Vehicle>(vehicleSerial);
-                vehicle.updateLocation(Point(x, y));
+                vehicle.updateLocation({ x, y });
                 user->updateLocation(vehicle.location());
                 break;
             }
-            user->updateLocation(Point(x, y));
+            user->updateLocation({ x, y });
             break;
         }
 
@@ -166,7 +166,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_NEED_TOOLS);
                 break;
             }
-            const Point location(x, y);
+            const MapPoint location(x, y);
             if (distance(user->collisionRect(), objType->collisionRect() + location) >
                 ACTION_DISTANCE) {
                 sendMessage(client, SV_TOO_FAR);
@@ -204,7 +204,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_CANNOT_CONSTRUCT);
                 break;
             }
-            const Point location(x, y);
+            const MapPoint location(x, y);
             const ObjectType &objType = *item.constructsObject();
             if (distance(user->collisionRect(), objType.collisionRect() + location) >
                 ACTION_DISTANCE) {
@@ -820,7 +820,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
         case CL_DISMOUNT:
         {
-            Point target;
+            MapPoint target;
             iss >> target.x >> del >> target.y >> del;
             if (del != MSG_END)
                 return;
@@ -828,7 +828,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, SV_NO_VEHICLE);
                 break;
             }
-            Rect dstRect = user->type()->collisionRect() + target;
+            auto dstRect = user->type()->collisionRect() + target;
             if (distance(dstRect, user->collisionRect()) > ACTION_DISTANCE){
                 sendMessage(client, SV_TOO_FAR);
                 break;
@@ -1474,7 +1474,7 @@ void Server::broadcast(MessageCode msgCode, const std::string &args){
     }
 }
 
-void Server::broadcastToArea(const Point & location, MessageCode msgCode, const std::string & args) const {
+void Server::broadcastToArea(const MapPoint & location, MessageCode msgCode, const std::string & args) const {
     for (const User *user : this->findUsersInArea(location)) {
         sendMessage(user->socket(), msgCode, args);
     }

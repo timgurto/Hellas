@@ -33,7 +33,7 @@ private:
     }
 
 public:
-    ProgressBar(const Rect &rect, const T &numerator, const T &denominator,
+    ProgressBar(const ScreenRect &rect, const T &numerator, const T &denominator,
                const Color&barColor = Color::PROGRESS_BAR,
                const Color &backgroundColor = Color::PROGRESS_BAR_BACKGROUND);
     void changeColor(const Color &newColor) { _bar->changeColor(newColor); }
@@ -47,7 +47,7 @@ public:
 extern Renderer renderer;
 
 template<typename T>
-ProgressBar<T>::ProgressBar(const Rect &rect, const T &numerator, const T &denominator,
+ProgressBar<T>::ProgressBar(const ScreenRect &rect, const T &numerator, const T &denominator,
                             const Color &barColor, const Color &backgroundColor):
 Element(rect),
 _numerator(numerator),
@@ -55,9 +55,9 @@ _denominator(denominator),
 _lastNumeratorVal(numerator),
 _lastDenominatorVal(denominator)
 {
-    addChild(new ColorBlock(Rect(1, 1, rect.w - 2, rect.h - 2), backgroundColor));
-    addChild(new ShadowBox(Rect(0, 0, rect.w, rect.h), true));
-    _bar = new ColorBlock(Rect(1, 1, rect.w - 2, rect.h - 2), barColor);
+    addChild(new ColorBlock({ 1, 1, rect.w - 2, rect.h - 2 }, backgroundColor));
+    addChild(new ShadowBox({ 0, 0, rect.w, rect.h }, true));
+    _bar = new ColorBlock({ 1, 1, rect.w - 2, rect.h - 2 }, barColor);
     addChild(_bar);
 }
 

@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #include "CheckBox.h"
 #include "ColorBlock.h"
 #include "Label.h"
@@ -10,7 +8,7 @@ const px_t CheckBox::BOX_SIZE = 8;
 const px_t CheckBox::GAP = 3;
 const px_t CheckBox::Y_OFFSET = 1;
 
-CheckBox::CheckBox(const Rect &rect, bool &linkedBool, const std::string &caption,
+CheckBox::CheckBox(const ScreenRect &rect, bool &linkedBool, const std::string &caption,
                    bool inverse):
 Element(rect),
 _linkedBool(linkedBool),
@@ -18,7 +16,7 @@ _inverse(inverse),
 _mouseButtonDown(false),
 _depressed(false){
     if (!caption.empty())
-        addChild(new Label(Rect(BOX_SIZE + GAP, 0, rect.w, rect.h),
+        addChild(new Label({ BOX_SIZE + GAP, 0, rect.w, rect.h },
                            caption, LEFT_JUSTIFIED, CENTER_JUSTIFIED));
     setLeftMouseDownFunction(&mouseDown);
     setLeftMouseUpFunction(&mouseUp);
@@ -42,24 +40,24 @@ void CheckBox::release(bool click){
     _depressed = false;
 }
 
-void CheckBox::mouseDown(Element &e, const Point &mousePos){
+void CheckBox::mouseDown(Element &e, const ScreenPoint &mousePos){
     CheckBox &checkBox = dynamic_cast<CheckBox&>(e);
     checkBox._mouseButtonDown = true;
     checkBox.depress();
 }
 
-void CheckBox::mouseUp(Element &e, const Point &mousePos){
+void CheckBox::mouseUp(Element &e, const ScreenPoint &mousePos){
     CheckBox &checkBox = dynamic_cast<CheckBox&>(e);
     checkBox._mouseButtonDown = false;
     if (checkBox._depressed) {
-        bool click = collision(mousePos, Rect(0, 0, checkBox.rect().w, checkBox.rect().h));
+        bool click = collision(mousePos, ScreenRect{0, 0, checkBox.rect().w, checkBox.rect().h});
         checkBox.release(click);
     }
 }
 
-void CheckBox::mouseMove(Element &e, const Point &mousePos){
+void CheckBox::mouseMove(Element &e, const ScreenPoint &mousePos){
     CheckBox &checkBox = dynamic_cast<CheckBox&>(e);
-    if (collision(mousePos, Rect(0, 0, checkBox.rect().w, checkBox.rect().h))) {
+    if (collision<px_t>(mousePos, { 0, 0, checkBox.rect().w, checkBox.rect().h })) {
         if (checkBox._mouseButtonDown && !checkBox._depressed)
             checkBox.depress();
     } else {
@@ -78,7 +76,7 @@ void CheckBox::checkIfChanged(){
 
 void CheckBox::refresh(){
     // Box
-    const Rect boxRect = Rect(0, (rect().h - BOX_SIZE) / 2 + Y_OFFSET, BOX_SIZE, BOX_SIZE);
+    const auto boxRect = ScreenRect{ 0, (rect().h - BOX_SIZE) / 2 + Y_OFFSET, BOX_SIZE, BOX_SIZE };
     renderer.setDrawColor(FONT_COLOR);
     renderer.drawRect(boxRect);
 
@@ -86,7 +84,7 @@ void CheckBox::refresh(){
     if (_depressed || (_linkedBool ^ _inverse)) {
         if (_depressed)
             renderer.setDrawColor(SHADOW_LIGHT);
-        static const Rect CHECK_OFFSET_RECT = Rect(2, 2, -4, -4);
+        static const auto CHECK_OFFSET_RECT = ScreenRect{ 2, 2, -4, -4 };
         renderer.fillRect(boxRect + CHECK_OFFSET_RECT);
     }
 }

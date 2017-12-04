@@ -32,7 +32,7 @@ _frameTimer(frameTime)
         }
 }
 
-void ClientTerrain::draw(const Rect &loc, const Rect &srcRect) const{
+void ClientTerrain::draw(const ScreenRect &loc, const ScreenRect &srcRect) const{
     _images[_frame].draw(loc, srcRect);
 }
 

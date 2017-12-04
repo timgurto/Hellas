@@ -13,7 +13,7 @@ TEST_CASE("Players can attack immediately"){
     User &user = s.getFirstUser();
 
     // Add NPC
-    s.addNPC("ant", Point(10, 10));
+    s.addNPC("ant", { 10, 10 });
     WAIT_UNTIL (c.objects().size() == 1);
 
     // Start attacking
@@ -105,7 +105,7 @@ TEST_CASE("Peaceful players can't fight", "[remote]"){
 TEST_CASE("Attack rate is respected", "[.flaky]"){
     // Given a server, with a wolf NPC which hits for 1 damage every 100ms;
     TestServer s = TestServer::WithData("wolf");
-    s.addNPC("wolf", Point(10, 20));
+    s.addNPC("wolf", { 10, 20 });
 
     // And a nearby user
     TestClient c;
@@ -128,7 +128,7 @@ TEST_CASE("Belligerents can attack each other's objects"){
     TestClient c = TestClient::WithData("vase");
 
     // And a vase owned by Alice;
-    s.addObject("vase", Point(10, 15), "alice");
+    s.addObject("vase", { 10, 15 }, "alice");
     Object &vase = s.getFirstObject();
     REQUIRE(vase.health() == 1);
 
@@ -150,7 +150,7 @@ TEST_CASE("Players can target distant entities"){
     TestClient c = TestClient::WithData("wolf");
 
     // And a wolf NPC on the other side of the map
-    s.addNPC("wolf", Point(200, 200));
+    s.addNPC("wolf", { 200, 200 });
     WAIT_UNTIL(s.users().size() == 1);
     const NPC &wolf = s.getFirstNPC();
     const User &user = s.getFirstUser();

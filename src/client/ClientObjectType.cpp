@@ -10,7 +10,7 @@
 #include "../Color.h"
 
 ClientObjectType::ClientObjectType(const std::string &id):
-SpriteType(Rect(), id),
+    SpriteType({}, id),
 _id(id),
 _canGather(false),
 _canDeconstruct(false),

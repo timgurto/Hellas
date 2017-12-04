@@ -19,14 +19,14 @@ class ChoiceList : public List{
     Element *_boxLayer; // shape/position is a copy of List::_content
 
     const std::string &getIdFromMouse(double mouseY, int *index = nullptr) const;
-    bool contentCollision(const Point &p) const;
+    bool contentCollision(const ScreenPoint &p) const;
 
-    static void markMouseDown(Element &e, const Point &mousePos);
-    static void toggle(Element &e, const Point &mousePos);
-    static void markMouseOver(Element &e, const Point &mousePos);
+    static void markMouseDown(Element &e, const ScreenPoint &mousePos);
+    static void toggle(Element &e, const ScreenPoint &mousePos);
+    static void markMouseOver(Element &e, const ScreenPoint &mousePos);
 
 public:
-    ChoiceList(const Rect &rect, px_t childHeight);
+    ChoiceList(const ScreenRect &rect, px_t childHeight);
 
     virtual void refresh() override;
 

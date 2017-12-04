@@ -178,7 +178,7 @@ const ClientObjectType & TestClient::getFirstObjectType() {
     return **it;
 }
 
-void TestClient::simulateClick(const Point &position){
+void TestClient::simulateClick(const ScreenPoint &position){
     const auto oldPosition = _client->_mouse;
     _client->_mouse = position;
     _client->onMouseMove();

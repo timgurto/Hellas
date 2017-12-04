@@ -12,15 +12,15 @@ const px_t List::ARROW_H = 5;
 const px_t List::CURSOR_HEIGHT = 8;
 const px_t List::SCROLL_AMOUNT = 10;
 
-List::List(const Rect &rect, px_t childHeight):
+List::List(const ScreenRect &rect, px_t childHeight):
 Element(rect),
 _mouseDownOnCursor(false),
 _cursorOffset(0),
 _childHeight(childHeight),
-_scrollBar(new Element(Rect(rect.w - ARROW_W, 0, ARROW_W, rect.h))),
-_cursor(new Element(Rect(0, 0, ARROW_W, CURSOR_HEIGHT))),
+_scrollBar(new Element({ rect.w - ARROW_W, 0, ARROW_W, rect.h })),
+_cursor(new Element({ 0, 0, ARROW_W, CURSOR_HEIGHT })),
 _scrolledToBottom(false),
-_content(new Element(Rect(0, 0, rect.w - ARROW_W, 0))){
+_content(new Element({ 0, 0, rect.w - ARROW_W, 0 })) {
     if (_childHeight <= 0) // Prevent div/0
         _childHeight = 1;
     //Element::addChild(new ColorBlock(Rect(0, 0, rect.w, rect.h)));
@@ -30,13 +30,13 @@ _content(new Element(Rect(0, 0, rect.w - ARROW_W, 0))){
     // Scroll bar details
     _scrollBar->addChild(new Line(ARROW_W/2 - 1, ARROW_H, rect.h - 2*ARROW_H, VERTICAL));
 
-    _whiteUp = new Picture(Rect(0, 0, ARROW_W, ARROW_H),
+    _whiteUp = new Picture({ 0, 0, ARROW_W, ARROW_H },
                            Texture("Images/arrowUp.png", Color::MAGENTA));
-    _greyUp = new Picture(Rect(0, 0, ARROW_W, ARROW_H),
+    _greyUp = new Picture({ 0, 0, ARROW_W, ARROW_H },
                           Texture("Images/arrowUpGrey.png", Color::MAGENTA));
-    _whiteDown = new Picture(Rect(0, rect.h - ARROW_H, ARROW_W, ARROW_H),
-                             Texture("Images/arrowDown.png", Color::MAGENTA)),
-    _greyDown = new Picture(Rect(0, rect.h - ARROW_H, ARROW_W, ARROW_H),
+    _whiteDown = new Picture({ 0, rect.h - ARROW_H, ARROW_W, ARROW_H },
+                             Texture("Images/arrowDown.png", Color::MAGENTA));
+    _greyDown = new Picture({ 0, rect.h - ARROW_H, ARROW_W, ARROW_H },
                             Texture("Images/arrowDownGrey.png", Color::MAGENTA));
     _whiteUp->hide();
     _greyDown->hide();
@@ -53,7 +53,7 @@ _content(new Element(Rect(0, 0, rect.w - ARROW_W, 0))){
     setScrollUpFunction(scrollUpRaw, this);
     setScrollDownFunction(scrollDownRaw, this);
 
-    _cursor->addChild(new ColorBlock(Rect(1, 1, _cursor->width() - 2, _cursor->height() - 2)));
+    _cursor->addChild(new ColorBlock({ 1, 1, _cursor->width() - 2, _cursor->height() - 2 }));
     _cursor->addChild(new ShadowBox(_cursor->rect()));
     _scrollBar->addChild(_cursor);
     updateScrollBar();
@@ -124,18 +124,18 @@ Element *List::findChild(const std::string id) const{
     return _content->findChild(id);
 }
 
-void List::cursorMouseDown(Element &e, const Point &mousePos){
+void List::cursorMouseDown(Element &e, const ScreenPoint &mousePos){
     List &list = dynamic_cast<List&>(e);
     list._mouseDownOnCursor = true;
     list._cursorOffset = toInt(mousePos.y);
 }
 
-void List::mouseUp(Element &e, const Point &mousePos){
+void List::mouseUp(Element &e, const ScreenPoint &mousePos){
     List &list = dynamic_cast<List&>(e);
     list._mouseDownOnCursor = false;
 }
 
-void List::mouseMove(Element &e, const Point &mousePos){
+void List::mouseMove(Element &e, const ScreenPoint &mousePos){
     List &list = dynamic_cast<List&>(e);
     if (list._mouseDownOnCursor){
         // Scroll based on mouse pos

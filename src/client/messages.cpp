@@ -279,7 +279,7 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
             Avatar *newUser = nullptr;
-            const Point p(x, y);
+            const MapPoint p(x, y);
             if (name == _username) {
                 if (msgCode == SV_LOCATION_INSTANT) {
                     _pendingCharLoc = p;
@@ -504,7 +504,7 @@ void Client::handleMessage(const std::string &msg){
             if (it != _objects.end()){
                 // Existing object: update its info.
                 ClientObject &obj = *it->second;
-                obj.location(Point(x, y));
+                obj.location({ x, y });
                 obj.type(cot);
                 // Redraw window
                 obj.assembleWindow(*this);
@@ -517,19 +517,19 @@ void Client::handleMessage(const std::string &msg){
                 case 'n':
                 {
                     const ClientNPCType *npcType = static_cast<const ClientNPCType *>(cot);
-                    obj = new ClientNPC(serial, npcType, Point(x, y));
+                    obj = new ClientNPC(serial, npcType, { x, y });
                     break;
                 }
                 case 'v':
                 {
                     const ClientVehicleType *vehicleType =
                             static_cast<const ClientVehicleType *>(cot);
-                    obj = new ClientVehicle(serial, vehicleType, Point(x, y));
+                    obj = new ClientVehicle(serial, vehicleType, { x, y });
                     break;
                 }
                 case 'o':
                 default:
-                    obj = new ClientObject(serial, cot, Point(x, y));
+                    obj = new ClientObject(serial, cot, { x, y });
                 }
                 _entities.insert(obj);
                 _objects[serial] = obj;
@@ -551,7 +551,7 @@ void Client::handleMessage(const std::string &msg){
                 //_debug("Server removed an object we didn't know about.", Color::WARNING);
                 break; // We didn't know about this object
             }
-            it->second->location(Point(x, y));
+            it->second->location({ x, y });
             break;
         }
 
@@ -1206,7 +1206,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_SHOW_BLOCK_AT:
         case SV_SHOW_CRIT_AT:
         {
-            auto loc = Point{};
+            auto loc = MapPoint{};
             singleMsg >> loc.x >> del >> loc.y >> del;
             if (del != MSG_END)
                 return;
@@ -1445,7 +1445,7 @@ void Client::handle_SV_KING(const std::string username) {
     userIt->second->setAsKing();
 }
 
-void Client::handle_SV_SPELL_HIT(const std::string &spellID, const Point &src, const Point &dst) {
+void Client::handle_SV_SPELL_HIT(const std::string &spellID, const MapPoint &src, const MapPoint &dst) {
     auto it = _spells.find(spellID);
     if (it == _spells.end())
         return;
@@ -1462,7 +1462,7 @@ void Client::handle_SV_SPELL_HIT(const std::string &spellID, const Point &src, c
         onSpellHit(dst, &spell);
 }
 
-void Client::handle_SV_SPELL_MISS(const std::string &spellID, const Point &src, const Point &dst) {
+void Client::handle_SV_SPELL_MISS(const std::string &spellID, const MapPoint &src, const MapPoint &dst) {
     auto it = _spells.find(spellID);
     if (it == _spells.end())
         return;
@@ -1507,7 +1507,7 @@ void Client::handle_SV_ENTITY_WAS_HIT(size_t serial) {
     victim.createDamageParticles();
 }
 
-void Client::handle_SV_SHOW_OUTCOME_AT(int msgCode, const Point & loc) {
+void Client::handle_SV_SHOW_OUTCOME_AT(int msgCode, const MapPoint & loc) {
     switch (msgCode) {
         case SV_SHOW_MISS_AT: addParticles("miss", loc); break;
         case SV_SHOW_DODGE_AT: addParticles("dodge", loc); break;

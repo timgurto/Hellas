@@ -5,7 +5,7 @@
 TEST_CASE("Objects have no owner by default", "[ownership]"){
     // When a basic object is created
     TestServer s = TestServer::WithData("basic_rock");
-    s.addObject("rock", Point(10, 10));
+    s.addObject("rock", { 10, 10 });
     WAIT_UNTIL(s.entities().size() == 1);
 
     // Then that object has no owner
@@ -33,7 +33,7 @@ TEST_CASE("Public-access objects", "[ownership]"){
     // Given a rock with no owner
     TestServer s = TestServer::WithData("basic_rock");
     TestClient c = TestClient::WithData("basic_rock");
-    s.addObject("rock", Point(10, 10));
+    s.addObject("rock", { 10, 10 });
     WAIT_UNTIL (c.objects().size() == 1);
 
     // When a user attempts to gather it
@@ -55,7 +55,7 @@ TEST_CASE("The owner can access an owned object", "[ownership]"){
     TestClient c = TestClient::WithData("basic_rock");
     WAIT_UNTIL(s.users().size() == 1);
     User &user = s.getFirstUser();
-    s.addObject("rock", Point(10, 10), user.name());
+    s.addObject("rock", { 10, 10 }, user.name());
     WAIT_UNTIL (c.objects().size() == 1);
 
     // When he attempts to gather it
@@ -73,7 +73,7 @@ TEST_CASE("The owner can access an owned object", "[ownership]"){
 TEST_CASE("A non-owner cannot access an owned object", "[ownership]"){
     // Given a rock owned by Alice
     TestServer s = TestServer::WithData("basic_rock");
-    s.addObject("rock", Point(10, 10));
+    s.addObject("rock", { 10, 10 });
     Object &rock = s.getFirstObject();
     rock.permissions().setPlayerOwner("alice");
 
@@ -94,7 +94,7 @@ TEST_CASE("A city can own an object", "[city][ownership]"){
     // Given a rock, and a city named Athens
     TestServer s = TestServer::WithData("basic_rock");
     s.cities().createCity("athens");
-    s.addObject("rock", Point(10, 10));
+    s.addObject("rock", { 10, 10 });
     Object &rock = s.getFirstObject();
 
     // When its owner is set to Athens
@@ -112,7 +112,7 @@ TEST_CASE("City ownership is persistent", "[city][ownership][persistence]"){
     {
         TestServer s1 = TestServer::WithData("basic_rock");
         s1.cities().createCity("athens");
-        s1.addObject("rock", Point(10, 10));
+        s1.addObject("rock", { 10, 10 });
         Object &rock = s1.getFirstObject();
         rock.permissions().setCityOwner("athens");
     }
@@ -129,7 +129,7 @@ TEST_CASE("City members can use city objects", "[city][ownership]"){
     // Given a rock owned by Athens;
     TestServer s = TestServer::WithData("basic_rock");
     s.cities().createCity("athens");
-    s.addObject("rock", Point(10, 10));
+    s.addObject("rock", { 10, 10 });
     Object &rock = s.getFirstObject();
     rock.permissions().setCityOwner("athens");
     // And a client, who is a member of Athens
@@ -157,7 +157,7 @@ TEST_CASE("Non-members cannot use city objects", "[city][ownership]"){
     // Given a rock owned by Athens;
     TestServer s = TestServer::WithData("basic_rock");
     s.cities().createCity("athens");
-    s.addObject("rock", Point(10, 10));
+    s.addObject("rock", { 10, 10 });
     Object &rock = s.getFirstObject();
     rock.permissions().setCityOwner("athens");
     // And a client, not a member of any city
@@ -181,7 +181,7 @@ TEST_CASE("Non-members cannot use city objects", "[city][ownership]"){
 TEST_CASE("Non-existent cities can't own objects", "[city][ownership]"){
     // Given a rock, and a server with no cities
     TestServer s = TestServer::WithData("basic_rock");
-    s.addObject("rock", Point(10, 10));
+    s.addObject("rock", { 10, 10 });
 
     // When the rock's owner is set to a nonexistent city "Athens"
     Object &rock = s.getFirstObject();
@@ -196,7 +196,7 @@ TEST_CASE("New objects are added to owner index", "[ownership]"){
     TestServer s = TestServer::WithData("basic_rock");
 
     // When a rock is added, owned by Alice
-    s.addObject("rock", Point(), "alice");
+    s.addObject("rock", {}, "alice");
 
     // The server's object-owner index knows about it
     Permissions::Owner owner(Permissions::Owner::PLAYER, "alice");
@@ -216,7 +216,7 @@ TEST_CASE("A removed object is removed from the object-owner index", "[ownership
     // Given a server
     TestServer s = TestServer::WithData("basic_rock");
     // And a rock object owned by Alice
-    s.addObject("rock", Point(), "alice");
+    s.addObject("rock", {}, "alice");
 
     // When the object is removed
     Object &rock = s.getFirstObject();
@@ -232,7 +232,7 @@ TEST_CASE("New ownership is reflected in the object-owner index", "[ownership]")
     TestServer s = TestServer::WithData("basic_rock");
 
     // When a rock is added, owned by Alice;
-    s.addObject("rock", Point(), "alice");
+    s.addObject("rock", {}, "alice");
 
     // And the rock's ownership is changed to Bob;
     Object &rock = s.getFirstObject();

@@ -178,18 +178,18 @@ void Texture::setAlpha(Uint8 alpha) const{
 }
 
 void Texture::draw(px_t x, px_t y) const{
-    draw(Rect(x, y, _w, _h));
+    draw({ x, y, _w, _h });
 }
 
-void Texture::draw(const Point &location) const{
+void Texture::draw(const ScreenPoint &location) const{
     draw(toInt(location.x), toInt(location.y));
 }
 
-void Texture::draw(const Rect &location) const{
+void Texture::draw(const ScreenRect &location) const{
     renderer.drawTexture(_raw, location);
 }
 
-void Texture::draw(const Rect &location, const Rect &srcRect) const{
+void Texture::draw(const ScreenRect &location, const ScreenRect &srcRect) const{
     renderer.drawTexture(_raw, location, srcRect);
 }
 

@@ -1,14 +1,13 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include "Point.h"
 #include "Rect.h"
 #include "messageCodes.h"
 
 #include <cstdlib>
 #include <vector>
 #include <sstream>
-
-struct Point;
 
 const double PI = 3.1415926535897;
 const double SQRT_2 = 1.4142135623731;
@@ -30,17 +29,17 @@ void pushBackMultiple(std::vector<T> &vec, const T &val, size_t count){
         vec.push_back(val);
 }
 
-double distance(const Point &a, const Point &b);
-double distance(const Point &p, const Point &a, const Point &b); // point P to line AB
+double distance(const MapPoint &a, const MapPoint &b);
+double distance(const MapPoint &p, const MapPoint &a, const MapPoint &b); // point P to line AB
 
-Point midpoint(const Point &a, const Point &b);
+MapPoint midpoint(const MapPoint &a, const MapPoint &b);
 
 // Return the point between a and b which is dist from point a,
 // or return b if dist exceeds the distance between a and b.
-Point interpolate(const Point &a, const Point &b, double dist);
+MapPoint interpolate(const MapPoint &a, const MapPoint &b, double dist);
 
 // dist must exceed the distance between a and b.
-Point extrapolate(const Point &a, const Point &b, double dist);
+MapPoint extrapolate(const MapPoint &a, const MapPoint &b, double dist);
 
 inline int str2int(const std::string str) {
     std::istringstream iss(str);
@@ -96,8 +95,6 @@ std::string makeArgs(T1 val1, T2 val2, T3 val3, T4 val4, T5 val5, T6 val6){
         << val5 << MSG_DELIM << val6;
     return oss.str();
 }
-
-bool collision(const Point &point, const Rect &rect);
 
 #undef min
 #undef max

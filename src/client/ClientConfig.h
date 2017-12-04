@@ -19,7 +19,7 @@ struct ClientConfig {
         castBarW = 150,
         castBarH = 11;
 
-    Point loginFrontOffset;
+    ScreenPoint loginFrontOffset;
 
     std::string serverHostDirectory;
 

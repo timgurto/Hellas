@@ -21,13 +21,13 @@ px_t Element::ITEM_HEIGHT = 0;
 
 Texture Element::transparentBackground;
 
-const Point *Element::absMouse = nullptr;
+const ScreenPoint *Element::absMouse = nullptr;
 
 const Texture *Element::_currentTooltip = nullptr;
 
 bool Element::initialized = false;
 
-Element::Element(const Rect &rect):
+Element::Element(const ScreenRect &rect):
 _changed(true),
 _dimensionsChanged(false),
 _visible(true),
@@ -73,7 +73,7 @@ void Element::rect(px_t x, px_t y, px_t w, px_t h){
     _dimensionsChanged = true;
 }
 
-void Element::rect(const Rect &rhs){
+void Element::rect(const ScreenRect &rhs){
     setPosition(rhs.x, rhs.y);
     width(rhs.w);
     height(rhs.h);
@@ -135,12 +135,12 @@ void Element::checkIfChanged(){
         child->checkIfChanged();
 }
 
-bool Element::onLeftMouseDown(const Point &mousePos){
+bool Element::onLeftMouseDown(const ScreenPoint &mousePos){
     // Assumption: if this is called, then the mouse collides with the element.
     // Assumption: each element has at most one child that collides with the mouse.
     if (!_visible)
         return false;
-    const Point relativeLocation = mousePos - position();
+    const ScreenPoint relativeLocation = mousePos - position();
     bool functionCalled = false;
     for (Element *child : _children) {
         if (collision(relativeLocation, child->rect())) {
@@ -162,12 +162,12 @@ bool Element::onLeftMouseDown(const Point &mousePos){
         return false;
 }
 
-bool Element::onRightMouseDown(const Point &mousePos){
+bool Element::onRightMouseDown(const ScreenPoint &mousePos){
     // Assumption: if this is called, then the mouse collides with the element.
     // Assumption: each element has at most one child that collides with the mouse.
     if (!_visible)
         return false;
-    const Point relativeLocation = mousePos - position();
+    const ScreenPoint relativeLocation = mousePos - position();
     bool functionCalled = false;
     for (Element *child : _children) {
         if (collision(relativeLocation, child->rect())) {
@@ -189,12 +189,12 @@ bool Element::onRightMouseDown(const Point &mousePos){
         return false;
 }
 
-bool Element::onScrollUp(const Point &mousePos){
+bool Element::onScrollUp(const ScreenPoint &mousePos){
     // Assumption: if this is called, then the mouse collides with the element.
     // Assumption: each element has at most one child that collides with the mouse.
     if (!_visible)
         return false;
-    const Point relativeLocation = mousePos - position();
+    const ScreenPoint relativeLocation = mousePos - position();
     bool functionCalled = false;
     for (Element *child : _children) {
         if (collision(relativeLocation, child->rect())) {
@@ -216,12 +216,12 @@ bool Element::onScrollUp(const Point &mousePos){
         return false;
 }
 
-bool Element::onScrollDown(const Point &mousePos){
+bool Element::onScrollDown(const ScreenPoint &mousePos){
     // Assumption: if this is called, then the mouse collides with the element.
     // Assumption: each element has at most one child that collides with the mouse.
     if (!_visible)
         return false;
-    const Point relativeLocation = mousePos - position();
+    const ScreenPoint relativeLocation = mousePos - position();
     bool functionCalled = false;
     for (Element *child : _children) {
         if (collision(relativeLocation, child->rect())) {
@@ -243,30 +243,30 @@ bool Element::onScrollDown(const Point &mousePos){
         return false;
 }
 
-void Element::onLeftMouseUp(const Point &mousePos){
+void Element::onLeftMouseUp(const ScreenPoint &mousePos){
     if (!_visible)
         return;
-    const Point relativeLocation = mousePos - position();
+    const ScreenPoint relativeLocation = mousePos - position();
     if (_leftMouseUp != nullptr)
         _leftMouseUp(*_leftMouseUpElement, relativeLocation);
     for (Element *child : _children)
         child->onLeftMouseUp(relativeLocation);
 }
 
-void Element::onRightMouseUp(const Point &mousePos){
+void Element::onRightMouseUp(const ScreenPoint &mousePos){
     if (!_visible)
         return;
-    const Point relativeLocation = mousePos - position();
+    const ScreenPoint relativeLocation = mousePos - position();
     if (_rightMouseUp != nullptr)
         _rightMouseUp(*_rightMouseUpElement, relativeLocation);
     for (Element *child : _children)
         child->onRightMouseUp(relativeLocation);
 }
 
-void Element::onMouseMove(const Point &mousePos){
+void Element::onMouseMove(const ScreenPoint &mousePos){
     if (!_visible)
         return;
-    const Point relativeLocation = mousePos - position();
+    const ScreenPoint relativeLocation = mousePos - position();
     if (_mouseMove != nullptr)
         _mouseMove(*_mouseMoveElement, relativeLocation);
     if (_tooltip && collision(mousePos, rect()))
@@ -409,7 +409,7 @@ void Element::makeBackgroundTransparent(){
         renderer.fill();
         renderer.popRenderTarget();
     }
-    Rect dstRect = Rect(0, 0, _rect.w, _rect.h);
+    auto dstRect = ScreenRect(0, 0, _rect.w, _rect.h);
     transparentBackground.draw(dstRect);
 }
 

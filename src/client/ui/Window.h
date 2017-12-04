@@ -21,14 +21,14 @@ public:
     typedef void (*InitFunction)(Client &);
 
     static Window *InitializeLater(InitFunction function, const std::string &title);
-    static Window *WithRectAndTitle(const Rect &rect, const std::string &title);
+    static Window *WithRectAndTitle(const ScreenRect &rect, const std::string &title);
 
     static void hideWindow(void *window);
     const std::string &title() const { return _title; }
 
-    static void startDragging(Element &e, const Point &mousePos);
-    static void stopDragging(Element &e, const Point &mousePos);
-    static void drag(Element &e, const Point &mousePos);
+    static void startDragging(Element &e, const ScreenPoint &mousePos);
+    static void stopDragging(Element &e, const ScreenPoint &mousePos);
+    static void drag(Element &e, const ScreenPoint &mousePos);
 
     void resize(px_t w, px_t h); // Resize window, so that the content size matches the given dims.
     void width(px_t w) override;
@@ -56,7 +56,7 @@ private:
 
     std::string _title;
     bool _dragging; // Whether this window is currently being dragged by the mouse.
-    Point _dragOffset; // While dragging, where the mouse is on the window.
+    ScreenPoint _dragOffset; // While dragging, where the mouse is on the window.
     Element *_content;
     ColorBlock *_background;
     ShadowBox *_border;

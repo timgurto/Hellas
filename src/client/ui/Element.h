@@ -49,7 +49,7 @@ private:
 
     bool _visible;
 
-    Rect _rect; // Location and dimensions within window
+    ScreenRect _rect; // Location and dimensions within window
 
     Element *_parent; // nullptr if no parent.
 
@@ -70,9 +70,9 @@ protected:
 
     static void resetTooltip(); // To be called once, when the mouse moves.
 
-    typedef void (*mouseDownFunction_t)(Element &e, const Point &mousePos);
-    typedef void (*mouseUpFunction_t)(Element &e, const Point &mousePos);
-    typedef void (*mouseMoveFunction_t)(Element &e, const Point &mousePos);
+    typedef void (*mouseDownFunction_t)(Element &e, const ScreenPoint &mousePos);
+    typedef void (*mouseUpFunction_t)(Element &e, const ScreenPoint &mousePos);
+    typedef void (*mouseMoveFunction_t)(Element &e, const ScreenPoint &mousePos);
     typedef void (*scrollUpFunction_t)(Element &e);
     typedef void (*scrollDownFunction_t)(Element &e);
     typedef void (*preRefreshFunction_t)(Element &e);
@@ -105,21 +105,21 @@ protected:
     void drawChildren() const;
 
 public:
-    Element(const Rect &rect = Rect());
+    Element(const ScreenRect &rect = {});
     virtual ~Element();
 
     static void initialize();
     
-    static const Point *absMouse; // Absolute mouse co-ordinates
+    static const ScreenPoint *absMouse; // Absolute mouse co-ordinates
     static px_t textOffset;
 
     bool visible() const { return _visible; }
     static TTF_Font *font() { return _font; }
     static void font(TTF_Font *newFont) { _font = newFont; }
-    const Rect &rect() const { return _rect; }
-    Point position() const { return Point(_rect.x, _rect.y); }
+    const ScreenRect &rect() const { return _rect; }
+    ScreenPoint position() const { return{ _rect.x, _rect.y }; }
     void setPosition(px_t x, px_t y);
-    void rect(const Rect &rhs);
+    void rect(const ScreenRect &rhs);
     void rect(px_t x, px_t y, px_t w, px_t h);
     px_t width() const { return _rect.w; }
     virtual void width(px_t w);
@@ -167,14 +167,14 @@ public:
     Recurse to all children, calling _mouseDown() etc. in the lowest element that the mouse is over.
     Return value: whether this or any child has called _mouseDown().
     */
-    bool onLeftMouseDown(const Point &mousePos); 
-    bool onRightMouseDown(const Point &mousePos); 
-    bool onScrollUp(const Point &mousePos);
-    bool onScrollDown(const Point &mousePos);
+    bool onLeftMouseDown(const ScreenPoint &mousePos);
+    bool onRightMouseDown(const ScreenPoint &mousePos);
+    bool onScrollUp(const ScreenPoint &mousePos);
+    bool onScrollDown(const ScreenPoint &mousePos);
     // Recurse to all children, calling _mouse*() in all found.
-    void onLeftMouseUp(const Point &mousePos);
-    void onRightMouseUp(const Point &mousePos);
-    void onMouseMove(const Point &mousePos);
+    void onLeftMouseUp(const ScreenPoint &mousePos);
+    void onRightMouseUp(const ScreenPoint &mousePos);
+    void onMouseMove(const ScreenPoint &mousePos);
 
     void draw(); // Draw the existing texture to its designated location.
     void forceRefresh(); // Mark this and all children as changed

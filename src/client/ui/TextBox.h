@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #ifndef TEXT_BOX_H
 #define TEXT_BOX_H
 
@@ -21,7 +19,7 @@ class TextBox : public Element{
     static TextBox *currentFocus;
 
 public:
-    TextBox(const Rect &rect, bool numeralsOnly = false);
+    TextBox(const ScreenRect &rect, bool numeralsOnly = false);
 
     const std::string &text() const { return _text; }
     void text(const std::string &text);
@@ -36,7 +34,7 @@ public:
 
     virtual void refresh();
 
-    static void click(Element &e, const Point &mousePos);
+    static void click(Element &e, const ScreenPoint &mousePos);
 };
 
 #endif

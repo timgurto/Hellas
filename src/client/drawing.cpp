@@ -43,20 +43,23 @@ void Client::draw() const{
     // Base under target combatant
     if (_target.exists()){
         const Texture &base = _target.isAggressive() ? _baseAggressive : _basePassive;
-        static const Point BASE_OFFSET(-15, -10);
-        base.draw(_target.entity()->location() + offset() + BASE_OFFSET);
+        static const ScreenPoint BASE_OFFSET(-15, -10);
+        base.draw(toScreenPoint(_target.entity()->location()) + offset() + BASE_OFFSET);
     }
 
     // Character's target and actual location
     if (isDebug()) {
         renderer.setDrawColor(Color::CYAN);
-        const Point &actualLoc = _character.destination() + offset();
-        renderer.drawRect(Rect(actualLoc.x - 1, actualLoc.y - 1, 3, 3));
+        const ScreenPoint &actualLoc = toScreenPoint(_character.destination()) + offset();
+        renderer.drawRect({ actualLoc.x - 1, actualLoc.y - 1, 3, 3 });
 
         renderer.setDrawColor(Color::WHITE);
-        Point pendingLoc(_pendingCharLoc.x + offset().x, _pendingCharLoc.y + offset().y);
-        renderer.drawRect(Rect(pendingLoc.x, pendingLoc.y, 1, 1));
-        renderer.drawRect(Rect(pendingLoc.x - 2, pendingLoc.y - 2, 5, 5));
+        auto pendingLoc = ScreenPoint{
+            toInt(_pendingCharLoc.x) + offset().x,
+            toInt(_pendingCharLoc.y) + offset().y
+        };
+        renderer.drawRect({ pendingLoc.x, pendingLoc.y, 1, 1 });
+        renderer.drawRect({ pendingLoc.x - 2, pendingLoc.y - 2, 5, 5 });
     }
 
     // Entities, sorted from back to front
@@ -71,8 +74,8 @@ void Client::draw() const{
         rightX = -offset().x + SCREEN_X + DRAW_MARGIN_SIDES;
     // Cull by y
     Sprite
-        topEntity(nullptr, Point(0, topY)),
-        bottomEntity(nullptr, Point(0, bottomY));
+        topEntity(nullptr, { 0, topY }),
+        bottomEntity(nullptr, { 0, bottomY });
     auto top = _entities.lower_bound(&topEntity);
     auto bottom = _entities.upper_bound(&bottomEntity);
     // Flat entities
@@ -103,7 +106,7 @@ void Client::draw() const{
         (*it)->draw();
 
     // Dragged item
-    static const Point MOUSE_ICON_OFFSET(-Client::ICON_SIZE/2, -Client::ICON_SIZE/2);
+    static const ScreenPoint MOUSE_ICON_OFFSET(-Client::ICON_SIZE/2, -Client::ICON_SIZE/2);
     const ClientItem *draggedItem = ContainerGrid::getDragItem();
     if (draggedItem != nullptr)
         draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
@@ -113,12 +116,12 @@ void Client::draw() const{
         const ClientObjectType *ot = _selectedConstruction == nullptr ?
                                      ContainerGrid::getUseItem()->constructsObject() :
                                      _selectedConstruction;
-        Rect footprintRect = ot->collisionRect() + _mouse - _offset;
+        auto footprintRect = ot->collisionRect() + toMapPoint(_mouse) - _offset;
         if (distance(playerCollisionRect(), footprintRect) <= Client::ACTION_DISTANCE) {
             renderer.setDrawColor(Color::FOOTPRINT_GOOD);
-            renderer.fillRect(footprintRect + _offset);
+            renderer.fillRect(toScreenPoint(footprintRect + _offset));
 
-            const Rect &drawRect = ot->drawRect();
+            const ScreenRect &drawRect = ot->drawRect();
             px_t
                 x = toInt(_mouse.x + drawRect.x),
                 y = toInt(_mouse.y + drawRect.y);
@@ -127,30 +130,30 @@ void Client::draw() const{
             _constructionFootprint.setAlpha();
         } else {
             renderer.setDrawColor(Color::FOOTPRINT_BAD);
-            renderer.fillRect(footprintRect + _offset);
+            renderer.fillRect(toScreenPoint(footprintRect + _offset));
         }
         // TODO: Show message explaining controls
     } else if (_isDismounting){
         const SpriteType &charType = *_character.type();
-        Rect footprintRect = Avatar::collisionRectRaw() + _mouse - _offset;
+        MapPoint footprintRect = Avatar::collisionRectRaw() - _offset + toMapPoint(_mouse);
         if (distance(playerCollisionRect(), footprintRect) <= Client::ACTION_DISTANCE) {
             charType.image().setAlpha(0x7f);
             charType.image().draw(_mouse + charType.drawRect());
             charType.image().setAlpha();
         } else {
             renderer.setDrawColor(Color::FOOTPRINT_BAD);
-            renderer.fillRect(footprintRect + _offset);
+            renderer.fillRect(toScreenPoint(footprintRect + _offset));
         }
     }
 
     // Cull distance
     if (isDebug()){
-        Point midScreen = _character.location() + offset();
+        const ScreenPoint midScreen = toScreenPoint(_character.location()) + offset();
         renderer.setDrawColor(Color::RED);
-        renderer.drawRect(Rect(midScreen.x - CULL_DISTANCE,
-                               midScreen.y - CULL_DISTANCE,
-                               CULL_DISTANCE * 2,
-                               CULL_DISTANCE * 2));
+        renderer.drawRect({ midScreen.x - CULL_DISTANCE,
+                            midScreen.y - CULL_DISTANCE,
+                            CULL_DISTANCE * 2,
+                            CULL_DISTANCE * 2 });
     }
 
     // Tooltip
@@ -206,7 +209,7 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const{
       L | tileID| R
           G | F
     */
-    const Rect drawLoc(xLoc, yLoc, 0, 0);
+    const ScreenRect drawLoc(xLoc, yLoc, 0, 0);
     const bool yOdd = (y % 2 == 1);
     char tileID, L, R, E, F, G, H;
     tileID = _map[x][y];
@@ -235,7 +238,7 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const{
         }
     }
 
-    static const Rect
+    static const ScreenRect
         TOP_LEFT     (0,        0,        TILE_W/2, TILE_H/2),
         TOP_RIGHT    (TILE_W/2, 0,        TILE_W/2, TILE_H/2),
         BOTTOM_LEFT  (0,        TILE_H/2, TILE_W/2, TILE_H/2),
@@ -320,8 +323,8 @@ void Client::drawLoadingScreen(const std::string &msg, double progress) const{
     mainText.draw(X_MAIN, Y_MAIN);
     message.draw((SCREEN_X - message.width()) / 2, Y_MSG);
     renderer.setDrawColor(FOREGROUND);
-    renderer.drawRect(Rect(X_BAR, Y_BAR, BAR_LENGTH, BAR_HEIGHT));
-    renderer.fillRect(Rect(X_BAR, Y_BAR, toInt(BAR_LENGTH * progress), BAR_HEIGHT));
+    renderer.drawRect({ X_BAR, Y_BAR, BAR_LENGTH, BAR_HEIGHT });
+    renderer.fillRect({ X_BAR, Y_BAR, toInt(BAR_LENGTH * progress), BAR_HEIGHT });
 
     renderer.present();
 }

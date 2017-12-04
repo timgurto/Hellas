@@ -10,10 +10,10 @@ TEST_CASE("Thin objects block movement"){
     // And a user;
     WAIT_UNTIL(s.users().size() == 1);
     User &user = s.getFirstUser();
-    user.updateLocation(Point(10, 15));
+    user.updateLocation({ 10, 15 });
 
     // And a wall just above him
-    s.addObject("wall", Point(10, 10));
+    s.addObject("wall", { 10, 10 });
 
     // When the user tries to move up, through the wall
     REPEAT_FOR_MS(500) {
@@ -33,10 +33,10 @@ TEST_CASE("Dead objects don't block movement"){
     // And a user;
     WAIT_UNTIL(s.users().size() == 1);
     User &user = s.getFirstUser();
-    user.updateLocation(Point(10, 15));
+    user.updateLocation({ 10, 15 });
 
     // And a wall just above him;
-    s.addObject("wall", Point(10, 10));
+    s.addObject("wall", {10, 10});
 
     // And that wall is dead
     s.getFirstObject().reduceHealth(1000000);
@@ -59,7 +59,7 @@ TEST_CASE("Damaged objects can't be deconstructed"){
     TestClient c = TestClient::WithData("pickup_bricks");
 
     // And a brick object exists with only 1 health
-    s.addObject("brick", Point(10, 15));
+    s.addObject("brick", {10, 15});
     Object &brick = s.getFirstObject();
     brick.reduceHealth(1);
     REQUIRE(brick.health() == 1);
@@ -78,7 +78,7 @@ TEST_CASE("Out-of-range objects are forgotten", "[.slow][culling][only]"){
     TestClient c = TestClient::WithData("signpost");
 
     // And a signpost near the user spawn
-    s.addObject("signpost", Point(10, 15));
+    s.addObject("signpost", {10, 15});
 
     // And the client is aware of it
     WAIT_UNTIL(s.users().size() == 1);

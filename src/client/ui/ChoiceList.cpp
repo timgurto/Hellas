@@ -6,11 +6,11 @@ static const std::string EMPTY_STR = "";
 
 extern Renderer renderer;
 
-ChoiceList::ChoiceList(const Rect &rect, px_t childHeight):
+ChoiceList::ChoiceList(const ScreenRect &rect, px_t childHeight):
 List(rect, childHeight),
-_selectedBox(new ShadowBox(Rect(0, 0, rect.w - List::ARROW_W, childHeight), true)),
-_mouseOverBox(new ShadowBox(Rect(0, 0, rect.w - List::ARROW_W, childHeight))),
-_mouseDownBox(new ShadowBox(Rect(0, 0, rect.w - List::ARROW_W, childHeight), true)),
+_selectedBox(new ShadowBox({ 0, 0, rect.w - List::ARROW_W, childHeight }, true)),
+_mouseOverBox(new ShadowBox({ 0, 0, rect.w - List::ARROW_W, childHeight })),
+_mouseDownBox(new ShadowBox({ 0, 0, rect.w - List::ARROW_W, childHeight }, true)),
 _boxLayer(new Element(_content->rect())){
     setLeftMouseDownFunction(markMouseDown);
     setLeftMouseUpFunction(toggle);
@@ -38,14 +38,11 @@ const std::string &ChoiceList::getIdFromMouse(double mouseY, int *index) const{
     return (*it)->id();
 }
 
-bool ChoiceList::contentCollision(const Point &p) const{
-    return collision(p, Rect(0,
-                             0,
-                             _content->rect().w,
-                             min(_content->rect().h, rect().h)));
+bool ChoiceList::contentCollision(const ScreenPoint &p) const{
+    return collision(p, ScreenRect{ 0, 0, _content->rect().w, min(_content->rect().h, rect().h) });
 }
 
-void ChoiceList::markMouseDown(Element &e, const Point &mousePos){
+void ChoiceList::markMouseDown(Element &e, const ScreenPoint &mousePos){
     ChoiceList &list = dynamic_cast<ChoiceList &>(e);
     if (!list.contentCollision(mousePos)) {
         list._mouseDownBox->hide();
@@ -64,7 +61,7 @@ void ChoiceList::markMouseDown(Element &e, const Point &mousePos){
     list.markChanged();
 }
 
-void ChoiceList::toggle(Element &e, const Point &mousePos){
+void ChoiceList::toggle(Element &e, const ScreenPoint &mousePos){
     ChoiceList &list = dynamic_cast<ChoiceList &>(e);
     List::mouseUp(e, mousePos);
     if (list._mouseDownID == EMPTY_STR) {
@@ -109,7 +106,7 @@ void ChoiceList::toggle(Element &e, const Point &mousePos){
         list.onSelect();
 }
 
-void ChoiceList::markMouseOver(Element &e, const Point &mousePos){
+void ChoiceList::markMouseOver(Element &e, const ScreenPoint &mousePos){
     ChoiceList &list = dynamic_cast<ChoiceList &>(e);
     if (!list.contentCollision(mousePos)) {
         if (list._mouseOverID != EMPTY_STR) {

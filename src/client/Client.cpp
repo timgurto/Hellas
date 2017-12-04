@@ -476,7 +476,7 @@ TTF_Font *Client::defaultFont() const{
     return _defaultFont;
 }
 
-void Client::setEntityLocation(Sprite *entity, const Point &location){
+void Client::setEntityLocation(Sprite *entity, const MapPoint &location){
     const Sprite::set_t::iterator it = _entities.find(entity);
     if (it == _entities.end()){
         assert(false); // Sprite is not in set.
@@ -490,11 +490,11 @@ void Client::setEntityLocation(Sprite *entity, const Point &location){
     }
 }
 
-void Client::updateOffset(){
-    _offset = Point(SCREEN_X / 2 - _character.location().x,
-                    SCREEN_Y / 2 - _character.location().y);
-    _intOffset = Point(toInt(_offset.x),
-                       toInt(_offset.y));
+void Client::updateOffset() {
+    _offset = { SCREEN_X / 2 - _character.location().x,
+        SCREEN_Y / 2 - _character.location().y };
+    _intOffset = {toInt(_offset.x),
+        toInt(_offset.y)};
 }
 
 void Client::prepareAction(const std::string &msg){
@@ -523,7 +523,7 @@ void Client::addUI(Element *element){
 }
 
 void Client::addChatMessage(const std::string &msg, const Color &color){
-    Label *label = new Label(Rect(), msg);
+    Label *label = new Label({}, msg);
     label->setColor(color);
     _chatLog->addChild(label);
     _chatLog->scrollToBottom();
@@ -552,7 +552,7 @@ void Client::dropItemOnConfirmation(size_t serial, size_t slot, const ClientItem
     _confirmDropItem->show();
 }
 
-bool Client::outsideCullRange(const Point &loc, px_t hysteresis) const{
+bool Client::outsideCullRange(const MapPoint &loc, px_t hysteresis) const{
     px_t testCullDist = CULL_DISTANCE + hysteresis;
     return
         abs(loc.x - _character.location().x) > testCullDist ||
@@ -567,33 +567,33 @@ const ParticleProfile *Client::findParticleProfile(const std::string &id){
     return *it;
 }
 
-void Client::addParticles(const ParticleProfile *profile, const Point &location, size_t qty){
+void Client::addParticles(const ParticleProfile *profile, const MapPoint &location, size_t qty){
     for (size_t i = 0; i != qty; ++i) {
         Particle *particle = profile->instantiate(location);
         addEntity(particle);
     }
 }
 
-void Client::addParticles(const ParticleProfile *profile, const Point &location){
+void Client::addParticles(const ParticleProfile *profile, const MapPoint &location){
     if (profile == nullptr)
         return;
     size_t qty = profile->numParticlesDiscrete();
     addParticles(profile, location, qty);
 }
 
-void Client::addParticles(const ParticleProfile *profile, const Point &location, double delta){
+void Client::addParticles(const ParticleProfile *profile, const MapPoint &location, double delta){
     if (profile == nullptr)
         return;
     size_t qty = profile->numParticlesContinuous(delta);
     addParticles(profile, location, qty);
 }
 
-void Client::addParticles(const std::string &profileName, const Point &location){
+void Client::addParticles(const std::string &profileName, const MapPoint &location){
     const ParticleProfile *profile = findParticleProfile(profileName);
     addParticles(profile, location);
 }
 
-void Client::addParticles(const std::string &profileName, const Point &location, double delta){
+void Client::addParticles(const std::string &profileName, const MapPoint &location, double delta){
     const ParticleProfile *profile = findParticleProfile(profileName);
     addParticles(profile, location, delta);
 }
@@ -641,7 +641,7 @@ bool Client::isAtWarWith(const Avatar &user) const{
     return isAtWarWith(user.name());
 }
 
-void Client::addUser(const std::string &name, const Point &location) {
+void Client::addUser(const std::string &name, const MapPoint &location) {
     auto pUser = new Avatar(name, location);
     _otherUsers[name] = pUser;
     _entities.insert(pUser);
@@ -653,7 +653,7 @@ void Client::infoWindow(const std::string & text) {
     window->show();
 }
 
-void Client::onSpellHit(const Point &location, const void *data) {
+void Client::onSpellHit(const MapPoint &location, const void *data) {
     auto &spell = *reinterpret_cast<const ClientSpell *>(data);
     if (spell.impactParticles())
         instance().addParticles(spell.impactParticles(), location);

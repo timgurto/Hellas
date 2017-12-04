@@ -7,7 +7,7 @@
 // A colored, filled rectangle
 class ColorBlock : public Element {
 public:
-    ColorBlock(const Rect &rect, const Color &color = BACKGROUND_COLOR);
+    ColorBlock(const ScreenRect &rect, const Color &color = BACKGROUND_COLOR);
 
     void changeColor(const Color &newColor);
     const Color &color() const { return _color; }

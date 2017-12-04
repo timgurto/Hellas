@@ -15,7 +15,7 @@ class ClientItem : public Item{
     std::string _name;
     Texture _icon;
     Texture _gearImage;
-    Point _drawLoc;
+    ScreenPoint _drawLoc;
     mutable Texture _tooltip;
     const SoundProfile *_sounds;
 
@@ -23,7 +23,7 @@ class ClientItem : public Item{
     const ClientObjectType *_constructsObject;
 
     static std::map<int, size_t> gearDrawOrder;
-    static std::vector<Point> gearOffsets;
+    static std::vector<ScreenPoint> gearOffsets;
 
 public:
     ClientItem(const std::string &id = "", const std::string &name = "");
@@ -32,7 +32,7 @@ public:
     const Texture &icon() const { return _icon; }
     void icon(const std::string &filename);
     void gearImage(const std::string &filename);
-    void drawLoc(const Point &loc) { _drawLoc = loc; }
+    void drawLoc(const ScreenPoint &loc) { _drawLoc = loc; }
     static const std::map<int, size_t> &drawOrder() { return gearDrawOrder; }
     void sounds(const std::string &id);
     const SoundProfile *sounds() const { return _sounds; }
@@ -44,7 +44,7 @@ public:
 
     const Texture &tooltip() const; // Getter; creates tooltip on first call.
 
-    void draw(const Point &loc) const;
+    void draw(const MapPoint &loc) const;
 
     static void init();
 };

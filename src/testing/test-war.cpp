@@ -212,7 +212,7 @@ TEST_CASE("The objects of an offline enemy in an enemy city can be attacked", "[
     WAIT_UNTIL(s.users().size() == 0);
 
     // And a rock owned by Bob;
-    s.addObject("chair", Point(15,15), "bob");
+    s.addObject("chair", { 15,15 }, "bob");
 
     // And a player, Alice;
     TestClient alice = TestClient::WithUsernameAndData("alice", "chair");

@@ -3,7 +3,7 @@
 
 extern Renderer renderer;
 
-ColorBlock::ColorBlock(const Rect &rect, const Color &color):
+ColorBlock::ColorBlock(const ScreenRect &rect, const Color &color):
 Element(rect),
 _color(color){}
 
@@ -14,5 +14,5 @@ void ColorBlock::changeColor(const Color &newColor){
 
 void ColorBlock::refresh(){
     renderer.setDrawColor(_color);
-    renderer.fillRect(Rect(0, 0, rect().w, rect().h));
+    renderer.fillRect({ 0, 0, rect().w, rect().h });
 }

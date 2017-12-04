@@ -5,7 +5,7 @@
 #include "../Server.h"
 #include "../../util.h"
 
-Object::Object(const ObjectType *type, const Point &loc):
+Object::Object(const ObjectType *type, const MapPoint &loc):
     Entity(type, loc),
     _numUsersGathering(0),
     _transformTimer(0),
@@ -21,7 +21,7 @@ Object::Object(size_t serial):
     _permissions(*this)
 {}
 
-Object::Object(const Point &loc):
+Object::Object(const MapPoint &loc):
     Entity(loc),
     _permissions(*this)
 {}

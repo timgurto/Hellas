@@ -3,8 +3,8 @@
 
 const SpriteType Particle::ENTITY_TYPE(SpriteType::DECORATION);
 
-Particle::Particle(const Point &loc, const Texture &image, const Rect &drawRect,
-                   const Point &velocity, double startingAltitude, double startingFallSpeed,
+Particle::Particle(const MapPoint &loc, const Texture &image, const ScreenRect &drawRect,
+                   const MapPoint &velocity, double startingAltitude, double startingFallSpeed,
                    double gravity, ms_t lifespan):
 Sprite(&ENTITY_TYPE, loc),
 _image(image),
@@ -20,7 +20,7 @@ void Particle::update(double delta){
     _altitude -= _fallSpeed * delta;
     if (_altitude < 0){
         _altitude = 0;
-        _velocity = Point();
+        _velocity = {};
     }
     _fallSpeed += _gravity * delta;
 
@@ -34,8 +34,7 @@ void Particle::update(double delta){
 
 }
 
-Rect Particle::drawRect() const{
-    Rect rect = _drawRect + location();
-    rect.y = toInt(rect.y - _altitude);
-    return rect;
+ScreenRect Particle::drawRect() const{
+    auto includingAltitude = location() - MapPoint{ 0, _altitude };
+    return _drawRect + toScreenRect(includingAltitude);
 }

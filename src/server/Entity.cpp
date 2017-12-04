@@ -9,7 +9,7 @@ const px_t Entity::DEFAULT_ATTACK_RANGE = Podes{ 4 }.toPixels();
 
 Stats Dummy::_stats{};
 
-Entity::Entity(const EntityType *type, const Point &loc):
+Entity::Entity(const EntityType *type, const MapPoint &loc):
     _type(type),
     _serial(generateSerial()),
     _spawner(nullptr),
@@ -33,7 +33,7 @@ Entity::Entity(size_t serial): // For set/map lookup ONLY
     _loot(nullptr)
 {}
 
-Entity::Entity(const Point &loc): // For set/map lookup ONLY
+Entity::Entity(const MapPoint &loc): // For set/map lookup ONLY
     _type(nullptr),
     _location(loc),
     _serial(0),
@@ -159,7 +159,7 @@ void Entity::update(ms_t timeElapsed){
     // Check if within range
     if (distance(collisionRect(), pTarget->collisionRect()) <= attackRange()){
         const Server &server = Server::instance();
-        Point locus = midpoint(location(), pTarget->location());
+        MapPoint locus = midpoint(location(), pTarget->location());
 
         auto outcome = generateHitAgainst(*pTarget, DAMAGE, SpellSchool::PHYSICAL, attackRange());
 

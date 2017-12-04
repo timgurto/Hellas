@@ -3,11 +3,12 @@
 
 #include "ClientNPCType.h"
 #include "ClientObject.h"
+#include "../Point.h"
 
 class ClientNPC : public ClientObject {
 
 public:
-    ClientNPC(size_t serial, const ClientNPCType *type = nullptr, const Point &loc = Point());
+    ClientNPC(size_t serial, const ClientNPCType *type = nullptr, const MapPoint &loc = MapPoint{});
     ~ClientNPC(){}
     bool isFlat() const override;
 

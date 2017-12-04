@@ -14,9 +14,10 @@
 class Avatar : public Sprite, public ClientCombatant{
     static ClientCombatantType _combatantType;
     static SpriteType _spriteType;
-    static const Rect COLLISION_RECT, DRAW_RECT;
+    static const MapRect COLLISION_RECT;
+    static const ScreenRect DRAW_RECT;
 
-    Point _destination;
+    MapPoint _destination;
     std::string _name;
     const ClassInfo *_class = nullptr;
     std::string _city;
@@ -25,12 +26,12 @@ class Avatar : public Sprite, public ClientCombatant{
     bool _driving;
 
 public:
-    Avatar(const std::string &name, const Point &location);
+    Avatar(const std::string &name, const MapPoint &location);
 
-    const Point &destination() const { return _destination; }
-    void destination(const Point &dst) { _destination = dst; }
-    const Rect collisionRect() const { return COLLISION_RECT + location(); }
-    static const Rect &collisionRectRaw() { return COLLISION_RECT; }
+    const MapPoint &destination() const { return _destination; }
+    void destination(const MapPoint &dst) { _destination = dst; }
+    const MapRect collisionRect() const { return COLLISION_RECT + location(); }
+    static const MapRect &collisionRectRaw() { return COLLISION_RECT; }
     void setClass(const ClassInfo::Name &newClass);
     const ClassInfo &getClass() const { assert(_class);  return *_class; }
     const ClientItem::vect_t &gear() const { return _gear; }
@@ -65,7 +66,7 @@ public:
     void sendSelectMessage() const override;
     bool canBeAttackedByPlayer() const override;
     const Sprite *entityPointer() const override { return this; }
-    const Point &combatantLocation() const { return location(); }
+    const MapPoint &combatantLocation() const override { return location(); }
     bool shouldDrawHealthBar() const override;
     const Color &healthBarColor() const override { return nameColor(); }
 
@@ -85,7 +86,7 @@ private:
     this client's latency, and by time elapsed.
     This is used to smooth the apparent movement of other users.
     */
-    Point interpolatedLocation(double delta);
+    MapPoint interpolatedLocation(double delta);
 };
 
 #endif

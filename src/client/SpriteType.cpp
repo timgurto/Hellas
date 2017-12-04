@@ -5,7 +5,7 @@
 #include "Surface.h"
 #include "../Color.h"
 
-SpriteType::SpriteType(const Rect &drawRect, const std::string &imageFile):
+SpriteType::SpriteType(const ScreenRect &drawRect, const std::string &imageFile):
 _image(imageFile, Color::MAGENTA),
 _drawRect(drawRect),
 _isFlat(false),

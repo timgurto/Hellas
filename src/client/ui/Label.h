@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef LABEL_H
 #define LABEL_H
 
@@ -19,7 +17,7 @@ protected:
     std::string _text;
 
 public:
-    Label(const Rect &rect, const std::string &text,
+    Label(const ScreenRect &rect, const std::string &text,
           Justification justificationH = LEFT_JUSTIFIED,
           Justification justificationV = TOP_JUSTIFIED);
 

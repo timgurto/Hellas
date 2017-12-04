@@ -35,13 +35,13 @@ class ContainerGrid : public Element{
 
     virtual void refresh() override;
     
-    static void leftMouseDown(Element &e, const Point &mousePos);
-    static void leftMouseUp(Element &e, const Point &mousePos);
-    static void rightMouseDown(Element &e, const Point &mousePos);
-    static void rightMouseUp(Element &e, const Point &mousePos);
-    static void mouseMove(Element &e, const Point &mousePos);
+    static void leftMouseDown(Element &e, const ScreenPoint &mousePos);
+    static void leftMouseUp(Element &e, const ScreenPoint &mousePos);
+    static void rightMouseDown(Element &e, const ScreenPoint &mousePos);
+    static void rightMouseUp(Element &e, const ScreenPoint &mousePos);
+    static void mouseMove(Element &e, const ScreenPoint &mousePos);
 
-    size_t getSlot(const Point &mousePos) const;
+    size_t getSlot(const ScreenPoint &mousePos) const;
 
 public:
     ContainerGrid(size_t rows, size_t cols, ClientItem::vect_t &linked,

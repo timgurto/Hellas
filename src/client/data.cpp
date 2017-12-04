@@ -62,7 +62,7 @@ void Client::loadData(const std::string &path){
 
             auto dirE = xr.findChild("direction", elem);
             if (dirE){
-                Point direction;
+                MapPoint direction;
                 xr.findAttr(dirE, "x", direction.x);
                 xr.findAttr(dirE, "y", direction.y);
                 profile->direction(direction);
@@ -73,7 +73,7 @@ void Client::loadData(const std::string &path){
                     continue; // No image file specified; skip
                 size_t count = 1;
                 xr.findAttr(variety, "count", count);
-                auto drawRect = Rect{};
+                auto drawRect = ScreenRect{};
                 if (xr.findRectChild("drawRect", variety, drawRect))
                     profile->addVariety(s, count, drawRect);
                 else
@@ -94,7 +94,7 @@ void Client::loadData(const std::string &path){
             if (!xr.findAttr(elem, "id", id))
                 continue;
 
-            auto drawRect = Rect{};
+            auto drawRect = ScreenRect{};
             if (!xr.findRectChild("drawRect", elem, drawRect))
                 continue;
 
@@ -239,7 +239,7 @@ void Client::loadData(const std::string &path){
             cot->corpseImage(std::string("Images/Objects/") + id + "-corpse.png");
             std::string s;
             if (xr.findAttr(elem, "name", s)) cot->name(s);
-            Rect drawRect(0, 0, cot->width(), cot->height());
+            ScreenRect drawRect(0, 0, cot->width(), cot->height());
             bool
                 xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
                 ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
@@ -265,7 +265,7 @@ void Client::loadData(const std::string &path){
             if (xr.findAttr(elem, "damageParticles", s)) cot->damageParticles(findParticleProfile(s));
             if (xr.findAttr(elem, "gatherReq", s)) cot->gatherReq(s);
             if (xr.findAttr(elem, "constructionReq", s)) cot->constructionReq(s);
-            Rect r;
+            MapRect r;
             if (xr.findRectChild("collisionRect", elem, r)) cot->collisionRect(r);
 
             if (xr.findAttr(elem, "playerUnique", s)) {
@@ -305,7 +305,7 @@ void Client::loadData(const std::string &path){
                 if (driver != nullptr){
                     ClientVehicleType &vt = dynamic_cast<ClientVehicleType &>(*cot);
                     vt.drawDriver(true);
-                    Point offset;
+                    ScreenPoint offset;
                     xr.findAttr(driver, "x", offset.x);
                     xr.findAttr(driver, "y", offset.y);
                     vt.driverOffset(offset);
@@ -367,7 +367,7 @@ void Client::loadData(const std::string &path){
 
             auto offset = xr.findChild("offset", elem);
             if (offset != nullptr){
-                Point drawLoc;
+                ScreenPoint drawLoc;
                 xr.findAttr(offset, "x", drawLoc.x);
                 xr.findAttr(offset, "y", drawLoc.y);
                 item.drawLoc(drawLoc);
@@ -535,13 +535,13 @@ void Client::loadData(const std::string &path){
             nt->imageSet(std::string("Images/NPCs/") + s + ".png");
             nt->corpseImage(std::string("Images/NPCs/") + s + "-corpse.png");
             if (xr.findAttr(elem, "name", s)) nt->name(s);
-            Rect drawRect(0, 0, nt->width(), nt->height());
+            ScreenRect drawRect(0, 0, nt->width(), nt->height());
             bool
                 xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
                 ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
             if (xSet || ySet)
                 nt->drawRect(drawRect);
-            Rect r;
+            MapRect r;
             if (xr.findRectChild("collisionRect", elem, r)) nt->collisionRect(r);
 
             if (xr.findAttr(elem, "sounds", s))

@@ -3,7 +3,7 @@
 #include "Server.h"
 #include "objects/Object.h"
 
-void Entity::updateLocation(const Point &dest){
+void Entity::updateLocation(const MapPoint &dest){
     Server &server = *Server::_instance;
     assert(server.isLocationValid(collisionRect(), this));
     const ms_t newTime = SDL_GetTicks();
@@ -19,7 +19,7 @@ void Entity::updateLocation(const Point &dest){
     // Max legal distance: straight line
     double requestedDistance = distance(_location, dest);
     double distanceToMove;
-    Point newDest;
+    MapPoint newDest;
     if (classTag() == 'u' && userPtr->isDriving()){
         distanceToMove = requestedDistance;
         newDest = dest;
@@ -29,12 +29,12 @@ void Entity::updateLocation(const Point &dest){
         distanceToMove = min(maxLegalDistance, requestedDistance);
         newDest = interpolate(_location, dest, distanceToMove);
 
-        Point rawDisplacement(newDest.x - _location.x,
+        MapPoint rawDisplacement(newDest.x - _location.x,
                               newDest.y - _location.y);
         px_t
             displacementX = toInt(ceil(abs(rawDisplacement.x))),
             displacementY = toInt(ceil(abs(rawDisplacement.y)));
-        Rect journeyRect = collisionRect();
+        auto journeyRect = collisionRect();
         if (rawDisplacement.x < 0)
             journeyRect.x -= displacementX;
         journeyRect.w += displacementX;
@@ -45,17 +45,17 @@ void Entity::updateLocation(const Point &dest){
             newDest = _location;
             assert(server.isLocationValid(newDest, *type(), this));
             static const double ACCURACY = 0.5;
-            Point displacementNorm(rawDisplacement.x / distanceToMove * ACCURACY,
+            MapPoint displacementNorm(rawDisplacement.x / distanceToMove * ACCURACY,
                                    rawDisplacement.y / distanceToMove * ACCURACY);
             for (double segment = ACCURACY; segment <= distanceToMove; segment += ACCURACY){
-                Point testDest = newDest;
+                MapPoint testDest = newDest;
                 testDest.x += displacementNorm.x;
                 if (!server.isLocationValid(testDest, *type(), this))
                     break;
                 newDest = testDest;
             }
             for (double segment = ACCURACY; segment <= distanceToMove; segment += ACCURACY){
-                Point testDest = newDest;
+                MapPoint testDest = newDest;
                 testDest.y += displacementNorm.y;
                 if (!server.isLocationValid(testDest, *type(), this))
                     break;
@@ -137,10 +137,10 @@ void Entity::updateLocation(const Point &dest){
     // Assemble list of newly nearby users (used at the end of this function)
     std::list<const User *> newlyNearbyUsers;
     {
-        auto loX = server._usersByX.lower_bound(&User(Point(left, 0)));
-        auto hiX = server._usersByX.upper_bound(&User(Point(right, 0)));
-        auto loY = server._usersByY.lower_bound(&User(Point(0, top)));
-        auto hiY = server._usersByY.upper_bound(&User(Point(0, bottom)));
+        auto loX = server._usersByX.lower_bound(&User(MapPoint{ left, 0 }));
+        auto hiX = server._usersByX.upper_bound(&User(MapPoint{ right, 0 }));
+        auto loY = server._usersByY.lower_bound(&User(MapPoint{ 0, top }));
+        auto hiY = server._usersByY.upper_bound(&User(MapPoint{ 0, bottom }));
         for (auto it = loX; it != hiX; ++it){
             if (abs((*it)->location().y - newDest.y) <= Server::CULL_DISTANCE)
                 newlyNearbyUsers.push_back(*it);
@@ -176,10 +176,10 @@ void Entity::updateLocation(const Point &dest){
     // Tell any users it has moved away from to forget about it, and forget about any such entities.
     std::list<const Entity *> newlyDistantEntities;
     {
-        auto loX = server._entitiesByX.lower_bound(&Dummy::Location(Point(forgetLeft, 0)));
-        auto hiX = server._entitiesByX.upper_bound(&Dummy::Location(Point(forgetRight, 0)));
-        auto loY = server._entitiesByY.lower_bound(&Dummy::Location(Point(0, forgetTop)));
-        auto hiY = server._entitiesByY.upper_bound(&Dummy::Location(Point(0, forgetBottom)));
+        auto loX = server._entitiesByX.lower_bound(&Dummy::Location({ forgetLeft, 0 }));
+        auto hiX = server._entitiesByX.upper_bound(&Dummy::Location({ forgetRight, 0 }));
+        auto loY = server._entitiesByY.lower_bound(&Dummy::Location({ 0, forgetTop }));
+        auto hiY = server._entitiesByY.upper_bound(&Dummy::Location({ 0, forgetBottom }));
         for (auto it = loX; it != hiX; ++it){
             double entityY = (*it)->location().y;
             if (entityY - _location.y <= Server::CULL_DISTANCE)
@@ -204,7 +204,7 @@ void Entity::updateLocation(const Point &dest){
         onOutOfRange(*pEntity);
     }
 
-    Point oldLoc = _location;
+    MapPoint oldLoc = _location;
 
     // Remove from location-indexed trees
     if (classTag() == 'u'){

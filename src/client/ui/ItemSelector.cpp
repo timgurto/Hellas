@@ -25,12 +25,11 @@ TextBox *ItemSelector::_filterText = nullptr;
 List *ItemSelector::_itemList = nullptr;
 
 ItemSelector::ItemSelector(const ClientItem *&item, px_t x, px_t y):
-Button(Rect(x, y, WIDTH, Element::ITEM_HEIGHT + 2), "",
-       openFindItemWindow, nullptr),
+Button({x, y, WIDTH, Element::ITEM_HEIGHT + 2}, "", openFindItemWindow, nullptr),
 _item(item),
 _lastItem(item),
-_icon(new Picture(Rect(1, 1, ITEM_HEIGHT, ITEM_HEIGHT), Texture())),
-_name(new Label(Rect(ITEM_HEIGHT + 1 + GAP, 1, WIDTH, ITEM_HEIGHT), "",
+_icon(new Picture({ 1, 1, ITEM_HEIGHT, ITEM_HEIGHT }, Texture())),
+_name(new Label({ ITEM_HEIGHT + 1 + GAP, 1, WIDTH, ITEM_HEIGHT }, "",
                 Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED))
 {
     addChild(_icon);
@@ -39,20 +38,20 @@ _name(new Label(Rect(ITEM_HEIGHT + 1 + GAP, 1, WIDTH, ITEM_HEIGHT), "",
     clickData(&_item);
 
     if (_findItemWindow == nullptr){
-        _findItemWindow = Window::WithRectAndTitle(Rect((Client::SCREEN_X - WINDOW_WIDTH) / 2,
+        _findItemWindow = Window::WithRectAndTitle({ (Client::SCREEN_X - WINDOW_WIDTH) / 2,
                                                         (Client::SCREEN_Y - WINDOW_HEIGHT) / 2,
-                                                        WINDOW_WIDTH, WINDOW_HEIGHT),
+                                                        WINDOW_WIDTH, WINDOW_HEIGHT },
                                                    "Find Item");
         px_t y = GAP;
-        _filterText = new TextBox(Rect(GAP, y, SEARCH_TEXT_WIDTH, SEARCH_BUTTON_HEIGHT));
+        _filterText = new TextBox({ GAP, y, SEARCH_TEXT_WIDTH, SEARCH_BUTTON_HEIGHT });
         _findItemWindow->addChild(_filterText);
-        _findItemWindow->addChild(new Button(Rect(SEARCH_TEXT_WIDTH + 2 * GAP, y,
-                                                  SEARCH_BUTTON_WIDTH, SEARCH_BUTTON_HEIGHT),
+        _findItemWindow->addChild(new Button({ SEARCH_TEXT_WIDTH + 2 * GAP, y,
+                                                  SEARCH_BUTTON_WIDTH, SEARCH_BUTTON_HEIGHT },
                                              "Search", applyFilter, nullptr));
         y += SEARCH_BUTTON_HEIGHT + GAP;
         _findItemWindow->addChild(new Line(0, y, WINDOW_WIDTH));
         y += 2 + GAP;
-        _itemList = new List(Rect(GAP, y, LIST_WIDTH, LIST_HEIGHT), ITEM_HEIGHT + 2 + LIST_GAP);
+        _itemList = new List({ GAP, y, LIST_WIDTH, LIST_HEIGHT }, ITEM_HEIGHT + 2 + LIST_GAP);
         _findItemWindow->addChild(_itemList);
 
         applyFilter(nullptr); // Populate list for the first time.
@@ -78,12 +77,11 @@ void ItemSelector::applyFilter(void *data){
             // Add item to list
             Element *container = new Element();
             _itemList->addChild(container);
-            Button *itemButton = new Button(Rect(0, 0, LIST_WIDTH - List::ARROW_W, ITEM_HEIGHT + 2),
+            Button *itemButton = new Button({ 0, 0, LIST_WIDTH - List::ARROW_W, ITEM_HEIGHT + 2 },
                                             "", selectItem, const_cast<ClientItem *>(&item));
             container->addChild(itemButton);
-            itemButton->addChild(new Picture(Rect(1, 1, ITEM_HEIGHT, ITEM_HEIGHT), item.icon()));
-            itemButton->addChild(new Label(Rect(ITEM_HEIGHT + GAP, LABEL_TOP,
-                                                LABEL_WIDTH, TEXT_HEIGHT),
+            itemButton->addChild(new Picture({ 1, 1, ITEM_HEIGHT, ITEM_HEIGHT }, item.icon()));
+            itemButton->addChild(new Label({ ITEM_HEIGHT + GAP, LABEL_TOP, LABEL_WIDTH, TEXT_HEIGHT },
                                            item.name()));
         }
     }
@@ -91,11 +89,11 @@ void ItemSelector::applyFilter(void *data){
     // Add 'none' option
     Element *container = new Element();
     _itemList->addChild(container);
-    Button *itemButton = new Button(Rect(0, 0, LIST_WIDTH - List::ARROW_W, ITEM_HEIGHT + 2), "",
+    Button *itemButton = new Button({ 0, 0, LIST_WIDTH - List::ARROW_W, ITEM_HEIGHT + 2 }, "",
                                     selectItem, nullptr);
     container->addChild(itemButton);
-    itemButton->addChild(new Label(Rect(ITEM_HEIGHT + GAP, LABEL_TOP,
-                                        LABEL_WIDTH, TEXT_HEIGHT), "[None]"));
+    itemButton->addChild(new Label({ ITEM_HEIGHT + GAP, LABEL_TOP, LABEL_WIDTH, TEXT_HEIGHT },
+            "[None]"));
 }
 
 void ItemSelector::selectItem(void *data){

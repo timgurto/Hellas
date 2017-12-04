@@ -9,7 +9,7 @@ class List;
 // An alternative to a container, that allows only taking items, and not swapping.  e.g., loot.
 class TakeContainer : public Element{
 public:
-    TakeContainer(ClientItem::vect_t &linked, size_t serial, const Rect &rect);
+    TakeContainer(ClientItem::vect_t &linked, size_t serial, const ScreenRect &rect);
 
     void repopulate();
     size_t size() const { return _list->size(); }

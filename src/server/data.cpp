@@ -47,7 +47,7 @@ bool Server::readUserData(User &user){
     }
 
     auto elem = xr.findChild("location");
-    Point p;
+    MapPoint p;
     if (elem == nullptr || !xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
             _debug("Invalid user data (location)", Color::RED);
             return false;
@@ -263,7 +263,7 @@ void Server::loadData(const std::string &path){
             if (xr.findAttr(elem, "merchantSlots", n)) ot->merchantSlots(n);
             if (xr.findAttr(elem, "bottomlessMerchant", n)) ot->bottomlessMerchant(n == 1);
 
-            Rect r;
+            MapRect r;
             if (xr.findRectChild("collisionRect", elem, r))
                 ot->collisionRect(r);
 
@@ -432,7 +432,7 @@ void Server::loadData(const std::string &path){
             NPCType *nt = new NPCType(id);
 
             std::string s;
-            Rect r;
+            MapRect r;
             if (xr.findRectChild("collisionRect", elem, r))
                 nt->collisionRect(r);
             for (auto objTag :xr.getChildren("class", elem))
@@ -739,7 +739,7 @@ void Server::loadData(const std::string &path){
                 continue;
             }
 
-            Point p;
+            MapPoint p;
             if (!xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
                 _debug("Skipping importing spawner with invalid/no location", Color::RED);
                 continue;
@@ -830,7 +830,7 @@ void Server::loadData(const std::string &path){
                 continue;
             }
 
-            Point p;
+            MapPoint p;
             auto loc = xr.findChild("location", elem);
             if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
                 _debug("Skipping importing object with invalid/no location", Color::RED);
@@ -936,7 +936,7 @@ void Server::loadData(const std::string &path){
                 continue;
             }
 
-            Point p;
+            MapPoint p;
             auto loc = xr.findChild("location", elem);
             if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
                 _debug("Skipping importing object with invalid/no location", Color::RED);

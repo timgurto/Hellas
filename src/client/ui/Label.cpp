@@ -1,10 +1,8 @@
-// (C) 2015 Tim Gurto
-
 #include "Label.h"
 
 extern Renderer renderer;
 
-Label::Label(const Rect &rect, const std::string &text,
+Label::Label(const ScreenRect &rect, const std::string &text,
              Justification justificationH, Justification justificationV):
 Element(rect),
 _text(text),
