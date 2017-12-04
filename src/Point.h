@@ -63,12 +63,12 @@ const double Point<T>::EPSILON = 0.001;
 
 template<typename T>
 Rect<T> operator+(const Rect<T> &lhs, const Point<T> &rhs){
-    return{ lhs.x + rhs.x, lhs.y + rhs.y };
+    return{ lhs.x + rhs.x, lhs.y + rhs.y, lhs.w, lhs.h };
 }
 
 template<typename T>
 Rect<T> operator-(const Rect<T> &lhs, const Point<T> &rhs){
-    return{ lhs.x - rhs.x, lhs.y - rhs.y };
+    return{ lhs.x - rhs.x, lhs.y - rhs.y, lhs.w, lhs.h };
 }
 
 template<typename T>
