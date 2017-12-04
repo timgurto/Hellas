@@ -5,12 +5,9 @@
 
 void Entity::updateLocation(const MapPoint &dest){
     Server &server = *Server::_instance;
-    assert(server.isLocationValid(collisionRect(), this));
     const ms_t newTime = SDL_GetTicks();
     ms_t timeElapsed = newTime - _lastLocUpdate;
     _lastLocUpdate = newTime;
-
-    assert(server.isLocationValid(_location, *type(), this));
 
     const User *userPtr = nullptr;
     if (classTag() == 'u')
@@ -232,6 +229,14 @@ void Entity::updateLocation(const MapPoint &dest){
     if (newDest.y != oldLoc.y)
         server._entitiesByY.insert(this);
 
+    // Move to a different collision chunk if needed
+    auto
+        &oldCollisionChunk = server.getCollisionChunk(oldLoc),
+        &newCollisionChunk = server.getCollisionChunk(_location);
+    if (&oldCollisionChunk != &newCollisionChunk) {
+        oldCollisionChunk.removeEntity(_serial);
+        newCollisionChunk.addEntity(this);
+    }
 
     // Tell newly nearby users that it exists
     for (const User *userP : newlyNearbyUsers){
