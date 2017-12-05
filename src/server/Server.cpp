@@ -361,6 +361,12 @@ void Server::addUser(const Socket &socket, const std::string &name){
             sendInventoryMessage(newUser, i, INVENTORY);
     }
 
+    // Send him his gear
+    for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
+        if (newUser.gear(i).first != nullptr)
+            sendInventoryMessage(newUser, i, GEAR);
+    }
+
     // Send him the recipes he knows
     if (newUser.knownRecipes().size() > 0){
         std::string args = makeArgs(newUser.knownRecipes().size());
