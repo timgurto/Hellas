@@ -310,7 +310,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 342,Show levels in target panels,21,5,Usability,,,,2
 343,Give NPCs levels,21,3,Feature,,TRUE,,2
 344,Modify combat based on level difference,34,5,Feature,,,,2
-345,Make objects always their attacker's level,8,8,Feature,,,,2
+345,Make objects always their attacker's level,8,8,Feature,344,,,2
 346,"Implement DoTs properly, with combat modifiers, XP, aggro",21,21,Bug,,,,2
 347,Add level-up particles,13,3,Aesthetics,,,,2
 348,Add level-up sound,21,3,Aesthetics,,,,2
