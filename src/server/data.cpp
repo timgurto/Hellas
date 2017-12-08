@@ -614,6 +614,10 @@ void Server::loadData(const std::string &path){
             auto newSpell = new Spell;
             _spells[id] = newSpell;
 
+            auto name = Spell::Name{};
+            if (xr.findAttr(elem, "name", name))
+                newSpell->name(name);
+
             auto cost = Energy{};
             if (xr.findAttr(elem, "cost", cost))
                 newSpell->cost(cost);
@@ -691,17 +695,25 @@ void Server::loadData(const std::string &path){
                             continue;
 
                         auto talentName = ""s;
-                        if (!xr.findAttr(talent, "name", talentName))
-                            continue;
+                        xr.findAttr(talent, "name", talentName);
 
                         if (type == "spell") {
                             auto spellID = Spell::ID{};
                             if (!xr.findAttr(talent, "id", spellID))
                                 continue;
 
+                            auto it = _spells.find(spellID);
+                            if (it == _spells.end())
+                                continue;
+                            const auto &spell = *it->second;
+                            if (talentName.empty())
+                                talentName = spell.name();
+
                             newClass.addSpell(talentName, spellID);
 
                         } else if (type == "stats") {
+                            if (talentName.empty())
+                                continue;
                             auto stats = StatsMod{};
                             if (!xr.findStatsChild("stats", talent, stats))
                                 continue;

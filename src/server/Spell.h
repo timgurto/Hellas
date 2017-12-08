@@ -24,6 +24,7 @@ public:
     };
 
     using ID = std::string;
+    using Name = std::string;
 
     void setFunction(const std::string &functionName);
     void args(const Args &args) { _args = args; }
@@ -31,6 +32,8 @@ public:
     CombatResult performAction(Entity &caster, Entity &target) const;
         bool isTargetValid(const Entity &caster, const Entity &target) const;
 
+    void name(const Name &name) { _name = name; }
+    const Name &name() const { return _name; }
     void canTarget(TargetType type) { _validTargets[type] = true; }
     void cost(Energy e) { _cost = e; }
     Energy cost() const { return _cost; }
@@ -59,6 +62,7 @@ private:
     static CombatResult buff(const Spell &spell, Entity &caster, Entity &target);
     static CombatResult debuff(const Spell &spell, Entity &caster, Entity &target);
 
+    Name _name;
     Energy _cost = 0;
     px_t _range = Podes::MELEE_RANGE.toPixels();
     bool _targetsInArea = false;
