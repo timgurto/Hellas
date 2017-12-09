@@ -1268,6 +1268,7 @@ void Client::handleMessage(const std::string &msg){
             }
 
             handle_SV_KNOWN_SPELLS(std::move(knownSpellIDs));
+            break;
         }
 
         case SV_LEARNED_SPELL:
@@ -1280,6 +1281,7 @@ void Client::handleMessage(const std::string &msg){
                 return;
 
             handle_SV_LEARNED_SPELL(spellID);
+            break;
         }
 
         case SV_SAY:

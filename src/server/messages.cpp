@@ -1019,6 +1019,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             handle_CL_TAKE_TALENT(*user, talentName);
+            break;
         }
 
         case CL_CAST:
@@ -1029,6 +1030,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             handle_CL_CAST(*user, spellID);
+            break;
         }
 
         case CL_SAY:
