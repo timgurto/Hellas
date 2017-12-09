@@ -1,7 +1,10 @@
 #pragma once
 
-#include "Entity.h"
+#include "combat.h"
+#include "../Podes.h"
+#include "../SpellSchool.h"
 
+class Entity;
 class Spell;
 
 class SpellEffect {

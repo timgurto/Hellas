@@ -528,11 +528,11 @@ void User::updateStats(){
 
     // Apply buffs
     for (auto &buff : buffs())
-        buff.applyTo(newStats);
+        buff.applyStatsTo(newStats);
 
     // Apply debuffs
     for (auto &debuff : debuffs())
-        debuff.applyTo(newStats);
+        debuff.applyStatsTo(newStats);
 
     // Special case: health must change to reflect new max health
     int healthDecrease = oldMaxHealth - newStats.maxHealth;

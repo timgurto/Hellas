@@ -673,8 +673,28 @@ void Server::loadData(const std::string &path){
             auto newBuff = BuffType{id};
 
             auto stats = StatsMod{};
-            if (xr.findStatsChild("stats", elem, stats))
+            if (xr.findStatsChild("stats", elem, stats)) {
                 newBuff.stats(stats);
+            }
+
+            auto functionElem = xr.findChild("function", elem);
+            if (functionElem) {
+                auto functionName = ""s;
+                if (xr.findAttr(functionElem, "name", functionName))
+                newBuff.effect().setFunction(functionName);
+
+                auto args = SpellEffect::Args{};
+                xr.findAttr(functionElem, "i1", args.i1);
+                xr.findAttr(functionElem, "s1", args.s1);
+
+                auto tickTime = ms_t{};
+                if (xr.findAttr(functionElem, "tickTime", tickTime))
+                    newBuff.tickTime(tickTime);
+                else
+                    continue; // Tick time mandatory if a function is specified
+
+                newBuff.effect().args(args);
+            }
 
             _buffTypes[id] = newBuff;
         }

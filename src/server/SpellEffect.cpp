@@ -84,7 +84,7 @@ CombatResult SpellEffect::buff(const SpellEffect &effect, Entity & caster, Entit
     if (buffType == nullptr)
         return FAIL;
 
-    target.applyBuff(*buffType);
+    target.applyBuff(*buffType, caster);
 
     return HIT;
 }
@@ -97,7 +97,7 @@ CombatResult SpellEffect::debuff(const SpellEffect &effect, Entity & caster, Ent
 
     auto outcome = caster.generateHitAgainst(target, DEBUFF, effect._school, effect._range);
 
-    target.applyDebuff(*debuffType);
+    target.applyDebuff(*debuffType, caster);
 
     return HIT;
 }

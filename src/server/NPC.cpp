@@ -274,11 +274,11 @@ void NPC::updateStats() {
 
     // Apply buffs
     for (auto &buff : buffs())
-        buff.applyTo(newStats);
+        buff.applyStatsTo(newStats);
 
     // Apply debuffs
     for (auto &debuff : debuffs())
-        debuff.applyTo(newStats);
+        debuff.applyStatsTo(newStats);
 
     // Assumption: max health/energy won't change
 

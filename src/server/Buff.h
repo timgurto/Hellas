@@ -4,39 +4,65 @@
 #include <set>
 #include <string>
 
+#include "SpellEffect.h"
 #include "../Stats.h"
 
 
 class BuffType {
 public:
+    enum Type {
+        UNKNOWN,
+        
+        STATS,
+        SPELL_OVER_TIME
+    };
+
     using ID = std::string;
 
     BuffType() {}
     BuffType(const ID &id) : _id(id) {}
 
-    void stats(const StatsMod &stats) { _stats = stats; }
-    const StatsMod &stats() const { return _stats; }
     const ID &id() const { return _id; }
 
+    void stats(const StatsMod &stats);
+    const StatsMod &stats() const { return _stats; }
+
+    SpellEffect &effect();
+    const SpellEffect &effect() const { return _effect; }
+    void tickTime(ms_t t) { _tickTime = t; }
+    ms_t tickTime() const { return _tickTime; }
+
 private:
-    StatsMod _stats{};
     ID _id{};
+    Type _type = UNKNOWN;
+
+    StatsMod _stats{};
+
+    SpellEffect _effect{};
+    ms_t _tickTime{ 0 };
 };
 
+// An instance of a buff type, on a specific target
 class Buff {
 public:
     using ID = std::string;
 
-    Buff(const BuffType &type) : _type(type) {}
+    Buff(const BuffType &type, Entity &owner, Entity &caster);
 
     const ID &type() const { return _type.id(); }
 
     bool operator<(const Buff &rhs) const { return &_type < &rhs._type; }
 
-    void applyTo(Stats &stats) const { stats &= _type.stats(); }
+    void applyStatsTo(Stats &stats) const { stats &= _type.stats(); }
+
+    void update(ms_t timeElapsed) const;
 
 private:
     const BuffType &_type;
+    Entity &_owner;
+    Entity &_caster;
+
+    mutable ms_t _timeSinceLastProc{ 0 };
 };
 
 using BuffTypes = std::map<Buff::ID, BuffType>;

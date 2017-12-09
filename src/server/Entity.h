@@ -18,21 +18,6 @@ class Spawner;
 class User;
 class XmlWriter;
 
-enum CombatType {
-    DAMAGE,
-    HEAL, // Can crit
-    DEBUFF // Can't crit
-};
-enum CombatResult {
-    FAIL,
-
-    HIT,
-    CRIT,
-    BLOCK,
-    DODGE,
-    MISS
-};
-
 // Abstract class describing location, movement and combat functions of something in the game world
 class Entity {
 
@@ -92,8 +77,8 @@ public:
     //Buffs &buffs() { return _buffs; }
     const Buffs &buffs() const { return _buffs; }
     const Buffs &debuffs() const { return _debuffs; }
-    void applyBuff(const BuffType &type);
-    void applyDebuff(const BuffType &type);
+    void applyBuff(const BuffType &type, Entity &caster);
+    void applyDebuff(const BuffType &type, Entity &caster);
     virtual void sendBuffMsg(const Buff::ID &buff) const;
     virtual void sendDebuffMsg(const Buff::ID &buff) const;
 

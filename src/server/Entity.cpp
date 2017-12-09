@@ -130,6 +130,11 @@ void Entity::healBy(Hitpoints amount) {
 void Entity::update(ms_t timeElapsed){
     regen(timeElapsed);
 
+    for (auto &buff : _buffs)
+        buff.update(timeElapsed);
+    for (auto &debuff : _debuffs)
+        debuff.update(timeElapsed);
+
     // Attacking
     if (_attackTimer > timeElapsed)
         _attackTimer -= timeElapsed;
@@ -267,19 +272,21 @@ void Entity::removeWatcher(const std::string &username){
     Server::debug() << username << " is no longer watching an object." << Log::endl;
 }
 
-void Entity::applyBuff(const BuffType & type) {
-    if (_buffs.find({ type }) != _buffs.end())
+void Entity::applyBuff(const BuffType & type, Entity &caster) {
+    auto newBuff = Buff{ type, *this, caster };
+    if (_buffs.find(newBuff) != _buffs.end())
         return;
-    _buffs.insert({ type });
+    _buffs.insert(newBuff);
     updateStats();
 
     sendBuffMsg(type.id());
 }
 
-void Entity::applyDebuff(const BuffType & type) {
-    if (_debuffs.find({ type }) != _debuffs.end())
+void Entity::applyDebuff(const BuffType & type, Entity &caster) {
+    auto newDebuff = Buff{ type, *this, caster };
+    if (_debuffs.find(newDebuff) != _debuffs.end())
         return;
-    _debuffs.insert({ type });
+    _debuffs.insert(newDebuff);
     updateStats();
 
     sendDebuffMsg(type.id());
