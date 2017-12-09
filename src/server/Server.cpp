@@ -387,6 +387,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
 
     // Add user to location-indexed trees
     const User *userP = &*it;
+    getCollisionChunk(newUser.location()).addEntity(userP);
     _usersByX.insert(userP);
     _usersByY.insert(userP);
     _entitiesByX.insert(userP);
@@ -394,20 +395,22 @@ void Server::addUser(const Socket &socket, const std::string &name){
 }
 
 void Server::removeUser(const std::set<User>::iterator &it){
+    const auto &userToDelete = *it;
     // Alert nearby users
-    for (const User *userP : findUsersInArea(it->location()))
-        if (userP != &*it)
-            sendMessage(userP->socket(), SV_USER_DISCONNECTED, it->name());
+    for (const User *userP : findUsersInArea(userToDelete.location()))
+        if (userP != &userToDelete)
+            sendMessage(userP->socket(), SV_USER_DISCONNECTED, userToDelete.name());
 
-    forceAllToUntarget(*it);
+    forceAllToUntarget(userToDelete);
 
     // Save user data
-    writeUserData(*it);
+    writeUserData(userToDelete);
 
-    _usersByX.erase(&*it);
-    _usersByY.erase(&*it);
-    _entitiesByX.erase(&*it);
-    _entitiesByY.erase(&*it);
+    getCollisionChunk(userToDelete.location()).removeEntity(userToDelete.serial());
+    _usersByX.erase(&userToDelete);
+    _usersByY.erase(&userToDelete);
+    _entitiesByX.erase(&userToDelete);
+    _entitiesByY.erase(&userToDelete);
     _usersByName.erase(it->name());
 
     _users.erase(it);
