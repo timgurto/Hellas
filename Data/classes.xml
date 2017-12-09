@@ -7,7 +7,7 @@
             <talent type="stats" name="Willpower Training"> <stats airResist="1" earthResist="1" fireResist="1" waterResist="1" /> </talent>
         </tier>
         <tier>
-            <!--talent type="spell" id="shieldBlock" /-->
+            <talent type="spell" id="shieldBlock" />
             <talent type="stats" name="Endurance Training"> <stats armor="1" /> </talent>
             <!--talent type="spell" id="Menacing Strike" /-->
         </tier>
@@ -18,9 +18,9 @@
             <talent type="stats" name="Strength Training"> <stats physicalDamage="2" /> </talent>
         </tier>
         <tier>
-            <!--talent type="spell" id="Sprint" /-->
+            <!--talent type="spell" id="sprint" /-->
             <!--talent type="spell" id="Head Crack" /-->
-            <!--talent type="spell" id="Lacerate" /-->
+            <talent type="spell" id="bleed" />
         </tier>
     </tree>
     <tree name="Philosopher" >
@@ -30,7 +30,7 @@
             <talent type="stats" name="Epicureanism"> <stats health="10" /> </talent>
         </tier>
         <tier>
-            <!--talent type="spell" id="Logic" /-->
+            <talent type="spell" id="airDot" />
             <!--talent type="spell" id="Constant Flux" /-->
         </tier>
     </tree>
@@ -53,7 +53,7 @@
             <talent type="stats" name="Study Medicine"> <stats healing="3" /> </talent>
         </tier>
         <tier>
-            <!--talent type="spell" id="poison" /-->
+            <talent type="spell" id="poison" />
             <!--talent type="stats" id="Study Classification" /-->
             <!--talent type="spell" id="Leeches" /-->
         </tier>
@@ -79,8 +79,8 @@
         </tier>
         <tier>
             <!--talent type="spell" id="Blessing of Hephaestus" /-->
-            <!--talent type="spell" id="Blessing of Apollo" /-->
-            <talent type="spell" id="heal" />
+            <talent type="spell" id="majorEnergyBuff" />
+            <talent type="spell" id="priestEconHeal" />
         </tier>
     </tree>
     <tree name="Cultist" >
@@ -91,7 +91,7 @@
         <tier>
             <!--talent type="spell" id="Demonic Armor" /-->
             <talent type="stats" name="Devotion to Mithra"> <stats airResist="1" earthResist="1" fireResist="1" waterResist="1" /> </talent>
-            <!--talent type="spell" id= "Selfish Request" /-->
+            <talent type="spell" id= "selfHeal" />
         </tier>
     </tree>
     <tree name="Poet" >

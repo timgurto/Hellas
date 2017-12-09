@@ -1,15 +1,19 @@
 <root>
 
-<!--buff id="poison" name="Poison">
-    <stats hps="-10" />
-</buff-->
-
-<buff id="shieldBlock" name="Asdf">
-    <stats block="100" />
+<buff id="airDot" name="Socratic questioning">
+    <function name="doDirectDamage" i1="2" tickTime="1500" />
 </buff>
-
-<buff id="majorEnergy" name="Blessing of Apollo">
+<buff id="bleed" name="Bleeding">
+    <function name="doDirectDamage" i1="2" tickTime="1500" />
+</buff>
+<buff id="majorEnergy" name="Blessed by Apollo">
     <stats energy="100" />
+</buff>
+<buff id="poison" name="Poisoned">
+    <function name="doDirectDamage" i1="2" tickTime="1500" />
+</buff>
+<buff id="shieldBlock" name="Shield raised">
+    <stats block="100" />
 </buff>
 
 </root>

@@ -10,38 +10,67 @@ Functions:
 
 <root>
 
-<spell id="fireball" name="Fireball" cost=10 range=30 school="fire" >
-    <aesthetics projectile="fireball" sounds="fireball" impactParticles="fire" />
-    <targets enemy=1 />
-    <function name="doDirectDamage" i1=5 />
-</spell>
-<spell id="heal" name="Prayer" cost=12 range=25 >
-    <aesthetics sounds="heal" impactParticles="lightRays" />
-    <targets friendly=1 self=1 />
-    <function name="heal" i1=20 />
-</spell>
-
-<!--spell id="poison" name="Poison" cost=10 range=30 school="earth" >
-    <aesthetics impactParticles="poison" />
-    <targets enemy=1 />
-    <function name="debuff" s1="poison" />
-</spell-->
-
-
-<spell id="shieldBlock" name="Raise Shield" cost=1 >
+<!-- Hoplite -->
+<spell id="shieldBlock" name="Raise Shield" cost=10 >
     <targets self=1 />
     <function name="buff" s1="shieldBlock" />
 </spell>
 
+<!-- Skirmisher -->
+<spell id="bleed" name="Lacerate" cost=10 range=4 >
+    <targets enemy=1 />
+    <function name="debuff" s1="bleed" />
+</spell>
 <!--spell id="whirlwind" name="Blade Storm" cost=30 radius=4 >
     <aesthetics impactParticles="heavyBlood" />
     <targets enemy=1 />
     <function name="doDirectDamage" i1=5 />
 </spell-->
 
+<!-- Philosopher -->
+<spell id="airDot" name="Logic" cost=10 range=30 school="air" >
+    <targets enemy=1 />
+    <function name="debuff" s1="airDot" />
+</spell>
+
+<!-- Magus -->
+<spell id="fireball" name="Fireball" cost=10 range=30 school="fire" >
+    <aesthetics projectile="fireball" sounds="fireball" impactParticles="fire" />
+    <targets enemy=1 />
+    <function name="doDirectDamage" i1=5 />
+</spell>
+
+<!-- Naturalist -->
+<spell id="poison" name="Poison Stab" cost=10 range=30 school="earth" >
+    <aesthetics impactParticles="poison" />
+    <targets enemy=1 />
+    <function name="debuff" s1="poison" />
+</spell>
+
+<!-- Alchemist -->
+
+<!-- Priest -->
+<spell id="priestEconHeal" name="Prayer" cost=12 range=25 >
+    <aesthetics sounds="heal" impactParticles="lightRays" />
+    <targets friendly=1 self=1 />
+    <function name="heal" i1=20 />
+</spell>
 <spell id="majorEnergyBuff" name="Blessing of Apollo" cost=20 range=30 >
     <targets friendly=1 self=1 />
     <function name="buff" s1="majorEnergy" />
 </spell>
+
+<!-- Cultist -->
+<spell id="selfHeal" name="Selfish Request" cost=5 >
+    <aesthetics sounds="heal" impactParticles="lightRays" />
+    <targets self=1 />
+    <function name="heal" i1=15 />
+</spell>
+
+<!-- Poet -->
+
+
+
+
 
 </root>
