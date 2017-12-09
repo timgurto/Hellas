@@ -197,7 +197,7 @@ void Entity::update(ms_t timeElapsed){
         auto resistanceMultiplier = (100 - resistance) / 100.0;
         rawDamage *= resistanceMultiplier;
 
-        auto damage = Spell::chooseRandomSpellMagnitude(rawDamage);
+        auto damage = SpellEffect::chooseRandomSpellMagnitude(rawDamage);
 
         if (outcome == BLOCK) {
             if (_stats.blockValue >= damage)

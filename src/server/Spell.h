@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Entity.h"
+#include "SpellEffect.h"
 #include "../Podes.h"
 #include "../SpellSchool.h"
 #include "../types.h"
@@ -18,16 +19,8 @@ public:
         NUM_TARGET_TYPES
     };
 
-    struct Args {
-        int i1 = 0;
-        std::string s1{};
-    };
-
     using ID = std::string;
     using Name = std::string;
-
-    void setFunction(const std::string &functionName);
-    void args(const Args &args) { _args = args; }
 
     CombatResult performAction(Entity &caster, Entity &target) const;
         bool isTargetValid(const Entity &caster, const Entity &target) const;
@@ -37,39 +30,20 @@ public:
     void canTarget(TargetType type) { _validTargets[type] = true; }
     void cost(Energy e) { _cost = e; }
     Energy cost() const { return _cost; }
+    bool shouldPlayDefenseSound() const { return _effect.isAggressive(); }
     void range(Podes r) { _range = r.toPixels(); }
-    void radius(Podes r) { _range = r.toPixels(); _targetsInArea = true; }
-    px_t range() const { return _range; }
-    bool isAoE() const { return _targetsInArea; }
-    void school(SpellSchool school) { _school = school; }
-    SpellSchool school() const { return _school; }
-    bool shouldPlayDefenseSound() const { return aggressionMap[_function]; }
-    static Hitpoints chooseRandomSpellMagnitude(double raw);
+    SpellEffect &effect() { return _effect; }
+    const SpellEffect &effect() const { return _effect; }
 
 private:
-    using Function = CombatResult(*)(const Spell &spell, Entity &caster, Entity &target);
-
-    Function _function = nullptr;
-    Args _args;
-
-    using FunctionMap = std::map<std::string, Function>;
-    static FunctionMap functionMap;
-    using FlagMap = std::map<Function, bool>;
-    static FlagMap aggressionMap; // Ultimately, whether a defense sound should play.
-
-    static CombatResult doDirectDamage(const Spell &spell, Entity &caster, Entity &target);
-    static CombatResult heal(const Spell &spell, Entity &caster, Entity &target);
-    static CombatResult buff(const Spell &spell, Entity &caster, Entity &target);
-    static CombatResult debuff(const Spell &spell, Entity &caster, Entity &target);
-
     Name _name;
     Energy _cost = 0;
     px_t _range = Podes::MELEE_RANGE.toPixels();
-    bool _targetsInArea = false;
-    SpellSchool _school;
+
+    SpellEffect _effect;
 
     using ValidTargets = std::vector<bool>;
     ValidTargets _validTargets = ValidTargets(NUM_TARGET_TYPES, false);
 };
 
-using Spells = std::map < Spell::ID , Spell * > ;
+using Spells = std::map < Spell::ID , Spell * >;

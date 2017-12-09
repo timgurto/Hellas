@@ -624,23 +624,28 @@ void Server::loadData(const std::string &path){
 
             auto school = SpellSchool{};
             if (xr.findAttr(elem, "school", school))
-                newSpell->school(school);
+                newSpell->effect().school(school);
 
             auto range = Podes{0};
-            if (xr.findAttr(elem, "range", range)) newSpell->range(range);
-            else if (xr.findAttr(elem, "radius", range)) newSpell->radius(range);
+            if (xr.findAttr(elem, "range", range)) {
+                newSpell->range(range);
+                newSpell->effect().range(range);
+            } else if (xr.findAttr(elem, "radius", range)) {
+                newSpell->range(range);
+                newSpell->effect().radius(range);
+            }
 
             auto functionElem = xr.findChild("function", elem);
             if (functionElem) {
                 auto functionName = ""s;
                 if (xr.findAttr(functionElem, "name", functionName))
-                    newSpell->setFunction(functionName);
+                    newSpell->effect().setFunction(functionName);
 
-                auto args = Spell::Args{};
+                auto args = SpellEffect::Args{};
                 xr.findAttr(functionElem, "i1", args.i1);
                 xr.findAttr(functionElem, "s1", args.s1);
 
-                newSpell->args(args);
+                newSpell->effect().args(args);
             }
 
             auto validTargets = xr.findChild("targets", elem);

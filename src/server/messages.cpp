@@ -1391,10 +1391,11 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
 
     auto usersNearCaster = findUsersInArea(user.location());
 
+    const SpellEffect &effect = spell.effect();
     auto targets = std::set<Entity*>{};
-    if (spell.isAoE()) {
-        targets = findEntitiesInArea(user.location(), spell.range());
-        auto nearbyUsers =  findUsersInArea(user.location(), spell.range());
+    if (effect.isAoE()) {
+        targets = findEntitiesInArea(user.location(), effect.range());
+        auto nearbyUsers =  findUsersInArea(user.location(), effect.range());
         for (auto user : nearbyUsers)
             targets.insert(user);
     } else {
@@ -1404,7 +1405,7 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
         targets.insert(target);
     }
 
-    if (spell.isAoE())
+    if (effect.isAoE())
         user.reduceEnergy(spell.cost());
 
     for (auto target : targets){
@@ -1415,7 +1416,7 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
             continue;
         }
 
-        if (!spell.isAoE()) // The spell succeeded, and there should be only one iteration.
+        if (!effect.isAoE()) // The spell succeeded, and there should be only one iteration.
             user.reduceEnergy(spell.cost());
 
         // Broadcast spellcast
