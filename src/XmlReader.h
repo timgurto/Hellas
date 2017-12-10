@@ -3,6 +3,8 @@
 
 #include <set>
 #include <string>
+#include <vector>
+
 #include <tinyxml.h>
 
 #ifndef NO_SDL
@@ -30,8 +32,9 @@ public:
     bool newFile(const char *filename);
     bool newFile(const std::string &filename);
     
-    static std::set<TiXmlElement *> getChildren(const std::string &val, TiXmlElement *elem);
-    std::set<TiXmlElement *> getChildren(const std::string &val) { return getChildren(val, _root); }
+    using Elements = std::vector<TiXmlElement *>;
+    static Elements getChildren(const std::string &val, TiXmlElement *elem);
+    Elements getChildren(const std::string &val) { return getChildren(val, _root); }
     static TiXmlElement *findChild(const std::string &val, TiXmlElement *elem);
     TiXmlElement *findChild(const std::string &val) { return findChild(val, _root); }
 
