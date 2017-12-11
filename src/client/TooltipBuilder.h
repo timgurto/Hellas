@@ -25,8 +25,13 @@ public:
 
     void setFont(TTF_Font *font = nullptr); // Default: default font
     void setColor(const Color &color = Color::TOOLTIP_FONT);
+
     void addLine(const std::string &line);
+    using Lines = std::vector<std::string>;
+    void addLines(const Lines &lines);
+
     void addGap();
+
     Texture publish();
 
     // Create a basic tooltip containing a single string, broken over multiple lines if necessary.

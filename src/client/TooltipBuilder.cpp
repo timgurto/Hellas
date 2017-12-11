@@ -36,6 +36,11 @@ void TooltipBuilder::addLine(const std::string &line){
     _content.push_back(lineTexture);
 }
 
+void TooltipBuilder::addLines(const Lines & lines) {
+    for (auto &line : lines)
+        addLine(line);
+}
+
 void TooltipBuilder::addGap(){
     _content.push_back(Texture());
 }

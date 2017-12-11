@@ -1,6 +1,8 @@
 #ifndef STATS_H
 #define STATS_H
 
+#include <vector>
+
 #include "SpellSchool.h"
 #include "types.h"
 
@@ -54,6 +56,9 @@ struct Stats{
 
 // Describes modifiers for player stats, e.g. for gear.
 struct StatsMod{
+
+    std::vector<std::string> toStrings() const;
+
     // Additive
     int
         armor = 0,

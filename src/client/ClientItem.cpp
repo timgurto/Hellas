@@ -67,12 +67,6 @@ void ClientItem::init(){
     }
 }
 
-std::string multiplicativeToString(double d){
-    d -= 1;
-    d *= 100;
-    return toString(toInt(d)) + "%";
-}
-
 const Texture &ClientItem::tooltip() const{
     if (_tooltip)
         return _tooltip;
@@ -88,52 +82,7 @@ const Texture &ClientItem::tooltip() const{
         tb.addGap();
         tb.setColor(Color::ITEM_STATS);
         tb.addLine("Gear: " + Client::GEAR_SLOT_NAMES[_gearSlot]);
-        if (_stats.armor > 0)
-            tb.addLine("+" + toString(_stats.armor) + "% armor");
-        if (_stats.maxHealth > 0)
-            tb.addLine("+" + toString(_stats.maxHealth) + " health");
-        if (_stats.maxEnergy > 0)
-            tb.addLine("+" + toString(_stats.maxEnergy) + " energy");
-        if (_stats.hps > 0)
-            tb.addLine("+" + toString(_stats.hps) + " health per second");
-        if (_stats.eps > 0)
-            tb.addLine("+" + toString(_stats.eps) + " energy per second");
-        if (_stats.hit > 0)
-            tb.addLine("+" + toString(_stats.hit) + "% hit");
-        if (_stats.crit > 0)
-            tb.addLine("+" + toString(_stats.crit) + "% crit");
-        if (_stats.critResist > 0)
-            tb.addLine("-" + toString(_stats.critResist) + "% chance to be crit");
-        if (_stats.dodge > 0)
-            tb.addLine("+" + toString(_stats.dodge) + "% dodge");
-        if (_stats.block > 0)
-            tb.addLine("+" + toString(_stats.block) + "% block");
-        if (_stats.blockValue > 0)
-            tb.addLine("+" + toString(_stats.blockValue) + " block value");
-        if (_stats.magicDamage > 0)
-            tb.addLine("+" + toString(_stats.magicDamage) + " magic damage");
-        if (_stats.physicalDamage > 0)
-            tb.addLine("+" + toString(_stats.physicalDamage) + " physical damage");
-        if (_stats.healing > 0)
-            tb.addLine("+" + toString(_stats.healing) + " healing amount");
-        if (_stats.airResist > 0)
-            tb.addLine("+" + toString(_stats.airResist) + "% air resistance");
-        if (_stats.earthResist > 0)
-            tb.addLine("+" + toString(_stats.earthResist) + "% earth resistance");
-        if (_stats.fireResist > 0)
-            tb.addLine("+" + toString(_stats.fireResist) + "% fire resistance");
-        if (_stats.waterResist > 0)
-            tb.addLine("+" + toString(_stats.waterResist) + "% water resistance");
-        if (_stats.attack > 0)
-            tb.addLine("+" + toString(_stats.attack) + " attack");
-        if (_stats.attackTime != 1) {
-            auto line = multiplicativeToString(1 / _stats.attackTime) + " attack speed";
-            if (_stats.attackTime < 1)
-                line = "+"s + line;
-            tb.addLine(line);
-        }
-        if (_stats.speed != 1)
-            tb.addLine("+" + multiplicativeToString(_stats.speed) + " run speed");
+        tb.addLines(_stats.toStrings());
     }
 
     // Tags

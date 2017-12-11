@@ -122,3 +122,62 @@ Percentage Stats::resistanceByType(SpellSchool school) const {
     assert(false);
     return 0;
 }
+
+std::string multiplicativeToString(double d) {
+    d -= 1;
+    d *= 100;
+    return toString(toInt(d)) + "%";
+}
+
+std::vector<std::string> StatsMod::toStrings() const {
+    auto v = std::vector<std::string>{};
+
+    if (armor > 0)
+        v.push_back("+" + toString(armor) + "% armor");
+    if (maxHealth > 0)
+        v.push_back("+" + toString(maxHealth) + " health");
+    if (maxEnergy > 0)
+        v.push_back("+" + toString(maxEnergy) + " energy");
+    if (hps > 0)
+        v.push_back("+" + toString(hps) + " health per second");
+    if (eps > 0)
+        v.push_back("+" + toString(eps) + " energy per second");
+    if (hit > 0)
+        v.push_back("+" + toString(hit) + "% hit");
+    if (crit > 0)
+        v.push_back("+" + toString(crit) + "% crit");
+    if (critResist > 0)
+        v.push_back("-" + toString(critResist) + "% chance to be crit");
+    if (dodge > 0)
+        v.push_back("+" + toString(dodge) + "% dodge");
+    if (block > 0)
+        v.push_back("+" + toString(block) + "% block");
+    if (blockValue > 0)
+        v.push_back("+" + toString(blockValue) + " block value");
+    if (magicDamage > 0)
+        v.push_back("+" + toString(magicDamage) + " magic damage");
+    if (physicalDamage > 0)
+        v.push_back("+" + toString(physicalDamage) + " physical damage");
+    if (healing > 0)
+        v.push_back("+" + toString(healing) + " healing amount");
+    if (airResist > 0)
+        v.push_back("+" + toString(airResist) + "% air resistance");
+    if (earthResist > 0)
+        v.push_back("+" + toString(earthResist) + "% earth resistance");
+    if (fireResist > 0)
+        v.push_back("+" + toString(fireResist) + "% fire resistance");
+    if (waterResist > 0)
+        v.push_back("+" + toString(waterResist) + "% water resistance");
+    if (attack > 0)
+        v.push_back("+" + toString(attack) + " attack");
+    if (attackTime != 1) {
+        auto line = multiplicativeToString(1 / attackTime) + " attack speed";
+        if (attackTime < 1)
+            line = "+"s + line;
+        v.push_back(line);
+    }
+    if (speed != 1)
+        v.push_back("+" + multiplicativeToString(speed) + " run speed");
+
+    return v;
+}
