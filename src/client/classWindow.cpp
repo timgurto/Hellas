@@ -92,7 +92,7 @@ void Client::populateClassWindow() {
                     reinterpret_cast<const void*>(&*talent.learnMessage));
                 auto learnSpellButton = new Button({ x, y, 18, 18 }, ""s,
                     this->sendRawMessageStatic, learnMessageVoidPtr);
-                learnSpellButton->setTooltip(talent.name);
+                learnSpellButton->setTooltip(talent.tooltip());
                 if (talent.icon)
                     learnSpellButton->addChild(new Picture(1, 1, *talent.icon));
 

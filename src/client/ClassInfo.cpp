@@ -1,5 +1,6 @@
 #include "ClassInfo.h"
 #include "Client.h"
+#include "TooltipBuilder.h"
 
 ClassInfo::ClassInfo(const Name &name) : _name(name), _trees{} {
     _image = { "Images/Humans/" + name + ".png", Color::MAGENTA };
@@ -50,6 +51,30 @@ name(talentName),
 type(type){
     auto &client = Client::instance();
     learnMessage = std::make_shared<std::string>(Client::compileMessage(CL_TAKE_TALENT, talentName));
+}
+
+const Texture ClientTalent::tooltip() const {
+    switch (type) {
+    case SPELL:
+        return spell->tooltip();
+    case STATS:
+    {
+        auto tb = TooltipBuilder{};
+        tb.setColor(Color::ITEM_NAME);
+        tb.addLine(name);
+        tb.addGap();
+
+        tb.setColor(Color::ITEM_STATS);
+        tb.addLine("Each level:");
+        tb.addLines(stats.toStrings());
+
+        return tb.publish();
+    }
+
+    default:
+        assert(false);
+        return {};
+    }
 }
 
 size_t Tree::numTiers() const {

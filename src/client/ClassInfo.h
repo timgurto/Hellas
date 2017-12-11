@@ -31,6 +31,7 @@ struct ClientTalent {
     Type type{ UNINITIALIZED };
     std::shared_ptr<std::string> learnMessage{};
     const Texture *icon{ nullptr };
+    const Texture tooltip() const;
 
     const ClientSpell *spell{ nullptr };
     StatsMod stats{};

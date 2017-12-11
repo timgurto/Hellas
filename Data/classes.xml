@@ -3,19 +3,19 @@
 <class name="Soldier" >
     <tree name="Hoplite" >
         <tier>
-            <talent type="stats" name="Reflex Training"> <stats dodge="1" /> </talent>
-            <talent type="stats" name="Willpower Training"> <stats airResist="1" earthResist="1" fireResist="1" waterResist="1" /> </talent>
+            <talent type="stats" name="Train Reflex"> <stats dodge="1" /> </talent>
+            <talent type="stats" name="Train Willpower"> <stats airResist="1" earthResist="1" fireResist="1" waterResist="1" /> </talent>
         </tier>
         <tier>
             <talent type="spell" id="shieldBlock" />
-            <talent type="stats" name="Endurance Training"> <stats armor="1" /> </talent>
+            <talent type="stats" name="Train Endurance"> <stats armor="1" /> </talent>
             <!--talent type="spell" id="Menacing Strike" /-->
         </tier>
     </tree>
     <tree name="Skirmisher" >
         <tier>
-            <talent type="stats" name="Weapons Training"> <stats crit="1" /> </talent>
-            <talent type="stats" name="Strength Training"> <stats physicalDamage="2" /> </talent>
+            <talent type="stats" name="Train Weapons"> <stats crit="1" /> </talent>
+            <talent type="stats" name="Train Strength"> <stats physicalDamage="2" /> </talent>
         </tier>
         <tier>
             <!--talent type="spell" id="sprint" /-->
