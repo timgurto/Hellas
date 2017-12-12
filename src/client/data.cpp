@@ -421,37 +421,43 @@ void Client::loadData(const std::string &path){
                 for (auto tier : xr.getChildren("tier", tree)) {
 
                     for (auto talent : xr.getChildren("talent", tier)) {
-                        auto type = ""s;
-                        if (!xr.findAttr(talent, "type", type))
+                        auto t = ClientTalent{};
+
+                        auto typeName = ""s;
+                        if (!xr.findAttr(talent, "type", typeName))
                             continue;
 
-                        auto talentName = ""s;
-                        xr.findAttr(talent, "name", talentName);
+                        xr.findAttr(talent, "name", t.name);
 
-                        if (type == "spell") {
+                        if (typeName == "spell") {
+                            t.type = ClientTalent::SPELL;
+
                             auto spellID = ""s;
                             if (!xr.findAttr(talent, "id", spellID))
                                 continue;
-
                             auto it = _spells.find(spellID);
                             if (it == _spells.end())
                                 continue;
-                            const auto &spell = *it->second;
+                            t.spell = it->second;
 
-                            if (talentName.empty())
-                                talentName = spell.name();
+                            t.icon = &t.spell->icon();
 
-                            newClass.addSpell(talentName, treeName, currentTier, it->second);
+                            if (t.name.empty())
+                                t.name = t.spell->name();
 
-                        } else if (type == "stats") {
-                            if (talentName.empty())
+                        } else if (typeName == "stats") {
+                            t.type = ClientTalent::STATS;
+
+                            if (t.name.empty())
                                 continue;
                             auto stats = StatsMod{};
                             if (!xr.findStatsChild("stats", talent, stats))
                                 continue;
-
-                            newClass.addStats(talentName, treeName, currentTier, stats);
+                            t.stats = stats;
                         }
+
+                        t.generateLearnMessage();
+                        newClass.addTalentToTree(t, treeName, currentTier);
                     }
 
                     ++currentTier;

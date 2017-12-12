@@ -6,25 +6,10 @@ ClassInfo::ClassInfo(const Name &name) : _name(name), _trees{} {
     _image = { "Images/Humans/" + name + ".png", Color::MAGENTA };
 }
 
-void ClassInfo::addSpell(const ClientTalent::Name & talentName, const Tree::Name & treeName,
-        unsigned tier, const ClientSpell * spell) {
+void ClassInfo::addTalentToTree(const ClientTalent & talent, const Tree::Name & treeName,
+    Tree::Tier tier) {
     auto &tree = findTree(treeName);
-
-    auto t = ClientTalent{ talentName, ClientTalent::SPELL };
-    t.spell = spell;
-    t.icon = &spell->icon();
-
-    tree.talents[tier].push_back(t);
-}
-
-void ClassInfo::addStats(const ClientTalent::Name & talentName, const Tree::Name & treeName,
-        unsigned tier, const StatsMod & stats) {
-    auto &tree = findTree(treeName);
-
-    auto t = ClientTalent{ talentName, ClientTalent::STATS };
-    t.stats = stats;
-
-    tree.talents[tier].push_back(t);
+    tree.talents[tier].push_back(talent);
 }
 
 void ClassInfo::ensureTreeExists(const Name & name) {
@@ -44,13 +29,6 @@ Tree & ClassInfo::findTree(const Tree::Name & name) {
     }
     assert(false);
     return _trees.front();
-}
-
-ClientTalent::ClientTalent(const Name & talentName, Type type) :
-name(talentName),
-type(type){
-    auto &client = Client::instance();
-    learnMessage = std::make_shared<std::string>(Client::compileMessage(CL_TAKE_TALENT, talentName));
 }
 
 const Texture ClientTalent::tooltip() const {
@@ -75,6 +53,11 @@ const Texture ClientTalent::tooltip() const {
         assert(false);
         return {};
     }
+}
+
+void ClientTalent::generateLearnMessage() {
+    auto &client = Client::instance();
+    learnMessage = std::make_shared<std::string>(Client::compileMessage(CL_TAKE_TALENT, name));
 }
 
 size_t Tree::numTiers() const {

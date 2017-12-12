@@ -21,17 +21,15 @@ struct ClientTalent {
 
     using Name = std::string;
 
-    ClientTalent(const Name &talentName, Type type);
-
     bool operator< (const ClientTalent &rhs) const { return name < rhs.name; }
 
     Name name{};
-    Name tree{};
-    unsigned tier{ 0 };
     Type type{ UNINITIALIZED };
     std::shared_ptr<std::string> learnMessage{};
     const Texture *icon{ nullptr };
     const Texture tooltip() const;
+
+    void generateLearnMessage();
 
     const ClientSpell *spell{ nullptr };
     StatsMod stats{};
@@ -58,8 +56,7 @@ public:
     ClassInfo() {}
     ClassInfo(const Name &name);
 
-    void addSpell(const ClientTalent::Name &talentName, const Tree::Name &tree, unsigned tier, const ClientSpell *spell);
-    void addStats(const ClientTalent::Name &talentName, const Tree::Name &tree, unsigned tier, const StatsMod &stats);
+    void addTalentToTree(const ClientTalent &talent, const Tree::Name &tree, Tree::Tier tier);
     void ensureTreeExists(const Tree::Name &name);
     Tree &findTree(const Tree::Name &name);
 
