@@ -33,6 +33,7 @@ struct ClientTalent {
 
     const ClientSpell *spell{ nullptr };
     StatsMod stats{};
+    std::string flavourText{};
 };
 
 struct Tree {

@@ -27,6 +27,7 @@ Color
     Color::TOOLTIP_FONT,
     Color::TOOLTIP_BACKGROUND,
     Color::TOOLTIP_BORDER,
+    Color::FLAVOUR_TEXT,
 
     Color::ELEMENT_BACKGROUND,
     Color::ELEMENT_SHADOW_DARK,

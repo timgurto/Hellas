@@ -33,6 +33,7 @@ public:
         TOOLTIP_FONT,
         TOOLTIP_BACKGROUND,
         TOOLTIP_BORDER,
+        FLAVOUR_TEXT,
 
         ITEM_NAME,
         ITEM_STATS,

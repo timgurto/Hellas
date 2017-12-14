@@ -22,6 +22,7 @@ void ClientConfig::loadFromFile(const std::string &filename) {
     xr.findAttr(elem, "tooltipFont", Color::TOOLTIP_FONT);
     xr.findAttr(elem, "tooltipBackground", Color::TOOLTIP_BACKGROUND);
     xr.findAttr(elem, "tooltipBorder", Color::TOOLTIP_BORDER);
+    xr.findAttr(elem, "flavourText", Color::FLAVOUR_TEXT);
     xr.findAttr(elem, "elementBackground", Color::ELEMENT_BACKGROUND);
     xr.findAttr(elem, "elementShadowDark", Color::ELEMENT_SHADOW_DARK);
     xr.findAttr(elem, "elementShadowLight", Color::ELEMENT_SHADOW_LIGHT);

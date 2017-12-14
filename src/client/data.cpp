@@ -428,6 +428,7 @@ void Client::loadData(const std::string &path){
                             continue;
 
                         xr.findAttr(talent, "name", t.name);
+                        xr.findAttr(talent, "flavourText", t.flavourText);
 
                         if (typeName == "spell") {
                             t.type = ClientTalent::SPELL;

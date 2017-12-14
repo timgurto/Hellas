@@ -42,6 +42,12 @@ const Texture ClientTalent::tooltip() const {
         tb.addLine(name);
         tb.addGap();
 
+        if (!flavourText.empty()) {
+            tb.setColor(Color::FLAVOUR_TEXT);
+            tb.addLine(flavourText);
+            tb.addGap();
+        }
+
         tb.setColor(Color::ITEM_STATS);
         tb.addLine("Each level:");
         tb.addLines(stats.toStrings());
