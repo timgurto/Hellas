@@ -94,7 +94,7 @@ void Client::populateClassWindow() {
                     this->sendRawMessageStatic, learnMessageVoidPtr);
                 learnSpellButton->setTooltip(talent.tooltip());
                 if (talent.icon)
-                    learnSpellButton->addChild(new Picture(1, 1, *talent.icon));
+                    learnSpellButton->addChild(new Picture(1, 1, talent.icon));
 
                 tree.element->addChild(learnSpellButton);
 

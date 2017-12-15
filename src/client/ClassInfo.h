@@ -26,7 +26,7 @@ struct ClientTalent {
     Name name{};
     Type type{ UNINITIALIZED };
     std::shared_ptr<std::string> learnMessage{};
-    const Texture *icon{ nullptr };
+    Texture icon{};
     const Texture tooltip() const;
 
     void generateLearnMessage();

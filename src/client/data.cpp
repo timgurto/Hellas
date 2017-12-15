@@ -441,16 +441,18 @@ void Client::loadData(const std::string &path){
                                 continue;
                             t.spell = it->second;
 
-                            t.icon = &t.spell->icon();
+                            t.icon = t.spell->icon();
 
                             if (t.name.empty())
                                 t.name = t.spell->name();
 
                         } else if (typeName == "stats") {
-                            t.type = ClientTalent::STATS;
-
                             if (t.name.empty())
                                 continue;
+
+                            t.type = ClientTalent::STATS;
+                            t.icon = { "Images/Talents/"s + t.name + ".png"s };
+
                             auto stats = StatsMod{};
                             if (!xr.findStatsChild("stats", talent, stats))
                                 continue;
