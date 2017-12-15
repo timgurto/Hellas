@@ -823,7 +823,7 @@ const Texture &ClientObject::tooltip() const{
     tb.setColor(Color::ITEM_NAME);
     std::string title = ot.name();
     if (isDead())
-        title += " (ruins)";
+        title += classTag() == 'n' ? " (corpse)" : " (ruins)";
     else if (isBeingConstructed())
         title += " (under construction)";
     tb.addLine(title);
