@@ -265,6 +265,7 @@ void Client::loadData(const std::string &path){
             if (xr.findAttr(elem, "damageParticles", s)) cot->damageParticles(findParticleProfile(s));
             if (xr.findAttr(elem, "gatherReq", s)) cot->gatherReq(s);
             if (xr.findAttr(elem, "constructionReq", s)) cot->constructionReq(s);
+            if (xr.findAttr(elem, "constructionText", s)) cot->constructionText(s);
             MapRect r;
             if (xr.findRectChild("collisionRect", elem, r)) cot->collisionRect(r);
 

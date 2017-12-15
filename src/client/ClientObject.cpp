@@ -824,8 +824,11 @@ const Texture &ClientObject::tooltip() const{
     std::string title = ot.name();
     if (isDead())
         title += classTag() == 'n' ? " (corpse)" : " (ruins)";
-    else if (isBeingConstructed())
-        title += " (under construction)";
+    else if (isBeingConstructed()) {
+        auto constructionText =
+                ot.constructionText().empty() ? "under construction"s : ot.constructionText();
+        title += " ("s + constructionText + ")"s;
+    }
     tb.addLine(title);
 
     // Debug info

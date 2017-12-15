@@ -32,6 +32,7 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
     std::string _gatherReq; // An item thus tagged is required to gather this object.
     std::string _constructionReq;
     bool _canDeconstruct; // Whether these objects can be deconstructed into items
+    std::string _constructionText{}; // If present, replaces "under construction" when items needed.
     size_t _containerSlots;
     size_t _merchantSlots;
     MapRect _collisionRect;
@@ -73,6 +74,8 @@ public:
     void constructionReq(const std::string &req) { _constructionReq = req; }
     bool canDeconstruct() const { return _canDeconstruct; }
     void canDeconstruct(bool b) { _canDeconstruct = b; }
+    const std::string &constructionText() const { return _constructionText; }
+    void constructionText(const std::string &text) { _constructionText = text; }
     size_t containerSlots() const { return _containerSlots; }
     void containerSlots(size_t n) { _containerSlots = n; }
     size_t merchantSlots() const { return _merchantSlots; }

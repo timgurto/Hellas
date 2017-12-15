@@ -317,5 +317,5 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 349,Server crashes on first assert in updateLocation(),89,21,Bug,,TRUE,,
 350,Update window title when object type changes,5,1,Bug,,,,
 351,Allow users to drop items onto construction sites,3,21,Usability,,,,
-352,Allow custom 'under construction' text,5,2,Aesthetics,,,,
+352,Allow custom 'under construction' text,5,2,Aesthetics,,TRUE,,
 353,Apply permissions to tool-object usage,21,5,Bug,,,,
