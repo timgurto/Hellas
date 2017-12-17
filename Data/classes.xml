@@ -43,7 +43,7 @@
             <talent type="stats" name="Study Deeply"> <stats magicDamage="1" /> </talent>
         </tier>
         <tier>
-            <talent type="stats" name="Study the Zodiac" flavourText="Each of us is born under a constellation.  Studying their effects helps you to live more effectively."> <stats health="10" /> </talent>
+            <talent type="stats" name="Study the Zodiac" flavourText="Each of us is born under a constellation.  Studying their effects helps you to live in harmony."> <stats health="10" /> </talent>
             <talent type="spell" id="fireball" />
         </tier>
     </tree>
