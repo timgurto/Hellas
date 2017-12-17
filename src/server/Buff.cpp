@@ -1,4 +1,7 @@
+#include <cassert>
+
 #include "Buff.h"
+#include "Server.h"
 
 void BuffType::stats(const StatsMod & stats) {
     _type = STATS;
@@ -13,17 +16,32 @@ SpellEffect & BuffType::effect() {
 Buff::Buff(const BuffType & type, Entity & owner, Entity & caster):
 _type(type),
 _owner(owner),
-_caster(caster)
+_caster(caster),
+_timeRemaining(type.duration())
 {}
 
-void Buff::update(ms_t timeElapsed) const {
-    if (_type.tickTime() == 0)
-        return;
+void Buff::update(ms_t timeElapsed) {
+    assert(!_expired);
 
-    _timeSinceLastProc += timeElapsed;
-    auto shouldProc = _timeSinceLastProc > _type.tickTime();
-    if (shouldProc) {
-        _type.effect().execute(_caster, _owner);
-        _timeSinceLastProc -= _type.tickTime();
+    Server::debug()(toString(_timeRemaining));
+
+    auto ticks = _type.tickTime() > 0;
+    if (ticks) {
+        _timeSinceLastProc += timeElapsed;
+        auto shouldProc = _timeSinceLastProc > _type.tickTime();
+        if (shouldProc) {
+            _type.effect().execute(_caster, _owner);
+            _timeSinceLastProc -= _type.tickTime();
+        }
     }
+
+    auto expires = _timeRemaining > 0;
+    if (!expires)
+        return;
+    if (timeElapsed >= _timeRemaining) {
+        _expired = true;
+        return;
+    }
+    _timeRemaining -= timeElapsed;
 }
+

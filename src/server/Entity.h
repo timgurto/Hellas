@@ -81,6 +81,7 @@ public:
     void applyDebuff(const BuffType &type, Entity &caster);
     virtual void sendBuffMsg(const Buff::ID &buff) const;
     virtual void sendDebuffMsg(const Buff::ID &buff) const;
+    void updateBuffs(ms_t timeElapsed);
 
     const Stats &stats() const { return _stats; }
     void stats(const Stats &stats) { _stats = stats; }

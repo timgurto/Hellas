@@ -1,18 +1,18 @@
 <root>
 
-<buff id="airDot" name="Socratic questioning">
+<buff id="airDot" name="Socratic questioning" duration="12">
     <function name="doDirectDamage" i1="2" tickTime="1500" />
 </buff>
-<buff id="bleed" name="Bleeding">
+<buff id="bleed" name="Bleeding" duration="12">
     <function name="doDirectDamage" i1="2" tickTime="1500" />
 </buff>
-<buff id="majorEnergy" name="Blessed by Apollo">
+<buff id="majorEnergy" name="Blessed by Apollo" duration="1800">
     <stats energy="100" />
 </buff>
-<buff id="poison" name="Poisoned">
+<buff id="poison" name="Poisoned" duration="12">
     <function name="doDirectDamage" i1="2" tickTime="1500" />
 </buff>
-<buff id="shieldBlock" name="Shield raised">
+<buff id="shieldBlock" name="Shield raised" duration="8">
     <stats block="100" />
 </buff>
 

@@ -677,6 +677,11 @@ void Server::loadData(const std::string &path){
                 newBuff.stats(stats);
             }
 
+            auto durationInSeconds = 0;
+            if (xr.findAttr(elem, "duration", durationInSeconds)) {
+                newBuff.duration(durationInSeconds * 1000);
+            }
+
             auto functionElem = xr.findChild("function", elem);
             if (functionElem) {
                 auto functionName = ""s;

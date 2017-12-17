@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cassert>
 
 #include "Entity.h"
@@ -130,10 +131,7 @@ void Entity::healBy(Hitpoints amount) {
 void Entity::update(ms_t timeElapsed){
     regen(timeElapsed);
 
-    for (auto &buff : _buffs)
-        buff.update(timeElapsed);
-    for (auto &debuff : _debuffs)
-        debuff.update(timeElapsed);
+    updateBuffs(timeElapsed);
 
     // Attacking
     if (_attackTimer > timeElapsed)
@@ -244,6 +242,20 @@ void Entity::update(ms_t timeElapsed){
             server.sendMessage(userToInform->socket(), msgCode, args);
         }
     }
+}
+
+void Entity::updateBuffs(ms_t timeElapsed) {
+    for (auto &buffConst : _buffs) {
+        auto &buff = const_cast<Buff &>(buffConst);
+        buff.update(timeElapsed);
+    }
+    erase_if(_buffs, [](const Buff &b) { return b.hasExpired(); });
+
+    for (auto &debuffConst : _debuffs) {
+        auto &debuff = const_cast<Buff &>(debuffConst);
+        debuff.update(timeElapsed);
+    }
+    erase_if(_debuffs, [](const Buff &b) { return b.hasExpired(); });
 }
 
 void Entity::onDeath(){
