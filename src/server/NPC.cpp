@@ -85,10 +85,10 @@ void NPC::onDeath(){
     Entity::onDeath();
 }
 
-void NPC::onAttackedBy(Entity &attacker) {
-    _recentAttacker = &attacker;
+void NPC::onAttackedBy(Entity &attacker, Hitpoints damage) {
+    _threatTable.addThreat(attacker, damage);
 
-    Entity::onAttackedBy(attacker);
+    Entity::onAttackedBy(attacker, damage);
 }
 
 void NPC::processAI(ms_t timeElapsed){
@@ -96,10 +96,19 @@ void NPC::processAI(ms_t timeElapsed){
         VIEW_RANGE = 50_px,
         ATTACK_RANGE = 5_px,
         // Assumption: this is farther than any ranged attack/spell can reach.
-        CONTINUE_ATTACKING_RANGE = Podes{ 35 }.toPixels(); 
+        CONTINUE_ATTACKING_RANGE = Podes{ 35 }.toPixels();
 
-    double distToTarget = (target() == nullptr) ? 0 :
-            distance(collisionRect(), target()->collisionRect());
+
+    auto distToTarget = target() ? distance(collisionRect(), target()->collisionRect()) : 0;
+
+    // Become aware of nearby users
+    for (User *user : Server::_instance->findUsersInArea(location(), VIEW_RANGE)){
+        if (distance(collisionRect(), user->collisionRect()) <= VIEW_RANGE){
+            _threatTable.makeAwareOf(*user);
+        }
+    }
+
+    target(_threatTable.getTarget());
 
     // Transition if necessary
     switch(_state){
@@ -108,64 +117,51 @@ void NPC::processAI(ms_t timeElapsed){
             break;
 
         // React to recent attacker
-        if (_recentAttacker != nullptr) {
-            target(_recentAttacker);
-            _state = CHASE;
-            _recentAttacker = nullptr;
-            break;
+        if (target()) {
+            if (distToTarget > ATTACK_RANGE)
+                _state = CHASE;
+            else
+                _state = ATTACK;
         }
 
-        // Look for nearby users to attack
-        for (User *user : Server::_instance->findUsersInArea(location(), VIEW_RANGE)){
-            if (distance(collisionRect(), user->collisionRect()) <= VIEW_RANGE){
-                target(dynamic_cast<Entity *>(user));
-                _state = CHASE;
-                break;
-            }
-        }
         break;
 
     case CHASE:
-        // React to recent attacker
-        if (_recentAttacker != nullptr) {
-            target(_recentAttacker);
-            _state = CHASE;
-            _recentAttacker = nullptr;
-            break;
-        }
-
         // Target has disappeared
-        if (target() == nullptr) {
+        if (!target()) {
             _state = IDLE;
             break;
         }
-        
+
+        // Target is dead
+        if (target()->isDead()) {
+            _state = IDLE;
+            break;
+        }
+
         // Target has run out of range: give up
         if (distToTarget > CONTINUE_ATTACKING_RANGE) {
             _state = IDLE;
-            target(nullptr);
             break;
         }
         
-        // Target is enough for me to attack
+        // Target is close enough to attack
         if (distToTarget <= ATTACK_RANGE) {
             _state = ATTACK;
-        }
-        break;
-
-    case ATTACK:
-        // React to recent attacker
-        if (_recentAttacker != nullptr) {
-            if (target() != _recentAttacker) {
-                target(_recentAttacker);
-                _state = CHASE;
-            }
-            _recentAttacker = nullptr;
             break;
         }
 
+        break;
+
+    case ATTACK:
         // Target has disappeared
         if (target() == nullptr) {
+            _state = IDLE;
+            break;
+        }
+
+        // Target is dead
+        if (target()->isDead()) {
             _state = IDLE;
             break;
         }
@@ -176,17 +172,13 @@ void NPC::processAI(ms_t timeElapsed){
             break;
         }
 
-        // Target is dead
-        if (target()->health() == 0){
-            _state = IDLE;
-            target(nullptr);
-        }
         break;
     }
 
     // Act
     switch(_state){
     case IDLE:
+        target(nullptr);
         break;
 
     case CHASE:

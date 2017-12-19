@@ -100,7 +100,7 @@ public:
     virtual void onHealthChange() {}; // Probably alerting relevant users.
     virtual void onEnergyChange() {}; // Probably alerting relevant users.
     virtual void onDeath(); // Anything that needs to happen upon death.
-    virtual void onAttackedBy(Entity &attacker); // If the entity needs to react to an attack.
+    virtual void onAttackedBy(Entity &attacker, Hitpoints damage); // If the entity needs to react to an attack.
     virtual void onKilled(const Entity &victim) {} // Upon this entity killing another
 
     virtual void describeSelfToNewWatcher(const User &watcher) const {}

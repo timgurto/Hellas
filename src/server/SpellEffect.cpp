@@ -58,7 +58,7 @@ CombatResult SpellEffect::doDirectDamage(const SpellEffect &effect, Entity &cast
     }
 
     target.reduceHealth(damage);
-    target.onAttackedBy(caster);
+    target.onAttackedBy(caster, damage);
 
     return outcome;
 }

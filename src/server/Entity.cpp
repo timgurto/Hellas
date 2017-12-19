@@ -212,7 +212,7 @@ void Entity::update(ms_t timeElapsed){
         pTarget->reduceHealth(damage);
 
         // Give target opportunity to react
-        pTarget->onAttackedBy(*this);
+        pTarget->onAttackedBy(*this, damage);
 
         // Alert nearby clients
         MessageCode msgCode;
@@ -265,7 +265,7 @@ void Entity::onDeath(){
         startCorpseTimer();
 }
 
-void Entity::onAttackedBy(Entity & attacker) {
+void Entity::onAttackedBy(Entity &attacker, Hitpoints damage) {
     if (isDead())
         attacker.onKilled(*this);
 }

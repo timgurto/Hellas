@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include "NPCType.h"
+#include "ThreatTable.h"
 #include "objects/Object.h"
 #include "../Point.h"
 
@@ -14,8 +15,8 @@ class NPC : public Entity {
         ATTACK,
     };
     State _state;
-    Entity *_recentAttacker = nullptr;
     Level _level{ 0 };
+    ThreatTable _threatTable;
 
 public:
     NPC(const NPCType *type, const MapPoint &loc); // Generates a new serial
@@ -30,7 +31,7 @@ public:
     void updateStats() override;
     void onHealthChange() override;
     void onDeath() override;
-    void onAttackedBy(Entity &attacker) override;
+    void onAttackedBy(Entity &attacker, Hitpoints damage) override;
 
     char classTag() const override { return 'n'; }
 

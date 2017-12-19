@@ -149,6 +149,7 @@
     <ClCompile Include="src\client\classWindow.cpp" />
     <ClCompile Include="src\server\SpellEffect.cpp" />
     <ClCompile Include="src\server\Buff.cpp" />
+    <ClCompile Include="src\server\ThreatTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -265,5 +266,6 @@
     <ClInclude Include="src\server\SpellEffect.h" />
     <ClInclude Include="src\server\Buff.h" />
     <ClInclude Include="src\server\combat.h" />
+    <ClInclude Include="src\server\ThreatTable.h" />
   </ItemGroup>
 </Project>
