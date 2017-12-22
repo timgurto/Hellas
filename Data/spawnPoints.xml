@@ -15,6 +15,7 @@
 <spawnPoint type="clay" quantity="5" radius="1000" respawnTime="60000" x="5000" y="11336" />
 <spawnPoint type="wildFlax" quantity="20" radius="1500" respawnTime="60000" x="8448" y="2928" />
 <spawnPoint type="goat" quantity="40" radius="1000" respawnTime="60000" x="9048" y="2440" />
+<spawnPoint type="handCart" quantity="200" radius="1000" respawnTime="60000" x="9048" y="2440" />
 <spawnPoint type="boar" quantity="20" radius="1500" respawnTime="60000" x="7264" y="6456" />
 <spawnPoint type="boar" quantity="20" radius="1000" respawnTime="60000" x="7880" y="4448" />
 <spawnPoint type="boar" quantity="20" radius="1000" respawnTime="60000" x="9040" y="5112" />

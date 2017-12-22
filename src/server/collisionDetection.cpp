@@ -94,8 +94,9 @@ bool Server::isLocationValid(const MapRect &rect, const TerrainList &allowedTerr
         xLimit = _mapX * Server::TILE_W - Server::TILE_W/2,
         yLimit = _mapY * Server::TILE_H;
     if (rect.x < 0 || right > xLimit ||
-        rect.y < 0 || bottom > yLimit)
-            return false;
+        rect.y < 0 || bottom > yLimit) {
+        return false;
+    }
 
     // Terrain
     auto terrainTypesCovered = nearbyTerrainTypes(rect);
@@ -103,18 +104,8 @@ bool Server::isLocationValid(const MapRect &rect, const TerrainList &allowedTerr
         if (!allowedTerrain.allows(terrainType))
             return false;
 
-    // Users
-    MapPoint rectCenter(rect.x + rect.w / 2, rect.y + rect.h / 2);
-    for (const auto *user : findUsersInArea(rectCenter)) {
-        if (user == thisEntity)
-            continue;
-        if (user->isDriving()) // The vehicle he is driving will be checked instead.
-            continue;
-        if (rect.collides(user->collisionRect()))
-            return false;
-    }
-
     // Objects
+    MapPoint rectCenter(rect.x + rect.w / 2, rect.y + rect.h / 2);
     auto superChunk = getCollisionSuperChunk(rectCenter);
     for (CollisionChunk *chunk : superChunk)
         for (const auto &pair : chunk->entities()) {
@@ -128,6 +119,9 @@ bool Server::isLocationValid(const MapRect &rect, const TerrainList &allowedTerr
             /*if (thisObject != nullptr && thisObject->classTag() == 'u' &&
                 (pObj->classTag() == 'u' || pObj->classTag() == 'n'))
                     continue;*/
+
+            if ((pEnt->classTag() == 'u') && dynamic_cast<const User*>(pEnt)->isDriving())
+                continue;
 
             if (rect.collides(pEnt->collisionRect()))
                 return false;
