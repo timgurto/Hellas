@@ -44,6 +44,7 @@ public:
 
     void update(ms_t timeElapsed);
     void processAI(ms_t timeElapsed);
+    void forgetAbout(const Entity &entity);
 };
 
 #endif

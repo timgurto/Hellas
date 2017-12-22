@@ -9,6 +9,7 @@ using Threat = int;
 class ThreatTable {
 public:
     void makeAwareOf(Entity &entity);
+    void forgetAbout(const Entity &entity);
     void addThreat(Entity &entity, Threat amount);
     Entity *getTarget(); // nullptr if table is empty
 

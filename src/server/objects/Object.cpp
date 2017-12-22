@@ -153,6 +153,7 @@ void Object::setType(const ObjectType *type, bool skipConstruction){
         type->yield().instantiate(_contents);
     }
     
+    // TODO skip these two when setType() is called from constructor, for efficiency.
     server->forceAllToUntarget(*this);
     removeAllGatheringUsers();
 

@@ -494,14 +494,15 @@ void Server::forceAllToUntarget(const Entity &target, const User *userToExclude)
         }
     }
 
-    // Fix NPCs targeting the entity
+    // Fix NPCs targeting/aware of the entity
     for (const Entity *pEnt : _entities) {
         Entity &entity = * const_cast<Entity *>(pEnt);
-        if (entity.classTag() == 'n'){
-            NPC &npc = dynamic_cast<NPC &>(entity);
-            if (npc.target() == &target)
-                npc.target(nullptr);
-        }
+        if (entity.classTag() != 'n')
+            continue;
+        NPC &npc = dynamic_cast<NPC &>(entity);
+        npc.forgetAbout(target);
+        if (npc.target() && npc.target() == &target)
+            npc.target(nullptr);
     }
 }
 

@@ -98,8 +98,7 @@ void NPC::processAI(ms_t timeElapsed){
         // Assumption: this is farther than any ranged attack/spell can reach.
         CONTINUE_ATTACKING_RANGE = Podes{ 35 }.toPixels();
 
-
-    auto distToTarget = target() ? distance(collisionRect(), target()->collisionRect()) : 0;
+    target(nullptr);
 
     // Become aware of nearby users
     for (User *user : Server::_instance->findUsersInArea(location(), VIEW_RANGE)){
@@ -107,8 +106,9 @@ void NPC::processAI(ms_t timeElapsed){
             _threatTable.makeAwareOf(*user);
         }
     }
-
     target(_threatTable.getTarget());
+
+    auto distToTarget = target() ? distance(collisionRect(), target()->collisionRect()) : 0;
 
     // Transition if necessary
     switch(_state){
@@ -191,6 +191,10 @@ void NPC::processAI(ms_t timeElapsed){
     }
       
     Entity::update(timeElapsed);
+}
+
+void NPC::forgetAbout(const Entity & entity) {
+    _threatTable.forgetAbout(entity);
 }
 
 void NPC::sendInfoToClient(const User &targetUser) const {
