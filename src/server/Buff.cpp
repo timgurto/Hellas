@@ -16,9 +16,14 @@ SpellEffect & BuffType::effect() {
 Buff::Buff(const BuffType & type, Entity & owner, Entity & caster):
 _type(type),
 _owner(owner),
-_caster(caster),
+_caster(&caster),
 _timeRemaining(type.duration())
 {}
+
+void Buff::clearCasterIfEqualTo(const Entity & casterToRemove) const {
+    if (_caster == &casterToRemove)
+        _caster = nullptr;
+}
 
 void Buff::update(ms_t timeElapsed) {
     assert(!_expired);
@@ -30,7 +35,11 @@ void Buff::update(ms_t timeElapsed) {
         _timeSinceLastProc += timeElapsed;
         auto shouldProc = _timeSinceLastProc > _type.tickTime();
         if (shouldProc) {
-            _type.effect().execute(_caster, _owner);
+            // A null caster circumvents deleted-memory errors, but for now makes any on-tick
+            // actions ineffectual.  At some point casters should become references again, allowing
+            // debuff effects from offline/dead entities.
+            if (_caster)
+                _type.effect().execute(*_caster, _owner);
             _timeSinceLastProc -= _type.tickTime();
         }
     }

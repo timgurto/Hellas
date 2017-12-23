@@ -59,12 +59,14 @@ public:
 
     void applyStatsTo(Stats &stats) const { stats &= _type.stats(); }
 
+    void clearCasterIfEqualTo(const Entity &casterToRemove) const;
+
     void update(ms_t timeElapsed);
 
 private:
     const BuffType &_type;
     Entity &_owner;
-    Entity &_caster;
+    mutable Entity *_caster; // Always initialized, but can become null if caster disappears
 
     ms_t _timeSinceLastProc{ 0 };
     ms_t _timeRemaining{ 0 };

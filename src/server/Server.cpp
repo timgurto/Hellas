@@ -494,9 +494,16 @@ void Server::forceAllToUntarget(const Entity &target, const User *userToExclude)
         }
     }
 
-    // Fix NPCs targeting/aware of the entity
     for (const Entity *pEnt : _entities) {
         Entity &entity = * const_cast<Entity *>(pEnt);
+
+        // Fix buffs cast by entity
+        for (auto &buff : entity.buffs())
+            buff.clearCasterIfEqualTo(target);
+        for (auto &debuff : entity.debuffs())
+            debuff.clearCasterIfEqualTo(target);
+
+        // Fix NPCs targeting/aware of the entity
         if (entity.classTag() != 'n')
             continue;
         NPC &npc = dynamic_cast<NPC &>(entity);
@@ -504,6 +511,8 @@ void Server::forceAllToUntarget(const Entity &target, const User *userToExclude)
         if (npc.target() && npc.target() == &target)
             npc.target(nullptr);
     }
+
+
 }
 
 void Server::removeEntity(Entity &ent, const User *userToExclude){
