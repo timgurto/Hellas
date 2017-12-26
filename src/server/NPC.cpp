@@ -57,6 +57,10 @@ CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type, Spel
     return HIT;
 }
 
+void NPC::scaleThreatAgainst(Entity & target, double multiplier) {
+    _threatTable.scaleThreat(target, multiplier);
+}
+
 void NPC::onHealthChange(){
     const Server &server = *Server::_instance;
     for (const User *user: server.findUsersInArea(location()))

@@ -3,7 +3,8 @@
 enum CombatType {
     DAMAGE,
     HEAL, // Can crit
-    DEBUFF // Can't crit
+    DEBUFF, // Can't crit
+    THREAT_MOD, // Can't block/dodge
 };
 
 enum CombatResult {

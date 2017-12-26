@@ -282,7 +282,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 312,Armour-class stat,5,8,Feature,,TRUE,,2
 313,NPCs have threat tables to dictate target,13,34,Feature,,TRUE,,2
 314,Threat % stat,2,3,Feature,313,,,2
-315,Threat-drop spell,3,5,Feature,313,,,2
+315,Threat-drop spell,3,5,Feature,313,TRUE,,2
 316,Taunt spell,3,5,Feature,313,,,2
 317,Fire-elemental-damage stat,2,8,Feature,262,,,2
 318,Water/earth/air-elemental-damage stats,2,2,Feature,317,,,2

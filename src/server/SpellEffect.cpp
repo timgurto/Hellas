@@ -12,14 +12,16 @@ SpellEffect::FunctionMap SpellEffect::functionMap = {
     { "doDirectDamage", doDirectDamage },
     { "heal", heal },
     { "buff", buff },
-    { "debuff", debuff }
+    { "debuff", debuff },
+    { "scaleThreat", scaleThreat }
 };
 
 SpellEffect::FlagMap SpellEffect::aggressionMap = {
     { doDirectDamage, true },
     { heal, false },
     { buff, false },
-    { debuff, true }
+    { debuff, false },
+    { scaleThreat, false }
 };
 
 bool SpellEffect::isAggressive() const {
@@ -74,6 +76,21 @@ CombatResult SpellEffect::heal(const SpellEffect &effect, Entity &caster, Entity
 
     auto amountToHeal = chooseRandomSpellMagnitude(rawAmountToHeal);
     target.healBy(amountToHeal);
+
+    return outcome;
+}
+
+CombatResult SpellEffect::scaleThreat(const SpellEffect &effect, Entity &caster, Entity &target) {
+    auto outcome = caster.generateHitAgainst(target, THREAT_MOD, effect._school, effect._range);
+    if (outcome == MISS)
+        return outcome;
+
+    auto multiplier = effect._args.d1;
+
+    if (outcome == CRIT)
+        multiplier = multiplier * multiplier;
+
+    target.scaleThreatAgainst(caster, multiplier);
 
     return outcome;
 }

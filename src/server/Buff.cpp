@@ -53,4 +53,3 @@ void Buff::update(ms_t timeElapsed) {
     }
     _timeRemaining -= timeElapsed;
 }
-

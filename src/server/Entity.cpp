@@ -90,6 +90,8 @@ bool Entity::combatTypeCanHaveOutcome(CombatType type, CombatResult outcome, Spe
         return false;
     if (outcome == BLOCK && school.isMagic())
         return false;
+    if (type == THREAT_MOD && (outcome == BLOCK || outcome == DODGE))
+        return false;
 
     return true;
 }

@@ -11,6 +11,7 @@ public:
     void makeAwareOf(Entity &entity);
     void forgetAbout(const Entity &entity);
     void addThreat(Entity &entity, Threat amount);
+    void scaleThreat(Entity &entity, double multiplier);
     Entity *getTarget(); // nullptr if table is empty
 
 private:

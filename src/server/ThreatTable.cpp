@@ -23,6 +23,14 @@ void ThreatTable::addThreat(Entity & entity, Threat amount) {
         it->second += amount;
 }
 
+void ThreatTable::scaleThreat(Entity & entity, double multiplier) {
+    auto it = _container.find(&entity);
+    if (it == _container.end())
+        return;
+    else
+        it->second = toInt(it->second * multiplier);
+}
+
 Entity * ThreatTable::getTarget() {
     auto highestThreat = -1;
     Entity* target = nullptr;

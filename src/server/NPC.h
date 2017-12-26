@@ -27,6 +27,7 @@ public:
     ms_t timeToRemainAsCorpse() const override { return 600000; } // 10 minutes
     bool canBeAttackedBy(const User &user) const override { return true; }
     CombatResult generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const override;
+    void scaleThreatAgainst(Entity &target, double multiplier) override;
 
     void updateStats() override;
     void onHealthChange() override;

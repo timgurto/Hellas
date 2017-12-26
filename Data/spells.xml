@@ -32,6 +32,10 @@ Functions:
     <targets enemy=1 />
     <function name="debuff" s1="airDot" />
 </spell>
+<spell id="threatDropPhilosopher" name="Constant Flux" cost=10 range=30 school="water" >
+    <targets enemy=1 />
+    <function name="scaleThreat" d1="0.75" />
+</spell>
 
 <!-- Magus -->
 <spell id="fireball" name="Fireball" cost=10 range=30 school="fire" >

@@ -10,7 +10,8 @@ class Spell;
 class SpellEffect {
 public:
     struct Args {
-        int i1 = 0;
+        int i1{ 0 };
+        double d1{ 0 };
         std::string s1{};
     };
 
@@ -49,6 +50,7 @@ private:
 
     static CombatResult doDirectDamage(const SpellEffect &effect, Entity &caster, Entity &target);
     static CombatResult heal(const SpellEffect &effect, Entity &caster, Entity &target);
+    static CombatResult scaleThreat(const SpellEffect &effect, Entity &caster, Entity &target);
     static CombatResult buff(const SpellEffect &effect, Entity &caster, Entity &target);
     static CombatResult debuff(const SpellEffect &effect, Entity &caster, Entity &target);
 };

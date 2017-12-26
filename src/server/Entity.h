@@ -73,6 +73,7 @@ public:
         static bool combatTypeCanHaveOutcome(CombatType type, CombatResult outcome, SpellSchool school, px_t range);
     virtual void sendGotHitMessageTo(const User &user) const;
     void regen(ms_t timeElapsed);
+    virtual void scaleThreatAgainst(Entity &target, double multiplier) {}
 
     //Buffs &buffs() { return _buffs; }
     const Buffs &buffs() const { return _buffs; }

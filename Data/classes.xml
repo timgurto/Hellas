@@ -31,7 +31,7 @@
         </tier>
         <tier>
             <talent type="spell" id="airDot" />
-            <!--talent type="spell" id="Constant Flux" /-->
+            <talent type="spell" id="threatDropPhilosopher" />
         </tier>
     </tree>
 </class>
