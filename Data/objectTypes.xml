@@ -37,7 +37,7 @@
     <strength item="tin" quantity="5" />
 </objectType>
 
-<objectType id="copper" name="Copper deposit"
+<!--objectType id="copper" name="Copper deposit"
     xDrawOffset="-14" yDrawOffset="-11"
     canGather="1" gatherTime="3000" gatherReq="mining"
     isFlat="1"
@@ -45,7 +45,7 @@
     <yield id="copper" initialMean="2.5" initialSD="1" initialMin="1" />
     <yield id="rock" initialMean="1" initialSD="2" />
     <strength item="copper" quantity="5" />
-</objectType>
+</objectType-->
 
 <objectType id="oven" name="Oven"
     xDrawOffset="-14" yDrawOffset="-17" >
@@ -117,11 +117,11 @@
     <container slots="4" />
     <strength item="clay" quantity="3" />
 </objectType>
-<objectType id="largePot" name="Large Pot"
+<!--objectType id="largePot" name="Large Pot"
     deconstructs="largePot" deconstructionTime="1000" >
     <container slots="10" />
     <strength item="clay" quantity="5" />
-</objectType>
+</objectType-->
 
 <objectType id="handCart" name="Trade Cart"
     xDrawOffset="-13" yDrawOffset="-16"
@@ -326,7 +326,7 @@
     <strength item="tinTube" quantity="2" chance="0.5" />
 </objectType>
 
-<objectType id="grindstone" name="Grindstone"
+<!--objectType id="grindstone" name="Grindstone"
     constructionTime="0" 
     xDrawOffset="-11" yDrawOffset="-21">>
     <collisionRect x="-11" y="-5" w="22" h="11" />
@@ -338,9 +338,9 @@
     <tag name="grinding2" />
     <unlockedBy recipe="tinTube" chance="0.5" />
     <strength item="tinTube" quantity="2" />
-</objectType>
+</objectType-->
 
-<objectType id="copperAnvil" name="Copper Anvil"
+<!--objectType id="copperAnvil" name="Copper Anvil"
     constructionTime="0" constructionReq="hammering"
     xDrawOffset="-11" yDrawOffset="-18" >
     <collisionRect x="-11" y="-5" w="24" h="10" />
@@ -349,7 +349,7 @@
     <unlockedBy recipe="copperBar" chance="0.1" />
     <unlockedBy recipe="copperHammer" />
     <strength item="copperBar" quantity="20" />
-</objectType>
+</objectType-->
 
 <objectType id="tannin" name="Pot of Tannin"
     constructionTime="1000"

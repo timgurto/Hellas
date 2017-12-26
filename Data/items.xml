@@ -14,13 +14,13 @@
 
 <item id="log"          name="Log"                               stackSize="5"  strength="4" />
 <item id="tin"          name="Tin Ore"                           stackSize="10" strength="4" />
-<item id="copper"       name="Copper Ore"                        stackSize="10" strength="5" />
+<!--item id="copper"       name="Copper Ore"                        stackSize="10" strength="5" /-->
 <item id="crudeClay"    name="Crude Clay"                        stackSize="10" strength="3" />
 <item id="clay"         name="Clay"                              stackSize="10" strength="5" />
 <item id="tinBar"       name="Tin Bar"        sounds="metalBar"  stackSize="10" />
-<item id="copperBar"    name="Copper Bar"     sounds="metalBar"  stackSize="10" strength="10"/>
-<item id="tinRing"      name="Tin Ringlet"                       stackSize="1000" />
-<item id="copperRing"   name="Copper Ringlet"                    stackSize="1000" />
+<!--item id="copperBar"    name="Copper Bar"     sounds="metalBar"  stackSize="10" strength="10"/-->
+<!--item id="tinRing"      name="Tin Ringlet"                       stackSize="1000" /-->
+<!--item id="copperRing"   name="Copper Ringlet"                    stackSize="1000" /-->
 <item id="charcoal"     name="Charcoal"                          stackSize="10" strength="3"/>
 <item id="fig"          name="Fig"                               stackSize="10" />
 <item id="flax"         name="Flax"                              stackSize="10" strength="1" />
@@ -30,13 +30,13 @@
 <item id="leather"      name="Leather"        sounds="leather"   stackSize="10" />
 <item id="leatherScale" name="Leather Scale"  sounds="leather"   stackSize="50" />
 <item id="tinScale"     name="Tin Scale"      sounds="metalTool" stackSize="50" />
-<item id="copperScale"  name="Copper Scale"   sounds="metalTool" stackSize="50" />
+<!--item id="copperScale"  name="Copper Scale"   sounds="metalTool" stackSize="50" /-->
 <item id="rope"         name="Rope"                              stackSize="10" strength="2" />
 <item id="brick"        name="Brick"          sounds="brick"     stackSize="10" strength="6" />
 
 <item id="smallPot"     name="Small Pot"      sounds="ceramic"   constructs="smallPot" />
 <item id="mediumPot"    name="Medium Pot"     sounds="ceramic"   constructs="mediumPot" />
-<item id="largePot"     name="Large Pot"      sounds="ceramic"   constructs="largePot" />
+<!--item id="largePot"     name="Large Pot"      sounds="ceramic"   constructs="largePot" /-->
 <item id="elutriator"   name="Elutriator"     sounds="ceramic"   constructs="elutriator" />
 <item id="tannin"       name="Tannin"         sounds="ceramic"   constructs="tannin" />
 <item id="woodenStatue" name="Wooden Statue"                     constructs="woodenStatue" />
@@ -48,13 +48,13 @@
 
 <item id="tinTube"      name="Tin Tube"     strength="4"/>
 <item id="pole1"		name="Crude Pole" />
-<item id="pole2"		name="Pole" />
+<!--item id="pole2"		name="Pole" /-->
 <item id="water"        name="Water Vessel"   sounds="ceramic"  returnsOnConstruction="smallPot" />
 
 <item id="pickMould"    name="Pickaxe Mould"  sounds="ceramic" >   <tag name="pickMould" />  </item>
 <item id="knifeMould"   name="Knife Mould"    sounds="ceramic" >   <tag name="knifeMould" /> </item>
 <item id="axeMould"     name="Axe Mould"      sounds="ceramic" >   <tag name="axeMould" />   </item>
-<item id="hammerMould"  name="Hammer Mould"   sounds="ceramic" >   <tag name="hammerMould" />   </item>
+<!--item id="hammerMould"  name="Hammer Mould"   sounds="ceramic" >   <tag name="hammerMould" />   </item-->
 <item id="tubeMould"    name="Tube Mould"     sounds="ceramic" >   <tag name="tubeMould" />  </item>
 <item id="sawMould"     name="Saw Mould"      sounds="ceramic" >   <tag name="sawMould" />   </item>
 <item id="scaleMould"   name="Scale Mould"    sounds="ceramic" >   <tag name="scaleMould" /> </item>
@@ -74,7 +74,7 @@
 </item>
 
 <item id="bone" name="Bone" stackSize="10" gearSlot="6" sounds="bone" >
-    <stats attack="3" attackTime="1.5" />
+    <stats attack="3" attackTime="1.35" />
 	<offset x="-6" y="-15" />
 </item>
 
@@ -83,74 +83,74 @@
 		<item id="tinSaw" name="Tin Saw" sounds="metalTool" >
 			<tag name="carpentry" />
 		</item>
-		<item id="copperSaw" name="Copper Saw" sounds="metalTool" >
+		<!--item id="copperSaw" name="Copper Saw" sounds="metalTool" >
 			<tag name="carpentry" />
-		</item>
+		</item-->
 
 	<!-- Pickaxes -->
-		<item id="tinPick" name="Tin Pickaxe" sounds="metalTool" >
+		<!--item id="tinPick" name="Tin Pickaxe" sounds="metalTool" >
 			<tag name="mining" />
 		</item>
 		<item id="copperPick" name="Copper Pickaxe" sounds="metalTool" >
 			<tag name="mining" />
-		</item>
+		</item-->
 
 	<!-- Knives -->
 		<item id="stoneKnife" name="Sharpened Stone" gearSlot="6" >
 			<tag name="carving" />
 			<tag name="harvesting" />
 			<offset x="-4" y="-1" />
-			<stats attack="2" />
+			<stats attack="1" attackTime="0.93" />
 		</item>
 		<item id="tinKnife" name="Tin Knife" gearSlot="6" >
 			<tag name="carving" />
 			<tag name="harvesting" />
 			<offset x="-6" y="-3" />
-			<stats attack="4" attackTime="0.8" />
+			<stats attack="2" attackTime="0.79" />
 		</item>
-		<item id="copperKnife" name="Copper Knife" gearSlot="6" >
+		<!--item id="copperKnife" name="Copper Knife" gearSlot="6" >
 			<tag name="carving" />
 			<tag name="harvesting" />
 			<offset x="-6" y="-3" />
 			<stats attack="5" attackTime="0.625" />
-		</item>
+		</item-->
 
 	<!-- Axes -->
 		<item id="stoneAxe" name="Stone Axe" gearSlot="6" >
 			<tag name="woodcutting" />
-			<stats attack="2" />
+			<stats attack="1" />
 			<offset x="-5" y="1" />
 		</item>
 		<item id="tinAxe" name="Tin Axe" gearSlot="6" sounds="metalTool" >
 			<tag name="woodcutting" />
-			<stats attack="5" />
+			<stats attack="4" />
 		</item>
-		<item id="copperAxe" name="Copper Axe" gearSlot="6" sounds="metalTool" >
+		<!--item id="copperAxe" name="Copper Axe" gearSlot="6" sounds="metalTool" >
 			<tag name="woodcutting" />
 			<stats attack="8" />
-		</item>
+		</item-->
 
 	<!-- Hammers -->
-		<item id="copperHammer" name="Copper Hammer" gearSlot="6" sounds="metalTool" >
+		<!--item id="copperHammer" name="Copper Hammer" gearSlot="6" sounds="metalTool" >
 			<tag name="hammering" />
 			<stats attack="14" attackTime="1.75" />
 			<offset x="-8" y="-1" />
-		</item>
+		</item-->
 
 <!-- Weapons -->
 	<!-- Spears -->
 		<item id="tinSpear" name="Light Spear" gearSlot="6" >
 			<stats attack="4" crit="1" />
 		</item>
-		<item id="copperSpear" name="Spear" gearSlot="6" >
+		<!--item id="copperSpear" name="Spear" gearSlot="6" >
 			<stats attack="7" crit="1" />
-		</item>
+		</item-->
 
 	<!-- Swords -->
-		<item id="copperSword" name="Short Sword" gearSlot="6" >
+		<!--item id="copperSword" name="Short Sword" gearSlot="6" >
 			<stats attack="7" hit="1" />
             <offset x="-6" y="-8" />
-		</item>
+		</item-->
 
 <!-- Armor -->
 	<!-- Head -->
@@ -158,47 +158,47 @@
 		<stats armor="1" dodge="1" />
 		<offset x="-3" y="-4" />
 	</item>
-	<item id="copperHelmet" name="Copper Helmet" gearSlot="0" >
+	<!--item id="copperHelmet" name="Copper Helmet" gearSlot="0" >
 		<stats armor="3" health="5" />
 		<offset x="-3" y="-5" />
-	</item>
+	</item-->
 
 	<!-- Shoulders -->
 		<item id="hide" name="Animal Hide" gearSlot="3" sounds="leather" >
-			<stats armor="1" />
+			<stats critResist="1" />
 			<offset x="-4" y="-1" />
 		</item>
 
 	<!-- Body -->
 		<!-- Lamellar -->
 			<item id="tinLamellar" name="Tin Lamellar" gearSlot="2" sounds="mailArmor" >
-				<stats armor="3" health="3" />
+				<stats armor="2" health="9" />
 				<offset x="-6" y="-4" />
 			</item>
-			<item id="copperLamellar" name="Copper Lamellar" gearSlot="2" sounds="mailArmor" >
+			<!--item id="copperLamellar" name="Copper Lamellar" gearSlot="2" sounds="mailArmor" >
 				<stats armor="4" health="13" />
-			</item>
+			</item-->
 
 		<!-- Hauberk -->
-			<item id="tinHauberk" name="Tin Hauberk" gearSlot="2" sounds="mailArmor" >
+			<!--item id="tinHauberk" name="Tin Hauberk" gearSlot="2" sounds="mailArmor" >
 				<stats armor="3" block="1" />
-			</item>
-			<item id="copperHauberk" name="Copper Hauberk" gearSlot="2" sounds="mailArmor" >
+			</item-->
+			<!--item id="copperHauberk" name="Copper Hauberk" gearSlot="2" sounds="mailArmor" >
 				<stats armor="4" block="4" />
-			</item>
+			</item-->
 
 		<!-- Cuirass -->
 			<item id="linothorax" name="Linothorax Armor" gearSlot="2" >
-				<stats armor="2" critResist="1" />
+				<stats armor="1" critResist="1" />
 			</item>
-			<item id="copperCuirass" name="Copper Cuirass" gearSlot="2" >
+			<!--item id="copperCuirass" name="Copper Cuirass" gearSlot="2" >
 				<stats armor="4" critResist="1" />
                 <offset x="-3" y="-4c" />
-			</item>
+			</item-->
 
 		<!-- Leather -->
 			<item id="leatherLamellar" name="Leather Lamellar" gearSlot="2" sounds="leather" >
-				<stats armor="2" dodge="1" />
+				<stats armor="1" dodge="2" />
 				<offset x="-6" y="-4" />
 			</item>
 
@@ -214,24 +214,24 @@
 		<stats speed="1.01" />
         <offset x="-1" y="-5" />
 	</item>
-	<item id="copperGreaves" name="Copper Greaves" gearSlot="5" >
+	<!--item id="copperGreaves" name="Copper Greaves" gearSlot="5" >
 		<stats armor="2" hps="1" />
         <offset x="-2" y="-10" />
-	</item>
+	</item-->
 
 	<!-- Left hand -->
 	<item id="leatherShield" name="Leather Shield" gearSlot="7" >
-		<stats armor="2" block="3" blockValue="3" />
+		<stats armor="2" block="4" blockValue="3" />
 		<offset x="-4" y="-10" />
         <tag name="shield" />
 	</item>
-	<item id="copperShield" name="Buckler" gearSlot="7" >
+	<!--item id="copperShield" name="Buckler" gearSlot="7" >
 		<stats armor="3" block="5" blockValue="5" />
         <tag name="shield" />
-	</item>
+	</item-->
 
     <item id="horn" name="Horn" gearSlot="7" >
-		<stats hps="2" eps="1" />
+		<stats eps="1" />
 		<offset x="0" y="-3" />
     </item>
 
