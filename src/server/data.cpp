@@ -644,6 +644,7 @@ void Server::loadData(const std::string &path){
                 auto args = SpellEffect::Args{};
                 xr.findAttr(functionElem, "i1", args.i1);
                 xr.findAttr(functionElem, "s1", args.s1);
+                xr.findAttr(functionElem, "d1", args.d1);
 
                 newSpell->effect().args(args);
             }
