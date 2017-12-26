@@ -54,5 +54,13 @@ std::string ClientSpell::createEffectDescription() const {
     else if (_effectName == "heal")
         oss << "Restore " << _effectArgs.i1 << " health to target.";
 
+    else if (_effectName == "scaleThreat") {
+        auto scalar = _effectArgs.d1;
+        if (scalar < 1.0)
+            oss << "Reduce your threat against target by " << toInt((1.0 - scalar) * 100.0) << "%.";
+        else
+            oss << "Increase your threat against target by " << toInt((scalar - 1.0) * 100.0) << "%.";
+    }
+
     return oss.str();
 }

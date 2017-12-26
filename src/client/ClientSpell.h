@@ -13,7 +13,8 @@ class SoundProfile;
 class ClientSpell {
 public:
     struct Args {
-        int i1 = 0;
+        int i1{ 0 };
+        double d1{ 0 };
         std::string s1{};
     };
 
