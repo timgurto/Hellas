@@ -64,7 +64,7 @@
             <talent type="stats" name="Transmute Skin" flavourText="Alter your skin, making it thicker and more resilient."> <stats armor="1" /> </talent>
         </tier>
         <tier>
-            <!--talent type="spell" id="Disappear" /-->
+            <talent type="spell" id="threatDropAlchemist" />
             <talent type="stats" name="Eternal Life" flavourText="The quest for an elixir of life comes ever closer to fruition."> <stats hps="1" /> </talent>
             <!--talent type="spell" id="Transmute Metal" /-->
         </tier>

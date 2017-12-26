@@ -52,6 +52,10 @@ Functions:
 </spell>
 
 <!-- Alchemist -->
+<spell id="threatDropAlchemist" name="Disappear" cost=10 range=30 school="air" >
+    <targets enemy=1 />
+    <function name="scaleThreat" d1="0.75" />
+</spell>
 
 <!-- Priest -->
 <spell id="priestEconHeal" name="Prayer" cost=12 range=25 >
