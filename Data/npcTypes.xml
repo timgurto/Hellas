@@ -6,8 +6,10 @@
     xDrawOffset="-17" yDrawOffset="-28" >
     <collisionRect x="-15" y="-4" w="31" h="7" />
     <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
-    <loot id="fat" chance="0.02" />
+    <loot id="fat" chance="0.05" />
     <loot id="horn" chance="0.05" />
+    <loot id="knucklebones" chance="0.02" />
+    <loot id="entrails" chance="0.1" />
 </npcType>
 
 <npcType
@@ -17,7 +19,9 @@
     sounds = "pig" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
     <loot id="hide" chance="0.5" />
-    <loot id="fat" chance="0.02" />
+    <loot id="fat" chance="0.05" />
+    <loot id="entrails" chance="0.1" />
+    <loot id="knucklebones" chance="0.02" />
     <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
 </npcType>
 
