@@ -2,7 +2,7 @@
 
 <npcType
     id="goat" name="Goat"
-	maxHealth="20" attack="4" attackTime="1000" level="1"
+	level="1" maxHealth="22" attack="4" attackTime="1000"
     xDrawOffset="-17" yDrawOffset="-28" >
     <collisionRect x="-15" y="-4" w="31" h="7" />
     <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
@@ -14,7 +14,7 @@
 
 <npcType
     id="boar" name="Wild boar"
-	maxHealth="17" attack="5" attackTime="1000" level="2"
+	level="5" maxHealth="26" attack="5" attackTime="1000"
     xDrawOffset="-11" yDrawOffset="-13"
     sounds = "pig" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
@@ -24,5 +24,31 @@
     <loot id="knucklebones" chance="0.02" />
     <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
 </npcType>
+
+<npcType
+    id="waterNymph" name="Water Nymph"
+	level="9" maxHealth="34" attack="4" attackTime="1000"
+    xDrawOffset="-8" yDrawOffset="-40" >
+    <collisionRect x="-5" y="-2" w="9" h="4" />
+</npcType>
+<npcType
+    id="airNymph" name="Air Nymph"
+	level="13" maxHealth="40" attack="5" attackTime="1000" range="25"
+    xDrawOffset="-8" yDrawOffset="-40" >
+    <collisionRect x="-5" y="-2" w="9" h="4" />
+</npcType>
+<npcType
+    id="earthNymph" name="Earth Nymph"
+	level="17" maxHealth="52" attack="8" attackTime="1000" range="25"
+    xDrawOffset="-8" yDrawOffset="-40" >
+    <collisionRect x="-5" y="-2" w="9" h="4" />
+</npcType>
+<npcType
+    id="fireNymph" name="Fire Nymph"
+	level="20" maxHealth="57" attack="7" attackTime="1000" range="25"
+    xDrawOffset="-8" yDrawOffset="-40" >
+    <collisionRect x="-5" y="-2" w="9" h="4" />
+</npcType>
+
 
 </root>
