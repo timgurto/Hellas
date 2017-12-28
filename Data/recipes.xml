@@ -124,8 +124,9 @@
         <material id="crudeClay" quantity="2" />
         <tool class="pottery1" />
         <unlockedBy construction="lathe" />
-        <unlockedBy recipe="pole1" chance="0.2" />
+        <unlockedBy recipe="pole1" />
         <unlockedBy recipe="tinKnife" chance="0.1" />
+        <unlockedBy recipe="tinBar" chance="0.05" />
     </recipe>
     <!--recipe id="hammerMould"
         time="12000" >
@@ -316,6 +317,97 @@
         <material id="entrails" />
         <unlockedBy recipe="lumber" chance="0.1" />
         <unlockedBy item="entrails" chance="0.1" />
+    </recipe>
+    <recipe
+        id="tinJavelin" time="4000" >
+        <material id="tinBar" quantity="5" />
+        <material id="stick" quantity="5" />
+        <tool class="smelting1" />
+        <tool class="spearMould" />
+        <unlockedBy recipe="spearMould" />
+    </recipe>
+    
+<!-- Magic weapons -->
+    <recipe
+        id="airWand" time="10000" >
+        <material id="stick" />
+        <material id="airEssence" quantity="2" />
+        <unlockedBy item="airEssence" chance="0.1" />
+        <unlockedBy item="earthWand" chance="0.1" />
+        <unlockedBy item="fireWand" chance="0.1" />
+        <unlockedBy item="waterWand" chance="0.1" />
+    </recipe>
+    <recipe
+        id="earthWand" time="10000" >
+        <material id="stick" />
+        <material id="earthEssence" quantity="2" />
+        <unlockedBy item="earthEssence" chance="0.1" />
+        <unlockedBy item="airWand" chance="0.1" />
+        <unlockedBy item="fireWand" chance="0.1" />
+        <unlockedBy item="waterWand" chance="0.1" />
+    </recipe>
+    <recipe
+        id="fireWand" time="10000" >
+        <material id="stick" />
+        <material id="fireEssence" quantity="2" />
+        <unlockedBy item="fireEssence" chance="0.1" />
+        <unlockedBy item="airWand" chance="0.1" />
+        <unlockedBy item="earthWand" chance="0.1" />
+        <unlockedBy item="waterWand" chance="0.1" />
+    </recipe>
+    <recipe
+        id="waterWand" time="10000" >
+        <material id="stick" />
+        <material id="waterEssence" quantity="2" />
+        <unlockedBy item="waterEssence" chance="0.1" />
+        <unlockedBy item="airWand" chance="0.1" />
+        <unlockedBy item="earthWand" chance="0.1" />
+        <unlockedBy item="fireWand" chance="0.1" />
+    </recipe>
+    
+    <recipe
+        id="airStaff" time="10000" >
+        <material id="pole1" />
+        <material id="airEssence" quantity="5" />
+        <tool class="wand" />
+        <unlockedBy recipe="pole1" chance="0.05" />
+        <unlockedBy recipe="airWand" chance="0.1" />
+        <unlockedBy recipe="earthStaff" chance="0.1" />
+        <unlockedBy recipe="fireStaff" chance="0.1" />
+        <unlockedBy recipe="waterStaff" chance="0.1" />
+    </recipe>
+    <recipe
+        id="earthStaff" time="10000" >
+        <material id="pole1" />
+        <material id="earthEssence" quantity="5" />
+        <tool class="wand" />
+        <unlockedBy recipe="pole1" chance="0.05" />
+        <unlockedBy recipe="earthWand" chance="0.1" />
+        <unlockedBy recipe="airStaff" chance="0.1" />
+        <unlockedBy recipe="fireStaff" chance="0.1" />
+        <unlockedBy recipe="waterStaff" chance="0.1" />
+    </recipe>
+    <recipe
+        id="fireStaff" time="10000" >
+        <material id="pole1" />
+        <material id="fireEssence" quantity="5" />
+        <tool class="wand" />
+        <unlockedBy recipe="pole1" chance="0.05" />
+        <unlockedBy recipe="fireWand" chance="0.1" />
+        <unlockedBy recipe="airStaff" chance="0.1" />
+        <unlockedBy recipe="earthStaff" chance="0.1" />
+        <unlockedBy recipe="waterStaff" chance="0.1" />
+    </recipe>
+    <recipe
+        id="waterStaff" time="10000" >
+        <material id="pole1" />
+        <material id="waterEssence" quantity="5" />
+        <tool class="wand" />
+        <unlockedBy recipe="pole1" chance="0.05" />
+        <unlockedBy recipe="waterWand" chance="0.1" />
+        <unlockedBy recipe="airStaff" chance="0.1" />
+        <unlockedBy recipe="earthStaff" chance="0.1" />
+        <unlockedBy recipe="fireStaff" chance="0.1" />
     </recipe>
 
 <!--recipe id="copperCuirass"

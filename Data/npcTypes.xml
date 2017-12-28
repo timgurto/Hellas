@@ -30,24 +30,28 @@
 	level="9" maxHealth="34" attack="4" attackTime="1000"
     xDrawOffset="-8" yDrawOffset="-40" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
+    <loot id="waterEssence" > <normal mean="0.8" sd="0.5" /> </loot>
 </npcType>
 <npcType
     id="airNymph" name="Air Nymph"
 	level="13" maxHealth="40" attack="5" attackTime="1000" range="25"
     xDrawOffset="-8" yDrawOffset="-40" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
+    <loot id="airEssence" > <normal mean="0.8" sd="0.5" /> </loot>
 </npcType>
 <npcType
     id="earthNymph" name="Earth Nymph"
 	level="17" maxHealth="52" attack="8" attackTime="1000" range="25"
     xDrawOffset="-8" yDrawOffset="-40" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
+    <loot id="earthEssence" > <normal mean="0.8" sd="0.5" /> </loot>
 </npcType>
 <npcType
     id="fireNymph" name="Fire Nymph"
 	level="20" maxHealth="57" attack="7" attackTime="1000" range="25"
     xDrawOffset="-8" yDrawOffset="-40" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
+    <loot id="fireEssence" > <normal mean="0.8" sd="0.5" /> </loot>
 </npcType>
 
 

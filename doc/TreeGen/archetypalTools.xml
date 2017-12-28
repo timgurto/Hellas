@@ -19,6 +19,7 @@
 <tool id="tanning"           archetype="object_tannin" />
 <tool id="leatherStretching" archetype="object_stretchingFrame" />
 <tool id="woodTurning"       archetype="object_lathe" />
+<tool id="wand"              archetype="item_fire_wand" />
 
 <tool id="axeMould"     archetype="item_axeMould" />
 <tool id="hammerMould"  archetype="item_hammerMould" />
@@ -41,6 +42,32 @@
 <blacklist parent="object_brickWallNS" child="object_brickWallEW" />
 <blacklist parent="object_palisadeEW" child="object_palisadeNS" />
 <blacklist parent="object_palisadeNS" child="object_palisadeEW" />
+
+<blacklist parent="item_airWand" child="item_earthWand" />
+<blacklist parent="item_airWand" child="item_fireWand" />
+<blacklist parent="item_airWand" child="item_waterWand" />
+<blacklist parent="item_earthWand" child="item_airWand" />
+<blacklist parent="item_earthWand" child="item_fireWand" />
+<blacklist parent="item_earthWand" child="item_waterWand" />
+<blacklist parent="item_fireWand" child="item_airWand" />
+<blacklist parent="item_fireWand" child="item_earthWand" />
+<blacklist parent="item_fireWand" child="item_waterWand" />
+<blacklist parent="item_waterWand" child="item_airWand" />
+<blacklist parent="item_waterWand" child="item_earthWand" />
+<blacklist parent="item_waterWand" child="item_fireWand" />
+
+<blacklist parent="item_airStaff" child="item_earthStaff" />
+<blacklist parent="item_airStaff" child="item_fireStaff" />
+<blacklist parent="item_airStaff" child="item_waterStaff" />
+<blacklist parent="item_earthStaff" child="item_airStaff" />
+<blacklist parent="item_earthStaff" child="item_fireStaff" />
+<blacklist parent="item_earthStaff" child="item_waterStaff" />
+<blacklist parent="item_fireStaff" child="item_airStaff" />
+<blacklist parent="item_fireStaff" child="item_earthStaff" />
+<blacklist parent="item_fireStaff" child="item_waterStaff" />
+<blacklist parent="item_waterStaff" child="item_airStaff" />
+<blacklist parent="item_waterStaff" child="item_earthStaff" />
+<blacklist parent="item_waterStaff" child="item_fireStaff" />
 
 <extra parent="item_leatherGloves" child="item_tinBar" />
 <extra parent="item_tinBar"        child="item_tinSaw" />

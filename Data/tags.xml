@@ -32,5 +32,6 @@
 
 <tag id="waterSource"   name="Water Source" />
 <tag id="anvil1"        name="Metalworking" />
+<tag id="wand"          name="Wand" />
 
 </root>

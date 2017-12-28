@@ -26,14 +26,18 @@
 <item id="flax"         name="Flax"                              stackSize="10" strength="1" />
 <item id="linenThread"  name="Linen Thread"                      stackSize="10" />
 <item id="linenCloth"   name="Linen Cloth"                       stackSize="10" />
-<item id="fat"          name="Animal Fat"                        stackSize="10" />
-<item id="entrails"     name="Entrails"                          stackSize="10" />
 <item id="leather"      name="Leather"        sounds="leather"   stackSize="10" />
 <item id="leatherScale" name="Leather Scale"  sounds="leather"   stackSize="50" />
 <item id="tinScale"     name="Tin Scale"      sounds="metalTool" stackSize="50" />
 <!--item id="copperScale"  name="Copper Scale"   sounds="metalTool" stackSize="50" /-->
 <item id="rope"         name="Rope"                              stackSize="10" strength="2" />
 <item id="brick"        name="Brick"          sounds="brick"     stackSize="10" strength="6" />
+<item id="fat"          name="Animal Fat"                        stackSize="10" />
+<item id="entrails"     name="Entrails"                          stackSize="10" />
+<item id="airEssence"   name="Air Essence"                       stackSize="10" />
+<item id="earthEssence" name="Earth Essence"                     stackSize="10" />
+<item id="fireEssence"  name="Fire Essence"                      stackSize="10" />
+<item id="waterEssence" name="Water Essence"                     stackSize="10" />
 
 <item id="smallPot"     name="Small Pot"      sounds="ceramic"   constructs="smallPot" />
 <item id="mediumPot"    name="Medium Pot"     sounds="ceramic"   constructs="mediumPot" />
@@ -165,6 +169,44 @@
 		<item id="tinJavelin" name="Light Javelin" gearSlot="6" >
             <weapon range="25" />
             <stats attack="1" crit="1"/>
+		</item>
+        
+    <!-- Magic -->
+		<item id="airWand" name="Wand of Air" gearSlot="6" >
+            <tag name="wand" />
+            <weapon range="25" school="air" />
+            <stats magicDamage="1" />
+		</item>
+		<item id="earthWand" name="Wand of Earth" gearSlot="6" >
+            <tag name="wand" />
+            <weapon range="25" school="earth" />
+            <stats magicDamage="1" />
+		</item>
+		<item id="fireWand" name="Wand of Fire" gearSlot="6" >
+            <tag name="wand" />
+            <weapon range="25" school="fire" />
+            <stats magicDamage="1" />
+		</item>
+		<item id="waterWand" name="Wand of Water" gearSlot="6" >
+            <tag name="wand" />
+            <weapon range="25" school="water" />
+            <stats magicDamage="1" />
+		</item>
+		<item id="airStaff" name="Staff of Air" gearSlot="6" >
+            <weapon range="25" school="air" />
+            <stats magicDamage="3" />
+		</item>
+		<item id="earthStaff" name="Staff of Earth" gearSlot="6" >
+            <weapon range="25" school="earth" />
+            <stats magicDamage="3" />
+		</item>
+		<item id="fireStaff" name="Staff of Fire" gearSlot="6" >
+            <weapon range="25" school="fire" />
+            <stats magicDamage="3" />
+		</item>
+		<item id="waterStaff" name="Staff of Water" gearSlot="6" >
+            <weapon range="25" school="water" />
+            <stats magicDamage="3" />
 		</item>
 
 <!-- Armor -->
