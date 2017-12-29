@@ -640,7 +640,6 @@ Private Sub mnuSaveSpawnPoints_Click()
     For i = 1 To UBound(spawnPoints)
         With spawnPoints(i)
             Print #1, "<spawnPoint";
-            writeAttr "index", i
             writeAttr "type", objectTypes(.type).id
             writeAttr "quantity", .quantity
             writeAttr "radius", .radius
