@@ -45,28 +45,28 @@ private:
     ms_t _duration{ 0 }; // 0: Never ends
 };
 
-// An instance of a buff type, on a specific target
+// An instance of a buff type, on a specific target, from a specific caster
 class Buff {
 public:
     using ID = std::string;
 
     Buff(const BuffType &type, Entity &owner, Entity &caster);
 
-    const ID &type() const { return _type.id(); }
+    const ID &type() const { return _type->id(); }
     bool hasExpired() const { return _expired; }
 
-    bool operator<(const Buff &rhs) const { return &_type < &rhs._type; }
+    bool operator==(const Buff &rhs) const { return _type == rhs._type; }
 
-    void applyStatsTo(Stats &stats) const { stats &= _type.stats(); }
+    void applyStatsTo(Stats &stats) const { stats &= _type->stats(); }
 
     void clearCasterIfEqualTo(const Entity &casterToRemove) const;
 
     void update(ms_t timeElapsed);
 
 private:
-    const BuffType &_type;
-    Entity &_owner;
-    mutable Entity *_caster; // Always initialized, but can become null if caster disappears
+    const BuffType *_type = nullptr;
+    Entity *_owner = nullptr;
+    mutable Entity *_caster = nullptr; // Always initialized, but can become null if caster disappears
 
     ms_t _timeSinceLastProc{ 0 };
     ms_t _timeRemaining{ 0 };
@@ -75,4 +75,4 @@ private:
 };
 
 using BuffTypes = std::map<Buff::ID, BuffType>;
-using Buffs = std::set<Buff>;
+using Buffs = std::vector<Buff>;

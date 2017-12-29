@@ -111,15 +111,4 @@ T max(const T &lhs, const T &rhs) {
 
 std::string msAsTimeDisplay(ms_t t);
 
-template<class V, class P>
-void erase_if(std::set<V>& s, P p) {
-    auto it = s.begin();
-    while (true) {
-        it = std::find_if(it, s.end(), p);
-        if (it == s.end())
-            break;
-        it = s.erase(it);
-    }
-}
-
 #endif

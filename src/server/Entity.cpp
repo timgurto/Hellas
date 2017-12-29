@@ -247,17 +247,20 @@ void Entity::update(ms_t timeElapsed){
 }
 
 void Entity::updateBuffs(ms_t timeElapsed) {
-    for (auto &buffConst : _buffs) {
-        auto &buff = const_cast<Buff &>(buffConst);
-        buff.update(timeElapsed);
+    for (auto i = 0; i != _buffs.size(); ) {
+        _buffs[i].update(timeElapsed);
+        if (_buffs[i].hasExpired())
+            _buffs.erase(_buffs.begin() + i);
+        else
+            ++i;
     }
-    erase_if(_buffs, [](const Buff &b) { return b.hasExpired(); });
-
-    for (auto &debuffConst : _debuffs) {
-        auto &debuff = const_cast<Buff &>(debuffConst);
-        debuff.update(timeElapsed);
+    for (auto i = 0; i != _debuffs.size(); ) {
+        _debuffs[i].update(timeElapsed);
+        if (_debuffs[i].hasExpired())
+            _debuffs.erase(_debuffs.begin() + i);
+        else
+            ++i;
     }
-    erase_if(_debuffs, [](const Buff &b) { return b.hasExpired(); });
 }
 
 void Entity::onDeath(){
@@ -288,9 +291,13 @@ void Entity::removeWatcher(const std::string &username){
 
 void Entity::applyBuff(const BuffType & type, Entity &caster) {
     auto newBuff = Buff{ type, *this, caster };
-    if (_buffs.find(newBuff) != _buffs.end())
-        return;
-    _buffs.insert(newBuff);
+
+    // Check for duplicates
+    for (auto &buff : _buffs)
+        if (buff == newBuff)
+            return;
+
+    _buffs.push_back(newBuff);
     updateStats();
 
     sendBuffMsg(type.id());
@@ -298,9 +305,13 @@ void Entity::applyBuff(const BuffType & type, Entity &caster) {
 
 void Entity::applyDebuff(const BuffType & type, Entity &caster) {
     auto newDebuff = Buff{ type, *this, caster };
-    if (_debuffs.find(newDebuff) != _debuffs.end())
-        return;
-    _debuffs.insert(newDebuff);
+
+    // Check for duplicates
+    for (auto &debuff : _debuffs)
+        if (debuff == newDebuff)
+            return;
+
+    _debuffs.push_back(newDebuff);
     updateStats();
 
     sendDebuffMsg(type.id());
