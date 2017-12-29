@@ -565,10 +565,26 @@ void Server::gatherObject(size_t serial, User &user){
 
 void Server::spawnInitialObjects(){
     // From spawners
+    auto timeOfLastReport = SDL_GetTicks();
+
+    auto numSpawners = _spawners.size();
+    auto i = 0;
     for (auto &spawner: _spawners){
         assert(spawner.type() != nullptr);
         for (size_t i = 0; i != spawner.quantity(); ++i)
             spawner.spawn();
+        ++i;
+
+        const auto REPORTING_TIME = 500;
+        auto currentTime = SDL_GetTicks();
+        if (currentTime - timeOfLastReport >= REPORTING_TIME) {
+            timeOfLastReport = currentTime;
+            _debug << "Loading spawners: "
+                << i << "/" << numSpawners
+                << " (" << 100 * i / numSpawners << "%)"
+                << Log::endl;
+        }
+
     }
 }
 

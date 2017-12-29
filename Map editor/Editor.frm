@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.OCX"
 Begin VB.Form frmEditor 
    AutoRedraw      =   -1  'True
    Caption         =   "Form1"
@@ -130,7 +130,7 @@ Begin VB.Form frmEditor
          Width           =   1575
       End
    End
-   Begin MSComctlLib.TabStrip tabs 
+   Begin ComctlLib.TabStrip tabs 
       Height          =   375
       Left            =   0
       TabIndex        =   2
@@ -141,46 +141,26 @@ Begin VB.Form frmEditor
       MultiRow        =   -1  'True
       Style           =   1
       ImageList       =   "tabImages"
-      _Version        =   393216
-      BeginProperty Tabs {1EFB6598-857C-11D1-B16A-00C0F0283628} 
+      _Version        =   327682
+      BeginProperty Tabs {0713E432-850A-101B-AFC0-4210102A8DA7} 
          NumTabs         =   2
-         BeginProperty Tab1 {1EFB659A-857C-11D1-B16A-00C0F0283628} 
+         BeginProperty Tab1 {0713F341-850A-101B-AFC0-4210102A8DA7} 
             Caption         =   "Terrain"
             Key             =   "tabTerrain"
+            Object.Tag             =   ""
             ImageVarType    =   2
             ImageIndex      =   1
          EndProperty
-         BeginProperty Tab2 {1EFB659A-857C-11D1-B16A-00C0F0283628} 
+         BeginProperty Tab2 {0713F341-850A-101B-AFC0-4210102A8DA7} 
             Caption         =   "Spawn points"
             Key             =   "tabSpawn"
+            Object.Tag             =   ""
             ImageVarType    =   2
             ImageIndex      =   2
          EndProperty
       EndProperty
    End
-   Begin MSComctlLib.ImageList tabImages 
-      Left            =   18720
-      Top             =   15240
-      _ExtentX        =   1005
-      _ExtentY        =   1005
-      BackColor       =   -2147483643
-      ImageWidth      =   16
-      ImageHeight     =   16
-      MaskColor       =   12632256
-      _Version        =   393216
-      BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
-         NumListImages   =   2
-         BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Editor.frx":0000
-            Key             =   ""
-         EndProperty
-         BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Editor.frx":0352
-            Key             =   ""
-         EndProperty
-      EndProperty
-   End
-   Begin MSComctlLib.StatusBar statusBar 
+   Begin ComctlLib.StatusBar statusBar 
       Align           =   2  'Align Bottom
       Height          =   255
       Left            =   0
@@ -189,19 +169,26 @@ Begin VB.Form frmEditor
       Width           =   22590
       _ExtentX        =   39846
       _ExtentY        =   450
-      _Version        =   393216
-      BeginProperty Panels {8E3867A5-8586-11D1-B16A-00C0F0283628} 
+      SimpleText      =   ""
+      _Version        =   327682
+      BeginProperty Panels {0713E89E-850A-101B-AFC0-4210102A8DA7} 
          NumPanels       =   3
-         BeginProperty Panel1 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
+         BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             Object.Width           =   1764
             MinWidth        =   1764
-            Picture         =   "Editor.frx":06A4
+            TextSave        =   ""
+            Key             =   ""
+            Object.Tag             =   ""
          EndProperty
-         BeginProperty Panel2 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
-            Picture         =   "Editor.frx":09F6
+         BeginProperty Panel2 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
+            TextSave        =   ""
+            Key             =   ""
+            Object.Tag             =   ""
          EndProperty
-         BeginProperty Panel3 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
-            Picture         =   "Editor.frx":0D48
+         BeginProperty Panel3 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
+            TextSave        =   ""
+            Key             =   ""
+            Object.Tag             =   ""
          EndProperty
       EndProperty
    End
@@ -217,6 +204,28 @@ Begin VB.Form frmEditor
       TabIndex        =   0
       Top             =   13320
       Width           =   2655
+   End
+   Begin ComctlLib.ImageList tabImages 
+      Left            =   18720
+      Top             =   15240
+      _ExtentX        =   1005
+      _ExtentY        =   1005
+      BackColor       =   -2147483643
+      ImageWidth      =   16
+      ImageHeight     =   16
+      MaskColor       =   12632256
+      _Version        =   327682
+      BeginProperty Images {0713E8C2-850A-101B-AFC0-4210102A8DA7} 
+         NumListImages   =   2
+         BeginProperty ListImage1 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "Editor.frx":0000
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage2 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "Editor.frx":005E
+            Key             =   ""
+         EndProperty
+      EndProperty
    End
    Begin VB.Menu mnuLoad 
       Caption         =   "&Load"

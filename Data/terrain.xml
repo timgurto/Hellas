@@ -74,19 +74,62 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
 <list id="sticks" >
     <allow id="normal" />
     <allow id="fertile" />
+    <allow id="plains" />
+    <allow id="plainsFertile" />
+    <allow id="forest" />
+    <allow id="forestFertile" />
+    <allow id="forestRocky" />
+    <allow id="rich" />
+    <allow id="richFertile" />
+    <allow id="swampFertile" />
+    <allow id="beachCoast" />
+    <allow id="beach" />
+    <allow id="ruinsFertile" />
 </list>
 
 <list id="rocks" >
     <allow id="normal" />
     <allow id="rocky" />
+    <allow id="plains" />
+    <allow id="plainsRocky" />
+    <allow id="forest" />
+    <allow id="forestRocky" />
+    <allow id="rich" />
+    <allow id="richRocky" />
+    <allow id="snow" />
+    <allow id="snowRocky" />
+    <allow id="desert" />
+    <allow id="desertRocky" />
+    <allow id="beach" />
+    <allow id="beachRocky" />
+    <allow id="ruins" />
+    <allow id="ruinsRocky" />
+    <allow id="caveRocky" />
+    <allow id="volcanoRocky" />
 </list>
 
 <list id="rocky" >
     <allow id="rocky" />
+    <allow id="plainsRocky" />
+    <allow id="forestRocky" />
+    <allow id="richRocky" />
+    <allow id="snowRocky" />
+    <allow id="desertRocky" />
+    <allow id="beachRocky" />
+    <allow id="ruinsRocky" />
+    <allow id="caveRocky" />
+    <allow id="volcanoRocky" />
 </list>
 
 <list id="fertile" >
     <allow id="fertile" />
+    <allow id="plainsFertile" />
+    <allow id="forestFertile" />
+    <allow id="richFertile" />
+    <allow id="swampFertile" />
+    <allow id="nileFertile" />
+    <allow id="ruinsFertile" />
+    <allow id="volcanoFertile" />
 </list>
 
 </root>
