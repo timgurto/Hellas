@@ -265,6 +265,7 @@
         <!-- Cloth -->
 			<item id="linenChiton" name="Linen Chiton" gearSlot="2" >
 				<stats energy="17" />
+				<offset x="-6" y="-3" />
 			</item>
 
 	<!-- Hands -->
