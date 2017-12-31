@@ -333,36 +333,36 @@
         <material id="stick" />
         <material id="airEssence" quantity="2" />
         <unlockedBy item="airEssence" chance="0.1" />
-        <unlockedBy item="earthWand" chance="0.1" />
-        <unlockedBy item="fireWand" chance="0.1" />
-        <unlockedBy item="waterWand" chance="0.1" />
+        <unlockedBy recipe="earthWand" chance="0.1" />
+        <unlockedBy recipe="fireWand" chance="0.1" />
+        <unlockedBy recipe="waterWand" chance="0.1" />
     </recipe>
     <recipe
         id="earthWand" time="10000" >
         <material id="stick" />
         <material id="earthEssence" quantity="2" />
         <unlockedBy item="earthEssence" chance="0.1" />
-        <unlockedBy item="airWand" chance="0.1" />
-        <unlockedBy item="fireWand" chance="0.1" />
-        <unlockedBy item="waterWand" chance="0.1" />
+        <unlockedBy recipe="airWand" chance="0.1" />
+        <unlockedBy recipe="fireWand" chance="0.1" />
+        <unlockedBy recipe="waterWand" chance="0.1" />
     </recipe>
     <recipe
         id="fireWand" time="10000" >
         <material id="stick" />
         <material id="fireEssence" quantity="2" />
         <unlockedBy item="fireEssence" chance="0.1" />
-        <unlockedBy item="airWand" chance="0.1" />
-        <unlockedBy item="earthWand" chance="0.1" />
-        <unlockedBy item="waterWand" chance="0.1" />
+        <unlockedBy recipe="airWand" chance="0.1" />
+        <unlockedBy recipe="earthWand" chance="0.1" />
+        <unlockedBy recipe="waterWand" chance="0.1" />
     </recipe>
     <recipe
         id="waterWand" time="10000" >
         <material id="stick" />
         <material id="waterEssence" quantity="2" />
         <unlockedBy item="waterEssence" chance="0.1" />
-        <unlockedBy item="airWand" chance="0.1" />
-        <unlockedBy item="earthWand" chance="0.1" />
-        <unlockedBy item="fireWand" chance="0.1" />
+        <unlockedBy recipe="airWand" chance="0.1" />
+        <unlockedBy recipe="earthWand" chance="0.1" />
+        <unlockedBy recipe="fireWand" chance="0.1" />
     </recipe>
     
     <recipe
