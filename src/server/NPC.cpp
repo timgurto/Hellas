@@ -15,6 +15,8 @@ void NPC::update(ms_t timeElapsed){
     if (health() > 0){
         processAI(timeElapsed); // May call Entity::update()
     }
+
+    Entity::update(timeElapsed);
 }
 
 CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const {
@@ -193,8 +195,6 @@ void NPC::processAI(ms_t timeElapsed){
     case ATTACK:
         break; // Entity::update() will handle it
     }
-      
-    Entity::update(timeElapsed);
 }
 
 void NPC::forgetAbout(const Entity & entity) {

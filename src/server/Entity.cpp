@@ -135,12 +135,7 @@ void Entity::update(ms_t timeElapsed){
 
     updateBuffs(timeElapsed);
 
-    // Attacking
-    if (_attackTimer > timeElapsed)
-        _attackTimer -= timeElapsed;
-    else
-        _attackTimer = 0;
-
+    // Corpse timer
     if (health() == 0){
         if (_corpseTime > timeElapsed)
             _corpseTime -= timeElapsed;
@@ -149,9 +144,15 @@ void Entity::update(ms_t timeElapsed){
         return;
     }
 
-    Entity *pTarget = target();
-    if (pTarget == nullptr)
+    // Combat
+    auto pTarget = target();
+    if (!pTarget)
         return;
+
+    if (_attackTimer > timeElapsed)
+        _attackTimer -= timeElapsed;
+    else
+        _attackTimer = 0;
 
     assert(pTarget->health() > 0);
 
