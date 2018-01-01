@@ -393,17 +393,14 @@
     <unlockedBy recipe="woodenStatue" />
 </objectType>
 <objectType id="cityAltar" name="Altar to Athena"
-    xDrawOffset="-14" yDrawOffset="-22"
+    xDrawOffset="-18" yDrawOffset="-56"
     constructionTime="0" playerUnique="altar" >
+    <collisionRect x="-18" y="-8" w="37" h="17" />
     <action label="Worship" target="createCity" tooltip="Found a city" textInput="City name" />
     <onDestroy target="destroyCity" />
     <material id="tinStatue" />
     <material id="brick" quantity="8" />
     <unlockedBy recipe="tinStatue" />
-    <strength item="brick" quantity="8" />
-    
-    <collisionRect x="-15" y="-4" w="30" h="8" />
-    <material id="rock" />
     <strength item="tin" quantity="15" />
 </objectType>
 
