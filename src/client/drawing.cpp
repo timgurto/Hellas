@@ -119,7 +119,7 @@ void Client::draw() const{
         auto footprintRect = ot->collisionRect() + toMapPoint(_mouse) - _offset;
         if (distance(playerCollisionRect(), footprintRect) <= Client::ACTION_DISTANCE) {
             renderer.setDrawColor(Color::FOOTPRINT_GOOD);
-            renderer.fillRect(toScreenPoint(footprintRect + _offset));
+            renderer.fillRect(toScreenRect(footprintRect + _offset));
 
             const ScreenRect &drawRect = ot->drawRect();
             px_t
@@ -130,7 +130,7 @@ void Client::draw() const{
             _constructionFootprint.setAlpha();
         } else {
             renderer.setDrawColor(Color::FOOTPRINT_BAD);
-            renderer.fillRect(toScreenPoint(footprintRect + _offset));
+            renderer.fillRect(toScreenRect(footprintRect + _offset));
         }
         // TODO: Show message explaining controls
     } else if (_isDismounting){
@@ -142,7 +142,7 @@ void Client::draw() const{
             charType.image().setAlpha();
         } else {
             renderer.setDrawColor(Color::FOOTPRINT_BAD);
-            renderer.fillRect(toScreenPoint(footprintRect + _offset));
+            renderer.fillRect(toScreenRect(footprintRect + _offset));
         }
     }
 
