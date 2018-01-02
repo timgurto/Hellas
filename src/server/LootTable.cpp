@@ -29,6 +29,8 @@ void LootTable::instantiate(Loot &loot) const{
             if (randDouble() < entry.simpleChance)
             quantity = 1;
         }
+        if (quantity == 0)
+            continue;
         loot.add(entry.item, quantity);
     }
 }
