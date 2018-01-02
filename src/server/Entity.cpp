@@ -131,18 +131,18 @@ void Entity::healBy(Hitpoints amount) {
 }
 
 void Entity::update(ms_t timeElapsed){
-    regen(timeElapsed);
-
-    updateBuffs(timeElapsed);
-
     // Corpse timer
-    if (health() == 0){
+    if (isDead()){
         if (_corpseTime > timeElapsed)
             _corpseTime -= timeElapsed;
         else
             markForRemoval();
         return;
     }
+
+    regen(timeElapsed);
+
+    updateBuffs(timeElapsed);
 
     // Combat
     auto pTarget = target();
