@@ -415,4 +415,26 @@
 <spawnPoint type="rock" quantity="50" radius="1500" respawnTime="600000" x="50720" y="42800" />
 <spawnPoint type="rock" quantity="50" radius="1500" respawnTime="600000" x="38496" y="32688" />
 <spawnPoint type="rock" quantity="50" radius="1500" respawnTime="600000" x="34720" y="24160" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="11456" y="12240" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="13664" y="17744" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="15840" y="20544" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="13152" y="23360" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="35248" y="22608" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="35200" y="29664" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="35648" y="23648" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="20384" y="33712" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="32208" y="32192" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="36352" y="34048" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="38112" y="30560" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="52304" y="46016" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="49344" y="44352" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="43920" y="41040" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="29600" y="42448" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="26640" y="36976" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="37792" y="37952" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="32400" y="49856" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="32144" y="47264" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="43104" y="49424" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="46832" y="50944" />
+<spawnPoint type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" x="43552" y="46128" />
 </root>

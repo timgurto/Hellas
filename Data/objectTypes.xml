@@ -189,7 +189,8 @@
     xDrawOffset="-19" yDrawOffset="-37"
     allowedTerrain="fertile" >
     <collisionRect x="-13" y="-9" w="26" h="18" />
-    <yield id="figSeeds" initialMean="1.2" initialSD="0.5" initialMin="1" />
+    <yield id="fig" initialMean="1.2" initialSD="0.5" initialMin="1" />
+    <yield id="figSeeds" initialMean="0.2" initialSD="0.2" />
     <strength item="log" quantity="1" />
 </objectType>
 <objectType id="figTree0" name="Fig Tree"
@@ -205,7 +206,7 @@
 </objectType>
 <objectType id="figTree1" name="Fig Tree (overgrown)" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
-    <yield id="stick" initialMean="2.5" initialSD="1" initialMin="1" />
+    <yield id="stick" initialMean="1" initialSD="1" initialMin="1" />
     <transform id="figTree2" whenEmpty="1" />
     <strength item="log" quantity="1" />
 </objectType>
@@ -217,7 +218,7 @@
 </objectType>
 <objectType id="figTree3" name="Fig Tree (overgrown)" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
-    <yield id="stick" initialMean="2.5" initialSD="1" initialMin="1" />
+    <yield id="stick" initialMean="1" initialSD="1" initialMin="1" />
     <transform id="figTree4" whenEmpty="1" />
     <strength item="log" quantity="1" />
 </objectType>
@@ -231,7 +232,7 @@
 </objectType>
 <objectType id="figTree6" name="Fig Tree (overgrown)" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
-    <yield id="stick" initialMean="2.5" initialSD="1" initialMin="1" />
+    <yield id="stick" initialMean="1" initialSD="1" initialMin="1" />
     <transform id="figTree7" whenEmpty="1" />
     <strength item="log" quantity="1" />
 </objectType>
@@ -241,8 +242,8 @@
 </objectType>
 <objectType id="figTree8" name="Fig Tree (ripe)" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1" gatherParticles="figLeaves" gatherTime="1000" damageParticles="figLeaves" > <collisionRect x="-13" y="-9" w="26" h="18" /> <strength item="log" quantity="1" />
-    <yield id="fig" initialMean="8" initialSD="2" initialMin="1" />
-    <yield id="figSeeds" initialMean="0.4" initialSD="0.1" />
+    <yield id="fig" initialMean="4" initialSD="2" initialMin="1" />
+    <yield id="figSeeds" initialMean="0.2" initialSD="0.2" />
     <transform id="figTree5" whenEmpty="1" />
     <strength item="log" quantity="1" />
 </objectType>
