@@ -999,6 +999,10 @@ void Server::loadData(const std::string &path){
 
             NPC &npc= addNPC(type, p);
 
+            auto health = Hitpoints{};
+            if (xr.findAttr(elem, "health", health))
+                npc.health(health);
+
             auto corpseTime = ms_t{};
             if (xr.findAttr(elem, "corpseTime", corpseTime))
                 npc.corpseTime(corpseTime);
