@@ -861,6 +861,9 @@ void Server::loadData(const std::string &path){
     do {
         bool loadExistingData = ! cmdLineArgs.contains("new");
 
+        if (loadExistingData)
+            _cities.readFromXMLFile("World/cities.world");
+
         // Entities
         if (loadExistingData)
             xr.newFile("World/entities.world");
@@ -1011,7 +1014,6 @@ void Server::loadData(const std::string &path){
         if (! loadExistingData)
             break;
 
-        _cities.readFromXMLFile("World/cities.world");
         _wars.readFromXMLFile("World/wars.world");
 
         _dataLoaded = true;
