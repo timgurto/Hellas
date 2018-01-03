@@ -504,6 +504,9 @@ void Server::loadData(const std::string &path){
                 item.returnsOnConstruction(itemToReturn);
             }
 
+            if (xr.findAttr(elem, "castsSpellOnUse", s))
+                item.castsSpellOnUse(s);
+
             auto stats = StatsMod{};
             if (xr.findStatsChild("stats", elem, stats))
                 item.stats(stats);

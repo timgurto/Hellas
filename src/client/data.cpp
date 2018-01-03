@@ -394,6 +394,9 @@ void Client::loadData(const std::string &path){
                 auto pair = _objectTypes.insert(new ClientObjectType(s));
                 item.constructsObject(*pair.first);
             }
+
+            if (xr.findAttr(elem, "castsSpellOnUse", s))
+                item.castsSpellOnUse(s);
         
             _items[id] = item;
         }

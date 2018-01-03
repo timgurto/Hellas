@@ -22,7 +22,6 @@
 <!--item id="tinRing"      name="Tin Ringlet"                       stackSize="1000" /-->
 <!--item id="copperRing"   name="Copper Ringlet"                    stackSize="1000" /-->
 <item id="charcoal"     name="Charcoal"                          stackSize="10" strength="3"/>
-<item id="fig"          name="Fig"                               stackSize="10" />
 <item id="flax"         name="Flax"                              stackSize="10" strength="1" />
 <item id="linenThread"  name="Linen Thread"                      stackSize="10" />
 <item id="linenCloth"   name="Linen Cloth"                       stackSize="10" />
@@ -65,6 +64,8 @@
 <item id="scaleMould"   name="Scale Mould"    sounds="ceramic" >   <tag name="scaleMould" /> </item>
 <item id="spearMould"   name="Spear Mould"    sounds="ceramic" >   <tag name="spearMould" /> </item>
 <item id="boneNeedle"   name="Bone Needle"    sounds="metalTool" > <tag name="sewing" />     </item>
+
+<item id="fig"  name="Fig"  stackSize="10"  castsSpellOnUse="food" />
 
 <item id="stick" name="Stick" stackSize="10" strength="1" >
     <offset x="-8" y="-1" />

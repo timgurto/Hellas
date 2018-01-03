@@ -10,6 +10,12 @@ Functions:
 
 <root>
 
+<!-- General -->
+<spell id="food" name="Eat food" >
+    <targets self=1 />
+    <function name="buff" s1="food" />
+</spell>
+
 <!-- Hoplite -->
 <spell id="shieldBlock" name="Raise Shield" cost=10 >
     <targets self=1 />

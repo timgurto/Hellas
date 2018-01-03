@@ -207,7 +207,7 @@ void ContainerGrid::rightMouseUp(Element &e, const ScreenPoint &mousePos){
         const ClientItem *item = grid._linked[slot].first;
         if (item != nullptr){ // Slot is not empty
             if (grid._serial == Client::INVENTORY) {
-                if (item->constructsObject() != nullptr) { // Can construct item
+                if (item->canUse()){
                     useSlot = slot;
                     useGrid = &grid;
                 } else if (item->gearSlot() < Client::GEAR_SLOTS){

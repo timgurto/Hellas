@@ -36,6 +36,7 @@ public:
     static const std::map<int, size_t> &drawOrder() { return gearDrawOrder; }
     void sounds(const std::string &id);
     const SoundProfile *sounds() const { return _sounds; }
+    bool canUse() const;
 
     typedef std::vector<std::pair<const ClientItem *, size_t> > vect_t;
 

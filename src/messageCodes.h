@@ -148,6 +148,10 @@ enum MessageCode{
     // Arguments: spell ID
     CL_CAST,
 
+    // Cast a spell by using an item
+    // Arguments: inventory slot containing the item
+    CL_CAST_ITEM,
+
     // "I want to say ... to everybody". 
     // Arguments: message
     CL_SAY,
@@ -199,7 +203,7 @@ enum MessageCode{
     // Arguments: serial
     SV_REMOVE_OBJECT,
 
-    // 
+    // An NPC has this level
     // Arguments: serial, level
     SV_NPC_LEVEL,
 
@@ -502,6 +506,9 @@ enum MessageCode{
 
     // You don't have enough energy to cast that
     SV_NOT_ENOUGH_ENERGY,
+
+    // That item doesn't cast a spell
+    SV_CANNOT_CAST_ITEM,
 
     // The user tried to put an item into an NPC
     SV_NPC_SWAP,

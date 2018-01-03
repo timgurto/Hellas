@@ -314,14 +314,17 @@ void Client::handleInput(double delta){
                 if (mouseUpOnWindow)
                     break;
 
-                // Construct item
-                if (ContainerGrid::getUseItem()) {
+                // Use item
+                auto useItem = ContainerGrid::getUseItem();
+                if (useItem) {
                     px_t
                         x = toInt(_mouse.x - offset().x),
                         y = toInt(_mouse.y - offset().y);
-                    sendMessage(CL_CONSTRUCT_ITEM, makeArgs(ContainerGrid::useSlot, x, y));
-                    prepareAction(std::string("Constructing ") +
-                                  _inventory[ContainerGrid::useSlot].first->constructsObject()->name());
+                    if (useItem->constructsObject()) {
+                        sendMessage(CL_CONSTRUCT_ITEM, makeArgs(ContainerGrid::useSlot, x, y));
+                        prepareAction(std::string("Constructing ") +
+                            _inventory[ContainerGrid::useSlot].first->constructsObject()->name());
+                    }
                     break;
 
                 // Construct without item
@@ -388,11 +391,16 @@ void Client::handleInput(double delta){
 
                 // Use item
                 const ClientItem *useItem = ContainerGrid::getUseItem();
-                if (useItem != nullptr) {
+                if (useItem && useItem->constructsObject()) {
                     _constructionFootprint = useItem->constructsObject()->image();
                     break;
-                } else
-                    _constructionFootprint = Texture();
+                }
+                _constructionFootprint = Texture();
+
+                if (useItem && useItem->castsSpellOnUse()) {
+                    sendMessage(CL_CAST_ITEM, makeArgs(ContainerGrid::useSlot));
+                    break;
+                }
 
                 if (_isDismounting)
                     _isDismounting = false;

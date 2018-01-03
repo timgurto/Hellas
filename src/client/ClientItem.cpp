@@ -134,3 +134,9 @@ void ClientItem::sounds(const std::string &id){
     const Client &client = *Client::_instance;
     _sounds = client.findSoundProfile(id);
 }
+
+bool ClientItem::canUse() const {
+    return
+        _constructsObject != nullptr ||
+        castsSpellOnUse();
+}

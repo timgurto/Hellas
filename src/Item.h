@@ -27,6 +27,9 @@ public:
     void strength(Hitpoints n) { _strength = n; }
     void weaponRange(Podes range) { _weaponRange = range.toPixels(); }
     px_t weaponRange() const { return _weaponRange; }
+    void castsSpellOnUse(const std::string &spell) { _castsSpellOnUse = spell; }
+    bool castsSpellOnUse() const { return ! _castsSpellOnUse.empty(); }
+    const std::string &spellToCastOnUse() const { return _castsSpellOnUse; }
     
     bool operator<(const Item &rhs) const { return _id < rhs._id; }
     
@@ -49,6 +52,8 @@ protected:
 
 private:
     Hitpoints _strength;
+
+    std::string _castsSpellOnUse{};
 };
 
 #endif

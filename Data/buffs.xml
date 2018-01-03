@@ -1,5 +1,8 @@
 <root>
 
+<buff id="food" name="Eating" duration="10">
+    <stats hps="5" eps="5" />
+</buff>
 <buff id="airDot" name="Socratic questioning" duration="12">
     <function name="doDirectDamage" i1="2" tickTime="1500" />
 </buff>

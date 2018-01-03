@@ -222,7 +222,35 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
             user->beginConstructing(objType, location, slot);
             sendMessage(client, SV_ACTION_STARTED,
-                        makeArgs(objType.constructionTime()));
+                makeArgs(objType.constructionTime()));
+            break;
+        }
+
+        case CL_CAST_ITEM:
+        {
+            size_t slot;
+            iss >> slot >> del;
+            if (del != MSG_END)
+                return;
+            user->cancelAction();
+            if (slot >= User::INVENTORY_SIZE) {
+                sendMessage(client, SV_INVALID_SLOT);
+                break;
+            }
+            const std::pair<const ServerItem *, size_t> &invSlot = user->inventory(slot);
+            if (invSlot.first == nullptr) {
+                sendMessage(client, SV_EMPTY_SLOT);
+                break;
+            }
+            const ServerItem &item = *invSlot.first;
+            if (! item.castsSpellOnUse()) {
+                sendMessage(client, SV_CANNOT_CAST_ITEM);
+                break;
+            }
+
+            auto spellID = item.spellToCastOnUse();
+            handle_CL_CAST(*user, spellID, /* casting from item*/ true);
+
             break;
         }
 
@@ -1370,7 +1398,7 @@ void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName)
     }
 }
 
-void Server::handle_CL_CAST(User & user, const std::string &spellID) {
+void Server::handle_CL_CAST(User & user, const std::string &spellID, bool castingFromItem) {
     auto target = user.target();
     if (target == nullptr)
         target = &user; // If no target, cast spell on self.
@@ -1380,7 +1408,8 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID) {
         return;
     const auto &spell = *it->second;
 
-    if (!user.getClass().knowsSpell(spellID)) {
+    // Learned-spell check
+    if (!castingFromItem && !user.getClass().knowsSpell(spellID)) {
         sendMessage(user.socket(), SV_DONT_KNOW_SPELL);
         return;
     }
