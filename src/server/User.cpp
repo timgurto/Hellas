@@ -296,28 +296,28 @@ void User::removeItems(const ItemSet &items) {
 void User::update(ms_t timeElapsed){
     regen(timeElapsed);
 
-    if (_action == NO_ACTION)
+    if (_action == NO_ACTION) {
+        Entity::update(timeElapsed);
         return;
+    }
 
     if (_actionTime > timeElapsed)
         _actionTime -= timeElapsed;
     else
         _actionTime = 0;
 
-    // Attack actions:
-    if (_action == ATTACK){
+    Server &server = *Server::_instance;
+
+    if (_actionTime > 0){ // Action hasn't finished yet.
         Entity::update(timeElapsed);
         return;
     }
-
-    // Non-attack actions:
-    Server &server = *Server::_instance;
-
-    if (_actionTime > 0) // Action hasn't finished yet.
-        return;
     
     // Timer has finished; complete action
     switch(_action){
+    case ATTACK:
+        break; // All handled by Entity::update()
+
     case GATHER:
         if (!_actionObject->contents().isEmpty())
             server.gatherObject(_actionObject->serial(), *this);
@@ -382,6 +382,8 @@ void User::update(ms_t timeElapsed){
         server.sendMessage(_socket, SV_ACTION_FINISHED);
         finishAction();
     }
+
+    Entity::update(timeElapsed);
 }
 
 bool User::hasRoomToCraft(const Recipe &recipe) const{
