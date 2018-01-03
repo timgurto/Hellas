@@ -248,20 +248,25 @@ void Entity::update(ms_t timeElapsed){
 }
 
 void Entity::updateBuffs(ms_t timeElapsed) {
+    auto aBuffHasExpired = false;
     for (auto i = 0; i != _buffs.size(); ) {
         _buffs[i].update(timeElapsed);
-        if (_buffs[i].hasExpired())
+        if (_buffs[i].hasExpired()) {
             _buffs.erase(_buffs.begin() + i);
-        else
+            aBuffHasExpired = true;
+        } else
             ++i;
     }
     for (auto i = 0; i != _debuffs.size(); ) {
         _debuffs[i].update(timeElapsed);
-        if (_debuffs[i].hasExpired())
+        if (_debuffs[i].hasExpired()) {
             _debuffs.erase(_debuffs.begin() + i);
-        else
+            aBuffHasExpired = true;
+        } else
             ++i;
     }
+    if (aBuffHasExpired)
+        updateStats();
 }
 
 void Entity::onDeath(){
