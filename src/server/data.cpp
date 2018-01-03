@@ -970,6 +970,10 @@ void Server::loadData(const std::string &path){
             auto health = Hitpoints{};
             if (xr.findAttr(elem, "health", health))
                 obj.health(health);
+
+            auto corpseTime = ms_t{};
+            if (xr.findAttr(elem, "corpseTime", corpseTime))
+                obj.corpseTime(corpseTime);
         }
 
         for (auto elem : xr.getChildren("npc")) {
@@ -994,6 +998,10 @@ void Server::loadData(const std::string &path){
             }
 
             NPC &npc= addNPC(type, p);
+
+            auto corpseTime = ms_t{};
+            if (xr.findAttr(elem, "corpseTime", corpseTime))
+                npc.corpseTime(corpseTime);
         }
 
         if (! loadExistingData)
@@ -1041,6 +1049,9 @@ void Object::writeToXML(XmlWriter &xw) const{
     if (health() < stats().maxHealth)
         xw.setAttr(e, "health", health());
 
+    if (corpseTime() > 0)
+        xw.setAttr(e, "corpseTime", corpseTime());
+
     if (hasContainer()){
         for (size_t i = 0; i != objType().container().slots(); ++i) {
             if (container().at(i).second == 0)
@@ -1081,6 +1092,9 @@ void NPC::writeToXML(XmlWriter &xw) const{
     xw.setAttr(loc, "y",location().y);
 
     xw.setAttr(e, "health", health());
+
+    if (corpseTime() > 0)
+        xw.setAttr(e, "corpseTime", corpseTime());
 }
 
 void Server::saveData(const Entities &entities, const Wars &wars, const Cities &cities){

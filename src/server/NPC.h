@@ -24,7 +24,7 @@ public:
 
     const NPCType *npcType() const { return dynamic_cast<const NPCType *>(type()); }
 
-    ms_t timeToRemainAsCorpse() const override { return 600000; } // 10 minutes
+    ms_t timeToRemainAsCorpse() const override { return 10000; } // 10 minutes
     bool canBeAttackedBy(const User &user) const override { return true; }
     CombatResult generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const override;
     void scaleThreatAgainst(Entity &target, double multiplier) override;

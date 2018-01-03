@@ -67,6 +67,8 @@ public:
     void target(Entity *p) { _target = p; }
     virtual void updateStats() {} // Recalculate _stats based on any modifiers
     virtual ms_t timeToRemainAsCorpse() const = 0;
+    ms_t corpseTime() const { return _corpseTime; }
+    void corpseTime(ms_t time) { _corpseTime = time; }
     virtual bool canBeAttackedBy(const User &user) const = 0;
     virtual px_t attackRange() const { return DEFAULT_ATTACK_RANGE; }
     virtual CombatResult generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const { return FAIL; }
