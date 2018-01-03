@@ -1055,7 +1055,7 @@ void Object::writeToXML(XmlWriter &xw) const{
     if (health() < stats().maxHealth)
         xw.setAttr(e, "health", health());
 
-    if (corpseTime() > 0)
+    if (isDead() && corpseTime() > 0)
         xw.setAttr(e, "corpseTime", corpseTime());
 
     if (hasContainer()){
@@ -1099,7 +1099,7 @@ void NPC::writeToXML(XmlWriter &xw) const{
 
     xw.setAttr(e, "health", health());
 
-    if (corpseTime() > 0)
+    if (isDead() && corpseTime() > 0)
         xw.setAttr(e, "corpseTime", corpseTime());
 }
 
