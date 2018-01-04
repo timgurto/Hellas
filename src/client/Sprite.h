@@ -47,7 +47,7 @@ public:
 
     virtual void draw(const Client &client) const; // Includes name, but not health bar.
     virtual void drawName() const;
-    virtual void update(double delta) {}
+    virtual void update(double delta);
     virtual void onLeftClick(Client &client) {}
     virtual void onRightClick(Client &client) {}
     virtual const Texture &cursor(const Client &client) const;

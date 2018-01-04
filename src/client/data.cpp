@@ -581,6 +581,16 @@ void Client::loadData(const std::string &path){
                 delete dummy;
                 _objectTypes.insert(nt);
             }
+
+            for (auto particles : xr.getChildren("particles", elem)) {
+                auto profileName = ""s;
+                if (!xr.findAttr(particles, "profile", profileName))
+                    continue;
+                MapPoint offset{};
+                xr.findAttr(particles, "x", offset.x);
+                xr.findAttr(particles, "y", offset.y);
+                nt->addParticles(profileName, offset);
+            }
         }
     }
 

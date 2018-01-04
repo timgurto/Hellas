@@ -52,6 +52,12 @@ void Sprite::drawName() const {
     nameLabel.draw(namePosition);
 }
 
+void Sprite::update(double delta) {
+    auto &client = Client::instance();
+    for (auto &p : _type->particles())
+        client.addParticles(p.profile, _location + p.offset, delta);
+}
+
 double Sprite::bottomEdge() const{
     if (_type != nullptr)
         return _location.y + _type->drawRect().y + _type->height();

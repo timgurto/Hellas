@@ -7,12 +7,18 @@
 #include "../Point.h"
 #include "../util.h"
 
-// Describes a class of Entities, the "instances" of which share common properties
+// Describes a class of Sprites, the "instances" of which share common properties
 class SpriteType{
     Texture _image, _imageHighlight;
     ScreenRect _drawRect; // Where to draw the image, relative to its location
     bool _isFlat; // Whether these objects appear flat, i.e., are drawn behind all other entities.
     bool _isDecoration; // Whether this is invisible to mouse events.
+
+    struct Particles {
+        std::string profile;
+        MapPoint offset;
+    };
+    std::vector<Particles> _particles;
 
 public:
     enum Special{
@@ -21,7 +27,6 @@ public:
 
     SpriteType(const ScreenRect &drawRect = {}, const std::string &imageFile = "");
     SpriteType(Special special);
-    SpriteType(const std::string &id); // For set lookup
 
     virtual ~SpriteType(){}
 
@@ -35,6 +40,8 @@ public:
     void isDecoration(bool b) { _isDecoration = b; }
     px_t width() const { return _drawRect.w; }
     px_t height() const { return _drawRect.h; }
+    void addParticles(const std::string &profileName, const MapPoint &offset);
+    const std::vector<Particles> &particles() const { return _particles; }
 
     void setAlpha(Uint8 alpha) { _image.setAlpha(alpha); }
 

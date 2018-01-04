@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+#include "Client.h"
 #include "SpriteType.h"
 #include "Surface.h"
 #include "../Color.h"
@@ -26,6 +27,13 @@ _isFlat(false)
         _isDecoration = true;
         break;
     }
+}
+
+void SpriteType::addParticles(const std::string & profileName, const MapPoint & offset) {
+    Particles p;
+    p.profile = profileName;
+    p.offset = offset;
+    _particles.push_back(p);
 }
 
 void SpriteType::setHighlightImage(const std::string &imageFile){

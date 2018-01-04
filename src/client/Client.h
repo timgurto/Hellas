@@ -127,6 +127,12 @@ public:
 
     void infoWindow(const std::string &text);
 
+    void addParticles(const ParticleProfile *profile, const MapPoint &location, size_t qty);
+    void addParticles(const ParticleProfile *profile, const MapPoint &location); // Single hit
+    void addParticles(const ParticleProfile *profile, const MapPoint &location, double delta);  // /s
+    void addParticles(const std::string &profileName, const MapPoint &location); // Single hit
+    void addParticles(const std::string &profileName, const MapPoint &location, double delta);  // /s
+
 private:
     static Client *_instance;
     static LogSDL *_debugInstance;
@@ -428,12 +434,6 @@ private:
 
     XP _xp = 40;
     XP _maxXP = 100;
-    
-    void addParticles(const ParticleProfile *profile, const MapPoint &location, size_t qty);
-    void addParticles(const ParticleProfile *profile, const MapPoint &location); // Single hit
-    void addParticles(const ParticleProfile *profile, const MapPoint &location, double delta);  // /s
-    void addParticles(const std::string &profileName, const MapPoint &location); // Single hit
-    void addParticles(const std::string &profileName, const MapPoint &location, double delta);  // /s
 
     static void onSpellHit(const MapPoint &location, const void *spell);
 

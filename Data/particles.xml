@@ -165,7 +165,7 @@
 </particleProfile>
 
 <particleProfile
-    id="fire"
+    id="fireball"
     gravityModifier=-4
     alpha=127 >
     <particlesPerHit mean=500 sd=100 />
@@ -216,6 +216,20 @@
     <variety imageFile="poison1" />
     <variety imageFile="poison2" />
     <variety imageFile="poison3" />
+</particleProfile>
+
+<particleProfile
+    id="fire"
+    gravityModifier=-0.5
+    alpha=127
+    particlesPerSecond=1000 >
+    <lifespan mean=400 sd=100 />
+    <distance mean=0 sd=5 />
+    <altitude mean=15 sd=8 />
+    <velocity mean=5 sd=2 />
+    <variety imageFile="loginFire1" />
+    <variety imageFile="loginFire2" />
+    <variety imageFile="loginFire3" />
 </particleProfile>
 
 </root>
