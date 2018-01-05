@@ -22,7 +22,8 @@ void Entity::updateLocation(const MapPoint &dest){
         newDest = dest;
     } else {
         const double maxLegalDistance = min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES,
-                                            timeElapsed + 100) / 1000.0 * stats().speed;
+                                            timeElapsed) / 1000.0 * stats().speed;
+        server.debug() << timeElapsed << " elapsed * " << stats().speed << " speed = " <<maxLegalDistance << Log::endl;
         distanceToMove = min(maxLegalDistance, requestedDistance);
         newDest = interpolate(_location, dest, distanceToMove);
 

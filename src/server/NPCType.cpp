@@ -11,7 +11,7 @@ ObjectType(id)
 void NPCType::init() {
     BASE_STATS.crit = 5;
     BASE_STATS.dodge = 5;
-    BASE_STATS.speed = 10.0;
+    BASE_STATS.speed = 60.0;
 }
 
 void NPCType::addSimpleLoot(const ServerItem * item, double chance) {
