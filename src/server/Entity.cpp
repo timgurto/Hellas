@@ -144,7 +144,7 @@ void Entity::update(ms_t timeElapsed){
 
     updateBuffs(timeElapsed);
 
-    // Combat
+    // The remainder of this function deals with combat.
     auto pTarget = target();
     if (!pTarget)
         return;
@@ -153,10 +153,10 @@ void Entity::update(ms_t timeElapsed){
         _attackTimer -= timeElapsed;
     else
         _attackTimer = 0;
-
-    assert(pTarget->health() > 0);
-
     if (_attackTimer > 0)
+        return;
+
+    if (pTarget->isDead())
         return;
 
     // Reset timer
