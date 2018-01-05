@@ -232,4 +232,38 @@
     <variety imageFile="loginFire3" />
 </particleProfile>
 
+<particleProfile
+    id="waterPooling"
+    particlesPerSecond=200
+    alpha=192 >
+    <lifespan mean=8000 sd=400 />
+    <distance mean=0 sd=4 />
+    <altitude mean=15 sd=8 />
+    <velocity mean=0 sd=2 />
+    <variety imageFile="water" />
+    <variety imageFile="waterLarge" />
+</particleProfile>
+
+<particleProfile
+    id="waterSparkles"
+    particlesPerSecond=50 >
+    <lifespan mean=150 sd=20 />
+    <distance mean=10 sd=2 />
+    <altitude mean=15 sd=8 />
+    <velocity mean=0 sd=2 />
+    <variety imageFile="waterSparkle" />
+</particleProfile>
+
+<particleProfile
+    id="water"
+    particlesPerSecond=200
+    alpha=192 >
+    <lifespan mean=200 sd=20 />
+    <distance mean=6 sd=2 />
+    <altitude mean=15 sd=8 />
+    <velocity mean=0 sd=2 />
+    <variety imageFile="water" />
+    <variety imageFile="waterLarge" />
+</particleProfile>
+
 </root>

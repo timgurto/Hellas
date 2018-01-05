@@ -31,6 +31,9 @@
     xDrawOffset="-8" yDrawOffset="-40" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
     <loot id="waterEssence" > <normal mean="0.8" sd="0.5" /> </loot>
+    <particles profile="waterPooling" />
+    <particles profile="waterSparkles" />
+    <particles profile="water" />
 </npcType>
 <npcType
     id="airNymph" name="Air Nymph"
