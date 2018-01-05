@@ -10,9 +10,10 @@ class Particle;
 
 class ParticleProfile{
     std::string _id;
-    double _particlesPerSecond; // For gathering, crafting
+    double _particlesPerSecond; // For gathering, crafting, and constant visuals like smoke and fire
     double _gravity;
-    bool _noZDimension; // Do not use a virtual z dimension.
+    bool _noZDimension; // Do not use a virtual z dimension.  False by default.
+    bool _canBeUnderground = false; // If false, enforce a minimum altitude of 0.
     NormalVariable
         _particlesPerHit, // For attacking
         _distance,
@@ -41,7 +42,10 @@ public:
     void lifespan(double mean, double sd) { _lifespan = NormalVariable(mean, sd); }
     void gravityModifer(double mod) { _gravity *= mod; }
     void noZDimension() { _noZDimension = true; }
+    void canBeUnderground() { _canBeUnderground = true; }
     void alpha(Uint8 n) { _alpha = n; }
+
+    bool canBeUnderground() const { return _canBeUnderground; }
 
     struct ptrCompare{
         bool operator()(const ParticleProfile *lhs, const ParticleProfile *rhs) const{

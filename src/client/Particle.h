@@ -6,6 +6,7 @@
 #include "../NormalVariable.h"
 #include "../Point.h"
 
+class ParticleProfile;
 class Texture;
 
 // An individual particle
@@ -25,13 +26,17 @@ class Particle : public Sprite{
 
     ms_t _lifespan;
 
+    const ParticleProfile &_profile;
+
 public:
     Particle(const MapPoint &loc, const Texture &image, const ScreenRect &drawRect, const MapPoint &velocity,
-             double startingAltitude, double startingFallSpeed, double gravity, ms_t lifespan);
+             double startingAltitude, double startingFallSpeed, double gravity, ms_t lifespan,
+             const ParticleProfile &profile);
 
-    virtual ScreenRect drawRect() const override;
-    virtual const Texture &image() const override { return _image; }
-    virtual void update(double delta) override;
+    ScreenRect drawRect() const override;
+    const Texture &image() const override { return _image; }
+    void update(double delta) override;
+    void draw(const Client &client) const override;
 };
 
 #endif

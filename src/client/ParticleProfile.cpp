@@ -68,10 +68,9 @@ Particle *ParticleProfile::instantiate(const MapPoint &location) const{
         startingVelocity.y = 0;
     }
 
-
     return new Particle(startingLoc, variety.image(), variety.drawRect(), startingVelocity,
                         _altitude.generate(), _fallSpeed.generate(), _gravity,
-                        max(0, toInt(_lifespan.generate())));
+                        max(0, toInt(_lifespan.generate())), *this);
 }
 
 size_t ParticleProfile::numParticlesContinuous(double delta) const{

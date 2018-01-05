@@ -58,6 +58,7 @@ void Client::loadData(const std::string &path){
             if (xr.findNormVarChild("lifespan", elem, mean, sd)) profile->lifespan(mean, sd);
             int n;
             if (xr.findAttr(elem, "noZDimension", n) && n != 0) profile->noZDimension();
+            if (xr.findAttr(elem, "canBeUnderground", n) && n != 0) profile->canBeUnderground();
             if (xr.findAttr(elem, "alpha", n) && n != 0xff) profile->alpha(n);
 
             auto dirE = xr.findChild("direction", elem);
