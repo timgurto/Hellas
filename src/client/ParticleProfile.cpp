@@ -37,7 +37,7 @@ void ParticleProfile::addVariety(const std::string &imageFile, size_t count) {
     editedRect.y = -particleType->height() / 2;
     particleType->drawRect(editedRect);
     if (_alpha != 0xff)
-        particleType->setAlpha(0x7f);
+        particleType->setAlpha(_alpha);
     _varieties.push_back(particleType); // _varieties owns the pointers.
     for (size_t i = 0; i != count; ++i)
         _pool.push_back(particleType);
