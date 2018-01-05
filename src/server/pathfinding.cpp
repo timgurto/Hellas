@@ -204,30 +204,34 @@ void Entity::updateLocation(const MapPoint &dest){
     MapPoint oldLoc = _location;
 
     // Remove from location-indexed trees
+    auto xChanged = newDest.x != oldLoc.x;
+    auto yChanged = newDest.y != oldLoc.y;
     if (classTag() == 'u'){
-        if (newDest.x != oldLoc.x)
+        if (xChanged)
             server._usersByX.erase(userPtr);
-        if (newDest.y != oldLoc.y)
+        if (yChanged)
             server._usersByY.erase(userPtr);
     }
-    if (newDest.x != oldLoc.x)
+    if (xChanged)
         server._entitiesByX.erase(this);
-    if (newDest.y != oldLoc.y)
+    if (yChanged)
         server._entitiesByY.erase(this);
 
     _location = newDest;
     
     // Re-insert into location-indexed trees
     if (classTag() == 'u'){
-        if (newDest.x != oldLoc.x)
+        if (xChanged)
             server._usersByX.insert(userPtr);
-        if (newDest.y != oldLoc.y)
+        if (yChanged)
             server._usersByY.insert(userPtr);
+            assert(server._usersByX.size() == server._usersByY.size());
     }
-    if (newDest.x != oldLoc.x)
+    if (xChanged)
         server._entitiesByX.insert(this);
-    if (newDest.y != oldLoc.y)
+    if (yChanged)
         server._entitiesByY.insert(this);
+    assert(server._entitiesByX.size() == server._entitiesByY.size());
 
     // Move to a different collision chunk if needed
     auto
