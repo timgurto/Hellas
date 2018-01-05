@@ -99,7 +99,7 @@ void NPC::onAttackedBy(Entity &attacker, Hitpoints damage) {
 
 void NPC::processAI(ms_t timeElapsed){
     const auto
-        VIEW_RANGE = 50_px,
+        VIEW_RANGE = 70_px,
         ATTACK_RANGE = 5_px,
         // Assumption: this is farther than any ranged attack/spell can reach.
         CONTINUE_ATTACKING_RANGE = Podes{ 35 }.toPixels();
