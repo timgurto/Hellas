@@ -124,9 +124,10 @@ void NPC::processAI(ms_t timeElapsed){
 
         // React to recent attacker
         if (target()) {
-            if (distToTarget > ATTACK_RANGE)
+            if (distToTarget > ATTACK_RANGE) {
                 _state = CHASE;
-            else
+                resetLocationUpdateTimer();
+            } else
                 _state = ATTACK;
         }
 
@@ -175,6 +176,7 @@ void NPC::processAI(ms_t timeElapsed){
         // Target has run out of attack range: chase
         if (distToTarget > ATTACK_RANGE) {
             _state = CHASE;
+            resetLocationUpdateTimer();
             break;
         }
 
