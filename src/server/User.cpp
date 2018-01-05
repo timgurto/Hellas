@@ -704,7 +704,7 @@ void User::moveToSpawnPoint(bool isNewPlayer) {
         newLoc.y = (randDouble() * 2 - 1) * spawnRadius + _respawnPoint.y;
     } while (!server.isLocationValid(newLoc, User::OBJECT_TYPE));
     auto oldLoc = location();
-    location(newLoc);
+    location(newLoc, /* firstInsertion */ isNewPlayer);
 
     if (isNewPlayer)
         return;

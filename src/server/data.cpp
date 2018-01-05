@@ -60,7 +60,7 @@ bool Server::readUserData(User &user){
     if (randomizedLocation)
         _debug << Color::YELLOW << "Player " << user.name()
                << " was moved due to an invalid location." << Log::endl;
-    user.location(p);
+    user.location(p, /* firstInsertion */ true);
 
     elem = xr.findChild("inventory");
     for (auto slotElem : xr.getChildren("slot", elem)) {

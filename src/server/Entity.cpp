@@ -295,6 +295,68 @@ void Entity::removeWatcher(const std::string &username){
     Server::debug() << username << " is no longer watching an object." << Log::endl;
 }
 
+void Entity::location(const MapPoint & newLoc, bool firstInsertion) {
+    Server &server = *Server::_instance;
+
+    const User *selfAsUser = nullptr;
+    if (classTag() == 'u')
+        selfAsUser = dynamic_cast<const User *>(this);
+
+    MapPoint oldLoc = _location;
+
+    auto xChanged = newLoc.x != oldLoc.x;
+    auto yChanged = newLoc.y != oldLoc.y;
+
+    if (!firstInsertion) {
+
+        // Remove from location-indexed trees
+        assert(server._entitiesByX.size() == server._entitiesByY.size());
+        if (classTag() == 'u') {
+            if (xChanged) {
+                auto numRemoved = server._usersByX.erase(selfAsUser);
+                assert(numRemoved == 1);
+            }
+            if (yChanged) {
+                auto numRemoved = server._usersByY.erase(selfAsUser);
+                assert(numRemoved == 1);
+            }
+        }
+        if (xChanged) {
+            auto numRemoved = server._entitiesByX.erase(this);
+            assert(numRemoved == 1);
+        }
+        if (yChanged) {
+            auto numRemoved = server._entitiesByY.erase(this);
+            assert(numRemoved == 1);
+        }
+    }
+
+    _location = newLoc;
+
+    // Re-insert into location-indexed trees
+    if (classTag() == 'u') {
+        if (xChanged)
+            server._usersByX.insert(selfAsUser);
+        if (yChanged)
+            server._usersByY.insert(selfAsUser);
+        assert(server._usersByX.size() == server._usersByY.size());
+    }
+    if (xChanged)
+        server._entitiesByX.insert(this);
+    if (yChanged)
+        server._entitiesByY.insert(this);
+    assert(server._entitiesByX.size() == server._entitiesByY.size());
+
+    // Move to a different collision chunk if needed
+    auto
+        &oldCollisionChunk = server.getCollisionChunk(oldLoc),
+        &newCollisionChunk = server.getCollisionChunk(_location);
+    if (firstInsertion || &oldCollisionChunk != &newCollisionChunk) {
+        oldCollisionChunk.removeEntity(_serial);
+        newCollisionChunk.addEntity(this);
+    }
+}
+
 void Entity::applyBuff(const BuffType & type, Entity &caster) {
     auto newBuff = Buff{ type, *this, caster };
 

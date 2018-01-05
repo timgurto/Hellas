@@ -57,7 +57,8 @@ public:
     
     // Space
     const MapPoint &location() const { return _location; }
-    void location(const MapPoint &loc) { _location = loc; }
+    void location(const MapPoint &loc, bool firstInsertion = false);
+    void changeDummyLocation(const MapPoint &loc) { _location = loc; }
     const MapRect collisionRect() const { return type()->collisionRect() + _location; }
     bool collides() const { return type()->collides() && _health != 0; }
 

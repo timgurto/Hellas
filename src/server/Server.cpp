@@ -427,9 +427,9 @@ void Server::removeUser(const Socket &socket){
 std::set<User *> Server::findUsersInArea(MapPoint loc, double squareRadius) const{
     static User dummy{ MapPoint{0} };
     std::set<User *> users;
-    dummy.location(loc.x - squareRadius);
+    dummy.changeDummyLocation(loc.x - squareRadius);
     auto loX = _usersByX.lower_bound(&dummy);
-    dummy.location(loc.x + squareRadius);
+    dummy.changeDummyLocation(loc.x + squareRadius);
     auto hiX = _usersByX.upper_bound(&dummy);
     for (auto it = loX; it != hiX; ++it)
         if (abs(loc.y - (*it)->location().y) <= squareRadius)

@@ -23,7 +23,6 @@ void Entity::updateLocation(const MapPoint &dest){
     } else {
         const double maxLegalDistance = min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES,
                                             timeElapsed) / 1000.0 * stats().speed;
-        server.debug() << timeElapsed << " elapsed * " << stats().speed << " speed = " <<maxLegalDistance << Log::endl;
         distanceToMove = min(maxLegalDistance, requestedDistance);
         newDest = interpolate(_location, dest, distanceToMove);
 
@@ -202,47 +201,8 @@ void Entity::updateLocation(const MapPoint &dest){
         onOutOfRange(*pEntity);
     }
 
-    MapPoint oldLoc = _location;
-
-    // Remove from location-indexed trees
-    assert(server._entitiesByX.size() == server._entitiesByY.size());
-    auto xChanged = newDest.x != oldLoc.x;
-    auto yChanged = newDest.y != oldLoc.y;
-    if (classTag() == 'u'){
-        if (xChanged)
-            server._usersByX.erase(userPtr);
-        if (yChanged)
-            server._usersByY.erase(userPtr);
-    }
-    if (xChanged)
-        server._entitiesByX.erase(this);
-    if (yChanged)
-        server._entitiesByY.erase(this);
-
-    _location = newDest;
-    
-    // Re-insert into location-indexed trees
-    if (classTag() == 'u'){
-        if (xChanged)
-            server._usersByX.insert(userPtr);
-        if (yChanged)
-            server._usersByY.insert(userPtr);
-            assert(server._usersByX.size() == server._usersByY.size());
-    }
-    if (xChanged)
-        server._entitiesByX.insert(this);
-    if (yChanged)
-        server._entitiesByY.insert(this);
-    assert(server._entitiesByX.size() == server._entitiesByY.size());
-
-    // Move to a different collision chunk if needed
-    auto
-        &oldCollisionChunk = server.getCollisionChunk(oldLoc),
-        &newCollisionChunk = server.getCollisionChunk(_location);
-    if (&oldCollisionChunk != &newCollisionChunk) {
-        oldCollisionChunk.removeEntity(_serial);
-        newCollisionChunk.addEntity(this);
-    }
+    // Actually change the entity's location
+    location(newDest);
 
     // Tell newly nearby users that it exists
     for (const User *userP : newlyNearbyUsers){
