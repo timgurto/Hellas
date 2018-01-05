@@ -204,6 +204,7 @@ void Entity::updateLocation(const MapPoint &dest){
     MapPoint oldLoc = _location;
 
     // Remove from location-indexed trees
+    assert(server._entitiesByX.size() == server._entitiesByY.size());
     auto xChanged = newDest.x != oldLoc.x;
     auto yChanged = newDest.y != oldLoc.y;
     if (classTag() == 'u'){

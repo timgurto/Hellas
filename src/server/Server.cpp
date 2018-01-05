@@ -485,15 +485,16 @@ void Server::forceAllToUntarget(const Entity &target, const User *userToExclude)
         User & user = const_cast<User &>(constUser);
         if (&user == userToExclude)
             continue;
-        if (user.action() == User::ATTACK && user.target() == &target) {
-            user.finishAction();
+        if (user.target() == &target) {
+            if (user.action() == User::ATTACK)
+                user.finishAction();
             user.target(nullptr);
             continue;
         }
         if (user.action() == User::GATHER && user.actionObject()->serial() == serial) {
             sendMessage(user.socket(), SV_DOESNT_EXIST);
-            user.target(nullptr);
             user.cancelAction();
+            user.target(nullptr);
         }
     }
 
