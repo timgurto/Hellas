@@ -48,6 +48,8 @@
     xDrawOffset="-8" yDrawOffset="-40" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
     <loot id="earthEssence" > <normal mean="0.8" sd="0.5" /> </loot>
+    <particles profile="vines" />
+    <particles profile="dirtFromGround" />
 </npcType>
 <npcType
     id="fireNymph" name="Fire Nymph"

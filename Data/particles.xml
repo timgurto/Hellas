@@ -220,13 +220,14 @@
 
 <particleProfile
     id="fire"
-    gravityModifier=-0.5
+    gravityModifier=-0
     alpha=127
     particlesPerSecond=1000 >
     <lifespan mean=400 sd=100 />
-    <distance mean=0 sd=5 />
+    <distance mean=0 sd=4 />
     <altitude mean=15 sd=8 />
     <velocity mean=5 sd=2 />
+    <fallSpeed mean=-20 sd=5 />
     <variety imageFile="loginFire1" />
     <variety imageFile="loginFire2" />
     <variety imageFile="loginFire3" />
@@ -235,9 +236,9 @@
 <particleProfile
     id="waterPooling"
     particlesPerSecond=200
-    alpha=192 >
-    <lifespan mean=8000 sd=400 />
-    <distance mean=0 sd=4 />
+    alpha=127 >
+    <lifespan mean=3000 sd=400 />
+    <distance mean=5 sd=2 />
     <altitude mean=15 sd=8 />
     <velocity mean=0 sd=2 />
     <variety imageFile="water" />
@@ -259,11 +260,39 @@
     particlesPerSecond=200
     alpha=192 >
     <lifespan mean=200 sd=20 />
-    <distance mean=6 sd=2 />
+    <distance mean=5 sd=2 />
     <altitude mean=15 sd=8 />
     <velocity mean=0 sd=2 />
     <variety imageFile="water" />
     <variety imageFile="waterLarge" />
+</particleProfile>
+
+<particleProfile
+    id="vines"
+    particlesPerSecond=15
+    canBeUnderground=1 >
+    <lifespan mean=1500 sd=0 />
+    <distance mean=5 sd=2 />
+    <altitude mean=-35 sd=10 />
+    <velocity mean=0 sd=0 />
+    <fallSpeed mean=-58 sd=5 />
+    <variety imageFile="vine"> <drawRect x=-4 y=-42 w=7 h=44 /> </variety>
+    <variety imageFile="vineFlipped"> <drawRect x=-2 y=-42 w=7 h=44 /> </variety>
+    <variety imageFile="vineStraight"> <drawRect x=-1 y=-42 w=3 h=44 /> </variety>
+</particleProfile>
+
+<particleProfile
+    id="dirtFromGround"
+    particlesPerSecond=1000 >
+    <lifespan mean=500 sd=100 />
+    <distance mean=5 sd=4 />
+    <altitude mean=0 sd=2 />
+    <velocity mean=0 sd=2 />
+    <fallSpeed mean=-10 sd=3 />
+    <variety imageFile="dirt0" count="3" />
+    <variety imageFile="dirt1" />
+    <variety imageFile="dirt2" />
+    <variety imageFile="dirt3" />
 </particleProfile>
 
 </root>
