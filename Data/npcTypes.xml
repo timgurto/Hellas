@@ -41,6 +41,7 @@
     xDrawOffset="-8" yDrawOffset="-40" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
     <loot id="airEssence" > <normal mean="0.8" sd="0.5" /> </loot>
+    <particles profile="dust" />
 </npcType>
 <npcType
     id="earthNymph" name="Earth Nymph"

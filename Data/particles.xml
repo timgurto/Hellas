@@ -220,23 +220,22 @@
 
 <particleProfile
     id="fire"
-    gravityModifier=-0
+    gravityModifier=0
     alpha=127
-    particlesPerSecond=1000 >
+    particlesPerSecond=700 >
     <lifespan mean=400 sd=100 />
     <distance mean=0 sd=4 />
     <altitude mean=15 sd=8 />
     <velocity mean=5 sd=2 />
     <fallSpeed mean=-20 sd=5 />
     <variety imageFile="loginFire1" />
-    <variety imageFile="loginFire2" />
     <variety imageFile="loginFire3" />
 </particleProfile>
 
 <particleProfile
     id="waterPooling"
     particlesPerSecond=200
-    alpha=127 >
+    alpha=192 >
     <lifespan mean=3000 sd=400 />
     <distance mean=5 sd=2 />
     <altitude mean=15 sd=8 />
@@ -252,7 +251,7 @@
     <distance mean=10 sd=2 />
     <altitude mean=15 sd=8 />
     <velocity mean=0 sd=2 />
-    <variety imageFile="waterSparkle" />
+    <variety imageFile="sparkleSmall2" />
 </particleProfile>
 
 <particleProfile
@@ -283,16 +282,31 @@
 
 <particleProfile
     id="dirtFromGround"
-    particlesPerSecond=1000 >
+    particlesPerSecond=300 >
     <lifespan mean=500 sd=100 />
     <distance mean=5 sd=4 />
     <altitude mean=0 sd=2 />
     <velocity mean=0 sd=2 />
     <fallSpeed mean=-10 sd=3 />
-    <variety imageFile="dirt0" count="3" />
+    <variety imageFile="dirt0" />
     <variety imageFile="dirt1" />
     <variety imageFile="dirt2" />
     <variety imageFile="dirt3" />
+    <variety imageFile="dirtLarge" />
+    <variety imageFile="dirtLarge1" />
+</particleProfile>
+
+<particleProfile
+    id="dust"
+    particlesPerSecond=30
+    gravityModifier=0 >
+    <lifespan mean=1000 sd=200 />
+    <distance mean=5 sd=2 />
+    <altitude mean=22 sd=7 />
+    <velocity mean=2 sd=2 />
+    <fallSpeed mean=0 sd=4 />
+    <variety imageFile="dust0" />
+    <variety imageFile="sparkleSmall2" />
 </particleProfile>
 
 </root>
