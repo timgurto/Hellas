@@ -6,7 +6,7 @@
 #include "Spawner.h"
 #include "../util.h"
 
-const px_t Entity::DEFAULT_ATTACK_RANGE = Podes{ 4 }.toPixels();
+const px_t Entity::MELEE_RANGE = Podes{ 4 }.toPixels();
 
 Stats Dummy::_stats{};
 
@@ -172,15 +172,23 @@ void Entity::update(ms_t timeElapsed){
         switch (outcome) {
         // These cases return
         case MISS:
-            for (const User *userToInform : server.findUsersInArea( locus ))
-                server.sendMessage( userToInform->socket(), SV_SHOW_MISS_AT, makeArgs(
-                    pTarget->location().x, pTarget->location().y ) );
-            return;
+            for (const User *userToInform : server.findUsersInArea(locus)) {
+                server.sendMessage(userToInform->socket(), SV_SHOW_MISS_AT, makeArgs(
+                    pTarget->location().x, pTarget->location().y));
+                if (attackRange() > MELEE_RANGE)
+                    sendRangedMissMessageTo(*userToInform);
+                return;
+            }
         case DODGE:
-            for (const User *userToInform : server.findUsersInArea(locus))
+            for (const User *userToInform : server.findUsersInArea(locus)) {
                 server.sendMessage(userToInform->socket(), SV_SHOW_DODGE_AT, makeArgs(
                     pTarget->location().x, pTarget->location().y));
-            return;
+                if (attackRange() > MELEE_RANGE)
+                    server.sendMessage(userToInform->socket(), SV_RANGED_NPC_MISS, makeArgs(
+                        type()->id(), location().x, location().y,
+                        pTarget->location().x, pTarget->location().y));
+                return;
+            }
 
         // These cases continue on
         case CRIT:
@@ -243,6 +251,10 @@ void Entity::update(ms_t timeElapsed){
         }
         for (const User *userToInform : server.findUsersInArea(locus)){
             server.sendMessage(userToInform->socket(), msgCode, args);
+            if (attackRange() > MELEE_RANGE)
+                server.sendMessage(userToInform->socket(), SV_RANGED_NPC_HIT, makeArgs(
+                    type()->id(), location().x, location().y,
+                    pTarget->location().x, pTarget->location().y));
         }
     }
 }

@@ -34,6 +34,8 @@ public:
     void onDeath() override;
     void onAttackedBy(Entity &attacker, Hitpoints damage) override;
     px_t attackRange() const override;
+    void sendRangedHitMessageTo(const User &userToInform) const override;
+    void sendRangedMissMessageTo(const User &userToInform) const override;
 
     char classTag() const override { return 'n'; }
 

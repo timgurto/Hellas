@@ -286,10 +286,12 @@ enum MessageCode{
     // Arguments: attacker's username, defender's username
     SV_PLAYER_HIT_PLAYER,
 
-    // The outcome of a spellcast.  This is purely so that the client can illustrate it.
-    // Arguments: spell ID, from x, from y, to x, to y
-    SV_SPELL_HIT,
-    SV_SPELL_MISS,
+    // The outcome of a spellcast or ranged attack.  This is purely so that the client can
+    // illustrate it.
+    SV_SPELL_HIT, // spell ID, from x, from y, to x, to y
+    SV_SPELL_MISS, // spell ID, from x, from y, to x, to y
+    SV_RANGED_NPC_HIT, // npc ID, from x, from y, to x, to y
+    SV_RANGED_NPC_MISS, // npc ID, from x, from y, to x, to y
 
     // Entity was hit by something.
     // Arguments: username/serial

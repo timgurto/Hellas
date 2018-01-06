@@ -463,6 +463,8 @@ private:
     void handle_SV_KING(const std::string username);
     void handle_SV_SPELL_HIT(const std::string &spellID, const MapPoint &src, const MapPoint &dst);
     void handle_SV_SPELL_MISS(const std::string &spellID, const MapPoint &src, const MapPoint &dst);
+    void handle_SV_RANGED_NPC_HIT(const std::string &npcID, const MapPoint &src, const MapPoint &dst);
+    void handle_SV_RANGED_NPC_MISS(const std::string &npcID, const MapPoint &src, const MapPoint &dst);
     void handle_SV_PLAYER_WAS_HIT(const std::string &username);
     void handle_SV_ENTITY_WAS_HIT(size_t serial);
     void handle_SV_SHOW_OUTCOME_AT(int msgCode, const MapPoint &loc);

@@ -1154,6 +1154,8 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_SPELL_HIT:
         case SV_SPELL_MISS:
+        case SV_RANGED_NPC_HIT:
+        case SV_RANGED_NPC_MISS:
         {
             singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
             auto id = std::string{ buffer };
@@ -1171,6 +1173,12 @@ void Client::handleMessage(const std::string &msg){
                 break;
             case SV_SPELL_MISS:
                 handle_SV_SPELL_MISS(id, { x1, y1 }, { x2, y2 });
+                break;
+            case SV_RANGED_NPC_HIT:
+                handle_SV_RANGED_NPC_HIT(id, { x1, y1 }, { x2, y2 });
+                break;
+            case SV_RANGED_NPC_MISS:
+                handle_SV_RANGED_NPC_MISS(id, { x1, y1 }, { x2, y2 });
                 break;
             }
             break;
@@ -1476,6 +1484,32 @@ void Client::handle_SV_SPELL_MISS(const std::string &spellID, const MapPoint &sr
     if (spell.projectile()) {
         auto pointPastDest = extrapolate(src, dst, 2000);
         addEntity(new Projectile(*spell.projectile(), src, pointPastDest));
+    }
+}
+
+void Client::handle_SV_RANGED_NPC_HIT(const std::string & npcID, const MapPoint & src, const MapPoint & dst) {
+    auto it = _objectTypes.find(&ClientObjectType{ npcID });
+    if (it == _objectTypes.end())
+        return;
+    const auto *npcType = dynamic_cast<const ClientNPCType *>(*it);
+    assert(npcType);
+
+    if (npcType->projectile()) {
+        auto projectile = new Projectile(*npcType->projectile(), src, dst);
+        addEntity(projectile);
+    }
+}
+
+void Client::handle_SV_RANGED_NPC_MISS(const std::string & npcID, const MapPoint & src, const MapPoint & dst) {
+    auto it = _objectTypes.find(&ClientObjectType{ npcID });
+    if (it == _objectTypes.end())
+        return;
+    const auto *npcType = dynamic_cast<const ClientNPCType *>(*it);
+    assert(npcType);
+
+    if (npcType->projectile()) {
+        auto pointPastDest = extrapolate(src, dst, 2000);
+        addEntity(new Projectile(*npcType->projectile(), src, pointPastDest));
     }
 }
 

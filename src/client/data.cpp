@@ -567,6 +567,13 @@ void Client::loadData(const std::string &path){
             if (xr.findAttr(elem, "sounds", s))
                 nt->sounds(s);
 
+            if (xr.findAttr(elem, "projectile", s)) {
+                auto dummy = Projectile::Type{ s, {} };
+                auto it = _projectileTypes.find(&dummy);
+                if (it != _projectileTypes.end())
+                    nt->projectile(**it);
+            }
+
             auto pair = _objectTypes.insert(nt);
             if (!pair.second) {
                 // A ClientObjectType is being pointed to by items; they need to point to this instead.

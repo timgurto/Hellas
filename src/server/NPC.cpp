@@ -100,7 +100,23 @@ void NPC::onAttackedBy(Entity &attacker, Hitpoints damage) {
 px_t NPC::attackRange() const {
     if (npcType()->isRanged())
         return Podes{ 20 }.toPixels();
-    return DEFAULT_ATTACK_RANGE;
+    return MELEE_RANGE;
+}
+
+void NPC::sendRangedHitMessageTo(const User & userToInform) const {
+    assert(target());
+    Server &server = *Server::_instance;
+    server.sendMessage(userToInform.socket(), SV_RANGED_NPC_MISS, makeArgs(
+        type()->id(), location().x, location().y,
+        target()->location().x, target()->location().y));
+}
+
+void NPC::sendRangedMissMessageTo(const User & userToInform) const {
+    assert(target());
+    Server &server = *Server::_instance;
+    server.sendMessage(userToInform.socket(), SV_RANGED_NPC_MISS, makeArgs(
+        type()->id(), location().x, location().y,
+        target()->location().x, target()->location().y));
 }
 
 void NPC::processAI(ms_t timeElapsed){

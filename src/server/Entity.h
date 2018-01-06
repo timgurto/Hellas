@@ -71,7 +71,7 @@ public:
     ms_t corpseTime() const { return _corpseTime; }
     void corpseTime(ms_t time) { _corpseTime = time; }
     virtual bool canBeAttackedBy(const User &user) const = 0;
-    virtual px_t attackRange() const { return DEFAULT_ATTACK_RANGE; }
+    virtual px_t attackRange() const { return MELEE_RANGE; }
     virtual CombatResult generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const { return FAIL; }
         static bool combatTypeCanHaveOutcome(CombatType type, CombatResult outcome, SpellSchool school, px_t range);
     virtual void sendGotHitMessageTo(const User &user) const;
@@ -106,6 +106,8 @@ public:
     virtual void onDeath(); // Anything that needs to happen upon death.
     virtual void onAttackedBy(Entity &attacker, Hitpoints damage); // If the entity needs to react to an attack.
     virtual void onKilled(const Entity &victim) {} // Upon this entity killing another
+    virtual void sendRangedMissMessageTo(const User &userToInform) const {} // Inform user that this entity has missed its target with a ranged attack.
+    virtual void sendRangedHitMessageTo(const User &userToInform) const {} // Inform user that this entity has hit its target with a ranged attack.
 
     virtual void describeSelfToNewWatcher(const User &watcher) const {}
     virtual void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const {}
@@ -127,7 +129,7 @@ protected:
     void type(const EntityType *type) { _type = type; }
     std::shared_ptr<Loot> _loot;
     void resetLocationUpdateTimer() { _lastLocUpdate = SDL_GetTicks(); } // To be called when movement starts
-    static const px_t DEFAULT_ATTACK_RANGE;
+    static const px_t MELEE_RANGE;
 
 private:
 
