@@ -289,12 +289,10 @@
     <altitude mean=0 sd=2 />
     <velocity mean=0 sd=2 />
     <fallSpeed mean=-10 sd=3 />
-    <!--variety imageFile="orangePixel" /-->
-    <variety imageFile="redPixel" />
+    <variety imageFile="orangePixel" />
     <variety imageFile="purplePixel" count=2 />
     <variety imageFile="darkGreyPixel" count=2 />
     <variety imageFile="dirtLargeOrange" />
-    <!--variety imageFile="dirtLargeLightOrange" /-->
 </particleProfile>
 
 <particleProfile

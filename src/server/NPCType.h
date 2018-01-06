@@ -9,6 +9,7 @@ class NPCType : public ObjectType{
 
     LootTable _lootTable;
     Level _level;
+    bool _isRanged = false;
 
 public:
     static Stats BASE_STATS;
@@ -21,6 +22,8 @@ public:
     const LootTable &lootTable() const { return _lootTable; }
     void level(Level l) { _level = l; }
     Level level() const { return _level; }
+    void makeRanged() { _isRanged = true; }
+    bool isRanged() const { return _isRanged; }
 
 
     virtual char classTag() const override { return 'n'; }

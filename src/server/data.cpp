@@ -445,6 +445,9 @@ void Server::loadData(const std::string &path){
             if (xr.findAttr(elem, "level", level))
                 nt->level(level);
 
+            auto n = 0;
+            if (xr.findAttr(elem, "isRanged", n) && n != 0) nt->makeRanged();
+
             Stats baseStats = NPCType::BASE_STATS;
             xr.findAttr(elem, "maxHealth", baseStats.maxHealth);
             xr.findAttr(elem, "attack", baseStats.attack);

@@ -33,6 +33,7 @@ public:
     void onHealthChange() override;
     void onDeath() override;
     void onAttackedBy(Entity &attacker, Hitpoints damage) override;
+    px_t attackRange() const override;
 
     char classTag() const override { return 'n'; }
 

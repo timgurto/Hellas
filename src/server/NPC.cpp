@@ -97,18 +97,24 @@ void NPC::onAttackedBy(Entity &attacker, Hitpoints damage) {
     Entity::onAttackedBy(attacker, damage);
 }
 
+px_t NPC::attackRange() const {
+    if (npcType()->isRanged())
+        return Podes{ 20 }.toPixels();
+    return DEFAULT_ATTACK_RANGE;
+}
+
 void NPC::processAI(ms_t timeElapsed){
     const auto
-        VIEW_RANGE = 70_px,
-        ATTACK_RANGE = 5_px,
+        AGGRO_RANGE = 70_px,
+        ATTACK_RANGE = attackRange() - Podes{ 1 }.toPixels(),
         // Assumption: this is farther than any ranged attack/spell can reach.
-        CONTINUE_ATTACKING_RANGE = Podes{ 35 }.toPixels();
+        PURSUIT_RANGE = Podes{ 35 }.toPixels();
 
     target(nullptr);
 
     // Become aware of nearby users
-    for (User *user : Server::_instance->findUsersInArea(location(), VIEW_RANGE)){
-        if (distance(collisionRect(), user->collisionRect()) <= VIEW_RANGE){
+    for (User *user : Server::_instance->findUsersInArea(location(), AGGRO_RANGE)){
+        if (distance(collisionRect(), user->collisionRect()) <= AGGRO_RANGE){
             _threatTable.makeAwareOf(*user);
         }
     }
@@ -147,7 +153,7 @@ void NPC::processAI(ms_t timeElapsed){
         }
 
         // Target has run out of range: give up
-        if (distToTarget > CONTINUE_ATTACKING_RANGE) {
+        if (distToTarget > PURSUIT_RANGE) {
             _state = IDLE;
             break;
         }

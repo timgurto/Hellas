@@ -127,9 +127,9 @@ protected:
     void type(const EntityType *type) { _type = type; }
     std::shared_ptr<Loot> _loot;
     void resetLocationUpdateTimer() { _lastLocUpdate = SDL_GetTicks(); } // To be called when movement starts
+    static const px_t DEFAULT_ATTACK_RANGE;
 
 private:
-    static const px_t DEFAULT_ATTACK_RANGE;
 
     static size_t generateSerial();
     const EntityType *_type;
