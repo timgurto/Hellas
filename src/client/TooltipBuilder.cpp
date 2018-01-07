@@ -6,7 +6,7 @@
 extern Renderer renderer;
 
 const px_t Tooltip::PADDING = 4; // Margins, and the height of gaps between lines.
-TTF_Font *Tooltip::_defaultFont = nullptr;
+TTF_Font *Tooltip::font = nullptr;
 const px_t Tooltip::DEFAULT_MAX_WIDTH = 150;
 const px_t Tooltip::NO_WRAP = 0;
 
@@ -14,13 +14,13 @@ Tooltip::Tooltip()
 {
     _color = Color::TOOLTIP_FONT;
 
-    if (_defaultFont == nullptr)
-        _defaultFont = TTF_OpenFont("AdvoCut.ttf", 10);
-    _font = _defaultFont;
+    if (font == nullptr)
+        font = TTF_OpenFont("AdvoCut.ttf", 10);
+    font = font;
 }
 
 void Tooltip::setFont(TTF_Font *font){
-    _font = font ? font : _defaultFont;
+    font = font ? font : font;
 }
 
 void Tooltip::setColor(const Color &color){
@@ -32,7 +32,7 @@ void Tooltip::addLine(const std::string &line){
         addGap();
         return;
     }
-    const Texture lineTexture(_font, line, _color);
+    const Texture lineTexture(font, line, _color);
     _content.push_back(lineTexture);
 }
 
@@ -99,7 +99,7 @@ Texture Tooltip::basicTooltip(const std::string &text, px_t maxWidth)
     Tooltip tb;
     
     { // Try a single line
-        Texture lineTexture(tb._font, text, tb._color);
+        Texture lineTexture(font, text, tb._color);
         if (maxWidth == NO_WRAP || lineTexture.width() <= maxWidth) { // No wrapping necessary.
             tb._content.push_back(lineTexture);
             return tb.publish();
@@ -121,7 +121,7 @@ Texture Tooltip::basicTooltip(const std::string &text, px_t maxWidth)
             extraSpaces += " ";
             iss.ignore(1);
         }
-        Texture lineTexture(tb._font, segment + " " +  word, tb._color);
+        Texture lineTexture(font, segment + " " +  word, tb._color);
         if (lineTexture.width() > maxWidth) {
             if (segment == "") {
                 tb._content.push_back(lineTexture);

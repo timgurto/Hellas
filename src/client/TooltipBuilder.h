@@ -10,12 +10,11 @@
 #include "../types.h"
 
 class Tooltip{
-    TTF_Font *_font;
     Color _color;
     std::vector<Texture> _content; // The lines of text; an empty texture implies a gap.
 
     static const px_t PADDING;
-    static TTF_Font *_defaultFont;
+    static TTF_Font *font;
     const static px_t DEFAULT_MAX_WIDTH;
 
 public:
