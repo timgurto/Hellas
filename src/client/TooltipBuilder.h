@@ -9,7 +9,7 @@
 #include "../Color.h"
 #include "../types.h"
 
-class TooltipBuilder{
+class Tooltip{
     TTF_Font *_font;
     Color _color;
     std::vector<Texture> _content; // The lines of text; an empty texture implies a gap.
@@ -19,7 +19,7 @@ class TooltipBuilder{
     const static px_t DEFAULT_MAX_WIDTH;
 
 public:
-    TooltipBuilder();
+    Tooltip();
 
     const static px_t NO_WRAP;
 

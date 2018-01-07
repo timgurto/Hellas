@@ -823,7 +823,7 @@ const Texture &ClientObject::tooltip() const{
     bool isContainer = ot.containerSlots() > 0 && classTag() != 'n';
 
     // Name
-    TooltipBuilder tb;
+    Tooltip tb;
     tb.setColor(Color::ITEM_NAME);
     std::string title = ot.name();
     if (isDead())

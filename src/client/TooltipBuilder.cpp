@@ -5,12 +5,12 @@
 
 extern Renderer renderer;
 
-const px_t TooltipBuilder::PADDING = 4; // Margins, and the height of gaps between lines.
-TTF_Font *TooltipBuilder::_defaultFont = nullptr;
-const px_t TooltipBuilder::DEFAULT_MAX_WIDTH = 150;
-const px_t TooltipBuilder::NO_WRAP = 0;
+const px_t Tooltip::PADDING = 4; // Margins, and the height of gaps between lines.
+TTF_Font *Tooltip::_defaultFont = nullptr;
+const px_t Tooltip::DEFAULT_MAX_WIDTH = 150;
+const px_t Tooltip::NO_WRAP = 0;
 
-TooltipBuilder::TooltipBuilder()
+Tooltip::Tooltip()
 {
     _color = Color::TOOLTIP_FONT;
 
@@ -19,15 +19,15 @@ TooltipBuilder::TooltipBuilder()
     _font = _defaultFont;
 }
 
-void TooltipBuilder::setFont(TTF_Font *font){
+void Tooltip::setFont(TTF_Font *font){
     _font = font ? font : _defaultFont;
 }
 
-void TooltipBuilder::setColor(const Color &color){
+void Tooltip::setColor(const Color &color){
     _color = color;
 }
 
-void TooltipBuilder::addLine(const std::string &line){
+void Tooltip::addLine(const std::string &line){
     if (line == "") {
         addGap();
         return;
@@ -36,16 +36,16 @@ void TooltipBuilder::addLine(const std::string &line){
     _content.push_back(lineTexture);
 }
 
-void TooltipBuilder::addLines(const Lines & lines) {
+void Tooltip::addLines(const Lines & lines) {
     for (auto &line : lines)
         addLine(line);
 }
 
-void TooltipBuilder::addGap(){
+void Tooltip::addGap(){
     _content.push_back(Texture());
 }
 
-Texture TooltipBuilder::publish(){
+Texture Tooltip::publish(){
     // Calculate height and width of final tooltip
     px_t
         totalHeight = 2*PADDING,
@@ -94,9 +94,9 @@ Texture TooltipBuilder::publish(){
     return ret;
 }
 
-Texture TooltipBuilder::basicTooltip(const std::string &text, px_t maxWidth)
+Texture Tooltip::basicTooltip(const std::string &text, px_t maxWidth)
 {
-    TooltipBuilder tb;
+    Tooltip tb;
     
     { // Try a single line
         Texture lineTexture(tb._font, text, tb._color);

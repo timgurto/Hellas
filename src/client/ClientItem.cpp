@@ -73,7 +73,7 @@ const Texture &ClientItem::tooltip() const{
 
     const auto &client = *Client::_instance;
 
-    TooltipBuilder tb;
+    Tooltip tb;
     tb.setColor(Color::ITEM_NAME);
     tb.addLine(_name);
 

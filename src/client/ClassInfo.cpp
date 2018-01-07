@@ -37,7 +37,7 @@ const Texture ClientTalent::tooltip() const {
         return spell->tooltip();
     case STATS:
     {
-        auto tb = TooltipBuilder{};
+        auto tb = Tooltip{};
         tb.setColor(Color::ITEM_NAME);
         tb.addLine(name);
         tb.addGap();

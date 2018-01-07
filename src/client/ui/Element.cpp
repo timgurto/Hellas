@@ -350,7 +350,7 @@ void Element::resetTooltip(){
 }
 
 void Element::setTooltip(const std::string &text){
-    _tooltip = TooltipBuilder::basicTooltip(text);
+    _tooltip = Tooltip::basicTooltip(text);
 }
 
 void Element::setTooltip(const Texture &tooltip){

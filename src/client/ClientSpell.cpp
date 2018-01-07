@@ -17,7 +17,7 @@ const Texture &ClientSpell::tooltip() const {
 
     const auto &client = Client::instance();
 
-    auto tb = TooltipBuilder{};
+    auto tb = Tooltip{};
     tb.setColor(Color::ITEM_NAME);
     tb.addLine(_name);
 

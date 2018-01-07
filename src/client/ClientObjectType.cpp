@@ -33,7 +33,7 @@ const Texture &ClientObjectType::constructionTooltip() const{
     const auto &client = *Client::_instance;
 
     if (_materialsTooltip == nullptr){
-        TooltipBuilder tb;
+        Tooltip tb;
         tb.setColor(Color::ITEM_NAME);
         tb.addLine(_name);
 

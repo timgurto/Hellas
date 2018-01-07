@@ -106,7 +106,7 @@ const Texture &Avatar::tooltip() const{
         return _tooltip;
 
     // Name
-    TooltipBuilder tb;
+    Tooltip tb;
     tb.setColor(Color::ITEM_NAME);
     tb.addLine(_name);
 
