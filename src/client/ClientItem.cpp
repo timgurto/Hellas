@@ -125,6 +125,17 @@ const Texture &ClientItem::tooltip() const{
         }
     }
 
+    // Spell
+    if (castsSpellOnUse()) {
+        auto it = client._spells.find(spellToCastOnUse());
+        if (it == client._spells.end()) {
+            client.debug() << Color::FAILURE << "Can't find spell: " << spellToCastOnUse() << Log::endl;
+        } else {
+            tb.setColor(Color::ITEM_STATS);
+            tb.addLine("Right-click: "s + it->second->createEffectDescription());
+        }
+    }
+
 
     _tooltip = tb.publish();
     return _tooltip;

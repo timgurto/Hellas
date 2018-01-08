@@ -38,6 +38,8 @@ public:
     void radius(Podes r) { _range = r;  _isAoE = true; }
     void school(SpellSchool school) { _school = school; }
 
+    std::string createEffectDescription() const;
+
 private:
     const Projectile::Type *_projectile = nullptr;
     const SoundProfile *_sounds = nullptr;
@@ -54,8 +56,6 @@ private:
 
     std::string _effectName = {};
     Args _effectArgs = {};
-
-    std::string createEffectDescription() const;
 };
 
 using ClientSpells = std::map<std::string, ClientSpell *>;
