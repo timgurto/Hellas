@@ -109,6 +109,7 @@ T max(const T &lhs, const T &rhs) {
     return rhs < lhs ? lhs : rhs;
 }
 
+std::string sAsTimeDisplay(int t);
 std::string msAsTimeDisplay(ms_t t);
 
 #endif

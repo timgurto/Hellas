@@ -19,6 +19,7 @@ public:
     void effectArgs(const ClientSpell::Args &args) { _effectArgs = args; }
     const ClientSpell::Args &effectArgs() const { return _effectArgs; }
     void stats(const StatsMod &s) { _stats = s; }
+    const StatsMod &stats() const { return _stats; }
     void duration(int s) { _duration = s; }
     const int duration() const { return _duration; }
     void tickTime(ms_t ms) { _tickTime = ms; }

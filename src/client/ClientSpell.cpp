@@ -48,24 +48,28 @@ std::string ClientSpell::createEffectDescription() const {
     auto effectArgs = _effectArgs;
 
     auto buffDuration = 0;
+    auto statsBuff = false;
+    const ClientBuffType *buff = nullptr;
 
     auto isBuff = _effectName == "buff" || _effectName == "debuff";
     if (isBuff) {
         auto buffName = effectArgs.s1;
         auto it = Client::instance().buffTypes().find(buffName);
         assert(it != Client::instance().buffTypes().end());
-        const auto &buff = it->second;
+        buff = &it->second;
 
-        buffDuration = buff.duration();
+        buffDuration = buff->duration();
 
-        if (!buff.effectName().empty()) {
-            effectName = buff.effectName();
-            effectArgs = buff.effectArgs();
+        if (!buff->effectName().empty()) {
+            effectName = buff->effectName();
+            effectArgs = buff->effectArgs();
 
-            if (buff.tickTime() > 0) {
-                auto numTicks = buff.duration() * 1000 / buff.tickTime();
+            if (buff->tickTime() > 0) {
+                auto numTicks = buff->duration() * 1000 / buff->tickTime();
                 effectArgs.i1 *= numTicks; // "format: n over m seconds"
             }
+        } else { // Assuming stats.  This will need to be changed when, for example, stun debuffs are added
+            statsBuff = true; // In lieu of an effect name
         }
     }
 
@@ -73,7 +77,20 @@ std::string ClientSpell::createEffectDescription() const {
         "all targets within "s + toString(_range) + " podes"s :
         "target"s;
 
-    if (effectName == "doDirectDamage")
+    if (statsBuff) {
+        oss << "Grant ";
+        auto statStrings = buff->stats().toStrings();
+        auto firstStringHasBeenPrinted = false;
+        for (auto &statString : statStrings) {
+            if (firstStringHasBeenPrinted)
+                oss << ", ";
+            oss << statString;
+            firstStringHasBeenPrinted = true;
+        }
+        oss << " to " << targetString;
+    }
+
+    else if (effectName == "doDirectDamage")
         oss << "Deal " << effectArgs.i1 << " damage to " << targetString;
 
     else if (effectName == "heal")
@@ -87,8 +104,11 @@ std::string ClientSpell::createEffectDescription() const {
             oss << "Increase your threat against target by " << toInt((scalar - 1.0) * 100.0) << "%";
     }
 
-    if (isBuff)
-        oss << " over " << buffDuration << "s";
+    if (isBuff) {
+        auto conjunction = statsBuff ? "for"s : "over"s;
+        
+        oss << " " << conjunction << " " << sAsTimeDisplay(buffDuration);
+    }
 
     oss << ".";
 

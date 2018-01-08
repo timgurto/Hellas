@@ -82,8 +82,8 @@ MapPoint extrapolate(const MapPoint & a, const MapPoint & b, double dist) {
     return{ a.x + xNorm * dist, a.y + yNorm * dist };
 }
 
-std::string msAsTimeDisplay(ms_t t) {
-    auto remaining = t / 1000;
+std::string sAsTimeDisplay(int t) {
+    auto remaining = t;
     auto seconds = remaining % 60; remaining /= 60;
     auto minutes = remaining % 60; remaining /= 60;
     auto hours = remaining % 24; remaining /= 24;
@@ -96,7 +96,11 @@ std::string msAsTimeDisplay(ms_t t) {
     if (seconds > 0) oss << seconds << "s "s;
     auto timeDisplay = oss.str();
     timeDisplay = timeDisplay.substr(0, timeDisplay.size() - 1); // Remove trailing space
-    if (! timeDisplay.empty())
+    if (!timeDisplay.empty())
         return timeDisplay;
     return "0s"s;
+}
+
+std::string msAsTimeDisplay(ms_t t) {
+    return sAsTimeDisplay(t/1000);
 }
