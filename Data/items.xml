@@ -164,6 +164,7 @@
 		<item id="sling" name="Sling" gearSlot="6" >
             <weapon range="25" />
             <stats attack="2"/>
+			<offset x="-7" y="0" />
 		</item>
 		<item id="bow" name="Bow" gearSlot="6" >
             <weapon range="25" />
