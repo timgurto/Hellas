@@ -77,6 +77,7 @@ public:
     virtual void sendGotHitMessageTo(const User &user) const;
     void regen(ms_t timeElapsed);
     virtual void scaleThreatAgainst(Entity &target, double multiplier) {}
+    virtual bool isAttackingTarget() const { return true; } // Assumption: entity has a target
 
     //Buffs &buffs() { return _buffs; }
     const Buffs &buffs() const { return _buffs; }

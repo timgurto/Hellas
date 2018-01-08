@@ -148,6 +148,8 @@ void Entity::update(ms_t timeElapsed){
     auto pTarget = target();
     if (!pTarget)
         return;
+    if (!isAttackingTarget())
+        return;
 
     if (_attackTimer > timeElapsed)
         _attackTimer -= timeElapsed;

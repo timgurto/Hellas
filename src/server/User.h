@@ -121,6 +121,7 @@ public:
     CombatResult generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const override;
     void sendGotHitMessageTo(const User &user) const override;
     bool canBlock() const override;
+    bool isAttackingTarget() const override { return _action == ATTACK; }
 
     char classTag() const override { return 'u'; }
     virtual void sendBuffMsg(const Buff::ID &buff) const override;
