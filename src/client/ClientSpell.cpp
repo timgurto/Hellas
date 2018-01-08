@@ -44,23 +44,53 @@ const Texture &ClientSpell::tooltip() const {
 std::string ClientSpell::createEffectDescription() const {
     std::ostringstream oss;
 
+    auto effectName = _effectName;
+    auto effectArgs = _effectArgs;
+
+    auto buffDuration = 0;
+
+    auto isBuff = _effectName == "buff" || _effectName == "debuff";
+    if (isBuff) {
+        auto buffName = effectArgs.s1;
+        auto it = Client::instance().buffTypes().find(buffName);
+        assert(it != Client::instance().buffTypes().end());
+        const auto &buff = it->second;
+
+        buffDuration = buff.duration();
+
+        if (!buff.effectName().empty()) {
+            effectName = buff.effectName();
+            effectArgs = buff.effectArgs();
+
+            if (buff.tickTime() > 0) {
+                auto numTicks = buff.duration() * 1000 / buff.tickTime();
+                effectArgs.i1 *= numTicks; // "format: n over m seconds"
+            }
+        }
+    }
+
     auto targetString = _isAoE ?
         "all targets within "s + toString(_range) + " podes"s :
         "target"s;
 
-    if (_effectName == "doDirectDamage")
-        oss << "Deal " << _effectArgs.i1 << " damage to " << targetString << ".";
+    if (effectName == "doDirectDamage")
+        oss << "Deal " << effectArgs.i1 << " damage to " << targetString;
 
-    else if (_effectName == "heal")
-        oss << "Restore " << _effectArgs.i1 << " health to target.";
+    else if (effectName == "heal")
+        oss << "Restore " << effectArgs.i1 << " health to target";
 
-    else if (_effectName == "scaleThreat") {
-        auto scalar = _effectArgs.d1;
+    else if (effectName == "scaleThreat") {
+        auto scalar = effectArgs.d1;
         if (scalar < 1.0)
-            oss << "Reduce your threat against target by " << toInt((1.0 - scalar) * 100.0) << "%.";
+            oss << "Reduce your threat against target by " << toInt((1.0 - scalar) * 100.0) << "%";
         else
-            oss << "Increase your threat against target by " << toInt((scalar - 1.0) * 100.0) << "%.";
+            oss << "Increase your threat against target by " << toInt((scalar - 1.0) * 100.0) << "%";
     }
+
+    if (isBuff)
+        oss << " over " << buffDuration << "s";
+
+    oss << ".";
 
     return oss.str();
 }

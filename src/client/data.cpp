@@ -210,6 +210,30 @@ void Client::loadData(const std::string &path){
             auto name = ClientBuffType::Name{};
             if (xr.findAttr(elem, "name", name)) newBuff.name(name);
 
+            int n;
+            if (xr.findAttr(elem, "duration", n)) newBuff.duration(n);
+
+            auto functionElem = xr.findChild("function", elem);
+            if (functionElem) {
+                auto effectName = ""s;
+                if (xr.findAttr(functionElem, "name", effectName))
+                    newBuff.effectName(effectName);
+
+                auto effectArgs = ClientSpell::Args{};
+                xr.findAttr(functionElem, "i1", effectArgs.i1);
+                xr.findAttr(functionElem, "s1", effectArgs.s1);
+                xr.findAttr(functionElem, "d1", effectArgs.d1);
+
+                newBuff.effectArgs(effectArgs);
+
+                if (xr.findAttr(functionElem, "tickTime", n)) newBuff.tickTime(n);
+            }
+
+            auto stats = StatsMod{};
+            auto itemHasStats = xr.findStatsChild("stats", elem, stats);
+            if (itemHasStats)
+                newBuff.stats(stats);
+
             _buffTypes[id] = newBuff;
         }
     }
