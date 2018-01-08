@@ -2,7 +2,7 @@
 #include "Client.h"
 #include "Renderer.h"
 #include "SoundProfile.h"
-#include "TooltipBuilder.h"
+#include "Tooltip.h"
 #include "ui/List.h"
 #include "../util.h"
 

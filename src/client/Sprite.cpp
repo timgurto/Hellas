@@ -3,7 +3,7 @@
 #include "Client.h"
 #include "Sprite.h"
 #include "Renderer.h"
-#include "TooltipBuilder.h"
+#include "Tooltip.h"
 
 #include "../util.h"
 

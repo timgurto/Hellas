@@ -15,7 +15,7 @@
 #include "ClientCombatant.h"
 #include "LogSDL.h"
 #include "Particle.h"
-#include "TooltipBuilder.h"
+#include "Tooltip.h"
 #include "ui/Button.h"
 #include "ui/CombatantPanel.h"
 #include "ui/ConfirmationWindow.h"

@@ -4,7 +4,7 @@
 #include "Element.h"
 #include "Window.h"
 #include "../Client.h"
-#include "../TooltipBuilder.h"
+#include "../Tooltip.h"
 #include "../../util.h"
 
 extern Renderer renderer;

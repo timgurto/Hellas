@@ -1,7 +1,7 @@
 #include <sstream>
 
 #include "Renderer.h"
-#include "TooltipBuilder.h"
+#include "Tooltip.h"
 
 extern Renderer renderer;
 

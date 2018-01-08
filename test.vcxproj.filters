@@ -34,7 +34,6 @@
     <ClCompile Include="src\Client\ClientTerrain.cpp" />
     <ClCompile Include="src\client\Target.cpp" />
     <ClCompile Include="src\client\Texture.cpp" />
-    <ClCompile Include="src\client\TooltipBuilder.cpp" />
     <ClCompile Include="src\client\ui\Button.cpp" />
     <ClCompile Include="src\client\ui\CheckBox.cpp" />
     <ClCompile Include="src\client\ui\ChoiceList.cpp" />
@@ -150,6 +149,7 @@
     <ClCompile Include="src\server\SpellEffect.cpp" />
     <ClCompile Include="src\server\Buff.cpp" />
     <ClCompile Include="src\server\ThreatTable.cpp" />
+    <ClCompile Include="src\client\Tooltip.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -176,7 +176,6 @@
     <ClInclude Include="src\Client\ClientTerrain.h" />
     <ClInclude Include="src\client\Target.h" />
     <ClInclude Include="src\client\Texture.h" />
-    <ClInclude Include="src\client\TooltipBuilder.h" />
     <ClInclude Include="src\client\ui\Button.h" />
     <ClInclude Include="src\client\ui\CheckBox.h" />
     <ClInclude Include="src\client\ui\ChoiceList.h" />
@@ -267,5 +266,6 @@
     <ClInclude Include="src\server\Buff.h" />
     <ClInclude Include="src\server\combat.h" />
     <ClInclude Include="src\server\ThreatTable.h" />
+    <ClInclude Include="src\client\Tooltip.h" />
   </ItemGroup>
 </Project>

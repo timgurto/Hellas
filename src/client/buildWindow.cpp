@@ -1,7 +1,7 @@
 #include <cassert>
 
 #include "Client.h"
-#include "TooltipBuilder.h"
+#include "Tooltip.h"
 #include "ui/CheckBox.h"
 #include "ui/Label.h"
 #include "ui/Line.h"

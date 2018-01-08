@@ -6,7 +6,7 @@
 #include "ClientObjectType.h"
 #include "SoundProfile.h"
 #include "Surface.h"
-#include "TooltipBuilder.h"
+#include "Tooltip.h"
 #include "../Color.h"
 
 ClientObjectType::ClientObjectType(const std::string &id):

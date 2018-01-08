@@ -3,7 +3,7 @@
 
 #include "Client.h"
 #include "ClientSpell.h"
-#include "TooltipBuilder.h"
+#include "Tooltip.h"
 
 ClientSpell::ClientSpell(const std::string &id) :
     _id(id),

@@ -1,6 +1,6 @@
 #include "Client.h"
 #include "ClientItem.h"
-#include "TooltipBuilder.h"
+#include "Tooltip.h"
 #include "../XmlReader.h"
 
 std::map<int, size_t> ClientItem::gearDrawOrder;

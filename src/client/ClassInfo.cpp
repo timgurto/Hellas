@@ -1,6 +1,6 @@
 #include "ClassInfo.h"
 #include "Client.h"
-#include "TooltipBuilder.h"
+#include "Tooltip.h"
 
 ClassInfo::ClassInfo(const Name &name) : _name(name), _trees{} {
     _image = { "Images/Humans/" + name + ".png", Color::MAGENTA };

@@ -7,7 +7,7 @@
 #include "Client.h"
 #include "Particle.h"
 #include "Renderer.h"
-#include "TooltipBuilder.h"
+#include "Tooltip.h"
 #include "ui/Button.h"
 #include "ui/ConfirmationWindow.h"
 #include "ui/ContainerGrid.h"
