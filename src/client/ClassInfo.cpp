@@ -42,12 +42,15 @@ const Texture ClientTalent::tooltip() const {
         tb.addLine(name);
         tb.addGap();
 
+        tb.setColor(Color::ITEM_TAGS);
         if (hasCost()) {
-            tb.setColor(Color::ITEM_TAGS);
             auto tagName = Client::instance().tagName(costTag);
             tb.addLine("Costs "s + tagName + " x"s + toString(costQuantity));
-            tb.addGap();
         }
+        if (reqPointsInTree > 0)
+            tb.addLine("Requires "s + toString(reqPointsInTree) + " points in "s + tree);
+        if (hasCost() || reqPointsInTree > 0)
+            tb.addGap();
 
         if (!flavourText.empty()) {
             tb.setColor(Color::FLAVOUR_TEXT);

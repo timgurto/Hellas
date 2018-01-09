@@ -450,12 +450,17 @@ void Client::loadData(const std::string &path){
                 auto currentTier = 0;
                 for (auto tier : xr.getChildren("tier", tree)) {
 
+                    auto cost = xr.findChild("cost", tier);
                     auto costTag = ""s;
                     auto costQty = 0;
-                    auto cost = xr.findChild("cost", tier);
                     if (cost) {
                         xr.findAttr(cost, "tag", costTag);
                         xr.findAttr(cost, "quantity", costQty);
+                    }
+                    auto req = xr.findChild("requires", tier);
+                    auto reqPointsInTree = 0;
+                    if (req) {
+                        xr.findAttr(req, "pointsInTree", reqPointsInTree);
                     }
 
                     for (auto talent : xr.getChildren("talent", tier)) {
@@ -470,6 +475,8 @@ void Client::loadData(const std::string &path){
 
                         t.costTag = costTag;
                         t.costQuantity = costQty;
+                        t.reqPointsInTree = reqPointsInTree;
+                        t.tree = treeName;
 
                         if (typeName == "spell") {
                             t.type = ClientTalent::SPELL;
