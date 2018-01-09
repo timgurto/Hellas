@@ -68,6 +68,15 @@ void Class::applyStatsTo(Stats &baseStats) const {
     }
 }
 
+size_t Class::pointsInTree(const std::string & treeName) const {
+    auto total = 0;
+    for (auto pair : _talentRanks) {
+        if (pair.first->tree() == treeName)
+            total += pair.second;
+    }
+    return total;
+}
+
 Talent Talent::Dummy(const Name & name) {
     return{ name, DUMMY , DUMMY_TIER };
 }
@@ -94,12 +103,14 @@ _type(type),
 _tier(tier)
 {}
 
-void ClassType::addSpell(const Talent::Name & name, const Spell::ID & spellID, const Tier &tier) {
-    _talents.insert(Talent::Spell(name, spellID, tier));
+Talent &ClassType::addSpell(const Talent::Name & name, const Spell::ID & spellID, const Tier &tier) {
+    auto pair = _talents.insert(Talent::Spell(name, spellID, tier));
+    return const_cast<Talent &>(*pair.first);
 }
 
-void ClassType::addStats(const Talent::Name & name, const StatsMod & stats, const Tier &tier) {
-    _talents.insert(Talent::Stats(name, stats, tier));
+Talent &ClassType::addStats(const Talent::Name & name, const StatsMod & stats, const Tier &tier) {
+    auto pair = _talents.insert(Talent::Stats(name, stats, tier));
+    return const_cast<Talent &>(*pair.first);
 }
 
 const Talent * ClassType::findTalent(const Talent::Name &name) const {

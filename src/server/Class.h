@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <unordered_map>
 
 #include "Spell.h"
 
@@ -34,6 +35,8 @@ public:
     const Spell::ID &spellID() const { return _spellID; }
     const StatsMod &stats() const { return _stats; }
     const Tier &tier() const { return _tier; }
+    void tree(const std::string &treeName) { _tree = treeName; }
+    const std::string &tree() const { return _tree; }
 
 private:
 
@@ -44,6 +47,7 @@ private:
     Spell::ID _spellID{};
     StatsMod _stats{};
     const Tier &_tier;
+    std::string _tree;
 
     static const Tier DUMMY_TIER;
 };
@@ -56,8 +60,8 @@ public:
 
     const ID &id() const { return _id; }
 
-    void addSpell(const Talent::Name &name, const Spell::ID &spellID, const Tier &tier);
-    void addStats(const Talent::Name &name, const StatsMod &stats, const Tier &tier);
+    Talent &addSpell(const Talent::Name &name, const Spell::ID &spellID, const Tier &tier);
+    Talent &addStats(const Talent::Name &name, const StatsMod &stats, const Tier &tier);
     const Talent *findTalent(const Talent::Name &name) const;
 
 private:
@@ -85,6 +89,7 @@ public:
     bool knowsSpell(const Spell::ID &spell) const;
     std::string generateKnownSpellsString() const;
     void applyStatsTo(Stats &baseStats) const;
+    size_t pointsInTree(const std::string &treeName) const;
 
 private:
     const ClassType *_type{ nullptr };

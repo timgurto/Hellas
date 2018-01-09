@@ -725,6 +725,10 @@ void Server::loadData(const std::string &path){
             auto newClass = ClassType{ className };
 
             for (auto tree : xr.getChildren("tree", elem)) {
+                auto treeName = ""s;
+                if (!xr.findAttr(tree, "name", treeName))
+                    continue;
+
                 for (auto tierElem : xr.getChildren("tier", tree)) {
                     _tiers.push_back({});
                     Tier &tier = _tiers.back();
@@ -754,7 +758,9 @@ void Server::loadData(const std::string &path){
                             if (talentName.empty())
                                 talentName = spell.name();
 
-                            newClass.addSpell(talentName, spellID, tier);
+                            Talent &t = newClass.addSpell(talentName, spellID, tier);
+
+                            t.tree(treeName);
 
                         } else if (type == "stats") {
                             if (talentName.empty())
@@ -763,7 +769,9 @@ void Server::loadData(const std::string &path){
                             if (!xr.findStatsChild("stats", talent, stats))
                                 continue;
 
-                            newClass.addStats(talentName, stats, tier);
+                            Talent &t = newClass.addStats(talentName, stats, tier);
+
+                            t.tree(treeName);
                         }
                     }
                 }
