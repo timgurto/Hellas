@@ -1,6 +1,13 @@
 #pragma once
 
+#include <list>
+
 #include "Spell.h"
+
+// A single tier of a single tree.  3 class * 3 trees * 5 tiers = 45 Tiers total
+struct Tier {
+};
+using Tiers = std::list<Tier>;
 
 class Talent {
 public:
@@ -14,8 +21,8 @@ public:
     };
 
     static Talent Dummy(const Name &name);
-    static Talent Spell(const Name &name, const Spell::ID &id);
-    static Talent Stats(const Name &name, const StatsMod &stats);
+    static Talent Spell(const Name &name, const Spell::ID &id, const Tier &tier);
+    static Talent Stats(const Name &name, const StatsMod &stats, const Tier &tier);
 
     bool operator<(const Talent &rhs) const;
 
@@ -25,12 +32,15 @@ public:
 
 private:
 
-    Talent(const Name &name, Type type);
+    Talent(const Name & name, Type type, const Tier &tier);
 
     Name _name{};
     Type _type{ DUMMY };
     Spell::ID _spellID{};
     StatsMod _stats{};
+    const Tier &_tier;
+
+    static const Tier DUMMY_TIER;
 };
 
 class ClassType {
@@ -41,8 +51,8 @@ public:
 
     const ID &id() const { return _id; }
 
-    void addSpell(const Talent::Name &name, const Spell::ID &spellID);
-    void addStats(const Talent::Name &name, const StatsMod &stats);
+    void addSpell(const Talent::Name &name, const Spell::ID &spellID, const Tier &tier);
+    void addStats(const Talent::Name &name, const StatsMod &stats, const Tier &tier);
     const Talent *findTalent(const Talent::Name &name) const;
 
 private:

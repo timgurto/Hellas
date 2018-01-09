@@ -717,6 +717,7 @@ void Server::loadData(const std::string &path){
         _debug("Failed to load classes.xml", Color::FAILURE);
     else {
         _classes.clear();
+        _tiers.clear();
         for (auto elem : xr.getChildren("class")) {
             std::string className;
             if (!xr.findAttr(elem, "name", className))
@@ -724,9 +725,11 @@ void Server::loadData(const std::string &path){
             auto newClass = ClassType{ className };
 
             for (auto tree : xr.getChildren("tree", elem)) {
-                for (auto tier : xr.getChildren("tier", tree)) {
+                for (auto tierElem : xr.getChildren("tier", tree)) {
+                    _tiers.push_back({});
+                    Tier &tier = _tiers.back();
 
-                    for (auto talent : xr.getChildren("talent", tier)) {
+                    for (auto talent : xr.getChildren("talent", tierElem)) {
                         auto type = ""s;
                         if (!xr.findAttr(talent, "type", type))
                             continue;
@@ -746,7 +749,7 @@ void Server::loadData(const std::string &path){
                             if (talentName.empty())
                                 talentName = spell.name();
 
-                            newClass.addSpell(talentName, spellID);
+                            newClass.addSpell(talentName, spellID, tier);
 
                         } else if (type == "stats") {
                             if (talentName.empty())
@@ -755,7 +758,7 @@ void Server::loadData(const std::string &path){
                             if (!xr.findStatsChild("stats", talent, stats))
                                 continue;
 
-                            newClass.addStats(talentName, stats);
+                            newClass.addStats(talentName, stats, tier);
                         }
                     }
                 }

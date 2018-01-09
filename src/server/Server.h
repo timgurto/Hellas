@@ -181,6 +181,7 @@ private:
     Spells _spells;
     BuffTypes _buffTypes;
     ClassTypes _classes;
+    Tiers _tiers; // Objects are never accessed via container.  This is just dynamic-object storage.
 
     const ClassType &chooseRandomClass() const;
 

@@ -3,6 +3,8 @@
 #include "Class.h"
 #include "User.h"
 
+const Tier Talent::DUMMY_TIER;
+
 bool Class::canTakeATalent() const {
     return _talentPointsAllocated < talentPointsAvailable();
 }
@@ -67,17 +69,17 @@ void Class::applyStatsTo(Stats &baseStats) const {
 }
 
 Talent Talent::Dummy(const Name & name) {
-    return{ name, DUMMY };
+    return{ name, DUMMY , DUMMY_TIER };
 }
 
-Talent Talent::Spell(const Name &name, const Spell::ID &id) {
-    auto t = Talent{ name, SPELL };
+Talent Talent::Spell(const Name &name, const Spell::ID &id, const Tier &tier) {
+    auto t = Talent{ name, SPELL, tier };
     t._spellID = id;
     return t;
 }
 
-Talent Talent::Stats(const Name & name, const StatsMod & stats) {
-    auto t = Talent{ name, STATS };
+Talent Talent::Stats(const Name & name, const StatsMod & stats, const Tier &tier) {
+    auto t = Talent{ name, STATS, tier };
     t._stats = stats;
     return t;
 }
@@ -86,17 +88,18 @@ bool Talent::operator<(const Talent & rhs) const {
     return _name < rhs._name;
 }
 
-Talent::Talent(const Name & name, Type type):
+Talent::Talent(const Name & name, Type type, const Tier &tier):
 _name(name),
-_type(type)
+_type(type),
+_tier(tier)
 {}
 
-void ClassType::addSpell(const Talent::Name & name, const Spell::ID & spellID) {
-    _talents.insert(Talent::Spell(name, spellID));
+void ClassType::addSpell(const Talent::Name & name, const Spell::ID & spellID, const Tier &tier) {
+    _talents.insert(Talent::Spell(name, spellID, tier));
 }
 
-void ClassType::addStats(const Talent::Name & name, const StatsMod & stats) {
-    _talents.insert(Talent::Stats(name, stats));
+void ClassType::addStats(const Talent::Name & name, const StatsMod & stats, const Tier &tier) {
+    _talents.insert(Talent::Stats(name, stats, tier));
 }
 
 const Talent * ClassType::findTalent(const Talent::Name &name) const {
