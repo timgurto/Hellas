@@ -450,6 +450,14 @@ void Client::loadData(const std::string &path){
                 auto currentTier = 0;
                 for (auto tier : xr.getChildren("tier", tree)) {
 
+                    auto costTag = ""s;
+                    auto costQty = 0;
+                    auto cost = xr.findChild("cost", tier);
+                    if (cost) {
+                        xr.findAttr(cost, "tag", costTag);
+                        xr.findAttr(cost, "quantity", costQty);
+                    }
+
                     for (auto talent : xr.getChildren("talent", tier)) {
                         auto t = ClientTalent{};
 
@@ -459,6 +467,9 @@ void Client::loadData(const std::string &path){
 
                         xr.findAttr(talent, "name", t.name);
                         xr.findAttr(talent, "flavourText", t.flavourText);
+
+                        t.costTag = costTag;
+                        t.costQuantity = costQty;
 
                         if (typeName == "spell") {
                             t.type = ClientTalent::SPELL;

@@ -42,6 +42,13 @@ const Texture ClientTalent::tooltip() const {
         tb.addLine(name);
         tb.addGap();
 
+        if (hasCost()) {
+            tb.setColor(Color::ITEM_TAGS);
+            auto tagName = Client::instance().tagName(costTag);
+            tb.addLine("Costs "s + tagName + " x"s + toString(costQuantity));
+            tb.addGap();
+        }
+
         if (!flavourText.empty()) {
             tb.setColor(Color::FLAVOUR_TEXT);
             tb.addLine(flavourText);

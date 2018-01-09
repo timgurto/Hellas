@@ -34,4 +34,6 @@
 <tag id="anvil1"        name="Metalworking" />
 <tag id="wand"          name="Wand" />
 
+<tag id="food"          name="Food" />
+
 </root>

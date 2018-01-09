@@ -34,6 +34,10 @@ struct ClientTalent {
     const ClientSpell *spell{ nullptr };
     StatsMod stats{};
     std::string flavourText{};
+
+    std::string costTag{};
+    size_t costQuantity{0};
+    bool hasCost() const { return !costTag.empty() && costQuantity > 0; }
 };
 
 struct Tree {
