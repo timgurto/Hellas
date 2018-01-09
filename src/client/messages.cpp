@@ -179,6 +179,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_INVALID_SPELL_TARGET:
         case SV_NOT_ENOUGH_ENERGY:
         case SV_NO_TALENT_POINTS:
+        case SV_MISSING_ITEMS_FOR_TALENT:
             errorMessageColor = Color::WARNING; // Yellow above, red below
         case SV_INVALID_USER:
         case SV_INVALID_ITEM:
@@ -1744,7 +1745,8 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_INVALID_TALENT] = "That isn't a talent you can take.";
     _errorMessages[SV_ALREADY_KNOW_SPELL] = "You already know that spell.";
     _errorMessages[SV_DONT_KNOW_SPELL] = "You haven't learned that spell.";
-    _errorMessages[SV_NO_TALENT_POINTS] = "You don't have any more talent points to allocate";
+    _errorMessages[SV_NO_TALENT_POINTS] = "You don't have any more talent points to allocate.";
+    _errorMessages[SV_MISSING_ITEMS_FOR_TALENT] = "You don't have the items needed to learn that.";
 }
 
 void Client::performCommand(const std::string &commandString){

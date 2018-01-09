@@ -221,6 +221,21 @@ bool User::hasItems(const ItemSet &items) const{
     return false;
 }
 
+bool User::hasItems(const std::string & tag, size_t quantity) const {
+    auto remaining = quantity;
+    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
+        const std::pair<const ServerItem *, size_t> &invSlot = _inventory[i];
+        if (!invSlot.first)
+            continue;
+        if (invSlot.first->isTag(tag)) {
+            if (invSlot.second >= remaining)
+                return true;
+            remaining -= invSlot.second;
+        }
+    }
+    return false;
+}
+
 bool User::hasTool(const std::string &tagName) const{
 
     // Check gear
@@ -283,6 +298,31 @@ void User::removeItems(const ItemSet &items) {
                 _inventory[i].first = nullptr;
             invSlotsChanged.insert(i);
             if (remaining.isEmpty())
+                break;
+        }
+    }
+    for (size_t slotNum : invSlotsChanged) {
+        const std::pair<const ServerItem *, size_t> &slot = _inventory[slotNum];
+        std::string id = slot.first ? slot.first->id() : "none";
+        Server::instance().sendInventoryMessage(*this, slotNum, Server::INVENTORY);
+    }
+}
+
+void User::removeItems(const std::string & tag, size_t quantity) {
+    std::set<size_t> invSlotsChanged;
+    auto remaining = quantity;
+    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
+        std::pair<const ServerItem *, size_t> &invSlot = _inventory[i];
+        if (invSlot.first->isTag(tag)) {
+            size_t itemsToRemove = min(invSlot.second, remaining);
+            remaining -= itemsToRemove;
+
+            _inventory[i].second -= itemsToRemove;
+            if (_inventory[i].second == 0)
+                _inventory[i].first = nullptr;
+
+            invSlotsChanged.insert(i);
+            if (remaining == 0)
                 break;
         }
     }

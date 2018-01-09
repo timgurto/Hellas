@@ -6,6 +6,10 @@
 
 // A single tier of a single tree.  3 class * 3 trees * 5 tiers = 45 Tiers total
 struct Tier {
+    std::string costTag;
+    size_t costQuantity{ 0 };
+
+    bool hasItemCost() const { return !costTag.empty() && costQuantity > 0; }
 };
 using Tiers = std::list<Tier>;
 
@@ -29,6 +33,7 @@ public:
     Type type() const { return _type; }
     const Spell::ID &spellID() const { return _spellID; }
     const StatsMod &stats() const { return _stats; }
+    const Tier &tier() const { return _tier; }
 
 private:
 

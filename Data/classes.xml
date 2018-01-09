@@ -3,10 +3,12 @@
 <class name="Soldier" >
     <tree name="Hoplite" >
         <tier>
+            <cost tag="food" quantity="1" />
             <talent type="stats" name="Train Reflexes"> <stats dodge="1" /> </talent>
             <talent type="stats" name="Train Willpower" flavourText="Build willpower through discomfort and deprivation, strengthening your mental defenses."> <stats airResist="1" earthResist="1" fireResist="1" waterResist="1" /> </talent>
         </tier>
         <tier>
+            <cost tag="food" quantity="2" />
             <talent type="spell" id="shieldBlock" />
             <talent type="stats" name="Train Endurance"> <stats armor="1" /> </talent>
             <!--talent type="spell" id="Menacing Strike" /-->
@@ -14,10 +16,12 @@
     </tree>
     <tree name="Skirmisher" >
         <tier>
+            <cost tag="food" quantity="1" />
             <talent type="stats" name="Train Weapons"> <stats crit="1" /> </talent>
             <talent type="stats" name="Train Strength"> <stats physicalDamage="2" /> </talent>
         </tier>
         <tier>
+            <cost tag="food" quantity="2" />
             <!--talent type="spell" id="sprint" /-->
             <!--talent type="spell" id="Head Crack" /-->
             <talent type="spell" id="bleed" />
@@ -25,11 +29,13 @@
     </tree>
     <tree name="Philosopher" >
         <tier>
+            <cost tag="food" quantity="1" />
             <talent type="stats" name="Grammar" flavourText="Memorize new facts, rules and relationships, giving you a larger pool of knowledge from which to draw."> <stats energy="10" /> </talent>
             <talent type="stats" name="Arche" flavourText="Water is the source of all matter, motion and change, and this knowledge gives you new ways to quench fire."> <stats fireResist="2" /> </talent>
             <talent type="stats" name="Epicureanism" flavourText="Overcoming the fear of death helps you to embrace life."> <stats health="10" /> </talent>
         </tier>
         <tier>
+            <cost tag="food" quantity="2" />
             <talent type="spell" id="airDot" />
             <talent type="spell" id="threatDropPhilosopher" />
         </tier>
@@ -39,20 +45,24 @@
 <class name="Scholar" >
     <tree name="Magus" >
         <tier>
+            <cost tag="food" quantity="1" />
             <talent type="stats" name="Study Widely"> <stats energy="10" /> </talent>
             <talent type="stats" name="Study Deeply"> <stats magicDamage="1" /> </talent>
         </tier>
         <tier>
+            <cost tag="food" quantity="2" />
             <talent type="stats" name="Study the Zodiac" flavourText="Each of us is born under a constellation.  Studying their effects helps you to live in harmony."> <stats health="10" /> </talent>
             <talent type="spell" id="fireball" />
         </tier>
     </tree>
     <tree name="Naturalist" >
         <tier>
+            <cost tag="food" quantity="1" />
             <talent type="stats" name="Study Poisons" flavourText="Delving into the art of poisons may help you to avoid or resist them."> <stats earthResist="2" /> </talent>
             <talent type="stats" name="Study Medicine" flavourText="With more understanding of medicine comes a greater ability to mend the body."> <stats healing="3" /> </talent>
         </tier>
         <tier>
+            <cost tag="food" quantity="2" />
             <talent type="spell" id="poison" />
             <!--talent type="stats" id="Study Classification" /-->
             <!--talent type="spell" id="Leeches" /-->
@@ -60,10 +70,12 @@
     </tree>
     <tree name="Alchemist" >
         <tier>
+            <cost tag="food" quantity="1" />
             <talent type="stats" name="Embrace the Shadow" flavourText="Avoid being seen through mastery of illusion and deception."> <stats dodge="1" /> </talent>
             <talent type="stats" name="Transmute Skin" flavourText="Alter your skin, making it thicker and more resilient."> <stats armor="1" /> </talent>
         </tier>
         <tier>
+            <cost tag="food" quantity="2" />
             <talent type="spell" id="threatDropAlchemist" />
             <talent type="stats" name="Eternal Life" flavourText="The quest for an elixir of life comes ever closer to fruition."> <stats hps="1" /> </talent>
             <!--talent type="spell" id="Transmute Metal" /-->
@@ -74,10 +86,12 @@
 <class name="Zealot" >
     <tree name="Priest" >
         <tier>
+            <cost tag="food" quantity="1" />
             <talent type="stats" name="Piety" flavourText="Striving for holiness is rewarded with the generosity of the gods."> <stats healing="3" /> </talent>
             <talent type="stats" name="Purity"> <stats airResist="2" /> </talent>
         </tier>
         <tier>
+            <cost tag="food" quantity="2" />
             <!--talent type="spell" id="Blessing of Hephaestus" /-->
             <talent type="spell" id="majorEnergyBuff" />
             <talent type="spell" id="priestEconHeal" />
@@ -85,10 +99,12 @@
     </tree>
     <tree name="Cultist" >
         <tier>
+            <cost tag="food" quantity="1" />
             <talent type="stats" name="Devotion to Dionysus" flavourText="The god of wine is well placed to protect you from water."> <stats waterResist="2" /> </talent>
             <talent type="stats" name="Devotion to Hermes Trismegistus" flavourText="Seek enlightenment from the divine master of writing and magic."> <stats energy="10" /> </talent>
         </tier>
         <tier>
+            <cost tag="food" quantity="2" />
             <!--talent type="spell" id="Demonic Armor" /-->
             <talent type="stats" name="Devotion to Mithra" flavourText="The lord of light dazzles your enemies and fades their efforts."> <stats airResist="1" earthResist="1" fireResist="1" waterResist="1" /> </talent>
             <talent type="spell" id= "selfHeal" />
@@ -96,10 +112,12 @@
     </tree>
     <tree name="Poet" >
         <tier>
+            <cost tag="food" quantity="1" />
             <talent type="stats" name="Practice Breathing" flavourText="Breathing exercises are good for the lungs and great for the heart."> <stats health="10" /> </talent>
             <talent type="stats" name="Practice Satire" flavourText="Effective satire means finding and exploiting your enemy's weaknesses."> <stats crit="1" /> </talent>
         </tier>
         <tier>
+            <cost tag="food" quantity="2" />
             <talent type="stats" name="Practice Taking Criticism" flavourText="Keeping your head in the face of critics is essential to surviving the stage."> <stats dodge="1" /> </talent>
             <!--talent type="spell" id="Uplifting Comedy" /-->
             <!--talent type="spell" id="Depressing Tragedy" /-->

@@ -494,6 +494,9 @@ enum MessageCode{
     // You tried to learn an invalid spell
     SV_INVALID_TALENT,
 
+    // You tried to learn a talent which you can't afford
+    SV_MISSING_ITEMS_FOR_TALENT,
+
     // You tried to learn a spell that you already know
     SV_ALREADY_KNOW_SPELL,
 

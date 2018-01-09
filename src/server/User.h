@@ -149,7 +149,9 @@ public:
 
     // Whether the user has enough materials to craft a recipe
     bool hasItems(const ItemSet &items) const;
+    bool hasItems(const std::string &tag, size_t quantity) const;
     void removeItems(const ItemSet &items);
+    void removeItems(const std::string &tag, size_t quantity);
     bool hasTool(const std::string &tagName) const;
     bool hasTools(const std::set<std::string> &classes) const;
 

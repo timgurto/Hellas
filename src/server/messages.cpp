@@ -1383,6 +1383,16 @@ void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName)
         return;
     }
 
+    auto &tier = talent->tier();
+    if (tier.hasItemCost()) {
+        if (!user.hasItems(tier.costTag, tier.costQuantity)) {
+            sendMessage(user.socket(), SV_MISSING_ITEMS_FOR_TALENT);
+            return;
+        }
+        user.removeItems(tier.costTag, tier.costQuantity);
+    }
+
+
     if (talent->type() == Talent::SPELL) {
         if (userClass.hasTalent(talent)) {
             sendMessage(user.socket(), SV_ALREADY_KNOW_SPELL);
