@@ -9,6 +9,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
+            <requires pointsInTree="5" />
             <talent type="spell" id="shieldBlock" />
             <talent type="stats" name="Train Endurance"> <stats armor="1" /> </talent>
             <!--talent type="spell" id="Menacing Strike" /-->
@@ -22,6 +23,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
+            <requires pointsInTree="5" />
             <!--talent type="spell" id="sprint" /-->
             <!--talent type="spell" id="Head Crack" /-->
             <talent type="spell" id="bleed" />
@@ -36,6 +38,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
+            <requires pointsInTree="5" />
             <talent type="spell" id="airDot" />
             <talent type="spell" id="threatDropPhilosopher" />
         </tier>
@@ -51,6 +54,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
+            <requires pointsInTree="5" />
             <talent type="stats" name="Study the Zodiac" flavourText="Each of us is born under a constellation.  Studying their effects helps you to live in harmony."> <stats health="10" /> </talent>
             <talent type="spell" id="fireball" />
         </tier>
@@ -63,6 +67,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
+            <requires pointsInTree="5" />
             <talent type="spell" id="poison" />
             <!--talent type="stats" id="Study Classification" /-->
             <!--talent type="spell" id="Leeches" /-->
@@ -76,6 +81,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
+            <requires pointsInTree="5" />
             <talent type="spell" id="threatDropAlchemist" />
             <talent type="stats" name="Eternal Life" flavourText="The quest for an elixir of life comes ever closer to fruition."> <stats hps="1" /> </talent>
             <!--talent type="spell" id="Transmute Metal" /-->
@@ -92,6 +98,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
+            <requires pointsInTree="5" />
             <!--talent type="spell" id="Blessing of Hephaestus" /-->
             <talent type="spell" id="majorEnergyBuff" />
             <talent type="spell" id="priestEconHeal" />
@@ -105,6 +112,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
+            <requires pointsInTree="5" />
             <!--talent type="spell" id="Demonic Armor" /-->
             <talent type="stats" name="Devotion to Mithra" flavourText="The lord of light dazzles your enemies and fades their efforts."> <stats airResist="1" earthResist="1" fireResist="1" waterResist="1" /> </talent>
             <talent type="spell" id= "selfHeal" />
@@ -118,6 +126,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
+            <requires pointsInTree="5" />
             <talent type="stats" name="Practice Taking Criticism" flavourText="Keeping your head in the face of critics is essential to surviving the stage."> <stats dodge="1" /> </talent>
             <!--talent type="spell" id="Uplifting Comedy" /-->
             <!--talent type="spell" id="Depressing Tragedy" /-->

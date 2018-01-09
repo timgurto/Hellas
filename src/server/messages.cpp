@@ -1384,6 +1384,13 @@ void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName)
     }
 
     auto &tier = talent->tier();
+
+    if (tier.reqPointsInTree > 0 &&
+            user.getClass().pointsInTree(talent->tree()) < tier.reqPointsInTree) {
+        sendMessage(user.socket(), SV_MISSING_REQ_FOR_TALENT);
+        return;
+    }
+
     if (tier.hasItemCost()) {
         if (!user.hasItems(tier.costTag, tier.costQuantity)) {
             sendMessage(user.socket(), SV_MISSING_ITEMS_FOR_TALENT);

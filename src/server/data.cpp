@@ -732,10 +732,16 @@ void Server::loadData(const std::string &path){
                 for (auto tierElem : xr.getChildren("tier", tree)) {
                     _tiers.push_back({});
                     Tier &tier = _tiers.back();
+
                     auto cost = xr.findChild("cost", tierElem);
                     if (cost) {
                         xr.findAttr(cost, "tag", tier.costTag);
                         xr.findAttr(cost, "quantity", tier.costQuantity);
+                    }
+
+                    auto req = xr.findChild("requires", tierElem);
+                    if (req) {
+                        xr.findAttr(req, "pointsInTree", tier.reqPointsInTree);
                     }
 
                     for (auto talent : xr.getChildren("talent", tierElem)) {
