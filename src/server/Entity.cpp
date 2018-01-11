@@ -209,7 +209,7 @@ void Entity::update(ms_t timeElapsed){
         if (outcome == CRIT)
             rawDamage *= 2;
 
-        auto resistance = pTarget->_stats.resistanceByType(SpellSchool::PHYSICAL);
+        auto resistance = pTarget->_stats.resistanceByType(school());
         auto resistanceMultiplier = (100 - resistance) / 100.0;
         rawDamage *= resistanceMultiplier;
 

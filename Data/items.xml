@@ -351,4 +351,8 @@
     />
 </item>
 
+<item id="fireRing" name="Ring of Fire" gearSlot="1" >
+    <stats fireResist="80" />
+</item>
+
 </root>

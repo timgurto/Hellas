@@ -445,6 +445,10 @@ void Server::loadData(const std::string &path){
             if (xr.findAttr(elem, "level", level))
                 nt->level(level);
 
+            auto school = ""s;
+            if (xr.findAttr(elem, "school", school))
+                nt->school(school);
+
             auto n = 0;
             if (xr.findAttr(elem, "isRanged", n) && n != 0) nt->makeRanged();
 

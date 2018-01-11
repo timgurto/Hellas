@@ -6,6 +6,7 @@
 #include "ThreatTable.h"
 #include "objects/Object.h"
 #include "../Point.h"
+#include "../SpellSchool.h"
 
 // Objects that can engage in combat, and that are AI-driven
 class NPC : public Entity {
@@ -36,6 +37,7 @@ public:
     px_t attackRange() const override;
     void sendRangedHitMessageTo(const User &userToInform) const override;
     void sendRangedMissMessageTo(const User &userToInform) const override;
+    SpellSchool school() const override { return npcType()->school(); }
 
     char classTag() const override { return 'n'; }
 

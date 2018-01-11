@@ -78,6 +78,7 @@ public:
     void regen(ms_t timeElapsed);
     virtual void scaleThreatAgainst(Entity &target, double multiplier) {}
     virtual bool isAttackingTarget() const { return true; } // Assumption: entity has a target
+    virtual SpellSchool school() const { return SpellSchool::PHYSICAL; }
 
     //Buffs &buffs() { return _buffs; }
     const Buffs &buffs() const { return _buffs; }

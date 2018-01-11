@@ -10,6 +10,7 @@ class NPCType : public ObjectType{
     LootTable _lootTable;
     Level _level;
     bool _isRanged = false;
+    SpellSchool _school{ SpellSchool::PHYSICAL };
 
 public:
     static Stats BASE_STATS;
@@ -24,6 +25,8 @@ public:
     Level level() const { return _level; }
     void makeRanged() { _isRanged = true; }
     bool isRanged() const { return _isRanged; }
+    void school(SpellSchool school) { _school = school; }
+    SpellSchool school() const { return _school; }
 
 
     virtual char classTag() const override { return 'n'; }
