@@ -15,5 +15,5 @@ using Percentage = short;
 using BonusDamage = int;
 using Regen = int;
 
-using Level = unsigned short;
+using Level = short;
 using XP = unsigned;

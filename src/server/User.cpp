@@ -465,10 +465,13 @@ CombatResult User::generateHitAgainst(const Entity &target, CombatType type, Spe
     const auto
         BASE_MISS_CHANCE = Percentage{ 5 };
 
+    auto levelDiff = target.level() - level();
+
     auto roll = rand() % 100;
 
     // Miss
-    auto missChance = max( BASE_MISS_CHANCE - stats().hit, 0 );
+    auto missChance = BASE_MISS_CHANCE - stats().hit + levelDiff;
+    missChance = max(0, missChance);
     if (combatTypeCanHaveOutcome( type, MISS, school, range))
     {
         if (roll < missChance)
@@ -477,7 +480,8 @@ CombatResult User::generateHitAgainst(const Entity &target, CombatType type, Spe
     }
 
     // Dodge
-    auto dodgeChance = target.stats().dodge;
+    auto dodgeChance = target.stats().dodge + levelDiff;
+    dodgeChance = max(0, dodgeChance);
     if (combatTypeCanHaveOutcome(type, DODGE, school, range)) {
         if (roll < dodgeChance)
             return DODGE;
@@ -485,7 +489,8 @@ CombatResult User::generateHitAgainst(const Entity &target, CombatType type, Spe
     }
 
     // Block
-    auto blockChance = target.stats().block;
+    auto blockChance = target.stats().block + levelDiff;
+    blockChance = max(0, blockChance);
     if (target.canBlock() && combatTypeCanHaveOutcome(type, BLOCK, school, range)) {
         if (roll < blockChance)
             return BLOCK;
@@ -493,7 +498,8 @@ CombatResult User::generateHitAgainst(const Entity &target, CombatType type, Spe
     }
 
     // Crit
-    auto critChance = stats().crit - target.stats().critResist;
+    auto critChance = stats().crit - target.stats().critResist - levelDiff;
+    critChance = max(0, critChance);
     if (critChance > 0 && combatTypeCanHaveOutcome(type, CRIT, school, range)) {
         if (roll < critChance)
             return CRIT;

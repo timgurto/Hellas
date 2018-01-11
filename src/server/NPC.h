@@ -29,6 +29,7 @@ public:
     bool canBeAttackedBy(const User &user) const override { return true; }
     CombatResult generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const override;
     void scaleThreatAgainst(Entity &target, double multiplier) override;
+    Level level() const override { return _level; }
 
     void updateStats() override;
     void onHealthChange() override;

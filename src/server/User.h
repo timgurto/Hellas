@@ -123,6 +123,7 @@ public:
     bool canBlock() const override;
     bool isAttackingTarget() const override { return _action == ATTACK; }
     SpellSchool school() const override;
+    Level level() const override { return _level; }
 
     char classTag() const override { return 'u'; }
     virtual void sendBuffMsg(const Buff::ID &buff) const override;
@@ -183,7 +184,6 @@ public:
 
     static const Level MAX_LEVEL = 60;
     static const std::vector<XP> XP_PER_LEVEL;
-    Level level() const { return _level; }
     void level(Level l) { _level = l; }
     XP xp() const { return _xp; }
     void xp(XP newXP) { _xp = newXP; }
