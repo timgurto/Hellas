@@ -522,6 +522,9 @@ void Server::loadData(const std::string &path){
             if (weaponElem != nullptr) {
                 auto range = Podes{};
                 if (xr.findAttr(weaponElem, "range", range)) item.weaponRange(range);
+
+                auto school = ""s;
+                if (xr.findAttr(weaponElem, "school", school)) item.weaponSchool({ school });
             }
 
             int n;

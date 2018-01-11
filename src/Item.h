@@ -27,6 +27,8 @@ public:
     void strength(Hitpoints n) { _strength = n; }
     void weaponRange(Podes range) { _weaponRange = range.toPixels(); }
     px_t weaponRange() const { return _weaponRange; }
+    void weaponSchool(SpellSchool school) { _weaponSchool = school; }
+    SpellSchool weaponSchool() const { return _weaponSchool; }
     void castsSpellOnUse(const std::string &spell) { _castsSpellOnUse = spell; }
     bool castsSpellOnUse() const { return ! _castsSpellOnUse.empty(); }
     const std::string &spellToCastOnUse() const { return _castsSpellOnUse; }
@@ -49,6 +51,7 @@ protected:
 
     // If a weapon, how close the holder must be to a target to it.
     px_t _weaponRange = Podes::MELEE_RANGE.toPixels();
+    SpellSchool _weaponSchool{ SpellSchool::PHYSICAL };
 
 private:
     Hitpoints _strength;

@@ -514,6 +514,13 @@ bool User::canBlock() const {
     return offhandItem->isTag("shield");
 }
 
+SpellSchool User::school() const {
+    auto weapon = _gear[Item::WEAPON_SLOT].first;
+    if (!weapon)
+        return {};
+    return weapon->weaponSchool();
+}
+
 void User::onHealthChange(){
     const Server &server = *Server::_instance;
     for (const User *userToInform: server.findUsersInArea(location()))

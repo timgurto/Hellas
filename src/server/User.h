@@ -122,6 +122,7 @@ public:
     void sendGotHitMessageTo(const User &user) const override;
     bool canBlock() const override;
     bool isAttackingTarget() const override { return _action == ATTACK; }
+    SpellSchool school() const override;
 
     char classTag() const override { return 'u'; }
     virtual void sendBuffMsg(const Buff::ID &buff) const override;
