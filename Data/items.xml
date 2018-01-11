@@ -354,5 +354,8 @@
 <item id="fireRing" name="Ring of Fire" gearSlot="1" >
     <stats fireResist="80" />
 </item>
+<item id="earthRing" name="Ring of Earth" gearSlot="1" >
+    <stats earthResist="80" />
+</item>
 
 </root>

@@ -693,11 +693,17 @@ void Server::loadData(const std::string &path){
                 newBuff.duration(durationInSeconds * 1000);
             }
 
+            auto school = SpellSchool{ SpellSchool::PHYSICAL };
+            auto schoolString = ""s;
+            if (xr.findAttr(elem, "school", schoolString))
+                school = { schoolString };
+
             auto functionElem = xr.findChild("function", elem);
             if (functionElem) {
                 auto functionName = ""s;
                 if (xr.findAttr(functionElem, "name", functionName))
                 newBuff.effect().setFunction(functionName);
+                newBuff.effect().school(school);
 
                 auto args = SpellEffect::Args{};
                 xr.findAttr(functionElem, "i1", args.i1);

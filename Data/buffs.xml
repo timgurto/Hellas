@@ -3,7 +3,7 @@
 <buff id="food" name="Eating" duration="10">
     <stats hps="5" eps="5" />
 </buff>
-<buff id="airDot" name="Socratic questioning" duration="12">
+<buff id="airDot" name="Socratic questioning" duration="12" school="air">
     <function name="doDirectDamage" i1="2" tickTime="1500" />
 </buff>
 <buff id="bleed" name="Bleeding" duration="12">
@@ -12,7 +12,7 @@
 <buff id="majorEnergy" name="Blessed by Apollo" duration="1800">
     <stats energy="100" />
 </buff>
-<buff id="poison" name="Poisoned" duration="12">
+<buff id="poison" name="Poisoned" duration="12" school="earth">
     <function name="doDirectDamage" i1="2" tickTime="1500" />
 </buff>
 <buff id="shieldBlock" name="Shield raised" duration="8">
