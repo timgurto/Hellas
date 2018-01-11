@@ -45,7 +45,10 @@ CombatResult SpellEffect::doDirectDamage(const SpellEffect &effect, Entity &cast
     if (outcome == CRIT)
         rawDamage *= 2;
 
-    auto resistance = target.stats().resistanceByType(effect._school);
+    auto levelDiff = target.level() - caster.level();
+
+    auto resistance = target.stats().resistanceByType(effect._school) + levelDiff;
+    resistance = max(0, min(100, resistance));
     auto resistanceMultiplier = (100 - resistance) / 100.0;
     rawDamage *= resistanceMultiplier;
 
