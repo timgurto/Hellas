@@ -1154,6 +1154,33 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_YOU_PROPOSED_PEACE:
+        {
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            auto name = std::string{ buffer };
+            singleMsg >> del;
+            if (del != MSG_END)
+                return;
+
+            if (_playerWars.atWarWith(name))
+                _playerWars.proposePeaceWith(name);
+            else if (_cityWars.atWarWith(name))
+                _cityWars.proposePeaceWith(name);
+            else {
+                _debug << Color::FAILURE << "Received information about an unknown war against " <<
+                    name << Log::endl;
+                break;
+            }
+
+            _debug << "You have sued for peace with " << name << Log::endl;
+
+            _target.refreshHealthBarColor();
+            _mapWindow->markChanged();
+
+            populateWarsList();
+            break;
+        }
+
         case SV_SPELL_HIT:
         case SV_SPELL_MISS:
         case SV_RANGED_NPC_HIT:
