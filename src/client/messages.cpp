@@ -1142,9 +1142,9 @@ void Client::handleMessage(const std::string &msg){
                 return;
 
             if (msgCode == SV_AT_WAR_WITH_PLAYER)
-                _atWarWithPlayer.insert(name);
+                _playerWars.add(name);
             else
-                _atWarWithCity.insert(name);
+                _cityWars.add(name);
             _debug << "You are now at war with " << name << Log::endl;
 
             _target.refreshHealthBarColor();

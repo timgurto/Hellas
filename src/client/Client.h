@@ -19,6 +19,7 @@
 #include "ClientObjectType.h"
 #include "ClientSpell.h"
 #include "ClientTerrain.h"
+#include "ClientWar.h"
 #include "HelpEntry.h"
 #include "LogSDL.h"
 #include "ParticleProfile.h"
@@ -73,9 +74,9 @@ public:
     bool isAtWarWith(const Avatar &user) const;
     bool isAtWarWith(const std::string &username) const;
     bool isAtWarWithPlayerDirectly(const std::string &username) const{
-        return _atWarWithPlayer.find(username) != _atWarWithPlayer.end(); }
+        return _playerWars.atWarWith(username); }
     bool isAtWarWithCityDirectly(const std::string &cityName) const{
-        return _atWarWithCity.find(cityName) != _atWarWithCity.end(); }
+        return _cityWars.atWarWith(cityName); }
 
     const Texture &mapImage() const { return _mapImage; }
 
@@ -427,10 +428,10 @@ private:
     void addUser(const std::string &name, const MapPoint &location);
     
     // Your wars, or if you're in a city, your city's wars
-    std::set<std::string> _atWarWithPlayer;
-    std::set<std::string> _atWarWithCity;
+    YourWars _playerWars;
+    YourWars _cityWars;
 
-    std::map<std::string, std::string> _userCities; // Username -> city name
+    std::map<std::string, std::string> _userCities; // Username -> city name. // TODO: remove once users always exist
 
     XP _xp = 40;
     XP _maxXP = 100;

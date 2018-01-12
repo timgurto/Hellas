@@ -93,8 +93,8 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType) 
 
 void Client::populateWarsList() {
     _warsList->clearChildren();
-    for (const auto &city : _atWarWithCity)
-        _warsList->addChild(createWarRow(city, CITY));
-    for (const auto &player : _atWarWithPlayer)
-        _warsList->addChild(createWarRow(player, PLAYER));
+    for (const auto &pair : _cityWars)
+        _warsList->addChild(createWarRow(pair.first, CITY));
+    for (const auto &pair : _playerWars)
+        _warsList->addChild(createWarRow(pair.first, PLAYER));
 }
