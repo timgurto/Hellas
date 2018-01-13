@@ -455,6 +455,15 @@ private:
     std::vector<MessageCode> _messagesReceived;
     std::mutex _messagesReceivedMutex;
 
+public:
+    template<MessageCode code>
+    static void sendMessageWithString(void *string){
+        auto pArgs = reinterpret_cast<const std::string *>(string);
+        auto message = compileMessage(code, *pArgs);
+        sendRawMessageStatic(&message);
+    }
+private:
+
     void handle_SV_LOOTABLE(size_t serial);
     void handle_SV_INVENTORY(size_t serial, size_t slot, const std::string &itemID, size_t quantity);
     void handle_SV_MAX_HEALTH(const std::string &username, Hitpoints newMaxHealth);

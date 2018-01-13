@@ -8,7 +8,6 @@ enum PeaceState {
     PEACE_PROPOSED_BY_HIM
 };
 
-
 class YourWars {
     using Container = std::map<std::string, PeaceState>;
 

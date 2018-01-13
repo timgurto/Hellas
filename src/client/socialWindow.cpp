@@ -5,7 +5,7 @@ extern Renderer renderer;
 
 static const auto
     GAP = 2_px,
-    WIN_WIDTH = 150_px,
+    WIN_WIDTH = 200_px,
     BUTTON_WIDTH = 100_px,
     BUTTON_HEIGHT = 15_px,
     WAR_ROW_HEIGHT = 15_px;
@@ -74,10 +74,11 @@ enum BelligerentType {
     PLAYER
 };
 
-Element *createWarRow(const std::string &name, BelligerentType belligerentType) {
+Element *createWarRow(const std::string &name, BelligerentType belligerentType, PeaceState state) {
     const auto
         ICON_W = 12,
-        NAME_W = 80_px;
+        NAME_W = 80_px,
+        BUTTON_W = 100_px;
     auto row = new Element;
     auto x = px_t{ GAP };
 
@@ -88,13 +89,21 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType) 
     row->addChild(new Label{ { x, 0, NAME_W, WAR_ROW_HEIGHT } , name });
     x += NAME_W;
 
+    switch (state) {
+    case NO_PEACE_PROPOSED:
+        row->addChild(new Button( {x, 0, BUTTON_W, WAR_ROW_HEIGHT}, "Sue for peace"s,
+            Client::sendMessageWithString<CL_SUE_FOR_PEACE_WITH_PLAYER>,
+            & const_cast<std::string &>(name) ));
+        break;
+    }
+
     return row;
 }
 
 void Client::populateWarsList() {
     _warsList->clearChildren();
     for (const auto &pair : _cityWars)
-        _warsList->addChild(createWarRow(pair.first, CITY));
+        _warsList->addChild(createWarRow(pair.first, CITY, pair.second));
     for (const auto &pair : _playerWars)
-        _warsList->addChild(createWarRow(pair.first, PLAYER));
+        _warsList->addChild(createWarRow(pair.first, PLAYER, pair.second));
 }
