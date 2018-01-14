@@ -49,7 +49,9 @@ public:
     void declare(const Belligerent &a, const Belligerent &b);
     bool isAtWar(Belligerent a, Belligerent b) const;
     void sendWarsToUser(const User &user, const Server &server) const;
-    void Wars::sueForPeace(const Belligerent &proposer, const Belligerent &enemy);
+    void sueForPeace(const Belligerent &proposer, const Belligerent &enemy);
+    // Return value: whether there was a peace offer that was successfully revoked
+    bool cancelPeaceOffer(const Belligerent &proposer, const Belligerent &enemy);
     
     void writeToXMLFile(const std::string &filename) const;
     void readFromXMLFile(const std::string &filename);

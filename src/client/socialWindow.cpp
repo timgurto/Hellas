@@ -95,6 +95,11 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType, 
             Client::sendMessageWithString<CL_SUE_FOR_PEACE_WITH_PLAYER>,
             & const_cast<std::string &>(name) ));
         break;
+    case PEACE_PROPOSED_BY_YOU:
+        row->addChild(new Button({ x, 0, BUTTON_W, WAR_ROW_HEIGHT }, "Revoke peace offer"s,
+            Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_PLAYER>,
+            &const_cast<std::string &>(name)));
+        break;
     }
 
     return row;

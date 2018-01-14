@@ -136,6 +136,10 @@ enum MessageCode{
     CL_SUE_FOR_PEACE_WITH_PLAYER,
     //CL_SUE_FOR_PEACE_WITH_CITY,
 
+    // "I proposed peace with ... but changed my mind"
+    // Arguments: other belligerent's name
+    CL_CANCEL_PEACE_OFFER_TO_PLAYER,
+
     // "I want to perform object ...'s action with argument ..."
     // Arguments: serial, textArg
     CL_PERFORM_OBJECT_ACTION,
@@ -395,6 +399,12 @@ enum MessageCode{
     // "... has sued for peace with you"
     // Arguments: name
     SV_PEACE_WAS_PROPOSED_TO_YOU,
+    // "You cancelled your peace offer to ..."
+    // Arguments: name
+    SV_YOU_CANCELED_PEACE_OFFER,
+    // "Your peace offer from ... was cancelled"
+    // Arguments: name
+    SV_PEACE_OFFER_WAS_CANCELED,
 
     // "User ... has said ...".
     // Arguments: username, message

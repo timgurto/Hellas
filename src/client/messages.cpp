@@ -1154,6 +1154,32 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_PEACE_WAS_PROPOSED_TO_YOU:
+        {
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            auto name = std::string{ buffer };
+            singleMsg >> del;
+            if (del != MSG_END)
+                return;
+
+            if (_playerWars.atWarWith(name))
+                _playerWars.peaceWasProposedBy(name);
+            else if (_cityWars.atWarWith(name))
+                _cityWars.peaceWasProposedBy(name);
+            else {
+                _debug << Color::FAILURE << "Received information about an unknown war against " <<
+                    name << Log::endl;
+                break;
+            }
+
+            _debug << name << " has sued for peace" << Log::endl;
+
+            _target.refreshHealthBarColor();
+            _mapWindow->markChanged();
+            populateWarsList();
+            break;
+        }
+
         case SV_YOU_PROPOSED_PEACE:
         {
             singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
@@ -1176,9 +1202,37 @@ void Client::handleMessage(const std::string &msg){
 
             _target.refreshHealthBarColor();
             _mapWindow->markChanged();
-
             populateWarsList();
             break;
+        }
+
+        case SV_YOU_CANCELED_PEACE_OFFER:
+        case SV_PEACE_OFFER_WAS_CANCELED:
+        {
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            auto name = std::string{ buffer };
+            singleMsg >> del;
+            if (del != MSG_END)
+                return;
+
+            if (_playerWars.atWarWith(name))
+                _playerWars.cancelPeaceOffer(name);
+            else if (_cityWars.atWarWith(name))
+                _cityWars.cancelPeaceOffer(name);
+            else {
+                _debug << Color::FAILURE << "Received information about an unknown war against " <<
+                    name << Log::endl;
+                break;
+            }
+
+            if (msgCode == SV_YOU_CANCELED_PEACE_OFFER)
+                _debug << "You have revoked your offer for peace with " << name << Log::endl;
+            else
+                _debug << "Your offer for peace from " << name << " has been revoked" << Log::endl;
+
+            _target.refreshHealthBarColor();
+            _mapWindow->markChanged();
+            populateWarsList();
         }
 
         case SV_SPELL_HIT:

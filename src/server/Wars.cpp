@@ -116,7 +116,23 @@ void Wars::sueForPeace(const Belligerent &proposer, const Belligerent &enemy) {
     if (it == container.end())
         assert(false);
     auto &war = const_cast<War &>(*it);
+
     war.peaceState = war.b1 == proposer ? War::PEACE_PROPOSED_BY_B1 : War::PEACE_PROPOSED_BY_B2;
+}
+
+bool Wars::cancelPeaceOffer(const Belligerent & proposer, const Belligerent & enemy) {
+    auto it = container.find({ proposer, enemy });
+    if (it == container.end())
+        assert(false);
+    auto &war = const_cast<War &>(*it);
+
+    // Make sure peace was proposed by proposer; Alice can't revoke Bob's offer.
+    if (war.b1 == proposer && war.peaceState != War::PEACE_PROPOSED_BY_B1)
+        return false;
+    if (war.b2 == proposer && war.peaceState != War::PEACE_PROPOSED_BY_B2)
+        return false;
+    war.peaceState = War::NO_PEACE_PROPOSED;
+    return true;
 }
 
 void Wars::writeToXMLFile(const std::string &filename) const{

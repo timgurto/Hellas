@@ -976,11 +976,22 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         case CL_SUE_FOR_PEACE_WITH_PLAYER:
         {
             iss.get(buffer, BUFFER_SIZE, MSG_END);
-            auto targetName = std::string{ buffer };
+            auto name = std::string{ buffer };
             iss >> del;
             if (del != MSG_END)
                 return;
-            handle_CL_SUE_FOR_PEACE_WITH_PLAYER(*user, targetName);
+            handle_CL_SUE_FOR_PEACE_WITH_PLAYER(*user, name);
+            break;
+        }
+
+        case CL_CANCEL_PEACE_OFFER_TO_PLAYER:
+        {
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
+            auto name = std::string{ buffer };
+            iss >> del;
+            if (del != MSG_END)
+                return;
+            handle_CL_CANCEL_PEACE_OFFER_TO_PLAYER(*user, name);
             break;
         }
 
@@ -1367,7 +1378,19 @@ void Server::handle_CL_SUE_FOR_PEACE_WITH_PLAYER(User & user, const std::string 
     auto it = _usersByName.find(name);
     if (it == _usersByName.end())
         return;
-    sendMessage(it->second->socket(), SV_PEACE_WAS_PROPOSED_TO_YOU);
+    sendMessage(it->second->socket(), SV_PEACE_WAS_PROPOSED_TO_YOU, user.name());
+}
+
+void Server::handle_CL_CANCEL_PEACE_OFFER_TO_PLAYER(User & user, const std::string & name) {
+    auto canceled = _wars.cancelPeaceOffer(user.name(), name);
+    if (!canceled)
+        return;
+
+    sendMessage(user.socket(), SV_YOU_CANCELED_PEACE_OFFER, name);
+    auto it = _usersByName.find(name);
+    if (it == _usersByName.end())
+        return;
+    sendMessage(it->second->socket(), SV_PEACE_OFFER_WAS_CANCELED, user.name());
 }
 
 void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName) {

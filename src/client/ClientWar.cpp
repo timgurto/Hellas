@@ -17,3 +17,15 @@ void YourWars::proposePeaceWith(const std::string & name) {
     assert(it != _container.end());
     it->second = PEACE_PROPOSED_BY_YOU;
 }
+
+void YourWars::peaceWasProposedBy(const std::string & name) {
+    auto it = _container.find(name);
+    assert(it != _container.end());
+    it->second = PEACE_PROPOSED_BY_HIM;
+}
+
+void YourWars::cancelPeaceOffer(const std::string &name) {
+    auto it = _container.find(name);
+    assert(it != _container.end());
+    it->second = NO_PEACE_PROPOSED;
+}
