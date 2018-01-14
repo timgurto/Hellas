@@ -568,6 +568,10 @@ const ParticleProfile *Client::findParticleProfile(const std::string &id){
 }
 
 void Client::addParticles(const ParticleProfile *profile, const MapPoint &location, size_t qty){
+#ifdef _DEBUG
+    return;
+#endif
+
     for (size_t i = 0; i != qty; ++i) {
         Particle *particle = profile->instantiate(location);
         addEntity(particle);
