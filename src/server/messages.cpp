@@ -961,15 +961,25 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> del;
             if (del != MSG_END)
                 return;
+            auto thisBelligerent = Belligerent{ user->name(), Belligerent::PLAYER };
             Belligerent::Type targetType = msgCode == CL_DECLARE_WAR_ON_PLAYER ?
                     Belligerent::PLAYER :
                     Belligerent::CITY;
-            Belligerent target(targetName, targetType);
+            auto target = Belligerent{ targetName, targetType };
             if (_wars.isAtWar(user->name(), target)){
                 sendMessage(client, ERROR_ALREADY_AT_WAR);
                 break;
             }
-            _wars.declare(user->name(), target);
+            if (_cities.isPlayerInACity(user->name())) {
+                if (_kings.isPlayerAKing(user->name())) {
+                    thisBelligerent = { _cities.getPlayerCity(user->name()), Belligerent::CITY };
+                } else {
+                    sendMessage(client, ERROR_NOT_A_KING);
+                    break;
+                }
+            }
+
+            _wars.declare(thisBelligerent, target);
             break;
         }
 

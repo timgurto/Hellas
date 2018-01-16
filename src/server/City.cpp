@@ -89,6 +89,11 @@ bool Cities::isPlayerInCity(const std::string &username, const City::Name &cityN
     return city.isPlayerAMember(username);
 }
 
+bool Cities::isPlayerInACity(const std::string & username) const {
+    auto it = _usersToCities.find(username);
+    return it != _usersToCities.end();
+}
+
 const City::Name &Cities::getPlayerCity(const std::string &username) const{
     auto it = _usersToCities.find(username);
     static const std::string BLANK = "";

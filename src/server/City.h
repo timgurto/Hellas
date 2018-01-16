@@ -50,6 +50,7 @@ public:
     void addPlayerToCity(const User &user, const City::Name &cityName);
     void removeUserFromCity(const User &user, const City::Name &cityName);
     bool isPlayerInCity(const std::string &username, const City::Name &cityName) const;
+    bool isPlayerInACity(const std::string &username) const;
     const City::Name &getPlayerCity(const std::string &username) const;
     const City::Members &membersOf(const std::string &cityName) const;
     
