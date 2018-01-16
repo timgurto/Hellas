@@ -197,8 +197,10 @@ void Wars::readFromXMLFile(const std::string &filename){
             switch (n) {
             case 1:
                 sueForPeace(b1, b2);
+                break;
             case 2:
                 sueForPeace(b2, b1);
+                break;
             default:
                 assert(false);
             }
