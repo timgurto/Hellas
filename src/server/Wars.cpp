@@ -132,7 +132,7 @@ bool Wars::acceptPeaceOffer(const Belligerent & accepter, const Belligerent & pr
     if (war.b2 == proposer && war.peaceState != War::PEACE_PROPOSED_BY_B2)
         return false;
 
-    war.peaceState = War::NO_PEACE_PROPOSED;
+    container.erase(it);
     return true;
 }
 
@@ -148,7 +148,7 @@ bool Wars::cancelPeaceOffer(const Belligerent & proposer, const Belligerent & en
     if (war.b2 == proposer && war.peaceState != War::PEACE_PROPOSED_BY_B2)
         return false;
 
-    container.erase(it);
+    war.peaceState = War::NO_PEACE_PROPOSED;
     return true;
 }
 
