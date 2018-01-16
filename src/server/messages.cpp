@@ -1267,7 +1267,7 @@ void Server::handle_CL_PERFORM_OBJECT_ACTION(User & user, size_t serial, const s
     }
     auto *obj = _entities.find<Object>(serial);
 
-    if (!obj->permissions().isOwnedByPlayer(user.name())) {
+    if (!obj->permissions().doesUserHaveAccess(user.name())){
         sendMessage(user.socket(), SV_NO_PERMISSION);
         return;
     }
