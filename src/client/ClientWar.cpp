@@ -29,3 +29,9 @@ void YourWars::cancelPeaceOffer(const std::string &name) {
     assert(it != _container.end());
     it->second = NO_PEACE_PROPOSED;
 }
+
+void YourWars::remove(const std::string & name) {
+    auto it = _container.find(name);
+    assert(it != _container.end());
+    _container.erase(it);
+}

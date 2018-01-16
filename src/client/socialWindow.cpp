@@ -78,7 +78,7 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType, 
     const auto
         ICON_W = 12,
         NAME_W = 80_px,
-        BUTTON_W = 100_px;
+        BUTTON_W = 90_px;
     auto row = new Element;
     auto x = px_t{ GAP };
 
@@ -98,6 +98,11 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType, 
     case PEACE_PROPOSED_BY_YOU:
         row->addChild(new Button({ x, 0, BUTTON_W, WAR_ROW_HEIGHT }, "Revoke peace offer"s,
             Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_PLAYER>,
+            &const_cast<std::string &>(name)));
+        break;
+    case PEACE_PROPOSED_BY_HIM:
+        row->addChild(new Button({ x, 0, BUTTON_W, WAR_ROW_HEIGHT }, "Accept peace offer"s,
+            Client::sendMessageWithString<CL_ACCEPT_PEACE_OFFER_WITH_PLAYER>,
             &const_cast<std::string &>(name)));
         break;
     }

@@ -120,6 +120,22 @@ void Wars::sueForPeace(const Belligerent &proposer, const Belligerent &enemy) {
     war.peaceState = war.b1 == proposer ? War::PEACE_PROPOSED_BY_B1 : War::PEACE_PROPOSED_BY_B2;
 }
 
+bool Wars::acceptPeaceOffer(const Belligerent & accepter, const Belligerent & proposer) {
+    auto it = container.find({ proposer, accepter });
+    if (it == container.end())
+        assert(false);
+    auto &war = const_cast<War &>(*it);
+
+    // Make sure peace was proposed by proposer; Alice can't accept her own offer.
+    if (war.b1 == proposer && war.peaceState != War::PEACE_PROPOSED_BY_B1)
+        return false;
+    if (war.b2 == proposer && war.peaceState != War::PEACE_PROPOSED_BY_B2)
+        return false;
+
+    war.peaceState = War::NO_PEACE_PROPOSED;
+    return true;
+}
+
 bool Wars::cancelPeaceOffer(const Belligerent & proposer, const Belligerent & enemy) {
     auto it = container.find({ proposer, enemy });
     if (it == container.end())
@@ -131,7 +147,8 @@ bool Wars::cancelPeaceOffer(const Belligerent & proposer, const Belligerent & en
         return false;
     if (war.b2 == proposer && war.peaceState != War::PEACE_PROPOSED_BY_B2)
         return false;
-    war.peaceState = War::NO_PEACE_PROPOSED;
+
+    container.erase(it);
     return true;
 }
 

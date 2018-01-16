@@ -198,7 +198,7 @@ void Client::handleMessage(const std::string &msg){
         case SV_UNKNOWN_RECIPE:
         case SV_UNKNOWN_CONSTRUCTION:
         case SV_UNDER_CONSTRUCTION:
-        case SV_AT_PEACE:
+        case SV_ATTACKED_PEACFUL_PLAYER:
         case SV_INVALID_OBJECT:
         case SV_ALREADY_AT_WAR:
         case SV_NOT_IN_CITY:
@@ -1233,6 +1233,32 @@ void Client::handleMessage(const std::string &msg){
             _target.refreshHealthBarColor();
             _mapWindow->markChanged();
             populateWarsList();
+            break;
+        }
+
+        case SV_AT_PEACE:
+        {
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            auto name = std::string{ buffer };
+            singleMsg >> del;
+            if (del != MSG_END)
+                return;
+
+            if (_playerWars.atWarWith(name))
+                _playerWars.remove(name);
+            else if (_cityWars.atWarWith(name))
+                _cityWars.remove(name);
+            else {
+                _debug << Color::FAILURE << "Received information about an unknown war against " <<
+                    name << Log::endl;
+                break;
+            }
+
+            _debug << "You are now at peace with " << name << Log::endl;
+
+            _target.refreshHealthBarColor();
+            _mapWindow->markChanged();
+            populateWarsList();
         }
 
         case SV_SPELL_HIT:
@@ -1810,7 +1836,7 @@ void Client::initializeMessageNames(){
     _errorMessages[SV_UNKNOWN_CONSTRUCTION] = "You don't know how to construct that object.";
     _errorMessages[SV_WRONG_MATERIAL] = "The construction site doesn't need that.";
     _errorMessages[SV_UNDER_CONSTRUCTION] = "That object is still under construction.";
-    _errorMessages[SV_AT_PEACE] = "You are not at war with that player.";
+    _errorMessages[SV_ATTACKED_PEACFUL_PLAYER] = "You are not at war with that player.";
     _errorMessages[SV_UNIQUE_OBJECT] = "There can be only one.";
     _errorMessages[SV_INVALID_OBJECT] = "That is not a valid object type.";
     _errorMessages[SV_ALREADY_AT_WAR] = "You are already at war with them.";

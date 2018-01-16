@@ -135,10 +135,12 @@ enum MessageCode{
     // Arguments: other belligerent's name
     CL_SUE_FOR_PEACE_WITH_PLAYER,
     //CL_SUE_FOR_PEACE_WITH_CITY,
-
     // "I proposed peace with ... but changed my mind"
     // Arguments: other belligerent's name
     CL_CANCEL_PEACE_OFFER_TO_PLAYER,
+    // "I accept ...'s peace offer"
+    // Arguments: other belligerent's name
+    CL_ACCEPT_PEACE_OFFER_WITH_PLAYER,
 
     // "I want to perform object ...'s action with argument ..."
     // Arguments: serial, textArg
@@ -395,7 +397,6 @@ enum MessageCode{
     // "You have sued for peace with ..."
     // Arguments: name
     SV_YOU_PROPOSED_PEACE,
-
     // "... has sued for peace with you"
     // Arguments: name
     SV_PEACE_WAS_PROPOSED_TO_YOU,
@@ -405,6 +406,11 @@ enum MessageCode{
     // "Your peace offer from ... was cancelled"
     // Arguments: name
     SV_PEACE_OFFER_WAS_CANCELED,
+
+    // "You are at peace with ..."
+    // Arguments: name
+    SV_AT_PEACE,
+
 
     // "User ... has said ...".
     // Arguments: username, message
@@ -559,7 +565,7 @@ enum MessageCode{
     SV_UNDER_CONSTRUCTION,
 
     // The user tried to attack a player without being at war with him
-    SV_AT_PEACE,
+    SV_ATTACKED_PEACFUL_PLAYER,
 
     // The user tried to construct a unique object that already exists in the world
     SV_UNIQUE_OBJECT,

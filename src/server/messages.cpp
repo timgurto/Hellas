@@ -995,6 +995,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_ACCEPT_PEACE_OFFER_WITH_PLAYER:
+        {
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
+            auto name = std::string{ buffer };
+            iss >> del;
+            if (del != MSG_END)
+                return;
+            handle_CL_ACCEPT_PEACE_OFFER_WITH_PLAYER(*user, name);
+            break;
+        }
+
         case CL_LEAVE_CITY:
         {
             if (del != MSG_END)
@@ -1292,7 +1303,7 @@ void Server::handle_CL_TARGET_ENTITY(User & user, size_t serial) {
 
     if (!target->canBeAttackedBy(user)) {
         user.setTargetAndAttack(nullptr);
-        sendMessage(user.socket(), SV_AT_PEACE);
+        sendMessage(user.socket(), SV_ATTACKED_PEACFUL_PLAYER);
         return;
     }
 
@@ -1315,7 +1326,7 @@ void Server::handle_CL_TARGET_PLAYER(User & user, const std::string & targetUser
     }
     if (!_wars.isAtWar(user.name(), targetUsername)) {
         user.setTargetAndAttack(nullptr);
-        sendMessage(user.socket(), SV_AT_PEACE);
+        sendMessage(user.socket(), SV_ATTACKED_PEACFUL_PLAYER);
         return;
     }
 
@@ -1391,6 +1402,18 @@ void Server::handle_CL_CANCEL_PEACE_OFFER_TO_PLAYER(User & user, const std::stri
     if (it == _usersByName.end())
         return;
     sendMessage(it->second->socket(), SV_PEACE_OFFER_WAS_CANCELED, user.name());
+}
+
+void Server::handle_CL_ACCEPT_PEACE_OFFER_WITH_PLAYER(User & user, const std::string & name) {
+    auto accpeted = _wars.acceptPeaceOffer(user.name(), name);
+    if (!accpeted)
+        return;
+
+    sendMessage(user.socket(), SV_AT_PEACE, name);
+    auto it = _usersByName.find(name);
+    if (it == _usersByName.end())
+        return;
+    sendMessage(it->second->socket(), SV_AT_PEACE, user.name());
 }
 
 void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName) {

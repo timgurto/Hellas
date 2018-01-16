@@ -50,6 +50,7 @@ public:
     bool isAtWar(Belligerent a, Belligerent b) const;
     void sendWarsToUser(const User &user, const Server &server) const;
     void sueForPeace(const Belligerent &proposer, const Belligerent &enemy);
+    bool acceptPeaceOffer(const Belligerent &accepter, const Belligerent &proposer);
     // Return value: whether there was a peace offer that was successfully revoked
     bool cancelPeaceOffer(const Belligerent &proposer, const Belligerent &enemy);
     
