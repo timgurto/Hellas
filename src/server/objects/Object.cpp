@@ -303,7 +303,7 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum, const U
 
     auto hasLoot = ! _loot->empty();
     if (! (hasLoot || hasContainer())){
-        server.sendMessage(socket, SV_NO_INVENTORY);
+        server.sendMessage(socket, ERROR_NO_INVENTORY);
         return nullptr;
     }
 
@@ -311,33 +311,33 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum, const U
         return nullptr;
        
     if (isBeingBuilt()){
-        server.sendMessage(socket, SV_UNDER_CONSTRUCTION);
+        server.sendMessage(socket, ERROR_UNDER_CONSTRUCTION);
         return nullptr;
     }
 
     if (hasLoot){
         ServerItem::Slot &slot = _loot->at(slotNum);
         if (slot.first == nullptr){
-            server.sendMessage(socket, SV_EMPTY_SLOT);
+            server.sendMessage(socket, ERROR_EMPTY_SLOT);
             return nullptr;
         }
         return &slot;
     }
 
     if (! permissions().doesUserHaveAccess(user.name())){
-        server.sendMessage(socket, SV_NO_PERMISSION);
+        server.sendMessage(socket, WARNING_NO_PERMISSION);
         return nullptr;
     }
 
     if (slotNum >= objType().container().slots()) {
-        server.sendMessage(socket, SV_INVALID_SLOT);
+        server.sendMessage(socket, ERROR_INVALID_SLOT);
         return nullptr;
     }
 
     assert(hasContainer());
     ServerItem::Slot &slot = container().at(slotNum);
     if (slot.first == nullptr){
-        server.sendMessage(socket, SV_EMPTY_SLOT);
+        server.sendMessage(socket, ERROR_EMPTY_SLOT);
         return nullptr;
     }
 

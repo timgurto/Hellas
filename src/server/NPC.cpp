@@ -274,7 +274,7 @@ ServerItem::Slot *NPC::getSlotToTakeFromAndSendErrors(size_t slotNum, const User
     const Socket &socket = user.socket();
 
     if (_loot->empty()){
-        server.sendMessage(socket, SV_EMPTY_SLOT);
+        server.sendMessage(socket, ERROR_EMPTY_SLOT);
         return nullptr;
     }
 
@@ -282,13 +282,13 @@ ServerItem::Slot *NPC::getSlotToTakeFromAndSendErrors(size_t slotNum, const User
         return nullptr;
 
     if (! _loot->isValidSlot(slotNum)) {
-        server.sendMessage(socket, SV_INVALID_SLOT);
+        server.sendMessage(socket, ERROR_INVALID_SLOT);
         return nullptr;
     }
 
     ServerItem::Slot &slot = _loot->at(slotNum);
     if (slot.first == nullptr){
-        server.sendMessage(socket, SV_EMPTY_SLOT);
+        server.sendMessage(socket, ERROR_EMPTY_SLOT);
         return nullptr;
     }
 

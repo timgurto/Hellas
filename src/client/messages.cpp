@@ -128,7 +128,7 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_WRONG_VERSION:
+        case WARNING_WRONG_VERSION:
         {
             auto serverVersion = ""s;
             readString(singleMsg, serverVersion, MSG_END);
@@ -140,84 +140,84 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_DUPLICATE_USERNAME:
+        case WARNING_DUPLICATE_USERNAME:
             if (del != MSG_END)
                 break;
             _invalidUsername = true;
             infoWindow("The user "s + _username + " is already connected to the server."s);
             break;
 
-        case SV_INVALID_USERNAME:
+        case WARNING_INVALID_USERNAME:
             if (del != MSG_END)
                 break;
             _invalidUsername = true;
             infoWindow("The username "s + _username + " is invalid."s);
             break;
 
-        case SV_SERVER_FULL:
+        case WARNING_SERVER_FULL:
             _socket = Socket();
             _loggedIn = false;
             infoWindow("The server is full; attempting reconnection.");
             break;
 
-        case SV_TOO_FAR:
-        case SV_DOESNT_EXIST:
-        case SV_NEED_MATERIALS:
-        case SV_NEED_TOOLS:
-        case SV_ACTION_INTERRUPTED:
-        case SV_BLOCKED:
-        case SV_INVENTORY_FULL:
-        case SV_NO_PERMISSION:
-        case SV_NO_WARE:
-        case SV_NO_PRICE:
-        case SV_MERCHANT_INVENTORY_FULL:
-        case SV_NOT_EMPTY:
-        case SV_VEHICLE_OCCUPIED:
-        case SV_NO_VEHICLE:
-        case SV_WRONG_MATERIAL:
-        case SV_UNIQUE_OBJECT:
-        case SV_INVALID_SPELL_TARGET:
-        case SV_NOT_ENOUGH_ENERGY:
-        case SV_NO_TALENT_POINTS:
-        case SV_MISSING_ITEMS_FOR_TALENT:
-        case SV_MISSING_REQ_FOR_TALENT:
+        case WARNING_TOO_FAR:
+        case WARNING_DOESNT_EXIST:
+        case WARNING_NEED_MATERIALS:
+        case WARNING_NEED_TOOLS:
+        case WARNING_ACTION_INTERRUPTED:
+        case WARNING_BLOCKED:
+        case WARNING_INVENTORY_FULL:
+        case WARNING_NO_PERMISSION:
+        case WARNING_NO_WARE:
+        case WARNING_NO_PRICE:
+        case WARNING_MERCHANT_INVENTORY_FULL:
+        case WARNING_NOT_EMPTY:
+        case WARNING_VEHICLE_OCCUPIED:
+        case WARNING_NO_VEHICLE:
+        case WARNING_WRONG_MATERIAL:
+        case WARNING_UNIQUE_OBJECT:
+        case WARNING_INVALID_SPELL_TARGET:
+        case WARNING_NOT_ENOUGH_ENERGY:
+        case WARNING_NO_TALENT_POINTS:
+        case WARNING_MISSING_ITEMS_FOR_TALENT:
+        case WARNING_MISSING_REQ_FOR_TALENT:
             errorMessageColor = Color::WARNING; // Yellow above, red below
-        case SV_INVALID_USER:
-        case SV_INVALID_ITEM:
-        case SV_CANNOT_CRAFT:
-        case SV_INVALID_SLOT:
-        case SV_EMPTY_SLOT:
-        case SV_CANNOT_CONSTRUCT:
-        case SV_NOT_MERCHANT:
-        case SV_INVALID_MERCHANT_SLOT:
-        case SV_TARGET_DEAD:
-        case SV_NPC_SWAP:
-        case SV_TAKE_SELF:
-        case SV_NOT_GEAR:
-        case SV_NOT_VEHICLE:
-        case SV_UNKNOWN_RECIPE:
-        case SV_UNKNOWN_CONSTRUCTION:
-        case SV_UNDER_CONSTRUCTION:
-        case SV_ATTACKED_PEACFUL_PLAYER:
-        case SV_INVALID_OBJECT:
-        case SV_ALREADY_AT_WAR:
-        case SV_NOT_IN_CITY:
-        case SV_NO_INVENTORY:
-        case SV_CANNOT_CEDE:
-        case SV_NO_ACTION:
-        case SV_KING_CANNOT_LEAVE_CITY:
-        case SV_ALREADY_IN_CITY:
-        case SV_NOT_A_KING:
-        case SV_INVALID_TALENT:
-        case SV_ALREADY_KNOW_SPELL:
-        case SV_DONT_KNOW_SPELL:
+        case ERROR_INVALID_USER:
+        case ERROR_INVALID_ITEM:
+        case ERROR_CANNOT_CRAFT:
+        case ERROR_INVALID_SLOT:
+        case ERROR_EMPTY_SLOT:
+        case ERROR_CANNOT_CONSTRUCT:
+        case ERROR_NOT_MERCHANT:
+        case ERROR_INVALID_MERCHANT_SLOT:
+        case ERROR_TARGET_DEAD:
+        case ERROR_NPC_SWAP:
+        case ERROR_TAKE_SELF:
+        case ERROR_NOT_GEAR:
+        case ERROR_NOT_VEHICLE:
+        case ERROR_UNKNOWN_RECIPE:
+        case ERROR_UNKNOWN_CONSTRUCTION:
+        case ERROR_UNDER_CONSTRUCTION:
+        case ERROR_ATTACKED_PEACFUL_PLAYER:
+        case ERROR_INVALID_OBJECT:
+        case ERROR_ALREADY_AT_WAR:
+        case ERROR_NOT_IN_CITY:
+        case ERROR_NO_INVENTORY:
+        case ERROR_CANNOT_CEDE:
+        case ERROR_NO_ACTION:
+        case ERROR_KING_CANNOT_LEAVE_CITY:
+        case ERROR_ALREADY_IN_CITY:
+        case ERROR_NOT_A_KING:
+        case ERROR_INVALID_TALENT:
+        case ERROR_ALREADY_KNOW_SPELL:
+        case ERROR_DONT_KNOW_SPELL:
             if (del != MSG_END)
                 break;
             _debug(_errorMessages[msgCode], errorMessageColor);
             startAction(0);
             break;
 
-        case SV_ITEM_NEEDED:
+        case WARNING_ITEM_NEEDED:
         {
             std::string reqItemTag;
             readString(singleMsg, reqItemTag, MSG_END);
@@ -235,7 +235,7 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_PLAYER_UNIQUE_OBJECT:
+        case WARNING_PLAYER_UNIQUE_OBJECT:
         {
             std::string category;
             readString(singleMsg, category, MSG_END);
@@ -1804,58 +1804,58 @@ void Client::initializeMessageNames(){
     _messageCommands["unlock"] = DG_UNLOCK;
     _messageCommands["level"] = DG_LEVEL;
 
-    _errorMessages[SV_TOO_FAR] = "You are too far away to perform that action.";
-    _errorMessages[SV_DOESNT_EXIST] = "That object doesn't exist.";
-    _errorMessages[SV_INVENTORY_FULL] = "Your inventory is full.";
-    _errorMessages[SV_NEED_MATERIALS] = "You do not have the materials neded to create that item.";
-    _errorMessages[SV_NEED_TOOLS] = "You do not have the tools needed to create that item.";
-    _errorMessages[SV_ACTION_INTERRUPTED] = "Action interrupted.";
-    _errorMessages[SV_INVALID_USER] = "That user doesn't exist.";
-    _errorMessages[SV_INVALID_ITEM] = "That is not a real item.";
-    _errorMessages[SV_CANNOT_CRAFT] = "That item cannot be crafted.";
-    _errorMessages[SV_EMPTY_SLOT] = "That inventory slot is empty.";
-    _errorMessages[SV_INVALID_SLOT] = "That is not a valid inventory slot.";
-    _errorMessages[SV_CANNOT_CONSTRUCT] = "That item cannot be constructed.";
-    _errorMessages[SV_BLOCKED] = "That location is unsuitable for that action.";
-    _errorMessages[SV_NO_PERMISSION] = "You do not have permission to do that.";
-    _errorMessages[SV_NOT_MERCHANT] = "That is not a merchant object.";
-    _errorMessages[SV_INVALID_MERCHANT_SLOT] = "That is not a valid merchant slot.";
-    _errorMessages[SV_NO_WARE] = "The object does not have enough items in stock.";
-    _errorMessages[SV_NO_PRICE] = "You cannot afford to buy that.";
-    _errorMessages[SV_MERCHANT_INVENTORY_FULL] =
+    _errorMessages[WARNING_TOO_FAR] = "You are too far away to perform that action.";
+    _errorMessages[WARNING_DOESNT_EXIST] = "That object doesn't exist.";
+    _errorMessages[WARNING_INVENTORY_FULL] = "Your inventory is full.";
+    _errorMessages[WARNING_NEED_MATERIALS] = "You do not have the materials neded to create that item.";
+    _errorMessages[WARNING_NEED_TOOLS] = "You do not have the tools needed to create that item.";
+    _errorMessages[WARNING_ACTION_INTERRUPTED] = "Action interrupted.";
+    _errorMessages[ERROR_INVALID_USER] = "That user doesn't exist.";
+    _errorMessages[ERROR_INVALID_ITEM] = "That is not a real item.";
+    _errorMessages[ERROR_CANNOT_CRAFT] = "That item cannot be crafted.";
+    _errorMessages[ERROR_EMPTY_SLOT] = "That inventory slot is empty.";
+    _errorMessages[ERROR_INVALID_SLOT] = "That is not a valid inventory slot.";
+    _errorMessages[ERROR_CANNOT_CONSTRUCT] = "That item cannot be constructed.";
+    _errorMessages[WARNING_BLOCKED] = "That location is unsuitable for that action.";
+    _errorMessages[WARNING_NO_PERMISSION] = "You do not have permission to do that.";
+    _errorMessages[ERROR_NOT_MERCHANT] = "That is not a merchant object.";
+    _errorMessages[ERROR_INVALID_MERCHANT_SLOT] = "That is not a valid merchant slot.";
+    _errorMessages[WARNING_NO_WARE] = "The object does not have enough items in stock.";
+    _errorMessages[WARNING_NO_PRICE] = "You cannot afford to buy that.";
+    _errorMessages[WARNING_MERCHANT_INVENTORY_FULL] =
         "The object does not have enough inventory space for that exchange.";
-    _errorMessages[SV_NOT_EMPTY] = "That object is not empty.";
-    _errorMessages[SV_TARGET_DEAD] = "That target is dead.";
-    _errorMessages[SV_NPC_SWAP] = "You can't put items inside an NPC.";
-    _errorMessages[SV_TAKE_SELF] = "You can't take an item from yourself.";
-    _errorMessages[SV_NOT_GEAR] = "That item can't be used in that equipment slot.";
-    _errorMessages[SV_NOT_VEHICLE] = "That isn't a vehicle.";
-    _errorMessages[SV_VEHICLE_OCCUPIED] = "You can't do that to an occupied vehicle.";
-    _errorMessages[SV_NO_VEHICLE] = "You are not in a vehicle.";
-    _errorMessages[SV_UNKNOWN_RECIPE] = "You don't know that recipe.";
-    _errorMessages[SV_UNKNOWN_CONSTRUCTION] = "You don't know how to construct that object.";
-    _errorMessages[SV_WRONG_MATERIAL] = "The construction site doesn't need that.";
-    _errorMessages[SV_UNDER_CONSTRUCTION] = "That object is still under construction.";
-    _errorMessages[SV_ATTACKED_PEACFUL_PLAYER] = "You are not at war with that player.";
-    _errorMessages[SV_UNIQUE_OBJECT] = "There can be only one.";
-    _errorMessages[SV_INVALID_OBJECT] = "That is not a valid object type.";
-    _errorMessages[SV_ALREADY_AT_WAR] = "You are already at war with them.";
-    _errorMessages[SV_NOT_IN_CITY] = "You are not in a city.";
-    _errorMessages[SV_NO_INVENTORY] = "That object doesn't have an inventory.";
-    _errorMessages[SV_DAMAGED_OBJECT] = "You can't do that while the object is damaged.";
-    _errorMessages[SV_CANNOT_CEDE] = "You can't cede that to your city.";
-    _errorMessages[SV_NO_ACTION] = "That object has no action to perform.";
-    _errorMessages[SV_KING_CANNOT_LEAVE_CITY] = "A king cannot leave his city.";
-    _errorMessages[SV_ALREADY_IN_CITY] = "That player is already in a city.";
-    _errorMessages[SV_NOT_A_KING] = "Only a king can do that.";
-    _errorMessages[SV_INVALID_SPELL_TARGET] = "Invalid spell target.";
-    _errorMessages[SV_NOT_ENOUGH_ENERGY] = "You don't have enough energy.";
-    _errorMessages[SV_INVALID_TALENT] = "That isn't a talent you can take.";
-    _errorMessages[SV_ALREADY_KNOW_SPELL] = "You already know that spell.";
-    _errorMessages[SV_DONT_KNOW_SPELL] = "You haven't learned that spell.";
-    _errorMessages[SV_NO_TALENT_POINTS] = "You don't have any more talent points to allocate.";
-    _errorMessages[SV_MISSING_ITEMS_FOR_TALENT] = "You don't have the items needed to learn that talent.";
-    _errorMessages[SV_MISSING_REQ_FOR_TALENT] = "You don't meet the requirements for that talent.";
+    _errorMessages[WARNING_NOT_EMPTY] = "That object is not empty.";
+    _errorMessages[ERROR_TARGET_DEAD] = "That target is dead.";
+    _errorMessages[ERROR_NPC_SWAP] = "You can't put items inside an NPC.";
+    _errorMessages[ERROR_TAKE_SELF] = "You can't take an item from yourself.";
+    _errorMessages[ERROR_NOT_GEAR] = "That item can't be used in that equipment slot.";
+    _errorMessages[ERROR_NOT_VEHICLE] = "That isn't a vehicle.";
+    _errorMessages[WARNING_VEHICLE_OCCUPIED] = "You can't do that to an occupied vehicle.";
+    _errorMessages[WARNING_NO_VEHICLE] = "You are not in a vehicle.";
+    _errorMessages[ERROR_UNKNOWN_RECIPE] = "You don't know that recipe.";
+    _errorMessages[ERROR_UNKNOWN_CONSTRUCTION] = "You don't know how to construct that object.";
+    _errorMessages[WARNING_WRONG_MATERIAL] = "The construction site doesn't need that.";
+    _errorMessages[ERROR_UNDER_CONSTRUCTION] = "That object is still under construction.";
+    _errorMessages[ERROR_ATTACKED_PEACFUL_PLAYER] = "You are not at war with that player.";
+    _errorMessages[WARNING_UNIQUE_OBJECT] = "There can be only one.";
+    _errorMessages[ERROR_INVALID_OBJECT] = "That is not a valid object type.";
+    _errorMessages[ERROR_ALREADY_AT_WAR] = "You are already at war with them.";
+    _errorMessages[ERROR_NOT_IN_CITY] = "You are not in a city.";
+    _errorMessages[ERROR_NO_INVENTORY] = "That object doesn't have an inventory.";
+    _errorMessages[ERROR_DAMAGED_OBJECT] = "You can't do that while the object is damaged.";
+    _errorMessages[ERROR_CANNOT_CEDE] = "You can't cede that to your city.";
+    _errorMessages[ERROR_NO_ACTION] = "That object has no action to perform.";
+    _errorMessages[ERROR_KING_CANNOT_LEAVE_CITY] = "A king cannot leave his city.";
+    _errorMessages[ERROR_ALREADY_IN_CITY] = "That player is already in a city.";
+    _errorMessages[ERROR_NOT_A_KING] = "Only a king can do that.";
+    _errorMessages[WARNING_INVALID_SPELL_TARGET] = "Invalid spell target.";
+    _errorMessages[WARNING_NOT_ENOUGH_ENERGY] = "You don't have enough energy.";
+    _errorMessages[ERROR_INVALID_TALENT] = "That isn't a talent you can take.";
+    _errorMessages[ERROR_ALREADY_KNOW_SPELL] = "You already know that spell.";
+    _errorMessages[ERROR_DONT_KNOW_SPELL] = "You haven't learned that spell.";
+    _errorMessages[WARNING_NO_TALENT_POINTS] = "You don't have any more talent points to allocate.";
+    _errorMessages[WARNING_MISSING_ITEMS_FOR_TALENT] = "You don't have the items needed to learn that talent.";
+    _errorMessages[WARNING_MISSING_REQ_FOR_TALENT] = "You don't meet the requirements for that talent.";
 }
 
 void Client::performCommand(const std::string &commandString){

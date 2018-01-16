@@ -16,20 +16,20 @@ CombatResult Spell::performAction(Entity &caster, Entity &target) const {
     // Target check
     if (!isTargetValid(caster, target)) {
         if (casterAsUser && !skipWarnings)
-            server.sendMessage(casterAsUser->socket(), SV_INVALID_SPELL_TARGET);
+            server.sendMessage(casterAsUser->socket(), WARNING_INVALID_SPELL_TARGET);
         return FAIL;
     }
 
     if (target.isDead()){
         if (casterAsUser && !skipWarnings)
-            server.sendMessage(casterAsUser->socket(), SV_TARGET_DEAD);
+            server.sendMessage(casterAsUser->socket(), ERROR_TARGET_DEAD);
         return FAIL;
     }
 
     // Range check
     if (distance(caster.location(), target.location()) > _range) {
         if (casterAsUser && !skipWarnings)
-            server.sendMessage(casterAsUser->socket(), SV_TOO_FAR);
+            server.sendMessage(casterAsUser->socket(), WARNING_TOO_FAR);
         return FAIL;
     }
 

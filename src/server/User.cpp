@@ -162,7 +162,7 @@ void User::cancelAction() {
         _actionObject->decrementGatheringUsers();
     }
 
-    Server::instance().sendMessage(_socket, SV_ACTION_INTERRUPTED);
+    Server::instance().sendMessage(_socket, WARNING_ACTION_INTERRUPTED);
     _action = NO_ACTION;
 }
 
@@ -366,7 +366,7 @@ void User::update(ms_t timeElapsed){
     case CRAFT:
     {
         if (! hasRoomToCraft(*_actionRecipe)) {
-            server.sendMessage(_socket, SV_INVENTORY_FULL);
+            server.sendMessage(_socket, WARNING_INVENTORY_FULL);
             cancelAction();
             return;
         }
@@ -403,7 +403,7 @@ void User::update(ms_t timeElapsed){
         //Check for inventory space
         const ServerItem *item = _actionObject->deconstruction().becomes();
         if (!vectHasSpace(_inventory, item)){
-            server.sendMessage(_socket, SV_INVENTORY_FULL);
+            server.sendMessage(_socket, WARNING_INVENTORY_FULL);
             cancelAction();
             return;
         }

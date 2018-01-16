@@ -137,7 +137,7 @@ void Server::checkSockets(){
             Socket s(tempSocket);
             // Allow time for rejection message to be sent before closing socket
             s.delayClosing(5000);
-            sendMessage(s, SV_SERVER_FULL);
+            sendMessage(s, WARNING_SERVER_FULL);
         } else {
             sockaddr_in clientAddr;
             SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr*)&clientAddr,
@@ -454,14 +454,14 @@ bool Server::isEntityInRange(const Socket &client, const User &user, const Entit
     // Doesn't exist
     if (ent == nullptr) {
         if (!suppressErrorMessages)
-            sendMessage(client, SV_DOESNT_EXIST);
+            sendMessage(client, WARNING_DOESNT_EXIST);
         return false;
     }
 
     // Check distance from user
     if (distance(user.collisionRect(), ent->collisionRect()) > ACTION_DISTANCE) {
         if (!suppressErrorMessages)
-            sendMessage(client, SV_TOO_FAR);
+            sendMessage(client, WARNING_TOO_FAR);
         return false;
     }
 
@@ -492,7 +492,7 @@ void Server::forceAllToUntarget(const Entity &target, const User *userToExclude)
             continue;
         }
         if (user.action() == User::GATHER && user.actionObject()->serial() == serial) {
-            sendMessage(user.socket(), SV_DOESNT_EXIST);
+            sendMessage(user.socket(), WARNING_DOESNT_EXIST);
             user.cancelAction();
             user.target(nullptr);
         }
@@ -544,7 +544,7 @@ void Server::gatherObject(size_t serial, User &user){
     size_t qtyToGive = obj->chooseGatherQuantity(toGive);
     const size_t remaining = user.giveItem(toGive, qtyToGive);
     if (remaining > 0) {
-        sendMessage(user.socket(), SV_INVENTORY_FULL);
+        sendMessage(user.socket(), WARNING_INVENTORY_FULL);
         qtyToGive -= remaining;
     }
     if (remaining < qtyToGive) // User received something: trigger any new unlocks

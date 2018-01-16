@@ -155,7 +155,7 @@ TEST_CASE("A player must be in a city to cede", "[.slow][city]"){
     c.sendMessage(CL_CEDE, makeArgs(rock.serial()));
 
     // Then the player receives an error message;
-    REQUIRE(c.waitForMessage(SV_NOT_IN_CITY));
+    REQUIRE(c.waitForMessage(ERROR_NOT_IN_CITY));
 
     // And the object still belongs to the player
     CHECK(rock.permissions().isOwnedByPlayer(user.name()));
@@ -179,7 +179,7 @@ TEST_CASE("A player can only cede his own objects", "[.slow][city]") {
     c.sendMessage(CL_CEDE, makeArgs(rock.serial()));
 
     // Then the player receives an error message;
-    CHECK(c.waitForMessage(SV_NO_PERMISSION, 10000));
+    CHECK(c.waitForMessage(WARNING_NO_PERMISSION, 10000));
 
     // And the object does not belong to Athens
     CHECK_FALSE(rock.permissions().isOwnedByCity("athens"));
@@ -226,7 +226,7 @@ TEST_CASE("A player can't leave a city if not in one", "[city]") {
     c.sendMessage(CL_LEAVE_CITY);
 
     // Then the player receives an error message;
-    CHECK(c.waitForMessage(SV_NOT_IN_CITY));
+    CHECK(c.waitForMessage(ERROR_NOT_IN_CITY));
 }
 
 TEST_CASE("A king can't leave his city", "[city][king]") {
@@ -248,7 +248,7 @@ TEST_CASE("A king can't leave his city", "[city][king]") {
     c.sendMessage(CL_LEAVE_CITY);
 
     // Then Alice receives an error message;
-    CHECK(c.waitForMessage(SV_KING_CANNOT_LEAVE_CITY));
+    CHECK(c.waitForMessage(ERROR_KING_CANNOT_LEAVE_CITY));
 
     // And Alice is still in Athens
     REPEAT_FOR_MS(100);

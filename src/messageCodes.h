@@ -423,189 +423,90 @@ enum MessageCode{
 
 
     // Errors and warnings
+    // Warning: the user is unable to perform a reasonable action, for X reason
+    // Error: the user should not have been able to attempt that action, or something went wrong.
 
-    // The client version differs from the server version
-    // Argument: server version
-    SV_WRONG_VERSION,
+    // Connection
+    WARNING_WRONG_VERSION, // The client version differs from the server version. Argument: server version
+    WARNING_DUPLICATE_USERNAME, // The client has attempted to connect with a username already in use
+    WARNING_INVALID_USERNAME, // The client has attempted to connect with an invalid username
+    WARNING_SERVER_FULL, // There is no room for more clients
 
-    // The client has attempted to connect with a username already in use
-    SV_DUPLICATE_USERNAME,
+    // Merchant objects
+    ERROR_NOT_MERCHANT, // The user tried to perform a merchant function on a non-merchant object
+    ERROR_INVALID_MERCHANT_SLOT, // The user tried to perform a merchant function on an invalid merchant slot
+    WARNING_NO_WARE, // The merchant has no wares in stock to sell the user
+    WARNING_NO_PRICE, // The user cannot afford the price of a merchant exchange
+    WARNING_MERCHANT_INVENTORY_FULL, // The merchant object does not have enough inventory space to trade with the user
 
-    // The client has attempted to connect with an invalid username
-    SV_INVALID_USERNAME,
+    // Talents and spells
+    ERROR_INVALID_TALENT, // You tried to learn an invalid spell
+    WARNING_MISSING_ITEMS_FOR_TALENT, // You tried to learn a talent which you can't afford
+    WARNING_MISSING_REQ_FOR_TALENT, // You do not meet the requirements for that talent
+    ERROR_ALREADY_KNOW_SPELL, // You tried to learn a spell that you already know
+    WARNING_NO_TALENT_POINTS, // You don't have any talent points left to allocate
+    ERROR_DONT_KNOW_SPELL, // You tried to cast a spell that you don't know
+    WARNING_INVALID_SPELL_TARGET, // You can't cast that spell at that target
+    WARNING_NOT_ENOUGH_ENERGY, // You don't have enough energy to cast that
+    ERROR_CANNOT_CAST_ITEM, // That item doesn't cast a spell
 
-    // There is no room for more clients
-    SV_SERVER_FULL,
+    // Vehicles
+    ERROR_NOT_VEHICLE, // The user tried to mount a non-vehicle object.
+    WARNING_VEHICLE_OCCUPIED, // The user tried to perform an action on an occupied vehicle
+    WARNING_NO_VEHICLE, // The user tried to perform an action on an occupied vehicle
 
-    // That user doesn't exist
-    SV_INVALID_USER,
+    // Crafting
+    WARNING_NEED_MATERIALS, // The user does not have enough materials to craft an item
+    ERROR_INVALID_ITEM, // The user tried to craft an item that does not exist
+    ERROR_CANNOT_CRAFT, // The user referred to a nonexistent item
+    ERROR_UNKNOWN_RECIPE, // The user tried to craft using a recipe he doesn't know
 
-    // The user is too far away to perform an action
-    SV_TOO_FAR,
+    // Construction
+    ERROR_INVALID_OBJECT, // The user tried to construct an object type that doesn't exist
+    ERROR_UNKNOWN_CONSTRUCTION, // The user tried to construct something that he doesn't know about
+    WARNING_WRONG_MATERIAL, // The user tried to add the wrong building material to a site
+    ERROR_UNDER_CONSTRUCTION, // The user tried to use an object that is still under construction
+    ERROR_UNBUILDABLE, // The user tried to construct an object that cannot be constructed
+    ERROR_CANNOT_CONSTRUCT, // The user tried to construct an item that cannot be constructed
+    WARNING_UNIQUE_OBJECT, // The user tried to construct a unique object that already exists in the world
+    WARNING_PLAYER_UNIQUE_OBJECT, // The user tried to build a second user-unique object. Arguments: category
 
-    // The user tried to perform an action on an object that doesn't exist
-    SV_DOESNT_EXIST,
+    // Cities
+    ERROR_NOT_IN_CITY, // The user tried to perform a city action when not in a city.
+    ERROR_KING_CANNOT_LEAVE_CITY, // The user tried to leave a city while being its king.
+    ERROR_ALREADY_IN_CITY, // The user tried to recruit a citizen of another city.
+    ERROR_NOT_A_KING, // Only a king can perform that action
 
-    // The user cannot receive an item because his inventory is full
-    SV_INVENTORY_FULL,
+    // Objects
+    WARNING_DOESNT_EXIST, // The user tried to perform an action on an object that doesn't exist
+    ERROR_CANNOT_DECONSTRUCT, // The user tried to deconstruct an object that cannot be deconstructed
+    ERROR_DAMAGED_OBJECT, // That action cannot be performed on a damaged object
+    ERROR_CANNOT_CEDE, // The user tried to cede an uncedable object
+    ERROR_NO_ACTION, // The user tried to perform an action with an object that has none.
 
-    // The user does not have enough materials to craft an item
-    SV_NEED_MATERIALS,
+    // Inventory and containers
+    WARNING_INVENTORY_FULL, // The user cannot receive an item because his inventory is full
+    ERROR_EMPTY_SLOT, // The user tried to manipulate an empty inventory slot
+    ERROR_INVALID_SLOT, // The user attempted to manipulate an out-of-range inventory slot
+    WARNING_NOT_EMPTY, // The object cannot be removed because it has an inventory of items
+    ERROR_NPC_SWAP, // The user tried to put an item into an NPC
+    ERROR_TAKE_SELF, // The user tried to take an item from himself
+    ERROR_NO_INVENTORY, // The user tried to manipulate an object's non-existent inventory
 
-    // The user tried to craft an item that does not exist
-    SV_INVALID_ITEM,
+    // War
+    ERROR_ATTACKED_PEACFUL_PLAYER, // The user tried to attack a player without being at war with him
+    ERROR_ALREADY_AT_WAR, // The user tried to declare war on somebody with whom they are already at war.
 
-    // The user referred to a nonexistent item
-    SV_CANNOT_CRAFT,
-
-    // The user was unable to complete an action
-    SV_ACTION_INTERRUPTED,
-
-    // The user tried to manipulate an empty inventory slot
-    SV_EMPTY_SLOT,
-
-    // The user attempted to manipulate an out-of-range inventory slot
-    SV_INVALID_SLOT,
-
-    // The user tried to construct an item that cannot be constructed
-    SV_CANNOT_CONSTRUCT,
-
-    // The user tried to perform an action but does not have the requisite item
-    // Arguments: requiredItemTag
-    SV_ITEM_NEEDED,
-
-    // The user tried to perform an action at an occupied location
-    SV_BLOCKED,
-
-    // The user does not have the tools required to craft an item
-    SV_NEED_TOOLS,
-
-    // The user tried to deconstruct an object that cannot be deconstructed
-    SV_CANNOT_DECONSTRUCT,
-
-    // The user does not have permission to perform an action
-    SV_NO_PERMISSION,
-
-    // The user tried to perform a merchant function on a non-merchant object
-    SV_NOT_MERCHANT,
-
-    // The user tried to perform a merchant function on an invalid merchant slot
-    SV_INVALID_MERCHANT_SLOT,
-
-    // The merchant has no wares in stock to sell the user
-    SV_NO_WARE,
-
-    // The user cannot afford the price of a merchant exchange
-    SV_NO_PRICE,
-
-    // The merchant object does not have enough inventory space to trade with the user
-    SV_MERCHANT_INVENTORY_FULL,
-
-    // The object cannot be removed because it has an inventory of items
-    SV_NOT_EMPTY,
-
-    // The NPC is dead
-    SV_TARGET_DEAD,
-
-    // You tried to learn an invalid spell
-    SV_INVALID_TALENT,
-
-    // You tried to learn a talent which you can't afford
-    SV_MISSING_ITEMS_FOR_TALENT,
-
-    // You do not meet the requirements for that talent
-    SV_MISSING_REQ_FOR_TALENT,
-
-    // You tried to learn a spell that you already know
-    SV_ALREADY_KNOW_SPELL,
-
-    // You don't have any talent points left to allocate
-    SV_NO_TALENT_POINTS,
-
-    // You tried to cast a spell that you don't know
-    SV_DONT_KNOW_SPELL,
-
-    // You can't cast that spell at that target
-    SV_INVALID_SPELL_TARGET,
-
-    // You don't have enough energy to cast that
-    SV_NOT_ENOUGH_ENERGY,
-
-    // That item doesn't cast a spell
-    SV_CANNOT_CAST_ITEM,
-
-    // The user tried to put an item into an NPC
-    SV_NPC_SWAP,
-
-    // The user tried to take an item from himself
-    SV_TAKE_SELF,
-
-    // The user tried to equip an item into a gear slot with which it doesn't compatible.
-    SV_NOT_GEAR,
-
-    // The user tried to mount a non-vehicle object.
-    SV_NOT_VEHICLE,
-
-    // The user tried to perform an action on an occupied vehicle
-    SV_VEHICLE_OCCUPIED,
-
-    // The user tried to perform an action on an occupied vehicle
-    SV_NO_VEHICLE,
-
-    // The user tried to craft using a recipe he doesn't know
-    SV_UNKNOWN_RECIPE,
-
-    // The user tried to construct something that he doesn't know about
-    SV_UNKNOWN_CONSTRUCTION,
-
-    // The user tried to add the wrong building material to a site
-    SV_WRONG_MATERIAL,
-
-    // The user tried to use an object that is still under construction
-    SV_UNDER_CONSTRUCTION,
-
-    // The user tried to attack a player without being at war with him
-    SV_ATTACKED_PEACFUL_PLAYER,
-
-    // The user tried to construct a unique object that already exists in the world
-    SV_UNIQUE_OBJECT,
-
-    // The user tried to construct an object that cannot be constructed
-    SV_UNBUILDABLE,
-
-    // The user tried to construct an object type that doesn't exist
-    SV_INVALID_OBJECT,
-
-    // The user tried to declare war on somebody with whom they are already at war.
-    SV_ALREADY_AT_WAR,
-
-    // The user tried to perform a city action when not in a city.
-    SV_NOT_IN_CITY,
-
-    // The user tried to manipulate an object's non-existent inventory
-    SV_NO_INVENTORY,
-
-    // That action cannot be performed on a damaged object
-    SV_DAMAGED_OBJECT,
-
-    // The user tried to build a second user-unique object
-    // Arguments: category
-    SV_PLAYER_UNIQUE_OBJECT,
-
-    // The user tried to cede an uncedable object
-    SV_CANNOT_CEDE,
-
-    // The user tried to perform an action with an object that has none.
-    SV_NO_ACTION,
-
-    // The user tried to leave a city while being its king.
-    SV_KING_CANNOT_LEAVE_CITY,
-
-    // The user tried to recruit a citizen of another city.
-    SV_ALREADY_IN_CITY,
-
-    // Only a king can perform that action
-    SV_NOT_A_KING,
+    // Misc
+    WARNING_TOO_FAR, // The user is too far away to perform an action
+    WARNING_NO_PERMISSION, // The user does not have permission to perform an action
+    ERROR_INVALID_USER, // That user doesn't exist
+    WARNING_NEED_TOOLS, // The user does not have the tools required to craft an item
+    WARNING_ACTION_INTERRUPTED, // The user was unable to complete an action
+    WARNING_ITEM_NEEDED, // The user tried to perform an action but does not have the requisite item. Arguments: requiredItemTag
+    WARNING_BLOCKED, // The user tried to perform an action at an occupied location
+    ERROR_TARGET_DEAD, // The NPC is dead
+    ERROR_NOT_GEAR, // The user tried to equip an item into a gear slot with which it doesn't compatible.
 
 
 

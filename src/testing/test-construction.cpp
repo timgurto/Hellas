@@ -50,7 +50,7 @@ TEST_CASE("Unique objects are unique"){
     WAIT_UNTIL (s.entities().size() == 1);
 
     c.sendMessage(CL_CONSTRUCT, makeArgs("throne", 10, 10));
-    bool isConstructionRejected = c.waitForMessage(SV_UNIQUE_OBJECT);
+    bool isConstructionRejected = c.waitForMessage(WARNING_UNIQUE_OBJECT);
 
     CHECK(isConstructionRejected);
     CHECK(s.entities().size() == 1);
@@ -97,7 +97,7 @@ TEST_CASE("Construction tool requirements are enforced", "[construction]"){
     WAIT_UNTIL (s.users().size() == 1);
 
     c.sendMessage(CL_CONSTRUCT, makeArgs("computer", 10, 10));
-    CHECK(c.waitForMessage(SV_NEED_TOOLS));
+    CHECK(c.waitForMessage(WARNING_NEED_TOOLS));
     CHECK(s.entities().size() == 0);
 }
 

@@ -56,7 +56,7 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
         c.sendMessage(CL_CEDE, makeArgs(wife.serial()));
 
         // Then Bob receives an error message,
-        c.waitForMessage(SV_CANNOT_CEDE);
+        c.waitForMessage(ERROR_CANNOT_CEDE);
 
         // And the wife still belongs to him
         CHECK(wife.permissions().isOwnedByPlayer("bob"));

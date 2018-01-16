@@ -55,7 +55,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 #ifndef _DEBUG
             // Check that version matches
             if (clientVersion != version()) {
-                sendMessage(client, SV_WRONG_VERSION, version());
+                sendMessage(client, WARNING_WRONG_VERSION, version());
                 break;
             }
 #endif
@@ -64,7 +64,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             bool invalid = false;
             for (char c : name){
                 if (c < 'a' || c > 'z') {
-                    sendMessage(client, SV_INVALID_USERNAME);
+                    sendMessage(client, WARNING_INVALID_USERNAME);
                     invalid = true;
                     break;
                 }
@@ -74,7 +74,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
             // Check that user isn't already logged in
             if (_usersByName.find(name) != _usersByName.end()) {
-                sendMessage(client, SV_DUPLICATE_USERNAME);
+                sendMessage(client, WARNING_DUPLICATE_USERNAME);
                 invalid = true;
                 break;
             }
@@ -114,16 +114,16 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             user->cancelAction();
             const std::set<Recipe>::const_iterator it = _recipes.find(id);
             if (!user->knowsRecipe(id)){
-                sendMessage(client, SV_UNKNOWN_RECIPE);
+                sendMessage(client, ERROR_UNKNOWN_RECIPE);
                 break;
             }
             ItemSet remaining;
             if (!user->hasItems(it->materials())) {
-                sendMessage(client, SV_NEED_MATERIALS);
+                sendMessage(client, WARNING_NEED_MATERIALS);
                 break;
             }
             if (!user->hasTools(it->tools())) {
-                sendMessage(client, SV_NEED_TOOLS);
+                sendMessage(client, WARNING_NEED_TOOLS);
                 break;
             }
             user->beginCrafting(*it);
@@ -142,38 +142,38 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             user->cancelAction();
             const ObjectType *objType = findObjectTypeByName(id);
             if (objType == nullptr){
-                sendMessage(client, SV_INVALID_OBJECT);
+                sendMessage(client, ERROR_INVALID_OBJECT);
                 break;
             }
             if (!user->knowsConstruction(id)){
-                sendMessage(client, SV_UNKNOWN_CONSTRUCTION);
+                sendMessage(client, ERROR_UNKNOWN_CONSTRUCTION);
                 break;
             }
             if (objType->isUnique() && objType->numInWorld() == 1){
-                sendMessage(client, SV_UNIQUE_OBJECT);
+                sendMessage(client, WARNING_UNIQUE_OBJECT);
                 break;
             }
             if (objType->isPlayerUnique() && user->hasPlayerUnique(objType->playerUniqueCategory())) {
-                sendMessage(client, SV_PLAYER_UNIQUE_OBJECT, objType->playerUniqueCategory());
+                sendMessage(client, WARNING_PLAYER_UNIQUE_OBJECT, objType->playerUniqueCategory());
                 break;
             }
             if (objType->isUnbuildable()){
-                sendMessage(client, SV_UNBUILDABLE);
+                sendMessage(client, ERROR_UNBUILDABLE);
                 break;
             }
             bool requiresTool = ! objType->constructionReq().empty();
             if (requiresTool && ! user->hasTool(objType->constructionReq())){
-                sendMessage(client, SV_NEED_TOOLS);
+                sendMessage(client, WARNING_NEED_TOOLS);
                 break;
             }
             const MapPoint location(x, y);
             if (distance(user->collisionRect(), objType->collisionRect() + location) >
                 ACTION_DISTANCE) {
-                sendMessage(client, SV_TOO_FAR);
+                sendMessage(client, WARNING_TOO_FAR);
                 break;
             }
             if (!isLocationValid(location, *objType)) {
-                sendMessage(client, SV_BLOCKED);
+                sendMessage(client, WARNING_BLOCKED);
                 break;
             }
             user->beginConstructing(*objType, location);
@@ -191,33 +191,33 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             user->cancelAction();
             if (slot >= User::INVENTORY_SIZE) {
-                sendMessage(client, SV_INVALID_SLOT);
+                sendMessage(client, ERROR_INVALID_SLOT);
                 break;
             }
             const std::pair<const ServerItem *, size_t> &invSlot = user->inventory(slot);
             if (invSlot.first == nullptr) {
-                sendMessage(client, SV_EMPTY_SLOT);
+                sendMessage(client, ERROR_EMPTY_SLOT);
                 break;
             }
             const ServerItem &item = *invSlot.first;
             if (item.constructsObject() == nullptr) {
-                sendMessage(client, SV_CANNOT_CONSTRUCT);
+                sendMessage(client, ERROR_CANNOT_CONSTRUCT);
                 break;
             }
             const MapPoint location(x, y);
             const ObjectType &objType = *item.constructsObject();
             if (distance(user->collisionRect(), objType.collisionRect() + location) >
                 ACTION_DISTANCE) {
-                sendMessage(client, SV_TOO_FAR);
+                sendMessage(client, WARNING_TOO_FAR);
                 break;
             }
             if (!isLocationValid(location, objType)) {
-                sendMessage(client, SV_BLOCKED);
+                sendMessage(client, WARNING_BLOCKED);
                 break;
             }
             const std::string constructionReq = objType.constructionReq();
             if (!(constructionReq.empty() || user->hasTool(constructionReq))) {
-                sendMessage(client, SV_ITEM_NEEDED, constructionReq);
+                sendMessage(client, WARNING_ITEM_NEEDED, constructionReq);
                 break;
             }
             user->beginConstructing(objType, location, slot);
@@ -234,17 +234,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             user->cancelAction();
             if (slot >= User::INVENTORY_SIZE) {
-                sendMessage(client, SV_INVALID_SLOT);
+                sendMessage(client, ERROR_INVALID_SLOT);
                 break;
             }
             const std::pair<const ServerItem *, size_t> &invSlot = user->inventory(slot);
             if (invSlot.first == nullptr) {
-                sendMessage(client, SV_EMPTY_SLOT);
+                sendMessage(client, ERROR_EMPTY_SLOT);
                 break;
             }
             const ServerItem &item = *invSlot.first;
             if (! item.castsSpellOnUse()) {
-                sendMessage(client, SV_CANNOT_CAST_ITEM);
+                sendMessage(client, ERROR_CANNOT_CAST_ITEM);
                 break;
             }
 
@@ -272,27 +272,27 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             user->cancelAction();
             Object *obj = _entities.find<Object>(serial);
             if (!isEntityInRange(client, *user, obj)) {
-                sendMessage(client, SV_DOESNT_EXIST);
+                sendMessage(client, WARNING_DOESNT_EXIST);
                 break;
             }
             assert (obj->type() != nullptr);
             // Check that the user meets the requirements
             if (obj->isBeingBuilt()){
-                sendMessage(client, SV_UNDER_CONSTRUCTION);
+                sendMessage(client, ERROR_UNDER_CONSTRUCTION);
                 break;
             }
             if (!obj->permissions().doesUserHaveAccess(user->name())){
-                sendMessage(client, SV_NO_PERMISSION);
+                sendMessage(client, WARNING_NO_PERMISSION);
                 break;
             }
             const std::string &gatherReq = obj->objType().gatherReq();
             if (gatherReq != "none" && !user->hasTool(gatherReq)) {
-                sendMessage(client, SV_ITEM_NEEDED, gatherReq);
+                sendMessage(client, WARNING_ITEM_NEEDED, gatherReq);
                 break;
             }
             // Check that it has an inventory
             if (obj->hasContainer() && !obj->container().isEmpty()){
-                sendMessage(client, SV_NOT_EMPTY);
+                sendMessage(client, WARNING_NOT_EMPTY);
                 break;
             }
             user->beginGathering(obj);
@@ -309,25 +309,25 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             user->cancelAction();
             Object *obj = _entities.find<Object>(serial);
             if (!isEntityInRange(client, *user, obj)) {
-                sendMessage(client, SV_TOO_FAR);
+                sendMessage(client, WARNING_TOO_FAR);
                 break;
             }
             if (obj->isBeingBuilt()) {
-                sendMessage(client, SV_UNDER_CONSTRUCTION);
+                sendMessage(client, ERROR_UNDER_CONSTRUCTION);
                 break;
             }
             assert(obj->type());
             if (!obj->permissions().doesUserHaveAccess(user->name())) {
-                sendMessage(client, SV_NO_PERMISSION);
+                sendMessage(client, WARNING_NO_PERMISSION);
                 break;
             }
             // Check that the object can be deconstructed
             if (!obj->hasDeconstruction()) {
-                sendMessage(client, SV_CANNOT_DECONSTRUCT);
+                sendMessage(client, ERROR_CANNOT_DECONSTRUCT);
                 break;
             }
             if (obj->health() < obj->stats().maxHealth) {
-                sendMessage(client, SV_DAMAGED_OBJECT);
+                sendMessage(client, ERROR_DAMAGED_OBJECT);
                 break;
             }
             if (!obj->isAbleToDeconstruct(*user)) {
@@ -335,7 +335,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
             // Check that it isn't an occupied vehicle
             if (obj->classTag() == 'v' && !dynamic_cast<const Vehicle *>(obj)->driver().empty()) {
-                sendMessage(client, SV_VEHICLE_OCCUPIED);
+                sendMessage(client, WARNING_VEHICLE_OCCUPIED);
                 break;
             }
 
@@ -354,17 +354,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             user->cancelAction();
             Object *obj = _entities.find<Object>(serial);
             if (!isEntityInRange(client, *user, obj)) {
-                sendMessage(client, SV_TOO_FAR);
+                sendMessage(client, WARNING_TOO_FAR);
                 break;
             }
             assert(obj->type());
             if (!obj->permissions().isOwnedByPlayer(user->name())) {
-                sendMessage(client, SV_NO_PERMISSION);
+                sendMessage(client, WARNING_NO_PERMISSION);
                 break;
             }
             // Check that it isn't an occupied vehicle
             if (obj->classTag() == 'v' && !dynamic_cast<const Vehicle *>(obj)->driver().empty()) {
-                sendMessage(client, SV_VEHICLE_OCCUPIED);
+                sendMessage(client, WARNING_VEHICLE_OCCUPIED);
                 break;
             }
 
@@ -387,7 +387,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 default:
                     pObj = _entities.find<Object>(serial);
                     if (!pObj->hasContainer()){
-                        sendMessage(client, SV_NO_INVENTORY);
+                        sendMessage(client, ERROR_NO_INVENTORY);
                         breakMsg = true;
                         break;
                     }
@@ -401,7 +401,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
 
             if (slot >= container->size()) {
-                sendMessage(client, SV_INVALID_SLOT);
+                sendMessage(client, ERROR_INVALID_SLOT);
                 break;
             }
             auto &containerSlot = (*container)[slot];
@@ -442,16 +442,16 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 default:
                     pObj1 = _entities.find<Object>(obj1);
                     if (!pObj1->hasContainer()){
-                        sendMessage(client, SV_NO_INVENTORY);
+                        sendMessage(client, ERROR_NO_INVENTORY);
                         breakMsg = true;
                         break;
                     }
                     if (!isEntityInRange(client, *user, pObj1)){
-                        sendMessage(client, SV_TOO_FAR);
+                        sendMessage(client, WARNING_TOO_FAR);
                         breakMsg = true;
                     }
                     if (!pObj1->permissions().doesUserHaveAccess(user->name())){
-                        sendMessage(client, SV_NO_PERMISSION);
+                        sendMessage(client, WARNING_NO_PERMISSION);
                         breakMsg = true;
                     }
                     containerFrom = &pObj1->container().raw();
@@ -469,16 +469,16 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                         slot2 == 0)
                             isConstructionMaterial = true;
                     if (!isConstructionMaterial && !pObj2->hasContainer()){
-                        sendMessage(client, SV_NO_INVENTORY);
+                        sendMessage(client, ERROR_NO_INVENTORY);
                         breakMsg = true;
                         break;
                     }
                     if (!isEntityInRange(client, *user, pObj2)){
-                        sendMessage(client, SV_TOO_FAR);
+                        sendMessage(client, WARNING_TOO_FAR);
                         breakMsg = true;
                     }
                     if (!pObj2->permissions().doesUserHaveAccess(user->name())){
-                        sendMessage(client, SV_NO_PERMISSION);
+                        sendMessage(client, WARNING_NO_PERMISSION);
                         breakMsg = true;
                     }
                     containerTo = &pObj2->container().raw();
@@ -489,7 +489,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (slot1 >= containerFrom->size() ||
                 !isConstructionMaterial && slot2 >= containerTo->size() ||
                 isConstructionMaterial && slot2 > 0) {
-                sendMessage(client, SV_INVALID_SLOT);
+                sendMessage(client, ERROR_INVALID_SLOT);
                 break;
             }
 
@@ -503,7 +503,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                     qtyToTake = min(qtyInSlot, qtyNeeded);
 
                 if (qtyNeeded == 0){
-                    sendMessage(client, SV_WRONG_MATERIAL);
+                    sendMessage(client, WARNING_WRONG_MATERIAL);
                     break;
                 }
 
@@ -548,14 +548,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             
             if (pObj1 != nullptr && pObj1->classTag() == 'n' && slotTo.first != nullptr ||
                 pObj2 != nullptr && pObj2->classTag() == 'n' && slotFrom.first != nullptr){
-                    sendMessage(client, SV_NPC_SWAP);
+                    sendMessage(client, ERROR_NPC_SWAP);
                     break;
             }
 
             // Check gear-slot compatibility
             if (obj1 == GEAR && slotTo.first != nullptr && slotTo.first->gearSlot() != slot1 ||
                 obj2 == GEAR && slotFrom.first != nullptr && slotFrom.first->gearSlot() != slot2){
-                    sendMessage(client, SV_NOT_GEAR);
+                    sendMessage(client, ERROR_NOT_GEAR);
                     break;
             }
 
@@ -657,37 +657,37 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (!isEntityInRange(client, *user, obj))
                 break;
             if (obj->isBeingBuilt()){
-                sendMessage(client, SV_UNDER_CONSTRUCTION);
+                sendMessage(client, ERROR_UNDER_CONSTRUCTION);
                 break;
             }
             size_t slots = obj->objType().merchantSlots();
             if (slots == 0){
-                sendMessage(client, SV_NOT_MERCHANT);
+                sendMessage(client, ERROR_NOT_MERCHANT);
                 break;
             } else if (slot >= slots){
-                sendMessage(client, SV_INVALID_MERCHANT_SLOT);
+                sendMessage(client, ERROR_INVALID_MERCHANT_SLOT);
                 break;
             }
             const MerchantSlot &mSlot = obj->merchantSlot(slot);
             if (!mSlot){
-                sendMessage(client, SV_INVALID_MERCHANT_SLOT);
+                sendMessage(client, ERROR_INVALID_MERCHANT_SLOT);
                 break;
             }
 
             // Check that user has price
             if (mSlot.price() > user->inventory()){
-                sendMessage(client, SV_NO_PRICE);
+                sendMessage(client, WARNING_NO_PRICE);
                 break;
             }
 
             // Check that user has inventory space
             const ServerItem *priceItem = toServerItem(mSlot.priceItem);
             if (!obj->hasContainer()){
-                sendMessage(client, SV_NO_INVENTORY);
+                sendMessage(client, ERROR_NO_INVENTORY);
                 break;
             }
             if (!vectHasSpace(user->inventory(), priceItem, mSlot.wareQty)){
-                sendMessage(client, SV_INVENTORY_FULL);
+                sendMessage(client, WARNING_INVENTORY_FULL);
                 break;
             }
 
@@ -695,13 +695,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (!bottomless){
                 // Check that object has items in stock
                 if (mSlot.ware() > obj->container().raw()){
-                    sendMessage(client, SV_NO_WARE);
+                    sendMessage(client, WARNING_NO_WARE);
                     break;
                 }
 
                 // Check that object has inventory space
                 if (!vectHasSpace(obj->container().raw(), priceItem, mSlot.priceQty)){
-                    sendMessage(client, SV_MERCHANT_INVENTORY_FULL);
+                    sendMessage(client, WARNING_MERCHANT_INVENTORY_FULL);
                     break;
                 }
             }
@@ -740,30 +740,30 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (!isEntityInRange(client, *user, obj))
                 break;
             if (obj->isBeingBuilt()){
-                sendMessage(client, SV_UNDER_CONSTRUCTION);
+                sendMessage(client, ERROR_UNDER_CONSTRUCTION);
                 break;
             }
             if (!obj->permissions().doesUserHaveAccess(user->name())){
-                sendMessage(client, SV_NO_PERMISSION);
+                sendMessage(client, WARNING_NO_PERMISSION);
                 break;
             }
             size_t slots = obj->objType().merchantSlots();
             if (slots == 0){
-                sendMessage(client, SV_NOT_MERCHANT);
+                sendMessage(client, ERROR_NOT_MERCHANT);
                 break;
             }
             if (slot >= slots){
-                sendMessage(client, SV_INVALID_MERCHANT_SLOT);
+                sendMessage(client, ERROR_INVALID_MERCHANT_SLOT);
                 break;
             }
             auto wareIt = _items.find(ware);
             if (wareIt == _items.end()){
-                sendMessage(client, SV_INVALID_ITEM);
+                sendMessage(client, ERROR_INVALID_ITEM);
                 break;
             }
             auto priceIt = _items.find(price);
             if (priceIt == _items.end()){
-                sendMessage(client, SV_INVALID_ITEM);
+                sendMessage(client, ERROR_INVALID_ITEM);
                 break;
             }
             MerchantSlot &mSlot = obj->merchantSlot(slot);
@@ -785,20 +785,20 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (!isEntityInRange(client, *user, obj))
                 break;
             if (obj->isBeingBuilt()){
-                sendMessage(client, SV_UNDER_CONSTRUCTION);
+                sendMessage(client, ERROR_UNDER_CONSTRUCTION);
                 break;
             }
             if (!obj->permissions().doesUserHaveAccess(user->name())){
-                sendMessage(client, SV_NO_PERMISSION);
+                sendMessage(client, WARNING_NO_PERMISSION);
                 break;
             }
             size_t slots = obj->objType().merchantSlots();
             if (slots == 0){
-                sendMessage(client, SV_NOT_MERCHANT);
+                sendMessage(client, ERROR_NOT_MERCHANT);
                 break;
             }
             if (slot >= slots){
-                sendMessage(client, SV_INVALID_MERCHANT_SLOT);
+                sendMessage(client, ERROR_INVALID_MERCHANT_SLOT);
                 break;
             }
             obj->merchantSlot(slot) = MerchantSlot();
@@ -819,20 +819,20 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (!isEntityInRange(client, *user, obj))
                 break;
             if (obj->isBeingBuilt()){
-                sendMessage(client, SV_UNDER_CONSTRUCTION);
+                sendMessage(client, ERROR_UNDER_CONSTRUCTION);
                 break;
             }
             if (!obj->permissions().doesUserHaveAccess(user->name())){
-                sendMessage(client, SV_NO_PERMISSION);
+                sendMessage(client, WARNING_NO_PERMISSION);
                 break;
             }
             if (obj->classTag() != 'v'){
-                sendMessage(client, SV_NOT_VEHICLE);
+                sendMessage(client, ERROR_NOT_VEHICLE);
                 break;
             }
             Vehicle *v = dynamic_cast<Vehicle *>(obj);
             if (!v->driver().empty() && v->driver() != user->name()){
-                sendMessage(client, SV_VEHICLE_OCCUPIED);
+                sendMessage(client, WARNING_VEHICLE_OCCUPIED);
                 break;
             }
 
@@ -853,16 +853,16 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
             if (!user->isDriving()){
-                sendMessage(client, SV_NO_VEHICLE);
+                sendMessage(client, ERROR_NOT_VEHICLE);
                 break;
             }
             auto dstRect = user->type()->collisionRect() + target;
             if (distance(dstRect, user->collisionRect()) > ACTION_DISTANCE){
-                sendMessage(client, SV_TOO_FAR);
+                sendMessage(client, WARNING_TOO_FAR);
                 break;
             }
             if (!isLocationValid(target, User::OBJECT_TYPE)){
-                sendMessage(client, SV_BLOCKED);
+                sendMessage(client, WARNING_BLOCKED);
                 break;
             }
             size_t serial = user->driving();
@@ -898,7 +898,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             Object *obj = _entities.find<Object>(serial);
             if (obj == nullptr) {
-                sendMessage(client, SV_DOESNT_EXIST);
+                sendMessage(client, WARNING_DOESNT_EXIST);
                 break;
             }
 
@@ -966,7 +966,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                     Belligerent::CITY;
             Belligerent target(targetName, targetType);
             if (_wars.isAtWar(user->name(), target)){
-                sendMessage(client, SV_ALREADY_AT_WAR);
+                sendMessage(client, ERROR_ALREADY_AT_WAR);
                 break;
             }
             _wars.declare(user->name(), target);
@@ -1106,7 +1106,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             auto it = _usersByName.find(username);
             if (it == _usersByName.end()) {
-                sendMessage(client, SV_INVALID_USER);
+                sendMessage(client, ERROR_INVALID_USER);
                 break;
             }
             const User *target = it->second;
@@ -1125,7 +1125,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
             const auto it = _items.find(id);
             if (it == _items.end()){
-                sendMessage(client, SV_INVALID_ITEM);
+                sendMessage(client, ERROR_INVALID_ITEM);
                 break;
             }
             const ServerItem &item = *it;;
@@ -1171,7 +1171,7 @@ void Server::handle_CL_START_WATCHING(User &user, size_t serial){
 
 void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
     if (serial == INVENTORY) {
-        sendMessage(user.socket(), SV_TAKE_SELF);
+        sendMessage(user.socket(), ERROR_TAKE_SELF);
         return;
     }
 
@@ -1191,7 +1191,7 @@ void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
     size_t remainder = user.giveItem(slot.first, slot.second);
     if (remainder > 0) {
         slot.second = remainder;
-        sendMessage(user.socket(), SV_INVENTORY_FULL);
+        sendMessage(user.socket(), WARNING_INVENTORY_FULL);
     } else {
         slot.first = nullptr;
         slot.second = 0;
@@ -1210,11 +1210,11 @@ void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
 void Server::handle_CL_LEAVE_CITY(User &user) {
     auto city = _cities.getPlayerCity(user.name());
     if (city.empty()) {
-        sendMessage(user.socket(), SV_NOT_IN_CITY);
+        sendMessage(user.socket(), ERROR_NOT_IN_CITY);
         return;
     }
     if (_kings.isPlayerAKing(user.name())) {
-        sendMessage(user.socket(), SV_KING_CANNOT_LEAVE_CITY);
+        sendMessage(user.socket(), ERROR_KING_CANNOT_LEAVE_CITY);
         return;
     }
     _cities.removeUserFromCity(user, city);
@@ -1222,24 +1222,24 @@ void Server::handle_CL_LEAVE_CITY(User &user) {
 
 void Server::handle_CL_CEDE(User &user, size_t serial) {
     if (serial == INVENTORY || serial == GEAR) {
-        sendMessage(user.socket(), SV_DOESNT_EXIST);
+        sendMessage(user.socket(), WARNING_DOESNT_EXIST);
         return;
     }
     auto *obj = _entities.find<Object>(serial);
 
     if (!obj->permissions().isOwnedByPlayer(user.name())) {
-        sendMessage(user.socket(), SV_NO_PERMISSION);
+        sendMessage(user.socket(), WARNING_NO_PERMISSION);
         return;
     }
 
     const City::Name &city = _cities.getPlayerCity(user.name());
     if (city.empty()) {
-        sendMessage(user.socket(), SV_NOT_IN_CITY);
+        sendMessage(user.socket(), ERROR_NOT_IN_CITY);
         return;
     }
 
     if (obj->objType().isPlayerUnique()) {
-        sendMessage(user.socket(), SV_CANNOT_CEDE);
+        sendMessage(user.socket(), ERROR_CANNOT_CEDE);
         return;
     }
 
@@ -1250,11 +1250,11 @@ void Server::handle_CL_GRANT(User &user, size_t serial, const std::string &usern
     auto *obj = _entities.find<Object>(serial);
     auto playerCity = cities().getPlayerCity(user.name());
     if (!obj->permissions().isOwnedByCity(playerCity)) {
-        sendMessage(user.socket(), SV_NO_PERMISSION);
+        sendMessage(user.socket(), WARNING_NO_PERMISSION);
         return;
     }
     if (!_kings.isPlayerAKing(user.name())) {
-        sendMessage(user.socket(), SV_NOT_A_KING);
+        sendMessage(user.socket(), ERROR_NOT_A_KING);
         return;
     }
     obj->permissions().setPlayerOwner(username);
@@ -1262,19 +1262,19 @@ void Server::handle_CL_GRANT(User &user, size_t serial, const std::string &usern
 
 void Server::handle_CL_PERFORM_OBJECT_ACTION(User & user, size_t serial, const std::string &textArg) {
     if (serial == INVENTORY || serial == GEAR) {
-        sendMessage(user.socket(), SV_DOESNT_EXIST);
+        sendMessage(user.socket(), WARNING_DOESNT_EXIST);
         return;
     }
     auto *obj = _entities.find<Object>(serial);
 
     if (!obj->permissions().doesUserHaveAccess(user.name())){
-        sendMessage(user.socket(), SV_NO_PERMISSION);
+        sendMessage(user.socket(), WARNING_NO_PERMISSION);
         return;
     }
 
     const auto &objType = obj->objType();
     if (!objType.hasAction()) {
-        sendMessage(user.socket(), SV_NO_ACTION);
+        sendMessage(user.socket(), ERROR_NO_ACTION);
         return;
     }
 
@@ -1291,19 +1291,19 @@ void Server::handle_CL_TARGET_ENTITY(User & user, size_t serial) {
     auto target = _entities.find(serial);
     if (target == nullptr) {
         user.setTargetAndAttack(nullptr);
-        sendMessage(user.socket(), SV_DOESNT_EXIST);
+        sendMessage(user.socket(), WARNING_DOESNT_EXIST);
         return;
     }
 
     if (target->health() == 0) {
         user.setTargetAndAttack(nullptr);
-        sendMessage(user.socket(), SV_TARGET_DEAD);
+        sendMessage(user.socket(), ERROR_TARGET_DEAD);
         return;
     }
 
     if (!target->canBeAttackedBy(user)) {
         user.setTargetAndAttack(nullptr);
-        sendMessage(user.socket(), SV_ATTACKED_PEACFUL_PLAYER);
+        sendMessage(user.socket(), ERROR_ATTACKED_PEACFUL_PLAYER);
         return;
     }
 
@@ -1315,18 +1315,18 @@ void Server::handle_CL_TARGET_PLAYER(User & user, const std::string & targetUser
 
     auto it = _usersByName.find(targetUsername);
     if (it == _usersByName.end()) {
-        sendMessage(user.socket(), SV_INVALID_USER);
+        sendMessage(user.socket(), ERROR_INVALID_USER);
         return;
     }
     User *targetUser = const_cast<User *>(it->second);
     if (targetUser->health() == 0) {
         user.setTargetAndAttack(nullptr);
-        sendMessage(user.socket(), SV_TARGET_DEAD);
+        sendMessage(user.socket(), ERROR_TARGET_DEAD);
         return;
     }
     if (!_wars.isAtWar(user.name(), targetUsername)) {
         user.setTargetAndAttack(nullptr);
-        sendMessage(user.socket(), SV_ATTACKED_PEACFUL_PLAYER);
+        sendMessage(user.socket(), ERROR_ATTACKED_PEACFUL_PLAYER);
         return;
     }
 
@@ -1344,7 +1344,7 @@ void Server::handle_CL_SELECT_ENTITY(User & user, size_t serial) {
     auto target = _entities.find(serial);
     if (target == nullptr) {
         user.setTargetAndAttack(nullptr);
-        sendMessage(user.socket(), SV_DOESNT_EXIST);
+        sendMessage(user.socket(), WARNING_DOESNT_EXIST);
         return;
     }
 
@@ -1356,7 +1356,7 @@ void Server::handle_CL_SELECT_PLAYER(User & user, const std::string & targetUser
 
     auto it = _usersByName.find(targetUsername);
     if (it == _usersByName.end()) {
-        sendMessage(user.socket(), SV_INVALID_USER);
+        sendMessage(user.socket(), ERROR_INVALID_USER);
         return;
     }
     User *targetUser = const_cast<User *>(it->second);
@@ -1366,16 +1366,16 @@ void Server::handle_CL_SELECT_PLAYER(User & user, const std::string & targetUser
 void Server::handle_CL_RECRUIT(User &user, const std::string & username) {
     const auto &cityName = _cities.getPlayerCity(user.name());
     if (cityName.empty()) {
-        sendMessage(user.socket(), SV_NOT_IN_CITY);
+        sendMessage(user.socket(), ERROR_NOT_IN_CITY);
         return;
     }
     if (!_cities.getPlayerCity(username).empty()) {
-        sendMessage(user.socket(), SV_ALREADY_IN_CITY);
+        sendMessage(user.socket(), ERROR_ALREADY_IN_CITY);
         return;
     }
     const auto *pTargetUser = getUserByName(username);
     if (pTargetUser == nullptr) {
-        sendMessage(user.socket(), SV_INVALID_USER);
+        sendMessage(user.socket(), ERROR_INVALID_USER);
         return;
     }
 
@@ -1421,11 +1421,11 @@ void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName)
     const auto &classType = userClass.type();
     auto talent = classType.findTalent(talentName);
     if (talent == nullptr) {
-        sendMessage(user.socket(), SV_INVALID_TALENT);
+        sendMessage(user.socket(), ERROR_INVALID_TALENT);
         return;
     }
     if (!user.getClass().canTakeATalent()) {
-        sendMessage(user.socket(), SV_NO_TALENT_POINTS);
+        sendMessage(user.socket(), WARNING_NO_TALENT_POINTS);
         return;
     }
 
@@ -1433,13 +1433,13 @@ void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName)
 
     if (tier.reqPointsInTree > 0 &&
             user.getClass().pointsInTree(talent->tree()) < tier.reqPointsInTree) {
-        sendMessage(user.socket(), SV_MISSING_REQ_FOR_TALENT);
+        sendMessage(user.socket(), WARNING_MISSING_REQ_FOR_TALENT);
         return;
     }
 
     if (tier.hasItemCost()) {
         if (!user.hasItems(tier.costTag, tier.costQuantity)) {
-            sendMessage(user.socket(), SV_MISSING_ITEMS_FOR_TALENT);
+            sendMessage(user.socket(), WARNING_MISSING_ITEMS_FOR_TALENT);
             return;
         }
         user.removeItems(tier.costTag, tier.costQuantity);
@@ -1448,7 +1448,7 @@ void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName)
 
     if (talent->type() == Talent::SPELL) {
         if (userClass.hasTalent(talent)) {
-            sendMessage(user.socket(), SV_ALREADY_KNOW_SPELL);
+            sendMessage(user.socket(), ERROR_ALREADY_KNOW_SPELL);
             return;
         }
 
@@ -1473,13 +1473,13 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID, bool castin
 
     // Learned-spell check
     if (!castingFromItem && !user.getClass().knowsSpell(spellID)) {
-        sendMessage(user.socket(), SV_DONT_KNOW_SPELL);
+        sendMessage(user.socket(), ERROR_DONT_KNOW_SPELL);
         return;
     }
 
     // Energy check
     if (user.energy() < spell.cost()) {
-        sendMessage(user.socket(), SV_NOT_ENOUGH_ENERGY);
+        sendMessage(user.socket(), WARNING_NOT_ENOUGH_ENERGY);
         return;
     }
 
@@ -1594,7 +1594,7 @@ std::string Server::compileMessage(MessageCode msgCode, const std::string &args)
 void Server::sendInventoryMessageInner(const User &user, size_t serial, size_t slot,
                                       const ServerItem::vect_t &itemVect) const{
     if (slot >= itemVect.size()){
-        sendMessage(user.socket(), SV_INVALID_SLOT);
+        sendMessage(user.socket(), ERROR_INVALID_SLOT);
         return;
     }
     const auto &containerSlot = itemVect[slot];

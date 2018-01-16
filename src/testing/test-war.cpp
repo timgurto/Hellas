@@ -83,8 +83,8 @@ TEST_CASE("Wars cannot be redeclared", "[war]"){
     // When Alice declares war on Bob
     alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "bob");
 
-    // Then she receives an SV_ALREADY_AT_WAR error message
-    CHECK(alice.waitForMessage(SV_ALREADY_AT_WAR));
+    // Then she receives an ERROR_ALREADY_AT_WAR error message
+    CHECK(alice.waitForMessage(ERROR_ALREADY_AT_WAR));
 }
 
 TEST_CASE("A player can be at war with a city", "[war][city]"){

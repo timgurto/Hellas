@@ -293,7 +293,7 @@ TEST_CASE("Non kings can't grant objects", "[king][city][ownership][grant]") {
     c.sendMessage(CL_GRANT, makeArgs(rock.serial(), "alice"));
 
     // Then Alice receives an error message;
-    c.waitForMessage(SV_NOT_A_KING);
+    c.waitForMessage(ERROR_NOT_A_KING);
 
     // And the rock is still owned by the city
     CHECK(rock.permissions().isOwnedByCity("athens"));
@@ -322,7 +322,7 @@ TEST_CASE("Unowned objects cannot be granted", "[city][ownership][grant]") {
     c.sendMessage(CL_GRANT, makeArgs(rock.serial(), "alice"));
 
     // Then Alice receives an error message;
-    c.waitForMessage(SV_NO_PERMISSION);
+    c.waitForMessage(WARNING_NO_PERMISSION);
 
     // And the rock is still unowned
     CHECK_FALSE(rock.permissions().hasOwner());
@@ -353,7 +353,7 @@ TEST_CASE("Only objects owned by your city can be granted", "[king][city][owners
     c.sendMessage(CL_GRANT, makeArgs(rock.serial(), "alice"));
 
     // Then Alice receives an error message;
-    c.waitForMessage(SV_NO_PERMISSION);
+    c.waitForMessage(WARNING_NO_PERMISSION);
 
     // And the rock is still owned by the city
     CHECK(rock.permissions().isOwnedByCity("sparta"));
