@@ -226,7 +226,7 @@ void Avatar::addMenuButtons(List &menu) const{
 
     void *pCityName = const_cast<std::string *>(&_city);
     auto *cityWarButton = new Button(0, "Declare war against city", declareWarAgainstCity,
-            pUsername);
+        pCityName);
     if (_city.empty()){
         cityWarButton->disable();
         tooltipText = _name + " is not a member of a city.";
@@ -256,7 +256,7 @@ void Avatar::addMenuButtons(List &menu) const{
         menu.addChild(playerWarButton);
 
         auto *cityWarButton = new Button(0, "Declare city war against city", declareCityWarAgainstCity,
-            pUsername);
+            pCityName);
         if (_city.empty()) {
             cityWarButton->disable();
             tooltipText = _name + " is not a member of a city.";
