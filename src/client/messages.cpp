@@ -1166,7 +1166,10 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_PEACE_WAS_PROPOSED_TO_YOU:
+        case SV_PEACE_WAS_PROPOSED_TO_YOU_BY_PLAYER:
+        case SV_PEACE_WAS_PROPOSED_TO_YOU_BY_CITY:
+        case SV_PEACE_WAS_PROPOSED_TO_YOUR_CITY_BY_PLAYER:
+        case SV_PEACE_WAS_PROPOSED_TO_YOUR_CITY_BY_CITY:
         {
             singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
             auto name = std::string{ buffer };
@@ -1174,14 +1177,15 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 return;
 
-            if (_warsAgainstPlayers.atWarWith(name))
-                _warsAgainstPlayers.peaceWasProposedBy(name);
-            else if (_warsAgainstCities.atWarWith(name))
-                _warsAgainstCities.peaceWasProposedBy(name);
-            else {
-                _debug << Color::FAILURE << "Received information about an unknown war against " <<
-                    name << Log::endl;
-                break;
+            switch (msgCode) {
+            case SV_PEACE_WAS_PROPOSED_TO_YOU_BY_PLAYER:
+                _warsAgainstPlayers.peaceWasProposedBy(name); break;
+            case SV_PEACE_WAS_PROPOSED_TO_YOU_BY_CITY:
+                _warsAgainstCities.peaceWasProposedBy(name); break;
+            case SV_PEACE_WAS_PROPOSED_TO_YOUR_CITY_BY_PLAYER:
+                _cityWarsAgainstPlayers.peaceWasProposedBy(name); break;
+            case SV_PEACE_WAS_PROPOSED_TO_YOUR_CITY_BY_CITY:
+                _cityWarsAgainstCities.peaceWasProposedBy(name); break;
             }
 
             _debug << name << " has sued for peace" << Log::endl;
@@ -1192,7 +1196,10 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_YOU_PROPOSED_PEACE:
+        case SV_YOU_PROPOSED_PEACE_TO_PLAYER:
+        case SV_YOU_PROPOSED_PEACE_TO_CITY:
+        case SV_YOUR_CITY_PROPOSED_PEACE_TO_PLAYER:
+        case SV_YOUR_CITY_PROPOSED_PEACE_TO_CITY:
         {
             singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
             auto name = std::string{ buffer };
@@ -1200,14 +1207,15 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 return;
 
-            if (_warsAgainstPlayers.atWarWith(name))
-                _warsAgainstPlayers.proposePeaceWith(name);
-            else if (_warsAgainstCities.atWarWith(name))
-                _warsAgainstCities.proposePeaceWith(name);
-            else {
-                _debug << Color::FAILURE << "Received information about an unknown war against " <<
-                    name << Log::endl;
-                break;
+            switch (msgCode) {
+            case SV_YOU_PROPOSED_PEACE_TO_PLAYER:
+                _warsAgainstPlayers.proposePeaceWith(name); break;
+            case SV_YOU_PROPOSED_PEACE_TO_CITY:
+                _warsAgainstCities.proposePeaceWith(name); break;
+            case SV_YOUR_CITY_PROPOSED_PEACE_TO_PLAYER:
+                _cityWarsAgainstPlayers.proposePeaceWith(name); break;
+            case SV_YOUR_CITY_PROPOSED_PEACE_TO_CITY:
+                _cityWarsAgainstCities.proposePeaceWith(name); break;
             }
 
             _debug << "You have sued for peace with " << name << Log::endl;

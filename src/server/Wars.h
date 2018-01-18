@@ -40,6 +40,8 @@ class War {
 
 public:
     bool operator<(const War &rhs) const;
+
+    bool wasPeaceProposedBy(const Belligerent b) const;
 };
 
 class Wars{
@@ -50,6 +52,8 @@ public:
     bool isAtWar(Belligerent a, Belligerent b) const; // Active wars only (taking into account cities)
     bool isAtWarExact(Belligerent a, Belligerent b) const;
     void sendWarsToUser(const User &user, const Server &server) const;
+        void Wars::sendWarsInvolvingBelligerentToUser(const User &user, 
+            const Belligerent &belligerent, const Server &server) const;
     void sueForPeace(const Belligerent &proposer, const Belligerent &enemy);
     bool acceptPeaceOffer(const Belligerent &accepter, const Belligerent &proposer);
     // Return value: whether there was a peace offer that was successfully revoked

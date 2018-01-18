@@ -47,6 +47,16 @@ bool War::operator<(const War & rhs) const {
     return b2 < rhs.b2;
 }
 
+bool War::wasPeaceProposedBy(const Belligerent b) const {
+    if (peaceState == NO_PEACE_PROPOSED)
+        return false;
+    if (peaceState == PEACE_PROPOSED_BY_B1 && b == b1)
+        return true;
+    if (peaceState == PEACE_PROPOSED_BY_B2)
+        return true;
+    return false;
+}
+
 void Wars::declare(const Belligerent &a, const Belligerent &b){
     if (isAtWar(a, b))
         return;
@@ -87,31 +97,59 @@ void Wars::changePlayerBelligerentToHisCity(Belligerent &belligerent){
 }
 
 void Wars::sendWarsToUser(const User & user, const Server & server) const {
-    auto userAsBelligerent = Belligerent{ user.name() };
-    changePlayerBelligerentToHisCity(userAsBelligerent);
+    sendWarsInvolvingBelligerentToUser(user, { user.name(), Belligerent::PLAYER }, server);
 
+    auto cityName = server.cities().getPlayerCity(user.name());
+    if (cityName.empty())
+        return;
+    sendWarsInvolvingBelligerentToUser(user, { cityName, Belligerent::CITY }, server);
+}
+
+void Wars::sendWarsInvolvingBelligerentToUser(const User &user, const Belligerent &belligerent,
+    const Server &server) const {
     for (const auto &war : container) {
-        auto otherBelligerent = Belligerent{};
-        if (war.b1 == userAsBelligerent)
-            otherBelligerent = war.b2;
-        else if (war.b2 == userAsBelligerent)
-            otherBelligerent = war.b1;
+        auto enemy = Belligerent{};
+        if (war.b1 == belligerent)
+            enemy = war.b2;
+        else if (war.b2 == belligerent)
+            enemy = war.b1;
         else
             continue;
-        if (otherBelligerent.type == Belligerent::PLAYER) {
-            auto otherBelligerentIsInCity = !server.cities().getPlayerCity(otherBelligerent.name).empty();
-            if (otherBelligerentIsInCity)
-                continue;
+
+        auto
+            warMessage = MessageCode{},
+            youProposedMessage = MessageCode{},
+            proposedToYouMessage = MessageCode{};
+        if (belligerent.type == Belligerent::PLAYER) {
+            if (enemy.type == Belligerent::PLAYER) {
+                warMessage = SV_AT_WAR_WITH_PLAYER;
+                youProposedMessage = SV_YOU_PROPOSED_PEACE_TO_PLAYER;
+                proposedToYouMessage = SV_PEACE_WAS_PROPOSED_TO_YOU_BY_PLAYER;
+            } else {
+                warMessage = SV_AT_WAR_WITH_CITY;
+                youProposedMessage = SV_YOU_PROPOSED_PEACE_TO_CITY;
+                proposedToYouMessage = SV_PEACE_WAS_PROPOSED_TO_YOUR_CITY_BY_PLAYER;
+            }
+        } else {
+            if (enemy.type == Belligerent::PLAYER){
+                warMessage = SV_YOUR_CITY_AT_WAR_WITH_PLAYER;
+                youProposedMessage = SV_YOU_PROPOSED_PEACE_TO_PLAYER;
+                proposedToYouMessage = SV_PEACE_WAS_PROPOSED_TO_YOU_BY_CITY;
+            } else {
+                warMessage = SV_YOUR_CITY_AT_WAR_WITH_CITY;
+                youProposedMessage = SV_YOUR_CITY_PROPOSED_PEACE_TO_CITY;
+                proposedToYouMessage = SV_PEACE_WAS_PROPOSED_TO_YOUR_CITY_BY_CITY;
+            }
         }
 
-        const MessageCode code = otherBelligerent.type == Belligerent::CITY ?
-            SV_AT_WAR_WITH_CITY : SV_AT_WAR_WITH_PLAYER;
-        server.sendMessage(user.socket(), code, otherBelligerent.name);
-        if (war.b1 == userAsBelligerent && war.peaceState == War::PEACE_PROPOSED_BY_B1 ||
-            war.b2 == userAsBelligerent && war.peaceState == War::PEACE_PROPOSED_BY_B2)
-            server.sendMessage(user.socket(), SV_YOU_PROPOSED_PEACE, otherBelligerent.name);
-        else if (war.peaceState != War::NO_PEACE_PROPOSED)
-            server.sendMessage(user.socket(), SV_PEACE_WAS_PROPOSED_TO_YOU, otherBelligerent.name);
+        server.sendMessage(user.socket(), warMessage, enemy.name);
+
+        if (war.peaceState == War::NO_PEACE_PROPOSED)
+            return;
+        if (war.wasPeaceProposedBy(belligerent))
+            server.sendMessage(user.socket(), youProposedMessage, enemy.name);
+        else
+            server.sendMessage(user.socket(), proposedToYouMessage, enemy.name);
     }
 }
 

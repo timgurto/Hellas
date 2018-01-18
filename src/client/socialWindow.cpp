@@ -74,8 +74,8 @@ enum BelligerentType {
     PLAYER
 };
 
-Element *createWarRow(const std::string &name, BelligerentType belligerentType, PeaceState state,
-    bool isActive = true) {
+Element *createWarRow(const std::string &name, BelligerentType belligerentType,
+    BelligerentType yourBelligerentType, PeaceState state, bool isActive = true) {
     const auto
         ICON_W = 12,
         NAME_W = 80_px,
@@ -95,22 +95,38 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType, 
     row->addChild(label);
     x += NAME_W;
 
-    switch (state) {
-    case NO_PEACE_PROPOSED:
-        row->addChild(new Button( {x, 0, BUTTON_W, WAR_ROW_HEIGHT}, "Sue for peace"s,
-            Client::sendMessageWithString<CL_SUE_FOR_PEACE_WITH_PLAYER>,
-            & const_cast<std::string &>(name) ));
-        break;
-    case PEACE_PROPOSED_BY_YOU:
-        row->addChild(new Button({ x, 0, BUTTON_W, WAR_ROW_HEIGHT }, "Revoke peace offer"s,
-            Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_PLAYER>,
-            &const_cast<std::string &>(name)));
-        break;
-    case PEACE_PROPOSED_BY_HIM:
-        row->addChild(new Button({ x, 0, BUTTON_W, WAR_ROW_HEIGHT }, "Accept peace offer"s,
-            Client::sendMessageWithString<CL_ACCEPT_PEACE_OFFER_WITH_PLAYER>,
-            &const_cast<std::string &>(name)));
-        break;
+    // Peace button
+    if (yourBelligerentType == PLAYER || Client::instance().character().isKing()) {
+        switch (state) {
+        case NO_PEACE_PROPOSED:
+        {
+            auto buttonFunc = Button::clickFun_t{};
+            if (yourBelligerentType == PLAYER) {
+                if (belligerentType == PLAYER)
+                    buttonFunc = Client::sendMessageWithString<CL_SUE_FOR_PEACE_WITH_PLAYER>;
+                else
+                    buttonFunc = Client::sendMessageWithString<CL_SUE_FOR_PEACE_WITH_CITY>;
+            } else {
+                if (belligerentType == PLAYER)
+                    buttonFunc = Client::sendMessageWithString<CL_SUE_FOR_PEACE_WITH_PLAYER_AS_CITY>;
+                else
+                    buttonFunc = Client::sendMessageWithString<CL_SUE_FOR_PEACE_WITH_CITY_AS_CITY>;
+            }
+            row->addChild(new Button({ x, 0, BUTTON_W, WAR_ROW_HEIGHT }, "Sue for peace"s,
+                buttonFunc, &const_cast<std::string &>(name)));
+            break;
+        }
+        case PEACE_PROPOSED_BY_YOU:
+            row->addChild(new Button({ x, 0, BUTTON_W, WAR_ROW_HEIGHT }, "Revoke peace offer"s,
+                Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_PLAYER>,
+                &const_cast<std::string &>(name)));
+            break;
+        case PEACE_PROPOSED_BY_HIM:
+            row->addChild(new Button({ x, 0, BUTTON_W, WAR_ROW_HEIGHT }, "Accept peace offer"s,
+                Client::sendMessageWithString<CL_ACCEPT_PEACE_OFFER_WITH_PLAYER>,
+                &const_cast<std::string &>(name)));
+            break;
+        }
     }
 
     return row;
@@ -122,13 +138,13 @@ void Client::populateWarsList() {
     auto isInCity = !this->_character.cityName().empty();
     if (isInCity) {
         for (const auto &pair : _cityWarsAgainstCities)
-            _warsList->addChild(createWarRow(pair.first, CITY, pair.second));
+            _warsList->addChild(createWarRow(pair.first, CITY, CITY, pair.second));
         for (const auto &pair : _cityWarsAgainstPlayers)
-            _warsList->addChild(createWarRow(pair.first, PLAYER, pair.second));
+            _warsList->addChild(createWarRow(pair.first, PLAYER, CITY, pair.second));
     }
 
     for (const auto &pair : _warsAgainstCities)
-        _warsList->addChild(createWarRow(pair.first, CITY, pair.second, !isInCity));
+        _warsList->addChild(createWarRow(pair.first, CITY, PLAYER, pair.second, !isInCity));
     for (const auto &pair : _warsAgainstPlayers)
-        _warsList->addChild(createWarRow(pair.first, PLAYER, pair.second, !isInCity));
+        _warsList->addChild(createWarRow(pair.first, PLAYER, PLAYER, pair.second, !isInCity));
 }

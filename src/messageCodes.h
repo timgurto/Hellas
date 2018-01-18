@@ -136,7 +136,10 @@ enum MessageCode{
     // "I want to propose peace with ..."
     // Arguments: other belligerent's name
     CL_SUE_FOR_PEACE_WITH_PLAYER,
-    //CL_SUE_FOR_PEACE_WITH_CITY,
+    CL_SUE_FOR_PEACE_WITH_CITY,
+    CL_SUE_FOR_PEACE_WITH_PLAYER_AS_CITY,
+    CL_SUE_FOR_PEACE_WITH_CITY_AS_CITY,
+
     // "I proposed peace with ... but changed my mind"
     // Arguments: other belligerent's name
     CL_CANCEL_PEACE_OFFER_TO_PLAYER,
@@ -400,10 +403,16 @@ enum MessageCode{
 
     // "You have sued for peace with ..."
     // Arguments: name
-    SV_YOU_PROPOSED_PEACE,
+    SV_YOU_PROPOSED_PEACE_TO_PLAYER,
+    SV_YOU_PROPOSED_PEACE_TO_CITY,
+    SV_YOUR_CITY_PROPOSED_PEACE_TO_PLAYER,
+    SV_YOUR_CITY_PROPOSED_PEACE_TO_CITY,
     // "... has sued for peace with you"
     // Arguments: name
-    SV_PEACE_WAS_PROPOSED_TO_YOU,
+    SV_PEACE_WAS_PROPOSED_TO_YOU_BY_PLAYER,
+    SV_PEACE_WAS_PROPOSED_TO_YOU_BY_CITY,
+    SV_PEACE_WAS_PROPOSED_TO_YOUR_CITY_BY_PLAYER,
+    SV_PEACE_WAS_PROPOSED_TO_YOUR_CITY_BY_CITY,
     // "You cancelled your peace offer to ..."
     // Arguments: name
     SV_YOU_CANCELED_PEACE_OFFER,

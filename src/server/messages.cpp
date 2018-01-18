@@ -1010,13 +1010,16 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         }
 
         case CL_SUE_FOR_PEACE_WITH_PLAYER:
+        case CL_SUE_FOR_PEACE_WITH_CITY:
+        case CL_SUE_FOR_PEACE_WITH_PLAYER_AS_CITY:
+        case CL_SUE_FOR_PEACE_WITH_CITY_AS_CITY:
         {
             iss.get(buffer, BUFFER_SIZE, MSG_END);
             auto name = std::string{ buffer };
             iss >> del;
             if (del != MSG_END)
                 return;
-            handle_CL_SUE_FOR_PEACE_WITH_PLAYER(*user, name);
+            handle_CL_SUE_FOR_PEACE(*user, static_cast<MessageCode>(msgCode), name);
             break;
         }
 
@@ -1418,14 +1421,61 @@ void Server::handle_CL_RECRUIT(User &user, const std::string & username) {
     _cities.addPlayerToCity(*pTargetUser, cityName);
 }
 
-void Server::handle_CL_SUE_FOR_PEACE_WITH_PLAYER(User & user, const std::string & name) {
-    _wars.sueForPeace(user.name(), { name, Belligerent::PLAYER });
-    sendMessage(user.socket(), SV_YOU_PROPOSED_PEACE, name);
+void Server::handle_CL_SUE_FOR_PEACE(User & user, MessageCode code, const std::string & name) {
+    Belligerent proposer, enemy;
+    MessageCode codeForProposer, codeForEnemy;
+    switch (code) {
+    case CL_SUE_FOR_PEACE_WITH_PLAYER:
+        proposer = { user.name(), Belligerent::PLAYER };
+        enemy = { name, Belligerent::PLAYER };
+        codeForProposer = SV_YOU_PROPOSED_PEACE_TO_PLAYER;
+        codeForEnemy = SV_PEACE_WAS_PROPOSED_TO_YOU_BY_PLAYER;
+        break;
+    case CL_SUE_FOR_PEACE_WITH_CITY:
+        proposer = { user.name(), Belligerent::PLAYER };
+        enemy = { name, Belligerent::CITY };
+        codeForProposer = SV_YOU_PROPOSED_PEACE_TO_CITY;
+        codeForEnemy = SV_PEACE_WAS_PROPOSED_TO_YOUR_CITY_BY_PLAYER;
+        break;
+    case CL_SUE_FOR_PEACE_WITH_PLAYER_AS_CITY:
+        proposer = { _cities.getPlayerCity(user.name()), Belligerent::CITY };
+        enemy = { name, Belligerent::PLAYER };
+        codeForProposer = SV_YOUR_CITY_PROPOSED_PEACE_TO_PLAYER;
+        codeForEnemy = SV_PEACE_WAS_PROPOSED_TO_YOU_BY_CITY;
+        break;
+    case CL_SUE_FOR_PEACE_WITH_CITY_AS_CITY:
+        proposer = { _cities.getPlayerCity(user.name()), Belligerent::CITY };
+        enemy = { name, Belligerent::CITY };
+        codeForProposer = SV_YOUR_CITY_PROPOSED_PEACE_TO_CITY;
+        codeForEnemy = SV_PEACE_WAS_PROPOSED_TO_YOUR_CITY_BY_CITY;
+        break;
+    }
 
-    auto it = _usersByName.find(name);
-    if (it == _usersByName.end())
-        return;
-    sendMessage(it->second->socket(), SV_PEACE_WAS_PROPOSED_TO_YOU, user.name());
+    // If a city is proposing, make sure the player is a king
+    if (proposer.type == Belligerent::CITY) {
+        if (!_cities.isPlayerInACity(user.name())) {
+            sendMessage(user.socket(), ERROR_NOT_IN_CITY);
+            return;
+        }
+        if (!_kings.isPlayerAKing(user.name())) {
+            sendMessage(user.socket(), ERROR_NOT_A_KING);
+            return;
+        }
+    }
+
+    _wars.sueForPeace(proposer, enemy);
+
+    // Alert the proposer
+    if (proposer.type == Belligerent::PLAYER)
+        sendMessage(user.socket(), codeForProposer, name);
+    else
+        broadcastToCity(proposer.name, codeForProposer, name);
+
+    // Alert the enemy
+    if (enemy.type == Belligerent::PLAYER)
+        sendMessageIfOnline(enemy.name, codeForEnemy, proposer.name);
+    else
+        broadcastToCity(enemy.name, codeForEnemy, proposer.name);
 }
 
 void Server::handle_CL_CANCEL_PEACE_OFFER_TO_PLAYER(User & user, const std::string & name) {
@@ -1611,10 +1661,28 @@ void Server::broadcastToArea(const MapPoint & location, MessageCode msgCode, con
     }
 }
 
+void Server::broadcastToCity(const std::string & cityName, MessageCode msgCode, const std::string & args) const {
+    if (!_cities.doesCityExist(cityName)) {
+        _debug << Color::FAILURE << "City " << cityName << " does not exist." << Log::endl;
+        return;
+    }
+
+    for (const auto &citizen : _cities.membersOf(cityName)) {
+        sendMessageIfOnline(citizen, msgCode, args);
+    }
+}
+
 void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
                          const std::string &args) const{
     auto message = compileMessage(msgCode, args);
     _socket.sendMessage(message, dstSocket);
+}
+
+void Server::sendMessageIfOnline(const std::string username, MessageCode msgCode, const std::string & args) const {
+    auto it = _usersByName.find(username);
+    if (it == _usersByName.end())
+        return;
+    sendMessage(it->second->socket(), msgCode, args);
 }
 
 std::string Server::compileMessage(MessageCode msgCode, const std::string &args) {

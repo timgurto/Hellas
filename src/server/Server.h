@@ -90,8 +90,10 @@ public:
     static std::string compileMessage(MessageCode msgCode, const std::string &args);
     void sendMessage(const Socket &dstSocket, MessageCode msgCode,
                      const std::string &args = "") const;
+    void sendMessageIfOnline(const std::string username, MessageCode msgCode, const std::string &args = "") const;
     void broadcast(MessageCode msgCode, const std::string &args); // Send a command to all users
     void broadcastToArea(const MapPoint &location, MessageCode msgCode, const std::string &args) const;
+    void broadcastToCity(const std::string &cityName, MessageCode msgCode, const std::string &args) const;
     void handleMessage(const Socket &client, const std::string &msg);
     void sendInventoryMessageInner(const User &user, size_t serial, size_t slot,
                                    const ServerItem::vect_t &itemVect) const;
@@ -242,7 +244,7 @@ private:
     void handle_CL_SELECT_ENTITY(User &user, size_t serial);
     void handle_CL_SELECT_PLAYER(User &user, const std::string &username);
     void handle_CL_RECRUIT(User &user, const std::string &username);
-    void handle_CL_SUE_FOR_PEACE_WITH_PLAYER(User &user, const std::string &name);
+    void handle_CL_SUE_FOR_PEACE(User &user, MessageCode code, const std::string &name);
     void handle_CL_CANCEL_PEACE_OFFER_TO_PLAYER(User &user, const std::string &name);
     void handle_CL_ACCEPT_PEACE_OFFER_WITH_PLAYER(User &user, const std::string &name);
     void handle_CL_TAKE_TALENT(User & user, const Talent::Name &talent);
