@@ -1142,9 +1142,17 @@ void Client::handleMessage(const std::string &msg){
                 return;
 
             if (msgCode == SV_AT_WAR_WITH_PLAYER)
+            switch (msgCode) {
+            case SV_AT_WAR_WITH_PLAYER:
+                _warsAgainstPlayers.add(name);
+                break;
+            case SV_AT_WAR_WITH_CITY:
+                _warsAgainstCities.add(name);
+                break;
                 _playerWars.add(name);
             else
                 _cityWars.add(name);
+            }
             _debug << "You are now at war with " << name << Log::endl;
 
             _target.refreshHealthBarColor();
@@ -1162,10 +1170,10 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 return;
 
-            if (_playerWars.atWarWith(name))
-                _playerWars.peaceWasProposedBy(name);
-            else if (_cityWars.atWarWith(name))
-                _cityWars.peaceWasProposedBy(name);
+            if (_warsAgainstPlayers.atWarWith(name))
+                _warsAgainstPlayers.peaceWasProposedBy(name);
+            else if (_warsAgainstCities.atWarWith(name))
+                _warsAgainstCities.peaceWasProposedBy(name);
             else {
                 _debug << Color::FAILURE << "Received information about an unknown war against " <<
                     name << Log::endl;
@@ -1188,10 +1196,10 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 return;
 
-            if (_playerWars.atWarWith(name))
-                _playerWars.proposePeaceWith(name);
-            else if (_cityWars.atWarWith(name))
-                _cityWars.proposePeaceWith(name);
+            if (_warsAgainstPlayers.atWarWith(name))
+                _warsAgainstPlayers.proposePeaceWith(name);
+            else if (_warsAgainstCities.atWarWith(name))
+                _warsAgainstCities.proposePeaceWith(name);
             else {
                 _debug << Color::FAILURE << "Received information about an unknown war against " <<
                     name << Log::endl;
@@ -1215,10 +1223,10 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 return;
 
-            if (_playerWars.atWarWith(name))
-                _playerWars.cancelPeaceOffer(name);
-            else if (_cityWars.atWarWith(name))
-                _cityWars.cancelPeaceOffer(name);
+            if (_warsAgainstPlayers.atWarWith(name))
+                _warsAgainstPlayers.cancelPeaceOffer(name);
+            else if (_warsAgainstCities.atWarWith(name))
+                _warsAgainstCities.cancelPeaceOffer(name);
             else {
                 _debug << Color::FAILURE << "Received information about an unknown war against " <<
                     name << Log::endl;
@@ -1244,10 +1252,10 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 return;
 
-            if (_playerWars.atWarWith(name))
-                _playerWars.remove(name);
-            else if (_cityWars.atWarWith(name))
-                _cityWars.remove(name);
+            if (_warsAgainstPlayers.atWarWith(name))
+                _warsAgainstPlayers.remove(name);
+            else if (_warsAgainstCities.atWarWith(name))
+                _warsAgainstCities.remove(name);
             else {
                 _debug << Color::FAILURE << "Received information about an unknown war against " <<
                     name << Log::endl;

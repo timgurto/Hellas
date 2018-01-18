@@ -74,9 +74,9 @@ public:
     bool isAtWarWith(const Avatar &user) const;
     bool isAtWarWith(const std::string &username) const;
     bool isAtWarWithPlayerDirectly(const std::string &username) const{
-        return _playerWars.atWarWith(username); }
+        return _warsAgainstPlayers.atWarWith(username); }
     bool isAtWarWithCityDirectly(const std::string &cityName) const{
-        return _cityWars.atWarWith(cityName); }
+        return _warsAgainstCities.atWarWith(cityName); }
 
     const Texture &mapImage() const { return _mapImage; }
 
@@ -428,8 +428,8 @@ private:
     void addUser(const std::string &name, const MapPoint &location);
     
     // Your wars, or if you're in a city, your city's wars
-    YourWars _playerWars;
-    YourWars _cityWars;
+    YourWars _warsAgainstPlayers;
+    YourWars _warsAgainstCities;
 
     std::map<std::string, std::string> _userCities; // Username -> city name. // TODO: remove once users always exist
 
