@@ -117,10 +117,24 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType,
             break;
         }
         case PEACE_PROPOSED_BY_YOU:
+        {
+            auto buttonFunc = Button::clickFun_t{};
+            if (yourBelligerentType == PLAYER) {
+                if (belligerentType == PLAYER)
+                    buttonFunc = Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_PLAYER>;
+                else
+                    buttonFunc = Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_CITY>;
+            } else {
+                if (belligerentType == PLAYER)
+                    buttonFunc = Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_PLAYER_AS_CITY>;
+                else
+                    buttonFunc = Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_CITY_AS_CITY>;
+            }
+
             row->addChild(new Button({ x, 0, BUTTON_W, WAR_ROW_HEIGHT }, "Revoke peace offer"s,
-                Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_PLAYER>,
-                &const_cast<std::string &>(name)));
+                buttonFunc, &const_cast<std::string &>(name)));
             break;
+        }
         case PEACE_PROPOSED_BY_HIM:
             row->addChild(new Button({ x, 0, BUTTON_W, WAR_ROW_HEIGHT }, "Accept peace offer"s,
                 Client::sendMessageWithString<CL_ACCEPT_PEACE_OFFER_WITH_PLAYER>,

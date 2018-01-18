@@ -1226,8 +1226,14 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_YOU_CANCELED_PEACE_OFFER:
-        case SV_PEACE_OFFER_WAS_CANCELED:
+        case SV_YOU_CANCELED_PEACE_OFFER_TO_PLAYER:
+        case SV_YOU_CANCELED_PEACE_OFFER_TO_CITY:
+        case SV_YOUR_CITY_CANCELED_PEACE_OFFER_TO_PLAYER:
+        case SV_YOUR_CITY_CANCELED_PEACE_OFFER_TO_CITY:
+        case SV_PEACE_OFFER_TO_YOU_FROM_PLAYER_WAS_CANCELED:
+        case SV_PEACE_OFFER_TO_YOU_FROM_CITY_WAS_CANCELED:
+        case SV_PEACE_OFFER_TO_YOUR_CITY_FROM_PLAYER_WAS_CANCELED:
+        case SV_PEACE_OFFER_TO_YOUR_CITY_FROM_CITY_WAS_CANCELED:
         {
             singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
             auto name = std::string{ buffer };
@@ -1235,20 +1241,35 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 return;
 
-            if (_warsAgainstPlayers.atWarWith(name))
-                _warsAgainstPlayers.cancelPeaceOffer(name);
-            else if (_warsAgainstCities.atWarWith(name))
-                _warsAgainstCities.cancelPeaceOffer(name);
-            else {
-                _debug << Color::FAILURE << "Received information about an unknown war against " <<
-                    name << Log::endl;
-                break;
+            switch (msgCode) {
+            case SV_YOU_CANCELED_PEACE_OFFER_TO_PLAYER:
+            case SV_PEACE_OFFER_TO_YOU_FROM_PLAYER_WAS_CANCELED:
+                _warsAgainstPlayers.cancelPeaceOffer(name); break;
+            case SV_YOU_CANCELED_PEACE_OFFER_TO_CITY:
+            case SV_PEACE_OFFER_TO_YOU_FROM_CITY_WAS_CANCELED:
+                _warsAgainstCities.cancelPeaceOffer(name); break;
+            case SV_YOUR_CITY_CANCELED_PEACE_OFFER_TO_PLAYER:
+            case SV_PEACE_OFFER_TO_YOUR_CITY_FROM_PLAYER_WAS_CANCELED:
+                _cityWarsAgainstPlayers.cancelPeaceOffer(name); break;
+            case SV_YOUR_CITY_CANCELED_PEACE_OFFER_TO_CITY:
+            case SV_PEACE_OFFER_TO_YOUR_CITY_FROM_CITY_WAS_CANCELED:
+                _cityWarsAgainstCities.cancelPeaceOffer(name); break;
             }
 
-            if (msgCode == SV_YOU_CANCELED_PEACE_OFFER)
+            switch (msgCode) {
+            case SV_YOU_CANCELED_PEACE_OFFER_TO_PLAYER:
+            case SV_YOU_CANCELED_PEACE_OFFER_TO_CITY:
+            case SV_YOUR_CITY_CANCELED_PEACE_OFFER_TO_PLAYER:
+            case SV_YOUR_CITY_CANCELED_PEACE_OFFER_TO_CITY:
                 _debug << "You have revoked your offer for peace with " << name << Log::endl;
-            else
+                break;
+            case SV_PEACE_OFFER_TO_YOU_FROM_PLAYER_WAS_CANCELED:
+            case SV_PEACE_OFFER_TO_YOU_FROM_CITY_WAS_CANCELED:
+            case SV_PEACE_OFFER_TO_YOUR_CITY_FROM_PLAYER_WAS_CANCELED:
+            case SV_PEACE_OFFER_TO_YOUR_CITY_FROM_CITY_WAS_CANCELED:
                 _debug << "Your offer for peace from " << name << " has been revoked" << Log::endl;
+                break;
+            }
 
             _target.refreshHealthBarColor();
             _mapWindow->markChanged();

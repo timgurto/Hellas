@@ -132,17 +132,18 @@ enum MessageCode{
     CL_DECLARE_WAR_ON_CITY,
     CL_DECLARE_WAR_ON_PLAYER_AS_CITY,
     CL_DECLARE_WAR_ON_CITY_AS_CITY,
-
     // "I want to propose peace with ..."
     // Arguments: other belligerent's name
     CL_SUE_FOR_PEACE_WITH_PLAYER,
     CL_SUE_FOR_PEACE_WITH_CITY,
     CL_SUE_FOR_PEACE_WITH_PLAYER_AS_CITY,
     CL_SUE_FOR_PEACE_WITH_CITY_AS_CITY,
-
     // "I proposed peace with ... but changed my mind"
     // Arguments: other belligerent's name
     CL_CANCEL_PEACE_OFFER_TO_PLAYER,
+    CL_CANCEL_PEACE_OFFER_TO_CITY,
+    CL_CANCEL_PEACE_OFFER_TO_PLAYER_AS_CITY,
+    CL_CANCEL_PEACE_OFFER_TO_CITY_AS_CITY,
     // "I accept ...'s peace offer"
     // Arguments: other belligerent's name
     CL_ACCEPT_PEACE_OFFER_WITH_PLAYER,
@@ -400,7 +401,6 @@ enum MessageCode{
     SV_AT_WAR_WITH_CITY,
     SV_YOUR_CITY_AT_WAR_WITH_PLAYER,
     SV_YOUR_CITY_AT_WAR_WITH_CITY,
-
     // "You have sued for peace with ..."
     // Arguments: name
     SV_YOU_PROPOSED_PEACE_TO_PLAYER,
@@ -415,10 +415,16 @@ enum MessageCode{
     SV_PEACE_WAS_PROPOSED_TO_YOUR_CITY_BY_CITY,
     // "You cancelled your peace offer to ..."
     // Arguments: name
-    SV_YOU_CANCELED_PEACE_OFFER,
+    SV_YOU_CANCELED_PEACE_OFFER_TO_PLAYER,
+    SV_YOU_CANCELED_PEACE_OFFER_TO_CITY,
+    SV_YOUR_CITY_CANCELED_PEACE_OFFER_TO_PLAYER,
+    SV_YOUR_CITY_CANCELED_PEACE_OFFER_TO_CITY,
     // "Your peace offer from ... was cancelled"
     // Arguments: name
-    SV_PEACE_OFFER_WAS_CANCELED,
+    SV_PEACE_OFFER_TO_YOU_FROM_PLAYER_WAS_CANCELED,
+    SV_PEACE_OFFER_TO_YOU_FROM_CITY_WAS_CANCELED,
+    SV_PEACE_OFFER_TO_YOUR_CITY_FROM_PLAYER_WAS_CANCELED,
+    SV_PEACE_OFFER_TO_YOUR_CITY_FROM_CITY_WAS_CANCELED,
 
     // "You are at peace with ..."
     // Arguments: name

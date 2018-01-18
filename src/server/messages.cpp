@@ -1024,13 +1024,16 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         }
 
         case CL_CANCEL_PEACE_OFFER_TO_PLAYER:
+        case CL_CANCEL_PEACE_OFFER_TO_CITY:
+        case CL_CANCEL_PEACE_OFFER_TO_PLAYER_AS_CITY:
+        case CL_CANCEL_PEACE_OFFER_TO_CITY_AS_CITY:
         {
             iss.get(buffer, BUFFER_SIZE, MSG_END);
             auto name = std::string{ buffer };
             iss >> del;
             if (del != MSG_END)
                 return;
-            handle_CL_CANCEL_PEACE_OFFER_TO_PLAYER(*user, name);
+            handle_CL_CANCEL_PEACE_OFFER(*user, static_cast<MessageCode>(msgCode), name);
             break;
         }
 
@@ -1478,16 +1481,63 @@ void Server::handle_CL_SUE_FOR_PEACE(User & user, MessageCode code, const std::s
         broadcastToCity(enemy.name, codeForEnemy, proposer.name);
 }
 
-void Server::handle_CL_CANCEL_PEACE_OFFER_TO_PLAYER(User & user, const std::string & name) {
-    auto canceled = _wars.cancelPeaceOffer(user.name(), name);
+void Server::handle_CL_CANCEL_PEACE_OFFER(User &user, MessageCode code, const std::string &name) {
+    Belligerent proposer, enemy;
+    MessageCode codeForProposer, codeForEnemy;
+    switch (code) {
+    case CL_CANCEL_PEACE_OFFER_TO_PLAYER:
+        proposer = { user.name(), Belligerent::PLAYER };
+        enemy = { name, Belligerent::PLAYER };
+        codeForProposer = SV_YOU_CANCELED_PEACE_OFFER_TO_PLAYER;
+        codeForEnemy = SV_PEACE_OFFER_TO_YOU_FROM_PLAYER_WAS_CANCELED;
+        break;
+    case CL_CANCEL_PEACE_OFFER_TO_CITY:
+        proposer = { user.name(), Belligerent::PLAYER };
+        enemy = { name, Belligerent::CITY };
+        codeForProposer = SV_YOU_CANCELED_PEACE_OFFER_TO_CITY;
+        codeForEnemy = SV_PEACE_OFFER_TO_YOUR_CITY_FROM_PLAYER_WAS_CANCELED;
+        break;
+    case CL_CANCEL_PEACE_OFFER_TO_PLAYER_AS_CITY:
+        proposer = { _cities.getPlayerCity(user.name()), Belligerent::CITY };
+        enemy = { name, Belligerent::PLAYER };
+        codeForProposer = SV_YOUR_CITY_CANCELED_PEACE_OFFER_TO_PLAYER;
+        codeForEnemy = SV_PEACE_OFFER_TO_YOU_FROM_CITY_WAS_CANCELED;
+        break;
+    case CL_CANCEL_PEACE_OFFER_TO_CITY_AS_CITY:
+        proposer = { _cities.getPlayerCity(user.name()), Belligerent::CITY };
+        enemy = { name, Belligerent::CITY };
+        codeForProposer = SV_YOUR_CITY_CANCELED_PEACE_OFFER_TO_CITY;
+        codeForEnemy = SV_PEACE_OFFER_TO_YOUR_CITY_FROM_CITY_WAS_CANCELED;
+        break;
+    }
+
+    // If a city is proposing, make sure the player is a king
+    if (proposer.type == Belligerent::CITY) {
+        if (!_cities.isPlayerInACity(user.name())) {
+            sendMessage(user.socket(), ERROR_NOT_IN_CITY);
+            return;
+        }
+        if (!_kings.isPlayerAKing(user.name())) {
+            sendMessage(user.socket(), ERROR_NOT_A_KING);
+            return;
+        }
+    }
+
+    auto canceled = _wars.cancelPeaceOffer(proposer, enemy);
     if (!canceled)
         return;
 
-    sendMessage(user.socket(), SV_YOU_CANCELED_PEACE_OFFER, name);
-    auto it = _usersByName.find(name);
-    if (it == _usersByName.end())
-        return;
-    sendMessage(it->second->socket(), SV_PEACE_OFFER_WAS_CANCELED, user.name());
+    // Alert the proposer
+    if (proposer.type == Belligerent::PLAYER)
+        sendMessage(user.socket(), codeForProposer, name);
+    else
+        broadcastToCity(proposer.name, codeForProposer, name);
+
+    // Alert the enemy
+    if (enemy.type == Belligerent::PLAYER)
+        sendMessageIfOnline(enemy.name, codeForEnemy, proposer.name);
+    else
+        broadcastToCity(enemy.name, codeForEnemy, proposer.name);
 }
 
 void Server::handle_CL_ACCEPT_PEACE_OFFER_WITH_PLAYER(User & user, const std::string & name) {
