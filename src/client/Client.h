@@ -73,10 +73,18 @@ public:
 
     bool isAtWarWith(const Avatar &user) const;
     bool isAtWarWith(const std::string &username) const;
-    bool isAtWarWithPlayerDirectly(const std::string &username) const{
-        return _warsAgainstPlayers.atWarWith(username); }
-    bool isAtWarWithCityDirectly(const std::string &cityName) const{
-        return _warsAgainstCities.atWarWith(cityName); }
+    bool isAtWarWithPlayerDirectly(const std::string &username) const {
+        return _warsAgainstPlayers.atWarWith(username);
+    }
+    bool isAtWarWithCityDirectly(const std::string &cityName) const {
+        return _warsAgainstCities.atWarWith(cityName);
+    }
+    bool isCityAtWarWithPlayerDirectly(const std::string &username) const {
+        return _cityWarsAgainstPlayers.atWarWith(username);
+    }
+    bool isCityAtWarWithCityDirectly(const std::string &cityName) const {
+        return _cityWarsAgainstCities.atWarWith(cityName);
+    }
 
     const Texture &mapImage() const { return _mapImage; }
 
@@ -427,9 +435,11 @@ private:
     size_t _numEntities; // Updated every tick
     void addUser(const std::string &name, const MapPoint &location);
     
-    // Your wars, or if you're in a city, your city's wars
+    // Your wars, and your city's wars
     YourWars _warsAgainstPlayers;
     YourWars _warsAgainstCities;
+    YourWars _cityWarsAgainstPlayers;
+    YourWars _cityWarsAgainstCities;
 
     std::map<std::string, std::string> _userCities; // Username -> city name. // TODO: remove once users always exist
 

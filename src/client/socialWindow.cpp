@@ -74,7 +74,8 @@ enum BelligerentType {
     PLAYER
 };
 
-Element *createWarRow(const std::string &name, BelligerentType belligerentType, PeaceState state) {
+Element *createWarRow(const std::string &name, BelligerentType belligerentType, PeaceState state,
+    bool isActive = true) {
     const auto
         ICON_W = 12,
         NAME_W = 80_px,
@@ -86,7 +87,12 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType, 
     row->addChild(new Picture{ {x, 1, icon.width(), icon.height()}, icon });
     x += ICON_W;
 
-    row->addChild(new Label{ { x, 0, NAME_W, WAR_ROW_HEIGHT } , name });
+    auto label = new Label{ { x, 0, NAME_W, WAR_ROW_HEIGHT } , name };
+    if (!isActive) {
+        label->setColor(Color::ELEMENT_SHADOW_LIGHT);
+        label->setTooltip("This personal war is inactive while you are in a city.");
+    }
+    row->addChild(label);
     x += NAME_W;
 
     switch (state) {
@@ -112,8 +118,17 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType, 
 
 void Client::populateWarsList() {
     _warsList->clearChildren();
+
+    auto isInCity = !this->_character.cityName().empty();
+    if (isInCity) {
+        for (const auto &pair : _cityWarsAgainstCities)
+            _warsList->addChild(createWarRow(pair.first, CITY, pair.second));
+        for (const auto &pair : _cityWarsAgainstPlayers)
+            _warsList->addChild(createWarRow(pair.first, PLAYER, pair.second));
+    }
+
     for (const auto &pair : _warsAgainstCities)
-        _warsList->addChild(createWarRow(pair.first, CITY, pair.second));
+        _warsList->addChild(createWarRow(pair.first, CITY, pair.second, !isInCity));
     for (const auto &pair : _warsAgainstPlayers)
-        _warsList->addChild(createWarRow(pair.first, PLAYER, pair.second));
+        _warsList->addChild(createWarRow(pair.first, PLAYER, pair.second, !isInCity));
 }

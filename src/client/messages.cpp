@@ -1134,6 +1134,8 @@ void Client::handleMessage(const std::string &msg){
 
         case SV_AT_WAR_WITH_PLAYER:
         case SV_AT_WAR_WITH_CITY:
+        case SV_YOUR_CITY_AT_WAR_WITH_PLAYER:
+        case SV_YOUR_CITY_AT_WAR_WITH_CITY:
         {
             singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
             auto name = std::string{ buffer };
@@ -1141,7 +1143,6 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 return;
 
-            if (msgCode == SV_AT_WAR_WITH_PLAYER)
             switch (msgCode) {
             case SV_AT_WAR_WITH_PLAYER:
                 _warsAgainstPlayers.add(name);
@@ -1149,9 +1150,12 @@ void Client::handleMessage(const std::string &msg){
             case SV_AT_WAR_WITH_CITY:
                 _warsAgainstCities.add(name);
                 break;
-                _playerWars.add(name);
-            else
-                _cityWars.add(name);
+            case SV_YOUR_CITY_AT_WAR_WITH_PLAYER:
+                _cityWarsAgainstPlayers.add(name);
+                break;
+            case SV_YOUR_CITY_AT_WAR_WITH_CITY:
+                _cityWarsAgainstCities.add(name);
+                break;
             }
             _debug << "You are now at war with " << name << Log::endl;
 

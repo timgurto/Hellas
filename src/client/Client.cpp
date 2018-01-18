@@ -635,10 +635,16 @@ bool Client::isAtWarWith(const std::string &username) const{
     if (it != _userCities.end())
         cityName = it->second;
 
+    if (_character.cityName().empty()) {
+        if (!cityName.empty())
+            return isAtWarWithCityDirectly(cityName);
+        else
+            return isAtWarWithPlayerDirectly(username);
+    }
     if (!cityName.empty())
-        return isAtWarWithCityDirectly(cityName);
+        return isCityAtWarWithCityDirectly(cityName);
     else
-        return isAtWarWithPlayerDirectly(username);
+        return isCityAtWarWithPlayerDirectly(username);
 }
 
 bool Client::isAtWarWith(const Avatar &user) const{

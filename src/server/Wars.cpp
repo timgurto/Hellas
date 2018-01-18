@@ -22,11 +22,11 @@ void Belligerent::alertToWarWith(const Belligerent rhs) const{
     const Server &server = Server::instance();
 
     if (type == PLAYER)
-        server.alertUserToWar(name, rhs);
+        server.alertUserToWar(name, rhs, false);
     else{
         const auto members = server.cities().membersOf(name);
         for (const auto &member : members)
-            server.alertUserToWar(member, rhs);
+            server.alertUserToWar(member, rhs, true);
     }
 }
 
@@ -58,10 +58,14 @@ void Wars::declare(const Belligerent &a, const Belligerent &b){
     b.alertToWarWith(a);
 }
 
-bool Wars::isAtWar(Belligerent a, Belligerent b) const{
+bool Wars::isAtWar(Belligerent a, Belligerent b) const {
     changePlayerBelligerentToHisCity(a);
     changePlayerBelligerentToHisCity(b);
 
+    return isAtWarExact(a, b);
+}
+
+bool Wars::isAtWarExact(Belligerent a, Belligerent b) const {
     if (a == b)
         return false;
 

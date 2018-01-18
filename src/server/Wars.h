@@ -47,7 +47,8 @@ public:
     typedef std::set<War> container_t;
 
     void declare(const Belligerent &a, const Belligerent &b);
-    bool isAtWar(Belligerent a, Belligerent b) const;
+    bool isAtWar(Belligerent a, Belligerent b) const; // Active wars only (taking into account cities)
+    bool isAtWarExact(Belligerent a, Belligerent b) const;
     void sendWarsToUser(const User &user, const Server &server) const;
     void sueForPeace(const Belligerent &proposer, const Belligerent &enemy);
     bool acceptPeaceOffer(const Belligerent &accepter, const Belligerent &proposer);
@@ -57,10 +58,10 @@ public:
     void writeToXMLFile(const std::string &filename) const;
     void readFromXMLFile(const std::string &filename);
 
+    static void changePlayerBelligerentToHisCity(Belligerent &belligerent);
+
 private:
     container_t container;
-
-    static void changePlayerBelligerentToHisCity(Belligerent &belligerent);
 };
 
 #endif

@@ -101,7 +101,8 @@ public:
     void sendConstructionMaterialsMessage(const User &user, const Object &obj) const;
     void sendNewBuildsMessage(const User &user, const std::set<std::string> &ids) const;
     void sendNewRecipesMessage(const User &user, const std::set<std::string> &ids) const;
-    void alertUserToWar(const std::string &username, const Belligerent &otherBelligerent) const;
+    void alertUserToWar(const std::string &username, const Belligerent &otherBelligerent,
+        bool isUserCityTheBelligerent) const;
 
     // Getters
     const Cities &cities() const { return _cities; }

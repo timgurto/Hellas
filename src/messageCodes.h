@@ -130,6 +130,8 @@ enum MessageCode{
     // Arguments: name
     CL_DECLARE_WAR_ON_PLAYER,
     CL_DECLARE_WAR_ON_CITY,
+    CL_DECLARE_WAR_ON_PLAYER_AS_CITY,
+    CL_DECLARE_WAR_ON_CITY_AS_CITY,
 
     // "I want to propose peace with ..."
     // Arguments: other belligerent's name
@@ -393,6 +395,8 @@ enum MessageCode{
     // Arguments: name
     SV_AT_WAR_WITH_PLAYER,
     SV_AT_WAR_WITH_CITY,
+    SV_YOUR_CITY_AT_WAR_WITH_PLAYER,
+    SV_YOUR_CITY_AT_WAR_WITH_CITY,
 
     // "You have sued for peace with ..."
     // Arguments: name
@@ -506,7 +510,7 @@ enum MessageCode{
     WARNING_ITEM_NEEDED, // The user tried to perform an action but does not have the requisite item. Arguments: requiredItemTag
     WARNING_BLOCKED, // The user tried to perform an action at an occupied location
     ERROR_TARGET_DEAD, // The NPC is dead
-    ERROR_NOT_GEAR, // The user tried to equip an item into a gear slot with which it doesn't compatible.
+    ERROR_NOT_GEAR, // The user tried to equip an item into a gear slot with which it isn't compatible.
 
 
 

@@ -210,7 +210,7 @@ void Avatar::addMenuButtons(List &menu) const{
     std::string tooltipText;
 
     void *pUsername = const_cast<std::string *>(&_name);
-    Button *playerWarButton = new Button(0, "Declare war", declareWarAgainstPlayer, pUsername);
+    auto *playerWarButton = new Button(0, "Declare war", declareWarAgainstPlayer, pUsername);
     if (client.isAtWarWithPlayerDirectly(_name)){
         playerWarButton->disable();
         tooltipText = "You are already at war with " + _name + ".";
@@ -225,7 +225,7 @@ void Avatar::addMenuButtons(List &menu) const{
     menu.addChild(playerWarButton);
 
     void *pCityName = const_cast<std::string *>(&_city);
-    Button *cityWarButton = new Button(0, "Declare war (city)", declareWarAgainstCity,
+    auto *cityWarButton = new Button(0, "Declare war against city", declareWarAgainstCity,
             pUsername);
     if (_city.empty()){
         cityWarButton->disable();
@@ -241,7 +241,36 @@ void Avatar::addMenuButtons(List &menu) const{
     cityWarButton->setTooltip(tooltipText);
     menu.addChild(cityWarButton);
 
-    Button *recruitButton = new Button(0, "Recruit" , recruit, pUsername);
+    if (client.character().isKing()) {
+        auto *playerWarButton = new Button(0, "Declare city war", declareCityWarAgainstPlayer, pUsername);
+        if (false /*client.isCityAtWarWithPlayerDirectly(_name)*/) {
+            playerWarButton->disable();
+            tooltipText = "Your city is already at war with " + _name + ".";
+        } else {
+            tooltipText = "Declare war on " + _name + " on behalf of your city.";
+        }
+        if (!_city.empty()) {
+            tooltipText += " While " + _name + " is a member of a city, this personal war will not be active.";
+        }
+        playerWarButton->setTooltip(tooltipText);
+        menu.addChild(playerWarButton);
+
+        auto *cityWarButton = new Button(0, "Declare city war against city", declareCityWarAgainstCity,
+            pUsername);
+        if (_city.empty()) {
+            cityWarButton->disable();
+            tooltipText = _name + " is not a member of a city.";
+        } else if (false /*client.isCityAtWarWithCityDirectly(_city)*/) {
+            cityWarButton->disable();
+            tooltipText = "You are already at war with the city of " + _city + ".";
+        } else {
+            tooltipText = "Declare war on the city of " + _city + " on behalf of your city.";
+        }
+        cityWarButton->setTooltip(tooltipText);
+        menu.addChild(cityWarButton);
+    }
+
+    auto *recruitButton = new Button(0, "Recruit" , recruit, pUsername);
     if (!_city.empty()) {
         recruitButton->disable();
         tooltipText = _name + " is already in a city.";
@@ -255,8 +284,8 @@ void Avatar::addMenuButtons(List &menu) const{
     menu.addChild(recruitButton);
 }
 
-void Avatar::declareWarAgainstPlayer(void *pUsername){
-    const std::string &username = * reinterpret_cast<const std::string *>(pUsername);
+void Avatar::declareWarAgainstPlayer(void *pUsername) {
+    const std::string &username = *reinterpret_cast<const std::string *>(pUsername);
     Client &client = *Client::_instance;
     client.sendMessage(CL_DECLARE_WAR_ON_PLAYER, username);
 }
@@ -265,6 +294,18 @@ void Avatar::declareWarAgainstCity(void *pCityName) {
     const std::string &cityName = *reinterpret_cast<const std::string *>(pCityName);
     Client &client = *Client::_instance;
     client.sendMessage(CL_DECLARE_WAR_ON_CITY, cityName);
+}
+
+void Avatar::declareCityWarAgainstPlayer(void *pUsername) {
+    const std::string &username = *reinterpret_cast<const std::string *>(pUsername);
+    Client &client = *Client::_instance;
+    client.sendMessage(CL_DECLARE_WAR_ON_PLAYER_AS_CITY, username);
+}
+
+void Avatar::declareCityWarAgainstCity(void *pCityName) {
+    const std::string &cityName = *reinterpret_cast<const std::string *>(pCityName);
+    Client &client = *Client::_instance;
+    client.sendMessage(CL_DECLARE_WAR_ON_CITY_AS_CITY, cityName);
 }
 
 void Avatar::recruit(void *pUsername) {

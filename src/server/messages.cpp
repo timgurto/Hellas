@@ -965,21 +965,47 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             Belligerent::Type targetType = msgCode == CL_DECLARE_WAR_ON_PLAYER ?
                     Belligerent::PLAYER :
                     Belligerent::CITY;
-            auto target = Belligerent{ targetName, targetType };
-            if (_wars.isAtWar(user->name(), target)){
+            auto targetBelligerent = Belligerent{ targetName, targetType };
+
+            if (_wars.isAtWarExact(user->name(), targetBelligerent)){
                 sendMessage(client, ERROR_ALREADY_AT_WAR);
                 break;
             }
-            if (_cities.isPlayerInACity(user->name())) {
-                if (_kings.isPlayerAKing(user->name())) {
-                    thisBelligerent = { _cities.getPlayerCity(user->name()), Belligerent::CITY };
-                } else {
-                    sendMessage(client, ERROR_NOT_A_KING);
-                    break;
-                }
+
+            _wars.declare(thisBelligerent, targetBelligerent);
+            break;
+        }
+
+        case CL_DECLARE_WAR_ON_PLAYER_AS_CITY:
+        case CL_DECLARE_WAR_ON_CITY_AS_CITY:
+        {
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
+            std::string targetName(buffer);
+            iss >> del;
+            if (del != MSG_END)
+                return;
+
+            if (!_cities.isPlayerInACity(user->name())) {
+                sendMessage(client, ERROR_NOT_IN_CITY);
+                break;
+            }
+            if (!_kings.isPlayerAKing(user->name())) {
+                sendMessage(client, ERROR_NOT_A_KING);
+                break;
+            }
+            auto declarer = Belligerent{ _cities.getPlayerCity(user->name()), Belligerent::CITY };
+
+            Belligerent::Type targetType = msgCode == CL_DECLARE_WAR_ON_PLAYER_AS_CITY ?
+                Belligerent::PLAYER :
+                Belligerent::CITY;
+            auto targetBelligerent = Belligerent{ targetName, targetType };
+
+            if (_wars.isAtWarExact(declarer, targetBelligerent)) {
+                sendMessage(client, ERROR_ALREADY_AT_WAR);
+                break;
             }
 
-            _wars.declare(thisBelligerent, target);
+            _wars.declare(declarer, targetBelligerent);
             break;
         }
 
@@ -1671,12 +1697,18 @@ void Server::sendNewRecipesMessage(const User &user, const std::set<std::string>
     }
 }
 
-void Server::alertUserToWar(const std::string &username, const Belligerent &otherBelligerent) const{
+void Server::alertUserToWar(const std::string &username, const Belligerent &otherBelligerent,
+    bool isUserCityTheBelligerent) const{
     auto it = _usersByName.find(username);
-    if (it == _usersByName.end()) // user1 is offline
+    if (it == _usersByName.end()) // user is offline
         return;
 
-    const MessageCode code = otherBelligerent.type == Belligerent::CITY ?
+    MessageCode code;
+    if (isUserCityTheBelligerent)
+        code = otherBelligerent.type == Belligerent::CITY ?
+            SV_YOUR_CITY_AT_WAR_WITH_CITY : SV_YOUR_CITY_AT_WAR_WITH_PLAYER;
+    else
+        code = otherBelligerent.type == Belligerent::CITY ?
             SV_AT_WAR_WITH_CITY : SV_AT_WAR_WITH_PLAYER;
     sendMessage(it->second->socket(), code, otherBelligerent.name);
 }
