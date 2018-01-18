@@ -243,7 +243,7 @@ void Avatar::addMenuButtons(List &menu) const{
 
     if (client.character().isKing()) {
         auto *playerWarButton = new Button(0, "Declare city war", declareCityWarAgainstPlayer, pUsername);
-        if (false /*client.isCityAtWarWithPlayerDirectly(_name)*/) {
+        if (client.isCityAtWarWithPlayerDirectly(_name)) {
             playerWarButton->disable();
             tooltipText = "Your city is already at war with " + _name + ".";
         } else {
@@ -260,7 +260,7 @@ void Avatar::addMenuButtons(List &menu) const{
         if (_city.empty()) {
             cityWarButton->disable();
             tooltipText = _name + " is not a member of a city.";
-        } else if (false /*client.isCityAtWarWithCityDirectly(_city)*/) {
+        } else if (client.isCityAtWarWithCityDirectly(_city)) {
             cityWarButton->disable();
             tooltipText = "You are already at war with the city of " + _city + ".";
         } else {
