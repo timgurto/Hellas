@@ -157,6 +157,7 @@ _debug("client.log"){
     _config.loadFromFile("client-config.xml");
     
     initUI();
+    _wordWrapper = WordWrapper{_defaultFont, _chatLog->width()};
 
     initializeMessageNames();
 
@@ -523,9 +524,12 @@ void Client::addUI(Element *element){
 }
 
 void Client::addChatMessage(const std::string &msg, const Color &color){
-    Label *label = new Label({}, msg);
-    label->setColor(color);
-    _chatLog->addChild(label);
+    auto wrappedLines = _wordWrapper.wrap(msg);
+    for (const auto &line : wrappedLines) {
+        Label *label = new Label({}, line);
+        label->setColor(color);
+        _chatLog->addChild(label);
+    }
     _chatLog->scrollToBottom();
 }
 

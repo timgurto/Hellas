@@ -28,6 +28,7 @@
 #include "Sprite.h"
 #include "Tag.h"
 #include "Target.h"
+#include "WordWrapper.h"
 #include "ui/ChoiceList.h"
 #include "ui/ItemSelector.h"
 #include "ui/Window.h"
@@ -151,6 +152,7 @@ private:
     static void initializeMessageNames();
 
     ClientConfig _config;
+    WordWrapper _wordWrapper;
 
     std::string _defaultServerAddress;
     static const u_short DEBUG_PORT = 8888;
