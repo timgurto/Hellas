@@ -147,6 +147,9 @@ enum MessageCode{
     // "I accept ...'s peace offer"
     // Arguments: other belligerent's name
     CL_ACCEPT_PEACE_OFFER_WITH_PLAYER,
+    CL_ACCEPT_PEACE_OFFER_WITH_CITY,
+    CL_ACCEPT_PEACE_OFFER_WITH_PLAYER_AS_CITY,
+    CL_ACCEPT_PEACE_OFFER_WITH_CITY_AS_CITY,
 
     // "I want to perform object ...'s action with argument ..."
     // Arguments: serial, textArg
@@ -425,10 +428,12 @@ enum MessageCode{
     SV_PEACE_OFFER_TO_YOU_FROM_CITY_WAS_CANCELED,
     SV_PEACE_OFFER_TO_YOUR_CITY_FROM_PLAYER_WAS_CANCELED,
     SV_PEACE_OFFER_TO_YOUR_CITY_FROM_CITY_WAS_CANCELED,
-
     // "You are at peace with ..."
     // Arguments: name
-    SV_AT_PEACE,
+    SV_AT_PEACE_WITH_PLAYER,
+    SV_AT_PEACE_WITH_CITY,
+    SV_YOUR_CITY_IS_AT_PEACE_WITH_PLAYER,
+    SV_YOUR_CITY_IS_AT_PEACE_WITH_CITY,
 
 
     // "User ... has said ...".

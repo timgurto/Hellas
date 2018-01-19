@@ -95,52 +95,68 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType,
     row->addChild(label);
     x += NAME_W;
 
-    // Peace button
-    if (yourBelligerentType == PLAYER || Client::instance().character().isKing()) {
-        switch (state) {
-        case NO_PEACE_PROPOSED:
-        {
-            auto buttonFunc = Button::clickFun_t{};
-            if (yourBelligerentType == PLAYER) {
-                if (belligerentType == PLAYER)
-                    buttonFunc = Client::sendMessageWithString<CL_SUE_FOR_PEACE_WITH_PLAYER>;
-                else
-                    buttonFunc = Client::sendMessageWithString<CL_SUE_FOR_PEACE_WITH_CITY>;
-            } else {
-                if (belligerentType == PLAYER)
-                    buttonFunc = Client::sendMessageWithString<CL_SUE_FOR_PEACE_WITH_PLAYER_AS_CITY>;
-                else
-                    buttonFunc = Client::sendMessageWithString<CL_SUE_FOR_PEACE_WITH_CITY_AS_CITY>;
-            }
-            row->addChild(new Button({ x, 0, BUTTON_W, WAR_ROW_HEIGHT }, "Sue for peace"s,
-                buttonFunc, &const_cast<std::string &>(name)));
-            break;
-        }
-        case PEACE_PROPOSED_BY_YOU:
-        {
-            auto buttonFunc = Button::clickFun_t{};
-            if (yourBelligerentType == PLAYER) {
-                if (belligerentType == PLAYER)
-                    buttonFunc = Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_PLAYER>;
-                else
-                    buttonFunc = Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_CITY>;
-            } else {
-                if (belligerentType == PLAYER)
-                    buttonFunc = Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_PLAYER_AS_CITY>;
-                else
-                    buttonFunc = Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_CITY_AS_CITY>;
-            }
+    if (yourBelligerentType == CITY && !Client::instance().character().isKing())
+        return row;
 
-            row->addChild(new Button({ x, 0, BUTTON_W, WAR_ROW_HEIGHT }, "Revoke peace offer"s,
-                buttonFunc, &const_cast<std::string &>(name)));
-            break;
+    // Peace button
+    switch (state) {
+    case NO_PEACE_PROPOSED:
+    {
+        auto buttonFunc = Button::clickFun_t{};
+        if (yourBelligerentType == PLAYER) {
+            if (belligerentType == PLAYER)
+                buttonFunc = Client::sendMessageWithString<CL_SUE_FOR_PEACE_WITH_PLAYER>;
+            else
+                buttonFunc = Client::sendMessageWithString<CL_SUE_FOR_PEACE_WITH_CITY>;
+        } else {
+            if (belligerentType == PLAYER)
+                buttonFunc = Client::sendMessageWithString<CL_SUE_FOR_PEACE_WITH_PLAYER_AS_CITY>;
+            else
+                buttonFunc = Client::sendMessageWithString<CL_SUE_FOR_PEACE_WITH_CITY_AS_CITY>;
         }
-        case PEACE_PROPOSED_BY_HIM:
-            row->addChild(new Button({ x, 0, BUTTON_W, WAR_ROW_HEIGHT }, "Accept peace offer"s,
-                Client::sendMessageWithString<CL_ACCEPT_PEACE_OFFER_WITH_PLAYER>,
-                &const_cast<std::string &>(name)));
-            break;
+
+        row->addChild(new Button({ x, 0, BUTTON_W, WAR_ROW_HEIGHT }, "Sue for peace"s,
+            buttonFunc, &const_cast<std::string &>(name)));
+        break;
+    }
+    case PEACE_PROPOSED_BY_YOU:
+    {
+        auto buttonFunc = Button::clickFun_t{};
+        if (yourBelligerentType == PLAYER) {
+            if (belligerentType == PLAYER)
+                buttonFunc = Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_PLAYER>;
+            else
+                buttonFunc = Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_CITY>;
+        } else {
+            if (belligerentType == PLAYER)
+                buttonFunc = Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_PLAYER_AS_CITY>;
+            else
+                buttonFunc = Client::sendMessageWithString<CL_CANCEL_PEACE_OFFER_TO_CITY_AS_CITY>;
         }
+
+        row->addChild(new Button({ x, 0, BUTTON_W, WAR_ROW_HEIGHT }, "Revoke peace offer"s,
+            buttonFunc, &const_cast<std::string &>(name)));
+        break;
+    }
+    case PEACE_PROPOSED_BY_HIM:
+    {
+        auto buttonFunc = Button::clickFun_t{};
+        if (yourBelligerentType == PLAYER) {
+            if (belligerentType == PLAYER)
+                buttonFunc = Client::sendMessageWithString<CL_ACCEPT_PEACE_OFFER_WITH_PLAYER>;
+            else
+                buttonFunc = Client::sendMessageWithString<CL_ACCEPT_PEACE_OFFER_WITH_CITY>;
+        } else {
+            if (belligerentType == PLAYER)
+                buttonFunc = Client::sendMessageWithString<CL_ACCEPT_PEACE_OFFER_WITH_PLAYER_AS_CITY>;
+            else
+                buttonFunc = Client::sendMessageWithString<CL_ACCEPT_PEACE_OFFER_WITH_CITY_AS_CITY>;
+        }
+
+        row->addChild(new Button({ x, 0, BUTTON_W, WAR_ROW_HEIGHT }, "Accept peace offer"s,
+            buttonFunc, &const_cast<std::string &>(name)));
+        break;
+    }
     }
 
     return row;

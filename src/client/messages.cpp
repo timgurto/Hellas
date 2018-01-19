@@ -1277,7 +1277,10 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_AT_PEACE:
+        case SV_AT_PEACE_WITH_PLAYER:
+        case SV_AT_PEACE_WITH_CITY:
+        case SV_YOUR_CITY_IS_AT_PEACE_WITH_PLAYER:
+        case SV_YOUR_CITY_IS_AT_PEACE_WITH_CITY:
         {
             singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
             auto name = std::string{ buffer };
@@ -1285,14 +1288,15 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 return;
 
-            if (_warsAgainstPlayers.atWarWith(name))
-                _warsAgainstPlayers.remove(name);
-            else if (_warsAgainstCities.atWarWith(name))
-                _warsAgainstCities.remove(name);
-            else {
-                _debug << Color::FAILURE << "Received information about an unknown war against " <<
-                    name << Log::endl;
-                break;
+            switch (msgCode) {
+            case SV_AT_PEACE_WITH_PLAYER:
+                _warsAgainstPlayers.remove(name); break;
+            case SV_AT_PEACE_WITH_CITY:
+                _warsAgainstCities.remove(name); break;
+            case SV_YOUR_CITY_IS_AT_PEACE_WITH_PLAYER:
+                _cityWarsAgainstPlayers.remove(name); break;
+            case SV_YOUR_CITY_IS_AT_PEACE_WITH_CITY:
+                _cityWarsAgainstCities.remove(name); break;
             }
 
             _debug << "You are now at peace with " << name << Log::endl;

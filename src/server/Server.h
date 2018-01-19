@@ -246,7 +246,7 @@ private:
     void handle_CL_RECRUIT(User &user, const std::string &username);
     void handle_CL_SUE_FOR_PEACE(User &user, MessageCode code, const std::string &name);
     void handle_CL_CANCEL_PEACE_OFFER(User &user, MessageCode code, const std::string &name);
-    void handle_CL_ACCEPT_PEACE_OFFER_WITH_PLAYER(User &user, const std::string &name);
+    void handle_CL_ACCEPT_PEACE_OFFER(User &user, MessageCode code, const std::string &name);
     void handle_CL_TAKE_TALENT(User & user, const Talent::Name &talent);
     void handle_CL_CAST(User & user, const std::string &spellID, bool castingFromItem = false);
 };
