@@ -161,6 +161,7 @@
     <ClCompile Include="src\client\ui\TakeContainer.cpp" />
     <ClCompile Include="src\client\ui\TextBox.cpp" />
     <ClCompile Include="src\client\ui\Window.cpp" />
+    <ClCompile Include="src\client\WordWrapper.cpp" />
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\curlUtil.cpp" />
     <ClCompile Include="src\Item.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="src\client\ui\TakeContainer.h" />
     <ClInclude Include="src\client\ui\TextBox.h" />
     <ClInclude Include="src\client\ui\Window.h" />
+    <ClInclude Include="src\client\WordWrapper.h" />
     <ClInclude Include="src\Color.h" />
     <ClInclude Include="src\curlUtil.h" />
     <ClInclude Include="src\Item.h" />
