@@ -2,10 +2,12 @@
 #define TOOLTIP_BUILDER_H
 
 #include <SDL_ttf.h>
-#include <vector>
+#include <memory>
 #include <string>
+#include <vector>
 
 #include "Texture.h"
+#include "WordWrapper.h"
 #include "../Color.h"
 #include "../types.h"
 
@@ -16,6 +18,8 @@ class Tooltip{
     static const px_t PADDING;
     static TTF_Font *font;
     const static px_t DEFAULT_MAX_WIDTH;
+
+    static std::unique_ptr<WordWrapper> wordWrapper;
 
 public:
     Tooltip();
@@ -33,10 +37,8 @@ public:
 
     Texture publish();
 
-    // Create a basic tooltip containing a single string, broken over multiple lines if necessary.
-    // maxWidth: the maximum width of the tooltip excluding padding; text will be wrapped to fit.
-    // A maxWidth of NO_WRAP will result in no wrapping.
-    static Texture basicTooltip(const std::string &text, px_t maxWidth = DEFAULT_MAX_WIDTH);
+    // Create a basic tooltip containing a single string.
+    static Texture basicTooltip(const std::string &text);
 };
 
 #endif

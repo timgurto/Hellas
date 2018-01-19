@@ -9,6 +9,7 @@ const px_t Tooltip::PADDING = 4; // Margins, and the height of gaps between line
 TTF_Font *Tooltip::font = nullptr;
 const px_t Tooltip::DEFAULT_MAX_WIDTH = 150;
 const px_t Tooltip::NO_WRAP = 0;
+std::unique_ptr<WordWrapper> Tooltip::wordWrapper;
 
 Tooltip::Tooltip()
 {
@@ -17,6 +18,10 @@ Tooltip::Tooltip()
     if (font == nullptr)
         font = TTF_OpenFont("AdvoCut.ttf", 10);
     font = font;
+
+    if (!wordWrapper) {
+        wordWrapper = std::make_unique<WordWrapper>(WordWrapper(font, DEFAULT_MAX_WIDTH));
+    }
 }
 
 void Tooltip::setFont(TTF_Font *font){
@@ -32,8 +37,9 @@ void Tooltip::addLine(const std::string &line){
         addGap();
         return;
     }
-    const Texture lineTexture(font, line, _color);
-    _content.push_back(lineTexture);
+    auto wrappedLines = wordWrapper->wrap(line);
+    for (const auto &wrappedLine : wrappedLines)
+        _content.push_back({ font, wrappedLine, _color });
 }
 
 void Tooltip::addLines(const Lines & lines) {
@@ -94,49 +100,9 @@ Texture Tooltip::publish(){
     return ret;
 }
 
-Texture Tooltip::basicTooltip(const std::string &text, px_t maxWidth)
+Texture Tooltip::basicTooltip(const std::string &text)
 {
     Tooltip tb;
-    
-    { // Try a single line
-        Texture lineTexture(font, text, tb._color);
-        if (maxWidth == NO_WRAP || lineTexture.width() <= maxWidth) { // No wrapping necessary.
-            tb._content.push_back(lineTexture);
-            return tb.publish();
-        }
-    }
-
-    std::istringstream iss(text);
-    static const size_t BUFFER_SIZE = 50; // Maximum word length
-    static char buffer[BUFFER_SIZE];
-
-    std::string segment;
-    std::string extraSpaces;
-    while (!iss.eof()) {
-        iss.get(buffer, BUFFER_SIZE, ' '); iss.ignore(1);
-        std::string word(buffer);
-        word = extraSpaces + word;
-        extraSpaces = "";
-        while (iss.peek() == ' ') {
-            extraSpaces += " ";
-            iss.ignore(1);
-        }
-        Texture lineTexture(font, segment + " " +  word, tb._color);
-        if (lineTexture.width() > maxWidth) {
-            if (segment == "") {
-                tb._content.push_back(lineTexture);
-                continue;
-            } else {
-                tb.addLine(segment);
-                segment = word;
-                continue;
-            }
-        }
-        if (segment != "")
-            segment += " ";
-        segment += word;
-    }
-    tb.addLine(segment);
-    
+    tb.addLine(text);
     return tb.publish();
 }

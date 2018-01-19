@@ -15,4 +15,9 @@ public:
 
 private:
     px_t _width;
+
+    using GlyphWidths = std::vector<px_t>;
+    GlyphWidths _glyphWidths;
+
+    px_t getWidth(const std::string &s) const;
 };
