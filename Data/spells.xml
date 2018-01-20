@@ -32,6 +32,10 @@ Functions:
     <targets enemy=1 />
     <function name="debuff" s1="bleed" />
 </spell>
+<spell id="soldierStun" name="Head Crack" cost=10 range=4 >
+    <targets enemy=1 />
+    <function name="debuff" s1="stun" />
+</spell>
 <!--spell id="whirlwind" name="Blade Storm" cost=30 radius=4 >
     <aesthetics impactParticles="heavyBlood" />
     <targets enemy=1 />
@@ -87,6 +91,10 @@ Functions:
 </spell>
 
 <!-- Poet -->
+<spell id="zealotStun" name="Depressing Tragedy" cost=10 range=30 school="air" >
+    <targets enemy=1 />
+    <function name="debuff" s1="stun" />
+</spell>
 
 
 

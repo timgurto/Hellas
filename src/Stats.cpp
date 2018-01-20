@@ -21,6 +21,7 @@ Stats &Stats::operator+=(const Stats &rhs){
     attack += rhs.attack;
     attackTime += rhs.attackTime;
     speed += rhs.speed;
+    stunned = stunned || rhs.stunned;
 
     return *this;
 }
@@ -98,6 +99,8 @@ const Stats &Stats::operator&=(const StatsMod &mod){
     assert(mod.speed >= 0);
     if (mod.speed != 1.0)
         speed *= mod.speed;
+
+    stunned = stunned || mod.stuns;
 
     return *this;
 }

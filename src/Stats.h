@@ -44,6 +44,9 @@ struct Stats{
 
     double
         speed = 0;
+
+    bool
+        stunned = false;
     
     Stats &operator+=(const Stats &rhs);
     const Stats operator+(const Stats &rhs) const;
@@ -87,6 +90,10 @@ struct StatsMod{
     double
         attackTime = 1.0,
         speed = 1.0;
+
+    // Flag
+    bool
+        stuns = false;
 };
 
 #endif
