@@ -49,6 +49,7 @@ private:
     static FlagMap aggressionMap; // Ultimately, whether a defense sound should play.
 
     static CombatResult doDirectDamage(const SpellEffect &effect, Entity &caster, Entity &target);
+    static CombatResult doDirectDamageWithModifiedThreat(const SpellEffect &effect, Entity &caster, Entity &target);
     static CombatResult heal(const SpellEffect &effect, Entity &caster, Entity &target);
     static CombatResult scaleThreat(const SpellEffect &effect, Entity &caster, Entity &target);
     static CombatResult buff(const SpellEffect &effect, Entity &caster, Entity &target);

@@ -34,7 +34,7 @@ public:
     void updateStats() override;
     void onHealthChange() override;
     void onDeath() override;
-    void onAttackedBy(Entity &attacker, Hitpoints damage) override;
+    void onAttackedBy(Entity &attacker, Threat threat) override;
     px_t attackRange() const override;
     void sendRangedHitMessageTo(const User &userToInform) const override;
     void sendRangedMissMessageTo(const User &userToInform) const override;

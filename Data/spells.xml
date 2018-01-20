@@ -3,6 +3,7 @@
 <!--
 Functions:
     doDirectDamage (i1 = damage)
+    doDirectDamageWithModifiedThreat(i1 = damage, d1 = threat multiplier)
     heal (i1 = amount to heal)
     buff (s1 = ID of buff to apply)
     debuff (s1 = ID of debuff to apply)
@@ -20,6 +21,10 @@ Functions:
 <spell id="shieldBlock" name="Raise Shield" cost=10 >
     <targets self=1 />
     <function name="buff" s1="shieldBlock" />
+</spell>
+<spell id="threatHit" name="Menacing Strike" cost=10 >
+    <targets enemy=1 />
+    <function name="doDirectDamageWithModifiedThreat" i1="3" d1="3.0" />
 </spell>
 
 <!-- Skirmisher -->

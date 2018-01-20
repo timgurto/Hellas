@@ -93,6 +93,11 @@ std::string ClientSpell::createEffectDescription() const {
     else if (effectName == "doDirectDamage")
         oss << "Deal " << effectArgs.i1 << " damage to " << targetString;
 
+    else if (effectName == "doDirectDamageWithModifiedThreat") {
+        oss << "Deal " << effectArgs.i1 << " damage to " << targetString;
+        oss << ", while causing a " << (effectArgs.d1 < 1.0 ? "low" : "high") << " amount of threat";
+    }
+
     else if (effectName == "heal")
         oss << "Restore " << effectArgs.i1 << " health to target";
 

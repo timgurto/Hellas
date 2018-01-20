@@ -8,6 +8,7 @@
 #include "EntityType.h"
 #include "Loot.h"
 #include "ServerItem.h"
+#include "ThreatTable.h"
 #include "../Message.h"
 #include "../Point.h"
 #include "../Rect.h"
@@ -107,7 +108,7 @@ public:
     virtual void onHealthChange() {}; // Probably alerting relevant users.
     virtual void onEnergyChange() {}; // Probably alerting relevant users.
     virtual void onDeath(); // Anything that needs to happen upon death.
-    virtual void onAttackedBy(Entity &attacker, Hitpoints damage); // If the entity needs to react to an attack.
+    virtual void onAttackedBy(Entity &attacker, Threat threat); // If the entity needs to react to an attack.
     virtual void onKilled(const Entity &victim) {} // Upon this entity killing another
     virtual void sendRangedMissMessageTo(const User &userToInform) const {} // Inform user that this entity has missed its target with a ranged attack.
     virtual void sendRangedHitMessageTo(const User &userToInform) const {} // Inform user that this entity has hit its target with a ranged attack.

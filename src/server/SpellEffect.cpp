@@ -10,6 +10,7 @@ void SpellEffect::setFunction(const std::string & functionName) {
 
 SpellEffect::FunctionMap SpellEffect::functionMap = {
     { "doDirectDamage", doDirectDamage },
+    { "doDirectDamageWithModifiedThreat", doDirectDamageWithModifiedThreat },
     { "heal", heal },
     { "buff", buff },
     { "debuff", debuff },
@@ -18,9 +19,10 @@ SpellEffect::FunctionMap SpellEffect::functionMap = {
 
 SpellEffect::FlagMap SpellEffect::aggressionMap = {
     { doDirectDamage, true },
+    { doDirectDamageWithModifiedThreat , true },
     { heal, false },
     { buff, false },
-    { debuff, false },
+    { debuff, true },
     { scaleThreat, false }
 };
 
@@ -35,6 +37,12 @@ bool SpellEffect::isAggressive() const {
 }
 
 CombatResult SpellEffect::doDirectDamage(const SpellEffect &effect, Entity &caster, Entity &target) {
+    auto effectWithDefaultThreat = effect;
+    effectWithDefaultThreat._args.d1 = 1.0; // Threat
+    return doDirectDamageWithModifiedThreat(effectWithDefaultThreat, caster, target);
+}
+
+CombatResult SpellEffect::doDirectDamageWithModifiedThreat(const SpellEffect &effect, Entity &caster, Entity &target) {
     auto outcome = caster.generateHitAgainst(target, DAMAGE, effect._school, effect._range);
     if (outcome == MISS || outcome == DODGE)
         return outcome;
@@ -63,7 +71,9 @@ CombatResult SpellEffect::doDirectDamage(const SpellEffect &effect, Entity &cast
     }
 
     target.reduceHealth(damage);
-    target.onAttackedBy(caster, damage);
+    auto threatScaler = effect._args.d1;
+    auto threat = toInt(damage * threatScaler);
+    target.onAttackedBy(caster, threat);
 
     return outcome;
 }

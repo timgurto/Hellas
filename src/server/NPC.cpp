@@ -98,10 +98,10 @@ void NPC::onDeath(){
     Entity::onDeath();
 }
 
-void NPC::onAttackedBy(Entity &attacker, Hitpoints damage) {
-    _threatTable.addThreat(attacker, damage);
+void NPC::onAttackedBy(Entity &attacker, Threat threat) {
+    _threatTable.addThreat(attacker, threat);
 
-    Entity::onAttackedBy(attacker, damage);
+    Entity::onAttackedBy(attacker, threat);
 }
 
 px_t NPC::attackRange() const {

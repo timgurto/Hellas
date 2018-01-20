@@ -12,7 +12,7 @@
             <requires pointsInTree="5" />
             <talent type="spell" id="shieldBlock" />
             <talent type="stats" name="Train Endurance"> <stats armor="1" /> </talent>
-            <!--talent type="spell" id="Menacing Strike" /-->
+            <talent type="spell" id="threatHit" />
         </tier>
     </tree>
     <tree name="Skirmisher" >

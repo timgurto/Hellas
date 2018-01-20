@@ -290,7 +290,7 @@ void Entity::onDeath(){
         startCorpseTimer();
 }
 
-void Entity::onAttackedBy(Entity &attacker, Hitpoints damage) {
+void Entity::onAttackedBy(Entity &attacker, Threat threat) {
     if (isDead())
         attacker.onKilled(*this);
 }
