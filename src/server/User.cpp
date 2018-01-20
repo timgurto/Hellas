@@ -86,6 +86,7 @@ void User::init(){
     baseStats.attack = 5;
     baseStats.attackTime = 1000;
     baseStats.speed = 80.0;
+    baseStats.stunned = false;
     OBJECT_TYPE.baseStats(baseStats);
 }
 
@@ -341,12 +342,17 @@ void User::update(ms_t timeElapsed){
         return;
     }
 
+    Server &server = *Server::_instance;
+
+    if (isStunned()) {
+        cancelAction();
+        return;
+    }
+
     if (_actionTime > timeElapsed)
         _actionTime -= timeElapsed;
     else
         _actionTime = 0;
-
-    Server &server = *Server::_instance;
 
     if (_actionTime > 0){ // Action hasn't finished yet.
         Entity::update(timeElapsed);

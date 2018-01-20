@@ -82,7 +82,6 @@ public:
     virtual SpellSchool school() const { return SpellSchool::PHYSICAL; }
     virtual Level level() const { return 0; }
 
-    //Buffs &buffs() { return _buffs; }
     const Buffs &buffs() const { return _buffs; }
     const Buffs &debuffs() const { return _debuffs; }
     void applyBuff(const BuffType &type, Entity &caster);
@@ -96,6 +95,7 @@ public:
     Hitpoints health() const {return _health; }
     Energy energy() const { return _energy; }
     virtual bool canBlock() const { return false; }
+    bool isStunned() const { return _stats.stunned; }
 
     void health(Hitpoints health) { _health = health; }
     void energy(Energy energy) { _energy = energy; }

@@ -150,6 +150,9 @@ void Entity::update(ms_t timeElapsed){
     else
         _attackTimer = 0;
 
+    if (isStunned())
+        return;
+
     auto pTarget = target();
     if (!pTarget)
         return;
