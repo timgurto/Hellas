@@ -317,7 +317,7 @@
     <strength item="rope" quantity="2" />
 </objectType>
 
-<objectType id="lathe" name="Lathe"
+<!--objectType id="lathe" name="Lathe"
     constructionTime="0" >
     <material id="lumber" quantity="4" />
     <material id="rope" quantity="2" />
@@ -325,7 +325,7 @@
     <tag name="woodTurning" />
     <unlockedBy recipe="tinTube" />
     <strength item="tinTube" quantity="2" chance="0.5" />
-</objectType>
+</objectType-->
 
 <!--objectType id="grindstone" name="Grindstone"
     constructionTime="0" 

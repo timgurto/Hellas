@@ -74,6 +74,7 @@
 <extra parent="item_tinBar"        child="item_tinTube" />
 <extra parent="item_water"         child="object_flaxCrop8" />
 <extra parent="item_log"           child="item_tannin" />
+<extra parent="item_brick"         child="object_cityAltar" />
 
 <collapse id="object_figTree0" into="object_figTree8" />
 <collapse id="object_figTree1" into="object_figTree8" />

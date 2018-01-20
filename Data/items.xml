@@ -55,7 +55,7 @@
 <!--item id="pole2"		name="Pole" /-->
 <item id="water"        name="Water Vessel"   sounds="ceramic"  returnsOnConstruction="smallPot" />
 
-<item id="pickMould"    name="Pickaxe Mould"  sounds="ceramic" >   <tag name="pickMould" />  </item>
+<!--item id="pickMould"    name="Pickaxe Mould"  sounds="ceramic" >   <tag name="pickMould" />  </item-->
 <item id="knifeMould"   name="Knife Mould"    sounds="ceramic" >   <tag name="knifeMould" /> </item>
 <item id="axeMould"     name="Axe Mould"      sounds="ceramic" >   <tag name="axeMould" />   </item>
 <!--item id="hammerMould"  name="Hammer Mould"   sounds="ceramic" >   <tag name="hammerMould" />   </item-->

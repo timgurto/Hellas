@@ -79,12 +79,12 @@
     </recipe-->
 
 <!-- Moulds-->
-    <recipe id="pickMould"
+    <!--recipe id="pickMould"
         time="12000" >
         <material id="crudeClay" quantity="2" />
         <tool class="pottery1" />
         <unlockedBy recipe="tinBar" chance="0.2" />
-    </recipe>
+    </recipe-->
     <recipe id="knifeMould"
         time="12000" >
         <material id="crudeClay" quantity="2" />
@@ -123,7 +123,7 @@
         time="12000" >
         <material id="crudeClay" quantity="2" />
         <tool class="pottery1" />
-        <unlockedBy construction="lathe" />
+        <!--unlockedBy construction="lathe" /-->
         <unlockedBy recipe="pole1" />
         <unlockedBy recipe="tinKnife" chance="0.1" />
         <unlockedBy recipe="tinBar" chance="0.05" />
