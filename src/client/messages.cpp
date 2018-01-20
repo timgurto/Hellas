@@ -181,6 +181,7 @@ void Client::handleMessage(const std::string &msg){
         case WARNING_NO_TALENT_POINTS:
         case WARNING_MISSING_ITEMS_FOR_TALENT:
         case WARNING_MISSING_REQ_FOR_TALENT:
+        case WARNING_STUNNED:
             errorMessageColor = Color::WARNING; // Yellow above, red below
         case ERROR_INVALID_USER:
         case ERROR_INVALID_ITEM:
@@ -1901,6 +1902,7 @@ void Client::initializeMessageNames(){
     _errorMessages[WARNING_NO_TALENT_POINTS] = "You don't have any more talent points to allocate.";
     _errorMessages[WARNING_MISSING_ITEMS_FOR_TALENT] = "You don't have the items needed to learn that talent.";
     _errorMessages[WARNING_MISSING_REQ_FOR_TALENT] = "You don't meet the requirements for that talent.";
+    _errorMessages[WARNING_STUNNED] = "You can't do that while stunned.";
 }
 
 void Client::performCommand(const std::string &commandString){

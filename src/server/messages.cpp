@@ -117,6 +117,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> del;
             if (del != MSG_END)
                 return;
+            if (user->isStunned()) {
+                sendMessage(user->socket(), WARNING_STUNNED);
+                break;
+            }
             user->cancelAction();
             const std::set<Recipe>::const_iterator it = _recipes.find(id);
             if (!user->knowsRecipe(id)){
@@ -145,6 +149,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> del >> x >> del >> y >> del;
             if (del != MSG_END)
                 return;
+            if (user->isStunned()) {
+                sendMessage(user->socket(), WARNING_STUNNED);
+                break;
+            }
             user->cancelAction();
             const ObjectType *objType = findObjectTypeByName(id);
             if (objType == nullptr){
@@ -195,6 +203,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> slot >> del >> x >> del >> y >> del;
             if (del != MSG_END)
                 return;
+            if (user->isStunned()) {
+                sendMessage(user->socket(), WARNING_STUNNED);
+                break;
+            }
             user->cancelAction();
             if (slot >= User::INVENTORY_SIZE) {
                 sendMessage(client, ERROR_INVALID_SLOT);
@@ -238,6 +250,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> slot >> del;
             if (del != MSG_END)
                 return;
+            if (user->isStunned()) {
+                sendMessage(user->socket(), WARNING_STUNNED);
+                break;
+            }
             user->cancelAction();
             if (slot >= User::INVENTORY_SIZE) {
                 sendMessage(client, ERROR_INVALID_SLOT);
@@ -275,6 +291,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != MSG_END)
                 return;
+            if (user->isStunned()) {
+                sendMessage(user->socket(), WARNING_STUNNED);
+                break;
+            }
             user->cancelAction();
             Object *obj = _entities.find<Object>(serial);
             if (!isEntityInRange(client, *user, obj)) {
@@ -312,6 +332,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != MSG_END)
                 return;
+            if (user->isStunned()) {
+                sendMessage(user->socket(), WARNING_STUNNED);
+                break;
+            }
             user->cancelAction();
             Object *obj = _entities.find<Object>(serial);
             if (!isEntityInRange(client, *user, obj)) {
@@ -357,6 +381,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != MSG_END)
                 return;
+            if (user->isStunned()) {
+                sendMessage(user->socket(), WARNING_STUNNED);
+                break;
+            }
             user->cancelAction();
             Object *obj = _entities.find<Object>(serial);
             if (!isEntityInRange(client, *user, obj)) {
@@ -384,6 +412,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del >> slot >> del;
             if (del != MSG_END)
                 return;
+            if (user->isStunned()) {
+                sendMessage(user->socket(), WARNING_STUNNED);
+                break;
+            }
             ServerItem::vect_t *container;
             Object *pObj = nullptr;
             bool breakMsg = false;
@@ -435,6 +467,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 >> slot2 >> del;
             if (del != MSG_END)
                 return;
+            if (user->isStunned()) {
+                sendMessage(user->socket(), WARNING_STUNNED);
+                break;
+            }
             ServerItem::vect_t
                 *containerFrom = nullptr,
                 *containerTo = nullptr;
@@ -647,6 +683,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
 
+            if (user->isStunned()) {
+                sendMessage(user->socket(), WARNING_STUNNED);
+                break;
+            }
+
             handle_CL_TAKE_ITEM(*user, serial, slotNum);
             break;
         }
@@ -657,6 +698,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del >> slot >> del;
             if (del != MSG_END)
                 return;
+
+            if (user->isStunned()) {
+                sendMessage(user->socket(), WARNING_STUNNED);
+                break;
+            }
 
             // Check that merchant slot is valid
             Object *obj = _entities.find<Object>(serial);
@@ -821,6 +867,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> serial >> del;
             if (del != MSG_END)
                 return;
+            if (user->isStunned()) {
+                sendMessage(user->socket(), WARNING_STUNNED);
+                break;
+            }
             Object *obj = _entities.find<Object>(serial);
             if (!isEntityInRange(client, *user, obj))
                 break;
@@ -858,6 +908,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> target.x >> del >> target.y >> del;
             if (del != MSG_END)
                 return;
+            if (user->isStunned()) {
+                sendMessage(user->socket(), WARNING_STUNNED);
+                break;
+            }
             if (!user->isDriving()){
                 sendMessage(client, ERROR_NOT_VEHICLE);
                 break;
@@ -1097,6 +1151,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> del;
             if (del != MSG_END)
                 return;
+            if (user->isStunned()) {
+                sendMessage(user->socket(), WARNING_STUNNED);
+                break;
+            }
             handle_CL_PERFORM_OBJECT_ACTION(*user, serial, textArg);
             break;
         }
@@ -1130,6 +1188,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> del;
             if (del != MSG_END)
                 return;
+            if (user->isStunned()) {
+                sendMessage(user->socket(), WARNING_STUNNED);
+                break;
+            }
             handle_CL_CAST(*user, spellID);
             break;
         }

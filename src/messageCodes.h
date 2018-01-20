@@ -531,6 +531,7 @@ enum MessageCode{
     WARNING_BLOCKED, // The user tried to perform an action at an occupied location
     ERROR_TARGET_DEAD, // The NPC is dead
     ERROR_NOT_GEAR, // The user tried to equip an item into a gear slot with which it isn't compatible.
+    WARNING_STUNNED, // The user can't perform an action because he is stunned
 
 
 
