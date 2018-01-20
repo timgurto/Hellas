@@ -32,7 +32,7 @@ Functions:
     <targets enemy=1 />
     <function name="debuff" s1="bleed" />
 </spell>
-<spell id="soldierStun" name="Head Crack" cost=10 range=4 >
+<spell id="skirmisherStun" name="Head Crack" cost=10 range=4 >
     <targets enemy=1 />
     <function name="debuff" s1="stun" />
 </spell>
@@ -91,9 +91,13 @@ Functions:
 </spell>
 
 <!-- Poet -->
-<spell id="zealotStun" name="Depressing Tragedy" cost=10 range=30 school="air" >
+<spell id="poetStun" name="Depressing Tragedy" cost=10 range=30 school="air" >
     <targets enemy=1 />
     <function name="debuff" s1="stun" />
+</spell>
+<spell id="threatDropPoet" name="Uplifting Comedy" cost=10 range=30 school="air" >
+    <targets enemy=1 />
+    <function name="scaleThreat" d1="0.75" />
 </spell>
 
 

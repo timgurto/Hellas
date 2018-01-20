@@ -25,7 +25,7 @@
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" />
             <!--talent type="spell" id="sprint" /-->
-            <talent type="spell" id="soldierStun" />
+            <talent type="spell" id="skirmisherStun" />
             <talent type="spell" id="bleed" />
         </tier>
     </tree>
@@ -127,9 +127,9 @@
         <tier>
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" />
+            <talent type="spell" id="threatDropAlchemist" />
+            <talent type="spell" id="poetStun" />
             <talent type="stats" name="Practice Taking Criticism" flavourText="Keeping your head in the face of critics is essential to surviving the stage."> <stats dodge="1" /> </talent>
-            <!--talent type="spell" id="Uplifting Comedy" /-->
-            <talent type="spell" id="zealotStun" />
         </tier>
     </tree>
 </class>
