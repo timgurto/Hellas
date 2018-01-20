@@ -145,16 +145,16 @@ void Entity::update(ms_t timeElapsed){
     updateBuffs(timeElapsed);
 
     // The remainder of this function deals with combat.
+    if (_attackTimer > timeElapsed)
+        _attackTimer -= timeElapsed;
+    else
+        _attackTimer = 0;
+
     auto pTarget = target();
     if (!pTarget)
         return;
     if (!isAttackingTarget())
         return;
-
-    if (_attackTimer > timeElapsed)
-        _attackTimer -= timeElapsed;
-    else
-        _attackTimer = 0;
     if (_attackTimer > 0)
         return;
 
