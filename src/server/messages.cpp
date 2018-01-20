@@ -90,6 +90,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> x >> del >> y >> del;
             if (del != MSG_END)
                 return;
+            if (user->isStunned()) {
+                sendMessage(user->socket(), SV_LOCATION, makeArgs(user->name(),
+                    user->location().x, user->location().y));
+                break;
+            }
+
             if (user->action() != User::ATTACK)
                 user->cancelAction();
             if (user->isDriving()){

@@ -6,15 +6,6 @@
 void Entity::updateLocation(const MapPoint &dest){
     Server &server = *Server::_instance;
 
-    if (isStunned()) {
-        if (classTag() == 'u') {
-            auto userPtr = dynamic_cast<const User *>(this);
-            server.sendMessage(userPtr->socket(), SV_LOCATION, makeArgs(userPtr->name(),
-                location().x, location().y));
-        }
-        return;
-    }
-
     const ms_t newTime = SDL_GetTicks();
     ms_t timeElapsed = newTime - _lastLocUpdate;
     _lastLocUpdate = newTime;
