@@ -61,6 +61,7 @@ struct Stats{
 struct StatsMod{
 
     std::vector<std::string> toStrings() const;
+    std::string buffDescription() const; // e.g. "Grant 1 health to ", "Stun "
 
     // Additive
     int

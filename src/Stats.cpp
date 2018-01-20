@@ -184,3 +184,20 @@ std::vector<std::string> StatsMod::toStrings() const {
 
     return v;
 }
+
+std::string StatsMod::buffDescription() const {
+    if (stuns)
+        return "Stun "s;
+
+    auto ret = "Grant "s;
+    auto statStrings = toStrings();
+    auto firstStringHasBeenPrinted = false;
+    for (const auto &statString : statStrings) {
+        if (firstStringHasBeenPrinted)
+            ret += ", ";
+        ret += statString;
+        firstStringHasBeenPrinted = true;
+    }
+    ret += " to "s;
+    return ret;
+}

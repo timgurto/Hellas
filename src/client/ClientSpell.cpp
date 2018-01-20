@@ -78,16 +78,7 @@ std::string ClientSpell::createEffectDescription() const {
         "target"s;
 
     if (statsBuff) {
-        oss << "Grant ";
-        auto statStrings = buff->stats().toStrings();
-        auto firstStringHasBeenPrinted = false;
-        for (auto &statString : statStrings) {
-            if (firstStringHasBeenPrinted)
-                oss << ", ";
-            oss << statString;
-            firstStringHasBeenPrinted = true;
-        }
-        oss << " to " << targetString;
+        oss << buff->stats().buffDescription() << targetString;
     }
 
     else if (effectName == "doDirectDamage")
