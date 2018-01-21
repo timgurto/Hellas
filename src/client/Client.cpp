@@ -572,9 +572,9 @@ const ParticleProfile *Client::findParticleProfile(const std::string &id){
 }
 
 void Client::addParticles(const ParticlesToAdd &details){
-/*#ifdef _DEBUG
+#ifdef _DEBUG
     return;
-#endif*/
+#endif
 
     for (size_t i = 0; i != details.quantity(); ++i) {
         auto *particle = details.profile().instantiate(details.location());

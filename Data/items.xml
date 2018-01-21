@@ -184,12 +184,14 @@
             <weapon range="25" school="air" />
             <stats magicDamage="1" />
 			<offset x="-5" y="-2" />
+            <particles profile="airSmall" x=-4 y=0 />
 		</item>
 		<item id="earthWand" name="Wand of Earth" gearSlot="6" >
             <tag name="wand" />
             <weapon range="25" school="earth" />
             <stats magicDamage="1" />
 			<offset x="-5" y="-2" />
+            <particles profile="earthSmall" x=-4 y=0 />
 		</item>
 		<item id="fireWand" name="Wand of Fire" gearSlot="6" >
             <tag name="wand" />
@@ -203,26 +205,35 @@
             <weapon range="25" school="water" />
             <stats magicDamage="1" />
 			<offset x="-5" y="-2" />
+            <particles profile="waterSmall" x=-4 y=0 />
 		</item>
 		<item id="airStaff" name="Staff of Air" gearSlot="6" >
             <weapon range="25" school="air" />
             <stats magicDamage="3" />
             <offset x="-5" y="-20" />
+            <particles profile="airSmall" x=-4 y=-19 />
+            <particles profile="airSmall" x=5 y=16 />
 		</item>
 		<item id="earthStaff" name="Staff of Earth" gearSlot="6" >
             <weapon range="25" school="earth" />
             <stats magicDamage="3" />
             <offset x="-5" y="-20" />
+            <particles profile="earthSmall" x=-4 y=-19 />
+            <particles profile="earthSmall" x=5 y=16 />
 		</item>
 		<item id="fireStaff" name="Staff of Fire" gearSlot="6" >
             <weapon range="25" school="fire" />
             <stats magicDamage="3" />
             <offset x="-5" y="-20" />
+            <particles profile="fireSmall" x=-4 y=-19 />
+            <particles profile="fireSmall" x=5 y=16 />
 		</item>
 		<item id="waterStaff" name="Staff of Water" gearSlot="6" >
             <weapon range="25" school="water" />
             <stats magicDamage="3" />
             <offset x="-5" y="-20" />
+            <particles profile="waterSmall" x=-4 y=-19 />
+            <particles profile="waterSmall" x=5 y=16 />
 		</item>
 
 <!-- Armor -->
