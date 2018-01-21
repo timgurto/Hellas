@@ -225,7 +225,7 @@
     particlesPerSecond=700 >
     <lifespan mean=400 sd=100 />
     <distance mean=0 sd=4 />
-    <altitude mean=15 sd=8 />
+    <altitude mean=0 sd=8 />
     <velocity mean=5 sd=2 />
     <fallSpeed mean=-20 sd=5 />
     <variety imageFile="loginFire1" />
@@ -251,7 +251,7 @@
     alpha=192 >
     <lifespan mean=3000 sd=400 />
     <distance mean=5 sd=2 />
-    <altitude mean=15 sd=8 />
+    <altitude mean=0 sd=8 />
     <velocity mean=0 sd=2 />
     <variety imageFile="water" />
     <variety imageFile="waterLarge" />
@@ -262,7 +262,7 @@
     particlesPerSecond=50 >
     <lifespan mean=150 sd=20 />
     <distance mean=10 sd=2 />
-    <altitude mean=15 sd=8 />
+    <altitude mean=0 sd=8 />
     <velocity mean=0 sd=2 />
     <variety imageFile="sparkleSmall2" />
 </particleProfile>
@@ -273,7 +273,7 @@
     alpha=192 >
     <lifespan mean=200 sd=20 />
     <distance mean=5 sd=2 />
-    <altitude mean=15 sd=8 />
+    <altitude mean=0 sd=8 />
     <velocity mean=0 sd=2 />
     <variety imageFile="water" />
     <variety imageFile="waterLarge" />
@@ -314,7 +314,7 @@
     gravityModifier=0 >
     <lifespan mean=1000 sd=200 />
     <distance mean=5 sd=2 />
-    <altitude mean=22 sd=7 />
+    <altitude mean=0 sd=7 />
     <velocity mean=2 sd=2 />
     <fallSpeed mean=0 sd=4 />
     <variety imageFile="dust0" />

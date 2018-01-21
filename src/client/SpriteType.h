@@ -16,7 +16,7 @@ class SpriteType{
 
     struct Particles {
         std::string profile;
-        MapPoint offset;
+        MapPoint offset; // From location
     };
     std::vector<Particles> _particles;
 
