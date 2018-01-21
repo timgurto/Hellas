@@ -32,8 +32,10 @@
     <collisionRect x="-5" y="-2" w="9" h="4" />
     <loot id="waterEssence" > <normal mean="0.8" sd="0.5" /> </loot>
     <particles profile="waterPooling" y="-15" />
-    <particles profile="waterSparkles" y="-15" />
+    <particles profile="waterSparkles" y="-18" />
     <particles profile="water" y="-15" />
+    <particles profile="waterSmall" x="-7" y="-21" />
+    <particles profile="waterSmall" x="7" y="-28" />
 </npcType>
 <npcType
     id="airNymph" name="Air Nymph"
@@ -51,6 +53,8 @@
     <loot id="earthEssence" > <normal mean="0.8" sd="0.5" /> </loot>
     <particles profile="vines" />
     <particles profile="dirtFromGround" />
+    <particles profile="figLeavesSmall" x="-7" y="-21" />
+    <particles profile="figLeavesSmall" x="7" y="-28" />
 </npcType>
 <npcType
     id="fireNymph" name="Fire Nymph"
@@ -59,6 +63,8 @@
     <collisionRect x="-5" y="-2" w="9" h="4" />
     <loot id="fireEssence" > <normal mean="0.8" sd="0.5" /> </loot>
     <particles profile="fire" y="-15" />
+    <particles profile="fireSmall" x="-7" y="-21" />
+    <particles profile="fireSmall" x="7" y="-28" />
 </npcType>
 
 

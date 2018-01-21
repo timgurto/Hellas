@@ -70,6 +70,17 @@
     <fallSpeed mean=0 sd=3 />
     <variety imageFile="figLeaves" />
 </particleProfile>
+<particleProfile
+    id="figLeavesSmall"
+    gravityModifier=0.7
+    particlesPerSecond=4>
+    <lifespan mean=1500 sd=300 />
+    <distance mean=0 sd=2 />
+    <altitude mean=0 sd=2 />
+    <velocity mean=5 sd=2 />
+    <fallSpeed mean=0 sd=3 />
+    <variety imageFile="figLeaves" />
+</particleProfile>
 
 <particleProfile
     id="tree"
@@ -224,9 +235,9 @@
     alpha=127
     particlesPerSecond=700 >
     <lifespan mean=400 sd=100 />
-    <distance mean=0 sd=4 />
+    <distance mean=0 sd=3 />
     <altitude mean=0 sd=8 />
-    <velocity mean=5 sd=2 />
+    <velocity mean=3 sd=2 />
     <fallSpeed mean=-20 sd=5 />
     <variety imageFile="loginFire1" />
     <variety imageFile="loginFire3" />
@@ -250,7 +261,7 @@
     particlesPerSecond=200
     alpha=192 >
     <lifespan mean=3000 sd=400 />
-    <distance mean=5 sd=2 />
+    <distance mean=3 sd=2 />
     <altitude mean=0 sd=8 />
     <velocity mean=0 sd=2 />
     <variety imageFile="water" />
@@ -261,7 +272,7 @@
     id="waterSparkles"
     particlesPerSecond=50 >
     <lifespan mean=150 sd=20 />
-    <distance mean=10 sd=2 />
+    <distance mean=8 sd=2 />
     <altitude mean=0 sd=8 />
     <velocity mean=0 sd=2 />
     <variety imageFile="sparkleSmall2" />
@@ -272,8 +283,20 @@
     particlesPerSecond=200
     alpha=192 >
     <lifespan mean=200 sd=20 />
-    <distance mean=5 sd=2 />
+    <distance mean=3 sd=2 />
     <altitude mean=0 sd=8 />
+    <velocity mean=0 sd=2 />
+    <variety imageFile="water" />
+    <variety imageFile="waterLarge" />
+</particleProfile>
+
+<particleProfile
+    id="waterSmall"
+    particlesPerSecond=100
+    alpha=192 >
+    <lifespan mean=200 sd=20 />
+    <distance mean=0 sd=2 />
+    <altitude mean=0 sd=2 />
     <velocity mean=0 sd=2 />
     <variety imageFile="water" />
     <variety imageFile="waterLarge" />
