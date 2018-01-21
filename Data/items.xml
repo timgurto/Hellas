@@ -196,6 +196,7 @@
             <weapon range="25" school="fire" />
             <stats magicDamage="1" />
 			<offset x="-5" y="-2" />
+            <particles profile="fireSmall" x=-4 y=0 />
 		</item>
 		<item id="waterWand" name="Wand of Water" gearSlot="6" >
             <tag name="wand" />

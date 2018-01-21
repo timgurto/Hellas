@@ -231,6 +231,19 @@
     <variety imageFile="loginFire1" />
     <variety imageFile="loginFire3" />
 </particleProfile>
+<particleProfile
+    id="fireSmall"
+    gravityModifier=0
+    alpha=127
+    particlesPerSecond=100 >
+    <lifespan mean=400 sd=100 />
+    <distance mean=0 sd=2 />
+    <altitude mean=0 sd=2 />
+    <velocity mean=5 sd=2 />
+    <fallSpeed mean=-20 sd=5 />
+    <variety imageFile="loginFire1" />
+    <variety imageFile="loginFire2" />
+</particleProfile>
 
 <particleProfile
     id="waterPooling"

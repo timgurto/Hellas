@@ -37,6 +37,7 @@ public:
     const Texture &image() const override { return _image; }
     void update(double delta) override;
     void draw(const Client &client) const override;
+    void addToAltitude(double extra) { _altitude += extra; }
 };
 
 #endif

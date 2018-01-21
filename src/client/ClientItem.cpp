@@ -151,3 +151,10 @@ bool ClientItem::canUse() const {
         _constructsObject != nullptr ||
         castsSpellOnUse();
 }
+
+void ClientItem::addParticles(const std::string & profileName, const MapPoint & offset) {
+    Particles p;
+    p.profile = profileName;
+    p.offset = offset;
+    _particles.push_back(p);
+}

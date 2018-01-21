@@ -18,6 +18,12 @@ class ClientItem : public Item{
     ScreenPoint _drawLoc;
     mutable Texture _tooltip;
     const SoundProfile *_sounds;
+    
+    struct Particles {
+        std::string profile;
+        MapPoint offset; // Relative to gear offset for that slot.
+    };
+    std::vector<Particles> _particles;
 
     // The object that this item can construct
     const ClientObjectType *_constructsObject;
@@ -37,6 +43,11 @@ public:
     void sounds(const std::string &id);
     const SoundProfile *sounds() const { return _sounds; }
     bool canUse() const;
+
+    static const ScreenPoint &gearOffset(size_t slot) { return gearOffsets[slot]; }
+
+    void addParticles(const std::string &profileName, const MapPoint &offset);
+    const std::vector<Particles> &particles() const { return _particles; }
 
     typedef std::vector<std::pair<const ClientItem *, size_t> > vect_t;
 

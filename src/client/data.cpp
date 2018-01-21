@@ -422,6 +422,16 @@ void Client::loadData(const std::string &path){
 
             if (xr.findAttr(elem, "castsSpellOnUse", s))
                 item.castsSpellOnUse(s);
+
+            for (auto particles : xr.getChildren("particles", elem)) {
+                auto profileName = ""s;
+                if (!xr.findAttr(particles, "profile", profileName))
+                    continue;
+                MapPoint offset{};
+                xr.findAttr(particles, "x", offset.x);
+                xr.findAttr(particles, "y", offset.y);
+                item.addParticles(profileName, offset);
+            }
         
             _items[id] = item;
         }

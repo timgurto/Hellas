@@ -137,11 +137,30 @@ public:
 
     void infoWindow(const std::string &text);
 
-    void addParticles(const ParticleProfile *profile, const MapPoint &location, size_t qty);
+    class ParticlesToAdd {
+        const ParticleProfile &_profile{ nullptr };
+        const MapPoint &_location{};
+        size_t _qty{ 0 };
+        double _customAltitude{ 0 };
+
+    public:
+        ParticlesToAdd(const ParticleProfile &profile, const MapPoint &location) :
+            _profile(profile), _location(location) {}
+        void discrete() { _qty = _profile.numParticlesDiscrete(); }
+        void continuous(double delta) { _qty = _profile.numParticlesContinuous(delta); }
+        void customAltitude(double alt) { _customAltitude = alt; }
+
+        size_t quantity() const { return _qty; }
+        const ParticleProfile &profile() const { return _profile; }
+        const MapPoint &location() const { return _location; }
+        double customAltitude() const { return _customAltitude; }
+    };
+    void addParticles(const ParticlesToAdd &details);
     void addParticles(const ParticleProfile *profile, const MapPoint &location); // Single hit
     void addParticles(const ParticleProfile *profile, const MapPoint &location, double delta);  // /s
     void addParticles(const std::string &profileName, const MapPoint &location); // Single hit
     void addParticles(const std::string &profileName, const MapPoint &location, double delta);  // /s
+    void addParticlesWithCustomAltitude(double altitude, const std::string &profileName, const MapPoint &location, double delta); // /s
 
 private:
     static Client *_instance;

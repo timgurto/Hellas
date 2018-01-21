@@ -571,13 +571,17 @@ const ParticleProfile *Client::findParticleProfile(const std::string &id){
     return *it;
 }
 
-void Client::addParticles(const ParticleProfile *profile, const MapPoint &location, size_t qty){
-#ifdef _DEBUG
+void Client::addParticles(const ParticlesToAdd &details){
+/*#ifdef _DEBUG
     return;
-#endif
+#endif*/
 
-    for (size_t i = 0; i != qty; ++i) {
-        Particle *particle = profile->instantiate(location);
+    for (size_t i = 0; i != details.quantity(); ++i) {
+        auto *particle = details.profile().instantiate(details.location());
+
+        if (details.customAltitude() != 0)
+            particle->addToAltitude(details.customAltitude());
+
         addEntity(particle);
     }
 }
@@ -585,25 +589,46 @@ void Client::addParticles(const ParticleProfile *profile, const MapPoint &locati
 void Client::addParticles(const ParticleProfile *profile, const MapPoint &location){
     if (profile == nullptr)
         return;
-    size_t qty = profile->numParticlesDiscrete();
-    addParticles(profile, location, qty);
+    auto details = ParticlesToAdd{ *profile, location };
+    details.discrete();
+    addParticles(details);
 }
 
 void Client::addParticles(const ParticleProfile *profile, const MapPoint &location, double delta){
     if (profile == nullptr)
         return;
-    size_t qty = profile->numParticlesContinuous(delta);
-    addParticles(profile, location, qty);
+    auto details = ParticlesToAdd{ *profile, location };
+    details.continuous(delta);
+    addParticles(details);
 }
 
 void Client::addParticles(const std::string &profileName, const MapPoint &location){
     const ParticleProfile *profile = findParticleProfile(profileName);
-    addParticles(profile, location);
+    if (profile == nullptr)
+        return;
+    auto details = ParticlesToAdd{ *profile, location };
+    details.discrete();
+    addParticles(details);
 }
 
 void Client::addParticles(const std::string &profileName, const MapPoint &location, double delta){
     const ParticleProfile *profile = findParticleProfile(profileName);
-    addParticles(profile, location, delta);
+    if (profile == nullptr)
+        return;
+    auto details = ParticlesToAdd{ *profile, location };
+    details.continuous(delta);
+    addParticles(details);
+}
+
+void Client::addParticlesWithCustomAltitude(double altitude, const std::string & profileName,
+    const MapPoint & location, double delta) {
+    const ParticleProfile *profile = findParticleProfile(profileName);
+    if (profile == nullptr)
+        return;
+    auto details = ParticlesToAdd{ *profile, location };
+    details.continuous(delta);
+    details.customAltitude(altitude);
+    addParticles(details);
 }
 
 void Client::initializeUsername(){
