@@ -26,6 +26,7 @@ public:
 
     void stats(const StatsMod &stats);
     const StatsMod &stats() const { return _stats; }
+    SpellSchool school() const { return _effect.school(); }
 
     SpellEffect &effect();
     const SpellEffect &effect() const { return _effect; }
@@ -54,6 +55,7 @@ public:
 
     const ID &type() const { return _type->id(); }
     bool hasExpired() const { return _expired; }
+    SpellSchool school() const { return _type->school(); }
 
     bool operator==(const Buff &rhs) const { return _type == rhs._type; }
 

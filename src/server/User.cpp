@@ -87,7 +87,7 @@ void User::init(){
     baseStats.attackTime = 1000;
     baseStats.speed = 80.0;
     baseStats.stunned = false;
-    baseStats.gatherBonus = 75;
+    baseStats.gatherBonus = 0;
     OBJECT_TYPE.baseStats(baseStats);
 }
 

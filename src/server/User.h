@@ -62,7 +62,11 @@ private:
     MapPoint _respawnPoint;
 
     XP _xp = 0;
-    Level _level = 0;
+#ifdef _DEBUG
+    Level _level = 10;
+#else
+    Level _level = 1;
+#endif
     void sendXPMessage() const;
     void announceLevelUp() const;
 

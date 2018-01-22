@@ -54,4 +54,5 @@ private:
     static CombatResult scaleThreat(const SpellEffect &effect, Entity &caster, Entity &target);
     static CombatResult buff(const SpellEffect &effect, Entity &caster, Entity &target);
     static CombatResult debuff(const SpellEffect &effect, Entity &caster, Entity &target);
+    static CombatResult dispellDebuff(const SpellEffect &effect, Entity &caster, Entity &target);
 };

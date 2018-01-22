@@ -402,6 +402,16 @@ void Entity::applyDebuff(const BuffType & type, Entity &caster) {
     sendDebuffMsg(type.id());
 }
 
+void Entity::removeDebuff(Buff::ID id) {
+    for (auto it = _debuffs.begin(); it != _debuffs.end(); ++it)
+        if (it->type() == id) {
+            _debuffs.erase(it);
+            updateStats();
+            // TODO: Alert client that debuff was removed
+            return;
+        }
+}
+
 void Entity::sendBuffMsg(const Buff::ID &buff) const {
     const Server &server = Server::instance();
     server.broadcastToArea(_location, SV_ENTITY_GOT_BUFF, makeArgs(_serial, buff));

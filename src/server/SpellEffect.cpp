@@ -14,7 +14,8 @@ SpellEffect::FunctionMap SpellEffect::functionMap = {
     { "heal", heal },
     { "buff", buff },
     { "debuff", debuff },
-    { "scaleThreat", scaleThreat }
+    { "scaleThreat", scaleThreat },
+    { "dispellDebuff", dispellDebuff }
 };
 
 SpellEffect::FlagMap SpellEffect::aggressionMap = {
@@ -23,7 +24,8 @@ SpellEffect::FlagMap SpellEffect::aggressionMap = {
     { heal, false },
     { buff, false },
     { debuff, true },
-    { scaleThreat, false }
+    { scaleThreat, false },
+    { dispellDebuff, false }
 };
 
 bool SpellEffect::isAggressive() const {
@@ -128,6 +130,31 @@ CombatResult SpellEffect::debuff(const SpellEffect &effect, Entity & caster, Ent
     auto outcome = caster.generateHitAgainst(target, DEBUFF, effect._school, effect._range);
 
     target.applyDebuff(*debuffType, caster);
+
+    return HIT;
+}
+
+CombatResult SpellEffect::dispellDebuff(const SpellEffect & effect, Entity & caster, Entity & target) {
+    const auto &server = Server::instance();
+    auto schoolToDispell = SpellSchool{ effect._args.s1 };
+    auto numDebuffsInThatSchool = 0;
+    for (const auto &debuff : target.debuffs()) {
+        if (debuff.school() == schoolToDispell)
+            ++numDebuffsInThatSchool;
+    }
+    if (numDebuffsInThatSchool == 0)
+        return HIT; // Success, but no effect.
+    auto debuffToDispell = rand() % numDebuffsInThatSchool;
+    auto i = 0;
+    for (const auto &debuff : target.debuffs()) {
+        if (debuff.school() == schoolToDispell) {
+            if (i == debuffToDispell) {
+                target.removeDebuff(debuff.type());
+                break;
+            }
+            ++i;
+        }
+    }
 
     return HIT;
 }

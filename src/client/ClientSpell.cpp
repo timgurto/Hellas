@@ -90,7 +90,14 @@ std::string ClientSpell::createEffectDescription() const {
     }
 
     else if (effectName == "heal")
-        oss << "Restore " << effectArgs.i1 << " health to target";
+        oss << "Restore " << effectArgs.i1 << " health to "s << targetString;
+
+    else if (effectName == "dispellDebuff") {
+        auto article = "a"s;
+        if (effectArgs.s1 == "air" || effectArgs.s1 == "earth")
+            article = "an"s;
+        oss << "Dispell " << article << " " << effectArgs.s1 << " debuff from "s << targetString;
+    }
 
     else if (effectName == "scaleThreat") {
         auto scalar = effectArgs.d1;

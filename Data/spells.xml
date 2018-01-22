@@ -7,6 +7,7 @@ Functions:
     heal (i1 = amount to heal)
     buff (s1 = ID of buff to apply)
     debuff (s1 = ID of debuff to apply)
+    dispellDebuff (s1 = school)
 -->
 
 <root>
@@ -64,6 +65,10 @@ Functions:
     <aesthetics impactParticles="poison" />
     <targets enemy=1 />
     <function name="debuff" s1="poison" />
+</spell>
+<spell id="dispellEarthDebuff" name="Leeches" cost=10 range=30 school="earth" >
+    <targets friendly=1 self=1 />
+    <function name="dispellDebuff" s1="earth" />
 </spell>
 
 <!-- Alchemist -->
