@@ -90,6 +90,7 @@ public:
     void addConstruction(const std::string &id) { _knownConstructions.insert(id); }
     bool knowsConstruction(const std::string &id) const;
     bool hasRoomToCraft(const Recipe &recipe) const;
+    bool shouldGatherDoubleThisTime() const;
     bool hasPlayerUnique(const std::string &category) const {
         return _playerUniqueCategoriesOwned.find(category) != _playerUniqueCategoriesOwned.end();
     }

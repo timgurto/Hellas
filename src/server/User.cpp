@@ -87,6 +87,7 @@ void User::init(){
     baseStats.attackTime = 1000;
     baseStats.speed = 80.0;
     baseStats.stunned = false;
+    baseStats.gatherBonus = 75;
     OBJECT_TYPE.baseStats(baseStats);
 }
 
@@ -449,6 +450,10 @@ bool User::hasRoomToCraft(const Recipe &recipe) const{
         }
     }
     return vectHasSpace(inventoryCopy, toServerItem(recipe.product()), recipe.quantity());
+}
+
+bool User::shouldGatherDoubleThisTime() const {
+    return randDouble() * 100 <= stats().gatherBonus;
 }
 
 const MapRect User::collisionRect() const{

@@ -541,16 +541,19 @@ void Server::gatherObject(size_t serial, User &user){
     // Give item to user
     Object *obj = _entities.find<Object>(serial);
     const ServerItem *const toGive = obj->chooseGatherItem();
-    size_t qtyToGive = obj->chooseGatherQuantity(toGive);
+    size_t qtyToRemove = obj->chooseGatherQuantity(toGive);
+    size_t qtyToGive = qtyToRemove;
+    if (user.shouldGatherDoubleThisTime())
+        qtyToGive *= 2;
     const size_t remaining = user.giveItem(toGive, qtyToGive);
     if (remaining > 0) {
         sendMessage(user.socket(), WARNING_INVENTORY_FULL);
-        qtyToGive -= remaining;
+        qtyToRemove -= remaining;
     }
     if (remaining < qtyToGive) // User received something: trigger any new unlocks
         ProgressLock::triggerUnlocks(user, ProgressLock::GATHER, toGive);
     // Remove object if empty
-    obj->removeItem(toGive, qtyToGive);
+    obj->removeItem(toGive, qtyToRemove);
     if (obj->contents().isEmpty()){
         if (obj->objType().transformsOnEmpty()){
             forceAllToUntarget(*obj);

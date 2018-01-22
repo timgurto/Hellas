@@ -69,7 +69,7 @@
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" />
             <talent type="spell" id="poison" />
-            <!--talent type="stats" id="Study Classification" /-->
+            <talent type="stats" id="Study Classification" flavourText="A habit of collecting and categorising nature helps you to find more when foraging and mining." > <stats gatherBonus="1" /> </talent> 
             <!--talent type="spell" id="Leeches" /-->
         </tier>
     </tree>

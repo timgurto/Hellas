@@ -87,6 +87,9 @@ const Stats &Stats::operator&=(const StatsMod &mod){
     waterResist += mod.waterResist;
     if (waterResist < 0) waterResist = 0;
 
+    gatherBonus += mod.gatherBonus;
+    if (gatherBonus < 0) gatherBonus = 0;
+
     if (mod.attack < 0 && -mod.attack > static_cast<int>(attack))
         attack = 0;
     else
@@ -171,6 +174,8 @@ std::vector<std::string> StatsMod::toStrings() const {
         v.push_back("+" + toString(fireResist) + "% fire resistance");
     if (waterResist > 0)
         v.push_back("+" + toString(waterResist) + "% water resistance");
+    if (gatherBonus > 0)
+        v.push_back("+" + toString(gatherBonus) + "% chance to gather double");
     if (attack > 0)
         v.push_back("+" + toString(attack) + " attack");
     if (attackTime != 1) {

@@ -32,7 +32,8 @@ struct Stats{
         airResist = 0,
         earthResist = 0,
         fireResist = 0,
-        waterResist = 0;
+        waterResist = 0,
+        gatherBonus = 0;
 
     BonusDamage
         magicDamage = 0,
@@ -85,7 +86,8 @@ struct StatsMod{
         airResist = 0,
         earthResist = 0,
         fireResist = 0,
-        waterResist = 0;
+        waterResist = 0,
+        gatherBonus = 0;
 
     // Multiplicative
     double
