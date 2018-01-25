@@ -252,7 +252,7 @@
 <objectType id="wildFlax" name="Wild Flax"
     canGather="1" gatherTime="3000" gatherReq="harvesting"
     allowedTerrain="fertile" 
-    xDrawOffset="-5" yDrawOffset="-19">
+    xDrawOffset="-5" yDrawOffset="-19" damageParticles="leaves" >
     <collisionRect x="-5" y="-4" w="11" h="7" />
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" initialMin="1" />
     <strength item="flax" quantity="5" />
@@ -260,7 +260,7 @@
 <objectType id="flaxCrop0" name="Flax Farm"
     xDrawOffset="-20"
     yDrawOffset="-34"
-    isFlat="1"
+    isFlat="1" damageParticles="leaves" 
     isUnbuildable="1" constructionTime="10000"
     allowedTerrain="fertile" >
     <collisionRect x="-19" y="-20" w="38" h="40" />
@@ -268,31 +268,31 @@
     <transform id="flaxCrop1" time="900000" />
     <strength item="flax" quantity="5" />
 </objectType>
-<objectType id="flaxCrop1" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
+<objectType id="flaxCrop1" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" > <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
     <transform id="flaxCrop2" time="900000" />
 </objectType>
-<objectType id="flaxCrop2" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
+<objectType id="flaxCrop2" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" > <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
     <transform id="flaxCrop3" time="900000" />
 </objectType>
-<objectType id="flaxCrop3" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
+<objectType id="flaxCrop3" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" > <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
     <transform id="flaxCrop4" time="900000" />
 </objectType>
-<objectType id="flaxCrop4" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
+<objectType id="flaxCrop4" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" > <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
     <transform id="flaxCrop5" time="900000" />
 </objectType>
-<objectType id="flaxCrop5" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
+<objectType id="flaxCrop5" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" > <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
     <transform id="flaxCrop6" time="900000" />
 </objectType>
-<objectType id="flaxCrop6" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
+<objectType id="flaxCrop6" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" > <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
     <transform id="flaxCrop7" time="900000" />
 </objectType>
-<objectType id="flaxCrop7" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering"> <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
+<objectType id="flaxCrop7" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" > <collisionRect x="-19" y="-20" w="38" h="40" /> <strength item="flax" quantity="5" />
     <material id="water" />
     <transform id="flaxCrop8" time="900000" />
 </objectType>
@@ -300,7 +300,8 @@
     xDrawOffset="-20"
     yDrawOffset="-34"
     isUnbuildable="1"
-    canGather="1" gatherTime="1000" >
+    canGather="1" gatherTime="1000"
+    damageParticles="leaves"     >
     <collisionRect x="-19" y="-20" w="38" h="40" />
     <yield id="flax" initialMean="5" initialSD="1" initialMin="1" />
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" />
