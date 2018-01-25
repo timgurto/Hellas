@@ -82,6 +82,7 @@
     <unlockedBy recipe="brick" />
     <strength item="brick" quantity="20" />
     <transform id="extinguishedKiln" time="45000" />
+    <particles profile="smoke" x="-1" y="-23" />
 </objectType>
 <objectType id="extinguishedKiln" name="Extinguished Kiln"
     xDrawOffset="-13" yDrawOffset="-26"

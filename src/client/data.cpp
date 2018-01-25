@@ -360,6 +360,16 @@ void Client::loadData(const std::string &path){
                     _debug("Transformation specified without target id; skipping.", Color::FAILURE);
             }
 
+            for (auto particles : xr.getChildren("particles", elem)) {
+                auto profileName = ""s;
+                if (!xr.findAttr(particles, "profile", profileName))
+                    continue;
+                MapPoint offset{};
+                xr.findAttr(particles, "x", offset.x);
+                xr.findAttr(particles, "y", offset.y);
+                cot->addParticles(profileName, offset);
+            }
+
             _objectTypes.insert(cot);
         }
     }
