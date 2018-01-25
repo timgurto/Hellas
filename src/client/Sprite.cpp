@@ -53,6 +53,9 @@ void Sprite::drawName() const {
 }
 
 void Sprite::update(double delta) {
+    if (!shouldAddParticles())
+        return;
+
     auto &client = Client::instance();
     for (auto &p : _type->particles()) {
         auto particleX = _location.x + p.offset.x;

@@ -42,6 +42,7 @@ public:
     bool markedForRemoval() const { return _toRemove; }
     virtual bool isFlat() const { return _type->isFlat(); }
     virtual std::string additionalTextInName() const { return{}; }
+    virtual bool shouldAddParticles() const { return true; }
 
     virtual char classTag() const { return 'e'; }
 
