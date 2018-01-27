@@ -488,6 +488,9 @@ int main(int argc, char **argv){
                 missingParticles,
                 missingImages;
 
+            requiredSounds.insert("defend");
+            requiredSounds.insert("death");
+
             if (!checkImageExists("Objects/" + image))
                 missingImages.insert("normal");
 
