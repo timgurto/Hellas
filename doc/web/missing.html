@@ -108,9 +108,9 @@
             }
                     
             for (spell of spells){
-                if ("soundsMissing" in item)
+                if ("soundsMissing" in spell)
                     appendSoundProfile(spell.name, spell);
-                if ("particlesMissing" in item)
+                if ("particlesMissing" in spell)
                     appendParticles(spell.name, spell);
             }
             
