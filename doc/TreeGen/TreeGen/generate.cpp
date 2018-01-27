@@ -215,6 +215,7 @@ int main(int argc, char **argv){
 
     
     // Load items
+    std::set<std::string> objectsConstructedFromItems;
     if (!xr.newFile(dataPath + "/items.xml"))
         std::cerr << "Failed to load items.xml" << std::endl;
     else{
@@ -252,6 +253,7 @@ int main(int argc, char **argv){
             if (xr.findAttr(elem, "constructs", s)){
                 edges.insert(Edge(name, "object_" + s, CONSTRUCT_FROM_ITEM));
                 jw.addAttribute("constructs", s);
+                objectsConstructedFromItems.insert(s);
             }
 
             std::set<std::string> tags;
@@ -330,10 +332,10 @@ int main(int argc, char **argv){
                 missingParticles,
                 missingImages;
 
-
-            requiredSounds.insert("defend");
-            requiredSounds.insert("death");
-
+            bool canBeOwned = false;
+            if (objectsConstructedFromItems.find(id) != objectsConstructedFromItems.end())
+                canBeOwned = true;
+            
             if (!checkImageExists("Objects/" + image))
                 missingImages.insert("normal");
 
@@ -354,6 +356,7 @@ int main(int argc, char **argv){
             }
 
             if (xr.findAttr(elem, "constructionReq", s)) {
+                canBeOwned = true;
                 auto it = tools.find(s);
                 if (it == tools.end()) {
                     std::cerr << "Tool class is missing archetype: " << s << std::endl;
@@ -363,9 +366,6 @@ int main(int argc, char **argv){
                 jw.addAttribute("constructionReq", s);
                 tagNames[s] = s;
             }
-
-            if (!xr.findAttr(elem, "damageParticles", s))
-                missingParticles.insert("damage");
 
             std::set<std::string> yields;
             for (auto yield : xr.getChildren("yield", elem)) {
@@ -390,9 +390,11 @@ int main(int argc, char **argv){
                 materialsForJson.insert("{id:\"" + s + "\", quantity:" + quantity + "}");
             }
             jw.addArrayAttribute("materials", materialsForJson, true);
-            if (!materialsForJson.empty())
+            if (!materialsForJson.empty()) {
                 if (!checkImageExists("Objects/" + image + "-construction"))
                     missingImages.insert("construction");
+                canBeOwned = true;
+            }
 
             std::set<std::string> unlocksForJson;
             for (auto unlockBy : xr.getChildren("unlockedBy", elem)) {
@@ -440,6 +442,14 @@ int main(int argc, char **argv){
             auto container = xr.findChild("container", elem);
             if (container && xr.findAttr(container, "slots", s))
                 jw.addAttribute("containerSlots", s);
+
+            if (canBeOwned) {
+                if (!xr.findAttr(elem, "damageParticles", s))
+                    missingParticles.insert("damage");
+
+                requiredSounds.insert("defend");
+                requiredSounds.insert("death");
+            }
 
             if (!requiredSounds.empty()) {
                 ID soundProfileID;
