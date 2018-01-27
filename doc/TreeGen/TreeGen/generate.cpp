@@ -339,9 +339,6 @@ int main(int argc, char **argv){
             if (!checkImageExists("Objects/" + image))
                 missingImages.insert("normal");
 
-            if (!checkImageExists("Objects/" + image + "-corpse"))
-                missingImages.insert("corpse");
-
             ID gatherReq;
             std::string s;
             if (xr.findAttr(elem, "gatherReq", gatherReq)) {
@@ -444,6 +441,8 @@ int main(int argc, char **argv){
                 jw.addAttribute("containerSlots", s);
 
             if (canBeOwned) {
+                if (!checkImageExists("Objects/" + image + "-corpse"))
+                    missingImages.insert("corpse");
                 if (!xr.findAttr(elem, "damageParticles", s))
                     missingParticles.insert("damage");
 
