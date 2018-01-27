@@ -131,6 +131,8 @@ public:
     bool hasAction() const { return _action != nullptr; }
     bool hasOnDestroy() const { return _onDestroy != nullptr; }
 
+    void initStrengthAndMaxHealth() const;
+
 private:
     void checkUniquenessInvariant() const;
 };

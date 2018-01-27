@@ -24,6 +24,11 @@ void ObjectType::addYield(const ServerItem *item,
     _yield.addItem(item, initMean, initSD, initMin, gatherMean, gatherSD);
 }
 
+void ObjectType::initStrengthAndMaxHealth() const {
+    _baseStats.maxHealth = _strength.get();
+    assert(_baseStats.maxHealth > 0);
+}
+
 void ObjectType::checkUniquenessInvariant() const{
     if (_isUnique)
     assert (_numInWorld <= 1);
@@ -31,8 +36,6 @@ void ObjectType::checkUniquenessInvariant() const{
 
 void ObjectType::setHealthBasedOnItems(const ServerItem *item, size_t quantity){
     _strength.set(item, quantity);
-    _baseStats.maxHealth = _strength.get();
-    assert(_baseStats.maxHealth > 0);
 }
 
 ObjectType::Strength::Strength():

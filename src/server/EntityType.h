@@ -28,7 +28,7 @@ public:
     const Stats &baseStats() const { return _baseStats; }
 
 protected:
-    Stats _baseStats{};
+    mutable Stats _baseStats{};
 
 private:
     std::string _id;

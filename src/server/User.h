@@ -20,7 +20,7 @@ class NPC;
 class Server;
 
 // Stores information about a single user account for the server
-class User : public Object{
+class User : public Object{ // TODO: Don't inherit from Object
 public:
     enum Action{
         GATHER,

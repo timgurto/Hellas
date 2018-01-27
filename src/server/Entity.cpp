@@ -304,13 +304,13 @@ void Entity::startCorpseTimer(){
 
 void Entity::addWatcher(const std::string &username){
     _watchers.insert(username);
-    Server::debug() << username << " is now watching an object." << Log::endl;
+    Server::debug() << username << " is now watching " << type()->id() << Log::endl;
 }
 
 void Entity::removeWatcher(const std::string &username){
     auto erased = _watchers.erase(username);
     if (erased > 0)
-        Server::debug() << username << " is no longer watching an object." << Log::endl;
+        Server::debug() << username << " is no longer watching " << type()->id() << Log::endl;
 }
 
 void Entity::location(const MapPoint & newLoc, bool firstInsertion) {
