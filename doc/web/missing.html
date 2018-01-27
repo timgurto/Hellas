@@ -109,9 +109,9 @@
                     
             for (spell of spells){
                 if ("soundsMissing" in spell)
-                    appendSoundProfile(spell.name, spell);
+                    appendSoundProfile(textOnlySpellLink(spell), spell);
                 if ("particlesMissing" in spell)
-                    appendParticles(spell.name, spell);
+                    appendParticles(textOnlySpellLink(spell), spell);
             }
             
             for (terrain of terrains){

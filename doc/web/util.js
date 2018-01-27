@@ -80,7 +80,7 @@ function displayTimeAsHMS(ms){
 function textOnlyObjectLink(object){
     var linkHTML =
         '<a href="object.html?id=' + object.id + '">'
-            + object.name
+            + "&#9820; " + object.name
         + '</a>';
     return linkHTML;
 }
@@ -97,7 +97,7 @@ function objectLink(object){
 function textOnlyNPCLink(npc){
     var linkHTML =
         '<a href="npc.html?id=' + npc.id + '">'
-            + npc.name
+            + "	&#9822; " + npc.name
         + '</a>';
     return linkHTML;
 }
@@ -114,6 +114,7 @@ function npcLink(npc){
 function textOnlyItemLink(item){
     var linkHTML =
         '<a href="item.html?id=' + item.id + '">'
+            + (isGear(item) ? "&#9876; " : "&#9752; ")
             + item.name
         + '</a>';
     return linkHTML;
@@ -125,6 +126,12 @@ function itemLink(item){
             + imageNode(item)
             + ' ' + item.name
         + '</a>';
+    return linkHTML;
+}
+
+function textOnlySpellLink(item){
+    var linkHTML =
+        "	&#9889; " + spell.name
     return linkHTML;
 }
 
