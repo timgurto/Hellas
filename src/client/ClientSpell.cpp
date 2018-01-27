@@ -37,7 +37,7 @@ const Texture &ClientSpell::tooltip() const {
     tb.setColor(Color::ITEM_INSTRUCTIONS);
     tb.addLine(createEffectDescription());
 
-    _tooltip = tb.publish();
+    _tooltip = tb.get();
     return _tooltip;
 }
 

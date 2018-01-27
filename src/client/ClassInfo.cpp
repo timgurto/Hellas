@@ -62,7 +62,7 @@ const Texture ClientTalent::tooltip() const {
         tb.addLine("Each level:");
         tb.addLines(stats.toStrings());
 
-        return tb.publish();
+        return tb.get();
     }
 
     default:

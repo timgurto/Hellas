@@ -82,7 +82,7 @@ const Texture &ClientObjectType::constructionTooltip() const{
             tb.addLine("Requires tool: " + client.tagName(_constructionReq));
         }
 
-        _materialsTooltip = new Texture(tb.publish());
+        _materialsTooltip = new Texture(tb.get());
     }
     return *_materialsTooltip;
 }

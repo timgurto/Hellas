@@ -142,7 +142,7 @@ const Texture &Avatar::tooltip() const{
         tb.addLine("");
     }*/
 
-    _tooltip = tb.publish();
+    _tooltip = tb.get();
     return _tooltip;
 }
 

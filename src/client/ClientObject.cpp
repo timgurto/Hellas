@@ -858,7 +858,7 @@ const Texture &ClientObject::tooltip() const{
     }
 
     if (isDead()){
-        _tooltip = tb.publish();
+        _tooltip = tb.get();
         return _tooltip;
     }
 
@@ -930,7 +930,7 @@ const Texture &ClientObject::tooltip() const{
     }
 
 
-    _tooltip = tb.publish();
+    _tooltip = tb.get();
     return _tooltip;
 }
 
