@@ -308,8 +308,9 @@ void Entity::addWatcher(const std::string &username){
 }
 
 void Entity::removeWatcher(const std::string &username){
-    _watchers.erase(username);
-    Server::debug() << username << " is no longer watching an object." << Log::endl;
+    auto erased = _watchers.erase(username);
+    if (erased > 0)
+        Server::debug() << username << " is no longer watching an object." << Log::endl;
 }
 
 void Entity::location(const MapPoint & newLoc, bool firstInsertion) {

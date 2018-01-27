@@ -403,6 +403,9 @@ void Server::removeUser(const std::set<User>::iterator &it){
 
     forceAllToUntarget(userToDelete);
 
+    for (auto *e : _entities)
+        e->removeWatcher(it->name());
+
     // Save user data
     writeUserData(userToDelete);
 
