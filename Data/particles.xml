@@ -356,4 +356,15 @@
     <variety imageFile="sparkleSmall2" />
 </particleProfile>
 
+<particleProfile
+    id="ceramicShards">
+    <particlesPerHit mean=5 sd=1 />
+    <distance mean=5 sd=0 />
+    <altitude mean=8 sd=4 />
+    <velocity mean=15 sd=3 />
+    <variety imageFile="orangePixel" count="12" />
+    <variety imageFile="ceramicShard0" />
+    <variety imageFile="ceramicShard1" />
+</particleProfile>
+
 </root>
