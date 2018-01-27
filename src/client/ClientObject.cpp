@@ -774,11 +774,11 @@ void ClientObject::update(double delta) {
                 randDouble() * collisionRect().w + collisionRect().x,
                 randDouble() * collisionRect().h + collisionRect().y };
         const ParticleProfile *smokeProfile = client.findParticleProfile("smoke");
+        assert(smokeProfile);
 
-        size_t numParticles = smokeProfile->numParticlesContinuous(delta);
         static const double PARTICLES_PER_PIXEL = 0.005;
         double area = collisionRect().w * collisionRect().h;
-        numParticles = toInt(numParticles * area * PARTICLES_PER_PIXEL);
+        size_t numParticles = smokeProfile->numParticlesContinuous(delta * area * PARTICLES_PER_PIXEL);
 
         client.addParticles(smokeProfile, particleLocation, numParticles);
     }

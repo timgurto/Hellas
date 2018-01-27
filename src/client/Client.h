@@ -148,6 +148,7 @@ public:
             _profile(profile), _location(location) {}
         void discrete() { _qty = _profile.numParticlesDiscrete(); }
         void continuous(double delta) { _qty = _profile.numParticlesContinuous(delta); }
+        void exactNumber(size_t qty) { _qty = qty; }
         void customAltitude(double alt) { _customAltitude = alt; }
 
         size_t quantity() const { return _qty; }
@@ -156,6 +157,7 @@ public:
         double customAltitude() const { return _customAltitude; }
     };
     void addParticles(const ParticlesToAdd &details);
+    void addParticles(const ParticleProfile *profile, const MapPoint &location, size_t qty);
     void addParticles(const ParticleProfile *profile, const MapPoint &location); // Single hit
     void addParticles(const ParticleProfile *profile, const MapPoint &location, double delta);  // /s
     void addParticles(const std::string &profileName, const MapPoint &location); // Single hit

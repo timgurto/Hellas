@@ -586,11 +586,19 @@ void Client::addParticles(const ParticlesToAdd &details){
     }
 }
 
-void Client::addParticles(const ParticleProfile *profile, const MapPoint &location){
+void Client::addParticles(const ParticleProfile *profile, const MapPoint &location) {
     if (profile == nullptr)
         return;
     auto details = ParticlesToAdd{ *profile, location };
     details.discrete();
+    addParticles(details);
+}
+
+void Client::addParticles(const ParticleProfile *profile, const MapPoint &location, size_t qty) {
+    if (profile == nullptr)
+        return;
+    auto details = ParticlesToAdd{ *profile, location };
+    details.exactNumber(qty);
     addParticles(details);
 }
 
