@@ -12,27 +12,27 @@
  7 left hand
 -->
 
-<item id="log"          name="Log"                               stackSize="5"  strength="8" />
+<item id="log"          name="Log"            sounds="wood"      stackSize="5"  strength="8" />
 <item id="tin"          name="Tin Ore"                           stackSize="10" strength="8" />
 <!--item id="copper"       name="Copper Ore"                        stackSize="10" strength="10" /-->
-<item id="crudeClay"    name="Crude Clay"                        stackSize="10" strength="6" />
-<item id="clay"         name="Clay"                              stackSize="10" strength="10" />
+<item id="crudeClay"    name="Crude Clay"     sounds="clay"      stackSize="10" strength="6" />
+<item id="clay"         name="Clay"           sounds="clay"      stackSize="10" strength="10" />
 <item id="tinBar"       name="Tin Bar"        sounds="metalBar"  stackSize="10" />
 <!--item id="copperBar"    name="Copper Bar"     sounds="metalBar"  stackSize="10" strength="20"/-->
 <!--item id="tinRing"      name="Tin Ringlet"                       stackSize="1000" /-->
 <!--item id="copperRing"   name="Copper Ringlet"                    stackSize="1000" /-->
 <item id="charcoal"     name="Charcoal"                          stackSize="10" strength="6"/>
-<item id="flax"         name="Flax"                              stackSize="10" strength="2" />
-<item id="linenThread"  name="Linen Thread"                      stackSize="10" />
-<item id="linenCloth"   name="Linen Cloth"                       stackSize="10" />
+<item id="flax"         name="Flax"           sounds="weakPlant" stackSize="10" strength="2" />
+<item id="linenThread"  name="Linen Thread"   sounds="fabric"    stackSize="10" />
+<item id="linenCloth"   name="Linen Cloth"    sounds="fabric"    stackSize="10" />
 <item id="leather"      name="Leather"        sounds="leather"   stackSize="10" />
 <item id="leatherScale" name="Leather Scale"  sounds="leather"   stackSize="50" />
 <item id="tinScale"     name="Tin Scale"      sounds="metalTool" stackSize="50" />
 <!--item id="copperScale"  name="Copper Scale"   sounds="metalTool" stackSize="50" /-->
 <item id="rope"         name="Rope"                              stackSize="10" strength="4" />
 <item id="brick"        name="Brick"          sounds="brick"     stackSize="10" strength="12" />
-<item id="fat"          name="Animal Fat"                        stackSize="10" />
-<item id="entrails"     name="Entrails"                          stackSize="10" />
+<item id="fat"          name="Animal Fat"     sounds="meat"      stackSize="10" />
+<item id="entrails"     name="Entrails"       sounds="meat"      stackSize="10" />
 <item id="airEssence"   name="Air Essence"                       stackSize="10" />
 <item id="earthEssence" name="Earth Essence"                     stackSize="10" />
 <item id="fireEssence"  name="Fire Essence"                      stackSize="10" />
@@ -43,15 +43,15 @@
 <!--item id="largePot"     name="Large Pot"      sounds="ceramic"   constructs="largePot" /-->
 <item id="elutriator"   name="Elutriator"     sounds="ceramic"   constructs="elutriator" />
 <item id="tannin"       name="Tannin"         sounds="ceramic"   constructs="tannin" />
-<item id="woodenStatue" name="Wooden Statue"                     constructs="woodenStatue" />
+<item id="woodenStatue" name="Wooden Statue"  sounds="wood"      constructs="woodenStatue" />
 <item id="tinStatue"    name="Tin Statue"                        constructs="tinStatue" />
-<item id="lumber"       name="Lumber"                            constructs="post"           stackSize="10" strength="8" />
+<item id="lumber"       name="Lumber"         sounds="wood"      constructs="post"           stackSize="10" strength="8" />
 
-<item id="figSeeds"     name="Fig Seeds"                         constructs="figTree0"       stackSize="10"/>
-<item id="flaxSeeds"    name="Flax Seeds"                        constructs="flaxCrop0"      stackSize="10"/>
+<item id="figSeeds"     name="Fig Seeds"      sounds="seeds"     constructs="figTree0"       stackSize="10"/>
+<item id="flaxSeeds"    name="Flax Seeds"     sounds="seeds"     constructs="flaxCrop0"      stackSize="10"/>
 
-<item id="tinTube"      name="Tin Tube"     strength="8"/>
-<item id="pole1"		name="Crude Pole" />
+<item id="tinTube"      name="Tin Tube"       sounds="metalTool" strength="8"/>
+<item id="pole1"		name="Crude Pole"     sounds="wood" />
 <!--item id="pole2"		name="Pole" /-->
 <item id="water"        name="Water Vessel"   sounds="ceramic"  returnsOnConstruction="smallPot" />
 
@@ -148,7 +148,7 @@
 
 <!-- Weapons -->
 	<!-- Spears -->
-		<item id="tinSpear" name="Light Spear" gearSlot="6" >
+		<item id="tinSpear" name="Light Spear" gearSlot="6" sounds="spear" >
 			<stats attack="4" crit="1" />
 			<offset x="-5" y="-21" />
 		</item>
@@ -168,11 +168,11 @@
             <stats attack="2"/>
 			<offset x="-7" y="0" />
 		</item>
-		<item id="bow" name="Bow" gearSlot="6" >
+		<item id="bow" name="Bow" gearSlot="6" sounds="bow" >
             <weapon range="25" />
             <stats attack="1" hit="1"/>
 		</item>
-		<item id="tinJavelin" name="Light Javelin" gearSlot="6" >
+		<item id="tinJavelin" name="Light Javelin" gearSlot="6" sounds="spear" >
             <weapon range="25" />
             <stats attack="1" crit="1"/>
 			<offset x="-5" y="-21" />
@@ -252,7 +252,7 @@
 			<stats critResist="1" />
 			<offset x="-4" y="-1" />
 		</item>
-		<item id="linenCloak" name="Linen Cloak" gearSlot="3" >
+		<item id="linenCloak" name="Linen Cloak" gearSlot="3" sounds="fabric" >
 			<stats eps="1" />
 			<offset x="-4" y="-1" />
 		</item>
@@ -291,7 +291,7 @@
 			</item>
 
         <!-- Cloth -->
-			<item id="linenChiton" name="Linen Chiton" gearSlot="2" >
+			<item id="linenChiton" name="Linen Chiton" gearSlot="2" sounds="fabric" >
 				<stats energy="17" />
 				<offset x="-6" y="-3" />
 			</item>
@@ -326,7 +326,7 @@
 	<item id="knucklebones" name="Knucklebones" gearSlot="7" >
 		<stats energy="9" />
 	</item>
-	<item id="tablet" name="Tablet" gearSlot="7" >
+	<item id="tablet" name="Tablet" gearSlot="7" sounds="ceramic" >
 		<stats energy="46" />
         <offset x="-2" y="-6" />
 	</item>
