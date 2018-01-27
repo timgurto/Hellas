@@ -21,6 +21,8 @@ class Tooltip{
 
     static std::unique_ptr<WordWrapper> wordWrapper;
 
+    Texture _generated{};
+
 public:
     Tooltip();
 
@@ -35,7 +37,7 @@ public:
 
     void addGap();
 
-    Texture publish();
+    const Texture &publish();
 
     // Create a basic tooltip containing a single string.
     static Texture basicTooltip(const std::string &text);

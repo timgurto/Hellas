@@ -51,7 +51,10 @@ void Tooltip::addGap(){
     _content.push_back(Texture());
 }
 
-Texture Tooltip::publish(){
+const Texture &Tooltip::publish(){
+    if (_generated)
+        return _generated;
+
     // Calculate height and width of final tooltip
     px_t
         totalHeight = 2*PADDING,
@@ -76,8 +79,8 @@ Texture Tooltip::publish(){
     renderer.popRenderTarget();
 
     // Draw background
-    Texture ret = Texture(totalWidth, totalHeight);
-    renderer.pushRenderTarget(ret);
+    _generated = Texture{ totalWidth, totalHeight };
+    renderer.pushRenderTarget(_generated);
     background.draw();
 
     // Draw border
@@ -95,9 +98,10 @@ Texture Tooltip::publish(){
         }
     }
 
-    ret.setBlend(SDL_BLENDMODE_BLEND);
+    _generated.setBlend(SDL_BLENDMODE_BLEND);
     renderer.popRenderTarget();
-    return ret;
+
+    return _generated;
 }
 
 Texture Tooltip::basicTooltip(const std::string &text)
