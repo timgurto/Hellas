@@ -49,6 +49,11 @@ void Tooltip::addLines(const Lines & lines) {
         addLine(line);
 }
 
+void Tooltip::embed(const Tooltip & subTooltip) {
+    subTooltip.generateIfNecessary();
+    _content.push_back(subTooltip._generated);
+}
+
 px_t Tooltip::width() const {
     generateIfNecessary();
     return _generated.width();

@@ -60,6 +60,7 @@ const Tooltip &ClientTalent::tooltip() const {
 
     switch (type) {
     case SPELL:
+        tooltip.embed(spell->tooltip());
         break;
     case STATS:
         tooltip.setColor(Color::ITEM_STATS);

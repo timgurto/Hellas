@@ -38,6 +38,7 @@ public:
     void addLine(const std::string &line);
     using Lines = std::vector<std::string>;
     void addLines(const Lines &lines);
+    void embed(const Tooltip &subTooltip);
 
     px_t width() const;
     px_t height() const;
