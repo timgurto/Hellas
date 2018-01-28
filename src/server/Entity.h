@@ -86,6 +86,8 @@ public:
     const Buffs &debuffs() const { return _debuffs; }
     void applyBuff(const BuffType &type, Entity &caster);
     void applyDebuff(const BuffType &type, Entity &caster);
+    void loadBuff(const BuffType &type, ms_t timeRemaining);
+    void loadDebuff(const BuffType &type, ms_t timeRemaining);
     void removeDebuff(Buff::ID id);
     virtual void sendBuffMsg(const Buff::ID &buff) const;
     virtual void sendDebuffMsg(const Buff::ID &buff) const;

@@ -20,6 +20,12 @@ _caster(&caster),
 _timeRemaining(type.duration())
 {}
 
+Buff::Buff(const BuffType & type, Entity & owner, ms_t timeRemaining) :
+    _type(&type),
+    _owner(&owner),
+    _timeRemaining(timeRemaining) {
+}
+
 void Buff::clearCasterIfEqualTo(const Entity & casterToRemove) const {
     if (_caster == &casterToRemove)
         _caster = nullptr;

@@ -52,6 +52,7 @@ public:
     using ID = std::string;
 
     Buff(const BuffType &type, Entity &owner, Entity &caster);
+    Buff(const BuffType &type, Entity &owner, ms_t timeRemaining);
 
     const ID &type() const { return _type->id(); }
     bool hasExpired() const { return _expired; }
@@ -63,12 +64,17 @@ public:
 
     void clearCasterIfEqualTo(const Entity &casterToRemove) const;
 
+    ms_t timeRemaining() const { return _timeRemaining; }
+
     void update(ms_t timeElapsed);
 
 private:
     const BuffType *_type = nullptr;
     Entity *_owner = nullptr;
-    mutable Entity *_caster = nullptr; // Always initialized, but can become null if caster disappears
+
+    // Always initialized for new buffs, but can become null if caster disappears.
+    // When loaded from XML (User logged off with buff), this is null.
+    mutable Entity *_caster = nullptr;
 
     ms_t _timeSinceLastProc{ 0 };
     ms_t _timeRemaining{ 0 };

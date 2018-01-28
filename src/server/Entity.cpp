@@ -403,6 +403,34 @@ void Entity::applyDebuff(const BuffType & type, Entity &caster) {
     sendDebuffMsg(type.id());
 }
 
+void Entity::loadBuff(const BuffType & type, ms_t timeRemaining) {
+    auto newBuff = Buff{ type, *this, timeRemaining };
+
+    // Check for duplicates
+    for (auto &buff : _buffs)
+        if (buff == newBuff)
+            return;
+
+    _buffs.push_back(newBuff);
+    updateStats();
+
+    sendBuffMsg(type.id());
+}
+
+void Entity::loadDebuff(const BuffType & type, ms_t timeRemaining) {
+    auto newDebuff = Buff{ type, *this, timeRemaining };
+
+    // Check for duplicates
+    for (auto &debuff : _debuffs)
+        if (debuff == newDebuff)
+            return;
+
+    _debuffs.push_back(newDebuff);
+    updateStats();
+
+    sendDebuffMsg(type.id());
+}
+
 void Entity::removeDebuff(Buff::ID id) {
     for (auto it = _debuffs.begin(); it != _debuffs.end(); ++it)
         if (it->type() == id) {

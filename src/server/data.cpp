@@ -94,6 +94,36 @@ bool Server::readUserData(User &user){
             std::make_pair<const ServerItem *, size_t>(&*it, static_cast<size_t>(qty));
     }
 
+    elem = xr.findChild("buffs");
+    for (auto buffElem : xr.getChildren("buff", elem)) {
+
+        auto id = ""s;
+        if (!xr.findAttr(buffElem, "type", id))
+            continue;
+        auto buffTypeIt = _buffTypes.find(id);
+        if (buffTypeIt == _buffTypes.end())
+            continue;
+
+        auto timeRemaining = ms_t{};
+        if (!xr.findAttr(buffElem, "timeRemaining", timeRemaining))
+            continue;
+        user.loadBuff(buffTypeIt->second, timeRemaining);
+    }
+    for (auto buffElem : xr.getChildren("debuff", elem)) {
+
+        auto id = ""s;
+        if (!xr.findAttr(buffElem, "type", id))
+            continue;
+        auto buffTypeIt = _buffTypes.find(id);
+        if (buffTypeIt == _buffTypes.end())
+            continue;
+
+        auto timeRemaining = ms_t{};
+        if (!xr.findAttr(buffElem, "timeRemaining", timeRemaining))
+            continue;
+        user.loadDebuff(buffTypeIt->second, timeRemaining);
+    }
+
     elem = xr.findChild("knownRecipes");
     for (auto slotElem : xr.getChildren("recipe", elem)){
         std::string id;
@@ -144,6 +174,18 @@ void Server::writeUserData(const User &user) const{
             xw.setAttr(slotElement, "id", slot.first->id());
             xw.setAttr(slotElement, "quantity", slot.second);
         }
+    }
+
+    e = xw.addChild("buffs");
+    for (const auto &buff : user.buffs()) {
+        auto buffElement = xw.addChild("buff", e);
+        xw.setAttr(buffElement, "type", buff.type());
+        xw.setAttr(buffElement, "timeRemaining", buff.timeRemaining());
+    }
+    for (const auto &debuff : user.debuffs()) {
+        auto buffElement = xw.addChild("buff", e);
+        xw.setAttr(buffElement, "type", debuff.type());
+        xw.setAttr(buffElement, "timeRemaining", debuff.timeRemaining());
     }
 
     e = xw.addChild("knownRecipes");
