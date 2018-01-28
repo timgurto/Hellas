@@ -35,47 +35,43 @@ const Tooltip &ClientTalent::tooltip() const {
     if (_tooltip.hasValue())
         return _tooltip.value();
 
+    _tooltip = Tooltip{};
+    auto &tooltip = _tooltip.value();
+
+    tooltip.setColor(Color::ITEM_NAME);
+    tooltip.addLine(name);
+    tooltip.addGap();
+
+    tooltip.setColor(Color::ITEM_TAGS);
+    if (hasCost()) {
+        auto tagName = Client::instance().tagName(costTag);
+        tooltip.addLine("Costs "s + tagName + " x"s + toString(costQuantity));
+    }
+    if (reqPointsInTree > 0)
+        tooltip.addLine("Requires "s + toString(reqPointsInTree) + " points in "s + tree);
+    if (hasCost() || reqPointsInTree > 0)
+        tooltip.addGap();
+
+    if (!flavourText.empty()) {
+        tooltip.setColor(Color::FLAVOUR_TEXT);
+        tooltip.addLine(flavourText);
+        tooltip.addGap();
+    }
 
     switch (type) {
     case SPELL:
-        _tooltip = spell->tooltip();
-        return _tooltip.value();
+        break;
     case STATS:
-    {
-        _tooltip = Tooltip{};
-        auto &tooltip = _tooltip.value();
-        tooltip.setColor(Color::ITEM_NAME);
-        tooltip.addLine(name);
-        tooltip.addGap();
-
-        tooltip.setColor(Color::ITEM_TAGS);
-        if (hasCost()) {
-            auto tagName = Client::instance().tagName(costTag);
-            tooltip.addLine("Costs "s + tagName + " x"s + toString(costQuantity));
-        }
-        if (reqPointsInTree > 0)
-            tooltip.addLine("Requires "s + toString(reqPointsInTree) + " points in "s + tree);
-        if (hasCost() || reqPointsInTree > 0)
-            tooltip.addGap();
-
-        if (!flavourText.empty()) {
-            tooltip.setColor(Color::FLAVOUR_TEXT);
-            tooltip.addLine(flavourText);
-            tooltip.addGap();
-        }
-
         tooltip.setColor(Color::ITEM_STATS);
         tooltip.addLine("Each level:");
         tooltip.addLines(stats.toStrings());
-
-        return tooltip;
-    }
+        break;
 
     default:
         assert(false);
-        _tooltip = Tooltip{};
-        return _tooltip.value();
     }
+
+        return tooltip;
 }
 
 void ClientTalent::generateLearnMessage() {
