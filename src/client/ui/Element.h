@@ -3,12 +3,12 @@
 
 #include "../Renderer.h"
 #include "../Texture.h"
+#include "../Tooltip.h"
 #include "../../Color.h"
 #include "../../types.h"
 
 #ifndef ELEMENT_H
 #define ELEMENT_H
-
 
 /*
 A UI element, making up part of a Window.
@@ -42,7 +42,7 @@ private:
 
     static Texture transparentBackground;
 
-    static const Texture *_currentTooltip; // The tooltip currently moused over.
+    static const Tooltip *_currentTooltip; // The tooltip currently moused over.
 
     mutable bool _changed; // If true, this element should be refreshed before next being drawn.
     bool _dimensionsChanged; // If true, destroy and recreate texture before next draw.
@@ -55,7 +55,8 @@ private:
 
     std::string _id; // Optional ID for finding children.
 
-    Texture _tooltip; // Optional tooltip
+    Tooltip _ownedTooltip{}; // In case the below needs to point to something new.
+    const Tooltip *_tooltip{ nullptr }; // Optional tooltip
 
     Uint8 _alpha = SDL_ALPHA_OPAQUE;
 
@@ -131,9 +132,9 @@ public:
     const children_t &children() const { return _children; }
     void setTooltip(const std::string &text); // Add a simple tooltip.
     void setTooltip(const char *text){ setTooltip(std::string(text)); }
-    void setTooltip(const Texture &tooltip); // Add a complex tooltip.
+    void setTooltip(const Tooltip &tooltip); // Add a complex tooltip.
     void clearTooltip();
-    static const Texture *tooltip() { return _currentTooltip; }
+    static const Tooltip *tooltip() { return _currentTooltip; }
     const Element *parent() const { return _parent; }
     const Texture &texture() const { return _texture; }
     static bool isInitialized() { return initialized; }

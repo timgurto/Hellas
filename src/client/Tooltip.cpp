@@ -1,5 +1,6 @@
 #include <sstream>
 
+#include "Client.h"
 #include "Renderer.h"
 #include "Tooltip.h"
 
@@ -10,6 +11,7 @@ TTF_Font *Tooltip::font = nullptr;
 const px_t Tooltip::DEFAULT_MAX_WIDTH = 150;
 const px_t Tooltip::NO_WRAP = 0;
 std::unique_ptr<WordWrapper> Tooltip::wordWrapper;
+ms_t Tooltip::timeThatTheLastRedrawWasOrdered{};
 
 Tooltip::Tooltip()
 {
@@ -47,17 +49,36 @@ void Tooltip::addLines(const Lines & lines) {
         addLine(line);
 }
 
+px_t Tooltip::width() const {
+    generateIfNecessary();
+    return _generated.width();
+}
+
+px_t Tooltip::height() const {
+    generateIfNecessary();
+    return _generated.height();
+}
+
 void Tooltip::addGap(){
     _content.push_back(Texture());
 }
 
-const Texture &Tooltip::get(){
-    if (!_generated)
-        generate();
-    return _generated;
+void Tooltip::draw(ScreenPoint p) const {
+    const auto &client = Client::instance();
+    generateIfNecessary();
+    _generated.draw(p.x, p.y);
 }
 
-void Tooltip::generate() {
+void Tooltip::forceAllToRedraw() {
+    timeThatTheLastRedrawWasOrdered = SDL_GetTicks();
+}
+
+void Tooltip::generateIfNecessary() const {
+    if (!_generated || _timeGenerated < timeThatTheLastRedrawWasOrdered)
+        generate();
+}
+
+void Tooltip::generate() const {
     // Calculate height and width of final tooltip
     px_t
         totalHeight = 2 * PADDING,
@@ -103,11 +124,13 @@ void Tooltip::generate() {
 
     _generated.setBlend(SDL_BLENDMODE_BLEND);
     renderer.popRenderTarget();
+
+    _timeGenerated = SDL_GetTicks();
 }
 
-Texture Tooltip::basicTooltip(const std::string &text)
+Tooltip Tooltip::basicTooltip(const std::string &text)
 {
     Tooltip tb;
     tb.addLine(text);
-    return tb.get();
+    return tb;
 }

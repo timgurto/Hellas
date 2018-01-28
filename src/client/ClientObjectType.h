@@ -39,7 +39,7 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
     const ParticleProfile *_gatherParticles;
     std::set<std::string> _tags;
     ItemSet _materials;
-    mutable Texture *_materialsTooltip;
+    mutable Optional<Tooltip> _constructionTooltip;
     ImageSet _constructionImage; // Shown when the object is under construction.
     Texture _corpseImage, _corpseHighlightImage;
     const SoundProfile *_sounds;
@@ -60,7 +60,6 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
 
 public:
     ClientObjectType(const std::string &id);
-    virtual ~ClientObjectType() override;
 
     const std::string &id() const { return _id; }
     const std::string &name() const { return _name; }
@@ -88,7 +87,7 @@ public:
     const ItemSet &materials() const { return _materials; }
     bool hasTags() const { return !_tags.empty(); }
     const std::set<std::string> &tags() const { return _tags; }
-    const Texture &constructionTooltip() const;
+    const Tooltip &constructionTooltip() const;
     bool transforms() const { return _transformTime > 0; }
     void transformTime(ms_t time) { _transformTime = time; }
     ms_t transformTime() const { return _transformTime; }

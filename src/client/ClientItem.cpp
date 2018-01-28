@@ -67,61 +67,63 @@ void ClientItem::init(){
     }
 }
 
-const Texture &ClientItem::tooltip() const{
-    if (_tooltip)
-        return _tooltip;
+const Tooltip &ClientItem::tooltip() const{
+    if (_tooltip.hasValue())
+        return _tooltip.value();
 
     const auto &client = *Client::_instance;
 
-    Tooltip tb;
-    tb.setColor(Color::ITEM_NAME);
-    tb.addLine(_name);
+    _tooltip = Tooltip{};
+    auto &tooltip = _tooltip.value();
+
+    tooltip.setColor(Color::ITEM_NAME);
+    tooltip.addLine(_name);
 
     // Gear slot/stats
     if (_gearSlot != Client::GEAR_SLOTS){
-        tb.addGap();
-        tb.setColor(Color::ITEM_STATS);
-        tb.addLine("Gear: " + Client::GEAR_SLOT_NAMES[_gearSlot]);
-        tb.addLines(_stats.toStrings());
+        tooltip.addGap();
+        tooltip.setColor(Color::ITEM_STATS);
+        tooltip.addLine("Gear: " + Client::GEAR_SLOT_NAMES[_gearSlot]);
+        tooltip.addLines(_stats.toStrings());
     }
 
     // Tags
     if (hasTags()){
-        tb.addGap();
-        tb.setColor(Color::ITEM_TAGS);
+        tooltip.addGap();
+        tooltip.setColor(Color::ITEM_TAGS);
         for (const std::string &tag : tags())
-            tb.addLine(client.tagName(tag));
+            tooltip.addLine(client.tagName(tag));
     }
     
     // Construction
     if (_constructsObject != nullptr){
-        tb.addGap();
-        tb.setColor(Color::ITEM_INSTRUCTIONS);
-        tb.addLine(std::string("Right-click to place ") + _constructsObject->name());
+        tooltip.addGap();
+        tooltip.setColor(Color::ITEM_INSTRUCTIONS);
+        tooltip.addLine(std::string("Right-click to place ") + _constructsObject->name());
         if (!_constructsObject->constructionReq().empty())
-        tb.addLine("(Requires " + client.tagName(_constructsObject->constructionReq()) + ")");
+            tooltip.addLine("(Requires " + client.tagName(_constructsObject->constructionReq()) + ")");
 
         // Vehicle?
         if (_constructsObject->classTag() == 'v'){
-            tb.setColor(Color::ITEM_STATS);
-            tb.addLine("  Vehicle");
+            tooltip.setColor(Color::ITEM_STATS);
+            tooltip.addLine("  Vehicle");
         }
 
         if (_constructsObject->containerSlots() > 0){
-            tb.setColor(Color::ITEM_STATS);
-            tb.addLine("  Container: " + toString(_constructsObject->containerSlots()) + " slots");
+            tooltip.setColor(Color::ITEM_STATS);
+            tooltip.addLine("  Container: " + toString(_constructsObject->containerSlots()) + " slots");
         }
 
         if (_constructsObject->merchantSlots() > 0){
-            tb.setColor(Color::ITEM_STATS);
-            tb.addLine("  Merchant: " + toString(_constructsObject->merchantSlots()) + " slots");
+            tooltip.setColor(Color::ITEM_STATS);
+            tooltip.addLine("  Merchant: " + toString(_constructsObject->merchantSlots()) + " slots");
         }
 
         // Tags
         if (_constructsObject->hasTags()){
-            tb.setColor(Color::ITEM_TAGS);
+            tooltip.setColor(Color::ITEM_TAGS);
             for (const std::string &tag : _constructsObject->tags())
-                tb.addLine("  " + client.tagName(tag));
+                tooltip.addLine("  " + client.tagName(tag));
         }
     }
 
@@ -131,14 +133,12 @@ const Texture &ClientItem::tooltip() const{
         if (it == client._spells.end()) {
             client.debug() << Color::FAILURE << "Can't find spell: " << spellToCastOnUse() << Log::endl;
         } else {
-            tb.setColor(Color::ITEM_STATS);
-            tb.addLine("Right-click: "s + it->second->createEffectDescription());
+            tooltip.setColor(Color::ITEM_STATS);
+            tooltip.addLine("Right-click: "s + it->second->createEffectDescription());
         }
     }
 
-
-    _tooltip = tb.get();
-    return _tooltip;
+    return tooltip;
 }
 
 void ClientItem::sounds(const std::string &id){

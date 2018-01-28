@@ -5,7 +5,9 @@
 
 #include "SoundProfile.h"
 #include "Texture.h"
+#include "Tooltip.h"
 #include "../Item.h"
+#include "../Optional.h"
 
 class ClientObjectType;
 class SoundProfile;
@@ -16,7 +18,7 @@ class ClientItem : public Item{
     Texture _icon;
     Texture _gearImage;
     ScreenPoint _drawLoc;
-    mutable Texture _tooltip;
+    mutable Optional<Tooltip> _tooltip;
     const SoundProfile *_sounds;
     
     struct Particles {
@@ -54,7 +56,7 @@ public:
     void constructsObject(const ClientObjectType *obj) { _constructsObject = obj; }
     const ClientObjectType *constructsObject() const { return _constructsObject; }
 
-    const Texture &tooltip() const; // Getter; creates tooltip on first call.
+    const Tooltip &tooltip() const; // Getter; creates tooltip on first call.
 
     void draw(const MapPoint &loc) const;
 

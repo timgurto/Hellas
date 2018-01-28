@@ -1,6 +1,7 @@
 #include "Client.h"
 #include "Particle.h"
 #include "Renderer.h"
+#include "Tooltip.h"
 #include "ui/ContainerGrid.h"
 #include "ui/TextBox.h"
 
@@ -450,6 +451,7 @@ void Client::handleInput(double delta){
                     window->forceRefresh();
                 for (Element *element : _ui)
                     element->forceRefresh();
+                Tooltip::forceAllToRedraw();
                 break;
             }
 

@@ -31,43 +31,50 @@ Tree & ClassInfo::findTree(const Tree::Name & name) {
     return _trees.front();
 }
 
-const Texture ClientTalent::tooltip() const {
+const Tooltip &ClientTalent::tooltip() const {
+    if (_tooltip.hasValue())
+        return _tooltip.value();
+
+
     switch (type) {
     case SPELL:
-        return spell->tooltip();
+        _tooltip = spell->tooltip();
+        return _tooltip.value();
     case STATS:
     {
-        auto tb = Tooltip{};
-        tb.setColor(Color::ITEM_NAME);
-        tb.addLine(name);
-        tb.addGap();
+        _tooltip = Tooltip{};
+        auto &tooltip = _tooltip.value();
+        tooltip.setColor(Color::ITEM_NAME);
+        tooltip.addLine(name);
+        tooltip.addGap();
 
-        tb.setColor(Color::ITEM_TAGS);
+        tooltip.setColor(Color::ITEM_TAGS);
         if (hasCost()) {
             auto tagName = Client::instance().tagName(costTag);
-            tb.addLine("Costs "s + tagName + " x"s + toString(costQuantity));
+            tooltip.addLine("Costs "s + tagName + " x"s + toString(costQuantity));
         }
         if (reqPointsInTree > 0)
-            tb.addLine("Requires "s + toString(reqPointsInTree) + " points in "s + tree);
+            tooltip.addLine("Requires "s + toString(reqPointsInTree) + " points in "s + tree);
         if (hasCost() || reqPointsInTree > 0)
-            tb.addGap();
+            tooltip.addGap();
 
         if (!flavourText.empty()) {
-            tb.setColor(Color::FLAVOUR_TEXT);
-            tb.addLine(flavourText);
-            tb.addGap();
+            tooltip.setColor(Color::FLAVOUR_TEXT);
+            tooltip.addLine(flavourText);
+            tooltip.addGap();
         }
 
-        tb.setColor(Color::ITEM_STATS);
-        tb.addLine("Each level:");
-        tb.addLines(stats.toStrings());
+        tooltip.setColor(Color::ITEM_STATS);
+        tooltip.addLine("Each level:");
+        tooltip.addLines(stats.toStrings());
 
-        return tb.get();
+        return tooltip;
     }
 
     default:
         assert(false);
-        return {};
+        _tooltip = Tooltip{};
+        return _tooltip.value();
     }
 }
 

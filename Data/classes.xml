@@ -33,7 +33,7 @@
         <tier>
             <cost tag="food" quantity="1" />
             <talent type="stats" name="Grammar" flavourText="Memorize new facts, rules and relationships, giving you a larger pool of knowledge from which to draw."> <stats energy="10" /> </talent>
-            <talent type="stats" name="Arche" flavourText="Water is the source of all matter, motion and change, and this knowledge gives you new ways to quench fire."> <stats fireResist="2" /> </talent>
+            <talent type="stats" name="Arche" flavourText="Water is the source of all matter, motion and change, and understanding this gives you new ways to quench fire."> <stats fireResist="2" /> </talent>
             <talent type="stats" name="Epicureanism" flavourText="Overcoming the fear of death helps you to embrace life."> <stats health="10" /> </talent>
         </tier>
         <tier>

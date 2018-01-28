@@ -21,8 +21,11 @@ class Tooltip{
 
     static std::unique_ptr<WordWrapper> wordWrapper;
 
-    Texture _generated{};
-    void generate();
+    mutable Texture _generated{};
+    void generateIfNecessary() const;
+    void generate() const;
+    static ms_t timeThatTheLastRedrawWasOrdered;
+    mutable ms_t _timeGenerated{};
 
 public:
     Tooltip();
@@ -36,12 +39,18 @@ public:
     using Lines = std::vector<std::string>;
     void addLines(const Lines &lines);
 
+    px_t width() const;
+    px_t height() const;
+
     void addGap();
 
-    const Texture &get();
+    void draw(ScreenPoint p) const;
+
+    //const Texture &get();
+    static void forceAllToRedraw();
 
     // Create a basic tooltip containing a single string.
-    static Texture basicTooltip(const std::string &text);
+    static Tooltip basicTooltip(const std::string &text);
 };
 
 #endif

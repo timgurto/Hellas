@@ -184,14 +184,10 @@ void Client::selectRecipe(Element &e, const ScreenPoint &mousePos){
     px_t y = HEADING_HEIGHT;
 
     // Icon
-    pane.addChild(new Picture({ 0, y, ICON_SIZE, ICON_SIZE }, product.icon()));
-
-    // Tooltip
-    px_t x = ICON_SIZE + CheckBox::GAP;
-    Picture *tooltip = new Picture(x, y, product.tooltip());
-    pane.addChild(new ColorBlock(tooltip->rect(), Color::OUTLINE));
-    pane.addChild(tooltip);
-    y += tooltip->height();
+    auto icon = new Picture({ 0, y, ICON_SIZE, ICON_SIZE }, product.icon());
+    icon->setTooltip(product.tooltip());
+    pane.addChild(icon);
+    y += ICON_SIZE;
 
     // Divider
     pane.addChild(new Line(0, y + LINE_GAP/2, paneRect.w));

@@ -6,6 +6,7 @@
 #include "Projectile.h"
 #include "../Podes.h"
 #include "../SpellSchool.h"
+#include "../Optional.h"
 
 class ParticleProfile;
 class SoundProfile;
@@ -28,7 +29,7 @@ public:
     const ParticleProfile *impactParticles() const { return _impactParticles; }
     const std::string &castMessage() const { return _castMessage; }
     const Texture &icon() const { return _icon; }
-    const Texture &tooltip() const;
+    const Tooltip &tooltip() const;
     void name(const std::string &s) { _name = s; }
     const std::string &name() const { return _name; }
     void cost(Energy c) { _cost = c; }
@@ -46,7 +47,7 @@ private:
     const ParticleProfile *_impactParticles = nullptr;
     std::string _castMessage{};
     Texture _icon;
-    mutable Texture _tooltip = {};
+    mutable Optional<Tooltip> _tooltip;
     std::string _id = {};
     std::string _name = {};
     Energy _cost = 0;

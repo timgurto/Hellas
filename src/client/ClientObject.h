@@ -9,6 +9,7 @@
 #include "ClientObjectType.h"
 #include "Sprite.h"
 #include "ClientItem.h"
+#include "Tooltip.h"
 #include "ui/ConfirmationWindow.h"
 #include "ui/TextBox.h"
 #include "../Point.h"
@@ -90,7 +91,7 @@ public:
     virtual const std::string &name() const override { return objectType()->name(); }
     virtual const Texture &image() const override;
     virtual const Texture &highlightImage() const override;
-    const Texture &tooltip() const override; // Getter; creates tooltip on first call.
+    const Tooltip &tooltip() const override; // Getter; creates tooltip on first call.
 
     MapRect collisionRect() const { return objectType()->collisionRect() + location(); }
 

@@ -141,9 +141,9 @@ std::vector<std::string> StatsMod::toStrings() const {
     if (armor > 0)
         v.push_back("+" + toString(armor) + "% armor");
     if (maxHealth > 0)
-        v.push_back("+" + toString(maxHealth) + " health");
+        v.push_back("+" + toString(maxHealth) + " max health");
     if (maxEnergy > 0)
-        v.push_back("+" + toString(maxEnergy) + " energy");
+        v.push_back("+" + toString(maxEnergy) + " max energy");
     if (hps > 0)
         v.push_back("+" + toString(hps) + " health per second");
     if (eps > 0)

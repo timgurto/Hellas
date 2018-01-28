@@ -23,7 +23,7 @@ Texture Element::transparentBackground;
 
 const ScreenPoint *Element::absMouse = nullptr;
 
-const Texture *Element::_currentTooltip = nullptr;
+const Tooltip *Element::_currentTooltip = nullptr;
 
 bool Element::initialized = false;
 
@@ -270,7 +270,7 @@ void Element::onMouseMove(const ScreenPoint &mousePos){
     if (_mouseMove != nullptr)
         _mouseMove(*_mouseMoveElement, relativeLocation);
     if (_tooltip && collision(mousePos, rect()))
-        _currentTooltip = &_tooltip;
+        _currentTooltip = _tooltip;
     for (Element *child : _children)
         child->onMouseMove(relativeLocation);
 }
@@ -350,15 +350,17 @@ void Element::resetTooltip(){
 }
 
 void Element::setTooltip(const std::string &text){
-    _tooltip = Tooltip::basicTooltip(text);
+    _ownedTooltip = Tooltip::basicTooltip(text);
+    _tooltip = &_ownedTooltip;
 }
 
-void Element::setTooltip(const Texture &tooltip){
-    _tooltip = tooltip;
+void Element::setTooltip(const Tooltip &tooltip){
+    _ownedTooltip = tooltip;
+    _tooltip = &_ownedTooltip;
 }
 
 void Element::clearTooltip(){
-    _tooltip = Texture();
+    _tooltip = nullptr;
 }
 
 void Element::draw(){

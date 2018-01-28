@@ -167,7 +167,7 @@ void Client::draw() const{
 }
 
 void Client::drawTooltip() const{
-    const Texture *tooltip;
+    const Tooltip *tooltip = nullptr;
     if (Element::tooltip() != nullptr)
         tooltip = Element::tooltip();
     else if (_currentMouseOverEntity != nullptr && !_mouseOverWindow){
@@ -193,7 +193,7 @@ void Client::drawTooltip() const{
             x = mouseX + CURSOR_GAP;
         else
             x = mouseX - tooltip->width() - CURSOR_GAP;
-        tooltip->draw(x, y);
+        tooltip->draw({ x, y });
     }
 }
 

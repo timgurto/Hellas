@@ -6,12 +6,13 @@
 
 #include "SpriteType.h"
 #include "Texture.h"
+#include "Tooltip.h"
 #include "../Point.h"
 
 class Client;
 
 // Handles the graphical and UI side of in-game objects  Abstract class
-class Sprite{
+class Sprite {
     bool _yChanged; // y co-ordinate has changed, and the entity must be reordered.
     const SpriteType *_type;
     MapPoint _location;
@@ -21,7 +22,8 @@ class Sprite{
     static const std::string EMPTY_NAME;
 
 protected:
-    mutable Texture _tooltip;
+    mutable Tooltip _tooltip;
+    mutable bool _shouldRedrawTooltip{ true };
 
 public:
     Sprite(const SpriteType *type, const MapPoint &location);
@@ -52,11 +54,11 @@ public:
     virtual void onLeftClick(Client &client) {}
     virtual void onRightClick(Client &client) {}
     virtual const Texture &cursor(const Client &client) const;
-    virtual const Texture &tooltip() const { return _tooltip; }
+    virtual const Tooltip &tooltip() const { return _tooltip; }
     virtual bool shouldDrawName() const { return false; }
     virtual const std::string &name() const { return EMPTY_NAME; }
     virtual const Color &nameColor() const { return Color::COMBATANT_NEUTRAL; }
-    void refreshTooltip() const { _tooltip = Texture(); }
+    void refreshTooltip() const { _shouldRedrawTooltip = true; }
 
     double bottomEdge() const;
     bool collision(const MapPoint &p) const;

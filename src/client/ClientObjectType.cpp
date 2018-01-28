@@ -18,73 +18,66 @@ _containerSlots(0),
 _merchantSlots(0),
 _sounds(nullptr),
 _gatherParticles(nullptr),
-_materialsTooltip(nullptr),
 _transformTime(0)
 {}
 
-ClientObjectType::~ClientObjectType(){
-    if (_materialsTooltip != nullptr){
-        delete _materialsTooltip;
-        _materialsTooltip = nullptr;
-    }
-}
+const Tooltip &ClientObjectType::constructionTooltip() const{
+    if (_constructionTooltip.hasValue())
+        return _constructionTooltip.value();
 
-const Texture &ClientObjectType::constructionTooltip() const{
     const auto &client = *Client::_instance;
 
-    if (_materialsTooltip == nullptr){
-        Tooltip tb;
-        tb.setColor(Color::ITEM_NAME);
-        tb.addLine(_name);
+    _constructionTooltip = Tooltip{};
+    auto &tooltip = _constructionTooltip.value();
+    tooltip.setColor(Color::ITEM_NAME);
+    tooltip.addLine(_name);
 
-        auto gapDrawn = false;
-        if (canGather()) {
-            if (!gapDrawn) { gapDrawn = true; tb.addGap(); }
-            std::string text = "Gatherable";
-            if (!gatherReq().empty())
-                text += " (requires " + client.tagName(gatherReq()) + ")";
-            tb.addLine(text);
-        }
-
-        if (canDeconstruct()) {
-            if (!gapDrawn) { gapDrawn = true; tb.addGap(); }
-            tb.addLine("Can pick up as item");
-        }
-
-        if (containerSlots() > 0) {
-            if (!gapDrawn) { gapDrawn = true; tb.addGap(); }
-            tb.addLine("Container: " + toString(containerSlots()) + " slots");
-        }
-
-        if (merchantSlots() > 0) {
-            if (!gapDrawn) { gapDrawn = true; tb.addGap(); }
-            tb.addLine("Merchant: " + toString(merchantSlots()) + " slots");
-        }
-
-        // Tags
-        if (hasTags()) {
-            tb.addGap();
-            tb.setColor(Color::ITEM_TAGS);
-            for (const std::string &tag : tags())
-                tb.addLine(client.tagName(tag));
-        }
-
-        tb.addGap();
-        tb.setColor(Color::ITEM_STATS);
-        tb.addLine("Construction materials:");
-        for (const auto &material : _materials){
-            const ClientItem &item = *dynamic_cast<const ClientItem *>(material.first);
-            tb.addLine(makeArgs(material.second) + "x " + item.name());
-        }
-
-        if (! _constructionReq.empty()){
-            tb.addGap();
-            tb.addLine("Requires tool: " + client.tagName(_constructionReq));
-        }
-
-        _materialsTooltip = new Texture(tb.get());
+    auto gapDrawn = false;
+    if (canGather()) {
+        if (!gapDrawn) { gapDrawn = true; tooltip.addGap(); }
+        std::string text = "Gatherable";
+        if (!gatherReq().empty())
+            text += " (requires " + client.tagName(gatherReq()) + ")";
+        tooltip.addLine(text);
     }
-    return *_materialsTooltip;
+
+    if (canDeconstruct()) {
+        if (!gapDrawn) { gapDrawn = true; tooltip.addGap(); }
+        tooltip.addLine("Can pick up as item");
+    }
+
+    if (containerSlots() > 0) {
+        if (!gapDrawn) { gapDrawn = true; tooltip.addGap(); }
+        tooltip.addLine("Container: " + toString(containerSlots()) + " slots");
+    }
+
+    if (merchantSlots() > 0) {
+        if (!gapDrawn) { gapDrawn = true; tooltip.addGap(); }
+        tooltip.addLine("Merchant: " + toString(merchantSlots()) + " slots");
+    }
+
+    // Tags
+    if (hasTags()) {
+        tooltip.addGap();
+        tooltip.setColor(Color::ITEM_TAGS);
+        for (const std::string &tag : tags())
+            tooltip.addLine(client.tagName(tag));
+    }
+
+    tooltip.addGap();
+    tooltip.setColor(Color::ITEM_STATS);
+    tooltip.addLine("Construction materials:");
+    for (const auto &material : _materials){
+        const ClientItem &item = *dynamic_cast<const ClientItem *>(material.first);
+        tooltip.addLine(makeArgs(material.second) + "x " + item.name());
+    }
+
+    if (! _constructionReq.empty()){
+        tooltip.addGap();
+        tooltip.addLine("Requires tool: " + client.tagName(_constructionReq));
+    }
+
+    return tooltip;
 }
 
 const ClientObjectType::ImageSet &ClientObjectType::getProgressImage(ms_t timeRemaining) const{

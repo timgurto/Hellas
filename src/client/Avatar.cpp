@@ -121,28 +121,27 @@ void Avatar::setClass(const ClassInfo::Name &newClass){
     _class = &(it->second);
 }
 
-const Texture &Avatar::tooltip() const{
-    if (_tooltip)
+const Tooltip &Avatar::tooltip() const{
+    if (!_shouldRedrawTooltip)
         return _tooltip;
+    _shouldRedrawTooltip = false;
 
     // Name
-    Tooltip tb;
-    tb.setColor(Color::ITEM_NAME);
-    tb.addLine(_name);
+    _tooltip.setColor(Color::ITEM_NAME);
+    _tooltip.addLine(_name);
 
     // Class
-    tb.addGap();
-    tb.setColor(Color::ITEM_TAGS);
-    tb.addLine("Level "s + toString(level()) + " "s + getClass().name());
+    _tooltip.addGap();
+    _tooltip.setColor(Color::ITEM_TAGS);
+    _tooltip.addLine("Level "s + toString(level()) + " "s + getClass().name());
 
     // Debug info
     /*if (isDebug()){
-        tb.addGap();
-        tb.setColor(Color::ITEM_TAGS);
-        tb.addLine("");
+        _tooltip.addGap();
+        _tooltip.setColor(Color::ITEM_TAGS);
+        _tooltip.addLine("");
     }*/
 
-    _tooltip = tb.get();
     return _tooltip;
 }
 

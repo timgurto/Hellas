@@ -812,9 +812,10 @@ const Texture &ClientObject::cursor(const Client &client) const {
     return client.cursorNormal();
 }
 
-const Texture &ClientObject::tooltip() const{
-    if (_tooltip)
+const Tooltip &ClientObject::tooltip() const{
+    if (!_shouldRedrawTooltip)
         return _tooltip;
+    _shouldRedrawTooltip = false;
 
     const auto &client = *Client::_instance;
 
@@ -823,8 +824,7 @@ const Texture &ClientObject::tooltip() const{
     bool isContainer = ot.containerSlots() > 0 && classTag() != 'n';
 
     // Name
-    Tooltip tb;
-    tb.setColor(Color::ITEM_NAME);
+    _tooltip.setColor(Color::ITEM_NAME);
     std::string title = ot.name();
     if (isDead())
         title += classTag() == 'n' ? " (corpse)" : " (ruins)";
@@ -833,104 +833,100 @@ const Texture &ClientObject::tooltip() const{
                 ot.constructionText().empty() ? "under construction"s : ot.constructionText();
         title += " ("s + constructionText + ")"s;
     }
-    tb.addLine(title);
+    _tooltip.addLine(title);
 
     // Debug info
     if (isDebug()){
-        tb.addGap();
-        tb.setColor(Color::ITEM_TAGS);
-        tb.addLine("Serial: " + toString(_serial));
-        tb.addLine("Class tag: " + toString(classTag()));
+        _tooltip.addGap();
+        _tooltip.setColor(Color::ITEM_TAGS);
+        _tooltip.addLine("Serial: " + toString(_serial));
+        _tooltip.addLine("Class tag: " + toString(classTag()));
     }
 
     // Level
     if (classTag() == 'n') {
-        tb.addGap();
-        tb.setColor(Color::ITEM_TAGS);
-        tb.addLine("Level "s + toString(level()));
+        _tooltip.addGap();
+        _tooltip.setColor(Color::ITEM_TAGS);
+        _tooltip.addLine("Level "s + toString(level()));
     }
 
     // Owner
     if (!owner().empty()){
-        tb.addGap();
-        tb.setColor(Color::ITEM_TAGS);
-        tb.addLine("Owned by " + (owner() == Client::_instance->username() ? "you" : owner()));
+        _tooltip.addGap();
+        _tooltip.setColor(Color::ITEM_TAGS);
+        _tooltip.addLine("Owned by " + (owner() == Client::_instance->username() ? "you" : owner()));
     }
 
-    if (isDead()){
-        _tooltip = tb.get();
+    if (isDead())
         return _tooltip;
-    }
 
     // Stats
     bool stats = false;
-    tb.setColor(Color::ITEM_STATS);
+    _tooltip.setColor(Color::ITEM_STATS);
 
     if (classTag() == 'v'){
-        if (!stats) {stats = true; tb.addGap(); }
-        tb.addLine("Vehicle");
+        if (!stats) {stats = true; _tooltip.addGap(); }
+        _tooltip.addLine("Vehicle");
     }
 
     if (userHasAccess()){
 
         if (ot.canGather()){
-            if (!stats) {stats = true; tb.addGap(); }
+            if (!stats) {stats = true; _tooltip.addGap(); }
             std::string text = "Gatherable";
             if (!ot.gatherReq().empty())
                 text += " (requires " + client.tagName(ot.gatherReq()) + ")";
-            tb.addLine(text);
+            _tooltip.addLine(text);
         }
 
         if (ot.canDeconstruct()){
-            if (!stats) {stats = true; tb.addGap(); }
-            tb.addLine("Can pick up as item");
+            if (!stats) {stats = true; _tooltip.addGap(); }
+            _tooltip.addLine("Can pick up as item");
         }
 
         if (isContainer){
-            if (!stats) {stats = true; tb.addGap(); }
-            tb.addLine("Container: " + toString(ot.containerSlots()) + " slots");
+            if (!stats) {stats = true; _tooltip.addGap(); }
+            _tooltip.addLine("Container: " + toString(ot.containerSlots()) + " slots");
         }
     }
 
     if (ot.merchantSlots() > 0){
-        if (!stats) {stats = true; tb.addGap(); }
-        tb.addLine("Merchant: " + toString(ot.merchantSlots()) + " slots");
+        if (!stats) {stats = true; _tooltip.addGap(); }
+        _tooltip.addLine("Merchant: " + toString(ot.merchantSlots()) + " slots");
     }
 
     // Tags
     if (ot.hasTags()){
-        tb.addGap();
-        tb.setColor(Color::ITEM_TAGS);
+        _tooltip.addGap();
+        _tooltip.setColor(Color::ITEM_TAGS);
         for (const std::string &tag : ot.tags())
-            tb.addLine(client.tagName(tag));
+            _tooltip.addLine(client.tagName(tag));
     }
 
     // Any actions available?
     if (ot.merchantSlots() > 0 || userHasAccess() && (classTag() == 'v' ||
                                                       isContainer ||
                                                       ot.canDeconstruct())){
-        tb.addGap();
-        tb.setColor(Color::ITEM_INSTRUCTIONS);
-        tb.addLine(std::string("Right-click for controls"));
+        _tooltip.addGap();
+        _tooltip.setColor(Color::ITEM_INSTRUCTIONS);
+        _tooltip.addLine(std::string("Right-click for controls"));
     }
 
     else if (classTag() == 'n'){
-        tb.addGap();
-        tb.setColor(Color::ITEM_INSTRUCTIONS);
+        _tooltip.addGap();
+        _tooltip.setColor(Color::ITEM_INSTRUCTIONS);
         const ClientNPC &npc = dynamic_cast<const ClientNPC &>(*this);
         bool alive = npc.health() > 0;
-        if (alive) tb.addLine("Right-click to attack");
-        else if (npc.lootable()) tb.addLine("Right-click to loot");
+        if (alive) _tooltip.addLine("Right-click to attack");
+        else if (npc.lootable()) _tooltip.addLine("Right-click to loot");
     }
 
     else if (userHasAccess() && ot.canGather()){
-        tb.addGap();
-        tb.setColor(Color::ITEM_INSTRUCTIONS);
-        tb.addLine(std::string("Right-click to gather"));
+        _tooltip.addGap();
+        _tooltip.setColor(Color::ITEM_INSTRUCTIONS);
+        _tooltip.addLine(std::string("Right-click to gather"));
     }
 
-
-    _tooltip = tb.get();
     return _tooltip;
 }
 

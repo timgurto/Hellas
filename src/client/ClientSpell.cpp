@@ -11,34 +11,34 @@ ClientSpell::ClientSpell(const std::string &id) :
     _icon("Images/Spells/"s + id + ".png"s){
 }
 
-const Texture &ClientSpell::tooltip() const {
-    if (_tooltip)
-        return _tooltip;
+const Tooltip &ClientSpell::tooltip() const {
+    if (_tooltip.hasValue())
+        return _tooltip.value();
 
     const auto &client = Client::instance();
 
-    auto tb = Tooltip{};
-    tb.setColor(Color::ITEM_NAME);
-    tb.addLine(_name);
+    _tooltip = Tooltip{};
+    auto &tooltip = _tooltip.value();
+    tooltip.setColor(Color::ITEM_NAME);
+    tooltip.addLine(_name);
 
-    tb.addGap();
+    tooltip.addGap();
 
     if (_school.isMagic()) {
-        tb.setColor(_school.color());
-        tb.addLine(_school);
+        tooltip.setColor(_school.color());
+        tooltip.addLine(_school);
     }
 
-    tb.setColor(Color::ITEM_STATS);
-    tb.addLine("Energy cost: "s + toString(_cost));
+    tooltip.setColor(Color::ITEM_STATS);
+    tooltip.addLine("Energy cost: "s + toString(_cost));
     
     if (!_isAoE)
-        tb.addLine("Range: "s + toString(_range) + " podes"s);
+        tooltip.addLine("Range: "s + toString(_range) + " podes"s);
 
-    tb.setColor(Color::ITEM_INSTRUCTIONS);
-    tb.addLine(createEffectDescription());
+    tooltip.setColor(Color::ITEM_INSTRUCTIONS);
+    tooltip.addLine(createEffectDescription());
 
-    _tooltip = tb.get();
-    return _tooltip;
+    return tooltip;
 }
 
 std::string ClientSpell::createEffectDescription() const {
