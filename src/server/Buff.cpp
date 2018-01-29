@@ -8,11 +8,6 @@ void BuffType::stats(const StatsMod & stats) {
     _stats = stats;
 }
 
-SpellEffect & BuffType::effect() {
-    _type = SPELL_OVER_TIME;
-    return _effect;
-}
-
 Buff::Buff(const BuffType & type, Entity & owner, Entity & caster):
 _type(&type),
 _owner(&owner),
@@ -45,7 +40,7 @@ void Buff::update(ms_t timeElapsed) {
             // actions ineffectual.  At some point casters should become references again, allowing
             // debuff effects from offline/dead entities.
             if (_caster)
-                _type->effect().execute(*_caster, *_owner);
+                proc();
             _timeSinceLastProc -= _type->tickTime();
         }
     }
@@ -58,4 +53,10 @@ void Buff::update(ms_t timeElapsed) {
         return;
     }
     _timeRemaining -= timeElapsed;
+}
+
+void Buff::proc(Entity *target) const {
+    if (target == nullptr)
+        target = _owner;
+    _type->effect().execute(*_caster, *target);
 }

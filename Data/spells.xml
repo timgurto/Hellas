@@ -94,6 +94,10 @@ Functions:
     <targets self=1 />
     <function name="heal" i1=15 />
 </spell>
+<spell id="damageShield" name="Demonic Armour" cost=10 range=30 school="fire" >
+    <targets self=1 />
+    <function name="debuff" s1="damageShield" />
+</spell>
 
 <!-- Poet -->
 <spell id="poetStun" name="Depressing Tragedy" cost=10 range=30 school="air" >

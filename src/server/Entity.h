@@ -84,6 +84,7 @@ public:
 
     const Buffs &buffs() const { return _buffs; }
     const Buffs &debuffs() const { return _debuffs; }
+    std::vector<const Buff *> onHitBuffsAndDebuffs();
     void applyBuff(const BuffType &type, Entity &caster);
     void applyDebuff(const BuffType &type, Entity &caster);
     void loadBuff(const BuffType &type, ms_t timeRemaining);

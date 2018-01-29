@@ -21,5 +21,8 @@
 <buff id="stun" name="Stunned" duration="10" >
     <stats stuns="1" />
 </buff>
+<buff id="damageShield" name="Demonic Armour" duration="120" school="fire" >
+    <function onHit="1" name="doDirectDamage" i1="2" />
+</buff>
 
 </root>

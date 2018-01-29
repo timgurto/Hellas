@@ -14,7 +14,8 @@ public:
         UNKNOWN,
         
         STATS,
-        SPELL_OVER_TIME
+        SPELL_OVER_TIME,
+        SPELL_ON_HIT
     };
 
     using ID = std::string;
@@ -28,12 +29,17 @@ public:
     const StatsMod &stats() const { return _stats; }
     SpellSchool school() const { return _effect.school(); }
 
-    SpellEffect &effect();
+    SpellEffect &effect() { return _effect; }
+    void effectOverTime() { _type = SPELL_OVER_TIME; }
+    void effectOnHit() { _type = SPELL_ON_HIT; }
     const SpellEffect &effect() const { return _effect; }
     void tickTime(ms_t t) { _tickTime = t; }
     ms_t tickTime() const { return _tickTime; }
     void duration(ms_t t) { _duration = t; }
     ms_t duration() const { return _duration; }
+
+    bool hasType() const { return _type != UNKNOWN; }
+    bool hasEffectOnHit() const { return _type == SPELL_ON_HIT; }
 
 private:
     ID _id{};
@@ -57,6 +63,7 @@ public:
     const ID &type() const { return _type->id(); }
     bool hasExpired() const { return _expired; }
     SpellSchool school() const { return _type->school(); }
+    bool hasEffectOnHit() const { return _type->hasEffectOnHit(); }
 
     bool operator==(const Buff &rhs) const { return _type == rhs._type; }
 
@@ -67,6 +74,8 @@ public:
     ms_t timeRemaining() const { return _timeRemaining; }
 
     void update(ms_t timeElapsed);
+
+    void proc(Entity *target = nullptr) const; // Default: buff owner is target
 
 private:
     const BuffType *_type = nullptr;

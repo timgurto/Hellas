@@ -755,10 +755,17 @@ void Server::loadData(const std::string &path){
                 xr.findAttr(functionElem, "s1", args.s1);
 
                 auto tickTime = ms_t{};
-                if (xr.findAttr(functionElem, "tickTime", tickTime))
+                if (xr.findAttr(functionElem, "tickTime", tickTime)) {
+                    newBuff.effectOverTime();
                     newBuff.tickTime(tickTime);
-                else
-                    continue; // Tick time mandatory if a function is specified
+                }
+
+                auto n = 0;
+                if (xr.findAttr(functionElem, "onHit", n) && n != 0) {
+                    newBuff.effectOnHit();
+                }
+
+                assert(newBuff.hasType());
 
                 newBuff.effect().args(args);
             }

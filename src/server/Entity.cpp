@@ -294,6 +294,10 @@ void Entity::onDeath(){
 }
 
 void Entity::onAttackedBy(Entity &attacker, Threat threat) {
+    for (const auto *buff : onHitBuffsAndDebuffs()) {
+        buff->proc(&attacker);
+    }
+
     if (isDead())
         attacker.onKilled(*this);
 }
@@ -373,6 +377,17 @@ void Entity::location(const MapPoint & newLoc, bool firstInsertion) {
         oldCollisionChunk.removeEntity(_serial);
         newCollisionChunk.addEntity(this);
     }
+}
+
+std::vector<const Buff*> Entity::onHitBuffsAndDebuffs() {
+    auto v = std::vector<const Buff*>{};
+    for (const auto &buff : _buffs)
+        if (buff.hasEffectOnHit())
+            v.push_back(&buff);
+    for (const auto &debuff : _debuffs)
+        if (debuff.hasEffectOnHit())
+            v.push_back(&debuff);
+    return v;
 }
 
 void Entity::applyBuff(const BuffType & type, Entity &caster) {

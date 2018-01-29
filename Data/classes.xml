@@ -113,7 +113,7 @@
         <tier>
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" />
-            <!--talent type="spell" id="Demonic Armor" /-->
+            <talent type="spell" id="damageShield" />
             <talent type="stats" name="Devotion to Mithra" flavourText="The lord of light dazzles your enemies and fades their efforts."> <stats airResist="1" earthResist="1" fireResist="1" waterResist="1" /> </talent>
             <talent type="spell" id= "selfHeal" />
         </tier>
