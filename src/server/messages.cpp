@@ -1679,6 +1679,7 @@ void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName)
         return;
     }
 
+#ifndef _DEBUG
     if (tier.hasItemCost()) {
         if (!user.hasItems(tier.costTag, tier.costQuantity)) {
             sendMessage(user.socket(), WARNING_MISSING_ITEMS_FOR_TALENT);
@@ -1686,6 +1687,7 @@ void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName)
         }
         user.removeItems(tier.costTag, tier.costQuantity);
     }
+#endif
 
 
     if (talent->type() == Talent::SPELL) {
