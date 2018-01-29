@@ -47,6 +47,8 @@ _preRefresh(nullptr), _preRefreshElement(nullptr){
 }
 
 Element::~Element(){
+    if (_currentTooltip == &_ownedTooltip)
+        _currentTooltip = nullptr;
     clearChildren();
 }
 
