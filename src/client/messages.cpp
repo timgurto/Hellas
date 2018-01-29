@@ -1458,7 +1458,7 @@ void Client::handleMessage(const std::string &msg){
                 return;
 
             _talentLevels[talentName] = level;
-            _debug << "Talent: " << talentName << " " << level << Log::endl;
+            populateClassWindow();
             break;
         }
 

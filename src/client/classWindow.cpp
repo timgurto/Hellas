@@ -1,5 +1,6 @@
 #include "Client.h"
 #include "ui/Line.h"
+#include "ui/OutlinedLabel.h"
 #include "ui/ProgressBar.h"
 
 void Client::initializeClassWindow() {
@@ -95,6 +96,10 @@ void Client::populateClassWindow() {
                 learnSpellButton->setTooltip(talent.tooltip());
                 if (talent.icon)
                     learnSpellButton->addChild(new Picture(1, 1, talent.icon));
+                auto level = _talentLevels[talent.name];
+                learnSpellButton->addChild(
+                    new OutlinedLabel({ 2, 2, ICON_SIZE, ICON_SIZE }, toString(level),
+                        Element::RIGHT_JUSTIFIED, Element::BOTTOM_JUSTIFIED));
 
                 tree.element->addChild(learnSpellButton);
 
@@ -105,4 +110,6 @@ void Client::populateClassWindow() {
             y += yDist;
         }
     }
+
+    onMouseMove();
 }
