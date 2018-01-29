@@ -227,6 +227,7 @@ void Client::loadData(const std::string &path){
                 newBuff.effectArgs(effectArgs);
 
                 if (xr.findAttr(functionElem, "tickTime", n)) newBuff.tickTime(n);
+                if (xr.findAttr(functionElem, "onHit", n) && n != 0) newBuff.hasHitEffect();
             }
 
             auto stats = StatsMod{};

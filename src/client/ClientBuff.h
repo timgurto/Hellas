@@ -24,12 +24,15 @@ public:
     const int duration() const { return _duration; }
     void tickTime(ms_t ms) { _tickTime = ms; }
     const ms_t tickTime() const { return _tickTime; }
+    void hasHitEffect() { _hasHitEffect = true; }
+    bool hasHitEffect() const { return _hasHitEffect; }
 
 private:
     Texture _icon;
     std::string _name{};
 
     int _duration{ 0 };
+    bool _hasHitEffect{ false };
     ms_t _tickTime{ 0 };
     std::string _effectName{};
     ClientSpell::Args _effectArgs{};

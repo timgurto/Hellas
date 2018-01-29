@@ -127,7 +127,7 @@
         <tier>
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" />
-            <talent type="spell" id="threatDropAlchemist" />
+            <talent type="spell" id="threatDropPoet" />
             <talent type="spell" id="poetStun" />
             <talent type="stats" name="Practice Taking Criticism" flavourText="Keeping your head in the face of critics is essential to surviving the stage."> <stats dodge="1" /> </talent>
         </tier>

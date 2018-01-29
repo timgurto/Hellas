@@ -73,9 +73,15 @@ std::string ClientSpell::createEffectDescription() const {
         }
     }
 
-    auto targetString = _isAoE ?
-        "all targets within "s + toString(_range) + " podes"s :
-        "target"s;
+    auto targetString = ""s;
+    if (isBuff && buff->hasHitEffect())
+        targetString = "attackers";
+    else {
+        if (_isAoE)
+            targetString = "all targets within "s + toString(_range) + " podes"s;
+        else
+            targetString = "target"s;
+    }
 
     if (statsBuff) {
         oss << buff->stats().buffDescription() << targetString;
@@ -108,7 +114,9 @@ std::string ClientSpell::createEffectDescription() const {
     }
 
     if (isBuff) {
-        auto conjunction = statsBuff ? "for"s : "over"s;
+        auto conjunction = "for"s;
+        if (buff->tickTime() > 0)
+            conjunction = "over"s;
         
         oss << " " << conjunction << " " << sAsTimeDisplay(buffDuration);
     }
