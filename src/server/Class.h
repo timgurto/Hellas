@@ -38,6 +38,7 @@ public:
     const Tier &tier() const { return _tier; }
     void tree(const std::string &treeName) { _tree = treeName; }
     const std::string &tree() const { return _tree; }
+    const Name &name() const { return _name; }
 
 private:
 

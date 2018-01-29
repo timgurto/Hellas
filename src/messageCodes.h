@@ -335,6 +335,10 @@ enum MessageCode{
     // Arguments: ID
     SV_LEARNED_SPELL,
 
+    // How many points a player has in a talent
+    // Arguments: name, points
+    SV_TALENT,
+
     // An object has an owner
     // Arguments: serial, type ("user"|"city"), name
     SV_OWNER,

@@ -1447,6 +1447,21 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_TALENT:
+        {
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            auto talentName = std::string{ buffer };
+            auto level = 0;
+            singleMsg >> del >> level >> del;
+
+            if (del != MSG_END)
+                return;
+
+            _talentLevels[talentName] = level;
+            _debug << "Talent: " << talentName << " " << level << Log::endl;
+            break;
+        }
+
         case SV_SAY:
         {
             std::string username, message;

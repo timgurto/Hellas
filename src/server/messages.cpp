@@ -1690,18 +1690,21 @@ void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName)
 #endif
 
 
-    if (talent->type() == Talent::SPELL) {
-        if (userClass.hasTalent(talent)) {
+    if (talent->type() == Talent::SPELL && userClass.hasTalent(talent)) {
             sendMessage(user.socket(), ERROR_ALREADY_KNOW_SPELL);
             return;
         }
 
-        userClass.takeTalent(talent);
-        sendMessage(user.socket(), SV_LEARNED_SPELL, talent->spellID());
+    userClass.takeTalent(talent);
 
-    } else if (talent->type() == Talent::STATS) {
-        userClass.takeTalent(talent);
+    switch(talent->type()){
+    case Talent::SPELL:
+        sendMessage(user.socket(), SV_LEARNED_SPELL, talent->spellID());
+        break;
+
+    case Talent::STATS:
         user.updateStats();
+        break;
     }
 }
 

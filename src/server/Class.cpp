@@ -1,6 +1,7 @@
 #include <cassert>
 
 #include "Class.h"
+#include "Server.h"
 #include "User.h"
 
 const Tier Talent::DUMMY_TIER;
@@ -23,10 +24,13 @@ void Class::takeTalent(const Talent * talent) {
 
     if (_talentRanks.find(talent) == _talentRanks.end()) {
         _talentRanks[talent] = 1;
-        return;
+    } else {
+        assert(talent->type() == Talent::STATS || _talentRanks[talent] == 0);
+        ++_talentRanks[talent];
     }
-    assert(talent->type() == Talent::STATS || _talentRanks[talent] == 0);
-    ++_talentRanks[talent];
+
+    const auto &server = Server::instance();
+    server.sendMessage(_owner->socket(), SV_TALENT, makeArgs(talent->name(), _talentRanks[talent]));
 }
 
 bool Class::knowsSpell(const Spell::ID & spell) const {

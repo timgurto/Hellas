@@ -7,6 +7,7 @@
 #include <map>
 #include <mutex>
 #include <set>
+#include <unordered_map>
 
 #include "Avatar.h"
 #include "ClientBuff.h"
@@ -457,6 +458,7 @@ private:
     Sprite *_currentMouseOverEntity;
     size_t _numEntities; // Updated every tick
     void addUser(const std::string &name, const MapPoint &location);
+    std::unordered_map<ClientTalent::Name, size_t> _talentLevels;
     
     // Your wars, and your city's wars
     YourWars _warsAgainstPlayers;
