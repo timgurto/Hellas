@@ -25,14 +25,11 @@ void Client::initializeClassWindow() {
     _classWindow->addChild(_levelLabel);
     y += Element::TEXT_HEIGHT + MARGIN;
 
-    _xpLabel = new Label({ MARGIN, y, WIN_W / 2 - MARGIN, Element::TEXT_HEIGHT }, {}, Element::RIGHT_JUSTIFIED);
-    _classWindow->addChild(_xpLabel);
+    const auto XP_RECT = ScreenRect{ MARGIN, y, WIN_W - MARGIN * 2 , 13 };
+    _classWindow->addChild(new ProgressBar<XP>(XP_RECT, _xp, _maxXP));
 
-    const auto
-        XP_BAR_X = WIN_W / 2 + MARGIN,
-        XP_BAR_W = WIN_W / 2 - MARGIN * 2,
-        XP_BAR_H = 10;
-    _classWindow->addChild(new ProgressBar<XP>({ XP_BAR_X, y, XP_BAR_W, XP_BAR_H }, _xp, _maxXP));
+    _xpLabel = new Label(XP_RECT, {}, Element::CENTER_JUSTIFIED, Element::CENTER_JUSTIFIED);
+    _classWindow->addChild(_xpLabel);
 }
 
 void Client::populateClassWindow() {
