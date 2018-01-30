@@ -285,6 +285,7 @@ private:
     Label *_xpLabel = nullptr;
     Label *_pointsAllocatedLabel = nullptr;
     void initializeClassWindow();
+        static void confirmAndUnlearnTalents(void *);
     void populateClassWindow();
     std::set<const ClientSpell *> _knownSpells{};
 

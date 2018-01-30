@@ -1477,6 +1477,17 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_NO_TALENTS:
+        {
+            if (del != MSG_END)
+                break;
+
+            _talentLevels.clear();
+            _pointsInTrees.clear();
+            populateClassWindow();
+            break;
+        }
+
         case SV_SAY:
         {
             std::string username, message;

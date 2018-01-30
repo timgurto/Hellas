@@ -1181,6 +1181,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_UNLEARN_TALENTS:
+        {
+            if (del != MSG_END)
+                return;
+            handle_CL_UNLEARN_TALENTS(*user);
+            break;
+        }
+
         case CL_CAST:
         {
             iss.get(buffer, BUFFER_SIZE, MSG_END);
@@ -1674,7 +1682,7 @@ void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName)
     auto &tier = talent->tier();
 
     if (tier.reqPointsInTree > 0 &&
-            user.getClass().pointsInTree(talent->tree()) < tier.reqPointsInTree) {
+        user.getClass().pointsInTree(talent->tree()) < tier.reqPointsInTree) {
         sendMessage(user.socket(), WARNING_MISSING_REQ_FOR_TALENT);
         return;
     }
@@ -1691,13 +1699,13 @@ void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName)
 
 
     if (talent->type() == Talent::SPELL && userClass.hasTalent(talent)) {
-            sendMessage(user.socket(), ERROR_ALREADY_KNOW_SPELL);
-            return;
-        }
+        sendMessage(user.socket(), ERROR_ALREADY_KNOW_SPELL);
+        return;
+    }
 
     userClass.takeTalent(talent);
 
-    switch(talent->type()){
+    switch (talent->type()) {
     case Talent::SPELL:
         sendMessage(user.socket(), SV_LEARNED_SPELL, talent->spellID());
         break;
@@ -1706,6 +1714,10 @@ void Server::handle_CL_TAKE_TALENT(User & user, const Talent::Name & talentName)
         user.updateStats();
         break;
     }
+}
+
+void Server::handle_CL_UNLEARN_TALENTS(User & user) {
+    user.getClass().unlearnAll();
 }
 
 void Server::handle_CL_CAST(User & user, const std::string &spellID, bool castingFromItem) {

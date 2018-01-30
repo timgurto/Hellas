@@ -81,6 +81,7 @@ public:
     using TalentRanks = std::map<const Talent *, unsigned>;
     bool canTakeATalent() const;
     int talentPointsAvailable() const;
+    void unlearnAll();
 
     Class() = default;
     Class(const ClassType &type, const User &owner);

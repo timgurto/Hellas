@@ -8,13 +8,13 @@ void Client::initializeClassWindow() {
         SECTION_GAP = 6,
         MARGIN = 2,
         WIN_W = 216,
-        WIN_H = 130,
+        WIN_H = 135,
         XP_H = 27,
         RESET_H = 15,
         TREES_Y = XP_H + SECTION_GAP;
     _classWindow = Window::WithRectAndTitle({ 80, 20, WIN_W, WIN_H }, "Class"s);
     const px_t
-        TREES_H = _classWindow->contentHeight() - TREES_Y - RESET_H - SECTION_GAP;
+        TREES_H = _classWindow->contentHeight() - TREES_Y - RESET_H - MARGIN - SECTION_GAP;
     _talentTrees = new Element({ 0, TREES_Y, WIN_W, TREES_H });
     _classWindow->addChild(_talentTrees);
 
@@ -33,12 +33,32 @@ void Client::initializeClassWindow() {
     _xpLabel = new Label(XP_RECT, {}, Element::CENTER_JUSTIFIED, Element::CENTER_JUSTIFIED);
     _classWindow->addChild(_xpLabel);
 
-    // Points available; reset
+    // Points available
     const px_t
         RESET_Y = TREES_Y + TREES_H + SECTION_GAP;
     _classWindow->addChild(new Line(0, RESET_Y - SECTION_GAP / 2 - 1, WIN_W));
     _pointsAllocatedLabel = new Label({ MARGIN, RESET_Y, WIN_W - 2 * MARGIN, RESET_H }, {});
     _classWindow->addChild(_pointsAllocatedLabel);
+
+    // Reset button
+    const auto RESET_BUTTON_W = 60_px;
+    _classWindow->addChild(new Button(
+        { WIN_W - MARGIN - RESET_BUTTON_W, RESET_Y, RESET_BUTTON_W, RESET_H }, "Unlearn all"s,
+        confirmAndUnlearnTalents));
+}
+
+void Client::confirmAndUnlearnTalents(void *) {
+    Client &client = *Client::_instance;
+
+    std::string confirmationText = "Are you sure you want to unlearn all of your talents?";
+
+    static ConfirmationWindow *_window = nullptr;
+    if (_window != nullptr)
+        client.removeWindow(_window);
+    else
+        _window = new ConfirmationWindow(confirmationText, CL_UNLEARN_TALENTS, {});
+    client.addWindow(_window);
+    _window->show();
 }
 
 void Client::populateClassWindow() {
@@ -48,7 +68,7 @@ void Client::populateClassWindow() {
     _xpLabel->changeText(toString(_xp) + "/"s + toString(_maxXP) + " experience"s);
 
     auto pointsAllocated = totalTalentPointsAllocated();
-    auto pointsAvailable = _character.level() + 1;
+    auto pointsAvailable = _character.level() - 1;
     _pointsAllocatedLabel->changeText("Talent points allocated: "s +
         toString(pointsAllocated) + "/"s + toString(pointsAvailable));
 

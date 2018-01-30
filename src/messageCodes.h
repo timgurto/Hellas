@@ -159,6 +159,9 @@ enum MessageCode{
     // Arguments: talent name
     CL_TAKE_TALENT,
 
+    // I want to unlearn all of my talents
+    CL_UNLEARN_TALENTS,
+
     // Cast a spell
     // Arguments: spell ID
     CL_CAST,
@@ -342,6 +345,9 @@ enum MessageCode{
     // How many total points a player has in a talent tree
     // Arguments: tree name, points
     SV_POINTS_IN_TREE,
+
+    // The user has no talent points allocated
+    SV_NO_TALENTS,
 
     // An object has an owner
     // Arguments: serial, type ("user"|"city"), name

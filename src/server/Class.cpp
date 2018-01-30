@@ -14,6 +14,16 @@ int Class::talentPointsAvailable() const {
     return _owner->level() - 1;
 }
 
+void Class::unlearnAll() {
+    for (auto &pair : _talentRanks) {
+        pair.second = 0;
+    }
+    _talentPointsAllocated = 0;
+
+    const auto &server = Server::instance();
+    server.sendMessage(_owner->socket(), SV_NO_TALENTS);
+}
+
 Class::Class(const ClassType &type, const User &owner) :
     _type(&type),
     _owner(&owner)
