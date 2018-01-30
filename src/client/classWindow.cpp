@@ -7,8 +7,8 @@ void Client::initializeClassWindow() {
     const px_t
         SECTION_GAP = 6,
         MARGIN = 2,
-        WIN_W = 200,
-        WIN_H = 200,
+        WIN_W = 215,
+        WIN_H = 100, // All five tiers: 200
         XP_H = 27,
         TREES_Y = XP_H + SECTION_GAP;
     _classWindow = Window::WithRectAndTitle({ 80, 20, WIN_W, WIN_H }, "Class"s);
@@ -80,12 +80,12 @@ void Client::populateClassWindow() {
             auto y = static_cast<px_t>(baseY + tier * yDist);
 
             const auto &talents = tierPair.second;
-            auto x = 0_px;
+            auto x = 1_px;
             auto xDist = 0_px;
             if (talents.size() > 1)
-                xDist = (TREE_WIDTH - 18) / (talents.size() - 1);
+                xDist = (TREE_WIDTH - 18 - 2) / (talents.size() - 1);
             else
-                x = (TREE_WIDTH - 18) / 2;
+                x = (TREE_WIDTH - 18) / 2 + 1;
             
             for (const auto &talent : talents) {
 
@@ -98,6 +98,12 @@ void Client::populateClassWindow() {
                     learnSpellButton->addChild(new Picture(1, 1, talent.icon));
 
                 auto level = _talentLevels[talent.name];
+
+                auto shouldDrawOutline = level > 0;
+                if (shouldDrawOutline) {
+                    auto outlineRect = learnSpellButton->rect() + ScreenRect{-1, -1, 2, 2};
+                    tree.element->addChild(new ColorBlock(outlineRect, Color::FONT));
+                }
 
                 auto shouldShowLevel = (level > 0) && (talent.type == ClientTalent::STATS);
                 if (shouldShowLevel) {
