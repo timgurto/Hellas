@@ -458,7 +458,9 @@ private:
     Sprite *_currentMouseOverEntity;
     size_t _numEntities; // Updated every tick
     void addUser(const std::string &name, const MapPoint &location);
+
     std::unordered_map<ClientTalent::Name, size_t> _talentLevels;
+    std::unordered_map<Tree::Name, size_t> _pointsInTrees;
     
     // Your wars, and your city's wars
     YourWars _warsAgainstPlayers;

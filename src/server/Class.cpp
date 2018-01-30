@@ -31,6 +31,8 @@ void Class::takeTalent(const Talent * talent) {
 
     const auto &server = Server::instance();
     server.sendMessage(_owner->socket(), SV_TALENT, makeArgs(talent->name(), _talentRanks[talent]));
+    server.sendMessage(_owner->socket(), SV_POINTS_IN_TREE,
+        makeArgs(talent->tree(), pointsInTree(talent->tree())));
 }
 
 bool Class::knowsSpell(const Spell::ID & spell) const {

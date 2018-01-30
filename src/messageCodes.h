@@ -339,6 +339,10 @@ enum MessageCode{
     // Arguments: name, points
     SV_TALENT,
 
+    // How many total points a player has in a talent tree
+    // Arguments: tree name, points
+    SV_POINTS_IN_TREE,
+
     // An object has an owner
     // Arguments: serial, type ("user"|"city"), name
     SV_OWNER,

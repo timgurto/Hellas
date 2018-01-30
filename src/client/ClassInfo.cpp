@@ -61,12 +61,12 @@ const Tooltip &ClientTalent::tooltip() const {
     switch (type) {
     case SPELL:
         tooltip.setColor(Color::ITEM_STATS);
-        tooltip.addLine("Teaches spell:");
+        tooltip.addLine("Teaches you this ability:");
         tooltip.embed(spell->tooltip());
         break;
     case STATS:
         tooltip.setColor(Color::ITEM_STATS);
-        tooltip.addLine("Each level:");
+        tooltip.addLine("Each point grants you:");
         tooltip.addLines(stats.toStrings());
         break;
 

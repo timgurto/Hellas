@@ -1462,6 +1462,21 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_POINTS_IN_TREE:
+        {
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            auto treeName = std::string{ buffer };
+            auto points = 0;
+            singleMsg >> del >> points >> del;
+
+            if (del != MSG_END)
+                return;
+
+            _pointsInTrees[treeName] = points;
+            populateClassWindow();
+            break;
+        }
+
         case SV_SAY:
         {
             std::string username, message;

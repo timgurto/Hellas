@@ -8,7 +8,7 @@ void Client::initializeClassWindow() {
         SECTION_GAP = 6,
         MARGIN = 2,
         WIN_W = 215,
-        WIN_H = 100, // All five tiers: 200
+        WIN_H = 115,
         XP_H = 27,
         TREES_Y = XP_H + SECTION_GAP;
     _classWindow = Window::WithRectAndTitle({ 80, 20, WIN_W, WIN_H }, "Class"s);
@@ -60,6 +60,12 @@ void Client::populateClassWindow() {
 
         treeElem->addChild(new Label({ 0, 0, TREE_WIDTH, Element::TEXT_HEIGHT }, tree.name,
                 Element::CENTER_JUSTIFIED));
+        auto y = Element::TEXT_HEIGHT;
+        auto pointsInTreeText = toString(_pointsInTrees[tree.name]) + " points"s;
+        auto pointsInTreeLabel = new Label({ 0, y,TREE_WIDTH, Element::TEXT_HEIGHT },
+            pointsInTreeText, Element::CENTER_JUSTIFIED);
+        pointsInTreeLabel->setColor(Color::ELEMENT_SHADOW_LIGHT);
+        treeElem->addChild(pointsInTreeLabel);
 
         x += TREE_WIDTH;
 
@@ -71,7 +77,7 @@ void Client::populateClassWindow() {
     }
 
     for (const auto &tree : classInfo.trees()) {
-        auto baseY = 18_px;
+        auto baseY = 30_px;
         auto yDist = 0_px;
         if (tree.numTiers() > 1)
             yDist = (TREE_HEIGHT - 18 - baseY - GAP/2) / (tree.numTiers() - 1);
@@ -119,6 +125,7 @@ void Client::populateClassWindow() {
 
             y += yDist;
         }
+
     }
 
     onMouseMove();
