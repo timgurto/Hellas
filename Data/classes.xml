@@ -4,29 +4,29 @@
     <tree name="Hoplite" >
         <tier>
             <cost tag="food" quantity="1" />
-            <talent type="stats" name="Train Reflexes"> <stats dodge="1" /> </talent>
+            <talent type="stats" name="Train Reflexes" flavourText="TODO"><stats dodge="1" /> </talent>
             <talent type="stats" name="Train Willpower" flavourText="Build willpower through discomfort and deprivation, strengthening your mental defenses."> <stats airResist="1" earthResist="1" fireResist="1" waterResist="1" /> </talent>
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" />
-            <talent type="spell" id="shieldBlock" />
-            <talent type="stats" name="Train Endurance"> <stats armor="1" /> </talent>
-            <talent type="spell" id="threatHit" />
+            <talent type="spell" id="shieldBlock" flavourText="TODO" />
+            <talent type="stats" name="Train Endurance" flavourText="TODO"> <stats armor="1" /> </talent>
+            <talent type="spell" id="threatHit" flavourText="TODO" />
         </tier>
     </tree>
     <tree name="Skirmisher" >
         <tier>
             <cost tag="food" quantity="1" />
-            <talent type="stats" name="Train Weapons"> <stats crit="1" /> </talent>
-            <talent type="stats" name="Train Strength"> <stats physicalDamage="2" /> </talent>
+            <talent type="stats" name="Train Weapons" flavourText="TODO"> <stats crit="1" /> </talent>
+            <talent type="stats" name="Train Strength" flavourText="TODO"> <stats physicalDamage="2" /> </talent>
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" />
             <!--talent type="spell" id="sprint" /-->
-            <talent type="spell" id="skirmisherStun" />
-            <talent type="spell" id="bleed" />
+            <talent type="spell" id="skirmisherStun" flavourText="TODO" />
+            <talent type="spell" id="bleed" flavourText="TODO" />
         </tier>
     </tree>
     <tree name="Philosopher" >
@@ -39,8 +39,8 @@
         <tier>
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" />
-            <talent type="spell" id="airDot" />
-            <talent type="spell" id="threatDropPhilosopher" />
+            <talent type="spell" id="airDot" flavourText="TODO" />
+            <talent type="spell" id="threatDropPhilosopher" flavourText="TODO" />
         </tier>
     </tree>
 </class>
@@ -49,14 +49,14 @@
     <tree name="Magus" >
         <tier>
             <cost tag="food" quantity="1" />
-            <talent type="stats" name="Study Widely"> <stats energy="10" /> </talent>
-            <talent type="stats" name="Study Deeply"> <stats magicDamage="1" /> </talent>
+            <talent type="stats" name="Study Widely" flavourText="TODO"> <stats energy="10" /> </talent>
+            <talent type="stats" name="Study Deeply" flavourText="TODO"> <stats magicDamage="1" /> </talent>
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" />
             <talent type="stats" name="Study the Zodiac" flavourText="Each of us is born under a constellation.  Studying their effects helps you to live in harmony."> <stats health="10" /> </talent>
-            <talent type="spell" id="fireball" />
+            <talent type="spell" id="fireball" flavourText="TODO" />
         </tier>
     </tree>
     <tree name="Naturalist" >
@@ -68,9 +68,9 @@
         <tier>
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" />
-            <talent type="spell" id="poison" />
+            <talent type="spell" id="poison" flavourText="TODO" />
             <talent type="stats" name="Study Classification" flavourText="A habit of collecting and categorising nature helps you to find more when foraging and mining." > <stats gatherBonus="1" /> </talent> 
-            <talent type="spell" id="dispellEarthDebuff" />
+            <talent type="spell" id="dispellEarthDebuff" flavourText="TODO" />
         </tier>
     </tree>
     <tree name="Alchemist" >
@@ -82,7 +82,7 @@
         <tier>
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" />
-            <talent type="spell" id="threatDropAlchemist" />
+            <talent type="spell" id="threatDropAlchemist" flavourText="TODO" />
             <talent type="stats" name="Eternal Life" flavourText="The quest for an elixir of life comes ever closer to fruition."> <stats hps="1" /> </talent>
             <!--talent type="spell" id="Transmute Metal" /-->
         </tier>
@@ -93,29 +93,29 @@
     <tree name="Priest" >
         <tier>
             <cost tag="food" quantity="1" />
-            <talent type="stats" name="Piety" flavourText="Striving for holiness is rewarded with the generosity of the gods."> <stats healing="3" /> </talent>
-            <talent type="stats" name="Purity"> <stats airResist="2" /> </talent>
+            <talent type="stats" name="Reverence" flavourText="Sincere veneration makes the gods more generous when answering your prayers."> <stats healing="3" /> </talent>
+            <talent type="stats" name="Piety" flavourText="The very air around you is cleansed by your purity and innocence."> <stats airResist="2" /> </talent>
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" />
             <!--talent type="spell" id="Blessing of Hephaestus" /-->
-            <talent type="spell" id="majorEnergyBuff" />
-            <talent type="spell" id="priestEconHeal" />
+            <talent type="spell" id="majorEnergyBuff" flavourText="The god of prophecy and truth grants increased knowledge to a friend." />
+            <talent type="spell" id="priestEconHeal" flavourText="Plead with the gods to heal the sick or save a life." />
         </tier>
     </tree>
     <tree name="Cultist" >
         <tier>
             <cost tag="food" quantity="1" />
-            <talent type="stats" name="Devotion to Dionysus" flavourText="The god of wine is well placed to protect you from water."> <stats waterResist="2" /> </talent>
+            <talent type="stats" name="Devotion to Dionysus" flavourText="The god of wine will gladly protect you from water."> <stats waterResist="2" /> </talent>
             <talent type="stats" name="Devotion to Hermes Trismegistus" flavourText="Seek enlightenment from the divine master of writing and magic."> <stats energy="10" /> </talent>
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" />
-            <talent type="spell" id="damageShield" />
+            <talent type="spell" id="damageShield" flavourText="Invoke the protection of a noble spirit, to smite all who harm you." />
             <talent type="stats" name="Devotion to Mithra" flavourText="The lord of light dazzles your enemies and fades their efforts."> <stats airResist="1" earthResist="1" fireResist="1" waterResist="1" /> </talent>
-            <talent type="spell" id= "selfHeal" />
+            <talent type="spell" id= "selfHeal" flavourText="Ask for a personal blessing that reinvigorates you." />
         </tier>
     </tree>
     <tree name="Poet" >
@@ -127,8 +127,8 @@
         <tier>
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" />
-            <talent type="spell" id="threatDropPoet" />
-            <talent type="spell" id="poetStun" />
+            <talent type="spell" id="threatDropPoet" flavourText="It's hard to stay angry when laughing." />
+            <talent type="spell" id="poetStun" flavourText="Overcome your enemies with grief and regret." />
             <talent type="stats" name="Practice Taking Criticism" flavourText="Keeping your head in the face of critics is essential to surviving the stage."> <stats dodge="1" /> </talent>
         </tier>
     </tree>

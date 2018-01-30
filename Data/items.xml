@@ -13,7 +13,7 @@
 -->
 
 <item id="log"          name="Log"            sounds="wood"      stackSize="5"  strength="8" />
-<item id="tin"          name="Tin Ore"                           stackSize="10" strength="8" />
+<item id="tin"          name="Tin Ore"        sounds="rock"      stackSize="10" strength="8" />
 <!--item id="copper"       name="Copper Ore"                        stackSize="10" strength="10" /-->
 <item id="crudeClay"    name="Crude Clay"     sounds="clay"      stackSize="10" strength="6" />
 <item id="clay"         name="Clay"           sounds="clay"      stackSize="10" strength="10" />
@@ -44,7 +44,7 @@
 <item id="elutriator"   name="Elutriator"     sounds="ceramic"   constructs="elutriator" />
 <item id="tannin"       name="Tannin"         sounds="ceramic"   constructs="tannin" />
 <item id="woodenStatue" name="Wooden Statue"  sounds="wood"      constructs="woodenStatue" />
-<item id="tinStatue"    name="Tin Statue"                        constructs="tinStatue" />
+<item id="tinStatue"    name="Tin Statue"     sounds="metalBar"  constructs="tinStatue" />
 <item id="lumber"       name="Lumber"         sounds="wood"      constructs="post"           stackSize="10" strength="8" />
 
 <item id="figSeeds"     name="Fig Seeds"      sounds="seeds"     constructs="figTree0"       stackSize="10"/>
@@ -69,12 +69,12 @@
     <tag name="food" />
 </item>
 
-<item id="stick" name="Stick" stackSize="10" strength="2" >
+<item id="stick" name="Stick" stackSize="10" strength="2" sounds="stick" >
     <offset x="-8" y="-1" />
     <tag name="planting" />
 </item>
 
-<item id="rock" name="Rock" stackSize="10" gearSlot="6" strength="6" >
+<item id="rock" name="Rock" stackSize="10" gearSlot="6" strength="6" sounds="rock" >
     <weapon range="25" />
     <stats attack="1"/>
     <offset x="-3" />
@@ -129,7 +129,7 @@
 			<stats attack="1" />
 			<offset x="-5" y="1" />
 		</item>
-		<item id="tinAxe" name="Tin Axe" gearSlot="6" sounds="metalTool" >
+		<item id="tinAxe" name="Tin Axe" gearSlot="6" >
 			<tag name="woodcutting" />
 			<stats attack="4" />
 			<offset x="-5" y="1" />

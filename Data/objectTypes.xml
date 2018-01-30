@@ -3,7 +3,7 @@
 <objectType id="stick" name="Stick"
     xDrawOffset="-10" yDrawOffset="-4"
     canGather="1" gatherTime="1000"
-    damageParticles="wood"
+    sounds="stick"
     allowedTerrain="sticks" >
     <yield id="stick" />
     <strength item="stick" quantity="1" />
@@ -12,7 +12,8 @@
 <objectType id="rock" name="Rock"
     xDrawOffset="-5" yDrawOffset="-5"
     canGather="1" gatherTime="1000"
-    allowedTerrain="rocks">
+    allowedTerrain="rocks"
+    sounds="rock">
     <yield id="rock" />
     <strength item="rock" quantity="1" />
 </objectType>
@@ -198,7 +199,7 @@
     canGather="1" gatherTime="3000" gatherReq="harvesting"
     xDrawOffset="-19" yDrawOffset="-37"
     allowedTerrain="fertile"
-    sounds="tree" >
+    gatherParticles="wood" sounds="tree" >
     <collisionRect x="-13" y="-9" w="26" h="18" />
     <yield id="fig" initialMean="1.2" initialSD="0.5" initialMin="1" />
     <yield id="figSeeds" initialMean="0.2" initialSD="0.2" />
@@ -208,7 +209,7 @@
     constructionTime="10000" isUnbuildable="1"
     xDrawOffset="-19" yDrawOffset="-37"
     allowedTerrain="fertile"
-    sounds="tree" >
+    damageParticles="wood" sounds="tree" >
     <collisionRect x="-13" y="-9" w="26" h="18" />
     <transform id="figTree1" time="900000" >
         <progress image="figTree0a" />
@@ -322,7 +323,7 @@
 <objectType id="stretchingFrame" name="Stretching Frame"
     constructionTime="0" 
     xDrawOffset="-10" yDrawOffset="-9"
-    sounds="wood">
+    damageParticles="wood" sounds="wood">
     <collisionRect x="-10" y="-9" w="20" h="17" />
     <material id="stick" quantity="2" />
     <material id="rope" quantity="2" />
