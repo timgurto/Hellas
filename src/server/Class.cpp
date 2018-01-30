@@ -11,7 +11,7 @@ bool Class::canTakeATalent() const {
 }
 
 int Class::talentPointsAvailable() const {
-    return _owner->level() + 1;
+    return _owner->level() - 1;
 }
 
 Class::Class(const ClassType &type, const User &owner) :
