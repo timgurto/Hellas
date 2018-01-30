@@ -96,10 +96,14 @@ void Client::populateClassWindow() {
                 learnSpellButton->setTooltip(talent.tooltip());
                 if (talent.icon)
                     learnSpellButton->addChild(new Picture(1, 1, talent.icon));
+
                 auto level = _talentLevels[talent.name];
-                learnSpellButton->addChild(
-                    new OutlinedLabel({ 2, 2, ICON_SIZE, ICON_SIZE }, toString(level),
-                        Element::RIGHT_JUSTIFIED, Element::BOTTOM_JUSTIFIED));
+
+                auto shouldShowLevel = (level > 0) && (talent.type == ClientTalent::STATS);
+                if (shouldShowLevel) {
+                    learnSpellButton->addChild(new OutlinedLabel( { 2, 2, ICON_SIZE, ICON_SIZE },
+                        toString(level), Element::RIGHT_JUSTIFIED, Element::BOTTOM_JUSTIFIED));
+                }
 
                 tree.element->addChild(learnSpellButton);
 
