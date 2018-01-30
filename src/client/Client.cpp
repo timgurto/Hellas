@@ -694,6 +694,13 @@ void Client::addUser(const std::string &name, const MapPoint &location) {
     _entities.insert(pUser);
 }
 
+int Client::totalTalentPointsAllocated() {
+    auto sum = 0;
+    for (const auto &pair : _pointsInTrees)
+        sum += pair.second;
+    return sum;
+}
+
 void Client::infoWindow(const std::string & text) {
     auto window = new InfoWindow(text);
     addWindow(window);

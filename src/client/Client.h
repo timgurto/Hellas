@@ -283,6 +283,7 @@ private:
     Element *_talentTrees = nullptr;
     Label *_levelLabel = nullptr;
     Label *_xpLabel = nullptr;
+    Label *_pointsAllocatedLabel = nullptr;
     void initializeClassWindow();
     void populateClassWindow();
     std::set<const ClientSpell *> _knownSpells{};
@@ -459,8 +460,9 @@ private:
     size_t _numEntities; // Updated every tick
     void addUser(const std::string &name, const MapPoint &location);
 
-    std::unordered_map<ClientTalent::Name, size_t> _talentLevels;
-    std::unordered_map<Tree::Name, size_t> _pointsInTrees;
+    std::unordered_map<ClientTalent::Name, int> _talentLevels;
+    std::unordered_map<Tree::Name, int> _pointsInTrees;
+    int totalTalentPointsAllocated();
     
     // Your wars, and your city's wars
     YourWars _warsAgainstPlayers;

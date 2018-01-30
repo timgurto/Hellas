@@ -7,29 +7,38 @@ void Client::initializeClassWindow() {
     const px_t
         SECTION_GAP = 6,
         MARGIN = 2,
-        WIN_W = 215,
-        WIN_H = 115,
+        WIN_W = 216,
+        WIN_H = 130,
         XP_H = 27,
+        RESET_H = 15,
         TREES_Y = XP_H + SECTION_GAP;
     _classWindow = Window::WithRectAndTitle({ 80, 20, WIN_W, WIN_H }, "Class"s);
     const px_t
-        TREES_H = _classWindow->contentHeight() - TREES_Y;
+        TREES_H = _classWindow->contentHeight() - TREES_Y - RESET_H - SECTION_GAP;
     _talentTrees = new Element({ 0, TREES_Y, WIN_W, TREES_H });
     _classWindow->addChild(_talentTrees);
 
     _classWindow->addChild(new Line(0, XP_H + SECTION_GAP / 2 - 1, WIN_W));
 
+    // Class and level
     auto y = MARGIN;
     _levelLabel = new Label({ MARGIN, MARGIN, WIN_W - 2* MARGIN, Element::TEXT_HEIGHT },
             {}, Element::CENTER_JUSTIFIED);
     _classWindow->addChild(_levelLabel);
     y += Element::TEXT_HEIGHT + MARGIN;
 
+    // XP
     const auto XP_RECT = ScreenRect{ MARGIN, y, WIN_W - MARGIN * 2 , 13 };
     _classWindow->addChild(new ProgressBar<XP>(XP_RECT, _xp, _maxXP));
-
     _xpLabel = new Label(XP_RECT, {}, Element::CENTER_JUSTIFIED, Element::CENTER_JUSTIFIED);
     _classWindow->addChild(_xpLabel);
+
+    // Points available; reset
+    const px_t
+        RESET_Y = TREES_Y + TREES_H + SECTION_GAP;
+    _classWindow->addChild(new Line(0, RESET_Y - SECTION_GAP / 2 - 1, WIN_W));
+    _pointsAllocatedLabel = new Label({ MARGIN, RESET_Y, WIN_W - 2 * MARGIN, RESET_H }, {});
+    _classWindow->addChild(_pointsAllocatedLabel);
 }
 
 void Client::populateClassWindow() {
@@ -37,6 +46,11 @@ void Client::populateClassWindow() {
         "Level "s + toString(_character.level()) +
         " "s + _character.getClass().name());
     _xpLabel->changeText(toString(_xp) + "/"s + toString(_maxXP) + " experience"s);
+
+    auto pointsAllocated = totalTalentPointsAllocated();
+    auto pointsAvailable = _character.level() + 1;
+    _pointsAllocatedLabel->changeText("Talent points allocated: "s +
+        toString(pointsAllocated) + "/"s + toString(pointsAvailable));
 
     _talentTrees->clearChildren();
 
