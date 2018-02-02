@@ -83,7 +83,11 @@ const Tooltip &ClientItem::tooltip() const{
     if (_gearSlot != Client::GEAR_SLOTS){
         tooltip.addGap();
         tooltip.setColor(Color::ITEM_STATS);
-        tooltip.addLine("Gear: " + Client::GEAR_SLOT_NAMES[_gearSlot]);
+        tooltip.addLine("Gear: "s + Client::GEAR_SLOT_NAMES[_gearSlot]);
+
+        if (weaponRange() > Podes::MELEE_RANGE.toPixels())
+            tooltip.addLine("Range: "s + toString(Podes::FromPixels(weaponRange())) + " podes");
+
         tooltip.addLines(_stats.toStrings());
     }
 

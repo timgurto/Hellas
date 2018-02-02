@@ -13,6 +13,8 @@ public:
 
     operator px_t() const { return toPixels(); }
 
+    static Podes FromPixels(px_t p);
+
 private:
     int _p;
     friend std::ostream &operator << (std::ostream &lhs, Podes rhs);

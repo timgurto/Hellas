@@ -9,3 +9,7 @@ std::istream &operator >> (std::istream &lhs, Podes &rhs) {
 std::ostream &operator << (std::ostream &lhs, Podes rhs) {
     lhs << rhs._p; return lhs;
 }
+
+Podes Podes::FromPixels(px_t p) {
+    return toInt(p / 7);
+}
