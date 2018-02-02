@@ -107,3 +107,16 @@ void Target::openMenu(Element &e, const ScreenPoint &mousePos){
         menu.show();
 
 }
+
+void Target::onTypeChange() {
+    _name = _entity->name();
+    _health = _combatant->health();
+    _maxHealth = _combatant->maxHealth();
+    _energy = _combatant->energy();
+    _maxEnergy = _combatant->maxEnergy();
+
+    if (_maxEnergy == 0)
+        _panel->hideEnergyBar();
+    else
+        _panel->showEnergyBar();
+}

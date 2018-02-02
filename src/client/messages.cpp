@@ -509,6 +509,8 @@ void Client::handleMessage(const std::string &msg){
                 ClientObject &obj = *it->second;
                 obj.location({ x, y });
                 obj.type(cot);
+                if (targetAsEntity() == &obj)
+                    _target.onTypeChange();
                 // Redraw window
                 obj.assembleWindow(*this);
                 obj.refreshTooltip();

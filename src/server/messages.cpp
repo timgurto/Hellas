@@ -572,10 +572,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 if (!pObj2->isBeingBuilt()){
 
                     // Send to all nearby players, since object appearance will change
-                    for (const User *otherUser : findUsersInArea(user->location())){
-                        if (otherUser == user)
-                            continue;
+                    for (const User *otherUser : findUsersInArea(user->location()))
                         sendConstructionMaterialsMessage(*otherUser, *pObj2);
+                    for (const std::string &owner : pObj2->permissions().ownerAsUsernames()) {
+                        auto pUser = getUserByName(owner);
+                        if (pUser)
+                            sendConstructionMaterialsMessage(pUser->socket(), *pObj2);
                     }
                     
                     // Trigger completing user's unlocks

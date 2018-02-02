@@ -45,6 +45,8 @@ public:
     static void openMenu(Element &e, const ScreenPoint &mousePos);
     void hideMenu(){ _menu->hide(); }
 
+    void onTypeChange();
+
 private:
     /*
     Both pointers should contain the same value.  Having both is necessary because reinterpret_cast

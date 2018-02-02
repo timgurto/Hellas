@@ -99,3 +99,18 @@ void Permissions::alertNearbyUsersToNewOwner() const {
     server.broadcastToArea(_parent.location(), SV_OWNER,
             makeArgs(_parent.serial(), _owner.typeString(), _owner.name));
 }
+
+Permissions::Usernames Permissions::ownerAsUsernames() {
+    const Server &server = Server::instance();
+    switch (_owner.type) {
+    case Owner::NONE:
+        return {};
+    case Owner::PLAYER:
+        return{ _owner.name };
+    case Owner::CITY:
+        return server.cities().membersOf(_owner.name);
+    default:
+        assert(false);
+        return{};
+    }
+}

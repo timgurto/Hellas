@@ -4,6 +4,7 @@
 #include <string>
 
 #include "City.h"
+#include "../messageCodes.h"
 
 class Object;
 class User;
@@ -36,6 +37,9 @@ public:
     const Owner &owner() const;
     bool doesUserHaveAccess(const std::string &username) const;
     void alertNearbyUsersToNewOwner() const;
+    
+    using Usernames = std::set<std::string>;
+    Usernames ownerAsUsernames();
 
 private:
     Owner _owner;

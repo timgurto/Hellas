@@ -180,6 +180,10 @@ void Object::setType(const ObjectType *type, bool skipConstruction){
     if (server != nullptr)
         for (const User *user : server->findUsersInArea(location()))
             sendInfoToClient(*user);
+    // Inform owner
+    for (const auto &owner : _permissions.ownerAsUsernames())
+        server->sendMessageIfOnline(owner, SV_OBJECT,  makeArgs(serial(),
+            location().x, location().y, type->id()));
 }
 
 void Object::onDeath(){
