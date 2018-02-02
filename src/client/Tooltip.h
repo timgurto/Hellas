@@ -27,12 +27,13 @@ class Tooltip{
     static ms_t timeThatTheLastRedrawWasOrdered;
     mutable ms_t _timeGenerated{};
 
+    static const Tooltip NO_TOOLTIP;
+
 public:
     Tooltip();
 
     const static px_t NO_WRAP;
 
-    void setFont(TTF_Font *font = nullptr); // Default: default font
     void setColor(const Color &color = Color::TOOLTIP_FONT);
 
     void addLine(const std::string &line);
@@ -52,6 +53,8 @@ public:
 
     // Create a basic tooltip containing a single string.
     static Tooltip basicTooltip(const std::string &text);
+
+    static const Tooltip &noTooltip() { return NO_TOOLTIP; }
 };
 
 #endif

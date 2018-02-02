@@ -12,6 +12,7 @@ const px_t Tooltip::DEFAULT_MAX_WIDTH = 150;
 const px_t Tooltip::NO_WRAP = 0;
 std::unique_ptr<WordWrapper> Tooltip::wordWrapper;
 ms_t Tooltip::timeThatTheLastRedrawWasOrdered{};
+const Tooltip Tooltip::NO_TOOLTIP{};
 
 Tooltip::Tooltip()
 {
@@ -19,15 +20,6 @@ Tooltip::Tooltip()
 
     if (font == nullptr)
         font = TTF_OpenFont("AdvoCut.ttf", 10);
-    font = font;
-
-    if (!wordWrapper) {
-        wordWrapper = std::make_unique<WordWrapper>(WordWrapper(font, DEFAULT_MAX_WIDTH));
-    }
-}
-
-void Tooltip::setFont(TTF_Font *font){
-    font = font ? font : font;
 }
 
 void Tooltip::setColor(const Color &color){
@@ -38,6 +30,10 @@ void Tooltip::addLine(const std::string &line){
     if (line == "") {
         addGap();
         return;
+    }
+
+    if (!wordWrapper) {
+        wordWrapper = std::make_unique<WordWrapper>(WordWrapper(font, DEFAULT_MAX_WIDTH));
     }
     auto wrappedLines = wordWrapper->wrap(line);
     for (const auto &wrappedLine : wrappedLines)
@@ -71,7 +67,8 @@ void Tooltip::addGap(){
 void Tooltip::draw(ScreenPoint p) const {
     const auto &client = Client::instance();
     generateIfNecessary();
-    _generated.draw(p.x, p.y);
+    if (this != &NO_TOOLTIP)
+        _generated.draw(p.x, p.y);
 }
 
 void Tooltip::forceAllToRedraw() {

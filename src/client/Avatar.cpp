@@ -122,18 +122,19 @@ void Avatar::setClass(const ClassInfo::Name &newClass){
 }
 
 const Tooltip &Avatar::tooltip() const{
-    if (!_shouldRedrawTooltip)
-        return _tooltip;
-    _shouldRedrawTooltip = false;
+    if (_tooltip.hasValue())
+        return _tooltip.value();
+    _tooltip = Tooltip{};
+    auto &tooltip = _tooltip.value();
 
     // Name
-    _tooltip.setColor(Color::ITEM_NAME);
-    _tooltip.addLine(_name);
+    tooltip.setColor(Color::ITEM_NAME);
+    tooltip.addLine(_name);
 
     // Class
-    _tooltip.addGap();
-    _tooltip.setColor(Color::ITEM_TAGS);
-    _tooltip.addLine("Level "s + toString(level()) + " "s + getClass().name());
+    tooltip.addGap();
+    tooltip.setColor(Color::ITEM_TAGS);
+    tooltip.addLine("Level "s + toString(level()) + " "s + getClass().name());
 
     // Debug info
     /*if (isDebug()){
@@ -142,7 +143,7 @@ const Tooltip &Avatar::tooltip() const{
         _tooltip.addLine("");
     }*/
 
-    return _tooltip;
+    return tooltip;
 }
 
 void Avatar::playAttackSound() const{

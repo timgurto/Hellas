@@ -87,3 +87,9 @@ bool Sprite::collision(const MapPoint &p) const{
 const Texture &Sprite::cursor(const Client &client) const {
     return client.cursorNormal();
 }
+
+const Tooltip & Sprite::tooltip() const {
+    if (_tooltip.hasValue())
+        return _tooltip.value();
+    return Tooltip::noTooltip();
+}

@@ -7,6 +7,7 @@
 #include "SpriteType.h"
 #include "Texture.h"
 #include "Tooltip.h"
+#include "../Optional.h"
 #include "../Point.h"
 
 class Client;
@@ -22,8 +23,7 @@ class Sprite {
     static const std::string EMPTY_NAME;
 
 protected:
-    mutable Tooltip _tooltip;
-    mutable bool _shouldRedrawTooltip{ true };
+    mutable Optional<Tooltip> _tooltip;
 
 public:
     Sprite(const SpriteType *type, const MapPoint &location);
@@ -54,11 +54,11 @@ public:
     virtual void onLeftClick(Client &client) {}
     virtual void onRightClick(Client &client) {}
     virtual const Texture &cursor(const Client &client) const;
-    virtual const Tooltip &tooltip() const { return _tooltip; }
+    virtual const Tooltip &tooltip() const;
     virtual bool shouldDrawName() const { return false; }
     virtual const std::string &name() const { return EMPTY_NAME; }
     virtual const Color &nameColor() const { return Color::COMBATANT_NEUTRAL; }
-    void refreshTooltip() const { _shouldRedrawTooltip = true; }
+    void refreshTooltip() const { _tooltip = Optional<Tooltip>{}; }
 
     double bottomEdge() const;
     bool collision(const MapPoint &p) const;
