@@ -202,8 +202,8 @@ void Client::initializeGearSlotNames(){
     GEAR_SLOT_NAMES.push_back("Shoulders");
     GEAR_SLOT_NAMES.push_back("Hands");
     GEAR_SLOT_NAMES.push_back("Feet");
-    GEAR_SLOT_NAMES.push_back("Right hand");
-    GEAR_SLOT_NAMES.push_back("Left hand");
+    GEAR_SLOT_NAMES.push_back("Weapon");
+    GEAR_SLOT_NAMES.push_back("Offhand");
 }
 
 Client::~Client() {
