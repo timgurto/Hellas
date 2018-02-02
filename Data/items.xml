@@ -74,11 +74,14 @@
     <tag name="planting" />
 </item>
 
-<item id="rock" name="Rock" stackSize="10" gearSlot="6" strength="6" sounds="rock" >
+<item id="rock" name="Rock" stackSize="10" strength="6" sounds="rock" >
+    <offset x="-3" />
+    <tag name="grinding1" />
+</item>
+<item id="throwingRock" name="Throwing Rock" gearSlot="6" sounds="rock" >
     <weapon range="25" />
     <stats attack="1"/>
     <offset x="-3" />
-    <tag name="grinding1" />
 </item>
 
 <item id="bone" name="Bone" stackSize="10" gearSlot="6" sounds="bone" >
