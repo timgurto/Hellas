@@ -532,7 +532,7 @@
 
 <recipe
     id="charcoal" time="12000" >
-    <material id="log" quantity="2" />
+    <material id="log" />
     <tool class="charcoalMaking" />
     <unlockedBy construction="oven" />
 </recipe>
