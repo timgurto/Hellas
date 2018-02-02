@@ -259,7 +259,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 sendMessage(client, ERROR_INVALID_SLOT);
                 break;
             }
-            const std::pair<const ServerItem *, size_t> &invSlot = user->inventory(slot);
+            std::pair<const ServerItem *, size_t> &invSlot = user->inventory(slot);
             if (invSlot.first == nullptr) {
                 sendMessage(client, ERROR_EMPTY_SLOT);
                 break;
@@ -272,6 +272,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
             auto spellID = item.spellToCastOnUse();
             handle_CL_CAST(*user, spellID, /* casting from item*/ true);
+
+            --invSlot.second;
+            if (invSlot.second == 0)
+                invSlot.first = nullptr;;
+            sendInventoryMessage(*user, slot, INVENTORY);
 
             break;
         }
