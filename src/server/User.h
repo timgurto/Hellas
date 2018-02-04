@@ -140,6 +140,8 @@ public:
     void onNewOwnedObject(const ObjectType &type) const;
     void onDestroyedOwnedObject(const ObjectType &type) const;
     void onKilled(const Entity &victim) override;
+    bool canAttack() const override;
+    void onAttack() override;
 
     void sendInfoToClient(const User &targetUser) const override;
 

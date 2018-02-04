@@ -567,6 +567,9 @@ void Server::loadData(const std::string &path){
 
                 auto school = ""s;
                 if (xr.findAttr(weaponElem, "school", school)) item.weaponSchool({ school });
+
+                auto ammoType = ""s;
+                if (xr.findAttr(weaponElem, "consumes", ammoType)) item.weaponAmmo({ ammoType });
             }
 
             int n;
@@ -584,6 +587,10 @@ void Server::loadData(const std::string &path){
                 itemInPlace = item;
             }
         }
+    }
+    for (auto &itemConst : _items){
+        auto &item = const_cast<ServerItem&>(itemConst);
+        item.fetchAmmoItem();
     }
 
     // Recipes

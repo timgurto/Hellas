@@ -204,6 +204,7 @@ private:
     friend class Spawner;
     friend class Permissions;
     friend class ProgressLock;
+    friend class ServerItem;
 
     NPC &addNPC(const NPCType *type, const MapPoint &location);
     Object &addObject (const ObjectType *type, const MapPoint &location,

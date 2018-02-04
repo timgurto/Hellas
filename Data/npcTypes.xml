@@ -5,7 +5,7 @@
 	level="1" maxHealth="22" attack="4" attackTime="1000"
     xDrawOffset="-17" yDrawOffset="-28" >
     <collisionRect x="-15" y="-4" w="31" h="7" />
-    <loot id="bone" chance="0.3" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
     <loot id="fat" chance="0.05" />
     <loot id="horn" chance="0.05" />
     <loot id="knucklebones" chance="0.02" />
@@ -22,7 +22,7 @@
     <loot id="fat" chance="0.05" />
     <loot id="entrails" chance="0.1" />
     <loot id="knucklebones" chance="0.02" />
-    <loot id="bone" chance="0.3" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
 </npcType>
 
 <npcType

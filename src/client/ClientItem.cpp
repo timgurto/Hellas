@@ -88,6 +88,11 @@ const Tooltip &ClientItem::tooltip() const{
         if (weaponRange() > Podes::MELEE_RANGE.toPixels())
             tooltip.addLine("Range: "s + toString(Podes::FromPixels(weaponRange())) + " podes");
 
+        if (usesAmmo()) {
+            auto &ammoType = dynamic_cast<const ClientItem &>(*weaponAmmo());
+            tooltip.addLine("Each attack consumes a "s + ammoType.name());
+        }
+
         tooltip.addLines(_stats.toStrings());
     }
 
@@ -154,6 +159,14 @@ bool ClientItem::canUse() const {
     return
         _constructsObject != nullptr ||
         castsSpellOnUse();
+}
+
+void ClientItem::fetchAmmoItem() {
+    const Client &client = *Client::_instance;
+    auto it = client._items.find(_weaponAmmoID);
+    if (it == client._items.end())
+        return;
+    _weaponAmmo = &(it->second);
 }
 
 void ClientItem::addParticles(const std::string & profileName, const MapPoint & offset) {

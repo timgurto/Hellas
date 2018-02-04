@@ -306,11 +306,6 @@
 
 <!-- Ranged weapons -->
     <recipe
-        id="throwingRock" time="4000" >
-        <material id="rock" quantity="20" />
-        <unlockedBy item="rock" chance="0.05" />
-    </recipe>
-    <recipe
         id="sling" time="4000" >
         <material id="rock" quantity="20" />
         <material id="leather" />

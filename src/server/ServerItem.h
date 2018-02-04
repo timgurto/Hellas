@@ -34,6 +34,8 @@ public:
     const ServerItem *returnsOnConstruction() const { return _returnsOnConstruction; }
     void returnsOnConstruction(const ServerItem *item) { _returnsOnConstruction = item; }
     bool valid() const { return _stackSize > 0; }
+
+    void fetchAmmoItem() override;
 };
 
 bool vectHasSpace(const ServerItem::vect_t &vect, const ServerItem *item, size_t qty = 1);

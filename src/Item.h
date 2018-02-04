@@ -29,6 +29,9 @@ public:
     px_t weaponRange() const { return _weaponRange; }
     void weaponSchool(SpellSchool school) { _weaponSchool = school; }
     SpellSchool weaponSchool() const { return _weaponSchool; }
+    void weaponAmmo(const std::string &id) { _weaponAmmoID = id; }
+    const Item *weaponAmmo() const { return _weaponAmmo; }
+    bool usesAmmo() const { return _weaponAmmo != nullptr; }
     void castsSpellOnUse(const std::string &spell) { _castsSpellOnUse = spell; }
     bool castsSpellOnUse() const { return ! _castsSpellOnUse.empty(); }
     const std::string &spellToCastOnUse() const { return _castsSpellOnUse; }
@@ -43,6 +46,8 @@ public:
 
     static size_t getRandomArmorSlot();
 
+    virtual void fetchAmmoItem() = 0;
+
 protected:
     std::string _id; // The no-space, unique name used in data files
     std::set<std::string> _tags;
@@ -52,6 +57,8 @@ protected:
     // If a weapon, how close the holder must be to a target to it.
     px_t _weaponRange = Podes::MELEE_RANGE.toPixels();
     SpellSchool _weaponSchool{ SpellSchool::PHYSICAL };
+    std::string _weaponAmmoID{};
+    mutable const Item *_weaponAmmo{ nullptr }; // Fetched in fetchAmmoItem()
 
 private:
     Hitpoints _strength;

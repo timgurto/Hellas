@@ -236,6 +236,23 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case WARNING_OUT_OF_AMMO:
+        {
+            auto ammoID = ""s;
+            readString(singleMsg, ammoID, MSG_END);
+            singleMsg >> del;
+            if (del != MSG_END)
+                break;
+            std::string msg = "Attacking with that weapon requires a";
+            const char first = ammoID.front();
+            auto vowels = std::string{ "AaEeIiOoUu" };
+            if (vowels.find(first) != vowels.npos)
+                msg += 'n';
+            _debug(msg + " " + ammoID + ".", Color::WARNING);
+            startAction(0);
+            break;
+        }
+
         case WARNING_PLAYER_UNIQUE_OBJECT:
         {
             std::string category;

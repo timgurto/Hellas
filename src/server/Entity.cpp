@@ -164,8 +164,13 @@ void Entity::update(ms_t timeElapsed){
     if (pTarget->isDead())
         return;
 
+    if (!canAttack())
+        return;
+
     // Reset timer
     _attackTimer = _stats.attackTime;
+
+    onAttack();
 
     // Check if within range
     if (distance(collisionRect(), pTarget->collisionRect()) <= attackRange()){

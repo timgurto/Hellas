@@ -1,3 +1,4 @@
+#include "Server.h"
 #include "ServerItem.h"
 #include "objects/ObjectType.h"
 
@@ -5,6 +6,14 @@ ServerItem::ServerItem(const std::string &idArg):
     Item(idArg),
     _constructsObject(nullptr)
 {}
+
+void ServerItem::fetchAmmoItem() {
+    const auto &server = Server::instance();
+    auto it = server._items.find(_weaponAmmoID);
+    if (it == server._items.end())
+        return;
+    _weaponAmmo = &*it;
+}
 
 bool vectHasSpace(const ServerItem::vect_t &vect, const ServerItem *item, size_t qty){
     for (size_t i = 0; i != vect.size(); ++i) {

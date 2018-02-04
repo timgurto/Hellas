@@ -574,6 +574,35 @@ void User::onKilled(const Entity & victim) {
     addXP(100);
 }
 
+bool User::canAttack() const {
+    const auto &gearSlot = _gear[Item::WEAPON_SLOT];
+
+    auto hasWeapon = gearSlot.first != nullptr;
+    if (!hasWeapon)
+        return true;
+
+    auto weapon = gearSlot.first;
+    if (!weapon->usesAmmo())
+        return true;
+
+    auto ammoType = gearSlot.first->weaponAmmo();
+    auto itemSet = ItemSet{};
+    itemSet.add(ammoType, 1);
+    if (this->hasItems(itemSet))
+        return true;
+
+    auto ammoID = gearSlot.first->weaponAmmo()->id();
+    Server::_instance->sendMessage(_socket, WARNING_OUT_OF_AMMO, ammoID);
+    return false;
+}
+
+void User::onAttack() {
+    auto ammoType = _gear[Item::WEAPON_SLOT].first->weaponAmmo();
+    auto ammo = ItemSet{};
+    ammo.add(ammoType);
+    removeItems(ammo);
+}
+
 void User::updateStats(){
     const Server &server = *Server::_instance;
 

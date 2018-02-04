@@ -420,6 +420,9 @@ void Client::loadData(const std::string &path){
             if (weaponElem != nullptr) {
                 auto range = Podes{};
                 if (xr.findAttr(weaponElem, "range", range)) item.weaponRange(range);
+
+                auto ammoType = ""s;
+                if (xr.findAttr(weaponElem, "consumes", ammoType)) item.weaponAmmo({ ammoType });
             }
 
             size_t gearSlot = GEAR_SLOTS; // Default; won't match any slot.
@@ -446,6 +449,10 @@ void Client::loadData(const std::string &path){
         
             _items[id] = item;
         }
+    }
+    for (auto &pair : _items) {
+        auto &item = const_cast<ClientItem&>(pair.second);
+        item.fetchAmmoItem();
     }
 
     // Classes/talents
