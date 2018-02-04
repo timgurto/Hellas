@@ -243,12 +243,21 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del;
             if (del != MSG_END)
                 break;
+
+            auto it = _items.find(ammoID);
+            if (it == _items.end()) {
+                _debug << Color::FAILURE << "Received warning about invalid item: " << ammoID
+                    << Log::endl;
+                break;
+            }
+            auto ammoName = it->second.name();
+
             std::string msg = "Attacking with that weapon requires a";
-            const char first = ammoID.front();
+            const char first = ammoName.front();
             auto vowels = std::string{ "AaEeIiOoUu" };
             if (vowels.find(first) != vowels.npos)
                 msg += 'n';
-            _debug(msg + " " + ammoID + ".", Color::WARNING);
+            _debug(msg + " " + ammoName + ".", Color::WARNING);
             startAction(0);
             break;
         }
