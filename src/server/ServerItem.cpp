@@ -7,7 +7,7 @@ ServerItem::ServerItem(const std::string &idArg):
     _constructsObject(nullptr)
 {}
 
-void ServerItem::fetchAmmoItem() {
+void ServerItem::fetchAmmoItem() const {
     if (_weaponAmmoID.empty())
         return;
 

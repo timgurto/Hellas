@@ -161,7 +161,7 @@ bool ClientItem::canUse() const {
         castsSpellOnUse();
 }
 
-void ClientItem::fetchAmmoItem() {
+void ClientItem::fetchAmmoItem() const {
     if (_weaponAmmoID.empty())
         return;
 

@@ -46,7 +46,7 @@ public:
 
     static size_t getRandomArmorSlot();
 
-    virtual void fetchAmmoItem() = 0;
+    virtual void fetchAmmoItem() const = 0;
 
 protected:
     std::string _id; // The no-space, unique name used in data files

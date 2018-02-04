@@ -48,7 +48,7 @@ public:
 
     static const ScreenPoint &gearOffset(size_t slot) { return gearOffsets[slot]; }
 
-    void fetchAmmoItem() override;
+    void fetchAmmoItem() const override;
 
     void addParticles(const std::string &profileName, const MapPoint &offset);
     const std::vector<Particles> &particles() const { return _particles; }
