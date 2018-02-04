@@ -328,18 +328,12 @@ void User::removeItems(const ItemSet &items) {
     std::set<size_t> slotsChanged;
 
     removeItemsFrom(remaining, _inventory, slotsChanged);
-    for (size_t slotNum : slotsChanged) {
-        const std::pair<const ServerItem *, size_t> &slot = _inventory[slotNum];
-        std::string id = slot.first ? slot.first->id() : "none";
+    for (size_t slotNum : slotsChanged)
         Server::instance().sendInventoryMessage(*this, slotNum, Server::INVENTORY);
-    }
 
     removeItemsFrom(remaining, _gear, slotsChanged);
-    for (size_t slotNum : slotsChanged) {
-        const std::pair<const ServerItem *, size_t> &slot = _gear[slotNum];
-        std::string id = slot.first ? slot.first->id() : "none";
+    for (size_t slotNum : slotsChanged)
         Server::instance().sendInventoryMessage(*this, slotNum, Server::GEAR);
-    }
 
     assert(remaining.isEmpty());
 }
@@ -371,18 +365,12 @@ void User::removeItems(const std::string & tag, size_t quantity) {
     auto remaining = quantity;
 
     removeItemsFrom(tag, remaining, _inventory, slotsChanged);
-    for (size_t slotNum : slotsChanged) {
-        const std::pair<const ServerItem *, size_t> &slot = _inventory[slotNum];
-        std::string id = slot.first ? slot.first->id() : "none";
+    for (size_t slotNum : slotsChanged)
         Server::instance().sendInventoryMessage(*this, slotNum, Server::INVENTORY);
-    }
 
     removeItemsFrom(tag, remaining, _gear, slotsChanged);
-    for (size_t slotNum : slotsChanged) {
-        const std::pair<const ServerItem *, size_t> &slot = _gear[slotNum];
-        std::string id = slot.first ? slot.first->id() : "none";
+    for (size_t slotNum : slotsChanged) 
         Server::instance().sendInventoryMessage(*this, slotNum, Server::GEAR);
-    }
 }
 
 void User::update(ms_t timeElapsed){
