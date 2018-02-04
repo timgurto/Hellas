@@ -636,6 +636,8 @@ bool User::canAttack() const {
 
 void User::onAttack() {
     auto ammoType = _gear[Item::WEAPON_SLOT].first->weaponAmmo();
+    if (ammoType == nullptr)
+        return;
     auto ammo = ItemSet{};
     ammo.add(ammoType);
     removeItems(ammo);
