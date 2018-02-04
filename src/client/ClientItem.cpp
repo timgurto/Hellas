@@ -162,10 +162,16 @@ bool ClientItem::canUse() const {
 }
 
 void ClientItem::fetchAmmoItem() {
+    if (_weaponAmmoID.empty())
+        return;
+
     const Client &client = *Client::_instance;
     auto it = client._items.find(_weaponAmmoID);
-    if (it == client._items.end())
+    if (it == client._items.end()) {
+        client.debug() << Color::FAILURE << "Unknown item "s << _weaponAmmoID
+            << " specified as ammo"s << Log::endl;
         return;
+    }
     _weaponAmmo = &(it->second);
 }
 
