@@ -661,6 +661,14 @@ const SoundProfile *Client::findSoundProfile(const std::string &id) const{
     return &*it;
 }
 
+const Projectile::Type * Client::findProjectileType(const std::string & id) const {
+    auto dummy = Projectile::Type{ id,{} };
+    auto it = _projectileTypes.find(&dummy);
+    if (it != _projectileTypes.end())
+        return *it;
+    return nullptr;
+}
+
 bool Client::isAtWarWith(const std::string &username) const{
     // Cities
     if (isAtWarWithCityDirectly(username))

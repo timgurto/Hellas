@@ -3,6 +3,7 @@
 
 #include <map>
 
+#include "Projectile.h"
 #include "SoundProfile.h"
 #include "Texture.h"
 #include "Tooltip.h"
@@ -20,6 +21,7 @@ class ClientItem : public Item{
     ScreenPoint _drawLoc;
     mutable Optional<Tooltip> _tooltip;
     const SoundProfile *_sounds;
+    const Projectile::Type *_projectile{ nullptr };
     
     struct Particles {
         std::string profile;
@@ -44,6 +46,8 @@ public:
     static const std::map<int, size_t> &drawOrder() { return gearDrawOrder; }
     void sounds(const std::string &id);
     const SoundProfile *sounds() const { return _sounds; }
+    void projectile(const Projectile::Type *p) { _projectile = p; }
+    const Projectile::Type *projectile() const { return _projectile; }
     bool canUse() const;
 
     static const ScreenPoint &gearOffset(size_t slot) { return gearOffsets[slot]; }

@@ -196,7 +196,7 @@
 		</item>
 		<item id="fireWand" name="Wand of Fire" gearSlot="6" >
             <tag name="wand" />
-            <weapon range="25" school="fire" consumes="boneDust" />
+            <weapon range="25" school="fire" consumes="boneDust" projectile="fireball" />
             <stats magicDamage="2" />
 			<offset x="-5" y="-2" />
             <particles profile="fireSmall" x=-4 y=0 />
@@ -223,7 +223,7 @@
             <particles profile="earthSmall" x=5 y=16 />
 		</item>
 		<item id="fireStaff" name="Staff of Fire" gearSlot="6" >
-            <weapon range="25" school="fire" consumes="fireDust" />
+            <weapon range="25" school="fire" consumes="fireDust" projectile="fireball" />
             <stats magicDamage="4" />
             <offset x="-5" y="-20" />
             <particles profile="fireSmall" x=-4 y=-19 />

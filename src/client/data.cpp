@@ -427,6 +427,10 @@ void Client::loadData(const std::string &path){
 
                 auto ammoType = ""s;
                 if (xr.findAttr(weaponElem, "consumes", ammoType)) item.weaponAmmo({ ammoType });
+
+                auto projectile = ""s;
+                if (xr.findAttr(weaponElem, "projectile", projectile))
+                    item.projectile(findProjectileType(projectile));
             }
 
             size_t gearSlot = GEAR_SLOTS; // Default; won't match any slot.

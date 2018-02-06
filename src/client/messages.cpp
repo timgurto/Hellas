@@ -1339,6 +1339,8 @@ void Client::handleMessage(const std::string &msg){
         case SV_SPELL_MISS:
         case SV_RANGED_NPC_HIT:
         case SV_RANGED_NPC_MISS:
+        case SV_RANGED_WEAPON_HIT:
+        case SV_RANGED_WEAPON_MISS:
         {
             singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
             auto id = std::string{ buffer };
@@ -1362,6 +1364,12 @@ void Client::handleMessage(const std::string &msg){
                 break;
             case SV_RANGED_NPC_MISS:
                 handle_SV_RANGED_NPC_MISS(id, { x1, y1 }, { x2, y2 });
+                break;
+            case SV_RANGED_WEAPON_HIT:
+                handle_SV_RANGED_WEAPON_HIT(id, { x1, y1 }, { x2, y2 });
+                break;
+            case SV_RANGED_WEAPON_MISS:
+                handle_SV_RANGED_WEAPON_MISS(id, { x1, y1 }, { x2, y2 });
                 break;
             }
             break;
@@ -1733,6 +1741,30 @@ void Client::handle_SV_RANGED_NPC_MISS(const std::string & npcID, const MapPoint
     if (npcType->projectile()) {
         auto pointPastDest = extrapolate(src, dst, 2000);
         addEntity(new Projectile(*npcType->projectile(), src, pointPastDest));
+    }
+}
+
+void Client::handle_SV_RANGED_WEAPON_HIT(const std::string & weaponID, const MapPoint & src, const MapPoint & dst) {
+    auto it = _items.find(weaponID);
+    if (it == _items.end())
+        return;
+    const auto &item = it->second;
+
+    if (item.projectile()) {
+        auto projectile = new Projectile(*item.projectile(), src, dst);
+        addEntity(projectile);
+    }
+}
+
+void Client::handle_SV_RANGED_WEAPON_MISS(const std::string & weaponID, const MapPoint & src, const MapPoint & dst) {
+    auto it = _items.find(weaponID);
+    if (it == _items.end())
+        return;
+    const auto &item = it->second;
+
+    if (item.projectile()) {
+        auto pointPastDest = extrapolate(src, dst, 2000);
+        addEntity(new Projectile(*item.projectile(), src, pointPastDest));
     }
 }
 

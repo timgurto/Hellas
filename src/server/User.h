@@ -142,6 +142,8 @@ public:
     void onKilled(const Entity &victim) override;
     bool canAttack() const override;
     void onAttack() override;
+    void sendRangedHitMessageTo(const User &userToInform) const override;
+    void sendRangedMissMessageTo(const User &userToInform) const override;
 
     void sendInfoToClient(const User &targetUser) const override;
 

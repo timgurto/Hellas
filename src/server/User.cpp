@@ -647,6 +647,32 @@ void User::onAttack() {
     removeItems(ammo);
 }
 
+void User::sendRangedHitMessageTo(const User & userToInform) const {
+    if (!target())
+        return;
+    auto weapon = _gear[Item::WEAPON_SLOT].first;
+    if (!weapon)
+        return;
+
+    Server &server = *Server::_instance;
+    server.sendMessage(userToInform.socket(), SV_RANGED_WEAPON_HIT, makeArgs(
+        weapon->id(), location().x, location().y,
+        target()->location().x, target()->location().y));
+}
+
+void User::sendRangedMissMessageTo(const User & userToInform) const {
+    if (!target())
+        return;
+    auto weapon = _gear[Item::WEAPON_SLOT].first;
+    if (!weapon)
+        return;
+
+    Server &server = *Server::_instance;
+    server.sendMessage(userToInform.socket(), SV_RANGED_WEAPON_MISS, makeArgs(
+        weapon->id(), location().x, location().y,
+        target()->location().x, target()->location().y));
+}
+
 void User::updateStats(){
     const Server &server = *Server::_instance;
 

@@ -194,9 +194,7 @@ void Entity::update(ms_t timeElapsed){
                 server.sendMessage(userToInform->socket(), SV_SHOW_DODGE_AT, makeArgs(
                     pTarget->location().x, pTarget->location().y));
                 if (attackRange() > MELEE_RANGE)
-                    server.sendMessage(userToInform->socket(), SV_RANGED_NPC_MISS, makeArgs(
-                        type()->id(), location().x, location().y,
-                        pTarget->location().x, pTarget->location().y));
+                    sendRangedMissMessageTo(*userToInform);
                 return;
             }
 
@@ -262,9 +260,7 @@ void Entity::update(ms_t timeElapsed){
         for (const User *userToInform : server.findUsersInArea(locus)){
             server.sendMessage(userToInform->socket(), msgCode, args);
             if (attackRange() > MELEE_RANGE)
-                server.sendMessage(userToInform->socket(), SV_RANGED_NPC_HIT, makeArgs(
-                    type()->id(), location().x, location().y,
-                    pTarget->location().x, pTarget->location().y));
+                sendRangedHitMessageTo(*userToInform);
         }
     }
 }

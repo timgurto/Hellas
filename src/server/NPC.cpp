@@ -113,7 +113,7 @@ px_t NPC::attackRange() const {
 void NPC::sendRangedHitMessageTo(const User & userToInform) const {
     assert(target());
     Server &server = *Server::_instance;
-    server.sendMessage(userToInform.socket(), SV_RANGED_NPC_MISS, makeArgs(
+    server.sendMessage(userToInform.socket(), SV_RANGED_NPC_HIT, makeArgs(
         type()->id(), location().x, location().y,
         target()->location().x, target()->location().y));
 }

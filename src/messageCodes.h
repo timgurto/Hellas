@@ -310,6 +310,8 @@ enum MessageCode{
     SV_SPELL_MISS, // spell ID, from x, from y, to x, to y
     SV_RANGED_NPC_HIT, // npc ID, from x, from y, to x, to y
     SV_RANGED_NPC_MISS, // npc ID, from x, from y, to x, to y
+    SV_RANGED_WEAPON_HIT, // weapon ID, from x, from y, to x, to y
+    SV_RANGED_WEAPON_MISS, // weapon ID, from x, from y, to x, to y
 
     // Entity was hit by something.
     // Arguments: username/serial
