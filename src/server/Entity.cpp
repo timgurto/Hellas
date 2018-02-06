@@ -228,11 +228,6 @@ void Entity::update(ms_t timeElapsed){
                 damage -= _stats.blockValue;
         }
 
-        pTarget->reduceHealth(damage);
-
-        // Give target opportunity to react
-        pTarget->onAttackedBy(*this, damage);
-
         // Alert nearby clients
         MessageCode msgCode;
         std::string args;
@@ -262,6 +257,11 @@ void Entity::update(ms_t timeElapsed){
             if (attackRange() > MELEE_RANGE)
                 sendRangedHitMessageTo(*userToInform);
         }
+
+        pTarget->reduceHealth(damage);
+
+        // Give target opportunity to react
+        pTarget->onAttackedBy(*this, damage);
     }
 }
 
