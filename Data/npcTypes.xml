@@ -27,7 +27,7 @@
 
 <npcType
     id="waterNymph" name="Water Nymph"
-	level="9" maxHealth="34" attack="4" attackTime="1000" isRanged="1" school="water"
+	level="9" maxHealth="34" attack="4" attackTime="1000" isRanged="1" school="water" projectile="waterball"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="waterNymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />

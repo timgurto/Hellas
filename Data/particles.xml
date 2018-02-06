@@ -267,7 +267,6 @@
     <variety imageFile="water" />
     <variety imageFile="waterLarge" />
 </particleProfile>
-
 <particleProfile
     id="waterSparkles"
     particlesPerSecond=50 >
@@ -277,7 +276,6 @@
     <velocity mean=0 sd=2 />
     <variety imageFile="sparkleSmall2" />
 </particleProfile>
-
 <particleProfile
     id="water"
     particlesPerSecond=200
@@ -289,7 +287,6 @@
     <variety imageFile="water" />
     <variety imageFile="waterLarge" />
 </particleProfile>
-
 <particleProfile
     id="waterSmall"
     particlesPerSecond=30
@@ -297,6 +294,17 @@
     <lifespan mean=400 sd=50 />
     <distance mean=0 sd=2 />
     <altitude mean=0 sd=2 />
+    <velocity mean=0 sd=2 />
+    <variety imageFile="water" />
+    <variety imageFile="waterLarge" />
+</particleProfile>
+<particleProfile
+    id="waterExplosion"
+    alpha=192 >
+    <particlesPerHit mean=100 sd=20 />
+    <lifespan mean=3000 sd=400 />
+    <distance mean=0 sd=10 />
+    <altitude mean=20 sd=3 />
     <velocity mean=0 sd=2 />
     <variety imageFile="water" />
     <variety imageFile="waterLarge" />
@@ -325,6 +333,19 @@
     <altitude mean=0 sd=2 />
     <velocity mean=0 sd=2 />
     <fallSpeed mean=-10 sd=3 />
+    <variety imageFile="orangePixel" />
+    <variety imageFile="purplePixel" count=2 />
+    <variety imageFile="darkGreyPixel" count=2 />
+    <variety imageFile="dirtLargeOrange" />
+</particleProfile>
+<particleProfile
+    id="dirtExplosion" >
+    <particlesPerHit mean=300 sd=40 />
+    <lifespan mean=3000 sd=400 />
+    <distance mean=0 sd=10 />
+    <altitude mean=20 sd=3 />
+    <velocity mean=0 sd=2 />
+    <fallSpeed mean=0 sd=2 />
     <variety imageFile="orangePixel" />
     <variety imageFile="purplePixel" count=2 />
     <variety imageFile="darkGreyPixel" count=2 />
