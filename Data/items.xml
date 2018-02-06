@@ -157,7 +157,7 @@
 		</item-->
 
     <!-- Ranged -->
-        <item id="rock" name="Rock" stackSize="100" strength="6" gearSlot="6" sounds="rock" >
+        <item id="rock" name="Rock" stackSize="20" strength="6" gearSlot="6" sounds="rock" >
             <weapon range="25" consumes="rock" projectile="rock" />
             <stats attack="1"/>
             <offset x="-3" />
@@ -173,7 +173,7 @@
             <weapon range="25" consumes="woodArrow" projectile="arrow" />
             <stats attack="1" hit="1"/>
 		</item>
-		<item id="tinJavelin" name="Light Javelin" gearSlot="6" sounds="spear" >
+		<item id="tinJavelin" name="Light Javelin" stackSize="20" gearSlot="6" sounds="spear" >
             <weapon range="25" consumes="tinJavelin" projectile="tinJavelin" />
             <stats attack="1" crit="1"/>
 			<offset x="-5" y="-21" />
@@ -239,14 +239,14 @@
 
     <!-- Ammo -->
         <!-- Rock -->
-        <item id="smoothRock"   name="Smooth Rock"  stackSize="100" sounds="rock" />
-        <item id="woodArrow"    name="Arrow"        stackSize="100" sounds="rock" />
+        <item id="smoothRock"   name="Smooth Rock"  stackSize="20"  sounds="rock" />
+        <item id="woodArrow"    name="Arrow"        stackSize="20"  sounds="rock" />
         <!-- Tin Javelin -->
-        <item id="boneDust"     name="Magic Dust"   stackSize="100" />
-        <item id="airDust"      name="Air Dust"     stackSize="100" />
-        <item id="earthDust"    name="Earth Dust"   stackSize="100" />
-        <item id="fireDust"     name="Fire Dust"    stackSize="100" />
-        <item id="waterDust"    name="Water Dust"   stackSize="100" />
+        <item id="boneDust"     name="Magic Dust"   stackSize="20" />
+        <item id="airDust"      name="Air Dust"     stackSize="20" />
+        <item id="earthDust"    name="Earth Dust"   stackSize="20" />
+        <item id="fireDust"     name="Fire Dust"    stackSize="20" />
+        <item id="waterDust"    name="Water Dust"   stackSize="20" />
 
 
 
