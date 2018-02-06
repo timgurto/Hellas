@@ -25,13 +25,14 @@ private:
 
     MapPoint _end;
     const void *_onReachDestinationArg = nullptr;
+    using Tail = std::vector<Sprite *>;
+    Tail _tail;
 
 
 public:
     struct Type : public SpriteType {
         Type(const std::string &id, const ScreenRect &drawRect) :
-            SpriteType(drawRect, "Images/Projectiles/"s + id + ".png"s), id(id) {
-        }
+            SpriteType(drawRect, "Images/Projectiles/"s + id + ".png"s), id(id) {}
         static Type Dummy(const std::string &id) { return Type{ id, {} }; }
 
         struct ptrCompare {
@@ -47,6 +48,11 @@ public:
         double speed = 0;
         std::string particlesAtEnd {};
         const SoundProfile *_sounds{ nullptr };
+
+        SpriteType _tailType;
+        int _tailLength{ 0 };
+        int _tailSeparation{ 0 };
+        void tail(const std::string &imageFile, const ScreenRect &drawRect, int length, int separation);
 
         void instantiate(const MapPoint &start, const MapPoint &end) const;
         friend class Projectile;

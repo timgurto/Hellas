@@ -131,6 +131,26 @@ void Client::loadData(const std::string &path){
             xr.findAttr(elem, "speed", projectile->speed);
             xr.findAttr(elem, "particlesAtEnd", projectile->particlesAtEnd);
 
+            auto tailElem = xr.findChild("tail", elem);
+            if (tailElem) {
+                auto imageFile = ""s;
+                xr.findAttr(tailElem, "image", imageFile);
+
+                auto drawRect = ScreenRect{};
+                xr.findAttr(tailElem, "x", drawRect.x);
+                xr.findAttr(tailElem, "y", drawRect.y);
+                xr.findAttr(tailElem, "w", drawRect.w);
+                xr.findAttr(tailElem, "h", drawRect.h);
+
+                auto length = 1;
+                xr.findAttr(tailElem, "length", length);
+
+                auto separation = 1;
+                xr.findAttr(tailElem, "separation", separation);
+
+                projectile->tail(imageFile, drawRect, length, separation);
+            }
+
             auto sounds = ""s;
             if (xr.findAttr(elem, "sounds", sounds))
                 projectile->sounds(sounds);

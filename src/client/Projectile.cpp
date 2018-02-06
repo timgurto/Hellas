@@ -17,11 +17,24 @@ void Projectile::update(double delta) {
             sounds->playOnce("impact"s);
 
         markForRemoval();
+        for (auto segment : _tail)
+            segment->markForRemoval();
         return;
     }
 
     auto newLocation = interpolate(location(), _end, distanceToMove);
+    auto locationDelta = newLocation - location();
     location(newLocation);
+    for (auto segment : _tail) {
+        auto oldSegmentLocation = segment->location();
+        segment->location(oldSegmentLocation + locationDelta);
+    }
+}
+
+void Projectile::Type::tail(const std::string & imageFile, const ScreenRect & drawRect, int length, int separation) {
+    _tailType = { drawRect, "Images/Projectiles/"s + imageFile + ".png"s };
+    _tailLength = length;
+    _tailSeparation = separation;
 }
 
 void Projectile::Type::sounds(const std::string & profile) {
@@ -30,5 +43,16 @@ void Projectile::Type::sounds(const std::string & profile) {
 
 void Projectile::Type::instantiate(const MapPoint & start, const MapPoint & end) const {
     auto &client = Client::instance();
-    client.addEntity(new Projectile(*this, start, end));
+    auto projectile = new Projectile(*this, start, end);
+    client.addEntity(projectile);
+
+    // Add tail
+    auto dist = distance(start, end);
+    for (auto i = 0; i != _tailLength; ++i) {
+        dist += _tailSeparation;
+        auto position = extrapolate(end, start, dist);
+        auto tailSegment = new Sprite(&_tailType, position);
+        client.addEntity(tailSegment);
+        projectile->_tail.push_back(tailSegment);
+    }
 }
