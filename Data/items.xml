@@ -174,7 +174,7 @@
             <stats attack="1" hit="1"/>
 		</item>
 		<item id="tinJavelin" name="Light Javelin" gearSlot="6" sounds="spear" >
-            <weapon range="25" consumes="tinJavelin" />
+            <weapon range="25" consumes="tinJavelin" projectile="tinJavelin" />
             <stats attack="1" crit="1"/>
 			<offset x="-5" y="-21" />
 		</item>

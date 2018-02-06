@@ -18,7 +18,12 @@
 
 <projectile id="arrow" speed=350 particlesAtEnd="blood" >
     <drawRect x=-2 y=-27 w=4 h=30 />
-    <tail image="stick" length=10 separation=1 x=-1 y=-26 w=2 h=29 />
+    <tail image="stick" length=15 separation=1 x=-1 y=-26 w=2 h=29 />
+</projectile>
+
+<projectile id="tinJavelin" speed=350 particlesAtEnd="blood" >
+    <drawRect x=-3 y=-28 w=6 h=32 />
+    <tail image="stick" length=40 separation=1 x=-1 y=-26 w=2 h=29 />
 </projectile>
 
 </root>
