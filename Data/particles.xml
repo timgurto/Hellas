@@ -356,6 +356,7 @@
     id="air"
     particlesPerSecond=30
     gravityModifier=0 >
+    <particlesPerHit mean=30 sd=5 />
     <lifespan mean=1000 sd=200 />
     <distance mean=5 sd=2 />
     <altitude mean=0 sd=7 />

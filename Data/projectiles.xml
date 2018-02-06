@@ -1,13 +1,14 @@
 <root>
 
+<projectile id="airball" speed=350 particlesAtEnd="air" >
+    <drawRect x=-7 y=-28 w=16 h=36 />
+</projectile>
 <projectile id="earthball" speed=350 particlesAtEnd="dirtExplosion" >
     <drawRect x=-7 y=-28 w=16 h=36 />
 </projectile>
-
 <projectile id="fireball" speed=350 particlesAtEnd="fireball" sounds="fireball" >
     <drawRect x=-7 y=-28 w=16 h=36 />
 </projectile>
-
 <projectile id="waterball" speed=350 particlesAtEnd="waterExplosion" >
     <drawRect x=-7 y=-28 w=16 h=36 />
 </projectile>
@@ -20,7 +21,6 @@
     <drawRect x=-2 y=-27 w=4 h=30 />
     <tail image="stick" length=15 separation=1 x=-1 y=-26 w=2 h=29 />
 </projectile>
-
 <projectile id="tinJavelin" speed=350 particlesAtEnd="blood" >
     <drawRect x=-3 y=-28 w=6 h=32 />
     <tail image="stick" length=40 separation=1 x=-1 y=-26 w=2 h=29 />

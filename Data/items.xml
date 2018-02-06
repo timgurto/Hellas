@@ -182,7 +182,7 @@
     <!-- Magic -->
 		<item id="airWand" name="Wand of Air" gearSlot="6" >
             <tag name="wand" />
-            <weapon range="25" school="air" consumes="boneDust" />
+            <weapon range="25" school="air" consumes="boneDust" projectile="airball" />
             <stats magicDamage="1" />
 			<offset x="-5" y="-2" />
             <particles profile="airSmall" x=-4 y=0 />
@@ -209,7 +209,7 @@
             <particles profile="waterSmall" x=-4 y=0 />
 		</item>
 		<item id="airStaff" name="Staff of Air" gearSlot="6" >
-            <weapon range="25" school="air" consumes="airDust" />
+            <weapon range="25" school="air" consumes="airDust" projectile="airball" />
             <stats magicDamage="3" />
             <offset x="-5" y="-20" />
             <particles profile="airSmall" x=-4 y=-19 />
