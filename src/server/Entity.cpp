@@ -173,96 +173,97 @@ void Entity::update(ms_t timeElapsed){
     onAttack();
 
     // Check if within range
-    if (distance(collisionRect(), pTarget->collisionRect()) <= attackRange()){
-        const Server &server = Server::instance();
-        MapPoint locus = midpoint(location(), pTarget->location());
+    if (distance(collisionRect(), pTarget->collisionRect()) > attackRange())
+        return;
 
-        auto outcome = generateHitAgainst(*pTarget, DAMAGE, SpellSchool::PHYSICAL, attackRange());
+    const Server &server = Server::instance();
+    MapPoint locus = midpoint(location(), pTarget->location());
 
-        switch (outcome) {
-        // These cases return
-        case MISS:
-            for (const User *userToInform : server.findUsersInArea(locus)) {
-                server.sendMessage(userToInform->socket(), SV_SHOW_MISS_AT, makeArgs(
-                    pTarget->location().x, pTarget->location().y));
-                if (attackRange() > MELEE_RANGE)
-                    sendRangedMissMessageTo(*userToInform);
-                return;
-            }
-        case DODGE:
-            for (const User *userToInform : server.findUsersInArea(locus)) {
-                server.sendMessage(userToInform->socket(), SV_SHOW_DODGE_AT, makeArgs(
-                    pTarget->location().x, pTarget->location().y));
-                if (attackRange() > MELEE_RANGE)
-                    sendRangedMissMessageTo(*userToInform);
-                return;
-            }
+    auto outcome = generateHitAgainst(*pTarget, DAMAGE, SpellSchool::PHYSICAL, attackRange());
 
-        // These cases continue on
-        case CRIT:
-            for (const User *userToInform : server.findUsersInArea(locus))
-                server.sendMessage(userToInform->socket(), SV_SHOW_CRIT_AT, makeArgs(
-                    pTarget->location().x, pTarget->location().y));
-            break;
-        case BLOCK:
-            for (const User *userToInform : server.findUsersInArea(locus))
-                server.sendMessage(userToInform->socket(), SV_SHOW_BLOCK_AT, makeArgs(
-                    pTarget->location().x, pTarget->location().y));
-            break;
-        }
-
-        auto rawDamage = static_cast<double>(_stats.attack);
-        if (outcome == CRIT)
-            rawDamage *= 2;
-
-        auto resistance = pTarget->_stats.resistanceByType(school());
-        auto resistanceMultiplier = (100 - resistance) / 100.0;
-        rawDamage *= resistanceMultiplier;
-
-        auto damage = SpellEffect::chooseRandomSpellMagnitude(rawDamage);
-
-        if (outcome == BLOCK) {
-            if (_stats.blockValue >= damage)
-                damage = 0;
-            else
-                damage -= _stats.blockValue;
-        }
-
-        // Alert nearby clients
-        MessageCode msgCode;
-        std::string args;
-        char
-            attackerTag = classTag(),
-            defenderTag = pTarget->classTag();
-        if (attackerTag == 'u' && defenderTag != 'u'){
-            msgCode = SV_PLAYER_HIT_ENTITY;
-            args = makeArgs(
-                    dynamic_cast<const User *>(this)->name(),
-                    pTarget->serial());
-        } else if (attackerTag != 'u' && defenderTag == 'u'){
-            msgCode = SV_ENTITY_HIT_PLAYER;
-            args = makeArgs(
-                    serial(),
-                    dynamic_cast<const User *>(pTarget)->name());
-        } else if (attackerTag == 'u' && defenderTag == 'u') {
-            msgCode = SV_PLAYER_HIT_PLAYER;
-            args = makeArgs(
-                    dynamic_cast<const User *>(this)->name(),
-                    dynamic_cast<const User *>(pTarget)->name());
-        } else {
-            assert(false);
-        }
-        for (const User *userToInform : server.findUsersInArea(locus)){
-            server.sendMessage(userToInform->socket(), msgCode, args);
+    switch (outcome) {
+    // These cases return
+    case MISS:
+        for (const User *userToInform : server.findUsersInArea(locus)) {
+            server.sendMessage(userToInform->socket(), SV_SHOW_MISS_AT, makeArgs(
+                pTarget->location().x, pTarget->location().y));
             if (attackRange() > MELEE_RANGE)
-                sendRangedHitMessageTo(*userToInform);
+                sendRangedMissMessageTo(*userToInform);
+            return;
+        }
+    case DODGE:
+        for (const User *userToInform : server.findUsersInArea(locus)) {
+            server.sendMessage(userToInform->socket(), SV_SHOW_DODGE_AT, makeArgs(
+                pTarget->location().x, pTarget->location().y));
+            if (attackRange() > MELEE_RANGE)
+                sendRangedMissMessageTo(*userToInform);
+            return;
         }
 
-        pTarget->reduceHealth(damage);
-
-        // Give target opportunity to react
-        pTarget->onAttackedBy(*this, damage);
+    // These cases continue on
+    case CRIT:
+        for (const User *userToInform : server.findUsersInArea(locus))
+            server.sendMessage(userToInform->socket(), SV_SHOW_CRIT_AT, makeArgs(
+                pTarget->location().x, pTarget->location().y));
+        break;
+    case BLOCK:
+        for (const User *userToInform : server.findUsersInArea(locus))
+            server.sendMessage(userToInform->socket(), SV_SHOW_BLOCK_AT, makeArgs(
+                pTarget->location().x, pTarget->location().y));
+        break;
     }
+
+    auto rawDamage = static_cast<double>(_stats.attack);
+    if (outcome == CRIT)
+        rawDamage *= 2;
+
+    auto resistance = pTarget->_stats.resistanceByType(school());
+    auto resistanceMultiplier = (100 - resistance) / 100.0;
+    rawDamage *= resistanceMultiplier;
+
+    auto damage = SpellEffect::chooseRandomSpellMagnitude(rawDamage);
+
+    if (outcome == BLOCK) {
+        if (_stats.blockValue >= damage)
+            damage = 0;
+        else
+            damage -= _stats.blockValue;
+    }
+
+    // Alert nearby clients
+    MessageCode msgCode;
+    std::string args;
+    char
+        attackerTag = classTag(),
+        defenderTag = pTarget->classTag();
+    if (attackerTag == 'u' && defenderTag != 'u'){
+        msgCode = SV_PLAYER_HIT_ENTITY;
+        args = makeArgs(
+                dynamic_cast<const User *>(this)->name(),
+                pTarget->serial());
+    } else if (attackerTag != 'u' && defenderTag == 'u'){
+        msgCode = SV_ENTITY_HIT_PLAYER;
+        args = makeArgs(
+                serial(),
+                dynamic_cast<const User *>(pTarget)->name());
+    } else if (attackerTag == 'u' && defenderTag == 'u') {
+        msgCode = SV_PLAYER_HIT_PLAYER;
+        args = makeArgs(
+                dynamic_cast<const User *>(this)->name(),
+                dynamic_cast<const User *>(pTarget)->name());
+    } else {
+        assert(false);
+    }
+    for (const User *userToInform : server.findUsersInArea(locus)){
+        server.sendMessage(userToInform->socket(), msgCode, args);
+        if (attackRange() > MELEE_RANGE)
+            sendRangedHitMessageTo(*userToInform);
+    }
+
+    pTarget->reduceHealth(damage);
+
+    // Give target opportunity to react
+    pTarget->onAttackedBy(*this, damage);
 }
 
 void Entity::updateBuffs(ms_t timeElapsed) {
