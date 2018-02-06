@@ -7,8 +7,10 @@ void Projectile::update(double delta) {
     auto reachedTarget = distanceToMove >= distanceFromTarget;
 
     if (reachedTarget) {
-        if (_onReachDestination != nullptr)
-            _onReachDestination(_end, _onReachDestinationArg);
+
+        if (!particlesAtEnd().empty())
+            Client::instance().addParticles(particlesAtEnd(), _end);
+
         markForRemoval();
         return;
     }

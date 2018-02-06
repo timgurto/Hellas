@@ -12,11 +12,9 @@ public:
     Projectile(const Type &type, const MapPoint &start, const MapPoint &end) :
         Sprite(&type, start), _end(end) {}
 
-    virtual void update(double delta) override;
+    const std::string &particlesAtEnd() const { return projectileType().particlesAtEnd; }
 
-    using onReachDestination_t = void (*)(const MapPoint &destination, const void *arg);
-    void onReachDestination(onReachDestination_t f, const void *arg = nullptr)
-            { _onReachDestination = f; _onReachDestinationArg = arg; }
+    virtual void update(double delta) override;
 
 private:
     const Type &projectileType() const { return * dynamic_cast<const Type *>(this->type()); }
@@ -24,7 +22,6 @@ private:
 
     MapPoint _end;
     const void *_onReachDestinationArg = nullptr;
-    onReachDestination_t _onReachDestination = nullptr;
 
 
 public:

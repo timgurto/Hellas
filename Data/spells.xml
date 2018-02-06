@@ -55,7 +55,7 @@ Functions:
 
 <!-- Magus -->
 <spell id="fireball" name="Fireball" cost=10 range=30 school="fire" >
-    <aesthetics projectile="fireball" sounds="fireball" impactParticles="fireball" />
+    <aesthetics projectile="fireball" sounds="fireball" />
     <targets enemy=1 />
     <function name="doDirectDamage" i1=5 />
 </spell>

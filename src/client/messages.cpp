@@ -1690,7 +1690,6 @@ void Client::handle_SV_SPELL_HIT(const std::string &spellID, const MapPoint &src
 
     if (spell.projectile()) {
         auto projectile = new Projectile(*spell.projectile(), src, dst);
-        projectile->onReachDestination(onSpellHit, &spell);
         addEntity(projectile);
     } else
         onSpellHit(dst, &spell);
