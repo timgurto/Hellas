@@ -170,7 +170,7 @@
 			<offset x="-7" y="0" />
 		</item>
 		<item id="bow" name="Bow" gearSlot="6" sounds="bow" >
-            <weapon range="25" consumes="woodArrow" />
+            <weapon range="25" consumes="woodArrow" projectile="arrow" />
             <stats attack="1" hit="1"/>
 		</item>
 		<item id="tinJavelin" name="Light Javelin" gearSlot="6" sounds="spear" >

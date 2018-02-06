@@ -11,14 +11,15 @@ class Projectile : public Sprite {
 public:
     struct Type;
 
-    Projectile(const Type &type, const MapPoint &start, const MapPoint &end) :
-        Sprite(&type, start), _end(end) {}
 
     const std::string &particlesAtEnd() const { return projectileType().particlesAtEnd; }
 
     virtual void update(double delta) override;
 
 private:
+    Projectile(const Type &type, const MapPoint &start, const MapPoint &end) :
+        Sprite(&type, start), _end(end) {}
+
     const Type &projectileType() const { return * dynamic_cast<const Type *>(this->type()); }
     double speed() const { return projectileType().speed; }
 
@@ -46,5 +47,8 @@ public:
         double speed = 0;
         std::string particlesAtEnd {};
         const SoundProfile *_sounds{ nullptr };
+
+        void instantiate(const MapPoint &start, const MapPoint &end) const;
+        friend class Projectile;
     };
 };

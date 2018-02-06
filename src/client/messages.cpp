@@ -1696,10 +1696,9 @@ void Client::handle_SV_SPELL_HIT(const std::string &spellID, const MapPoint &src
     if (spell.sounds())
         spell.sounds()->playOnce("launch");
 
-    if (spell.projectile()) {
-        auto projectile = new Projectile(*spell.projectile(), src, dst);
-        addEntity(projectile);
-    } else
+    if (spell.projectile())
+        spell.projectile()->instantiate(src, dst);
+    else
         onSpellHit(dst, &spell);
 }
 
@@ -1714,7 +1713,7 @@ void Client::handle_SV_SPELL_MISS(const std::string &spellID, const MapPoint &sr
 
     if (spell.projectile()) {
         auto pointPastDest = extrapolate(src, dst, 2000);
-        addEntity(new Projectile(*spell.projectile(), src, pointPastDest));
+        spell.projectile()->instantiate(src, pointPastDest);
     }
 }
 
@@ -1725,10 +1724,8 @@ void Client::handle_SV_RANGED_NPC_HIT(const std::string & npcID, const MapPoint 
     const auto *npcType = dynamic_cast<const ClientNPCType *>(*it);
     assert(npcType);
 
-    if (npcType->projectile()) {
-        auto projectile = new Projectile(*npcType->projectile(), src, dst);
-        addEntity(projectile);
-    }
+    if (npcType->projectile())
+        npcType->projectile()->instantiate(src, dst);
 }
 
 void Client::handle_SV_RANGED_NPC_MISS(const std::string & npcID, const MapPoint & src, const MapPoint & dst) {
@@ -1740,7 +1737,7 @@ void Client::handle_SV_RANGED_NPC_MISS(const std::string & npcID, const MapPoint
 
     if (npcType->projectile()) {
         auto pointPastDest = extrapolate(src, dst, 2000);
-        addEntity(new Projectile(*npcType->projectile(), src, pointPastDest));
+        npcType->projectile()->instantiate(src, pointPastDest);
     }
 }
 
@@ -1751,8 +1748,7 @@ void Client::handle_SV_RANGED_WEAPON_HIT(const std::string & weaponID, const Map
     const auto &item = it->second;
 
     if (item.projectile()) {
-        auto projectile = new Projectile(*item.projectile(), src, dst);
-        addEntity(projectile);
+        item.projectile()->instantiate(src, dst);
     }
 }
 
@@ -1764,7 +1760,7 @@ void Client::handle_SV_RANGED_WEAPON_MISS(const std::string & weaponID, const Ma
 
     if (item.projectile()) {
         auto pointPastDest = extrapolate(src, dst, 2000);
-        addEntity(new Projectile(*item.projectile(), src, pointPastDest));
+        item.projectile()->instantiate(src, pointPastDest);
     }
 }
 

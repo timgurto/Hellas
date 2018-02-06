@@ -27,3 +27,8 @@ void Projectile::update(double delta) {
 void Projectile::Type::sounds(const std::string & profile) {
     _sounds = Client::instance().findSoundProfile(profile);
 }
+
+void Projectile::Type::instantiate(const MapPoint & start, const MapPoint & end) const {
+    auto &client = Client::instance();
+    client.addEntity(new Projectile(*this, start, end));
+}
