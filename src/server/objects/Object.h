@@ -46,7 +46,7 @@ public:
     void decrementGatheringUsers(const User *userToSkip = nullptr);
     void removeAllGatheringUsers();
     size_t numUsersGathering() const { return _numUsersGathering; }
-    bool isBeingBuilt() const { return !_remainingMaterials.isEmpty(); }
+    bool isBeingBuilt() const { return !_remainingMaterials.isEmpty() && !isDead(); }
     const ItemSet &remainingMaterials() const { return _remainingMaterials; }
     ItemSet &remainingMaterials() { return _remainingMaterials; }
     void removeMaterial(const ServerItem *item, size_t qty);
