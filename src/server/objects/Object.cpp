@@ -113,6 +113,8 @@ void Object::update(ms_t timeElapsed){
 
     // Transform
     do {
+        if (isDead())
+            break;
         if (_transformTimer == 0)
             break;
         if (objType().transformObject() == nullptr)
