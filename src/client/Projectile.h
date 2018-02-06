@@ -4,6 +4,8 @@
 
 using namespace std::string_literals;
 
+class SoundProfile;
+
 // A sprite that travels in a straight line before disappearing.
 class Projectile : public Sprite {
 public:
@@ -37,8 +39,12 @@ public:
             }
         };
 
+        void sounds(const std::string &profile);
+        const SoundProfile *sounds() const { return _sounds; }
+
         std::string id;
         double speed = 0;
-        std::string particlesAtEnd = {};
+        std::string particlesAtEnd {};
+        const SoundProfile *_sounds{ nullptr };
     };
 };

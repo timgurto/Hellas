@@ -86,28 +86,6 @@ void Client::loadData(const std::string &path){
     }
     Avatar::_combatantType.damageParticles(findParticleProfile("blood"));
 
-    // Projectiles
-    if (xr.newFile(path + "/projectiles.xml")) {
-        _projectileTypes.clear();
-        for (auto elem : xr.getChildren("projectile")) {
-
-            auto id = ""s;
-            if (!xr.findAttr(elem, "id", id))
-                continue;
-
-            auto drawRect = ScreenRect{};
-            if (!xr.findRectChild("drawRect", elem, drawRect))
-                continue;
-
-            Projectile::Type *projectile = new Projectile::Type(id, drawRect);
-
-            xr.findAttr(elem, "speed", projectile->speed);
-            xr.findAttr(elem, "particlesAtEnd", projectile->particlesAtEnd);
-
-            _projectileTypes.insert(projectile);
-        }
-    }
-
     // Sounds
     drawLoadingScreen("Loading sounds", 0.638);
     if (xr.newFile(path + "/sounds.xml")){
@@ -132,6 +110,32 @@ void Client::loadData(const std::string &path){
                             continue;
                 sp.add(type, file);
             }
+        }
+    }
+
+    // Projectiles
+    if (xr.newFile(path + "/projectiles.xml")) {
+        _projectileTypes.clear();
+        for (auto elem : xr.getChildren("projectile")) {
+
+            auto id = ""s;
+            if (!xr.findAttr(elem, "id", id))
+                continue;
+
+            auto drawRect = ScreenRect{};
+            if (!xr.findRectChild("drawRect", elem, drawRect))
+                continue;
+
+            Projectile::Type *projectile = new Projectile::Type(id, drawRect);
+
+            xr.findAttr(elem, "speed", projectile->speed);
+            xr.findAttr(elem, "particlesAtEnd", projectile->particlesAtEnd);
+
+            auto sounds = ""s;
+            if (xr.findAttr(elem, "sounds", sounds))
+                projectile->sounds(sounds);
+
+            _projectileTypes.insert(projectile);
         }
     }
 
