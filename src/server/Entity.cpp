@@ -167,14 +167,14 @@ void Entity::update(ms_t timeElapsed){
     if (!canAttack())
         return;
 
+    // Check if within range
+    if (distance(collisionRect(), pTarget->collisionRect()) > attackRange())
+        return;
+
     // Reset timer
     _attackTimer = _stats.attackTime;
 
     onAttack();
-
-    // Check if within range
-    if (distance(collisionRect(), pTarget->collisionRect()) > attackRange())
-        return;
 
     const Server &server = Server::instance();
     MapPoint locus = midpoint(location(), pTarget->location());
