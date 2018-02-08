@@ -11,6 +11,13 @@ public:
 
     Label *centralLabel() { return _central; }
 
+    void setColor(const Color &color);
+    void changeText(const std::string &text);
+
 private:
-    Label *_central;
+    Label *_central{ nullptr };
+    Label *_u{ nullptr };
+    Label *_d{ nullptr };
+    Label *_l{ nullptr };
+    Label *_r{ nullptr };
 };

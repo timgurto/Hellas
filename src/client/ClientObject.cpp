@@ -182,7 +182,7 @@ void ClientObject::onRightClick(Client &client){
 
     // Make sure object is in range
     if (distance(client.playerCollisionRect(), collisionRect()) > Client::ACTION_DISTANCE) {
-        client._debug("That object is too far away.", Color::WARNING);
+        client.showErrorMessage("That object is too far away.", Color::WARNING);
         return;
     }
     
@@ -698,7 +698,7 @@ void ClientObject::sendMerchantSlot(void *serialAndSlot){
     const auto &objects = Client::_instance->_objects;
     auto it = objects.find(serial);
     if (it == objects.end()){
-        Client::debug()("Attempting to configure nonexistent object", Color::FAILURE);
+        Client::instance().showErrorMessage("Attempting to configure nonexistent object", Color::FAILURE);
         return;
     }
     ClientObject &obj = *it->second;
@@ -709,7 +709,7 @@ void ClientObject::sendMerchantSlot(void *serialAndSlot){
     mSlot.priceQty = obj._priceQtyBoxes[slot]->textAsNum();
 
     if (mSlot.wareItem == nullptr || mSlot.priceItem == nullptr){
-        Client::debug()("You must select an item; clearing slot.", Color::WARNING);
+        Client::instance().showErrorMessage("You must select an item; clearing slot.", Color::WARNING);
         Client::_instance->sendMessage(CL_CLEAR_MERCHANT_SLOT, makeArgs(serial, slot));
         return;
     }

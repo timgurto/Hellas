@@ -161,7 +161,7 @@ void Client::loadData(const std::string &path){
 
     // Spells
     if (!xr.newFile(path + "/spells.xml"))
-        _debug("Failed to load spells.xml", Color::FAILURE);
+        showErrorMessage("Failed to load spells.xml", Color::FAILURE);
     else {
         for (auto elem : xr.getChildren("spell")) {
             std::string id;
@@ -247,7 +247,7 @@ void Client::loadData(const std::string &path){
 
     // Buffs
     if (!xr.newFile(path + "/buffs.xml"))
-        _debug("Failed to load buffs.xml", Color::FAILURE);
+        showErrorMessage("Failed to load buffs.xml", Color::FAILURE);
     else {
         for (auto elem : xr.getChildren("buff")) {
             std::string id;
@@ -286,6 +286,9 @@ void Client::loadData(const std::string &path){
             _buffTypes[id] = newBuff;
         }
     }
+
+    for (auto pair : _spells)
+        _debug << pair.second->name() << ": "s << pair.second->createEffectDescription() << Log::endl;
 
     _tagNames.readFromXMLFile(path + "/tags.xml");
 
@@ -406,7 +409,8 @@ void Client::loadData(const std::string &path){
                         ClientItem &item = _items[s];
                         cot->strength(&item, n);
                 } else
-                    _debug("Transformation specified without target id; skipping.", Color::FAILURE);
+                    showErrorMessage("Transformation specified without target id; skipping.",
+                        Color::FAILURE);
             }
 
             for (auto particles : xr.getChildren("particles", elem)) {
@@ -509,7 +513,7 @@ void Client::loadData(const std::string &path){
 
     // Classes/talents
     if (!xr.newFile(path + "/classes.xml"))
-        _debug("Failed to load classes.xml", Color::FAILURE);
+        showErrorMessage("Failed to load classes.xml", Color::FAILURE);
     else {
         _classes.clear();
         for (auto elem : xr.getChildren("class")) {
@@ -619,7 +623,7 @@ void Client::loadData(const std::string &path){
             xr.findAttr(elem, "product", s);
             auto it = _items.find(s);
             if (it == _items.end()) {
-                _debug << Color::FAILURE << "Skipping recipe with invalid product " << s << Log::endl;
+                showErrorMessage("Skipping recipe with invalid product "s + s, Color::FAILURE);
                 continue;
             }
             const ClientItem *item = &it->second;
@@ -638,7 +642,7 @@ void Client::loadData(const std::string &path){
                 if (xr.findAttr(child, "id", s)) {
                     auto it = _items.find(s);
                     if (it == _items.end()) {
-                        _debug << Color::FAILURE << "Skipping invalid recipe material " << s << Log::endl;
+                        showErrorMessage("Skipping invalid recipe material "s + s, Color::FAILURE);
                         continue;
                     }
                     const ClientItem *material = &it->second;
@@ -733,7 +737,7 @@ void Client::loadData(const std::string &path){
             break;
         auto elem = xr.findChild("size");
         if (elem == nullptr || !xr.findAttr(elem, "x", _mapX) || !xr.findAttr(elem, "y", _mapY)) {
-            _debug("Map size missing or incomplete.", Color::FAILURE);
+            showErrorMessage("Map size missing or incomplete.", Color::FAILURE);
             break;
         }
         _map = std::vector<std::vector<char> >(_mapX);
@@ -755,7 +759,7 @@ void Client::loadData(const std::string &path){
         mapSuccessful = true;
     } while (false);
     if (!mapSuccessful)
-        _debug("Failed to load map.", Color::FAILURE);
+        showErrorMessage("Failed to load map.", Color::FAILURE);
 
 
     populateBuildList();

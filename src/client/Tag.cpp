@@ -14,14 +14,14 @@ const std::string & TagNames::operator[](const std::string & id) const {
 void TagNames::readFromXMLFile(const std::string &filename) {
     XmlReader xr(filename);
     if (!xr) {
-        Client::debug()("Failed to load data from " + filename, Color::FAILURE);
+        Client::instance().showErrorMessage("Failed to load data from "s + filename, Color::FAILURE);
         return;
     }
     for (auto elem : xr.getChildren("tag")) {
         std::string id, name;
         if (!xr.findAttr(elem, "id", id) ||
             !xr.findAttr(elem, "name", name)) {
-            Client::debug()("Skipping tag with insufficient info.", Color::RED);
+            Client::instance().showErrorMessage("Skipping tag with insufficient info."s, Color::FAILURE);
             continue;
         }
         container_[id] = name;

@@ -7,21 +7,32 @@ Element(rect){
     const auto
         w = rect.w - 2,
         h = rect.h - 2;
-    auto
-        u = new Label({ 1, 0, w, h }, text, justificationH, justificationV),
-        d = new Label({ 1, 2, w, h }, text, justificationH, justificationV),
-        l = new Label({ 0, 1, w, h }, text, justificationH, justificationV),
-        r = new Label({ 2, 1, w, h }, text, justificationH, justificationV),
-        _central = new Label({ 1, 1, w, h }, text, justificationH, justificationV);
+    _u = new Label({ 1, 0, w, h }, text, justificationH, justificationV),
+    _d = new Label({ 1, 2, w, h }, text, justificationH, justificationV),
+    _l = new Label({ 0, 1, w, h }, text, justificationH, justificationV),
+    _r = new Label({ 2, 1, w, h }, text, justificationH, justificationV);
+    _central = new Label({ 1, 1, w, h }, text, justificationH, justificationV);
 
-    u->setColor(Color::OUTLINE);
-    d->setColor(Color::OUTLINE);
-    l->setColor(Color::OUTLINE);
-    r->setColor(Color::OUTLINE);
+    _u->setColor(Color::OUTLINE);
+    _d->setColor(Color::OUTLINE);
+    _l->setColor(Color::OUTLINE);
+    _r->setColor(Color::OUTLINE);
 
-    addChild(u);
-    addChild(d);
-    addChild(l);
-    addChild(r);
+    addChild(_u);
+    addChild(_d);
+    addChild(_l);
+    addChild(_r);
     addChild(_central);
+}
+
+void OutlinedLabel::setColor(const Color &color) {
+    _central->setColor(color);
+}
+
+void OutlinedLabel::changeText(const std::string &text) {
+    _u->changeText(text);
+    _d->changeText(text);
+    _l->changeText(text);
+    _r->changeText(text);
+    _central->changeText(text);
 }

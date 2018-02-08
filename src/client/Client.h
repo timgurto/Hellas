@@ -32,6 +32,7 @@
 #include "WordWrapper.h"
 #include "ui/ChoiceList.h"
 #include "ui/ItemSelector.h"
+#include "ui/OutlinedLabel.h"
 #include "ui/Window.h"
 #include "../Args.h"
 #include "../Point.h"
@@ -58,6 +59,8 @@ public:
 
     const Socket &socket() const;
     TTF_Font *defaultFont() const;
+
+    void showErrorMessage(const std::string &message, Color color) const;
 
     const Avatar &character() const { return _character; }
     const ScreenPoint &offset() const { return _intOffset; }
@@ -267,23 +270,23 @@ private:
     ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const;
 
     // Social window
-    Window *_socialWindow = nullptr;
+    Window *_socialWindow{ nullptr };
     void initializeSocialWindow();
     void cleanupSocialWindow();
-    List *_warsList = nullptr;
-    Element *_citySection = nullptr;
+    List *_warsList{ nullptr };
+    Element *_citySection{ nullptr };
     void refreshCitySection();
     void populateWarsList();
 
-    Window *_helpWindow = nullptr;
+    Window *_helpWindow{ nullptr };
     void initializeHelpWindow();
     HelpEntries _helpEntries;
 
-    Window *_classWindow = nullptr;
-    Element *_talentTrees = nullptr;
-    Label *_levelLabel = nullptr;
-    Label *_xpLabel = nullptr;
-    Label *_pointsAllocatedLabel = nullptr;
+    Window *_classWindow{ nullptr };
+    Element *_talentTrees{ nullptr };
+    Label *_levelLabel{ nullptr };
+    Label *_xpLabel{ nullptr };
+    Label *_pointsAllocatedLabel{ nullptr };
     void initializeClassWindow();
         static void confirmAndUnlearnTalents(void *);
     void populateClassWindow();
@@ -296,10 +299,11 @@ private:
     ui_t _ui;
     void addUI(Element *element);
     Element *_castBar;
-    Element *_hotbar = nullptr;
+    Element *_hotbar{ nullptr };
     std::vector<Button*> _hotbarButtons = { 10, nullptr };
-    List *_buffsDisplay = nullptr;
-    Element *_targetBuffs = nullptr;
+    List *_buffsDisplay{ nullptr };
+    Element *_targetBuffs{ nullptr };
+    OutlinedLabel *_lastErrorMessage{ nullptr };
     void initUI();
         void initChatLog();
         void initWindows();

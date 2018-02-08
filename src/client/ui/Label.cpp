@@ -51,6 +51,7 @@ void Label::matchW(){
 
 void Label::setColor(const Color &color){
     _color = color;
+    markChanged();
 }
 
 void Label::changeText(const std::string &text){

@@ -140,7 +140,7 @@ const Tooltip &ClientItem::tooltip() const{
     if (castsSpellOnUse()) {
         auto it = client._spells.find(spellToCastOnUse());
         if (it == client._spells.end()) {
-            client.debug() << Color::FAILURE << "Can't find spell: " << spellToCastOnUse() << Log::endl;
+            client.showErrorMessage("Can't find spell: "s + spellToCastOnUse(), Color::FAILURE);
         } else {
             tooltip.setColor(Color::ITEM_STATS);
             tooltip.addLine("Right-click: "s + it->second->createEffectDescription());
@@ -168,8 +168,8 @@ void ClientItem::fetchAmmoItem() const {
     const Client &client = *Client::_instance;
     auto it = client._items.find(_weaponAmmoID);
     if (it == client._items.end()) {
-        client.debug() << Color::FAILURE << "Unknown item "s << _weaponAmmoID
-            << " specified as ammo"s << Log::endl;
+        client.showErrorMessage("Unknown item "s + _weaponAmmoID + " specified as ammo"s,
+            Color::FAILURE);
         return;
     }
     _weaponAmmo = &(it->second);

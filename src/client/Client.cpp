@@ -172,7 +172,7 @@ _debug("client.log"){
     drawLoadingScreen("Initializing audio", 0.5);
     int ret = (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 1, 512) < 0);
     if (ret < 0){
-        _debug("SDL_mixer failed to initialize.", Color::FAILURE);
+        showErrorMessage("SDL_mixer failed to initialize.", Color::FAILURE);
     }
     Mix_AllocateChannels(MIXING_CHANNELS);
 
@@ -268,7 +268,7 @@ void Client::checkSocket(){
         serverAddr.sin_port = htons(port);
 
         if (connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
-            _debug << Color::FAILURE << "Connection error: " << WSAGetLastError() << Log::endl;
+            showErrorMessage("Connection error: "s + toString(WSAGetLastError()), Color::FAILURE);
             _connectionStatus = CONNECTION_ERROR;
         } else {
 #ifdef _DEBUG
@@ -288,7 +288,7 @@ void Client::checkSocket(){
     static timeval selectTimeout = {0, 10000};
     int activity = select(0, &readFDs, nullptr, nullptr, &selectTimeout);
     if (activity == SOCKET_ERROR) {
-        _debug << Color::FAILURE << "Error polling sockets: " << WSAGetLastError() << Log::endl;
+        showErrorMessage("Error polling sockets: "s + toString(WSAGetLastError()), Color::FAILURE);
         return;
     }
     if (FD_ISSET(_socket.getRaw(), &readFDs)) {
@@ -356,7 +356,7 @@ void Client::gameLoop(){
 
     // Ensure server connectivity
     if (_time - _lastPingReply > SERVER_TIMEOUT) {
-        _debug("Disconnected from server", Color::FAILURE);
+        showErrorMessage("Disconnected from server", Color::FAILURE);
         _socket = Socket();
         _loggedIn = false;
     }

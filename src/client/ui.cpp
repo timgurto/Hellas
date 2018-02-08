@@ -4,6 +4,11 @@
 #include "ui/OutlinedLabel.h"
 #include "ui/TextBox.h"
 
+void Client::showErrorMessage(const std::string & message, Color color)  const{
+    _lastErrorMessage->changeText(message);
+    _lastErrorMessage->setColor(color);
+}
+
 void Client::initUI() {
     if (_defaultFont != nullptr)
         TTF_CloseFont(_defaultFont);
@@ -27,6 +32,12 @@ void Client::initUI() {
     initMenuBar();
     initPlayerPanels();
     initTargetBuffs();
+
+    const auto ERROR_FROM_BOTTOM = 50;
+    _lastErrorMessage = new OutlinedLabel(
+        { 0, SCREEN_Y - ERROR_FROM_BOTTOM, SCREEN_X, Element::TEXT_HEIGHT }, {},
+        Element::CENTER_JUSTIFIED);
+    addUI(_lastErrorMessage);
 }
 
 void Client::initChatLog() {
