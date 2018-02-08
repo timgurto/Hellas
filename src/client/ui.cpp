@@ -7,6 +7,11 @@
 void Client::showErrorMessage(const std::string & message, Color color)  const{
     _lastErrorMessage->changeText(message);
     _lastErrorMessage->setColor(color);
+
+    const auto TIME_TO_SHOW_ERROR_MESSAGE = 5000;
+    _errorMessageTimer = TIME_TO_SHOW_ERROR_MESSAGE;
+
+    _lastErrorMessage->show();
 }
 
 void Client::initUI() {
@@ -200,6 +205,14 @@ void Client::refreshTargetBuffs() {
         _targetBuffs->addChild(icon);
         x += 17;
     }
+}
+
+void Client::updateUI() {
+    if (_timeElapsed >= _errorMessageTimer) {
+        _errorMessageTimer = 0;
+        _lastErrorMessage->hide();
+    } else
+        _errorMessageTimer -= _timeElapsed;
 }
 
 void Client::initMenuBar() {

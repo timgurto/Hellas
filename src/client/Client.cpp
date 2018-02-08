@@ -424,6 +424,8 @@ void Client::gameLoop(){
     if (_mouseMoved)
         checkMouseOver();
 
+    updateUI();
+
     checkSocket();
     // Draw
     draw();

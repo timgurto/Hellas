@@ -304,6 +304,7 @@ private:
     List *_buffsDisplay{ nullptr };
     Element *_targetBuffs{ nullptr };
     OutlinedLabel *_lastErrorMessage{ nullptr };
+    mutable ms_t _errorMessageTimer{ 0 };
     void initUI();
         void initChatLog();
         void initWindows();
@@ -320,6 +321,7 @@ private:
                 static Element *assembleBuffEntry(const ClientBuffType &type, bool isDebuff = false);
         void initTargetBuffs();
             void refreshTargetBuffs();
+    void updateUI();
 
     // Chat
     Element *_chatContainer;
