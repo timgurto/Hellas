@@ -33,6 +33,23 @@ SpellSchool::operator std::string() const {
     return{};
 }
 
+std::string SpellSchool::midSentenceString() const {
+    switch (_type) {
+    case AIR:
+        return "air";
+    case EARTH:
+        return "earth";
+    case FIRE:
+        return "fire";
+    case WATER:
+        return "water";
+    case PHYSICAL:
+        return "physical";
+    }
+    assert(false);
+    return{};
+}
+
 const Color & SpellSchool::color() const {
     switch (_type) {
     case AIR:

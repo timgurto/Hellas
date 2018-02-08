@@ -79,19 +79,22 @@ std::string ClientSpell::createEffectDescription() const {
     else {
         if (_isAoE)
             targetString = "all targets within "s + toString(_range) + " podes"s;
-        else
+        else {
+            
             targetString = "target"s;
+        }
     }
 
-    if (statsBuff) {
+    auto damageStr = _school.midSentenceString() +" damage"s;
+
+    if (statsBuff)
         oss << buff->stats().buffDescription() << targetString;
-    }
 
     else if (effectName == "doDirectDamage")
-        oss << "Deal " << effectArgs.i1 << " damage to " << targetString;
+        oss << "Deal " << effectArgs.i1 << " "s + damageStr + " to " << targetString;
 
     else if (effectName == "doDirectDamageWithModifiedThreat") {
-        oss << "Deal " << effectArgs.i1 << " damage to " << targetString;
+        oss << "Deal " << effectArgs.i1 << " "s + damageStr + " to " << targetString;
         oss << ", while causing a " << (effectArgs.d1 < 1.0 ? "low" : "high") << " amount of threat";
     }
 

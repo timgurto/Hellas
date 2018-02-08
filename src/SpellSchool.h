@@ -21,6 +21,7 @@ public:
     SpellSchool(Type type) : _type(type) {}
     SpellSchool(const std::string &name);
     operator std::string() const;
+    std::string midSentenceString() const;
     bool operator==(SpellSchool rhs) const { return _type == rhs._type; }
     bool operator!=(SpellSchool rhs) const { return ! (_type == rhs._type); }
     bool isMagic() const { return _type != PHYSICAL; }
