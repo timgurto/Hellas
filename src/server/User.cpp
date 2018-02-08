@@ -340,11 +340,16 @@ void User::removeItems(const ItemSet &items) {
 
 static void removeItemsFrom(const std::string & tag, size_t &remaining,
         ServerItem::vect_t &container, std::set<size_t> &slotsChanged) {
+    if (remaining == 0)
+        return;
+
     slotsChanged = {};
     for (size_t i = 0; i != container.size(); ++i) {
         auto &slot = container[i];
         auto &itemType = slot.first;
         auto &qty = slot.second;
+        if (itemType == nullptr)
+            continue;
         if (itemType->isTag(tag)) {
             size_t itemsToRemove = min(qty, remaining);
             remaining -= itemsToRemove;
