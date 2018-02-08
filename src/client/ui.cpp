@@ -40,7 +40,7 @@ void Client::initUI() {
 
     const auto ERROR_FROM_BOTTOM = 50;
     _lastErrorMessage = new OutlinedLabel(
-        { 0, SCREEN_Y - ERROR_FROM_BOTTOM, SCREEN_X, Element::TEXT_HEIGHT }, {},
+        { 0, SCREEN_Y - ERROR_FROM_BOTTOM, SCREEN_X, Element::TEXT_HEIGHT + 4 }, {},
         Element::CENTER_JUSTIFIED);
     addUI(_lastErrorMessage);
 }
