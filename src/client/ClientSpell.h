@@ -13,6 +13,15 @@ class SoundProfile;
 
 class ClientSpell {
 public:
+    enum TargetType {
+        SELF,
+        FRIENDLY,
+        ENEMY,
+        ALL,
+
+        NUM_TARGET_TYPES
+    };
+
     struct Args {
         int i1{ 0 };
         double d1{ 0 };
@@ -38,6 +47,7 @@ public:
     void range(Podes r) { _range = r; }
     void radius(Podes r) { _range = r;  _isAoE = true; }
     void school(SpellSchool school) { _school = school; }
+    void targetType(TargetType t) { _targetType = t; }
 
     std::string createEffectDescription() const;
 
@@ -57,6 +67,7 @@ private:
 
     std::string _effectName = {};
     Args _effectArgs = {};
+    TargetType _targetType = NUM_TARGET_TYPES;
 };
 
 using ClientSpells = std::map<std::string, ClientSpell *>;

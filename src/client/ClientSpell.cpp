@@ -80,8 +80,23 @@ std::string ClientSpell::createEffectDescription() const {
         if (_isAoE)
             targetString = "all targets within "s + toString(_range) + " podes"s;
         else {
-            
-            targetString = "target"s;
+            switch (_targetType) {
+            case ALL:
+                assert(false);
+                targetString = "enemy or friendly target"s;
+                break;
+            case FRIENDLY:
+                targetString = "friendly target"s;
+                break;
+            case ENEMY:
+                targetString = "target"s;
+                break;
+            case SELF:
+                targetString = "yourself"s;
+                break;
+            default:
+                assert(false);
+            }
         }
     }
 
@@ -113,7 +128,7 @@ std::string ClientSpell::createEffectDescription() const {
         if (scalar < 1.0)
             oss << "Reduce your threat against target by " << toInt((1.0 - scalar) * 100.0) << "%";
         else
-            oss << "Increase your threat against target by " << toInt((scalar - 1.0) * 100.0) << "%";
+            oss << "Increase your threat against " << targetString << " by " << toInt((scalar - 1.0) * 100.0) << "%";
     }
 
     if (isBuff) {

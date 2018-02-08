@@ -218,6 +218,30 @@ void Client::loadData(const std::string &path){
                         newSpell->impactParticles(profile);
                 }
             }
+
+            // Contains many assumptions about allowed/forbidden combinations.
+            auto validTargets = xr.findChild("targets", elem);
+            assert (validTargets);
+            if (validTargets) {
+                auto val = 0;
+                auto self = xr.findAttr(validTargets, "self", val) && val != 0;
+                auto friendly = xr.findAttr(validTargets, "friendly", val) && val != 0;
+                auto enemy = xr.findAttr(validTargets, "enemy", val) && val != 0;
+
+                if (friendly) {
+                    assert(self);
+                    if (enemy)
+                        newSpell->targetType(ClientSpell::TargetType::ALL);
+                    else
+                        newSpell->targetType(ClientSpell::TargetType::FRIENDLY);
+                } else if (enemy) {
+                    assert(!self);
+                    newSpell->targetType(ClientSpell::TargetType::ENEMY);
+                } else {
+                    assert(self);
+                    newSpell->targetType(ClientSpell::TargetType::SELF);
+                }
+            }
         }
     }
 
