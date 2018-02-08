@@ -287,9 +287,6 @@ void Client::loadData(const std::string &path){
         }
     }
 
-    for (auto pair : _spells)
-        _debug << pair.second->name() << ": "s << pair.second->createEffectDescription() << Log::endl;
-
     _tagNames.readFromXMLFile(path + "/tags.xml");
 
     if (xr.newFile(path + "/items.xml")) // Early, because object types may insert new items.
