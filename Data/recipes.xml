@@ -320,9 +320,9 @@
         <unlockedBy item="entrails" chance="0.1" />
     </recipe>
     <recipe
-        id="tinJavelin" time="4000" >
-        <material id="tinBar" quantity="2" />
-        <material id="stick" quantity="20" />
+        id="tinJavelin" time="4000" quantity="2">
+        <material id="tinBar" quantity="1" />
+        <material id="stick" quantity="2" />
         <tool class="smelting1" />
         <tool class="spearMould" />
         <unlockedBy recipe="spearMould" />
