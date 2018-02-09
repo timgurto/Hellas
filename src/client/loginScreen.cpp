@@ -3,6 +3,7 @@
 #include "Client.h"
 #include "Particle.h"
 #include "../versionUtil.h"
+#include "ui/Indicator.h"
 #include "ui/Label.h"
 #include "ui/TextBox.h"
 
@@ -121,12 +122,14 @@ void exit(void *data){
 
 void Client::initLoginScreen(){
     // UI elements
-    static const px_t
+    const px_t
         BUTTON_W = 100,
         BUTTON_HEIGHT = 20,
         SCREEN_MID_X = 335,
         BUTTON_X = SCREEN_MID_X - BUTTON_W / 2,
-        GAP = 20;
+        GAP = 20,
+        LEFT_MARGIN = 10,
+        LABEL_GAP = Element::TEXT_HEIGHT + 2;
     px_t
         Y = (SCREEN_Y - BUTTON_HEIGHT) / 2;
 
@@ -148,19 +151,35 @@ void Client::initLoginScreen(){
     _loginUI.push_back(new Button({ SCREEN_X - BUTTON_W - GAP, SCREEN_Y - BUTTON_HEIGHT - GAP,
                                        BUTTON_W, BUTTON_HEIGHT }, "Quit", exit, &_loop));
 
-    std::string serverIP;
-    if (cmdLineArgs.contains("server-ip"))
-        serverIP = cmdLineArgs.getString("server-ip");
-    else {
-        serverIP = _defaultServerAddress;
-    }
-    auto serverAddressY = SCREEN_Y - Element::TEXT_HEIGHT - GAP;
-    _loginUI.push_back(new OutlinedLabel({ GAP, serverAddressY, 200, Element::TEXT_HEIGHT+5 },
-        "Server: " + serverIP));
+    {
+        Y = 318;
 
-    auto clientVersionY = serverAddressY - Element::TEXT_HEIGHT - 2;
-    _loginUI.push_back(new OutlinedLabel({ GAP, clientVersionY, 200, Element::TEXT_HEIGHT+5 },
+        // Server-connection indicator
+        const px_t
+            INDICATOR_LABEL_X = LEFT_MARGIN + 15,
+            INDICATOR_Y_OFFSET = -1;
+        _loginUI.push_back(new Indicator({ LEFT_MARGIN, Y - INDICATOR_Y_OFFSET }));
+        _loginUI.push_back(new OutlinedLabel({ INDICATOR_LABEL_X, Y, 100 , Element::TEXT_HEIGHT + 5 },
+            "Server connection"s));
+        Y += LABEL_GAP;
+
+        // Server IP
+        std::string serverIP;
+        if (cmdLineArgs.contains("server-ip"))
+            serverIP = cmdLineArgs.getString("server-ip");
+        else {
+            serverIP = _defaultServerAddress;
+        }
+        _loginUI.push_back(new OutlinedLabel({ LEFT_MARGIN, Y, 200, Element::TEXT_HEIGHT + 5 },
+            "Server: " + serverIP));
+        Y += LABEL_GAP;
+
+        // Client version
+        _loginUI.push_back(new OutlinedLabel({ LEFT_MARGIN, Y, 200, Element::TEXT_HEIGHT + 5 },
             "Client version: " + version()));
+        Y += LABEL_GAP;
+    }
+
 
     // Images
     _loginFront = Texture(std::string("Images/loginFront.png"), Color::MAGENTA);

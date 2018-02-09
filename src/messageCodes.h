@@ -345,6 +345,7 @@ enum MessageCode{
     SV_TALENT,
 
     // How many total points a player has in a talent tree
+
     // Arguments: tree name, points
     SV_POINTS_IN_TREE,
 

@@ -151,6 +151,7 @@
     <ClCompile Include="src\client\ui\ConfirmationWindow.cpp" />
     <ClCompile Include="src\client\ui\ContainerGrid.cpp" />
     <ClCompile Include="src\client\ui\Element.cpp" />
+    <ClCompile Include="src\client\ui\Indicator.cpp" />
     <ClCompile Include="src\client\ui\ItemSelector.cpp" />
     <ClCompile Include="src\client\ui\Label.cpp" />
     <ClCompile Include="src\client\ui\Line.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="src\client\ui\Picture.h" />
     <ClInclude Include="src\Client\ui\ProgressBar.h" />
     <ClInclude Include="src\client\ui\ShadowBox.h" />
+    <ClInclude Include="src\client\ui\Indicator.h" />
     <ClInclude Include="src\client\ui\TakeContainer.h" />
     <ClInclude Include="src\client\ui\TextBox.h" />
     <ClInclude Include="src\client\ui\Window.h" />

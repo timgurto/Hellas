@@ -303,7 +303,7 @@ void Client::checkSocket(){
 
 void Client::run(){
     _running = true;
-    if (!_dataLoaded){
+    /*if (!_dataLoaded){
         drawLoadingScreen("Loading data", 0.6);
         bool shouldLoadDefaultData = true;
         if (cmdLineArgs.contains("load-test-data-first")){
@@ -316,7 +316,7 @@ void Client::run(){
         }
         if (shouldLoadDefaultData)
             loadData();
-    }
+    }*/
 
     populateHotbar();
     

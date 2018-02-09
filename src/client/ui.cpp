@@ -1,6 +1,7 @@
 #include <cassert>
 
 #include "Client.h"
+#include "ui/Indicator.h"
 #include "ui/OutlinedLabel.h"
 #include "ui/TextBox.h"
 
@@ -25,6 +26,7 @@ void Client::initUI() {
     Element::absMouse = &_mouse;
 
     Element::initialize();
+    Indicator::initialize();
     ClientItem::init();
 
     initPerformanceDisplay();
