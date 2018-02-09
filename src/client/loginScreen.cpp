@@ -227,8 +227,10 @@ void Client::initLoginScreen(){
             INDICATOR_Y_OFFSET = -1;
         _serverConnectionIndicator = new Indicator({ LEFT_MARGIN, y - INDICATOR_Y_OFFSET });
         _loginUI.push_back(_serverConnectionIndicator);
-        _loginUI.push_back(new OutlinedLabel({ INDICATOR_LABEL_X, y, 100 , Element::TEXT_HEIGHT + 5 },
-            "Server connection"s));
+        auto label = new OutlinedLabel({ INDICATOR_LABEL_X, y, 200 , Element::TEXT_HEIGHT + 5 },
+            "Connection with server"s);
+        label->setColor(Color::ITEM_STATS);
+        _loginUI.push_back(label);
         y += LABEL_GAP;
 
         // Server IP
@@ -238,23 +240,27 @@ void Client::initLoginScreen(){
         else {
             serverIP = _defaultServerAddress;
         }
-        _loginUI.push_back(new OutlinedLabel({ LEFT_MARGIN, y, 200, Element::TEXT_HEIGHT + 5 },
-            "Server: " + serverIP));
+        label = new OutlinedLabel({ LEFT_MARGIN, y, 200, Element::TEXT_HEIGHT + 5 },
+            "Server: " + serverIP);
+        label->setColor(Color::ITEM_STATS);
+        _loginUI.push_back(label);
         y += LABEL_GAP;
 
         // Client version
-        _loginUI.push_back(new OutlinedLabel({ LEFT_MARGIN, y, 200, Element::TEXT_HEIGHT + 5 },
-            "Client version: " + version()));
+        label = new OutlinedLabel({ LEFT_MARGIN, y, 200, Element::TEXT_HEIGHT + 5 },
+            "Client version: " + version());
+        label->setColor(Color::ITEM_STATS);
+        _loginUI.push_back(label);
         y += LABEL_GAP;
     }
 
     // Right-hand content
     {
         auto
-            y = 318_px,
-            BUTTON_X = SCREEN_X - BUTTON_W - LEFT_MARGIN;
+            y = 250_px,
+            BUTTON_X = SCREEN_X - BUTTON_W - GAP;
 
-        auto createButton = new Button({ BUTTON_X, Y, BUTTON_W, BUTTON_HEIGHT }, "Create account",
+        auto createButton = new Button({ BUTTON_X, y, BUTTON_W, BUTTON_HEIGHT }, "Create new account",
             showWindowInFront, _createWindow);
         _loginUI.push_back(createButton);
     }
