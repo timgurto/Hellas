@@ -17,7 +17,7 @@ enum MessageCode{
     // "My name is ... and my client version is ..."
     // This has the effect of registering the user with the server.
     // Arguments: username, version
-    CL_I_AM,
+    CL_LOGIN_EXISTING,
 
     // "My location has changed, and is now ..."
     // Arguments: x, y

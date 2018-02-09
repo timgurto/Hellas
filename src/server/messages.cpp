@@ -20,10 +20,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         
         // Discard message if this client has not yet sent CL_I_AM
         std::set<User>::iterator it = _users.find(client);
-        if (it == _users.end() && msgCode != CL_I_AM) {
+        if (it == _users.end() && msgCode != CL_LOGIN_EXISTING) {
             continue;
         }
-        if (msgCode != CL_I_AM) {
+        if (msgCode != CL_LOGIN_EXISTING) {
             User & userRef = const_cast<User&>(*it);
             user = &userRef;
             user->contact();
@@ -41,7 +41,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
-        case CL_I_AM:
+        case CL_LOGIN_EXISTING:
         {
             iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
             auto name = std::string(buffer);

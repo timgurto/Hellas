@@ -169,7 +169,7 @@ void Client::login(void *){
     SDL_StopTextInput();
 
     _instance->_username = username;
-    _instance->sendMessage(CL_I_AM, makeArgs(username, version()));
+    _instance->sendMessage(CL_LOGIN_EXISTING, makeArgs(username, version()));
 }
 
 void exit(void *data){
