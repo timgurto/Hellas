@@ -18,6 +18,7 @@ public:
     void set(Status status);
 
     static void initialize();
+    static void cleanup();
 
 private:
     Status _status;

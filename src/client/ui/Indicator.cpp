@@ -15,3 +15,7 @@ void Indicator::initialize() {
     images[FAILED] =      { "Images/UI/indicator-failure.png", Color::MAGENTA };
     images[IN_PROGRESS] = { "Images/UI/indicator-progress.png", Color::MAGENTA };
 }
+
+void Indicator::cleanup() {
+    images.clear();
+}

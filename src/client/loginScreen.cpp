@@ -154,6 +154,7 @@ void Client::connectToServer() {
 
 void Client::initCreateWindow() {
     _createWindow = Window::WithRectAndTitle({ 100, 100, 100, 100 }, "Account creation");
+    addWindow(_createWindow);
 }
 
 void Client::login(void *){
