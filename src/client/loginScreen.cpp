@@ -13,8 +13,6 @@ static bool tryToConnect = false;
 
 static TextBox *nameBox;
 
-static void quit(void*);
-
 void Client::loginScreenLoop(){
     const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
     _timeSinceConnectAttempt += _timeElapsed;
@@ -132,9 +130,9 @@ void Client::initLoginScreen(){
     px_t
         Y = (SCREEN_Y - BUTTON_HEIGHT) / 2;
 
-    _loginUI.push_back(new Label({ BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT },
+    _loginUI.push_back(new OutlinedLabel({ BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT+5 },
                                  "Name:", Element::CENTER_JUSTIFIED));
-    Y += Element::TEXT_HEIGHT;
+    Y += Element::TEXT_HEIGHT+1;
 
     nameBox = new TextBox({ BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT });
     nameBox->text(_username);
@@ -157,11 +155,11 @@ void Client::initLoginScreen(){
         serverIP = _defaultServerAddress;
     }
     auto serverAddressY = SCREEN_Y - Element::TEXT_HEIGHT - GAP;
-    _loginUI.push_back(new Label({ GAP, serverAddressY, 200, Element::TEXT_HEIGHT },
+    _loginUI.push_back(new OutlinedLabel({ GAP, serverAddressY, 200, Element::TEXT_HEIGHT+5 },
         "Server: " + serverIP));
 
     auto clientVersionY = serverAddressY - Element::TEXT_HEIGHT - 2;
-    _loginUI.push_back(new Label({ GAP, clientVersionY, 200, Element::TEXT_HEIGHT },
+    _loginUI.push_back(new OutlinedLabel({ GAP, clientVersionY, 200, Element::TEXT_HEIGHT+5 },
             "Client version: " + version()));
 
     // Images
