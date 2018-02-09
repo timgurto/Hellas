@@ -10,22 +10,19 @@
 extern Renderer renderer;
 extern Args cmdLineArgs;
 
-static bool tryToConnect = false;
-
 static TextBox *nameBox;
 
 void Client::loginScreenLoop(){
     const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
     _timeSinceConnectAttempt += _timeElapsed;
 
+    connectToServer();
+
     // Deal with any messages from the server
     if (!_messages.empty()){
         handleMessage(_messages.front());
         _messages.pop();
     }
-
-    if (tryToConnect)
-        checkSocket();
 
     handleLoginInput(delta);
 
@@ -94,6 +91,66 @@ void Client::drawLoginScreen() const{
     renderer.present();
 }
 
+void Client::connectToServer() {
+        if (_invalidUsername)
+            return;
+
+    // Ensure connected to server
+    if (_connectionStatus != CONNECTED && _timeSinceConnectAttempt >= CONNECT_RETRY_DELAY) {
+        _timeSinceConnectAttempt = 0;
+        // Server details
+        std::string serverIP;
+        if (cmdLineArgs.contains("server-ip"))
+            serverIP = cmdLineArgs.getString("server-ip");
+        else {
+            serverIP = _defaultServerAddress;
+        }
+        sockaddr_in serverAddr;
+        serverAddr.sin_addr.s_addr = inet_addr(serverIP.c_str());
+        serverAddr.sin_family = AF_INET;
+
+        // Select server port
+#ifdef _DEBUG
+        auto port = DEBUG_PORT;
+#else
+        auto port = PRODUCTION_PORT;
+#endif
+        if (cmdLineArgs.contains("server-port"))
+            port = cmdLineArgs.getInt("server-port");
+        serverAddr.sin_port = htons(port);
+
+        if (connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
+            showErrorMessage("Connection error: "s + toString(WSAGetLastError()), Color::FAILURE);
+            _connectionStatus = CONNECTION_ERROR;
+            _serverConnectionIndicator->set(Indicator::FAILED);
+        } else {
+            _serverConnectionIndicator->set(Indicator::SUCCEEDED);
+            sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
+            _connectionStatus = CONNECTED;
+        }
+    }
+
+    static fd_set readFDs;
+    FD_ZERO(&readFDs);
+    FD_SET(_socket.getRaw(), &readFDs);
+    static timeval selectTimeout = { 0, 10000 };
+    int activity = select(0, &readFDs, nullptr, nullptr, &selectTimeout);
+    if (activity == SOCKET_ERROR) {
+        showErrorMessage("Error polling sockets: "s + toString(WSAGetLastError()), Color::FAILURE);
+        _serverConnectionIndicator->set(Indicator::FAILED);
+        return;
+    }
+    if (FD_ISSET(_socket.getRaw(), &readFDs)) {
+        static char buffer[BUFFER_SIZE + 1];
+        int charsRead = recv(_socket.getRaw(), buffer, BUFFER_SIZE, 0);
+        if (charsRead != SOCKET_ERROR && charsRead != 0) {
+            buffer[charsRead] = '\0';
+            _messages.push(std::string(buffer));
+        }
+    }
+
+}
+
 void Client::login(void *){
     for (char c : nameBox->text()){
         if ((c < 'A' || c > 'Z') &&
@@ -109,10 +166,10 @@ void Client::login(void *){
     std::string username = nameBox->text();
     std::transform(username.begin(), username.end(), username.begin(), tolower);
     nameBox->text(username);
-    _instance->_username = username;
-    _instance->_connectionStatus = TRYING_TO_CONNECT;
-    tryToConnect = true;
     SDL_StopTextInput();
+
+    _instance->_username = username;
+    _instance->sendMessage(CL_I_AM, makeArgs(username, version()));
 }
 
 void exit(void *data){
@@ -158,7 +215,8 @@ void Client::initLoginScreen(){
         const px_t
             INDICATOR_LABEL_X = LEFT_MARGIN + 15,
             INDICATOR_Y_OFFSET = -1;
-        _loginUI.push_back(new Indicator({ LEFT_MARGIN, Y - INDICATOR_Y_OFFSET }));
+        _serverConnectionIndicator = new Indicator({ LEFT_MARGIN, Y - INDICATOR_Y_OFFSET });
+        _loginUI.push_back(_serverConnectionIndicator);
         _loginUI.push_back(new OutlinedLabel({ INDICATOR_LABEL_X, Y, 100 , Element::TEXT_HEIGHT + 5 },
             "Server connection"s));
         Y += LABEL_GAP;

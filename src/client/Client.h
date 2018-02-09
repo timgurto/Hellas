@@ -31,6 +31,7 @@
 #include "Target.h"
 #include "WordWrapper.h"
 #include "ui/ChoiceList.h"
+#include "ui/Indicator.h"
 #include "ui/ItemSelector.h"
 #include "ui/OutlinedLabel.h"
 #include "ui/Window.h"
@@ -349,6 +350,8 @@ private:
     std::list<Particle*> _loginParticles;
     void updateLoginParticles(double delta);
     static void login(void *);
+    void connectToServer();
+    Indicator *_serverConnectionIndicator{};
 
     // These are superficial, and relate only to the cast bar.
     ms_t _actionTimer; // How long the character has been performing the current action.
@@ -536,10 +539,9 @@ private:
     void sendClearTargetMessage() const;
     
     enum ConnectionStatus{
-        INITIALIZING,
-        IN_LOGIN_SCREEN,
-        TRYING_TO_CONNECT,
-        CONNECTED,
+        INITIALIZING,      // }
+        TRYING_TO_CONNECT, // } Login screen
+        CONNECTED,         // }
         LOGGED_IN,
         LOADED,
         CONNECTION_ERROR

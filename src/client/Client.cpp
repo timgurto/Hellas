@@ -243,45 +243,6 @@ void Client::checkSocket(){
     if (_invalidUsername)
         return;
 
-    // Ensure connected to server
-    if (!_loggedIn && _timeSinceConnectAttempt >= CONNECT_RETRY_DELAY) {
-        _timeSinceConnectAttempt = 0;
-        // Server details
-        std::string serverIP;
-        if (cmdLineArgs.contains("server-ip"))
-            serverIP = cmdLineArgs.getString("server-ip");
-        else{
-            serverIP = _defaultServerAddress;
-        }
-        sockaddr_in serverAddr;
-        serverAddr.sin_addr.s_addr = inet_addr(serverIP.c_str());
-        serverAddr.sin_family = AF_INET;
-
-        // Select server port
-#ifdef _DEBUG
-        auto port = DEBUG_PORT;
-#else
-        auto port = PRODUCTION_PORT;
-#endif
-        if (cmdLineArgs.contains("server-port"))
-            port = cmdLineArgs.getInt("server-port");
-        serverAddr.sin_port = htons(port);
-
-        if (connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
-            showErrorMessage("Connection error: "s + toString(WSAGetLastError()), Color::FAILURE);
-            _connectionStatus = CONNECTION_ERROR;
-        } else {
-#ifdef _DEBUG
-            _debug("Connected to server", Color::SUCCESS);
-#endif
-            // Announce player name
-            sendMessage(CL_I_AM, makeArgs(_username, version()));
-            sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
-            _connectionStatus = CONNECTED;
-            _character.name(_username);
-        }
-    }
-
     static fd_set readFDs;
     FD_ZERO(&readFDs);
     FD_SET(_socket.getRaw(), &readFDs);
@@ -303,7 +264,7 @@ void Client::checkSocket(){
 
 void Client::run(){
     _running = true;
-    /*if (!_dataLoaded){
+    if (!_dataLoaded){
         drawLoadingScreen("Loading data", 0.6);
         bool shouldLoadDefaultData = true;
         if (cmdLineArgs.contains("load-test-data-first")){
@@ -316,13 +277,13 @@ void Client::run(){
         }
         if (shouldLoadDefaultData)
             loadData();
-    }*/
+    }
 
     populateHotbar();
     
     drawLoadingScreen("Initializing login screen", 0.9);
     initLoginScreen();
-    _connectionStatus = IN_LOGIN_SCREEN;
+    _connectionStatus = TRYING_TO_CONNECT;
 
     ms_t timeAtLastTick = SDL_GetTicks();
     while (_loop) {
@@ -357,6 +318,7 @@ void Client::gameLoop(){
     // Ensure server connectivity
     if (_time - _lastPingReply > SERVER_TIMEOUT) {
         showErrorMessage("Disconnected from server", Color::FAILURE);
+        _serverConnectionIndicator->set(Indicator::FAILED);
         _socket = Socket();
         _loggedIn = false;
     }
