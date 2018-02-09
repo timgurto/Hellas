@@ -253,8 +253,7 @@ void Client::handleInput(double delta){
                 // Bring top clicked window to front
                 for (auto *window : _windows) {
                     if (window->visible() && collision(_mouse, window->rect())) {
-                        removeWindow(window);
-                        addWindow(window);
+                        showWindowInFront(window);
                         break;
                     }
                 }

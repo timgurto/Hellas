@@ -483,6 +483,12 @@ void Client::removeWindow(Window *window){
     _windows.remove(window);
 }
 
+void Client::showWindowInFront(Window * window) {
+    removeWindow(window);
+    addWindow(window);
+    window->show();
+}
+
 void Client::addUI(Element *element){
     _ui.push_back(element);
 }

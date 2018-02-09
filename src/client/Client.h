@@ -296,6 +296,8 @@ private:
     windows_t _windows;
     void addWindow(Window *window);
     void removeWindow(Window *window); // Linear time
+    void showWindowInFront(Window *window);
+    static void showWindowInFront(void *window) { _instance->showWindowInFront(reinterpret_cast<Window*>(window)); }
 
     ui_t _ui;
     void addUI(Element *element);
@@ -351,7 +353,9 @@ private:
     void updateLoginParticles(double delta);
     static void login(void *);
     void connectToServer();
-    Indicator *_serverConnectionIndicator{};
+    Indicator *_serverConnectionIndicator{ nullptr };
+    Window *_createWindow{ nullptr };
+    void initCreateWindow();
 
     // These are superficial, and relate only to the cast bar.
     ms_t _actionTimer; // How long the character has been performing the current action.

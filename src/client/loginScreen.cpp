@@ -6,6 +6,7 @@
 #include "ui/Indicator.h"
 #include "ui/Label.h"
 #include "ui/TextBox.h"
+#include "ui/Window.h"
 
 extern Renderer renderer;
 extern Args cmdLineArgs;
@@ -151,6 +152,10 @@ void Client::connectToServer() {
 
 }
 
+void Client::initCreateWindow() {
+    _createWindow = Window::WithRectAndTitle({ 100, 100, 100, 100 }, "Account creation");
+}
+
 void Client::login(void *){
     for (char c : nameBox->text()){
         if ((c < 'A' || c > 'Z') &&
@@ -178,6 +183,8 @@ void exit(void *data){
 }
 
 void Client::initLoginScreen(){
+    initCreateWindow();
+
     // UI elements
     const px_t
         BUTTON_W = 100,
@@ -208,18 +215,20 @@ void Client::initLoginScreen(){
     _loginUI.push_back(new Button({ SCREEN_X - BUTTON_W - GAP, SCREEN_Y - BUTTON_HEIGHT - GAP,
                                        BUTTON_W, BUTTON_HEIGHT }, "Quit", exit, &_loop));
 
+    // Left-hand content
     {
-        Y = 318;
+        auto
+            y = 318_px;
 
         // Server-connection indicator
         const px_t
             INDICATOR_LABEL_X = LEFT_MARGIN + 15,
             INDICATOR_Y_OFFSET = -1;
-        _serverConnectionIndicator = new Indicator({ LEFT_MARGIN, Y - INDICATOR_Y_OFFSET });
+        _serverConnectionIndicator = new Indicator({ LEFT_MARGIN, y - INDICATOR_Y_OFFSET });
         _loginUI.push_back(_serverConnectionIndicator);
-        _loginUI.push_back(new OutlinedLabel({ INDICATOR_LABEL_X, Y, 100 , Element::TEXT_HEIGHT + 5 },
+        _loginUI.push_back(new OutlinedLabel({ INDICATOR_LABEL_X, y, 100 , Element::TEXT_HEIGHT + 5 },
             "Server connection"s));
-        Y += LABEL_GAP;
+        y += LABEL_GAP;
 
         // Server IP
         std::string serverIP;
@@ -228,16 +237,26 @@ void Client::initLoginScreen(){
         else {
             serverIP = _defaultServerAddress;
         }
-        _loginUI.push_back(new OutlinedLabel({ LEFT_MARGIN, Y, 200, Element::TEXT_HEIGHT + 5 },
+        _loginUI.push_back(new OutlinedLabel({ LEFT_MARGIN, y, 200, Element::TEXT_HEIGHT + 5 },
             "Server: " + serverIP));
-        Y += LABEL_GAP;
+        y += LABEL_GAP;
 
         // Client version
-        _loginUI.push_back(new OutlinedLabel({ LEFT_MARGIN, Y, 200, Element::TEXT_HEIGHT + 5 },
+        _loginUI.push_back(new OutlinedLabel({ LEFT_MARGIN, y, 200, Element::TEXT_HEIGHT + 5 },
             "Client version: " + version()));
-        Y += LABEL_GAP;
+        y += LABEL_GAP;
     }
 
+    // Right-hand content
+    {
+        auto
+            y = 318_px,
+            BUTTON_X = SCREEN_X - BUTTON_W - LEFT_MARGIN;
+
+        auto createButton = new Button({ BUTTON_X, Y, BUTTON_W, BUTTON_HEIGHT }, "Create account",
+            showWindowInFront, _createWindow);
+        _loginUI.push_back(createButton);
+    }
 
     // Images
     _loginFront = Texture(std::string("Images/loginFront.png"), Color::MAGENTA);
