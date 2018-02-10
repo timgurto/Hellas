@@ -8,7 +8,12 @@
 
 class TextBox : public Element{
 public:
-    TextBox(const ScreenRect &rect, bool numeralsOnly = false);
+    enum ValidInput {
+        ALL,
+        NUMERALS
+    };
+
+    TextBox(const ScreenRect &rect, ValidInput validInput = ALL);
 
     const std::string &text() const { return _text; }
     void text(const std::string &text);
@@ -28,7 +33,8 @@ public:
 private:
     std::string _text;
 
-    bool _numeralsOnly;
+    ValidInput _validInput;
+    bool isInputValid(char c) const;
 
     static const size_t MAX_TEXT_LENGTH;
 

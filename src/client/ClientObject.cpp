@@ -121,14 +121,14 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg){
 
     if (userHasAccess()){ // Setup view
         px_t x = GAP;
-        TextBox *textBox = new TextBox({ x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT }, true);
+        TextBox *textBox = new TextBox({ x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT }, TextBox::NUMERALS);
         _wareQtyBoxes[i] = textBox;
         textBox->text(toString(mSlot.wareQty));
         e.addChild(textBox);
         x += QUANTITY_WIDTH + GAP;
         e.addChild(new ItemSelector(mSlot.wareItem, x, BUTTON_TOP));
         x += ICON_SIZE + 2 + NAME_WIDTH + 3 * GAP + 2;
-        textBox = new TextBox({ x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT }, true);
+        textBox = new TextBox({ x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT }, TextBox::NUMERALS);
         _priceQtyBoxes[i] = textBox;
         textBox->text(toString(mSlot.priceQty));
         e.addChild(textBox);

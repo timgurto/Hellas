@@ -10,9 +10,9 @@ TextBox *TextBox::currentFocus = nullptr;
 const px_t TextBox::HEIGHT = 14;
 const size_t TextBox::MAX_TEXT_LENGTH = 100;
 
-TextBox::TextBox(const ScreenRect &rect, bool numeralsOnly):
+TextBox::TextBox(const ScreenRect &rect, ValidInput validInput):
 Element({rect.x, rect.y, rect.w, HEIGHT}),
-_numeralsOnly(numeralsOnly)
+_validInput(validInput)
 {
     addChild(new ShadowBox({ 0, 0, rect.w, HEIGHT }, true));
     setLeftMouseDownFunction(&click);
@@ -67,7 +67,8 @@ void TextBox::addText(const char *newText){
     assert(currentFocus);
     assert(newText[1] == '\0');
 
-    if (currentFocus->_numeralsOnly && (newText[0] < '0' || newText[0] > '9'))
+    const auto &newChar = newText[0];
+    if (!currentFocus->isInputValid(newChar))
         return;
 
     std::string &text = currentFocus->_text;
@@ -75,6 +76,12 @@ void TextBox::addText(const char *newText){
         text.append(newText);
         currentFocus->markChanged();
     }
+}
+
+bool TextBox::isInputValid(char c) const {
+    if (_validInput == NUMERALS && (c < '0' || c > '9'))
+        return false;
+    return true;
 }
 
 void TextBox::backspace(){
