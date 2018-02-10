@@ -11,7 +11,8 @@
 extern Renderer renderer;
 extern Args cmdLineArgs;
 
-static TextBox *nameBox;
+static TextBox *nameBox{};
+static TextBox *newNameBox{};
 
 void Client::loginScreenLoop(){
     const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
@@ -153,19 +154,76 @@ void Client::connectToServer() {
 }
 
 void Client::initCreateWindow() {
-    _createWindow = Window::WithRectAndTitle({ 100, 100, 100, 100 }, "Account creation");
+
+    const auto
+        PANE_W = 100_px,
+        MID_PANE = 40_px,
+        PANE_H = 200_px,
+        MARGIN = 10_px,
+        BUTTON_HEIGHT = 20,
+        BUTTON_WIDTH = 100,
+        WIN_W = 2 * PANE_W + 3 * MARGIN,
+        WIN_H = PANE_H + 3 * MARGIN + BUTTON_HEIGHT,
+        WIN_X = (SCREEN_X - WIN_W) / 2,
+        WIN_Y = (SCREEN_Y - WIN_H) / 2;
+
+    _createWindow = Window::WithRectAndTitle({ WIN_X, WIN_Y, WIN_W, WIN_H }, "Create Account");
     addWindow(_createWindow);
+
+    {
+        auto inputPane = new Element({ MARGIN, MARGIN, PANE_W, PANE_H });
+        _createWindow->addChild(inputPane);
+        auto y = 0_px;
+
+        inputPane->addChild(new Label({ 0, y, 100, Element::TEXT_HEIGHT }, "Name:"));
+        newNameBox = new TextBox({ MID_PANE, y, PANE_W - MID_PANE, Element::TEXT_HEIGHT });
+        inputPane->addChild(newNameBox);
+    }
+
+    {
+        auto infoPane = new Element({ PANE_W + 2 * MARGIN, MARGIN, PANE_W, PANE_H });
+        _createWindow->addChild(infoPane);
+    }
+
+    const auto
+        BUTTON_X = (WIN_H - BUTTON_WIDTH) / 2,
+        BUTTON_Y = WIN_H - BUTTON_HEIGHT - MARGIN;
+    auto createButton = new Button({ BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT },
+        "Create account"s, createAccount);
+    _createWindow->addChild(createButton);
 }
 
-void Client::login(void *){
-    for (char c : nameBox->text()){
+void Client::createAccount(void *) {
+    for (char c : newNameBox->text()) {
         if ((c < 'A' || c > 'Z') &&
-            (c < 'a' || c > 'z')){
+            (c < 'a' || c > 'z')) {
+            newNameBox->text("Letters only, please");
+            return;
+        }
+    }
+    if (newNameBox->text().empty()) {
+        newNameBox->text("At least 1 letter, please");
+        return;
+    }
+    std::string username = newNameBox->text();
+    std::transform(username.begin(), username.end(), username.begin(), tolower);
+    newNameBox->text(username);
+
+    _instance->_username = username;
+    _instance->sendMessage(CL_LOGIN_EXISTING, makeArgs(username, version()));
+
+    _instance->_createWindow->hide();
+}
+
+void Client::login(void *) {
+    for (char c : nameBox->text()) {
+        if ((c < 'A' || c > 'Z') &&
+            (c < 'a' || c > 'z')) {
             nameBox->text("Letters only, please");
             return;
         }
     }
-    if (nameBox->text().empty()){
+    if (nameBox->text().empty()) {
         nameBox->text("At least 1 letter, please");
         return;
     }

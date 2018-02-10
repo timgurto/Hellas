@@ -355,7 +355,8 @@ private:
     void connectToServer();
     Indicator *_serverConnectionIndicator{ nullptr };
     Window *_createWindow{ nullptr };
-    void initCreateWindow();
+        void initCreateWindow();
+        static void createAccount(void *);
 
     // These are superficial, and relate only to the cast bar.
     ms_t _actionTimer; // How long the character has been performing the current action.
