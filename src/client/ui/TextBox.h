@@ -7,17 +7,6 @@
 #include "LinkedLabel.h"
 
 class TextBox : public Element{
-    std::string _text;
-
-    bool _numeralsOnly;
-
-    static const size_t MAX_TEXT_LENGTH;
-
-    static const px_t
-        HEIGHT;
-
-    static TextBox *currentFocus;
-
 public:
     TextBox(const ScreenRect &rect, bool numeralsOnly = false);
 
@@ -35,6 +24,18 @@ public:
     virtual void refresh();
 
     static void click(Element &e, const ScreenPoint &mousePos);
+
+private:
+    std::string _text;
+
+    bool _numeralsOnly;
+
+    static const size_t MAX_TEXT_LENGTH;
+
+    static const px_t
+        HEIGHT;
+
+    static TextBox *currentFocus;
 };
 
 #endif
