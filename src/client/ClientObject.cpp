@@ -394,7 +394,7 @@ void ClientObject::addActionToWindow() {
         _window->addChild(label);
         x += LABEL_WIDTH + BUTTON_GAP;
 
-        _actionTextEntry = new TextBox({ x, y, 50, 13 });
+        _actionTextEntry = new TextBox({ x, y, 50, 13 }, TextBox::LETTERS);
         _window->addChild(_actionTextEntry);
         y += 13 + BUTTON_GAP;
         x += 50;

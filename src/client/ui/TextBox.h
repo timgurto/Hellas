@@ -10,7 +10,8 @@ class TextBox : public Element{
 public:
     enum ValidInput {
         ALL,
-        NUMERALS
+        NUMERALS,
+        LETTERS
     };
 
     TextBox(const ScreenRect &rect, ValidInput validInput = ALL);

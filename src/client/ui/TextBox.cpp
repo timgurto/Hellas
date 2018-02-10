@@ -79,8 +79,16 @@ void TextBox::addText(const char *newText){
 }
 
 bool TextBox::isInputValid(char c) const {
-    if (_validInput == NUMERALS && (c < '0' || c > '9'))
-        return false;
+    switch (_validInput) {
+    case NUMERALS:
+        if (c < '0' || c > '9') return false;
+        break;
+    case LETTERS:
+        if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) return false;
+        break;
+    default:
+        ; // All allowed
+    }
     return true;
 }
 

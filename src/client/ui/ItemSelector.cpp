@@ -43,7 +43,8 @@ _name(new Label({ ITEM_HEIGHT + 1 + GAP, 1, WIDTH, ITEM_HEIGHT }, "",
                                                         WINDOW_WIDTH, WINDOW_HEIGHT },
                                                    "Find Item");
         px_t y = GAP;
-        _filterText = new TextBox({ GAP, y, SEARCH_TEXT_WIDTH, SEARCH_BUTTON_HEIGHT });
+        _filterText = new TextBox({ GAP, y, SEARCH_TEXT_WIDTH, SEARCH_BUTTON_HEIGHT },
+            TextBox::LETTERS);
         _findItemWindow->addChild(_filterText);
         _findItemWindow->addChild(new Button({ SEARCH_TEXT_WIDTH + 2 * GAP, y,
                                                   SEARCH_BUTTON_WIDTH, SEARCH_BUTTON_HEIGHT },

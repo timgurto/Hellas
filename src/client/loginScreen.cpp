@@ -176,7 +176,8 @@ void Client::initCreateWindow() {
         auto y = 0_px;
 
         inputPane->addChild(new Label({ 0, y, 100, Element::TEXT_HEIGHT }, "Name:"));
-        newNameBox = new TextBox({ MID_PANE, y, PANE_W - MID_PANE, Element::TEXT_HEIGHT });
+        newNameBox = new TextBox({ MID_PANE, y, PANE_W - MID_PANE, Element::TEXT_HEIGHT },
+            TextBox::LETTERS);
         inputPane->addChild(newNameBox);
     }
 
@@ -194,13 +195,6 @@ void Client::initCreateWindow() {
 }
 
 void Client::createAccount(void *) {
-    for (char c : newNameBox->text()) {
-        if ((c < 'A' || c > 'Z') &&
-            (c < 'a' || c > 'z')) {
-            newNameBox->text("Letters only, please");
-            return;
-        }
-    }
     if (newNameBox->text().empty()) {
         newNameBox->text("At least 1 letter, please");
         return;
@@ -216,13 +210,6 @@ void Client::createAccount(void *) {
 }
 
 void Client::login(void *) {
-    for (char c : nameBox->text()) {
-        if ((c < 'A' || c > 'Z') &&
-            (c < 'a' || c > 'z')) {
-            nameBox->text("Letters only, please");
-            return;
-        }
-    }
     if (nameBox->text().empty()) {
         nameBox->text("At least 1 letter, please");
         return;
@@ -260,7 +247,7 @@ void Client::initLoginScreen(){
                                  "Name:", Element::CENTER_JUSTIFIED));
     Y += Element::TEXT_HEIGHT+1;
 
-    nameBox = new TextBox({ BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT });
+    nameBox = new TextBox({ BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT }, TextBox::LETTERS);
     nameBox->text(_username);
     TextBox::focus(nameBox);
     _loginUI.push_back(nameBox);

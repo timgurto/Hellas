@@ -82,7 +82,7 @@ _msgArgs(msgArgs)
     addChild(new Label({ 0, y, WINDOW_WIDTH, Element::TEXT_HEIGHT }, windowText, Element::CENTER_JUSTIFIED));
     y += Element::TEXT_HEIGHT + PADDING;
 
-    _textBox = new TextBox({ 0, y, WINDOW_WIDTH, Element::TEXT_HEIGHT });
+    _textBox = new TextBox({ 0, y, WINDOW_WIDTH, Element::TEXT_HEIGHT }, TextBox::LETTERS);
     addChild(_textBox);
     y += _textBox->height() + PADDING;
 
