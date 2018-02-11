@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cassert>
+#include <set>
 
 #include "ProgressLock.h"
 #include "Server.h"
@@ -17,13 +18,22 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
     User *user = nullptr;
     while (iss.peek() == MSG_START) {
         iss >> del >> msgCode >> del;
+
         
-        // Discard message if this client has not yet sent CL_I_AM
-        std::set<User>::iterator it = _users.find(client);
-        if (it == _users.end() && msgCode != CL_LOGIN_EXISTING && msgCode != CL_LOGIN_NEW) {
+        // Discard message if this client has not yet logged in
+        const auto messagesAllowedBeforeLogin = std::set<int>{
+            CL_PING,
+            CL_LOGIN_EXISTING,
+            CL_LOGIN_NEW
+        };
+        auto thisMessageIsAllowedBeforeLogin =
+            messagesAllowedBeforeLogin.find(msgCode) != messagesAllowedBeforeLogin.end();
+        auto it = _users.find(client);
+        auto userHasLoggedIn = it != _users.end();
+        if (!userHasLoggedIn && !thisMessageIsAllowedBeforeLogin) {
             continue;
         }
-        if (msgCode != CL_LOGIN_EXISTING && msgCode != CL_LOGIN_NEW) {
+        if (!thisMessageIsAllowedBeforeLogin) {
             User & userRef = const_cast<User&>(*it);
             user = &userRef;
             user->contact();
@@ -37,7 +47,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss >> timeSent  >> del;
             if (del != MSG_END)
                 return;
-            sendMessage(user->socket(), SV_PING_REPLY, makeArgs(timeSent));
+            sendMessage(client, SV_PING_REPLY, makeArgs(timeSent));
             break;
         }
 

@@ -26,6 +26,19 @@ void Client::loginScreenLoop(){
     std::thread t(connectToServerStatic);
     t.detach();
 
+    // Send ping
+    if (_time - _lastPingSent > PING_FREQUENCY) {
+        sendMessage(CL_PING, makeArgs(_time));
+        _lastPingSent = _time;
+    }
+
+    // Ensure server connectivity
+    if (_time - _lastPingReply > SERVER_TIMEOUT) {
+        _serverConnectionIndicator->set(Indicator::FAILED);
+        _socket = {};
+        _loggedIn = false;
+    }
+
     // Deal with any messages from the server
     if (!_messages.empty()){
         handleMessage(_messages.front());

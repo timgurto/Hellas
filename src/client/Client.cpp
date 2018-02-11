@@ -318,9 +318,9 @@ void Client::gameLoop(){
 
     // Ensure server connectivity
     if (_time - _lastPingReply > SERVER_TIMEOUT) {
-        showErrorMessage("Disconnected from server", Color::FAILURE);
+        infoWindow("Disconnected from server.");
         _serverConnectionIndicator->set(Indicator::FAILED);
-        _socket = Socket();
+        _socket = {};
         _loggedIn = false;
     }
 
