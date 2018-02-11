@@ -165,7 +165,7 @@ void Client::updateLoginButton(void *) {
 }
 
 void Client::updateCreateButton(void *) {
-    if (newNameBox->text().empty())
+    if (!isUsernameValid(newNameBox->text()))
         createButton->disable();
     else if (classList->getSelected().empty())
         createButton->disable();
@@ -205,7 +205,7 @@ void Client::initCreateWindow() {
         WIN_Y = (SCREEN_Y - WIN_H) / 2,
         GAP = 2;
 
-    _createWindow = Window::WithRectAndTitle({ WIN_X, WIN_Y, WIN_W, WIN_H }, "Create Account");
+    _createWindow = Window::WithRectAndTitle({ WIN_X, WIN_Y, WIN_W, WIN_H }, "Create Account"s);
     addWindow(_createWindow);
 
     auto infoPane = new Element({ L_PANE_W + 2 * MARGIN, MARGIN, R_PANE_W, PANE_H });
@@ -216,14 +216,16 @@ void Client::initCreateWindow() {
         _createWindow->addChild(inputPane);
         auto y = 0_px;
 
-        inputPane->addChild(new Label({ 0, y, 100, Element::TEXT_HEIGHT }, "Name:"));
+        inputPane->addChild(new Label({ 0, y, 100, Element::TEXT_HEIGHT }, "Name:"s));
         newNameBox = new TextBox({ MID_PANE, y, L_PANE_W - MID_PANE, 0 },
             TextBox::LETTERS);
         newNameBox->setOnChange(updateCreateButton);
         inputPane->addChild(newNameBox);
+        infoPane->addChild(new Label({ 0, y, R_PANE_W, Element::TEXT_HEIGHT },
+            "(Names must contain 3-20 characters)"s));
         y += newNameBox->height() + GAP;
 
-        inputPane->addChild(new Label({ 0, y, 100, Element::TEXT_HEIGHT }, "Class:"));
+        inputPane->addChild(new Label({ 0, y, 100, Element::TEXT_HEIGHT }, "Class:"s));
         const auto CLASS_LIST_HEIGHT = 50_px;
         classList = new ChoiceList({ MID_PANE, y, L_PANE_W - MID_PANE, CLASS_LIST_HEIGHT },
             Element::TEXT_HEIGHT);

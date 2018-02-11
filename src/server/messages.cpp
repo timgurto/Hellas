@@ -1290,20 +1290,6 @@ void Server::handle_CL_START_WATCHING(User &user, size_t serial){
     ent->addWatcher(user.name());
 }
 
-static bool isUsernameValid(const std::string name) {
-    const auto
-        MIN_CHARS = 3,
-        MAX_CHARS = 20;
-    if (name.length() < MIN_CHARS)
-        return false;
-    if (name.length() > MAX_CHARS)
-        return false;
-    for (char c : name)
-        if (c < 'a' || c > 'z')
-            return false;
-    return true;
-}
-
 void Server::handle_CL_LOGIN_EXISTING(const Socket &client, const std::string & name, const std::string & clientVersion) {
 #ifndef _DEBUG
     // Check that version matches

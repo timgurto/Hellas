@@ -110,3 +110,17 @@ bool fileExists(const std::string & path) {
     std::ifstream fs(path);
     return fs.good();
 }
+
+bool isUsernameValid(const std::string name) {
+    const auto
+        MIN_CHARS = 3,
+        MAX_CHARS = 20;
+    if (name.length() < MIN_CHARS)
+        return false;
+    if (name.length() > MAX_CHARS)
+        return false;
+    for (char c : name)
+        if (c < 'a' || c > 'z')
+            return false;
+    return true;
+}

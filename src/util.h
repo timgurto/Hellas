@@ -114,4 +114,6 @@ std::string msAsTimeDisplay(ms_t t);
 
 bool fileExists(const std::string &path);
 
+bool isUsernameValid(const std::string name);
+
 #endif
