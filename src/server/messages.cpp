@@ -52,35 +52,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
 
-#ifndef _DEBUG
-            // Check that version matches
-            if (clientVersion != version()) {
-                sendMessage(client, WARNING_WRONG_VERSION, version());
-                break;
-            }
-#endif
-
-            // Check that username is valid
-            bool invalid = false;
-            for (char c : name){
-                if (c < 'a' || c > 'z') {
-                    sendMessage(client, WARNING_INVALID_USERNAME);
-                    invalid = true;
-                    break;
-                }
-            }
-            if (invalid)
-                break;
-
-            // Check that user isn't already logged in
-            if (_usersByName.find(name) != _usersByName.end()) {
-                sendMessage(client, WARNING_DUPLICATE_USERNAME);
-                invalid = true;
-                break;
-            }
-
-            addUser(client, name);
-
+            handle_CL_LOGIN_EXISTING(*user, name, clientVersion);
             break;
         }
 
@@ -1295,6 +1267,32 @@ void Server::handle_CL_START_WATCHING(User &user, size_t serial){
 
     ent->describeSelfToNewWatcher(user);
     ent->addWatcher(user.name());
+}
+
+void Server::handle_CL_LOGIN_EXISTING(User & user, const std::string & name, const std::string & clientVersion) {
+#ifndef _DEBUG
+    // Check that version matches
+    if (clientVersion != version()) {
+        sendMessage(client, WARNING_WRONG_VERSION, version());
+        break;
+    }
+#endif
+
+    // Check that username is valid
+    for (char c : name) {
+        if (c < 'a' || c > 'z') {
+            sendMessage(user.socket(), WARNING_INVALID_USERNAME);
+            return;
+        }
+    }
+
+    // Check that user isn't already logged in
+    if (_usersByName.find(name) != _usersByName.end()) {
+        sendMessage(user.socket(), WARNING_DUPLICATE_USERNAME);
+        return;
+    }
+
+    addUser(user.socket(), name);
 }
 
 void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
