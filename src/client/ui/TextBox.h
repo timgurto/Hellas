@@ -24,6 +24,9 @@ public:
     static const TextBox *focus() { return currentFocus; }
     static void focus(TextBox *textBox) { currentFocus = textBox; }
 
+    using OnChangeFunction = void(*)(void *);
+    void setOnChange(OnChangeFunction function, void *data = nullptr);
+
     static void addText(const char *newText);
     static void backspace();
 
@@ -37,6 +40,9 @@ private:
     ValidInput _validInput;
     bool isInputValid(char c) const;
 
+    OnChangeFunction _onChangeFunction{ nullptr };
+    void *_onChangeData{ nullptr };
+    void onChange();
 
     static const size_t MAX_TEXT_LENGTH = 100;
 

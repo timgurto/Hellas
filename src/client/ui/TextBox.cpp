@@ -61,6 +61,11 @@ void TextBox::click(Element &e, const ScreenPoint &mousePos){
     currentFocus = newFocus;
 }
 
+void TextBox::setOnChange(OnChangeFunction function, void * data) {
+    _onChangeFunction = function;
+    _onChangeData = data;
+}
+
 void TextBox::addText(const char *newText){
     assert(currentFocus);
     assert(newText[1] == '\0');
@@ -72,6 +77,7 @@ void TextBox::addText(const char *newText){
     std::string &text = currentFocus->_text;
     if (text.size() < MAX_TEXT_LENGTH) {
         text.append(newText);
+        currentFocus->onChange();
         currentFocus->markChanged();
     }
 }
@@ -90,12 +96,18 @@ bool TextBox::isInputValid(char c) const {
     return true;
 }
 
+void TextBox::onChange() {
+    if (_onChangeFunction)
+        _onChangeFunction(_onChangeData);
+}
+
 void TextBox::backspace(){
     assert(currentFocus);
 
     std::string &text = currentFocus->_text;
     if (text.size() > 0) {
         text.erase(text.size() - 1);
+        currentFocus->onChange();
         currentFocus->markChanged();
     }
 }
