@@ -111,6 +111,9 @@ void Client::connectToServer() {
     // Ensure connected to server
     if (_connectionStatus != CONNECTED && _timeSinceConnectAttempt >= CONNECT_RETRY_DELAY) {
         _timeSinceConnectAttempt = 0;
+
+        _serverConnectionIndicator->set(Indicator::IN_PROGRESS);
+
         // Server details
         std::string serverIP;
         if (cmdLineArgs.contains("server-ip"))
