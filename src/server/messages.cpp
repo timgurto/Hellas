@@ -1314,8 +1314,13 @@ void Server::handle_CL_LOGIN_EXISTING(const Socket &client, const std::string & 
     // Check that user exists
     auto userFile = _userFilesPath + name + ".usr";
     if (! fileExists(userFile)) {
+#ifndef _DEBUG
         sendMessage(client, WARNING_USER_DOESNT_EXIST);
         return;
+#else
+        addUser(client, name, "Soldier");
+        return;
+#endif
     }
 
     addUser(client, name);
