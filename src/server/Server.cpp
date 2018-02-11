@@ -275,7 +275,7 @@ void Server::run(){
     _running = false;
 }
 
-void Server::addUser(const Socket &socket, const std::string &name){
+void Server::addUser(const Socket &socket, const std::string &name, const std::string &classID){
     auto newUserToInsert = User{ name, {}, socket };
 
     // Add new user to list
@@ -286,7 +286,7 @@ void Server::addUser(const Socket &socket, const std::string &name){
 
     const bool userExisted = readUserData(newUser);
     if (!userExisted) {
-        newUser.setClass(chooseRandomClass());
+        newUser.setClass(_classes[classID]);
         newUser.moveToSpawnPoint(true);
         _debug << "New";
     } else {
@@ -469,16 +469,6 @@ bool Server::isEntityInRange(const Socket &client, const User &user, const Entit
     }
 
     return true;
-}
-
-const ClassType & Server::chooseRandomClass() const {
-    auto numClasses = _classes.size();
-    assert(numClasses > 0);
-    auto index = rand() % numClasses;
-    auto it = _classes.begin();
-    for (auto i = 0; i != index; ++i)
-        ++it;
-    return it->second;
 }
 
 void Server::forceAllToUntarget(const Entity &target, const User *userToExclude){

@@ -144,9 +144,10 @@ private:
     void deleteUserFiles();
     /*
     Add the newly logged-in user
-    This happens not once the client connects, but rather when a CL_I_AM message is received.
+    This happens not once the client connects, but rather when a CL_LOGIN_* message is received.
+    The classID argument is used only when a new account is created.
     */
-    void addUser(const Socket &socket, const std::string &name);
+    void addUser(const Socket &socket, const std::string &name, const std::string &classID = {});
     void checkSockets();
 
     // Remove traces of a user who has disconnected.
@@ -185,8 +186,6 @@ private:
     BuffTypes _buffTypes;
     ClassTypes _classes;
     Tiers _tiers; // Objects are never accessed via container.  This is just dynamic-object storage.
-
-    const ClassType &chooseRandomClass() const;
 
     size_t _numBuildableObjects = 0;
 

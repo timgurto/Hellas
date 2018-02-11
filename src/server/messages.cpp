@@ -1357,7 +1357,7 @@ void Server::handle_CL_LOGIN_NEW(const Socket &client, const std::string & name,
         return;
     }
 
-    addUser(client, name);
+    addUser(client, name, classID);
 }
 
 void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
