@@ -16,6 +16,7 @@ static TextBox *newNameBox{ nullptr };
 static Button *loginButton{ nullptr };
 static Button *createButton{ nullptr };
 static ChoiceList *classList{ nullptr };
+static List *classDescription{ nullptr };
 
 void Client::loginScreenLoop(){
     const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
@@ -172,13 +173,29 @@ void Client::updateCreateButton(void *) {
         createButton->enable();
 }
 
+void Client::updateClassDescription() {
+    updateCreateButton(nullptr);
+
+    classDescription->clearChildren();
+    auto classID = classList->getSelected();
+    if (classID.empty())
+        return;
+
+    const auto &description = _instance->_classes[classID].description();
+    static auto wrapper = WordWrapper{ _instance->defaultFont(), classDescription->contentWidth() };
+    auto lines = wrapper.wrap(description);
+
+    for (const auto &line : lines)
+        classDescription->addChild(new Label({}, line));
+}
+
 void Client::initCreateWindow() {
 
     const auto
         L_PANE_W = 100_px,
-        R_PANE_W = 0_px,
+        R_PANE_W = 200_px,
         MID_PANE = 40_px,
-        PANE_H = 100_px,
+        PANE_H = 120_px,
         MARGIN = 10_px,
         BUTTON_HEIGHT = 20,
         BUTTON_WIDTH = 100,
@@ -190,6 +207,9 @@ void Client::initCreateWindow() {
 
     _createWindow = Window::WithRectAndTitle({ WIN_X, WIN_Y, WIN_W, WIN_H }, "Create Account");
     addWindow(_createWindow);
+
+    auto infoPane = new Element({ L_PANE_W + 2 * MARGIN, MARGIN, R_PANE_W, PANE_H });
+    _createWindow->addChild(infoPane);
 
     {
         auto inputPane = new Element({ MARGIN, MARGIN, L_PANE_W, PANE_H });
@@ -213,11 +233,10 @@ void Client::initCreateWindow() {
             label->id(pair.first);
             classList->addChild(label);
         }
-    }
 
-    {
-        auto infoPane = new Element({ L_PANE_W + 2 * MARGIN, MARGIN, R_PANE_W, PANE_H });
-        _createWindow->addChild(infoPane);
+        classList->onSelect = updateClassDescription;
+        classDescription = new List({ 0, y, R_PANE_W, PANE_H - y });
+        infoPane->addChild(classDescription);
     }
 
     const auto

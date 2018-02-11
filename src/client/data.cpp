@@ -521,6 +521,10 @@ void Client::loadData(const std::string &path){
 
             auto newClass = ClassInfo{ className };
 
+            auto description = ""s;
+            if (xr.findAttr(elem, "description", description))
+                newClass.description(description);
+
             for (auto tree : xr.getChildren("tree", elem)) {
 
                 auto treeName = ClassInfo::Name{};

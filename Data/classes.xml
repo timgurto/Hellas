@@ -1,6 +1,7 @@
 <root>
 
-<class name="Soldier" >
+<class name="Soldier"
+    description="The soldier is a fearless warrior, and a master of physical combat. He is in his element drawing the fire of a strong enemy, or smiting him while establishing tactical control over the battlefield. In times of peace he dabbles in philosophy." >
     <tree name="Hoplite" >
         <tier>
             <cost tag="food" quantity="1" />
@@ -45,7 +46,8 @@
     </tree>
 </class>
 
-<class name="Scholar" >
+<class name="Scholar"
+    description="The scholar prizes knowledge above all else; the more esoteric, the better. He can bring destructive magic to a whole battlefield, or the restoring touch of an expert physician. Many scholars also find themselves drawn to alchemy." >
     <tree name="Magus" >
         <tier>
             <cost tag="food" quantity="1" />
@@ -89,7 +91,8 @@
     </tree>
 </class>
 
-<class name="Zealot" >
+<class name="Zealot"
+    description="The zealot is devoted to the heavenly powers, and can effect their intervention. Mainstream worship lets him invoke healing magic, and the cults allow him to distract many enemies and shield himself from them. The zealot's interest in ceremony and spectacle may also extend to the performing arts." >
     <tree name="Priest" >
         <tier>
             <cost tag="food" quantity="1" />

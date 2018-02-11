@@ -60,6 +60,7 @@ public:
     using Name = std::string;
     using Container = std::map<Name, ClassInfo>;
     using Trees = std::vector<Tree>;
+    using Description = std::string;
 
     ClassInfo() {}
     ClassInfo(const Name &name);
@@ -71,9 +72,12 @@ public:
     const Name &name() const { return _name; }
     const Texture &image() const { return _image; }
     const Trees &trees() const { return _trees; }
+    const Description &description() const { return _description; }
+    void description(const Description &desc) { _description = desc; }
 
 private:
     Name _name{};
     Texture _image{};
     Trees _trees{};
+    Description _description{};
 };

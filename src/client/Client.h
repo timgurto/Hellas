@@ -359,6 +359,7 @@ private:
         void initCreateWindow();
         static void createAccount(void *);
         static void updateCreateButton(void *);
+        static void updateClassDescription();
 
     // These are superficial, and relate only to the cast bar.
     ms_t _actionTimer; // How long the character has been performing the current action.
