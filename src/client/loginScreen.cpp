@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <thread>
 
 #include "Client.h"
 #include "Particle.h"
@@ -22,7 +23,8 @@ void Client::loginScreenLoop(){
     const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
     _timeSinceConnectAttempt += _timeElapsed;
 
-    connectToServer();
+    std::thread t(connectToServerStatic);
+    t.detach();
 
     // Deal with any messages from the server
     if (!_messages.empty()){
@@ -95,6 +97,11 @@ void Client::drawLoginScreen() const{
     _currentCursor->draw(_mouse);
 
     renderer.present();
+}
+
+void Client::connectToServerStatic() {
+    auto &client = *_instance;
+    client.connectToServer();
 }
 
 void Client::connectToServer() {

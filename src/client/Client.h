@@ -353,6 +353,7 @@ private:
     void updateLoginParticles(double delta);
     static void login(void *);
     void connectToServer();
+    static void connectToServerStatic();
     Indicator *_serverConnectionIndicator{ nullptr };
     static void updateLoginButton(void *);
     Window *_createWindow{ nullptr };
