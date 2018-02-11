@@ -124,9 +124,7 @@ _latency(0),
 _timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
 _fps(0),
 
-_invalidUsername(false),
 _loggedIn(false),
-
 _loaded(false),
 
 _timeSinceLocUpdate(0),
@@ -241,9 +239,6 @@ Client::~Client() {
 }
 
 void Client::checkSocket(){
-    if (_invalidUsername)
-        return;
-
     static fd_set readFDs;
     FD_ZERO(&readFDs);
     FD_SET(_socket.getRaw(), &readFDs);

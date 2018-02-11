@@ -118,9 +118,6 @@ void Client::connectToServerStatic() {
 }
 
 void Client::connectToServer() {
-        if (_invalidUsername)
-            return;
-
     // Ensure connected to server
     if (_connectionStatus != CONNECTED && _timeSinceConnectAttempt >= CONNECT_RETRY_DELAY) {
         _timeSinceConnectAttempt = 0;

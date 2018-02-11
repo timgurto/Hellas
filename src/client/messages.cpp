@@ -147,14 +147,12 @@ void Client::handleMessage(const std::string &msg){
         case WARNING_DUPLICATE_USERNAME:
             if (del != MSG_END)
                 break;
-            _invalidUsername = true;
             infoWindow("The user "s + _username + " is already connected to the server."s);
             break;
 
         case WARNING_INVALID_USERNAME:
             if (del != MSG_END)
                 break;
-            _invalidUsername = true;
             infoWindow("The username "s + _username + " is invalid."s);
             break;
 

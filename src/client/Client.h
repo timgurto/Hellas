@@ -430,8 +430,6 @@ private:
     ms_t _timeSinceConnectAttempt;
     unsigned _fps;
 
-    bool _invalidUsername; // Flag set if server refused username
-
     bool _loggedIn;
     bool _loaded; // Whether the client has sufficient information to begin
 
