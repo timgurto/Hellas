@@ -15,6 +15,7 @@ static TextBox *nameBox{ nullptr };
 static TextBox *newNameBox{ nullptr };
 static Button *loginButton{ nullptr };
 static Button *createButton{ nullptr };
+static ChoiceList *classList{ nullptr };
 
 void Client::loginScreenLoop(){
     const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
@@ -172,13 +173,14 @@ void Client::updateCreateButton(void *) {
 void Client::initCreateWindow() {
 
     const auto
-        PANE_W = 100_px,
+        L_PANE_W = 100_px,
+        R_PANE_W = 0_px,
         MID_PANE = 40_px,
-        PANE_H = 200_px,
+        PANE_H = 100_px,
         MARGIN = 10_px,
         BUTTON_HEIGHT = 20,
         BUTTON_WIDTH = 100,
-        WIN_W = 2 * PANE_W + 3 * MARGIN,
+        WIN_W = L_PANE_W + R_PANE_W + 3 * MARGIN,
         WIN_H = PANE_H + 3 * MARGIN + BUTTON_HEIGHT,
         WIN_X = (SCREEN_X - WIN_W) / 2,
         WIN_Y = (SCREEN_Y - WIN_H) / 2;
@@ -187,19 +189,19 @@ void Client::initCreateWindow() {
     addWindow(_createWindow);
 
     {
-        auto inputPane = new Element({ MARGIN, MARGIN, PANE_W, PANE_H });
+        auto inputPane = new Element({ MARGIN, MARGIN, L_PANE_W, PANE_H });
         _createWindow->addChild(inputPane);
         auto y = 0_px;
 
         inputPane->addChild(new Label({ 0, y, 100, Element::TEXT_HEIGHT }, "Name:"));
-        newNameBox = new TextBox({ MID_PANE, y, PANE_W - MID_PANE, Element::TEXT_HEIGHT },
+        newNameBox = new TextBox({ MID_PANE, y, L_PANE_W - MID_PANE, 0 },
             TextBox::LETTERS);
         newNameBox->setOnChange(updateCreateButton);
         inputPane->addChild(newNameBox);
     }
 
     {
-        auto infoPane = new Element({ PANE_W + 2 * MARGIN, MARGIN, PANE_W, PANE_H });
+        auto infoPane = new Element({ L_PANE_W + 2 * MARGIN, MARGIN, R_PANE_W, PANE_H });
         _createWindow->addChild(infoPane);
     }
 
