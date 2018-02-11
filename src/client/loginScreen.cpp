@@ -11,8 +11,10 @@
 extern Renderer renderer;
 extern Args cmdLineArgs;
 
-static TextBox *nameBox{};
-static TextBox *newNameBox{};
+static TextBox *nameBox{ nullptr };
+static TextBox *newNameBox{ nullptr };
+static Button *loginButton{ nullptr };
+static Button *createButton{ nullptr };
 
 void Client::loginScreenLoop(){
     const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
@@ -153,6 +155,20 @@ void Client::connectToServer() {
 
 }
 
+void Client::updateLoginButton(void *) {
+    if (nameBox->text().empty())
+        loginButton->disable();
+    else
+        loginButton->enable();
+}
+
+void Client::updateCreateButton(void *) {
+    if (newNameBox->text().empty())
+        createButton->disable();
+    else
+        createButton->enable();
+}
+
 void Client::initCreateWindow() {
 
     const auto
@@ -178,6 +194,7 @@ void Client::initCreateWindow() {
         inputPane->addChild(new Label({ 0, y, 100, Element::TEXT_HEIGHT }, "Name:"));
         newNameBox = new TextBox({ MID_PANE, y, PANE_W - MID_PANE, Element::TEXT_HEIGHT },
             TextBox::LETTERS);
+        newNameBox->setOnChange(updateCreateButton);
         inputPane->addChild(newNameBox);
     }
 
@@ -189,16 +206,12 @@ void Client::initCreateWindow() {
     const auto
         BUTTON_X = (WIN_H - BUTTON_WIDTH) / 2,
         BUTTON_Y = WIN_H - BUTTON_HEIGHT - MARGIN;
-    auto createButton = new Button({ BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT },
+    createButton = new Button({ BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT },
         "Create account"s, createAccount);
     _createWindow->addChild(createButton);
 }
 
 void Client::createAccount(void *) {
-    if (newNameBox->text().empty()) {
-        newNameBox->text("At least 1 letter, please");
-        return;
-    }
     std::string username = newNameBox->text();
     std::transform(username.begin(), username.end(), username.begin(), tolower);
     newNameBox->text(username);
@@ -210,10 +223,6 @@ void Client::createAccount(void *) {
 }
 
 void Client::login(void *) {
-    if (nameBox->text().empty()) {
-        nameBox->text("At least 1 letter, please");
-        return;
-    }
     std::string username = nameBox->text();
     std::transform(username.begin(), username.end(), username.begin(), tolower);
     nameBox->text(username);
@@ -243,23 +252,23 @@ void Client::initLoginScreen(){
     px_t
         Y = (SCREEN_Y - BUTTON_HEIGHT) / 2;
 
-    _loginUI.push_back(new OutlinedLabel({ BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT+5 },
-                                 "Name:", Element::CENTER_JUSTIFIED));
-    Y += Element::TEXT_HEIGHT+1;
+    _loginUI.push_back(new OutlinedLabel({ BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT + 5 },
+        "Name:", Element::CENTER_JUSTIFIED));
+    Y += Element::TEXT_HEIGHT + 1;
 
     nameBox = new TextBox({ BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT }, TextBox::LETTERS);
     nameBox->text(_username);
     TextBox::focus(nameBox);
+    nameBox->setOnChange(updateLoginButton);
     _loginUI.push_back(nameBox);
 
     SDL_StartTextInput();
 
     Y += Element::TEXT_HEIGHT + GAP;
 
-    _loginUI.push_back(new Button({ BUTTON_X, Y, BUTTON_W, BUTTON_HEIGHT }, "Login", login));
-
-    _loginUI.push_back(new Button({ SCREEN_X - BUTTON_W - GAP, SCREEN_Y - BUTTON_HEIGHT - GAP,
-                                       BUTTON_W, BUTTON_HEIGHT }, "Quit", exit, &_loop));
+    loginButton = new Button({ BUTTON_X, Y, BUTTON_W, BUTTON_HEIGHT }, "Login", login);
+    _loginUI.push_back(loginButton);
+    updateLoginButton(nullptr);
 
     // Left-hand content
     {
@@ -301,6 +310,9 @@ void Client::initLoginScreen(){
 
     // Right-hand content
     {
+        _loginUI.push_back(new Button({ SCREEN_X - BUTTON_W - GAP, SCREEN_Y - BUTTON_HEIGHT - GAP,
+            BUTTON_W, BUTTON_HEIGHT }, "Quit", exit, &_loop));
+
         auto
             y = 250_px,
             BUTTON_X = SCREEN_X - BUTTON_W - GAP;
@@ -308,6 +320,7 @@ void Client::initLoginScreen(){
         auto createButton = new Button({ BUTTON_X, y, BUTTON_W, BUTTON_HEIGHT }, "Create new account",
             showWindowInFront, _createWindow);
         _loginUI.push_back(createButton);
+        updateCreateButton(nullptr);
     }
 
     // Images
