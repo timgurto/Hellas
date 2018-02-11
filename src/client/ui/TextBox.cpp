@@ -7,8 +7,6 @@
 extern Renderer renderer;
 
 TextBox *TextBox::currentFocus = nullptr;
-const px_t TextBox::HEIGHT = 14;
-const size_t TextBox::MAX_TEXT_LENGTH = 100;
 
 TextBox::TextBox(const ScreenRect &rect, ValidInput validInput):
 Element({rect.x, rect.y, rect.w, HEIGHT}),

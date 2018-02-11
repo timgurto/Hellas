@@ -37,11 +37,10 @@ private:
     ValidInput _validInput;
     bool isInputValid(char c) const;
 
-    static const size_t MAX_TEXT_LENGTH;
 
-    static const px_t
-        HEIGHT;
+    static const size_t MAX_TEXT_LENGTH = 100;
 
+    static const px_t HEIGHT = 14;
     static TextBox *currentFocus;
 };
 
