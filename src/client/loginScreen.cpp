@@ -166,6 +166,8 @@ void Client::updateLoginButton(void *) {
 void Client::updateCreateButton(void *) {
     if (newNameBox->text().empty())
         createButton->disable();
+    else if (classList->getSelected().empty())
+        createButton->disable();
     else
         createButton->enable();
 }
