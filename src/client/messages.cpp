@@ -163,6 +163,7 @@ void Client::handleMessage(const std::string &msg){
             break;
 
         case WARNING_USER_DOESNT_EXIST:
+        case WARNING_NAME_TAKEN:
             if (del != MSG_END)
                 break;
             infoWindow(_errorMessages[msgCode]);
@@ -2008,6 +2009,7 @@ void Client::initializeMessageNames(){
     _errorMessages[WARNING_MISSING_REQ_FOR_TALENT] = "You don't meet the requirements for that talent.";
     _errorMessages[WARNING_STUNNED] = "You can't do that while stunned.";
     _errorMessages[WARNING_USER_DOESNT_EXIST] = "That account does not exist.";
+    _errorMessages[WARNING_NAME_TAKEN] = "That name is taken.";
 }
 
 void Client::performCommand(const std::string &commandString){

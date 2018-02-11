@@ -1324,6 +1324,30 @@ void Server::handle_CL_LOGIN_EXISTING(const Socket &client, const std::string & 
 }
 
 void Server::handle_CL_LOGIN_NEW(const Socket &client, const std::string & name, const std::string & classID, std::string & clientVersion) {
+#ifndef _DEBUG
+    // Check that version matches
+    if (clientVersion != version()) {
+        sendMessage(client, WARNING_WRONG_VERSION, version());
+        return;
+    }
+#endif
+
+    // Check that username is valid
+    for (char c : name) {
+        if (c < 'a' || c > 'z') {
+            sendMessage(client, WARNING_INVALID_USERNAME);
+            return;
+        }
+    }
+
+    // Check that user doesn't exist
+    auto userFile = _userFilesPath + name + ".usr";
+    if (fileExists(userFile)) {
+        sendMessage(client, WARNING_NAME_TAKEN);
+        return;
+    }
+
+    addUser(client, name);
 }
 
 void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
