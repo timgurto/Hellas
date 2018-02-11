@@ -263,7 +263,6 @@ void Client::login(void *) {
     std::string username = nameBox->text();
     std::transform(username.begin(), username.end(), username.begin(), tolower);
     nameBox->text(username);
-    SDL_StopTextInput();
 
     _instance->_username = username;
     _instance->sendMessage(CL_LOGIN_EXISTING, makeArgs(username, version()));

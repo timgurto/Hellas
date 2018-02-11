@@ -76,6 +76,7 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
             _connectionStatus = LOGGED_IN;
+            SDL_StopTextInput();
             _loggedIn = true;
             _timeSinceConnectAttempt = 0;
             _lastPingSent = _lastPingReply = _time;
