@@ -183,7 +183,8 @@ void Client::initCreateWindow() {
         WIN_W = L_PANE_W + R_PANE_W + 3 * MARGIN,
         WIN_H = PANE_H + 3 * MARGIN + BUTTON_HEIGHT,
         WIN_X = (SCREEN_X - WIN_W) / 2,
-        WIN_Y = (SCREEN_Y - WIN_H) / 2;
+        WIN_Y = (SCREEN_Y - WIN_H) / 2,
+        GAP = 2;
 
     _createWindow = Window::WithRectAndTitle({ WIN_X, WIN_Y, WIN_W, WIN_H }, "Create Account");
     addWindow(_createWindow);
@@ -198,6 +199,18 @@ void Client::initCreateWindow() {
             TextBox::LETTERS);
         newNameBox->setOnChange(updateCreateButton);
         inputPane->addChild(newNameBox);
+        y += newNameBox->height() + GAP;
+
+        inputPane->addChild(new Label({ 0, y, 100, Element::TEXT_HEIGHT }, "Class:"));
+        const auto CLASS_LIST_HEIGHT = 50_px;
+        classList = new ChoiceList({ MID_PANE, y, L_PANE_W - MID_PANE, CLASS_LIST_HEIGHT },
+            Element::TEXT_HEIGHT);
+        inputPane->addChild(classList);
+        for (const auto &pair : _classes) {
+            auto label = new Label({}, " "s + pair.second.name());
+            label->id(pair.first);
+            classList->addChild(label);
+        }
     }
 
     {
