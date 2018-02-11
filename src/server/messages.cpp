@@ -20,10 +20,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         
         // Discard message if this client has not yet sent CL_I_AM
         std::set<User>::iterator it = _users.find(client);
-        if (it == _users.end() && msgCode != CL_LOGIN_EXISTING) {
+        if (it == _users.end() && msgCode != CL_LOGIN_EXISTING && msgCode != CL_LOGIN_NEW) {
             continue;
         }
-        if (msgCode != CL_LOGIN_EXISTING) {
+        if (msgCode != CL_LOGIN_EXISTING && msgCode != CL_LOGIN_NEW) {
             User & userRef = const_cast<User&>(*it);
             user = &userRef;
             user->contact();
@@ -53,6 +53,27 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 return;
 
             handle_CL_LOGIN_EXISTING(*user, name, clientVersion);
+            break;
+        }
+
+        case CL_LOGIN_NEW:
+        {
+            iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            auto name = std::string(buffer);
+            iss >> del;
+
+            iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            auto classID = std::string(buffer);
+            iss >> del;
+
+            iss.get(buffer, BUFFER_SIZE, MSG_END);
+            auto clientVersion = std::string(buffer);
+            iss >> del;
+
+            if (del != MSG_END)
+                return;
+
+            handle_CL_LOGIN_NEW(*user, name, classID, clientVersion);
             break;
         }
 
@@ -1293,6 +1314,9 @@ void Server::handle_CL_LOGIN_EXISTING(User & user, const std::string & name, con
     }
 
     addUser(user.socket(), name);
+}
+
+void Server::handle_CL_LOGIN_NEW(User & user, const std::string & name, const std::string & classID, std::string & clientVersion) {
 }
 
 void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {

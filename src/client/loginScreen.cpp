@@ -232,7 +232,8 @@ void Client::createAccount(void *) {
     newNameBox->text(username);
 
     _instance->_username = username;
-    _instance->sendMessage(CL_LOGIN_EXISTING, makeArgs(username, version()));
+    const auto &selectedClass = classList->getSelected();
+    _instance->sendMessage(CL_LOGIN_NEW, makeArgs(username, selectedClass, version()));
 
     _instance->_createWindow->hide();
 }

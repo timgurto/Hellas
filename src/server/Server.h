@@ -235,6 +235,7 @@ private:
 
 
     void handle_CL_LOGIN_EXISTING(User &user, const std::string &name, const std::string &clientVersion);
+    void handle_CL_LOGIN_NEW(User &user, const std::string &name, const std::string &classID, std::string &clientVersion);
     void handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum);
     void handle_CL_START_WATCHING(User &user, size_t serial);
     void handle_CL_LEAVE_CITY(User &user);
