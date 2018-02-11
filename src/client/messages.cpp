@@ -75,8 +75,12 @@ void Client::handleMessage(const std::string &msg){
         {
             if (del != MSG_END)
                 break;
-            _connectionStatus = LOGGED_IN;
+
+            // Hide/clean up from login screen
             SDL_StopTextInput();
+            _instance->_createWindow->hide();
+
+            _connectionStatus = LOGGED_IN;
             _loggedIn = true;
             _timeSinceConnectAttempt = 0;
             _lastPingSent = _lastPingReply = _time;
