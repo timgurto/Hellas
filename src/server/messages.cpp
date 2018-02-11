@@ -1290,6 +1290,20 @@ void Server::handle_CL_START_WATCHING(User &user, size_t serial){
     ent->addWatcher(user.name());
 }
 
+static bool isUsernameValid(const std::string name) {
+    const auto
+        MIN_CHARS = 3,
+        MAX_CHARS = 20;
+    if (name.length() < MIN_CHARS)
+        return false;
+    if (name.length() > MAX_CHARS)
+        return false;
+    for (char c : name)
+        if (c < 'a' || c > 'z')
+            return false;
+    return true;
+}
+
 void Server::handle_CL_LOGIN_EXISTING(const Socket &client, const std::string & name, const std::string & clientVersion) {
 #ifndef _DEBUG
     // Check that version matches
@@ -1300,11 +1314,9 @@ void Server::handle_CL_LOGIN_EXISTING(const Socket &client, const std::string & 
 #endif
 
     // Check that username is valid
-    for (char c : name) {
-        if (c < 'a' || c > 'z') {
-            sendMessage(client, WARNING_INVALID_USERNAME);
-            return;
-        }
+    if (!isUsernameValid(name)) {
+        sendMessage(client, WARNING_INVALID_USERNAME);
+        return;
     }
 
     // Check that user isn't already logged in
@@ -1333,11 +1345,9 @@ void Server::handle_CL_LOGIN_NEW(const Socket &client, const std::string & name,
 #endif
 
     // Check that username is valid
-    for (char c : name) {
-        if (c < 'a' || c > 'z') {
-            sendMessage(client, WARNING_INVALID_USERNAME);
-            return;
-        }
+    if (!isUsernameValid(name)){
+        sendMessage(client, WARNING_INVALID_USERNAME);
+        return;
     }
 
     // Check that user doesn't exist
