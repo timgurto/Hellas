@@ -46,13 +46,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
             auto name = std::string(buffer);
             iss >> del;
+
             iss.get(buffer, BUFFER_SIZE, MSG_END);
             auto clientVersion = std::string(buffer);
             iss >> del;
             if (del != MSG_END)
                 return;
 
-            handle_CL_LOGIN_EXISTING(*user, name, clientVersion);
+            handle_CL_LOGIN_EXISTING(client, name, clientVersion);
             break;
         }
 
@@ -69,11 +70,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             iss.get(buffer, BUFFER_SIZE, MSG_END);
             auto clientVersion = std::string(buffer);
             iss >> del;
-
             if (del != MSG_END)
                 return;
 
-            handle_CL_LOGIN_NEW(*user, name, classID, clientVersion);
+            handle_CL_LOGIN_NEW(client, name, classID, clientVersion);
             break;
         }
 
@@ -1290,33 +1290,40 @@ void Server::handle_CL_START_WATCHING(User &user, size_t serial){
     ent->addWatcher(user.name());
 }
 
-void Server::handle_CL_LOGIN_EXISTING(User & user, const std::string & name, const std::string & clientVersion) {
+void Server::handle_CL_LOGIN_EXISTING(const Socket &client, const std::string & name, const std::string & clientVersion) {
 #ifndef _DEBUG
     // Check that version matches
     if (clientVersion != version()) {
         sendMessage(client, WARNING_WRONG_VERSION, version());
-        break;
+        return;
     }
 #endif
 
     // Check that username is valid
     for (char c : name) {
         if (c < 'a' || c > 'z') {
-            sendMessage(user.socket(), WARNING_INVALID_USERNAME);
+            sendMessage(client, WARNING_INVALID_USERNAME);
             return;
         }
     }
 
     // Check that user isn't already logged in
     if (_usersByName.find(name) != _usersByName.end()) {
-        sendMessage(user.socket(), WARNING_DUPLICATE_USERNAME);
+        sendMessage(client, WARNING_DUPLICATE_USERNAME);
         return;
     }
 
-    addUser(user.socket(), name);
+    // Check that user exists
+    auto userFile = _userFilesPath + name + ".usr";
+    if (! fileExists(userFile)) {
+        sendMessage(client, WARNING_USER_DOESNT_EXIST);
+        return;
+    }
+
+    addUser(client, name);
 }
 
-void Server::handle_CL_LOGIN_NEW(User & user, const std::string & name, const std::string & classID, std::string & clientVersion) {
+void Server::handle_CL_LOGIN_NEW(const Socket &client, const std::string & name, const std::string & classID, std::string & clientVersion) {
 }
 
 void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {

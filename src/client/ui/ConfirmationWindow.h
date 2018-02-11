@@ -27,7 +27,6 @@ public:
     InfoWindow(const std::string &windowText);
 
 private:
-
     static const px_t
         WINDOW_WIDTH = 300,
         WINDOW_HEIGHT = 32;

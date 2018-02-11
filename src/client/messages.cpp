@@ -154,9 +154,17 @@ void Client::handleMessage(const std::string &msg){
             break;
 
         case WARNING_SERVER_FULL:
+            if (del != MSG_END)
+                break;
             _socket = Socket();
             _loggedIn = false;
             infoWindow("The server is full; attempting reconnection.");
+            break;
+
+        case WARNING_USER_DOESNT_EXIST:
+            if (del != MSG_END)
+                break;
+            infoWindow(_errorMessages[msgCode]);
             break;
 
         case WARNING_TOO_FAR:
@@ -1998,6 +2006,7 @@ void Client::initializeMessageNames(){
     _errorMessages[WARNING_MISSING_ITEMS_FOR_TALENT] = "You don't have the items needed to learn that talent.";
     _errorMessages[WARNING_MISSING_REQ_FOR_TALENT] = "You don't meet the requirements for that talent.";
     _errorMessages[WARNING_STUNNED] = "You can't do that while stunned.";
+    _errorMessages[WARNING_USER_DOESNT_EXIST] = "That account does not exist.";
 }
 
 void Client::performCommand(const std::string &commandString){

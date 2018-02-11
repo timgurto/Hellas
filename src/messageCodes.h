@@ -477,6 +477,7 @@ enum MessageCode{
     WARNING_DUPLICATE_USERNAME, // The client has attempted to connect with a username already in use
     WARNING_INVALID_USERNAME, // The client has attempted to connect with an invalid username
     WARNING_SERVER_FULL, // There is no room for more clients
+    WARNING_USER_DOESNT_EXIST, // User tried to log in to an account that doesn't exist
 
     // Merchant objects
     ERROR_NOT_MERCHANT, // The user tried to perform a merchant function on a non-merchant object

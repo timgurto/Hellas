@@ -1,5 +1,6 @@
 #include <cassert>
 #include <cmath>
+#include <fstream>
 #include <sstream>
 
 #include "Args.h"
@@ -103,4 +104,9 @@ std::string sAsTimeDisplay(int t) {
 
 std::string msAsTimeDisplay(ms_t t) {
     return sAsTimeDisplay(t/1000);
+}
+
+bool fileExists(const std::string & path) {
+    std::ifstream fs(path);
+    return fs.good();
 }

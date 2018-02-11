@@ -112,4 +112,6 @@ T max(const T &lhs, const T &rhs) {
 std::string sAsTimeDisplay(int t);
 std::string msAsTimeDisplay(ms_t t);
 
+bool fileExists(const std::string &path);
+
 #endif
