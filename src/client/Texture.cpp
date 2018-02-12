@@ -136,6 +136,8 @@ _programEndMarker(false){
 Texture &Texture::operator=(const Texture &rhs){
     if (this == &rhs)
         return *this;
+    if (_raw == rhs._raw)
+        return *this;
     if (_raw != nullptr)
         removeRef();
 
