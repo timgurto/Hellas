@@ -34,6 +34,7 @@ public:
     void width(px_t w) override;
     void height(px_t h) override;
     void setTitle(const std::string &title);
+    void center();
     
     px_t contentWidth() const { return _content->width(); }
     px_t contentHeight() const { return _content->height(); }

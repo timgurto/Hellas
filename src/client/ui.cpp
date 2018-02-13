@@ -221,6 +221,7 @@ void Client::initializeEscapeWindow() {
         NUM_BUTTONS = 2,
         WIN_HEIGHT = NUM_BUTTONS * BUTTON_HEIGHT + (NUM_BUTTONS + 1) * GAP;
     _escapeWindow = Window::WithRectAndTitle({ 0, 0, WIN_WIDTH, WIN_HEIGHT }, "System Menu"s);
+    _escapeWindow->center();
     auto y = GAP;
     auto x = GAP;
 

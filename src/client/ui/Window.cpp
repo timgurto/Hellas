@@ -162,6 +162,13 @@ void Window::setTitle(const std::string &title){
     _heading->changeText(_title);
 }
 
+void Window::center() {
+    auto
+        x = (Client::SCREEN_X - contentWidth()) / 2,
+        y = (Client::SCREEN_Y - contentHeight()) / 2;
+    setPosition(x, y);
+}
+
 void Window::checkInitialized(Element &thisWindow){
     Window &window = dynamic_cast<Window &>(thisWindow);
     if (window._isInitialized)
