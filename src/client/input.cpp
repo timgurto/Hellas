@@ -89,7 +89,7 @@ void Client::handleInput(double delta){
                     else if (frontMostVisibleWindow != nullptr)
                         frontMostVisibleWindow->hide();
                     else
-                        _loop = false;
+                        _escapeWindow->show();
                     break;
                 }
 

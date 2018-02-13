@@ -308,6 +308,7 @@ private:
     Element *_targetBuffs{ nullptr };
     OutlinedLabel *_lastErrorMessage{ nullptr };
     mutable ms_t _errorMessageTimer{ 0 };
+    Window *_escapeWindow{ nullptr };
     void initUI();
         void initChatLog();
         void initWindows();
@@ -324,6 +325,7 @@ private:
                 static Element *assembleBuffEntry(const ClientBuffType &type, bool isDebuff = false);
         void initTargetBuffs();
             void refreshTargetBuffs();
+        void initializeEscapeWindow();
     void updateUI();
 
     // Chat
@@ -383,6 +385,7 @@ private:
     bool _running; // True while run() is being executed.
     bool _freeze; // For testing purposes only; should otherwise remain false.
     Socket _socket;
+    static void exitGame(void *client);
 
     TTF_Font *_defaultFont;
 

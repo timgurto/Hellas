@@ -302,6 +302,11 @@ void Client::run(){
     _running = false;
 }
 
+void Client::exitGame(void * pClient) {
+    auto &client = *reinterpret_cast<Client *>(pClient);
+    client._loop = false;
+}
+
 void Client::gameLoop(){
     const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
 

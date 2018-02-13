@@ -93,6 +93,9 @@ void Client::initWindows() {
 
     initializeClassWindow();
     addWindow(_classWindow);
+
+    initializeEscapeWindow();
+    addWindow(_escapeWindow);
 }
 
 void Client::initCastBar() {
@@ -207,6 +210,26 @@ void Client::refreshTargetBuffs() {
         _targetBuffs->addChild(icon);
         x += 17;
     }
+}
+
+void Client::initializeEscapeWindow() {
+    const auto
+        BUTTON_WIDTH = 80,
+        BUTTON_HEIGHT = 20,
+        GAP = 3,
+        WIN_WIDTH = BUTTON_WIDTH + 2 * GAP,
+        NUM_BUTTONS = 2,
+        WIN_HEIGHT = NUM_BUTTONS * BUTTON_HEIGHT + (NUM_BUTTONS + 1) * GAP;
+    _escapeWindow = Window::WithRectAndTitle({ 0, 0, WIN_WIDTH, WIN_HEIGHT }, "System Menu"s);
+    auto y = GAP;
+    auto x = GAP;
+
+    _escapeWindow->addChild(new Button({ x, y, BUTTON_WIDTH, BUTTON_HEIGHT }, "Exit to desktop"s,
+        exitGame, this));
+    y += BUTTON_HEIGHT + GAP;
+
+    _escapeWindow->addChild(new Button({ x, y, BUTTON_WIDTH, BUTTON_HEIGHT }, "Return to game"s,
+        Window::hideWindow, _escapeWindow));
 }
 
 void Client::updateUI() {
