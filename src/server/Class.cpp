@@ -59,17 +59,18 @@ bool Class::knowsSpell(const Spell::ID & spell) const {
 
 std::string Class::generateKnownSpellsString() const {
     auto string = ""s;
+    auto spellsKnown = 0;
     for (auto pair : _talentRanks) {
         if (pair.second == 0)
             continue;
         auto talent = pair.first;
         if (talent->type() != Talent::SPELL)
             continue;
-        if (!string.empty())
-            string.append(",");
+        string.append(std::string{ MSG_DELIM });
         string.append(talent->spellID());
+        ++spellsKnown;
     }
-    return string;
+    return toString(spellsKnown) + string;
 }
 
 void Class::applyStatsTo(Stats &baseStats) const {

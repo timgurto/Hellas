@@ -1468,12 +1468,16 @@ void Client::handleMessage(const std::string &msg){
 
             auto knownSpellIDs = std::set<std::string>{};
             for (auto i = 0; i != numSpellsKnown; ++i) {
-                singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+                auto expectedDelimiter = (i == numSpellsKnown - 1) ? MSG_END : MSG_DELIM;
+                singleMsg.get(buffer, BUFFER_SIZE, expectedDelimiter);
                 auto spellID = std::string{ buffer };
                 singleMsg >> del;
 
                 knownSpellIDs.insert(spellID);
             }
+
+            if (del != MSG_END)
+                return;
 
             handle_SV_KNOWN_SPELLS(std::move(knownSpellIDs));
             break;

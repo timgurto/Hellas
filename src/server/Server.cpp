@@ -350,10 +350,6 @@ void Server::addUser(const Socket &socket, const std::string &name, const std::s
         entity->sendInfoToClient(newUser);
     }
 
-    // Send him his known spells
-    auto knownSpellsString = newUser.getClass().generateKnownSpellsString();
-    sendMessage(newUser.socket(), SV_KNOWN_SPELLS, knownSpellsString);
-
 
     // Send him his inventory
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
@@ -384,6 +380,10 @@ void Server::addUser(const Socket &socket, const std::string &name, const std::s
         }
         sendMessage(newUser.socket(), SV_CONSTRUCTIONS, args);
     }
+
+    // Send him his known spells
+    auto knownSpellsString = userClass.generateKnownSpellsString();
+    sendMessage(newUser.socket(), SV_KNOWN_SPELLS, knownSpellsString);
 
     // Add user to location-indexed trees
     const User *userP = &*it;
