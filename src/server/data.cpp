@@ -131,9 +131,25 @@ bool Server::readUserData(User &user){
     }
 
     elem = xr.findChild("knownConstructions");
-    for (auto slotElem : xr.getChildren("construction", elem)){
+    for (auto slotElem : xr.getChildren("construction", elem)) {
         std::string id;
         if (xr.findAttr(slotElem, "id", id)) user.addConstruction(id);
+    }
+
+    elem = xr.findChild("talents");
+    for (auto talentElem : xr.getChildren("talent", elem)) {
+        auto name = ""s;
+        if (!xr.findAttr(talentElem, "name", name))
+            continue;
+        auto &userClass = user.getClass();
+        auto talent = userClass.type().findTalent(name);
+        if (!talent)
+            continue;
+
+        auto rank = 0;
+        xr.findAttr(talentElem, "rank", rank);
+
+        userClass.loadTalentRank(*talent, rank);
     }
 
     return true;
@@ -198,6 +214,15 @@ void Server::writeUserData(const User &user) const{
     for (const std::string &id : user.knownConstructions()){
         auto slotElement = xw.addChild("construction", e);
         xw.setAttr(slotElement, "id", id);
+    }
+
+    e = xw.addChild("talents");
+    for (auto pair : user.getClass().talentRanks()) {
+        if (pair.second == 0)
+            continue;
+        auto talentElem = xw.addChild("talent", e);
+        xw.setAttr(talentElem, "name", pair.first->name());
+        xw.setAttr(talentElem, "rank", pair.second);
     }
 
     xw.publish();

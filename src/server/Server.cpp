@@ -381,6 +381,19 @@ void Server::addUser(const Socket &socket, const std::string &name, const std::s
         sendMessage(newUser.socket(), SV_CONSTRUCTIONS, args);
     }
 
+    // Send him his talents
+    const auto &userClass = newUser.getClass();
+    auto treesToSend = std::set<std::string>{};
+    for (auto pair : userClass.talentRanks()) {
+        const auto &talent = *pair.first;
+        sendMessage(newUser.socket(), SV_TALENT, makeArgs(talent.name(), pair.second));
+        treesToSend.insert(talent.tree());
+    }
+    for (const auto &tree : treesToSend) {
+        auto pointsInTree = userClass.pointsInTree(tree);
+        sendMessage(newUser.socket(), SV_POINTS_IN_TREE, makeArgs(tree, pointsInTree));
+    }
+
     // Send him his known spells
     auto knownSpellsString = userClass.generateKnownSpellsString();
     sendMessage(newUser.socket(), SV_KNOWN_SPELLS, knownSpellsString);

@@ -93,6 +93,8 @@ public:
     std::string generateKnownSpellsString() const;
     void applyStatsTo(Stats &baseStats) const;
     size_t pointsInTree(const std::string &treeName) const;
+    const TalentRanks &talentRanks() const { return _talentRanks; }
+    void loadTalentRank(const Talent &talent, unsigned rank);
 
 private:
     const ClassType *_type{ nullptr };

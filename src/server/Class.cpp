@@ -94,6 +94,11 @@ size_t Class::pointsInTree(const std::string & treeName) const {
     return total;
 }
 
+void Class::loadTalentRank(const Talent & talent, unsigned rank) {
+    _talentPointsAllocated += rank;
+    _talentRanks[&talent] = rank;
+}
+
 Talent Talent::Dummy(const Name & name) {
     return{ name, DUMMY , DUMMY_TIER };
 }
