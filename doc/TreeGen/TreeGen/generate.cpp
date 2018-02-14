@@ -241,7 +241,9 @@ int main(int argc, char **argv){
             requiredSounds.insert("drop");
             std::set<ID> missingImages;
 
-            if (!checkImageExists("Items/" + id))
+            auto iconFile = id;
+            xr.findAttr(elem, "iconFile", iconFile);
+            if (!checkImageExists("Items/" + iconFile))
                 missingImages.insert("icon");
 
             std::string s;
@@ -274,7 +276,10 @@ int main(int argc, char **argv){
                 else if (isArmor)
                     requiredSounds.insert("defend");
 
-                if (!checkImageExists("Gear/" + id))
+
+                auto gearFile = id;
+                xr.findAttr(elem, "gearFile", gearFile);
+                if (!checkImageExists("Gear/" + gearFile))
                     missingImages.insert("gear");
             }
 
