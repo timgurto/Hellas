@@ -5,10 +5,21 @@
     <sound type="attack" file="punch1" />
     <sound type="attack" file="punch2" />
     <sound type="attack" file="punch3" />
+    <sound type="defend" file="grunt0" />
     <sound type="defend" file="grunt1" />
     <sound type="defend" file="grunt2" />
     <sound type="defend" file="grunt3" />
     <sound type="defend" file="grunt4" />
+    <sound type="defend" file="grunt5" />
+    <sound type="defend" file="grunt6" />
+    <sound type="defend" file="grunt7" />
+    <sound type="death" file="death0" />
+    <sound type="death" file="death1" />
+    <sound type="death" file="death2" />
+    <sound type="death" file="death3" />
+    <sound type="death" file="death4" />
+    <sound type="death" file="death5" />
+    <sound type="death" file="death6" />
 </soundProfile>
 
 <soundProfile id="brick" >
