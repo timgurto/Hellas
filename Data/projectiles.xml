@@ -9,11 +9,11 @@
 <projectile id="fireball" speed=350 particlesAtEnd="fireball" sounds="fireball" >
     <drawRect x=-7 y=-28 w=16 h=36 />
 </projectile>
-<projectile id="waterball" speed=350 particlesAtEnd="waterExplosion" >
+<projectile id="waterball" speed=350 particlesAtEnd="waterExplosion" sounds="water" >
     <drawRect x=-7 y=-28 w=16 h=36 />
 </projectile>
 
-<projectile id="rock" speed=450 particlesAtEnd="blood" >
+<projectile id="rock" speed=450 particlesAtEnd="blood" sounds="rock" >
     <drawRect x=-4 y=-28 w=9 h=32 />
 </projectile>
 

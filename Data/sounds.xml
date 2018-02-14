@@ -25,6 +25,15 @@
     <sound type="attack" file="boneThud5" />
 </soundProfile>
 
+<soundProfile id="rock" >
+    <sound type="impact" file="boneThud0" />
+    <sound type="impact" file="boneThud1" />
+    <sound type="impact" file="boneThud2" />
+    <sound type="impact" file="boneThud3" />
+    <sound type="impact" file="boneThud4" />
+    <sound type="impact" file="boneThud5" />
+</soundProfile>
+
 <soundProfile id="ceramic" >
     <sound type="drop" file="ceramic" />
 </soundProfile>
@@ -81,6 +90,14 @@
 <soundProfile id="fireball" >
     <sound type="launch" file="catchFlame" />
     <sound type="impact" file="ignite" />
+</soundProfile>
+
+<soundProfile id="water" >
+    <sound type="impact" file="splash0" />
+    <sound type="impact" file="splash1" />
+    <sound type="impact" file="splash2" />
+    <sound type="impact" file="splash3" />
+    <sound type="impact" file="splash4" />
 </soundProfile>
 
 <soundProfile id="heal" >
