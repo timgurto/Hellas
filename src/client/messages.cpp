@@ -799,7 +799,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             }
             const ClientNPC &attacker = * dynamic_cast<const ClientNPC *>(objIt->second);
-            if (attacker.npcType()->sounds() != nullptr)
+            if (! attacker.npcType()->projectile() && attacker.npcType()->sounds() != nullptr)
                 attacker.npcType()->sounds()->playOnce("attack");
 
             handle_SV_PLAYER_WAS_HIT(username);
