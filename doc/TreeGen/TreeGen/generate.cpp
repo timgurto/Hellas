@@ -243,7 +243,7 @@ int main(int argc, char **argv){
 
             auto iconFile = id;
             xr.findAttr(elem, "iconFile", iconFile);
-            if (!checkImageExists("Items/" + iconFile))
+            if (!iconFile.empty() && !checkImageExists("Items/" + iconFile))
                 missingImages.insert("icon");
 
             std::string s;
@@ -279,7 +279,7 @@ int main(int argc, char **argv){
 
                 auto gearFile = id;
                 xr.findAttr(elem, "gearFile", gearFile);
-                if (!checkImageExists("Gear/" + gearFile))
+                if (!gearFile.empty() && !checkImageExists("Gear/" + gearFile))
                     missingImages.insert("gear");
             }
 
@@ -292,9 +292,11 @@ int main(int argc, char **argv){
 
             ID sounds;
             if (xr.findAttr(elem, "sounds", sounds)){
-                SoundProfile &soundProfile = soundProfiles[sounds];
-                for (const std::string &soundType : requiredSounds)
-                    soundProfile.checkType(soundType);
+                if (!sounds.empty()) {
+                    SoundProfile &soundProfile = soundProfiles[sounds];
+                    for (const std::string &soundType : requiredSounds)
+                        soundProfile.checkType(soundType);
+                }
             } else{
                 jw.addArrayAttribute("soundsMissing", requiredSounds);
             }

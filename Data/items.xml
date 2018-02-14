@@ -355,7 +355,7 @@
     </item>
 
 <!-- Test -->
-<item id="ring" name="Ring" gearSlot="1" >
+<item id="ring" name="Ring" gearSlot="1" sounds="" iconFile="" gearFile="" >
     <stats
         armor="5"
         health="5"
@@ -378,10 +378,10 @@
     />
 </item>
 
-<item id="fireRing" name="Ring of Fire" gearSlot="1" >
+<item id="fireRing" name="Ring of Fire" gearSlot="1" sounds="" iconFile="" gearFile="" >
     <stats fireResist="80" />
 </item>
-<item id="earthRing" name="Ring of Earth" gearSlot="1" >
+<item id="earthRing" name="Ring of Earth" gearSlot="1" sounds="" iconFile="" gearFile="" >
     <stats earthResist="80" />
 </item>
 
