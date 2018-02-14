@@ -29,7 +29,7 @@
     id="waterNymph" name="Water Nymph"
 	level="9" maxHealth="34" attack="4" attackTime="1000" isRanged="1" school="water" projectile="waterball"
     xDrawOffset="-18" yDrawOffset="-40"
-    sounds="waterNymph" >
+    sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
     <loot id="waterEssence" > <normal mean="0.3" sd="0.5" /> </loot>
     <particles profile="waterPooling" y="-15" />
@@ -42,7 +42,7 @@
     id="airNymph" name="Air Nymph"
 	level="13" maxHealth="40" attack="5" attackTime="1000" isRanged="1" school="air" projectile="airball"
     xDrawOffset="-18" yDrawOffset="-40"
-    sounds="airNymph" >
+    sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
     <loot id="airEssence" > <normal mean="0.3" sd="0.5" /> </loot>
     <particles profile="air" y="-22" />
@@ -63,7 +63,7 @@
     id="fireNymph" name="Fire Nymph"
 	level="20" maxHealth="57" attack="7" attackTime="1000" isRanged="1" school="fire" projectile="fireball"
     xDrawOffset="-18" yDrawOffset="-40"
-    sounds="fireNymph" >
+    sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
     <loot id="fireEssence" > <normal mean="0.3" sd="0.5" /> </loot>
     <particles profile="fire" y="-15" />
