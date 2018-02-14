@@ -87,4 +87,28 @@
     <sound type="impact" file="choir" />
 </soundProfile>
 
+<soundProfile id="nymph" >
+    <sound type="defend" file="womanHit0" />
+    <sound type="defend" file="womanHit1" />
+    <sound type="defend" file="womanHit2" />
+    <sound type="defend" file="womanHit3" />
+    <sound type="defend" file="womanHit4" />
+    <sound type="defend" file="womanHit5" />
+    <sound type="death" file="womanDeath0" />
+    <sound type="death" file="womanDeath1" />
+    <sound type="death" file="womanDeath2" />
+</soundProfile>
+
+<soundProfile id="earthNymph" >
+    <sound type="defend" file="womanHit0" />
+    <sound type="defend" file="womanHit1" />
+    <sound type="defend" file="womanHit2" />
+    <sound type="defend" file="womanHit3" />
+    <sound type="defend" file="womanHit4" />
+    <sound type="defend" file="womanHit5" />
+    <sound type="death" file="womanDeath0" />
+    <sound type="death" file="womanDeath1" />
+    <sound type="death" file="womanDeath2" />
+</soundProfile>
+
 </root>
