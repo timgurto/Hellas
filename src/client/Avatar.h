@@ -77,8 +77,9 @@ public:
     static void declareCityWarAgainstCity(void *pCityName);
     static void recruit(void *pUsername);
 
-    void playAttackSound() const; // The player has attacked; play an appropriate sound.
-    void playDefendSound() const; // The player has been attacked; play an appropriate sound.
+    void playAttackSound() const override;
+    void playDefendSound() const override;
+    void playDeathSound() const override;
 
     friend class Client;
 

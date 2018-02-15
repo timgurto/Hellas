@@ -70,3 +70,10 @@ void ClientCombatant::addBuffOrDebuff(const ClientBuffType::ID & buff, bool isBu
     else
         _debuffs.insert(&it->second);
 }
+
+void ClientCombatant::playSoundWhenHit() const {
+    if (isDead())
+        playDeathSound();
+    else
+        playDefendSound();
+}

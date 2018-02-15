@@ -970,6 +970,24 @@ bool ClientObject::canBeAttackedByPlayer() const{
     return client.isAtWarWith(_owner);
 }
 
+void ClientObject::playAttackSound() const {
+    auto sounds = objectType()->sounds();
+    if (sounds)
+        sounds->playOnce("attack");
+}
+
+void ClientObject::playDefendSound() const {
+    auto sounds = objectType()->sounds();
+    if (sounds)
+        sounds->playOnce("defend");
+}
+
+void ClientObject::playDeathSound() const {
+    auto sounds = objectType()->sounds();
+    if (sounds)
+        sounds->playOnce("death");
+}
+
 const Color &ClientObject::nameColor() const{
     if (belongsToPlayerCity())
         return Color::COMBATANT_ALLY;

@@ -47,6 +47,11 @@ public:
     const Buffs buffs() const { return _buffs; }
     const Buffs debuffs() const { return _debuffs; }
 
+    virtual void playAttackSound() const = 0;
+    void playSoundWhenHit() const;
+        virtual void playDefendSound() const = 0;
+        virtual void playDeathSound() const = 0;
+
 private:
     const ClientCombatantType *_type;
     Hitpoints _maxHealth, _health;

@@ -155,12 +155,17 @@ void Avatar::playAttackSound() const{
         weaponSound->playOnce("attack");
 }
 
-void Avatar::playDefendSound() const{
+void Avatar::playDefendSound() const {
     const Client &client = *Client::_instance;
     const ClientItem *armor = getRandomArmor();
     const SoundProfile *armorSound = armor == nullptr ? client.avatarSounds() : armor->sounds();
     if (armorSound != nullptr)
         armorSound->playOnce("defend");
+}
+
+void Avatar::playDeathSound() const {
+    const Client &client = *Client::_instance;
+    client.avatarSounds()->playOnce("death");
 }
 
 void Avatar::onLeftClick(Client &client){

@@ -799,8 +799,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
             }
             const ClientNPC &attacker = * dynamic_cast<const ClientNPC *>(objIt->second);
-            if (attacker.npcType()->sounds() != nullptr)
-                attacker.npcType()->sounds()->playOnce("attack");
+            attacker.playAttackSound();
 
             handle_SV_PLAYER_WAS_HIT(username);
             break;
@@ -1787,7 +1786,7 @@ void Client::handle_SV_PLAYER_WAS_HIT(const std::string & username) {
             return;
         victim = it->second;
     }
-    victim->playDefendSound();
+    victim->playSoundWhenHit();
     victim->createDamageParticles();
 }
 
@@ -1798,12 +1797,7 @@ void Client::handle_SV_ENTITY_WAS_HIT(size_t serial) {
     }
     const ClientObject &victim = *objIt->second;
     const SoundProfile *sounds = victim.objectType()->sounds();
-    if (sounds != nullptr) {
-        if (victim.health() == 0)
-            sounds->playOnce("death");
-        else
-            sounds->playOnce("defend");
-    }
+    victim.playSoundWhenHit();
     victim.createDamageParticles();
 }
 
