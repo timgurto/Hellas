@@ -33,7 +33,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
         if (!userHasLoggedIn && !thisMessageIsAllowedBeforeLogin) {
             continue;
         }
-        if (!thisMessageIsAllowedBeforeLogin) {
+
+        if (userHasLoggedIn) {
             User & userRef = const_cast<User&>(*it);
             user = &userRef;
             user->contact();
