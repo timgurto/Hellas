@@ -275,7 +275,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
 
             auto spellID = item.spellToCastOnUse();
-            handle_CL_CAST(*user, spellID, /* casting from item*/ true);
+            auto result = handle_CL_CAST(*user, spellID, /* casting from item*/ true);
+
+            if (result == FAIL)
+                break;
 
             --invSlot.second;
             if (invSlot.second == 0)
@@ -1791,26 +1794,26 @@ void Server::handle_CL_UNLEARN_TALENTS(User & user) {
     user.getClass().unlearnAll();
 }
 
-void Server::handle_CL_CAST(User & user, const std::string &spellID, bool castingFromItem) {
+CombatResult Server::handle_CL_CAST(User & user, const std::string &spellID, bool castingFromItem) {
     auto target = user.target();
     if (target == nullptr)
         target = &user; // If no target, cast spell on self.
 
     auto it = _spells.find(spellID);
     if (it == _spells.end())
-        return;
+        return FAIL;
     const auto &spell = *it->second;
 
     // Learned-spell check
     if (!castingFromItem && !user.getClass().knowsSpell(spellID)) {
         sendMessage(user.socket(), ERROR_DONT_KNOW_SPELL);
-        return;
+        return FAIL;
     }
 
     // Energy check
     if (user.energy() < spell.cost()) {
         sendMessage(user.socket(), WARNING_NOT_ENOUGH_ENERGY);
-        return;
+        return FAIL;
     }
 
     auto usersNearCaster = findUsersInArea(user.location());
@@ -1832,9 +1835,13 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID, bool castin
     if (effect.isAoE())
         user.reduceEnergy(spell.cost());
 
+    // Note: this will be set for each target.  Return value will vary based on target order, if >1.
+    // When the return value was added to this function, it was used only for eating food; i.e., a single target.
+    // Its purpose was to skip consuming the food if the spell failed.
+    auto outcome = CombatResult{};
     for (auto target : targets){
 
-        auto outcome = spell.performAction(user, *target);
+        outcome = spell.performAction(user, *target);
         if (outcome == FAIL) {
             _debug("Spell "s + spellID + " failed."s, Color::FAILURE);
             continue;
@@ -1890,6 +1897,7 @@ void Server::handle_CL_CAST(User & user, const std::string &spellID, bool castin
             }
         }
     }
+    return outcome;
 }
 
 
