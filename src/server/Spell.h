@@ -34,6 +34,7 @@ public:
     void range(Podes r) { _range = r.toPixels(); }
     SpellEffect &effect() { return _effect; }
     const SpellEffect &effect() const { return _effect; }
+    bool canCastOnlyOnSelf() const;
 
 private:
     Name _name;

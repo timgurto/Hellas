@@ -1795,10 +1795,6 @@ void Server::handle_CL_UNLEARN_TALENTS(User & user) {
 }
 
 CombatResult Server::handle_CL_CAST(User & user, const std::string &spellID, bool castingFromItem) {
-    auto target = user.target();
-    if (target == nullptr)
-        target = &user; // If no target, cast spell on self.
-
     auto it = _spells.find(spellID);
     if (it == _spells.end())
         return FAIL;
@@ -1828,6 +1824,8 @@ CombatResult Server::handle_CL_CAST(User & user, const std::string &spellID, boo
     } else {
         auto target = user.target();
         if (target == nullptr)
+            target = &user;
+        else if (spell.canCastOnlyOnSelf())
             target = &user;
         targets.insert(target);
     }
