@@ -34,7 +34,7 @@
     isFlat="1"
     allowedTerrain="rocks" >
     <yield id="tin" initialMean="2.5" initialSD="1" initialMin="1" />
-    <yield id="rock" initialMean="1" initialSD="2" />
+    <yield id="rock" initialMean="2" initialSD="2" />
     <strength item="tin" quantity="5" />
 </objectType>
 
@@ -44,7 +44,7 @@
     isFlat="1"
     allowedTerrain="rocks" >
     <yield id="copper" initialMean="2.5" initialSD="1" initialMin="1" />
-    <yield id="rock" initialMean="1" initialSD="2" />
+    <yield id="rock" initialMean="2" initialSD="2" />
     <strength item="copper" quantity="5" />
 </objectType-->
 
