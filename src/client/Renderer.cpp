@@ -57,7 +57,9 @@ void Renderer::init(){
 
 Renderer::~Renderer(){
     if (_renderer != nullptr){
+#ifdef _DEBUG
         assert(Texture::numTextures() == 0);
+#endif
         SDL_DestroyRenderer(_renderer);
         _renderer = nullptr;
     }
