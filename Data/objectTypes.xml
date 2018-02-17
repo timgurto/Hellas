@@ -18,13 +18,13 @@
     <strength item="rock" quantity="1" />
 </objectType>
 
-<objectType id="tree" name="Tree"
-    xDrawOffset="-23" yDrawOffset="-57"
+<objectType id="tree" name="Pine Tree"
+    xDrawOffset="-21" yDrawOffset="-96"
     canGather="1" sounds="tree" gatherParticles="tree" damageParticles="tree" gatherReq="woodcutting" gatherTime="3000"
     allowedTerrain="fertile" >
     <yield id="log" initialMean="5.5" initialSD="1" initialMin="1" />
     <yield id="stick" initialMean="2" initialSD="1" />
-    <collisionRect x="-7" y="-3" w="16" h="6" />
+    <collisionRect x="-5" y="-4" w="10" h="7" />
     <strength item="log" quantity="6" />
 </objectType>
 
