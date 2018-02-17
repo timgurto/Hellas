@@ -83,6 +83,11 @@
 <blacklist parent="item_boneDust" child="item_fireWand" />
 <blacklist parent="item_boneDust" child="item_waterWand" />
 
+<blacklist parent="item_smoothRock" child="item_sling" />
+<blacklist parent="item_rock" child="item_smoothRock" />
+<blacklist parent="item_woodArrow" child="item_bow" />
+<blacklist parent="item_stick" child="item_woodArrow" />
+
 <extra parent="item_leatherGloves" child="item_tinBar" />
 <extra parent="item_tinBar"        child="item_tinSaw" />
 <extra parent="item_tinBar"        child="item_tinTube" />

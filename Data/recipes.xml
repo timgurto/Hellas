@@ -307,17 +307,30 @@
 <!-- Ranged weapons -->
     <recipe
         id="sling" time="4000" >
-        <material id="rock" quantity="20" />
         <material id="leather" />
         <unlockedBy recipe="leather" chance="0.1" />
+        <unlockedBy recipe="smoothRock" />
+    </recipe>
+    <recipe
+        id="smoothRock" time="4000" >
+        <material id="rock" quantity="2" />
+        <unlockedBy recipe="sling" />
+        <unlockedBy item="rock" chance="0.01" />
     </recipe>
     <recipe
         id="bow" time="10000" >
         <material id="lumber" />
         <material id="entrails" />
-        <material id="stick" quantity="20" />
         <unlockedBy recipe="lumber" chance="0.1" />
         <unlockedBy item="entrails" chance="0.1" />
+        <unlockedBy recipe="woodArrow" />
+    </recipe>
+    <recipe
+        id="woodArrow" time="4000" >
+        <material id="stick" />
+        <tool class="grinding1" />
+        <unlockedBy recipe="bow" />
+        <unlockedBy item="stick" chance="0.01" />
     </recipe>
     <recipe
         id="tinJavelin" time="4000" quantity="2">
@@ -425,29 +438,29 @@
     </recipe>
     
     <recipe
-        id="airDust" time="4000" quantity="2" >
-        <material id="boneDust" quantity="2" />
+        id="airDust" time="4000" quantity="4" >
+        <material id="boneDust" quantity="4" />
         <material id="airEssence" />
         <unlockedBy recipe="airStaff" />
         <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
     <recipe
-        id="earthDust" time="4000" quantity="2" >
-        <material id="boneDust" quantity="2" />
+        id="earthDust" time="4000" quantity="4" >
+        <material id="boneDust" quantity="4" />
         <material id="earthEssence" />
         <unlockedBy recipe="earthStaff" />
         <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
     <recipe
-        id="fireDust" time="4000" quantity="2" >
-        <material id="boneDust" quantity="2" />
+        id="fireDust" time="4000" quantity="4" >
+        <material id="boneDust" quantity="4" />
         <material id="fireEssence" />
         <unlockedBy recipe="fireStaff" />
         <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
     <recipe
-        id="waterDust" time="4000" quantity="2" >
-        <material id="boneDust" quantity="2" />
+        id="waterDust" time="4000" quantity="4" >
+        <material id="boneDust" quantity="4" />
         <material id="waterEssence" />
         <unlockedBy recipe="waterStaff" />
         <unlockedBy recipe="boneDust" chance="0.02" />

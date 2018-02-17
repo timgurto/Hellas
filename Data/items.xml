@@ -161,17 +161,17 @@
             <weapon range="25" consumes="rock" projectile="rock" />
             <stats attack="1"/>
             <offset x="-3" />
-            <offset x="-3" />
             <tag name="grinding1" />
         </item>
 		<item id="sling" name="Sling" gearSlot="6" >
-            <weapon range="25" consumes="smoothRock" projectile="rock" />
+            <weapon range="25" consumes="smoothRock" projectile="smoothRock" />
             <stats attack="2"/>
 			<offset x="-7" y="0" />
 		</item>
 		<item id="bow" name="Bow" gearSlot="6" sounds="bow" >
             <weapon range="25" consumes="woodArrow" projectile="arrow" />
             <stats attack="1" hit="1"/>
+            <offset x="-7" y=-3 />
 		</item>
 		<item id="tinJavelin" name="Light Javelin" stackSize="20" gearSlot="6" sounds="spear" >
             <weapon range="25" consumes="tinJavelin" projectile="tinJavelin" />
