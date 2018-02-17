@@ -69,6 +69,20 @@
 <blacklist parent="item_waterStaff" child="item_earthStaff" />
 <blacklist parent="item_waterStaff" child="item_fireStaff" />
 
+<blacklist parent="item_airWand"   child="item_boneDust" />
+<blacklist parent="item_earthWand" child="item_boneDust" />
+<blacklist parent="item_fireWand"  child="item_boneDust" />
+<blacklist parent="item_waterWand" child="item_boneDust" />
+
+<blacklist parent="item_boneDust" child="item_airDust" />
+<blacklist parent="item_boneDust" child="item_earthDust" />
+<blacklist parent="item_boneDust" child="item_fireDust" />
+<blacklist parent="item_boneDust" child="item_waterDust" />
+<blacklist parent="item_boneDust" child="item_airWand" />
+<blacklist parent="item_boneDust" child="item_earthWand" />
+<blacklist parent="item_boneDust" child="item_fireWand" />
+<blacklist parent="item_boneDust" child="item_waterWand" />
+
 <extra parent="item_leatherGloves" child="item_tinBar" />
 <extra parent="item_tinBar"        child="item_tinSaw" />
 <extra parent="item_tinBar"        child="item_tinTube" />

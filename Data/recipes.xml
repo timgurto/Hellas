@@ -337,6 +337,7 @@
         <unlockedBy recipe="earthWand" chance="0.1" />
         <unlockedBy recipe="fireWand" chance="0.1" />
         <unlockedBy recipe="waterWand" chance="0.1" />
+        <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
     <recipe
         id="earthWand" time="10000" >
@@ -346,6 +347,7 @@
         <unlockedBy recipe="airWand" chance="0.1" />
         <unlockedBy recipe="fireWand" chance="0.1" />
         <unlockedBy recipe="waterWand" chance="0.1" />
+        <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
     <recipe
         id="fireWand" time="10000" >
@@ -355,6 +357,7 @@
         <unlockedBy recipe="airWand" chance="0.1" />
         <unlockedBy recipe="earthWand" chance="0.1" />
         <unlockedBy recipe="waterWand" chance="0.1" />
+        <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
     <recipe
         id="waterWand" time="10000" >
@@ -364,6 +367,16 @@
         <unlockedBy recipe="airWand" chance="0.1" />
         <unlockedBy recipe="earthWand" chance="0.1" />
         <unlockedBy recipe="fireWand" chance="0.1" />
+        <unlockedBy recipe="boneDust" chance="0.02" />
+    </recipe>
+    <recipe
+        id="boneDust" time="4000" quantity="2" >
+        <material id="bone" />
+        <unlockedBy item="bone" chance="0.1" />
+        <unlockedBy recipe="airWand" />
+        <unlockedBy recipe="earthWand" />
+        <unlockedBy recipe="fireWand" />
+        <unlockedBy recipe="waterWand" />
     </recipe>
     
     <recipe
@@ -409,6 +422,35 @@
         <unlockedBy recipe="airStaff" chance="0.1" />
         <unlockedBy recipe="earthStaff" chance="0.1" />
         <unlockedBy recipe="fireStaff" chance="0.1" />
+    </recipe>
+    
+    <recipe
+        id="airDust" time="4000" quantity="2" >
+        <material id="boneDust" quantity="2" />
+        <material id="airEssence" />
+        <unlockedBy recipe="airStaff" />
+        <unlockedBy recipe="boneDust" chance="0.02" />
+    </recipe>
+    <recipe
+        id="earthDust" time="4000" quantity="2" >
+        <material id="boneDust" quantity="2" />
+        <material id="earthEssence" />
+        <unlockedBy recipe="earthStaff" />
+        <unlockedBy recipe="boneDust" chance="0.02" />
+    </recipe>
+    <recipe
+        id="fireDust" time="4000" quantity="2" >
+        <material id="boneDust" quantity="2" />
+        <material id="fireEssence" />
+        <unlockedBy recipe="fireStaff" />
+        <unlockedBy recipe="boneDust" chance="0.02" />
+    </recipe>
+    <recipe
+        id="waterDust" time="4000" quantity="2" >
+        <material id="boneDust" quantity="2" />
+        <material id="waterEssence" />
+        <unlockedBy recipe="waterStaff" />
+        <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
 
 <!--recipe id="copperCuirass"
