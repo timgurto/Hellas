@@ -143,12 +143,7 @@ void Client::handleInput(double delta){
                     break;
 
                 case SDLK_SPACE:
-                {
-                    auto floatingTextProfile = findParticleProfile("floatingText");
-                    auto floatingText = floatingTextProfile->instantiate(_character.location());
-                    floatingText->setImageManually({ _defaultFont, "test", Color::COMBATANT_ENEMY });
-                    addEntity(floatingText);
-                }
+                    addFloatingCombatText("test", _character.location(), Color::CHAT_LOG_BACKGROUND);
                     break;
 
                 case SDLK_g:

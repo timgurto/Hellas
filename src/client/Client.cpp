@@ -610,6 +610,13 @@ void Client::addParticlesWithCustomAltitude(double altitude, const std::string &
     addParticles(details);
 }
 
+void Client::addFloatingCombatText(const std::string & text, const MapPoint & location, Color color) {
+    auto floatingTextProfile = findParticleProfile("floatingText");
+    auto floatingText = floatingTextProfile->instantiate(_character.location());
+    floatingText->setImageManually({ _defaultFont, text, color });
+    addEntity(floatingText);
+}
+
 void Client::initializeUsername(){
     if (cmdLineArgs.contains("username"))
         _username = cmdLineArgs.getString("username");

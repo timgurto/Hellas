@@ -168,6 +168,7 @@ public:
     void addParticles(const std::string &profileName, const MapPoint &location); // Single hit
     void addParticles(const std::string &profileName, const MapPoint &location, double delta);  // /s
     void addParticlesWithCustomAltitude(double altitude, const std::string &profileName, const MapPoint &location, double delta); // /s
+    void addFloatingCombatText(const std::string &text, const MapPoint &location, Color color);
 
 private:
     static Client *_instance;
