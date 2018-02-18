@@ -50,6 +50,14 @@ void Particle::draw(const Client & client) const {
     _image.draw(drawRect + client.offset(), srcRect);
 }
 
+void Particle::setImageManually(const Texture & image) {
+    _image = image;
+    _drawRect.w = image.width();
+    _drawRect.h = image.height();
+    _drawRect.x = -_drawRect.w / 2;
+    _drawRect.y = -_drawRect.h / 2;
+}
+
 ScreenRect Particle::drawRect() const{
     auto includingAltitude = location() - MapPoint{ 0, _altitude };
     return _drawRect + toScreenRect(includingAltitude);

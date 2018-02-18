@@ -142,6 +142,15 @@ void Client::handleInput(double delta){
                     _chatLog->toggleVisibility();
                     break;
 
+                case SDLK_SPACE:
+                {
+                    auto floatingTextProfile = findParticleProfile("floatingText");
+                    auto floatingText = floatingTextProfile->instantiate(_character.location());
+                    floatingText->setImageManually({ _defaultFont, "test", Color::COMBATANT_ENEMY });
+                    addEntity(floatingText);
+                }
+                    break;
+
                 case SDLK_g:
                     _gearWindow->toggleVisibility();
                     removeWindow(_gearWindow);

@@ -13,8 +13,8 @@ class Texture;
 class Particle : public Sprite{
     static const SpriteType ENTITY_TYPE;
 
-    const Texture &_image;
-    const ScreenRect &_drawRect;
+    Texture _image;
+    ScreenRect _drawRect;
 
     // x and y
     MapPoint _velocity; // in px/s
@@ -33,11 +33,12 @@ public:
              double startingAltitude, double startingFallSpeed, double gravity, ms_t lifespan,
              const ParticleProfile &profile);
 
-    ScreenRect drawRect() const override;
-    const Texture &image() const override { return _image; }
+    virtual ScreenRect drawRect() const override;
+    virtual const Texture &image() const override { return _image; }
     void update(double delta) override;
     void draw(const Client &client) const override;
     void addToAltitude(double extra) { _altitude += extra; }
+    void setImageManually(const Texture &image);
 };
 
 #endif
