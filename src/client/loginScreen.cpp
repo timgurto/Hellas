@@ -106,6 +106,9 @@ void Client::drawLoginScreen() const{
     for (windows_t::const_reverse_iterator it = _windows.rbegin(); it != _windows.rend(); ++it)
         (*it)->draw();
 
+    // Tooltip
+    drawTooltip();
+
     // Cursor
     _currentCursor->draw(_mouse);
 
@@ -156,6 +159,9 @@ void Client::connectToServer() {
         }
     }
 
+    updateCreateButton(nullptr);
+    updateLoginButton(nullptr);
+
     static fd_set readFDs;
     FD_ZERO(&readFDs);
     FD_SET(_socket.getRaw(), &readFDs);
@@ -178,17 +184,32 @@ void Client::connectToServer() {
 }
 
 void Client::updateLoginButton(void *) {
-    if (nameBox->text().empty())
-        loginButton->disable();
+    loginButton->clearTooltip();
+    loginButton->disable();
+
+    if (Client::_instance->_connectionStatus != CONNECTED)
+        loginButton->setTooltip("Not connected to server");
+
+    else if (nameBox->text().empty())
+        loginButton->setTooltip("No username was entered");
+
     else
         loginButton->enable();
 }
 
 void Client::updateCreateButton(void *) {
-    if (!isUsernameValid(newNameBox->text()))
-        createButton->disable();
+    createButton->clearTooltip();
+    createButton->disable();
+
+    if (Client::_instance->_connectionStatus != CONNECTED)
+        createButton->setTooltip("Not connected to server");
+
+    else if (!isUsernameValid(newNameBox->text()))
+        createButton->setTooltip("Please enter a valid username");
+
     else if (classList->getSelected().empty())
-        createButton->disable();
+        createButton->setTooltip("Please choose a class");
+
     else
         createButton->enable();
 }
@@ -429,7 +450,8 @@ void Client::handleLoginInput(double delta){
             SDL_GetMouseState(&x, &y);
             _mouse.x = toInt(x * SCREEN_X / static_cast<double>(renderer.width()));
             _mouse.y = toInt(y * SCREEN_Y / static_cast<double>(renderer.height()));
-                
+
+            Element::resetTooltip();
             for (Element *element : _loginUI)
                 if (element->visible())
                     element->onMouseMove(_mouse);
