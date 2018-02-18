@@ -18,6 +18,12 @@ static Button *loginButton{ nullptr };
 static Button *createButton{ nullptr };
 static ChoiceList *classList{ nullptr };
 static List *classDescription{ nullptr };
+static OutlinedLabel *loginErrorLabel{ nullptr };
+
+static void showError(const std::string &message, const Color &color) {
+    loginErrorLabel->changeText(message);
+    loginErrorLabel->setColor(color);
+}
 
 void Client::loginScreenLoop(){
     const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
@@ -149,7 +155,7 @@ void Client::connectToServer() {
         serverAddr.sin_port = htons(port);
 
         if (connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
-            showErrorMessage("Connection error: "s + toString(WSAGetLastError()), Color::FAILURE);
+            showError("Connection error: "s + toString(WSAGetLastError()), Color::FAILURE);
             _connectionStatus = CONNECTION_ERROR;
             _serverConnectionIndicator->set(Indicator::FAILED);
         } else {
@@ -168,7 +174,7 @@ void Client::connectToServer() {
     static timeval selectTimeout = { 0, 10000 };
     int activity = select(0, &readFDs, nullptr, nullptr, &selectTimeout);
     if (activity == SOCKET_ERROR) {
-        showErrorMessage("Error polling sockets: "s + toString(WSAGetLastError()), Color::FAILURE);
+        showError("Error polling sockets: "s + toString(WSAGetLastError()), Color::FAILURE);
         _serverConnectionIndicator->set(Indicator::FAILED);
         return;
     }
@@ -406,6 +412,9 @@ void Client::initLoginScreen(){
 
     if (cmdLineArgs.contains("auto-login"))
         login(nullptr);
+
+    loginErrorLabel = new OutlinedLabel({ 0,0,200,15 }, {});
+    _loginUI.push_back(loginErrorLabel);
 }
 
 void Client::cleanUpLoginScreen(){
