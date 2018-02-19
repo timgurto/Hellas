@@ -310,7 +310,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             user->cancelAction();
             Object *obj = _entities.find<Object>(serial);
             if (!isEntityInRange(client, *user, obj)) {
-                sendMessage(client, WARNING_DOESNT_EXIST);
+                // isEntityInRange() sends error messages if applicable.
                 break;
             }
             assert (obj->type() != nullptr);
