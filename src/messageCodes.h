@@ -405,6 +405,10 @@ enum MessageCode{
     // Arguments: XP, maxXP
     SV_XP,
 
+    // The user received new XP
+    // Arguments: XP
+    SV_XP_GAIN,
+
     // A player leveled up
     // Arguments: username
     SV_LEVEL_UP,

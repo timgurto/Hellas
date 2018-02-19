@@ -921,9 +921,11 @@ void User::addXP(XP amount) {
 
         announceLevelUp();
     }
-    sendXPMessage();
 
     Server &server = Server::instance();
+    server.sendMessage(_socket, SV_XP_GAIN, makeArgs(amount));
+    sendXPMessage();
+
     server.debug() << "Level: " << _level << "; XP: " << _xp << "/" << XP_PER_LEVEL[_level]
         << "(" << _xp * 100 / XP_PER_LEVEL[_level] << "%)" << Log::endl;
 }

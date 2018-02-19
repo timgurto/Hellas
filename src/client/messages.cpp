@@ -1098,6 +1098,19 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_XP_GAIN:
+        {
+            auto newXP = XP{};
+            singleMsg >> newXP >> del;
+            if (del != MSG_END)
+                return;
+
+            addFloatingCombatText("+"s + toString(newXP) + " XP"s, _character.location(),
+                Color::FLOATING_XP);
+
+            break;
+        }
+
         case SV_LEVEL_UP:
         {
             auto username = ""s;

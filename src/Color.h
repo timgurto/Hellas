@@ -67,6 +67,7 @@ public:
         PLAYER_NAME_OUTLINE,
 
         FLOATING_DAMAGE,
+        FLOATING_XP,
         FLOATING_MISS,
         FLOATING_LOOT,
 

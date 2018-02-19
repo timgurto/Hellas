@@ -63,6 +63,7 @@ Color
     Color::HIGHLIGHT_OUTLINE,
 
     Color::FLOATING_DAMAGE,
+    Color::FLOATING_XP,
     Color::FLOATING_MISS,
     Color::FLOATING_LOOT,
     
