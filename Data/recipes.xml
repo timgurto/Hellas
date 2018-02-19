@@ -256,7 +256,7 @@
 <!-- Poles/Spears -->
     <recipe
         id="pole1" time="10000" >
-        <material id="lumber" />
+        <material id="log" />
         <tool class="carving" />
         <unlockedBy gather="log" chance="0.05" />
         <unlockedBy recipe="stoneKnife" chance="0.1" />
