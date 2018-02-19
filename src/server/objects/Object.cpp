@@ -384,3 +384,13 @@ bool Object::shouldAlwaysBeKnownToUser(const User &user) const{
         return true;
     return false;
 }
+
+void Object::broadcastDamagedMessage(Hitpoints amount) const {
+    Server &server = *Server::_instance;
+    server.broadcastToArea(location(), SV_OBJECT_DAMAGED, makeArgs(serial(), amount));
+}
+
+void Object::broadcastHealedMessage(Hitpoints amount) const {
+    Server &server = *Server::_instance;
+    server.broadcastToArea(location(), SV_OBJECT_HEALED, makeArgs(serial(), amount));
+}

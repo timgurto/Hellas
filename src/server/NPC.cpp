@@ -315,3 +315,13 @@ void NPC::updateStats() {
 
     stats(newStats);
 }
+
+void NPC::broadcastDamagedMessage(Hitpoints amount) const {
+    Server &server = *Server::_instance;
+    server.broadcastToArea(location(), SV_OBJECT_DAMAGED, makeArgs(serial(), amount));
+}
+
+void NPC::broadcastHealedMessage(Hitpoints amount) const {
+    Server &server = *Server::_instance;
+    server.broadcastToArea(location(), SV_OBJECT_HEALED, makeArgs(serial(), amount));
+}

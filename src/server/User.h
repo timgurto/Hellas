@@ -144,6 +144,8 @@ public:
     void onAttack() override;
     void sendRangedHitMessageTo(const User &userToInform) const override;
     void sendRangedMissMessageTo(const User &userToInform) const override;
+    void broadcastDamagedMessage(Hitpoints amount) const override;
+    void broadcastHealedMessage(Hitpoints amount) const override;
 
     void sendInfoToClient(const User &targetUser) const override;
 

@@ -118,6 +118,8 @@ public:
     virtual void sendRangedHitMessageTo(const User &userToInform) const {} // Inform user that this entity has hit its target with a ranged attack.
     virtual bool canAttack() const { return true; } // Any final checks immediately before the attack
     virtual void onAttack() {} // Any actions immediately before the attack
+    virtual void broadcastDamagedMessage(Hitpoints amount) const {}
+    virtual void broadcastHealedMessage(Hitpoints amount) const {}
 
     virtual void describeSelfToNewWatcher(const User &watcher) const {}
     virtual void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const {}

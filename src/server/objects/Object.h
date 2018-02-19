@@ -87,6 +87,8 @@ public:
     ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum, const User &user) override;
     Message outOfRangeMessage() const override;
     bool shouldAlwaysBeKnownToUser(const User &user) const override;
+    virtual void broadcastDamagedMessage(Hitpoints amount) const override;
+    virtual void broadcastHealedMessage(Hitpoints amount) const override;
 
     // Randomly choose an item type for the user to gather.
     const ServerItem *chooseGatherItem() const;

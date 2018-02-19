@@ -417,6 +417,14 @@ enum MessageCode{
     // Arguments: username, hp
     SV_PLAYER_HEALTH,
 
+    // An entity has been damaged/healed.  For aesthetics, e.g., floating combat text.
+    // Arguments: username, amount
+    SV_PLAYER_DAMAGED,
+    SV_PLAYER_HEALED,
+    // Arguments: serial, amount
+    SV_OBJECT_DAMAGED,
+    SV_OBJECT_HEALED,
+
     // A user's energy value
     // Arguments: username, energy
     SV_PLAYER_ENERGY,

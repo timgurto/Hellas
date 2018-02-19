@@ -684,6 +684,16 @@ void User::sendRangedMissMessageTo(const User & userToInform) const {
         target()->location().x, target()->location().y));
 }
 
+void User::broadcastDamagedMessage(Hitpoints amount) const {
+    Server &server = *Server::_instance;
+    server.broadcastToArea(location(), SV_PLAYER_DAMAGED, makeArgs(_name, amount));
+}
+
+void User::broadcastHealedMessage(Hitpoints amount) const {
+    Server &server = *Server::_instance;
+    server.broadcastToArea(location(), SV_PLAYER_HEALED, makeArgs(_name, amount));
+}
+
 void User::updateStats(){
     const Server &server = *Server::_instance;
 

@@ -62,6 +62,7 @@ Color
     Color::OUTLINE,
     Color::HIGHLIGHT_OUTLINE,
 
+    Color::FLOATING_HEAL,
     Color::FLOATING_DAMAGE,
     Color::FLOATING_XP,
     Color::FLOATING_MISS,

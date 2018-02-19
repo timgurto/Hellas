@@ -959,6 +959,52 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_PLAYER_DAMAGED:
+        {
+            auto username = ""s;
+            auto amount = Hitpoints{};
+            readString(singleMsg, username, MSG_DELIM);
+            singleMsg >> del >> amount >> del;
+            if (del != MSG_END)
+                break;
+            handle_SV_PLAYER_DAMAGED(username, amount);
+            break;
+        }
+
+        case SV_PLAYER_HEALED:
+        {
+            auto username = ""s;
+            auto amount = Hitpoints{};
+            readString(singleMsg, username, MSG_DELIM);
+            singleMsg >> del >> amount >> del;
+            if (del != MSG_END)
+                break;
+            handle_SV_PLAYER_HEALED(username, amount);
+            break;
+        }
+
+        case SV_OBJECT_DAMAGED:
+        {
+            auto serial = 0;
+            auto amount = Hitpoints{};
+            singleMsg >> serial >> del >> amount >> del;
+            if (del != MSG_END)
+                break;
+            handle_SV_OBJECT_DAMAGED(serial, amount);
+            break;
+        }
+
+        case SV_OBJECT_HEALED:
+        {
+            auto serial = 0;
+            auto amount = Hitpoints{};
+            singleMsg >> serial >> del >> amount >> del;
+            if (del != MSG_END)
+                break;
+            handle_SV_OBJECT_HEALED(serial, amount);
+            break;
+        }
+
         case SV_PLAYER_ENERGY:
         {
             std::string username;
@@ -1925,6 +1971,50 @@ void Client::handle_SV_NPC_LEVEL(size_t serial, Level level) {
     }
 
     objIt->second->level(level);
+}
+
+void Client::handle_SV_PLAYER_DAMAGED(const std::string & username, Hitpoints amount) {
+    Avatar *user{ nullptr };
+    if (username == _username)
+        user = &_character;
+    else {
+        auto it = _otherUsers.find(username);
+        if (it == _otherUsers.end())
+            return;
+        user = it->second;
+    }
+
+    addFloatingCombatText("-"s + toString(amount), user->location(), Color::FLOATING_DAMAGE);
+}
+
+void Client::handle_SV_PLAYER_HEALED(const std::string & username, Hitpoints amount) {
+    Avatar *user{ nullptr };
+    if (username == _username)
+        user = &_character;
+    else {
+        auto it = _otherUsers.find(username);
+        if (it == _otherUsers.end())
+            return;
+        user = it->second;
+    }
+
+    addFloatingCombatText("+"s + toString(amount), user->location(), Color::FLOATING_HEAL);
+}
+
+void Client::handle_SV_OBJECT_DAMAGED(size_t serial, Hitpoints amount) {
+    auto it = _objects.find(serial);
+    if (it == _objects.end())
+        return;
+
+    addFloatingCombatText("-"s + toString(amount), it->second->location(), Color::FLOATING_DAMAGE);
+}
+
+void Client::handle_SV_OBJECT_HEALED(size_t serial, Hitpoints amount) {
+    auto it = _objects.find(serial);
+    if (it == _objects.end())
+        return;
+
+    addFloatingCombatText("+"s + toString(amount), it->second->location(), Color::FLOATING_HEAL);
 }
 
 

@@ -111,6 +111,7 @@ void Entity::reduceHealth(int damage) {
         _health -= damage;
         onHealthChange();
     }
+    broadcastDamagedMessage(damage);
 
     assert(_health <= this->_stats.maxHealth);
 }
@@ -128,6 +129,7 @@ void Entity::healBy(Hitpoints amount) {
     auto newHealth = min(health() + amount, _stats.maxHealth);
     _health = newHealth;
     onHealthChange();
+    broadcastHealedMessage(amount);
 }
 
 void Entity::update(ms_t timeElapsed){

@@ -38,6 +38,8 @@ public:
     px_t attackRange() const override;
     void sendRangedHitMessageTo(const User &userToInform) const override;
     void sendRangedMissMessageTo(const User &userToInform) const override;
+    virtual void broadcastDamagedMessage(Hitpoints amount) const override;
+    virtual void broadcastHealedMessage(Hitpoints amount) const override;
     SpellSchool school() const override { return npcType()->school(); }
 
     char classTag() const override { return 'n'; }
