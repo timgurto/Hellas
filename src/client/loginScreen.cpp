@@ -162,6 +162,7 @@ void Client::connectToServer() {
             _serverConnectionIndicator->set(Indicator::SUCCEEDED);
             sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
             _connectionStatus = CONNECTED;
+            _character.name(_username);
         }
     }
 
