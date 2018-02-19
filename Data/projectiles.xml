@@ -16,6 +16,9 @@
 <projectile id="rock" speed=450 particlesAtEnd="blood" sounds="rock" >
     <drawRect x=-4 y=-28 w=9 h=32 />
 </projectile>
+<projectile id="smoothRock" speed=550 particlesAtEnd="blood" sounds="rock" >
+    <drawRect x=-4 y=-28 w=9 h=32 />
+</projectile>
 
 <projectile id="arrow" speed=350 particlesAtEnd="blood" >
     <drawRect x=-2 y=-27 w=4 h=30 />
