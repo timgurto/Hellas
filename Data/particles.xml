@@ -7,8 +7,8 @@
     <distance mean=0 sd=5 />
     <altitude mean=40 sd=4 />
     <velocity mean=0 sd=0 />
-    <fallSpeed mean=-30 sd=4 />
-    <lifespan mean=1000 sd=50 />
+    <fallSpeed mean=-40 sd=4 />
+    <lifespan mean=1500 sd=50 />
     <variety imageFile="miss" />
 </particleProfile>
 

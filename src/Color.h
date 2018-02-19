@@ -68,6 +68,7 @@ public:
 
         FLOATING_DAMAGE,
         FLOATING_MISS,
+        FLOATING_LOOT,
 
         OUTLINE,
         HIGHLIGHT_OUTLINE,

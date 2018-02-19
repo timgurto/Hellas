@@ -558,6 +558,7 @@ void Server::gatherObject(size_t serial, User &user){
     }
     if (remaining < qtyToGive) // User received something: trigger any new unlocks
         ProgressLock::triggerUnlocks(user, ProgressLock::GATHER, toGive);
+
     // Remove object if empty
     obj->removeItem(toGive, qtyToRemove);
     if (obj->contents().isEmpty()){

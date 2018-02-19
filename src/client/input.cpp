@@ -142,10 +142,6 @@ void Client::handleInput(double delta){
                     _chatLog->toggleVisibility();
                     break;
 
-                case SDLK_SPACE:
-                    addFloatingCombatText("test", _character.location(), Color::CHAT_LOG_BACKGROUND);
-                    break;
-
                 case SDLK_g:
                     _gearWindow->toggleVisibility();
                     removeWindow(_gearWindow);

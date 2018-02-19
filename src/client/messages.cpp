@@ -472,6 +472,26 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_RECEIVED_ITEM:
+        {
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            auto id = std::string{ buffer };
+            auto qty = 0;
+            singleMsg >> del >> qty >> del;
+
+            if (del != MSG_END)
+                return;
+
+            auto item = _items.find(id);
+            if (item == _items.end())
+                break;
+
+            addFloatingCombatText("+"s + toString(qty) + " "s + item->second.name(),
+                _character.location(), Color::FLOATING_LOOT);
+
+            break;
+        }
+
         case SV_JOINED_CITY:
         {
             std::string cityName;

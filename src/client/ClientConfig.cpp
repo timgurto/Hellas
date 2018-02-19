@@ -54,6 +54,7 @@ void ClientConfig::loadFromFile(const std::string &filename) {
     xr.findAttr(elem, "highlightOutline", Color::HIGHLIGHT_OUTLINE);
     xr.findAttr(elem, "floatingDamage", Color::FLOATING_DAMAGE);
     xr.findAttr(elem, "floatingMiss", Color::FLOATING_MISS);
+    xr.findAttr(elem, "floatingLoot", Color::FLOATING_LOOT);
     xr.findAttr(elem, "air", Color::AIR);
     xr.findAttr(elem, "earth", Color::EARTH);
     xr.findAttr(elem, "fire", Color::FIRE);

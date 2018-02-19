@@ -116,6 +116,8 @@ bool User::alive() const{
 }
 
 size_t User::giveItem(const ServerItem *item, size_t quantity){
+    auto &server = Server::instance();
+
     size_t remaining = quantity;
 
     // First pass: partial stacks
@@ -144,14 +146,18 @@ size_t User::giveItem(const ServerItem *item, size_t quantity){
             _inventory[i].first = item;
             _inventory[i].second = qtyInThisSlot;
             Server::debug()("Quantity placed in slot: "s + toString(qtyInThisSlot));
-            Server::instance().sendInventoryMessage(*this, i, Server::INVENTORY);
+            server.sendInventoryMessage(*this, i, Server::INVENTORY);
             remaining -= qtyInThisSlot;
             if (remaining == 0)
                 break;
         }
     }
-    if (remaining < quantity)
+
+    auto quantityGiven = quantity - remaining;
+    if (quantityGiven > 0) {
         ProgressLock::triggerUnlocks(*this, ProgressLock::ITEM, item);
+        server.sendMessage(_socket, SV_RECEIVED_ITEM, makeArgs(item->id(), quantityGiven));
+    }
     return remaining;
 }
 

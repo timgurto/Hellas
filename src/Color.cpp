@@ -64,6 +64,7 @@ Color
 
     Color::FLOATING_DAMAGE,
     Color::FLOATING_MISS,
+    Color::FLOATING_LOOT,
     
     Color::AIR,
     Color::EARTH,
