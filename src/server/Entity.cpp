@@ -190,16 +190,16 @@ void Entity::update(ms_t timeElapsed){
         for (auto user : usersToInform) {
             server.sendMessage(user->socket(), SV_SHOW_MISS_AT, targetLoc);
             if (attackRange() > MELEE_RANGE)
-            return;
                 sendRangedMissMessageTo(*user);
         }
+        return;
     case DODGE:
         for (auto user : usersToInform) {
             server.sendMessage(user->socket(), SV_SHOW_DODGE_AT, targetLoc);
             if (attackRange() > MELEE_RANGE)
-            return;
                 sendRangedMissMessageTo(*user);
         }
+        return;
 
     // These cases continue on
     case CRIT:
