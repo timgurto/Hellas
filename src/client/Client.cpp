@@ -613,7 +613,22 @@ void Client::addParticlesWithCustomAltitude(double altitude, const std::string &
 void Client::addFloatingCombatText(const std::string & text, const MapPoint & location, Color color) {
     auto floatingTextProfile = findParticleProfile("floatingText");
     auto floatingText = floatingTextProfile->instantiate(_character.location());
-    floatingText->setImageManually({ _defaultFont, text, color });
+
+    auto outline = Texture{ _defaultFont, text, Color::OUTLINE };
+    auto front = Texture{ _defaultFont, text, color };
+
+    auto canvas = Texture{ front.width() + 2, front.height() + 2 };
+    canvas.setBlend(SDL_BLENDMODE_BLEND);
+
+    renderer.pushRenderTarget(canvas);
+        outline.draw(0, 1);
+        outline.draw(1, 0);
+        outline.draw(2, 1);
+        outline.draw(1, 2);
+        front.draw(1, 1);
+    renderer.popRenderTarget();
+
+    floatingText->setImageManually(canvas);
     addEntity(floatingText);
 }
 
