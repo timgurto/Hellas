@@ -120,29 +120,48 @@ size_t User::giveItem(const ServerItem *item, size_t quantity){
 
     size_t remaining = quantity;
 
-    // First pass: partial stacks
-    for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
-        if (_inventory[i].first != item)
+    // Gear pass 1: partial stacks
+    for (auto i = 0; i != GEAR_SLOTS; ++i) {
+        if (_gear[i].first != item)
             continue;
-        size_t spaceAvailable = item->stackSize() - _inventory[i].second;
+        auto spaceAvailable = item->stackSize() - _gear[i].second;
         if (spaceAvailable > 0) {
-            size_t qtyInThisSlot = min(spaceAvailable, remaining);
-            _inventory[i].second += qtyInThisSlot;
-            Server::instance().sendInventoryMessage(*this, i, Server::INVENTORY);
+            auto qtyInThisSlot = min(spaceAvailable, remaining);
+            _gear[i].second += qtyInThisSlot;
+            Server::instance().sendInventoryMessage(*this, i, Server::GEAR);
             remaining -= qtyInThisSlot;
         }
         if (remaining == 0)
             break;
     }
 
-    // Second pass: empty slots
+    // Inventory pass 1: partial stacks
+    if (remaining > 0) {
+        for (auto i = 0; i != INVENTORY_SIZE; ++i) {
+            if (_inventory[i].first != item)
+                continue;
+            assert(remaining > 0);
+            assert(item->stackSize() > 0);
+            auto spaceAvailable = item->stackSize() - _inventory[i].second;
+            if (spaceAvailable > 0) {
+                auto qtyInThisSlot = min(spaceAvailable, remaining);
+                _inventory[i].second += qtyInThisSlot;
+                Server::instance().sendInventoryMessage(*this, i, Server::INVENTORY);
+                remaining -= qtyInThisSlot;
+            }
+            if (remaining == 0)
+                break;
+        }
+    }
+
+    // Inventory pass 2: empty slots
     if (remaining > 0){
-        for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
+        for (auto i = 0; i != INVENTORY_SIZE; ++i) {
             if (_inventory[i].first != nullptr)
                 continue;
             assert(remaining > 0);
             assert(item->stackSize() > 0);
-            size_t qtyInThisSlot = min(item->stackSize(), remaining);
+            auto qtyInThisSlot = min(item->stackSize(), remaining);
             _inventory[i].first = item;
             _inventory[i].second = qtyInThisSlot;
             Server::debug()("Quantity placed in slot: "s + toString(qtyInThisSlot));
