@@ -614,8 +614,8 @@ void Client::addFloatingCombatText(const std::string & text, const MapPoint & lo
     auto floatingTextProfile = findParticleProfile("floatingText");
     auto floatingText = floatingTextProfile->instantiate(_character.location());
 
-    auto outline = Texture{ _defaultFont, text, Color::OUTLINE };
-    auto front = Texture{ _defaultFont, text, color };
+    auto outline = Texture{ _defaultFont, text, color };
+    auto front = Texture{ _defaultFont, text, Color::OUTLINE };
 
     auto canvas = Texture{ front.width() + 2, front.height() + 2 };
     canvas.setBlend(SDL_BLENDMODE_BLEND);

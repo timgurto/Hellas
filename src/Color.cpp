@@ -61,6 +61,9 @@ Color
     Color::PLAYER_NAME_OUTLINE,
     Color::OUTLINE,
     Color::HIGHLIGHT_OUTLINE,
+
+    Color::FLOATING_DAMAGE,
+    Color::FLOATING_MISS,
     
     Color::AIR,
     Color::EARTH,

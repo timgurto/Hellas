@@ -4,60 +4,12 @@
     id="floatingText"
     gravityModifier=0>
     <particlesPerHit mean=1 sd=0 />
-    <distance mean=0 sd=4 />
+    <distance mean=0 sd=5 />
     <altitude mean=40 sd=4 />
     <velocity mean=0 sd=0 />
-    <fallSpeed mean=-50 sd=5 />
-    <lifespan mean=600 sd=50 />
+    <fallSpeed mean=-30 sd=4 />
+    <lifespan mean=1000 sd=50 />
     <variety imageFile="miss" />
-</particleProfile>
-
-<particleProfile
-    id="miss"
-    gravityModifier=0>
-    <particlesPerHit mean=1 sd=0 />
-    <distance mean=0 sd=4 />
-    <altitude mean=40 sd=4 />
-    <velocity mean=0 sd=0 />
-    <fallSpeed mean=-50 sd=5 />
-    <lifespan mean=600 sd=50 />
-    <variety imageFile="miss" />
-</particleProfile>
-
-<particleProfile
-    id="dodge"
-    gravityModifier=0>
-    <particlesPerHit mean=1 sd=0 />
-    <distance mean=0 sd=4 />
-    <altitude mean=40 sd=4 />
-    <velocity mean=0 sd=0 />
-    <fallSpeed mean=-50 sd=5 />
-    <lifespan mean=600 sd=50 />
-    <variety imageFile="dodge" />
-</particleProfile>
-
-<particleProfile
-    id="block"
-    gravityModifier=0>
-    <particlesPerHit mean=1 sd=0 />
-    <distance mean=0 sd=4 />
-    <altitude mean=40 sd=4 />
-    <velocity mean=0 sd=0 />
-    <fallSpeed mean=-50 sd=5 />
-    <lifespan mean=600 sd=50 />
-    <variety imageFile="block" />
-</particleProfile>
-
-<particleProfile
-    id="crit"
-    gravityModifier=0>
-    <particlesPerHit mean=1 sd=0 />
-    <distance mean=0 sd=4 />
-    <altitude mean=40 sd=4 />
-    <velocity mean=0 sd=0 />
-    <fallSpeed mean=-50 sd=5 />
-    <lifespan mean=600 sd=50 />
-    <variety imageFile="crit" />
 </particleProfile>
 
 <particleProfile

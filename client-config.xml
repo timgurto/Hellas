@@ -93,6 +93,9 @@ Dark blue   3C388C
     energy="E8CE94"
     playerNameOutline="170A33"
     
+    floatingDamage="A34C5C"
+    floatingMiss="2C6777"
+    
     outline="170A33"
     highlightOutline="E5E5E5"
     

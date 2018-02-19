@@ -66,6 +66,9 @@ public:
         ENERGY,
         PLAYER_NAME_OUTLINE,
 
+        FLOATING_DAMAGE,
+        FLOATING_MISS,
+
         OUTLINE,
         HIGHLIGHT_OUTLINE,
         
