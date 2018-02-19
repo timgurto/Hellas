@@ -214,25 +214,6 @@ void Entity::update(ms_t timeElapsed){
         break;
     }
 
-    auto rawDamage = static_cast<double>(_stats.attack);
-    if (outcome == CRIT)
-        rawDamage *= 2;
-
-    auto resistance = pTarget->_stats.resistanceByType(school());
-    auto resistanceMultiplier = (100 - resistance) / 100.0;
-    rawDamage *= resistanceMultiplier;
-
-    auto damage = SpellEffect::chooseRandomSpellMagnitude(rawDamage);
-
-    if (outcome == BLOCK) {
-        if (_stats.blockValue >= damage)
-            damage = 0;
-        else
-            damage -= _stats.blockValue;
-    }
-
-    pTarget->reduceHealth(damage);
-
     // Alert nearby clients
     MessageCode msgCode;
     std::string args;
@@ -262,6 +243,27 @@ void Entity::update(ms_t timeElapsed){
         if (attackRange() > MELEE_RANGE)
             sendRangedHitMessageTo(*user);
     }
+
+
+    auto rawDamage = static_cast<double>(_stats.attack);
+    if (outcome == CRIT)
+        rawDamage *= 2;
+
+    auto resistance = pTarget->_stats.resistanceByType(school());
+    auto resistanceMultiplier = (100 - resistance) / 100.0;
+    rawDamage *= resistanceMultiplier;
+
+    auto damage = SpellEffect::chooseRandomSpellMagnitude(rawDamage);
+
+    if (outcome == BLOCK) {
+        if (_stats.blockValue >= damage)
+            damage = 0;
+        else
+            damage -= _stats.blockValue;
+    }
+
+    pTarget->reduceHealth(damage);
+
 
     // Give target opportunity to react
     pTarget->onAttackedBy(*this, damage);
