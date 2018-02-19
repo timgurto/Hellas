@@ -80,6 +80,8 @@ void Client::handleMessage(const std::string &msg){
             SDL_StopTextInput();
             _instance->_createWindow->hide();
 
+            _character.name(_username);
+
             _connectionStatus = LOGGED_IN;
             _loggedIn = true;
             _timeSinceConnectAttempt = 0;

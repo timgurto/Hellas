@@ -162,7 +162,6 @@ void Client::connectToServer() {
             _serverConnectionIndicator->set(Indicator::SUCCEEDED);
             sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
             _connectionStatus = CONNECTED;
-            _character.name(_username);
         }
     }
 
@@ -298,7 +297,7 @@ void Client::initCreateWindow() {
 }
 
 void Client::createAccount(void *) {
-    std::string username = newNameBox->text();
+    auto username = newNameBox->text();
     std::transform(username.begin(), username.end(), username.begin(), tolower);
     newNameBox->text(username);
 
