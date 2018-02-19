@@ -179,37 +179,36 @@ void Entity::update(ms_t timeElapsed){
     const Server &server = Server::instance();
     MapPoint locus = midpoint(location(), pTarget->location());
 
-    auto outcome = generateHitAgainst(*pTarget, DAMAGE, SpellSchool::PHYSICAL, attackRange());
+    auto outcome = generateHitAgainst(*pTarget, DAMAGE, school(), attackRange());
+
+    auto usersToInform = server.findUsersInArea(locus);
+    auto targetLoc = makeArgs(pTarget->location().x, pTarget->location().y);
 
     switch (outcome) {
     // These cases return
     case MISS:
-        for (const User *userToInform : server.findUsersInArea(locus)) {
-            server.sendMessage(userToInform->socket(), SV_SHOW_MISS_AT, makeArgs(
-                pTarget->location().x, pTarget->location().y));
+        for (auto user : usersToInform) {
+            server.sendMessage(user->socket(), SV_SHOW_MISS_AT, targetLoc);
             if (attackRange() > MELEE_RANGE)
-                sendRangedMissMessageTo(*userToInform);
             return;
+                sendRangedMissMessageTo(*user);
         }
     case DODGE:
-        for (const User *userToInform : server.findUsersInArea(locus)) {
-            server.sendMessage(userToInform->socket(), SV_SHOW_DODGE_AT, makeArgs(
-                pTarget->location().x, pTarget->location().y));
+        for (auto user : usersToInform) {
+            server.sendMessage(user->socket(), SV_SHOW_DODGE_AT, targetLoc);
             if (attackRange() > MELEE_RANGE)
-                sendRangedMissMessageTo(*userToInform);
             return;
+                sendRangedMissMessageTo(*user);
         }
 
     // These cases continue on
     case CRIT:
-        for (const User *userToInform : server.findUsersInArea(locus))
-            server.sendMessage(userToInform->socket(), SV_SHOW_CRIT_AT, makeArgs(
-                pTarget->location().x, pTarget->location().y));
+        for (auto user : usersToInform)
+            server.sendMessage(user->socket(), SV_SHOW_CRIT_AT, targetLoc);
         break;
     case BLOCK:
-        for (const User *userToInform : server.findUsersInArea(locus))
-            server.sendMessage(userToInform->socket(), SV_SHOW_BLOCK_AT, makeArgs(
-                pTarget->location().x, pTarget->location().y));
+        for (auto user : usersToInform)
+            server.sendMessage(user->socket(), SV_SHOW_BLOCK_AT, targetLoc);
         break;
     }
 
@@ -256,10 +255,10 @@ void Entity::update(ms_t timeElapsed){
     } else {
         assert(false);
     }
-    for (const User *userToInform : server.findUsersInArea(locus)){
-        server.sendMessage(userToInform->socket(), msgCode, args);
+    for (auto user : usersToInform){
+        server.sendMessage(user->socket(), msgCode, args);
         if (attackRange() > MELEE_RANGE)
-            sendRangedHitMessageTo(*userToInform);
+            sendRangedHitMessageTo(*user);
     }
 
     // Give target opportunity to react
