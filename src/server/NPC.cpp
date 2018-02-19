@@ -2,6 +2,7 @@
 
 #include "NPC.h"
 #include "Server.h"
+#include "User.h"
 
 NPC::NPC(const NPCType *type, const MapPoint &loc):
     Entity(type, loc),
@@ -324,4 +325,8 @@ void NPC::broadcastDamagedMessage(Hitpoints amount) const {
 void NPC::broadcastHealedMessage(Hitpoints amount) const {
     Server &server = *Server::_instance;
     server.broadcastToArea(location(), SV_OBJECT_HEALED, makeArgs(serial(), amount));
+}
+
+int NPC::getLevelDifference(const User & user) const {
+    return level() - user.level();
 }

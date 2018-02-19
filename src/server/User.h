@@ -63,7 +63,7 @@ private:
 
     XP _xp = 0;
 #ifdef _DEBUG
-    Level _level = 10;
+    Level _level = 1;
 #else
     Level _level = 1;
 #endif
@@ -199,6 +199,7 @@ public:
     XP xp() const { return _xp; }
     void xp(XP newXP) { _xp = newXP; }
     void addXP(XP amount);
+    int getLevelDifference(const User &user) const override { return level() - user.level(); }
 
     void update(ms_t timeElapsed);
 

@@ -120,6 +120,7 @@ public:
     virtual void onAttack() {} // Any actions immediately before the attack
     virtual void broadcastDamagedMessage(Hitpoints amount) const {}
     virtual void broadcastHealedMessage(Hitpoints amount) const {}
+    virtual int getLevelDifference(const User &user) const { return 0; }
 
     virtual void describeSelfToNewWatcher(const User &watcher) const {}
     virtual void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const {}

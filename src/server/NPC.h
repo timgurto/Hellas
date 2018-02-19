@@ -8,6 +8,8 @@
 #include "../Point.h"
 #include "../SpellSchool.h"
 
+class User;
+
 // Objects that can engage in combat, and that are AI-driven
 class NPC : public Entity {
     enum State {
@@ -41,6 +43,7 @@ public:
     virtual void broadcastDamagedMessage(Hitpoints amount) const override;
     virtual void broadcastHealedMessage(Hitpoints amount) const override;
     SpellSchool school() const override { return npcType()->school(); }
+    int getLevelDifference(const User &user) const override;
 
     char classTag() const override { return 'n'; }
 
