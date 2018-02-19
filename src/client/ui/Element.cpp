@@ -409,9 +409,6 @@ void Element::makeBackgroundTransparent(){
         transparentBackground = Texture(4,4);//Texture(renderer.width(), renderer.height());
         transparentBackground.setAlpha(0);
         transparentBackground.setBlend(SDL_BLENDMODE_NONE);
-        renderer.pushRenderTarget(transparentBackground);
-        renderer.fill();
-        renderer.popRenderTarget();
     }
     auto dstRect = ScreenRect(0, 0, _rect.w, _rect.h);
     transparentBackground.draw(dstRect);
