@@ -56,7 +56,7 @@ const double Client::MOVEMENT_SPEED = 80;
 const double Client::VEHICLE_SPEED = 20;
 const Hitpoints Client::MAX_PLAYER_HEALTH = 50;
 
-const px_t Client::ACTION_DISTANCE = 30;
+const px_t Client::ACTION_DISTANCE = Podes{ 4 }.toPixels();
 
 const px_t Client::CULL_DISTANCE = 450; // Just copy Server::CULL_DISTANCE
 const px_t Client::CULL_HYSTERESIS_DISTANCE = 50;
