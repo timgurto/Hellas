@@ -13,16 +13,16 @@ class Surface;
 
 // A wrapper class for SDL_Texture, which also provides related functionality
 class Texture{
-    SDL_Texture *_raw;
-    px_t _w, _h;
-    bool _validTarget;
+    SDL_Texture *_raw{ nullptr };
+    px_t _w{ 0 }, _h{ 0 };
+    bool _validTarget{ false };
 
     static std::map<SDL_Texture *, size_t> _refs;
     void addRef(); // Increment reference counter, and initialize window and renderer on first run
     void removeRef(); // Decrement reference counter, and free memory/uninitialize if needed
     static int _numTextures; // The total number of texture *references* in use
 
-    bool _programEndMarker;
+    bool _programEndMarker{ false };
     Texture(bool programEndMarker) : _programEndMarker(true) {}
     static Texture _programEndMarkerTexture;
 

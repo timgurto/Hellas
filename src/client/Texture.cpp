@@ -18,19 +18,12 @@ std::map<const SDL_Texture*, std::string> Texture::_descriptions;
 
 int Texture::_numTextures = 0;
 
-Texture::Texture():
-_raw(nullptr),
-_w(0),
-_h(0),
-_validTarget(false),
-_programEndMarker(false){}
+Texture::Texture() {}
 
 Texture::Texture(px_t width, px_t height):
-_raw(nullptr),
 _w(width),
 _h(height),
-_validTarget(true),
-_programEndMarker(false){
+_validTarget(true){
     assert (renderer);
 
     _raw = renderer.createTargetableTexture(width, height);
@@ -46,12 +39,7 @@ _programEndMarker(false){
     }
 }
 
-Texture::Texture(const std::string &filename, const Color &colorKey):
-_raw(nullptr),
-_w(0),
-_h(0),
-_validTarget(false),
-_programEndMarker(false){
+Texture::Texture(const std::string &filename, const Color &colorKey){
     if (filename == "")
         return;
     assert (renderer);
@@ -73,12 +61,7 @@ _programEndMarker(false){
     }
 }
 
-Texture::Texture(const Surface &surface):
-_raw(nullptr),
-_w(0),
-_h(0),
-_validTarget(false),
-_programEndMarker(false){
+Texture::Texture(const Surface &surface){
     if (!surface)
         return;
     _raw = surface.toTexture();
@@ -95,12 +78,7 @@ _programEndMarker(false){
     }
 }
 
-Texture::Texture(TTF_Font *font, const std::string &text, const Color &color):
-_raw(nullptr),
-_w(0),
-_h(0),
-_validTarget(false),
-_programEndMarker(false){
+Texture::Texture(TTF_Font *font, const std::string &text, const Color &color){
     assert (renderer);
 
     if (font == nullptr)
@@ -127,8 +105,7 @@ Texture::Texture(const Texture &rhs):
 _raw(rhs._raw),
 _w(rhs._w),
 _h(rhs._h),
-_validTarget(rhs._validTarget),
-_programEndMarker(false){
+_validTarget(rhs._validTarget){
     if (_raw != nullptr)
         addRef();
 }
