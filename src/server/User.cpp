@@ -124,7 +124,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity){
     for (auto i = 0; i != GEAR_SLOTS; ++i) {
         if (_gear[i].first != item)
             continue;
-        auto spaceAvailable = item->stackSize() - _gear[i].second;
+        auto spaceAvailable = static_cast<int>(item->stackSize()) - static_cast<int>(_gear[i].second);
         if (spaceAvailable > 0) {
             auto qtyInThisSlot = min(spaceAvailable, remaining);
             _gear[i].second += qtyInThisSlot;
@@ -142,7 +142,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity){
                 continue;
             assert(remaining > 0);
             assert(item->stackSize() > 0);
-            auto spaceAvailable = item->stackSize() - _inventory[i].second;
+            auto spaceAvailable = static_cast<int>(item->stackSize()) - static_cast<int>(_inventory[i].second);
             if (spaceAvailable > 0) {
                 auto qtyInThisSlot = min(spaceAvailable, remaining);
                 _inventory[i].second += qtyInThisSlot;
