@@ -385,6 +385,7 @@
     <recipe
         id="boneDust" time="4000" quantity="2" >
         <material id="bone" />
+        <tool class="grinding1" />
         <unlockedBy item="bone" chance="0.1" />
         <unlockedBy recipe="airWand" />
         <unlockedBy recipe="earthWand" />

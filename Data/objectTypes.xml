@@ -105,7 +105,7 @@
     isFlat="1"
     allowedTerrain="fertile" sounds="clay" >
     <collisionRect x="-12" y="-2" w="25" h="24" />
-    <yield id="crudeClay" initialMean="7" initialSD="1" initialMin="1" />
+    <yield id="crudeClay" initialMean="4" initialSD="1" initialMin="1" />
     <strength item="crudeClay" quantity="3" />
 </objectType>
 
@@ -275,7 +275,7 @@
     xDrawOffset="-20"
     yDrawOffset="-34"
     isFlat="1" damageParticles="leaves" sounds="weakPlant"
-    isUnbuildable="1" constructionTime="10000"
+    isUnbuildable="1" constructionTime="10000" constructionText="needs watering"
     allowedTerrain="fertile" >
     <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
