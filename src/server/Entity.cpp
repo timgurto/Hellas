@@ -214,7 +214,35 @@ void Entity::update(ms_t timeElapsed){
         break;
     }
 
-    // Alert nearby clients
+    // Send ranged message if hit.  This tells the client to create a projectile.  This must be done
+    // before the damage, because if the damage kills the target and the attacker subsequently
+    // untargets it, then this message will not be sent.
+    if (attackRange() > MELEE_RANGE)
+        for (auto user : usersToInform)
+            sendRangedHitMessageTo(*user);
+
+    // Actually do the damage.
+    auto rawDamage = static_cast<double>(_stats.attack);
+    if (outcome == CRIT)
+        rawDamage *= 2;
+
+    auto resistance = pTarget->_stats.resistanceByType(school());
+    auto resistanceMultiplier = (100 - resistance) / 100.0;
+    rawDamage *= resistanceMultiplier;
+
+    auto damage = SpellEffect::chooseRandomSpellMagnitude(rawDamage);
+
+    if (outcome == BLOCK) {
+        if (_stats.blockValue >= damage)
+            damage = 0;
+        else
+            damage -= _stats.blockValue;
+    }
+
+    pTarget->reduceHealth(damage);
+
+    // Alert nearby clients.  This must be done after the damage, so that the client knows whether
+    // to play a hit sound or a death sound.
     MessageCode msgCode;
     std::string args;
     char
@@ -238,32 +266,8 @@ void Entity::update(ms_t timeElapsed){
     } else {
         assert(false);
     }
-    for (auto user : usersToInform){
+    for (auto user : usersToInform)
         server.sendMessage(user->socket(), msgCode, args);
-        if (attackRange() > MELEE_RANGE)
-            sendRangedHitMessageTo(*user);
-    }
-
-
-    auto rawDamage = static_cast<double>(_stats.attack);
-    if (outcome == CRIT)
-        rawDamage *= 2;
-
-    auto resistance = pTarget->_stats.resistanceByType(school());
-    auto resistanceMultiplier = (100 - resistance) / 100.0;
-    rawDamage *= resistanceMultiplier;
-
-    auto damage = SpellEffect::chooseRandomSpellMagnitude(rawDamage);
-
-    if (outcome == BLOCK) {
-        if (_stats.blockValue >= damage)
-            damage = 0;
-        else
-            damage -= _stats.blockValue;
-    }
-
-    pTarget->reduceHealth(damage);
-
 
     // Give target opportunity to react
     pTarget->onAttackedBy(*this, damage);
