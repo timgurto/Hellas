@@ -1447,7 +1447,9 @@ void Client::handleMessage(const std::string &msg){
                 _cityWarsAgainstCities.remove(name); break;
             }
 
-            _debug << "You are now at peace with " << name << Log::endl;
+            auto message = "You are now at peace with "s + name + "."s;
+            _debug(message);
+            toast("helmet", message);
 
             _target.refreshHealthBarColor();
             _mapWindow->markChanged();
