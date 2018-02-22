@@ -490,6 +490,12 @@ void Client::handleMessage(const std::string &msg){
 
             addFloatingCombatText("+"s + toString(qty) + " "s + item->second.name(),
                 _character.location(), Color::FLOATING_LOOT);
+            
+            auto logMessage = "Received "s;
+            if (qty > 1)
+                logMessage += toString(qty) + "x "s;
+            logMessage += item->second.name();
+            _debug(logMessage);
 
             break;
         }
@@ -502,7 +508,11 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
             _character.cityName(cityName);
-            _debug("You have joined the city of " + cityName);
+
+            auto message = "You have joined the city of "s + cityName + "."s;
+            toast("column", message);
+            _debug(message);
+
             break;
         }
 
@@ -514,7 +524,6 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
             handle_SV_NO_CITY(username);
-
             break;
         }
 
@@ -714,6 +723,15 @@ void Client::handleMessage(const std::string &msg){
                 readString(singleMsg, recipe, i == n - 1 ? MSG_END : MSG_DELIM);
                 singleMsg >> del;
                 _knownRecipes.insert(recipe);
+
+                auto it = _recipes.find(recipe);
+                if (it == _recipes.end())
+                    continue;
+
+                if (msgCode == SV_NEW_RECIPES) {
+                    auto message = "You have learned how to craft a new recipe: " + it->name();
+                    toast("hammer", message);
+                }
             }
             if (msgCode == SV_NEW_RECIPES){
                 _debug << "You have discovered ";
@@ -740,6 +758,15 @@ void Client::handleMessage(const std::string &msg){
                 readString(singleMsg, recipe, i == n - 1 ? MSG_END : MSG_DELIM);
                 singleMsg >> del;
                 _knownConstructions.insert(recipe);
+
+                auto it = _objectTypes.find(&ClientObjectType(recipe));
+                if (it == _objectTypes.end())
+                    continue;
+
+                if (msgCode == SV_NEW_CONSTRUCTIONS) {
+                    auto message = "You have learned how to construct a new object: " + (*it)->name();
+                    toast("lumber", message);
+                }
             }
             if (msgCode == SV_NEW_CONSTRUCTIONS){
                 _debug << "You have discovered ";
@@ -1275,7 +1302,10 @@ void Client::handleMessage(const std::string &msg){
                 _cityWarsAgainstCities.add(name);
                 break;
             }
-            _debug << "You are now at war with " << name << Log::endl;
+            auto message = "You are now at war with "s + name + "."s;
+            _debug(message);
+            toast("helmet", message);
+
 
             _target.refreshHealthBarColor();
             _mapWindow->markChanged();
@@ -1759,8 +1789,13 @@ void Client::handle_SV_IN_CITY(const std::string &username, const std::string &c
 
 void Client::handle_SV_NO_CITY(const std::string &username) {
     if (username == _username) {
+        auto message = "You are no longer a citizen of "s + _character.cityName() + "."s;
+
         _character.cityName("");
+
         refreshCitySection();
+        toast("column", message);
+        _debug(message);
         return;
     }
     auto userIt = _otherUsers.find(username);
@@ -1961,8 +1996,11 @@ void Client::handle_SV_LEVEL_UP(const std::string & username) {
     avatar->refreshTooltip();
 
     if (username == _username) {
-        _debug << "You have reached level "s << avatar->level() << "!"s << Log::endl;
         populateClassWindow();
+
+        auto message = "You have reached level "s + toString(avatar->level()) + "!"s;
+        toast("light", message);
+        _debug(message);
     }
 }
 
