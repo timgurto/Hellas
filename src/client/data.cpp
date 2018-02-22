@@ -172,7 +172,7 @@ void Client::loadData(const std::string &path){
 
             auto icon = ""s;
             if (xr.findAttr(elem, "icon", icon))
-                newSpell->icon(_icons.get(icon));
+                newSpell->icon(_icons[icon]);
 
             auto name = ""s;
             if (xr.findAttr(elem, "name", name)) newSpell->name(name);
@@ -591,7 +591,7 @@ void Client::loadData(const std::string &path){
 
                             auto icon = ""s;
                             if (xr.findAttr(talent, "icon", icon))
-                                t.icon = _icons.get(icon);
+                                t.icon = _icons[icon];
 
                             auto stats = StatsMod{};
                             if (!xr.findStatsChild("stats", talent, stats))

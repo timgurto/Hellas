@@ -12,7 +12,7 @@ class Images {
 public:
     Images(const std::string &directory);
 
-    const Texture &get(const std::string key);
+    const Texture &operator[](const std::string key);
 
 private:
     using container = std::unordered_map<std::string, Texture>;

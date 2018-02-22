@@ -19,7 +19,7 @@ Images::Images(const std::string &directory) :
     renderer.setRenderTarget();
 }
 
-const Texture &Images::get(const std::string key) {
+const Texture &Images::operator[](const std::string key) {
     auto it = _container.find(key);
 
     // Image exists: return it
