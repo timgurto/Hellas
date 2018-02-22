@@ -1302,7 +1302,13 @@ void Client::handleMessage(const std::string &msg){
                 _cityWarsAgainstCities.add(name);
                 break;
             }
-            auto message = "You are now at war with "s + name + "."s;
+
+            auto youAre = ""s;
+            if (msgCode == SV_AT_WAR_WITH_PLAYER || msgCode == SV_AT_WAR_WITH_CITY)
+                youAre = "You are"s;
+            else
+                youAre = "Your city is";
+            auto message = youAre + " now at war with "s + name + "."s;
             _debug(message);
             toast("helmet", message);
 
@@ -1447,7 +1453,12 @@ void Client::handleMessage(const std::string &msg){
                 _cityWarsAgainstCities.remove(name); break;
             }
 
-            auto message = "You are now at peace with "s + name + "."s;
+            auto youAre = ""s;
+            if (msgCode == SV_AT_PEACE_WITH_PLAYER || msgCode == SV_AT_PEACE_WITH_CITY)
+                youAre = "You are"s;
+            else
+                youAre = "Your city is";
+            auto message = youAre + " now at peace with "s + name + "."s;
             _debug(message);
             toast("helmet", message);
 
