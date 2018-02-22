@@ -170,6 +170,10 @@ void Client::loadData(const std::string &path){
             auto newSpell = new ClientSpell(id);
             _spells[id] = newSpell;
 
+            auto icon = ""s;
+            if (xr.findAttr(elem, "icon", icon))
+                newSpell->icon(icon);
+
             auto name = ""s;
             if (xr.findAttr(elem, "name", name)) newSpell->name(name);
 
@@ -584,7 +588,10 @@ void Client::loadData(const std::string &path){
                                 continue;
 
                             t.type = ClientTalent::STATS;
-                            t.icon = { "Images/Talents/"s + t.name + ".png"s };
+
+                            auto icon = ""s;
+                            if (xr.findAttr(talent, "icon", icon))
+                                t.icon = { "Images/Icons/"s + icon + ".png"s };
 
                             auto stats = StatsMod{};
                             if (!xr.findStatsChild("stats", talent, stats))

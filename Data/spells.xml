@@ -19,21 +19,21 @@ Functions:
 </spell>
 
 <!-- Hoplite -->
-<spell id="shieldBlock" name="Raise Shield" cost=10 >
+<spell id="shieldBlock" name="Raise Shield" icon="shield" cost=10 >
     <targets self=1 />
     <function name="buff" s1="shieldBlock" />
 </spell>
-<spell id="threatHit" name="Menacing Strike" cost=10 >
+<spell id="threatHit" name="Menacing Strike" icon="sword" cost=10 >
     <targets enemy=1 />
     <function name="doDirectDamageWithModifiedThreat" i1="3" d1="3.0" />
 </spell>
 
 <!-- Skirmisher -->
-<spell id="bleed" name="Lacerate" cost=10 range=4 >
+<spell id="bleed" name="Lacerate" icon="dripRed" cost=10 range=4 >
     <targets enemy=1 />
     <function name="debuff" s1="bleed" />
 </spell>
-<spell id="skirmisherStun" name="Head Crack" cost=10 range=4 >
+<spell id="skirmisherStun" name="Head Crack" icon="shout" cost=10 range=4 >
     <targets enemy=1 />
     <function name="debuff" s1="stun" />
 </spell>
@@ -44,24 +44,24 @@ Functions:
 </spell-->
 
 <!-- Philosopher -->
-<spell id="airDot" name="Logic" cost=10 range=30 school="air" >
+<spell id="airDot" name="Logic" icon="lettersCopper" cost=10 range=30 school="air" >
     <targets enemy=1 />
     <function name="debuff" s1="airDot" />
 </spell>
-<spell id="threatDropPhilosopher" name="Constant Flux" cost=10 range=30 school="water" >
+<spell id="threatDropPhilosopher" name="Constant Flux" icon="waterRipples" cost=10 range=30 school="water" >
     <targets enemy=1 />
     <function name="scaleThreat" d1="0.75" />
 </spell>
 
 <!-- Magus -->
-<spell id="fireball" name="Fireball" cost=10 range=30 school="fire" >
+<spell id="fireball" name="Fireball" icon="fireball" cost=10 range=30 school="fire" >
     <aesthetics projectile="fireball" sounds="fireball" />
     <targets enemy=1 />
     <function name="doDirectDamage" i1=5 />
 </spell>
 
 <!-- Naturalist -->
-<spell id="poison" name="Poison Stab" cost=10 range=30 school="earth" >
+<spell id="poison" name="Poison Stab" icon="dripGreen" cost=10 range=30 school="earth" >
     <aesthetics impactParticles="poison" />
     <targets enemy=1 />
     <function name="debuff" s1="poison" />
@@ -72,13 +72,13 @@ Functions:
 </spell>
 
 <!-- Alchemist -->
-<spell id="threatDropAlchemist" name="Disappear" cost=10 range=30 school="air" >
+<spell id="threatDropAlchemist" name="Disappear" icon="shadow" cost=10 range=30 school="air" >
     <targets enemy=1 />
     <function name="scaleThreat" d1="0.75" />
 </spell>
 
 <!-- Priest -->
-<spell id="priestEconHeal" name="Prayer" cost=12 range=25 >
+<spell id="priestEconHeal" name="Prayer" icon="light" cost=12 range=25 >
     <aesthetics sounds="heal" impactParticles="lightRays" />
     <targets friendly=1 self=1 />
     <function name="heal" i1=20 />

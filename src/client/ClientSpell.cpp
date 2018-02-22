@@ -7,8 +7,10 @@
 
 ClientSpell::ClientSpell(const std::string &id) :
     _id(id),
-    _castMessage(Client::compileMessage(CL_CAST, id)),
-    _icon("Images/Spells/"s + id + ".png"s){
+    _castMessage(Client::compileMessage(CL_CAST, id)){}
+
+void ClientSpell::icon(const std::string & file) {
+    _icon = { "Images/Icons/"s + file + ".png"s };
 }
 
 const Tooltip &ClientSpell::tooltip() const {
