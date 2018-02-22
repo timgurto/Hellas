@@ -37,7 +37,7 @@ public:
     void impactParticles(const ParticleProfile *p) { _impactParticles = p; }
     const ParticleProfile *impactParticles() const { return _impactParticles; }
     const std::string &castMessage() const { return _castMessage; }
-    void icon(const std::string &file);
+    void icon(const Texture & iconTexture);
     const Texture &icon() const { return _icon; }
     const Tooltip &tooltip() const;
     void name(const std::string &s) { _name = s; }

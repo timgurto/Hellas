@@ -22,6 +22,7 @@
 #include "ClientTerrain.h"
 #include "ClientWar.h"
 #include "HelpEntry.h"
+#include "Images.h"
 #include "LogSDL.h"
 #include "ParticleProfile.h"
 #include "Projectile.h"
@@ -464,6 +465,7 @@ private:
     soundProfiles_t _soundProfiles;
     const SoundProfile *_avatarSounds;
     
+    Images _icons{ "Images/Icons" };
 
     // Information about the state of the world
     size_t _mapX, _mapY;

@@ -120,6 +120,7 @@
     <ClCompile Include="src\client\drawing.cpp" />
     <ClCompile Include="src\client\HelpEntry.cpp" />
     <ClCompile Include="src\client\helpWindow.cpp" />
+    <ClCompile Include="src\client\Images.cpp" />
     <ClCompile Include="src\client\Projectile.cpp" />
     <ClCompile Include="src\client\socialWindow.cpp" />
     <ClCompile Include="src\client\Sprite.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="src\client\ClientVehicleType.h" />
     <ClInclude Include="src\client\ClientWar.h" />
     <ClInclude Include="src\client\HelpEntry.h" />
+    <ClInclude Include="src\client\Images.h" />
     <ClInclude Include="src\client\Projectile.h" />
     <ClInclude Include="src\client\Sprite.h" />
     <ClInclude Include="src\client\SpriteType.h" />
