@@ -12,16 +12,39 @@ const auto
 }
 
 struct Toast {
+    ms_t timeRemaining;
     Texture icon;
     std::string text;
 };
 
 std::list<Toast> toastInfo;
 
+void Client::updateToasts() {
+    // Update all toasts' timers.  If a timer runs out, remove it and repopulate List.
+
+    auto aToastNeedsRemoving = false;
+
+    for (auto &info : toastInfo) {
+        if (info.timeRemaining < _timeElapsed) {
+            info.timeRemaining = 0;
+            aToastNeedsRemoving = true;
+        } else
+            info.timeRemaining -= _timeElapsed;
+    }
+
+    if (!aToastNeedsRemoving)
+        return;
+
+    toastInfo.remove_if([](const Toast &info) {return info.timeRemaining == 0; });
+
+    populateToastsList();
+}
+
 void Client::toast(const std::string &icon, const std::string &text) {
     Toast t;
     t.icon = _icons[icon];
     t.text = text;
+    t.timeRemaining = 8000;
 
     toastInfo.push_back(t);
     populateToastsList();

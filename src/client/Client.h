@@ -331,6 +331,7 @@ private:
     void updateUI();
     List *_toasts{ nullptr };
     void initToasts();
+    void updateToasts();
     void populateToastsList();
     void toast(const std::string &icon, const std::string &message);
 

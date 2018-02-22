@@ -240,6 +240,7 @@ void Client::updateUI() {
         _lastErrorMessage->hide();
     } else
         _errorMessageTimer -= _timeElapsed;
+    updateToasts();
 }
 
 void Client::initMenuBar() {
