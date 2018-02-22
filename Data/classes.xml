@@ -64,7 +64,7 @@
     <tree name="Naturalist" >
         <tier>
             <cost tag="food" quantity="1" />
-            <talent type="stats" name="Study Poisons" icon="dripGreen" flavourText="Delving into the art of poisons may help you to avoid or resist them."> <stats earthResist="2" /> </talent>
+            <talent type="stats" name="Study Poisons" icon="skullGreen" flavourText="Delving into the art of poisons may help you to avoid or resist them."> <stats earthResist="2" /> </talent>
             <talent type="stats" name="Study Medicine" icon="rodOfAsclepius" flavourText="With more understanding of medicine comes a greater ability to mend the body."> <stats healing="3" /> </talent>
         </tier>
         <tier>
