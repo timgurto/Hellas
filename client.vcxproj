@@ -142,6 +142,7 @@
     <ClCompile Include="src\client\Tag.cpp" />
     <ClCompile Include="src\client\Target.cpp" />
     <ClCompile Include="src\client\Texture.cpp" />
+    <ClCompile Include="src\client\toast.cpp" />
     <ClCompile Include="src\client\Tooltip.cpp" />
     <ClCompile Include="src\client\ui.cpp" />
     <ClCompile Include="src\client\ui\Button.cpp" />

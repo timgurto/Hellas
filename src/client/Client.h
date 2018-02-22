@@ -329,6 +329,10 @@ private:
             void refreshTargetBuffs();
         void initializeEscapeWindow();
     void updateUI();
+    List *_toasts{ nullptr };
+    void initToasts();
+    void populateToastsList();
+    void toast(const std::string &icon, const std::string &message);
 
     // Chat
     Element *_chatContainer;

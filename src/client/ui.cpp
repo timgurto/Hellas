@@ -39,6 +39,7 @@ void Client::initUI() {
     initMenuBar();
     initPlayerPanels();
     initTargetBuffs();
+    initToasts();
 
     const auto ERROR_FROM_BOTTOM = 50;
     _lastErrorMessage = new OutlinedLabel(
