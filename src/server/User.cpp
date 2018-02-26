@@ -118,7 +118,7 @@ bool User::alive() const{
 size_t User::giveItem(const ServerItem *item, size_t quantity){
     auto &server = Server::instance();
 
-    size_t remaining = quantity;
+    auto remaining = quantity;
 
     // Gear pass 1: partial stacks
     for (auto i = 0; i != GEAR_SLOTS; ++i) {
@@ -126,7 +126,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity){
             continue;
         auto spaceAvailable = static_cast<int>(item->stackSize()) - static_cast<int>(_gear[i].second);
         if (spaceAvailable > 0) {
-            auto qtyInThisSlot = min(spaceAvailable, remaining);
+            auto qtyInThisSlot = min(static_cast<size_t>(spaceAvailable), remaining);
             _gear[i].second += qtyInThisSlot;
             Server::instance().sendInventoryMessage(*this, i, Server::GEAR);
             remaining -= qtyInThisSlot;
@@ -144,7 +144,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity){
             assert(item->stackSize() > 0);
             auto spaceAvailable = static_cast<int>(item->stackSize()) - static_cast<int>(_inventory[i].second);
             if (spaceAvailable > 0) {
-                auto qtyInThisSlot = min(spaceAvailable, remaining);
+                auto qtyInThisSlot = min(static_cast<size_t>(spaceAvailable), remaining);
                 _inventory[i].second += qtyInThisSlot;
                 Server::instance().sendInventoryMessage(*this, i, Server::INVENTORY);
                 remaining -= qtyInThisSlot;
