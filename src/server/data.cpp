@@ -62,6 +62,10 @@ bool Server::readUserData(User &user){
                << " was moved due to an invalid location." << Log::endl;
     user.location(p, /* firstInsertion */ true);
 
+    elem = xr.findChild("respawnPoint");
+    if (elem && xr.findAttr(elem, "x", p.x) && xr.findAttr(elem, "y", p.y))
+        user.respawnPoint(p);
+
     elem = xr.findChild("inventory");
     for (auto slotElem : xr.getChildren("slot", elem)) {
         int slot; std::string id; int qty;
@@ -169,6 +173,10 @@ void Server::writeUserData(const User &user) const{
     e = xw.addChild("location");
     xw.setAttr(e, "x", user.location().x);
     xw.setAttr(e, "y", user.location().y);
+
+    e = xw.addChild("respawnPoint");
+    xw.setAttr(e, "x", user.respawnPoint().x);
+    xw.setAttr(e, "y", user.respawnPoint().y);
 
     e = xw.addChild("inventory");
     for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
