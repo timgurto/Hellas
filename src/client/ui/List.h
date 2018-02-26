@@ -59,6 +59,7 @@ public:
     px_t childHeight() const { return _childHeight; }
     void doNotScrollToTopOnClear() { _shouldScrollToTopOnClear = false; }
     px_t contentWidth() const { return _content->width(); }
+    void resizeToContent() { height(_content->height()); }
 
     size_t size() const { return _content->children().size(); }
     bool empty() const { return size() == 0; }

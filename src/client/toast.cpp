@@ -81,4 +81,6 @@ void Client::populateToastsList() {
             y += Element::TEXT_HEIGHT;
         }
     }
+
+    _toasts->resizeToContent();
 }
