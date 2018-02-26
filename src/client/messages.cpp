@@ -398,6 +398,18 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_SET_SPAWN:
+        {
+            if (del != MSG_END)
+                break;
+
+            auto message = "By the grace of Hermes, you will return to this point should you ever "
+                    "falter in battle."s;
+            toast("light"s, message);
+            _debug(message);
+            break;
+        }
+
         case SV_CLASS:
         {
             auto username = ""s, classID = ""s;
@@ -537,6 +549,39 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 break;
             handle_SV_IN_CITY(username, cityName);
+            break;
+        }
+
+        case SV_CITY_FOUNDED:
+        {
+            std::string founder, city;
+            readString(singleMsg, founder);
+            singleMsg >> del;
+            readString(singleMsg, city, MSG_END);
+            singleMsg >> del;
+            if (del != MSG_END)
+                break;
+
+            auto message = "The city of "s + city + " has been founded by "s + founder + "."s;
+            if (founder == _username)
+                message = "By the grace of Athena, you have founded the city of "s + city + "."s;
+            toast("column"s, message);
+            _debug(message);
+            break;
+        }
+
+        case SV_CITY_DESTROYED:
+        {
+            std::string city;
+            readString(singleMsg, city, MSG_END);
+            singleMsg >> del;
+            if (del != MSG_END)
+                break;
+
+            auto message = "The city of "s + city + " has been destroyed."s;
+            toast("fireball"s, message);
+            _debug(message);
+            break;
         }
 
         case SV_KING:

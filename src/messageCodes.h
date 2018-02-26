@@ -210,6 +210,9 @@ enum MessageCode{
     // Arguments: username, x, y
     SV_LOCATION,
 
+    // The user's spawn point has changed
+    SV_SET_SPAWN,
+
     // User ... is at location ..., and moved there instantly. (Used for respawning)
     // Arguments: username, x, y
     SV_LOCATION_INSTANT,
@@ -297,6 +300,9 @@ enum MessageCode{
     // A user is not a member of a city
     // Arguments: username
     SV_NO_CITY,
+
+    SV_CITY_FOUNDED, // Arguments: founder name, city name
+    SV_CITY_DESTROYED, // Arguments: city name
 
     // A user is a king
     // Arguments: username
