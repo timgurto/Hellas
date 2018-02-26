@@ -1,24 +1,24 @@
 <root>
 
-<buff id="food" name="Eating" duration="10">
+<buff id="food" name="Eating" icon="foodFig" duration="10">
     <stats hps="5" eps="5" />
 </buff>
 <buff id="airDot" name="Socratic questioning" duration="12" school="air">
     <function name="doDirectDamage" i1="2" tickTime="1500" />
 </buff>
-<buff id="bleed" name="Bleeding" duration="12">
+<buff id="bleed" name="Bleeding" icon="dripRed" duration="12">
     <function name="doDirectDamage" i1="2" tickTime="1500" />
 </buff>
 <buff id="majorEnergy" name="Blessed by Apollo" duration="1800">
     <stats energy="100" />
 </buff>
-<buff id="poison" name="Poisoned" duration="12" school="earth">
+<buff id="poison" name="Poisoned" icon="dripGreen" duration="12" school="earth">
     <function name="doDirectDamage" i1="2" tickTime="1500" />
 </buff>
-<buff id="shieldBlock" name="Shield raised" duration="8">
+<buff id="shieldBlock" name="Shield raised" icon="shield" duration="8">
     <stats block="100" />
 </buff>
-<buff id="stun" name="Stunned" duration="10" >
+<buff id="stun" name="Stunned" icon="shout" duration="10" >
     <stats stuns="1" />
 </buff>
 <buff id="damageShield" name="Daemonic Armour" duration="120" school="fire" >

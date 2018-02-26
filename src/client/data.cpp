@@ -257,7 +257,10 @@ void Client::loadData(const std::string &path){
             std::string id;
             if (!xr.findAttr(elem, "id", id))
                 continue; // ID is mandatory.
-            auto newBuff = ClientBuffType{ id };
+
+            auto iconFile = id;
+            !xr.findAttr(elem, "icon", iconFile);
+            auto newBuff = ClientBuffType{ iconFile };
 
             auto name = ClientBuffType::Name{};
             if (xr.findAttr(elem, "name", name)) newBuff.name(name);
