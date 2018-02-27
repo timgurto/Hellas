@@ -347,6 +347,12 @@ enum MessageCode{
     SV_PLAYER_GOT_BUFF,
     SV_ENTITY_GOT_DEBUFF,
     SV_PLAYER_GOT_DEBUFF,
+    // Something lost a buff/debuff
+    // Arguments: serial/username, buff ID
+    SV_ENTITY_LOST_BUFF,
+    SV_PLAYER_LOST_BUFF,
+    SV_ENTITY_LOST_DEBUFF,
+    SV_PLAYER_LOST_DEBUFF,
 
     // You know the following ... spells: ..., ..., etc.
     // Arguments: count, id1, id2, id3, ...

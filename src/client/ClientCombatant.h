@@ -41,6 +41,7 @@ public:
     void createDamageParticles() const;
 
     void addBuffOrDebuff(const ClientBuffType::ID &buff, bool isBuff);
+    void removeBuffOrDebuff(const ClientBuffType::ID &buff, bool isBuff);
 
     size_t numBuffs() const { return _buffs.size() + _debuffs.size(); }
     using Buffs = std::set<const ClientBuffType *>;

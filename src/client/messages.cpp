@@ -1629,6 +1629,43 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_ENTITY_LOST_BUFF:
+        case SV_ENTITY_LOST_DEBUFF:
+        {
+            auto serial = size_t{};
+            singleMsg >> serial >> del;
+
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            auto buffID = ClientBuffType::ID{ buffer };
+            singleMsg >> del;
+
+            if (del != MSG_END)
+                return;
+
+            handle_SV_ENTITY_LOST_BUFF(msgCode, serial, buffID);
+
+            break;
+        }
+
+        case SV_PLAYER_LOST_BUFF:
+        case SV_PLAYER_LOST_DEBUFF:
+        {
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            auto username = std::string{ buffer };
+            singleMsg >> del;
+
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            auto buffID = ClientBuffType::ID{ buffer };
+            singleMsg >> del;
+
+            if (del != MSG_END)
+                return;
+
+            handle_SV_PLAYER_LOST_BUFF(msgCode, username, buffID);
+
+            break;
+        }
+
         case SV_KNOWN_SPELLS:
         {
             auto numSpellsKnown = 0;
@@ -1996,6 +2033,18 @@ void Client::handle_SV_ENTITY_GOT_BUFF(int msgCode, size_t serial, const std::st
         refreshTargetBuffs();
 }
 
+void Client::handle_SV_ENTITY_LOST_BUFF(int msgCode, size_t serial, const std::string & buffID) {
+    auto objIt = _objects.find(serial);
+    if (objIt == _objects.end()) {
+        return;
+    }
+
+    objIt->second->removeBuffOrDebuff(buffID, msgCode == SV_ENTITY_LOST_BUFF);
+
+    if (objIt->second == _target.entity())
+        refreshTargetBuffs();
+}
+
 void Client::handle_SV_PLAYER_GOT_BUFF(int msgCode, const std::string & username,
         const std::string &buffID) {
     Avatar *avatar = nullptr;
@@ -2009,6 +2058,27 @@ void Client::handle_SV_PLAYER_GOT_BUFF(int msgCode, const std::string & username
     }
 
     avatar->addBuffOrDebuff(buffID, msgCode == SV_PLAYER_GOT_BUFF);
+
+    if (avatar == &_character)
+        refreshBuffsDisplay();
+
+    if (avatar == _target.entity())
+        refreshTargetBuffs();
+}
+
+void Client::handle_SV_PLAYER_LOST_BUFF(int msgCode, const std::string & username,
+        const std::string & buffID) {
+    Avatar *avatar = nullptr;
+    if (username == _username)
+        avatar = &_character;
+    else {
+        auto it = _otherUsers.find(username);
+        if (it == _otherUsers.end())
+            return;
+        avatar = it->second;
+    }
+
+    avatar->removeBuffOrDebuff(buffID, msgCode == SV_PLAYER_LOST_BUFF);
 
     if (avatar == &_character)
         refreshBuffsDisplay();

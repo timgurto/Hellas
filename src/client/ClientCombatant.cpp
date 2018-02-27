@@ -71,6 +71,18 @@ void ClientCombatant::addBuffOrDebuff(const ClientBuffType::ID & buff, bool isBu
         _debuffs.insert(&it->second);
 }
 
+void ClientCombatant::removeBuffOrDebuff(const ClientBuffType::ID & buff, bool isBuff) {
+    Client &client = *Client::_instance;
+    auto it = client.buffTypes().find(buff);
+    if (it == client.buffTypes().end())
+        return;
+
+    if (isBuff)
+        _buffs.erase(&it->second);
+    else
+        _debuffs.erase(&it->second);
+}
+
 void ClientCombatant::playSoundWhenHit() const {
     if (isDead())
         playDeathSound();

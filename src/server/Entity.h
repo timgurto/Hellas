@@ -92,6 +92,8 @@ public:
     void removeDebuff(Buff::ID id);
     virtual void sendBuffMsg(const Buff::ID &buff) const;
     virtual void sendDebuffMsg(const Buff::ID &buff) const;
+    virtual void sendLostBuffMsg(const Buff::ID &buff) const;
+    virtual void sendLostDebuffMsg(const Buff::ID &buff) const;
     void updateBuffs(ms_t timeElapsed);
 
     const Stats &stats() const { return _stats; }

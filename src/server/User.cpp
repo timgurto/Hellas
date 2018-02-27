@@ -954,6 +954,16 @@ void User::sendDebuffMsg(const Buff::ID &buff) const {
     server.broadcastToArea(location(), SV_PLAYER_GOT_DEBUFF, makeArgs(_name, buff));
 }
 
+void User::sendLostBuffMsg(const Buff::ID &buff) const {
+    const Server &server = Server::instance();
+    server.broadcastToArea(location(), SV_PLAYER_LOST_BUFF, makeArgs(_name, buff));
+}
+
+void User::sendLostDebuffMsg(const Buff::ID &buff) const {
+    const Server &server = Server::instance();
+    server.broadcastToArea(location(), SV_PLAYER_LOST_DEBUFF, makeArgs(_name, buff));
+}
+
 void User::sendXPMessage() const {
     const Server &server = Server::instance();
     server.sendMessage(_socket, SV_XP, makeArgs(_xp, XP_PER_LEVEL[_level]));

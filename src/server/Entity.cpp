@@ -276,16 +276,20 @@ void Entity::update(ms_t timeElapsed){
 void Entity::updateBuffs(ms_t timeElapsed) {
     auto aBuffHasExpired = false;
     for (auto i = 0; i != _buffs.size(); ) {
-        _buffs[i].update(timeElapsed);
-        if (_buffs[i].hasExpired()) {
+        auto &buff = _buffs[i];
+        buff.update(timeElapsed);
+        if (buff.hasExpired()) {
+            sendLostBuffMsg(buff.type());
             _buffs.erase(_buffs.begin() + i);
             aBuffHasExpired = true;
         } else
             ++i;
     }
     for (auto i = 0; i != _debuffs.size(); ) {
-        _debuffs[i].update(timeElapsed);
-        if (_debuffs[i].hasExpired()) {
+        auto &debuff = _debuffs[i];
+        debuff.update(timeElapsed);
+        if (debuff.hasExpired()) {
+            sendLostDebuffMsg(debuff.type());
             _debuffs.erase(_debuffs.begin() + i);
             aBuffHasExpired = true;
         } else
@@ -473,6 +477,16 @@ void Entity::sendBuffMsg(const Buff::ID &buff) const {
 void Entity::sendDebuffMsg(const Buff::ID &buff) const {
     const Server &server = Server::instance();
     server.broadcastToArea(_location, SV_ENTITY_GOT_DEBUFF, makeArgs(_serial, buff));
+}
+
+void Entity::sendLostBuffMsg(const Buff::ID &buff) const {
+    const Server &server = Server::instance();
+    server.broadcastToArea(_location, SV_ENTITY_LOST_DEBUFF, makeArgs(_serial, buff));
+}
+
+void Entity::sendLostDebuffMsg(const Buff::ID &buff) const {
+    const Server &server = Server::instance();
+    server.broadcastToArea(_location, SV_ENTITY_LOST_DEBUFF, makeArgs(_serial, buff));
 }
 
 void Entity::regen(ms_t timeElapsed) {
