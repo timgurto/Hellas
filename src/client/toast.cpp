@@ -9,6 +9,8 @@ const auto
     auto x = (SCREEN_X - TOAST_W) / 2;
     _toasts = new List({ x, 0, TOAST_W, SCREEN_Y }, TOAST_H);
     addUI(_toasts);
+
+    populateToastsList();
 }
 
 struct Toast {
