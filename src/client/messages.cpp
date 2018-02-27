@@ -1936,7 +1936,7 @@ void Client::handle_SV_SPELL_MISS(const std::string &spellID, const MapPoint &sr
 
     if (spell.projectile()) {
         auto pointPastDest = extrapolate(src, dst, 2000);
-        spell.projectile()->instantiate(src, pointPastDest);
+        spell.projectile()->instantiate(src, pointPastDest, true);
     }
 }
 
@@ -1960,7 +1960,7 @@ void Client::handle_SV_RANGED_NPC_MISS(const std::string & npcID, const MapPoint
 
     if (npcType->projectile()) {
         auto pointPastDest = extrapolate(src, dst, 2000);
-        npcType->projectile()->instantiate(src, pointPastDest);
+        npcType->projectile()->instantiate(src, pointPastDest, true);
     }
 }
 
@@ -1983,7 +1983,7 @@ void Client::handle_SV_RANGED_WEAPON_MISS(const std::string & weaponID, const Ma
 
     if (item.projectile()) {
         auto pointPastDest = extrapolate(src, dst, 2000);
-        item.projectile()->instantiate(src, pointPastDest);
+        item.projectile()->instantiate(src, pointPastDest, true);
     }
 }
 

@@ -8,13 +8,15 @@ void Projectile::update(double delta) {
     auto reachedTarget = distanceToMove >= distanceFromTarget;
 
     if (reachedTarget) {
+        auto shouldShowImpact = !_willMiss;
+        if (shouldShowImpact) {
+            if (!particlesAtEnd().empty())
+                Client::instance().addParticles(particlesAtEnd(), _end);
 
-        if (!particlesAtEnd().empty())
-            Client::instance().addParticles(particlesAtEnd(), _end);
-
-        auto sounds = projectileType().sounds();
-        if (sounds)
-            sounds->playOnce("impact"s);
+            auto sounds = projectileType().sounds();
+            if (sounds)
+                sounds->playOnce("impact"s);
+        }
 
         markForRemoval();
         for (auto segment : _tail)
@@ -41,9 +43,11 @@ void Projectile::Type::sounds(const std::string & profile) {
     _sounds = Client::instance().findSoundProfile(profile);
 }
 
-void Projectile::Type::instantiate(const MapPoint & start, const MapPoint & end) const {
+void Projectile::Type::instantiate(const MapPoint & start, const MapPoint & end, bool willMiss) const {
     auto &client = Client::instance();
     auto projectile = new Projectile(*this, start, end);
+    if (willMiss)
+        projectile->willMiss();
     client.addEntity(projectile);
 
     // Add tail

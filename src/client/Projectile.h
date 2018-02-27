@@ -22,9 +22,12 @@ private:
 
     const Type &projectileType() const { return * dynamic_cast<const Type *>(this->type()); }
     double speed() const { return projectileType().speed; }
+    void willMiss() { _willMiss = true; }
 
     MapPoint _end;
     const void *_onReachDestinationArg = nullptr;
+    bool _willMiss{ false };
+
     using Tail = std::vector<Sprite *>;
     Tail _tail;
 
@@ -54,7 +57,7 @@ public:
         int _tailSeparation{ 0 };
         void tail(const std::string &imageFile, const ScreenRect &drawRect, int length, int separation);
 
-        void instantiate(const MapPoint &start, const MapPoint &end) const;
+        void instantiate(const MapPoint &start, const MapPoint &end, bool willMiss = false) const;
         friend class Projectile;
     };
 };
