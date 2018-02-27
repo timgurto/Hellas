@@ -18,7 +18,6 @@ Stats &Stats::operator+=(const Stats &rhs){
     earthResist += rhs.earthResist;
     fireResist += rhs.fireResist;
     waterResist += rhs.waterResist;
-    attack += rhs.attack;
     attackTime += rhs.attackTime;
     speed += rhs.speed;
     stunned = stunned || rhs.stunned;
@@ -89,11 +88,6 @@ const Stats &Stats::operator&=(const StatsMod &mod){
 
     gatherBonus += mod.gatherBonus;
     if (gatherBonus < 0) gatherBonus = 0;
-
-    if (mod.attack < 0 && -mod.attack > static_cast<int>(attack))
-        attack = 0;
-    else
-        attack += mod.attack;
 
     assert(mod.attackTime >= 0);
     if (mod.attackTime != 1.0)
@@ -176,8 +170,6 @@ std::vector<std::string> StatsMod::toStrings() const {
         v.push_back("+" + toString(waterResist) + "% water resistance");
     if (gatherBonus > 0)
         v.push_back("+" + toString(gatherBonus) + "% chance to gather double");
-    if (attack > 0)
-        v.push_back("+" + toString(attack) + " attack");
     if (attackTime != 1) {
         auto line = multiplicativeToString(1 / attackTime) + " attack speed";
         if (attackTime < 1)

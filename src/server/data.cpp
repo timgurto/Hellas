@@ -529,7 +529,10 @@ void Server::loadData(const std::string &path){
 
             Stats baseStats = NPCType::BASE_STATS;
             xr.findAttr(elem, "maxHealth", baseStats.maxHealth);
-            xr.findAttr(elem, "attack", baseStats.attack);
+
+            // physicalDamage is used to store attack, regardless of actual damage school.
+            xr.findAttr(elem, "attack", baseStats.physicalDamage);
+            
             xr.findAttr(elem, "attackTime", baseStats.attackTime);
             nt->baseStats(baseStats);
 

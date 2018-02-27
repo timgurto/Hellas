@@ -83,7 +83,6 @@ void User::init(){
     baseStats.earthResist = 0;
     baseStats.fireResist = 0;
     baseStats.waterResist = 0;
-    baseStats.attack = 5;
     baseStats.attackTime = 1000;
     baseStats.speed = 80.0;
     baseStats.stunned = false;
@@ -610,6 +609,18 @@ SpellSchool User::school() const {
     return weapon->weaponSchool();
 }
 
+double User::combatDamage() const {
+    const auto BASE_DAMAGE = 5.0;
+    
+    auto weapon = _gear[Item::WEAPON_SLOT].first;
+    auto damageSchool = weapon ? weapon->weaponSchool() : SpellSchool::PHYSICAL;
+
+    if (damageSchool == SpellSchool::PHYSICAL)
+        return BASE_DAMAGE + stats().physicalDamage;
+    else
+        return BASE_DAMAGE + stats().magicDamage;
+}
+
 void User::onHealthChange(){
     const Server &server = *Server::_instance;
     for (const User *userToInform: server.findUsersInArea(location()))
@@ -829,7 +840,6 @@ void User::updateStats(){
             newStats.fireResist,
             newStats.waterResist
         ), makeArgs(
-            newStats.attack,
             newStats.attackTime,
             newStats.speed
         )

@@ -97,7 +97,6 @@ void Client::initializeGearWindow(){
     addStat("Block chance",     _stats.block,           {},     "%",    y, _gearWindow);
     addStat("Block value",      _stats.blockValue,      {},     {},     y, _gearWindow);
     addGap(y, _gearWindow);
-    addStat("Weapon damage",    _stats.attack,          {},     {},     y, _gearWindow);
     addStat("Speed",            _stats.speed,           {},     {},     y, _gearWindow);
 
     y += 2;

@@ -221,7 +221,7 @@ void Entity::update(ms_t timeElapsed){
             sendRangedHitMessageTo(*user);
 
     // Actually do the damage.
-    auto rawDamage = static_cast<double>(_stats.attack);
+    auto rawDamage = combatDamage();
     if (outcome == CRIT)
         rawDamage *= 2;
 

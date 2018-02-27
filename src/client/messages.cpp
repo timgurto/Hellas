@@ -1195,7 +1195,6 @@ void Client::handleMessage(const std::string &msg){
                 >> del >> _stats.earthResist
                 >> del >> _stats.fireResist
                 >> del >> _stats.waterResist
-                >> del >> _stats.attack
                 >> del >> _stats.attackTime
                 >> del >> _stats.speed
                 >> del;

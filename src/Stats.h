@@ -12,7 +12,6 @@ struct StatsMod;
 struct Stats{
     Hitpoints
         maxHealth = 0,
-        attack = 0,
         blockValue = 0;
 
     Energy
@@ -71,7 +70,6 @@ struct StatsMod{
         hps = 0,
         maxEnergy = 0,
         eps = 0,
-        attack = 0,
         blockValue = 0;
     BonusDamage
         magicDamage = 0,

@@ -44,6 +44,7 @@ public:
     virtual void broadcastHealedMessage(Hitpoints amount) const override;
     SpellSchool school() const override { return npcType()->school(); }
     int getLevelDifference(const User &user) const override;
+    double combatDamage() const override { return npcType()->baseStats().physicalDamage; }
 
     char classTag() const override { return 'n'; }
 

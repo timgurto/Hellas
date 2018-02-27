@@ -129,6 +129,7 @@ public:
     bool isAttackingTarget() const override { return _action == ATTACK; }
     SpellSchool school() const override;
     Level level() const override { return _level; }
+    double combatDamage() const override;
 
     char classTag() const override { return 'u'; }
     virtual void sendBuffMsg(const Buff::ID &buff) const override;

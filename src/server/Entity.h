@@ -82,6 +82,7 @@ public:
     virtual SpellSchool school() const { return SpellSchool::PHYSICAL; }
     virtual Level level() const { return 0; }
     void resetAttackTimer() { _attackTimer = _stats.attackTime; }
+    virtual double combatDamage() const { return 0; }
 
     const Buffs &buffs() const { return _buffs; }
     const Buffs &debuffs() const { return _debuffs; }
