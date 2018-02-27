@@ -81,6 +81,7 @@ public:
     virtual bool isAttackingTarget() const { return true; } // Assumption: entity has a target
     virtual SpellSchool school() const { return SpellSchool::PHYSICAL; }
     virtual Level level() const { return 0; }
+    void resetAttackTimer() { _attackTimer = _stats.attackTime; }
 
     const Buffs &buffs() const { return _buffs; }
     const Buffs &debuffs() const { return _debuffs; }

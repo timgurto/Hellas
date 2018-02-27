@@ -189,8 +189,12 @@ void User::cancelAction() {
         _actionObject->decrementGatheringUsers();
     }
 
-    Server::instance().sendMessage(_socket, WARNING_ACTION_INTERRUPTED);
-    _action = NO_ACTION;
+    if (_action == ATTACK) {
+        resetAttackTimer();
+    } else {
+        Server::instance().sendMessage(_socket, WARNING_ACTION_INTERRUPTED);
+        _action = NO_ACTION;
+    }
 }
 
 void User::finishAction() {

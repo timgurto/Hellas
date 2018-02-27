@@ -173,8 +173,7 @@ void Entity::update(ms_t timeElapsed){
     if (distance(collisionRect(), pTarget->collisionRect()) > attackRange())
         return;
 
-    // Reset timer
-    _attackTimer = _stats.attackTime;
+    resetAttackTimer();
 
     onAttack();
 
