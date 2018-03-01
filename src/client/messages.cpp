@@ -1739,8 +1739,8 @@ void Client::handleMessage(const std::string &msg){
             if (del != MSG_END)
                 return;
 
-            auto message = "You have died, and Charon the ferryman takes his toll: "
-                "you lost a talent point in "s + talentName + "."s;
+            auto message = "You have died, and the ferryman takes his toll: "
+                "a talent point in "s + talentName + "."s;
             toast("skullRed"s, message);
             _debug(message);
             break;
