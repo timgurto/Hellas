@@ -121,6 +121,9 @@ Talent::Name Class::loseARandomLeafTalent() {
     server.sendMessage(_owner->socket(), SV_POINTS_IN_TREE,
         makeArgs(talentToDrop->tree(), pointsInTree(talentToDrop->tree())));
 
+    if (talentToDrop->type() == Talent::SPELL)
+        server.sendMessage(_owner->socket(), SV_UNLEARNED_SPELL, talentToDrop->spellID());
+
     return talentToDrop->name();
 }
 

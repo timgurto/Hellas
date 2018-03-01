@@ -362,6 +362,10 @@ enum MessageCode{
     // Arguments: ID
     SV_LEARNED_SPELL,
 
+    // You just unlearned spell ...
+    // Arguments: ID
+    SV_UNLEARNED_SPELL,
+
     // How many points a player has in a talent
     // Arguments: name, points
     SV_TALENT,

@@ -553,6 +553,7 @@ private:
     void handle_SV_PLAYER_LOST_BUFF(int msgCode, const std::string &username, const std::string &buffID);
     void handle_SV_KNOWN_SPELLS(const std::set<std::string> && knownSpellIDs);
     void handle_SV_LEARNED_SPELL(const std::string &spellID);
+    void handle_SV_UNLEARNED_SPELL(const std::string &spellID);
     void handle_SV_LEVEL_UP(const std::string &username);
     void handle_SV_NPC_LEVEL(size_t serial, Level level);
     void handle_SV_PLAYER_DAMAGED(const std::string &username, Hitpoints amount);

@@ -1702,6 +1702,19 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_UNLEARNED_SPELL:
+        {
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            auto spellID = std::string{ buffer };
+            singleMsg >> del;
+
+            if (del != MSG_END)
+                return;
+
+            handle_SV_UNLEARNED_SPELL(spellID);
+            break;
+        }
+
         case SV_TALENT:
         {
             singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
@@ -1755,7 +1768,9 @@ void Client::handleMessage(const std::string &msg){
 
             _talentLevels.clear();
             _pointsInTrees.clear();
+            _knownSpells.clear();
             populateClassWindow();
+            populateHotbar();
             break;
         }
 
@@ -2122,6 +2137,15 @@ void Client::handle_SV_LEARNED_SPELL(const std::string & spellID) {
     if (it == _spells.end())
         return;
     _knownSpells.insert(it->second);
+
+    populateHotbar();
+}
+
+void Client::handle_SV_UNLEARNED_SPELL(const std::string & spellID) {
+    auto it = _spells.find(spellID);
+    if (it == _spells.end())
+        return;
+    _knownSpells.erase(it->second);
 
     populateHotbar();
 }
