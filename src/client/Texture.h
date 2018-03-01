@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <map>
+#include <memory>
 #include <string>
 
 #include "../Color.h"
@@ -13,20 +14,9 @@ class Surface;
 
 // A wrapper class for SDL_Texture, which also provides related functionality
 class Texture{
-    SDL_Texture *_raw{ nullptr };
+    std::shared_ptr<SDL_Texture> _raw;
     px_t _w{ 0 }, _h{ 0 };
     bool _validTarget{ false };
-
-    static std::map<SDL_Texture *, size_t> _refs;
-    void addRef(); // Increment reference counter, and initialize window and renderer on first run
-    void removeRef(); // Decrement reference counter, and free memory/uninitialize if needed
-    static int _numTextures; // The total number of texture *references* in use
-
-    bool _programEndMarker{ false };
-    Texture(bool programEndMarker) : _programEndMarker(true) {}
-    static Texture _programEndMarkerTexture;
-
-    static std::map<const SDL_Texture*, std::string> _descriptions; // To help debug leaks.
 
 public:
     Texture();
@@ -34,9 +24,7 @@ public:
     Texture(const std::string &filename, const Color &colorKey = Color::NO_KEY);
     Texture(const Surface &surface);
     Texture(TTF_Font *font, const std::string &text, const Color &color = Color::FONT);
-
-    ~Texture();
-    static void destroyAllRemainingTextures();
+        void createFromSurface(const Surface &surface);
 
     Texture(const Texture &rhs);
     Texture &operator=(const Texture &rhs);
@@ -44,8 +32,7 @@ public:
     bool operator!() const { return _raw == nullptr; }
     operator bool() const { return _raw != nullptr; }
 
-    SDL_Texture *raw() { return _raw; }
-    static int numTextures() { return _numTextures; }
+    SDL_Texture *raw() { return _raw.get(); }
     px_t width() const { return _w; }
     px_t height() const { return _h; }
 
