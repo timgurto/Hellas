@@ -312,13 +312,21 @@ bool User::hasTool(const std::string &tagName) const{
     for (CollisionChunk *chunk : superChunk)
         for (const auto &pair : chunk->entities()) {
             const Entity *pEnt = pair.second;
+
             const Object *pObj = dynamic_cast<const Object *>(pEnt);
             if (pObj == nullptr)
                 continue;
-            if (!pObj->isBeingBuilt() &&
-                pObj->type()->isTag(tagName) &&
-                distance(pObj->collisionRect(), collisionRect()) < Server::ACTION_DISTANCE)
-                return true;
+
+            if (pObj->isBeingBuilt())
+                continue;
+            if (!pObj->type()->isTag(tagName))
+                continue;
+            if (distance(pObj->collisionRect(), collisionRect()) > Server::ACTION_DISTANCE)
+                continue;
+            if (!pObj->permissions().doesUserHaveAccess(_name))
+                continue;
+
+            return true;
         }
 
     return false;
