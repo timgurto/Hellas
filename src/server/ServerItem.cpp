@@ -22,16 +22,19 @@ void ServerItem::fetchAmmoItem() const {
 }
 
 bool vectHasSpace(const ServerItem::vect_t &vect, const ServerItem *item, size_t qty){
-    for (size_t i = 0; i != vect.size(); ++i) {
-        if (vect[i].first == nullptr) {
+    for (const auto &slot : vect) {
+        auto itemInSlot = slot.first;
+        auto qtyInSlot = slot.second;
+
+        if (!itemInSlot) {
             if (qty <= item->stackSize())
                 return true;
             qty -= item->stackSize();
-        } else if (vect[i].first == item) {
-            size_t spaceAvailable = item->stackSize() - vect[i].second;
-            if (qty <= spaceAvailable)
+        } else if (itemInSlot == item) {
+            auto roomInSlot = item->stackSize() - qtyInSlot;
+            if (qty <= roomInSlot)
                 return true;
-            qty -= spaceAvailable;
+            qty -= roomInSlot;
         } else
             continue;
     }

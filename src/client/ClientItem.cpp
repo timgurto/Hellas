@@ -43,7 +43,7 @@ void ClientItem::draw(const MapPoint &loc) const{
         ScreenPoint drawLoc =
             _drawLoc +                   // The item's offset
             gearOffsets[_gearSlot] +     // The slot's offset
-            toScreenPoint(loc) +      // The avatar's location
+            toScreenPoint(loc) +         // The avatar's location
             Client::_instance->offset(); // The overall map offset
         _gearImage.draw(drawLoc);
     }
