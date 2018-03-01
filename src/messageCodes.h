@@ -366,8 +366,11 @@ enum MessageCode{
     // Arguments: name, points
     SV_TALENT,
 
-    // How many total points a player has in a talent tree
+    // The user died and lost a talet point
+    // Arguments: talent name
+    SV_LOST_TALENT,
 
+    // How many total points a player has in a talent tree
     // Arguments: tree name, points
     SV_POINTS_IN_TREE,
 

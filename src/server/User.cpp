@@ -643,6 +643,12 @@ void User::onDeath(){
     // Handle respawn etc.
     moveToSpawnPoint();
 
+    auto talentLost = _class.value().loseARandomLeafTalent();
+    if (!talentLost.empty()) {
+        const Server &server = *Server::_instance;
+        server.sendMessage(_socket, SV_LOST_TALENT, talentLost);
+    }
+
     health(stats().maxHealth);
     energy(stats().maxEnergy);
     onHealthChange();

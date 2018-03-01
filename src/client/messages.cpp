@@ -406,7 +406,7 @@ void Client::handleMessage(const std::string &msg){
                 break;
 
             auto message = "By the grace of Hermes, you will return to this point should you ever "
-                    "falter in battle."s;
+                "fall in battle."s;
             toast("light"s, message);
             _debug(message);
             break;
@@ -1714,6 +1714,22 @@ void Client::handleMessage(const std::string &msg){
 
             _talentLevels[talentName] = level;
             populateClassWindow();
+            break;
+        }
+
+        case SV_LOST_TALENT:
+        {
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            auto talentName = std::string{ buffer };
+            singleMsg >> del;
+
+            if (del != MSG_END)
+                return;
+
+            auto message = "You have died, and Charon the ferryman takes his toll: "
+                "you lost a talent point in "s + talentName + "."s;
+            toast("skullRed"s, message);
+            _debug(message);
             break;
         }
 

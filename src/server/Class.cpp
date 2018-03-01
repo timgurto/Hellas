@@ -99,6 +99,81 @@ void Class::loadTalentRank(const Talent & talent, unsigned rank) {
     _talentRanks[&talent] = rank;
 }
 
+Talent::Name Class::loseARandomLeafTalent() {
+    auto candidates = std::vector<const Talent*>{};
+    for (const auto &pair : _talentRanks) {
+        if (isLeafTalent(*pair.first))
+            candidates.push_back(pair.first);
+    }
+
+    if (candidates.empty())
+        return{};
+
+    auto indexToDrop = rand() % candidates.size();
+    auto talentToDrop = candidates[indexToDrop];
+
+    --_talentRanks[talentToDrop];
+
+    const auto &server = Server::instance();
+    server.sendMessage(_owner->socket(), SV_TALENT,
+        makeArgs(talentToDrop->name(), _talentRanks[talentToDrop]));
+    server.sendMessage(_owner->socket(), SV_POINTS_IN_TREE,
+        makeArgs(talentToDrop->tree(), pointsInTree(talentToDrop->tree())));
+
+    return talentToDrop->name();
+}
+
+bool Class::isLeafTalent(const Talent & talent) {
+    // Not a talent --> not a leaf talent
+    if (_talentRanks[&talent] == 0)
+        return false;
+
+    auto withoutTalent = _talentRanks;
+    --withoutTalent[&talent];
+    return (allTalentsAreSupported(withoutTalent));
+}
+
+bool Class::allTalentsAreSupported(TalentRanks &talentRanks) {
+    for (const auto &pair : talentRanks) {
+        if (!talentIsSupported(pair.first, talentRanks))
+            return false;
+    }
+    return true;
+}
+
+bool Class::talentIsSupported(const Talent * talent, TalentRanks & talentRanks) {
+    // Talent isn't taken, and so doesn't need support.
+    auto rank = talentRanks[talent];
+    if (rank == 0)
+        return true;
+
+    auto pointsRequired = talent->tier().reqPointsInTree;
+
+    // Talent has no point req; i.e., no need for support.
+    if (pointsRequired == 0)
+        return true;
+
+    for (const auto &supportingTalent : talentRanks) {
+        // 0 points = no support
+        if (supportingTalent.second == 0)
+            continue;
+
+        // This talent is more advanced, and so can't support it.
+        if (supportingTalent.first->tier().reqPointsInTree > talent->tier().reqPointsInTree)
+            continue;
+
+        // A talent can't support itself
+        if (supportingTalent.first == talent)
+            continue;
+
+        if (supportingTalent.second >= pointsRequired)
+            return true;
+        pointsRequired -= supportingTalent.second;
+    }
+
+    return false;
+}
+
 Talent Talent::Dummy(const Name & name) {
     return{ name, DUMMY , DUMMY_TIER };
 }

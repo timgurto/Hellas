@@ -95,6 +95,10 @@ public:
     size_t pointsInTree(const std::string &treeName) const;
     const TalentRanks &talentRanks() const { return _talentRanks; }
     void loadTalentRank(const Talent &talent, unsigned rank);
+    Talent::Name loseARandomLeafTalent();
+        bool isLeafTalent(const Talent &talent); // Is it a necessary prereq for something else
+            static bool allTalentsAreSupported(TalentRanks &talentRanks);
+                static bool talentIsSupported(const Talent *talent, TalentRanks &talentRanks);
 
 private:
     const ClassType *_type{ nullptr };
