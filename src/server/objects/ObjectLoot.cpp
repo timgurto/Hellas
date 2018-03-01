@@ -21,6 +21,10 @@ void ObjectLoot::populate(){
 void ObjectLoot::addStrengthItemsToLoot(){
     static const double MATERIAL_LOOT_CHANCE = 0.05;
 
+    auto wasUnderConstruction = !_parent.remainingMaterials().isEmpty();
+    if (wasUnderConstruction)
+        return;
+
     const auto &strengthPair = _parent.objType().strengthPair();
     const ServerItem *strengthItem = strengthPair.first;
     size_t strengthQty = strengthPair.second;
