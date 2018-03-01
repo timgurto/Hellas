@@ -878,6 +878,8 @@ const Tooltip &ClientObject::tooltip() const{
 
     if (isDead())
         return tooltip;
+    if (isBeingConstructed())
+        return tooltip;
 
     // Stats
     bool stats = false;
