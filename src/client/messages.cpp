@@ -195,6 +195,7 @@ void Client::handleMessage(const std::string &msg){
         case WARNING_MISSING_ITEMS_FOR_TALENT:
         case WARNING_MISSING_REQ_FOR_TALENT:
         case WARNING_STUNNED:
+        case WARNING_YOU_ARE_ALREADY_IN_CITY:
             errorMessageColor = Color::WARNING; // Yellow above, red below
         case ERROR_INVALID_USER:
         case ERROR_INVALID_ITEM:
@@ -2288,6 +2289,7 @@ void Client::initializeMessageNames(){
     _errorMessages[ERROR_NO_ACTION] = "That object has no action to perform.";
     _errorMessages[ERROR_KING_CANNOT_LEAVE_CITY] = "A king cannot leave his city.";
     _errorMessages[ERROR_ALREADY_IN_CITY] = "That player is already in a city.";
+    _errorMessages[WARNING_YOU_ARE_ALREADY_IN_CITY] = "You are already in a city";
     _errorMessages[ERROR_NOT_A_KING] = "Only a king can do that.";
     _errorMessages[WARNING_INVALID_SPELL_TARGET] = "Invalid spell target.";
     _errorMessages[WARNING_NOT_ENOUGH_ENERGY] = "You don't have enough energy.";

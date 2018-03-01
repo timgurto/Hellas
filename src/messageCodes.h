@@ -552,6 +552,7 @@ enum MessageCode{
     ERROR_NOT_IN_CITY, // The user tried to perform a city action when not in a city.
     ERROR_KING_CANNOT_LEAVE_CITY, // The user tried to leave a city while being its king.
     ERROR_ALREADY_IN_CITY, // The user tried to recruit a citizen of another city.
+    WARNING_YOU_ARE_ALREADY_IN_CITY, // The user is already in a city and cannot found a new one.
     ERROR_NOT_A_KING, // Only a king can perform that action
 
     // Objects

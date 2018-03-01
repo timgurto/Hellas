@@ -17,8 +17,10 @@ void Server::createCity(const Object & obj, User & performer,
     if (textArg == "_")
         return;
 
-    if (!server._cities.getPlayerCity(performer.name()).empty())
+    if (!server._cities.getPlayerCity(performer.name()).empty()) {
+        server.sendMessage(performer.socket(), WARNING_YOU_ARE_ALREADY_IN_CITY);
         return;
+    }
 
     server._cities.createCity(textArg);
     server._cities.addPlayerToCity(performer, textArg);
