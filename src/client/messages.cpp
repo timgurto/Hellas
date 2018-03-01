@@ -232,7 +232,7 @@ void Client::handleMessage(const std::string &msg){
             startAction(0);
             break;
 
-        case WARNING_ITEM_NEEDED:
+        case WARNING_ITEM_TAG_NEEDED:
         {
             std::string reqItemTag;
             readString(singleMsg, reqItemTag, MSG_END);

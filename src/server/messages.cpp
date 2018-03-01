@@ -239,7 +239,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
             const std::string constructionReq = objType.constructionReq();
             if (!(constructionReq.empty() || user->hasTool(constructionReq))) {
-                sendMessage(client, WARNING_ITEM_NEEDED, constructionReq);
+                sendMessage(client, WARNING_ITEM_TAG_NEEDED, constructionReq);
                 break;
             }
             user->beginConstructing(objType, location, slot);
@@ -325,7 +325,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             }
             const std::string &gatherReq = obj->objType().gatherReq();
             if (gatherReq != "none" && !user->hasTool(gatherReq)) {
-                sendMessage(client, WARNING_ITEM_NEEDED, gatherReq);
+                sendMessage(client, WARNING_ITEM_TAG_NEEDED, gatherReq);
                 break;
             }
             // Check that it has an inventory
