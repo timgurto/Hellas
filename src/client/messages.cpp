@@ -196,6 +196,7 @@ void Client::handleMessage(const std::string &msg){
         case WARNING_MISSING_REQ_FOR_TALENT:
         case WARNING_STUNNED:
         case WARNING_YOU_ARE_ALREADY_IN_CITY:
+        case WARNING_ITEM_NEEDED:
             errorMessageColor = Color::WARNING; // Yellow above, red below
         case ERROR_INVALID_USER:
         case ERROR_INVALID_ITEM:
@@ -2302,6 +2303,7 @@ void Client::initializeMessageNames(){
     _errorMessages[WARNING_STUNNED] = "You can't do that while stunned.";
     _errorMessages[WARNING_USER_DOESNT_EXIST] = "That account does not exist.";
     _errorMessages[WARNING_NAME_TAKEN] = "That name is taken.";
+    _errorMessages[WARNING_ITEM_NEEDED] = "You are missing a required item.";
 }
 
 void Client::performCommand(const std::string &commandString){

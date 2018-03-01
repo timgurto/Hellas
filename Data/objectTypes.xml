@@ -408,7 +408,7 @@
     <material id="woodenStatue" />
     <material id="rock" quantity="8" />
     <strength item="rock" quantity="8" />
-    <action label="Worship" target="setRespawnPoint" tooltip="Set this location as your respawn point upon death" />
+    <action label="Worship" target="setRespawnPoint" tooltip="Set this location as your respawn point upon death" cost="entrails" />
     <unlockedBy recipe="woodenStatue" />
 </objectType>
 <objectType id="cityAltar" name="Altar to Athena"
@@ -416,7 +416,7 @@
     constructionTime="0" playerUnique="altar"
     sounds="brick" >
     <collisionRect x="-18" y="-8" w="37" h="17" />
-    <action label="Worship" target="createCity" tooltip="Found a city" textInput="City name" />
+    <action label="Worship" target="createCity" tooltip="Found a city" textInput="City name" cost="entrails" />
     <onDestroy target="destroyCity" />
     <material id="tinStatue" />
     <material id="brick" quantity="8" />

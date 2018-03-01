@@ -583,6 +583,7 @@ enum MessageCode{
     WARNING_NEED_TOOLS, // The user does not have the tools required to craft an item
     WARNING_ACTION_INTERRUPTED, // The user was unable to complete an action
     WARNING_ITEM_TAG_NEEDED, // The user tried to perform an action but does not have the requisite item. Arguments: requiredItemTag
+    WARNING_ITEM_NEEDED, // The user tried to perform an action but does not have the requisite item.
     WARNING_BLOCKED, // The user tried to perform an action at an occupied location
     ERROR_TARGET_DEAD, // The NPC is dead
     ERROR_NOT_GEAR, // The user tried to equip an item into a gear slot with which it isn't compatible.

@@ -3,7 +3,7 @@
 
 void Client::initToasts() {
 const auto
-    TOAST_H = 30,
+    TOAST_H = 40,
     TOAST_W = 200;
 
     auto x = (SCREEN_X - TOAST_W) / 2;

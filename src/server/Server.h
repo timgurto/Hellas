@@ -110,8 +110,8 @@ public:
     const Cities &cities() const { return _cities; }
 
     // Action functions
-    static void createCity(const Object &obj, User &performer, const std::string &textArg);
-    static void setRespawnPoint(const Object &obj, User &performer, const std::string &textArg);
+    static bool createCity(const Object &obj, User &performer, const std::string &textArg);
+    static bool setRespawnPoint(const Object &obj, User &performer, const std::string &textArg);
     // Callback-action functions
     static void destroyCity(const Object & obj);
 

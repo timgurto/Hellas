@@ -359,9 +359,16 @@ void Client::loadData(const std::string &path){
             auto action = xr.findChild("action", elem);
             if (action != nullptr) {
                 auto pAction = new ClientObjectAction;
+
                 xr.findAttr(action, "label", pAction->label);
                 xr.findAttr(action, "tooltip", pAction->tooltip);
                 xr.findAttr(action, "textInput", pAction->textInput);
+
+                auto costID = ""s;
+                if (xr.findAttr(action, "cost", costID)) {
+                    pAction->cost = &_items[costID];
+                }
+
                 cot->action(pAction);
             }
 

@@ -1170,6 +1170,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
                 break;
             }
             handle_CL_PERFORM_OBJECT_ACTION(*user, serial, textArg);
+
             break;
         }
 
@@ -1474,7 +1475,24 @@ void Server::handle_CL_PERFORM_OBJECT_ACTION(User & user, size_t serial, const s
         return;
     }
 
-    objType.action().function(*obj, user, textArg);
+    if (objType.action().cost) {
+        auto cost = ItemSet{};
+        cost.add(objType.action().cost);
+        if (!user.hasItems(cost)) {
+            sendMessage(user.socket(), WARNING_ITEM_NEEDED);
+            return;
+        }
+    }
+
+    auto succeeded = objType.action().function(*obj, user, textArg);
+
+    if (succeeded) {
+        if (objType.action().cost) {
+            auto cost = ItemSet{};
+            cost.add(objType.action().cost);
+            user.removeItems(cost);
+        }
+    }
 }
 
 void Server::handle_CL_TARGET_ENTITY(User & user, size_t serial) {

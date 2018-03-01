@@ -406,8 +406,23 @@ void ClientObject::addActionToWindow() {
     x = BUTTON_GAP;
     Button *button = new Button({ x, y, BUTTON_WIDTH, BUTTON_HEIGHT }, action.label,
         performAction, this);
-    if (!action.tooltip.empty())
-        button->setTooltip(action.tooltip);
+
+    auto tooltipNeeded = !action.tooltip.empty() || action.cost;
+    if (tooltipNeeded) {
+        Tooltip tooltip;
+        if (!action.tooltip.empty())
+            tooltip.addLine(action.tooltip);
+
+        if (!action.tooltip.empty() && action.cost)
+            tooltip.addGap();
+
+        if (action.cost) {
+            tooltip.setColor(Color::ITEM_TAGS);
+            tooltip.addLine("Consumes "s + action.cost->name());
+        }
+
+        button->setTooltip(tooltip);
+    }
     _window->addChild(button);
     y += BUTTON_GAP + BUTTON_HEIGHT;
     x += BUTTON_GAP + BUTTON_WIDTH;

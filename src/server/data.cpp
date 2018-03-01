@@ -441,6 +441,8 @@ void Server::loadData(const std::string &path){
             // Action
             auto action = xr.findChild("action", elem);
             if (action != nullptr) {
+                auto *pAction = new Action;
+
                 std::string target;
                 if (!xr.findAttr(action, "target", target)) {
                     _debug("Skipping action with missing target", Color::RED);
@@ -452,9 +454,16 @@ void Server::loadData(const std::string &path){
                         "() doesn't exist; skipping" << Log::endl;
                     continue;
                 }
-
-                auto *pAction = new Action;
                 pAction->function = it->second;
+
+                auto costID = ""s;
+                if (xr.findAttr(action, "cost", costID)) {
+                    std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(costID)).first;
+                    auto pItem = &*itemIt;
+                    pAction->cost = pItem;
+                }
+
+
                 ot->action(pAction);
             }
 

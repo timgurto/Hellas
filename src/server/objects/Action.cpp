@@ -10,16 +10,16 @@ CallbackAction::FunctionMap CallbackAction::functionMap = {
     { "destroyCity", Server::destroyCity }
 };
 
-void Server::createCity(const Object & obj, User & performer,
+bool Server::createCity(const Object & obj, User & performer,
         const std::string &textArg) {
     auto &server = Server::instance();
 
     if (textArg == "_")
-        return;
+        return false;
 
     if (!server._cities.getPlayerCity(performer.name()).empty()) {
         server.sendMessage(performer.socket(), WARNING_YOU_ARE_ALREADY_IN_CITY);
-        return;
+        return false;
     }
 
     server._cities.createCity(textArg);
@@ -28,13 +28,15 @@ void Server::createCity(const Object & obj, User & performer,
     server.makePlayerAKing(performer);
 
     server.broadcast(SV_CITY_FOUNDED, makeArgs(performer.name(), textArg));
+    return true;
 }
 
-void Server::setRespawnPoint(const Object & obj, User & performer,
+bool Server::setRespawnPoint(const Object & obj, User & performer,
     const std::string &textArg) {
     performer.respawnPoint(obj.location());
 
     instance().sendMessage(performer.socket(), SV_SET_SPAWN);
+    return true;
 }
 
 void Server::destroyCity(const Object & obj) {
