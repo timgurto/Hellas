@@ -624,7 +624,8 @@ void ClientObject::assembleWindow(Client &client){
                                 objType.canDeconstruct() ||
                                 isBeingConstructed() ||
                                 canCede ||
-                                canGrant))){
+                                canGrant ||
+                                canDemolish ))){
 
         if (_window == nullptr)
             _window = Window::WithRectAndTitle({}, objType.name());
