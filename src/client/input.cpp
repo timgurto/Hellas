@@ -51,10 +51,10 @@ void Client::handleInput(double delta){
                             } else {
                                 performCommand("/say " + text);
                             }
-                            _chatTextBox->text("");
-                            _chatTextBox->hide();
-                            TextBox::clearFocus();
                         }
+                        _chatTextBox->text("");
+                        _chatTextBox->hide();
+                        TextBox::clearFocus();
                     }
                     break;
                 }
