@@ -113,6 +113,7 @@ Talent::Name Class::loseARandomLeafTalent() {
     auto talentToDrop = candidates[indexToDrop];
 
     --_talentRanks[talentToDrop];
+    --_talentPointsAllocated;
 
     const auto &server = Server::instance();
     server.sendMessage(_owner->socket(), SV_TALENT,
