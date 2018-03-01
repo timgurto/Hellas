@@ -721,7 +721,6 @@
     <recipe
         id="tinStatue" time="10000" >
         <material id="tinBar" quantity="5" />
-        <material id="log" />
         <tool class="smelting1" />
         <tool class="grinding2" />
         <unlockedBy recipe="woodenStatue" chance="0.2" />

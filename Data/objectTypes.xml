@@ -397,7 +397,9 @@
     <strength item="log" quantity="1" />
 </objectType>
 <objectType id="tinStatue" name="Tin Statue"
+    xDrawOffset="-18" yDrawOffset="-36"
     constructionTime="0" deconstructs="tinStatue" deconstructionTime="1000" >
+    <collisionRect x="-6" y="-2" w="6" h="3f" />
     <strength item="tinBar" quantity="5" />
 </objectType>
 
