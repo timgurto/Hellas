@@ -776,6 +776,8 @@ void ClientObject::update(double delta) {
     }
 
     // If transforming, reduce timer.
+    if (isDead())
+        _transformTimer = 0;
     if (_transformTimer > 0){
         if (timeElapsed > _transformTimer)
             _transformTimer = 0;
