@@ -962,6 +962,8 @@ void User::moveToSpawnPoint(bool isNewPlayer) {
 
     server.broadcastToArea(oldLoc, SV_LOCATION_INSTANT, makeArgs(name(), location().x, location().y));
     server.broadcastToArea(location(), SV_LOCATION_INSTANT, makeArgs(name(), location().x, location().y));
+
+    server.sendRelevantEntitiesToUser(*this);
 }
 
 void User::sendBuffMsg(const Buff::ID &buff) const {

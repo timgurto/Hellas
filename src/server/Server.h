@@ -105,6 +105,7 @@ public:
     void sendNewRecipesMessage(const User &user, const std::set<std::string> &ids) const;
     void alertUserToWar(const std::string &username, const Belligerent &otherBelligerent,
         bool isUserCityTheBelligerent) const;
+    void sendRelevantEntitiesToUser(const User &user);
 
     // Getters
     const Cities &cities() const { return _cities; }

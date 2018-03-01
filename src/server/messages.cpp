@@ -2048,3 +2048,44 @@ void Server::alertUserToWar(const std::string &username, const Belligerent &othe
             SV_AT_WAR_WITH_CITY : SV_AT_WAR_WITH_PLAYER;
     sendMessage(it->second->socket(), code, otherBelligerent.name);
 }
+
+void Server::sendRelevantEntitiesToUser(const User & user) {
+    std::set<const Entity *> entitiesToDescribe; // Multiple sources; a set ensures no duplicates.
+    
+    // (Nearby)
+    const MapPoint &loc = user.location();
+    auto loX = _entitiesByX.lower_bound(&Dummy::Location(loc.x - CULL_DISTANCE, 0));
+    auto hiX = _entitiesByX.upper_bound(&Dummy::Location(loc.x + CULL_DISTANCE, 0));
+    for (auto it = loX; it != hiX; ++it) {
+        const Entity *entity = *it;
+        if (abs(entity->location().y - loc.y) > CULL_DISTANCE) // Cull y
+            continue;
+        entitiesToDescribe.insert(entity);
+    }
+
+    // (Owned objects)
+    Permissions::Owner owner(Permissions::Owner::PLAYER, user.name());
+    for (auto pEntity : _entities) {
+        auto *pObject = dynamic_cast<const Object *>(pEntity);
+
+        bool notAnObject = pObject == nullptr;
+        if (notAnObject)
+            continue;
+
+        bool newUserOwnsThisObject = _objectsByOwner.isObjectOwnedBy(pObject->serial(), owner);
+        if (newUserOwnsThisObject) {
+            entitiesToDescribe.insert(pEntity);
+            if (!pObject->isDead())
+                user.onNewOwnedObject(pObject->objType());
+        }
+    }
+
+    // Send
+    for (const Entity *entity : entitiesToDescribe) {
+        if (entity->type() == nullptr) {
+            _debug("Null-type object skipped", Color::RED);
+            continue;
+        }
+        entity->sendInfoToClient(user);
+    }
+}
