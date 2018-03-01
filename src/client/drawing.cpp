@@ -78,6 +78,25 @@ void Client::draw() const{
         bottomEntity(nullptr, { 0, bottomY });
     auto top = _entities.lower_bound(&topEntity);
     auto bottom = _entities.upper_bound(&bottomEntity);
+    // Construction sites
+    renderer.setDrawColor(Color::FOOTPRINT);
+    for (auto it = top; it != bottom; ++it) {
+        auto pObj = dynamic_cast<ClientObject *>(*it);
+        if (!pObj)
+            continue;
+        if (!pObj->isBeingConstructed())
+            continue;
+
+        auto footprint = Texture{ toInt(pObj->collisionRect().w), toInt(pObj->collisionRect().h) };
+        renderer.pushRenderTarget(footprint);
+            renderer.fill();
+        renderer.popRenderTarget();
+        footprint.setAlpha(0x7f);
+        footprint.setBlend();
+
+        auto drawPos = _offset + pObj->collisionRect();
+        footprint.draw(toScreenPoint(drawPos));
+    }
     // Flat entities
     for (auto it = top; it != bottom; ++it) {
         if ((*it)->isFlat()) {
