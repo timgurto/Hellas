@@ -300,7 +300,6 @@ void Client::initCreateWindow() {
 
 void Client::createAccount(void *) {
     auto username = newNameBox->text();
-    std::transform(username.begin(), username.end(), username.begin(), tolower);
     newNameBox->text(username);
 
     _instance->_username = username;
@@ -310,7 +309,6 @@ void Client::createAccount(void *) {
 
 void Client::login(void *) {
     std::string username = nameBox->text();
-    std::transform(username.begin(), username.end(), username.begin(), tolower);
     nameBox->text(username);
 
     _instance->_username = username;
