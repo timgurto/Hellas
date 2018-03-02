@@ -192,12 +192,13 @@ void Client::connectToServer() {
 void Client::updateLoginButton(void *) {
     loginButton->clearTooltip();
     loginButton->disable();
+    nameBox->forcePascalCase();
 
     if (Client::_instance->_connectionStatus != CONNECTED)
         ;// loginButton->setTooltip("Not connected to server");
 
-    else if (nameBox->text().empty())
-        ;// loginButton->setTooltip("No username was entered");
+    else if (!isUsernameValid(nameBox->text()))
+        ;// loginButton->setTooltip("Please enter a valid username");
 
     else
         loginButton->enable();
@@ -206,6 +207,7 @@ void Client::updateLoginButton(void *) {
 void Client::updateCreateButton(void *) {
     createButton->clearTooltip();
     createButton->disable();
+    newNameBox->forcePascalCase();
 
     if (Client::_instance->_connectionStatus != CONNECTED)
         ;// createButton->setTooltip("Not connected to server");

@@ -34,6 +34,8 @@ public:
 
     static void click(Element &e, const ScreenPoint &mousePos);
 
+    void forcePascalCase();
+
 private:
     std::string _text;
 
