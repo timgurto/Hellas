@@ -10,7 +10,6 @@ class ClientNPC : public ClientObject {
 public:
     ClientNPC(size_t serial, const ClientNPCType *type = nullptr, const MapPoint &loc = MapPoint{});
     ~ClientNPC(){}
-    bool isFlat() const override;
 
     const ClientNPCType *npcType() const { return dynamic_cast<const ClientNPCType *>(type()); }
 

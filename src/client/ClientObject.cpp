@@ -1045,3 +1045,7 @@ std::string ClientObject::additionalTextInName() const {
         return "("s + msAsTimeDisplay(_transformTimer) + " remaining)"s;
     return{};
 }
+
+bool ClientObject::isFlat() const {
+    return Sprite::isFlat() || isDead();
+}

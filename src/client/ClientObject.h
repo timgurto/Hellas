@@ -122,6 +122,7 @@ public:
     virtual const Color &nameColor() const override;
     virtual bool shouldDrawName() const override;
     bool shouldAddParticles() const override { return isAlive(); }
+    bool isFlat() const override;
 
 
     bool userHasAccess() const;

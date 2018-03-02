@@ -9,10 +9,6 @@ ClientNPC::ClientNPC(size_t serial, const ClientNPCType *type, const MapPoint &l
 ClientObject(serial, type, loc)
 {}
 
-bool ClientNPC::isFlat() const{
-    return Sprite::isFlat() || health() == 0;
-}
-
 bool ClientNPC::canBeAttackedByPlayer() const{
     if (! ClientCombatant::canBeAttackedByPlayer())
         return false;
