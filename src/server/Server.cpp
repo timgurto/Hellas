@@ -688,6 +688,10 @@ void Server::publishStats(const Server * server) {
             statsFile
                 << "\n{"
                 << "name: \"" << user.name() << "\","
+                << "class: \"" << user.getClass().type().id() << "\","
+                << "level: \"" << user.level() << "\","
+                << "xp: \"" << user.xp() << "\","
+                << "xpNeeded: \"" << user.XP_PER_LEVEL[user.level()] << "\","
                 << "x: \"" << user.location().x << "\","
                 << "y: \"" << user.location().y << "\","
                 << "city: \"" << server->_cities.getPlayerCity(user.name()) << "\","

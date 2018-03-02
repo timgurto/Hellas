@@ -16,6 +16,8 @@
     <table id="users" >
     <tr>
         <td class="heading">Name</td>
+        <td class="heading">Class</td>
+        <td class="heading">XP</td>
         <td class="heading">City</td>
         <td class="heading">Health</td>
         <td class="heading">Energy</td>
@@ -55,6 +57,10 @@
     function makeUserRow(user){
         var cells = "";
         cells += "<td>" + user.name + "</td>";
+        
+        cells += "<td>Level " + user.level + " " + user.class + "</td>";
+        
+        cells += makeBarCell(user.xp, user.xpNeeded, "#3478D8");
         
         var cityText = user.city;
         if (user.isKing)
