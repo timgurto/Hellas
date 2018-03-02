@@ -293,6 +293,7 @@
 		<!-- Cuirass -->
 			<item id="linothorax" name="Linothorax Armor" gearSlot="2" >
 				<stats armor="1" critResist="1" />
+				<offset x="-5" y="-4" />
 			</item>
 			<!--item id="copperCuirass" name="Copper Cuirass" gearSlot="2" >
 				<stats armor="4" critResist="1" />
@@ -340,6 +341,7 @@
 	</item-->
 	<item id="knucklebones" name="Knucklebones" gearSlot="7" >
 		<stats energy="9" />
+        <offset x="0" y="1" />
 	</item>
 	<item id="tablet" name="Tablet" gearSlot="7" sounds="ceramic" >
 		<stats energy="46" />
@@ -352,6 +354,7 @@
     </item>
     <item id="tambourine" name="Tambourine" gearSlot="7" >
 		<stats hps="2" eps="3" />
+		<offset x="-5" y="-2" />
     </item>
 
 <!-- Test -->

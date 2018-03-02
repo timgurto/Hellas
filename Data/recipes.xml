@@ -554,12 +554,11 @@
     </recipe-->
     <recipe
         id="tambourine" time="4000" >
-        <material id="leather" />
+        <material id="hide" />
         <material id="lumber" />
         <material id="tinScale" quantity="20" />
-        <unlockedBy recipe="tinScale" chance="0.05" />
-        <unlockedBy recipe="lumber" chance="0.05" />
-        <unlockedBy recipe="leather" chance="0.05" />
+        <unlockedBy recipe="tinScale" chance="0.08" />
+        <unlockedBy recipe="lumber" chance="0.07" />
     </recipe>
     <recipe
         id="tablet" time="10000" >

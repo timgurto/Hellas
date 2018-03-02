@@ -66,7 +66,7 @@ Functions:
     <targets enemy=1 />
     <function name="debuff" s1="poison" />
 </spell>
-<spell id="dispellEarthDebuff" name="Leeches" cost=10 range=30 school="earth" >
+<spell id="dispellEarthDebuff" name="Leeches" icon="leech" cost=10 range=30 school="earth" >
     <targets friendly=1 self=1 />
     <function name="dispellDebuff" s1="earth" />
 </spell>
@@ -83,28 +83,28 @@ Functions:
     <targets friendly=1 self=1 />
     <function name="heal" i1=20 />
 </spell>
-<spell id="majorEnergyBuff" name="Blessing of Apollo" cost=20 range=30 >
+<spell id="majorEnergyBuff" name="Blessing of Apollo" icon="symbolApollo" cost=20 range=30 >
     <targets friendly=1 self=1 />
     <function name="buff" s1="majorEnergy" />
 </spell>
 
 <!-- Cultist -->
-<spell id="selfHeal" name="Selfish Request" cost=5 >
+<spell id="selfHeal" name="Selfish Request" icon="lightOnMan" cost=5 >
     <aesthetics sounds="heal" impactParticles="lightRays" />
     <targets self=1 />
     <function name="heal" i1=15 />
 </spell>
-<spell id="damageShield" name="Daemonic Armour" cost=10 range=30 school="fire" >
+<spell id="damageShield" name="Daemonic Shield" icon="orbBlue" cost=10 range=30 school="fire" >
     <targets self=1 />
     <function name="debuff" s1="damageShield" />
 </spell>
 
 <!-- Poet -->
-<spell id="poetStun" name="Depressing Tragedy" cost=10 range=30 school="air" >
+<spell id="poetStun" name="Depressing Tragedy" icon="maskSad" cost=10 range=30 school="air" >
     <targets enemy=1 />
     <function name="debuff" s1="stun" />
 </spell>
-<spell id="threatDropPoet" name="Uplifting Comedy" cost=10 range=30 school="air" >
+<spell id="threatDropPoet" name="Uplifting Comedy" icon="maskHappy" cost=10 range=30 school="air" >
     <targets enemy=1 />
     <function name="scaleThreat" d1="0.75" />
 </spell>

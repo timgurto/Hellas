@@ -45,7 +45,7 @@ const Tooltip &ClientTalent::tooltip() const {
     tooltip.setColor(Color::ITEM_TAGS);
     if (hasCost()) {
         auto tagName = Client::instance().tagName(costTag);
-        tooltip.addLine("Costs "s + tagName + " x"s + toString(costQuantity));
+        tooltip.addLine("Costs "s + toString(costQuantity) + " "s + tagName);
     }
     if (reqPointsInTree > 0)
         tooltip.addLine("Requires "s + toString(reqPointsInTree) + " points in "s + tree);
