@@ -19,7 +19,7 @@ public:
     void hideEnergyBar();
 
     static const px_t
-        WIDTH = 60,
+        WIDTH = 100,
         HEIGHT = 40,
         BAR_HEIGHT = 7,
         GAP = 2;
