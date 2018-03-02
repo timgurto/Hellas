@@ -58,6 +58,17 @@
     <variety imageFile="wood1" />
     <variety imageFile="leaves" />
 </particleProfile>
+<particleProfile
+    id="leaves"
+    particlesPerSecond=4>
+    <particlesPerHit mean=3 sd=1 />
+    <distance mean=5 sd=0 />
+    <altitude mean=20 sd=4 />
+    <velocity mean=15 sd=3 />
+    <fallSpeed mean=0 sd=3 />
+    <variety imageFile="green" count="5" />
+    <variety imageFile="leaves" />
+</particleProfile>
 
 <particleProfile
     id="lootSparkles"
@@ -351,6 +362,29 @@
     <variety imageFile="orangePixel" count="12" />
     <variety imageFile="ceramicShard0" />
     <variety imageFile="ceramicShard1" />
+</particleProfile>
+
+<particleProfile
+    id="rocks"
+    particlesPerSecond=10>
+    <particlesPerHit mean=5 sd=1 />
+    <distance mean=5 sd=0 />
+    <altitude mean=8 sd=4 />
+    <velocity mean=15 sd=3 />
+    <variety imageFile="smallRock" />
+    <variety imageFile="darkGreyPixel" count="12" />
+</particleProfile>
+
+<particleProfile
+    id="brick"
+    particlesPerSecond=10>
+    <particlesPerHit mean=5 sd=1 />
+    <distance mean=5 sd=0 />
+    <altitude mean=8 sd=4 />
+    <velocity mean=15 sd=3 />
+    <variety imageFile="brickShard" />
+    <variety imageFile="orangePixel" count="6" />
+    <variety imageFile="lightOrangePixel" count="6" />
 </particleProfile>
 
 </root>

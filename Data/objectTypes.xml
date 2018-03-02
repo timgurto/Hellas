@@ -30,7 +30,7 @@
 
 <objectType id="tin" name="Tin deposit"
     xDrawOffset="-14" yDrawOffset="-11"
-    canGather="1" gatherTime="3000"
+    canGather="1" gatherTime="3000" gatherParticles="rocks"
     isFlat="1"
     allowedTerrain="rocks" >
     <yield id="tin" initialMean="2.5" initialSD="1" initialMin="1" />
@@ -50,7 +50,7 @@
 
 <objectType id="oven" name="Oven"
     xDrawOffset="-14" yDrawOffset="-17"
-    sounds="stone" >
+    sounds="stone" damageParticles="rocks">
     <collisionRect x="-13" y="-9" w="24" h="15" />
     <tag name="charcoalMaking" />
     <tag name="smelting1" />
@@ -65,7 +65,7 @@
     xDrawOffset="-14" yDrawOffset="-17"
     isUnbuildable="1"
     constructionText="requires fuel"
-    sounds="stone" >
+    sounds="stone" damageParticles="rocks" >
     <collisionRect x="-13" y="-9" w="24" h="15" />
     <material id="log" />
     <strength item="rock" quantity="10" />
@@ -73,7 +73,7 @@
 </objectType>
 <objectType id="kiln" name="Kiln"
     xDrawOffset="-13" yDrawOffset="-26"
-    sounds="brick" >
+    sounds="brick" damageParticles="brick" >
     <collisionRect x="-12" y="-4" w="27" h="10" />
     <tag name="smelting1" />
     <tag name="smelting2" />
@@ -92,7 +92,7 @@
     xDrawOffset="-13" yDrawOffset="-26"
     isUnbuildable="1"
     constructionText="requires fuel"
-    sounds="brick" >
+    sounds="brick" damageParticles="brick" >
     <collisionRect x="-12" y="-4" w="27" h="10" />
     <material id="charcoal" />
     <strength item="brick" quantity="20" />
@@ -101,7 +101,7 @@
 
 <objectType id="clay" name="Clay Deposit"
     xDrawOffset="-12" yDrawOffset="-12"
-    canGather="1" gatherTime="1000"
+    canGather="1" gatherTime="1000" gatherParticles="dirtFromGround"
     isFlat="1"
     allowedTerrain="fertile" sounds="clay" >
     <collisionRect x="-12" y="-2" w="25" h="24" />
@@ -144,7 +144,7 @@
 <objectType id="elutriator" name="Elutriator"
     xDrawOffset="-15" yDrawOffset="-21"
     deconstructs="elutriator" deconstructionTime="1000"
-    sounds="pottery" >
+    sounds="pottery" damageParticles="ceramicShards" >
     <tag name="clayRefinement" />
     <collisionRect x="-15" y="-4" w="31" h="8" />
     <strength item="crudeClay" quantity="4" />
@@ -171,7 +171,7 @@
 
 <objectType id="brickWallEW" name="Brick Wall E/W"
     xDrawOffset="-60" yDrawOffset="-42"
-    sounds="brick" >
+    sounds="brick" damageParticles="brick" >
     <collisionRect x="-60" y="-2" w="122" h="6" />
     <material id="brick" quantity="12" />
     <unlockedBy recipe="brick" chance="0.05" />
@@ -180,7 +180,7 @@
 </objectType>
 <objectType id="brickWallNS" name="Brick Wall N/S"
     xDrawOffset="-3" yDrawOffset="-101"
-    sounds="brick" >
+    sounds="brick" damageParticles="brick" >
     <collisionRect x="-3" y="-60" w="8" h="120" />
     <material id="brick" quantity="12" />
     <unlockedBy recipe="brick" chance="0.05" />
@@ -373,7 +373,7 @@
     constructionTime="1000"
     deconstructs="tannin"
     xDrawOffset="-7" yDrawOffset="-14"
-    sounds="pottery" >
+    sounds="pottery" damageParticles="ceramicShards" >
     <collisionRect x="-7" y="-3" w="16" h="7" />
     <tag name="tanning" />
     <strength item="crudeClay" quantity="2" />
@@ -416,7 +416,7 @@
 <objectType id="cityAltar" name="Altar to Athena"
     xDrawOffset="-18" yDrawOffset="-56"
     constructionTime="0" playerUnique="altar"
-    sounds="brick" >
+    sounds="brick" damageParticles="brick" >
     <collisionRect x="-18" y="-8" w="37" h="17" />
     <action label="Worship" target="createCity" tooltip="Found a city" textInput="City name" cost="entrails" />
     <onDestroy target="destroyCity" />
