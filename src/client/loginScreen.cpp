@@ -194,10 +194,10 @@ void Client::updateLoginButton(void *) {
     loginButton->disable();
 
     if (Client::_instance->_connectionStatus != CONNECTED)
-        loginButton->setTooltip("Not connected to server");
+        ;// loginButton->setTooltip("Not connected to server");
 
     else if (nameBox->text().empty())
-        loginButton->setTooltip("No username was entered");
+        ;// loginButton->setTooltip("No username was entered");
 
     else
         loginButton->enable();
@@ -208,13 +208,13 @@ void Client::updateCreateButton(void *) {
     createButton->disable();
 
     if (Client::_instance->_connectionStatus != CONNECTED)
-        createButton->setTooltip("Not connected to server");
+        ;// createButton->setTooltip("Not connected to server");
 
     else if (!isUsernameValid(newNameBox->text()))
-        createButton->setTooltip("Please enter a valid username");
+        ;// createButton->setTooltip("Please enter a valid username");
 
     else if (classList->getSelected().empty())
-        createButton->setTooltip("Please choose a class");
+        ;// createButton->setTooltip("Please choose a class");
 
     else
         createButton->enable();
