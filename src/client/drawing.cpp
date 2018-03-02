@@ -40,13 +40,6 @@ void Client::draw() const{
         }
     }
 
-    // Base under target combatant
-    if (_target.exists()){
-        const Texture &base = _target.isAggressive() ? _baseAggressive : _basePassive;
-        static const ScreenPoint BASE_OFFSET(-15, -10);
-        base.draw(toScreenPoint(_target.entity()->location()) + offset() + BASE_OFFSET);
-    }
-
     // Character's target and actual location
     if (isDebug()) {
         renderer.setDrawColor(Color::CYAN);
@@ -96,6 +89,12 @@ void Client::draw() const{
 
         auto drawPos = _offset + pObj->collisionRect();
         footprint.draw(toScreenPoint(drawPos));
+    }
+    // Base under target combatant
+    if (_target.exists()){
+        const Texture &base = _target.isAggressive() ? _baseAggressive : _basePassive;
+        static const ScreenPoint BASE_OFFSET(-15, -10);
+        base.draw(toScreenPoint(_target.entity()->location()) + offset() + BASE_OFFSET);
     }
     // Flat entities
     for (auto it = top; it != bottom; ++it) {
