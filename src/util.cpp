@@ -120,7 +120,7 @@ bool isUsernameValid(const std::string name) {
     if (name.length() > MAX_CHARS)
         return false;
     for (char c : name)
-        if (c < 'a' || c > 'z')
+        if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')))
             return false;
     return true;
 }
