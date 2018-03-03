@@ -344,7 +344,7 @@
     <strength item="tinTube" quantity="2" chance="0.5" />
 </objectType-->
 
-<!--objectType id="grindstone" name="Grindstone"
+<objectType id="grindstone" name="Grindstone"
     constructionTime="0" 
     xDrawOffset="-11" yDrawOffset="-21">>
     <collisionRect x="-11" y="-5" w="22" h="11" />
@@ -367,7 +367,7 @@
     <unlockedBy recipe="copperBar" chance="0.1" />
     <unlockedBy recipe="copperHammer" />
     <strength item="copperBar" quantity="20" />
-</objectType-->
+</objectType>
 
 <objectType id="tannin" name="Pot of Tannin"
     constructionTime="1000"
