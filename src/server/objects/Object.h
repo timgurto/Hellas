@@ -53,6 +53,7 @@ public:
     void clearMaterialsRequired() { _remainingMaterials.clear(); }
     bool isTransforming() const { return _transformTimer > 0; }
     ms_t transformTimer() const { return _transformTimer; }
+    void transformTimer(ms_t timeRemaining) { _transformTimer = timeRemaining; }
     Permissions &permissions() { return _permissions; }
     const Permissions &permissions() const { return _permissions; }
 

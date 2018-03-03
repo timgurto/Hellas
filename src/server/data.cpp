@@ -1119,6 +1119,10 @@ void Server::loadData(const std::string &path){
             auto corpseTime = ms_t{};
             if (xr.findAttr(elem, "corpseTime", corpseTime))
                 obj.corpseTime(corpseTime);
+
+            auto transformTimer = ms_t{};
+            if (xr.findAttr(elem, "transformTime", transformTimer))
+                obj.transformTimer(transformTimer);
         }
 
         for (auto elem : xr.getChildren("npc")) {
@@ -1199,6 +1203,9 @@ void Object::writeToXML(XmlWriter &xw) const{
 
     if (isDead() && corpseTime() > 0)
         xw.setAttr(e, "corpseTime", corpseTime());
+
+    if (transformTimer() > 0)
+        xw.setAttr(e, "transformTime", transformTimer());
 
     if (hasContainer()){
         for (size_t i = 0; i != objType().container().slots(); ++i) {
