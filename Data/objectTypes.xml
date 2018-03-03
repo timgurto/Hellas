@@ -346,7 +346,7 @@
 
 <objectType id="grindstone" name="Grindstone"
     constructionTime="0" 
-    xDrawOffset="-11" yDrawOffset="-21">>
+    xDrawOffset="-11" yDrawOffset="-21">
     <collisionRect x="-11" y="-5" w="22" h="11" />
     <material id="lumber" quantity="4" />
     <material id="rope" quantity="2" />
@@ -356,7 +356,7 @@
     <tag name="grinding2" />
     <unlockedBy recipe="tinTube" chance="0.5" />
     <strength item="tinTube" quantity="2" />
-</objectType-->
+</objectType>
 
 <!--objectType id="copperAnvil" name="Copper Anvil"
     constructionTime="0" constructionReq="hammering"
