@@ -140,6 +140,20 @@
     <unlockedBy recipe="lumber" />
     <strength item="lumber" quantity="8" />
 </objectType>
+<objectType
+    id="raft" name="Raft"
+    xDrawOffset="-16"
+    yDrawOffset="-11"
+    allowedTerrain="shallowWater"
+    isVehicle="1" >
+    <driver x="0" y="0" />
+    <collisionRect x="-7" y="-5" w="15" h="10" />
+    <material id="log" quantity="8" />
+    <material id="rope" quantity="2" />
+    <unlockedBy gather="log" chance="0.05" />
+    <unlockedBy recipe="rope" />
+    <strength item="log" quantity="8" />
+</objectType>
 
 <objectType id="elutriator" name="Elutriator"
     xDrawOffset="-15" yDrawOffset="-21"

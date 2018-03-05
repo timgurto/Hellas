@@ -132,4 +132,8 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
     <allow id="volcanoFertile" />
 </list>
 
+<list id="shallowWater" >
+    <allow id="water" />
+</list>
+
 </root>
