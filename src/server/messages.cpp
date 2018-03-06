@@ -1378,6 +1378,10 @@ void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
         pSlot = user.getSlotToTakeFromAndSendErrors(slotNum, user);
     else {
         pEnt = _entities.find(serial);
+        if (!pEnt) {
+            sendMessage(user.socket(), WARNING_DOESNT_EXIST);
+            return;
+        }
         pSlot = pEnt->getSlotToTakeFromAndSendErrors(slotNum, user);
     }
     if (pSlot == nullptr)
