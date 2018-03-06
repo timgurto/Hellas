@@ -60,19 +60,20 @@ bool Server::readUserData(User &user){
             _debug("Invalid user data (location)", Color::RED);
             return false;
     }
-    bool randomizedLocation = false;
-    while (!isLocationValid(p, User::OBJECT_TYPE, &user)) {
-        p = mapRand();
-        randomizedLocation = true;
-    }
-    if (randomizedLocation)
-        _debug << Color::YELLOW << "Player " << user.name()
-               << " was moved due to an invalid location." << Log::endl;
-    user.location(p, /* firstInsertion */ true);
 
     elem = xr.findChild("respawnPoint");
     if (elem && xr.findAttr(elem, "x", p.x) && xr.findAttr(elem, "y", p.y))
         user.respawnPoint(p);
+
+    bool s = false;
+    if (isLocationValid(p, User::OBJECT_TYPE, &user))
+        user.location(p, /* firstInsertion */ true);
+    else {
+        _debug << Color::YELLOW << "Player " << user.name()
+               << " was respawned due to an invalid or occupied location." << Log::endl;
+        user.moveToSpawnPoint( /* firstInsertion */ true);
+    }
+
 
     elem = xr.findChild("inventory");
     for (auto slotElem : xr.getChildren("slot", elem)) {
