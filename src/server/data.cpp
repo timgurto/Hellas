@@ -8,6 +8,7 @@
 #include "ProgressLock.h"
 #include "Server.h"
 #include "VehicleType.h"
+#include "Vehicle.h"
 #include "../Podes.h"
 #include "../SpellSchool.h"
 #include "../Terrain.h"
@@ -44,6 +45,13 @@ bool Server::readUserData(User &user){
         auto n = 0;
         if (xr.findAttr(elem, "isKing", n) && n == 1)
             makePlayerAKing(user);
+
+        if (xr.findAttr(elem, "isDriving", n) && n == 1) {
+            auto pVehicle = _entities.findVehicleDrivenBy(user);
+            if (pVehicle) {
+                user.driving(pVehicle->serial());
+            }
+        }
     }
 
     auto elem = xr.findChild("location");
@@ -53,7 +61,7 @@ bool Server::readUserData(User &user){
             return false;
     }
     bool randomizedLocation = false;
-    while (!isLocationValid(p, User::OBJECT_TYPE)) {
+    while (!isLocationValid(p, User::OBJECT_TYPE, &user)) {
         p = mapRand();
         randomizedLocation = true;
     }
@@ -169,6 +177,8 @@ void Server::writeUserData(const User &user) const{
         xw.setAttr(e, "isKing", 1);
     xw.setAttr(e, "level", user.level());
     xw.setAttr(e, "xp", user.xp());
+    if (user.isDriving())
+        xw.setAttr(e, "isDriving", 1);
 
     e = xw.addChild("location");
     xw.setAttr(e, "x", user.location().x);
@@ -1123,6 +1133,17 @@ void Server::loadData(const std::string &path){
             auto transformTimer = ms_t{};
             if (xr.findAttr(elem, "transformTime", transformTimer))
                 obj.transformTimer(transformTimer);
+
+            auto vehicle = xr.findChild("vehicle", elem);
+            if (vehicle) {
+                auto driver = ""s;
+                if (xr.findAttr(vehicle, "driver", driver) && !driver.empty()) {
+                    auto objAsVehicle = dynamic_cast<Vehicle*>(&obj);
+                    if (objAsVehicle) {
+                        objAsVehicle->driver(driver);
+                    }
+                }
+            }
         }
 
         for (auto elem : xr.getChildren("npc")) {
@@ -1235,6 +1256,13 @@ void Object::writeToXML(XmlWriter &xw) const{
         xw.setAttr(matE, "id", pair.first->id());
         xw.setAttr(matE, "qty", pair.second);
     }
+
+    auto asVehicle = dynamic_cast<const Vehicle*>(this);
+    if (asVehicle && !asVehicle->driver().empty()) {
+        auto vehicleE = xw.addChild("vehicle", e);
+        xw.setAttr(vehicleE, "driver", asVehicle->driver());
+    }
+
 }
 
 void NPC::writeToXML(XmlWriter &xw) const{

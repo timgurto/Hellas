@@ -930,6 +930,10 @@ void User::sendInfoToClient(const User &targetUser) const {
         server.sendMessage(client, SV_PLAYER_GOT_BUFF, makeArgs(_name, buff.type()));
     for (const auto &debuff : debuffs())
         server.sendMessage(client, SV_PLAYER_GOT_DEBUFF, makeArgs(_name, debuff.type()));
+
+    // Vehicle?
+    if (isDriving())
+        server.sendMessage(client, SV_MOUNTED, makeArgs(driving(), _name));
 }
 
 void User::onOutOfRange(const Entity &rhs) const{

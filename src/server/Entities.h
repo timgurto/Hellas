@@ -27,6 +27,8 @@ public:
         return dynamic_cast<T *>(pEnt);
     }
 
+    const Vehicle *findVehicleDrivenBy(const User &driver);
+
 private:
     Container _container;
 };
