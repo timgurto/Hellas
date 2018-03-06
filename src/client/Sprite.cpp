@@ -15,6 +15,7 @@ Sprite::Sprite(const SpriteType *type, const MapPoint &location):
 _yChanged(false),
 _type(type),
 _location(location),
+_destination(location),
 _toRemove(false){}
 
 ScreenRect Sprite::drawRect() const {
@@ -53,6 +54,8 @@ void Sprite::drawName() const {
 }
 
 void Sprite::update(double delta) {
+    location(interpolatedLocation(delta));
+    
     if (!shouldAddParticles())
         return;
 
@@ -92,4 +95,12 @@ const Tooltip & Sprite::tooltip() const {
     if (_tooltip.hasValue())
         return _tooltip.value();
     return Tooltip::noTooltip();
+}
+
+MapPoint Sprite::interpolatedLocation(double delta) {
+    if (_destination == location())
+        return _destination;;
+
+    const double maxLegalDistance = delta * Client::MOVEMENT_SPEED;
+    return interpolate(location(), _destination, maxLegalDistance);
 }

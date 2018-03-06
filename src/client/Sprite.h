@@ -18,6 +18,15 @@ class Sprite {
     const SpriteType *_type;
     MapPoint _location;
 
+    // Lerping
+    MapPoint _destination;
+    /*
+    Get the next location towards destination, with distance determined by
+    this client's latency, and by time elapsed.
+    This is used to smooth the apparent movement of other users.
+    */
+    MapPoint interpolatedLocation(double delta);
+
     bool _toRemove; // No longer draw or update, and remove when possible.
 
     static const std::string EMPTY_NAME;
@@ -45,6 +54,11 @@ public:
     virtual bool isFlat() const { return _type->isFlat(); }
     virtual std::string additionalTextInName() const { return{}; }
     virtual bool shouldAddParticles() const { return true; }
+
+    // Movement lerping
+    const MapPoint &destination() const { return _destination; }
+    void destination(const MapPoint &dst) { _destination = dst; }
+    virtual px_t apparentMovementSpeed() const { return 0; }
 
     virtual char classTag() const { return 'e'; }
 

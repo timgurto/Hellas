@@ -20,14 +20,6 @@ _name(name),
 _gear(Client::GEAR_SLOTS, std::make_pair(nullptr, 0)),
 _driving(false){}
 
-MapPoint Avatar::interpolatedLocation(double delta){
-    if (_destination == location())
-        return _destination;;
-
-    const double maxLegalDistance = delta * Client::MOVEMENT_SPEED;
-    return interpolate(location(), _destination, maxLegalDistance);
-}
-
 void Avatar::draw(const Client &client) const{
     if (_driving)
         return;
@@ -89,8 +81,6 @@ void Avatar::drawName() const {
 }
 
 void Avatar::update(double delta){
-    location(interpolatedLocation(delta));
-
     // Gear particles
     auto &client = Client::instance();
     for (auto i = 0; i != Client::GEAR_SLOTS; ++i) {
@@ -110,6 +100,8 @@ void Avatar::update(double delta){
                 { particleX, particleY }, delta);
         }
     }
+
+    Sprite::update(delta);
 }
 
 void Avatar::setClass(const ClassInfo::Name &newClass){

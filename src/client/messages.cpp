@@ -620,7 +620,7 @@ void Client::handleMessage(const std::string &msg){
             if (it != _objects.end()){
                 // Existing object: update its info.
                 ClientObject &obj = *it->second;
-                obj.location({ x, y });
+                obj.destination({ x, y });
                 obj.type(cot);
                 if (targetAsEntity() == &obj)
                     _target.onTypeChange();
@@ -669,7 +669,7 @@ void Client::handleMessage(const std::string &msg){
                 //showErrorMessage("Server removed an object we didn't know about.", Color::WARNING);
                 break; // We didn't know about this object
             }
-            it->second->location({ x, y });
+            it->second->destination({ x, y });
             break;
         }
 

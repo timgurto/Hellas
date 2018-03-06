@@ -17,7 +17,6 @@ class Avatar : public Sprite, public ClientCombatant{
     static const MapRect COLLISION_RECT;
     static const ScreenRect DRAW_RECT;
 
-    MapPoint _destination;
     std::string _name;
     const ClassInfo *_class = nullptr;
     std::string _city;
@@ -28,8 +27,6 @@ class Avatar : public Sprite, public ClientCombatant{
 public:
     Avatar(const std::string &name, const MapPoint &location);
 
-    const MapPoint &destination() const { return _destination; }
-    void destination(const MapPoint &dst) { _destination = dst; }
     const MapRect collisionRect() const { return COLLISION_RECT + location(); }
     static const MapRect &collisionRectRaw() { return COLLISION_RECT; }
     void setClass(const ClassInfo::Name &newClass);
@@ -82,14 +79,6 @@ public:
     void playDeathSound() const override;
 
     friend class Client;
-
-private:
-    /*
-    Get the next location towards destination, with distance determined by
-    this client's latency, and by time elapsed.
-    This is used to smooth the apparent movement of other users.
-    */
-    MapPoint interpolatedLocation(double delta);
 };
 
 #endif
