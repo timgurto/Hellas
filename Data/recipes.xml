@@ -590,7 +590,7 @@
     id="charcoal" time="12000" >
     <material id="log" />
     <tool class="charcoalMaking" />
-    <unlockedBy construction="oven" />
+    <unlockedBy recipe="brick" />
 </recipe>
 
 <recipe
