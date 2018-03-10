@@ -159,7 +159,7 @@ std::vector<std::string> StatsMod::toStrings() const {
     if (physicalDamage > 0)
         v.push_back("+" + toString(physicalDamage) + " physical damage");
     if (healing > 0)
-        v.push_back("+" + toString(healing) + " healing amount");
+        v.push_back("+" + toString(healing) + " healing-spell amount");
     if (airResist > 0)
         v.push_back("+" + toString(airResist) + "% air resistance");
     if (earthResist > 0)
