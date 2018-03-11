@@ -150,6 +150,11 @@
     <ClCompile Include="src\server\Buff.cpp" />
     <ClCompile Include="src\server\ThreatTable.cpp" />
     <ClCompile Include="src\client\Tooltip.cpp" />
+    <ClCompile Include="src\client\ClientWar.cpp" />
+    <ClCompile Include="src\client\Images.cpp" />
+    <ClCompile Include="src\client\toast.cpp" />
+    <ClCompile Include="src\client\WordWrapper.cpp" />
+    <ClCompile Include="src\client\ui\Indicator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -267,5 +272,11 @@
     <ClInclude Include="src\server\combat.h" />
     <ClInclude Include="src\server\ThreatTable.h" />
     <ClInclude Include="src\client\Tooltip.h" />
+    <ClInclude Include="src\Message.h" />
+    <ClInclude Include="src\client\ClientWar.h" />
+    <ClInclude Include="src\client\HelpEntry.h" />
+    <ClInclude Include="src\client\Images.h" />
+    <ClInclude Include="src\client\WordWrapper.h" />
+    <ClInclude Include="src\client\ui\Indicator.h" />
   </ItemGroup>
 </Project>

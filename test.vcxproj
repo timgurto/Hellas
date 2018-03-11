@@ -108,6 +108,7 @@
     <ClCompile Include="src\client\ClientSpell.cpp" />
     <ClCompile Include="src\client\ClientVehicle.cpp" />
     <ClCompile Include="src\client\ClientVehicleType.cpp" />
+    <ClCompile Include="src\client\ClientWar.cpp" />
     <ClCompile Include="src\client\craftingWindow.cpp" />
     <ClCompile Include="src\client\data.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName)\data-client</ObjectFileName>
@@ -116,6 +117,7 @@
     <ClCompile Include="src\client\drawing.cpp" />
     <ClCompile Include="src\client\HelpEntry.cpp" />
     <ClCompile Include="src\client\helpWindow.cpp" />
+    <ClCompile Include="src\client\Images.cpp" />
     <ClCompile Include="src\client\input.cpp" />
     <ClCompile Include="src\client\inventoryWindow.cpp" />
     <ClCompile Include="src\client\loginScreen.cpp" />
@@ -138,6 +140,7 @@
     <ClCompile Include="src\client\Tag.cpp" />
     <ClCompile Include="src\client\Target.cpp" />
     <ClCompile Include="src\client\Texture.cpp" />
+    <ClCompile Include="src\client\toast.cpp" />
     <ClCompile Include="src\client\Tooltip.cpp" />
     <ClCompile Include="src\client\ui.cpp" />
     <ClCompile Include="src\client\ui\Button.cpp" />
@@ -148,6 +151,7 @@
     <ClCompile Include="src\client\ui\ConfirmationWindow.cpp" />
     <ClCompile Include="src\client\ui\ContainerGrid.cpp" />
     <ClCompile Include="src\client\ui\Element.cpp" />
+    <ClCompile Include="src\client\ui\Indicator.cpp" />
     <ClCompile Include="src\client\ui\ItemSelector.cpp" />
     <ClCompile Include="src\client\ui\Label.cpp" />
     <ClCompile Include="src\client\ui\Line.cpp" />
@@ -158,6 +162,7 @@
     <ClCompile Include="src\client\ui\TakeContainer.cpp" />
     <ClCompile Include="src\client\ui\TextBox.cpp" />
     <ClCompile Include="src\client\ui\Window.cpp" />
+    <ClCompile Include="src\client\WordWrapper.cpp" />
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\curlUtil.cpp" />
     <ClCompile Include="src\Item.cpp" />
@@ -270,6 +275,9 @@
     <ClInclude Include="src\client\ClientSpell.h" />
     <ClInclude Include="src\client\ClientVehicle.h" />
     <ClInclude Include="src\client\ClientVehicleType.h" />
+    <ClInclude Include="src\client\ClientWar.h" />
+    <ClInclude Include="src\client\HelpEntry.h" />
+    <ClInclude Include="src\client\Images.h" />
     <ClInclude Include="src\client\LogSDL.h" />
     <ClInclude Include="src\client\Particle.h" />
     <ClInclude Include="src\client\ParticleProfile.h" />
@@ -292,6 +300,7 @@
     <ClInclude Include="src\client\ui\ConfirmationWindow.h" />
     <ClInclude Include="src\client\ui\ContainerGrid.h" />
     <ClInclude Include="src\client\ui\Element.h" />
+    <ClInclude Include="src\client\ui\Indicator.h" />
     <ClInclude Include="src\client\ui\ItemSelector.h" />
     <ClInclude Include="src\client\ui\Label.h" />
     <ClInclude Include="src\client\ui\Line.h" />
@@ -304,10 +313,12 @@
     <ClInclude Include="src\client\ui\TakeContainer.h" />
     <ClInclude Include="src\client\ui\TextBox.h" />
     <ClInclude Include="src\client\ui\Window.h" />
+    <ClInclude Include="src\client\WordWrapper.h" />
     <ClInclude Include="src\Color.h" />
     <ClInclude Include="src\curlUtil.h" />
     <ClInclude Include="src\Item.h" />
     <ClInclude Include="src\Log.h" />
+    <ClInclude Include="src\Message.h" />
     <ClInclude Include="src\messageCodes.h" />
     <ClInclude Include="src\NormalVariable.h" />
     <ClInclude Include="src\Optional.h" />
