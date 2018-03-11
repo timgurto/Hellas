@@ -79,7 +79,9 @@ void Client::populateClassWindow() {
     const px_t
         GAP = 10,
         TOTAL_GAP_WIDTH = GAP * (classInfo.trees().size()),
-        TREE_WIDTH = (_talentTrees->rect().w - TOTAL_GAP_WIDTH) / classInfo.trees().size(),
+        TREE_WIDTH = (classInfo.trees().size() > 0 ?
+            (_talentTrees->rect().w - TOTAL_GAP_WIDTH) / classInfo.trees().size() :
+            0),
         TREE_HEIGHT = _talentTrees->rect().h;
     auto x = GAP/2;
     auto treeElems = std::map<std::string, Element *>{};
