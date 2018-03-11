@@ -1333,7 +1333,7 @@ void Server::handle_CL_LOGIN_EXISTING(const Socket &client, const std::string & 
         sendMessage(client, WARNING_USER_DOESNT_EXIST);
         return;
 #else
-        addUser(client, name, "Soldier");
+        addUser(client, name, _classes.begin()->first);
         return;
 #endif
     }
