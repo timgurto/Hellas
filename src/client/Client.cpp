@@ -236,6 +236,8 @@ Client::~Client() {
     for (Element *element : _ui)
         delete element;
     Mix_Quit();
+
+    _instance = nullptr;
 }
 
 void Client::checkSocket(){

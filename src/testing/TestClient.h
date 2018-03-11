@@ -20,6 +20,7 @@ public:
 
     bool connected() const { return _client->_connectionStatus == Client::CONNECTED; }
     void freeze();
+    static void stopClientIfRunning();
 
     std::map<size_t, ClientObject*> &objects() { return _client->_objects; }
     Client::objectTypes_t &objectTypes() { return _client->_objectTypes; }

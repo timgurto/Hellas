@@ -36,14 +36,17 @@ _client(new Client){
 }
 
 TestClient TestClient::WithUsername(const std::string &username){
+    stopClientIfRunning();
     return TestClient(username, USERNAME);
 }
 
 TestClient TestClient::WithData(const std::string &dataPath){
+    stopClientIfRunning();
     return TestClient(dataPath, DATA_PATH);
 }
 
 TestClient TestClient::WithUsernameAndData(const std::string &username, const std::string &dataPath){
+    stopClientIfRunning();
     return TestClient(username, dataPath);
 }
 
@@ -84,6 +87,15 @@ void TestClient::stop(){
 
 void TestClient::freeze(){
     _client->_freeze = true;
+}
+
+void TestClient::stopClientIfRunning() {
+    auto client = Client::_instance;
+    if (client && client->_running) {
+        client->_loop = false;
+        client->_freeze = false;
+        WAIT_UNTIL(!client->_running);
+    }
 }
 
 void TestClient::waitForRedraw(){
