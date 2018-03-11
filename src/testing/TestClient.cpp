@@ -71,7 +71,7 @@ TestClient &TestClient::operator=(TestClient &rhs){
 void TestClient::run(){
     Client &client = *_client;
     std::thread([& client](){ client.run(); }).detach();
-    WAIT_UNTIL(_client->_connectionStatus == Client::IN_LOGIN_SCREEN);
+    WAIT_UNTIL(_client->_connectionStatus == Client::CONNECTED);
     _client->login(nullptr);
     WAIT_UNTIL(_client->_connectionStatus != Client::TRYING_TO_CONNECT);
 }

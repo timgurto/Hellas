@@ -19,7 +19,7 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
         c.sendMessage(CL_CONSTRUCT, makeArgs("redhead", 10, 15));
 
         // Then Bob receives an error message,
-        c.waitForMessage(SV_PLAYER_UNIQUE_OBJECT);
+        c.waitForMessage(WARNING_UNIQUE_OBJECT);
 
         // And there is still only one in the world
         CHECK(s.entities().size() == 1);

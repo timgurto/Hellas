@@ -239,7 +239,7 @@ TEST_CASE("A player is alerted when he sues for peace", "[war][peace]") {
     c.sendMessage(CL_SUE_FOR_PEACE_WITH_PLAYER, "bob");
 
     // Then Alice is alerted
-    CHECK(c.waitForMessage(SV_YOU_PROPOSED_PEACE));
+    CHECK(c.waitForMessage(SV_YOU_PROPOSED_PEACE_TO_PLAYER));
 }
 
 TEST_CASE("The enemy is alerted when peace is proposed", "[war][peace][remote]") {
@@ -258,7 +258,7 @@ TEST_CASE("The enemy is alerted when peace is proposed", "[war][peace][remote]")
     s->handleMessage(bob.socket(), s->compileMessage(CL_SUE_FOR_PEACE_WITH_PLAYER, "alice"));
 
     // Then Alice is alerted
-    CHECK(c.waitForMessage(SV_PEACE_WAS_PROPOSED_TO_YOU));
+    CHECK(c.waitForMessage(SV_PEACE_WAS_PROPOSED_TO_YOU_BY_PLAYER));
 }
 
 TEST_CASE("Users are alerted to peace proposals on login", "[war][peace]") {
@@ -280,7 +280,7 @@ TEST_CASE("Users are alerted to peace proposals on login", "[war][peace]") {
         WAIT_UNTIL(s.users().size() == 1);
 
         // Then Alice is alerted
-        CHECK(c.waitForMessage(SV_YOU_PROPOSED_PEACE));
+        CHECK(c.waitForMessage(SV_YOU_PROPOSED_PEACE_TO_PLAYER));
     }
 
     SECTION("Bob logs in") {
@@ -288,6 +288,6 @@ TEST_CASE("Users are alerted to peace proposals on login", "[war][peace]") {
         WAIT_UNTIL(s.users().size() == 1);
 
         // Then Bob is alerted
-        CHECK(c.waitForMessage(SV_PEACE_WAS_PROPOSED_TO_YOU));
+        CHECK(c.waitForMessage(SV_PEACE_WAS_PROPOSED_TO_YOU_BY_PLAYER));
     }
 }
