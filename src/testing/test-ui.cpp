@@ -175,9 +175,9 @@ TEST_CASE("Gear-slot names are initialized once", "[.slow][tooltip][gear][invent
 
 TEST_CASE("A player's objects are the appropriate color", "[color][ownership]"){
     TestServer s = TestServer::WithData("basic_rock");
-    TestClient c = TestClient::WithUsernameAndData("alice", "basic_rock");
+    TestClient c = TestClient::WithUsernameAndData("Alice", "basic_rock");
 
-    s.addObject("rock", { 10, 15 }, "alice");
+    s.addObject("rock", { 10, 15 }, "Alice");
     
     WAIT_UNTIL(c.objects().size() == 1);
     const auto &rock = c.getFirstObject();

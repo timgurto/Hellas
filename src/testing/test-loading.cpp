@@ -33,9 +33,9 @@ TEST_CASE("Get spawn range from map file", "[remote]"){
     TestServer s = TestServer::WithData("spawn_point_37ish");
 
     RemoteClient
-        c1("-username a"),
-        c2("-username b"),
-        c3("-username c");
+        c1("-username Aaa"),
+        c2("-username Bbb"),
+        c3("-username Ccc");
     WAIT_UNTIL(s.users().size() == 3);
 
     for (const User &user : s.users()){

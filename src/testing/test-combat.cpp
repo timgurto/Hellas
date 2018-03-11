@@ -29,28 +29,28 @@ TEST_CASE("Players can attack immediately"){
 
 TEST_CASE("Belligerents can target each other", "[remote]"){
     TestServer s;
-    TestClient alice = TestClient::WithUsername("alice");
-    RemoteClient bob("-username bob");
+    TestClient alice = TestClient::WithUsername("Alice");
+    RemoteClient bob("-username Bob");
     WAIT_UNTIL(s.users().size() == 2);
     User
-        &uAlice = s.findUser("alice"),
-        &uBob = s.findUser("bob");
+        &uAlice = s.findUser("Alice"),
+        &uBob = s.findUser("Bob");
 
-    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "bob");
-    alice.sendMessage(CL_TARGET_PLAYER, "bob");
+    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Bob");
+    alice.sendMessage(CL_TARGET_PLAYER, "Bob");
     WAIT_UNTIL(uAlice.target() == &uBob);
 }
 
 TEST_CASE("Peaceful players can't target each other", "[remote]"){
     TestServer s;
-    TestClient alice = TestClient::WithUsername("alice");
-    RemoteClient bob("-username bob");
+    TestClient alice = TestClient::WithUsername("Alice");
+    RemoteClient bob("-username Bob");
     WAIT_UNTIL(s.users().size() == 2);
     User
-        &uAlice = s.findUser("alice"),
-        &uBob = s.findUser("bob");
+        &uAlice = s.findUser("Alice"),
+        &uBob = s.findUser("Bob");
 
-    alice.sendMessage(CL_TARGET_PLAYER, "bob");
+    alice.sendMessage(CL_TARGET_PLAYER, "Bob");
     REPEAT_FOR_MS(500);
     CHECK_FALSE(uAlice.target() == &uBob);
 }
@@ -58,17 +58,17 @@ TEST_CASE("Peaceful players can't target each other", "[remote]"){
 TEST_CASE("Belliegerents can fight", "[remote]"){
     // Given a server, Alice, and Bob
     TestServer s;
-    TestClient alice = TestClient::WithUsername("alice");
-    RemoteClient rcBob("-username bob");
+    TestClient alice = TestClient::WithUsername("Alice");
+    RemoteClient rcBob("-username Bob");
     WAIT_UNTIL(s.users().size() == 2);
 
     // And Alice is at war with Bob
-    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "bob");
+    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Bob");
 
     // When Alice moves within range of Bob
     User
-        &uAlice = s.findUser("alice"),
-        &uBob = s.findUser("bob");
+        &uAlice = s.findUser("Alice"),
+        &uBob = s.findUser("Bob");
     while (distance(uAlice.location(), uBob.location()) > Server::ACTION_DISTANCE)
         uAlice.updateLocation(uBob.location());
 
@@ -78,7 +78,7 @@ TEST_CASE("Belliegerents can fight", "[remote]"){
     WAIT_UNTIL(alice->isAtWarWith(bob));
 
     // And Alice targets Bob
-    alice.sendMessage(CL_TARGET_PLAYER, "bob");
+    alice.sendMessage(CL_TARGET_PLAYER, "Bob");
 
     // Then Bob loses health
     WAIT_UNTIL(uBob.health() < uBob.stats().maxHealth);
@@ -86,17 +86,17 @@ TEST_CASE("Belliegerents can fight", "[remote]"){
 
 TEST_CASE("Peaceful players can't fight", "[remote]"){
     TestServer s;
-    TestClient alice = TestClient::WithUsername("alice");
-    RemoteClient bob("-username bob");
+    TestClient alice = TestClient::WithUsername("Alice");
+    RemoteClient bob("-username Bob");
     WAIT_UNTIL(s.users().size() == 2);
 
     User
-        &uAlice = s.findUser("alice"),
-        &uBob = s.findUser("bob");
+        &uAlice = s.findUser("Alice"),
+        &uBob = s.findUser("Bob");
     while (distance(uAlice.location(), uBob.location()) > Server::ACTION_DISTANCE)
         uAlice.updateLocation(uBob.location());
 
-    alice.sendMessage(CL_TARGET_PLAYER, "bob");
+    alice.sendMessage(CL_TARGET_PLAYER, "Bob");
     REPEAT_FOR_MS(500);
 
     CHECK (uBob.health() == uBob.stats().maxHealth);
@@ -128,13 +128,13 @@ TEST_CASE("Belligerents can attack each other's objects"){
     TestClient c = TestClient::WithData("vase");
 
     // And a vase owned by Alice;
-    s.addObject("vase", { 10, 15 }, "alice");
+    s.addObject("vase", { 10, 15 }, "Alice");
     Object &vase = s.getFirstObject();
     REQUIRE(vase.health() == 1);
 
     // And that the user is at war with Alice
     const std::string &username = c.name();
-    s.wars().declare(username, "alice");
+    s.wars().declare(username, "Alice");
 
     // When he targets the vase
     WAIT_UNTIL(s.users().size() == 1);
@@ -168,24 +168,24 @@ TEST_CASE("Players can target distant entities"){
 TEST_CASE("Clients receive nearby users' health values", "[remote]"){
     // Given a server and two clients, Alice and Bob;
     TestServer s;
-    TestClient clientAlice = TestClient::WithUsername("alice");
-    RemoteClient clientBob = RemoteClient("-username bob");
+    TestClient clientAlice = TestClient::WithUsername("Alice");
+    RemoteClient clientBob = RemoteClient("-username Bob");
 
     // And Alice and Bob are at war
-    s.wars().declare("alice", "bob");
+    s.wars().declare("Alice", "Bob");
 
     // When Alice is close to Bob;
     WAIT_UNTIL(s.users().size() == 2);
     const User
-        &alice = s.findUser("alice"),
-        &bob = s.findUser("bob");
+        &alice = s.findUser("Alice"),
+        &bob = s.findUser("Bob");
     while (distance(alice.collisionRect(), bob.collisionRect()) >= Server::ACTION_DISTANCE){
         clientAlice.sendMessage(CL_LOCATION, makeArgs(bob.location().x, bob.location().y));
         SDL_Delay(5);
     }
 
     // And she attacks him
-    clientAlice.sendMessage(CL_TARGET_PLAYER, "bob");
+    clientAlice.sendMessage(CL_TARGET_PLAYER, "Bob");
 
     // Then Alice sees that Bob is damaged
     WAIT_UNTIL(clientAlice.otherUsers().size() == 1);

@@ -8,11 +8,11 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
     auto s = TestServer::WithData("wives");
 
     // And Bob has a blonde wife
-    s.addObject("blonde", {}, "bob");
+    s.addObject("blonde", {}, "Bob");
 
     SECTION("Bob can't have a second wife") {
         // When Bob logs in,
-        auto c = TestClient::WithUsernameAndData("bob", "wives");
+        auto c = TestClient::WithUsernameAndData("Bob", "wives");
         WAIT_UNTIL(s.users().size() == 1);
 
         // And tries to get a readhead wife
@@ -27,7 +27,7 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
 
     SECTION("Charlie can have a wife too") {
         // When Charlie logs in,
-        auto c = TestClient::WithUsernameAndData("charlie", "wives");
+        auto c = TestClient::WithUsernameAndData("Vharlie", "wives");
         WAIT_UNTIL(s.users().size() == 1);
         auto &user = s.getFirstUser();
 
@@ -41,15 +41,15 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
 
     SECTION("Bob can't give his wife to the city", "[city]") {
         // And there is a city of Athens
-        s.cities().createCity("athens");
+        s.cities().createCity("Athens");
 
         // When Bob logs in,
-        auto c = TestClient::WithUsernameAndData("bob", "wives");
+        auto c = TestClient::WithUsernameAndData("Bob", "wives");
         WAIT_UNTIL(s.users().size() == 1);
 
         // And joins Athens,
         auto &bob = s.getFirstUser();
-        s.cities().addPlayerToCity(bob, "athens");
+        s.cities().addPlayerToCity(bob, "Athens");
 
         // And tries to give his wife to Athens
         auto &wife = s.getFirstObject();
@@ -59,7 +59,7 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
         c.waitForMessage(ERROR_CANNOT_CEDE);
 
         // And the wife still belongs to him
-        CHECK(wife.permissions().isOwnedByPlayer("bob"));
+        CHECK(wife.permissions().isOwnedByPlayer("Bob"));
     }
 
     SECTION("If Bob's wife dies he can get a new one") {
@@ -68,7 +68,7 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
         firstWife.reduceHealth(firstWife.health());
 
         // When Bob logs in,
-        auto c = TestClient::WithUsernameAndData("bob", "wives");
+        auto c = TestClient::WithUsernameAndData("Bob", "wives");
         WAIT_UNTIL(s.users().size() == 1);
 
         // And tries to get a readhead wife

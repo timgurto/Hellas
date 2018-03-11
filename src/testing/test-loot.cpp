@@ -189,7 +189,7 @@ TEST_CASE("Looting from a container", "[loot][container][only]"){
 
     SECTION("An owned container can be looted from"){
         // And the chest has an owner
-        chest.permissions().setPlayerOwner("alice");
+        chest.permissions().setPlayerOwner("Alice");
 
         // And the chest contains gold;
         chest.container().addItems(&gold, 100);

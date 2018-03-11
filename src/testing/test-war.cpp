@@ -6,14 +6,14 @@
 TEST_CASE("Basic declaration of war", "[war]"){
     // Given Alice is logged in
     TestServer s;
-    TestClient alice = TestClient::WithUsername("alice");
+    TestClient alice = TestClient::WithUsername("Alice");
     WAIT_UNTIL(s.users().size() == 1);
 
     // When Alice sends a CL_DECLARE_WAR_ON_PLAYER message
-    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "bob");
+    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Bob");
 
     // Then Alice and Bob go to war
-    WAIT_UNTIL(s.wars().isAtWar("alice", "bob"));
+    WAIT_UNTIL(s.wars().isAtWar("Alice", "Bob"));
 }
 
 TEST_CASE("No erroneous wars", "[war]"){
@@ -21,35 +21,35 @@ TEST_CASE("No erroneous wars", "[war]"){
     TestServer s;
     
     // Then Alice and Bob are not at war
-    CHECK_FALSE(s.wars().isAtWar("alice", "bob"));
+    CHECK_FALSE(s.wars().isAtWar("Alice", "Bob"));
 }
 
 TEST_CASE("Wars are persistent", "[war][persistence]"){
     // Given Alice and Bob are at war, and there is no server running
     {
         TestServer server1;
-        server1.wars().declare("alice", "bob");
+        server1.wars().declare("Alice", "Bob");
     }
 
     // When a server begins that keeps persistent data
     TestServer server2 = TestServer::KeepingOldData();
 
     // Then Alice and Bob are still at war
-    CHECK(server2.wars().isAtWar("alice", "bob"));
+    CHECK(server2.wars().isAtWar("Alice", "Bob"));
 }
 
 TEST_CASE("Clients are alerted of new wars", "[war][remote]"){
     // Given Alice is logged in
     TestServer s;
-    TestClient alice = TestClient::WithUsername("alice");
+    TestClient alice = TestClient::WithUsername("Alice");
     WAIT_UNTIL(s.users().size() == 1);
 
     // And Bob is logged in
-    RemoteClient rcBob("-username bob");
+    RemoteClient rcBob("-username Bob");
     WAIT_UNTIL(s.users().size() == 2);
 
     // When Alice declares war on Bob
-    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "bob");
+    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Bob");
 
     // Then Alice is alerted to the new war
     WAIT_UNTIL(alice.otherUsers().size() == 1);
@@ -60,11 +60,11 @@ TEST_CASE("Clients are alerted of new wars", "[war][remote]"){
 TEST_CASE("Clients are told of existing wars on login", "[war][remote]"){
     // Given Alice and Bob are at war
     TestServer s;
-    s.wars().declare("alice", "bob");
+    s.wars().declare("Alice", "Bob");
 
     // When Alice and Bob log in
-    TestClient alice = TestClient::WithUsername("alice");
-    RemoteClient rcBob("-username bob");
+    TestClient alice = TestClient::WithUsername("Alice");
+    RemoteClient rcBob("-username Bob");
     WAIT_UNTIL(s.users().size() == 1);
 
     // Then she is told about the war
@@ -76,12 +76,12 @@ TEST_CASE("Clients are told of existing wars on login", "[war][remote]"){
 TEST_CASE("Wars cannot be redeclared", "[war]"){
     // Given Alice and Bob are at war, and Alice is logged in
     TestServer s;
-    TestClient alice = TestClient::WithUsername("alice");
-    s.wars().declare("alice", "bob");
+    TestClient alice = TestClient::WithUsername("Alice");
+    s.wars().declare("Alice", "Bob");
     WAIT_UNTIL(s.users().size() == 1);
 
     // When Alice declares war on Bob
-    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "bob");
+    alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Bob");
 
     // Then she receives an ERROR_ALREADY_AT_WAR error message
     CHECK(alice.waitForMessage(ERROR_ALREADY_AT_WAR));
@@ -92,17 +92,17 @@ TEST_CASE("A player can be at war with a city", "[war][city]"){
     TestServer s;
 
     // And a city named Athens;
-    s.cities().createCity("athens");
+    s.cities().createCity("Athens");
 
     // And a user named Alice
-    TestClient c = TestClient::WithUsername("alice");
+    TestClient c = TestClient::WithUsername("Alice");
     WAIT_UNTIL(s.users().size() == 1);
 
     // When a war is declared between Alice and Athens
-    s.wars().declare("alice", "athens");
+    s.wars().declare("Alice", "Athens");
 
     // Then they are considered to be at war.
-    CHECK(s.wars().isAtWar("alice", "athens"));
+    CHECK(s.wars().isAtWar("Alice", "Athens"));
 }
 
 TEST_CASE("A player at war with a city is at war with its members", "[war][city][remote]"){
@@ -110,25 +110,25 @@ TEST_CASE("A player at war with a city is at war with its members", "[war][city]
     TestServer s;
 
     // And a city named Athens;
-    s.cities().createCity("athens");
+    s.cities().createCity("Athens");
 
     // And a user, Alice, who is a member of Athens;
-    RemoteClient alice("-username alice");
+    RemoteClient alice("-username Alice");
     WAIT_UNTIL(s.users().size() == 1);
-    s.cities().addPlayerToCity(s.getFirstUser(), "athens");
+    s.cities().addPlayerToCity(s.getFirstUser(), "Athens");
 
     // When new user Bob and Athens go to war
     Belligerent
-        b1("bob", Belligerent::PLAYER),
-        b2("athens", Belligerent::CITY);
+        b1("Bob", Belligerent::PLAYER),
+        b2("Athens", Belligerent::CITY);
 
     SECTION("Bob logs in, then war is declared"){
-        TestClient bob = TestClient::WithUsername("bob");
+        TestClient bob = TestClient::WithUsername("Bob");
         WAIT_UNTIL(s.users().size() == 2);
         s.wars().declare(b1, b2);
         
         // Then Bob is at war with Alice;
-        CHECK(s.wars().isAtWar("alice", "bob"));
+        CHECK(s.wars().isAtWar("Alice", "Bob"));
 
         // And Bob knows that he's at war with Alice
         WAIT_UNTIL(bob.otherUsers().size() == 1);
@@ -139,10 +139,10 @@ TEST_CASE("A player at war with a city is at war with its members", "[war][city]
     SECTION("War is declared, then Bob logs in"){
         s.wars().declare(b1, b2);
         WAIT_UNTIL(s.wars().isAtWar(b1, b2));
-        TestClient bob = TestClient::WithUsername("bob");
+        TestClient bob = TestClient::WithUsername("Bob");
         
         // Then Bob is at war with Alice;
-        CHECK(s.wars().isAtWar("alice", "bob"));
+        CHECK(s.wars().isAtWar("Alice", "Bob"));
 
         // And Bob knows that he's at war with Alice
         WAIT_UNTIL(bob.otherUsers().size() == 1);
@@ -156,30 +156,30 @@ TEST_CASE("Players can declare war on cities", "[war][city]"){
     TestServer s;
 
     // And a city named Athens;
-    s.cities().createCity("athens");
+    s.cities().createCity("Athens");
 
     // And a user, Alice;
-    TestClient alice = TestClient::WithUsername("alice");
+    TestClient alice = TestClient::WithUsername("Alice");
 
     // When Alice declares war on Athens
-    alice.sendMessage(CL_DECLARE_WAR_ON_CITY, "athens");
+    alice.sendMessage(CL_DECLARE_WAR_ON_CITY, "Athens");
 
     // Then they are at war
     Belligerent
-        b1("alice", Belligerent::PLAYER),
-        b2("athens", Belligerent::CITY);
+        b1("Alice", Belligerent::PLAYER),
+        b2("Athens", Belligerent::CITY);
     WAIT_UNTIL(s.wars().isAtWar(b1, b2));
 }
 
 TEST_CASE("Wars involving cities are persistent", "[persistence][city][war]"){
     Belligerent
-        b1("alice", Belligerent::PLAYER),
-        b2("athens", Belligerent::CITY);
+        b1("Alice", Belligerent::PLAYER),
+        b2("Athens", Belligerent::CITY);
 
     {
         // Given a city named Athens;
         TestServer server1;
-        server1.cities().createCity("athens");
+        server1.cities().createCity("Athens");
 
         // And Alice and Athens are at war;
         server1.wars().declare(b1, b2);
@@ -199,26 +199,26 @@ TEST_CASE("The objects of an offline enemy in an enemy city can be attacked", "[
     TestServer s = TestServer::WithData("chair");
 
     // And a city named Athens;
-    s.cities().createCity("athens");
+    s.cities().createCity("Athens");
 
     // And Bob is a member of Athens;
     {
-        RemoteClient bob("-username bob -data testing/data/chair");
+        RemoteClient bob("-username Bob -data testing/data/chair");
         WAIT_UNTIL(s.users().size() == 1);
-        s.cities().addPlayerToCity(s.getFirstUser(), "athens");
+        s.cities().addPlayerToCity(s.getFirstUser(), "Athens");
 
     // And Bob is offline
     }
     WAIT_UNTIL(s.users().size() == 0);
 
     // And a rock owned by Bob;
-    s.addObject("chair", { 15,15 }, "bob");
+    s.addObject("chair", { 15,15 }, "Bob");
 
     // And a player, Alice;
-    TestClient alice = TestClient::WithUsernameAndData("alice", "chair");
+    TestClient alice = TestClient::WithUsernameAndData("Alice", "chair");
 
     // And Alice is at war with Athens
-    s.wars().declare("alice", Belligerent("athens", Belligerent::CITY));
+    s.wars().declare("Alice", Belligerent("Athens", Belligerent::CITY));
 
     // When Alice becomes aware of the rock
     WAIT_UNTIL(alice.objects().size() == 1);
@@ -231,12 +231,12 @@ TEST_CASE("The objects of an offline enemy in an enemy city can be attacked", "[
 TEST_CASE("A player is alerted when he sues for peace", "[war][peace]") {
     // Given Alice and Bob are at war
     auto s = TestServer{};
-    s.wars().declare({ "alice", Belligerent::PLAYER }, { "bob", Belligerent::PLAYER });
+    s.wars().declare({ "Alice", Belligerent::PLAYER }, { "Bob", Belligerent::PLAYER });
 
     // When Alice sues for peace
-    auto c = TestClient::WithUsername("alice");
+    auto c = TestClient::WithUsername("Alice");
     WAIT_UNTIL(s.users().size() == 1);
-    c.sendMessage(CL_SUE_FOR_PEACE_WITH_PLAYER, "bob");
+    c.sendMessage(CL_SUE_FOR_PEACE_WITH_PLAYER, "Bob");
 
     // Then Alice is alerted
     CHECK(c.waitForMessage(SV_YOU_PROPOSED_PEACE_TO_PLAYER));
@@ -245,17 +245,17 @@ TEST_CASE("A player is alerted when he sues for peace", "[war][peace]") {
 TEST_CASE("The enemy is alerted when peace is proposed", "[war][peace][remote]") {
     // Given Alice and Bob are at war
     auto s = TestServer{};
-    s.wars().declare({ "alice", Belligerent::PLAYER }, { "bob", Belligerent::PLAYER });
+    s.wars().declare({ "Alice", Belligerent::PLAYER }, { "Bob", Belligerent::PLAYER });
 
     // And Alice is logged in
-    auto c = TestClient::WithUsername("alice");
+    auto c = TestClient::WithUsername("Alice");
     WAIT_UNTIL(s.users().size() == 1);
 
     // When Bob logs in and sues for peace
-    auto rc = RemoteClient{ "-username bob" };
+    auto rc = RemoteClient{ "-username Bob" };
     WAIT_UNTIL(s.users().size() == 2);
-    auto &bob = s.findUser("bob");
-    s->handleMessage(bob.socket(), s->compileMessage(CL_SUE_FOR_PEACE_WITH_PLAYER, "alice"));
+    auto &bob = s.findUser("Bob");
+    s->handleMessage(bob.socket(), s->compileMessage(CL_SUE_FOR_PEACE_WITH_PLAYER, "Alice"));
 
     // Then Alice is alerted
     CHECK(c.waitForMessage(SV_PEACE_WAS_PROPOSED_TO_YOU_BY_PLAYER));
@@ -264,19 +264,19 @@ TEST_CASE("The enemy is alerted when peace is proposed", "[war][peace][remote]")
 TEST_CASE("Users are alerted to peace proposals on login", "[war][peace]") {
     // Given Alice and Bob are at war
     auto s = TestServer{};
-    s.wars().declare({ "alice", Belligerent::PLAYER }, { "bob", Belligerent::PLAYER });
+    s.wars().declare({ "Alice", Belligerent::PLAYER }, { "Bob", Belligerent::PLAYER });
 
     {
         // When Alice sues for peace
-        auto c = TestClient::WithUsername("alice");
+        auto c = TestClient::WithUsername("Alice");
         WAIT_UNTIL(s.users().size() == 1);
-        c.sendMessage(CL_SUE_FOR_PEACE_WITH_PLAYER, "bob");
+        c.sendMessage(CL_SUE_FOR_PEACE_WITH_PLAYER, "Bob");
 
         // And disconnects
     }
 
     SECTION("Alice logs in") {
-        auto c = TestClient::WithUsername("alice");
+        auto c = TestClient::WithUsername("Alice");
         WAIT_UNTIL(s.users().size() == 1);
 
         // Then Alice is alerted
@@ -284,7 +284,7 @@ TEST_CASE("Users are alerted to peace proposals on login", "[war][peace]") {
     }
 
     SECTION("Bob logs in") {
-        auto c = TestClient::WithUsername("bob");
+        auto c = TestClient::WithUsername("Bob");
         WAIT_UNTIL(s.users().size() == 1);
 
         // Then Bob is alerted

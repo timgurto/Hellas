@@ -5,8 +5,8 @@
 
 TEST_CASE("City creation", "[city]"){
     TestServer s;
-    s.cities().createCity("athens");
-    CHECK(s.cities().doesCityExist("athens"));
+    s.cities().createCity("Athens");
+    CHECK(s.cities().doesCityExist("Athens"));
 }
 
 TEST_CASE("No erroneous cities", "[city]"){
@@ -16,37 +16,37 @@ TEST_CASE("No erroneous cities", "[city]"){
 
 TEST_CASE("Add a player to a city", "[city]"){
     TestServer s;
-    TestClient c = TestClient::WithUsername("alice");
+    TestClient c = TestClient::WithUsername("Alice");
     WAIT_UNTIL(s.users().size() == 1);
     User &alice = s.getFirstUser();
 
-    s.cities().createCity("athens");
-    s.cities().addPlayerToCity(alice, "athens");
+    s.cities().createCity("Athens");
+    s.cities().addPlayerToCity(alice, "Athens");
 
-    CHECK(s.cities().isPlayerInCity("alice", "athens"));
+    CHECK(s.cities().isPlayerInCity("Alice", "Athens"));
 }
 
 TEST_CASE("No erroneous city membership", "[city]"){
     TestServer s;
-    TestClient c = TestClient::WithUsername("alice");
+    TestClient c = TestClient::WithUsername("Alice");
     WAIT_UNTIL(s.users().size() == 1);
 
-    s.cities().createCity("athens");
+    s.cities().createCity("Athens");
 
-    CHECK_FALSE(s.cities().isPlayerInCity("alice", "athens"));
+    CHECK_FALSE(s.cities().isPlayerInCity("Alice", "Athens"));
 }
 
 TEST_CASE("Cities can't be overwritten", "[city]"){
     TestServer s;
-    TestClient c = TestClient::WithUsername("alice");
+    TestClient c = TestClient::WithUsername("Alice");
     WAIT_UNTIL(s.users().size() == 1);
     User &alice = s.getFirstUser();
 
-    s.cities().createCity("athens");
-    s.cities().addPlayerToCity(alice, "athens");
+    s.cities().createCity("Athens");
+    s.cities().addPlayerToCity(alice, "Athens");
 
-    s.cities().createCity("athens");
-    CHECK(s.cities().isPlayerInCity("alice", "athens"));
+    s.cities().createCity("Athens");
+    CHECK(s.cities().isPlayerInCity("Alice", "Athens"));
 }
 
 TEST_CASE("Default client knows no city membership", "[city]"){
@@ -57,56 +57,56 @@ TEST_CASE("Default client knows no city membership", "[city]"){
 
 TEST_CASE("Client is alerted to city membership", "[city]"){
     TestServer s;
-    TestClient c = TestClient::WithUsername("alice");
+    TestClient c = TestClient::WithUsername("Alice");
     WAIT_UNTIL(s.users().size() == 1);
     User &alice = s.getFirstUser();
 
-    s.cities().createCity("athens");
-    s.cities().addPlayerToCity(alice, "athens");
+    s.cities().createCity("Athens");
+    s.cities().addPlayerToCity(alice, "Athens");
 
     bool messageReceived = c.waitForMessage(SV_JOINED_CITY);
     REQUIRE(messageReceived);
-    WAIT_UNTIL(c->character().cityName() == "athens");
+    WAIT_UNTIL(c->character().cityName() == "Athens");
 }
 
 TEST_CASE("Cities are persistent", "[city][persistence]"){
     {
         TestServer server1;
-        TestClient client = TestClient::WithUsername("alice");
+        TestClient client = TestClient::WithUsername("Alice");
         WAIT_UNTIL(server1.users().size() == 1);
         User &alice = server1.getFirstUser();
 
-        server1.cities().createCity("athens");
-        server1.cities().addPlayerToCity(alice, "athens");
+        server1.cities().createCity("Athens");
+        server1.cities().addPlayerToCity(alice, "Athens");
     }
     TestServer server2 = TestServer::KeepingOldData();
 
-    CHECK(server2.cities().doesCityExist("athens"));
-    CHECK(server2.cities().isPlayerInCity("alice", "athens"));
+    CHECK(server2.cities().doesCityExist("Athens"));
+    CHECK(server2.cities().isPlayerInCity("Alice", "Athens"));
 }
 
 TEST_CASE("Clients are told if in a city on login", "[city]"){
     TestServer server;
-    server.cities().createCity("athens");
+    server.cities().createCity("Athens");
     {
-        TestClient client1 = TestClient::WithUsername("alice");
+        TestClient client1 = TestClient::WithUsername("Alice");
         WAIT_UNTIL(server.users().size() == 1);
         User &alice = server.getFirstUser();
-        server.cities().addPlayerToCity(alice, "athens");
+        server.cities().addPlayerToCity(alice, "Athens");
     }
 
-    TestClient client2 = TestClient::WithUsername("alice");
-    WAIT_UNTIL(client2->character().cityName() == "athens");
+    TestClient client2 = TestClient::WithUsername("Alice");
+    WAIT_UNTIL(client2->character().cityName() == "Athens");
 }
 
 TEST_CASE("Clients know nearby players' cities", "[.flaky][remote][city]"){
     // Given Alice is a member of Athens, and connected to the server
     TestServer s;
-    s.cities().createCity("athens");
-    RemoteClient rc("-username alice");
+    s.cities().createCity("Athens");
+    RemoteClient rc("-username Alice");
     WAIT_UNTIL(s.users().size() == 1);
     User &serverAlice = s.getFirstUser();
-    s.cities().addPlayerToCity(serverAlice, "athens");
+    s.cities().addPlayerToCity(serverAlice, "Athens");
 
     // When another client connects
     TestClient c;
@@ -114,17 +114,17 @@ TEST_CASE("Clients know nearby players' cities", "[.flaky][remote][city]"){
 
     // Then that client can see that Alice is in Athens
     const Avatar &clientAlice = c.getFirstOtherUser();
-    WAIT_UNTIL(clientAlice.cityName() == "athens");
+    WAIT_UNTIL(clientAlice.cityName() == "Athens");
 }
 
 TEST_CASE("A player can cede an object to his city", "[.slow][city]"){
     // Given a user in Athens;
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");
-    s.cities().createCity("athens");
+    s.cities().createCity("Athens");
     WAIT_UNTIL(s.users().size() == 1);
     User &user = s.getFirstUser();
-    s.cities().addPlayerToCity(user, "athens");
+    s.cities().addPlayerToCity(user, "Athens");
 
     // And an object owned by him
     s.addObject("rock", { 10, 10 }, user.name());
@@ -135,7 +135,7 @@ TEST_CASE("A player can cede an object to his city", "[.slow][city]"){
     c.sendMessage(CL_CEDE, makeArgs(rock.serial()));
 
     // Then the object belongs to Athens;
-    WAIT_UNTIL(rock.permissions().isOwnedByCity("athens"));
+    WAIT_UNTIL(rock.permissions().isOwnedByCity("Athens"));
 
     // And the object doesn't belong to him.
     CHECK_FALSE(rock.permissions().isOwnedByPlayer(user.name()));
@@ -165,10 +165,10 @@ TEST_CASE("A player can only cede his own objects", "[.slow][city]") {
     // Given a user in Athens;
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");
-    s.cities().createCity("athens");
+    s.cities().createCity("Athens");
     WAIT_UNTIL(s.users().size() == 1);
     User &user = s.getFirstUser();
-    s.cities().addPlayerToCity(user, "athens");
+    s.cities().addPlayerToCity(user, "Athens");
 
     // And a rock owned by nobody
     s.addObject("rock", { 10, 10 });
@@ -182,23 +182,23 @@ TEST_CASE("A player can only cede his own objects", "[.slow][city]") {
     CHECK(c.waitForMessage(WARNING_NO_PERMISSION, 10000));
 
     // And the object does not belong to Athens
-    CHECK_FALSE(rock.permissions().isOwnedByCity("athens"));
+    CHECK_FALSE(rock.permissions().isOwnedByCity("Athens"));
 }
 
 TEST_CASE("A player can leave a city", "[city]") {
     // Given a user named Alice;
-    auto c = TestClient::WithUsername("alice");
+    auto c = TestClient::WithUsername("Alice");
     auto s = TestServer{};
     WAIT_UNTIL(s.users().size() == 1);
     auto &user = s.getFirstUser();
 
     // Who is a member of Athens;
-    s.cities().createCity("athens");
-    s.cities().addPlayerToCity(user, "athens");
-    WAIT_UNTIL(s.cities().isPlayerInCity("alice", "athens"));
+    s.cities().createCity("Athens");
+    s.cities().addPlayerToCity(user, "Athens");
+    WAIT_UNTIL(s.cities().isPlayerInCity("Alice", "Athens"));
 
     // And who knows it
-    WAIT_UNTIL(c.cityName() == "athens");
+    WAIT_UNTIL(c.cityName() == "Athens");
 
     SECTION("When Alice sends a leave-city message") {
         c.sendMessage(CL_LEAVE_CITY);
@@ -208,8 +208,8 @@ TEST_CASE("A player can leave a city", "[city]") {
     }
 
     // Then Alice is not in a city;
-    WAIT_UNTIL(!s.cities().isPlayerInCity("alice", "athens"));
-    CHECK(s.cities().getPlayerCity("alice").empty());
+    WAIT_UNTIL(!s.cities().isPlayerInCity("Alice", "Athens"));
+    CHECK(s.cities().getPlayerCity("Alice").empty());
 
     // And the user knows it
     WAIT_UNTIL(c.cityName().empty());
@@ -231,15 +231,15 @@ TEST_CASE("A player can't leave a city if not in one", "[city]") {
 
 TEST_CASE("A king can't leave his city", "[city][king]") {
     // Given a user named Alice;
-    auto c = TestClient::WithUsername("alice");
+    auto c = TestClient::WithUsername("Alice");
     auto s = TestServer{};
     WAIT_UNTIL(s.users().size() == 1);
     auto &user = s.getFirstUser();
 
     // Who is a member of Athens;
-    s.cities().createCity("athens");
-    s.cities().addPlayerToCity(user, "athens");
-    WAIT_UNTIL(s.cities().isPlayerInCity("alice", "athens"));
+    s.cities().createCity("Athens");
+    s.cities().addPlayerToCity(user, "Athens");
+    WAIT_UNTIL(s.cities().isPlayerInCity("Alice", "Athens"));
 
     // And is a king
     s->makePlayerAKing(user);
@@ -252,13 +252,13 @@ TEST_CASE("A king can't leave his city", "[city][king]") {
 
     // And Alice is still in Athens
     REPEAT_FOR_MS(100);
-    CHECK(s.cities().isPlayerInCity("alice", "athens"));
+    CHECK(s.cities().isPlayerInCity("Alice", "Athens"));
 }
 
 TEST_CASE("Kingship is persistent", "[king]") {
     // Given a user named Alice;
     {
-        auto c = TestClient::WithUsername("alice");
+        auto c = TestClient::WithUsername("Alice");
         auto s = TestServer{};
         WAIT_UNTIL(s.users().size() == 1);
         auto &user = s.getFirstUser();
@@ -269,11 +269,11 @@ TEST_CASE("Kingship is persistent", "[king]") {
         // When the server restarts
     }
     {
-        auto c = TestClient::WithUsername("alice");
+        auto c = TestClient::WithUsername("Alice");
         auto s = TestServer::KeepingOldData();
         WAIT_UNTIL(s.users().size() == 1);
 
         // Then Alice is still a king
-        WAIT_UNTIL(s.kings().isPlayerAKing("alice"));
+        WAIT_UNTIL(s.kings().isPlayerAKing("Alice"));
     }
 }

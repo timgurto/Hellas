@@ -105,10 +105,10 @@ TEST_CASE("Construction progress is persistent", "[persistence][construction]") 
     // Given a new brick wall object with no materials added, owned by Alice
     {
         auto s = TestServer::WithData("brick_wall");
-        s.addObject("wall", { 10, 10 }, "alice");
+        s.addObject("wall", { 10, 10 }, "Alice");
 
         // And Alice has a brick
-        auto c = TestClient::WithUsernameAndData("alice", "brick_wall");
+        auto c = TestClient::WithUsernameAndData("Alice", "brick_wall");
         WAIT_UNTIL(s.users().size() == 1);
         auto &alice = s.getFirstUser();
         const auto *brick = &s.getFirstItem();

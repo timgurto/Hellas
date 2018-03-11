@@ -12,7 +12,7 @@ TEST_CASE("Run a client in a separate process", "[remote]"){
     TestServer s;
 
     // When a RemoteClient is created
-    RemoteClient alice("-username alice");
+    RemoteClient alice("-username Alice");
 
     // Then it successfully logs into the server
     WAIT_UNTIL(s.users().size() == 1);
@@ -24,7 +24,7 @@ TEST_CASE("Concurrent local and remote clients", "[remote]"){
 
     // When a TestClient and RemoteClient are both created
     TestClient c;
-    RemoteClient alice("-username alice");
+    RemoteClient alice("-username Alice");
 
     // Then both successfully log into the server
     WAIT_UNTIL(s.users().size() == 2);
@@ -35,11 +35,11 @@ TEST_CASE("Run TestClient with custom username"){
     TestServer s;
 
     // When a TestClient is created with a custom username
-    TestClient alice = TestClient::WithUsername("alice");
+    TestClient alice = TestClient::WithUsername("Alice");
     WAIT_UNTIL(s.users().size() == 1);
 
     // Then the client logs in with that username
-    CHECK(alice->username() == "alice");
+    CHECK(alice->username() == "Alice");
 }
 
 TEST_CASE("Removed users are removed from co-ord indices"){
@@ -84,7 +84,7 @@ TEST_CASE("Map with extra row doesn't crash client", "[.flaky]"){
 TEST_CASE("New servers clear old user data"){
     {
         TestServer s;
-        TestClient c = TestClient::WithUsername("alice");
+        TestClient c = TestClient::WithUsername("Alice");
         WAIT_UNTIL(s.users().size() == 1);
         User &alice = s.getFirstUser();
         CHECK(alice.health() == alice.stats().maxHealth);
@@ -93,7 +93,7 @@ TEST_CASE("New servers clear old user data"){
     }
     {
         TestServer s;
-        TestClient c = TestClient::WithUsername("alice");
+        TestClient c = TestClient::WithUsername("Alice");
         WAIT_UNTIL(s.users().size() == 1);
         User &alice = s.getFirstUser();
         CHECK(alice.health() == alice.stats().maxHealth);
