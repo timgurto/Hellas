@@ -645,7 +645,8 @@ void Client::initializeUsername(){
 
 void Client::setRandomUsername(){
     _username.clear();
-    for (int i = 0; i != 3; ++i)
+    _username.push_back('A' + rand() % 26);
+    for (int i = 0; i != 2; ++i)
         _username.push_back('a' + rand() % 26);
 }
 
