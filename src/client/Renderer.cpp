@@ -57,8 +57,9 @@ void Renderer::init(){
 
 Renderer::~Renderer(){
     if (_renderer){
-        SDL_DestroyRenderer(_renderer);
+        auto temp = _renderer;
         _renderer = nullptr;
+        SDL_DestroyRenderer(temp);
     }
     if (_window != nullptr){
         SDL_DestroyWindow(_window);
@@ -73,61 +74,89 @@ Renderer::~Renderer(){
 }
 
 SDL_Texture *Renderer::createTextureFromSurface(SDL_Surface *surface) const{
+    if (!_renderer)
+        return nullptr;
     return SDL_CreateTextureFromSurface(_renderer, surface);
 }
 
 SDL_Texture *Renderer::createTargetableTexture(px_t width, px_t height) const{
+    if (!_renderer)
+        return nullptr;
     return SDL_CreateTexture(_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
                              width, height);
 }
 
 void Renderer::drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect){
+    if (!_renderer)
+        return;
     SDL_RenderCopy(_renderer, srcTex, 0, &rectToSDL(dstRect));
 }
 
 void Renderer::drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect, const ScreenRect &srcRect){
+    if (!_renderer)
+        return;
     SDL_RenderCopy(_renderer, srcTex, &rectToSDL(srcRect), &rectToSDL(dstRect));
 }
 
 void Renderer::setDrawColor(const Color &color){
+    if (!_renderer)
+        return;
     SDL_SetRenderDrawColor(_renderer, color.r(), color.g(), color.b(), 0xff);
 }
 
 void Renderer::clear(){
+    if (!_renderer)
+        return;
     SDL_RenderClear(_renderer);
 }
 
 void Renderer::present(){
+    if (!_renderer)
+        return;
     SDL_RenderPresent(_renderer);
 }
 
 void Renderer::drawRect(const ScreenRect &dstRect){
+    if (!_renderer)
+        return;
     SDL_RenderDrawRect(_renderer, &rectToSDL(dstRect));
 }
 
 void Renderer::fillRect(const ScreenRect &dstRect){
+    if (!_renderer)
+        return;
     SDL_RenderFillRect(_renderer, &rectToSDL(dstRect));
 }
 
 void Renderer::fill(){
+    if (!_renderer)
+        return;
     SDL_RenderFillRect(_renderer, 0);
 }
 
 void Renderer::setRenderTarget() const{
+    if (!_renderer)
+        return;
     SDL_SetRenderTarget(_renderer, 0);
 }
 
 void Renderer::updateSize(){
+    if (!_renderer)
+        return;
     SDL_GetRendererOutputSize(_renderer, &_w, &_h);
 }
 
 void Renderer::pushRenderTarget(Texture &target) {
+    if (!_renderer)
+        return;
     SDL_Texture *currentTarget = SDL_GetRenderTarget(_renderer);
     _renderTargetsStack.push(currentTarget);
     SDL_SetRenderTarget(_renderer, target.raw());
 }
 
 void Renderer::popRenderTarget() {
+    if (!_renderer)
+        return;
     SDL_SetRenderTarget(_renderer, _renderTargetsStack.top());
     _renderTargetsStack.pop();
 }
@@ -138,6 +167,8 @@ SDL_Rect Renderer::rectToSDL(const ScreenRect &rect){
 }
 
 Color Renderer::getPixel(px_t x, px_t y) const{
+    if (!_renderer)
+        return {};
     px_t logicalW, logicalH;
     SDL_RenderGetLogicalSize(_renderer, &logicalW, &logicalH);
 
