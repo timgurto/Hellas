@@ -614,6 +614,8 @@ void Client::addParticlesWithCustomAltitude(double altitude, const std::string &
 
 void Client::addFloatingCombatText(const std::string & text, const MapPoint & location, Color color) {
     auto floatingTextProfile = findParticleProfile("floatingText");
+    if (!floatingTextProfile)
+        return;
     auto floatingText = floatingTextProfile->instantiate(location);
 
     auto outline = Texture{ _defaultFont, text, color };
