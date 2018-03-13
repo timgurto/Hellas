@@ -129,6 +129,7 @@ void Client::connectToServerStatic() {
 void Client::connectToServer() {
     // Ensure connected to server
     if (_connectionStatus != CONNECTED && _timeSinceConnectAttempt >= CONNECT_RETRY_DELAY) {
+        _connectionStatus = TRYING_TO_CONNECT;
         _timeSinceConnectAttempt = 0;
 
         _serverConnectionIndicator->set(Indicator::IN_PROGRESS);

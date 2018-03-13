@@ -76,13 +76,14 @@ void TestClient::run(){
     std::thread([& client](){ client.run(); }).detach();
     WAIT_UNTIL(_client->_connectionStatus == Client::CONNECTED);
     _client->login(nullptr);
-    WAIT_UNTIL(_client->_connectionStatus != Client::TRYING_TO_CONNECT);
+    WAIT_UNTIL(_client->_connectionStatus == Client::LOGGED_IN);
 }
 
 void TestClient::stop(){
     _client->_loop = false;
     _client->_freeze = false;
     WAIT_UNTIL(!_client->_running);
+    WAIT_UNTIL(_client->_connectionStatus != Client::TRYING_TO_CONNECT);
 }
 
 void TestClient::freeze(){
@@ -95,6 +96,7 @@ void TestClient::stopClientIfRunning() {
         client->_loop = false;
         client->_freeze = false;
         WAIT_UNTIL(!client->_running);
+        WAIT_UNTIL(client->_connectionStatus != Client::TRYING_TO_CONNECT);
     }
 }
 
