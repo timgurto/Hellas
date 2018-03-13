@@ -29,8 +29,10 @@ void Client::loginScreenLoop(){
     const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
     _timeSinceConnectAttempt += _timeElapsed;
 
-    std::thread t(connectToServerStatic);
-    t.detach();
+    auto threadExists = _connectToServerThread.get_id() != std::thread::id{};
+    if (!threadExists) {
+        _connectToServerThread = std::thread{ connectToServerStatic };
+    }
 
     // Send ping
     if (_time - _lastPingSent > PING_FREQUENCY) {

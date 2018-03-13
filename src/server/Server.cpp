@@ -191,6 +191,10 @@ void Server::run(){
         loadData();
     spawnInitialObjects();
 
+    std::thread
+        publishStatsThread,
+        saveDataThread;
+
     _loop = true;
     _running = true;
     _debug("Server is running", Color::GREEN);
@@ -221,21 +225,19 @@ void Server::run(){
             for (const User &user : _users) {
                 writeUserData(user);
             }
-#ifdef SINGLE_THREAD
-            saveData(_entities, _wars, _cities);
-#else
-            std::thread(saveData, _entities, _wars, _cities).detach();
-#endif
+
+            if (!saveDataThread.joinable())
+                saveDataThread = std::thread(saveData, _entities, _wars, _cities);
+
             _lastSave = _time;
         }
 
         // Publish stats
         if (_time - _timeStatsLastPublished >= PUBLISH_STATS_FREQUENCY) {
-#ifdef SINGLE_THREAD
-            publishStats(this);
-#else
-            std::thread(publishStats, this).detach();
-#endif
+
+            if (!publishStatsThread.joinable())
+                publishStatsThread = std::thread(publishStats, this);
+
             _timeStatsLastPublished = _time;
         }
 
@@ -273,6 +275,11 @@ void Server::run(){
         writeUserData(user);
     }
     _running = false;
+
+    if (publishStatsThread.joinable())
+        publishStatsThread.join();
+    if (saveDataThread.joinable())
+        saveDataThread.join();
 }
 
 void Server::addUser(const Socket &socket, const std::string &name, const std::string &classID){

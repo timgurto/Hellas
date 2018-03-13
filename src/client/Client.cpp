@@ -302,6 +302,9 @@ void Client::run(){
             ;
     }
     _running = false;
+
+    if (_connectToServerThread.joinable())
+        _connectToServerThread.join();
 }
 
 void Client::exitGame(void * pClient) {
