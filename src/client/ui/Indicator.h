@@ -21,8 +21,6 @@ public:
     static void cleanup();
 
 private:
-    Status _status;
-
     using Images = std::unordered_map<Status, Texture>;
     static Images images;
 };

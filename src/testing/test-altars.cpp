@@ -27,7 +27,7 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
 
     SECTION("Charlie can have a wife too") {
         // When Charlie logs in,
-        auto c = TestClient::WithUsernameAndData("Vharlie", "wives");
+        auto c = TestClient::WithUsernameAndData("Charlie", "wives");
         WAIT_UNTIL(s.users().size() == 1);
         auto &user = s.getFirstUser();
 
@@ -79,7 +79,7 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
     }
 }
 
-TEST_CASE("Clients can discern player uniqueness", "[player-unique]") {
+TEST_CASE("Clients can discern player-uniqueness", "[player-unique]") {
     auto c = TestClient::WithData("wives");
     const auto &blonde = c.getFirstObjectType();
     CHECK(blonde.isPlayerUnique());

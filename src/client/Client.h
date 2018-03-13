@@ -572,7 +572,7 @@ private:
         LOADED,
         CONNECTION_ERROR
     };
-    ConnectionStatus _connectionStatus;
+    volatile ConnectionStatus _connectionStatus;
     void checkSocket();
 
     ConfirmationWindow *_confirmDropItem;
