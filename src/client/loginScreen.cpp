@@ -134,7 +134,8 @@ void Client::connectToServer() {
         _connectionStatus = TRYING_TO_CONNECT;
         _timeSinceConnectAttempt = 0;
 
-        _serverConnectionIndicator->set(Indicator::IN_PROGRESS);
+        if (_serverConnectionIndicator)
+            _serverConnectionIndicator->set(Indicator::IN_PROGRESS);
 
         // Server details
         std::string serverIP;
