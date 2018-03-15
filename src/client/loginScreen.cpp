@@ -311,11 +311,11 @@ void Client::createAccount(void *) {
 }
 
 void Client::login(void *) {
-    std::string username = nameBox->text();
-    nameBox->text(username);
+    if (_instance->_username.empty()) {
+        _instance->_username = nameBox->text();
+    }
 
-    _instance->_username = username;
-    _instance->sendMessage(CL_LOGIN_EXISTING, makeArgs(username, version()));
+    _instance->sendMessage(CL_LOGIN_EXISTING, makeArgs(_instance->_username, version()));
 }
 
 void exit(void *data){
