@@ -105,7 +105,10 @@ Server::~Server(){
         delete pair.second;
     for (const auto &spellPair : _spells)
         delete spellPair.second;
+
     _instance = nullptr;
+
+    Socket::debug = nullptr;
 }
 
 void Server::checkSockets(){

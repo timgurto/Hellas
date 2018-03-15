@@ -238,6 +238,8 @@ Client::~Client() {
     Mix_Quit();
 
     _instance = nullptr;
+
+    Socket::debug = nullptr;
 }
 
 void Client::checkSocket(){
