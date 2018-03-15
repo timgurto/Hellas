@@ -29,9 +29,9 @@ void Client::loginScreenLoop(){
     const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
     _timeSinceConnectAttempt += _timeElapsed;
 
-    auto threadExists = _connectToServerThread.get_id() != std::thread::id{};
-    if (!threadExists) {
-        _connectToServerThread = std::thread{ connectToServerStatic };
+    if (!_threadIsConnectingToServer) {
+        _threadIsConnectingToServer = true;
+        std::thread{ connectToServerStatic }.detach();
     }
 
     // Send ping
@@ -179,9 +179,7 @@ void Client::connectToServer() {
     if (activity == SOCKET_ERROR) {
         showError("Error polling sockets: "s + toString(WSAGetLastError()), Color::FAILURE);
         _serverConnectionIndicator->set(Indicator::FAILED);
-        return;
-    }
-    if (FD_ISSET(_socket.getRaw(), &readFDs)) {
+    } else if (FD_ISSET(_socket.getRaw(), &readFDs)) {
         static char buffer[BUFFER_SIZE + 1];
         int charsRead = recv(_socket.getRaw(), buffer, BUFFER_SIZE, 0);
         if (charsRead != SOCKET_ERROR && charsRead != 0) {
@@ -190,6 +188,7 @@ void Client::connectToServer() {
         }
     }
 
+    _threadIsConnectingToServer = false;
 }
 
 void Client::updateLoginButton(void *) {
