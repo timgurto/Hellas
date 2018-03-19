@@ -26,7 +26,6 @@ void Client::initUI() {
     Element::absMouse = &_mouse;
 
     Element::initialize();
-    Indicator::initialize();
     ClientItem::init();
 
     initPerformanceDisplay();

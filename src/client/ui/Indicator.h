@@ -18,9 +18,10 @@ public:
     void set(Status status);
 
     static void initialize();
-    static void cleanup();
 
 private:
     using Images = std::unordered_map<Status, Texture>;
     static Images images;
+
+    static bool initialized;
 };

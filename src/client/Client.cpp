@@ -207,7 +207,6 @@ void Client::initializeGearSlotNames(){
 Client::~Client() {
     SDL_ShowCursor(SDL_ENABLE);
     cleanUpLoginScreen();
-    Indicator::cleanup();
     Element::cleanup();
     if (_defaultFont != nullptr)
         TTF_CloseFont(_defaultFont);
