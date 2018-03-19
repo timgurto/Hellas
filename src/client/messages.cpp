@@ -34,6 +34,7 @@ void Client::handleMessage(const std::string &msg){
     _partialMessage = "";
     int msgCode;
     char del;
+    const auto BUFFER_SIZE = 1023;
     static char buffer[BUFFER_SIZE+1];
 
     // Read while there are new messages
@@ -161,7 +162,7 @@ void Client::handleMessage(const std::string &msg){
         case WARNING_SERVER_FULL:
             if (del != MSG_END)
                 break;
-            _socket = Socket();
+            _connection.clearSocket();
             _loggedIn = false;
             infoWindow("The server is full; attempting reconnection.");
             break;
@@ -2228,7 +2229,7 @@ void Client::handle_SV_OBJECT_HEALED(size_t serial, Hitpoints amount) {
 
 
 void Client::sendRawMessage(const std::string &msg) const{
-    _socket.sendMessage(msg);
+    _connection.socket().sendMessage(msg);
 }
 
 void Client::sendMessage(MessageCode msgCode, const std::string &args) const{
@@ -2357,6 +2358,7 @@ void Client::performCommand(const std::string &commandString){
         return;
     }
 
+    const auto BUFFER_SIZE = 1023;
     static char buffer[BUFFER_SIZE+1];
     iss.get(buffer, BUFFER_SIZE, ' ');
     std::string command(buffer);

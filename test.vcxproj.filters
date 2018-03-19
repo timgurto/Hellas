@@ -155,6 +155,7 @@
     <ClCompile Include="src\client\toast.cpp" />
     <ClCompile Include="src\client\WordWrapper.cpp" />
     <ClCompile Include="src\client\ui\Indicator.cpp" />
+    <ClCompile Include="src\client\Connection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -278,5 +279,6 @@
     <ClInclude Include="src\client\Images.h" />
     <ClInclude Include="src\client\WordWrapper.h" />
     <ClInclude Include="src\client\ui\Indicator.h" />
+    <ClInclude Include="src\client\Connection.h" />
   </ItemGroup>
 </Project>

@@ -98,7 +98,6 @@ _actionLength(0),
 _loop(true),
 _running(false),
 _freeze(false),
-_socket(),
 _dataLoaded(false),
 
 _defaultFont(nullptr),
@@ -241,26 +240,6 @@ Client::~Client() {
     Socket::debug = nullptr;
 }
 
-void Client::checkSocket(){
-    static fd_set readFDs;
-    FD_ZERO(&readFDs);
-    FD_SET(_socket.getRaw(), &readFDs);
-    static timeval selectTimeout = {0, 10000};
-    int activity = select(0, &readFDs, nullptr, nullptr, &selectTimeout);
-    if (activity == SOCKET_ERROR) {
-        showErrorMessage("Error polling sockets: "s + toString(WSAGetLastError()), Color::FAILURE);
-        return;
-    }
-    if (FD_ISSET(_socket.getRaw(), &readFDs)) {
-        static char buffer[BUFFER_SIZE+1];
-        int charsRead = recv(_socket.getRaw(), buffer, BUFFER_SIZE, 0);
-        if (charsRead != SOCKET_ERROR && charsRead != 0){
-            buffer[charsRead] = '\0';
-            _messages.push(std::string(buffer));
-        }
-    }
-}
-
 void Client::run(){
     _running = true;
     if (!_dataLoaded){
@@ -326,7 +305,7 @@ void Client::gameLoop(){
     if (_time - _lastPingReply > SERVER_TIMEOUT) {
         infoWindow("Disconnected from server.");
         _serverConnectionIndicator->set(Indicator::FAILED);
-        _socket = {};
+        _connection.clearSocket();
         _loggedIn = false;
     }
 
@@ -395,7 +374,7 @@ void Client::gameLoop(){
 
     updateUI();
 
-    checkSocket();
+    _connection.getNewMessages(_messages);
     // Draw
     draw();
     SDL_Delay(5);
@@ -420,21 +399,6 @@ bool Client::playerHasItem(const Item *item, size_t quantity) const{
         }
     }
     return false;
-}
-
-//bool Client::playerHasTool(const std::string &tagName) const{
-//    // Check inventory
-//    for (std::pair<const Item *, size_t> slot : _inventory)
-//        if slot.first->isTag(tagName)
-//            return true;
-//
-//    //Check nearby objects
-//    for (
-//    return false;
-//}
-
-const Socket &Client::socket() const{
-    return _socket;
 }
 
 void Client::removeEntity(Sprite *const toRemove){

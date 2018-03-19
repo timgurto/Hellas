@@ -21,6 +21,7 @@
 #include "ClientSpell.h"
 #include "ClientTerrain.h"
 #include "ClientWar.h"
+#include "Connection.h"
 #include "HelpEntry.h"
 #include "Images.h"
 #include "LogSDL.h"
@@ -59,7 +60,6 @@ public:
 
     static bool isClient;
 
-    const Socket &socket() const;
     TTF_Font *defaultFont() const;
 
     void showErrorMessage(const std::string &message, Color color) const;
@@ -174,6 +174,8 @@ public:
 private:
     static Client *_instance;
     static LogSDL *_debugInstance;
+
+    Connection _connection;
 
     static std::map<std::string, int> _messageCommands;
     static std::map<int, std::string> _errorMessages;
@@ -392,7 +394,6 @@ private:
     bool _loop;
     bool _running; // True while run() is being executed.
     bool _freeze; // For testing purposes only; should otherwise remain false.
-    Socket _socket;
     static void exitGame(void *client);
 
     TTF_Font *_defaultFont;
@@ -443,8 +444,6 @@ private:
 
     bool _loggedIn;
     bool _loaded; // Whether the client has sufficient information to begin
-
-    static const size_t BUFFER_SIZE = 1023;
 
     ms_t _timeSinceLocUpdate; // Time since a CL_LOCATION was sent
     // Location has changed (local or official), and tooltip may have changed.
@@ -573,7 +572,6 @@ private:
         CONNECTION_ERROR
     };
     volatile ConnectionStatus _connectionStatus;
-    void checkSocket();
 
     ConfirmationWindow *_confirmDropItem;
     // Show a confirmation window, then drop item if confirmed

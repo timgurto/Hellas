@@ -43,7 +43,7 @@ void Client::loginScreenLoop(){
     // Ensure server connectivity
     if (_time - _lastPingReply > SERVER_TIMEOUT) {
         _serverConnectionIndicator->set(Indicator::FAILED);
-        _socket = {};
+        _connection.clearSocket();
         _loggedIn = false;
     }
 
@@ -158,7 +158,7 @@ void Client::connectToServer() {
             port = cmdLineArgs.getInt("server-port");
         serverAddr.sin_port = htons(port);
 
-        if (connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
+        if (connect(_connection.socket().getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
             showError("Connection error: "s + toString(WSAGetLastError()), Color::FAILURE);
             _connectionStatus = CONNECTION_ERROR;
             _serverConnectionIndicator->set(Indicator::FAILED);
@@ -174,15 +174,16 @@ void Client::connectToServer() {
 
     static fd_set readFDs;
     FD_ZERO(&readFDs);
-    FD_SET(_socket.getRaw(), &readFDs);
+    FD_SET(_connection.socket().getRaw(), &readFDs);
     static timeval selectTimeout = { 0, 10000 };
     int activity = select(0, &readFDs, nullptr, nullptr, &selectTimeout);
     if (activity == SOCKET_ERROR) {
         showError("Error polling sockets: "s + toString(WSAGetLastError()), Color::FAILURE);
         _serverConnectionIndicator->set(Indicator::FAILED);
-    } else if (FD_ISSET(_socket.getRaw(), &readFDs)) {
+    } else if (FD_ISSET(_connection.socket().getRaw(), &readFDs)) {
+        const auto BUFFER_SIZE = 1023;
         static char buffer[BUFFER_SIZE + 1];
-        int charsRead = recv(_socket.getRaw(), buffer, BUFFER_SIZE, 0);
+        int charsRead = recv(_connection.socket().getRaw(), buffer, BUFFER_SIZE, 0);
         if (charsRead != SOCKET_ERROR && charsRead != 0) {
             buffer[charsRead] = '\0';
             _messages.push(std::string(buffer));
