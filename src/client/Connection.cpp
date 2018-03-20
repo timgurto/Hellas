@@ -55,9 +55,9 @@ void Connection::connect() {
 
     // Select server port
 #ifdef _DEBUG
-    auto port = _client.DEBUG_PORT;
+    auto port = DEBUG_PORT;
 #else
-    auto port = _client.PRODUCTION_PORT;
+    auto port = PRODUCTION_PORT;
 #endif
     if (cmdLineArgs.contains("server-port"))
         port = cmdLineArgs.getInt("server-port");

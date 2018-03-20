@@ -43,4 +43,6 @@ private:
     bool _aThreadIsConnecting{ false };
 
     static const ms_t TIME_BETWEEN_CONNECTION_ATTEMPTS{ 3000 };
+    static const u_short DEBUG_PORT{ 8888 };
+    static const u_short PRODUCTION_PORT{ 8889 };
 };
