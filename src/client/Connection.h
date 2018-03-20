@@ -41,4 +41,6 @@ private:
     ms_t _timeOfLastConnectionAttempt{ 0 };
 
     bool _aThreadIsConnecting{ false };
+
+    static const ms_t TIME_BETWEEN_CONNECTION_ATTEMPTS{ 3000 };
 };

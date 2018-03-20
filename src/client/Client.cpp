@@ -41,7 +41,6 @@ const px_t Client::SCREEN_Y = 360;
 
 const ms_t Client::MAX_TICK_LENGTH = 100;
 const ms_t Client::SERVER_TIMEOUT = 10000;
-const ms_t Client::CONNECT_RETRY_DELAY = 3000;
 const ms_t Client::PING_FREQUENCY = 5000;
 
 const ms_t Client::TIME_BETWEEN_LOCATION_UPDATES = 50;

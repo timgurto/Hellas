@@ -31,7 +31,7 @@ void Connection::getNewMessages() {
 
 void Connection::connect() {
     auto timeNow = SDL_GetTicks();
-    if (timeNow - _timeOfLastConnectionAttempt < _client.CONNECT_RETRY_DELAY) {
+    if (timeNow - _timeOfLastConnectionAttempt < TIME_BETWEEN_CONNECTION_ATTEMPTS) {
         _aThreadIsConnecting = false;
         return;
     }

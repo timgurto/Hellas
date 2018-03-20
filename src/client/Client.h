@@ -190,7 +190,6 @@ private:
 
     static const ms_t MAX_TICK_LENGTH;
     static const ms_t SERVER_TIMEOUT; // How long the client will wait for a ping reply
-    static const ms_t CONNECT_RETRY_DELAY; // How long to wait between retries at connecting
     static const ms_t PING_FREQUENCY; // How often to test latency with each client
     // How often to send location updates to server (while moving)
     static const ms_t TIME_BETWEEN_LOCATION_UPDATES;
