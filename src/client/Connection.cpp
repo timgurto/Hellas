@@ -30,6 +30,11 @@ void Connection::getNewMessages() {
 }
 
 void Connection::connect() {
+    if (_state == CONNECTED) {
+        _aThreadIsConnecting = false;
+        return;
+    }
+
     auto timeNow = SDL_GetTicks();
     if (timeNow - _timeOfLastConnectionAttempt < TIME_BETWEEN_CONNECTION_ATTEMPTS) {
         _aThreadIsConnecting = false;
