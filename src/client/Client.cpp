@@ -90,8 +90,6 @@ _activeRecipe(nullptr),
 _selectedConstruction(nullptr),
 _multiBuild(false),
 
-_connectionStatus(INITIALIZING),
-
 _actionTimer(0),
 _actionLength(0),
 
@@ -261,7 +259,7 @@ void Client::run(){
     
     drawLoadingScreen("Initializing login screen", 0.9);
     initLoginScreen();
-    _connectionStatus = TRYING_TO_CONNECT;
+    _connection.state(Connection::TRYING_TO_CONNECT);
 
     ms_t timeAtLastTick = SDL_GetTicks();
     while (_loop) {

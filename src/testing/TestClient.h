@@ -18,7 +18,7 @@ public:
     TestClient(TestClient &rhs);
     TestClient &operator=(TestClient &rhs);
 
-    bool connected() const { return _client->_connectionStatus == Client::CONNECTED; }
+    bool connected() const { return _client->_connection.state() == Connection::CONNECTED; }
     void freeze();
     static void stopClientIfRunning();
 

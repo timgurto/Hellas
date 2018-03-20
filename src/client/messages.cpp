@@ -83,7 +83,7 @@ void Client::handleMessage(const std::string &msg){
 
             _character.name(_username);
 
-            _connectionStatus = LOGGED_IN;
+            _connection.state(Connection::LOGGED_IN);
             _loggedIn = true;
             _timeSinceConnectAttempt = 0;
             _lastPingSent = _lastPingReply = _time;
@@ -340,7 +340,7 @@ void Client::handleMessage(const std::string &msg){
                 }
                 updateOffset();
                 _mapWindow->markChanged();
-                _connectionStatus = LOADED;
+                _connection.state(Connection::LOADED);
                 _loaded = true;
                 _tooltipNeedsRefresh = true;
                 _mouseMoved = true;

@@ -562,16 +562,6 @@ private:
     void handle_SV_OBJECT_HEALED(size_t serial, Hitpoints amount);
 
     void sendClearTargetMessage() const;
-    
-    enum ConnectionStatus{
-        INITIALIZING,      // }
-        TRYING_TO_CONNECT, // } Login screen
-        CONNECTED,         // }
-        LOGGED_IN,
-        LOADED,
-        CONNECTION_ERROR
-    };
-    volatile ConnectionStatus _connectionStatus;
 
     ConfirmationWindow *_confirmDropItem;
     // Show a confirmation window, then drop item if confirmed

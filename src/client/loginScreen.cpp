@@ -130,8 +130,8 @@ void Client::connectToServerStatic() {
 
 void Client::connectToServer() {
     // Ensure connected to server
-    if (_connectionStatus != CONNECTED && _timeSinceConnectAttempt >= CONNECT_RETRY_DELAY) {
-        _connectionStatus = TRYING_TO_CONNECT;
+    if (_connection.state() != Connection::CONNECTED && _timeSinceConnectAttempt >= CONNECT_RETRY_DELAY) {
+        _connection.state(Connection::TRYING_TO_CONNECT);
         _timeSinceConnectAttempt = 0;
 
         if (_serverConnectionIndicator)
@@ -160,12 +160,12 @@ void Client::connectToServer() {
 
         if (connect(_connection.socket().getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
             showError("Connection error: "s + toString(WSAGetLastError()), Color::FAILURE);
-            _connectionStatus = CONNECTION_ERROR;
+            _connection.state(Connection::CONNECTION_ERROR);
             _serverConnectionIndicator->set(Indicator::FAILED);
         } else {
             _serverConnectionIndicator->set(Indicator::SUCCEEDED);
             sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
-            _connectionStatus = CONNECTED;
+            _connection.state(Connection::CONNECTED);
         }
     }
 
@@ -198,7 +198,7 @@ void Client::updateLoginButton(void *) {
     loginButton->disable();
     nameBox->forcePascalCase();
 
-    if (Client::_instance->_connectionStatus != CONNECTED)
+    if (Client::_instance->_connection.state() != Connection::CONNECTED)
         ;// loginButton->setTooltip("Not connected to server");
 
     else if (!isUsernameValid(nameBox->text()))
@@ -213,7 +213,7 @@ void Client::updateCreateButton(void *) {
     createButton->disable();
     newNameBox->forcePascalCase();
 
-    if (Client::_instance->_connectionStatus != CONNECTED)
+    if (Client::_instance->_connection.state() != Connection::CONNECTED)
         ;// createButton->setTooltip("Not connected to server");
 
     else if (!isUsernameValid(newNameBox->text()))
