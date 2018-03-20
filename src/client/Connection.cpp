@@ -93,4 +93,5 @@ void Connection::connect() {
 
 void Connection::showError(const std::string & msg) const {
     Client::instance().showErrorMessage(msg, Color::FAILURE);
+    _client.infoWindow(msg);
 }
