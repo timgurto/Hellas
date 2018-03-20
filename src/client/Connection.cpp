@@ -1,12 +1,19 @@
-#include "../Args.h"
 #include "Client.h"
 #include "Connection.h"
+#include "../Args.h"
+#include "../curlUtil.h"
 
 extern Args cmdLineArgs;
+
+std::string Connection::defaultServerIP{};
 
 Connection::Connection(Client & client):
 _client(client)
 {}
+
+void Connection::initialize(const std::string &serverIP) {
+    defaultServerIP = readFromURL(serverIP);
+}
 
 void Connection::getNewMessages() {
     auto readFDs = fd_set{};
@@ -48,17 +55,10 @@ void Connection::connect() {
         _client._serverConnectionIndicator->set(Indicator::IN_PROGRESS);
 
     // Server details
-    auto serverIP = ""s;
-    if (cmdLineArgs.contains("server-ip"))
-        serverIP = cmdLineArgs.getString("server-ip");
-    else {
-        serverIP = _client._defaultServerAddress;
-    }
     auto serverAddr = sockaddr_in{};
-    serverAddr.sin_addr.s_addr = inet_addr(serverIP.c_str());
     serverAddr.sin_family = AF_INET;
-
-    serverAddr.sin_port = htons(getPort());
+    serverAddr.sin_addr.s_addr = inet_addr(getServerIP().c_str());
+    serverAddr.sin_port = htons(getServerPort());
 
     if (::connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
         auto winsockError = WSAGetLastError();
@@ -88,7 +88,13 @@ void Connection::showError(const std::string & msg) const {
     _client.infoWindow(msg);
 }
 
-u_short Connection::getPort() {
+std::string Connection::getServerIP() {
+    if (cmdLineArgs.contains("server-ip"))
+        return cmdLineArgs.getString("server-ip");
+    return defaultServerIP;
+}
+
+u_short Connection::getServerPort() {
     // Specified
     if (cmdLineArgs.contains("server-port"))
         return cmdLineArgs.getInt("server-port");

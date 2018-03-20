@@ -150,6 +150,7 @@ _debug("client.log"){
     _debugInstance = &_debug;
 
     _config.loadFromFile("client-config.xml");
+    _connection.initialize(_config.serverHostDirectory);
     
     initUI();
     _wordWrapper = WordWrapper{_defaultFont, _chatLog->width()};
@@ -170,12 +171,6 @@ _debug("client.log"){
         showErrorMessage("SDL_mixer failed to initialize.", Color::FAILURE);
     }
     Mix_AllocateChannels(MIXING_CHANNELS);
-
-    // Resolve default server IP
-    drawLoadingScreen("Finding server", 0.7);
-    if (!cmdLineArgs.contains("server-ip")){
-        _defaultServerAddress = readFromURL(_config.serverHostDirectory);
-    }
 
     renderer.setDrawColor();
 

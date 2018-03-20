@@ -20,6 +20,7 @@ public:
     };
 
     Connection(Client &client);
+    static void initialize(const std::string &serverIP);
 
     void getNewMessages();
     void connect();
@@ -42,7 +43,9 @@ private:
 
     bool _aThreadIsConnecting{ false };
 
-    static u_short getPort();
+    static std::string getServerIP();
+    static u_short getServerPort();
+    static std::string defaultServerIP;
 
     static const ms_t TIME_BETWEEN_CONNECTION_ATTEMPTS{ 3000 };
     static const u_short DEBUG_PORT{ 8888 };
