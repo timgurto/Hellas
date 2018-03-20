@@ -9,22 +9,22 @@ _client(client)
 {}
 
 void Connection::getNewMessages() {
-    static fd_set readFDs;
+    auto readFDs = fd_set{};
     FD_ZERO(&readFDs);
     FD_SET(_socket.getRaw(), &readFDs);
-    static timeval selectTimeout = { 0, 10000 };
-    int activity = select(0, &readFDs, nullptr, nullptr, &selectTimeout);
+    auto selectTimeout = timeval{ 0, 10000 };
+    auto activity = select(0, &readFDs, nullptr, nullptr, &selectTimeout);
     if (activity == SOCKET_ERROR) {
         showError("Error polling sockets: "s + toString(WSAGetLastError()));
         return;
     }
     if (FD_ISSET(_socket.getRaw(), &readFDs)) {
         const auto BUFFER_SIZE = 1023;
-        static char buffer[BUFFER_SIZE + 1];
-        int charsRead = recv(_socket.getRaw(), buffer, BUFFER_SIZE, 0);
+        char buffer[BUFFER_SIZE + 1];
+        auto charsRead = recv(_socket.getRaw(), buffer, BUFFER_SIZE, 0);
         if (charsRead != SOCKET_ERROR && charsRead != 0) {
             buffer[charsRead] = '\0';
-            _client._messages.push(std::string(buffer));
+            _client._messages.push({ buffer });
         }
     }
 }
@@ -43,13 +43,13 @@ void Connection::connect() {
         _client._serverConnectionIndicator->set(Indicator::IN_PROGRESS);
 
     // Server details
-    std::string serverIP;
+    auto serverIP = ""s;
     if (cmdLineArgs.contains("server-ip"))
         serverIP = cmdLineArgs.getString("server-ip");
     else {
         serverIP = _client._defaultServerAddress;
     }
-    sockaddr_in serverAddr;
+    auto serverAddr = sockaddr_in{};
     serverAddr.sin_addr.s_addr = inet_addr(serverIP.c_str());
     serverAddr.sin_family = AF_INET;
 
@@ -57,7 +57,7 @@ void Connection::connect() {
 #ifdef _DEBUG
     auto port = _client.DEBUG_PORT;
 #else
-    auto port = PRODUCTION_PORT;
+    auto port = _client.PRODUCTION_PORT;
 #endif
     if (cmdLineArgs.contains("server-port"))
         port = cmdLineArgs.getInt("server-port");
