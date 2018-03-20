@@ -46,6 +46,8 @@ void Client::loginScreenLoop(){
         _loggedIn = false;
     }
 
+    _connection.getNewMessages();
+
     // Deal with any messages from the server
     if (!_messages.empty()){
         handleMessage(_messages.front());

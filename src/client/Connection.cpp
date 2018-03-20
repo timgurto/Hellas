@@ -83,8 +83,6 @@ void Connection::connect() {
     _client.updateCreateButton(nullptr);
     _client.updateLoginButton(nullptr);
 
-    getNewMessages();
-
     _aThreadIsConnecting = false;
 }
 
