@@ -64,9 +64,16 @@ void Connection::connect() {
     serverAddr.sin_port = htons(port);
 
     if (::connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
-        showError("Connection error: "s + toString(WSAGetLastError()));
-        _state = CONNECTION_ERROR;
-        _client._serverConnectionIndicator->set(Indicator::FAILED);
+        auto winsockError = WSAGetLastError();
+        showError("Connection error: "s + toString(winsockError));
+        const auto ALREADY_CONNECTED = 10056;
+        if (winsockError == ALREADY_CONNECTED) {
+            _state = CONNECTED;
+            _client._serverConnectionIndicator->set(Indicator::SUCCEEDED);
+        } else {
+            _state = CONNECTION_ERROR;
+            _client._serverConnectionIndicator->set(Indicator::FAILED);
+        }
     } else {
         _client._serverConnectionIndicator->set(Indicator::SUCCEEDED);
         _client.sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
