@@ -58,15 +58,7 @@ void Connection::connect() {
     serverAddr.sin_addr.s_addr = inet_addr(serverIP.c_str());
     serverAddr.sin_family = AF_INET;
 
-    // Select server port
-#ifdef _DEBUG
-    auto port = DEBUG_PORT;
-#else
-    auto port = PRODUCTION_PORT;
-#endif
-    if (cmdLineArgs.contains("server-port"))
-        port = cmdLineArgs.getInt("server-port");
-    serverAddr.sin_port = htons(port);
+    serverAddr.sin_port = htons(getPort());
 
     if (::connect(_socket.getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
         auto winsockError = WSAGetLastError();
@@ -94,4 +86,17 @@ void Connection::connect() {
 void Connection::showError(const std::string & msg) const {
     Client::instance().showErrorMessage(msg, Color::FAILURE);
     _client.infoWindow(msg);
+}
+
+u_short Connection::getPort() {
+    // Specified
+    if (cmdLineArgs.contains("server-port"))
+        return cmdLineArgs.getInt("server-port");
+
+    // Default
+#ifdef _DEBUG
+    return DEBUG_PORT;
+#else
+    return PRODUCTION_PORT;
+#endif
 }
