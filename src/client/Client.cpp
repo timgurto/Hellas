@@ -93,6 +93,8 @@ _multiBuild(false),
 _actionTimer(0),
 _actionLength(0),
 
+_connection(*this),
+
 _loop(true),
 _running(false),
 _freeze(false),
@@ -118,7 +120,6 @@ _timeElapsed(0),
 _lastPingReply(_time),
 _lastPingSent(_time),
 _latency(0),
-_timeSinceConnectAttempt(CONNECT_RETRY_DELAY),
 _fps(0),
 
 _loggedIn(false),
@@ -281,7 +282,7 @@ void Client::run(){
     }
     _running = false;
 
-    while (_threadIsConnectingToServer)
+    while (_connection.isAThreadConnecting())
         ;
 }
 
@@ -372,7 +373,7 @@ void Client::gameLoop(){
 
     updateUI();
 
-    _connection.getNewMessages(_messages);
+    _connection.getNewMessages();
     // Draw
     draw();
     SDL_Delay(5);

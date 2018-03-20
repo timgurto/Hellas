@@ -85,7 +85,6 @@ void Client::handleMessage(const std::string &msg){
 
             _connection.state(Connection::LOGGED_IN);
             _loggedIn = true;
-            _timeSinceConnectAttempt = 0;
             _lastPingSent = _lastPingReply = _time;
 #ifdef _DEBUG
             _debug("Successfully logged in to server", Color::SUCCESS);

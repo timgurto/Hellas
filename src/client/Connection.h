@@ -4,6 +4,8 @@
 
 #include "../Socket.h"
 
+class Client;
+
 // Manages a connection to the server
 class Connection {
 
@@ -17,13 +19,26 @@ public:
         CONNECTION_ERROR
     };
 
-    void getNewMessages(std::queue<std::string> &messages);
+    Connection(Client &client);
+
+    void getNewMessages();
+    void connect();
+
     const Socket &socket() const { return _socket; } // TODO: remove
     void clearSocket() { _socket = {}; } // TODO: remove
     void state(State s) { _state = s; } // TODO: remove
     State state() const { return _state; } // TODO: remove
+    bool isAThreadConnecting() const { return _aThreadIsConnecting; } // TODO: remove
+    void aThreadIsConnecting() { _aThreadIsConnecting = true; } // TODO: remove
+
+    void showError(const std::string &msg) const;
 
 private:
     Socket _socket;
     State _state{ INITIALIZING };
+    Client &_client;
+
+    ms_t _timeOfLastConnectionAttempt{ 0 };
+
+    bool _aThreadIsConnecting{ false };
 };

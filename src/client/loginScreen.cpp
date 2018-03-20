@@ -27,10 +27,9 @@ static void showError(const std::string &message, const Color &color) {
 
 void Client::loginScreenLoop(){
     const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
-    _timeSinceConnectAttempt += _timeElapsed;
 
-    if (!_threadIsConnectingToServer) {
-        _threadIsConnectingToServer = true;
+    if (!_connection.isAThreadConnecting()) {
+        _connection.aThreadIsConnecting();
         std::thread{ connectToServerStatic }.detach();
     }
 
@@ -125,72 +124,7 @@ void Client::drawLoginScreen() const{
 
 void Client::connectToServerStatic() {
     auto &client = *_instance;
-    client.connectToServer();
-}
-
-void Client::connectToServer() {
-    // Ensure connected to server
-    if (_connection.state() != Connection::CONNECTED && _timeSinceConnectAttempt >= CONNECT_RETRY_DELAY) {
-        _connection.state(Connection::TRYING_TO_CONNECT);
-        _timeSinceConnectAttempt = 0;
-
-        if (_serverConnectionIndicator)
-            _serverConnectionIndicator->set(Indicator::IN_PROGRESS);
-
-        // Server details
-        std::string serverIP;
-        if (cmdLineArgs.contains("server-ip"))
-            serverIP = cmdLineArgs.getString("server-ip");
-        else {
-            serverIP = _defaultServerAddress;
-        }
-        sockaddr_in serverAddr;
-        serverAddr.sin_addr.s_addr = inet_addr(serverIP.c_str());
-        serverAddr.sin_family = AF_INET;
-
-        // Select server port
-#ifdef _DEBUG
-        auto port = DEBUG_PORT;
-#else
-        auto port = PRODUCTION_PORT;
-#endif
-        if (cmdLineArgs.contains("server-port"))
-            port = cmdLineArgs.getInt("server-port");
-        serverAddr.sin_port = htons(port);
-
-        if (connect(_connection.socket().getRaw(), (sockaddr*)&serverAddr, Socket::sockAddrSize) < 0) {
-            showError("Connection error: "s + toString(WSAGetLastError()), Color::FAILURE);
-            _connection.state(Connection::CONNECTION_ERROR);
-            _serverConnectionIndicator->set(Indicator::FAILED);
-        } else {
-            _serverConnectionIndicator->set(Indicator::SUCCEEDED);
-            sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
-            _connection.state(Connection::CONNECTED);
-        }
-    }
-
-    updateCreateButton(nullptr);
-    updateLoginButton(nullptr);
-
-    static fd_set readFDs;
-    FD_ZERO(&readFDs);
-    FD_SET(_connection.socket().getRaw(), &readFDs);
-    static timeval selectTimeout = { 0, 10000 };
-    int activity = select(0, &readFDs, nullptr, nullptr, &selectTimeout);
-    if (activity == SOCKET_ERROR) {
-        showError("Error polling sockets: "s + toString(WSAGetLastError()), Color::FAILURE);
-        _serverConnectionIndicator->set(Indicator::FAILED);
-    } else if (FD_ISSET(_connection.socket().getRaw(), &readFDs)) {
-        const auto BUFFER_SIZE = 1023;
-        static char buffer[BUFFER_SIZE + 1];
-        int charsRead = recv(_connection.socket().getRaw(), buffer, BUFFER_SIZE, 0);
-        if (charsRead != SOCKET_ERROR && charsRead != 0) {
-            buffer[charsRead] = '\0';
-            _messages.push(std::string(buffer));
-        }
-    }
-
-    _threadIsConnectingToServer = false;
+    client._connection.connect();
 }
 
 void Client::updateLoginButton(void *) {

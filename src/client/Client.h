@@ -363,7 +363,6 @@ private:
     std::list<Particle*> _loginParticles;
     void updateLoginParticles(double delta);
     static void login(void *);
-    void connectToServer();
     static void connectToServerStatic();
     Indicator *_serverConnectionIndicator{ nullptr };
     static void updateLoginButton(void *);
@@ -372,7 +371,6 @@ private:
         static void createAccount(void *);
         static void updateCreateButton(void *);
         static void updateClassDescription();
-    bool _threadIsConnectingToServer{ false };
 
     // These are superficial, and relate only to the cast bar.
     ms_t _actionTimer; // How long the character has been performing the current action.
@@ -439,7 +437,6 @@ private:
     ms_t _lastPingReply; // The last time a ping reply was received from the server
     ms_t _lastPingSent; // The last time a ping was sent to the server
     ms_t _latency;
-    ms_t _timeSinceConnectAttempt;
     unsigned _fps;
 
     bool _loggedIn;
@@ -581,6 +578,7 @@ private:
     friend class ClientNPC;
     friend class ClientObjectType;
     friend class ClientNPCType;
+    friend class Connection;
     friend class Projectile;
     friend class ClientVehicle;
     friend void LogSDL::operator()(const std::string &message, const Color &color);
