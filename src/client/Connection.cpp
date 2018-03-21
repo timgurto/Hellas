@@ -8,7 +8,7 @@ extern Args cmdLineArgs;
 std::string Connection::defaultServerIP{};
 
 Connection::Connection(Client & client):
-_client(client)
+_client(&client)
 {}
 
 void Connection::initialize(const std::string &serverIP) {
@@ -31,7 +31,7 @@ void Connection::getNewMessages() {
         auto charsRead = recv(_socket.getRaw(), buffer, BUFFER_SIZE, 0);
         if (charsRead != SOCKET_ERROR && charsRead != 0) {
             buffer[charsRead] = '\0';
-            _client._messages.push({ buffer });
+            _client->_messages.push({ buffer });
         }
     }
 }
@@ -41,8 +41,8 @@ void Connection::connect() {
     auto timeNow = SDL_GetTicks();
     _timeOfLastConnectionAttempt = timeNow;
 
-    if (_client._serverConnectionIndicator)
-        _client._serverConnectionIndicator->set(Indicator::IN_PROGRESS);
+    if (_client->_serverConnectionIndicator)
+        _client->_serverConnectionIndicator->set(Indicator::IN_PROGRESS);
 
     // Server details
     auto serverAddr = sockaddr_in{};
@@ -56,19 +56,19 @@ void Connection::connect() {
         const auto ALREADY_CONNECTED = 10056;
         if (winsockError == ALREADY_CONNECTED) {
             _state = CONNECTED;
-            _client._serverConnectionIndicator->set(Indicator::SUCCEEDED);
+            _client->_serverConnectionIndicator->set(Indicator::SUCCEEDED);
         } else {
             _state = CONNECTION_ERROR;
-            _client._serverConnectionIndicator->set(Indicator::FAILED);
+            _client->_serverConnectionIndicator->set(Indicator::FAILED);
         }
     } else {
-        _client._serverConnectionIndicator->set(Indicator::SUCCEEDED);
-        _client.sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
+        _client->_serverConnectionIndicator->set(Indicator::SUCCEEDED);
+        _client->sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
         _state = CONNECTED;
     }
 
-    _client.updateCreateButton(nullptr);
-    _client.updateLoginButton(nullptr);
+    _client->updateCreateButton(nullptr);
+    _client->updateLoginButton(nullptr);
 
     _aThreadIsConnecting = false;
 }
@@ -89,7 +89,7 @@ bool Connection::shouldAttemptReconnection() const {
 
 void Connection::showError(const std::string & msg) const {
     Client::instance().showErrorMessage(msg, Color::FAILURE);
-    _client.infoWindow(msg);
+    _client->infoWindow(msg);
 }
 
 std::string Connection::getServerIP() {

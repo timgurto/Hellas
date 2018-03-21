@@ -38,7 +38,7 @@ public:
 private:
     Socket _socket;
     State _state{ INITIALIZING };
-    Client &_client;
+    Client *_client{ nullptr };
 
     ms_t _timeOfLastConnectionAttempt{ 0 };
 
