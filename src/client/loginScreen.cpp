@@ -29,6 +29,8 @@ void Client::loginScreenLoop(){
     const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
 
     if (_connection.shouldAttemptReconnection()){
+        _connection = { *this };
+
         _connection.aThreadIsConnecting();
         std::thread{ connectToServerStatic }.detach();
     }
