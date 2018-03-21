@@ -28,7 +28,7 @@ static void showError(const std::string &message, const Color &color) {
 void Client::loginScreenLoop(){
     const double delta = _timeElapsed / 1000.0; // Fraction of a second that has elapsed
 
-    if (!_connection.isAThreadConnecting()) {
+    if (_connection.shouldAttemptReconnection()){
         _connection.aThreadIsConnecting();
         std::thread{ connectToServerStatic }.detach();
     }

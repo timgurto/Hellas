@@ -37,18 +37,8 @@ void Connection::getNewMessages() {
 }
 
 void Connection::connect() {
-    if (_state == CONNECTED) {
-        _aThreadIsConnecting = false;
-        return;
-    }
-
-    auto timeNow = SDL_GetTicks();
-    if (timeNow - _timeOfLastConnectionAttempt < TIME_BETWEEN_CONNECTION_ATTEMPTS) {
-        _aThreadIsConnecting = false;
-        return;
-    }
-
     _state = TRYING_TO_CONNECT;
+    auto timeNow = SDL_GetTicks();
     _timeOfLastConnectionAttempt = timeNow;
 
     if (_client._serverConnectionIndicator)
@@ -81,6 +71,20 @@ void Connection::connect() {
     _client.updateLoginButton(nullptr);
 
     _aThreadIsConnecting = false;
+}
+
+bool Connection::shouldAttemptReconnection() const {
+    if (_state == CONNECTED)
+        return false;
+
+    if (_aThreadIsConnecting)
+        return false;
+
+    auto timeNow = SDL_GetTicks();
+    if (timeNow - _timeOfLastConnectionAttempt < TIME_BETWEEN_CONNECTION_ATTEMPTS)
+        return false;
+
+    return true;
 }
 
 void Connection::showError(const std::string & msg) const {

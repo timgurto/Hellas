@@ -31,6 +31,7 @@ public:
     State state() const { return _state; } // TODO: remove
     bool isAThreadConnecting() const { return _aThreadIsConnecting; } // TODO: remove
     void aThreadIsConnecting() { _aThreadIsConnecting = true; } // TODO: remove
+    bool shouldAttemptReconnection() const;
 
     void showError(const std::string &msg) const;
 
