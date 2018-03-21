@@ -17,5 +17,7 @@ void Picture::refresh(){
 
 void Picture::changeTexture(const Texture &srcTexture){
     _srcTexture = srcTexture;
+    this->width(srcTexture.width());
+    this->height(srcTexture.height());
     markChanged();
 }
