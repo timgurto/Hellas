@@ -31,7 +31,6 @@ void Client::loginScreenLoop(){
     if (_connection.shouldAttemptReconnection()){
         _connection = { *this };
 
-        _connection.aThreadIsConnecting();
         std::thread{ connectToServerStatic }.detach();
     }
 

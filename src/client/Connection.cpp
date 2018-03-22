@@ -15,6 +15,11 @@ void Connection::initialize(const std::string &serverIP) {
     defaultServerIP = readFromURL(serverIP);
 }
 
+Connection::~Connection() {
+    while (_aThreadIsConnecting)
+        ;
+}
+
 void Connection::getNewMessages() {
     auto readFDs = fd_set{};
     FD_ZERO(&readFDs);
@@ -37,6 +42,8 @@ void Connection::getNewMessages() {
 }
 
 void Connection::connect() {
+    _aThreadIsConnecting = true;
+
     _state = TRYING_TO_CONNECT;
     auto timeNow = SDL_GetTicks();
     _timeOfLastConnectionAttempt = timeNow;

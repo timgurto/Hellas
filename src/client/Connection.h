@@ -21,6 +21,7 @@ public:
 
     Connection(Client &client);
     static void initialize(const std::string &serverIP);
+    ~Connection();
 
     void getNewMessages();
     void connect();
@@ -29,8 +30,6 @@ public:
     void clearSocket() { _socket = {}; } // TODO: remove
     void state(State s) { _state = s; } // TODO: remove
     State state() const { return _state; } // TODO: remove
-    bool isAThreadConnecting() const { return _aThreadIsConnecting; } // TODO: remove
-    void aThreadIsConnecting() { _aThreadIsConnecting = true; } // TODO: remove
     bool shouldAttemptReconnection() const;
 
     void showError(const std::string &msg) const;

@@ -275,9 +275,6 @@ void Client::run(){
             ;
     }
     _running = false;
-
-    while (_connection.isAThreadConnecting())
-        ;
 }
 
 void Client::exitGame(void * pClient) {
