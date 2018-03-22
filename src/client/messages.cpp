@@ -161,7 +161,6 @@ void Client::handleMessage(const std::string &msg){
         case WARNING_SERVER_FULL:
             if (del != MSG_END)
                 break;
-            _connection.clearSocket();
             _loggedIn = false;
             infoWindow("The server is full; attempting reconnection.");
             break;

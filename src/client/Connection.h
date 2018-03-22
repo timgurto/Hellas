@@ -27,7 +27,6 @@ public:
     void connect();
 
     const Socket &socket() const { return _socket; } // TODO: remove
-    void clearSocket() { _socket = {}; } // TODO: remove
     void state(State s) { _state = s; } // TODO: remove
     State state() const { return _state; } // TODO: remove
     bool shouldAttemptReconnection() const;

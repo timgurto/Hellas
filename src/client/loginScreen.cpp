@@ -43,7 +43,6 @@ void Client::loginScreenLoop(){
     // Ensure server connectivity
     if (_time - _lastPingReply > SERVER_TIMEOUT) {
         _serverConnectionIndicator->set(Indicator::FAILED);
-        _connection.clearSocket();
         _loggedIn = false;
     }
 
