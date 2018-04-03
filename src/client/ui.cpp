@@ -6,6 +6,8 @@
 #include "ui/TextBox.h"
 
 void Client::showErrorMessage(const std::string & message, Color color)  const{
+    if (!_lastErrorMessage)
+        return;
     _lastErrorMessage->changeText(message);
     _lastErrorMessage->setColor(color);
 
