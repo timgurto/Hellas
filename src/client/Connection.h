@@ -16,7 +16,8 @@ public:
         CONNECTED,         // }
         LOGGED_IN,
         LOADED,
-        CONNECTION_ERROR
+        CONNECTION_ERROR,
+        FINISHED
     };
 
     Connection(Client &client);

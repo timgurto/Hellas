@@ -275,6 +275,7 @@ void Client::run(){
             ;
     }
     _running = false;
+    _connection.state(Connection::FINISHED);
 }
 
 void Client::exitGame(void * pClient) {
