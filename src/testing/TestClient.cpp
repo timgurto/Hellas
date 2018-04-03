@@ -74,7 +74,15 @@ TestClient &TestClient::operator=(TestClient &rhs){
 void TestClient::run(){
     Client &client = *_client;
     std::thread([& client](){ client.run(); }).detach();
-    WAIT_UNTIL(connectionState() == Connection::CONNECTED);
+    //WAIT_UNTIL(connectionState() == Connection::CONNECTED);
+
+    REPEAT_FOR_MS(5000) {
+        if (connectionState() == Connection::CONNECTED)
+            break;
+    }
+    if (connectionState() != Connection::CONNECTED)
+        return;
+
     _client->login(nullptr);
     WAIT_UNTIL(connectionState() == Connection::LOGGED_IN);
 }
