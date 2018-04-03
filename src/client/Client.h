@@ -389,6 +389,7 @@ private:
     bool _loop;
     bool _running; // True while run() is being executed.
     bool _freeze; // For testing purposes only; should otherwise remain false.
+    bool _shouldAutoLogIn{ false }; // Used for tests
     static void exitGame(void *client);
 
     TTF_Font *_defaultFont;

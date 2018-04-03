@@ -34,6 +34,9 @@ void Client::loginScreenLoop(){
         std::thread{ connectToServerStatic }.detach();
     }
 
+    if (_shouldAutoLogIn && _connection.state() == Connection::CONNECTED)
+        login(nullptr);
+
     // Send ping
     if (_time - _lastPingSent > PING_FREQUENCY) {
         sendMessage(CL_PING, makeArgs(_time));
