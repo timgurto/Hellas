@@ -7,6 +7,7 @@ TestClient::TestClient():
 _client(new Client){
     _client->loadData("testing/data/minimal");
     _client->setRandomUsername();
+    _client->_shouldAutoLogIn = true;
     run();
 }
 
