@@ -37,6 +37,7 @@ public:
                    const std::string &owner = "");
     void addNPC(const std::string &typeName, const MapPoint &loc = MapPoint{});
     void removeEntity(Entity &entity) { _server->removeEntity(entity); }
+    void waitForUsers(size_t numUsers) const;
 
     Server *operator->(){ return _server; }
     void loadData(const std::string path){ _server->loadData(path); }

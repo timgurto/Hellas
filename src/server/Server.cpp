@@ -290,9 +290,8 @@ void Server::addUser(const Socket &socket, const std::string &name, const std::s
 
     // Add new user to list
     std::set<User>::const_iterator it = _users.insert(newUserToInsert).first;
-    _usersByName[name] = &*it;
-
     auto &newUser = const_cast<User &>(*it);
+    _usersByName[name] = &*it;
 
     const bool userExisted = readUserData(newUser);
     if (!userExisted) {
@@ -373,12 +372,13 @@ void Server::addUser(const Socket &socket, const std::string &name, const std::s
     sendMessage(newUser.socket(), SV_KNOWN_SPELLS, knownSpellsString);
 
     // Add user to location-indexed trees
-    const User *userP = &*it;
-    getCollisionChunk(newUser.location()).addEntity(userP);
-    _usersByX.insert(userP);
-    _usersByY.insert(userP);
-    _entitiesByX.insert(userP);
-    _entitiesByY.insert(userP);
+    getCollisionChunk(newUser.location()).addEntity(&newUser);
+    _usersByX.insert(&newUser);
+    _usersByY.insert(&newUser);
+    _entitiesByX.insert(&newUser);
+    _entitiesByY.insert(&newUser);
+
+    newUser.markAsInitialised();
 }
 
 void Server::removeUser(const std::set<User>::iterator &it){

@@ -84,6 +84,12 @@ void TestServer::addNPC(const std::string &typeName, const MapPoint &loc){
     _server->addNPC(npcType, loc);
 }
 
+void TestServer::waitForUsers(size_t numUsers) const {
+    WAIT_UNTIL(_server->_users.size() == numUsers);
+    for (auto &user : _server->_users)
+        WAIT_UNTIL(user.isInitialised());
+}
+
 User &TestServer::findUser(const std::string &username) {
     auto usersByName = _server->_usersByName;
     auto it = usersByName.find(username);

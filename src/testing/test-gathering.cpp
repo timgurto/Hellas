@@ -7,7 +7,7 @@ TEST_CASE("Gather an item from an object"){
     TestClient c = TestClient::WithData("basic_rock");
 
     //Move user to middle
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
     User &user = s.getFirstUser();
     user.updateLocation({ 10, 10 });
 

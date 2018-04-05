@@ -61,6 +61,8 @@ private:
 
     MapPoint _respawnPoint;
 
+    bool _isInitialised{ false };
+
     XP _xp = 0;
 #ifdef _DEBUG
     Level _level = 1;
@@ -117,6 +119,8 @@ public:
     const ServerItem::vect_t &gear() const { return _gear; }
 
     static void init();
+    bool isInitialised() const { return _isInitialised; }
+    void markAsInitialised() { _isInitialised = true; }
 
     void updateStats() override;
     ms_t timeToRemainAsCorpse() const override { return 0; }
