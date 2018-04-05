@@ -99,3 +99,16 @@ TEST_CASE("New servers clear old user data"){
         CHECK(alice.health() == alice.stats().maxHealth);
     }
 }
+
+TEST_CASE("The client handles a server appearing") {
+    // Given a client
+    auto c = TestClient{};
+
+    REPEAT_FOR_MS(4000);
+
+    // When a server appears
+    auto s = TestServer{};
+
+    // Then the client connects to it
+    s.waitForUsers(1);
+}
