@@ -106,6 +106,7 @@ public:
     bool isStunned() const { return _stats.stunned; }
 
     void health(Hitpoints health) { _health = health; }
+    void initStatsFromType();
     void energy(Energy energy) { _energy = energy; }
     bool isDead() const { return _health == 0; }
 

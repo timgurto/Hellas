@@ -18,14 +18,12 @@ Entity::Entity(const EntityType *type, const MapPoint &loc):
     _location(loc),
     _lastLocUpdate(SDL_GetTicks()),
 
-    _stats(type->baseStats()),
-    _health(_stats.maxHealth),
-    _energy(_stats.maxEnergy),
-
     _attackTimer(0),
     _target(nullptr),
     _loot(nullptr)
-{}
+{
+    initStatsFromType();
+}
 
 Entity::Entity(size_t serial): // For set/map lookup ONLY
     _type(nullptr),
@@ -98,6 +96,12 @@ bool Entity::combatTypeCanHaveOutcome(CombatType type, CombatResult outcome, Spe
 
 void Entity::sendGotHitMessageTo(const User & user) const {
     Server::_instance->sendMessage(user.socket(), SV_ENTITY_WAS_HIT, makeArgs(serial()));
+}
+
+void Entity::initStatsFromType() {
+    _stats = _type->baseStats();
+    _health = _stats.maxHealth;
+    _energy = _stats.maxEnergy;
 }
 
 void Entity::reduceHealth(int damage) {

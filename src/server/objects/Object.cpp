@@ -13,8 +13,11 @@ Object::Object(const ObjectType *type, const MapPoint &loc):
 {
     setType(type);
     objType().incrementCounter();
+
     if (type != &User::OBJECT_TYPE)
         type->initStrengthAndMaxHealth();
+    initStatsFromType();
+
     _loot.reset(new ObjectLoot(*this));
 }
 
