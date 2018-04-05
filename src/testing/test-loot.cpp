@@ -66,7 +66,7 @@ TEST_CASE("Chance for strength-items as loot from object", "[loot][strength]"){
     // And a snowman object type made of 1000 snowflakes;
     TestServer s = TestServer::WithData("snowman");
     TestClient c = TestClient::WithData("snowman");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
 
     // And a snowman exists
     s.addObject("snowman", { 10, 15 });
@@ -116,7 +116,7 @@ TEST_CASE("Looting from a container", "[loot][container][only]"){
     // And a gold item that stacks to 100;
     TestServer s = TestServer::WithData("chest_of_gold");
     TestClient c = TestClient::WithData("chest_of_gold");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
 
     // And a chest exists;
     s.addObject("chest", { 10, 15 });
@@ -222,7 +222,7 @@ TEST_CASE("New users are alerted to lootable objects", "[loot]"){
 
     // When a client logs in
     TestClient c = TestClient::WithData("snowman");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
 
     // Then the client finds out that it's lootable
     CHECK(c.waitForMessage(SV_LOOTABLE));

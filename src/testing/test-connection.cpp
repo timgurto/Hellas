@@ -15,7 +15,7 @@ TEST_CASE("Run a client in a separate process", "[remote]"){
     RemoteClient alice("-username Alice");
 
     // Then it successfully logs into the server
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
 }
 
 TEST_CASE("Concurrent local and remote clients", "[remote]"){
@@ -27,7 +27,7 @@ TEST_CASE("Concurrent local and remote clients", "[remote]"){
     RemoteClient alice("-username Alice");
 
     // Then both successfully log into the server
-    WAIT_UNTIL(s.users().size() == 2);
+    s.waitForUsers(2);
 }
 
 TEST_CASE("Run TestClient with custom username"){
@@ -36,7 +36,7 @@ TEST_CASE("Run TestClient with custom username"){
 
     // When a TestClient is created with a custom username
     TestClient alice = TestClient::WithUsername("Alice");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
 
     // Then the client logs in with that username
     CHECK(alice->username() == "Alice");
@@ -50,7 +50,7 @@ TEST_CASE("Removed users are removed from co-ord indices"){
     {
         TestClient c;
     }
-    WAIT_UNTIL(s.users().empty());
+    s.waitForUsers(0);
 
     // Then that user is not represented in the x-indexed objects list
     CHECK(s.entitiesByX().empty());
@@ -61,7 +61,7 @@ TEST_CASE("Server remains functional with unresponsive client", "[.slow]"){
     TestServer s;
     {
         TestClient badClient;
-        WAIT_UNTIL(s.users().size() == 1);
+        s.waitForUsers(1);
 
         // When the client freezes and becomes unresponsive;
         badClient.freeze();
@@ -72,7 +72,7 @@ TEST_CASE("Server remains functional with unresponsive client", "[.slow]"){
 
     // Then the server can still accept connections
     TestClient goodClient;
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
 }
 
 TEST_CASE("Map with extra row doesn't crash client", "[.flaky]"){
@@ -85,7 +85,7 @@ TEST_CASE("New servers clear old user data"){
     {
         TestServer s;
         TestClient c = TestClient::WithUsername("Alice");
-        WAIT_UNTIL(s.users().size() == 1);
+        s.waitForUsers(1);
         User &alice = s.getFirstUser();
         CHECK(alice.health() == alice.stats().maxHealth);
         alice.reduceHealth(1);
@@ -94,7 +94,7 @@ TEST_CASE("New servers clear old user data"){
     {
         TestServer s;
         TestClient c = TestClient::WithUsername("Alice");
-        WAIT_UNTIL(s.users().size() == 1);
+        s.waitForUsers(1);
         User &alice = s.getFirstUser();
         CHECK(alice.health() == alice.stats().maxHealth);
     }

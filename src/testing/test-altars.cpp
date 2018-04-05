@@ -13,7 +13,7 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
     SECTION("Bob can't have a second wife") {
         // When Bob logs in,
         auto c = TestClient::WithUsernameAndData("Bob", "wives");
-        WAIT_UNTIL(s.users().size() == 1);
+        s.waitForUsers(1);
 
         // And tries to get a readhead wife
         c.sendMessage(CL_CONSTRUCT, makeArgs("redhead", 10, 15));
@@ -28,7 +28,7 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
     SECTION("Charlie can have a wife too") {
         // When Charlie logs in,
         auto c = TestClient::WithUsernameAndData("Charlie", "wives");
-        WAIT_UNTIL(s.users().size() == 1);
+        s.waitForUsers(1);
         auto &user = s.getFirstUser();
 
         // And tries to get a readhead wife
@@ -45,7 +45,7 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
 
         // When Bob logs in,
         auto c = TestClient::WithUsernameAndData("Bob", "wives");
-        WAIT_UNTIL(s.users().size() == 1);
+        s.waitForUsers(1);
 
         // And joins Athens,
         auto &bob = s.getFirstUser();
@@ -69,7 +69,7 @@ TEST_CASE("A user can't build multiple player-unique objects", "[player-unique]"
 
         // When Bob logs in,
         auto c = TestClient::WithUsernameAndData("Bob", "wives");
-        WAIT_UNTIL(s.users().size() == 1);
+        s.waitForUsers(1);
 
         // And tries to get a readhead wife
         c.sendMessage(CL_CONSTRUCT, makeArgs("redhead", 10, 15));

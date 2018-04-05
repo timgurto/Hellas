@@ -17,7 +17,7 @@ TEST_CASE("No erroneous cities", "[city]"){
 TEST_CASE("Add a player to a city", "[city]"){
     TestServer s;
     TestClient c = TestClient::WithUsername("Alice");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     User &alice = s.getFirstUser();
 
     s.cities().createCity("Athens");
@@ -29,7 +29,7 @@ TEST_CASE("Add a player to a city", "[city]"){
 TEST_CASE("No erroneous city membership", "[city]"){
     TestServer s;
     TestClient c = TestClient::WithUsername("Alice");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
 
     s.cities().createCity("Athens");
 
@@ -39,7 +39,7 @@ TEST_CASE("No erroneous city membership", "[city]"){
 TEST_CASE("Cities can't be overwritten", "[city]"){
     TestServer s;
     TestClient c = TestClient::WithUsername("Alice");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     User &alice = s.getFirstUser();
 
     s.cities().createCity("Athens");
@@ -58,7 +58,7 @@ TEST_CASE("Default client knows no city membership", "[city]"){
 TEST_CASE("Client is alerted to city membership", "[city]"){
     TestServer s;
     TestClient c = TestClient::WithUsername("Alice");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     User &alice = s.getFirstUser();
 
     s.cities().createCity("Athens");
@@ -73,7 +73,7 @@ TEST_CASE("Cities are persistent", "[city][persistence]"){
     {
         TestServer server1;
         TestClient client = TestClient::WithUsername("Alice");
-        WAIT_UNTIL(server1.users().size() == 1);
+        server1.waitForUsers(1);
         User &alice = server1.getFirstUser();
 
         server1.cities().createCity("Athens");
@@ -90,7 +90,7 @@ TEST_CASE("Clients are told if in a city on login", "[city]"){
     server.cities().createCity("Athens");
     {
         TestClient client1 = TestClient::WithUsername("Alice");
-        WAIT_UNTIL(server.users().size() == 1);
+        server.waitForUsers(1);
         User &alice = server.getFirstUser();
         server.cities().addPlayerToCity(alice, "Athens");
     }
@@ -104,7 +104,7 @@ TEST_CASE("Clients know nearby players' cities", "[.flaky][remote][city]"){
     TestServer s;
     s.cities().createCity("Athens");
     RemoteClient rc("-username Alice");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     User &serverAlice = s.getFirstUser();
     s.cities().addPlayerToCity(serverAlice, "Athens");
 
@@ -122,7 +122,7 @@ TEST_CASE("A player can cede an object to his city", "[.slow][city]"){
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");
     s.cities().createCity("Athens");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     User &user = s.getFirstUser();
     s.cities().addPlayerToCity(user, "Athens");
 
@@ -145,7 +145,7 @@ TEST_CASE("A player must be in a city to cede", "[.slow][city]"){
     // Given a user who owns a rock
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     User &user = s.getFirstUser();
     s.addObject("rock", { 10, 10 }, user.name());
 
@@ -166,7 +166,7 @@ TEST_CASE("A player can only cede his own objects", "[.slow][city]") {
     TestClient c = TestClient::WithData("basic_rock");
     TestServer s = TestServer::WithData("basic_rock");
     s.cities().createCity("Athens");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     User &user = s.getFirstUser();
     s.cities().addPlayerToCity(user, "Athens");
 
@@ -189,7 +189,7 @@ TEST_CASE("A player can leave a city", "[city]") {
     // Given a user named Alice;
     auto c = TestClient::WithUsername("Alice");
     auto s = TestServer{};
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     auto &user = s.getFirstUser();
 
     // Who is a member of Athens;
@@ -219,7 +219,7 @@ TEST_CASE("A player can't leave a city if not in one", "[city]") {
     // Given a user;
     auto c = TestClient{};
     auto s = TestServer{};
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     auto &user = s.getFirstUser();
 
     // When the user sends a leave-city message
@@ -233,7 +233,7 @@ TEST_CASE("A king can't leave his city", "[city][king]") {
     // Given a user named Alice;
     auto c = TestClient::WithUsername("Alice");
     auto s = TestServer{};
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     auto &user = s.getFirstUser();
 
     // Who is a member of Athens;
@@ -260,7 +260,7 @@ TEST_CASE("Kingship is persistent", "[king]") {
     {
         auto c = TestClient::WithUsername("Alice");
         auto s = TestServer{};
-        WAIT_UNTIL(s.users().size() == 1);
+        s.waitForUsers(1);
         auto &user = s.getFirstUser();
 
         // Who is a king
@@ -271,7 +271,7 @@ TEST_CASE("Kingship is persistent", "[king]") {
     {
         auto c = TestClient::WithUsername("Alice");
         auto s = TestServer::KeepingOldData();
-        WAIT_UNTIL(s.users().size() == 1);
+        s.waitForUsers(1);
 
         // Then Alice is still a king
         WAIT_UNTIL(s.kings().isPlayerAKing("Alice"));

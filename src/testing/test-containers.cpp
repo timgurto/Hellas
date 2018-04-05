@@ -18,7 +18,7 @@ TEST_CASE("Dismantle an object with an inventory", "[.flaky][container]"){
     TestServer s = TestServer::WithData("dismantle");
     // And a user at (10, 10);
     TestClient c = TestClient::WithData("dismantle");
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
     User &user = s.getFirstUser();
     user.updateLocation({ 10, 10 });
     // And a box at (10, 10) that is deconstructible and has an empty inventory
@@ -58,7 +58,7 @@ TEST_CASE("Client-side containers don't spontaneously clear", "[container]") {
     // Given a server and client, and a "box" container object,
     auto s = TestServer::WithData("dismantle");
     auto c = TestClient::WithData("dismantle");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     auto username = c.name();
 
     // And a single box belonging to the user

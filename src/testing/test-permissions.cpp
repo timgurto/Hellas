@@ -17,7 +17,7 @@ TEST_CASE("Constructing an object grants ownership", "[ownership]"){
     // Given a logged-in client
     TestServer s = TestServer::WithData("brick_wall");
     TestClient c = TestClient::WithData("brick_wall");
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
 
     // When he constructs a wall
     c.sendMessage(CL_CONSTRUCT, makeArgs("wall", 10, 10));
@@ -53,7 +53,7 @@ TEST_CASE("The owner can access an owned object", "[ownership]"){
     // Given a rock owned by a user
     TestServer s = TestServer::WithData("basic_rock");
     TestClient c = TestClient::WithData("basic_rock");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     User &user = s.getFirstUser();
     s.addObject("rock", { 10, 10 }, user.name());
     WAIT_UNTIL (c.objects().size() == 1);
@@ -134,7 +134,7 @@ TEST_CASE("City members can use city objects", "[city][ownership]"){
     rock.permissions().setCityOwner("Athens");
     // And a client, who is a member of Athens
     TestClient c = TestClient::WithData("basic_rock");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     User &user = s.getFirstUser();
     s.cities().addPlayerToCity(user, "Athens");
 
@@ -162,7 +162,7 @@ TEST_CASE("Non-members cannot use city objects", "[city][ownership]"){
     rock.permissions().setCityOwner("Athens");
     // And a client, not a member of any city
     TestClient c = TestClient::WithData("basic_rock");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
 
     // When he attempts to gather the rock
     WAIT_UNTIL (c.objects().size() == 1);
@@ -254,7 +254,7 @@ TEST_CASE("Objects can be granted to citizens", "[king][city][ownership][grant]"
 
     // And its king, Alice;
     auto c = TestClient::WithUsernameAndData("Alice", "basic_rock");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     auto &alice = s.getFirstUser();
     s.cities().addPlayerToCity(alice, "Athens");
     s->makePlayerAKing(alice);
@@ -280,7 +280,7 @@ TEST_CASE("Non kings can't grant objects", "[king][city][ownership][grant]") {
 
     // And its citizen, Alice;
     auto c = TestClient::WithUsernameAndData("Alice", "basic_rock");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     auto &alice = s.getFirstUser();
     s.cities().addPlayerToCity(alice, "Athens");
 
@@ -308,7 +308,7 @@ TEST_CASE("Unowned objects cannot be granted", "[city][ownership][grant]") {
 
     // And its king, Alice;
     auto c = TestClient::WithUsernameAndData("Alice", "basic_rock");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     auto &alice = s.getFirstUser();
     s.cities().addPlayerToCity(alice, "Athens");
     s->makePlayerAKing(alice);
@@ -317,7 +317,6 @@ TEST_CASE("Unowned objects cannot be granted", "[city][ownership][grant]") {
     s.addObject("rock");
 
     // When Alice tries to grant the rock to herself
-    WAIT_UNTIL(s.users().size() == 1);
     auto &rock = s.getFirstObject();
     c.sendMessage(CL_GRANT, makeArgs(rock.serial(), "Alice"));
 
@@ -338,7 +337,7 @@ TEST_CASE("Only objects owned by your city can be granted", "[king][city][owners
 
     // And Alice, Athens' king;
     auto c = TestClient::WithUsernameAndData("Alice", "basic_rock");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     auto &alice = s.getFirstUser();
     s.cities().addPlayerToCity(alice, "Athens");
     s->makePlayerAKing(alice);
@@ -349,7 +348,6 @@ TEST_CASE("Only objects owned by your city can be granted", "[king][city][owners
     rock.permissions().setCityOwner("Sparta");
 
     // When Alice tries to grant the rock to herself
-    WAIT_UNTIL(s.users().size() == 1);
     c.sendMessage(CL_GRANT, makeArgs(rock.serial(), "Alice"));
 
     // Then Alice receives an error message;

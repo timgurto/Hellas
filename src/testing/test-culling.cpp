@@ -11,6 +11,7 @@ TEST_CASE("On login, players are told about their distant objects", "[.flaky][cu
     // When Alice logs in
     TestClient c = TestClient::WithUsernameAndData("Alice", "signpost");
     WAIT_UNTIL_TIMEOUT(s.users().size() == 1, 10000);
+    s.waitForUsers(1);
 
     // Alice knows about the object
     REPEAT_FOR_MS(500);
@@ -25,6 +26,7 @@ TEST_CASE("On login, players are not told about others' distant objects", "[.fla
     // When Alice logs in
     TestClient c = TestClient::WithUsernameAndData("Alice", "signpost");
     WAIT_UNTIL_TIMEOUT(s.users().size() == 1, 10000);
+    s.waitForUsers(1);
 
     // Alice does not know about the object
     REPEAT_FOR_MS(500);
@@ -37,12 +39,12 @@ TEST_CASE("When one user approaches another, he finds out about him", "[.slow][c
 
     // And a client at (10, 10);
     TestClient c = TestClient::WithData("signpost");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
 
     // And a client at (1000, 10);
     s.changePlayerSpawn({ 1000, 10 });
     RemoteClient rc("-data testing/data/signpost");
-    WAIT_UNTIL(s.users().size() == 2);
+    s.waitForUsers(2);
     REPEAT_FOR_MS(500);
     CHECK(c.otherUsers().size() == 0);
 
@@ -67,7 +69,7 @@ TEST_CASE("When a player moves away from his object, he is still aware of it", "
 
     // And Alice is logged in
     TestClient c = TestClient::WithUsernameAndData("Alice", "signpost");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     WAIT_UNTIL(c.objects().size() == 1);
 
     // When Alice moves out of range of the signpost
@@ -99,7 +101,7 @@ TEST_CASE("When a player moves away from his city's object, he is still aware of
     TestClient c = TestClient::WithUsernameAndData("Alice", "signpost");
 
     // And Alice is a member of Athens
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     User &user = s.getFirstUser();
     s.cities().addPlayerToCity(user, "Athens");
 

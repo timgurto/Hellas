@@ -76,7 +76,7 @@ TEST_CASE("Other players show up on the map", "[map][remote]"){
     RemoteClient rc;
 
     // When both clients log in;
-    WAIT_UNTIL(s.users().size() == 2);
+    s.waitForUsers(2);
 
     // And the first client opens his map
     c.mapWindow()->show();
@@ -92,7 +92,7 @@ TEST_CASE("When a player declares war, his map pin changes color", "[map][remote
     RemoteClient c2("-username Secunda");
 
     // And the first has his map open;
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     c.mapWindow()->show();
 
     // And sees two map pins

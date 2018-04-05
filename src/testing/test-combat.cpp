@@ -9,7 +9,7 @@ TEST_CASE("Players can attack immediately"){
     TestClient c = TestClient::WithData("ant");
 
     //Move user to middle
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
     User &user = s.getFirstUser();
 
     // Add NPC
@@ -31,7 +31,7 @@ TEST_CASE("Belligerents can target each other", "[remote]"){
     TestServer s;
     TestClient alice = TestClient::WithUsername("Alice");
     RemoteClient bob("-username Bob");
-    WAIT_UNTIL(s.users().size() == 2);
+    s.waitForUsers(2);
     User
         &uAlice = s.findUser("Alice"),
         &uBob = s.findUser("Bob");
@@ -45,7 +45,7 @@ TEST_CASE("Peaceful players can't target each other", "[remote]"){
     TestServer s;
     TestClient alice = TestClient::WithUsername("Alice");
     RemoteClient bob("-username Bob");
-    WAIT_UNTIL(s.users().size() == 2);
+    s.waitForUsers(2);
     User
         &uAlice = s.findUser("Alice"),
         &uBob = s.findUser("Bob");
@@ -60,7 +60,7 @@ TEST_CASE("Belliegerents can fight", "[remote]"){
     TestServer s;
     TestClient alice = TestClient::WithUsername("Alice");
     RemoteClient rcBob("-username Bob");
-    WAIT_UNTIL(s.users().size() == 2);
+    s.waitForUsers(2);
 
     // And Alice is at war with Bob
     alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Bob");
@@ -88,7 +88,7 @@ TEST_CASE("Peaceful players can't fight", "[remote]"){
     TestServer s;
     TestClient alice = TestClient::WithUsername("Alice");
     RemoteClient bob("-username Bob");
-    WAIT_UNTIL(s.users().size() == 2);
+    s.waitForUsers(2);
 
     User
         &uAlice = s.findUser("Alice"),
@@ -109,7 +109,7 @@ TEST_CASE("Attack rate is respected", "[.flaky]"){
 
     // And a nearby user
     TestClient c;
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     const User &user = s.getFirstUser();
     Hitpoints before = user.health();
 
@@ -137,7 +137,7 @@ TEST_CASE("Belligerents can attack each other's objects"){
     s.wars().declare(username, "Alice");
 
     // When he targets the vase
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     c.sendMessage(CL_TARGET_ENTITY, makeArgs(vase.serial()));
 
     // Then the vase has 0 health
@@ -151,7 +151,7 @@ TEST_CASE("Players can target distant entities"){
 
     // And a wolf NPC on the other side of the map
     s.addNPC("wolf", { 200, 200 });
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     const NPC &wolf = s.getFirstNPC();
     const User &user = s.getFirstUser();
     REQUIRE(distance(wolf.collisionRect(), user.collisionRect()) > Server::ACTION_DISTANCE);
@@ -175,7 +175,7 @@ TEST_CASE("Clients receive nearby users' health values", "[remote]"){
     s.wars().declare("Alice", "Bob");
 
     // When Alice is close to Bob;
-    WAIT_UNTIL(s.users().size() == 2);
+    s.waitForUsers(2);
     const User
         &alice = s.findUser("Alice"),
         &bob = s.findUser("Bob");
@@ -197,7 +197,7 @@ TEST_CASE("A player dying doesn't crash the server"){
     // Given a server and client;
     TestServer s;
     TestClient c;
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
 
     // When the user dies
     User &user = s.getFirstUser();

@@ -8,7 +8,7 @@ TEST_CASE("Thin objects block movement"){
     TestClient c = TestClient::WithData("thin_wall");
 
     // And a user;
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     User &user = s.getFirstUser();
     user.updateLocation({ 10, 15 });
 
@@ -31,7 +31,7 @@ TEST_CASE("Dead objects don't block movement"){
     TestClient c = TestClient::WithData("thin_wall");
 
     // And a user;
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     User &user = s.getFirstUser();
     user.updateLocation({ 10, 15 });
 
@@ -81,7 +81,7 @@ TEST_CASE("Out-of-range objects are forgotten", "[.slow][culling][only]"){
     s.addObject("signpost", {10, 15});
 
     // And the client is aware of it
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     WAIT_UNTIL(c.objects().size() == 1);
 
     // When the client moves out of range of the signpost

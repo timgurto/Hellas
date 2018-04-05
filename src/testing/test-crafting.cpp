@@ -5,7 +5,7 @@
 TEST_CASE("Recipes can be known by default"){
     TestServer s = TestServer::WithData("box_from_nothing");
     TestClient c = TestClient::WithData("box_from_nothing");
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
 
     User &user = s.getFirstUser();
     c.sendMessage(CL_CRAFT, "box");
@@ -20,7 +20,7 @@ TEST_CASE("Recipes can be known by default"){
 TEST_CASE("Terrain as tool", "[tool]"){
     TestServer s = TestServer::WithData("daisy_chain");
     TestClient c = TestClient::WithData("daisy_chain");
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
 
     User &user = s.getFirstUser();
     c.sendMessage(CL_CRAFT, "daisyChain");
@@ -35,7 +35,7 @@ TEST_CASE("Terrain as tool", "[tool]"){
 TEST_CASE("Client sees default recipes"){
     TestServer s = TestServer::WithData("box_from_nothing");
     TestClient c = TestClient::WithData("box_from_nothing");
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
 
     c.showCraftingWindow();
 
@@ -49,7 +49,7 @@ TEST_CASE("Crafting is allowed if materials will vacate a slot"){
     TestClient c = TestClient::WithData("cooking_meat");
 
     // And the user has an inventory full of meat
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     User &u = s.getFirstUser();
     const ServerItem &meat = *s.items().find(ServerItem("meat"));
     u.giveItem(&meat, User::INVENTORY_SIZE);
@@ -69,7 +69,7 @@ TEST_CASE("NPCs don't cause tool checks to crash", "[tool][crash]") {
     // Given a server and client with an NPC type defined;
     auto s = TestServer::WithData("wolf");
     auto c = TestClient::WithData("wolf");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     const auto &user = s.getFirstUser();
 
     // And an NPC;

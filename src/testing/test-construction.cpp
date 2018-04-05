@@ -8,7 +8,7 @@ TEST_CASE("Construction materials can be added", "[construction]"){
     TestServer s = TestServer::WithData("brick_wall");
     TestClient c = TestClient::WithData("brick_wall");
     // And a brick item in the user's inventory
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
     User &user = s.getFirstUser();
     user.giveItem(&*s.items().begin());
     WAIT_UNTIL(c.inventory()[0].first != nullptr);
@@ -28,7 +28,7 @@ TEST_CASE("Construction materials can be added", "[construction]"){
 TEST_CASE("Client knows about default constructions", "[construction]"){
     TestServer s = TestServer::WithData("brick_wall");
     TestClient c = TestClient::WithData("brick_wall");
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
 
     CHECK(c.knowsConstruction("wall"));
 }
@@ -36,7 +36,7 @@ TEST_CASE("Client knows about default constructions", "[construction]"){
 TEST_CASE("New client doesn't know any locked constructions", "[construction]"){
     TestServer s = TestServer::WithData("secret_table");
     TestClient c = TestClient::WithData("secret_table");
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
 
     CHECK_FALSE(c.knowsConstruction("table"));
 }
@@ -44,7 +44,7 @@ TEST_CASE("New client doesn't know any locked constructions", "[construction]"){
 TEST_CASE("Unique objects are unique"){
     TestServer s = TestServer::WithData("unique_throne");
     TestClient c = TestClient::WithData("unique_throne");
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
 
     c.sendMessage(CL_CONSTRUCT, makeArgs("throne", 10, 10));
     WAIT_UNTIL (s.entities().size() == 1);
@@ -65,7 +65,7 @@ TEST_CASE("Constructing invalid object fails gracefully", "[construction]"){
 TEST_CASE("Objects can be unbuildable"){
     TestServer s = TestServer::WithData("unbuildable_treehouse");
     TestClient c = TestClient::WithData("unbuildable_treehouse");
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
 
     c.sendMessage(CL_CONSTRUCT, makeArgs("treehouse", 10, 10));
     REPEAT_FOR_MS(1200);
@@ -76,7 +76,7 @@ TEST_CASE("Objects can be unbuildable"){
 TEST_CASE("Clients can't see unbuildable constructions", "[construction]"){
     TestServer s = TestServer::WithData("unbuildable_treehouse");
     TestClient c = TestClient::WithData("unbuildable_treehouse");
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
     
     CHECK_FALSE(c.knowsConstruction("treehouse"));
 }
@@ -84,7 +84,7 @@ TEST_CASE("Clients can't see unbuildable constructions", "[construction]"){
 TEST_CASE("Objects without materials can't be built", "[construction]"){
     TestServer s = TestServer::WithData("basic_rock");
     TestClient c = TestClient::WithData("basic_rock");
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
     
     c.sendMessage(CL_CONSTRUCT, makeArgs("rock", 10, 15));
     REPEAT_FOR_MS(1200);
@@ -94,7 +94,7 @@ TEST_CASE("Objects without materials can't be built", "[construction]"){
 TEST_CASE("Construction tool requirements are enforced", "[construction]"){
     TestServer s = TestServer::WithData("computer");
     TestClient c = TestClient::WithData("computer");
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
 
     c.sendMessage(CL_CONSTRUCT, makeArgs("computer", 10, 10));
     CHECK(c.waitForMessage(WARNING_NEED_TOOLS));
@@ -109,7 +109,7 @@ TEST_CASE("Construction progress is persistent", "[persistence][construction]") 
 
         // And Alice has a brick
         auto c = TestClient::WithUsernameAndData("Alice", "brick_wall");
-        WAIT_UNTIL(s.users().size() == 1);
+        s.waitForUsers(1);
         auto &alice = s.getFirstUser();
         const auto *brick = &s.getFirstItem();
         alice.giveItem(brick);
@@ -141,7 +141,7 @@ TEST_CASE("A construction material can 'return' an item", "[construction]") {
     auto s = TestServer::WithData("matches");
     auto c = TestClient::WithData("matches");
     // And matches are in the user's inventory
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     auto &user = s.getFirstUser();
     auto &matches = *s.items().find(ServerItem{ "matches" });
     user.giveItem(&matches);

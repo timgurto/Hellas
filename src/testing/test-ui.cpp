@@ -31,7 +31,7 @@ TEST_CASE("View merchant slots in window", "[.flaky]"){
     TestServer s = TestServer::WithData("merchant");
     TestClient c = TestClient::WithData("merchant");
     // Move user to middle
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
     User &user = s.getFirstUser();
     user.updateLocation({ 10, 10 });
     // Add a single vending machine
@@ -66,7 +66,7 @@ TEST_CASE("New client can build default constructions"){
 
     // When a client logs in
     TestClient c = TestClient::WithData("brick_wall");
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
 
     // His construction window contains at least one item
     CHECK_FALSE(c.uiBuildList().empty());
@@ -76,7 +76,7 @@ TEST_CASE("New client has target UI hidden"){
     // When a client logs in
     TestServer s;
     TestClient c;
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
 
     // Then his targeting UI is hidden
     CHECK_FALSE(c.target().panel()->visible());
@@ -86,7 +86,7 @@ TEST_CASE("Chat messages are added to chat log"){
     // Given a logged-in client
     TestServer s;
     TestClient c;
-    WAIT_UNTIL (s.users().size() == 1);
+    s.waitForUsers(1);
 
     // When he sends a message
     c.sendMessage(CL_SAY, "asdf");
@@ -101,7 +101,7 @@ TEST_CASE("Windows start uninitialized"){
     TestClient c;
 
     // When the client logs in
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
 
     // Then the crafting window is uninitialized
     CHECK_FALSE(c.craftingWindow()->isInitialized());
@@ -111,7 +111,7 @@ TEST_CASE("Windows are initialized when used"){
     // Given a server and client
     TestServer s;
     TestClient c;
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
 
     // When the client opens the crafting window
     c.craftingWindow()->show();
@@ -124,7 +124,7 @@ TEST_CASE("A visible window is fully-formed"){
     // Given a server and client;
     TestServer s;
     TestClient c;
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
 
     // When the client opens the build window
     c.buildWindow()->show();
@@ -153,7 +153,7 @@ TEST_CASE("New clients survive recipe unlocks", ""){
     // Given a client and server
     TestServer s = TestServer::WithData("secret_bread");
     TestClient c = TestClient::WithData("secret_bread");
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
 
     // When the server alerts the client to a recipe unlock
     s.sendMessage(s.getFirstUser().socket(), SV_NEW_RECIPES, makeArgs(1, "asdf"));

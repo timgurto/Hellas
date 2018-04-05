@@ -24,7 +24,7 @@ TEST_CASE("No crash on bad data"){
 TEST_CASE("Get spawn point from map file"){
     TestServer s = TestServer::WithData("spawn_point_37");
     TestClient c;
-    WAIT_UNTIL(s.users().size() == 1);
+    s.waitForUsers(1);
     const User &user = *s.users().begin();
     CHECK(user.location() == MapPoint(37, 37));
 }
@@ -36,7 +36,7 @@ TEST_CASE("Get spawn range from map file", "[remote]"){
         c1("-username Aaa"),
         c2("-username Bbb"),
         c3("-username Ccc");
-    WAIT_UNTIL(s.users().size() == 3);
+    s.waitForUsers(3);
 
     for (const User &user : s.users()){
         CHECK(user.location().x > 17);
