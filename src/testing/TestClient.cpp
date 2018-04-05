@@ -24,6 +24,7 @@ _client(new Client){
     default:
         assert(false);
     }
+    _client->_shouldAutoLogIn = true;
     run();
 }
 
