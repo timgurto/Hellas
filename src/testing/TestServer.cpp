@@ -85,7 +85,8 @@ void TestServer::addNPC(const std::string &typeName, const MapPoint &loc){
 }
 
 void TestServer::waitForUsers(size_t numUsers) const {
-    WAIT_UNTIL(_server->_users.size() == numUsers);
+    // Timeout must be longer than Connection::TIME_BETWEEN_CONNECTION_ATTEMPTS
+    WAIT_UNTIL_TIMEOUT(_server->_users.size() == numUsers, 4000);
     for (auto &user : _server->_users)
         WAIT_UNTIL(user.isInitialised());
 }

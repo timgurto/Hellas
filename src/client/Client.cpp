@@ -164,6 +164,9 @@ _debug("client.log"){
     if (Socket::debug == nullptr)
         Socket::debug = &_debug;
 #endif
+
+    if (cmdLineArgs.contains("auto-login"))
+        _shouldAutoLogIn = true;
     
     drawLoadingScreen("Initializing audio", 0.5);
     int ret = (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 1, 512) < 0);

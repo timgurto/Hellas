@@ -354,9 +354,6 @@ void Client::initLoginScreen(){
     _loginFront = Texture(std::string("Images/loginFront.png"), Color::MAGENTA);
     _loginBack = Texture(std::string("Images/loginBack.png"));
 
-    if (cmdLineArgs.contains("auto-login"))
-        login(nullptr);
-
     loginErrorLabel = new OutlinedLabel({ 0,0,200,15 }, {});
     _loginUI.push_back(loginErrorLabel);
 }
