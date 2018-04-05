@@ -119,11 +119,11 @@ enum MessageCode{
     // Arguments: username
     CL_TARGET_PLAYER,
 
-    // "I have entity ... slected"
+    // "I have entity ... selected"
     // Arguments: serial
     CL_SELECT_ENTITY,
 
-    // "I have player ... slected"
+    // "I have player ... selected"
     // Arguments: username
     CL_SELECT_PLAYER,
 

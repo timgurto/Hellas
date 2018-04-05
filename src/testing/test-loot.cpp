@@ -15,7 +15,7 @@ TEST_CASE("Client gets loot info and can loot", "[loot]"){
     c.sendMessage(CL_TARGET_ENTITY, makeArgs(goldbug.serial()));
     WAIT_UNTIL(goldbug.health() == 0);
 
-    // Then the user can see one item in its the loot window;
+    // Then the user can see one item in its loot window;
     ClientNPC &clientGoldbug = c.getFirstNPC();
     c.watchObject(clientGoldbug);
     WAIT_UNTIL(clientGoldbug.container().size() == 1);
