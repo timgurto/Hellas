@@ -89,7 +89,7 @@ TEST_CASE("When a player declares war, his map pin changes color", "[map][remote
     // Given a server with two clients;
     TestServer s;
     TestClient c;
-    RemoteClient c2("-username Secunda");
+    RemoteClient c2("-username Duteros");
 
     // And the first has his map open;
     s.waitForUsers(2);
@@ -99,12 +99,12 @@ TEST_CASE("When a player declares war, his map pin changes color", "[map][remote
     WAIT_UNTIL(c.mapPins().size() == 2);
 
     // When the first declares war on the second;
-    c.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Secunda");
+    c.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Duteros");
 
     // And the war is confirmed to him;
     WAIT_UNTIL(c.otherUsers().size() == 1);
-    const auto &secunda = c.getFirstOtherUser();
-    WAIT_UNTIL(c.isAtWarWith(secunda));
+    const auto &duteros = c.getFirstOtherUser();
+    WAIT_UNTIL(c.isAtWarWith(duteros));
 
     // And the map refreshes
     REPEAT_FOR_MS(200);
