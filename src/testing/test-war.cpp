@@ -64,7 +64,7 @@ TEST_CASE("Clients are told of existing wars on login", "[war][remote]"){
     // When Alice and Bob log in
     TestClient alice = TestClient::WithUsername("Alice");
     RemoteClient rcBob("-username Bob");
-    s.waitForUsers(1);
+    s.waitForUsers(2);
 
     // Then she is told about the war
     WAIT_UNTIL(alice.otherUsers().size() == 1);
@@ -154,13 +154,14 @@ TEST_CASE("Players can declare war on cities", "[war][city]"){
     // Given a running server;
     TestServer s;
 
-    // And a city named Athens;
-    s.cities().createCity("Athens");
-
     // And a user, Alice;
     TestClient alice = TestClient::WithUsername("Alice");
 
+    // And a city named Athens;
+    s.cities().createCity("Athens");
+
     // When Alice declares war on Athens
+    s.waitForUsers(1);
     alice.sendMessage(CL_DECLARE_WAR_ON_CITY, "Athens");
 
     // Then they are at war
@@ -193,7 +194,7 @@ TEST_CASE("Wars involving cities are persistent", "[persistence][city][war]"){
     CHECK(server2.wars().isAtWar(b1, b2));
 }
 
-TEST_CASE("The objects of an offline enemy in an enemy city can be attacked", "[.slow][city][war][remote]"){
+TEST_CASE("The objects of an offline enemy in an enemy city can be attacked", "[city][war][remote]"){
     // Given a server with rock objects;
     TestServer s = TestServer::WithData("chair");
 
