@@ -1011,22 +1011,26 @@ void User::addXP(XP amount) {
         return;
     _xp += amount;
 
-    const auto maxXpThisLevel = XP_PER_LEVEL[_level];
-    if (_xp >= maxXpThisLevel) {
-        auto surplus = _xp - maxXpThisLevel;
-        ++_level;
-        if (_level < MAX_LEVEL)
-            _xp = surplus;
-
-        fillHealthAndEnergy();
-
-        announceLevelUp();
-    }
-
     Server &server = Server::instance();
     server.sendMessage(_socket, SV_XP_GAIN, makeArgs(amount));
     sendXPMessage();
 
-    server.debug() << "Level: " << _level << "; XP: " << _xp << "/" << XP_PER_LEVEL[_level]
-        << "(" << _xp * 100 / XP_PER_LEVEL[_level] << "%)" << Log::endl;
+    const auto maxXpThisLevel = XP_PER_LEVEL[_level];
+    if (_xp < maxXpThisLevel)
+        return;
+
+    levelUp();
+
+    if (_level == MAX_LEVEL)
+        _xp = 0;
+    else {
+        auto surplus = _xp - maxXpThisLevel;
+        _xp = surplus;
+    }
+}
+
+void User::levelUp() {
+    ++_level;
+    fillHealthAndEnergy();
+    announceLevelUp();
 }
