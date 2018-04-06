@@ -234,6 +234,7 @@
     <ClCompile Include="src\testing\test-map.cpp" />
     <ClCompile Include="src\testing\test-permissions.cpp" />
     <ClCompile Include="src\testing\test-sound.cpp" />
+    <ClCompile Include="src\testing\test-stats.cpp" />
     <ClCompile Include="src\testing\test-transformation.cpp" />
     <ClCompile Include="src\testing\TestClient.cpp" />
     <ClCompile Include="src\testing\RemoteClient.cpp" />

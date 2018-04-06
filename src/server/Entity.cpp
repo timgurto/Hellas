@@ -104,6 +104,11 @@ void Entity::initStatsFromType() {
     _energy = _stats.maxEnergy;
 }
 
+void Entity::fillHealthAndEnergy() {
+    _health = _stats.maxHealth;
+    onHealthChange();
+}
+
 void Entity::reduceHealth(int damage) {
     if (damage == 0)
         return;

@@ -1018,6 +1018,8 @@ void User::addXP(XP amount) {
         if (_level < MAX_LEVEL)
             _xp = surplus;
 
+        fillHealthAndEnergy();
+
         announceLevelUp();
     }
 

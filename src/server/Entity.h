@@ -105,9 +105,10 @@ public:
     virtual bool canBlock() const { return false; }
     bool isStunned() const { return _stats.stunned; }
 
-    void health(Hitpoints health) { _health = health; }
     void initStatsFromType();
-    void energy(Energy energy) { _energy = energy; }
+    void fillHealthAndEnergy();
+    void health(Hitpoints health) { _health = health; } // TODO: Remove
+    void energy(Energy energy) { _energy = energy; } // TODO: Remove
     bool isDead() const { return _health == 0; }
 
     void kill() { reduceHealth(health()); }
