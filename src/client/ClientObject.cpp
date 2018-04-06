@@ -791,14 +791,15 @@ void ClientObject::update(double delta) {
         auto particleLocation = MapPoint{
                 randDouble() * collisionRect().w + collisionRect().x,
                 randDouble() * collisionRect().h + collisionRect().y };
-        const ParticleProfile *smokeProfile = client.findParticleProfile("smoke");
-        assert(smokeProfile);
 
-        static const double PARTICLES_PER_PIXEL = 0.005;
-        double area = collisionRect().w * collisionRect().h;
-        size_t numParticles = smokeProfile->numParticlesContinuous(delta * area * PARTICLES_PER_PIXEL);
+        const auto *smokeProfile = client.findParticleProfile("smoke");
+        if (smokeProfile) {
+            const auto PARTICLES_PER_PIXEL = 0.005;
+            auto area = collisionRect().w * collisionRect().h;
+            auto numParticles = smokeProfile->numParticlesContinuous(delta * area * PARTICLES_PER_PIXEL);
 
-        client.addParticles(smokeProfile, particleLocation, numParticles);
+            client.addParticles(smokeProfile, particleLocation, numParticles);
+        }
     }
 
     // Loot sparkles
