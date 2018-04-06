@@ -92,7 +92,7 @@ TEST_CASE("When a player declares war, his map pin changes color", "[map][remote
     RemoteClient c2("-username Secunda");
 
     // And the first has his map open;
-    s.waitForUsers(1);
+    s.waitForUsers(2);
     c.mapWindow()->show();
 
     // And sees two map pins
