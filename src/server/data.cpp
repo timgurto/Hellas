@@ -585,7 +585,7 @@ void Server::loadData(const std::string &path){
                 continue; // ID and name are mandatory.
             ServerItem item(id);
 
-            auto stackSize = size_t{ 1 };
+            auto stackSize = size_t{};
             if (xr.findAttr(elem, "stackSize", stackSize)) item.stackSize(stackSize);
 
             std::string s;
@@ -598,6 +598,8 @@ void Server::loadData(const std::string &path){
                     item.constructsObject(*(_objectTypes.insert(new ObjectType(s)).first));
             }
 
+            // Assumption: any item that returns on construction cannot be stacked.
+            // Until there's a use case to the contrary, this simplifies the code.
             if (xr.findAttr(elem, "returnsOnConstruction", s)) {
                 if (stackSize > 1) {
                     _debug("Skipping return-on-construct item for stackable material", Color::RED);
@@ -637,6 +639,8 @@ void Server::loadData(const std::string &path){
                 if (xr.findAttr(child, "name", s)) item.addTag(s);
 
             if (xr.findAttr(elem, "strength", n)) item.strength(n);
+
+            item.loaded();
         
             std::pair<std::set<ServerItem>::iterator, bool> ret = _items.insert(item);
             if (!ret.second) {
@@ -918,9 +922,7 @@ void Server::loadData(const std::string &path){
     // Remove invalid items referred to by objects/recipes
     for (auto it = _items.begin(); it != _items.end(); ){
         if (!it->valid()){
-            auto temp = it;
-            ++it;
-            _items.erase(temp);
+            _items.erase(it++);
         } else
             ++it;
     }

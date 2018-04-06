@@ -11,7 +11,7 @@ TEST_CASE("Read XML file with root only"){
         ;
 }
 
-TEST_CASE("Load object type naming an invalid item"){
+TEST_CASE("Invalid items are removed"){
     TestServer s = TestServer::WithData("fake_item");
     auto it = s.items().find(ServerItem("fakeStone"));
     CHECK(it == s.items().end());

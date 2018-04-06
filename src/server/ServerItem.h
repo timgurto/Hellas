@@ -1,5 +1,3 @@
-// (C) 2015 Tim Gurto
-
 #ifndef SERVER_ITEM_H
 #define SERVER_ITEM_H
 
@@ -20,6 +18,8 @@ class ServerItem : public Item{
 
     // An item returned to the user after this is used as a construction material
     const ServerItem *_returnsOnConstruction = nullptr;
+    
+    bool _loaded{ false };
 
 public:
     ServerItem(const std::string &id);
@@ -33,7 +33,8 @@ public:
     const ObjectType *constructsObject() const { return _constructsObject; }
     const ServerItem *returnsOnConstruction() const { return _returnsOnConstruction; }
     void returnsOnConstruction(const ServerItem *item) { _returnsOnConstruction = item; }
-    bool valid() const { return _stackSize > 0; }
+    bool valid() const { return _loaded; }
+    void loaded() { _loaded = true; }
 
     void fetchAmmoItem() const override;
 };
