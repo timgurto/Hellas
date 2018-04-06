@@ -12,6 +12,12 @@ const px_t List::ARROW_H = 5;
 const px_t List::CURSOR_HEIGHT = 8;
 const px_t List::SCROLL_AMOUNT = 10;
 
+Texture
+    List::whiteUp{},
+    List::whiteDown{},
+    List::greyUp{},
+    List::greyDown{};
+
 List::List(const ScreenRect &rect, px_t childHeight):
 Element(rect),
 _mouseDownOnCursor(false),
@@ -30,14 +36,17 @@ _content(new Element({ 0, 0, rect.w - ARROW_W, 0 })) {
     // Scroll bar details
     _scrollBar->addChild(new Line(ARROW_W/2 - 1, ARROW_H, rect.h - 2*ARROW_H, VERTICAL));
 
-    _whiteUp = new Picture({ 0, 0, ARROW_W, ARROW_H },
-                           Texture("Images/arrowUp.png", Color::MAGENTA));
-    _greyUp = new Picture({ 0, 0, ARROW_W, ARROW_H },
-                          Texture("Images/arrowUpGrey.png", Color::MAGENTA));
-    _whiteDown = new Picture({ 0, rect.h - ARROW_H, ARROW_W, ARROW_H },
-                             Texture("Images/arrowDown.png", Color::MAGENTA));
-    _greyDown = new Picture({ 0, rect.h - ARROW_H, ARROW_W, ARROW_H },
-                            Texture("Images/arrowDownGrey.png", Color::MAGENTA));
+    if (!whiteUp) {
+        whiteUp = { "Images/arrowUp.png", Color::MAGENTA };
+        greyUp = { "Images/arrowUpGrey.png", Color::MAGENTA };
+        whiteDown = { "Images/arrowDown.png", Color::MAGENTA };
+        greyDown = { "Images/arrowDownGrey.png", Color::MAGENTA };
+    }
+    _whiteUp = new Picture({ 0, 0, ARROW_W, ARROW_H }, whiteUp);
+    _greyUp = new Picture({ 0, 0, ARROW_W, ARROW_H }, greyUp);
+    _whiteDown = new Picture({ 0, rect.h - ARROW_H, ARROW_W, ARROW_H }, whiteDown);
+    _greyDown = new Picture({ 0, rect.h - ARROW_H, ARROW_W, ARROW_H }, greyDown);
+
     _whiteUp->hide();
     _greyDown->hide();
     _whiteUp->setLeftMouseDownFunction(scrollUp, this);
@@ -75,6 +84,7 @@ void List::updateScrollBar(){
     _scrollBar->markChanged();
 
     // Arrow visibility
+    // TODO: use Picture::changeTexture() instead of hiding/showing.
     if (_content->rect().y == 0) { // Scroll bar at top
         _whiteUp->hide();
         _greyUp->show();

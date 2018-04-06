@@ -153,7 +153,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 176,Use Catch for tests,3,5,Code quality,,TRUE,,
 180,"Update map pins at limited frequency, e.g., 1s",2,5,Performance,,,,
 181,Send object-movement updates to owner and city's members,5,3,Bug,,,,
-182,Maintain only one set of scroll-bar triangle images,2,2,Performance,,,,
+182,Maintain only one set of scroll-bar triangle images,2,2,Performance,,TRUE,,
 183,"Add fake latency by default, for testing",55,34,Usability,,,,
 184,Animate lava under volcano terrain,13,3,Content,,,,
 185,Require map to be explored,21,21,Feature,,,,

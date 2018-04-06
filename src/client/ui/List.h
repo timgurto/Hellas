@@ -23,12 +23,17 @@ private:
     px_t _childHeight;
 
     Element *_scrollBar;
-    Picture // Arrow images
-        *_whiteUp,
-        *_whiteDown,
-        *_greyUp,
-        *_greyDown;
-    Element *_cursor; // Shows position on the scroll bar, and can be dragged.
+    static Texture // Arrow images
+        whiteUp,
+        whiteDown,
+        greyUp,
+        greyDown;
+    Picture
+        *_whiteUp{ nullptr },
+        *_whiteDown{ nullptr },
+        *_greyUp{ nullptr },
+        *_greyDown{ nullptr };
+    Element *_cursor{ nullptr }; // Shows position on the scroll bar, and can be dragged.
     void updateScrollBar(); // Update the appearance of the scroll bar.
     bool _scrolledToBottom;
 
