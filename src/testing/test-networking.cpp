@@ -28,6 +28,6 @@ TEST_CASE("Use socket after cleanup"){
         TestServer s;
         TestClient c;
 
-        CHECK(c.connected()); // false in case of a connection error.
+        WAIT_UNTIL(c.connected()); // false in case of a connection error.
     }
 }
