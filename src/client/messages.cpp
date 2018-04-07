@@ -282,7 +282,7 @@ void Client::handleMessage(const std::string &msg){
             singleMsg >> del;
             if (del != MSG_END)
                 break;
-            showErrorMessage("You may only own a single " + category + " object", Color::WARNING);
+            showErrorMessage("You may own only one " + category + " object", Color::WARNING);
             startAction(0);
             break;
         }
