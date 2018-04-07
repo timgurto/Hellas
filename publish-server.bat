@@ -10,4 +10,4 @@ xcopy Images\Items "C:\Hellas server\Images\Items\" /E /Y
 rem Start server
 C:
 cd "C:\Hellas server"
-server.exe
+launch.bat
