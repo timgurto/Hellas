@@ -93,3 +93,15 @@ TEST_CASE("Help text is valid XML") {
     const auto &helpTextEntries = c->helpEntries();
     CHECK(helpTextEntries.begin() != helpTextEntries.end());
 }
+
+TEST_CASE("Default NPCs are level 1") {
+    // GIVEN an Ant NPC type with no level specified
+    TestServer s = TestServer::WithData("ant");
+
+    // WHEN an Ant is added
+    s.addNPC("ant");
+
+    // THEN it has level 1
+    auto &ant = s.getFirstNPC();
+    CHECK(ant.level() == 1);
+}

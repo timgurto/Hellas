@@ -543,9 +543,9 @@ void Server::loadData(const std::string &path){
             if (xr.findAttr(elem, "allowedTerrain", s))
                 nt->allowedTerrain(s);
 
-            auto level = Level{ 0 };
-            if (xr.findAttr(elem, "level", level))
-                nt->level(level);
+            auto level = Level{ 1 };
+            xr.findAttr(elem, "level", level);
+            nt->level(level);
 
             auto school = ""s;
             if (xr.findAttr(elem, "school", school))
