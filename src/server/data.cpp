@@ -526,13 +526,20 @@ void Server::loadData(const std::string &path){
                 continue;
             NPCType *nt = new NPCType(id);
 
-            std::string s;
+            auto humanoid = xr.findChild("humanoid", elem);
+
+            // Collision rect
+            if (humanoid)
+                nt->collisionRect(User::OBJECT_TYPE.collisionRect());
             MapRect r;
             if (xr.findRectChild("collisionRect", elem, r))
                 nt->collisionRect(r);
+
+            std::string s;
             for (auto objTag :xr.getChildren("class", elem))
                 if (xr.findAttr(objTag, "name", s))
                     nt->addTag(s);
+
             if (xr.findAttr(elem, "allowedTerrain", s))
                 nt->allowedTerrain(s);
 

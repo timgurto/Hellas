@@ -3,8 +3,8 @@
 #include "ClientBuff.h"
 #include "ClientNPCType.h"
 #include "ClientVehicleType.h"
-#include "ParticleProfile.h"
 #include "ClientVehicleType.h"
+#include "ParticleProfile.h"
 
 #include "SoundProfile.h"
 #include "../Podes.h"
@@ -690,24 +690,32 @@ void Client::loadData(const std::string &path){
             auto id = ""s;
             if (!xr.findAttr(elem, "id", id)) // No ID: skip
                 continue;
-            int n;
-            if (!xr.findAttr(elem, "maxHealth", n)) // No max health: skip
+            auto maxHealth = 0;
+            if (!xr.findAttr(elem, "maxHealth", maxHealth)) // No max health: skip
                 continue;
 
+            auto humanoid = xr.findChild("humanoid", elem);
+
             auto imageFile = id;
-            xr.findAttr(elem, "imageFile", imageFile); // If no explicit imageFile, s will still == id
-            ClientNPCType *nt = new ClientNPCType(id, "Images/NPCs/"s + imageFile, n);
+            xr.findAttr(elem, "imageFile", imageFile); // If no explicit imageFile, will still == id
+            auto imagePath = humanoid ? "Images/Humans/default"s : "Images/NPCs/"s + imageFile;
+            ClientNPCType *nt = new ClientNPCType(id, imagePath, maxHealth);
 
             auto s = ""s;
             if (xr.findAttr(elem, "name", s)) nt->name(s);
 
-            ScreenRect drawRect(0, 0, nt->width(), nt->height());
+            // Draw rect
+            auto drawRect = humanoid ?
+                Avatar::DRAW_RECT : ScreenRect{ 0, 0, nt->width(), nt->height() };
             bool
                 xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
                 ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
-            if (xSet || ySet)
-                nt->drawRect(drawRect);
-            MapRect r;
+            nt->drawRect(drawRect);
+
+            // Collision rect
+            if (humanoid)
+                nt->collisionRect(Avatar::COLLISION_RECT);
+            auto r = MapRect{};
             if (xr.findRectChild("collisionRect", elem, r)) nt->collisionRect(r);
 
             if (xr.findAttr(elem, "sounds", s))
