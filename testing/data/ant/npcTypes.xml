@@ -2,8 +2,7 @@
 
 <npcType
     id="ant"
-    name="Ant"
-	maxHealth=1 >
+    name="Ant" >
 </npcType>
 
 </root>
