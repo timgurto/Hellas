@@ -21,38 +21,38 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 20,Shrine actions require an animal carcass,34,21,Feature,19,TRUE,TRUE,
 29,Objects have health,55,21,Feature,,TRUE,TRUE,
 30,"Items have durability, affected by combat and use.",34,34,Feature,,,TRUE,
-31,Objects can be repaired with specific items,21,34,Feature,29,,TRUE,
+31,Objects can be repaired with materials,21,34,Feature,29,,TRUE,
 32,Object repair can require tools,5,2,Feature,31,,TRUE,
-33,Items can be repaired with specific items,21,55,Feature,30,,TRUE,
+33,Items can be repaired with materials,21,55,Feature,30,,TRUE,
 34,Repairing items can require tools,8,2,Feature,33,,TRUE,
-35,There can be groups of two or more players,34,8,Feature,,,TRUE,
-36,A player's group shows up on the UI,21,13,Usability,35,,TRUE,
-37,Grouped players can invite others to their group,21,8,Feature,35,,TRUE,
-38,Non-grouped players can invite others to form a group,21,8,Feature,35,,TRUE,
-39,Players can leave groups,13,5,Feature,35,,TRUE,
+35,There can be groups of two or more players,34,8,Feature,,,TRUE,2
+36,A player's group shows up on the UI,21,13,Usability,35,,TRUE,2
+37,Grouped players can invite others to their group,21,8,Feature,35,,TRUE,2
+38,Non-grouped players can invite others to form a group,21,8,Feature,35,,TRUE,2
+39,Players can leave groups,13,5,Feature,35,,TRUE,2
 40,"The first player to damage an NPC tags it, until it dies or disengages.",34,5,Feature,,,TRUE,
 41,Grouped players share NPC tagging,21,34,Feature,40,,TRUE,
-42,A player can be in an alternate 'instance',34,233,Feature,,,TRUE,
-43,Instances get terrain from templates,34,55,Feature,42,,TRUE,
-44,Instances get spawners from templates,34,89,Feature,42,,TRUE,
-45,Instances get static objects from templates,34,55,Feature,42,,TRUE,
-46,A player can create and enter a new instance,21,233,Feature,42,,TRUE,
-47,Instance entrance happens at a specific point in the world,13,13,Feature,46,,TRUE,
-48,Grouped players can enter the same instance,21,34,Feature,42,,TRUE,
-49,Instances are destroyed after being empty for (30m?),13,8,Feature,42,,TRUE,
-50,Instances have a player cap,21,3,Feature,42,,TRUE,
-51,"There's a way to leave instances, to a specific point in the world",8,8,Feature,42,,TRUE,
-52,NPCs can specify a set of items for their image,34,8,Aesthetics,,,TRUE,
-53,NPCs can specify a custom human template image,21,8,Aesthetics,52,,TRUE,
+42,A player can be in an alternate 'instance',34,233,Feature,,,TRUE,2
+43,Instances get terrain from templates,34,55,Feature,42,,TRUE,2
+44,Instances get spawners from templates,34,89,Feature,42,,TRUE,2
+45,Instances get static objects from templates,34,55,Feature,42,,TRUE,2
+46,A player can create and enter a new instance,21,233,Feature,42,,TRUE,2
+47,Instance entrance happens at a specific point in the world,13,13,Feature,46,,TRUE,2
+48,Grouped players can enter the same instance,21,34,Feature,42,,TRUE,2
+49,Instances are destroyed after being empty for (30m?),13,8,Feature,42,,TRUE,2
+50,Instances have a player cap,21,3,Feature,42,,TRUE,2
+51,"There's a way to leave instances, to a specific point in the world",8,8,Feature,42,,TRUE,2
+52,NPCs can specify a set of items for their image,34,8,Aesthetics,,,TRUE,1
+53,NPCs can specify a custom human template image,21,8,Aesthetics,52,,TRUE,1
 54,A pyramid object that is unique,21,3,Feature,,TRUE,TRUE,
 55,Players and cities can be at war with each other,34,5,Feature,1,TRUE,TRUE,
 57,Heavy items that prevent player movement,13,3,Feature,,,TRUE,
 58,Containers may allow 'heavy' objects or not,13,5,Feature,57,,TRUE,
-59,Better NPC pathfinding,21,34,Feature,,,,
+59,Better NPC pathfinding,21,34,Feature,,,,2
 60,Some tool objects have a cooldown,5,13,Feature,,,TRUE,
 62,Fix flaky merchant-slot-window test,2,89,Bug,,TRUE,,
-65,NPCs can combine loot tables,5,8,Feature,,,,
-66,NPCs can have skills/abilities,34,144,Feature,22,,,
+65,NPCs can combine loot tables,5,8,Feature,,,,2
+66,NPCs can have skills/abilities,34,144,Feature,22,,,2
 67,Set bonuses for gear,13,21,Feature,,,,
 68,Class-restricted gear,8,5,Feature,,,,
 69,Distant players aren't being removed,8,8,Bug,,TRUE,,
@@ -171,7 +171,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 197,Allow ceding of unfinished objects,21,5,Feature,,TRUE,,
 198,"Unowned-object colors sometimes green, sometimes grey",5,13,Bug,,TRUE,,
 199,Provide list of online players,21,8,Usability,,,,
-200,Make login screen behave on disconnect,8,21,Usability,,,,
+200,Make login screen behave on disconnect,8,21,Usability,,TRUE,,
 201,Lower object names,8,2,Aesthetics,,TRUE,,
 202,Give back a small pot after constructing with a water vessel,21,21,Feature,,TRUE,,
 203,Prevent object updates from interrupting crafting,5,3,Bug,,,,
@@ -303,7 +303,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 339,Display buffs in UI,13,5,Usability,267,TRUE,,
 340,Make talents persistent,21,21,Bug,,TRUE,,
 341,Make level/XP persistent,55,8,Bug,,TRUE,,
-342,Show levels in target panels,21,5,Usability,,,,
+342,Show levels in target panels,21,5,Usability,,,,2
 343,Give NPCs levels,21,3,Feature,,TRUE,,
 344,Modify combat based on level difference,34,5,Feature,,TRUE,,
 345,Make objects always their attacker's level,8,8,Feature,344,TRUE,,
@@ -331,7 +331,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 368,Update object windows after joining/leaving a city,21,3,Bug,,,,
 369,Trees sometimes think they're being gathered when they're not.  Endless particles/sound.,55,5,Bug,,,,
 370,Avatar isn't playing death sound,13,5,Bug,,,,
-371,Make server connection an object with a lifetime,55,21,Bug,,,,
+371,Make server connection an object with a lifetime,55,21,Bug,,TRUE,,
 372,Left-click doesn't always deselect neutral target,13,5,Bug,,,,
 373,Flash crafting and building buttons on unlock until opened,21,8,Usability,,,,
 374,Flash class button when talents are unspent,21,3,Usability,373,,,
@@ -350,7 +350,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 388,Respond to server going down then up in login screen,34,13,Bug,371,TRUE,,
 389,Include equipped items in materials filter,13,5,Bug,,,,
 390,Restore health/energy on level up,13,2,Feature,,TRUE,,
-391,Show buff timers in client,21,8,Usability,,,,
+391,Show buff timers in client,21,8,Usability,,,,2
 392,Screen events break embedded tooltips,13,5,Bug,,,,
 393,"Play defend/death sounds on projectile hit, not launch",8,5,Usability,,,,
 394,Tooltips for terrain tags,8,5,Usability,,,,
@@ -359,7 +359,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 397,Carve arrows instead of grinding them,8,2,Content,,,,
 398,"If login position blocked: try nearby, then spawn, then default spawn",21,3,Feature,,,,
 399,Client crashes sometimes on pot pickup.  Window/watchers?,55,8,Bug,,,,
-400,Add missing sounds,34,34,Content,,,,
 401,Allow granting unfinished objects,21,3,Bug,,,,
 402,City label jitters for some players,5,5,Bug,,,,
 403,Consume smaller stacks of mats first,13,3,Feature,,,,
@@ -367,24 +366,26 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 405,Save user data more frequently,55,5,Feature,,,,
 406,Scroll recipe list to top when filters change,5,2,Bug,,,,
 407,Make under-construction objects easier to kill,8,8,Exploit,,,,
-408,Tutorial,89,89,Feature,45,,,
+408,Tutorial,89,89,Feature,45,,,3
 409,Change lighting/colors to simulate time of day,21,55,Aesthetics,,,,
 410,"Recruit via an invitation, not insta-join",21,13,Usability,,,,
 411,Failed assertion in Entity.cpp line 116,34,8,Bug,,,,
 412,Prevent picking up items while drop confirmation is open,8,3,Bug,,,,
-413,A quest from NPC A that finishes at NPC B,5,21,Feature,,,,
-414,Quest-briefing text,8,5,Feature,413,,,
-415,Quest-completion text,3,5,Feature,413,,,
-416,Quests reward constant XP,13,2,Feature,413,,,
-417,Quests reward custom XP,5,3,Feature,416,,,
-418,Quests can reward an item,34,8,Feature,417,,,
-419,Quests can reward a choice of item,21,13,Feature,418,,,
-420,A quest to kill n NPCs,21,13,Feature,413,,,
-421,A quest to collect n items,21,8,Feature,413,,,
-422,Quest items that drop only while on a specific quest,5,5,Feature,421,,,
-423,A quest to worship at a specific altar type,2,5,Feature,413,,,
-424,A quest to craft a recipe,8,5,Feature,413,,,
-425,A quest to complete a construction,8,5,Feature,413,,,
-426,A quest to walk a certain distance,2,8,Feature,413,,,
+413,A quest from NPC A that finishes at NPC B,5,21,Feature,,,,1
+414,Quest-briefing text,8,5,Feature,413,,,1
+415,Quest-completion text,3,5,Feature,413,,,1
+416,Quests reward constant XP,13,2,Feature,413,,,1
+417,Quests reward custom XP,5,3,Feature,416,,,1
+418,Quests can reward an item,34,8,Feature,417,,,1
+419,Quests can reward a choice of item,21,13,Feature,418,,,1
+420,A quest to kill n NPCs,21,13,Feature,413,,,1
+421,A quest to collect n items,21,8,Feature,413,,,1
+422,Quest items that drop only while on a specific quest,5,5,Feature,421,,,1
+423,A quest to worship at a specific altar type,2,5,Feature,413,,,3
+424,A quest to craft a recipe,8,5,Feature,413,,,3
+425,A quest to complete a construction (or own an object),8,5,Feature,413,,,3
+426,A quest to walk a certain distance,2,8,Feature,413,,,3
 427,Quests can reward a recipe,13,5,Feature,413,,,
-428,Quests can reward a construction,13,5,Feature,413,,,
+428,Quests can reward a construction,13,5,Feature,413,,,3
+429,Can log in with Enter key when button is disabled,34,2,Bug,,,,
+430,Sometimes non-leaf skills are lost on death,13,8,Bug,,,,
