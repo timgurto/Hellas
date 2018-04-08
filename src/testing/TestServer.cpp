@@ -73,13 +73,13 @@ void TestServer::stop(){
 void TestServer::addObject(const std::string &typeName, const MapPoint &loc,
                            const std::string &owner){
     const ObjectType *const type = _server->findObjectTypeByName(typeName);
-    assert(type != nullptr);
+    REQUIRE(type != nullptr);
     _server->addObject(type, loc, owner);
 }
 
 void TestServer::addNPC(const std::string &typeName, const MapPoint &loc){
     const ObjectType *const type = _server->findObjectTypeByName(typeName);
-    assert (type->classTag() == 'n');
+    REQUIRE(type->classTag() == 'n');
     const NPCType *const npcType = dynamic_cast<const NPCType *const>(type);
     _server->addNPC(npcType, loc);
 }
@@ -94,31 +94,44 @@ void TestServer::waitForUsers(size_t numUsers) const {
 User &TestServer::findUser(const std::string &username) {
     auto usersByName = _server->_usersByName;
     auto it = usersByName.find(username);
-    assert (it != usersByName.end());
+    REQUIRE(it != usersByName.end());
     User *user = const_cast<User *>(it->second);
     return *user;
 }
 
 User &TestServer::getFirstUser() {
-    assert(! _server->_users.empty());
+    REQUIRE(! _server->_users.empty());
     return const_cast<User &>(* _server->_users.begin());
 }
 
 Object &TestServer::getFirstObject() {
-    assert(! _server->_entities.empty());
+    REQUIRE(! _server->_entities.empty());
     auto it =_server-> _entities.begin();
     Entity *ent = *it;
-    return * dynamic_cast<Object *>(ent);
+    auto pObj = dynamic_cast<Object *>(ent);
+    REQUIRE(pObj);
+    return *pObj;
 }
 
 NPC &TestServer::getFirstNPC() {
-    assert(! _server->_entities.empty());
+    REQUIRE(! _server->_entities.empty());
     auto it =_server-> _entities.begin();
-    Entity *ent = *it;
-    return * dynamic_cast<NPC *>(ent);
+    auto pEntity = *it;
+    auto pNpc = dynamic_cast<NPC *>(pEntity);
+    REQUIRE(pNpc);
+    return *pNpc;
+}
+
+NPCType & TestServer::getFirstNPCType() {
+    REQUIRE(!_server->_objectTypes.empty());
+    auto it = _server->_objectTypes.begin();
+    auto *pObjType = const_cast<ObjectType *>(*it);
+    auto pNpcType = dynamic_cast<NPCType *>(pObjType);
+    REQUIRE(pNpcType);
+    return *pNpcType;
 }
 
 ServerItem &TestServer::getFirstItem() {
-    assert(! _server->_items.empty());
+    REQUIRE(! _server->_items.empty());
     return const_cast<ServerItem &>(* _server->_items.begin());
 }

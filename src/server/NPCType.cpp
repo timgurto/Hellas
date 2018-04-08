@@ -9,6 +9,7 @@ ObjectType(id)
 {}
 
 void NPCType::init() {
+    BASE_STATS.maxHealth = 1;
     BASE_STATS.crit = 5;
     BASE_STATS.dodge = 5;
     BASE_STATS.speed = 50.0;

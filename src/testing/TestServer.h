@@ -31,6 +31,7 @@ public:
     User &getFirstUser();
     Object &getFirstObject();
     NPC &getFirstNPC();
+    NPCType &getFirstNPCType();
     ServerItem &getFirstItem();
 
     void addObject(const std::string &typeName, const MapPoint &loc = MapPoint{},

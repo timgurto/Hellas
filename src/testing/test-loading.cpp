@@ -94,14 +94,20 @@ TEST_CASE("Help text is valid XML") {
     CHECK(helpTextEntries.begin() != helpTextEntries.end());
 }
 
-TEST_CASE("Default NPCs are level 1") {
+TEST_CASE("By default, NPCs are level 1", "[defaults]") {
     // GIVEN an Ant NPC type with no level specified
     TestServer s = TestServer::WithData("ant");
 
-    // WHEN an Ant is added
-    s.addNPC("ant");
-
     // THEN it has level 1
-    auto &ant = s.getFirstNPC();
+    auto &ant = s.getFirstNPCType();
     CHECK(ant.level() == 1);
+}
+
+TEST_CASE("By default, NPCs have 1 max health", "[defaults]") {
+    // GIVEN a pig NPC type with no max health specified
+    TestServer s = TestServer::WithData("friendlyPig");
+
+    // THEN it has 1 max health
+    auto &pig = s.getFirstNPCType();
+    CHECK(pig.baseStats().maxHealth == 1);
 }
