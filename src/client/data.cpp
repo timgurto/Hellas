@@ -687,18 +687,20 @@ void Client::loadData(const std::string &path){
         if (!objectTypesCleared)
             _objectTypes.clear();
         for (auto elem : xr.getChildren("npcType")) {
-            std::string s;
-            if (!xr.findAttr(elem, "id", s)) // No ID: skip
+            auto id = ""s;
+            if (!xr.findAttr(elem, "id", id)) // No ID: skip
                 continue;
             int n;
             if (!xr.findAttr(elem, "maxHealth", n)) // No max health: skip
                 continue;
-            ClientNPCType *nt = new ClientNPCType(s, n);
-            xr.findAttr(elem, "imageFile", s); // If no explicit imageFile, s will still == id
-            nt->setImage(std::string("Images/NPCs/") + s + ".png");
-            nt->imageSet(std::string("Images/NPCs/") + s + ".png");
-            nt->corpseImage(std::string("Images/NPCs/") + s + "-corpse.png");
+
+            auto imageFile = id;
+            xr.findAttr(elem, "imageFile", imageFile); // If no explicit imageFile, s will still == id
+            ClientNPCType *nt = new ClientNPCType(id, "Images/NPCs/"s + imageFile, n);
+
+            auto s = ""s;
             if (xr.findAttr(elem, "name", s)) nt->name(s);
+
             ScreenRect drawRect(0, 0, nt->width(), nt->height());
             bool
                 xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),

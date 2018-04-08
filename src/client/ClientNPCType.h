@@ -9,7 +9,7 @@ class SoundProfile;
 class ClientNPCType : public ClientObjectType {
 
 public:
-    ClientNPCType(const std::string &id, Hitpoints maxHealth);
+    ClientNPCType(const std::string &id, const std::string &imagePath, Hitpoints maxHealth);
     virtual ~ClientNPCType() override{}
 
     void projectile(const Projectile::Type &type) { _projectile = &type; }
