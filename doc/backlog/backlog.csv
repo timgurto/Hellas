@@ -43,7 +43,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 50,Instances have a player cap,21,3,Feature,42,,TRUE,2
 51,"There's a way to leave instances, to a specific point in the world",8,8,Feature,42,,TRUE,2
 52,NPCs can specify a set of items for their image,34,8,Aesthetics,,,TRUE,1
-53,NPCs can specify a custom human template image,21,8,Aesthetics,52,,TRUE,1
+53,NPCs can specify a custom human template image,21,8,Aesthetics,,TRUE,TRUE,1
 54,A pyramid object that is unique,21,3,Feature,,TRUE,TRUE,
 55,Players and cities can be at war with each other,34,5,Feature,1,TRUE,TRUE,
 57,Heavy items that prevent player movement,13,3,Feature,,,TRUE,

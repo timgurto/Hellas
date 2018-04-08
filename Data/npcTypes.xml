@@ -19,6 +19,12 @@
 </npcType>
 
 <npcType
+    id="nubian" name="Nubian"
+	level="3" maxHealth="23" attack="4" attackTime="857" >
+    <humanoid base="african"/>
+</npcType>
+
+<npcType
     id="boar" name="Wild boar"
 	level="5" maxHealth="30" attack="5" attackTime="1186"
     xDrawOffset="-11" yDrawOffset="-13"

@@ -696,9 +696,16 @@ void Client::loadData(const std::string &path){
 
             auto humanoid = xr.findChild("humanoid", elem);
 
-            auto imageFile = id;
-            xr.findAttr(elem, "imageFile", imageFile); // If no explicit imageFile, will still == id
-            auto imagePath = humanoid ? "Images/Humans/default"s : "Images/NPCs/"s + imageFile;
+            auto imagePath = ""s;
+            if (humanoid) {
+                auto baseImage = "default"s;
+                xr.findAttr(humanoid, "base", baseImage);
+                imagePath = "Images/Humans/"s + baseImage;
+            } else {
+                auto imageFile = id;
+                xr.findAttr(elem, "imageFile", imageFile); // If no explicit imageFile, will still == id
+                imagePath = "Images/NPCs/"s + imageFile;
+            }
             ClientNPCType *nt = new ClientNPCType(id, imagePath, maxHealth);
 
             auto s = ""s;
