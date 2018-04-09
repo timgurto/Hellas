@@ -175,6 +175,9 @@ enum MessageCode{
     // Arguments: inventory slot containing the item
     CL_CAST_ITEM,
 
+    // Start a quest
+    CL_ACCEPT_QUEST,
+
     // "I want to say ... to everybody". 
     // Arguments: message
     CL_SAY,

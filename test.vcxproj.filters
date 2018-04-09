@@ -157,6 +157,7 @@
     <ClCompile Include="src\client\ui\Indicator.cpp" />
     <ClCompile Include="src\client\Connection.cpp" />
     <ClCompile Include="src\testing\test-stats.cpp" />
+    <ClCompile Include="src\testing\test-quests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

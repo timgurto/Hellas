@@ -233,6 +233,7 @@
     <ClCompile Include="src\testing\test-loot.cpp" />
     <ClCompile Include="src\testing\test-map.cpp" />
     <ClCompile Include="src\testing\test-permissions.cpp" />
+    <ClCompile Include="src\testing\test-quests.cpp" />
     <ClCompile Include="src\testing\test-sound.cpp" />
     <ClCompile Include="src\testing\test-stats.cpp" />
     <ClCompile Include="src\testing\test-transformation.cpp" />

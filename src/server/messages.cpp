@@ -1219,6 +1219,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_ACCEPT_QUEST:
+        {
+            if (del != MSG_END)
+                return;
+            handle_CL_ACCEPT_QUEST(*user);
+            break;
+        }
+
         case CL_SAY:
         {
             iss.get(buffer, BUFFER_SIZE, MSG_END);
@@ -1918,6 +1926,10 @@ CombatResult Server::handle_CL_CAST(User & user, const std::string &spellID, boo
         }
     }
     return outcome;
+}
+
+void Server::handle_CL_ACCEPT_QUEST(User & user) {
+    user.startQuest();
 }
 
 

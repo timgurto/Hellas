@@ -72,6 +72,8 @@ private:
     void sendXPMessage() const;
     void announceLevelUp() const;
 
+    bool _isOnQuest{ false };
+
 public:
     User(const std::string &name, const MapPoint &loc, const Socket &socket);
     User(const Socket &rhs); // for use with set::find(), allowing find-by-socket
@@ -213,6 +215,9 @@ public:
     static MapPoint newPlayerSpawn;
     static double spawnRadius;
     void moveToSpawnPoint(bool isNewPlayer = false);
+
+    void startQuest() { _isOnQuest = true; }
+    bool isOnQuest() { return _isOnQuest; }
 
     struct compareXThenSerial{ bool operator()( const User *a, const User *b) const; };
     struct compareYThenSerial{ bool operator()( const User *a, const User *b) const; };
