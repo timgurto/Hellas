@@ -73,7 +73,7 @@ public:
     static MapRect getTileRect(size_t x, size_t y);
     std::set<User*> findUsersInArea(MapPoint loc, double squareRadius = CULL_DISTANCE) const;
     std::set<Entity*> findEntitiesInArea(MapPoint loc, double squareRadius = CULL_DISTANCE) const;
-    const ObjectType *findObjectTypeByName(const std::string &id) const; // Linear complexity
+    ObjectType *findObjectTypeByName(const std::string &id) const; // Linear complexity
     std::set<char> nearbyTerrainTypes(const MapRect &rect, double extraRadius = 0);
     const User *getUserByName(const std::string &username) const;
     const BuffType *getBuffByName(const Buff::ID &id) const;

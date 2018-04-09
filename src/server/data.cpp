@@ -514,6 +514,23 @@ void Server::loadData(const std::string &path){
         }
     }
 
+
+
+    // Quests
+    if (!xr.newFile(path + "/quests.xml"))
+        _debug("Failed to load quests.xml", Color::FAILURE);
+    else {
+        for (auto elem : xr.getChildren("quest")) {
+            auto startsAt = ""s;
+            if (!xr.findAttr(elem, "startsAt", startsAt))
+                continue;
+            auto ot = findObjectTypeByName(startsAt);
+            if (!ot)
+                continue;
+            ot->addQuest();
+        }
+    }
+
     // NPC types
     if (!xr.newFile(path + "/npcTypes.xml"))
         _debug("Failed to load npcTypes.xml", Color::FAILURE);

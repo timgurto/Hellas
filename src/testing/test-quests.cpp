@@ -36,6 +36,12 @@ TEST_CASE("Invalid quest") {
         c.sendMessage(CL_ACCEPT_QUEST, makeArgs(a.serial()));
     }
 
+    SECTION("When the object does not have a quest") {
+        s.addObject("B", { 10, 15 });
+        const auto &b = s.getFirstObject();
+        c.sendMessage(CL_ACCEPT_QUEST, makeArgs(b.serial()));
+    }
+
     // Then user is not on a quest
     auto &user = s.getFirstUser();
     REPEAT_FOR_MS(100)

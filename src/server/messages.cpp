@@ -1931,14 +1931,22 @@ CombatResult Server::handle_CL_CAST(User & user, const std::string &spellID, boo
 }
 
 void Server::handle_CL_ACCEPT_QUEST(User &user, size_t serial) {
-    auto obj = _entities.find(serial);
-    if (!obj)
+    const auto entity = _entities.find(serial);
+    if (!entity)
         return;
-    if (!isEntityInRange(user.socket(), user, obj))
+
+    auto object = dynamic_cast<const Object *>(entity);
+    if (!object)
         return;
+
+    if (!isEntityInRange(user.socket(), user, object))
+        return;
+
+    if (!object->objType().givesQuest())
+        return;
+
     user.startQuest();
 }
-
 
 void Server::broadcast(MessageCode msgCode, const std::string &args){
     for (const User &user : _users){

@@ -55,6 +55,8 @@ class ObjectType : public EntityType{
 
     std::string _playerUniqueCategory; // Assumption: up to one category per object type.
 
+    bool _givesQuest{ false };
+
 protected:
     ContainerType *_container;
     DeconstructionType *_deconstruction;
@@ -88,6 +90,8 @@ public:
     void makeUniquePerPlayer(const std::string &category) { _playerUniqueCategory = category; }
     bool isPlayerUnique() const { return !_playerUniqueCategory.empty(); }
     const std::string &playerUniqueCategory() const { return _playerUniqueCategory; }
+    void addQuest() { _givesQuest = true; }
+    bool givesQuest() const { return _givesQuest; }
 
     virtual char classTag() const override { return 'o'; }
 
