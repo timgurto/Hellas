@@ -192,6 +192,7 @@
     <ClInclude Include="src\server\objects\ObjectType.h" />
     <ClInclude Include="src\server\Permissions.h" />
     <ClInclude Include="src\server\ProgressLock.h" />
+    <ClInclude Include="src\server\Quest.h" />
     <ClInclude Include="src\server\Recipe.h" />
     <ClInclude Include="src\server\Server.h" />
     <ClInclude Include="src\server\ServerItem.h" />

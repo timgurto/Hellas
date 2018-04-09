@@ -1221,11 +1221,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
         case CL_ACCEPT_QUEST:
         {
+            iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            auto questID = Quest::ID{ buffer };
+            iss >> del;
+
             auto serial = size_t{};
             iss >> serial >> del;
+
             if (del != MSG_END)
                 return;
-            handle_CL_ACCEPT_QUEST(*user, serial);
+
+            handle_CL_ACCEPT_QUEST(*user, questID, serial);
             break;
         }
 
@@ -1930,8 +1936,8 @@ CombatResult Server::handle_CL_CAST(User & user, const std::string &spellID, boo
     return outcome;
 }
 
-void Server::handle_CL_ACCEPT_QUEST(User &user, size_t serial) {
-    const auto entity = _entities.find(serial);
+void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest, size_t giverSerial) {
+    const auto entity = _entities.find(giverSerial);
     if (!entity)
         return;
 
@@ -1942,7 +1948,8 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, size_t serial) {
     if (!isEntityInRange(user.socket(), user, object))
         return;
 
-    if (!object->objType().givesQuest())
+    auto questFromObject = object->objType().givesQuest();
+    if (quest != questFromObject)
         return;
 
     user.startQuest();

@@ -521,13 +521,19 @@ void Server::loadData(const std::string &path){
         _debug("Failed to load quests.xml", Color::FAILURE);
     else {
         for (auto elem : xr.getChildren("quest")) {
+
+            auto id = ""s;
+            if (!xr.findAttr(elem, "id", id))
+                continue;
+
             auto startsAt = ""s;
             if (!xr.findAttr(elem, "startsAt", startsAt))
                 continue;
+
             auto ot = findObjectTypeByName(startsAt);
             if (!ot)
                 continue;
-            ot->addQuest();
+            ot->addQuest(id);
         }
     }
 

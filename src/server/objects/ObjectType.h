@@ -5,6 +5,7 @@
 #include "Container.h"
 #include "Deconstruction.h"
 #include "../EntityType.h"
+#include "../Quest.h"
 #include "../Yield.h"
 #include "../../types.h"
 
@@ -55,7 +56,7 @@ class ObjectType : public EntityType{
 
     std::string _playerUniqueCategory; // Assumption: up to one category per object type.
 
-    bool _givesQuest{ false };
+    Quest::ID _givesQuest{};
 
 protected:
     ContainerType *_container;
@@ -90,8 +91,8 @@ public:
     void makeUniquePerPlayer(const std::string &category) { _playerUniqueCategory = category; }
     bool isPlayerUnique() const { return !_playerUniqueCategory.empty(); }
     const std::string &playerUniqueCategory() const { return _playerUniqueCategory; }
-    void addQuest() { _givesQuest = true; }
-    bool givesQuest() const { return _givesQuest; }
+    void addQuest(const Quest::ID &id) { _givesQuest = id; }
+    const Quest::ID &givesQuest() const { return _givesQuest; }
 
     virtual char classTag() const override { return 'o'; }
 

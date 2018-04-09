@@ -16,6 +16,7 @@
 #include "LogConsole.h"
 #include "NPC.h"
 #include "ObjectsByOwner.h"
+#include "Quest.h"
 #include "Recipe.h"
 #include "ServerItem.h"
 #include "Spawner.h"
@@ -253,7 +254,7 @@ private:
     void handle_CL_TAKE_TALENT(User & user, const Talent::Name &talent);
     void handle_CL_UNLEARN_TALENTS(User &user);
     CombatResult handle_CL_CAST(User & user, const std::string &spellID, bool castingFromItem = false);
-    void handle_CL_ACCEPT_QUEST(User &user, size_t serial);
+    void handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest, size_t giverSerial);
 };
 
 #endif

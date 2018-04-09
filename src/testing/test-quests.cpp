@@ -12,7 +12,7 @@ TEST_CASE("Simple quest") {
 
     // When a client accepts a quest from A
     s.waitForUsers(1);
-    c.sendMessage(CL_ACCEPT_QUEST, makeArgs(a.serial()));
+    c.sendMessage(CL_ACCEPT_QUEST, makeArgs("questFromA", a.serial()));
 
     // Then he is on a quest
     auto &user = s.getFirstUser();
@@ -24,22 +24,28 @@ TEST_CASE("Invalid quest") {
     auto c = TestClient::WithData("simpleQuest");
     s.waitForUsers(1);
 
-    SECTION("When the client is not on a quest") {}
+    SECTION("The client is not on a quest") {}
 
-    SECTION("When the client tries to accept a quest from a nonexistent object") {
-        c.sendMessage(CL_ACCEPT_QUEST, makeArgs(50));
+    SECTION("The client tries to accept a quest from a nonexistent object") {
+        c.sendMessage(CL_ACCEPT_QUEST, makeArgs("questFromA", 50));
     }
 
-    SECTION("When the object is too far away") {
+    SECTION("The object is too far away") {
         s.addObject("A", { 100, 100 });
         const auto &a = s.getFirstObject();
-        c.sendMessage(CL_ACCEPT_QUEST, makeArgs(a.serial()));
+        c.sendMessage(CL_ACCEPT_QUEST, makeArgs("questFromA", a.serial()));
     }
 
-    SECTION("When the object does not have a quest") {
+    SECTION("The object does not have a quest") {
         s.addObject("B", { 10, 15 });
         const auto &b = s.getFirstObject();
-        c.sendMessage(CL_ACCEPT_QUEST, makeArgs(b.serial()));
+        c.sendMessage(CL_ACCEPT_QUEST, makeArgs("questFromA", b.serial()));
+    }
+
+    SECTION("The object has the wrong quest") {
+        s.addObject("D", { 10, 15 });
+        const auto &d = s.getFirstObject();
+        c.sendMessage(CL_ACCEPT_QUEST, makeArgs("questFromA", d.serial()));
     }
 
     // Then user is not on a quest

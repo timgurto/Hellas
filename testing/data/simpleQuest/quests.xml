@@ -1,5 +1,6 @@
 <root>
 
-<quest startsAt="A" />
+<quest id="questFromA" startsAt="A" />
+<quest id="questFromD" startsAt="D" />
 
 </root>
