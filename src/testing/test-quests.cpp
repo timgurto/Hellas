@@ -20,8 +20,8 @@ TEST_CASE("Simple quest") {
 }
 
 TEST_CASE("Invalid quest") {
-    auto s = TestServer{};
-    auto c = TestClient{};
+    auto s = TestServer::WithData("simpleQuest");
+    auto c = TestClient::WithData("simpleQuest");
     s.waitForUsers(1);
 
     SECTION("When the client is not on a quest") {}
@@ -30,7 +30,13 @@ TEST_CASE("Invalid quest") {
         c.sendMessage(CL_ACCEPT_QUEST, makeArgs(50));
     }
 
-    // The user is not on a quest
+    SECTION("When the object is too far away") {
+        s.addObject("A", { 100, 100 });
+        const auto &a = s.getFirstObject();
+        c.sendMessage(CL_ACCEPT_QUEST, makeArgs(a.serial()));
+    }
+
+    // Then user is not on a quest
     auto &user = s.getFirstUser();
     REPEAT_FOR_MS(100)
         ;

@@ -1934,6 +1934,8 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, size_t serial) {
     auto obj = _entities.find(serial);
     if (!obj)
         return;
+    if (!isEntityInRange(user.socket(), user, obj))
+        return;
     user.startQuest();
 }
 
