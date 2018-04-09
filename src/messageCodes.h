@@ -176,6 +176,7 @@ enum MessageCode{
     CL_CAST_ITEM,
 
     // Start a quest
+    // Arguments: source serial
     CL_ACCEPT_QUEST,
 
     // "I want to say ... to everybody". 

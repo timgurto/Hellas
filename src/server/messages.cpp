@@ -1221,9 +1221,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
         case CL_ACCEPT_QUEST:
         {
+            auto serial = size_t{};
+            iss >> serial >> del;
             if (del != MSG_END)
                 return;
-            handle_CL_ACCEPT_QUEST(*user);
+            handle_CL_ACCEPT_QUEST(*user, serial);
             break;
         }
 
@@ -1928,7 +1930,10 @@ CombatResult Server::handle_CL_CAST(User & user, const std::string &spellID, boo
     return outcome;
 }
 
-void Server::handle_CL_ACCEPT_QUEST(User & user) {
+void Server::handle_CL_ACCEPT_QUEST(User &user, size_t serial) {
+    auto obj = _entities.find(serial);
+    if (!obj)
+        return;
     user.startQuest();
 }
 
