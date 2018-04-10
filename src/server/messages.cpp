@@ -1237,6 +1237,9 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
 
         case CL_COMPLETE_QUEST:
         {
+            auto serial = size_t{};
+            iss >> serial >> del;
+
             if (del != MSG_END)
                 return;
 
