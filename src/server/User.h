@@ -217,6 +217,7 @@ public:
     void moveToSpawnPoint(bool isNewPlayer = false);
 
     void startQuest() { _isOnQuest = true; }
+    void completeQuest() { _isOnQuest = false; }
     bool isOnQuest() { return _isOnQuest; }
 
     struct compareXThenSerial{ bool operator()( const User *a, const User *b) const; };

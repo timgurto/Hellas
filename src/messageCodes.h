@@ -179,6 +179,9 @@ enum MessageCode{
     // Arguments: quest ID, questgiver serial
     CL_ACCEPT_QUEST,
 
+    // Complete a quest
+    CL_COMPLETE_QUEST,
+
     // "I want to say ... to everybody". 
     // Arguments: message
     CL_SAY,

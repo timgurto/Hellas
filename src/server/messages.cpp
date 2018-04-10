@@ -1235,6 +1235,15 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             break;
         }
 
+        case CL_COMPLETE_QUEST:
+        {
+            if (del != MSG_END)
+                return;
+
+            handle_CL_COMPLETE_QUEST(*user);
+            break;
+        }
+
         case CL_SAY:
         {
             iss.get(buffer, BUFFER_SIZE, MSG_END);
@@ -1953,6 +1962,10 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest, size_t g
         return;
 
     user.startQuest();
+}
+
+void Server::handle_CL_COMPLETE_QUEST(User &user) {
+    user.completeQuest();
 }
 
 void Server::broadcast(MessageCode msgCode, const std::string &args){
