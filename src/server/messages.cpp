@@ -1243,7 +1243,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             if (del != MSG_END)
                 return;
 
-            handle_CL_COMPLETE_QUEST(*user);
+            handle_CL_COMPLETE_QUEST(*user, serial);
             break;
         }
 
@@ -1967,7 +1967,11 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest, size_t g
     user.startQuest();
 }
 
-void Server::handle_CL_COMPLETE_QUEST(User &user) {
+void Server::handle_CL_COMPLETE_QUEST(User &user, size_t serial) {
+    const auto entity = _entities.find(serial);
+    if (!entity)
+        return;
+
     user.completeQuest();
 }
 

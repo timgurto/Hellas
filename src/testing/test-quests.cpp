@@ -19,7 +19,7 @@ TEST_CASE("Simple quest") {
     WAIT_UNTIL(user.isOnQuest());
 
     // When he completes the quest
-    c.sendMessage(CL_COMPLETE_QUEST, makeArgs(0));
+    c.sendMessage(CL_COMPLETE_QUEST, makeArgs(a.serial()));
 
     // Then he is not on a quest
     REPEAT_FOR_MS(100)
@@ -61,4 +61,30 @@ TEST_CASE("Cases where a quest should not be accepted") {
     REPEAT_FOR_MS(100)
         ;
     CHECK(!user.isOnQuest());
+}
+
+TEST_CASE("Cases where a quest should not be completed") {
+    auto s = TestServer::WithData("simpleQuest");
+    auto c = TestClient::WithData("simpleQuest");
+
+    // Given an object, A
+    s.addObject("A", { 10, 15 });
+    const auto &a = s.getFirstObject();
+
+    // And the user has accepted a quest from A
+    s.waitForUsers(1);
+    c.sendMessage(CL_ACCEPT_QUEST, makeArgs("questFromA", a.serial()));
+
+    // And he is therefore on a quest
+    auto &user = s.getFirstUser();
+    WAIT_UNTIL(user.isOnQuest());
+
+    SECTION("The client tries to complete a quest at a nonexistent object") {
+        c.sendMessage(CL_COMPLETE_QUEST, makeArgs(50));
+    }
+
+    // Then he is still on the quest
+    REPEAT_FOR_MS(100)
+        ;
+    CHECK(user.isOnQuest());
 }
