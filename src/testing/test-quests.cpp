@@ -20,13 +20,13 @@ TEST_CASE("Simple quest") {
 
     // Then he is on a quest
     auto &user = s.getFirstUser();
-    WAIT_UNTIL(user.isOnQuest());
+    WAIT_UNTIL(user.numQuests() == 1);
 
     // When he completes the quest at B
     c.sendMessage(CL_COMPLETE_QUEST, makeArgs("questFromAToB", b));
 
     // Then he is not on a quest
-    WAIT_UNTIL(!user.isOnQuest());
+    WAIT_UNTIL(!user.numQuests() == 0);
 }
 
 TEST_CASE("Cases where a quest should not be accepted") {
@@ -62,7 +62,7 @@ TEST_CASE("Cases where a quest should not be accepted") {
     auto &user = s.getFirstUser();
     REPEAT_FOR_MS(100)
         ;
-    CHECK(!user.isOnQuest());
+    CHECK(user.numQuests() == 0);
 }
 
 TEST_CASE("Cases where a quest should not be completed") {
@@ -79,7 +79,7 @@ TEST_CASE("Cases where a quest should not be completed") {
 
     // And he is therefore on a quest
     auto &user = s.getFirstUser();
-    WAIT_UNTIL(user.isOnQuest());
+    WAIT_UNTIL(user.numQuests() == 1);
 
     SECTION("The client tries to complete a quest at a nonexistent object") {
         c.sendMessage(CL_COMPLETE_QUEST, makeArgs(50));
@@ -92,7 +92,7 @@ TEST_CASE("Cases where a quest should not be completed") {
     // Then he is still on the quest
     REPEAT_FOR_MS(100)
         ;
-    CHECK(user.isOnQuest());
+    CHECK(user.numQuests() == 1);
 }
 
 TEST_CASE("Identical source and destination") {
@@ -101,7 +101,7 @@ TEST_CASE("Identical source and destination") {
     auto c = TestClient::WithData("simpleQuest");
 
     // And an object, A
-    s.addObject("D", { 10, 15 });
+    s.addObject("A", { 10, 15 });
     const auto &a = s.getFirstObject();
 
     // And an object, B
@@ -113,16 +113,16 @@ TEST_CASE("Identical source and destination") {
     c.sendMessage(CL_ACCEPT_QUEST, makeArgs("questFromAToB", a.serial()));
     c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest2FromAToB", a.serial()));
 
-    // Then he is on a quest
+    // Then he is on two quest
     auto &user = s.getFirstUser();
-    REPEAT_FOR_MS(100);
+    WAIT_UNTIL(user.numQuests() == 2);
 
     // When he completes the quests at B
     c.sendMessage(CL_COMPLETE_QUEST, makeArgs("questFromAToB", b));
-    c.sendMessage(CL_COMPLETE_QUEST, makeArgs("questFromAToB", b));
+    c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest2FromAToB", b));
 
-    // Then he is not on a quest
+    // Then he is not on any quests
     REPEAT_FOR_MS(100)
         ;
-    CHECK(!user.isOnQuest());
+    CHECK(user.numQuests() == 0);
 }

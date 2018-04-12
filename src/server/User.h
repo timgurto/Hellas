@@ -72,7 +72,7 @@ private:
     void sendXPMessage() const;
     void announceLevelUp() const;
 
-    bool _isOnQuest{ false };
+    int _numQuests{ 0 };
 
 public:
     User(const std::string &name, const MapPoint &loc, const Socket &socket);
@@ -216,9 +216,9 @@ public:
     static double spawnRadius;
     void moveToSpawnPoint(bool isNewPlayer = false);
 
-    void startQuest() { _isOnQuest = true; }
-    void completeQuest() { _isOnQuest = false; }
-    bool isOnQuest() { return _isOnQuest; }
+    void startQuest() { ++_numQuests; }
+    void completeQuest() { --_numQuests; }
+    int numQuests() const { return _numQuests; }
 
     struct compareXThenSerial{ bool operator()( const User *a, const User *b) const; };
     struct compareYThenSerial{ bool operator()( const User *a, const User *b) const; };
