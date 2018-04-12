@@ -19,6 +19,7 @@ public:
     bool canBeAttackedByPlayer() const override;
 
     // From Sprite:
+    void draw(const Client &client) const override;
     bool shouldDrawName() const override { return true; }
 };
 

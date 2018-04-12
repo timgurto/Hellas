@@ -14,3 +14,15 @@ bool ClientNPC::canBeAttackedByPlayer() const{
         return false;
     return true;
 }
+
+void ClientNPC::draw(const Client & client) const {
+    ClientObject::draw(client);
+
+    // Draw gear
+    if (npcType()->hasGear())
+    for (const auto &pair : ClientItem::drawOrder()) {
+        const ClientItem *item = npcType()->gear(pair.second);
+        if (item)
+            item->draw(location());
+    }
+}

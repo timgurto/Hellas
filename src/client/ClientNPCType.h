@@ -15,10 +15,16 @@ public:
     void projectile(const Projectile::Type &type) { _projectile = &type; }
     const Projectile::Type *projectile() const { return _projectile; }
 
+    void addGear(const ClientItem &item);
+    const ClientItem *gear(size_t slot) const;
+    bool hasGear() const { return !_gear.empty(); }
+
     virtual char classTag() const override { return 'n';} 
 
 private:
     const Projectile::Type *_projectile = nullptr;
+    using Gear = std::vector<const ClientItem *>;
+    Gear _gear; // For humanoid NPCs
 };
 
 #endif

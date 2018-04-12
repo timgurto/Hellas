@@ -706,6 +706,7 @@ void Client::loadData(const std::string &path){
                 xr.findAttr(elem, "imageFile", imageFile); // If no explicit imageFile, will still == id
                 imagePath = "Images/NPCs/"s + imageFile;
             }
+
             ClientNPCType *nt = new ClientNPCType(id, imagePath, maxHealth);
 
             auto s = ""s;
@@ -759,6 +760,20 @@ void Client::loadData(const std::string &path){
                 xr.findAttr(particles, "x", offset.x);
                 xr.findAttr(particles, "y", offset.y);
                 nt->addParticles(profileName, offset);
+            }
+
+            for (auto gearElem : xr.getChildren("gear", humanoid)) {
+                auto id = ""s;
+                if (!xr.findAttr(gearElem, "id", id))
+                    continue;
+
+                auto it = _items.find(id);
+                if (it == _items.end()) {
+                    showErrorMessage("Skipping invalid NPC gear "s + id, Color::FAILURE);
+                    continue;
+                }
+
+                nt->addGear(it->second);
             }
         }
     }

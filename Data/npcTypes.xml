@@ -15,7 +15,9 @@
 <npcType
     id="bandit" name="Bandit"
 	level="3" maxHealth="23" attack="4" attackTime="857" >
-    <humanoid />
+    <humanoid>
+        <gear id="linenCloak" />
+    </humanoid>
 </npcType>
 
 <npcType

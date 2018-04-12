@@ -15,3 +15,17 @@ ClientObjectType(id)
     imageSet(imagePath + ".png");
     corpseImage(imagePath + "-corpse.png");
 }
+
+void ClientNPCType::addGear(const ClientItem & item) {
+    auto slot = item.gearSlot();
+    if (_gear.empty()) {
+        _gear = { Client::GEAR_SLOTS, nullptr };
+    }
+    _gear[slot] = &item;
+}
+
+const ClientItem * ClientNPCType::gear(size_t slot) const {
+    if (_gear.empty())
+        return nullptr;
+    return _gear[slot];
+}

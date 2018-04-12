@@ -4,6 +4,8 @@
 #include "LootTable.h"
 #include "objects/ObjectType.h"
 
+class ClientItem;
+
 // Describes a class of NPCs, a la the ObjectType class.
 class NPCType : public ObjectType{
 
