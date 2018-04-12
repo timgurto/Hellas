@@ -56,8 +56,9 @@ class ObjectType : public EntityType{
 
     std::string _playerUniqueCategory; // Assumption: up to one category per object type.
 
-    Quest::ID _startsQuest{};
-    Quest::ID _endsQuest{};
+    using Quests = std::set<Quest::ID>;
+    Quests _questsStartingHere{};
+    Quests _questsEndingHere{};
 
 protected:
     ContainerType *_container;
@@ -92,10 +93,10 @@ public:
     void makeUniquePerPlayer(const std::string &category) { _playerUniqueCategory = category; }
     bool isPlayerUnique() const { return !_playerUniqueCategory.empty(); }
     const std::string &playerUniqueCategory() const { return _playerUniqueCategory; }
-    void addQuestStart(const Quest::ID &id) { _startsQuest = id; }
-    const Quest::ID &startsQuest() const { return _startsQuest; }
-    void addQuestEnd(const Quest::ID &id) { _endsQuest = id; }
-    const Quest::ID &endsQuest() const { return _endsQuest; }
+    void addQuestStart(const Quest::ID &id) { _questsStartingHere.insert(id); }
+    bool startsQuest(const Quest::ID &id) const { return _questsStartingHere.find(id) != _questsStartingHere.end(); }
+    void addQuestEnd(const Quest::ID &id) { _questsEndingHere.insert(id); }
+    bool endsQuest(const Quest::ID &id) const { return _questsEndingHere.find(id) != _questsEndingHere.end(); }
 
     virtual char classTag() const override { return 'o'; }
 

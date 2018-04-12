@@ -26,9 +26,7 @@ TEST_CASE("Simple quest") {
     c.sendMessage(CL_COMPLETE_QUEST, makeArgs("questFromAToB", b));
 
     // Then he is not on a quest
-    REPEAT_FOR_MS(100)
-        ;
-    CHECK(!user.isOnQuest());
+    WAIT_UNTIL(!user.isOnQuest());
 }
 
 TEST_CASE("Cases where a quest should not be accepted") {
@@ -95,4 +93,36 @@ TEST_CASE("Cases where a quest should not be completed") {
     REPEAT_FOR_MS(100)
         ;
     CHECK(user.isOnQuest());
+}
+
+TEST_CASE("Identical source and destination") {
+    // Given two quests that start at A and end at B
+    auto s = TestServer::WithData("simpleQuest");
+    auto c = TestClient::WithData("simpleQuest");
+
+    // And an object, A
+    s.addObject("D", { 10, 15 });
+    const auto &a = s.getFirstObject();
+
+    // And an object, B
+    s.addObject("B", { 15, 10 });
+    auto b = a.serial() + 1;
+
+    // When a client accepts two quests from A (that finish at B)
+    s.waitForUsers(1);
+    c.sendMessage(CL_ACCEPT_QUEST, makeArgs("questFromAToB", a.serial()));
+    c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest2FromAToB", a.serial()));
+
+    // Then he is on a quest
+    auto &user = s.getFirstUser();
+    REPEAT_FOR_MS(100);
+
+    // When he completes the quests at B
+    c.sendMessage(CL_COMPLETE_QUEST, makeArgs("questFromAToB", b));
+    c.sendMessage(CL_COMPLETE_QUEST, makeArgs("questFromAToB", b));
+
+    // Then he is not on a quest
+    REPEAT_FOR_MS(100)
+        ;
+    CHECK(!user.isOnQuest());
 }

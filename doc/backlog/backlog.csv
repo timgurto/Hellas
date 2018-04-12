@@ -371,7 +371,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 410,"Recruit via an invitation, not insta-join",21,13,Usability,,,,
 411,Failed assertion in Entity.cpp line 116,34,8,Bug,,,,
 412,Prevent picking up items while drop confirmation is open,8,3,Bug,,,,
-413,A quest from A that finishes at B,5,21,Feature,,,,1
+413,A quest from A that finishes at B,5,21,Feature,,TRUE,,1
 414,Quest-briefing text,8,5,Feature,413,,,1
 415,Quest-completion text,3,5,Feature,413,,,1
 416,Quests reward constant XP,13,2,Feature,413,,,1

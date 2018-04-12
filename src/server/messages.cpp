@@ -1963,8 +1963,8 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest, size_t s
     if (!isEntityInRange(user.socket(), user, object))
         return;
 
-    auto questStartingAtThisObject = object->objType().startsQuest();
-    if (quest != questStartingAtThisObject)
+    const auto &objType = object->objType();
+    if (!objType.startsQuest(quest))
         return;
 
     user.startQuest();
@@ -1979,8 +1979,7 @@ void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest, size_t
         return;
 
     const auto &objType = object->objType();
-    auto questEndingAtThisObject = objType.endsQuest();
-    if (quest != questEndingAtThisObject)
+    if (!objType.endsQuest(quest))
         return;
 
     user.completeQuest();
