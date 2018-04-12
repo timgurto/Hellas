@@ -1967,7 +1967,7 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest, size_t s
     if (!objType.startsQuest(quest))
         return;
 
-    user.startQuest();
+    user.startQuest(quest);
 }
 
 void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest, size_t endSerial) {
@@ -1982,7 +1982,7 @@ void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest, size_t
     if (!objType.endsQuest(quest))
         return;
 
-    user.completeQuest();
+    user.completeQuest(quest);
 }
 
 void Server::broadcast(MessageCode msgCode, const std::string &args){
