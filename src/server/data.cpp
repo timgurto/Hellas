@@ -529,11 +529,18 @@ void Server::loadData(const std::string &path){
             auto startsAt = ""s;
             if (!xr.findAttr(elem, "startsAt", startsAt))
                 continue;
-
-            auto ot = findObjectTypeByName(startsAt);
-            if (!ot)
+            auto startingObject = findObjectTypeByName(startsAt);
+            if (!startingObject)
                 continue;
-            ot->addQuest(id);
+            startingObject->addQuestStart(id);
+
+            auto endsAt = ""s;
+            if (!xr.findAttr(elem, "endsAt", endsAt))
+                continue;
+            auto endingObject = findObjectTypeByName(endsAt);
+            if (!endingObject)
+                continue;
+            endingObject->addQuestEnd(id);
         }
     }
 

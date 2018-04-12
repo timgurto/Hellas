@@ -1225,25 +1225,29 @@ void Server::handleMessage(const Socket &client, const std::string &msg){
             auto questID = Quest::ID{ buffer };
             iss >> del;
 
-            auto serial = size_t{};
-            iss >> serial >> del;
+            auto startSerial = size_t{};
+            iss >> startSerial >> del;
 
             if (del != MSG_END)
                 return;
 
-            handle_CL_ACCEPT_QUEST(*user, questID, serial);
+            handle_CL_ACCEPT_QUEST(*user, questID, startSerial);
             break;
         }
 
         case CL_COMPLETE_QUEST:
         {
-            auto serial = size_t{};
-            iss >> serial >> del;
+            iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
+            auto questID = Quest::ID{ buffer };
+            iss >> del;
+
+            auto endSerial = size_t{};
+            iss >> endSerial >> del;
 
             if (del != MSG_END)
                 return;
 
-            handle_CL_COMPLETE_QUEST(*user, serial);
+            handle_CL_COMPLETE_QUEST(*user, questID, endSerial);
             break;
         }
 
@@ -1948,11 +1952,10 @@ CombatResult Server::handle_CL_CAST(User & user, const std::string &spellID, boo
     return outcome;
 }
 
-void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest, size_t giverSerial) {
-    const auto entity = _entities.find(giverSerial);
+void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest, size_t startSerial) {
+    const auto entity = _entities.find(startSerial);
     if (!entity)
         return;
-
     auto object = dynamic_cast<const Object *>(entity);
     if (!object)
         return;
@@ -1960,16 +1963,24 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest, size_t g
     if (!isEntityInRange(user.socket(), user, object))
         return;
 
-    auto questFromObject = object->objType().givesQuest();
-    if (quest != questFromObject)
+    auto questStartingAtThisObject = object->objType().startsQuest();
+    if (quest != questStartingAtThisObject)
         return;
 
     user.startQuest();
 }
 
-void Server::handle_CL_COMPLETE_QUEST(User &user, size_t serial) {
-    const auto entity = _entities.find(serial);
+void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest, size_t endSerial) {
+    const auto entity = _entities.find(endSerial);
     if (!entity)
+        return;
+    auto object = dynamic_cast<const Object *>(entity);
+    if (!object)
+        return;
+
+    const auto &objType = object->objType();
+    auto questEndingAtThisObject = objType.endsQuest();
+    if (quest != questEndingAtThisObject)
         return;
 
     user.completeQuest();

@@ -176,11 +176,11 @@ enum MessageCode{
     CL_CAST_ITEM,
 
     // Start a quest
-    // Arguments: quest ID, object serial
+    // Arguments: quest ID, start-object serial
     CL_ACCEPT_QUEST,
 
     // Complete a quest
-    // Arguments: object serial
+    // Arguments: quest ID, end-object serial
     CL_COMPLETE_QUEST,
 
     // "I want to say ... to everybody". 
