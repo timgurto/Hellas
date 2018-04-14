@@ -532,7 +532,6 @@ void Server::loadData(const std::string &path){
             auto startingObject = findObjectTypeByName(startsAt);
             if (!startingObject)
                 continue;
-            startingObject->addQuestStart(id);
 
             auto endsAt = ""s;
             if (!xr.findAttr(elem, "endsAt", endsAt))
@@ -540,6 +539,8 @@ void Server::loadData(const std::string &path){
             auto endingObject = findObjectTypeByName(endsAt);
             if (!endingObject)
                 continue;
+
+            startingObject->addQuestStart(id);
             endingObject->addQuestEnd(id);
         }
     }
