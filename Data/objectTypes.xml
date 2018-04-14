@@ -440,4 +440,9 @@
     <strength item="tin" quantity="15" />
 </objectType>
 
+<objectType id="questgiver" name="Questgiver"
+    xDrawOffset="-10" yDrawOffset="-10" >
+    <collisionRect x="-10" y="-10" w="20" h="20" />
+</objectType>
+
 </root>

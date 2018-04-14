@@ -811,6 +811,19 @@ void ClientObject::update(double delta) {
 
 void ClientObject::draw(const Client & client) const {
     Sprite::draw(client);
+
+    if (!startsQuest().empty()) {
+        static const auto questStartIndicator = Texture{ "Images/questStart.png", Color::MAGENTA };
+        auto questStartIndicatorOffset = ScreenRect{
+            -questStartIndicator.width() / 2,
+            -questStartIndicator.height() - 7 - height(),
+            questStartIndicator.width(),
+            questStartIndicator.height()
+        };
+        auto indicatorLocation = toScreenRect(location()) + client.offset() + questStartIndicatorOffset;
+        questStartIndicator.draw(indicatorLocation);
+    }
+
     drawHealthBarIfAppropriate(location(), height());
 }
 

@@ -1,0 +1,5 @@
+<root>
+
+<quest id="q1" startsAt="questgiver" endsAt="questgiver" />
+
+</root>
