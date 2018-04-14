@@ -236,12 +236,18 @@ void ClientObject::addQuestsToWindow() {
         MARGIN = 2,
         GAP = 2;
 
-    const auto buttonRect = ScreenRect{ MARGIN, y + MARGIN, BUTTON_WIDTH, BUTTON_HEIGHT };
-    auto questIDAddress = const_cast<void*>(reinterpret_cast<const void*>(&startsQuest()));
-    _window->addChild(new Button(buttonRect, startsQuest(),
-        Client::sendMessageWithString<CL_ACCEPT_QUEST>, questIDAddress));
+    for (const auto &questID : startsQuests()) {
+        y += MARGIN;
 
-    y += BUTTON_HEIGHT + 2 * MARGIN;
+        const auto buttonRect = ScreenRect{ MARGIN, y, BUTTON_WIDTH, BUTTON_HEIGHT };
+        auto questIDAddress = const_cast<void*>(reinterpret_cast<const void*>(&questID));
+        _window->addChild(new Button(buttonRect, questID,
+            Client::sendMessageWithString<CL_ACCEPT_QUEST>, questIDAddress));
+
+        y += BUTTON_HEIGHT;
+    }
+
+    y += MARGIN;
 
     newWidth = max(newWidth, BUTTON_WIDTH + 2 * MARGIN);
     _window->resize(newWidth, y);
@@ -638,7 +644,7 @@ void ClientObject::assembleWindow(Client &client){
         canGrant = (client.character().isKing() &&
                     _owner == client.character().cityName()),
         canDemolish = _owner == Client::_instance->username(),
-        startsAQuest = !startsQuest().empty();
+        startsAQuest = !startsQuests().empty();
     if (isAlive() && (
             isMerchant ||
             userHasAccess() && (hasContainer ||
@@ -838,7 +844,7 @@ void ClientObject::update(double delta) {
 void ClientObject::draw(const Client & client) const {
     Sprite::draw(client);
 
-    if (!startsQuest().empty()) {
+    if (!startsQuests().empty()) {
         static const auto questStartIndicator = Texture{ "Images/questStart.png", Color::MAGENTA };
         auto questStartIndicatorOffset = ScreenRect{
             -questStartIndicator.width() / 2,
@@ -881,7 +887,7 @@ const Tooltip &ClientObject::tooltip() const{
     const ClientObjectType &ot = *objectType();
 
     auto isContainer = ot.containerSlots() > 0 && classTag() != 'n';
-    auto startsAQuest = !startsQuest().empty();
+    auto startsAQuest = !startsQuests().empty();
 
     // Name
     tooltip.setColor(Color::ITEM_NAME);
@@ -972,7 +978,7 @@ const Tooltip &ClientObject::tooltip() const{
                                                       startsAQuest)){
        tooltip.addGap();
        tooltip.setColor(Color::ITEM_INSTRUCTIONS);
-       tooltip.addLine(std::string("Right-click for controls"));
+       tooltip.addLine(std::string("Right-click to interact"));
     }
 
     else if (classTag() == 'n'){

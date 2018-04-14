@@ -47,7 +47,7 @@ class ClientObject : public Sprite, public ClientCombatant {
 
     TextBox *_actionTextEntry = nullptr;
 
-    std::string _questFromHere{};
+    std::set<std::string> _questsStartingHere{};
 
 protected:
     Window *_window; // For containers, etc; opens when the object is nearby and right-clicked.
@@ -108,8 +108,8 @@ public:
     virtual void assembleWindow(Client &client);
 
     // Quests
-    void startsQuest(const std::string questID) { _questFromHere = questID; }
-    const std::string &startsQuest() const { return _questFromHere; }
+    void startsQuest(const std::string questID) { _questsStartingHere.insert(questID); }
+    const std::set<std::string> &startsQuests() const { return _questsStartingHere; }
 
     // From ClientCombatant
     virtual void sendTargetMessage() const override;
