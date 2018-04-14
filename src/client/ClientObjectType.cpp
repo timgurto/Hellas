@@ -112,7 +112,8 @@ void ClientObjectType::addTransformImage(const std::string &filename){
 
 void ClientObjectType::addMaterial(const ClientItem *item, size_t qty) {
     _materials.set(item, qty);
-    if (!_constructionImage.normal)
+    auto isConstructionImageAlreadyInitialized = bool{ _constructionImage.normal };
+    if (!isConstructionImageAlreadyInitialized)
         _constructionImage = ImageSet("Images/Objects/" + _id + "-construction.png");
 }
 
