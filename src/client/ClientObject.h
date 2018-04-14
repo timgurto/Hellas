@@ -143,6 +143,7 @@ private:
         BUTTON_WIDTH,
         GAP,
         BUTTON_GAP;
+    void addQuestsToWindow();
     void addConstructionToWindow();
     void addMerchantSetupToWindow();
     void addInventoryToWindow();

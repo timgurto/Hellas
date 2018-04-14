@@ -225,6 +225,28 @@ void ClientObject::onRightClick(Client &client){
     }
 }
 
+void ClientObject::addQuestsToWindow() {
+    px_t
+        y = _window->contentHeight(),
+        newWidth = _window->contentWidth();
+
+    const auto
+        BUTTON_HEIGHT = 15,
+        BUTTON_WIDTH = 100,
+        MARGIN = 2,
+        GAP = 2;
+
+    const auto buttonRect = ScreenRect{ MARGIN, y + MARGIN, BUTTON_WIDTH, BUTTON_HEIGHT };
+    auto questIDAddress = const_cast<void*>(reinterpret_cast<const void*>(&startsQuest()));
+    _window->addChild(new Button(buttonRect, startsQuest(),
+        Client::sendMessageWithString<CL_ACCEPT_QUEST>, questIDAddress));
+
+    y += BUTTON_HEIGHT + 2 * MARGIN;
+
+    newWidth = max(newWidth, BUTTON_WIDTH + 2 * MARGIN);
+    _window->resize(newWidth, y);
+}
+
 void ClientObject::addConstructionToWindow(){
     px_t
         x = 0,
@@ -615,7 +637,8 @@ void ClientObject::assembleWindow(Client &client){
                   (!objType.isPlayerUnique()),
         canGrant = (client.character().isKing() &&
                     _owner == client.character().cityName()),
-        canDemolish = _owner == Client::_instance->username();
+        canDemolish = _owner == Client::_instance->username(),
+        startsAQuest = !startsQuest().empty();
     if (isAlive() && (
             isMerchant ||
             userHasAccess() && (hasContainer ||
@@ -625,7 +648,8 @@ void ClientObject::assembleWindow(Client &client){
                                 isBeingConstructed() ||
                                 canCede ||
                                 canGrant ||
-                                canDemolish ))){
+                                canDemolish ||
+                                startsAQuest ))){
 
         if (_window == nullptr)
             _window = Window::WithRectAndTitle({}, objType.name());
@@ -646,6 +670,8 @@ void ClientObject::assembleWindow(Client &client){
             }
 
         } else {
+            if (startsAQuest)
+                addQuestsToWindow();
             if (isMerchant)
                 addMerchantSetupToWindow();
             if (hasContainer){
@@ -854,7 +880,8 @@ const Tooltip &ClientObject::tooltip() const{
 
     const ClientObjectType &ot = *objectType();
 
-    bool isContainer = ot.containerSlots() > 0 && classTag() != 'n';
+    auto isContainer = ot.containerSlots() > 0 && classTag() != 'n';
+    auto startsAQuest = !startsQuest().empty();
 
     // Name
     tooltip.setColor(Color::ITEM_NAME);
@@ -941,7 +968,8 @@ const Tooltip &ClientObject::tooltip() const{
     // Any actions available?
     if (ot.merchantSlots() > 0 || userHasAccess() && (classTag() == 'v' ||
                                                       isContainer ||
-                                                      ot.canDeconstruct())){
+                                                      ot.canDeconstruct() ||
+                                                      startsAQuest)){
        tooltip.addGap();
        tooltip.setColor(Color::ITEM_INSTRUCTIONS);
        tooltip.addLine(std::string("Right-click for controls"));
