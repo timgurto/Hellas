@@ -233,13 +233,21 @@ void ClientObject::addQuestsToWindow() {
     const auto
         BUTTON_HEIGHT = 15,
         BUTTON_WIDTH = 100,
-        MARGIN = 2,
-        GAP = 2;
+        MARGIN = 2;
+
+    _window->addChild(new Label({ MARGIN, y, BUTTON_WIDTH, Element::TEXT_HEIGHT }, "New quests:"));
+    y += Element::TEXT_HEIGHT + MARGIN;
+
+    static auto newQuestIcon = Texture{ "Images/UI/newQuest.png", Color::MAGENTA };
+    const auto BUTTON_X = newQuestIcon.width();
 
     for (const auto &questID : startsQuests()) {
         y += MARGIN;
 
-        const auto buttonRect = ScreenRect{ MARGIN, y, BUTTON_WIDTH, BUTTON_HEIGHT };
+        _window->addChild(new Picture(0, y + (BUTTON_HEIGHT - newQuestIcon.height()) / 2,
+            newQuestIcon));
+
+        const auto buttonRect = ScreenRect{ BUTTON_X, y, BUTTON_WIDTH, BUTTON_HEIGHT };
         auto questIDAddress = const_cast<void*>(reinterpret_cast<const void*>(&questID));
         _window->addChild(new Button(buttonRect, questID,
             Client::sendMessageWithString<CL_ACCEPT_QUEST>, questIDAddress));
@@ -249,7 +257,7 @@ void ClientObject::addQuestsToWindow() {
 
     y += MARGIN;
 
-    newWidth = max(newWidth, BUTTON_WIDTH + 2 * MARGIN);
+    newWidth = max(newWidth, BUTTON_WIDTH + BUTTON_X + MARGIN);
     _window->resize(newWidth, y);
 }
 
