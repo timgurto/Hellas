@@ -288,8 +288,10 @@ void Object::sendInfoToClient(const User &targetUser) const {
         server.sendMessage(client, SV_ENTITY_GOT_DEBUFF, makeArgs(serial(), debuff.type()));
 
     // Quests
-    if (!objType().questsStartingHere().empty())
-        server.sendMessage(client, SV_OBJECT_GIVES_QUEST, makeArgs(serial()));
+    if (!objType().questsStartingHere().empty()) {
+        auto questID = *objType().questsStartingHere().begin();
+        server.sendMessage(client, SV_OBJECT_GIVES_QUEST, makeArgs(serial(), questID));
+    }
 }
 
 void Object::describeSelfToNewWatcher(const User &watcher) const{

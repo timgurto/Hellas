@@ -1778,10 +1778,14 @@ void Client::handleMessage(const std::string &msg){
             auto serial = size_t{};
             singleMsg >> serial >> del;
 
+            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+            auto questID = std::string{ buffer };
+            singleMsg >> del;
+
             if (del != MSG_END)
                 return;
 
-            handle_SV_OBJECT_GIVES_QUEST(serial);
+            handle_SV_OBJECT_GIVES_QUEST(serial, questID);
 
             break;
         }
@@ -2238,12 +2242,12 @@ void Client::handle_SV_OBJECT_HEALED(size_t serial, Hitpoints amount) {
     addFloatingCombatText("+"s + toString(amount), it->second->location(), Color::FLOATING_HEAL);
 }
 
-void Client::handle_SV_OBJECT_GIVES_QUEST(size_t serial) {
+void Client::handle_SV_OBJECT_GIVES_QUEST(size_t serial, const std::string &questID) {
     auto it = _objects.find(serial);
     if (it == _objects.end())
         return;
 
-    it->second->setHasQuest();
+    it->second->startsQuest(questID);
 }
 
 

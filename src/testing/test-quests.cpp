@@ -138,9 +138,10 @@ TEST_CASE("Client knows about objects' quests") {
     s.waitForUsers(1);
 
     // Then he knows that the object has a quest
+    // And he knows that is gives "quest2FromAToB"
     WAIT_UNTIL(c.objects().size() == 1);
     const auto &a = c.getFirstObject();
-    WAIT_UNTIL(a.hasQuest());
+    WAIT_UNTIL(a.startsQuest() == "quest2FromAToB");
 }
 
 TEST_CASE("Client knows when objects have no quests") {
@@ -158,5 +159,5 @@ TEST_CASE("Client knows when objects have no quests") {
     const auto &b = c.getFirstObject();
     REPEAT_FOR_MS(100)
         ;
-    CHECK(!b.hasQuest());
+    CHECK(b.startsQuest().empty());
 }
