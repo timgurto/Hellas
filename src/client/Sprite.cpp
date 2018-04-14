@@ -29,6 +29,11 @@ void Sprite::draw(const Client &client) const{
     const Texture &imageToDraw = client.currentMouseOverEntity() == this ? highlightImage() : image();
     if (imageToDraw)
         imageToDraw.draw(drawRect() + client.offset());
+    else {
+        renderer.setDrawColor(Color::BLUE);
+        auto drawRect = toScreenRect(MapRect{_location.x - 5, _location.y - 5, 10, 10});
+        renderer.fillRect(drawRect + client.offset());
+    }
 
     if (shouldDrawName())
         drawName();
