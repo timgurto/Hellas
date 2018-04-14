@@ -219,6 +219,7 @@ public:
     void startQuest(const Quest::ID &id) { _quests.insert(id); }
     void completeQuest(const Quest::ID &id) { _quests.erase(id); }
     int numQuests() const { return _quests.size(); }
+    bool isOnQuest(const Quest::ID &id) const { return _quests.find(id) != _quests.end(); }
 
     struct compareXThenSerial{ bool operator()( const User *a, const User *b) const; };
     struct compareYThenSerial{ bool operator()( const User *a, const User *b) const; };

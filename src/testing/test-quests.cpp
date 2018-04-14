@@ -163,3 +163,23 @@ TEST_CASE("Client knows when objects have no quests") {
         ;
     CHECK(b.startsQuests().empty());
 }
+
+TEST_CASE("A user can't pick up a quest he's already on") {
+    auto s = TestServer::WithData("simpleQuest");
+    auto c = TestClient::WithData("simpleQuest");
+
+    // Given the user has accepted a quest from A
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.startQuest("questFromAToB");
+
+    // When an object, A, is added (which has two quests)
+    s.addObject("A", { 10, 15 });
+
+    // Then the user is told that there is only one quest available
+    REPEAT_FOR_MS(100)
+        ;
+    const auto &a = c.getFirstObject();
+    CHECK(a.startsQuests().size() == 1);
+
+}

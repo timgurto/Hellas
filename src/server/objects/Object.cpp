@@ -289,7 +289,8 @@ void Object::sendInfoToClient(const User &targetUser) const {
 
     // Quests
     for (const auto &questID : objType().questsStartingHere())
-        server.sendMessage(client, SV_OBJECT_GIVES_QUEST, makeArgs(serial(), questID));
+        if (!targetUser.isOnQuest(questID))
+            server.sendMessage(client, SV_OBJECT_GIVES_QUEST, makeArgs(serial(), questID));
 }
 
 void Object::describeSelfToNewWatcher(const User &watcher) const{
