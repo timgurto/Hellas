@@ -501,6 +501,10 @@ enum MessageCode{
     SV_YOUR_CITY_IS_AT_PEACE_WITH_PLAYER,
     SV_YOUR_CITY_IS_AT_PEACE_WITH_CITY,
 
+    // An object gives a quest
+    // Arguments: serial
+    SV_OBJECT_GIVES_QUEST,
+
 
     // "User ... has said ...".
     // Arguments: username, message

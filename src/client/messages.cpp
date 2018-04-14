@@ -1773,6 +1773,19 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
+        case SV_OBJECT_GIVES_QUEST:
+        {
+            auto serial = size_t{};
+            singleMsg >> serial >> del;
+
+            if (del != MSG_END)
+                return;
+
+            handle_SV_OBJECT_GIVES_QUEST(serial);
+
+            break;
+        }
+
         case SV_SAY:
         {
             std::string username, message;
@@ -2223,6 +2236,14 @@ void Client::handle_SV_OBJECT_HEALED(size_t serial, Hitpoints amount) {
         return;
 
     addFloatingCombatText("+"s + toString(amount), it->second->location(), Color::FLOATING_HEAL);
+}
+
+void Client::handle_SV_OBJECT_GIVES_QUEST(size_t serial) {
+    auto it = _objects.find(serial);
+    if (it == _objects.end())
+        return;
+
+    it->second->setHasQuest();
 }
 
 

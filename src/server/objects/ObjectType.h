@@ -97,6 +97,7 @@ public:
     bool startsQuest(const Quest::ID &id) const { return _questsStartingHere.find(id) != _questsStartingHere.end(); }
     void addQuestEnd(const Quest::ID &id) { _questsEndingHere.insert(id); }
     bool endsQuest(const Quest::ID &id) const { return _questsEndingHere.find(id) != _questsEndingHere.end(); }
+    const Quests &questsStartingHere() const { return _questsStartingHere; }
 
     virtual char classTag() const override { return 'o'; }
 

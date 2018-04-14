@@ -47,6 +47,8 @@ class ClientObject : public Sprite, public ClientCombatant {
 
     TextBox *_actionTextEntry = nullptr;
 
+    bool _hasQuest{ false };
+
 protected:
     Window *_window; // For containers, etc; opens when the object is nearby and right-clicked.
     ConfirmationWindow *_confirmCedeWindow;
@@ -104,6 +106,10 @@ public:
     virtual void onInventoryUpdate();
     void hideWindow();
     virtual void assembleWindow(Client &client);
+
+    // Quests
+    bool hasQuest() const { return _hasQuest; }
+    void setHasQuest() { _hasQuest = true; }
 
     // From ClientCombatant
     virtual void sendTargetMessage() const override;

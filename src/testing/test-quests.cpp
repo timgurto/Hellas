@@ -126,3 +126,37 @@ TEST_CASE("Identical source and destination") {
         ;
     CHECK(user.numQuests() == 0);
 }
+
+TEST_CASE("Client knows about objects' quests") {
+    auto s = TestServer::WithData("simpleQuest");
+
+    // Given an object, A
+    s.addObject("A", { 10, 15 });
+
+    // When a client logs in
+    auto c = TestClient::WithData("simpleQuest");
+    s.waitForUsers(1);
+
+    // Then he knows that the object has a quest
+    WAIT_UNTIL(c.objects().size() == 1);
+    const auto &a = c.getFirstObject();
+    WAIT_UNTIL(a.hasQuest());
+}
+
+TEST_CASE("Client knows when objects have no quests") {
+    auto s = TestServer::WithData("simpleQuest");
+
+    // Given an object, B
+    s.addObject("B", { 10, 15 });
+
+    // When a client logs in
+    auto c = TestClient::WithData("simpleQuest");
+    s.waitForUsers(1);
+
+    // Then he knows that the object has no quests
+    WAIT_UNTIL(c.objects().size() == 1);
+    const auto &b = c.getFirstObject();
+    REPEAT_FOR_MS(100)
+        ;
+    CHECK(!b.hasQuest());
+}
