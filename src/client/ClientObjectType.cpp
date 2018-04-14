@@ -129,7 +129,8 @@ void ClientObjectType::sounds(const std::string &id){
 }
 
 void ClientObjectType::calculateAndInitStrength(){
-    if (_strength.item == nullptr)
-        return;
-    maxHealth(_strength.item->strength() * _strength.quantity);
+    if (_strength.item == nullptr || _strength.quantity == 0)
+        maxHealth(1);
+    else
+        maxHealth(_strength.item->strength() * _strength.quantity);
 }

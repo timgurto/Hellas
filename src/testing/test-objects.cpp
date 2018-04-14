@@ -89,3 +89,20 @@ TEST_CASE("Out-of-range objects are forgotten", "[.slow][culling][only]") {
     }
     CHECK(c.objects().size() == 0);
 }
+
+TEST_CASE("Objects with no strength have 1 health in client") {
+    // Given an object type A with no strength;
+    TestServer s = TestServer::WithData("simpleQuest");
+    TestClient c = TestClient::WithData("simpleQuest");
+
+    // When an A object is added
+    s.addObject("A", { 10, 15 });
+
+    // And the client becomes aware of it
+    s.waitForUsers(1);
+    WAIT_UNTIL(c.objects().size() == 1);
+
+    // Then the client knows it has 1 health
+    auto &obj = c.getFirstObject();
+    CHECK(obj.health() == 1);
+}
