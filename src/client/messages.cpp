@@ -1773,19 +1773,28 @@ void Client::handleMessage(const std::string &msg){
             break;
         }
 
-        case SV_OBJECT_GIVES_QUEST:
+        case SV_OBJECT_GIVES_QUESTS:
         {
             auto serial = size_t{};
             singleMsg >> serial >> del;
 
-            singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
-            auto questID = std::string{ buffer };
-            singleMsg >> del;
+            auto numQuests = size_t{};
+            singleMsg >> numQuests >> del;
+
+            auto questsFromObject = std::set<std::string>{};
+            for (auto i = 0; i != numQuests; ++i) {
+                auto expectedDelimiter = (i == numQuests - 1) ? MSG_END : MSG_DELIM;
+                singleMsg.get(buffer, BUFFER_SIZE, expectedDelimiter);
+                auto questID = std::string{ buffer };
+                singleMsg >> del;
+
+                questsFromObject.insert(questID);
+            }
 
             if (del != MSG_END)
                 return;
 
-            handle_SV_OBJECT_GIVES_QUEST(serial, questID);
+            handle_SV_OBJECT_GIVES_QUESTS(serial, std::move(questsFromObject));
 
             break;
         }
@@ -2242,12 +2251,15 @@ void Client::handle_SV_OBJECT_HEALED(size_t serial, Hitpoints amount) {
     addFloatingCombatText("+"s + toString(amount), it->second->location(), Color::FLOATING_HEAL);
 }
 
-void Client::handle_SV_OBJECT_GIVES_QUEST(size_t serial, const std::string &questID) {
+void Client::handle_SV_OBJECT_GIVES_QUESTS(size_t serial, const std::set<std::string> && questIDs) {
     auto it = _objects.find(serial);
     if (it == _objects.end())
         return;
 
-    it->second->startsQuest(questID);
+    auto &object = *it->second;
+    object.clearQuestsStartingHere();
+    for (auto questID : questIDs)
+        object.startsQuest(questID);
 }
 
 

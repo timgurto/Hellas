@@ -83,6 +83,7 @@ public:
     void setType(const ObjectType *type, bool skipConstruction = false); // Set/change ObjectType
 
     void sendInfoToClient(const User &targetUser) const override;
+    void sendQuestsToClient(const User &targetUser) const;
     void describeSelfToNewWatcher(const User &watcher) const override;
     void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const;
     ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum, const User &user) override;

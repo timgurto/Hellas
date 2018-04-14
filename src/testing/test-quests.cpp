@@ -181,5 +181,25 @@ TEST_CASE("A user can't pick up a quest he's already on") {
         ;
     const auto &a = c.getFirstObject();
     CHECK(a.startsQuests().size() == 1);
+}
 
+TEST_CASE("After a user accepts a quest, he can't do so again") {
+    auto s = TestServer::WithData("simpleQuest");
+    auto c = TestClient::WithData("simpleQuest");
+
+    // Given an object, A
+    s.addObject("A", { 10, 15 });
+    auto serial = s.getFirstObject().serial();
+
+    // When a client accepts a quest from A
+    s.waitForUsers(1);
+    c.sendMessage(CL_ACCEPT_QUEST, makeArgs("questFromAToB", serial));
+    auto &user = s.getFirstUser();
+    WAIT_UNTIL(user.numQuests() == 1);
+
+    // Then he can see only one quest at object A
+    REPEAT_FOR_MS(100)
+        ;
+    const auto &a = c.getFirstObject();
+    CHECK(a.startsQuests().size() == 1);
 }

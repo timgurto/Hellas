@@ -288,9 +288,23 @@ void Object::sendInfoToClient(const User &targetUser) const {
         server.sendMessage(client, SV_ENTITY_GOT_DEBUFF, makeArgs(serial(), debuff.type()));
 
     // Quests
+    sendQuestsToClient(targetUser);
+}
+
+void Object::sendQuestsToClient(const User & targetUser) const {
+    auto questsToSend = std::set<std::string>{};
     for (const auto &questID : objType().questsStartingHere())
         if (!targetUser.isOnQuest(questID))
-            server.sendMessage(client, SV_OBJECT_GIVES_QUEST, makeArgs(serial(), questID));
+            questsToSend.insert(questID);
+    if (questsToSend.empty())
+        return;
+
+    auto args = makeArgs(serial(), questsToSend.size());
+    for (auto questID : questsToSend)
+        args = makeArgs(args, questID);
+
+    const Server &server = Server::instance();
+    server.sendMessage(targetUser.socket(), SV_OBJECT_GIVES_QUESTS, args);
 }
 
 void Object::describeSelfToNewWatcher(const User &watcher) const{

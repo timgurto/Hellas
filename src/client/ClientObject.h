@@ -110,6 +110,7 @@ public:
     // Quests
     void startsQuest(const std::string questID) { _questsStartingHere.insert(questID); }
     const std::set<std::string> &startsQuests() const { return _questsStartingHere; }
+    void clearQuestsStartingHere() { _questsStartingHere.clear(); }
 
     // From ClientCombatant
     virtual void sendTargetMessage() const override;

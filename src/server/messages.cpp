@@ -1968,6 +1968,8 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest, size_t s
         return;
 
     user.startQuest(quest);
+
+    object->sendQuestsToClient(user);
 }
 
 void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest, size_t endSerial) {
