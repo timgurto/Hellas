@@ -371,7 +371,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 410,"Recruit via an invitation, not insta-join",21,13,Usability,,,,
 411,Failed assertion in Entity.cpp line 116,34,8,Bug,,,,
 412,Prevent picking up items while drop confirmation is open,8,3,Bug,,,,
-413,A quest from A that finishes at B,5,21,Feature,,TRUE,,1
+413,A quest from A that finishes at B,5,21,Feature,,,,1
 414,Quest-briefing text,8,5,Feature,413,,,1
 415,Quest-completion text,3,5,Feature,413,,,1
 416,Quests reward constant XP,13,2,Feature,413,,,1
@@ -390,3 +390,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 429,Can log in with Enter key when button is disabled,34,2,Bug,,,,
 430,Sometimes non-leaf skills are lost on death,13,8,Bug,,,,
 432,A quest can unlock another quest,,,Feature,413,,,3
+433,Quests are persistent,,,Feature,,,,1
+434,Quest progress is persistent,,,Feature,421,,,1
+435,Quests have min levels,,,Feature,413,,,

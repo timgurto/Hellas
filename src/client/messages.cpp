@@ -2256,10 +2256,15 @@ void Client::handle_SV_OBJECT_GIVES_QUESTS(size_t serial, const std::set<std::st
     if (it == _objects.end())
         return;
 
+    if (questIDs.empty())
+        return;
+
     auto &object = *it->second;
     object.clearQuestsStartingHere();
     for (auto questID : questIDs)
         object.startsQuest(questID);
+
+    object.assembleWindow(*this);
 }
 
 
