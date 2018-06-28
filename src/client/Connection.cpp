@@ -5,14 +5,14 @@
 
 extern Args cmdLineArgs;
 
-std::string Connection::defaultServerIP{};
+Connection::URL Connection::serverIPDirectory{};
 
 Connection::Connection(Client & client):
 _client(&client)
 {}
 
-void Connection::initialize(const std::string &serverIP) {
-    defaultServerIP = readFromURL(serverIP);
+void Connection::initialize(const URL &serverIPDirectory) {
+    Connection::serverIPDirectory = serverIPDirectory;
 }
 
 Connection::~Connection() {
@@ -100,9 +100,12 @@ void Connection::showError(const std::string & msg) const {
 }
 
 std::string Connection::getServerIP() {
-    if (cmdLineArgs.contains("server-ip"))
-        return cmdLineArgs.getString("server-ip");
-    return defaultServerIP;
+    if (cmdLineArgs.contains("server-ip")) {
+        auto ipFromCommandLine = cmdLineArgs.getString("server-ip");
+        return ipFromCommandLine;
+    }
+    auto ipFromWeb = readFromURL(serverIPDirectory);
+    return ipFromWeb;
 }
 
 u_short Connection::getServerPort() {

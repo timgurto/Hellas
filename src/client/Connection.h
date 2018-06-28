@@ -20,8 +20,10 @@ public:
         FINISHED
     };
 
+    using URL = std::string;
+
     Connection(Client &client);
-    static void initialize(const std::string &serverIP);
+    static void initialize(const URL &serverIPDirectory);
     ~Connection();
 
     void getNewMessages();
@@ -45,7 +47,7 @@ private:
 
     static std::string getServerIP();
     static u_short getServerPort();
-    static std::string defaultServerIP;
+    static URL serverIPDirectory;
 
     static const ms_t TIME_BETWEEN_CONNECTION_ATTEMPTS{ 3000 };
     static const u_short DEBUG_PORT{ 8888 };
