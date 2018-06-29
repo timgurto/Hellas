@@ -1,3 +1,4 @@
 <root>
-<object id="respawnAltar" owner="gaia"> <location x="35329" y="22363" /> </object>
+<object id="respawnAltar"> <location x="35329" y="22363" /> </object>
+<npc id="prometheus"> <location x="1700" y="59600" /> </npc>
 </root>

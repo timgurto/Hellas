@@ -13,10 +13,12 @@
 </npcType>
 
 <npcType
-    id="bandit" name="Bandit"
-	level="3" maxHealth="23" attack="4" attackTime="857" >
+    id="prometheus" name="Prometheus"
+	level="60" maxHealth="600" attack="75" attackTime="2548" >
     <humanoid>
-        <gear id="linenCloak" />
+        <gear id="linenChiton" />
+        <gear id="sandals" />
+        <gear id="fireWand" />
     </humanoid>
 </npcType>
 
