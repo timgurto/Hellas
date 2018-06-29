@@ -11,10 +11,11 @@
 
 #include "Client.h"
 #include "ClientNPC.h"
-#include "SpriteType.h"
 #include "ClientCombatant.h"
+#include "DataLoader.h"
 #include "LogSDL.h"
 #include "Particle.h"
+#include "SpriteType.h"
 #include "Tooltip.h"
 #include "ui/Button.h"
 #include "ui/CombatantPanel.h"
@@ -186,6 +187,25 @@ _debug("client.log"){
     drawLoadingScreen("", 1);
 }
 
+void Client::initialiseData() {
+    // Tell Avatars to use blood particles
+    Avatar::_combatantType.damageParticles(findParticleProfile("blood"));
+
+    // Match up ranged weapons with their ammo items
+    for (auto &pair : _items) {
+        auto &item = const_cast<ClientItem&>(pair.second);
+        item.fetchAmmoItem();
+    }
+
+    // Initialize object-type strengths
+    for (auto *objectType : _objectTypes) {
+        auto nonConstType = const_cast<ClientObjectType *>(objectType);
+        nonConstType->calculateAndInitStrength();
+    }
+
+    populateBuildList();
+}
+
 void Client::initializeGearSlotNames(){
     if (! GEAR_SLOT_NAMES.empty())
         return;
@@ -242,16 +262,17 @@ void Client::run(){
         drawLoadingScreen("Loading data", 0.6);
         bool shouldLoadDefaultData = true;
         if (cmdLineArgs.contains("load-test-data-first")){
-            loadData("testing/data/minimal");
+            DataLoader{ *this, "testing/data/minimal" }.load();
             shouldLoadDefaultData = false;
         }
         if (cmdLineArgs.contains("data")){
-            loadData(cmdLineArgs.getString("data"));
+            DataLoader{ *this, cmdLineArgs.getString("data") }.load();
             shouldLoadDefaultData = false;
         }
         if (shouldLoadDefaultData)
-            loadData();
+            DataLoader{ *this }.load();
     }
+    initialiseData();
 
     populateHotbar();
     

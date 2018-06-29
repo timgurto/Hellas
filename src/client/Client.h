@@ -445,23 +445,8 @@ private:
     bool _tooltipNeedsRefresh;
 
     // Game data
-public:
-    void loadData(const std::string &path = "Data", bool keepOldData = false);
-private:
-        void loadTerrain(const std::string &filename);
-        void loadParticles(const std::string &filename);
-        void loadSounds(const std::string &filename);
-        void loadProjectiles(const std::string &filename);
-        void loadSpells(const std::string &filename);
-        void loadBuffs(const std::string &filename);
-        void loadObjectTypes(const std::string &filename);
-        void loadItems(const std::string &filename);
-        void loadClasses(const std::string &filename);
-        void loadRecipes(const std::string &filename);
-        void loadNPCTypes(const std::string &filename);
-        void loadMap(const std::string &filename);
-        void initialiseData();
     bool _dataLoaded; // If false when run() is called, load default data.
+    void initialiseData(); // Any massaging necessary after everything is loaded.
     std::map<char, ClientTerrain> _terrain;
     std::map<std::string, ClientItem> _items;
     std::set<Recipe> _recipes;
@@ -592,6 +577,7 @@ private:
     friend class ClientNPC;
     friend class ClientObjectType;
     friend class ClientNPCType;
+    friend class DataLoader;
     friend class Connection;
     friend class Projectile;
     friend class ClientVehicle;

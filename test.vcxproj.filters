@@ -16,7 +16,6 @@
     <ClCompile Include="src\client\ClientVehicle.cpp" />
     <ClCompile Include="src\client\ClientVehicleType.cpp" />
     <ClCompile Include="src\client\craftingWindow.cpp" />
-    <ClCompile Include="src\client\data.cpp" />
     <ClCompile Include="src\client\drawing.cpp" />
     <ClCompile Include="src\client\input.cpp" />
     <ClCompile Include="src\client\inventoryWindow.cpp" />
@@ -158,6 +157,7 @@
     <ClCompile Include="src\client\Connection.cpp" />
     <ClCompile Include="src\testing\test-stats.cpp" />
     <ClCompile Include="src\testing\test-quests.cpp" />
+    <ClCompile Include="src\client\DataLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -282,5 +282,6 @@
     <ClInclude Include="src\client\WordWrapper.h" />
     <ClInclude Include="src\client\ui\Indicator.h" />
     <ClInclude Include="src\client\Connection.h" />
+    <ClInclude Include="src\client\DataLoader.h" />
   </ItemGroup>
 </Project>

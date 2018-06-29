@@ -3,6 +3,7 @@
 
 #include "testing.h"
 #include "../client/Client.h"
+#include "../client/DataLoader.h"
 
 // A wrapper of the client, with full access, used for testing.
 class TestClient{
@@ -74,7 +75,7 @@ private:
 
     void run();
     void stop();
-    void loadData(const std::string path){ _client->loadData(path); }
+    void loadData(const std::string path) { DataLoader{ *_client, path }.load(); }
 
     bool TestClient::messageWasReceivedSince(MessageCode desiredMsg, size_t startingIndex) const;
 };

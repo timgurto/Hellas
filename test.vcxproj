@@ -111,10 +111,7 @@
     <ClCompile Include="src\client\ClientWar.cpp" />
     <ClCompile Include="src\client\Connection.cpp" />
     <ClCompile Include="src\client\craftingWindow.cpp" />
-    <ClCompile Include="src\client\data.cpp">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName)\data-client</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName)\data-client</ObjectFileName>
-    </ClCompile>
+    <ClCompile Include="src\client\DataLoader.cpp" />
     <ClCompile Include="src\client\drawing.cpp" />
     <ClCompile Include="src\client\HelpEntry.cpp" />
     <ClCompile Include="src\client\helpWindow.cpp" />
@@ -280,6 +277,7 @@
     <ClInclude Include="src\client\ClientVehicleType.h" />
     <ClInclude Include="src\client\ClientWar.h" />
     <ClInclude Include="src\client\Connection.h" />
+    <ClInclude Include="src\client\DataLoader.h" />
     <ClInclude Include="src\client\HelpEntry.h" />
     <ClInclude Include="src\client\Images.h" />
     <ClInclude Include="src\client\LogSDL.h" />

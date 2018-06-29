@@ -14,9 +14,12 @@
 class Avatar : public Sprite, public ClientCombatant{
     static ClientCombatantType _combatantType;
     static SpriteType _spriteType;
+
+public:
     static const MapRect COLLISION_RECT;
     static const ScreenRect DRAW_RECT;
 
+private:
     std::string _name;
     const ClassInfo *_class = nullptr;
     std::string _city;
