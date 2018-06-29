@@ -1,5 +1,6 @@
 #include <set>
 
+#include "CDataLoader.h"
 #include "Client.h"
 #include "ClassInfo.h"
 #include "Client.h"
@@ -7,17 +8,16 @@
 #include "ClientNPCType.h"
 #include "ClientVehicleType.h"
 #include "ClientVehicleType.h"
-#include "DataLoader.h"
 #include "ParticleProfile.h"
 #include "SoundProfile.h"
 #include "../Podes.h"
 #include "../XmlReader.h"
 
-DataLoader::DataLoader(Client &client, const Directory &path):
+CDataLoader::CDataLoader(Client &client, const Directory &path):
     _client(client),
     _path(path){}
 
-void DataLoader::load(bool keepOldData) {
+void CDataLoader::load(bool keepOldData) {
     if (!keepOldData) {
         _client._terrain.clear();
         _client._particleProfiles.clear();
@@ -64,7 +64,7 @@ void DataLoader::load(bool keepOldData) {
     _client._dataLoaded = true;
 }
 
-DataLoader::FilesList DataLoader::findDataFiles() const {
+CDataLoader::FilesList CDataLoader::findDataFiles() const {
     auto list = FilesList{};
 
     WIN32_FIND_DATA fd;
@@ -86,7 +86,7 @@ DataLoader::FilesList DataLoader::findDataFiles() const {
     return list;
 }
 
-void DataLoader::loadTerrain(const std::string &filename) {
+void CDataLoader::loadTerrain(const std::string &filename) {
     XmlReader xr(filename);
     if (!xr)
         return;
@@ -108,7 +108,7 @@ void DataLoader::loadTerrain(const std::string &filename) {
     }
 }
 
-void DataLoader::loadParticles(const std::string &filename) {
+void CDataLoader::loadParticles(const std::string &filename) {
     XmlReader xr(filename);
     if (!xr)
         return;
@@ -156,7 +156,7 @@ void DataLoader::loadParticles(const std::string &filename) {
     }
 }
 
-void DataLoader::loadSounds(const std::string &filename) {
+void CDataLoader::loadSounds(const std::string &filename) {
     XmlReader xr(filename);
     if (!xr)
         return;
@@ -184,7 +184,7 @@ void DataLoader::loadSounds(const std::string &filename) {
     }
 }
 
-void DataLoader::loadProjectiles(const std::string &filename) {
+void CDataLoader::loadProjectiles(const std::string &filename) {
     XmlReader xr(filename);
     if (!xr)
         return;
@@ -232,7 +232,7 @@ void DataLoader::loadProjectiles(const std::string &filename) {
     }
 }
 
-void DataLoader::loadSpells(const std::string &filename) {
+void CDataLoader::loadSpells(const std::string &filename) {
     XmlReader xr(filename);
     if (!xr)
         return;
@@ -323,7 +323,7 @@ void DataLoader::loadSpells(const std::string &filename) {
     }
 }
 
-void DataLoader::loadBuffs(const std::string &filename) {
+void CDataLoader::loadBuffs(const std::string &filename) {
     XmlReader xr(filename);
     if (!xr)
         return;
@@ -369,7 +369,7 @@ void DataLoader::loadBuffs(const std::string &filename) {
     }
 }
 
-void DataLoader::loadObjectTypes(const std::string &filename) {
+void CDataLoader::loadObjectTypes(const std::string &filename) {
     XmlReader xr(filename);
     if (!xr)
         return;
@@ -507,7 +507,7 @@ void DataLoader::loadObjectTypes(const std::string &filename) {
     }
 }
 
-void DataLoader::loadItems(const std::string &filename) {
+void CDataLoader::loadItems(const std::string &filename) {
     XmlReader xr(filename);
     if (!xr)
         return;
@@ -589,7 +589,7 @@ void DataLoader::loadItems(const std::string &filename) {
     }
 }
 
-void DataLoader::loadClasses(const std::string &filename) {
+void CDataLoader::loadClasses(const std::string &filename) {
     XmlReader xr(filename);
     if (!xr)
         return;
@@ -688,7 +688,7 @@ void DataLoader::loadClasses(const std::string &filename) {
     }
 }
 
-void DataLoader::loadRecipes(const std::string &filename) {
+void CDataLoader::loadRecipes(const std::string &filename) {
     XmlReader xr(filename);
     if (!xr)
         return;
@@ -743,7 +743,7 @@ void DataLoader::loadRecipes(const std::string &filename) {
     }
 }
 
-void DataLoader::loadNPCTypes(const std::string &filename) {
+void CDataLoader::loadNPCTypes(const std::string &filename) {
     XmlReader xr(filename);
     if (!xr)
         return;
@@ -840,7 +840,7 @@ void DataLoader::loadNPCTypes(const std::string &filename) {
     }
 }
 
-void DataLoader::loadMap(const std::string &filename) {
+void CDataLoader::loadMap(const std::string &filename) {
     XmlReader xr(filename);
     if (!xr) {
         return;

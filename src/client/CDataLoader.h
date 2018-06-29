@@ -4,10 +4,10 @@
 
 class Client;
 
-class DataLoader {
+class CDataLoader {
 public:
     using Directory = std::string;
-    DataLoader(Client &client, const Directory &path = "Data");
+    CDataLoader(Client &client, const Directory &path = "Data");
 
     void load(bool keepOldData = false);
 

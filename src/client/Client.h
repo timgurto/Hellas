@@ -577,7 +577,7 @@ private:
     friend class ClientNPC;
     friend class ClientObjectType;
     friend class ClientNPCType;
-    friend class DataLoader;
+    friend class CDataLoader;
     friend class Connection;
     friend class Projectile;
     friend class ClientVehicle;

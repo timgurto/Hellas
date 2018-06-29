@@ -9,10 +9,10 @@
 #include <sstream>
 #include <vector>
 
+#include "CDataLoader.h"
 #include "Client.h"
 #include "ClientNPC.h"
 #include "ClientCombatant.h"
-#include "DataLoader.h"
 #include "LogSDL.h"
 #include "Particle.h"
 #include "SpriteType.h"
@@ -262,15 +262,15 @@ void Client::run(){
         drawLoadingScreen("Loading data", 0.6);
         bool shouldLoadDefaultData = true;
         if (cmdLineArgs.contains("load-test-data-first")){
-            DataLoader{ *this, "testing/data/minimal" }.load();
+            CDataLoader{ *this, "testing/data/minimal" }.load();
             shouldLoadDefaultData = false;
         }
         if (cmdLineArgs.contains("data")){
-            DataLoader{ *this, cmdLineArgs.getString("data") }.load();
+            CDataLoader{ *this, cmdLineArgs.getString("data") }.load();
             shouldLoadDefaultData = false;
         }
         if (shouldLoadDefaultData)
-            DataLoader{ *this }.load();
+            CDataLoader{ *this }.load();
     }
     initialiseData();
 

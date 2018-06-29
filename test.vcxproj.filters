@@ -157,7 +157,7 @@
     <ClCompile Include="src\client\Connection.cpp" />
     <ClCompile Include="src\testing\test-stats.cpp" />
     <ClCompile Include="src\testing\test-quests.cpp" />
-    <ClCompile Include="src\client\DataLoader.cpp" />
+    <ClCompile Include="src\client\CDataLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -282,6 +282,6 @@
     <ClInclude Include="src\client\WordWrapper.h" />
     <ClInclude Include="src\client\ui\Indicator.h" />
     <ClInclude Include="src\client\Connection.h" />
-    <ClInclude Include="src\client\DataLoader.h" />
+    <ClInclude Include="src\client\CDataLoader.h" />
   </ItemGroup>
 </Project>
