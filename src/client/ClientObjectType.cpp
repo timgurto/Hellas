@@ -130,6 +130,9 @@ void ClientObjectType::sounds(const std::string &id){
 }
 
 void ClientObjectType::calculateAndInitStrength(){
+    auto isNPC = classTag() == 'n';
+    if (isNPC)
+        return;
     if (_strength.item == nullptr || _strength.quantity == 0)
         maxHealth(1);
     else

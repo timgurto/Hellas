@@ -10,12 +10,20 @@
 #include "../Podes.h"
 #include "../XmlReader.h"
 
-void Client::loadData(const std::string &path){
-    drawLoadingScreen("Clearing old data", 0.611);
-    _items.clear();
-    _recipes.clear();
-    _objects.clear();
+void Client::loadData(const std::string &path, bool keepOldData){
 
+    if (!keepOldData) {
+        _terrain.clear();
+        _particleProfiles.clear();
+        _soundProfiles.clear();
+        _projectileTypes.clear();
+        _objects.clear();
+        _items.clear();
+        _classes.clear();
+        _recipes.clear();
+    }
+
+    drawLoadingScreen("Loading data", 0.6);
     loadTerrain(path + "/terrain.xml");
     loadParticles(path + "/particles.xml");
     loadSounds(path + "/sounds.xml");
@@ -23,15 +31,13 @@ void Client::loadData(const std::string &path){
     loadSpells(path + "/spells.xml");
     loadBuffs(path + "/buffs.xml");
     _tagNames.readFromXMLFile(path + "/tags.xml");
-
-    if (XmlReader{ path + "/items.xml" }) // Early, because object types may insert new items.
-        _items.clear();
-
     loadObjectTypes(path + "/objectTypes.xml");
     loadItems(path + "/items.xml");
     loadClasses(path + "/classes.xml");
     loadRecipes(path + "/recipes.xml");
     loadNPCTypes(path + "/npcTypes.xml");
+
+    drawLoadingScreen("Loading map", 0.65);
     loadMap(path + "/map.xml");
 
     initialiseData();
@@ -63,7 +69,6 @@ void Client::loadTerrain(const std::string &filename) {
     if (!xr)
         return;
 
-    _terrain.clear();
     for (auto elem : xr.getChildren("terrain")) {
         char index;
         if (!xr.findAttr(elem, "index", index))
@@ -86,7 +91,6 @@ void Client::loadParticles(const std::string &filename) {
     if (!xr)
         return;
 
-    _particleProfiles.clear();
     for (auto elem : xr.getChildren("particleProfile")) {
         std::string s;
         if (!xr.findAttr(elem, "id", s)) // No ID: skip
@@ -135,7 +139,6 @@ void Client::loadSounds(const std::string &filename) {
     if (!xr)
         return;
 
-    _soundProfiles.clear();
     for (auto elem : xr.getChildren("soundProfile")) {
         std::string id;
         if (!xr.findAttr(elem, "id", id)) // No ID: skip
@@ -164,7 +167,6 @@ void Client::loadProjectiles(const std::string &filename) {
     if (!xr)
         return;
 
-    _projectileTypes.clear();
     for (auto elem : xr.getChildren("projectile")) {
 
         auto id = ""s;
@@ -350,7 +352,6 @@ void Client::loadObjectTypes(const std::string &filename) {
     if (!xr)
         return;
 
-    _objectTypes.clear();
     for (auto elem : xr.getChildren("objectType")) {
         std::string id;
         if (!xr.findAttr(elem, "id", id))
@@ -571,7 +572,6 @@ void Client::loadClasses(const std::string &filename) {
     if (!xr)
         return;
 
-    _classes.clear();
     for (auto elem : xr.getChildren("class")) {
 
         auto className = ClassInfo::Name{};
@@ -671,7 +671,6 @@ void Client::loadRecipes(const std::string &filename) {
     if (!xr)
         return;
 
-    _recipes.clear();
     for (auto elem : xr.getChildren("recipe")) {
         std::string id;
         if (!xr.findAttr(elem, "id", id))

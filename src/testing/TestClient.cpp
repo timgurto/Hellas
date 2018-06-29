@@ -20,7 +20,7 @@ _client(new Client){
         break;
     case DATA_PATH:
         _client->setRandomUsername();
-        _client->loadData("testing/data/" + string);
+        _client->loadData("testing/data/" + string, true);
         break;
     default:
         assert(false);
@@ -32,7 +32,7 @@ _client(new Client){
 TestClient::TestClient(const std::string &username, const std::string &dataPath):
 _client(new Client){
     _client->loadData("testing/data/minimal");
-    _client->loadData("testing/data/" + dataPath);
+    _client->loadData("testing/data/" + dataPath, true);
     _client->_username = username;
     _client->_shouldAutoLogIn = true;
     run();
