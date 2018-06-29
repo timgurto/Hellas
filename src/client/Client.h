@@ -445,7 +445,9 @@ private:
     bool _tooltipNeedsRefresh;
 
     // Game data
+public:
     void loadData(const std::string &path = "Data", bool keepOldData = false);
+private:
         void loadTerrain(const std::string &filename);
         void loadParticles(const std::string &filename);
         void loadSounds(const std::string &filename);
