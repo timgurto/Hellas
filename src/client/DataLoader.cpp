@@ -59,8 +59,7 @@ void DataLoader::load(bool keepOldData) {
         loadNPCTypes(file);
 
     _client.drawLoadingScreen("Loading map", 0.65);
-    for (const auto &file : dataFiles)
-        loadMap(file);
+    loadMap(_path + "/map.xml");
     
     _client._dataLoaded = true;
 }
@@ -76,6 +75,8 @@ DataLoader::FilesList DataLoader::findDataFiles() const {
     HANDLE hFind = FindFirstFile(filter.c_str(), &fd);
     if (hFind != INVALID_HANDLE_VALUE) {
         do {
+            if (fd.cFileName == "map.xml"s)
+                continue;
             auto file = path + fd.cFileName;
             list.insert(file);
         } while (FindNextFile(hFind, &fd));
