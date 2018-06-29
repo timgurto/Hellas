@@ -24,8 +24,10 @@ public:
     void loadNPCTypes(const std::string &filename);
     void loadMap(const std::string &filename);
 
-
 private:
     Client &_client;
     Directory _path;
+
+    using FilesList = std::set<std::string>;
+    FilesList findDataFiles() const;
 };

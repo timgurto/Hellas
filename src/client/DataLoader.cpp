@@ -1,3 +1,5 @@
+#include <set>
+
 #include "Client.h"
 #include "ClassInfo.h"
 #include "Client.h"
@@ -28,23 +30,59 @@ void DataLoader::load(bool keepOldData) {
     }
 
     _client.drawLoadingScreen("Loading data", 0.6);
-    loadTerrain(_path + "/terrain.xml");
-    loadParticles(_path + "/particles.xml");
-    loadSounds(_path + "/sounds.xml");
-    loadProjectiles(_path + "/projectiles.xml");
-    loadSpells(_path + "/spells.xml");
-    loadBuffs(_path + "/buffs.xml");
-    _client._tagNames.readFromXMLFile(_path + "/tags.xml");
-    loadObjectTypes(_path + "/objectTypes.xml");
-    loadItems(_path + "/items.xml");
-    loadClasses(_path + "/classes.xml");
-    loadRecipes(_path + "/recipes.xml");
-    loadNPCTypes(_path + "/npcTypes.xml");
+
+    auto dataFiles = findDataFiles();
+
+    for (const auto &file : dataFiles)
+        loadTerrain(file);
+    for (const auto &file : dataFiles)
+        loadParticles(file);
+    for (const auto &file : dataFiles)
+        loadSounds(file);
+    for (const auto &file : dataFiles)
+        loadProjectiles(file);
+    for (const auto &file : dataFiles)
+        loadSpells(file);
+    for (const auto &file : dataFiles)
+        loadBuffs(file);
+    for (const auto &file : dataFiles)
+        _client._tagNames.readFromXMLFile(file);
+    for (const auto &file : dataFiles)
+        loadObjectTypes(file);
+    for (const auto &file : dataFiles)
+        loadItems(file);
+    for (const auto &file : dataFiles)
+        loadClasses(file);
+    for (const auto &file : dataFiles)
+        loadRecipes(file);
+    for (const auto &file : dataFiles)
+        loadNPCTypes(file);
 
     _client.drawLoadingScreen("Loading map", 0.65);
-    loadMap(_path + "/map.xml");
-
+    for (const auto &file : dataFiles)
+        loadMap(file);
+    
     _client._dataLoaded = true;
+}
+
+DataLoader::FilesList DataLoader::findDataFiles() const {
+    auto list = FilesList{};
+
+    WIN32_FIND_DATA fd;
+    auto path = std::string{ _path.begin(), _path.end() } + "/";
+    std::replace(path.begin(), path.end(), '/', '\\');
+    std::string filter = path + "*.xml";
+    path.c_str();
+    HANDLE hFind = FindFirstFile(filter.c_str(), &fd);
+    if (hFind != INVALID_HANDLE_VALUE) {
+        do {
+            auto file = path + fd.cFileName;
+            list.insert(file);
+        } while (FindNextFile(hFind, &fd));
+        FindClose(hFind);
+    }
+
+    return list;
 }
 
 void DataLoader::loadTerrain(const std::string &filename) {
