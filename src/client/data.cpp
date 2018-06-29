@@ -17,48 +17,45 @@ void Client::loadData(const std::string &path){
     _objects.clear();
 
     loadTerrain(path + "/terrain.xml");
-
     loadParticles(path + "/particles.xml");
-    Avatar::_combatantType.damageParticles(findParticleProfile("blood"));
-
     loadSounds(path + "/sounds.xml");
     loadProjectiles(path + "/projectiles.xml");
     loadSpells(path + "/spells.xml");
     loadBuffs(path + "/buffs.xml");
-
     _tagNames.readFromXMLFile(path + "/tags.xml");
 
     if (XmlReader{ path + "/items.xml" }) // Early, because object types may insert new items.
         _items.clear();
 
-    // Object types
     loadObjectTypes(path + "/objectTypes.xml");
-
     loadItems(path + "/items.xml");
+    loadClasses(path + "/classes.xml");
+    loadRecipes(path + "/recipes.xml");
+    loadNPCTypes(path + "/npcTypes.xml");
+    loadMap(path + "/map.xml");
 
+    initialiseData();
+
+    populateBuildList();
+
+    _dataLoaded = true;
+}
+
+void Client::initialiseData() {
+    // Tell Avatars to use blood particles
+    Avatar::_combatantType.damageParticles(findParticleProfile("blood"));
+
+    // Match up ranged weapons with their ammo items
     for (auto &pair : _items) {
         auto &item = const_cast<ClientItem&>(pair.second);
         item.fetchAmmoItem();
     }
 
-
-    // Classes/talents
-    loadClasses(path + "/classes.xml");
-
     // Initialize object-type strengths
-    for (auto *objectType : _objectTypes){
+    for (auto *objectType : _objectTypes) {
         auto nonConstType = const_cast<ClientObjectType *>(objectType);
         nonConstType->calculateAndInitStrength();
     }
-
-    loadRecipes(path + "/recipes.xml");
-    loadNPCTypes(path + "/npcTypes.xml");
-    loadMap(path + "/map.xml");
-
-
-    populateBuildList();
-
-    _dataLoaded = true;
 }
 
 void Client::loadTerrain(const std::string &filename) {

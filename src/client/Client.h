@@ -458,6 +458,7 @@ private:
         void loadRecipes(const std::string &filename);
         void loadNPCTypes(const std::string &filename);
         void loadMap(const std::string &filename);
+        void initialiseData();
     bool _dataLoaded; // If false when run() is called, load default data.
     std::map<char, ClientTerrain> _terrain;
     std::map<std::string, ClientItem> _items;
