@@ -446,6 +446,18 @@ private:
 
     // Game data
     void loadData(const std::string &path = "Data");
+        void loadTerrain(const std::string &filename);
+        void loadParticles(const std::string &filename);
+        void loadSounds(const std::string &filename);
+        void loadProjectiles(const std::string &filename);
+        void loadSpells(const std::string &filename);
+        void loadBuffs(const std::string &filename);
+        void loadObjectTypes(const std::string &filename);
+        void loadItems(const std::string &filename);
+        void loadClasses(const std::string &filename);
+        void loadRecipes(const std::string &filename);
+        void loadNPCTypes(const std::string &filename);
+        void loadMap(const std::string &filename);
     bool _dataLoaded; // If false when run() is called, load default data.
     std::map<char, ClientTerrain> _terrain;
     std::map<std::string, ClientItem> _items;
