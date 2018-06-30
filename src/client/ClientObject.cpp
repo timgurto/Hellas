@@ -990,12 +990,16 @@ const Tooltip &ClientObject::tooltip() const{
     }
 
     else if (classTag() == 'n'){
-        tooltip.addGap();
         tooltip.setColor(Color::ITEM_INSTRUCTIONS);
         const ClientNPC &npc = dynamic_cast<const ClientNPC &>(*this);
-        bool alive = npc.health() > 0;
-        if (alive) tooltip.addLine("Right-click to attack");
-        else if (npc.lootable()) tooltip.addLine("Right-click to loot");
+        if (npc.canBeAttackedByPlayer()) {
+            tooltip.addGap();
+            tooltip.addLine("Right-click to attack");
+        }
+        else if (npc.lootable()) {
+            tooltip.addGap();
+            tooltip.addLine("Right-click to loot");
+        }
     }
 
     else if (userHasAccess() && ot.canGather()){
