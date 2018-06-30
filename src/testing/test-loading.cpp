@@ -117,3 +117,19 @@ TEST_CASE("NPC tags are loaded in client") {
         }
     }
 }
+
+TEST_CASE("Load XML from string") {
+    GIVEN("An XML string defining an item") {
+        auto data = R"(
+            <root>
+                <item id="rock" />
+            </root>
+        )";
+        WHEN("A client is loaded with that data") {
+            auto c = TestClient::WithDataString(data);
+            THEN("The client has an item defined") {
+                CHECK(c.items().size() == 1);
+            }
+        }
+    }
+}

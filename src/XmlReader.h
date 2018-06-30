@@ -23,6 +23,7 @@ class XmlReader{
     XmlReader(const std::string &string, bool isFile);
 
 public:
+    static XmlReader FromString(const std::string &data);
     static XmlReader FromFile(const std::string &filename);
     ~XmlReader();
 
@@ -31,6 +32,8 @@ public:
     
     // Close the current file and open a new one
     bool newFile(const std::string &filename);
+
+    bool newString(const std::string &data);
     
     using Elements = std::vector<TiXmlElement *>;
     static Elements getChildren(const std::string &val, TiXmlElement *elem);

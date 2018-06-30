@@ -22,6 +22,12 @@ CDataLoader CDataLoader::FromPath(Client &client, const Directory & path) {
     return loader;
 }
 
+CDataLoader CDataLoader::FromString(Client &client, const XML & data) {
+    auto loader = CDataLoader(client);
+    loader._data = data;
+    return loader;
+}
+
 void CDataLoader::load(bool keepOldData) {
     if (!keepOldData) {
         _client._terrain.clear();
@@ -36,29 +42,45 @@ void CDataLoader::load(bool keepOldData) {
 
     _client.drawLoadingScreen("Loading data", 0.6);
 
-    _files = findDataFiles();
+    auto usingPath = !_path.empty();
+    if (usingPath) {
+        _files = findDataFiles();
 
-    loadFromAllFiles(&CDataLoader::loadTerrain);
-    loadFromAllFiles(&CDataLoader::loadParticles);
-    loadFromAllFiles(&CDataLoader::loadSounds);
-    loadFromAllFiles(&CDataLoader::loadProjectiles);
-    loadFromAllFiles(&CDataLoader::loadSpells);
-    loadFromAllFiles(&CDataLoader::loadBuffs);
+        loadFromAllFiles(&CDataLoader::loadTerrain);
+        loadFromAllFiles(&CDataLoader::loadParticles);
+        loadFromAllFiles(&CDataLoader::loadSounds);
+        loadFromAllFiles(&CDataLoader::loadProjectiles);
+        loadFromAllFiles(&CDataLoader::loadSpells);
+        loadFromAllFiles(&CDataLoader::loadBuffs);
 
-    for (const auto &file : _files) {
+        for (const auto &file : _files) {
             auto xr = XmlReader::FromFile(file);
             _client._tagNames.readFromXML(xr);
+        }
+
+        loadFromAllFiles(&CDataLoader::loadObjectTypes);
+        loadFromAllFiles(&CDataLoader::loadItems);
+        loadFromAllFiles(&CDataLoader::loadClasses);
+        loadFromAllFiles(&CDataLoader::loadRecipes);
+        loadFromAllFiles(&CDataLoader::loadNPCTypes);
+
+        _client.drawLoadingScreen("Loading map", 0.65);
+        auto reader = XmlReader::FromFile(_path + "/map.xml");
+        loadMap(reader);
+    } else {
+        loadTerrain(XmlReader::FromString(_data));
+        loadParticles(XmlReader::FromString(_data));
+        loadSounds(XmlReader::FromString(_data));
+        loadProjectiles(XmlReader::FromString(_data));
+        loadSpells(XmlReader::FromString(_data));
+        loadBuffs(XmlReader::FromString(_data));
+        _client._tagNames.readFromXML(XmlReader::FromString(_data));
+        loadObjectTypes(XmlReader::FromString(_data));
+        loadItems(XmlReader::FromString(_data));
+        loadClasses(XmlReader::FromString(_data));
+        loadRecipes(XmlReader::FromString(_data));
+        loadNPCTypes(XmlReader::FromString(_data));
     }
-
-    loadFromAllFiles(&CDataLoader::loadObjectTypes);
-    loadFromAllFiles(&CDataLoader::loadItems);
-    loadFromAllFiles(&CDataLoader::loadClasses);
-    loadFromAllFiles(&CDataLoader::loadRecipes);
-    loadFromAllFiles(&CDataLoader::loadNPCTypes);
-
-    _client.drawLoadingScreen("Loading map", 0.65);
-    auto reader = XmlReader{ _path + "/map.xml" };
-    loadMap(reader);
     
     _client._dataLoaded = true;
 }

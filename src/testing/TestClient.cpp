@@ -22,6 +22,10 @@ _client(new Client){
         _client->setRandomUsername();
         CDataLoader::FromPath(*_client, "testing/data/" + string).load(true);
         break;
+    case DATA_STRING:
+        _client->setRandomUsername();
+        CDataLoader::FromString(*_client, string).load(true);
+        break;
     default:
         assert(false);
     }
@@ -46,6 +50,11 @@ TestClient TestClient::WithUsername(const std::string &username){
 TestClient TestClient::WithData(const std::string &dataPath){
     stopClientIfRunning();
     return TestClient(dataPath, DATA_PATH);
+}
+
+TestClient TestClient::WithDataString(const std::string & data) {
+    stopClientIfRunning();
+    return TestClient(data, DATA_STRING);
 }
 
 TestClient TestClient::WithUsernameAndData(const std::string &username, const std::string &dataPath){

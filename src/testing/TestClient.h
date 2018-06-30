@@ -12,6 +12,7 @@ public:
     TestClient();
     static TestClient WithUsername(const std::string &username);
     static TestClient WithData(const std::string &dataPath);
+    static TestClient WithDataString(const std::string &data);
     static TestClient WithUsernameAndData(const std::string &username, const std::string &dataPath);
     ~TestClient();
 
@@ -25,6 +26,7 @@ public:
 
     std::map<size_t, ClientObject*> &objects() { return _client->_objects; }
     Client::objectTypes_t &objectTypes() { return _client->_objectTypes; }
+    const std::map<std::string, ClientItem> &items() const { return _client->_items; }
     const List &recipeList() const { return *_client->_recipeList; }
     void showCraftingWindow();
     void watchObject(ClientObject &obj);
@@ -67,7 +69,8 @@ private:
 
     enum StringType{
         USERNAME,
-        DATA_PATH
+        DATA_PATH,
+        DATA_STRING
     };
 
     TestClient(const std::string &string, StringType type);

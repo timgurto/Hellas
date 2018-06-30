@@ -8,7 +8,9 @@ class XmlReader;
 class CDataLoader {
 public:
     using Directory = std::string;
+    using XML = std::string;
     static CDataLoader FromPath(Client &client, const Directory &path = "Data");
+    static CDataLoader FromString(Client &client, const XML &data);
 
     void load(bool keepOldData = false);
 
@@ -29,7 +31,10 @@ private:
     CDataLoader(Client &client);
 
     Client &_client;
+
+    // Only one of these will be nonempty.
     Directory _path;
+    XML _data;
 
     using LoadFunction = void (CDataLoader::*)(XmlReader &);
     void loadFromAllFiles(LoadFunction load);

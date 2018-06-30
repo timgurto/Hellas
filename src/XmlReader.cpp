@@ -11,7 +11,10 @@
 
 XmlReader::XmlReader(const std::string &string, bool isFile) :
 _root(nullptr) {
+    if (isFile)
         newFile(string);
+    else {
+        newString(string);
     }
 }
 
@@ -27,9 +30,10 @@ XmlReader::~XmlReader(){
     _doc.Clear();
 }
 
+bool XmlReader::newString(const std::string &data) {
     _doc.Clear();
     _root = nullptr;
-    if (!_doc.LoadFile(filename))
+    if (!_doc.Parse(data.c_str()/*, 0, TIXML_ENCODING_UTF8*/))
         return false;
     _root = _doc.FirstChildElement();
     return *this;
