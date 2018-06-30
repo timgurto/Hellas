@@ -14,7 +14,7 @@ _root(nullptr) {
     if (isFile)
         newFile(string);
     else {
-        newString(string);
+        newString("<root>" + string + "</root>\n");
     }
 }
 
