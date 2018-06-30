@@ -512,8 +512,10 @@ void CDataLoader::loadItems(XmlReader &xr) {
 
     for (auto elem : xr.getChildren("item")) {
         std::string id, name;
-        if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name))
-            continue; // ID and name are mandatory.
+        if (!xr.findAttr(elem, "id", id))
+            continue; // ID is mandatory.
+        if (!xr.findAttr(elem, "name", name))
+            name = id;
         ClientItem item(id, name);
         std::string s;
         for (auto child : xr.getChildren("tag", elem))
