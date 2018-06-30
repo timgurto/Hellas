@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Element.h"
+#include "Label.h"
 
 // A label with
 class OutlinedLabel : public Element {

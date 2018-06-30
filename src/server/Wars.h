@@ -2,8 +2,11 @@
 #define WARS_H
 
 #include <map>
+#include <set>
 #include <string>
 #include <vector>
+
+#include "User.h"
 
 struct Belligerent {
   enum Type { CITY, PLAYER };

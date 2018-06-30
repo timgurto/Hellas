@@ -69,8 +69,7 @@ class Target {
   void setAndAlertServer(const Sprite &asEntity,
                          const ClientCombatant &asCombatant,
                          bool nowAggressive);
-  bool targetIsDifferentFromServer(const Sprite &newTarget,
-                                   bool nowAggress ive);
+  bool targetIsDifferentFromServer(const Sprite &newTarget, bool nowAggressive);
 
   CombatantPanel *_panel;
 

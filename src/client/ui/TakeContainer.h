@@ -3,8 +3,7 @@
 
 #include "../ClientItem.h"
 #include "Element.h"
-
-class List;
+#include "List.h"
 
 // An alternative to a container, that allows only taking items, and not
 // swapping.  e.g., loot.

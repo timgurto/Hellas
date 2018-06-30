@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 #include "../Podes.h"
 #include "../SpellSchool.h"
 #include "combat.h"
