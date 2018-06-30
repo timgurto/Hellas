@@ -8,45 +8,39 @@ class ProgressLockStaging;
 class User;
 
 // Defines a trigger-effect pair, used to unlock content per user.
-class ProgressLock{
-public:
-    enum Type{          //  As trigger      As effect
-                        //  ----------      ---------
-        RECIPE,         //  Crafted         Can craft
-        CONSTRUCTION,   //  Built           Can build
-        ITEM,           //  Acquired        -
-        GATHER,         //  Gathered        -
-    };
-    typedef std::multimap<const void *, ProgressLock> locks_t; // trigger -> lock
-    typedef std::map<Type, locks_t> locksByType_t;
+class ProgressLock {
+ public:
+  enum Type {      //  As trigger      As effect
+                   //  ----------      ---------
+    RECIPE,        //  Crafted         Can craft
+    CONSTRUCTION,  //  Built           Can build
+    ITEM,          //  Acquired        -
+    GATHER,        //  Gathered        -
+  };
+  typedef std::multimap<const void *, ProgressLock> locks_t;  // trigger -> lock
+  typedef std::map<Type, locks_t> locksByType_t;
 
-private:
-    Type
-        _triggerType,
-        _effectType;
-    const void
-        *_trigger,
-        *_effect;
-    std::string
-        _triggerID,
-        _effectID;
-    double _chance; // The chance that the trigger actually causes the effect. (0, 1]
+ private:
+  Type _triggerType, _effectType;
+  const void *_trigger, *_effect;
+  std::string _triggerID, _effectID;
+  double _chance;  // The chance that the trigger actually causes the effect.
+                   // (0, 1]
 
-    static locksByType_t locksByType;
-    static std::set<ProgressLock> stagedLocks;
-    
-    bool isValid() const { return _trigger != nullptr; }
+  static locksByType_t locksByType;
+  static std::set<ProgressLock> stagedLocks;
 
-public:
-    ProgressLock(Type triggerType, const std::string &triggerID,
-                 Type effectType, const std::string &effectID,
-                 double chance);
+  bool isValid() const { return _trigger != nullptr; }
 
-    static void registerStagedLocks();
-    static void triggerUnlocks(User &user, Type triggerType, const void *trigger);
-    static void unlockAll(User &user);
-    void stage() const { stagedLocks.insert(*this); }
+ public:
+  ProgressLock(Type triggerType, const std::string &triggerID, Type effectType,
+               const std::string &effectID, double chance);
 
-    bool ProgressLock::operator<(const ProgressLock &rhs) const;
+  static void registerStagedLocks();
+  static void triggerUnlocks(User &user, Type triggerType, const void *trigger);
+  static void unlockAll(User &user);
+  void stage() const { stagedLocks.insert(*this); }
+
+  bool ProgressLock::operator<(const ProgressLock &rhs) const;
 };
 #endif

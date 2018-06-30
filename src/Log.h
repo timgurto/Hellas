@@ -21,8 +21,9 @@ log << "message " << 1;
     Compile a message of different values/types
 
 log << Color::YELLOW;
-    Change the color of the current compilation; it will reset after endl is received.
-    This can be done at any time, but the one color will be used for the entire compilation.
+    Change the color of the current compilation; it will reset after endl is
+received. This can be done at any time, but the one color will be used for the
+entire compilation.
 
 log << endl;
     End the current compilation, adding it to the screen.
@@ -30,73 +31,68 @@ log << endl;
 
 class FileAppender;
 
-class Log{
-public:
-    Log(const std::string &logFileName = "");
-    virtual ~Log(){}
+class Log {
+ public:
+  Log(const std::string &logFileName = "");
+  virtual ~Log() {}
 
-    virtual void operator()(const std::string &message, const Color &color = Color::NO_KEY) = 0;
+  virtual void operator()(const std::string &message,
+                          const Color &color = Color::NO_KEY) = 0;
 
-    enum LogSpecial {
-        endl,
-        uncolor
-    };
+  enum LogSpecial { endl, uncolor };
 
-    template<typename T>
-    Log &operator<<(const T &val){
-        std::ostringstream oss;
-        oss << val;
-        *this << oss.str();
-        return *this;
-    }
-    virtual Log &operator<<(const std::string &val) = 0;
+  template <typename T>
+  Log &operator<<(const T &val) {
+    std::ostringstream oss;
+    oss << val;
+    *this << oss.str();
+    return *this;
+  }
+  virtual Log &operator<<(const std::string &val) = 0;
 
-    /*
-    Handle special commands:
-      endl: end message and begin a new one
-      uncolor: revert to the default message color
-    */
-    virtual Log &operator<<(const LogSpecial &val) = 0;
-    // color: set color of current compilation
-    virtual Log &operator<<(const Color &c) = 0;
+  /*
+  Handle special commands:
+    endl: end message and begin a new one
+    uncolor: revert to the default message color
+  */
+  virtual Log &operator<<(const LogSpecial &val) = 0;
+  // color: set color of current compilation
+  virtual Log &operator<<(const Color &c) = 0;
 
-protected:
+ protected:
+  template <typename T>
+  void writeToFile(const T &val) const {
+    logFile() << val;
+  }
 
-    template<typename T>
-    void writeToFile(const T &val) const {
-        logFile() << val;
-    }
-    
-    template<typename T>
-    void writeLineToFile(const T &val) const {
-        logFile() << val << '\n';
-    }
+  template <typename T>
+  void writeLineToFile(const T &val) const {
+    logFile() << val << '\n';
+  }
 
-private:
-    std::string _logFileName;
+ private:
+  std::string _logFileName;
 
-    bool usingLogFile() const;
-    FileAppender logFile() const;
+  bool usingLogFile() const;
+  FileAppender logFile() const;
 };
 
+class FileAppender {
+ public:
+  FileAppender(const std::string &filename);
+  ~FileAppender();
 
-class FileAppender{
-public:
-    FileAppender(const std::string &filename);
-    ~FileAppender();
+  template <typename T>
+  friend FileAppender &operator<<(FileAppender &lhs, const T &rhs);
 
-    template<typename T>
-    friend FileAppender &operator<<(FileAppender &lhs, const T &rhs);
-
-private:
-    std::ofstream _fileStream;
+ private:
+  std::ofstream _fileStream;
 };
 
-template<typename T>
-FileAppender &operator<<(FileAppender &lhs, const T &rhs){
-    if (lhs._fileStream.is_open())
-        lhs._fileStream << rhs;
-    return lhs;
+template <typename T>
+FileAppender &operator<<(FileAppender &lhs, const T &rhs) {
+  if (lhs._fileStream.is_open()) lhs._fileStream << rhs;
+  return lhs;
 }
 
 #endif

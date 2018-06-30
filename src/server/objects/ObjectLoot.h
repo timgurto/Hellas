@@ -5,16 +5,16 @@
 
 class Object;
 
-class ObjectLoot : public Loot{
-public:
-    ObjectLoot(Object &parent);
-    void populate();
+class ObjectLoot : public Loot {
+ public:
+  ObjectLoot(Object &parent);
+  void populate();
 
-private:
-    Object &_parent;
+ private:
+  Object &_parent;
 
-    void addStrengthItemsToLoot();
-    void addContainerItemsToLoot();
+  void addStrengthItemsToLoot();
+  void addContainerItemsToLoot();
 };
 
 #endif

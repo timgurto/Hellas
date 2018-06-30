@@ -7,21 +7,17 @@
 
 // Illustrates the state of something--success, fail, or in progress
 class Indicator : public Picture {
-public:
-    enum Status {
-        FAILED,
-        SUCCEEDED,
-        IN_PROGRESS
-    };
+ public:
+  enum Status { FAILED, SUCCEEDED, IN_PROGRESS };
 
-    Indicator(const ScreenPoint &loc, Status initial = IN_PROGRESS);
-    void set(Status status);
+  Indicator(const ScreenPoint &loc, Status initial = IN_PROGRESS);
+  void set(Status status);
 
-    static void initialize();
+  static void initialize();
 
-private:
-    using Images = std::unordered_map<Status, Texture>;
-    static Images images;
+ private:
+  using Images = std::unordered_map<Status, Texture>;
+  static Images images;
 
-    static bool initialized;
+  static bool initialized;
 };

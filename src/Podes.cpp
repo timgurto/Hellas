@@ -1,15 +1,15 @@
 #include "Podes.h"
 
-const Podes Podes::MELEE_RANGE{ 4 };
+const Podes Podes::MELEE_RANGE{4};
 
-std::istream &operator >> (std::istream &lhs, Podes &rhs) {
-    lhs >> rhs._p; return lhs;
+std::istream &operator>>(std::istream &lhs, Podes &rhs) {
+  lhs >> rhs._p;
+  return lhs;
 }
 
-std::ostream &operator << (std::ostream &lhs, Podes rhs) {
-    lhs << rhs._p; return lhs;
+std::ostream &operator<<(std::ostream &lhs, Podes rhs) {
+  lhs << rhs._p;
+  return lhs;
 }
 
-Podes Podes::FromPixels(px_t p) {
-    return toInt(p / 7);
-}
+Podes Podes::FromPixels(px_t p) { return toInt(p / 7); }

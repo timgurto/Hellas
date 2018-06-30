@@ -1,18 +1,18 @@
 #pragma once
 
 enum CombatType {
-    DAMAGE,
-    HEAL, // Can crit
-    DEBUFF, // Can't crit
-    THREAT_MOD, // Can't block/dodge
+  DAMAGE,
+  HEAL,        // Can crit
+  DEBUFF,      // Can't crit
+  THREAT_MOD,  // Can't block/dodge
 };
 
 enum CombatResult {
-    FAIL,
+  FAIL,
 
-    HIT,
-    CRIT,
-    BLOCK,
-    DODGE,
-    MISS
+  HIT,
+  CRIT,
+  BLOCK,
+  DODGE,
+  MISS
 };

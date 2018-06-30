@@ -8,29 +8,29 @@
 #include "../Log.h"
 
 // A message log that writes to the console.
-class LogConsole : public Log{
-public:
-    LogConsole(const std::string &logFileName = "");
+class LogConsole : public Log {
+ public:
+  LogConsole(const std::string &logFileName = "");
 
-    virtual void operator()(const std::string &message, const Color &color = Color::YELLOW) override;
+  virtual void operator()(const std::string &message,
+                          const Color &color = Color::YELLOW) override;
 
-    void quiet(bool b = true){ _quiet = b; }
+  void quiet(bool b = true) { _quiet = b; }
 
-    template<typename T>
-    LogConsole &operator<<(const T &val) {
-        writeToFile(val);
-        if (_quiet)
-            return *this;
+  template <typename T>
+  LogConsole &operator<<(const T &val) {
+    writeToFile(val);
+    if (_quiet) return *this;
 
-        std::cout << val;
-        return *this;
-    }
-    LogConsole &operator<<(const std::string &val) override;
-    LogConsole &operator<<(const LogSpecial &val) override;
-    LogConsole &operator<<(const Color &c) override;
+    std::cout << val;
+    return *this;
+  }
+  LogConsole &operator<<(const std::string &val) override;
+  LogConsole &operator<<(const LogSpecial &val) override;
+  LogConsole &operator<<(const Color &c) override;
 
-private:
-    bool _quiet; // If true, suppress all messages.
+ private:
+  bool _quiet;  // If true, suppress all messages.
 };
 
 #endif

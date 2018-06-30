@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #ifndef MERCHANT_SLOT_H
 #define MERCHANT_SLOT_H
 
@@ -7,21 +5,17 @@
 
 class Item;
 
-struct MerchantSlot{
-    const Item
-        *wareItem,
-        *priceItem;
-    size_t
-        wareQty,
-        priceQty;
+struct MerchantSlot {
+  const Item *wareItem, *priceItem;
+  size_t wareQty, priceQty;
 
-    MerchantSlot(const Item *wareItem = nullptr, size_t wareQty = 0,
-                 const Item *priceItem = nullptr, size_t priceQty = 0);
+  MerchantSlot(const Item *wareItem = nullptr, size_t wareQty = 0,
+               const Item *priceItem = nullptr, size_t priceQty = 0);
 
-    operator bool() const;
-    
-    const ItemSet ware() const;
-    const ItemSet price() const;
+  operator bool() const;
+
+  const ItemSet ware() const;
+  const ItemSet price() const;
 };
 
 #endif

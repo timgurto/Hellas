@@ -1,5 +1,3 @@
-// (C) 2016 Tim Gurto
-
 #ifndef CURL_UTIL_H
 #define CURL_UTIL_H
 

@@ -1,23 +1,25 @@
-#include <cassert>
-#include <ctime>
-#include <cstdlib>
-#include <string>
 #include <SDL.h>
+#include <cassert>
+#include <cstdlib>
+#include <ctime>
+#include <string>
 
-#include "Server.h"
 #include "../Args.h"
+#include "Server.h"
 
-extern "C" { FILE __iob_func[3] = { *stdin,*stdout,*stderr }; }
+extern "C" {
+FILE __iob_func[3] = {*stdin, *stdout, *stderr};
+}
 
 Args cmdLineArgs;
 
-int main(int argc, char* argv[]){
-    cmdLineArgs.init(argc, argv);
+int main(int argc, char* argv[]) {
+  cmdLineArgs.init(argc, argv);
 
-    srand(static_cast<unsigned>(time(0)));
+  srand(static_cast<unsigned>(time(0)));
 
-    Server server;
-    server.run();
+  Server server;
+  server.run();
 
-    return 0;
+  return 0;
 }

@@ -3,6 +3,6 @@
 #include <string>
 
 class Quest {
-public:
-    using ID = std::string;
+ public:
+  using ID = std::string;
 };

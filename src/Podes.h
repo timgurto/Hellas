@@ -4,19 +4,19 @@
 
 #include "util.h"
 
-class Podes { // 1 Pous = 7 pixels = 1 foot
-public:
-    Podes(int p = 0) :_p(p) {}
-    px_t toPixels() const { return _p * 7; }
+class Podes {  // 1 Pous = 7 pixels = 1 foot
+ public:
+  Podes(int p = 0) : _p(p) {}
+  px_t toPixels() const { return _p * 7; }
 
-    static const Podes MELEE_RANGE;
+  static const Podes MELEE_RANGE;
 
-    operator px_t() const { return toPixels(); }
+  operator px_t() const { return toPixels(); }
 
-    static Podes FromPixels(px_t p);
+  static Podes FromPixels(px_t p);
 
-private:
-    int _p;
-    friend std::ostream &operator << (std::ostream &lhs, Podes rhs);
-    friend std::istream &operator >> (std::istream &lhs, Podes &rhs);
+ private:
+  int _p;
+  friend std::ostream &operator<<(std::ostream &lhs, Podes rhs);
+  friend std::istream &operator>>(std::istream &lhs, Podes &rhs);
 };

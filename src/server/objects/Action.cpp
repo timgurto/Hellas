@@ -2,47 +2,44 @@
 #include "../Server.h"
 
 Action::FunctionMap Action::functionMap = {
-    { "createCity", Server::createCity },
-    { "setRespawnPoint", Server::setRespawnPoint }
-};
+    {"createCity", Server::createCity},
+    {"setRespawnPoint", Server::setRespawnPoint}};
 
 CallbackAction::FunctionMap CallbackAction::functionMap = {
-    { "destroyCity", Server::destroyCity }
-};
+    {"destroyCity", Server::destroyCity}};
 
-bool Server::createCity(const Object & obj, User & performer,
-        const std::string &textArg) {
-    auto &server = Server::instance();
+bool Server::createCity(const Object &obj, User &performer,
+                        const std::string &textArg) {
+  auto &server = Server::instance();
 
-    if (textArg == "_")
-        return false;
+  if (textArg == "_") return false;
 
-    if (!server._cities.getPlayerCity(performer.name()).empty()) {
-        server.sendMessage(performer.socket(), WARNING_YOU_ARE_ALREADY_IN_CITY);
-        return false;
-    }
+  if (!server._cities.getPlayerCity(performer.name()).empty()) {
+    server.sendMessage(performer.socket(), WARNING_YOU_ARE_ALREADY_IN_CITY);
+    return false;
+  }
 
-    server._cities.createCity(textArg);
-    server._cities.addPlayerToCity(performer, textArg);
+  server._cities.createCity(textArg);
+  server._cities.addPlayerToCity(performer, textArg);
 
-    server.makePlayerAKing(performer);
+  server.makePlayerAKing(performer);
 
-    server.broadcast(SV_CITY_FOUNDED, makeArgs(performer.name(), textArg));
-    return true;
+  server.broadcast(SV_CITY_FOUNDED, makeArgs(performer.name(), textArg));
+  return true;
 }
 
-bool Server::setRespawnPoint(const Object & obj, User & performer,
-    const std::string &textArg) {
-    performer.respawnPoint(obj.location());
+bool Server::setRespawnPoint(const Object &obj, User &performer,
+                             const std::string &textArg) {
+  performer.respawnPoint(obj.location());
 
-    instance().sendMessage(performer.socket(), SV_SET_SPAWN);
-    return true;
+  instance().sendMessage(performer.socket(), SV_SET_SPAWN);
+  return true;
 }
 
-void Server::destroyCity(const Object & obj) {
-    auto owner = obj.permissions().owner();
-    const auto cityName = instance()._cities.getPlayerCity(owner.name);
-    instance()._cities.destroyCity(cityName);
+void Server::destroyCity(const Object &obj) {
+  auto owner = obj.permissions().owner();
+  const auto cityName = instance()._cities.getPlayerCity(owner.name);
+  instance()._cities.destroyCity(cityName);
 
-    instance().broadcast(SV_CITY_DESTROYED, cityName);
+  instance().broadcast(SV_CITY_DESTROYED, cityName);
 }

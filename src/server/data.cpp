@@ -3,1359 +3,1296 @@
 #include <thread>
 #endif
 
-#include "Class.h"
-#include "NPCType.h"
-#include "ProgressLock.h"
-#include "Server.h"
-#include "VehicleType.h"
-#include "Vehicle.h"
 #include "../Podes.h"
 #include "../SpellSchool.h"
 #include "../Terrain.h"
 #include "../XmlReader.h"
 #include "../XmlWriter.h"
+#include "Class.h"
+#include "NPCType.h"
+#include "ProgressLock.h"
+#include "Server.h"
+#include "Vehicle.h"
+#include "VehicleType.h"
 
 extern Args cmdLineArgs;
 
-bool Server::readUserData(User &user){
-    auto xr = XmlReader::FromFile(_userFilesPath + user.name() + ".usr");
-    if (!xr)
-        return false;
+bool Server::readUserData(User &user) {
+  auto xr = XmlReader::FromFile(_userFilesPath + user.name() + ".usr");
+  if (!xr) return false;
 
-    {
-        auto elem = xr.findChild("general");
-        auto classID = ClassType::ID{};
-        if (!xr.findAttr(elem, "class", classID))
-            return false;
-        auto it = _classes.find(classID);
-        if (it == _classes.end()) {
-            _debug << Color::RED << "Invalid class (" << classID
-                << ") specified; creating new character." << Log::endl;
+  {
+    auto elem = xr.findChild("general");
+    auto classID = ClassType::ID{};
+    if (!xr.findAttr(elem, "class", classID)) return false;
+    auto it = _classes.find(classID);
+    if (it == _classes.end()) {
+      _debug << Color::RED << "Invalid class (" << classID
+             << ") specified; creating new character." << Log::endl;
+    }
+    user.setClass(it->second);
+
+    auto level = Level{0};
+    if (xr.findAttr(elem, "level", level)) user.level(level);
+
+    auto xp = XP{0};
+    if (xr.findAttr(elem, "xp", xp)) user.xp(xp);
+
+    auto n = 0;
+    if (xr.findAttr(elem, "isKing", n) && n == 1) makePlayerAKing(user);
+
+    if (xr.findAttr(elem, "isDriving", n) && n == 1) {
+      auto pVehicle = _entities.findVehicleDrivenBy(user);
+      if (pVehicle) {
+        user.driving(pVehicle->serial());
+      }
+    }
+  }
+
+  auto elem = xr.findChild("location");
+  MapPoint p;
+  if (elem == nullptr || !xr.findAttr(elem, "x", p.x) ||
+      !xr.findAttr(elem, "y", p.y)) {
+    _debug("Invalid user data (location)", Color::RED);
+    return false;
+  }
+
+  elem = xr.findChild("respawnPoint");
+  if (elem && xr.findAttr(elem, "x", p.x) && xr.findAttr(elem, "y", p.y))
+    user.respawnPoint(p);
+
+  bool s = false;
+  if (isLocationValid(p, User::OBJECT_TYPE, &user))
+    user.location(p, /* firstInsertion */ true);
+  else {
+    _debug << Color::YELLOW << "Player " << user.name()
+           << " was respawned due to an invalid or occupied location."
+           << Log::endl;
+    user.moveToSpawnPoint(/* firstInsertion */ true);
+  }
+
+  elem = xr.findChild("inventory");
+  for (auto slotElem : xr.getChildren("slot", elem)) {
+    int slot;
+    std::string id;
+    int qty;
+    if (!xr.findAttr(slotElem, "slot", slot)) continue;
+    if (!xr.findAttr(slotElem, "id", id)) continue;
+    if (!xr.findAttr(slotElem, "quantity", qty)) continue;
+
+    std::set<ServerItem>::const_iterator it = _items.find(id);
+    if (it == _items.end()) {
+      _debug("Invalid user data (inventory item).  Removing item.", Color::RED);
+      continue;
+    }
+    user.inventory(slot) = std::make_pair<const ServerItem *, size_t>(
+        &*it, static_cast<size_t>(qty));
+  }
+
+  elem = xr.findChild("gear");
+  for (auto slotElem : xr.getChildren("slot", elem)) {
+    int slot;
+    std::string id;
+    int qty;
+    if (!xr.findAttr(slotElem, "slot", slot)) continue;
+    if (!xr.findAttr(slotElem, "id", id)) continue;
+    if (!xr.findAttr(slotElem, "quantity", qty)) continue;
+
+    std::set<ServerItem>::const_iterator it = _items.find(id);
+    if (it == _items.end()) {
+      _debug("Invalid user data (gear item).  Removing item.", Color::RED);
+      continue;
+    }
+    user.gear(slot) = std::make_pair<const ServerItem *, size_t>(
+        &*it, static_cast<size_t>(qty));
+  }
+
+  elem = xr.findChild("buffs");
+  for (auto buffElem : xr.getChildren("buff", elem)) {
+    auto id = ""s;
+    if (!xr.findAttr(buffElem, "type", id)) continue;
+    auto buffTypeIt = _buffTypes.find(id);
+    if (buffTypeIt == _buffTypes.end()) continue;
+
+    auto timeRemaining = ms_t{};
+    if (!xr.findAttr(buffElem, "timeRemaining", timeRemaining)) continue;
+    user.loadBuff(buffTypeIt->second, timeRemaining);
+  }
+  for (auto buffElem : xr.getChildren("debuff", elem)) {
+    auto id = ""s;
+    if (!xr.findAttr(buffElem, "type", id)) continue;
+    auto buffTypeIt = _buffTypes.find(id);
+    if (buffTypeIt == _buffTypes.end()) continue;
+
+    auto timeRemaining = ms_t{};
+    if (!xr.findAttr(buffElem, "timeRemaining", timeRemaining)) continue;
+    user.loadDebuff(buffTypeIt->second, timeRemaining);
+  }
+
+  elem = xr.findChild("knownRecipes");
+  for (auto slotElem : xr.getChildren("recipe", elem)) {
+    std::string id;
+    if (xr.findAttr(slotElem, "id", id)) user.addRecipe(id);
+  }
+
+  elem = xr.findChild("knownConstructions");
+  for (auto slotElem : xr.getChildren("construction", elem)) {
+    std::string id;
+    if (xr.findAttr(slotElem, "id", id)) user.addConstruction(id);
+  }
+
+  elem = xr.findChild("talents");
+  for (auto talentElem : xr.getChildren("talent", elem)) {
+    auto name = ""s;
+    if (!xr.findAttr(talentElem, "name", name)) continue;
+    auto &userClass = user.getClass();
+    auto talent = userClass.type().findTalent(name);
+    if (!talent) continue;
+
+    auto rank = 0;
+    xr.findAttr(talentElem, "rank", rank);
+
+    userClass.loadTalentRank(*talent, rank);
+  }
+
+  return true;
+}
+
+void Server::writeUserData(const User &user) const {
+  XmlWriter xw(_userFilesPath + user.name() + ".usr");
+
+  auto e = xw.addChild("general");
+  xw.setAttr(e, "class", user.getClass().type().id());
+  if (_kings.isPlayerAKing(user.name())) xw.setAttr(e, "isKing", 1);
+  xw.setAttr(e, "level", user.level());
+  xw.setAttr(e, "xp", user.xp());
+  if (user.isDriving()) xw.setAttr(e, "isDriving", 1);
+
+  e = xw.addChild("location");
+  xw.setAttr(e, "x", user.location().x);
+  xw.setAttr(e, "y", user.location().y);
+
+  e = xw.addChild("respawnPoint");
+  xw.setAttr(e, "x", user.respawnPoint().x);
+  xw.setAttr(e, "y", user.respawnPoint().y);
+
+  e = xw.addChild("inventory");
+  for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
+    const std::pair<const ServerItem *, size_t> &slot = user.inventory(i);
+    if (slot.first) {
+      auto slotElement = xw.addChild("slot", e);
+      xw.setAttr(slotElement, "slot", i);
+      xw.setAttr(slotElement, "id", slot.first->id());
+      xw.setAttr(slotElement, "quantity", slot.second);
+    }
+  }
+
+  e = xw.addChild("gear");
+  for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
+    const std::pair<const ServerItem *, size_t> &slot = user.gear(i);
+    if (slot.first != nullptr) {
+      auto slotElement = xw.addChild("slot", e);
+      xw.setAttr(slotElement, "slot", i);
+      xw.setAttr(slotElement, "id", slot.first->id());
+      xw.setAttr(slotElement, "quantity", slot.second);
+    }
+  }
+
+  e = xw.addChild("buffs");
+  for (const auto &buff : user.buffs()) {
+    auto buffElement = xw.addChild("buff", e);
+    xw.setAttr(buffElement, "type", buff.type());
+    xw.setAttr(buffElement, "timeRemaining", buff.timeRemaining());
+  }
+  for (const auto &debuff : user.debuffs()) {
+    auto buffElement = xw.addChild("buff", e);
+    xw.setAttr(buffElement, "type", debuff.type());
+    xw.setAttr(buffElement, "timeRemaining", debuff.timeRemaining());
+  }
+
+  e = xw.addChild("knownRecipes");
+  for (const std::string &id : user.knownRecipes()) {
+    auto slotElement = xw.addChild("recipe", e);
+    xw.setAttr(slotElement, "id", id);
+  }
+
+  e = xw.addChild("knownConstructions");
+  for (const std::string &id : user.knownConstructions()) {
+    auto slotElement = xw.addChild("construction", e);
+    xw.setAttr(slotElement, "id", id);
+  }
+
+  e = xw.addChild("talents");
+  for (auto pair : user.getClass().talentRanks()) {
+    if (pair.second == 0) continue;
+    auto talentElem = xw.addChild("talent", e);
+    xw.setAttr(talentElem, "name", pair.first->name());
+    xw.setAttr(talentElem, "rank", pair.second);
+  }
+
+  xw.publish();
+}
+
+void Server::loadData(const std::string &path) {
+  _debug("Loading data");
+  _entities.clear();
+
+  // Load terrain lists
+  auto xr = XmlReader::FromFile(path + "/terrain.xml");
+  std::map<std::string, char>
+      terrainCodes;  // For easier lookup when compiling lists below.
+  if (xr) {
+    TerrainList::clearLists();
+    for (auto elem : xr.getChildren("terrain")) {
+      char index;
+      std::string id, tag;
+      if (!xr.findAttr(elem, "index", index)) continue;
+      if (!xr.findAttr(elem, "id", id)) continue;
+      Terrain *newTerrain = nullptr;
+      if (xr.findAttr(elem, "tag", tag))
+        newTerrain = Terrain::withTag(tag);
+      else
+        newTerrain = Terrain::empty();
+      _terrainTypes[index] = newTerrain;
+      terrainCodes[id] = index;
+    }
+
+    for (auto elem : xr.getChildren("list")) {
+      std::string id;
+      if (!xr.findAttr(elem, "id", id)) continue;
+      TerrainList tl;
+      for (auto terrain : xr.getChildren("allow", elem)) {
+        std::string s;
+        if (xr.findAttr(terrain, "id", s) &&
+            terrainCodes.find(s) != terrainCodes.end())
+          tl.allow(terrainCodes[s]);
+      }
+      for (auto terrain : xr.getChildren("forbid", elem)) {
+        std::string s;
+        if (xr.findAttr(terrain, "id", s) &&
+            terrainCodes.find(s) != terrainCodes.end())
+          tl.forbid(terrainCodes[s]);
+      }
+      TerrainList::addList(id, tl);
+      size_t default = 0;
+      if (xr.findAttr(elem, "default", default) && default == 1)
+        TerrainList::setDefault(id);
+    }
+  }
+
+  if (xr.newFile(
+          path +
+          "/items.xml"))  // Early, because object types may insert new items.
+    _items.clear();
+
+  // Object types
+  bool clearedObjectTypes = false;
+  if (!xr.newFile(path + "/objectTypes.xml"))
+    _debug("Failed to load objectTypes.xml", Color::FAILURE);
+  else {
+    _objectTypes.clear();
+    clearedObjectTypes = true;
+    for (auto elem : xr.getChildren("objectType")) {
+      std::string id;
+      if (!xr.findAttr(elem, "id", id)) continue;
+      ObjectType *ot = nullptr;
+      int n;
+      if (xr.findAttr(elem, "isVehicle", n) == 1)
+        ot = new VehicleType(id);
+      else
+        ot = new ObjectType(id);
+
+      std::string s;
+      if (xr.findAttr(elem, "gatherTime", n)) ot->gatherTime(n);
+      if (xr.findAttr(elem, "constructionTime", n)) ot->constructionTime(n);
+      if (xr.findAttr(elem, "gatherReq", s)) ot->gatherReq(s);
+      if (xr.findAttr(elem, "constructionReq", s)) ot->constructionReq(s);
+
+      // Deconstruction
+      if (xr.findAttr(elem, "deconstructs", s)) {
+        ms_t deconstructionTime = 0;
+        xr.findAttr(elem, "deconstructionTime", deconstructionTime);
+        std::set<ServerItem>::const_iterator itemIt =
+            _items.insert(ServerItem(s)).first;
+        ot->addDeconstruction(
+            DeconstructionType::ItemAndTime(&*itemIt, deconstructionTime));
+      }
+
+      // Gathering yields
+      for (auto yield : xr.getChildren("yield", elem)) {
+        if (!xr.findAttr(yield, "id", s)) continue;
+        double initMean = 1., initSD = 0, gatherMean = 1, gatherSD = 0;
+        size_t initMin = 0;
+        xr.findAttr(yield, "initialMean", initMean);
+        xr.findAttr(yield, "initialSD", initSD);
+        xr.findAttr(yield, "initialMin", initMin);
+        xr.findAttr(yield, "gatherMean", gatherMean);
+        xr.findAttr(yield, "gatherSD", gatherSD);
+        std::set<ServerItem>::const_iterator itemIt =
+            _items.insert(ServerItem(s)).first;
+        ot->addYield(&*itemIt, initMean, initSD, initMin, gatherMean, gatherSD);
+      }
+
+      // Merchant
+      if (xr.findAttr(elem, "merchantSlots", n)) ot->merchantSlots(n);
+      if (xr.findAttr(elem, "bottomlessMerchant", n))
+        ot->bottomlessMerchant(n == 1);
+
+      MapRect r;
+      if (xr.findRectChild("collisionRect", elem, r)) ot->collisionRect(r);
+
+      // Tags
+      for (auto objTag : xr.getChildren("tag", elem))
+        if (xr.findAttr(objTag, "name", s)) ot->addTag(s);
+
+      // Construction site
+      bool needsMaterials = false;
+      for (auto objMat : xr.getChildren("material", elem)) {
+        if (!xr.findAttr(objMat, "id", s)) continue;
+        std::set<ServerItem>::const_iterator itemIt =
+            _items.insert(ServerItem(s)).first;
+        n = 1;
+        xr.findAttr(objMat, "quantity", n);
+        ot->addMaterial(&*itemIt, n);
+        needsMaterials = true;
+      }
+      if (xr.findAttr(elem, "isUnique", n) == 1) ot->makeUnique();
+      bool isUnbuildable = xr.findAttr(elem, "isUnbuildable", n) == 1;
+      if (isUnbuildable) ot->makeUnbuildable();
+
+      if (xr.findAttr(elem, "playerUnique", s)) ot->makeUniquePerPlayer(s);
+
+      // Construction locks
+      bool requiresUnlock = false;
+      for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
+        double chance = 1.0;
+        xr.findAttr(unlockedBy, "chance", chance);
+        ProgressLock::Type triggerType;
+        if (xr.findAttr(unlockedBy, "item", s))
+          triggerType = ProgressLock::ITEM;
+        else if (xr.findAttr(unlockedBy, "construction", s))
+          triggerType = ProgressLock::CONSTRUCTION;
+        else if (xr.findAttr(unlockedBy, "gather", s))
+          triggerType = ProgressLock::GATHER;
+        else if (xr.findAttr(unlockedBy, "recipe", s))
+          triggerType = ProgressLock::RECIPE;
+        ProgressLock(triggerType, s, ProgressLock::CONSTRUCTION, id, chance)
+            .stage();
+        requiresUnlock = true;
+      }
+      if (!requiresUnlock && !isUnbuildable && needsMaterials)
+        ot->knownByDefault();
+      if (needsMaterials && !isUnbuildable) ++_numBuildableObjects;
+
+      // Container
+      auto container = xr.findChild("container", elem);
+      if (container != nullptr) {
+        if (xr.findAttr(container, "slots", n)) {
+          ot->addContainer(ContainerType::WithSlots(n));
         }
-        user.setClass(it->second);
+      }
 
-        auto level = Level{ 0 };
-        if (xr.findAttr(elem, "level", level))
-            user.level(level);
+      // Terrain restrictions
+      if (xr.findAttr(elem, "allowedTerrain", s)) ot->allowedTerrain(s);
 
-        auto xp = XP{ 0 };
-        if (xr.findAttr(elem, "xp", xp))
-            user.xp(xp);
+      // Transformation
+      auto transform = xr.findChild("transform", elem);
+      if (transform) {
+        if (!xr.findAttr(transform, "id", s)) {
+          _debug("Transformation specified without target id; skipping.",
+                 Color::FAILURE);
+          continue;
+        }
+        const ObjectType *transformObjPtr = findObjectTypeByName(s);
+        if (transformObjPtr == nullptr) {
+          transformObjPtr = new ObjectType(s);
+          _objectTypes.insert(transformObjPtr);
+        }
+
+        ms_t time = 0;
+        xr.findAttr(transform, "time", n);
+
+        ot->transform(n, transformObjPtr);
+
+        if (xr.findAttr(transform, "whenEmpty", n) && n != 0)
+          ot->transformOnEmpty();
+
+        if (xr.findAttr(transform, "skipConstruction", n) && n != 0)
+          ot->skipConstructionOnTransform(true);
+      }
+
+      // Strength
+      auto strength = xr.findChild("strength", elem);
+      if (strength) {
+        if (xr.findAttr(strength, "item", s) &&
+            xr.findAttr(strength, "quantity", n)) {
+          std::set<ServerItem>::const_iterator itemIt =
+              _items.insert(ServerItem(s)).first;
+          ot->setHealthBasedOnItems(&*itemIt, n);
+        } else
+          _debug("Strength specified without item type; skipping.",
+                 Color::FAILURE);
+      }
+
+      // Action
+      auto action = xr.findChild("action", elem);
+      if (action != nullptr) {
+        auto *pAction = new Action;
+
+        std::string target;
+        if (!xr.findAttr(action, "target", target)) {
+          _debug("Skipping action with missing target", Color::RED);
+          continue;
+        }
+        auto it = Action::functionMap.find(target);
+        if (it == Action::functionMap.end()) {
+          _debug << Color::RED << "Action target " << target
+                 << "() doesn't exist; skipping" << Log::endl;
+          continue;
+        }
+        pAction->function = it->second;
+
+        auto costID = ""s;
+        if (xr.findAttr(action, "cost", costID)) {
+          std::set<ServerItem>::const_iterator itemIt =
+              _items.insert(ServerItem(costID)).first;
+          auto pItem = &*itemIt;
+          pAction->cost = pItem;
+        }
+
+        ot->action(pAction);
+      }
+
+      // onDestroy callback
+      auto onDestroy = xr.findChild("onDestroy", elem);
+      if (onDestroy != nullptr) {
+        std::string target;
+        if (!xr.findAttr(onDestroy, "target", target)) {
+          _debug("Skipping onDestroy with missing target", Color::RED);
+          continue;
+        }
+        auto it = CallbackAction::functionMap.find(target);
+        if (it == CallbackAction::functionMap.end()) {
+          _debug << Color::RED << "CallbackAction target " << target
+                 << "() doesn't exist; skipping" << Log::endl;
+          continue;
+        }
+
+        auto *pAction = new CallbackAction;
+        pAction->function = it->second;
+        ot->onDestroy(pAction);
+      }
+
+      bool foundInPlace = false;
+      for (auto it = _objectTypes.begin(); it != _objectTypes.end(); ++it) {
+        if ((*it)->id() == ot->id()) {
+          ObjectType &inPlace = *const_cast<ObjectType *>(*it);
+          inPlace = *ot;
+          delete ot;
+          foundInPlace = true;
+          break;
+        }
+      }
+      if (!foundInPlace) _objectTypes.insert(ot);
+    }
+  }
+
+  // Quests
+  if (!xr.newFile(path + "/quests.xml"))
+    _debug("Failed to load quests.xml", Color::FAILURE);
+  else {
+    for (auto elem : xr.getChildren("quest")) {
+      auto id = ""s;
+      if (!xr.findAttr(elem, "id", id)) continue;
+
+      auto startsAt = ""s;
+      if (!xr.findAttr(elem, "startsAt", startsAt)) continue;
+      auto startingObject = findObjectTypeByName(startsAt);
+      if (!startingObject) continue;
+
+      auto endsAt = ""s;
+      if (!xr.findAttr(elem, "endsAt", endsAt)) continue;
+      auto endingObject = findObjectTypeByName(endsAt);
+      if (!endingObject) continue;
+
+      startingObject->addQuestStart(id);
+      endingObject->addQuestEnd(id);
+    }
+  }
+
+  // NPC types
+  if (!xr.newFile(path + "/npcTypes.xml"))
+    _debug("Failed to load npcTypes.xml", Color::FAILURE);
+  else {
+    if (!clearedObjectTypes) _objectTypes.clear();
+    for (auto elem : xr.getChildren("npcType")) {
+      std::string id;
+      if (!xr.findAttr(elem, "id", id))  // No ID: skip
+        continue;
+      NPCType *nt = new NPCType(id);
+
+      auto humanoid = xr.findChild("humanoid", elem);
+
+      // Collision rect
+      if (humanoid) nt->collisionRect(User::OBJECT_TYPE.collisionRect());
+      MapRect r;
+      if (xr.findRectChild("collisionRect", elem, r)) nt->collisionRect(r);
+
+      std::string s;
+      for (auto objTag : xr.getChildren("class", elem))
+        if (xr.findAttr(objTag, "name", s)) nt->addTag(s);
+
+      if (xr.findAttr(elem, "allowedTerrain", s)) nt->allowedTerrain(s);
+
+      auto level = Level{1};
+      xr.findAttr(elem, "level", level);
+      nt->level(level);
+
+      auto school = ""s;
+      if (xr.findAttr(elem, "school", school)) nt->school(school);
+
+      auto n = 0;
+      if (xr.findAttr(elem, "isRanged", n) && n != 0) nt->makeRanged();
+      if (xr.findAttr(elem, "isCivilian", n) && n != 0) nt->makeCivilian();
+
+      Stats baseStats = NPCType::BASE_STATS;
+      xr.findAttr(elem, "maxHealth", baseStats.maxHealth);
+      xr.findAttr(elem, "attack", baseStats.physicalDamage);
+      xr.findAttr(elem, "attackTime", baseStats.attackTime);
+      nt->baseStats(baseStats);
+
+      for (auto loot : xr.getChildren("loot", elem)) {
+        if (!xr.findAttr(loot, "id", s)) continue;
+
+        double mean = 1.0, sd = 0;
+        std::set<ServerItem>::const_iterator itemIt =
+            _items.insert(ServerItem(s)).first;
+        if (xr.findAttr(loot, "chance", mean)) {
+          nt->addSimpleLoot(&*itemIt, mean);
+        } else if (xr.findNormVarChild("normal", loot, mean, sd)) {
+          nt->addNormalLoot(&*itemIt, mean, sd);
+        } else {
+          nt->addSimpleLoot(&*itemIt, 1.0);
+        }
+      }
+
+      _objectTypes.insert(nt);
+    }
+  }
+
+  // Items
+  if (!xr.newFile(path + "/items.xml"))
+    _debug("Failed to load items.xml", Color::FAILURE);
+  else {
+    for (auto elem : xr.getChildren("item")) {
+      std::string id;
+      if (!xr.findAttr(elem, "id", id)) continue;  // ID and name are mandatory.
+      ServerItem item(id);
+
+      auto stackSize = size_t{};
+      if (xr.findAttr(elem, "stackSize", stackSize)) item.stackSize(stackSize);
+
+      std::string s;
+      if (xr.findAttr(elem, "constructs", s)) {
+        // Create dummy ObjectType if necessary
+        const ObjectType *ot = findObjectTypeByName(s);
+        if (ot != nullptr)
+          item.constructsObject(ot);
+        else
+          item.constructsObject(
+              *(_objectTypes.insert(new ObjectType(s)).first));
+      }
+
+      // Assumption: any item that returns on construction cannot be stacked.
+      // Until there's a use case to the contrary, this simplifies the code.
+      if (xr.findAttr(elem, "returnsOnConstruction", s)) {
+        if (stackSize > 1) {
+          _debug("Skipping return-on-construct item for stackable material",
+                 Color::RED);
+          continue;
+        }
+
+        // Create dummy Item if necessary
+        auto dummy = ServerItem{s};
+        const auto *itemToReturn = &*_items.insert(dummy).first;
+        item.returnsOnConstruction(itemToReturn);
+      }
+
+      if (xr.findAttr(elem, "castsSpellOnUse", s)) item.castsSpellOnUse(s);
+
+      auto stats = StatsMod{};
+      if (xr.findStatsChild("stats", elem, stats)) item.stats(stats);
+
+      auto weaponElem = xr.findChild("weapon", elem);
+      if (weaponElem != nullptr) {
+        auto range = Podes{};
+        if (xr.findAttr(weaponElem, "range", range)) item.weaponRange(range);
+
+        auto school = ""s;
+        if (xr.findAttr(weaponElem, "school", school))
+          item.weaponSchool({school});
+
+        auto ammoType = ""s;
+        if (xr.findAttr(weaponElem, "consumes", ammoType))
+          item.weaponAmmo({ammoType});
+      }
+
+      int n;
+      n = User::GEAR_SLOTS;  // Default; won't match any slot.
+      xr.findAttr(elem, "gearSlot", n);
+      item.gearSlot(n);
+
+      for (auto child : xr.getChildren("tag", elem))
+        if (xr.findAttr(child, "name", s)) item.addTag(s);
+
+      if (xr.findAttr(elem, "strength", n)) item.strength(n);
+
+      item.loaded();
+
+      std::pair<std::set<ServerItem>::iterator, bool> ret = _items.insert(item);
+      if (!ret.second) {
+        ServerItem &itemInPlace = const_cast<ServerItem &>(*ret.first);
+        itemInPlace = item;
+      }
+    }
+  }
+  for (auto &itemConst : _items) {
+    auto &item = const_cast<ServerItem &>(itemConst);
+    item.fetchAmmoItem();
+  }
+
+  // Recipes
+  if (!xr.newFile(path + "/recipes.xml"))
+    _debug("Failed to load recipes.xml", Color::FAILURE);
+  else {
+    _recipes.clear();
+    for (auto elem : xr.getChildren("recipe")) {
+      std::string id, name;
+      if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
+      Recipe recipe(id);
+
+      std::string product = id;
+      xr.findAttr(elem, "product", product);
+      auto it = _items.find(product);
+      if (it == _items.end()) {
+        _debug << Color::RED << "Skipping recipe with invalid product "
+               << product << Log::endl;
+        continue;
+      }
+      recipe.product(&*it);
+
+      int n;
+      if (xr.findAttr(elem, "quantity", n)) recipe.quantity(n);
+      if (xr.findAttr(elem, "time", n)) recipe.time(n);
+
+      for (auto child : xr.getChildren("material", elem)) {
+        int quantity = 1;
+        std::string matID;
+        // Quantity
+        xr.findAttr(child, "quantity", quantity);
+        if (xr.findAttr(child, "id", matID)) {
+          auto it = _items.find(ServerItem(matID));
+          if (it == _items.end()) {
+            _debug << Color::RED << "Skipping invalid recipe material " << matID
+                   << Log::endl;
+            continue;
+          }
+          recipe.addMaterial(&*it, quantity);
+        }
+      }
+
+      std::string tag;
+      for (auto child : xr.getChildren("tool", elem)) {
+        if (xr.findAttr(child, "class", tag)) {
+          recipe.addTool(tag);
+        }
+      }
+
+      bool requiresUnlock = false;
+      for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
+        double chance = 1.0;
+        xr.findAttr(unlockedBy, "chance", chance);
+        ProgressLock::Type triggerType;
+        std::string triggerID;
+        if (xr.findAttr(unlockedBy, "item", triggerID))
+          triggerType = ProgressLock::ITEM;
+        else if (xr.findAttr(unlockedBy, "construction", triggerID))
+          triggerType = ProgressLock::CONSTRUCTION;
+        else if (xr.findAttr(unlockedBy, "gather", triggerID))
+          triggerType = ProgressLock::GATHER;
+        else if (xr.findAttr(unlockedBy, "recipe", triggerID))
+          triggerType = ProgressLock::RECIPE;
+        else
+          assert(false);
+        ProgressLock(triggerType, triggerID, ProgressLock::RECIPE, id, chance)
+            .stage();
+        requiresUnlock = true;
+      }
+      if (!requiresUnlock) recipe.knownByDefault();
+
+      _recipes.insert(recipe);
+    }
+  }
+
+  // Spells
+  if (!xr.newFile(path + "/spells.xml"))
+    _debug("Failed to load spells.xml", Color::FAILURE);
+  else {
+    for (auto elem : xr.getChildren("spell")) {
+      std::string id;
+      if (!xr.findAttr(elem, "id", id)) continue;  // ID and name are mandatory.
+      auto newSpell = new Spell;
+      _spells[id] = newSpell;
+
+      auto name = Spell::Name{};
+      if (xr.findAttr(elem, "name", name)) newSpell->name(name);
+
+      auto cost = Energy{};
+      if (xr.findAttr(elem, "cost", cost)) newSpell->cost(cost);
+
+      auto school = SpellSchool{};
+      if (xr.findAttr(elem, "school", school))
+        newSpell->effect().school(school);
+
+      auto range = Podes{0};
+      if (xr.findAttr(elem, "range", range)) {
+        newSpell->range(range);
+        newSpell->effect().range(range);
+      } else if (xr.findAttr(elem, "radius", range)) {
+        newSpell->range(range);
+        newSpell->effect().radius(range);
+      }
+
+      auto functionElem = xr.findChild("function", elem);
+      if (functionElem) {
+        auto functionName = ""s;
+        if (xr.findAttr(functionElem, "name", functionName))
+          newSpell->effect().setFunction(functionName);
+
+        auto args = SpellEffect::Args{};
+        xr.findAttr(functionElem, "i1", args.i1);
+        xr.findAttr(functionElem, "s1", args.s1);
+        xr.findAttr(functionElem, "d1", args.d1);
+
+        newSpell->effect().args(args);
+      }
+
+      auto validTargets = xr.findChild("targets", elem);
+      if (validTargets) {
+        auto val = 0;
+        if (xr.findAttr(validTargets, "self", val) && val != 0)
+          newSpell->canTarget(Spell::SELF);
+        if (xr.findAttr(validTargets, "friendly", val) && val != 0)
+          newSpell->canTarget(Spell::FRIENDLY);
+        if (xr.findAttr(validTargets, "enemy", val) && val != 0)
+          newSpell->canTarget(Spell::ENEMY);
+      }
+    }
+  }
+
+  // Buffs
+  if (!xr.newFile(path + "/buffs.xml"))
+    _debug("Failed to load buffs.xml", Color::FAILURE);
+  else {
+    _buffTypes.clear();
+    for (auto elem : xr.getChildren("buff")) {
+      std::string id;
+      if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory
+      auto newBuff = BuffType{id};
+
+      auto stats = StatsMod{};
+      if (xr.findStatsChild("stats", elem, stats)) {
+        newBuff.stats(stats);
+      }
+
+      auto durationInSeconds = 0;
+      if (xr.findAttr(elem, "duration", durationInSeconds)) {
+        newBuff.duration(durationInSeconds * 1000);
+      }
+
+      auto school = SpellSchool{SpellSchool::PHYSICAL};
+      auto schoolString = ""s;
+      if (xr.findAttr(elem, "school", schoolString)) school = {schoolString};
+
+      auto functionElem = xr.findChild("function", elem);
+      if (functionElem) {
+        auto functionName = ""s;
+        if (xr.findAttr(functionElem, "name", functionName))
+          newBuff.effect().setFunction(functionName);
+        newBuff.effect().school(school);
+
+        auto args = SpellEffect::Args{};
+        xr.findAttr(functionElem, "i1", args.i1);
+        xr.findAttr(functionElem, "s1", args.s1);
+
+        auto tickTime = ms_t{};
+        if (xr.findAttr(functionElem, "tickTime", tickTime)) {
+          newBuff.effectOverTime();
+          newBuff.tickTime(tickTime);
+        }
 
         auto n = 0;
-        if (xr.findAttr(elem, "isKing", n) && n == 1)
-            makePlayerAKing(user);
-
-        if (xr.findAttr(elem, "isDriving", n) && n == 1) {
-            auto pVehicle = _entities.findVehicleDrivenBy(user);
-            if (pVehicle) {
-                user.driving(pVehicle->serial());
-            }
-        }
-    }
-
-    auto elem = xr.findChild("location");
-    MapPoint p;
-    if (elem == nullptr || !xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
-            _debug("Invalid user data (location)", Color::RED);
-            return false;
-    }
-
-    elem = xr.findChild("respawnPoint");
-    if (elem && xr.findAttr(elem, "x", p.x) && xr.findAttr(elem, "y", p.y))
-        user.respawnPoint(p);
-
-    bool s = false;
-    if (isLocationValid(p, User::OBJECT_TYPE, &user))
-        user.location(p, /* firstInsertion */ true);
-    else {
-        _debug << Color::YELLOW << "Player " << user.name()
-               << " was respawned due to an invalid or occupied location." << Log::endl;
-        user.moveToSpawnPoint( /* firstInsertion */ true);
-    }
-
-
-    elem = xr.findChild("inventory");
-    for (auto slotElem : xr.getChildren("slot", elem)) {
-        int slot; std::string id; int qty;
-        if (!xr.findAttr(slotElem, "slot", slot)) continue;
-        if (!xr.findAttr(slotElem, "id", id)) continue;
-        if (!xr.findAttr(slotElem, "quantity", qty)) continue;
-
-        std::set<ServerItem>::const_iterator it = _items.find(id);
-        if (it == _items.end()) {
-            _debug("Invalid user data (inventory item).  Removing item.", Color::RED);
-            continue;
-        }
-        user.inventory(slot) =
-            std::make_pair<const ServerItem *, size_t>(&*it, static_cast<size_t>(qty));
-    }
-
-    elem = xr.findChild("gear");
-    for (auto slotElem : xr.getChildren("slot", elem)) {
-        int slot; std::string id; int qty;
-        if (!xr.findAttr(slotElem, "slot", slot)) continue;
-        if (!xr.findAttr(slotElem, "id", id)) continue;
-        if (!xr.findAttr(slotElem, "quantity", qty)) continue;
-
-        std::set<ServerItem>::const_iterator it = _items.find(id);
-        if (it == _items.end()) {
-            _debug("Invalid user data (gear item).  Removing item.", Color::RED);
-            continue;
-        }
-        user.gear(slot) =
-            std::make_pair<const ServerItem *, size_t>(&*it, static_cast<size_t>(qty));
-    }
-
-    elem = xr.findChild("buffs");
-    for (auto buffElem : xr.getChildren("buff", elem)) {
-
-        auto id = ""s;
-        if (!xr.findAttr(buffElem, "type", id))
-            continue;
-        auto buffTypeIt = _buffTypes.find(id);
-        if (buffTypeIt == _buffTypes.end())
-            continue;
-
-        auto timeRemaining = ms_t{};
-        if (!xr.findAttr(buffElem, "timeRemaining", timeRemaining))
-            continue;
-        user.loadBuff(buffTypeIt->second, timeRemaining);
-    }
-    for (auto buffElem : xr.getChildren("debuff", elem)) {
-
-        auto id = ""s;
-        if (!xr.findAttr(buffElem, "type", id))
-            continue;
-        auto buffTypeIt = _buffTypes.find(id);
-        if (buffTypeIt == _buffTypes.end())
-            continue;
-
-        auto timeRemaining = ms_t{};
-        if (!xr.findAttr(buffElem, "timeRemaining", timeRemaining))
-            continue;
-        user.loadDebuff(buffTypeIt->second, timeRemaining);
-    }
-
-    elem = xr.findChild("knownRecipes");
-    for (auto slotElem : xr.getChildren("recipe", elem)){
-        std::string id;
-        if (xr.findAttr(slotElem, "id", id)) user.addRecipe(id);
-    }
-
-    elem = xr.findChild("knownConstructions");
-    for (auto slotElem : xr.getChildren("construction", elem)) {
-        std::string id;
-        if (xr.findAttr(slotElem, "id", id)) user.addConstruction(id);
-    }
-
-    elem = xr.findChild("talents");
-    for (auto talentElem : xr.getChildren("talent", elem)) {
-        auto name = ""s;
-        if (!xr.findAttr(talentElem, "name", name))
-            continue;
-        auto &userClass = user.getClass();
-        auto talent = userClass.type().findTalent(name);
-        if (!talent)
-            continue;
-
-        auto rank = 0;
-        xr.findAttr(talentElem, "rank", rank);
-
-        userClass.loadTalentRank(*talent, rank);
-    }
-
-    return true;
-
-}
-
-void Server::writeUserData(const User &user) const{
-    XmlWriter xw(_userFilesPath + user.name() + ".usr");
-
-    auto e = xw.addChild("general");
-    xw.setAttr(e, "class", user.getClass().type().id());
-    if (_kings.isPlayerAKing(user.name()))
-        xw.setAttr(e, "isKing", 1);
-    xw.setAttr(e, "level", user.level());
-    xw.setAttr(e, "xp", user.xp());
-    if (user.isDriving())
-        xw.setAttr(e, "isDriving", 1);
-
-    e = xw.addChild("location");
-    xw.setAttr(e, "x", user.location().x);
-    xw.setAttr(e, "y", user.location().y);
-
-    e = xw.addChild("respawnPoint");
-    xw.setAttr(e, "x", user.respawnPoint().x);
-    xw.setAttr(e, "y", user.respawnPoint().y);
-
-    e = xw.addChild("inventory");
-    for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
-        const std::pair<const ServerItem *, size_t> &slot = user.inventory(i);
-        if (slot.first) {
-            auto slotElement = xw.addChild("slot", e);
-            xw.setAttr(slotElement, "slot", i);
-            xw.setAttr(slotElement, "id", slot.first->id());
-            xw.setAttr(slotElement, "quantity", slot.second);
-        }
-    }
-
-    e = xw.addChild("gear");
-    for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
-        const std::pair<const ServerItem *, size_t> &slot = user.gear(i);
-        if (slot.first != nullptr) {
-            auto slotElement = xw.addChild("slot", e);
-            xw.setAttr(slotElement, "slot", i);
-            xw.setAttr(slotElement, "id", slot.first->id());
-            xw.setAttr(slotElement, "quantity", slot.second);
-        }
-    }
-
-    e = xw.addChild("buffs");
-    for (const auto &buff : user.buffs()) {
-        auto buffElement = xw.addChild("buff", e);
-        xw.setAttr(buffElement, "type", buff.type());
-        xw.setAttr(buffElement, "timeRemaining", buff.timeRemaining());
-    }
-    for (const auto &debuff : user.debuffs()) {
-        auto buffElement = xw.addChild("buff", e);
-        xw.setAttr(buffElement, "type", debuff.type());
-        xw.setAttr(buffElement, "timeRemaining", debuff.timeRemaining());
-    }
-
-    e = xw.addChild("knownRecipes");
-    for (const std::string &id : user.knownRecipes()){
-        auto slotElement = xw.addChild("recipe", e);
-        xw.setAttr(slotElement, "id", id);
-    }
-
-    e = xw.addChild("knownConstructions");
-    for (const std::string &id : user.knownConstructions()){
-        auto slotElement = xw.addChild("construction", e);
-        xw.setAttr(slotElement, "id", id);
-    }
-
-    e = xw.addChild("talents");
-    for (auto pair : user.getClass().talentRanks()) {
-        if (pair.second == 0)
-            continue;
-        auto talentElem = xw.addChild("talent", e);
-        xw.setAttr(talentElem, "name", pair.first->name());
-        xw.setAttr(talentElem, "rank", pair.second);
-    }
-
-    xw.publish();
-}
-
-void Server::loadData(const std::string &path){
-    _debug("Loading data");
-    _entities.clear();
-
-    // Load terrain lists
-    auto xr = XmlReader::FromFile(path + "/terrain.xml");
-    std::map<std::string, char> terrainCodes; // For easier lookup when compiling lists below.
-    if (xr){
-        TerrainList::clearLists();
-        for (auto elem : xr.getChildren("terrain")) {
-            char index;
-            std::string id, tag;
-            if (!xr.findAttr(elem, "index", index))
-                continue;
-            if (!xr.findAttr(elem, "id", id))
-                continue;
-            Terrain *newTerrain = nullptr;
-            if (xr.findAttr(elem, "tag", tag))
-                newTerrain = Terrain::withTag(tag);
-            else
-                newTerrain = Terrain::empty();
-            _terrainTypes[index] = newTerrain;
-            terrainCodes[id] = index;
+        if (xr.findAttr(functionElem, "onHit", n) && n != 0) {
+          newBuff.effectOnHit();
         }
 
-        for (auto elem : xr.getChildren("list")){
-            std::string id;
-            if (!xr.findAttr(elem, "id", id))
-                continue;
-            TerrainList tl;
-            for (auto terrain : xr.getChildren("allow", elem)){
-                std::string s;
-                if (xr.findAttr(terrain, "id", s) && terrainCodes.find(s) != terrainCodes.end())
-                    tl.allow(terrainCodes[s]);
+        assert(newBuff.hasType());
+
+        newBuff.effect().args(args);
+      }
+
+      _buffTypes[id] = newBuff;
+    }
+  }
+
+  // Classes/talents
+  if (!xr.newFile(path + "/classes.xml"))
+    _debug("Failed to load classes.xml", Color::FAILURE);
+  else {
+    _classes.clear();
+    _tiers.clear();
+    for (auto elem : xr.getChildren("class")) {
+      std::string className;
+      if (!xr.findAttr(elem, "name", className)) continue;  // ID is mandatory
+      auto newClass = ClassType{className};
+
+      for (auto tree : xr.getChildren("tree", elem)) {
+        auto treeName = ""s;
+        if (!xr.findAttr(tree, "name", treeName)) continue;
+
+        for (auto tierElem : xr.getChildren("tier", tree)) {
+          _tiers.push_back({});
+          Tier &tier = _tiers.back();
+
+          auto cost = xr.findChild("cost", tierElem);
+          if (cost) {
+            xr.findAttr(cost, "tag", tier.costTag);
+            xr.findAttr(cost, "quantity", tier.costQuantity);
+          }
+
+          auto req = xr.findChild("requires", tierElem);
+          if (req) {
+            xr.findAttr(req, "pointsInTree", tier.reqPointsInTree);
+          }
+
+          for (auto talent : xr.getChildren("talent", tierElem)) {
+            auto type = ""s;
+            if (!xr.findAttr(talent, "type", type)) continue;
+
+            auto talentName = ""s;
+            xr.findAttr(talent, "name", talentName);
+
+            if (type == "spell") {
+              auto spellID = Spell::ID{};
+              if (!xr.findAttr(talent, "id", spellID)) continue;
+
+              auto it = _spells.find(spellID);
+              if (it == _spells.end()) continue;
+              const auto &spell = *it->second;
+              if (talentName.empty()) talentName = spell.name();
+
+              Talent &t = newClass.addSpell(talentName, spellID, tier);
+
+              t.tree(treeName);
+
+            } else if (type == "stats") {
+              if (talentName.empty()) continue;
+              auto stats = StatsMod{};
+              if (!xr.findStatsChild("stats", talent, stats)) continue;
+
+              Talent &t = newClass.addStats(talentName, stats, tier);
+
+              t.tree(treeName);
             }
-            for (auto terrain : xr.getChildren("forbid", elem)){
-                std::string s;
-                if (xr.findAttr(terrain, "id", s) && terrainCodes.find(s) != terrainCodes.end())
-                    tl.forbid(terrainCodes[s]);
-            }
-            TerrainList::addList(id, tl);
-            size_t default = 0;
-            if (xr.findAttr(elem, "default", default) && default == 1)
-                TerrainList::setDefault(id);
+          }
         }
+      }
+
+      _classes[className] = newClass;
+    }
+  }
+
+  ProgressLock::registerStagedLocks();
+
+  // Remove invalid items referred to by objects/recipes
+  for (auto it = _items.begin(); it != _items.end();) {
+    if (!it->valid()) {
+      _items.erase(it++);
+    } else
+      ++it;
+  }
+
+  // Spawners
+  if (!xr.newFile(path + "/spawnPoints.xml"))
+    _debug("Failed to load spawnPoints.xml", Color::FAILURE);
+  else {
+    for (auto elem : xr.getChildren("spawnPoint")) {
+      std::string id;
+      if (!xr.findAttr(elem, "type", id)) {
+        _debug("Skipping importing spawner with no type.", Color::RED);
+        continue;
+      }
+
+      MapPoint p;
+      if (!xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
+        _debug("Skipping importing spawner with invalid/no location",
+               Color::RED);
+        continue;
+      }
+
+      const ObjectType *type = findObjectTypeByName(id);
+      if (type == nullptr) {
+        _debug << Color::RED
+               << "Skipping importing spawner for unknown objects \"" << id
+               << "\"." << Log::endl;
+        continue;
+      }
+
+      Spawner s(p, type);
+
+      size_t n;
+      if (xr.findAttr(elem, "quantity", n)) s.quantity(n);
+      if (xr.findAttr(elem, "respawnTime", n)) s.respawnTime(n);
+      double d;
+      if (xr.findAttr(elem, "radius", d)) s.radius(d);
+
+      char c;
+      for (auto terrain : xr.getChildren("allowedTerrain", elem))
+        if (xr.findAttr(terrain, "index", c)) s.allowTerrain(c);
+
+      _spawners.push_back(s);
+    }
+  }
+
+  // Map
+  bool mapSuccessful = false;
+  do {
+    xr.newFile(path + "/map.xml");
+    if (!xr) break;
+
+    auto elem = xr.findChild("newPlayerSpawn");
+
+    if (!xr.findAttr(elem, "x", User::newPlayerSpawn.x) ||
+        !xr.findAttr(elem, "y", User::newPlayerSpawn.y)) {
+      _debug("New-player spawn point missing or incomplete.", Color::RED);
+      break;
     }
 
-    if (xr.newFile(path + "/items.xml")) // Early, because object types may insert new items.
-        _items.clear();
+    if (!xr.findAttr(elem, "range", User::spawnRadius)) User::spawnRadius = 0;
 
-    // Object types
-    bool clearedObjectTypes = false;
-    if (!xr.newFile(path + "/objectTypes.xml"))
-        _debug("Failed to load objectTypes.xml", Color::FAILURE);
-    else{
-        _objectTypes.clear();
-        clearedObjectTypes = true;
-        for (auto elem : xr.getChildren("objectType")) {
-            std::string id;
-            if (!xr.findAttr(elem, "id", id))
-                continue;
-            ObjectType *ot = nullptr;
-            int n;
-            if (xr.findAttr(elem, "isVehicle", n) == 1) 
-                ot = new VehicleType(id);
-            else
-                ot = new ObjectType(id);
-
-            std::string s;
-            if (xr.findAttr(elem, "gatherTime", n)) ot->gatherTime(n);
-            if (xr.findAttr(elem, "constructionTime", n)) ot->constructionTime(n);
-            if (xr.findAttr(elem, "gatherReq", s)) ot->gatherReq(s);
-            if (xr.findAttr(elem, "constructionReq", s)) ot->constructionReq(s);
-
-            // Deconstruction
-            if (xr.findAttr(elem, "deconstructs", s)){
-                ms_t deconstructionTime = 0;
-                xr.findAttr(elem, "deconstructionTime", deconstructionTime);
-                std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
-                ot->addDeconstruction(DeconstructionType::ItemAndTime(
-                        &*itemIt, deconstructionTime));
-            }
-
-            // Gathering yields
-            for (auto yield : xr.getChildren("yield", elem)) {
-                if (!xr.findAttr(yield, "id", s))
-                    continue;
-                double initMean = 1., initSD = 0, gatherMean = 1, gatherSD = 0;
-                size_t initMin = 0;
-                xr.findAttr(yield, "initialMean", initMean);
-                xr.findAttr(yield, "initialSD", initSD);
-                xr.findAttr(yield, "initialMin", initMin);
-                xr.findAttr(yield, "gatherMean", gatherMean);
-                xr.findAttr(yield, "gatherSD", gatherSD);
-                std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
-                ot->addYield(&*itemIt, initMean, initSD, initMin, gatherMean, gatherSD);
-            }
-
-            // Merchant
-            if (xr.findAttr(elem, "merchantSlots", n)) ot->merchantSlots(n);
-            if (xr.findAttr(elem, "bottomlessMerchant", n)) ot->bottomlessMerchant(n == 1);
-
-            MapRect r;
-            if (xr.findRectChild("collisionRect", elem, r))
-                ot->collisionRect(r);
-
-            // Tags
-            for (auto objTag :xr.getChildren("tag", elem))
-                if (xr.findAttr(objTag, "name", s))
-                    ot->addTag(s);
-
-            // Construction site
-            bool needsMaterials = false;
-            for (auto objMat : xr.getChildren("material", elem)){
-                if (!xr.findAttr(objMat, "id", s))
-                    continue;
-                std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
-                n = 1;
-                xr.findAttr(objMat, "quantity", n);
-                ot->addMaterial(&*itemIt, n);
-                needsMaterials = true;
-            }
-            if (xr.findAttr(elem, "isUnique", n) == 1)
-                ot->makeUnique();
-            bool isUnbuildable = xr.findAttr(elem, "isUnbuildable", n) == 1;
-            if (isUnbuildable)
-                ot->makeUnbuildable();
-
-            if (xr.findAttr(elem, "playerUnique", s))
-                ot->makeUniquePerPlayer(s);
-            
-            // Construction locks
-            bool requiresUnlock = false;
-            for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
-                double chance = 1.0;
-                xr.findAttr(unlockedBy, "chance", chance);
-                ProgressLock::Type triggerType;
-                if (xr.findAttr(unlockedBy, "item", s))
-                    triggerType = ProgressLock::ITEM;
-                else if (xr.findAttr(unlockedBy, "construction", s))
-                    triggerType = ProgressLock::CONSTRUCTION;
-                else if (xr.findAttr(unlockedBy, "gather", s))
-                    triggerType = ProgressLock::GATHER;
-                else if (xr.findAttr(unlockedBy, "recipe", s))
-                    triggerType = ProgressLock::RECIPE;
-                ProgressLock(triggerType, s, ProgressLock::CONSTRUCTION, id, chance).stage();
-                requiresUnlock = true;
-            }
-            if (!requiresUnlock && !isUnbuildable && needsMaterials)
-                ot->knownByDefault();
-            if (needsMaterials && !isUnbuildable)
-                ++_numBuildableObjects;
-
-            // Container
-            auto container = xr.findChild("container", elem);
-            if (container != nullptr) {
-                if (xr.findAttr(container, "slots", n)){
-                    ot->addContainer(ContainerType::WithSlots(n));
-                }
-            }
-
-            // Terrain restrictions
-            if (xr.findAttr(elem, "allowedTerrain", s))
-                ot->allowedTerrain(s);
-
-            // Transformation
-            auto transform = xr.findChild("transform", elem);
-            if (transform){
-                if (!xr.findAttr(transform, "id", s)){
-                    _debug("Transformation specified without target id; skipping.", Color::FAILURE);
-                    continue;
-                }
-                const ObjectType *transformObjPtr = findObjectTypeByName(s);
-                if (transformObjPtr == nullptr){
-                    transformObjPtr = new ObjectType(s);
-                    _objectTypes.insert(transformObjPtr);
-                }
-
-                ms_t time = 0;
-                xr.findAttr(transform, "time", n);
-
-                ot->transform(n, transformObjPtr);
-
-                if (xr.findAttr(transform, "whenEmpty", n) && n != 0)
-                    ot->transformOnEmpty();
-
-                if (xr.findAttr(transform, "skipConstruction", n) && n != 0)
-                    ot->skipConstructionOnTransform(true);
-            }
-
-            // Strength
-            auto strength = xr.findChild("strength", elem);
-            if (strength){
-                if (xr.findAttr(strength, "item", s) &&
-                    xr.findAttr(strength, "quantity", n)){
-                        std::set<ServerItem>::const_iterator itemIt =
-                                _items.insert(ServerItem(s)).first;
-                        ot->setHealthBasedOnItems(&*itemIt, n);
-                } else
-                    _debug("Strength specified without item type; skipping.", Color::FAILURE);
-            }
-
-            // Action
-            auto action = xr.findChild("action", elem);
-            if (action != nullptr) {
-                auto *pAction = new Action;
-
-                std::string target;
-                if (!xr.findAttr(action, "target", target)) {
-                    _debug("Skipping action with missing target", Color::RED);
-                    continue;
-                }
-                auto it = Action::functionMap.find(target);
-                if (it == Action::functionMap.end()) {
-                    _debug << Color::RED << "Action target " << target <<
-                        "() doesn't exist; skipping" << Log::endl;
-                    continue;
-                }
-                pAction->function = it->second;
-
-                auto costID = ""s;
-                if (xr.findAttr(action, "cost", costID)) {
-                    std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(costID)).first;
-                    auto pItem = &*itemIt;
-                    pAction->cost = pItem;
-                }
-
-
-                ot->action(pAction);
-            }
-
-            // onDestroy callback
-            auto onDestroy = xr.findChild("onDestroy", elem);
-            if (onDestroy != nullptr) {
-                std::string target;
-                if (!xr.findAttr(onDestroy, "target", target)) {
-                    _debug("Skipping onDestroy with missing target", Color::RED);
-                    continue;
-                }
-                auto it = CallbackAction::functionMap.find(target);
-                if (it == CallbackAction::functionMap.end()) {
-                    _debug << Color::RED << "CallbackAction target " << target <<
-                        "() doesn't exist; skipping" << Log::endl;
-                    continue;
-                }
-
-                auto *pAction = new CallbackAction;
-                pAction->function = it->second;
-                ot->onDestroy(pAction);
-            }
-
-
-            bool foundInPlace = false;
-            for (auto it = _objectTypes.begin(); it != _objectTypes.end(); ++it){
-                if ((*it)->id() == ot->id()){
-                    ObjectType &inPlace = *const_cast<ObjectType *>(*it);
-                    inPlace = *ot;
-                    delete ot;
-                    foundInPlace = true;
-                    break;
-                }
-            }
-            if (!foundInPlace)
-                _objectTypes.insert(ot);
-        }
+    elem = xr.findChild("size");
+    if (elem == nullptr || !xr.findAttr(elem, "x", _mapX) ||
+        !xr.findAttr(elem, "y", _mapY)) {
+      _debug("Map size missing or incomplete.", Color::RED);
+      break;
     }
 
-
-
-    // Quests
-    if (!xr.newFile(path + "/quests.xml"))
-        _debug("Failed to load quests.xml", Color::FAILURE);
-    else {
-        for (auto elem : xr.getChildren("quest")) {
-
-            auto id = ""s;
-            if (!xr.findAttr(elem, "id", id))
-                continue;
-
-            auto startsAt = ""s;
-            if (!xr.findAttr(elem, "startsAt", startsAt))
-                continue;
-            auto startingObject = findObjectTypeByName(startsAt);
-            if (!startingObject)
-                continue;
-
-            auto endsAt = ""s;
-            if (!xr.findAttr(elem, "endsAt", endsAt))
-                continue;
-            auto endingObject = findObjectTypeByName(endsAt);
-            if (!endingObject)
-                continue;
-
-            startingObject->addQuestStart(id);
-            endingObject->addQuestEnd(id);
-        }
+    _map = std::vector<std::vector<char> >(_mapX);
+    for (size_t x = 0; x != _mapX; ++x) _map[x] = std::vector<char>(_mapY, 0);
+    for (auto row : xr.getChildren("row")) {
+      size_t y;
+      if (!xr.findAttr(row, "y", y) || y >= _mapY) break;
+      std::string rowTerrain;
+      if (!xr.findAttr(row, "terrain", rowTerrain)) break;
+      for (size_t x = 0; x != rowTerrain.size(); ++x) {
+        if (x > _mapX) break;
+        _map[x][y] = rowTerrain[x];
+      }
     }
+    mapSuccessful = true;
+  } while (false);
+  if (!mapSuccessful) _debug("Failed to load map.", Color::RED);
 
-    // NPC types
-    if (!xr.newFile(path + "/npcTypes.xml"))
-        _debug("Failed to load npcTypes.xml", Color::FAILURE);
-    else{
-        if (!clearedObjectTypes)
-            _objectTypes.clear();
-        for (auto elem : xr.getChildren("npcType")) {
-            std::string id;
-            if (!xr.findAttr(elem, "id", id)) // No ID: skip
-                continue;
-            NPCType *nt = new NPCType(id);
+  std::ifstream fs;
+  // Detect/load state
+  do {
+    bool loadExistingData = !cmdLineArgs.contains("new");
 
-            auto humanoid = xr.findChild("humanoid", elem);
+    if (loadExistingData) _cities.readFromXMLFile("World/cities.world");
 
-            // Collision rect
-            if (humanoid)
-                nt->collisionRect(User::OBJECT_TYPE.collisionRect());
-            MapRect r;
-            if (xr.findRectChild("collisionRect", elem, r))
-                nt->collisionRect(r);
-
-            std::string s;
-            for (auto objTag :xr.getChildren("class", elem))
-                if (xr.findAttr(objTag, "name", s))
-                    nt->addTag(s);
-
-            if (xr.findAttr(elem, "allowedTerrain", s))
-                nt->allowedTerrain(s);
-
-            auto level = Level{ 1 };
-            xr.findAttr(elem, "level", level);
-            nt->level(level);
-
-            auto school = ""s;
-            if (xr.findAttr(elem, "school", school))
-                nt->school(school);
-
-            auto n = 0;
-            if (xr.findAttr(elem, "isRanged", n) && n != 0) nt->makeRanged();
-            if (xr.findAttr(elem, "isCivilian", n) && n != 0) nt->makeCivilian();
-
-            Stats baseStats = NPCType::BASE_STATS;
-            xr.findAttr(elem, "maxHealth", baseStats.maxHealth);
-            xr.findAttr(elem, "attack", baseStats.physicalDamage);
-            xr.findAttr(elem, "attackTime", baseStats.attackTime);
-            nt->baseStats(baseStats);
-
-            for (auto loot : xr.getChildren("loot", elem)){
-                if (!xr.findAttr(loot, "id", s))
-                    continue;
-
-                double mean = 1.0, sd = 0;
-                std::set<ServerItem>::const_iterator itemIt = _items.insert(ServerItem(s)).first;
-                if (xr.findAttr(loot, "chance", mean)) {
-                    nt->addSimpleLoot(&*itemIt, mean);
-                } else if (xr.findNormVarChild("normal", loot, mean, sd)) {
-                    nt->addNormalLoot(&*itemIt, mean, sd);
-                } else {
-                    nt->addSimpleLoot(&*itemIt, 1.0);
-                }
-            }
-        
-            _objectTypes.insert(nt);
-        }
-    }
-
-    // Items
-    if (!xr.newFile(path + "/items.xml"))
-        _debug("Failed to load items.xml", Color::FAILURE);
-    else{
-        for (auto elem : xr.getChildren("item")) {
-            std::string id;
-            if (!xr.findAttr(elem, "id", id))
-                continue; // ID and name are mandatory.
-            ServerItem item(id);
-
-            auto stackSize = size_t{};
-            if (xr.findAttr(elem, "stackSize", stackSize)) item.stackSize(stackSize);
-
-            std::string s;
-            if (xr.findAttr(elem, "constructs", s)) {
-                // Create dummy ObjectType if necessary
-                const ObjectType *ot = findObjectTypeByName(s);
-                if (ot != nullptr)
-                    item.constructsObject(ot);
-                else
-                    item.constructsObject(*(_objectTypes.insert(new ObjectType(s)).first));
-            }
-
-            // Assumption: any item that returns on construction cannot be stacked.
-            // Until there's a use case to the contrary, this simplifies the code.
-            if (xr.findAttr(elem, "returnsOnConstruction", s)) {
-                if (stackSize > 1) {
-                    _debug("Skipping return-on-construct item for stackable material", Color::RED);
-                    continue;
-                }
-
-                // Create dummy Item if necessary
-                auto dummy = ServerItem{ s };
-                const auto *itemToReturn = &*_items.insert(dummy).first;
-                item.returnsOnConstruction(itemToReturn);
-            }
-
-            if (xr.findAttr(elem, "castsSpellOnUse", s))
-                item.castsSpellOnUse(s);
-
-            auto stats = StatsMod{};
-            if (xr.findStatsChild("stats", elem, stats))
-                item.stats(stats);
-
-            auto weaponElem = xr.findChild("weapon", elem);
-            if (weaponElem != nullptr) {
-                auto range = Podes{};
-                if (xr.findAttr(weaponElem, "range", range)) item.weaponRange(range);
-
-                auto school = ""s;
-                if (xr.findAttr(weaponElem, "school", school)) item.weaponSchool({ school });
-
-                auto ammoType = ""s;
-                if (xr.findAttr(weaponElem, "consumes", ammoType)) item.weaponAmmo({ ammoType });
-            }
-
-            int n;
-            n = User::GEAR_SLOTS; // Default; won't match any slot.
-            xr.findAttr(elem, "gearSlot", n); item.gearSlot(n);
-
-            for (auto child : xr.getChildren("tag", elem))
-                if (xr.findAttr(child, "name", s)) item.addTag(s);
-
-            if (xr.findAttr(elem, "strength", n)) item.strength(n);
-
-            item.loaded();
-        
-            std::pair<std::set<ServerItem>::iterator, bool> ret = _items.insert(item);
-            if (!ret.second) {
-                ServerItem &itemInPlace = const_cast<ServerItem &>(*ret.first);
-                itemInPlace = item;
-            }
-        }
-    }
-    for (auto &itemConst : _items){
-        auto &item = const_cast<ServerItem&>(itemConst);
-        item.fetchAmmoItem();
-    }
-
-    // Recipes
-    if (!xr.newFile(path + "/recipes.xml"))
-        _debug("Failed to load recipes.xml", Color::FAILURE);
-    else{
-        _recipes.clear();
-        for (auto elem : xr.getChildren("recipe")) {
-            std::string id, name;
-            if (!xr.findAttr(elem, "id", id))
-                continue; // ID is mandatory.
-            Recipe recipe(id);
-
-            std::string product = id;
-            xr.findAttr(elem, "product", product);
-            auto it = _items.find(product);
-            if (it == _items.end()) {
-                _debug << Color::RED << "Skipping recipe with invalid product " << product << Log::endl;
-                continue;
-            }
-            recipe.product(&*it);
-
-            int n;
-            if (xr.findAttr(elem, "quantity", n)) recipe.quantity(n);
-            if (xr.findAttr(elem, "time", n)) recipe.time(n);
-
-            for (auto child : xr.getChildren("material", elem)) {
-                int quantity = 1;
-                std::string matID;
-                // Quantity
-                xr.findAttr(child, "quantity", quantity);
-                if (xr.findAttr(child, "id", matID)) {
-                    auto it = _items.find(ServerItem(matID));
-                    if (it == _items.end()) {
-                        _debug << Color::RED << "Skipping invalid recipe material " << matID << Log::endl;
-                        continue;
-                    }
-                    recipe.addMaterial(&*it, quantity);
-                }
-            }
-
-            std::string tag;
-            for (auto child : xr.getChildren("tool", elem)) {
-                if (xr.findAttr(child, "class", tag)) {
-                    recipe.addTool(tag);
-                }
-            }
-
-            bool requiresUnlock = false;
-            for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
-                double chance = 1.0;
-                xr.findAttr(unlockedBy, "chance", chance);
-                ProgressLock::Type triggerType;
-                std::string triggerID;
-                if (xr.findAttr(unlockedBy, "item", triggerID))
-                    triggerType = ProgressLock::ITEM;
-                else if (xr.findAttr(unlockedBy, "construction", triggerID))
-                    triggerType = ProgressLock::CONSTRUCTION;
-                else if (xr.findAttr(unlockedBy, "gather", triggerID))
-                    triggerType = ProgressLock::GATHER;
-                else if (xr.findAttr(unlockedBy, "recipe", triggerID))
-                    triggerType = ProgressLock::RECIPE;
-                else
-                    assert(false);
-                ProgressLock(triggerType, triggerID, ProgressLock::RECIPE, id, chance).stage();
-                requiresUnlock = true;
-            }
-            if (!requiresUnlock)
-                recipe.knownByDefault();
-        
-            _recipes.insert(recipe);
-        }
-    }
-
-    // Spells
-    if (!xr.newFile(path + "/spells.xml"))
-        _debug("Failed to load spells.xml", Color::FAILURE);
-    else {
-        for (auto elem : xr.getChildren("spell")) {
-            std::string id;
-            if (!xr.findAttr(elem, "id", id))
-                continue; // ID and name are mandatory.
-            auto newSpell = new Spell;
-            _spells[id] = newSpell;
-
-            auto name = Spell::Name{};
-            if (xr.findAttr(elem, "name", name))
-                newSpell->name(name);
-
-            auto cost = Energy{};
-            if (xr.findAttr(elem, "cost", cost))
-                newSpell->cost(cost);
-
-            auto school = SpellSchool{};
-            if (xr.findAttr(elem, "school", school))
-                newSpell->effect().school(school);
-
-            auto range = Podes{0};
-            if (xr.findAttr(elem, "range", range)) {
-                newSpell->range(range);
-                newSpell->effect().range(range);
-            } else if (xr.findAttr(elem, "radius", range)) {
-                newSpell->range(range);
-                newSpell->effect().radius(range);
-            }
-
-            auto functionElem = xr.findChild("function", elem);
-            if (functionElem) {
-                auto functionName = ""s;
-                if (xr.findAttr(functionElem, "name", functionName))
-                    newSpell->effect().setFunction(functionName);
-
-                auto args = SpellEffect::Args{};
-                xr.findAttr(functionElem, "i1", args.i1);
-                xr.findAttr(functionElem, "s1", args.s1);
-                xr.findAttr(functionElem, "d1", args.d1);
-
-                newSpell->effect().args(args);
-            }
-
-            auto validTargets = xr.findChild("targets", elem);
-            if (validTargets) {
-                auto val = 0;
-                if (xr.findAttr(validTargets, "self", val) && val != 0)
-                    newSpell->canTarget(Spell::SELF);
-                if (xr.findAttr(validTargets, "friendly", val) && val != 0)
-                    newSpell->canTarget(Spell::FRIENDLY);
-                if (xr.findAttr(validTargets, "enemy", val) && val != 0)
-                    newSpell->canTarget(Spell::ENEMY);
-            }
-        }
-    }
-
-    // Buffs
-    if (!xr.newFile(path + "/buffs.xml"))
-        _debug("Failed to load buffs.xml", Color::FAILURE);
-    else {
-        _buffTypes.clear();
-        for (auto elem : xr.getChildren("buff")) {
-            std::string id;
-            if (!xr.findAttr(elem, "id", id))
-                continue; // ID is mandatory
-            auto newBuff = BuffType{id};
-
-            auto stats = StatsMod{};
-            if (xr.findStatsChild("stats", elem, stats)) {
-                newBuff.stats(stats);
-            }
-
-            auto durationInSeconds = 0;
-            if (xr.findAttr(elem, "duration", durationInSeconds)) {
-                newBuff.duration(durationInSeconds * 1000);
-            }
-
-            auto school = SpellSchool{ SpellSchool::PHYSICAL };
-            auto schoolString = ""s;
-            if (xr.findAttr(elem, "school", schoolString))
-                school = { schoolString };
-
-            auto functionElem = xr.findChild("function", elem);
-            if (functionElem) {
-                auto functionName = ""s;
-                if (xr.findAttr(functionElem, "name", functionName))
-                newBuff.effect().setFunction(functionName);
-                newBuff.effect().school(school);
-
-                auto args = SpellEffect::Args{};
-                xr.findAttr(functionElem, "i1", args.i1);
-                xr.findAttr(functionElem, "s1", args.s1);
-
-                auto tickTime = ms_t{};
-                if (xr.findAttr(functionElem, "tickTime", tickTime)) {
-                    newBuff.effectOverTime();
-                    newBuff.tickTime(tickTime);
-                }
-
-                auto n = 0;
-                if (xr.findAttr(functionElem, "onHit", n) && n != 0) {
-                    newBuff.effectOnHit();
-                }
-
-                assert(newBuff.hasType());
-
-                newBuff.effect().args(args);
-            }
-
-            _buffTypes[id] = newBuff;
-        }
-    }
-
-    // Classes/talents
-    if (!xr.newFile(path + "/classes.xml"))
-        _debug("Failed to load classes.xml", Color::FAILURE);
-    else {
-        _classes.clear();
-        _tiers.clear();
-        for (auto elem : xr.getChildren("class")) {
-            std::string className;
-            if (!xr.findAttr(elem, "name", className))
-                continue; // ID is mandatory
-            auto newClass = ClassType{ className };
-
-            for (auto tree : xr.getChildren("tree", elem)) {
-                auto treeName = ""s;
-                if (!xr.findAttr(tree, "name", treeName))
-                    continue;
-
-                for (auto tierElem : xr.getChildren("tier", tree)) {
-                    _tiers.push_back({});
-                    Tier &tier = _tiers.back();
-
-                    auto cost = xr.findChild("cost", tierElem);
-                    if (cost) {
-                        xr.findAttr(cost, "tag", tier.costTag);
-                        xr.findAttr(cost, "quantity", tier.costQuantity);
-                    }
-
-                    auto req = xr.findChild("requires", tierElem);
-                    if (req) {
-                        xr.findAttr(req, "pointsInTree", tier.reqPointsInTree);
-                    }
-
-                    for (auto talent : xr.getChildren("talent", tierElem)) {
-                        auto type = ""s;
-                        if (!xr.findAttr(talent, "type", type))
-                            continue;
-
-                        auto talentName = ""s;
-                        xr.findAttr(talent, "name", talentName);
-
-                        if (type == "spell") {
-                            auto spellID = Spell::ID{};
-                            if (!xr.findAttr(talent, "id", spellID))
-                                continue;
-
-                            auto it = _spells.find(spellID);
-                            if (it == _spells.end())
-                                continue;
-                            const auto &spell = *it->second;
-                            if (talentName.empty())
-                                talentName = spell.name();
-
-                            Talent &t = newClass.addSpell(talentName, spellID, tier);
-
-                            t.tree(treeName);
-
-                        } else if (type == "stats") {
-                            if (talentName.empty())
-                                continue;
-                            auto stats = StatsMod{};
-                            if (!xr.findStatsChild("stats", talent, stats))
-                                continue;
-
-                            Talent &t = newClass.addStats(talentName, stats, tier);
-
-                            t.tree(treeName);
-                        }
-                    }
-                }
-            }
-
-            _classes[className] = newClass;
-        }
-    }
-
-    ProgressLock::registerStagedLocks();
-
-    // Remove invalid items referred to by objects/recipes
-    for (auto it = _items.begin(); it != _items.end(); ){
-        if (!it->valid()){
-            _items.erase(it++);
-        } else
-            ++it;
-    }
-
-    // Spawners
-    if (!xr.newFile(path + "/spawnPoints.xml"))
-        _debug("Failed to load spawnPoints.xml", Color::FAILURE);
-    else{
-        for (auto elem : xr.getChildren("spawnPoint")) {
-            std::string id;
-            if (!xr.findAttr(elem, "type", id)) {
-                _debug("Skipping importing spawner with no type.", Color::RED);
-                continue;
-            }
-
-            MapPoint p;
-            if (!xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
-                _debug("Skipping importing spawner with invalid/no location", Color::RED);
-                continue;
-            }
-
-            const ObjectType *type = findObjectTypeByName(id);
-            if (type == nullptr){
-                _debug << Color::RED << "Skipping importing spawner for unknown objects \"" << id
-                        << "\"." << Log::endl;
-                continue;
-            }
-
-            Spawner s(p, type);
-
-            size_t n;
-            if (xr.findAttr(elem, "quantity", n)) s.quantity(n);
-            if (xr.findAttr(elem, "respawnTime", n)) s.respawnTime(n);
-            double d;
-            if (xr.findAttr(elem, "radius", d)) s.radius(d);
-
-            char c;
-            for (auto terrain : xr.getChildren("allowedTerrain", elem))
-                if (xr.findAttr(terrain, "index", c)) s.allowTerrain(c);
-
-            _spawners.push_back(s);
-        }
-    }
-
-    // Map
-    bool mapSuccessful = false;
-    do {
-        xr.newFile(path + "/map.xml");
-        if (!xr)
-            break;
-
-        auto elem = xr.findChild("newPlayerSpawn");
-
-        if (! xr.findAttr(elem, "x", User::newPlayerSpawn.x) ||
-            ! xr.findAttr(elem, "y", User::newPlayerSpawn.y)){
-                _debug("New-player spawn point missing or incomplete.", Color::RED);
-                break;
-        }
-
-        if (! xr.findAttr(elem, "range", User::spawnRadius))
-            User::spawnRadius = 0;
-
-        elem = xr.findChild("size");
-        if (elem == nullptr || !xr.findAttr(elem, "x", _mapX) || !xr.findAttr(elem, "y", _mapY)) {
-            _debug("Map size missing or incomplete.", Color::RED);
-            break;
-        }
-
-        _map = std::vector<std::vector<char> >(_mapX);
-        for (size_t x = 0; x != _mapX; ++x)
-            _map[x] = std::vector<char>(_mapY, 0);
-        for (auto row : xr.getChildren("row")) {
-            size_t y;
-            if (!xr.findAttr(row, "y", y) || y >= _mapY)
-                break;
-            std::string rowTerrain;
-                if (!xr.findAttr(row, "terrain", rowTerrain))
-                    break;
-            for (size_t x = 0; x != rowTerrain.size(); ++x){
-                if (x > _mapX)
-                    break;
-                _map[x][y] = rowTerrain[x];
-            }
-        }
-        mapSuccessful = true;
-    } while (false);
-    if (!mapSuccessful)
-        _debug("Failed to load map.", Color::RED);
-
-    std::ifstream fs;
-    // Detect/load state
-    do {
-        bool loadExistingData = ! cmdLineArgs.contains("new");
-
-        if (loadExistingData)
-            _cities.readFromXMLFile("World/cities.world");
-
-        // Entities
-        if (loadExistingData)
-            xr.newFile("World/entities.world");
-        else
-            xr.newFile(path + "/staticObjects.xml");
-        for (auto elem : xr.getChildren("object")) {
-            std::string s;
-            if (!xr.findAttr(elem, "id", s)) {
-                _debug("Skipping importing object with no type.", Color::RED);
-                continue;
-            }
-
-            MapPoint p;
-            auto loc = xr.findChild("location", elem);
-            if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
-                _debug("Skipping importing object with invalid/no location", Color::RED);
-                continue;
-            }
-
-            const ObjectType *type = findObjectTypeByName(s);
-            if (type == nullptr){
-                _debug << Color::RED << "Skipping importing object with unknown type \"" << s
-                       << "\"." << Log::endl;
-                continue;
-            }
-
-            Object &obj = addObject(type, p, "");
-
-            auto owner = xr.findChild("owner", elem);
-            if (owner){
-                std::string type, name;
-                xr.findAttr(owner, "type", type);
-                xr.findAttr(owner, "name", name);
-                if (type == "player")
-                    obj.permissions().setPlayerOwner(name);
-                else if (type == "city")
-                    obj.permissions().setCityOwner(name);
-                else
-                    _debug << Color::RED << "Skipping bad object owner type \"" << type << "\"."
-                           << Log::endl;
-            }
-
-            size_t n;
-            ItemSet contents;
-            for (auto content : xr.getChildren("gatherable", elem)) {
-                if (!xr.findAttr(content, "id", s))
-                    continue;
-                n = 1;
-                xr.findAttr(content, "quantity", n);
-                auto it = _items.find(s);
-                if (it == _items.end())
-                    continue;
-                contents.set(&*it, n);
-            }
-            obj.contents(contents);
-
-            size_t q;
-            for (auto inventory : xr.getChildren("inventory", elem)) {
-                assert (obj.hasContainer());
-                if (!xr.findAttr(inventory, "item", s))
-                    continue;
-                if (!xr.findAttr(inventory, "slot", n))
-                    continue;
-                q = 1;
-                xr.findAttr(inventory, "qty", q);
-                if (obj.objType().container().slots() <= n) {
-                    _debug << Color::RED << "Skipping object with invalid inventory slot." << Log::endl;
-                    continue;
-                }
-                auto &invSlot = obj.container().at(n);
-                invSlot.first = &*_items.find(s);
-                invSlot.second = q;
-            }
-
-            for (auto merchant : xr.getChildren("merchant", elem)) {
-                size_t slot;
-                if (!xr.findAttr(merchant, "slot", slot))
-                    continue;
-                std::string wareName, priceName;
-                if (!xr.findAttr(merchant, "wareItem", wareName) ||
-                    !xr.findAttr(merchant, "priceItem", priceName))
-                    continue;
-                auto wareIt = _items.find(wareName);
-                if (wareIt == _items.end())
-                    continue;
-                auto priceIt = _items.find(priceName);
-                if (priceIt == _items.end())
-                    continue;
-                size_t wareQty = 1, priceQty = 1;
-                xr.findAttr(merchant, "wareQty", wareQty);
-                xr.findAttr(merchant, "priceQty", priceQty);
-                obj.merchantSlot(slot) = MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty);
-            }
-
-            obj.clearMaterialsRequired();
-            for (auto material : xr.getChildren("material", elem)){
-                if (!xr.findAttr(material, "id", s))
-                    continue;
-                if (!xr.findAttr(material, "qty", n))
-                    continue;
-                auto it = _items.find(s);
-                if (it == _items.end())
-                    continue;
-                obj.remainingMaterials().set(&*it, n);
-            }
-
-            auto health = Hitpoints{};
-            if (xr.findAttr(elem, "health", health))
-                obj.health(health);
-
-            auto corpseTime = ms_t{};
-            if (xr.findAttr(elem, "corpseTime", corpseTime))
-                obj.corpseTime(corpseTime);
-
-            auto transformTimer = ms_t{};
-            if (xr.findAttr(elem, "transformTime", transformTimer))
-                obj.transformTimer(transformTimer);
-
-            auto vehicle = xr.findChild("vehicle", elem);
-            if (vehicle) {
-                auto driver = ""s;
-                if (xr.findAttr(vehicle, "driver", driver) && !driver.empty()) {
-                    auto objAsVehicle = dynamic_cast<Vehicle*>(&obj);
-                    if (objAsVehicle) {
-                        objAsVehicle->driver(driver);
-                    }
-                }
-            }
-        }
-
-        for (auto elem : xr.getChildren("npc")) {
-            std::string s;
-            if (!xr.findAttr(elem, "id", s)) {
-                _debug("Skipping importing NPC with no type.", Color::RED);
-                continue;
-            }
-
-            MapPoint p;
-            auto loc = xr.findChild("location", elem);
-            if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
-                _debug("Skipping importing object with invalid/no location", Color::RED);
-                continue;
-            }
-
-            const NPCType *type = dynamic_cast<const NPCType *>(findObjectTypeByName(s));
-            if (type == nullptr){
-                _debug << Color::RED << "Skipping importing NPC with unknown type \"" << s
-                       << "\"." << Log::endl;
-                continue;
-            }
-
-            NPC &npc= addNPC(type, p);
-
-            auto health = Hitpoints{};
-            if (xr.findAttr(elem, "health", health))
-                npc.health(health);
-
-            auto corpseTime = ms_t{};
-            if (xr.findAttr(elem, "corpseTime", corpseTime))
-                npc.corpseTime(corpseTime);
-        }
-
-        if (! loadExistingData)
-            break;
-
-        _wars.readFromXMLFile("World/wars.world");
-
-        _dataLoaded = true;
-
-        return;
-    } while (false);
-
-    // If execution reaches here, fresh objects will be generated instead of old ones loaded.
-
-    _debug("Generating new objects.", Color::YELLOW);
-    _dataLoaded = true;
-}
-
-void Object::writeToXML(XmlWriter &xw) const{
-    if (spawner() != nullptr)
-        return; // Spawned objects are not persistent.
-
-    auto e = xw.addChild("object");
-
-    xw.setAttr(e, "id", type()->id());
-
-    for (auto &content : contents()) {
-        auto contentE = xw.addChild("gatherable", e);
-        xw.setAttr(contentE, "id", content.first->id());
-        xw.setAttr(contentE, "quantity", content.second);
-    }
-
-    if (permissions().hasOwner()){
-        const auto &owner = permissions().owner();
-        auto ownerElem = xw.addChild("owner", e);
-        xw.setAttr(ownerElem, "type", owner.typeString());
-        xw.setAttr(ownerElem, "name", owner.name);
-    }
-
-    auto loc = xw.addChild("location", e);
-    xw.setAttr(loc, "x", location().x);
-    xw.setAttr(loc, "y", location().y);
-
-    if (health() < stats().maxHealth)
-        xw.setAttr(e, "health", health());
-
-    if (isDead() && corpseTime() > 0)
-        xw.setAttr(e, "corpseTime", corpseTime());
-
-    if (transformTimer() > 0)
-        xw.setAttr(e, "transformTime", transformTimer());
-
-    if (hasContainer()){
-        for (size_t i = 0; i != objType().container().slots(); ++i) {
-            if (container().at(i).second == 0)
-                continue;
-            auto invSlotE = xw.addChild("inventory", e);
-            xw.setAttr(invSlotE, "slot", i);
-            xw.setAttr(invSlotE, "item", container().at(i).first->id());
-            xw.setAttr(invSlotE, "qty", container().at(i).second);
-        }
-    }
-
-    const auto mSlots = merchantSlots();
-    for (size_t i = 0; i != mSlots.size(); ++i){
-        if (!mSlots[i])
-            continue;
-        auto mSlotE = xw.addChild("merchant", e);
-        xw.setAttr(mSlotE, "slot", i);
-        xw.setAttr(mSlotE, "wareItem", mSlots[i].wareItem->id());
-        xw.setAttr(mSlotE, "wareQty", mSlots[i].wareQty);
-        xw.setAttr(mSlotE, "priceItem", mSlots[i].priceItem->id());
-        xw.setAttr(mSlotE, "priceQty", mSlots[i].priceQty);
-    }
-
-    for (const auto &pair : remainingMaterials()){
-        auto matE = xw.addChild("material", e);
-        xw.setAttr(matE, "id", pair.first->id());
-        xw.setAttr(matE, "qty", pair.second);
-    }
-
-    auto asVehicle = dynamic_cast<const Vehicle*>(this);
-    if (asVehicle && !asVehicle->driver().empty()) {
-        auto vehicleE = xw.addChild("vehicle", e);
-        xw.setAttr(vehicleE, "driver", asVehicle->driver());
-    }
-
-}
-
-void NPC::writeToXML(XmlWriter &xw) const{
-    auto e = xw.addChild("npc");
-
-    xw.setAttr(e, "id", type()->id());
-
-    auto loc = xw.addChild("location", e);
-    xw.setAttr(loc, "x",location().x);
-    xw.setAttr(loc, "y",location().y);
-
-    xw.setAttr(e, "health", health());
-
-    if (isDead() && corpseTime() > 0)
-        xw.setAttr(e, "corpseTime", corpseTime());
-}
-
-void Server::saveData(const Entities &entities, const Wars &wars, const Cities &cities){
     // Entities
-#ifndef SINGLE_THREAD
-    static std::mutex entitiesFileMutex;
-    entitiesFileMutex.lock();
-#endif
-    XmlWriter xw("World/entities.world");
+    if (loadExistingData)
+      xr.newFile("World/entities.world");
+    else
+      xr.newFile(path + "/staticObjects.xml");
+    for (auto elem : xr.getChildren("object")) {
+      std::string s;
+      if (!xr.findAttr(elem, "id", s)) {
+        _debug("Skipping importing object with no type.", Color::RED);
+        continue;
+      }
 
-    for (const Entity *entity : entities)
-        if (entity->spawner() == nullptr)
-            entity->writeToXML(xw);
+      MapPoint p;
+      auto loc = xr.findChild("location", elem);
+      if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
+        _debug("Skipping importing object with invalid/no location",
+               Color::RED);
+        continue;
+      }
 
-    xw.publish();
-#ifndef SINGLE_THREAD
-    entitiesFileMutex.unlock();
-#endif
+      const ObjectType *type = findObjectTypeByName(s);
+      if (type == nullptr) {
+        _debug << Color::RED << "Skipping importing object with unknown type \""
+               << s << "\"." << Log::endl;
+        continue;
+      }
 
-    // Wars
-#ifndef SINGLE_THREAD
-    static std::mutex warsFileMutex;
-    warsFileMutex.lock();
-#endif
-    wars.writeToXMLFile("World/wars.world");
-#ifndef SINGLE_THREAD
-    warsFileMutex.unlock();
-#endif
+      Object &obj = addObject(type, p, "");
 
-    // Cities
-#ifndef SINGLE_THREAD
-    static std::mutex citiesFileMutex;
-    citiesFileMutex.lock();
-#endif
-    cities.writeToXMLFile("World/cities.world");
-#ifndef SINGLE_THREAD
-    citiesFileMutex.unlock();
-#endif
+      auto owner = xr.findChild("owner", elem);
+      if (owner) {
+        std::string type, name;
+        xr.findAttr(owner, "type", type);
+        xr.findAttr(owner, "name", name);
+        if (type == "player")
+          obj.permissions().setPlayerOwner(name);
+        else if (type == "city")
+          obj.permissions().setCityOwner(name);
+        else
+          _debug << Color::RED << "Skipping bad object owner type \"" << type
+                 << "\"." << Log::endl;
+      }
 
+      size_t n;
+      ItemSet contents;
+      for (auto content : xr.getChildren("gatherable", elem)) {
+        if (!xr.findAttr(content, "id", s)) continue;
+        n = 1;
+        xr.findAttr(content, "quantity", n);
+        auto it = _items.find(s);
+        if (it == _items.end()) continue;
+        contents.set(&*it, n);
+      }
+      obj.contents(contents);
+
+      size_t q;
+      for (auto inventory : xr.getChildren("inventory", elem)) {
+        assert(obj.hasContainer());
+        if (!xr.findAttr(inventory, "item", s)) continue;
+        if (!xr.findAttr(inventory, "slot", n)) continue;
+        q = 1;
+        xr.findAttr(inventory, "qty", q);
+        if (obj.objType().container().slots() <= n) {
+          _debug << Color::RED << "Skipping object with invalid inventory slot."
+                 << Log::endl;
+          continue;
+        }
+        auto &invSlot = obj.container().at(n);
+        invSlot.first = &*_items.find(s);
+        invSlot.second = q;
+      }
+
+      for (auto merchant : xr.getChildren("merchant", elem)) {
+        size_t slot;
+        if (!xr.findAttr(merchant, "slot", slot)) continue;
+        std::string wareName, priceName;
+        if (!xr.findAttr(merchant, "wareItem", wareName) ||
+            !xr.findAttr(merchant, "priceItem", priceName))
+          continue;
+        auto wareIt = _items.find(wareName);
+        if (wareIt == _items.end()) continue;
+        auto priceIt = _items.find(priceName);
+        if (priceIt == _items.end()) continue;
+        size_t wareQty = 1, priceQty = 1;
+        xr.findAttr(merchant, "wareQty", wareQty);
+        xr.findAttr(merchant, "priceQty", priceQty);
+        obj.merchantSlot(slot) =
+            MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty);
+      }
+
+      obj.clearMaterialsRequired();
+      for (auto material : xr.getChildren("material", elem)) {
+        if (!xr.findAttr(material, "id", s)) continue;
+        if (!xr.findAttr(material, "qty", n)) continue;
+        auto it = _items.find(s);
+        if (it == _items.end()) continue;
+        obj.remainingMaterials().set(&*it, n);
+      }
+
+      auto health = Hitpoints{};
+      if (xr.findAttr(elem, "health", health)) obj.health(health);
+
+      auto corpseTime = ms_t{};
+      if (xr.findAttr(elem, "corpseTime", corpseTime))
+        obj.corpseTime(corpseTime);
+
+      auto transformTimer = ms_t{};
+      if (xr.findAttr(elem, "transformTime", transformTimer))
+        obj.transformTimer(transformTimer);
+
+      auto vehicle = xr.findChild("vehicle", elem);
+      if (vehicle) {
+        auto driver = ""s;
+        if (xr.findAttr(vehicle, "driver", driver) && !driver.empty()) {
+          auto objAsVehicle = dynamic_cast<Vehicle *>(&obj);
+          if (objAsVehicle) {
+            objAsVehicle->driver(driver);
+          }
+        }
+      }
+    }
+
+    for (auto elem : xr.getChildren("npc")) {
+      std::string s;
+      if (!xr.findAttr(elem, "id", s)) {
+        _debug("Skipping importing NPC with no type.", Color::RED);
+        continue;
+      }
+
+      MapPoint p;
+      auto loc = xr.findChild("location", elem);
+      if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
+        _debug("Skipping importing object with invalid/no location",
+               Color::RED);
+        continue;
+      }
+
+      const NPCType *type =
+          dynamic_cast<const NPCType *>(findObjectTypeByName(s));
+      if (type == nullptr) {
+        _debug << Color::RED << "Skipping importing NPC with unknown type \""
+               << s << "\"." << Log::endl;
+        continue;
+      }
+
+      NPC &npc = addNPC(type, p);
+
+      auto health = Hitpoints{};
+      if (xr.findAttr(elem, "health", health)) npc.health(health);
+
+      auto corpseTime = ms_t{};
+      if (xr.findAttr(elem, "corpseTime", corpseTime))
+        npc.corpseTime(corpseTime);
+    }
+
+    if (!loadExistingData) break;
+
+    _wars.readFromXMLFile("World/wars.world");
+
+    _dataLoaded = true;
+
+    return;
+  } while (false);
+
+  // If execution reaches here, fresh objects will be generated instead of old
+  // ones loaded.
+
+  _debug("Generating new objects.", Color::YELLOW);
+  _dataLoaded = true;
 }
 
+void Object::writeToXML(XmlWriter &xw) const {
+  if (spawner() != nullptr) return;  // Spawned objects are not persistent.
+
+  auto e = xw.addChild("object");
+
+  xw.setAttr(e, "id", type()->id());
+
+  for (auto &content : contents()) {
+    auto contentE = xw.addChild("gatherable", e);
+    xw.setAttr(contentE, "id", content.first->id());
+    xw.setAttr(contentE, "quantity", content.second);
+  }
+
+  if (permissions().hasOwner()) {
+    const auto &owner = permissions().owner();
+    auto ownerElem = xw.addChild("owner", e);
+    xw.setAttr(ownerElem, "type", owner.typeString());
+    xw.setAttr(ownerElem, "name", owner.name);
+  }
+
+  auto loc = xw.addChild("location", e);
+  xw.setAttr(loc, "x", location().x);
+  xw.setAttr(loc, "y", location().y);
+
+  if (health() < stats().maxHealth) xw.setAttr(e, "health", health());
+
+  if (isDead() && corpseTime() > 0) xw.setAttr(e, "corpseTime", corpseTime());
+
+  if (transformTimer() > 0) xw.setAttr(e, "transformTime", transformTimer());
+
+  if (hasContainer()) {
+    for (size_t i = 0; i != objType().container().slots(); ++i) {
+      if (container().at(i).second == 0) continue;
+      auto invSlotE = xw.addChild("inventory", e);
+      xw.setAttr(invSlotE, "slot", i);
+      xw.setAttr(invSlotE, "item", container().at(i).first->id());
+      xw.setAttr(invSlotE, "qty", container().at(i).second);
+    }
+  }
+
+  const auto mSlots = merchantSlots();
+  for (size_t i = 0; i != mSlots.size(); ++i) {
+    if (!mSlots[i]) continue;
+    auto mSlotE = xw.addChild("merchant", e);
+    xw.setAttr(mSlotE, "slot", i);
+    xw.setAttr(mSlotE, "wareItem", mSlots[i].wareItem->id());
+    xw.setAttr(mSlotE, "wareQty", mSlots[i].wareQty);
+    xw.setAttr(mSlotE, "priceItem", mSlots[i].priceItem->id());
+    xw.setAttr(mSlotE, "priceQty", mSlots[i].priceQty);
+  }
+
+  for (const auto &pair : remainingMaterials()) {
+    auto matE = xw.addChild("material", e);
+    xw.setAttr(matE, "id", pair.first->id());
+    xw.setAttr(matE, "qty", pair.second);
+  }
+
+  auto asVehicle = dynamic_cast<const Vehicle *>(this);
+  if (asVehicle && !asVehicle->driver().empty()) {
+    auto vehicleE = xw.addChild("vehicle", e);
+    xw.setAttr(vehicleE, "driver", asVehicle->driver());
+  }
+}
+
+void NPC::writeToXML(XmlWriter &xw) const {
+  auto e = xw.addChild("npc");
+
+  xw.setAttr(e, "id", type()->id());
+
+  auto loc = xw.addChild("location", e);
+  xw.setAttr(loc, "x", location().x);
+  xw.setAttr(loc, "y", location().y);
+
+  xw.setAttr(e, "health", health());
+
+  if (isDead() && corpseTime() > 0) xw.setAttr(e, "corpseTime", corpseTime());
+}
+
+void Server::saveData(const Entities &entities, const Wars &wars,
+                      const Cities &cities) {
+  // Entities
+#ifndef SINGLE_THREAD
+  static std::mutex entitiesFileMutex;
+  entitiesFileMutex.lock();
+#endif
+  XmlWriter xw("World/entities.world");
+
+  for (const Entity *entity : entities)
+    if (entity->spawner() == nullptr) entity->writeToXML(xw);
+
+  xw.publish();
+#ifndef SINGLE_THREAD
+  entitiesFileMutex.unlock();
+#endif
+
+  // Wars
+#ifndef SINGLE_THREAD
+  static std::mutex warsFileMutex;
+  warsFileMutex.lock();
+#endif
+  wars.writeToXMLFile("World/wars.world");
+#ifndef SINGLE_THREAD
+  warsFileMutex.unlock();
+#endif
+
+  // Cities
+#ifndef SINGLE_THREAD
+  static std::mutex citiesFileMutex;
+  citiesFileMutex.lock();
+#endif
+  cities.writeToXMLFile("World/cities.world");
+#ifndef SINGLE_THREAD
+  citiesFileMutex.unlock();
+#endif
+}

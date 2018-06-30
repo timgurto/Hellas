@@ -1,186 +1,186 @@
 #include <SDL.h>
 #include <list>
 
+#include "../../Color.h"
+#include "../../types.h"
 #include "../Renderer.h"
 #include "../Texture.h"
 #include "../Tooltip.h"
-#include "../../Color.h"
-#include "../../types.h"
 
 #ifndef ELEMENT_H
 #define ELEMENT_H
 
 /*
 A UI element, making up part of a Window.
-The base class may be used as an invisible container for other Elements, to improve the efficiency
-of collision detection.
+The base class may be used as an invisible container for other Elements, to
+improve the efficiency of collision detection.
 */
-class Element{
-public:
-    enum Justification{
-        LEFT_JUSTIFIED,
-        RIGHT_JUSTIFIED,
-        TOP_JUSTIFIED,
-        BOTTOM_JUSTIFIED,
-        CENTER_JUSTIFIED
-    };
-    enum Orientation{
-        HORIZONTAL,
-        VERTICAL
-    };
-    typedef std::list<Element*> children_t;
-    static px_t TEXT_HEIGHT, ITEM_HEIGHT;
+class Element {
+ public:
+  enum Justification {
+    LEFT_JUSTIFIED,
+    RIGHT_JUSTIFIED,
+    TOP_JUSTIFIED,
+    BOTTOM_JUSTIFIED,
+    CENTER_JUSTIFIED
+  };
+  enum Orientation { HORIZONTAL, VERTICAL };
+  typedef std::list<Element *> children_t;
+  static px_t TEXT_HEIGHT, ITEM_HEIGHT;
 
-    static Color
-        BACKGROUND_COLOR,
-        SHADOW_LIGHT,
-        SHADOW_DARK,
-        FONT_COLOR;
+  static Color BACKGROUND_COLOR, SHADOW_LIGHT, SHADOW_DARK, FONT_COLOR;
 
-private:
-    static TTF_Font *_font;
+ private:
+  static TTF_Font *_font;
 
-    static Texture transparentBackground;
+  static Texture transparentBackground;
 
-    static const Tooltip *_currentTooltip; // The tooltip currently moused over.
+  static const Tooltip *_currentTooltip;  // The tooltip currently moused over.
 
-    mutable bool _changed; // If true, this element should be refreshed before next being drawn.
-    bool _dimensionsChanged; // If true, destroy and recreate texture before next draw.
+  mutable bool _changed;    // If true, this element should be refreshed before
+                            // next being drawn.
+  bool _dimensionsChanged;  // If true, destroy and recreate texture before next
+                            // draw.
 
-    bool _visible;
+  bool _visible;
 
-    ScreenRect _rect; // Location and dimensions within window
+  ScreenRect _rect;  // Location and dimensions within window
 
-    Element *_parent; // nullptr if no parent.
+  Element *_parent;  // nullptr if no parent.
 
-    std::string _id; // Optional ID for finding children.
+  std::string _id;  // Optional ID for finding children.
 
-    Tooltip _ownedTooltip{}; // In case the below needs to point to something new.
-    const Tooltip *_tooltip{ nullptr }; // Optional tooltip
+  Tooltip
+      _ownedTooltip{};  // In case the below needs to point to something new.
+  const Tooltip *_tooltip{nullptr};  // Optional tooltip
 
-    Uint8 _alpha = SDL_ALPHA_OPAQUE;
+  Uint8 _alpha = SDL_ALPHA_OPAQUE;
 
-    static bool initialized;
+  static bool initialized;
 
-protected:
+ protected:
+  children_t _children;
 
-    children_t _children;
+  Texture _texture;  // A memoized image of the element, redrawn only when
+                     // necessary.
+  virtual void
+  checkIfChanged();  // Allows elements to update their changed status.
 
-    Texture _texture; // A memoized image of the element, redrawn only when necessary.
-    virtual void checkIfChanged(); // Allows elements to update their changed status.
+  static void resetTooltip();  // To be called once, when the mouse moves.
 
-    static void resetTooltip(); // To be called once, when the mouse moves.
+  typedef void (*mouseDownFunction_t)(Element &e, const ScreenPoint &mousePos);
+  typedef void (*mouseUpFunction_t)(Element &e, const ScreenPoint &mousePos);
+  typedef void (*mouseMoveFunction_t)(Element &e, const ScreenPoint &mousePos);
+  typedef void (*scrollUpFunction_t)(Element &e);
+  typedef void (*scrollDownFunction_t)(Element &e);
+  typedef void (*preRefreshFunction_t)(Element &e);
 
-    typedef void (*mouseDownFunction_t)(Element &e, const ScreenPoint &mousePos);
-    typedef void (*mouseUpFunction_t)(Element &e, const ScreenPoint &mousePos);
-    typedef void (*mouseMoveFunction_t)(Element &e, const ScreenPoint &mousePos);
-    typedef void (*scrollUpFunction_t)(Element &e);
-    typedef void (*scrollDownFunction_t)(Element &e);
-    typedef void (*preRefreshFunction_t)(Element &e);
+  mouseDownFunction_t _leftMouseDown;
+  Element *_leftMouseDownElement;
+  mouseUpFunction_t _leftMouseUp;
+  Element *_leftMouseUpElement;
+  mouseDownFunction_t _rightMouseDown;
+  Element *_rightMouseDownElement;
+  mouseUpFunction_t _rightMouseUp;
+  Element *_rightMouseUpElement;
+  mouseMoveFunction_t _mouseMove;
+  Element *_mouseMoveElement;
 
-    mouseDownFunction_t _leftMouseDown;
-    Element *_leftMouseDownElement;
-    mouseUpFunction_t _leftMouseUp;
-    Element *_leftMouseUpElement;
-    mouseDownFunction_t _rightMouseDown;
-    Element *_rightMouseDownElement;
-    mouseUpFunction_t _rightMouseUp;
-    Element *_rightMouseUpElement;
-    mouseMoveFunction_t _mouseMove;
-    Element *_mouseMoveElement;
+  scrollUpFunction_t _scrollUp;
+  Element *_scrollUpElement;
+  scrollUpFunction_t _scrollDown;
+  Element *_scrollDownElement;
 
-    scrollUpFunction_t _scrollUp;
-    Element *_scrollUpElement;
-    scrollUpFunction_t _scrollDown;
-    Element *_scrollDownElement;
+  preRefreshFunction_t _preRefresh;
+  Element *_preRefreshElement;
 
-    preRefreshFunction_t _preRefresh;
-    Element *_preRefreshElement;
+  /*
+  Perform any extra redrawing.  The renderer can be used directly.
+  After this function is called, the element's children are drawn on top.
+  */
+  virtual void refresh() {}
 
-    /*
-    Perform any extra redrawing.  The renderer can be used directly.
-    After this function is called, the element's children are drawn on top.
-    */
-    virtual void refresh(){}
+  void drawChildren() const;
 
-    void drawChildren() const;
+ public:
+  Element(const ScreenRect &rect = {});
+  virtual ~Element();
 
-public:
-    Element(const ScreenRect &rect = {});
-    virtual ~Element();
+  static void initialize();
 
-    static void initialize();
-    
-    static const ScreenPoint *absMouse; // Absolute mouse co-ordinates
-    static px_t textOffset;
+  static const ScreenPoint *absMouse;  // Absolute mouse co-ordinates
+  static px_t textOffset;
 
-    bool visible() const { return _visible; }
-    static TTF_Font *font() { return _font; }
-    static void font(TTF_Font *newFont) { _font = newFont; }
-    const ScreenRect &rect() const { return _rect; }
-    ScreenPoint position() const { return{ _rect.x, _rect.y }; }
-    void setPosition(px_t x, px_t y);
-    void rect(const ScreenRect &rhs);
-    void rect(px_t x, px_t y, px_t w, px_t h);
-    px_t width() const { return _rect.w; }
-    virtual void width(px_t w);
-    px_t height() const { return _rect.h; }
-    virtual void height(px_t h);
-    bool changed() const { return _changed; }
-    const std::string &id() const { return _id; }
-    void id(const std::string &id) { _id = id; }
-    const children_t &children() const { return _children; }
-    void setTooltip(const std::string &text); // Add a simple tooltip.
-    void setTooltip(const char *text){ setTooltip(std::string(text)); }
-    void setTooltip(const Tooltip &tooltip); // Add a complex tooltip.
-    void clearTooltip();
-    static const Tooltip *tooltip() { return _currentTooltip; }
-    const Element *parent() const { return _parent; }
-    const Texture &texture() const { return _texture; }
-    static bool isInitialized() { return initialized; }
-    void setAlpha(Uint8 alpha);
+  bool visible() const { return _visible; }
+  static TTF_Font *font() { return _font; }
+  static void font(TTF_Font *newFont) { _font = newFont; }
+  const ScreenRect &rect() const { return _rect; }
+  ScreenPoint position() const { return {_rect.x, _rect.y}; }
+  void setPosition(px_t x, px_t y);
+  void rect(const ScreenRect &rhs);
+  void rect(px_t x, px_t y, px_t w, px_t h);
+  px_t width() const { return _rect.w; }
+  virtual void width(px_t w);
+  px_t height() const { return _rect.h; }
+  virtual void height(px_t h);
+  bool changed() const { return _changed; }
+  const std::string &id() const { return _id; }
+  void id(const std::string &id) { _id = id; }
+  const children_t &children() const { return _children; }
+  void setTooltip(const std::string &text);  // Add a simple tooltip.
+  void setTooltip(const char *text) { setTooltip(std::string(text)); }
+  void setTooltip(const Tooltip &tooltip);  // Add a complex tooltip.
+  void clearTooltip();
+  static const Tooltip *tooltip() { return _currentTooltip; }
+  const Element *parent() const { return _parent; }
+  const Texture &texture() const { return _texture; }
+  static bool isInitialized() { return initialized; }
+  void setAlpha(Uint8 alpha);
 
-    void show();
-    void hide();
-    void toggleVisibility();
-    static void toggleVisibilityOf(void *element);
+  void show();
+  void hide();
+  void toggleVisibility();
+  static void toggleVisibilityOf(void *element);
 
-    void markChanged() const;
+  void markChanged() const;
 
-    virtual void addChild(Element *child);
-    virtual void clearChildren(); // Delete all children
-    virtual Element *findChild(const std::string id) const; // Find a child by ID, or nullptr if not found.
+  virtual void addChild(Element *child);
+  virtual void clearChildren();  // Delete all children
+  virtual Element *findChild(const std::string id)
+      const;  // Find a child by ID, or nullptr if not found.
 
-    // To be called during refresh.
-    void makeBackgroundTransparent();
+  // To be called during refresh.
+  void makeBackgroundTransparent();
 
-    // e: allows the function to be called on behalf of another element.  nullptr = self.
-    void setLeftMouseDownFunction(mouseDownFunction_t f, Element *e = nullptr);
-    void setLeftMouseUpFunction(mouseUpFunction_t f, Element *e = nullptr);
-    void setRightMouseDownFunction(mouseDownFunction_t f, Element *e = nullptr);
-    void setRightMouseUpFunction(mouseUpFunction_t f, Element *e = nullptr);
-    void setMouseMoveFunction(mouseMoveFunction_t f, Element *e = nullptr);
-    void setScrollUpFunction(scrollUpFunction_t f, Element *e = nullptr);
-    void setScrollDownFunction(scrollDownFunction_t f, Element *e = nullptr);
-    void setPreRefreshFunction(preRefreshFunction_t f, Element *e = nullptr);
+  // e: allows the function to be called on behalf of another element.  nullptr
+  // = self.
+  void setLeftMouseDownFunction(mouseDownFunction_t f, Element *e = nullptr);
+  void setLeftMouseUpFunction(mouseUpFunction_t f, Element *e = nullptr);
+  void setRightMouseDownFunction(mouseDownFunction_t f, Element *e = nullptr);
+  void setRightMouseUpFunction(mouseUpFunction_t f, Element *e = nullptr);
+  void setMouseMoveFunction(mouseMoveFunction_t f, Element *e = nullptr);
+  void setScrollUpFunction(scrollUpFunction_t f, Element *e = nullptr);
+  void setScrollDownFunction(scrollDownFunction_t f, Element *e = nullptr);
+  void setPreRefreshFunction(preRefreshFunction_t f, Element *e = nullptr);
 
-    /*
-    Recurse to all children, calling _mouseDown() etc. in the lowest element that the mouse is over.
-    Return value: whether this or any child has called _mouseDown().
-    */
-    bool onLeftMouseDown(const ScreenPoint &mousePos);
-    bool onRightMouseDown(const ScreenPoint &mousePos);
-    bool onScrollUp(const ScreenPoint &mousePos);
-    bool onScrollDown(const ScreenPoint &mousePos);
-    // Recurse to all children, calling _mouse*() in all found.
-    void onLeftMouseUp(const ScreenPoint &mousePos);
-    void onRightMouseUp(const ScreenPoint &mousePos);
-    void onMouseMove(const ScreenPoint &mousePos);
+  /*
+  Recurse to all children, calling _mouseDown() etc. in the lowest element that
+  the mouse is over. Return value: whether this or any child has called
+  _mouseDown().
+  */
+  bool onLeftMouseDown(const ScreenPoint &mousePos);
+  bool onRightMouseDown(const ScreenPoint &mousePos);
+  bool onScrollUp(const ScreenPoint &mousePos);
+  bool onScrollDown(const ScreenPoint &mousePos);
+  // Recurse to all children, calling _mouse*() in all found.
+  void onLeftMouseUp(const ScreenPoint &mousePos);
+  void onRightMouseUp(const ScreenPoint &mousePos);
+  void onMouseMove(const ScreenPoint &mousePos);
 
-    void draw(); // Draw the existing texture to its designated location.
-    void forceRefresh(); // Mark this and all children as changed
+  void draw();          // Draw the existing texture to its designated location.
+  void forceRefresh();  // Mark this and all children as changed
 
-    static void cleanup(); // Release static resources
+  static void cleanup();  // Release static resources
 };
 
 #endif

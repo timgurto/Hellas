@@ -9,99 +9,81 @@ extern Renderer renderer;
 
 Texture::Texture() {}
 
-Texture::Texture(px_t width, px_t height):
-_w(width),
-_h(height),
-_validTarget(true){
-    assert (renderer);
+Texture::Texture(px_t width, px_t height)
+    : _w(width), _h(height), _validTarget(true) {
+  assert(renderer);
 
-    _raw = std::shared_ptr<SDL_Texture>{
-        renderer.createTargetableTexture(width, height), SDL_DestroyTexture };
-    if (_raw)
-        _validTarget = false;
+  _raw = std::shared_ptr<SDL_Texture>{
+      renderer.createTargetableTexture(width, height), SDL_DestroyTexture};
+  if (_raw) _validTarget = false;
 }
 
-Texture::Texture(const std::string &filename, const Color &colorKey){
-    if (filename.empty())
-        return;
-    assert (renderer);
+Texture::Texture(const std::string &filename, const Color &colorKey) {
+  if (filename.empty()) return;
+  assert(renderer);
 
-    Surface surface(filename, colorKey);
-    createFromSurface(surface);
+  Surface surface(filename, colorKey);
+  createFromSurface(surface);
 }
 
-Texture::Texture(const Surface &surface) {
-    createFromSurface(surface);
+Texture::Texture(const Surface &surface) { createFromSurface(surface); }
+
+Texture::Texture(TTF_Font *font, const std::string &text, const Color &color) {
+  assert(renderer);
+
+  if (!font) return;
+
+  Surface surface(font, text, color);
+  createFromSurface(surface);
 }
 
-Texture::Texture(TTF_Font *font, const std::string &text, const Color &color){
-    assert (renderer);
+void Texture::createFromSurface(const Surface &surface) {
+  if (!surface) return;
 
-    if (!font)
-        return;
+  _raw = std::shared_ptr<SDL_Texture>{surface.toTexture(), SDL_DestroyTexture};
 
-    Surface surface(font, text, color);
-    createFromSurface(surface);
+  auto isValid = SDL_QueryTexture(_raw.get(), nullptr, nullptr, &_w, &_h) == 0;
+  if (!isValid) _raw = {};
 }
 
-void Texture::createFromSurface(const Surface & surface) {
-    if (!surface)
-        return;
+Texture::Texture(const Texture &rhs)
+    : _raw(rhs._raw), _w(rhs._w), _h(rhs._h), _validTarget(rhs._validTarget) {}
 
-    _raw = std::shared_ptr<SDL_Texture>{ surface.toTexture(), SDL_DestroyTexture };
+Texture &Texture::operator=(const Texture &rhs) {
+  if (this == &rhs) return *this;
+  if (_raw == rhs._raw) return *this;
 
-    auto isValid = SDL_QueryTexture(_raw.get(), nullptr, nullptr, &_w, &_h) == 0;
-    if (!isValid)
-        _raw = {};
+  _raw = rhs._raw;
+  _w = rhs._w;
+  _h = rhs._h;
+  _validTarget = rhs._validTarget;
+
+  return *this;
 }
 
-Texture::Texture(const Texture &rhs) :
-    _raw(rhs._raw),
-    _w(rhs._w),
-    _h(rhs._h),
-    _validTarget(rhs._validTarget)
-{}
-
-Texture &Texture::operator=(const Texture &rhs){
-    if (this == &rhs)
-        return *this;
-    if (_raw == rhs._raw)
-        return *this;
-
-    _raw = rhs._raw;
-    _w = rhs._w;
-    _h = rhs._h;
-    _validTarget = rhs._validTarget;
-
-    return *this;
+void Texture::setBlend(SDL_BlendMode mode) const {
+  SDL_SetTextureBlendMode(_raw.get(), mode);
 }
 
-
-void Texture::setBlend(SDL_BlendMode mode) const{
-    SDL_SetTextureBlendMode(_raw.get(), mode);
+void Texture::setAlpha(Uint8 alpha) const {
+  SDL_SetTextureAlphaMod(_raw.get(), alpha);
 }
 
-void Texture::setAlpha(Uint8 alpha) const{
-    SDL_SetTextureAlphaMod(_raw.get(), alpha);
+void Texture::draw(px_t x, px_t y) const { draw({x, y, _w, _h}); }
+
+void Texture::draw(const ScreenPoint &location) const {
+  draw(toInt(location.x), toInt(location.y));
 }
 
-void Texture::draw(px_t x, px_t y) const{
-    draw({ x, y, _w, _h });
+void Texture::draw(const ScreenRect &location) const {
+  renderer.drawTexture(_raw.get(), location);
 }
 
-void Texture::draw(const ScreenPoint &location) const{
-    draw(toInt(location.x), toInt(location.y));
+void Texture::draw(const ScreenRect &location,
+                   const ScreenRect &srcRect) const {
+  renderer.drawTexture(_raw.get(), location, srcRect);
 }
 
-void Texture::draw(const ScreenRect &location) const{
-    renderer.drawTexture(_raw.get(), location);
-}
-
-void Texture::draw(const ScreenRect &location, const ScreenRect &srcRect) const{
-    renderer.drawTexture(_raw.get(), location, srcRect);
-}
-
-void Texture::setRenderTarget() const{
-    if (_validTarget)
-        SDL_SetRenderTarget(renderer._renderer, _raw.get());
+void Texture::setRenderTarget() const {
+  if (_validTarget) SDL_SetRenderTarget(renderer._renderer, _raw.get());
 }

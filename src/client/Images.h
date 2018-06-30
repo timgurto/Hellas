@@ -9,15 +9,15 @@
 extern Renderer renderer;
 
 class Images {
-public:
-    Images(const std::string &directory);
+ public:
+  Images(const std::string &directory);
 
-    const Texture &operator[](const std::string key);
+  const Texture &operator[](const std::string key);
 
-private:
-    using container = std::unordered_map<std::string, Texture>;
-    container _container;
-    std::string _directory;
+ private:
+  using container = std::unordered_map<std::string, Texture>;
+  container _container;
+  std::string _directory;
 
-    static Texture defaultTexture;
+  static Texture defaultTexture;
 };

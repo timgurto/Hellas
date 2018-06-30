@@ -1,9 +1,9 @@
-#include "ColorBlock.h"
 #include "ContainerGrid.h"
+#include "../../server/User.h"
 #include "../Client.h"
 #include "../Renderer.h"
 #include "../Texture.h"
-#include "../../server/User.h"
+#include "ColorBlock.h"
 
 extern Renderer renderer;
 
@@ -22,245 +22,247 @@ Texture ContainerGrid::_highlight;
 Texture ContainerGrid::_highlightGood;
 Texture ContainerGrid::_highlightBad;
 
-ContainerGrid::ContainerGrid(size_t rows, size_t cols, ClientItem::vect_t &linked, size_t serial,
-                             px_t x, px_t y, px_t gap, bool solidBackground):
-    Element({ x, y,
-        static_cast<px_t>(cols) * (Client::ICON_SIZE + gap + 2) + gap,
-        static_cast<px_t>(rows) * (Client::ICON_SIZE + gap + 2) + gap + 1 }),
-_rows(rows),
-_cols(cols),
-_linked(linked),
-_serial(serial),
-_mouseOverSlot(NO_SLOT),
-_leftMouseDownSlot(NO_SLOT),
-_rightMouseDownSlot(NO_SLOT),
-_gap(gap),
-_solidBackground(solidBackground){
-    if (!_highlight){
-        _highlight = Texture(std::string("Images/Items/highlight.png"), Color::MAGENTA);
-        _highlightGood = Texture(std::string("Images/Items/highlightGood.png"), Color::MAGENTA);
-        _highlightBad = Texture(std::string("Images/Items/highlightBad.png"), Color::MAGENTA);
-    }
+ContainerGrid::ContainerGrid(size_t rows, size_t cols,
+                             ClientItem::vect_t &linked, size_t serial, px_t x,
+                             px_t y, px_t gap, bool solidBackground)
+    : Element(
+          {x, y, static_cast<px_t>(cols) * (Client::ICON_SIZE + gap + 2) + gap,
+           static_cast<px_t>(rows) * (Client::ICON_SIZE + gap + 2) + gap + 1}),
+      _rows(rows),
+      _cols(cols),
+      _linked(linked),
+      _serial(serial),
+      _mouseOverSlot(NO_SLOT),
+      _leftMouseDownSlot(NO_SLOT),
+      _rightMouseDownSlot(NO_SLOT),
+      _gap(gap),
+      _solidBackground(solidBackground) {
+  if (!_highlight) {
+    _highlight =
+        Texture(std::string("Images/Items/highlight.png"), Color::MAGENTA);
+    _highlightGood =
+        Texture(std::string("Images/Items/highlightGood.png"), Color::MAGENTA);
+    _highlightBad =
+        Texture(std::string("Images/Items/highlightBad.png"), Color::MAGENTA);
+  }
 
-    for (size_t i = 0; i != _linked.size(); ++i) {
-        const px_t
-            x = i % cols,
-            y = i / cols;
-        const auto slotRect = ScreenRect{ x * (Client::ICON_SIZE + _gap + 2),
-                                   y * (Client::ICON_SIZE + _gap + 2) + 1,
-                                   Client::ICON_SIZE + 2, Client::ICON_SIZE + 2 };
-        addChild(new ShadowBox(slotRect, true));
-    }
-    setLeftMouseDownFunction(leftMouseDown);
-    setLeftMouseUpFunction(leftMouseUp);
-    setRightMouseDownFunction(rightMouseDown);
-    setRightMouseUpFunction(rightMouseUp);
-    setMouseMoveFunction(mouseMove);
+  for (size_t i = 0; i != _linked.size(); ++i) {
+    const px_t x = i % cols, y = i / cols;
+    const auto slotRect =
+        ScreenRect{x * (Client::ICON_SIZE + _gap + 2),
+                   y * (Client::ICON_SIZE + _gap + 2) + 1,
+                   Client::ICON_SIZE + 2, Client::ICON_SIZE + 2};
+    addChild(new ShadowBox(slotRect, true));
+  }
+  setLeftMouseDownFunction(leftMouseDown);
+  setLeftMouseUpFunction(leftMouseUp);
+  setRightMouseDownFunction(rightMouseDown);
+  setRightMouseUpFunction(rightMouseUp);
+  setMouseMoveFunction(mouseMove);
 }
 
-void ContainerGrid::refresh(){
-    renderer.setDrawColor(Color::CONTAINER_SLOT_BACKGROUND);
-    for (size_t i = 0; i != _linked.size(); ++i) {
-        const px_t
-            x = i % _cols,
-            y = i / _cols;
-        const auto slotRect = ScreenRect{ x * (Client::ICON_SIZE + _gap + 2),
-                                   y * (Client::ICON_SIZE + _gap + 2) + 1,
-                                   Client::ICON_SIZE + 2, Client::ICON_SIZE + 2 };
-        if (_solidBackground){
-            static const auto SLOT_BACKGROUND_OFFSET = ScreenRect{ 1, 1, -2, -2 };
-            renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
+void ContainerGrid::refresh() {
+  renderer.setDrawColor(Color::CONTAINER_SLOT_BACKGROUND);
+  for (size_t i = 0; i != _linked.size(); ++i) {
+    const px_t x = i % _cols, y = i / _cols;
+    const auto slotRect =
+        ScreenRect{x * (Client::ICON_SIZE + _gap + 2),
+                   y * (Client::ICON_SIZE + _gap + 2) + 1,
+                   Client::ICON_SIZE + 2, Client::ICON_SIZE + 2};
+    if (_solidBackground) {
+      static const auto SLOT_BACKGROUND_OFFSET = ScreenRect{1, 1, -2, -2};
+      renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
+    }
+    if (dragSlot != i ||
+        dragGrid != this) {  // Don't draw an item being moved by the mouse.
+      const std::pair<const ClientItem *, size_t> &slot = _linked[i];
+      if (slot.first != nullptr) {
+        slot.first->icon().draw(slotRect.x + 1, slotRect.y + 1);
+        if (slot.second > 1) {
+          Texture label(font(), makeArgs(slot.second), FONT_COLOR),
+              labelOutline(font(), toString(slot.second), Color::FONT_OUTLINE);
+          px_t x = slotRect.x + slotRect.w - label.width() - 1,
+               y = slotRect.y + slotRect.h - label.height() + textOffset;
+          labelOutline.draw(x - 1, y);
+          labelOutline.draw(x + 1, y);
+          labelOutline.draw(x, y - 1);
+          labelOutline.draw(x, y + 1);
+          label.draw(x, y);
         }
-        if (dragSlot != i || dragGrid != this) { // Don't draw an item being moved by the mouse.
-            const std::pair<const ClientItem *, size_t> &slot = _linked[i];
-            if (slot.first != nullptr){
-                slot.first->icon().draw(slotRect.x + 1, slotRect.y + 1);
-                if (slot.second > 1){
-                    Texture
-                        label(font(), makeArgs(slot.second), FONT_COLOR),
-                        labelOutline(font(), toString(slot.second), Color::FONT_OUTLINE);
-                    px_t
-                        x = slotRect.x + slotRect.w - label.width() - 1,
-                        y = slotRect.y + slotRect.h - label.height() + textOffset;
-                    labelOutline.draw(x-1, y);
-                    labelOutline.draw(x+1, y);
-                    labelOutline.draw(x, y-1);
-                    labelOutline.draw(x, y+1);
-                    label.draw(x, y);
-                }
-            }
-        }
-
-        // Highlight moused-over slot
-        if (_mouseOverSlot == i) {
-            _highlight.draw(slotRect.x + 1, slotRect.y + 1);
-
-        // Indicate matching gear slot if an item is being dragged
-        } else if (_serial == Client::GEAR && dragGrid != nullptr){
-            size_t itemSlot = dragGrid->_linked[dragSlot].first->gearSlot();
-            (i == itemSlot ? _highlightGood : _highlightBad).draw(slotRect.x + 1, slotRect.y + 1);
-        }
+      }
     }
 
-    // Item tooltip
-    if (_mouseOverSlot != NO_SLOT){
-        const ClientItem *item = _linked[_mouseOverSlot].first;
-        if (item == nullptr)
-            clearTooltip();
-        else
-            setTooltip(item->tooltip());
+    // Highlight moused-over slot
+    if (_mouseOverSlot == i) {
+      _highlight.draw(slotRect.x + 1, slotRect.y + 1);
 
+      // Indicate matching gear slot if an item is being dragged
+    } else if (_serial == Client::GEAR && dragGrid != nullptr) {
+      size_t itemSlot = dragGrid->_linked[dragSlot].first->gearSlot();
+      (i == itemSlot ? _highlightGood : _highlightBad)
+          .draw(slotRect.x + 1, slotRect.y + 1);
     }
+  }
+
+  // Item tooltip
+  if (_mouseOverSlot != NO_SLOT) {
+    const ClientItem *item = _linked[_mouseOverSlot].first;
+    if (item == nullptr)
+      clearTooltip();
+    else
+      setTooltip(item->tooltip());
+  }
 }
 
-size_t ContainerGrid::getSlot(const ScreenPoint &mousePos) const{
-    if (!collision(mousePos, ScreenRect{ 0, 0, width(), height() }))
-        return NO_SLOT;
-    size_t
-        x = static_cast<size_t>((mousePos.x) / (Client::ICON_SIZE + _gap + 2)),
-        y = static_cast<size_t>((mousePos.y - 1) / (Client::ICON_SIZE + _gap + 2));
-    // Check inside gaps
-    if (mousePos.x - static_cast<px_t>(x) * (Client::ICON_SIZE + _gap + 2) > Client::ICON_SIZE + 2)
-        return NO_SLOT;
-    if (mousePos.y - static_cast<px_t>(y) * (Client::ICON_SIZE + _gap + 2) > Client::ICON_SIZE + 2)
-        return NO_SLOT;
-    size_t slot = y * _cols + x;
-    if (slot >= _linked.size())
-        return NO_SLOT;
-    return slot;
+size_t ContainerGrid::getSlot(const ScreenPoint &mousePos) const {
+  if (!collision(mousePos, ScreenRect{0, 0, width(), height()})) return NO_SLOT;
+  size_t x = static_cast<size_t>((mousePos.x) / (Client::ICON_SIZE + _gap + 2)),
+         y = static_cast<size_t>((mousePos.y - 1) /
+                                 (Client::ICON_SIZE + _gap + 2));
+  // Check inside gaps
+  if (mousePos.x - static_cast<px_t>(x) * (Client::ICON_SIZE + _gap + 2) >
+      Client::ICON_SIZE + 2)
+    return NO_SLOT;
+  if (mousePos.y - static_cast<px_t>(y) * (Client::ICON_SIZE + _gap + 2) >
+      Client::ICON_SIZE + 2)
+    return NO_SLOT;
+  size_t slot = y * _cols + x;
+  if (slot >= _linked.size()) return NO_SLOT;
+  return slot;
 }
 
-void ContainerGrid::leftMouseDown(Element &e, const ScreenPoint &mousePos){
-    ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
-    size_t slot = grid.getSlot(mousePos);
-    grid._leftMouseDownSlot = slot;
+void ContainerGrid::leftMouseDown(Element &e, const ScreenPoint &mousePos) {
+  ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
+  size_t slot = grid.getSlot(mousePos);
+  grid._leftMouseDownSlot = slot;
 }
 
-void ContainerGrid::leftMouseUp(Element &e, const ScreenPoint &mousePos){
-    ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
-    size_t slot = grid.getSlot(mousePos);
-    if (slot != NO_SLOT) { // Clicked a valid slot
-        size_t mouseDownSlot = grid._leftMouseDownSlot;
-        grid._leftMouseDownSlot = NO_SLOT;
+void ContainerGrid::leftMouseUp(Element &e, const ScreenPoint &mousePos) {
+  ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
+  size_t slot = grid.getSlot(mousePos);
+  if (slot != NO_SLOT) {  // Clicked a valid slot
+    size_t mouseDownSlot = grid._leftMouseDownSlot;
+    grid._leftMouseDownSlot = NO_SLOT;
 
-        // Enforce gear slots
-        if (dragGrid != nullptr){
-            if (dragGrid->_serial == Client::GEAR){ // From gear slot
-                const ClientItem *item = grid._linked[slot].first;
-                if (item != nullptr && item->gearSlot() != dragSlot)
-                    return;
-            } else if (grid._serial == Client::GEAR){ // To gear slot
-                const ClientItem *item = dragGrid->_linked[dragSlot].first;
-                if (item != nullptr && item->gearSlot() != slot)
-                    return;
-            }
-        }
-
-        // Different grid/slot: finish dragging.
-        if ((dragGrid != &grid || dragSlot != slot) && dragSlot != NO_SLOT) { 
-            Client::_instance->sendMessage(CL_SWAP_ITEMS, makeArgs(dragGrid->_serial, dragSlot,
-                                                                   grid._serial, slot));
-            const ClientItem *item = dragGrid->_linked[dragSlot].first;
-            if (item != nullptr && item->sounds() != nullptr)
-                item->sounds()->playOnce("drop");
-
-            dragSlot = NO_SLOT;
-            dragGrid = nullptr;
-            Client::_instance->onChangeDragItem();
-
-        // Dragging to same grid/slot; do nothing.
-        } else if (slot == dragSlot && &grid == dragGrid) {
-            dragSlot = NO_SLOT;
-            dragGrid = nullptr;
-            Client::_instance->onChangeDragItem();
-            grid.markChanged();
-
-        // Same grid and slot that mouse went down on and slot isn't empty: start dragging.
-        } else if (mouseDownSlot == slot &&  grid._linked[slot].first) {
-            dragSlot = slot;
-            dragGrid = &grid;
-            Client::_instance->onChangeDragItem();
-            grid.markChanged();
-        }
-    }
-}
-
-void ContainerGrid::rightMouseDown(Element &e, const ScreenPoint &mousePos){
-    ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
-    size_t slot = grid.getSlot(mousePos);
-    grid._rightMouseDownSlot = slot;
-}
-
-void ContainerGrid::rightMouseUp(Element &e, const ScreenPoint &mousePos){
-    ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
-    size_t slot = grid.getSlot(mousePos);
-    if (dragSlot != NO_SLOT) { // Cancel dragging
-        dragSlot = NO_SLOT;
-        dragGrid = nullptr;
-        Client::_instance->onChangeDragItem();
-        grid.markChanged();
-    }
-    if (useSlot != NO_SLOT) { // Right-clicked instead of used: cancel use
-        useSlot = NO_SLOT;
-        useGrid = nullptr;
-    } else if (slot != NO_SLOT) { // Right-clicked a slot
+    // Enforce gear slots
+    if (dragGrid != nullptr) {
+      if (dragGrid->_serial == Client::GEAR) {  // From gear slot
         const ClientItem *item = grid._linked[slot].first;
-        if (item != nullptr){ // Slot is not empty
-            if (grid._serial == Client::INVENTORY) {
-                if (item->canUse()){
-                    useSlot = slot;
-                    useGrid = &grid;
-                } else if (item->gearSlot() < Client::GEAR_SLOTS){
-                    Client::_instance->sendMessage(CL_SWAP_ITEMS,
-                            makeArgs(Client::INVENTORY, slot, Client::GEAR, item->gearSlot()));
-                    if (item->sounds() != nullptr)
-                        item->sounds()->playOnce("drop");
-                }
-            } else { // An object: take item
-                Client::_instance->sendMessage(CL_TAKE_ITEM, makeArgs(grid._serial, slot));
-                if (item->sounds() != nullptr)
-                    item->sounds()->playOnce("drop");
-            }
-        }
+        if (item != nullptr && item->gearSlot() != dragSlot) return;
+      } else if (grid._serial == Client::GEAR) {  // To gear slot
+        const ClientItem *item = dragGrid->_linked[dragSlot].first;
+        if (item != nullptr && item->gearSlot() != slot) return;
+      }
     }
-    grid._rightMouseDownSlot = NO_SLOT;
+
+    // Different grid/slot: finish dragging.
+    if ((dragGrid != &grid || dragSlot != slot) && dragSlot != NO_SLOT) {
+      Client::_instance->sendMessage(
+          CL_SWAP_ITEMS,
+          makeArgs(dragGrid->_serial, dragSlot, grid._serial, slot));
+      const ClientItem *item = dragGrid->_linked[dragSlot].first;
+      if (item != nullptr && item->sounds() != nullptr)
+        item->sounds()->playOnce("drop");
+
+      dragSlot = NO_SLOT;
+      dragGrid = nullptr;
+      Client::_instance->onChangeDragItem();
+
+      // Dragging to same grid/slot; do nothing.
+    } else if (slot == dragSlot && &grid == dragGrid) {
+      dragSlot = NO_SLOT;
+      dragGrid = nullptr;
+      Client::_instance->onChangeDragItem();
+      grid.markChanged();
+
+      // Same grid and slot that mouse went down on and slot isn't empty: start
+      // dragging.
+    } else if (mouseDownSlot == slot && grid._linked[slot].first) {
+      dragSlot = slot;
+      dragGrid = &grid;
+      Client::_instance->onChangeDragItem();
+      grid.markChanged();
+    }
+  }
 }
 
-void ContainerGrid::mouseMove(Element &e, const ScreenPoint &mousePos){
-    ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
-    size_t slot = grid.getSlot(mousePos);
-    if (slot != grid._mouseOverSlot) {
-        grid._mouseOverSlot = slot;
-        grid.markChanged();
+void ContainerGrid::rightMouseDown(Element &e, const ScreenPoint &mousePos) {
+  ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
+  size_t slot = grid.getSlot(mousePos);
+  grid._rightMouseDownSlot = slot;
+}
+
+void ContainerGrid::rightMouseUp(Element &e, const ScreenPoint &mousePos) {
+  ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
+  size_t slot = grid.getSlot(mousePos);
+  if (dragSlot != NO_SLOT) {  // Cancel dragging
+    dragSlot = NO_SLOT;
+    dragGrid = nullptr;
+    Client::_instance->onChangeDragItem();
+    grid.markChanged();
+  }
+  if (useSlot != NO_SLOT) {  // Right-clicked instead of used: cancel use
+    useSlot = NO_SLOT;
+    useGrid = nullptr;
+  } else if (slot != NO_SLOT) {  // Right-clicked a slot
+    const ClientItem *item = grid._linked[slot].first;
+    if (item != nullptr) {  // Slot is not empty
+      if (grid._serial == Client::INVENTORY) {
+        if (item->canUse()) {
+          useSlot = slot;
+          useGrid = &grid;
+        } else if (item->gearSlot() < Client::GEAR_SLOTS) {
+          Client::_instance->sendMessage(
+              CL_SWAP_ITEMS, makeArgs(Client::INVENTORY, slot, Client::GEAR,
+                                      item->gearSlot()));
+          if (item->sounds() != nullptr) item->sounds()->playOnce("drop");
+        }
+      } else {  // An object: take item
+        Client::_instance->sendMessage(CL_TAKE_ITEM,
+                                       makeArgs(grid._serial, slot));
+        if (item->sounds() != nullptr) item->sounds()->playOnce("drop");
+      }
     }
+  }
+  grid._rightMouseDownSlot = NO_SLOT;
+}
+
+void ContainerGrid::mouseMove(Element &e, const ScreenPoint &mousePos) {
+  ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
+  size_t slot = grid.getSlot(mousePos);
+  if (slot != grid._mouseOverSlot) {
+    grid._mouseOverSlot = slot;
+    grid.markChanged();
+  }
 }
 
 const ClientItem *ContainerGrid::getDragItem() {
-    if (dragSlot == NO_SLOT || !dragGrid)
-        return nullptr;
-    else
-        return dragGrid->_linked[dragSlot].first;
+  if (dragSlot == NO_SLOT || !dragGrid)
+    return nullptr;
+  else
+    return dragGrid->_linked[dragSlot].first;
 }
 
 const ClientItem *ContainerGrid::getUseItem() {
-    if (useSlot == NO_SLOT || !useGrid)
-        return nullptr;
-    else
-        return useGrid->_linked[useSlot].first;
+  if (useSlot == NO_SLOT || !useGrid)
+    return nullptr;
+  else
+    return useGrid->_linked[useSlot].first;
 }
 
 void ContainerGrid::dropItem() {
-    if (dragSlot != NO_SLOT && dragGrid != nullptr) {
-        const ClientItem *item = dragGrid->_linked[dragSlot].first;
-        Client::_instance->dropItemOnConfirmation(dragGrid->_serial, dragSlot, item);
-        dragSlot = NO_SLOT;
-        dragGrid->markChanged();
-        dragGrid = nullptr;
-        Client::_instance->onChangeDragItem();
-    }
+  if (dragSlot != NO_SLOT && dragGrid != nullptr) {
+    const ClientItem *item = dragGrid->_linked[dragSlot].first;
+    Client::_instance->dropItemOnConfirmation(dragGrid->_serial, dragSlot,
+                                              item);
+    dragSlot = NO_SLOT;
+    dragGrid->markChanged();
+    dragGrid = nullptr;
+    Client::_instance->onChangeDragItem();
+  }
 }
 
 void ContainerGrid::clearUseItem() {
-    useSlot = NO_SLOT;
-    useGrid = nullptr;
+  useSlot = NO_SLOT;
+  useGrid = nullptr;
 }

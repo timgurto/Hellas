@@ -8,341 +8,323 @@
 extern Args cmdLineArgs;
 extern Renderer renderer;
 
-void Client::draw() const{
-    if (!_loggedIn || !_loaded){
-        renderer.setDrawColor();
-        renderer.clear();
-        _chatLog->draw();
-        renderer.present();
-        return;
-    }
-
-    // Background
+void Client::draw() const {
+  if (!_loggedIn || !_loaded) {
     renderer.setDrawColor();
     renderer.clear();
-
-    // Terrain
-    size_t
-        xMin = static_cast<size_t>(max<double>(0, -offset().x / TILE_W)),
-        xMax = static_cast<size_t>(min<double>(_mapX,
-                                               1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
-        yMin = static_cast<size_t>(max<double>(0, -offset().y / TILE_H)),
-        yMax = static_cast<size_t>(min<double>(_mapY, (-offset().y + SCREEN_Y) / TILE_H + 1));
-    assert(xMin <= xMax);
-    assert(yMin <= yMax);
-    for (size_t y = yMin; y != yMax; ++y) {
-        const px_t yLoc = y * TILE_H + toInt(offset().y);
-        for (size_t x = xMin; x != xMax; ++x){
-            px_t xLoc = x * TILE_W + toInt(offset().x);
-            if (y % 2 == 1)
-                xLoc -= TILE_W/2;
-            drawTile(x, y, xLoc, yLoc);
-        }
-    }
-
-    // Character's target and actual location
-    if (isDebug()) {
-        renderer.setDrawColor(Color::CYAN);
-        const ScreenPoint &actualLoc = toScreenPoint(_character.destination()) + offset();
-        renderer.drawRect({ actualLoc.x - 1, actualLoc.y - 1, 3, 3 });
-
-        renderer.setDrawColor(Color::WHITE);
-        auto pendingLoc = ScreenPoint{
-            toInt(_pendingCharLoc.x) + offset().x,
-            toInt(_pendingCharLoc.y) + offset().y
-        };
-        renderer.drawRect({ pendingLoc.x, pendingLoc.y, 1, 1 });
-        renderer.drawRect({ pendingLoc.x - 2, pendingLoc.y - 2, 5, 5 });
-    }
-
-    // Entities, sorted from back to front
-    static const px_t
-        DRAW_MARGIN_ABOVE = 160,
-        DRAW_MARGIN_BELOW = 160,
-        DRAW_MARGIN_SIDES = 160;
-    const double
-        topY = -offset().y - DRAW_MARGIN_BELOW,
-        bottomY = -offset().y + SCREEN_Y + DRAW_MARGIN_ABOVE,
-        leftX = -offset().x - DRAW_MARGIN_SIDES,
-        rightX = -offset().x + SCREEN_X + DRAW_MARGIN_SIDES;
-    // Cull by y
-    Sprite
-        topEntity(nullptr, { 0, topY }),
-        bottomEntity(nullptr, { 0, bottomY });
-    auto top = _entities.lower_bound(&topEntity);
-    auto bottom = _entities.upper_bound(&bottomEntity);
-    // Construction sites
-    renderer.setDrawColor(Color::FOOTPRINT);
-    for (auto it = top; it != bottom; ++it) {
-        auto pObj = dynamic_cast<ClientObject *>(*it);
-        if (!pObj)
-            continue;
-        if (!pObj->isBeingConstructed())
-            continue;
-
-        auto footprint = Texture{ toInt(pObj->collisionRect().w), toInt(pObj->collisionRect().h) };
-        renderer.pushRenderTarget(footprint);
-            renderer.fill();
-        renderer.popRenderTarget();
-        footprint.setAlpha(0x7f);
-        footprint.setBlend();
-
-        auto drawPos = _offset + pObj->collisionRect();
-        footprint.draw(toScreenPoint(drawPos));
-    }
-    // Base under target combatant
-    if (_target.exists()){
-        const Texture &base = _target.isAggressive() ? _baseAggressive : _basePassive;
-        static const ScreenPoint BASE_OFFSET(-15, -10);
-        base.draw(toScreenPoint(_target.entity()->location()) + offset() + BASE_OFFSET);
-    }
-    // Flat entities
-    for (auto it = top; it != bottom; ++it) {
-        if ((*it)->isFlat()) {
-            // Cull by x
-            double x = (*it)->location().x;
-            if (x >= leftX && x <= rightX)
-                (*it)->draw(*this);
-        }
-    }
-    // Non-flat entities
-    for (auto it = top; it != bottom; ++it) {
-        if (!(*it)->isFlat()) {
-            // Cull by x
-            double x = (*it)->location().x;
-            if (x >= leftX && x <= rightX)
-                (*it)->draw(*this);
-        }
-    }
-
-    // Non-window UI
-    for (Element *element : _ui)
-        element->draw();
-
-    // Windows
-    for (windows_t::const_reverse_iterator it = _windows.rbegin(); it != _windows.rend(); ++it)
-        (*it)->draw();
-
-    // Dragged item
-    static const ScreenPoint MOUSE_ICON_OFFSET(-Client::ICON_SIZE/2, -Client::ICON_SIZE/2);
-    const ClientItem *draggedItem = ContainerGrid::getDragItem();
-    if (draggedItem != nullptr)
-        draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
-
-    // Used item
-    if (_constructionFootprint) {
-        const ClientObjectType *ot = _selectedConstruction == nullptr ?
-                                     ContainerGrid::getUseItem()->constructsObject() :
-                                     _selectedConstruction;
-        auto footprintRect = ot->collisionRect() + toMapPoint(_mouse) - _offset;
-        if (distance(playerCollisionRect(), footprintRect) <= Client::ACTION_DISTANCE) {
-            renderer.setDrawColor(Color::FOOTPRINT_GOOD);
-            renderer.fillRect(toScreenRect(footprintRect + _offset));
-
-            const ScreenRect &drawRect = ot->drawRect();
-            px_t
-                x = toInt(_mouse.x + drawRect.x),
-                y = toInt(_mouse.y + drawRect.y);
-            _constructionFootprint.setAlpha(0x7f);
-            _constructionFootprint.draw(x, y);
-            _constructionFootprint.setAlpha();
-        } else {
-            renderer.setDrawColor(Color::FOOTPRINT_BAD);
-            renderer.fillRect(toScreenRect(footprintRect + _offset));
-        }
-        // TODO: Show message explaining controls
-    } else if (_isDismounting){
-        const SpriteType &charType = *_character.type();
-        MapPoint footprintRect = Avatar::collisionRectRaw() - _offset + toMapPoint(_mouse);
-        if (distance(playerCollisionRect(), footprintRect) <= Client::ACTION_DISTANCE) {
-            charType.image().setAlpha(0x7f);
-            charType.image().draw(_mouse + charType.drawRect());
-            charType.image().setAlpha();
-        } else {
-            renderer.setDrawColor(Color::FOOTPRINT_BAD);
-            renderer.fillRect(toScreenRect(footprintRect + _offset));
-        }
-    }
-
-    // Cull distance
-    if (isDebug()){
-        const ScreenPoint midScreen = toScreenPoint(_character.location()) + offset();
-        renderer.setDrawColor(Color::RED);
-        renderer.drawRect({ midScreen.x - CULL_DISTANCE,
-                            midScreen.y - CULL_DISTANCE,
-                            CULL_DISTANCE * 2,
-                            CULL_DISTANCE * 2 });
-    }
-
-    // Tooltip
-    drawTooltip();
-
-    // Cursor
-    _currentCursor->draw(_mouse);
-
+    _chatLog->draw();
     renderer.present();
-    _drawingFinished = true;
+    return;
+  }
+
+  // Background
+  renderer.setDrawColor();
+  renderer.clear();
+
+  // Terrain
+  size_t xMin = static_cast<size_t>(max<double>(0, -offset().x / TILE_W)),
+         xMax = static_cast<size_t>(
+             min<double>(_mapX, 1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
+         yMin = static_cast<size_t>(max<double>(0, -offset().y / TILE_H)),
+         yMax = static_cast<size_t>(
+             min<double>(_mapY, (-offset().y + SCREEN_Y) / TILE_H + 1));
+  assert(xMin <= xMax);
+  assert(yMin <= yMax);
+  for (size_t y = yMin; y != yMax; ++y) {
+    const px_t yLoc = y * TILE_H + toInt(offset().y);
+    for (size_t x = xMin; x != xMax; ++x) {
+      px_t xLoc = x * TILE_W + toInt(offset().x);
+      if (y % 2 == 1) xLoc -= TILE_W / 2;
+      drawTile(x, y, xLoc, yLoc);
+    }
+  }
+
+  // Character's target and actual location
+  if (isDebug()) {
+    renderer.setDrawColor(Color::CYAN);
+    const ScreenPoint &actualLoc =
+        toScreenPoint(_character.destination()) + offset();
+    renderer.drawRect({actualLoc.x - 1, actualLoc.y - 1, 3, 3});
+
+    renderer.setDrawColor(Color::WHITE);
+    auto pendingLoc = ScreenPoint{toInt(_pendingCharLoc.x) + offset().x,
+                                  toInt(_pendingCharLoc.y) + offset().y};
+    renderer.drawRect({pendingLoc.x, pendingLoc.y, 1, 1});
+    renderer.drawRect({pendingLoc.x - 2, pendingLoc.y - 2, 5, 5});
+  }
+
+  // Entities, sorted from back to front
+  static const px_t DRAW_MARGIN_ABOVE = 160, DRAW_MARGIN_BELOW = 160,
+                    DRAW_MARGIN_SIDES = 160;
+  const double topY = -offset().y - DRAW_MARGIN_BELOW,
+               bottomY = -offset().y + SCREEN_Y + DRAW_MARGIN_ABOVE,
+               leftX = -offset().x - DRAW_MARGIN_SIDES,
+               rightX = -offset().x + SCREEN_X + DRAW_MARGIN_SIDES;
+  // Cull by y
+  Sprite topEntity(nullptr, {0, topY}), bottomEntity(nullptr, {0, bottomY});
+  auto top = _entities.lower_bound(&topEntity);
+  auto bottom = _entities.upper_bound(&bottomEntity);
+  // Construction sites
+  renderer.setDrawColor(Color::FOOTPRINT);
+  for (auto it = top; it != bottom; ++it) {
+    auto pObj = dynamic_cast<ClientObject *>(*it);
+    if (!pObj) continue;
+    if (!pObj->isBeingConstructed()) continue;
+
+    auto footprint =
+        Texture{toInt(pObj->collisionRect().w), toInt(pObj->collisionRect().h)};
+    renderer.pushRenderTarget(footprint);
+    renderer.fill();
+    renderer.popRenderTarget();
+    footprint.setAlpha(0x7f);
+    footprint.setBlend();
+
+    auto drawPos = _offset + pObj->collisionRect();
+    footprint.draw(toScreenPoint(drawPos));
+  }
+  // Base under target combatant
+  if (_target.exists()) {
+    const Texture &base =
+        _target.isAggressive() ? _baseAggressive : _basePassive;
+    static const ScreenPoint BASE_OFFSET(-15, -10);
+    base.draw(toScreenPoint(_target.entity()->location()) + offset() +
+              BASE_OFFSET);
+  }
+  // Flat entities
+  for (auto it = top; it != bottom; ++it) {
+    if ((*it)->isFlat()) {
+      // Cull by x
+      double x = (*it)->location().x;
+      if (x >= leftX && x <= rightX) (*it)->draw(*this);
+    }
+  }
+  // Non-flat entities
+  for (auto it = top; it != bottom; ++it) {
+    if (!(*it)->isFlat()) {
+      // Cull by x
+      double x = (*it)->location().x;
+      if (x >= leftX && x <= rightX) (*it)->draw(*this);
+    }
+  }
+
+  // Non-window UI
+  for (Element *element : _ui) element->draw();
+
+  // Windows
+  for (windows_t::const_reverse_iterator it = _windows.rbegin();
+       it != _windows.rend(); ++it)
+    (*it)->draw();
+
+  // Dragged item
+  static const ScreenPoint MOUSE_ICON_OFFSET(-Client::ICON_SIZE / 2,
+                                             -Client::ICON_SIZE / 2);
+  const ClientItem *draggedItem = ContainerGrid::getDragItem();
+  if (draggedItem != nullptr)
+    draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
+
+  // Used item
+  if (_constructionFootprint) {
+    const ClientObjectType *ot =
+        _selectedConstruction == nullptr
+            ? ContainerGrid::getUseItem()->constructsObject()
+            : _selectedConstruction;
+    auto footprintRect = ot->collisionRect() + toMapPoint(_mouse) - _offset;
+    if (distance(playerCollisionRect(), footprintRect) <=
+        Client::ACTION_DISTANCE) {
+      renderer.setDrawColor(Color::FOOTPRINT_GOOD);
+      renderer.fillRect(toScreenRect(footprintRect + _offset));
+
+      const ScreenRect &drawRect = ot->drawRect();
+      px_t x = toInt(_mouse.x + drawRect.x), y = toInt(_mouse.y + drawRect.y);
+      _constructionFootprint.setAlpha(0x7f);
+      _constructionFootprint.draw(x, y);
+      _constructionFootprint.setAlpha();
+    } else {
+      renderer.setDrawColor(Color::FOOTPRINT_BAD);
+      renderer.fillRect(toScreenRect(footprintRect + _offset));
+    }
+    // TODO: Show message explaining controls
+  } else if (_isDismounting) {
+    const SpriteType &charType = *_character.type();
+    MapPoint footprintRect =
+        Avatar::collisionRectRaw() - _offset + toMapPoint(_mouse);
+    if (distance(playerCollisionRect(), footprintRect) <=
+        Client::ACTION_DISTANCE) {
+      charType.image().setAlpha(0x7f);
+      charType.image().draw(_mouse + charType.drawRect());
+      charType.image().setAlpha();
+    } else {
+      renderer.setDrawColor(Color::FOOTPRINT_BAD);
+      renderer.fillRect(toScreenRect(footprintRect + _offset));
+    }
+  }
+
+  // Cull distance
+  if (isDebug()) {
+    const ScreenPoint midScreen =
+        toScreenPoint(_character.location()) + offset();
+    renderer.setDrawColor(Color::RED);
+    renderer.drawRect({midScreen.x - CULL_DISTANCE, midScreen.y - CULL_DISTANCE,
+                       CULL_DISTANCE * 2, CULL_DISTANCE * 2});
+  }
+
+  // Tooltip
+  drawTooltip();
+
+  // Cursor
+  _currentCursor->draw(_mouse);
+
+  renderer.present();
+  _drawingFinished = true;
 }
 
-void Client::drawTooltip() const{
-    const Tooltip *tooltip = nullptr;
-    if (Element::tooltip() != nullptr)
-        tooltip = Element::tooltip();
-    else if (_currentMouseOverEntity != nullptr && !_mouseOverWindow){
-        tooltip = &_currentMouseOverEntity->tooltip();
-    } else
-        return;
+void Client::drawTooltip() const {
+  const Tooltip *tooltip = nullptr;
+  if (Element::tooltip() != nullptr)
+    tooltip = Element::tooltip();
+  else if (_currentMouseOverEntity != nullptr && !_mouseOverWindow) {
+    tooltip = &_currentMouseOverEntity->tooltip();
+  } else
+    return;
 
-    if (tooltip != nullptr) {
-        static const px_t EDGE_GAP = 2; // Gap from screen edges
-        static const px_t CURSOR_GAP = 10; // Horizontal gap from cursor
-        px_t x, y;
-        const px_t mouseX = toInt(_mouse.x);
-        const px_t mouseY = toInt(_mouse.y);
+  if (tooltip != nullptr) {
+    static const px_t EDGE_GAP = 2;     // Gap from screen edges
+    static const px_t CURSOR_GAP = 10;  // Horizontal gap from cursor
+    px_t x, y;
+    const px_t mouseX = toInt(_mouse.x);
+    const px_t mouseY = toInt(_mouse.y);
 
-        // y: below cursor, unless too close to the bottom of the screen
-        if (SCREEN_Y > mouseY + tooltip->height() + EDGE_GAP)
-            y = mouseY;
-        else
-            y = SCREEN_Y - tooltip->height() - EDGE_GAP;
+    // y: below cursor, unless too close to the bottom of the screen
+    if (SCREEN_Y > mouseY + tooltip->height() + EDGE_GAP)
+      y = mouseY;
+    else
+      y = SCREEN_Y - tooltip->height() - EDGE_GAP;
 
-        // x: to the right of the cursor, unless too close to the right of the screen
-        if (SCREEN_X > mouseX + tooltip->width() + EDGE_GAP + CURSOR_GAP)
-            x = mouseX + CURSOR_GAP;
-        else
-            x = mouseX - tooltip->width() - CURSOR_GAP;
-        tooltip->draw({ x, y });
-    }
+    // x: to the right of the cursor, unless too close to the right of the
+    // screen
+    if (SCREEN_X > mouseX + tooltip->width() + EDGE_GAP + CURSOR_GAP)
+      x = mouseX + CURSOR_GAP;
+    else
+      x = mouseX - tooltip->width() - CURSOR_GAP;
+    tooltip->draw({x, y});
+  }
 }
 
-void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const{
-    if (isDebug()) {
-        _terrain.at(_map[x][y]).draw(xLoc, yLoc);
-        return;
-    }
+void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
+  if (isDebug()) {
+    _terrain.at(_map[x][y]).draw(xLoc, yLoc);
+    return;
+  }
 
-
-    /*
-          H | E
-      L | tileID| R
-          G | F
-    */
-    const ScreenRect drawLoc(xLoc, yLoc, 0, 0);
-    const bool yOdd = (y % 2 == 1);
-    char tileID, L, R, E, F, G, H;
-    tileID = _map[x][y];
-    R = x == _mapX-1 ? tileID : _map[x+1][y];
-    L = x == 0 ? tileID : _map[x-1][y];
-    if (y == 0) {
-        H = E = tileID;
+  /*
+        H | E
+    L | tileID| R
+        G | F
+  */
+  const ScreenRect drawLoc(xLoc, yLoc, 0, 0);
+  const bool yOdd = (y % 2 == 1);
+  char tileID, L, R, E, F, G, H;
+  tileID = _map[x][y];
+  R = x == _mapX - 1 ? tileID : _map[x + 1][y];
+  L = x == 0 ? tileID : _map[x - 1][y];
+  if (y == 0) {
+    H = E = tileID;
+  } else {
+    if (yOdd) {
+      E = _map[x][y - 1];
+      H = x == 0 ? tileID : _map[x - 1][y - 1];
     } else {
-        if (yOdd) {
-            E = _map[x][y-1];
-            H = x == 0 ? tileID : _map[x-1][y-1];
-        } else {
-            E = x == _mapX-1 ? tileID : _map[x+1][y-1];
-            H = _map[x][y-1];
-        }
+      E = x == _mapX - 1 ? tileID : _map[x + 1][y - 1];
+      H = _map[x][y - 1];
     }
-    if (y == _mapY-1) {
-        G = F = tileID;
+  }
+  if (y == _mapY - 1) {
+    G = F = tileID;
+  } else {
+    if (!yOdd) {
+      F = x == _mapX - 1 ? tileID : _map[x + 1][y + 1];
+      G = _map[x][y + 1];
     } else {
-        if (!yOdd) {
-            F = x == _mapX-1 ? tileID : _map[x+1][y+1];
-            G = _map[x][y+1];
-        } else {
-            F = _map[x][y+1];
-            G = x == 0 ? tileID : _map[x-1][y+1];
-        }
+      F = _map[x][y + 1];
+      G = x == 0 ? tileID : _map[x - 1][y + 1];
     }
+  }
 
-    static const ScreenRect
-        TOP_LEFT     (0,        0,        TILE_W/2, TILE_H/2),
-        TOP_RIGHT    (TILE_W/2, 0,        TILE_W/2, TILE_H/2),
-        BOTTOM_LEFT  (0,        TILE_H/2, TILE_W/2, TILE_H/2),
-        BOTTOM_RIGHT (TILE_W/2, TILE_H/2, TILE_W/2, TILE_H/2),
-        LEFT_HALF    (0,        0,        TILE_W/2, TILE_H),
-        RIGHT_HALF   (TILE_W/2, 0,        TILE_W/2, TILE_H),
-        FULL         (0,        0,        TILE_W,   TILE_H);
+  static const ScreenRect TOP_LEFT(0, 0, TILE_W / 2, TILE_H / 2),
+      TOP_RIGHT(TILE_W / 2, 0, TILE_W / 2, TILE_H / 2),
+      BOTTOM_LEFT(0, TILE_H / 2, TILE_W / 2, TILE_H / 2),
+      BOTTOM_RIGHT(TILE_W / 2, TILE_H / 2, TILE_W / 2, TILE_H / 2),
+      LEFT_HALF(0, 0, TILE_W / 2, TILE_H),
+      RIGHT_HALF(TILE_W / 2, 0, TILE_W / 2, TILE_H), FULL(0, 0, TILE_W, TILE_H);
 
-    // Black background
-    // Assuming all tile images are set to SDL_BLENDMODE_ADD and quarter alpha
-    renderer.setDrawColor(Color::BLACK);
-    if (yOdd && x == 0) {
-        renderer.fillRect(drawLoc + RIGHT_HALF);
-    }
-    else if (!yOdd && x == _mapX-1) {
-        renderer.fillRect(drawLoc + LEFT_HALF);
-    }
-    else {
-        renderer.fillRect(drawLoc + FULL);
-    }
+  // Black background
+  // Assuming all tile images are set to SDL_BLENDMODE_ADD and quarter alpha
+  renderer.setDrawColor(Color::BLACK);
+  if (yOdd && x == 0) {
+    renderer.fillRect(drawLoc + RIGHT_HALF);
+  } else if (!yOdd && x == _mapX - 1) {
+    renderer.fillRect(drawLoc + LEFT_HALF);
+  } else {
+    renderer.fillRect(drawLoc + FULL);
+  }
 
-    // Half-alpha base tile
-    _terrain.at(tileID).setHalfAlpha();
-    if (yOdd && x == 0) {
-        _terrain.at(tileID).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-        _terrain.at(tileID).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-    } else if (!yOdd && x == _mapX-1) {
-        _terrain.at(tileID).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-        _terrain.at(tileID).draw(drawLoc + TOP_LEFT, TOP_LEFT);
-    } else {
-        _terrain.at(tileID).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-        _terrain.at(tileID).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-        _terrain.at(tileID).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-        _terrain.at(tileID).draw(drawLoc + TOP_LEFT, TOP_LEFT);
-    }
-    _terrain.at(tileID).setQuarterAlpha();
+  // Half-alpha base tile
+  _terrain.at(tileID).setHalfAlpha();
+  if (yOdd && x == 0) {
+    _terrain.at(tileID).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+    _terrain.at(tileID).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+  } else if (!yOdd && x == _mapX - 1) {
+    _terrain.at(tileID).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+    _terrain.at(tileID).draw(drawLoc + TOP_LEFT, TOP_LEFT);
+  } else {
+    _terrain.at(tileID).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+    _terrain.at(tileID).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+    _terrain.at(tileID).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+    _terrain.at(tileID).draw(drawLoc + TOP_LEFT, TOP_LEFT);
+  }
+  _terrain.at(tileID).setQuarterAlpha();
 
-    // Quarter-alpha L, R, E, F, G, H tiles
-    if (!yOdd || x != 0) {
-        _terrain.at(L).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-        _terrain.at(L).draw(drawLoc + TOP_LEFT, TOP_LEFT);
-        _terrain.at(G).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-        _terrain.at(H).draw(drawLoc + TOP_LEFT, TOP_LEFT);
-    }
-    if (yOdd || x != _mapX-1) {
-        _terrain.at(R).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-        _terrain.at(R).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-        _terrain.at(E).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-        _terrain.at(F).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-    }
+  // Quarter-alpha L, R, E, F, G, H tiles
+  if (!yOdd || x != 0) {
+    _terrain.at(L).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+    _terrain.at(L).draw(drawLoc + TOP_LEFT, TOP_LEFT);
+    _terrain.at(G).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+    _terrain.at(H).draw(drawLoc + TOP_LEFT, TOP_LEFT);
+  }
+  if (yOdd || x != _mapX - 1) {
+    _terrain.at(R).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+    _terrain.at(R).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+    _terrain.at(E).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+    _terrain.at(F).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+  }
 
-    /*if (!_terrain[tileID].isTraversable()) {
-        renderer.setDrawColor(Color::RED);
-        renderer.drawRect(drawLoc + FULL);
-    }*/
+  /*if (!_terrain[tileID].isTraversable()) {
+      renderer.setDrawColor(Color::RED);
+      renderer.drawRect(drawLoc + FULL);
+  }*/
 }
 
-void Client::drawLoadingScreen(const std::string &msg, double progress) const{
-    if (cmdLineArgs.contains("hideLoadingScreen"))
-        return;
+void Client::drawLoadingScreen(const std::string &msg, double progress) const {
+  if (cmdLineArgs.contains("hideLoadingScreen")) return;
 
-    static const Color
-        BACKGROUND = Color(0x3C, 0x38, 0x8C),
-        FOREGROUND = Color(0xE5, 0xE5, 0xE5);
+  static const Color BACKGROUND = Color(0x3C, 0x38, 0x8C),
+                     FOREGROUND = Color(0xE5, 0xE5, 0xE5);
 
-    renderer.setDrawColor(BACKGROUND);
-    renderer.clear();
+  renderer.setDrawColor(BACKGROUND);
+  renderer.clear();
 
-    Texture mainText(_defaultFont, "LOADING", FOREGROUND);
-    Texture message(_defaultFont, msg + " . . .", FOREGROUND);
+  Texture mainText(_defaultFont, "LOADING", FOREGROUND);
+  Texture message(_defaultFont, msg + " . . .", FOREGROUND);
 
-    static const px_t
-        Y_MAIN = 160,
-        Y_MSG = 180,
-        Y_BAR = 195,
-        BAR_LENGTH = 80,
-        BAR_HEIGHT = 5,
-        X_BAR = (SCREEN_X - BAR_LENGTH) / 2;
-    static px_t
-        X_MAIN = (SCREEN_X - mainText.width()) / 2;
+  static const px_t Y_MAIN = 160, Y_MSG = 180, Y_BAR = 195, BAR_LENGTH = 80,
+                    BAR_HEIGHT = 5, X_BAR = (SCREEN_X - BAR_LENGTH) / 2;
+  static px_t X_MAIN = (SCREEN_X - mainText.width()) / 2;
 
-    mainText.draw(X_MAIN, Y_MAIN);
-    message.draw((SCREEN_X - message.width()) / 2, Y_MSG);
-    renderer.setDrawColor(FOREGROUND);
-    renderer.drawRect({ X_BAR, Y_BAR, BAR_LENGTH, BAR_HEIGHT });
-    renderer.fillRect({ X_BAR, Y_BAR, toInt(BAR_LENGTH * progress), BAR_HEIGHT });
+  mainText.draw(X_MAIN, Y_MAIN);
+  message.draw((SCREEN_X - message.width()) / 2, Y_MSG);
+  renderer.setDrawColor(FOREGROUND);
+  renderer.drawRect({X_BAR, Y_BAR, BAR_LENGTH, BAR_HEIGHT});
+  renderer.fillRect({X_BAR, Y_BAR, toInt(BAR_LENGTH * progress), BAR_HEIGHT});
 
-    renderer.present();
+  renderer.present();
 }

@@ -3,77 +3,92 @@
 
 #include <string>
 
-#include "SpriteType.h"
 #include "../NormalVariable.h"
+#include "SpriteType.h"
 
 class Particle;
 
-class ParticleProfile{
-    std::string _id;
-    double _particlesPerSecond; // For gathering, crafting, and constant visuals like smoke and fire
-    double _gravity;
-    bool _noZDimension; // Do not use a virtual z dimension.  False by default.
-    bool _canBeUnderground = false; // If false, enforce a minimum altitude of 0.
-    NormalVariable
-        _particlesPerHit, // For attacking
-        _distance,
-        _altitude,
-        _velocity,
-        _fallSpeed,
-        _lifespan; // The particle will disappear after this time
-    MapPoint _direction;
-    Uint8 _alpha;
-    std::vector<const SpriteType *> _varieties, _pool;
+class ParticleProfile {
+  std::string _id;
+  double _particlesPerSecond;  // For gathering, crafting, and constant visuals
+                               // like smoke and fire
+  double _gravity;
+  bool _noZDimension;  // Do not use a virtual z dimension.  False by default.
+  bool _canBeUnderground = false;  // If false, enforce a minimum altitude of 0.
+  NormalVariable _particlesPerHit,  // For attacking
+      _distance, _altitude, _velocity, _fallSpeed,
+      _lifespan;  // The particle will disappear after this time
+  MapPoint _direction;
+  Uint8 _alpha;
+  std::vector<const SpriteType *> _varieties, _pool;
 
-public:
-    static const double DEFAULT_GRAVITY; // px/s/s
-    static const ms_t DEFAULT_LIFESPAN_MEAN, DEFAULT_LIFESPAN_SD;
+ public:
+  static const double DEFAULT_GRAVITY;  // px/s/s
+  static const ms_t DEFAULT_LIFESPAN_MEAN, DEFAULT_LIFESPAN_SD;
 
-    ParticleProfile(const std::string &id);
-    ~ParticleProfile();
-    
-    void particlesPerSecond(double f) { _particlesPerSecond = f; }
-    void particlesPerHit(double mean, double sd) { _particlesPerHit = NormalVariable(mean, sd); }
-    void distance(double mean, double sd) { _distance = NormalVariable(mean, sd); }
-    void altitude(double mean, double sd) { _altitude = NormalVariable(mean, sd); }
-    void velocity(double mean, double sd) { _velocity = NormalVariable(mean, sd); }
-    void direction(const MapPoint &p) { _direction = p; }
-    void fallSpeed(double mean, double sd) { _fallSpeed = NormalVariable(mean, sd); }
-    void lifespan(double mean, double sd) { _lifespan = NormalVariable(mean, sd); }
-    void gravityModifer(double mod) { _gravity *= mod; }
-    void noZDimension() { _noZDimension = true; }
-    void canBeUnderground() { _canBeUnderground = true; }
-    void alpha(Uint8 n) { _alpha = n; }
+  ParticleProfile(const std::string &id);
+  ~ParticleProfile();
 
-    bool canBeUnderground() const { return _canBeUnderground; }
+  void particlesPerSecond(double f) { _particlesPerSecond = f; }
+  void particlesPerHit(double mean, double sd) {
+    _particlesPerHit = NormalVariable(mean, sd);
+  }
+  void distance(double mean, double sd) {
+    _distance = NormalVariable(mean, sd);
+  }
+  void altitude(double mean, double sd) {
+    _altitude = NormalVariable(mean, sd);
+  }
+  void velocity(double mean, double sd) {
+    _velocity = NormalVariable(mean, sd);
+  }
+  void direction(const MapPoint &p) { _direction = p; }
+  void fallSpeed(double mean, double sd) {
+    _fallSpeed = NormalVariable(mean, sd);
+  }
+  void lifespan(double mean, double sd) {
+    _lifespan = NormalVariable(mean, sd);
+  }
+  void gravityModifer(double mod) { _gravity *= mod; }
+  void noZDimension() { _noZDimension = true; }
+  void canBeUnderground() { _canBeUnderground = true; }
+  void alpha(Uint8 n) { _alpha = n; }
 
-    struct ptrCompare{
-        bool operator()(const ParticleProfile *lhs, const ParticleProfile *rhs) const{
-            return lhs->_id < rhs->_id;
-        }
-    };
+  bool canBeUnderground() const { return _canBeUnderground; }
 
-    /*
-    Register a new SpriteType with the client describing a variety of particle.  Also, save it to
-    _varieties so that it might be chosen when a new Particle is created.
-    */
-    void addVariety(const std::string &imageFile, size_t count, const ScreenRect &drawRect);
-    void addVariety(const std::string &imageFile, size_t count); // Auto draw rect
+  struct ptrCompare {
+    bool operator()(const ParticleProfile *lhs,
+                    const ParticleProfile *rhs) const {
+      return lhs->_id < rhs->_id;
+    }
+  };
 
-    /*
-    Create a new particle and return its pointer.  The caller takes responsibility for freeing it.
-    */
-    Particle *instantiate(const MapPoint &location) const;
+  /*
+  Register a new SpriteType with the client describing a variety of particle.
+  Also, save it to _varieties so that it might be chosen when a new Particle is
+  created.
+  */
+  void addVariety(const std::string &imageFile, size_t count,
+                  const ScreenRect &drawRect);
+  void addVariety(const std::string &imageFile,
+                  size_t count);  // Auto draw rect
 
-    /*
-    Conceptually, returns delta * _particlesPerSecond.  However, since we want a whole number, and
-    since an accurate return value will often be < 0, randomization is used to give the correct
-    results over time, with the bonus of looking good.
-    */
-    size_t numParticlesContinuous(double delta) const;
+  /*
+  Create a new particle and return its pointer.  The caller takes responsibility
+  for freeing it.
+  */
+  Particle *instantiate(const MapPoint &location) const;
 
-    // Generate a random number of particles for a single hit, e.g. on an attack.
-    size_t numParticlesDiscrete() const;
+  /*
+  Conceptually, returns delta * _particlesPerSecond.  However, since we want a
+  whole number, and since an accurate return value will often be < 0,
+  randomization is used to give the correct results over time, with the bonus of
+  looking good.
+  */
+  size_t numParticlesContinuous(double delta) const;
+
+  // Generate a random number of particles for a single hit, e.g. on an attack.
+  size_t numParticlesDiscrete() const;
 };
 
 #endif

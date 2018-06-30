@@ -7,34 +7,38 @@
 
 class Object;
 
-class ObjectsByOwner{
-    class ObjectsWithSpecificOwner;
+class ObjectsByOwner {
+  class ObjectsWithSpecificOwner;
 
-public:
-    bool isObjectOwnedBy(size_t serial, const Permissions::Owner &owner) const;
-    const ObjectsWithSpecificOwner &getObjectsWithSpecificOwner(
-            const Permissions::Owner &owner) const;
-    void add(const Permissions::Owner &owner, size_t serial) { container[owner].add(serial); }
-    void remove(const Permissions::Owner &owner, size_t serial) { container[owner].remove(serial); }
+ public:
+  bool isObjectOwnedBy(size_t serial, const Permissions::Owner &owner) const;
+  const ObjectsWithSpecificOwner &getObjectsWithSpecificOwner(
+      const Permissions::Owner &owner) const;
+  void add(const Permissions::Owner &owner, size_t serial) {
+    container[owner].add(serial);
+  }
+  void remove(const Permissions::Owner &owner, size_t serial) {
+    container[owner].remove(serial);
+  }
 
-private:
-    class ObjectsWithSpecificOwner{
-    public:
-        size_t size() const { return container.size(); }
-        void add(size_t serial);
-        void remove(size_t serial);
-        bool isObjectOwned(size_t serial) const;
+ private:
+  class ObjectsWithSpecificOwner {
+   public:
+    size_t size() const { return container.size(); }
+    void add(size_t serial);
+    void remove(size_t serial);
+    bool isObjectOwned(size_t serial) const;
 
-        using Container = std::set<size_t>;
-        Container::const_iterator begin() const { return container.begin(); }
-        Container::const_iterator end() const { return container.end(); }
-        
-    private:
-        Container container;
-    };
+    using Container = std::set<size_t>;
+    Container::const_iterator begin() const { return container.begin(); }
+    Container::const_iterator end() const { return container.end(); }
 
-    std::map<Permissions::Owner, ObjectsWithSpecificOwner> container;
-    static ObjectsWithSpecificOwner EmptyQueryResult;
+   private:
+    Container container;
+  };
+
+  std::map<Permissions::Owner, ObjectsWithSpecificOwner> container;
+  static ObjectsWithSpecificOwner EmptyQueryResult;
 };
 
 #endif

@@ -4,42 +4,47 @@
 #include <SDL.h>
 #include <map>
 
-#include "ItemSet.h"
 #include "../Item.h"
+#include "ItemSet.h"
 
 class ObjectType;
 
 // Describes an item type
-class ServerItem : public Item{
-    size_t _stackSize = 1;
+class ServerItem : public Item {
+  size_t _stackSize = 1;
 
-    // The object that this item can construct
-    const ObjectType *_constructsObject;
+  // The object that this item can construct
+  const ObjectType *_constructsObject;
 
-    // An item returned to the user after this is used as a construction material
-    const ServerItem *_returnsOnConstruction = nullptr;
-    
-    bool _loaded{ false };
+  // An item returned to the user after this is used as a construction material
+  const ServerItem *_returnsOnConstruction = nullptr;
 
-public:
-    ServerItem(const std::string &id);
+  bool _loaded{false};
 
-    typedef std::pair<const ServerItem *, size_t> Slot;
-    typedef std::vector<Slot> vect_t;
+ public:
+  ServerItem(const std::string &id);
 
-    size_t stackSize() const { return _stackSize; }
-    void stackSize(size_t n) { _stackSize = n; }
-    void constructsObject(const ObjectType *obj) { _constructsObject = obj; }
-    const ObjectType *constructsObject() const { return _constructsObject; }
-    const ServerItem *returnsOnConstruction() const { return _returnsOnConstruction; }
-    void returnsOnConstruction(const ServerItem *item) { _returnsOnConstruction = item; }
-    bool valid() const { return _loaded; }
-    void loaded() { _loaded = true; }
+  typedef std::pair<const ServerItem *, size_t> Slot;
+  typedef std::vector<Slot> vect_t;
 
-    void fetchAmmoItem() const override;
+  size_t stackSize() const { return _stackSize; }
+  void stackSize(size_t n) { _stackSize = n; }
+  void constructsObject(const ObjectType *obj) { _constructsObject = obj; }
+  const ObjectType *constructsObject() const { return _constructsObject; }
+  const ServerItem *returnsOnConstruction() const {
+    return _returnsOnConstruction;
+  }
+  void returnsOnConstruction(const ServerItem *item) {
+    _returnsOnConstruction = item;
+  }
+  bool valid() const { return _loaded; }
+  void loaded() { _loaded = true; }
+
+  void fetchAmmoItem() const override;
 };
 
-bool vectHasSpace(const ServerItem::vect_t &vect, const ServerItem *item, size_t qty = 1);
+bool vectHasSpace(const ServerItem::vect_t &vect, const ServerItem *item,
+                  size_t qty = 1);
 
 bool operator<=(const ItemSet &itemSet, const ServerItem::vect_t &vect);
 bool operator>(const ItemSet &itemSet, const ServerItem::vect_t &vect);

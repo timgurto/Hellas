@@ -3,120 +3,110 @@
 #include "Client.h"
 #include "Target.h"
 
-Target::Target() :
-_entity(nullptr),
-_combatant(nullptr),
-_aggressive(false),
-_panel(nullptr),
-_menu(nullptr)
-{}
+Target::Target()
+    : _entity(nullptr),
+      _combatant(nullptr),
+      _aggressive(false),
+      _panel(nullptr),
+      _menu(nullptr) {}
 
-void Target::setAndAlertServer(
-        const Sprite &asEntity, const ClientCombatant &asCombatant, bool nowAggressive){
-    const Client &client = *Client::_instance;
-    const ClientCombatant &targetCombatant = asCombatant;
-    const Sprite &targetEntity = asEntity;
+void Target::setAndAlertServer(const Sprite &asEntity,
+                               const ClientCombatant &asCombatant,
+                               bool nowAggressive) {
+  const Client &client = *Client::_instance;
+  const ClientCombatant &targetCombatant = asCombatant;
+  const Sprite &targetEntity = asEntity;
 
-    if (! targetCombatant.canBeAttackedByPlayer())
-        nowAggressive = false;
+  if (!targetCombatant.canBeAttackedByPlayer()) nowAggressive = false;
 
-    if (targetIsDifferentFromServer(targetEntity, nowAggressive)){
-        if (nowAggressive)
-            targetCombatant.sendTargetMessage();
-        else
-            targetCombatant.sendSelectMessage();
-    }
-
-
-
-    _entity = &asEntity;
-    _combatant = &asCombatant;
-    _aggressive = nowAggressive;
-
-    _name = _entity->name();
-    _health = _combatant->health();
-    _maxHealth = _combatant->maxHealth();
-    _energy = _combatant->energy();
-    _maxEnergy = _combatant->maxEnergy();
-    refreshHealthBarColor();
-
-    if (_maxEnergy == 0)
-        _panel->hideEnergyBar();
+  if (targetIsDifferentFromServer(targetEntity, nowAggressive)) {
+    if (nowAggressive)
+      targetCombatant.sendTargetMessage();
     else
-        _panel->showEnergyBar();
+      targetCombatant.sendSelectMessage();
+  }
 
-    _panel->show();
+  _entity = &asEntity;
+  _combatant = &asCombatant;
+  _aggressive = nowAggressive;
+
+  _name = _entity->name();
+  _health = _combatant->health();
+  _maxHealth = _combatant->maxHealth();
+  _energy = _combatant->energy();
+  _maxEnergy = _combatant->maxEnergy();
+  refreshHealthBarColor();
+
+  if (_maxEnergy == 0)
+    _panel->hideEnergyBar();
+  else
+    _panel->showEnergyBar();
+
+  _panel->show();
 }
 
-void Target::refreshHealthBarColor(){
-    if (_combatant == nullptr)
-        return;
-    _panel->changeColor(_entity->nameColor());
+void Target::refreshHealthBarColor() {
+  if (_combatant == nullptr) return;
+  _panel->changeColor(_entity->nameColor());
 }
 
-bool Target::targetIsDifferentFromServer(const Sprite &newTarget, bool nowAggressive){
-    bool sameTargetAsBefore = &newTarget == _entity;
-    bool aggressionLevelChanged = isAggressive() != nowAggressive;
-    return !sameTargetAsBefore || aggressionLevelChanged;
+bool Target::targetIsDifferentFromServer(const Sprite &newTarget,
+                                         bool nowAggressive) {
+  bool sameTargetAsBefore = &newTarget == _entity;
+  bool aggressionLevelChanged = isAggressive() != nowAggressive;
+  return !sameTargetAsBefore || aggressionLevelChanged;
 }
 
-void Target::clear(){
-    const Client &client = *Client::_instance;
+void Target::clear() {
+  const Client &client = *Client::_instance;
 
-    bool serverHasTarget = _entity != nullptr;
-    if (serverHasTarget)
-        client.sendClearTargetMessage();
+  bool serverHasTarget = _entity != nullptr;
+  if (serverHasTarget) client.sendClearTargetMessage();
 
-    _entity = nullptr;
-    _combatant = nullptr;
-    _aggressive = false;
+  _entity = nullptr;
+  _combatant = nullptr;
+  _aggressive = false;
 
-    _panel->hide();
-    _menu->hide();
+  _panel->hide();
+  _menu->hide();
 }
 
-void Target::initializePanel(){
-    static const px_t
-        X = CombatantPanel::WIDTH + 2 * CombatantPanel::GAP,
-        Y = CombatantPanel::GAP;
-    _panel = new CombatantPanel(X, Y, _name, _health, _maxHealth, _energy, _maxEnergy);
-    _panel->hide();
-    _panel->setRightMouseDownFunction(openMenu, _menu);
+void Target::initializePanel() {
+  static const px_t X = CombatantPanel::WIDTH + 2 * CombatantPanel::GAP,
+                    Y = CombatantPanel::GAP;
+  _panel =
+      new CombatantPanel(X, Y, _name, _health, _maxHealth, _energy, _maxEnergy);
+  _panel->hide();
+  _panel->setRightMouseDownFunction(openMenu, _menu);
 }
 
-void Target::initializeMenu(){
-    static const px_t
-        WIDTH = 120,
-        ITEM_HEIGHT = 20;
-    _menu = new List({ _menu->absMouse->x, _menu->absMouse->y, WIDTH, 50 });
-    _menu->hide();
+void Target::initializeMenu() {
+  static const px_t WIDTH = 120, ITEM_HEIGHT = 20;
+  _menu = new List({_menu->absMouse->x, _menu->absMouse->y, WIDTH, 50});
+  _menu->hide();
 }
 
-void Target::openMenu(Element &e, const ScreenPoint &mousePos){
-    List &menu = dynamic_cast<List &>(e);
-    menu.setPosition(
-            toInt(menu.absMouse->x),
-            toInt(menu.absMouse->y));
+void Target::openMenu(Element &e, const ScreenPoint &mousePos) {
+  List &menu = dynamic_cast<List &>(e);
+  menu.setPosition(toInt(menu.absMouse->x), toInt(menu.absMouse->y));
 
-    menu.clearChildren();
-    
-    Client &client = *Client::_instance;
-    client.targetAsCombatant()->addMenuButtons(menu);
+  menu.clearChildren();
 
-    if (!menu.empty())
-        menu.show();
+  Client &client = *Client::_instance;
+  client.targetAsCombatant()->addMenuButtons(menu);
 
+  if (!menu.empty()) menu.show();
 }
 
 void Target::onTypeChange() {
-    _name = _entity->name();
-    _health = _combatant->health();
-    _maxHealth = _combatant->maxHealth();
-    _energy = _combatant->energy();
-    _maxEnergy = _combatant->maxEnergy();
+  _name = _entity->name();
+  _health = _combatant->health();
+  _maxHealth = _combatant->maxHealth();
+  _energy = _combatant->energy();
+  _maxEnergy = _combatant->maxEnergy();
 
-    if (_maxEnergy == 0)
-        _panel->hideEnergyBar();
-    else
-        _panel->showEnergyBar();
+  if (_maxEnergy == 0)
+    _panel->hideEnergyBar();
+  else
+    _panel->showEnergyBar();
 }

@@ -6,50 +6,46 @@
 #include "Element.h"
 #include "LinkedLabel.h"
 
-class TextBox : public Element{
-public:
-    enum ValidInput {
-        ALL,
-        NUMERALS,
-        LETTERS
-    };
+class TextBox : public Element {
+ public:
+  enum ValidInput { ALL, NUMERALS, LETTERS };
 
-    TextBox(const ScreenRect &rect, ValidInput validInput = ALL);
+  TextBox(const ScreenRect &rect, ValidInput validInput = ALL);
 
-    const std::string &text() const { return _text; }
-    void text(const std::string &text);
-    size_t textAsNum() const;
+  const std::string &text() const { return _text; }
+  void text(const std::string &text);
+  size_t textAsNum() const;
 
-    static void clearFocus();
-    static const TextBox *focus() { return currentFocus; }
-    static void focus(TextBox *textBox) { currentFocus = textBox; }
+  static void clearFocus();
+  static const TextBox *focus() { return currentFocus; }
+  static void focus(TextBox *textBox) { currentFocus = textBox; }
 
-    using OnChangeFunction = void(*)(void *);
-    void setOnChange(OnChangeFunction function, void *data = nullptr);
+  using OnChangeFunction = void (*)(void *);
+  void setOnChange(OnChangeFunction function, void *data = nullptr);
 
-    static void addText(const char *newText);
-    static void backspace();
+  static void addText(const char *newText);
+  static void backspace();
 
-    virtual void refresh();
+  virtual void refresh();
 
-    static void click(Element &e, const ScreenPoint &mousePos);
+  static void click(Element &e, const ScreenPoint &mousePos);
 
-    void forcePascalCase();
+  void forcePascalCase();
 
-private:
-    std::string _text;
+ private:
+  std::string _text;
 
-    ValidInput _validInput;
-    bool isInputValid(char c) const;
+  ValidInput _validInput;
+  bool isInputValid(char c) const;
 
-    OnChangeFunction _onChangeFunction{ nullptr };
-    void *_onChangeData{ nullptr };
-    void onChange();
+  OnChangeFunction _onChangeFunction{nullptr};
+  void *_onChangeData{nullptr};
+  void onChange();
 
-    static const size_t MAX_TEXT_LENGTH = 100;
+  static const size_t MAX_TEXT_LENGTH = 100;
 
-    static const px_t HEIGHT = 14;
-    static TextBox *currentFocus;
+  static const px_t HEIGHT = 14;
+  static TextBox *currentFocus;
 };
 
 #endif

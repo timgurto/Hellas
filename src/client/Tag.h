@@ -6,11 +6,11 @@
 class XmlReader;
 
 class TagNames {
-    using Container = std::map <std::string, std::string>;
-    Container container_;
+  using Container = std::map<std::string, std::string>;
+  Container container_;
 
-public:
-    const std::string &operator[](const std::string &id) const;
+ public:
+  const std::string &operator[](const std::string &id) const;
 
-    void readFromXML(XmlReader &xr);
+  void readFromXML(XmlReader &xr);
 };

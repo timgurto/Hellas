@@ -5,73 +5,67 @@
 #include "SpellSchool.h"
 
 SpellSchool::SpellSchool(const std::string &name) {
-    static const auto map = std::map<std::string, Type>{
-        { ""s, PHYSICAL },
-        { "physical"s, PHYSICAL },
-        { "air"s, AIR },
-        { "earth"s, EARTH },
-        { "fire"s, FIRE },
-        { "water"s, WATER }
-    };
-    auto it = map.find(name);
-    if (it != map.end())
-        _type = it->second;
+  static const auto map = std::map<std::string, Type>{
+      {""s, PHYSICAL},   {"physical"s, PHYSICAL}, {"air"s, AIR},
+      {"earth"s, EARTH}, {"fire"s, FIRE},         {"water"s, WATER}};
+  auto it = map.find(name);
+  if (it != map.end()) _type = it->second;
 }
 
 SpellSchool::operator std::string() const {
-    switch (_type) {
+  switch (_type) {
     case AIR:
-        return "Air";
+      return "Air";
     case EARTH:
-        return "Earth";
+      return "Earth";
     case FIRE:
-        return "Fire";
+      return "Fire";
     case WATER:
-        return "Water";
-    }
-    assert(false);
-    return{};
+      return "Water";
+  }
+  assert(false);
+  return {};
 }
 
 std::string SpellSchool::midSentenceString() const {
-    switch (_type) {
+  switch (_type) {
     case AIR:
-        return "air";
+      return "air";
     case EARTH:
-        return "earth";
+      return "earth";
     case FIRE:
-        return "fire";
+      return "fire";
     case WATER:
-        return "water";
+      return "water";
     case PHYSICAL:
-        return "physical";
-    }
-    assert(false);
-    return{};
+      return "physical";
+  }
+  assert(false);
+  return {};
 }
 
-const Color & SpellSchool::color() const {
-    switch (_type) {
+const Color &SpellSchool::color() const {
+  switch (_type) {
     case AIR:
-        return Color::AIR;
+      return Color::AIR;
     case EARTH:
-        return Color::EARTH;
+      return Color::EARTH;
     case FIRE:
-        return Color::FIRE;
+      return Color::FIRE;
     case WATER:
-        return Color::WATER;
-    }
-    assert(false);
-    return{Color::OUTLINE};
+      return Color::WATER;
+  }
+  assert(false);
+  return {Color::OUTLINE};
 }
 
-std::istream &operator >> (std::istream &lhs, SpellSchool &rhs) {
-    auto name = ""s;
-    lhs >> name;
-    rhs = { name };
-    return lhs;
+std::istream &operator>>(std::istream &lhs, SpellSchool &rhs) {
+  auto name = ""s;
+  lhs >> name;
+  rhs = {name};
+  return lhs;
 }
 
-std::string operator+ (const std::string &lhs, const SpellSchool &rhs) {
-    return lhs + std::string{ rhs };
+std::string operator+(const std::string &lhs, const SpellSchool &rhs) {
+  return lhs + std::string{rhs};
 }

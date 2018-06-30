@@ -10,33 +10,36 @@
 class Server;
 class ObjectType;
 
-class Spawner{
-    MapPoint _location;
-    double _radius; // Default: 0
-    const ObjectType *_type; // What it spawns
-    size_t _quantity; // How many to maintain.  Default: 1
+class Spawner {
+  MapPoint _location;
+  double _radius;           // Default: 0
+  const ObjectType *_type;  // What it spawns
+  size_t _quantity;         // How many to maintain.  Default: 1
 
-    // Time between an object being removed, and its replacement spawning.  Default: 0
-    // In the case of an NPC, this timer starts on death, rather than on the corpse despawning.
-    ms_t _respawnTime;
+  // Time between an object being removed, and its replacement spawning.
+  // Default: 0 In the case of an NPC, this timer starts on death, rather than
+  // on the corpse despawning.
+  ms_t _respawnTime;
 
-    std::set<char> _terrainWhitelist; // Only applies if nonempty
-    std::list<ms_t> _spawnSchedule; // The times at which new objects should spawn
+  std::set<char> _terrainWhitelist;  // Only applies if nonempty
+  std::list<ms_t>
+      _spawnSchedule;  // The times at which new objects should spawn
 
-public:
-    Spawner(const MapPoint &location = MapPoint{}, const ObjectType *type = nullptr);
+ public:
+  Spawner(const MapPoint &location = MapPoint{},
+          const ObjectType *type = nullptr);
 
-    const ObjectType *type() const { return _type; }
-    void radius(double r) { _radius = r; }
-    void quantity(size_t qty) { _quantity = qty; }
-    size_t quantity() const { return _quantity; }
-    void respawnTime(ms_t t) { _respawnTime = t; }
-    void allowTerrain(char c) { _terrainWhitelist.insert(c); }
+  const ObjectType *type() const { return _type; }
+  void radius(double r) { _radius = r; }
+  void quantity(size_t qty) { _quantity = qty; }
+  size_t quantity() const { return _quantity; }
+  void respawnTime(ms_t t) { _respawnTime = t; }
+  void allowTerrain(char c) { _terrainWhitelist.insert(c); }
 
-    void spawn(); // Attempt to add a new object.
-    // Add a spawn job to the queue.  After _respawnTime, spawn() will be called.
-    void scheduleSpawn();
-    void update(ms_t currentTime); // Act on any scheduled spawns that are due.
+  void spawn();  // Attempt to add a new object.
+  // Add a spawn job to the queue.  After _respawnTime, spawn() will be called.
+  void scheduleSpawn();
+  void update(ms_t currentTime);  // Act on any scheduled spawns that are due.
 };
 
 #endif

@@ -2,37 +2,32 @@
 
 Texture Images::defaultTexture;
 
-Images::Images(const std::string &directory) :
-    _directory(directory) {
+Images::Images(const std::string &directory) : _directory(directory) {
+  // Initialize default texture
+  if (defaultTexture) return;
+  defaultTexture = {16, 16};
 
+  defaultTexture.setRenderTarget();
 
-    // Initialize default texture
-    if (defaultTexture)
-        return;
-    defaultTexture = { 16, 16 };
+  renderer.setDrawColor(Color::MAGENTA);
+  renderer.fill();
 
-    defaultTexture.setRenderTarget();
-
-    renderer.setDrawColor(Color::MAGENTA);
-    renderer.fill();
-
-    renderer.setRenderTarget();
+  renderer.setRenderTarget();
 }
 
 const Texture &Images::operator[](const std::string key) {
-    auto it = _container.find(key);
+  auto it = _container.find(key);
 
-    // Image exists: return it
-    if (it != _container.end())
-        return it->second;
+  // Image exists: return it
+  if (it != _container.end()) return it->second;
 
-    // Doesn't exist: load it
-    auto tex = Texture{ _directory + "/" + key + ".png" };
-    if (tex) {
-        _container[key] = tex;
-        return _container[key];
-    }
+  // Doesn't exist: load it
+  auto tex = Texture{_directory + "/" + key + ".png"};
+  if (tex) {
+    _container[key] = tex;
+    return _container[key];
+  }
 
-    // File doesn't exist: return default
-    return defaultTexture;
+  // File doesn't exist: return default
+  return defaultTexture;
 }

@@ -6,26 +6,27 @@
 #include "../Args.h"
 #include "../client/Renderer.h"
 
-extern "C" { FILE __iob_func[3] = { *stdin,*stdout,*stderr }; }
+extern "C" {
+FILE __iob_func[3] = {*stdin, *stdout, *stderr};
+}
 
 Args cmdLineArgs;
 Renderer renderer;
 
-int main( int argc, char* argv[] )
-{
-    srand(static_cast<unsigned>(time(0)));
+int main(int argc, char* argv[]) {
+  srand(static_cast<unsigned>(time(0)));
 
-    cmdLineArgs.init(argc, argv);
-    cmdLineArgs.add("new");
-    cmdLineArgs.add("server-ip", "127.0.0.1");
-    cmdLineArgs.add("window");
-    cmdLineArgs.add("quiet");
-    cmdLineArgs.add("user-files-path", "testing/users");
-    cmdLineArgs.add("hideLoadingScreen");
-    
-    renderer.init();
+  cmdLineArgs.init(argc, argv);
+  cmdLineArgs.add("new");
+  cmdLineArgs.add("server-ip", "127.0.0.1");
+  cmdLineArgs.add("window");
+  cmdLineArgs.add("quiet");
+  cmdLineArgs.add("user-files-path", "testing/users");
+  cmdLineArgs.add("hideLoadingScreen");
 
-    auto result = Catch::Session().run( argc, argv );
+  renderer.init();
 
-    return ( result < 0xff ? result : 0xff );
+  auto result = Catch::Session().run(argc, argv);
+
+  return (result < 0xff ? result : 0xff);
 }

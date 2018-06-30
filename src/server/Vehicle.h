@@ -5,17 +5,17 @@
 
 class VehicleType;
 
-class Vehicle : public Object{
-    std::string _driver{};
+class Vehicle : public Object {
+  std::string _driver{};
 
-public:
-    Vehicle(const VehicleType *type, const MapPoint &loc);
-    virtual ~Vehicle(){}
+ public:
+  Vehicle(const VehicleType *type, const MapPoint &loc);
+  virtual ~Vehicle() {}
 
-    const std::string &driver() const { return _driver; }
-    void driver(const std::string &username) { _driver = username; }
-    
-    char classTag() const override { return 'v'; }
+  const std::string &driver() const { return _driver; }
+  void driver(const std::string &username) { _driver = username; }
+
+  char classTag() const override { return 'v'; }
 };
 
 #endif

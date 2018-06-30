@@ -3,17 +3,17 @@
 
 #include <string>
 
-class Terrain{
-    std::string _tag;
+class Terrain {
+  std::string _tag;
 
-protected:
-    Terrain(){}
+ protected:
+  Terrain() {}
 
-public:
-    static Terrain *empty();
-    static Terrain *withTag(const std::string &tag);
+ public:
+  static Terrain *empty();
+  static Terrain *withTag(const std::string &tag);
 
-    const std::string &tag() const { return _tag; }
+  const std::string &tag() const { return _tag; }
 };
 
 #endif

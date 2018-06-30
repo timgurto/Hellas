@@ -3,70 +3,74 @@
 
 #include <map>
 
+#include "../Item.h"
+#include "../Optional.h"
 #include "Projectile.h"
 #include "SoundProfile.h"
 #include "Texture.h"
 #include "Tooltip.h"
-#include "../Item.h"
-#include "../Optional.h"
 
 class ClientObjectType;
 class SoundProfile;
 
 // The client-side representation of an item type
-class ClientItem : public Item{
-    std::string _name;
-    Texture _icon;
-    Texture _gearImage;
-    ScreenPoint _drawLoc;
-    mutable Optional<Tooltip> _tooltip;
-    const SoundProfile *_sounds;
-    const Projectile::Type *_projectile{ nullptr };
-    
-    struct Particles {
-        std::string profile;
-        MapPoint offset; // Relative to gear offset for that slot.
-    };
-    std::vector<Particles> _particles;
+class ClientItem : public Item {
+  std::string _name;
+  Texture _icon;
+  Texture _gearImage;
+  ScreenPoint _drawLoc;
+  mutable Optional<Tooltip> _tooltip;
+  const SoundProfile *_sounds;
+  const Projectile::Type *_projectile{nullptr};
 
-    // The object that this item can construct
-    const ClientObjectType *_constructsObject;
+  struct Particles {
+    std::string profile;
+    MapPoint offset;  // Relative to gear offset for that slot.
+  };
+  std::vector<Particles> _particles;
 
-    static std::map<int, size_t> gearDrawOrder;
-    static std::vector<ScreenPoint> gearOffsets;
+  // The object that this item can construct
+  const ClientObjectType *_constructsObject;
 
-public:
-    ClientItem(const std::string &id = "", const std::string &name = "");
+  static std::map<int, size_t> gearDrawOrder;
+  static std::vector<ScreenPoint> gearOffsets;
 
-    const std::string &name() const { return _name; }
-    const Texture &icon() const { return _icon; }
-    void icon(const std::string &filename);
-    void gearImage(const std::string &filename);
-    void drawLoc(const ScreenPoint &loc) { _drawLoc = loc; }
-    static const std::map<int, size_t> &drawOrder() { return gearDrawOrder; }
-    void sounds(const std::string &id);
-    const SoundProfile *sounds() const { return _sounds; }
-    void projectile(const Projectile::Type *p) { _projectile = p; }
-    const Projectile::Type *projectile() const { return _projectile; }
-    bool canUse() const;
+ public:
+  ClientItem(const std::string &id = "", const std::string &name = "");
 
-    static const ScreenPoint &gearOffset(size_t slot) { return gearOffsets[slot]; }
+  const std::string &name() const { return _name; }
+  const Texture &icon() const { return _icon; }
+  void icon(const std::string &filename);
+  void gearImage(const std::string &filename);
+  void drawLoc(const ScreenPoint &loc) { _drawLoc = loc; }
+  static const std::map<int, size_t> &drawOrder() { return gearDrawOrder; }
+  void sounds(const std::string &id);
+  const SoundProfile *sounds() const { return _sounds; }
+  void projectile(const Projectile::Type *p) { _projectile = p; }
+  const Projectile::Type *projectile() const { return _projectile; }
+  bool canUse() const;
 
-    void fetchAmmoItem() const override;
+  static const ScreenPoint &gearOffset(size_t slot) {
+    return gearOffsets[slot];
+  }
 
-    void addParticles(const std::string &profileName, const MapPoint &offset);
-    const std::vector<Particles> &particles() const { return _particles; }
+  void fetchAmmoItem() const override;
 
-    typedef std::vector<std::pair<const ClientItem *, size_t> > vect_t;
+  void addParticles(const std::string &profileName, const MapPoint &offset);
+  const std::vector<Particles> &particles() const { return _particles; }
 
-    void constructsObject(const ClientObjectType *obj) { _constructsObject = obj; }
-    const ClientObjectType *constructsObject() const { return _constructsObject; }
+  typedef std::vector<std::pair<const ClientItem *, size_t> > vect_t;
 
-    const Tooltip &tooltip() const; // Getter; creates tooltip on first call.
+  void constructsObject(const ClientObjectType *obj) {
+    _constructsObject = obj;
+  }
+  const ClientObjectType *constructsObject() const { return _constructsObject; }
 
-    void draw(const MapPoint &loc) const;
+  const Tooltip &tooltip() const;  // Getter; creates tooltip on first call.
 
-    static void init();
+  void draw(const MapPoint &loc) const;
+
+  static void init();
 };
 
 const ClientItem *toClientItem(const Item *item);

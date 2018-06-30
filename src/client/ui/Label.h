@@ -8,26 +8,27 @@
 class Color;
 
 // Displays text.
-class Label : public Element{
-    Justification _justificationH, _justificationV;
-    bool _matchWidth;
-    Color _color;
+class Label : public Element {
+  Justification _justificationH, _justificationV;
+  bool _matchWidth;
+  Color _color;
 
-protected:
-    std::string _text;
+ protected:
+  std::string _text;
 
-public:
-    Label(const ScreenRect &rect, const std::string &text,
-          Justification justificationH = LEFT_JUSTIFIED,
-          Justification justificationV = TOP_JUSTIFIED);
+ public:
+  Label(const ScreenRect &rect, const std::string &text,
+        Justification justificationH = LEFT_JUSTIFIED,
+        Justification justificationV = TOP_JUSTIFIED);
 
-    virtual void refresh() override;
+  virtual void refresh() override;
 
-    void setColor(const Color &color);
+  void setColor(const Color &color);
 
-    void matchW(); // Set the label's width to the width of the contained text image.
+  void
+  matchW();  // Set the label's width to the width of the contained text image.
 
-    void changeText(const std::string &text);
+  void changeText(const std::string &text);
 };
 
 #endif

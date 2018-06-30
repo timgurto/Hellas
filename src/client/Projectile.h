@@ -8,56 +8,60 @@ class SoundProfile;
 
 // A sprite that travels in a straight line before disappearing.
 class Projectile : public Sprite {
-public:
-    struct Type;
+ public:
+  struct Type;
 
+  const std::string &particlesAtEnd() const {
+    return projectileType().particlesAtEnd;
+  }
 
-    const std::string &particlesAtEnd() const { return projectileType().particlesAtEnd; }
+  virtual void update(double delta) override;
 
-    virtual void update(double delta) override;
+ private:
+  Projectile(const Type &type, const MapPoint &start, const MapPoint &end)
+      : Sprite(&type, start), _end(end) {}
 
-private:
-    Projectile(const Type &type, const MapPoint &start, const MapPoint &end) :
-        Sprite(&type, start), _end(end) {}
+  const Type &projectileType() const {
+    return *dynamic_cast<const Type *>(this->type());
+  }
+  double speed() const { return projectileType().speed; }
+  void willMiss() { _willMiss = true; }
 
-    const Type &projectileType() const { return * dynamic_cast<const Type *>(this->type()); }
-    double speed() const { return projectileType().speed; }
-    void willMiss() { _willMiss = true; }
+  MapPoint _end;
+  const void *_onReachDestinationArg = nullptr;
+  bool _willMiss{false};
 
-    MapPoint _end;
-    const void *_onReachDestinationArg = nullptr;
-    bool _willMiss{ false };
+  using Tail = std::vector<Sprite *>;
+  Tail _tail;
 
-    using Tail = std::vector<Sprite *>;
-    Tail _tail;
+ public:
+  struct Type : public SpriteType {
+    Type(const std::string &id, const ScreenRect &drawRect)
+        : SpriteType(drawRect, "Images/Projectiles/"s + id + ".png"s), id(id) {}
+    static Type Dummy(const std::string &id) { return Type{id, {}}; }
 
-
-public:
-    struct Type : public SpriteType {
-        Type(const std::string &id, const ScreenRect &drawRect) :
-            SpriteType(drawRect, "Images/Projectiles/"s + id + ".png"s), id(id) {}
-        static Type Dummy(const std::string &id) { return Type{ id, {} }; }
-
-        struct ptrCompare {
-            bool operator()(const Type *lhs, const Type *rhs) const {
-                return lhs->id < rhs->id;
-            }
-        };
-
-        void sounds(const std::string &profile);
-        const SoundProfile *sounds() const { return _sounds; }
-
-        std::string id;
-        double speed = 0;
-        std::string particlesAtEnd {};
-        const SoundProfile *_sounds{ nullptr };
-
-        SpriteType _tailType;
-        int _tailLength{ 0 };
-        int _tailSeparation{ 0 };
-        void tail(const std::string &imageFile, const ScreenRect &drawRect, int length, int separation);
-
-        void instantiate(const MapPoint &start, const MapPoint &end, bool willMiss = false) const;
-        friend class Projectile;
+    struct ptrCompare {
+      bool operator()(const Type *lhs, const Type *rhs) const {
+        return lhs->id < rhs->id;
+      }
     };
+
+    void sounds(const std::string &profile);
+    const SoundProfile *sounds() const { return _sounds; }
+
+    std::string id;
+    double speed = 0;
+    std::string particlesAtEnd{};
+    const SoundProfile *_sounds{nullptr};
+
+    SpriteType _tailType;
+    int _tailLength{0};
+    int _tailSeparation{0};
+    void tail(const std::string &imageFile, const ScreenRect &drawRect,
+              int length, int separation);
+
+    void instantiate(const MapPoint &start, const MapPoint &end,
+                     bool willMiss = false) const;
+    friend class Projectile;
+  };
 };

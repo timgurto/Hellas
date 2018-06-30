@@ -3,75 +3,78 @@
 
 #include <string>
 
+#include "../types.h"
 #include "ClientCombatant.h"
 #include "Sprite.h"
 #include "ui/CombatantPanel.h"
 #include "ui/List.h"
-#include "../types.h"
 
-class Target{
-public:
-    Target();
+class Target {
+ public:
+  Target();
 
-    template<typename T>
-    void setAndAlertServer(const T &newTarget, bool nowAggressive){
-        setAndAlertServer(newTarget, newTarget, nowAggressive);
-    }
+  template <typename T>
+  void setAndAlertServer(const T &newTarget, bool nowAggressive) {
+    setAndAlertServer(newTarget, newTarget, nowAggressive);
+  }
 
-    void clear();
+  void clear();
 
-    const Sprite *entity() const { return _entity; }
-    const ClientCombatant *combatant() const { return _combatant; }
-    bool exists() const { return _entity != nullptr; }
-    bool isAggressive() const { return _aggressive; }
-    void makeAggressive() { _aggressive = true; }
-    void makePassive() { _aggressive = false; }
-    
-    const std::string &name() const { return _name; }
-    const Hitpoints &health() const { return _health; }
-    const Hitpoints &maxHealth() const { return _maxHealth; }
-    const Energy &energy() const { return _energy; }
-    const Energy &maxEnergy() const { return _energy; }
-    void refreshHealthBarColor();
+  const Sprite *entity() const { return _entity; }
+  const ClientCombatant *combatant() const { return _combatant; }
+  bool exists() const { return _entity != nullptr; }
+  bool isAggressive() const { return _aggressive; }
+  void makeAggressive() { _aggressive = true; }
+  void makePassive() { _aggressive = false; }
 
-    void updateHealth(Hitpoints newHealth) { _health = newHealth; }
-    void updateEnergy(Energy newEnergy) { _energy = newEnergy; }
+  const std::string &name() const { return _name; }
+  const Hitpoints &health() const { return _health; }
+  const Hitpoints &maxHealth() const { return _maxHealth; }
+  const Energy &energy() const { return _energy; }
+  const Energy &maxEnergy() const { return _energy; }
+  void refreshHealthBarColor();
 
-    void initializePanel();
-    CombatantPanel *panel() { return _panel; }
-    void initializeMenu();
-    List *menu() { return _menu; }
+  void updateHealth(Hitpoints newHealth) { _health = newHealth; }
+  void updateEnergy(Energy newEnergy) { _energy = newEnergy; }
 
-    static void openMenu(Element &e, const ScreenPoint &mousePos);
-    void hideMenu(){ _menu->hide(); }
+  void initializePanel();
+  CombatantPanel *panel() { return _panel; }
+  void initializeMenu();
+  List *menu() { return _menu; }
 
-    void onTypeChange();
+  static void openMenu(Element &e, const ScreenPoint &mousePos);
+  void hideMenu() { _menu->hide(); }
 
-private:
-    /*
-    Both pointers should contain the same value.  Having both is necessary because reinterpret_cast
-    doesn't appear to work.
-    */
-    const Sprite *_entity;
-    const ClientCombatant *_combatant;
+  void onTypeChange();
 
-    bool _aggressive; // True: will attack when in range.  False: mere selection, client-side only.
+ private:
+  /*
+  Both pointers should contain the same value.  Having both is necessary because
+  reinterpret_cast doesn't appear to work.
+  */
+  const Sprite *_entity;
+  const ClientCombatant *_combatant;
 
-    /*
-    Updated on set().  These are attributes, not functions, because the UI uses LinkedLabels that
-    contain data references.
-    */
-    std::string _name;
-    Hitpoints _health, _maxHealth;
-    Energy _energy, _maxEnergy;
+  bool _aggressive;  // True: will attack when in range.  False: mere selection,
+                     // client-side only.
 
-    void setAndAlertServer(
-            const Sprite &asEntity, const ClientCombatant &asCombatant, bool nowAggressive);
-    bool targetIsDifferentFromServer(const Sprite &newTarget, bool nowAggressive);
+  /*
+  Updated on set().  These are attributes, not functions, because the UI uses
+  LinkedLabels that contain data references.
+  */
+  std::string _name;
+  Hitpoints _health, _maxHealth;
+  Energy _energy, _maxEnergy;
 
-    CombatantPanel *_panel;
+  void setAndAlertServer(const Sprite &asEntity,
+                         const ClientCombatant &asCombatant,
+                         bool nowAggressive);
+  bool targetIsDifferentFromServer(const Sprite &newTarget,
+                                   bool nowAggress ive);
 
-    List *_menu;
+  CombatantPanel *_panel;
+
+  List *_menu;
 };
 
 #endif
