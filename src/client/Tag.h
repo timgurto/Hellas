@@ -3,6 +3,8 @@
 #include <map>
 #include <string>
 
+class XmlReader;
+
 class TagNames {
     using Container = std::map <std::string, std::string>;
     Container container_;
@@ -10,5 +12,5 @@ class TagNames {
 public:
     const std::string &operator[](const std::string &id) const;
 
-    void readFromXMLFile(const std::string &filename);
+    void readFromXML(XmlReader &xr);
 };

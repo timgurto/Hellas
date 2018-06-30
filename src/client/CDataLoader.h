@@ -3,6 +3,7 @@
 #include <string>
 
 class Client;
+class XmlReader;
 
 class CDataLoader {
 public:
@@ -11,18 +12,18 @@ public:
 
     void load(bool keepOldData = false);
 
-    void loadTerrain(const std::string &filename);
-    void loadParticles(const std::string &filename);
-    void loadSounds(const std::string &filename);
-    void loadProjectiles(const std::string &filename);
-    void loadSpells(const std::string &filename);
-    void loadBuffs(const std::string &filename);
-    void loadObjectTypes(const std::string &filename);
-    void loadItems(const std::string &filename);
-    void loadClasses(const std::string &filename);
-    void loadRecipes(const std::string &filename);
-    void loadNPCTypes(const std::string &filename);
-    void loadMap(const std::string &filename);
+    void loadTerrain(XmlReader &reader);
+    void loadParticles(XmlReader &reader);
+    void loadSounds(XmlReader &reader);
+    void loadProjectiles(XmlReader &reader);
+    void loadSpells(XmlReader &reader);
+    void loadBuffs(XmlReader &reader);
+    void loadObjectTypes(XmlReader &reader);
+    void loadItems(XmlReader &reader);
+    void loadClasses(XmlReader &reader);
+    void loadRecipes(XmlReader &reader);
+    void loadNPCTypes(XmlReader &reader);
+    void loadMap(XmlReader &reader);
 
 private:
     Client &_client;

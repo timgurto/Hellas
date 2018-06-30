@@ -11,10 +11,8 @@ const std::string & TagNames::operator[](const std::string & id) const {
     return it->second;
 }
 
-void TagNames::readFromXMLFile(const std::string &filename) {
-    XmlReader xr(filename);
+void TagNames::readFromXML(XmlReader &xr) {
     if (!xr) {
-        Client::instance().showErrorMessage("Failed to load data from "s + filename, Color::FAILURE);
         return;
     }
     for (auto elem : xr.getChildren("tag")) {

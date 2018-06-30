@@ -33,33 +33,58 @@ void CDataLoader::load(bool keepOldData) {
 
     auto dataFiles = findDataFiles();
 
-    for (const auto &file : dataFiles)
-        loadTerrain(file);
-    for (const auto &file : dataFiles)
-        loadParticles(file);
-    for (const auto &file : dataFiles)
-        loadSounds(file);
-    for (const auto &file : dataFiles)
-        loadProjectiles(file);
-    for (const auto &file : dataFiles)
-        loadSpells(file);
-    for (const auto &file : dataFiles)
-        loadBuffs(file);
-    for (const auto &file : dataFiles)
-        _client._tagNames.readFromXMLFile(file);
-    for (const auto &file : dataFiles)
-        loadObjectTypes(file);
-    for (const auto &file : dataFiles)
-        loadItems(file);
-    for (const auto &file : dataFiles)
-        loadClasses(file);
-    for (const auto &file : dataFiles)
-        loadRecipes(file);
-    for (const auto &file : dataFiles)
-        loadNPCTypes(file);
+    for (const auto &file : dataFiles) {
+        auto reader = XmlReader{ file };
+        loadTerrain(reader);
+    }
+    for (const auto &file : dataFiles) {
+        auto reader = XmlReader{ file };
+        loadParticles(reader);
+    }
+    for (const auto &file : dataFiles) {
+        auto reader = XmlReader{ file };
+        loadSounds(reader);
+    }
+    for (const auto &file : dataFiles) {
+        auto reader = XmlReader{ file };
+        loadProjectiles(reader);
+    }
+    for (const auto &file : dataFiles) {
+        auto reader = XmlReader{ file };
+        loadSpells(reader);
+    }
+    for (const auto &file : dataFiles) {
+        auto reader = XmlReader{ file };
+        loadBuffs(reader);
+    }
+    for (const auto &file : dataFiles) {
+        auto reader = XmlReader{ file };
+        _client._tagNames.readFromXML(reader);
+    }
+    for (const auto &file : dataFiles) {
+        auto reader = XmlReader{ file };
+        loadObjectTypes(reader);
+    }
+    for (const auto &file : dataFiles) {
+        auto reader = XmlReader{ file };
+        loadItems(reader);
+    }
+    for (const auto &file : dataFiles) {
+        auto reader = XmlReader{ file };
+        loadClasses(reader);
+    }
+    for (const auto &file : dataFiles) {
+        auto reader = XmlReader{ file };
+        loadRecipes(reader);
+    }
+    for (const auto &file : dataFiles) {
+        auto reader = XmlReader{ file };
+        loadNPCTypes(reader);
+    }
 
     _client.drawLoadingScreen("Loading map", 0.65);
-    loadMap(_path + "/map.xml");
+    auto reader = XmlReader{ _path + "/map.xml" };
+    loadMap(reader);
     
     _client._dataLoaded = true;
 }
@@ -86,8 +111,7 @@ CDataLoader::FilesList CDataLoader::findDataFiles() const {
     return list;
 }
 
-void CDataLoader::loadTerrain(const std::string &filename) {
-    XmlReader xr(filename);
+void CDataLoader::loadTerrain(XmlReader &xr) {
     if (!xr)
         return;
 
@@ -108,8 +132,7 @@ void CDataLoader::loadTerrain(const std::string &filename) {
     }
 }
 
-void CDataLoader::loadParticles(const std::string &filename) {
-    XmlReader xr(filename);
+void CDataLoader::loadParticles(XmlReader &xr) {
     if (!xr)
         return;
 
@@ -156,8 +179,7 @@ void CDataLoader::loadParticles(const std::string &filename) {
     }
 }
 
-void CDataLoader::loadSounds(const std::string &filename) {
-    XmlReader xr(filename);
+void CDataLoader::loadSounds(XmlReader &xr) {
     if (!xr)
         return;
 
@@ -184,8 +206,7 @@ void CDataLoader::loadSounds(const std::string &filename) {
     }
 }
 
-void CDataLoader::loadProjectiles(const std::string &filename) {
-    XmlReader xr(filename);
+void CDataLoader::loadProjectiles(XmlReader &xr) {
     if (!xr)
         return;
 
@@ -232,8 +253,7 @@ void CDataLoader::loadProjectiles(const std::string &filename) {
     }
 }
 
-void CDataLoader::loadSpells(const std::string &filename) {
-    XmlReader xr(filename);
+void CDataLoader::loadSpells(XmlReader &xr) {
     if (!xr)
         return;
 
@@ -323,8 +343,7 @@ void CDataLoader::loadSpells(const std::string &filename) {
     }
 }
 
-void CDataLoader::loadBuffs(const std::string &filename) {
-    XmlReader xr(filename);
+void CDataLoader::loadBuffs(XmlReader &xr) {
     if (!xr)
         return;
 
@@ -369,8 +388,7 @@ void CDataLoader::loadBuffs(const std::string &filename) {
     }
 }
 
-void CDataLoader::loadObjectTypes(const std::string &filename) {
-    XmlReader xr(filename);
+void CDataLoader::loadObjectTypes(XmlReader &xr) {
     if (!xr)
         return;
 
@@ -507,8 +525,7 @@ void CDataLoader::loadObjectTypes(const std::string &filename) {
     }
 }
 
-void CDataLoader::loadItems(const std::string &filename) {
-    XmlReader xr(filename);
+void CDataLoader::loadItems(XmlReader &xr) {
     if (!xr)
         return;
 
@@ -589,8 +606,7 @@ void CDataLoader::loadItems(const std::string &filename) {
     }
 }
 
-void CDataLoader::loadClasses(const std::string &filename) {
-    XmlReader xr(filename);
+void CDataLoader::loadClasses(XmlReader &xr) {
     if (!xr)
         return;
 
@@ -688,8 +704,7 @@ void CDataLoader::loadClasses(const std::string &filename) {
     }
 }
 
-void CDataLoader::loadRecipes(const std::string &filename) {
-    XmlReader xr(filename);
+void CDataLoader::loadRecipes(XmlReader &xr) {
     if (!xr)
         return;
 
@@ -743,8 +758,7 @@ void CDataLoader::loadRecipes(const std::string &filename) {
     }
 }
 
-void CDataLoader::loadNPCTypes(const std::string &filename) {
-    XmlReader xr(filename);
+void CDataLoader::loadNPCTypes(XmlReader &xr) {
     if (!xr)
         return;
 
@@ -848,8 +862,7 @@ void CDataLoader::loadNPCTypes(const std::string &filename) {
     }
 }
 
-void CDataLoader::loadMap(const std::string &filename) {
-    XmlReader xr(filename);
+void CDataLoader::loadMap(XmlReader &xr) {
     if (!xr) {
         return;
     }
