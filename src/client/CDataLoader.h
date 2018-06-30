@@ -33,4 +33,5 @@ private:
 
     using FilesList = std::set<std::string>;
     FilesList findDataFiles() const;
+    FilesList _files;
 };

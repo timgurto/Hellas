@@ -36,62 +36,38 @@ void CDataLoader::load(bool keepOldData) {
 
     _client.drawLoadingScreen("Loading data", 0.6);
 
-    auto dataFiles = findDataFiles();
+    _files = findDataFiles();
 
-    for (const auto &file : dataFiles) {
-        auto reader = XmlReader{ file };
-        loadTerrain(reader);
-    }
-    for (const auto &file : dataFiles) {
-        auto reader = XmlReader{ file };
-        loadParticles(reader);
-    }
-    for (const auto &file : dataFiles) {
-        auto reader = XmlReader{ file };
-        loadSounds(reader);
-    }
-    for (const auto &file : dataFiles) {
-        auto reader = XmlReader{ file };
-        loadProjectiles(reader);
-    }
-    for (const auto &file : dataFiles) {
-        auto reader = XmlReader{ file };
-        loadSpells(reader);
-    }
-    for (const auto &file : dataFiles) {
-        auto reader = XmlReader{ file };
-        loadBuffs(reader);
-    }
-    for (const auto &file : dataFiles) {
+    loadFromAllFiles(&CDataLoader::loadTerrain);
+    loadFromAllFiles(&CDataLoader::loadParticles);
+    loadFromAllFiles(&CDataLoader::loadSounds);
+    loadFromAllFiles(&CDataLoader::loadProjectiles);
+    loadFromAllFiles(&CDataLoader::loadSpells);
+    loadFromAllFiles(&CDataLoader::loadBuffs);
+
+    for (const auto &file : _files) {
         auto reader = XmlReader{ file };
         _client._tagNames.readFromXML(reader);
     }
-    for (const auto &file : dataFiles) {
-        auto reader = XmlReader{ file };
-        loadObjectTypes(reader);
-    }
-    for (const auto &file : dataFiles) {
-        auto reader = XmlReader{ file };
-        loadItems(reader);
-    }
-    for (const auto &file : dataFiles) {
-        auto reader = XmlReader{ file };
-        loadClasses(reader);
-    }
-    for (const auto &file : dataFiles) {
-        auto reader = XmlReader{ file };
-        loadRecipes(reader);
-    }
-    for (const auto &file : dataFiles) {
-        auto reader = XmlReader{ file };
-        loadNPCTypes(reader);
-    }
+
+    loadFromAllFiles(&CDataLoader::loadObjectTypes);
+    loadFromAllFiles(&CDataLoader::loadItems);
+    loadFromAllFiles(&CDataLoader::loadClasses);
+    loadFromAllFiles(&CDataLoader::loadRecipes);
+    loadFromAllFiles(&CDataLoader::loadNPCTypes);
 
     _client.drawLoadingScreen("Loading map", 0.65);
     auto reader = XmlReader{ _path + "/map.xml" };
     loadMap(reader);
     
     _client._dataLoaded = true;
+}
+
+void CDataLoader::loadFromAllFiles(LoadFunction load) {
+    for (const auto &file : _files) {
+        auto xr = XmlReader{ file };
+        (this->*load)(xr);
+    }
 }
 
 CDataLoader::FilesList CDataLoader::findDataFiles() const {
