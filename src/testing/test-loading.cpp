@@ -105,3 +105,15 @@ TEST_CASE("NPC types have correct defaults") {
     // AND it has 1 max health
     CHECK(ant.baseStats().maxHealth == 1);
 }
+
+TEST_CASE("NPC tags are loaded in client") {
+    GIVEN("An NPC type with a tag") {
+        WHEN("The client is finished loading") {
+            auto c = TestClient::WithData("npc_tag");
+            THEN("The NPC type has tags") {
+                const auto &npc = c.getFirstObjectType();
+                WAIT_UNTIL(npc.hasTags());
+            }
+        }
+    }
+}

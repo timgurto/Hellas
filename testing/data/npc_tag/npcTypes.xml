@@ -1,0 +1,8 @@
+<root>
+
+<npcType
+    id="woodElf" maxHealth="1">
+    <class name="elf"/>
+</npcType>
+
+</root>
