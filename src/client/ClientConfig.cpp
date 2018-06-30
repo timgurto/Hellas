@@ -2,7 +2,7 @@
 #include "../XmlReader.h"
 
 void ClientConfig::loadFromFile(const std::string &filename) {
-    XmlReader xr("client-config.xml");
+    auto xr = XmlReader::FromFile("client-config.xml");
 
     auto elem = xr.findChild("chatLog");
     xr.findAttr(elem, "width", chatW);

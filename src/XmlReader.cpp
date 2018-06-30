@@ -9,21 +9,24 @@
 #include "Rect.h"
 #endif // NO_SDL
 
-XmlReader::XmlReader(const char *filename):
-_root(nullptr){
-    newFile(filename);
+XmlReader::XmlReader(const std::string &string, bool isFile) :
+_root(nullptr) {
+        newFile(string);
+    }
 }
 
-XmlReader::XmlReader(const std::string &filename):
-_root(nullptr){
-    newFile(filename);
+XmlReader XmlReader::FromString(const std::string & data) {
+    return XmlReader(data, false);
+}
+
+XmlReader XmlReader::FromFile(const std::string & filename) {
+    return XmlReader(filename, true);
 }
 
 XmlReader::~XmlReader(){
     _doc.Clear();
 }
 
-bool XmlReader::newFile(const char *filename){
     _doc.Clear();
     _root = nullptr;
     if (!_doc.LoadFile(filename))
@@ -32,8 +35,13 @@ bool XmlReader::newFile(const char *filename){
     return *this;
 }
 
-bool XmlReader::newFile(const std::string &filename){
-    return newFile(filename.c_str());
+bool XmlReader::newFile(const std::string &filename) {
+    _doc.Clear();
+    _root = nullptr;
+    if (!_doc.LoadFile(filename))
+        return false;
+    _root = _doc.FirstChildElement();
+    return *this;
 }
 
 XmlReader::Elements XmlReader::getChildren(const std::string &val, TiXmlElement *elem) {

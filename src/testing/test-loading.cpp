@@ -6,7 +6,7 @@
 #include "../client/ClientNPCType.h"
 
 TEST_CASE("Read XML file with root only"){
-    XmlReader xr("testing/empty.xml");
+    auto xr = XmlReader::FromFile("testing/empty.xml");
     for (auto elem : xr.getChildren("nonexistent_tag"))
         ;
 }

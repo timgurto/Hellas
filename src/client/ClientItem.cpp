@@ -50,7 +50,7 @@ void ClientItem::draw(const MapPoint &loc) const{
 }
 
 void ClientItem::init(){
-    XmlReader xr("client-config.xml");
+    auto xr = XmlReader::FromFile("client-config.xml");
     auto elem = xr.findChild("gearDisplay");
     if (elem == nullptr)
         return;

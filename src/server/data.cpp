@@ -18,7 +18,7 @@
 extern Args cmdLineArgs;
 
 bool Server::readUserData(User &user){
-    XmlReader xr((_userFilesPath + user.name() + ".usr").c_str());
+    auto xr = XmlReader::FromFile(_userFilesPath + user.name() + ".usr");
     if (!xr)
         return false;
 
@@ -252,7 +252,7 @@ void Server::loadData(const std::string &path){
     _entities.clear();
 
     // Load terrain lists
-    XmlReader xr(path + "/terrain.xml");
+    auto xr = XmlReader::FromFile(path + "/terrain.xml");
     std::map<std::string, char> terrainCodes; // For easier lookup when compiling lists below.
     if (xr){
         TerrainList::clearLists();

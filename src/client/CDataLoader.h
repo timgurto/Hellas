@@ -31,6 +31,9 @@ private:
     Client &_client;
     Directory _path;
 
+    using LoadFunction = void (CDataLoader::*)(XmlReader &);
+    void loadFromAllFiles(LoadFunction load);
+
     using FilesList = std::set<std::string>;
     FilesList findDataFiles() const;
     FilesList _files;

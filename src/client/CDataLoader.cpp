@@ -46,8 +46,8 @@ void CDataLoader::load(bool keepOldData) {
     loadFromAllFiles(&CDataLoader::loadBuffs);
 
     for (const auto &file : _files) {
-        auto reader = XmlReader{ file };
-        _client._tagNames.readFromXML(reader);
+            auto xr = XmlReader::FromFile(file);
+            _client._tagNames.readFromXML(xr);
     }
 
     loadFromAllFiles(&CDataLoader::loadObjectTypes);
@@ -65,7 +65,7 @@ void CDataLoader::load(bool keepOldData) {
 
 void CDataLoader::loadFromAllFiles(LoadFunction load) {
     for (const auto &file : _files) {
-        auto xr = XmlReader{ file };
+        auto xr = XmlReader::FromFile(file);
         (this->*load)(xr);
     }
 }

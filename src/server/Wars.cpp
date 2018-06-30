@@ -214,7 +214,7 @@ void Wars::writeToXMLFile(const std::string &filename) const{
 }
 
 void Wars::readFromXMLFile(const std::string &filename){
-    XmlReader xr(filename);
+    auto xr = XmlReader::FromFile(filename);
     if (! xr){
         Server::debug()("Failed to load data from " + filename, Color::FAILURE);
         return;

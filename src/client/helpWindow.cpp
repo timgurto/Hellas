@@ -80,7 +80,7 @@ void showTopic() {
 void loadHelpEntries(HelpEntries &entries) {
     entries.clear();
     
-    auto xr = XmlReader("Data/help.xml");
+    auto xr = XmlReader::FromFile("Data/help.xml");
     if (!xr)
         return;
     for (auto elem : xr.getChildren("entry")) {

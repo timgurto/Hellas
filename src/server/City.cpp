@@ -119,7 +119,7 @@ void Cities::writeToXMLFile(const std::string &filename) const{
 }
 
 void Cities::readFromXMLFile(const std::string &filename){
-    XmlReader xr(filename);
+    auto xr = XmlReader::FromFile(filename);
     if (! xr){
         Server::debug()("Failed to load data from " + filename, Color::FAILURE);
         return;

@@ -18,18 +18,18 @@ struct StatsMod;
 // Wrapper class for TinyXml functionality
 class XmlReader{
     TiXmlDocument _doc;
-    TiXmlElement *_root;
+    TiXmlElement *_root{ nullptr };
+
+    XmlReader(const std::string &string, bool isFile);
 
 public:
-    XmlReader(const char *filename);
-    XmlReader(const std::string &filename);
+    static XmlReader FromFile(const std::string &filename);
     ~XmlReader();
 
     operator bool() const { return _root != 0; }
     bool operator!() const { return _root == 0; }
     
     // Close the current file and open a new one
-    bool newFile(const char *filename);
     bool newFile(const std::string &filename);
     
     using Elements = std::vector<TiXmlElement *>;
