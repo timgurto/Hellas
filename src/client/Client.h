@@ -428,6 +428,8 @@ private:
     ScreenPoint _intOffset; // An integer version of the offset
     void updateOffset(); // Update the offset, when the character moves.
 
+    void drawGearParticles(const ClientItem::vect_t &gear, const MapPoint &location, double delta);
+
     int _channelsPlaying; // The number of sound channels currently playing sounds; updated on tick
 
     ms_t _time;

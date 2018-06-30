@@ -448,6 +448,27 @@ void Client::updateOffset() {
         toInt(_offset.y)};
 }
 
+void Client::drawGearParticles(const ClientItem::vect_t &gear, const MapPoint & location,
+    double delta) {
+    for (const auto &pair : gear){
+        const auto item = pair.first;
+        if (!item)
+            continue;
+        for (const auto &particles : item->particles()) {
+            auto gearOffsetScreen = ClientItem::gearOffset(item->gearSlot());
+            auto gearOffset = MapPoint{
+                static_cast<double>(gearOffsetScreen.x),
+                static_cast<double>(gearOffsetScreen.y) };
+
+            auto particleX = location.x + gearOffset.x + particles.offset.x;
+            auto particleY = location.y;
+            auto altitude = -gearOffset.y - particles.offset.y;
+            addParticlesWithCustomAltitude(altitude, particles.profile, { particleX, particleY },
+                delta);
+        }
+    }
+}
+
 void Client::prepareAction(const std::string &msg){
     _actionMessage = msg;
 }

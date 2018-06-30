@@ -81,25 +81,8 @@ void Avatar::drawName() const {
 }
 
 void Avatar::update(double delta){
-    // Gear particles
     auto &client = Client::instance();
-    for (auto i = 0; i != Client::GEAR_SLOTS; ++i) {
-        const auto item = _gear[i].first;
-        if (!item)
-            continue;
-        for (const auto &particles : item->particles()) {
-            auto gearOffsetScreen = ClientItem::gearOffset(i);
-            auto gearOffset = MapPoint{
-                static_cast<double>(gearOffsetScreen.x),
-                static_cast<double>(gearOffsetScreen.y) };
-
-            auto particleX = location().x + gearOffset.x + particles.offset.x;
-            auto particleY = location().y;
-            auto altitude = -gearOffset.y -particles.offset.y;
-            client.addParticlesWithCustomAltitude(altitude, particles.profile,
-                { particleX, particleY }, delta);
-        }
-    }
+    client.drawGearParticles(_gear, location(), delta);
 
     Sprite::update(delta);
 }
