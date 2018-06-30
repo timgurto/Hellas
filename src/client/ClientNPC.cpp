@@ -23,6 +23,14 @@ const Color & ClientNPC::healthBarColor() const {
     return ClientObject::healthBarColor();
 }
 
+void ClientNPC::update(double delta) {
+    auto &client = Client::instance();
+    if (npcType()->hasGear())
+        client.drawGearParticles(npcType()->gear(), location(), delta);
+
+        ClientObject::update(delta);
+}
+
 void ClientNPC::draw(const Client & client) const {
     ClientObject::draw(client);
 

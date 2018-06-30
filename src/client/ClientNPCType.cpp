@@ -19,13 +19,13 @@ ClientObjectType(id)
 void ClientNPCType::addGear(const ClientItem & item) {
     auto slot = item.gearSlot();
     if (_gear.empty()) {
-        _gear = { Client::GEAR_SLOTS, nullptr };
+        _gear = { Client::GEAR_SLOTS, {nullptr, 0} };
     }
-    _gear[slot] = &item;
+    _gear[slot] = { &item, 1 };
 }
 
 const ClientItem * ClientNPCType::gear(size_t slot) const {
     if (_gear.empty())
         return nullptr;
-    return _gear[slot];
+    return _gear[slot].first;
 }

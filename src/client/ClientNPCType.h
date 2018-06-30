@@ -17,6 +17,7 @@ public:
 
     void addGear(const ClientItem &item);
     const ClientItem *gear(size_t slot) const;
+    const ClientItem::vect_t &gear() const { return _gear; }
     bool hasGear() const { return !_gear.empty(); }
 
     void makeCivilian() { _isCivilian = true; }
@@ -26,8 +27,7 @@ public:
 
 private:
     const Projectile::Type *_projectile = nullptr;
-    using Gear = std::vector<const ClientItem *>;
-    Gear _gear; // For humanoid NPCs
+    ClientItem::vect_t _gear; // For humanoid NPCs
     bool _isCivilian{ false };
 };
 
