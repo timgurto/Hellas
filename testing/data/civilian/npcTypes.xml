@@ -1,0 +1,3 @@
+<root>
+<npcType id="civilian" maxHealth="1" isCivilian="1" />
+</root>

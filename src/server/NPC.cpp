@@ -20,6 +20,12 @@ void NPC::update(ms_t timeElapsed){
     Entity::update(timeElapsed);
 }
 
+bool NPC::canBeAttackedBy(const User & user) const {
+    if (npcType()->isCivilian())
+        return false;
+    return true;
+}
+
 CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type, SpellSchool school, px_t range) const {
     const auto
         MISS_CHANCE = Percentage{ 5 };

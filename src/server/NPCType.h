@@ -11,7 +11,8 @@ class NPCType : public ObjectType{
 
     LootTable _lootTable;
     Level _level;
-    bool _isRanged = false;
+    bool _isRanged{ false };
+    bool _isCivilian{ false };
     SpellSchool _school{ SpellSchool::PHYSICAL };
 
 public:
@@ -27,6 +28,8 @@ public:
     Level level() const { return _level; }
     void makeRanged() { _isRanged = true; }
     bool isRanged() const { return _isRanged; }
+    void makeCivilian() { _isCivilian = true; }
+    bool isCivilian() const { return _isCivilian; }
     void school(SpellSchool school) { _school = school; }
     SpellSchool school() const { return _school; }
 

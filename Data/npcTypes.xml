@@ -14,7 +14,7 @@
 
 <npcType
     id="prometheus" name="Prometheus"
-	level="60" maxHealth="600" attack="75" attackTime="2548" >
+	level="60" maxHealth="100" isCivilian="1" >
     <humanoid>
         <gear id="linenChiton" />
         <gear id="sandals" />

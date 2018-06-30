@@ -584,13 +584,11 @@ void Server::loadData(const std::string &path){
 
             auto n = 0;
             if (xr.findAttr(elem, "isRanged", n) && n != 0) nt->makeRanged();
+            if (xr.findAttr(elem, "isCivilian", n) && n != 0) nt->makeCivilian();
 
             Stats baseStats = NPCType::BASE_STATS;
             xr.findAttr(elem, "maxHealth", baseStats.maxHealth);
-
-            // physicalDamage is used to store attack, regardless of actual damage school.
             xr.findAttr(elem, "attack", baseStats.physicalDamage);
-            
             xr.findAttr(elem, "attackTime", baseStats.attackTime);
             nt->baseStats(baseStats);
 

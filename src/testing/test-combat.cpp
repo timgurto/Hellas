@@ -206,3 +206,23 @@ TEST_CASE("A player dying doesn't crash the server"){
     // The server survives
     s.nop();
 }
+
+TEST_CASE("Civilian NPCs") {
+    GIVEN("An NPC with \"isCivilian\" and 1 health") {
+        auto s = TestServer::WithData("civilian");
+        auto c = TestClient::WithData("civilian");
+
+        s.addNPC("civilian", { 10, 15 });
+        WAIT_UNTIL(c.objects().size() == 1);
+
+        WHEN("a client attempts to attack it") {
+            const auto &civilian = c.getFirstNPC();
+            c.sendMessage(CL_TARGET_ENTITY, toString(civilian.serial()));
+
+            THEN("it is still alive") {
+                REPEAT_FOR_MS(500);
+                CHECK(civilian.isAlive());
+            }
+        }
+    }
+}
