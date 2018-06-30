@@ -798,21 +798,9 @@ void CDataLoader::loadNPCTypes(const std::string &filename) {
                 nt->projectile(**it);
         }
 
-        auto pair = _client._objectTypes.insert(nt);
-        if (!pair.second) {
-            // A ClientObjectType is being pointed to by items; they need to point to this instead.
-            const ClientObjectType *dummy = *pair.first;
-            for (const auto &pair : _client._items) {
-                const ClientItem &item = pair.second;
-                if (item.constructsObject() == dummy) {
-                    ClientItem &nonConstItem = const_cast<ClientItem &>(item);
-                    nonConstItem.constructsObject(nt);
-                }
-            }
-            _client._objectTypes.erase(dummy);
-            delete dummy;
-            _client._objectTypes.insert(nt);
-        }
+        for (auto objTag : xr.getChildren("class", elem))
+            if (xr.findAttr(objTag, "name", s))
+                nt->addTag(s);
 
         for (auto particles : xr.getChildren("particles", elem)) {
             auto profileName = ""s;
@@ -840,6 +828,23 @@ void CDataLoader::loadNPCTypes(const std::string &filename) {
 
         auto n = 0;
         if (xr.findAttr(elem, "isCivilian", n) && n != 0) nt->makeCivilian();
+
+        // Insert
+        auto pair = _client._objectTypes.insert(nt);
+        if (!pair.second) {
+            // A ClientObjectType is being pointed to by items; they need to point to this instead.
+            const ClientObjectType *dummy = *pair.first;
+            for (const auto &pair : _client._items) {
+                const ClientItem &item = pair.second;
+                if (item.constructsObject() == dummy) {
+                    ClientItem &nonConstItem = const_cast<ClientItem &>(item);
+                    nonConstItem.constructsObject(nt);
+                }
+            }
+            _client._objectTypes.erase(dummy);
+            delete dummy;
+            _client._objectTypes.insert(nt);
+        }
     }
 }
 
