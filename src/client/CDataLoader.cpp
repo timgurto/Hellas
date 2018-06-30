@@ -837,6 +837,9 @@ void CDataLoader::loadNPCTypes(const std::string &filename) {
 
             nt->addGear(it->second);
         }
+
+        auto n = 0;
+        if (xr.findAttr(elem, "isCivilian", n) && n != 0) nt->makeCivilian();
     }
 }
 

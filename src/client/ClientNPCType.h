@@ -19,12 +19,16 @@ public:
     const ClientItem *gear(size_t slot) const;
     bool hasGear() const { return !_gear.empty(); }
 
+    void makeCivilian() { _isCivilian = true; }
+    bool isCivilian() const { return _isCivilian; }
+
     virtual char classTag() const override { return 'n';} 
 
 private:
     const Projectile::Type *_projectile = nullptr;
     using Gear = std::vector<const ClientItem *>;
     Gear _gear; // For humanoid NPCs
+    bool _isCivilian{ false };
 };
 
 #endif

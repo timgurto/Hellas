@@ -12,6 +12,8 @@ ClientObject(serial, type, loc)
 bool ClientNPC::canBeAttackedByPlayer() const{
     if (! ClientCombatant::canBeAttackedByPlayer())
         return false;
+    if (npcType()->isCivilian())
+        return false;
     return true;
 }
 
