@@ -262,15 +262,15 @@ void Client::run(){
         drawLoadingScreen("Loading data", 0.6);
         bool shouldLoadDefaultData = true;
         if (cmdLineArgs.contains("load-test-data-first")){
-            CDataLoader{ *this, "testing/data/minimal" }.load();
+            CDataLoader::FromPath(*this, "testing/data/minimal").load();
             shouldLoadDefaultData = false;
         }
         if (cmdLineArgs.contains("data")){
-            CDataLoader{ *this, cmdLineArgs.getString("data") }.load();
+            CDataLoader::FromPath(*this, cmdLineArgs.getString("data")).load();
             shouldLoadDefaultData = false;
         }
         if (shouldLoadDefaultData)
-            CDataLoader{ *this }.load();
+            CDataLoader::FromPath(*this).load();
     }
     initialiseData();
 

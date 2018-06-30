@@ -75,7 +75,7 @@ private:
 
     void run();
     void stop();
-    void loadData(const std::string path) { CDataLoader{ *_client, path }.load(); }
+    void loadData(const std::string path) { CDataLoader::FromPath(*_client, path).load(); }
 
     bool TestClient::messageWasReceivedSince(MessageCode desiredMsg, size_t startingIndex) const;
 };

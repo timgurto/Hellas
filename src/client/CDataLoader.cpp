@@ -13,9 +13,14 @@
 #include "../Podes.h"
 #include "../XmlReader.h"
 
-CDataLoader::CDataLoader(Client &client, const Directory &path):
-    _client(client),
-    _path(path){}
+CDataLoader::CDataLoader(Client &client) :
+    _client(client) {}
+
+CDataLoader CDataLoader::FromPath(Client &client, const Directory & path) {
+    auto loader = CDataLoader(client);
+    loader._path = path;
+    return loader;
+}
 
 void CDataLoader::load(bool keepOldData) {
     if (!keepOldData) {

@@ -5,7 +5,7 @@
 
 TestClient::TestClient():
 _client(new Client){
-    CDataLoader{ *_client, "testing/data/minimal" }.load();
+    CDataLoader::FromPath(*_client, "testing/data/minimal").load();
     _client->setRandomUsername();
     _client->_shouldAutoLogIn = true;
     run();
@@ -13,14 +13,14 @@ _client(new Client){
 
 TestClient::TestClient(const std::string &string, StringType type):
 _client(new Client){
-    CDataLoader{ *_client, "testing/data/minimal" }.load();
+    CDataLoader::FromPath(*_client, "testing/data/minimal").load();
     switch(type){
     case USERNAME:
         _client->_username = string;
         break;
     case DATA_PATH:
         _client->setRandomUsername();
-        CDataLoader{ *_client, "testing/data/" + string }.load(true);
+        CDataLoader::FromPath(*_client, "testing/data/" + string).load(true);
         break;
     default:
         assert(false);
@@ -31,8 +31,8 @@ _client(new Client){
 
 TestClient::TestClient(const std::string &username, const std::string &dataPath):
 _client(new Client){
-    CDataLoader{ *_client, "testing/data/minimal" }.load();
-    CDataLoader{ *_client, "testing/data/" + dataPath }.load(true);
+    CDataLoader::FromPath(*_client, "testing/data/minimal").load();
+    CDataLoader::FromPath(*_client, "testing/data/" + dataPath).load(true);
     _client->_username = username;
     _client->_shouldAutoLogIn = true;
     run();

@@ -8,7 +8,7 @@ class XmlReader;
 class CDataLoader {
 public:
     using Directory = std::string;
-    CDataLoader(Client &client, const Directory &path = "Data");
+    static CDataLoader FromPath(Client &client, const Directory &path = "Data");
 
     void load(bool keepOldData = false);
 
@@ -26,6 +26,8 @@ public:
     void loadMap(XmlReader &reader);
 
 private:
+    CDataLoader(Client &client);
+
     Client &_client;
     Directory _path;
 
