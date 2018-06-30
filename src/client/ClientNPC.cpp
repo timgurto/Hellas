@@ -17,6 +17,12 @@ bool ClientNPC::canBeAttackedByPlayer() const{
     return true;
 }
 
+const Color & ClientNPC::healthBarColor() const {
+    if (npcType()->isCivilian())
+        return Color::COMBATANT_NEUTRAL;
+    return ClientObject::healthBarColor();
+}
+
 void ClientNPC::draw(const Client & client) const {
     ClientObject::draw(client);
 

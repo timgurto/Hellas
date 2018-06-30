@@ -17,6 +17,7 @@ public:
 
     // From ClientCombatant:
     bool canBeAttackedByPlayer() const override;
+    const Color &healthBarColor() const override;
 
     // From Sprite:
     void draw(const Client &client) const override;
