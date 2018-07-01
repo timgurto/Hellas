@@ -158,6 +158,7 @@
     <ClCompile Include="src\testing\test-stats.cpp" />
     <ClCompile Include="src\testing\test-quests.cpp" />
     <ClCompile Include="src\client\CDataLoader.cpp" />
+    <ClCompile Include="src\server\DataLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -283,5 +284,6 @@
     <ClInclude Include="src\client\ui\Indicator.h" />
     <ClInclude Include="src\client\Connection.h" />
     <ClInclude Include="src\client\CDataLoader.h" />
+    <ClInclude Include="src\server\DataLoader.h" />
   </ItemGroup>
 </Project>

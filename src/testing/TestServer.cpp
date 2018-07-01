@@ -16,7 +16,7 @@ TestServer::TestServer() {
 TestServer::TestServer(const std::string &dataPath) {
   _server = new Server;
   _server->loadData("testing/data/minimal");
-  _server->loadData("testing/data/" + dataPath);
+  _server->loadData("testing/data/" + dataPath, true);
   run();
 }
 

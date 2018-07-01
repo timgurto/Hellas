@@ -189,6 +189,7 @@ void Server::checkSockets() {
 
 void Server::run() {
   if (!_dataLoaded) loadData();
+  initialiseData();
   spawnInitialObjects();
 
   std::thread publishStatsThread, saveDataThread;
@@ -717,4 +718,22 @@ void Server::publishStats(const Server *server) {
   statsFile << "],\n";
 
   statsFile << "\n};\n";
+}
+
+void Server::initialiseData() {
+  // Connect ranged weapons with their ammo
+  for (auto &itemConst : _items) {
+    auto &item = const_cast<ServerItem &>(itemConst);
+    item.fetchAmmoItem();
+  }
+
+  ProgressLock::registerStagedLocks();
+
+  // Remove invalid items referred to by objects/recipes
+  for (auto it = _items.begin(); it != _items.end();) {
+    if (!it->valid()) {
+      _items.erase(it++);
+    } else
+      ++it;
+  }
 }

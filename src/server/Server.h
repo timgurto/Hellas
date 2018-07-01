@@ -15,6 +15,7 @@
 #include "City.h"
 #include "Class.h"
 #include "CollisionChunk.h"
+#include "DataLoader.h"
 #include "Entities.h"
 #include "ItemSet.h"
 #include "LogConsole.h"
@@ -194,7 +195,9 @@ class Server {
   Kings _kings;
 
   void loadData(
-      const std::string &path = "Data");  // Attempt to load data from files.
+      const std::string &path = "Data",
+      bool shouldKeepOldData = false);  // Attempt to load data from files.
+  void initialiseData();
   bool _dataLoaded;  // If false when run() is called, load default data.
   static void saveData(const Entities &entities, const Wars &wars,
                        const Cities &cities);
@@ -225,15 +228,16 @@ class Server {
   void gatherObject(size_t serial, User &user);
 
   friend class City;
-  friend class Object;
-  friend class User;
-  friend class NPC;
+  friend class DataLoader;
   friend class Entity;
-  friend class TestServer;
-  friend class Spawner;
+  friend class NPC;
+  friend class Object;
   friend class Permissions;
   friend class ProgressLock;
   friend class ServerItem;
+  friend class Spawner;
+  friend class TestServer;
+  friend class User;
 
   NPC &addNPC(const NPCType *type, const MapPoint &location);
   Object &addObject(const ObjectType *type, const MapPoint &location,
