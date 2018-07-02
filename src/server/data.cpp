@@ -228,8 +228,6 @@ void Server::writeUserData(const User &user) const {
 }
 
 void Server::loadData(const std::string &path, bool shouldKeepOldData) {
-  DataLoader::FromPath(*this, path).load(shouldKeepOldData);
-
   auto xr = XmlReader::FromFile("");
 
   std::ifstream fs;
@@ -397,8 +395,6 @@ void Server::loadData(const std::string &path, bool shouldKeepOldData) {
     if (!loadExistingData) break;
 
     _wars.readFromXMLFile("World/wars.world");
-
-    _dataLoaded = true;
 
     return;
   } while (false);

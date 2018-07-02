@@ -40,7 +40,7 @@ class TestServer {
   void waitForUsers(size_t numUsers) const;
 
   Server *operator->() { return _server; }
-  void loadData(const std::string path) { _server->loadData(path); }
+  void loadData(const std::string path);
   void sendMessage(const Socket &socket, MessageCode code,
                    const std::string &args) {
     _server->sendMessage(socket, code, args);

@@ -9,15 +9,19 @@ extern Args cmdLineArgs;
 
 TestServer::TestServer() {
   _server = new Server;
-  _server->loadData("testing/data/minimal");
+  DataLoader::FromPath(*_server, "testing/data/minimal").load();
   run();
 }
 
 TestServer::TestServer(const std::string &dataPath) {
   _server = new Server;
-  _server->loadData("testing/data/minimal");
-  _server->loadData("testing/data/" + dataPath, true);
+  DataLoader::FromPath(*_server, "testing/data/minimal").load();
+  DataLoader::FromPath(*_server, "testing/data/" + dataPath).load(true);
   run();
+}
+
+void TestServer::loadData(const std::string path) {
+  DataLoader::FromPath(*_server, "testing/data/" + path).load(true);
 }
 
 TestServer TestServer::KeepingOldData() {

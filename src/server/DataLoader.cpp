@@ -83,6 +83,8 @@ void DataLoader::load(bool keepOldData) {
     // loadProjectiles(XmlReader::FromString(_data));
     //_client._tagNames.readFromXML(XmlReader::FromString(_data));
   }
+
+  _server._dataLoaded = true;
 }
 
 void DataLoader::loadFromAllFiles(LoadFunction load) {

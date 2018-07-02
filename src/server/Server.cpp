@@ -188,7 +188,8 @@ void Server::checkSockets() {
 }
 
 void Server::run() {
-  if (!_dataLoaded) loadData();
+  if (!_dataLoaded) DataLoader::FromPath(*this).load();
+  loadData();
   initialiseData();
   spawnInitialObjects();
 
