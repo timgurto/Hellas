@@ -189,8 +189,8 @@ void Server::checkSockets() {
 
 void Server::run() {
   if (!_dataLoaded) DataLoader::FromPath(*this).load();
-  loadData();
   initialiseData();
+  loadWorldState();
   spawnInitialObjects();
 
   std::thread publishStatsThread, saveDataThread;

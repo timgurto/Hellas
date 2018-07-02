@@ -194,7 +194,7 @@ class Server {
   Cities _cities;
   Kings _kings;
 
-  void loadData(
+  void loadWorldState(
       const std::string &path = "Data",
       bool shouldKeepOldData = false);  // Attempt to load data from files.
   void initialiseData();

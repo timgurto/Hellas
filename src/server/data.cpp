@@ -227,7 +227,7 @@ void Server::writeUserData(const User &user) const {
   xw.publish();
 }
 
-void Server::loadData(const std::string &path, bool shouldKeepOldData) {
+void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {
   auto xr = XmlReader::FromFile("");
 
   std::ifstream fs;
