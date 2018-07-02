@@ -238,3 +238,47 @@ TEST_CASE("After a user accepts a quest, he can't do so again") {
   const auto &a = c.getFirstObject();
   CHECK(a.startsQuests().size() == 1);
 }
+
+TEST_CASE("Objects have a quest UI") {
+  GIVEN("an object that gives a quest") {
+    auto data = R"(
+      <objectType id="A" />
+      <quest id="quest1" startsAt="A" endsAt="A" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    s.addObject("A", {10, 15});
+
+    WHEN("a client logs in") {
+      auto c = TestClient::WithDataString(data);
+
+      THEN("The NPC has an object window") {
+        WAIT_UNTIL(c.objects().size() == 1);
+        const auto &npc = c.getFirstObject();
+        WAIT_UNTIL(npc.window() != nullptr);
+      }
+    }
+  }
+}
+
+TEST_CASE("NPCs have a quest UI") {
+  GIVEN("an NPC that gives a quest") {
+    auto data = R"(
+      <npcType id="A" maxHealth="1" />
+      <quest id="quest1" startsAt="A" endsAt="A" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    s.addNPC("A", {10, 15});
+
+    WHEN("a client logs in") {
+      auto c = TestClient::WithDataString(data);
+
+      THEN("The NPC has an object window") {
+        WAIT_UNTIL(c.objects().size() == 1);
+        const auto &npc = c.getFirstNPC();
+        WAIT_UNTIL(npc.window() != nullptr);
+      }
+    }
+  }
+}

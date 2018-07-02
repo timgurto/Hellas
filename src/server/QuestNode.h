@@ -29,6 +29,8 @@ class QuestNode {
 
  public:
   void sendQuestsToClient(const User &targetUser) const;
+  bool startsQuest(const Quest::ID &id) const { return _type->startsQuest(id); }
+  bool endsQuest(const Quest::ID &id) const { return _type->endsQuest(id); }
 
  private:
   QuestNode() {}

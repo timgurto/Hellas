@@ -2,6 +2,7 @@
 #define NPC_TYPE_H
 
 #include "LootTable.h"
+#include "QuestNode.h"
 #include "objects/ObjectType.h"
 
 class ClientItem;

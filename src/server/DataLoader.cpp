@@ -42,8 +42,8 @@ void DataLoader::load(bool keepOldData) {
 
     loadFromAllFiles(&DataLoader::loadTerrainLists);
     loadFromAllFiles(&DataLoader::loadObjectTypes);
-    loadFromAllFiles(&DataLoader::loadQuests);
     loadFromAllFiles(&DataLoader::loadNPCTypes);
+    loadFromAllFiles(&DataLoader::loadQuests);
     loadFromAllFiles(&DataLoader::loadItems);
     loadFromAllFiles(&DataLoader::loadRecipes);
     loadFromAllFiles(&DataLoader::loadSpells);
@@ -57,8 +57,8 @@ void DataLoader::load(bool keepOldData) {
   } else {
     loadTerrainLists(XmlReader::FromString(_data));
     loadObjectTypes(XmlReader::FromString(_data));
-    loadQuests(XmlReader::FromString(_data));
     loadNPCTypes(XmlReader::FromString(_data));
+    loadQuests(XmlReader::FromString(_data));
     loadItems(XmlReader::FromString(_data));
     loadRecipes(XmlReader::FromString(_data));
     loadSpells(XmlReader::FromString(_data));

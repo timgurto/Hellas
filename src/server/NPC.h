@@ -11,7 +11,7 @@
 class User;
 
 // Objects that can engage in combat, and that are AI-driven
-class NPC : public Entity {
+class NPC : public Entity, public QuestNode {
   enum State {
     IDLE,
     CHASE,

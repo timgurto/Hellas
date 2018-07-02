@@ -5,7 +5,10 @@
 #include "User.h"
 
 NPC::NPC(const NPCType *type, const MapPoint &loc)
-    : Entity(type, loc), _level(type->level()), _state(IDLE) {
+    : Entity(type, loc),
+      QuestNode(*type, serial()),
+      _level(type->level()),
+      _state(IDLE) {
   _loot.reset(new Loot);
 }
 
@@ -260,6 +263,9 @@ void NPC::sendInfoToClient(const User &targetUser) const {
   for (const auto &debuff : debuffs())
     server.sendMessage(client, SV_ENTITY_GOT_DEBUFF,
                        makeArgs(serial(), debuff.type()));
+
+  // Quests
+  sendQuestsToClient(targetUser);
 }
 
 void NPC::describeSelfToNewWatcher(const User &watcher) const {

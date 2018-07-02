@@ -1864,17 +1864,16 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest,
                                     size_t startSerial) {
   const auto entity = _entities.find(startSerial);
   if (!entity) return;
-  auto object = dynamic_cast<const Object *>(entity);
-  if (!object) return;
+  auto node = dynamic_cast<const QuestNode *>(entity);
+  if (!node) return;
 
-  if (!isEntityInRange(user.socket(), user, object)) return;
+  if (!isEntityInRange(user.socket(), user, entity)) return;
 
-  const auto &objType = object->objType();
-  if (!objType.startsQuest(quest)) return;
+  if (!node->startsQuest(quest)) return;
 
   user.startQuest(quest);
 
-  object->sendQuestsToClient(user);
+  node->sendQuestsToClient(user);
 }
 
 void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,
