@@ -2,19 +2,14 @@
 #include "TestServer.h"
 #include "testing.h"
 
-auto simpleQuests = R"(
-  <objectType id="A" />
-  <objectType id="B" />
-  <objectType id="D" />
-
-  <quest id="questFromAToB" startsAt="A" endsAt="B" />
-  <quest id="quest2FromAToB" startsAt="A" endsAt="B" />
-  <quest id="questFromD" startsAt="D" endsAt="D" />
-)";
-
 TEST_CASE("Simple quest") {
-  auto s = TestServer::WithDataString(simpleQuests);
-  auto c = TestClient::WithDataString(simpleQuests);
+  auto data = R"(
+    <objectType id="A" />
+    <objectType id="B" />
+    <quest id="questFromAToB" startsAt="A" endsAt="B" />
+  )";
+  auto s = TestServer::WithDataString(data);
+  auto c = TestClient::WithDataString(data);
 
   // Given an object, A
   s.addObject("A", {10, 15});
@@ -40,8 +35,14 @@ TEST_CASE("Simple quest") {
 }
 
 TEST_CASE("Cases where a quest should not be accepted") {
-  auto s = TestServer::WithDataString(simpleQuests);
-  auto c = TestClient::WithDataString(simpleQuests);
+  auto data = R"(
+    <objectType id="A" />
+    <objectType id="B" />
+    <objectType id="D" />
+    <quest id="questFromAToB" startsAt="A" endsAt="B" />
+  )";
+  auto s = TestServer::WithDataString(data);
+  auto c = TestClient::WithDataString(data);
   s.waitForUsers(1);
 
   SECTION("No attempt is made to accept a quest") {}
@@ -75,8 +76,13 @@ TEST_CASE("Cases where a quest should not be accepted") {
 }
 
 TEST_CASE("Cases where a quest should not be completed") {
-  auto s = TestServer::WithDataString(simpleQuests);
-  auto c = TestClient::WithDataString(simpleQuests);
+  auto data = R"(
+    <objectType id="A" />
+    <objectType id="B" />
+    <quest id="questFromAToB" startsAt="A" endsAt="B" />
+  )";
+  auto s = TestServer::WithDataString(data);
+  auto c = TestClient::WithDataString(data);
 
   // Given an object, A
   s.addObject("A", {10, 15});
@@ -91,7 +97,8 @@ TEST_CASE("Cases where a quest should not be completed") {
   WAIT_UNTIL(user.numQuests() == 1);
 
   SECTION("The client tries to complete a quest at a nonexistent object") {
-    c.sendMessage(CL_COMPLETE_QUEST, makeArgs(50));
+    auto invalidSerial = 50;
+    c.sendMessage(CL_COMPLETE_QUEST, makeArgs(invalidSerial));
   }
 
   SECTION("The object is the wrong type") {
@@ -105,8 +112,14 @@ TEST_CASE("Cases where a quest should not be completed") {
 
 TEST_CASE("Identical source and destination") {
   // Given two quests that start at A and end at B
-  auto s = TestServer::WithDataString(simpleQuests);
-  auto c = TestClient::WithDataString(simpleQuests);
+  auto data = R"(
+    <objectType id="A" />
+    <objectType id="B" />
+    <quest id="quest1" startsAt="A" endsAt="B" />
+    <quest id="quest2" startsAt="A" endsAt="B" />
+  )";
+  auto s = TestServer::WithDataString(data);
+  auto c = TestClient::WithDataString(data);
 
   // And an object, A
   s.addObject("A", {10, 15});
@@ -116,18 +129,18 @@ TEST_CASE("Identical source and destination") {
   s.addObject("B", {15, 10});
   auto b = a.serial() + 1;
 
-  // When a client accepts two quests from A (that finish at B)
+  // When a client accepts both quests
   s.waitForUsers(1);
-  c.sendMessage(CL_ACCEPT_QUEST, makeArgs("questFromAToB", a.serial()));
-  c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest2FromAToB", a.serial()));
+  c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", a.serial()));
+  c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest2", a.serial()));
 
   // Then he is on two quest
   auto &user = s.getFirstUser();
   WAIT_UNTIL(user.numQuests() == 2);
 
-  // When he completes the quests at B
-  c.sendMessage(CL_COMPLETE_QUEST, makeArgs("questFromAToB", b));
-  c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest2FromAToB", b));
+  // And when he completes the quests at B
+  c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", b));
+  c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest2", b));
 
   // Then he is not on any quests
   REPEAT_FOR_MS(100);
@@ -135,13 +148,18 @@ TEST_CASE("Identical source and destination") {
 }
 
 TEST_CASE("Client knows about objects' quests") {
-  auto s = TestServer::WithDataString(simpleQuests);
+  auto data = R"(
+    <objectType id="A" />
+    <quest id="quest1" startsAt="A" endsAt="A" />
+    <quest id="quest2" startsAt="A" endsAt="A" />
+  )";
+  auto s = TestServer::WithDataString(data);
 
   // Given an object, A
   s.addObject("A", {10, 15});
 
   // When a client logs in
-  auto c = TestClient::WithDataString(simpleQuests);
+  auto c = TestClient::WithDataString(data);
   s.waitForUsers(1);
 
   // Then he knows that the object has two quests
@@ -149,18 +167,22 @@ TEST_CASE("Client knows about objects' quests") {
   const auto &a = c.getFirstObject();
   WAIT_UNTIL(a.startsQuests().size() == 2);
 
-  // And he knows that it gives "quest2FromAToB"
-  CHECK(a.startsQuests().find("quest2FromAToB") != a.startsQuests().end());
+  // And he knows that it gives "questFromAToB"
+  CHECK(a.startsQuests().find("quest1") != a.startsQuests().end());
 }
 
 TEST_CASE("Client knows when objects have no quests") {
-  auto s = TestServer::WithDataString(simpleQuests);
+  // Given an object type B, with no quests
+  auto data = R"(
+    <objectType id="B" />
+  )";
+  auto s = TestServer::WithDataString(data);
 
-  // Given an object, B
+  // And an object, B
   s.addObject("B", {10, 15});
 
   // When a client logs in
-  auto c = TestClient::WithDataString(simpleQuests);
+  auto c = TestClient::WithDataString(data);
   s.waitForUsers(1);
 
   // Then he knows that the object has no quests
@@ -171,26 +193,35 @@ TEST_CASE("Client knows when objects have no quests") {
 }
 
 TEST_CASE("A user can't pick up a quest he's already on") {
-  auto s = TestServer::WithDataString(simpleQuests);
-  auto c = TestClient::WithDataString(simpleQuests);
+  auto data = R"(
+    <objectType id="A" />
+    <quest id="quest1" startsAt="A" endsAt="A" />
+  )";
+  auto s = TestServer::WithDataString(data);
+  auto c = TestClient::WithDataString(data);
 
   // Given the user has accepted a quest from A
   s.waitForUsers(1);
   auto &user = s.getFirstUser();
-  user.startQuest("questFromAToB");
+  user.startQuest("quest1");
 
   // When an object, A, is added (which has two quests)
   s.addObject("A", {10, 15});
 
-  // Then the user is told that there is only one quest available
+  // Then the user is told that there are no quests available
   REPEAT_FOR_MS(100);
   const auto &a = c.getFirstObject();
-  CHECK(a.startsQuests().size() == 1);
+  CHECK(a.startsQuests().size() == 0);
 }
 
 TEST_CASE("After a user accepts a quest, he can't do so again") {
-  auto s = TestServer::WithDataString(simpleQuests);
-  auto c = TestClient::WithDataString(simpleQuests);
+  auto data = R"(
+    <objectType id="A" />
+    <quest id="quest1" startsAt="A" endsAt="A" />
+    <quest id="quest2" startsAt="A" endsAt="A" />
+  )";
+  auto s = TestServer::WithDataString(data);
+  auto c = TestClient::WithDataString(data);
 
   // Given an object, A
   s.addObject("A", {10, 15});
@@ -198,7 +229,7 @@ TEST_CASE("After a user accepts a quest, he can't do so again") {
 
   // When a client accepts a quest from A
   s.waitForUsers(1);
-  c.sendMessage(CL_ACCEPT_QUEST, makeArgs("questFromAToB", serial));
+  c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", serial));
   auto &user = s.getFirstUser();
   WAIT_UNTIL(user.numQuests() == 1);
 
