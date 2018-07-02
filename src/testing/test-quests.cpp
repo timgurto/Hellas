@@ -2,9 +2,19 @@
 #include "TestServer.h"
 #include "testing.h"
 
+auto simpleQuests = R"(
+  <objectType id="A" />
+  <objectType id="B" />
+  <objectType id="D" />
+
+  <quest id="questFromAToB" startsAt="A" endsAt="B" />
+  <quest id="quest2FromAToB" startsAt="A" endsAt="B" />
+  <quest id="questFromD" startsAt="D" endsAt="D" />
+)";
+
 TEST_CASE("Simple quest") {
-  auto s = TestServer::WithData("simpleQuest");
-  auto c = TestClient::WithData("simpleQuest");
+  auto s = TestServer::WithDataString(simpleQuests);
+  auto c = TestClient::WithDataString(simpleQuests);
 
   // Given an object, A
   s.addObject("A", {10, 15});
@@ -30,8 +40,8 @@ TEST_CASE("Simple quest") {
 }
 
 TEST_CASE("Cases where a quest should not be accepted") {
-  auto s = TestServer::WithData("simpleQuest");
-  auto c = TestClient::WithData("simpleQuest");
+  auto s = TestServer::WithDataString(simpleQuests);
+  auto c = TestClient::WithDataString(simpleQuests);
   s.waitForUsers(1);
 
   SECTION("No attempt is made to accept a quest") {}
@@ -65,8 +75,8 @@ TEST_CASE("Cases where a quest should not be accepted") {
 }
 
 TEST_CASE("Cases where a quest should not be completed") {
-  auto s = TestServer::WithData("simpleQuest");
-  auto c = TestClient::WithData("simpleQuest");
+  auto s = TestServer::WithDataString(simpleQuests);
+  auto c = TestClient::WithDataString(simpleQuests);
 
   // Given an object, A
   s.addObject("A", {10, 15});
@@ -95,8 +105,8 @@ TEST_CASE("Cases where a quest should not be completed") {
 
 TEST_CASE("Identical source and destination") {
   // Given two quests that start at A and end at B
-  auto s = TestServer::WithData("simpleQuest");
-  auto c = TestClient::WithData("simpleQuest");
+  auto s = TestServer::WithDataString(simpleQuests);
+  auto c = TestClient::WithDataString(simpleQuests);
 
   // And an object, A
   s.addObject("A", {10, 15});
@@ -125,13 +135,13 @@ TEST_CASE("Identical source and destination") {
 }
 
 TEST_CASE("Client knows about objects' quests") {
-  auto s = TestServer::WithData("simpleQuest");
+  auto s = TestServer::WithDataString(simpleQuests);
 
   // Given an object, A
   s.addObject("A", {10, 15});
 
   // When a client logs in
-  auto c = TestClient::WithData("simpleQuest");
+  auto c = TestClient::WithDataString(simpleQuests);
   s.waitForUsers(1);
 
   // Then he knows that the object has two quests
@@ -144,13 +154,13 @@ TEST_CASE("Client knows about objects' quests") {
 }
 
 TEST_CASE("Client knows when objects have no quests") {
-  auto s = TestServer::WithData("simpleQuest");
+  auto s = TestServer::WithDataString(simpleQuests);
 
   // Given an object, B
   s.addObject("B", {10, 15});
 
   // When a client logs in
-  auto c = TestClient::WithData("simpleQuest");
+  auto c = TestClient::WithDataString(simpleQuests);
   s.waitForUsers(1);
 
   // Then he knows that the object has no quests
@@ -161,8 +171,8 @@ TEST_CASE("Client knows when objects have no quests") {
 }
 
 TEST_CASE("A user can't pick up a quest he's already on") {
-  auto s = TestServer::WithData("simpleQuest");
-  auto c = TestClient::WithData("simpleQuest");
+  auto s = TestServer::WithDataString(simpleQuests);
+  auto c = TestClient::WithDataString(simpleQuests);
 
   // Given the user has accepted a quest from A
   s.waitForUsers(1);
@@ -179,8 +189,8 @@ TEST_CASE("A user can't pick up a quest he's already on") {
 }
 
 TEST_CASE("After a user accepts a quest, he can't do so again") {
-  auto s = TestServer::WithData("simpleQuest");
-  auto c = TestClient::WithData("simpleQuest");
+  auto s = TestServer::WithDataString(simpleQuests);
+  auto c = TestClient::WithDataString(simpleQuests);
 
   // Given an object, A
   s.addObject("A", {10, 15});

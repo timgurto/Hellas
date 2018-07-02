@@ -1,7 +1,0 @@
-<root>
-
-<quest id="questFromAToB" startsAt="A" endsAt="B" />
-<quest id="quest2FromAToB" startsAt="A" endsAt="B" />
-<quest id="questFromD" startsAt="D" endsAt="D" />
-
-</root>
