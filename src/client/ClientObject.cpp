@@ -804,6 +804,7 @@ const Texture &ClientObject::cursor(const Client &client) const {
 
   const ClientObjectType &ot = *objectType();
   if (userHasAccess()) {
+    if (startsQuests().size() > 0) return client.cursorQuest();
     if (ot.canGather()) return client.cursorGather();
     if (ot.containerSlots() > 0) return client.cursorContainer();
   }

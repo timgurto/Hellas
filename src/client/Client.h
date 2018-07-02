@@ -117,6 +117,7 @@ class Client {
   const Texture &cursorGather() const { return _cursorGather; }
   const Texture &cursorContainer() const { return _cursorContainer; }
   const Texture &cursorAttack() const { return _cursorAttack; }
+  const Texture &cursorQuest() const { return _cursorQuest; }
 
   static const px_t ICON_SIZE;
   static const px_t TILE_W, TILE_H;
@@ -211,7 +212,8 @@ class Client {
   // How often to send location updates to server (while moving)
   static const ms_t TIME_BETWEEN_LOCATION_UPDATES;
 
-  Texture _cursorNormal, _cursorGather, _cursorContainer, _cursorAttack;
+  Texture _cursorNormal, _cursorGather, _cursorContainer, _cursorAttack,
+      _cursorQuest;
   const Texture *_currentCursor;
 
   bool _isDismounting;  // Whether the user is looking for a dismount location.
