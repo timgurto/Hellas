@@ -54,18 +54,6 @@ void DataLoader::load(bool keepOldData) {
     auto reader = XmlReader::FromFile(_path + "/map.xml");
     loadMap(reader);
 
-    // loadFromAllFiles(&DataLoader::loadTerrain);
-    // loadFromAllFiles(&DataLoader::loadParticles);
-    // loadFromAllFiles(&DataLoader::loadSounds);
-    // loadFromAllFiles(&DataLoader::loadProjectiles);
-
-    // for (const auto &file : _files) {
-    //  auto xr = XmlReader::FromFile(file);
-    //  _client._tagNames.readFromXML(xr);
-    //}
-
-    // auto reader = XmlReader::FromFile(_path + "/map.xml");
-    // loadMap(reader);
   } else {
     loadTerrainLists(XmlReader::FromString(_data));
     loadObjectTypes(XmlReader::FromString(_data));
@@ -77,11 +65,6 @@ void DataLoader::load(bool keepOldData) {
     loadBuffs(XmlReader::FromString(_data));
     loadClasses(XmlReader::FromString(_data));
     loadSpawners(XmlReader::FromString(_data));
-    // loadTerrain(XmlReader::FromString(_data));
-    // loadParticles(XmlReader::FromString(_data));
-    // loadSounds(XmlReader::FromString(_data));
-    // loadProjectiles(XmlReader::FromString(_data));
-    //_client._tagNames.readFromXML(XmlReader::FromString(_data));
   }
 
   _server._dataLoaded = true;

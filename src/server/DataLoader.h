@@ -26,10 +26,6 @@ class DataLoader {
   void loadClasses(XmlReader &reader);
   void loadSpawners(XmlReader &reader);
   void loadMap(XmlReader &reader);
-  // void loadTerrain(XmlReader &reader);
-  // void loadParticles(XmlReader &reader);
-  // void loadSounds(XmlReader &reader);
-  // void loadProjectiles(XmlReader &reader);
 
  private:
   DataLoader(Server &server);
