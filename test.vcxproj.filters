@@ -159,6 +159,7 @@
     <ClCompile Include="src\testing\test-quests.cpp" />
     <ClCompile Include="src\client\CDataLoader.cpp" />
     <ClCompile Include="src\server\DataLoader.cpp" />
+    <ClCompile Include="src\server\QuestNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -285,5 +286,6 @@
     <ClInclude Include="src\client\Connection.h" />
     <ClInclude Include="src\client\CDataLoader.h" />
     <ClInclude Include="src\server\DataLoader.h" />
+    <ClInclude Include="src\server\QuestNode.h" />
   </ItemGroup>
 </Project>

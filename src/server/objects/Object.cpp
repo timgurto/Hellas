@@ -7,6 +7,7 @@
 
 Object::Object(const ObjectType *type, const MapPoint &loc)
     : Entity(type, loc),
+      QuestNode(*type, serial()),
       _numUsersGathering(0),
       _transformTimer(0),
       _permissions(*this) {
@@ -19,9 +20,11 @@ Object::Object(const ObjectType *type, const MapPoint &loc)
   _loot.reset(new ObjectLoot(*this));
 }
 
-Object::Object(size_t serial) : Entity(serial), _permissions(*this) {}
+Object::Object(size_t serial)
+    : Entity(serial), QuestNode(QuestNode::Dummy()), _permissions(*this) {}
 
-Object::Object(const MapPoint &loc) : Entity(loc), _permissions(*this) {}
+Object::Object(const MapPoint &loc)
+    : Entity(loc), QuestNode(QuestNode::Dummy()), _permissions(*this) {}
 
 Object::~Object() {
   if (permissions().hasOwner()) {
@@ -281,19 +284,6 @@ void Object::sendInfoToClient(const User &targetUser) const {
 
   // Quests
   sendQuestsToClient(targetUser);
-}
-
-void Object::sendQuestsToClient(const User &targetUser) const {
-  auto questsToSend = std::set<std::string>{};
-  for (const auto &questID : objType().questsStartingHere())
-    if (!targetUser.isOnQuest(questID)) questsToSend.insert(questID);
-  if (questsToSend.empty()) return;
-
-  auto args = makeArgs(serial(), questsToSend.size());
-  for (auto questID : questsToSend) args = makeArgs(args, questID);
-
-  const Server &server = Server::instance();
-  server.sendMessage(targetUser.socket(), SV_OBJECT_GIVES_QUESTS, args);
 }
 
 void Object::describeSelfToNewWatcher(const User &watcher) const {

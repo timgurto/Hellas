@@ -3,7 +3,7 @@
 
 #include "../../types.h"
 #include "../EntityType.h"
-#include "../Quest.h"
+#include "../QuestNode.h"
 #include "../Yield.h"
 #include "Action.h"
 #include "Container.h"
@@ -13,7 +13,7 @@ class ServerItem;
 
 // Describes a class of Objects, the "instances" of which share common
 // properties
-class ObjectType : public EntityType {
+class ObjectType : public EntityType, public QuestNodeType {
   class Strength {
    public:
     Strength();
@@ -64,10 +64,6 @@ class ObjectType : public EntityType {
   std::string
       _playerUniqueCategory;  // Assumption: up to one category per object type.
 
-  using Quests = std::set<Quest::ID>;
-  Quests _questsStartingHere{};
-  Quests _questsEndingHere{};
-
  protected:
   ContainerType *_container;
   DeconstructionType *_deconstruction;
@@ -111,15 +107,6 @@ class ObjectType : public EntityType {
   const std::string &playerUniqueCategory() const {
     return _playerUniqueCategory;
   }
-  void addQuestStart(const Quest::ID &id) { _questsStartingHere.insert(id); }
-  bool startsQuest(const Quest::ID &id) const {
-    return _questsStartingHere.find(id) != _questsStartingHere.end();
-  }
-  void addQuestEnd(const Quest::ID &id) { _questsEndingHere.insert(id); }
-  bool endsQuest(const Quest::ID &id) const {
-    return _questsEndingHere.find(id) != _questsEndingHere.end();
-  }
-  const Quests &questsStartingHere() const { return _questsStartingHere; }
 
   virtual char classTag() const override { return 'o'; }
 

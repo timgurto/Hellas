@@ -7,6 +7,7 @@
 #include "../Loot.h"
 #include "../MerchantSlot.h"
 #include "../Permissions.h"
+#include "../QuestNode.h"
 #include "Container.h"
 #include "Deconstruction.h"
 #include "ObjectType.h"
@@ -15,7 +16,7 @@ class User;
 class XmlWriter;
 
 // A server-side representation of an in-game object
-class Object : public Entity {
+class Object : public Entity, public QuestNode {
   Permissions _permissions;
   ItemSet _contents;  // Remaining contents, which can be gathered
   std::vector<MerchantSlot> _merchantSlots;
@@ -94,7 +95,6 @@ class Object : public Entity {
                bool skipConstruction = false);  // Set/change ObjectType
 
   void sendInfoToClient(const User &targetUser) const override;
-  void sendQuestsToClient(const User &targetUser) const;
   void describeSelfToNewWatcher(const User &watcher) const override;
   void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const;
   ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum,
