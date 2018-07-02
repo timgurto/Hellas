@@ -193,25 +193,28 @@ TEST_CASE("Client knows when objects have no quests") {
 }
 
 TEST_CASE("A user can't pick up a quest he's already on") {
-  auto data = R"(
+  GIVEN("a user is already on the quest that A offers") {
+    auto data = R"(
     <objectType id="A" />
     <quest id="quest1" startsAt="A" endsAt="A" />
   )";
-  auto s = TestServer::WithDataString(data);
-  auto c = TestClient::WithDataString(data);
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
 
-  // Given the user has accepted a quest from A
-  s.waitForUsers(1);
-  auto &user = s.getFirstUser();
-  user.startQuest("quest1");
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.startQuest("quest1");
 
-  // When an object, A, is added (which has two quests)
-  s.addObject("A", {10, 15});
+    WHEN("an A object is added") {
+      s.addObject("A", {10, 15});
+      WAIT_UNTIL(c.objects().size() == 1);
 
-  // Then the user is told that there are no quests available
-  REPEAT_FOR_MS(100);
-  const auto &a = c.getFirstObject();
-  CHECK(a.startsQuests().size() == 0);
+      THEN("he is told that there are no quests available") {
+        const auto &a = c.getFirstObject();
+        CHECK(a.startsQuests().size() == 0);
+      }
+    }
+  }
 }
 
 TEST_CASE("After a user accepts a quest, he can't do so again") {
