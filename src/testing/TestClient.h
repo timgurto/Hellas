@@ -90,7 +90,6 @@ class TestClient {
   Client *_client;
 
   enum StringType { USERNAME, DATA_PATH, DATA_STRING };
-
   TestClient(const std::string &string, StringType type);
   TestClient(const std::string &username, const std::string &dataPath);
 

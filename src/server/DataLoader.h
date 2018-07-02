@@ -10,8 +10,8 @@ class DataLoader {
  public:
   using Directory = std::string;
   using XML = std::string;
-  static DataLoader FromPath(Server &client, const Directory &path = "Data");
-  static DataLoader FromString(Server &client, const XML &data);
+  static DataLoader FromPath(Server &server, const Directory &path = "Data");
+  static DataLoader FromString(Server &server, const XML &data);
 
   void load(bool keepOldData = false);
 

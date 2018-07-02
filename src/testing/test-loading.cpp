@@ -125,5 +125,9 @@ TEST_CASE("Load XML from string") {
       auto c = TestClient::WithDataString(data);
       THEN("The client has an item defined") { CHECK(c.items().size() == 1); }
     }
+    WHEN("A server is loaded with that data") {
+      auto s = TestServer::WithDataString(data);
+      THEN("The server has an item defined") { CHECK(s.items().size() == 1); }
+    }
   }
 }

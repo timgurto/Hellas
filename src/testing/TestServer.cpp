@@ -13,10 +13,13 @@ TestServer::TestServer() {
   run();
 }
 
-TestServer::TestServer(const std::string &dataPath) {
+TestServer::TestServer(const std::string &string, StringType type) {
   _server = new Server;
   DataLoader::FromPath(*_server, "testing/data/minimal").load();
-  DataLoader::FromPath(*_server, "testing/data/" + dataPath).load(true);
+  if (type == DATA_PATH)
+    DataLoader::FromPath(*_server, "testing/data/" + string).load(true);
+  else if (type == DATA_STRING)
+    DataLoader::FromString(*_server, string);
   run();
 }
 
@@ -33,13 +36,19 @@ TestServer TestServer::KeepingOldData() {
 
 TestServer TestServer::WithDataAndKeepingOldData(const std::string &dataPath) {
   cmdLineArgs.remove("new");
-  TestServer s(dataPath);
+  TestServer s(dataPath, DATA_PATH);
   cmdLineArgs.add("new");
   return s;
 }
 
 TestServer TestServer::WithData(const std::string &dataPath) {
-  return TestServer(dataPath);
+  return TestServer(dataPath, DATA_PATH);
+}
+
+TestServer TestServer::WithDataString(const std::string &data) {
+  auto s = TestServer{};
+  DataLoader::FromString(*s._server, data).load(true);
+  return s;
 }
 
 TestServer::~TestServer() {

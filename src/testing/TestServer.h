@@ -9,6 +9,7 @@ class TestServer {
   TestServer();
   static TestServer KeepingOldData();
   static TestServer WithData(const std::string &dataPath);
+  static TestServer WithDataString(const std::string &data);
   static TestServer WithDataAndKeepingOldData(const std::string &dataPath);
   ~TestServer();
 
@@ -56,7 +57,9 @@ class TestServer {
 
  private:
   Server *_server;
-  TestServer(const std::string &dataPath);
+
+  enum StringType { DATA_PATH, DATA_STRING };
+  TestServer(const std::string &string, StringType type);
 
   void run();
   void stop();

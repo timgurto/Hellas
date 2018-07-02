@@ -86,7 +86,7 @@ TEST_CASE("Other players show up on the map", "[map][remote]") {
 }
 
 TEST_CASE("When a player declares war, his map pin changes color",
-          "[map][remote][war][color]") {
+          "[map][remote][war][color][.flaky]") {
   // Given a server with two clients;
   TestServer s;
   TestClient c;
