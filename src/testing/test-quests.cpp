@@ -282,6 +282,10 @@ TEST_CASE("NPCs have a quest UI") {
 
       AND_WHEN("The client right-clicks on the NPC") {
         npc.onRightClick(c.client());
+
+        THEN("The object window is visible") {
+          WAIT_UNTIL(npc.window()->visible());
+        }
       }
     }
   }
