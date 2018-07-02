@@ -751,8 +751,9 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
 
     ClientNPCType *nt = new ClientNPCType(id, imagePath, maxHealth);
 
-    auto s = ""s;
-    if (xr.findAttr(elem, "name", s)) nt->name(s);
+    auto s = id;
+    xr.findAttr(elem, "name", s);
+    nt->name(s);
 
     // Draw rect
     auto drawRect = humanoid ? Avatar::DRAW_RECT

@@ -273,11 +273,15 @@ TEST_CASE("NPCs have a quest UI") {
 
     WHEN("a client logs in") {
       auto c = TestClient::WithDataString(data);
+      WAIT_UNTIL(c.objects().size() == 1);
+      auto &npc = c.getFirstNPC();
 
       THEN("The NPC has an object window") {
-        WAIT_UNTIL(c.objects().size() == 1);
-        const auto &npc = c.getFirstNPC();
         WAIT_UNTIL(npc.window() != nullptr);
+      }
+
+      AND_WHEN("The client right-clicks on the NPC") {
+        npc.onRightClick(c.client());
       }
     }
   }
