@@ -42,7 +42,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 49,Instances are destroyed after being empty for (30m?),13,8,Feature,42,,TRUE,2
 50,Instances have a player cap,21,3,Feature,42,,TRUE,2
 51,"There's a way to leave instances, to a specific point in the world",8,8,Feature,42,,TRUE,2
-52,NPCs can specify a set of items for their image,34,8,Aesthetics,,,TRUE,1
+52,NPCs can specify a set of items for their image,34,8,Aesthetics,,TRUE,TRUE,1
 53,NPCs can specify a custom human template image,21,8,Aesthetics,,TRUE,TRUE,1
 54,A pyramid object that is unique,21,3,Feature,,TRUE,TRUE,
 55,Players and cities can be at war with each other,34,5,Feature,1,TRUE,TRUE,
@@ -64,7 +64,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 77,An altar that grants items,5,34,Feature,19,,,
 78,Release scrollbar on mouse up,5,8,Bug,,,,
 79,Make it more obvious when something is out of range,13,8,Usability,,,,
-80,Make client connection failures more clean,5,13,Usability,,,,
+80,Make client connection failures more clean,5,13,Usability,,TRUE,,
 81,Allow actual dragging from containers,21,34,Usability,,,,
 82,Fix jumpy movement when laggy,5,34,Aesthetics,,,,
 83,Stack splitting,21,34,Feature,,,,
@@ -366,7 +366,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 405,Save user data more frequently,55,5,Feature,,,,
 406,Scroll recipe list to top when filters change,5,2,Bug,,,,
 407,Make under-construction objects easier to kill,8,8,Exploit,,,,
-408,Tutorial,89,89,Feature,45,,,3
+408,Tutorial,89,89,Feature,45,,,1
 409,Change lighting/colors to simulate time of day,21,55,Aesthetics,,,,
 410,"Recruit via an invitation, not insta-join",21,13,Usability,,,,
 411,Failed assertion in Entity.cpp line 116,34,8,Bug,,,,
@@ -389,7 +389,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 428,Quests can reward a construction,13,5,Feature,413,,,3
 429,Can log in with Enter key when button is disabled,34,2,Bug,,,,
 430,Sometimes non-leaf skills are lost on death,13,8,Bug,,,,
-432,A quest can unlock another quest,,,Feature,413,,,3
-433,Quests are persistent,,,Feature,,,,1
-434,Quest progress is persistent,,,Feature,421,,,1
-435,Quests have min levels,,,Feature,413,,,
+432,A quest can unlock another quest,21,3,Feature,413,,,3
+433,Quests are persistent,34,3,Bug,,,,1
+434,Quest progress is persistent,34,3,Bug,421,,,1
+435,Quests have min levels,21,5,Feature,413,,,
