@@ -132,7 +132,7 @@ TEST_CASE("Load XML from string") {
   }
 }
 
-TEST_CASE("Clients load quests") {
+TEST_CASE("Clients load quests", "[quests]") {
   GIVEN("a quest") {
     auto data = R"(
       <quest id="quest1" name="Quest" />

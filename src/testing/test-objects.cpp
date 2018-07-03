@@ -91,8 +91,11 @@ TEST_CASE("Out-of-range objects are forgotten", "[.slow][culling][only]") {
 
 TEST_CASE("Objects with no strength have 1 health in client") {
   // Given an object type A with no strength;
-  TestServer s = TestServer::WithData("simpleQuest");
-  TestClient c = TestClient::WithData("simpleQuest");
+  auto data = R"(
+      <objectType id="A" />
+    )";
+  TestServer s = TestServer::WithDataString(data);
+  TestClient c = TestClient::WithDataString(data);
 
   // When an A object is added
   s.addObject("A", {10, 15});

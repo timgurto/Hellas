@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Simple quest") {
+TEST_CASE("Simple quest", "[quests]") {
   auto data = R"(
     <objectType id="A" />
     <objectType id="B" />
@@ -34,7 +34,7 @@ TEST_CASE("Simple quest") {
   WAIT_UNTIL(!user.numQuests() == 0);
 }
 
-TEST_CASE("Cases where a quest should not be accepted") {
+TEST_CASE("Cases where a quest should not be accepted", "[quests]") {
   auto data = R"(
     <objectType id="A" />
     <objectType id="B" />
@@ -75,7 +75,7 @@ TEST_CASE("Cases where a quest should not be accepted") {
   CHECK(user.numQuests() == 0);
 }
 
-TEST_CASE("Cases where a quest should not be completed") {
+TEST_CASE("Cases where a quest should not be completed", "[quests]") {
   auto data = R"(
     <objectType id="A" />
     <objectType id="B" />
@@ -110,7 +110,7 @@ TEST_CASE("Cases where a quest should not be completed") {
   CHECK(user.numQuests() == 1);
 }
 
-TEST_CASE("Identical source and destination") {
+TEST_CASE("Identical source and destination", "[quests]") {
   // Given two quests that start at A and end at B
   auto data = R"(
     <objectType id="A" />
@@ -147,7 +147,7 @@ TEST_CASE("Identical source and destination") {
   CHECK(user.numQuests() == 0);
 }
 
-TEST_CASE("Client knows about objects' quests") {
+TEST_CASE("Client knows about objects' quests", "[quests]") {
   auto data = R"(
     <objectType id="A" />
     <quest id="quest1" startsAt="A" endsAt="A" />
@@ -179,7 +179,7 @@ TEST_CASE("Client knows about objects' quests") {
   CHECK(hasQuest2);
 }
 
-TEST_CASE("Client knows when objects have no quests") {
+TEST_CASE("Client knows when objects have no quests", "[quests]") {
   // Given an object type B, with no quests
   auto data = R"(
     <objectType id="B" />
@@ -200,7 +200,7 @@ TEST_CASE("Client knows when objects have no quests") {
   CHECK(b.startsQuests().empty());
 }
 
-TEST_CASE("A user can't pick up a quest he's already on") {
+TEST_CASE("A user can't pick up a quest he's already on", "[quests]") {
   GIVEN("a user is already on the quest that A offers") {
     auto data = R"(
       <objectType id="A" />
@@ -225,7 +225,7 @@ TEST_CASE("A user can't pick up a quest he's already on") {
   }
 }
 
-TEST_CASE("After a user accepts a quest, he can't do so again") {
+TEST_CASE("After a user accepts a quest, he can't do so again", "[quests]") {
   auto data = R"(
     <objectType id="A" />
     <quest id="quest1" startsAt="A" endsAt="A" />
@@ -250,7 +250,7 @@ TEST_CASE("After a user accepts a quest, he can't do so again") {
   CHECK(a.startsQuests().size() == 1);
 }
 
-TEST_CASE("Objects' quest UI") {
+TEST_CASE("Objects' quest UI", "[quests]") {
   GIVEN("an object that gives a quest") {
     auto data = R"(
       <objectType id="A" />
@@ -287,7 +287,7 @@ TEST_CASE("Objects' quest UI") {
   }
 }
 
-TEST_CASE("NPCs' quest UI") {
+TEST_CASE("NPCs' quest UI", "[quests]") {
   GIVEN("an NPC that gives a quest") {
     auto data = R"(
       <npcType id="A" maxHealth="1" />
@@ -317,7 +317,7 @@ TEST_CASE("NPCs' quest UI") {
   }
 }
 
-TEST_CASE("Show the user when an object has no more quests") {
+TEST_CASE("Show the user when an object has no more quests", "[quests]") {
   GIVEN("an object that gives a quest") {
     auto data = R"(
       <objectType id="A" />
