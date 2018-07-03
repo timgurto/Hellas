@@ -248,9 +248,11 @@ void ClientObject::addQuestsToWindow() {
         ScreenRect{BUTTON_X, y, BUTTON_WIDTH, BUTTON_HEIGHT};
     auto questIDAddress =
         const_cast<void *>(reinterpret_cast<const void *>(&questID));
-    _window->addChild(new Button(buttonRect, questID,
-                                 Client::sendMessageWithString<CL_ACCEPT_QUEST>,
-                                 questIDAddress));
+    auto button = new Button(buttonRect, questID,
+                             Client::sendMessageWithString<CL_ACCEPT_QUEST>,
+                             questIDAddress);
+    button->id(questID);
+    _window->addChild(button);
 
     y += BUTTON_HEIGHT;
   }

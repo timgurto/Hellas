@@ -195,9 +195,9 @@ TEST_CASE("Client knows when objects have no quests") {
 TEST_CASE("A user can't pick up a quest he's already on") {
   GIVEN("a user is already on the quest that A offers") {
     auto data = R"(
-    <objectType id="A" />
-    <quest id="quest1" startsAt="A" endsAt="A" />
-  )";
+      <objectType id="A" />
+      <quest id="quest1" startsAt="A" endsAt="A" />
+    )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
 
@@ -242,7 +242,7 @@ TEST_CASE("After a user accepts a quest, he can't do so again") {
   CHECK(a.startsQuests().size() == 1);
 }
 
-TEST_CASE("Objects have a quest UI") {
+TEST_CASE("Objects' quest UI") {
   GIVEN("an object that gives a quest") {
     auto data = R"(
       <objectType id="A" />
@@ -259,12 +259,18 @@ TEST_CASE("Objects have a quest UI") {
         WAIT_UNTIL(c.objects().size() == 1);
         const auto &npc = c.getFirstObject();
         WAIT_UNTIL(npc.window() != nullptr);
+
+        AND_WHEN("The quest button is clicked") {
+          REPEAT_FOR_MS(100);
+          auto questButton = npc.window()->findChild("quest1");
+          CHECK(questButton != nullptr);
+        }
       }
     }
   }
 }
 
-TEST_CASE("NPCs have a quest UI") {
+TEST_CASE("NPCs' quest UI") {
   GIVEN("an NPC that gives a quest") {
     auto data = R"(
       <npcType id="A" maxHealth="1" />
