@@ -27,6 +27,8 @@ class Button : public Element {
 
   clickFun_t _clickFun{nullptr};
   void *_clickData{nullptr};       // Data passed to _clickFun().
+  std::string _clickDataString{};  // Storage for a string, which can be used
+                                   // instead of _clickData.
 
   bool _mouseButtonDown{false};
   bool _depressed{false};
@@ -40,6 +42,8 @@ class Button : public Element {
  public:
   Button(const ScreenRect &rect, const std::string &caption = "",
          clickFun_t clickFunction = nullptr, void *clickData = nullptr);
+  Button(const ScreenRect &rect, const std::string &caption,
+         clickFun_t clickFunction, const std::string &clickData);
   void clickData(void *data = nullptr) { _clickData = data; }
   virtual void addChild(Element *child) override;
   virtual void clearChildren() override;

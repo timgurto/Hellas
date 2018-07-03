@@ -8,6 +8,13 @@ Button::Button(const ScreenRect &rect, const std::string &caption,
   init(caption);
 }
 
+Button::Button(const ScreenRect &rect, const std::string &caption,
+               clickFun_t clickFunction, const std::string &clickData)
+    : Element(rect), _clickFun(clickFunction), _clickDataString(clickData) {
+  _clickData = &_clickDataString;
+  init(caption);
+}
+
 void Button::init(const std::string &caption) {
   Element::addChild(_background);
   Element::addChild(_content);

@@ -255,15 +255,24 @@ TEST_CASE("Objects' quest UI") {
     WHEN("a client logs in") {
       auto c = TestClient::WithDataString(data);
 
-      THEN("The NPC has an object window") {
+      THEN("the NPC has an object window") {
         WAIT_UNTIL(c.objects().size() == 1);
         const auto &npc = c.getFirstObject();
         WAIT_UNTIL(npc.window() != nullptr);
 
-        AND_WHEN("The quest button is clicked") {
+        AND_WHEN("the quest button is clicked") {
           REPEAT_FOR_MS(100);
-          auto questButton = npc.window()->findChild("quest1");
+          auto questButtonE = npc.window()->findChild("quest1");
+          auto questButton = dynamic_cast<Button *>(questButtonE);
           CHECK(questButton != nullptr);
+
+          questButton->depress();
+          questButton->release(true);
+
+          THEN("the client is on a quest") {
+            auto &user = s.getFirstUser();
+            WAIT_UNTIL(user.numQuests() == 1);
+          }
         }
       }
     }
