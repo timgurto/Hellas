@@ -17,6 +17,7 @@
 #include "../server/Recipe.h"
 #include "../types.h"
 #include "Avatar.h"
+#include "CQuest.h"
 #include "ClientBuff.h"
 #include "ClientCombatant.h"
 #include "ClientConfig.h"
@@ -105,6 +106,8 @@ class Client {
   const Texture &mapImage() const { return _mapImage; }
 
   const ClientBuffTypes &buffTypes() const { return _buffTypes; }
+
+  const CQuests &quests() const { return _quests; }
 
   template <typename T>
   void setTarget(const T &newTarget, bool aggressive = false) {
@@ -489,6 +492,7 @@ class Client {
   ClientSpells _spells;
   ClientBuffTypes _buffTypes;
   ClassInfo::Container _classes;
+  CQuests _quests;
 
   typedef std::set<SoundProfile> soundProfiles_t;
   soundProfiles_t _soundProfiles;

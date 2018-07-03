@@ -131,3 +131,17 @@ TEST_CASE("Load XML from string") {
     }
   }
 }
+
+TEST_CASE("Clients load quests") {
+  GIVEN("a quest") {
+    auto data = R"(
+      <quest id="quest1" />
+    )";
+
+    WHEN("a client loads") {
+      auto c = TestClient::WithDataString(data);
+
+      THEN("it has a quest") { CHECK(c.quests().size() == 1); }
+    }
+  }
+}

@@ -60,6 +60,7 @@ void CDataLoader::load(bool keepOldData) {
     loadFromAllFiles(&CDataLoader::loadClasses);
     loadFromAllFiles(&CDataLoader::loadRecipes);
     loadFromAllFiles(&CDataLoader::loadNPCTypes);
+    loadFromAllFiles(&CDataLoader::loadQuests);
 
     _client.drawLoadingScreen("Loading map", 0.65);
     auto reader = XmlReader::FromFile(_path + "/map.xml");
@@ -77,6 +78,7 @@ void CDataLoader::load(bool keepOldData) {
     loadClasses(XmlReader::FromString(_data));
     loadRecipes(XmlReader::FromString(_data));
     loadNPCTypes(XmlReader::FromString(_data));
+    loadQuests(XmlReader::FromString(_data));
   }
 
   _client._dataLoaded = true;
@@ -821,6 +823,17 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       delete dummy;
       _client._objectTypes.insert(nt);
     }
+  }
+}
+
+void CDataLoader::loadQuests(XmlReader &xr) {
+  if (!xr) return;
+
+  for (auto elem : xr.getChildren("quest")) {
+    CQuest::ID id;
+    if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
+
+    _client._quests[id] = {};
   }
 }
 
