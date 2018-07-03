@@ -135,7 +135,7 @@ TEST_CASE("Load XML from string") {
 TEST_CASE("Clients load quests") {
   GIVEN("a quest") {
     auto data = R"(
-      <quest id="quest1" />
+      <quest id="quest1" name="Quest" />
     )";
 
     WHEN("a client loads") {
@@ -145,6 +145,7 @@ TEST_CASE("Clients load quests") {
       AND_THEN("it has the correct ID") {
         const auto &quest = c.quests().begin()->second;
         CHECK(quest.id() == "quest1");
+        CHECK(quest.name() == "Quest");
       }
     }
   }

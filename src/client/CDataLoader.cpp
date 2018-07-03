@@ -833,7 +833,12 @@ void CDataLoader::loadQuests(XmlReader &xr) {
     CQuest::ID id;
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
 
-    _client._quests[id] = {id};
+    CQuest q{id};
+
+    CQuest::Name name;
+    if (xr.findAttr(elem, "name", name)) q.name(name);
+
+    _client._quests[id] = q;
   }
 }
 
