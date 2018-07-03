@@ -20,6 +20,8 @@ class TakeContainer;
 class TextBox;
 class Window;
 
+class CQuest;
+
 // A client-side description of an object
 class ClientObject : public Sprite, public ClientCombatant {
   size_t _serial;
@@ -49,7 +51,7 @@ class ClientObject : public Sprite, public ClientCombatant {
 
   TextBox *_actionTextEntry = nullptr;
 
-  std::set<std::string> _questsStartingHere{};
+  std::set<const CQuest *> _questsStartingHere{};
 
  protected:
   Window *_window;  // For containers, etc; opens when the object is nearby and
@@ -130,10 +132,8 @@ class ClientObject : public Sprite, public ClientCombatant {
   virtual void assembleWindow(Client &client);
 
   // Quests
-  void startsQuest(const std::string questID) {
-    _questsStartingHere.insert(questID);
-  }
-  const std::set<std::string> &startsQuests() const {
+  void startsQuest(const std::string questID);
+  const std::set<const CQuest *> startsQuests() const {
     return _questsStartingHere;
   }
   void clearQuestsStartingHere() { _questsStartingHere.clear(); }

@@ -167,8 +167,16 @@ TEST_CASE("Client knows about objects' quests") {
   const auto &a = c.getFirstObject();
   WAIT_UNTIL(a.startsQuests().size() == 2);
 
-  // And he knows that it gives "questFromAToB"
-  CHECK(a.startsQuests().find("quest1") != a.startsQuests().end());
+  // And he knows that it gives both quests
+  auto hasQuest1 = false, hasQuest2 = false;
+  for (auto quest : a.startsQuests()) {
+    if (quest->id() == "quest1")
+      hasQuest1 = true;
+    else if (quest->id() == "quest2")
+      hasQuest2 = true;
+  }
+  CHECK(hasQuest1);
+  CHECK(hasQuest2);
 }
 
 TEST_CASE("Client knows when objects have no quests") {

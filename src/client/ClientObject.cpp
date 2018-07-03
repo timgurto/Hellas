@@ -227,6 +227,7 @@ void ClientObject::onRightClick(Client &client) {
 }
 
 void ClientObject::addQuestsToWindow() {
+  const Client &client = Client::instance();
   px_t y = _window->contentHeight(), newWidth = _window->contentWidth();
 
   const auto BUTTON_HEIGHT = 15, BUTTON_WIDTH = 100, MARGIN = 2;
@@ -238,7 +239,7 @@ void ClientObject::addQuestsToWindow() {
   static auto newQuestIcon = Texture{"Images/UI/newQuest.png", Color::MAGENTA};
   const auto BUTTON_X = newQuestIcon.width();
 
-  for (const auto &questID : startsQuests()) {
+  for (const auto &quest : startsQuests()) {
     y += MARGIN;
 
     _window->addChild(new Picture(
@@ -246,11 +247,11 @@ void ClientObject::addQuestsToWindow() {
 
     const auto buttonRect =
         ScreenRect{BUTTON_X, y, BUTTON_WIDTH, BUTTON_HEIGHT};
-    auto data = makeArgs(questID, serial());
+    auto data = makeArgs(quest->id(), serial());
     auto button =
-        new Button(buttonRect, questID,
+        new Button(buttonRect, quest->name(),
                    Client::sendMessageWithString<CL_ACCEPT_QUEST>, data);
-    button->id(questID);
+    button->id(quest->id());
     _window->addChild(button);
 
     y += BUTTON_HEIGHT;
@@ -656,6 +657,14 @@ void ClientObject::assembleWindow(Client &client) {
     delete _window;
     _window = nullptr;
   }
+}
+
+void ClientObject::startsQuest(const std::string questID) {
+  const Client &client = Client::instance();
+  auto it = client.quests().find(questID);
+  if (it == client.quests().end()) return;
+  const auto &quest = it->second;
+  _questsStartingHere.insert(&quest);
 }
 
 void ClientObject::onInventoryUpdate() {
