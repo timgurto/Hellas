@@ -4,11 +4,10 @@
 #include <string>
 
 #include "../../Point.h"
+#include "ColorBlock.h"
 #include "Element.h"
-
-class ColorBlock;
-class Label;
-class ShadowBox;
+#include "Label.h"
+#include "ShadowBox.h"
 
 // A button which can be clicked, showing visible feedback and performing a
 // function.
@@ -21,18 +20,18 @@ class Button : public Element {
                              // _clickFun will be called.
 
  private:
-  Element *_content;
-  ColorBlock *_background;
-  ShadowBox *_border;
-  Label *_caption;
+  Element *_content{new Element{}};
+  ColorBlock *_background{new ColorBlock{{1, 1, 0, 0}}};
+  ShadowBox *_border{new ShadowBox{{}}};
+  Label *_caption{nullptr};
 
-  clickFun_t _clickFun;
-  void *_clickData;  // Data passed to _clickFun().
+  clickFun_t _clickFun{nullptr};
+  void *_clickData{nullptr};       // Data passed to _clickFun().
 
-  bool _mouseButtonDown;
-  bool _depressed;
+  bool _mouseButtonDown{false};
+  bool _depressed{false};
 
-  bool _enabled;  // False: greyed out; can't be clicked.
+  bool _enabled{true};  // False: greyed out; can't be clicked.
 
   static void mouseDown(Element &e, const ScreenPoint &mousePos);
   static void mouseUp(Element &e, const ScreenPoint &mousePos);
@@ -51,6 +50,9 @@ class Button : public Element {
 
   void enable();
   void disable();
+
+ private:
+  void init(const std::string &caption);
 };
 
 #endif

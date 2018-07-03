@@ -1,34 +1,26 @@
 #include "Button.h"
-#include "ColorBlock.h"
-#include "Label.h"
-#include "ShadowBox.h"
 
 extern Renderer renderer;
 
 Button::Button(const ScreenRect &rect, const std::string &caption,
                clickFun_t clickFunction, void *clickData)
-    : Element(rect),
-      _content(new Element(0)),
-      _background(new ColorBlock({1, 1, 0, 0})),
-      _border(new ShadowBox(0)),
-      _caption(nullptr),
-      _clickFun(clickFunction),
-      _clickData(clickData),
-      _mouseButtonDown(false),
-      _depressed(false),
-      _enabled(true) {
+    : Element(rect), _clickFun(clickFunction), _clickData(clickData) {
+  init(caption);
+}
+
+void Button::init(const std::string &caption) {
   Element::addChild(_background);
   Element::addChild(_content);
   Element::addChild(_border);
 
   if (!caption.empty()) {
-    _caption = new Label({0, 0, rect.w, rect.h}, caption, CENTER_JUSTIFIED,
+    _caption = new Label({0, 0, rect().w, rect().h}, caption, CENTER_JUSTIFIED,
                          CENTER_JUSTIFIED);
     addChild(_caption);
   }
 
-  width(rect.w);
-  height(rect.h);
+  width(rect().w);
+  height(rect().h);
 
   setLeftMouseDownFunction(&mouseDown);
   setLeftMouseUpFunction(&mouseUp);
