@@ -2167,8 +2167,6 @@ void Client::handle_SV_OBJECT_GIVES_QUESTS(
   auto it = _objects.find(serial);
   if (it == _objects.end()) return;
 
-  if (questIDs.empty()) return;
-
   auto &object = *it->second;
   object.clearQuestsStartingHere();
   for (auto questID : questIDs) object.startsQuest(questID);

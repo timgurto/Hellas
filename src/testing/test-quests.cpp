@@ -308,3 +308,27 @@ TEST_CASE("NPCs' quest UI") {
     }
   }
 }
+
+TEST_CASE("Show the user when an object has no more quests") {
+  GIVEN("an object that gives a quest") {
+    auto data = R"(
+      <objectType id="A" />
+      <quest id="quest1" startsAt="A" endsAt="A" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    s.addObject("A", {10, 15});
+    auto serial = s.getFirstObject().serial();
+
+    WHEN("a client accepts the quest") {
+      auto c = TestClient::WithDataString(data);
+      WAIT_UNTIL(c.objects().size() == 1);
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", serial));
+
+      THEN("The client sees that the object has no quests left") {
+        const auto &obj = c.getFirstObject();
+        WAIT_UNTIL(obj.startsQuests().size() == 0);
+      }
+    }
+  }
+}

@@ -6,7 +6,6 @@ void QuestNode::sendQuestsToClient(const User &targetUser) const {
   auto questsToSend = std::set<std::string>{};
   for (const auto &questID : _type->questsStartingHere())
     if (!targetUser.isOnQuest(questID)) questsToSend.insert(questID);
-  if (questsToSend.empty()) return;
 
   auto args = makeArgs(_serial, questsToSend.size());
   for (auto questID : questsToSend) args = makeArgs(args, questID);
