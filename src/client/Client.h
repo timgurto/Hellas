@@ -107,8 +107,6 @@ class Client {
 
   const ClientBuffTypes &buffTypes() const { return _buffTypes; }
 
-  const CQuests &quests() const { return _quests; }
-
   template <typename T>
   void setTarget(const T &newTarget, bool aggressive = false) {
     _target.setAndAlertServer(newTarget, aggressive);

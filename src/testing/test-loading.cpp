@@ -142,6 +142,10 @@ TEST_CASE("Clients load quests") {
       auto c = TestClient::WithDataString(data);
 
       THEN("it has a quest") { CHECK(c.quests().size() == 1); }
+      AND_THEN("it has the correct ID") {
+        const auto &quest = c.quests().begin()->second;
+        CHECK(quest.id() == "quest1");
+      }
     }
   }
 }

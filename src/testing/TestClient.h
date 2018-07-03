@@ -29,7 +29,7 @@ class TestClient {
 
   std::map<size_t, ClientObject *> &objects() { return _client->_objects; }
   Client::objectTypes_t &objectTypes() { return _client->_objectTypes; }
-  const CQuests quests() const { return _client->quests(); }
+  const CQuests &quests() const { return _client->_quests; }
   const std::map<std::string, ClientItem> &items() const {
     return _client->_items;
   }

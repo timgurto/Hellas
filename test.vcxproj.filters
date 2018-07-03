@@ -287,5 +287,6 @@
     <ClInclude Include="src\client\CDataLoader.h" />
     <ClInclude Include="src\server\DataLoader.h" />
     <ClInclude Include="src\server\QuestNode.h" />
+    <ClInclude Include="src\client\CQuest.h" />
   </ItemGroup>
 </Project>

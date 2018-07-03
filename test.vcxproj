@@ -280,6 +280,7 @@
     <ClInclude Include="src\client\ClientWar.h" />
     <ClInclude Include="src\client\Connection.h" />
     <ClInclude Include="src\client\CDataLoader.h" />
+    <ClInclude Include="src\client\CQuest.h" />
     <ClInclude Include="src\client\HelpEntry.h" />
     <ClInclude Include="src\client\Images.h" />
     <ClInclude Include="src\client\LogSDL.h" />
