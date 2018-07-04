@@ -289,12 +289,18 @@ TEST_CASE("Quest UI", "[quests][ui]") {
           CHECK(c->isWindowRegistered(quest.window()));
         }
 
-        AND_THEN("the quest window has an accept button") {
-          auto acceptButton = quest.window()->findChild("accept");
+        AND_WHEN("the \"Accept\" button is clicked") {
+          auto acceptButtonE = quest.window()->findChild("accept");
+          auto acceptButton = dynamic_cast<Button *>(acceptButtonE);
           CHECK(acceptButton != nullptr);
 
-          /*auto &user = s.getFirstUser();
-          WAIT_UNTIL(user.numQuests() == 1);*/
+          acceptButton->depress();
+          acceptButton->release(true);
+
+          THEN("the user is on a quest") {
+            auto &user = s.getFirstUser();
+            WAIT_UNTIL(user.numQuests() == 1);
+          }
         }
       }
     }

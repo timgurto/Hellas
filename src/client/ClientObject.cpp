@@ -240,8 +240,9 @@ void ClientObject::addQuestsToWindow() {
     const auto buttonRect =
         ScreenRect{BUTTON_X, y, BUTTON_WIDTH, BUTTON_HEIGHT};
     auto data = makeArgs(quest->id(), serial());
-    auto button = new Button(buttonRect, quest->name(),
-                             [quest]() { CQuest::generateWindow(quest); });
+    auto button = new Button(buttonRect, quest->name(), [this, quest]() {
+      CQuest::generateWindow(quest, serial());
+    });
     button->id(quest->id());
     _window->addChild(button);
 
