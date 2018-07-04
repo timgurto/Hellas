@@ -686,6 +686,13 @@ int Client::totalTalentPointsAllocated() {
   return sum;
 }
 
+bool Client::isWindowRegistered(const Window *toFind) {
+  for (auto window : _windows) {
+    if (window == toFind) return true;
+  }
+  return false;
+}
+
 void Client::infoWindow(const std::string &text) {
   auto window = new InfoWindow(text);
   addWindow(window);

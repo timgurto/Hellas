@@ -143,6 +143,14 @@ class Client {
   typedef std::list<Element *>
       ui_t;  // For the UI, that sits below all windows.
 
+  void addWindow(Window *window);
+  void removeWindow(Window *window);  // Linear time
+  void showWindowInFront(Window *window);
+  static void showWindowInFront(void *window) {
+    _instance->showWindowInFront(reinterpret_cast<Window *>(window));
+  }
+  bool isWindowRegistered(const Window *toFind);
+
   static const px_t SCREEN_X, SCREEN_Y;
 
   static const px_t CULL_DISTANCE, CULL_HYSTERESIS_DISTANCE;
@@ -313,12 +321,6 @@ class Client {
   std::set<const ClientSpell *> _knownSpells{};
 
   windows_t _windows;
-  void addWindow(Window *window);
-  void removeWindow(Window *window);  // Linear time
-  void showWindowInFront(Window *window);
-  static void showWindowInFront(void *window) {
-    _instance->showWindowInFront(reinterpret_cast<Window *>(window));
-  }
 
   ui_t _ui;
   void addUI(Element *element);

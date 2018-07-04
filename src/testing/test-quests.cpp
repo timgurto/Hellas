@@ -286,6 +286,7 @@ TEST_CASE("Quest UI", "[quests][ui]") {
         THEN("the quest has a visible window") {
           WAIT_UNTIL(quest.window() != nullptr);
           CHECK(quest.window()->visible());
+          CHECK(c->isWindowRegistered(quest.window()));
 
           /*auto &user = s.getFirstUser();
           WAIT_UNTIL(user.numQuests() == 1);*/
