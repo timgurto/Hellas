@@ -11,7 +11,7 @@ void QuestNode::sendQuestsToClient(const User &targetUser) const {
   for (auto questID : questsToSend) args = makeArgs(args, questID);
 
   const Server &server = Server::instance();
-  server.sendMessage(targetUser.socket(), SV_OBJECT_GIVES_QUESTS, args);
+  server.sendMessage(targetUser.socket(), SV_OBJECT_STARTS_QUESTS, args);
 }
 
 void QuestNodeType::addQuestStart(const Quest::ID &id) {

@@ -1672,7 +1672,7 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
-      case SV_OBJECT_GIVES_QUESTS: {
+      case SV_OBJECT_STARTS_QUESTS: {
         auto serial = size_t{};
         singleMsg >> serial >> del;
 
