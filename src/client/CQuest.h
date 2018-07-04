@@ -21,6 +21,8 @@ class CQuest {
 
   static void generateWindow(CQuest *quest, size_t startObjectSerial);
 
+  static void acceptQuest(CQuest *quest, size_t startObjectSerial);
+
  private:
   ID _id;
   Name _name;
