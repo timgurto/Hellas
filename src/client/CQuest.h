@@ -10,6 +10,8 @@ class CQuest {
   using ID = std::string;
   using Name = std::string;
 
+  enum Transition { ACCEPT, COMPLETE };
+
   CQuest(const ID &id = "") : _id(id) {}
 
   bool operator<(const CQuest &rhs) { return _id < rhs._id; }
@@ -19,9 +21,11 @@ class CQuest {
   void name(const Name &newName) { _name = newName; }
   const Window *window() const { return _window; }
 
-  static void generateWindow(CQuest *quest, size_t startObjectSerial);
+  static void generateWindow(CQuest *quest, size_t startObjectSerial,
+                             Transition pendingTransition);
 
   static void acceptQuest(CQuest *quest, size_t startObjectSerial);
+  static void completeQuest(CQuest *quest, size_t startObjectSerial);
 
  private:
   ID _id;

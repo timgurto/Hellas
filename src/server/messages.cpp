@@ -1880,13 +1880,16 @@ void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,
                                       size_t endSerial) {
   const auto entity = _entities.find(endSerial);
   if (!entity) return;
-  auto object = dynamic_cast<const Object *>(entity);
-  if (!object) return;
+  auto node = dynamic_cast<const QuestNode *>(entity);
+  if (!node) return;
 
-  const auto &objType = object->objType();
-  if (!objType.endsQuest(quest)) return;
+  if (!isEntityInRange(user.socket(), user, entity)) return;
+
+  if (!node->endsQuest(quest)) return;
 
   user.completeQuest(quest);
+
+  node->sendQuestsToClient(user);
 }
 
 void Server::broadcast(MessageCode msgCode, const std::string &args) {
