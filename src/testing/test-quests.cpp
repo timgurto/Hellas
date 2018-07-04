@@ -3,35 +3,35 @@
 #include "testing.h"
 
 TEST_CASE("Simple quest", "[quests]") {
-  auto data = R"(
-    <objectType id="A" />
-    <objectType id="B" />
-    <quest id="questFromAToB" startsAt="A" endsAt="B" />
-  )";
-  auto s = TestServer::WithDataString(data);
-  auto c = TestClient::WithDataString(data);
+  GIVEN("a quest starting at A and ending at B") {
+    auto data = R"(
+      <objectType id="A" />
+      <objectType id="B" />
+      <quest id="questFromAToB" startsAt="A" endsAt="B" />
+    )";
+    auto s = TestServer::WithDataString(data);
 
-  // Given an object, A
-  s.addObject("A", {10, 15});
-  const auto &a = s.getFirstObject();
+    s.addObject("A", {10, 15});
+    const auto &a = s.getFirstObject();
 
-  // And an object, B
-  s.addObject("B", {15, 10});
-  auto b = a.serial() + 1;
+    s.addObject("B", {15, 10});
+    auto b = a.serial() + 1;
 
-  // When a client accepts a quest from A
-  s.waitForUsers(1);
-  c.sendMessage(CL_ACCEPT_QUEST, makeArgs("questFromAToB", a.serial()));
+    WHEN("a  client accepts the quest from A") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("questFromAToB", a.serial()));
 
-  // Then he is on a quest
-  auto &user = s.getFirstUser();
-  WAIT_UNTIL(user.numQuests() == 1);
+      THEN("he is on a quest") { WAIT_UNTIL(user.numQuests() == 1); }
 
-  // When he completes the quest at B
-  c.sendMessage(CL_COMPLETE_QUEST, makeArgs("questFromAToB", b));
+      AND_WHEN("he completes the quest at B") {
+        c.sendMessage(CL_COMPLETE_QUEST, makeArgs("questFromAToB", b));
 
-  // Then he is not on a quest
-  WAIT_UNTIL(!user.numQuests() == 0);
+        THEN("he is not on a quest") { WAIT_UNTIL(!user.numQuests() == 0); }
+      }
+    }
+  }
 }
 
 TEST_CASE("Cases where a quest should not be accepted", "[quests]") {
