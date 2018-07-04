@@ -20,6 +20,12 @@ void CQuest::generateWindow(void *questAsVoid) {
   window->addChild(name);
 
   // Accept button
+  const auto BUTTON_W = 80_px, BUTTON_H = 20_px,
+             BUTTON_Y = BOTTOM - GAP - BUTTON_H;
+  auto acceptButton =
+      new Button({GAP, BUTTON_Y, BUTTON_W, BUTTON_H}, "Accept quest");
+  acceptButton->id("accept");
+  window->addChild(acceptButton);
 
   quest->_window = window;
   Client::instance().addWindow(quest->_window);

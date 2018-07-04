@@ -287,6 +287,11 @@ TEST_CASE("Quest UI", "[quests][ui]") {
           WAIT_UNTIL(quest.window() != nullptr);
           CHECK(quest.window()->visible());
           CHECK(c->isWindowRegistered(quest.window()));
+        }
+
+        AND_THEN("the quest window has an accept button") {
+          auto acceptButton = quest.window()->findChild("accept");
+          CHECK(acceptButton != nullptr);
 
           /*auto &user = s.getFirstUser();
           WAIT_UNTIL(user.numQuests() == 1);*/

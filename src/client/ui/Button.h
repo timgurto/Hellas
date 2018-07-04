@@ -1,5 +1,4 @@
-#ifndef BUTTON_H
-#define BUTTON_H
+#pragma once
 
 #include <functional>
 #include <string>
@@ -55,5 +54,3 @@ class Button : public Element {
  private:
   void init(const std::string &caption);
 };
-
-#endif
