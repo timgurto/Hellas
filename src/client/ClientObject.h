@@ -50,6 +50,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   TextBox *_actionTextEntry = nullptr;
 
   std::set<CQuest *> _questsStartingHere{};
+  std::set<CQuest *> _questsEndingHere{};
 
  protected:
   Window *_window;  // For containers, etc; opens when the object is nearby and
@@ -133,6 +134,9 @@ class ClientObject : public Sprite, public ClientCombatant {
   void startsQuest(const std::string questID);
   const std::set<CQuest *> &startsQuests() const { return _questsStartingHere; }
   void clearQuestsStartingHere() { _questsStartingHere.clear(); }
+  void endsQuest(const std::string questID);
+  const std::set<CQuest *> &endsQuests() const { return _questsEndingHere; }
+  void clearQuestsEndingHere() { _questsEndingHere.clear(); }
 
   // From ClientCombatant
   virtual void sendTargetMessage() const override;

@@ -488,7 +488,7 @@ enum MessageCode {
   SV_YOU_CANCELED_PEACE_OFFER_TO_CITY,
   SV_YOUR_CITY_CANCELED_PEACE_OFFER_TO_PLAYER,
   SV_YOUR_CITY_CANCELED_PEACE_OFFER_TO_CITY,
-  // "Your peace offer from ... was cancelled"
+  // "Your peace offer from ... was canceled"
   // Arguments: name
   SV_PEACE_OFFER_TO_YOU_FROM_PLAYER_WAS_CANCELED,
   SV_PEACE_OFFER_TO_YOU_FROM_CITY_WAS_CANCELED,
@@ -501,9 +501,10 @@ enum MessageCode {
   SV_YOUR_CITY_IS_AT_PEACE_WITH_PLAYER,
   SV_YOUR_CITY_IS_AT_PEACE_WITH_CITY,
 
-  // Object quests.  This is filtered to those quests that should actually be visible to the user.
+  // Object quests.  These are filtered to only those quests that should actually be visible to the user.
   // Arguments: serial, quantity, questID1, questID2, ...
   SV_OBJECT_STARTS_QUESTS,
+  SV_OBJECT_ENDS_QUESTS,
 
   // "User ... has said ...".
   // Arguments: username, message

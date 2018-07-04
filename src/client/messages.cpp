@@ -1672,7 +1672,8 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
-      case SV_OBJECT_STARTS_QUESTS: {
+      case SV_OBJECT_STARTS_QUESTS:
+      case SV_OBJECT_ENDS_QUESTS: {
         auto serial = size_t{};
         singleMsg >> serial >> del;
 
@@ -1691,7 +1692,10 @@ void Client::handleMessage(const std::string &msg) {
 
         if (del != MSG_END) return;
 
-        handle_SV_OBJECT_GIVES_QUESTS(serial, std::move(questsFromObject));
+        if (msgCode == SV_OBJECT_STARTS_QUESTS)
+          handle_SV_OBJECT_STARTS_QUESTS(serial, std::move(questsFromObject));
+        else
+          handle_SV_OBJECT_ENDS_QUESTS(serial, std::move(questsFromObject));
 
         break;
       }
@@ -2162,7 +2166,7 @@ void Client::handle_SV_OBJECT_HEALED(size_t serial, Hitpoints amount) {
                         Color::FLOATING_HEAL);
 }
 
-void Client::handle_SV_OBJECT_GIVES_QUESTS(
+void Client::handle_SV_OBJECT_STARTS_QUESTS(
     size_t serial, const std::set<std::string> &&questIDs) {
   auto it = _objects.find(serial);
   if (it == _objects.end()) return;
@@ -2170,6 +2174,18 @@ void Client::handle_SV_OBJECT_GIVES_QUESTS(
   auto &object = *it->second;
   object.clearQuestsStartingHere();
   for (auto questID : questIDs) object.startsQuest(questID);
+
+  object.assembleWindow(*this);
+}
+
+void Client::handle_SV_OBJECT_ENDS_QUESTS(
+    size_t serial, const std::set<std::string> &&questIDs) {
+  auto it = _objects.find(serial);
+  if (it == _objects.end()) return;
+
+  auto &object = *it->second;
+  object.clearQuestsEndingHere();
+  for (auto questID : questIDs) object.endsQuest(questID);
 
   object.assembleWindow(*this);
 }

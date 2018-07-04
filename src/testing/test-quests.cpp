@@ -179,6 +179,37 @@ TEST_CASE("Client knows about objects' quests", "[quests]") {
   CHECK(hasQuest2);
 }
 
+TEST_CASE("Client knows when quests can be completed", "[quests]") {
+  GIVEN("an object that starts and ends a quest") {
+    auto data = R"(
+      <objectType id="A" />
+      <quest id="quest1" startsAt="A" endsAt="A" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    s.addObject("A", {10, 15});
+    auto serial = s.getFirstObject().serial();
+
+    WHEN("a user connects") {
+      auto c = TestClient::WithDataString(data);
+      WAIT_UNTIL(c.objects().size() == 1);
+      const auto &obj = c.getFirstObject();
+
+      THEN("he knows he can't complete any quests at the object") {
+        WAIT_UNTIL(obj.endsQuests().size() == 0);
+      }
+
+      AND_WHEN("he accepts the quest") {
+        c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", serial));
+
+        THEN("he knows that he can complete it at the object") {
+          WAIT_UNTIL(obj.endsQuests().size() == 1);
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE("Client knows when objects have no quests", "[quests]") {
   // Given an object type B, with no quests
   auto data = R"(

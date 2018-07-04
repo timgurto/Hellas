@@ -662,6 +662,15 @@ void ClientObject::startsQuest(const std::string questID) {
   _questsStartingHere.insert(pQuest);
 }
 
+void ClientObject::endsQuest(const std::string questID) {
+  Client &client = Client::instance();
+  auto it = client.quests().find(questID);
+  if (it == client.quests().end()) return;
+  auto &quest = it->second;
+  auto pQuest = const_cast<CQuest *>(&quest);
+  _questsEndingHere.insert(pQuest);
+}
+
 void ClientObject::onInventoryUpdate() {
   if (_lootContainer != nullptr) _lootContainer->repopulate();
   if (_window != nullptr) _window->forceRefresh();

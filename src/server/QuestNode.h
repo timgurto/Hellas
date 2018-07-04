@@ -6,10 +6,10 @@
 
 class User;
 
+using Quests = std::set<Quest::ID>;
+
 class QuestNodeType {
  public:
-  using Quests = std::set<Quest::ID>;
-
   void addQuestStart(const Quest::ID &id);
   bool startsQuest(const Quest::ID &id) const;
   void addQuestEnd(const Quest::ID &id);
@@ -29,6 +29,8 @@ class QuestNode {
 
  public:
   void sendQuestsToClient(const User &targetUser) const;
+  Quests questsUserCanStartHere(const User &user) const;
+  Quests questsUserCanEndHere(const User &user) const;
   bool startsQuest(const Quest::ID &id) const { return _type->startsQuest(id); }
   bool endsQuest(const Quest::ID &id) const { return _type->endsQuest(id); }
 
