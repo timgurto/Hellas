@@ -224,10 +224,6 @@ void ClientObject::addQuestsToWindow() {
 
   const auto BUTTON_HEIGHT = 15, BUTTON_WIDTH = 100, MARGIN = 2;
 
-  _window->addChild(new Label({MARGIN, y, BUTTON_WIDTH, Element::TEXT_HEIGHT},
-                              "New quests:"));
-  y += Element::TEXT_HEIGHT + MARGIN;
-
   static auto startQuestIcon =
       Texture{"Images/UI/startQuest.png", Color::MAGENTA};
   static auto endQuestIcon = Texture{"Images/UI/endQuest.png", Color::MAGENTA};
@@ -829,7 +825,8 @@ const Texture &ClientObject::cursor(const Client &client) const {
 
   const ClientObjectType &ot = *objectType();
   if (userHasAccess()) {
-    if (startsQuests().size() > 0) return client.cursorQuest();
+    if (endsQuests().size() > 0) return client.cursorEndsQuest();
+    if (startsQuests().size() > 0) return client.cursorStartsQuest();
     if (ot.canGather()) return client.cursorGather();
     if (ot.containerSlots() > 0) return client.cursorContainer();
   }

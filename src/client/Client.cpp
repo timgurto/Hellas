@@ -81,7 +81,10 @@ Client::Client()
       _cursorContainer(std::string("Images/Cursors/container.png"),
                        Color::MAGENTA),
       _cursorAttack(std::string("Images/Cursors/attack.png"), Color::MAGENTA),
-      _cursorQuest(std::string("Images/Cursors/quest.png"), Color::MAGENTA),
+      _cursorStartsQuest(std::string("Images/Cursors/startsQuest.png"),
+                         Color::MAGENTA),
+      _cursorEndsQuest(std::string("Images/Cursors/endsQuest.png"),
+                       Color::MAGENTA),
       _currentCursor(&_cursorNormal),
 
       _character({}, {}),
