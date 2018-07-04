@@ -133,7 +133,7 @@ class ClientObject : public Sprite, public ClientCombatant {
 
   // Quests
   void startsQuest(const std::string questID);
-  const std::set<const CQuest *> startsQuests() const {
+  const std::set<const CQuest *> &startsQuests() const {
     return _questsStartingHere;
   }
   void clearQuestsStartingHere() { _questsStartingHere.clear(); }

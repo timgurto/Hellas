@@ -10,7 +10,7 @@ class CQuest {
   using ID = std::string;
   using Name = std::string;
 
-  CQuest(const ID &id = "") : _id(id) { generateWindow(); }
+  CQuest(const ID &id = "") : _id(id) {}
 
   bool operator<(const CQuest &rhs) { return _id < rhs._id; }
 

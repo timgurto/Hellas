@@ -263,27 +263,31 @@ TEST_CASE("Quest UI", "[quests][ui]") {
     WHEN("a client logs in") {
       auto c = TestClient::WithDataString(data);
 
-      THEN("the NPC has an object window") {
-        WAIT_UNTIL(c.objects().size() == 1);
-        const auto &npc = c.getFirstObject();
+      const auto &quest = c.getFirstQuest();
+
+      WAIT_UNTIL(c.objects().size() == 1);
+      const auto &npc = c.getFirstObject();
+
+      THEN("the quest has no window") { CHECK(quest.window() == nullptr); }
+
+      AND_THEN("the NPC has an object window") {
         WAIT_UNTIL(npc.window() != nullptr);
+      }
 
-        AND_WHEN("the quest button is clicked") {
-          REPEAT_FOR_MS(100);
-          auto questButtonE = npc.window()->findChild("quest1");
-          auto questButton = dynamic_cast<Button *>(questButtonE);
-          CHECK(questButton != nullptr);
+      AND_WHEN("the quest button is clicked") {
+        REPEAT_FOR_MS(100);
+        auto questButtonE = npc.window()->findChild("quest1");
+        auto questButton = dynamic_cast<Button *>(questButtonE);
+        CHECK(questButton != nullptr);
 
-          questButton->depress();
-          questButton->release(true);
+        questButton->depress();
+        questButton->release(true);
 
-          THEN("the quest has a visible window") {
-            const auto &quest = c.getFirstQuest();
-            WAIT_UNTIL(quest.window() != nullptr);
+        THEN("the quest has a visible window") {
+          WAIT_UNTIL(quest.window() != nullptr);
 
-            /*auto &user = s.getFirstUser();
-            WAIT_UNTIL(user.numQuests() == 1);*/
-          }
+          /*auto &user = s.getFirstUser();
+          WAIT_UNTIL(user.numQuests() == 1);*/
         }
       }
     }
