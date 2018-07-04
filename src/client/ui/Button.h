@@ -1,6 +1,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
+#include <functional>
 #include <string>
 
 #include "../../Point.h"
@@ -13,7 +14,7 @@
 // function.
 class Button : public Element {
  public:
-  typedef void (*clickFun_t)(void *data);
+  using clickFun_t = std::function<void()>;
 
   void depress();
   void release(bool click);  // click: whether, on release, the button's
@@ -25,10 +26,7 @@ class Button : public Element {
   ShadowBox *_border{new ShadowBox{{}}};
   Label *_caption{nullptr};
 
-  clickFun_t _clickFun{nullptr};
-  void *_clickData{nullptr};       // Data passed to _clickFun().
-  std::string _clickDataString{};  // Storage for a string, which can be used
-                                   // instead of _clickData.
+  clickFun_t _clickFun{[]() {}};
 
   bool _mouseButtonDown{false};
   bool _depressed{false};
@@ -41,13 +39,12 @@ class Button : public Element {
 
  public:
   Button(const ScreenRect &rect, const std::string &caption = "",
-         clickFun_t clickFunction = nullptr, void *clickData = nullptr);
-  Button(const ScreenRect &rect, const std::string &caption,
-         clickFun_t clickFunction, const std::string &clickData);
-  void clickData(void *data = nullptr) { _clickData = data; }
+         clickFun_t clickFunction = []() {});
   virtual void addChild(Element *child) override;
   virtual void clearChildren() override;
   virtual Element *findChild(const std::string id) const override;
+
+  void clickFun(const clickFun_t &fun) { _clickFun = fun; }
 
   void width(px_t w) override;
   void height(px_t h) override;

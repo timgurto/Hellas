@@ -22,9 +22,9 @@ ConfirmationWindow::ConfirmationWindow(const std::string &windowText,
        okButtonX = middle - PADDING / 2 - BUTTON_WIDTH,
        cancelButtonX = middle + PADDING / 2;
   addChild(new Button({okButtonX, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT}, "OK",
-                      sendMessageAndHideWindow, this));
+                      [this]() { sendMessageAndHideWindow(this); }));
   addChild(new Button({cancelButtonX, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT},
-                      "Cancel", Window::hideWindow, this));
+                      "Cancel", [this]() { Window::hideWindow(this); }));
 }
 
 void ConfirmationWindow::sendMessageAndHideWindow(void *thisConfWindow) {
@@ -48,7 +48,7 @@ InfoWindow::InfoWindow(const std::string &windowText) {
                      windowText, Element::CENTER_JUSTIFIED));
   px_t middle = WINDOW_WIDTH / 2, okButtonX = middle - BUTTON_WIDTH / 2;
   addChild(new Button({okButtonX, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT}, "OK",
-                      hideWindow, this));
+                      [this]() { hideWindow(this); }));
 }
 
 void InfoWindow::deleteWindow(void *thisWindow) {
@@ -82,9 +82,9 @@ InputWindow::InputWindow(const std::string &windowText, MessageCode msgCode,
        okButtonX = middle - PADDING / 2 - BUTTON_WIDTH,
        cancelButtonX = middle + PADDING / 2;
   addChild(new Button({okButtonX, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "OK",
-                      sendMessageWithInputAndHideWindow, this));
+                      [this]() { sendMessageWithInputAndHideWindow(this); }));
   addChild(new Button({cancelButtonX, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Cancel",
-                      Window::hideWindow, this));
+                      [this]() { Window::hideWindow(this); }));
 }
 
 void InputWindow::sendMessageWithInputAndHideWindow(void *thisInputWindow) {

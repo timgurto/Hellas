@@ -30,8 +30,6 @@ class ClientObject : public Sprite, public ClientCombatant {
   std::vector<ClientMerchantSlot> _merchantSlots;
   // Used for either the trade screen, or the merchant setup screen.
   std::vector<Element *> _merchantSlotElements;
-  typedef std::pair<size_t, size_t> serialSlotPair_t;
-  std::vector<serialSlotPair_t *> _serialSlotPairs;
   std::vector<TextBox *> _wareQtyBoxes;
   std::vector<TextBox *> _priceQtyBoxes;
   bool _beingGathered;             // For aesthetic effects
@@ -124,8 +122,8 @@ class ClientObject : public Sprite, public ClientCombatant {
   virtual void onLeftClick(Client &client) override;
   virtual void onRightClick(Client &client) override;
   static void startDeconstructing(void *object);
-  static void trade(void *serialAndSlot);
-  static void sendMerchantSlot(void *serialAndSlot);
+  static void trade(size_t serial, size_t slot);
+  static void sendMerchantSlot(size_t serial, size_t slot);
 
   virtual void onInventoryUpdate();
   void hideWindow();

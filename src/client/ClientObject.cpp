@@ -58,19 +58,11 @@ ClientObject::ClientObject(size_t serialArg, const ClientObjectType *type,
   _container = ClientItem::vect_t(containerSlots);
   _merchantSlots = std::vector<ClientMerchantSlot>(merchantSlots);
   _merchantSlotElements = std::vector<Element *>(merchantSlots, nullptr);
-  _serialSlotPairs = std::vector<serialSlotPair_t *>(merchantSlots, nullptr);
-  for (size_t i = 0; i != merchantSlots; ++i) {
-    serialSlotPair_t *pair = new serialSlotPair_t();
-    pair->first = _serial;
-    pair->second = i;
-    _serialSlotPairs[i] = pair;
-  }
   _wareQtyBoxes = std::vector<TextBox *>(merchantSlots, nullptr);
   _priceQtyBoxes = std::vector<TextBox *>(merchantSlots, nullptr);
 }
 
 ClientObject::~ClientObject() {
-  for (auto p : _serialSlotPairs) delete p;
   if (_window != nullptr) {
     Client::_instance->removeWindow(_window);
     delete _window;
@@ -132,7 +124,7 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
     x += ICON_SIZE + 2 + NAME_WIDTH + 2 * GAP + 2;
     e.addChild(
         new Button({x, SET_BUTTON_TOP, SET_BUTTON_WIDTH, SET_BUTTON_HEIGHT},
-                   "Set", sendMerchantSlot, _serialSlotPairs[i]));
+                   "Set", [this, i]() { sendMerchantSlot(serial(), i); }));
 
   } else {  // Trade view
     if (!mSlot) {
@@ -154,7 +146,7 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
 
     // Buy button
     Button *button = new Button({x, GAP, BUTTON_WIDTH, BUTTON_HEIGHT}, "",
-                                trade, _serialSlotPairs[i]);
+                                [this, i]() { trade(serial(), i); });
     e.addChild(button);
     x = BUTTON_PADDING;
     button->addChild(
@@ -248,8 +240,8 @@ void ClientObject::addQuestsToWindow() {
     const auto buttonRect =
         ScreenRect{BUTTON_X, y, BUTTON_WIDTH, BUTTON_HEIGHT};
     auto data = makeArgs(quest->id(), serial());
-    auto button =
-        new Button(buttonRect, quest->name(), CQuest::generateWindow, quest);
+    auto button = new Button(buttonRect, quest->name(),
+                             [quest]() { CQuest::generateWindow(quest); });
     button->id(quest->id());
     _window->addChild(button);
 
@@ -371,8 +363,9 @@ void ClientObject::addDeconstructionToWindow() {
   px_t x = BUTTON_GAP, y = _window->contentHeight(),
        newWidth = _window->contentWidth();
   y += BUTTON_GAP;
-  Button *deconstructButton = new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT},
-                                         "Pick up", startDeconstructing, this);
+  Button *deconstructButton =
+      new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Pick up",
+                 [this]() { startDeconstructing(this); });
   _window->addChild(deconstructButton);
   y += BUTTON_GAP + BUTTON_HEIGHT;
   x += BUTTON_GAP + BUTTON_WIDTH;
@@ -387,7 +380,7 @@ void ClientObject::addVehicleToWindow() {
   y += BUTTON_GAP;
   Button *mountButton =
       new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Enter/exit",
-                 ClientVehicle::mountOrDismount, this);
+                 [this]() { ClientVehicle::mountOrDismount(this); });
   _window->addChild(mountButton);
   y += BUTTON_GAP + BUTTON_HEIGHT;
   x += BUTTON_GAP + BUTTON_WIDTH;
@@ -419,7 +412,7 @@ void ClientObject::addActionToWindow() {
   // Button
   x = BUTTON_GAP;
   Button *button = new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, action.label,
-                              performAction, this);
+                              [this]() { performAction(this); });
 
   auto tooltipNeeded = !action.tooltip.empty() || action.cost;
   if (tooltipNeeded) {
@@ -485,8 +478,9 @@ void ClientObject::addCedeButtonToWindow() {
   px_t x = BUTTON_GAP, y = _window->contentHeight(),
        newWidth = _window->contentWidth();
   y += BUTTON_GAP;
-  Button *cedeButton = new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT},
-                                  "Cede to city", confirmAndCedeObject, this);
+  Button *cedeButton =
+      new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Cede to city",
+                 [this]() { confirmAndCedeObject(this); });
   cedeButton->setTooltip("Transfer ownership of this object over to your city");
   _window->addChild(cedeButton);
   y += BUTTON_GAP + BUTTON_HEIGHT;
@@ -517,7 +511,7 @@ void ClientObject::addGrantButtonToWindow() {
   y += BUTTON_GAP;
   Button *grantButton =
       new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Grant to citizen",
-                 getInputAndGrantObject, this);
+                 [this]() { getInputAndGrantObject(this); });
   grantButton->setTooltip(
       "Transfer ownership of this object over to a member of your city");
   _window->addChild(grantButton);
@@ -548,7 +542,7 @@ void ClientObject::addDemolishButtonToWindow() {
   y += BUTTON_GAP;
   Button *demolishButton =
       new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Demolish",
-                 confirmAndDemolishObject, this);
+                 [this]() { confirmAndDemolishObject(this); });
   demolishButton->setTooltip("Demolish this object, removing it permanently");
   _window->addChild(demolishButton);
   y += BUTTON_GAP + BUTTON_HEIGHT;
@@ -683,16 +677,11 @@ void ClientObject::startDeconstructing(void *object) {
   client.prepareAction(std::string("Dismantling ") + obj.objectType()->name());
 }
 
-void ClientObject::trade(void *serialAndSlot) {
-  const std::pair<size_t, size_t> pair =
-      *static_cast<std::pair<size_t, size_t> *>(serialAndSlot);
-  Client::_instance->sendMessage(CL_TRADE, makeArgs(pair.first, pair.second));
+void ClientObject::trade(size_t serial, size_t slot) {
+  Client::_instance->sendMessage(CL_TRADE, makeArgs(serial, slot));
 }
 
-void ClientObject::sendMerchantSlot(void *serialAndSlot) {
-  const std::pair<size_t, size_t> pair =
-      *static_cast<std::pair<size_t, size_t> *>(serialAndSlot);
-  size_t serial = pair.first, slot = pair.second;
+void ClientObject::sendMerchantSlot(size_t serial, size_t slot) {
   const auto &objects = Client::_instance->_objects;
   auto it = objects.find(serial);
   if (it == objects.end()) {

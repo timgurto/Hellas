@@ -19,6 +19,8 @@ void CQuest::generateWindow(void *questAsVoid) {
   name->setColor(Color::HELP_TEXT_HEADING);
   window->addChild(name);
 
+  // Accept button
+
   quest->_window = window;
   Client::instance().addWindow(quest->_window);
   quest->_window->show();

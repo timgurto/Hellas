@@ -27,8 +27,7 @@ TextBox *ItemSelector::_filterText = nullptr;
 List *ItemSelector::_itemList = nullptr;
 
 ItemSelector::ItemSelector(const ClientItem *&item, px_t x, px_t y)
-    : Button({x, y, WIDTH, Element::ITEM_HEIGHT + 2}, "", openFindItemWindow,
-             nullptr),
+    : Button({x, y, WIDTH, Element::ITEM_HEIGHT + 2}),
       _item(item),
       _lastItem(item),
       _icon(new Picture({1, 1, ITEM_HEIGHT, ITEM_HEIGHT}, Texture())),
@@ -37,7 +36,8 @@ ItemSelector::ItemSelector(const ClientItem *&item, px_t x, px_t y)
   addChild(_icon);
   addChild(_name);
 
-  clickData(&_item);
+  auto ppItem = &_item;
+  clickFun([ppItem]() { openFindItemWindow(ppItem); });
 
   if (_findItemWindow == nullptr) {
     _findItemWindow = Window::WithRectAndTitle(
@@ -51,7 +51,7 @@ ItemSelector::ItemSelector(const ClientItem *&item, px_t x, px_t y)
     _findItemWindow->addChild(
         new Button({SEARCH_TEXT_WIDTH + 2 * GAP, y, SEARCH_BUTTON_WIDTH,
                     SEARCH_BUTTON_HEIGHT},
-                   "Search", applyFilter, nullptr));
+                   "Search", applyFilter));
     y += SEARCH_BUTTON_HEIGHT + GAP;
     _findItemWindow->addChild(new Line(0, y, WINDOW_WIDTH));
     y += 2 + GAP;
@@ -59,7 +59,7 @@ ItemSelector::ItemSelector(const ClientItem *&item, px_t x, px_t y)
         new List({GAP, y, LIST_WIDTH, LIST_HEIGHT}, ITEM_HEIGHT + 2 + LIST_GAP);
     _findItemWindow->addChild(_itemList);
 
-    applyFilter(nullptr);  // Populate list for the first time.
+    applyFilter();  // Populate list for the first time.
     Client::_instance->addWindow(_findItemWindow);
   }
 }
@@ -71,7 +71,7 @@ void ItemSelector::openFindItemWindow(void *data) {
   _itemBeingSelected = static_cast<ClientItem **>(data);
 }
 
-void ItemSelector::applyFilter(void *data) {
+void ItemSelector::applyFilter() {
   _itemList->clearChildren();
   const std::string &filterText = _filterText->text();
 
@@ -82,9 +82,10 @@ void ItemSelector::applyFilter(void *data) {
       // Add item to list
       Element *container = new Element();
       _itemList->addChild(container);
+      auto pItem = const_cast<ClientItem *>(&item);
       Button *itemButton =
           new Button({0, 0, LIST_WIDTH - List::ARROW_W, ITEM_HEIGHT + 2}, "",
-                     selectItem, const_cast<ClientItem *>(&item));
+                     [pItem]() { selectItem(pItem); });
       container->addChild(itemButton);
       itemButton->addChild(
           new Picture({1, 1, ITEM_HEIGHT, ITEM_HEIGHT}, item.icon()));
@@ -99,7 +100,7 @@ void ItemSelector::applyFilter(void *data) {
   _itemList->addChild(container);
   Button *itemButton =
       new Button({0, 0, LIST_WIDTH - List::ARROW_W, ITEM_HEIGHT + 2}, "",
-                 selectItem, nullptr);
+                 []() { selectItem(nullptr); });
   container->addChild(itemButton);
   itemButton->addChild(new Label(
       {ITEM_HEIGHT + GAP, LABEL_TOP, LABEL_WIDTH, TEXT_HEIGHT}, "[None]"));

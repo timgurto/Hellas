@@ -386,7 +386,7 @@ void Client::gameLoop() {
   SDL_Delay(5);
 }
 
-void Client::startCrafting(void *data) {
+void Client::startCrafting() {
   if (_instance->_activeRecipe != nullptr) {
     _instance->sendMessage(CL_CRAFT, _instance->_activeRecipe->id());
     const ClientItem *product =

@@ -3,15 +3,8 @@
 extern Renderer renderer;
 
 Button::Button(const ScreenRect &rect, const std::string &caption,
-               clickFun_t clickFunction, void *clickData)
-    : Element(rect), _clickFun(clickFunction), _clickData(clickData) {
-  init(caption);
-}
-
-Button::Button(const ScreenRect &rect, const std::string &caption,
-               clickFun_t clickFunction, const std::string &clickData)
-    : Element(rect), _clickFun(clickFunction), _clickDataString(clickData) {
-  _clickData = &_clickDataString;
+               clickFun_t clickFunction)
+    : Element(rect), _clickFun(clickFunction) {
   init(caption);
 }
 
@@ -44,7 +37,7 @@ void Button::depress() {
 void Button::release(bool click) {
   _border->setReversed(false);
   _content->setPosition(0, 0);
-  if (click && _clickFun != nullptr) _clickFun(_clickData);
+  if (click && _clickFun != nullptr) _clickFun();
   _depressed = false;
   markChanged();
 }

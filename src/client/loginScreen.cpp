@@ -35,8 +35,7 @@ void Client::loginScreenLoop() {
     std::thread{connectToServerStatic}.detach();
   }
 
-  if (_shouldAutoLogIn && _connection.state() == Connection::CONNECTED)
-    login(nullptr);
+  if (_shouldAutoLogIn && _connection.state() == Connection::CONNECTED) login();
 
   // Send ping
   if (_time - _lastPingSent > PING_FREQUENCY) {
@@ -234,7 +233,7 @@ void Client::initCreateWindow() {
   _createWindow->addChild(createButton);
 }
 
-void Client::createAccount(void *) {
+void Client::createAccount() {
   auto username = newNameBox->text();
   newNameBox->text(username);
 
@@ -244,18 +243,13 @@ void Client::createAccount(void *) {
                          makeArgs(username, selectedClass, version()));
 }
 
-void Client::login(void *) {
+void Client::login() {
   if (_instance->_username.empty()) {
     _instance->_username = nameBox->text();
   }
 
   _instance->sendMessage(CL_LOGIN_EXISTING,
                          makeArgs(_instance->_username, version()));
-}
-
-void exit(void *data) {
-  bool &loop = *reinterpret_cast<bool *>(data);
-  loop = false;
 }
 
 void Client::initLoginScreen() {
@@ -330,13 +324,13 @@ void Client::initLoginScreen() {
     _loginUI.push_back(
         new Button({SCREEN_X - BUTTON_W - GAP, SCREEN_Y - BUTTON_HEIGHT - GAP,
                     BUTTON_W, BUTTON_HEIGHT},
-                   "Quit", exit, &_loop));
+                   "Quit", [this]() { _loop = false; }));
 
     auto y = 250_px, BUTTON_X = SCREEN_X - BUTTON_W - GAP;
 
     auto createButton =
         new Button({BUTTON_X, y, BUTTON_W, BUTTON_HEIGHT}, "Create new account",
-                   showWindowInFront, _createWindow);
+                   [this]() { showWindowInFront(_createWindow); });
     _loginUI.push_back(createButton);
     updateCreateButton(nullptr);
   }
@@ -379,7 +373,7 @@ void Client::handleLoginInput(double delta) {
 
           case SDLK_RETURN:
           case SDLK_KP_ENTER:
-            login(nullptr);
+            login();
             break;
         }
         break;

@@ -149,10 +149,10 @@ void Client::initializeCraftingWindow() {
 }
 
 void Client::selectRecipe(Element &e, const ScreenPoint &mousePos) {
-  const auto &client = *Client::_instance;
+  auto &client = *_instance;
 
   if (!collision(mousePos, {0, 0, e.rect().w, e.rect().h})) return;
-  Element &pane = *_instance->_detailsPane;
+  Element &pane = *client._detailsPane;
   pane.clearChildren();
   const ScreenRect &paneRect = pane.rect();
 
@@ -161,19 +161,19 @@ void Client::selectRecipe(Element &e, const ScreenPoint &mousePos) {
                     BUTTON_GAP = 3, BUTTON_Y = paneRect.h - BUTTON_HEIGHT;
   pane.addChild(new Button(
       {paneRect.w - BUTTON_WIDTH, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT},
-      "Close", Window::hideWindow, _instance->_craftingWindow));
+      "Close", [&client]() { Window::hideWindow(client._craftingWindow); }));
 
   // If no recipe selected
-  const std::string &selectedID = _instance->_recipeList->getSelected();
+  const std::string &selectedID = client._recipeList->getSelected();
   if (selectedID == "") {
-    _instance->_activeRecipe = nullptr;
+    client._activeRecipe = nullptr;
     return;
   }
 
   // Crafting Button
   pane.addChild(new Button({paneRect.w - 2 * BUTTON_WIDTH - BUTTON_GAP,
                             BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT},
-                           "Craft", startCrafting, nullptr));
+                           "Craft", startCrafting));
 
   const std::set<Recipe>::const_iterator it =
       _instance->_recipes.find(selectedID);

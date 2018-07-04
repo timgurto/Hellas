@@ -241,8 +241,7 @@ class Client {
   static const px_t LINE_GAP;   // The total height occupied by a line and its
                                 // surrounding spacing
   const Recipe *_activeRecipe;  // The recipe currently selected, if any
-  static void startCrafting(
-      void *data);  // Called when the "Craft" button is clicked.
+  static void startCrafting();  // Called when the "Craft" button is clicked.
   // Populated at load time, after _items
   std::map<std::string, bool> _tagFilters;
   std::map<const ClientItem *, bool> _matFilters;
@@ -316,7 +315,7 @@ class Client {
   Label *_xpLabel{nullptr};
   Label *_pointsAllocatedLabel{nullptr};
   void initializeClassWindow();
-  static void confirmAndUnlearnTalents(void *);
+  static void confirmAndUnlearnTalents();
   void populateClassWindow();
   std::set<const ClientSpell *> _knownSpells{};
 
@@ -383,13 +382,13 @@ class Client {
   void drawLoginScreen() const;
   std::list<Particle *> _loginParticles;
   void updateLoginParticles(double delta);
-  static void login(void *);
+  static void login();
   static void connectToServerStatic();
   Indicator *_serverConnectionIndicator{nullptr};
   static void updateLoginButton(void *);
   Window *_createWindow{nullptr};
   void initCreateWindow();
-  static void createAccount(void *);
+  static void createAccount();
   static void updateCreateButton(void *);
   static void updateClassDescription();
 
@@ -544,12 +543,12 @@ class Client {
  public:
   static std::string compileMessage(MessageCode msgCode,
                                     const std::string &args = "");
+  void sendMessage(MessageCode msgCode, const std::string &args = "") const;
 
  private:
   std::queue<std::string> _messages;
   std::string _partialMessage;
   void sendRawMessage(const std::string &msg = "") const;
-  void sendMessage(MessageCode msgCode, const std::string &args = "") const;
   static void sendRawMessageStatic(void *data);
   void handleMessage(const std::string &msg);
   void performCommand(const std::string &commandString);

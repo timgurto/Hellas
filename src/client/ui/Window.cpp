@@ -75,7 +75,7 @@ void Window::addHeading() {
   Element::addChild(_headingLine);
 
   _closeButton = new Button({UNINIT, 1, CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE},
-                            "", hideWindow, this);
+                            "", [this]() { hideWindow(this); });
   _closeButton->addChild(new Label({0, 0, CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE},
                                    "x", CENTER_JUSTIFIED, CENTER_JUSTIFIED));
   Element::addChild(_closeButton);

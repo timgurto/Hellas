@@ -76,8 +76,7 @@ const Tooltip &ClientTalent::tooltip() const {
 
 void ClientTalent::generateLearnMessage() {
   auto &client = Client::instance();
-  learnMessage = std::make_shared<std::string>(
-      Client::compileMessage(CL_TAKE_TALENT, name));
+  learnMessage = Client::compileMessage(CL_TAKE_TALENT, name);
 }
 
 size_t Tree::numTiers() const {

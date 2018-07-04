@@ -38,8 +38,9 @@ void TakeContainer::repopulate() {
     Element *dummy = new Element;
     _list->addChild(dummy);
     if (slot.first != nullptr) {
+      auto pSlot = &_slots[i];
       Button *button = new Button({0, 0, dummy->width(), dummy->height()}, "",
-                                  take, &_slots[i]);
+                                  [pSlot]() { take(pSlot); });
       dummy->addChild(button);
       button->addChild(new Picture(1, 1, slot.first->icon()));
       px_t labX = Client::ICON_SIZE + 2;

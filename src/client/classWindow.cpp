@@ -43,7 +43,7 @@ void Client::initializeClassWindow() {
       "Unlearn all"s, confirmAndUnlearnTalents));
 }
 
-void Client::confirmAndUnlearnTalents(void *) {
+void Client::confirmAndUnlearnTalents() {
   Client &client = *Client::_instance;
 
   std::string confirmationText =
@@ -126,11 +126,9 @@ void Client::populateClassWindow() {
         x = (TREE_WIDTH - 18) / 2 + 1;
 
       for (const auto &talent : talents) {
-        void *learnMessageVoidPtr = const_cast<void *>(
-            reinterpret_cast<const void *>(&*talent.learnMessage));
-        auto learnSpellButton =
-            new Button({x, y, 18, 18}, ""s, this->sendRawMessageStatic,
-                       learnMessageVoidPtr);
+        auto learnSpellButton = new Button(
+            {x, y, 18, 18}, ""s,
+            [this, &talent]() { this->sendRawMessage(talent.learnMessage); });
         learnSpellButton->setTooltip(talent.tooltip());
         if (talent.icon)
           learnSpellButton->addChild(new Picture(1, 1, talent.icon));

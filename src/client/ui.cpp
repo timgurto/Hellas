@@ -135,8 +135,9 @@ void Client::populateHotbar() {
   for (auto *spell : _knownSpells) {
     void *castMessageVoidPtr = const_cast<void *>(
         reinterpret_cast<const void *>(&spell->castMessage()));
-    auto button = new Button({i * 18, 0, 18, 18}, {}, sendRawMessageStatic,
-                             castMessageVoidPtr);
+    auto button = new Button({i * 18, 0, 18, 18}, {}, [castMessageVoidPtr]() {
+      sendRawMessageStatic(castMessageVoidPtr);
+    });
     button->addChild(new ColorBlock({0, 0, 18, 18}, Color::OUTLINE));
     button->addChild(new Picture(1, 1, spell->icon()));
     button->addChild(new OutlinedLabel({0, -1, 19, 18}, toString((i + 1) % 10),
@@ -221,12 +222,13 @@ void Client::initializeEscapeWindow() {
   auto x = GAP;
 
   _escapeWindow->addChild(new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT},
-                                     "Exit to desktop"s, exitGame, this));
+                                     "Exit to desktop"s,
+                                     [this]() { exitGame(this); }));
   y += BUTTON_HEIGHT + GAP;
 
-  _escapeWindow->addChild(new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT},
-                                     "Return to game"s, Window::hideWindow,
-                                     _escapeWindow));
+  _escapeWindow->addChild(
+      new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Return to game"s,
+                 [this]() { Window::hideWindow(_escapeWindow); }));
 }
 
 void Client::updateUI() {
@@ -268,9 +270,10 @@ void Client::addButtonToMenu(Element *menuBar, size_t index, Element *toToggle,
                              const std::string tooltip) {
   static const px_t MENU_BUTTON_W = 12, MENU_BUTTON_H = 12;
 
-  Button *button = new Button({MENU_BUTTON_W * static_cast<px_t>(index), 0,
-                               MENU_BUTTON_W, MENU_BUTTON_H},
-                              "", Element::toggleVisibilityOf, toToggle);
+  Button *button =
+      new Button({MENU_BUTTON_W * static_cast<px_t>(index), 0, MENU_BUTTON_W,
+                  MENU_BUTTON_H},
+                 "", [toToggle]() { Element::toggleVisibilityOf(toToggle); });
   button->addChild(
       new Picture(2, 2, {"Images/UI/" + iconFile, Color::MAGENTA}));
   button->setTooltip(tooltip);
