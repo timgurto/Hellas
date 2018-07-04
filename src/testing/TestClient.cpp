@@ -190,6 +190,13 @@ const ClientObjectType &TestClient::getFirstObjectType() {
   return **it;
 }
 
+const CQuest &TestClient::getFirstQuest() {
+  auto &quests = _client->_quests;
+  assert(!quests.empty());
+  auto it = quests.begin();
+  return it->second;
+}
+
 void TestClient::simulateClick(const ScreenPoint &position) {
   const auto oldPosition = _client->_mouse;
   _client->_mouse = position;

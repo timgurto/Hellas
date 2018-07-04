@@ -110,6 +110,7 @@
     <ClCompile Include="src\client\ClientVehicleType.cpp" />
     <ClCompile Include="src\client\ClientWar.cpp" />
     <ClCompile Include="src\client\Connection.cpp" />
+    <ClCompile Include="src\client\CQuest.cpp" />
     <ClCompile Include="src\client\craftingWindow.cpp" />
     <ClCompile Include="src\client\CDataLoader.cpp" />
     <ClCompile Include="src\client\drawing.cpp" />

@@ -250,7 +250,7 @@ TEST_CASE("After a user accepts a quest, he can't do so again", "[quests]") {
   CHECK(a.startsQuests().size() == 1);
 }
 
-TEST_CASE("Objects' quest UI", "[quests]") {
+TEST_CASE("Quest UI", "[quests][ui]") {
   GIVEN("an object that gives a quest") {
     auto data = R"(
       <objectType id="A" />
@@ -277,9 +277,12 @@ TEST_CASE("Objects' quest UI", "[quests]") {
           questButton->depress();
           questButton->release(true);
 
-          THEN("the client is on a quest") {
-            auto &user = s.getFirstUser();
-            WAIT_UNTIL(user.numQuests() == 1);
+          THEN("the quest has a visible window") {
+            const auto &quest = c.getFirstQuest();
+            WAIT_UNTIL(quest.window() != nullptr);
+
+            /*auto &user = s.getFirstUser();
+            WAIT_UNTIL(user.numQuests() == 1);*/
           }
         }
       }
@@ -287,7 +290,7 @@ TEST_CASE("Objects' quest UI", "[quests]") {
   }
 }
 
-TEST_CASE("NPCs' quest UI", "[quests]") {
+TEST_CASE("Quest UI for NPCs", "[quests][ui]") {
   GIVEN("an NPC that gives a quest") {
     auto data = R"(
       <npcType id="A" maxHealth="1" />

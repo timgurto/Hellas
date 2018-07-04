@@ -4,10 +4,11 @@
 #include <SDL.h>
 #include <string>
 
+#include "Element.h"
+
 class Client;
 class Button;
 class ColorBlock;
-class Element;
 class Label;
 class Line;
 class ShadowBox;

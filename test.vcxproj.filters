@@ -160,6 +160,7 @@
     <ClCompile Include="src\client\CDataLoader.cpp" />
     <ClCompile Include="src\server\DataLoader.cpp" />
     <ClCompile Include="src\server\QuestNode.cpp" />
+    <ClCompile Include="src\client\CQuest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

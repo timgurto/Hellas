@@ -6,6 +6,8 @@
 #include "../client/Client.h"
 #include "testing.h"
 
+class CQuest;
+
 // A wrapper of the client, with full access, used for testing.
 class TestClient {
  public:
@@ -73,6 +75,7 @@ class TestClient {
   ClientNPC &getFirstNPC();
   ClientObject &getFirstObject();
   const ClientObjectType &getFirstObjectType();
+  const CQuest &getFirstQuest();
 
   Client *operator->() { return _client; }
   Client &client() { return *_client; }
