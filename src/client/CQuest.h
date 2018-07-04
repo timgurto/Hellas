@@ -19,7 +19,7 @@ class CQuest {
   void name(const Name &newName) { _name = newName; }
   const Window *window() const { return _window; }
 
-  void generateWindow();
+  static void generateWindow(void *quest);
 
  private:
   ID _id;
