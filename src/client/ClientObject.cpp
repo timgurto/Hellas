@@ -228,14 +228,23 @@ void ClientObject::addQuestsToWindow() {
                               "New quests:"));
   y += Element::TEXT_HEIGHT + MARGIN;
 
-  static auto newQuestIcon = Texture{"Images/UI/newQuest.png", Color::MAGENTA};
-  const auto BUTTON_X = newQuestIcon.width();
+  static auto startQuestIcon =
+      Texture{"Images/UI/startQuest.png", Color::MAGENTA};
+  static auto endQuestIcon = Texture{"Images/UI/endQuest.png", Color::MAGENTA};
+  const auto BUTTON_X = startQuestIcon.width();
 
-  for (auto quest : startsQuests()) {
+  auto questsToDisplay = std::map<CQuest *, bool>{};  // true=start, false=end
+  for (auto quest : startsQuests()) questsToDisplay[quest] = true;
+  for (auto quest : endsQuests()) questsToDisplay[quest] = false;
+
+  for (auto pair : questsToDisplay) {
+    auto quest = pair.first;
+    auto startsThisQuest = pair.second;
     y += MARGIN;
 
-    _window->addChild(new Picture(
-        0, y + (BUTTON_HEIGHT - newQuestIcon.height()) / 2, newQuestIcon));
+    auto &icon = startsThisQuest ? startQuestIcon : endQuestIcon;
+    _window->addChild(
+        new Picture(0, y + (BUTTON_HEIGHT - icon.height()) / 2, icon));
 
     const auto buttonRect =
         ScreenRect{BUTTON_X, y, BUTTON_WIDTH, BUTTON_HEIGHT};
@@ -601,12 +610,12 @@ void ClientObject::assembleWindow(Client &client) {
        canGrant = (client.character().isKing() &&
                    _owner == client.character().cityName()),
        canDemolish = _owner == Client::_instance->username(),
-       startsAQuest = !startsQuests().empty();
-  if (isAlive() && (isMerchant ||
-                    userHasAccess() &&
-                        (hasContainer || isVehicle || objType.hasAction() ||
-                         objType.canDeconstruct() || isBeingConstructed() ||
-                         canCede || canGrant || canDemolish || startsAQuest))) {
+       hasAQuest = !(startsQuests().empty() && endsQuests().empty());
+  if (isAlive() &&
+      (isMerchant ||
+       userHasAccess() && (hasContainer || isVehicle || objType.hasAction() ||
+                           objType.canDeconstruct() || isBeingConstructed() ||
+                           canCede || canGrant || canDemolish || hasAQuest))) {
     if (_window == nullptr)
       _window = Window::WithRectAndTitle({}, objType.name());
 
@@ -624,7 +633,7 @@ void ClientObject::assembleWindow(Client &client) {
       }
 
     } else {
-      if (startsAQuest) addQuestsToWindow();
+      if (hasAQuest) addQuestsToWindow();
       if (isMerchant) addMerchantSetupToWindow();
       if (hasContainer) {
         client.watchObject(*this);
