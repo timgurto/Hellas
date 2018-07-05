@@ -15,6 +15,7 @@ class QuestNodeType {
   void addQuestEnd(const Quest::ID &id);
   bool endsQuest(const Quest::ID &id) const;
   const Quests &questsStartingHere() const { return _questsStartingHere; }
+  const Quests &questsEndingHere() const { return _questsEndingHere; }
 
  private:
   Quests _questsStartingHere{};

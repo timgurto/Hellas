@@ -30,7 +30,7 @@ Quests QuestNode::questsUserCanStartHere(const User &user) const {
 Quests QuestNode::questsUserCanEndHere(const User &user) const {
   auto ret = Quests{};
 
-  for (const auto &questID : _type->questsStartingHere()) {
+  for (const auto &questID : _type->questsEndingHere()) {
     if (!user.isOnQuest(questID)) continue;
     ret.insert(questID);
   }

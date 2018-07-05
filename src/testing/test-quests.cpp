@@ -179,6 +179,34 @@ TEST_CASE("Client knows about objects' quests", "[quests]") {
   CHECK(hasQuest2);
 }
 
+TEST_CASE("Clients know quests' correct end nodes", "[quests]") {
+  GIVEN("a quest from A to B") {
+    auto data = R"(
+      <objectType id="A" />
+      <objectType id="B" />
+      <quest id="quest1" startsAt="A" endsAt="B" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    s.addObject("A", {10, 15});
+    const auto &a = s.getFirstObject();
+
+    s.addObject("B", {15, 10});
+
+    WHEN("a user accepts the quest") {
+      auto c = TestClient::WithDataString(data);
+      WAIT_UNTIL(c.objects().size() == 2);
+
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", a.serial()));
+
+      THEN("he knows object B ends it") {
+        auto &b = c.getFirstObject();
+        WAIT_UNTIL(b.endsQuests().size() == 1);
+      }
+    }
+  }
+}
+
 TEST_CASE("Client knows when quests can be completed", "[quests]") {
   GIVEN("an object that starts and ends a quest") {
     auto data = R"(
@@ -334,9 +362,8 @@ TEST_CASE("Quest UI", "[quests][ui]") {
           }
           /*
           AND_THEN(
-              "the object window is still visible (because the quest can be "
-              "completed)") {
-            REPEAT_FOR_MS(100);
+              "the object window is still visible (because the quest can be
+          " "completed)") { REPEAT_FOR_MS(100);
             CHECK(obj.window()->visible());
           }
           */
