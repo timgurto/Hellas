@@ -1873,7 +1873,16 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest,
 
   user.startQuest(quest);
 
-  node->sendQuestsToClient(user);
+  // Send user quests from all nearby nodes
+  auto nearbyEntities = findEntitiesInArea(user.location());
+  for (auto entity : nearbyEntities) {
+    auto nearbyNode = dynamic_cast<QuestNode *>(entity);
+    if (!nearbyNode) continue;
+    nearbyNode->sendQuestsToClient(user);
+  }
+  // TODO: Give clients information about quest states, and let them deal with
+  // any corresponding nodes.  As this stands it has the potential to be very
+  // slow.
 }
 
 void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,
@@ -1889,7 +1898,16 @@ void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,
 
   user.completeQuest(quest);
 
-  node->sendQuestsToClient(user);
+  // Send user quests from all nearby nodes
+  auto nearbyEntities = findEntitiesInArea(user.location());
+  for (auto entity : nearbyEntities) {
+    auto nearbyNode = dynamic_cast<QuestNode *>(entity);
+    if (!nearbyNode) continue;
+    nearbyNode->sendQuestsToClient(user);
+  }
+  // TODO: Give clients information about quest states, and let them deal with
+  // any corresponding nodes.  As this stands it has the potential to be very
+  // slow.
 }
 
 void Server::broadcast(MessageCode msgCode, const std::string &args) {

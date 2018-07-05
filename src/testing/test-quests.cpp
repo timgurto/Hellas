@@ -190,18 +190,20 @@ TEST_CASE("Clients know quests' correct end nodes", "[quests]") {
 
     s.addObject("A", {10, 15});
     const auto &a = s.getFirstObject();
+    auto aSerial = a.serial();
 
     s.addObject("B", {15, 10});
+    auto bSerial = aSerial + 1;
 
     WHEN("a user accepts the quest") {
       auto c = TestClient::WithDataString(data);
       WAIT_UNTIL(c.objects().size() == 2);
-
-      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", a.serial()));
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", aSerial));
 
       THEN("he knows object B ends it") {
-        auto &b = c.getFirstObject();
-        WAIT_UNTIL(b.endsQuests().size() == 1);
+        auto &b = c.objects()[bSerial];
+        REQUIRE(b != nullptr);
+        WAIT_UNTIL(b->endsQuests().size() == 1);
       }
     }
   }
