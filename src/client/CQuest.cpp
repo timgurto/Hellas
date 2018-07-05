@@ -2,6 +2,7 @@
 #include "../Rect.h"
 #include "CQuest.h"
 #include "Client.h"
+#include "ui/Line.h"
 #include "ui/Window.h"
 
 void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
@@ -12,20 +13,24 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   window->center();
 
   const auto BOTTOM = window->contentHeight();
-  const auto GAP = 2_px;
+  const auto GAP = 2_px, BUTTON_W = 90_px, BUTTON_H = 16_px,
+             CONTENT_W = WIN_W - 2 * GAP;
   auto y = GAP;
 
   // Quest name
   auto name = new Label({GAP, y, WIN_W, Element::TEXT_HEIGHT}, quest->name());
   name->setColor(Color::HELP_TEXT_HEADING);
   window->addChild(name);
+  y += name->height() + GAP;
+
+  // Body
+  const auto BODY_H = BOTTOM - 2 * GAP - BUTTON_H - y;
+  auto body = new Element({GAP, y, CONTENT_W, BODY_H});
+
+  y += BODY_H + GAP;
 
   // Transition button
-  const auto BUTTON_W = 90_px, BUTTON_H = 16_px,
-             BUTTON_Y = BOTTOM - GAP - BUTTON_H;
-
-  const auto TRANSITION_BUTTON_RECT =
-      ScreenRect{GAP, BUTTON_Y, BUTTON_W, BUTTON_H};
+  const auto TRANSITION_BUTTON_RECT = ScreenRect{GAP, y, BUTTON_W, BUTTON_H};
   auto transitionName =
       pendingTransition == ACCEPT ? "Accept quest"s : "Complete quest"s;
   auto transitionFun =
@@ -49,10 +54,10 @@ void CQuest::acceptQuest(CQuest *quest, size_t startObjectSerial) {
 
   // Close and remove window
   quest->_window->hide();
-  // TODO: better cleanup.  Lots of unused windows in the background may take up
-  // significant memory.  Note that this function is called from a button click
-  // (which subsequently changes the appearance of the button), meaning it is
-  // unsafe to delete the window here.
+  // TODO: better cleanup.  Lots of unused windows in the background may take
+  // up significant memory.  Note that this function is called from a button
+  // click (which subsequently changes the appearance of the button), meaning
+  // it is unsafe to delete the window here.
 }
 
 void CQuest::completeQuest(CQuest *quest, size_t startObjectSerial) {
@@ -64,8 +69,8 @@ void CQuest::completeQuest(CQuest *quest, size_t startObjectSerial) {
 
   // Close and remove window
   quest->_window->hide();
-  // TODO: better cleanup.  Lots of unused windows in the background may take up
-  // significant memory.  Note that this function is called from a button click
-  // (which subsequently changes the appearance of the button), meaning it is
-  // unsafe to delete the window here.
+  // TODO: better cleanup.  Lots of unused windows in the background may take
+  // up significant memory.  Note that this function is called from a button
+  // click (which subsequently changes the appearance of the button), meaning
+  // it is unsafe to delete the window here.
 }
