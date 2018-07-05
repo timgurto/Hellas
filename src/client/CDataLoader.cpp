@@ -838,6 +838,9 @@ void CDataLoader::loadQuests(XmlReader &xr) {
     CQuest::Name name;
     if (xr.findAttr(elem, "name", name)) q.name(name);
 
+    CQuest::Prose brief;
+    if (xr.findAttr(elem, "brief", brief)) q.brief(brief);
+
     _client._quests[id] = q;
   }
 }

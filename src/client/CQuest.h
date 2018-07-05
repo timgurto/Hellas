@@ -9,6 +9,7 @@ class CQuest {
  public:
   using ID = std::string;
   using Name = std::string;
+  using Prose = std::string;
 
   enum Transition { ACCEPT, COMPLETE };
 
@@ -19,6 +20,8 @@ class CQuest {
   const ID &id() const { return _id; }
   const Name &name() const { return _name; }
   void name(const Name &newName) { _name = newName; }
+  const Prose &brief() const { return _brief; }
+  void brief(const Prose &newBrief) { _brief = newBrief; }
   const Window *window() const { return _window; }
 
   static void generateWindow(CQuest *quest, size_t startObjectSerial,
@@ -30,6 +33,7 @@ class CQuest {
  private:
   ID _id;
   Name _name;
+  Prose _brief;
   Window *_window{nullptr};
 };
 

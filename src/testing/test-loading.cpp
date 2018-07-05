@@ -135,17 +135,19 @@ TEST_CASE("Load XML from string") {
 TEST_CASE("Clients load quests", "[quests]") {
   GIVEN("a quest") {
     auto data = R"(
-      <quest id="quest1" name="Quest" />
+      <quest id="quest1" name="Quest" brief="Brief" />
     )";
 
     WHEN("a client loads") {
       auto c = TestClient::WithDataString(data);
 
       THEN("it has a quest") { CHECK(c.quests().size() == 1); }
-      AND_THEN("it has the correct ID") {
+
+      AND_THEN("it has the correct data for that quest") {
         const auto &quest = c.quests().begin()->second;
         CHECK(quest.id() == "quest1");
         CHECK(quest.name() == "Quest");
+        CHECK(quest.brief() == "Brief");
       }
     }
   }

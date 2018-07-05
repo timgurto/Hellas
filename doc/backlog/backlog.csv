@@ -393,3 +393,4 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 433,Quests are persistent,34,3,Bug,,,,1
 434,Quest progress is persistent,34,3,Bug,421,,,1
 435,Quests have min levels,21,5,Feature,413,,,
+436,"New classes for ID and Name, used everywhere",,,Code quality,,,,
