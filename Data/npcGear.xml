@@ -1,0 +1,17 @@
+<root>
+
+<!--
+ Gear slots:
+ 0 head
+ 1 jewelry
+ 2 body
+ 3 shoulders
+ 4 hands
+ 5 feet
+ 6 right hand
+ 7 left hand
+-->
+
+<item id="linenChitonOrange" gearSlot="2" ><offset x="-6" y="-3" /></item>
+
+</root>

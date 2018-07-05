@@ -16,7 +16,7 @@
     id="prometheus" name="Prometheus"
 	level="20" maxHealth="100" isCivilian="1" >
     <humanoid>
-        <gear id="linenChiton" />
+        <gear id="linenChitonOrange" />
         <gear id="sandals" />
         <gear id="fireWand" />
     </humanoid>
