@@ -22,6 +22,8 @@ class CQuest {
   void name(const Name &newName) { _name = newName; }
   const Prose &brief() const { return _brief; }
   void brief(const Prose &newBrief) { _brief = newBrief; }
+  const Prose &debrief() const { return _debrief; }
+  void debrief(const Prose &newDebrief) { _debrief = newDebrief; }
   const Window *window() const { return _window; }
 
   static void generateWindow(CQuest *quest, size_t startObjectSerial,
@@ -33,7 +35,7 @@ class CQuest {
  private:
   ID _id;
   Name _name;
-  Prose _brief;
+  Prose _brief, _debrief;
   Window *_window{nullptr};
 };
 

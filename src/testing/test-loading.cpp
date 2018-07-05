@@ -135,7 +135,7 @@ TEST_CASE("Load XML from string") {
 TEST_CASE("Clients load quests", "[quests]") {
   GIVEN("a quest") {
     auto data = R"(
-      <quest id="quest1" name="Quest" brief="Brief" />
+      <quest id="quest1" name="Quest" brief="Brief" debrief="Debrief" />
     )";
 
     WHEN("a client loads") {
@@ -148,6 +148,7 @@ TEST_CASE("Clients load quests", "[quests]") {
         CHECK(quest.id() == "quest1");
         CHECK(quest.name() == "Quest");
         CHECK(quest.brief() == "Brief");
+        CHECK(quest.debrief() == "Debrief");
       }
     }
   }
