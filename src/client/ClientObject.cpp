@@ -811,7 +811,7 @@ void ClientObject::draw(const Client &client) const {
     questIndicator = questStartIndicator;
   if (questIndicator) {
     auto questIndicatorOffset = ScreenRect{
-        -questIndicator.width() / 2, -questIndicator.height() - 7 - height(),
+        -questIndicator.width() / 2, -questIndicator.height() - 17 - height(),
         questIndicator.width(), questIndicator.height()};
     auto indicatorLocation =
         toScreenRect(location()) + client.offset() + questIndicatorOffset;
