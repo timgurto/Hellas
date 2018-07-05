@@ -2,6 +2,7 @@
 #include "../Rect.h"
 #include "CQuest.h"
 #include "Client.h"
+#include "WordWrapper.h"
 #include "ui/Line.h"
 #include "ui/Window.h"
 
@@ -25,7 +26,11 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
 
   // Body
   const auto BODY_H = BOTTOM - 2 * GAP - BUTTON_H - y;
-  auto body = new Element({GAP, y, CONTENT_W, BODY_H});
+  auto body = new List({GAP, y, CONTENT_W, BODY_H});
+  window->addChild(body);
+  auto ww = WordWrapper{Element::font(), body->contentWidth()};
+  auto lines = ww.wrap(quest->_brief);
+  for (const auto &line : lines) body->addChild(new Label({}, line));
 
   y += BODY_H + GAP;
 
