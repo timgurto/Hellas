@@ -57,6 +57,7 @@ class Scrollable : public Element {
 
   void doNotScrollToTopOnClear() { _shouldScrollToTopOnClear = false; }
   px_t contentWidth() const { return _content->width(); }
+  px_t contentHeight() const { return _content->height(); }
   void resizeToContent() { height(_content->height()); }
 
   virtual void refresh() override;

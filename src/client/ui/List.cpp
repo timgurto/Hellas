@@ -8,5 +8,5 @@ List::List(const ScreenRect &rect, px_t childHeight)
 
 void List::addChild(Element *child) {
   child->rect(0, _content->height(), rect().w - ARROW_W, _childHeight);
-  _content->addChild(child);
+  Scrollable::addChild(child);
 }

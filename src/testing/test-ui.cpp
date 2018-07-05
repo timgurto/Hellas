@@ -26,6 +26,19 @@ TEST_CASE("Size of nonempty list", "[ui]") {
   CHECK(l.size() == 1);
 }
 
+TEST_CASE("List is resized on new child", "[ui]") {
+  GIVEN("an empty List") {
+    Element::initialize();
+    auto l = List{{0, 0, 100, 100}};
+
+    WHEN("an element is added") {
+      l.addChild(new Label({}, "asdf"));
+
+      THEN("its content grows in height") { CHECK(l.contentHeight() > 0); }
+    }
+  }
+}
+
 TEST_CASE("View merchant slots in window", "[.flaky][ui]") {
   // Given a logged-in client and an object with merchant slots
   TestServer s = TestServer::WithData("merchant");
