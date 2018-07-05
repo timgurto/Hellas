@@ -23,23 +23,18 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   // Transition button
   const auto BUTTON_W = 90_px, BUTTON_H = 16_px,
              BUTTON_Y = BOTTOM - GAP - BUTTON_H;
+
   const auto TRANSITION_BUTTON_RECT =
       ScreenRect{GAP, BUTTON_Y, BUTTON_W, BUTTON_H};
-  Button *button = nullptr;
-  switch (pendingTransition) {
-    case ACCEPT:
-      button = new Button(TRANSITION_BUTTON_RECT, "Accept quest",
-                          [=]() { acceptQuest(quest, startObjectSerial); });
-      button->id("accept");
-      break;
-    case COMPLETE:
-      button = new Button(TRANSITION_BUTTON_RECT, "Complete quest",
-                          [=]() { completeQuest(quest, startObjectSerial); });
-      break;
-    default:
-      button = new Button{{}};
-  }
-  window->addChild(button);
+  auto transitionName =
+      pendingTransition == ACCEPT ? "Accept quest"s : "Complete quest"s;
+  auto transitionFun =
+      pendingTransition == ACCEPT ? acceptQuest : completeQuest;
+  Button *transitionButton =
+      new Button(TRANSITION_BUTTON_RECT, transitionName,
+                 [=]() { transitionFun(quest, startObjectSerial); });
+  ;
+  window->addChild(transitionButton);
 
   quest->_window = window;
   Client::instance().addWindow(quest->_window);
