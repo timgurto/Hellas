@@ -40,6 +40,16 @@ void DataLoader::load(bool keepOldData) {
   if (usingPath) {
     _files = findDataFiles();
 
+    if (isDebug()) {
+      for (const auto &filename : _files) {
+        auto xr = XmlReader::FromFile(filename);
+        if (!xr) {
+          _server._debug("Failed to load XML file "s + filename,
+                         Color::FAILURE);
+        }
+      }
+    }
+
     loadFromAllFiles(&DataLoader::loadTerrainLists);
     loadFromAllFiles(&DataLoader::loadObjectTypes);
     loadFromAllFiles(&DataLoader::loadNPCTypes);

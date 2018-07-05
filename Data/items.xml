@@ -311,6 +311,7 @@
 				<stats energy="17" />
 				<offset x="-6" y="-3" />
 			</item>
+            <item id="linenChitonOrange" gearSlot="2" ><offset x="-6" y="-3" /></item>
 
 	<!-- Hands -->
 	<item id="leatherGloves" name="Leather Gloves" gearSlot="4" sounds="leather" >
