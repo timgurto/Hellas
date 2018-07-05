@@ -29,7 +29,9 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   auto body = new List({GAP, y, CONTENT_W, BODY_H});
   window->addChild(body);
   auto ww = WordWrapper{Element::font(), body->contentWidth()};
-  auto lines = ww.wrap(quest->_brief);
+  const auto &bodyText =
+      pendingTransition == ACCEPT ? quest->_brief : quest->_debrief;
+  auto lines = ww.wrap(bodyText);
   for (const auto &line : lines) body->addChild(new Label({}, line));
 
   y += BODY_H + GAP;
