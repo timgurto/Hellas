@@ -157,6 +157,7 @@
     <ClCompile Include="src\client\ui\List.cpp" />
     <ClCompile Include="src\client\ui\OutlinedLabel.cpp" />
     <ClCompile Include="src\client\ui\Picture.cpp" />
+    <ClCompile Include="src\client\ui\Scrollable.cpp" />
     <ClCompile Include="src\client\ui\ShadowBox.cpp" />
     <ClCompile Include="src\client\ui\TakeContainer.cpp" />
     <ClCompile Include="src\client\ui\TextBox.cpp" />
@@ -315,6 +316,7 @@
     <ClInclude Include="src\client\ui\OutlinedLabel.h" />
     <ClInclude Include="src\client\ui\Picture.h" />
     <ClInclude Include="src\client\ui\ProgressBar.h" />
+    <ClInclude Include="src\client\ui\Scrollable.h" />
     <ClInclude Include="src\client\ui\ShadowBox.h" />
     <ClInclude Include="src\client\ui\TakeContainer.h" />
     <ClInclude Include="src\client\ui\TextBox.h" />

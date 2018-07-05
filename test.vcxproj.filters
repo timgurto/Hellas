@@ -161,6 +161,7 @@
     <ClCompile Include="src\server\DataLoader.cpp" />
     <ClCompile Include="src\server\QuestNode.cpp" />
     <ClCompile Include="src\client\CQuest.cpp" />
+    <ClCompile Include="src\client\ui\Scrollable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -289,5 +290,6 @@
     <ClInclude Include="src\server\DataLoader.h" />
     <ClInclude Include="src\server\QuestNode.h" />
     <ClInclude Include="src\client\CQuest.h" />
+    <ClInclude Include="src\client\ui\Scrollable.h" />
   </ItemGroup>
 </Project>
