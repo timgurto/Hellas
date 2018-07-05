@@ -43,7 +43,7 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   Button *transitionButton =
       new Button(TRANSITION_BUTTON_RECT, transitionName,
                  [=]() { transitionFun(quest, startObjectSerial); });
-  ;
+  if (pendingTransition == ACCEPT) transitionButton->id("accept");
   window->addChild(transitionButton);
 
   quest->_window = window;
