@@ -13,7 +13,17 @@
 </npcType>
 
 <npcType
-    id="prometheus" name="Prometheus"
+    id="prometheus1" name="Prometheus"
+	level="20" maxHealth="100" isCivilian="1" >
+    <humanoid>
+        <gear id="linenChitonOrange" />
+        <gear id="sandals" />
+        <gear id="fireWand" />
+    </humanoid>
+    <class name="titan"/>
+</npcType>
+<npcType
+    id="prometheus2" name="Prometheus"
 	level="20" maxHealth="100" isCivilian="1" >
     <humanoid>
         <gear id="linenChitonOrange" />

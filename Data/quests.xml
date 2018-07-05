@@ -1,6 +1,9 @@
 <root>
 
-<quest id="q1" startsAt="questgiver" endsAt="questgiver" />
-<quest id="q2" startsAt="questgiver" endsAt="questgiver" />
+<quest id="tutConversation" name="A new creation" startsAt="prometheus1" endsAt="prometheus2"
+    brief="I see your eyes and ears are working. Now let's stretch those legs.
+    
+    Follow the path up North and speak with me again. You can move with the WASD or arrow keys."
+    debrief="I suppose an introduction is in order.  My name is Prometheus, and I created you.  Welcome to the world!"/>
 
 </root>
