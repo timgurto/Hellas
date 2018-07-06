@@ -69,7 +69,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>F:\My stuff\Docs\VS2015 Projects\Hellas\third-party\SDL2-2.0.3\include\SDL2;$(IncludePath)</IncludePath>
+    <IncludePath>F:\My stuff\Docs\VS2015 Projects\Hellas\third-party\tinyxml;F:\My stuff\Docs\VS2015 Projects\Hellas\third-party\SDL2-2.0.3\include\SDL2;$(IncludePath)</IncludePath>
     <LibraryPath>F:\My stuff\Docs\VS2015 Projects\Hellas\third-party\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -116,7 +116,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\Color.cpp" />
+    <ClCompile Include="..\..\..\src\XmlReader.cpp" />
+    <ClCompile Include="..\..\..\third-party\tinyxml\tinystr.cpp" />
+    <ClCompile Include="..\..\..\third-party\tinyxml\tinyxml.cpp" />
+    <ClCompile Include="..\..\..\third-party\tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="..\..\..\third-party\tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\Color.h" />
+    <ClInclude Include="..\..\..\src\XmlReader.h" />
+    <ClInclude Include="..\..\..\third-party\tinyxml\tinystr.h" />
+    <ClInclude Include="..\..\..\third-party\tinyxml\tinyxml.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

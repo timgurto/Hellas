@@ -1,16 +1,18 @@
 #include <SDL.h>
-#include <cassert>
-#include <fstream>
-#include <iostream>
-#include <string>
+
+#include "../../../src/Color.h"
+#include "../../../src/XmlReader.h"
 
 #undef main
 int main(int argc, char *argv[]) {
   SDL_Init(SDL_INIT_VIDEO);
 
   auto window =
-      SDL_CreateWindow("Hellas Editor", 100, 100, 800, 600, SDL_WINDOW_SHOWN);
+      SDL_CreateWindow("Hellas Editor", 100, 100, 1280, 720, SDL_WINDOW_SHOWN);
   auto renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+  auto xr = XmlReader::FromFile("../../Data/map.xml");
+  if (!xr) return 0;
 
   auto loop = true;
   while (loop) {
