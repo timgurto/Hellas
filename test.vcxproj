@@ -42,15 +42,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)</OutDir>
     <TargetName>$(ProjectName)-debug</TargetName>
-    <LibraryPath>$(SolutionDir)SDL2\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)SDL2\SDL2_image-2.0.0\lib\x86;$(SolutionDir)SDL2\SDL2-2.0.3\lib\x86;$(SolutionDir)libcurl\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)third-party\catch-1.9.5;$(SolutionDir)tinyxml;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\include;$(SolutionDir)SDL2\SDL2_image-2.0.0\include;$(SolutionDir)SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)libcurl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)third-party\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)third-party\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)third-party\SDL2_image-2.0.0\lib\x86;$(SolutionDir)third-party\SDL2-2.0.3\lib\x86;$(SolutionDir)libcurl\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)third-party\catch-1.9.5;$(SolutionDir)tinyxml;$(SolutionDir)third-party\SDL2_ttf-2.0.12\include;$(SolutionDir)third-party\SDL2_mixer-2.0.0\include;$(SolutionDir)third-party\SDL2_image-2.0.0\include;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)libcurl\include;$(IncludePath)</IncludePath>
     <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)</OutDir>
     <TargetName>$(ProjectName)</TargetName>
-    <IncludePath>$(SolutionDir)third-party\catch-1.9.5;$(SolutionDir)tinyxml;$(SolutionDir)SDL2\SDL2_ttf-2.0.12\include;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\include;$(SolutionDir)SDL2\SDL2_image-2.0.0\include;$(SolutionDir)SDL2\SDL2-2.0.3\include\SDL2;$(SolutionDir)libcurl\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)SDL2\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)SDL2\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)SDL2\SDL2_image-2.0.0\lib\x86;$(SolutionDir)SDL2\SDL2-2.0.3\lib\x86;$(SolutionDir)libcurl\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)third-party\catch-1.9.5;$(SolutionDir)tinyxml;$(SolutionDir)third-party\SDL2_ttf-2.0.12\include;$(SolutionDir)third-party\SDL2_mixer-2.0.0\include;$(SolutionDir)third-party\SDL2_image-2.0.0\include;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)libcurl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)third-party\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)third-party\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)third-party\SDL2_image-2.0.0\lib\x86;$(SolutionDir)third-party\SDL2-2.0.3\lib\x86;$(SolutionDir)libcurl\lib;$(LibraryPath)</LibraryPath>
     <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
