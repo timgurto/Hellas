@@ -10,7 +10,8 @@ auto loop = true;
 SDL_Window *window{nullptr};
 SDL_Renderer *renderer{nullptr};
 auto map = Map{};
-auto zoomLevel = 0u;
+auto zoomLevel = 1;
+std::pair<int, int> offset = {0, 0};
 
 #undef main
 int main(int argc, char *argv[]) {
@@ -20,8 +21,13 @@ int main(int argc, char *argv[]) {
 
   render();
 
+  auto time = SDL_GetTicks();
   while (loop) {
-    handleInput();
+    auto newTime = SDL_GetTicks();
+    auto timeElapsed = newTime - time;
+    time = newTime;
+
+    handleInput(timeElapsed);
   }
 
   finaliseSDL();
@@ -43,7 +49,9 @@ void finaliseSDL() {
   SDL_Quit();
 }
 
-void handleInput() {
+void handleInput(unsigned timeElapsed) {
+  auto shouldRender = false;
+
   auto e = SDL_Event{};
   while (SDL_PollEvent(&e)) {
     switch (e.type) {
@@ -57,19 +65,52 @@ void handleInput() {
         case SDL_WINDOWEVENT_RESIZED:
         case SDL_WINDOWEVENT_MAXIMIZED:
         case SDL_WINDOWEVENT_RESTORED:
-          render();
+          shouldRender = true;
+        break;
+
+      case SDL_KEYDOWN:
+        switch (e.key.keysym.sym) {
+          case SDLK_UP:
+            offset.second -= 20 * zoomLevel;
+            shouldRender = true;
+            break;
+          case SDLK_DOWN:
+            offset.second += 20 * zoomLevel;
+            shouldRender = true;
+            break;
+          case SDLK_LEFT:
+            offset.first -= 20 * zoomLevel;
+            shouldRender = true;
+            break;
+          case SDLK_RIGHT:
+            offset.first += 20 * zoomLevel;
+            shouldRender = true;
+            break;
+        }
         break;
 
       case SDL_MOUSEWHEEL:
         if (e.wheel.y < 0) {
-          if (zoomLevel > 0) --zoomLevel;
+          if (zoomLevel > 1) --zoomLevel;
         } else if (e.wheel.y > 0) {
           ++zoomLevel;
         }
-        render();
+        shouldRender = true;
         break;
     }
+
+    if (shouldRender) render();
   }
+
+  /*auto keyboardState = SDL_GetKeyboardState(0);
+  if (keyboardState[SDL_SCANCODE_UP] == SDL_PRESSED) {
+    offset.second -= timeElapsed * zoomLevel;
+    render();
+  }
+  if (keyboardState[SDL_SCANCODE_DOWN] == SDL_PRESSED) {
+    offset.second += timeElapsed * zoomLevel;
+    render();
+  }*/
 }
 
 void render() {
@@ -81,10 +122,10 @@ void render() {
                          255);
   SDL_RenderClear(renderer);
 
-  auto terrainColor = std::map<char, Color>{};
+  static auto terrainColor = std::map<char, Color>{};
 
-  auto maxX = min<int>(map.width(), winW);
-  auto maxY = min<int>(map.height(), winH);
+  auto maxX = min<int>(map.width(), winW) / zoomLevel;
+  auto maxY = min<int>(map.height(), winH) / zoomLevel;
 
   for (auto y = 0; y != maxY; ++y)
     for (auto x = 0; x != maxX; ++x) {
@@ -94,8 +135,9 @@ void render() {
         terrainColor[terrainHere] = randomColor();
 
       auto color = terrainColor[terrainHere];
-      auto tileSize = static_cast<int>(pow<int>(2, zoomLevel));
-      auto rect = SDL_Rect{x * tileSize, y * tileSize, tileSize, tileSize};
+      auto tileSize = zoomLevel;
+      auto rect = SDL_Rect{x * tileSize - offset.first,
+                           y * tileSize - offset.second, tileSize, tileSize};
 
       SDL_SetRenderDrawColor(renderer, color.r(), color.g(), color.b(), 0xff);
       SDL_RenderFillRect(renderer, &rect);

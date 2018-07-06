@@ -3,7 +3,7 @@
 void initialiseSDL();
 void finaliseSDL();
 
-void handleInput();
+void handleInput(unsigned timeElapsed);
 void render();
 
 Color randomColor();
