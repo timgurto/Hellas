@@ -10,6 +10,7 @@ auto loop = true;
 SDL_Window *window{nullptr};
 SDL_Renderer *renderer{nullptr};
 auto map = Map{};
+auto zoomLevel = 0u;
 
 #undef main
 int main(int argc, char *argv[]) {
@@ -49,15 +50,24 @@ void handleInput() {
       case SDL_QUIT:
         loop = false;
         break;
+
       case SDL_WINDOWEVENT:
-        switch (e.window.event) {
-          case SDL_WINDOWEVENT_SIZE_CHANGED:
-          case SDL_WINDOWEVENT_RESIZED:
-          case SDL_WINDOWEVENT_MAXIMIZED:
-          case SDL_WINDOWEVENT_RESTORED:
-            render();
-            break;
+        switch (e.window.event)
+        case SDL_WINDOWEVENT_SIZE_CHANGED:
+        case SDL_WINDOWEVENT_RESIZED:
+        case SDL_WINDOWEVENT_MAXIMIZED:
+        case SDL_WINDOWEVENT_RESTORED:
+          render();
+        break;
+
+      case SDL_MOUSEWHEEL:
+        if (e.wheel.y < 0) {
+          if (zoomLevel > 0) --zoomLevel;
+        } else if (e.wheel.y > 0) {
+          ++zoomLevel;
         }
+        render();
+        break;
     }
   }
 }
@@ -84,7 +94,8 @@ void render() {
         terrainColor[terrainHere] = randomColor();
 
       auto color = terrainColor[terrainHere];
-      auto rect = SDL_Rect{x, y, 1, 1};
+      auto tileSize = static_cast<int>(pow<int>(2, zoomLevel));
+      auto rect = SDL_Rect{x * tileSize, y * tileSize, tileSize, tileSize};
 
       SDL_SetRenderDrawColor(renderer, color.r(), color.g(), color.b(), 0xff);
       SDL_RenderFillRect(renderer, &rect);
