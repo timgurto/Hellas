@@ -3,6 +3,9 @@
 #include "../../../src/XmlReader.h"
 
 #include "Map.h"
+#include "main.h"
+
+static auto loop = true;
 
 #undef main
 int main(int argc, char *argv[]) {
@@ -14,16 +17,8 @@ int main(int argc, char *argv[]) {
 
   auto map = Map::load("../../Data/map.xml");
 
-  auto loop = true;
   while (loop) {
-    auto e = SDL_Event{};
-    while (SDL_PollEvent(&e)) {
-      switch (e.type) {
-        case SDL_QUIT:
-          loop = false;
-          break;
-      }
-    }
+    handleInput();
   }
 
   SDL_DestroyRenderer(renderer);
@@ -31,4 +26,15 @@ int main(int argc, char *argv[]) {
 
   SDL_Quit();
   return 0;
+}
+
+void handleInput() {
+  auto e = SDL_Event{};
+  while (SDL_PollEvent(&e)) {
+    switch (e.type) {
+      case SDL_QUIT:
+        loop = false;
+        break;
+    }
+  }
 }
