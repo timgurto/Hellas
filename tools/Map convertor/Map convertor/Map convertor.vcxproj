@@ -39,8 +39,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>F:\My stuff\Docs\VS2012 Projects\Map convertor\SDL2\SDL2_image-2.0.0\lib\x86;F:\My stuff\Docs\VS2012 Projects\Map convertor\SDL2\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
-    <IncludePath>F:\My stuff\Docs\VS2012 Projects\Map convertor\SDL2\SDL2_image-2.0.0\include;F:\My stuff\Docs\VS2012 Projects\Map convertor\SDL2\SDL2-2.0.3\include\SDL2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\third-party\SDL2_image-2.0.0\lib\x86;$(SolutionDir)..\..\third-party\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\..\third-party\SDL2_image-2.0.0\include;$(SolutionDir)..\..\third-party\SDL2-2.0.3\include\SDL2;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
