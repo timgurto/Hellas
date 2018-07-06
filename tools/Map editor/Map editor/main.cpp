@@ -6,14 +6,13 @@
 #include "main.h"
 
 static auto loop = true;
+SDL_Window *window{nullptr};
+SDL_Renderer *renderer{nullptr};
 
 #undef main
 int main(int argc, char *argv[]) {
-  SDL_Init(SDL_INIT_VIDEO);
+  initialiseSDL();
 
-  auto window =
-      SDL_CreateWindow("Hellas Editor", 100, 100, 1280, 720, SDL_WINDOW_SHOWN);
-  auto renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
   auto map = Map::load("../../Data/map.xml");
 
@@ -21,11 +20,23 @@ int main(int argc, char *argv[]) {
     handleInput();
   }
 
+  finaliseSDL();
+  return 0;
+}
+
+void initialiseSDL() {
+  SDL_Init(SDL_INIT_VIDEO);
+
+  window =
+      SDL_CreateWindow("Hellas Editor", 100, 100, 1280, 720, SDL_WINDOW_SHOWN);
+  renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+}
+
+void finaliseSDL() {
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
 
   SDL_Quit();
-  return 0;
 }
 
 void handleInput() {
