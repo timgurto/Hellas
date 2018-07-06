@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <map>
 
 #include "../../../src/XmlReader.h"
 
@@ -8,14 +9,15 @@
 auto loop = true;
 SDL_Window *window{nullptr};
 SDL_Renderer *renderer{nullptr};
+auto map = Map{};
 
 #undef main
 int main(int argc, char *argv[]) {
   initialiseSDL();
 
-  render();
+  map = Map::load("../../Data/map.xml");
 
-  auto map = Map::load("../../Data/map.xml");
+  render();
 
   while (loop) {
     handleInput();
@@ -57,5 +59,27 @@ void render() {
                          255);
   SDL_RenderClear(renderer);
 
+  auto terrainColor = std::map<char, Color>{};
+
+  for (auto y = 0; y != map.height(); ++y)
+    for (auto x = 0; x != map.width(); ++x) {
+      auto terrainHere = map.tileAt(x, y);
+      auto colorIt = terrainColor.find(terrainHere);
+      if (colorIt == terrainColor.end())
+        terrainColor[terrainHere] = randomColor();
+
+      auto color = terrainColor[terrainHere];
+      auto rect = SDL_Rect{x, y, 1, 1};
+
+      SDL_SetRenderDrawColor(renderer, color.r(), color.g(), color.b(), 0xff);
+      SDL_RenderFillRect(renderer, &rect);
+    }
+
   SDL_RenderPresent(renderer);
+}
+
+Color randomColor() {
+  return {static_cast<Uint8>(rand() % 0x100),
+          static_cast<Uint8>(rand() % 0x100),
+          static_cast<Uint8>(rand() % 0x100)};
 }
