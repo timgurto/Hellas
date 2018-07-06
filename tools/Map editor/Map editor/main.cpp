@@ -54,6 +54,9 @@ void handleInput() {
 }
 
 void render() {
+  int winW, winH;
+  SDL_GetRendererOutputSize(renderer, &winW, &winH);
+
   auto blueHell = Color{24, 82, 161};
   SDL_SetRenderDrawColor(renderer, blueHell.r(), blueHell.g(), blueHell.b(),
                          255);
@@ -61,8 +64,11 @@ void render() {
 
   auto terrainColor = std::map<char, Color>{};
 
-  for (auto y = 0; y != map.height(); ++y)
-    for (auto x = 0; x != map.width(); ++x) {
+  auto maxX = min<int>(map.width(), winW);
+  auto maxY = min<int>(map.height(), winH);
+
+  for (auto y = 0; y != maxY; ++y)
+    for (auto x = 0; x != maxX; ++x) {
       auto terrainHere = map.tileAt(x, y);
       auto colorIt = terrainColor.find(terrainHere);
       if (colorIt == terrainColor.end())
