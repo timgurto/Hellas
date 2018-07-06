@@ -8,7 +8,6 @@ class Map {
   static Map load(const std::string &filename);
 
  private:
-  Map(){};
   size_t _dimX{0}, _dimY{0};
 
   using Tiles = std::vector<std::vector<char>>;

@@ -5,7 +5,7 @@
 #include "Map.h"
 #include "main.h"
 
-static auto loop = true;
+auto loop = true;
 SDL_Window *window{nullptr};
 SDL_Renderer *renderer{nullptr};
 
@@ -13,6 +13,7 @@ SDL_Renderer *renderer{nullptr};
 int main(int argc, char *argv[]) {
   initialiseSDL();
 
+  render();
 
   auto map = Map::load("../../Data/map.xml");
 
@@ -48,4 +49,13 @@ void handleInput() {
         break;
     }
   }
+}
+
+void render() {
+  auto blueHell = Color{24, 82, 161};
+  SDL_SetRenderDrawColor(renderer, blueHell.r(), blueHell.g(), blueHell.b(),
+                         255);
+  SDL_RenderClear(renderer);
+
+  SDL_RenderPresent(renderer);
 }
