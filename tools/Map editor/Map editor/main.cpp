@@ -30,8 +30,8 @@ int main(int argc, char *argv[]) {
 void initialiseSDL() {
   SDL_Init(SDL_INIT_VIDEO);
 
-  window =
-      SDL_CreateWindow("Hellas Editor", 100, 100, 1280, 720, SDL_WINDOW_SHOWN);
+  window = SDL_CreateWindow("Hellas Editor", 100, 100, 1280, 720,
+                            SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 }
 
@@ -49,6 +49,15 @@ void handleInput() {
       case SDL_QUIT:
         loop = false;
         break;
+      case SDL_WINDOWEVENT:
+        switch (e.window.event) {
+          case SDL_WINDOWEVENT_SIZE_CHANGED:
+          case SDL_WINDOWEVENT_RESIZED:
+          case SDL_WINDOWEVENT_MAXIMIZED:
+          case SDL_WINDOWEVENT_RESTORED:
+            render();
+            break;
+        }
     }
   }
 }
