@@ -123,12 +123,14 @@
     <ClCompile Include="..\..\..\third-party\tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="..\..\..\third-party\tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Color.h" />
     <ClInclude Include="..\..\..\src\XmlReader.h" />
     <ClInclude Include="..\..\..\third-party\tinyxml\tinystr.h" />
     <ClInclude Include="..\..\..\third-party\tinyxml\tinyxml.h" />
+    <ClInclude Include="Map.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
