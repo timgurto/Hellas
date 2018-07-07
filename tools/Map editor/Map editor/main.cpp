@@ -70,19 +70,19 @@ void handleInput(unsigned timeElapsed) {
       case SDL_KEYDOWN:
         switch (e.key.keysym.sym) {
           case SDLK_UP:
-            offset.second -= 20 * zoomLevel;
+            offset.second -= 200 / zoomLevel;
             shouldRender = true;
             break;
           case SDLK_DOWN:
-            offset.second += 20 * zoomLevel;
+            offset.second += 200 / zoomLevel;
             shouldRender = true;
             break;
           case SDLK_LEFT:
-            offset.first -= 20 * zoomLevel;
+            offset.first -= 200 / zoomLevel;
             shouldRender = true;
             break;
           case SDLK_RIGHT:
-            offset.first += 20 * zoomLevel;
+            offset.first += 200 / zoomLevel;
             shouldRender = true;
             break;
         }
@@ -121,7 +121,8 @@ void render() {
                          255);
   SDL_RenderClear(renderer);
 
-  auto src = SDL_Rect{0, 0, winW / zoomLevel, winH / zoomLevel};
+  auto src =
+      SDL_Rect{offset.first, offset.second, winW / zoomLevel, winH / zoomLevel};
   auto wholeMap = map.wholeMap();
   auto result = SDL_RenderCopy(renderer, wholeMap, &src, nullptr);
   auto error = SDL_GetError();
