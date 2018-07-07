@@ -113,7 +113,8 @@ void render() {
   auto result = SDL_RenderClear(renderer);
 
   auto src = SDL_Rect{offset.first, offset.second, zoomed(winW), zoomed(winH)};
-  result = SDL_RenderCopy(renderer, map.wholeMap(), &src, nullptr);
+  auto dst = SDL_Rect{0, 0, winW, winH};
+  result = SDL_RenderCopy(renderer, map.wholeMap(), &src, &dst);
   auto error = SDL_GetError();
 
   SDL_RenderPresent(renderer);
