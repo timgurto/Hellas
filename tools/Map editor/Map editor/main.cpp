@@ -1,5 +1,4 @@
 #include <SDL.h>
-#include <map>
 
 #include "../../../src/XmlReader.h"
 
@@ -17,7 +16,7 @@ std::pair<int, int> offset = {0, 0};
 int main(int argc, char *argv[]) {
   initialiseSDL();
 
-  map = Map::load("../../Data/map.xml");
+  map = {"../../Data/map.xml"};
 
   render();
 
@@ -117,37 +116,16 @@ void render() {
   int winW, winH;
   SDL_GetRendererOutputSize(renderer, &winW, &winH);
 
-  auto blueHell = Color{24, 82, 161};
+  const auto blueHell = Color{24, 82, 161};
   SDL_SetRenderDrawColor(renderer, blueHell.r(), blueHell.g(), blueHell.b(),
                          255);
   SDL_RenderClear(renderer);
 
-  static auto terrainColor = std::map<char, Color>{};
-
-  auto maxX = min<int>(map.width(), winW) / zoomLevel;
-  auto maxY = min<int>(map.height(), winH) / zoomLevel;
-
-  for (auto y = 0; y != maxY; ++y)
-    for (auto x = 0; x != maxX; ++x) {
-      auto terrainHere = map.tileAt(x, y);
-      auto colorIt = terrainColor.find(terrainHere);
-      if (colorIt == terrainColor.end())
-        terrainColor[terrainHere] = randomColor();
-
-      auto color = terrainColor[terrainHere];
-      auto tileSize = zoomLevel;
-      auto rect = SDL_Rect{x * tileSize - offset.first,
-                           y * tileSize - offset.second, tileSize, tileSize};
-
-      SDL_SetRenderDrawColor(renderer, color.r(), color.g(), color.b(), 0xff);
-      SDL_RenderFillRect(renderer, &rect);
-    }
+  auto src = SDL_Rect{100, 100, 100, 100};
+  auto dst = SDL_Rect{100, 100, 100, 100};
+  auto wholeMap = map.wholeMap();
+  auto result = SDL_RenderCopy(renderer, wholeMap, nullptr, nullptr);
+  auto error = SDL_GetError();
 
   SDL_RenderPresent(renderer);
-}
-
-Color randomColor() {
-  return {static_cast<Uint8>(rand() % 0x100),
-          static_cast<Uint8>(rand() % 0x100),
-          static_cast<Uint8>(rand() % 0x100)};
 }
