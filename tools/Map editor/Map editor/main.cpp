@@ -152,8 +152,24 @@ void enforcePanLimits() {
   }
 }
 
-void zoomIn() { ++zoomLevel; }
+void zoomIn() {
+  auto oldWidth = winW / zoomLevel;
+  auto oldHeight = winH / zoomLevel;
+  ++zoomLevel;
+  auto newWidth = winW / zoomLevel;
+  auto newHeight = winH / zoomLevel;
+  offset.first += (oldWidth - newWidth) / 2;
+  offset.second += (oldHeight - newHeight) / 2;
+}
 
 void zoomOut() {
-  if (zoomLevel > 1) --zoomLevel;
+  if (zoomLevel == 1) return;
+
+  auto oldWidth = winW / zoomLevel;
+  auto oldHeight = winH / zoomLevel;
+  --zoomLevel;
+  auto newWidth = winW / zoomLevel;
+  auto newHeight = winH / zoomLevel;
+  offset.first -= (newWidth - oldWidth) / 2;
+  offset.second -= (newHeight - oldHeight) / 2;
 }
