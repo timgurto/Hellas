@@ -37,7 +37,8 @@ static Color randomColor() {
 
 void Map::generateTexture() {
   _wholeMap = {SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
-                                 SDL_TEXTUREACCESS_TARGET, _dimX, _dimY),
+                                 SDL_TEXTUREACCESS_TARGET, _dimX * TILE_SIZE,
+                                 _dimY * TILE_SIZE),
                SDL_DestroyTexture};
 
   auto result = SDL_SetRenderTarget(renderer, _wholeMap.get());
@@ -55,7 +56,7 @@ void Map::generateTexture() {
         terrainColor[terrainHere] = randomColor();
 
       auto color = terrainColor[terrainHere];
-      auto rect = SDL_Rect{x, y, 1, 1};
+      auto rect = SDL_Rect{x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE};
 
       SDL_SetRenderDrawColor(renderer, color.r(), color.g(), color.b(), 0xff);
       SDL_RenderFillRect(renderer, &rect);
