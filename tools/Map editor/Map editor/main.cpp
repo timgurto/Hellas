@@ -163,8 +163,6 @@ void zoomIn() {
 }
 
 void zoomOut() {
-  if (zoomLevel == 0) return;
-
   auto oldWidth = zoomed(winW);
   auto oldHeight = zoomed(winH);
   --zoomLevel;
@@ -174,4 +172,10 @@ void zoomOut() {
   offset.second -= (newHeight - oldHeight) / 2;
 }
 
-int zoomed(int value) { return value >> zoomLevel; }
+int zoomed(int value) {
+  if (zoomLevel > 0)
+    return value >> zoomLevel;
+  else if (zoomLevel < 0)
+    return value << -zoomLevel;
+  return value;
+}
