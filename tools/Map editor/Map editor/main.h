@@ -15,3 +15,6 @@ enum Direction { UP, DOWN, LEFT, RIGHT };
 void pan(Direction dir);
 
 void enforcePanLimits();
+
+void zoomIn();
+void zoomOut();

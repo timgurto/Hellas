@@ -39,7 +39,7 @@ void initialiseSDL() {
   SDL_Init(SDL_INIT_VIDEO);
 
   window =
-      SDL_CreateWindow("Hellas Editor", 100, 100, 1920, 1150, SDL_WINDOW_SHOWN);
+      SDL_CreateWindow("Hellas Editor", 100, 100, 800, 600, SDL_WINDOW_SHOWN);
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
   SDL_GetRendererOutputSize(renderer, &winW, &winH);
@@ -84,9 +84,9 @@ void handleInput(unsigned timeElapsed) {
 
       case SDL_MOUSEWHEEL:
         if (e.wheel.y < 0) {
-          if (zoomLevel > 1) --zoomLevel;
+          zoomOut();
         } else if (e.wheel.y > 0) {
-          ++zoomLevel;
+          zoomIn();
         }
         break;
     }
@@ -150,4 +150,10 @@ void enforcePanLimits() {
     const auto maxYOffset = static_cast<int>(map.height()) - (winH / zoomLevel);
     if (offset.second > maxYOffset) offset.second = maxYOffset;
   }
+}
+
+void zoomIn() { ++zoomLevel; }
+
+void zoomOut() {
+  if (zoomLevel > 1) --zoomLevel;
 }
