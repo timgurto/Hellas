@@ -11,7 +11,6 @@ SDL_Renderer *renderer{nullptr};
 auto map = Map{};
 auto zoomLevel = 1;
 std::pair<int, int> offset = {0, 0};
-bool shouldRender = false;
 int winW{0}, winH{0};
 
 #undef main
@@ -29,6 +28,7 @@ int main(int argc, char *argv[]) {
     time = newTime;
 
     handleInput(timeElapsed);
+    render();
   }
 
   finaliseSDL();
@@ -41,6 +41,8 @@ void initialiseSDL() {
   window = SDL_CreateWindow("Hellas Editor", 100, 100, 1920, 1080,
                             SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+  SDL_GetRendererOutputSize(renderer, &winW, &winH);
 }
 
 void finaliseSDL() {
@@ -64,7 +66,7 @@ void handleInput(unsigned timeElapsed) {
         case SDL_WINDOWEVENT_RESIZED:
         case SDL_WINDOWEVENT_MAXIMIZED:
         case SDL_WINDOWEVENT_RESTORED:
-          shouldRender = true;
+          SDL_GetRendererOutputSize(renderer, &winW, &winH);
         break;
 
       case SDL_KEYDOWN:
@@ -90,11 +92,8 @@ void handleInput(unsigned timeElapsed) {
         } else if (e.wheel.y > 0) {
           ++zoomLevel;
         }
-        shouldRender = true;
         break;
     }
-
-    if (shouldRender) render();
   }
 
   /*auto keyboardState = SDL_GetKeyboardState(0);
@@ -109,7 +108,6 @@ void handleInput(unsigned timeElapsed) {
 }
 
 void render() {
-  SDL_GetRendererOutputSize(renderer, &winW, &winH);
   enforcePanLimits();
 
   const auto blueHell = Color{24, 82, 161};
@@ -124,8 +122,6 @@ void render() {
   auto error = SDL_GetError();
 
   SDL_RenderPresent(renderer);
-
-  shouldRender = false;
 }
 
 void pan(Direction dir) {
@@ -144,7 +140,6 @@ void pan(Direction dir) {
       offset.first += PAN_AMOUNT / zoomLevel;
       break;
   }
-  shouldRender = true;
 }
 
 void enforcePanLimits() {
