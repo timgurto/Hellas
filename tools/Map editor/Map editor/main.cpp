@@ -155,7 +155,7 @@ void enforcePanLimits() {
 void zoomIn() {
   auto oldWidth = winW / zoomLevel;
   auto oldHeight = winH / zoomLevel;
-  ++zoomLevel;
+  zoomLevel *= 2;
   auto newWidth = winW / zoomLevel;
   auto newHeight = winH / zoomLevel;
   offset.first += (oldWidth - newWidth) / 2;
@@ -167,7 +167,7 @@ void zoomOut() {
 
   auto oldWidth = winW / zoomLevel;
   auto oldHeight = winH / zoomLevel;
-  --zoomLevel;
+  zoomLevel /= 2;
   auto newWidth = winW / zoomLevel;
   auto newHeight = winH / zoomLevel;
   offset.first -= (newWidth - oldWidth) / 2;
