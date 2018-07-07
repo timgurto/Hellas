@@ -110,6 +110,7 @@ void handleInput(unsigned timeElapsed) {
 
 void render() {
   SDL_GetRendererOutputSize(renderer, &winW, &winH);
+  enforcePanLimits();
 
   const auto blueHell = Color{24, 82, 161};
   SDL_SetRenderDrawColor(renderer, blueHell.r(), blueHell.g(), blueHell.b(),
@@ -132,26 +133,25 @@ void pan(Direction dir) {
   switch (dir) {
     case UP:
       offset.second -= PAN_AMOUNT / zoomLevel;
-      if (offset.second < 0) offset.second = 0;
       break;
-    case DOWN: {
+    case DOWN:
       offset.second += PAN_AMOUNT / zoomLevel;
-      const auto maxYOffset =
-          static_cast<int>(map.height()) - (winH / zoomLevel);
-      if (offset.second > maxYOffset) offset.second = maxYOffset;
       break;
-    }
     case LEFT:
       offset.first -= PAN_AMOUNT / zoomLevel;
-      if (offset.first < 0) offset.first = 0;
       break;
-    case RIGHT: {
+    case RIGHT:
       offset.first += PAN_AMOUNT / zoomLevel;
-      const auto maxXOffset =
-          static_cast<int>(map.width()) - (winW / zoomLevel);
-      if (offset.first > maxXOffset) offset.first = maxXOffset;
       break;
-    }
   }
   shouldRender = true;
+}
+
+void enforcePanLimits() {
+  if (offset.second < 0) offset.second = 0;
+  if (offset.first < 0) offset.first = 0;
+  const auto maxYOffset = static_cast<int>(map.height()) - (winH / zoomLevel);
+  if (offset.second > maxYOffset) offset.second = maxYOffset;
+  const auto maxXOffset = static_cast<int>(map.width()) - (winW / zoomLevel);
+  if (offset.first > maxXOffset) offset.first = maxXOffset;
 }

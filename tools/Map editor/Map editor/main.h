@@ -13,3 +13,5 @@ T min(const T &lhs, const T &rhs) {
 
 enum Direction { UP, DOWN, LEFT, RIGHT };
 void pan(Direction dir);
+
+void enforcePanLimits();
