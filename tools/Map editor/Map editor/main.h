@@ -10,3 +10,6 @@ template <typename T>
 T min(const T &lhs, const T &rhs) {
   return lhs < rhs ? lhs : rhs;
 }
+
+enum Direction { UP, DOWN, LEFT, RIGHT };
+void pan(Direction dir);

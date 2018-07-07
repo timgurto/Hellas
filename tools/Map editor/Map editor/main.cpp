@@ -11,6 +11,7 @@ SDL_Renderer *renderer{nullptr};
 auto map = Map{};
 auto zoomLevel = 1;
 std::pair<int, int> offset = {0, 0};
+bool shouldRender = false;
 
 #undef main
 int main(int argc, char *argv[]) {
@@ -49,8 +50,6 @@ void finaliseSDL() {
 }
 
 void handleInput(unsigned timeElapsed) {
-  auto shouldRender = false;
-
   auto e = SDL_Event{};
   while (SDL_PollEvent(&e)) {
     switch (e.type) {
@@ -70,20 +69,16 @@ void handleInput(unsigned timeElapsed) {
       case SDL_KEYDOWN:
         switch (e.key.keysym.sym) {
           case SDLK_UP:
-            offset.second -= 200 / zoomLevel;
-            shouldRender = true;
+            pan(UP);
             break;
           case SDLK_DOWN:
-            offset.second += 200 / zoomLevel;
-            shouldRender = true;
+            pan(DOWN);
             break;
           case SDLK_LEFT:
-            offset.first -= 200 / zoomLevel;
-            shouldRender = true;
+            pan(LEFT);
             break;
           case SDLK_RIGHT:
-            offset.first += 200 / zoomLevel;
-            shouldRender = true;
+            pan(RIGHT);
             break;
         }
         break;
@@ -128,4 +123,25 @@ void render() {
   auto error = SDL_GetError();
 
   SDL_RenderPresent(renderer);
+
+  shouldRender = false;
+}
+
+void pan(Direction dir) {
+  const auto PAN_AMOUNT = 200;
+  switch (dir) {
+    case UP:
+      offset.second -= PAN_AMOUNT / zoomLevel;
+      break;
+    case DOWN:
+      offset.second += PAN_AMOUNT / zoomLevel;
+      break;
+    case LEFT:
+      offset.first -= PAN_AMOUNT / zoomLevel;
+      break;
+    case RIGHT:
+      offset.first += PAN_AMOUNT / zoomLevel;
+      break;
+  }
+  shouldRender = true;
 }
