@@ -18,3 +18,5 @@ void enforcePanLimits();
 
 void zoomIn();
 void zoomOut();
+
+int zoomed(int value);

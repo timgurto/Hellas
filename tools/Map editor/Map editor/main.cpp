@@ -112,8 +112,7 @@ void render() {
                          255);
   auto result = SDL_RenderClear(renderer);
 
-  auto src = SDL_Rect{offset.first, offset.second, winW >> zoomLevel,
-                      winH >> zoomLevel};
+  auto src = SDL_Rect{offset.first, offset.second, zoomed(winW), zoomed(winH)};
   result = SDL_RenderCopy(renderer, map.wholeMap(), &src, nullptr);
   auto error = SDL_GetError();
 
@@ -124,16 +123,16 @@ void pan(Direction dir) {
   const auto PAN_AMOUNT = 200;
   switch (dir) {
     case UP:
-      offset.second -= PAN_AMOUNT >> zoomLevel;
+      offset.second -= zoomed(PAN_AMOUNT);
       break;
     case DOWN:
-      offset.second += PAN_AMOUNT >> zoomLevel;
+      offset.second += zoomed(PAN_AMOUNT);
       break;
     case LEFT:
-      offset.first -= PAN_AMOUNT >> zoomLevel;
+      offset.first -= zoomed(PAN_AMOUNT);
       break;
     case RIGHT:
-      offset.first += PAN_AMOUNT >> zoomLevel;
+      offset.first += zoomed(PAN_AMOUNT);
       break;
   }
 }
@@ -142,24 +141,23 @@ void enforcePanLimits() {
   if (offset.first < 0)
     offset.first = 0;
   else {
-    const auto maxXOffset = static_cast<int>(map.width()) - (winW >> zoomLevel);
+    const auto maxXOffset = static_cast<int>(map.width()) - zoomed(winW);
     if (offset.first > maxXOffset) offset.first = maxXOffset;
   }
   if (offset.second < 0)
     offset.second = 0;
   else {
-    const auto maxYOffset =
-        static_cast<int>(map.height()) - (winH >> zoomLevel);
+    const auto maxYOffset = static_cast<int>(map.height()) - zoomed(winH);
     if (offset.second > maxYOffset) offset.second = maxYOffset;
   }
 }
 
 void zoomIn() {
-  auto oldWidth = winW >> zoomLevel;
-  auto oldHeight = winH >> zoomLevel;
+  auto oldWidth = zoomed(winW);
+  auto oldHeight = zoomed(winH);
   ++zoomLevel;
-  auto newWidth = winW >> zoomLevel;
-  auto newHeight = winH >> zoomLevel;
+  auto newWidth = zoomed(winW);
+  auto newHeight = zoomed(winH);
   offset.first += (oldWidth - newWidth) / 2;
   offset.second += (oldHeight - newHeight) / 2;
 }
@@ -167,11 +165,13 @@ void zoomIn() {
 void zoomOut() {
   if (zoomLevel == 0) return;
 
-  auto oldWidth = winW >> zoomLevel;
-  auto oldHeight = winH >> zoomLevel;
+  auto oldWidth = zoomed(winW);
+  auto oldHeight = zoomed(winH);
   --zoomLevel;
-  auto newWidth = winW >> zoomLevel;
-  auto newHeight = winH >> zoomLevel;
+  auto newWidth = zoomed(winW);
+  auto newHeight = zoomed(winH);
   offset.first -= (newWidth - oldWidth) / 2;
   offset.second -= (newHeight - oldHeight) / 2;
 }
+
+int zoomed(int value) { return value >> zoomLevel; }
