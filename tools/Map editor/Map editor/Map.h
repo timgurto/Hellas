@@ -9,8 +9,8 @@ class Map {
   Map() {}
   Map(const std::string &filename);
 
-  size_t width() const { return _dimX; }
-  size_t height() const { return _dimY; }
+  int width() const { return _dimX; }
+  int height() const { return _dimY; }
 
   SDL_Texture *wholeMap() const { return _wholeMap.get(); }
 

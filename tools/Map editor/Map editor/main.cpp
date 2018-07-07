@@ -19,7 +19,8 @@ int main(int argc, char *argv[]) {
 
   map = {"../../Data/map.xml"};
 
-  render();
+  offset.first = (map.width() - winW) / 2;
+  offset.second = (map.height() - winH) / 2;
 
   auto time = SDL_GetTicks();
   while (loop) {
