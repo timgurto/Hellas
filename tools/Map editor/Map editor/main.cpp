@@ -121,10 +121,9 @@ void render() {
                          255);
   SDL_RenderClear(renderer);
 
-  auto src = SDL_Rect{100, 100, 100, 100};
-  auto dst = SDL_Rect{100, 100, 100, 100};
+  auto src = SDL_Rect{0, 0, winW, winH};
   auto wholeMap = map.wholeMap();
-  auto result = SDL_RenderCopy(renderer, wholeMap, nullptr, nullptr);
+  auto result = SDL_RenderCopy(renderer, wholeMap, &src, nullptr);
   auto error = SDL_GetError();
 
   SDL_RenderPresent(renderer);
