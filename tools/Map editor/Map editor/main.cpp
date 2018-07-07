@@ -1,8 +1,11 @@
 #include <SDL.h>
+#include <windows.h>
+#include <algorithm>
 
 #include "../../../src/XmlReader.h"
 
 #include "Map.h"
+#include "Terrain.h"
 #include "main.h"
 
 auto loop = true;
@@ -13,12 +16,18 @@ auto zoomLevel = 1;
 std::pair<int, int> offset = {0, 0};
 int winW{0}, winH{0};
 
+auto terrain = TerrainType::Container{};
+
 #undef main
 int main(int argc, char *argv[]) {
   initialiseSDL();
 
-  map = {"../../Data/map.xml"};
+  auto files = findDataFiles("../../Data");
+  for (const auto &file : files) {
+    TerrainType::load(terrain, file);
+  }
 
+  map = {"../../Data/map.xml"};
   offset.first = (map.width() - winW) / 2;
   offset.second = (map.height() - winH) / 2;
 
@@ -179,4 +188,25 @@ int zoomed(int value) {
   else if (zoomLevel < 0)
     return value << -zoomLevel;
   return value;
+}
+
+FilesList findDataFiles(const std::string &searchPath) {
+  auto list = FilesList{};
+
+  WIN32_FIND_DATA fd;
+  auto path = std::string{searchPath.begin(), searchPath.end()} + "/";
+  std::replace(path.begin(), path.end(), '/', '\\');
+  std::string filter = path + "*.xml";
+  path.c_str();
+  HANDLE hFind = FindFirstFile(filter.c_str(), &fd);
+  if (hFind != INVALID_HANDLE_VALUE) {
+    do {
+      if (fd.cFileName == std::string{"map.xml"}) continue;
+      auto file = path + fd.cFileName;
+      list.insert(file);
+    } while (FindNextFile(hFind, &fd));
+    FindClose(hFind);
+  }
+
+  return list;
 }

@@ -3,8 +3,10 @@
 #include "../../../src/XmlReader.h"
 
 #include "Map.h"
+#include "Terrain.h"
 
 extern SDL_Renderer* renderer;
+extern TerrainType::Container terrain;
 
 Map::Map(const std::string& filename) {
   auto xr = XmlReader::FromFile(filename);
@@ -29,12 +31,6 @@ Map::Map(const std::string& filename) {
   generateTexture();
 }
 
-static Color randomColor() {
-  return {static_cast<Uint8>(rand() % 0x100),
-          static_cast<Uint8>(rand() % 0x100),
-          static_cast<Uint8>(rand() % 0x100)};
-}
-
 void Map::generateTexture() {
   _textureWidth = _dimX * TILE_SIZE - TILE_SIZE / 2;
   _textureHeight = _dimY * TILE_SIZE - TILE_SIZE / 2;
@@ -48,16 +44,11 @@ void Map::generateTexture() {
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
   SDL_RenderClear(renderer);
 
-  static auto terrainColor = std::map<char, Color>{};
-
   for (auto y = 0; y != _dimY; ++y)
     for (auto x = 0; x != _dimX; ++x) {
       auto terrainHere = _tiles[x][y];
-      auto colorIt = terrainColor.find(terrainHere);
-      if (colorIt == terrainColor.end())
-        terrainColor[terrainHere] = randomColor();
 
-      auto color = terrainColor[terrainHere];
+      auto color = terrain[terrainHere].color;
       auto rect = SDL_Rect{x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE};
       if (y % 2 == 1) rect.x -= TILE_SIZE / 2;
 
