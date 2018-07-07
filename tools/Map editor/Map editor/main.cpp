@@ -12,6 +12,7 @@ auto map = Map{};
 auto zoomLevel = 1;
 std::pair<int, int> offset = {0, 0};
 bool shouldRender = false;
+int winW{0}, winH{0};
 
 #undef main
 int main(int argc, char *argv[]) {
@@ -37,7 +38,7 @@ int main(int argc, char *argv[]) {
 void initialiseSDL() {
   SDL_Init(SDL_INIT_VIDEO);
 
-  window = SDL_CreateWindow("Hellas Editor", 100, 100, 1280, 720,
+  window = SDL_CreateWindow("Hellas Editor", 100, 100, 1920, 1080,
                             SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 }
@@ -108,7 +109,6 @@ void handleInput(unsigned timeElapsed) {
 }
 
 void render() {
-  int winW, winH;
   SDL_GetRendererOutputSize(renderer, &winW, &winH);
 
   const auto blueHell = Color{24, 82, 161};
@@ -132,16 +132,26 @@ void pan(Direction dir) {
   switch (dir) {
     case UP:
       offset.second -= PAN_AMOUNT / zoomLevel;
+      if (offset.second < 0) offset.second = 0;
       break;
-    case DOWN:
+    case DOWN: {
       offset.second += PAN_AMOUNT / zoomLevel;
+      const auto maxYOffset =
+          static_cast<int>(map.height()) - (winH / zoomLevel);
+      if (offset.second > maxYOffset) offset.second = maxYOffset;
       break;
+    }
     case LEFT:
       offset.first -= PAN_AMOUNT / zoomLevel;
+      if (offset.first < 0) offset.first = 0;
       break;
-    case RIGHT:
+    case RIGHT: {
       offset.first += PAN_AMOUNT / zoomLevel;
+      const auto maxXOffset =
+          static_cast<int>(map.width()) - (winW / zoomLevel);
+      if (offset.first > maxXOffset) offset.first = maxXOffset;
       break;
+    }
   }
   shouldRender = true;
 }
