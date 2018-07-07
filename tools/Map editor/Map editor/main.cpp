@@ -38,8 +38,8 @@ int main(int argc, char *argv[]) {
 void initialiseSDL() {
   SDL_Init(SDL_INIT_VIDEO);
 
-  window = SDL_CreateWindow("Hellas Editor", 100, 100, 1920, 1080,
-                            SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+  window =
+      SDL_CreateWindow("Hellas Editor", 100, 100, 1920, 1150, SDL_WINDOW_SHOWN);
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
   SDL_GetRendererOutputSize(renderer, &winW, &winH);
@@ -60,14 +60,10 @@ void handleInput(unsigned timeElapsed) {
         loop = false;
         break;
 
-      case SDL_WINDOWEVENT:
-        switch (e.window.event)
-        case SDL_WINDOWEVENT_SIZE_CHANGED:
-        case SDL_WINDOWEVENT_RESIZED:
-        case SDL_WINDOWEVENT_MAXIMIZED:
-        case SDL_WINDOWEVENT_RESTORED:
-          SDL_GetRendererOutputSize(renderer, &winW, &winH);
-        break;
+      case SDL_WINDOWEVENT: {
+        auto eventType = e.window.event;
+        SDL_GetRendererOutputSize(renderer, &winW, &winH);
+      } break;
 
       case SDL_KEYDOWN:
         switch (e.key.keysym.sym) {
@@ -113,12 +109,11 @@ void render() {
   const auto blueHell = Color{24, 82, 161};
   SDL_SetRenderDrawColor(renderer, blueHell.r(), blueHell.g(), blueHell.b(),
                          255);
-  SDL_RenderClear(renderer);
+  auto result = SDL_RenderClear(renderer);
 
   auto src =
       SDL_Rect{offset.first, offset.second, winW / zoomLevel, winH / zoomLevel};
-  auto wholeMap = map.wholeMap();
-  auto result = SDL_RenderCopy(renderer, wholeMap, &src, nullptr);
+  result = SDL_RenderCopy(renderer, map.wholeMap(), &src, nullptr);
   auto error = SDL_GetError();
 
   SDL_RenderPresent(renderer);
@@ -143,10 +138,16 @@ void pan(Direction dir) {
 }
 
 void enforcePanLimits() {
-  if (offset.second < 0) offset.second = 0;
-  if (offset.first < 0) offset.first = 0;
-  const auto maxYOffset = static_cast<int>(map.height()) - (winH / zoomLevel);
-  if (offset.second > maxYOffset) offset.second = maxYOffset;
-  const auto maxXOffset = static_cast<int>(map.width()) - (winW / zoomLevel);
-  if (offset.first > maxXOffset) offset.first = maxXOffset;
+  if (offset.first < 0)
+    offset.first = 0;
+  else {
+    const auto maxXOffset = static_cast<int>(map.width()) - (winW / zoomLevel);
+    if (offset.first > maxXOffset) offset.first = maxXOffset;
+  }
+  if (offset.second < 0)
+    offset.second = 0;
+  else {
+    const auto maxYOffset = static_cast<int>(map.height()) - (winH / zoomLevel);
+    if (offset.second > maxYOffset) offset.second = maxYOffset;
+  }
 }
