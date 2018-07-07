@@ -121,7 +121,7 @@ void render() {
                          255);
   SDL_RenderClear(renderer);
 
-  auto src = SDL_Rect{0, 0, winW, winH};
+  auto src = SDL_Rect{0, 0, winW / zoomLevel, winH / zoomLevel};
   auto wholeMap = map.wholeMap();
   auto result = SDL_RenderCopy(renderer, wholeMap, &src, nullptr);
   auto error = SDL_GetError();
