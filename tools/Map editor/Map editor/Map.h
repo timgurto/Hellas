@@ -18,6 +18,8 @@ class Map {
 
   void generateTexture();
 
+  void draw(std::pair<int, int> offset);
+
  private:
   size_t _dimX{0}, _dimY{0};
   int _textureWidth{0}, _textureHeight{0};

@@ -5,6 +5,7 @@
 
 #include "Map.h"
 #include "Terrain.h"
+#include "main.h"
 
 extern Renderer renderer;
 extern TerrainType::Container terrain;
@@ -56,4 +57,19 @@ void Map::generateTexture() {
   renderer.present();
 
   renderer.popRenderTarget();
+}
+
+void Map::draw(std::pair<int, int> offset) {
+  auto src = ScreenRect{offset.first, offset.second, zoomed(renderer.width()),
+                        zoomed(renderer.height())};
+  auto dst = ScreenRect{0, 0, renderer.width(), renderer.height()};
+  _wholeMap.draw(dst, src);
+
+  auto mapStretched = src.w > _textureWidth || src.h > _textureHeight;
+  if (mapStretched) {
+    renderer.setDrawColor(Color::RED);
+    for (auto i = 0; i != 10; ++i)
+      renderer.drawRect(
+          {i, i, renderer.width() - 2 * i, renderer.height() - 2 * i});
+  }
 }

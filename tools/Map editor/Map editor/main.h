@@ -3,9 +3,6 @@
 #include <set>
 #include <string>
 
-void initialiseSDL();
-void finaliseSDL();
-
 using FilesList = std::set<std::string>;
 FilesList findDataFiles(const std::string &path);
 
@@ -22,5 +19,3 @@ void zoomOut();
 
 int zoomed(int value);
 double zoomed(double value);
-
-bool isDebug() { return true; }

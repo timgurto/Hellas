@@ -122,18 +122,7 @@ void render() {
   renderer.setDrawColor(BLUE_HELL);
   renderer.clear();
 
-  auto src = ScreenRect{offset.first, offset.second, zoomed(renderer.width()),
-                        zoomed(renderer.height())};
-  auto dst = ScreenRect{0, 0, renderer.width(), renderer.height()};
-  map.wholeMap().draw(dst, src);
-
-  auto mapStretched = src.w > map.width() || src.h > map.height();
-  if (mapStretched) {
-    renderer.setDrawColor(Color::RED);
-    for (auto i = 0; i != 10; ++i)
-      renderer.drawRect(
-          {i, i, renderer.width() - 2 * i, renderer.height() - 2 * i});
-  }
+  map.draw(offset);
 
   auto cursorLabelRect = ScreenRect{0, renderer.height() - 20, 200, 20};
   auto mapPos = MapPoint{zoomed(1.0 * mouse.x) + offset.first,
