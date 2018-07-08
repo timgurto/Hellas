@@ -398,10 +398,10 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 440,A quest log,34,55,Usability,,,,1
 441,Show quest progress on screen,21,34,Usability,420,,,1
 442,Fade in from black on first login,21,21,Aesthetics,,,,
-443,Editor: draw map,34,21,Tooling,,,,
-444,Editor: panning,21,1,Tooling,443,,,
-445,Editor: zooming,21,21,Tooling,443,,,
-446,Editor: show co-ordinates,34,5,Tooling,443,,,
+443,Editor: draw map,34,21,Tooling,,TRUE,,
+444,Editor: panning,21,1,Tooling,443,TRUE,,
+445,Editor: zooming,21,21,Tooling,443,TRUE,,
+446,Editor: show co-ordinates,34,5,Tooling,443,TRUE,,
 447,Editor: draw grass,2,5,Tooling,443,,,
 448,Editor: draw any terrain,5,21,Tooling,447,,,
 449,Editor: save map,8,3,Tooling,443,,,

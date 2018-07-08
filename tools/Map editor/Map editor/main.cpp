@@ -18,6 +18,7 @@ auto loop = true;
 auto map = Map{};
 auto zoomLevel = 1;
 std::pair<int, int> offset = {0, 0};
+auto mouse = ScreenPoint{};
 
 auto terrain = TerrainType::Container{};
 
@@ -72,6 +73,10 @@ void handleInput(unsigned timeElapsed) {
           // Tooltip::forceAllToRedraw();
       } break;
 
+      case SDL_MOUSEMOTION:
+        SDL_GetMouseState(&mouse.x, &mouse.y);
+        break;
+
       case SDL_KEYDOWN:
         switch (e.key.keysym.sym) {
           case SDLK_UP:
@@ -122,7 +127,13 @@ void render() {
   auto dst = ScreenRect{0, 0, renderer.width(), renderer.height()};
   map.wholeMap().draw(dst, src);
 
-  Label{{50, 50, 200, 20}, "test"}.draw();
+  auto cursorLabelRect = ScreenRect{0, renderer.height() - 20, 200, 20};
+  auto mapPos = MapPoint{zoomed(1.0 * mouse.x) + offset.first,
+                         zoomed(1.0 * mouse.y) + offset.second} *
+                16.0;
+  Label{cursorLabelRect,
+        "Cursor is at (" + toString(mapPos.x) + "," + toString(mapPos.y) + ")"}
+      .draw();
 
   renderer.present();
 }
@@ -187,6 +198,17 @@ int zoomed(int value) {
     return value >> zoomLevel;
   else if (zoomLevel < 0)
     return value << -zoomLevel;
+  return value;
+}
+
+double zoomed(double value) {
+  if (zoomLevel > 0) {
+    for (auto i = 0; i != zoomLevel; ++i) value /= 2.0;
+    return value;
+  } else if (zoomLevel < 0) {
+    for (auto i = 0; i != -zoomLevel; ++i) value *= 2.0;
+    return value;
+  }
   return value;
 }
 

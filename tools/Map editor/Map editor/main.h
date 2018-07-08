@@ -21,5 +21,6 @@ void zoomIn();
 void zoomOut();
 
 int zoomed(int value);
+double zoomed(double value);
 
 bool isDebug() { return true; }
