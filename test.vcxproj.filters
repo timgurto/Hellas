@@ -112,10 +112,6 @@
     <ClCompile Include="src\util.cpp" />
     <ClCompile Include="src\XmlReader.cpp" />
     <ClCompile Include="src\XmlWriter.cpp" />
-    <ClCompile Include="tinyxml\tinystr.cpp" />
-    <ClCompile Include="tinyxml\tinyxml.cpp" />
-    <ClCompile Include="tinyxml\tinyxmlerror.cpp" />
-    <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="src\server\Entity.cpp" />
     <ClCompile Include="src\server\EntityType.cpp" />
     <ClCompile Include="src\server\Entities.cpp" />
@@ -162,6 +158,10 @@
     <ClCompile Include="src\server\QuestNode.cpp" />
     <ClCompile Include="src\client\CQuest.cpp" />
     <ClCompile Include="src\client\ui\Scrollable.cpp" />
+    <ClCompile Include="third-party\tinyxml\tinystr.cpp" />
+    <ClCompile Include="third-party\tinyxml\tinyxml.cpp" />
+    <ClCompile Include="third-party\tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="third-party\tinyxml\tinyxmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -249,8 +249,6 @@
     <ClInclude Include="src\util.h" />
     <ClInclude Include="src\XmlReader.h" />
     <ClInclude Include="src\XmlWriter.h" />
-    <ClInclude Include="tinyxml\tinystr.h" />
-    <ClInclude Include="tinyxml\tinyxml.h" />
     <ClInclude Include="src\server\Entity.h" />
     <ClInclude Include="src\server\EntityType.h" />
     <ClInclude Include="src\server\Entities.h" />
@@ -291,5 +289,7 @@
     <ClInclude Include="src\server\QuestNode.h" />
     <ClInclude Include="src\client\CQuest.h" />
     <ClInclude Include="src\client\ui\Scrollable.h" />
+    <ClInclude Include="third-party\tinyxml\tinystr.h" />
+    <ClInclude Include="third-party\tinyxml\tinyxml.h" />
   </ItemGroup>
 </Project>

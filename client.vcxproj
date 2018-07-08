@@ -43,14 +43,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)</OutDir>
     <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)libcurl\include;$(SolutionDir)tinyxml;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)third-party\SDL2_ttf-2.0.12\include;$(SolutionDir)third-party\SDL2_mixer-2.0.0\include;$(SolutionDir)third-party\SDL2_image-2.0.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)libcurl\include;$(SolutionDir)third-party\tinyxml;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)third-party\SDL2_ttf-2.0.12\include;$(SolutionDir)third-party\SDL2_mixer-2.0.0\include;$(SolutionDir)third-party\SDL2_image-2.0.0\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)libcurl\lib;$(SolutionDir)third-party\SDL2-2.0.3\lib\x86;$(SolutionDir)third-party\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)third-party\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)third-party\SDL2_image-2.0.0\lib\x86;$(LibraryPath)</LibraryPath>
     <TargetName>$(ProjectName)-debug</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)</OutDir>
     <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)libcurl\include;$(SolutionDir)tinyxml;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)third-party\SDL2_ttf-2.0.12\include;$(SolutionDir)third-party\SDL2_mixer-2.0.0\include;$(SolutionDir)third-party\SDL2_image-2.0.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)libcurl\include;$(SolutionDir)third-party\tinyxml;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)third-party\SDL2_ttf-2.0.12\include;$(SolutionDir)third-party\SDL2_mixer-2.0.0\include;$(SolutionDir)third-party\SDL2_image-2.0.0\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)libcurl\lib;$(SolutionDir)third-party\SDL2-2.0.3\lib\x86;$(SolutionDir)third-party\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)third-party\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)third-party\SDL2_image-2.0.0\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -187,10 +187,10 @@
     <ClCompile Include="src\versionUtil.cpp" />
     <ClCompile Include="src\XmlReader.cpp" />
     <ClCompile Include="src\XmlWriter.cpp" />
-    <ClCompile Include="tinyxml\tinystr.cpp" />
-    <ClCompile Include="tinyxml\tinyxml.cpp" />
-    <ClCompile Include="tinyxml\tinyxmlerror.cpp" />
-    <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="third-party\tinyxml\tinystr.cpp" />
+    <ClCompile Include="third-party\tinyxml\tinyxml.cpp" />
+    <ClCompile Include="third-party\tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="third-party\tinyxml\tinyxmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -276,7 +276,8 @@
     <ClInclude Include="src\versionUtil.h" />
     <ClInclude Include="src\XmlReader.h" />
     <ClInclude Include="src\XmlWriter.h" />
-    <ClInclude Include="tinyxml\tinyxml.h" />
+    <ClInclude Include="third-party\tinyxml\tinystr.h" />
+    <ClInclude Include="third-party\tinyxml\tinyxml.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
