@@ -36,6 +36,8 @@ class Renderer {
   */
   void init();
 
+  SDL_Renderer *raw() { return _renderer; }
+
   operator bool() const { return _valid; }
 
   px_t width() const { return _w; }

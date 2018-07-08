@@ -24,6 +24,7 @@ auto terrain = TerrainType::Container{};
 #undef main
 int main(int argc, char *argv[]) {
   renderer.init();
+  SDL_RenderSetLogicalSize(renderer.raw(), renderer.width(), renderer.height());
 
   auto files = findDataFiles("../../Data");
   for (const auto &file : files) {
