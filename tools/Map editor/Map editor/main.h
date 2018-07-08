@@ -22,4 +22,6 @@ int unzoomed(int value);
 double zoomed(double value);
 double unzoomed(double value);
 
-void drawPoint(MapPoint &mapLoc, Color color);
+void drawPoint(MapPoint &mapLoc, Color color, int radius = 0);
+
+void drawCircle(ScreenPoint &p, int radius);

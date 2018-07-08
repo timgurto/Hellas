@@ -135,7 +135,7 @@ void render() {
         "Cursor is at (" + toString(mapPos.x) + "," + toString(mapPos.y) + ")"}
       .draw();
 
-  drawPoint(playerSpawn, Color::WHITE);
+  drawPoint(playerSpawn, Color::WHITE, playerSpawnRange);
 
   renderer.present();
 }
@@ -233,7 +233,7 @@ double unzoomed(double value) {
   return value;
 }
 
-void drawPoint(MapPoint &mapLoc, Color color) {
+void drawPoint(MapPoint &mapLoc, Color color, int radius) {
   auto pointToDraw = mapLoc;
   pointToDraw.x = unzoomed(pointToDraw.x / 16.0 - offset.first);
   pointToDraw.y = unzoomed(pointToDraw.y / 16.0 - offset.second);
@@ -243,6 +243,40 @@ void drawPoint(MapPoint &mapLoc, Color color) {
   auto screenPoint = toScreenPoint(pointToDraw);
   renderer.fillRect(
       {screenPoint.x - WEIGHT / 2, screenPoint.y - WEIGHT / 2, WEIGHT, WEIGHT});
+  if (radius > 0) drawCircle(screenPoint, unzoomed(radius / 16));
+}
+
+// From
+// https://stackoverflow.com/questions/38334081/howto-draw-circles-arcs-and-vector-graphics-in-sdl
+void drawCircle(ScreenPoint &p, int radius) {
+  typedef int32_t s32;
+  s32 x = radius - 1;
+  s32 y = 0;
+  s32 tx = 1;
+  s32 ty = 1;
+  s32 err = tx - (radius << 1);  // shifting bits left by 1 effectively
+                                 // doubles the value. == tx - diameter
+  while (x >= y) {
+    //  Each of the following renders an octant of the circle
+    SDL_RenderDrawPoint(renderer.raw(), p.x + x, p.y - y);
+    SDL_RenderDrawPoint(renderer.raw(), p.x + x, p.y + y);
+    SDL_RenderDrawPoint(renderer.raw(), p.x - x, p.y - y);
+    SDL_RenderDrawPoint(renderer.raw(), p.x - x, p.y + y);
+    SDL_RenderDrawPoint(renderer.raw(), p.x + y, p.y - x);
+    SDL_RenderDrawPoint(renderer.raw(), p.x + y, p.y + x);
+    SDL_RenderDrawPoint(renderer.raw(), p.x - y, p.y - x);
+    SDL_RenderDrawPoint(renderer.raw(), p.x - y, p.y + x);
+
+    if (err <= 0) {
+      y++;
+      err += ty;
+      ty += 2;
+    } else if (err > 0) {
+      x--;
+      tx += 2;
+      err += tx - (radius << 1);
+    }
+  }
 }
 
 FilesList findDataFiles(const std::string &searchPath) {

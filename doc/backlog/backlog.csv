@@ -405,7 +405,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 447,Editor: draw grass,2,5,Tooling,443,,,
 448,Editor: draw any terrain,5,21,Tooling,447,,,
 449,Editor: save map,8,3,Tooling,443,,,
-450,Editor: show player spawn,3,3,Tooling,443,,,
+450,Editor: show player spawn,3,3,Tooling,443,TRUE,,
 451,Editor: save player spawn,8,2,Tooling,450,,,
 452,Editor: change player spawn,5,5,Tooling,450,,,
 453,Editor: show static objects,21,13,Tooling,443,,,
