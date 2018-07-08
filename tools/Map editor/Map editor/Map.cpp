@@ -10,11 +10,17 @@
 extern Renderer renderer;
 extern TerrainType::Container terrain;
 
-Map::Map(const std::string& filename) {
+Map::Map(const std::string &filename, MapPoint &playerSpawn,
+         int &playerSpawnRange) {
   auto xr = XmlReader::FromFile(filename);
   if (!xr) return;
 
-  auto elem = xr.findChild("size");
+  auto elem = xr.findChild("newPlayerSpawn");
+  xr.findAttr(elem, "x", playerSpawn.x);
+  xr.findAttr(elem, "y", playerSpawn.y);
+  xr.findAttr(elem, "range", playerSpawnRange);
+
+  elem = xr.findChild("size");
   xr.findAttr(elem, "x", _dimX);
   xr.findAttr(elem, "y", _dimY);
 

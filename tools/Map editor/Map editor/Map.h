@@ -9,7 +9,8 @@
 class Map {
  public:
   Map() {}
-  Map(const std::string &filename);
+  Map(const std::string &filename, MapPoint &playerSpawn,
+      int &playerSpawnRange);
 
   int width() const { return _textureWidth; }
   int height() const { return _textureHeight; }

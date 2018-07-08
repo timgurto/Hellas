@@ -16,11 +16,14 @@ auto renderer = Renderer{};  // MUST be defined after cmdLineArgs
 
 auto loop = true;
 auto map = Map{};
-auto zoomLevel = 1;
+auto zoomLevel = 5;
 std::pair<int, int> offset = {0, 0};
 auto mouse = ScreenPoint{};
 
 auto terrain = TerrainType::Container{};
+
+auto playerSpawn = MapPoint{};
+auto playerSpawnRange = 0;
 
 #undef main
 int main(int argc, char *argv[]) {
@@ -32,7 +35,7 @@ int main(int argc, char *argv[]) {
     TerrainType::load(terrain, file);
   }
 
-  map = {"../../Data/map.xml"};
+  map = {"../../Data/map.xml", playerSpawn, playerSpawnRange};
   offset.first = (map.width() - renderer.width()) / 2;
   offset.second = (map.height() - renderer.height()) / 2;
 
@@ -131,6 +134,8 @@ void render() {
   Label{cursorLabelRect,
         "Cursor is at (" + toString(mapPos.x) + "," + toString(mapPos.y) + ")"}
       .draw();
+
+  as;
 
   renderer.present();
 }
