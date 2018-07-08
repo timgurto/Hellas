@@ -1,3 +1,5 @@
+#include <SDL_mixer.h>
+
 #include "SoundProfile.h"
 #include "Client.h"
 
