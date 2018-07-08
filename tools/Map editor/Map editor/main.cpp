@@ -135,7 +135,11 @@ void render() {
         "Cursor is at (" + toString(mapPos.x) + "," + toString(mapPos.y) + ")"}
       .draw();
 
-  as;
+  auto pointToDraw = toScreenPoint(playerSpawn);
+  pointToDraw.x = unzoomed(pointToDraw.x / 16 - offset.first);
+  pointToDraw.y = unzoomed(pointToDraw.y / 16 - offset.second);
+  renderer.setDrawColor(Color::WHITE);
+  renderer.fillRect({pointToDraw.x - 2, pointToDraw.y - 2, 5, 5});
 
   renderer.present();
 }
@@ -200,6 +204,14 @@ int zoomed(int value) {
     return value >> zoomLevel;
   else if (zoomLevel < 0)
     return value << -zoomLevel;
+  return value;
+}
+
+int unzoomed(int value) {
+  if (zoomLevel < 0)
+    return value >> -zoomLevel;
+  else if (zoomLevel > 0)
+    return value << zoomLevel;
   return value;
 }
 

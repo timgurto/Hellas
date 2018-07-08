@@ -135,6 +135,7 @@
     <ClCompile Include="..\..\..\src\client\ui\Window.cpp" />
     <ClCompile Include="..\..\..\src\client\WordWrapper.cpp" />
     <ClCompile Include="..\..\..\src\Color.cpp" />
+    <ClCompile Include="..\..\..\src\Point.cpp" />
     <ClCompile Include="..\..\..\src\XmlReader.cpp" />
     <ClCompile Include="..\..\..\third-party\tinyxml\tinystr.cpp" />
     <ClCompile Include="..\..\..\third-party\tinyxml\tinyxml.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="..\..\..\src\client\ui\Window.h" />
     <ClInclude Include="..\..\..\src\client\WordWrapper.h" />
     <ClInclude Include="..\..\..\src\Color.h" />
+    <ClInclude Include="..\..\..\src\Point.h" />
     <ClInclude Include="..\..\..\src\XmlReader.h" />
     <ClInclude Include="..\..\..\third-party\tinyxml\tinystr.h" />
     <ClInclude Include="..\..\..\third-party\tinyxml\tinyxml.h" />

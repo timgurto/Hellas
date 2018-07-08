@@ -18,4 +18,5 @@ void zoomIn();
 void zoomOut();
 
 int zoomed(int value);
+int unzoomed(int value);
 double zoomed(double value);
