@@ -1,11 +1,12 @@
 #include <map>
 
 #include "../../../src/XmlReader.h"
+#include "../../../src/client/Renderer.h"
 
 #include "Map.h"
 #include "Terrain.h"
 
-extern SDL_Renderer* renderer;
+extern Renderer renderer;
 extern TerrainType::Container terrain;
 
 Map::Map(const std::string& filename) {
@@ -34,29 +35,25 @@ Map::Map(const std::string& filename) {
 void Map::generateTexture() {
   _textureWidth = _dimX * TILE_SIZE - TILE_SIZE / 2;
   _textureHeight = _dimY * TILE_SIZE - TILE_SIZE / 2;
-  _wholeMap = {SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
-                                 SDL_TEXTUREACCESS_TARGET, _textureWidth,
-                                 _textureHeight),
-               SDL_DestroyTexture};
+  _wholeMap = {_textureWidth, _textureHeight};
 
-  auto result = SDL_SetRenderTarget(renderer, _wholeMap.get());
+  renderer.pushRenderTarget(_wholeMap);
 
-  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-  SDL_RenderClear(renderer);
+  renderer.setDrawColor(Color::BLACK);
+  renderer.clear();
 
   for (auto y = 0; y != _dimY; ++y)
     for (auto x = 0; x != _dimX; ++x) {
       auto terrainHere = _tiles[x][y];
+      renderer.setDrawColor(terrain[terrainHere].color);
 
-      auto color = terrain[terrainHere].color;
-      auto rect = SDL_Rect{x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE};
+      auto rect =
+          ScreenRect{x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE};
       if (y % 2 == 1) rect.x -= TILE_SIZE / 2;
-
-      SDL_SetRenderDrawColor(renderer, color.r(), color.g(), color.b(), 0xff);
-      SDL_RenderFillRect(renderer, &rect);
+      renderer.fillRect(rect);
     }
 
-  SDL_RenderPresent(renderer);
+  renderer.present();
 
-  result = SDL_SetRenderTarget(renderer, nullptr);
+  renderer.popRenderTarget();
 }

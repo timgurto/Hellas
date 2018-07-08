@@ -1,6 +1,5 @@
 #include <sstream>
 
-#include "Client.h"
 #include "Renderer.h"
 #include "Tooltip.h"
 
@@ -60,7 +59,6 @@ px_t Tooltip::height() const {
 void Tooltip::addGap() { _content.push_back(Texture()); }
 
 void Tooltip::draw(ScreenPoint p) const {
-  const auto &client = Client::instance();
   generateIfNecessary();
   if (this != &NO_TOOLTIP) _generated.draw(p.x, p.y);
 }

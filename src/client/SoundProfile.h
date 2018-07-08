@@ -5,12 +5,11 @@
 #include <string>
 #include <vector>
 
-#include <SDL_mixer.h>
-
 #include "../types.h"
 
 class SoundVariants;
 class SoundsRecord;
+struct Mix_Chunk;
 
 typedef std::string SoundType;
 typedef int Channel;

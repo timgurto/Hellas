@@ -50,6 +50,7 @@ class ContainerGrid : public Element {
   ContainerGrid(size_t rows, size_t cols, ClientItem::vect_t &linked,
                 size_t serial = Client::INVENTORY, px_t x = 0, px_t y = 0,
                 px_t gap = DEFAULT_GAP, bool solidBackground = true);
+  static void cleanup();
 
   static const ClientItem *getDragItem();
   static const ClientItem *getUseItem();
@@ -58,7 +59,6 @@ class ContainerGrid : public Element {
   static void clearUseItem();
 
   friend Client;
-  friend void Element::cleanup();
 };
 
 #endif

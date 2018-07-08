@@ -2,25 +2,27 @@
 #include <windows.h>
 #include <algorithm>
 
+#include "../../../src/Args.h"
 #include "../../../src/XmlReader.h"
+#include "../../../src/client/Renderer.h"
 
 #include "Map.h"
 #include "Terrain.h"
 #include "main.h"
 
+auto cmdLineArgs = Args{};   // MUST be defined before renderer
+auto renderer = Renderer{};  // MUST be defined after cmdLineArgs
+
 auto loop = true;
-SDL_Window *window{nullptr};
-SDL_Renderer *renderer{nullptr};
 auto map = Map{};
 auto zoomLevel = 1;
 std::pair<int, int> offset = {0, 0};
-int winW{0}, winH{0};
 
 auto terrain = TerrainType::Container{};
 
 #undef main
 int main(int argc, char *argv[]) {
-  initialiseSDL();
+  renderer.init();
 
   auto files = findDataFiles("../../Data");
   for (const auto &file : files) {
@@ -28,8 +30,10 @@ int main(int argc, char *argv[]) {
   }
 
   map = {"../../Data/map.xml"};
-  offset.first = (map.width() - winW) / 2;
-  offset.second = (map.height() - winH) / 2;
+  offset.first = (map.width() - renderer.width()) / 2;
+  offset.second = (map.height() - renderer.height()) / 2;
+
+  Element::initialize();
 
   auto time = SDL_GetTicks();
   while (loop) {
@@ -41,25 +45,7 @@ int main(int argc, char *argv[]) {
     render();
   }
 
-  finaliseSDL();
   return 0;
-}
-
-void initialiseSDL() {
-  SDL_Init(SDL_INIT_VIDEO);
-
-  window =
-      SDL_CreateWindow("Hellas Editor", 100, 100, 800, 600, SDL_WINDOW_SHOWN);
-  renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-  SDL_GetRendererOutputSize(renderer, &winW, &winH);
-}
-
-void finaliseSDL() {
-  SDL_DestroyRenderer(renderer);
-  SDL_DestroyWindow(window);
-
-  SDL_Quit();
 }
 
 void handleInput(unsigned timeElapsed) {
@@ -71,8 +57,14 @@ void handleInput(unsigned timeElapsed) {
         break;
 
       case SDL_WINDOWEVENT: {
-        auto eventType = e.window.event;
-        SDL_GetRendererOutputSize(renderer, &winW, &winH);
+        case SDL_WINDOWEVENT_SIZE_CHANGED:
+        case SDL_WINDOWEVENT_RESIZED:
+        case SDL_WINDOWEVENT_MAXIMIZED:
+        case SDL_WINDOWEVENT_RESTORED:
+          renderer.updateSize();
+          // for (Window *window : _windows) window->forceRefresh();
+          // for (Element *element : _ui) element->forceRefresh();
+          // Tooltip::forceAllToRedraw();
       } break;
 
       case SDL_KEYDOWN:
@@ -116,17 +108,17 @@ void handleInput(unsigned timeElapsed) {
 void render() {
   enforcePanLimits();
 
-  const auto blueHell = Color{24, 82, 161};
-  SDL_SetRenderDrawColor(renderer, blueHell.r(), blueHell.g(), blueHell.b(),
-                         255);
-  auto result = SDL_RenderClear(renderer);
+  const auto BLUE_HELL = Color{24, 82, 161};
+  renderer.setDrawColor(BLUE_HELL);
+  renderer.clear();
 
-  auto src = SDL_Rect{offset.first, offset.second, zoomed(winW), zoomed(winH)};
-  auto dst = SDL_Rect{0, 0, winW, winH};
-  result = SDL_RenderCopy(renderer, map.wholeMap(), &src, &dst);
-  auto error = SDL_GetError();
+  auto src = ScreenRect{offset.first, offset.second, zoomed(renderer.width()),
+                        zoomed(renderer.height())};
+  auto dst = ScreenRect{0, 0, renderer.width(), renderer.height()};
+  map.wholeMap().draw(dst, src);
 
-  SDL_RenderPresent(renderer);
+
+  renderer.present();
 }
 
 void pan(Direction dir) {
@@ -151,33 +143,35 @@ void enforcePanLimits() {
   if (offset.first < 0)
     offset.first = 0;
   else {
-    const auto maxXOffset = static_cast<int>(map.width()) - zoomed(winW);
+    const auto maxXOffset =
+        static_cast<int>(map.width()) - zoomed(renderer.width());
     if (offset.first > maxXOffset) offset.first = maxXOffset;
   }
   if (offset.second < 0)
     offset.second = 0;
   else {
-    const auto maxYOffset = static_cast<int>(map.height()) - zoomed(winH);
+    const auto maxYOffset =
+        static_cast<int>(map.height()) - zoomed(renderer.height());
     if (offset.second > maxYOffset) offset.second = maxYOffset;
   }
 }
 
 void zoomIn() {
-  auto oldWidth = zoomed(winW);
-  auto oldHeight = zoomed(winH);
+  auto oldWidth = zoomed(renderer.width());
+  auto oldHeight = zoomed(renderer.height());
   ++zoomLevel;
-  auto newWidth = zoomed(winW);
-  auto newHeight = zoomed(winH);
+  auto newWidth = zoomed(renderer.width());
+  auto newHeight = zoomed(renderer.height());
   offset.first += (oldWidth - newWidth) / 2;
   offset.second += (oldHeight - newHeight) / 2;
 }
 
 void zoomOut() {
-  auto oldWidth = zoomed(winW);
-  auto oldHeight = zoomed(winH);
+  auto oldWidth = zoomed(renderer.width());
+  auto oldHeight = zoomed(renderer.height());
   --zoomLevel;
-  auto newWidth = zoomed(winW);
-  auto newHeight = zoomed(winH);
+  auto newWidth = zoomed(renderer.width());
+  auto newHeight = zoomed(renderer.height());
   offset.first -= (newWidth - oldWidth) / 2;
   offset.second -= (newHeight - oldHeight) / 2;
 }

@@ -3,7 +3,6 @@
 #include "../../util.h"
 #include "../Client.h"
 #include "../Tooltip.h"
-#include "ContainerGrid.h"
 #include "Element.h"
 #include "Window.h"
 
@@ -399,9 +398,4 @@ void Element::setAlpha(Uint8 alpha) {
   markChanged();
 }
 
-void Element::cleanup() {
-  transparentBackground = Texture();
-  ContainerGrid::_highlight = Texture();
-  ContainerGrid::_highlightGood = Texture();
-  ContainerGrid::_highlightBad = Texture();
-}
+void Element::cleanup() { transparentBackground = Texture(); }

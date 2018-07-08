@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "../../../src/client/Texture.h"
+
 class Map {
  public:
   Map() {}
@@ -12,7 +14,7 @@ class Map {
   int width() const { return _textureWidth; }
   int height() const { return _textureHeight; }
 
-  SDL_Texture *wholeMap() const { return _wholeMap.get(); }
+  const Texture &wholeMap() const { return _wholeMap; }
 
   void generateTexture();
 
@@ -25,5 +27,5 @@ class Map {
   using Tiles = std::vector<std::vector<char>>;
   mutable Tiles _tiles;
 
-  std::shared_ptr<SDL_Texture> _wholeMap;
+  Texture _wholeMap;
 };

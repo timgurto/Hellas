@@ -3,6 +3,7 @@
 
 #include "Element.h"
 #include "Window.h"
+#include "../../messageCodes.h"
 
 class TextBox;
 

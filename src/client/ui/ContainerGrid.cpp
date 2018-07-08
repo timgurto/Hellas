@@ -61,6 +61,12 @@ ContainerGrid::ContainerGrid(size_t rows, size_t cols,
   setMouseMoveFunction(mouseMove);
 }
 
+void ContainerGrid::cleanup() {
+  ContainerGrid::_highlight = {};
+  ContainerGrid::_highlightGood = {};
+  ContainerGrid::_highlightBad = {};
+}
+
 void ContainerGrid::refresh() {
   renderer.setDrawColor(Color::CONTAINER_SLOT_BACKGROUND);
   for (size_t i = 0; i != _linked.size(); ++i) {

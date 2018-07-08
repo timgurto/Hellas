@@ -3,9 +3,9 @@
 
 #include "../../Color.h"
 #include "../../types.h"
-#include "../Renderer.h"
 #include "../Texture.h"
 #include "../Tooltip.h"
+#include "../Renderer.h"
 
 #ifndef ELEMENT_H
 #define ELEMENT_H
