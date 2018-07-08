@@ -16,7 +16,7 @@ auto renderer = Renderer{};  // MUST be defined after cmdLineArgs
 
 auto loop = true;
 auto map = Map{};
-auto zoomLevel = 5;
+auto zoomLevel = 1;
 std::pair<int, int> offset = {0, 0};
 auto mouse = ScreenPoint{};
 
@@ -135,11 +135,7 @@ void render() {
         "Cursor is at (" + toString(mapPos.x) + "," + toString(mapPos.y) + ")"}
       .draw();
 
-  auto pointToDraw = toScreenPoint(playerSpawn);
-  pointToDraw.x = unzoomed(pointToDraw.x / 16 - offset.first);
-  pointToDraw.y = unzoomed(pointToDraw.y / 16 - offset.second);
-  renderer.setDrawColor(Color::WHITE);
-  renderer.fillRect({pointToDraw.x - 2, pointToDraw.y - 2, 5, 5});
+  drawPoint(playerSpawn, Color::WHITE);
 
   renderer.present();
 }
@@ -224,6 +220,29 @@ double zoomed(double value) {
     return value;
   }
   return value;
+}
+
+double unzoomed(double value) {
+  if (zoomLevel > 0) {
+    for (auto i = 0; i != zoomLevel; ++i) value *= 2.0;
+    return value;
+  } else if (zoomLevel < 0) {
+    for (auto i = 0; i != -zoomLevel; ++i) value /= 2.0;
+    return value;
+  }
+  return value;
+}
+
+void drawPoint(MapPoint &mapLoc, Color color) {
+  auto pointToDraw = mapLoc;
+  pointToDraw.x = unzoomed(pointToDraw.x / 16.0 - offset.first);
+  pointToDraw.y = unzoomed(pointToDraw.y / 16.0 - offset.second);
+  renderer.setDrawColor(color);
+
+  const int WEIGHT = 5;
+  auto screenPoint = toScreenPoint(pointToDraw);
+  renderer.fillRect(
+      {screenPoint.x - WEIGHT / 2, screenPoint.y - WEIGHT / 2, WEIGHT, WEIGHT});
 }
 
 FilesList findDataFiles(const std::string &searchPath) {
