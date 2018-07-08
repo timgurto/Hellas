@@ -5,6 +5,7 @@
 #include "../../../src/Args.h"
 #include "../../../src/XmlReader.h"
 #include "../../../src/client/Renderer.h"
+#include "../../../src/client/ui/Label.h"
 
 #include "Map.h"
 #include "Terrain.h"
@@ -34,6 +35,7 @@ int main(int argc, char *argv[]) {
   offset.second = (map.height() - renderer.height()) / 2;
 
   Element::initialize();
+  Element::font(TTF_OpenFont("micross.ttf", 12));
 
   auto time = SDL_GetTicks();
   while (loop) {
@@ -44,6 +46,8 @@ int main(int argc, char *argv[]) {
     handleInput(timeElapsed);
     render();
   }
+
+  TTF_CloseFont(Element::font());
 
   return 0;
 }
@@ -117,6 +121,7 @@ void render() {
   auto dst = ScreenRect{0, 0, renderer.width(), renderer.height()};
   map.wholeMap().draw(dst, src);
 
+  Label{{50, 50, 200, 20}, "test"}.draw();
 
   renderer.present();
 }
