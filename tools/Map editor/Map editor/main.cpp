@@ -209,17 +209,13 @@ void render() {
     (*it)->draw();
   }
 
-  drawPoint(playerSpawn, Color::WHITE, "New-player spawn", playerSpawnRange);
+  drawCircleOnMap(playerSpawn, Color::WHITE, playerSpawnRange);
+  drawTextOnMap(playerSpawn, Color::WHITE, "New-player spawn");
 
   for (const auto &so : staticObjects) {
-    drawPoint(so.loc, Color::YELLOW, so.id);
     auto &entityType = entityTypes[so.id];
-
-    auto pointToDraw = so.loc;
-    pointToDraw.x = unzoomed(pointToDraw.x / 16.0 - offset.first);
-    pointToDraw.y = unzoomed(pointToDraw.y / 16.0 - offset.second);
-    auto drawRect = toScreenPoint(pointToDraw) + entityType.drawRect;
-    entityType.image.draw(drawRect);
+    drawTextOnMap(playerSpawn, Color::YELLOW, so.id);
+    drawImageOnMap(so.loc, entityType.image, entityType.drawRect);
   }
 
   renderer.present();
@@ -318,31 +314,46 @@ double unzoomed(double value) {
   return value;
 }
 
-void drawPoint(const MapPoint &mapLoc, Color color, const std::string &label,
-               int radius) {
-  auto pointToDraw = mapLoc;
-  pointToDraw.x = unzoomed(pointToDraw.x / 16.0 - offset.first);
-  pointToDraw.y = unzoomed(pointToDraw.y / 16.0 - offset.second);
+void drawPointOnMap(MapPoint mapLoc, Color color) {
+  mapLoc.x = unzoomed(mapLoc.x / 16.0 - offset.first);
+  mapLoc.y = unzoomed(mapLoc.y / 16.0 - offset.second);
   renderer.setDrawColor(color);
 
-  const int WEIGHT = 5;
-  auto screenPoint = toScreenPoint(pointToDraw);
+  auto screenPoint = toScreenPoint(mapLoc);
 
-  // Point
+  const int WEIGHT = 5;
   renderer.fillRect(
       {screenPoint.x - WEIGHT / 2, screenPoint.y - WEIGHT / 2, WEIGHT, WEIGHT});
+}
 
-  // Circle
-  if (radius > 0) drawCircle(screenPoint, unzoomed(radius / 16));
+void drawTextOnMap(MapPoint mapLoc, Color color, const std::string &text) {
+  mapLoc.x = unzoomed(mapLoc.x / 16.0 - offset.first);
+  mapLoc.y = unzoomed(mapLoc.y / 16.0 - offset.second);
+  renderer.setDrawColor(color);
 
-  // Label
-  auto shouldDrawLabel = !label.empty();
-  if (shouldDrawLabel) {
-    auto labelTexture = Texture{Element::font(), label, color};
-    labelTexture.draw(ScreenRect{screenPoint.x - labelTexture.width() / 2,
-                                 screenPoint.y - labelTexture.height() / 2,
-                                 labelTexture.width(), labelTexture.height()});
-  }
+  auto screenPoint = toScreenPoint(mapLoc);
+
+  auto labelTexture = Texture{Element::font(), text, color};
+  labelTexture.draw(ScreenRect{screenPoint.x - labelTexture.width() / 2,
+                               screenPoint.y - labelTexture.height() / 2,
+                               labelTexture.width(), labelTexture.height()});
+}
+
+void drawCircleOnMap(MapPoint mapLoc, Color color, int radius) {
+  mapLoc.x = unzoomed(mapLoc.x / 16.0 - offset.first);
+  mapLoc.y = unzoomed(mapLoc.y / 16.0 - offset.second);
+  renderer.setDrawColor(color);
+
+  auto screenPoint = toScreenPoint(mapLoc);
+
+  drawCircle(screenPoint, unzoomed(radius / 16));
+}
+
+void drawImageOnMap(MapPoint mapLoc, const Texture &image,
+                    const ScreenRect &drawRect) {
+  mapLoc.x = unzoomed(mapLoc.x / 16.0 - offset.first);
+  mapLoc.y = unzoomed(mapLoc.y / 16.0 - offset.second);
+  image.draw(toScreenPoint(mapLoc) + drawRect);
 }
 
 void initUI() {
