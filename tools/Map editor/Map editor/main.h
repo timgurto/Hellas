@@ -18,6 +18,7 @@ int unzoomed(int value);
 double zoomed(double value);
 double unzoomed(double value);
 
-void drawPoint(MapPoint &mapLoc, Color color, int radius = 0);
+void drawPoint(const MapPoint &mapLoc, Color color,
+               const std::string &label = {}, int radius = 0);
 
 void initUI();

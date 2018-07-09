@@ -203,7 +203,7 @@ void render() {
     (*it)->draw();
   }
 
-  drawPoint(playerSpawn, Color::WHITE, playerSpawnRange);
+  drawPoint(playerSpawn, Color::WHITE, "New-player spawn", playerSpawnRange);
 
   renderer.present();
 }
@@ -301,7 +301,8 @@ double unzoomed(double value) {
   return value;
 }
 
-void drawPoint(MapPoint &mapLoc, Color color, int radius) {
+void drawPoint(const MapPoint &mapLoc, Color color, const std::string &label,
+               int radius) {
   auto pointToDraw = mapLoc;
   pointToDraw.x = unzoomed(pointToDraw.x / 16.0 - offset.first);
   pointToDraw.y = unzoomed(pointToDraw.y / 16.0 - offset.second);
@@ -309,9 +310,22 @@ void drawPoint(MapPoint &mapLoc, Color color, int radius) {
 
   const int WEIGHT = 5;
   auto screenPoint = toScreenPoint(pointToDraw);
+
+  // Point
   renderer.fillRect(
       {screenPoint.x - WEIGHT / 2, screenPoint.y - WEIGHT / 2, WEIGHT, WEIGHT});
+
+  // Circle
   if (radius > 0) drawCircle(screenPoint, unzoomed(radius / 16));
+
+  // Label
+  auto shouldDrawLabel = !label.empty();
+  if (shouldDrawLabel) {
+    auto labelTexture = Texture{Element::font(), label, color};
+    labelTexture.draw(ScreenRect{screenPoint.x - labelTexture.width() / 2,
+                                 screenPoint.y - labelTexture.height() / 2,
+                                 labelTexture.width(), labelTexture.height()});
+  }
 }
 
 void initUI() {
