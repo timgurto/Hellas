@@ -326,12 +326,12 @@ void initUI() {
 
   saveLoadWindow->addChild(new Label({GAP, y, BUTTON_W, Element::TEXT_HEIGHT},
                                      "Load", Element::CENTER_JUSTIFIED));
-  saveLoadWindow->addChild(
-      new Label({COL2_X, y, BUTTON_W, Element::TEXT_HEIGHT}, "Save",
-                Element::CENTER_JUSTIFIED));
-  y += Element::TEXT_HEIGHT + GAP;
 
+  saveLoadWindow->addChild(
+      new Button({GAP, y, BUTTON_W, BUTTON_H}, "Load map", []() {
+        map = {"../../Data/map.xml", playerSpawn, playerSpawnRange};
+      }));
   saveLoadWindow->addChild(new Button(
-      {COL2_X, y, BUTTON_W, BUTTON_H}, "Map",
+      {COL2_X, y, BUTTON_W, BUTTON_H}, "Save map",
       []() { map.save("../../Data/map.xml", playerSpawn, playerSpawnRange); }));
 }
