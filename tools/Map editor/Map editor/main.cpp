@@ -6,6 +6,7 @@
 #include "../../../src/XmlReader.h"
 #include "../../../src/client/Renderer.h"
 #include "../../../src/client/ui/Label.h"
+#include "../../../src/client/ui/Window.h"
 
 #include "Map.h"
 #include "Terrain.h"
@@ -25,6 +26,8 @@ auto terrain = TerrainType::Container{};
 auto playerSpawn = MapPoint{};
 auto playerSpawnRange = 0;
 
+auto windows = std::list<Window *>{};
+
 #undef main
 int main(int argc, char *argv[]) {
   renderer.init();
@@ -35,12 +38,21 @@ int main(int argc, char *argv[]) {
     TerrainType::load(terrain, file);
   }
 
+  Element::font(TTF_OpenFont("micross.ttf", 12));
+  Element::textOffset = 2;
+  Element::TEXT_HEIGHT = 15;
+  Color::ELEMENT_BACKGROUND = Uint32{0x683141};
+  Color::ELEMENT_FONT = Uint32{0xE5E5E5};
+  Color::ELEMENT_SHADOW_DARK = Uint32{0x330a17};
+  Color::ELEMENT_SHADOW_LIGHT = Uint32{0xa57887};
+  Element::absMouse = &mouse;
+  Element::initialize();
+
+  initUI();
+
   map = {"../../Data/map.xml", playerSpawn, playerSpawnRange};
   offset.first = (map.width() - renderer.width()) / 2;
   offset.second = (map.height() - renderer.height()) / 2;
-
-  Element::initialize();
-  Element::font(TTF_OpenFont("micross.ttf", 12));
 
   auto time = SDL_GetTicks();
   while (loop) {
@@ -51,6 +63,8 @@ int main(int argc, char *argv[]) {
     handleInput(timeElapsed);
     render();
   }
+
+  for (auto window : windows) delete window;
 
   TTF_CloseFont(Element::font());
 
@@ -71,13 +85,15 @@ void handleInput(unsigned timeElapsed) {
         case SDL_WINDOWEVENT_MAXIMIZED:
         case SDL_WINDOWEVENT_RESTORED:
           renderer.updateSize();
-          // for (Window *window : _windows) window->forceRefresh();
-          // for (Element *element : _ui) element->forceRefresh();
+          for (auto window : windows) window->forceRefresh();
           // Tooltip::forceAllToRedraw();
       } break;
 
       case SDL_MOUSEMOTION:
         SDL_GetMouseState(&mouse.x, &mouse.y);
+
+        for (Window *window : windows)
+          if (window->visible()) window->onMouseMove(mouse);
         break;
 
       case SDL_KEYDOWN:
@@ -100,8 +116,54 @@ void handleInput(unsigned timeElapsed) {
       case SDL_MOUSEWHEEL:
         if (e.wheel.y < 0) {
           zoomOut();
+          for (auto window : windows)
+            if (collision(mouse, window->rect())) window->onScrollDown(mouse);
         } else if (e.wheel.y > 0) {
           zoomIn();
+          for (auto window : windows)
+            if (collision(mouse, window->rect())) window->onScrollUp(mouse);
+        }
+        break;
+
+      case SDL_MOUSEBUTTONDOWN:
+        switch (e.button.button) {
+          case SDL_BUTTON_LEFT:
+            for (auto window : windows)
+              if (window->visible()) window->onLeftMouseDown(mouse);
+
+            // Bring top clicked window to front
+            for (auto *window : windows) {
+              if (window->visible() && collision(mouse, window->rect())) {
+                windows.remove(window);
+                windows.push_front(window);
+                window->show();
+                break;
+              }
+            }
+            break;
+          case SDL_BUTTON_RIGHT:
+            for (auto window : windows)
+              if (window->visible() && collision(mouse, window->rect()))
+                window->onRightMouseDown(mouse);
+            break;
+        }
+        break;
+
+      case SDL_MOUSEBUTTONUP:
+        switch (e.button.button) {
+          case SDL_BUTTON_LEFT: {
+            for (auto window : windows)
+              if (window->visible() && collision(mouse, window->rect())) {
+                window->onLeftMouseUp(mouse);
+                break;
+              }
+          }
+          case SDL_BUTTON_RIGHT:
+            for (auto window : windows)
+              if (window->visible() && collision(mouse, window->rect())) {
+                window->onRightMouseUp(mouse);
+                break;
+              }
         }
         break;
     }
@@ -134,6 +196,8 @@ void render() {
   Label{cursorLabelRect,
         "Cursor is at (" + toString(mapPos.x) + "," + toString(mapPos.y) + ")"}
       .draw();
+
+  for (auto it = windows.rbegin(); it != windows.rend(); ++it) (*it)->draw();
 
   drawPoint(playerSpawn, Color::WHITE, playerSpawnRange);
 
@@ -277,6 +341,13 @@ void drawCircle(ScreenPoint &p, int radius) {
       err += tx - (radius << 1);
     }
   }
+}
+
+void initUI() {
+  auto saveLoadWindow =
+      Window::WithRectAndTitle({0, 15, 200, 100}, "Save/Load");
+  saveLoadWindow->show();
+  windows.push_front(saveLoadWindow);
 }
 
 FilesList findDataFiles(const std::string &searchPath) {

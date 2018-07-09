@@ -25,3 +25,5 @@ double unzoomed(double value);
 void drawPoint(MapPoint &mapLoc, Color color, int radius = 0);
 
 void drawCircle(ScreenPoint &p, int radius);
+
+void initUI();
