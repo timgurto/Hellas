@@ -314,46 +314,40 @@ double unzoomed(double value) {
   return value;
 }
 
-void drawPointOnMap(MapPoint mapLoc, Color color) {
-  mapLoc.x = unzoomed(mapLoc.x / 16.0 - offset.first);
-  mapLoc.y = unzoomed(mapLoc.y / 16.0 - offset.second);
+ScreenPoint transform(MapPoint mp) {
+  mp.x = unzoomed(mp.x / 16.0 - offset.first);
+  mp.y = unzoomed(mp.y / 16.0 - offset.second);
+  return toScreenPoint({mp.x, mp.y});
+}
+
+void drawPointOnMap(const MapPoint &mapLoc, Color color) {
   renderer.setDrawColor(color);
-
-  auto screenPoint = toScreenPoint(mapLoc);
-
+  auto screenPoint = transform(mapLoc);
   const int WEIGHT = 5;
   renderer.fillRect(
       {screenPoint.x - WEIGHT / 2, screenPoint.y - WEIGHT / 2, WEIGHT, WEIGHT});
 }
 
-void drawTextOnMap(MapPoint mapLoc, Color color, const std::string &text) {
-  mapLoc.x = unzoomed(mapLoc.x / 16.0 - offset.first);
-  mapLoc.y = unzoomed(mapLoc.y / 16.0 - offset.second);
+void drawTextOnMap(const MapPoint &mapLoc, Color color,
+                   const std::string &text) {
   renderer.setDrawColor(color);
-
-  auto screenPoint = toScreenPoint(mapLoc);
-
+  auto screenPoint = transform(mapLoc);
   auto labelTexture = Texture{Element::font(), text, color};
   labelTexture.draw(ScreenRect{screenPoint.x - labelTexture.width() / 2,
                                screenPoint.y - labelTexture.height() / 2,
                                labelTexture.width(), labelTexture.height()});
 }
 
-void drawCircleOnMap(MapPoint mapLoc, Color color, int radius) {
-  mapLoc.x = unzoomed(mapLoc.x / 16.0 - offset.first);
-  mapLoc.y = unzoomed(mapLoc.y / 16.0 - offset.second);
+void drawCircleOnMap(const MapPoint &mapLoc, Color color, int radius) {
   renderer.setDrawColor(color);
-
-  auto screenPoint = toScreenPoint(mapLoc);
-
+  auto screenPoint = transform(mapLoc);
   drawCircle(screenPoint, unzoomed(radius / 16));
 }
 
-void drawImageOnMap(MapPoint mapLoc, const Texture &image,
+void drawImageOnMap(const MapPoint &mapLoc, const Texture &image,
                     const ScreenRect &drawRect) {
-  mapLoc.x = unzoomed(mapLoc.x / 16.0 - offset.first);
-  mapLoc.y = unzoomed(mapLoc.y / 16.0 - offset.second);
-  image.draw(toScreenPoint(mapLoc) + drawRect);
+  auto screenPoint = transform(mapLoc);
+  image.draw(screenPoint + drawRect);
 }
 
 void initUI() {
