@@ -11,7 +11,9 @@ void EntityType::load(Container& container, const std::string& filename) {
     auto id = std::string{};
     xr.findAttr(elem, "id", id);
 
-    et.image = {"../../Images/Objects/" + id + ".png", Color::MAGENTA};
+    auto imageFile = id;
+    xr.findAttr(elem, "imageFile", imageFile);
+    et.image = {"../../Images/Objects/" + imageFile + ".png", Color::MAGENTA};
     et.drawRect.w = et.image.width();
     et.drawRect.h = et.image.height();
 
