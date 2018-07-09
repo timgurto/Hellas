@@ -145,6 +145,7 @@
     <ClCompile Include="..\..\..\third-party\tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="..\..\..\third-party\tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="DummyClient.cpp" />
+    <ClCompile Include="EntityType.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="StaticObject.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="..\..\..\src\XmlWriter.h" />
     <ClInclude Include="..\..\..\third-party\tinyxml\tinystr.h" />
     <ClInclude Include="..\..\..\third-party\tinyxml\tinyxml.h" />
+    <ClInclude Include="EntityType.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="StaticObject.h" />

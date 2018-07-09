@@ -7,6 +7,7 @@
 #include "../../../src/client/ui/OutlinedLabel.h"
 #include "../../../src/client/ui/Window.h"
 
+#include "EntityType.h"
 #include "Map.h"
 #include "StaticObject.h"
 #include "Terrain.h"
@@ -24,6 +25,7 @@ auto mouse = ScreenPoint{};
 
 auto terrain = TerrainType::Container{};
 auto staticObjects = StaticObject::Container{};
+auto entityTypes = EntityType::Container{};
 
 auto playerSpawn = MapPoint{};
 auto playerSpawnRange = 0;
@@ -39,6 +41,7 @@ int main(int argc, char *argv[]) {
   for (const auto &file : files) {
     TerrainType::load(terrain, file);
     StaticObject::load(staticObjects, file);
+    EntityType::load(entityTypes, file);
   }
 
   Element::font(TTF_OpenFont("trebucbd.ttf", 15));
@@ -210,6 +213,13 @@ void render() {
 
   for (const auto &so : staticObjects) {
     drawPoint(so.loc, Color::YELLOW, so.id);
+    auto &entityType = entityTypes[so.id];
+
+    auto pointToDraw = so.loc;
+    pointToDraw.x = unzoomed(pointToDraw.x / 16.0 - offset.first);
+    pointToDraw.y = unzoomed(pointToDraw.y / 16.0 - offset.second);
+    auto drawRect = toScreenPoint(pointToDraw) + entityType.drawRect;
+    entityType.image.draw(drawRect);
   }
 
   renderer.present();
