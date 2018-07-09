@@ -1,10 +1,6 @@
 #pragma once
 
-#include <set>
 #include <string>
-
-using FilesList = std::set<std::string>;
-FilesList findDataFiles(const std::string &path);
 
 void handleInput(unsigned timeElapsed);
 void render();
@@ -23,7 +19,5 @@ double zoomed(double value);
 double unzoomed(double value);
 
 void drawPoint(MapPoint &mapLoc, Color color, int radius = 0);
-
-void drawCircle(ScreenPoint &p, int radius);
 
 void initUI();
