@@ -196,7 +196,10 @@ void render() {
         "Cursor is at (" + toString(mapPos.x) + "," + toString(mapPos.y) + ")"}
       .draw();
 
-  for (auto it = windows.rbegin(); it != windows.rend(); ++it) (*it)->draw();
+  for (auto it = windows.rbegin(); it != windows.rend(); ++it) {
+    (*it)->show();
+    (*it)->draw();
+  }
 
   drawPoint(playerSpawn, Color::WHITE, playerSpawnRange);
 
@@ -312,6 +315,5 @@ void drawPoint(MapPoint &mapLoc, Color color, int radius) {
 void initUI() {
   auto saveLoadWindow =
       Window::WithRectAndTitle({0, 15, 200, 100}, "Save/Load");
-  saveLoadWindow->show();
   windows.push_front(saveLoadWindow);
 }
