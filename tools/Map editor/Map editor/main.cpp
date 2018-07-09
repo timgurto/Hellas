@@ -3,6 +3,7 @@
 #include "../../../src/Args.h"
 #include "../../../src/XmlReader.h"
 #include "../../../src/client/Renderer.h"
+#include "../../../src/client/ui/Button.h"
 #include "../../../src/client/ui/OutlinedLabel.h"
 #include "../../../src/client/ui/Window.h"
 
@@ -37,9 +38,9 @@ int main(int argc, char *argv[]) {
     TerrainType::load(terrain, file);
   }
 
-  Element::font(TTF_OpenFont("tahomabd.ttf", 15));
+  Element::font(TTF_OpenFont("trebucbd.ttf", 15));
   Element::textOffset = 2;
-  Element::TEXT_HEIGHT = 15;
+  Element::TEXT_HEIGHT = 20;
   Color::ELEMENT_BACKGROUND = Uint32{0x683141};
   Color::ELEMENT_FONT = Uint32{0xE5E5E5};
   Color::ELEMENT_SHADOW_DARK = Uint32{0x330a17};
@@ -316,4 +317,21 @@ void drawPoint(MapPoint &mapLoc, Color color, int radius) {
 void initUI() {
   auto saveLoadWindow = Window::WithRectAndTitle({0, 0, 200, 100}, "Save/Load");
   windows.push_front(saveLoadWindow);
+
+  const auto GAP = 2_px,
+             BUTTON_W = (saveLoadWindow->contentWidth() - 3 * GAP) / 2,
+             BUTTON_H = 25, COL2_X = 2 * GAP + BUTTON_W;
+
+  auto y = GAP;
+
+  saveLoadWindow->addChild(new Label({GAP, y, BUTTON_W, Element::TEXT_HEIGHT},
+                                     "Load", Element::CENTER_JUSTIFIED));
+  saveLoadWindow->addChild(
+      new Label({COL2_X, y, BUTTON_W, Element::TEXT_HEIGHT}, "Save",
+                Element::CENTER_JUSTIFIED));
+  y += Element::TEXT_HEIGHT + GAP;
+
+  saveLoadWindow->addChild(new Button(
+      {COL2_X, y, BUTTON_W, BUTTON_H}, "Map",
+      []() { map.save("../../Data/map.xml", playerSpawn, playerSpawnRange); }));
 }

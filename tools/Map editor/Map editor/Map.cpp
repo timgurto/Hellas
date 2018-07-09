@@ -1,6 +1,7 @@
 #include <map>
 
 #include "../../../src/XmlReader.h"
+#include "../../../src/XmlWriter.h"
 #include "../../../src/client/Renderer.h"
 
 #include "Map.h"
@@ -37,6 +38,32 @@ Map::Map(const std::string &filename, MapPoint &playerSpawn,
   }
 
   generateTexture();
+}
+
+void Map::save(const std::string &filename, MapPoint playerSpawn,
+               int playerSpawnRange) {
+  auto xw = XmlWriter{filename};
+
+  auto e = xw.addChild("size");
+  xw.setAttr(e, "x", _dimX);
+  xw.setAttr(e, "y", _dimY);
+
+  e = xw.addChild("newPlayerSpawn");
+  xw.setAttr(e, "x", playerSpawn.x);
+  xw.setAttr(e, "y", playerSpawn.y);
+  xw.setAttr(e, "range", playerSpawnRange);
+
+  for (auto y = 0; y != _dimY; ++y) {
+    auto rowString = std::string{};
+    for (auto x = 0; x != _dimX; ++x) {
+      rowString += (_tiles[x][y]);
+    }
+    e = xw.addChild("row");
+    xw.setAttr(e, "y", y);
+    xw.setAttr(e, "terrain", rowString);
+  }
+
+  xw.publish();
 }
 
 void Map::generateTexture() {

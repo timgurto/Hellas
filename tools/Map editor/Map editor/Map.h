@@ -12,6 +12,9 @@ class Map {
   Map(const std::string &filename, MapPoint &playerSpawn,
       int &playerSpawnRange);
 
+  void save(const std::string &filename, MapPoint playerSpawn,
+            int playerSpawnRange);
+
   int width() const { return _textureWidth; }
   int height() const { return _textureHeight; }
 
