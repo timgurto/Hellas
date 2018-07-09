@@ -131,11 +131,13 @@
     <ClCompile Include="..\..\..\src\client\ui\Element.cpp" />
     <ClCompile Include="..\..\..\src\client\ui\Label.cpp" />
     <ClCompile Include="..\..\..\src\client\ui\Line.cpp" />
+    <ClCompile Include="..\..\..\src\client\ui\OutlinedLabel.cpp" />
     <ClCompile Include="..\..\..\src\client\ui\ShadowBox.cpp" />
     <ClCompile Include="..\..\..\src\client\ui\Window.cpp" />
     <ClCompile Include="..\..\..\src\client\WordWrapper.cpp" />
     <ClCompile Include="..\..\..\src\Color.cpp" />
     <ClCompile Include="..\..\..\src\Point.cpp" />
+    <ClCompile Include="..\..\..\src\types.cpp" />
     <ClCompile Include="..\..\..\src\XmlReader.cpp" />
     <ClCompile Include="..\..\..\third-party\tinyxml\tinystr.cpp" />
     <ClCompile Include="..\..\..\third-party\tinyxml\tinyxml.cpp" />
@@ -158,6 +160,7 @@
     <ClInclude Include="..\..\..\src\client\ui\Element.h" />
     <ClInclude Include="..\..\..\src\client\ui\Label.h" />
     <ClInclude Include="..\..\..\src\client\ui\Line.h" />
+    <ClInclude Include="..\..\..\src\client\ui\OutlinedLabel.h" />
     <ClInclude Include="..\..\..\src\client\ui\ShadowBox.h" />
     <ClInclude Include="..\..\..\src\client\ui\Window.h" />
     <ClInclude Include="..\..\..\src\client\WordWrapper.h" />

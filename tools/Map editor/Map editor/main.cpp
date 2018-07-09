@@ -3,7 +3,7 @@
 #include "../../../src/Args.h"
 #include "../../../src/XmlReader.h"
 #include "../../../src/client/Renderer.h"
-#include "../../../src/client/ui/Label.h"
+#include "../../../src/client/ui/OutlinedLabel.h"
 #include "../../../src/client/ui/Window.h"
 
 #include "Map.h"
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
     TerrainType::load(terrain, file);
   }
 
-  Element::font(TTF_OpenFont("micross.ttf", 12));
+  Element::font(TTF_OpenFont("tahomabd.ttf", 15));
   Element::textOffset = 2;
   Element::TEXT_HEIGHT = 15;
   Color::ELEMENT_BACKGROUND = Uint32{0x683141};
@@ -192,9 +192,10 @@ void render() {
   auto mapPos = MapPoint{zoomed(1.0 * mouse.x) + offset.first,
                          zoomed(1.0 * mouse.y) + offset.second} *
                 16.0;
-  Label{cursorLabelRect,
-        "Cursor is at (" + toString(mapPos.x) + "," + toString(mapPos.y) + ")"}
-      .draw();
+  auto cursorPosLabel =
+      OutlinedLabel{cursorLabelRect, "Cursor is at (" + toString(mapPos.x) +
+                                         "," + toString(mapPos.y) + ")"};
+  cursorPosLabel.draw();
 
   for (auto it = windows.rbegin(); it != windows.rend(); ++it) {
     (*it)->show();
@@ -313,7 +314,6 @@ void drawPoint(MapPoint &mapLoc, Color color, int radius) {
 }
 
 void initUI() {
-  auto saveLoadWindow =
-      Window::WithRectAndTitle({0, 15, 200, 100}, "Save/Load");
+  auto saveLoadWindow = Window::WithRectAndTitle({0, 0, 200, 100}, "Save/Load");
   windows.push_front(saveLoadWindow);
 }
