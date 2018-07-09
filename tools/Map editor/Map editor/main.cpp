@@ -8,6 +8,7 @@
 #include "../../../src/client/ui/Window.h"
 
 #include "Map.h"
+#include "StaticObject.h"
 #include "Terrain.h"
 #include "main.h"
 #include "util.h"
@@ -22,6 +23,7 @@ std::pair<int, int> offset = {0, 0};
 auto mouse = ScreenPoint{};
 
 auto terrain = TerrainType::Container{};
+auto staticObjects = StaticObject::Container{};
 
 auto playerSpawn = MapPoint{};
 auto playerSpawnRange = 0;
@@ -36,6 +38,7 @@ int main(int argc, char *argv[]) {
   auto files = findDataFiles("../../Data");
   for (const auto &file : files) {
     TerrainType::load(terrain, file);
+    StaticObject::load(staticObjects, file);
   }
 
   Element::font(TTF_OpenFont("trebucbd.ttf", 15));
@@ -204,6 +207,10 @@ void render() {
   }
 
   drawPoint(playerSpawn, Color::WHITE, "New-player spawn", playerSpawnRange);
+
+  for (const auto &so : staticObjects) {
+    drawPoint(so.loc, Color::YELLOW, so.id);
+  }
 
   renderer.present();
 }

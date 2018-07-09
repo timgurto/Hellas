@@ -2,8 +2,6 @@
 
 #include <map>
 
-#include "../../../src/XmlReader.h"
-
 struct TerrainType {
   char index{'\0'};
   std::string id;

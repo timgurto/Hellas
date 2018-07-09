@@ -1,0 +1,33 @@
+#include "../../../src/XmlReader.h"
+
+#include "StaticObject.h"
+
+void StaticObject::load(Container& container, const std::string& filename) {
+  auto xr = XmlReader::FromFile(filename);
+
+  for (auto elem : xr.getChildren("object")) {
+    auto so = StaticObject{};
+    so.type = OBJECT;
+
+    xr.findAttr(elem, "id", so.id);
+
+    auto location = xr.findChild("location", elem);
+    xr.findAttr(location, "x", so.loc.x);
+    xr.findAttr(location, "y", so.loc.y);
+
+    container.push_back(so);
+  }
+
+  for (auto elem : xr.getChildren("npc")) {
+    auto so = StaticObject{};
+    so.type = NPC;
+
+    xr.findAttr(elem, "id", so.id);
+
+    auto location = xr.findChild("location", elem);
+    xr.findAttr(location, "x", so.loc.x);
+    xr.findAttr(location, "y", so.loc.y);
+
+    container.push_back(so);
+  }
+}

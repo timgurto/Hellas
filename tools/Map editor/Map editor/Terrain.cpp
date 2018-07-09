@@ -1,3 +1,5 @@
+#include "../../../src/XmlReader.h"
+
 #include "Terrain.h"
 
 void TerrainType::load(Container &container, const std::string &filename) {
