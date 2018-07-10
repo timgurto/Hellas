@@ -148,6 +148,7 @@
     <ClCompile Include="..\..\..\third-party\tinyxml\tinyxml.cpp" />
     <ClCompile Include="..\..\..\third-party\tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="..\..\..\third-party\tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="DummyClient.cpp" />
     <ClCompile Include="EntityType.cpp" />
     <ClCompile Include="main.cpp" />
