@@ -31,13 +31,20 @@ void EntityType::load(Container& container, const std::string& filename) {
     xr.findAttr(elem, "id", id);
 
     auto imageFile = id;
+
+    auto isHumanoid = xr.findChild("humanoid", elem);
+    if (isHumanoid) {
+      imageFile = {"../Humans/default"};
+      et.collisionRect = {-5, -2, 10, 4};
+      et.drawRect.x = -9;
+      et.drawRect.y = -39;
+    }
+
     xr.findAttr(elem, "imageFile", imageFile);
     et.image = {"../../Images/NPCs/" + imageFile + ".png", Color::MAGENTA};
     et.drawRect.w = et.image.width();
     et.drawRect.h = et.image.height();
 
-    auto isHumanoid = xr.findChild("humanoid", elem);
-    if (isHumanoid) et.collisionRect = {-5, -2, 10, 4};
     xr.findRectChild("collisionRect", elem, et.collisionRect);
 
     xr.findAttr(elem, "xDrawOffset", et.drawRect.x);
