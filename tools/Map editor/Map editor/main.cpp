@@ -215,8 +215,12 @@ void render() {
   drawCircleOnMap(playerSpawn, Color::WHITE, playerSpawnRange);
   drawTextOnMap(playerSpawn, Color::WHITE, "New-player spawn");
 
-  for (const auto &sp : spawnPoints)
-    drawCircleOnMap(sp.loc, Color::CYAN, sp.radius);
+  for (const auto &sp : spawnPoints) {
+    auto &entityType = entityTypes[sp.id];
+    auto color =
+        entityType.category == EntityType::OBJECT ? Color::CYAN : Color::RED;
+    drawCircleOnMap(sp.loc, color, sp.radius);
+  }
   for (const auto &so : staticObjects) {
     auto &entityType = entityTypes[so.id];
     drawRectOnMap(so.loc, Color::YELLOW, entityType.collisionRect);

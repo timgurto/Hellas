@@ -7,7 +7,6 @@ void SpawnPoint::load(Container& container, const std::string& filename) {
 
   for (auto elem : xr.getChildren("spawnPoint")) {
     auto sp = SpawnPoint{};
-    sp.type = OBJECT;
 
     xr.findAttr(elem, "type", sp.id);
     xr.findAttr(elem, "quantity", sp.quantity);

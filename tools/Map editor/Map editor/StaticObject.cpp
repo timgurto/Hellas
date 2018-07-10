@@ -7,7 +7,6 @@ void StaticObject::load(Container& container, const std::string& filename) {
 
   for (auto elem : xr.getChildren("object")) {
     auto so = StaticObject{};
-    so.type = OBJECT;
 
     xr.findAttr(elem, "id", so.id);
 
@@ -20,7 +19,6 @@ void StaticObject::load(Container& container, const std::string& filename) {
 
   for (auto elem : xr.getChildren("npc")) {
     auto so = StaticObject{};
-    so.type = NPC;
 
     xr.findAttr(elem, "id", so.id);
 

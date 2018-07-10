@@ -7,6 +7,7 @@ void EntityType::load(Container& container, const std::string& filename) {
 
   for (auto elem : xr.getChildren("objectType")) {
     auto et = EntityType{};
+    et.category = OBJECT;
 
     auto id = std::string{};
     xr.findAttr(elem, "id", id);
@@ -26,6 +27,7 @@ void EntityType::load(Container& container, const std::string& filename) {
 
   for (auto elem : xr.getChildren("npcType")) {
     auto et = EntityType{};
+    et.category = NPC;
 
     auto id = std::string{};
     xr.findAttr(elem, "id", id);

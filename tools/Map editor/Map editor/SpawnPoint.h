@@ -6,8 +6,6 @@
 #include "../../../src/Point.h"
 
 struct SpawnPoint {
-  enum Type { OBJECT, NPC };
-  Type type;
   std::string id;
   MapPoint loc;
   int radius{0};
