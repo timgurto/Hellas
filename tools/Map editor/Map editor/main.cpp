@@ -350,14 +350,20 @@ void drawCircleOnMap(const MapPoint &mapLoc, Color color, int radius) {
 void drawImageOnMap(const MapPoint &mapLoc, const Texture &image,
                     const ScreenRect &drawRect) {
   auto screenPoint = transform(mapLoc);
-  image.draw(screenPoint + drawRect);
+  auto scaledDrawRect = ScreenRect{
+      toInt(unzoomed(drawRect.x / 16.0)), toInt(unzoomed(drawRect.y / 16.0)),
+      toInt(unzoomed(drawRect.w / 16.0)), toInt(unzoomed(drawRect.h / 16.0))};
+  image.draw(scaledDrawRect + screenPoint);
 }
 
 void drawRectOnMap(const MapPoint &mapLoc, Color color,
                    const ScreenRect &drawRect) {
   renderer.setDrawColor(color);
   auto screenPoint = transform(mapLoc);
-  renderer.drawRect(drawRect + screenPoint);
+  auto scaledDrawRect = ScreenRect{
+      toInt(unzoomed(drawRect.x / 16.0)), toInt(unzoomed(drawRect.y / 16.0)),
+      toInt(unzoomed(drawRect.w / 16.0)), toInt(unzoomed(drawRect.h / 16.0))};
+  renderer.fillRect(scaledDrawRect + screenPoint);
 }
 
 void initUI() {
