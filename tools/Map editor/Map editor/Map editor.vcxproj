@@ -148,6 +148,7 @@
     <ClCompile Include="EntityType.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="SpawnPoint.cpp" />
     <ClCompile Include="StaticObject.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="util.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="EntityType.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="SpawnPoint.h" />
     <ClInclude Include="StaticObject.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="util.h" />

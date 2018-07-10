@@ -9,6 +9,7 @@
 
 #include "EntityType.h"
 #include "Map.h"
+#include "SpawnPoint.h"
 #include "StaticObject.h"
 #include "Terrain.h"
 #include "main.h"
@@ -25,6 +26,7 @@ auto mouse = ScreenPoint{};
 
 auto terrain = TerrainType::Container{};
 auto staticObjects = StaticObject::Container{};
+auto spawnPoints = SpawnPoint::Container{};
 auto entityTypes = EntityType::Container{};
 
 auto playerSpawn = MapPoint{};
@@ -41,6 +43,7 @@ int main(int argc, char *argv[]) {
   for (const auto &file : files) {
     TerrainType::load(terrain, file);
     StaticObject::load(staticObjects, file);
+    SpawnPoint::load(spawnPoints, file);
     EntityType::load(entityTypes, file);
   }
 
@@ -212,9 +215,15 @@ void render() {
   drawCircleOnMap(playerSpawn, Color::WHITE, playerSpawnRange);
   drawTextOnMap(playerSpawn, Color::WHITE, "New-player spawn");
 
+  for (const auto &sp : spawnPoints)
+    drawCircleOnMap(sp.loc, Color::CYAN, sp.radius);
   for (const auto &so : staticObjects) {
     auto &entityType = entityTypes[so.id];
     drawRectOnMap(so.loc, Color::YELLOW, entityType.collisionRect);
+  }
+  for (const auto &sp : spawnPoints) {
+    auto &entityType = entityTypes[sp.id];
+    drawImageOnMap(sp.loc, entityType.image, entityType.drawRect);
   }
   for (const auto &so : staticObjects) {
     auto &entityType = entityTypes[so.id];
