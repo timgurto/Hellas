@@ -198,20 +198,6 @@ void render() {
 
   map.draw(offset);
 
-  auto cursorLabelRect = ScreenRect{0, renderer.height() - 20, 200, 20};
-  auto mapPos = MapPoint{zoomed(1.0 * mouse.x) + offset.first,
-                         zoomed(1.0 * mouse.y) + offset.second} *
-                16.0;
-  auto cursorPosLabel =
-      OutlinedLabel{cursorLabelRect, "Cursor is at (" + toString(mapPos.x) +
-                                         "," + toString(mapPos.y) + ")"};
-  cursorPosLabel.draw();
-
-  for (auto it = windows.rbegin(); it != windows.rend(); ++it) {
-    (*it)->show();
-    (*it)->draw();
-  }
-
   drawCircleOnMap(playerSpawn, Color::WHITE, playerSpawnRange);
   drawTextOnMap(playerSpawn, Color::WHITE, "New-player spawn");
 
@@ -232,6 +218,20 @@ void render() {
   for (const auto &so : staticObjects) {
     auto &entityType = entityTypes[so.id];
     drawImageOnMap(so.loc, entityType.image, entityType.drawRect);
+  }
+
+  auto cursorLabelRect = ScreenRect{0, renderer.height() - 20, 200, 20};
+  auto mapPos = MapPoint{zoomed(1.0 * mouse.x) + offset.first,
+                         zoomed(1.0 * mouse.y) + offset.second} *
+                16.0;
+  auto cursorPosLabel =
+      OutlinedLabel{cursorLabelRect, "Cursor is at (" + toString(mapPos.x) +
+                                         "," + toString(mapPos.y) + ")"};
+  cursorPosLabel.draw();
+
+  for (auto it = windows.rbegin(); it != windows.rend(); ++it) {
+    (*it)->show();
+    (*it)->draw();
   }
 
   renderer.present();
