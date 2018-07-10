@@ -4,6 +4,8 @@
 #include "../../../src/XmlReader.h"
 #include "../../../src/client/Renderer.h"
 #include "../../../src/client/ui/Button.h"
+#include "../../../src/client/ui/CheckBox.h"
+#include "../../../src/client/ui/List.h"
 #include "../../../src/client/ui/OutlinedLabel.h"
 #include "../../../src/client/ui/Window.h"
 
@@ -31,6 +33,9 @@ auto entityTypes = EntityType::Container{};
 
 auto playerSpawn = MapPoint{};
 auto playerSpawnRange = 0;
+
+// Options
+auto shouldDrawSpawnPointCircles = false;
 
 auto windows = std::list<Window *>{};
 
@@ -201,12 +206,13 @@ void render() {
   drawCircleOnMap(playerSpawn, Color::WHITE, playerSpawnRange);
   drawTextOnMap(playerSpawn, Color::WHITE, "New-player spawn");
 
-  for (const auto &sp : spawnPoints) {
-    auto &entityType = entityTypes[sp.id];
-    auto color =
-        entityType.category == EntityType::OBJECT ? Color::CYAN : Color::RED;
-    drawCircleOnMap(sp.loc, color, sp.radius);
-  }
+  if (shouldDrawSpawnPointCircles)
+    for (const auto &sp : spawnPoints) {
+      auto &entityType = entityTypes[sp.id];
+      auto color =
+          entityType.category == EntityType::OBJECT ? Color::CYAN : Color::RED;
+      drawCircleOnMap(sp.loc, color, sp.radius);
+    }
   for (const auto &so : staticObjects) {
     auto &entityType = entityTypes[so.id];
     drawRectOnMap(so.loc, Color::YELLOW, entityType.collisionRect);
@@ -399,4 +405,13 @@ void initUI() {
   saveLoadWindow->addChild(new Button(
       {COL2_X, y, BUTTON_W, BUTTON_H}, "Save map",
       []() { map.save("../../Data/map.xml", playerSpawn, playerSpawnRange); }));
+
+  auto optionsWindow = Window::WithRectAndTitle({0, 125, 200, 100}, "Options");
+  windows.push_front(optionsWindow);
+  auto optionsList = new List(
+      {0, 0, optionsWindow->contentWidth(), optionsWindow->contentHeight()});
+  optionsWindow->addChild(optionsList);
+  optionsList->addChild(
+      new CheckBox({0, 0, optionsList->width(), optionsList->childHeight()},
+                   shouldDrawSpawnPointCircles, "Draw spawn-point circles"));
 }
