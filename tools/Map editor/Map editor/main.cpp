@@ -36,6 +36,7 @@ auto playerSpawnRange = 0;
 
 // Options
 auto shouldDrawSpawnPointCircles = false;
+auto shouldScaleStaticImages = false;
 
 auto windows = std::list<Window *>{};
 
@@ -372,7 +373,8 @@ void drawImageOnMap(const MapPoint &mapLoc, const Texture &image,
   auto scaledDrawRect = ScreenRect{
       toInt(unzoomed(drawRect.x / 16.0)), toInt(unzoomed(drawRect.y / 16.0)),
       toInt(unzoomed(drawRect.w / 16.0)), toInt(unzoomed(drawRect.h / 16.0))};
-  image.draw(scaledDrawRect + screenPoint);
+  auto drawRectToUse = shouldScaleStaticImages ? scaledDrawRect : drawRect;
+  image.draw(drawRectToUse + screenPoint);
 }
 
 void drawRectOnMap(const MapPoint &mapLoc, Color color,
@@ -411,7 +413,10 @@ void initUI() {
   auto optionsList = new List(
       {0, 0, optionsWindow->contentWidth(), optionsWindow->contentHeight()});
   optionsWindow->addChild(optionsList);
+  const auto cbRect =
+      ScreenRect{0, 0, optionsList->width(), optionsList->childHeight()};
+  optionsList->addChild(new CheckBox(cbRect, shouldDrawSpawnPointCircles,
+                                     "Draw spawn-point circles"));
   optionsList->addChild(
-      new CheckBox({0, 0, optionsList->width(), optionsList->childHeight()},
-                   shouldDrawSpawnPointCircles, "Draw spawn-point circles"));
+      new CheckBox(cbRect, shouldScaleStaticImages, "Scale static objects"));
 }
