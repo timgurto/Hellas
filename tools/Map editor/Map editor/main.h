@@ -26,5 +26,7 @@ void drawTextOnMap(const MapPoint &mapLoc, Color color,
 void drawCircleOnMap(const MapPoint &mapLoc, Color color, int radius);
 void drawImageOnMap(const MapPoint &mapLoc, const Texture &image,
                     const ScreenRect &drawRect);
+void drawRectOnMap(const MapPoint &mapLoc, Color color,
+                   const ScreenRect &drawRect);
 
 void initUI();

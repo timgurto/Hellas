@@ -216,6 +216,7 @@ void render() {
     auto &entityType = entityTypes[so.id];
     drawTextOnMap(playerSpawn, Color::YELLOW, so.id);
     drawImageOnMap(so.loc, entityType.image, entityType.drawRect);
+    drawRectOnMap(so.loc, Color::YELLOW, entityType.collisionRect);
   }
 
   renderer.present();
@@ -348,6 +349,13 @@ void drawImageOnMap(const MapPoint &mapLoc, const Texture &image,
                     const ScreenRect &drawRect) {
   auto screenPoint = transform(mapLoc);
   image.draw(screenPoint + drawRect);
+}
+
+void drawRectOnMap(const MapPoint &mapLoc, Color color,
+                   const ScreenRect &drawRect) {
+  renderer.setDrawColor(color);
+  auto screenPoint = transform(mapLoc);
+  renderer.drawRect(drawRect + screenPoint);
 }
 
 void initUI() {
