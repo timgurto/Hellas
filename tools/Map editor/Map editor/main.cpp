@@ -214,9 +214,11 @@ void render() {
 
   for (const auto &so : staticObjects) {
     auto &entityType = entityTypes[so.id];
-    drawTextOnMap(playerSpawn, Color::YELLOW, so.id);
-    drawImageOnMap(so.loc, entityType.image, entityType.drawRect);
     drawRectOnMap(so.loc, Color::YELLOW, entityType.collisionRect);
+  }
+  for (const auto &so : staticObjects) {
+    auto &entityType = entityTypes[so.id];
+    drawImageOnMap(so.loc, entityType.image, entityType.drawRect);
   }
 
   renderer.present();
