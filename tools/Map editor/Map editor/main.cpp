@@ -31,7 +31,8 @@ auto staticObjects = StaticObject::Container{};
 auto spawnPoints = SpawnPoint::Container{};
 auto entityTypes = EntityType::Container{};
 
-Label *contextPixel = nullptr;
+Label *contextPixel{nullptr};
+Label *contextTile{nullptr};
 
 auto playerSpawn = MapPoint{};
 auto playerSpawnRange = 0;
@@ -118,6 +119,12 @@ void handleInput(unsigned timeElapsed) {
                         16.0;
           contextPixel->changeText("Pixel: (" + toString(mapPos.x) + "," +
                                    toString(mapPos.y) + ")");
+          auto tile = MapPoint{mapPos.x / 32.0, mapPos.y / 32.0};
+          tile.y -= 0.5;
+          if (toInt(tile.y) % 2 == 0) tile.x -= 0.5;
+          auto tileInts = toScreenPoint(tile);
+          contextTile->changeText("Tile: (" + toString(tileInts.x) + "," +
+                                  toString(tileInts.y) + ")");
         }
         break;
 
@@ -331,8 +338,17 @@ void initUI() {
       new CheckBox(cbRect, shouldScaleStaticImages, "Scale static objects"));
 
   // Context window
-  auto contextWindow = Window::WithRectAndTitle({0, 600, 200, 50}, "Context");
+  auto contextWindow = Window::WithRectAndTitle({0, 600, 200, 0}, "Context");
   windows.push_front(contextWindow);
-  contextPixel = new Label(ScreenRect{0, 0, 200, 20}, {});
+  y = GAP;
+
+  contextPixel = new Label(ScreenRect{0, y, 200, 20}, {});
   contextWindow->addChild(contextPixel);
+  y += contextPixel->height() + GAP;
+
+  contextTile = new Label(ScreenRect{0, y, 200, 20}, {});
+  contextWindow->addChild(contextTile);
+  y += contextTile->height() + GAP;
+
+  contextWindow->height(y);
 }
