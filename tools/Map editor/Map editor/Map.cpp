@@ -118,3 +118,9 @@ void Map::set(int x, int y, char id) {
   renderer.present();
   renderer.popRenderTarget();
 }
+
+char Map::at(int x, int y) {
+  if (x < 0 || x >= _dimX) return 'a';
+  if (y < 0 || y >= _dimY) return 'a';
+  return _tiles[x][y];
+}

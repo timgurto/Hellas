@@ -34,6 +34,7 @@ auto entityTypes = EntityType::Container{};
 
 Label *contextPixelLabel{nullptr};
 Label *contextTileLabel{nullptr};
+Label *contextTerrainLabel{nullptr};
 
 auto playerSpawn = MapPoint{};
 auto playerSpawnRange = 0;
@@ -132,6 +133,9 @@ void handleInput(unsigned timeElapsed) {
           contextTile = toScreenPoint(tile);
           contextTileLabel->changeText("Tile: (" + toString(contextTile.x) +
                                        "," + toString(contextTile.y) + ")");
+          auto terrainIndex = map.at(contextTile.x, contextTile.y);
+          auto terrainType = terrain[terrainIndex];
+          contextTerrainLabel->changeText("Terrain: " + terrainType.id);
         }
         break;
 
@@ -366,6 +370,10 @@ void initUI() {
   contextTileLabel = new Label(ScreenRect{0, y, 200, 20}, {});
   contextWindow->addChild(contextTileLabel);
   y += contextTileLabel->height() + GAP;
+
+  contextTerrainLabel = new Label(ScreenRect{0, y, 200, 20}, {});
+  contextWindow->addChild(contextTerrainLabel);
+  y += contextTerrainLabel->height() + GAP;
 
   contextWindow->height(y);
 }

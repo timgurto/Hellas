@@ -21,6 +21,7 @@ class Map {
   const Texture &wholeMap() const { return _wholeMap; }
 
   void set(int x, int y, char id);
+  char at(int x, int y);
 
   void generateTexture();
   void drawTile(int x, int y);
