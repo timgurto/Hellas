@@ -112,5 +112,9 @@ void Map::draw(std::pair<int, int> offset) {
 
 void Map::set(int x, int y, char id) {
   _tiles[x][y] = id;
-  generateTexture();
+
+  renderer.pushRenderTarget(_wholeMap);
+  drawTile(x, y);
+  renderer.present();
+  renderer.popRenderTarget();
 }
