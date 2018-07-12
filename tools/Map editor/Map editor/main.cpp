@@ -42,6 +42,9 @@ auto playerSpawnRange = 0;
 auto shouldDrawSpawnPointCircles = false;
 auto shouldScaleStaticImages = false;
 
+auto mouseLeftIsDown = false;
+auto terrainToDraw = 'a';
+
 auto windows = std::list<Window *>{};
 
 #undef main
@@ -114,6 +117,9 @@ void handleInput(unsigned timeElapsed) {
         for (Window *window : windows)
           if (window->visible()) window->onMouseMove(mouse);
 
+        if (mouseLeftIsDown)
+          map.set(contextTile.x, contextTile.y, terrainToDraw);
+
         {
           auto mapPos = MapPoint{zoomed(1.0 * mouse.x) + offset.first,
                                  zoomed(1.0 * mouse.y) + offset.second} *
@@ -177,8 +183,8 @@ void handleInput(unsigned timeElapsed) {
             }
             if (windowWasClicked) break;
 
-            // Set terrain
-            map.set(contextTile.x, contextTile.y, 'a');
+            mouseLeftIsDown = true;
+            map.set(contextTile.x, contextTile.y, terrainToDraw);
           } break;
 
           case SDL_BUTTON_RIGHT:
@@ -192,18 +198,21 @@ void handleInput(unsigned timeElapsed) {
       case SDL_MOUSEBUTTONUP:
         switch (e.button.button) {
           case SDL_BUTTON_LEFT: {
+            mouseLeftIsDown = false;
+
             for (auto window : windows)
               if (window->visible() && collision(mouse, window->rect())) {
                 window->onLeftMouseUp(mouse);
                 break;
               }
-          }
+          } break;
           case SDL_BUTTON_RIGHT:
             for (auto window : windows)
               if (window->visible() && collision(mouse, window->rect())) {
                 window->onRightMouseUp(mouse);
                 break;
               }
+            break;
         }
         break;
     }

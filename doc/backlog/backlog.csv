@@ -402,7 +402,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 444,Editor: panning,21,1,Tooling,443,TRUE,,
 445,Editor: zooming,21,21,Tooling,443,TRUE,,
 446,Editor: show co-ordinates,34,5,Tooling,443,TRUE,,
-447,Editor: draw grass,2,5,Tooling,443,,,
+447,Editor: draw grass,2,5,Tooling,443,TRUE,,
 448,Editor: draw any terrain,5,21,Tooling,447,,,
 449,Editor: save map,8,3,Tooling,443,TRUE,,
 450,Editor: show player spawn,3,3,Tooling,443,TRUE,,
