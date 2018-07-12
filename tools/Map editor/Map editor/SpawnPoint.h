@@ -12,6 +12,8 @@ struct SpawnPoint {
   int quantity{0};
   ms_t respawnTime{0};
 
-  using Container = std::vector<SpawnPoint>;
+  bool operator<(const SpawnPoint &rhs) const;
+
+  using Container = std::set<SpawnPoint>;
   static void load(Container &container, const std::string &filename);
 };

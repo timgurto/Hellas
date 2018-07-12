@@ -2,6 +2,16 @@
 
 #include "SpawnPoint.h"
 
+bool SpawnPoint::operator<(const SpawnPoint& rhs) const {
+  if (loc.y != rhs.loc.y) return loc.y < rhs.loc.y;
+  if (loc.x != rhs.loc.x) return loc.x < rhs.loc.x;
+  if (id != rhs.id) return id < rhs.id;
+  if (quantity != rhs.quantity) return quantity < rhs.quantity;
+  if (radius != rhs.radius) return radius < rhs.radius;
+  if (respawnTime != rhs.respawnTime) return respawnTime < rhs.respawnTime;
+  return false;
+}
+
 void SpawnPoint::load(Container& container, const std::string& filename) {
   auto xr = XmlReader::FromFile(filename);
 
@@ -15,6 +25,6 @@ void SpawnPoint::load(Container& container, const std::string& filename) {
     xr.findAttr(elem, "x", sp.loc.x);
     xr.findAttr(elem, "y", sp.loc.y);
 
-    container.push_back(sp);
+    container.insert(sp);
   }
 }
