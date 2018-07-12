@@ -23,6 +23,7 @@ class Map {
   void set(int x, int y, char id);
 
   void generateTexture();
+  void drawTile(int x, int y);
 
   void draw(std::pair<int, int> offset);
 

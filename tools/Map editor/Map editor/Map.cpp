@@ -78,18 +78,21 @@ void Map::generateTexture() {
 
   for (auto y = 0; y != _dimY; ++y)
     for (auto x = 0; x != _dimX; ++x) {
-      auto terrainHere = _tiles[x][y];
-      renderer.setDrawColor(terrain[terrainHere].color);
-
-      auto rect =
-          ScreenRect{x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE};
-      if (y % 2 == 1) rect.x -= TILE_SIZE / 2;
-      renderer.fillRect(rect);
+      drawTile(x, y);
     }
 
   renderer.present();
 
   renderer.popRenderTarget();
+}
+
+void Map::drawTile(int x, int y) {
+  auto terrainHere = _tiles[x][y];
+  renderer.setDrawColor(terrain[terrainHere].color);
+
+  auto rect = ScreenRect{x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE};
+  if (y % 2 == 1) rect.x -= TILE_SIZE / 2;
+  renderer.fillRect(rect);
 }
 
 void Map::draw(std::pair<int, int> offset) {
