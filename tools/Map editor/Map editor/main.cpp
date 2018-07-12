@@ -31,6 +31,8 @@ auto staticObjects = StaticObject::Container{};
 auto spawnPoints = SpawnPoint::Container{};
 auto entityTypes = EntityType::Container{};
 
+Label *contextPixel = nullptr;
+
 auto playerSpawn = MapPoint{};
 auto playerSpawnRange = 0;
 
@@ -109,6 +111,14 @@ void handleInput(unsigned timeElapsed) {
 
         for (Window *window : windows)
           if (window->visible()) window->onMouseMove(mouse);
+
+        {
+          auto mapPos = MapPoint{zoomed(1.0 * mouse.x) + offset.first,
+                                 zoomed(1.0 * mouse.y) + offset.second} *
+                        16.0;
+          contextPixel->changeText("Pixel: (" + toString(mapPos.x) + "," +
+                                   toString(mapPos.y) + ")");
+        }
         break;
 
       case SDL_KEYDOWN:
@@ -227,15 +237,6 @@ void render() {
     drawImageOnMap(so.loc, entityType.image, entityType.drawRect);
   }
 
-  auto cursorLabelRect = ScreenRect{0, renderer.height() - 20, 200, 20};
-  auto mapPos = MapPoint{zoomed(1.0 * mouse.x) + offset.first,
-                         zoomed(1.0 * mouse.y) + offset.second} *
-                16.0;
-  auto cursorPosLabel =
-      OutlinedLabel{cursorLabelRect, "Cursor is at (" + toString(mapPos.x) +
-                                         "," + toString(mapPos.y) + ")"};
-  cursorPosLabel.draw();
-
   for (auto it = windows.rbegin(); it != windows.rend(); ++it) {
     (*it)->show();
     (*it)->draw();
@@ -295,6 +296,7 @@ void drawRectOnMap(const MapPoint &mapLoc, Color color,
 }
 
 void initUI() {
+  // Save/load window
   auto saveLoadWindow = Window::WithRectAndTitle({0, 0, 200, 100}, "Save/Load");
   windows.push_front(saveLoadWindow);
 
@@ -315,6 +317,7 @@ void initUI() {
       {COL2_X, y, BUTTON_W, BUTTON_H}, "Save map",
       []() { map.save("../../Data/map.xml", playerSpawn, playerSpawnRange); }));
 
+  // Options window
   auto optionsWindow = Window::WithRectAndTitle({0, 125, 200, 100}, "Options");
   windows.push_front(optionsWindow);
   auto optionsList = new List(
@@ -326,4 +329,10 @@ void initUI() {
                                      "Draw spawn-point circles"));
   optionsList->addChild(
       new CheckBox(cbRect, shouldScaleStaticImages, "Scale static objects"));
+
+  // Context window
+  auto contextWindow = Window::WithRectAndTitle({0, 600, 200, 50}, "Context");
+  windows.push_front(contextWindow);
+  contextPixel = new Label(ScreenRect{0, 0, 200, 20}, {});
+  contextWindow->addChild(contextPixel);
 }
