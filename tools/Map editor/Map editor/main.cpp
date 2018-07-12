@@ -25,14 +25,15 @@ auto map = Map{};
 auto zoomLevel = 1;
 std::pair<int, int> offset = {0, 0};
 auto mouse = ScreenPoint{};
+ScreenPoint contextTile;
 
 auto terrain = TerrainType::Container{};
 auto staticObjects = StaticObject::Container{};
 auto spawnPoints = SpawnPoint::Container{};
 auto entityTypes = EntityType::Container{};
 
-Label *contextPixel{nullptr};
-Label *contextTile{nullptr};
+Label *contextPixelLabel{nullptr};
+Label *contextTileLabel{nullptr};
 
 auto playerSpawn = MapPoint{};
 auto playerSpawnRange = 0;
@@ -117,14 +118,14 @@ void handleInput(unsigned timeElapsed) {
           auto mapPos = MapPoint{zoomed(1.0 * mouse.x) + offset.first,
                                  zoomed(1.0 * mouse.y) + offset.second} *
                         16.0;
-          contextPixel->changeText("Pixel: (" + toString(mapPos.x) + "," +
-                                   toString(mapPos.y) + ")");
+          contextPixelLabel->changeText("Pixel: (" + toString(mapPos.x) + "," +
+                                        toString(mapPos.y) + ")");
           auto tile = MapPoint{mapPos.x / 32.0, mapPos.y / 32.0};
           tile.y -= 0.5;
           if (toInt(tile.y) % 2 == 0) tile.x -= 0.5;
-          auto tileInts = toScreenPoint(tile);
-          contextTile->changeText("Tile: (" + toString(tileInts.x) + "," +
-                                  toString(tileInts.y) + ")");
+          contextTile = toScreenPoint(tile);
+          contextTileLabel->changeText("Tile: (" + toString(contextTile.x) +
+                                       "," + toString(contextTile.y) + ")");
         }
         break;
 
@@ -159,20 +160,27 @@ void handleInput(unsigned timeElapsed) {
 
       case SDL_MOUSEBUTTONDOWN:
         switch (e.button.button) {
-          case SDL_BUTTON_LEFT:
+          case SDL_BUTTON_LEFT: {
             for (auto window : windows)
               if (window->visible()) window->onLeftMouseDown(mouse);
 
             // Bring top clicked window to front
+            auto windowWasClicked = false;
             for (auto *window : windows) {
               if (window->visible() && collision(mouse, window->rect())) {
                 windows.remove(window);
                 windows.push_front(window);
                 window->show();
+                windowWasClicked = true;
                 break;
               }
             }
-            break;
+            if (windowWasClicked) break;
+
+            // Set terrain
+            map.set(contextTile.x, contextTile.y, 'a');
+          } break;
+
           case SDL_BUTTON_RIGHT:
             for (auto window : windows)
               if (window->visible() && collision(mouse, window->rect()))
@@ -342,13 +350,13 @@ void initUI() {
   windows.push_front(contextWindow);
   y = GAP;
 
-  contextPixel = new Label(ScreenRect{0, y, 200, 20}, {});
-  contextWindow->addChild(contextPixel);
-  y += contextPixel->height() + GAP;
+  contextPixelLabel = new Label(ScreenRect{0, y, 200, 20}, {});
+  contextWindow->addChild(contextPixelLabel);
+  y += contextPixelLabel->height() + GAP;
 
-  contextTile = new Label(ScreenRect{0, y, 200, 20}, {});
-  contextWindow->addChild(contextTile);
-  y += contextTile->height() + GAP;
+  contextTileLabel = new Label(ScreenRect{0, y, 200, 20}, {});
+  contextWindow->addChild(contextTileLabel);
+  y += contextTileLabel->height() + GAP;
 
   contextWindow->height(y);
 }

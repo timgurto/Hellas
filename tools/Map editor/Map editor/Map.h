@@ -20,6 +20,8 @@ class Map {
 
   const Texture &wholeMap() const { return _wholeMap; }
 
+  void set(int x, int y, char id);
+
   void generateTexture();
 
   void draw(std::pair<int, int> offset);

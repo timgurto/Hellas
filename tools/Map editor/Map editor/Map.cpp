@@ -106,3 +106,8 @@ void Map::draw(std::pair<int, int> offset) {
           {i, i, renderer.width() - 2 * i, renderer.height() - 2 * i});
   }
 }
+
+void Map::set(int x, int y, char id) {
+  _tiles[x][y] = id;
+  generateTexture();
+}
