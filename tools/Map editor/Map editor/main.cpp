@@ -379,7 +379,7 @@ void initUI() {
   contextWindow->height(y);
 
   // Terrain window
-  auto terrainWindow = Window::WithRectAndTitle({300, 0, 100, 200}, "Terrain");
+  auto terrainWindow = Window::WithRectAndTitle({300, 0, 200, 400}, "Terrain");
   windows.push_front(terrainWindow);
   auto terrainList = new ChoiceList(
       {0, 0, terrainWindow->contentWidth(), terrainWindow->contentHeight()},
@@ -387,6 +387,11 @@ void initUI() {
   terrainWindow->addChild(terrainList);
   for (auto pair : terrain) {
     auto &t = pair.second;
-    terrainList->addChild(new Button({0, 0, 20, 20}, t.id));
+    auto button = new Button({}, {});
+    terrainList->addChild(button);
+    button->addChild(new Picture({0, 0, 32, 32}, t.image));
+    button->addChild(new Label({36, 0, button->rect().w, button->rect().h},
+                               t.id, Element::LEFT_JUSTIFIED,
+                               Element::CENTER_JUSTIFIED));
   }
 }

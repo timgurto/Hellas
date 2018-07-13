@@ -12,6 +12,12 @@ void TerrainType::load(Container &container, const std::string &filename) {
     xr.findAttr(elem, "id", t.id);
     xr.findAttr(elem, "color", t.color);
 
+    auto numFrames = 1;
+    xr.findAttr(elem, "frames", numFrames);
+    auto filename = t.id;
+    if (numFrames > 1) filename += "00";
+    t.image = {"../../Images/Terrain/" + filename + ".png"};
+
     container[t.index] = t;
   }
 }
