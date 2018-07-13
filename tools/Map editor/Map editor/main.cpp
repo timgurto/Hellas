@@ -28,6 +28,8 @@ std::pair<int, int> offset = {0, 0};
 auto mouse = ScreenPoint{};
 ScreenPoint contextTile;
 
+auto dataFiles = FilesList{};
+
 auto terrain = TerrainType::Container{};
 auto staticObjects = StaticObject::Container{};
 auto spawnPoints = SpawnPoint::Container{};
@@ -55,8 +57,8 @@ int main(int argc, char *argv[]) {
   renderer.init();
   SDL_RenderSetLogicalSize(renderer.raw(), renderer.width(), renderer.height());
 
-  auto files = findDataFiles("../../Data");
-  for (const auto &file : files) {
+  dataFiles = findDataFiles("../../Data");
+  for (const auto &file : dataFiles) {
     TerrainType::load(terrain, file);
     StaticObject::load(staticObjects, file);
     SpawnPoint::load(spawnPoints, file);
@@ -356,6 +358,13 @@ void initUI() {
   saveLoadWindow->addChild(new Button(
       {COL2_X, y, BUTTON_W, BUTTON_H}, "Save map",
       []() { map.save("../../Data/map.xml", playerSpawn, playerSpawnRange); }));
+  y += BUTTON_H + GAP;
+
+  saveLoadWindow->addChild(
+      new Button({GAP, y, BUTTON_W, BUTTON_H}, "Load spawn points", []() {
+        spawnPoints.clear();
+        for (const auto &file : dataFiles) SpawnPoint::load(spawnPoints, file);
+      }));
 
   // Options window
   auto optionsWindow = Window::WithRectAndTitle({0, 125, 200, 100}, "Options");
