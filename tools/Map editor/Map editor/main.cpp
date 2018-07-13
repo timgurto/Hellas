@@ -159,13 +159,24 @@ void handleInput(unsigned timeElapsed) {
 
       case SDL_MOUSEWHEEL:
         if (e.wheel.y < 0) {
-          zoomOut();
+          auto windowScrolled = false;
           for (auto window : windows)
-            if (collision(mouse, window->rect())) window->onScrollDown(mouse);
+            if (collision(mouse, window->rect())) {
+              window->onScrollDown(mouse);
+              windowScrolled = true;
+              break;
+            }
+          if (!windowScrolled) zoomOut();
+
         } else if (e.wheel.y > 0) {
-          zoomIn();
+          auto windowScrolled = false;
           for (auto window : windows)
-            if (collision(mouse, window->rect())) window->onScrollUp(mouse);
+            if (collision(mouse, window->rect())) {
+              window->onScrollUp(mouse);
+              windowScrolled = true;
+              break;
+            }
+          if (!windowScrolled) zoomIn();
         }
         break;
 
