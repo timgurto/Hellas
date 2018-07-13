@@ -153,3 +153,15 @@ TEST_CASE("Clients load quests", "[quests]") {
     }
   }
 }
+
+TEST_CASE("NPCs have default max health") {
+  GIVEN("an NPC type with only the ID defined") {
+    auto data = R"(
+      <npcType id="ant" />
+    )";
+    WHEN("a client is started") {
+      auto c = TestClient::WithDataString(data);
+      THEN("it has an NPC type defined") { CHECK(c.objectTypes().size() == 1); }
+    }
+  }
+}

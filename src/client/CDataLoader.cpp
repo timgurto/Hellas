@@ -733,9 +733,9 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     auto id = ""s;
     if (!xr.findAttr(elem, "id", id))  // No ID: skip
       continue;
-    auto maxHealth = 0;
-    if (!xr.findAttr(elem, "maxHealth", maxHealth))  // No max health: skip
-      continue;
+
+    auto maxHealth = 1;
+    xr.findAttr(elem, "maxHealth", maxHealth);
 
     auto humanoid = xr.findChild("humanoid", elem);
 
