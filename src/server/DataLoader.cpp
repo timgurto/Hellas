@@ -364,8 +364,9 @@ void DataLoader::loadQuests(XmlReader &xr) {
   if (!xr) return;
 
   for (auto elem : xr.getChildren("quest")) {
-    auto id = ""s;
-    if (!xr.findAttr(elem, "id", id)) continue;
+    Quest q;
+
+    if (!xr.findAttr(elem, "id", q.id)) continue;
 
     auto startsAt = ""s;
     if (!xr.findAttr(elem, "startsAt", startsAt)) continue;
@@ -377,8 +378,11 @@ void DataLoader::loadQuests(XmlReader &xr) {
     auto endingObject = _server.findObjectTypeByName(endsAt);
     if (!endingObject) continue;
 
-    startingObject->addQuestStart(id);
-    endingObject->addQuestEnd(id);
+    if (xr.findChild("objective", elem)) q.hasObjective = true;
+
+    _server._quests[q.id] = q;
+    startingObject->addQuestStart(q.id);
+    endingObject->addQuestEnd(q.id);
   }
 }
 

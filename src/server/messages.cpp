@@ -1896,6 +1896,12 @@ void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,
 
   if (!node->endsQuest(quest)) return;
 
+  const auto it = _quests.find(quest);
+  if (it == _quests.end()) return;
+  const auto &q = it->second;
+
+  if (q.hasObjective) return;
+
   user.completeQuest(quest);
 
   // Send user quests from all nearby nodes

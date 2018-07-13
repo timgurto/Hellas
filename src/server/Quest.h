@@ -1,8 +1,13 @@
 #pragma once
 
+#include <map>
 #include <string>
 
-class Quest {
+struct Quest {
  public:
   using ID = std::string;
+  ID id;
+  bool hasObjective{false};
 };
+
+using Quests = std::map<Quest::ID, Quest>;

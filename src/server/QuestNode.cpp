@@ -16,8 +16,8 @@ void QuestNode::sendQuestsToClient(const User &targetUser) const {
   server.sendMessage(targetUser.socket(), SV_OBJECT_ENDS_QUESTS, args);
 }
 
-Quests QuestNode::questsUserCanStartHere(const User &user) const {
-  auto ret = Quests{};
+SomeQuests QuestNode::questsUserCanStartHere(const User &user) const {
+  auto ret = SomeQuests{};
 
   for (const auto &questID : _type->questsStartingHere()) {
     if (user.isOnQuest(questID)) continue;
@@ -27,8 +27,8 @@ Quests QuestNode::questsUserCanStartHere(const User &user) const {
   return ret;
 }
 
-Quests QuestNode::questsUserCanEndHere(const User &user) const {
-  auto ret = Quests{};
+SomeQuests QuestNode::questsUserCanEndHere(const User &user) const {
+  auto ret = SomeQuests{};
 
   for (const auto &questID : _type->questsEndingHere()) {
     if (!user.isOnQuest(questID)) continue;

@@ -428,3 +428,32 @@ TEST_CASE("Show the user when an object has no more quests", "[quests]") {
     }
   }
 }
+
+TEST_CASE("A quest to kill an NPC", "[quests]") {
+  GIVEN("A quest that requires a rat to be killed") {
+    auto data = R"(
+        <objectType id="A" />
+        <npcType id="rat" />
+        <quest id="quest1" startsAt="A" endsAt="A">
+          <objective id="rat" />
+        </quest>
+      )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addObject("A", {10, 5});
+    auto aSerial = s.getFirstObject().serial();
+    s.addNPC("rat", {10, 15});
+    auto ratSerial = aSerial + 1;
+    WAIT_UNTIL(c.objects().size() == 2);
+
+    auto &u = s.getFirstUser();
+    u.startQuest("quest1");
+
+    THEN("The quest cannot be completed") {
+      c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+      REPEAT_FOR_MS(100);
+      CHECK(u.numQuests() == 1);
+    }
+  }
+}

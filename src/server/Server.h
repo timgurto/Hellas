@@ -218,6 +218,7 @@ class Server {
   ClassTypes _classes;
   Tiers _tiers;  // Objects are never accessed via container.  This is just
                  // dynamic-object storage.
+  Quests _quests;
 
   size_t _numBuildableObjects = 0;
 
