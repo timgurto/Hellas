@@ -6,26 +6,43 @@
     Follow the path up North and speak with me again. You can move with the WASD or arrow keys."
     debrief="I suppose an introduction is in order.  My name is Prometheus, and I created you.  Welcome to the world!"/>
 
+    <npcType
+        id="prometheus1" name="Prometheus"
+        level="20" maxHealth="100" isCivilian="1" >
+        <humanoid>
+            <gear id="linenChitonOrange" />
+            <gear id="sandals" />
+            <gear id="fireWand" />
+        </humanoid>
+        <class name="titan"/>
+    </npcType>
+    <npcType
+        id="prometheus2" name="Prometheus"
+        level="20" maxHealth="100" isCivilian="1" >
+        <humanoid>
+            <gear id="linenChitonOrange" />
+            <gear id="sandals" />
+            <gear id="fireWand" />
+        </humanoid>
+        <class name="titan"/>
+    </npcType>
+
+<quest id="tutCombat" name="All due respect" startsAt="prometheus2" endsAt="prometheus2"
+    brief="Zeus, the king of the gods, wants to establish animal sacrifices in their honour.  Before we can begin negotiations, we'll need to slaughter an animal.
     
-<npcType
-    id="prometheus1" name="Prometheus"
-    level="20" maxHealth="100" isCivilian="1" >
-    <humanoid>
-        <gear id="linenChitonOrange" />
-        <gear id="sandals" />
-        <gear id="fireWand" />
-    </humanoid>
-    <class name="titan"/>
-</npcType>
-<npcType
-    id="prometheus2" name="Prometheus"
-    level="20" maxHealth="100" isCivilian="1" >
-    <humanoid>
-        <gear id="linenChitonOrange" />
-        <gear id="sandals" />
-        <gear id="fireWand" />
-    </humanoid>
-    <class name="titan"/>
-</npcType>
+    Look around nearby for a Pig, and target it by right-clicking on it.  Once you move close enough, you will automatically start attacking it."
+    debrief="asdf"/>
+    
+    <npcType
+        id="tutPig" name="Pig"
+        level="1" maxHealth="42"
+        xDrawOffset="-11" yDrawOffset="-13"
+        imageFile="critter" sounds = "pig" >
+        <collisionRect x="-9" y="-4" w="18" h="7" />
+        <loot id="tutMeat" />
+    </npcType>
+    <item id="tutMeat" name="Meat" stackSize="5" />
+    <spawnPoint type="tutPig" quantity="10" radius="320" respawnTime="30000" x="1732" y="60048" />
+    <spawnPoint type="tutPig" quantity="6" radius="150" respawnTime="30000" x="1490" y="60160" />
 
 </root>

@@ -2,7 +2,7 @@
 
 <npcType
     id="goat" name="Goat"
-	level="1" maxHealth="24" attack="3" attackTime="833"
+	level="1" maxHealth="26" attack="3" attackTime="829"
     xDrawOffset="-17" yDrawOffset="-28" >
     <collisionRect x="-15" y="-4" w="31" h="7" />
     <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
