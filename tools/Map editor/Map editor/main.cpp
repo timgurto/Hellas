@@ -36,6 +36,7 @@ auto entityTypes = EntityType::Container{};
 Label *contextPixelLabel{nullptr};
 Label *contextTileLabel{nullptr};
 Label *contextTerrainLabel{nullptr};
+ChoiceList *terrainList{nullptr};
 
 auto playerSpawn = MapPoint{};
 auto playerSpawnRange = 0;
@@ -119,8 +120,7 @@ void handleInput(unsigned timeElapsed) {
         for (Window *window : windows)
           if (window->visible()) window->onMouseMove(mouse);
 
-        if (mouseLeftIsDown)
-          map.set(contextTile.x, contextTile.y, terrainToDraw);
+        if (mouseLeftIsDown) map.set(contextTile.x, contextTile.y);
 
         {
           auto mapPos = MapPoint{zoomed(1.0 * mouse.x) + offset.first,
@@ -200,7 +200,7 @@ void handleInput(unsigned timeElapsed) {
             if (windowWasClicked) break;
 
             mouseLeftIsDown = true;
-            map.set(contextTile.x, contextTile.y, terrainToDraw);
+            map.set(contextTile.x, contextTile.y);
           } break;
 
           case SDL_BUTTON_RIGHT:
@@ -392,17 +392,18 @@ void initUI() {
   // Terrain window
   auto terrainWindow = Window::WithRectAndTitle({300, 0, 200, 400}, "Terrain");
   windows.push_front(terrainWindow);
-  auto terrainList = new ChoiceList(
+  terrainList = new ChoiceList(
       {0, 0, terrainWindow->contentWidth(), terrainWindow->contentHeight()},
       34);
   terrainWindow->addChild(terrainList);
   for (auto pair : terrain) {
     auto &t = pair.second;
-    auto button = new Button({}, {});
-    terrainList->addChild(button);
-    button->addChild(new Picture({0, 0, 32, 32}, t.image));
-    button->addChild(new Label({36, 0, button->rect().w, button->rect().h},
-                               t.id, Element::LEFT_JUSTIFIED,
-                               Element::CENTER_JUSTIFIED));
+    auto entry = new Element({});
+    entry->id({t.index});
+    terrainList->addChild(entry);
+    entry->addChild(new Picture({0, 0, 32, 32}, t.image));
+    entry->addChild(new Label({36, 0, entry->rect().w, entry->rect().h}, t.id,
+                              Element::LEFT_JUSTIFIED,
+                              Element::CENTER_JUSTIFIED));
   }
 }

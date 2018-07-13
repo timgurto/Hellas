@@ -3,6 +3,7 @@
 #include "../../../src/XmlReader.h"
 #include "../../../src/XmlWriter.h"
 #include "../../../src/client/Renderer.h"
+#include "../../../src/client/ui/ChoiceList.h"
 
 #include "Map.h"
 #include "Terrain.h"
@@ -10,6 +11,7 @@
 
 extern Renderer renderer;
 extern TerrainType::Container terrain;
+extern ChoiceList *terrainList;
 
 Map::Map(const std::string &filename, MapPoint &playerSpawn,
          int &playerSpawnRange) {
@@ -110,7 +112,11 @@ void Map::draw(std::pair<int, int> offset) {
   }
 }
 
-void Map::set(int x, int y, char id) {
+void Map::set(int x, int y) {
+  auto terrainType = terrainList->getSelected();
+  if (terrainType.empty()) return;
+  auto id = terrainType[0];
+
   _tiles[x][y] = id;
 
   renderer.pushRenderTarget(_wholeMap);
