@@ -450,10 +450,12 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
     auto &u = s.getFirstUser();
     u.startQuest("quest1");
 
-    THEN("The quest cannot be completed") {
+    WHEN("the user tries to complete the quest") {
       c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
-      REPEAT_FOR_MS(100);
-      CHECK(u.numQuests() == 1);
+      THEN("he is still on the quest") {
+        REPEAT_FOR_MS(100);
+        CHECK(u.numQuests() == 1);
+      }
     }
   }
 }
