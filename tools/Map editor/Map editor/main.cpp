@@ -5,6 +5,7 @@
 #include "../../../src/client/Renderer.h"
 #include "../../../src/client/ui/Button.h"
 #include "../../../src/client/ui/CheckBox.h"
+#include "../../../src/client/ui/ChoiceList.h"
 #include "../../../src/client/ui/List.h"
 #include "../../../src/client/ui/OutlinedLabel.h"
 #include "../../../src/client/ui/Window.h"
@@ -376,4 +377,16 @@ void initUI() {
   y += contextTerrainLabel->height() + GAP;
 
   contextWindow->height(y);
+
+  // Terrain window
+  auto terrainWindow = Window::WithRectAndTitle({300, 0, 100, 200}, "Terrain");
+  windows.push_front(terrainWindow);
+  auto terrainList = new ChoiceList(
+      {0, 0, terrainWindow->contentWidth(), terrainWindow->contentHeight()},
+      34);
+  terrainWindow->addChild(terrainList);
+  for (auto pair : terrain) {
+    auto &t = pair.second;
+    terrainList->addChild(new Button({0, 0, 20, 20}, t.id));
+  }
 }

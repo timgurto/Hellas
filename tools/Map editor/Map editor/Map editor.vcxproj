@@ -128,6 +128,7 @@
     <ClCompile Include="..\..\..\src\client\Tooltip.cpp" />
     <ClCompile Include="..\..\..\src\client\ui\Button.cpp" />
     <ClCompile Include="..\..\..\src\client\ui\CheckBox.cpp" />
+    <ClCompile Include="..\..\..\src\client\ui\ChoiceList.cpp" />
     <ClCompile Include="..\..\..\src\client\ui\ColorBlock.cpp" />
     <ClCompile Include="..\..\..\src\client\ui\Element.cpp" />
     <ClCompile Include="..\..\..\src\client\ui\Label.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="..\..\..\src\client\Tooltip.h" />
     <ClInclude Include="..\..\..\src\client\ui\Button.h" />
     <ClInclude Include="..\..\..\src\client\ui\CheckBox.h" />
+    <ClInclude Include="..\..\..\src\client\ui\ChoiceList.h" />
     <ClInclude Include="..\..\..\src\client\ui\ColorBlock.h" />
     <ClInclude Include="..\..\..\src\client\ui\Element.h" />
     <ClInclude Include="..\..\..\src\client\ui\Label.h" />
