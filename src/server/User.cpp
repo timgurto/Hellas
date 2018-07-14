@@ -638,8 +638,14 @@ void User::onKilled(const Entity &victim) {
 
   addXP(xp);
 
-  if (victim.type()->id() == "rat")
-    for (auto quest : _quests) _questsWithKills.insert(quest);
+  auto victimID = victim.type()->id();
+  for (auto questID : _quests) {
+    const auto &server = Server::instance();
+    auto quest = server.findQuest(questID);
+    if (!quest) continue;
+
+    if (quest->objectiveID == victimID) _questsWithKills.insert(questID);
+  }
 }
 
 bool User::canAttack() const {

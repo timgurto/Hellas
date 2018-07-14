@@ -519,4 +519,41 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
       }
     }
   }
+
+  GIVEN("A quest that requires a mouse to be killed, and a mouse") {
+    auto data = R"(
+      <objectType id="A" />
+      <npcType id="mouse" />
+      <quest id="quest1" startsAt="A" endsAt="A">
+        <objective id="mouse" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    WAIT_UNTIL(s.users().size() == 1);
+    auto &u = s.getFirstUser();
+
+    s.addObject("A", {10, 5});
+    auto aSerial = s.getFirstObject().serial();
+
+    s.addNPC("mouse", {10, 15});
+    auto mouseSerial = aSerial + 1;
+    auto mouse = s.entities().find(mouseSerial);
+    WAIT_UNTIL(c.objects().size() == 2);
+
+    WHEN("the user is on the quest") {
+      u.startQuest("quest1");
+
+      AND_WHEN("he kills the mouse") {
+        c.sendMessage(CL_TARGET_ENTITY, makeArgs(mouseSerial));
+        WAIT_UNTIL(mouse->isDead());
+
+        AND_WHEN("he tries to complete the quest") {
+          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+
+          THEN("he is not on the quest") { WAIT_UNTIL(u.numQuests() == 0); }
+        }
+      }
+    }
+  }
 }

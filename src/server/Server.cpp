@@ -633,6 +633,12 @@ const BuffType *Server::getBuffByName(const Buff::ID &id) const {
   return &it->second;
 }
 
+const Quest *Server::findQuest(const Quest::ID &id) const {
+  auto it = _quests.find(id);
+  if (it == _quests.end()) return nullptr;
+  return &it->second;
+}
+
 const Terrain *Server::terrainType(char index) const {
   auto &types = const_cast<std::map<char, Terrain *> &>(_terrainTypes);
   return types[index];

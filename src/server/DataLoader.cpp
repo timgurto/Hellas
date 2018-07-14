@@ -378,7 +378,10 @@ void DataLoader::loadQuests(XmlReader &xr) {
     auto endingObject = _server.findObjectTypeByName(endsAt);
     if (!endingObject) continue;
 
-    if (xr.findChild("objective", elem)) q.hasObjective = true;
+    auto objective = xr.findChild("objective", elem);
+    if (objective) {
+      xr.findAttr(objective, "id", q.objectiveID);
+    }
 
     _server._quests[q.id] = q;
     startingObject->addQuestStart(q.id);
