@@ -1900,7 +1900,7 @@ void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,
   if (it == _quests.end()) return;
   const auto &q = it->second;
 
-  if (q.hasObjective) return;
+  if (q.hasObjective && !user.hasKilledSomething) return;
 
   user.completeQuest(quest);
 

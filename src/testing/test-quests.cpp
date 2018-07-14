@@ -457,5 +457,17 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
         CHECK(u.numQuests() == 1);
       }
     }
+
+    WHEN("he kills a rat") {
+      c.sendMessage(CL_TARGET_ENTITY, makeArgs(ratSerial));
+      auto rat = s.entities().find(ratSerial);
+      WAIT_UNTIL(rat->isDead());
+
+      AND_WHEN("he tries to complete the quest") {
+        c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+
+        THEN("he is not on the quest") { WAIT_UNTIL(u.numQuests() == 0); }
+      }
+    }
   }
 }

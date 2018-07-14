@@ -637,6 +637,8 @@ void User::onKilled(const Entity &victim) {
   }
 
   addXP(xp);
+
+  hasKilledSomething = true;
 }
 
 bool User::canAttack() const {
