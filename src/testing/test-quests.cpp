@@ -440,6 +440,8 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
+    WAIT_UNTIL(s.users().size() == 1);
+    auto &u = s.getFirstUser();
 
     s.addObject("A", {10, 5});
     auto aSerial = s.getFirstObject().serial();
@@ -450,7 +452,7 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
     WAIT_UNTIL(c.objects().size() == 2);
 
     WHEN("the user is on the quest") {
-      auto &u = s.getFirstUser();
+
       u.startQuest("quest1");
 
       AND_WHEN("the user tries to complete the quest") {
@@ -469,6 +471,25 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
           c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
 
           THEN("he is not on the quest") { WAIT_UNTIL(u.numQuests() == 0); }
+        }
+      }
+    }
+
+    WHEN("the user kills a rat while not on the quest") {
+      c.sendMessage(CL_TARGET_ENTITY, makeArgs(ratSerial));
+      WAIT_UNTIL(rat->isDead());
+      REPEAT_FOR_MS(100);
+
+      AND_WHEN("he starts the quest") {
+        u.startQuest("quest1");
+
+        AND_WHEN("he tries to complete the quest") {
+          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+
+          THEN("he is still on the quest") {
+            REPEAT_FOR_MS(100);
+            CHECK(u.numQuests() == 1);
+          }
         }
       }
     }

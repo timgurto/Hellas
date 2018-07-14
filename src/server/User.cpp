@@ -638,7 +638,7 @@ void User::onKilled(const Entity &victim) {
 
   addXP(xp);
 
-  hasKilledSomething = true;
+  for (auto quest : _quests) _questsWithKills.insert(quest);
 }
 
 bool User::canAttack() const {
@@ -892,6 +892,11 @@ void User::moveToSpawnPoint(bool isNewPlayer) {
                          makeArgs(name(), location().x, location().y));
 
   server.sendRelevantEntitiesToUser(*this);
+}
+
+bool User::hasKilledSomethingWhileOnQuest(const Quest::ID &quest) const {
+  auto it = _questsWithKills.find(quest);
+  return it != _questsWithKills.end();
 }
 
 void User::sendBuffMsg(const Buff::ID &buff) const {
