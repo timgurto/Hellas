@@ -17,6 +17,9 @@ class TestServer {
   TestServer(TestServer &rhs);
   TestServer &operator=(TestServer &rhs);
 
+  void loadData(const std::string path);
+  void loadDataFromString(const std::string data);
+
   std::set<const ObjectType *> &objectTypes() { return _server->_objectTypes; }
   Entities &entities() { return _server->_entities; }
   Entity::byX_t &entitiesByX() { return _server->_entitiesByX; }
@@ -41,7 +44,6 @@ class TestServer {
   void waitForUsers(size_t numUsers) const;
 
   Server *operator->() { return _server; }
-  void loadData(const std::string path);
   void sendMessage(const Socket &socket, MessageCode code,
                    const std::string &args) {
     _server->sendMessage(socket, code, args);

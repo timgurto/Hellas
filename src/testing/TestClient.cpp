@@ -80,6 +80,10 @@ TestClient &TestClient::operator=(TestClient &rhs) {
   return *this;
 }
 
+void TestClient::loadDataFromString(const std::string &data) {
+  CDataLoader::FromString(*_client, data).load(true);
+}
+
 void TestClient::run() {
   Client &client = *_client;
   std::thread([&client]() { client.run(); }).detach();

@@ -27,6 +27,10 @@ void TestServer::loadData(const std::string path) {
   DataLoader::FromPath(*_server, "testing/data/" + path).load(true);
 }
 
+void TestServer::loadDataFromString(const std::string data) {
+  DataLoader::FromString(*_server, data).load(true);
+}
+
 TestServer TestServer::KeepingOldData() {
   cmdLineArgs.remove("new");
   TestServer s;

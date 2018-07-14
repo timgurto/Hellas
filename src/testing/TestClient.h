@@ -23,6 +23,8 @@ class TestClient {
   TestClient(TestClient &rhs);
   TestClient &operator=(TestClient &rhs);
 
+  void loadDataFromString(const std::string &data);
+
   bool connected() const {
     return _client->_connection.state() == Connection::CONNECTED;
   }
