@@ -28,10 +28,12 @@
     </npcType>
 
 <quest id="tutCombat" name="All due respect" startsAt="prometheus2" endsAt="prometheus2"
-    brief="Zeus, the king of the gods, wants to establish animal sacrifices in their honour.  Before we can begin negotiations, we'll need to slaughter an animal.
+    brief="Zeus, the king of the gods, wants to establish animal sacrifices in their honour.  Before we can begin negotiations, you'll need to slaughter an animal.
     
     Look around nearby for a Pig, and target it by right-clicking on it.  Once you move close enough, you will automatically start attacking it."
-    debrief="asdf"/>
+    debrief="asdf">
+    <objective id="tutPig"/>
+</quest>
     
     <npcType
         id="tutPig" name="Pig"
