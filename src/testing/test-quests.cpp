@@ -430,43 +430,46 @@ TEST_CASE("Show the user when an object has no more quests", "[quests]") {
 }
 
 TEST_CASE("A quest to kill an NPC", "[quests]") {
-  GIVEN("A quest that requires a rat to be killed") {
+  GIVEN("A quest that requires a rat to be killed, and a rat") {
     auto data = R"(
-        <objectType id="A" />
-        <npcType id="rat" />
-        <quest id="quest1" startsAt="A" endsAt="A">
-          <objective id="rat" />
-        </quest>
-      )";
+      <objectType id="A" />
+      <npcType id="rat" />
+      <quest id="quest1" startsAt="A" endsAt="A">
+        <objective id="rat" />
+      </quest>
+    )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
 
     s.addObject("A", {10, 5});
     auto aSerial = s.getFirstObject().serial();
+
     s.addNPC("rat", {10, 15});
     auto ratSerial = aSerial + 1;
+    auto rat = s.entities().find(ratSerial);
     WAIT_UNTIL(c.objects().size() == 2);
 
-    auto &u = s.getFirstUser();
-    u.startQuest("quest1");
+    WHEN("the user is on the quest") {
+      auto &u = s.getFirstUser();
+      u.startQuest("quest1");
 
-    WHEN("the user tries to complete the quest") {
-      c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
-      THEN("he is still on the quest") {
-        REPEAT_FOR_MS(100);
-        CHECK(u.numQuests() == 1);
-      }
-    }
-
-    WHEN("he kills a rat") {
-      c.sendMessage(CL_TARGET_ENTITY, makeArgs(ratSerial));
-      auto rat = s.entities().find(ratSerial);
-      WAIT_UNTIL(rat->isDead());
-
-      AND_WHEN("he tries to complete the quest") {
+      AND_WHEN("the user tries to complete the quest") {
         c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+        THEN("he is still on the quest") {
+          REPEAT_FOR_MS(100);
+          CHECK(u.numQuests() == 1);
+        }
+      }
 
-        THEN("he is not on the quest") { WAIT_UNTIL(u.numQuests() == 0); }
+      AND_WHEN("he kills a rat") {
+        c.sendMessage(CL_TARGET_ENTITY, makeArgs(ratSerial));
+        WAIT_UNTIL(rat->isDead());
+
+        AND_WHEN("he tries to complete the quest") {
+          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+
+          THEN("he is not on the quest") { WAIT_UNTIL(u.numQuests() == 0); }
+        }
       }
     }
   }
