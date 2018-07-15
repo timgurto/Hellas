@@ -575,6 +575,11 @@ TEST_CASE("Quest chains", "[quests]") {
     WAIT_UNTIL(c.objects().size() == 1);
     auto &u = s.getFirstUser();
 
+    THEN("the user can see only one quest available") {
+      const auto &a = c.getFirstObject();
+      CHECK(a.startsQuests().size() == 1);
+    }
+
     WHEN("the user tries to accept the second quest") {
       c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest2", aSerial));
 

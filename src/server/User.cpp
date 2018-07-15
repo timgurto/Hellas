@@ -906,7 +906,7 @@ void User::completeQuest(const Quest::ID &id) {
   _quests.erase(id);
 }
 
-bool User::hasCompletedQuest(const Quest::ID &id) {
+bool User::hasCompletedQuest(const Quest::ID &id) const {
   auto it = _questsCompleted.find(id);
   return it != _questsCompleted.end();
 }

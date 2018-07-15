@@ -17,10 +17,17 @@ void QuestNode::sendQuestsToClient(const User &targetUser) const {
 }
 
 SomeQuests QuestNode::questsUserCanStartHere(const User &user) const {
+  const Server &server = Server::instance();
   auto ret = SomeQuests{};
 
   for (const auto &questID : _type->questsStartingHere()) {
     if (user.isOnQuest(questID)) continue;
+
+    auto quest = server.findQuest(questID);
+    if (quest->hasPrerequisite() &&
+        !user.hasCompletedQuest(quest->prerequisiteQuest))
+      continue;
+
     ret.insert(questID);
   }
 

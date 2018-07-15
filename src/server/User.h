@@ -236,7 +236,7 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   void startQuest(const Quest::ID &id) { _quests.insert(id); }
   void completeQuest(const Quest::ID &id);
-  bool hasCompletedQuest(const Quest::ID &id);
+  bool hasCompletedQuest(const Quest::ID &id) const;
   int numQuests() const { return _quests.size(); }
   bool isOnQuest(const Quest::ID &id) const {
     return _quests.find(id) != _quests.end();
