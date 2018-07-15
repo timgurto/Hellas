@@ -901,6 +901,16 @@ void User::moveToSpawnPoint(bool isNewPlayer) {
   server.sendRelevantEntitiesToUser(*this);
 }
 
+void User::completeQuest(const Quest::ID &id) {
+  _questsCompleted.insert(id);
+  _quests.erase(id);
+}
+
+bool User::hasCompletedQuest(const Quest::ID &id) {
+  auto it = _questsCompleted.find(id);
+  return it != _questsCompleted.end();
+}
+
 bool User::hasKilledSomethingWhileOnQuest(const Quest::ID &quest) const {
   auto it = _questsWithKills.find(quest);
   return it != _questsWithKills.end();

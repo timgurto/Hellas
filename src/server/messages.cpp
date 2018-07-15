@@ -1872,7 +1872,10 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &questID,
   if (!node->startsQuest(questID)) return;
 
   auto quest = findQuest(questID);
-  if (quest && quest->hasPrerequisite()) return;
+  if (!quest) return;
+  if (quest->hasPrerequisite() &&
+      !user.hasCompletedQuest(quest->prerequisiteQuest))
+    return;
 
   user.startQuest(questID);
 

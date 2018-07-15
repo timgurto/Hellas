@@ -573,14 +573,27 @@ TEST_CASE("Quest chains", "[quests]") {
     s.addObject("A", {10, 15});
     auto aSerial = s.getFirstObject().serial();
     WAIT_UNTIL(c.objects().size() == 1);
+    auto &u = s.getFirstUser();
 
     WHEN("the user tries to accept the second quest") {
       c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest2", aSerial));
 
       THEN("he is not on a quest") {
         REPEAT_FOR_MS(100);
-        auto &u = s.getFirstUser();
         CHECK(u.numQuests() == 0);
+      }
+    }
+
+    WHEN("the user starts and finishes the first quest") {
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", aSerial));
+      WAIT_UNTIL(u.numQuests() == 1);
+      c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+      WAIT_UNTIL(u.numQuests() == 0);
+
+      AND_WHEN("the user tries to accept the second quest") {
+        c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest2", aSerial));
+
+        THEN("he is on a quest") { WAIT_UNTIL(u.numQuests() == 1); }
       }
     }
   }

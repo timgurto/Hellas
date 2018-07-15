@@ -73,6 +73,7 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   std::set<Quest::ID> _quests;
   std::set<Quest::ID> _questsWithKills;
+  std::set<Quest::ID> _questsCompleted;
 
  public:
   User(const std::string &name, const MapPoint &loc, const Socket &socket);
@@ -234,7 +235,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   void moveToSpawnPoint(bool isNewPlayer = false);
 
   void startQuest(const Quest::ID &id) { _quests.insert(id); }
-  void completeQuest(const Quest::ID &id) { _quests.erase(id); }
+  void completeQuest(const Quest::ID &id);
+  bool hasCompletedQuest(const Quest::ID &id);
   int numQuests() const { return _quests.size(); }
   bool isOnQuest(const Quest::ID &id) const {
     return _quests.find(id) != _quests.end();
