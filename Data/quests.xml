@@ -32,6 +32,7 @@
     
     Look around nearby for a Pig, and target it by right-clicking on it.  Once you move close enough, you will automatically start attacking it."
     debrief="asdf">
+    <prerequisite id="tutConversation"/>
     <objective id="tutPig"/>
 </quest>
     
