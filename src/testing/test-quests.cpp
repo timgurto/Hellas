@@ -557,3 +557,31 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
     }
   }
 }
+
+TEST_CASE("Quest chains", "[quests]") {
+  GIVEN("a quest with another quest as a prerequisite") {
+    auto data = R"(
+      <objectType id="A" />
+      <quest id="quest1" startsAt="A" endsAt="A" />
+      <quest id="quest2" startsAt="A" endsAt="A">
+        <prerequisite id="quest1" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addObject("A", {10, 15});
+    auto aSerial = s.getFirstObject().serial();
+    WAIT_UNTIL(c.objects().size() == 1);
+
+    WHEN("the user tries to accept the second quest") {
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest2", aSerial));
+
+      THEN("he is not on a quest") {
+        REPEAT_FOR_MS(100);
+        auto &u = s.getFirstUser();
+        CHECK(u.numQuests() == 0);
+      }
+    }
+  }
+}

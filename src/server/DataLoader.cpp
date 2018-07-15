@@ -379,9 +379,10 @@ void DataLoader::loadQuests(XmlReader &xr) {
     if (!endingObject) continue;
 
     auto objective = xr.findChild("objective", elem);
-    if (objective) {
-      xr.findAttr(objective, "id", q.objectiveID);
-    }
+    xr.findAttr(objective, "id", q.objectiveID);
+
+    auto prereq = xr.findChild("prerequisite", elem);
+    xr.findAttr(prereq, "id", q.prerequisiteQuest);
 
     _server._quests[q.id] = q;
     startingObject->addQuestStart(q.id);

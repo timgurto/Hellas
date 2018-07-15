@@ -1860,7 +1860,7 @@ CombatResult Server::handle_CL_CAST(User &user, const std::string &spellID,
   return outcome;
 }
 
-void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest,
+void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &questID,
                                     size_t startSerial) {
   const auto entity = _entities.find(startSerial);
   if (!entity) return;
@@ -1869,9 +1869,12 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest,
 
   if (!isEntityInRange(user.socket(), user, entity)) return;
 
-  if (!node->startsQuest(quest)) return;
+  if (!node->startsQuest(questID)) return;
 
-  user.startQuest(quest);
+  auto quest = findQuest(questID);
+  if (quest && quest->hasPrerequisite()) return;
+
+  user.startQuest(questID);
 
   // Send user quests from all nearby nodes
   auto nearbyEntities = findEntitiesInArea(user.location());
