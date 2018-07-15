@@ -452,7 +452,14 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
     WAIT_UNTIL(c.objects().size() == 2);
 
     WHEN("the user is on the quest") {
-      u.startQuest("quest1");
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", aSerial));
+      WAIT_UNTIL(u.numQuests() == 1);
+
+      THEN("the user can see no completable quests at A") {
+        REPEAT_FOR_MS(100);
+        const auto a = c.objects()[aSerial];
+        CHECK(a->endsQuests().size() == 0);
+      }
 
       AND_WHEN("the user tries to complete the quest") {
         c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));

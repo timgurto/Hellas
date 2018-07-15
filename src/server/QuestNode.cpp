@@ -35,10 +35,16 @@ SomeQuests QuestNode::questsUserCanStartHere(const User &user) const {
 }
 
 SomeQuests QuestNode::questsUserCanEndHere(const User &user) const {
+  const Server &server = Server::instance();
   auto ret = SomeQuests{};
 
   for (const auto &questID : _type->questsEndingHere()) {
     if (!user.isOnQuest(questID)) continue;
+
+    auto quest = server.findQuest(questID);
+    if (quest->hasObjective() && !user.hasKilledSomethingWhileOnQuest(questID))
+      continue;
+
     ret.insert(questID);
   }
 
