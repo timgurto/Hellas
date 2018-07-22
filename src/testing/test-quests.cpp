@@ -337,6 +337,7 @@ TEST_CASE("Quest UI", "[quests][ui]") {
 
       AND_WHEN("the quest button is clicked") {
         REPEAT_FOR_MS(100);
+        REQUIRE(obj.window() != nullptr);
         auto questButtonE = obj.window()->findChild("quest1");
         auto questButton = dynamic_cast<Button *>(questButtonE);
         CHECK(questButton != nullptr);
