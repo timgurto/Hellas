@@ -209,6 +209,17 @@ void Client::initialiseData() {
   }
 
   populateBuildList();
+
+  // Tell quest nodes about their quests
+  for (auto &questPair : _quests) {
+    auto &quest = questPair.second;
+
+    auto startNode = findObjectType(quest.startsAt());
+    startNode->startsQuest(quest);
+
+    auto endNode = findObjectType(quest.endsAt());
+    endNode->endsQuest(quest);
+  }
 }
 
 void Client::initializeGearSlotNames() {

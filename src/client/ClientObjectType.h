@@ -7,6 +7,7 @@
 #include "../Point.h"
 #include "../server/ItemSet.h"
 #include "../util.h"
+#include "CQuest.h"
 #include "ClientCombatantType.h"
 #include "ClientItem.h"
 #include "ClientObjectAction.h"
@@ -63,6 +64,9 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
 
   ClientObjectAction *_action = nullptr;
 
+  std::set<CQuest *> _startsQuests;
+  std::set<CQuest *> _endsQuests;
+
  public:
   ClientObjectType(const std::string &id);
 
@@ -111,6 +115,12 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
   void action(ClientObjectAction *pAction) { _action = pAction; }
   const ClientObjectAction &action() const { return *_action; }
   bool hasAction() const { return _action != nullptr; }
+  void startsQuest(CQuest &quest) { _startsQuests.insert(&quest); }
+  std::set<CQuest *> &startsQuests() { return _startsQuests; }
+  const std::set<CQuest *> &startsQuests() const { return _startsQuests; }
+  void endsQuest(CQuest &quest) { _endsQuests.insert(&quest); }
+  std::set<CQuest *> &endsQuests() { return _endsQuests; }
+  const std::set<CQuest *> &endsQuests() const { return _endsQuests; }
 
   const ImageSet &getProgressImage(ms_t timeRemaining) const;
   void corpseImage(const std::string &filename);

@@ -49,9 +49,6 @@ class ClientObject : public Sprite, public ClientCombatant {
 
   TextBox *_actionTextEntry = nullptr;
 
-  std::set<CQuest *> _questsStartingHere{};
-  std::set<CQuest *> _questsEndingHere{};
-
  protected:
   Window *_window;  // For containers, etc; opens when the object is nearby and
                     // right-clicked.
@@ -131,12 +128,20 @@ class ClientObject : public Sprite, public ClientCombatant {
   virtual void assembleWindow(Client &client);
 
   // Quests
-  void startsQuest(const std::string questID);
-  const std::set<CQuest *> &startsQuests() const { return _questsStartingHere; }
-  void clearQuestsStartingHere() { _questsStartingHere.clear(); }
-  void endsQuest(const std::string questID);
-  const std::set<CQuest *> &endsQuests() const { return _questsEndingHere; }
-  void clearQuestsEndingHere() { _questsEndingHere.clear(); }
+  std::set<CQuest *> &startsQuests() {
+    auto objType = const_cast<ClientObjectType *>(objectType());
+    return objType->startsQuests();
+  }
+  const std::set<CQuest *> &startsQuests() const {
+    return objectType()->startsQuests();
+  }
+  std::set<CQuest *> &endsQuests() {
+    auto objType = const_cast<ClientObjectType *>(objectType());
+    return objType->endsQuests();
+  }
+  const std::set<CQuest *> &endsQuests() const {
+    return objectType()->endsQuests();
+  }
 
   // From ClientCombatant
   virtual void sendTargetMessage() const override;

@@ -281,9 +281,6 @@ void Object::sendInfoToClient(const User &targetUser) const {
   for (const auto &debuff : debuffs())
     server.sendMessage(client, SV_ENTITY_GOT_DEBUFF,
                        makeArgs(serial(), debuff.type()));
-
-  // Quests
-  sendQuestsToClient(targetUser);
 }
 
 void Object::describeSelfToNewWatcher(const User &watcher) const {

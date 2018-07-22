@@ -29,9 +29,6 @@ class QuestNode {
   static QuestNode Dummy() { return {}; }
 
  public:
-  void sendQuestsToClient(const User &targetUser) const;
-  SomeQuests questsUserCanStartHere(const User &user) const;
-  SomeQuests questsUserCanEndHere(const User &user) const;
   bool startsQuest(const Quest::ID &id) const { return _type->startsQuest(id); }
   bool endsQuest(const Quest::ID &id) const { return _type->endsQuest(id); }
 

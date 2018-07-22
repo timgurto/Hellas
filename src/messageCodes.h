@@ -501,11 +501,6 @@ enum MessageCode {
   SV_YOUR_CITY_IS_AT_PEACE_WITH_PLAYER,
   SV_YOUR_CITY_IS_AT_PEACE_WITH_CITY,
 
-  // Object quests.  These are filtered to only those quests that should actually be visible to the user.
-  // Arguments: serial, quantity, questID1, questID2, ...
-  SV_OBJECT_STARTS_QUESTS,
-  SV_OBJECT_ENDS_QUESTS,
-
   // "User ... has said ...".
   // Arguments: username, message
   SV_SAY,

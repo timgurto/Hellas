@@ -835,10 +835,18 @@ void CDataLoader::loadQuests(XmlReader &xr) {
 
     CQuest q{id};
 
-    CQuest::Name name;
+    auto node = CQuest::ID{};
+    if (!xr.findAttr(elem, "startsAt", node))
+      continue;  // Start node is mandatory
+    q.startsAt(node);
+
+    if (!xr.findAttr(elem, "endsAt", node)) continue;  // End node is mandatory
+    q.endsAt(node);
+
+    auto name = CQuest::Name{};
     if (xr.findAttr(elem, "name", name)) q.name(name);
 
-    CQuest::Prose text;
+    auto text = CQuest::Prose{};
     if (xr.findAttr(elem, "brief", text)) q.brief(text);
     if (xr.findAttr(elem, "debrief", text)) q.debrief(text);
 

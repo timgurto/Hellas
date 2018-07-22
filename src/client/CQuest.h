@@ -25,6 +25,10 @@ class CQuest {
   const Prose &debrief() const { return _debrief; }
   void debrief(const Prose &newDebrief) { _debrief = newDebrief; }
   const Window *window() const { return _window; }
+  void startsAt(const ID &node) { _startsAt = node; }
+  const ID &startsAt() const { return _startsAt; }
+  void endsAt(const ID &node) { _endsAt = node; }
+  const ID &endsAt() const { return _endsAt; }
 
   static void generateWindow(CQuest *quest, size_t startObjectSerial,
                              Transition pendingTransition);
@@ -37,6 +41,7 @@ class CQuest {
   Name _name;
   Prose _brief, _debrief;
   Window *_window{nullptr};
+  ID _startsAt, _endsAt;
 };
 
 using CQuests = std::map<CQuest::ID, CQuest>;
