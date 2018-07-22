@@ -653,6 +653,18 @@ const Projectile::Type *Client::findProjectileType(
   return nullptr;
 }
 
+ClientObjectType *Client::findObjectType(const std::string &id) {
+  auto dummy = ClientObjectType{id};
+  auto it = _objectTypes.find(&dummy);
+  if (it == _objectTypes.end()) return nullptr;
+  return const_cast<ClientObjectType *>(*it);
+}
+
+ClientNPCType *Client::findNPCType(const std::string &id) {
+  auto ot = findObjectType(id);
+  return dynamic_cast<ClientNPCType *>(ot);
+}
+
 bool Client::isAtWarWith(const std::string &username) const {
   // Cities
   if (isAtWarWithCityDirectly(username)) return true;

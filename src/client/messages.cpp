@@ -571,15 +571,12 @@ void Client::handleMessage(const std::string &msg) {
         singleMsg >> del;
         if (del != MSG_END) break;
 
-        const ClientObjectType dummy(type);
-        const Client::objectTypes_t::const_iterator typeIt =
-            _objectTypes.find(&dummy);
-        if (typeIt == _objectTypes.end()) {
+        auto cot = findObjectType(type);
+        if (!cot) {
           showErrorMessage("Received object of invalid type; ignored.",
                            Color::FAILURE);
           break;
         }
-        const ClientObjectType *cot = *typeIt;
 
         std::map<size_t, ClientObject *>::iterator it = _objects.find(serial);
         if (it != _objects.end()) {
@@ -763,12 +760,11 @@ void Client::handleMessage(const std::string &msg) {
           singleMsg >> del;
           _knownConstructions.insert(recipe);
 
-          auto it = _objectTypes.find(&ClientObjectType(recipe));
-          if (it == _objectTypes.end()) continue;
-
+          auto cot = findObjectType(recipe);
+          if (!cot) continue;
           if (msgCode == SV_NEW_CONSTRUCTIONS) {
             auto message = "You have learned how to construct a new object: " +
-                           (*it)->name();
+                           cot->name();
             toast("lumber", message);
           }
         }
@@ -1910,21 +1906,16 @@ void Client::handle_SV_SPELL_MISS(const std::string &spellID,
 void Client::handle_SV_RANGED_NPC_HIT(const std::string &npcID,
                                       const MapPoint &src,
                                       const MapPoint &dst) {
-  auto it = _objectTypes.find(&ClientObjectType{npcID});
-  if (it == _objectTypes.end()) return;
-  const auto *npcType = dynamic_cast<const ClientNPCType *>(*it);
-  assert(npcType);
-
+  auto npcType = findNPCType(npcID);
+  if (!npcType) return;
   if (npcType->projectile()) npcType->projectile()->instantiate(src, dst);
 }
 
 void Client::handle_SV_RANGED_NPC_MISS(const std::string &npcID,
                                        const MapPoint &src,
                                        const MapPoint &dst) {
-  auto it = _objectTypes.find(&ClientObjectType{npcID});
-  if (it == _objectTypes.end()) return;
-  const auto *npcType = dynamic_cast<const ClientNPCType *>(*it);
-  assert(npcType);
+  auto npcType = findNPCType(npcID);
+  if (!npcType) return;
 
   if (npcType->projectile()) {
     auto pointPastDest = extrapolate(src, dst, 2000);

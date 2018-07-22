@@ -30,9 +30,9 @@ void Client::populateBuildList() {
   assert(_buildList != nullptr);
   _buildList->clearChildren();
   for (const std::string &id : _knownConstructions) {
-    auto it = _objectTypes.find(&ClientObjectType(id));
-    if (it == _objectTypes.end()) continue;
-    const auto ot = *it;
+    auto ot = findObjectType(id);
+    if (!ot) continue;
+
     Element *listElement = new Element({});
     _buildList->addChild(listElement);
     Label *label = new Label(
@@ -53,9 +53,7 @@ void Client::chooseConstruction(Element &e, const ScreenPoint &mousePos) {
     client._selectedConstruction = nullptr;
     client._constructionFootprint = Texture();
   } else {
-    const ClientObjectType *ot =
-        *client._objectTypes.find(&ClientObjectType(selectedID));
-    client._selectedConstruction = ot;
-    client._constructionFootprint = ot->image();
+    auto ot = client.findObjectType(selectedID);
+    client._constructionFootprint = ot ? ot->image() : Texture{};
   }
 }
