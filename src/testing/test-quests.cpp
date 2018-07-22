@@ -450,6 +450,7 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
     auto ratSerial = aSerial + 1;
     auto rat = s.entities().find(ratSerial);
     WAIT_UNTIL(c.objects().size() == 2);
+    const auto a = c.objects()[aSerial];
 
     WHEN("the user is on the quest") {
       c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", aSerial));
@@ -457,7 +458,6 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
 
       THEN("the user can see no completable quests at A") {
         REPEAT_FOR_MS(100);
-        const auto a = c.objects()[aSerial];
         CHECK(a->endsQuests().size() == 0);
       }
 
@@ -472,6 +472,10 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
       AND_WHEN("he kills a rat") {
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(ratSerial));
         WAIT_UNTIL(rat->isDead());
+
+        THEN("he can see a completable quest at A") {
+          // WAIT_UNTIL(a->endsQuests().size() == 1);
+        }
 
         AND_WHEN("he tries to complete the quest") {
           c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
