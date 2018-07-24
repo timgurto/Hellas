@@ -1668,17 +1668,6 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
-      case SV_QUEST_CAN_NOT_BE_ACCEPTED: {
-        singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
-        auto questID = std::string{buffer};
-        singleMsg >> del;
-
-        if (del != MSG_END) return;
-
-        handle_SV_QUEST_CAN_NOT_BE_ACCEPTED(questID);
-        break;
-      }
-
       case SV_QUEST_CAN_BE_COMPLETED: {
         singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
         auto questID = std::string{buffer};
@@ -2149,13 +2138,6 @@ void Client::handle_SV_OBJECT_HEALED(size_t serial, Hitpoints amount) {
 
   addFloatingCombatText("+"s + toString(amount), it->second->location(),
                         Color::FLOATING_HEAL);
-}
-
-void Client::handle_SV_QUEST_CAN_NOT_BE_ACCEPTED(const std::string &questID) {
-  auto it = _quests.find(questID);
-  if (it == _quests.end()) return;
-
-  it->second.state = CQuest::CAN_COMPLETE;
 }
 
 void Client::handle_SV_QUEST_CAN_BE_COMPLETED(const std::string &questID) {

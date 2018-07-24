@@ -503,7 +503,6 @@ enum MessageCode {
 
   // A change in state for a quest
   // Arguments: questID
-  SV_QUEST_CAN_NOT_BE_ACCEPTED,
   SV_QUEST_CAN_BE_COMPLETED,
 
   // "User ... has said ...".
