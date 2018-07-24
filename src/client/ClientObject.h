@@ -128,16 +128,8 @@ class ClientObject : public Sprite, public ClientCombatant {
   virtual void assembleWindow(Client &client);
 
   // Quests
-  std::set<CQuest *> &startsQuests() {
-    auto objType = const_cast<ClientObjectType *>(objectType());
-    return objType->startsQuests();
-  }
   const std::set<CQuest *> &startsQuests() const {
     return objectType()->startsQuests();
-  }
-  std::set<CQuest *> &completableQuests() {
-    auto objType = const_cast<ClientObjectType *>(objectType());
-    return objType->endsQuests();
   }
   std::set<CQuest *> completableQuests() const;
 
