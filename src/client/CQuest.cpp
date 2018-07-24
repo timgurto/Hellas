@@ -49,9 +49,9 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   if (pendingTransition == ACCEPT) transitionButton->id("accept");
   window->addChild(transitionButton);
 
-  quest->_state.window = window;
-  Client::instance().addWindow(quest->_state.window);
-  quest->_state.window->show();
+  quest->_window = window;
+  Client::instance().addWindow(quest->_window);
+  quest->_window->show();
 }
 
 void CQuest::acceptQuest(CQuest *quest, size_t startObjectSerial) {
@@ -62,7 +62,7 @@ void CQuest::acceptQuest(CQuest *quest, size_t startObjectSerial) {
                      makeArgs(quest->_info.id, startObjectSerial));
 
   // Close and remove window
-  quest->_state.window->hide();
+  quest->_window->hide();
   // TODO: better cleanup.  Lots of unused windows in the background may take
   // up significant memory.  Note that this function is called from a button
   // click (which subsequently changes the appearance of the button), meaning
@@ -77,7 +77,7 @@ void CQuest::completeQuest(CQuest *quest, size_t startObjectSerial) {
                      makeArgs(quest->_info.id, startObjectSerial));
 
   // Close and remove window
-  quest->_state.window->hide();
+  quest->_window->hide();
   // TODO: better cleanup.  Lots of unused windows in the background may take
   // up significant memory.  Note that this function is called from a button
   // click (which subsequently changes the appearance of the button), meaning

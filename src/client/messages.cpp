@@ -2155,14 +2155,14 @@ void Client::handle_SV_QUEST_CAN_NOT_BE_ACCEPTED(const std::string &questID) {
   auto it = _quests.find(questID);
   if (it == _quests.end()) return;
 
-  it->second.canNowNotBeAccepted();
+  it->second.state = CQuest::CAN_COMPLETE;
 }
 
 void Client::handle_SV_QUEST_CAN_BE_COMPLETED(const std::string &questID) {
   auto it = _quests.find(questID);
   if (it == _quests.end()) return;
 
-  it->second.canNowBeCompleted();
+  it->second.state = CQuest::CAN_COMPLETE;
 }
 
 void Client::sendRawMessage(const std::string &msg) const {

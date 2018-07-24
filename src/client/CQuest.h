@@ -26,12 +26,7 @@ class CQuest {
 
   const Info &info() const { return _info; }
 
-  const Window *window() const { return _state.window; }
-
-  void canNowNotBeAccepted() { _state.canBeAccepted = false; }
-  void canNowBeCompleted() { _state.canBeCompleted = true; }
-  bool canBeAccepted() const { return _state.canBeAccepted; }
-  bool canBeCompleted() const { return _state.canBeCompleted; }
+  const Window *window() const { return _window; }
 
   static void generateWindow(CQuest *quest, size_t startObjectSerial,
                              Transition pendingTransition);
@@ -39,15 +34,12 @@ class CQuest {
   static void acceptQuest(CQuest *quest, size_t startObjectSerial);
   static void completeQuest(CQuest *quest, size_t startObjectSerial);
 
+  enum State { CAN_ACCEPT, CAN_COMPLETE };
+  State state{CAN_ACCEPT};
+
  private:
   Info _info;
-
-  struct State {
-    Window *window{nullptr};
-    bool canBeAccepted{true};
-    bool canBeCompleted{false};
-  };
-  State _state;
+  Window *_window{nullptr};
 };
 
 using CQuests = std::map<CQuest::Info::ID, CQuest>;
