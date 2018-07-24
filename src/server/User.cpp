@@ -901,6 +901,14 @@ void User::moveToSpawnPoint(bool isNewPlayer) {
   server.sendRelevantEntitiesToUser(*this);
 }
 
+void User::startQuest(const Quest::ID &id) {
+  _quests.insert(id);
+
+  auto &server = Server::instance();
+  server.sendMessage(_socket, SV_QUEST_CAN_NOT_BE_ACCEPTED, id);
+  server.sendMessage(_socket, SV_QUEST_CAN_BE_COMPLETED, id);
+}
+
 void User::completeQuest(const Quest::ID &id) {
   _questsCompleted.insert(id);
   _quests.erase(id);

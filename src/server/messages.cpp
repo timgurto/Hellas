@@ -1878,7 +1878,6 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &questID,
     return;
 
   user.startQuest(questID);
-  sendMessage(user.socket(), SV_QUEST_CAN_BE_COMPLETED, questID);
 }
 
 void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,

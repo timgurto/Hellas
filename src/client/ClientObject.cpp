@@ -973,6 +973,15 @@ const Texture &ClientObject::highlightImage() const {
   return Sprite::highlightImage();
 }
 
+std::set<CQuest *> ClientObject::startsQuests() const {
+  auto questsForThisType = objectType()->startsQuests();
+  auto startableQuests = std::set<CQuest *>{};
+  for (auto quest : questsForThisType) {
+    if (quest->canBeAccepted()) startableQuests.insert(quest);
+  }
+  return startableQuests;
+}
+
 std::set<CQuest *> ClientObject::completableQuests() const {
   auto questsForThisType = objectType()->endsQuests();
   auto completableQuests = std::set<CQuest *>{};

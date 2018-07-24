@@ -128,9 +128,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   virtual void assembleWindow(Client &client);
 
   // Quests
-  const std::set<CQuest *> &startsQuests() const {
-    return objectType()->startsQuests();
-  }
+  std::set<CQuest *> startsQuests() const;
   std::set<CQuest *> completableQuests() const;
 
   // From ClientCombatant

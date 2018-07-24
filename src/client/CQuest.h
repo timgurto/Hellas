@@ -28,7 +28,9 @@ class CQuest {
 
   const Window *window() const { return _state.window; }
 
+  void canNowNotBeAccepted() { _state.canBeAccepted = false; }
   void canNowBeCompleted() { _state.canBeCompleted = true; }
+  bool canBeAccepted() const { return _state.canBeAccepted; }
   bool canBeCompleted() const { return _state.canBeCompleted; }
 
   static void generateWindow(CQuest *quest, size_t startObjectSerial,
@@ -42,6 +44,7 @@ class CQuest {
 
   struct State {
     Window *window{nullptr};
+    bool canBeAccepted{true};
     bool canBeCompleted{false};
   };
   State _state;
