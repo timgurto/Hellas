@@ -1877,7 +1877,7 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &questID,
       !user.hasCompletedQuest(quest->prerequisiteQuest))
     return;
 
-  user.startQuest(questID);
+  user.startQuest(*quest);
 }
 
 void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,

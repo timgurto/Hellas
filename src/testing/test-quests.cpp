@@ -272,7 +272,7 @@ TEST_CASE("A user can't pick up a quest he's already on", "[quests]") {
 
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
-    user.startQuest("quest1");
+    user.startQuest(s.getFirstQuest());
 
     WHEN("an A object is added") {
       s.addObject("A", {10, 15});
@@ -512,7 +512,7 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
       REPEAT_FOR_MS(100);
 
       AND_WHEN("he starts the quest") {
-        u.startQuest("quest1");
+        u.startQuest(s.getFirstQuest());
 
         AND_WHEN("he tries to complete the quest") {
           c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
@@ -548,7 +548,7 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
     WAIT_UNTIL(c.objects().size() == 2);
 
     WHEN("the user is on the quest") {
-      u.startQuest("quest1");
+      u.startQuest(s.getFirstQuest());
 
       AND_WHEN("he kills the mouse") {
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(mouseSerial));

@@ -234,7 +234,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   static double spawnRadius;
   void moveToSpawnPoint(bool isNewPlayer = false);
 
-  void startQuest(const Quest::ID &id);
+  void startQuest(const Quest &quest);
   void completeQuest(const Quest::ID &id);
   bool hasCompletedQuest(const Quest::ID &id) const;
   int numQuests() const { return _quests.size(); }

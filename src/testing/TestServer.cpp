@@ -148,3 +148,8 @@ ServerItem &TestServer::getFirstItem() {
   REQUIRE(!_server->_items.empty());
   return const_cast<ServerItem &>(*_server->_items.begin());
 }
+
+const Quest &TestServer::getFirstQuest() {
+  REQUIRE(!_server->_quests.empty());
+  return _server->_quests.begin()->second;
+}

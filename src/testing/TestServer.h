@@ -36,6 +36,7 @@ class TestServer {
   NPC &getFirstNPC();
   NPCType &getFirstNPCType();
   ServerItem &getFirstItem();
+  const Quest &getFirstQuest();
 
   void addObject(const std::string &typeName, const MapPoint &loc = MapPoint{},
                  const std::string &owner = "");
