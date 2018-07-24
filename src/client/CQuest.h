@@ -30,6 +30,8 @@ class CQuest {
   void endsAt(const ID &node) { _endsAt = node; }
   const ID &endsAt() const { return _endsAt; }
 
+  bool canBeCompleted() const { return _canBeCompleted; }
+
   static void generateWindow(CQuest *quest, size_t startObjectSerial,
                              Transition pendingTransition);
 
@@ -37,11 +39,15 @@ class CQuest {
   static void completeQuest(CQuest *quest, size_t startObjectSerial);
 
  private:
+  // Immutable quest details
   ID _id;
   Name _name;
   Prose _brief, _debrief;
-  Window *_window{nullptr};
   ID _startsAt, _endsAt;
+
+  // Quest state
+  Window *_window{nullptr};
+  bool _canBeCompleted{false};
 };
 
 using CQuests = std::map<CQuest::ID, CQuest>;

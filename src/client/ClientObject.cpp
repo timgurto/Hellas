@@ -973,6 +973,15 @@ const Texture &ClientObject::highlightImage() const {
   return Sprite::highlightImage();
 }
 
+std::set<CQuest *> ClientObject::endsQuests() const {
+  auto questsForThisType = objectType()->endsQuests();
+  auto completableQuests = std::set<CQuest *>{};
+  for (auto quest : questsForThisType) {
+    if (quest->canBeCompleted()) completableQuests.insert(quest);
+  }
+  return completableQuests;
+}
+
 void ClientObject::sendTargetMessage() const {
   const Client &client = *Client::_instance;
   client.sendMessage(CL_TARGET_ENTITY, makeArgs(serial()));
