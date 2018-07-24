@@ -203,7 +203,7 @@ TEST_CASE("Clients know quests' correct end nodes", "[quests]") {
       THEN("he knows object B ends it") {
         auto &b = c.objects()[bSerial];
         REQUIRE(b != nullptr);
-        WAIT_UNTIL(b->endsQuests().size() == 1);
+        WAIT_UNTIL(b->completableQuests().size() == 1);
       }
     }
   }
@@ -226,14 +226,14 @@ TEST_CASE("Client knows when quests can be completed", "[quests]") {
       const auto &obj = c.getFirstObject();
 
       THEN("he knows he can't complete any quests at the object") {
-        WAIT_UNTIL(obj.endsQuests().size() == 0);
+        WAIT_UNTIL(obj.completableQuests().size() == 0);
       }
 
       AND_WHEN("he accepts the quest") {
         c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", serial));
 
         THEN("he knows that he can complete it at the object") {
-          WAIT_UNTIL(obj.endsQuests().size() == 1);
+          WAIT_UNTIL(obj.completableQuests().size() == 1);
         }
       }
     }
@@ -459,7 +459,7 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
 
       THEN("the user can see no completable quests at A") {
         REPEAT_FOR_MS(100);
-        CHECK(a->endsQuests().size() == 0);
+        CHECK(a->completableQuests().size() == 0);
       }
 
       AND_WHEN("the user tries to complete the quest") {
@@ -475,7 +475,7 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
         WAIT_UNTIL(rat->isDead());
 
         THEN("he can see a completable quest at A") {
-          // WAIT_UNTIL(a->endsQuests().size() == 1);
+          // WAIT_UNTIL(a->completableQuests().size() == 1);
         }
 
         AND_WHEN("he tries to complete the quest") {

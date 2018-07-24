@@ -135,11 +135,11 @@ class ClientObject : public Sprite, public ClientCombatant {
   const std::set<CQuest *> &startsQuests() const {
     return objectType()->startsQuests();
   }
-  std::set<CQuest *> &endsQuests() {
+  std::set<CQuest *> &completableQuests() {
     auto objType = const_cast<ClientObjectType *>(objectType());
     return objType->endsQuests();
   }
-  std::set<CQuest *> endsQuests() const;
+  std::set<CQuest *> completableQuests() const;
 
   // From ClientCombatant
   virtual void sendTargetMessage() const override;

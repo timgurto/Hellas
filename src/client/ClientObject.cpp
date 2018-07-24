@@ -231,7 +231,7 @@ void ClientObject::addQuestsToWindow() {
 
   auto questsToDisplay = std::map<CQuest *, bool>{};  // true=start, false=end
   for (auto quest : startsQuests()) questsToDisplay[quest] = true;
-  for (auto quest : endsQuests()) questsToDisplay[quest] = false;
+  for (auto quest : completableQuests()) questsToDisplay[quest] = false;
 
   for (auto pair : questsToDisplay) {
     auto quest = pair.first;
@@ -607,7 +607,7 @@ void ClientObject::assembleWindow(Client &client) {
        canGrant = (client.character().isKing() &&
                    _owner == client.character().cityName()),
        canDemolish = _owner == Client::_instance->username(),
-       hasAQuest = !(startsQuests().empty() && endsQuests().empty());
+       hasAQuest = !(startsQuests().empty() && completableQuests().empty());
   if (isAlive() &&
       (isMerchant ||
        userHasAccess() && (hasContainer || isVehicle || objType.hasAction() ||
@@ -787,7 +787,7 @@ void ClientObject::draw(const Client &client) const {
   static const auto questEndIndicator =
       Texture{"Images/questEnd.png", Color::MAGENTA};
   auto questIndicator = Texture{};
-  if (!endsQuests().empty())
+  if (!completableQuests().empty())
     questIndicator = questEndIndicator;
   else if (!startsQuests().empty())
     questIndicator = questStartIndicator;
@@ -808,7 +808,7 @@ const Texture &ClientObject::cursor(const Client &client) const {
 
   const ClientObjectType &ot = *objectType();
   if (userHasAccess()) {
-    if (endsQuests().size() > 0) return client.cursorEndsQuest();
+    if (completableQuests().size() > 0) return client.cursorEndsQuest();
     if (startsQuests().size() > 0) return client.cursorStartsQuest();
     if (ot.canGather()) return client.cursorGather();
     if (ot.containerSlots() > 0) return client.cursorContainer();
@@ -973,7 +973,7 @@ const Texture &ClientObject::highlightImage() const {
   return Sprite::highlightImage();
 }
 
-std::set<CQuest *> ClientObject::endsQuests() const {
+std::set<CQuest *> ClientObject::completableQuests() const {
   auto questsForThisType = objectType()->endsQuests();
   auto completableQuests = std::set<CQuest *>{};
   for (auto quest : questsForThisType) {
