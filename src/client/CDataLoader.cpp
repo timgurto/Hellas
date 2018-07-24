@@ -396,13 +396,15 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     cot->setImage(std::string("Images/Objects/") + id + ".png");
     cot->imageSet(std::string("Images/Objects/") + id + ".png");
     cot->corpseImage(std::string("Images/Objects/") + id + "-corpse.png");
-    std::string s;
-    if (xr.findAttr(elem, "name", s)) cot->name(s);
+    auto name = id;
+    xr.findAttr(elem, "name", name);
+    cot->name(name);
     ScreenRect drawRect(0, 0, cot->width(), cot->height());
     bool xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
          ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
     if (xSet || ySet) cot->drawRect(drawRect);
     if (xr.getChildren("yield", elem).size() > 0) cot->canGather(true);
+    auto s = ""s;
     if (xr.findAttr(elem, "deconstructs", s)) cot->canDeconstruct(true);
 
     auto container = xr.findChild("container", elem);
