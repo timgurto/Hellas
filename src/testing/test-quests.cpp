@@ -327,17 +327,14 @@ TEST_CASE("Quest UI", "[quests][ui]") {
       const auto &quest = c.getFirstQuest();
 
       WAIT_UNTIL(c.objects().size() == 1);
-      const auto &obj = c.getFirstObject();
+      auto &obj = c.getFirstObject();
 
-      THEN("the quest has no window") { CHECK(quest.window() == nullptr); }
-
-      AND_THEN("the object has an object window") {
-        WAIT_UNTIL(obj.window() != nullptr);
-      }
+      THEN("the quest has a window") { CHECK(quest.window() == nullptr); }
 
       AND_WHEN("the quest button is clicked") {
-        REPEAT_FOR_MS(100);
-        REQUIRE(obj.window() != nullptr);
+        obj.onRightClick(c.client());
+        WAIT_UNTIL(obj.window() != nullptr);
+
         auto questButtonE = obj.window()->findChild("quest1");
         auto questButton = dynamic_cast<Button *>(questButtonE);
         CHECK(questButton != nullptr);
@@ -391,14 +388,11 @@ TEST_CASE("Quest UI for NPCs", "[quests][ui]") {
       WAIT_UNTIL(c.objects().size() == 1);
       auto &npc = c.getFirstNPC();
 
-      THEN("The NPC has an object window") {
-        WAIT_UNTIL(npc.window() != nullptr);
-      }
-
       AND_WHEN("The client right-clicks on the NPC") {
         npc.onRightClick(c.client());
 
         THEN("The object window is visible") {
+          WAIT_UNTIL(npc.window() != nullptr);
           WAIT_UNTIL(npc.window()->visible());
         }
       }
