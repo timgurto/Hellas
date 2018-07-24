@@ -644,8 +644,15 @@ void User::onKilled(const Entity &victim) {
     auto quest = server.findQuest(questID);
     if (!quest) continue;
 
-    if (quest->objectiveID == victimID) _questsWithKills.insert(questID);
+    if (quest->objectiveID == victimID) completeQuestObjective(questID);
   }
+}
+
+void User::completeQuestObjective(const std::string &questID) {
+  _questsWithKills.insert(questID);
+
+  auto &server = *Server::_instance;
+  server.sendMessage(_socket, SV_QUEST_CAN_BE_COMPLETED, questID);
 }
 
 bool User::canAttack() const {

@@ -74,6 +74,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   std::set<Quest::ID> _quests;
   std::set<Quest::ID> _questsWithKills;
   std::set<Quest::ID> _questsCompleted;
+  void completeQuestObjective(const std::string &questID);
 
  public:
   User(const std::string &name, const MapPoint &loc, const Socket &socket);

@@ -469,7 +469,7 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
         WAIT_UNTIL(rat->isDead());
 
         THEN("he can see a completable quest at A") {
-          // WAIT_UNTIL(a->completableQuests().size() == 1);
+          WAIT_UNTIL(a->completableQuests().size() == 1);
         }
 
         AND_WHEN("he tries to complete the quest") {
