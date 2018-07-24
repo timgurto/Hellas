@@ -501,6 +501,10 @@ enum MessageCode {
   SV_YOUR_CITY_IS_AT_PEACE_WITH_PLAYER,
   SV_YOUR_CITY_IS_AT_PEACE_WITH_CITY,
 
+  // "You can now complete quest ..."
+  // Arguments: questID
+  SV_QUEST_CAN_BE_COMPLETED,
+
   // "User ... has said ...".
   // Arguments: username, message
   SV_SAY,

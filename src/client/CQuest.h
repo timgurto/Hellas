@@ -30,6 +30,7 @@ class CQuest {
   void endsAt(const ID &node) { _endsAt = node; }
   const ID &endsAt() const { return _endsAt; }
 
+  void canNowBeCompleted() { _canBeCompleted = true; }
   bool canBeCompleted() const { return _canBeCompleted; }
 
   static void generateWindow(CQuest *quest, size_t startObjectSerial,
