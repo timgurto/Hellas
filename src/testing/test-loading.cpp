@@ -146,10 +146,10 @@ TEST_CASE("Clients load quests", "[quests]") {
 
       AND_THEN("it has the correct data for that quest") {
         const auto &quest = c.quests().begin()->second;
-        CHECK(quest.id() == "quest1");
-        CHECK(quest.name() == "Quest");
-        CHECK(quest.brief() == "Brief");
-        CHECK(quest.debrief() == "Debrief");
+        CHECK(quest.info().id == "quest1");
+        CHECK(quest.info().name == "Quest");
+        CHECK(quest.info().brief == "Brief");
+        CHECK(quest.info().debrief == "Debrief");
       }
     }
   }

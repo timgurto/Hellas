@@ -830,27 +830,22 @@ void CDataLoader::loadQuests(XmlReader &xr) {
   if (!xr) return;
 
   for (auto elem : xr.getChildren("quest")) {
-    CQuest::ID id;
-    if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
+    CQuest::Info questInfo;
 
-    CQuest q{id};
+    if (!xr.findAttr(elem, "id", questInfo.id)) continue;  // ID is mandatory.
 
-    auto node = CQuest::ID{};
-    if (!xr.findAttr(elem, "startsAt", node))
+    if (!xr.findAttr(elem, "startsAt", questInfo.startsAt))
       continue;  // Start node is mandatory
-    q.startsAt(node);
 
-    if (!xr.findAttr(elem, "endsAt", node)) continue;  // End node is mandatory
-    q.endsAt(node);
+    if (!xr.findAttr(elem, "endsAt", questInfo.endsAt))
+      continue;  // End node is mandatory
 
-    auto name = CQuest::Name{};
-    if (xr.findAttr(elem, "name", name)) q.name(name);
+    xr.findAttr(elem, "name", questInfo.name);
 
-    auto text = CQuest::Prose{};
-    if (xr.findAttr(elem, "brief", text)) q.brief(text);
-    if (xr.findAttr(elem, "debrief", text)) q.debrief(text);
+    xr.findAttr(elem, "brief", questInfo.brief);
+    xr.findAttr(elem, "debrief", questInfo.debrief);
 
-    _client._quests[id] = q;
+    _client._quests[questInfo.id] = {questInfo};
   }
 }
 

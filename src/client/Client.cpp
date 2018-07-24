@@ -214,10 +214,10 @@ void Client::initialiseData() {
   for (auto &questPair : _quests) {
     auto &quest = questPair.second;
 
-    auto startNode = findObjectType(quest.startsAt());
+    auto startNode = findObjectType(quest.info().startsAt);
     if (startNode) startNode->startsQuest(quest);
 
-    auto endNode = findObjectType(quest.endsAt());
+    auto endNode = findObjectType(quest.info().endsAt);
     if (endNode) endNode->endsQuest(quest);
   }
 }

@@ -7,31 +7,29 @@ class Window;
 
 class CQuest {
  public:
-  using ID = std::string;
-  using Name = std::string;
-  using Prose = std::string;
+  struct Info {
+    using ID = std::string;
+    using Name = std::string;
+    using Prose = std::string;
+
+    ID id;
+    Name name;
+    Prose brief, debrief;
+    ID startsAt, endsAt;
+  };
 
   enum Transition { ACCEPT, COMPLETE };
 
-  CQuest(const ID &id = "") : _id(id) {}
+  CQuest(const Info &info = {}) : _info(info) {}
 
-  bool operator<(const CQuest &rhs) { return _id < rhs._id; }
+  bool operator<(const CQuest &rhs) { return _info.id < rhs._info.id; }
 
-  const ID &id() const { return _id; }
-  const Name &name() const { return _name; }
-  void name(const Name &newName) { _name = newName; }
-  const Prose &brief() const { return _brief; }
-  void brief(const Prose &newBrief) { _brief = newBrief; }
-  const Prose &debrief() const { return _debrief; }
-  void debrief(const Prose &newDebrief) { _debrief = newDebrief; }
-  const Window *window() const { return _window; }
-  void startsAt(const ID &node) { _startsAt = node; }
-  const ID &startsAt() const { return _startsAt; }
-  void endsAt(const ID &node) { _endsAt = node; }
-  const ID &endsAt() const { return _endsAt; }
+  const Info &info() const { return _info; }
 
-  void canNowBeCompleted() { _canBeCompleted = true; }
-  bool canBeCompleted() const { return _canBeCompleted; }
+  const Window *window() const { return _state.window; }
+
+  void canNowBeCompleted() { _state.canBeCompleted = true; }
+  bool canBeCompleted() const { return _state.canBeCompleted; }
 
   static void generateWindow(CQuest *quest, size_t startObjectSerial,
                              Transition pendingTransition);
@@ -40,15 +38,13 @@ class CQuest {
   static void completeQuest(CQuest *quest, size_t startObjectSerial);
 
  private:
-  // Immutable quest details
-  ID _id;
-  Name _name;
-  Prose _brief, _debrief;
-  ID _startsAt, _endsAt;
+  Info _info;
 
-  // Quest state
-  Window *_window{nullptr};
-  bool _canBeCompleted{false};
+  struct State {
+    Window *window{nullptr};
+    bool canBeCompleted{false};
+  };
+  State _state;
 };
 
-using CQuests = std::map<CQuest::ID, CQuest>;
+using CQuests = std::map<CQuest::Info::ID, CQuest>;

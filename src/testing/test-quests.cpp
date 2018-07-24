@@ -170,9 +170,9 @@ TEST_CASE("Client knows about objects' quests", "[quests]") {
   // And he knows that it gives both quests
   auto hasQuest1 = false, hasQuest2 = false;
   for (auto quest : a.startsQuests()) {
-    if (quest->id() == "quest1")
+    if (quest->info().id == "quest1")
       hasQuest1 = true;
-    else if (quest->id() == "quest2")
+    else if (quest->info().id == "quest2")
       hasQuest2 = true;
   }
   CHECK(hasQuest1);

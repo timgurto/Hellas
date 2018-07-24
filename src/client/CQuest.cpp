@@ -19,7 +19,8 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   auto y = GAP;
 
   // Quest name
-  auto name = new Label({GAP, y, WIN_W, Element::TEXT_HEIGHT}, quest->name());
+  auto name =
+      new Label({GAP, y, WIN_W, Element::TEXT_HEIGHT}, quest->_info.name);
   name->setColor(Color::HELP_TEXT_HEADING);
   window->addChild(name);
   y += name->height() + GAP;
@@ -30,7 +31,7 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   window->addChild(body);
   auto ww = WordWrapper{Element::font(), body->contentWidth()};
   const auto &bodyText =
-      pendingTransition == ACCEPT ? quest->_brief : quest->_debrief;
+      pendingTransition == ACCEPT ? quest->_info.brief : quest->_info.debrief;
   auto lines = ww.wrap(bodyText);
   for (const auto &line : lines) body->addChild(new Label({}, line));
 
@@ -48,19 +49,20 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   if (pendingTransition == ACCEPT) transitionButton->id("accept");
   window->addChild(transitionButton);
 
-  quest->_window = window;
-  Client::instance().addWindow(quest->_window);
-  quest->_window->show();
+  quest->_state.window = window;
+  Client::instance().addWindow(quest->_state.window);
+  quest->_state.window->show();
 }
 
 void CQuest::acceptQuest(CQuest *quest, size_t startObjectSerial) {
   auto &client = Client::instance();
 
   // Send message
-  client.sendMessage(CL_ACCEPT_QUEST, makeArgs(quest->id(), startObjectSerial));
+  client.sendMessage(CL_ACCEPT_QUEST,
+                     makeArgs(quest->_info.id, startObjectSerial));
 
   // Close and remove window
-  quest->_window->hide();
+  quest->_state.window->hide();
   // TODO: better cleanup.  Lots of unused windows in the background may take
   // up significant memory.  Note that this function is called from a button
   // click (which subsequently changes the appearance of the button), meaning
@@ -72,10 +74,10 @@ void CQuest::completeQuest(CQuest *quest, size_t startObjectSerial) {
 
   // Send message
   client.sendMessage(CL_COMPLETE_QUEST,
-                     makeArgs(quest->id(), startObjectSerial));
+                     makeArgs(quest->_info.id, startObjectSerial));
 
   // Close and remove window
-  quest->_window->hide();
+  quest->_state.window->hide();
   // TODO: better cleanup.  Lots of unused windows in the background may take
   // up significant memory.  Note that this function is called from a button
   // click (which subsequently changes the appearance of the button), meaning

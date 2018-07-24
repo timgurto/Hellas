@@ -244,12 +244,12 @@ void ClientObject::addQuestsToWindow() {
 
     const auto buttonRect =
         ScreenRect{BUTTON_X, y, BUTTON_WIDTH, BUTTON_HEIGHT};
-    auto data = makeArgs(quest->id(), serial());
+    auto data = makeArgs(quest->info().id, serial());
     auto pendingState = startsThisQuest ? CQuest::ACCEPT : CQuest::COMPLETE;
-    auto button = new Button(buttonRect, quest->name(), [=]() {
+    auto button = new Button(buttonRect, quest->info().name, [=]() {
       CQuest::generateWindow(quest, serial(), pendingState);
     });
-    button->id(quest->id());
+    button->id(quest->info().id);
     _window->addChild(button);
 
     y += BUTTON_HEIGHT;
