@@ -904,6 +904,8 @@ void User::moveToSpawnPoint(bool isNewPlayer) {
 void User::startQuest(const Quest &quest) {
   _quests.insert(quest.id);
 
+  if (quest.hasObjective()) return;
+
   auto &server = Server::instance();
   server.sendMessage(_socket, SV_QUEST_CAN_BE_COMPLETED, quest.id);
 }
