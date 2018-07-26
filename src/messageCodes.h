@@ -505,6 +505,7 @@ enum MessageCode {
   // Arguments: questID
   SV_QUEST_CAN_BE_STARTED,
   SV_QUEST_CAN_BE_FINISHED,
+  SV_QUEST_COMPLETED,
 
   // "User ... has said ...".
   // Arguments: username, message

@@ -609,6 +609,7 @@ class Client {
   void handle_SV_OBJECT_HEALED(size_t serial, Hitpoints amount);
   void handle_SV_QUEST_CAN_BE_STARTED(const std::string &questID);
   void handle_SV_QUEST_CAN_BE_FINISHED(const std::string &questID);
+  void handle_SV_QUEST_COMPLETED(const std::string &questID);
 
   void sendClearTargetMessage() const;
 

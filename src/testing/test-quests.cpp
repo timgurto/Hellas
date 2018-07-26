@@ -609,3 +609,64 @@ TEST_CASE("Quest chains", "[quests]") {
     }
   }
 }
+
+TEST_CASE("Object window is updated with quest changes", "[quests][ui]") {
+  GIVEN("an object that only starts one quest") {
+    auto data = R"(
+      <objectType id="A" />
+      <objectType id="B" />
+      <quest id="quest1" startsAt="A" endsAt="B" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    s.addObject("A", {10, 15});
+    auto serial = s.getFirstObject().serial();
+
+    WHEN("a user opens the object window") {
+      auto c = TestClient::WithDataString(data);
+      WAIT_UNTIL(c.objects().size() == 1);
+      auto &obj = c.getFirstObject();
+      obj.onRightClick(c.client());
+
+      AND_WHEN("he accepts the quest") {
+        c->sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", serial));
+
+        THEN("The object has no window") {
+          REPEAT_FOR_MS(100);
+          CHECK(!obj.window());
+        }
+      }
+    }
+  }
+
+  GIVEN("an object that starts and ends a quest") {
+    auto data = R"(
+      <objectType id="A" />
+      <quest id="quest1" startsAt="A" endsAt="A" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    s.addObject("A", {10, 15});
+    auto serial = s.getFirstObject().serial();
+
+    WHEN("a user opens the object window") {
+      auto c = TestClient::WithDataString(data);
+      WAIT_UNTIL(c.objects().size() == 1);
+      auto &obj = c.getFirstObject();
+      obj.onRightClick(c.client());
+
+      AND_WHEN("he accepts the quest") {
+        c->sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", serial));
+
+        AND_WHEN("he completes the quest") {
+          c->sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
+
+          THEN("The object has no window") {
+            REPEAT_FOR_MS(100);
+            CHECK(!obj.window());
+          }
+        }
+      }
+    }
+  }
+}

@@ -920,6 +920,9 @@ void User::startQuest(const Quest &quest) {
 void User::completeQuest(const Quest::ID &id) {
   _questsCompleted.insert(id);
   _quests.erase(id);
+
+  auto &server = Server::instance();
+  server.sendMessage(_socket, SV_QUEST_COMPLETED, id);
 }
 
 bool User::hasCompletedQuest(const Quest::ID &id) const {

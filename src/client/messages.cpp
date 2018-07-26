@@ -1690,6 +1690,17 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_QUEST_COMPLETED: {
+        singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+        auto questID = std::string{buffer};
+        singleMsg >> del;
+
+        if (del != MSG_END) return;
+
+        handle_SV_QUEST_COMPLETED(questID);
+        break;
+      }
+
       case SV_SAY: {
         std::string username, message;
         singleMsg >> username >> del;
@@ -2163,6 +2174,25 @@ void Client::handle_SV_QUEST_CAN_BE_FINISHED(const std::string &questID) {
   if (it == _quests.end()) return;
 
   it->second.state = CQuest::CAN_FINISH;
+
+  const auto &startNode = it->second.info().startsAt;
+  for (auto pair : _objects) {
+    auto &obj = *pair.second;
+    if (obj.objectType()->id() == startNode) obj.assembleWindow(*this);
+  }
+}
+
+void Client::handle_SV_QUEST_COMPLETED(const std::string &questID) {
+  auto it = _quests.find(questID);
+  if (it == _quests.end()) return;
+
+  it->second.state = CQuest::NONE;
+
+  const auto &endNode = it->second.info().endsAt;
+  for (auto pair : _objects) {
+    auto &obj = *pair.second;
+    if (obj.objectType()->id() == endNode) obj.assembleWindow(*this);
+  }
 }
 
 void Client::sendRawMessage(const std::string &msg) const {
