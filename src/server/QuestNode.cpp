@@ -17,3 +17,22 @@ void QuestNodeType::addQuestEnd(const Quest::ID &id) {
 bool QuestNodeType::endsQuest(const Quest::ID &id) const {
   return _questsEndingHere.find(id) != _questsEndingHere.end();
 }
+
+void QuestNodeType::sendQuestsToUser(const User &user) const {
+  const auto &server = Server::instance();
+
+  for (const auto &id : _questsStartingHere) {
+    auto quest = server.findQuest(id);
+    if (quest->hasPrerequisite()) continue;
+    server.sendMessage(user.socket(), SV_QUEST_CAN_BE_ACCEPTED, id);
+  }
+
+  for (const auto &id : _questsEndingHere) {
+    auto quest = server.findQuest(id);
+    if (quest->hasObjective() && !user.hasKilledSomethingWhileOnQuest(id))
+      continue;
+    if (!user.isOnQuest(id)) continue;
+
+    server.sendMessage(user.socket(), SV_QUEST_CAN_BE_COMPLETED, id);
+  }
+}

@@ -16,6 +16,7 @@ class QuestNodeType {
   bool endsQuest(const Quest::ID &id) const;
   const SomeQuests &questsStartingHere() const { return _questsStartingHere; }
   const SomeQuests &questsEndingHere() const { return _questsEndingHere; }
+  void sendQuestsToUser(const User &user) const;
 
  private:
   SomeQuests _questsStartingHere{};
@@ -31,6 +32,9 @@ class QuestNode {
  public:
   bool startsQuest(const Quest::ID &id) const { return _type->startsQuest(id); }
   bool endsQuest(const Quest::ID &id) const { return _type->endsQuest(id); }
+  void sendQuestsToUser(const User &user) const {
+    _type->sendQuestsToUser(user);
+  };
 
  private:
   QuestNode() {}

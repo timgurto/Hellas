@@ -263,6 +263,9 @@ void NPC::sendInfoToClient(const User &targetUser) const {
   for (const auto &debuff : debuffs())
     server.sendMessage(client, SV_ENTITY_GOT_DEBUFF,
                        makeArgs(serial(), debuff.type()));
+
+  // Quests
+  QuestNode::sendQuestsToUser(targetUser);
 }
 
 void NPC::describeSelfToNewWatcher(const User &watcher) const {
