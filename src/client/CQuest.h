@@ -34,7 +34,7 @@ class CQuest {
   static void acceptQuest(CQuest *quest, size_t startObjectSerial);
   static void completeQuest(CQuest *quest, size_t startObjectSerial);
 
-  enum State { NONE, CAN_ACCEPT, IN_PROGRESS, CAN_COMPLETE };
+  enum State { NONE, CAN_START, IN_PROGRESS, CAN_FINISH };
   State state{NONE};
 
  private:

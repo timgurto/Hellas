@@ -24,7 +24,7 @@ void QuestNodeType::sendQuestsToUser(const User &user) const {
   for (const auto &id : _questsStartingHere) {
     auto quest = server.findQuest(id);
     if (quest->hasPrerequisite()) continue;
-    server.sendMessage(user.socket(), SV_QUEST_CAN_BE_ACCEPTED, id);
+    server.sendMessage(user.socket(), SV_QUEST_CAN_BE_STARTED, id);
   }
 
   for (const auto &id : _questsEndingHere) {
@@ -33,6 +33,6 @@ void QuestNodeType::sendQuestsToUser(const User &user) const {
       continue;
     if (!user.isOnQuest(id)) continue;
 
-    server.sendMessage(user.socket(), SV_QUEST_CAN_BE_COMPLETED, id);
+    server.sendMessage(user.socket(), SV_QUEST_CAN_BE_FINISHED, id);
   }
 }

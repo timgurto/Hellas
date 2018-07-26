@@ -977,7 +977,7 @@ std::set<CQuest *> ClientObject::startsQuests() const {
   auto questsForThisType = objectType()->startsQuests();
   auto startableQuests = std::set<CQuest *>{};
   for (auto quest : questsForThisType) {
-    if (quest->state == CQuest::CAN_ACCEPT) startableQuests.insert(quest);
+    if (quest->state == CQuest::CAN_START) startableQuests.insert(quest);
   }
   return startableQuests;
 }
@@ -986,7 +986,7 @@ std::set<CQuest *> ClientObject::completableQuests() const {
   auto questsForThisType = objectType()->endsQuests();
   auto completableQuests = std::set<CQuest *>{};
   for (auto quest : questsForThisType) {
-    if (quest->state == CQuest::CAN_COMPLETE) completableQuests.insert(quest);
+    if (quest->state == CQuest::CAN_FINISH) completableQuests.insert(quest);
   }
   return completableQuests;
 }

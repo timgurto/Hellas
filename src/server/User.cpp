@@ -652,7 +652,7 @@ void User::completeQuestObjective(const std::string &questID) {
   _questsWithKills.insert(questID);
 
   auto &server = *Server::_instance;
-  server.sendMessage(_socket, SV_QUEST_CAN_BE_COMPLETED, questID);
+  server.sendMessage(_socket, SV_QUEST_CAN_BE_FINISHED, questID);
 }
 
 bool User::canAttack() const {
@@ -914,7 +914,7 @@ void User::startQuest(const Quest &quest) {
   if (quest.hasObjective()) return;
 
   auto &server = Server::instance();
-  server.sendMessage(_socket, SV_QUEST_CAN_BE_COMPLETED, quest.id);
+  server.sendMessage(_socket, SV_QUEST_CAN_BE_FINISHED, quest.id);
 }
 
 void User::completeQuest(const Quest::ID &id) {

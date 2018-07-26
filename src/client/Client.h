@@ -607,8 +607,8 @@ class Client {
   void handle_SV_PLAYER_HEALED(const std::string &username, Hitpoints amount);
   void handle_SV_OBJECT_DAMAGED(size_t serial, Hitpoints amount);
   void handle_SV_OBJECT_HEALED(size_t serial, Hitpoints amount);
-  void handle_SV_QUEST_CAN_BE_ACCEPTED(const std::string &questID);
-  void handle_SV_QUEST_CAN_BE_COMPLETED(const std::string &questID);
+  void handle_SV_QUEST_CAN_BE_STARTED(const std::string &questID);
+  void handle_SV_QUEST_CAN_BE_FINISHED(const std::string &questID);
 
   void sendClearTargetMessage() const;
 
