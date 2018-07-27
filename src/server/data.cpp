@@ -149,6 +149,13 @@ bool Server::readUserData(User &user) {
     userClass.loadTalentRank(*talent, rank);
   }
 
+  elem = xr.findChild("quests");
+  for (auto questElem : xr.getChildren("completed", elem)) {
+    auto id = ""s;
+    if (!xr.findAttr(questElem, "id", id)) continue;
+    user.markQuestAsCompleted(id);
+  }
+
   return true;
 }
 
@@ -222,6 +229,12 @@ void Server::writeUserData(const User &user) const {
     auto talentElem = xw.addChild("talent", e);
     xw.setAttr(talentElem, "name", pair.first->name());
     xw.setAttr(talentElem, "rank", pair.second);
+  }
+
+  e = xw.addChild("quests");
+  for (const auto &completedQuestID : user.questsCompleted()) {
+    auto questElem = xw.addChild("completed", e);
+    xw.setAttr(questElem, "id", completedQuestID);
   }
 
   xw.publish();

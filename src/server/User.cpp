@@ -918,7 +918,7 @@ void User::startQuest(const Quest &quest) {
 }
 
 void User::completeQuest(const Quest::ID &id) {
-  _questsCompleted.insert(id);
+  markQuestAsCompleted(id);
   _quests.erase(id);
 
   auto &server = Server::instance();
@@ -933,6 +933,10 @@ void User::completeQuest(const Quest::ID &id) {
 bool User::hasCompletedQuest(const Quest::ID &id) const {
   auto it = _questsCompleted.find(id);
   return it != _questsCompleted.end();
+}
+
+void User::markQuestAsCompleted(const Quest::ID &id) {
+  _questsCompleted.insert(id);
 }
 
 bool User::hasKilledSomethingWhileOnQuest(const Quest::ID &quest) const {

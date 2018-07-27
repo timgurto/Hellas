@@ -238,6 +238,10 @@ class User : public Object {  // TODO: Don't inherit from Object
   void startQuest(const Quest &quest);
   void completeQuest(const Quest::ID &id);
   bool hasCompletedQuest(const Quest::ID &id) const;
+  const std::set<Quest::ID> &questsCompleted() const {
+    return _questsCompleted;
+  }
+  void markQuestAsCompleted(const Quest::ID &id);
   int numQuests() const { return _quests.size(); }
   bool isOnQuest(const Quest::ID &id) const {
     return _quests.find(id) != _quests.end();
