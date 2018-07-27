@@ -11,6 +11,7 @@ class TestServer {
   static TestServer WithData(const std::string &dataPath);
   static TestServer WithDataString(const std::string &data);
   static TestServer WithDataAndKeepingOldData(const std::string &dataPath);
+  static TestServer WithDataStringAndKeepingOldData(const std::string &data);
   ~TestServer();
 
   // Move constructor/assignment

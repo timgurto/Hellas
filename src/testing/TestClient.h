@@ -17,6 +17,8 @@ class TestClient {
   static TestClient WithDataString(const std::string &data);
   static TestClient WithUsernameAndData(const std::string &username,
                                         const std::string &dataPath);
+  static TestClient WithUsernameAndDataString(const std::string &username,
+                                              const std::string &data);
   ~TestClient();
 
   // Move constructor/assignment
@@ -98,7 +100,8 @@ class TestClient {
 
   enum StringType { USERNAME, DATA_PATH, DATA_STRING };
   TestClient(const std::string &string, StringType type);
-  TestClient(const std::string &username, const std::string &dataPath);
+  TestClient(const std::string &username, const std::string &string,
+             StringType type);
 
   void run();
   void stop();

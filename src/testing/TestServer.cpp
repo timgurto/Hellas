@@ -45,6 +45,15 @@ TestServer TestServer::WithDataAndKeepingOldData(const std::string &dataPath) {
   return s;
 }
 
+TestServer TestServer::WithDataStringAndKeepingOldData(
+    const std::string &data) {
+  cmdLineArgs.remove("new");
+  auto s = TestServer{};
+  DataLoader::FromString(*s._server, data).load(true);
+  cmdLineArgs.add("new");
+  return s;
+}
+
 TestServer TestServer::WithData(const std::string &dataPath) {
   return TestServer(dataPath, DATA_PATH);
 }

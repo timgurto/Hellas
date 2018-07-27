@@ -388,7 +388,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 429,Can log in with Enter key when button is disabled,34,2,Bug,,,,
 430,Sometimes non-leaf skills are lost on death,13,8,Bug,,,,
 432,A quest can unlock another quest,21,3,Feature,413,,,3
-433,Quests are persistent,34,3,Bug,,,,1
+433,Quests are persistent,34,3,Bug,,TRUE,,1
 434,Quest progress is persistent,34,3,Bug,421,,,1
 435,Quests have min levels,21,5,Feature,413,,,1
 436,"New classes for ID and Name, used everywhere",2,5,Code quality,,,,

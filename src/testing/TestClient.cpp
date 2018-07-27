@@ -32,10 +32,14 @@ TestClient::TestClient(const std::string &string, StringType type)
   run();
 }
 
-TestClient::TestClient(const std::string &username, const std::string &dataPath)
+TestClient::TestClient(const std::string &username, const std::string &string,
+                       StringType type)
     : _client(new Client) {
   CDataLoader::FromPath(*_client, "testing/data/minimal").load();
-  CDataLoader::FromPath(*_client, "testing/data/" + dataPath).load(true);
+  if (type == DATA_PATH)
+    CDataLoader::FromPath(*_client, "testing/data/" + string).load(true);
+  else
+    CDataLoader::FromString(*_client, string);
   _client->_username = username;
   _client->_shouldAutoLogIn = true;
   run();
@@ -59,7 +63,13 @@ TestClient TestClient::WithDataString(const std::string &data) {
 TestClient TestClient::WithUsernameAndData(const std::string &username,
                                            const std::string &dataPath) {
   stopClientIfRunning();
-  return TestClient(username, dataPath);
+  return TestClient(username, dataPath, DATA_PATH);
+}
+
+TestClient TestClient::WithUsernameAndDataString(const std::string &username,
+                                                 const std::string &data) {
+  stopClientIfRunning();
+  return TestClient(username, data, DATA_STRING);
 }
 
 TestClient::~TestClient() {
