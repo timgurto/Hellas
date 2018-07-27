@@ -1679,6 +1679,17 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_QUEST_IN_PROGRESS: {
+        singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+        auto questID = std::string{buffer};
+        singleMsg >> del;
+
+        if (del != MSG_END) return;
+
+        handle_SV_QUEST_IN_PROGRESS(questID);
+        break;
+      }
+
       case SV_QUEST_CAN_BE_FINISHED: {
         singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
         auto questID = std::string{buffer};
@@ -2169,12 +2180,27 @@ void Client::handle_SV_QUEST_CAN_BE_STARTED(const std::string &questID) {
   it->second.state = CQuest::CAN_START;
 }
 
+void Client::handle_SV_QUEST_IN_PROGRESS(const std::string &questID) {
+  auto it = _quests.find(questID);
+  if (it == _quests.end()) return;
+
+  it->second.state = CQuest::IN_PROGRESS;
+
+  // Start node could start this, but now can't
+  const auto &startNode = it->second.info().startsAt;
+  for (auto pair : _objects) {
+    auto &obj = *pair.second;
+    if (obj.objectType()->id() == startNode) obj.assembleWindow(*this);
+  }
+}
+
 void Client::handle_SV_QUEST_CAN_BE_FINISHED(const std::string &questID) {
   auto it = _quests.find(questID);
   if (it == _quests.end()) return;
 
   it->second.state = CQuest::CAN_FINISH;
 
+  // Start node could start this, but now can't
   const auto &startNode = it->second.info().startsAt;
   for (auto pair : _objects) {
     auto &obj = *pair.second;
@@ -2188,6 +2214,7 @@ void Client::handle_SV_QUEST_COMPLETED(const std::string &questID) {
 
   it->second.state = CQuest::NONE;
 
+  // End node could finish this, but now can't
   const auto &endNode = it->second.info().endsAt;
   for (auto pair : _objects) {
     auto &obj = *pair.second;

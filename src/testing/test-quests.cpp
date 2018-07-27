@@ -541,6 +541,8 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
 
     s.addObject("A", {10, 5});
     auto aSerial = s.getFirstObject().serial();
+    WAIT_UNTIL(c.objects().size() == 1);
+    auto &a = c.getFirstObject();
 
     s.addNPC("mouse", {10, 15});
     auto mouseSerial = aSerial + 1;
@@ -549,6 +551,13 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
 
     WHEN("the user is on the quest") {
       u.startQuest(s.getFirstQuest());
+
+      AND_WHEN("he right-clicks on the questgiver") {
+        REPEAT_FOR_MS(100);
+        a.onRightClick(c.client());
+
+        THEN("it doesn't have a window") { CHECK(!a.window()); }
+      }
 
       AND_WHEN("he kills the mouse") {
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(mouseSerial));
@@ -606,9 +615,7 @@ TEST_CASE("Quest chains", "[quests]") {
         REPEAT_FOR_MS(100);
         obj.onRightClick(c.client());
 
-        THEN("it has a window") {
-          CHECK(obj.window());
-        }
+        THEN("it has a window") { CHECK(obj.window()); }
       }
 
       AND_WHEN("he tries to accept the second quest") {

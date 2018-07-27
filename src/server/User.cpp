@@ -911,10 +911,10 @@ void User::moveToSpawnPoint(bool isNewPlayer) {
 void User::startQuest(const Quest &quest) {
   _quests.insert(quest.id);
 
-  if (quest.hasObjective()) return;
-
+  auto message =
+      quest.hasObjective() ? SV_QUEST_IN_PROGRESS : SV_QUEST_CAN_BE_FINISHED;
   auto &server = Server::instance();
-  server.sendMessage(_socket, SV_QUEST_CAN_BE_FINISHED, quest.id);
+  server.sendMessage(_socket, message, quest.id);
 }
 
 void User::completeQuest(const Quest::ID &id) {

@@ -504,6 +504,7 @@ enum MessageCode {
   // A change in state for a quest
   // Arguments: questID
   SV_QUEST_CAN_BE_STARTED,
+  SV_QUEST_IN_PROGRESS,
   SV_QUEST_CAN_BE_FINISHED,
   SV_QUEST_COMPLETED,
 
