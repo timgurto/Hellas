@@ -923,6 +923,11 @@ void User::completeQuest(const Quest::ID &id) {
 
   auto &server = Server::instance();
   server.sendMessage(_socket, SV_QUEST_COMPLETED, id);
+
+  const auto quest = server.findQuest(id);
+  if (quest->otherQuestHasThisAsPrerequisite())
+    server.sendMessage(_socket, SV_QUEST_CAN_BE_STARTED,
+                       quest->otherQuestWithThisAsPrerequisite);
 }
 
 bool User::hasCompletedQuest(const Quest::ID &id) const {

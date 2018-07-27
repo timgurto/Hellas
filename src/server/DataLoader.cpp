@@ -364,9 +364,11 @@ void DataLoader::loadQuests(XmlReader &xr) {
   if (!xr) return;
 
   for (auto elem : xr.getChildren("quest")) {
-    Quest q;
-
-    if (!xr.findAttr(elem, "id", q.id)) continue;
+    auto id = ""s;
+    if (!xr.findAttr(elem, "id", id)) continue;
+    // It may already exist, due to being a prerequisite.
+    auto &q = _server._quests[id];
+    q.id = id;
 
     auto startsAt = ""s;
     if (!xr.findAttr(elem, "startsAt", startsAt)) continue;
@@ -382,11 +384,14 @@ void DataLoader::loadQuests(XmlReader &xr) {
     xr.findAttr(objective, "id", q.objectiveID);
 
     auto prereq = xr.findChild("prerequisite", elem);
-    xr.findAttr(prereq, "id", q.prerequisiteQuest);
+    auto hasPrereq = xr.findAttr(prereq, "id", q.prerequisiteQuest);
+    if (hasPrereq) {
+      auto &prerequisiteQuest = _server._quests[q.prerequisiteQuest];
+      prerequisiteQuest.otherQuestWithThisAsPrerequisite = id;
+    }
 
-    _server._quests[q.id] = q;
-    startingObject->addQuestStart(q.id);
-    endingObject->addQuestEnd(q.id);
+    startingObject->addQuestStart(id);
+    endingObject->addQuestEnd(id);
   }
 }
 

@@ -11,6 +11,10 @@ struct Quest {
   bool hasObjective() const { return !objectiveID.empty(); }
   std::string prerequisiteQuest{};
   bool hasPrerequisite() const { return !prerequisiteQuest.empty(); }
+  std::string otherQuestWithThisAsPrerequisite{};
+  bool otherQuestHasThisAsPrerequisite() const {
+    return !otherQuestWithThisAsPrerequisite.empty();
+  }
 };
 
 using Quests = std::map<Quest::ID, Quest>;

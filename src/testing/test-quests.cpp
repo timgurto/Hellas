@@ -601,7 +601,17 @@ TEST_CASE("Quest chains", "[quests]") {
       c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
       WAIT_UNTIL(u.numQuests() == 0);
 
-      AND_WHEN("the user tries to accept the second quest") {
+      AND_WHEN("he right-clicks on the object") {
+        auto &obj = c.getFirstObject();
+        REPEAT_FOR_MS(100);
+        obj.onRightClick(c.client());
+
+        THEN("it has a window") {
+          CHECK(obj.window());
+        }
+      }
+
+      AND_WHEN("he tries to accept the second quest") {
         c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest2", aSerial));
 
         THEN("he is on a quest") { WAIT_UNTIL(u.numQuests() == 1); }
