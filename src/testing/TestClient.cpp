@@ -39,7 +39,8 @@ TestClient::TestClient(const std::string &username, const std::string &string,
   if (type == DATA_PATH)
     CDataLoader::FromPath(*_client, "testing/data/" + string).load(true);
   else
-    CDataLoader::FromString(*_client, string);
+    CDataLoader::FromString(*_client, string).load(true);
+  ;
   _client->_username = username;
   _client->_shouldAutoLogIn = true;
   run();
