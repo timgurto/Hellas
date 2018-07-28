@@ -688,11 +688,10 @@ TEST_CASE("Object window is updated with quest changes", "[quests][ui]") {
   }
 }
 
-TEST_CASE("Completed quests are persistent", "[quests]") {
-  // Given Alice has completed a quest
+TEST_CASE("Quest progress is persistent", "[quests]") {
   auto data = R"(
     <objectType id="A" />
-    <quest id="quest1" startsAt="A" endsAt="A" />
+    <quest id="finishedQuest" startsAt="A" endsAt="A" />
   )";
   {
     auto s = TestServer::WithDataString(data);
@@ -700,9 +699,10 @@ TEST_CASE("Completed quests are persistent", "[quests]") {
 
     s.waitForUsers(1);
     auto &alice = s.getFirstUser();
-    const auto quest = s->findQuest("quest1");
-    alice.startQuest(*quest);
-    alice.completeQuest("quest1");
+
+    // Given Alice has finished a quest
+    alice.startQuest(*s->findQuest("finishedQuest"));
+    alice.completeQuest("finishedQuest");
 
     // When the server restarts
   }
@@ -713,7 +713,7 @@ TEST_CASE("Completed quests are persistent", "[quests]") {
     auto c = TestClient::WithUsernameAndDataString("alice", data);
     s.waitForUsers(1);
     const auto &alice = s.getFirstUser();
-    CHECK(alice.hasCompletedQuest("quest1"));
+    CHECK(alice.hasCompletedQuest("finishedQuest"));
   }
 }
 
