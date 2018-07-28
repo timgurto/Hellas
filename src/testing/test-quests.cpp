@@ -716,3 +716,37 @@ TEST_CASE("Completed quests are persistent", "[quests]") {
     CHECK(alice.hasCompletedQuest("quest1"));
   }
 }
+
+TEST_CASE("On login, client objects reflect already completed quests",
+          "[quests]") {
+  GIVEN("a simple quest and object") {
+    auto data = R"(
+      <objectType id="A" />
+      <quest id="quest1" startsAt="A" endsAt="A" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    s.addObject("A", {10, 15});
+
+    WHEN("Alice finishes the quest then disconnects") {
+      {
+        auto c = TestClient::WithUsernameAndDataString("alice", data);
+        s.waitForUsers(1);
+        auto &alice = s.getFirstUser();
+        const auto quest = s->findQuest("quest1");
+        alice.startQuest(*quest);
+        alice.completeQuest("quest1");
+      }
+
+      AND_WHEN("she logs in") {
+        auto c = TestClient::WithUsernameAndDataString("alice", data);
+
+        THEN("she knows that a questgiver object gives no quests") {
+          WAIT_UNTIL(c.objects().size() == 1);
+          const auto &obj = c.getFirstObject();
+          WAIT_UNTIL(obj.startsQuests().size() == 0);
+        }
+      }
+    }
+  }
+}
