@@ -244,8 +244,9 @@ void Client::createAccount() {
 }
 
 void Client::login() {
-  if (_instance->_username.empty()) {
-    _instance->_username = nameBox->text();
+  auto enteredName = nameBox->text();
+  if (!enteredName.empty()) {
+    _instance->_username = enteredName;
   }
 
   _instance->sendMessage(CL_LOGIN_EXISTING,
