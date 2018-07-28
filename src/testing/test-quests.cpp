@@ -110,6 +110,32 @@ TEST_CASE("Cases where a quest should not be completed", "[quests]") {
   CHECK(user.numQuests() == 1);
 }
 
+TEST_CASE("A user must be on a quest to complete it", "[quests]") {
+  GIVEN("A user, quest and quest node") {
+    auto data = R"(
+      <objectType id="A" />
+      <quest id="quest1" startsAt="A" endsAt="A" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    const auto &user = s.getFirstUser();
+
+    s.addObject("A", {10, 15});
+    auto serial = s.getFirstObject().serial();
+
+    WHEN("he tries to complete the quest at the node") {
+      c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
+
+      THEN("he has not completed the quest") {
+        REPEAT_FOR_MS(100);
+        CHECK_FALSE(user.hasCompletedQuest("quest1"));
+      }
+    }
+  }
+}
+
 TEST_CASE("Identical source and destination", "[quests]") {
   // Given two quests that start at A and end at B
   auto data = R"(

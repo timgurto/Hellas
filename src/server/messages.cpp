@@ -1882,6 +1882,8 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &questID,
 
 void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,
                                       size_t endSerial) {
+  if (!user.isOnQuest(quest)) return;
+
   const auto entity = _entities.find(endSerial);
   if (!entity) return;
   auto node = dynamic_cast<const QuestNode *>(entity);
