@@ -44,20 +44,22 @@ bool Server::readUserData(User &user) {
   }
 
   auto elem = xr.findChild("location");
-  MapPoint p;
-  if (elem == nullptr || !xr.findAttr(elem, "x", p.x) ||
-      !xr.findAttr(elem, "y", p.y)) {
+  auto location = MapPoint{};
+  if (elem == nullptr || !xr.findAttr(elem, "x", location.x) ||
+      !xr.findAttr(elem, "y", location.y)) {
     _debug("Invalid user data (location)", Color::RED);
     return false;
   }
 
   elem = xr.findChild("respawnPoint");
-  if (elem && xr.findAttr(elem, "x", p.x) && xr.findAttr(elem, "y", p.y))
-    user.respawnPoint(p);
+  auto respawnPoint = MapPoint{};
+  if (elem && xr.findAttr(elem, "x", respawnPoint.x) &&
+      xr.findAttr(elem, "y", respawnPoint.y))
+    user.respawnPoint(respawnPoint);
 
   bool s = false;
-  if (isLocationValid(p, User::OBJECT_TYPE, &user))
-    user.location(p, /* firstInsertion */ true);
+  if (isLocationValid(location, User::OBJECT_TYPE, &user))
+    user.location(location, /* firstInsertion */ true);
   else {
     _debug << Color::YELLOW << "Player " << user.name()
            << " was respawned due to an invalid or occupied location."

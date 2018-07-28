@@ -166,3 +166,29 @@ TEST_CASE("NPCs have default max health") {
     }
   }
 }
+
+TEST_CASE("Existing users load at the correct location") {
+  // Given Alice spawns at (10, 10)
+  auto s = TestServer{};
+  User *alice = nullptr;
+
+  {
+    auto c = TestClient::WithUsername("Alice");
+    s.waitForUsers(1);
+    alice = &s.getFirstUser();
+
+    // When she moves to (15, 15)
+    alice->location({15, 15});
+
+    // And when she logs out then back in
+  }
+  {
+    auto c = TestClient::WithUsername("Alice");
+    s.waitForUsers(1);
+    alice = &s.getFirstUser();
+
+    // Then she is at (15,15)
+    auto spawnedCorrectly = alice->location() == MapPoint{15, 15};
+    CHECK(spawnedCorrectly);
+  }
+}
