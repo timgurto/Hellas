@@ -74,7 +74,6 @@ class User : public Object {  // TODO: Don't inherit from Object
   std::set<Quest::ID> _quests;
   std::set<Quest::ID> _questsWithKills;
   std::set<Quest::ID> _questsCompleted;
-  void completeQuestObjective(const std::string &questID);
 
  public:
   User(const std::string &name, const MapPoint &loc, const Socket &socket);
@@ -244,6 +243,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   const std::set<Quest::ID> &questsInProgress() const { return _quests; }
   void markQuestAsCompleted(const Quest::ID &id);
   void markQuestAsStarted(const Quest::ID &id);
+  void completeQuestObjective(const std::string &questID);
   int numQuests() const { return _quests.size(); }
   bool isOnQuest(const Quest::ID &id) const {
     return _quests.find(id) != _quests.end();

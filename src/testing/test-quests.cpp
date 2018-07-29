@@ -717,8 +717,11 @@ TEST_CASE("Object window is updated with quest changes", "[quests][ui]") {
 TEST_CASE("Quest progress is persistent", "[quests]") {
   auto data = R"(
     <objectType id="A" />
-    <quest id="finishedQuest" startsAt="A" endsAt="A" />
     <quest id="startedQuest" startsAt="A" endsAt="A" />
+    <quest id="killedQuest" startsAt="A" endsAt="A">
+      <objective id="A" />
+    </quest>
+    <quest id="finishedQuest" startsAt="A" endsAt="A" />
   )";
   {
     auto s = TestServer::WithDataString(data);
@@ -727,24 +730,33 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
     s.waitForUsers(1);
     auto &alice = s.getFirstUser();
 
-    // Given Alice has finished a quest
+    // Given that Alice has started a quest
+    alice.startQuest(*s->findQuest("startedQuest"));
+
+    // And killed the target of another quest
+    alice.startQuest(*s->findQuest("killedQuest"));
+    alice.completeQuestObjective("killedQuest");
+
+    // and finished yet another
     alice.startQuest(*s->findQuest("finishedQuest"));
     alice.completeQuest("finishedQuest");
-
-    // And started another
-    alice.startQuest(*s->findQuest("startedQuest"));
 
     // When the server restarts
   }
   {
     auto s = TestServer::WithDataStringAndKeepingOldData(data);
-
-    // Then she has completed the quest
     auto c = TestClient::WithUsernameAndDataString("alice", data);
     s.waitForUsers(1);
     const auto &alice = s.getFirstUser();
-    CHECK(alice.hasCompletedQuest("finishedQuest"));
+
+    // Then she is on the first quest
     CHECK(alice.isOnQuest("startedQuest"));
+
+    // And has achieved the objective of the second quest
+    CHECK(alice.hasKilledSomethingWhileOnQuest("killedQuest"));
+
+    // And completed the third quest
+    CHECK(alice.hasCompletedQuest("finishedQuest"));
   }
 }
 
