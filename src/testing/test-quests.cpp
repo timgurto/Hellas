@@ -793,3 +793,23 @@ TEST_CASE("On login, client objects reflect already completed quests",
     }
   }
 }
+
+TEST_CASE("Quests give XP", "[quests]") {
+  GIVEN("A quest and a user") {
+    auto data = R"(
+      <objectType id="A" />
+      <quest id="quest1" startsAt="A" endsAt="A" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    WHEN("he completes the quest") {
+      user.startQuest(*s->findQuest("quest1"));
+      user.completeQuest("quest1");
+
+      THEN("he has XP") { CHECK(user.xp() > 0); }
+    }
+  }
+}

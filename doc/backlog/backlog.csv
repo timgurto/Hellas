@@ -373,7 +373,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 413,A quest from A that finishes at B,5,21,Feature,,TRUE,,1
 414,Quest-briefing text,8,5,Feature,413,TRUE,,1
 415,Quest-completion text,3,5,Feature,413,TRUE,,1
-416,Quests reward constant XP,13,2,Feature,413,,,1
+416,Quests reward constant XP,13,2,Feature,413,TRUE,,1
 417,Quests reward custom XP,5,3,Feature,416,,,1
 418,Quests can reward an item,34,8,Feature,417,,,1
 419,Quests can reward a choice of item,21,13,Feature,418,,,1
@@ -392,7 +392,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 434,Quest progress is persistent,34,3,Bug,421,TRUE,,1
 435,Quests have min levels,21,5,Feature,413,,,1
 436,"New classes for ID and Name, used everywhere",2,5,Code quality,,,,
-437,Quests can be completed only once,34,5,Bug,,,,1
+437,Quests can be completed only once,34,5,Bug,,TRUE,,1
 438,Show a tooltip when terrain is inaccessible,2,3,Usability,,,,
 439,Account for vehicles in 'inaccessible' tooltips,2,3,Bug,438,,,
 440,A quest log,34,55,Usability,,,,1
