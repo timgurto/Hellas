@@ -157,6 +157,12 @@ bool Server::readUserData(User &user) {
     if (!xr.findAttr(questElem, "id", id)) continue;
     user.markQuestAsCompleted(id);
   }
+  for (auto questElem : xr.getChildren("inProgress", elem)) {
+    auto id = ""s;
+    if (!xr.findAttr(questElem, "id", id)) continue;
+
+    user.markQuestAsStarted(id);
+  }
 
   return true;
 }
@@ -237,6 +243,10 @@ void Server::writeUserData(const User &user) const {
   for (const auto &completedQuestID : user.questsCompleted()) {
     auto questElem = xw.addChild("completed", e);
     xw.setAttr(questElem, "id", completedQuestID);
+  }
+  for (const auto &questID : user.questsInProgress()) {
+    auto questElem = xw.addChild("inProgress", e);
+    xw.setAttr(questElem, "id", questID);
   }
 
   xw.publish();

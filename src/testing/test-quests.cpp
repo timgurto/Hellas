@@ -718,6 +718,7 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
   auto data = R"(
     <objectType id="A" />
     <quest id="finishedQuest" startsAt="A" endsAt="A" />
+    <quest id="startedQuest" startsAt="A" endsAt="A" />
   )";
   {
     auto s = TestServer::WithDataString(data);
@@ -730,6 +731,9 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
     alice.startQuest(*s->findQuest("finishedQuest"));
     alice.completeQuest("finishedQuest");
 
+    // And started another
+    alice.startQuest(*s->findQuest("startedQuest"));
+
     // When the server restarts
   }
   {
@@ -740,6 +744,7 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
     s.waitForUsers(1);
     const auto &alice = s.getFirstUser();
     CHECK(alice.hasCompletedQuest("finishedQuest"));
+    CHECK(alice.isOnQuest("startedQuest"));
   }
 }
 

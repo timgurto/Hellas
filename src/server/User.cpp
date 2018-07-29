@@ -939,6 +939,10 @@ void User::markQuestAsCompleted(const Quest::ID &id) {
   _questsCompleted.insert(id);
 }
 
+void User::markQuestAsStarted(const Quest::ID & id) {
+  _quests.insert(id);
+}
+
 bool User::hasKilledSomethingWhileOnQuest(const Quest::ID &quest) const {
   auto it = _questsWithKills.find(quest);
   return it != _questsWithKills.end();
