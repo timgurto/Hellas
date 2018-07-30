@@ -820,7 +820,7 @@ TEST_CASE("Fetch quests", "[quests]") {
       <objectType id="A" />
       <item id="eyeball" />
       <quest id="quest1" startsAt="A" endsAt="A">
-        <objective id="eyeball" />
+        <objective id="eyeball" type="fetch" />
       </quest>
     )";
     auto s = TestServer::WithDataString(data);
@@ -834,7 +834,7 @@ TEST_CASE("Fetch quests", "[quests]") {
     user.startQuest(*s->findQuest("quest1"));
 
     WHEN("he gets the item") {
-      auto eyeball = s.getFirstItem();
+      auto &eyeball = s.getFirstItem();
       user.giveItem(&eyeball);
 
       AND_WHEN("he tries to complete the quest") {
@@ -842,6 +842,12 @@ TEST_CASE("Fetch quests", "[quests]") {
 
         THEN("he has completed the quest") {
           WAIT_UNTIL(user.hasCompletedQuest("quest1"));
+
+          AND_THEN("he no longer has the item") {
+            auto itemSet = ItemSet{};
+            itemSet.add(&eyeball);
+            CHECK_FALSE(user.hasItems(itemSet));
+          }
         }
       }
     }

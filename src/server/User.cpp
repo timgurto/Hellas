@@ -918,15 +918,21 @@ void User::startQuest(const Quest &quest) {
 }
 
 void User::completeQuest(const Quest::ID &id) {
+  auto &server = Server::instance();
+  const auto quest = server.findQuest(id);
+  if (quest->objectiveType == Quest::FETCH) {
+    auto set = ItemSet{};
+    set.add(quest->itemObjective);
+    this->removeItems(set);
+  }
+
   markQuestAsCompleted(id);
   _quests.erase(id);
 
   addXP(100);
 
-  auto &server = Server::instance();
   server.sendMessage(_socket, SV_QUEST_COMPLETED, id);
 
-  const auto quest = server.findQuest(id);
   if (quest->otherQuestHasThisAsPrerequisite())
     server.sendMessage(_socket, SV_QUEST_CAN_BE_STARTED,
                        quest->otherQuestWithThisAsPrerequisite);
