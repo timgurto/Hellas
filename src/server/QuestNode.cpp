@@ -30,8 +30,7 @@ void QuestNodeType::sendQuestsToUser(const User &user) const {
 
   for (const auto &id : _questsEndingHere) {
     auto quest = server.findQuest(id);
-    if (quest->hasObjective() && !user.hasKilledSomethingWhileOnQuest(id))
-      continue;
+    if (!quest->canBeCompletedByUser(user)) continue;
     if (!user.isOnQuest(id)) continue;
 
     server.sendMessage(user.socket(), SV_QUEST_CAN_BE_FINISHED, id);

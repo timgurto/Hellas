@@ -456,7 +456,7 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
       <objectType id="A" />
       <npcType id="rat" />
       <quest id="quest1" startsAt="A" endsAt="A">
-        <objective id="rat" />
+        <objective type="kill" id="rat" />
       </quest>
     )";
     auto s = TestServer::WithDataString(data);
@@ -557,7 +557,7 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
       <objectType id="A" />
       <npcType id="mouse" />
       <quest id="quest1" startsAt="A" endsAt="A">
-        <objective id="mouse" />
+        <objective type="kill" id="mouse" />
       </quest>
     )";
     auto s = TestServer::WithDataString(data);
@@ -719,7 +719,7 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
     <objectType id="A" />
     <quest id="startedQuest" startsAt="A" endsAt="A" />
     <quest id="killedQuest" startsAt="A" endsAt="A">
-      <objective id="A" />
+      <objective type="kill" id="A" />
     </quest>
     <quest id="finishedQuest" startsAt="A" endsAt="A" />
   )";
