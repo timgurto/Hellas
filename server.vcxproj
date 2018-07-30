@@ -132,6 +132,7 @@
     <ClCompile Include="src\server\Permissions.cpp" />
     <ClCompile Include="src\server\pathfinding.cpp" />
     <ClCompile Include="src\server\ProgressLock.cpp" />
+    <ClCompile Include="src\server\Quest.cpp" />
     <ClCompile Include="src\server\QuestNode.cpp" />
     <ClCompile Include="src\server\Recipe.cpp" />
     <ClCompile Include="src\server\Server.cpp" />

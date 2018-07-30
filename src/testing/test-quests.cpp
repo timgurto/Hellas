@@ -813,3 +813,37 @@ TEST_CASE("Quests give XP", "[quests]") {
     }
   }
 }
+
+TEST_CASE("Fetch quests", "[quests]") {
+  GIVEN("A user on a fetch quest") {
+    auto data = R"(
+      <objectType id="A" />
+      <item id="eyeball" />
+      <quest id="quest1" startsAt="A" endsAt="A">
+        <objective id="eyeball" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addObject("A", {10, 15});
+    auto serial = s.getFirstObject().serial();
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.startQuest(*s->findQuest("quest1"));
+
+    WHEN("he gets the item") {
+      auto eyeball = s.getFirstItem();
+      user.giveItem(&eyeball);
+
+      AND_WHEN("he tries to complete the quest") {
+        c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
+
+        THEN("he has completed the quest") {
+          WAIT_UNTIL(user.hasCompletedQuest("quest1"));
+        }
+      }
+    }
+  }
+}

@@ -162,6 +162,7 @@
     <ClCompile Include="third-party\tinyxml\tinyxml.cpp" />
     <ClCompile Include="third-party\tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="third-party\tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="src\server\Quest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

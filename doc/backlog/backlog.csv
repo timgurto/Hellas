@@ -387,7 +387,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 428,Quests can reward a construction,13,5,Feature,413,,,3
 429,Can log in with Enter key when button is disabled,34,2,Bug,,,,
 430,Sometimes non-leaf skills are lost on death,13,8,Bug,,,,
-432,A quest can unlock another quest,21,3,Feature,413,,,3
+432,A quest can unlock another quest,21,3,Feature,413,TRUE,,3
 433,Quests are persistent,34,3,Bug,,TRUE,,1
 434,Quest progress is persistent,34,3,Bug,421,TRUE,,1
 435,Quests have min levels,21,5,Feature,413,,,1
