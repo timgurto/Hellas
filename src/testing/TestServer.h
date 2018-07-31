@@ -31,6 +31,7 @@ class TestServer {
   Cities &cities() { return _server->_cities; }
   ObjectsByOwner &objectsByOwner() { return _server->_objectsByOwner; }
   Kings &kings() { return _server->_kings; }
+  const std::set<ServerItem> &items() const { return _server->_items; }
 
   User &getFirstUser();
   Object &getFirstObject();

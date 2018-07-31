@@ -853,3 +853,37 @@ TEST_CASE("Fetch quests", "[quests]") {
     }
   }
 }
+
+TEST_CASE("Multiple objectives", "[quests][!mayfail]") {
+  GIVEN("A user on a fetch quest for two items") {
+    auto data = R"(
+      <objectType id="A" />
+      <item id="leftPiece" />
+      <item id="rightPiece" />
+      <quest id="quest1" startsAt="A" endsAt="A">
+        <objective type="fetch" id="leftPiece" />
+        <objective type="fetch" id="rightPiece" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addObject("A", {10, 15});
+    auto serial = s.getFirstObject().serial();
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.startQuest(*s->findQuest("quest1"));
+
+    const auto &quest = s.getFirstQuest();
+
+    WHEN("he gets the first item") {
+      auto &leftPiece = *s.items().find(ServerItem{"leftPiece"});
+      user.giveItem(&leftPiece);
+
+      THEN("he can't complete the quest") {
+        CHECK_FALSE(quest.canBeCompletedByUser(user));
+      }
+    }
+  }
+}
