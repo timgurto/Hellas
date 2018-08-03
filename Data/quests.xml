@@ -2,9 +2,9 @@
 
 <quest id="tutConversation" name="A new creation" startsAt="prometheus1" endsAt="prometheus2"
     brief="Great!  It looks like your eyes and ears are working. Now let's stretch those legs.
-    
+
     Follow the path up North and speak with me again. You can move with the WASD or arrow keys."
-    debrief="I suppose an introduction is in order.  My name is Prometheus, and I created you.  Welcome to the world!"/>
+    debrief="Wonderful!  You can move around.  Next we'll test your strength."/>
 
     <npcType
         id="prometheus1" name="Prometheus"
@@ -27,25 +27,54 @@
         <class name="titan"/>
     </npcType>
 
-<quest id="tutCombat" name="All due respect" startsAt="prometheus2" endsAt="prometheus2"
-    brief="Zeus, the king of the gods, wants to establish animal sacrifices in their honour.  Before we can begin negotiations, you'll need to slaughter an animal.
+<quest id="tutCombat" name="Taking your place" startsAt="prometheus2" endsAt="prometheus2"
+    brief="You are mortal, like the birds and beasts, but unlike them you have a spirit.  Thus, in the Great Chain of Being, you sit above them.
+    
+    I built you to be capable, with a broad chest and strong arms: enough to assert your position in the order of things.  To make sure that you actually can, go out and kill some beasts.
     
     Look around nearby for a Pig, and target it by right-clicking on it.  Once you move close enough, you will automatically start attacking it."
-    debrief="asdf">
-    <prerequisite id="tutConversation"/>
-    <objective id="tutPig"/>
+    debrief="Excellent, everything seems to be working as intended.
+
+    I suppose I should introduce myself.  My name is Prometheus, and I created you.  Welcome to the world!">
+    <prerequisite id="tutConversation" />
+    <objective id="tutPig" qty="5" />
 </quest>
-    
     <npcType
         id="tutPig" name="Pig"
-        level="1" maxHealth="42"
+        level="1" maxHealth="40
+        "
         xDrawOffset="-11" yDrawOffset="-13"
         imageFile="critter" sounds = "pig" >
         <collisionRect x="-9" y="-4" w="18" h="7" />
-        <loot id="tutMeat" />
     </npcType>
-    <item id="tutMeat" name="Meat" stackSize="5" />
     <spawnPoint type="tutPig" quantity="10" radius="320" respawnTime="30000" x="1732" y="60048" />
     <spawnPoint type="tutPig" quantity="6" radius="150" respawnTime="30000" x="1490" y="60160" />
 
+
+<quest id="tutParts" name="All due respect" startsAt="prometheus2" endsAt="prometheus2"
+    brief="Zeus, the king of the gods, wants to establish animal sacrifices in their honour.  Before we can begin negotiations, you'll need to get your hands dirty: slay some goats, and gather what you can of their remains."
+    debrief="Ah yes, these will do nicely.">
+    <prerequisite id="tutCombat" />
+    <objective item="tutMeat" qty="4" />
+    <objective item="tutHide" />
+    <objective item="tutEntrails" qty="4" />
+    <objective item="tutFat" />
+</quest>
+    <npcType
+        id="tutGoat" name="Goat"
+        level="1" maxHealth="32" attack="2" attackTime="1000"
+        xDrawOffset="-17" yDrawOffset="-28"
+        imageFile="goat" sounds = "goat" >
+        <collisionRect x="-15" y="-4" w="31" h="7" />
+        <loot id="tutMeat" > <normal mean="1.5" sd="0.5" /> </loot>
+        <loot id="tutHide" chance="0.2" />
+        <loot id="tutEntrails" > <normal mean="1.5" sd="0.5" /> </loot>
+        <loot id="tutFat" chance="0.2" />
+    </npcType>
+
+<!-- Build both offerings, by placing items then adding toppings -->
+<!-- Worship at shrine, giving entrails and getting some rocks to throw -->
+<!-- Gather sticks, make fire, cook meat -->
+<!-- Level up? -->
+    
 </root>
