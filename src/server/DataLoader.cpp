@@ -394,6 +394,9 @@ void DataLoader::loadQuests(XmlReader &xr) {
         else
           q.itemObjective = &*item;
       }
+
+      auto n{0};
+      if (xr.findAttr(objective, "qty", n)) q.hasQty = true;
     }
 
     auto prereq = xr.findChild("prerequisite", elem);

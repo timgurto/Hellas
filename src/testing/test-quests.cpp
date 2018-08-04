@@ -450,7 +450,7 @@ TEST_CASE("Show the user when an object has no more quests", "[quests]") {
   }
 }
 
-TEST_CASE("A quest to kill an NPC", "[quests]") {
+TEST_CASE("Kill quests", "[quests]") {
   GIVEN("A quest that requires a rat to be killed, and a rat") {
     auto data = R"(
       <objectType id="A" />
@@ -593,6 +593,51 @@ TEST_CASE("A quest to kill an NPC", "[quests]") {
           c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
 
           THEN("he is not on the quest") { WAIT_UNTIL(u.numQuests() == 0); }
+        }
+      }
+    }
+  }
+
+  GIVEN("A quest that requires two rats to be killed, and two rats") {
+    auto data = R"(
+      <objectType id="A" />
+      <npcType id="rat" />
+      <quest id="quest1" startsAt="A" endsAt="A">
+        <objective type="kill" id="rat" qty="2" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    WAIT_UNTIL(s.users().size() == 1);
+    auto &u = s.getFirstUser();
+
+    s.addObject("A", {10, 5});
+    auto aSerial = s.getFirstObject().serial();
+
+    s.addNPC("rat", {10, 15});
+    s.addNPC("rat", {5, 10});
+    auto rat1Serial = aSerial + 1;
+    auto rat2Serial = rat1Serial + 1;
+    auto rat1 = s.entities().find(rat1Serial);
+    auto rat2 = s.entities().find(rat2Serial);
+    WAIT_UNTIL(c.objects().size() == 3);
+    const auto a = c.objects()[aSerial];
+
+    WHEN("the user accepts the quest") {
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", aSerial));
+      WAIT_UNTIL(u.numQuests() == 1);
+
+      AND_WHEN("he kills a rat") {
+        c.sendMessage(CL_TARGET_ENTITY, makeArgs(rat1Serial));
+        WAIT_UNTIL(rat1->isDead());
+
+        AND_WHEN("he tries to complete the quest") {
+          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+
+          THEN("he is still on the quest") {
+            REPEAT_FOR_MS(100);
+            CHECK(u.numQuests() == 1);
+          }
         }
       }
     }

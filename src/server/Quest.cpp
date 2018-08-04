@@ -13,6 +13,8 @@ void Quest::setObjectiveType(const std::string& asString) {
 }
 
 bool Quest::canBeCompletedByUser(const User& user) const {
+  if (hasQty) return false;
+
   switch (objectiveType) {
     case NONE:
       return true;
