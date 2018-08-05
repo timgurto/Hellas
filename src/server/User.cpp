@@ -644,7 +644,7 @@ void User::onKilled(const Entity &victim) {
     auto quest = server.findQuest(questID);
     if (!quest) continue;
 
-    if (quest->objectiveID == victimID) addQuestKill(questID);
+    if (quest->objective.id == victimID) addQuestKill(questID);
   }
 }
 
@@ -653,7 +653,7 @@ void User::addQuestKill(const std::string &questID) {
 
   const auto &server = Server::instance();
   const auto quest = server.findQuest(questID);
-  if (_questKills[questID] < quest->objectiveQty) return;
+  if (_questKills[questID] < quest->objective.qty) return;
 
   server.sendMessage(_socket, SV_QUEST_CAN_BE_FINISHED, questID);
 }
@@ -923,9 +923,9 @@ void User::startQuest(const Quest &quest) {
 void User::completeQuest(const Quest::ID &id) {
   auto &server = Server::instance();
   const auto quest = server.findQuest(id);
-  if (quest->objectiveType == Quest::FETCH) {
+  if (quest->objective.type == Quest::Objective::FETCH) {
     auto set = ItemSet{};
-    set.add(quest->itemObjective);
+    set.add(quest->objective.item);
     this->removeItems(set);
   }
 

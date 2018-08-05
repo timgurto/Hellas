@@ -2,27 +2,27 @@
 #include "Server.h"
 #include "User.h"
 
-void Quest::setObjectiveType(const std::string& asString) {
-  const auto typesByName = std::map<std::string, Quest::ObjectiveType>{
-      {"kill", Quest::KILL}, {"fetch", Quest::FETCH}};
+void Quest::Objective::setType(const std::string& asString) {
+  const auto typesByName = std::map<std::string, Quest::Objective::Type>{
+      {"kill", KILL}, {"fetch", FETCH}};
   auto it = typesByName.find(asString);
   if (it == typesByName.end())
-    objectiveType = NONE;
+    type = NONE;
   else
-    objectiveType = it->second;
+    type = it->second;
 }
 
 bool Quest::canBeCompletedByUser(const User& user) const {
   if (hasMultipleObjectives) return false;
 
-  switch (objectiveType) {
-    case NONE:
+  switch (objective.type) {
+    case Objective::NONE:
       return true;
-    case KILL:
-      return user.killsTowardsQuest(id) >= objectiveQty;
-    case FETCH: {
+    case Objective::KILL:
+      return user.killsTowardsQuest(id) >= objective.qty;
+    case Objective::FETCH: {
       auto requiredItem = ItemSet{};
-      requiredItem.add(itemObjective, objectiveQty);
+      requiredItem.add(objective.item, objective.qty);
       return user.hasItems(requiredItem);
     }
   }

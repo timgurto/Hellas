@@ -10,16 +10,21 @@ struct Quest {
  public:
   using ID = std::string;
   ID id;
-  int objectiveQty{1};
+
+  struct Objective {
+    enum Type { NONE, KILL, FETCH };
+    Type type{NONE};
+    void setType(const std::string &asString);
+
+    std::string id{};
+    const ServerItem *item{nullptr};
+    int qty{1};
+  };
+
+  Objective objective;
+  bool hasObjective() const { return objective.type != Objective::NONE; }
 
   bool hasMultipleObjectives{false};
-
-  enum ObjectiveType { NONE, KILL, FETCH };
-  ObjectiveType objectiveType{NONE};
-  std::string objectiveID{};
-  const ServerItem *itemObjective{nullptr};
-  void setObjectiveType(const std::string &asString);
-  bool hasObjective() const { return objectiveType != NONE; }
 
   std::string prerequisiteQuest{};
   bool hasPrerequisite() const { return !prerequisiteQuest.empty(); }

@@ -390,20 +390,20 @@ void DataLoader::loadQuests(XmlReader &xr) {
 
       auto type = ""s;
       xr.findAttr(objective, "type", type);
-      q.setObjectiveType(type);
-      xr.findAttr(objective, "id", q.objectiveID);
+      q.objective.setType(type);
+      xr.findAttr(objective, "id", q.objective.id);
 
-      if (q.objectiveType == Quest::FETCH) {
-        auto item = _server._items.find(q.objectiveID);
+      if (q.objective.type == Quest::Objective::FETCH) {
+        auto item = _server._items.find(q.objective.id);
         if (item == _server._items.end())
-          q.objectiveType = Quest::NONE;
+          q.objective.type = Quest::Objective::NONE;
         else
-          q.itemObjective = &*item;
+          q.objective.item = &*item;
       }
 
       auto objectiveQty{0};
       if (xr.findAttr(objective, "qty", objectiveQty))
-        q.objectiveQty = objectiveQty;
+        q.objective.qty = objectiveQty;
     }
 
     auto prereq = xr.findChild("prerequisite", elem);
