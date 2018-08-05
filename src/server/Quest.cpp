@@ -20,7 +20,7 @@ bool Quest::canBeCompletedByUser(const User& user) const {
       return user.killsTowardsQuest(id) >= objectiveQty;
     case FETCH: {
       auto requiredItem = ItemSet{};
-      requiredItem.add(itemObjective);
+      requiredItem.add(itemObjective, objectiveQty);
       return user.hasItems(requiredItem);
     }
   }

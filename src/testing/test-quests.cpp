@@ -909,6 +909,39 @@ TEST_CASE("Fetch quests", "[quests]") {
       }
     }
   }
+
+  GIVEN("A user on a quest to get two eyeballs") {
+    auto data = R"(
+      <objectType id="A" />
+      <item id="eyeball" />
+      <quest id="quest1" startsAt="A" endsAt="A">
+        <objective id="eyeball" type="fetch" qty="2" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addObject("A", {10, 15});
+    auto serial = s.getFirstObject().serial();
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.startQuest(*s->findQuest("quest1"));
+
+    WHEN("he gets one") {
+      auto &eyeball = s.getFirstItem();
+      user.giveItem(&eyeball);
+
+      AND_WHEN("he tries to complete the quest") {
+        c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
+
+        THEN("he is still on the quest") {
+          REPEAT_FOR_MS(100);
+          CHECK_FALSE(user.hasCompletedQuest("quest1"));
+        }
+      }
+    }
+  }
 }
 
 TEST_CASE("Multiple objectives", "[quests][!mayfail]") {
