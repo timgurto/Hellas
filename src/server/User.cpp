@@ -644,14 +644,17 @@ void User::onKilled(const Entity &victim) {
     auto quest = server.findQuest(questID);
     if (!quest) continue;
 
-    if (quest->objectiveID == victimID) completeQuestObjective(questID);
+    if (quest->objectiveID == victimID) addQuestKill(questID);
   }
 }
 
-void User::completeQuestObjective(const std::string &questID) {
-  _questsWithKills.insert(questID);
+void User::addQuestKill(const std::string &questID) {
+  ++_questKills[questID];
 
-  auto &server = *Server::_instance;
+  const auto &server = Server::instance();
+  const auto quest = server.findQuest(questID);
+  if (_questKills[questID] < quest->objectiveQty) return;
+
   server.sendMessage(_socket, SV_QUEST_CAN_BE_FINISHED, questID);
 }
 
@@ -949,9 +952,10 @@ void User::markQuestAsCompleted(const Quest::ID &id) {
 
 void User::markQuestAsStarted(const Quest::ID &id) { _quests.insert(id); }
 
-bool User::hasKilledSomethingWhileOnQuest(const Quest::ID &quest) const {
-  auto it = _questsWithKills.find(quest);
-  return it != _questsWithKills.end();
+int User::killsTowardsQuest(const Quest::ID &quest) const {
+  auto it = _questKills.find(quest);
+  if (it == _questKills.end()) return 0;
+  return it->second;
 }
 
 void User::sendBuffMsg(const Buff::ID &buff) const {

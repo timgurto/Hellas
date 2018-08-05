@@ -72,7 +72,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void announceLevelUp() const;
 
   std::set<Quest::ID> _quests;
-  std::set<Quest::ID> _questsWithKills;
+  std::map<Quest::ID, int> _questKills;
   std::set<Quest::ID> _questsCompleted;
 
  public:
@@ -243,12 +243,12 @@ class User : public Object {  // TODO: Don't inherit from Object
   const std::set<Quest::ID> &questsInProgress() const { return _quests; }
   void markQuestAsCompleted(const Quest::ID &id);
   void markQuestAsStarted(const Quest::ID &id);
-  void completeQuestObjective(const std::string &questID);
+  void addQuestKill(const std::string &questID);
   int numQuests() const { return _quests.size(); }
   bool isOnQuest(const Quest::ID &id) const {
     return _quests.find(id) != _quests.end();
   }
-  bool hasKilledSomethingWhileOnQuest(const Quest::ID &quest) const;
+  int killsTowardsQuest(const Quest::ID &quest) const;
 
   struct compareXThenSerial {
     bool operator()(const User *a, const User *b) const;

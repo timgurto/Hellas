@@ -639,6 +639,17 @@ TEST_CASE("Kill quests", "[quests]") {
             CHECK(u.numQuests() == 1);
           }
         }
+
+        AND_WHEN("he kills another rat") {
+          c.sendMessage(CL_TARGET_ENTITY, makeArgs(rat2Serial));
+          WAIT_UNTIL(rat2->isDead());
+
+          AND_WHEN("he tries to complete the quest") {
+            c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+
+            THEN("he is not on the quest") { WAIT_UNTIL(u.numQuests() == 0); }
+          }
+        }
       }
     }
   }
@@ -780,7 +791,7 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
 
     // And killed the target of another quest
     alice.startQuest(*s->findQuest("killedQuest"));
-    alice.completeQuestObjective("killedQuest");
+    alice.addQuestKill("killedQuest");
 
     // and finished yet another
     alice.startQuest(*s->findQuest("finishedQuest"));
@@ -798,7 +809,8 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
     CHECK(alice.isOnQuest("startedQuest"));
 
     // And has achieved the objective of the second quest
-    CHECK(alice.hasKilledSomethingWhileOnQuest("killedQuest"));
+    auto killedQuest = s->findQuest("killedQuest");
+    CHECK(killedQuest->canBeCompletedByUser(alice));
 
     // And completed the third quest
     CHECK(alice.hasCompletedQuest("finishedQuest"));

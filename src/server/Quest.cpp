@@ -13,17 +13,17 @@ void Quest::setObjectiveType(const std::string& asString) {
 }
 
 bool Quest::canBeCompletedByUser(const User& user) const {
-  if (hasQty) return false;
-
   switch (objectiveType) {
     case NONE:
       return true;
     case KILL:
-      return user.hasKilledSomethingWhileOnQuest(id);
+      return user.killsTowardsQuest(id) >= objectiveQty;
     case FETCH: {
       auto requiredItem = ItemSet{};
       requiredItem.add(itemObjective);
       return user.hasItems(requiredItem);
     }
   }
+
+  return false;
 }

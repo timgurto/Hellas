@@ -163,7 +163,9 @@ bool Server::readUserData(User &user) {
     user.markQuestAsStarted(id);
 
     auto n = 0;
-    if (xr.findAttr(questElem, "gotKill", n)) user.completeQuestObjective(id);
+    if (xr.findAttr(questElem, "kills", n)) {
+      for (auto i = 0; i != n; ++i) user.addQuestKill(id);
+    }
   }
 
   return true;
@@ -250,8 +252,8 @@ void Server::writeUserData(const User &user) const {
     auto questElem = xw.addChild("inProgress", e);
     xw.setAttr(questElem, "id", questID);
     auto quest = findQuest(questID);
-    if (quest->hasObjective() && user.hasKilledSomethingWhileOnQuest(questID))
-      xw.setAttr(questElem, "gotKill", 1);
+    if (quest->hasObjective())
+      xw.setAttr(questElem, "kills", user.killsTowardsQuest(questID));
   }
 
   xw.publish();

@@ -10,7 +10,7 @@ struct Quest {
  public:
   using ID = std::string;
   ID id;
-  bool hasQty{false};
+  int objectiveQty{1};
 
   enum ObjectiveType { NONE, KILL, FETCH };
   ObjectiveType objectiveType{NONE};

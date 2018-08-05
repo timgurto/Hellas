@@ -377,7 +377,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 417,Quests reward custom XP,5,3,Feature,416,,,1
 418,Quests can reward an item,34,8,Feature,417,,,1
 419,Quests can reward a choice of item,21,13,Feature,418,,,1
-420,A quest to kill n NPCs,21,13,Feature,413,,,1
+420,A quest to kill n NPCs,21,13,Feature,413,TRUE,,1
 421,A quest to collect n items,21,8,Feature,413,,,1
 422,Quest items that drop only while on a specific quest,5,5,Feature,421,,,1
 423,A quest to worship at a specific altar type,2,5,Feature,413,,,3
