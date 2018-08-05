@@ -644,7 +644,8 @@ void User::onKilled(const Entity &victim) {
     auto quest = server.findQuest(questID);
     if (!quest) continue;
 
-    if (quest->objective.id == victimID) addQuestKill(questID);
+    for (const auto &objective : quest->objectives)
+      if (objective.id == victimID) addQuestKill(questID);
   }
 }
 
@@ -653,9 +654,8 @@ void User::addQuestKill(const std::string &questID) {
 
   const auto &server = Server::instance();
   const auto quest = server.findQuest(questID);
-  if (_questKills[questID] < quest->objective.qty) return;
-
-  server.sendMessage(_socket, SV_QUEST_CAN_BE_FINISHED, questID);
+  if (quest->canBeCompletedByUser(*this))
+    server.sendMessage(_socket, SV_QUEST_CAN_BE_FINISHED, questID);
 }
 
 bool User::canAttack() const {
@@ -923,10 +923,12 @@ void User::startQuest(const Quest &quest) {
 void User::completeQuest(const Quest::ID &id) {
   auto &server = Server::instance();
   const auto quest = server.findQuest(id);
-  if (quest->objective.type == Quest::Objective::FETCH) {
-    auto set = ItemSet{};
-    set.add(quest->objective.item);
-    this->removeItems(set);
+  for (const auto &objective : quest->objectives) {
+    if (objective.type == Quest::Objective::FETCH) {
+      auto set = ItemSet{};
+      set.add(objective.item);
+      this->removeItems(set);
+    }
   }
 
   markQuestAsCompleted(id);

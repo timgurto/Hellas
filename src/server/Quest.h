@@ -2,6 +2,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 class User;
 class ServerItem;
@@ -21,10 +22,8 @@ struct Quest {
     int qty{1};
   };
 
-  Objective objective;
-  bool hasObjective() const { return objective.type != Objective::NONE; }
-
-  bool hasMultipleObjectives{false};
+  std::vector<Objective> objectives;
+  bool hasObjective() const { return !objectives.empty(); }
 
   std::string prerequisiteQuest{};
   bool hasPrerequisite() const { return !prerequisiteQuest.empty(); }

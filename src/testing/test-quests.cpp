@@ -975,6 +975,19 @@ TEST_CASE("Fetch quests", "[quests]") {
           CHECK_FALSE(user.hasCompletedQuest("quest1"));
         }
       }
+
+      AND_WHEN("he gets the nose") {
+        auto nose = s->findItem("nose");
+        user.giveItem(nose, 1);
+
+        AND_WHEN("he tries to complete the quest") {
+          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
+
+          THEN("he has completed the quest") {
+            WAIT_UNTIL(user.hasCompletedQuest("quest1"));
+          }
+        }
+      }
     }
   }
 }

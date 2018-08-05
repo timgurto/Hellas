@@ -13,19 +13,22 @@ void Quest::Objective::setType(const std::string& asString) {
 }
 
 bool Quest::canBeCompletedByUser(const User& user) const {
-  if (hasMultipleObjectives) return false;
+  for (const auto& objective : objectives) {
+    switch (objective.type) {
+      case Objective::NONE:
+        continue;
 
-  switch (objective.type) {
-    case Objective::NONE:
-      return true;
-    case Objective::KILL:
-      return user.killsTowardsQuest(id) >= objective.qty;
-    case Objective::FETCH: {
-      auto requiredItem = ItemSet{};
-      requiredItem.add(objective.item, objective.qty);
-      return user.hasItems(requiredItem);
+      case Objective::KILL:
+        if (user.killsTowardsQuest(id) < objective.qty) return false;
+        continue;
+
+      case Objective::FETCH: {
+        auto requiredItem = ItemSet{};
+        requiredItem.add(objective.item, objective.qty);
+        if (!user.hasItems(requiredItem)) return false;
+        continue;
+      }
     }
   }
-
-  return false;
+  return true;
 }

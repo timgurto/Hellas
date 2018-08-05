@@ -380,30 +380,25 @@ void DataLoader::loadQuests(XmlReader &xr) {
     auto endingObject = _server.findObjectTypeByName(endsAt);
     if (!endingObject) continue;
 
-    auto gotAnObjectiveAlready = false;
-    for (auto objective : xr.getChildren("objective", elem)) {
-      if (gotAnObjectiveAlready) {
-        q.hasMultipleObjectives = true;
-        break;
-      }
-      gotAnObjectiveAlready = true;
+    for (auto objectiveElem : xr.getChildren("objective", elem)) {
+      Quest::Objective objective;
 
       auto type = ""s;
-      xr.findAttr(objective, "type", type);
-      q.objective.setType(type);
-      xr.findAttr(objective, "id", q.objective.id);
+      xr.findAttr(objectiveElem, "type", type);
+      objective.setType(type);
+      xr.findAttr(objectiveElem, "id", objective.id);
 
-      if (q.objective.type == Quest::Objective::FETCH) {
-        auto item = _server._items.find(q.objective.id);
+      if (objective.type == Quest::Objective::FETCH) {
+        auto item = _server._items.find(objective.id);
         if (item == _server._items.end())
-          q.objective.type = Quest::Objective::NONE;
+          objective.type = Quest::Objective::NONE;
         else
-          q.objective.item = &*item;
+          objective.item = &*item;
       }
 
-      auto objectiveQty{0};
-      if (xr.findAttr(objective, "qty", objectiveQty))
-        q.objective.qty = objectiveQty;
+      xr.findAttr(objectiveElem, "qty", objective.qty);
+
+      q.objectives.push_back(objective);
     }
 
     auto prereq = xr.findChild("prerequisite", elem);
