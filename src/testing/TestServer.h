@@ -25,13 +25,13 @@ class TestServer {
   Entities &entities() { return _server->_entities; }
   Entity::byX_t &entitiesByX() { return _server->_entitiesByX; }
   std::set<ServerItem> &items() { return _server->_items; }
+  const std::set<ServerItem> &items() const { return _server->_items; }
   std::set<User> &users() { return _server->_users; }
   std::vector<Spawner> &spawners() { return _server->_spawners; }
   Wars &wars() { return _server->_wars; }
   Cities &cities() { return _server->_cities; }
   ObjectsByOwner &objectsByOwner() { return _server->_objectsByOwner; }
   Kings &kings() { return _server->_kings; }
-  const std::set<ServerItem> &items() const { return _server->_items; }
 
   User &getFirstUser();
   Object &getFirstObject();

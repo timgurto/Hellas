@@ -639,6 +639,13 @@ const Quest *Server::findQuest(const Quest::ID &id) const {
   return &it->second;
 }
 
+const ServerItem *Server::findItem(const std::string &id) const {
+  auto dummy = ServerItem{id};
+  auto it = _items.find(dummy);
+  if (it == _items.end()) return nullptr;
+  return &*it;
+}
+
 const Terrain *Server::terrainType(char index) const {
   auto &types = const_cast<std::map<char, Terrain *> &>(_terrainTypes);
   return types[index];

@@ -380,8 +380,14 @@ void DataLoader::loadQuests(XmlReader &xr) {
     auto endingObject = _server.findObjectTypeByName(endsAt);
     if (!endingObject) continue;
 
-    auto objective = xr.findChild("objective", elem);
-    if (objective) {
+    auto gotAnObjectiveAlready = false;
+    for (auto objective : xr.getChildren("objective", elem)) {
+      if (gotAnObjectiveAlready) {
+        q.hasMultipleObjectives = true;
+        break;
+      }
+      gotAnObjectiveAlready = true;
+
       auto type = ""s;
       xr.findAttr(objective, "type", type);
       q.setObjectiveType(type);

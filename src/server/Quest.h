@@ -12,6 +12,8 @@ struct Quest {
   ID id;
   int objectiveQty{1};
 
+  bool hasMultipleObjectives{false};
+
   enum ObjectiveType { NONE, KILL, FETCH };
   ObjectiveType objectiveType{NONE};
   std::string objectiveID{};
