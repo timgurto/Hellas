@@ -30,14 +30,14 @@
 <quest id="tutCombat" name="Taking your place" startsAt="prometheus2" endsAt="prometheus2"
     brief="You are mortal, like the birds and beasts, but unlike them you have a spirit.  Thus, in the Great Chain of Being, you sit above them.
     
-    I built you to be capable, with a broad chest and strong arms: enough to assert your position in the order of things.  To make sure that you actually can, go out and kill some beasts.
+    I built you to be capable, with a broad chest and strong arms: enough to assert your position in the order of things.  To check that you actually can, go out and kill some beasts.
     
-    Look around nearby for a Pig, and target it by right-clicking on it.  Once you move close enough, you will automatically start attacking it."
+    Look around nearby for a Pig, and target it by right-clicking on it.  Once you move close enough, you will automatically start attacking it.  I'd like you to kill five."
     debrief="Excellent, everything seems to be working as intended.
 
     I suppose I should introduce myself.  My name is Prometheus, and I created you.  Welcome to the world!">
     <prerequisite id="tutConversation" />
-    <objective id="tutPig" qty="5" />
+    <objective type="kill" id="tutPig" qty="5" />
 </quest>
     <npcType
         id="tutPig" name="Pig"
@@ -55,10 +55,10 @@
     brief="Zeus, the king of the gods, wants to establish animal sacrifices in their honour.  Before we can begin negotiations, you'll need to get your hands dirty: slay some goats, and gather what you can of their remains."
     debrief="Ah yes, these will do nicely.">
     <prerequisite id="tutCombat" />
-    <objective item="tutMeat" qty="4" />
-    <objective item="tutHide" />
-    <objective item="tutEntrails" qty="4" />
-    <objective item="tutFat" />
+    <objective type="fetch" item="tutMeat" qty="4" />
+    <objective type="fetch" item="tutHide" />
+    <objective type="fetch" item="tutEntrails" qty="4" />
+    <objective type="fetch" item="tutFat" />
 </quest>
     <npcType
         id="tutGoat" name="Goat"
