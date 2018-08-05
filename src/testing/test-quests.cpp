@@ -985,6 +985,12 @@ TEST_CASE("Fetch quests", "[quests]") {
 
           THEN("he has completed the quest") {
             WAIT_UNTIL(user.hasCompletedQuest("quest1"));
+
+            AND_THEN("all items are removed from his inventory") {
+              auto eyeballAsSet = ItemSet{};
+              eyeballAsSet.add(eyeball);
+              CHECK_FALSE(user.hasItems(eyeballAsSet));
+            }
           }
         }
       }

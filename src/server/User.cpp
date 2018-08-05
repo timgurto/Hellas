@@ -926,7 +926,7 @@ void User::completeQuest(const Quest::ID &id) {
   for (const auto &objective : quest->objectives) {
     if (objective.type == Quest::Objective::FETCH) {
       auto set = ItemSet{};
-      set.add(objective.item);
+      set.add(objective.item, objective.qty);
       this->removeItems(set);
     }
   }
