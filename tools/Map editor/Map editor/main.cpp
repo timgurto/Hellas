@@ -201,8 +201,10 @@ void handleInput(unsigned timeElapsed) {
             }
             if (windowWasClicked) break;
 
-            mouseLeftIsDown = true;
-            map.set(contextTile.x, contextTile.y);
+            if (mouse.y != 0) {
+              mouseLeftIsDown = true;
+              map.set(contextTile.x, contextTile.y);
+            }
           } break;
 
           case SDL_BUTTON_RIGHT:
