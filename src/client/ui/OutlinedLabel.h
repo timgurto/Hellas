@@ -14,6 +14,8 @@ class OutlinedLabel : public Element {
   void setColor(const Color &color);
   void changeText(const std::string &text);
 
+  void refresh() override;
+
  private:
   Label *_central{nullptr};
   Label *_u{nullptr};

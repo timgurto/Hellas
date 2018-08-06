@@ -33,3 +33,19 @@ void OutlinedLabel::changeText(const std::string &text) {
   _r->changeText(text);
   _central->changeText(text);
 }
+
+void OutlinedLabel::refresh() {
+  auto width = rect().w;
+  _u->width(width);
+  _d->width(width);
+  _l->width(width);
+  _r->width(width);
+  _central->width(width);
+
+  auto height = rect().h;
+  _u->height(height);
+  _d->height(height);
+  _l->height(height);
+  _r->height(height);
+  _central->height(height);
+}
