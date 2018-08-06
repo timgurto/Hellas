@@ -51,13 +51,15 @@
 
 
 <quest id="tutParts" name="All due respect" startsAt="prometheus2" endsAt="prometheus2"
-    brief="Zeus, the king of the gods, wants to establish animal sacrifices in their honour.  Before we can begin negotiations, you'll need to get your hands dirty: slay some goats, and gather what you can of their remains."
+    brief="Zeus, the king of the gods, wants to establish animal sacrifices in their honour.  Before we can begin negotiations, you'll need to get your hands dirty: slay some goats, and gather what you can of their remains.
+    
+    You can view your inventory of items by pressing the 'I' key."
     debrief="Ah yes, these will do nicely.">
     <prerequisite id="tutCombat" />
-    <objective type="fetch" item="tutMeat" qty="4" />
-    <objective type="fetch" item="tutHide" />
-    <objective type="fetch" item="tutEntrails" qty="4" />
-    <objective type="fetch" item="tutFat" />
+    <objective type="fetch" id="tutMeat" qty="10" />
+    <objective type="fetch" id="tutHide" />
+    <objective type="fetch" id="tutEntrails" qty="10" />
+    <objective type="fetch" id="tutFat" />
 </quest>
     <npcType
         id="tutGoat" name="Goat"
@@ -70,6 +72,10 @@
         <loot id="tutEntrails" > <normal mean="1.5" sd="0.5" /> </loot>
         <loot id="tutFat" chance="0.2" />
     </npcType>
+    <item id="tutMeat"     name="Meat"                         stackSize="10" />
+    <item id="tutHide"     name="Hide"     iconFile="hide"     stackSize="10" />
+    <item id="tutEntrails" name="Entrails" iconFile="entrails" stackSize="10" />
+    <item id="tutFat"      name="Fat"      iconFile="fat"      stackSize="10" />
     <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="1392" y="59350" />
     <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="1244" y="59774" />
     <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="1040" y="59576" />
