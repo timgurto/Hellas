@@ -41,14 +41,13 @@
 </quest>
     <npcType
         id="tutPig" name="Pig"
-        level="1" maxHealth="40
-        "
+        level="1" maxHealth="30" attack="2" attackTime="835"
         xDrawOffset="-11" yDrawOffset="-13"
         imageFile="critter" sounds = "pig" >
         <collisionRect x="-9" y="-4" w="18" h="7" />
     </npcType>
-    <spawnPoint type="tutPig" quantity="12" radius="320" respawnTime="30000" x="1732" y="60048" />
-    <spawnPoint type="tutPig" quantity="4" radius="150" respawnTime="30000" x="1490" y="60160" />
+    <spawnPoint type="tutPig" quantity="15" radius="320" respawnTime="30000" x="1732" y="60048" />
+    <spawnPoint type="tutPig" quantity="1" radius="150" respawnTime="30000" x="1490" y="60160" />
 
 
 <quest id="tutParts" name="All due respect" startsAt="prometheus2" endsAt="prometheus2"
@@ -62,7 +61,7 @@
 </quest>
     <npcType
         id="tutGoat" name="Goat"
-        level="1" maxHealth="32" attack="2" attackTime="1000"
+        level="1" maxHealth="32" attack="3" attackTime="1240"
         xDrawOffset="-17" yDrawOffset="-28"
         imageFile="goat" sounds = "goat" >
         <collisionRect x="-15" y="-4" w="31" h="7" />
@@ -71,10 +70,10 @@
         <loot id="tutEntrails" > <normal mean="1.5" sd="0.5" /> </loot>
         <loot id="tutFat" chance="0.2" />
     </npcType>
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="30000" x="1392" y="59350" />
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="30000" x="1244" y="59774" />
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="30000" x="1040" y="59576" />
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="30000" x="1246" y="59490" />
+    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="1392" y="59350" />
+    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="1244" y="59774" />
+    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="1040" y="59576" />
+    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="1246" y="59490" />
 
 <!-- Build both offerings, by placing items then adding toppings -->
 <!-- Worship at shrine, giving entrails and getting some rocks to throw -->

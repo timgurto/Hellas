@@ -56,6 +56,8 @@ void User::init() {
   baseStats.armor = 0;
   baseStats.maxHealth = 50;
   baseStats.maxEnergy = 50;
+  baseStats.hps = 1;
+  baseStats.eps = 1;
   baseStats.hit = 0;
   baseStats.crit = 5;
   baseStats.critResist = 0;
