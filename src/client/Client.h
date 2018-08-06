@@ -332,6 +332,7 @@ class Client {
   OutlinedLabel *_lastErrorMessage{nullptr};
   mutable ms_t _errorMessageTimer{0};
   Window *_escapeWindow{nullptr};
+  List *_questProgress{nullptr};
   void initUI();
   void initChatLog();
   void initWindows();
@@ -357,6 +358,8 @@ class Client {
   void updateToasts();
   void populateToastsList();
   void toast(const std::string &icon, const std::string &message);
+  void initQuestProgress();
+  void refreshQuestProgress();
 
   // Chat
   Element *_chatContainer;

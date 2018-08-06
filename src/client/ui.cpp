@@ -39,6 +39,7 @@ void Client::initUI() {
   initPlayerPanels();
   initTargetBuffs();
   initToasts();
+  initQuestProgress();
 
   const auto ERROR_FROM_BOTTOM = 50;
   _lastErrorMessage = new OutlinedLabel(
@@ -332,4 +333,37 @@ void Client::initPlayerPanels() {
   _target.initializePanel();
   addUI(_target.panel());
   addUI(_target.menu());
+}
+
+void Client::initQuestProgress() {
+  const auto WIDTH = 100_px, Y = 100_px, HEIGHT = 200_px;
+  _questProgress =
+      new List{{SCREEN_X - WIDTH, Y, WIDTH, HEIGHT}, Element::TEXT_HEIGHT + 2};
+  addUI(_questProgress);
+}
+
+void Client::refreshQuestProgress() {
+  _questProgress->clearChildren();
+
+  auto isEmpty = true;
+  for (const auto &pair : _quests) {
+    const auto &quest = pair.second;
+    if (!quest.userIsOnQuest()) continue;
+
+    if (!isEmpty) _questProgress->addGap();
+    isEmpty = false;
+
+    auto questName = new OutlinedLabel({}, quest.info().name);
+    questName->setColor(Color::QUEST_NAME);
+    _questProgress->addChild(questName);
+
+    for (const auto &objective : quest.info().objectives) {
+      auto objectiveText = " "s + objective.text;
+      if (objective.qty > 1)
+        objectiveText += " (0/"s + toString(objective.qty) + ")";
+      auto objectiveLabel = new OutlinedLabel({}, objectiveText);
+      objectiveLabel->setColor(Color::QUEST_OBJECTIVE);
+      _questProgress->addChild(objectiveLabel);
+    }
+  }
 }

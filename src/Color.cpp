@@ -43,6 +43,9 @@ Color
 
   Color::HELP_TEXT_HEADING,
 
+  Color::QUEST_NAME,
+  Color::QUEST_OBJECTIVE,
+
   Color::FOOTPRINT_GOOD,
   Color::FOOTPRINT_BAD,
   Color::FOOTPRINT,

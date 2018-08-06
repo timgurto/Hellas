@@ -42,6 +42,9 @@ class Color {
       ITEM_TAGS,
 
       HELP_TEXT_HEADING,
+
+      QUEST_NAME,
+      QUEST_OBJECTIVE,
  
       ELEMENT_BACKGROUND,
       ELEMENT_SHADOW_DARK,

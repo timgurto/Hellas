@@ -44,6 +44,9 @@ class CQuest {
 
   enum State { NONE, CAN_START, IN_PROGRESS, CAN_FINISH };
   State state{NONE};
+  bool userIsOnQuest() const {
+    return state == IN_PROGRESS || state == CAN_FINISH;
+  }
 
  private:
   Info _info;

@@ -2192,6 +2192,8 @@ void Client::handle_SV_QUEST_IN_PROGRESS(const std::string &questID) {
     auto &obj = *pair.second;
     if (obj.objectType()->id() == startNode) obj.assembleWindow(*this);
   }
+
+  refreshQuestProgress();
 }
 
 void Client::handle_SV_QUEST_CAN_BE_FINISHED(const std::string &questID) {
@@ -2206,6 +2208,8 @@ void Client::handle_SV_QUEST_CAN_BE_FINISHED(const std::string &questID) {
     auto &obj = *pair.second;
     if (obj.objectType()->id() == startNode) obj.assembleWindow(*this);
   }
+
+  refreshQuestProgress();
 }
 
 void Client::handle_SV_QUEST_COMPLETED(const std::string &questID) {
@@ -2220,6 +2224,8 @@ void Client::handle_SV_QUEST_COMPLETED(const std::string &questID) {
     auto &obj = *pair.second;
     if (obj.objectType()->id() == endNode) obj.assembleWindow(*this);
   }
+
+  refreshQuestProgress();
 }
 
 void Client::sendRawMessage(const std::string &msg) const {
