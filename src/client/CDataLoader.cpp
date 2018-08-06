@@ -847,6 +847,31 @@ void CDataLoader::loadQuests(XmlReader &xr) {
     xr.findAttr(elem, "brief", questInfo.brief);
     xr.findAttr(elem, "debrief", questInfo.debrief);
 
+    for (auto objectiveElem : xr.getChildren("objective", elem)) {
+      auto &client = Client::instance();
+      auto objective = CQuest::Info::Objective{};
+
+      auto id = ""s;
+      xr.findAttr(objectiveElem, "id", id);
+
+      auto type = ""s;
+      xr.findAttr(objectiveElem, "type", type);
+
+      if (type == "kill") {
+        auto npcType = client.findNPCType(id);
+        objective.text = "Kill "s + (npcType ? npcType->name() : "???"s);
+
+      } else if (type == "fetch") {
+        auto &it = client._items.find(id);
+        objective.text = it->second.name();
+      }
+
+      objective.qty = 1;
+      xr.findAttr(objectiveElem, "qty", objective.qty);
+
+      questInfo.objectives.push_back(objective);
+    }
+
     _client._quests[questInfo.id] = {questInfo};
   }
 }

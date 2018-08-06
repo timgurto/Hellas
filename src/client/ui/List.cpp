@@ -10,3 +10,5 @@ void List::addChild(Element *child) {
   child->rect(0, _content->height(), rect().w - ARROW_W, _childHeight);
   Scrollable::addChild(child);
 }
+
+void List::addGap() { addChild(new Element{{}}); }

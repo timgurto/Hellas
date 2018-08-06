@@ -53,7 +53,7 @@
 <quest id="tutParts" name="All due respect" startsAt="prometheus2" endsAt="prometheus2"
     brief="Zeus, the king of the gods, wants to establish animal sacrifices in their honour.  Before we can begin negotiations, you'll need to get your hands dirty: slay some goats, and gather what you can of their remains.
     
-    You can view your inventory of items by pressing the 'I' key."
+    You can view your inventory of items by pressing the I key."
     debrief="Ah yes, these will do nicely.">
     <prerequisite id="tutCombat" />
     <objective type="fetch" id="tutMeat" qty="10" />

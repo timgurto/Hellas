@@ -2,6 +2,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 class Window;
 
@@ -12,10 +13,17 @@ class CQuest {
     using Name = std::string;
     using Prose = std::string;
 
+    // The client doesn't need to know what the objectives actually mean.
+    struct Objective {
+      std::string text;
+      int qty;
+    };
+
     ID id;
     Name name;
     Prose brief, debrief;
     ID startsAt, endsAt;
+    std::vector<Objective> objectives;
   };
 
   enum Transition { ACCEPT, COMPLETE };

@@ -16,6 +16,7 @@ class List : public Scrollable {
   bool empty() const { return size() == 0; }
 
   void addChild(Element *child) override;
+  void addGap();
 };
 
 #endif

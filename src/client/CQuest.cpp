@@ -25,7 +25,7 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   window->addChild(name);
   y += name->height() + GAP;
 
-  // Body
+  // Body: brief/debrief
   const auto BODY_H = BOTTOM - 2 * GAP - BUTTON_H - y;
   auto body = new List({GAP, y, CONTENT_W, BODY_H});
   window->addChild(body);
@@ -34,6 +34,22 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
       pendingTransition == ACCEPT ? quest->_info.brief : quest->_info.debrief;
   auto lines = ww.wrap(bodyText);
   for (const auto &line : lines) body->addChild(new Label({}, line));
+
+  // Body: objectives
+  auto shouldShowObjectives =
+      pendingTransition == ACCEPT && !quest->_info.objectives.empty();
+  if (shouldShowObjectives) {
+    body->addGap();
+    auto heading = new Label({}, "Objectives:");
+    heading->setColor(Color::HELP_TEXT_HEADING);
+    body->addChild(heading);
+
+    for (auto &objective : quest->_info.objectives) {
+      auto text = objective.text;
+      if (objective.qty > 1) text += " ("s + toString(objective.qty) + ")"s;
+      body->addChild(new Label({}, text));
+    }
+  }
 
   y += BODY_H + GAP;
 
