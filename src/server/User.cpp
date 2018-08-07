@@ -688,10 +688,12 @@ void User::onKilled(const Entity &victim) {
 }
 
 void User::addQuestKill(const std::string &questID) {
-  ++_questKills[questID];
-
   const auto &server = Server::instance();
   const auto quest = server.findQuest(questID);
+
+  _questKills[questID] =
+      min(_questKills[questID] + 1, quest->objectives[0].qty);
+
   server.sendMessage(_socket, SV_QUEST_PROGRESS,
                      makeArgs(questID, 0, _questKills[questID]));
   if (quest->canBeCompletedByUser(*this))
