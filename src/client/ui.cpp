@@ -368,7 +368,9 @@ void Client::refreshQuestProgress() {
                          toString(objective.qty) + ")";
       }
       auto objectiveLabel = new OutlinedLabel({}, objectiveText);
-      objectiveLabel->setColor(Color::QUEST_OBJECTIVE);
+      auto objectiveComplete = quest.getProgress(i) == objective.qty;
+      objectiveLabel->setColor(objectiveComplete ? Color::QUEST_COMPLETE
+                                                 : Color::QUEST_OBJECTIVE);
       _questProgress->addChild(objectiveLabel);
     }
   }

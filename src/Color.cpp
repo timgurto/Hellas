@@ -45,6 +45,7 @@ Color
 
   Color::QUEST_NAME,
   Color::QUEST_OBJECTIVE,
+  Color::QUEST_COMPLETE,
 
   Color::FOOTPRINT_GOOD,
   Color::FOOTPRINT_BAD,

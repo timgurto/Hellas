@@ -45,6 +45,7 @@ class Color {
 
       QUEST_NAME,
       QUEST_OBJECTIVE,
+      QUEST_COMPLETE,
  
       ELEMENT_BACKGROUND,
       ELEMENT_SHADOW_DARK,

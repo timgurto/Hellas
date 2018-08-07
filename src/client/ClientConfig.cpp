@@ -36,6 +36,7 @@ void ClientConfig::loadFromFile(const std::string &filename) {
   xr.findAttr(elem, "helpTextHeading", Color::HELP_TEXT_HEADING);
   xr.findAttr(elem, "questName", Color::QUEST_NAME);
   xr.findAttr(elem, "questObjective", Color::QUEST_OBJECTIVE);
+  xr.findAttr(elem, "questComplete", Color::QUEST_COMPLETE);
   xr.findAttr(elem, "footprintGood", Color::FOOTPRINT_GOOD);
   xr.findAttr(elem, "footprintBad", Color::FOOTPRINT_BAD);
   xr.findAttr(elem, "footprint", Color::FOOTPRINT);
