@@ -358,10 +358,12 @@ void Client::refreshQuestProgress() {
     questName->setColor(Color::QUEST_NAME);
     _questProgress->addChild(questName);
 
+    auto allObjectivesCompleted = true;
+
     for (auto i = 0; i != quest.info().objectives.size(); ++i) {
       const auto &objective = quest.info().objectives[i];
 
-      auto objectiveText = " "s + objective.text;
+      auto objectiveText = "- "s + objective.text;
 
       if (objective.qty > 1) {
         objectiveText += " ("s + toString(quest.getProgress(i)) + "/"s +
@@ -372,6 +374,12 @@ void Client::refreshQuestProgress() {
       objectiveLabel->setColor(objectiveComplete ? Color::QUEST_COMPLETE
                                                  : Color::QUEST_OBJECTIVE);
       _questProgress->addChild(objectiveLabel);
+
+      if (!objectiveComplete) allObjectivesCompleted = false;
+    }
+
+    if (allObjectivesCompleted) {
+      questName->setColor(Color::QUEST_COMPLETE);
     }
   }
 }
