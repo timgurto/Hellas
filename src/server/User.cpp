@@ -656,6 +656,8 @@ void User::addQuestKill(const std::string &questID) {
 
   const auto &server = Server::instance();
   const auto quest = server.findQuest(questID);
+  server.sendMessage(_socket, SV_QUEST_PROGRESS,
+                     makeArgs(questID, 0, _questKills[questID]));
   if (quest->canBeCompletedByUser(*this))
     server.sendMessage(_socket, SV_QUEST_CAN_BE_FINISHED, questID);
 }

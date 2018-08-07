@@ -358,10 +358,15 @@ void Client::refreshQuestProgress() {
     questName->setColor(Color::QUEST_NAME);
     _questProgress->addChild(questName);
 
-    for (const auto &objective : quest.info().objectives) {
+    for (auto i = 0; i != quest.info().objectives.size(); ++i) {
+      const auto &objective = quest.info().objectives[i];
+
       auto objectiveText = " "s + objective.text;
-      if (objective.qty > 1)
-        objectiveText += " (0/"s + toString(objective.qty) + ")";
+
+      if (objective.qty > 1) {
+        objectiveText += " ("s + toString(quest.getProgress(i)) + "/"s +
+                         toString(objective.qty) + ")";
+      }
       auto objectiveLabel = new OutlinedLabel({}, objectiveText);
       objectiveLabel->setColor(Color::QUEST_OBJECTIVE);
       _questProgress->addChild(objectiveLabel);

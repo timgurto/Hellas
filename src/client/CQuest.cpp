@@ -6,6 +6,9 @@
 #include "ui/Line.h"
 #include "ui/Window.h"
 
+CQuest::CQuest(const Info &info)
+    : _info(info), _progress(info.objectives.size(), 0) {}
+
 void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
                             Transition pendingTransition) {
   const auto WIN_W = 200_px, WIN_H = 200_px;
@@ -98,4 +101,12 @@ void CQuest::completeQuest(CQuest *quest, size_t startObjectSerial) {
   // up significant memory.  Note that this function is called from a button
   // click (which subsequently changes the appearance of the button), meaning
   // it is unsafe to delete the window here.
+}
+
+void CQuest::setProgress(size_t objective, int progress) {
+  _progress[objective] = progress;
+}
+
+int CQuest::getProgress(size_t objective) const {
+  return _progress.at(objective);
 }

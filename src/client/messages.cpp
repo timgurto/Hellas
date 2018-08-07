@@ -1712,6 +1712,23 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_QUEST_PROGRESS: {
+        singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+        auto questID = std::string{buffer};
+        singleMsg >> del;
+
+        auto objectiveIndex = size_t{0};
+        singleMsg >> objectiveIndex >> del;
+
+        auto progress = 0;
+        singleMsg >> progress >> del;
+
+        if (del != MSG_END) return;
+
+        handle_SV_QUEST_PROGRESS(questID, objectiveIndex, progress);
+        break;
+      }
+
       case SV_SAY: {
         std::string username, message;
         singleMsg >> username >> del;
@@ -2224,6 +2241,16 @@ void Client::handle_SV_QUEST_COMPLETED(const std::string &questID) {
     auto &obj = *pair.second;
     if (obj.objectType()->id() == endNode) obj.assembleWindow(*this);
   }
+
+  refreshQuestProgress();
+}
+
+void Client::handle_SV_QUEST_PROGRESS(const std::string &questID,
+                                      size_t objectiveIndex, int progress) {
+  auto it = _quests.find(questID);
+  if (it == _quests.end()) return;
+
+  it->second.setProgress(objectiveIndex, progress);
 
   refreshQuestProgress();
 }

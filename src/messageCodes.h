@@ -508,6 +508,10 @@ enum MessageCode {
   SV_QUEST_CAN_BE_FINISHED,
   SV_QUEST_COMPLETED,
 
+  // Progress on a quest objective
+  // Arguments: questID, objective index, progress
+  SV_QUEST_PROGRESS,
+
   // "User ... has said ...".
   // Arguments: username, message
   SV_SAY,

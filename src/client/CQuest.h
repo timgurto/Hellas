@@ -28,7 +28,7 @@ class CQuest {
 
   enum Transition { ACCEPT, COMPLETE };
 
-  CQuest(const Info &info = {}) : _info(info) {}
+  CQuest(const Info &info = {});
 
   bool operator<(const CQuest &rhs) { return _info.id < rhs._info.id; }
 
@@ -48,9 +48,13 @@ class CQuest {
     return state == IN_PROGRESS || state == CAN_FINISH;
   }
 
+  void setProgress(size_t objective, int progress);
+  int getProgress(size_t objective) const;
+
  private:
   Info _info;
   Window *_window{nullptr};
+  std::vector<int> _progress;  // objective index -> progress
 };
 
 using CQuests = std::map<CQuest::Info::ID, CQuest>;
