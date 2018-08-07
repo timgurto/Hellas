@@ -154,6 +154,30 @@ size_t User::giveItem(const ServerItem *item, size_t quantity) {
     }
   }
 
+  // Send client fetch-quest progress
+  auto qtyHeld = 0;
+  auto qtyHeldHasBeenCalculated = false;
+  for (const auto &questID : questsInProgress()) {
+    auto quest = server.findQuest(questID);
+    if (!quest) continue;
+
+    for (auto i = 0; i != quest->objectives.size(); ++i) {
+      const auto &objective = quest->objectives[i];
+      if (objective.type != Quest::Objective::FETCH) continue;
+      if (objective.id != item->id()) continue;
+
+      // Only count items once
+      if (!qtyHeldHasBeenCalculated) {
+        qtyHeld = countItems(item);
+        qtyHeldHasBeenCalculated = true;
+      }
+
+      auto progress = min(qtyHeld, objective.qty);
+      server.sendMessage(_socket, SV_QUEST_PROGRESS,
+                         makeArgs(questID, i, progress));
+    }
+  }
+
   auto quantityGiven = quantity - remaining;
   if (quantityGiven > 0) {
     ProgressLock::triggerUnlocks(*this, ProgressLock::ITEM, item);
@@ -375,6 +399,18 @@ void User::removeItems(const std::string &tag, size_t quantity) {
   removeItemsFrom(tag, remaining, _gear, slotsChanged);
   for (size_t slotNum : slotsChanged)
     Server::instance().sendInventoryMessage(*this, slotNum, Server::GEAR);
+}
+
+int User::countItems(const ServerItem *item) const {
+  auto count = 0;
+
+  for (auto &pair : _gear)
+    if (pair.first == item) count += pair.second;
+
+  for (auto &pair : _inventory)
+    if (pair.first == item) count += pair.second;
+
+  return count;
 }
 
 void User::update(ms_t timeElapsed) {

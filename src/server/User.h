@@ -188,6 +188,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   bool hasItems(const std::string &tag, size_t quantity) const;
   void removeItems(const ItemSet &items);
   void removeItems(const std::string &tag, size_t quantity);
+  int countItems(const ServerItem *item) const;
   bool hasTool(const std::string &tagName) const;
   bool hasTools(const std::set<std::string> &classes) const;
 
