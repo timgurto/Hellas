@@ -141,6 +141,7 @@ bool Element::onLeftMouseDown(const ScreenPoint &mousePos) {
   // Assumption: each element has at most one child that collides with the
   // mouse.
   if (!_visible) return false;
+  if (_ignoreMouseEvents) return false;
   const ScreenPoint relativeLocation = mousePos - position();
   bool functionCalled = false;
   for (Element *child : _children) {
@@ -167,6 +168,7 @@ bool Element::onRightMouseDown(const ScreenPoint &mousePos) {
   // Assumption: each element has at most one child that collides with the
   // mouse.
   if (!_visible) return false;
+  if (_ignoreMouseEvents) return false;
   const ScreenPoint relativeLocation = mousePos - position();
   bool functionCalled = false;
   for (Element *child : _children) {
@@ -193,6 +195,7 @@ bool Element::onScrollUp(const ScreenPoint &mousePos) {
   // Assumption: each element has at most one child that collides with the
   // mouse.
   if (!_visible) return false;
+  if (_ignoreMouseEvents) return false;
   const ScreenPoint relativeLocation = mousePos - position();
   bool functionCalled = false;
   for (Element *child : _children) {
@@ -219,6 +222,7 @@ bool Element::onScrollDown(const ScreenPoint &mousePos) {
   // Assumption: each element has at most one child that collides with the
   // mouse.
   if (!_visible) return false;
+  if (_ignoreMouseEvents) return false;
   const ScreenPoint relativeLocation = mousePos - position();
   bool functionCalled = false;
   for (Element *child : _children) {
@@ -242,6 +246,7 @@ bool Element::onScrollDown(const ScreenPoint &mousePos) {
 
 void Element::onLeftMouseUp(const ScreenPoint &mousePos) {
   if (!_visible) return;
+  if (_ignoreMouseEvents) return;
   const ScreenPoint relativeLocation = mousePos - position();
   if (_leftMouseUp != nullptr)
     _leftMouseUp(*_leftMouseUpElement, relativeLocation);
@@ -250,6 +255,7 @@ void Element::onLeftMouseUp(const ScreenPoint &mousePos) {
 
 void Element::onRightMouseUp(const ScreenPoint &mousePos) {
   if (!_visible) return;
+  if (_ignoreMouseEvents) return;
   const ScreenPoint relativeLocation = mousePos - position();
   if (_rightMouseUp != nullptr)
     _rightMouseUp(*_rightMouseUpElement, relativeLocation);

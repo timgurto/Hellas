@@ -3,9 +3,9 @@
 
 #include "../../Color.h"
 #include "../../types.h"
+#include "../Renderer.h"
 #include "../Texture.h"
 #include "../Tooltip.h"
-#include "../Renderer.h"
 
 #ifndef ELEMENT_H
 #define ELEMENT_H
@@ -55,6 +55,8 @@ class Element {
   const Tooltip *_tooltip{nullptr};  // Optional tooltip
 
   Uint8 _alpha = SDL_ALPHA_OPAQUE;
+
+  bool _ignoreMouseEvents{false};
 
   static bool initialized;
 
@@ -136,6 +138,8 @@ class Element {
   const Texture &texture() const { return _texture; }
   static bool isInitialized() { return initialized; }
   void setAlpha(Uint8 alpha);
+  void ignoreMouseEvents() { _ignoreMouseEvents = true; }
+  bool canReceiveMouseEvents() const { return !_ignoreMouseEvents; }
 
   void show();
   void hide();

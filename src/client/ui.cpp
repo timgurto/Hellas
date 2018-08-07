@@ -340,6 +340,7 @@ void Client::initQuestProgress() {
   _questProgress =
       new List{{SCREEN_X - WIDTH, Y, WIDTH, HEIGHT}, Element::TEXT_HEIGHT + 2};
   addUI(_questProgress);
+  _questProgress->ignoreMouseEvents();
 }
 
 void Client::refreshQuestProgress() {

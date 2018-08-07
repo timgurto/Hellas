@@ -235,7 +235,8 @@ void Client::handleInput(double delta) {
             for (Window *window : _windows)
               if (window->visible()) window->onLeftMouseDown(_mouse);
             for (Element *element : _ui)
-              if (element->visible() && collision(_mouse, element->rect()))
+              if (element->visible() && element->canReceiveMouseEvents() &&
+                  collision(_mouse, element->rect()))
                 element->onLeftMouseDown(_mouse);
 
             if (SDL_IsTextInputActive() && !TextBox::focus())
@@ -263,7 +264,8 @@ void Client::handleInput(double delta) {
                 _rightMouseDownWasOnUI = true;
               }
             for (Element *element : _ui)
-              if (element->visible() && collision(_mouse, element->rect())) {
+              if (element->visible() && element->canReceiveMouseEvents() &&
+                  collision(_mouse, element->rect())) {
                 element->onRightMouseDown(_mouse);
                 _rightMouseDownWasOnUI = true;
               }
@@ -294,6 +296,7 @@ void Client::handleInput(double delta) {
             // Propagate event to UI elements
             for (Element *element : _ui)
               if (!mouseUpOnWindow && element->visible() &&
+                  element->canReceiveMouseEvents() &&
                   collision(_mouse, element->rect())) {
                 element->onLeftMouseUp(_mouse);
                 mouseUpOnWindow = true;
@@ -374,6 +377,7 @@ void Client::handleInput(double delta) {
             // Propagate event to UI elements
             for (Element *element : _ui)
               if (!mouseUpOnWindow && element->visible() &&
+                  element->canReceiveMouseEvents() &&
                   collision(_mouse, element->rect())) {
                 element->onRightMouseUp(_mouse);
                 mouseUpOnWindow = true;
@@ -415,13 +419,16 @@ void Client::handleInput(double delta) {
           for (Window *window : _windows)
             if (collision(_mouse, window->rect())) window->onScrollDown(_mouse);
           for (Element *element : _ui)
-            if (collision(_mouse, element->rect()))
+            if (element->visible() && element->canReceiveMouseEvents() &&
+                collision(_mouse, element->rect()))
               element->onScrollDown(_mouse);
         } else if (e.wheel.y > 0) {
           for (Window *window : _windows)
             if (collision(_mouse, window->rect())) window->onScrollUp(_mouse);
           for (Element *element : _ui)
-            if (collision(_mouse, element->rect())) element->onScrollUp(_mouse);
+            if (element->visible() && element->canReceiveMouseEvents() &&
+                collision(_mouse, element->rect()))
+              element->onScrollUp(_mouse);
         }
         break;
 
@@ -488,7 +495,8 @@ void Client::onMouseMove() {
     if (window->visible()) window->onMouseMove(_mouse);
 
   for (Element *element : _ui)
-    if (element->visible()) element->onMouseMove(_mouse);
+    if (element->visible() && element->canReceiveMouseEvents())
+      element->onMouseMove(_mouse);
 }
 
 Sprite *Client::getEntityAtMouse() {
