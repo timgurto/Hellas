@@ -14,6 +14,8 @@ class WordWrapper {
 
   Lines wrap(const std::string &unwrapped) const;
 
+  static std::string readWord(std::istringstream &stream);
+
  private:
   px_t _width{0};
 

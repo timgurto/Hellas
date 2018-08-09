@@ -9,10 +9,32 @@ WordWrapper::WordWrapper(TTF_Font *font, px_t width) : _width(width) {
     auto glyph = Texture{font, std::string{c}};
     _glyphWidths.push_back(glyph.width());
   }
+  _glyphWidths['\n'] = 100000;  // Force new line
+}
+
+std::string WordWrapper::readWord(std::istringstream &stream) {
+  auto word = std::string{};
+  while (true) {
+    auto c = static_cast<char>(stream.peek());
+    if (!stream) return word;
+    if (c == -1) return word;
+
+    if (c == ' ') {
+      stream.ignore(1);
+      return word;
+    }
+
+    if (c == '\n') {
+      stream.ignore(1);
+      return word + "\n";
+    }
+
+    word += c;
+    stream.ignore(1);
+  }
 }
 
 WordWrapper::Lines WordWrapper::wrap(const std::string &unwrapped) const {
-  // return{ unwrapped };
   auto lines = Lines{};
 
   std::istringstream iss(unwrapped);
@@ -28,16 +50,23 @@ WordWrapper::Lines WordWrapper::wrap(const std::string &unwrapped) const {
   std::string segment;
   std::string extraSpaces;
   while (!iss.eof()) {
-    iss.get(buffer, BUFFER_SIZE, ' ');
-    iss.ignore(1);
-    auto charsRead = iss.gcount();
-    std::string word(buffer);
-    word = extraSpaces + word;
+    // Handle newlines
+    auto next = iss.peek();
+    if (next == '\n') {
+      lines.push_back(indent + segment);
+      continue;
+    }
+
+    auto word = readWord(iss);
+
+    // Count extra spaces to put before next word
     extraSpaces = "";
     while (iss.peek() == ' ') {
       extraSpaces += " ";
       iss.ignore(1);
     }
+
+    // Add word to line if it fits
     auto lineWidth = getWidth(indent + segment + " " + word);
     if (lineWidth > _width) {
       if (segment == "") {
