@@ -1072,7 +1072,30 @@ TEST_CASE("Quest items that drop only while on quest", "[quests]") {
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(dragon.serial()));
         WAIT_UNTIL(dragon.isDead());
 
-        THEN("it has loot") { WAIT_UNTIL(dragon.lootable()); }
+        THEN("it has loot") {
+          WAIT_UNTIL(dragon.lootable());
+
+          AND_WHEN("he loots it") {
+            c.sendMessage(CL_TAKE_ITEM, makeArgs(dragon.serial(), 0));
+            WAIT_UNTIL(c.inventory()[0].first != nullptr);
+
+            AND_WHEN("he kills another dragon") {
+              s.addNPC("dragon", {10, 5});
+              WAIT_UNTIL(c.objects().size() == 2);
+              auto dragon2Serial = dragon.serial() + 1;
+              auto it = c.objects().find(dragon2Serial);
+              const auto &dragon2 = *dynamic_cast<ClientNPC *>(it->second);
+
+              c.sendMessage(CL_TARGET_ENTITY, makeArgs(dragon2Serial));
+              WAIT_UNTIL(dragon2.isDead());
+
+              THEN("it has no loot") {
+                REPEAT_FOR_MS(100);
+                CHECK_FALSE(dragon2.lootable());
+              }
+            }
+          }
+        }
       }
     }
 
