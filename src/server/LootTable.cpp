@@ -52,7 +52,9 @@ void LootTable::instantiate(Loot &loot, const User *killer) const {
     } else {
       if (randDouble() < entry.simpleChance) quantity = 1;
     }
-    quantity = min(quantity, qtyLimit);
+
+    if (qtyLimit != NO_LIMIT) quantity = min(quantity, qtyLimit);
+
     if (quantity == 0) continue;
     loot.add(entry.item, quantity);
   }
