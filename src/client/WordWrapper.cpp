@@ -14,6 +14,10 @@ WordWrapper::WordWrapper(TTF_Font *font, px_t width) : _width(width) {
 
 std::string WordWrapper::readWord(std::istringstream &stream) {
   auto word = std::string{};
+
+  // Gobble leading spaces
+  while (stream.peek() == ' ' || stream.peek() == '\n') stream.ignore(1);
+
   while (true) {
     auto c = static_cast<char>(stream.peek());
     if (!stream) return word;
@@ -41,39 +45,27 @@ WordWrapper::Lines WordWrapper::wrap(const std::string &unwrapped) const {
   static const size_t BUFFER_SIZE = 50;  // Maximum word length
   static char buffer[BUFFER_SIZE];
 
-  std::string indent;
-  while (iss.peek() == ' ') {
-    indent += " ";
-    iss.ignore();
-  }
+  bool indentNextWord = false;
 
   std::string segment;
-  std::string extraSpaces;
   while (!iss.eof()) {
     // Handle newlines
     auto next = iss.peek();
-    if (next == '\n') {
-      lines.push_back(indent + segment);
-      continue;
-    }
 
     auto word = readWord(iss);
 
-    // Count extra spaces to put before next word
-    extraSpaces = "";
-    while (iss.peek() == ' ') {
-      extraSpaces += " ";
-      iss.ignore(1);
-    }
+    // Indent non-first paragraphs
+    if (indentNextWord) word = "    " + word;
+    indentNextWord = !word.empty() && word.back() == '\n';
 
     // Add word to line if it fits
-    auto lineWidth = getWidth(indent + segment + " " + word);
+    auto lineWidth = getWidth(segment + " " + word);
     if (lineWidth > _width) {
       if (segment == "") {
         lines.push_back("");
         continue;
       } else {
-        lines.push_back(indent + segment);
+        lines.push_back(segment);
         segment = word;
         continue;
       }
@@ -81,7 +73,7 @@ WordWrapper::Lines WordWrapper::wrap(const std::string &unwrapped) const {
     if (segment != "") segment += " ";
     segment += word;
   }
-  lines.push_back(indent + segment);
+  lines.push_back(segment);
 
   return lines;
 }
