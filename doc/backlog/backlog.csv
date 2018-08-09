@@ -379,7 +379,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 419,Quests can reward a choice of item,21,13,Feature,418,,,1
 420,A quest to kill n NPCs,21,13,Feature,413,TRUE,,1
 421,A quest to collect n items,21,8,Feature,413,TRUE,,1
-422,Quest items that drop only while on a specific quest,5,5,Feature,421,,,1
+422,Quest items that drop only while on a specific quest,5,5,Feature,421,TRUE,,1
 423,A quest to worship at a specific altar type,2,5,Feature,413,,,3
 424,A quest to craft a recipe,8,5,Feature,413,,,3
 425,A quest to complete a construction (or own an object),8,5,Feature,413,,,3
