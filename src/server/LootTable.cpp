@@ -3,6 +3,7 @@
 #include "../util.h"
 #include "Loot.h"
 #include "LootTable.h"
+#include "User.h"
 
 void LootTable::addNormalItem(const ServerItem *item, double mean, double sd) {
   _entries.push_back({});
@@ -18,10 +19,14 @@ void LootTable::addSimpleItem(const ServerItem *item, double chance) {
   le.simpleChance = chance;
 }
 
-void LootTable::instantiate(Loot &loot) const {
+void LootTable::instantiate(Loot &loot, const User *killer) const {
   assert(loot.empty());
   for (const LootEntry &entry : _entries) {
-    if (entry.item->isQuestExclusive()) continue;
+    // Enforce quest exclusivity
+    if (entry.item->isQuestExclusive()) {
+      if (!killer) continue;
+      if (killer->numQuests() == 0) continue;
+    }
 
     auto quantity = 0;
     if (entry.simpleChance == 0) {

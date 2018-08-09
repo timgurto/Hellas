@@ -658,7 +658,7 @@ void User::onDestroyedOwnedObject(const ObjectType &type) const {
   this->_playerUniqueCategoriesOwned.erase(type.playerUniqueCategory());
 }
 
-void User::onKilled(const Entity &victim) {
+void User::onKilled(Entity &victim) {
   auto levelDiff = victim.getLevelDifference(*this);
 
   auto xp = XP{};
@@ -720,11 +720,14 @@ bool User::canAttack() const {
 }
 
 void User::onAttack() {
+  // Tag target
+  if (!target()->tagger()) target()->tagger(*this);
+
+  // Remove ammo if ranged weapon
   auto weapon = _gear[Item::WEAPON_SLOT].first;
   if (!weapon) return;
   auto ammoType = weapon->weaponAmmo();
   if (!ammoType) return;
-
   auto ammo = ItemSet{};
   ammo.add(ammoType);
   removeItems(ammo);

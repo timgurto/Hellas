@@ -160,7 +160,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void onDeath() override;
   void onNewOwnedObject(const ObjectType &type) const;
   void onDestroyedOwnedObject(const ObjectType &type) const;
-  void onKilled(const Entity &victim) override;
+  void onKilled(Entity &victim) override;
   bool canAttack() const override;
   void onAttack() override;
   void sendRangedHitMessageTo(const User &userToInform) const override;

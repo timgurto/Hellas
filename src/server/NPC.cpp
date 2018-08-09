@@ -84,7 +84,7 @@ void NPC::onDeath() {
   Server &server = *Server::_instance;
   server.forceAllToUntarget(*this);
 
-  npcType()->lootTable().instantiate(*_loot);
+  npcType()->lootTable().instantiate(*_loot, tagger());
   if (!_loot->empty())
     for (const User *user : server.findUsersInArea(location()))
       server.sendMessage(user->socket(), SV_LOOTABLE, makeArgs(serial()));

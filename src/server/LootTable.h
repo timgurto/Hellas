@@ -7,6 +7,7 @@
 #include "ServerItem.h"
 
 class Loot;
+class User;
 
 // Defines the loot chances for a single NPC type, and generates loot.
 class LootTable {
@@ -24,7 +25,7 @@ class LootTable {
 
   // Creates a new instance of this Yield, with random init values, in the
   // specified ItemSet
-  void instantiate(Loot &container) const;
+  void instantiate(Loot &container, const User *killer) const;
 };
 
 #endif

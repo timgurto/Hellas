@@ -1033,12 +1033,16 @@ TEST_CASE("Multiple objectives", "[quests][!mayfail]") {
 }
 
 TEST_CASE("Quest items that drop only while on quest", "[quests]") {
-  GIVEN("A quest-exclusive dragon's scale") {
+  GIVEN("A quest for a dragon's scale") {
     auto data = R"(
+      <objectType id="questgiver" />
       <npcType id="dragon">
         <loot id="scale" />
       </npcType>
       <item id="scale" exclusiveToQuest="quest1" />
+      <quest id="quest1" startsAt="questgiver" endsAt="questgiver">
+        <objective type="fetch" id="scale" />
+      </quest>
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
@@ -1054,9 +1058,20 @@ TEST_CASE("Quest items that drop only while on quest", "[quests]") {
       c.sendMessage(CL_TARGET_ENTITY, makeArgs(dragon.serial()));
       WAIT_UNTIL(dragon.isDead());
 
-      THEN("it doesn't drop a scale") {
+      THEN("it has no loot") {
         REPEAT_FOR_MS(100);
         CHECK_FALSE(dragon.lootable());
+      }
+    }
+
+    WHEN("a player is on the quest") {
+      user.startQuest(*s->findQuest("quest1"));
+
+      AND_WHEN("he kills a dragon") {
+        c.sendMessage(CL_TARGET_ENTITY, makeArgs(dragon.serial()));
+        WAIT_UNTIL(dragon.isDead());
+
+        THEN("it has loot") { WAIT_UNTIL(dragon.lootable()); }
       }
     }
   }

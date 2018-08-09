@@ -135,8 +135,9 @@ class Entity {
   virtual void onAttackedBy(
       Entity &attacker,
       Threat threat);  // If the entity needs to react to an attack.
-  virtual void onKilled(const Entity &victim) {
-  }  // Upon this entity killing another
+  virtual void onKilled(Entity &victim) {}  // Upon this entity killing another
+  const User *tagger() { return _tagger; }
+  void tagger(const User &attacker) { _tagger = &attacker; }
   virtual void sendRangedMissMessageTo(const User &userToInform) const {
   }  // Inform user that this entity has missed its target with a ranged attack.
   virtual void sendRangedHitMessageTo(const User &userToInform) const {
@@ -208,6 +209,8 @@ class Entity {
   ms_t _corpseTime;  // How much longer this entity should exist as a corpse.
   void startCorpseTimer();
   Buffs _buffs, _debuffs;
+
+  const User *_tagger{nullptr};  // The user who gets credit for killing this.
 
   ms_t _timeSinceRegen = 0;
 
