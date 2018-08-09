@@ -25,7 +25,7 @@ void LootTable::instantiate(Loot &loot, const User *killer) const {
     // Enforce quest exclusivity
     if (entry.item->isQuestExclusive()) {
       if (!killer) continue;
-      if (killer->numQuests() == 0) continue;
+      if (!killer->isOnQuest(entry.item->exclusiveToQuest())) return;
     }
 
     auto quantity = 0;

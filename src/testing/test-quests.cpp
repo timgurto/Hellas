@@ -1043,6 +1043,7 @@ TEST_CASE("Quest items that drop only while on quest", "[quests]") {
       <quest id="quest1" startsAt="questgiver" endsAt="questgiver">
         <objective type="fetch" id="scale" />
       </quest>
+      <quest id="quest2" startsAt="questgiver" endsAt="questgiver" />
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
@@ -1072,6 +1073,20 @@ TEST_CASE("Quest items that drop only while on quest", "[quests]") {
         WAIT_UNTIL(dragon.isDead());
 
         THEN("it has loot") { WAIT_UNTIL(dragon.lootable()); }
+      }
+    }
+
+    WHEN("a player is on a different quest") {
+      user.startQuest(*s->findQuest("quest2"));
+
+      AND_WHEN("he kills a dragon") {
+        c.sendMessage(CL_TARGET_ENTITY, makeArgs(dragon.serial()));
+        WAIT_UNTIL(dragon.isDead());
+
+        THEN("it has no loot") {
+          REPEAT_FOR_MS(100);
+          CHECK_FALSE(dragon.lootable());
+        }
       }
     }
   }

@@ -21,7 +21,7 @@ class ServerItem : public Item {
 
   bool _loaded{false};
 
-  bool _isQuestExclusive{false};
+  std::string _exclusiveToQuest{};
 
  public:
   ServerItem(const std::string &id);
@@ -39,8 +39,9 @@ class ServerItem : public Item {
   void returnsOnConstruction(const ServerItem *item) {
     _returnsOnConstruction = item;
   }
-  void makeQuestExclusive() { _isQuestExclusive = true; }
-  bool isQuestExclusive() const { return _isQuestExclusive; }
+  void exclusiveToQuest(const std::string &id) { _exclusiveToQuest = id; }
+  bool isQuestExclusive() const { return !_exclusiveToQuest.empty(); }
+  const std::string &exclusiveToQuest() const { return _exclusiveToQuest; }
   bool valid() const { return _loaded; }
   void loaded() { _loaded = true; }
 

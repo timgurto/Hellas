@@ -514,7 +514,7 @@ void DataLoader::loadItems(XmlReader &xr) {
     auto stats = StatsMod{};
     if (xr.findStatsChild("stats", elem, stats)) item.stats(stats);
 
-    if (xr.findAttr(elem, "exclusiveToQuest", s)) item.makeQuestExclusive();
+    if (xr.findAttr(elem, "exclusiveToQuest", s)) item.exclusiveToQuest(s);
 
     auto weaponElem = xr.findChild("weapon", elem);
     if (weaponElem != nullptr) {
