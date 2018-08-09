@@ -28,6 +28,7 @@ void Projectile::update(double delta) {
   for (auto segment : _tail) {
     auto oldSegmentLocation = segment->location();
     segment->location(oldSegmentLocation + locationDelta);
+    segment->destination(segment->location());
   }
 }
 
