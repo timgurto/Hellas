@@ -21,6 +21,8 @@ void LootTable::addSimpleItem(const ServerItem *item, double chance) {
 void LootTable::instantiate(Loot &loot) const {
   assert(loot.empty());
   for (const LootEntry &entry : _entries) {
+    if (entry.item->isQuestExclusive()) continue;
+
     auto quantity = 0;
     if (entry.simpleChance == 0) {
       double rawQuantity = entry.normalDist.generate();

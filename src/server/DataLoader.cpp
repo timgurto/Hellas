@@ -514,6 +514,8 @@ void DataLoader::loadItems(XmlReader &xr) {
     auto stats = StatsMod{};
     if (xr.findStatsChild("stats", elem, stats)) item.stats(stats);
 
+    if (xr.findAttr(elem, "exclusiveToQuest", s)) item.makeQuestExclusive();
+
     auto weaponElem = xr.findChild("weapon", elem);
     if (weaponElem != nullptr) {
       auto range = Podes{};

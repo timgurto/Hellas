@@ -1031,3 +1031,33 @@ TEST_CASE("Multiple objectives", "[quests][!mayfail]") {
     }
   }
 }
+
+TEST_CASE("Quest items that drop only while on quest", "[quests]") {
+  GIVEN("A quest-exclusive dragon's scale") {
+    auto data = R"(
+      <npcType id="dragon">
+        <loot id="scale" />
+      </npcType>
+      <item id="scale" exclusiveToQuest="quest1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    s.addNPC("dragon", {10, 15});
+    WAIT_UNTIL(c.objects().size() == 1);
+    const auto &dragon = c.getFirstNPC();
+
+    WHEN("a player kills a dragon") {
+      c.sendMessage(CL_TARGET_ENTITY, makeArgs(dragon.serial()));
+      WAIT_UNTIL(dragon.isDead());
+
+      THEN("it doesn't drop a scale") {
+        REPEAT_FOR_MS(100);
+        CHECK_FALSE(dragon.lootable());
+      }
+    }
+  }
+}
