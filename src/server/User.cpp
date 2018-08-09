@@ -981,11 +981,11 @@ void User::completeQuest(const Quest::ID &id) {
 
   addXP(100);
 
-  server.sendMessage(_socket, SV_QUEST_COMPLETED, id);
-
   if (quest->otherQuestHasThisAsPrerequisite())
     server.sendMessage(_socket, SV_QUEST_CAN_BE_STARTED,
                        quest->otherQuestWithThisAsPrerequisite);
+
+  server.sendMessage(_socket, SV_QUEST_COMPLETED, id);
 }
 
 bool User::hasCompletedQuest(const Quest::ID &id) const {

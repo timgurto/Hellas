@@ -709,6 +709,43 @@ TEST_CASE("Quest chains", "[quests]") {
   }
 }
 
+TEST_CASE("Object window stays open for chained quests", "[quests][ui]") {
+  GIVEN("a quest chain") {
+    auto data = R"(
+      <objectType id="A" />
+      <quest id="quest1" startsAt="A" endsAt="A" />
+      <quest id="quest2" startsAt="A" endsAt="A">
+        <prerequisite id="quest1" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.addObject("A", {10, 15});
+    WAIT_UNTIL(c.objects().size() == 1);
+    auto &questgiver = c.getFirstObject();
+
+    WHEN("a user starts the first quest") {
+      auto &user = s.getFirstUser();
+      user.startQuest(*s->findQuest("quest1"));
+
+      AND_WHEN("he opens the questgiver's window") {
+        questgiver.onRightClick(c.client());
+        WAIT_UNTIL(questgiver.window() != nullptr);
+
+        AND_WHEN("he completes the quest") {
+          c.sendMessage(CL_COMPLETE_QUEST,
+                        makeArgs("quest1", questgiver.serial()));
+
+          THEN("the object window is still open") {
+            REPEAT_FOR_MS(100);
+            CHECK(questgiver.window() != nullptr);
+          }
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE("Object window is updated with quest changes", "[quests][ui]") {
   GIVEN("an object that only starts one quest") {
     auto data = R"(
