@@ -11,5 +11,6 @@
 <object id="dummyTree"> <location x="1312" y="60736" /> </object>
 
 <npc id="prometheus3"> <location x="2448" y="60324" /> </npc>
+
 <object id="tutBrazier"> <location x="2560" y="60340" /> </object>
 </root>

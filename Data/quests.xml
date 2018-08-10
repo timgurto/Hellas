@@ -29,7 +29,8 @@
 <quest id="tutCombat" name="Taking your place" startsAt="prometheus2" endsAt="prometheus2"
     brief="You are mortal, like the birds and beasts, but unlike them you have a spirit.  Thus, in the Great Chain of Being, you sit above them.
     I built you to be capable, with a broad chest and strong arms: enough to assert your position in the order of things.  To check that you actually can, go out and kill some beasts.
-    Look around nearby for a Pig, and target it by right-clicking on it.  Once you move close enough, you will automatically start attacking it.  I'd like you to kill five."
+    Look around nearby for a Pig, and target it by right-clicking on it.  Once you move close enough, you will automatically start attacking it.  I'd like you to kill five.
+    You can see your progress on the right-hand side of the screen."
     debrief="Excellent, everything seems to be working as intended.
     I suppose I should introduce myself.  My name is Prometheus, and I created you.  Welcome to the world!">
     <prerequisite id="tutConversation" />
@@ -42,13 +43,14 @@
         imageFile="critter" sounds = "pig" >
         <collisionRect x="-9" y="-4" w="18" h="7" />
     </npcType>
-    <spawnPoint type="tutPig" quantity="15" radius="320" respawnTime="30000" x="1732" y="60048" />
-    <spawnPoint type="tutPig" quantity="1" radius="150" respawnTime="30000" x="1490" y="60160" />
+    <spawnPoint type="tutPig" quantity="15" radius="250" respawnTime="30000" x="1000" y="60030" />
+    <spawnPoint type="tutPig" quantity="5"  radius="120" respawnTime="30000" x="1280" y="60058" />
 
 
-<quest id="tutParts" name="All due respect" startsAt="prometheus2" endsAt="prometheus2"
+<quest id="tutParts" name="All due respect" startsAt="prometheus2" endsAt="prometheus3"
     brief="Zeus, the king of the gods, wants to establish animal sacrifices in their honour.  Before we can begin negotiations, you'll need to get your hands dirty: slay some goats, and gather what you can of their remains.
-    You can view your inventory of items by pressing the I key."
+    Once you're done, head East until you find a brazier burning incense; you'll find me there.
+    Look for the telltale sparkles that indicate a dead creature has loot available, and right-click on it.  You can view your inventory of items by pressing the I key."
     debrief="Ah yes, these will do nicely.">
     <prerequisite id="tutCombat" />
     <objective type="fetch" id="tutMeat" qty="10" />
@@ -56,6 +58,16 @@
     <objective type="fetch" id="tutEntrails" qty="10" />
     <objective type="fetch" id="tutFat" />
 </quest>
+    <npcType
+        id="prometheus3" name="Prometheus"
+        level="20" maxHealth="100" isCivilian="1" >
+        <humanoid>
+            <gear id="linenChitonOrange" />
+            <gear id="sandals" />
+            <gear id="fireWand" />
+        </humanoid>
+        <class name="titan"/>
+    </npcType>
     <npcType
         id="tutGoat" name="Goat"
         level="1" maxHealth="32" attack="3" attackTime="1240"
@@ -71,14 +83,17 @@
     <item id="tutHide"     name="Hide"     iconFile="hide"     stackSize="10" exclusiveToQuest="tutParts" />
     <item id="tutEntrails" name="Entrails" iconFile="entrails" stackSize="10" exclusiveToQuest="tutParts" />
     <item id="tutFat"      name="Fat"      iconFile="fat"      stackSize="10" exclusiveToQuest="tutParts" />
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="1392" y="59350" />
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="1244" y="59774" />
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="1040" y="59576" />
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="1246" y="59490" />
+    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="1710" y="59923" />
+    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="2143" y="59822" />
+    <spawnPoint type="tutGoat" quantity="3" radius="200" respawnTime="60000" x="1934" y="60050" />
+    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="1866" y="60305" />
+    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="2190" y="60113" />
 
 
-<quest id="tutOfferings" name="A heavenly choice" startsAt="prometheus2" endsAt="prometheus3"
-    brief="Now that we have what we need, it's time to speak with Zeus.  Head East until you find a brazier burning incense.  I'll meet you there.">
+<!-- Build both offerings, by placing items then adding toppings -->
+<quest id="tutOfferings" name="A heavenly choice" startsAt="prometheus3" endsAt="tutBrazier"
+    brief="[Build two offerings]."
+    debrief="[Greetings, mortal.  I choose the pretty offering!]">
     <prerequisite id="tutParts" />    
 </quest>
     <objectType
@@ -87,18 +102,7 @@
         <collisionRect x="-6" y="-3" w="13" h="6" />
         <particles profile="smoke" x="0" y="-15" />
     </objectType>
-    <npcType
-        id="prometheus3" name="Prometheus"
-        level="20" maxHealth="100" isCivilian="1" >
-        <humanoid>
-            <gear id="linenChitonOrange" />
-            <gear id="sandals" />
-            <gear id="fireWand" />
-        </humanoid>
-        <class name="titan"/>
-    </npcType>
 
-<!-- Build both offerings, by placing items then adding toppings -->
 <!-- Worship at shrine, giving entrails and getting some rocks to throw -->
 <!-- Gather sticks, make fire, cook meat -->
 <!-- Level up? -->
