@@ -30,7 +30,8 @@ bool Quest::canBeCompletedByUser(const User& user) const {
       }
 
       case Objective::CONSTRUCT:
-        return false;
+        if (user.constructionsTowardsQuest(id) < objective.qty) return false;
+        continue;
     }
   }
   return true;

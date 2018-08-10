@@ -700,6 +700,19 @@ void User::addQuestKill(const std::string &questID) {
     server.sendMessage(_socket, SV_QUEST_CAN_BE_FINISHED, questID);
 }
 
+void User::addQuestConstruction(const std::string &questID) {
+  const auto &server = Server::instance();
+  const auto quest = server.findQuest(questID);
+
+  _questConstruction[questID] =
+      min(_questKills[questID] + 1, quest->objectives[0].qty);
+
+  server.sendMessage(_socket, SV_QUEST_PROGRESS,
+                     makeArgs(questID, 0, _questConstruction[questID]));
+  if (quest->canBeCompletedByUser(*this))
+    server.sendMessage(_socket, SV_QUEST_CAN_BE_FINISHED, questID);
+}
+
 bool User::canAttack() const {
   const auto &gearSlot = _gear[Item::WEAPON_SLOT];
 
@@ -1002,6 +1015,12 @@ void User::markQuestAsStarted(const Quest::ID &id) { _quests.insert(id); }
 int User::killsTowardsQuest(const Quest::ID &quest) const {
   auto it = _questKills.find(quest);
   if (it == _questKills.end()) return 0;
+  return it->second;
+}
+
+int User::constructionsTowardsQuest(const Quest::ID &quest) const {
+  auto it = _questConstruction.find(quest);
+  if (it == _questConstruction.end()) return 0;
   return it->second;
 }
 

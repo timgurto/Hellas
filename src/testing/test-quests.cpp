@@ -1153,15 +1153,20 @@ TEST_CASE("Quest items that drop only while on quest", "[quests]") {
 }
 
 TEST_CASE("Construction quests", "[quests]") {
-  GIVEN("a construction quest") {
+  GIVEN("a quest to construct a chair") {
     auto data = R"(
       <objectType id="questgiver" />
+      <objectType id="chair" constructionTime="0" >
+        <material id="wood" />
+      </objectType>
+      <item id="wood" />
       <quest id="quest1" startsAt="questgiver" endsAt="questgiver">
-        <objective type="construct" />
+        <objective type="construct" id="chair" />
       </quest>
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
+    WAIT_UNTIL(s.users().size() == 1);  // Ensures object serials are sequential
 
     s.addObject("questgiver", {10, 15});
     WAIT_UNTIL(c.objects().size() == 1);
@@ -1177,6 +1182,27 @@ TEST_CASE("Construction quests", "[quests]") {
         THEN("he is still on the quest") {
           REPEAT_FOR_MS(100);
           CHECK(user.isOnQuest("quest1"));
+        }
+      }
+
+      AND_WHEN("he constructs a chair") {
+        s.addObject("chair", {5, 10}, user.name());
+        WAIT_UNTIL(c.objects().size() == 2);
+        auto chairSerial = serial + 1;
+        auto chair = s.entities().find<Object>(chairSerial);
+
+        auto &wood = s.getFirstItem();
+        user.giveItem(&wood);
+        c.sendMessage(CL_SWAP_ITEMS,
+                      makeArgs(Server::INVENTORY, 0, chairSerial, 0));
+        WAIT_UNTIL(!chair->isBeingBuilt());
+
+        AND_WHEN("he tries to finish the quest") {
+          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
+
+          THEN("he is has completed it") {
+            WAIT_UNTIL(user.hasCompletedQuest("quest1"));
+          }
         }
       }
     }

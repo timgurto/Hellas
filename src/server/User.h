@@ -73,6 +73,7 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   std::set<Quest::ID> _quests;
   std::map<Quest::ID, int> _questKills;
+  std::map<Quest::ID, int> _questConstruction;
   std::set<Quest::ID> _questsCompleted;
 
  public:
@@ -235,6 +236,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   static double spawnRadius;
   void moveToSpawnPoint(bool isNewPlayer = false);
 
+  // Quests
   void startQuest(const Quest &quest);
   void completeQuest(const Quest::ID &id);
   bool hasCompletedQuest(const Quest::ID &id) const;
@@ -245,11 +247,13 @@ class User : public Object {  // TODO: Don't inherit from Object
   void markQuestAsCompleted(const Quest::ID &id);
   void markQuestAsStarted(const Quest::ID &id);
   void addQuestKill(const std::string &questID);
+  void addQuestConstruction(const std::string &questID);
   int numQuests() const { return _quests.size(); }
   bool isOnQuest(const Quest::ID &id) const {
     return _quests.find(id) != _quests.end();
   }
   int killsTowardsQuest(const Quest::ID &quest) const;
+  int constructionsTowardsQuest(const Quest::ID &quest) const;
 
   struct compareXThenSerial {
     bool operator()(const User *a, const User *b) const;
