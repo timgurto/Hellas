@@ -79,10 +79,10 @@
         <loot id="tutEntrails" > <normal mean="1.5" sd="0.5" /> </loot>
         <loot id="tutFat" chance="0.2" />
     </npcType>
-    <item id="tutMeat"     name="Meat"                         stackSize="10" exclusiveToQuest="tutParts" />
-    <item id="tutHide"     name="Hide"     iconFile="hide"     stackSize="10" exclusiveToQuest="tutParts" />
-    <item id="tutEntrails" name="Entrails" iconFile="entrails" stackSize="10" exclusiveToQuest="tutParts" />
-    <item id="tutFat"      name="Fat"      iconFile="fat"      stackSize="10" exclusiveToQuest="tutParts" />
+    <item id="tutMeat"     name="Meat"                           stackSize="10" exclusiveToQuest="tutParts" />
+    <item id="tutHide"     name="Hide"       iconFile="hide"     stackSize="10" exclusiveToQuest="tutParts" />
+    <item id="tutEntrails" name="Entrails"   iconFile="entrails" stackSize="10" exclusiveToQuest="tutParts" />
+    <item id="tutFat"      name="Animal Fat" iconFile="fat"      stackSize="10" exclusiveToQuest="tutParts" />
     <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="1710" y="59923" />
     <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="2143" y="59822" />
     <spawnPoint type="tutGoat" quantity="3" radius="200" respawnTime="60000" x="1934" y="60050" />
@@ -92,15 +92,38 @@
 
 <!-- Build both offerings, by placing items then adding toppings -->
 <quest id="tutOfferings" name="A heavenly choice" startsAt="prometheus3" endsAt="tutBrazier"
-    brief="[Build two offerings]."
-    debrief="[Greetings, mortal.  I choose the pretty offering!]">
-    <prerequisite id="tutParts" />    
+    brief="Zeus wants to choose which parts of the animal should henceforth be sacrificed to the gods, and so you'll need to make two offerings.
+    I'm very fond of you humans, and so I'll suggest a way that we can cheat him.  This is an eternity of sacrifices we're talking about here, so every little bit helps!
+    Place these piles of meat and entrails on those tiles near the brazier.  Then, decorate them with the hide and fat respectively.
+    To place an item, right-click it and then left-click on the ground.  To add materials to an object, right-click on it, then when the object window appears, move an item to it from your inventory."
+    debrief="Greetings, mortal.  We gods have our due, and as their king it falls to me to make the choice.  But it seems clear to me: I want the best-quality meat, of course!  I choose the fatty offering.">
+    <prerequisite id="tutParts" />
+    <objective type="construct" id="leanOffering" />
+    <objective type="construct" id="fattyOffering" />
 </quest>
     <objectType
         id="tutBrazier" name="Brazier"
         xDrawOffset="-7" yDrawOffset="-18" >
         <collisionRect x="-6" y="-3" w="13" h="6" />
         <particles profile="smoke" x="0" y="-15" />
+    </objectType>
+    <item id="tutMeat2"     name="Meat"                           constructs="leanOffering" />
+    <item id="tutEntrails2" name="Entrails"   iconFile="entrails" constructs="fattyOffering" />
+    <item id="tutHide2"     name="Hide"       iconFile="hide" />
+    <item id="tutFat2"      name="Animal Fat" iconFile="fat" />
+    <objectType
+        id="leanOffering" name="Scrawny Offering"
+        allowedTerrain="tutOfferings"
+        xDrawOffset="-9" yDrawOffset="-9" >
+        <collisionRect x="-9" y="-4" w="18" h="9" />
+        <material id="tutHide2" />
+    </objectType>
+    <objectType
+        id="fattyOffering" name="Fatty Offering"
+        allowedTerrain="tutOfferings"
+        xDrawOffset="-9" yDrawOffset="-9" >
+        <collisionRect x="-9" y="-4" w="18" h="9" />
+        <material id="tutFat2" />
     </objectType>
 
 <!-- Worship at shrine, giving entrails and getting some rocks to throw -->

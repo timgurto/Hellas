@@ -136,4 +136,8 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
     <allow id="water" />
 </list>
 
+<list id="tutOfferings" >
+    <allow id="ruins" />
+</list>
+
 </root>
