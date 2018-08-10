@@ -13,7 +13,7 @@ struct Quest {
   ID id;
 
   struct Objective {
-    enum Type { NONE, KILL, FETCH };
+    enum Type { NONE, KILL, FETCH, CONSTRUCT };
     Type type{NONE};
     void setType(const std::string &asString);
 

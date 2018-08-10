@@ -4,7 +4,7 @@
 
 void Quest::Objective::setType(const std::string& asString) {
   const auto typesByName = std::map<std::string, Quest::Objective::Type>{
-      {"kill", KILL}, {"fetch", FETCH}};
+      {"kill", KILL}, {"fetch", FETCH}, {"construct", CONSTRUCT}};
   auto it = typesByName.find(asString);
   if (it == typesByName.end())
     type = NONE;
@@ -28,6 +28,9 @@ bool Quest::canBeCompletedByUser(const User& user) const {
         if (!user.hasItems(requiredItem)) return false;
         continue;
       }
+
+      case Objective::CONSTRUCT:
+        return false;
     }
   }
   return true;

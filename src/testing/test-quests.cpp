@@ -1151,3 +1151,34 @@ TEST_CASE("Quest items that drop only while on quest", "[quests]") {
     }
   }
 }
+
+TEST_CASE("Construction quests", "[quests]") {
+  GIVEN("a construction quest") {
+    auto data = R"(
+      <objectType id="questgiver" />
+      <quest id="quest1" startsAt="questgiver" endsAt="questgiver">
+        <objective type="construct" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addObject("questgiver", {10, 15});
+    WAIT_UNTIL(c.objects().size() == 1);
+    auto serial = c.getFirstObject().serial();
+    auto &user = s.getFirstUser();
+
+    WHEN("a user starts the quest") {
+      user.startQuest(*s->findQuest("quest1"));
+
+      AND_WHEN("he tries to finish it") {
+        c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
+
+        THEN("he is still on the quest") {
+          REPEAT_FOR_MS(100);
+          CHECK(user.isOnQuest("quest1"));
+        }
+      }
+    }
+  }
+}
