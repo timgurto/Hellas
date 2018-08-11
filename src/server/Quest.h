@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -11,7 +12,7 @@ struct Quest {
  public:
   using ID = std::string;
   ID id;
-  std::string startsWithItem{};
+  std::set<std::string> startsWithItems{};
 
   struct Objective {
     enum Type { NONE, KILL, FETCH, CONSTRUCT };

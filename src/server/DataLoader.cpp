@@ -408,8 +408,10 @@ void DataLoader::loadQuests(XmlReader &xr) {
       prerequisiteQuest.otherQuestWithThisAsPrerequisite = id;
     }
 
-    auto startsWithItem = xr.findChild("startsWithItem", elem);
-    if (startsWithItem) xr.findAttr(startsWithItem, "id", q.startsWithItem);
+    for (auto startsWithItem : xr.getChildren("startsWithItem", elem)) {
+      auto id = ""s;
+      if (xr.findAttr(startsWithItem, "id", id)) q.startsWithItems.insert(id);
+    }
 
     startingObject->addQuestStart(id);
     endingObject->addQuestEnd(id);

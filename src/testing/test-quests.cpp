@@ -1271,7 +1271,7 @@ TEST_CASE("Construction quests", "[quests]") {
   }
 }
 
-TEST_CASE("A quest that gives you items when you start", "[quests]") {
+TEST_CASE("Quests that give items when you start", "[quests]") {
   GIVEN("a questgiver, and a variety of quests") {
     auto data = R"(
       <objectType id="questgiver" />
@@ -1283,7 +1283,11 @@ TEST_CASE("A quest that gives you items when you start", "[quests]") {
       <quest id="assassinate" startsAt="questgiver" endsAt="questgiver">
         <startsWithItem id="gun" />
       </quest>
-      <quest id="doStuff" startsAt="questgiver" endsAt="questgiver" />
+      <quest id="robHouse" startsAt="questgiver" endsAt="questgiver">
+        <startsWithItem id="key" />
+        <startsWithItem id="gun" />
+      </quest>
+      <quest id="doNothing" startsAt="questgiver" endsAt="questgiver" />
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
@@ -1303,7 +1307,7 @@ TEST_CASE("A quest that gives you items when you start", "[quests]") {
     }
 
     WHEN("a user accepts a minimal quest") {
-      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("doStuff", serial));
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("doNothing", serial));
 
       THEN("the user has no items") {
         REPEAT_FOR_MS(100);
@@ -1315,6 +1319,19 @@ TEST_CASE("A quest that gives you items when you start", "[quests]") {
     WHEN("a user accepts two quests that grant two different items") {
       c.sendMessage(CL_ACCEPT_QUEST, makeArgs("openTheDoor", serial));
       c.sendMessage(CL_ACCEPT_QUEST, makeArgs("assassinate", serial));
+
+      THEN("the user has both items") {
+        auto requiredItems = ItemSet{};
+        requiredItems.add(s->findItem("key"));
+        requiredItems.add(s->findItem("gun"));
+        REPEAT_FOR_MS(100);
+
+        WAIT_UNTIL(user.hasItems(requiredItems));
+      }
+    }
+
+    WHEN("a user accepts a quest that gives two items") {
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("robHouse", serial));
 
       THEN("the user has both items") {
         auto requiredItems = ItemSet{};

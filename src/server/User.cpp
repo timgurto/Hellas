@@ -998,8 +998,8 @@ void User::startQuest(const Quest &quest) {
   auto &server = Server::instance();
   server.sendMessage(_socket, message, quest.id);
 
-  if (!quest.startsWithItem.empty()) {
-    auto item = server.findItem(quest.startsWithItem);
+  for (const auto &itemID : quest.startsWithItems) {
+    auto item = server.findItem(itemID);
     if (!item) return;
     giveItem(item);
   }
