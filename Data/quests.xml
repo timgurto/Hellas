@@ -118,14 +118,14 @@
     <item id="tutFat2"      name="Animal Fat" iconFile="fat"      exclusiveToQuest="tutOfferings" />
     <objectType
         id="leanOffering" name="Scrawny Offering"
-        allowedTerrain="tutOfferings"
+        allowedTerrain="tutOfferings" constructionTime="5000"  isUnbuildable="true"
         xDrawOffset="-9" yDrawOffset="-9" >
         <collisionRect x="-9" y="-4" w="18" h="9" />
         <material id="tutHide2" />
     </objectType>
     <objectType
         id="fattyOffering" name="Fatty Offering"
-        allowedTerrain="tutOfferings"
+        allowedTerrain="tutOfferings" constructionTime="5000" isUnbuildable="true"
         xDrawOffset="-9" yDrawOffset="-9" >
         <collisionRect x="-9" y="-4" w="18" h="9" />
         <material id="tutFat2" />
