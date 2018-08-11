@@ -1270,3 +1270,31 @@ TEST_CASE("Construction quests", "[quests]") {
     }
   }
 }
+
+TEST_CASE("A quest that gives you items when you start", "[quests]") {
+  GIVEN("a quest that gives you a key") {
+    auto data = R"(
+      <objectType id="questgiver" />
+      <item id="key" />
+      <quest id="openTheDoor" startsAt="questgiver" endsAt="questgiver">
+        <startsWithItem id="key" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addObject("questgiver", {10, 15});
+    WAIT_UNTIL(c.objects().size() == 1);
+    auto serial = c.getFirstObject().serial();
+    auto &user = s.getFirstUser();
+
+    WHEN("a user accepts the quest") {
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("openTheDoor", serial));
+
+      THEN("the user has a key") {
+        const auto &firstSlot = user.inventory()[0];
+        WAIT_UNTIL(firstSlot.first != nullptr);
+      }
+    }
+  }
+}

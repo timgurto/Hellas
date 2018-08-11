@@ -997,6 +997,8 @@ void User::startQuest(const Quest &quest) {
       quest.hasObjective() ? SV_QUEST_IN_PROGRESS : SV_QUEST_CAN_BE_FINISHED;
   auto &server = Server::instance();
   server.sendMessage(_socket, message, quest.id);
+
+  if (server._items.size() > 0) giveItem(&*server._items.begin());
 }
 
 void User::completeQuest(const Quest::ID &id) {

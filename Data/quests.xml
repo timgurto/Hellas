@@ -93,13 +93,18 @@
 <!-- Build both offerings, by placing items then adding toppings -->
 <quest id="tutOfferings" name="A heavenly choice" startsAt="prometheus3" endsAt="tutBrazier"
     brief="Zeus wants to choose which parts of the animal should henceforth be sacrificed to the gods, and so you'll need to make two offerings.
-    I'm very fond of you humans, and so I'll suggest a way that we can cheat him.  This is an eternity of sacrifices we're talking about here, so every little bit helps!
+    I'm very fond of you humans, and so I'll suggest a way that we can cheat him.  We're talking about an eternity of sacrifices, so every little bit helps!
     Place these piles of meat and entrails on those tiles near the brazier.  Then, cover them with the hide and fat respectively.
+    Once you've done all that, approach the brazier, reverently, and speak with Zeus.
     To place an item, right-click it and then left-click on the ground.  To add materials to an object, right-click on it, then when the object window appears, move an item to it from your inventory."
-    debrief="Greetings, mortal.  We gods have our due, and as their king it falls to me to make the choice.  But it seems clear to me: I want the best-quality meat, of course!  I choose the fatty offering.">
+    debrief="Greetings, mortal.  We gods have our due, and as their king it falls to me to make the choice.  But it seems clear to me: We should have the best-quality meat for ourselves, of course!  I choose the fatty offering.">
     <!--prerequisite id="tutParts" /-->
     <objective type="construct" id="leanOffering" />
     <objective type="construct" id="fattyOffering" />
+    <startsWithItem id="tutMeat2" />
+    <startsWithItem id="tutEntrails2" />
+    <startsWithItem id="tutHide2" />
+    <startsWithItem id="tutFat2" />
 </quest>
     <objectType
         id="tutBrazier" name="Brazier"
@@ -107,10 +112,10 @@
         <collisionRect x="-6" y="-3" w="13" h="6" />
         <particles profile="smoke" x="0" y="-15" />
     </objectType>
-    <item id="tutMeat2"     name="Meat"                           constructs="leanOffering" />
-    <item id="tutEntrails2" name="Entrails"   iconFile="entrails" constructs="fattyOffering" />
-    <item id="tutHide2"     name="Hide"       iconFile="hide" />
-    <item id="tutFat2"      name="Animal Fat" iconFile="fat" />
+    <item id="tutMeat2"     name="Meat"                           exclusiveToQuest="tutOfferings" constructs="leanOffering" />
+    <item id="tutEntrails2" name="Entrails"   iconFile="entrails" exclusiveToQuest="tutOfferings" constructs="fattyOffering" />
+    <item id="tutHide2"     name="Hide"       iconFile="hide"     exclusiveToQuest="tutOfferings" />
+    <item id="tutFat2"      name="Animal Fat" iconFile="fat"      exclusiveToQuest="tutOfferings" />
     <objectType
         id="leanOffering" name="Scrawny Offering"
         allowedTerrain="tutOfferings"
