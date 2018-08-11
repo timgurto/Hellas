@@ -365,7 +365,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 405,Save user data more frequently,55,5,Feature,,,,
 406,Scroll recipe list to top when filters change,5,2,Bug,,,,
 407,Make under-construction objects easier to kill,8,8,Exploit,,,,
-408,Tutorial,89,89,Feature,45,,,1
+408,Tutorial,89,89,Feature,,,,1
 409,Change lighting/colors to simulate time of day,21,55,Aesthetics,,,,
 410,"Recruit via an invitation, not insta-join",21,13,Usability,,,,
 411,Failed assertion in Entity.cpp line 116,34,8,Bug,,,,
@@ -380,11 +380,10 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 420,A quest to kill n NPCs,21,13,Feature,413,TRUE,,1
 421,A quest to collect n items,21,8,Feature,413,TRUE,,1
 422,Quest items that drop only while on a specific quest,5,5,Feature,421,TRUE,,1
-423,A quest to worship at a specific altar type,2,5,Feature,413,,,3
-424,A quest to craft a recipe,8,5,Feature,413,,,3
-425,A quest to complete a construction (or own an object),8,5,Feature,413,,,3
-427,Quests can reward a recipe,13,5,Feature,413,,,
-428,Quests can reward a construction,13,5,Feature,413,,,3
+423,A quest to worship at a specific altar type,2,5,Feature,413,,,1
+425,A quest to complete a construction,8,5,Feature,413,TRUE,,1
+427,Quests can reward a recipe,13,5,Feature,413,,,1
+428,Quests can reward a construction,13,5,Feature,413,,,1
 429,Can log in with Enter key when button is disabled,34,2,Bug,,,,
 430,Sometimes non-leaf skills are lost on death,13,8,Bug,,,,
 432,A quest can unlock another quest,21,3,Feature,413,TRUE,,3
@@ -417,3 +416,5 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 459,Editor: save spawners,8,3,Tooling,458,,,
 460,Editor: add spawners,21,21,Tooling,458,,,
 461,Editor: remove spawners,2,8,Tooling,458,,,
+462,Quest content for levels 1–20,144,144,Content,,,,
+463,An adventure (instance),233,89,Content,45,,,2

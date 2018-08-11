@@ -861,6 +861,10 @@ void CDataLoader::loadQuests(XmlReader &xr) {
         auto npcType = client.findNPCType(id);
         objective.text = "Kill "s + (npcType ? npcType->name() : "???"s);
 
+      } else if (type == "construct") {
+        auto objType = client.findObjectType(id);
+        objective.text = "Construct "s + (objType ? objType->name() : "???"s);
+
       } else if (type == "fetch") {
         auto &it = client._items.find(id);
         objective.text = it->second.name();

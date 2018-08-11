@@ -94,10 +94,10 @@
 <quest id="tutOfferings" name="A heavenly choice" startsAt="prometheus3" endsAt="tutBrazier"
     brief="Zeus wants to choose which parts of the animal should henceforth be sacrificed to the gods, and so you'll need to make two offerings.
     I'm very fond of you humans, and so I'll suggest a way that we can cheat him.  This is an eternity of sacrifices we're talking about here, so every little bit helps!
-    Place these piles of meat and entrails on those tiles near the brazier.  Then, decorate them with the hide and fat respectively.
+    Place these piles of meat and entrails on those tiles near the brazier.  Then, cover them with the hide and fat respectively.
     To place an item, right-click it and then left-click on the ground.  To add materials to an object, right-click on it, then when the object window appears, move an item to it from your inventory."
     debrief="Greetings, mortal.  We gods have our due, and as their king it falls to me to make the choice.  But it seems clear to me: I want the best-quality meat, of course!  I choose the fatty offering.">
-    <prerequisite id="tutParts" />
+    <!--prerequisite id="tutParts" /-->
     <objective type="construct" id="leanOffering" />
     <objective type="construct" id="fattyOffering" />
 </quest>

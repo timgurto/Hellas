@@ -336,7 +336,7 @@ void Client::initPlayerPanels() {
 }
 
 void Client::initQuestProgress() {
-  const auto WIDTH = 100_px, Y = 100_px, HEIGHT = 200_px;
+  const auto WIDTH = 150_px, Y = 100_px, HEIGHT = 200_px;
   _questProgress =
       new List{{SCREEN_X - WIDTH, Y, WIDTH, HEIGHT}, Element::TEXT_HEIGHT + 2};
   addUI(_questProgress);
