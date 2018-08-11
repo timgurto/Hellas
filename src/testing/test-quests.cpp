@@ -1297,4 +1297,28 @@ TEST_CASE("A quest that gives you items when you start", "[quests]") {
       }
     }
   }
+  GIVEN("a minimal quest, and an item") {
+    auto data = R"(
+      <item id="garbage" />
+      <objectType id="questgiver" />
+      <quest id="doStuff" startsAt="questgiver" endsAt="questgiver" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addObject("questgiver", {10, 15});
+    WAIT_UNTIL(c.objects().size() == 1);
+    auto serial = c.getFirstObject().serial();
+    auto &user = s.getFirstUser();
+
+    WHEN("a user accepts the quest") {
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("doStuff", serial));
+
+      THEN("the user has no items") {
+        REPEAT_FOR_MS(100);
+        const auto &firstSlot = user.inventory()[0];
+        CHECK(firstSlot.first == nullptr);
+      }
+    }
+  }
 }
