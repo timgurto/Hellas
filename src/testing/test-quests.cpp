@@ -814,6 +814,9 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
     <quest id="killIt" startsAt="A" endsAt="A">
       <objective type="kill" id="A" />
     </quest>
+    <quest id="buildIt" startsAt="A" endsAt="A">
+      <objective type="construct" id="A" />
+    </quest>
     <quest id="finishMe" startsAt="A" endsAt="A" />
   )";
   {
@@ -829,6 +832,10 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
     // And killed the target of another quest
     alice.startQuest(*s->findQuest("killIt"));
     alice.addQuestProgress(Quest::Objective::KILL, "A");
+
+    // And constructed the target of another quest
+    alice.startQuest(*s->findQuest("buildIt"));
+    alice.addQuestProgress(Quest::Objective::CONSTRUCT, "A");
 
     // and finished yet another
     alice.startQuest(*s->findQuest("finishMe"));
@@ -848,6 +855,10 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
     // And has achieved the objective of the second quest
     auto killIt = s->findQuest("killIt");
     CHECK(killIt->canBeCompletedByUser(alice));
+
+    // And has achieved the objective of the third quest
+    auto buidlIt = s->findQuest("buildIt");
+    CHECK(buidlIt->canBeCompletedByUser(alice));
 
     // And completed the fourth quest
     CHECK(alice.hasCompletedQuest("finishMe"));

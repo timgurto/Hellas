@@ -15,7 +15,9 @@ struct Quest {
   struct Objective {
     enum Type { NONE, KILL, FETCH, CONSTRUCT };
     Type type{NONE};
+    static Type typeFromString(const std::string &asString);
     void setType(const std::string &asString);
+    std::string typeAsString() const;
 
     std::string id{};
     const ServerItem *item{nullptr};

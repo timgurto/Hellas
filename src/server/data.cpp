@@ -163,11 +163,14 @@ bool Server::readUserData(User &user) {
     user.markQuestAsStarted(questID);
 
     for (auto progress : xr.getChildren("progress", questElem)) {
+      auto typeAsString = ""s;
+      if (!xr.findAttr(progress, "type", typeAsString)) continue;
+      auto type = Quest::Objective::typeFromString(typeAsString);
       auto id = ""s;
       if (!xr.findAttr(progress, "id", id)) continue;
       auto qty = 0;
       if (!xr.findAttr(progress, "qty", qty)) continue;
-      user.initQuestProgress(questID, Quest::Objective::KILL, id, qty);
+      user.initQuestProgress(questID, type, id, qty);
     }
   }
 
@@ -256,11 +259,10 @@ void Server::writeUserData(const User &user) const {
     xw.setAttr(questElem, "quest", questID);
     auto quest = findQuest(questID);
     for (const auto &objective : quest->objectives) {
-      if (objective.type != Quest::Objective::KILL) continue;
-      auto progress =
-          user.questProgress(questID, Quest::Objective::KILL, objective.id);
+      auto progress = user.questProgress(questID, objective.type, objective.id);
       if (progress == 0) continue;
       auto progressElem = xw.addChild("progress", questElem);
+      xw.setAttr(progressElem, "type", objective.typeAsString());
       xw.setAttr(progressElem, "id", objective.id);
       xw.setAttr(progressElem, "qty", progress);
     }

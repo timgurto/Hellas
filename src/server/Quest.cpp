@@ -2,14 +2,25 @@
 #include "Server.h"
 #include "User.h"
 
-void Quest::Objective::setType(const std::string& asString) {
+Quest::Objective::Type Quest::Objective::typeFromString(
+    const std::string& asString) {
   const auto typesByName = std::map<std::string, Quest::Objective::Type>{
       {"kill", KILL}, {"fetch", FETCH}, {"construct", CONSTRUCT}};
   auto it = typesByName.find(asString);
-  if (it == typesByName.end())
-    type = NONE;
-  else
-    type = it->second;
+  if (it == typesByName.end()) return NONE;
+  return it->second;
+}
+
+void Quest::Objective::setType(const std::string& asString) {
+  type = typeFromString(asString);
+}
+
+std::string Quest::Objective::typeAsString() const {
+  const auto typeNames = std::map<Quest::Objective::Type, std::string>{
+      {KILL, "kill"}, {FETCH, "fetch"}, {CONSTRUCT, "construct"}};
+  auto it = typeNames.find(type);
+  if (it == typeNames.end()) return "none";
+  return it->second;
 }
 
 bool Quest::canBeCompletedByUser(const User& user) const {
