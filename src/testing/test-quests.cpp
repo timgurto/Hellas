@@ -1272,35 +1272,13 @@ TEST_CASE("Construction quests", "[quests]") {
 }
 
 TEST_CASE("A quest that gives you items when you start", "[quests]") {
-  GIVEN("a quest that gives you a key") {
+  GIVEN("a questgiver, and a variety of quests") {
     auto data = R"(
       <objectType id="questgiver" />
       <item id="key" />
       <quest id="openTheDoor" startsAt="questgiver" endsAt="questgiver">
         <startsWithItem id="key" />
       </quest>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-
-    s.addObject("questgiver", {10, 15});
-    WAIT_UNTIL(c.objects().size() == 1);
-    auto serial = c.getFirstObject().serial();
-    auto &user = s.getFirstUser();
-
-    WHEN("a user accepts the quest") {
-      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("openTheDoor", serial));
-
-      THEN("the user has a key") {
-        const auto &firstSlot = user.inventory()[0];
-        WAIT_UNTIL(firstSlot.first != nullptr);
-      }
-    }
-  }
-  GIVEN("a minimal quest, and an item") {
-    auto data = R"(
-      <item id="garbage" />
-      <objectType id="questgiver" />
       <quest id="doStuff" startsAt="questgiver" endsAt="questgiver" />
     )";
     auto s = TestServer::WithDataString(data);
@@ -1311,7 +1289,16 @@ TEST_CASE("A quest that gives you items when you start", "[quests]") {
     auto serial = c.getFirstObject().serial();
     auto &user = s.getFirstUser();
 
-    WHEN("a user accepts the quest") {
+    WHEN("a user accepts a quest that gives a key") {
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("openTheDoor", serial));
+
+      THEN("the user has a key") {
+        const auto &firstSlot = user.inventory()[0];
+        WAIT_UNTIL(firstSlot.first != nullptr);
+      }
+    }
+
+    WHEN("a user accepts a minimal quest") {
       c.sendMessage(CL_ACCEPT_QUEST, makeArgs("doStuff", serial));
 
       THEN("the user has no items") {
