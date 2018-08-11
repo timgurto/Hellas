@@ -409,7 +409,7 @@ void DataLoader::loadQuests(XmlReader &xr) {
     }
 
     auto startsWithItem = xr.findChild("startsWithItem", elem);
-    if (startsWithItem) q.startsWithItem = true;
+    if (startsWithItem) xr.findAttr(startsWithItem, "id", q.startsWithItem);
 
     startingObject->addQuestStart(id);
     endingObject->addQuestEnd(id);

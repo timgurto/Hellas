@@ -11,7 +11,7 @@ struct Quest {
  public:
   using ID = std::string;
   ID id;
-  bool startsWithItem{false};
+  std::string startsWithItem{};
 
   struct Objective {
     enum Type { NONE, KILL, FETCH, CONSTRUCT };

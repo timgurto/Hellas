@@ -1276,8 +1276,12 @@ TEST_CASE("A quest that gives you items when you start", "[quests]") {
     auto data = R"(
       <objectType id="questgiver" />
       <item id="key" />
+      <item id="gun" />
       <quest id="openTheDoor" startsAt="questgiver" endsAt="questgiver">
         <startsWithItem id="key" />
+      </quest>
+      <quest id="assassinate" startsAt="questgiver" endsAt="questgiver">
+        <startsWithItem id="gun" />
       </quest>
       <quest id="doStuff" startsAt="questgiver" endsAt="questgiver" />
     )";
@@ -1305,6 +1309,20 @@ TEST_CASE("A quest that gives you items when you start", "[quests]") {
         REPEAT_FOR_MS(100);
         const auto &firstSlot = user.inventory()[0];
         CHECK(firstSlot.first == nullptr);
+      }
+    }
+
+    WHEN("a user accepts two quests that grant two different items") {
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("openTheDoor", serial));
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("assassinate", serial));
+
+      THEN("the user has both items") {
+        auto requiredItems = ItemSet{};
+        requiredItems.add(s->findItem("key"));
+        requiredItems.add(s->findItem("gun"));
+        REPEAT_FOR_MS(100);
+
+        WAIT_UNTIL(user.hasItems(requiredItems));
       }
     }
   }

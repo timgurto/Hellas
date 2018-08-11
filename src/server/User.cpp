@@ -998,8 +998,11 @@ void User::startQuest(const Quest &quest) {
   auto &server = Server::instance();
   server.sendMessage(_socket, message, quest.id);
 
-  if (quest.startsWithItem && server._items.size() > 0)
-    giveItem(&*server._items.begin());
+  if (!quest.startsWithItem.empty()) {
+    auto item = server.findItem(quest.startsWithItem);
+    if (!item) return;
+    giveItem(item);
+  }
 }
 
 void User::completeQuest(const Quest::ID &id) {
