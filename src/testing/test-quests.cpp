@@ -810,11 +810,11 @@ TEST_CASE("Object window is updated with quest changes", "[quests][ui]") {
 TEST_CASE("Quest progress is persistent", "[quests]") {
   auto data = R"(
     <objectType id="A" />
-    <quest id="startedQuest" startsAt="A" endsAt="A" />
-    <quest id="killedQuest" startsAt="A" endsAt="A">
+    <quest id="startMe" startsAt="A" endsAt="A" />
+    <quest id="killIt" startsAt="A" endsAt="A">
       <objective type="kill" id="A" />
     </quest>
-    <quest id="finishedQuest" startsAt="A" endsAt="A" />
+    <quest id="finishMe" startsAt="A" endsAt="A" />
   )";
   {
     auto s = TestServer::WithDataString(data);
@@ -824,15 +824,15 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
     auto &alice = s.getFirstUser();
 
     // Given that Alice has started a quest
-    alice.startQuest(*s->findQuest("startedQuest"));
+    alice.startQuest(*s->findQuest("startMe"));
 
     // And killed the target of another quest
-    alice.startQuest(*s->findQuest("killedQuest"));
+    alice.startQuest(*s->findQuest("killIt"));
     alice.addQuestProgress(Quest::Objective::KILL, "A");
 
     // and finished yet another
-    alice.startQuest(*s->findQuest("finishedQuest"));
-    alice.completeQuest("finishedQuest");
+    alice.startQuest(*s->findQuest("finishMe"));
+    alice.completeQuest("finishMe");
 
     // When the server restarts
   }
@@ -843,14 +843,14 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
     const auto &alice = s.getFirstUser();
 
     // Then she is on the first quest
-    CHECK(alice.isOnQuest("startedQuest"));
+    CHECK(alice.isOnQuest("startMe"));
 
     // And has achieved the objective of the second quest
-    auto killedQuest = s->findQuest("killedQuest");
-    CHECK(killedQuest->canBeCompletedByUser(alice));
+    auto killIt = s->findQuest("killIt");
+    CHECK(killIt->canBeCompletedByUser(alice));
 
-    // And completed the third quest
-    CHECK(alice.hasCompletedQuest("finishedQuest"));
+    // And completed the fourth quest
+    CHECK(alice.hasCompletedQuest("finishMe"));
   }
 }
 
