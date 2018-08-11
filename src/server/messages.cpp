@@ -565,14 +565,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
                                            pObj2->type());
 
             // Update quest progress for completing user
-            for (auto questID : user->questsInProgress()) {
-              auto quest = findQuest(questID);
-              for (const auto &objective : quest->objectives) {
-                if (objective.type != Quest::Objective::CONSTRUCT) continue;
-                if (objective.id != pObj2->type()->id()) continue;
-                user->addQuestConstruction(questID);
-              }
-            }
+            user->addQuestProgress(Quest::Objective::CONSTRUCT,
+                                   pObj2->type()->id());
           }
 
           // Return an item to the user, if required.

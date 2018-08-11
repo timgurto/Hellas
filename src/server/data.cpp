@@ -153,18 +153,21 @@ bool Server::readUserData(User &user) {
 
   elem = xr.findChild("quests");
   for (auto questElem : xr.getChildren("completed", elem)) {
-    auto id = ""s;
-    if (!xr.findAttr(questElem, "id", id)) continue;
-    user.markQuestAsCompleted(id);
+    auto questID = ""s;
+    if (!xr.findAttr(questElem, "quest", questID)) continue;
+    user.markQuestAsCompleted(questID);
   }
   for (auto questElem : xr.getChildren("inProgress", elem)) {
-    auto id = ""s;
-    if (!xr.findAttr(questElem, "id", id)) continue;
-    user.markQuestAsStarted(id);
+    auto questID = ""s;
+    if (!xr.findAttr(questElem, "quest", questID)) continue;
+    user.markQuestAsStarted(questID);
 
-    auto n = 0;
-    if (xr.findAttr(questElem, "kills", n)) {
-      for (auto i = 0; i != n; ++i) user.addQuestKill(id);
+    for (auto progress : xr.getChildren("progress", questElem)) {
+      auto id = ""s;
+      if (!xr.findAttr(progress, "id", id)) continue;
+      auto qty = 0;
+      if (!xr.findAttr(progress, "qty", qty)) continue;
+      user.initQuestProgress(questID, Quest::Objective::KILL, id, qty);
     }
   }
 
@@ -246,14 +249,21 @@ void Server::writeUserData(const User &user) const {
   e = xw.addChild("quests");
   for (const auto &completedQuestID : user.questsCompleted()) {
     auto questElem = xw.addChild("completed", e);
-    xw.setAttr(questElem, "id", completedQuestID);
+    xw.setAttr(questElem, "quest", completedQuestID);
   }
   for (const auto &questID : user.questsInProgress()) {
     auto questElem = xw.addChild("inProgress", e);
-    xw.setAttr(questElem, "id", questID);
+    xw.setAttr(questElem, "quest", questID);
     auto quest = findQuest(questID);
-    if (quest->hasObjective())
-      xw.setAttr(questElem, "kills", user.killsTowardsQuest(questID));
+    for (const auto &objective : quest->objectives) {
+      if (objective.type != Quest::Objective::KILL) continue;
+      auto progress =
+          user.questProgress(questID, Quest::Objective::KILL, objective.id);
+      if (progress == 0) continue;
+      auto progressElem = xw.addChild("progress", questElem);
+      xw.setAttr(progressElem, "id", objective.id);
+      xw.setAttr(progressElem, "qty", progress);
+    }
   }
 
   xw.publish();

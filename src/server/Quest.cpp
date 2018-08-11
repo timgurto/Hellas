@@ -16,11 +16,7 @@ bool Quest::canBeCompletedByUser(const User& user) const {
   for (const auto& objective : objectives) {
     switch (objective.type) {
       case Objective::NONE:
-        continue;
-
-      case Objective::KILL:
-        if (user.killsTowardsQuest(id) < objective.qty) return false;
-        continue;
+        assert(false);
 
       case Objective::FETCH: {
         auto requiredItem = ItemSet{};
@@ -29,8 +25,11 @@ bool Quest::canBeCompletedByUser(const User& user) const {
         continue;
       }
 
+      case Objective::KILL:
       case Objective::CONSTRUCT:
-        if (user.constructionsTowardsQuest(id) < objective.qty) return false;
+        if (user.questProgress(id, objective.type, objective.id) <
+            objective.qty)
+          return false;
         continue;
     }
   }

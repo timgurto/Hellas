@@ -828,7 +828,7 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
 
     // And killed the target of another quest
     alice.startQuest(*s->findQuest("killedQuest"));
-    alice.addQuestKill("killedQuest");
+    alice.addQuestProgress(Quest::Objective::KILL, "A");
 
     // and finished yet another
     alice.startQuest(*s->findQuest("finishedQuest"));
@@ -1202,6 +1202,57 @@ TEST_CASE("Construction quests", "[quests]") {
 
           THEN("he is has completed it") {
             WAIT_UNTIL(user.hasCompletedQuest("quest1"));
+          }
+        }
+      }
+    }
+  }
+
+  GIVEN("a quest to construct a washer and dryer") {
+    auto data = R"(
+      <objectType id="questgiver" />
+      <objectType id="washer" constructionTime="0" >
+        <material id="parts" />
+      </objectType>
+      <objectType id="dryer" constructionTime="0" >
+        <material id="parts" />
+      </objectType>
+      <item id="parts" />
+      <quest id="quest1" startsAt="questgiver" endsAt="questgiver">
+        <objective type="construct" id="washer" />
+        <objective type="construct" id="dryer" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    WAIT_UNTIL(s.users().size() == 1);  // Ensures object serials are sequential
+
+    s.addObject("questgiver", {10, 15});
+    WAIT_UNTIL(c.objects().size() == 1);
+    auto serial = c.getFirstObject().serial();
+    auto &user = s.getFirstUser();
+
+    WHEN("a user starts the quest") {
+      user.startQuest(*s->findQuest("quest1"));
+
+      AND_WHEN("he constructs a dryer") {
+        s.addObject("dryer", {5, 10}, user.name());
+        WAIT_UNTIL(c.objects().size() == 2);
+        auto dryerSerial = serial + 1;
+        auto dryer = s.entities().find<Object>(dryerSerial);
+
+        auto &parts = s.getFirstItem();
+        user.giveItem(&parts, 2);
+        c.sendMessage(CL_SWAP_ITEMS,
+                      makeArgs(Server::INVENTORY, 0, dryerSerial, 0));
+        WAIT_UNTIL(!dryer->isBeingBuilt());
+
+        AND_WHEN("he tries to finish the quest") {
+          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
+
+          THEN("he has not completed it") {
+            REPEAT_FOR_MS(100);
+            CHECK_FALSE(user.hasCompletedQuest("quest1"));
           }
         }
       }

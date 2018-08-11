@@ -677,40 +677,61 @@ void User::onKilled(Entity &victim) {
   addXP(xp);
 
   auto victimID = victim.type()->id();
-  for (auto questID : _quests) {
-    const auto &server = Server::instance();
-    auto quest = server.findQuest(questID);
-    if (!quest) continue;
+  addQuestProgress(Quest::Objective::KILL, victimID);
+}
 
-    for (const auto &objective : quest->objectives)
-      if (objective.id == victimID) addQuestKill(questID);
+void User::addQuestProgress(Quest::Objective::Type type,
+                            const std::string &id) {
+  const auto &server = Server::instance();
+  for (const auto &questID : _quests) {
+    auto quest = server.findQuest(questID);
+    for (auto i = 0; i != quest->objectives.size(); ++i) {
+      auto &objective = quest->objectives[i];
+      if (objective.type != type) continue;
+      if (objective.id != id) continue;
+
+      auto key = QuestProgress{};
+      key.ID = objective.id;
+      key.type = objective.type;
+      key.quest = questID;
+
+      auto &progress = _questProgress[key];
+      if (progress == objective.qty) continue;
+
+      progress = min(progress + 1, objective.qty);
+
+      // Alert user
+      server.sendMessage(_socket, SV_QUEST_PROGRESS,
+                         makeArgs(questID, i, progress));
+      if (quest->canBeCompletedByUser(*this))
+        server.sendMessage(_socket, SV_QUEST_CAN_BE_FINISHED, questID);
+
+      break;  // Assuming there will be a key match no more than once per quest
+    }
   }
 }
 
-void User::addQuestKill(const std::string &questID) {
-  const auto &server = Server::instance();
-  const auto quest = server.findQuest(questID);
+void User::initQuestProgress(const Quest::ID &questID,
+                             Quest::Objective::Type type, const std::string &id,
+                             int qty) {
+  auto key = QuestProgress{};
+  key.quest = questID;
+  key.ID = id;
+  key.type = type;
 
-  _questKills[questID] =
-      min(_questKills[questID] + 1, quest->objectives[0].qty);
-
-  server.sendMessage(_socket, SV_QUEST_PROGRESS,
-                     makeArgs(questID, 0, _questKills[questID]));
-  if (quest->canBeCompletedByUser(*this))
-    server.sendMessage(_socket, SV_QUEST_CAN_BE_FINISHED, questID);
+  _questProgress[key] = qty;
 }
 
-void User::addQuestConstruction(const std::string &questID) {
-  const auto &server = Server::instance();
-  const auto quest = server.findQuest(questID);
+int User::questProgress(const Quest::ID &quest, Quest::Objective::Type type,
+                        const std::string &id) const {
+  auto key = QuestProgress{};
+  key.quest = quest;
+  key.ID = id;
+  key.type = type;
 
-  _questConstruction[questID] =
-      min(_questKills[questID] + 1, quest->objectives[0].qty);
-
-  server.sendMessage(_socket, SV_QUEST_PROGRESS,
-                     makeArgs(questID, 0, _questConstruction[questID]));
-  if (quest->canBeCompletedByUser(*this))
-    server.sendMessage(_socket, SV_QUEST_CAN_BE_FINISHED, questID);
+  auto it = _questProgress.find(key);
+  if (it == _questProgress.end()) return 0;
+  return it->second;
 }
 
 bool User::canAttack() const {
@@ -1012,18 +1033,6 @@ void User::markQuestAsCompleted(const Quest::ID &id) {
 
 void User::markQuestAsStarted(const Quest::ID &id) { _quests.insert(id); }
 
-int User::killsTowardsQuest(const Quest::ID &quest) const {
-  auto it = _questKills.find(quest);
-  if (it == _questKills.end()) return 0;
-  return it->second;
-}
-
-int User::constructionsTowardsQuest(const Quest::ID &quest) const {
-  auto it = _questConstruction.find(quest);
-  if (it == _questConstruction.end()) return 0;
-  return it->second;
-}
-
 void User::sendBuffMsg(const Buff::ID &buff) const {
   const Server &server = Server::instance();
   server.broadcastToArea(location(), SV_PLAYER_GOT_BUFF, makeArgs(_name, buff));
@@ -1082,4 +1091,10 @@ void User::levelUp() {
   ++_level;
   fillHealthAndEnergy();
   announceLevelUp();
+}
+
+bool User::QuestProgress::operator<(const QuestProgress &rhs) const {
+  if (quest != rhs.quest) return quest < rhs.quest;
+  if (type != rhs.type) return type < rhs.type;
+  return ID < rhs.ID;
 }

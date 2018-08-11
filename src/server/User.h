@@ -72,8 +72,13 @@ class User : public Object {  // TODO: Don't inherit from Object
   void announceLevelUp() const;
 
   std::set<Quest::ID> _quests;
-  std::map<Quest::ID, int> _questKills;
-  std::map<Quest::ID, int> _questConstruction;
+  struct QuestProgress {
+    Quest::ID quest;
+    Quest::Objective::Type type;
+    std::string ID;
+    bool operator<(const QuestProgress &rhs) const;
+  };
+  std::map<QuestProgress, int> _questProgress;
   std::set<Quest::ID> _questsCompleted;
 
  public:
@@ -246,14 +251,15 @@ class User : public Object {  // TODO: Don't inherit from Object
   const std::set<Quest::ID> &questsInProgress() const { return _quests; }
   void markQuestAsCompleted(const Quest::ID &id);
   void markQuestAsStarted(const Quest::ID &id);
-  void addQuestKill(const std::string &questID);
-  void addQuestConstruction(const std::string &questID);
+  void addQuestProgress(Quest::Objective::Type type, const std::string &id);
+  void initQuestProgress(const Quest::ID &questID, Quest::Objective::Type type,
+                         const std::string &id, int qty);
+  int questProgress(const Quest::ID &quest, Quest::Objective::Type type,
+                    const std::string &id) const;
   int numQuests() const { return _quests.size(); }
   bool isOnQuest(const Quest::ID &id) const {
     return _quests.find(id) != _quests.end();
   }
-  int killsTowardsQuest(const Quest::ID &quest) const;
-  int constructionsTowardsQuest(const Quest::ID &quest) const;
 
   struct compareXThenSerial {
     bool operator()(const User *a, const User *b) const;
