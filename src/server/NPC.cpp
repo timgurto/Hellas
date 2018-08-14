@@ -73,6 +73,8 @@ void NPC::scaleThreatAgainst(Entity &target, double multiplier) {
   _threatTable.scaleThreat(target, multiplier);
 }
 
+void NPC::makeAwareOf(Entity &target) { _threatTable.makeAwareOf(target); }
+
 void NPC::onHealthChange() {
   const Server &server = *Server::_instance;
   for (const User *user : server.findUsersInArea(location()))

@@ -634,6 +634,9 @@ void User::onEnergyChange() {
 }
 
 void User::onDeath() {
+  Server &server = *Server::_instance;
+  server.forceAllToUntarget(*this);
+
   // Handle respawn etc.
   moveToSpawnPoint();
 
