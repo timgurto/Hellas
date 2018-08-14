@@ -35,7 +35,7 @@ class NPC : public Entity, public QuestNode {
                                   SpellSchool school,
                                   px_t range) const override;
   void scaleThreatAgainst(Entity &target, double multiplier) override;
-  void makeAwareOf(Entity &target);
+  void makeAwareOf(User &user);
   Level level() const override { return _level; }
 
   void updateStats() override;

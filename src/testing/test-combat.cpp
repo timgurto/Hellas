@@ -233,6 +233,9 @@ TEST_CASE("In-combat flag") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
     auto &fox = s.getFirstNPC();
+
+    THEN("The user is not in combat") { CHECK_FALSE(user.isInCombat()); }
+
     WHEN("the fox becomes aware of the user") {
       fox.makeAwareOf(user);
       WAIT_UNTIL(fox.target() == &user);

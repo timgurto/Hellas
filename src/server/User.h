@@ -81,6 +81,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   std::map<QuestProgress, int> _questProgress;
   std::set<Quest::ID> _questsCompleted;
 
+  bool _isInCombat{false};
+
  public:
   User(const std::string &name, const MapPoint &loc, const Socket &socket);
   User(const Socket &rhs);  // for use with set::find(), allowing find-by-socket
@@ -154,7 +156,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   SpellSchool school() const override;
   Level level() const override { return _level; }
   double combatDamage() const override;
-  bool isInCombat() const { return true; }
+  bool isInCombat() const { return _isInCombat; }
+  void putInCombat() { _isInCombat = true; }
 
   char classTag() const override { return 'u'; }
   virtual void sendBuffMsg(const Buff::ID &buff) const override;

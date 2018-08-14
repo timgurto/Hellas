@@ -73,7 +73,10 @@ void NPC::scaleThreatAgainst(Entity &target, double multiplier) {
   _threatTable.scaleThreat(target, multiplier);
 }
 
-void NPC::makeAwareOf(Entity &target) { _threatTable.makeAwareOf(target); }
+void NPC::makeAwareOf(User &user) {
+  _threatTable.makeAwareOf(user);
+  user.putInCombat();
+}
 
 void NPC::onHealthChange() {
   const Server &server = *Server::_instance;
