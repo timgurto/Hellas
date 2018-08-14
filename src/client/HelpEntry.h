@@ -1,6 +1,5 @@
 #pragma once
 
-#include <set>
 #include <string>
 #include <vector>
 
@@ -9,35 +8,27 @@ class List;
 struct Paragraph {
   std::string heading;
   std::string text;
-  size_t order;
-
-  bool operator<(const Paragraph &rhs) const { return order < rhs.order; }
 };
 
 class HelpEntry {
  public:
-  HelpEntry(size_t order, const std::string &name)
-      : _order(order), _name(name) {}
+  HelpEntry(const std::string &name) : _name(name) {}
 
   const std::string &name() const { return _name; }
 
-  bool operator<(const HelpEntry &rhs) const { return _order < rhs._order; }
-
-  void addParagraph(size_t order, const std::string &heading,
-                    const std::string &text);
+  void addParagraph(const std::string &heading, const std::string &text);
   void draw(List *page) const;
 
  private:
-  size_t _order;
   std::string _name;
 
-  std::set<Paragraph> _paragraphs;
+  std::vector<Paragraph> _paragraphs;
 };
 
 class HelpEntries {
  public:
-  using Container = std::set<HelpEntry>;
-  void add(const HelpEntry &newEntry) { _container.insert(newEntry); }
+  using Container = std::vector<HelpEntry>;
+  void add(const HelpEntry &newEntry) { _container.push_back(newEntry); }
   void clear() { _container.clear(); }
 
   Container::const_iterator begin() const { return _container.begin(); }

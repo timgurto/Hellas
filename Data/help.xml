@@ -1,27 +1,27 @@
 <root>
 
-<entry order="1" name="Basic: controls"    >
-    <paragraph order="1"  text="Press H any time to show this Help window." />
-    <paragraph order="2"  heading="Movement"
-                        text="Use the arrow keys or WASD to move around the world." />
-    <paragraph order="4"  heading="Quests"
-                        text="A green exclamation mark indicates that a quest is available.  Move up to the questgiver and right-click on it, then select the quest.  All of your current quests are visible on the right-hand side of the screen." />
-    <paragraph order="4"  text="A green question mark indicates that a quest can be completed." />
+<entry name="Basic: controls"    >
+    <paragraph text="Press H any time to show this Help window." />
+    <paragraph heading="Movement"
+               text="Use the arrow keys or WASD to move around the world." />
+    <paragraph heading="Quests"
+               text="A green exclamation mark indicates that a quest is available.  Move up to the questgiver and right-click on it, then select the quest.  All of your current quests are visible on the right-hand side of the screen." />
+    <paragraph text="A green question mark indicates that a quest can be completed." />
 </entry>
 
-<entry order="2" name="Basic: combat"    >
-    <paragraph order="1"  text="To attack an enemy, first target it by right-clicking on it.  Once targeted, whenever you are close enough to the enemy, you will automatically strike it at regular intervals." />
+<entry name="Basic: combat"    >
+    <paragraph text="To attack an enemy, first target it by right-clicking on it.  Once targeted, whenever you are close enough to the enemy, you will automatically strike it at regular intervals." />
 </entry>
 
-<entry order="3" name="Basic: loot"    >
-    <paragraph order="1"  text="Sparkles rising from a dead creature indicate that it has loot available.  Move close to it and right-click on it, and then click on the items you want." />
-    <paragraph order="2"  text="You can view your inventory of items by pressing the I key." />
+<entry name="Basic: loot"    >
+    <paragraph text="Sparkles rising from a dead creature indicate that it has loot available.  Move close to it and right-click on it, and then click on the items you want." />
+    <paragraph text="You can view your inventory of items by pressing the I key." />
 </entry>
 
-<entry order="4" name="Basic: placement"    >
-    <paragraph order="1" text="Some items can be placed into the world as objects.  If an item has this ability, then its tooltip will include 'Right click to place (Object)'." />
-    <paragraph order="2"  text="To place an object, right-click the item in your inventory.  The mouse cursor will now show a footprint of how large the object will be.  Click on the ground to place it; note that placement may take some time, depending on the object.  The placement area must be clear of any obstacles, and close to the player; the footprint will turn red if it is too far away.  It must also be a terrain type that is compatible with the object." />
-    <paragraph order="6"  text="Once a construction site has been designated, materials can be added.  Right-click on the site, and you will see a list of items required to complete the object.  To add an item, move it from your inventory (I key) into the item slot in the object window." />
+<entry name="Basic: placement"    >
+    <paragraph text="Some items can be placed into the world as objects.  If an item has this ability, then its tooltip will include 'Right click to place (Object)'." />
+    <paragraph text="To place an object, right-click the item in your inventory.  The mouse cursor will now show a footprint of how large the object will be.  Click on the ground to place it; note that placement may take some time, depending on the object.  The placement area must be clear of any obstacles, and close to the player; the footprint will turn red if it is too far away.  It must also be a terrain type that is compatible with the object." />
+    <paragraph text="Once a construction site has been designated, materials can be added.  Right-click on the site, and you will see a list of items required to complete the object.  To add an item, move it from your inventory (I key) into the item slot in the object window." />
 </entry>
 
 <!--entry order="10" name="Controls"    >
