@@ -283,6 +283,10 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
         ot->skipConstructionOnTransform(true);
     }
 
+    // Disappearance
+    auto disappearTime = 0;
+    if (xr.findAttr(elem, "disappearAfter", disappearTime)) ot->makeDisappear();
+
     // Strength
     auto strength = xr.findChild("strength", elem);
     if (strength) {

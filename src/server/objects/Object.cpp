@@ -108,6 +108,8 @@ void Object::removeAllGatheringUsers() {
 void Object::update(ms_t timeElapsed) {
   if (isBeingBuilt()) return;
 
+  if (objType().disappears()) markForRemoval();
+
   // Transform
   do {
     if (isDead()) break;
