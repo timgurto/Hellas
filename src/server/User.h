@@ -154,6 +154,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   SpellSchool school() const override;
   Level level() const override { return _level; }
   double combatDamage() const override;
+  bool isInCombat() const { return true; }
 
   char classTag() const override { return 'u'; }
   virtual void sendBuffMsg(const Buff::ID &buff) const override;

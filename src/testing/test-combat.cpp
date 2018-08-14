@@ -219,3 +219,24 @@ TEST_CASE("Civilian NPCs") {
     }
   }
 }
+
+TEST_CASE("In-combat flag") {
+  GIVEN("a user and a fox out of aggro range") {
+    auto data = R"(
+      <npcType id="fox" attack="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addNPC("fox", {100, 0});
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    auto &fox = s.getFirstNPC();
+    WHEN("the fox becomes aware of the user") {
+      fox.makeAwareOf(user);
+      WAIT_UNTIL(fox.target() == &user);
+      THEN("the user is in combat") { WAIT_UNTIL(user.isInCombat()); }
+    }
+  }
+}
