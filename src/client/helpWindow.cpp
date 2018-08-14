@@ -85,7 +85,7 @@ void loadHelpEntries(HelpEntries &entries) {
     if (!xr.findAttr(elem, "name", name)) continue;
     auto newEntry = HelpEntry{name};
 
-    for (auto paragraph : xr.getChildren("paragraph", elem)) {
+    for (auto paragraph : xr.getChildren("p", elem)) {
       auto text = ""s;
       if (!xr.findAttr(paragraph, "text", text)) continue;
       auto heading = ""s;
