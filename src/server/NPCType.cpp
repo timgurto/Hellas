@@ -10,7 +10,7 @@ void NPCType::init() {
   BASE_STATS.maxHealth = 1;
   BASE_STATS.crit = 5;
   BASE_STATS.dodge = 5;
-  BASE_STATS.speed = 50.0;
+  BASE_STATS.speed = 70.0;
 }
 
 void NPCType::addSimpleLoot(const ServerItem *item, double chance) {
