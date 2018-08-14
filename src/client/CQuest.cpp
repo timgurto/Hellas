@@ -36,7 +36,19 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   const auto &bodyText =
       pendingTransition == ACCEPT ? quest->_info.brief : quest->_info.debrief;
   auto lines = ww.wrap(bodyText);
-  for (const auto &line : lines) body->addChild(new Label({}, line));
+  for (auto line : lines) {
+    auto isHelpText = false;
+
+    if (line.front() == '?') {
+      isHelpText = true;
+      line = line.substr(1);
+    }
+    auto label = new Label({}, line);
+    body->addChild(label);
+    if (isHelpText) {
+      label->setColor(Color::CYAN);
+    }
+  }
 
   // Body: objectives
   auto shouldShowObjectives =
@@ -86,6 +98,10 @@ void CQuest::acceptQuest(CQuest *quest, size_t startObjectSerial) {
   // up significant memory.  Note that this function is called from a button
   // click (which subsequently changes the appearance of the button), meaning
   // it is unsafe to delete the window here.
+
+  // Show specified help topic
+  if (!quest->_info.helpTopicOnAccept.empty())
+    client.showHelpTopic(quest->_info.helpTopicOnAccept);
 }
 
 void CQuest::completeQuest(CQuest *quest, size_t startObjectSerial) {

@@ -2,8 +2,9 @@
 
 <quest id="tutConversation" name="A new creation" startsAt="prometheus1" endsAt="prometheus2"
     brief="Great!  It looks like your eyes and ears are working. Now let's stretch those legs.
-    Follow the path up North and speak with me again. You can move with the WASD or arrow keys."
-    debrief="Wonderful!  You can move around.  Next we'll test your strength."/>
+    Follow the path up North and speak with me again."
+    debrief="Wonderful!  You can move around.  Next we'll test your strength."
+    helpTopicOnAccept="Basic: controls" />
     <npcType
         id="prometheus1" name="Prometheus"
         level="20" maxHealth="100" isCivilian="1" >
@@ -28,11 +29,10 @@
 
 <quest id="tutCombat" name="Taking your place" startsAt="prometheus2" endsAt="prometheus2"
     brief="You are mortal, like the birds and beasts, but unlike them you have a spirit.  Thus, in the Great Chain of Being, you sit above them.
-    I built you to be capable, with a broad chest and strong arms: enough to assert your position in the order of things.  To check that you actually can, go out and kill some beasts.
-    Look around nearby for a Pig, and target it by right-clicking on it.  Once you move close enough, you will automatically start attacking it.  I'd like you to kill five.
-    You can see your progress on the right-hand side of the screen."
+    I built you to be capable, with a broad chest and strong arms: enough to assert your position in the order of things.  To check that you actually can, go out and kill some beasts.  Five pigs should do it."
     debrief="Excellent, everything seems to be working as intended.
-    I suppose I should introduce myself.  My name is Prometheus, and I created you.  Welcome to the world!">
+    I suppose I should introduce myself.  My name is Prometheus, and I created you.  Welcome to the world!"
+    helpTopicOnAccept="Basic: combat">
     <prerequisite id="tutConversation" />
     <objective type="kill" id="tutPig" qty="5" />
 </quest>
@@ -49,9 +49,9 @@
 
 <quest id="tutParts" name="All due respect" startsAt="prometheus2" endsAt="prometheus3"
     brief="Zeus, the king of the gods, wants to establish animal sacrifices in their honour.  Before we can begin negotiations, you'll need to get your hands dirty: slay some goats, and gather what you can of their remains.
-    Once you're done, head East until you find a brazier burning incense; you'll find me there.
-    Look for the telltale sparkles that indicate a dead creature has loot available, and right-click on it.  You can view your inventory of items by pressing the I key."
-    debrief="Ah yes, these will do nicely.">
+    Once you're done, head East until you find a brazier burning incense; you'll find me there."
+    debrief="Ah yes, these will do nicely."
+    helpTopicOnAccept="Basic: loot">
     <prerequisite id="tutCombat" />
     <objective type="fetch" id="tutMeat" qty="10" />
     <objective type="fetch" id="tutHide" />
@@ -95,10 +95,10 @@
     brief="Zeus wants to choose which parts of the animal should henceforth be sacrificed to the gods, and so you'll need to make two offerings.
     I'm very fond of you humans, and so I'll suggest a way that we can cheat him.  We're talking about an eternity of sacrifices, so every little bit helps!
     Place these piles of meat and entrails on those tiles near the brazier.  Then, cover them with the hide and fat respectively.
-    Once you've done all that, approach the brazier, reverently, and speak with Zeus.
-    To place an item, right-click it and then left-click on the ground.  To add materials to an object, right-click on it, then when the object window appears, move an item to it from your inventory."
-    debrief="Greetings, mortal.  We gods have our due, and as their king it falls to me to make the choice.  But it seems clear to me: We should have the best-quality meat for ourselves, of course!  I choose the fatty offering.">
-    <!--prerequisite id="tutParts" /-->
+    Once you've done all that, approach the brazier, reverently, and speak with Zeus."
+    debrief="Greetings, mortal.  We gods have our due, and as their king it falls to me to make the choice.  But it seems clear to me: We should have the best-quality meat for ourselves, of course!  I choose the fatty offering."
+    helpTopicOnAccept="Basic: placement">
+    <prerequisite id="tutParts" />
     <objective type="construct" id="leanOffering" />
     <objective type="construct" id="fattyOffering" />
     <startsWithItem id="tutMeat2" />

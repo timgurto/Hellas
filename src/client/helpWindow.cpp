@@ -21,7 +21,7 @@ void Client::initializeHelpWindow() {
       Window::WithRectAndTitle({WIN_X, WIN_Y, WIN_WIDTH, WIN_HEIGHT}, "Help");
 
   // Topic list
-  const px_t TOPIC_W = 60, TOPIC_BORDER = 2, TOPIC_GAP = 2;
+  const px_t TOPIC_W = 85, TOPIC_BORDER = 2, TOPIC_GAP = 2;
   auto *topicList =
       new ChoiceList({TOPIC_BORDER, TOPIC_BORDER, TOPIC_W - TOPIC_BORDER * 2,
                       WIN_HEIGHT - TOPIC_BORDER * 2},
@@ -52,6 +52,13 @@ void Client::initializeHelpWindow() {
   auto *helpText = new List({TEXT_X, TEXT_Y, TEXT_W, TEXT_H});
   helpText->id("helpText");
   _helpWindow->addChild(helpText);
+}
+
+void Client::showHelpTopic(const std::string &topic) {
+  auto topicList =
+      dynamic_cast<ChoiceList *>(_helpWindow->findChild("topicList"));
+  topicList->manuallySelect(topic);
+  _helpWindow->show();
 }
 
 void showTopic() {

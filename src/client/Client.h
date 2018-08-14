@@ -162,6 +162,8 @@ class Client {
 
   void infoWindow(const std::string &text);
 
+  void showHelpTopic(const std::string &topic);
+
   class ParticlesToAdd {
     const ParticleProfile &_profile{nullptr};
     const MapPoint &_location{};

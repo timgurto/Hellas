@@ -30,6 +30,7 @@ class ChoiceList : public List {
 
   const std::string &getSelected() { return _selectedID; }
   void clearSelection();
+  void manuallySelect(const std::string &id);
 
   void verifyBoxes();  // Call after changing the list's contents.
 

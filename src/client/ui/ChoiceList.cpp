@@ -139,6 +139,12 @@ void ChoiceList::markMouseOver(Element &e, const ScreenPoint &mousePos) {
   }
 }
 
+void ChoiceList::manuallySelect(const std::string &id) {
+  _selectedID = id;
+  _selectedBox->hide();
+  onSelect();
+}
+
 void ChoiceList::verifyBoxes() {
   bool mouseOverFound = _mouseOverID == EMPTY_STR,
        mouseDownFound = _mouseDownID == EMPTY_STR,
