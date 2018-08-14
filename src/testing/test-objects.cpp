@@ -112,17 +112,23 @@ TEST_CASE("Objects with no strength have 1 health in client") {
 TEST_CASE("Objects that disappear after a time") {
   GIVEN("an object that disappears after 1s") {
     auto data = R"(
-      <objectType id="A" disappearAfter="1" />
+      <objectType id="A" disappearAfter="1000" />
     )";
     TestServer s = TestServer::WithDataString(data);
     TestClient c = TestClient::WithDataString(data);
 
     s.addObject("A", {10, 15});
 
-    WHEN("1.1s elapses") {
-      REPEAT_FOR_MS(1100);
+    WHEN("0.9s elapses") {
+      REPEAT_FOR_MS(900);
 
-      THEN("There are no objects") { CHECK(s.entities().size() == 0); }
+      THEN("There is an object") { CHECK(s.entities().size() == 1); }
+
+      AND_WHEN("Another 0.2s elapses") {
+        REPEAT_FOR_MS(1100);
+
+        THEN("There are no objects") { CHECK(s.entities().size() == 0); }
+      }
     }
   }
 }

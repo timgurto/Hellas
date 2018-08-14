@@ -10,6 +10,7 @@ Object::Object(const ObjectType *type, const MapPoint &loc)
       QuestNode(*type, serial()),
       _numUsersGathering(0),
       _transformTimer(0),
+      _disappearTimer(type->disappearsAfter()),
       _permissions(*this) {
   setType(type);
   objType().incrementCounter();
@@ -108,7 +109,12 @@ void Object::removeAllGatheringUsers() {
 void Object::update(ms_t timeElapsed) {
   if (isBeingBuilt()) return;
 
-  if (objType().disappears()) markForRemoval();
+  if (_disappearTimer > 0) {
+    if (timeElapsed > _disappearTimer)
+      markForRemoval();
+    else
+      _disappearTimer -= timeElapsed;
+  }
 
   // Transform
   do {

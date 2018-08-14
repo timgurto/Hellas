@@ -57,7 +57,8 @@ class ObjectType : public EntityType, public QuestNodeType {
   bool _skipConstructionOnTransform =
       false;  // If true, the new object will be fully constructed
 
-  bool _disappears{false};
+  ms_t _disappearsAfter{
+      0};  // After an object has existed for this long, it disappears.
 
   ItemSet _materials;  // The necessary materials, if this needs to be
                        // constructed in-place.
@@ -133,8 +134,8 @@ class ObjectType : public EntityType, public QuestNodeType {
   bool skipConstructionOnTransform() const {
     return _skipConstructionOnTransform;
   }
-  void makeDisappear() { _disappears = true; }
-  bool disappears() const { return _disappears; }
+  void disappearsAfter(ms_t time) { _disappearsAfter = time; }
+  ms_t disappearsAfter() const { return _disappearsAfter; }
   void setHealthBasedOnItems(const ServerItem *item, size_t quantity);
   std::pair<const ServerItem *, size_t> strengthPair() const {
     return std::make_pair(_strength.item(), _strength.quantity());

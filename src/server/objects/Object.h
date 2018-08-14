@@ -28,6 +28,8 @@ class Object : public Entity, public QuestNode {
 
   ms_t _transformTimer;  // When this hits zero, it switches types.
 
+  ms_t _disappearTimer;  // When this hits zero, it disappears.
+
  public:
   Object(const ObjectType *type,
          const MapPoint &loc);  // Generates a new serial
