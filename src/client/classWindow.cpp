@@ -113,7 +113,7 @@ void Client::populateClassWindow() {
     auto yDist = 0_px;
     if (tree.numTiers() > 1)
       yDist = (TREE_HEIGHT - 18 - baseY - GAP / 2) / (tree.numTiers() - 1);
-    for (auto tierPair : tree.talents) {
+    for (auto &tierPair : tree.talents) {
       auto tier = tierPair.first;
       auto y = static_cast<px_t>(baseY + tier * yDist);
 
