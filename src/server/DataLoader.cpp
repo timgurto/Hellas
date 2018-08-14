@@ -460,6 +460,7 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     xr.findAttr(elem, "maxHealth", baseStats.maxHealth);
     xr.findAttr(elem, "attack", baseStats.physicalDamage);
     xr.findAttr(elem, "attackTime", baseStats.attackTime);
+    xr.findAttr(elem, "speed", baseStats.speed);
     nt->baseStats(baseStats);
 
     for (auto loot : xr.getChildren("loot", elem)) {

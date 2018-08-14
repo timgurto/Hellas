@@ -549,7 +549,7 @@ px_t User::attackRange() const {
 
 CombatResult User::generateHitAgainst(const Entity &target, CombatType type,
                                       SpellSchool school, px_t range) const {
-  const auto BASE_MISS_CHANCE = Percentage{5};
+  const auto BASE_MISS_CHANCE = Percentage{10};
 
   auto levelDiff = target.level() - level();
 

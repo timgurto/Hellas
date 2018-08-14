@@ -7,7 +7,7 @@
     helpTopicOnAccept="Basic: controls" />
     <npcType
         id="prometheus1" name="Prometheus"
-        level="20" maxHealth="100" isCivilian="1" >
+        level="20" maxHealth="107" isCivilian="1" >
         <humanoid>
             <gear id="linenChitonOrange" />
             <gear id="sandals" />
@@ -17,7 +17,7 @@
     </npcType>
     <npcType
         id="prometheus2" name="Prometheus"
-        level="20" maxHealth="100" isCivilian="1" >
+        level="20" maxHealth="107" isCivilian="1" >
         <humanoid>
             <gear id="linenChitonOrange" />
             <gear id="sandals" />
@@ -38,13 +38,13 @@
 </quest>
     <npcType
         id="tutPig" name="Pig"
-        level="1" maxHealth="30" attack="2" attackTime="835"
+        level="1" maxHealth="41" attack="6" attackTime="2000"
         xDrawOffset="-11" yDrawOffset="-13"
         imageFile="critter" sounds = "pig" >
         <collisionRect x="-9" y="-4" w="18" h="7" />
     </npcType>
     <spawnPoint type="tutPig" quantity="15" radius="250" respawnTime="30000" x="1000" y="60030" />
-    <spawnPoint type="tutPig" quantity="5"  radius="120" respawnTime="30000" x="1280" y="60058" />
+    <spawnPoint type="tutPig" quantity="2"  radius="120" respawnTime="30000" x="1280" y="60058" />
 
 
 <quest id="tutParts" name="All due respect" startsAt="prometheus2" endsAt="prometheus3"
@@ -60,7 +60,7 @@
 </quest>
     <npcType
         id="prometheus3" name="Prometheus"
-        level="20" maxHealth="100" isCivilian="1" >
+        level="20" maxHealth="107" isCivilian="1" >
         <humanoid>
             <gear id="linenChitonOrange" />
             <gear id="sandals" />
@@ -70,7 +70,7 @@
     </npcType>
     <npcType
         id="tutGoat" name="Goat"
-        level="1" maxHealth="32" attack="3" attackTime="1240"
+        level="2" maxHealth="44" attack="6" attackTime="2030"
         xDrawOffset="-17" yDrawOffset="-28"
         imageFile="goat" sounds = "goat" >
         <collisionRect x="-15" y="-4" w="31" h="7" />
@@ -118,14 +118,14 @@
     <item id="tutFat2"      name="Animal Fat" iconFile="fat"      exclusiveToQuest="tutOfferings" />
     <objectType
         id="leanOffering" name="Scrawny Offering"
-        allowedTerrain="tutOfferings" constructionTime="5000"  isUnbuildable="true"
+        allowedTerrain="tutOfferings" constructionTime="5000"  isUnbuildable="true" disappearAfter="300000"
         xDrawOffset="-9" yDrawOffset="-9" >
         <collisionRect x="-9" y="-4" w="18" h="9" />
         <material id="tutHide2" />
     </objectType>
     <objectType
         id="fattyOffering" name="Fatty Offering"
-        allowedTerrain="tutOfferings" constructionTime="5000" isUnbuildable="true"
+        allowedTerrain="tutOfferings" constructionTime="5000" isUnbuildable="true" disappearAfter="300000"
         xDrawOffset="-9" yDrawOffset="-9" >
         <collisionRect x="-9" y="-4" w="18" h="9" />
         <material id="tutFat2" />

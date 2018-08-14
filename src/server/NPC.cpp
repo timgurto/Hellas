@@ -27,7 +27,7 @@ bool NPC::canBeAttackedBy(const User &user) const {
 
 CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type,
                                      SpellSchool school, px_t range) const {
-  const auto MISS_CHANCE = Percentage{5};
+  const auto MISS_CHANCE = Percentage{10};
 
   auto levelDiff = target.level() - level();
 

@@ -2,7 +2,7 @@
 
 <npcType
     id="goat" name="Goat"
-	level="1" maxHealth="26" attack="3" attackTime="829"
+	level="2" maxHealth="44" attack="6" attackTime="2030"
     xDrawOffset="-17" yDrawOffset="-28" >
     <collisionRect x="-15" y="-4" w="31" h="7" />
     <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
@@ -20,7 +20,7 @@
 
 <npcType
     id="boar" name="Wild boar"
-	level="5" maxHealth="30" attack="5" attackTime="1186"
+	level="5" maxHealth="51" attack="7" attackTime="2050"
     xDrawOffset="-11" yDrawOffset="-13"
     sounds = "pig" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
@@ -33,7 +33,7 @@
 
 <npcType
     id="waterNymph" name="Water Nymph"
-	level="9" maxHealth="37" attack="3" attackTime="838" isRanged="1" school="water" projectile="waterball"
+	level="9" maxHealth="59" attack="6" attackTime="1770" isRanged="1" school="water" projectile="waterball"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
@@ -46,7 +46,7 @@
 </npcType>
 <npcType
     id="airNymph" name="Air Nymph"
-	level="13" maxHealth="42" attack="4" attackTime="838" isRanged="1" school="air" projectile="airball"
+	level="13" maxHealth="43" attack="3" attackTime="1195" speed="65" isRanged="1" school="air" projectile="airball"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
@@ -55,7 +55,7 @@
 </npcType>
 <npcType
     id="earthNymph" name="Earth Nymph"
-	level="17" maxHealth="50" attack="7" attackTime="840" school="earth"
+	level="17" maxHealth="122" attack="17" attackTime="2112" speed="35" school="earth"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="earthNymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
@@ -67,7 +67,7 @@
 </npcType>
 <npcType
     id="fireNymph" name="Fire Nymph"
-	level="20" maxHealth="57" attack="6" attackTime="855" isRanged="1" school="fire" projectile="fireball"
+	level="20" maxHealth="104" attack="8" attackTime="1492" isRanged="1" school="fire" projectile="fireball"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
