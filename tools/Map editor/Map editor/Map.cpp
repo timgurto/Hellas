@@ -32,9 +32,12 @@ Map::Map(const std::string &filename, MapPoint &playerSpawn,
   for (auto row : xr.getChildren("row")) {
     auto y = 0;
     auto rowNumberSpecified = xr.findAttr(row, "y", y);
+    if (y >= _dimY) break;
     auto rowTerrain = std::string{};
     xr.findAttr(row, "terrain", rowTerrain);
-    for (auto x = 0; x != rowTerrain.size(); ++x) {
+    auto xToRead = min<int>(
+        _dimX, rowTerrain.size());  // Prevent buffer overflow if size changed
+    for (auto x = 0; x != xToRead; ++x) {
       _tiles[x][y] = rowTerrain[x];
     }
   }
