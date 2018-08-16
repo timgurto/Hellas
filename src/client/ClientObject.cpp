@@ -467,11 +467,9 @@ void ClientObject::addMerchantTradeToWindow() {
                     WIDTH = 2 * Element::ITEM_HEIGHT + 2 * NAME_WIDTH +
                             QUANTITY_WIDTH + BUTTON_LABEL_WIDTH +
                             2 * BUTTON_PADDING + 3 * GAP + List::ARROW_W;
-  const double MAX_ROWS = 7.5,
-               NUM_ROWS = objectType()->merchantSlots() < MAX_ROWS
-                              ? objectType()->merchantSlots()
-                              : MAX_ROWS;
-  static const px_t HEIGHT = toInt(ROW_HEIGHT * NUM_ROWS);
+  const double MAX_ROWS = 7.5;
+  const double NUM_ROWS = min(objectType()->merchantSlots(), MAX_ROWS);
+  const px_t HEIGHT = toInt(ROW_HEIGHT * NUM_ROWS);
   List *list = new List({0, 0, WIDTH, HEIGHT}, ROW_HEIGHT);
   y += list->height();
   _window->addChild(list);
