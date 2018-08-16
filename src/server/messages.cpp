@@ -711,7 +711,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
 
         // Check that user has inventory space
-        if (!obj->hasContainer()) {
+        if (!obj->hasContainer() && !obj->objType().bottomlessMerchant()) {
           sendMessage(client, ERROR_NO_INVENTORY);
           break;
         }
