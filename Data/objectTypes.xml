@@ -25,11 +25,19 @@
     <collisionRect x="-5" y="-2" w="10" h="4" />
 </objectType>
 
-<objectType id="handCart" name="Ammo stash"
+<objectType id="handCart" name="Ammo Stash"
     xDrawOffset="-13" yDrawOffset="-16"
     merchantSlots="4" isVehicle="1" damageParticles="wood" sounds="wood" >
     <collisionRect x="-13" y="-4" w="25" h="8" />
     <container slots="20" />
+</objectType>
+
+<objectType id="mediumPot" name="Wirt's Pot"
+    xDrawOffset="-19" yDrawOffset="-27"
+    deconstructs="mediumPot" deconstructionTime="1000"
+    sounds="pottery" >
+    <collisionRect x="-13" y="-4" w="25" h="6" />
+    <container slots="4" />
 </objectType>
 
 </root>
