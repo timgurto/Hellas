@@ -1,118 +1,221 @@
 <root>
 
 <npcType
-    id="physical" name="Griswos the Armorer"
-    level="20" maxHealth="107" isCivilian="1" >
+    id="melee1" name="Primitive Brute"
+	level="20" maxHealth="20" attack="6" attackTime="1700" >
     <humanoid>
-        <gear id="leatherLamellar" />
-        <gear id="leatherGloves" />
+        <gear id="bone" />
+    </humanoid>
+</npcType>
+<npcType
+    id="ranged1" name="Primitive Rock Man"
+	level="20" maxHealth="21" attack="4" attackTime="1429" isRanged="1" projectile="rock" >
+    <humanoid>
         <gear id="rock" />
-        <gear id="sandals" />
     </humanoid>
 </npcType>
 
 <npcType
-    id="magic" name="Deckod the Elder"
-    level="20" maxHealth="107" isCivilian="1" >
+    id="melee2" name="Simple Oaf"
+	level="20" maxHealth="29" attack="9" attackTime="1700" >
     <humanoid>
-        <gear id="linenChiton" />
-        <gear id="fireStaff" />
-        <gear id="fireStaff" />
-        <gear id="sandals" />
+        <gear id="hide" />
+        <gear id="stoneKnife" />
     </humanoid>
 </npcType>
-
 <npcType
-    id="food" name="Ogdon the Innkeeper"
-    level="20" maxHealth="107" isCivilian="1" >
-    <humanoid>
-        <gear id="linenCloak" />
-        <gear id="tablet" />
-        <gear id="sandals" />
-    </humanoid>
-</npcType>
-
-<npcType
-    id="music" name="Farnhon the Drunk"
-    level="20" maxHealth="107" isCivilian="1" >
-    <humanoid>
-        <gear id="horn" />
-    </humanoid>
-</npcType>
-
-
-<npcType
-    id="goat" name="Goat"
-	level="2" maxHealth="44" attack="6" attackTime="2030"
-    xDrawOffset="-17" yDrawOffset="-28" >
-    <collisionRect x="-15" y="-4" w="31" h="7" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
-    <loot id="fat" chance="0.05" />
-    <loot id="horn" chance="0.05" />
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="entrails" chance="0.1" />
-</npcType>
-
-<npcType
-    id="nubian" name="Nubian"
-	level="3" maxHealth="23" attack="4" attackTime="857" >
-    <humanoid base="african"/>
-</npcType>
-
-<npcType
-    id="boar" name="Wild boar"
-	level="5" maxHealth="51" attack="7" attackTime="2050"
-    xDrawOffset="-11" yDrawOffset="-13"
-    sounds = "pig" >
-    <collisionRect x="-9" y="-4" w="18" h="7" />
-    <loot id="hide" chance="0.3" />
-    <loot id="fat" chance="0.05" />
-    <loot id="entrails" chance="0.1" />
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
-</npcType>
-
-<npcType
-    id="waterNymph" name="Water Nymph"
-	level="9" maxHealth="59" attack="6" attackTime="1770" isRanged="1" school="water" projectile="waterball"
+    id="ranged2" name="Simple Airhead" imageFile="airNymph"
+	level="20" maxHealth="29" attack="5" attackTime="1429" isRanged="1" school="air" projectile="airball"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
-    <loot id="waterEssence" > <normal mean="0.3" sd="0.5" /> </loot>
+    <particles profile="air" y="-22" />
+</npcType>
+
+<npcType
+    id="melee3" name="Angered Militia"
+	level="20" maxHealth="40" attack="12" attackTime="1700" >
+    <humanoid>
+        <gear id="stoneAxe" />
+        <gear id="linenChiton" />
+    </humanoid>
+</npcType>
+<npcType
+    id="ranged3" name="Angered Torch Thrower"
+	level="20" maxHealth="41" attack="7" attackTime="1429" isRanged="1" school="fire" projectile="fireball" >
+    <humanoid>
+        <gear id="fireWand" />
+    </humanoid>
+</npcType>
+
+<npcType
+    id="melee4" name="Ruffian Boxer"
+	level="20" maxHealth="56" attack="17" attackTime="1700" >
+    <humanoid>
+        <gear id="leatherGloves" />
+    </humanoid>
+</npcType>
+<npcType
+    id="ranged4" name="Ruffian Vandal"
+	level="20" maxHealth="57" attack="10" attackTime="1429" isRanged="1" projectile="rock" >
+    <humanoid>
+        <gear id="rock" />
+    </humanoid>
+</npcType>
+
+<npcType
+    id="melee5" name="Phoenician Pirate"
+	level="20" maxHealth="78" attack="24" attackTime="1700" >
+    <humanoid>
+        <gear id="linenCloak" />
+        <gear id="horn" />
+        <gear id="stoneKnife" />
+    </humanoid>
+</npcType>
+<npcType
+    id="ranged5" name="Phoenician Hydromancer" imageFile="waterNymph"
+	level="20" maxHealth="80" attack="14" attackTime="1429" isRanged="1" school="water" projectile="waterball"
+    xDrawOffset="-18" yDrawOffset="-40"
+    sounds="nymph" >
+    <collisionRect x="-5" y="-2" w="9" h="4" />
     <particles profile="waterPooling" y="-15" />
     <particles profile="waterSparkles" y="-18" />
     <particles profile="water" y="-15" />
     <particles profile="waterSmall" x="-7" y="-21" />
     <particles profile="waterSmall" x="7" y="-28" />
 </npcType>
+
 <npcType
-    id="airNymph" name="Air Nymph"
-	level="13" maxHealth="43" attack="3" attackTime="1195" speed="91" isRanged="1" school="air" projectile="airball"
-    xDrawOffset="-18" yDrawOffset="-40"
-    sounds="nymph" >
-    <collisionRect x="-5" y="-2" w="9" h="4" />
-    <loot id="airEssence" > <normal mean="0.3" sd="0.5" /> </loot>
-    <particles profile="air" y="-22" />
+    id="melee6" name="Seasoned Spearman"
+	level="20" maxHealth="110" attack="33" attackTime="1700" >
+    <humanoid>
+        <gear id="tinSpear" />
+        <gear id="sandals" />
+        <gear id="skullCap" />
+    </humanoid>
 </npcType>
 <npcType
-    id="earthNymph" name="Earth Nymph"
-	level="17" maxHealth="122" attack="17" attackTime="2112" speed="49" school="earth"
+    id="ranged6" name="Seasoned Slinger"
+	level="20" maxHealth="112" attack="20" attackTime="1429" isRanged="1" projectile="smoothRock" >
+    <humanoid>
+        <gear id="sling" />
+        <gear id="sandals" />
+    </humanoid>
+</npcType>
+
+<npcType
+    id="melee7" name="Nubian Clubman"
+	level="20" maxHealth="154" attack="47" attackTime="1700" >
+    <humanoid base="african">
+        <gear id="bone" />
+    </humanoid>
+</npcType>
+<npcType
+    id="ranged7" name="Nubian Spear Thrower"
+	level="20" maxHealth="156" attack="27" attackTime="1429" isRanged="1" projectile="tinJavelin" >
+    <humanoid base="african">
+        <gear id="tinJavelin" />
+    </humanoid>
+</npcType>
+
+<npcType
+    id="melee8" name="Hittite Axeman"
+	level="20" maxHealth="215" attack="65" attackTime="1700" >
+    <humanoid>
+        <gear id="tinAxe" />
+        <gear id="linothorax" />
+        <gear id="sandals" />
+    </humanoid>
+</npcType>
+<npcType
+    id="ranged8" name="Hittite Fire Thrower"
+	level="20" maxHealth="219" attack="38" attackTime="1429" isRanged="1" school="fire" projectile="fireball" >
+    <humanoid>
+        <gear id="fireStaff" />
+        <gear id="linenCloak" />
+        <gear id="knucklebones" />
+    </humanoid>
+</npcType>
+
+<npcType
+    id="melee9" name="Mercenary Soldier"
+	level="20" maxHealth="301" attack="91" attackTime="1700" >
+    <humanoid>
+        <gear id="tinSpear" />
+        <gear id="leatherLamellar" />
+        <gear id="sandals" />
+    </humanoid>
+</npcType>
+<npcType
+    id="ranged9" name="Mercenary Archer"
+	level="20" maxHealth="307" attack="54" attackTime="1429" isRanged="1" projectile="arrow" >
+    <humanoid>
+        <gear id="bow" />
+        <gear id="sandals" />
+        <gear id="horn" />
+    </humanoid>
+</npcType>
+
+<npcType
+    id="melee10" name="Athenian Hoplite"
+	level="20" maxHealth="422" attack="128" attackTime="1700" >
+    <humanoid>
+        <gear id="sandals" />
+        <gear id="linothorax" />
+        <gear id="tinSpear" />
+        <gear id="leatherShield" />
+        <gear id="skullCap" />
+    </humanoid>
+</npcType>
+<npcType
+    id="ranged10" name="Athenian Slinger"
+	level="20" maxHealth="429" attack="75" attackTime="1429" isRanged="1" projectile="smoothRock" >
+    <humanoid>
+        <gear id="sling" />
+        <gear id="sandals" />
+        <gear id="tambourine" />
+        <gear id="linenCloak" />
+    </humanoid>
+</npcType>
+
+<npcType
+    id="melee11" name="Immortal Soldier"
+	level="20" maxHealth="590" attack="179" attackTime="1700" >
+    <humanoid>
+        <gear id="tinLamellar" />
+        <gear id="tinKnife" />
+        <gear id="sandals" />
+        <gear id="skullCap" />
+    </humanoid>
+</npcType>
+<npcType
+    id="ranged11" name="Immortal Magus"
+	level="20" maxHealth="601" attack="105" attackTime="1429" isRanged="1" school="earth" projectile="earthball" >
+    <humanoid>
+        <gear id="earthStaff" />
+        <gear id="linenChiton" />
+        <gear id="sandals" />
+        <gear id="tablet" />
+    </humanoid>
+</npcType>
+
+<npcType
+    id="melee12" name="Daughter of Demeter" imageFile="earthNymph"
+	level="20" maxHealth="826" attack="251" attackTime="1700" school="earth"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="earthNymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
-    <loot id="earthEssence" > <normal mean="0.3" sd="0.5" /> </loot>
     <particles profile="vines" />
     <particles profile="dirtFromGround" />
     <particles profile="earthSmall" x="-7" y="-21" />
     <particles profile="earthSmall" x="7" y="-28" />
 </npcType>
 <npcType
-    id="fireNymph" name="Fire Nymph"
-	level="20" maxHealth="104" attack="8" attackTime="1492" isRanged="1" school="fire" projectile="fireball"
+    id="ranged12" name="Daughter of Hephaestus" imageFile="fireNymph"
+	level="20" maxHealth="841" attack="148" attackTime="1429" isRanged="1" school="fire" projectile="fireball"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
-    <loot id="fireEssence" > <normal mean="0.3" sd="0.5" /> </loot>
     <particles profile="fire" y="-15" />
     <particles profile="fireSmall" x="-7" y="-21" />
     <particles profile="fireSmall" x="7" y="-28" />

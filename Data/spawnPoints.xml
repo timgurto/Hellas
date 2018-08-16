@@ -1,5 +1,39 @@
 <root>
 
-<spawnPoint type="boar" quantity="1" radius="0" respawnTime="180000" x="1600" y="752" />
+<spawnPoint type="melee1" quantity="2" radius="50" respawnTime="120000" x="1600" y="750" />
+<spawnPoint type="ranged1" quantity="1" radius="50" respawnTime="120000" x="1600" y="750" />
+
+<spawnPoint type="melee2" quantity="2" radius="50" respawnTime="120000" x="1950" y="815" />
+<spawnPoint type="ranged2" quantity="1" radius="50" respawnTime="120000" x="1950" y="815" />
+
+<spawnPoint type="melee3" quantity="2" radius="50" respawnTime="120000" x="2250" y="975" />
+<spawnPoint type="ranged3" quantity="1" radius="50" respawnTime="120000" x="2250" y="975" />
+
+<spawnPoint type="melee4" quantity="2" radius="50" respawnTime="120000" x="2368" y="1265" />
+<spawnPoint type="ranged4" quantity="1" radius="50" respawnTime="120000" x="2368" y="1265" />
+
+<spawnPoint type="melee5" quantity="2" radius="50" respawnTime="120000" x="2432" y="1585" />
+<spawnPoint type="ranged5" quantity="1" radius="50" respawnTime="120000" x="2432" y="1585" />
+
+<spawnPoint type="melee6" quantity="2" radius="50" respawnTime="120000" x="2368" y="1905" />
+<spawnPoint type="ranged6" quantity="1" radius="50" respawnTime="120000" x="2368" y="1905" />
+
+<spawnPoint type="melee7" quantity="2" radius="50" respawnTime="120000" x="2255" y="2195" />
+<spawnPoint type="ranged7" quantity="1" radius="50" respawnTime="120000" x="2255" y="2195" />
+
+<spawnPoint type="melee8" quantity="2" radius="50" respawnTime="120000" x="1936" y="2320" />
+<spawnPoint type="ranged8" quantity="1" radius="50" respawnTime="120000" x="1936" y="2320" />
+
+<spawnPoint type="melee9" quantity="2" radius="50" respawnTime="120000" x="1600" y="2417" />
+<spawnPoint type="ranged9" quantity="1" radius="50" respawnTime="120000" x="1600" y="2417" />
+
+<spawnPoint type="melee10" quantity="2" radius="50" respawnTime="120000" x="1230" y="2323" />
+<spawnPoint type="ranged10" quantity="1" radius="50" respawnTime="120000" x="1230" y="2323" />
+
+<spawnPoint type="melee11" quantity="2" radius="50" respawnTime="120000" x="942" y="2193" />
+<spawnPoint type="ranged11" quantity="1" radius="50" respawnTime="120000" x="942" y="2193" />
+
+<spawnPoint type="melee12" quantity="2" radius="50" respawnTime="120000" x="848" y="1872" />
+<spawnPoint type="ranged12" quantity="1" radius="50" respawnTime="120000" x="848" y="1872" />
 
 </root>
