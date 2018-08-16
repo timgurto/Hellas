@@ -9,6 +9,7 @@
 
 class Server;
 class ObjectType;
+class Entity;
 
 class Spawner {
   MapPoint _location;
@@ -29,6 +30,8 @@ class Spawner {
   Spawner(const MapPoint &location = MapPoint{},
           const ObjectType *type = nullptr);
 
+  MapPoint getRandomPoint() const;
+  double distanceFromEntity(const Entity &entity) const;
   const ObjectType *type() const { return _type; }
   void radius(double r) { _radius = r; }
   void quantity(size_t qty) { _quantity = qty; }

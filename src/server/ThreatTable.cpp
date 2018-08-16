@@ -41,3 +41,5 @@ Entity* ThreatTable::getTarget() {
 
   return target;
 }
+
+void ThreatTable::clear() { _container.clear(); }

@@ -12,14 +12,11 @@ class User;
 
 // Objects that can engage in combat, and that are AI-driven
 class NPC : public Entity, public QuestNode {
-  enum State {
-    IDLE,
-    CHASE,
-    ATTACK,
-  };
+  enum State { IDLE, CHASE, ATTACK, RETURN_TO_SPAWNER };
   State _state;
   Level _level{0};
   ThreatTable _threatTable;
+  MapPoint _targetDestination{};
 
  public:
   NPC(const NPCType *type, const MapPoint &loc);  // Generates a new serial
