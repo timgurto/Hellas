@@ -136,9 +136,12 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
     e.addChild(new Label({x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT},
                          toString(mSlot.wareQty), Element::RIGHT_JUSTIFIED));
     x += QUANTITY_WIDTH;
-    e.addChild(
+    auto icon =
         new Picture({x, (ROW_HEIGHT - ICON_SIZE) / 2, ICON_SIZE, ICON_SIZE},
-                    wareItem->icon()));
+                    wareItem->icon());
+    icon->setTooltip(wareItem->tooltip());
+    e.addChild(icon);
+
     x += ICON_SIZE;
     e.addChild(
         new Label({x, TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT}, wareItem->name()));
