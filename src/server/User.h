@@ -64,9 +64,9 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   XP _xp = 0;
 #ifdef _DEBUG
-  Level _level = 1;
+  Level _level = 20;
 #else
-  Level _level = 1;
+  Level _level = 20;
 #endif
   void sendXPMessage() const;
   void announceLevelUp() const;

@@ -292,6 +292,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
   if (!userExisted) {
     newUser.setClass(_classes[classID]);
     newUser.moveToSpawnPoint(true);
+    newUser.giveItem(findItem("coin"s), 999);
     _debug << "New";
   } else {
     _debug << "Existing";
