@@ -416,5 +416,11 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 459,Editor: save spawners,8,3,Tooling,458,,,
 460,Editor: add spawners,21,21,Tooling,458,,,
 461,Editor: remove spawners,2,8,Tooling,458,,,
-462,Quest content for levels 1–20,144,144,Content,,,,
+462,Quest content for levels 1-20,144,144,Content,,,,
 463,An adventure (instance),233,89,Content,45,,,2
+464,Start-quest sound,5,3,Aesthetics,,,,
+465,End-quest sound,5,3,Aesthetics,,,,
+466,Show shadow box in help-topic list in showHelpTopic(),1,5,Bug,,,,
+467,"If a quest gives items, make sure player has space",3,3,Bug,,,,
+468,Destroy quest-exclusive items if quest is abandoned,3,3,Bug,469,,,
+469,A quest can be abandoned,8,5,Feature,440,,,
