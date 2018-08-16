@@ -473,6 +473,7 @@ void Entity::regen(ms_t timeElapsed) {
   _timeSinceRegen -= 1000;
 
   if (stats().hps != 0) {
+    auto oldHealth = health();
     int rawNewHealth = health() + stats().hps;
     if (rawNewHealth < 0)
       health(0);
@@ -480,11 +481,14 @@ void Entity::regen(ms_t timeElapsed) {
       health(stats().maxHealth);
     else
       health(rawNewHealth);
-    onHealthChange();
+
+    if (health() != oldHealth) onHealthChange();
+
     if (isDead()) onDeath();
   }
 
   if (stats().eps != 0) {
+    auto oldEnergy = energy();
     int rawNewEnergy = energy() + stats().eps;
     if (rawNewEnergy < 0)
       energy(0);
@@ -492,6 +496,7 @@ void Entity::regen(ms_t timeElapsed) {
       energy(stats().maxEnergy);
     else
       energy(rawNewEnergy);
-    onEnergyChange();
+
+    if (energy() != oldEnergy) onEnergyChange();
   }
 }
