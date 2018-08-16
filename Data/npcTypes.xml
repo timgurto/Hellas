@@ -1,6 +1,47 @@
 <root>
 
 <npcType
+    id="physical" name="Griswos the Armorer"
+    level="20" maxHealth="107" isCivilian="1" >
+    <humanoid>
+        <gear id="leatherLamellar" />
+        <gear id="leatherGloves" />
+        <gear id="rock" />
+        <gear id="sandals" />
+    </humanoid>
+</npcType>
+
+<npcType
+    id="magic" name="Deckod the Elder"
+    level="20" maxHealth="107" isCivilian="1" >
+    <humanoid>
+        <gear id="linenChiton" />
+        <gear id="fireStaff" />
+        <gear id="fireStaff" />
+        <gear id="sandals" />
+    </humanoid>
+</npcType>
+
+<npcType
+    id="food" name="Ogdon the Innkeeper"
+    level="20" maxHealth="107" isCivilian="1" >
+    <humanoid>
+        <gear id="linenCloak" />
+        <gear id="tablet" />
+        <gear id="sandals" />
+    </humanoid>
+</npcType>
+
+<npcType
+    id="music" name="Farnhon the Drunk"
+    level="20" maxHealth="107" isCivilian="1" >
+    <humanoid>
+        <gear id="horn" />
+    </humanoid>
+</npcType>
+
+
+<npcType
     id="goat" name="Goat"
 	level="2" maxHealth="44" attack="6" attackTime="2030"
     xDrawOffset="-17" yDrawOffset="-28" >

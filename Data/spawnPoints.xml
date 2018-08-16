@@ -1,3 +1,5 @@
 <root>
 
+<spawnPoint type="boar" quantity="1" radius="0" respawnTime="180000" x="1600" y="752" />
+
 </root>

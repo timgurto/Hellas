@@ -1,16 +1,71 @@
 <root>
-<object id="respawnAltar"> <location x="35328" y="22358" /> </object>
+<object id="griswold"> <location x="1550" y="1530" />
+    <owner type="city" name="Tristram" />
+    <merchant slot="0" priceItem="coin" wareItem="skullCap" />
+    <merchant slot="1" priceItem="coin" wareItem="hide" />
+    <merchant slot="2" priceItem="coin" wareItem="linothorax" />
+    <merchant slot="3" priceItem="coin" wareItem="tinLamellar" />
+    <merchant slot="4" priceItem="coin" wareItem="leatherGloves" />
+    <merchant slot="5" priceItem="coin" wareItem="sandals" />
+    <merchant slot="6" priceItem="coin" wareItem="leatherShield" />
+    <merchant slot="7" priceItem="coin" wareItem="bone" />
+    <merchant slot="8" priceItem="coin" wareItem="tinSpear" />
+    <merchant slot="9" priceItem="coin" wareItem="tinAxe" />
+    <merchant slot="10" priceItem="coin" wareItem="tinKnife" />
+    <merchant slot="11" priceItem="coin" wareItem="sling" />
+    <merchant slot="12" priceItem="coin" wareItem="bow" />
+</object>
 
-<npc id="prometheus1"> <location x="1360" y="60854" /> </npc>
-<npc id="prometheus2"> <location x="1360" y="60342" /> </npc>
-<object id="dummyTree"> <location x="1424" y="60480" /> </object>
-<object id="dummyTree"> <location x="1424" y="60608" /> </object>
-<object id="dummyTree"> <location x="1424" y="60736" /> </object>
-<object id="dummyTree"> <location x="1312" y="60480" /> </object>
-<object id="dummyTree"> <location x="1312" y="60608" /> </object>
-<object id="dummyTree"> <location x="1312" y="60736" /> </object>
+<object id="deckard" owner="Tristram"> <location x="1630" y="1580" />
+    <owner type="city" name="Tristram" />
+    <merchant slot="0" priceItem="coin" wareItem="linenChiton" />
+    <merchant slot="1" priceItem="coin" wareItem="linenCloak" />
+    <merchant slot="2" priceItem="coin" wareItem="fireStaff" />
+    <merchant slot="3" priceItem="coin" wareItem="tablet" />
+</object>
 
-<npc id="prometheus3"> <location x="2448" y="60324" /> </npc>
+<object id="ogden" owner="Tristram"> <location x="1520" y="1640" />
+    <merchant slot="0" priceItem="coin" wareItem="fig" wareQty="10" />
+    <owner type="city" name="Tristram" />
+</object>
 
-<object id="tutBrazier"> <location x="2560" y="60340" /> </object>
+<object id="farnham" owner="Tristram"> <location x="1670" y="1670" />
+    <owner type="city" name="Tristram" />
+    <merchant slot="0" priceItem="coin" wareItem="tambourine" />
+</object>
+
+<object id="handCart" owner="Tristram" health="1"> <location x="1575" y="1520" />
+    <owner type="city" name="Tristram" />
+    <merchant slot="0" priceItem="coin" wareItem="tinJavelin" wareQty="20" />
+    <merchant slot="1" priceItem="coin" wareItem="smoothRock" wareQty="20" />
+    <merchant slot="2" priceItem="coin" wareItem="woodArrow" wareQty="20" />
+    <merchant slot="3" priceItem="coin" wareItem="fireDust" wareQty="20" />
+    
+    <inventory slot="0" item="fireDust" qty="20" />
+    <inventory slot="1" item="fireDust" qty="20" />
+    <inventory slot="2" item="fireDust" qty="20" />
+    <inventory slot="3" item="fireDust" qty="20" />
+    <inventory slot="4" item="fireDust" qty="20" />
+    <inventory slot="5" item="tinJavelin" qty="20" />
+    <inventory slot="6" item="tinJavelin" qty="20" />
+    <inventory slot="7" item="tinJavelin" qty="20" />
+    <inventory slot="8" item="tinJavelin" qty="20" />
+    <inventory slot="9" item="tinJavelin" qty="20" />
+    <inventory slot="10" item="smoothRock" qty="20" />
+    <inventory slot="11" item="smoothRock" qty="20" />
+    <inventory slot="12" item="smoothRock" qty="20" />
+    <inventory slot="13" item="smoothRock" qty="20" />
+    <inventory slot="14" item="smoothRock" qty="20" />
+    <inventory slot="15" item="woodArrow" qty="20" />
+    <inventory slot="16" item="woodArrow" qty="20" />
+    <inventory slot="17" item="woodArrow" qty="20" />
+    <inventory slot="18" item="woodArrow" qty="20" />
+    <inventory slot="19" item="woodArrow" qty="20" />
+</object>
+
+<object id="well" owner="Tristram"> <location x="1600" y="1584" />
+    <owner type="city" name="Tristram" />
+</object>
+
+
 </root>
