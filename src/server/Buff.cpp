@@ -24,7 +24,7 @@ void Buff::clearCasterIfEqualTo(const Entity &casterToRemove) const {
 void Buff::update(ms_t timeElapsed) {
   assert(!_expired);
 
-  Server::debug()(toString(_timeRemaining));
+  // Server::debug()(toString(_timeRemaining));
 
   auto ticks = _type->tickTime() > 0;
   if (ticks) {
