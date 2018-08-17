@@ -9,6 +9,7 @@ using Threat = int;
 class ThreatTable {
  public:
   void makeAwareOf(Entity &entity);
+  bool isAwareOf(Entity &entity) const;
   void forgetAbout(const Entity &entity);
   void addThreat(Entity &entity, Threat amount);
   void scaleThreat(Entity &entity, double multiplier);

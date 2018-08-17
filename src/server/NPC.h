@@ -33,6 +33,9 @@ class NPC : public Entity, public QuestNode {
                                   px_t range) const override;
   void scaleThreatAgainst(Entity &target, double multiplier) override;
   void makeAwareOf(User &user);
+  bool isAwareOf(User &user) const;
+  void makeNearbyNPCsAwareOf(User &user);
+  void addThreat(User &user, Threat amount);
   Level level() const override { return _level; }
 
   void updateStats() override;

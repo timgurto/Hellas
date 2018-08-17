@@ -2,10 +2,55 @@
 #include "TestServer.h"
 #include "testing.h"
 
+TEST_CASE("NPCs chain pull") {
+  GIVEN("two NPCs close to each other, away from a ranged user") {
+    auto data = R"(
+      <npcType id="bear" />
+      <item id="spear" gearSlot="6">
+        <weapon range="25" consumes="spear" />
+      </item>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.waitForUsers(1);
+
+    s.addNPC("bear", {100, 5});
+    auto bear1Serial = s.getFirstNPC().serial();
+    s.addNPC("bear", {100, 15});
+    auto bear2Serial = bear1Serial + 1;
+
+    auto &user = s.getFirstUser();
+    auto spear = &s.getFirstItem();
+    user.giveItem(spear);
+    c.sendMessage(CL_SWAP_ITEMS,
+                  makeArgs(Client::INVENTORY, 0, Client::GEAR, 6));
+    WAIT_UNTIL(user.gear()[6].first == spear);
+
+    WHEN("the user throws a spear at one") {
+      WAIT_UNTIL(c.objects().size() == 2);
+      c.sendMessage(CL_TARGET_ENTITY, makeArgs(bear1Serial));
+
+      THEN("both are aware of him") {
+        NPC *bear1, *bear2;
+        for (auto ent : s.entities()) {
+          if (ent->serial() == bear1Serial)
+            bear1 = dynamic_cast<NPC *>(ent);
+          else if (ent->serial() == bear2Serial)
+            bear2 = dynamic_cast<NPC *>(ent);
+        }
+
+        WAIT_UNTIL(bear1->isAwareOf(user));
+        WAIT_UNTIL(bear2->isAwareOf(user));
+      }
+    }
+  }
+}
+
 TEST_CASE("NPCs can get around obstacles") {
-  GIVEN("A wall between an NPC and a player") {
-    WHEN("The NPC becomes aware of the user") {
-      THEN("It can reach him") {}
+  GIVEN("a wall between an NPC and a player") {
+    WHEN("the NPC becomes aware of the user") {
+      THEN("it can reach him") {}
     }
   }
 }

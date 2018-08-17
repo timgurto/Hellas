@@ -75,7 +75,27 @@ void NPC::scaleThreatAgainst(Entity &target, double multiplier) {
 
 void NPC::makeAwareOf(User &user) {
   _threatTable.makeAwareOf(user);
+  makeNearbyNPCsAwareOf(user);
   user.putInCombat();
+}
+
+bool NPC::isAwareOf(User &user) const { return _threatTable.isAwareOf(user); }
+
+void NPC::makeNearbyNPCsAwareOf(User &user) {
+  const Server &server = *Server::_instance;
+
+  // Skip those already aware, otherwise we'd get infinite loops
+  for (auto entity : server._entities) {
+    auto npc = dynamic_cast<NPC *>(entity);
+    if (!npc) continue;
+    if (npc->isAwareOf(user)) continue;
+    npc->makeAwareOf(user);
+  }
+}
+
+void NPC::addThreat(User &user, Threat amount) {
+  makeAwareOf(user);
+  _threatTable.addThreat(user, amount);
 }
 
 void NPC::onHealthChange() {
@@ -150,7 +170,7 @@ void NPC::processAI(ms_t timeElapsed) {
     for (User *user :
          Server::_instance->findUsersInArea(location(), AGGRO_RANGE)) {
       if (distance(collisionRect(), user->collisionRect()) <= AGGRO_RANGE) {
-        _threatTable.makeAwareOf(*user);
+        makeAwareOf(*user);
       }
     }
   }
