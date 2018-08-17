@@ -35,7 +35,7 @@ class NPC : public Entity, public QuestNode {
   void makeAwareOf(User &user);
   bool isAwareOf(User &user) const;
   void makeNearbyNPCsAwareOf(User &user);
-  void addThreat(User &user, Threat amount);
+  void addThreat(User &attacker, Threat amount);
   Level level() const override { return _level; }
 
   void updateStats() override;

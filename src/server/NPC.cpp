@@ -93,9 +93,9 @@ void NPC::makeNearbyNPCsAwareOf(User &user) {
   }
 }
 
-void NPC::addThreat(User &user, Threat amount) {
-  makeAwareOf(user);
-  _threatTable.addThreat(user, amount);
+void NPC::addThreat(User &attacker, Threat amount) {
+  makeAwareOf(attacker);
+  _threatTable.addThreat(attacker, amount);
 }
 
 void NPC::onHealthChange() {
@@ -128,7 +128,8 @@ void NPC::onDeath() {
 }
 
 void NPC::onAttackedBy(Entity &attacker, Threat threat) {
-  _threatTable.addThreat(attacker, threat);
+  if (attacker.classTag() == 'u')
+    addThreat(dynamic_cast<User &>(attacker), threat);
 
   Entity::onAttackedBy(attacker, threat);
 }
