@@ -51,9 +51,10 @@ void Client::chooseConstruction(Element &e, const ScreenPoint &mousePos) {
   const std::string selectedID = client._buildList->getSelected();
   if (selectedID.empty()) {
     client._selectedConstruction = nullptr;
-    client._constructionFootprint = Texture();
+    client._constructionFootprint = {};
   } else {
     auto ot = client.findObjectType(selectedID);
+    client._selectedConstruction = ot;
     client._constructionFootprint = ot ? ot->image() : Texture{};
   }
 }
