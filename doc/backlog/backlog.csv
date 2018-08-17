@@ -350,7 +350,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 389,Include equipped items in materials filter,13,5,Bug,,,,
 390,Restore health/energy on level up,13,2,Feature,,TRUE,,
 391,Show buff timers in client,21,8,Usability,,,,2
-392,Screen events break embedded tooltips,13,5,Bug,,,,
+392,Screen events break embedded tooltips,13,5,Bug,,TRUE,,
 393,"Play defend/death sounds on projectile hit, not launch",8,5,Usability,,,,
 394,Tooltips for terrain tags,8,5,Usability,,,,
 395,Add simple object shadows,21,13,Aesthetics,,,,

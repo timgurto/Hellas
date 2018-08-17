@@ -30,8 +30,6 @@ Tree &ClassInfo::findTree(const Tree::Name &name) {
 }
 
 const Tooltip &ClientTalent::tooltip() const {
-  if (_tooltip.hasValue()) return _tooltip.value();
-
   _tooltip = Tooltip{};
   auto &tooltip = _tooltip.value();
 
