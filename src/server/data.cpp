@@ -178,6 +178,8 @@ bool Server::readUserData(User &user) {
 }
 
 void Server::writeUserData(const User &user) const {
+  ++_threadsOpen;
+
   XmlWriter xw(_userFilesPath + user.name() + ".usr");
 
   auto e = xw.addChild("general");
@@ -269,6 +271,7 @@ void Server::writeUserData(const User &user) const {
   }
 
   xw.publish();
+  --_threadsOpen;
 }
 
 void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {

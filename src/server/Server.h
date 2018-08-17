@@ -204,6 +204,7 @@ class Server {
   static void saveData(const Entities &entities, const Wars &wars,
                        const Cities &cities);
   void spawnInitialObjects();
+  volatile mutable int _threadsOpen{0};
 
   MapPoint mapRand() const;  // Return a random point on the map.
   size_t _mapX, _mapY;       // Number of tiles in each dimension.
