@@ -89,7 +89,10 @@ void NPC::makeNearbyNPCsAwareOf(User &user) {
     auto npc = dynamic_cast<NPC *>(entity);
     if (!npc) continue;
     if (npc->isAwareOf(user)) continue;
-    npc->makeAwareOf(user);
+
+    const auto CHAIN_PULL_DISTANCE = Podes{10}.toPixels();
+    if (distance(location(), npc->location()) <= CHAIN_PULL_DISTANCE)
+      npc->makeAwareOf(user);
   }
 }
 
