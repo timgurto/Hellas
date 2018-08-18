@@ -297,6 +297,9 @@ void Entity::onAttackedBy(Entity &attacker, Threat threat) {
     buff->proc(&attacker);
   }
 
+  _buffs.clear();
+  updateStats();
+
   if (isDead()) attacker.onKilled(*this);
 }
 
@@ -380,8 +383,6 @@ std::vector<const Buff *> Entity::onHitBuffsAndDebuffs() {
 }
 
 void Entity::applyBuff(const BuffType &type, Entity &caster) {
-  if (type.canBeInterrupted()) return;
-
   auto newBuff = Buff{type, *this, caster};
 
   // Check for duplicates
