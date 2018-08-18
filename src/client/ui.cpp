@@ -141,7 +141,7 @@ void Client::populateHotbar() {
     });
     button->addChild(new ColorBlock({0, 0, 18, 18}, Color::OUTLINE));
     button->addChild(new Picture(1, 1, spell->icon()));
-    button->addChild(new OutlinedLabel({0, -1, 19, 18}, toString((i + 1) % 10),
+    button->addChild(new OutlinedLabel({0, -1, 16, 18}, toString((i + 1) % 10),
                                        Element::RIGHT_JUSTIFIED));
     button->setTooltip(spell->tooltip());
     _hotbar->addChild(button);

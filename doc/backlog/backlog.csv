@@ -430,4 +430,4 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 473,"Selection broken after eating, fixed with right-click",13,5,Bug,,,,
 474,Remove buffs on death,8,2,Feature,,,,
 475,Add stat tooltips in gear window,8,3,Usability,,,,
-476,Spell hotkey numbers not visible,8,1,Bug,,,,
+476,Spell hotkey numbers not visible,8,1,Bug,,TRUE,,
