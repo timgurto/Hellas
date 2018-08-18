@@ -145,8 +145,6 @@ void Entity::update(ms_t timeElapsed) {
     return;
   }
 
-  regen(timeElapsed);
-
   updateBuffs(timeElapsed);
 
   // The remainder of this function deals with combat.
@@ -297,6 +295,8 @@ void Entity::onAttackedBy(Entity &attacker, Threat threat) {
     buff->proc(&attacker);
   }
 
+  for (auto buff : interruptibleBuffs()) removeBuff(buff);
+
   if (isDead()) attacker.onKilled(*this);
 }
 
@@ -379,6 +379,14 @@ std::vector<const Buff *> Entity::onHitBuffsAndDebuffs() {
   return v;
 }
 
+std::vector<BuffType::ID> Entity::interruptibleBuffs() const {
+  auto ret = std::vector<BuffType::ID>{};
+  for (const auto &buff : _buffs) {
+    if (buff.canBeInterrupted()) ret.push_back(buff.type());
+  }
+  return ret;
+}
+
 void Entity::applyBuff(const BuffType &type, Entity &caster) {
   auto newBuff = Buff{type, *this, caster};
 
@@ -431,6 +439,16 @@ void Entity::loadDebuff(const BuffType &type, ms_t timeRemaining) {
   sendDebuffMsg(type.id());
 }
 
+void Entity::removeBuff(Buff::ID id) {
+  for (auto it = _buffs.begin(); it != _buffs.end(); ++it)
+    if (it->type() == id) {
+      _buffs.erase(it);
+      updateStats();
+      // TODO: Alert client that buff was removed
+      return;
+    }
+}
+
 void Entity::removeDebuff(Buff::ID id) {
   for (auto it = _debuffs.begin(); it != _debuffs.end(); ++it)
     if (it->type() == id) {
@@ -473,6 +491,7 @@ void Entity::regen(ms_t timeElapsed) {
   _timeSinceRegen -= 1000;
 
   if (stats().hps != 0) {
+    auto oldHealth = health();
     int rawNewHealth = health() + stats().hps;
     if (rawNewHealth < 0)
       health(0);
@@ -480,11 +499,14 @@ void Entity::regen(ms_t timeElapsed) {
       health(stats().maxHealth);
     else
       health(rawNewHealth);
-    onHealthChange();
+
+    if (health() != oldHealth) onHealthChange();
+
     if (isDead()) onDeath();
   }
 
   if (stats().eps != 0) {
+    auto oldEnergy = energy();
     int rawNewEnergy = energy() + stats().eps;
     if (rawNewEnergy < 0)
       energy(0);
@@ -492,6 +514,7 @@ void Entity::regen(ms_t timeElapsed) {
       energy(stats().maxEnergy);
     else
       energy(rawNewEnergy);
-    onEnergyChange();
+
+    if (energy() != oldEnergy) onEnergyChange();
   }
 }

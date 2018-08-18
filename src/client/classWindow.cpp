@@ -146,7 +146,7 @@ void Client::populateClassWindow() {
             (level > 0) && (talent.type == ClientTalent::STATS);
         if (shouldShowLevel) {
           learnSpellButton->addChild(new OutlinedLabel(
-              {2, 2, ICON_SIZE, ICON_SIZE}, toString(level),
+              {2, 2, ICON_SIZE - 1, ICON_SIZE - 1}, toString(level),
               Element::RIGHT_JUSTIFIED, Element::BOTTOM_JUSTIFIED));
         }
 

@@ -164,6 +164,8 @@
     <ClCompile Include="third-party\tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="src\server\Quest.cpp" />
     <ClCompile Include="src\testing\test-death.cpp" />
+    <ClCompile Include="src\testing\test-ai.cpp" />
+    <ClCompile Include="src\testing\test-buffs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

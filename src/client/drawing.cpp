@@ -122,7 +122,7 @@ void Client::draw() const {
   if (draggedItem != nullptr)
     draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
 
-  // Used item
+  // Construction footprint
   if (_constructionFootprint) {
     const ClientObjectType *ot =
         _selectedConstruction == nullptr

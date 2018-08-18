@@ -193,7 +193,7 @@ void Server::run() {
   loadWorldState();
   spawnInitialObjects();
 
-  std::thread publishStatsThread, saveDataThread;
+  auto threadsOpen = 0;
 
   _loop = true;
   _running = true;
@@ -228,16 +228,14 @@ void Server::run() {
         writeUserData(user);
       }
 
-      if (!saveDataThread.joinable())
-        saveDataThread = std::thread(saveData, _entities, _wars, _cities);
+      std::thread(saveData, _entities, _wars, _cities).detach();
 
       _lastSave = _time;
     }
 
     // Publish stats
     if (_time - _timeStatsLastPublished >= PUBLISH_STATS_FREQUENCY) {
-      if (!publishStatsThread.joinable())
-        publishStatsThread = std::thread(publishStats, this);
+      std::thread(publishStats, this).detach();
 
       _timeStatsLastPublished = _time;
     }
@@ -275,8 +273,8 @@ void Server::run() {
   }
   _running = false;
 
-  if (publishStatsThread.joinable()) publishStatsThread.join();
-  if (saveDataThread.joinable()) saveDataThread.join();
+  while (_threadsOpen > 0)
+    ;
 }
 
 void Server::addUser(const Socket &socket, const std::string &name,
@@ -681,6 +679,8 @@ void Server::killAllObjectsOwnedBy(const Permissions::Owner &owner) {
 }
 
 void Server::publishStats(const Server *server) {
+  ++server->_threadsOpen;
+
   auto statsFile = std::ofstream{"logging/stats.js"};
   statsFile << "stats = {\n\n";
 
@@ -733,6 +733,8 @@ void Server::publishStats(const Server *server) {
   statsFile << "],\n";
 
   statsFile << "\n};\n";
+
+  --server->_threadsOpen;
 }
 
 void Server::initialiseData() {

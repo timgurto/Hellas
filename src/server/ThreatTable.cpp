@@ -6,6 +6,11 @@ void ThreatTable::makeAwareOf(Entity& entity) {
   if (it == _container.end()) _container[&entity] = 0;
 }
 
+bool ThreatTable::isAwareOf(Entity& entity) const {
+  auto it = _container.find(&entity);
+  return (it != _container.end());
+}
+
 void ThreatTable::forgetAbout(const Entity& entity) {
   auto& nonConstRef = const_cast<Entity&>(entity);
   auto it = _container.find(&nonConstRef);
