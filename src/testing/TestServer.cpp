@@ -162,3 +162,8 @@ const Quest &TestServer::getFirstQuest() {
   REQUIRE(!_server->_quests.empty());
   return _server->_quests.begin()->second;
 }
+
+const BuffType &TestServer::getFirstBuff() {
+  REQUIRE(!_server->_buffTypes.empty());
+  return _server->_buffTypes.begin()->second;
+}

@@ -380,6 +380,7 @@ std::vector<const Buff *> Entity::onHitBuffsAndDebuffs() {
 }
 
 void Entity::applyBuff(const BuffType &type, Entity &caster) {
+  return;
   auto newBuff = Buff{type, *this, caster};
 
   // Check for duplicates
