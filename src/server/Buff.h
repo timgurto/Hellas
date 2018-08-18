@@ -36,6 +36,8 @@ class BuffType {
   ms_t tickTime() const { return _tickTime; }
   void duration(ms_t t) { _duration = t; }
   ms_t duration() const { return _duration; }
+  void makeInterruptible() { _canBeInterrupted = true; }
+  bool canBeInterrupted() const { return _canBeInterrupted; }
 
   bool hasType() const { return _type != UNKNOWN; }
   bool hasEffectOnHit() const { return _type == SPELL_ON_HIT; }
@@ -48,7 +50,8 @@ class BuffType {
 
   SpellEffect _effect{};
   ms_t _tickTime{0};
-  ms_t _duration{0};  // 0: Never ends
+  ms_t _duration{0};              // 0: Never ends
+  bool _canBeInterrupted{false};  // Cancels when hit
 };
 
 // An instance of a buff type, on a specific target, from a specific caster

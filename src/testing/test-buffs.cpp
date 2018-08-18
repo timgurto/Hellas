@@ -2,6 +2,24 @@
 #include "TestServer.h"
 #include "testing.h"
 
+TEST_CASE("Buffs can be applied") {
+  GIVEN("A buff") {
+    auto data = R"(
+      <buff id="intellect" duration="10" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    WHEN("a user near is given the buff") {
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      user.applyBuff(s.getFirstBuff(), user);
+
+      THEN("he has the buff") { CHECK(user.buffs().size() == 1); }
+    }
+  }
+}
+
 TEST_CASE("Interruptible buffs disappear on interrupt", "[combat]") {
   GIVEN("An interruptible buff, and a fox") {
     auto data = R"(

@@ -705,6 +705,10 @@ void DataLoader::loadBuffs(XmlReader &xr) {
       newBuff.duration(durationInSeconds * 1000);
     }
 
+    auto n = 0;
+    if (xr.findAttr(elem, "canBeInterrupted", n) && n == 1)
+      newBuff.makeInterruptible();
+
     auto school = SpellSchool{SpellSchool::PHYSICAL};
     auto schoolString = ""s;
     if (xr.findAttr(elem, "school", schoolString)) school = {schoolString};
