@@ -66,6 +66,7 @@ class Buff {
   bool hasExpired() const { return _expired; }
   SpellSchool school() const { return _type->school(); }
   bool hasEffectOnHit() const { return _type->hasEffectOnHit(); }
+  bool canBeInterrupted() const { return _type->canBeInterrupted(); }
 
   bool operator==(const Buff &rhs) const { return _type == rhs._type; }
 

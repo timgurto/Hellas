@@ -297,8 +297,7 @@ void Entity::onAttackedBy(Entity &attacker, Threat threat) {
     buff->proc(&attacker);
   }
 
-  _buffs.clear();
-  updateStats();
+  for (auto buff : interruptibleBuffs()) removeBuff(buff);
 
   if (isDead()) attacker.onKilled(*this);
 }
@@ -382,6 +381,14 @@ std::vector<const Buff *> Entity::onHitBuffsAndDebuffs() {
   return v;
 }
 
+std::vector<BuffType::ID> Entity::interruptibleBuffs() const {
+  auto ret = std::vector<BuffType::ID>{};
+  for (const auto &buff : _buffs) {
+    if (buff.canBeInterrupted()) ret.push_back(buff.type());
+  }
+  return ret;
+}
+
 void Entity::applyBuff(const BuffType &type, Entity &caster) {
   auto newBuff = Buff{type, *this, caster};
 
@@ -432,6 +439,16 @@ void Entity::loadDebuff(const BuffType &type, ms_t timeRemaining) {
   updateStats();
 
   sendDebuffMsg(type.id());
+}
+
+void Entity::removeBuff(Buff::ID id) {
+  for (auto it = _buffs.begin(); it != _buffs.end(); ++it)
+    if (it->type() == id) {
+      _buffs.erase(it);
+      updateStats();
+      // TODO: Alert client that buff was removed
+      return;
+    }
 }
 
 void Entity::removeDebuff(Buff::ID id) {

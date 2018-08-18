@@ -101,10 +101,12 @@ class Entity {
   const Buffs &buffs() const { return _buffs; }
   const Buffs &debuffs() const { return _debuffs; }
   std::vector<const Buff *> onHitBuffsAndDebuffs();
+  std::vector<BuffType::ID> interruptibleBuffs() const;
   void applyBuff(const BuffType &type, Entity &caster);
   void applyDebuff(const BuffType &type, Entity &caster);
   void loadBuff(const BuffType &type, ms_t timeRemaining);
   void loadDebuff(const BuffType &type, ms_t timeRemaining);
+  void removeBuff(Buff::ID id);
   void removeDebuff(Buff::ID id);
   virtual void sendBuffMsg(const Buff::ID &buff) const;
   virtual void sendDebuffMsg(const Buff::ID &buff) const;
