@@ -1,6 +1,6 @@
 <root>
 
-<buff id="food" name="Eating" icon="foodFig" duration="10">
+<buff id="food" name="Eating" icon="foodFig" duration="10" canBeInterrupted="1">
     <stats hps="5" eps="5" />
 </buff>
 <buff id="airDot" name="Socratic questioning" icon="lettersCopper" duration="12" school="air">
