@@ -283,7 +283,7 @@ void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {
     bool loadExistingData = !cmdLineArgs.contains("new");
 
     if (loadExistingData) _cities.readFromXMLFile("World/cities.world");
-    _cities.createCity("Tristram");
+    _cities.createCity("Tristrum");
 
     // Entities
     if (loadExistingData)

@@ -1,6 +1,6 @@
 <root>
 <object id="griswold"> <location x="1550" y="1530" />
-    <owner type="city" name="Tristram" />
+    <owner type="city" name="Tristrum" />
     <merchant slot="0" priceItem="coin" wareItem="skullCap" />
     <merchant slot="1" priceItem="coin" wareItem="hide" />
     <merchant slot="2" priceItem="coin" wareItem="linothorax" />
@@ -17,7 +17,7 @@
 </object>
 
 <object id="deckard"> <location x="1630" y="1580" />
-    <owner type="city" name="Tristram" />
+    <owner type="city" name="Tristrum" />
     <merchant slot="0" priceItem="coin" wareItem="linenChiton" />
     <merchant slot="1" priceItem="coin" wareItem="linenCloak" />
     <merchant slot="2" priceItem="coin" wareItem="fireStaff" />
@@ -26,16 +26,16 @@
 
 <object id="ogden"> <location x="1520" y="1640" />
     <merchant slot="0" priceItem="coin" wareItem="fig" wareQty="10" />
-    <owner type="city" name="Tristram" />
+    <owner type="city" name="Tristrum" />
 </object>
 
 <object id="farnham"> <location x="1670" y="1670" />
-    <owner type="city" name="Tristram" />
+    <owner type="city" name="Tristrum" />
     <merchant slot="0" priceItem="coin" wareItem="tambourine" />
 </object>
 
 <object id="handCart" health="1"> <location x="1575" y="1520" />
-    <owner type="city" name="Tristram" />
+    <owner type="city" name="Tristrum" />
     <merchant slot="0" priceItem="coin" wareItem="tinJavelin" wareQty="20" />
     <merchant slot="1" priceItem="coin" wareItem="smoothRock" wareQty="20" />
     <merchant slot="2" priceItem="coin" wareItem="woodArrow" wareQty="20" />
@@ -63,8 +63,8 @@
     <inventory slot="19" item="woodArrow" qty="20" />
 </object>
 
-<object id="well" owner="Tristram"> <location x="1600" y="1584" />
-    <owner type="city" name="Tristram" />
+<object id="well" owner="Tristrum"> <location x="1600" y="1584" />
+    <owner type="city" name="Tristrum" />
 </object>
 
 <object id="mediumPot" health="1"> <location x="1570" y="1670" />    
