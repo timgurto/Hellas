@@ -145,8 +145,6 @@ void Entity::update(ms_t timeElapsed) {
     return;
   }
 
-  regen(timeElapsed);
-
   updateBuffs(timeElapsed);
 
   // The remainder of this function deals with combat.
