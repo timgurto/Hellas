@@ -644,6 +644,12 @@ const ServerItem *Server::findItem(const std::string &id) const {
   return &*it;
 }
 
+const BuffType *Server::findBuff(const BuffType::ID &id) const {
+  auto it = _buffTypes.find(id);
+  if (it == _buffTypes.end()) return nullptr;
+  return &it->second;
+}
+
 const Terrain *Server::terrainType(char index) const {
   auto &types = const_cast<std::map<char, Terrain *> &>(_terrainTypes);
   return types[index];

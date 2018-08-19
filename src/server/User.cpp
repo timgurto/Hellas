@@ -624,6 +624,7 @@ void User::onHealthChange() {
   for (const User *userToInform : server.findUsersInArea(location()))
     server.sendMessage(userToInform->socket(), SV_PLAYER_HEALTH,
                        makeArgs(_name, health()));
+  Object::onHealthChange();
 }
 
 void User::onEnergyChange() {
@@ -631,6 +632,7 @@ void User::onEnergyChange() {
   for (const User *userToInform : server.findUsersInArea(location()))
     server.sendMessage(userToInform->socket(), SV_PLAYER_ENERGY,
                        makeArgs(_name, energy()));
+  Object::onEnergyChange();
 }
 
 void User::onDeath() {

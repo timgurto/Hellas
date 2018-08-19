@@ -138,16 +138,20 @@ void Object::update(ms_t timeElapsed) {
 
 void Object::onHealthChange() {
   const Server &server = *Server::_instance;
-  for (const User *user : server.findUsersInArea(location()))
-    server.sendMessage(user->socket(), SV_ENTITY_HEALTH,
-                       makeArgs(serial(), health()));
+  if (classTag() != 'u')
+    for (const User *user : server.findUsersInArea(location()))
+      server.sendMessage(user->socket(), SV_ENTITY_HEALTH,
+                         makeArgs(serial(), health()));
+  Entity::onHealthChange();
 }
 
 void Object::onEnergyChange() {
   const Server &server = *Server::_instance;
-  for (const User *user : server.findUsersInArea(location()))
-    server.sendMessage(user->socket(), SV_ENTITY_ENERGY,
-                       makeArgs(serial(), energy()));
+  if (classTag() != 'u')
+    for (const User *user : server.findUsersInArea(location()))
+      server.sendMessage(user->socket(), SV_ENTITY_ENERGY,
+                         makeArgs(serial(), energy()));
+  Entity::onEnergyChange();
 }
 
 void Object::setType(const ObjectType *type, bool skipConstruction) {

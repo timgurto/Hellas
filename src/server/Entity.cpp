@@ -126,9 +126,6 @@ void Entity::reduceEnergy(int amount) {
   if (amount > static_cast<int>(_energy)) amount = _energy;
   _energy -= amount;
   onEnergyChange();
-
-  // Remove cancel-on-OOE buffs
-  for (auto buff : buffsThatCancelOnOOE()) removeBuff(buff);
 }
 
 void Entity::healBy(Hitpoints amount) {
@@ -284,6 +281,11 @@ void Entity::updateBuffs(ms_t timeElapsed) {
       ++i;
   }
   if (aBuffHasExpired) updateStats();
+}
+
+void Entity::onEnergyChange() {
+  // Remove cancel-on-OOE buffs
+  for (auto buff : buffsThatCancelOnOOE()) removeBuff(buff);
 }
 
 void Entity::onDeath() {

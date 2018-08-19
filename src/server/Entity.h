@@ -133,7 +133,7 @@ class Entity {
   void reduceEnergy(int amount);
   void healBy(Hitpoints amount);
   virtual void onHealthChange(){};  // Probably alerting relevant users.
-  virtual void onEnergyChange(){};  // Probably alerting relevant users.
+  virtual void onEnergyChange();    // Probably alerting relevant users.
   virtual void onDeath();           // Anything that needs to happen upon death.
   virtual void onAttackedBy(
       Entity &attacker,
