@@ -92,8 +92,8 @@ class Class {
   bool hasTalent(const Talent *talent) { return _talentRanks[talent] > 0; }
   void takeTalent(const Talent *talent);
   bool knowsSpell(const Spell::ID &spell) const;
-  void teachSpell(const Spell::ID spell) {
-  }  // Teach spell outside of talent system
+  void teachSpell(
+      const Spell::ID spell);  // Teach spell outside of talent system
   std::string generateKnownSpellsString() const;
   void applyStatsTo(Stats &baseStats) const;
   size_t pointsInTree(const std::string &treeName) const;
@@ -110,4 +110,5 @@ class Class {
   TalentRanks _talentRanks{};
   int _talentPointsAllocated{0};  // Updated in takeTalent()
   const User *_owner{nullptr};
+  bool _knowsSpell{false};
 };

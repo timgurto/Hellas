@@ -43,7 +43,7 @@ void Class::takeTalent(const Talent *talent) {
 }
 
 bool Class::knowsSpell(const Spell::ID &spell) const {
-  return true;
+  return _knowsSpell;
   for (const auto pair : _talentRanks) {
     auto talent = pair.first;
     if (talent->type() != Talent::SPELL) continue;
@@ -52,6 +52,8 @@ bool Class::knowsSpell(const Spell::ID &spell) const {
   }
   return false;
 }
+
+void Class::teachSpell(const Spell::ID spell) { _knowsSpell = true; }
 
 std::string Class::generateKnownSpellsString() const {
   auto string = ""s;
