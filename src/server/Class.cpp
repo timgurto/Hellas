@@ -55,7 +55,11 @@ bool Class::knowsSpell(const Spell::ID &spell) const {
   return _knownSpells.find(spell) != _knownSpells.end();
 }
 
-void Class::teachSpell(const Spell::ID spell) { _knownSpells.insert(spell); }
+void Class::teachSpell(const Spell::ID spell) {
+  _knownSpells.insert(spell);
+  const auto &server = Server::instance();
+  server.sendMessage(_owner->socket(), SV_LEARNED_SPELL, spell);
+}
 
 std::string Class::generateKnownSpellsString() const {
   auto string = ""s;
