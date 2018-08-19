@@ -68,7 +68,7 @@ TEST_CASE("Normal buffs persist when attacked", "[combat]") {
 }
 
 TEST_CASE("A buff that ends when out of energy") {
-  GIVEN("A user with a \"cancelsOnOOE\" buff") {
+  GIVEN("A user with a cancel-on-OOE buff") {
     auto data = R"(
       <buff id="concentrate" duration="10" cancelsOnOOE="1" />
     )";
@@ -78,6 +78,7 @@ TEST_CASE("A buff that ends when out of energy") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
     user.applyBuff(s.getFirstBuff(), user);
+    CHECK(user.buffs().size() == 1);
 
     WHEN("the user has no energy") {
       user.reduceEnergy(user.energy());

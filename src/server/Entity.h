@@ -102,6 +102,7 @@ class Entity {
   const Buffs &debuffs() const { return _debuffs; }
   std::vector<const Buff *> onHitBuffsAndDebuffs();
   std::vector<BuffType::ID> interruptibleBuffs() const;
+  std::vector<BuffType::ID> buffsThatCancelOnOOE() const;
   void applyBuff(const BuffType &type, Entity &caster);
   void applyDebuff(const BuffType &type, Entity &caster);
   void loadBuff(const BuffType &type, ms_t timeRemaining);
