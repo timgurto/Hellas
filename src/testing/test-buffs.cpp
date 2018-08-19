@@ -10,7 +10,7 @@ TEST_CASE("Buffs can be applied") {
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
 
-    WHEN("a user near is given the buff") {
+    WHEN("a user is given the buff") {
       s.waitForUsers(1);
       auto &user = s.getFirstUser();
       user.applyBuff(s.getFirstBuff(), user);
@@ -63,6 +63,26 @@ TEST_CASE("Normal buffs persist when attacked", "[combat]") {
         REPEAT_FOR_MS(100);
         CHECK(user.buffs().size() == 1);
       }
+    }
+  }
+}
+
+TEST_CASE("A buff that ends when out of energy") {
+  GIVEN("A user with a \"cancelsOnOOE\" buff") {
+    auto data = R"(
+      <buff id="concentrate" duration="10" cancelsOnOOE="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.applyBuff(s.getFirstBuff(), user);
+
+    WHEN("the user has no energy") {
+      user.reduceEnergy(user.energy());
+
+      THEN("he has no buffs") { CHECK(user.buffs().empty()); }
     }
   }
 }

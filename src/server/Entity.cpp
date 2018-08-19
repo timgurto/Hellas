@@ -388,6 +388,7 @@ std::vector<BuffType::ID> Entity::interruptibleBuffs() const {
 }
 
 void Entity::applyBuff(const BuffType &type, Entity &caster) {
+  if (type.cancelsOnOOE()) return;
   auto newBuff = Buff{type, *this, caster};
 
   // Check for duplicates

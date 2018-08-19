@@ -708,6 +708,7 @@ void DataLoader::loadBuffs(XmlReader &xr) {
     auto n = 0;
     if (xr.findAttr(elem, "canBeInterrupted", n) && n == 1)
       newBuff.makeInterruptible();
+    if (xr.findAttr(elem, "cancelsOnOOE", n) && n == 1) newBuff.cancelOnOOE();
 
     auto school = SpellSchool{SpellSchool::PHYSICAL};
     auto schoolString = ""s;
