@@ -9,13 +9,17 @@ TEST_CASE("Spells learned outside of talents") {
   s.waitForUsers(1);
   auto &user = s.getFirstUser();
 
-  THEN("the player doesn't know Fireball") {
-    CHECK_FALSE(user.getClass().knowsSpell("fireball"));
-  }
+  CHECK_FALSE(user.getClass().knowsSpell("fireball"));
 
   WHEN("a player learns a spell") {
     user.getClass().teachSpell("fireball");
 
-    THEN("he knows it") { CHECK(user.getClass().knowsSpell("fireball")); }
+    THEN("he knows it") {
+      CHECK(user.getClass().knowsSpell("fireball"));
+
+      AND_THEN("he doesn't know some other spell") {
+        CHECK_FALSE(user.getClass().knowsSpell("iceball"));
+      }
+    }
   }
 }

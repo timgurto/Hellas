@@ -52,10 +52,10 @@ bool Class::knowsSpell(const Spell::ID &spell) const {
   }
 
   // Others
-  return _knowsSpell;
+  return _knownSpells.find(spell) != _knownSpells.end();
 }
 
-void Class::teachSpell(const Spell::ID spell) { _knowsSpell = true; }
+void Class::teachSpell(const Spell::ID spell) { _knownSpells.insert(spell); }
 
 std::string Class::generateKnownSpellsString() const {
   auto string = ""s;

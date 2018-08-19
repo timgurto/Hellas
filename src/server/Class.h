@@ -110,5 +110,5 @@ class Class {
   TalentRanks _talentRanks{};
   int _talentPointsAllocated{0};  // Updated in takeTalent()
   const User *_owner{nullptr};
-  bool _knowsSpell{false};
+  std::set<Spell::ID> _knownSpells{};
 };
