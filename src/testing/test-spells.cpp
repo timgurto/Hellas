@@ -10,5 +10,7 @@ TEST_CASE("Spells learned outside of talents") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
     user.getClass().teachSpell("fireball");
+
+    THEN("he knows it") { CHECK(user.getClass().knowsSpell("fireball")); }
   }
 }
