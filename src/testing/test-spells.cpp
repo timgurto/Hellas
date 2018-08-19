@@ -16,6 +16,7 @@ TEST_CASE("Spells learned outside of talents") {
 
     THEN("he knows it") {
       CHECK(user.getClass().knowsSpell("fireball"));
+      WAIT_UNTIL(c.knowsSpell("fireball"));
 
       AND_THEN("he doesn't know some other spell") {
         CHECK_FALSE(user.getClass().knowsSpell("iceball"));

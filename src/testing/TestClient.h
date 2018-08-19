@@ -47,6 +47,7 @@ class TestClient {
            _client->_knownConstructions.end();
   }
   const ChoiceList &uiBuildList() const { return *_client->_buildList; }
+  bool knowsSpell(const std::string &id) { return true; }
   Target target() { return _client->_target; }
   const std::map<std::string, Avatar *> &otherUsers() const {
     return _client->_otherUsers;
