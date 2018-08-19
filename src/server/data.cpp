@@ -151,6 +151,12 @@ bool Server::readUserData(User &user) {
     userClass.loadTalentRank(*talent, rank);
   }
 
+  elem = xr.findChild("otherSpells");
+  for (auto slotElem : xr.getChildren("spell", elem)) {
+    std::string id;
+    if (xr.findAttr(slotElem, "id", id)) user.getClass().markSpellAsKnown(id);
+  }
+
   elem = xr.findChild("quests");
   for (auto questElem : xr.getChildren("completed", elem)) {
     auto questID = ""s;
@@ -249,6 +255,12 @@ void Server::writeUserData(const User &user) const {
     auto talentElem = xw.addChild("talent", e);
     xw.setAttr(talentElem, "name", pair.first->name());
     xw.setAttr(talentElem, "rank", pair.second);
+  }
+
+  e = xw.addChild("otherSpells");
+  for (auto spellID : user.getClass().otherKnownSpells()) {
+    auto spellElem = xw.addChild("spell", e);
+    xw.setAttr(spellElem, "id", spellID);
   }
 
   e = xw.addChild("quests");

@@ -52,11 +52,15 @@ bool Class::knowsSpell(const Spell::ID &spell) const {
   }
 
   // Others
-  return _knownSpells.find(spell) != _knownSpells.end();
+  return _otherKnownSpells.find(spell) != _otherKnownSpells.end();
 }
 
-void Class::teachSpell(const Spell::ID spell) {
-  _knownSpells.insert(spell);
+void Class::markSpellAsKnown(const Spell::ID &spell) {
+  _otherKnownSpells.insert(spell);
+}
+
+void Class::teachSpell(const Spell::ID &spell) {
+  markSpellAsKnown(spell);
   const auto &server = Server::instance();
   server.sendMessage(_owner->socket(), SV_LEARNED_SPELL, spell);
 }

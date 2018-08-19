@@ -92,8 +92,12 @@ class Class {
   bool hasTalent(const Talent *talent) { return _talentRanks[talent] > 0; }
   void takeTalent(const Talent *talent);
   bool knowsSpell(const Spell::ID &spell) const;
+  void markSpellAsKnown(const Spell::ID &spell);
   void teachSpell(
-      const Spell::ID spell);  // Teach spell outside of talent system
+      const Spell::ID &spell);  // Teach spell outside of talent system
+  const std::set<Spell::ID> &otherKnownSpells() const {
+    return _otherKnownSpells;
+  }
   std::string generateKnownSpellsString() const;
   void applyStatsTo(Stats &baseStats) const;
   size_t pointsInTree(const std::string &treeName) const;
@@ -110,5 +114,5 @@ class Class {
   TalentRanks _talentRanks{};
   int _talentPointsAllocated{0};  // Updated in takeTalent()
   const User *_owner{nullptr};
-  std::set<Spell::ID> _knownSpells{};
+  std::set<Spell::ID> _otherKnownSpells{};
 };
