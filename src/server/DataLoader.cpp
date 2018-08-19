@@ -638,7 +638,7 @@ void DataLoader::loadSpells(XmlReader &xr) {
 
   for (auto elem : xr.getChildren("spell")) {
     std::string id;
-    if (!xr.findAttr(elem, "id", id)) continue;  // ID and name are mandatory.
+    if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
     auto newSpell = new Spell;
     _server._spells[id] = newSpell;
 

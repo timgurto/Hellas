@@ -166,6 +166,7 @@
     <ClCompile Include="src\testing\test-death.cpp" />
     <ClCompile Include="src\testing\test-ai.cpp" />
     <ClCompile Include="src\testing\test-buffs.cpp" />
+    <ClCompile Include="src\testing\test-spells.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
