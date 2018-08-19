@@ -5,7 +5,7 @@
 TEST_CASE("Buffs can be applied") {
   GIVEN("A buff") {
     auto data = R"(
-      <buff id="intellect" duration="10" />
+      <buff id="intellect" />
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
@@ -23,7 +23,7 @@ TEST_CASE("Buffs can be applied") {
 TEST_CASE("Interruptible buffs disappear on interrupt", "[combat]") {
   GIVEN("An interruptible buff, and a fox") {
     auto data = R"(
-      <buff id="food" duration="10" canBeInterrupted="1"/>
+      <buff id="food" canBeInterrupted="1"/>
       <npcType id="fox" attack="1" attackTime="1" />
     )";
     auto s = TestServer::WithDataString(data);
@@ -45,7 +45,7 @@ TEST_CASE("Interruptible buffs disappear on interrupt", "[combat]") {
 TEST_CASE("Normal buffs persist when attacked", "[combat]") {
   GIVEN("A buff, and a fox") {
     auto data = R"(
-      <buff id="intellect" duration="10" />
+      <buff id="intellect" />
       <npcType id="fox" attack="1" attackTime="1" />
     )";
     auto s = TestServer::WithDataString(data);
@@ -70,7 +70,7 @@ TEST_CASE("Normal buffs persist when attacked", "[combat]") {
 TEST_CASE("A buff that ends when out of energy") {
   GIVEN("A user with a cancel-on-OOE buff") {
     auto data = R"(
-      <buff id="concentrate" duration="10" cancelsOnOOE="1" />
+      <buff id="concentrate" cancelsOnOOE="1" />
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
