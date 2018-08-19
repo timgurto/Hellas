@@ -43,14 +43,16 @@ void Class::takeTalent(const Talent *talent) {
 }
 
 bool Class::knowsSpell(const Spell::ID &spell) const {
-  return _knowsSpell;
+  // From talents
   for (const auto pair : _talentRanks) {
     auto talent = pair.first;
     if (talent->type() != Talent::SPELL) continue;
     if (talent->spellID() != spell) continue;
     return pair.second > 0;
   }
-  return false;
+
+  // Others
+  return _knowsSpell;
 }
 
 void Class::teachSpell(const Spell::ID spell) { _knowsSpell = true; }
