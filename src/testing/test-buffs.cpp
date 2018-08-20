@@ -84,6 +84,12 @@ TEST_CASE("A buff that ends when out of energy") {
     user.applyBuff(*focus, user);
     CHECK(user.buffs().size() == 1);
 
+    WHEN("the user loses a small amount of energy") {
+      user.reduceEnergy(1);
+
+      THEN("he still has a buff") { CHECK(user.buffs().size() == 1); }
+    }
+
     WHEN("the user has no energy") {
       user.reduceEnergy(user.energy());
 

@@ -284,6 +284,8 @@ void Entity::updateBuffs(ms_t timeElapsed) {
 }
 
 void Entity::onEnergyChange() {
+  if (energy() > 0) return;
+
   // Remove cancel-on-OOE buffs
   for (auto buff : buffsThatCancelOnOOE()) removeBuff(buff);
 }
