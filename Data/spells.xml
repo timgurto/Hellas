@@ -8,6 +8,7 @@ Functions:
     buff (s1 = ID of buff to apply)
     debuff (s1 = ID of debuff to apply)
     dispellDebuff (s1 = school)
+    randomTeleport (i1 = distance in podes)
 -->
 
 <root>
@@ -18,10 +19,14 @@ Functions:
     <function name="buff" s1="food" />
 </spell>
 
-<!-- Soldier -->
+<!-- Class -->
 <spell id="sprint" name="Sprint" icon="outlineRun" >
     <targets self=1 />
     <function name="buff" s1="sprint" />
+</spell>
+<spell id="blink" name="Teleport" icon="orbBlue" cost=10 cooldown=120 >
+    <targets self=1 />
+    <function name="randomTeleport" i1="10" />
 </spell>
 
 <!-- Hoplite -->

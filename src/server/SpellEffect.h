@@ -69,4 +69,6 @@ class SpellEffect {
                              Entity &target);
   static CombatResult dispellDebuff(const SpellEffect &effect, Entity &caster,
                                     Entity &target);
+  static CombatResult randomTeleport(const SpellEffect &effect, Entity &caster,
+                                     Entity &target);
 };

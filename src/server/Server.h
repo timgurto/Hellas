@@ -255,6 +255,7 @@ class Server {
   CollisionChunk &getCollisionChunk(const MapPoint &p);
   std::list<CollisionChunk *> getCollisionSuperChunk(const MapPoint &p);
 
+ public:
   // thisObject = object to omit from collision detection (usually "this", to
   // avoid self-collision)
   bool isLocationValid(
@@ -266,6 +267,7 @@ class Server {
   bool isLocationValid(const MapRect &rect, const TerrainList &allowedTerrain,
                        const Entity *thisEntity = nullptr);
 
+ private:
   bool readUserData(User &user);  // true: save data existed
   void writeUserData(const User &user) const;
   static const ms_t SAVE_FREQUENCY = 30000;

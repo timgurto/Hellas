@@ -365,6 +365,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
   auto knownSpellsString = userClass.generateKnownSpellsString();
   sendMessage(newUser.socket(), SV_KNOWN_SPELLS, knownSpellsString);
   newUser.getClass().teachSpell("sprint");
+  newUser.getClass().teachSpell("blink");
 
   // Add user to location-indexed trees
   getCollisionChunk(newUser.location()).addEntity(&newUser);

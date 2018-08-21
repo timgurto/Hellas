@@ -13,7 +13,8 @@ SpellEffect::FunctionMap SpellEffect::functionMap = {
     {"buff", buff},
     {"debuff", debuff},
     {"scaleThreat", scaleThreat},
-    {"dispellDebuff", dispellDebuff}};
+    {"dispellDebuff", dispellDebuff},
+    {"randomTeleport", randomTeleport}};
 
 SpellEffect::FlagMap SpellEffect::aggressionMap = {
     {doDirectDamage, true}, {doDirectDamageWithModifiedThreat, true},
@@ -150,6 +151,36 @@ CombatResult SpellEffect::dispellDebuff(const SpellEffect &effect,
     }
   }
 
+  return HIT;
+}
+
+CombatResult SpellEffect::randomTeleport(const SpellEffect &effect,
+                                         Entity &caster, Entity &target) {
+  auto &server = Server::instance();
+
+  auto proposedLocation = MapPoint{};
+
+  auto attempts = 50;
+  while (attempts-- > 0) {
+    auto angle = randDouble() * 2 * PI;
+    auto radius = Podes{effect._args.i1}.toPixels();
+    auto dX = cos(angle) * radius;
+    auto dY = sin(angle) * radius;
+
+    proposedLocation = target.location() + MapPoint{dX, dY};
+    if (server.isLocationValid(proposedLocation, *target.type(), &target))
+      break;
+  }
+
+  if (attempts == 0) return FAIL;
+
+  target.location(proposedLocation);
+  if (target.classTag() == 'u') {
+    const auto &targetAsUser = dynamic_cast<const User &>(target);
+    server.broadcastToArea(target.location(), SV_LOCATION_INSTANT,
+                           makeArgs(targetAsUser.name(), target.location().x,
+                                    target.location().y));
+  }
   return HIT;
 }
 
