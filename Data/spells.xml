@@ -18,6 +18,12 @@ Functions:
     <function name="buff" s1="food" />
 </spell>
 
+<!-- Soldier -->
+<spell id="sprint" name="Sprint" icon="outlineRun" >
+    <targets self=1 />
+    <function name="buff" s1="sprint" />
+</spell>
+
 <!-- Hoplite -->
 <spell id="shieldBlock" name="Raise Shield" icon="shield" cost=10 >
     <targets self=1 />

@@ -18,6 +18,9 @@
 <buff id="shieldBlock" name="Shield raised" icon="shield" duration="8">
     <stats block="100" />
 </buff>
+<buff id="sprint" name="Sprinting" icon="outlineRun" cancelsOnOOE="1">
+    <stats eps="-20" speed="2" />
+</buff>
 <buff id="stun" name="Stunned" icon="shout" duration="10" >
     <stats stuns="1" />
 </buff>

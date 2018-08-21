@@ -364,6 +364,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
   // Send him his known spells
   auto knownSpellsString = userClass.generateKnownSpellsString();
   sendMessage(newUser.socket(), SV_KNOWN_SPELLS, knownSpellsString);
+  newUser.getClass().teachSpell("sprint");
 
   // Add user to location-indexed trees
   getCollisionChunk(newUser.location()).addEntity(&newUser);
