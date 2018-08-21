@@ -134,6 +134,11 @@ std::string ClientSpell::createEffectDescription() const {
           << toInt((scalar - 1.0) * 100.0) << "%";
   }
 
+  else if (effectName == "randomTeleport") {
+    oss << "Instantly teleport "s << effectArgs.i1
+        << " podes in a random direction"s;
+  }
+
   if (isBuff) {
     if (buffDuration > 0) {
       auto conjunction = "for"s;
