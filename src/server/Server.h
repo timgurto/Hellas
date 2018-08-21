@@ -160,6 +160,8 @@ class Server {
   bool _loop;
   bool _running;  // True while run() is being executed.
 
+  bool _aSpellHasBeenCast{false};
+
   // Clients
   // All connected sockets, including those without registered users
   std::set<Socket> _clientSockets;

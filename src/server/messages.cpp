@@ -1781,6 +1781,8 @@ CombatResult Server::handle_CL_CAST(User &user, const std::string &spellID,
     return FAIL;
   }
 
+  if (_aSpellHasBeenCast) return FAIL;
+
   auto usersNearCaster = findUsersInArea(user.location());
 
   const SpellEffect &effect = spell.effect();
@@ -1861,6 +1863,9 @@ CombatResult Server::handle_CL_CAST(User &user, const std::string &spellID,
       }
     }
   }
+
+  _aSpellHasBeenCast = true;
+
   return outcome;
 }
 
