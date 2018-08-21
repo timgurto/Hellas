@@ -65,7 +65,7 @@ TEST_CASE("Non-talent spells are persistent") {
 TEST_CASE("Spell cooldowns") {
   GIVEN("Self-damaging spells, one with a 1s cooldown and one without") {
     auto data = R"(
-      <spell id="hurtSelfCooldown" >
+      <spell id="hurtSelfCooldown" cooldown="1" >
         <targets self=1 />
         <function name="doDirectDamage" i1="5" />
       </spell>
