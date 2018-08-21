@@ -464,7 +464,7 @@ void Client::handleInput(double delta) {
                  keyboardState[SDL_SCANCODE_D] == SDL_PRESSED;
     if (up != down || left != right) {
       const double SPEED =
-          _character.isDriving() ? VEHICLE_SPEED : MOVEMENT_SPEED;
+          _character.isDriving() ? VEHICLE_SPEED : _stats.speed;
       const double DIAG_SPEED = SPEED / SQRT_2;
       const double dist = delta * SPEED, diagDist = delta * DIAG_SPEED;
       MapPoint newLoc = _pendingCharLoc;
@@ -480,9 +480,9 @@ void Client::handleInput(double delta) {
         newLoc.x += (up != down) ? diagDist : dist;
 
       _pendingCharLoc = newLoc;
-      static double const MAX_PENDING_DISTANCE = 50;
+      const auto maxPendingDistance = 50.0 * _stats.speed / 80.0;
       _pendingCharLoc = interpolate(_character.location(), _pendingCharLoc,
-                                    MAX_PENDING_DISTANCE);
+                                    maxPendingDistance);
       _mouseMoved = true;
     }
   }

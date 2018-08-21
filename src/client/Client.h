@@ -653,6 +653,7 @@ class Client {
   friend class TestClient;
   friend class Avatar;
   friend class SoundProfile;
+  friend class Sprite;
   friend class Target;
   friend class ConfirmationWindow;
   friend class InfoWindow;

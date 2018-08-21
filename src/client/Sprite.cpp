@@ -25,6 +25,12 @@ ScreenRect Sprite::drawRect() const {
   return drawRect;
 }
 
+double Sprite::speed() const {
+  const auto &client = Client::instance();
+  if (this == &client.character()) return client._stats.speed;
+  return Client::MOVEMENT_SPEED;
+}
+
 void Sprite::draw(const Client &client) const {
   const Texture &imageToDraw =
       client.currentMouseOverEntity() == this ? highlightImage() : image();
@@ -104,6 +110,6 @@ MapPoint Sprite::interpolatedLocation(double delta) {
   if (_destination == location()) return _destination;
   ;
 
-  const double maxLegalDistance = delta * Client::MOVEMENT_SPEED;
+  const double maxLegalDistance = delta * speed();
   return interpolate(location(), _destination, maxLegalDistance);
 }

@@ -63,6 +63,7 @@ class Sprite {
   const MapPoint &destination() const { return _destination; }
   void destination(const MapPoint &dst) { _destination = dst; }
   virtual px_t apparentMovementSpeed() const { return 0; }
+  virtual double speed() const;
 
   virtual char classTag() const { return 'e'; }
 
