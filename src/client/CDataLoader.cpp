@@ -353,6 +353,8 @@ void CDataLoader::loadBuffs(XmlReader &xr) {
     int n;
     if (xr.findAttr(elem, "duration", n)) newBuff.duration(n);
 
+    if (xr.findAttr(elem, "cancelsOnOOE", n) && n == 1) newBuff.cancelOnOOE();
+
     auto functionElem = xr.findChild("function", elem);
     if (functionElem) {
       auto effectName = ""s;

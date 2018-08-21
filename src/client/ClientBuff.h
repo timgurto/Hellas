@@ -26,6 +26,8 @@ class ClientBuffType {
   const ms_t tickTime() const { return _tickTime; }
   void hasHitEffect() { _hasHitEffect = true; }
   bool hasHitEffect() const { return _hasHitEffect; }
+  void cancelOnOOE() { _cancelsOnOOE = true; }
+  bool cancelsOnOOE() const { return _cancelsOnOOE; }
 
  private:
   Texture _icon;
@@ -34,6 +36,7 @@ class ClientBuffType {
   int _duration{0};
   bool _hasHitEffect{false};
   ms_t _tickTime{0};
+  bool _cancelsOnOOE{false};
   std::string _effectName{};
   ClientSpell::Args _effectArgs{};
   StatsMod _stats{};

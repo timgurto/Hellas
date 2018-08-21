@@ -135,10 +135,14 @@ std::string ClientSpell::createEffectDescription() const {
   }
 
   if (isBuff) {
-    auto conjunction = "for"s;
-    if (buff->tickTime() > 0) conjunction = "over"s;
+    if (buffDuration > 0) {
+      auto conjunction = "for"s;
+      if (buff->tickTime() > 0) conjunction = "over"s;
+      oss << " " << conjunction << " " << sAsTimeDisplay(buffDuration);
 
-    oss << " " << conjunction << " " << sAsTimeDisplay(buffDuration);
+    } else if (buff->cancelsOnOOE()) {
+      oss << " until energy runs out"s;
+    }
   }
 
   oss << ".";
