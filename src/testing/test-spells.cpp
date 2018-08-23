@@ -75,23 +75,23 @@ TEST_CASE("Spell cooldowns") {
       </spell>
     )";
     auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    auto c = TestClient::WithUsernameAndDataString("Alice"s, data);
     s.waitForUsers(1);
 
-    auto &user = s.getFirstUser();
-    user.getClass().teachSpell("hurtSelf1s");
+    auto &alice = s.getFirstUser();
+    alice.getClass().teachSpell("hurtSelf1s");
 
     WHEN("a user casts the spell with cooldown 1s") {
       c.sendMessage(CL_CAST, "hurtSelf1s");
       REPEAT_FOR_MS(100);
-      auto healthAfterFirstCast = user.health();
+      auto healthAfterFirstCast = alice.health();
 
       AND_WHEN("he tries casting it again") {
         c.sendMessage(CL_CAST, "hurtSelf1s");
 
         THEN("he hasn't lost any health") {
           REPEAT_FOR_MS(100);
-          CHECK(user.health() >= healthAfterFirstCast);
+          CHECK(alice.health() >= healthAfterFirstCast);
         }
       }
 
@@ -103,18 +103,22 @@ TEST_CASE("Spell cooldowns") {
 
           THEN("he has lost health") {
             REPEAT_FOR_MS(100);
-            CHECK(user.health() < healthAfterFirstCast);
+            CHECK(alice.health() < healthAfterFirstCast);
           }
         }
       }
 
+          CHECK(user.health() < healthAfterFirstCast);
+        }
+      }*/
+
       AND_WHEN("he tries casting the spell with no cooldown") {
-        user.getClass().teachSpell("hurtSelf");
+        alice.getClass().teachSpell("hurtSelf");
         c.sendMessage(CL_CAST, "hurtSelf");
 
         THEN("he has lost health") {
           REPEAT_FOR_MS(100);
-          CHECK(user.health() < healthAfterFirstCast);
+          CHECK(alice.health() < healthAfterFirstCast);
         }
       }
     }
