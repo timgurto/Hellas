@@ -63,7 +63,7 @@ TEST_CASE("Non-talent spells are persistent") {
 }
 
 TEST_CASE("Spell cooldowns") {
-  GIVEN("Self-damaging spells, one with a 1s cooldown and one without") {
+  GIVEN("A range of self-damaging spells") {
     auto data = R"(
       <spell id="hurtSelfCooldown" cooldown="1" >
         <targets self=1 />
@@ -81,7 +81,7 @@ TEST_CASE("Spell cooldowns") {
     auto &user = s.getFirstUser();
     user.getClass().teachSpell("hurtSelfCooldown");
 
-    WHEN("a user casts it") {
+    WHEN("a user casts the spell with cooldown 1s") {
       c.sendMessage(CL_CAST, "hurtSelfCooldown");
       REPEAT_FOR_MS(100);
       auto healthAfterFirstCast = user.health();
@@ -95,7 +95,7 @@ TEST_CASE("Spell cooldowns") {
         }
       }
 
-      AND_WHEN("he tries casting a different spell") {
+      AND_WHEN("he tries casting the spell with no cooldown") {
         user.getClass().teachSpell("hurtSelf");
         c.sendMessage(CL_CAST, "hurtSelf");
 
