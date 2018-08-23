@@ -624,10 +624,11 @@ Entity &Server::addEntity(Entity *newEntity) {
   return const_cast<Entity &>(*newEntity);
 }
 
-const User *Server::getUserByName(const std::string &username) const {
+User *Server::getUserByName(const std::string &username) {
   auto it = _usersByName.find(username);
   if (it == _usersByName.end()) return nullptr;
-  return _usersByName.find(username)->second;
+  auto ptr = _usersByName.find(username)->second;
+  return const_cast<User *>(ptr);
 }
 
 const BuffType *Server::getBuffByName(const Buff::ID &id) const {

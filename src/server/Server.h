@@ -84,7 +84,7 @@ class Server {
       const std::string &id) const;  // Linear complexity
   std::set<char> nearbyTerrainTypes(const MapRect &rect,
                                     double extraRadius = 0);
-  const User *getUserByName(const std::string &username) const;
+  User *getUserByName(const std::string &username);
   const BuffType *getBuffByName(const Buff::ID &id) const;
   const Quest *findQuest(const Quest::ID &id) const;
   const ServerItem *findItem(const std::string &id) const;
