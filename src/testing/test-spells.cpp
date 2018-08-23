@@ -95,6 +95,19 @@ TEST_CASE("Spell cooldowns") {
         }
       }
 
+      AND_WHEN("1s elapses") {
+        REPEAT_FOR_MS(1000);
+
+        AND_WHEN("he tries casting it again") {
+          c.sendMessage(CL_CAST, "hurtSelfCooldown");
+
+          THEN("he has lost health") {
+            REPEAT_FOR_MS(100);
+            CHECK(user.health() < healthAfterFirstCast);
+          }
+        }
+      }
+
       AND_WHEN("he tries casting the spell with no cooldown") {
         user.getClass().teachSpell("hurtSelf");
         c.sendMessage(CL_CAST, "hurtSelf");

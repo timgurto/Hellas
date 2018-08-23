@@ -160,7 +160,7 @@ class Server {
   bool _loop;
   bool _running;  // True while run() is being executed.
 
-  bool _aSpellHasBeenCast{false};
+  ms_t _timeSinceSpellCast{0};
 
   // Clients
   // All connected sockets, including those without registered users

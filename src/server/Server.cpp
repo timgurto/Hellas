@@ -256,6 +256,9 @@ void Server::run() {
     // Update spawners
     for (auto &spawner : _spawners) spawner.update(_time);
 
+    // Update spell cooldowns
+    _timeSinceSpellCast += timeElapsed;
+
     // Deal with any messages from the server
     while (!_messages.empty()) {
       handleMessage(_messages.front().first, _messages.front().second);

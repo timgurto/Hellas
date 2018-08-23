@@ -1781,7 +1781,7 @@ CombatResult Server::handle_CL_CAST(User &user, const std::string &spellID,
     return FAIL;
   }
 
-  if (spell.hasCooldown() && _aSpellHasBeenCast) return FAIL;
+  if (spell.hasCooldown() && _timeSinceSpellCast < 1000) return FAIL;
 
   auto usersNearCaster = findUsersInArea(user.location());
 
@@ -1864,7 +1864,7 @@ CombatResult Server::handle_CL_CAST(User &user, const std::string &spellID,
     }
   }
 
-  _aSpellHasBeenCast = true;
+  _timeSinceSpellCast = 0;
 
   return outcome;
 }
