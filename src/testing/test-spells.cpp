@@ -69,6 +69,10 @@ TEST_CASE("Spell cooldowns") {
         <targets self=1 />
         <function name="doDirectDamage" i1="5" />
       </spell>
+      <spell id="hurtSelf" >
+        <targets self=1 />
+        <function name="doDirectDamage" i1="5" />
+      </spell>
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
@@ -80,14 +84,24 @@ TEST_CASE("Spell cooldowns") {
     WHEN("a user casts it") {
       c.sendMessage(CL_CAST, "hurtSelfCooldown");
       REPEAT_FOR_MS(100);
+      auto healthAfterFirstCast = user.health();
 
       AND_WHEN("he tries casting it again") {
-        auto healthBefore = user.health();
         c.sendMessage(CL_CAST, "hurtSelfCooldown");
 
         THEN("he hasn't lost any health") {
           REPEAT_FOR_MS(100);
-          CHECK(user.health() >= healthBefore);
+          CHECK(user.health() >= healthAfterFirstCast);
+        }
+      }
+
+      AND_WHEN("he tries casting a different spell") {
+        user.getClass().teachSpell("hurtSelf");
+        c.sendMessage(CL_CAST, "hurtSelf");
+
+        THEN("he has lost health") {
+          REPEAT_FOR_MS(100);
+          CHECK(user.health() < healthAfterFirstCast);
         }
       }
     }

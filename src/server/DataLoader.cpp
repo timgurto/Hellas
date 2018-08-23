@@ -660,6 +660,10 @@ void DataLoader::loadSpells(XmlReader &xr) {
       newSpell->effect().radius(range);
     }
 
+    auto cooldown = 0;
+    if (xr.findAttr(elem, "cooldown", cooldown) && cooldown == 1)
+      newSpell->giveCooldown();
+
     auto functionElem = xr.findChild("function", elem);
     if (functionElem) {
       auto functionName = ""s;
