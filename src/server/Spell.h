@@ -35,14 +35,14 @@ class Spell {
   SpellEffect &effect() { return _effect; }
   const SpellEffect &effect() const { return _effect; }
   bool canCastOnlyOnSelf() const;
-  void giveCooldown() { _hasCooldown = true; }
-  bool hasCooldown() const { return _hasCooldown; }
+  void cooldown(ms_t cooldown) { _cooldown = cooldown; }
+  ms_t cooldown() const { return _cooldown; }
 
  private:
   Name _name;
   Energy _cost = 0;
   px_t _range = Podes::MELEE_RANGE.toPixels();
-  bool _hasCooldown{false};
+  ms_t _cooldown{0};
 
   SpellEffect _effect;
 

@@ -176,7 +176,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void onKilled(Entity &victim) override;
   bool canAttack() const override;
   void onAttack() override;
-  void onSpellcast(const Spell::ID &spell);
+  void onSpellcast(const Spell::ID &id, const Spell &spell);
   void sendRangedHitMessageTo(const User &userToInform) const override;
   void sendRangedMissMessageTo(const User &userToInform) const override;
   void broadcastDamagedMessage(Hitpoints amount) const override;

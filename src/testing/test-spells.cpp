@@ -74,6 +74,10 @@ TEST_CASE("Spell cooldowns", "[remote]") {
         <targets self=1 />
         <function name="doDirectDamage" i1="5" />
       </spell>
+      <spell id="hurtSelf2s" cooldown="2" >
+        <targets self=1 />
+        <function name="doDirectDamage" i1="5" />
+      </spell>
       <spell id="hurtSelf" >
         <targets self=1 />
         <function name="doDirectDamage" i1="5" />
@@ -90,6 +94,7 @@ TEST_CASE("Spell cooldowns", "[remote]") {
     alice.getClass().teachSpell("hurtSelf");
     alice.getClass().teachSpell("hurtSelf1s");
     alice.getClass().teachSpell("hurtSelfAlso1s");
+    alice.getClass().teachSpell("hurtSelf2s");
     bob.getClass().teachSpell("hurtSelf1s");
 
     WHEN("Alice casts the spell with cooldown 1s") {
@@ -145,6 +150,25 @@ TEST_CASE("Spell cooldowns", "[remote]") {
         THEN("he has lost health") {
           REPEAT_FOR_MS(100);
           CHECK(bob.health() < healthBefore);
+        }
+      }
+    }
+
+    WHEN("Alice casts the spell with cooldown 2s") {
+      cAlice.sendMessage(CL_CAST, "hurtSelf2s");
+      REPEAT_FOR_MS(100);
+      auto healthAfterFirstCast = alice.health();
+
+      AND_WHEN("1s elapses") {
+        REPEAT_FOR_MS(1000);
+
+        AND_WHEN("she tries casting it again") {
+          cAlice.sendMessage(CL_CAST, "hurtSelf2s");
+
+          THEN("she hasn't lost any health") {
+            REPEAT_FOR_MS(100);
+            CHECK(alice.health() >= healthAfterFirstCast);
+          }
         }
       }
     }

@@ -786,8 +786,9 @@ void User::onAttack() {
   removeItems(ammo);
 }
 
-void User::onSpellcast(const Spell::ID &spell) {
-  _spellCooldowns[spell] = 1000;
+void User::onSpellcast(const Spell::ID &id, const Spell &spell) {
+  if (spell.cooldown() == 0) return;
+  _spellCooldowns[id] = spell.cooldown();
 }
 
 void User::sendRangedHitMessageTo(const User &userToInform) const {
