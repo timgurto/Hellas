@@ -130,13 +130,13 @@ void Wars::sendWarsInvolvingBelligerentToUser(const User &user,
       }
     }
 
-    server.sendMessage(user.socket(), warMessage, enemy.name);
+    user.sendMessage(warMessage, enemy.name);
 
     if (war.peaceState == War::NO_PEACE_PROPOSED) return;
     if (war.wasPeaceProposedBy(belligerent))
-      server.sendMessage(user.socket(), youProposedMessage, enemy.name);
+      user.sendMessage(youProposedMessage, enemy.name);
     else
-      server.sendMessage(user.socket(), proposedToYouMessage, enemy.name);
+      user.sendMessage(proposedToYouMessage, enemy.name);
   }
 }
 

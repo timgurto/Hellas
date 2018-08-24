@@ -18,8 +18,7 @@ void Class::unlearnAll() {
   }
   _talentPointsAllocated = 0;
 
-  const auto &server = Server::instance();
-  server.sendMessage(_owner->socket(), SV_NO_TALENTS);
+  _owner->sendMessage(SV_NO_TALENTS);
 }
 
 Class::Class(const ClassType &type, const User &owner)
@@ -35,11 +34,10 @@ void Class::takeTalent(const Talent *talent) {
     ++_talentRanks[talent];
   }
 
-  const auto &server = Server::instance();
-  server.sendMessage(_owner->socket(), SV_TALENT,
-                     makeArgs(talent->name(), _talentRanks[talent]));
-  server.sendMessage(_owner->socket(), SV_POINTS_IN_TREE,
-                     makeArgs(talent->tree(), pointsInTree(talent->tree())));
+  _owner->sendMessage(SV_TALENT,
+                      makeArgs(talent->name(), _talentRanks[talent]));
+  _owner->sendMessage(SV_POINTS_IN_TREE,
+                      makeArgs(talent->tree(), pointsInTree(talent->tree())));
 }
 
 bool Class::knowsSpell(const Spell::ID &spell) const {
@@ -61,8 +59,7 @@ void Class::markSpellAsKnown(const Spell::ID &spell) {
 
 void Class::teachSpell(const Spell::ID &spell) {
   markSpellAsKnown(spell);
-  const auto &server = Server::instance();
-  server.sendMessage(_owner->socket(), SV_LEARNED_SPELL, spell);
+  _owner->sendMessage(SV_LEARNED_SPELL, spell);
 }
 
 std::string Class::generateKnownSpellsString() const {
@@ -116,17 +113,14 @@ Talent::Name Class::loseARandomLeafTalent() {
   --_talentRanks[talentToDrop];
   --_talentPointsAllocated;
 
-  const auto &server = Server::instance();
-  server.sendMessage(
-      _owner->socket(), SV_TALENT,
-      makeArgs(talentToDrop->name(), _talentRanks[talentToDrop]));
-  server.sendMessage(
-      _owner->socket(), SV_POINTS_IN_TREE,
+  _owner->sendMessage(
+      SV_TALENT, makeArgs(talentToDrop->name(), _talentRanks[talentToDrop]));
+  _owner->sendMessage(
+      SV_POINTS_IN_TREE,
       makeArgs(talentToDrop->tree(), pointsInTree(talentToDrop->tree())));
 
   if (talentToDrop->type() == Talent::SPELL)
-    server.sendMessage(_owner->socket(), SV_UNLEARNED_SPELL,
-                       talentToDrop->spellID());
+    _owner->sendMessage(SV_UNLEARNED_SPELL, talentToDrop->spellID());
 
   return talentToDrop->name();
 }

@@ -101,7 +101,7 @@ void Container::addItems(const ServerItem *item, size_t qty) {
 
 bool Container::isAbleToDeconstruct(const User &user) const {
   if (!isEmpty()) {
-    Server::instance().sendMessage(user.socket(), WARNING_NOT_EMPTY);
+    user.sendMessage(WARNING_NOT_EMPTY);
     return false;
   }
   return true;

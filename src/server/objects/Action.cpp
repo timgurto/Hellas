@@ -15,7 +15,7 @@ bool Server::createCity(const Object &obj, User &performer,
   if (textArg == "_") return false;
 
   if (!server._cities.getPlayerCity(performer.name()).empty()) {
-    server.sendMessage(performer.socket(), WARNING_YOU_ARE_ALREADY_IN_CITY);
+    performer.sendMessage(WARNING_YOU_ARE_ALREADY_IN_CITY);
     return false;
   }
 
@@ -32,7 +32,7 @@ bool Server::setRespawnPoint(const Object &obj, User &performer,
                              const std::string &textArg) {
   performer.respawnPoint(obj.location());
 
-  instance().sendMessage(performer.socket(), SV_SET_SPAWN);
+  performer.sendMessage(SV_SET_SPAWN);
   return true;
 }
 

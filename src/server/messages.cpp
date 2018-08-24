@@ -84,7 +84,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         if (del != MSG_END) return;
         if (user->isStunned()) {
           sendMessage(
-              user->socket(), SV_LOCATION,
+              client, SV_LOCATION,
               makeArgs(user->name(), user->location().x, user->location().y));
           break;
         }
@@ -108,7 +108,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
-          sendMessage(user->socket(), WARNING_STUNNED);
+          sendMessage(client, WARNING_STUNNED);
           break;
         }
         user->cancelAction();
@@ -138,7 +138,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> del >> x >> del >> y >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
-          sendMessage(user->socket(), WARNING_STUNNED);
+          sendMessage(client, WARNING_STUNNED);
           break;
         }
         user->cancelAction();
@@ -192,7 +192,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> slot >> del >> x >> del >> y >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
-          sendMessage(user->socket(), WARNING_STUNNED);
+          sendMessage(client, WARNING_STUNNED);
           break;
         }
         user->cancelAction();
@@ -238,7 +238,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> slot >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
-          sendMessage(user->socket(), WARNING_STUNNED);
+          sendMessage(client, WARNING_STUNNED);
           break;
         }
         user->cancelAction();
@@ -283,7 +283,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> serial >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
-          sendMessage(user->socket(), WARNING_STUNNED);
+          sendMessage(client, WARNING_STUNNED);
           break;
         }
         user->cancelAction();
@@ -323,7 +323,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> serial >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
-          sendMessage(user->socket(), WARNING_STUNNED);
+          sendMessage(client, WARNING_STUNNED);
           break;
         }
         user->cancelAction();
@@ -371,7 +371,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> serial >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
-          sendMessage(user->socket(), WARNING_STUNNED);
+          sendMessage(client, WARNING_STUNNED);
           break;
         }
         user->cancelAction();
@@ -401,7 +401,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> serial >> del >> slot >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
-          sendMessage(user->socket(), WARNING_STUNNED);
+          sendMessage(client, WARNING_STUNNED);
           break;
         }
         ServerItem::vect_t *container;
@@ -454,7 +454,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> obj1 >> del >> slot1 >> del >> obj2 >> del >> slot2 >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
-          sendMessage(user->socket(), WARNING_STUNNED);
+          sendMessage(client, WARNING_STUNNED);
           break;
         }
         ServerItem::vect_t *containerFrom = nullptr, *containerTo = nullptr;
@@ -665,7 +665,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         if (del != MSG_END) return;
 
         if (user->isStunned()) {
-          sendMessage(user->socket(), WARNING_STUNNED);
+          sendMessage(client, WARNING_STUNNED);
           break;
         }
 
@@ -679,7 +679,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         if (del != MSG_END) return;
 
         if (user->isStunned()) {
-          sendMessage(user->socket(), WARNING_STUNNED);
+          sendMessage(client, WARNING_STUNNED);
           break;
         }
 
@@ -840,7 +840,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> serial >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
-          sendMessage(user->socket(), WARNING_STUNNED);
+          sendMessage(client, WARNING_STUNNED);
           break;
         }
         Object *obj = _entities.find<Object>(serial);
@@ -878,7 +878,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> target.x >> del >> target.y >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
-          sendMessage(user->socket(), WARNING_STUNNED);
+          sendMessage(client, WARNING_STUNNED);
           break;
         }
         if (!user->isDriving()) {
@@ -1096,7 +1096,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
-          sendMessage(user->socket(), WARNING_STUNNED);
+          sendMessage(client, WARNING_STUNNED);
           break;
         }
         handle_CL_PERFORM_OBJECT_ACTION(*user, serial, textArg);
@@ -1134,7 +1134,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
-          sendMessage(user->socket(), WARNING_STUNNED);
+          sendMessage(client, WARNING_STUNNED);
           break;
         }
         handle_CL_CAST(*user, spellID);
@@ -1842,23 +1842,23 @@ CombatResult Server::handle_CL_CAST(User &user, const std::string &spellID,
     auto usersToAlert = findUsersInArea(dst);
     usersToAlert.insert(usersNearCaster.begin(), usersNearCaster.end());
     for (auto user : usersToAlert) {
-      sendMessage(user->socket(), msgCode, args);
+      user->sendMessage(msgCode, args);
       if (spellHit && spell.shouldPlayDefenseSound())
         target->sendGotHitMessageTo(*user);
 
       // Show notable outcomes
       switch (outcome) {
         case MISS:
-          sendMessage(user->socket(), SV_SHOW_MISS_AT, makeArgs(dst.x, dst.y));
+          user->sendMessage(SV_SHOW_MISS_AT, makeArgs(dst.x, dst.y));
           break;
         case DODGE:
-          sendMessage(user->socket(), SV_SHOW_DODGE_AT, makeArgs(dst.x, dst.y));
+          user->sendMessage(SV_SHOW_DODGE_AT, makeArgs(dst.x, dst.y));
           break;
         case BLOCK:
-          sendMessage(user->socket(), SV_SHOW_BLOCK_AT, makeArgs(dst.x, dst.y));
+          user->sendMessage(SV_SHOW_BLOCK_AT, makeArgs(dst.x, dst.y));
           break;
         case CRIT:
-          sendMessage(user->socket(), SV_SHOW_CRIT_AT, makeArgs(dst.x, dst.y));
+          user->sendMessage(SV_SHOW_CRIT_AT, makeArgs(dst.x, dst.y));
           break;
       }
     }
@@ -1920,7 +1920,7 @@ void Server::broadcast(MessageCode msgCode, const std::string &args) {
 void Server::broadcastToArea(const MapPoint &location, MessageCode msgCode,
                              const std::string &args) const {
   for (const User *user : this->findUsersInArea(location)) {
-    sendMessage(user->socket(), msgCode, args);
+    user->sendMessage(msgCode, args);
   }
 }
 

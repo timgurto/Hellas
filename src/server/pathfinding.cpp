@@ -94,8 +94,8 @@ void Entity::updateLocation(const MapPoint &dest) {
     auto loY = server._entitiesByY.lower_bound(&Dummy::Location(0, top));
     auto hiY = server._entitiesByY.upper_bound(&Dummy::Location(0, bottom));
 
-    server.sendMessage(userPtr->socket(), SV_LOCATION,
-                       makeArgs(userPtr->name(), newDest.x, newDest.y));
+    userPtr->sendMessage(SV_LOCATION,
+                         makeArgs(userPtr->name(), newDest.x, newDest.y));
     // Tell user about any additional objects he can now see
     std::list<const Entity *> nearbyEntities;
     for (auto it = loX; it != hiX; ++it) {
@@ -158,9 +158,9 @@ void Entity::updateLocation(const MapPoint &dest) {
   for (const User *userP : server.findUsersInArea(location()))
     if (userP != this) {
       if (classTag() == 'u')
-        server.sendMessage(userP->socket(), SV_LOCATION, args);
+        userP->sendMessage(SV_LOCATION, args);
       else
-        server.sendMessage(userP->socket(), SV_OBJECT_LOCATION, args);
+        userP->sendMessage(SV_OBJECT_LOCATION, args);
     }
 
   // Tell any users it has moved away from to forget about it, and forget about

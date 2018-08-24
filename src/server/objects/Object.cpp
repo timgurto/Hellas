@@ -81,8 +81,7 @@ void Object::incrementGatheringUsers(const User *userToSkip) {
   if (_numUsersGathering == 1) {
     for (const User *user : server.findUsersInArea(location()))
       if (user != userToSkip)
-        server.sendMessage(user->socket(), SV_GATHERING_OBJECT,
-                           makeArgs(serial()));
+        user->sendMessage(SV_GATHERING_OBJECT, makeArgs(serial()));
   }
 }
 
@@ -93,8 +92,7 @@ void Object::decrementGatheringUsers(const User *userToSkip) {
   if (_numUsersGathering == 0) {
     for (const User *user : server.findUsersInArea(location()))
       if (user != userToSkip)
-        server.sendMessage(user->socket(), SV_NOT_GATHERING_OBJECT,
-                           makeArgs(serial()));
+        user->sendMessage(SV_NOT_GATHERING_OBJECT, makeArgs(serial()));
   }
 }
 
@@ -102,8 +100,7 @@ void Object::removeAllGatheringUsers() {
   const Server &server = *Server::_instance;
   _numUsersGathering = 0;
   for (const User *user : server.findUsersInArea(location()))
-    server.sendMessage(user->socket(), SV_NOT_GATHERING_OBJECT,
-                       makeArgs(serial()));
+    user->sendMessage(SV_NOT_GATHERING_OBJECT, makeArgs(serial()));
 }
 
 void Object::update(ms_t timeElapsed) {
@@ -140,8 +137,7 @@ void Object::onHealthChange() {
   const Server &server = *Server::_instance;
   if (classTag() != 'u')
     for (const User *user : server.findUsersInArea(location()))
-      server.sendMessage(user->socket(), SV_ENTITY_HEALTH,
-                         makeArgs(serial(), health()));
+      user->sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
   Entity::onHealthChange();
 }
 
@@ -149,8 +145,7 @@ void Object::onEnergyChange() {
   const Server &server = *Server::_instance;
   if (classTag() != 'u')
     for (const User *user : server.findUsersInArea(location()))
-      server.sendMessage(user->socket(), SV_ENTITY_ENERGY,
-                         makeArgs(serial(), energy()));
+      user->sendMessage(SV_ENTITY_ENERGY, makeArgs(serial(), energy()));
   Entity::onEnergyChange();
 }
 
@@ -242,30 +237,27 @@ bool Object::isAbleToDeconstruct(const User &user) const {
 
 void Object::sendInfoToClient(const User &targetUser) const {
   const Server &server = Server::instance();
-  const Socket &client = targetUser.socket();
 
-  server.sendMessage(
-      client, SV_OBJECT,
-      makeArgs(serial(), location().x, location().y, type()->id()));
+  targetUser.sendMessage(
+      SV_OBJECT, makeArgs(serial(), location().x, location().y, type()->id()));
 
   // Owner
   if (permissions().hasOwner()) {
     const auto &owner = permissions().owner();
-    server.sendMessage(client, SV_OWNER,
-                       makeArgs(serial(), owner.typeString(), owner.name));
+    targetUser.sendMessage(SV_OWNER,
+                           makeArgs(serial(), owner.typeString(), owner.name));
 
     // In case the owner is unknown to the client, tell him the owner's city
     if (owner.type == owner.PLAYER) {
       std::string ownersCity = server.cities().getPlayerCity(owner.name);
       if (!ownersCity.empty())
-        server.sendMessage(client, SV_IN_CITY,
-                           makeArgs(owner.name, ownersCity));
+        targetUser.sendMessage(SV_IN_CITY, makeArgs(owner.name, ownersCity));
     }
   }
 
   // Being gathered
   if (numUsersGathering() > 0)
-    server.sendMessage(client, SV_GATHERING_OBJECT, makeArgs(serial()));
+    targetUser.sendMessage(SV_GATHERING_OBJECT, makeArgs(serial()));
 
   // Construction materials
   if (isBeingBuilt()) {
@@ -274,25 +266,24 @@ void Object::sendInfoToClient(const User &targetUser) const {
 
   // Transform timer
   if (isTransforming()) {
-    server.sendMessage(client, SV_TRANSFORM_TIME,
-                       makeArgs(serial(), transformTimer()));
+    targetUser.sendMessage(SV_TRANSFORM_TIME,
+                           makeArgs(serial(), transformTimer()));
   }
 
   // Hitpoints
   if (health() < stats().maxHealth)
-    server.sendMessage(client, SV_ENTITY_HEALTH, makeArgs(serial(), health()));
+    targetUser.sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 
   // Lootable
   if (_loot != nullptr && !_loot->empty())
-    server.sendMessage(client, SV_LOOTABLE, makeArgs(serial()));
+    targetUser.sendMessage(SV_LOOTABLE, makeArgs(serial()));
 
   // Buffs/debuffs
   for (const auto &buff : buffs())
-    server.sendMessage(client, SV_ENTITY_GOT_BUFF,
-                       makeArgs(serial(), buff.type()));
+    targetUser.sendMessage(SV_ENTITY_GOT_BUFF, makeArgs(serial(), buff.type()));
   for (const auto &debuff : debuffs())
-    server.sendMessage(client, SV_ENTITY_GOT_DEBUFF,
-                       makeArgs(serial(), debuff.type()));
+    targetUser.sendMessage(SV_ENTITY_GOT_DEBUFF,
+                           makeArgs(serial(), debuff.type()));
 
   // Quests
   QuestNode::sendQuestsToUser(targetUser);
@@ -323,40 +314,40 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum,
 
   auto hasLoot = !_loot->empty();
   if (!(hasLoot || hasContainer())) {
-    server.sendMessage(socket, ERROR_NO_INVENTORY);
+    user.sendMessage(ERROR_NO_INVENTORY);
     return nullptr;
   }
 
   if (!server.isEntityInRange(socket, user, this)) return nullptr;
 
   if (isBeingBuilt()) {
-    server.sendMessage(socket, ERROR_UNDER_CONSTRUCTION);
+    user.sendMessage(ERROR_UNDER_CONSTRUCTION);
     return nullptr;
   }
 
   if (hasLoot) {
     ServerItem::Slot &slot = _loot->at(slotNum);
     if (slot.first == nullptr) {
-      server.sendMessage(socket, ERROR_EMPTY_SLOT);
+      user.sendMessage(ERROR_EMPTY_SLOT);
       return nullptr;
     }
     return &slot;
   }
 
   if (!permissions().doesUserHaveAccess(user.name())) {
-    server.sendMessage(socket, WARNING_NO_PERMISSION);
+    user.sendMessage(WARNING_NO_PERMISSION);
     return nullptr;
   }
 
   if (slotNum >= objType().container().slots()) {
-    server.sendMessage(socket, ERROR_INVALID_SLOT);
+    user.sendMessage(ERROR_INVALID_SLOT);
     return nullptr;
   }
 
   assert(hasContainer());
   ServerItem::Slot &slot = container().at(slotNum);
   if (slot.first == nullptr) {
-    server.sendMessage(socket, ERROR_EMPTY_SLOT);
+    user.sendMessage(ERROR_EMPTY_SLOT);
     return nullptr;
   }
 
@@ -371,7 +362,7 @@ void Object::alertWatcherOnInventoryChange(const User &watcher,
     _loot->sendSingleSlotToUser(watcher, serial(), slot);
 
     if (_loot->empty())
-      server.sendMessage(watcher.socket(), SV_NOT_LOOTABLE, makeArgs(serial()));
+      watcher.sendMessage(SV_NOT_LOOTABLE, makeArgs(serial()));
 
   } else {
     const std::string &username = watcher.name();

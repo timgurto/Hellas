@@ -173,16 +173,14 @@ size_t User::giveItem(const ServerItem *item, size_t quantity) {
       }
 
       auto progress = min(qtyHeld, objective.qty);
-      server.sendMessage(_socket, SV_QUEST_PROGRESS,
-                         makeArgs(questID, i, progress));
+      sendMessage(SV_QUEST_PROGRESS, makeArgs(questID, i, progress));
     }
   }
 
   auto quantityGiven = quantity - remaining;
   if (quantityGiven > 0) {
     ProgressLock::triggerUnlocks(*this, ProgressLock::ITEM, item);
-    server.sendMessage(_socket, SV_RECEIVED_ITEM,
-                       makeArgs(item->id(), quantityGiven));
+    sendMessage(SV_RECEIVED_ITEM, makeArgs(item->id(), quantityGiven));
   }
   return remaining;
 }
@@ -198,7 +196,7 @@ void User::cancelAction() {
   if (_action == ATTACK) {
     resetAttackTimer();
   } else {
-    Server::instance().sendMessage(_socket, WARNING_ACTION_INTERRUPTED);
+    sendMessage(WARNING_ACTION_INTERRUPTED);
     _action = NO_ACTION;
   }
 }
@@ -413,6 +411,11 @@ int User::countItems(const ServerItem *item) const {
   return count;
 }
 
+void User::sendMessage(MessageCode msgCode, const std::string &args) const {
+  const Server &server = Server::instance();
+  server.sendMessage(_socket, msgCode, args);
+}
+
 void User::update(ms_t timeElapsed) {
   for (auto &pair : _spellCooldowns) {
     auto &cooldown = pair.second;
@@ -458,7 +461,7 @@ void User::update(ms_t timeElapsed) {
 
     case CRAFT: {
       if (!hasRoomToCraft(*_actionRecipe)) {
-        server.sendMessage(_socket, WARNING_INVENTORY_FULL);
+        sendMessage(WARNING_INVENTORY_FULL);
         cancelAction();
         return;
       }
@@ -494,7 +497,7 @@ void User::update(ms_t timeElapsed) {
       // Check for inventory space
       const ServerItem *item = _actionObject->deconstruction().becomes();
       if (!vectHasSpace(_inventory, item)) {
-        server.sendMessage(_socket, WARNING_INVENTORY_FULL);
+        sendMessage(WARNING_INVENTORY_FULL);
         cancelAction();
         return;
       }
@@ -510,7 +513,7 @@ void User::update(ms_t timeElapsed) {
   }
 
   if (_action != ATTACK) {  // ATTACK is a repeating action.
-    server.sendMessage(_socket, SV_ACTION_FINISHED);
+    sendMessage(SV_ACTION_FINISHED);
     finishAction();
   }
 
@@ -659,7 +662,7 @@ void User::onDeath() {
   auto talentLost = _class.value().loseARandomLeafTalent();
   if (!talentLost.empty()) {
     const Server &server = *Server::_instance;
-    server.sendMessage(_socket, SV_LOST_TALENT, talentLost);
+    sendMessage(SV_LOST_TALENT, talentLost);
   }
 
   health(stats().maxHealth);
@@ -720,10 +723,9 @@ void User::addQuestProgress(Quest::Objective::Type type,
       progress = min(progress + 1, objective.qty);
 
       // Alert user
-      server.sendMessage(_socket, SV_QUEST_PROGRESS,
-                         makeArgs(questID, i, progress));
+      sendMessage(SV_QUEST_PROGRESS, makeArgs(questID, i, progress));
       if (quest->canBeCompletedByUser(*this))
-        server.sendMessage(_socket, SV_QUEST_CAN_BE_FINISHED, questID);
+        sendMessage(SV_QUEST_CAN_BE_FINISHED, questID);
 
       break;  // Assuming there will be a key match no more than once per quest
     }
@@ -768,7 +770,7 @@ bool User::canAttack() const {
   if (this->hasItems(itemSet)) return true;
 
   auto ammoID = gearSlot.first->weaponAmmo()->id();
-  Server::_instance->sendMessage(_socket, WARNING_OUT_OF_AMMO, ammoID);
+  sendMessage(WARNING_OUT_OF_AMMO, ammoID);
   return false;
 }
 
@@ -789,8 +791,7 @@ void User::onAttack() {
 void User::onSpellcast(const Spell::ID &id, const Spell &spell) {
   if (spell.cooldown() == 0) return;
   _spellCooldowns[id] = spell.cooldown();
-  Server::instance().sendMessage(_socket, SV_SPELL_COOLING_DOWN,
-                                 makeArgs(id, spell.cooldown()));
+  sendMessage(SV_SPELL_COOLING_DOWN, makeArgs(id, spell.cooldown()));
 }
 
 void User::sendRangedHitMessageTo(const User &userToInform) const {
@@ -895,7 +896,7 @@ void User::updateStats() {
       makeArgs(newStats.airResist, newStats.earthResist, newStats.fireResist,
                newStats.waterResist),
       makeArgs(newStats.attackTime, newStats.speed));
-  server.sendMessage(socket(), SV_YOUR_STATS, args);
+  sendMessage(SV_YOUR_STATS, args);
 
   stats(newStats);
 }
@@ -977,9 +978,8 @@ void User::sendInfoToClient(const User &targetUser) const {
 void User::onOutOfRange(const Entity &rhs) const {
   if (rhs.shouldAlwaysBeKnownToUser(*this)) return;
 
-  const Server &server = *Server::_instance;
   auto message = rhs.outOfRangeMessage();
-  server.sendMessage(socket(), message.code, message.args);
+  sendMessage(message.code, message.args);
 }
 
 Message User::outOfRangeMessage() const {
@@ -1022,7 +1022,7 @@ void User::startQuest(const Quest &quest) {
   auto message =
       quest.hasObjective() ? SV_QUEST_IN_PROGRESS : SV_QUEST_CAN_BE_FINISHED;
   auto &server = Server::instance();
-  server.sendMessage(_socket, message, quest.id);
+  sendMessage(message, quest.id);
 
   for (const auto &itemID : quest.startsWithItems) {
     auto item = server.findItem(itemID);
@@ -1048,10 +1048,10 @@ void User::completeQuest(const Quest::ID &id) {
   addXP(100);
 
   if (quest->otherQuestHasThisAsPrerequisite())
-    server.sendMessage(_socket, SV_QUEST_CAN_BE_STARTED,
-                       quest->otherQuestWithThisAsPrerequisite);
+    sendMessage(SV_QUEST_CAN_BE_STARTED,
+                quest->otherQuestWithThisAsPrerequisite);
 
-  server.sendMessage(_socket, SV_QUEST_COMPLETED, id);
+  sendMessage(SV_QUEST_COMPLETED, id);
 }
 
 bool User::hasCompletedQuest(const Quest::ID &id) const {
@@ -1090,7 +1090,7 @@ void User::sendLostDebuffMsg(const Buff::ID &buff) const {
 
 void User::sendXPMessage() const {
   const Server &server = Server::instance();
-  server.sendMessage(_socket, SV_XP, makeArgs(_xp, XP_PER_LEVEL[_level]));
+  sendMessage(SV_XP, makeArgs(_xp, XP_PER_LEVEL[_level]));
 }
 
 void User::announceLevelUp() const {
@@ -1103,7 +1103,7 @@ void User::addXP(XP amount) {
   _xp += amount;
 
   Server &server = Server::instance();
-  server.sendMessage(_socket, SV_XP_GAIN, makeArgs(amount));
+  sendMessage(SV_XP_GAIN, makeArgs(amount));
   sendXPMessage();
 
   const auto maxXpThisLevel = XP_PER_LEVEL[_level];

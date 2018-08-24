@@ -89,8 +89,7 @@ bool Entity::combatTypeCanHaveOutcome(CombatType type, CombatResult outcome,
 }
 
 void Entity::sendGotHitMessageTo(const User &user) const {
-  Server::_instance->sendMessage(user.socket(), SV_ENTITY_WAS_HIT,
-                                 makeArgs(serial()));
+  user.sendMessage(SV_ENTITY_WAS_HIT, makeArgs(serial()));
 }
 
 void Entity::initStatsFromType() {
@@ -184,13 +183,13 @@ void Entity::update(ms_t timeElapsed) {
     // These cases return
     case MISS:
       for (auto user : usersToInform) {
-        server.sendMessage(user->socket(), SV_SHOW_MISS_AT, targetLoc);
+        user->sendMessage(SV_SHOW_MISS_AT, targetLoc);
         if (attackRange() > MELEE_RANGE) sendRangedMissMessageTo(*user);
       }
       return;
     case DODGE:
       for (auto user : usersToInform) {
-        server.sendMessage(user->socket(), SV_SHOW_DODGE_AT, targetLoc);
+        user->sendMessage(SV_SHOW_DODGE_AT, targetLoc);
         if (attackRange() > MELEE_RANGE) sendRangedMissMessageTo(*user);
       }
       return;
@@ -198,11 +197,11 @@ void Entity::update(ms_t timeElapsed) {
     // These cases continue on
     case CRIT:
       for (auto user : usersToInform)
-        server.sendMessage(user->socket(), SV_SHOW_CRIT_AT, targetLoc);
+        user->sendMessage(SV_SHOW_CRIT_AT, targetLoc);
       break;
     case BLOCK:
       for (auto user : usersToInform)
-        server.sendMessage(user->socket(), SV_SHOW_BLOCK_AT, targetLoc);
+        user->sendMessage(SV_SHOW_BLOCK_AT, targetLoc);
       break;
   }
 
@@ -251,8 +250,7 @@ void Entity::update(ms_t timeElapsed) {
   } else {
     assert(false);
   }
-  for (auto user : usersToInform)
-    server.sendMessage(user->socket(), msgCode, args);
+  for (auto user : usersToInform) user->sendMessage(msgCode, args);
 
   // Give target opportunity to react
   pTarget->onAttackedBy(*this, damage);

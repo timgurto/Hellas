@@ -104,8 +104,7 @@ void NPC::addThreat(User &attacker, Threat amount) {
 void NPC::onHealthChange() {
   const Server &server = *Server::_instance;
   for (const User *user : server.findUsersInArea(location()))
-    server.sendMessage(user->socket(), SV_ENTITY_HEALTH,
-                       makeArgs(serial(), health()));
+    user->sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 }
 
 void NPC::onDeath() {
@@ -115,7 +114,7 @@ void NPC::onDeath() {
   npcType()->lootTable().instantiate(*_loot, tagger());
   if (!_loot->empty())
     for (const User *user : server.findUsersInArea(location()))
-      server.sendMessage(user->socket(), SV_LOOTABLE, makeArgs(serial()));
+      user->sendMessage(SV_LOOTABLE, makeArgs(serial()));
 
   /*
   Schedule a respawn, if this NPC came from a spawner.
@@ -144,18 +143,18 @@ px_t NPC::attackRange() const {
 
 void NPC::sendRangedHitMessageTo(const User &userToInform) const {
   assert(target());
-  Server &server = *Server::_instance;
-  server.sendMessage(userToInform.socket(), SV_RANGED_NPC_HIT,
-                     makeArgs(type()->id(), location().x, location().y,
-                              target()->location().x, target()->location().y));
+  userToInform.sendMessage(
+      SV_RANGED_NPC_HIT,
+      makeArgs(type()->id(), location().x, location().y, target()->location().x,
+               target()->location().y));
 }
 
 void NPC::sendRangedMissMessageTo(const User &userToInform) const {
   assert(target());
-  Server &server = *Server::_instance;
-  server.sendMessage(userToInform.socket(), SV_RANGED_NPC_MISS,
-                     makeArgs(type()->id(), location().x, location().y,
-                              target()->location().x, target()->location().y));
+  userToInform.sendMessage(
+      SV_RANGED_NPC_MISS,
+      makeArgs(type()->id(), location().x, location().y, target()->location().x,
+               target()->location().y));
 }
 
 void NPC::processAI(ms_t timeElapsed) {
@@ -299,31 +298,25 @@ void NPC::forgetAbout(const Entity &entity) {
 }
 
 void NPC::sendInfoToClient(const User &targetUser) const {
-  const Server &server = Server::instance();
-  const Socket &client = targetUser.socket();
-
-  server.sendMessage(
-      client, SV_OBJECT,
-      makeArgs(serial(), location().x, location().y, type()->id()));
+  targetUser.sendMessage(
+      SV_OBJECT, makeArgs(serial(), location().x, location().y, type()->id()));
 
   // Level
-  server.sendMessage(client, SV_NPC_LEVEL, makeArgs(serial(), _level));
+  targetUser.sendMessage(SV_NPC_LEVEL, makeArgs(serial(), _level));
 
   // Hitpoints
   if (health() < stats().maxHealth)
-    server.sendMessage(client, SV_ENTITY_HEALTH, makeArgs(serial(), health()));
+    targetUser.sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 
   // Loot
-  if (!_loot->empty())
-    server.sendMessage(client, SV_LOOTABLE, makeArgs(serial()));
+  if (!_loot->empty()) targetUser.sendMessage(SV_LOOTABLE, makeArgs(serial()));
 
   // Buffs/debuffs
   for (const auto &buff : buffs())
-    server.sendMessage(client, SV_ENTITY_GOT_BUFF,
-                       makeArgs(serial(), buff.type()));
+    targetUser.sendMessage(SV_ENTITY_GOT_BUFF, makeArgs(serial(), buff.type()));
   for (const auto &debuff : debuffs())
-    server.sendMessage(client, SV_ENTITY_GOT_DEBUFF,
-                       makeArgs(serial(), debuff.type()));
+    targetUser.sendMessage(SV_ENTITY_GOT_DEBUFF,
+                           makeArgs(serial(), debuff.type()));
 
   // Quests
   QuestNode::sendQuestsToUser(targetUser);
@@ -337,31 +330,28 @@ void NPC::alertWatcherOnInventoryChange(const User &watcher,
                                         size_t slot) const {
   _loot->sendSingleSlotToUser(watcher, serial(), slot);
 
-  const Server &server = Server::instance();
-  if (_loot->empty())
-    server.sendMessage(watcher.socket(), SV_NOT_LOOTABLE, makeArgs(serial()));
+  if (_loot->empty()) watcher.sendMessage(SV_NOT_LOOTABLE, makeArgs(serial()));
 }
 
 ServerItem::Slot *NPC::getSlotToTakeFromAndSendErrors(size_t slotNum,
                                                       const User &user) {
   const Server &server = Server::instance();
-  const Socket &socket = user.socket();
 
   if (_loot->empty()) {
-    server.sendMessage(socket, ERROR_EMPTY_SLOT);
+    user.sendMessage(ERROR_EMPTY_SLOT);
     return nullptr;
   }
 
-  if (!server.isEntityInRange(socket, user, this)) return nullptr;
+  if (!server.isEntityInRange(user.socket(), user, this)) return nullptr;
 
   if (!_loot->isValidSlot(slotNum)) {
-    server.sendMessage(socket, ERROR_INVALID_SLOT);
+    user.sendMessage(ERROR_INVALID_SLOT);
     return nullptr;
   }
 
   ServerItem::Slot &slot = _loot->at(slotNum);
   if (slot.first == nullptr) {
-    server.sendMessage(socket, ERROR_EMPTY_SLOT);
+    user.sendMessage(ERROR_EMPTY_SLOT);
     return nullptr;
   }
 

@@ -243,6 +243,8 @@ class User : public Object {  // TODO: Don't inherit from Object
     return level() - user.level();
   }
 
+  void sendMessage(MessageCode msgCode, const std::string &args = {}) const;
+
   void update(ms_t timeElapsed);
 
   static MapPoint newPlayerSpawn;

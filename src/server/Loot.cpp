@@ -36,8 +36,7 @@ void Loot::add(const ItemSet &items) {
 
 void Loot::sendContentsToUser(const User &recipient, size_t serial) const {
   const Server &server = Server::instance();
-  server.sendMessage(recipient.socket(), SV_LOOT_COUNT,
-                     makeArgs(serial, _container.size()));
+  recipient.sendMessage(SV_LOOT_COUNT, makeArgs(serial, _container.size()));
   for (size_t i = 0; i != _container.size(); ++i)
     server.sendInventoryMessageInner(recipient, serial, i, _container);
 }

@@ -334,7 +334,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
     for (const std::string &id : newUser.knownRecipes()) {
       args = makeArgs(args, id);
     }
-    sendMessage(newUser.socket(), SV_RECIPES, args);
+    newUser.sendMessage(SV_RECIPES, args);
   }
 
   // Send him the constructions he knows
@@ -343,7 +343,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
     for (const std::string &id : newUser.knownConstructions()) {
       args = makeArgs(args, id);
     }
-    sendMessage(newUser.socket(), SV_CONSTRUCTIONS, args);
+    newUser.sendMessage(SV_CONSTRUCTIONS, args);
   }
 
   // Send him his talents
@@ -351,19 +351,17 @@ void Server::addUser(const Socket &socket, const std::string &name,
   auto treesToSend = std::set<std::string>{};
   for (auto pair : userClass.talentRanks()) {
     const auto &talent = *pair.first;
-    sendMessage(newUser.socket(), SV_TALENT,
-                makeArgs(talent.name(), pair.second));
+    newUser.sendMessage(SV_TALENT, makeArgs(talent.name(), pair.second));
     treesToSend.insert(talent.tree());
   }
   for (const auto &tree : treesToSend) {
     auto pointsInTree = userClass.pointsInTree(tree);
-    sendMessage(newUser.socket(), SV_POINTS_IN_TREE,
-                makeArgs(tree, pointsInTree));
+    newUser.sendMessage(SV_POINTS_IN_TREE, makeArgs(tree, pointsInTree));
   }
 
   // Send him his known spells
   auto knownSpellsString = userClass.generateKnownSpellsString();
-  sendMessage(newUser.socket(), SV_KNOWN_SPELLS, knownSpellsString);
+  newUser.sendMessage(SV_KNOWN_SPELLS, knownSpellsString);
   newUser.getClass().teachSpell("sprint");
   newUser.getClass().teachSpell("blink");
 
@@ -382,7 +380,7 @@ void Server::removeUser(const std::set<User>::iterator &it) {
   // Alert nearby users
   for (const User *userP : findUsersInArea(userToDelete.location()))
     if (userP != &userToDelete)
-      sendMessage(userP->socket(), SV_USER_DISCONNECTED, userToDelete.name());
+      userP->sendMessage(SV_USER_DISCONNECTED, userToDelete.name());
 
   forceAllToUntarget(userToDelete);
 
@@ -471,7 +469,7 @@ void Server::forceAllToUntarget(const Entity &target,
     }
     if (user.action() == User::GATHER &&
         user.actionObject()->serial() == serial) {
-      sendMessage(user.socket(), WARNING_DOESNT_EXIST);
+      user.sendMessage(WARNING_DOESNT_EXIST);
       user.cancelAction();
       user.target(nullptr);
     }
@@ -499,7 +497,7 @@ void Server::removeEntity(Entity &ent, const User *userToExclude) {
   // Alert nearby users of the removal
   size_t serial = ent.serial();
   for (const User *userP : findUsersInArea(ent.location()))
-    sendMessage(userP->socket(), SV_REMOVE_OBJECT, makeArgs(serial));
+    userP->sendMessage(SV_REMOVE_OBJECT, makeArgs(serial));
 
   getCollisionChunk(ent.location()).removeEntity(serial);
   _entitiesByX.erase(&ent);
@@ -518,7 +516,7 @@ void Server::gatherObject(size_t serial, User &user) {
   if (user.shouldGatherDoubleThisTime()) qtyToGive *= 2;
   const size_t remaining = user.giveItem(toGive, qtyToGive);
   if (remaining > 0) {
-    sendMessage(user.socket(), WARNING_INVENTORY_FULL);
+    user.sendMessage(WARNING_INVENTORY_FULL);
     qtyToRemove -= remaining;
   }
   if (remaining <
