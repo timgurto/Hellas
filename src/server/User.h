@@ -83,7 +83,7 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   bool _isInCombat{false};
 
-  ms_t _spellCooldown{0};
+  std::map<Spell::ID, ms_t> _spellCooldowns;  // >0 = cooling down
 
  public:
   User(const std::string &name, const MapPoint &loc, const Socket &socket);
@@ -160,7 +160,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   double combatDamage() const override;
   bool isInCombat() const { return _isInCombat; }
   void putInCombat() { _isInCombat = true; }
-  bool isSpellCoolingDown() const;
+  bool isSpellCoolingDown(const Spell::ID &spell) const;
 
   char classTag() const override { return 'u'; }
   virtual void sendBuffMsg(const Buff::ID &buff) const override;
@@ -176,7 +176,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void onKilled(Entity &victim) override;
   bool canAttack() const override;
   void onAttack() override;
-  void onSpellcast();
+  void onSpellcast(const Spell::ID &spell);
   void sendRangedHitMessageTo(const User &userToInform) const override;
   void sendRangedMissMessageTo(const User &userToInform) const override;
   void broadcastDamagedMessage(Hitpoints amount) const override;

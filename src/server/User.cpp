@@ -414,10 +414,13 @@ int User::countItems(const ServerItem *item) const {
 }
 
 void User::update(ms_t timeElapsed) {
-  if (_spellCooldown < timeElapsed)
-    _spellCooldown = 0;
-  else
-    _spellCooldown -= timeElapsed;
+  for (auto &pair : _spellCooldowns) {
+    auto &cooldown = pair.second;
+    if (cooldown < timeElapsed)
+      cooldown = 0;
+    else
+      cooldown -= timeElapsed;
+  }
 
   regen(timeElapsed);
 
@@ -624,7 +627,11 @@ double User::combatDamage() const {
     return BASE_DAMAGE + stats().magicDamage;
 }
 
-bool User::isSpellCoolingDown() const { return _spellCooldown > 0; }
+bool User::isSpellCoolingDown(const Spell::ID &spell) const {
+  auto it = _spellCooldowns.find(spell);
+  if (it == _spellCooldowns.end()) return false;
+  return it->second > 0;
+}
 
 void User::onHealthChange() {
   const Server &server = *Server::_instance;
@@ -779,7 +786,9 @@ void User::onAttack() {
   removeItems(ammo);
 }
 
-void User::onSpellcast() { _spellCooldown = 1000; }
+void User::onSpellcast(const Spell::ID &spell) {
+  _spellCooldowns[spell] = 1000;
+}
 
 void User::sendRangedHitMessageTo(const User &userToInform) const {
   if (!target()) return;
