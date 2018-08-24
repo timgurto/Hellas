@@ -28,9 +28,11 @@ const Tooltip &ClientSpell::tooltip() const {
   }
 
   tooltip.setColor(Color::ITEM_STATS);
-  tooltip.addLine("Energy cost: "s + toString(_cost));
+  if (_cost > 0) tooltip.addLine("Energy cost: "s + toString(_cost));
 
-  if (!_isAoE) tooltip.addLine("Range: "s + toString(_range) + " podes"s);
+  auto shouldShowRange = !_isAoE && _range > 0;
+  if (shouldShowRange)
+    tooltip.addLine("Range: "s + toString(_range) + " podes"s);
 
   if (_cooldown > 0) tooltip.addLine("Cooldown: "s + sAsTimeDisplay(_cooldown));
 
