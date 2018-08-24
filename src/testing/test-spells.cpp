@@ -64,7 +64,7 @@ TEST_CASE("Non-talent spells are persistent") {
 }
 
 TEST_CASE("Spell cooldowns", "[remote]") {
-  GIVEN("A range of self-damaging spells") {
+  GIVEN("Alice and Bob know a range of self-damaging spells") {
     auto data = R"(
       <spell id="hurtSelf1s" cooldown="1" >
         <targets self=1 />
@@ -76,19 +76,24 @@ TEST_CASE("Spell cooldowns", "[remote]") {
       </spell>
     )";
     auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithUsernameAndDataString("Alice"s, data);
-    s.waitForUsers(1);
 
+    auto cAlice = TestClient::WithUsername("Alice");
+    auto cBob = RemoteClient{"-username Bob"};
+    s.waitForUsers(2);
     auto &alice = *s->getUserByName("Alice");
+    auto &bob = *s->getUserByName("Bob");
+
+    alice.getClass().teachSpell("hurtSelf");
     alice.getClass().teachSpell("hurtSelf1s");
+    bob.getClass().teachSpell("hurtSelf1s");
 
     WHEN("Alice casts the spell with cooldown 1s") {
-      c.sendMessage(CL_CAST, "hurtSelf1s");
+      cAlice.sendMessage(CL_CAST, "hurtSelf1s");
       REPEAT_FOR_MS(100);
       auto healthAfterFirstCast = alice.health();
 
       AND_WHEN("she tries casting it again") {
-        c.sendMessage(CL_CAST, "hurtSelf1s");
+        cAlice.sendMessage(CL_CAST, "hurtSelf1s");
 
         THEN("she hasn't lost any health") {
           REPEAT_FOR_MS(100);
@@ -100,7 +105,7 @@ TEST_CASE("Spell cooldowns", "[remote]") {
         REPEAT_FOR_MS(1000);
 
         AND_WHEN("she tries casting it again") {
-          c.sendMessage(CL_CAST, "hurtSelf1s");
+          cAlice.sendMessage(CL_CAST, "hurtSelf1s");
 
           THEN("she has lost health") {
             REPEAT_FOR_MS(100);
@@ -109,19 +114,8 @@ TEST_CASE("Spell cooldowns", "[remote]") {
         }
       }
 
-      /*AND_WHEN("she tries casting the spell with cooldown 2s") {
-        user.getClass().teachSpell("hurtSelf2s");
-        c.sendMessage(CL_CAST, "hurtSelf2s");
-
-        THEN("she has lost health") {
-          REPEAT_FOR_MS(100);
-          CHECK(user.health() < healthAfterFirstCast);
-        }
-      }*/
-
       AND_WHEN("she tries casting the spell with no cooldown") {
-        alice.getClass().teachSpell("hurtSelf");
-        c.sendMessage(CL_CAST, "hurtSelf");
+        cAlice.sendMessage(CL_CAST, "hurtSelf");
 
         THEN("she has lost health") {
           REPEAT_FOR_MS(100);
@@ -130,10 +124,6 @@ TEST_CASE("Spell cooldowns", "[remote]") {
       }
 
       AND_WHEN("Bob tries casting it") {
-        auto rc = RemoteClient{"-username Bob"};
-        s.waitForUsers(2);
-        auto &bob = *s->getUserByName("Bob");
-        bob.getClass().teachSpell("hurtSelf1s");
         auto healthBefore = bob.health();
         s.sendMessage(bob.socket(), TST_SEND_THIS_BACK,
                       makeArgs(CL_CAST, "hurtSelf1s"));
