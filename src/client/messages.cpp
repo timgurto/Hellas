@@ -1752,6 +1752,19 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case TST_SEND_THIS_BACK: {
+        auto msgCodeAsInt = 0;
+        singleMsg >> msgCodeAsInt >> del;
+        auto msgCode = static_cast<MessageCode>(msgCodeAsInt);
+        std::string args;
+        readString(singleMsg, args, MSG_END);
+        singleMsg >> del;
+        if (del != MSG_END) break;
+
+        sendMessage(msgCode, args);
+        break;
+      }
+
       default
           :;  // showErrorMessage("Unhandled message: "s + msg, Color::FAILURE);
     }

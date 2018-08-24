@@ -630,6 +630,14 @@ enum MessageCode {
 
 
 
+  // Messages used in tests
+
+  // Tell the client to send the message back to the server; used for remote clients.
+  // Arguments: message code, args
+  TST_SEND_THIS_BACK,
+
+
+
   NO_CODE
   // clang-format on
 };
