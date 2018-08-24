@@ -1668,6 +1668,19 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_SPELL_COOLING_DOWN: {
+        singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+        auto spellID = std::string{buffer};
+        auto timeRemaining = 0;
+        singleMsg >> del >> timeRemaining >> del;
+
+        if (del != MSG_END) return;
+
+        _spellCooldowns[spellID] = timeRemaining;
+        populateHotbar();
+        break;
+      }
+
       case SV_QUEST_CAN_BE_STARTED: {
         singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
         auto questID = std::string{buffer};

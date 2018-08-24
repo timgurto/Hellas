@@ -321,6 +321,7 @@ class Client {
   static void confirmAndUnlearnTalents();
   void populateClassWindow();
   std::set<const ClientSpell *> _knownSpells{};
+  std::map<std::string, ms_t> _spellCooldowns{};
 
   windows_t _windows;
 

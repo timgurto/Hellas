@@ -391,6 +391,17 @@ void Client::gameLoop() {
   for (auto &terrainPair : _terrain)
     terrainPair.second.advanceTime(_timeElapsed);
 
+  // Update spell cooldowns
+  for (auto &pair : _spellCooldowns) {
+    if (pair.second == 0) continue;
+    if (pair.second < _timeElapsed) {
+      pair.second = 0;
+      populateHotbar();
+    } else {
+      pair.second -= _timeElapsed;
+    }
+  }
+
   if (_mouseMoved) checkMouseOver();
 
   updateUI();

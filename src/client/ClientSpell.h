@@ -30,6 +30,7 @@ class ClientSpell {
 
   ClientSpell(const std::string &id);
 
+  const std::string &id() const { return _id; }
   void projectile(const Projectile::Type *p) { _projectile = p; }
   const Projectile::Type *projectile() const { return _projectile; }
   void sounds(const SoundProfile *p) { _sounds = p; }

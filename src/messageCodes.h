@@ -389,6 +389,10 @@ enum MessageCode {
   // The user has no talent points allocated
   SV_NO_TALENTS,
 
+  // A spell is cooling down
+  // Arguments: spellID, time left in ms
+  SV_SPELL_COOLING_DOWN,
+
   // An object has an owner
   // Arguments: serial, type ("user"|"city"), name
   SV_OWNER,

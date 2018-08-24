@@ -144,6 +144,11 @@ void Client::populateHotbar() {
     button->addChild(new OutlinedLabel({0, -1, 16, 18}, toString((i + 1) % 10),
                                        Element::RIGHT_JUSTIFIED));
     button->setTooltip(spell->tooltip());
+
+    auto it = _spellCooldowns.find(spell->id());
+    auto spellIsCoolingDown = it != _spellCooldowns.end() && it->second > 0;
+    if (spellIsCoolingDown) button->disable();
+
     _hotbar->addChild(button);
     _hotbarButtons[i] = button;
     ++i;

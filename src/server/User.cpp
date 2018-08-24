@@ -789,6 +789,8 @@ void User::onAttack() {
 void User::onSpellcast(const Spell::ID &id, const Spell &spell) {
   if (spell.cooldown() == 0) return;
   _spellCooldowns[id] = spell.cooldown();
+  Server::instance().sendMessage(_socket, SV_SPELL_COOLING_DOWN,
+                                 makeArgs(id, spell.cooldown()));
 }
 
 void User::sendRangedHitMessageTo(const User &userToInform) const {
