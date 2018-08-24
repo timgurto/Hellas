@@ -107,5 +107,5 @@ void Button::enable() {
 
 void Button::disable() {
   _enabled = false;
-  _caption->setColor(Color::DISABLED_TEXT);
+  if (_caption) _caption->setColor(Color::DISABLED_TEXT);
 }
