@@ -22,6 +22,7 @@ class Button : public Element {
  private:
   Element *_content{new Element{}};
   ColorBlock *_background{new ColorBlock{{1, 1, 0, 0}}};
+  ColorBlock *_disabledMask{new ColorBlock{{1, 1, 0, 0}}};
   ShadowBox *_border{new ShadowBox{{}}};
   Label *_caption{nullptr};
 

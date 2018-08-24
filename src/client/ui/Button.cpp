@@ -11,6 +11,11 @@ Button::Button(const ScreenRect &rect, const std::string &caption,
 void Button::init(const std::string &caption) {
   Element::addChild(_background);
   Element::addChild(_content);
+
+  _disabledMask->setAlpha(0xbf);
+  _disabledMask->hide();
+  Element::addChild(_disabledMask);
+
   Element::addChild(_border);
 
   if (!caption.empty()) {
@@ -89,6 +94,7 @@ void Button::width(px_t w) {
   _background->width(w - 2);
   _content->width(w);
   _border->width(w);
+  _disabledMask->width(w - 2);
   if (_caption != nullptr) _caption->width(w);
 }
 
@@ -97,15 +103,16 @@ void Button::height(px_t h) {
   _background->height(h - 2);
   _content->height(h);
   _border->height(h);
+  _disabledMask->height(h - 2);
   if (_caption != nullptr) _caption->height(h);
 }
 
 void Button::enable() {
   _enabled = true;
-  _caption->setColor(FONT_COLOR);
+  _disabledMask->hide();
 }
 
 void Button::disable() {
   _enabled = false;
-  if (_caption) _caption->setColor(Color::DISABLED_TEXT);
+  _disabledMask->show();
 }
