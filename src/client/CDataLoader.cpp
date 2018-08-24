@@ -278,6 +278,9 @@ void CDataLoader::loadSpells(XmlReader &xr) {
     else if (xr.findAttr(elem, "radius", range))
       newSpell->radius(range);
 
+    auto cooldown = 0;
+    if (xr.findAttr(elem, "cooldown", cooldown)) newSpell->cooldown(cooldown);
+
     auto functionElem = xr.findChild("function", elem);
     if (functionElem) {
       auto functionName = ""s;

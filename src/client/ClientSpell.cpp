@@ -32,6 +32,8 @@ const Tooltip &ClientSpell::tooltip() const {
 
   if (!_isAoE) tooltip.addLine("Range: "s + toString(_range) + " podes"s);
 
+  if (_cooldown > 0) tooltip.addLine("Cooldown: "s + sAsTimeDisplay(_cooldown));
+
   tooltip.setColor(Color::ITEM_INSTRUCTIONS);
   tooltip.addLine(createEffectDescription());
 

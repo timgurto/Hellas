@@ -53,6 +53,8 @@ class ClientSpell {
   }
   void school(SpellSchool school) { _school = school; }
   void targetType(TargetType t) { _targetType = t; }
+  void cooldown(int s) { _cooldown = s; }
+  int cooldown() const { return _cooldown; }
 
   std::string createEffectDescription() const;
 
@@ -73,6 +75,7 @@ class ClientSpell {
   std::string _effectName = {};
   Args _effectArgs = {};
   TargetType _targetType = NUM_TARGET_TYPES;
+  int _cooldown{0};  // in seconds
 };
 
 using ClientSpells = std::map<std::string, ClientSpell *>;
