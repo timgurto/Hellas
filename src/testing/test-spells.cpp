@@ -1,3 +1,4 @@
+#include "RemoteClient.h"
 #include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
@@ -62,7 +63,7 @@ TEST_CASE("Non-talent spells are persistent") {
   }
 }
 
-TEST_CASE("Spell cooldowns") {
+TEST_CASE("Spell cooldowns", "[remote]") {
   GIVEN("A range of self-damaging spells") {
     auto data = R"(
       <spell id="hurtSelf1s" cooldown="1" >
@@ -108,6 +109,12 @@ TEST_CASE("Spell cooldowns") {
         }
       }
 
+      /*AND_WHEN("she tries casting the spell with cooldown 2s") {
+        user.getClass().teachSpell("hurtSelf2s");
+        c.sendMessage(CL_CAST, "hurtSelf2s");
+
+        THEN("she has lost health") {
+          REPEAT_FOR_MS(100);
           CHECK(user.health() < healthAfterFirstCast);
         }
       }*/
@@ -119,6 +126,21 @@ TEST_CASE("Spell cooldowns") {
         THEN("she has lost health") {
           REPEAT_FOR_MS(100);
           CHECK(alice.health() < healthAfterFirstCast);
+        }
+      }
+
+      AND_WHEN("Bob tries casting it") {
+        auto rc = RemoteClient{"-username Bob"};
+        s.waitForUsers(2);
+        auto &bob = *s->getUserByName("Bob");
+        bob.getClass().teachSpell("hurtSelf1s");
+        auto healthBefore = bob.health();
+        s.sendMessage(bob.socket(), TST_SEND_THIS_BACK,
+                      makeArgs(CL_CAST, "hurtSelf1s"));
+
+        THEN("he has lost health") {
+          REPEAT_FOR_MS(100);
+          CHECK(bob.health() < healthBefore);
         }
       }
     }

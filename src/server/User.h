@@ -83,6 +83,8 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   bool _isInCombat{false};
 
+  ms_t _spellCooldown{0};
+
  public:
   User(const std::string &name, const MapPoint &loc, const Socket &socket);
   User(const Socket &rhs);  // for use with set::find(), allowing find-by-socket
@@ -158,6 +160,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   double combatDamage() const override;
   bool isInCombat() const { return _isInCombat; }
   void putInCombat() { _isInCombat = true; }
+  bool isSpellCoolingDown() const;
 
   char classTag() const override { return 'u'; }
   virtual void sendBuffMsg(const Buff::ID &buff) const override;
@@ -173,6 +176,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void onKilled(Entity &victim) override;
   bool canAttack() const override;
   void onAttack() override;
+  void onSpellcast();
   void sendRangedHitMessageTo(const User &userToInform) const override;
   void sendRangedMissMessageTo(const User &userToInform) const override;
   void broadcastDamagedMessage(Hitpoints amount) const override;
