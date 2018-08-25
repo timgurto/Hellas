@@ -71,6 +71,18 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
     <forbid id="volcanoMountain" />
 </list>
 
+<list id="notMountains">
+    <forbid id="mountain" />
+    <forbid id="plainsMountain" />
+    <forbid id="forestMountain" />
+    <forbid id="richMountain" />
+    <forbid id="desertMountain" />
+    <forbid id="beachMountain" />
+    <forbid id="ruinsMountain" />
+    <forbid id="caveMountain" />
+    <forbid id="volcanoMountain" />
+</list>
+
 <list id="sticks" >
     <allow id="normal" />
     <allow id="fertile" />

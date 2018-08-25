@@ -27,5 +27,8 @@
 <buff id="damageShield" name="Daemonic Armour" icon="orbBlue" duration="120" school="fire" >
     <function onHit="1" name="doDirectDamage" i1="2" />
 </buff>
+<buff id="waterWalking" name="Water Walking" icon="waterRipples" canBeInterrupted="1" school="air" >
+    <changeAllowedTerrain terrainList="notMountains" />
+</buff>
 
 </root>
