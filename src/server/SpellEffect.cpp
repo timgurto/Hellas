@@ -168,8 +168,7 @@ CombatResult SpellEffect::randomTeleport(const SpellEffect &effect,
     auto dY = sin(angle) * radius;
 
     proposedLocation = target.location() + MapPoint{dX, dY};
-    if (server.isLocationValid(proposedLocation, *target.type(), &target))
-      break;
+    if (server.isLocationValid(proposedLocation, target)) break;
   }
 
   if (attempts == 0) return FAIL;

@@ -70,6 +70,7 @@ class Entity {
     return type()->collisionRect() + _location;
   }
   bool collides() const { return type()->collides() && _health != 0; }
+  const TerrainList &allowedTerrain() const;
 
   // Combat
   Entity *target() const { return _target; }

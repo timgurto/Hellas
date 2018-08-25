@@ -719,6 +719,20 @@ void DataLoader::loadBuffs(XmlReader &xr) {
     auto schoolString = ""s;
     if (xr.findAttr(elem, "school", schoolString)) school = {schoolString};
 
+    do {
+      auto changeAllowedTerrain = xr.findChild("changeAllowedTerrain", elem);
+      if (!changeAllowedTerrain) break;
+
+      auto listName = ""s;
+      if (!xr.findAttr(changeAllowedTerrain, "terrainList", listName)) break;
+
+      auto list = TerrainList::findList(listName);
+      if (!list) break;
+
+      newBuff.changesAllowedTerrain(list);
+
+    } while (false);
+
     auto functionElem = xr.findChild("function", elem);
     if (functionElem) {
       auto functionName = ""s;
@@ -740,8 +754,6 @@ void DataLoader::loadBuffs(XmlReader &xr) {
       if (xr.findAttr(functionElem, "onHit", n) && n != 0) {
         newBuff.effectOnHit();
       }
-
-      if (functionName == "changeAllowedTerrain") newBuff.effectOverTime();
 
       assert(newBuff.hasType());
 

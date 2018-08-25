@@ -126,7 +126,7 @@ TEST_CASE("A buff that changes allowed terrain") {
       <row    y="3" terrain = "...." />
 
       <buff id="levitating" >
-          <function name="changeAllowedTerrain" s1="all" />
+          <changeAllowedTerrain terrainList="all" />
       </buff>
     )";
 

@@ -19,8 +19,7 @@ bool Server::isLocationValid(const MapPoint &loc, const Entity &thisEntity) {
 }
 
 bool Server::isLocationValid(const MapRect &rect, const Entity &thisEntity) {
-  return isLocationValid(rect, thisEntity.type()->allowedTerrain(),
-                         &thisEntity);
+  return isLocationValid(rect, thisEntity.allowedTerrain(), &thisEntity);
 }
 
 MapRect Server::getTileRect(size_t x, size_t y) {

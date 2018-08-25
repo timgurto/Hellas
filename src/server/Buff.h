@@ -7,6 +7,8 @@
 #include "../Stats.h"
 #include "SpellEffect.h"
 
+class TerrainList;
+
 class BuffType {
  public:
   enum Type {
@@ -31,6 +33,8 @@ class BuffType {
   SpellEffect &effect() { return _effect; }
   void effectOverTime() { _type = SPELL_OVER_TIME; }
   void effectOnHit() { _type = SPELL_ON_HIT; }
+  void changesAllowedTerrain(const TerrainList *list) { _terrainList = list; }
+  const TerrainList *changesAllowedTerrain() const { return _terrainList; }
   const SpellEffect &effect() const { return _effect; }
   void tickTime(ms_t t) { _tickTime = t; }
   ms_t tickTime() const { return _tickTime; }
@@ -49,6 +53,8 @@ class BuffType {
   Type _type = UNKNOWN;
 
   StatsMod _stats{};
+  const TerrainList *_terrainList{
+      nullptr};  // If non-null, indicates that the buff changes this.
 
   SpellEffect _effect{};
   ms_t _tickTime{0};
@@ -69,6 +75,9 @@ class Buff {
   bool hasExpired() const { return _expired; }
   SpellSchool school() const { return _type->school(); }
   bool hasEffectOnHit() const { return _type->hasEffectOnHit(); }
+  const TerrainList *changesAllowedTerrain() const {
+    return _type->changesAllowedTerrain();
+  }
   bool canBeInterrupted() const { return _type->canBeInterrupted(); }
   bool cancelsOnOOE() const { return _type->cancelsOnOOE(); }
 

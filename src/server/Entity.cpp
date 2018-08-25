@@ -375,6 +375,16 @@ void Entity::location(const MapPoint &newLoc, bool firstInsertion) {
   }
 }
 
+const TerrainList &Entity::allowedTerrain() const {
+  for (const auto &buff : buffs()) {
+    auto newTerrainList = buff.changesAllowedTerrain();
+    if (!newTerrainList) continue;
+    return *newTerrainList;
+  }
+
+  return _type->allowedTerrain();
+}
+
 std::vector<const Buff *> Entity::onHitBuffsAndDebuffs() {
   auto v = std::vector<const Buff *>{};
   for (const auto &buff : _buffs)
