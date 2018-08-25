@@ -192,3 +192,18 @@ TEST_CASE("Existing users load at the correct location") {
     CHECK(spawnedCorrectly);
   }
 }
+
+TEST_CASE("The map can be loaded from a string") {
+  GIVEN("a 2x2 map specified by string") {
+    auto data = R"(
+      <size x="2" y="2" />
+      <newPlayerSpawn x="10" y="10" range="50" />
+      <row    y="0" terrain = "GG" />
+      <row    y="1" terrain = "GG" />
+    )";
+
+    auto s = TestServer::WithDataString(data);
+
+    THEN("The map has width=2") { CHECK(s->mapX() == 2); }
+  }
+}

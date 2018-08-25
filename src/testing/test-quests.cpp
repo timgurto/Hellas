@@ -337,7 +337,7 @@ TEST_CASE("After a user accepts a quest, he can't do so again", "[quests]") {
   CHECK(a.startsQuests().size() == 1);
 }
 
-TEST_CASE("Quest UI", "[quests][ui]") {
+TEST_CASE("Quest UI", "[quests][ui][.flaky]") {
   GIVEN("an object that gives a quest") {
     auto data = R"(
       <objectType id="A" />

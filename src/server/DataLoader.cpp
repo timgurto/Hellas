@@ -75,6 +75,7 @@ void DataLoader::load(bool keepOldData) {
     loadBuffs(XmlReader::FromString(_data));
     loadClasses(XmlReader::FromString(_data));
     loadSpawners(XmlReader::FromString(_data));
+    loadMap(XmlReader::FromString(_data));
   }
 
   _server._dataLoaded = true;
