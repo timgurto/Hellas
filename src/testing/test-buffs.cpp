@@ -109,6 +109,22 @@ TEST_CASE("A buff that ends when out of energy") {
 TEST_CASE("A buff that changes allowed terrain") {
   GIVEN("a map with grass and water, and buff that allows water walking") {
     auto data = R"(
+      <terrain index="G" id="grass" />
+      <terrain index="." id="water" />
+      <list id="default" default="1" >
+          <allow id="grass" />
+      </list>
+      <list id="all" >
+          <allow id="grass" />
+          <allow id="water" />
+      </list>
+      <newPlayerSpawn x="10" y="10" range="0" />
+      <size x="4" y="4" />
+      <row    y="0" terrain = "GG.." />
+      <row    y="1" terrain = "GG.." />
+      <row    y="2" terrain = "...." />
+      <row    y="3" terrain = "...." />
+
       <buff id="levitating" >
           <function name="changeAllowedTerrain" s1="all" />
       </buff>
@@ -122,6 +138,14 @@ TEST_CASE("A buff that changes allowed terrain") {
     WHEN("the player has the buff") {
       auto levitating = s.getFirstBuff();
       user.applyBuff(levitating, user);
+
+      THEN("he can walk to the other end of the map") {
+        REPEAT_FOR_MS(2000) {
+          c.sendMessage(CL_LOCATION, makeArgs(70, 10));
+          SDL_Delay(5);
+        }
+        CHECK(user.location().x == 70.0);
+      }
     }
   }
 }
