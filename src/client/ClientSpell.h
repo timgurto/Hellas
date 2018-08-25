@@ -55,6 +55,9 @@ class ClientSpell {
   void targetType(TargetType t) { _targetType = t; }
   void cooldown(int s) { _cooldown = s; }
   int cooldown() const { return _cooldown; }
+  void customDescription(const std::string &description) {
+    _customDescription = description;
+  }
 
   std::string createEffectDescription() const;
 
@@ -71,6 +74,7 @@ class ClientSpell {
   Podes _range = 0;
   bool _isAoE = false;
   SpellSchool _school;
+  std::string _customDescription{};  // Used if not empty
 
   std::string _effectName = {};
   Args _effectArgs = {};

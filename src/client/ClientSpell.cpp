@@ -43,6 +43,8 @@ const Tooltip &ClientSpell::tooltip() const {
 }
 
 std::string ClientSpell::createEffectDescription() const {
+  if (!_customDescription.empty()) return _customDescription;
+
   std::ostringstream oss;
 
   auto effectName = _effectName;

@@ -28,7 +28,7 @@ Functions:
     <targets self=1 />
     <function name="randomTeleport" i1="10" />
 </spell>
-<spell id="waterWalking" name="Walk on Water" icon="waterRipples" cost=20 >
+<spell id="waterWalking" name="Walk on Water" icon="waterRipples" customDescription="Grant yourself the ability to walk on water." cost=20 >
     <targets self=1 />
     <function name="buff" s1="waterWalking" />
 </spell>

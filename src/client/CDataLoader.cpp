@@ -281,6 +281,10 @@ void CDataLoader::loadSpells(XmlReader &xr) {
     auto cooldown = 0;
     if (xr.findAttr(elem, "cooldown", cooldown)) newSpell->cooldown(cooldown);
 
+    auto customDescription = ""s;
+    if (xr.findAttr(elem, "customDescription", customDescription))
+      newSpell->customDescription(customDescription);
+
     auto functionElem = xr.findChild("function", elem);
     if (functionElem) {
       auto functionName = ""s;
