@@ -105,3 +105,23 @@ TEST_CASE("A buff that ends when out of energy") {
     }
   }
 }
+
+TEST_CASE("A buff that changes allowed terrain") {
+  GIVEN("a map with grass and water, and buff that allows water walking") {
+    auto data = R"(
+      <buff id="levitating" >
+          <function name="changeAllowedTerrain" s1="all" />
+      </buff>
+    )";
+
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    WHEN("the player has the buff") {
+      auto levitating = s.getFirstBuff();
+      user.applyBuff(levitating, user);
+    }
+  }
+}

@@ -741,6 +741,8 @@ void DataLoader::loadBuffs(XmlReader &xr) {
         newBuff.effectOnHit();
       }
 
+      if (functionName == "changeAllowedTerrain") newBuff.effectOverTime();
+
       assert(newBuff.hasType());
 
       newBuff.effect().args(args);
