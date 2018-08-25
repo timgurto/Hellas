@@ -1,3 +1,4 @@
+#include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -29,4 +30,36 @@ TEST_CASE("Large map is read accurately", "[.slow][terrain]") {
       CAPTURE(y);
       REQUIRE(s->map()[x][y] == 'G');
     }
+}
+
+TEST_CASE("Users limited to default terrain list") {
+  GIVEN("a map with grass and water, and only grass in the default list") {
+    auto data = R"(
+      <terrain index="G" id="grass" />
+      <terrain index="." id="water" />
+      <list id="default" default="1" >
+          <allow id="grass" />
+      </list>
+      <newPlayerSpawn x="10" y="10" range="0" />
+      <size x="4" y="4" />
+      <row    y="0" terrain = "GG.." />
+      <row    y="1" terrain = "GG.." />
+      <row    y="2" terrain = "...." />
+      <row    y="3" terrain = "...." />
+    )";
+
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    WHEN("he tries to walk onto the water") {
+      REPEAT_FOR_MS(2000) {
+        c.sendMessage(CL_LOCATION, makeArgs(70, 10));
+        SDL_Delay(5);
+      }
+
+      THEN("he can't get there") { CHECK(user.location().x != 70.0); }
+    }
+  }
 }

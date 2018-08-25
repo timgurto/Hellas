@@ -86,6 +86,11 @@ bool Server::isLocationValid(const MapRect &rect,
     return false;
   }
 
+  // Terrain
+  auto terrainTypesCovered = nearbyTerrainTypes(rect);
+  for (char terrainType : terrainTypesCovered)
+    if (!allowedTerrain.allows(terrainType)) return false;
+
   // Objects
   MapPoint rectCenter(rect.x + rect.w / 2, rect.y + rect.h / 2);
   auto superChunk = getCollisionSuperChunk(rectCenter);
