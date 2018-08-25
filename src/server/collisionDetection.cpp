@@ -8,15 +8,19 @@
 
 const px_t Server::COLLISION_CHUNK_SIZE = 160;
 
-bool Server::isLocationValid(const MapPoint &loc, const EntityType &type,
-                             const Entity *thisEntity) {
+bool Server::isLocationValid(const MapPoint &loc, const EntityType &type) {
   auto rect = type.collisionRect() + loc;
-  return isLocationValid(rect, type.allowedTerrain(), thisEntity);
+  return isLocationValid(rect, type.allowedTerrain());
 }
 
-bool Server::isLocationValid(const MapRect &rect, const Entity *thisEntity) {
-  return isLocationValid(rect, thisEntity->type()->allowedTerrain(),
-                         thisEntity);
+bool Server::isLocationValid(const MapPoint &loc, const Entity &thisEntity) {
+  auto rect = thisEntity.type()->collisionRect() + loc;
+  return isLocationValid(rect, thisEntity);
+}
+
+bool Server::isLocationValid(const MapRect &rect, const Entity &thisEntity) {
+  return isLocationValid(rect, thisEntity.type()->allowedTerrain(),
+                         &thisEntity);
 }
 
 MapRect Server::getTileRect(size_t x, size_t y) {

@@ -258,12 +258,11 @@ class Server {
  public:
   // thisObject = object to omit from collision detection (usually "this", to
   // avoid self-collision)
-  bool isLocationValid(
-      const MapPoint &loc, const EntityType &type,
-      const Entity *thisEntity = nullptr);  // Deduces allowed terrain from type
-  bool isLocationValid(
-      const MapRect &rect,
-      const Entity *thisEntity);  // Deduces allowed terrain from thisObject
+  bool isLocationValid(const MapPoint &loc, const Entity &thisEntity);
+  bool isLocationValid(const MapRect &rect, const Entity &thisEntity);
+  bool isLocationValid(const MapPoint &loc, const EntityType &type);
+
+ private:
   bool isLocationValid(const MapRect &rect, const TerrainList &allowedTerrain,
                        const Entity *thisEntity = nullptr);
 

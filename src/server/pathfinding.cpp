@@ -35,9 +35,9 @@ void Entity::updateLocation(const MapPoint &dest) {
     journeyRect.w += displacementX;
     if (rawDisplacement.y < 0) journeyRect.y -= displacementY;
     journeyRect.h += displacementY;
-    if (!server.isLocationValid(journeyRect, this)) {
+    if (!server.isLocationValid(journeyRect, *this)) {
       newDest = _location;
-      assert(server.isLocationValid(newDest, *type(), this));
+      assert(server.isLocationValid(newDest, *this));
       static const double ACCURACY = 0.5;
       MapPoint displacementNorm(rawDisplacement.x / distanceToMove * ACCURACY,
                                 rawDisplacement.y / distanceToMove * ACCURACY);
@@ -45,14 +45,14 @@ void Entity::updateLocation(const MapPoint &dest) {
            segment += ACCURACY) {
         MapPoint testDest = newDest;
         testDest.x += displacementNorm.x;
-        if (!server.isLocationValid(testDest, *type(), this)) break;
+        if (!server.isLocationValid(testDest, *this)) break;
         newDest = testDest;
       }
       for (double segment = ACCURACY; segment <= distanceToMove;
            segment += ACCURACY) {
         MapPoint testDest = newDest;
         testDest.y += displacementNorm.y;
-        if (!server.isLocationValid(testDest, *type(), this)) break;
+        if (!server.isLocationValid(testDest, *this)) break;
         newDest = testDest;
       }
     }
@@ -60,7 +60,7 @@ void Entity::updateLocation(const MapPoint &dest) {
 
   // At this point, the new location has been finalized.  Now new information
   // must be propagated.
-  assert(server.isLocationValid(newDest, *type(), this));
+  assert(server.isLocationValid(newDest, *this));
 
   double left, right, top, bottom;  // Area newly visible
   double forgetLeft, forgetRight, forgetTop,

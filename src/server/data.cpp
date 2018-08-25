@@ -58,7 +58,7 @@ bool Server::readUserData(User &user) {
     user.respawnPoint(respawnPoint);
 
   bool s = false;
-  if (isLocationValid(location, User::OBJECT_TYPE, &user))
+  if (isLocationValid(location, user))
     user.location(location, /* firstInsertion */ true);
   else {
     _debug << Color::YELLOW << "Player " << user.name()
