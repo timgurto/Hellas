@@ -1,6 +1,6 @@
 <root>
 
-<quest id="tutConversation" name="A new creation" startsAt="prometheus" endsAt="prometheus"
+<quest id="tutCombat" name="A new creation" startsAt="prometheus" endsAt="prometheus"
     brief="Welcome to Mt. Othrys--or what's left of it.  My name is Prometheus, and I created you.
 It looks like your eyes and ears are in working order, so let's test your arms and legs.  Head over to that grassy area there, and kill some pigs."
     debrief="Excellent, everything seems to be working as intended."
@@ -24,8 +24,39 @@ It looks like your eyes and ears are in working order, so let's test your arms a
         imageFile="critter" sounds = "pig" >
         <collisionRect x="-9" y="-4" w="18" h="7" />
     </npcType>
-    <spawnPoint type="tutPig" quantity="20" radius="350" respawnTime="0" x="4566" y="60376" />
+    <spawnPoint type="tutPig" quantity="20" radius="350" respawnTime="10000" x="4566" y="60376" />
     <spawnPoint type="tutPig" quantity="5" radius="200" respawnTime="30000" x="4174" y="60220" />
-
+	
+<quest id="tutParts" name="Goat Accumulator" startsAt="prometheus" endsAt="prometheus"
+    brief="My kin used to rule the cosmos, but cruelty and jealousy led to a war . . . a war that we lost.  Now the youngsters on Mt. Olympus rule, while the other Titans, my family, suffer imprisonment in the underworld.  
+Zeus, the king of these Olympian gods, wants you humans to worship his kind with animal sacrifices.  Before we negotiate the details, you'll need to get your hands dirty: slay some goats, and gather what you can of their remains."
+    debrief="These will do nicely."
+    helpTopicOnAccept="Basic: loot">
+    <prerequisite id="tutCombat" />
+    <objective type="fetch" id="tutMeat" qty="10" />
+    <objective type="fetch" id="tutHide" />
+    <objective type="fetch" id="tutEntrails" qty="10" />
+    <objective type="fetch" id="tutFat" />
+</quest>
+    <npcType
+        id="tutGoat" name="Goat"
+        level="2" maxHealth="44" attack="6" attackTime="2030"
+        xDrawOffset="-17" yDrawOffset="-28"
+        imageFile="goat" sounds = "goat" >
+        <collisionRect x="-15" y="-4" w="31" h="7" />
+        <loot id="tutMeat" chance="0.3" />
+        <loot id="tutHide" chance="0.1" />
+        <loot id="tutEntrails" chance="0.3" />
+        <loot id="tutFat" chance="0.1" />
+    </npcType>
+    <item id="tutMeat"     name="Meat"                           stackSize="10" exclusiveToQuest="tutParts" />
+    <item id="tutHide"     name="Hide"       iconFile="hide"     stackSize="10" exclusiveToQuest="tutParts" />
+    <item id="tutEntrails" name="Entrails"   iconFile="entrails" stackSize="10" exclusiveToQuest="tutParts" />
+    <item id="tutFat"      name="Animal Fat" iconFile="fat"      stackSize="10" exclusiveToQuest="tutParts" />
+    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="4396" y="59760" />
+    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="4542" y="59490" />
+    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="4762" y="59664" />
+    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="4880" y="59296" />
+    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="5096" y="59482" />
 
 </root>
