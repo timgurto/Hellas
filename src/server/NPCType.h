@@ -12,6 +12,7 @@ class NPCType : public ObjectType {
  public:
   enum Aggression {
     AGGRESSIVE,     // Will attack nearby enemies
+    NEUTRAL,        // Will defend itself
     NON_COMBATANT,  // Cannot be attacked
   };
 
@@ -35,7 +36,9 @@ class NPCType : public ObjectType {
   void makeRanged() { _isRanged = true; }
   bool isRanged() const { return _isRanged; }
   void makeCivilian() { _aggression = NON_COMBATANT; }
+  void makeNeutral() { _aggression = NEUTRAL; }
   bool canBeAttacked() const;
+  bool attacksNearby() const;
   void school(SpellSchool school) { _school = school; }
   SpellSchool school() const { return _school; }
 

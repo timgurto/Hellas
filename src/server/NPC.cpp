@@ -74,6 +74,8 @@ void NPC::scaleThreatAgainst(Entity &target, double multiplier) {
 }
 
 void NPC::makeAwareOf(User &user) {
+  if (!npcType()->attacksNearby()) return;
+
   _threatTable.makeAwareOf(user);
   makeNearbyNPCsAwareOf(user);
   user.putInCombat();

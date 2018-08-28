@@ -243,3 +243,25 @@ TEST_CASE("In-combat flag") {
     }
   }
 }
+
+TEST_CASE("Neutral NPCs") {
+  GIVEN("a \"neutral\" NPC with attack") {
+    auto data = R"(
+      <npcType id="snake" attack="1" isNeutral="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    s.addNPC("snake", {15, 10});
+
+    WHEN("a user gets close") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      auto healthBefore = user.health();
+
+      THEN("he doesn't get attacked") {
+        REPEAT_FOR_MS(100) REQUIRE(user.health() == healthBefore);
+      }
+    }
+  }
+}

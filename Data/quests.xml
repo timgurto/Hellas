@@ -19,7 +19,7 @@ It looks like your eyes and ears are in working order, so let's test your arms a
     </npcType>
     <npcType
         id="tutPig" name="Pig"
-        level="1" maxHealth="41" attack="6" attackTime="2000"
+        level="1" maxHealth="41" attack="6" attackTime="2000" isNeutral="1"
         xDrawOffset="-11" yDrawOffset="-13"
         imageFile="critter" sounds = "pig" >
         <collisionRect x="-9" y="-4" w="18" h="7" />

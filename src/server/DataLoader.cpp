@@ -455,7 +455,10 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
 
     auto n = 0;
     if (xr.findAttr(elem, "isRanged", n) && n != 0) nt->makeRanged();
-    if (xr.findAttr(elem, "isCivilian", n) && n != 0) nt->makeCivilian();
+    if (xr.findAttr(elem, "isCivilian", n) && n != 0)
+      nt->makeCivilian();
+    else if (xr.findAttr(elem, "isNeutral", n) && n != 0)
+      nt->makeNeutral();
 
     Stats baseStats = NPCType::BASE_STATS;
     xr.findAttr(elem, "maxHealth", baseStats.maxHealth);

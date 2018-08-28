@@ -15,6 +15,8 @@ void NPCType::init() {
 
 bool NPCType::canBeAttacked() const { return _aggression != NON_COMBATANT; }
 
+bool NPCType::attacksNearby() const { return _aggression == AGGRESSIVE; }
+
 void NPCType::addSimpleLoot(const ServerItem *item, double chance) {
   _lootTable.addSimpleItem(item, chance);
 }
