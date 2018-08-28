@@ -1,41 +1,22 @@
 <root>
 
-<quest id="tutConversation" name="A new creation" startsAt="prometheus1" endsAt="prometheus2"
-    brief="Great!  It looks like your eyes and ears are working. Now let's stretch those legs.
-    Follow the path up North and speak with me again."
-    debrief="Wonderful!  You can move around.  Next we'll test your strength."
-    helpTopicOnAccept="Basic: controls" />
-    <npcType
-        id="prometheus1" name="Prometheus"
-        level="20" maxHealth="107" isCivilian="1" >
-        <humanoid>
-            <gear id="linenChitonOrange" />
-            <gear id="sandals" />
-            <gear id="fireWand" />
-        </humanoid>
-        <class name="titan"/>
-    </npcType>
-    <npcType
-        id="prometheus2" name="Prometheus"
-        level="20" maxHealth="107" isCivilian="1" >
-        <humanoid>
-            <gear id="linenChitonOrange" />
-            <gear id="sandals" />
-            <gear id="fireWand" />
-        </humanoid>
-        <class name="titan"/>
-    </npcType>
-
-
-<quest id="tutCombat" name="Taking your place" startsAt="prometheus2" endsAt="prometheus2"
-    brief="You are mortal, like the birds and beasts, but unlike them you have a spirit.  Thus, in the Great Chain of Being, you sit above them.
-    I built you to be capable, with a broad chest and strong arms: enough to assert your position in the order of things.  To check that you actually can, go out and kill some beasts.  Five pigs should do it."
-    debrief="Excellent, everything seems to be working as intended.
-    I suppose I should introduce myself.  My name is Prometheus, and I created you.  Welcome to the world!"
+<quest id="tutConversation" name="A new creation" startsAt="prometheus" endsAt="prometheus"
+    brief="Welcome to Mt. Othrys--or what's left of it.  My name is Prometheus, and I created you.
+It looks like your eyes and ears are in working order, so let's test your arms and legs.  Head over to that grassy area there, and kill some pigs."
+    debrief="Excellent, everything seems to be working as intended."
     helpTopicOnAccept="Basic: combat">
-    <prerequisite id="tutConversation" />
-    <objective type="kill" id="tutPig" qty="5" />
+	<objective type="kill" id="tutPig" qty="6" />
 </quest>
+    <npcType
+        id="prometheus" name="Prometheus"
+        level="20" maxHealth="107" isCivilian="1" >
+        <humanoid>
+            <gear id="linenChitonOrange" />
+            <gear id="sandals" />
+            <gear id="fireWand" />
+        </humanoid>
+        <class name="titan"/>
+    </npcType>
     <npcType
         id="tutPig" name="Pig"
         level="1" maxHealth="41" attack="6" attackTime="2000"
@@ -43,96 +24,8 @@
         imageFile="critter" sounds = "pig" >
         <collisionRect x="-9" y="-4" w="18" h="7" />
     </npcType>
-    <spawnPoint type="tutPig" quantity="15" radius="250" respawnTime="30000" x="1000" y="60030" />
-    <spawnPoint type="tutPig" quantity="2"  radius="120" respawnTime="30000" x="1280" y="60058" />
+    <spawnPoint type="tutPig" quantity="20" radius="350" respawnTime="0" x="4566" y="60376" />
+    <spawnPoint type="tutPig" quantity="5" radius="200" respawnTime="30000" x="4174" y="60220" />
 
-
-<quest id="tutParts" name="All due respect" startsAt="prometheus2" endsAt="prometheus3"
-    brief="Zeus, the king of the gods, wants to establish animal sacrifices in their honour.  Before we can begin negotiations, you'll need to get your hands dirty: slay some goats, and gather what you can of their remains.
-    Once you're done, head East until you find a brazier burning incense; you'll find me there."
-    debrief="Ah yes, these will do nicely."
-    helpTopicOnAccept="Basic: loot">
-    <prerequisite id="tutCombat" />
-    <objective type="fetch" id="tutMeat" qty="10" />
-    <objective type="fetch" id="tutHide" />
-    <objective type="fetch" id="tutEntrails" qty="10" />
-    <objective type="fetch" id="tutFat" />
-</quest>
-    <npcType
-        id="prometheus3" name="Prometheus"
-        level="20" maxHealth="107" isCivilian="1" >
-        <humanoid>
-            <gear id="linenChitonOrange" />
-            <gear id="sandals" />
-            <gear id="fireWand" />
-        </humanoid>
-        <class name="titan"/>
-    </npcType>
-    <npcType
-        id="tutGoat" name="Goat"
-        level="2" maxHealth="44" attack="6" attackTime="2030"
-        xDrawOffset="-17" yDrawOffset="-28"
-        imageFile="goat" sounds = "goat" >
-        <collisionRect x="-15" y="-4" w="31" h="7" />
-        <loot id="tutMeat" > <normal mean="1.5" sd="0.5" /> </loot>
-        <loot id="tutHide" chance="0.2" />
-        <loot id="tutEntrails" > <normal mean="1.5" sd="0.5" /> </loot>
-        <loot id="tutFat" chance="0.2" />
-    </npcType>
-    <item id="tutMeat"     name="Meat"                           stackSize="10" exclusiveToQuest="tutParts" />
-    <item id="tutHide"     name="Hide"       iconFile="hide"     stackSize="10" exclusiveToQuest="tutParts" />
-    <item id="tutEntrails" name="Entrails"   iconFile="entrails" stackSize="10" exclusiveToQuest="tutParts" />
-    <item id="tutFat"      name="Animal Fat" iconFile="fat"      stackSize="10" exclusiveToQuest="tutParts" />
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="1710" y="59923" />
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="2143" y="59822" />
-    <spawnPoint type="tutGoat" quantity="3" radius="200" respawnTime="60000" x="1934" y="60050" />
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="1866" y="60305" />
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="2190" y="60113" />
-
-
-<!-- Build both offerings, by placing items then adding toppings -->
-<quest id="tutOfferings" name="A heavenly choice" startsAt="prometheus3" endsAt="tutBrazier"
-    brief="Zeus wants to choose which parts of the animal should henceforth be sacrificed to the gods, and so you'll need to make two offerings.
-    I'm very fond of you humans, and so I'll suggest a way that we can cheat him.  We're talking about an eternity of sacrifices, so every little bit helps!
-    Place these piles of meat and entrails on those tiles near the brazier.  Then, cover them with the hide and fat respectively.
-    Once you've done all that, approach the brazier, reverently, and speak with Zeus."
-    debrief="Greetings, mortal.  We gods have our due, and as their king it falls to me to make the choice.  But it seems clear to me: We should have the best-quality meat for ourselves, of course!  I choose the fatty offering."
-    helpTopicOnAccept="Basic: placement">
-    <prerequisite id="tutParts" />
-    <objective type="construct" id="leanOffering" />
-    <objective type="construct" id="fattyOffering" />
-    <startsWithItem id="tutMeat2" />
-    <startsWithItem id="tutEntrails2" />
-    <startsWithItem id="tutHide2" />
-    <startsWithItem id="tutFat2" />
-</quest>
-    <objectType
-        id="tutBrazier" name="Brazier"
-        xDrawOffset="-7" yDrawOffset="-18" >
-        <collisionRect x="-6" y="-3" w="13" h="6" />
-        <particles profile="smoke" x="0" y="-15" />
-    </objectType>
-    <item id="tutMeat2"     name="Meat"                           exclusiveToQuest="tutOfferings" constructs="leanOffering" />
-    <item id="tutEntrails2" name="Entrails"   iconFile="entrails" exclusiveToQuest="tutOfferings" constructs="fattyOffering" />
-    <item id="tutHide2"     name="Hide"       iconFile="hide"     exclusiveToQuest="tutOfferings" />
-    <item id="tutFat2"      name="Animal Fat" iconFile="fat"      exclusiveToQuest="tutOfferings" />
-    <objectType
-        id="leanOffering" name="Scrawny Offering"
-        allowedTerrain="tutOfferings" constructionTime="5000"  isUnbuildable="true" disappearAfter="300000"
-        xDrawOffset="-9" yDrawOffset="-9" >
-        <collisionRect x="-9" y="-4" w="18" h="9" />
-        <material id="tutHide2" />
-    </objectType>
-    <objectType
-        id="fattyOffering" name="Fatty Offering"
-        allowedTerrain="tutOfferings" constructionTime="5000" isUnbuildable="true" disappearAfter="300000"
-        xDrawOffset="-9" yDrawOffset="-9" >
-        <collisionRect x="-9" y="-4" w="18" h="9" />
-        <material id="tutFat2" />
-    </objectType>
-
-<!-- Worship at shrine, giving entrails and getting some rocks to throw -->
-<!-- Gather sticks, make fire, cook meat -->
-<!-- Level up? -->
 
 </root>

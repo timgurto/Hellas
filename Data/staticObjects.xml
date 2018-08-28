@@ -1,16 +1,5 @@
 <root>
 <object id="respawnAltar"> <location x="35328" y="22358" /> </object>
 
-<npc id="prometheus1"> <location x="1360" y="60854" /> </npc>
-<npc id="prometheus2"> <location x="1360" y="60342" /> </npc>
-<object id="dummyTree"> <location x="1424" y="60480" /> </object>
-<object id="dummyTree"> <location x="1424" y="60608" /> </object>
-<object id="dummyTree"> <location x="1424" y="60736" /> </object>
-<object id="dummyTree"> <location x="1312" y="60480" /> </object>
-<object id="dummyTree"> <location x="1312" y="60608" /> </object>
-<object id="dummyTree"> <location x="1312" y="60736" /> </object>
-
-<npc id="prometheus3"> <location x="2448" y="60324" /> </npc>
-
-<object id="tutBrazier"> <location x="2560" y="60340" /> </object>
+<npc id="prometheus"> <location x="3872" y="60212" /> </npc>
 </root>
