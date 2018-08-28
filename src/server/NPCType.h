@@ -9,11 +9,17 @@ class ClientItem;
 
 // Describes a class of NPCs, a la the ObjectType class.
 class NPCType : public ObjectType {
+ public:
+  enum Aggression {
+    AGGRESSIVE,     // Will attack nearby enemies
+    NON_COMBATANT,  // Cannot be attacked
+  };
+
   LootTable _lootTable;
   Level _level;
   bool _isRanged{false};
-  bool _isCivilian{false};
   SpellSchool _school{SpellSchool::PHYSICAL};
+  Aggression _aggression{AGGRESSIVE};
 
  public:
   static Stats BASE_STATS;
@@ -28,8 +34,8 @@ class NPCType : public ObjectType {
   Level level() const { return _level; }
   void makeRanged() { _isRanged = true; }
   bool isRanged() const { return _isRanged; }
-  void makeCivilian() { _isCivilian = true; }
-  bool isCivilian() const { return _isCivilian; }
+  void makeCivilian() { _aggression = NON_COMBATANT; }
+  bool canBeAttacked() const;
   void school(SpellSchool school) { _school = school; }
   SpellSchool school() const { return _school; }
 

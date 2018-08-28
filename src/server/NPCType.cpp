@@ -13,6 +13,8 @@ void NPCType::init() {
   BASE_STATS.speed = 70.0;
 }
 
+bool NPCType::canBeAttacked() const { return _aggression != NON_COMBATANT; }
+
 void NPCType::addSimpleLoot(const ServerItem *item, double chance) {
   _lootTable.addSimpleItem(item, chance);
 }

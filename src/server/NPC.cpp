@@ -21,7 +21,7 @@ void NPC::update(ms_t timeElapsed) {
 }
 
 bool NPC::canBeAttackedBy(const User &user) const {
-  if (npcType()->isCivilian()) return false;
+  if (!npcType()->canBeAttacked()) return false;
   return true;
 }
 
