@@ -17,9 +17,10 @@ const Color Color::WHITE(0xff, 0xff, 0xff);
 
 const Color Color::ERR{0xff, 0, 0};
 
-const Color Color::WINDOW_BACKGROUND{0x33, 0x33, 0x33};
-const Color Color::WINDOW_DARK{0x19, 0x19, 0x19};
-const Color Color::WINDOW_LIGHT{0x4c, 0x4c, 0x4c};
+const Color Color::WINDOW_BACKGROUND{0x22, 0x22, 0x22};
+const Color Color::WINDOW_DARK{0x11, 0x11, 0x11};
+const Color Color::WINDOW_LIGHT{0x33, 0x33, 0x33};
+const Color Color::WINDOW_FONT{0xcc, 0xcc, 0xcc};
 
 const Color Color::COMBATANT_SELF = GREEN;
 const Color Color::COMBATANT_ALLY = GREEN;

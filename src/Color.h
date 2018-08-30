@@ -25,6 +25,7 @@ class Color {
   static const Color WINDOW_BACKGROUND;
   static const Color WINDOW_DARK;
   static const Color WINDOW_LIGHT;
+  static const Color WINDOW_FONT;
 
   static const Color COMBATANT_SELF;
   static const Color COMBATANT_ALLY;
