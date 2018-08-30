@@ -30,7 +30,7 @@ bool City::isPlayerAMember(const std::string &username) const {
 void Cities::createCity(const City::Name &cityName) {
   if (doesCityExist(cityName)) {
     Server::debug()("Can't create city: a city with that name already exists",
-                    Color::FAILURE);
+                    Color::TODO);
     return;
   }
   _container[cityName] = City(cityName);
@@ -80,7 +80,7 @@ bool Cities::isPlayerInCity(const std::string &username,
   bool cityExists = it != _container.end();
   if (!cityExists) {
     Server::debug()("Can't check membership for a city that doesn't exist",
-                    Color::FAILURE);
+                    Color::TODO);
     return false;
   }
   const City &city = it->second;
@@ -117,7 +117,7 @@ void Cities::writeToXMLFile(const std::string &filename) const {
 void Cities::readFromXMLFile(const std::string &filename) {
   auto xr = XmlReader::FromFile(filename);
   if (!xr) {
-    Server::debug()("Failed to load data from " + filename, Color::FAILURE);
+    Server::debug()("Failed to load data from " + filename, Color::TODO);
     return;
   }
   for (auto elem : xr.getChildren("city")) {
@@ -139,7 +139,7 @@ const City::Members &Cities::membersOf(const std::string &cityName) const {
   bool cityExists = it != _container.end();
   if (!cityExists) {
     Server::debug()("Can't fetch members of a city that doesn't exist",
-                    Color::FAILURE);
+                    Color::TODO);
     assert(false);
   }
   return it->second.members();

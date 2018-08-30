@@ -25,11 +25,11 @@ void ClientCombatant::drawHealthBarIfAppropriate(const MapPoint &objectLocation,
        y = toInt(objectLocation.y - objHeight - BAR_GAP - BAR_HEIGHT +
                  offset.y);
 
-  renderer.setDrawColor(Color::HEALTH_BAR_OUTLINE);
+  renderer.setDrawColor(Color::TODO);
   renderer.drawRect({x - 1, y - 1, BAR_TOTAL_LENGTH + 2, BAR_HEIGHT + 2});
   renderer.setDrawColor(healthBarColor());
   renderer.fillRect({x, y, barLength, BAR_HEIGHT});
-  renderer.setDrawColor(Color::HEALTH_BAR_BACKGROUND);
+  renderer.setDrawColor(Color::TODO);
   renderer.fillRect(
       {x + barLength, y, BAR_TOTAL_LENGTH - barLength, BAR_HEIGHT});
 }

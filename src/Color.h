@@ -7,91 +7,9 @@
 
 class Color {
  public:
+  static const Color TODO;
   static const Color BLACK;
-  static const Color BLUE;
-  static const Color GREEN;
-  static const Color CYAN;
-  static const Color RED;
-  static const Color MAGENTA;
-  static const Color YELLOW;
-  static const Color WHITE;
-
-  // clang-format off
-  static Color
-      WARNING,
-      FAILURE,
-      SUCCESS,
-
-      CHAT_LOG_BACKGROUND,
-      SAY,
-      WHISPER,
-
-      DEFAULT_DRAW,
-      FONT,
-      FONT_OUTLINE,
-      DISABLED_TEXT,
-
-      TOOLTIP_FONT,
-      TOOLTIP_BACKGROUND,
-      TOOLTIP_BORDER,
-      FLAVOUR_TEXT,
-
-      ITEM_NAME,
-      ITEM_STATS,
-      ITEM_INSTRUCTIONS,
-      ITEM_TAGS,
-
-      HELP_TEXT_HEADING,
-
-      QUEST_NAME,
-      QUEST_OBJECTIVE,
-      QUEST_COMPLETE,
- 
-      ELEMENT_BACKGROUND,
-      ELEMENT_SHADOW_DARK,
-      ELEMENT_SHADOW_LIGHT,
-      ELEMENT_FONT,
-      CONTAINER_SLOT_BACKGROUND,
-
-      FOOTPRINT_GOOD,
-      FOOTPRINT_BAD,
-      FOOTPRINT,
-      IN_RANGE,
-      OUT_OF_RANGE,
-      HEALTH_BAR_BACKGROUND,
-      HEALTH_BAR_OUTLINE,
-      CAST_BAR_FONT,
-      PERFORMANCE_FONT,
-      PROGRESS_BAR,
-      PROGRESS_BAR_BACKGROUND,
-      COMBATANT_SELF,
-      COMBATANT_ALLY,
-      COMBATANT_NEUTRAL,
-      COMBATANT_ENEMY,
-      ENERGY,
-      PLAYER_NAME_OUTLINE,
-
-      FLOATING_HEAL,
-      FLOATING_DAMAGE,
-      FLOATING_XP,
-      FLOATING_MISS,
-      FLOATING_LOOT,
-
-      OUTLINE,
-      HIGHLIGHT_OUTLINE,
-        
-      AIR,
-      EARTH,
-      FIRE,
-      WATER
-      ;
-  // clang-format on
-
-  static const Color GREY_2;
-  static const Color GREY_4;
-  static const Color GREY_8;
-
-  // static const Color BLUE_HELL;
+  static const Color BLUE_HELL;
   static const Color NO_KEY;
 
   Color(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0);
@@ -118,5 +36,6 @@ class Color {
 Color operator+(const Color &lhs, const Color &rhs);
 
 std::ostream &operator<<(std::ostream &lhs, const Color &rhs);
+// std::istream &operator>>(std::istream &lhs, Color &rhs);
 
 #endif

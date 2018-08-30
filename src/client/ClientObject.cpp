@@ -177,7 +177,7 @@ void ClientObject::onRightClick(Client &client) {
   // Make sure object is in range
   if (distance(client.playerCollisionRect(), collisionRect()) >
       Client::ACTION_DISTANCE) {
-    client.showErrorMessage("That object is too far away.", Color::WARNING);
+    client.showErrorMessage("That object is too far away.", Color::TODO);
     return;
   }
 
@@ -227,9 +227,8 @@ void ClientObject::addQuestsToWindow() {
 
   const auto BUTTON_HEIGHT = 15, BUTTON_WIDTH = 100, MARGIN = 2;
 
-  static auto startQuestIcon =
-      Texture{"Images/UI/startQuest.png", Color::MAGENTA};
-  static auto endQuestIcon = Texture{"Images/UI/endQuest.png", Color::MAGENTA};
+  static auto startQuestIcon = Texture{"Images/UI/startQuest.png", Color::TODO};
+  static auto endQuestIcon = Texture{"Images/UI/endQuest.png", Color::TODO};
   const auto BUTTON_X = startQuestIcon.width();
 
   auto questsToDisplay = std::map<CQuest *, bool>{};  // true=start, false=end
@@ -432,7 +431,7 @@ void ClientObject::addActionToWindow() {
     if (!action.tooltip.empty() && action.cost) tooltip.addGap();
 
     if (action.cost) {
-      tooltip.setColor(Color::ITEM_TAGS);
+      tooltip.setColor(Color::TODO);
       tooltip.addLine("Consumes "s + action.cost->name());
     }
 
@@ -685,7 +684,7 @@ void ClientObject::sendMerchantSlot(size_t serial, size_t slot) {
   auto it = objects.find(serial);
   if (it == objects.end()) {
     Client::instance().showErrorMessage(
-        "Attempting to configure nonexistent object", Color::FAILURE);
+        "Attempting to configure nonexistent object", Color::TODO);
     return;
   }
   ClientObject &obj = *it->second;
@@ -697,7 +696,7 @@ void ClientObject::sendMerchantSlot(size_t serial, size_t slot) {
 
   if (mSlot.wareItem == nullptr || mSlot.priceItem == nullptr) {
     Client::instance().showErrorMessage(
-        "You must select an item; clearing slot.", Color::WARNING);
+        "You must select an item; clearing slot.", Color::TODO);
     Client::_instance->sendMessage(CL_CLEAR_MERCHANT_SLOT,
                                    makeArgs(serial, slot));
     return;
@@ -784,9 +783,9 @@ void ClientObject::draw(const Client &client) const {
 
   // Quest indicator
   static const auto questStartIndicator =
-      Texture{"Images/questStart.png", Color::MAGENTA};
+      Texture{"Images/questStart.png", Color::TODO};
   static const auto questEndIndicator =
-      Texture{"Images/questEnd.png", Color::MAGENTA};
+      Texture{"Images/questEnd.png", Color::TODO};
   auto questIndicator = Texture{};
   if (!completableQuests().empty())
     questIndicator = questEndIndicator;
@@ -832,7 +831,7 @@ const Tooltip &ClientObject::tooltip() const {
   auto startsAQuest = !startsQuests().empty();
 
   // Name
-  tooltip.setColor(Color::ITEM_NAME);
+  tooltip.setColor(Color::TODO);
   std::string title = ot.name();
   if (isDead())
     title += classTag() == 'n' ? " (corpse)" : " (ruins)";
@@ -847,7 +846,7 @@ const Tooltip &ClientObject::tooltip() const {
   // Debug info
   if (isDebug()) {
     tooltip.addGap();
-    tooltip.setColor(Color::ITEM_TAGS);
+    tooltip.setColor(Color::TODO);
     tooltip.addLine("Serial: " + toString(_serial));
     tooltip.addLine("Class tag: " + toString(classTag()));
   }
@@ -855,14 +854,14 @@ const Tooltip &ClientObject::tooltip() const {
   // Level
   if (classTag() == 'n') {
     tooltip.addGap();
-    tooltip.setColor(Color::ITEM_TAGS);
+    tooltip.setColor(Color::TODO);
     tooltip.addLine("Level "s + toString(level()));
   }
 
   // Owner
   if (!owner().empty()) {
     tooltip.addGap();
-    tooltip.setColor(Color::ITEM_TAGS);
+    tooltip.setColor(Color::TODO);
     tooltip.addLine("Owned by " + (owner() == Client::_instance->username()
                                        ? "you"
                                        : owner()));
@@ -873,7 +872,7 @@ const Tooltip &ClientObject::tooltip() const {
 
   // Stats
   bool stats = false;
-  tooltip.setColor(Color::ITEM_STATS);
+  tooltip.setColor(Color::TODO);
 
   if (classTag() == 'v') {
     if (!stats) {
@@ -923,7 +922,7 @@ const Tooltip &ClientObject::tooltip() const {
   // Tags
   if (ot.hasTags()) {
     tooltip.addGap();
-    tooltip.setColor(Color::ITEM_TAGS);
+    tooltip.setColor(Color::TODO);
     for (const std::string &tag : ot.tags())
       tooltip.addLine(client.tagName(tag));
   }
@@ -933,12 +932,12 @@ const Tooltip &ClientObject::tooltip() const {
       userHasAccess() && (classTag() == 'v' || isContainer ||
                           ot.canDeconstruct() || startsAQuest)) {
     tooltip.addGap();
-    tooltip.setColor(Color::ITEM_INSTRUCTIONS);
+    tooltip.setColor(Color::TODO);
     tooltip.addLine(std::string("Right-click to interact"));
   }
 
   else if (classTag() == 'n') {
-    tooltip.setColor(Color::ITEM_INSTRUCTIONS);
+    tooltip.setColor(Color::TODO);
     const ClientNPC &npc = dynamic_cast<const ClientNPC &>(*this);
     if (npc.canBeAttackedByPlayer()) {
       tooltip.addGap();
@@ -951,7 +950,7 @@ const Tooltip &ClientObject::tooltip() const {
 
   else if (userHasAccess() && ot.canGather()) {
     tooltip.addGap();
-    tooltip.setColor(Color::ITEM_INSTRUCTIONS);
+    tooltip.setColor(Color::TODO);
     tooltip.addLine(std::string("Right-click to gather"));
   }
 
@@ -1025,11 +1024,11 @@ void ClientObject::playDeathSound() const {
 }
 
 const Color &ClientObject::nameColor() const {
-  if (belongsToPlayerCity()) return Color::COMBATANT_ALLY;
+  if (belongsToPlayerCity()) return Color::TODO;
 
-  if (belongsToPlayer()) return Color::COMBATANT_SELF;
+  if (belongsToPlayer()) return Color::TODO;
 
-  if (canBeAttackedByPlayer()) return Color::COMBATANT_ENEMY;
+  if (canBeAttackedByPlayer()) return Color::TODO;
 
   return Sprite::nameColor();
 }

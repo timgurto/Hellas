@@ -1230,7 +1230,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
       }
 
       default:
-        _debug << Color::RED << "Unhandled message: " << msg << Log::endl;
+        _debug << Color::TODO << "Unhandled message: " << msg << Log::endl;
     }
   }
 }
@@ -1810,7 +1810,7 @@ CombatResult Server::handle_CL_CAST(User &user, const std::string &spellID,
   for (auto target : targets) {
     outcome = spell.performAction(user, *target);
     if (outcome == FAIL) {
-      _debug("Spell "s + spellID + " failed."s, Color::FAILURE);
+      _debug("Spell "s + spellID + " failed."s, Color::TODO);
       continue;
     }
 
@@ -1927,7 +1927,7 @@ void Server::broadcastToArea(const MapPoint &location, MessageCode msgCode,
 void Server::broadcastToCity(const std::string &cityName, MessageCode msgCode,
                              const std::string &args) const {
   if (!_cities.doesCityExist(cityName)) {
-    _debug << Color::FAILURE << "City " << cityName << " does not exist."
+    _debug << Color::TODO << "City " << cityName << " does not exist."
            << Log::endl;
     return;
   }
@@ -2095,7 +2095,7 @@ void Server::sendRelevantEntitiesToUser(const User &user) {
   // Send
   for (const Entity *entity : entitiesToDescribe) {
     if (entity->type() == nullptr) {
-      _debug("Null-type object skipped", Color::RED);
+      _debug("Null-type object skipped", Color::TODO);
       continue;
     }
     entity->sendInfoToClient(user);

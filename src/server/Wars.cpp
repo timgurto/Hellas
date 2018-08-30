@@ -201,7 +201,7 @@ void Wars::writeToXMLFile(const std::string &filename) const {
 void Wars::readFromXMLFile(const std::string &filename) {
   auto xr = XmlReader::FromFile(filename);
   if (!xr) {
-    Server::debug()("Failed to load data from " + filename, Color::FAILURE);
+    Server::debug()("Failed to load data from " + filename, Color::TODO);
     return;
   }
   for (auto elem : xr.getChildren("war")) {
@@ -209,7 +209,7 @@ void Wars::readFromXMLFile(const std::string &filename) {
     if (!xr.findAttr(elem, "name1", b1.name) ||
         !xr.findAttr(elem, "name2", b2.name)) {
       Server::debug()("Skipping war with insufficient belligerents.",
-                      Color::RED);
+                      Color::TODO);
       continue;
     }
     int n;

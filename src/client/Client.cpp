@@ -76,15 +76,15 @@ std::map<int, std::string> Client::_errorMessages;
 const int Client::MIXING_CHANNELS = 32;
 
 Client::Client()
-    : _cursorNormal(std::string("Images/Cursors/normal.png"), Color::MAGENTA),
-      _cursorGather(std::string("Images/Cursors/gather.png"), Color::MAGENTA),
+    : _cursorNormal(std::string("Images/Cursors/normal.png"), Color::TODO),
+      _cursorGather(std::string("Images/Cursors/gather.png"), Color::TODO),
       _cursorContainer(std::string("Images/Cursors/container.png"),
-                       Color::MAGENTA),
-      _cursorAttack(std::string("Images/Cursors/attack.png"), Color::MAGENTA),
+                       Color::TODO),
+      _cursorAttack(std::string("Images/Cursors/attack.png"), Color::TODO),
       _cursorStartsQuest(std::string("Images/Cursors/startsQuest.png"),
-                         Color::MAGENTA),
+                         Color::TODO),
       _cursorEndsQuest(std::string("Images/Cursors/endsQuest.png"),
-                       Color::MAGENTA),
+                       Color::TODO),
       _currentCursor(&_cursorNormal),
 
       _character({}, {}),
@@ -116,9 +116,8 @@ Client::Client()
       _rightMouseDownEntity(nullptr),
       _rightMouseDownWasOnUI(false),
 
-      _basePassive(std::string("Images/targetPassive.png"), Color::MAGENTA),
-      _baseAggressive(std::string("Images/targetAggressive.png"),
-                      Color::MAGENTA),
+      _basePassive(std::string("Images/targetPassive.png"), Color::TODO),
+      _baseAggressive(std::string("Images/targetAggressive.png"), Color::TODO),
       _inventory(INVENTORY_SIZE, std::make_pair(nullptr, 0)),
 
       _time(SDL_GetTicks()),
@@ -168,7 +167,7 @@ Client::Client()
   SDL_ShowCursor(SDL_DISABLE);
 
 #ifdef _DEBUG
-  _debug << Color::FONT << cmdLineArgs << Log::endl;
+  _debug << Color::TODO << cmdLineArgs << Log::endl;
   if (Socket::debug == nullptr) Socket::debug = &_debug;
 #endif
 
@@ -177,7 +176,7 @@ Client::Client()
   drawLoadingScreen("Initializing audio", 0.5);
   int ret = (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 1, 512) < 0);
   if (ret < 0) {
-    showErrorMessage("SDL_mixer failed to initialize.", Color::FAILURE);
+    showErrorMessage("SDL_mixer failed to initialize.", Color::TODO);
   }
   Mix_AllocateChannels(MIXING_CHANNELS);
 
@@ -629,7 +628,7 @@ void Client::addFloatingCombatText(const std::string &text,
   auto floatingText = floatingTextProfile->instantiate(location);
 
   auto outline = Texture{_defaultFont, text, color};
-  auto front = Texture{_defaultFont, text, Color::OUTLINE};
+  auto front = Texture{_defaultFont, text, Color::TODO};
 
   auto canvas = Texture{front.width() + 2, front.height() + 2};
   canvas.setBlend(SDL_BLENDMODE_BLEND);

@@ -29,10 +29,10 @@ Scrollable::Scrollable(const ScreenRect &rect)
       new Line(ARROW_W / 2 - 1, ARROW_H, rect.h - 2 * ARROW_H, VERTICAL));
 
   if (!whiteUp) {
-    whiteUp = {"Images/arrowUp.png", Color::MAGENTA};
-    greyUp = {"Images/arrowUpGrey.png", Color::MAGENTA};
-    whiteDown = {"Images/arrowDown.png", Color::MAGENTA};
-    greyDown = {"Images/arrowDownGrey.png", Color::MAGENTA};
+    whiteUp = {"Images/arrowUp.png", Color::TODO};
+    greyUp = {"Images/arrowUpGrey.png", Color::TODO};
+    whiteDown = {"Images/arrowDown.png", Color::TODO};
+    greyDown = {"Images/arrowDownGrey.png", Color::TODO};
   }
   _whiteUp = new Picture({0, 0, ARROW_W, ARROW_H}, whiteUp);
   _greyUp = new Picture({0, 0, ARROW_W, ARROW_H}, greyUp);

@@ -39,7 +39,7 @@ TEST_CASE("A player shows up on his own map", "[.flaky][map][color]") {
   const ColorBlock *pin =
       dynamic_cast<const ColorBlock *>(*c.mapPins().begin());
   CHECK(pin != nullptr);
-  CHECK(pin->color() == Color::COMBATANT_SELF);
+  CHECK(pin->color() == Color::TODO);
 
   // And that pin is 1x1 and in the center of the map;
   const px_t midMapX = toInt(c->mapImage().width() / 2.0),
@@ -55,7 +55,7 @@ TEST_CASE("A player shows up on his own map", "[.flaky][map][color]") {
   const ColorBlock *outline =
       dynamic_cast<const ColorBlock *>(*c.mapPinOutlines().begin());
   CHECK(outline != nullptr);
-  CHECK(outline->color() == Color::OUTLINE);
+  CHECK(outline->color() == Color::TODO);
 
   // And that outline is 3x3 and in the center of the map;
   CHECK(outline->rect() == ScreenRect(midMapX - 1, midMapY - 1, 3, 3));
@@ -65,8 +65,8 @@ TEST_CASE("A player shows up on his own map", "[.flaky][map][color]") {
   px_t xInScreen = midMapX + toInt(c.mapWindow()->position().x) + 1,
        yInScreen = midMapY + toInt(c.mapWindow()->position().y) + 2 +
                    Window::HEADING_HEIGHT;
-  CHECK(renderer.getPixel(xInScreen, yInScreen) == Color::COMBATANT_SELF);
-  CHECK(renderer.getPixel(xInScreen - 1, yInScreen) == Color::OUTLINE);
+  CHECK(renderer.getPixel(xInScreen, yInScreen) == Color::TODO);
+  CHECK(renderer.getPixel(xInScreen - 1, yInScreen) == Color::TODO);
 }
 
 TEST_CASE("Other players show up on the map", "[map][remote]") {
@@ -114,9 +114,9 @@ TEST_CASE("When a player declares war, his map pin changes color",
   bool bluePinExists = false, redPinExists = false;
   for (const auto *elemPin : c.mapPins()) {
     const auto &pin = dynamic_cast<const ColorBlock &>(*elemPin);
-    if (pin.color() == Color::COMBATANT_SELF)
+    if (pin.color() == Color::TODO)
       bluePinExists = true;
-    else if (pin.color() == Color::COMBATANT_ENEMY)
+    else if (pin.color() == Color::TODO)
       redPinExists = true;
   }
   CHECK(bluePinExists);

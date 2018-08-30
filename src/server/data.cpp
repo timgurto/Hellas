@@ -21,7 +21,7 @@ bool Server::readUserData(User &user) {
     if (!xr.findAttr(elem, "class", classID)) return false;
     auto it = _classes.find(classID);
     if (it == _classes.end()) {
-      _debug << Color::RED << "Invalid class (" << classID
+      _debug << Color::TODO << "Invalid class (" << classID
              << ") specified; creating new character." << Log::endl;
     }
     user.setClass(it->second);
@@ -47,7 +47,7 @@ bool Server::readUserData(User &user) {
   auto location = MapPoint{};
   if (elem == nullptr || !xr.findAttr(elem, "x", location.x) ||
       !xr.findAttr(elem, "y", location.y)) {
-    _debug("Invalid user data (location)", Color::RED);
+    _debug("Invalid user data (location)", Color::TODO);
     return false;
   }
 
@@ -61,7 +61,7 @@ bool Server::readUserData(User &user) {
   if (isLocationValid(location, user))
     user.location(location, /* firstInsertion */ true);
   else {
-    _debug << Color::YELLOW << "Player " << user.name()
+    _debug << Color::TODO << "Player " << user.name()
            << " was respawned due to an invalid or occupied location."
            << Log::endl;
     user.moveToSpawnPoint(/* firstInsertion */ true);
@@ -78,7 +78,8 @@ bool Server::readUserData(User &user) {
 
     std::set<ServerItem>::const_iterator it = _items.find(id);
     if (it == _items.end()) {
-      _debug("Invalid user data (inventory item).  Removing item.", Color::RED);
+      _debug("Invalid user data (inventory item).  Removing item.",
+             Color::TODO);
       continue;
     }
     user.inventory(slot) = std::make_pair<const ServerItem *, size_t>(
@@ -96,7 +97,7 @@ bool Server::readUserData(User &user) {
 
     std::set<ServerItem>::const_iterator it = _items.find(id);
     if (it == _items.end()) {
-      _debug("Invalid user data (gear item).  Removing item.", Color::RED);
+      _debug("Invalid user data (gear item).  Removing item.", Color::TODO);
       continue;
     }
     user.gear(slot) = std::make_pair<const ServerItem *, size_t>(
@@ -304,7 +305,7 @@ void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {
     for (auto elem : xr.getChildren("object")) {
       std::string s;
       if (!xr.findAttr(elem, "id", s)) {
-        _debug("Skipping importing object with no type.", Color::RED);
+        _debug("Skipping importing object with no type.", Color::TODO);
         continue;
       }
 
@@ -312,14 +313,15 @@ void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {
       auto loc = xr.findChild("location", elem);
       if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
         _debug("Skipping importing object with invalid/no location",
-               Color::RED);
+               Color::TODO);
         continue;
       }
 
       const ObjectType *type = findObjectTypeByName(s);
       if (type == nullptr) {
-        _debug << Color::RED << "Skipping importing object with unknown type \""
-               << s << "\"." << Log::endl;
+        _debug << Color::TODO
+               << "Skipping importing object with unknown type \"" << s << "\"."
+               << Log::endl;
         continue;
       }
 
@@ -335,7 +337,7 @@ void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {
         else if (type == "city")
           obj.permissions().setCityOwner(name);
         else
-          _debug << Color::RED << "Skipping bad object owner type \"" << type
+          _debug << Color::TODO << "Skipping bad object owner type \"" << type
                  << "\"." << Log::endl;
       }
 
@@ -359,8 +361,8 @@ void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {
         q = 1;
         xr.findAttr(inventory, "qty", q);
         if (obj.objType().container().slots() <= n) {
-          _debug << Color::RED << "Skipping object with invalid inventory slot."
-                 << Log::endl;
+          _debug << Color::TODO
+                 << "Skipping object with invalid inventory slot." << Log::endl;
           continue;
         }
         auto &invSlot = obj.container().at(n);
@@ -421,7 +423,7 @@ void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {
     for (auto elem : xr.getChildren("npc")) {
       std::string s;
       if (!xr.findAttr(elem, "id", s)) {
-        _debug("Skipping importing NPC with no type.", Color::RED);
+        _debug("Skipping importing NPC with no type.", Color::TODO);
         continue;
       }
 
@@ -429,14 +431,14 @@ void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {
       auto loc = xr.findChild("location", elem);
       if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
         _debug("Skipping importing object with invalid/no location",
-               Color::RED);
+               Color::TODO);
         continue;
       }
 
       const NPCType *type =
           dynamic_cast<const NPCType *>(findObjectTypeByName(s));
       if (type == nullptr) {
-        _debug << Color::RED << "Skipping importing NPC with unknown type \""
+        _debug << Color::TODO << "Skipping importing NPC with unknown type \""
                << s << "\"." << Log::endl;
         continue;
       }
@@ -461,7 +463,7 @@ void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {
   // If execution reaches here, fresh objects will be generated instead of old
   // ones loaded.
 
-  _debug("Generating new objects.", Color::YELLOW);
+  _debug("Generating new objects.", Color::TODO);
   _dataLoaded = true;
 }
 

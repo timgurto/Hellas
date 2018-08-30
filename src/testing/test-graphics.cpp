@@ -11,9 +11,9 @@ TEST_CASE("Use texture after removing all others") {
 }
 
 TEST_CASE("Renderer pixel data can be read") {
-  renderer.setDrawColor(Color::YELLOW);
+  renderer.setDrawColor(Color::TODO);
   renderer.fill();
-  renderer.setDrawColor(Color::CYAN);
+  renderer.setDrawColor(Color::TODO);
   renderer.fillRect({5, 2, 1, 1});
 
   renderer.present();
@@ -21,6 +21,6 @@ TEST_CASE("Renderer pixel data can be read") {
   Color c1 = renderer.getPixel(1, 1);
   Color c2 = renderer.getPixel(5, 2);
 
-  CHECK(renderer.getPixel(1, 1) == Color::YELLOW);
-  CHECK(renderer.getPixel(5, 2) == Color::CYAN);
+  CHECK(renderer.getPixel(1, 1) == Color::TODO);
+  CHECK(renderer.getPixel(5, 2) == Color::TODO);
 }

@@ -15,7 +15,7 @@ class LogSDL : public Log {
  public:
   LogSDL(const std::string &logFileName = "");
   void operator()(const std::string &message,
-                  const Color &color = Color::FONT) override;
+                  const Color &color = Color::TODO) override;
 
   template <typename T>
   LogSDL &operator<<(const T &val) {

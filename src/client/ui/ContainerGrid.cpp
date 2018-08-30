@@ -39,11 +39,11 @@ ContainerGrid::ContainerGrid(size_t rows, size_t cols,
       _solidBackground(solidBackground) {
   if (!_highlight) {
     _highlight =
-        Texture(std::string("Images/Items/highlight.png"), Color::MAGENTA);
+        Texture(std::string("Images/Items/highlight.png"), Color::TODO);
     _highlightGood =
-        Texture(std::string("Images/Items/highlightGood.png"), Color::MAGENTA);
+        Texture(std::string("Images/Items/highlightGood.png"), Color::TODO);
     _highlightBad =
-        Texture(std::string("Images/Items/highlightBad.png"), Color::MAGENTA);
+        Texture(std::string("Images/Items/highlightBad.png"), Color::TODO);
   }
 
   for (size_t i = 0; i != _linked.size(); ++i) {
@@ -68,7 +68,7 @@ void ContainerGrid::cleanup() {
 }
 
 void ContainerGrid::refresh() {
-  renderer.setDrawColor(Color::CONTAINER_SLOT_BACKGROUND);
+  renderer.setDrawColor(Color::TODO);
   for (size_t i = 0; i != _linked.size(); ++i) {
     const px_t x = i % _cols, y = i / _cols;
     const auto slotRect =
@@ -86,7 +86,7 @@ void ContainerGrid::refresh() {
         slot.first->icon().draw(slotRect.x + 1, slotRect.y + 1);
         if (slot.second > 1) {
           Texture label(font(), makeArgs(slot.second), FONT_COLOR),
-              labelOutline(font(), toString(slot.second), Color::FONT_OUTLINE);
+              labelOutline(font(), toString(slot.second), Color::TODO);
           px_t x = slotRect.x + slotRect.w - label.width() - 1,
                y = slotRect.y + slotRect.h - label.height() + textOffset;
           labelOutline.draw(x - 1, y);

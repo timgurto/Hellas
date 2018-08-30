@@ -35,7 +35,7 @@ class Tooltip {
 
   const static px_t NO_WRAP;
 
-  void setColor(const Color &color = Color::TOOLTIP_FONT);
+  void setColor(const Color &color = Color::TODO);
 
   void addLine(const std::string &line);
   using Lines = std::vector<std::string>;

@@ -95,7 +95,7 @@ void Client::populateClassWindow() {
     auto pointsInTreeLabel =
         new Label({0, y, TREE_WIDTH, Element::TEXT_HEIGHT}, pointsInTreeText,
                   Element::CENTER_JUSTIFIED);
-    pointsInTreeLabel->setColor(Color::ELEMENT_SHADOW_LIGHT);
+    pointsInTreeLabel->setColor(Color::TODO);
     treeElem->addChild(pointsInTreeLabel);
 
     x += TREE_WIDTH;
@@ -139,7 +139,7 @@ void Client::populateClassWindow() {
         if (shouldDrawOutline) {
           auto outlineRect =
               learnSpellButton->rect() + ScreenRect{-1, -1, 2, 2};
-          tree.element->addChild(new ColorBlock(outlineRect, Color::FONT));
+          tree.element->addChild(new ColorBlock(outlineRect, Color::TODO));
         }
 
         auto shouldShowLevel =

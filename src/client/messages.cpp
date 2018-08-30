@@ -45,7 +45,7 @@ void Client::handleMessage(const std::string &msg) {
       iss.get(buffer, BUFFER_SIZE, MSG_START);
       /*_debug << "Read " << iss.gcount() << " characters." << Log::endl;
       showErrorMessage("Malformed message; discarded \""s + buffer + "\""s,
-      Color::FAILURE);*/
+      Color::TODO);*/
       if (iss.eof()) {
         break;
       }
@@ -63,14 +63,14 @@ void Client::handleMessage(const std::string &msg) {
       iss.ignore();  // Throw away ']'
     }
     std::istringstream singleMsg(buffer);
-    //_debug(buffer, Color::CYAN);
+    //_debug(buffer, Color::TODO);
     singleMsg >> del >> msgCode >> del;
 
     _messagesReceivedMutex.lock();
     _messagesReceived.push_back(MessageCode(msgCode));
     _messagesReceivedMutex.unlock();
 
-    Color errorMessageColor = Color::FAILURE;
+    Color errorMessageColor = Color::TODO;
 
     switch (msgCode) {
       case SV_WELCOME: {
@@ -86,7 +86,7 @@ void Client::handleMessage(const std::string &msg) {
         _loggedIn = true;
         _lastPingSent = _lastPingReply = _time;
 #ifdef _DEBUG
-        _debug("Successfully logged in to server", Color::SUCCESS);
+        _debug("Successfully logged in to server", Color::TODO);
 #endif
         _debug("Welcome to Hellas!");
         break;
@@ -188,7 +188,7 @@ void Client::handleMessage(const std::string &msg) {
       case WARNING_STUNNED:
       case WARNING_YOU_ARE_ALREADY_IN_CITY:
       case WARNING_ITEM_NEEDED:
-        errorMessageColor = Color::WARNING;  // Yellow above, red below
+        errorMessageColor = Color::TODO;  // Yellow above, red below
       case ERROR_INVALID_USER:
       case ERROR_INVALID_ITEM:
       case ERROR_CANNOT_CRAFT:
@@ -234,7 +234,7 @@ void Client::handleMessage(const std::string &msg) {
         auto vowels = std::string{"AaEeIiOoUu"};
         if (vowels.find(first) != vowels.npos) msg += 'n';
         showErrorMessage(msg + ' ' + reqItemTag + " tool to do that.",
-                         Color::WARNING);
+                         Color::TODO);
         startAction(0);
         break;
       }
@@ -248,7 +248,7 @@ void Client::handleMessage(const std::string &msg) {
         auto it = _items.find(ammoID);
         if (it == _items.end()) {
           showErrorMessage("Received warning about invalid item: "s + ammoID,
-                           Color::FAILURE);
+                           Color::TODO);
           break;
         }
         auto ammoName = it->second.name();
@@ -257,7 +257,7 @@ void Client::handleMessage(const std::string &msg) {
         const char first = ammoName.front();
         auto vowels = std::string{"AaEeIiOoUu"};
         if (vowels.find(first) != vowels.npos) msg += 'n';
-        showErrorMessage(msg + " " + ammoName + ".", Color::WARNING);
+        showErrorMessage(msg + " " + ammoName + ".", Color::TODO);
         startAction(0);
         break;
       }
@@ -268,7 +268,7 @@ void Client::handleMessage(const std::string &msg) {
         singleMsg >> del;
         if (del != MSG_END) break;
         showErrorMessage("You may own only one " + category + " object",
-                         Color::WARNING);
+                         Color::TODO);
         startAction(0);
         break;
       }
@@ -406,7 +406,7 @@ void Client::handleMessage(const std::string &msg) {
           auto it = _otherUsers.find(username);
           if (it == _otherUsers.end()) {
             // showErrorMessage("Class received for an unknown user. Ignoring.",
-            // Color::FAILURE);
+            // Color::TODO);
             break;
           }
           auto &otherUser = *it->second;
@@ -425,12 +425,12 @@ void Client::handleMessage(const std::string &msg) {
         if (del != MSG_END) break;
         if (username == _username) {
           // showErrorMessage("Own gear info received by wrong channel.
-          // Ignoring.", Color::FAILURE);
+          // Ignoring.", Color::TODO);
           break;
         }
         if (_otherUsers.find(username) == _otherUsers.end()) {
           // showErrorMessage("Gear received for an unknown user.  Ignoring.",
-          // Color::FAILURE);
+          // Color::TODO);
           break;
         }
 
@@ -443,13 +443,13 @@ void Client::handleMessage(const std::string &msg) {
         const auto it = _items.find(id);
         if (it == _items.end()) {
           showErrorMessage("Unknown gear received ("s + id + ").  Ignoring.",
-                           Color::FAILURE);
+                           Color::TODO);
           break;
         }
         const ClientItem &item = it->second;
         if (item.gearSlot() >= GEAR_SLOTS) {
           showErrorMessage("Gear info received for a non-gear item.  Ignoring.",
-                           Color::FAILURE);
+                           Color::TODO);
           break;
         }
         _otherUsers[username]->gear()[slot].first = &item;
@@ -479,7 +479,7 @@ void Client::handleMessage(const std::string &msg) {
         if (item == _items.end()) break;
 
         addFloatingCombatText("+"s + toString(qty) + " "s + item->second.name(),
-                              _character.location(), Color::FLOATING_LOOT);
+                              _character.location(), Color::TODO);
 
         auto logMessage = "Received "s;
         if (qty > 1) logMessage += toString(qty) + "x "s;
@@ -574,7 +574,7 @@ void Client::handleMessage(const std::string &msg) {
         auto cot = findObjectType(type);
         if (!cot) {
           showErrorMessage("Received object of invalid type; ignored.",
-                           Color::FAILURE);
+                           Color::TODO);
           break;
         }
 
@@ -625,7 +625,7 @@ void Client::handleMessage(const std::string &msg) {
         std::map<size_t, ClientObject *>::iterator it = _objects.find(serial);
         if (it == _objects.end()) {
           // showErrorMessage("Server removed an object we didn't know about.",
-          // Color::WARNING);
+          // Color::TODO);
           break;  // We didn't know about this object
         }
         it->second->destination({x, y});
@@ -641,7 +641,7 @@ void Client::handleMessage(const std::string &msg) {
             _objects.find(serial);
         if (it == _objects.end()) {
           // showErrorMessage("Server removed an object we didn't know about.",
-          // Color::WARNING);
+          // Color::TODO);
           break;  // We didn't know about this object
         }
         if (it->second == _currentMouseOverEntity)
@@ -676,7 +676,7 @@ void Client::handleMessage(const std::string &msg) {
             _objects.find(serial);
         if (it == _objects.end()) {
           // showErrorMessage("Received ownership info for an unknown object.",
-          // Color::FAILURE);
+          // Color::TODO);
           break;
         }
         ClientObject &obj = *it->second;
@@ -694,7 +694,7 @@ void Client::handleMessage(const std::string &msg) {
             _objects.find(serial);
         if (it == _objects.end()) {
           // showErrorMessage("Received info about an unknown object.",
-          // Color::FAILURE);
+          // Color::TODO);
           break;
         }
         (it->second)->beingGathered(true);
@@ -709,7 +709,7 @@ void Client::handleMessage(const std::string &msg) {
             _objects.find(serial);
         if (it == _objects.end()) {
           // showErrorMessage("Received info about an unknown object.",
-          // Color::FAILURE);
+          // Color::TODO);
           break;
         }
         (it->second)->beingGathered(false);
@@ -789,7 +789,7 @@ void Client::handleMessage(const std::string &msg) {
             _objects.find(serial);
         if (it == _objects.end()) {
           // showErrorMessage("Received health info for an unknown object.",
-          // Color::FAILURE);
+          // Color::TODO);
           break;
         }
         ClientObject &obj = *it->second;
@@ -820,7 +820,7 @@ void Client::handleMessage(const std::string &msg) {
           auto userIt = _otherUsers.find(username);
           if (userIt == _otherUsers.end()) {
             // showErrorMessage("Received combat info for an unknown player.",
-            // Color::FAILURE);
+            // Color::TODO);
             break;
           }
           attacker = userIt->second;
@@ -841,7 +841,7 @@ void Client::handleMessage(const std::string &msg) {
         auto objIt = _objects.find(serial);
         if (objIt == _objects.end()) {
           // showErrorMessage("Received combat info for an unknown object.",
-          // Color::FAILURE);
+          // Color::TODO);
           break;
         }
         const ClientNPC &attacker =
@@ -867,7 +867,7 @@ void Client::handleMessage(const std::string &msg) {
           auto userIt = _otherUsers.find(attackerName);
           if (userIt == _otherUsers.end()) {
             // showErrorMessage("Received combat info for an unknown attacking
-            // player.", Color::FAILURE);
+            // player.", Color::TODO);
             break;
           }
           attacker = userIt->second;
@@ -895,7 +895,7 @@ void Client::handleMessage(const std::string &msg) {
             _objects.find(serial);
         if (it == _objects.end()) {
           // showErrorMessage("Received loot info for an unknown object.",
-          // Color::FAILURE);
+          // Color::TODO);
           break;
         }
         ClientObject &object = *it->second;
@@ -915,7 +915,7 @@ void Client::handleMessage(const std::string &msg) {
             _objects.find(serial);
         if (it == _objects.end()) {
           // showErrorMessage("Received loot info for an unknown object.",
-          // Color::FAILURE);
+          // Color::TODO);
           break;
         }
         ClientObject &object = *it->second;
@@ -944,7 +944,7 @@ void Client::handleMessage(const std::string &msg) {
           const auto it = _items.find(id);
           if (it == _items.end()) {
             showErrorMessage("Received invalid construction-material info.",
-                             Color::FAILURE);
+                             Color::TODO);
             break;
           }
           size_t qty;
@@ -971,7 +971,7 @@ void Client::handleMessage(const std::string &msg) {
           auto userIt = _otherUsers.find(username);
           if (userIt == _otherUsers.end()) {
             // showErrorMessage("Received combat info for an unknown defending
-            // player.", Color::FAILURE);
+            // player.", Color::TODO);
             break;
           }
           target = userIt->second;
@@ -1033,7 +1033,7 @@ void Client::handleMessage(const std::string &msg) {
           auto userIt = _otherUsers.find(username);
           if (userIt == _otherUsers.end()) {
             // showErrorMessage("Received combat info for an unknown defending
-            // player.", Color::FAILURE);
+            // player.", Color::TODO);
             break;
           }
           target = userIt->second;
@@ -1062,7 +1062,7 @@ void Client::handleMessage(const std::string &msg) {
           auto it = _otherUsers.find(user);
           if (it == _otherUsers.end())
             ;  // showErrorMessage("Received vehicle info for an unknown user",
-               // Color::FAILURE);
+               // Color::TODO);
           else
             userP = it->second;
         }
@@ -1070,7 +1070,7 @@ void Client::handleMessage(const std::string &msg) {
         auto pairIt = _objects.find(serial);
         if (pairIt == _objects.end())
           ;  // showErrorMessage("Received driver info for an unknown vehicle",
-             // Color::FAILURE);
+             // Color::TODO);
         else {
           ClientVehicle *v = dynamic_cast<ClientVehicle *>(pairIt->second);
           v->driver(userP);
@@ -1098,7 +1098,7 @@ void Client::handleMessage(const std::string &msg) {
           auto it = _otherUsers.find(user);
           if (it == _otherUsers.end())
             ;  // showErrorMessage("Received vehicle info for an unknown user",
-               // Color::FAILURE);
+               // Color::TODO);
           else
             userP = it->second;
         }
@@ -1106,7 +1106,7 @@ void Client::handleMessage(const std::string &msg) {
         auto pairIt = _objects.find(serial);
         if (pairIt == _objects.end())
           ;  // showErrorMessage("Received driver info for an unknown vehicle",
-             // Color::FAILURE);
+             // Color::TODO);
         else {
           ClientVehicle *v = dynamic_cast<ClientVehicle *>(pairIt->second);
           v->driver(nullptr);
@@ -1146,7 +1146,7 @@ void Client::handleMessage(const std::string &msg) {
         if (del != MSG_END) return;
 
         addFloatingCombatText("+"s + toString(newXP) + " XP"s,
-                              _character.location(), Color::FLOATING_XP);
+                              _character.location(), Color::TODO);
 
         break;
       }
@@ -1189,13 +1189,13 @@ void Client::handleMessage(const std::string &msg) {
         auto objIt = _objects.find(serial);
         if (objIt == _objects.end()) {
           // showErrorMessage("Info received about unknown object.",
-          // Color::FAILURE);
+          // Color::TODO);
           break;
         }
         ClientObject &obj = const_cast<ClientObject &>(*objIt->second);
         size_t slots = obj.objectType()->merchantSlots();
         if (slot >= slots) {
-          showErrorMessage("Received invalid merchant slot.", Color::FAILURE);
+          showErrorMessage("Received invalid merchant slot.", Color::TODO);
           break;
         }
         if (ware.empty() || price.empty()) {
@@ -1205,14 +1205,14 @@ void Client::handleMessage(const std::string &msg) {
         auto wareIt = _items.find(ware);
         if (wareIt == _items.end()) {
           showErrorMessage("Received merchant slot describing invalid item",
-                           Color::FAILURE);
+                           Color::TODO);
           break;
         }
         const ClientItem *wareItem = &wareIt->second;
         auto priceIt = _items.find(price);
         if (priceIt == _items.end()) {
           showErrorMessage("Received merchant slot describing invalid item",
-                           Color::FAILURE);
+                           Color::TODO);
           break;
         }
         const ClientItem *priceItem = &priceIt->second;
@@ -1228,7 +1228,7 @@ void Client::handleMessage(const std::string &msg) {
         auto objIt = _objects.find(serial);
         if (objIt == _objects.end()) {
           // showErrorMessage("Info received about unknown object.",
-          // Color::FAILURE);
+          // Color::TODO);
           break;
         }
         ClientObject &obj = const_cast<ClientObject &>(*objIt->second);
@@ -1778,15 +1778,14 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
-      default
-          :;  // showErrorMessage("Unhandled message: "s + msg, Color::FAILURE);
+      default:;  // showErrorMessage("Unhandled message: "s + msg, Color::TODO);
     }
 
     if (del != MSG_END && !iss.eof()) {
       showErrorMessage("Bad message ending. code="s + toString(msgCode) +
                            "; remaining message = "s + toString(del) +
                            singleMsg.str(),
-                       Color::FAILURE);
+                       Color::TODO);
     }
 
     iss.peek();
@@ -1797,7 +1796,7 @@ void Client::handle_SV_LOOTABLE(size_t serial) {
   const std::map<size_t, ClientObject *>::iterator it = _objects.find(serial);
   if (it == _objects.end()) {
     // showErrorMessage("Received loot info for an unknown object.",
-    // Color::FAILURE);
+    // Color::TODO);
     return;
   }
   ClientObject &object = *it->second;
@@ -1815,7 +1814,7 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
     if (it == _items.end()) {
       showErrorMessage(
           "Unknown inventory item \""s + itemID + "\"announced; ignored."s,
-          Color::FAILURE);
+          Color::TODO);
       return;
     }
     item = &it->second;
@@ -1834,7 +1833,7 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
       auto it = _objects.find(serial);
       if (it == _objects.end()) {
         // showErrorMessage("Received inventory of nonexistent object;
-        // ignored.", Color::FAILURE);
+        // ignored.", Color::TODO);
         break;
       }
       object = it->second;
@@ -1842,7 +1841,7 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
   }
   if (slot >= container->size()) {
     // showErrorMessage("Received item in invalid inventory slot; ignored.",
-    // Color::FAILURE);
+    // Color::TODO);
     return;
   }
   auto &invSlot = (*container)[slot];
@@ -2034,16 +2033,16 @@ void Client::handle_SV_ENTITY_WAS_HIT(size_t serial) {
 void Client::handle_SV_SHOW_OUTCOME_AT(int msgCode, const MapPoint &loc) {
   switch (msgCode) {
     case SV_SHOW_MISS_AT:
-      addFloatingCombatText("MISS", loc, Color::FLOATING_MISS);
+      addFloatingCombatText("MISS", loc, Color::TODO);
       break;
     case SV_SHOW_DODGE_AT:
-      addFloatingCombatText("DODGE", loc, Color::FLOATING_MISS);
+      addFloatingCombatText("DODGE", loc, Color::TODO);
       break;
     case SV_SHOW_BLOCK_AT:
-      addFloatingCombatText("BLOCK", loc, Color::FLOATING_MISS);
+      addFloatingCombatText("BLOCK", loc, Color::TODO);
       break;
     case SV_SHOW_CRIT_AT:
-      addFloatingCombatText("CRIT", loc, Color::FLOATING_DAMAGE);
+      addFloatingCombatText("CRIT", loc, Color::TODO);
       break;
   }
 }
@@ -2181,8 +2180,7 @@ void Client::handle_SV_PLAYER_DAMAGED(const std::string &username,
     user = it->second;
   }
 
-  addFloatingCombatText("-"s + toString(amount), user->location(),
-                        Color::FLOATING_DAMAGE);
+  addFloatingCombatText("-"s + toString(amount), user->location(), Color::TODO);
 }
 
 void Client::handle_SV_PLAYER_HEALED(const std::string &username,
@@ -2196,8 +2194,7 @@ void Client::handle_SV_PLAYER_HEALED(const std::string &username,
     user = it->second;
   }
 
-  addFloatingCombatText("+"s + toString(amount), user->location(),
-                        Color::FLOATING_HEAL);
+  addFloatingCombatText("+"s + toString(amount), user->location(), Color::TODO);
 }
 
 void Client::handle_SV_OBJECT_DAMAGED(size_t serial, Hitpoints amount) {
@@ -2205,7 +2202,7 @@ void Client::handle_SV_OBJECT_DAMAGED(size_t serial, Hitpoints amount) {
   if (it == _objects.end()) return;
 
   addFloatingCombatText("-"s + toString(amount), it->second->location(),
-                        Color::FLOATING_DAMAGE);
+                        Color::TODO);
 }
 
 void Client::handle_SV_OBJECT_HEALED(size_t serial, Hitpoints amount) {
@@ -2213,7 +2210,7 @@ void Client::handle_SV_OBJECT_HEALED(size_t serial, Hitpoints amount) {
   if (it == _objects.end()) return;
 
   addFloatingCombatText("+"s + toString(amount), it->second->location(),
-                        Color::FLOATING_HEAL);
+                        Color::TODO);
 }
 
 void Client::handle_SV_QUEST_CAN_BE_STARTED(const std::string &questID) {
@@ -2425,7 +2422,7 @@ void Client::performCommand(const std::string &commandString) {
   iss >> c;
   if (c != '/') {
     assert(false);
-    showErrorMessage("Commands must begin with '/'.", Color::FAILURE);
+    showErrorMessage("Commands must begin with '/'.", Color::TODO);
     return;
   }
 
@@ -2492,7 +2489,7 @@ void Client::performCommand(const std::string &commandString) {
     return;
   }
 
-  showErrorMessage("Unknown command: "s + command, Color::FAILURE);
+  showErrorMessage("Unknown command: "s + command, Color::TODO);
 }
 
 void Client::sendClearTargetMessage() const {

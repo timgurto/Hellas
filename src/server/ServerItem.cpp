@@ -11,7 +11,7 @@ void ServerItem::fetchAmmoItem() const {
   const auto &server = Server::instance();
   auto it = server._items.find(_weaponAmmoID);
   if (it == server._items.end()) {
-    server.debug() << Color::FAILURE << "Unknown item "s << _weaponAmmoID
+    server.debug() << Color::TODO << "Unknown item "s << _weaponAmmoID
                    << " specified as ammo"s << Log::endl;
     return;
   }

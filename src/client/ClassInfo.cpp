@@ -3,7 +3,7 @@
 #include "Tooltip.h"
 
 ClassInfo::ClassInfo(const Name &name) : _name(name), _trees{} {
-  _image = {"Images/Humans/" + name + ".png", Color::MAGENTA};
+  _image = {"Images/Humans/" + name + ".png", Color::TODO};
 }
 
 void ClassInfo::addTalentToTree(const ClientTalent &talent,
@@ -33,11 +33,11 @@ const Tooltip &ClientTalent::tooltip() const {
   _tooltip = Tooltip{};
   auto &tooltip = _tooltip.value();
 
-  tooltip.setColor(Color::ITEM_NAME);
+  tooltip.setColor(Color::TODO);
   tooltip.addLine(name);
   tooltip.addGap();
 
-  tooltip.setColor(Color::ITEM_TAGS);
+  tooltip.setColor(Color::TODO);
   if (hasCost()) {
     auto tagName = Client::instance().tagName(costTag);
     tooltip.addLine("Costs "s + toString(costQuantity) + " "s + tagName);
@@ -48,19 +48,19 @@ const Tooltip &ClientTalent::tooltip() const {
   if (hasCost() || reqPointsInTree > 0) tooltip.addGap();
 
   if (!flavourText.empty()) {
-    tooltip.setColor(Color::FLAVOUR_TEXT);
+    tooltip.setColor(Color::TODO);
     tooltip.addLine(flavourText);
     tooltip.addGap();
   }
 
   switch (type) {
     case SPELL:
-      tooltip.setColor(Color::ITEM_STATS);
+      tooltip.setColor(Color::TODO);
       tooltip.addLine("Teaches you this ability:");
       tooltip.embed(spell->tooltip());
       break;
     case STATS:
-      tooltip.setColor(Color::ITEM_STATS);
+      tooltip.setColor(Color::TODO);
       tooltip.addLine("Each point grants you:");
       tooltip.addLines(stats.toStrings());
       break;

@@ -77,7 +77,7 @@ size_t Object::chooseGatherQuantity(const ServerItem *item) const {
 void Object::incrementGatheringUsers(const User *userToSkip) {
   const Server &server = *Server::_instance;
   ++_numUsersGathering;
-  server._debug << Color::CYAN << _numUsersGathering << Log::endl;
+  server._debug << Color::TODO << _numUsersGathering << Log::endl;
   if (_numUsersGathering == 1) {
     for (const User *user : server.findUsersInArea(location()))
       if (user != userToSkip)
@@ -88,7 +88,7 @@ void Object::incrementGatheringUsers(const User *userToSkip) {
 void Object::decrementGatheringUsers(const User *userToSkip) {
   const Server &server = *Server::_instance;
   --_numUsersGathering;
-  server._debug << Color::CYAN << _numUsersGathering << Log::endl;
+  server._debug << Color::TODO << _numUsersGathering << Log::endl;
   if (_numUsersGathering == 0) {
     for (const User *user : server.findUsersInArea(location()))
       if (user != userToSkip)

@@ -37,7 +37,7 @@ void ProgressLock::registerStagedLocks() {
     }
 
     if (lock._trigger == nullptr) {
-      server._debug << Color::RED << "Invalid progress trigger: '"
+      server._debug << Color::TODO << "Invalid progress trigger: '"
                     << lock._triggerID << "'" << Log::endl;
       continue;
     }
@@ -55,7 +55,7 @@ void ProgressLock::registerStagedLocks() {
     }
 
     if (lock._effect == nullptr) {
-      server._debug << Color::RED << "Invalid progress effect: '"
+      server._debug << Color::TODO << "Invalid progress effect: '"
                     << lock._effectID << "'" << Log::endl;
       continue;
     }

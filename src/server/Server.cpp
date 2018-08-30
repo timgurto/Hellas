@@ -118,7 +118,7 @@ void Server::checkSockets() {
   static const timeval selectTimeout = {0, 10000};
   int activity = select(0, &readFDs, nullptr, nullptr, &selectTimeout);
   if (activity == SOCKET_ERROR) {
-    _debug << Color::RED << "Error polling sockets: " << WSAGetLastError()
+    _debug << Color::TODO << "Error polling sockets: " << WSAGetLastError()
            << Log::endl;
     return;
   }
@@ -140,11 +140,11 @@ void Server::checkSockets() {
       SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr *)&clientAddr,
                                  (int *)&Socket::sockAddrSize);
       if (tempSocket == SOCKET_ERROR) {
-        _debug << Color::RED
+        _debug << Color::TODO
                << "Error accepting connection: " << WSAGetLastError()
                << Log::endl;
       } else {
-        _debug << Color::GREEN
+        _debug << Color::TODO
                << "Connection accepted: " << inet_ntoa(clientAddr.sin_addr)
                << ":" << ntohs(clientAddr.sin_port)
                << ", socket number = " << tempSocket << Log::endl;
@@ -197,7 +197,7 @@ void Server::run() {
 
   _loop = true;
   _running = true;
-  _debug("Server is running", Color::GREEN);
+  _debug("Server is running", Color::TODO);
   while (_loop) {
     _time = SDL_GetTicks();
     const ms_t timeElapsed = _time - _lastTime;
@@ -206,7 +206,7 @@ void Server::run() {
     // Check that clients are alive
     for (std::set<User>::iterator it = _users.begin(); it != _users.end();) {
       if (!it->alive()) {
-        _debug << Color::RED << "User " << it->name() << " has timed out."
+        _debug << Color::TODO << "User " << it->name() << " has timed out."
                << Log::endl;
         std::set<User>::iterator next = it;
         ++next;
@@ -406,7 +406,7 @@ void Server::removeUser(const Socket &socket) {
   if (it != _users.end())
     removeUser(it);
   else
-    _debug("User was already removed", Color::RED);
+    _debug("User was already removed", Color::TODO);
 }
 
 std::set<User *> Server::findUsersInArea(MapPoint loc,

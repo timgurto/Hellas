@@ -295,7 +295,7 @@ void Client::initLoginScreen() {
     auto label =
         new OutlinedLabel({INDICATOR_LABEL_X, y, 200, Element::TEXT_HEIGHT + 5},
                           "Connection with server"s);
-    label->setColor(Color::ITEM_STATS);
+    label->setColor(Color::TODO);
     _loginUI.push_back(label);
     y += LABEL_GAP;
 
@@ -308,14 +308,14 @@ void Client::initLoginScreen() {
     }
     label = new OutlinedLabel({LEFT_MARGIN, y, 200, Element::TEXT_HEIGHT + 5},
                               "Server: " + serverIP);
-    label->setColor(Color::ITEM_STATS);
+    label->setColor(Color::TODO);
     _loginUI.push_back(label);
     y += LABEL_GAP;
 
     // Client version
     label = new OutlinedLabel({LEFT_MARGIN, y, 200, Element::TEXT_HEIGHT + 5},
                               "Client version: " + version());
-    label->setColor(Color::ITEM_STATS);
+    label->setColor(Color::TODO);
     _loginUI.push_back(label);
     y += LABEL_GAP;
   }
@@ -337,7 +337,7 @@ void Client::initLoginScreen() {
   }
 
   // Images
-  _loginFront = Texture(std::string("Images/loginFront.png"), Color::MAGENTA);
+  _loginFront = Texture(std::string("Images/loginFront.png"), Color::TODO);
   _loginBack = Texture(std::string("Images/loginBack.png"));
 
   loginErrorLabel = new OutlinedLabel({0, 0, 200, 15}, {});

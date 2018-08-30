@@ -27,7 +27,7 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
 
   _constructionTooltip = Tooltip{};
   auto &tooltip = _constructionTooltip.value();
-  tooltip.setColor(Color::ITEM_NAME);
+  tooltip.setColor(Color::TODO);
   tooltip.addLine(_name);
 
   auto gapDrawn = false;
@@ -69,12 +69,12 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
   // Tags
   if (hasTags()) {
     tooltip.addGap();
-    tooltip.setColor(Color::ITEM_TAGS);
+    tooltip.setColor(Color::TODO);
     for (const std::string &tag : tags()) tooltip.addLine(client.tagName(tag));
   }
 
   tooltip.addGap();
-  tooltip.setColor(Color::ITEM_STATS);
+  tooltip.setColor(Color::TODO);
   tooltip.addLine("Construction materials:");
   for (const auto &material : _materials) {
     const ClientItem &item = *dynamic_cast<const ClientItem *>(material.first);
@@ -103,13 +103,13 @@ const ClientObjectType::ImageSet &ClientObjectType::getProgressImage(
 }
 
 void ClientObjectType::corpseImage(const std::string &filename) {
-  _corpseImage = Texture(filename, Color::MAGENTA);
+  _corpseImage = Texture(filename, Color::TODO);
   if (!_corpseImage) return;
 
   // Set corpse highlight image
-  Surface corpseHighlightSurface(filename, Color::MAGENTA);
+  Surface corpseHighlightSurface(filename, Color::TODO);
   if (!corpseHighlightSurface) return;
-  corpseHighlightSurface.swapColors(Color::OUTLINE, Color::HIGHLIGHT_OUTLINE);
+  corpseHighlightSurface.swapColors(Color::TODO, Color::TODO);
   _corpseHighlightImage = Texture(corpseHighlightSurface);
 }
 
@@ -126,9 +126,9 @@ void ClientObjectType::addMaterial(const ClientItem *item, size_t qty) {
 }
 
 ClientObjectType::ImageSet::ImageSet(const std::string &filename) {
-  Surface surface(filename, Color::MAGENTA);
+  Surface surface(filename, Color::TODO);
   normal = Texture(surface);
-  surface.swapColors(Color::OUTLINE, Color::HIGHLIGHT_OUTLINE);
+  surface.swapColors(Color::TODO, Color::TODO);
   highlight = Texture(surface);
 }
 

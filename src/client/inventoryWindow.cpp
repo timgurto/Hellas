@@ -28,7 +28,7 @@ template <typename T>
 static void addStat(const std::string &label, const T &value,
                     const std::string &prefix, const std::string &suffix,
                     px_t &y, Element *gearWindow,
-                    Color &lineColor = Element::FONT_COLOR) {
+                    const Color &lineColor = Element::FONT_COLOR) {
   const auto X = 2_px, W = 98_px;
   auto labelRect = ScreenRect{X, y, W, Element::TEXT_HEIGHT};
   auto nameLabel = new Label(labelRect, label);
@@ -50,7 +50,7 @@ static void addGap(px_t &y, Element *gearWindow) {
 
 void Client::initializeGearWindow() {
   _gearWindowBackground =
-      Texture(std::string("Images/gearWindow.png"), Color::MAGENTA);
+      Texture(std::string("Images/gearWindow.png"), Color::TODO);
 
   const auto STATS_WIDTH = 100, STAT_X_GAP = 2_px,
              gridX = STATS_WIDTH + STAT_X_GAP, gridY = -1_px, w = 16_px,
@@ -69,13 +69,10 @@ void Client::initializeGearWindow() {
 
   // Stats
   auto y = labelRect.y;
-  addStat("Max health", _stats.maxHealth, {}, {}, y, _gearWindow,
-          Color::COMBATANT_SELF);
-  addStat("Health regen", _stats.hps, {}, "/s", y, _gearWindow,
-          Color::COMBATANT_SELF);
-  addStat("Max energy", _stats.maxEnergy, {}, {}, y, _gearWindow,
-          Color::ENERGY);
-  addStat("Energy regen", _stats.eps, {}, "/s", y, _gearWindow, Color::ENERGY);
+  addStat("Max health", _stats.maxHealth, {}, {}, y, _gearWindow, Color::TODO);
+  addStat("Health regen", _stats.hps, {}, "/s", y, _gearWindow, Color::TODO);
+  addStat("Max energy", _stats.maxEnergy, {}, {}, y, _gearWindow, Color::TODO);
+  addStat("Energy regen", _stats.eps, {}, "/s", y, _gearWindow, Color::TODO);
   addGap(y, _gearWindow);
   addStat("Hit chance", _stats.hit, {}, "%", y, _gearWindow);
   addStat("Crit chance", _stats.crit, {}, "%", y, _gearWindow);
@@ -85,13 +82,13 @@ void Client::initializeGearWindow() {
   addGap(y, _gearWindow);
   addStat("Armor", _stats.armor, {}, "%", y, _gearWindow);
   addStat("Air resistance", _stats.airResist, {}, "%", y, _gearWindow,
-          Color::AIR);
+          Color::TODO);
   addStat("Earth resistance", _stats.earthResist, {}, "%", y, _gearWindow,
-          Color::EARTH);
+          Color::TODO);
   addStat("Fire resistance", _stats.fireResist, {}, "%", y, _gearWindow,
-          Color::FIRE);
+          Color::TODO);
   addStat("Water resistance", _stats.waterResist, {}, "%", y, _gearWindow,
-          Color::WATER);
+          Color::TODO);
   addStat("Crit avoidance", _stats.critResist, {}, "%", y, _gearWindow);
   addStat("Dodge chance", _stats.dodge, {}, "%", y, _gearWindow);
   addStat("Block chance", _stats.block, {}, "%", y, _gearWindow);

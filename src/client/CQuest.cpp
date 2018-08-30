@@ -24,7 +24,7 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   // Quest name
   auto name =
       new Label({GAP, y, WIN_W, Element::TEXT_HEIGHT}, quest->_info.name);
-  name->setColor(Color::HELP_TEXT_HEADING);
+  name->setColor(Color::TODO);
   window->addChild(name);
   y += name->height() + GAP;
 
@@ -46,7 +46,7 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
     auto label = new Label({}, line);
     body->addChild(label);
     if (isHelpText) {
-      label->setColor(Color::CYAN);
+      label->setColor(Color::TODO);
     }
   }
 
@@ -56,7 +56,7 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   if (shouldShowObjectives) {
     body->addGap();
     auto heading = new Label({}, "Objectives:");
-    heading->setColor(Color::HELP_TEXT_HEADING);
+    heading->setColor(Color::TODO);
     body->addChild(heading);
 
     for (auto &objective : quest->_info.objectives) {

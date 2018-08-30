@@ -122,7 +122,7 @@ size_t Server::getTileYCoord(double y) const {
   assert(y >= 0);
   size_t yTile = static_cast<size_t>(y / TILE_H);
   if (yTile >= _mapY) {
-    _debug << Color::RED << "Invalid location; clipping y from " << yTile
+    _debug << Color::TODO << "Invalid location; clipping y from " << yTile
            << " to " << _mapY - 1 << ". original co-ord=" << y << Log::endl;
     yTile = _mapY - 1;
   }
@@ -135,7 +135,7 @@ size_t Server::getTileXCoord(double x, size_t yTile) const {
   if (yTile % 2 == 1) x += TILE_W / 2;
   size_t xTile = static_cast<size_t>(x / TILE_W);
   if (xTile >= _mapX) {
-    _debug << Color::RED << "Invalid location; clipping x from " << originalX
+    _debug << Color::TODO << "Invalid location; clipping x from " << originalX
            << " to " << _mapX - 1 << ". original co-ord=" << x << Log::endl;
     xTile = _mapX - 1;
   }

@@ -37,7 +37,7 @@ void Sprite::draw(const Client &client) const {
   if (imageToDraw)
     imageToDraw.draw(drawRect() + client.offset());
   else {
-    renderer.setDrawColor(Color::BLUE);
+    renderer.setDrawColor(Color::TODO);
     auto drawRect =
         toScreenRect(MapRect{_location.x - 5, _location.y - 5, 10, 10});
     renderer.fillRect(drawRect + client.offset());
@@ -53,8 +53,7 @@ void Sprite::drawName() const {
   if (!additionalTextInName().empty()) text += " "s + additionalTextInName();
 
   const auto nameLabel = Texture{client.defaultFont(), text, nameColor()};
-  const auto nameOutline =
-      Texture{client.defaultFont(), text, Color::PLAYER_NAME_OUTLINE};
+  const auto nameOutline = Texture{client.defaultFont(), text, Color::TODO};
   auto namePosition = toScreenPoint(location()) + client.offset();
   namePosition.y -= height();
   namePosition.y -= 16;

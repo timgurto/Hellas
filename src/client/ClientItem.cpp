@@ -18,7 +18,7 @@ void ClientItem::icon(const std::string &filename) {
 
 void ClientItem::gearImage(const std::string &filename) {
   static const std::string prefix = "Images/Gear/", suffix = ".png";
-  _gearImage = Texture(prefix + filename + suffix, Color::MAGENTA);
+  _gearImage = Texture(prefix + filename + suffix, Color::TODO);
 }
 
 const ClientItem *toClientItem(const Item *item) {
@@ -66,13 +66,13 @@ const Tooltip &ClientItem::tooltip() const {
   _tooltip = Tooltip{};
   auto &tooltip = _tooltip.value();
 
-  tooltip.setColor(Color::ITEM_NAME);
+  tooltip.setColor(Color::TODO);
   tooltip.addLine(_name);
 
   // Gear slot/stats
   if (_gearSlot != Client::GEAR_SLOTS) {
     tooltip.addGap();
-    tooltip.setColor(Color::ITEM_STATS);
+    tooltip.setColor(Color::TODO);
     tooltip.addLine("Gear: "s + Client::GEAR_SLOT_NAMES[_gearSlot]);
 
     if (weaponRange() > Podes::MELEE_RANGE.toPixels())
@@ -90,14 +90,14 @@ const Tooltip &ClientItem::tooltip() const {
   // Tags
   if (hasTags()) {
     tooltip.addGap();
-    tooltip.setColor(Color::ITEM_TAGS);
+    tooltip.setColor(Color::TODO);
     for (const std::string &tag : tags()) tooltip.addLine(client.tagName(tag));
   }
 
   // Construction
   if (_constructsObject != nullptr) {
     tooltip.addGap();
-    tooltip.setColor(Color::ITEM_INSTRUCTIONS);
+    tooltip.setColor(Color::TODO);
     tooltip.addLine(std::string("Right-click to place ") +
                     _constructsObject->name());
     if (!_constructsObject->constructionReq().empty())
@@ -107,25 +107,25 @@ const Tooltip &ClientItem::tooltip() const {
 
     // Vehicle?
     if (_constructsObject->classTag() == 'v') {
-      tooltip.setColor(Color::ITEM_STATS);
+      tooltip.setColor(Color::TODO);
       tooltip.addLine("  Vehicle");
     }
 
     if (_constructsObject->containerSlots() > 0) {
-      tooltip.setColor(Color::ITEM_STATS);
+      tooltip.setColor(Color::TODO);
       tooltip.addLine("  Container: " +
                       toString(_constructsObject->containerSlots()) + " slots");
     }
 
     if (_constructsObject->merchantSlots() > 0) {
-      tooltip.setColor(Color::ITEM_STATS);
+      tooltip.setColor(Color::TODO);
       tooltip.addLine("  Merchant: " +
                       toString(_constructsObject->merchantSlots()) + " slots");
     }
 
     // Tags
     if (_constructsObject->hasTags()) {
-      tooltip.setColor(Color::ITEM_TAGS);
+      tooltip.setColor(Color::TODO);
       for (const std::string &tag : _constructsObject->tags())
         tooltip.addLine("  " + client.tagName(tag));
     }
@@ -136,9 +136,9 @@ const Tooltip &ClientItem::tooltip() const {
     auto it = client._spells.find(spellToCastOnUse());
     if (it == client._spells.end()) {
       client.showErrorMessage("Can't find spell: "s + spellToCastOnUse(),
-                              Color::FAILURE);
+                              Color::TODO);
     } else {
-      tooltip.setColor(Color::ITEM_STATS);
+      tooltip.setColor(Color::TODO);
       tooltip.addLine("Right-click: "s + it->second->createEffectDescription());
     }
   }
@@ -162,8 +162,7 @@ void ClientItem::fetchAmmoItem() const {
   auto it = client._items.find(_weaponAmmoID);
   if (it == client._items.end()) {
     client.showErrorMessage(
-        "Unknown item "s + _weaponAmmoID + " specified as ammo"s,
-        Color::FAILURE);
+        "Unknown item "s + _weaponAmmoID + " specified as ammo"s, Color::TODO);
     return;
   }
   _weaponAmmo = &(it->second);

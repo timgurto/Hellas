@@ -47,16 +47,16 @@ std::string SpellSchool::midSentenceString() const {
 const Color &SpellSchool::color() const {
   switch (_type) {
     case AIR:
-      return Color::AIR;
+      return Color::TODO;
     case EARTH:
-      return Color::EARTH;
+      return Color::TODO;
     case FIRE:
-      return Color::FIRE;
+      return Color::TODO;
     case WATER:
-      return Color::WATER;
+      return Color::TODO;
   }
   assert(false);
-  return {Color::OUTLINE};
+  return {Color::TODO};
 }
 
 std::istream &operator>>(std::istream &lhs, SpellSchool &rhs) {

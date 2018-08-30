@@ -58,8 +58,7 @@ void Client::initChatLog() {
   _chatTextBox->setPosition(0, _chatLog->height());
   _chatTextBox->hide();
 
-  auto background =
-      new ColorBlock(_chatLog->rect(), Color::CHAT_LOG_BACKGROUND);
+  auto background = new ColorBlock(_chatLog->rect(), Color::TODO);
   background->setAlpha(0x7f);
   _chatContainer->addChild(background);
 
@@ -67,8 +66,8 @@ void Client::initChatLog() {
   _chatContainer->addChild(_chatTextBox);
 
   addUI(_chatContainer);
-  SAY_COLOR = Color::SAY;
-  WHISPER_COLOR = Color::WHISPER;
+  SAY_COLOR = Color::TODO;
+  WHISPER_COLOR = Color::TODO;
 }
 
 void Client::initWindows() {
@@ -109,7 +108,7 @@ void Client::initCastBar() {
                                  _config.castBarY, _config.castBarW,
                                  _config.castBarH),
       CAST_BAR_DIMENSIONS(0, 0, _config.castBarW, _config.castBarH);
-  static const Color CAST_BAR_LABEL_COLOR = Color::CAST_BAR_FONT;
+  static const Color CAST_BAR_LABEL_COLOR = Color::TODO;
   _castBar = new Element(CAST_BAR_RECT);
   _castBar->addChild(
       new ProgressBar<ms_t>(CAST_BAR_DIMENSIONS, _actionTimer, _actionLength));
@@ -139,7 +138,7 @@ void Client::populateHotbar() {
     auto button = new Button({i * 18, 0, 18, 18}, {}, [castMessageVoidPtr]() {
       sendRawMessageStatic(castMessageVoidPtr);
     });
-    button->addChild(new ColorBlock({0, 0, 18, 18}, Color::OUTLINE));
+    button->addChild(new ColorBlock({0, 0, 18, 18}, Color::TODO));
     button->addChild(new Picture(1, 1, spell->icon()));
     button->addChild(new OutlinedLabel({0, -1, 16, 18}, toString((i + 1) % 10),
                                        Element::RIGHT_JUSTIFIED));
@@ -175,8 +174,7 @@ void Client::refreshBuffsDisplay() {
 
 Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
   auto e = new Element();
-  if (isDebuff)
-    e->addChild(new ColorBlock({1, 1, 18, 18}, Color::COMBATANT_ENEMY));
+  if (isDebuff) e->addChild(new ColorBlock({1, 1, 18, 18}, Color::TODO));
   e->addChild(new Picture({2, 2, 16, 16}, type.icon()));
   e->setTooltip(type.name());
   return e;
@@ -280,8 +278,7 @@ void Client::addButtonToMenu(Element *menuBar, size_t index, Element *toToggle,
       new Button({MENU_BUTTON_W * static_cast<px_t>(index), 0, MENU_BUTTON_W,
                   MENU_BUTTON_H},
                  "", [toToggle]() { Element::toggleVisibilityOf(toToggle); });
-  button->addChild(
-      new Picture(2, 2, {"Images/UI/" + iconFile, Color::MAGENTA}));
+  button->addChild(new Picture(2, 2, {"Images/UI/" + iconFile, Color::TODO}));
   button->setTooltip(tooltip);
   menuBar->addChild(button);
 }
@@ -312,10 +309,10 @@ void Client::initPerformanceDisplay() {
        HARDWARE_STATS_LABEL_HEIGHT},
       _channelsPlaying, "", "/" + makeArgs(MIXING_CHANNELS) + " channels",
       Label::RIGHT_JUSTIFIED);
-  fps->setColor(Color::PERFORMANCE_FONT);
-  lat->setColor(Color::PERFORMANCE_FONT);
-  numEntities->setColor(Color::PERFORMANCE_FONT);
-  channels->setColor(Color::PERFORMANCE_FONT);
+  fps->setColor(Color::TODO);
+  lat->setColor(Color::TODO);
+  numEntities->setColor(Color::TODO);
+  channels->setColor(Color::TODO);
   hardwareStats->addChild(fps);
   hardwareStats->addChild(lat);
   hardwareStats->addChild(numEntities);
@@ -328,7 +325,7 @@ void Client::initPlayerPanels() {
   CombatantPanel *playerPanel = new CombatantPanel(
       playerPanelX, playerPanelY, _username, _character.health(),
       _character.maxHealth(), _character.energy(), _character.maxEnergy());
-  playerPanel->changeColor(Color::COMBATANT_SELF);
+  playerPanel->changeColor(Color::TODO);
   addUI(playerPanel);
   /*
   initializeMenu() must be called before initializePanel(), otherwise the
@@ -360,7 +357,7 @@ void Client::refreshQuestProgress() {
     isEmpty = false;
 
     auto questName = new OutlinedLabel({}, quest.info().name);
-    questName->setColor(Color::QUEST_NAME);
+    questName->setColor(Color::TODO);
     _questProgress->addChild(questName);
 
     auto allObjectivesCompleted = true;
@@ -376,15 +373,14 @@ void Client::refreshQuestProgress() {
       }
       auto objectiveLabel = new OutlinedLabel({}, objectiveText);
       auto objectiveComplete = quest.getProgress(i) == objective.qty;
-      objectiveLabel->setColor(objectiveComplete ? Color::QUEST_COMPLETE
-                                                 : Color::QUEST_OBJECTIVE);
+      objectiveLabel->setColor(objectiveComplete ? Color::TODO : Color::TODO);
       _questProgress->addChild(objectiveLabel);
 
       if (!objectiveComplete) allObjectivesCompleted = false;
     }
 
     if (allObjectivesCompleted) {
-      questName->setColor(Color::QUEST_COMPLETE);
+      questName->setColor(Color::TODO);
     }
   }
 }

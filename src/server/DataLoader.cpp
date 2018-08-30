@@ -44,8 +44,7 @@ void DataLoader::load(bool keepOldData) {
       for (const auto &filename : _files) {
         auto xr = XmlReader::FromFile(filename);
         if (!xr) {
-          _server._debug("Failed to load XML file "s + filename,
-                         Color::FAILURE);
+          _server._debug("Failed to load XML file "s + filename, Color::TODO);
         }
       }
     }
@@ -263,7 +262,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     if (transform) {
       if (!xr.findAttr(transform, "id", s)) {
         _server._debug("Transformation specified without target id; skipping.",
-                       Color::FAILURE);
+                       Color::TODO);
         continue;
       }
       const ObjectType *transformObjPtr = _server.findObjectTypeByName(s);
@@ -299,7 +298,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
         ot->setHealthBasedOnItems(&*itemIt, n);
       } else
         _server._debug("Strength specified without item type; skipping.",
-                       Color::FAILURE);
+                       Color::TODO);
     }
 
     // Action
@@ -309,12 +308,12 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
 
       std::string target;
       if (!xr.findAttr(action, "target", target)) {
-        _server._debug("Skipping action with missing target", Color::RED);
+        _server._debug("Skipping action with missing target", Color::TODO);
         continue;
       }
       auto it = Action::functionMap.find(target);
       if (it == Action::functionMap.end()) {
-        _server._debug << Color::RED << "Action target " << target
+        _server._debug << Color::TODO << "Action target " << target
                        << "() doesn't exist; skipping" << Log::endl;
         continue;
       }
@@ -336,12 +335,12 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     if (onDestroy != nullptr) {
       std::string target;
       if (!xr.findAttr(onDestroy, "target", target)) {
-        _server._debug("Skipping onDestroy with missing target", Color::RED);
+        _server._debug("Skipping onDestroy with missing target", Color::TODO);
         continue;
       }
       auto it = CallbackAction::functionMap.find(target);
       if (it == CallbackAction::functionMap.end()) {
-        _server._debug << Color::RED << "CallbackAction target " << target
+        _server._debug << Color::TODO << "CallbackAction target " << target
                        << "() doesn't exist; skipping" << Log::endl;
         continue;
       }
@@ -514,7 +513,7 @@ void DataLoader::loadItems(XmlReader &xr) {
       if (stackSize > 1) {
         _server._debug(
             "Skipping return-on-construct item for stackable material",
-            Color::RED);
+            Color::TODO);
         continue;
       }
 
@@ -578,7 +577,7 @@ void DataLoader::loadRecipes(XmlReader &xr) {
     xr.findAttr(elem, "product", product);
     auto it = _server._items.find(product);
     if (it == _server._items.end()) {
-      _server._debug << Color::RED << "Skipping recipe with invalid product "
+      _server._debug << Color::TODO << "Skipping recipe with invalid product "
                      << product << Log::endl;
       continue;
     }
@@ -596,7 +595,7 @@ void DataLoader::loadRecipes(XmlReader &xr) {
       if (xr.findAttr(child, "id", matID)) {
         auto it = _server._items.find(ServerItem(matID));
         if (it == _server._items.end()) {
-          _server._debug << Color::RED << "Skipping invalid recipe material "
+          _server._debug << Color::TODO << "Skipping invalid recipe material "
                          << matID << Log::endl;
           continue;
         }
@@ -837,20 +836,20 @@ void DataLoader::loadSpawners(XmlReader &xr) {
   for (auto elem : xr.getChildren("spawnPoint")) {
     std::string id;
     if (!xr.findAttr(elem, "type", id)) {
-      _server._debug("Skipping importing spawner with no type.", Color::RED);
+      _server._debug("Skipping importing spawner with no type.", Color::TODO);
       continue;
     }
 
     MapPoint p;
     if (!xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
       _server._debug("Skipping importing spawner with invalid/no location",
-                     Color::RED);
+                     Color::TODO);
       continue;
     }
 
     const ObjectType *type = _server.findObjectTypeByName(id);
     if (type == nullptr) {
-      _server._debug << Color::RED
+      _server._debug << Color::TODO
                      << "Skipping importing spawner for unknown objects \""
                      << id << "\"." << Log::endl;
       continue;
@@ -879,7 +878,8 @@ void DataLoader::loadMap(XmlReader &xr) {
 
   if (!xr.findAttr(elem, "x", User::newPlayerSpawn.x) ||
       !xr.findAttr(elem, "y", User::newPlayerSpawn.y)) {
-    _server._debug("New-player spawn point missing or incomplete.", Color::RED);
+    _server._debug("New-player spawn point missing or incomplete.",
+                   Color::TODO);
     return;
   }
 
@@ -888,7 +888,7 @@ void DataLoader::loadMap(XmlReader &xr) {
   elem = xr.findChild("size");
   if (elem == nullptr || !xr.findAttr(elem, "x", _server._mapX) ||
       !xr.findAttr(elem, "y", _server._mapY)) {
-    _server._debug("Map size missing or incomplete.", Color::RED);
+    _server._debug("Map size missing or incomplete.", Color::TODO);
     return;
   }
 

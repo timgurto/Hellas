@@ -8,9 +8,9 @@ class Surface {
   std::string _description;  // For easier debugging of leaks.
 
  public:
-  Surface(const std::string &filename, const Color &colorKey = Color::NO_KEY);
+  Surface(const std::string &filename, const Color &colorKey = Color::TODO);
   Surface(TTF_Font *font, const std::string &text,
-          const Color &color = Color::FONT);
+          const Color &color = Color::TODO);
   ~Surface();
 
   bool operator!() const;

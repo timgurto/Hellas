@@ -368,7 +368,7 @@ class Client {
   Element *_chatContainer;
   List *_chatLog;
   TextBox *_chatTextBox;
-  void addChatMessage(const std::string &msg, const Color &color = Color::FONT);
+  void addChatMessage(const std::string &msg, const Color &color = Color::TODO);
   static Color SAY_COLOR, WHISPER_COLOR;
   std::string _lastWhisperer;  // The username of the last person to whisper,
                                // for fast replying.

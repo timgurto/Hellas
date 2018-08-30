@@ -34,7 +34,7 @@ void Avatar::draw(const Client &client) const {
   }
 
   if (isDebug()) {
-    renderer.setDrawColor(Color::WHITE);
+    renderer.setDrawColor(Color::TODO);
     renderer.drawRect(toScreenRect(COLLISION_RECT + location()) +
                       client.offset());
   }
@@ -46,8 +46,7 @@ void Avatar::drawName() const {
   const auto &client = Client::instance();
 
   const Texture nameLabel(client.defaultFont(), _name, nameColor());
-  const Texture nameOutline(client.defaultFont(), _name,
-                            Color::PLAYER_NAME_OUTLINE);
+  const Texture nameOutline(client.defaultFont(), _name, Color::TODO);
   Texture cityOutline, cityLabel;
 
   ScreenPoint namePosition = toScreenPoint(location()) + client.offset();
@@ -61,8 +60,7 @@ void Avatar::drawName() const {
     auto cityText = std::string{};
     if (_isKing) cityText = "King ";
     cityText += "of " + _city;
-    cityOutline =
-        Texture(client.defaultFont(), cityText, Color::PLAYER_NAME_OUTLINE);
+    cityOutline = Texture(client.defaultFont(), cityText, Color::TODO);
     cityLabel = Texture(client.defaultFont(), cityText, nameColor());
     cityPosition.x =
         toInt(location().x + client.offset().x - cityLabel.width() / 2.0);
@@ -100,18 +98,18 @@ const Tooltip &Avatar::tooltip() const {
   auto &tooltip = _tooltip.value();
 
   // Name
-  tooltip.setColor(Color::ITEM_NAME);
+  tooltip.setColor(Color::TODO);
   tooltip.addLine(_name);
 
   // Class
   tooltip.addGap();
-  tooltip.setColor(Color::ITEM_TAGS);
+  tooltip.setColor(Color::TODO);
   tooltip.addLine("Level "s + toString(level()) + " "s + getClass().name());
 
   // Debug info
   /*if (isDebug()){
       _tooltip.addGap();
-      _tooltip.setColor(Color::ITEM_TAGS);
+      _tooltip.setColor(Color::TODO);
       _tooltip.addLine("");
   }*/
 
@@ -189,9 +187,9 @@ bool Avatar::shouldDrawHealthBar() const {
 }
 
 const Color &Avatar::nameColor() const {
-  if (this == &Client::_instance->character()) return Color::COMBATANT_SELF;
+  if (this == &Client::_instance->character()) return Color::TODO;
 
-  if (canBeAttackedByPlayer()) return Color::COMBATANT_ENEMY;
+  if (canBeAttackedByPlayer()) return Color::TODO;
 
   return Sprite::nameColor();
 }

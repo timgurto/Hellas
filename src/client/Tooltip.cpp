@@ -15,7 +15,7 @@ ms_t Tooltip::timeThatTheLastRedrawWasOrdered{};
 const Tooltip Tooltip::NO_TOOLTIP{};
 
 Tooltip::Tooltip() {
-  _color = Color::TOOLTIP_FONT;
+  _color = Color::TODO;
 
   if (font == nullptr) font = TTF_OpenFont("AdvoCut.ttf", 10);
 }
@@ -88,7 +88,7 @@ void Tooltip::generate() const {
   // Create background
   Texture background(totalWidth, totalHeight);
   renderer.pushRenderTarget(background);
-  renderer.setDrawColor(Color::TOOLTIP_BACKGROUND);
+  renderer.setDrawColor(Color::TODO);
   renderer.clear();
   background.setAlpha(0xdf);
   renderer.popRenderTarget();
@@ -99,7 +99,7 @@ void Tooltip::generate() const {
   background.draw();
 
   // Draw border
-  renderer.setDrawColor(Color::TOOLTIP_BORDER);
+  renderer.setDrawColor(Color::TODO);
   renderer.drawRect({0, 0, totalWidth, totalHeight});
 
   // Draw text

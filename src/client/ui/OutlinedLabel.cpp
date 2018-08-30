@@ -12,10 +12,10 @@ OutlinedLabel::OutlinedLabel(const ScreenRect &rect, const std::string &text,
   _r = new Label({2, 1, w, h}, text, justificationH, justificationV);
   _central = new Label({1, 1, w, h}, text, justificationH, justificationV);
 
-  _u->setColor(Color::OUTLINE);
-  _d->setColor(Color::OUTLINE);
-  _l->setColor(Color::OUTLINE);
-  _r->setColor(Color::OUTLINE);
+  _u->setColor(Color::TODO);
+  _d->setColor(Color::TODO);
+  _l->setColor(Color::TODO);
+  _r->setColor(Color::TODO);
 
   addChild(_u);
   addChild(_d);

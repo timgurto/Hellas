@@ -41,12 +41,12 @@ void Client::draw() const {
 
   // Character's target and actual location
   if (isDebug()) {
-    renderer.setDrawColor(Color::CYAN);
+    renderer.setDrawColor(Color::TODO);
     const ScreenPoint &actualLoc =
         toScreenPoint(_character.destination()) + offset();
     renderer.drawRect({actualLoc.x - 1, actualLoc.y - 1, 3, 3});
 
-    renderer.setDrawColor(Color::WHITE);
+    renderer.setDrawColor(Color::TODO);
     auto pendingLoc = ScreenPoint{toInt(_pendingCharLoc.x) + offset().x,
                                   toInt(_pendingCharLoc.y) + offset().y};
     renderer.drawRect({pendingLoc.x, pendingLoc.y, 1, 1});
@@ -65,7 +65,7 @@ void Client::draw() const {
   auto top = _entities.lower_bound(&topEntity);
   auto bottom = _entities.upper_bound(&bottomEntity);
   // Construction sites
-  renderer.setDrawColor(Color::FOOTPRINT);
+  renderer.setDrawColor(Color::TODO);
   for (auto it = top; it != bottom; ++it) {
     auto pObj = dynamic_cast<ClientObject *>(*it);
     if (!pObj) continue;
@@ -131,7 +131,7 @@ void Client::draw() const {
     auto footprintRect = ot->collisionRect() + toMapPoint(_mouse) - _offset;
     if (distance(playerCollisionRect(), footprintRect) <=
         Client::ACTION_DISTANCE) {
-      renderer.setDrawColor(Color::FOOTPRINT_GOOD);
+      renderer.setDrawColor(Color::TODO);
       renderer.fillRect(toScreenRect(footprintRect + _offset));
 
       const ScreenRect &drawRect = ot->drawRect();
@@ -140,7 +140,7 @@ void Client::draw() const {
       _constructionFootprint.draw(x, y);
       _constructionFootprint.setAlpha();
     } else {
-      renderer.setDrawColor(Color::FOOTPRINT_BAD);
+      renderer.setDrawColor(Color::TODO);
       renderer.fillRect(toScreenRect(footprintRect + _offset));
     }
     // TODO: Show message explaining controls
@@ -154,7 +154,7 @@ void Client::draw() const {
       charType.image().draw(_mouse + charType.drawRect());
       charType.image().setAlpha();
     } else {
-      renderer.setDrawColor(Color::FOOTPRINT_BAD);
+      renderer.setDrawColor(Color::TODO);
       renderer.fillRect(toScreenRect(footprintRect + _offset));
     }
   }
@@ -163,7 +163,7 @@ void Client::draw() const {
   if (isDebug()) {
     const ScreenPoint midScreen =
         toScreenPoint(_character.location()) + offset();
-    renderer.setDrawColor(Color::RED);
+    renderer.setDrawColor(Color::TODO);
     renderer.drawRect({midScreen.x - CULL_DISTANCE, midScreen.y - CULL_DISTANCE,
                        CULL_DISTANCE * 2, CULL_DISTANCE * 2});
   }
@@ -259,7 +259,7 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
 
   // Black background
   // Assuming all tile images are set to SDL_BLENDMODE_ADD and quarter alpha
-  renderer.setDrawColor(Color::BLACK);
+  renderer.setDrawColor(Color::TODO);
   if (yOdd && x == 0) {
     renderer.fillRect(drawLoc + RIGHT_HALF);
   } else if (!yOdd && x == _mapX - 1) {
@@ -299,7 +299,7 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
   }
 
   /*if (!_terrain[tileID].isTraversable()) {
-      renderer.setDrawColor(Color::RED);
+      renderer.setDrawColor(Color::TODO);
       renderer.drawRect(drawLoc + FULL);
   }*/
 }
