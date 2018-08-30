@@ -187,9 +187,9 @@ bool Avatar::shouldDrawHealthBar() const {
 }
 
 const Color &Avatar::nameColor() const {
-  if (this == &Client::_instance->character()) return Color::TODO;
+  if (this == &Client::_instance->character()) return Color::COMBATANT_SELF;
 
-  if (canBeAttackedByPlayer()) return Color::TODO;
+  if (canBeAttackedByPlayer()) return Color::COMBATANT_ENEMY;
 
   return Sprite::nameColor();
 }

@@ -1025,11 +1025,11 @@ void ClientObject::playDeathSound() const {
 }
 
 const Color &ClientObject::nameColor() const {
-  if (belongsToPlayerCity()) return Color::TODO;
+  if (belongsToPlayerCity()) return Color::COMBATANT_ALLY;
 
-  if (belongsToPlayer()) return Color::TODO;
+  if (belongsToPlayer()) return Color::COMBATANT_SELF;
 
-  if (canBeAttackedByPlayer()) return Color::TODO;
+  if (canBeAttackedByPlayer()) return Color::COMBATANT_DEFENSIVE;
 
   return Sprite::nameColor();
 }

@@ -18,6 +18,12 @@ class Color {
   static const Color WINDOW_DARK;
   static const Color WINDOW_LIGHT;
 
+  static const Color COMBATANT_SELF;
+  static const Color COMBATANT_ALLY;
+  static const Color COMBATANT_DEFENSIVE;
+  static const Color COMBATANT_ENEMY;
+  static const Color COMBATANT_NEUTRAL;
+
   Color(Uint8 r, Uint8 g, Uint8 b);
   Color(const SDL_Color &rhs);
   Color(Uint32 rhs = 0);

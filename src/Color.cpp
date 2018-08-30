@@ -13,6 +13,12 @@ const Color Color::WINDOW_BACKGROUND{0x33, 0x33, 0x33};
 const Color Color::WINDOW_DARK{0x19, 0x19, 0x19};
 const Color Color::WINDOW_LIGHT{0x4c, 0x4c, 0x4c};
 
+const Color Color::COMBATANT_SELF{0x23, 0xb2, 0x23};
+const Color Color::COMBATANT_ALLY{0x23, 0x82, 0xb2};
+const Color Color::COMBATANT_DEFENSIVE{0xb2, 0xb2, 0x23};
+const Color Color::COMBATANT_ENEMY{0xb2, 0x23, 0x23};
+const Color Color::COMBATANT_NEUTRAL{0xb2, 0xb2, 0xb2};
+
 Color::Color(Uint8 r, Uint8 g, Uint8 b) : _r(r), _g(g), _b(b) {}
 
 Color::Color(const SDL_Color &rhs) : _r(rhs.r), _g(rhs.g), _b(rhs.b) {}
