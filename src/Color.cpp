@@ -1,10 +1,12 @@
 #include "Color.h"
 #include "util.h"
 
-const Color Color::TODO(0xff, 0x01, 0xff);
-const Color Color::BLACK(0x00, 0x00, 0x00);
-const Color Color::BLUE_HELL(0x18, 0x52, 0xa1);
-const Color Color::NO_KEY(0x01, 0x02, 0x03);
+const Color Color::TODO{0xff, 0x01, 0xff};
+const Color Color::BLACK{0x00, 0x00, 0x00};
+const Color Color::BLUE_HELL{0x18, 0x52, 0xa1};
+const Color Color::NO_KEY{0x01, 0x02, 0x03};
+
+const Color Color::ERR{0xff, 0, 0};
 
 Color::Color(Uint8 r, Uint8 g, Uint8 b) : _r(r), _g(g), _b(b) {}
 
@@ -74,10 +76,3 @@ std::ostream &operator<<(std::ostream &lhs, const Color &rhs) {
   lhs << std::hex << static_cast<Uint32>(rhs) << std::dec;
   return lhs;
 }
-
-/*std::istream &operator>>(std::istream &lhs, Color &rhs) {
-  auto n = Uint32{};
-  lhs >> std::hex >> n >> std::dec;
-  rhs = n;
-  return lhs;
-}*/

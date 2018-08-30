@@ -56,7 +56,7 @@ void Socket::bind(sockaddr_in &socketAddr) {
   if (!valid()) return;
 
   if (::bind(_raw, (sockaddr *)&socketAddr, sockAddrSize) == SOCKET_ERROR) {
-    *debug << Color::TODO << "Error binding socket: " << WSAGetLastError()
+    *debug << Color::ERR << "Error binding socket: " << WSAGetLastError()
            << Log::endl;
   } else {
     *debug << "Socket bound. " << Log::endl;
@@ -78,7 +78,7 @@ void Socket::sendMessage(const std::string &msg,
 
   if (send(destSocket.getRaw(), msg.c_str(), (int)msg.length(), 0) < 0) {
     if (debug)
-      *debug << Color::TODO << "Failed to send command \"" << msg
+      *debug << Color::ERR << "Failed to send command \"" << msg
              << "\" to socket " << destSocket.getRaw() << Log::endl;
   }
 

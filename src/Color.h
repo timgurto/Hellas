@@ -12,7 +12,9 @@ class Color {
   static const Color BLUE_HELL;
   static const Color NO_KEY;
 
-  Color(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0);
+  static const Color ERR;
+
+  Color(Uint8 r, Uint8 g, Uint8 b);
   Color(const SDL_Color &rhs);
   Color(Uint32 rhs);
 
@@ -36,6 +38,5 @@ class Color {
 Color operator+(const Color &lhs, const Color &rhs);
 
 std::ostream &operator<<(std::ostream &lhs, const Color &rhs);
-// std::istream &operator>>(std::istream &lhs, Color &rhs);
 
 #endif
