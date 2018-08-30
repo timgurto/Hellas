@@ -15,9 +15,10 @@ bool ClientNPC::canBeAttackedByPlayer() const {
   return true;
 }
 
-const Color &ClientNPC::healthBarColor() const {
+const Color &ClientNPC::nameColor() const {
   if (npcType()->isCivilian()) return Color::COMBATANT_NEUTRAL;
-  return ClientObject::healthBarColor();
+  if (npcType()->isNeutral()) return Color::YELLOW;
+  return ClientObject::nameColor();
 }
 
 void ClientNPC::update(double delta) {

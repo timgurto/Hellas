@@ -815,7 +815,10 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     }
 
     auto n = 0;
-    if (xr.findAttr(elem, "isCivilian", n) && n != 0) nt->makeCivilian();
+    if (xr.findAttr(elem, "isCivilian", n) && n != 0)
+      nt->makeCivilian();
+    else if (xr.findAttr(elem, "isNeutral", n) && n != 0)
+      nt->makeNeutral();
 
     // Insert
     auto pair = _client._objectTypes.insert(nt);

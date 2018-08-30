@@ -22,6 +22,8 @@ class ClientNPCType : public ClientObjectType {
 
   void makeCivilian() { _isCivilian = true; }
   bool isCivilian() const { return _isCivilian; }
+  void makeNeutral() { _isNeutral = true; }
+  bool isNeutral() const { return _isNeutral; }
 
   virtual char classTag() const override { return 'n'; }
 
@@ -29,6 +31,7 @@ class ClientNPCType : public ClientObjectType {
   const Projectile::Type *_projectile = nullptr;
   ClientItem::vect_t _gear;  // For humanoid NPCs
   bool _isCivilian{false};
+  bool _isNeutral{false};
 };
 
 #endif

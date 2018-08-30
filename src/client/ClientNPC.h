@@ -19,7 +19,7 @@ class ClientNPC : public ClientObject {
 
   // From ClientCombatant:
   bool canBeAttackedByPlayer() const override;
-  const Color &healthBarColor() const override;
+  const Color &nameColor() const override;
 
   // From Sprite:
   void update(double delta) override;
