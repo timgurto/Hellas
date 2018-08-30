@@ -61,9 +61,9 @@ Element::~Element() {
 void Element::initialize() {
   if (initialized) return;
 
-  BACKGROUND_COLOR = Color::TODO;
-  SHADOW_LIGHT = Color::TODO;
-  SHADOW_DARK = Color::TODO;
+  BACKGROUND_COLOR = Color::WINDOW_BACKGROUND;
+  SHADOW_LIGHT = Color::WINDOW_LIGHT;
+  SHADOW_DARK = Color::WINDOW_DARK;
   FONT_COLOR = Color::TODO;
 
   ITEM_HEIGHT = max(Client::ICON_SIZE, TEXT_HEIGHT);

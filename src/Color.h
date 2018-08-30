@@ -13,10 +13,13 @@ class Color {
   static const Color NO_KEY;
 
   static const Color ERR;
+  static const Color WINDOW_BACKGROUND;
+  static const Color WINDOW_DARK;
+  static const Color WINDOW_LIGHT;
 
   Color(Uint8 r, Uint8 g, Uint8 b);
   Color(const SDL_Color &rhs);
-  Color(Uint32 rhs);
+  Color(Uint32 rhs = 0);
 
   operator SDL_Color() const;
   operator Uint32() const;  // Used by some SDL functions
