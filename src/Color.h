@@ -9,6 +9,7 @@ class Color {
  public:
   static const Color TODO;
   static const Color BLACK;
+  static const Color MAGENTA;
   static const Color BLUE_HELL;
   static const Color NO_KEY;
 

@@ -103,11 +103,11 @@ const ClientObjectType::ImageSet &ClientObjectType::getProgressImage(
 }
 
 void ClientObjectType::corpseImage(const std::string &filename) {
-  _corpseImage = Texture(filename, Color::TODO);
+  _corpseImage = Texture(filename, Color::MAGENTA);
   if (!_corpseImage) return;
 
   // Set corpse highlight image
-  Surface corpseHighlightSurface(filename, Color::TODO);
+  Surface corpseHighlightSurface(filename, Color::MAGENTA);
   if (!corpseHighlightSurface) return;
   corpseHighlightSurface.swapColors(Color::TODO, Color::TODO);
   _corpseHighlightImage = Texture(corpseHighlightSurface);
@@ -126,7 +126,7 @@ void ClientObjectType::addMaterial(const ClientItem *item, size_t qty) {
 }
 
 ClientObjectType::ImageSet::ImageSet(const std::string &filename) {
-  Surface surface(filename, Color::TODO);
+  Surface surface(filename, Color::MAGENTA);
   normal = Texture(surface);
   surface.swapColors(Color::TODO, Color::TODO);
   highlight = Texture(surface);

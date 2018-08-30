@@ -13,8 +13,8 @@ Indicator::Indicator(const ScreenPoint& loc, Status initial)
 void Indicator::set(Status status) { changeTexture(images[status]); }
 
 void Indicator::initialize() {
-  images[SUCCEEDED] = {"Images/UI/indicator-success.png", Color::TODO};
-  images[FAILED] = {"Images/UI/indicator-failure.png", Color::TODO};
-  images[IN_PROGRESS] = {"Images/UI/indicator-progress.png", Color::TODO};
+  images[SUCCEEDED] = {"Images/UI/indicator-success.png", Color::MAGENTA};
+  images[FAILED] = {"Images/UI/indicator-failure.png", Color::MAGENTA};
+  images[IN_PROGRESS] = {"Images/UI/indicator-progress.png", Color::MAGENTA};
   initialized = true;
 }

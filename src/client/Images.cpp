@@ -9,7 +9,7 @@ Images::Images(const std::string &directory) : _directory(directory) {
 
   defaultTexture.setRenderTarget();
 
-  renderer.setDrawColor(Color::TODO);
+  renderer.setDrawColor(Color::MAGENTA);
   renderer.fill();
 
   renderer.setRenderTarget();

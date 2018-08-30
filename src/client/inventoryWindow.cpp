@@ -50,7 +50,7 @@ static void addGap(px_t &y, Element *gearWindow) {
 
 void Client::initializeGearWindow() {
   _gearWindowBackground =
-      Texture(std::string("Images/gearWindow.png"), Color::TODO);
+      Texture(std::string("Images/gearWindow.png"), Color::MAGENTA);
 
   const auto STATS_WIDTH = 100, STAT_X_GAP = 2_px,
              gridX = STATS_WIDTH + STAT_X_GAP, gridY = -1_px, w = 16_px,

@@ -76,15 +76,15 @@ std::map<int, std::string> Client::_errorMessages;
 const int Client::MIXING_CHANNELS = 32;
 
 Client::Client()
-    : _cursorNormal(std::string("Images/Cursors/normal.png"), Color::TODO),
-      _cursorGather(std::string("Images/Cursors/gather.png"), Color::TODO),
+    : _cursorNormal(std::string("Images/Cursors/normal.png"), Color::MAGENTA),
+      _cursorGather(std::string("Images/Cursors/gather.png"), Color::MAGENTA),
       _cursorContainer(std::string("Images/Cursors/container.png"),
-                       Color::TODO),
-      _cursorAttack(std::string("Images/Cursors/attack.png"), Color::TODO),
+                       Color::MAGENTA),
+      _cursorAttack(std::string("Images/Cursors/attack.png"), Color::MAGENTA),
       _cursorStartsQuest(std::string("Images/Cursors/startsQuest.png"),
-                         Color::TODO),
+                         Color::MAGENTA),
       _cursorEndsQuest(std::string("Images/Cursors/endsQuest.png"),
-                       Color::TODO),
+                       Color::MAGENTA),
       _currentCursor(&_cursorNormal),
 
       _character({}, {}),
@@ -116,8 +116,9 @@ Client::Client()
       _rightMouseDownEntity(nullptr),
       _rightMouseDownWasOnUI(false),
 
-      _basePassive(std::string("Images/targetPassive.png"), Color::TODO),
-      _baseAggressive(std::string("Images/targetAggressive.png"), Color::TODO),
+      _basePassive(std::string("Images/targetPassive.png"), Color::MAGENTA),
+      _baseAggressive(std::string("Images/targetAggressive.png"),
+                      Color::MAGENTA),
       _inventory(INVENTORY_SIZE, std::make_pair(nullptr, 0)),
 
       _time(SDL_GetTicks()),

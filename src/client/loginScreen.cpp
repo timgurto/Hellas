@@ -337,7 +337,7 @@ void Client::initLoginScreen() {
   }
 
   // Images
-  _loginFront = Texture(std::string("Images/loginFront.png"), Color::TODO);
+  _loginFront = Texture(std::string("Images/loginFront.png"), Color::MAGENTA);
   _loginBack = Texture(std::string("Images/loginBack.png"));
 
   loginErrorLabel = new OutlinedLabel({0, 0, 200, 15}, {});

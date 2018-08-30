@@ -227,8 +227,9 @@ void ClientObject::addQuestsToWindow() {
 
   const auto BUTTON_HEIGHT = 15, BUTTON_WIDTH = 100, MARGIN = 2;
 
-  static auto startQuestIcon = Texture{"Images/UI/startQuest.png", Color::TODO};
-  static auto endQuestIcon = Texture{"Images/UI/endQuest.png", Color::TODO};
+  static auto startQuestIcon =
+      Texture{"Images/UI/startQuest.png", Color::MAGENTA};
+  static auto endQuestIcon = Texture{"Images/UI/endQuest.png", Color::MAGENTA};
   const auto BUTTON_X = startQuestIcon.width();
 
   auto questsToDisplay = std::map<CQuest *, bool>{};  // true=start, false=end
@@ -783,9 +784,9 @@ void ClientObject::draw(const Client &client) const {
 
   // Quest indicator
   static const auto questStartIndicator =
-      Texture{"Images/questStart.png", Color::TODO};
+      Texture{"Images/questStart.png", Color::MAGENTA};
   static const auto questEndIndicator =
-      Texture{"Images/questEnd.png", Color::TODO};
+      Texture{"Images/questEnd.png", Color::MAGENTA};
   auto questIndicator = Texture{};
   if (!completableQuests().empty())
     questIndicator = questEndIndicator;

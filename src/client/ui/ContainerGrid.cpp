@@ -39,11 +39,11 @@ ContainerGrid::ContainerGrid(size_t rows, size_t cols,
       _solidBackground(solidBackground) {
   if (!_highlight) {
     _highlight =
-        Texture(std::string("Images/Items/highlight.png"), Color::TODO);
+        Texture(std::string("Images/Items/highlight.png"), Color::MAGENTA);
     _highlightGood =
-        Texture(std::string("Images/Items/highlightGood.png"), Color::TODO);
+        Texture(std::string("Images/Items/highlightGood.png"), Color::MAGENTA);
     _highlightBad =
-        Texture(std::string("Images/Items/highlightBad.png"), Color::TODO);
+        Texture(std::string("Images/Items/highlightBad.png"), Color::MAGENTA);
   }
 
   for (size_t i = 0; i != _linked.size(); ++i) {
