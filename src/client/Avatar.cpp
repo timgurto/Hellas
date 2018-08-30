@@ -180,12 +180,6 @@ bool Avatar::isInPlayersCity() const {
   return false;
 }
 
-bool Avatar::shouldDrawHealthBar() const {
-  const Client &client = *Client::_instance;
-  if (this == &client.character()) return false;
-  return ClientCombatant::shouldDrawHealthBar();
-}
-
 const Color &Avatar::nameColor() const {
   if (this == &Client::_instance->character()) return Color::COMBATANT_SELF;
 

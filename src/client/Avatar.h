@@ -78,7 +78,6 @@ class Avatar : public Sprite, public ClientCombatant {
   bool canBeAttackedByPlayer() const override;
   const Sprite *entityPointer() const override { return this; }
   const MapPoint &combatantLocation() const override { return location(); }
-  bool shouldDrawHealthBar() const override;
   const Color &healthBarColor() const override { return nameColor(); }
 
   void addMenuButtons(List &menu) const override;
