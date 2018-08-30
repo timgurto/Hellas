@@ -2,10 +2,18 @@
 #include "util.h"
 
 const Color Color::TODO{0xff, 0x01, 0xff};
-const Color Color::BLACK{0x00, 0x00, 0x00};
-const Color Color::MAGENTA(0xff, 0x00, 0xff);
+
 const Color Color::BLUE_HELL{0x18, 0x52, 0xa1};
 const Color Color::NO_KEY{0x01, 0x02, 0x03};
+
+const Color Color::BLACK(0x00, 0x00, 0x00);
+const Color Color::BLUE(0x00, 0x00, 0xff);
+const Color Color::GREEN(0x00, 0xff, 0x00);
+const Color Color::CYAN(0x00, 0xff, 0xff);
+const Color Color::RED(0xff, 0x00, 0x00);
+const Color Color::MAGENTA(0xff, 0x00, 0xff);
+const Color Color::YELLOW(0xff, 0xff, 0x00);
+const Color Color::WHITE(0xff, 0xff, 0xff);
 
 const Color Color::ERR{0xff, 0, 0};
 
@@ -13,11 +21,13 @@ const Color Color::WINDOW_BACKGROUND{0x33, 0x33, 0x33};
 const Color Color::WINDOW_DARK{0x19, 0x19, 0x19};
 const Color Color::WINDOW_LIGHT{0x4c, 0x4c, 0x4c};
 
-const Color Color::COMBATANT_SELF{0x23, 0xb2, 0x23};
-const Color Color::COMBATANT_ALLY{0x23, 0x82, 0xb2};
-const Color Color::COMBATANT_DEFENSIVE{0xb2, 0xb2, 0x23};
-const Color Color::COMBATANT_ENEMY{0xb2, 0x23, 0x23};
-const Color Color::COMBATANT_NEUTRAL{0xb2, 0xb2, 0xb2};
+const Color Color::COMBATANT_SELF = GREEN;
+const Color Color::COMBATANT_ALLY = GREEN;
+const Color Color::COMBATANT_DEFENSIVE = YELLOW;
+const Color Color::COMBATANT_ENEMY = RED;
+const Color Color::COMBATANT_NEUTRAL = WHITE;
+
+const Color Color::UI_OUTLINE = BLACK;
 
 Color::Color(Uint8 r, Uint8 g, Uint8 b) : _r(r), _g(g), _b(b) {}
 

@@ -53,7 +53,8 @@ void Sprite::drawName() const {
   if (!additionalTextInName().empty()) text += " "s + additionalTextInName();
 
   const auto nameLabel = Texture{client.defaultFont(), text, nameColor()};
-  const auto nameOutline = Texture{client.defaultFont(), text, Color::TODO};
+  const auto nameOutline =
+      Texture{client.defaultFont(), text, Color::UI_OUTLINE};
   auto namePosition = toScreenPoint(location()) + client.offset();
   namePosition.y -= height();
   namePosition.y -= 16;

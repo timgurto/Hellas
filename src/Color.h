@@ -8,10 +8,18 @@
 class Color {
  public:
   static const Color TODO;
-  static const Color BLACK;
-  static const Color MAGENTA;
+
   static const Color BLUE_HELL;
   static const Color NO_KEY;
+
+  static const Color BLACK;
+  static const Color BLUE;
+  static const Color GREEN;
+  static const Color CYAN;
+  static const Color RED;
+  static const Color MAGENTA;
+  static const Color YELLOW;
+  static const Color WHITE;
 
   static const Color ERR;
   static const Color WINDOW_BACKGROUND;
@@ -23,6 +31,8 @@ class Color {
   static const Color COMBATANT_DEFENSIVE;
   static const Color COMBATANT_ENEMY;
   static const Color COMBATANT_NEUTRAL;
+
+  static const Color UI_OUTLINE;
 
   Color(Uint8 r, Uint8 g, Uint8 b);
   Color(const SDL_Color &rhs);

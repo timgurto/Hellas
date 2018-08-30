@@ -46,7 +46,7 @@ void Avatar::drawName() const {
   const auto &client = Client::instance();
 
   const Texture nameLabel(client.defaultFont(), _name, nameColor());
-  const Texture nameOutline(client.defaultFont(), _name, Color::TODO);
+  const Texture nameOutline(client.defaultFont(), _name, Color::UI_OUTLINE);
   Texture cityOutline, cityLabel;
 
   ScreenPoint namePosition = toScreenPoint(location()) + client.offset();
@@ -60,7 +60,7 @@ void Avatar::drawName() const {
     auto cityText = std::string{};
     if (_isKing) cityText = "King ";
     cityText += "of " + _city;
-    cityOutline = Texture(client.defaultFont(), cityText, Color::TODO);
+    cityOutline = Texture(client.defaultFont(), cityText, Color::UI_OUTLINE);
     cityLabel = Texture(client.defaultFont(), cityText, nameColor());
     cityPosition.x =
         toInt(location().x + client.offset().x - cityLabel.width() / 2.0);
