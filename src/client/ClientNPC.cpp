@@ -39,3 +39,8 @@ void ClientNPC::draw(const Client &client) const {
       if (item) item->draw(location());
     }
 }
+
+bool ClientNPC::shouldDrawName() const {
+  if (isDead()) return false;
+  return true;
+}
