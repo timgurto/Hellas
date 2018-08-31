@@ -37,7 +37,7 @@ const Tooltip &ClientTalent::tooltip() const {
   tooltip.addLine(name);
   tooltip.addGap();
 
-  tooltip.setColor(Color::TODO);
+  tooltip.setColor(Color::TOOLTIP_BODY);
   if (hasCost()) {
     auto tagName = Client::instance().tagName(costTag);
     tooltip.addLine("Costs "s + toString(costQuantity) + " "s + tagName);
@@ -55,12 +55,12 @@ const Tooltip &ClientTalent::tooltip() const {
 
   switch (type) {
     case SPELL:
-      tooltip.setColor(Color::TODO);
+      tooltip.setColor(Color::TOOLTIP_BODY);
       tooltip.addLine("Teaches you this ability:");
       tooltip.embed(spell->tooltip());
       break;
     case STATS:
-      tooltip.setColor(Color::TODO);
+      tooltip.setColor(Color::TOOLTIP_BODY);
       tooltip.addLine("Each point grants you:");
       tooltip.addLines(stats.toStrings());
       break;

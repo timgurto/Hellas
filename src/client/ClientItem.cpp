@@ -72,7 +72,7 @@ const Tooltip &ClientItem::tooltip() const {
   // Gear slot/stats
   if (_gearSlot != Client::GEAR_SLOTS) {
     tooltip.addGap();
-    tooltip.setColor(Color::TODO);
+    tooltip.setColor(Color::TOOLTIP_BODY);
     tooltip.addLine("Gear: "s + Client::GEAR_SLOT_NAMES[_gearSlot]);
 
     if (weaponRange() > Podes::MELEE_RANGE.toPixels())
@@ -107,18 +107,18 @@ const Tooltip &ClientItem::tooltip() const {
 
     // Vehicle?
     if (_constructsObject->classTag() == 'v') {
-      tooltip.setColor(Color::TODO);
+      tooltip.setColor(Color::TOOLTIP_BODY);
       tooltip.addLine("  Vehicle");
     }
 
     if (_constructsObject->containerSlots() > 0) {
-      tooltip.setColor(Color::TODO);
+      tooltip.setColor(Color::TOOLTIP_BODY);
       tooltip.addLine("  Container: " +
                       toString(_constructsObject->containerSlots()) + " slots");
     }
 
     if (_constructsObject->merchantSlots() > 0) {
-      tooltip.setColor(Color::TODO);
+      tooltip.setColor(Color::TOOLTIP_BODY);
       tooltip.addLine("  Merchant: " +
                       toString(_constructsObject->merchantSlots()) + " slots");
     }
@@ -162,7 +162,8 @@ void ClientItem::fetchAmmoItem() const {
   auto it = client._items.find(_weaponAmmoID);
   if (it == client._items.end()) {
     client.showErrorMessage(
-        "Unknown item "s + _weaponAmmoID + " specified as ammo"s, Color::CHAT_ERROR);
+        "Unknown item "s + _weaponAmmoID + " specified as ammo"s,
+        Color::CHAT_ERROR);
     return;
   }
   _weaponAmmo = &(it->second);

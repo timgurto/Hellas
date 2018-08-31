@@ -25,7 +25,7 @@ class Texture {
   Texture(const std::string &filename, const Color &colorKey = Color::TODO);
   Texture(const Surface &surface);
   Texture(TTF_Font *font, const std::string &text,
-          const Color &color = Color::TODO);
+          const Color &color = Color::WINDOW_FONT);
   void createFromSurface(const Surface &surface);
 
   Texture(const Texture &rhs);

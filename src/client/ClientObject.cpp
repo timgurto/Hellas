@@ -847,7 +847,7 @@ const Tooltip &ClientObject::tooltip() const {
   // Debug info
   if (isDebug()) {
     tooltip.addGap();
-    tooltip.setColor(Color::TODO);
+    tooltip.setColor(Color::TOOLTIP_BODY);
     tooltip.addLine("Serial: " + toString(_serial));
     tooltip.addLine("Class tag: " + toString(classTag()));
   }
@@ -855,14 +855,14 @@ const Tooltip &ClientObject::tooltip() const {
   // Level
   if (classTag() == 'n') {
     tooltip.addGap();
-    tooltip.setColor(Color::TODO);
+    tooltip.setColor(Color::TOOLTIP_BODY);
     tooltip.addLine("Level "s + toString(level()));
   }
 
   // Owner
   if (!owner().empty()) {
     tooltip.addGap();
-    tooltip.setColor(Color::TODO);
+    tooltip.setColor(Color::TOOLTIP_BODY);
     tooltip.addLine("Owned by " + (owner() == Client::_instance->username()
                                        ? "you"
                                        : owner()));
@@ -873,7 +873,7 @@ const Tooltip &ClientObject::tooltip() const {
 
   // Stats
   bool stats = false;
-  tooltip.setColor(Color::TODO);
+  tooltip.setColor(Color::TOOLTIP_BODY);
 
   if (classTag() == 'v') {
     if (!stats) {

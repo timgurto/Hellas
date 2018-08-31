@@ -15,8 +15,6 @@ ms_t Tooltip::timeThatTheLastRedrawWasOrdered{};
 const Tooltip Tooltip::NO_TOOLTIP{};
 
 Tooltip::Tooltip() {
-  _color = Color::TODO;
-
   if (font == nullptr) font = TTF_OpenFont("AdvoCut.ttf", 10);
 }
 

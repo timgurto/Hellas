@@ -27,7 +27,7 @@ const Tooltip &ClientSpell::tooltip() const {
     tooltip.addLine(_school);
   }
 
-  tooltip.setColor(Color::TODO);
+  tooltip.setColor(Color::TOOLTIP_BODY);
   if (_cost > 0) tooltip.addLine("Energy cost: "s + toString(_cost));
 
   auto shouldShowRange = !_isAoE && _range > 0;
@@ -36,7 +36,7 @@ const Tooltip &ClientSpell::tooltip() const {
 
   if (_cooldown > 0) tooltip.addLine("Cooldown: "s + sAsTimeDisplay(_cooldown));
 
-  tooltip.setColor(Color::TODO);
+  tooltip.setColor(Color::TOOLTIP_BODY);
   tooltip.addLine(createEffectDescription());
 
   return tooltip;

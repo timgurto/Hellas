@@ -12,7 +12,7 @@
 #include "WordWrapper.h"
 
 class Tooltip {
-  Color _color;
+  Color _color{Color::TOOLTIP_BODY};
   std::vector<Texture>
       _content;  // The lines of text; an empty texture implies a gap.
 
@@ -35,7 +35,7 @@ class Tooltip {
 
   const static px_t NO_WRAP;
 
-  void setColor(const Color &color = Color::TODO);
+  void setColor(const Color &color = Color::TOOLTIP_BODY);
 
   void addLine(const std::string &line);
   using Lines = std::vector<std::string>;

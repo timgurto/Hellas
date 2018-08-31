@@ -168,7 +168,7 @@ Client::Client()
   SDL_ShowCursor(SDL_DISABLE);
 
 #ifdef _DEBUG
-  _debug << Color::TODO << cmdLineArgs << Log::endl;
+  _debug(toString(cmdLineArgs));
   if (Socket::debug == nullptr) Socket::debug = &_debug;
 #endif
 

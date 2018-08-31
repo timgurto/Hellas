@@ -98,12 +98,12 @@ const Tooltip &Avatar::tooltip() const {
   auto &tooltip = _tooltip.value();
 
   // Name
-  tooltip.setColor(Color::TODO);
+  tooltip.setColor(Color::TOOLTIP_NAME);
   tooltip.addLine(_name);
 
   // Class
   tooltip.addGap();
-  tooltip.setColor(Color::TODO);
+  tooltip.setColor(Color::TOOLTIP_BODY);
   tooltip.addLine("Level "s + toString(level()) + " "s + getClass().name());
 
   // Debug info

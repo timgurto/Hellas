@@ -14,13 +14,13 @@ Usage:
 log("message");
     Add a message to the screen.
 
-log("message", Color::TODO);
+log("message", Color::WHITE);
     Add a colored message to the screen
 
 log << "message " << 1;
     Compile a message of different values/types
 
-log << Color::TODO;
+log << Color::WHITE;
     Change the color of the current compilation; it will reset after endl is
 received. This can be done at any time, but the one color will be used for the
 entire compilation.
@@ -37,7 +37,7 @@ class Log {
   virtual ~Log() {}
 
   virtual void operator()(const std::string &message,
-                          const Color &color = Color::TODO) = 0;
+                          const Color &color = Color::WHITE) = 0;
 
   enum LogSpecial { endl, uncolor };
 
