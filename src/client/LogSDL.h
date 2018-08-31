@@ -15,7 +15,7 @@ class LogSDL : public Log {
  public:
   LogSDL(const std::string &logFileName = "");
   void operator()(const std::string &message,
-                  const Color &color = Color::TODO) override;
+                  const Color &color = Color::CHAT_DEFAULT) override;
 
   template <typename T>
   LogSDL &operator<<(const T &val) {
@@ -30,7 +30,8 @@ class LogSDL : public Log {
 
  private:
   std::ostringstream _oss;
-  Color _compilationColor;  // for use while compiling a message
+  Color _compilationColor =
+      Color::CHAT_DEFAULT;  // for use while compiling a message
 };
 
 #endif

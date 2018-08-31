@@ -3,8 +3,7 @@
 #include "ui/Label.h"
 #include "ui/List.h"
 
-LogSDL::LogSDL(const std::string &logFileName)
-    : Log(logFileName), _compilationColor(Color::TODO) {}
+LogSDL::LogSDL(const std::string &logFileName) : Log(logFileName) {}
 
 void LogSDL::operator()(const std::string &message, const Color &color) {
   writeLineToFile(message);
@@ -21,11 +20,12 @@ LogSDL &LogSDL::operator<<(const LogSpecial &val) {
     case endl:
       operator()(_oss.str(), _compilationColor);
       _oss.str("");
-      _compilationColor = Color::TODO;  // reset color for next compilation
+      _compilationColor =
+          Color::CHAT_DEFAULT;  // reset color for next compilation
       break;
 
     case uncolor:
-      _compilationColor = Color::TODO;
+      _compilationColor = Color::CHAT_DEFAULT;
       break;
   }
   return *this;

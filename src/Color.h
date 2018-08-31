@@ -21,7 +21,13 @@ class Color {
   static const Color YELLOW;
   static const Color WHITE;
 
-  static const Color ERR;
+  static const Color CHAT_BACKGROUND;
+  static const Color CHAT_DEFAULT;
+  static const Color CHAT_SAY;
+  static const Color CHAT_WHISPER;
+  static const Color CHAT_ERROR;
+  static const Color CHAT_SUCCESS;
+
   static const Color WINDOW_BACKGROUND;
   static const Color WINDOW_DARK;
   static const Color WINDOW_LIGHT;

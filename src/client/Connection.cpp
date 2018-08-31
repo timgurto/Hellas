@@ -92,7 +92,7 @@ bool Connection::shouldAttemptReconnection() const {
 }
 
 void Connection::showError(const std::string &msg) const {
-  Client::instance().showErrorMessage(msg, Color::ERR);
+  Client::instance().showErrorMessage(msg, Color::CHAT_ERROR);
   _client->infoWindow(msg);
 }
 

@@ -18,7 +18,7 @@ void TagNames::readFromXML(XmlReader &xr) {
     std::string id, name;
     if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name)) {
       Client::instance().showErrorMessage(
-          "Skipping tag with insufficient info."s, Color::ERR);
+          "Skipping tag with insufficient info."s, Color::CHAT_ERROR);
       continue;
     }
     container_[id] = name;

@@ -177,7 +177,7 @@ Client::Client()
   drawLoadingScreen("Initializing audio", 0.5);
   int ret = (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 1, 512) < 0);
   if (ret < 0) {
-    showErrorMessage("SDL_mixer failed to initialize.", Color::ERR);
+    showErrorMessage("SDL_mixer failed to initialize.", Color::CHAT_ERROR);
   }
   Mix_AllocateChannels(MIXING_CHANNELS);
 

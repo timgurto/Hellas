@@ -504,7 +504,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       } else
         _client.showErrorMessage(
             "Transformation specified without target id; skipping.",
-            Color::ERR);
+            Color::CHAT_ERROR);
     }
 
     for (auto particles : xr.getChildren("particles", elem)) {
@@ -696,7 +696,7 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
     auto it = _client._items.find(s);
     if (it == _client._items.end()) {
       _client.showErrorMessage("Skipping recipe with invalid product "s + s,
-                               Color::ERR);
+                               Color::CHAT_ERROR);
       continue;
     }
     const ClientItem *item = &it->second;
@@ -716,7 +716,7 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
         auto it = _client._items.find(s);
         if (it == _client._items.end()) {
           _client.showErrorMessage("Skipping invalid recipe material "s + s,
-                                   Color::ERR);
+                                   Color::CHAT_ERROR);
           continue;
         }
         const ClientItem *material = &it->second;
@@ -807,7 +807,7 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       auto it = _client._items.find(id);
       if (it == _client._items.end()) {
         _client.showErrorMessage("Skipping invalid NPC gear "s + id,
-                                 Color::ERR);
+                                 Color::CHAT_ERROR);
         continue;
       }
 
@@ -900,7 +900,8 @@ void CDataLoader::loadMap(XmlReader &xr) {
   auto elem = xr.findChild("size");
   if (elem == nullptr || !xr.findAttr(elem, "x", _client._mapX) ||
       !xr.findAttr(elem, "y", _client._mapY)) {
-    _client.showErrorMessage("Map size missing or incomplete.", Color::ERR);
+    _client.showErrorMessage("Map size missing or incomplete.",
+                             Color::CHAT_ERROR);
     return;
   }
   _client._map = std::vector<std::vector<char> >(_client._mapX);
@@ -910,20 +911,21 @@ void CDataLoader::loadMap(XmlReader &xr) {
     size_t y;
     auto rowNumberSpecified = xr.findAttr(row, "y", y);
     if (!rowNumberSpecified) {
-      _client.showErrorMessage("Map row is missing a row number.", Color::ERR);
+      _client.showErrorMessage("Map row is missing a row number.",
+                               Color::CHAT_ERROR);
       return;
     }
     if (y >= _client._mapY) {
       _client.showErrorMessage("Map row number "s + toString(y) +
                                    " exceeds y dimension of " +
                                    toString(_client._mapY),
-                               Color::ERR);
+                               Color::CHAT_ERROR);
       return;
     }
     std::string rowTerrain;
     if (!xr.findAttr(row, "terrain", rowTerrain)) {
       _client.showErrorMessage("Map row is missing terrain information.",
-                               Color::ERR);
+                               Color::CHAT_ERROR);
       return;
     }
     for (size_t x = 0; x != rowTerrain.size(); ++x) {
@@ -931,7 +933,7 @@ void CDataLoader::loadMap(XmlReader &xr) {
         _client.showErrorMessage("Row length of "s + toString(x) +
                                      " exceeds x dimension of " +
                                      toString(_client._mapX),
-                                 Color::ERR);
+                                 Color::CHAT_ERROR);
         return;
       }
       _client._map[x][y] = rowTerrain[x];

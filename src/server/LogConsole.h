@@ -13,7 +13,7 @@ class LogConsole : public Log {
   LogConsole(const std::string &logFileName = "");
 
   virtual void operator()(const std::string &message,
-                          const Color &color = Color::TODO) override;
+                          const Color &color = Color::WHITE) override;
 
   void quiet(bool b = true) { _quiet = b; }
 

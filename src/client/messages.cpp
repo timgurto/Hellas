@@ -86,7 +86,7 @@ void Client::handleMessage(const std::string &msg) {
         _loggedIn = true;
         _lastPingSent = _lastPingReply = _time;
 #ifdef _DEBUG
-        _debug("Successfully logged in to server", Color::TODO);
+        _debug("Successfully logged in to server", Color::CHAT_SUCCESS);
 #endif
         _debug("Welcome to Hellas!");
         break;
@@ -188,7 +188,7 @@ void Client::handleMessage(const std::string &msg) {
       case WARNING_STUNNED:
       case WARNING_YOU_ARE_ALREADY_IN_CITY:
       case WARNING_ITEM_NEEDED:
-        errorMessageColor = Color::ERR;  // Yellow above, red below
+        errorMessageColor = Color::CHAT_ERROR;  // Yellow above, red below
       case ERROR_INVALID_USER:
       case ERROR_INVALID_ITEM:
       case ERROR_CANNOT_CRAFT:
@@ -248,7 +248,7 @@ void Client::handleMessage(const std::string &msg) {
         auto it = _items.find(ammoID);
         if (it == _items.end()) {
           showErrorMessage("Received warning about invalid item: "s + ammoID,
-                           Color::ERR);
+                           Color::CHAT_ERROR);
           break;
         }
         auto ammoName = it->second.name();
@@ -443,13 +443,13 @@ void Client::handleMessage(const std::string &msg) {
         const auto it = _items.find(id);
         if (it == _items.end()) {
           showErrorMessage("Unknown gear received ("s + id + ").  Ignoring.",
-                           Color::ERR);
+                           Color::CHAT_ERROR);
           break;
         }
         const ClientItem &item = it->second;
         if (item.gearSlot() >= GEAR_SLOTS) {
           showErrorMessage("Gear info received for a non-gear item.  Ignoring.",
-                           Color::ERR);
+                           Color::CHAT_ERROR);
           break;
         }
         _otherUsers[username]->gear()[slot].first = &item;
@@ -574,7 +574,7 @@ void Client::handleMessage(const std::string &msg) {
         auto cot = findObjectType(type);
         if (!cot) {
           showErrorMessage("Received object of invalid type; ignored.",
-                           Color::ERR);
+                           Color::CHAT_ERROR);
           break;
         }
 
@@ -944,7 +944,7 @@ void Client::handleMessage(const std::string &msg) {
           const auto it = _items.find(id);
           if (it == _items.end()) {
             showErrorMessage("Received invalid construction-material info.",
-                             Color::ERR);
+                             Color::CHAT_ERROR);
             break;
           }
           size_t qty;
@@ -1195,7 +1195,8 @@ void Client::handleMessage(const std::string &msg) {
         ClientObject &obj = const_cast<ClientObject &>(*objIt->second);
         size_t slots = obj.objectType()->merchantSlots();
         if (slot >= slots) {
-          showErrorMessage("Received invalid merchant slot.", Color::ERR);
+          showErrorMessage("Received invalid merchant slot.",
+                           Color::CHAT_ERROR);
           break;
         }
         if (ware.empty() || price.empty()) {
@@ -1205,14 +1206,14 @@ void Client::handleMessage(const std::string &msg) {
         auto wareIt = _items.find(ware);
         if (wareIt == _items.end()) {
           showErrorMessage("Received merchant slot describing invalid item",
-                           Color::ERR);
+                           Color::CHAT_ERROR);
           break;
         }
         const ClientItem *wareItem = &wareIt->second;
         auto priceIt = _items.find(price);
         if (priceIt == _items.end()) {
           showErrorMessage("Received merchant slot describing invalid item",
-                           Color::ERR);
+                           Color::CHAT_ERROR);
           break;
         }
         const ClientItem *priceItem = &priceIt->second;
@@ -1780,7 +1781,7 @@ void Client::handleMessage(const std::string &msg) {
       showErrorMessage("Bad message ending. code="s + toString(msgCode) +
                            "; remaining message = "s + toString(del) +
                            singleMsg.str(),
-                       Color::ERR);
+                       Color::CHAT_ERROR);
     }
 
     iss.peek();
@@ -1809,7 +1810,7 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
     if (it == _items.end()) {
       showErrorMessage(
           "Unknown inventory item \""s + itemID + "\"announced; ignored."s,
-          Color::ERR);
+          Color::CHAT_ERROR);
       return;
     }
     item = &it->second;

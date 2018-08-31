@@ -58,7 +58,7 @@ void Client::initChatLog() {
   _chatTextBox->setPosition(0, _chatLog->height());
   _chatTextBox->hide();
 
-  auto background = new ColorBlock(_chatLog->rect(), Color::TODO);
+  auto background = new ColorBlock(_chatLog->rect(), Color::CHAT_BACKGROUND);
   background->setAlpha(0x7f);
   _chatContainer->addChild(background);
 
@@ -66,8 +66,8 @@ void Client::initChatLog() {
   _chatContainer->addChild(_chatTextBox);
 
   addUI(_chatContainer);
-  SAY_COLOR = Color::TODO;
-  WHISPER_COLOR = Color::TODO;
+  SAY_COLOR = Color::CHAT_SAY;
+  WHISPER_COLOR = Color::CHAT_WHISPER;
 }
 
 void Client::initWindows() {
