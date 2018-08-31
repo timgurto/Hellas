@@ -44,6 +44,7 @@ void Avatar::draw(const Client &client) const {
 
 void Avatar::drawName() const {
   const auto &client = Client::instance();
+  if (this == &client.character()) return;
 
   const Texture nameLabel(client.defaultFont(), _name, nameColor());
   const Texture nameOutline(client.defaultFont(), _name, Color::UI_OUTLINE);
