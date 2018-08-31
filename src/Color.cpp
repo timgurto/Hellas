@@ -28,6 +28,9 @@ const Color Color::COMBATANT_DEFENSIVE = YELLOW;
 const Color Color::COMBATANT_ENEMY = RED;
 const Color Color::COMBATANT_NEUTRAL = WHITE;
 
+const Color Color::TOOLTIP_BACKGROUND = {0x18, 0x1d, 0x56};
+const Color Color::TOOLTIP_BORDER = WHITE;
+
 const Color Color::UI_OUTLINE = BLACK;
 
 Color::Color(Uint8 r, Uint8 g, Uint8 b) : _r(r), _g(g), _b(b) {}

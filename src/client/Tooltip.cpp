@@ -88,7 +88,7 @@ void Tooltip::generate() const {
   // Create background
   Texture background(totalWidth, totalHeight);
   renderer.pushRenderTarget(background);
-  renderer.setDrawColor(Color::TODO);
+  renderer.setDrawColor(Color::TOOLTIP_BACKGROUND);
   renderer.clear();
   background.setAlpha(0xdf);
   renderer.popRenderTarget();
@@ -99,7 +99,7 @@ void Tooltip::generate() const {
   background.draw();
 
   // Draw border
-  renderer.setDrawColor(Color::TODO);
+  renderer.setDrawColor(Color::TOOLTIP_BORDER);
   renderer.drawRect({0, 0, totalWidth, totalHeight});
 
   // Draw text
