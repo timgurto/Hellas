@@ -27,18 +27,18 @@ const Color Color::WINDOW_DARK{0x11, 0x11, 0x11};
 const Color Color::WINDOW_LIGHT{0x33, 0x33, 0x33};
 const Color Color::WINDOW_FONT{0xcc, 0xcc, 0xcc};
 
-const Color Color::COMBATANT_SELF = GREEN;
-const Color Color::COMBATANT_ALLY = GREEN;
-const Color Color::COMBATANT_DEFENSIVE = YELLOW;
-const Color Color::COMBATANT_ENEMY = RED;
-const Color Color::COMBATANT_NEUTRAL = WHITE;
+const Color Color::COMBATANT_SELF = GREEN + BLUE * 0.1;
+const Color Color::COMBATANT_ALLY = GREEN * 0.8;
+const Color Color::COMBATANT_DEFENSIVE = YELLOW * 0.9;
+const Color Color::COMBATANT_ENEMY = RED * 0.8 + WHITE * 0.2;
+const Color Color::COMBATANT_NEUTRAL = WHITE * 0.9;
 
 const Color Color::TOOLTIP_BACKGROUND = {0x18, 0x1d, 0x56};
 const Color Color::TOOLTIP_BORDER{0xa7, 0xa7, 0xa7};
 const Color Color::TOOLTIP_NAME = WHITE;
 const Color Color::TOOLTIP_BODY{0xa7, 0xa7, 0xa7};
 
-const Color Color::HEALTH = GREEN;
+const Color Color::HEALTH = GREEN * 0.8;
 
 const Color Color::UI_OUTLINE = BLACK;
 

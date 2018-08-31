@@ -138,7 +138,7 @@ void Client::populateHotbar() {
     auto button = new Button({i * 18, 0, 18, 18}, {}, [castMessageVoidPtr]() {
       sendRawMessageStatic(castMessageVoidPtr);
     });
-    button->addChild(new ColorBlock({0, 0, 18, 18}, Color::TODO));
+    button->addChild(new ColorBlock({0, 0, 18, 18}, Color::UI_OUTLINE));
     button->addChild(new Picture(1, 1, spell->icon()));
     button->addChild(new OutlinedLabel({0, -1, 16, 18}, toString((i + 1) % 10),
                                        Element::RIGHT_JUSTIFIED));
