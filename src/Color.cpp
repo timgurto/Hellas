@@ -16,11 +16,11 @@ const Color Color::YELLOW(0xff, 0xff, 0x00);
 const Color Color::WHITE(0xff, 0xff, 0xff);
 
 const Color Color::CHAT_BACKGROUND = BLACK;
-const Color Color::CHAT_DEFAULT = YELLOW;
+const Color Color::CHAT_DEFAULT = YELLOW * 0.9;
 const Color Color::CHAT_SAY{0xcc, 0xcc, 0xcc};
 const Color Color::CHAT_WHISPER = {0xff, 0x99, 0x99};
 const Color Color::CHAT_ERROR = RED;
-const Color Color::CHAT_SUCCESS = YELLOW;
+const Color Color::CHAT_SUCCESS = CHAT_DEFAULT;
 
 const Color Color::WINDOW_BACKGROUND{0x22, 0x22, 0x22};
 const Color Color::WINDOW_DARK{0x11, 0x11, 0x11};
