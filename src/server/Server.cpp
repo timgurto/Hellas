@@ -144,7 +144,7 @@ void Server::checkSockets() {
                << "Error accepting connection: " << WSAGetLastError()
                << Log::endl;
       } else {
-        _debug << Color::TODO
+        _debug << Color::CHAT_SUCCESS
                << "Connection accepted: " << inet_ntoa(clientAddr.sin_addr)
                << ":" << ntohs(clientAddr.sin_port)
                << ", socket number = " << tempSocket << Log::endl;
@@ -197,7 +197,7 @@ void Server::run() {
 
   _loop = true;
   _running = true;
-  _debug("Server is running", Color::TODO);
+  _debug("Server is running", Color::CHAT_SUCCESS);
   while (_loop) {
     _time = SDL_GetTicks();
     const ms_t timeElapsed = _time - _lastTime;

@@ -34,7 +34,7 @@ void Avatar::draw(const Client &client) const {
   }
 
   if (isDebug()) {
-    renderer.setDrawColor(Color::TODO);
+    renderer.setDrawColor(Color::CYAN);
     renderer.drawRect(toScreenRect(COLLISION_RECT + location()) +
                       client.offset());
   }

@@ -41,12 +41,12 @@ void Client::draw() const {
 
   // Character's target and actual location
   if (isDebug()) {
-    renderer.setDrawColor(Color::TODO);
+    renderer.setDrawColor(Color::YELLOW);
     const ScreenPoint &actualLoc =
         toScreenPoint(_character.destination()) + offset();
     renderer.drawRect({actualLoc.x - 1, actualLoc.y - 1, 3, 3});
 
-    renderer.setDrawColor(Color::TODO);
+    renderer.setDrawColor(Color::WHITE);
     auto pendingLoc = ScreenPoint{toInt(_pendingCharLoc.x) + offset().x,
                                   toInt(_pendingCharLoc.y) + offset().y};
     renderer.drawRect({pendingLoc.x, pendingLoc.y, 1, 1});
@@ -163,7 +163,7 @@ void Client::draw() const {
   if (isDebug()) {
     const ScreenPoint midScreen =
         toScreenPoint(_character.location()) + offset();
-    renderer.setDrawColor(Color::TODO);
+    renderer.setDrawColor(Color::RED);
     renderer.drawRect({midScreen.x - CULL_DISTANCE, midScreen.y - CULL_DISTANCE,
                        CULL_DISTANCE * 2, CULL_DISTANCE * 2});
   }
@@ -259,7 +259,7 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
 
   // Black background
   // Assuming all tile images are set to SDL_BLENDMODE_ADD and quarter alpha
-  renderer.setDrawColor(Color::TODO);
+  renderer.setDrawColor(Color::BLACK);
   if (yOdd && x == 0) {
     renderer.fillRect(drawLoc + RIGHT_HALF);
   } else if (!yOdd && x == _mapX - 1) {
@@ -307,8 +307,8 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
 void Client::drawLoadingScreen(const std::string &msg, double progress) const {
   if (cmdLineArgs.contains("hideLoadingScreen")) return;
 
-  static const Color BACKGROUND = Color(0x3C, 0x38, 0x8C),
-                     FOREGROUND = Color(0xE5, 0xE5, 0xE5);
+  static const Color BACKGROUND = Color::WINDOW_BACKGROUND,
+                     FOREGROUND = Color::WINDOW_FONT;
 
   renderer.setDrawColor(BACKGROUND);
   renderer.clear();
