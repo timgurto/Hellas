@@ -35,6 +35,7 @@ class Color {
 
   static const Color TOOLTIP_BACKGROUND;
   static const Color TOOLTIP_BORDER;
+  static const Color TOOLTIP_NAME;
 
   static const Color HEALTH;
 

@@ -27,7 +27,7 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
 
   _constructionTooltip = Tooltip{};
   auto &tooltip = _constructionTooltip.value();
-  tooltip.setColor(Color::TODO);
+  tooltip.setColor(Color::TOOLTIP_NAME);
   tooltip.addLine(_name);
 
   auto gapDrawn = false;

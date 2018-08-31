@@ -832,7 +832,7 @@ const Tooltip &ClientObject::tooltip() const {
   auto startsAQuest = !startsQuests().empty();
 
   // Name
-  tooltip.setColor(Color::TODO);
+  tooltip.setColor(Color::TOOLTIP_NAME);
   std::string title = ot.name();
   if (isDead())
     title += classTag() == 'n' ? " (corpse)" : " (ruins)";

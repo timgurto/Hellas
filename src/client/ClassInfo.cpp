@@ -33,7 +33,7 @@ const Tooltip &ClientTalent::tooltip() const {
   _tooltip = Tooltip{};
   auto &tooltip = _tooltip.value();
 
-  tooltip.setColor(Color::TODO);
+  tooltip.setColor(Color::TOOLTIP_NAME);
   tooltip.addLine(name);
   tooltip.addGap();
 

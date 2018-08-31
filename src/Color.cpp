@@ -30,6 +30,7 @@ const Color Color::COMBATANT_NEUTRAL = WHITE;
 
 const Color Color::TOOLTIP_BACKGROUND = {0x18, 0x1d, 0x56};
 const Color Color::TOOLTIP_BORDER = WHITE;
+const Color Color::TOOLTIP_NAME = WHITE;
 
 const Color Color::HEALTH = GREEN;
 

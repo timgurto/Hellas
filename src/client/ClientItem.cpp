@@ -66,7 +66,7 @@ const Tooltip &ClientItem::tooltip() const {
   _tooltip = Tooltip{};
   auto &tooltip = _tooltip.value();
 
-  tooltip.setColor(Color::TODO);
+  tooltip.setColor(Color::TOOLTIP_NAME);
   tooltip.addLine(_name);
 
   // Gear slot/stats
