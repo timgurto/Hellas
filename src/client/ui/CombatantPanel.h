@@ -14,7 +14,6 @@ class CombatantPanel : public Element {
                  const Hitpoints &health, const Hitpoints &maxHealth,
                  const Energy &energy, const Energy &maxEnergy);
 
-  void changeColor(const Color &newColor) { _healthBar->changeColor(newColor); }
   void showEnergyBar();
   void hideEnergyBar();
 

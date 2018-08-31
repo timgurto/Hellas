@@ -35,7 +35,6 @@ void Target::setAndAlertServer(const Sprite &asEntity,
   _maxHealth = _combatant->maxHealth();
   _energy = _combatant->energy();
   _maxEnergy = _combatant->maxEnergy();
-  refreshHealthBarColor();
 
   if (_maxEnergy == 0)
     _panel->hideEnergyBar();
@@ -43,11 +42,6 @@ void Target::setAndAlertServer(const Sprite &asEntity,
     _panel->showEnergyBar();
 
   _panel->show();
-}
-
-void Target::refreshHealthBarColor() {
-  if (_combatant == nullptr) return;
-  _panel->changeColor(_entity->nameColor());
 }
 
 bool Target::targetIsDifferentFromServer(const Sprite &newTarget,

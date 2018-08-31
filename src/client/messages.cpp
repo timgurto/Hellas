@@ -1269,7 +1269,6 @@ void Client::handleMessage(const std::string &msg) {
         _debug(message);
         toast("helmet", message);
 
-        _target.refreshHealthBarColor();
         _mapWindow->markChanged();
 
         populateWarsList();
@@ -1302,7 +1301,6 @@ void Client::handleMessage(const std::string &msg) {
 
         _debug << name << " has sued for peace" << Log::endl;
 
-        _target.refreshHealthBarColor();
         _mapWindow->markChanged();
         populateWarsList();
         break;
@@ -1334,7 +1332,6 @@ void Client::handleMessage(const std::string &msg) {
 
         _debug << "You have sued for peace with " << name << Log::endl;
 
-        _target.refreshHealthBarColor();
         _mapWindow->markChanged();
         populateWarsList();
         break;
@@ -1389,7 +1386,6 @@ void Client::handleMessage(const std::string &msg) {
             break;
         }
 
-        _target.refreshHealthBarColor();
         _mapWindow->markChanged();
         populateWarsList();
         break;
@@ -1429,7 +1425,6 @@ void Client::handleMessage(const std::string &msg) {
         _debug(message);
         toast("helmet", message);
 
-        _target.refreshHealthBarColor();
         _mapWindow->markChanged();
         populateWarsList();
       }

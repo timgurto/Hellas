@@ -32,7 +32,6 @@ class Target {
   const Hitpoints &maxHealth() const { return _maxHealth; }
   const Energy &energy() const { return _energy; }
   const Energy &maxEnergy() const { return _energy; }
-  void refreshHealthBarColor();
 
   void updateHealth(Hitpoints newHealth) { _health = newHealth; }
   void updateEnergy(Energy newEnergy) { _energy = newEnergy; }

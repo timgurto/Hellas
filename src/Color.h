@@ -36,6 +36,8 @@ class Color {
   static const Color TOOLTIP_BACKGROUND;
   static const Color TOOLTIP_BORDER;
 
+  static const Color HEALTH;
+
   static const Color UI_OUTLINE;
 
   Color(Uint8 r, Uint8 g, Uint8 b);

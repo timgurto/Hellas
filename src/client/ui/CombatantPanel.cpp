@@ -19,7 +19,7 @@ CombatantPanel::CombatantPanel(px_t panelX, px_t panelY,
   y += Element::TEXT_HEIGHT + GAP;
 
   _healthBar = new ProgressBar<Hitpoints>({GAP, y, ELEMENT_WIDTH, BAR_HEIGHT},
-                                          health, maxHealth, Color::TODO);
+                                          health, maxHealth, Color::HEALTH);
   addChild(_healthBar);
   _healthBar->showValuesInTooltip();
   y += BAR_HEIGHT + GAP;

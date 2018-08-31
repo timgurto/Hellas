@@ -326,7 +326,6 @@ void Client::initPlayerPanels() {
   CombatantPanel *playerPanel = new CombatantPanel(
       playerPanelX, playerPanelY, _username, _character.health(),
       _character.maxHealth(), _character.energy(), _character.maxEnergy());
-  playerPanel->changeColor(Color::TODO);
   addUI(playerPanel);
   /*
   initializeMenu() must be called before initializePanel(), otherwise the
