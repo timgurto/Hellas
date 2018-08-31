@@ -46,6 +46,7 @@ class Color {
   static const Color HEALTH;
 
   static const Color UI_OUTLINE;
+  static const Color UI_FONT;
 
   Color(Uint8 r, Uint8 g, Uint8 b);
   Color(const SDL_Color &rhs);

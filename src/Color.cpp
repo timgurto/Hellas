@@ -40,6 +40,7 @@ const Color Color::TOOLTIP_NAME = WHITE;
 const Color Color::HEALTH = GREEN;
 
 const Color Color::UI_OUTLINE = BLACK;
+// const Color Color::UI_FONT{0xcc, 0xcc, 0xcc};
 
 Color::Color(Uint8 r, Uint8 g, Uint8 b) : _r(r), _g(g), _b(b) {}
 

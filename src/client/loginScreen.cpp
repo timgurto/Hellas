@@ -295,7 +295,6 @@ void Client::initLoginScreen() {
     auto label =
         new OutlinedLabel({INDICATOR_LABEL_X, y, 200, Element::TEXT_HEIGHT + 5},
                           "Connection with server"s);
-    label->setColor(Color::TODO);
     _loginUI.push_back(label);
     y += LABEL_GAP;
 
@@ -308,14 +307,12 @@ void Client::initLoginScreen() {
     }
     label = new OutlinedLabel({LEFT_MARGIN, y, 200, Element::TEXT_HEIGHT + 5},
                               "Server: " + serverIP);
-    label->setColor(Color::TODO);
     _loginUI.push_back(label);
     y += LABEL_GAP;
 
     // Client version
     label = new OutlinedLabel({LEFT_MARGIN, y, 200, Element::TEXT_HEIGHT + 5},
                               "Client version: " + version());
-    label->setColor(Color::TODO);
     _loginUI.push_back(label);
     y += LABEL_GAP;
   }
