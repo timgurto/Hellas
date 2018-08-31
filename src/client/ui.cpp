@@ -310,10 +310,10 @@ void Client::initPerformanceDisplay() {
        HARDWARE_STATS_LABEL_HEIGHT},
       _channelsPlaying, "", "/" + makeArgs(MIXING_CHANNELS) + " channels",
       Label::RIGHT_JUSTIFIED);
-  fps->setColor(Color::TODO);
-  lat->setColor(Color::TODO);
-  numEntities->setColor(Color::TODO);
-  channels->setColor(Color::TODO);
+  fps->setColor(Color::DEBUG_TEXT);
+  lat->setColor(Color::DEBUG_TEXT);
+  numEntities->setColor(Color::DEBUG_TEXT);
+  channels->setColor(Color::DEBUG_TEXT);
   hardwareStats->addChild(fps);
   hardwareStats->addChild(lat);
   hardwareStats->addChild(numEntities);

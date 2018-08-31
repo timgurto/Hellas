@@ -11,6 +11,7 @@ class Color {
 
   static const Color BLUE_HELL;
   static const Color NO_KEY;
+  static const Color DEBUG_TEXT;
 
   static const Color BLACK;
   static const Color BLUE;

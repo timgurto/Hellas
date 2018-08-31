@@ -847,7 +847,7 @@ const Tooltip &ClientObject::tooltip() const {
   // Debug info
   if (isDebug()) {
     tooltip.addGap();
-    tooltip.setColor(Color::TOOLTIP_BODY);
+    tooltip.setColor(Color::DEBUG_TEXT);
     tooltip.addLine("Serial: " + toString(_serial));
     tooltip.addLine("Class tag: " + toString(classTag()));
   }
