@@ -1146,7 +1146,7 @@ void Client::handleMessage(const std::string &msg) {
         if (del != MSG_END) return;
 
         addFloatingCombatText("+"s + toString(newXP) + " XP"s,
-                              _character.location(), Color::TODO);
+                              _character.location(), Color::STAT_XP);
 
         break;
       }

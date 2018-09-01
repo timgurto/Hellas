@@ -24,7 +24,8 @@ void Client::initializeClassWindow() {
 
   // XP
   const auto XP_RECT = ScreenRect{MARGIN, y, WIN_W - MARGIN * 2, 13};
-  _classWindow->addChild(new ProgressBar<XP>(XP_RECT, _xp, _maxXP));
+  _classWindow->addChild(
+      new ProgressBar<XP>(XP_RECT, _xp, _maxXP, Color::STAT_XP));
   _xpLabel = new Label(XP_RECT, {}, Element::CENTER_JUSTIFIED,
                        Element::CENTER_JUSTIFIED);
   _classWindow->addChild(_xpLabel);

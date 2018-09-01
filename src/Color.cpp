@@ -42,6 +42,7 @@ const Color Color::TOOLTIP_BODY{0xa7, 0xa7, 0xa7};
 
 const Color Color::STAT_HEALTH = GREEN * .8;
 const Color Color::STAT_ENERGY = RED + GREEN * .8;
+const Color Color::STAT_XP = MAGENTA * .5 + CYAN * .1;
 const Color Color::STAT_AIR = WHITE * .6 + MAGENTA * .2 + BLUE * .3;
 const Color Color::STAT_EARTH = GREEN * .6 + RED * .1;
 const Color Color::STAT_FIRE = RED + GREEN * .3;
