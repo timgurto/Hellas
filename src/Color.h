@@ -53,6 +53,12 @@ class Color {
   static const Color STAT_FIRE;
   static const Color STAT_WATER;
 
+  static const Color FLOATING_CORE;
+  static const Color FLOATING_DAMAGE;
+  static const Color FLOATING_HEAL;
+  static const Color FLOATING_MISS;
+  static const Color FLOATING_CRIT;
+
   static const Color UI_OUTLINE;
   static const Color UI_TEXT;
   static const Color UI_DISABLED;

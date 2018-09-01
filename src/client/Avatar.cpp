@@ -107,13 +107,6 @@ const Tooltip &Avatar::tooltip() const {
   tooltip.setColor(Color::TOOLTIP_BODY);
   tooltip.addLine("Level "s + toString(level()) + " "s + getClass().name());
 
-  // Debug info
-  /*if (isDebug()){
-      _tooltip.addGap();
-      _tooltip.setColor(Color::TODO);
-      _tooltip.addLine("");
-  }*/
-
   return tooltip;
 }
 

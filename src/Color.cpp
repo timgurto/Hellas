@@ -47,6 +47,12 @@ const Color Color::STAT_EARTH = GREEN * .6 + RED * .1;
 const Color Color::STAT_FIRE = RED + GREEN * .3;
 const Color Color::STAT_WATER = CYAN * .5 + BLUE * .5;
 
+const Color Color::FLOATING_CORE = BLACK;
+const Color Color::FLOATING_DAMAGE = YELLOW;
+const Color Color::FLOATING_HEAL = STAT_HEALTH;
+const Color Color::FLOATING_MISS = BLUE + GREEN * .5;
+const Color Color::FLOATING_CRIT = RED + YELLOW * .5;
+
 const Color Color::UI_OUTLINE = BLACK;
 const Color Color::UI_TEXT = YELLOW * 0.9;
 const Color Color::UI_DISABLED = WHITE * 0.3;

@@ -629,7 +629,7 @@ void Client::addFloatingCombatText(const std::string &text,
   auto floatingText = floatingTextProfile->instantiate(location);
 
   auto outline = Texture{_defaultFont, text, color};
-  auto front = Texture{_defaultFont, text, Color::TODO};
+  auto front = Texture{_defaultFont, text, Color::FLOATING_CORE};
 
   auto canvas = Texture{front.width() + 2, front.height() + 2};
   canvas.setBlend(SDL_BLENDMODE_BLEND);

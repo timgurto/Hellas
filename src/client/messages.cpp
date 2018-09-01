@@ -2029,16 +2029,16 @@ void Client::handle_SV_ENTITY_WAS_HIT(size_t serial) {
 void Client::handle_SV_SHOW_OUTCOME_AT(int msgCode, const MapPoint &loc) {
   switch (msgCode) {
     case SV_SHOW_MISS_AT:
-      addFloatingCombatText("MISS", loc, Color::TODO);
+      addFloatingCombatText("MISS", loc, Color::FLOATING_MISS);
       break;
     case SV_SHOW_DODGE_AT:
-      addFloatingCombatText("DODGE", loc, Color::TODO);
+      addFloatingCombatText("DODGE", loc, Color::FLOATING_MISS);
       break;
     case SV_SHOW_BLOCK_AT:
-      addFloatingCombatText("BLOCK", loc, Color::TODO);
+      addFloatingCombatText("BLOCK", loc, Color::FLOATING_MISS);
       break;
     case SV_SHOW_CRIT_AT:
-      addFloatingCombatText("CRIT", loc, Color::TODO);
+      addFloatingCombatText("CRIT", loc, Color::FLOATING_CRIT);
       break;
   }
 }
@@ -2176,7 +2176,8 @@ void Client::handle_SV_PLAYER_DAMAGED(const std::string &username,
     user = it->second;
   }
 
-  addFloatingCombatText("-"s + toString(amount), user->location(), Color::TODO);
+  addFloatingCombatText("-"s + toString(amount), user->location(),
+                        Color::FLOATING_DAMAGE);
 }
 
 void Client::handle_SV_PLAYER_HEALED(const std::string &username,
@@ -2190,7 +2191,8 @@ void Client::handle_SV_PLAYER_HEALED(const std::string &username,
     user = it->second;
   }
 
-  addFloatingCombatText("+"s + toString(amount), user->location(), Color::TODO);
+  addFloatingCombatText("+"s + toString(amount), user->location(),
+                        Color::FLOATING_HEAL);
 }
 
 void Client::handle_SV_OBJECT_DAMAGED(size_t serial, Hitpoints amount) {
@@ -2198,7 +2200,7 @@ void Client::handle_SV_OBJECT_DAMAGED(size_t serial, Hitpoints amount) {
   if (it == _objects.end()) return;
 
   addFloatingCombatText("-"s + toString(amount), it->second->location(),
-                        Color::TODO);
+                        Color::FLOATING_DAMAGE);
 }
 
 void Client::handle_SV_OBJECT_HEALED(size_t serial, Hitpoints amount) {
@@ -2206,7 +2208,7 @@ void Client::handle_SV_OBJECT_HEALED(size_t serial, Hitpoints amount) {
   if (it == _objects.end()) return;
 
   addFloatingCombatText("+"s + toString(amount), it->second->location(),
-                        Color::TODO);
+                        Color::FLOATING_HEAL);
 }
 
 void Client::handle_SV_QUEST_CAN_BE_STARTED(const std::string &questID) {
