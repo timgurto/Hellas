@@ -357,7 +357,7 @@ void Client::refreshQuestProgress() {
     isEmpty = false;
 
     auto questName = new OutlinedLabel({}, quest.info().name);
-    questName->setColor(Color::TODO);
+    questName->setColor(Color::UI_TEXT);
     _questProgress->addChild(questName);
 
     auto allObjectivesCompleted = true;
@@ -373,14 +373,15 @@ void Client::refreshQuestProgress() {
       }
       auto objectiveLabel = new OutlinedLabel({}, objectiveText);
       auto objectiveComplete = quest.getProgress(i) == objective.qty;
-      objectiveLabel->setColor(objectiveComplete ? Color::TODO : Color::TODO);
+      objectiveLabel->setColor(objectiveComplete ? Color::UI_DISABLED
+                                                 : Color::UI_TEXT);
       _questProgress->addChild(objectiveLabel);
 
       if (!objectiveComplete) allObjectivesCompleted = false;
     }
 
     if (allObjectivesCompleted) {
-      questName->setColor(Color::TODO);
+      questName->setColor(Color::UI_DISABLED);
     }
   }
 }

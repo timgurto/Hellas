@@ -33,6 +33,7 @@ class Color {
   static const Color WINDOW_DARK;
   static const Color WINDOW_LIGHT;
   static const Color WINDOW_FONT;
+  static const Color WINDOW_HEADING;
 
   static const Color COMBATANT_SELF;
   static const Color COMBATANT_ALLY;
@@ -48,6 +49,8 @@ class Color {
   static const Color HEALTH;
 
   static const Color UI_OUTLINE;
+  static const Color UI_TEXT;
+  static const Color UI_DISABLED;
 
   Color(Uint8 r, Uint8 g, Uint8 b);
   Color(const SDL_Color &rhs);

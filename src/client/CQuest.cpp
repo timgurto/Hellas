@@ -24,7 +24,7 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   // Quest name
   auto name =
       new Label({GAP, y, WIN_W, Element::TEXT_HEIGHT}, quest->_info.name);
-  name->setColor(Color::TODO);
+  name->setColor(Color::WINDOW_HEADING);
   window->addChild(name);
   y += name->height() + GAP;
 
@@ -56,7 +56,7 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   if (shouldShowObjectives) {
     body->addGap();
     auto heading = new Label({}, "Objectives:");
-    heading->setColor(Color::TODO);
+    heading->setColor(Color::WINDOW_HEADING);
     body->addChild(heading);
 
     for (auto &objective : quest->_info.objectives) {

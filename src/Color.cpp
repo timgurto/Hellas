@@ -23,10 +23,11 @@ const Color Color::CHAT_WHISPER = {0xff, 0x99, 0x99};
 const Color Color::CHAT_ERROR = RED;
 const Color Color::CHAT_SUCCESS = CHAT_DEFAULT;
 
-const Color Color::WINDOW_BACKGROUND{0x22, 0x22, 0x22};
-const Color Color::WINDOW_DARK{0x11, 0x11, 0x11};
-const Color Color::WINDOW_LIGHT{0x33, 0x33, 0x33};
+const Color Color::WINDOW_BACKGROUND = WHITE * 0.2;
+const Color Color::WINDOW_DARK = WHITE * 0.1;
+const Color Color::WINDOW_LIGHT = WHITE * 0.3;
 const Color Color::WINDOW_FONT{0xcc, 0xcc, 0xcc};
+const Color Color::WINDOW_HEADING = BLUE * .4 + CYAN * .6;
 
 const Color Color::COMBATANT_SELF = GREEN + BLUE * 0.1;
 const Color Color::COMBATANT_ALLY = GREEN * 0.8;
@@ -42,6 +43,8 @@ const Color Color::TOOLTIP_BODY{0xa7, 0xa7, 0xa7};
 const Color Color::HEALTH = GREEN * 0.8;
 
 const Color Color::UI_OUTLINE = BLACK;
+const Color Color::UI_TEXT = YELLOW * 0.9;
+const Color Color::UI_DISABLED = WHITE * 0.3;
 
 Color::Color(Uint8 r, Uint8 g, Uint8 b) : _r(r), _g(g), _b(b) {}
 
