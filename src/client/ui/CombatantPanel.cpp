@@ -18,14 +18,15 @@ CombatantPanel::CombatantPanel(px_t panelX, px_t panelY,
       Element::CENTER_JUSTIFIED));
   y += Element::TEXT_HEIGHT + GAP;
 
-  _healthBar = new ProgressBar<Hitpoints>({GAP, y, ELEMENT_WIDTH, BAR_HEIGHT},
-                                          health, maxHealth, Color::HEALTH);
+  _healthBar =
+      new ProgressBar<Hitpoints>({GAP, y, ELEMENT_WIDTH, BAR_HEIGHT}, health,
+                                 maxHealth, Color::STAT_HEALTH);
   addChild(_healthBar);
   _healthBar->showValuesInTooltip();
   y += BAR_HEIGHT + GAP;
 
   _energyBar = new ProgressBar<Energy>({GAP, y, ELEMENT_WIDTH, BAR_HEIGHT},
-                                       energy, maxEnergy, Color::TODO);
+                                       energy, maxEnergy, Color::STAT_ENERGY);
   _energyBar->showValuesInTooltip();
   addChild(_energyBar);
   y += BAR_HEIGHT + GAP;

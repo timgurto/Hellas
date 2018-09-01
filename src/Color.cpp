@@ -23,9 +23,9 @@ const Color Color::CHAT_WHISPER = {0xff, 0x99, 0x99};
 const Color Color::CHAT_ERROR = RED;
 const Color Color::CHAT_SUCCESS = CHAT_DEFAULT;
 
-const Color Color::WINDOW_BACKGROUND = WHITE * 0.2;
-const Color Color::WINDOW_DARK = WHITE * 0.1;
-const Color Color::WINDOW_LIGHT = WHITE * 0.3;
+const Color Color::WINDOW_BACKGROUND = WHITE * 0.1;
+const Color Color::WINDOW_DARK = WHITE * 0.05;
+const Color Color::WINDOW_LIGHT = WHITE * 0.15;
 const Color Color::WINDOW_FONT{0xcc, 0xcc, 0xcc};
 const Color Color::WINDOW_HEADING = BLUE * .4 + CYAN * .6;
 
@@ -40,7 +40,12 @@ const Color Color::TOOLTIP_BORDER{0xa7, 0xa7, 0xa7};
 const Color Color::TOOLTIP_NAME = WHITE;
 const Color Color::TOOLTIP_BODY{0xa7, 0xa7, 0xa7};
 
-const Color Color::HEALTH = GREEN * 0.8;
+const Color Color::STAT_HEALTH = GREEN * .8;
+const Color Color::STAT_ENERGY = RED + GREEN * .8;
+const Color Color::STAT_AIR = WHITE * .6 + MAGENTA * .2 + BLUE * .3;
+const Color Color::STAT_EARTH = GREEN * .6 + RED * .1;
+const Color Color::STAT_FIRE = RED + GREEN * .3;
+const Color Color::STAT_WATER = CYAN * .5 + BLUE * .5;
 
 const Color Color::UI_OUTLINE = BLACK;
 const Color Color::UI_TEXT = YELLOW * 0.9;

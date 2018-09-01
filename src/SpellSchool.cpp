@@ -47,13 +47,13 @@ std::string SpellSchool::midSentenceString() const {
 const Color &SpellSchool::color() const {
   switch (_type) {
     case AIR:
-      return Color::TODO;
+      return Color::STAT_AIR;
     case EARTH:
-      return Color::TODO;
+      return Color::STAT_EARTH;
     case FIRE:
-      return Color::TODO;
+      return Color::STAT_FIRE;
     case WATER:
-      return Color::TODO;
+      return Color::STAT_WATER;
   }
   assert(false);
   return {Color::TODO};

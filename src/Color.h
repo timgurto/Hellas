@@ -46,7 +46,12 @@ class Color {
   static const Color TOOLTIP_NAME;
   static const Color TOOLTIP_BODY;
 
-  static const Color HEALTH;
+  static const Color STAT_HEALTH;
+  static const Color STAT_ENERGY;
+  static const Color STAT_AIR;
+  static const Color STAT_EARTH;
+  static const Color STAT_FIRE;
+  static const Color STAT_WATER;
 
   static const Color UI_OUTLINE;
   static const Color UI_TEXT;

@@ -69,10 +69,14 @@ void Client::initializeGearWindow() {
 
   // Stats
   auto y = labelRect.y;
-  addStat("Max health", _stats.maxHealth, {}, {}, y, _gearWindow, Color::TODO);
-  addStat("Health regen", _stats.hps, {}, "/s", y, _gearWindow, Color::TODO);
-  addStat("Max energy", _stats.maxEnergy, {}, {}, y, _gearWindow, Color::TODO);
-  addStat("Energy regen", _stats.eps, {}, "/s", y, _gearWindow, Color::TODO);
+  addStat("Max health", _stats.maxHealth, {}, {}, y, _gearWindow,
+          Color::STAT_HEALTH);
+  addStat("Health regen", _stats.hps, {}, "/s", y, _gearWindow,
+          Color::STAT_HEALTH);
+  addStat("Max energy", _stats.maxEnergy, {}, {}, y, _gearWindow,
+          Color::STAT_ENERGY);
+  addStat("Energy regen", _stats.eps, {}, "/s", y, _gearWindow,
+          Color::STAT_ENERGY);
   addGap(y, _gearWindow);
   addStat("Hit chance", _stats.hit, {}, "%", y, _gearWindow);
   addStat("Crit chance", _stats.crit, {}, "%", y, _gearWindow);
@@ -82,13 +86,13 @@ void Client::initializeGearWindow() {
   addGap(y, _gearWindow);
   addStat("Armor", _stats.armor, {}, "%", y, _gearWindow);
   addStat("Air resistance", _stats.airResist, {}, "%", y, _gearWindow,
-          Color::TODO);
+          Color::STAT_AIR);
   addStat("Earth resistance", _stats.earthResist, {}, "%", y, _gearWindow,
-          Color::TODO);
+          Color::STAT_EARTH);
   addStat("Fire resistance", _stats.fireResist, {}, "%", y, _gearWindow,
-          Color::TODO);
+          Color::STAT_FIRE);
   addStat("Water resistance", _stats.waterResist, {}, "%", y, _gearWindow,
-          Color::TODO);
+          Color::STAT_WATER);
   addStat("Crit avoidance", _stats.critResist, {}, "%", y, _gearWindow);
   addStat("Dodge chance", _stats.dodge, {}, "%", y, _gearWindow);
   addStat("Block chance", _stats.block, {}, "%", y, _gearWindow);
