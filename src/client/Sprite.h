@@ -77,7 +77,7 @@ class Sprite {
   virtual const Tooltip &tooltip() const;
   virtual bool shouldDrawName() const { return false; }
   virtual const std::string &name() const { return EMPTY_NAME; }
-  virtual const Color &nameColor() const { return Color::TODO; }
+  virtual const Color &nameColor() const { return Color::COMBATANT_NEUTRAL; }
   void refreshTooltip() const { _tooltip = Optional<Tooltip>{}; }
 
   double bottomEdge() const;
