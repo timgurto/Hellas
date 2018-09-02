@@ -49,7 +49,7 @@ class Renderer {
   void drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect,
                    const ScreenRect &srcRect);
 
-  void setDrawColor(const Color &color = Color::TODO);
+  void setDrawColor(const Color &color);
   void clear();
   void present();
 

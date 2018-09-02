@@ -10,7 +10,7 @@ extern Renderer renderer;
 
 void Client::draw() const {
   if (!_loggedIn || !_loaded) {
-    renderer.setDrawColor();
+    renderer.setDrawColor(Color::BLACK);
     renderer.clear();
     _chatLog->draw();
     renderer.present();
@@ -18,7 +18,7 @@ void Client::draw() const {
   }
 
   // Background
-  renderer.setDrawColor();
+  renderer.setDrawColor(Color::BLACK);
   renderer.clear();
 
   // Terrain

@@ -181,8 +181,6 @@ Client::Client()
   }
   Mix_AllocateChannels(MIXING_CHANNELS);
 
-  renderer.setDrawColor();
-
   _entities.insert(&_character);
 
   initializeUsername();

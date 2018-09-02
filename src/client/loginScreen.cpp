@@ -95,7 +95,7 @@ void Client::updateLoginParticles(double delta) {
 }
 
 void Client::drawLoginScreen() const {
-  renderer.setDrawColor();
+  renderer.setDrawColor(Color::BLACK);
   renderer.clear();
 
   // Background
