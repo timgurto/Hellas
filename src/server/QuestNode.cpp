@@ -23,8 +23,11 @@ void QuestNodeType::sendQuestsToUser(const User &user) const {
 
   for (const auto &id : _questsStartingHere) {
     auto quest = server.findQuest(id);
-    if (quest->hasPrerequisite()) continue;
     if (user.hasCompletedQuest(id)) continue;
+    if (quest->hasPrerequisite()) {
+      const auto &prereq = quest->prerequisiteQuest;
+      if (!user.hasCompletedQuest(prereq)) continue;
+    }
     user.sendMessage(SV_QUEST_CAN_BE_STARTED, id);
   }
 

@@ -818,6 +818,9 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
       <objective type="construct" id="A" />
     </quest>
     <quest id="finishMe" startsAt="A" endsAt="A" />
+    <quest id="hasPrereq" startsAt="A" endsAt="A">
+        <prerequisite id="finishMe" />
+      </quest>
   )";
   {
     auto s = TestServer::WithDataString(data);
@@ -862,6 +865,13 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
 
     // And completed the fourth quest
     CHECK(alice.hasCompletedQuest("finishMe"));
+
+    // And can see the quest requiring the fourth to have been completed
+    s.addObject("A", {10, 15});
+    WAIT_UNTIL(c.objects().size() == 1);
+    const auto &cObj = c.getFirstObject();
+    REPEAT_FOR_MS(100);
+    CHECK(cObj.startsQuests().size() == 1);
   }
 }
 
