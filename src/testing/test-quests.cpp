@@ -1354,3 +1354,36 @@ TEST_CASE("Quests that give items when you start", "[quests]") {
     }
   }
 }
+
+TEST_CASE("Quest reward: construction", "[quests]") {
+  GIVEN("a quest that awards a construction project") {
+    auto data = R"(
+      <objectType id="questgiver" />
+      <item id="air" />
+      <objectType id="hole">
+        <material id="air" />
+        <unlockedBy />
+      </objectType>
+      <item id="key" />
+      <quest id="teachesHole" startsAt="questgiver" endsAt="questgiver">
+        <reward type="construction" id="hole" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    WHEN("a user completes the quest") {
+      const auto &quest = s.getFirstQuest();
+      user.startQuest(quest);
+      user.completeQuest(quest.id);
+
+      THEN("he knows the construction project") {
+        WAIT_UNTIL(user.knowsConstruction("hole"));
+
+        AND_THEN("and he knows it") { WAIT_UNTIL(c.knowsConstruction("hole")); }
+      }
+    }
+  }
+}

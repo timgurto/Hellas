@@ -408,6 +408,11 @@ void DataLoader::loadQuests(XmlReader &xr) {
       q.objectives.push_back(objective);
     }
 
+    for (auto rewardElem : xr.getChildren("reward", elem)) {
+      auto id = ""s;
+      if (xr.findAttr(rewardElem, "id", id)) q.reward = id;
+    }
+
     auto prereq = xr.findChild("prerequisite", elem);
     auto hasPrereq = xr.findAttr(prereq, "id", q.prerequisiteQuest);
     if (hasPrereq) {

@@ -1034,6 +1034,8 @@ void User::startQuest(const Quest &quest) {
 void User::completeQuest(const Quest::ID &id) {
   auto &server = Server::instance();
   const auto quest = server.findQuest(id);
+
+  // Remove fetched items
   for (const auto &objective : quest->objectives) {
     if (objective.type == Quest::Objective::FETCH) {
       auto set = ItemSet{};
@@ -1045,7 +1047,12 @@ void User::completeQuest(const Quest::ID &id) {
   markQuestAsCompleted(id);
   _quests.erase(id);
 
+  // Rewards
   addXP(100);
+  if (!quest->reward.empty()) {
+    addConstruction(quest->reward);
+    server.sendNewBuildsMessage(*this, {quest->reward});
+  }
 
   if (quest->otherQuestHasThisAsPrerequisite())
     sendMessage(SV_QUEST_CAN_BE_STARTED,

@@ -14,6 +14,8 @@ struct Quest {
   ID id;
   std::set<std::string> startsWithItems{};
 
+  std::string reward{};
+
   struct Objective {
     enum Type { NONE, KILL, FETCH, CONSTRUCT };
     Type type{NONE};
