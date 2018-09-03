@@ -227,6 +227,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     // Construction locks
     bool requiresUnlock = false;
     for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
+      requiresUnlock = true;
       double chance = 1.0;
       xr.findAttr(unlockedBy, "chance", chance);
       ProgressLock::Type triggerType;
@@ -238,9 +239,10 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
         triggerType = ProgressLock::GATHER;
       else if (xr.findAttr(unlockedBy, "recipe", s))
         triggerType = ProgressLock::RECIPE;
+      else
+        continue;  // Not a real lock, but blocks being known by default
       ProgressLock(triggerType, s, ProgressLock::CONSTRUCTION, id, chance)
           .stage();
-      requiresUnlock = true;
     }
     if (!requiresUnlock && !isUnbuildable && needsMaterials)
       ot->knownByDefault();
