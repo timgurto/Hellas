@@ -68,10 +68,6 @@ int main(int argc, char *argv[]) {
   Element::font(TTF_OpenFont("trebucbd.ttf", 15));
   Element::textOffset = 2;
   Element::TEXT_HEIGHT = 20;
-  Color::ELEMENT_BACKGROUND = Uint32{0x683141};
-  Color::ELEMENT_FONT = Uint32{0xE5E5E5};
-  Color::ELEMENT_SHADOW_DARK = Uint32{0x330a17};
-  Color::ELEMENT_SHADOW_LIGHT = Uint32{0xa57887};
   Element::absMouse = &mouse;
   Element::initialize();
 
