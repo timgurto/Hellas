@@ -199,3 +199,22 @@ TEST_CASE("A player's objects are the appropriate color",
   const auto &rock = c.getFirstObject();
   WAIT_UNTIL(rock.nameColor() == Color::TODO);
 }
+
+TEST_CASE("Word wrapper", "[ui]") {
+  GIVEN("a word wrapper") {
+    auto font = TTF_OpenFont("AdvoCut.ttf", 10);
+    auto ww = WordWrapper(font, 200);
+
+    WHEN("it's given two lines of input with two words each") {
+      auto input = R"(
+        line 1
+        line 2
+      )";
+      auto output = ww.wrap(input);
+
+      THEN("the first line is together on a line") {
+        CHECK(output[0] == "line 1");
+      }
+    }
+  }
+}

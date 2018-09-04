@@ -9,7 +9,7 @@ WordWrapper::WordWrapper(TTF_Font *font, px_t width) : _width(width) {
     auto glyph = Texture{font, std::string{c}};
     _glyphWidths.push_back(glyph.width());
   }
-  _glyphWidths['\n'] = 100000;  // Force new line
+  _glyphWidths['\n'] = 0;
 }
 
 std::string WordWrapper::readWord(std::istringstream &stream) {
@@ -50,7 +50,11 @@ WordWrapper::Lines WordWrapper::wrap(const std::string &unwrapped) const {
   std::string segment;
   while (!iss.eof()) {
     // Handle newlines
-    auto next = iss.peek();
+    if (!segment.empty() && segment.back() == '\n') {
+      segment.pop_back();
+      lines.push_back(segment);
+      segment = {};
+    }
 
     auto word = readWord(iss);
 
