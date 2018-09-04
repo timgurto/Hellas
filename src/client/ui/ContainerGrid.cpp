@@ -68,7 +68,7 @@ void ContainerGrid::cleanup() {
 }
 
 void ContainerGrid::refresh() {
-  renderer.setDrawColor(Color::TODO);
+  renderer.setDrawColor(Color::BLACK);
   for (size_t i = 0; i != _linked.size(); ++i) {
     const px_t x = i % _cols, y = i / _cols;
     const auto slotRect =

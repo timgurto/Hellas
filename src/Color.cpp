@@ -56,7 +56,7 @@ const Color Color::FLOATING_CRIT = RED + YELLOW * .5;
 
 const Color Color::UI_OUTLINE = BLACK;
 const Color Color::UI_TEXT = YELLOW * 0.9;
-const Color Color::UI_DISABLED = WHITE * 0.3;
+const Color Color::UI_DISABLED = WHITE * 0.6;
 
 Color::Color(Uint8 r, Uint8 g, Uint8 b) : _r(r), _g(g), _b(b) {}
 
