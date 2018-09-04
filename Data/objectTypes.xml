@@ -27,7 +27,7 @@
     <collisionRect x="-5" y="-4" w="10" h="7" />
     <strength item="log" quantity="6" />
 </objectType>
-<objectType id="dummyTree" name="Pine Tree" xDrawOffset="-21" yDrawOffset="-96" imageFile="tree">
+<objectType id="dummyTree" name="Pine Tree" xDrawOffset="-21" yDrawOffset="-96" imageFile="tree" allowedTerrain="tutSticks">
     <collisionRect x="-5" y="-4" w="10" h="7" />
 </objectType>
 

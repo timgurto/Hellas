@@ -41,7 +41,7 @@ It looks like your eyes and ears are in working order, so let's test your arms a
 </quest>
     <npcType
         id="tutGoat" name="Goat"
-        level="2" maxHealth="44" attack="6" attackTime="2030"
+        level="2" maxHealth="44" attack="6" attackTime="2030" isNeutral="1"
         xDrawOffset="-17" yDrawOffset="-28"
         imageFile="goat" sounds = "goat" >
         <collisionRect x="-15" y="-4" w="31" h="7" />
@@ -143,5 +143,16 @@ It looks like your eyes and ears are in working order, so let's test your arms a
         <yield id="tutStick" />
         <strength item="stick" quantity="1" />
     </objectType>
-    <spawnPoint type="tutStick" quantity="20" radius="450" respawnTime="60000" x="3112" y="59956" />
+    <spawnPoint type="tutStick" quantity="15" radius="450" respawnTime="60000" x="3112" y="59956" />
+    <spawnPoint type="dummyTree" quantity="40" radius="450" respawnTime="60000" x="3112" y="59956" />
+    <spawnPoint type="dummyTree" quantity="7" radius="250" respawnTime="60000" x="3378" y="59472" />
+    <spawnPoint type="dummyTree" quantity="5" radius="200" respawnTime="60000" x="2486" y="59860" />
+    <spawnPoint type="tutBoar" quantity="10" radius="450" respawnTime="60000" x="3112" y="59956" />
+    <npcType
+        id="tutBoar" name="Boar"
+        level="3" maxHealth="44" attack="7" attackTime="1970"
+        xDrawOffset="-11" yDrawOffset="-13"
+        imageFile="boar" sounds = "pig" >
+        <collisionRect x="-9" y="-4" w="18" h="7" />
+    </npcType>
 </root>
