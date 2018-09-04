@@ -149,7 +149,11 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
 </list>
 
 <list id="tutOfferings" >
-    <allow id="ruins" />
+    <allow id="ruinsRocky" />
+</list>
+
+<list id="tutSticks" >
+    <allow id="forestFertile" />
 </list>
 
 </root>

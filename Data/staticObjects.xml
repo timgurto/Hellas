@@ -2,4 +2,5 @@
 <object id="respawnAltar"> <location x="35328" y="22358" /> </object>
 
 <npc id="prometheus"> <location x="3872" y="60212" /> </npc>
+<object id="tutBrazier"> <location x="3886" y="58420" /> </object>
 </root>
