@@ -4,7 +4,7 @@
     brief="Welcome to Mt. Othrys--or what's left of it.  My name is Prometheus, and I created you.
 It looks like your eyes and ears are in working order, so let's test your arms and legs.  Head over to that grassy area nearby, and kill some pigs."
     debrief="Excellent, everything seems to be working as intended.  You're quite impressive, if I do say so myself!"
-    helpTopicOnAccept="Basic: combat">
+    ><!--helpTopicOnAccept="Basic: combat"-->
 	<objective type="kill" id="tutPig" qty="6" />
 </quest>
     <npcType
@@ -32,7 +32,7 @@ It looks like your eyes and ears are in working order, so let's test your arms a
     Zeus, the king of these Olympian gods, wants you humans to worship his kind with animal sacrifices.
     Before we negotiate the details, you'll need to get your hands dirty.  There's a small pass north of the pigs you just encountered, that leads to a herd of wild goats.  Slay some, and gather what you can of their remains."
     debrief="These will do nicely."
-    helpTopicOnAccept="Basic: loot">
+    ><!--helpTopicOnAccept="Basic: loot"-->
     <prerequisite id="tutCombat" />
     <objective type="fetch" id="tutMeat" qty="6" />
     <objective type="fetch" id="tutHide" />
