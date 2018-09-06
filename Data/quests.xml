@@ -50,10 +50,10 @@ It looks like your eyes and ears are in working order, so let's test your arms a
         <loot id="tutEntrails" chance="0.3" />
         <loot id="tutFat" chance="0.2" />
     </npcType>
-    <item id="tutMeat"     name="Meat"                           stackSize="10" exclusiveToQuest="tutParts" />
-    <item id="tutHide"     name="Hide"       iconFile="hide"     stackSize="10" exclusiveToQuest="tutParts" />
-    <item id="tutEntrails" name="Entrails"   iconFile="entrails" stackSize="10" exclusiveToQuest="tutParts" />
-    <item id="tutFat"      name="Animal Fat" iconFile="fat"      stackSize="10" exclusiveToQuest="tutParts" />
+    <item id="tutMeat"     name="Goat Meat"                         stackSize="10" exclusiveToQuest="tutParts" />
+    <item id="tutHide"     name="Goat Hide"     iconFile="hide"     stackSize="10" exclusiveToQuest="tutParts" />
+    <item id="tutEntrails" name="Goat Entrails" iconFile="entrails" stackSize="10" exclusiveToQuest="tutParts" />
+    <item id="tutFat"      name="Goat Fat"      iconFile="fat"      stackSize="10" exclusiveToQuest="tutParts" />
     <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="4396" y="59760" />
     <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="4542" y="59490" />
     <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="4762" y="59664" />
@@ -61,11 +61,12 @@ It looks like your eyes and ears are in working order, so let's test your arms a
     <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="5096" y="59482" />
 
 <quest id="tutOfferings" name="An offer he can't refuse" startsAt="prometheus" endsAt="tutBrazier"
-    brief="Zeus wants to decide which parts of the animal should be sacrificed, and so you'll need to make two offerings and let him choose; this gives us an opportunity to trick him.
+    brief="Zeus wants to decide which parts of the animal should be sacrificed, and so you'll need to make two offerings and let him choose.  This gives us an opportunity to trick him.
     Don't look at me like that--we're talking about an eternity of sacrifices here, and this will make it easier for you humans!
     Follow the path up north, until you find a smoking brazier.  That is where Zeus will make his choice.
     Place this pile of meat on the tiles there, and cover it with the hide so that it looks skinny and unappealing.  Do the same with the entrails, but dress them up with fat.  Once you've prepared both sacrifices, approach the brazier--reverently--and speak with Zeus."
-    debrief="Are you one of Prometheus's little creatures?  Greetings, mortal.  We gods have our due, and as their king it falls to me to make the choice.  But obviously we should have the best-quality meat for ourselves!  I choose the fatty offering."
+    debrief="Greetings, mortal.  Are you one of Prometheus's little creatures?
+    We gods have our due, and as their king it falls to me to make the choice.  But obviously we should have the best-quality meat for ourselves!  I choose the fatty offering."
     helpTopicOnAccept="Basic: placement">
     <prerequisite id="tutParts" />
     <objective type="construct" id="leanOffering" />
@@ -81,10 +82,10 @@ It looks like your eyes and ears are in working order, so let's test your arms a
         <collisionRect x="-6" y="-3" w="13" h="6" />
         <particles profile="smoke" x="0" y="-15" />
     </objectType>
-    <item id="tutMeat2"     name="Meat"                           exclusiveToQuest="tutOfferings" constructs="leanOffering" />
-    <item id="tutEntrails2" name="Entrails"   iconFile="entrails" exclusiveToQuest="tutOfferings" constructs="fattyOffering" />
-    <item id="tutHide2"     name="Hide"       iconFile="hide"     exclusiveToQuest="tutOfferings" />
-    <item id="tutFat2"      name="Animal Fat" iconFile="fat"      exclusiveToQuest="tutOfferings" />
+    <item id="tutMeat2"     name="Sacrificial Meat"                         exclusiveToQuest="tutOfferings" constructs="leanOffering" />
+    <item id="tutEntrails2" name="Sacrificial Entrails" iconFile="entrails" exclusiveToQuest="tutOfferings" constructs="fattyOffering" />
+    <item id="tutHide2"     name="Sacrificial Hide"     iconFile="hide"     exclusiveToQuest="tutOfferings" />
+    <item id="tutFat2"      name="Sacrificial Fat"      iconFile="fat"      exclusiveToQuest="tutOfferings" />
     <objectType
         id="leanOffering" name="Scrawny Sacrifice"
         allowedTerrain="tutOfferings" constructionTime="10000"  isUnbuildable="true" disappearAfter="300000"
@@ -102,18 +103,18 @@ It looks like your eyes and ears are in working order, so let's test your arms a
 
 <quest id="tutReturnFromZeus" name="No more fire" startsAt="tutBrazier" endsAt="prometheus"
     brief="What the . . . disgusting!  Where is the meat?  What are we supposed to do with these revolting entrails?
-    Insolence!  To imagine that you, a mere mortal, could outsmart a god!  Did you think you'd get away with this?
+    The insolence to believe that you, a mere mortal, could outsmart a god!  Did you think you'd get away with this?
     What's done is done, and these are the sacrifices we must now accept.  But I can punish you in a different way.  I am banishing fire from your world; you and your kind can languish in primitive savagery for all time.
-    Now get out of my sight--run along to your benefactor."
+    Now get out of my sight, you worm--run along to your benefactor."
     debrief="It was inevitable that Zeus would get angry, but trust me, it was worth it." >
-    <!--prerequisite id="tutOfferings" /-->
+    <prerequisite id="tutOfferings" />
 </quest>
 
 <quest id="tutLearnFire" name="More fire" startsAt="prometheus" endsAt="prometheus"
     brief="What?  He removed fire from the world?  But it's critical to . . . that would stop you from ever . . . hmm . . .
     I know what I must do.
-    Head to the woods out west, and pick up some sticks for me.  When you get back, I will restore fire to mankind."
-    debrief="Good.  Zeus won't let you leave this mountain with fire, so instead I'll teach you how to make it yourself.  That way he can never take it from you again.
+    Head to the woods, westward, and pick up some sticks for me.  When you get back, I will restore fire to mankind."
+    debrief="Good.  Zeus won't let you leave this mountain with anything in your hand or on your back, especially fire, so instead you'll have to carry it in your heart--I'll teach you how to create fire yourself.  That way the gods can never take it from you again.
     I don't care about Zeus's wrath--this is too important.  Fire is critical to the development of civilisation and mankind must have access to it." >
     <prerequisite id="tutReturnFromZeus" />
     <objective type="fetch" id="tutStick" qty="8" />
