@@ -13,20 +13,14 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
                             Transition pendingTransition) {
   const auto WIN_W = 200_px, WIN_H = 200_px;
 
-  auto window = Window::WithRectAndTitle({0, 0, WIN_W, WIN_H}, "Quest");
+  auto window =
+      Window::WithRectAndTitle({0, 0, WIN_W, WIN_H}, quest->_info.name);
   window->center();
 
   const auto BOTTOM = window->contentHeight();
   const auto GAP = 2_px, BUTTON_W = 90_px, BUTTON_H = 16_px,
              CONTENT_W = WIN_W - 2 * GAP;
   auto y = GAP;
-
-  // Quest name
-  auto name =
-      new Label({GAP, y, WIN_W, Element::TEXT_HEIGHT}, quest->_info.name);
-  name->setColor(Color::WINDOW_HEADING);
-  window->addChild(name);
-  y += name->height() + GAP;
 
   // Body: brief/debrief
   const auto BODY_H = BOTTOM - 2 * GAP - BUTTON_H - y;
