@@ -225,7 +225,7 @@ void ClientObject::addQuestsToWindow() {
   const Client &client = Client::instance();
   px_t y = _window->contentHeight(), newWidth = _window->contentWidth();
 
-  const auto BUTTON_HEIGHT = 15, BUTTON_WIDTH = 100, MARGIN = 2;
+  const auto BUTTON_HEIGHT = 15, BUTTON_WIDTH = 150, MARGIN = 2;
 
   static auto startQuestIcon =
       Texture{"Images/UI/startQuest.png", Color::MAGENTA};

@@ -108,13 +108,11 @@ void Client::initCastBar() {
                                  _config.castBarY, _config.castBarW,
                                  _config.castBarH),
       CAST_BAR_DIMENSIONS(0, 0, _config.castBarW, _config.castBarH);
-  static const Color CAST_BAR_LABEL_COLOR = Color::TODO;
   _castBar = new Element(CAST_BAR_RECT);
   _castBar->addChild(
       new ProgressBar<ms_t>(CAST_BAR_DIMENSIONS, _actionTimer, _actionLength));
   LinkedLabel<std::string> *castBarLabel = new LinkedLabel<std::string>(
       CAST_BAR_DIMENSIONS, _actionMessage, "", "", Label::CENTER_JUSTIFIED);
-  castBarLabel->setColor(CAST_BAR_LABEL_COLOR);
   _castBar->addChild(castBarLabel);
   _castBar->hide();
   addUI(_castBar);
