@@ -65,10 +65,6 @@
 <item id="spearMould"   name="Spear Mould"    sounds="ceramic" >   <tag name="spearMould" /> </item>
 <item id="boneNeedle"   name="Bone Needle"    sounds="metalTool" > <tag name="sewing" />     </item>
 
-<item id="fig"  name="Fig"  stackSize="10"  castsSpellOnUse="food" >
-    <tag name="food" />
-</item>
-
 <item id="stick" name="Stick" stackSize="10" strength="2" sounds="stick" >
     <offset x="-8" y="-1" />
     <tag name="planting" />

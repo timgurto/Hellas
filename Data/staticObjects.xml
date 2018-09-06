@@ -3,4 +3,5 @@
 
 <npc id="prometheus"> <location x="3872" y="60212" /> </npc>
 <object id="tutBrazier"> <location x="3886" y="58420" /> </object>
+<npc id="atlas"> <location x="15" y="59604" /> </npc>
 </root>

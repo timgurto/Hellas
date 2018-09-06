@@ -37,5 +37,6 @@
 <tag id="food" name="Food" />
 
 <tag id="titan" name="Titan" />
+<tag id="cyclops" name="Cyclops" />
 
 </root>

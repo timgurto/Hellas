@@ -122,8 +122,6 @@ It looks like your eyes and ears are in working order, so let's test your arms a
     <objectType id="tutFire" name="Cooking Fire">
         <tag name="cooking" />
         <material id="tutStick" quantity="5" />
-        <material id="log" />
-        <unlockedBy gather="rock" />
         <strength item="stick" quantity="5" />
         <transform id="tutExtinguishedFire" time="20000" />
     </objectType>
@@ -154,5 +152,55 @@ It looks like your eyes and ears are in working order, so let's test your arms a
         xDrawOffset="-11" yDrawOffset="-13"
         imageFile="boar" sounds = "pig" >
         <collisionRect x="-9" y="-4" w="18" h="7" />
+        <loot id="meat" chance="0.3" />
     </npcType>
+    
+<quest id="tutCooking" name="Cooking" startsAt="prometheus" endsAt="atlas"
+    brief="My brother Atlas was a general in the war against the Olympians, and for that they devised a special punishment for him--a rather exhausting one.
+    Now that you know how to cook, I would greatly appreciate it if you could pay him a visit and bring him some food.  If you build a cooking fire, that experience will teach you all the knowledge necessary to cook raw boar meat into a nutritious meal.
+    Now that I think about it, given his history fighting against the gods, Atlas might be able to offer you some guidance of his own.  Be sure to ask him for any advice he may have.
+    Head west.  Then keep going, until you reach the very edge of the world.  That's where you'll find Atlas."
+    debrief="Hello . . . urgh . . .  it's nice to have a visitor.  One of my brother's . . . ungh . . .  new creatures, are you?  What's that?  You brought me some food?"
+    helpTopicOnAccept="Crafting" >
+    <prerequisite id="tutLearnFire" />
+    <objective type="fetch" id="cookedMeat" qty="3" />
+</quest>
+    <npcType
+        id="atlas" name="Atlas"
+        level="20" maxHealth="107" isCivilian="1"
+        xDrawOffset="-188" yDrawOffset="-129" >
+        <collisionRect x="-15" y="-3" w="23" h="6" />
+        <class name="titan"/>
+    </npcType>
+    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="60000" x="2910" y="59372" />
+    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="60000" x="2278" y="59356" />
+    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="60000" x="2062" y="59688" />
+    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="60000" x="1684" y="59460" />
+    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="60000" x="1200" y="59382" />
+    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="60000" x="638" y="59624" />
+    
+<quest id="tutCyclops" name="Eye on the Prize" startsAt="atlas" endsAt="arges"
+    brief="Thank you, I feel much better.  Bearing the heavens for all eternity is hungry work.  Would you mind holding this for a moment while I wipe my mouth?
+    Hah, I'm joking; relax!
+    Advice?  Actually, there is something that might prove useful to you.  Over yonder are the cyclops craftsmen that made weapons for Zeus during the war.  Go speak to them, and see if they have any surplus weapons now that the war is over.  Sure, they sided with the enemy, but the blood of the Titans flows through their veins too and they might be willing to bargain."
+    debrief="Good day.  You're a small one!
+    Surplus weapons?  Hmm, I don't know . . . the war is over, I suppose.  Plus, we're short on materials for our work, so maybe we can help each other.  My brother Brontes here will give you what you want in exchange for the metal ore that can be found on this mountain.">
+    <prerequisite id="tutCooking" />
+</quest>
+    <npcType
+        id="cyclops1" name="Arges"
+        level="20" maxHealth="107" isCivilian="1" >
+        <class name="cyclops"/>
+    </npcType>
+    <npcType
+        id="cyclops2" name="Brontes"
+        level="20" maxHealth="107" isCivilian="1" >
+        <class name="cyclops"/>
+    </npcType>
+    <npcType
+        id="cyclops3" name="Stereopes"
+        level="20" maxHealth="107" isCivilian="1" >
+        <class name="cyclops"/>
+    </npcType>
+
 </root>
