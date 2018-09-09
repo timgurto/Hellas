@@ -45,9 +45,9 @@ It looks like your eyes and ears are in working order, so let's test your arms a
         xDrawOffset="-17" yDrawOffset="-28"
         imageFile="goat" sounds = "goat" >
         <collisionRect x="-15" y="-4" w="31" h="7" />
-        <loot id="tutMeat" chance="0.3" />
+        <loot id="tutMeat" chance="0.4" />
         <loot id="tutHide" chance="0.2" />
-        <loot id="tutEntrails" chance="0.3" />
+        <loot id="tutEntrails" chance="0.4" />
         <loot id="tutFat" chance="0.2" />
     </npcType>
     <item id="tutMeat"     name="Goat Meat"                         stackSize="10" exclusiveToQuest="tutParts" />
@@ -88,14 +88,14 @@ It looks like your eyes and ears are in working order, so let's test your arms a
     <item id="tutFat2"      name="Sacrificial Fat"      iconFile="fat"      exclusiveToQuest="tutOfferings" />
     <objectType
         id="leanOffering" name="Scrawny Sacrifice"
-        allowedTerrain="tutOfferings" constructionTime="10000"  isUnbuildable="true" disappearAfter="300000"
+        allowedTerrain="tutOfferings" constructionTime="6000"  isUnbuildable="true" disappearAfter="300000"
         xDrawOffset="-9" yDrawOffset="-9" >
         <collisionRect x="-9" y="-4" w="18" h="9" />
         <material id="tutHide2" />
     </objectType>
     <objectType
         id="fattyOffering" name="Fatty Sacrifice"
-        allowedTerrain="tutOfferings" constructionTime="10000" isUnbuildable="true" disappearAfter="300000"
+        allowedTerrain="tutOfferings" constructionTime="6000" isUnbuildable="true" disappearAfter="300000"
         xDrawOffset="-9" yDrawOffset="-9" >
         <collisionRect x="-9" y="-4" w="18" h="9" />
         <material id="tutFat2" />
@@ -160,6 +160,7 @@ It looks like your eyes and ears are in working order, so let's test your arms a
         imageFile="boar" sounds = "pig" >
         <collisionRect x="-9" y="-4" w="18" h="7" />
         <loot id="meat" chance="0.3" />
+        <loot id="meat" > <normal mean="0.5" sd="0.7" /> </loot>
     </npcType>
     
 <quest id="tutCooking" name="Cooking" startsAt="prometheus" endsAt="atlas"
