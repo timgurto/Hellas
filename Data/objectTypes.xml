@@ -51,18 +51,22 @@
     <strength item="copper" quantity="5" />
 </objectType-->
 
-<objectType id="fire" name="Cooking Fire">
+<objectType id="fire" name="Cooking Fire"
+    xDrawOffset="-10" yDrawOffset="-7" >
+    <collisionRect x="-10" y="-3" w="20" h="8" />
     <tag name="cooking" />
     <material id="stick" quantity="5" />
-    <material id="log" />
-    <unlockedBy gather="rock" />
     <strength item="stick" quantity="5" />
     <transform id="extinguishedFire" time="20000" />
+    <particles profile="fire" x="0" y="-6" />
+    <particles profile="smoke" x="0" y="-10" />
 </objectType>
 <objectType id="extinguishedFire" name="Extinguished Cooking Fire"
-    isUnbuildable="1"
+    xDrawOffset="-10" yDrawOffset="-7"
+    isUnbuildable="1" disappearAfter="300000"
     constructionText="requires fuel">
-    <material id="stick" />
+    <collisionRect x="-10" y="-3" w="20" h="8" />
+    <material id="stick" quantity="3" />
     <strength item="stick" quantity="5" />
     <transform id="fire" time="1" skipConstruction="1" />
 </objectType>
