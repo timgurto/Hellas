@@ -265,3 +265,39 @@ TEST_CASE("Neutral NPCs") {
     }
   }
 }
+
+TEST_CASE("Attacking civilians after dying") {
+  GIVEN("A user between an attackable sloth and a civilian maiden") {
+    auto data = R"(
+      <newPlayerSpawn x="10" y="10" range="0" />
+      <npcType id="sloth" maxHealth="1000" />
+      <npcType id="maiden" maxHealth="1000" isCivilian="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addNPC("sloth", {10, 15});
+    const auto &sloth = s.getFirstNPC();
+    auto slothSerial = sloth.serial();
+    s.addNPC("maiden", {10, 5});
+    auto maidenSerial = slothSerial + 1;
+    auto &maiden = *s.entities().find(maidenSerial);
+
+    s.waitForUsers(1);
+
+    WHEN("he attacks the sloth") {
+      c.sendMessage(CL_TARGET_ENTITY, makeArgs(slothSerial));
+      REPEAT_FOR_MS(100);
+
+      AND_WHEN("he right-clicks the maiden") {
+        auto cMaiden = c.objects()[maidenSerial];
+        cMaiden->onRightClick(c.client());
+
+        THEN("the maiden doesn't take damage") {
+          REPEAT_FOR_MS(3000);
+          CHECK(maiden.health() == maiden.stats().maxHealth);
+        }
+      }
+    }
+  }
+}

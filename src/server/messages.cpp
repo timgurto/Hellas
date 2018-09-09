@@ -1498,6 +1498,7 @@ void Server::handle_CL_TARGET_PLAYER(User &user,
 
 void Server::handle_CL_SELECT_ENTITY(User &user, size_t serial) {
   user.cancelAction();
+  user.action(User::NO_ACTION);
 
   if (serial == INVENTORY || serial == GEAR) {
     user.setTargetAndAttack(nullptr);
