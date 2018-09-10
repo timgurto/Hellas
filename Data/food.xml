@@ -10,9 +10,7 @@
 </item>
 <recipe id="cookedMeat"
     time="8000" >
-    <material id="meat" quantity="1" />
-    <material id="stick" />
-    <material id="leather" />
+    <material id="meat" />
     <tool class="cooking" />
     <unlockedBy construction="tutFire" />
 </recipe>
