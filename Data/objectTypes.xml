@@ -60,6 +60,7 @@
     <transform id="extinguishedFire" time="20000" />
     <particles profile="fire" x="0" y="-6" />
     <particles profile="smoke" x="0" y="-10" />
+    <unlockedBy />
 </objectType>
 <objectType id="extinguishedFire" name="Extinguished Cooking Fire"
     xDrawOffset="-10" yDrawOffset="-7"

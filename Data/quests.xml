@@ -129,6 +129,7 @@ It looks like your eyes and ears are in working order, so let's test your arms a
         <transform id="tutExtinguishedFire" time="20000" />
         <particles profile="fire" x="0" y="-6" />
         <particles profile="smoke" x="0" y="-10" />
+        <unlockedBy />
     </objectType>
     <objectType id="tutExtinguishedFire" name="Extinguished Cooking Fire"
         xDrawOffset="-10" yDrawOffset="-7" imageFile="extinguishedFire"
