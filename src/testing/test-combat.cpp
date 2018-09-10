@@ -266,7 +266,7 @@ TEST_CASE("Neutral NPCs") {
   }
 }
 
-TEST_CASE("Attacking civilians after dying") {
+TEST_CASE("Targeting civilians after attacking") {
   GIVEN("A user between an attackable sloth and a civilian maiden") {
     auto data = R"(
       <newPlayerSpawn x="10" y="10" range="0" />
