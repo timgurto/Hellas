@@ -31,6 +31,7 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
 
   std::string _id;
   std::string _name;
+  std::string _imageFile;
   bool _canGather;  // Whether this represents objects that can be gathered
   std::string
       _gatherReq;  // An item thus tagged is required to gather this object.
@@ -73,6 +74,8 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
   const std::string &id() const { return _id; }
   const std::string &name() const { return _name; }
   void name(const std::string &s) { _name = s; }
+  const std::string &imageFile() const { return _imageFile; }
+  void imageFile(const std::string &s) { _imageFile = s; }
   void imageSet(const std::string &fileName) { _images = ImageSet(fileName); }
   bool canGather() const { return _canGather; }
   void canGather(bool b) { _canGather = b; }

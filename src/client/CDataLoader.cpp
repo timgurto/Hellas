@@ -400,8 +400,10 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       cot = new ClientVehicleType(id);
     else
       cot = new ClientObjectType(id);
+
     auto imageFile = id;
     xr.findAttr(elem, "imageFile", imageFile);
+    cot->imageFile(imageFile);
     cot->setImage(std::string("Images/Objects/") + imageFile + ".png");
     cot->imageSet(std::string("Images/Objects/") + imageFile + ".png");
     cot->corpseImage(std::string("Images/Objects/") + imageFile +

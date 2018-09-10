@@ -109,7 +109,7 @@ void ClientObjectType::addMaterial(const ClientItem *item, size_t qty) {
   auto isConstructionImageAlreadyInitialized = bool{_constructionImage.normal};
   if (!isConstructionImageAlreadyInitialized)
     _constructionImage =
-        ImageSet("Images/Objects/" + _id + "-construction.png");
+        ImageSet("Images/Objects/" + _imageFile + "-construction.png");
 }
 
 ClientObjectType::ImageSet::ImageSet(const std::string &filename) {
