@@ -400,11 +400,12 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       cot = new ClientVehicleType(id);
     else
       cot = new ClientObjectType(id);
-    xr.findAttr(elem, "imageFile",
-                id);  // If no explicit imageFile, s will still == id
-    cot->setImage(std::string("Images/Objects/") + id + ".png");
-    cot->imageSet(std::string("Images/Objects/") + id + ".png");
-    cot->corpseImage(std::string("Images/Objects/") + id + "-corpse.png");
+    auto imageFile = id;
+    xr.findAttr(elem, "imageFile", imageFile);
+    cot->setImage(std::string("Images/Objects/") + imageFile + ".png");
+    cot->imageSet(std::string("Images/Objects/") + imageFile + ".png");
+    cot->corpseImage(std::string("Images/Objects/") + imageFile +
+                     "-corpse.png");
     auto name = id;
     xr.findAttr(elem, "name", name);
     cot->name(name);
