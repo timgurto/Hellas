@@ -30,41 +30,28 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
   tooltip.setColor(Color::TOOLTIP_NAME);
   tooltip.addLine(_name);
 
+  auto descriptionLines = std::vector<std::string>{};
+
   auto gapDrawn = false;
   if (canGather()) {
-    if (!gapDrawn) {
-      gapDrawn = true;
-      tooltip.addGap();
-    }
     std::string text = "Gatherable";
     if (!gatherReq().empty())
       text += " (requires " + client.tagName(gatherReq()) + ")";
-    tooltip.addLine(text);
+    descriptionLines.push_back(text);
   }
 
-  if (canDeconstruct()) {
-    if (!gapDrawn) {
-      gapDrawn = true;
-      tooltip.addGap();
-    }
-    tooltip.addLine("Can pick up as item");
-  }
+  if (canDeconstruct()) descriptionLines.push_back("Can pick up as item");
 
-  if (containerSlots() > 0) {
-    if (!gapDrawn) {
-      gapDrawn = true;
-      tooltip.addGap();
-    }
-    tooltip.addLine("Container: " + toString(containerSlots()) + " slots");
-  }
+  if (containerSlots() > 0)
+    descriptionLines.push_back("Container: " + toString(containerSlots()) +
+                               " slots");
 
-  if (merchantSlots() > 0) {
-    if (!gapDrawn) {
-      gapDrawn = true;
-      tooltip.addGap();
-    }
-    tooltip.addLine("Merchant: " + toString(merchantSlots()) + " slots");
-  }
+  if (merchantSlots() > 0)
+    descriptionLines.push_back("Merchant: " + toString(merchantSlots()) +
+                               " slots");
+
+  if (!descriptionLines.empty()) tooltip.addGap();
+  for (const auto &line : descriptionLines) tooltip.addLine(line);
 
   // Tags
   if (hasTags()) {
