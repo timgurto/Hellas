@@ -71,7 +71,7 @@ void User::init() {
   baseStats.earthResist = 0;
   baseStats.fireResist = 0;
   baseStats.waterResist = 0;
-  baseStats.attackTime = 1000;
+  baseStats.attackTime = 2000;
   baseStats.speed = 80.0;
   baseStats.stunned = false;
   baseStats.gatherBonus = 0;
