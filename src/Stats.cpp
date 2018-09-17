@@ -91,8 +91,7 @@ const Stats &Stats::operator&=(const StatsMod &mod) {
   if (gatherBonus < 0) gatherBonus = 0;
 
   // ASSUMPTION: only one item, presumably the weapon, will have this stat.
-  assert(mod.attackTime >= 0);
-  attackTime = mod.attackTime * 1000;
+  if (mod.attackTime > 0) attackTime = mod.attackTime;
 
   assert(mod.speed >= 0);
   if (mod.speed != 1.0) speed *= mod.speed;
