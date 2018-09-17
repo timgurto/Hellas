@@ -49,8 +49,11 @@ struct StatsMod {
              airResist = 0, earthResist = 0, fireResist = 0, waterResist = 0,
              gatherBonus = 0;
 
+  // Replacement
+  ms_t attackTime = 0;
+
   // Multiplicative
-  double attackTime = 1.0, speed = 1.0;
+  double speed = 1.0;
 
   // Flag
   bool stuns = false;

@@ -1,4 +1,5 @@
 #include <cassert>
+#include <iomanip>
 
 #include "Stats.h"
 #include "util.h"
@@ -89,8 +90,9 @@ const Stats &Stats::operator&=(const StatsMod &mod) {
   gatherBonus += mod.gatherBonus;
   if (gatherBonus < 0) gatherBonus = 0;
 
+  // ASSUMPTION: only one item, presumably the weapon, will have this stat.
   assert(mod.attackTime >= 0);
-  if (mod.attackTime != 1.0) attackTime = toInt(attackTime * mod.attackTime);
+  attackTime = mod.attackTime * 1000;
 
   assert(mod.speed >= 0);
   if (mod.speed != 1.0) speed *= mod.speed;
@@ -124,6 +126,12 @@ std::string multiplicativeToString(double d) {
 
 std::vector<std::string> StatsMod::toStrings() const {
   auto v = std::vector<std::string>{};
+  if (attackTime != 0) {
+    auto inSeconds = attackTime / 1000.0;
+    auto formatted = std::ostringstream{};
+    formatted << std::setprecision(2) << std::fixed << inSeconds << "s speed"s;
+    v.push_back(formatted.str());
+  }
   if (armor > 0) v.push_back("+" + toString(armor) + "% armor");
   if (maxHealth > 0) v.push_back("+" + toString(maxHealth) + " max health");
   if (maxEnergy > 0) v.push_back("+" + toString(maxEnergy) + " max energy");
@@ -155,11 +163,6 @@ std::vector<std::string> StatsMod::toStrings() const {
     v.push_back("+" + toString(waterResist) + "% water resistance");
   if (gatherBonus > 0)
     v.push_back("+" + toString(gatherBonus) + "% chance to gather double");
-  if (attackTime != 1) {
-    auto line = multiplicativeToString(1 / attackTime) + " attack speed";
-    if (attackTime < 1) line = "+"s + line;
-    v.push_back(line);
-  }
   if (speed != 1)
     v.push_back("+" + multiplicativeToString(speed) + " run speed");
 
