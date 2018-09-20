@@ -63,6 +63,9 @@ const Stats &Stats::operator&=(const StatsMod &mod) {
   if (gatherBonus < 0) gatherBonus = 0;
 
   // ASSUMPTION: only one item, presumably the weapon, will have this stat.
+  if (mod.weaponDamage > 0) weaponDamage = mod.weaponDamage;
+
+  // ASSUMPTION: only one item, presumably the weapon, will have this stat.
   if (mod.attackTime > 0) attackTime = mod.attackTime;
 
   assert(mod.speed >= 0);
@@ -97,11 +100,21 @@ std::string multiplicativeToString(double d) {
 
 std::vector<std::string> StatsMod::toStrings() const {
   auto v = std::vector<std::string>{};
-  if (attackTime != 0) {
+  if (attackTime > 0) {
     auto inSeconds = attackTime / 1000.0;
     auto formatted = std::ostringstream{};
     formatted << std::setprecision(2) << std::fixed << inSeconds << "s speed"s;
     v.push_back(formatted.str());
+  }
+  if (weaponDamage > 0) {
+    auto line = toString(weaponDamage) + " damage"s;
+    if (attackTime > 0) {
+      auto dps = std::ostringstream{};
+      dps << std::setprecision(2) << std::fixed
+          << 1000.0 * weaponDamage / attackTime;
+      line += " ("s + dps.str() + " per second)"s;
+    }
+    v.push_back(line);
   }
   if (armor > 0) v.push_back("+" + toString(armor) + "% armor");
   if (maxHealth > 0) v.push_back("+" + toString(maxHealth) + " max health");

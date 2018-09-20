@@ -23,6 +23,7 @@ class Item {
   const StatsMod &stats() const { return _stats; }
   Hitpoints strength() const { return _strength; }
   void strength(Hitpoints n) { _strength = n; }
+  void makeWeapon(Hitpoints damage, double speedInS);
   void weaponRange(Podes range) { _weaponRange = range.toPixels(); }
   px_t weaponRange() const { return _weaponRange; }
   void weaponSchool(SpellSchool school) { _weaponSchool = school; }

@@ -2,6 +2,11 @@
 
 Item::Item(const std::string &id) : _id(id), _strength(0) {}
 
+void Item::makeWeapon(Hitpoints damage, double speedInS) {
+  _stats.weaponDamage = damage;
+  _stats.attackTime = static_cast<ms_t>(speedInS * 1000 + 0.5);
+}
+
 void Item::addTag(const std::string &tagName) { _tags.insert(tagName); }
 
 bool Item::isTag(const std::string &tagName) const {

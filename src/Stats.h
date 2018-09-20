@@ -20,7 +20,9 @@ struct Stats {
              airResist = 0, earthResist = 0, fireResist = 0, waterResist = 0,
              gatherBonus = 0;
 
+  Hitpoints weaponDamage = 0;
   BonusDamage magicDamage = 0, physicalDamage = 0, healing = 0;
+  SpellSchool weaponSchool = SpellSchool::PHYSICAL;
 
   ms_t attackTime = 0;
 
@@ -46,8 +48,10 @@ struct StatsMod {
              airResist = 0, earthResist = 0, fireResist = 0, waterResist = 0,
              gatherBonus = 0;
 
-  // Replacement
+  // Replacement.
   ms_t attackTime = 0;
+  Hitpoints weaponDamage = 0;
+  SpellSchool weaponSchool = SpellSchool::PHYSICAL;
 
   // Multiplicative
   double speed = 1.0;

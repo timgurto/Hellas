@@ -539,6 +539,20 @@ void DataLoader::loadItems(XmlReader &xr) {
 
     auto weaponElem = xr.findChild("weapon", elem);
     if (weaponElem != nullptr) {
+      auto damage = Hitpoints{0};
+      if (!xr.findAttr(weaponElem, "damage", damage)) {
+        _server._debug("Item "s + id + " is missing weapon damage"s,
+                       Color::TODO);
+        continue;
+      }
+      auto speedInS = 0.0;
+      if (!xr.findAttr(weaponElem, "speed", speedInS)) {
+        _server._debug("Item "s + id + " is missing weapon speed"s,
+                       Color::TODO);
+        continue;
+      }
+      item.makeWeapon(damage, speedInS);
+
       auto range = Podes{};
       if (xr.findAttr(weaponElem, "range", range)) item.weaponRange(range);
 

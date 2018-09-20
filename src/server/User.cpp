@@ -71,6 +71,7 @@ void User::init() {
   baseStats.earthResist = 0;
   baseStats.fireResist = 0;
   baseStats.waterResist = 0;
+  baseStats.weaponDamage = 2;
   baseStats.attackTime = 2000;
   baseStats.speed = 80.0;
   baseStats.stunned = false;
@@ -619,15 +620,10 @@ SpellSchool User::school() const {
 }
 
 double User::combatDamage() const {
-  const auto BASE_DAMAGE = 5.0;
-
-  auto weapon = _gear[Item::WEAPON_SLOT].first;
-  auto damageSchool = weapon ? weapon->weaponSchool() : SpellSchool::PHYSICAL;
-
-  if (damageSchool == SpellSchool::PHYSICAL)
-    return BASE_DAMAGE + stats().physicalDamage;
+  if (stats().weaponSchool == SpellSchool::PHYSICAL)
+    return stats().weaponDamage + stats().physicalDamage;
   else
-    return BASE_DAMAGE + stats().magicDamage;
+    return stats().weaponDamage + stats().magicDamage;
 }
 
 bool User::isSpellCoolingDown(const Spell::ID &spell) const {

@@ -563,6 +563,12 @@ void CDataLoader::loadItems(XmlReader &xr) {
 
     auto weaponElem = xr.findChild("weapon", elem);
     if (weaponElem != nullptr) {
+      auto damage = Hitpoints{0};
+      xr.findAttr(weaponElem, "damage", damage);
+      auto speedInS = 0.0;
+      xr.findAttr(weaponElem, "speed", speedInS);
+      item.makeWeapon(damage, speedInS);
+
       auto range = Podes{};
       if (xr.findAttr(weaponElem, "range", range)) item.weaponRange(range);
 

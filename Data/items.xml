@@ -72,7 +72,7 @@
 
 
 <item id="bone" name="Bone" stackSize="10" gearSlot="6" sounds="bone" >
-    <stats physicalDamage="3" attackTime="1.35" />
+    <weapon damage="3" speed="2.8" />
 	<offset x="-6" y="-15" />
 </item>
 
@@ -98,136 +98,129 @@
 			<tag name="carving" />
 			<tag name="harvesting" />
 			<offset x="-4" y="-1" />
-			<stats physicalDamage="1" attackTime="0.93" />
+			<weapon damage="2" speed="1.4" />
 		</item>
 		<item id="tinKnife" name="Tin Knife" gearSlot="6" >
 			<tag name="carving" />
 			<tag name="harvesting" />
 			<offset x="-6" y="-3" />
-			<stats physicalDamage="2" attackTime="0.79" />
+			<weapon damage="5" speed="1.3" />
 		</item>
 		<!--item id="copperKnife" name="Copper Knife" gearSlot="6" >
 			<tag name="carving" />
 			<tag name="harvesting" />
 			<offset x="-6" y="-3" />
-			<stats attack="5" attackTime="0.625" />
+			<weapon damage="5" speed="0.625" />
 		</item-->
 
 	<!-- Axes -->
 		<item id="stoneAxe" name="Stone Axe" gearSlot="6" >
 			<tag name="woodcutting" />
-			<stats physicalDamage="1" />
+			<weapon damage="2" speed="2.1" />
 			<offset x="-5" y="1" />
 		</item>
 		<item id="tinAxe" name="Tin Axe" gearSlot="6" >
 			<tag name="woodcutting" />
-			<stats physicalDamage="4" />
+			<weapon damage="8" speed="2.1" />
 			<offset x="-5" y="1" />
 		</item>
 		<!--item id="copperAxe" name="Copper Axe" gearSlot="6" sounds="metalTool" >
 			<tag name="woodcutting" />
-			<stats attack="8" />
+			<weapon damage="8" />
 		</item-->
 
 	<!-- Hammers -->
 		<!--item id="copperHammer" name="Copper Hammer" gearSlot="6" sounds="metalTool" >
 			<tag name="hammering" />
-			<stats attack="14" attackTime="1.75" />
+			<weapon damage="14" speed="1.75" />
 			<offset x="-8" y="-1" />
 		</item-->
 
 <!-- Weapons -->
 	<!-- Spears -->
 		<item id="tinSpear" name="Light Spear" gearSlot="6" sounds="spear" >
-			<stats physicalDamage="4" crit="1" />
+			<stats crit="1" />
+            <weapon damage="7" speed="1.9" />
 			<offset x="-5" y="-21" />
 		</item>
 		<!--item id="copperSpear" name="Spear" gearSlot="6" >
-			<stats attack="7" crit="1" />
+			<stats crit="1" />
+            <weapon damage="7" />
 		</item-->
 
 	<!-- Swords -->
 		<!--item id="copperSword" name="Short Sword" gearSlot="6" >
-			<stats attack="7" hit="1" />
+			<stats hit="1" />
+            <weapon damage="7" />
             <offset x="-6" y="-8" />
 		</item-->
 
     <!-- Ranged -->
         <item id="rock" name="Rock" stackSize="20" strength="6" gearSlot="6" sounds="rock" >
-            <weapon range="25" consumes="rock" projectile="rock" />
-            <stats physicalDamage="1"/>
+            <weapon damage="2" speed="2.1" range="25" consumes="rock" projectile="rock" />
             <offset x="-3" />
             <tag name="grinding1" />
         </item>
 		<item id="sling" name="Sling" gearSlot="6" >
-            <weapon range="25" consumes="smoothRock" projectile="smoothRock" />
-            <stats physicalDamage="2"/>
+            <weapon damage="4" speed="2" range="25" consumes="smoothRock" projectile="smoothRock" />
 			<offset x="-7" y="0" />
 		</item>
 		<item id="bow" name="Bow" gearSlot="6" sounds="bow" >
-            <weapon range="25" consumes="woodArrow" projectile="arrow" />
-            <stats physicalDamage="1" hit="1"/>
+            <weapon damage="2" speed="1.9" range="25" consumes="woodArrow" projectile="arrow" />
+            <stats hit="1"/>
             <offset x="-7" y=-3 />
 		</item>
 		<item id="tinJavelin" name="Light Javelin" stackSize="20" gearSlot="6" sounds="spear" >
-            <weapon range="25" consumes="tinJavelin" projectile="tinJavelin" />
-            <stats physicalDamage="1" crit="1"/>
+            <weapon damage="2" speed="1.9" range="25" consumes="tinJavelin" projectile="tinJavelin" />
+            <stats crit="1"/>
 			<offset x="-5" y="-21" />
 		</item>
 
     <!-- Magic -->
 		<item id="airWand" name="Wand of Air" gearSlot="6" >
             <tag name="wand" />
-            <weapon range="25" school="air" consumes="boneDust" projectile="airball" />
-            <stats magicDamage="1" />
+            <weapon damage="2" speed="1.8" range="25" school="air" consumes="boneDust" projectile="airball" />
 			<offset x="-5" y="-2" />
             <particles profile="airSmall" x=-4 y=0 />
 		</item>
 		<item id="earthWand" name="Wand of Earth" gearSlot="6" >
             <tag name="wand" />
-            <weapon range="25" school="earth" consumes="boneDust" projectile="earthball" />
-            <stats magicDamage="2" />
+            <weapon damage="4" speed="1.8" range="25" school="earth" consumes="boneDust" projectile="earthball" />
 			<offset x="-5" y="-2" />
             <particles profile="earthSmall" x=-4 y=0 />
 		</item>
 		<item id="fireWand" name="Wand of Fire" gearSlot="6" >
             <tag name="wand" />
-            <weapon range="25" school="fire" consumes="boneDust" projectile="fireball" />
-            <stats magicDamage="2" />
+            <weapon damage="4" speed="1.8" range="25" school="fire" consumes="boneDust" projectile="fireball" />
 			<offset x="-5" y="-2" />
             <particles profile="fireSmall" x=-4 y=0 />
 		</item>
 		<item id="waterWand" name="Wand of Water" gearSlot="6" >
             <tag name="wand" />
-            <weapon range="25" school="water" consumes="boneDust" projectile="waterball" />
-            <stats magicDamage="1" />
+            <weapon damage="2" speed="1.8" range="25" school="water" consumes="boneDust" projectile="waterball" />
 			<offset x="-5" y="-2" />
             <particles profile="waterSmall" x=-4 y=0 />
 		</item>
 		<item id="airStaff" name="Staff of Air" gearSlot="6" >
-            <weapon range="25" school="air" consumes="airDust" projectile="airball" />
-            <stats magicDamage="3" />
+            <weapon damage="7" speed="2.1" range="25" school="air" consumes="airDust" projectile="airball" />
             <offset x="-5" y="-20" />
             <particles profile="airSmall" x=-4 y=-19 />
             <particles profile="airSmall" x=5 y=16 />
 		</item>
 		<item id="earthStaff" name="Staff of Earth" gearSlot="6" >
-            <weapon range="25" school="earth" consumes="earthDust" projectile="earthball" />
-            <stats magicDamage="4" />
+            <weapon damage="9" speed="2.1" range="25" school="earth" consumes="earthDust" projectile="earthball" />
             <offset x="-5" y="-20" />
             <particles profile="earthSmall" x=-4 y=-19 />
             <particles profile="earthSmall" x=5 y=16 />
 		</item>
 		<item id="fireStaff" name="Staff of Fire" gearSlot="6" >
-            <weapon range="25" school="fire" consumes="fireDust" projectile="fireball" />
-            <stats magicDamage="4" />
+            <weapon damage="9" speed="2.1" range="25" school="fire" consumes="fireDust" projectile="fireball" />
             <offset x="-5" y="-20" />
             <particles profile="fireSmall" x=-4 y=-19 />
             <particles profile="fireSmall" x=5 y=16 />
 		</item>
 		<item id="waterStaff" name="Staff of Water" gearSlot="6" >
-            <weapon range="25" school="water" consumes="waterDust" projectile="waterball" />
-            <stats magicDamage="3" />
+            <weapon damage="7" speed="2.1" range="25" school="water" consumes="waterDust" projectile="waterball" />
             <offset x="-5" y="-20" />
             <particles profile="waterSmall" x=-4 y=-19 />
             <particles profile="waterSmall" x=5 y=16 />
