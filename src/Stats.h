@@ -28,9 +28,6 @@ struct Stats {
 
   bool stunned = false;
 
-  Stats &operator+=(const Stats &rhs);
-  const Stats operator+(const Stats &rhs) const;
-
   const Stats &operator&=(const StatsMod &rhs);
   Stats operator&(const StatsMod &mod) const;
 

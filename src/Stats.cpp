@@ -4,34 +4,6 @@
 #include "Stats.h"
 #include "util.h"
 
-Stats &Stats::operator+=(const Stats &rhs) {
-  maxHealth += rhs.maxHealth;
-  maxEnergy += rhs.maxEnergy;
-  hps += rhs.hps;
-  eps += rhs.eps;
-  hit += rhs.hit;
-  crit += rhs.crit;
-  dodge += rhs.dodge;
-  magicDamage += rhs.magicDamage;
-  physicalDamage += rhs.physicalDamage;
-  healing += rhs.healing;
-  airResist += rhs.airResist;
-  earthResist += rhs.earthResist;
-  fireResist += rhs.fireResist;
-  waterResist += rhs.waterResist;
-  attackTime += rhs.attackTime;
-  speed += rhs.speed;
-  stunned = stunned || rhs.stunned;
-
-  return *this;
-}
-
-const Stats Stats::operator+(const Stats &rhs) const {
-  Stats ret = *this;
-  ret += rhs;
-  return ret;
-}
-
 const Stats &Stats::operator&=(const StatsMod &mod) {
   armor += mod.armor;
   if (armor < 0) armor = 0;
