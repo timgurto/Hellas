@@ -19,7 +19,7 @@ It looks like your eyes and ears are in working order, so let's test your arms a
     </npcType>
     <npcType
         id="tutPig" name="Pig"
-        level="1" maxHealth="41" attack="6" attackTime="2000" isNeutral="1"
+        level="1" maxHealth="16" attack="5" attackTime="2930" isNeutral="1"
         xDrawOffset="-11" yDrawOffset="-13"
         imageFile="critter" sounds = "pig" >
         <collisionRect x="-9" y="-4" w="18" h="7" />
@@ -41,7 +41,7 @@ It looks like your eyes and ears are in working order, so let's test your arms a
 </quest>
     <npcType
         id="tutGoat" name="Goat"
-        level="2" maxHealth="44" attack="6" attackTime="2030" isNeutral="1"
+        level="2" maxHealth="17" attack="5" attackTime="2870" isNeutral="1"
         xDrawOffset="-17" yDrawOffset="-28"
         imageFile="goat" sounds = "goat" >
         <collisionRect x="-15" y="-4" w="31" h="7" />
@@ -156,7 +156,7 @@ It looks like your eyes and ears are in working order, so let's test your arms a
     <spawnPoint type="tutBoar" quantity="10" radius="450" respawnTime="60000" x="3112" y="59956" />
     <npcType
         id="tutBoar" name="Boar"
-        level="3" maxHealth="44" attack="7" attackTime="1970"
+        level="3" maxHealth="18" attack="5" attackTime="2780"
         xDrawOffset="-11" yDrawOffset="-13"
         imageFile="boar" sounds = "pig" >
         <collisionRect x="-9" y="-4" w="18" h="7" />
