@@ -545,20 +545,21 @@ void DataLoader::loadItems(XmlReader &xr) {
                        Color::TODO);
         continue;
       }
+
       auto speedInS = 0.0;
       if (!xr.findAttr(weaponElem, "speed", speedInS)) {
         _server._debug("Item "s + id + " is missing weapon speed"s,
                        Color::TODO);
         continue;
       }
-      item.makeWeapon(damage, speedInS);
+
+      auto school = ""s;
+      xr.findAttr(weaponElem, "school", school);
+
+      item.makeWeapon(damage, speedInS, {school});
 
       auto range = Podes{};
       if (xr.findAttr(weaponElem, "range", range)) item.weaponRange(range);
-
-      auto school = ""s;
-      if (xr.findAttr(weaponElem, "school", school))
-        item.weaponSchool({school});
 
       auto ammoType = ""s;
       if (xr.findAttr(weaponElem, "consumes", ammoType))

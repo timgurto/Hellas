@@ -207,3 +207,31 @@ TEST_CASE("The map can be loaded from a string") {
     THEN("The map has width=2") { CHECK(s->mapX() == 2); }
   }
 }
+
+TEST_CASE("Weapon damage school is loaded") {
+  GIVEN("a weapon that does fire damage") {
+    auto data = R"(
+      <item id="fireSword" >
+        <weapon damage="1" speed="1" school="fire" />
+      </item>
+    )";
+
+    WHEN("a server starts") {
+      auto s = TestServer::WithDataString(data);
+
+      THEN("that weapon has the correct school") {
+        const auto &fireSword = s.getFirstItem();
+        CHECK(fireSword.stats().weaponSchool == SpellSchool::FIRE);
+      }
+    }
+
+    WHEN("a client starts") {
+      auto c = TestClient::WithDataString(data);
+
+      THEN("that weapon has the correct school") {
+        const auto &fireSword = c.items().begin()->second;
+        CHECK(fireSword.stats().weaponSchool == SpellSchool::FIRE);
+      }
+    }
+  }
+}

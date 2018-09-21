@@ -616,7 +616,7 @@ bool User::canBlock() const {
 SpellSchool User::school() const {
   auto weapon = _gear[Item::WEAPON_SLOT].first;
   if (!weapon) return {};
-  return weapon->weaponSchool();
+  return weapon->stats().weaponSchool;
 }
 
 double User::combatDamage() const {

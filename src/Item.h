@@ -23,11 +23,9 @@ class Item {
   const StatsMod &stats() const { return _stats; }
   Hitpoints strength() const { return _strength; }
   void strength(Hitpoints n) { _strength = n; }
-  void makeWeapon(Hitpoints damage, double speedInS);
+  void makeWeapon(Hitpoints damage, double speedInS, SpellSchool school);
   void weaponRange(Podes range) { _weaponRange = range.toPixels(); }
   px_t weaponRange() const { return _weaponRange; }
-  void weaponSchool(SpellSchool school) { _weaponSchool = school; }
-  SpellSchool weaponSchool() const { return _weaponSchool; }
   void weaponAmmo(const std::string &id) { _weaponAmmoID = id; }
   const Item *weaponAmmo() const { return _weaponAmmo; }
   bool usesAmmo() const { return _weaponAmmo != nullptr; }
@@ -55,7 +53,6 @@ class Item {
 
   // If a weapon, how close the holder must be to a target to it.
   px_t _weaponRange = Podes::MELEE_RANGE.toPixels();
-  SpellSchool _weaponSchool{SpellSchool::PHYSICAL};
   std::string _weaponAmmoID{};
   mutable const Item *_weaponAmmo{nullptr};  // Fetched in fetchAmmoItem()
 
