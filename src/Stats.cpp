@@ -103,11 +103,13 @@ std::vector<std::string> StatsMod::toStrings() const {
   if (attackTime > 0) {
     auto inSeconds = attackTime / 1000.0;
     auto formatted = std::ostringstream{};
-    formatted << std::setprecision(2) << std::fixed << inSeconds << "s speed"s;
+    formatted << std::setprecision(1) << std::fixed << inSeconds << "s speed"s;
     v.push_back(formatted.str());
   }
   if (weaponDamage > 0) {
-    auto line = toString(weaponDamage) + " damage"s;
+    std::string schoolString =
+        weaponSchool == SpellSchool::PHYSICAL ? ""s : weaponSchool;
+    auto line = toString(weaponDamage) + " "s + schoolString + " damage"s;
     if (attackTime > 0) {
       auto dps = std::ostringstream{};
       dps << std::setprecision(2) << std::fixed

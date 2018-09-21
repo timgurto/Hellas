@@ -75,6 +75,8 @@ const Tooltip &ClientItem::tooltip() const {
     tooltip.setColor(Color::TOOLTIP_BODY);
     tooltip.addLine("Gear: "s + Client::GEAR_SLOT_NAMES[_gearSlot]);
 
+    tooltip.addLines(_stats.toStrings());
+
     if (weaponRange() > Podes::MELEE_RANGE.toPixels())
       tooltip.addLine("Range: "s + toString(Podes::FromPixels(weaponRange())) +
                       " podes");
@@ -83,8 +85,6 @@ const Tooltip &ClientItem::tooltip() const {
       auto &ammoType = dynamic_cast<const ClientItem &>(*weaponAmmo());
       tooltip.addLine("Each attack consumes a "s + ammoType.name());
     }
-
-    tooltip.addLines(_stats.toStrings());
   }
 
   // Tags
