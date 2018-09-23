@@ -50,7 +50,11 @@ void Texture::createFromSurface() {
 }
 
 Texture::Texture(const Texture &rhs)
-    : _raw(rhs._raw), _w(rhs._w), _h(rhs._h), _validTarget(rhs._validTarget) {}
+    : _raw(rhs._raw),
+      _w(rhs._w),
+      _h(rhs._h),
+      _validTarget(rhs._validTarget),
+      _surface(rhs._surface) {}
 
 Texture &Texture::operator=(const Texture &rhs) {
   if (this == &rhs) return *this;
@@ -60,6 +64,7 @@ Texture &Texture::operator=(const Texture &rhs) {
   _w = rhs._w;
   _h = rhs._h;
   _validTarget = rhs._validTarget;
+  _surface = rhs._surface;
 
   return *this;
 }
@@ -85,6 +90,11 @@ void Texture::draw(const ScreenRect &location) const {
 void Texture::draw(const ScreenRect &location,
                    const ScreenRect &srcRect) const {
   renderer.drawTexture(_raw.get(), location, srcRect);
+}
+
+Color Texture::getPixel(px_t x, px_t y) const {
+  if (!_surface) return 0;
+  return _surface.getPixel(x, y);
 }
 
 void Texture::setRenderTarget() const {

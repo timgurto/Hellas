@@ -513,6 +513,7 @@ Sprite *Client::getEntityAtMouse() {
     if (&entity == &_character) continue;  // Can't interact with self
     if (entity.type()->isDecoration()) continue;
     if (!entity.collision(mouseOffset)) continue;  // Crude collision check
+    if (!entity.mouseIsOverRealPixel(mouseOffset)) continue;  // Detailed check
     mouseOverIt = it;
   }
   if (mouseOverIt != _entities.end())

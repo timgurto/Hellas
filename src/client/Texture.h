@@ -47,6 +47,8 @@ class Texture {
   void draw(const ScreenRect &location) const;
   void draw(const ScreenRect &location, const ScreenRect &srcRect) const;
 
+  Color getPixel(px_t x, px_t y) const;
+
   /*
   Render to this Texture instead of the renderer.
   Texture must have been created with Texture(width, height), otherwise this

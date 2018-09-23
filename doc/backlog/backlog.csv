@@ -313,7 +313,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 354,Show construction sites as pegs rather than a footprint,5,5,Aesthetics,,,,
 355,Revert to older grunts,5,1,Content,,,,
 357,Prepopulate login-name field,21,3,Usability,,,,
-358,Nymphs are hard to target; player might be in the way,13,8,Bug,,,,
+358,Nymphs are hard to target; player might be in the way,13,8,Bug,,TRUE,,
 359,Don't show extinguished ovens and intermediary farms as construction sites,5,5,Aesthetics,,,,
 360,Auto-close object window if only option is to destroy,8,3,Usability,,,,1
 361,Objects can be wrongly destroyed.  Attack state might persist after death,55,8,Bug,,TRUE,,
@@ -437,9 +437,9 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 491,Better blood colour,5,2,Content,,,,1
 492,Replace all instances of Color::TODO,8,5,Content,,,,1
 493,Get in-progress quests on login,13,2,Bug,,,,1
-494,Ignore entity if mouse is over a transparent pixel,21,3,Usability,,,,1
+494,Ignore entity if mouse is over a transparent pixel,21,3,Usability,,TRUE,,1
 495,XP bar looks overfull when leveling with a remainder,8,2,Bug,,,,1
 496,Draw names/bars in front of everything else,2,2,Usability,,,,1
 497,Extinguished fire can't be clicked on,21,3,Bug,,TRUE,,
-498,"Allow smaller mouse-over boxes (e.g., Atlas)",2,3,Usability,,,,1
+498,It's too easy to select Atlas,2,3,Usability,,,,1
 499,Recolour UI images,13,8,Usability,,,,1

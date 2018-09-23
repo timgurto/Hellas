@@ -97,6 +97,18 @@ bool Sprite::collision(const MapPoint &p) const {
   return ::collision(toScreenPoint(p), drawRect());
 }
 
+bool Sprite::mouseIsOverRealPixel(const MapPoint &p) const {
+  auto pos = toScreenPoint(p);
+  const auto &dr = drawRect();
+  pos.x -= dr.x;
+  pos.y -= dr.y;
+
+  auto pixel = image().getPixel(pos.x, pos.y);
+  if (pixel == Color::MAGENTA) return false;
+
+  return true;
+}
+
 const Texture &Sprite::cursor(const Client &client) const {
   return client.cursorNormal();
 }

@@ -82,6 +82,7 @@ class Sprite {
 
   double bottomEdge() const;
   bool collision(const MapPoint &p) const;
+  bool mouseIsOverRealPixel(const MapPoint &p) const;
 
   struct ComparePointers {
     bool operator()(const Sprite *lhs, const Sprite *rhs) const {
