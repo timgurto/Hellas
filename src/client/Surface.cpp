@@ -12,33 +12,32 @@
 extern Renderer renderer;
 
 Surface::Surface(const std::string &filename, const Color &colorKey)
-    : _raw(IMG_Load(filename.c_str())) {
-  if (_raw == nullptr) {
+    : _raw(std::shared_ptr<SDL_Surface>{IMG_Load(filename.c_str()),
+                                        SDL_FreeSurface}) {
+  if (!_raw) {
     if (isDebug() && Client::isClient)
       Client::debug()("File missing: " + filename, Color::TODO);
     return;
   }
-  if (&colorKey != &Color::TODO) SDL_SetColorKey(_raw, SDL_TRUE, colorKey);
+  if (&colorKey != &Color::TODO)
+    SDL_SetColorKey(_raw.get(), SDL_TRUE, colorKey);
 
   if (isDebug()) _description = filename;
 }
 
 Surface::Surface(TTF_Font *font, const std::string &text, const Color &color)
-    : _raw(TTF_RenderText_Blended(font, text.c_str(), color)) {
+    : _raw(std::shared_ptr<SDL_Surface>{
+          TTF_RenderText_Blended(font, text.c_str(), color), SDL_FreeSurface}) {
   if (isDebug()) _description = "Text: " + text;
 }
 
-Surface::~Surface() {
-  if (_raw != nullptr) SDL_FreeSurface(_raw);
-}
-
 SDL_Texture *Surface::toTexture() const {
-  return renderer.createTextureFromSurface(_raw);
+  return renderer.createTextureFromSurface(_raw.get());
 }
 
-bool Surface::operator!() const { return _raw == nullptr; }
+bool Surface::operator!() const { return !_raw.operator bool(); }
 
-Surface::operator bool() const { return _raw != nullptr; }
+Surface::operator bool() const { return _raw.operator bool(); }
 
 Uint32 Surface::getPixel(px_t x, px_t y) const {
   int bytesPerPixel = _raw->format->BytesPerPixel;

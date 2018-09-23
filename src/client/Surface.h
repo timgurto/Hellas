@@ -3,7 +3,7 @@
 
 // Wrapper for SDL_Surface.
 class Surface {
-  SDL_Surface *_raw;
+  std::shared_ptr<SDL_Surface> _raw;
 
   std::string _description;  // For easier debugging of leaks.
 
@@ -11,7 +11,6 @@ class Surface {
   Surface(const std::string &filename, const Color &colorKey = Color::TODO);
   Surface(TTF_Font *font, const std::string &text,
           const Color &color = Color::TODO);
-  ~Surface();
 
   bool operator!() const;
   operator bool() const;
