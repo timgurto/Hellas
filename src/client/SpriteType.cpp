@@ -7,10 +7,9 @@
 #include "Surface.h"
 
 SpriteType::SpriteType(const ScreenRect &drawRect, const std::string &imageFile)
-    : _image(imageFile, Color::MAGENTA),
-      _drawRect(drawRect),
-      _isFlat(false),
-      _isDecoration(false) {
+    : _drawRect(drawRect), _isFlat(false), _isDecoration(false) {
+  if (imageFile.empty()) return;
+  _image = {imageFile, Color::MAGENTA};
   if (_image) {
     _drawRect.w = _image.width();
     _drawRect.h = _image.height();

@@ -10,7 +10,7 @@
 #include "Tooltip.h"
 
 ClientObjectType::ClientObjectType(const std::string &id)
-    : SpriteType({}, id),
+    : SpriteType({}, {}),
       _id(id),
       _canGather(false),
       _canDeconstruct(false),
