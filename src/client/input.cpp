@@ -509,10 +509,11 @@ Sprite *Client::getEntityAtMouse() {
   auto lowerBound = _entities.lower_bound(&topEntity),
        upperBound = _entities.upper_bound(&bottomEntity);
   for (auto it = lowerBound; it != upperBound; ++it) {
-    if (*it != &_character &&              // Skip the player's character
-        !(*it)->type()->isDecoration() &&  // Skip decorations
-        (*it)->collision(mouseOffset))     // Check collision
-      mouseOverIt = it;
+    const auto &entity = **it;
+    if (&entity == &_character) continue;  // Can't interact with self
+    if (entity.type()->isDecoration()) continue;
+    if (!entity.collision(mouseOffset)) continue;  // Crude collision check
+    mouseOverIt = it;
   }
   if (mouseOverIt != _entities.end())
     return *mouseOverIt;
