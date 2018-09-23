@@ -9,12 +9,12 @@
 
 #include "../Color.h"
 #include "../Point.h"
-
-class Surface;
+#include "Surface.h"
 
 // A wrapper class for SDL_Texture, which also provides related functionality
 class Texture {
   std::shared_ptr<SDL_Texture> _raw;
+  Surface _surface;  // If created from a surface
   px_t _w{0}, _h{0};
   bool _validTarget{false};
 
@@ -26,7 +26,7 @@ class Texture {
   Texture(const Surface &surface);
   Texture(TTF_Font *font, const std::string &text,
           const Color &color = Color::WINDOW_FONT);
-  void createFromSurface(const Surface &surface);
+  void createFromSurface();  // Uses _surface
 
   Texture(const Texture &rhs);
   Texture &operator=(const Texture &rhs);

@@ -22,25 +22,28 @@ Texture::Texture(const std::string &filename, const Color &colorKey) {
   if (filename.empty()) return;
   assert(renderer);
 
-  Surface surface(filename, colorKey);
-  createFromSurface(surface);
+  _surface = {filename, colorKey};
+  createFromSurface();
 }
 
-Texture::Texture(const Surface &surface) { createFromSurface(surface); }
+Texture::Texture(const Surface &surface) {
+  _surface = surface;
+  createFromSurface();
+}
 
 Texture::Texture(TTF_Font *font, const std::string &text, const Color &color) {
   assert(renderer);
 
   if (!font) return;
 
-  Surface surface(font, text, color);
-  createFromSurface(surface);
+  _surface = {font, text, color};
+  createFromSurface();
 }
 
-void Texture::createFromSurface(const Surface &surface) {
-  if (!surface) return;
+void Texture::createFromSurface() {
+  if (!_surface) return;
 
-  _raw = std::shared_ptr<SDL_Texture>{surface.toTexture(), SDL_DestroyTexture};
+  _raw = std::shared_ptr<SDL_Texture>{_surface.toTexture(), SDL_DestroyTexture};
 
   auto isValid = SDL_QueryTexture(_raw.get(), nullptr, nullptr, &_w, &_h) == 0;
   if (!isValid) _raw = {};
