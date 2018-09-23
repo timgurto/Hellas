@@ -45,20 +45,20 @@ It looks like your eyes and ears are in working order, so let's test your arms a
         xDrawOffset="-17" yDrawOffset="-28"
         imageFile="goat" sounds = "goat" >
         <collisionRect x="-15" y="-4" w="31" h="7" />
-        <loot id="tutMeat" chance="0.4" />
+        <loot id="tutMeat" > <normal mean="0.5" sd="0.5" /> </loot>
         <loot id="tutHide" chance="0.2" />
-        <loot id="tutEntrails" chance="0.4" />
+        <loot id="tutEntrails"> <normal mean="0.5" sd="0.5" /> </loot>
         <loot id="tutFat" chance="0.2" />
     </npcType>
     <item id="tutMeat"     name="Goat Meat"                         stackSize="10" exclusiveToQuest="tutParts" />
     <item id="tutHide"     name="Goat Hide"     iconFile="hide"     stackSize="10" exclusiveToQuest="tutParts" />
     <item id="tutEntrails" name="Goat Entrails" iconFile="entrails" stackSize="10" exclusiveToQuest="tutParts" />
     <item id="tutFat"      name="Goat Fat"      iconFile="fat"      stackSize="10" exclusiveToQuest="tutParts" />
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="4396" y="59760" />
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="4542" y="59490" />
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="4762" y="59664" />
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="4880" y="59296" />
-    <spawnPoint type="tutGoat" quantity="3" radius="120" respawnTime="60000" x="5096" y="59482" />
+    <spawnPoint type="tutGoat" quantity="2" radius="120" respawnTime="90000" x="4396" y="59760" />
+    <spawnPoint type="tutGoat" quantity="2" radius="120" respawnTime="90000" x="4542" y="59490" />
+    <spawnPoint type="tutGoat" quantity="2" radius="120" respawnTime="90000" x="4762" y="59664" />
+    <spawnPoint type="tutGoat" quantity="2" radius="120" respawnTime="90000" x="4880" y="59296" />
+    <spawnPoint type="tutGoat" quantity="2" radius="120" respawnTime="90000" x="5096" y="59482" />
 
 <quest id="tutOfferings" name="An offer he can't refuse" startsAt="prometheus" endsAt="tutBrazier"
     brief="Zeus wants to decide which parts of the animal should be sacrificed, and so you'll need to make two offerings and let him choose.  This gives us an opportunity to trick him.
@@ -136,7 +136,7 @@ It looks like your eyes and ears are in working order, so let's test your arms a
         isUnbuildable="1" disappearAfter="300000"
         constructionText="requires fuel">
         <collisionRect x="-10" y="-3" w="20" h="8" />
-        <material id="tutStick" quantity="3" />
+        <material id="tutStick" quantity="2" />
         <strength item="stick" quantity="5" />
         <transform id="tutFire" time="1" skipConstruction="1" />
     </objectType>
@@ -149,11 +149,11 @@ It looks like your eyes and ears are in working order, so let's test your arms a
         <yield id="tutStick" />
         <strength item="stick" quantity="1" />
     </objectType>
-    <spawnPoint type="tutStick" quantity="15" radius="450" respawnTime="60000" x="3112" y="59956" />
+    <spawnPoint type="tutStick" quantity="10" radius="450" respawnTime="60000" x="3112" y="59956" />
     <spawnPoint type="dummyTree" quantity="40" radius="450" respawnTime="60000" x="3112" y="59956" />
     <spawnPoint type="dummyTree" quantity="7" radius="250" respawnTime="60000" x="3378" y="59472" />
     <spawnPoint type="dummyTree" quantity="5" radius="200" respawnTime="60000" x="2486" y="59860" />
-    <spawnPoint type="tutBoar" quantity="10" radius="450" respawnTime="60000" x="3112" y="59956" />
+    <spawnPoint type="tutBoar" quantity="12" radius="450" respawnTime="120000" x="3112" y="59956" />
     <npcType
         id="tutBoar" name="Boar"
         level="3" maxHealth="18" attack="5" attackTime="2780"
@@ -181,17 +181,17 @@ It looks like your eyes and ears are in working order, so let's test your arms a
         <collisionRect x="-15" y="-3" w="23" h="6" />
         <class name="titan"/>
     </npcType>
-    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="60000" x="2910" y="59372" />
-    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="60000" x="2278" y="59356" />
-    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="60000" x="2062" y="59688" />
-    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="60000" x="1684" y="59460" />
-    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="60000" x="1200" y="59382" />
-    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="60000" x="638" y="59624" />
+    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="120000" x="2910" y="59372" />
+    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="120000" x="2278" y="59356" />
+    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="120000" x="2062" y="59688" />
+    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="120000" x="1684" y="59460" />
+    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="120000" x="1200" y="59382" />
+    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="120000" x="638" y="59624" />
     
-<quest id="tutCyclops" name="Eye on the Prize" startsAt="atlas" endsAt="arges"
+<quest id="tutCyclops" name="Eye on the Prize" startsAt="atlas" endsAt="cyclops1"
     brief="Thank you, I feel much better.  Bearing the heavens for all eternity is hungry work.  Would you mind holding this for a moment while I wipe my mouth?
     Hah, I'm joking; relax!
-    Advice?  Actually, there is something that might prove useful to you.  Over yonder are the cyclops craftsmen that made weapons for Zeus during the war.  Go speak to them, and see if they have any surplus weapons now that the war is over.  Sure, they sided with the enemy, but the blood of the Titans flows through their veins too and they might be willing to bargain."
+    Advice?  Actually, there is something that might prove useful to you.  Down the path to the south are the cyclops craftsmen that made weapons for Zeus during the war.  Go speak to them, and see if they have any surplus weapons now that the war is over.  Sure, they sided with the enemy, but the blood of the Titans flows through their veins too and they might be willing to bargain."
     debrief="Good day.  You're a small one!
     Surplus weapons?  Hmm, I don't know . . . the war is over, I suppose.  Plus, we're short on materials for our work, so maybe we can help each other.  My brother Brontes here will give you what you want in exchange for the metal ore that can be found on this mountain.">
     <prerequisite id="tutCooking" />
