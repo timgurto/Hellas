@@ -442,6 +442,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 494,Ignore entity if mouse is over a transparent pixel,21,3,Usability,,,,
 495,XP bar looks overfull when leveling with a remainder,8,2,Bug,,,,
 496,Draw names/bars in front of everything else,2,2,Usability,,,,
-497,Extinguished fire can't be clicked on,21,3,Bug,,,,
+497,Extinguished fire can't be clicked on,21,3,Bug,,TRUE,,
 498,"Allow smaller mouse-over boxes (e.g., Atlas)",2,3,Usability,,,,
 499,Recolour UI images,13,8,Usability,,,,
