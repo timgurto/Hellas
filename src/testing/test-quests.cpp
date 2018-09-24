@@ -1387,3 +1387,32 @@ TEST_CASE("Quest reward: construction", "[quests]") {
     }
   }
 }
+
+TEST_CASE("Client remembers quest progress after death", "[quests]") {
+  GIVEN("a player on a quest, and a quest-starter object") {
+    auto data = R"(
+      <objectType id="questStarter" />
+      <objectType id="questEnder" />
+      <quest id="quest1" startsAt="questStarter" endsAt="questEnder" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addObject("questStarter", {10, 15});
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.startQuest(s.getFirstQuest());
+
+    WHEN("he dies") {
+      REPEAT_FOR_MS(100);
+      user.kill();
+
+      THEN("he knows he's on the quest") {
+        REPEAT_FOR_MS(100);
+        const auto &quest = c.getFirstQuest();
+        CHECK(quest.state == CQuest::CAN_FINISH);
+      }
+    }
+  }
+}

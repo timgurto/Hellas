@@ -22,8 +22,9 @@ void QuestNodeType::sendQuestsToUser(const User &user) const {
   const auto &server = Server::instance();
 
   for (const auto &id : _questsStartingHere) {
-    auto quest = server.findQuest(id);
     if (user.hasCompletedQuest(id)) continue;
+    if (user.isOnQuest(id)) continue;
+    auto quest = server.findQuest(id);
     if (quest->hasPrerequisite()) {
       const auto &prereq = quest->prerequisiteQuest;
       if (!user.hasCompletedQuest(prereq)) continue;
