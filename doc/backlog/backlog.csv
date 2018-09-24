@@ -374,7 +374,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 422,Quest items that drop only while on a specific quest,5,5,Feature,421,TRUE,,
 425,A quest to complete a construction,8,5,Feature,413,TRUE,,
 428,Quests can reward a construction,13,5,Feature,413,TRUE,,
-429,Can log in with Enter key when button is disabled,34,2,Bug,,,,1
+429,Can log in with Enter key when button is disabled,34,2,Bug,,TRUE,,1
 430,Sometimes non-leaf skills are lost on death,13,8,Bug,,,,1
 432,A quest can unlock another quest,21,3,Feature,413,TRUE,,
 433,Quests are persistent,34,3,Bug,,TRUE,,

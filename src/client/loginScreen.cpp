@@ -371,7 +371,10 @@ void Client::handleLoginInput(double delta) {
 
           case SDLK_RETURN:
           case SDLK_KP_ENTER:
-            login();
+            if (_createWindow && _createWindow->visible())
+              createAccount();
+            else
+              login();
             break;
         }
         break;
