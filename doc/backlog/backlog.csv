@@ -420,7 +420,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 474,Remove buffs on death,8,2,Feature,,,,1
 475,Add stat tooltips in gear window,8,3,Usability,,,,1
 476,Spell hotkey numbers not visible,8,1,Bug,,TRUE,,
-477,Order hotbar deterministically,21,2,Usability,,,,1
+477,Order hotbar deterministically,21,2,Usability,,TRUE,,1
 478,Update missing-data page,55,21,Tooling,,,,
 479,SFX for aggro,5,3,Usability,,,,
 480,SFX for swing,8,3,Usability,,,,

@@ -129,8 +129,20 @@ void Client::initHotbar() {
 void Client::populateHotbar() {
   _hotbar->clearChildren();
 
+  // Alphabetise list
+  struct CompareSpellName {
+    bool operator()(const ClientSpell *lhs, const ClientSpell *rhs) {
+      if (lhs == rhs) return false;
+      if (!lhs) return false;
+      if (!rhs) return true;
+      return lhs->name() < rhs->name();
+    }
+  };
+  auto sortedSpells = std::set<const ClientSpell *, CompareSpellName>{};
+  for (auto *spell : _knownSpells) sortedSpells.insert(spell);
+
   auto i = 0;
-  for (auto *spell : _knownSpells) {
+  for (auto *spell : sortedSpells) {
     void *castMessageVoidPtr = const_cast<void *>(
         reinterpret_cast<const void *>(&spell->castMessage()));
     auto button = new Button({i * 18, 0, 18, 18}, {}, [castMessageVoidPtr]() {
