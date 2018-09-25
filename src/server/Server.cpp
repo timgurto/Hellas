@@ -359,6 +359,11 @@ void Server::addUser(const Socket &socket, const std::string &name,
     newUser.sendMessage(SV_POINTS_IN_TREE, makeArgs(tree, pointsInTree));
   }
 
+  // Send him his quest progress
+  for (const auto &questID : newUser.questsInProgress()) {
+    newUser.sendMessage(SV_QUEST_CAN_BE_FINISHED, questID);
+  }
+
   // Send him his known spells
   auto knownSpellsString = userClass.generateKnownSpellsString();
   newUser.sendMessage(SV_KNOWN_SPELLS, knownSpellsString);

@@ -875,34 +875,42 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
   }
 }
 
-TEST_CASE("On login, client objects reflect already completed quests",
-          "[quests]") {
-  GIVEN("a simple quest and object") {
+TEST_CASE("Clients get the correct state on login", "[quests]") {
+  GIVEN("two simple quests, and a questgiver") {
     auto data = R"(
-      <objectType id="A" />
-      <quest id="quest1" startsAt="A" endsAt="A" />
+      <objectType id="questgiver" />
+      <objectType id="B" />
+      <quest id="quest1" startsAt="questgiver" endsAt="B" />
+      <quest id="quest2" startsAt="questgiver" endsAt="B" />
     )";
     auto s = TestServer::WithDataString(data);
 
-    s.addObject("A", {10, 15});
+    s.addObject("questgiver", {10, 15});
 
-    WHEN("Alice finishes the quest then disconnects") {
+    WHEN("Alice starts one quest, finishes another, and disconnects") {
       {
         auto c = TestClient::WithUsernameAndDataString("alice", data);
         s.waitForUsers(1);
         auto &alice = s.getFirstUser();
-        const auto quest = s->findQuest("quest1");
-        alice.startQuest(*quest);
-        alice.completeQuest("quest1");
+
+        alice.startQuest(*s->findQuest("quest1"));
+
+        alice.startQuest(*s->findQuest("quest2"));
+        alice.completeQuest("quest2");
       }
 
       AND_WHEN("she logs in") {
         auto c = TestClient::WithUsernameAndDataString("alice", data);
 
-        THEN("she knows that a questgiver object gives no quests") {
+        THEN("she knows that the questgiver gives no quests") {
           WAIT_UNTIL(c.objects().size() == 1);
           const auto &obj = c.getFirstObject();
           WAIT_UNTIL(obj.startsQuests().size() == 0);
+
+          AND_THEN("she knows that she is on quest1") {
+            const auto &questInProgress = c->quests().find("quest1")->second;
+            WAIT_UNTIL(questInProgress.state == CQuest::CAN_FINISH);
+          }
         }
       }
     }
