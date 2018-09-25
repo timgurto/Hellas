@@ -876,12 +876,12 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
 }
 
 TEST_CASE("Clients get the correct state on login", "[quests]") {
-  GIVEN("two simple quests, and a questgiver") {
+  GIVEN("two quests, and a questgiver") {
     auto data = R"(
       <objectType id="questgiver" />
       <objectType id="B" />
-      <quest id="quest1" startsAt="questgiver" endsAt="B" />
-      <quest id="quest2" startsAt="questgiver" endsAt="B" />
+      <quest id="completable" startsAt="questgiver" endsAt="B" />
+      <quest id="completed" startsAt="questgiver" endsAt="B" />
     )";
     auto s = TestServer::WithDataString(data);
 
@@ -893,10 +893,10 @@ TEST_CASE("Clients get the correct state on login", "[quests]") {
         s.waitForUsers(1);
         auto &alice = s.getFirstUser();
 
-        alice.startQuest(*s->findQuest("quest1"));
+        alice.startQuest(*s->findQuest("completable"));
 
-        alice.startQuest(*s->findQuest("quest2"));
-        alice.completeQuest("quest2");
+        alice.startQuest(*s->findQuest("completed"));
+        alice.completeQuest("completed");
       }
 
       AND_WHEN("she logs in") {
@@ -907,8 +907,9 @@ TEST_CASE("Clients get the correct state on login", "[quests]") {
           const auto &obj = c.getFirstObject();
           WAIT_UNTIL(obj.startsQuests().size() == 0);
 
-          AND_THEN("she knows that she is on quest1") {
-            const auto &questInProgress = c->quests().find("quest1")->second;
+          AND_THEN("she knows that she is on 'completable'") {
+            const auto &questInProgress =
+                c->quests().find("completable")->second;
             WAIT_UNTIL(questInProgress.state == CQuest::CAN_FINISH);
           }
         }
