@@ -33,10 +33,7 @@ class Avatar : public Sprite, public ClientCombatant {
   const MapRect collisionRect() const { return COLLISION_RECT + location(); }
   static const MapRect &collisionRectRaw() { return COLLISION_RECT; }
   void setClass(const ClassInfo::Name &newClass);
-  const ClassInfo &getClass() const {
-    assert(_class);
-    return *_class;
-  }
+  const ClassInfo *getClass() const { return _class; }
   const ClientItem::vect_t &gear() const { return _gear; }
   ClientItem::vect_t &gear() { return _gear; }
   void driving(bool b) { _driving = b; }

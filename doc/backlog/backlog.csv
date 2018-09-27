@@ -436,7 +436,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 490,Allow line break on -,2,3,Bug,,,,
 491,Better blood colour,5,2,Content,,,,1
 492,Replace all instances of Color::TODO,8,5,Content,,,,1
-493,Get in-progress quests on login,13,2,Bug,,,,1
+493,Get in-progress quests on login,13,8,Bug,,,,1
 494,Ignore entity if mouse is over a transparent pixel,21,3,Usability,,TRUE,,1
 495,XP bar looks overfull when leveling with a remainder,8,2,Bug,,,,1
 496,Draw names/bars in front of everything else,2,2,Usability,,,,1

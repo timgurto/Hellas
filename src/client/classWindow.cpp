@@ -60,8 +60,12 @@ void Client::confirmAndUnlearnTalents() {
 }
 
 void Client::populateClassWindow() {
+  if (!_character.getClass()) return;
+
+  auto &classInfo = *_character.getClass();
+
   _levelLabel->changeText("Level "s + toString(_character.level()) + " "s +
-                          _character.getClass().name());
+                          classInfo.name());
   _xpLabel->changeText(toString(_xp) + "/"s + toString(_maxXP) +
                        " experience"s);
 
@@ -72,8 +76,6 @@ void Client::populateClassWindow() {
                                     toString(pointsAvailable));
 
   _talentTrees->clearChildren();
-
-  auto &classInfo = _character.getClass();
 
   const px_t GAP = 10, TOTAL_GAP_WIDTH = GAP * (classInfo.trees().size()),
              TREE_WIDTH = (classInfo.trees().size() > 0

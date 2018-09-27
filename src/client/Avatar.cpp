@@ -103,9 +103,10 @@ const Tooltip &Avatar::tooltip() const {
   tooltip.addLine(_name);
 
   // Class
+  auto className = getClass() ? getClass()->name() : "Unknown";
   tooltip.addGap();
   tooltip.setColor(Color::TOOLTIP_BODY);
-  tooltip.addLine("Level "s + toString(level()) + " "s + getClass().name());
+  tooltip.addLine("Level "s + toString(level()) + " "s + className);
 
   return tooltip;
 }
