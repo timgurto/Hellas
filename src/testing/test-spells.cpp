@@ -86,16 +86,13 @@ TEST_CASE("Spell cooldowns", "[remote]") {
     auto s = TestServer::WithDataString(data);
 
     auto cAlice = TestClient::WithUsername("Alice");
-    auto cBob = RemoteClient{"-username Bob"};
-    s.waitForUsers(2);
+    s.waitForUsers(1);
     auto &alice = *s->getUserByName("Alice");
-    auto &bob = *s->getUserByName("Bob");
 
     alice.getClass().teachSpell("hurtSelf");
     alice.getClass().teachSpell("hurtSelf1s");
     alice.getClass().teachSpell("hurtSelfAlso1s");
     alice.getClass().teachSpell("hurtSelf2s");
-    bob.getClass().teachSpell("hurtSelf1s");
 
     WHEN("Alice casts the spell with cooldown 1s") {
       cAlice.sendMessage(CL_CAST, "hurtSelf1s");
@@ -143,6 +140,11 @@ TEST_CASE("Spell cooldowns", "[remote]") {
       }
 
       AND_WHEN("Bob tries casting it") {
+        auto cBob = RemoteClient{"-username Bob"};
+        s.waitForUsers(2);
+        auto &bob = *s->getUserByName("Bob");
+        bob.getClass().teachSpell("hurtSelf1s");
+
         auto healthBefore = bob.health();
         s.sendMessage(bob.socket(), TST_SEND_THIS_BACK,
                       makeArgs(CL_CAST, "hurtSelf1s"));
