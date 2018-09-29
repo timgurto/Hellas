@@ -113,11 +113,16 @@ void Entity::reduceHealth(int damage) {
     onDeath();
   } else {
     _health -= damage;
+    if (_health > this->_stats.maxHealth) {
+      Server::debug()("reduceHealth(): Entity has too much health: "s +
+                          toString(_health) + "/"s +
+                          toString(this->_stats.maxHealth),
+                      Color::TODO);
+      _health = this->_stats.maxHealth;
+    }
     onHealthChange();
   }
   broadcastDamagedMessage(damage);
-
-  assert(_health <= this->_stats.maxHealth);
 }
 
 void Entity::reduceEnergy(int amount) {

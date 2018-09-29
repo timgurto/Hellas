@@ -363,7 +363,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 408,Tutorial,89,89,Feature,,,,1
 409,Change lighting/colors to simulate time of day,21,55,Aesthetics,,,,
 410,"Recruit via an invitation, not insta-join",21,13,Usability,,,,
-411,Failed assertion in Entity.cpp line 116,34,8,Bug,,,,1
+411,Failed assertion in Entity.cpp line 116,34,8,Bug,,TRUE,,1
 412,Prevent picking up items while drop confirmation is open,8,3,Bug,,,,1
 413,A quest from A that finishes at B,5,21,Feature,,TRUE,,
 414,Quest-briefing text,8,5,Feature,413,TRUE,,
