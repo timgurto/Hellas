@@ -307,7 +307,14 @@ void Entity::onAttackedBy(Entity &attacker, Threat threat) {
 
   for (auto buff : interruptibleBuffs()) removeBuff(buff);
 
-  if (isDead()) attacker.onKilled(*this);
+  if (isDead()) {
+    if (!this->tagger()) {
+      Server::debug()("Entity died without being tagged; no credit given.",
+                      Color::TODO);
+      return;
+    }
+    this->tagger()->onKilled(*this);
+  }
 }
 
 void Entity::startCorpseTimer() { _corpseTime = timeToRemainAsCorpse(); }

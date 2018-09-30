@@ -18,6 +18,8 @@ struct Point {
     return abs(x - rhs.x) <= EPSILON && abs(y - rhs.y) <= EPSILON;
   }
 
+  bool operator!=(const Point &rhs) const { return !(*this == rhs); }
+
   Point &operator+=(const Point &rhs) {
     this->x += rhs.x;
     this->y += rhs.y;

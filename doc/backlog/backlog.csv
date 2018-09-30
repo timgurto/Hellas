@@ -30,7 +30,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 37,Grouped players can invite others to their group,21,8,Feature,35,,TRUE,3
 38,Non-grouped players can invite others to form a group,21,8,Feature,35,,TRUE,3
 39,Players can leave groups,13,5,Feature,35,,TRUE,3
-40,"The first player to damage an NPC tags it, until it dies or disengages.",34,5,Feature,,,TRUE,2
+40,"The first player to damage an NPC tags it, until it dies or disengages.",34,5,Feature,,TRUE,TRUE,2
 41,Grouped players share NPC tagging,21,34,Feature,40,,TRUE,
 42,A player can be in an alternate 'instance',34,233,Feature,,,TRUE,3
 43,Instances get terrain from templates,34,55,Feature,42,,TRUE,3
@@ -443,3 +443,4 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 497,Extinguished fire can't be clicked on,21,3,Bug,,TRUE,,
 498,It's too easy to select Atlas,2,3,Usability,,,,2
 499,Recolour UI images,13,8,Usability,,,,1
+500,Show taggers in client,5,3,Usability,,,,

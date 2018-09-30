@@ -238,6 +238,7 @@ void NPC::processAI(ms_t timeElapsed) {
       // Target has run out of range: give up
       if (distToTarget > PURSUIT_RANGE) {
         _state = IDLE;
+        clearTagger();
         break;
       }
 
