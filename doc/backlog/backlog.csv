@@ -25,34 +25,34 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 32,Object repair can require tools,5,2,Feature,31,,TRUE,
 33,Items can be repaired with materials,21,55,Feature,30,,TRUE,
 34,Repairing items can require tools,8,2,Feature,33,,TRUE,
-35,There can be groups of two or more players,34,8,Feature,,,TRUE,2
-36,A player's group shows up on the UI,21,13,Usability,35,,TRUE,2
-37,Grouped players can invite others to their group,21,8,Feature,35,,TRUE,2
-38,Non-grouped players can invite others to form a group,21,8,Feature,35,,TRUE,2
-39,Players can leave groups,13,5,Feature,35,,TRUE,2
-40,"The first player to damage an NPC tags it, until it dies or disengages.",34,5,Feature,,,TRUE,1
+35,There can be groups of two or more players,34,8,Feature,,,TRUE,3
+36,A player's group shows up on the UI,21,13,Usability,35,,TRUE,3
+37,Grouped players can invite others to their group,21,8,Feature,35,,TRUE,3
+38,Non-grouped players can invite others to form a group,21,8,Feature,35,,TRUE,3
+39,Players can leave groups,13,5,Feature,35,,TRUE,3
+40,"The first player to damage an NPC tags it, until it dies or disengages.",34,5,Feature,,,TRUE,2
 41,Grouped players share NPC tagging,21,34,Feature,40,,TRUE,
-42,A player can be in an alternate 'instance',34,233,Feature,,,TRUE,2
-43,Instances get terrain from templates,34,55,Feature,42,,TRUE,2
-44,Instances get spawners from templates,34,89,Feature,42,,TRUE,2
-45,Instances get static objects from templates,34,55,Feature,42,,TRUE,2
-46,A player can create and enter a new instance,21,233,Feature,42,,TRUE,2
-47,Instance entrance happens at a specific point in the world,13,13,Feature,46,,TRUE,2
-48,Grouped players can enter the same instance,21,34,Feature,42,,TRUE,2
-49,Instances are destroyed after being empty for (30m?),13,8,Feature,42,,TRUE,2
-50,Instances have a player cap,21,3,Feature,42,,TRUE,2
-51,"There's a way to leave instances, to a specific point in the world",8,8,Feature,42,,TRUE,2
+42,A player can be in an alternate 'instance',34,233,Feature,,,TRUE,3
+43,Instances get terrain from templates,34,55,Feature,42,,TRUE,3
+44,Instances get spawners from templates,34,89,Feature,42,,TRUE,3
+45,Instances get static objects from templates,34,55,Feature,42,,TRUE,3
+46,A player can create and enter a new instance,21,233,Feature,42,,TRUE,3
+47,Instance entrance happens at a specific point in the world,13,13,Feature,46,,TRUE,3
+48,Grouped players can enter the same instance,21,34,Feature,42,,TRUE,3
+49,Instances are destroyed after being empty for (30m?),13,8,Feature,42,,TRUE,3
+50,Instances have a player cap,21,3,Feature,42,,TRUE,3
+51,"There's a way to leave instances, to a specific point in the world",8,8,Feature,42,,TRUE,3
 52,NPCs can specify a set of items for their image,34,8,Aesthetics,,TRUE,TRUE,
 53,NPCs can specify a custom human template image,21,8,Aesthetics,,TRUE,TRUE,
 54,A pyramid object that is unique,21,3,Feature,,TRUE,TRUE,
 55,Players and cities can be at war with each other,34,5,Feature,1,TRUE,TRUE,
 57,Heavy items that prevent player movement,13,3,Feature,,,TRUE,
 58,Containers may allow 'heavy' objects or not,13,5,Feature,57,,TRUE,
-59,Better NPC pathfinding,21,34,Feature,,,,2
+59,Better NPC pathfinding,21,34,Feature,,,,3
 60,Some tool objects have a cooldown,5,13,Feature,,,TRUE,
 62,Fix flaky merchant-slot-window test,2,89,Bug,,TRUE,,
-65,NPCs can combine loot tables,5,8,Feature,,,,2
-66,NPCs can have skills/abilities,34,144,Feature,22,,,2
+65,NPCs can combine loot tables,5,8,Feature,,,,3
+66,NPCs can have skills/abilities,34,144,Feature,22,,,3
 67,Set bonuses for gear,13,21,Feature,,,,
 68,Class-restricted gear,8,5,Feature,,,,
 69,Distant players aren't being removed,8,8,Bug,,TRUE,,
@@ -62,7 +62,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 75,NPC idling AI,5,5,Feature,,,,
 76,Sounds for attacking and death,89,3,Aesthetics,,TRUE,,
 78,Release scrollbar on mouse up,5,8,Bug,,,,
-79,Make it more obvious when something is out of range,13,8,Usability,,,,1
+79,Make it more obvious when something is out of range,13,8,Usability,,,,2
 80,Make client connection failures more clean,5,13,Usability,,TRUE,,
 81,Allow actual dragging from containers,21,34,Usability,,,,
 82,Fix jumpy movement when laggy,5,34,Aesthetics,,,,
@@ -167,7 +167,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 196,Container slots are sometimes invisible or broken,89,21,Bug,,TRUE,,
 197,Allow ceding of unfinished objects,21,5,Feature,,TRUE,,
 198,"Unowned-object colors sometimes green, sometimes grey",5,13,Bug,,TRUE,,
-199,Provide list of online players,21,8,Usability,,,,1
+199,Provide list of online players,21,8,Usability,,,,2
 200,Make login screen behave on disconnect,8,21,Usability,,TRUE,,
 201,Lower object names,8,2,Aesthetics,,TRUE,,
 202,Give back a small pot after constructing with a water vessel,21,21,Feature,,TRUE,,
@@ -185,7 +185,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 218,Add recipe for water vessel -> small pot,8,1,Content,,TRUE,,
 220,Space check on trade doesn't account for existing stacks,13,2,Bug,,TRUE,,
 221,Space check on trade doesn't account for items' stack size,13,2,Bug,,TRUE,,
-222,Add placeholder images for items/objects,21,5,Usability,,,,1
+222,Add placeholder images for items/objects,21,5,Usability,,,,2
 223,Limit ware selection to items in container,8,13,Usability,,,,
 224,Don't require 'set' button for trade slots,8,8,Usability,,,,
 225,Find-item search doesn't work for more than 1 character,8,3,Bug,,,,
@@ -196,7 +196,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 231,Under-construction objects get full loot on destruction,21,3,Bug,,TRUE,,
 232,Under-construction objects can't be looted on destruction,8,2,Bug,,TRUE,,
 233,"Object loot should be 5%, not 50%",21,1,Bug,,TRUE,,
-234,Make allowed-terrain more intuitive for construction,8,8,Usability,,,,1
+234,Make allowed-terrain more intuitive for construction,8,8,Usability,,,,2
 235,"Give ovens a fueled state, and remove fuel from recipes",13,5,Content,,TRUE,,
 236,Prevent construction near respawn altars,3,8,Exploit,,,,
 237,Make players more clear on map,34,3,Usability,,TRUE,,
@@ -231,7 +231,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 267,Random characters get +health buff,2,2,Feature,265,TRUE,,
 268,Buffs expire,2,5,Feature,267,TRUE,,
 269,Buffs can be cast on target (no longer random),21,5,Feature,267,TRUE,,
-270,Buffs can be dismissed,1,5,Feature,267,,,1
+270,Buffs can be dismissed,1,5,Feature,267,,,2
 271,Buffs can be restricted to self,2,5,Feature,269,TRUE,,
 272,A -resistance debuff (can't be dismissed),3,5,Feature,270,TRUE,,
 273,DoT debuff,13,5,Feature,267,TRUE,,
@@ -298,13 +298,13 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 339,Display buffs in UI,13,5,Usability,267,TRUE,,
 340,Make talents persistent,21,21,Bug,,TRUE,,
 341,Make level/XP persistent,55,8,Bug,,TRUE,,
-342,Show levels in target panels,21,5,Usability,,,,1
+342,Show levels in target panels,21,5,Usability,,,,2
 343,Give NPCs levels,21,3,Feature,,TRUE,,
 344,Modify combat based on level difference,34,5,Feature,,TRUE,,
 345,Make objects always their attacker's level,8,8,Feature,344,TRUE,,
 346,"Implement DoTs properly, with combat modifiers, XP, aggro",21,21,Bug,,TRUE,,
-347,Add level-up particles,13,3,Aesthetics,,,,1
-348,Add level-up sound,21,3,Aesthetics,,,,1
+347,Add level-up particles,13,3,Aesthetics,,,,2
+348,Add level-up sound,21,3,Aesthetics,,,,2
 349,Server crashes on first assert in updateLocation(),89,21,Bug,,TRUE,,
 350,Update window title when object type changes,5,1,Bug,,,,
 351,Allow users to drop items onto construction sites,3,21,Usability,,,,
@@ -315,10 +315,10 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 357,Prepopulate login-name field,21,3,Usability,,,,
 358,Nymphs are hard to target; player might be in the way,13,8,Bug,,TRUE,,
 359,Don't show extinguished ovens and intermediary farms as construction sites,5,5,Aesthetics,,,,
-360,Auto-close object window if only option is to destroy,8,3,Usability,,,,1
+360,Auto-close object window if only option is to destroy,8,3,Usability,,,,2
 361,Objects can be wrongly destroyed.  Attack state might persist after death,55,8,Bug,,TRUE,,
-362,Close windows on disconnect,5,3,Usability,,,,1
-363,Failed assertion in Avatar.h line 36,55,8,Bug,,,,1
+362,Close windows on disconnect,5,3,Usability,,,,2
+363,Failed assertion in Avatar.h line 36,55,8,Bug,,TRUE,,2
 364,Current-wars spam on login,3,3,Bug,,,,
 365,Give XP for player kills,13,3,Feature,,,,
 366,Cancel food buff on interrupt,34,5,Bug,,,,
@@ -327,7 +327,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 369,Trees sometimes think they're being gathered when they're not.  Endless particles/sound.,55,5,Bug,,,,
 370,Avatar isn't playing death sound,13,5,Bug,,,,
 371,Make server connection an object with a lifetime,55,21,Bug,,TRUE,,
-372,Left-click doesn't always deselect neutral target,13,5,Bug,,,,1
+372,Left-click doesn't always deselect neutral target,13,5,Bug,,,,2
 373,Flash crafting and building buttons on unlock until opened,21,8,Usability,,,,
 374,Flash class button when talents are unspent,21,3,Usability,373,,,
 375,Allow war to be declared on an object,21,5,Usability,,,,
@@ -338,13 +338,13 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 381,Use consistent colors for tooltip text,5,2,Usability,,TRUE,,
 382,Password-protect accounts,34,233,Exploit,,,,
 384,Use in-class initialisers where possible,3,8,Code quality,,,,
-385,Remove asserts from server,89,13,Code quality,,,,1
+385,Remove asserts from server,89,13,Code quality,,,,2
 386,Disable unavailable-talent buttons,21,8,Usability,,,,
-387,Show XP bar in main UI,21,3,Usability,,,,1
+387,Show XP bar in main UI,21,3,Usability,,,,2
 388,Respond to server going down then up in login screen,34,13,Bug,371,TRUE,,
 389,Include equipped items in materials filter,13,5,Bug,,,,
 390,Restore health/energy on level up,13,2,Feature,,TRUE,,
-391,Show buff timers in client,21,8,Usability,,,,1
+391,Show buff timers in client,21,8,Usability,,,,2
 392,Screen events break embedded tooltips,13,5,Bug,,TRUE,,
 393,"Play defend/death sounds on projectile hit, not launch",8,5,Usability,,,,
 394,Tooltips for terrain tags,8,5,Usability,,,,
@@ -356,15 +356,15 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 401,Allow granting unfinished objects,21,3,Bug,,,,
 402,City label jitters for some players,5,5,Bug,,,,
 403,Consume smaller stacks of mats first,13,3,Feature,,,,
-404,Log players' cumulative time online,13,5,Feature,,,,1
+404,Log players' cumulative time online,13,5,Feature,,,,2
 405,Save user data more frequently,55,5,Feature,,,,
 406,Scroll recipe list to top when filters change,5,2,Bug,,,,
 407,Make under-construction objects easier to kill,8,8,Exploit,,,,
 408,Tutorial,89,89,Feature,,,,1
 409,Change lighting/colors to simulate time of day,21,55,Aesthetics,,,,
 410,"Recruit via an invitation, not insta-join",21,13,Usability,,,,
-411,Failed assertion in Entity.cpp line 116,34,8,Bug,,TRUE,,1
-412,Prevent picking up items while drop confirmation is open,8,3,Bug,,,,1
+411,Failed assertion in Entity.cpp line 116,34,8,Bug,,TRUE,,2
+412,Prevent picking up items while drop confirmation is open,8,3,Bug,,,,2
 413,A quest from A that finishes at B,5,21,Feature,,TRUE,,
 414,Quest-briefing text,8,5,Feature,413,TRUE,,
 415,Quest-completion text,3,5,Feature,413,TRUE,,
@@ -374,14 +374,14 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 422,Quest items that drop only while on a specific quest,5,5,Feature,421,TRUE,,
 425,A quest to complete a construction,8,5,Feature,413,TRUE,,
 428,Quests can reward a construction,13,5,Feature,413,TRUE,,
-429,Can log in with Enter key when button is disabled,34,2,Bug,,TRUE,,1
-430,Sometimes non-leaf skills are lost on death,13,8,Bug,,,,1
+429,Can log in with Enter key when button is disabled,34,2,Bug,,TRUE,,2
+430,Sometimes non-leaf skills are lost on death,13,8,Bug,,,,2
 432,A quest can unlock another quest,21,3,Feature,413,TRUE,,
 433,Quests are persistent,34,3,Bug,,TRUE,,
 434,Quest progress is persistent,34,3,Bug,421,TRUE,,
 436,"New classes for ID and Name, used everywhere",2,5,Code quality,,,,
 437,Quests can be completed only once,34,5,Bug,,TRUE,,
-438,Show a tooltip when terrain is inaccessible,2,3,Usability,,,,1
+438,Show a tooltip when terrain is inaccessible,2,3,Usability,,,,2
 439,Account for vehicles in 'inaccessible' tooltips,2,3,Bug,438,,,
 440,A quest log,34,55,Usability,,,,1
 441,Show quest progress on screen,21,34,Usability,420,TRUE,,
@@ -406,7 +406,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 460,Editor: add spawners,21,21,Tooling,458,,,
 461,Editor: remove spawners,2,8,Tooling,458,,,
 462,Quest content for levels 1-20,144,144,Content,,,,
-463,An adventure (instance),233,89,Content,45,,,2
+463,An adventure (instance),233,89,Content,45,,,3
 464,Start-quest sound,5,3,Aesthetics,,,,
 465,End-quest sound,5,3,Aesthetics,,,,1
 466,Show shadow box in help-topic list in showHelpTopic(),1,5,Bug,,,,
@@ -414,13 +414,13 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 468,Destroy quest-exclusive items if quest is abandoned,3,3,Bug,469,,,
 469,A quest can be abandoned,8,5,Feature,440,,,
 470,Draw correct corpses for humanoid NPCs and players,21,55,Bug,,,,
-471,"Show important error messages in chat log, to avoid being missed",5,2,Usability,,,,1
-472,Include descriptive tooltips on active buffs,8,5,Usability,,,,1
-473,"Selection broken after eating, fixed with right-click",13,5,Bug,,,,1
-474,Remove buffs on death,8,2,Feature,,,,1
-475,Add stat tooltips in gear window,8,3,Usability,,,,1
+471,"Show important error messages in chat log, to avoid being missed",5,2,Usability,,,,2
+472,Include descriptive tooltips on active buffs,8,5,Usability,,,,2
+473,"Selection broken after eating, fixed with right-click",13,5,Bug,,,,2
+474,Remove buffs on death,8,2,Feature,,,,2
+475,Add stat tooltips in gear window,8,3,Usability,,,,2
 476,Spell hotkey numbers not visible,8,1,Bug,,TRUE,,
-477,Order hotbar deterministically,21,2,Usability,,TRUE,,1
+477,Order hotbar deterministically,21,2,Usability,,TRUE,,2
 478,Update missing-data page,55,21,Tooling,,,,
 479,SFX for aggro,5,3,Usability,,,,
 480,SFX for swing,8,3,Usability,,,,
@@ -431,15 +431,15 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 485,"On death, client loses quest progress",13,2,Bug,,TRUE,,1
 486,Show chance to unlock when crafting,34,8,Usability,,,,
 487,Show chance to unlock when building,13,2,Usability,486,,,
-488,Clay terrain for starting area,1,2,Content,,,,1
-489,Clay particles coming from new users for ~15s,3,3,Content,,,,1
+488,Clay terrain for starting area,1,2,Content,,,,2
+489,Clay particles coming from new users for ~15s,3,3,Content,,,,2
 490,Allow line break on -,2,3,Bug,,,,
-491,Better blood colour,5,2,Content,,,,1
+491,Better blood colour,5,2,Content,,,,2
 492,Replace all instances of Color::TODO,8,5,Content,,,,1
 493,Get in-progress quests on login,13,8,Bug,,,,1
-494,Ignore entity if mouse is over a transparent pixel,21,3,Usability,,TRUE,,1
-495,XP bar looks overfull when leveling with a remainder,8,2,Bug,,,,1
-496,Draw names/bars in front of everything else,2,2,Usability,,,,1
+494,Ignore entity if mouse is over a transparent pixel,21,3,Usability,,TRUE,,2
+495,XP bar looks overfull when leveling with a remainder,8,2,Bug,,,,2
+496,Draw names/bars in front of everything else,2,2,Usability,,,,2
 497,Extinguished fire can't be clicked on,21,3,Bug,,TRUE,,
-498,It's too easy to select Atlas,2,3,Usability,,,,1
+498,It's too easy to select Atlas,2,3,Usability,,,,2
 499,Recolour UI images,13,8,Usability,,,,1
