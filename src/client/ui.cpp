@@ -101,6 +101,9 @@ void Client::initWindows() {
 
   initializeEscapeWindow();
   addWindow(_escapeWindow);
+
+  initializeQuestLog();
+  addWindow(_questLog);
 }
 
 void Client::initCastBar() {
@@ -269,12 +272,13 @@ void Client::initMenuBar() {
   addButtonToMenu(menuBar, 3, _gearWindow, "icon-gear.png", "Gear window (G)");
   addButtonToMenu(menuBar, 4, _classWindow, "icon-class.png",
                   "Class window (K)");
-  addButtonToMenu(menuBar, 5, _socialWindow, "icon-social.png",
+  addButtonToMenu(menuBar, 5, _questLog, "icon-quest.png", "Quest Log (Q)");
+  addButtonToMenu(menuBar, 6, _socialWindow, "icon-social.png",
                   "Social window (O)");
-  addButtonToMenu(menuBar, 6, _chatContainer, "icon-chat.png",
+  addButtonToMenu(menuBar, 7, _chatContainer, "icon-chat.png",
                   "Toggle chat log");
-  addButtonToMenu(menuBar, 7, _mapWindow, "icon-map.png", "Map (M)");
-  addButtonToMenu(menuBar, 8, _helpWindow, "icon-help.png", "Help (H)");
+  addButtonToMenu(menuBar, 8, _mapWindow, "icon-map.png", "Map (M)");
+  addButtonToMenu(menuBar, 9, _helpWindow, "icon-help.png", "Help (H)");
 
   addUI(menuBar);
 }
@@ -345,6 +349,10 @@ void Client::initPlayerPanels() {
   _target.initializePanel();
   addUI(_target.panel());
   addUI(_target.menu());
+}
+
+void Client::initializeQuestLog() {
+  _questLog = Window::WithRectAndTitle({50, 50, 100, 100}, "Quests");
 }
 
 void Client::initQuestProgress() {

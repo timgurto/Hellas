@@ -289,6 +289,9 @@ class Client {
   Texture _gearWindowBackground;
   void onChangeDragItem() { _gearWindow->forceRefresh(); }
 
+  Window *_questLog{nullptr};
+  void initializeQuestLog();
+
   Window *_mapWindow = nullptr;
   Texture _mapImage;
   Element *_mapPins, *_mapPinOutlines;
