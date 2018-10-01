@@ -412,7 +412,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 466,Show shadow box in help-topic list in showHelpTopic(),1,5,Bug,,,,
 467,"If a quest gives items, make sure player has space",3,3,Bug,,,,1
 468,Destroy quest-exclusive items if quest is abandoned,3,3,Bug,469,,,
-469,A quest can be abandoned,8,5,Feature,440,,,
+469,A quest can be abandoned,8,5,Feature,440,TRUE,,1
 470,Draw correct corpses for humanoid NPCs and players,21,55,Bug,,,,
 471,"Show important error messages in chat log, to avoid being missed",5,2,Usability,,,,2
 472,Include descriptive tooltips on active buffs,8,5,Usability,,,,2

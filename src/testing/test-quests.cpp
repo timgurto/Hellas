@@ -1444,6 +1444,10 @@ TEST_CASE("Abandoning quests", "[quests]") {
       c.sendMessage(CL_ABANDON_QUEST, "quest1");
       THEN("he is not on any quests") {
         WAIT_UNTIL(user.questsInProgress().empty());
+        AND_THEN("he knows it") {
+          const auto &quest = c.getFirstQuest();
+          WAIT_UNTIL(quest.state == CQuest::CAN_START);
+        }
       }
     }
   }

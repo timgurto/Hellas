@@ -1062,7 +1062,10 @@ bool User::hasCompletedQuest(const Quest::ID &id) const {
   return it != _questsCompleted.end();
 }
 
-void User::abandonQuest(const Quest::ID &id) { _quests.erase(id); }
+void User::abandonQuest(const Quest::ID &id) {
+  _quests.erase(id);
+  sendMessage(SV_QUEST_CAN_BE_STARTED, id);
+}
 
 void User::markQuestAsCompleted(const Quest::ID &id) {
   _questsCompleted.insert(id);
