@@ -258,6 +258,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   const std::set<Quest::ID> &questsCompleted() const {
     return _questsCompleted;
   }
+  void abandonQuest(const Quest::ID &id);
   const std::set<Quest::ID> &questsInProgress() const { return _quests; }
   void markQuestAsCompleted(const Quest::ID &id);
   void markQuestAsStarted(const Quest::ID &id);

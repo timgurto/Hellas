@@ -1425,3 +1425,25 @@ TEST_CASE("Client remembers quest progress after death", "[quests]") {
     }
   }
 }
+
+TEST_CASE("Abandoning quests", "[quests]") {
+  GIVEN("a player on a quest") {
+    auto data = R"(
+      <objectType id="questgiver" />
+      <quest id="quest1" startsAt="questgiver" endsAt="questgiver" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.startQuest(s.getFirstQuest());
+
+    WHEN("he tries to abandon the quest") {
+      c.sendMessage(CL_ABANDON_QUEST, "quest1");
+      THEN("he is not on any quests") {
+        WAIT_UNTIL(user.questsInProgress().empty());
+      }
+    }
+  }
+}

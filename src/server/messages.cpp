@@ -1169,6 +1169,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         break;
       }
 
+      case CL_ABANDON_QUEST: {
+        iss.get(buffer, BUFFER_SIZE, MSG_END);
+        auto questID = Quest::ID{buffer};
+        iss >> del;
+
+        if (del != MSG_END) return;
+
+        handle_CL_ABANDON_QUEST(*user, questID);
+        break;
+      }
+
       case CL_SAY: {
         iss.get(buffer, BUFFER_SIZE, MSG_END);
         std::string message(buffer);
@@ -1910,6 +1921,10 @@ void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,
   if (!q.canBeCompletedByUser(user)) return;
 
   user.completeQuest(quest);
+}
+
+void Server::handle_CL_ABANDON_QUEST(User &user, const Quest::ID &quest) {
+  user.abandonQuest(quest);
 }
 
 void Server::broadcast(MessageCode msgCode, const std::string &args) {

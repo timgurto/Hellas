@@ -183,6 +183,10 @@ enum MessageCode {
   // Arguments: quest ID, end-object serial
   CL_COMPLETE_QUEST,
 
+  // I no longer want to be on a quest
+  // Arguments: questID
+  CL_ABANDON_QUEST,
+
   // "I want to say ... to everybody". 
   // Arguments: message
   CL_SAY,

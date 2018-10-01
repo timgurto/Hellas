@@ -307,6 +307,7 @@ class Server {
                               size_t giverSerial);
   void handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,
                                 size_t giverSerial);
+  void handle_CL_ABANDON_QUEST(User &user, const Quest::ID &quest);
 };
 
 #endif
