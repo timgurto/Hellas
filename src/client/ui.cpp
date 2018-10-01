@@ -353,18 +353,32 @@ void Client::initPlayerPanels() {
 
 void Client::initializeQuestLog() {
   _questLog = Window::WithRectAndTitle({50, 50, 200, 200}, "Quests");
-  _questList = new List({0, 0, 200, 200}, 15);
+  _questList = new List({0, 0, 250, 200}, 15);
   _questLog->addChild(_questList);
 }
 
 void Client::populateQuestLog() {
+  const auto NAME_W = 130_px, GAP = 2_px;
+  auto BUTTON_W = (_questList->contentWidth() - NAME_W - 4 * GAP) / 2;
   _questList->clearChildren();
 
   for (const auto &pair : _quests) {
     const auto &quest = pair.second;
     if (!quest.userIsOnQuest()) continue;
 
-    _questList->addChild(new Label({0, 0, 100, 0}, quest.info().name));
+    auto entry = new Element({});
+    _questList->addChild(entry);
+    auto x = GAP;
+    auto questName =
+        new Label({x, 0, NAME_W, entry->height()}, quest.info().name,
+                  Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED);
+    entry->addChild(questName);
+    x += questName->width() + GAP;
+    entry->addChild(
+        new Button({x, 0, BUTTON_W, entry->height() - GAP}, "Briefing"));
+    x += BUTTON_W + GAP;
+    entry->addChild(
+        new Button({x, 0, BUTTON_W, entry->height() - GAP}, "Abandon"));
   }
 }
 
