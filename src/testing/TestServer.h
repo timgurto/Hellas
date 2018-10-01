@@ -60,6 +60,7 @@ class TestServer {
   void nop() { _server->mapX(); }
 
   User &findUser(const std::string &username);
+  const Quest &findQuest(const Quest::ID &questID) const;
 
  private:
   Server *_server;

@@ -121,6 +121,10 @@ User &TestServer::findUser(const std::string &username) {
   return *user;
 }
 
+const Quest &TestServer::findQuest(const Quest::ID &questID) const {
+  return _server->_quests[questID];
+}
+
 User &TestServer::getFirstUser() {
   REQUIRE(!_server->_users.empty());
   return const_cast<User &>(*_server->_users.begin());
