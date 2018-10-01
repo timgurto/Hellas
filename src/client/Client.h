@@ -290,7 +290,9 @@ class Client {
   void onChangeDragItem() { _gearWindow->forceRefresh(); }
 
   Window *_questLog{nullptr};
+  List *_questList{nullptr};
   void initializeQuestLog();
+  void populateQuestLog();
 
   Window *_mapWindow = nullptr;
   Texture _mapImage;

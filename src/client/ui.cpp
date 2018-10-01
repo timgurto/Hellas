@@ -352,7 +352,20 @@ void Client::initPlayerPanels() {
 }
 
 void Client::initializeQuestLog() {
-  _questLog = Window::WithRectAndTitle({50, 50, 100, 100}, "Quests");
+  _questLog = Window::WithRectAndTitle({50, 50, 200, 200}, "Quests");
+  _questList = new List({0, 0, 200, 200}, 15);
+  _questLog->addChild(_questList);
+}
+
+void Client::populateQuestLog() {
+  _questList->clearChildren();
+
+  for (const auto &pair : _quests) {
+    const auto &quest = pair.second;
+    if (!quest.userIsOnQuest()) continue;
+
+    _questList->addChild(new Label({0, 0, 100, 0}, quest.info().name));
+  }
 }
 
 void Client::initQuestProgress() {

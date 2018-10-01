@@ -1,6 +1,5 @@
 #include "CQuest.h"
 #include "../Rect.h"
-#include "CQuest.h"
 #include "Client.h"
 #include "WordWrapper.h"
 #include "ui/Line.h"
