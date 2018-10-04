@@ -352,8 +352,8 @@ void Client::initPlayerPanels() {
 }
 
 void Client::initializeQuestLog() {
-  _questLog = Window::WithRectAndTitle({50, 50, 200, 200}, "Quests");
-  _questList = new List({0, 0, 250, 200}, 15);
+  _questLog = Window::WithRectAndTitle({50, 50, 250, 100}, "Quests");
+  _questList = new List({0, 0, 250, 100}, 15);
   _questLog->addChild(_questList);
 }
 
@@ -373,12 +373,15 @@ void Client::populateQuestLog() {
         new Label({x, 0, NAME_W, entry->height()}, quest.info().name,
                   Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED);
     entry->addChild(questName);
-    x += questName->width() + GAP;
+    x += NAME_W + GAP;
     entry->addChild(
         new Button({x, 0, BUTTON_W, entry->height() - GAP}, "Briefing"));
     x += BUTTON_W + GAP;
-    entry->addChild(
-        new Button({x, 0, BUTTON_W, entry->height() - GAP}, "Abandon"));
+    auto pQuestID = const_cast<std::string *>(&quest.info().id);
+    entry->addChild(new Button(
+        {x, 0, BUTTON_W, entry->height() - GAP}, "Abandon", [this, pQuestID]() {
+          sendMessageWithString<CL_ABANDON_QUEST>(pQuestID);
+        }));
   }
 }
 

@@ -2216,6 +2216,9 @@ void Client::handle_SV_QUEST_CAN_BE_STARTED(const std::string &questID) {
   if (it == _quests.end()) return;
 
   it->second.state = CQuest::CAN_START;
+
+  populateQuestLog();
+  refreshQuestProgress();
 }
 
 void Client::handle_SV_QUEST_IN_PROGRESS(const std::string &questID) {
