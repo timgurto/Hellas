@@ -51,8 +51,7 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   }
 
   // Body: objectives
-  auto shouldShowObjectives =
-      pendingTransition == ACCEPT && !quest->_info.objectives.empty();
+  auto shouldShowObjectives = showBriefing && !quest->_info.objectives.empty();
   if (shouldShowObjectives) {
     body->addGap();
     auto heading = new Label({}, "Objectives:");

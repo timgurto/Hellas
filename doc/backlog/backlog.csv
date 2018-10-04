@@ -383,7 +383,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 437,Quests can be completed only once,34,5,Bug,,TRUE,,
 438,Show a tooltip when terrain is inaccessible,2,3,Usability,,,,2
 439,Account for vehicles in 'inaccessible' tooltips,2,3,Bug,438,,,
-440,A quest log,34,55,Usability,,,,1
+440,A quest log,34,55,Usability,,TRUE,,1
 441,Show quest progress on screen,21,34,Usability,420,TRUE,,
 442,Fade in from black on first login,21,21,Aesthetics,,,,1
 443,Editor: draw map,34,21,Tooling,,TRUE,,
