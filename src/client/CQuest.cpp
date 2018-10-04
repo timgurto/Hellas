@@ -12,11 +12,16 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
                             Transition pendingTransition) {
   const auto WIN_W = 200_px, WIN_H = 200_px;
 
-  auto window =
-      Window::WithRectAndTitle({0, 0, WIN_W, WIN_H}, quest->_info.name);
-  window->center();
+  if (quest->_window) {
+    Client::instance().removeWindow(quest->_window);
+    delete quest->_window;
+  }
 
-  const auto BOTTOM = window->contentHeight();
+  quest->_window =
+      Window::WithRectAndTitle({0, 0, WIN_W, WIN_H}, quest->_info.name);
+  quest->_window->center();
+
+  const auto BOTTOM = quest->_window->contentHeight();
   const auto GAP = 2_px, BUTTON_W = 90_px, BUTTON_H = 16_px,
              CONTENT_W = WIN_W - 2 * GAP;
   auto y = GAP;
@@ -24,7 +29,7 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   // Body: brief/debrief
   const auto BODY_H = BOTTOM - 2 * GAP - BUTTON_H - y;
   auto body = new List({GAP, y, CONTENT_W, BODY_H});
-  window->addChild(body);
+  quest->_window->addChild(body);
   auto ww = WordWrapper{Element::font(), body->contentWidth()};
   auto showBriefing =
       pendingTransition == ACCEPT || pendingTransition == INFO_ONLY;
@@ -74,10 +79,9 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
         new Button(TRANSITION_BUTTON_RECT, transitionName,
                    [=]() { transitionFun(quest, startObjectSerial); });
     if (pendingTransition == ACCEPT) transitionButton->id("accept");
-    window->addChild(transitionButton);
+    quest->_window->addChild(transitionButton);
   }
 
-  quest->_window = window;
   Client::instance().addWindow(quest->_window);
   quest->_window->show();
 }
