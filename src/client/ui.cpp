@@ -362,8 +362,8 @@ void Client::populateQuestLog() {
   auto BUTTON_W = (_questList->contentWidth() - NAME_W - 4 * GAP) / 2;
   _questList->clearChildren();
 
-  for (const auto &pair : _quests) {
-    const auto &quest = pair.second;
+  for (auto &pair : _quests) {
+    auto &quest = pair.second;
     if (!quest.userIsOnQuest()) continue;
 
     auto entry = new Element({});
@@ -374,8 +374,9 @@ void Client::populateQuestLog() {
                   Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED);
     entry->addChild(questName);
     x += NAME_W + GAP;
-    entry->addChild(
-        new Button({x, 0, BUTTON_W, entry->height() - GAP}, "Briefing"));
+    entry->addChild(new Button(
+        {x, 0, BUTTON_W, entry->height() - GAP}, "Briefing",
+        [&quest]() { CQuest::generateWindow(&quest, 0, CQuest::INFO_ONLY); }));
     x += BUTTON_W + GAP;
     auto pQuestID = const_cast<std::string *>(&quest.info().id);
     entry->addChild(new Button(

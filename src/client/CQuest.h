@@ -27,7 +27,7 @@ class CQuest {
     std::string helpTopicOnAccept;
   };
 
-  enum Transition { ACCEPT, COMPLETE };
+  enum Transition { ACCEPT, COMPLETE, INFO_ONLY };
 
   CQuest(const Info &info = {});
 

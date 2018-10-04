@@ -26,8 +26,10 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   auto body = new List({GAP, y, CONTENT_W, BODY_H});
   window->addChild(body);
   auto ww = WordWrapper{Element::font(), body->contentWidth()};
+  auto showBriefing =
+      pendingTransition == ACCEPT || pendingTransition == INFO_ONLY;
   const auto &bodyText =
-      pendingTransition == ACCEPT ? quest->_info.brief : quest->_info.debrief;
+      showBriefing ? quest->_info.brief : quest->_info.debrief;
   auto lines = ww.wrap(bodyText);
   for (auto line : lines) {
     auto isHelpText = false;
@@ -62,16 +64,18 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   y += BODY_H + GAP;
 
   // Transition button
-  const auto TRANSITION_BUTTON_RECT = ScreenRect{GAP, y, BUTTON_W, BUTTON_H};
-  auto transitionName =
-      pendingTransition == ACCEPT ? "Accept quest"s : "Complete quest"s;
-  auto transitionFun =
-      pendingTransition == ACCEPT ? acceptQuest : completeQuest;
-  Button *transitionButton =
-      new Button(TRANSITION_BUTTON_RECT, transitionName,
-                 [=]() { transitionFun(quest, startObjectSerial); });
-  if (pendingTransition == ACCEPT) transitionButton->id("accept");
-  window->addChild(transitionButton);
+  if (pendingTransition != INFO_ONLY) {
+    const auto TRANSITION_BUTTON_RECT = ScreenRect{GAP, y, BUTTON_W, BUTTON_H};
+    auto transitionName =
+        pendingTransition == ACCEPT ? "Accept quest"s : "Complete quest"s;
+    auto transitionFun =
+        pendingTransition == ACCEPT ? acceptQuest : completeQuest;
+    Button *transitionButton =
+        new Button(TRANSITION_BUTTON_RECT, transitionName,
+                   [=]() { transitionFun(quest, startObjectSerial); });
+    if (pendingTransition == ACCEPT) transitionButton->id("accept");
+    window->addChild(transitionButton);
+  }
 
   quest->_window = window;
   Client::instance().addWindow(quest->_window);
