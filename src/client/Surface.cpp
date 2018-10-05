@@ -5,7 +5,6 @@
 #include <string>
 
 #include "../Color.h"
-#include "Client.h"
 #include "Renderer.h"
 #include "Surface.h"
 
@@ -14,11 +13,8 @@ extern Renderer renderer;
 Surface::Surface(const std::string &filename, const Color &colorKey)
     : _raw(std::shared_ptr<SDL_Surface>{IMG_Load(filename.c_str()),
                                         SDL_FreeSurface}) {
-  if (!_raw) {
-    if (isDebug() && Client::isClient)
-      Client::debug()("File missing: " + filename, Color::TODO);
-    return;
-  }
+  if (!_raw) return;
+
   if (&colorKey != &Color::TODO)
     SDL_SetColorKey(_raw.get(), SDL_TRUE, colorKey);
 
