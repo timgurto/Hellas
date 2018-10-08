@@ -116,6 +116,8 @@ void Map::draw(std::pair<int, int> offset) {
 }
 
 void Map::set(int x, int y) {
+  if (x < 0 || y < 0) return;
+
   auto terrainType = terrainList->getSelected();
   if (terrainType.empty()) return;
   auto id = terrainType[0];
