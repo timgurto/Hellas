@@ -1,3 +1,4 @@
+#include <SDL_image.h>
 #include <map>
 
 #include "../../../src/XmlReader.h"
@@ -69,6 +70,23 @@ void Map::save(const std::string &filename, MapPoint playerSpawn,
   }
 
   xw.publish();
+
+  saveMapImage();
+}
+
+void Map::saveMapImage() {
+  const auto EDGE_SIZE = 700_px;
+  auto canvas = Texture{EDGE_SIZE, EDGE_SIZE};
+  auto filename = "map-" + toString(EDGE_SIZE) + ".png";
+
+  _wholeMap.draw({0, 0, EDGE_SIZE, EDGE_SIZE});
+
+  auto surface = SDL_CreateRGBSurface(0, EDGE_SIZE, EDGE_SIZE, 32, 0, 0, 0, 0);
+  auto clip = SDL_Rect{0, 0, EDGE_SIZE, EDGE_SIZE};
+  SDL_RenderReadPixels(renderer.raw(), &clip, surface->format->format,
+                       surface->pixels, surface->pitch);
+  IMG_SavePNG(surface, filename.c_str());
+  SDL_FreeSurface(surface);
 }
 
 void Map::generateTexture() {
