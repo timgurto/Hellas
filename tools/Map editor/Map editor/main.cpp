@@ -54,6 +54,9 @@ auto windows = std::list<Window *>{};
 
 #undef main
 int main(int argc, char *argv[]) {
+  cmdLineArgs.add("width", "3800");
+  cmdLineArgs.add("height", "2000");
+
   renderer.init();
   SDL_RenderSetLogicalSize(renderer.raw(), renderer.width(), renderer.height());
 

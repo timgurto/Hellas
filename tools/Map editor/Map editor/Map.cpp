@@ -75,7 +75,7 @@ void Map::save(const std::string &filename, MapPoint playerSpawn,
 }
 
 void Map::saveMapImage() {
-  const auto EDGE_SIZE = 700_px;
+  const auto EDGE_SIZE = 1920_px;
   auto canvas = Texture{EDGE_SIZE, EDGE_SIZE};
   auto filename = "map-" + toString(EDGE_SIZE) + ".png";
 
