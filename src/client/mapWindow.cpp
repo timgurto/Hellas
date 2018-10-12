@@ -6,13 +6,14 @@
 void Client::initializeMapWindow() {
   _mapImage = Texture(std::string("Images/map.png"));
   _mapWindow = Window::WithRectAndTitle(
-      {(SCREEN_X - _mapImage.width()) / 2, (SCREEN_Y - _mapImage.height()) / 2,
-       _mapImage.width(), _mapImage.height()},
+      {(SCREEN_X - MAP_IMAGE_W) / 2, (SCREEN_Y - MAP_IMAGE_H) / 2,
+       MAP_IMAGE_W + 1, MAP_IMAGE_H + 1},
       "Map");
-  _mapWindow->addChild(new Picture(0, 0, _mapImage));
+  _mapWindow->addChild(
+      new Picture(ScreenRect{0, 0, MAP_IMAGE_W, MAP_IMAGE_H}, _mapImage));
 
-  _mapPinOutlines = new Element({0, 0, _mapImage.width(), _mapImage.height()});
-  _mapPins = new Element({0, 0, _mapImage.width(), _mapImage.height()});
+  _mapPinOutlines = new Element({0, 0, MAP_IMAGE_W, MAP_IMAGE_H});
+  _mapPins = new Element({0, 0, MAP_IMAGE_W, MAP_IMAGE_H});
   _mapWindow->addChild(_mapPinOutlines);
   _mapWindow->addChild(_mapPins);
 
@@ -66,8 +67,8 @@ void Client::addOutlinedMapPin(const MapPoint &worldPosition,
 }
 
 ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const {
-  const double MAP_FACTOR_X = 1.0 * _mapX * TILE_W / _mapImage.width(),
-               MAP_FACTOR_Y = 1.0 * _mapY * TILE_H / _mapImage.height();
+  const double MAP_FACTOR_X = 1.0 * _mapX * TILE_W / MAP_IMAGE_W,
+               MAP_FACTOR_Y = 1.0 * _mapY * TILE_H / MAP_IMAGE_H;
 
   px_t x = toInt(worldPosition.x / MAP_FACTOR_X),
        y = toInt(worldPosition.y / MAP_FACTOR_Y);
