@@ -75,17 +75,24 @@ void Map::save(const std::string &filename, MapPoint playerSpawn,
 }
 
 void Map::saveMapImage() {
-  const auto EDGE_SIZE = 1920_px;
-  auto canvas = Texture{EDGE_SIZE, EDGE_SIZE};
-  auto filename = "map-" + toString(EDGE_SIZE) + ".png";
+  auto surface =
+      SDL_CreateRGBSurface(0, _textureWidth, _textureHeight, 32, 0, 0, 0, 0);
 
-  _wholeMap.draw({0, 0, EDGE_SIZE, EDGE_SIZE});
+  for (auto y = 0; y != _dimY; ++y)
+    for (auto x = 0; x != _dimX; ++x) {
+      auto terrainHere = _tiles[x][y];
+      auto terrainColorInverted = terrain[terrainHere].color;
+      auto color =
+          SDL_MapRGB(surface->format, terrainColorInverted.r(),
+                     terrainColorInverted.g(), terrainColorInverted.b());
 
-  auto surface = SDL_CreateRGBSurface(0, EDGE_SIZE, EDGE_SIZE, 32, 0, 0, 0, 0);
-  auto clip = SDL_Rect{0, 0, EDGE_SIZE, EDGE_SIZE};
-  SDL_RenderReadPixels(renderer.raw(), &clip, surface->format->format,
-                       surface->pixels, surface->pitch);
-  IMG_SavePNG(surface, filename.c_str());
+      auto rect = SDL_Rect{x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE};
+      if (y % 2 == 1) rect.x -= TILE_SIZE / 2;
+      SDL_FillRect(surface, &rect, color);
+    }
+
+  IMG_SavePNG(surface, "../../Images/map.png");
+
   SDL_FreeSurface(surface);
 }
 
