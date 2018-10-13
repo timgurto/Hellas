@@ -202,7 +202,13 @@ void handleInput(unsigned timeElapsed) {
 
             if (mouse.y != 0) {
               mouseLeftIsDown = true;
-              map.set(contextTile.x, contextTile.y);
+              auto *state = SDL_GetKeyboardState(nullptr);
+              auto shiftIsDown =
+                  state[SDL_SCANCODE_LSHIFT] || state[SDL_SCANCODE_RSHIFT];
+              if (shiftIsDown)
+                map.fill(contextTile.x, contextTile.y);
+              else
+                map.set(contextTile.x, contextTile.y);
             }
           } break;
 

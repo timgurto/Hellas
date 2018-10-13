@@ -1,5 +1,6 @@
 #include <SDL_image.h>
 #include <map>
+#include <queue>
 
 #include "../../../src/XmlReader.h"
 #include "../../../src/XmlWriter.h"
@@ -140,6 +141,14 @@ void Map::draw(std::pair<int, int> offset) {
   }
 }
 
+bool Map::isOutOfBounds(int x, int y) const {
+  if (x < 0) return true;
+  if (y < 0) return true;
+  if (x >= _dimX) return true;
+  if (y >= _dimY) return true;
+  return false;
+}
+
 void Map::set(int x, int y) {
   if (x < 0 || y < 0) return;
 
@@ -151,6 +160,59 @@ void Map::set(int x, int y) {
 
   renderer.pushRenderTarget(_wholeMap);
   drawTile(x, y);
+  renderer.present();
+  renderer.popRenderTarget();
+}
+
+struct Tile {
+  int x;
+  int y;
+};
+
+void Map::fill(int x, int y) {
+  renderer.pushRenderTarget(_wholeMap);
+  auto terrainType = terrainList->getSelected();
+  if (terrainType.empty()) return;
+  auto id = terrainType[0];
+
+  auto startingTerrain = at(x, y);
+  auto tilesToFill = std::queue<Tile>{};
+  tilesToFill.push({x, y});
+
+  while (!tilesToFill.empty()) {
+    // Get tile at the head of the queue
+    auto currentTile = tilesToFill.front();
+    x = currentTile.x;
+    y = currentTile.y;
+
+    // Set this tile
+    _tiles[x][y] = id;
+    drawTile(x, y);
+
+    // Push all adjacent tiles of the same starting terrain
+    auto tilesToConsider = std::vector<Tile>{};
+    tilesToConsider.push_back({x - 1, y});
+    tilesToConsider.push_back({x + 1, y});
+    tilesToConsider.push_back({x, y - 1});
+    tilesToConsider.push_back({x, y + 1});
+    if (y % 2 == 1) {
+      tilesToConsider.push_back({x - 1, y - 1});
+      tilesToConsider.push_back({x - 1, y + 1});
+    } else {
+      tilesToConsider.push_back({x + 1, y - 1});
+      tilesToConsider.push_back({x + 1, y + 1});
+    }
+
+    for (auto tile : tilesToConsider) {
+      if (isOutOfBounds(x, y)) continue;
+      if (at(tile.x, tile.y) != startingTerrain) continue;
+      tilesToFill.push(tile);
+    }
+
+    // Pop
+    tilesToFill.pop();
+  }
+
   renderer.present();
   renderer.popRenderTarget();
 }

@@ -22,6 +22,7 @@ class Map {
   const Texture &wholeMap() const { return _wholeMap; }
 
   void set(int x, int y);
+  void fill(int x, int y);
   char at(int x, int y);
 
   void generateTexture();
@@ -31,6 +32,7 @@ class Map {
 
  private:
   int _dimX{0}, _dimY{0};
+  bool isOutOfBounds(int x, int y) const;
   int _textureWidth{0}, _textureHeight{0};
 
   static const int TILE_SIZE = 2;
