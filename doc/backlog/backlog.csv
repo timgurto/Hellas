@@ -426,7 +426,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 480,SFX for swing,8,3,Usability,,,,
 481,Marker for player in-combat,3,3,Usability,,,,
 482,Marker for aggro,8,5,Usability,,,,
-483,Clouds around mountain so it doesn't look like a cave,3,2,Content,,,,1
+483,Clouds around mountain so it doesn't look like a cave,3,2,Content,,TRUE,,1
 484,"Close quest window earlier, when player moves out of range",8,2,Usability,,,,1
 485,"On death, client loses quest progress",13,2,Bug,,TRUE,,1
 486,Show chance to unlock when crafting,34,8,Usability,,,,

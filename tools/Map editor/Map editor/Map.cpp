@@ -179,7 +179,7 @@ void Map::fill(int x, int y) {
   auto tilesToFill = std::queue<Tile>{};
   tilesToFill.push({x, y});
 
-  const auto MAX_TILES_TO_FILL = 100;
+  const auto MAX_TILES_TO_FILL = 500;
 
   auto tilesFilled = 0;
   while (!tilesToFill.empty() && tilesFilled++ < MAX_TILES_TO_FILL) {
