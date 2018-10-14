@@ -53,6 +53,7 @@ frameTime          *
 <terrain index="Q" id="deepWater"       color="45617C" frames="32" frameTime="200" tag="waterSource" />
 <terrain index="R" id="sky"             color="3478D8" />
 <terrain index="S" id="clouds"          color="CEC5CF" />
+<terrain index="T" id="clay"            color="B06263" />
 
 <!--
 Default list applies to player avatars, and to all objects unless otherwise specified.
@@ -71,6 +72,8 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
     <forbid id="ruinsMountain" />
     <forbid id="caveMountain" />
     <forbid id="volcanoMountain" />
+    <forbid id="sky" />
+    <forbid id="clouds" />
 </list>
 
 <list id="notMountains">
