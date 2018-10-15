@@ -374,7 +374,8 @@ void Server::addUser(const Socket &socket, const std::string &name,
   // Give him starting buffs
   if (!_buffTypes.empty()) {
     const auto &firstBuff = _buffTypes.begin()->second;
-    newUser.applyBuff(firstBuff, newUser);
+    if (firstBuff.shouldGiveToNewPlayers())
+      newUser.applyBuff(firstBuff, newUser);
   }
 
   // Add user to location-indexed trees

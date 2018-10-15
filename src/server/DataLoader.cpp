@@ -743,6 +743,9 @@ void DataLoader::loadBuffs(XmlReader &xr) {
     auto schoolString = ""s;
     if (xr.findAttr(elem, "school", schoolString)) school = {schoolString};
 
+    if (xr.findAttr(elem, "onNewPlayers", n) && n != 0)
+      newBuff.giveToNewPlayers();
+
     do {
       auto changeAllowedTerrain = xr.findChild("changeAllowedTerrain", elem);
       if (!changeAllowedTerrain) break;

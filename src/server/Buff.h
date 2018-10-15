@@ -44,6 +44,8 @@ class BuffType {
   bool canBeInterrupted() const { return _canBeInterrupted; }
   void cancelOnOOE() { _cancelsOnOOE = true; }
   bool cancelsOnOOE() const { return _cancelsOnOOE; }
+  void giveToNewPlayers() { _givenToNewPlayers = true; }
+  bool shouldGiveToNewPlayers() const { return _givenToNewPlayers; }
 
   bool hasType() const { return _type != UNKNOWN; }
   bool hasEffectOnHit() const { return _type == SPELL_ON_HIT; }
@@ -61,6 +63,7 @@ class BuffType {
   ms_t _duration{0};              // 0: Never ends
   bool _canBeInterrupted{false};  // Cancels when hit
   bool _cancelsOnOOE{false};      // Cancels when recipient has no energy
+  bool _givenToNewPlayers{false};
 };
 
 // An instance of a buff type, on a specific target, from a specific caster
