@@ -149,3 +149,17 @@ TEST_CASE("A buff that changes allowed terrain") {
     }
   }
 }
+
+TEST_CASE("A buff on new players") {
+  GIVEN("a buff set to be given to all new players") {
+    auto data = R"(
+      <buff id="newbie" onNewPlayers="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    THEN("he has a buff") { CHECK(user.buffs().size() == 1); }
+  }
+}

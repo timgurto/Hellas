@@ -371,6 +371,12 @@ void Server::addUser(const Socket &socket, const std::string &name,
   newUser.getClass().teachSpell("blink");
   newUser.getClass().teachSpell("waterWalking");
 
+  // Give him starting buffs
+  if (!_buffTypes.empty()) {
+    const auto &firstBuff = _buffTypes.begin()->second;
+    newUser.applyBuff(firstBuff, newUser);
+  }
+
   // Add user to location-indexed trees
   getCollisionChunk(newUser.location()).addEntity(&newUser);
   _usersByX.insert(&newUser);
