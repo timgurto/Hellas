@@ -362,6 +362,10 @@ void CDataLoader::loadBuffs(XmlReader &xr) {
 
     if (xr.findAttr(elem, "cancelsOnOOE", n) && n == 1) newBuff.cancelOnOOE();
 
+    auto particleProfileName = ""s;
+    if (xr.findAttr(elem, "particles", particleProfileName))
+      newBuff.particles(particleProfileName);
+
     auto functionElem = xr.findChild("function", elem);
     if (functionElem) {
       auto effectName = ""s;

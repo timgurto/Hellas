@@ -722,6 +722,7 @@ bool ClientObject::canAlwaysSee() const {
 void ClientObject::update(double delta) {
   if (this->isBeingConstructed()) {
     Sprite::update(delta);
+    ClientCombatant::update(delta);
     return;
   }
 

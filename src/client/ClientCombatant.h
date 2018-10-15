@@ -14,6 +14,8 @@ class ClientCombatant {
  public:
   ClientCombatant::ClientCombatant(const ClientCombatantType *type);
 
+  void update(double delta);  // Non-virtual.
+
   const Hitpoints &health() const { return _health; }
   void health(Hitpoints n) { _health = n; }
   const Energy &energy() const { return _energy; }
@@ -40,6 +42,7 @@ class ClientCombatant {
   virtual void addMenuButtons(List &menu) const {}
 
   void createDamageParticles() const;
+  void createBuffParticles(double delta) const;
 
   void addBuffOrDebuff(const ClientBuffType::ID &buff, bool isBuff);
   void removeBuffOrDebuff(const ClientBuffType::ID &buff, bool isBuff);

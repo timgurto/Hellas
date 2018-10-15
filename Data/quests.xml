@@ -1,8 +1,23 @@
 <root>
 
+<particleProfile
+    id="newPlayerClay"
+    particlesPerSecond=50>
+    <distance mean=5 sd=0 />
+    <altitude mean=30 sd=4 />
+    <velocity mean=15 sd=3 />
+    <fallSpeed mean=4 sd=2 />
+    <variety imageFile="clay" count="2" />
+    <variety imageFile="clayLarge" />
+</particleProfile>
+<buff id="newPlayerClay" name="Born from Clay" icon="worship" duration="4000"
+    onNewPlayers="1"
+    particles="newPlayerClay" />
+
+
 <quest id="tutCombat" name="A new creation" startsAt="prometheus" endsAt="prometheus"
-    brief="Welcome to Mt. Othrys--or what's left of it.  My name is Prometheus, and I created you.
-It looks like your eyes and ears are in working order, so let's test your arms and legs.  Head over to that grassy area nearby, and kill some pigs."
+    brief="Ah, finally free from the clay!  Welcome to Mt. Othrys--or what's left of it.  My name is Prometheus, and I created you.
+    It looks like your eyes and ears are in working order, so let's test your arms and legs.  Head over to that grassy area nearby, and kill some pigs."
     debrief="Excellent, everything seems to be working as intended.  You're quite impressive, if I do say so myself!"
     ><!--helpTopicOnAccept="Basic: combat"-->
 	<objective type="kill" id="tutPig" qty="6" />

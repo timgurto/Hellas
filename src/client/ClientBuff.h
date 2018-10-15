@@ -28,6 +28,8 @@ class ClientBuffType {
   bool hasHitEffect() const { return _hasHitEffect; }
   void cancelOnOOE() { _cancelsOnOOE = true; }
   bool cancelsOnOOE() const { return _cancelsOnOOE; }
+  void particles(const std::string &profileName) { _particles = profileName; }
+  const std::string &particles() const { return _particles; }
 
  private:
   Texture _icon;
@@ -40,6 +42,7 @@ class ClientBuffType {
   std::string _effectName{};
   ClientSpell::Args _effectArgs{};
   StatsMod _stats{};
+  std::string _particles = "";
 };
 
 using ClientBuffTypes = std::map<ClientBuffType::ID, ClientBuffType>;

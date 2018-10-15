@@ -12,6 +12,11 @@ ClientCombatant::ClientCombatant(const ClientCombatantType *type)
       _maxEnergy(_type->maxEnergy()),
       _energy(_maxEnergy) {}
 
+void ClientCombatant::update(double delta)
+{
+  createBuffParticles(delta);
+}
+
 void ClientCombatant::drawHealthBarIfAppropriate(const MapPoint &objectLocation,
                                                  px_t objHeight) const {
   if (!shouldDrawHealthBar()) return;
@@ -51,6 +56,16 @@ bool ClientCombatant::shouldDrawHealthBar() const {
 void ClientCombatant::createDamageParticles() const {
   Client &client = *Client::_instance;
   client.addParticles(_type->damageParticles(), combatantLocation());
+}
+
+void ClientCombatant::createBuffParticles(double delta) const {
+  Client &client = *Client::_instance;
+  for (auto *buff : _buffs)
+    if (!buff->particles().empty())
+      client.addParticles(buff->particles(), combatantLocation(), delta);
+  for (auto *debuff : _debuffs)
+    if (!debuff->particles().empty())
+      client.addParticles(debuff->particles(), combatantLocation(), delta);
 }
 
 void ClientCombatant::addBuffOrDebuff(const ClientBuffType::ID &buff,

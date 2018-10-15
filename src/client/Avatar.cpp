@@ -83,6 +83,7 @@ void Avatar::update(double delta) {
   client.drawGearParticles(_gear, location(), delta);
 
   Sprite::update(delta);
+  ClientCombatant::update(delta);
 }
 
 void Avatar::setClass(const ClassInfo::Name &newClass) {
