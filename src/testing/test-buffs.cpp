@@ -180,4 +180,20 @@ TEST_CASE("A buff on new players") {
       THEN("he has no buffs") { CHECK(user.buffs().empty()); }
     }
   }
+
+  GIVEN("two buffs set to be given to new players") {
+    auto data = R"(
+      <buff id="blessing" onNewPlayers="1" />
+      <buff id="curse" onNewPlayers="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("a user logs in") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+
+      THEN("he has two buff") { CHECK(user.buffs().size() == 2); }
+    }
+  }
 }

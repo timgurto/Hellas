@@ -372,10 +372,9 @@ void Server::addUser(const Socket &socket, const std::string &name,
   newUser.getClass().teachSpell("waterWalking");
 
   // Give him starting buffs
-  if (!_buffTypes.empty()) {
-    const auto &firstBuff = _buffTypes.begin()->second;
-    if (firstBuff.shouldGiveToNewPlayers())
-      newUser.applyBuff(firstBuff, newUser);
+  for (auto &pair : _buffTypes) {
+    const auto &buff = pair.second;
+    if (buff.shouldGiveToNewPlayers()) newUser.applyBuff(buff, newUser);
   }
 
   // Add user to location-indexed trees
