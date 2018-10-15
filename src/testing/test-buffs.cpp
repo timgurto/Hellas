@@ -164,6 +164,25 @@ TEST_CASE("A buff on new players") {
 
       THEN("he has a buff") { CHECK(user.buffs().size() == 1); }
     }
+
+    WHEN("Alice logs in, loses the buff, and logs out") {
+      {
+        auto c = TestClient::WithUsernameAndDataString("alice", data);
+        s.waitForUsers(1);
+        auto &user = s.getFirstUser();
+
+        user.removeBuff("newbie");
+        CHECK(user.buffs().empty());
+      }
+
+      AND_WHEN("Alice logs back in") {
+        auto c = TestClient::WithUsernameAndDataString("alice", data);
+        s.waitForUsers(1);
+        auto &user = s.getFirstUser();
+
+        THEN("she doesn't have any buffs") { CHECK(user.buffs().empty()); }
+      }
+    }
   }
 
   GIVEN("a buff") {
