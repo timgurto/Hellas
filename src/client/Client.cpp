@@ -553,7 +553,7 @@ const ParticleProfile *Client::findParticleProfile(const std::string &id) {
 
 void Client::addParticles(const ParticlesToAdd &details) {
 #ifdef _DEBUG
-  // return;
+  return;
 #endif
 
   for (size_t i = 0; i != details.quantity(); ++i) {

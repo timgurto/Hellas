@@ -216,3 +216,28 @@ TEST_CASE("A buff on new players") {
     }
   }
 }
+
+TEST_CASE("Buff removal propagates to client") {
+  GIVEN("a buff that lasts 1s") {
+    auto data = R"(
+      <buff id="sneezy" duration="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    WHEN("a user gets the buff") {
+      user.applyBuff(s.getFirstBuff(), user);
+
+      AND_WHEN("the buff expires") {
+        WAIT_UNTIL(user.buffs().empty());
+
+        THEN("he knows he has no buffs") {
+          REPEAT_FOR_MS(100);
+          CHECK(c->character().buffs().empty());
+        }
+      }
+    }
+  }
+}
