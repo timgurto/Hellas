@@ -10,7 +10,7 @@
     <variety imageFile="clay" count="2" />
     <variety imageFile="clayLarge" />
 </particleProfile>
-<buff id="newPlayerClay" name="Born from Clay" icon="worship" duration="4000"
+<buff id="newPlayerClay" name="Born from Clay" icon="worship" duration="4"
     onNewPlayers="1"
     particles="newPlayerClay" />
 
