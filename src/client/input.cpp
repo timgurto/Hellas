@@ -207,7 +207,6 @@ void Client::handleInput(double delta) {
 
               auto loc = toMapPoint(_mouse) - _offset;
               sendMessage(DG_TELEPORT, makeArgs(loc.x, loc.y));
-              _debug << "Teleporting to " << loc.x << "," << loc.y << Log::endl;
               break;
           }
         }

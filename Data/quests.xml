@@ -211,20 +211,24 @@
     Surplus weapons?  Hmm, I don't know . . . the war is over, I suppose.  Plus, we're short on materials for our work, so maybe we can help each other.  My brother Brontes here will give you what you want in exchange for the metal ore that can be found on this mountain.">
     <prerequisite id="tutCooking" />
 </quest>
-    <npcType
-        id="cyclops1" name="Arges"
+    <objectType
+        id="tutCyclops1" name="Arges"
         level="20" maxHealth="107" isCivilian="1" >
         <class name="cyclops"/>
-    </npcType>
-    <npcType
-        id="cyclops2" name="Brontes"
+    </objectType>
+    <objectType
+        id="tutCyclops2" name="Brontes"
+        level="20" maxHealth="107" isCivilian="1" merchantSlots="1" >
+        <class name="cyclops"/>
+    </objectType>
+    <objectType
+        id="tutCyclops3" name="Stereopes"
         level="20" maxHealth="107" isCivilian="1" >
         <class name="cyclops"/>
-    </npcType>
-    <npcType
-        id="cyclops3" name="Stereopes"
-        level="20" maxHealth="107" isCivilian="1" >
-        <class name="cyclops"/>
-    </npcType>
+    </objectType>
+    <item id="tutOre" name="Othrysian Ore" stackSize="5" />
+    <item id="tutLightning" name="Handheld Lightning" stackSize="5" gearSlot="6" >
+        <weapon damage="5" speed="2.1" range="25" consumes="tutLightning" />
+    </item>
 
 </root>

@@ -4,7 +4,18 @@
 <npc id="prometheus"> <location x="3872" y="60212" /> </npc>
 <object id="tutBrazier"> <location x="3886" y="58420" /> </object>
 <npc id="atlas"> <location x="15" y="59604" /> </npc>
-<npc id="cyclops1"> <location x="760" y="60510" /> </npc>
-<npc id="cyclops2"> <location x="816" y="60554" /> </npc>
-<npc id="cyclops3"> <location x="845" y="60447" /> </npc>
+
+<object id="tutCyclops1">
+    <location x="760" y="60510" />
+    <owner type="player" name="Othrys" />
+</object>
+<object id="tutCyclops2">
+    <location x="816" y="60554" />
+    <owner type="player" name="Othrys" />
+    <merchant slot="0" wareItem="tutLightning" priceItem="tutOre" />
+</object>
+<object id="tutCyclops3">
+    <location x="845" y="60447" />
+    <owner type="player" name="Othrys" />
+</object>
 </root>
