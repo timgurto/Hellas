@@ -421,7 +421,7 @@ void initUI() {
   contextWindow->addChild(new Line(GAP, y, LINE_SIZE));
   y += GAP + 2;
 
-  const auto ICON_SIZE = 16_px;
+  const auto ICON_SIZE = 32_px;
   const auto BUTTON_SIZE = ICON_SIZE + 2;
   // Row 1: normal windows
   {
@@ -431,6 +431,21 @@ void initUI() {
     auto button = new Button({x, y, BUTTON_SIZE, BUTTON_SIZE}, {},
                              [&]() { optionsWindow->toggleVisibility(); });
     button->addChild(new Picture({0, 0, ICON_SIZE, ICON_SIZE}, optionsIcon));
+    contextWindow->addChild(button);
+
+    y += BUTTON_SIZE + GAP;
+  }
+
+  contextWindow->addChild(new Line(GAP, y, LINE_SIZE));
+  y += GAP + 2;
+
+  // Row 2: tools
+  {
+    auto x = GAP;
+    static auto terrainIcon = Texture{"icons/terrain.png", Color::MAGENTA};
+    auto button = new Button({x, y, BUTTON_SIZE, BUTTON_SIZE}, {},
+                             [&]() { terrainWindow->toggleVisibility(); });
+    button->addChild(new Picture({0, 0, ICON_SIZE, ICON_SIZE}, terrainIcon));
     contextWindow->addChild(button);
 
     y += BUTTON_SIZE + GAP;
