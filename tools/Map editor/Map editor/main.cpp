@@ -52,6 +52,10 @@ auto terrainToDraw = 'a';
 
 auto windows = std::list<Window *>{};
 
+Window *optionsWindow{nullptr};
+Window *contextWindow{nullptr};
+Window *terrainWindow{nullptr};
+
 #undef main
 int main(int argc, char *argv[]) {
   cmdLineArgs.add("width", "3800");
@@ -287,8 +291,9 @@ void render() {
   }
 
   for (auto it = windows.rbegin(); it != windows.rend(); ++it) {
-    (*it)->show();
-    (*it)->draw();
+    contextWindow->show();
+    auto &window = **it;
+    if (window.visible()) window.draw();
   }
 
   renderer.present();
@@ -382,7 +387,7 @@ void initUI() {
       }));
 
   // Options window
-  auto optionsWindow = Window::WithRectAndTitle({0, 125, 200, 100}, "Options");
+  optionsWindow = Window::WithRectAndTitle({0, 125, 200, 100}, "Options");
   windows.push_front(optionsWindow);
   auto optionsList = new List(
       {0, 0, optionsWindow->contentWidth(), optionsWindow->contentHeight()});
@@ -395,7 +400,7 @@ void initUI() {
       new CheckBox(cbRect, shouldScaleStaticImages, "Scale static objects"));
 
   // Context window
-  auto contextWindow = Window::WithRectAndTitle({0, 600, 200, 0}, "Context");
+  contextWindow = Window::WithRectAndTitle({0, 0, 200, 0}, "Context");
   windows.push_front(contextWindow);
   y = GAP;
 
@@ -414,7 +419,7 @@ void initUI() {
   contextWindow->height(y);
 
   // Terrain window
-  auto terrainWindow = Window::WithRectAndTitle({300, 0, 200, 400}, "Terrain");
+  terrainWindow = Window::WithRectAndTitle({300, 0, 200, 400}, "Terrain");
   windows.push_front(terrainWindow);
   terrainList = new ChoiceList(
       {0, 0, terrainWindow->contentWidth(), terrainWindow->contentHeight()},
