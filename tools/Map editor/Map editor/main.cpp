@@ -6,6 +6,7 @@
 #include "../../../src/client/ui/Button.h"
 #include "../../../src/client/ui/CheckBox.h"
 #include "../../../src/client/ui/ChoiceList.h"
+#include "../../../src/client/ui/Line.h"
 #include "../../../src/client/ui/List.h"
 #include "../../../src/client/ui/OutlinedLabel.h"
 #include "../../../src/client/ui/Window.h"
@@ -415,6 +416,25 @@ void initUI() {
   contextTerrainLabel = new Label(ScreenRect{0, y, 200, 20}, {});
   contextWindow->addChild(contextTerrainLabel);
   y += contextTerrainLabel->height() + GAP;
+
+  const auto LINE_SIZE = 200 - 2 * GAP;
+  contextWindow->addChild(new Line(GAP, y, LINE_SIZE));
+  y += GAP + 2;
+
+  const auto ICON_SIZE = 16_px;
+  const auto BUTTON_SIZE = ICON_SIZE + 2;
+  // Row 1: normal windows
+  {
+    auto x = GAP;
+
+    static auto optionsIcon = Texture{"icons/options.png", Color::MAGENTA};
+    auto button = new Button({x, y, BUTTON_SIZE, BUTTON_SIZE}, {},
+                             [&]() { optionsWindow->toggleVisibility(); });
+    button->addChild(new Picture({0, 0, ICON_SIZE, ICON_SIZE}, optionsIcon));
+    contextWindow->addChild(button);
+
+    y += BUTTON_SIZE + GAP;
+  }
 
   contextWindow->height(y);
 
