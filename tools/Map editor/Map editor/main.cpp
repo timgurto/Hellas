@@ -372,6 +372,14 @@ void initUI() {
         spawnPoints.clear();
         for (const auto &file : dataFiles) SpawnPoint::load(spawnPoints, file);
       }));
+  y += BUTTON_H + GAP;
+
+  saveLoadWindow->addChild(
+      new Button({GAP, y, BUTTON_W, BUTTON_H}, "Load static objects", []() {
+        staticObjects.clear();
+        for (const auto &file : dataFiles)
+          StaticObject::load(staticObjects, file);
+      }));
 
   // Options window
   auto optionsWindow = Window::WithRectAndTitle({0, 125, 200, 100}, "Options");
