@@ -1240,6 +1240,23 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         break;
       }
 
+      case DG_TELEPORT: {
+        double x, y;
+        iss >> x >> del >> y >> del;
+        if (del != MSG_END) return;
+
+        auto oldLoc = user->location();
+        auto newLoc = MapPoint{x, y};
+
+        user->location(newLoc);
+
+        broadcastToArea(oldLoc, SV_LOCATION_INSTANT,
+                        makeArgs(user->name(), newLoc.x, newLoc.y));
+        broadcastToArea(newLoc, SV_LOCATION_INSTANT,
+                        makeArgs(user->name(), newLoc.x, newLoc.y));
+        sendRelevantEntitiesToUser(*user);
+      }
+
       default:
         _debug << Color::TODO << "Unhandled message: " << msg << Log::endl;
     }

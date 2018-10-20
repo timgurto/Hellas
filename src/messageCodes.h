@@ -636,6 +636,10 @@ enum MessageCode {
   // "Give me enough XP to level up"
   DG_LEVEL,
 
+  // "Teleport me to ..."
+  // Arguments: x, y
+  DG_TELEPORT,
+
 
 
   // Messages used in tests

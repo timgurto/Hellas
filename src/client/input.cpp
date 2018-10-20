@@ -201,6 +201,14 @@ void Client::handleInput(double delta) {
             case SDLK_3:
               if (_hotbarButtons[2]) _hotbarButtons[2]->depress();
               break;
+
+            case SDLK_F1:
+              if (!isDebug()) break;
+
+              auto loc = toMapPoint(_mouse) - _offset;
+              sendMessage(DG_TELEPORT, makeArgs(loc.x, loc.y));
+              _debug << "Teleporting to " << loc.x << "," << loc.y << Log::endl;
+              break;
           }
         }
         break;
