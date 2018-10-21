@@ -232,6 +232,11 @@
         <collisionRect x="-13" y="-3" w="26" h="7" />
         <class name="cyclops"/>
     </objectType>
+    <objectType id="tutAnvil" name="Anvil"
+        isDecoration="1" imageFile="copperAnvil"
+        xDrawOffset="-11" yDrawOffset="-18" >
+        <collisionRect x="-11" y="-5" w="24" h="10" />
+    </objectType>
     <item id="tutOre" name="Othrysian Ore" stackSize="5" strength="3" />
     <item id="tutLightning" name="Handheld Lightning" stackSize="5" gearSlot="6" >
         <weapon damage="5" speed="2.1" range="25" consumes="tutLightning" />

@@ -18,4 +18,8 @@
     <location x="816" y="60554" />
     <owner type="player" name="Othrys" />
 </object>
+<object id="tutAnvil">
+    <location x="816" y="60564" />
+    <owner type="player" name="Othrys" />
+</object>
 </root>
