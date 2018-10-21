@@ -203,7 +203,7 @@
     <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="120000" x="1200" y="59382" />
     <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="120000" x="638" y="59624" />
     
-<quest id="tutCyclops" name="Eye on the Prize" startsAt="atlas" endsAt="cyclops1"
+<quest id="tutCyclops" name="Eye on the Prize" startsAt="atlas" endsAt="tutCyclopsQuestgiver"
     brief="Thank you, I feel much better.  Bearing the heavens for all eternity is hungry work.  Would you mind holding this for a moment while I wipe my mouth?
     Hah, I'm joking; relax!
     Advice?  Actually, there is something that might prove useful to you.  Down the path to the south are the cyclops craftsmen that made weapons for Zeus during the war.  Go speak to them, and see if they have any surplus weapons now that the war is over.  Sure, they sided with the enemy, but the blood of the Titans flows through their veins too and they might be willing to bargain."
@@ -212,18 +212,24 @@
     <prerequisite id="tutCooking" />
 </quest>
     <objectType
-        id="tutCyclops1" name="Arges"
-        level="20" maxHealth="107" isCivilian="1" >
+        id="tutCyclopsQuestgiver" name="Arges"
+        level="20" maxHealth="107" isCivilian="1"
+        xDrawOffset="-20" yDrawOffset="-55" >
+        <collisionRect x="-13" y="-3" w="26" h="7" />
         <class name="cyclops"/>
     </objectType>
     <objectType
-        id="tutCyclops2" name="Brontes"
-        level="20" maxHealth="107" isCivilian="1" merchantSlots="1" >
+        id="tutCyclopsMerchant" name="Brontes"
+        level="20" maxHealth="107" isCivilian="1" merchantSlots="1"
+        xDrawOffset="-20" yDrawOffset="-55" >
+        <collisionRect x="-13" y="-3" w="26" h="7" />
         <class name="cyclops"/>
     </objectType>
     <objectType
-        id="tutCyclops3" name="Stereopes"
-        level="20" maxHealth="107" isCivilian="1" >
+        id="tutCyclopsSmithy" name="Stereopes"
+        level="20" maxHealth="107" isCivilian="1"
+        xDrawOffset="-20" yDrawOffset="-55" >
+        <collisionRect x="-13" y="-3" w="26" h="7" />
         <class name="cyclops"/>
     </objectType>
     <item id="tutOre" name="Othrysian Ore" stackSize="5" strength="3" />
