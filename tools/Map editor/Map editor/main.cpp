@@ -53,6 +53,7 @@ auto terrainToDraw = 'a';
 
 auto windows = std::list<Window *>{};
 
+Window *saveLoadWindow{nullptr};
 Window *optionsWindow{nullptr};
 Window *contextWindow{nullptr};
 Window *terrainWindow{nullptr};
@@ -352,7 +353,7 @@ void drawRectOnMap(const MapPoint &mapLoc, Color color,
 
 void initUI() {
   // Save/load window
-  auto saveLoadWindow = Window::WithRectAndTitle({0, 0, 200, 100}, "Save/Load");
+  saveLoadWindow = Window::WithRectAndTitle({0, 200, 200, 100}, "Save/Load");
   windows.push_front(saveLoadWindow);
 
   const auto GAP = 2_px,
@@ -427,11 +428,19 @@ void initUI() {
   {
     auto x = GAP;
 
-    static auto optionsIcon = Texture{"icons/options.png", Color::MAGENTA};
+    static auto saveLoadIcon = Texture{"icons/saveLoad.png", Color::MAGENTA};
     auto button = new Button({x, y, BUTTON_SIZE, BUTTON_SIZE}, {},
-                             [&]() { optionsWindow->toggleVisibility(); });
+                             [&]() { saveLoadWindow->toggleVisibility(); });
+    button->addChild(new Picture({0, 0, ICON_SIZE, ICON_SIZE}, saveLoadIcon));
+    contextWindow->addChild(button);
+    x += BUTTON_SIZE;
+
+    static auto optionsIcon = Texture{"icons/options.png", Color::MAGENTA};
+    button = new Button({x, y, BUTTON_SIZE, BUTTON_SIZE}, {},
+                        [&]() { optionsWindow->toggleVisibility(); });
     button->addChild(new Picture({0, 0, ICON_SIZE, ICON_SIZE}, optionsIcon));
     contextWindow->addChild(button);
+    x += BUTTON_SIZE;
 
     y += BUTTON_SIZE + GAP;
   }
