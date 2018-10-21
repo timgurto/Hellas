@@ -34,7 +34,7 @@ frameTime          *
 <terrain index="x" id="desert"          color="F3F3CA" />
 <terrain index="y" id="desertRocky"     color="E3D7B4" />
 <terrain index="z" id="desertMountain"  color="B3A19C" />
-<terrain index="S" id="beachCoast"      color="6893D7" />
+<terrain index="T" id="beachCoast"      color="6893D7" />
 <terrain index="A" id="beach"           color="F3E9AD" />
 <terrain index="C" id="beachRocky"      color="AF9C99" />
 <terrain index="D" id="beachMountain"   color="705F89" />
@@ -53,7 +53,7 @@ frameTime          *
 <terrain index="Q" id="deepWater"       color="45617C" frames="32" frameTime="200" tag="waterSource" />
 <terrain index="R" id="sky"             color="3478D8" />
 <terrain index="S" id="clouds"          color="CEC5CF" />
-<terrain index="T" id="clay"            color="B06263" />
+<terrain index="U" id="clay"            color="B06263" />
 
 <!--
 Default list applies to player avatars, and to all objects unless otherwise specified.
