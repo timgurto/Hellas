@@ -226,9 +226,19 @@
         level="20" maxHealth="107" isCivilian="1" >
         <class name="cyclops"/>
     </objectType>
-    <item id="tutOre" name="Othrysian Ore" stackSize="5" />
+    <item id="tutOre" name="Othrysian Ore" stackSize="5" strength="3" />
     <item id="tutLightning" name="Handheld Lightning" stackSize="5" gearSlot="6" >
         <weapon damage="5" speed="2.1" range="25" consumes="tutLightning" />
     </item>
+    <objectType id="tutOre" name="Othrysian Ore"
+        canGather="1" gatherTime="4000" >
+        <yield id="tutOre" />
+        <strength item="tutOre" quantity="1" />
+    </objectType>
+    <spawnPoint type="tutOre" quantity="5" radius="250" respawnTime="120000" x="2140" y="58400" />
+    <spawnPoint type="tutOre" quantity="5" radius="200" respawnTime="120000" x="2000" y="58745" />
+    <spawnPoint type="tutOre" quantity="10" radius="400" respawnTime="120000" x="3110" y="58400" />
+    <spawnPoint type="tutOre" quantity="5" radius="250" respawnTime="120000" x="4409" y="58596" />
+    <spawnPoint type="tutOre" quantity="5" radius="250" respawnTime="120000" x="4430" y="58989" />
 
 </root>
