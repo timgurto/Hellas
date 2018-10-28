@@ -241,7 +241,10 @@ void CDataLoader::loadProjectiles(XmlReader &xr) {
       auto separation = 1;
       xr.findAttr(tailElem, "separation", separation);
 
-      projectile->tail(imageFile, drawRect, length, separation);
+      auto tailParticles = ""s;
+      xr.findAttr(tailElem, "particles", tailParticles);
+
+      projectile->tail(imageFile, drawRect, length, separation, tailParticles);
     }
 
     auto sounds = ""s;

@@ -22,22 +22,31 @@ void Projectile::update(double delta) {
     return;
   }
 
+  const auto &tailParticles = projectileType()._tailParticles;
+
   auto newLocation = interpolate(location(), _end, distanceToMove);
   auto locationDelta = newLocation - location();
   location(newLocation);
   for (auto segment : _tail) {
+    // Update location
     auto oldSegmentLocation = segment->location();
     segment->location(oldSegmentLocation + locationDelta);
     segment->destination(segment->location());
+
+    // Add particles
+    if (tailParticles != ""s) {
+      Client::instance().addParticles(tailParticles, segment->location());
+    }
   }
 }
 
 void Projectile::Type::tail(const std::string &imageFile,
                             const ScreenRect &drawRect, int length,
-                            int separation) {
+                            int separation, const std::string &particles) {
   _tailType = {drawRect, "Images/Projectiles/"s + imageFile + ".png"s};
   _tailLength = length;
   _tailSeparation = separation;
+  _tailParticles = particles;
 }
 
 void Projectile::Type::sounds(const std::string &profile) {

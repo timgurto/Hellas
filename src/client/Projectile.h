@@ -57,8 +57,9 @@ class Projectile : public Sprite {
     SpriteType _tailType;
     int _tailLength{0};
     int _tailSeparation{0};
+    std::string _tailParticles{};
     void tail(const std::string &imageFile, const ScreenRect &drawRect,
-              int length, int separation);
+              int length, int separation, const std::string &particles);
 
     void instantiate(const MapPoint &start, const MapPoint &end,
                      bool willMiss = false) const;
