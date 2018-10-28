@@ -387,4 +387,37 @@
     <variety imageFile="lightOrangePixel" count="6" />
 </particleProfile>
 
+<particleProfile
+    id="lightningSparks"
+    particlesPerSecond=15
+    gravityModifier=0 >
+    <lifespan mean=200 sd=50 />
+    <distance mean=1 sd=1 />
+    <velocity mean=2 sd=1 />
+    <variety imageFile="lightning0" count="1" />
+    <variety imageFile="whitePixel" count="3" />
+</particleProfile>
+<particleProfile
+    id="lightningTail"
+    particlesPerSecond=15
+    gravityModifier=0 >
+    <lifespan mean=400 sd=80 />
+    <distance mean=1 sd=1 />
+    <velocity mean=2 sd=1 />
+    <altitude mean=26 sd=3 />
+    <variety imageFile="lightning0" count="1" />
+    <variety imageFile="whitePixel" count="3" />
+</particleProfile>
+<particleProfile
+    id="lightningExplosion"
+    gravityModifier=0 >
+    <particlesPerHit mean=20 sd=10 />
+    <lifespan mean=700 sd=10 />
+    <distance mean=0 sd=3 />
+    <velocity mean=4 sd=2 />
+    <altitude mean=20 sd=3 />
+    <variety imageFile="lightning0" count="1" />
+    <variety imageFile="whitePixel" count="3" />
+</particleProfile>
+
 </root>

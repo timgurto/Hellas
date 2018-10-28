@@ -239,9 +239,28 @@
     </objectType>
     <item id="tutOre" name="Othrysian Ore" stackSize="5" strength="3" />
     <item id="tutLightning" name="Handheld Lightning" stackSize="5" gearSlot="6" >
-        <weapon damage="5" speed="2.1" range="25" consumes="tutLightning" />
+        <weapon damage="12" speed="2.1" range="25" consumes="tutLightning" projectile="lightning" />
+        <offset x="-8" y="-6" />
+        <particles profile="lightningSparks" x=-7 y=-5 />
+        <particles profile="lightningSparks" x=-6 y=-4 />
+        <particles profile="lightningSparks" x=-5 y=-4 />
+        <particles profile="lightningSparks" x=-5 y=-3 />
+        <particles profile="lightningSparks" x=-4 y=-3 />
+        <particles profile="lightningSparks" x=-4 y=-2 />
+        <particles profile="lightningSparks" x=-3 y=-2 />
+        <particles profile="lightningSparks" x=-2 y=-2 />
+        <particles profile="lightningSparks" x=-1 y=-2 />
+        <particles profile="lightningSparks" x=-3 y=-1 />
+        <particles profile="lightningSparks" x=-2 y=-1 />
+        <particles profile="lightningSparks" x=-1 y=-1 />
+        <particles profile="lightningSparks" x=0 y=-1 />
+        <particles profile="lightningSparks" x=-1 y=0 />
+        <particles profile="lightningSparks" x=0 y=0 />
+        <particles profile="lightningSparks" x=1 y=0 />
+        <particles profile="lightningSparks" x=1 y=1 />
     </item>
     <objectType id="tutOre" name="Othrysian Ore"
+        xDrawOffset="-5" yDrawOffset="-5"
         canGather="1" gatherTime="4000" >
         <yield id="tutOre" />
         <strength item="tutOre" quantity="1" />

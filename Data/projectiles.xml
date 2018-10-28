@@ -12,6 +12,10 @@
 <projectile id="waterball" speed=350 particlesAtEnd="waterExplosion" sounds="water" >
     <drawRect x=-7 y=-28 w=16 h=36 />
 </projectile>
+<projectile id="lightning" speed=350 particlesAtEnd="lightningExplosion" >
+    <drawRect x=-3 y=-28 w=6 h=32 />
+    <tail image="lightning" length=20 separation=1 x=-1 y=-26 w=2 h=29 particles="lightningTail" />
+</projectile>
 
 <projectile id="rock" speed=450 particlesAtEnd="blood" sounds="rock" >
     <drawRect x=-4 y=-28 w=9 h=32 />
