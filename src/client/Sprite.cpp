@@ -73,8 +73,8 @@ void Sprite::update(double delta) {
   auto &client = Client::instance();
   for (auto &p : _type->particles()) {
     auto particleX = _location.x + p.offset.x;
-    auto particleY = _location.y;
-    auto altitude = -p.offset.y;
+    auto particleY = bottomEdge();
+    auto altitude = -p.offset.y + (bottomEdge() - _location.y);
     client.addParticlesWithCustomAltitude(altitude, p.profile,
                                           {particleX, particleY}, delta);
   }

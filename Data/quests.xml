@@ -224,6 +224,25 @@
         xDrawOffset="-20" yDrawOffset="-55" >
         <collisionRect x="-13" y="-3" w="26" h="7" />
         <class name="cyclops"/>
+        <particles profile="lightningSparks" x=3 y=-21 />
+        <particles profile="lightningSparks" x=4 y=-21 />
+        <particles profile="lightningSparks" x=5 y=-21 />
+        <particles profile="lightningSparks" x=5 y=-22 />
+        <particles profile="lightningSparks" x=6 y=-22 />
+        <particles profile="lightningSparks" x=7 y=-22 />
+        <particles profile="lightningSparks" x=7 y=-23 />
+        <particles profile="lightningSparks" x=8 y=-23 />
+        <particles profile="lightningSparks" x=9 y=-23 />
+        <particles profile="lightningSparks" x=13 y=-26 />
+        <particles profile="lightningSparks" x=14 y=-26 />
+        <particles profile="lightningSparks" x=15 y=-26 />
+        <particles profile="lightningSparks" x=15 y=-27 />
+        <particles profile="lightningSparks" x=16 y=-27 />
+        <particles profile="lightningSparks" x=17 y=-27 />
+        <particles profile="lightningSparks" x=17 y=-28 />
+        <particles profile="lightningSparks" x=18 y=-28 />
+        <particles profile="lightningSparks" x=19 y=-28 />
+        <particles profile="lightningSparks" x=19 y=-29 />
     </objectType>
     <objectType
         id="tutCyclopsSmithy" name="Stereopes"
