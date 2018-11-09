@@ -13,6 +13,12 @@
 <buff id="newPlayerClay" name="Born from Clay" icon="worship" duration="4"
     onNewPlayers="1"
     particles="newPlayerClay" />
+    
+<objectType id="crater" isFlat=1 isDecoration=1
+    xDrawOffset=-20 yDrawOffset=-14 >
+    <!--collisionRect x=-20 y=-14 w=40 h=29 /-->
+    <particles profile="smoke" x=0 y=0 />
+</objectType>
 
 
 <quest id="tutCombat" name="A new creation" startsAt="prometheus" endsAt="prometheus"

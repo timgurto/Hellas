@@ -1,6 +1,24 @@
 <root>
 <object id="respawnAltar"> <location x="35328" y="22358" /> </object>
 
+<object id="crater"> <location x=3708 y=60440/> </object>
+<object id="crater"> <location x=3904 y=60331/> </object>
+<object id="crater"> <location x=3756 y=60210/> </object>
+<object id="crater"> <location x=3943 y=60010/> </object>
+<object id="crater"> <location x=3593 y=60130/> </object>
+<object id="crater"> <location x=3629 y=59868/> </object>
+<object id="crater"> <location x=3763 y=59717/> </object>
+<object id="crater"> <location x=4075 y=59492/> </object>
+<object id="crater"> <location x=3441 y=59078/> </object>
+<object id="crater"> <location x=3523 y=59396/> </object>
+<object id="crater"> <location x=3895 y=59349/> </object>
+<object id="crater"> <location x=4793 y=58877/> </object>
+<object id="crater"> <location x=393 y=59505/> </object>
+<object id="crater"> <location x=476 y=59711/> </object>
+<object id="crater"> <location x=324 y=59883/> </object>
+<object id="crater"> <location x=349 y=60283/> </object>
+<object id="crater"> <location x=1073 y=60259/> </object>
+
 <npc id="prometheus"> <location x="3872" y="60212" /> </npc>
 <object id="tutBrazier"> <location x="3886" y="58420" /> </object>
 <npc id="atlas"> <location x="15" y="59604" /> </npc>
