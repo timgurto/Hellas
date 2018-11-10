@@ -301,7 +301,8 @@
     brief="After Zeus took power, he asked my aunt Themis and I to populate the world with new types of creatures.
     Themis quickly created all sorts of animals, giving them interesting gifts and talents.  I created you--and I'm afraid I took so long trying to get you right, that there are no gifts left!  All of the good ideas are already taken.
     Maybe inspecting Themis's work will give me some inspiration.  We've already seen goats and pigs, so let's take a look at some of the other sorts of animals she has created.  Head out and kill some snakes, taking note of anything that makes them special.  You can find them North, slithering around in a swamp."
-    debrief="They attack from far away?  How interesting.  And you say they damage you with the power of the earth element?" >
+    debrief="They attack from far away?  How interesting.
+    It also sounds like when they hit you, it isn't physical damage that you took, but rather magical damage from the earth element." >
     <prerequisite id="tutLearnFire" />
 	<objective type="kill" id="tutSnake" qty="10" />
 </quest>
@@ -318,6 +319,14 @@
 	<objective type="kill" id="tutLizard" qty="10" />
 </quest>
     <npcType
+        id="tutSnake" name="Snake" isFlat="1"
+        level="4" maxHealth="18" attack="4" attackTime="2700" isRanged="1" school="earth" projectile="poison"
+        xDrawOffset="-12" yDrawOffset="-12"
+        imageFile="snake" >
+        <collisionRect x="-5" y="-5" w="10" h="10" />
+        <loot id="tutMeat" > <normal mean="0.5" sd="0.5" /> </loot>
+    </npcType>
+    <npcType
         id="tutTortoise" name="Tortoise"
         level="5" maxHealth="19" attack="6" attackTime="2780"
         xDrawOffset="-18" yDrawOffset="-20"
@@ -325,6 +334,7 @@
         <collisionRect x="-15" y="-5" w="31" h="10" />
         <loot id="tutMeat" > <normal mean="0.5" sd="0.5" /> </loot>
     </npcType>
+    <spawnPoint type="tutSnake" quantity="15" radius="560" respawnTime="120000" x="3139" y="58485" />
     <spawnPoint type="tutTortoise" quantity="4" radius="150" respawnTime="120000" x="4364" y="58540" />
     <spawnPoint type="tutTortoise" quantity="9" radius="250" respawnTime="120000" x="4423" y="58913" />
 

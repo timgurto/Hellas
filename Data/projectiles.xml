@@ -16,6 +16,9 @@
     <drawRect x=-3 y=-28 w=6 h=32 />
     <tail image="lightning" length=20 separation=1 x=-1 y=-26 w=2 h=29 particles="lightningTail" />
 </projectile>
+<projectile id="poison" speed=350 particlesAtEnd="poison" >
+    <drawRect x=-2 y=-15 w=4 h=4 />
+</projectile>
 
 <projectile id="rock" speed=450 particlesAtEnd="blood" sounds="rock" >
     <drawRect x=-4 y=-28 w=9 h=32 />
