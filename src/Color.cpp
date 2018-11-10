@@ -24,8 +24,8 @@ const Color Color::CHAT_ERROR = RED;
 const Color Color::CHAT_SUCCESS = CHAT_DEFAULT;
 
 const Color Color::WINDOW_BACKGROUND = WHITE * 0.1;
-const Color Color::WINDOW_DARK = WHITE * 0.05;
-const Color Color::WINDOW_LIGHT = WHITE * 0.15;
+const Color Color::WINDOW_DARK = WHITE * 0.0;
+const Color Color::WINDOW_LIGHT = WHITE * 0.2;
 const Color Color::WINDOW_FONT{0xcc, 0xcc, 0xcc};
 const Color Color::WINDOW_HEADING = BLUE * .4 + CYAN * .6;
 
