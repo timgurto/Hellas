@@ -295,5 +295,37 @@
     <spawnPoint type="tutOre" quantity="10" radius="400" respawnTime="120000" x="3110" y="58400" />
     <spawnPoint type="tutOre" quantity="5" radius="250" respawnTime="120000" x="4409" y="58596" />
     <spawnPoint type="tutOre" quantity="5" radius="250" respawnTime="120000" x="4430" y="58989" />
+    
+
+<quest id="tutSnakes" name="Snakes" startsAt="prometheus" endsAt="prometheus"
+    brief="After Zeus took power, he asked my aunt Themis and I to populate the world with new types of creatures.
+    Themis quickly created all sorts of animals, giving them interesting gifts and talents.  I created you--and I'm afraid I took so long trying to get you right, that there are no gifts left!  All of the good ideas are already taken.
+    Maybe inspecting Themis's work will give me some inspiration.  We've already seen goats and pigs, so let's take a look at some of the other sorts of animals she has created.  Head out and kill some snakes, taking note of anything that makes them special.  You can find them North, slithering around in a swamp."
+    debrief="They attack from far away?  How interesting.  And you say they damage you with the power of the earth element?" >
+    <prerequisite id="tutLearnFire" />
+	<objective type="kill" id="tutSnake" qty="10" />
+</quest>
+<quest id="tutTortoises" name="Tortoises" startsAt="prometheus" endsAt="prometheus"
+    brief="Another fascinating new animal Themis created is tortoises.  They look quite strange; go North East to the beach, and see if you can discern their gift."
+    debrief="A shield that protects them from damage?  Huh . . ." >
+    <prerequisite id="tutSnakes" />
+	<objective type="kill" id="tutTortoise" qty="10" />
+</quest>
+<quest id="tutLizards" name="Lizards" startsAt="prometheus" endsAt="prometheus"
+    brief="There's one final animal I want you to investigate: lizards.  I think I saw some crawling around out West past the forest, in a desert.  Please engage a few in combat."
+    debrief="How very strange . . . the lizards healed themselves while you fought?  That's quite a defense mechanism." >
+    <prerequisite id="tutTortoises" />
+	<objective type="kill" id="tutLizard" qty="10" />
+</quest>
+    <npcType
+        id="tutTortoise" name="Tortoise"
+        level="5" maxHealth="19" attack="6" attackTime="2780"
+        xDrawOffset="-18" yDrawOffset="-20"
+        imageFile="tortoise" >
+        <collisionRect x="-15" y="-5" w="31" h="10" />
+        <loot id="tutMeat" > <normal mean="0.5" sd="0.5" /> </loot>
+    </npcType>
+    <spawnPoint type="tutTortoise" quantity="4" radius="150" respawnTime="120000" x="4364" y="58540" />
+    <spawnPoint type="tutTortoise" quantity="9" radius="250" respawnTime="120000" x="4423" y="58913" />
 
 </root>
