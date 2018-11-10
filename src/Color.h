@@ -64,6 +64,9 @@ class Color {
   static const Color UI_TEXT;
   static const Color UI_DISABLED;
 
+  static const Color SPRITE_OUTLINE;
+  static const Color SPRITE_OUTLINE_HIGHLIGHT;
+
   Color(Uint8 r, Uint8 g, Uint8 b);
   Color(const SDL_Color &rhs);
   Color(Uint32 rhs = 0);

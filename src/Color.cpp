@@ -58,6 +58,9 @@ const Color Color::UI_OUTLINE = BLACK;
 const Color Color::UI_TEXT = YELLOW * 0.9;
 const Color Color::UI_DISABLED = WHITE * 0.6;
 
+const Color Color::SPRITE_OUTLINE = 0x330a17;
+const Color Color::SPRITE_OUTLINE_HIGHLIGHT = 0xE5E5E5;
+
 Color::Color(Uint8 r, Uint8 g, Uint8 b) : _r(r), _g(g), _b(b) {}
 
 Color::Color(const SDL_Color &rhs) : _r(rhs.r), _g(rhs.g), _b(rhs.b) {}

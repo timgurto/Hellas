@@ -36,7 +36,7 @@ void SpriteType::addParticles(const std::string &profileName,
 void SpriteType::setHighlightImage(const std::string &imageFile) {
   Surface highlightSurface(imageFile, Color::MAGENTA);
   if (!highlightSurface) return;
-  highlightSurface.swapColors(Color::TODO, Color::TODO);
+  highlightSurface.swapColors(Color::SPRITE_OUTLINE, Color::SPRITE_OUTLINE_HIGHLIGHT);
   _imageHighlight = Texture(highlightSurface);
 }
 

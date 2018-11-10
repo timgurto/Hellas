@@ -99,7 +99,7 @@ void ClientObjectType::corpseImage(const std::string &filename) {
   // Set corpse highlight image
   Surface corpseHighlightSurface(filename, Color::MAGENTA);
   if (!corpseHighlightSurface) return;
-  corpseHighlightSurface.swapColors(Color::TODO, Color::TODO);
+  corpseHighlightSurface.swapColors(Color::SPRITE_OUTLINE, Color::SPRITE_OUTLINE_HIGHLIGHT);
   _corpseHighlightImage = Texture(corpseHighlightSurface);
 }
 
@@ -118,7 +118,7 @@ void ClientObjectType::addMaterial(const ClientItem *item, size_t qty) {
 ClientObjectType::ImageSet::ImageSet(const std::string &filename) {
   Surface surface(filename, Color::MAGENTA);
   normal = Texture(surface);
-  surface.swapColors(Color::TODO, Color::TODO);
+  surface.swapColors(Color::SPRITE_OUTLINE, Color::SPRITE_OUTLINE_HIGHLIGHT);
   highlight = Texture(surface);
 }
 
