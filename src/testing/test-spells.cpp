@@ -176,3 +176,29 @@ TEST_CASE("Spell cooldowns", "[remote]") {
     }
   }
 }
+
+TEST_CASE("NPC spells") {
+  GIVEN("A Wizard NPC with no combat damage and a fireball spell") {
+    auto data = R"(
+      <spell id="fireball" range=30 >
+        <targets enemy=1 />
+        <function name="doDirectDamage" i1=5 />
+      </spell>
+      <npcType id="wizard">
+        <spell id="fireball" />
+      </npcType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    s.addNPC("wizard", {10, 15});
+
+    WHEN("a player is nearby") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+
+      THEN("he gets damaged") {
+        WAIT_UNTIL(user.health() < user.stats().maxHealth);
+      }
+    }
+  }
+}

@@ -3,6 +3,7 @@
 
 #include "LootTable.h"
 #include "QuestNode.h"
+#include "Spell.h"
 #include "objects/ObjectType.h"
 
 class ClientItem;
@@ -21,6 +22,8 @@ class NPCType : public ObjectType {
   bool _isRanged{false};
   SpellSchool _school{SpellSchool::PHYSICAL};
   Aggression _aggression{AGGRESSIVE};
+  Spell::ID _knownSpellID;
+  mutable const Spell *_knownSpell{nullptr};
 
  public:
   static Stats BASE_STATS;
@@ -29,6 +32,7 @@ class NPCType : public ObjectType {
   virtual ~NPCType() {}
 
   static void init();
+  virtual void initialise() const override;
 
   const LootTable &lootTable() const { return _lootTable; }
   void level(Level l) { _level = l; }
@@ -41,6 +45,8 @@ class NPCType : public ObjectType {
   bool attacksNearby() const;
   void school(SpellSchool school) { _school = school; }
   SpellSchool school() const { return _school; }
+  void knowsSpell(const Spell::ID &spell) { _knownSpellID = spell; }
+  const Spell *knownSpell() const { return _knownSpell; }
 
   virtual char classTag() const override { return 'n'; }
 

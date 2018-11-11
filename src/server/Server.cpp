@@ -665,6 +665,12 @@ const BuffType *Server::findBuff(const BuffType::ID &id) const {
   return &it->second;
 }
 
+const Spell *Server::findSpell(const Spell::ID &id) const {
+  auto it = _spells.find(id);
+  if (it == _spells.end()) return nullptr;
+  return it->second;
+}
+
 const Terrain *Server::terrainType(char index) const {
   auto &types = const_cast<std::map<char, Terrain *> &>(_terrainTypes);
   return types[index];
@@ -773,4 +779,6 @@ void Server::initialiseData() {
     } else
       ++it;
   }
+
+  for (auto &ot : _objectTypes) ot->initialise();
 }

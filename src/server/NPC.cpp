@@ -292,7 +292,10 @@ void NPC::processAI(ms_t timeElapsed) {
       break;
 
     case ATTACK:
-      break;  // Entity::update() will handle it
+      // Cast any spells it knows
+      if (npcType()->knownSpell())
+        ;     // TODO: spellcast
+      break;  // Entity::update() will handle combat
   }
 }
 

@@ -89,6 +89,7 @@ class Server {
   const Quest *findQuest(const Quest::ID &id) const;
   const ServerItem *findItem(const std::string &id) const;
   const BuffType *findBuff(const BuffType::ID &id) const;
+  const Spell *findSpell(const Spell::ID &id) const;
 
   // Checks whether an entity is within range of a user.  If not, a relevant
   // error message is sent to the client.
