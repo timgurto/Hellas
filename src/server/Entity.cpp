@@ -286,6 +286,91 @@ void Entity::updateBuffs(ms_t timeElapsed) {
   if (aBuffHasExpired) updateStats();
 }
 
+CombatResult Entity::castSpell(const Spell &spell) {
+  const Server &server = Server::instance();
+
+  auto usersNearCaster = server.findUsersInArea(location());
+
+  const auto &effect = spell.effect();
+  auto targets = std::set<Entity *>{};
+  if (effect.isAoE()) {
+    targets = server.findEntitiesInArea(location(), effect.range());
+    auto nearbyUsers = server.findUsersInArea(location(), effect.range());
+    for (auto *user : nearbyUsers) targets.insert(user);
+  } else {
+    auto target = this->target();
+    if (target == nullptr)
+      target = this;
+    else if (spell.canCastOnlyOnSelf())
+      target = this;
+    targets.insert(target);
+  }
+
+  if (effect.isAoE()) reduceEnergy(spell.cost());
+
+  // Note: this will be set for each target.  Return value will vary based on
+  // target order, if >1. When the return value was added to this function, it
+  // was used only for eating food; i.e., a single target. Its purpose was to
+  // skip consuming the food if the spell failed.
+  auto outcome = CombatResult{};
+  for (auto target : targets) {
+    outcome = spell.performAction(*this, *target);
+    if (outcome == FAIL) {
+      Server::debug()("Spell "s + spell.id() + " failed."s, Color::TODO);
+      continue;
+    }
+
+    if (!effect.isAoE())  // The spell succeeded, and there should be only one
+                          // iteration.
+      reduceEnergy(spell.cost());
+
+    // Broadcast spellcast
+    auto spellHit = bool{};
+    switch (outcome) {
+      case MISS:
+      case DODGE:
+        spellHit = false;
+        break;
+      case HIT:
+      case CRIT:
+      case BLOCK:
+        spellHit = true;
+        break;
+      default:
+        assert(false);
+    }
+    auto msgCode = spellHit ? SV_SPELL_HIT : SV_SPELL_MISS;
+    const auto &src = location(), &dst = target->location();
+    auto args = makeArgs(spell.id(), src.x, src.y, dst.x, dst.y);
+
+    auto usersToAlert = server.findUsersInArea(dst);
+    usersToAlert.insert(usersNearCaster.begin(), usersNearCaster.end());
+    for (auto user : usersToAlert) {
+      user->sendMessage(msgCode, args);
+      if (spellHit && spell.shouldPlayDefenseSound())
+        target->sendGotHitMessageTo(*user);
+
+      // Show notable outcomes
+      switch (outcome) {
+        case MISS:
+          user->sendMessage(SV_SHOW_MISS_AT, makeArgs(dst.x, dst.y));
+          break;
+        case DODGE:
+          user->sendMessage(SV_SHOW_DODGE_AT, makeArgs(dst.x, dst.y));
+          break;
+        case BLOCK:
+          user->sendMessage(SV_SHOW_BLOCK_AT, makeArgs(dst.x, dst.y));
+          break;
+        case CRIT:
+          user->sendMessage(SV_SHOW_CRIT_AT, makeArgs(dst.x, dst.y));
+          break;
+      }
+    }
+  }
+
+  return outcome;
+}
+
 void Entity::onEnergyChange() {
   if (energy() > 0) return;
 
