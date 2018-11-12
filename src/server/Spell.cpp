@@ -37,14 +37,21 @@ CombatResult Spell::performAction(Entity &caster, Entity &target) const {
 }
 
 bool Spell::isTargetValid(const Entity &caster, const Entity &target) const {
-  if (caster.classTag() != 'u')
-    return false;  // For now, forbid non-user casters
-
   if (&caster == &target) return _validTargets[SELF];
 
-  const auto &casterAsUser = dynamic_cast<const User &>(caster);
-
-  if (target.canBeAttackedBy(casterAsUser)) return _validTargets[ENEMY];
+  const auto *casterAsUser = dynamic_cast<const User *>(&caster);
+  auto casterIsUser = !!casterAsUser;
+  if (casterIsUser) {
+    if (target.canBeAttackedBy(*casterAsUser)) return _validTargets[ENEMY];
+  } else {
+    if (target.classTag() == 'u')
+      return _validTargets[ENEMY];  // Assumption: NPCs can attack only Users.
+                                    // Assumption: NPCs always treat Users as
+                                    // enemies for the purposes of spells.  This
+                                    // will need to be changed if, e.g., a
+                                    // friendly NPC casts a positive spell on a
+                                    // User.
+  }
 
   return _validTargets[FRIENDLY];
 }
