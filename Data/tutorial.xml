@@ -337,7 +337,7 @@
         <targets self=1 />
         <function name="buff" s1="tutShield" />
     </spell>
-    <buff id="tutShield" name="Hardened Shell" icon="shield" duration="5" onNewPlayers="1" >
+    <buff id="tutShield" name="Hardened Shell" icon="shield" duration="5" >
         <effect image="shield" xOffset=-20 yOffset=-40 />
         <stats armor="50" /> <!-- TODO: make this 100 -->
     </buff>
