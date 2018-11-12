@@ -669,6 +669,7 @@ void DataLoader::loadSpells(XmlReader &xr) {
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
     auto newSpell = new Spell;
     _server._spells[id] = newSpell;
+    newSpell->id(id);
 
     auto name = Spell::Name{};
     if (xr.findAttr(elem, "name", name)) newSpell->name(name);

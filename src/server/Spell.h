@@ -25,6 +25,8 @@ class Spell {
   CombatResult performAction(Entity &caster, Entity &target) const;
   bool isTargetValid(const Entity &caster, const Entity &target) const;
 
+  void id(const ID &id) { _id = id; }
+  const ID &id() const { return _id; }
   void name(const Name &name) { _name = name; }
   const Name &name() const { return _name; }
   void canTarget(TargetType type) { _validTargets[type] = true; }
@@ -39,6 +41,7 @@ class Spell {
   ms_t cooldown() const { return _cooldown; }
 
  private:
+  ID _id;
   Name _name;
   Energy _cost = 0;
   px_t _range = Podes::MELEE_RANGE.toPixels();
