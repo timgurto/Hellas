@@ -306,18 +306,6 @@
     <prerequisite id="tutLearnFire" />
 	<objective type="kill" id="tutSnake" qty="10" />
 </quest>
-<quest id="tutTortoises" name="Tortoises" startsAt="prometheus" endsAt="prometheus"
-    brief="Another fascinating new animal Themis created is tortoises.  They look quite strange; go North East to the beach, and see if you can discern their gift."
-    debrief="A shield that protects them from damage?  Huh . . ." >
-    <prerequisite id="tutSnakes" />
-	<objective type="kill" id="tutTortoise" qty="10" />
-</quest>
-<quest id="tutLizards" name="Lizards" startsAt="prometheus" endsAt="prometheus"
-    brief="There's one final animal I want you to investigate: lizards.  I think I saw some crawling around out West past the forest, in a desert.  Please engage a few in combat."
-    debrief="How very strange . . . the lizards healed themselves while you fought?  That's quite a defense mechanism." >
-    <prerequisite id="tutTortoises" />
-	<objective type="kill" id="tutLizard" qty="10" />
-</quest>
     <npcType
         id="tutSnake" name="Snake" isFlat="1"
         level="4" maxHealth="18" attack="4" attackTime="2700" isRanged="1" school="earth" projectile="poison"
@@ -326,16 +314,41 @@
         <collisionRect x="-5" y="-5" w="10" h="10" />
         <loot id="tutMeat" > <normal mean="0.5" sd="0.5" /> </loot>
     </npcType>
+    <spawnPoint type="tutSnake" quantity="15" radius="560" respawnTime="120000" x="3139" y="58485" />
+
+<quest id="tutTortoises" name="Tortoises" startsAt="prometheus" endsAt="prometheus"
+    brief="Another fascinating new animal Themis created is tortoises.  They look quite strange; go North East to the beach, and see if you can discern their gift."
+    debrief="A shield that protects them from damage?  Huh . . ." >
+    <prerequisite id="tutSnakes" />
+	<objective type="kill" id="tutTortoise" qty="10" />
+</quest>
     <npcType
         id="tutTortoise" name="Tortoise"
         level="5" maxHealth="19" attack="6" attackTime="2780"
         xDrawOffset="-18" yDrawOffset="-20"
         imageFile="tortoise" >
+        <spell id="tutShield" />
         <collisionRect x="-15" y="-5" w="31" h="10" />
         <loot id="tutMeat" > <normal mean="0.5" sd="0.5" /> </loot>
     </npcType>
-    <spawnPoint type="tutSnake" quantity="15" radius="560" respawnTime="120000" x="3139" y="58485" />
     <spawnPoint type="tutTortoise" quantity="4" radius="150" respawnTime="120000" x="4364" y="58540" />
     <spawnPoint type="tutTortoise" quantity="9" radius="250" respawnTime="120000" x="4423" y="58913" />
+    <spell id="tutShield" cooldown=10 school="earth">
+        <targets self=1 />
+        <function name="buff" s1="tutShield" />
+    </spell>
+    <buff id="tutShield" name="Hardened Shell" icon="shield" duration="5" onNewPlayers="1" >
+        <effect image="shield" xOffset=-20 yOffset=-40 />
+        <stats armor="50" /> <!-- TODO: make this 100 -->
+    </buff>
+    
+
+<quest id="tutLizards" name="Lizards" startsAt="prometheus" endsAt="prometheus"
+    brief="There's one final animal I want you to investigate: lizards.  I think I saw some crawling around out West past the forest, in a desert.  Please engage a few in combat."
+    debrief="How very strange . . . the lizards healed themselves while you fought?  That's quite a defense mechanism." >
+    <prerequisite id="tutTortoises" />
+	<objective type="kill" id="tutLizard" qty="10" />
+</quest>
+
 
 </root>
