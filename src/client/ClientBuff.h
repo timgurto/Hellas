@@ -30,10 +30,16 @@ class ClientBuffType {
   bool cancelsOnOOE() const { return _cancelsOnOOE; }
   void particles(const std::string &profileName) { _particles = profileName; }
   const std::string &particles() const { return _particles; }
+  void effect(const Texture &image, const ScreenPoint &offset);
+  bool hasEffect() const { return {_effect}; }
+  const Texture &effectImage() const { return _effect; }
+  const ScreenPoint &effectOffset() const { return _effectOffset; }
 
  private:
   Texture _icon;
   std::string _name{};
+  Texture _effect;
+  ScreenPoint _effectOffset{};
 
   int _duration{0};
   bool _hasHitEffect{false};

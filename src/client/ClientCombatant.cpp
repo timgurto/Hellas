@@ -12,10 +12,7 @@ ClientCombatant::ClientCombatant(const ClientCombatantType *type)
       _maxEnergy(_type->maxEnergy()),
       _energy(_maxEnergy) {}
 
-void ClientCombatant::update(double delta)
-{
-  createBuffParticles(delta);
-}
+void ClientCombatant::update(double delta) { createBuffParticles(delta); }
 
 void ClientCombatant::drawHealthBarIfAppropriate(const MapPoint &objectLocation,
                                                  px_t objHeight) const {
@@ -97,4 +94,13 @@ void ClientCombatant::playSoundWhenHit() const {
     playDeathSound();
   else
     playDefendSound();
+}
+
+void ClientCombatant::drawBuffEffects(const MapPoint &location) const {
+  for (auto *buffType : buffs()) {
+    if (!buffType->hasEffect()) continue;
+    buffType->effectImage().draw(toScreenPoint(location) +
+                                 Client::instance().offset() +
+                                 buffType->effectOffset());
+  }
 }

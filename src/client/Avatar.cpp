@@ -33,6 +33,8 @@ void Avatar::draw(const Client &client) const {
     if (item != nullptr) item->draw(location());
   }
 
+  drawBuffEffects(location());
+
   if (isDebug()) {
     renderer.setDrawColor(Color::CYAN);
     renderer.drawRect(toScreenRect(COLLISION_RECT + location()) +

@@ -38,6 +38,8 @@ void ClientNPC::draw(const Client &client) const {
       const ClientItem *item = npcType()->gear(pair.second);
       if (item) item->draw(location());
     }
+
+  drawBuffEffects(location());
 }
 
 bool ClientNPC::shouldDrawName() const {

@@ -369,6 +369,18 @@ void CDataLoader::loadBuffs(XmlReader &xr) {
     if (xr.findAttr(elem, "particles", particleProfileName))
       newBuff.particles(particleProfileName);
 
+    auto effectElem = xr.findChild("effect", elem);
+    if (effectElem) {
+      auto filename = ""s;
+      xr.findAttr(effectElem, "image", filename);
+      filename = "Images/Effects/"s + filename + ".png";
+      auto offset = ScreenPoint{};
+      xr.findAttr(effectElem, "xOffset", offset.x);
+      xr.findAttr(effectElem, "yOffset", offset.y);
+
+      newBuff.effect({filename, Color::MAGENTA}, offset);
+    }
+
     auto functionElem = xr.findChild("function", elem);
     if (functionElem) {
       auto effectName = ""s;
