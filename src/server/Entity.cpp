@@ -152,6 +152,15 @@ void Entity::update(ms_t timeElapsed) {
 
   updateBuffs(timeElapsed);
 
+  // Spell cooldowns
+  for (auto &pair : _spellCooldowns) {
+    auto &cooldown = pair.second;
+    if (cooldown < timeElapsed)
+      cooldown = 0;
+    else
+      cooldown -= timeElapsed;
+  }
+
   // The remainder of this function deals with combat.
   if (_attackTimer > timeElapsed)
     _attackTimer -= timeElapsed;

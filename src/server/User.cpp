@@ -418,14 +418,6 @@ void User::sendMessage(MessageCode msgCode, const std::string &args) const {
 }
 
 void User::update(ms_t timeElapsed) {
-  for (auto &pair : _spellCooldowns) {
-    auto &cooldown = pair.second;
-    if (cooldown < timeElapsed)
-      cooldown = 0;
-    else
-      cooldown -= timeElapsed;
-  }
-
   regen(timeElapsed);
 
   if (_action == NO_ACTION) {
