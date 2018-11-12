@@ -196,7 +196,8 @@ void NPC::processAI(ms_t timeElapsed) {
 
     // case RETURN_TO_SPAWNER fallthrough:
     case IDLE:
-      if (combatDamage() == 0)  // NPCs that can't attack won't try.
+      if (combatDamage() == 0 &&
+          !npcType()->knownSpell())  // NPCs that can't attack won't try.
         break;
 
       // React to recent attacker
