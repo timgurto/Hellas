@@ -13,6 +13,11 @@ TestServer::TestServer() {
   run();
 }
 
+TestServer::TestServer(NotRunning) {
+  _server = new Server;
+  DataLoader::FromPath(*_server, "testing/data/minimal").load();
+}
+
 TestServer::TestServer(const std::string &string, StringType type) {
   _server = new Server;
   DataLoader::FromPath(*_server, "testing/data/minimal").load();
@@ -48,8 +53,9 @@ TestServer TestServer::WithDataAndKeepingOldData(const std::string &dataPath) {
 TestServer TestServer::WithDataStringAndKeepingOldData(
     const std::string &data) {
   cmdLineArgs.remove("new");
-  auto s = TestServer{};
+  auto s = TestServer{NOT_RUNNING};
   DataLoader::FromString(*s._server, data).load(true);
+  s.run();
   cmdLineArgs.add("new");
   return s;
 }
@@ -59,8 +65,9 @@ TestServer TestServer::WithData(const std::string &dataPath) {
 }
 
 TestServer TestServer::WithDataString(const std::string &data) {
-  auto s = TestServer{};
+  auto s = TestServer{NOT_RUNNING};
   DataLoader::FromString(*s._server, data).load(true);
+  s.run();
   return s;
 }
 

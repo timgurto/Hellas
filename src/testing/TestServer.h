@@ -5,6 +5,8 @@
 
 // A wrapper of the server, with full access, used for testing.
 class TestServer {
+  enum NotRunning { NOT_RUNNING };
+
  public:
   TestServer();
   static TestServer KeepingOldData();
@@ -67,6 +69,7 @@ class TestServer {
 
   enum StringType { DATA_PATH, DATA_STRING };
   TestServer(const std::string &string, StringType type);
+  TestServer(NotRunning);
 
   void run();
   void stop();
