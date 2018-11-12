@@ -217,6 +217,10 @@ class Entity {
   void startCorpseTimer();
   Buffs _buffs, _debuffs;
 
+ protected:
+  std::map<std::string, ms_t> _spellCooldowns;  // >0 = cooling down
+
+ private:
   User *_tagger{nullptr};  // The user who gets credit for killing this.
 
   ms_t _timeSinceRegen = 0;

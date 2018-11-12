@@ -83,8 +83,6 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   bool _isInCombat{false};
 
-  std::map<Spell::ID, ms_t> _spellCooldowns;  // >0 = cooling down
-
  public:
   User(const std::string &name, const MapPoint &loc, const Socket &socket);
   User(const Socket &rhs);  // for use with set::find(), allowing find-by-socket
