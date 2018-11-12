@@ -124,6 +124,7 @@ class Entity {
   Energy energy() const { return _energy; }
   virtual bool canBlock() const { return false; }
   bool isStunned() const { return _stats.stunned; }
+  bool isSpellCoolingDown(const std::string &spell) const;
 
   void initStatsFromType();
   void fillHealthAndEnergy();

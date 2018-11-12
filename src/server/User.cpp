@@ -626,12 +626,6 @@ double User::combatDamage() const {
     return stats().weaponDamage + stats().magicDamage;
 }
 
-bool User::isSpellCoolingDown(const Spell::ID &spell) const {
-  auto it = _spellCooldowns.find(spell);
-  if (it == _spellCooldowns.end()) return false;
-  return it->second > 0;
-}
-
 void User::onHealthChange() {
   const Server &server = *Server::_instance;
   for (const User *userToInform : server.findUsersInArea(location()))

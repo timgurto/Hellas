@@ -158,7 +158,6 @@ class User : public Object {  // TODO: Don't inherit from Object
   double combatDamage() const override;
   bool isInCombat() const { return _isInCombat; }
   void putInCombat() { _isInCombat = true; }
-  bool isSpellCoolingDown(const Spell::ID &spell) const;
 
   char classTag() const override { return 'u'; }
   virtual void sendBuffMsg(const Buff::ID &buff) const override;

@@ -5,6 +5,7 @@
 #include "Entity.h"
 #include "Server.h"
 #include "Spawner.h"
+#include "Spell.h"
 
 const px_t Entity::MELEE_RANGE = Podes{4}.toPixels();
 
@@ -285,6 +286,12 @@ void Entity::updateBuffs(ms_t timeElapsed) {
       ++i;
   }
   if (aBuffHasExpired) updateStats();
+}
+
+bool Entity::isSpellCoolingDown(const std::string &spell) const {
+  auto it = _spellCooldowns.find(spell);
+  if (it == _spellCooldowns.end()) return false;
+  return it->second > 0;
 }
 
 CombatResult Entity::castSpell(const Spell &spell) {
