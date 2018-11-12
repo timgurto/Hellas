@@ -178,9 +178,11 @@ TEST_CASE("Spell cooldowns", "[remote]") {
 }
 
 TEST_CASE("NPC spells") {
-  GIVEN("A Wizard NPC with no combat damage and a fireball spell") {
+  GIVEN(
+      "A Wizard NPC with no combat damage and a fireball spell (with a 2s "
+      "cooldown)") {
     auto data = R"(
-      <spell id="fireball" range=30 >
+      <spell id="fireball" range=30 cooldown=2 >
         <targets enemy=1 />
         <function name="doDirectDamage" i1=5 />
       </spell>
@@ -198,6 +200,23 @@ TEST_CASE("NPC spells") {
 
       THEN("he gets damaged") {
         WAIT_UNTIL(user.health() < user.stats().maxHealth);
+
+        AND_WHEN("1 more second elapses") {
+          auto oldHealth = user.health();
+          auto oldLocation = user.location();
+          REPEAT_FOR_MS(1000);
+
+          THEN("his health is unchanged") {
+            // Proxies for the user not dying.  Before implementation, the user
+            // died and respawned many times.
+            // If the effects on dying are changed, perhaps this can be
+            // improved or simplified.
+            auto expectedHealthAfter1s =
+                oldHealth + User::OBJECT_TYPE.baseStats().hps;
+            CHECK(user.health() == expectedHealthAfter1s);
+            CHECK(user.location() == oldLocation);
+          }
+        }
       }
     }
   }

@@ -295,7 +295,11 @@ void NPC::processAI(ms_t timeElapsed) {
     case ATTACK:
       // Cast any spells it knows
       auto knownSpell = npcType()->knownSpell();
-      if (knownSpell) castSpell(*knownSpell);
+      if (knownSpell) {
+        if (isSpellCoolingDown(knownSpell->id())) break;
+        ;
+        castSpell(*knownSpell);
+      }
       break;  // Entity::update() will handle combat
   }
 }

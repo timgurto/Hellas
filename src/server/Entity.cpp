@@ -385,6 +385,8 @@ CombatResult Entity::castSpell(const Spell &spell) {
     }
   }
 
+  _spellCooldowns[spell.id()] = spell.cooldown();
+
   return outcome;
 }
 
