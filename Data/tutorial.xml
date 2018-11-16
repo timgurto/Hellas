@@ -349,6 +349,22 @@
     <prerequisite id="tutTortoises" />
 	<objective type="kill" id="tutLizard" qty="10" />
 </quest>
+    <npcType
+        id="tutLizard" name="Lizard"
+        level="6" maxHealth="21" attack="6" attackTime="2920"
+        xDrawOffset="-20" yDrawOffset="-12"
+        imageFile="lizard" >
+        <spell id="tutHeal" />
+        <collisionRect x="-18" y="-6" w="37" h="12" />
+        <loot id="tutMeat" > <normal mean="0.5" sd="0.5" /> </loot>
+    </npcType>
+    <spawnPoint type="tutLizard" quantity="7" radius="250" respawnTime="120000" x="2148" y="58382" />
+    <spawnPoint type="tutLizard" quantity="8" radius="280" respawnTime="120000" x="1950" y="58831" />
+    <spell id="tutHeal" cooldown=10 school="water">
+    <aesthetics sounds="heal" impactParticles="lightRays" />
+        <targets self=1 />
+    <function name="heal" i1=5 />
+    </spell>
 
 
 </root>
