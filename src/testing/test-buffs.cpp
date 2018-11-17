@@ -221,14 +221,16 @@ TEST_CASE("Buff removal propagates to client") {
   GIVEN("a buff that lasts 1s") {
     auto data = R"(
       <buff id="sneezy" duration="1" />
+      <npcType id="cat" />
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
+    const auto &sneezy = s.getFirstBuff();
 
     WHEN("a user gets the buff") {
-      user.applyBuff(s.getFirstBuff(), user);
+      user.applyBuff(sneezy, user);
 
       AND_WHEN("the buff expires") {
         WAIT_UNTIL(user.buffs().empty());
@@ -236,6 +238,22 @@ TEST_CASE("Buff removal propagates to client") {
         THEN("he knows he has no buffs") {
           REPEAT_FOR_MS(100);
           CHECK(c->character().buffs().empty());
+        }
+      }
+    }
+
+    WHEN("an NPC gets the buff") {
+      s.addNPC("cat", {10, 15});
+      auto &cat = s.getFirstNPC();
+      cat.applyBuff(sneezy, cat);
+
+      AND_WHEN("the buff expires") {
+        WAIT_UNTIL(cat.buffs().empty());
+
+        THEN("the user knows that has it no buffs") {
+          REPEAT_FOR_MS(100);
+          const auto &cCat = c.getFirstNPC();
+          CHECK(cCat.buffs().empty());
         }
       }
     }

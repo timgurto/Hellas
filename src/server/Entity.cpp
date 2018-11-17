@@ -612,7 +612,7 @@ void Entity::sendDebuffMsg(const Buff::ID &buff) const {
 
 void Entity::sendLostBuffMsg(const Buff::ID &buff) const {
   const Server &server = Server::instance();
-  server.broadcastToArea(_location, SV_ENTITY_LOST_DEBUFF,
+  server.broadcastToArea(_location, SV_ENTITY_LOST_BUFF,
                          makeArgs(_serial, buff));
 }
 
