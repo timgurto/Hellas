@@ -473,7 +473,7 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     xr.findAttr(elem, "speed", baseStats.speed);
     nt->baseStats(baseStats);
 
-    auto elemSpell = xr.findChild("spell");
+    auto elemSpell = xr.findChild("spell", elem);
     if (elemSpell) {
       auto spellID = ""s;
       if (xr.findAttr(elemSpell, "id", spellID)) nt->knowsSpell(spellID);

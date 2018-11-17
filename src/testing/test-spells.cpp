@@ -220,4 +220,31 @@ TEST_CASE("NPC spells") {
       }
     }
   }
+
+  GIVEN("a sorcerer with a buff, and an apprentice with no spells") {
+    auto data = R"(
+      <spell id="buffMagic" >
+          <targets self=1 />
+          <function name="buff" s1="magic" />
+      </spell>
+      <buff id="magic" />
+      <npcType id="sorcerer">
+        <spell id="buffMagic" />
+      </npcType>
+      <npcType id="apprentice" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    s.addNPC("apprentice", {10, 15});
+
+    WHEN("a user appears near the apprentice") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+
+      THEN("the apprentice has no buffs") {
+        const auto &apprentice = s.getFirstNPC();
+        REPEAT_FOR_MS(100);
+        CHECK(apprentice.buffs().empty());
+      }
+    }
+  }
 }
