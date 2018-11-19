@@ -71,7 +71,7 @@
         <loot id="tutEntrails"> <normal mean="0.5" sd="0.5" /> </loot>
         <loot id="tutFat" chance="0.2" />
     </npcType>
-    <item id="tutMeat"     name="Goat Meat"     iconFile="meat"     stackSize="10" />
+    <item id="tutMeat"     name="Goat Meat"     iconFile="meat"     stackSize="10" exclusiveToQuest="tutParts" />
     <item id="tutHide"     name="Goat Hide"     iconFile="hide"     stackSize="10" exclusiveToQuest="tutParts" />
     <item id="tutEntrails" name="Goat Entrails" iconFile="entrails" stackSize="10" exclusiveToQuest="tutParts" />
     <item id="tutFat"      name="Goat Fat"      iconFile="fat"      stackSize="10" exclusiveToQuest="tutParts" />
@@ -89,7 +89,6 @@
     debrief="Greetings, mortal.  Are you one of Prometheus's little creatures?
     We gods have our due, and as their king it falls to me to make the choice.  But obviously we should have the best-quality meat for ourselves!  I choose the fatty offering."
     helpTopicOnAccept="Basic: placement">
-    <prerequisite id="tutParts" />
     <objective type="construct" id="leanOffering" />
     <objective type="construct" id="fattyOffering" />
     <startsWithItem id="tutMeat2" />
@@ -103,7 +102,7 @@
         <collisionRect x="-6" y="-3" w="13" h="6" />
         <particles profile="smoke" x="0" y="-15" />
     </objectType>
-    <item id="tutMeat2"     name="Sacrificial Meat"                         exclusiveToQuest="tutOfferings" constructs="leanOffering" />
+    <item id="tutMeat2"     name="Sacrificial Meat"     iconFile="meat"     exclusiveToQuest="tutOfferings" constructs="leanOffering" />
     <item id="tutEntrails2" name="Sacrificial Entrails" iconFile="entrails" exclusiveToQuest="tutOfferings" constructs="fattyOffering" />
     <item id="tutHide2"     name="Sacrificial Hide"     iconFile="hide"     exclusiveToQuest="tutOfferings" />
     <item id="tutFat2"      name="Sacrificial Fat"      iconFile="fat"      exclusiveToQuest="tutOfferings" />
@@ -312,7 +311,7 @@
         xDrawOffset="-12" yDrawOffset="-12"
         imageFile="snake" >
         <collisionRect x="-5" y="-5" w="10" h="10" />
-        <loot id="tutMeat" > <normal mean="0.5" sd="0.5" /> </loot>
+        <loot id="meat" > <normal mean="0.5" sd="0.5" /> </loot>
     </npcType>
     <spawnPoint type="tutSnake" quantity="15" radius="560" respawnTime="120000" x="3139" y="58485" />
 
@@ -329,7 +328,7 @@
         imageFile="tortoise" >
         <spell id="tutShield" />
         <collisionRect x="-15" y="-5" w="31" h="10" />
-        <loot id="tutMeat" > <normal mean="0.5" sd="0.5" /> </loot>
+        <loot id="meat" > <normal mean="0.5" sd="0.5" /> </loot>
     </npcType>
     <spawnPoint type="tutTortoise" quantity="4" radius="150" respawnTime="120000" x="4364" y="58540" />
     <spawnPoint type="tutTortoise" quantity="9" radius="250" respawnTime="120000" x="4423" y="58913" />
@@ -356,7 +355,7 @@
         imageFile="lizard" >
         <spell id="tutHeal" />
         <collisionRect x="-18" y="-6" w="37" h="12" />
-        <loot id="tutMeat" > <normal mean="0.5" sd="0.5" /> </loot>
+        <loot id="meat" > <normal mean="0.5" sd="0.5" /> </loot>
     </npcType>
     <spawnPoint type="tutLizard" quantity="7" radius="250" respawnTime="120000" x="2148" y="58382" />
     <spawnPoint type="tutLizard" quantity="8" radius="280" respawnTime="120000" x="1950" y="58831" />
