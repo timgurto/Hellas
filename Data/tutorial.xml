@@ -71,7 +71,7 @@
         <loot id="tutEntrails"> <normal mean="0.5" sd="0.5" /> </loot>
         <loot id="tutFat" chance="0.2" />
     </npcType>
-    <item id="tutMeat"     name="Goat Meat"                         stackSize="10" exclusiveToQuest="tutParts" />
+    <item id="tutMeat"     name="Goat Meat"     iconFile="meat"     stackSize="10" />
     <item id="tutHide"     name="Goat Hide"     iconFile="hide"     stackSize="10" exclusiveToQuest="tutParts" />
     <item id="tutEntrails" name="Goat Entrails" iconFile="entrails" stackSize="10" exclusiveToQuest="tutParts" />
     <item id="tutFat"      name="Goat Fat"      iconFile="fat"      stackSize="10" exclusiveToQuest="tutParts" />
