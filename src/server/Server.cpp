@@ -361,7 +361,18 @@ void Server::addUser(const Socket &socket, const std::string &name,
 
   // Send him his quest progress
   for (const auto &questID : newUser.questsInProgress()) {
-    newUser.sendMessage(SV_QUEST_CAN_BE_FINISHED, questID);
+    const auto *quest = findQuest(questID);
+    if (quest->objectives.empty())
+      newUser.sendMessage(SV_QUEST_CAN_BE_FINISHED, questID);
+    else {
+      for (auto i = 0; i != quest->objectives.size(); ++i) {
+        auto &objective = quest->objectives[i];
+        auto progress =
+            newUser.questProgress(questID, objective.type, objective.id);
+        if (progress == 0) continue;
+        newUser.sendMessage(SV_QUEST_PROGRESS, makeArgs(questID, i, progress));
+      }
+    }
   }
 
   // Send him his known spells

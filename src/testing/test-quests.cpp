@@ -880,6 +880,9 @@ TEST_CASE("Clients get the correct state on login", "[quests]") {
     auto data = R"(
       <objectType id="questgiver" />
       <objectType id="B" />
+      <quest id="partial" startsAt="questgiver" endsAt="B">
+        <objective type="kill" id="B" qty="2" />
+      </quest>
       <quest id="completable" startsAt="questgiver" endsAt="B" />
       <quest id="completed" startsAt="questgiver" endsAt="B" />
     )";
@@ -887,11 +890,16 @@ TEST_CASE("Clients get the correct state on login", "[quests]") {
 
     s.addObject("questgiver", {10, 15});
 
-    WHEN("Alice starts one quest, finishes another, and disconnects") {
+    WHEN(
+        "Alice starts one quest, partially finishes another, finishes another, "
+        "and disconnects") {
       {
         auto c = TestClient::WithUsernameAndDataString("alice", data);
         s.waitForUsers(1);
         auto &alice = s.getFirstUser();
+
+        alice.startQuest(*s->findQuest("partial"));
+        alice.addQuestProgress(Quest::Objective::KILL, "B");
 
         alice.startQuest(*s->findQuest("completable"));
 
@@ -906,6 +914,11 @@ TEST_CASE("Clients get the correct state on login", "[quests]") {
           WAIT_UNTIL(c.objects().size() == 1);
           const auto &obj = c.getFirstObject();
           WAIT_UNTIL(obj.startsQuests().size() == 0);
+
+          AND_THEN("she knows that she's killed 1/2 targets for 'partial'") {
+            const auto &partialQuest = c->quests().find("partial")->second;
+            WAIT_UNTIL(partialQuest.getProgress(0) == 1);
+          }
 
           AND_THEN("she knows that she is on 'completable'") {
             const auto &questInProgress =
@@ -1205,6 +1218,14 @@ TEST_CASE("Construction quests", "[quests]") {
 
     WHEN("a user starts the quest") {
       user.startQuest(*s->findQuest("quest1"));
+
+      THEN("the client knows it isn't completable") {
+        REPEAT_FOR_MS(100);
+        const auto &quest1 = c->quests().find("quest1")->second;
+        CHECK(quest1.state == CQuest::IN_PROGRESS);
+        const auto &cQuestgiver = c.getFirstObject();
+        CHECK(cQuestgiver.completableQuests().empty());
+      }
 
       AND_WHEN("he tries to finish it") {
         c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
