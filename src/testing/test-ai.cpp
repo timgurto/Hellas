@@ -7,7 +7,7 @@ TEST_CASE("NPCs chain pull", "[ai]") {
     auto data = R"(
       <npcType id="bear" />
       <item id="spear" gearSlot="6">
-        <weapon range="25" consumes="spear" />
+        <weapon range="25" consumes="spear" damage="1" speed="1" />
       </item>
     )";
     auto s = TestServer::WithDataString(data);
