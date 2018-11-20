@@ -33,10 +33,7 @@ struct Quest {
 
   std::string prerequisiteQuest{};
   bool hasPrerequisite() const { return !prerequisiteQuest.empty(); }
-  std::string otherQuestWithThisAsPrerequisite{};
-  bool otherQuestHasThisAsPrerequisite() const {
-    return !otherQuestWithThisAsPrerequisite.empty();
-  }
+  std::set<std::string> otherQuestsWithThisAsPrerequisite;
 
   bool canBeCompletedByUser(const User &user) const;
 };

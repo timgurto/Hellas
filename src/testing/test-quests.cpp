@@ -707,6 +707,38 @@ TEST_CASE("Quest chains", "[quests]") {
       }
     }
   }
+
+  GIVEN("one quest that unlocks two others") {
+    auto data = R"(
+      <objectType id="A" />
+      <quest id="quest1" startsAt="A" endsAt="A" />
+      <quest id="quest2a" startsAt="A" endsAt="A">
+        <prerequisite id="quest1" />
+      </quest>
+      <quest id="quest2b" startsAt="A" endsAt="A">
+        <prerequisite id="quest1" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addObject("A", {10, 15});
+    auto aSerial = s.getFirstObject().serial();
+    WAIT_UNTIL(c.objects().size() == 1);
+    auto &user = s.getFirstUser();
+
+    WHEN("the first quest is started and finished") {
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", aSerial));
+      WAIT_UNTIL(user.numQuests() == 1);
+      c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+      WAIT_UNTIL(user.numQuests() == 0);
+
+      THEN("the user can see two quests available") {
+        const auto &object = c.getFirstObject();
+        WAIT_UNTIL(object.startsQuests().size() == 2);
+      }
+    }
+  }
 }
 
 TEST_CASE("Object window stays open for chained quests", "[quests][ui]") {

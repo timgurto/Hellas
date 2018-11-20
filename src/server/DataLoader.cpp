@@ -417,7 +417,7 @@ void DataLoader::loadQuests(XmlReader &xr) {
     auto hasPrereq = xr.findAttr(prereq, "id", q.prerequisiteQuest);
     if (hasPrereq) {
       auto &prerequisiteQuest = _server._quests[q.prerequisiteQuest];
-      prerequisiteQuest.otherQuestWithThisAsPrerequisite = id;
+      prerequisiteQuest.otherQuestsWithThisAsPrerequisite.insert(id);
     }
 
     for (auto startsWithItem : xr.getChildren("startsWithItem", elem)) {

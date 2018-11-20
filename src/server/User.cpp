@@ -1035,9 +1035,8 @@ void User::completeQuest(const Quest::ID &id) {
     server.sendNewBuildsMessage(*this, {quest->reward});
   }
 
-  if (quest->otherQuestHasThisAsPrerequisite())
-    sendMessage(SV_QUEST_CAN_BE_STARTED,
-                quest->otherQuestWithThisAsPrerequisite);
+  for (const auto &unlockedQuestID : quest->otherQuestsWithThisAsPrerequisite)
+    sendMessage(SV_QUEST_CAN_BE_STARTED, unlockedQuestID);
 
   sendMessage(SV_QUEST_COMPLETED, id);
 }
