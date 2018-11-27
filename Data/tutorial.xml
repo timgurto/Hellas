@@ -26,7 +26,7 @@
     It looks like your eyes and ears are in working order, so let's test your arms and legs.  Head over to that grassy area nearby, and kill some pigs."
     debrief="Excellent, everything seems to be working as intended.  You're quite impressive, if I do say so myself!"
     ><!--helpTopicOnAccept="Basic: combat"-->
-	<objective type="kill" id="tutPig" qty="6" />
+	<objective type="kill" id="tutPig" qty="4" />
 </quest>
     <npcType
         id="prometheus" name="Prometheus"
@@ -55,9 +55,9 @@
     debrief="These will do nicely."
     ><!--helpTopicOnAccept="Basic: loot"-->
     <prerequisite id="tutCombat" />
-    <objective type="fetch" id="tutMeat" qty="6" />
+    <objective type="fetch" id="tutMeat" qty="4" />
     <objective type="fetch" id="tutHide" />
-    <objective type="fetch" id="tutEntrails" qty="6" />
+    <objective type="fetch" id="tutEntrails" qty="4" />
     <objective type="fetch" id="tutFat" />
 </quest>
     <npcType
@@ -66,10 +66,10 @@
         xDrawOffset="-17" yDrawOffset="-28"
         imageFile="goat" sounds = "goat" >
         <collisionRect x="-15" y="-4" w="31" h="7" />
-        <loot id="tutMeat" > <normal mean="0.5" sd="0.5" /> </loot>
-        <loot id="tutHide" chance="0.2" />
-        <loot id="tutEntrails"> <normal mean="0.5" sd="0.5" /> </loot>
-        <loot id="tutFat" chance="0.2" />
+        <loot id="tutMeat" > <normal mean="0.8" sd="0.5" /> </loot>
+        <loot id="tutHide" chance="0.3" />
+        <loot id="tutEntrails"> <normal mean="0.8" sd="0.5" /> </loot>
+        <loot id="tutFat" chance="0.3" />
     </npcType>
     <item id="tutMeat"     name="Goat Meat"     iconFile="meat"     stackSize="10" exclusiveToQuest="tutParts" />
     <item id="tutHide"     name="Goat Hide"     iconFile="hide"     stackSize="10" exclusiveToQuest="tutParts" />
@@ -303,7 +303,7 @@
     debrief="They attack from far away?  How interesting.
     It also sounds like when they hit you, it isn't physical damage that you took, but rather magical damage from the earth element." >
     <prerequisite id="tutLearnFire" />
-	<objective type="kill" id="tutSnake" qty="10" />
+	<objective type="kill" id="tutSnake" qty="5" />
 </quest>
     <npcType
         id="tutSnake" name="Snake" isFlat="1"
@@ -319,7 +319,7 @@
     brief="Another fascinating new animal Themis created is tortoises.  They look quite strange; go North East to the beach, and see if you can discern their gift."
     debrief="A shield that protects them from damage?  Huh . . ." >
     <prerequisite id="tutSnakes" />
-	<objective type="kill" id="tutTortoise" qty="10" />
+	<objective type="kill" id="tutTortoise" qty="5" />
 </quest>
     <npcType
         id="tutTortoise" name="Tortoise"
@@ -346,7 +346,7 @@
     brief="There's one final animal I want you to investigate: lizards.  I think I saw some crawling around out West past the forest, in a desert.  Please engage a few in combat."
     debrief="How very strange . . . the lizards healed themselves while you fought?  That's quite a defense mechanism." >
     <prerequisite id="tutTortoises" />
-	<objective type="kill" id="tutLizard" qty="10" />
+	<objective type="kill" id="tutLizard" qty="5" />
 </quest>
     <npcType
         id="tutLizard" name="Lizard"
