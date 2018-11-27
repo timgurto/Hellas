@@ -186,7 +186,7 @@
     
 <quest id="tutCooking" name="Cooking" startsAt="prometheus" endsAt="atlas"
     brief="My brother Atlas was a general in the war against the Olympians, and for that they devised a special punishment for him--a rather exhausting one.
-    Now that you know how to cook, I would greatly appreciate it if you could pay him a visit and bring him some food.  If you build a cooking fire, that experience will teach you all the knowledge necessary to cook raw boar meat into a nutritious meal.
+    Now that you know how to cook, I would greatly appreciate it if you could pay him a visit and bring him some food.  If you manage to get a fire going, that experience will teach you all the knowledge necessary to cook raw boar meat into a nutritious meal.
     Now that I think about it, given his history fighting against the gods, Atlas might be able to offer you some guidance of his own.  Be sure to ask him for any advice he may have.
     Head west.  Then keep going, until you reach the very edge of the world.  That's where you'll find Atlas."
     debrief="Hello . . . urgh . . .  it's nice to have a visitor.  One of my brother's . . . ungh . . .  new creatures, are you?  What's that?  You brought me some food?"
@@ -211,7 +211,7 @@
 <quest id="tutCyclops" name="Eye on the Prize" startsAt="atlas" endsAt="tutCyclopsQuestgiver"
     brief="Thank you, I feel much better.  Bearing the heavens for all eternity is hungry work.  Would you mind holding this for a moment while I wipe my mouth?
     Hah, I'm joking; relax!
-    Advice?  Actually, there is something that might prove useful to you.  Down the path to the south are the cyclops craftsmen that made weapons for Zeus during the war.  Go speak to them, and see if they have any surplus weapons now that the war is over.  Sure, they sided with the enemy, but the blood of the Titans flows through their veins too and they might be willing to bargain."
+    Advice?  Actually, there is something that might prove useful to you.  Down the path to the south are the cyclops craftsmen that made weapons for Zeus during the war.  Go speak to them, and see if they have any surplus weapons now that the war is over.  Sure, they sided with the enemy, but the blood of the Titans flows through their veins and they might be willing to bargain."
     debrief="Good day.  You're a small one!
     Surplus weapons?  Hmm, I don't know . . . the war is over, I suppose.  Plus, we're short on materials for our work, so maybe we can help each other.  My brother Brontes here will give you what you want in exchange for the metal ore that can be found on this mountain.">
     <prerequisite id="tutCooking" />
@@ -299,7 +299,7 @@
 <quest id="tutSnakes" name="Snakes" startsAt="prometheus" endsAt="prometheus"
     brief="After Zeus took power, he asked my aunt Themis and I to populate the world with new types of creatures.
     Themis quickly created all sorts of animals, giving them interesting gifts and talents.  I created you--and I'm afraid I took so long trying to get you right, that there are no gifts left!  All of the good ideas are already taken.
-    Maybe inspecting Themis's work will give me some inspiration.  We've already seen goats and pigs, so let's take a look at some of the other sorts of animals she has created.  Head out and kill some snakes, taking note of anything that makes them special.  You can find them North, slithering around in a swamp."
+    Maybe inspecting Themis's work will give me some inspiration.  We've already seen goats and pigs, so let's take a look at some of the other sorts of animals she has created.  Head out and kill some snakes, taking note of anything that makes them special.  You can find them north, slithering around in a swamp."
     debrief="They attack from far away?  How interesting.
     It also sounds like when they hit you, it isn't physical damage that you took, but rather magical damage from the earth element." >
     <prerequisite id="tutLearnFire" />
@@ -316,7 +316,7 @@
     <spawnPoint type="tutSnake" quantity="15" radius="560" respawnTime="120000" x="3139" y="58485" />
 
 <quest id="tutTortoises" name="Tortoises" startsAt="prometheus" endsAt="prometheus"
-    brief="Another fascinating new animal Themis created is tortoises.  They look quite strange; go North East to the beach, and see if you can discern their gift."
+    brief="Another fascinating new animal Themis created is tortoises.  They look quite strange; go north-east to the beach, and see if you can discern their gift."
     debrief="A shield that protects them from damage?  Huh . . ." >
     <prerequisite id="tutSnakes" />
 	<objective type="kill" id="tutTortoise" qty="5" />
@@ -343,7 +343,7 @@
     
 
 <quest id="tutLizards" name="Lizards" startsAt="prometheus" endsAt="prometheus"
-    brief="There's one final animal I want you to investigate: lizards.  I think I saw some crawling around out West past the forest, in a desert.  Please engage a few in combat."
+    brief="There's one final animal I want you to investigate: lizards.  I saw some crawling around out west past the forest, in a desert.  Please engage a few in combat."
     debrief="How very strange . . . the lizards healed themselves while you fought?  That's quite a defense mechanism." >
     <prerequisite id="tutTortoises" />
 	<objective type="kill" id="tutLizard" qty="5" />
