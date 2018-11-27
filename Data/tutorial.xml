@@ -89,6 +89,7 @@
     debrief="Greetings, mortal.  Are you one of Prometheus's little creatures?
     We gods have our due, and as their king it falls to me to make the choice.  But obviously we should have the best-quality meat for ourselves!  I choose the fatty offering."
     helpTopicOnAccept="Basic: placement">
+    <prerequisite id="tutParts" />
     <objective type="construct" id="leanOffering" />
     <objective type="construct" id="fattyOffering" />
     <startsWithItem id="tutMeat2" />
