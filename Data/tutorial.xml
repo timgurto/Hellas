@@ -226,7 +226,7 @@
     </objectType>
     <objectType
         id="tutCyclopsMerchant" name="Brontes"
-        level="20" maxHealth="86" isCivilian="1" merchantSlots="1"
+        level="20" maxHealth="86" isCivilian="1" merchantSlots="1" bottomlessMerchant="1"
         xDrawOffset="-20" yDrawOffset="-55" >
         <collisionRect x="-13" y="-3" w="26" h="7" />
         <class name="cyclops"/>
