@@ -431,8 +431,8 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 485,"On death, client loses quest progress",13,2,Bug,,TRUE,,1
 486,Show chance to unlock when crafting,34,8,Usability,,,,
 487,Show chance to unlock when building,13,2,Usability,486,,,
-488,Clay terrain for starting area,1,2,Content,,,,2
-489,Clay particles coming from new users for ~15s,3,3,Content,,,,2
+488,Clay terrain for starting area,1,2,Content,,TRUE,,2
+489,Clay particles coming from new users for ~15s,3,3,Content,,TRUE,,2
 490,Allow line break on -,2,3,Bug,,,,
 491,Better blood colour,5,2,Content,,,,2
 492,Replace all instances of Color::TODO,8,5,Content,,,,1
@@ -442,5 +442,4 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 496,Draw names/bars in front of everything else,2,2,Usability,,,,2
 497,Extinguished fire can't be clicked on,21,3,Bug,,TRUE,,
 498,It's too easy to select Atlas,2,3,Usability,,,,2
-499,Recolour UI images,13,8,Usability,,,,1
 500,Show taggers in client,5,3,Usability,,,,
