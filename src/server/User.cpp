@@ -1030,19 +1030,7 @@ void User::completeQuest(const Quest::ID &id) {
 
   // Rewards
   addXP(100);
-  switch (quest->reward.type) {
-    case Quest::Reward::CONSTRUCTION:
-      addConstruction(quest->reward.id);
-      server.sendNewBuildsMessage(*this, {quest->reward.id});
-      break;
-
-    case Quest::Reward::SPELL:
-      getClass().teachSpell(quest->reward.id);
-      break;
-
-    case Quest::Reward::NONE:
-      break;
-  }
+  giveQuestReward(quest->reward);
 
   for (const auto &unlockedQuestID : quest->otherQuestsWithThisAsPrerequisite) {
     if (hasCompletedAllPrerequisiteQuestsOf(unlockedQuestID))
@@ -1050,6 +1038,23 @@ void User::completeQuest(const Quest::ID &id) {
   }
 
   sendMessage(SV_QUEST_COMPLETED, id);
+}
+
+void User::giveQuestReward(const Quest::Reward &reward) {
+  auto &server = Server::instance();
+  switch (reward.type) {
+    case Quest::Reward::CONSTRUCTION:
+      addConstruction(reward.id);
+      server.sendNewBuildsMessage(*this, {reward.id});
+      break;
+
+    case Quest::Reward::SPELL:
+      getClass().teachSpell(reward.id);
+      break;
+
+    case Quest::Reward::NONE:
+      break;
+  }
 }
 
 bool User::hasCompletedQuest(const Quest::ID &id) const {
