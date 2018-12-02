@@ -756,6 +756,7 @@ TEST_CASE("Quest chains", "[quests]") {
     s.addObject("A", {10, 15});
     auto aSerial = s.getFirstObject().serial();
     WAIT_UNTIL(c.objects().size() == 1);
+    const auto &cObject = c.getFirstObject();
     auto &user = s.getFirstUser();
 
     WHEN("the prerequisite quests are started") {
@@ -768,9 +769,8 @@ TEST_CASE("Quest chains", "[quests]") {
         c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1a", aSerial));
 
         THEN("the user can see no quests available") {
-          const auto &object = c.getFirstObject();
           REPEAT_FOR_MS(100);
-          CHECK(object.startsQuests().size() == 0);
+          CHECK(cObject.startsQuests().size() == 0);
         }
       }
     }
