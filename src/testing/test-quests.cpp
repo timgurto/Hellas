@@ -772,6 +772,15 @@ TEST_CASE("Quest chains", "[quests]") {
           REPEAT_FOR_MS(100);
           CHECK(cObject.startsQuests().size() == 0);
         }
+
+        AND_WHEN("the other is completed") {
+          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1b", aSerial));
+
+          THEN("the user can see a quest available") {
+            REPEAT_FOR_MS(100);
+            CHECK(cObject.startsQuests().size() == 1);
+          }
+        }
       }
     }
   }

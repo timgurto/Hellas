@@ -252,6 +252,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void startQuest(const Quest &quest);
   void completeQuest(const Quest::ID &id);
   bool hasCompletedQuest(const Quest::ID &id) const;
+  bool hasCompletedAllPrerequisiteQuestsOf(const Quest::ID &id) const;
   const std::set<Quest::ID> &questsCompleted() const {
     return _questsCompleted;
   }

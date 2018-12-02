@@ -1036,9 +1036,8 @@ void User::completeQuest(const Quest::ID &id) {
   }
 
   for (const auto &unlockedQuestID : quest->otherQuestsWithThisAsPrerequisite) {
-    const auto unlockedQuest = server.findQuest(unlockedQuestID);
-    if (unlockedQuest->prerequisiteQuests.size() > 1) continue;
-    sendMessage(SV_QUEST_CAN_BE_STARTED, unlockedQuestID);
+    if (hasCompletedAllPrerequisiteQuests(unlockedQuestID))
+      sendMessage(SV_QUEST_CAN_BE_STARTED, unlockedQuestID);
   }
 
   sendMessage(SV_QUEST_COMPLETED, id);
@@ -1047,6 +1046,15 @@ void User::completeQuest(const Quest::ID &id) {
 bool User::hasCompletedQuest(const Quest::ID &id) const {
   auto it = _questsCompleted.find(id);
   return it != _questsCompleted.end();
+}
+
+bool User::hasCompletedAllPrerequisiteQuests(const Quest::ID &id) const {
+  auto &server = Server::instance();
+  const auto *quest = server.findQuest(id);
+  for (const auto prereq : quest->prerequisiteQuests) {
+    if (!hasCompletedQuest(prereq)) return false;
+  }
+  return true;
 }
 
 void User::abandonQuest(const Quest::ID &id) {
