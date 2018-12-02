@@ -12,7 +12,7 @@
 <object id="crater"> <location x=3441 y=59078/> </object>
 <object id="crater"> <location x=3523 y=59396/> </object>
 <object id="crater"> <location x=3895 y=59349/> </object>
-<object id="crater"> <location x=4793 y=58877/> </object>
+<object id="crater"> <location x=4676 y=58998/> </object>
 <object id="crater"> <location x=393 y=59505/> </object>
 <object id="crater"> <location x=476 y=59711/> </object>
 <object id="crater"> <location x=324 y=59883/> </object>
@@ -20,6 +20,7 @@
 <object id="crater"> <location x=1073 y=60259/> </object>
 
 <npc id="prometheus"> <location x="3872" y="60212" /> </npc>
+<npc id="prometheusBound"> <location x="4780" y="58829" /> </npc>
 <object id="tutBrazier"> <location x="3886" y="58420" /> </object>
 <npc id="atlas"> <location x="15" y="59604" /> </npc>
 

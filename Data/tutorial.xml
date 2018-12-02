@@ -366,5 +366,13 @@
     <function name="heal" i1=5 />
     </spell>
 
+    
+    <npcType
+        id="prometheusBound" name="Prometheus"
+        level="20" maxHealth="86" isCivilian="1" allowedTerrain="mountains"
+        xDrawOffset="-20" yDrawOffset="-12" >
+        <class name="titan"/>
+        <particles profile="wound" x=3 y=0 />
+    </npcType>
 
 </root>

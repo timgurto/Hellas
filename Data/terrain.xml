@@ -161,4 +161,16 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
     <allow id="forestFertile" />
 </list>
 
+<list id="mountains" >
+    <allow id="mountain" />
+    <allow id="plainsMountain" />
+    <allow id="forestMountain" />
+    <allow id="richMountain" />
+    <allow id="desertMountain" />
+    <allow id="beachMountain" />
+    <allow id="ruinsMountain" />
+    <allow id="caveMountain" />
+    <allow id="volcanoMountain" />
+</list>
+
 </root>
