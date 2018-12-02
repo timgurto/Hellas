@@ -378,7 +378,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
   // Send him his known spells
   auto knownSpellsString = userClass.generateKnownSpellsString();
   newUser.sendMessage(SV_KNOWN_SPELLS, knownSpellsString);
-  newUser.getClass().teachSpell("sprint");
+  for (const auto &spell : _spells) newUser.getClass().teachSpell("sprint");
   newUser.getClass().teachSpell("blink");
   newUser.getClass().teachSpell("waterWalking");
 

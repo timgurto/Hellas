@@ -1033,10 +1033,11 @@ void User::completeQuest(const Quest::ID &id) {
   if (!quest->reward.empty()) {
     addConstruction(quest->reward);
     server.sendNewBuildsMessage(*this, {quest->reward});
+    getClass().teachSpell(quest->reward);
   }
 
   for (const auto &unlockedQuestID : quest->otherQuestsWithThisAsPrerequisite) {
-    if (hasCompletedAllPrerequisiteQuests(unlockedQuestID))
+    if (hasCompletedAllPrerequisiteQuestsOf(unlockedQuestID))
       sendMessage(SV_QUEST_CAN_BE_STARTED, unlockedQuestID);
   }
 
@@ -1048,7 +1049,7 @@ bool User::hasCompletedQuest(const Quest::ID &id) const {
   return it != _questsCompleted.end();
 }
 
-bool User::hasCompletedAllPrerequisiteQuests(const Quest::ID &id) const {
+bool User::hasCompletedAllPrerequisiteQuestsOf(const Quest::ID &id) const {
   auto &server = Server::instance();
   const auto *quest = server.findQuest(id);
   for (const auto prereq : quest->prerequisiteQuests) {

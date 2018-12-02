@@ -1495,6 +1495,39 @@ TEST_CASE("Quest reward: construction", "[quests]") {
   }
 }
 
+TEST_CASE("Quest reward: spell", "[quests]") {
+  GIVEN("a quest that awards a spell") {
+    auto data = R"(
+      <objectType id="questgiver" />
+      <spell id="fireball" range=30 cooldown=2 >
+        <targets enemy=1 />
+        <function name="doDirectDamage" i1=5 />
+      </spell>
+      <quest id="teachesFireball" startsAt="questgiver" endsAt="questgiver">
+        <reward type="spell" id="fireball" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    THEN("the user doesn't know any spells") {
+      CHECK_FALSE(user.getClass().knowsSpell("fireball"));
+    }
+
+    WHEN("a user completes the quest") {
+      const auto &quest = s.getFirstQuest();
+      user.startQuest(quest);
+      user.completeQuest(quest.id);
+
+      THEN("he knows the spell") {
+        WAIT_UNTIL(user.getClass().knowsSpell("fireball"));
+      }
+    }
+  }
+}
+
 TEST_CASE("Client remembers quest progress after death", "[quests]") {
   GIVEN("a player on a quest, and a quest-starter object") {
     auto data = R"(
