@@ -1475,6 +1475,10 @@ TEST_CASE("Quest reward: construction", "[quests]") {
       <quest id="teachesHole" startsAt="questgiver" endsAt="questgiver">
         <reward type="construction" id="hole" />
       </quest>
+      <spell id="hole" range=30 cooldown=2 >
+        <targets enemy=1 />
+        <function name="doDirectDamage" />
+      </spell>
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
@@ -1490,6 +1494,10 @@ TEST_CASE("Quest reward: construction", "[quests]") {
         WAIT_UNTIL(user.knowsConstruction("hole"));
 
         AND_THEN("and he knows it") { WAIT_UNTIL(c.knowsConstruction("hole")); }
+
+        AND_THEN("he doesn't know the spell of the same name") {
+          CHECK_FALSE(user.getClass().knowsSpell("hole"));
+        }
       }
     }
   }
@@ -1501,7 +1509,7 @@ TEST_CASE("Quest reward: spell", "[quests]") {
       <objectType id="questgiver" />
       <spell id="fireball" range=30 cooldown=2 >
         <targets enemy=1 />
-        <function name="doDirectDamage" i1=5 />
+        <function name="doDirectDamage" />
       </spell>
       <quest id="teachesFireball" startsAt="questgiver" endsAt="questgiver">
         <reward type="spell" id="fireball" />

@@ -408,9 +408,21 @@ void DataLoader::loadQuests(XmlReader &xr) {
       q.objectives.push_back(objective);
     }
 
-    for (auto rewardElem : xr.getChildren("reward", elem)) {
-      auto id = ""s;
-      if (xr.findAttr(rewardElem, "id", id)) q.reward = id;
+    auto rewardElem = xr.findChild("reward", elem);
+    if (rewardElem) {
+      auto type = ""s;
+      if (!xr.findAttr(rewardElem, "type", type)) continue;
+      auto rewardID = ""s;
+      if (!xr.findAttr(rewardElem, "id", rewardID)) continue;
+
+      if (type == "construction")
+        q.reward.type = Quest::Reward::CONSTRUCTION;
+      else if (type == "spell")
+        q.reward.type = Quest::Reward::SPELL;
+      else
+        continue;
+
+      q.reward.id = rewardID;
     }
 
     for (auto prereq : xr.getChildren("prerequisite", elem)) {

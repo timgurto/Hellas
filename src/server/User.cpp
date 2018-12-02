@@ -1030,10 +1030,18 @@ void User::completeQuest(const Quest::ID &id) {
 
   // Rewards
   addXP(100);
-  if (!quest->reward.empty()) {
-    addConstruction(quest->reward);
-    server.sendNewBuildsMessage(*this, {quest->reward});
-    getClass().teachSpell(quest->reward);
+  switch (quest->reward.type) {
+    case Quest::Reward::CONSTRUCTION:
+      addConstruction(quest->reward.id);
+      server.sendNewBuildsMessage(*this, {quest->reward.id});
+      break;
+
+    case Quest::Reward::SPELL:
+      getClass().teachSpell(quest->reward.id);
+      break;
+
+    case Quest::Reward::NONE:
+      break;
   }
 
   for (const auto &unlockedQuestID : quest->otherQuestsWithThisAsPrerequisite) {

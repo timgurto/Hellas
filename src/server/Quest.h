@@ -14,8 +14,6 @@ struct Quest {
   ID id;
   std::set<std::string> startsWithItems{};
 
-  std::string reward{};
-
   struct Objective {
     enum Type { NONE, KILL, FETCH, CONSTRUCT };
     Type type{NONE};
@@ -30,6 +28,13 @@ struct Quest {
 
   std::vector<Objective> objectives;
   bool hasObjective() const { return !objectives.empty(); }
+
+  struct Reward {
+    enum Type { NONE, CONSTRUCTION, SPELL };
+    Type type{NONE};
+    std::string id;
+  };
+  Reward reward;
 
   std::set<std::string> prerequisiteQuests{};
   bool hasPrerequisite() const { return !prerequisiteQuests.empty(); }
