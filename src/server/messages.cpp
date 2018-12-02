@@ -1832,9 +1832,8 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &questID,
 
   auto quest = findQuest(questID);
   if (!quest) return;
-  if (quest->hasPrerequisite() &&
-      !user.hasCompletedQuest(quest->prerequisiteQuest))
-    return;
+  for (auto prereq : quest->prerequisiteQuests)
+    if (!user.hasCompletedQuest(prereq)) return;
 
   user.startQuest(*quest);
 }

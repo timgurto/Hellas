@@ -1035,8 +1035,11 @@ void User::completeQuest(const Quest::ID &id) {
     server.sendNewBuildsMessage(*this, {quest->reward});
   }
 
-  for (const auto &unlockedQuestID : quest->otherQuestsWithThisAsPrerequisite)
+  for (const auto &unlockedQuestID : quest->otherQuestsWithThisAsPrerequisite) {
+    const auto unlockedQuest = server.findQuest(unlockedQuestID);
+    if (unlockedQuest->prerequisiteQuests.size() > 1) continue;
     sendMessage(SV_QUEST_CAN_BE_STARTED, unlockedQuestID);
+  }
 
   sendMessage(SV_QUEST_COMPLETED, id);
 }

@@ -413,11 +413,13 @@ void DataLoader::loadQuests(XmlReader &xr) {
       if (xr.findAttr(rewardElem, "id", id)) q.reward = id;
     }
 
-    auto prereq = xr.findChild("prerequisite", elem);
-    auto hasPrereq = xr.findAttr(prereq, "id", q.prerequisiteQuest);
-    if (hasPrereq) {
-      auto &prerequisiteQuest = _server._quests[q.prerequisiteQuest];
-      prerequisiteQuest.otherQuestsWithThisAsPrerequisite.insert(id);
+    for (auto prereq : xr.getChildren("prerequisite", elem)) {
+      auto prereqID = ""s;
+      if (xr.findAttr(prereq, "id", prereqID)) {
+        q.prerequisiteQuests.insert(prereqID);
+        auto &prerequisiteQuest = _server._quests[prereqID];
+        prerequisiteQuest.otherQuestsWithThisAsPrerequisite.insert(id);
+      }
     }
 
     for (auto startsWithItem : xr.getChildren("startsWithItem", elem)) {

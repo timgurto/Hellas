@@ -31,8 +31,8 @@ struct Quest {
   std::vector<Objective> objectives;
   bool hasObjective() const { return !objectives.empty(); }
 
-  std::string prerequisiteQuest{};
-  bool hasPrerequisite() const { return !prerequisiteQuest.empty(); }
+  std::set<std::string> prerequisiteQuests{};
+  bool hasPrerequisite() const { return !prerequisiteQuests.empty(); }
   std::set<std::string> otherQuestsWithThisAsPrerequisite;
 
   bool canBeCompletedByUser(const User &user) const;

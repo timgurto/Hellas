@@ -739,6 +739,42 @@ TEST_CASE("Quest chains", "[quests]") {
       }
     }
   }
+
+  GIVEN("a quest that has two prerequisite quests") {
+    auto data = R"(
+      <objectType id="A" />
+      <quest id="quest1a" startsAt="A" endsAt="A" />
+      <quest id="quest1b" startsAt="A" endsAt="A" />
+      <quest id="quest2" startsAt="A" endsAt="A">
+        <prerequisite id="quest1a" />
+        <prerequisite id="quest1b" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addObject("A", {10, 15});
+    auto aSerial = s.getFirstObject().serial();
+    WAIT_UNTIL(c.objects().size() == 1);
+    auto &user = s.getFirstUser();
+
+    WHEN("the prerequisite quests are started") {
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1a", aSerial));
+      WAIT_UNTIL(user.numQuests() == 1);
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1b", aSerial));
+      WAIT_UNTIL(user.numQuests() == 1);
+
+      AND_WHEN("one is completed") {
+        c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1a", aSerial));
+
+        THEN("the user can see no quests available") {
+          const auto &object = c.getFirstObject();
+          REPEAT_FOR_MS(100);
+          CHECK(object.startsQuests().size() == 0);
+        }
+      }
+    }
+  }
 }
 
 TEST_CASE("Object window stays open for chained quests", "[quests][ui]") {
@@ -923,8 +959,8 @@ TEST_CASE("Clients get the correct state on login", "[quests]") {
     s.addObject("questgiver", {10, 15});
 
     WHEN(
-        "Alice starts one quest, partially finishes another, finishes another, "
-        "and disconnects") {
+        "Alice starts one quest, partially finishes another, finishes "
+        "another, and disconnects") {
       {
         auto c = TestClient::WithUsernameAndDataString("alice", data);
         s.waitForUsers(1);

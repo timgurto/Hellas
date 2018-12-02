@@ -26,8 +26,14 @@ void QuestNodeType::sendQuestsToUser(const User &user) const {
     if (user.isOnQuest(id)) continue;
     auto quest = server.findQuest(id);
     if (quest->hasPrerequisite()) {
-      const auto &prereq = quest->prerequisiteQuest;
-      if (!user.hasCompletedQuest(prereq)) continue;
+      auto aPrereqIsIncomplete = false;
+      for (const auto &prereq : quest->prerequisiteQuests) {
+        if (!user.hasCompletedQuest(prereq)) {
+          aPrereqIsIncomplete = true;
+          break;
+        }
+      }
+      if (aPrereqIsIncomplete) continue;
     }
     user.sendMessage(SV_QUEST_CAN_BE_STARTED, id);
   }
