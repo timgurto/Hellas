@@ -367,6 +367,16 @@
     </spell>
 
     
+<quest id="tutEnd" name="Gifted" startsAt="prometheus" endsAt="prometheusBound"
+    brief="Some animals can attack, up close or from far away.  Some do physical damage, and some draw on the elements.  Some can protect themselves with shields, and some can restore health.
+    With your help, I have decided on a gift to bestow upon mankind: you will receive them all.  No man can excel at everything, but together you will have access to each of these gifts.  Another gift I grant you is reason--the ability to know and improve yourself, and choose how best to make the most of your talents.
+    Now it's time to leave this mountain for good, and enter the wider world.  To do this, travel northeast until you find the Altar to Zeus."
+    debrief="As you can see, Zeus has seen fit to punish me for sharing fire with you against his wishes.  At least this bird isn't cooking my liver before eating it!  Heh heh . . .
+    No matter, I made my decision and I will live with it."
+>
+    <prerequisite id="tutLizards" />
+    <prerequisite id="tutCooking" />
+</quest>
     <npcType
         id="prometheusBound" name="Prometheus"
         level="20" maxHealth="86" isCivilian="1" allowedTerrain="mountains"
@@ -374,5 +384,14 @@
         <class name="titan"/>
         <particles profile="wound" x=3 y=0 />
     </npcType>
+    
+    
+<quest id="tutUtility" name="Gifted" startsAt="prometheusBound" endsAt="prometheusBound"
+    brief="Zeus has put one of his servants between us and his altar--I guess he's trying to keep us up here and out of trouble.  I have one final gift for you that might help."
+    debrief="I've set you on your feet, and it's up to you to find your path and walk it as best you can.
+    Now go.  Get to the altar, worship there, and get off this accursed mountain.  I hope the gods look kindly upon you." >
+    <prerequisite id="tutEnd" />
+    <reward type="spell" id="sprint" />
+</quest>
 
 </root>
