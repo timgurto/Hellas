@@ -96,7 +96,7 @@
 </particleProfile>
 
 <particleProfile
-    id="wound" particlesPerSecond=5>
+    id="wound" particlesPerSecond=3>
     <velocity mean=0 sd=10 />
     <fallSpeed mean=0 sd=2 />
     <variety imageFile="blood" />
