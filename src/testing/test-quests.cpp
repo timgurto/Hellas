@@ -1604,3 +1604,27 @@ TEST_CASE("Abandoning quests", "[quests]") {
     }
   }
 }
+
+TEST_CASE("Class-specific quests", "[quests]") {
+  GIVEN("A quest marked as exclusive to a 'politician' class") {
+    auto data = R"(
+      <objectType id="questgiver" />
+      <quest id="getElected" startsAt="questgiver" endsAt="questgiver" exclusiveToClass="politician" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.addObject("questgiver", {10, 15});
+    auto questgiver = s.getFirstObject().serial();
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    WHEN("A non-politician user tries to accept it") {
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("getElected", questgiver));
+
+      THEN("he isn't on any quests") {
+        REPEAT_FOR_MS(100);
+        CHECK(user.numQuests() == 0);
+      }
+    }
+  }
+}
