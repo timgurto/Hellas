@@ -1606,7 +1606,7 @@ TEST_CASE("Abandoning quests", "[quests]") {
 }
 
 TEST_CASE("Class-specific quests", "[quests]") {
-  GIVEN("A quest marked as exclusive to a 'politician' class") {
+  GIVEN("a quest marked as exclusive to a 'politician' class") {
     auto data = R"(
       <objectType id="questgiver" />
       <quest id="getElected" startsAt="questgiver" endsAt="questgiver" exclusiveToClass="politician" />
@@ -1618,7 +1618,9 @@ TEST_CASE("Class-specific quests", "[quests]") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
 
-    WHEN("A non-politician user tries to accept it") {
+    THEN("the quest exists") { CHECK(s->findQuest("getElected")); }
+
+    WHEN("a non-politician user tries to accept it") {
       c.sendMessage(CL_ACCEPT_QUEST, makeArgs("getElected", questgiver));
 
       THEN("he isn't on any quests") {

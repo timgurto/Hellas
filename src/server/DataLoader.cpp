@@ -371,9 +371,6 @@ void DataLoader::loadQuests(XmlReader &xr) {
   if (!xr) return;
 
   for (auto elem : xr.getChildren("quest")) {
-    auto exclusiveClass = ""s;
-    if (xr.findAttr(elem, "exclusiveToClass", exclusiveClass)) continue;
-
     auto id = ""s;
     if (!xr.findAttr(elem, "id", id)) continue;
     // It may already exist, due to being a prerequisite.
@@ -441,6 +438,10 @@ void DataLoader::loadQuests(XmlReader &xr) {
       auto id = ""s;
       if (xr.findAttr(startsWithItem, "id", id)) q.startsWithItems.insert(id);
     }
+
+    auto exclusiveClass = ""s;
+    if (xr.findAttr(elem, "exclusiveToClass", exclusiveClass))
+      q.exclusiveToClass = true;
 
     startingObject->addQuestStart(id);
     endingObject->addQuestEnd(id);
