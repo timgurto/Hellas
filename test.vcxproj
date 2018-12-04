@@ -227,6 +227,7 @@
     <ClCompile Include="src\testing\test-altars.cpp" />
     <ClCompile Include="src\testing\test-buffs.cpp" />
     <ClCompile Include="src\testing\test-cities.cpp" />
+    <ClCompile Include="src\testing\test-classes.cpp" />
     <ClCompile Include="src\testing\test-combat.cpp" />
     <ClCompile Include="src\testing\test-connection.cpp" />
     <ClCompile Include="src\testing\test-construction.cpp" />

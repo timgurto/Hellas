@@ -73,6 +73,12 @@ TestClient TestClient::WithUsernameAndDataString(const std::string &username,
   return TestClient(username, data, DATA_STRING);
 }
 
+TestClient TestClient::WithClassAndDataString(const std::string &classID,
+                                              const std::string &data) {
+  stopClientIfRunning();
+  return TestClient(data, DATA_STRING);
+}
+
 TestClient::~TestClient() {
   if (_client == nullptr) return;
   stop();

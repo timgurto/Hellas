@@ -168,6 +168,7 @@
     <ClCompile Include="src\testing\test-buffs.cpp" />
     <ClCompile Include="src\testing\test-spells.cpp" />
     <ClCompile Include="src\testing\test-tagging.cpp" />
+    <ClCompile Include="src\testing\test-classes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

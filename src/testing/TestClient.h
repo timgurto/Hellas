@@ -19,6 +19,8 @@ class TestClient {
                                         const std::string &dataPath);
   static TestClient WithUsernameAndDataString(const std::string &username,
                                               const std::string &data);
+  static TestClient WithClassAndDataString(const std::string &classID,
+                                           const std::string &data);
   ~TestClient();
 
   // Move constructor/assignment
