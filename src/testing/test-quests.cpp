@@ -1612,19 +1612,19 @@ TEST_CASE("Class-specific quests", "[quests]") {
       <quest id="getElected" startsAt="questgiver" endsAt="questgiver" exclusiveToClass="politician" />
     )";
     auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
     s.addObject("questgiver", {10, 15});
     auto questgiver = s.getFirstObject().serial();
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
 
     THEN("the quest exists") { CHECK(s->findQuest("getElected")); }
 
     WHEN("a non-politician user tries to accept it") {
+      auto c = TestClient::WithDataString(data);
       c.sendMessage(CL_ACCEPT_QUEST, makeArgs("getElected", questgiver));
+      s.waitForUsers(1);
 
       THEN("he isn't on any quests") {
         REPEAT_FOR_MS(100);
+        auto &user = s.getFirstUser();
         CHECK(user.numQuests() == 0);
       }
     }
