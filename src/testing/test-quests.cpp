@@ -786,7 +786,8 @@ TEST_CASE("Quest chains", "[quests]") {
   }
 }
 
-TEST_CASE("Object window stays open for chained quests", "[quests][ui]") {
+TEST_CASE("Object window stays open for chained quests",
+          "[quests][ui][.flaky]") {
   GIVEN("a quest chain") {
     auto data = R"(
       <objectType id="A" />
@@ -823,7 +824,8 @@ TEST_CASE("Object window stays open for chained quests", "[quests][ui]") {
   }
 }
 
-TEST_CASE("Object window is updated with quest changes", "[quests][ui]") {
+TEST_CASE("Object window is updated with quest changes",
+          "[quests][ui][.flaky]") {
   GIVEN("an object that only starts one quest") {
     auto data = R"(
       <objectType id="A" />
@@ -1608,6 +1610,7 @@ TEST_CASE("Abandoning quests", "[quests]") {
 TEST_CASE("Class-specific quests", "[quests]") {
   GIVEN("a quest marked as exclusive to a 'politician' class") {
     auto data = R"(
+      <class name="politician" />
       <objectType id="questgiver" />
       <quest id="getElected" startsAt="questgiver" endsAt="questgiver" exclusiveToClass="politician" />
     )";
@@ -1619,13 +1622,24 @@ TEST_CASE("Class-specific quests", "[quests]") {
 
     WHEN("a non-politician user tries to accept it") {
       auto c = TestClient::WithDataString(data);
-      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("getElected", questgiver));
       s.waitForUsers(1);
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("getElected", questgiver));
 
       THEN("he isn't on any quests") {
         REPEAT_FOR_MS(100);
         auto &user = s.getFirstUser();
         CHECK(user.numQuests() == 0);
+      }
+    }
+
+    WHEN("a politician user tries to accept it") {
+      auto c = TestClient::WithClassAndDataString("politician", data);
+      s.waitForUsers(1);
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("getElected", questgiver));
+
+      THEN("he is on a quest") {
+        auto &user = s.getFirstUser();
+        WAIT_UNTIL(user.numQuests() == 1);
       }
     }
   }

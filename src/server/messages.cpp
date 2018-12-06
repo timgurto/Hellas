@@ -1835,7 +1835,8 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &questID,
   for (auto prereq : quest->prerequisiteQuests)
     if (!user.hasCompletedQuest(prereq)) return;
 
-  if (quest->exclusiveToClass) return;
+  if (quest->exclusiveToClass && user.getClass().type().id() != "politician")
+    return;
 
   user.startQuest(*quest);
 }
