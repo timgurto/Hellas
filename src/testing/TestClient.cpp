@@ -24,6 +24,8 @@ TestClient::TestClient(const StringMap &strings) : _client(new Client) {
   if (strings.count(DATA_STRING) == 1)
     CDataLoader::FromString(*_client, strings.at(DATA_STRING)).load(true);
 
+  if (strings.count(CLASS) == 1) _client->_autoClassID = strings.at(CLASS);
+
   _client->_shouldAutoLogIn = true;
   run();
 }
@@ -71,6 +73,7 @@ TestClient TestClient::WithClassAndDataString(const std::string &classID,
                                               const std::string &data) {
   stopClientIfRunning();
   auto strings = StringMap{};
+  strings[CLASS] = classID;
   strings[DATA_STRING] = data;
   return TestClient(strings);
 }

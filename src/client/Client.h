@@ -405,6 +405,8 @@ class Client {
   static void createAccount();
   static void updateCreateButton(void *);
   static void updateClassDescription();
+  std::string _autoClassID =
+      {};  // For automated account creation, i.e., in tests
 
   // These are superficial, and relate only to the cast bar.
   ms_t _actionTimer;   // How long the character has been performing the current

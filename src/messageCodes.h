@@ -19,7 +19,7 @@ enum MessageCode {
   // Arguments: username, version
   CL_LOGIN_EXISTING,
 
-  // "I'm ne; my name is ..., my class is ... and my client version is ..."
+  // "I'm new; my name is ..., my class is ... and my client version is ..."
   // This has the effect of creating the account, then registering the user with the server.
   // Arguments: username, class, version
   CL_LOGIN_NEW,

@@ -101,7 +101,7 @@ class TestClient {
  private:
   Client *_client;
 
-  enum StringType { USERNAME, DATA_PATH, DATA_STRING };
+  enum StringType { USERNAME, CLASS, DATA_PATH, DATA_STRING };
   using StringMap = std::map<StringType, std::string>;
   TestClient(const StringMap &strings);
   TestClient(const std::string &string, StringType type);

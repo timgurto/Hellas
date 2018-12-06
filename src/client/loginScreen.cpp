@@ -249,8 +249,14 @@ void Client::login() {
     _instance->_username = enteredName;
   }
 
-  _instance->sendMessage(CL_LOGIN_EXISTING,
-                         makeArgs(_instance->_username, version()));
+  auto shouldCallCreateInsteadOfLogin = !_instance->_autoClassID.empty();
+  if (shouldCallCreateInsteadOfLogin)
+    _instance->sendMessage(
+        CL_LOGIN_NEW,
+        makeArgs(_instance->_username, _instance->_autoClassID, version()));
+  else
+    _instance->sendMessage(CL_LOGIN_EXISTING,
+                           makeArgs(_instance->_username, version()));
 }
 
 void Client::initLoginScreen() {
