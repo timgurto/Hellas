@@ -1624,6 +1624,13 @@ TEST_CASE("Class-specific quests", "[quests]") {
       auto c = TestClient::WithDataString(data);
       s.waitForUsers(1);
 
+      THEN("he knows that the questgiver gives no quests") {
+        WAIT_UNTIL(c.objects().size() == 1);
+        const auto &obj = c.getFirstObject();
+        REPEAT_FOR_MS(100);
+        CHECK(obj.startsQuests().size() == 0);
+      }
+
       AND_WHEN("he tries to accept it") {
         c.sendMessage(CL_ACCEPT_QUEST, makeArgs("getElected", questgiver));
 
