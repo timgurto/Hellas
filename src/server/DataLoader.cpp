@@ -439,9 +439,7 @@ void DataLoader::loadQuests(XmlReader &xr) {
       if (xr.findAttr(startsWithItem, "id", id)) q.startsWithItems.insert(id);
     }
 
-    auto exclusiveClass = ""s;
-    if (xr.findAttr(elem, "exclusiveToClass", exclusiveClass))
-      q.exclusiveToClass = true;
+    xr.findAttr(elem, "exclusiveToClass", q.exclusiveToClass);
 
     startingObject->addQuestStart(id);
     endingObject->addQuestEnd(id);

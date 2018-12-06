@@ -1643,4 +1643,26 @@ TEST_CASE("Class-specific quests", "[quests]") {
       }
     }
   }
+
+  GIVEN("a quest marked as exclusive to a 'frog' class") {
+    auto data = R"(
+      <class name="frog" />
+      <objectType id="questgiver" />
+      <quest id="ribbit" startsAt="questgiver" endsAt="questgiver" exclusiveToClass="frog" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    s.addObject("questgiver", {10, 15});
+    auto questgiver = s.getFirstObject().serial();
+
+    WHEN("a frog user tries to accept it") {
+      auto c = TestClient::WithClassAndDataString("frog", data);
+      s.waitForUsers(1);
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("ribbit", questgiver));
+
+      THEN("he is on a quest") {
+        auto &user = s.getFirstUser();
+        WAIT_UNTIL(user.numQuests() == 1);
+      }
+    }
+  }
 }

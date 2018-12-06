@@ -42,7 +42,7 @@ struct Quest {
 
   bool canBeCompletedByUser(const User &user) const;
 
-  bool exclusiveToClass{false};
+  std::string exclusiveToClass{};
 };
 
 using Quests = std::map<Quest::ID, Quest>;
