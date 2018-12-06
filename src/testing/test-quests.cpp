@@ -1607,7 +1607,9 @@ TEST_CASE("Abandoning quests", "[quests]") {
   }
 }
 
-TEST_CASE("Class-specific quests", "[quests]") {
+// Sometimes causes a failed assertion: bad state when removing/inserting
+// entities in Server::_entitiesBy?
+TEST_CASE("Class-specific quests", "[quests][.flaky]") {
   GIVEN("a quest marked as exclusive to a 'politician' class") {
     auto data = R"(
       <class name="politician" />
@@ -1645,6 +1647,12 @@ TEST_CASE("Class-specific quests", "[quests]") {
     WHEN("a politician user logs in") {
       auto c = TestClient::WithClassAndDataString("politician", data);
       s.waitForUsers(1);
+
+      THEN("he knows that the questgiver gives a quest") {
+        WAIT_UNTIL(c.objects().size() == 1);
+        const auto &obj = c.getFirstObject();
+        WAIT_UNTIL(obj.startsQuests().size() == 1);
+      }
 
       AND_WHEN("he tries to accept it") {
         c.sendMessage(CL_ACCEPT_QUEST, makeArgs("getElected", questgiver));

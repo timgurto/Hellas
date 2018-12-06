@@ -35,6 +35,9 @@ void QuestNodeType::sendQuestsToUser(const User &user) const {
       }
       if (aPrereqIsIncomplete) continue;
     }
+    if (!quest->exclusiveToClass.empty() &&
+        quest->exclusiveToClass != user.getClass().type().id())
+      continue;
     user.sendMessage(SV_QUEST_CAN_BE_STARTED, id);
   }
 

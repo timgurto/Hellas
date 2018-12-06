@@ -921,9 +921,6 @@ void CDataLoader::loadQuests(XmlReader &xr) {
       questInfo.objectives.push_back(objective);
     }
 
-    auto exclusiveClass = ""s;
-    if (xr.findAttr(elem, "exclusiveToClass", exclusiveClass)) continue;
-
     _client._quests[questInfo.id] = {questInfo};
   }
 }
