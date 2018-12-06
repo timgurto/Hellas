@@ -10,73 +10,69 @@ TestClient::TestClient() : _client(new Client) {
   run();
 }
 
-TestClient::TestClient(const std::string &string, StringType type)
-    : _client(new Client) {
+TestClient::TestClient(const StringMap &strings) : _client(new Client) {
   CDataLoader::FromPath(*_client, "testing/data/minimal").load();
-  switch (type) {
-    case USERNAME:
-      _client->_username = string;
-      break;
-    case DATA_PATH:
-      _client->setRandomUsername();
-      CDataLoader::FromPath(*_client, "testing/data/" + string).load(true);
-      break;
-    case DATA_STRING:
-      _client->setRandomUsername();
-      CDataLoader::FromString(*_client, string).load(true);
-      break;
-    default:
-      assert(false);
-  }
-  _client->_shouldAutoLogIn = true;
-  run();
-}
 
-TestClient::TestClient(const std::string &username, const std::string &string,
-                       StringType type)
-    : _client(new Client) {
-  CDataLoader::FromPath(*_client, "testing/data/minimal").load();
-  if (type == DATA_PATH)
-    CDataLoader::FromPath(*_client, "testing/data/" + string).load(true);
+  if (strings.count(USERNAME) == 1)
+    _client->_username = strings.at(USERNAME);
   else
-    CDataLoader::FromString(*_client, string).load(true);
-  ;
-  _client->_username = username;
+    _client->setRandomUsername();
+
+  if (strings.count(DATA_PATH) == 1)
+    CDataLoader::FromPath(*_client, "testing/data/" + strings.at(DATA_PATH))
+        .load(true);
+  if (strings.count(DATA_STRING) == 1)
+    CDataLoader::FromString(*_client, strings.at(DATA_STRING)).load(true);
+
   _client->_shouldAutoLogIn = true;
   run();
 }
 
 TestClient TestClient::WithUsername(const std::string &username) {
   stopClientIfRunning();
-  return TestClient(username, USERNAME);
+  auto strings = StringMap{};
+  strings[USERNAME] = username;
+  return TestClient(strings);
 }
 
 TestClient TestClient::WithData(const std::string &dataPath) {
   stopClientIfRunning();
-  return TestClient(dataPath, DATA_PATH);
+  auto strings = StringMap{};
+  strings[DATA_PATH] = dataPath;
+  return TestClient(strings);
 }
 
 TestClient TestClient::WithDataString(const std::string &data) {
   stopClientIfRunning();
-  return TestClient(data, DATA_STRING);
+  auto strings = StringMap{};
+  strings[DATA_STRING] = data;
+  return TestClient(strings);
 }
 
 TestClient TestClient::WithUsernameAndData(const std::string &username,
                                            const std::string &dataPath) {
   stopClientIfRunning();
-  return TestClient(username, dataPath, DATA_PATH);
+  auto strings = StringMap{};
+  strings[USERNAME] = username;
+  strings[DATA_PATH] = dataPath;
+  return TestClient(strings);
 }
 
 TestClient TestClient::WithUsernameAndDataString(const std::string &username,
                                                  const std::string &data) {
   stopClientIfRunning();
-  return TestClient(username, data, DATA_STRING);
+  auto strings = StringMap{};
+  strings[USERNAME] = username;
+  strings[DATA_STRING] = data;
+  return TestClient(strings);
 }
 
 TestClient TestClient::WithClassAndDataString(const std::string &classID,
                                               const std::string &data) {
   stopClientIfRunning();
-  return TestClient(data, DATA_STRING);
+  auto strings = StringMap{};
+  strings[DATA_STRING] = data;
+  return TestClient(strings);
 }
 
 TestClient::~TestClient() {
