@@ -1620,26 +1620,32 @@ TEST_CASE("Class-specific quests", "[quests]") {
 
     THEN("the quest exists") { CHECK(s->findQuest("getElected")); }
 
-    WHEN("a non-politician user tries to accept it") {
+    WHEN("a non-politician user logs in") {
       auto c = TestClient::WithDataString(data);
       s.waitForUsers(1);
-      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("getElected", questgiver));
 
-      THEN("he isn't on any quests") {
-        REPEAT_FOR_MS(100);
-        auto &user = s.getFirstUser();
-        CHECK(user.numQuests() == 0);
+      AND_WHEN("he tries to accept it") {
+        c.sendMessage(CL_ACCEPT_QUEST, makeArgs("getElected", questgiver));
+
+        THEN("he isn't on any quests") {
+          REPEAT_FOR_MS(100);
+          auto &user = s.getFirstUser();
+          CHECK(user.numQuests() == 0);
+        }
       }
     }
 
-    WHEN("a politician user tries to accept it") {
+    WHEN("a politician user logs in") {
       auto c = TestClient::WithClassAndDataString("politician", data);
       s.waitForUsers(1);
-      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("getElected", questgiver));
 
-      THEN("he is on a quest") {
-        auto &user = s.getFirstUser();
-        WAIT_UNTIL(user.numQuests() == 1);
+      AND_WHEN("he tries to accept it") {
+        c.sendMessage(CL_ACCEPT_QUEST, makeArgs("getElected", questgiver));
+
+        THEN("he is on a quest") {
+          auto &user = s.getFirstUser();
+          WAIT_UNTIL(user.numQuests() == 1);
+        }
       }
     }
   }
