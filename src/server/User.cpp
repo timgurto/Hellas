@@ -744,18 +744,9 @@ bool User::canStartQuest(const Quest::ID &id) const {
 
   if (isOnQuest(id)) return false;
 
-  auto *quest = server.findQuest(id);
-  if (quest->hasPrerequisite()) {
-    auto aPrereqIsIncomplete = false;
-    for (const auto &prereq : quest->prerequisiteQuests) {
-      if (!hasCompletedQuest(prereq)) {
-        aPrereqIsIncomplete = true;
-        break;
-      }
-    }
-    if (aPrereqIsIncomplete) return false;
-  }
+  if (!hasCompletedAllPrerequisiteQuestsOf(id)) return false;
 
+  auto *quest = server.findQuest(id);
   if (!quest->exclusiveToClass.empty() &&
       quest->exclusiveToClass != getClass().type().id())
     return false;
@@ -1059,7 +1050,7 @@ void User::completeQuest(const Quest::ID &id) {
   giveQuestReward(quest->reward);
 
   for (const auto &unlockedQuestID : quest->otherQuestsWithThisAsPrerequisite) {
-    if (hasCompletedAllPrerequisiteQuestsOf(unlockedQuestID))
+    if (canStartQuest(unlockedQuestID))
       sendMessage(SV_QUEST_CAN_BE_STARTED, unlockedQuestID);
   }
 
