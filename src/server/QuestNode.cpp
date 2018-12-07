@@ -22,23 +22,7 @@ void QuestNodeType::sendQuestsToUser(const User &user) const {
   const auto &server = Server::instance();
 
   for (const auto &id : _questsStartingHere) {
-    if (user.hasCompletedQuest(id)) continue;
-    if (user.isOnQuest(id)) continue;
-    auto quest = server.findQuest(id);
-    if (quest->hasPrerequisite()) {
-      auto aPrereqIsIncomplete = false;
-      for (const auto &prereq : quest->prerequisiteQuests) {
-        if (!user.hasCompletedQuest(prereq)) {
-          aPrereqIsIncomplete = true;
-          break;
-        }
-      }
-      if (aPrereqIsIncomplete) continue;
-    }
-    if (!quest->exclusiveToClass.empty() &&
-        quest->exclusiveToClass != user.getClass().type().id())
-      continue;
-    user.sendMessage(SV_QUEST_CAN_BE_STARTED, id);
+    if (user.canStartQuest(id)) user.sendMessage(SV_QUEST_CAN_BE_STARTED, id);
   }
 
   for (const auto &id : _questsEndingHere) {

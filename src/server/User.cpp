@@ -737,6 +737,32 @@ int User::questProgress(const Quest::ID &quest, Quest::Objective::Type type,
   return it->second;
 }
 
+bool User::canStartQuest(const Quest::ID &id) const {
+  Server &server = *Server::_instance;
+
+  if (hasCompletedQuest(id)) return false;
+
+  if (isOnQuest(id)) return false;
+
+  auto *quest = server.findQuest(id);
+  if (quest->hasPrerequisite()) {
+    auto aPrereqIsIncomplete = false;
+    for (const auto &prereq : quest->prerequisiteQuests) {
+      if (!hasCompletedQuest(prereq)) {
+        aPrereqIsIncomplete = true;
+        break;
+      }
+    }
+    if (aPrereqIsIncomplete) return false;
+  }
+
+  if (!quest->exclusiveToClass.empty() &&
+      quest->exclusiveToClass != getClass().type().id())
+    return false;
+
+  return true;
+}
+
 bool User::canAttack() const {
   const auto &gearSlot = _gear[Item::WEAPON_SLOT];
 

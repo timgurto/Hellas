@@ -270,6 +270,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   bool isOnQuest(const Quest::ID &id) const {
     return _quests.find(id) != _quests.end();
   }
+  bool canStartQuest(const Quest::ID &quest) const;
 
   struct compareXThenSerial {
     bool operator()(const User *a, const User *b) const;
