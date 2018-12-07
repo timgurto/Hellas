@@ -409,4 +409,29 @@
     <reward type="spell" id="waterWalking" />
 </quest>
 
+    <item id="dummyCopperCuirass" gearFile="copperCuirass" gearSlot="2">
+        <offset x="-3" y="-4" />
+    </item>
+    <item id="dummyCopperGreaves" gearFile="copperGreaves" gearSlot="5">
+        <offset x="-2" y="-10" />
+    </item>
+    <item id="dummyCopperHelmet" gearFile="copperHelmet" gearSlot="0">
+        <offset x="-3" y="-5" />
+    </item>
+    <item id="dummyCopperSword" gearFile="copperSword" gearSlot="6">
+        <offset x="-6" y="-8" />
+    </item>
+    <npcType
+        id="gigantis" name="Gigantis"
+        level="20" maxHealth="273" attack="40" >
+        <humanoid base="gigantis">
+            <gear id="dummyCopperCuirass" />
+            <gear id="dummyCopperGreaves" />
+            <gear id="dummyCopperHelmet" />
+            <gear id="dummyCopperSword" />
+        </humanoid>
+    </npcType>
+    <spawnPoint type="gigantis" quantity="1" radius="15" respawnTime="10000" x="5050" y="58897" />
+    <spawnPoint type="gigantis" quantity="1" radius="15" respawnTime="10000" x="4978" y="58777" />
+
 </root>
