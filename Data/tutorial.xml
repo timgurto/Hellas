@@ -181,7 +181,6 @@
         xDrawOffset="-11" yDrawOffset="-13"
         imageFile="boar" sounds = "pig" >
         <collisionRect x="-9" y="-4" w="18" h="7" />
-        <loot id="meat" chance="0.3" />
         <loot id="meat" > <normal mean="0.5" sd="0.7" /> </loot>
     </npcType>
     

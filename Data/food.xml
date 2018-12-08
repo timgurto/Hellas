@@ -4,8 +4,8 @@
     <tag name="food" />
 </item>
 
-<item id="meat" name="Meat" stackSize="10" />
-<item id="cookedMeat" name="Cooked Meat" stackSize="10" castsSpellOnUse="food" >
+<item id="meat" name="Meat" stackSize="10" sounds="meat" />
+<item id="cookedMeat" name="Cooked Meat" stackSize="10" sounds="meat" castsSpellOnUse="food" >
     <tag name="food" />
 </item>
 <recipe id="cookedMeat"
