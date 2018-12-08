@@ -95,7 +95,24 @@ TEST_CASE("End-of-tutorial altar") {
     )";
 
     auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addObject("altar", {10, 15});
+    const auto &altar = s.getFirstObject();
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    auto oldLocation = user.location();
 
     THEN("an altar can be added") { s.addObject("altar", {10, 15}); }
+
+    WHEN("a user worships there") {
+      c.sendMessage(CL_PERFORM_OBJECT_ACTION, makeArgs(altar.serial(), "_"s));
+
+      THEN("he is no longer at (10, 10)") {
+        WAIT_UNTIL(user.location() != oldLocation);
+      }
+    }
   }
 }
