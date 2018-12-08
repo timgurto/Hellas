@@ -136,6 +136,8 @@ class Server {
   const Cities &cities() const { return _cities; }
 
   // Action functions
+  static bool endTutorial(const Object &obj, User &performer,
+                          const std::string &textArg);
   static bool createCity(const Object &obj, User &performer,
                          const std::string &textArg);
   static bool setRespawnPoint(const Object &obj, User &performer,

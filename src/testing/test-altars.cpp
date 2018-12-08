@@ -2,8 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("A user can't build multiple player-unique objects",
-          "[player-unique]") {
+TEST_CASE("A user can't build multiple player-unique objects") {
   // Given "blonde" and "readhead" object types,
   // And each is marked with the "wife" player-unique category,
   auto s = TestServer::WithData("wives");
@@ -80,9 +79,23 @@ TEST_CASE("A user can't build multiple player-unique objects",
   }
 }
 
-TEST_CASE("Clients can discern player-uniqueness", "[player-unique]") {
+TEST_CASE("Clients can discern player-uniqueness") {
   auto c = TestClient::WithData("wives");
   const auto &blonde = c.getFirstObjectType();
   CHECK(blonde.isPlayerUnique());
   CHECK(blonde.hasTags());
+}
+
+TEST_CASE("End-of-tutorial altar") {
+  GIVEN("an altar that ends the tutorial, and a user next to it") {
+    auto data = R"(
+      <objectType id="altar">
+        <action target="endTutorial" />
+      </objectType>
+    )";
+
+    auto s = TestServer::WithDataString(data);
+
+    THEN("an altar can be added") { s.addObject("altar", {10, 15}); }
+  }
 }

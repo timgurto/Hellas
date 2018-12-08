@@ -2,11 +2,17 @@
 #include "../Server.h"
 
 Action::FunctionMap Action::functionMap = {
+    {"endTutorial", Server::endTutorial},
     {"createCity", Server::createCity},
     {"setRespawnPoint", Server::setRespawnPoint}};
 
 CallbackAction::FunctionMap CallbackAction::functionMap = {
     {"destroyCity", Server::destroyCity}};
+
+bool Server::endTutorial(const Object &obj, User &performer,
+                         const std::string &textArg) {
+  return {};
+}
 
 bool Server::createCity(const Object &obj, User &performer,
                         const std::string &textArg) {
