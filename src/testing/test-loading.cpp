@@ -74,16 +74,20 @@ TEST_CASE("NPC spawners work") {
 }
 
 TEST_CASE("Clients load map properly") {
-  // Given a server and client, with a 101x101 map on which users spawn at the
-  // midpoint
-  TestServer s = TestServer::WithData("big_map");
-  TestClient c = TestClient::WithData("big_map");
+  GIVEN(
+      "a server and client, with a 101x101 map on which users spawn at the "
+      "midpoint") {
+    TestServer s = TestServer::WithData("big_map");
+    TestClient c = TestClient::WithData("big_map");
 
-  // Then the client's map has 101 rows;
-  WAIT_UNTIL(c.map().size() == 101);
+    THEN("the client's map has 101 rows") {
+      WAIT_UNTIL(c.map().size() == 101);
 
-  // And the user spawned in the correct place
-  WAIT_UNTIL(c->character().location() == MapPoint(1616, 1616));
+      AND_THEN("the user spawned in the correct place") {
+        WAIT_UNTIL(c->character().location() == MapPoint(1616, 1616));
+      }
+    }
+  }
 }
 
 TEST_CASE("Help text is valid XML") {
