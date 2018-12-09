@@ -11,7 +11,8 @@ CallbackAction::FunctionMap CallbackAction::functionMap = {
 
 bool Server::endTutorial(const Object &obj, User &performer,
                          const std::string &textArg) {
-  performer.location(User::postTutorialSpawn);
+  performer.setSpawnPointToPostTutorial();
+  performer.moveToSpawnPoint();
   return {};
 }
 

@@ -54,10 +54,6 @@ class TestServer {
                    const std::string &args) {
     _server->sendMessage(socket, code, args);
   }
-  void changePlayerSpawn(const MapPoint &location, double range = 0) {
-    User::newPlayerSpawn = location;
-    User::spawnRadius = range;
-  }
 
   void nop() { _server->mapX(); }
 

@@ -246,6 +246,7 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   static MapPoint newPlayerSpawn, postTutorialSpawn;
   static double spawnRadius;
+  void setSpawnPointToPostTutorial() { _respawnPoint = postTutorialSpawn; }
   void moveToSpawnPoint(bool isNewPlayer = false);
 
   // Quests

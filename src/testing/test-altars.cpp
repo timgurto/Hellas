@@ -111,10 +111,20 @@ TEST_CASE("End-of-tutorial altar") {
 
     WHEN("a user worships there") {
       c.sendMessage(CL_PERFORM_OBJECT_ACTION, makeArgs(altar.serial(), "_"s));
+      REPEAT_FOR_MS(100);
 
       THEN("he is at the new specified location") {
-        WAIT_UNTIL(user.location() != oldLocation);
+        CHECK(user.location() != oldLocation);
         CHECK(user.location() == expectedLocation);
+      }
+
+      AND_WHEN("he dies") {
+        user.reduceHealth(user.health());
+
+        THEN("he respawns at the new location") {
+          REPEAT_FOR_MS(100);
+          CHECK(user.location() == expectedLocation);
+        }
       }
     }
   }
