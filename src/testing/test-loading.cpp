@@ -88,6 +88,20 @@ TEST_CASE("Clients load map properly") {
       }
     }
   }
+
+  GIVEN("a spawn point with a non-zero range") {
+    auto data = R"(
+      <newPlayerSpawn range="5" />
+    )";
+
+    WHEN("a server starts") {
+      auto s = TestServer::WithDataString(data);
+
+      THEN("the respawn range has the correct value") {
+        WAIT_UNTIL(User::spawnRadius == 5);
+      }
+    }
+  }
 }
 
 TEST_CASE("Help text is valid XML") {

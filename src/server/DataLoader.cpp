@@ -929,6 +929,7 @@ void DataLoader::loadMap(XmlReader &xr) {
     _server._debug("New-player spawn point missing or incomplete.",
                    Color::TODO);
   }
+  if (!xr.findAttr(elem, "range", User::spawnRadius)) User::spawnRadius = 0;
 
   elem = xr.findChild("postTutorialSpawn");
   if (!xr.findAttr(elem, "x", User::postTutorialSpawn.x) ||
@@ -936,8 +937,6 @@ void DataLoader::loadMap(XmlReader &xr) {
     _server._debug("Post-tutorial spawn point missing or incomplete.",
                    Color::TODO);
   }
-
-  if (!xr.findAttr(elem, "range", User::spawnRadius)) User::spawnRadius = 0;
 
   elem = xr.findChild("size");
   if (elem == nullptr || !xr.findAttr(elem, "x", _server._mapX) ||
