@@ -203,6 +203,9 @@ class User : public Object {  // TODO: Don't inherit from Object
   bool hasTool(const std::string &tagName) const;
   bool hasTools(const std::set<std::string> &classes) const;
 
+  void clearInventory();
+  void clearGear();
+
   void beginCrafting(const Recipe &item);  // Configure user to craft an item
 
   // Configure user to construct an item, or an object from no item

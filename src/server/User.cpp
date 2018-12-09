@@ -331,6 +331,28 @@ bool User::hasTools(const std::set<std::string> &classes) const {
   return true;
 }
 
+void User::clearInventory() {
+  const Server &server = *Server::_instance;
+  for (auto i = 0; i != INVENTORY_SIZE; ++i)
+    if (_inventory[i].first) {
+      _inventory[i].first = nullptr;
+      _inventory[i].second = 0;
+      server.sendMessage(socket(), SV_INVENTORY,
+                         makeArgs(Server::INVENTORY, i, "", 0));
+    }
+}
+
+void User::clearGear() {
+  const Server &server = *Server::_instance;
+  for (auto i = 0; i != GEAR_SLOTS; ++i)
+    if (_inventory[i].first) {
+      _inventory[i].first = nullptr;
+      _inventory[i].second = 0;
+      server.sendMessage(socket(), SV_INVENTORY,
+                         makeArgs(Server::GEAR, i, "", 0));
+    }
+}
+
 static void removeItemsFrom(ItemSet &remaining, ServerItem::vect_t &container,
                             std::set<size_t> &slotsChanged) {
   slotsChanged = {};

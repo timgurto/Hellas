@@ -13,7 +13,13 @@ bool Server::endTutorial(const Object &obj, User &performer,
                          const std::string &textArg) {
   performer.setSpawnPointToPostTutorial();
   performer.moveToSpawnPoint();
-  return {};
+
+  performer.getClass().unlearnAll();
+
+  performer.clearInventory();
+  performer.clearGear();
+
+  return true;
 }
 
 bool Server::createCity(const Object &obj, User &performer,
