@@ -309,7 +309,7 @@
         id="tutSnake" name="Snake" isFlat="1"
         level="4" maxHealth="20" attack="4" attackTime="2050" isRanged="1" school="earth" projectile="poison"
         xDrawOffset="-12" yDrawOffset="-12"
-        imageFile="snake" >
+        imageFile="snake" sounds="snake" >
         <collisionRect x="-5" y="-5" w="10" h="10" />
         <loot id="meat" > <normal mean="0.5" sd="0.5" /> </loot>
     </npcType>
@@ -325,7 +325,7 @@
         id="tutTortoise" name="Tortoise"
         level="5" maxHealth="25" attack="6" attackTime="2800"
         xDrawOffset="-18" yDrawOffset="-20"
-        imageFile="tortoise" >
+        imageFile="tortoise" sounds="tortoise" >
         <spell id="tutShield" />
         <collisionRect x="-15" y="-5" w="31" h="10" />
         <loot id="meat" > <normal mean="0.5" sd="0.5" /> </loot>
@@ -352,7 +352,7 @@
         id="tutLizard" name="Lizard"
         level="6" maxHealth="27" attack="6" attackTime="2765"
         xDrawOffset="-20" yDrawOffset="-12"
-        imageFile="lizard" >
+        imageFile="lizard" sounds="lizard" >
         <spell id="tutHeal" />
         <collisionRect x="-18" y="-6" w="37" h="12" />
         <loot id="meat" > <normal mean="0.5" sd="0.5" /> </loot>

@@ -139,4 +139,41 @@
     <sound type="death" file="womanDeath2" />
 </soundProfile>
 
+<soundProfile id="goat" >
+    <sound type="defend" file="goat0" />
+    <sound type="defend" file="goat1" />
+    <sound type="defend" file="goat2" />
+    <sound type="defend" file="goat3" />
+    <sound type="death" file="goatLoud0" />
+    <sound type="death" file="goatLoud1" />
+    <sound type="attack" file="bite0" />
+    <sound type="attack" file="bite1" />
+    <sound type="attack" file="bite2" />
+    <sound type="attack" file="bite3" />
+    <sound type="attack" file="bite4" />
+</soundProfile>
+
+<soundProfile id="lizard" >
+    <sound type="defend" file="hiss0" />
+    <sound type="death" file="hiss1" />
+    <sound type="attack" file="bite0" />
+    <sound type="attack" file="bite1" />
+    <sound type="attack" file="bite2" />
+    <sound type="attack" file="bite3" />
+    <sound type="attack" file="bite4" />
+</soundProfile>
+
+<soundProfile id="snake" >
+    <sound type="defend" file="hiss0" />
+    <sound type="death" file="hiss1" />
+</soundProfile>
+
+<soundProfile id="tortoise" >
+    <sound type="attack" file="bite0" />
+    <sound type="attack" file="bite1" />
+    <sound type="attack" file="bite2" />
+    <sound type="attack" file="bite3" />
+    <sound type="attack" file="bite4" />
+</soundProfile>
+
 </root>
