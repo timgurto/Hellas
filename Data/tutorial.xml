@@ -182,7 +182,9 @@
         imageFile="boar" sounds = "pig" >
         <collisionRect x="-9" y="-4" w="18" h="7" />
         <loot id="meat" > <normal mean="0.5" sd="0.7" /> </loot>
+        <loot id="tutEntrails3" chance="0.05" />
     </npcType>
+    <item id="tutEntrails3" name="Entrails" sounds="meat" stackSize="10" iconFile="entrails" />
     
 <quest id="tutCooking" name="Cooking" startsAt="prometheus" endsAt="atlas"
     brief="My brother Atlas was a general in the war against the Olympians, and for that they devised a special punishment for him--a rather exhausting one.
@@ -312,6 +314,7 @@
         imageFile="snake" sounds="snake" >
         <collisionRect x="-5" y="-5" w="10" h="10" />
         <loot id="meat" > <normal mean="0.5" sd="0.5" /> </loot>
+        <loot id="tutEntrails3" chance="0.05" />
     </npcType>
     <spawnPoint type="tutSnake" quantity="15" radius="560" respawnTime="120000" x="3139" y="58485" />
 
@@ -329,6 +332,7 @@
         <spell id="tutShield" />
         <collisionRect x="-15" y="-5" w="31" h="10" />
         <loot id="meat" > <normal mean="0.5" sd="0.5" /> </loot>
+        <loot id="tutEntrails3" chance="0.05" />
     </npcType>
     <spawnPoint type="tutTortoise" quantity="4" radius="150" respawnTime="120000" x="4364" y="58540" />
     <spawnPoint type="tutTortoise" quantity="9" radius="250" respawnTime="120000" x="4423" y="58913" />
@@ -356,6 +360,7 @@
         <spell id="tutHeal" />
         <collisionRect x="-18" y="-6" w="37" h="12" />
         <loot id="meat" > <normal mean="0.5" sd="0.5" /> </loot>
+        <loot id="tutEntrails3" chance="0.05" />
     </npcType>
     <spawnPoint type="tutLizard" quantity="7" radius="250" respawnTime="120000" x="2148" y="58382" />
     <spawnPoint type="tutLizard" quantity="8" radius="280" respawnTime="120000" x="1950" y="58831" />
@@ -432,5 +437,12 @@
     </npcType>
     <spawnPoint type="gigantis" quantity="1" radius="15" respawnTime="10000" x="5050" y="58897" />
     <spawnPoint type="gigantis" quantity="1" radius="15" respawnTime="10000" x="4978" y="58777" />
+    
+    <objectType id="tutorialAltar" name="Altar to Eos"
+        xDrawOffset="-10" yDrawOffset="-10"
+        playerUnique="altar" >
+        <collisionRect x="-10" y="-10" w="20" h="20" />
+        <action label="Worship" target="endTutorial" tooltip="Leave Mt. Othrys permanently and enter the mortal realm.  You will lose all items, gear, and talents." cost="tutEntrails3" />
+    </objectType>
 
 </root>

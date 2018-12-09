@@ -41,4 +41,7 @@
     <location x="816" y="60564" />
     <owner type="player" name="Othrys" />
 </object>
+
+<object id="tutorialAltar"> <location x="5058" y="58376" /> </object>
+
 </root>
