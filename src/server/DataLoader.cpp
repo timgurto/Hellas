@@ -945,9 +945,11 @@ void DataLoader::loadMap(XmlReader &xr) {
     _server._debug("Map size missing or incomplete.", Color::TODO);
   }
 
-  _server._map = std::vector<std::vector<char> >(_server._mapX);
-  for (size_t x = 0; x != _server._mapX; ++x)
-    _server._map[x] = std::vector<char>(_server._mapY, 0);
+  if (_server._map.size() != _server._mapX) {
+    _server._map = std::vector<std::vector<char> >(_server._mapX);
+    for (size_t x = 0; x != _server._mapX; ++x)
+      _server._map[x] = std::vector<char>(_server._mapY, 0);
+  }
   for (auto row : xr.getChildren("row")) {
     size_t y;
     if (!xr.findAttr(row, "y", y) || y >= _server._mapY) break;
