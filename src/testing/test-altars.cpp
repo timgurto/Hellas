@@ -92,6 +92,7 @@ TEST_CASE("End-of-tutorial altar") {
       <objectType id="altar">
         <action target="endTutorial" />
       </objectType>
+      <postTutorialSpawn x="20" y="20" />
     )";
 
     auto s = TestServer::WithDataString(data);
@@ -104,14 +105,16 @@ TEST_CASE("End-of-tutorial altar") {
     auto &user = s.getFirstUser();
 
     auto oldLocation = user.location();
+    const auto expectedLocation = MapPoint{20, 20};
 
     THEN("an altar can be added") { s.addObject("altar", {10, 15}); }
 
     WHEN("a user worships there") {
       c.sendMessage(CL_PERFORM_OBJECT_ACTION, makeArgs(altar.serial(), "_"s));
 
-      THEN("he is no longer at (10, 10)") {
+      THEN("he is at the new specified location") {
         WAIT_UNTIL(user.location() != oldLocation);
+        CHECK(user.location() == expectedLocation);
       }
     }
   }
