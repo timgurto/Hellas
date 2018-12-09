@@ -7,6 +7,7 @@
 ObjectType User::OBJECT_TYPE("__clientObjectType__");
 
 MapPoint User::newPlayerSpawn = {};
+MapPoint User::postTutorialSpawn = {};
 double User::spawnRadius = 0;
 
 const std::vector<XP> User::XP_PER_LEVEL{

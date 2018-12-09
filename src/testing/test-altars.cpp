@@ -118,4 +118,32 @@ TEST_CASE("End-of-tutorial altar") {
       }
     }
   }
+
+  GIVEN("a different post-tutorial location, (30, 30)") {
+    auto data = R"(
+      <objectType id="altar">
+        <action target="endTutorial" />
+      </objectType>
+      <postTutorialSpawn x="30" y="30" />
+    )";
+
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addObject("altar", {10, 15});
+    const auto &altar = s.getFirstObject();
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    const auto expectedLocation = MapPoint{30, 30};
+
+    WHEN("a user worships at the altar") {
+      c.sendMessage(CL_PERFORM_OBJECT_ACTION, makeArgs(altar.serial(), "_"s));
+
+      THEN("he is at (30, 30)") {
+        WAIT_UNTIL(user.location() == expectedLocation);
+      }
+    }
+  }
 }

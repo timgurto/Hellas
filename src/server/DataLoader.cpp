@@ -75,6 +75,7 @@ void DataLoader::load(bool keepOldData) {
     loadClasses(XmlReader::FromString(_data));
     loadSpawners(XmlReader::FromString(_data));
     loadMap(XmlReader::FromString(_data));
+    loadMap(XmlReader::FromString(_data));
   }
 
   _server._dataLoaded = true;
@@ -923,12 +924,17 @@ void DataLoader::loadMap(XmlReader &xr) {
   if (!xr) return;
 
   auto elem = xr.findChild("newPlayerSpawn");
-
   if (!xr.findAttr(elem, "x", User::newPlayerSpawn.x) ||
       !xr.findAttr(elem, "y", User::newPlayerSpawn.y)) {
     _server._debug("New-player spawn point missing or incomplete.",
                    Color::TODO);
-    return;
+  }
+
+  elem = xr.findChild("postTutorialSpawn");
+  if (!xr.findAttr(elem, "x", User::postTutorialSpawn.x) ||
+      !xr.findAttr(elem, "y", User::postTutorialSpawn.y)) {
+    _server._debug("Post-tutorial spawn point missing or incomplete.",
+                   Color::TODO);
   }
 
   if (!xr.findAttr(elem, "range", User::spawnRadius)) User::spawnRadius = 0;
@@ -937,7 +943,6 @@ void DataLoader::loadMap(XmlReader &xr) {
   if (elem == nullptr || !xr.findAttr(elem, "x", _server._mapX) ||
       !xr.findAttr(elem, "y", _server._mapY)) {
     _server._debug("Map size missing or incomplete.", Color::TODO);
-    return;
   }
 
   _server._map = std::vector<std::vector<char> >(_server._mapX);

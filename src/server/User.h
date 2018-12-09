@@ -244,7 +244,7 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   void update(ms_t timeElapsed);
 
-  static MapPoint newPlayerSpawn;
+  static MapPoint newPlayerSpawn, postTutorialSpawn;
   static double spawnRadius;
   void moveToSpawnPoint(bool isNewPlayer = false);
 
