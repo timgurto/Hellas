@@ -205,7 +205,8 @@ void Server::run() {
 
     // Check that clients are alive
     for (std::set<User>::iterator it = _users.begin(); it != _users.end();) {
-      if (!it->alive() && !_DEBUG) {
+#ifndef _DEBUG
+      if (!it->alive()) {
         _debug << Color::TODO << "User " << it->name() << " has timed out."
                << Log::endl;
         std::set<User>::iterator next = it;
@@ -220,6 +221,9 @@ void Server::run() {
       } else {
         ++it;
       }
+#else
+      ++it;
+#endif
     }
 
     // Save data
