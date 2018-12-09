@@ -43,6 +43,7 @@ ChoiceList *terrainList{nullptr};
 
 auto playerSpawn = MapPoint{};
 auto playerSpawnRange = 0;
+auto postTutorialPlayerSpawn = MapPoint{};
 
 // Options
 auto shouldDrawSpawnPointCircles = false;
@@ -82,7 +83,8 @@ int main(int argc, char *argv[]) {
 
   initUI();
 
-  map = {"../../Data/map.xml", playerSpawn, playerSpawnRange};
+  map = {"../../Data/map.xml", playerSpawn, playerSpawnRange,
+         postTutorialPlayerSpawn};
   offset.first = (map.width() - renderer.width()) / 2;
   offset.second = (map.height() - renderer.height()) / 2;
 
@@ -367,11 +369,14 @@ void initUI() {
 
   saveLoadWindow->addChild(
       new Button({GAP, y, BUTTON_W, BUTTON_H}, "Load map", []() {
-        map = {"../../Data/map.xml", playerSpawn, playerSpawnRange};
+        map = {"../../Data/map.xml", playerSpawn, playerSpawnRange,
+               postTutorialPlayerSpawn};
       }));
-  saveLoadWindow->addChild(new Button(
-      {COL2_X, y, BUTTON_W, BUTTON_H}, "Save map",
-      []() { map.save("../../Data/map.xml", playerSpawn, playerSpawnRange); }));
+  saveLoadWindow->addChild(
+      new Button({COL2_X, y, BUTTON_W, BUTTON_H}, "Save map", []() {
+        map.save("../../Data/map.xml", playerSpawn, playerSpawnRange,
+                 postTutorialPlayerSpawn);
+      }));
   y += BUTTON_H + GAP;
 
   saveLoadWindow->addChild(

@@ -9,11 +9,11 @@
 class Map {
  public:
   Map() {}
-  Map(const std::string &filename, MapPoint &playerSpawn,
-      int &playerSpawnRange);
+  Map(const std::string &filename, MapPoint &playerSpawn, int &playerSpawnRange,
+      MapPoint &postTutorialPlayerSpawn);
 
   void save(const std::string &filename, MapPoint playerSpawn,
-            int playerSpawnRange);
+            int playerSpawnRange, const MapPoint &postTutorialPlayerSpawn);
   void saveMapImage();
 
   int width() const { return _textureWidth; }

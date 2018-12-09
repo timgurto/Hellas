@@ -16,7 +16,7 @@ extern TerrainType::Container terrain;
 extern ChoiceList *terrainList;
 
 Map::Map(const std::string &filename, MapPoint &playerSpawn,
-         int &playerSpawnRange) {
+         int &playerSpawnRange, MapPoint &postTutorialPlayerSpawn) {
   auto xr = XmlReader::FromFile(filename);
   if (!xr) return;
 
@@ -24,6 +24,10 @@ Map::Map(const std::string &filename, MapPoint &playerSpawn,
   xr.findAttr(elem, "x", playerSpawn.x);
   xr.findAttr(elem, "y", playerSpawn.y);
   xr.findAttr(elem, "range", playerSpawnRange);
+
+  elem = xr.findChild("postTutorialSpawn");
+  xr.findAttr(elem, "x", postTutorialPlayerSpawn.x);
+  xr.findAttr(elem, "y", postTutorialPlayerSpawn.y);
 
   elem = xr.findChild("size");
   xr.findAttr(elem, "x", _dimX);
@@ -48,7 +52,7 @@ Map::Map(const std::string &filename, MapPoint &playerSpawn,
 }
 
 void Map::save(const std::string &filename, MapPoint playerSpawn,
-               int playerSpawnRange) {
+               int playerSpawnRange, const MapPoint &postTutorialPlayerSpawn) {
   auto xw = XmlWriter{filename};
 
   auto e = xw.addChild("size");
@@ -59,6 +63,10 @@ void Map::save(const std::string &filename, MapPoint playerSpawn,
   xw.setAttr(e, "x", playerSpawn.x);
   xw.setAttr(e, "y", playerSpawn.y);
   xw.setAttr(e, "range", playerSpawnRange);
+
+  e = xw.addChild("postTutorialSpawn");
+  xw.setAttr(e, "x", postTutorialPlayerSpawn.x);
+  xw.setAttr(e, "y", postTutorialPlayerSpawn.y);
 
   for (auto y = 0; y != _dimY; ++y) {
     auto rowString = std::string{};
