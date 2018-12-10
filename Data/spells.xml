@@ -24,7 +24,7 @@ Functions:
     <targets self=1 />
     <function name="buff" s1="sprint" />
 </spell>
-<spell id="blink" name="Teleport" icon="orbBlue" cost=10 cooldown=120 >
+<spell id="blink" name="Teleport" icon="orbBlue" cost=20 >
     <targets self=1 />
     <function name="randomTeleport" i1="10" />
 </spell>
