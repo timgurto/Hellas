@@ -183,7 +183,10 @@ void TestClient::showCraftingWindow() {
 void TestClient::watchObject(ClientObject &obj) { _client->watchObject(obj); }
 
 bool TestClient::knowsSpell(const std::string &id) const {
-  return _client->_spells.find(id) != _client->_spells.end();
+  for (const auto *spell : _client->_knownSpells) {
+    if (spell->id() == id) return true;
+  }
+  return false;
 }
 
 Avatar &TestClient::getFirstOtherUser() {
