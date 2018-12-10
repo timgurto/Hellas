@@ -65,6 +65,7 @@ void Class::teachSpell(const Spell::ID &spell) {
 std::string Class::generateKnownSpellsString() const {
   auto string = ""s;
   auto spellsKnown = 0;
+
   for (auto pair : _talentRanks) {
     if (pair.second == 0) continue;
     auto talent = pair.first;
@@ -73,6 +74,13 @@ std::string Class::generateKnownSpellsString() const {
     string.append(talent->spellID());
     ++spellsKnown;
   }
+
+  for (const auto &id : _otherKnownSpells) {
+    string.append(std::string{MSG_DELIM});
+    string.append(id);
+    ++spellsKnown;
+  }
+
   return toString(spellsKnown) + string;
 }
 

@@ -60,6 +60,9 @@ TEST_CASE("Non-talent spells are persistent") {
 
     // Then she still knows it
     WAIT_UNTIL(user.getClass().knowsSpell("fireball"));
+
+    // And she knows it
+    WAIT_UNTIL(c.knowsSpell("fireball"));
   }
 }
 
