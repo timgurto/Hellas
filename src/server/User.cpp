@@ -176,6 +176,8 @@ size_t User::giveItem(const ServerItem *item, size_t quantity) {
 
       auto progress = min(qtyHeld, objective.qty);
       sendMessage(SV_QUEST_PROGRESS, makeArgs(questID, i, progress));
+      if (quest->canBeCompletedByUser(*this))
+        sendMessage(SV_QUEST_CAN_BE_FINISHED, questID);
     }
   }
 

@@ -1155,6 +1155,35 @@ TEST_CASE("Fetch quests", "[quests]") {
       }
     }
   }
+
+  GIVEN("a quest to get a craftable breath") {
+    auto data = R"(
+      <objectType id="questgiver" />
+      <item id="breath" />
+      <recipe id="breath" time="1" />
+      <quest id="breatheOnMe" startsAt="questgiver" endsAt="questgiver">
+        <objective type="fetch" id="breath" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    /*s.addObject("questgiver", {10, 15});
+    auto serial = s.getFirstObject().serial();*/
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.startQuest(s.getFirstQuest());
+
+    WHEN("the user creates a breath") {
+      c.sendMessage(CL_CRAFT, "breath");
+
+      THEN("he knows that he can complete the quest") {
+        const auto &quest = c.getFirstQuest();
+        WAIT_UNTIL(quest.state == CQuest::CAN_FINISH);
+      }
+    }
+  }
 }
 
 TEST_CASE("Multiple objectives", "[quests][!mayfail]") {
