@@ -291,11 +291,11 @@
         <yield id="tutOre" />
         <strength item="tutOre" quantity="1" />
     </objectType>
-    <spawnPoint type="tutOre" quantity="5" radius="250" respawnTime="120000" x="2140" y="58400" />
-    <spawnPoint type="tutOre" quantity="5" radius="200" respawnTime="120000" x="2000" y="58745" />
-    <spawnPoint type="tutOre" quantity="10" radius="400" respawnTime="120000" x="3110" y="58400" />
-    <spawnPoint type="tutOre" quantity="5" radius="250" respawnTime="120000" x="4409" y="58596" />
-    <spawnPoint type="tutOre" quantity="5" radius="250" respawnTime="120000" x="4430" y="58989" />
+    <spawnPoint type="tutOre" quantity="3" radius="250" respawnTime="120000" x="2140" y="58400" />
+    <spawnPoint type="tutOre" quantity="3" radius="200" respawnTime="120000" x="2000" y="58745" />
+    <spawnPoint type="tutOre" quantity="6" radius="400" respawnTime="120000" x="3110" y="58400" />
+    <spawnPoint type="tutOre" quantity="3" radius="250" respawnTime="120000" x="4409" y="58596" />
+    <spawnPoint type="tutOre" quantity="3" radius="250" respawnTime="120000" x="4430" y="58989" />
     
 
 <quest id="tutSnakes" name="Gifts of the Wild" startsAt="prometheus" endsAt="prometheus"
@@ -313,8 +313,8 @@
         xDrawOffset="-12" yDrawOffset="-12"
         imageFile="snake" sounds="snake" >
         <collisionRect x="-5" y="-5" w="10" h="10" />
-        <loot id="meat" > <normal mean="0.5" sd="0.5" /> </loot>
-        <loot id="tutEntrails3" chance="0.05" />
+        <loot id="meat" > <normal mean="0.3" sd="0.5" /> </loot>
+        <loot id="tutEntrails3" chance="0.1" />
     </npcType>
     <spawnPoint type="tutSnake" quantity="15" radius="560" respawnTime="120000" x="3139" y="58485" />
 
@@ -331,8 +331,8 @@
         imageFile="tortoise" sounds="tortoise" >
         <spell id="tutShield" />
         <collisionRect x="-15" y="-5" w="31" h="10" />
-        <loot id="meat" > <normal mean="0.5" sd="0.5" /> </loot>
-        <loot id="tutEntrails3" chance="0.05" />
+        <loot id="meat" > <normal mean="0.3" sd="0.5" /> </loot>
+        <loot id="tutEntrails3" chance="0.1" />
     </npcType>
     <spawnPoint type="tutTortoise" quantity="4" radius="150" respawnTime="120000" x="4364" y="58540" />
     <spawnPoint type="tutTortoise" quantity="9" radius="250" respawnTime="120000" x="4423" y="58913" />
@@ -359,8 +359,8 @@
         imageFile="lizard" sounds="lizard" >
         <spell id="tutHeal" />
         <collisionRect x="-18" y="-6" w="37" h="12" />
-        <loot id="meat" > <normal mean="0.5" sd="0.5" /> </loot>
-        <loot id="tutEntrails3" chance="0.05" />
+        <loot id="meat" > <normal mean="0.3" sd="0.5" /> </loot>
+        <loot id="tutEntrails3" chance="0.1" />
     </npcType>
     <spawnPoint type="tutLizard" quantity="7" radius="250" respawnTime="120000" x="2148" y="58382" />
     <spawnPoint type="tutLizard" quantity="8" radius="280" respawnTime="120000" x="1950" y="58831" />
