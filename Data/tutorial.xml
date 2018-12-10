@@ -439,9 +439,9 @@
     <spawnPoint type="gigantis" quantity="1" radius="15" respawnTime="10000" x="4978" y="58777" />
     
     <objectType id="tutorialAltar" name="Altar to Eos"
-        xDrawOffset="-10" yDrawOffset="-10"
+        xDrawOffset="-18" yDrawOffset="-54"
         playerUnique="altar" >
-        <collisionRect x="-10" y="-10" w="20" h="20" />
+        <collisionRect x="-19" y="-10" w="38" h="20" />
         <action label="Worship" target="endTutorial" tooltip="Leave Mt. Othrys permanently and enter the mortal realm.  You will lose all items, gear, and talents." cost="tutEntrails3" />
     </objectType>
 
