@@ -156,4 +156,37 @@ TEST_CASE("End-of-tutorial altar") {
       }
     }
   }
+
+  GIVEN("a cost") {
+    auto data = R"(
+      <objectType id="altar">
+        <action target="endTutorial" cost="coin" />
+      </objectType>
+      <item id="coin" />
+    )";
+
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addObject("altar", {10, 15});
+    const auto &altar = s.getFirstObject();
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    const auto expectedLocation = MapPoint{30, 30};
+
+    WHEN("the user has the required item") {
+      user.giveItem(&s.getFirstItem());
+
+      AND_WHEN("he worships at the altar") {
+        c.sendMessage(CL_PERFORM_OBJECT_ACTION, makeArgs(altar.serial(), "_"s));
+
+        THEN("he the server survives") {
+          REPEAT_FOR_MS(100);
+          s.nop();
+        }
+      }
+    }
+  }
 }

@@ -347,9 +347,9 @@ void User::clearInventory() {
 void User::clearGear() {
   const Server &server = *Server::_instance;
   for (auto i = 0; i != GEAR_SLOTS; ++i)
-    if (_inventory[i].first) {
-      _inventory[i].first = nullptr;
-      _inventory[i].second = 0;
+    if (_gear[i].first) {
+      _gear[i].first = nullptr;
+      _gear[i].second = 0;
       server.sendMessage(socket(), SV_INVENTORY,
                          makeArgs(Server::GEAR, i, "", 0));
     }

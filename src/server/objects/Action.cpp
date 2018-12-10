@@ -19,6 +19,10 @@ bool Server::endTutorial(const Object &obj, User &performer,
   performer.clearInventory();
   performer.clearGear();
 
+  // Replenish the usage cost, after clearing the inventory
+  const auto costItem = obj.objType().action().cost;
+  if (costItem) performer.giveItem(costItem);
+
   return true;
 }
 
