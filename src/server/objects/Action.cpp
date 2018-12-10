@@ -11,6 +11,8 @@ CallbackAction::FunctionMap CallbackAction::functionMap = {
 
 bool Server::endTutorial(const Object &obj, User &performer,
                          const std::string &textArg) {
+  auto &server = Server::instance();
+
   performer.setSpawnPointToPostTutorial();
   performer.moveToSpawnPoint();
 
@@ -22,6 +24,11 @@ bool Server::endTutorial(const Object &obj, User &performer,
   // Replenish the usage cost, after clearing the inventory
   const auto costItem = obj.objType().action().cost;
   if (costItem) performer.giveItem(costItem);
+
+  performer.removeConstruction("tutFire");
+  server.sendMessage(performer.socket(), SV_UNLEARNED_CONSTRUCTION, "fire");
+  performer.addConstruction("fire");
+  server.sendMessage(performer.socket(), SV_CONSTRUCTIONS, makeArgs(1, "fire"));
 
   return true;
 }

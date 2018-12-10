@@ -109,6 +109,9 @@ class User : public Object {  // TODO: Don't inherit from Object
   void addConstruction(const std::string &id) {
     _knownConstructions.insert(id);
   }
+  void removeConstruction(const std::string &id) {
+    _knownConstructions.erase(id);
+  }
   bool knowsConstruction(const std::string &id) const;
   bool hasRoomToCraft(const Recipe &recipe) const;
   bool shouldGatherDoubleThisTime() const;

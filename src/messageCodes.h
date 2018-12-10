@@ -301,6 +301,10 @@ enum MessageCode {
   // Arguments: quantity, id1, id2, ...
   SV_NEW_CONSTRUCTIONS,
 
+  // A user has unlearned a construction.  Used on completion of the tutorial.
+  // Arguments: id
+  SV_UNLEARNED_CONSTRUCTION,
+
   // The user has just joined a city
   // Arguments: cityName
   SV_JOINED_CITY,
