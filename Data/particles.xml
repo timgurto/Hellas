@@ -86,6 +86,7 @@
 
 <particleProfile
     id="blood">
+    <lifespan mean=180000 sd=20000 />
     <particlesPerHit mean=6 sd=2 />
     <distance mean=5 sd=0 />
     <altitude mean=8 sd=4 />
