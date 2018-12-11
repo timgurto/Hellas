@@ -1,109 +1,83 @@
 <root>
 
-<entry name="Basic: controls"    >
-    <p text="Press H any time to show this Help window." />
-    <p heading="Movement"
-       text="Use the arrow keys or WASD to move around the world." />
-    <p heading="Quests"
-       text="A green exclamation mark indicates that a quest is available.  Move up to the questgiver and right-click on it, then select the quest.  All of your current quests are visible on the right-hand side of the screen." />
-    <p text="A green question mark indicates that a quest can be completed." />
-</entry>
-
-<entry name="Basic: combat"    >
-    <p text="To attack an enemy, first target it by right-clicking on it.  Once targeted, whenever you are close enough to the enemy, you will automatically strike it at regular intervals." />
-</entry>
-
-<entry name="Basic: loot"    >
-    <p text="Sparkles rising from a dead creature indicate that it has loot available.  Move close to it and right-click on it, and then click on the items you want." />
-    <p text="You can view your inventory of items by pressing the I key." />
-</entry>
-
-<entry name="Basic: placement"    >
+<entry name="Object placement" >
     <p text="Some items can be placed into the world as objects.  If an item has this ability, then its tooltip will include 'Right click to place (Object)'." />
     <p text="To place an object, right-click the item in your inventory.  The mouse cursor will now show a footprint of how large the object will be.  Click on the ground to place it; note that placement may take some time, depending on the object.  The placement area must be clear of any obstacles, and close to the player; the footprint will turn red if it is too far away.  It must also be a terrain type that is compatible with the object." />
-    <p text="Once a construction site has been designated, materials can be added.  Right-click on the site, and you will see a list of items required to complete the object.  To add an item, move it from your inventory (I key) into the item slot in the object window." />
+    <p text="Often this will be enough, but sometimes a construction site will be created instead of the finished object.  In this case, after the construction site is designated, materials can be added.  Right-click on the site, and you will see a list of items required to complete the object.  To add an item, move it from your inventory (I key) into the item slot in the object window." />
 </entry>
 
-<!--entry order="10" name="Controls"    >
-    <paragraph order="1"  heading="Mouse"
-                        text="Left-click on an object, NPC or player to select it.  Right-click to target it.  When something is selected or targeted, you can see its health and energy levels at the top of the screen, and you can cast spells on it." />
-    <paragraph order="2"  text="The difference between selecting and targeting is that you can only target enemies, and if you are within range, you will automatically attack your target." />
+<entry name="Object construction" >
+    <p text="Some objects can be constructed from scratch.  A construction site is designated, and then materials must be added before the object is fully functional." />
+    <p text="To construct an object, press 'B' or click on the 'Build window' button on the toolbar.  This will bring up a list of all construction projects that you have unlocked.  Click on the one you want." />
+    <p text="The mouse cursor will now show a footprint of how large the object will be.  Click on the ground to place it; note that placement may take some time, depending on the object.  The placement area must be clear of any obstacles, and close to the player; the footprint will turn red if it is too far away.  It must also be a terrain type that is compatible with the object." />
+    <p text="After the construction site is designated, materials can be added.  Right-click on the site, and you will see a list of items required to complete the object.  To add an item, move it from your inventory (I key) into the item slot in the object window." />
 </entry>
 
-<entry order="20" name="Combat"    >
-    <paragraph order="1"  text="Players can engage in combat with enemy players and objects, and with most NPCs.  A sword cursor when you move the mouse over something indicates that you can attack it." />
-    <paragraph order="2"  text="It is not necessary to have a weapon equipped in order to attack an enemy." />
-    <paragraph order="3"  heading="Death"
-                        text="When a player dies, he respawns with full health at his respawn point.  By default, this is the starting location." />
-    <paragraph order="4"  text="A player can change his respawn point by worshipping at an Altar to Hermes." />
+<entry name="Crafting" >
+    <p text="Some items can be crafted using other items as materials.  Each such recipe can only be crafted once you learn it." />
+    <p text="To craft an item, press 'C' or click on the 'Crafting' button on the toolbar.  This will bring up the crafting window." />
+    <p text="On the left side of the window you will find a number of filters to shorten the list of recipes on display.  In the middle are all matching recipes that you know.  If you select one by clicking on it, the right side of the window will show the details of that recipe, including all materials required, any tools that you must have, and a button to actually begin crafting." />
 </entry>
 
-<entry order="30" name="Gear"    >
-    <paragraph order="1"  text="Many items can be equipped by players to increase their effectiveness in combat." />
-    <paragraph order="2"  heading="The gear window"
-                        text="The gear window shows all gear being worn by the user, and summarises the total stats from all pieces.  The gear window can be accessed with the 'G' key or the button on the taskbar." />
-    <paragraph order="2"  heading="Stats"
-                        text="Health: the total damage that can be received before dying." />
-    <paragraph order="3"  text="Attack: the amount of damage done by one strike." />
-    <paragraph order="4"  text="Attack time: how long you must wait between strikes.  Gear will modify this by way of a multiplier." />
-    <paragraph order="5"  text="Speed: how fast you walk.  Gear will modify this by way of a multiplier." />
+<entry name="Tools" >
+    <p text="Some actions in the game require one or more tools.  A tool requirement is in terms of a type, rather than a specific thing.  For example, gathering a Tree requires anything of type 'Axe', rather than specifically requiring a Stone Axe or Copper Axe.  Types will appear in tooltips." />
+    <p text="Tools are not consumed when used--they are passive participants in the action." />
+    <p heading="Item tools"
+        text="To use an item as a tool, it must be in your inventory or a gear slot." />
+    <p heading="Object tools"
+        text="For an object to work as a tool, it must be close to you, and you must have permission to use it.  This will generally mean it's owned by you or your city, or unowned." />
+    <p heading="Terrain tools"
+        text="Occasionally a map tile can be used as a tool.  In these cases the tile will behave just like an unowned object: the user must be close to it." />
 </entry>
 
-<entry order="40" name="Objects"    >
-    <paragraph order="1"  text="Objects are non-living things that exist in the world and have a specific location and shape.  Some occur naturally, such as trees; others can be created by players.  The two means for players to create objects are 'placement' and 'construction'." />
-    <paragraph order="4"  heading="Construction"
-                        text="Some objects can be constructed from scratch.  A construction site is designated, and then materials must be added before the object is fully functional.  Construction might require a Tool." />
-    <paragraph order="5"  text="To construct an object, press 'B' or click on the 'Build window' button on the toolbar.  This will bring up a list of all construction projects that you have unlocked.  Click on one, then place the construction site just as you would when placing an object." />
-    <paragraph order="7"  heading="Gathering"
-                        text="asdf" />
-    <paragraph order="8"  heading="Ownership"
-                        text="Objects can be owned by individual players or cities, or be unowned.  An object's owner can be seen in the tooltip when the mouse cursor is over it.  Many of an object's actions are available only to its owner." />
-    <paragraph order="9"  text="Naturally occuring objects are unowned.  When a player creates an object, it will automatically be owned by him." />
-    <paragraph order="10" text="If an object is owned by a city, then all citizens of that city can use the object." />
-    <paragraph order="11" heading="The object window"
-                        text="If an object has any actions available, they can be accessed through the object window.  To bring up an object window, make sure you are close to the object in question and right-click on it." />
+<entry name="Ownership" >
+    <p heading="Ownership"
+        text="Objects can be owned by individual players or cities, or be unowned.  An object's owner can be seen in the tooltip when the mouse cursor is over it.  Many of an object's actions are available only to its owner." />
+    <p text="Naturally occuring objects are unowned.  When a player creates an object, it will automatically be owned by him." />
+    <p text="If an object is owned by a city, then all citizens of that city can use the object." />
+    <p heading="The object window"
+        text="If an object has any actions available, they can be accessed through the object window.  To bring up an object window, make sure you are close to the object in question and right-click on it." />
 </entry>
 
-<entry order="50" name="Cities"    >
-    <paragraph order="1"  text="A city is a group of players who are joined together in a single diplomatic unit.  A player's city is displayed underneath their name.  When a new player begins, he is not in any city." />
-    <paragraph order="2"  heading="Foundation"
-                        text="A city can be founded at an Altar to Athena.  The altar's object window allows the new city's name to be entered.  The player who worships at the altar will become King, and the city will stand only as long as his Altar to Athena does." />
-    <paragraph order="2"  heading="Recruitment"
-                        text="Any member of a city can recruit new members.  To recruit a player to your city, click on him, right-click on the target panel at the top of the screen, and click 'Recruit'." />
-    <paragraph order="3"  heading="City objects"
-                        text="Just as objects can be owned by a player, they can instead be owned by a city.  A city-owned object is accessible by all members of the city.  In order for an object to come under the ownership of a city, a player must cede one of his own objects to his city." />
-    <paragraph order="4"  text="To cede an object, use the 'Cede to City' button in the object window.  An object can only be ceded if it belongs to the player, it is not an Altar, and the player is in a city." />
-    <paragraph order="5"  heading="Leaving a city"
-                        text="To leave your city, open the Social window with 'O' or the button on the toolbar.  Then, click the 'Leave city' button." />
-    <paragraph order="6"  text="Note that a king cannot leave his city." />
-    <paragraph order="7"  heading="Destruction"
-                        text="If a city's Altar to Athena is destroyed, then the city is destroyed.  All citizens become citiless, and all city objects crumble into ruin." />
+<entry name="Cities" >
+    <p text="A city is a group of players who are joined together in a single diplomatic unit.  A player's city is displayed underneath their name.  When a new player begins, he is not in any city." />
+    <p heading="Foundation"
+        text="A city can be founded at an Altar to Athena.  The altar's object window allows the new city's name to be entered.  The player who worships at the altar will become King, and the city will stand only as long as his Altar to Athena does." />
+    <p heading="Recruitment"
+        text="Any member of a city can recruit new members.  To recruit a player to your city, click on him, right-click on the target panel at the top of the screen, and click 'Recruit'." />
+    <p heading="City objects"
+        text="Just as objects can be owned by a player, they can instead be owned by a city.  A city-owned object is accessible by all members of the city.  In order for an object to come under the ownership of a city, a player must cede one of his own objects to his city." />
+    <p text="To cede an object, use the 'Cede to City' button in the object window.  An object can only be ceded if it belongs to the player, it is not an Altar, and the player is in a city." />
+    <p heading="Leaving a city"
+        text="To leave your city, open the Social window with 'O' or the button on the toolbar.  Then, click the 'Leave city' button." />
+    <p text="Note that a king cannot leave his city." />
+    <p heading="Destruction"
+        text="If a city's Altar to Athena is destroyed, then the city is destroyed.  All citizens become citiless, and all city objects crumble into ruin." />
 </entry>
 
-<entry order="60" name="War"    >
-    <paragraph order="1"  text="At any given time, two players are either at peace or at war.  When at war, " />
-    <paragraph order="2"  text="Personal wars; may be resumed on leaving your city." />
-    <paragraph order="3"  text="Cities at war" />
-    <paragraph order="4"  heading="Managing wars"
-                        text="Your active wars can be managed in the Social window.  Open this window by pressing 'O' or clicking the 'Social window' button on the toolbar.  The bottom section of this window lists all of your active wars."/>
-    <paragraph order="5"  heading="Active and inactive wars"
-                        text="Every war is either active or inactive.  An active war means that the belligerents can fight each other, whereas an inactive war is effectively a truce.  A war is inactive if at least one of the belligerents is a player, and that player is in a city; the city's diplomatic state takes precedence."/>
-    <paragraph order="6" text="For example, if Domos is at war with Timos, they can fight.  If Domos then joins a city, then that personal war takes a back seat; the players can fight only if Domos's city is at war with Timos.  The personal war is resumed if Domos leaves his city."/>
+<entry name="War" >
+    <p text="At any given time, two players are either at peace or at war.  When at war, you may attack the player or any objects he owns.  Combat between players can only take place in a state of war." />
+    <p text="A city can also be at war, and a city's diplomatic state supercedes that of its citizens.  If you are at war with a city, then you may engage in combat with any citizen of that city, and any object owned by a citizen or by the city itself." />
+    <p heading="Active and inactive wars"
+        text="Every war is either active or inactive.  An active war means that the belligerents can fight each other, whereas an inactive war is effectively a truce.  A war is inactive if at least one of the belligerents is a player, and that player is in a city; the city's diplomatic state takes precedence."/>
+    <p text="For example, if Domos is at war with Timos, they can fight.  If Domos then joins a city, then that personal war takes a back seat; the players can fight only if Domos's city is at war with Timos.  The personal war is resumed if Domos leaves his city."/>
+    <p heading="Managing wars"
+        text="Your active wars can be managed in the Social window, opened by pressing 'O' or clicking the 'Social window' button on the toolbar.  The bottom section of the window lists all of your active wars."/>
 </entry>
 
-<entry order="70" name="Altars"    >
-    <paragraph order="1"  text="Altars are objects that grant special benefits to players.  Each player may own only a single altar at any given time." />
-    <paragraph order="2"  heading="Worshipping" 
-                        text="To gain the benefit of an altar, right-click the altar and click the 'Worship' button.  This requires that you have permission to use it." />
-    <paragraph order="3"  heading="Uniqueness"
-                        text="Because each player is limited to a single altar under his ownership, altars are the only objects that cannot be ceded to one's city.  Instead, all citizens of a city can worship at any altar owned by a fellow citizen, making all altars effectively city objects." />
-    <paragraph order="4"  heading="Altar types"
-                        text="The Altar to Athena is used to found a new city, and remains the heart of that city." />
-    <paragraph order="5"  text="The Altar to Hermes is used to change a player's respawn point." />
+<entry name="Talents" >
+    <p text="There are a number of talents available with which you can customise and specialise your character.  Some give you passive stat boosts, and some teach you new spells or abilities.  The set of talents is based on your class, and one talent point is awarded each time you gain a level."/>
+    <p text="Talents are managed in the Class window, which can be opened by pressing 'K'."/>
+    <p heading="Branches and levels"
+        text="The available talents are based on your class, and they are further split into three branches representing roles in society."/>
+    <p text="Within a branch, talents are further divided into vertical levels.  Talents at the top have no special requirements, and cost a small amount of food to learn." />
+    <p text="As you move down, talents may need tools to learn, they may require a number of talents points to already be allocated in the branch.  This allows you to choose how deeply you want to specialise in each branch."/>
+    <p text="More advanced talents cost more food, and may also require additional items as part of the cost." />
+    <p heading="Changing your mind"
+        text="If you want to allocate your talents differently, at any time you may unlearn all of your talents by clicking on the 'Unlearn all' button in the Class window." />
+    <p text="Note that you will need to pay the food and item costs of each talent point once again.  Thus, at higher levels the cost of revising your talents can be quite high." />
+    <p heading="Death"
+        text="When you die, you lose one random talent point.  It can be reallocated, but you must once again bear its food and item costs." />
 </entry>
-
-<entry order="80" name="Unlocking"    >
-    <paragraph order="1"  text="asdf" />
-</entry-->
 
 </root>

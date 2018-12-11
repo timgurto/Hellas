@@ -16,7 +16,6 @@
     
 <objectType id="crater" isFlat=1 isDecoration=1
     xDrawOffset=-20 yDrawOffset=-14 >
-    <!--collisionRect x=-20 y=-14 w=40 h=29 /-->
     <particles profile="smoke" x=0 y=0 />
 </objectType>
 
@@ -25,7 +24,7 @@
     brief="Ah, finally free from the clay!  Welcome to Mt. Othrys--or what's left of it.  My name is Prometheus, and I created you.
     It looks like your eyes and ears are in working order, so let's test your arms and legs.  Head over to that grassy area nearby, and kill some pigs."
     debrief="Excellent, everything seems to be working as intended.  You're quite impressive, if I do say so myself!"
-    ><!--helpTopicOnAccept="Basic: combat"-->
+    >
 	<objective type="kill" id="tutPig" qty="4" />
 </quest>
     <npcType
@@ -53,7 +52,7 @@
     Zeus, the king of these Olympian gods, wants you humans to worship his kind with animal sacrifices.
     Before we negotiate the details, you'll need to get your hands dirty.  There's a small pass north of the pigs you just encountered, that leads to a herd of wild goats.  Slay some, and gather what you can of their remains."
     debrief="These will do nicely."
-    ><!--helpTopicOnAccept="Basic: loot"-->
+    >
     <prerequisite id="tutCombat" />
     <objective type="fetch" id="tutMeat" qty="4" />
     <objective type="fetch" id="tutHide" />
@@ -66,10 +65,10 @@
         xDrawOffset="-17" yDrawOffset="-28"
         imageFile="goat" sounds = "goat" >
         <collisionRect x="-15" y="-4" w="31" h="7" />
-        <loot id="tutMeat" > <normal mean="0.8" sd="0.5" /> </loot>
-        <loot id="tutHide" chance="0.3" />
-        <loot id="tutEntrails"> <normal mean="0.8" sd="0.5" /> </loot>
-        <loot id="tutFat" chance="0.3" />
+        <loot id="tutMeat" > <normal mean="0.7" sd="0.5" /> </loot>
+        <loot id="tutHide" chance="0.2" />
+        <loot id="tutEntrails"> <normal mean="0.7" sd="0.5" /> </loot>
+        <loot id="tutFat" chance="0.2" />
     </npcType>
     <item id="tutMeat"     name="Goat Meat"     iconFile="meat"     stackSize="10" exclusiveToQuest="tutParts" />
     <item id="tutHide"     name="Goat Hide"     iconFile="hide"     stackSize="10" exclusiveToQuest="tutParts" />
@@ -88,7 +87,7 @@
     Place this pile of meat on the tiles there, and cover it with the hide so that it looks skinny and unappealing.  Do the same with the entrails, but dress them up with fat.  Once you've prepared both sacrifices, approach the brazier--reverently--and speak with Zeus."
     debrief="Greetings, mortal.  Are you one of Prometheus's little creatures?
     We gods have our due, and as their king it falls to me to make the choice.  But obviously we should have the best-quality meat for ourselves!  I choose the fatty offering."
-    helpTopicOnAccept="Basic: placement">
+    helpTopicOnAccept="Object placement">
     <prerequisite id="tutParts" />
     <objective type="construct" id="leanOffering" />
     <objective type="construct" id="fattyOffering" />
@@ -136,7 +135,8 @@
     I know what I must do.
     Head to the woods, westward, and pick up some sticks for me.  When you get back, I will restore fire to mankind."
     debrief="Good.  Zeus won't let you leave this mountain with anything in your hand or on your back, especially fire, so instead you'll have to carry it in your heart--I'll teach you how to create fire yourself.  That way the gods can never take it from you again.
-    I don't care about Zeus's wrath--this is too important.  Fire is critical to the development of civilisation and mankind must have access to it." >
+    I don't care about Zeus's wrath--this is too important.  Fire is critical to the development of civilisation and mankind must have access to it."
+    helpTopicOnComplete="Object construction"    >
     <prerequisite id="tutReturnFromZeus" />
     <objective type="fetch" id="tutStick" qty="8" />
     <reward type="construction" id="tutFire" />
@@ -376,7 +376,8 @@
     With your help, I have decided on a gift to bestow upon mankind: you will receive them all.  No man can excel at everything, but together you will have access to each of these gifts.  Another gift I grant you is reason--the ability to know and improve yourself, and choose how best to make the most of your talents.
     Now it's time to leave this mountain for good, and enter the wider world.  To do this, enlist the aid of my cousin Eos; she is the goddess of the dawn, and will gladly help to establish mankind in the mortal realm.  Travel northeast and look for her Altar."
     debrief="As you can see, Zeus has seen fit to punish me for sharing fire with you against his wishes.  At least this bird isn't cooking my liver before eating it!  Heh heh . . .
-    No matter, I made my decision and I will live with it." >
+    No matter, I made my decision and I will live with it."
+    helpTopicOnAccept="Talents" >
     <prerequisite id="tutLizards" />
     <prerequisite id="tutCooking" />
 </quest>

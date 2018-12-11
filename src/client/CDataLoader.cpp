@@ -891,6 +891,7 @@ void CDataLoader::loadQuests(XmlReader &xr) {
     xr.findAttr(elem, "brief", questInfo.brief);
     xr.findAttr(elem, "debrief", questInfo.debrief);
     xr.findAttr(elem, "helpTopicOnAccept", questInfo.helpTopicOnAccept);
+    xr.findAttr(elem, "helpTopicOnComplete", questInfo.helpTopicOnComplete);
 
     for (auto objectiveElem : xr.getChildren("objective", elem)) {
       auto &client = Client::instance();

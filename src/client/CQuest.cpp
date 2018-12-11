@@ -117,6 +117,10 @@ void CQuest::completeQuest(CQuest *quest, size_t startObjectSerial) {
   // up significant memory.  Note that this function is called from a button
   // click (which subsequently changes the appearance of the button), meaning
   // it is unsafe to delete the window here.
+
+  // Show specified help topic
+  if (!quest->_info.helpTopicOnComplete.empty())
+    client.showHelpTopic(quest->_info.helpTopicOnComplete);
 }
 
 void CQuest::setProgress(size_t objective, int progress) {

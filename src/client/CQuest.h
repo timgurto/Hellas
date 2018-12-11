@@ -24,7 +24,7 @@ class CQuest {
     Prose brief, debrief;
     ID startsAt, endsAt;
     std::vector<Objective> objectives;
-    std::string helpTopicOnAccept;
+    std::string helpTopicOnAccept, helpTopicOnComplete;
   };
 
   enum Transition { ACCEPT, COMPLETE, INFO_ONLY };
