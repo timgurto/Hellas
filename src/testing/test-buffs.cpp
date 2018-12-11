@@ -20,6 +20,27 @@ TEST_CASE("Buffs can be applied") {
   }
 }
 
+TEST_CASE("Buffs disappear on death") {
+  GIVEN("a dog with a flea") {
+    auto data = R"(
+      <buff id="flea" />
+      <npcType id="dog" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    s.addNPC("dog", {10, 15});
+    auto &dog = s.getFirstNPC();
+    auto &flea = s.getFirstBuff();
+    dog.applyBuff(flea, dog);
+
+    WHEN("the dog dies") {
+      dog.kill();
+
+      THEN("it doesn't have a flea") { CHECK(dog.buffs().empty()); }
+    }
+  }
+}
+
 TEST_CASE("Interruptible buffs disappear on interrupt", "[combat]") {
   GIVEN("An interruptible buff, and a fox") {
     auto data = R"(

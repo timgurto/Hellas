@@ -398,6 +398,10 @@ void Entity::onEnergyChange() {
 }
 
 void Entity::onDeath() {
+  auto buffIDs = std::set<std::string>{};
+  for (const auto &buff : buffs()) buffIDs.insert(buff.type());
+  for (const auto &buffID : buffIDs) removeBuff(buffID);
+
   if (timeToRemainAsCorpse() == 0)
     markForRemoval();
   else
