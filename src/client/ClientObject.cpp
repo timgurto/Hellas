@@ -813,6 +813,7 @@ const Texture &ClientObject::cursor(const Client &client) const {
     if (completableQuests().size() > 0) return client.cursorEndsQuest();
     if (startsQuests().size() > 0) return client.cursorStartsQuest();
     if (ot.canGather()) return client.cursorGather();
+    if (ot.hasAction()) return client.cursorContainer();
     if (ot.containerSlots() > 0) return client.cursorContainer();
   }
   if (lootable() || ot.merchantSlots() > 0) return client.cursorContainer();
@@ -831,6 +832,7 @@ const Tooltip &ClientObject::tooltip() const {
 
   auto isContainer = ot.containerSlots() > 0 && classTag() != 'n';
   auto startsAQuest = !startsQuests().empty();
+  auto hasAction = ot.hasAction();
 
   // Name
   tooltip.setColor(Color::TOOLTIP_NAME);
@@ -932,7 +934,7 @@ const Tooltip &ClientObject::tooltip() const {
   // Any actions available?
   if (ot.merchantSlots() > 0 ||
       userHasAccess() && (classTag() == 'v' || isContainer ||
-                          ot.canDeconstruct() || startsAQuest)) {
+                          ot.canDeconstruct() || startsAQuest || hasAction)) {
     tooltip.addGap();
     tooltip.setColor(Color::TODO);
     tooltip.addLine(std::string("Right-click to interact"));
