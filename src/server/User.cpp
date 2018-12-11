@@ -810,6 +810,9 @@ void User::onAttack() {
   auto ammo = ItemSet{};
   ammo.add(ammoType);
   removeItems(ammo);
+
+  // The weapon itself is gone
+  if (!_gear[Item::WEAPON_SLOT].first) updateStats();
 }
 
 void User::onSpellcast(const Spell::ID &id, const Spell &spell) {
