@@ -810,6 +810,7 @@ const Texture &ClientObject::cursor(const Client &client) const {
 
   const ClientObjectType &ot = *objectType();
   if (userHasAccess()) {
+    if (isBeingConstructed()) return client.cursorContainer();
     if (completableQuests().size() > 0) return client.cursorEndsQuest();
     if (startsQuests().size() > 0) return client.cursorStartsQuest();
     if (ot.canGather()) return client.cursorGather();
