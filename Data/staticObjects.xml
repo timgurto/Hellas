@@ -26,7 +26,6 @@
 
 <object id="tutCyclopsQuestgiver">
     <location x="760" y="60510" />
-    <owner type="player" name="Othrys" />
 </object>
 <object id="tutCyclopsMerchant">
     <location x="845" y="60447" />
