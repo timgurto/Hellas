@@ -599,7 +599,11 @@ void Entity::removeDebuff(Buff::ID id) {
     if (it->type() == id) {
       _debuffs.erase(it);
       updateStats();
-      // TODO: Alert client that debuff was removed
+
+      const Server &server = Server::instance();
+      server.broadcastToArea(location(), SV_ENTITY_LOST_DEBUFF,
+                             makeArgs(serial(), id));
+
       return;
     }
 }

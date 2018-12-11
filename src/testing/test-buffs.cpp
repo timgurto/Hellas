@@ -50,6 +50,7 @@ TEST_CASE("Buffs disappear on death") {
           CHECK(dog.debuffs().empty());
 
           AND_THEN("and nearby users know it") {
+            WAIT_UNTIL(cDog.debuffs().empty());
             WAIT_UNTIL(cDog.buffs().empty());
           }
         }
