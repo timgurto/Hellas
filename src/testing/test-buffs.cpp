@@ -21,25 +21,38 @@ TEST_CASE("Buffs can be applied") {
 }
 
 TEST_CASE("Buffs disappear on death") {
-  GIVEN("a dog with a flea buff and a flea debuff") {
+  GIVEN("a dog and a flea buff") {
     auto data = R"(
       <buff id="flea" />
       <npcType id="dog" />
     )";
     auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
 
     s.addNPC("dog", {10, 15});
     auto &dog = s.getFirstNPC();
-    auto &flea = s.getFirstBuff();
-    dog.applyBuff(flea, dog);
-    dog.applyDebuff(flea, dog);
 
-    WHEN("the dog dies") {
-      dog.kill();
+    WHEN("the dog gets a flea buff and a flea debuff") {
+      auto &flea = s.getFirstBuff();
+      dog.applyBuff(flea, dog);
+      dog.applyDebuff(flea, dog);
 
-      THEN("it doesn't have any fleas") {
-        CHECK(dog.buffs().empty());
-        CHECK(dog.debuffs().empty());
+      WAIT_UNTIL(c.objects().size() == 1);
+      auto &cDog = c.getFirstNPC();
+      WAIT_UNTIL(cDog.debuffs().size() == 1);
+
+      WHEN("the dog dies") {
+        dog.kill();
+
+        THEN("it doesn't have any fleas") {
+          CHECK(dog.buffs().empty());
+          CHECK(dog.debuffs().empty());
+
+          AND_THEN("and nearby users know it") {
+            WAIT_UNTIL(cDog.buffs().empty());
+          }
+        }
       }
     }
   }

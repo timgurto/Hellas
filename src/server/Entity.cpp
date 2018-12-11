@@ -585,7 +585,11 @@ void Entity::removeBuff(Buff::ID id) {
     if (it->type() == id) {
       _buffs.erase(it);
       updateStats();
-      // TODO: Alert client that buff was removed
+
+      const Server &server = Server::instance();
+      server.broadcastToArea(location(), SV_ENTITY_LOST_BUFF,
+                             makeArgs(serial(), id));
+
       return;
     }
 }
