@@ -21,9 +21,15 @@ bool Server::endTutorial(const Object &obj, User &performer,
   performer.clearInventory();
   performer.clearGear();
 
-  // Replenish the usage cost, after clearing the inventory
+  // Replenish the usage cost, after clearing the inventory.  Do it directly,
+  // rather than via User::giveItem(), to avoid alerting the client
+  // unnecessarily.
   const auto costItem = obj.objType().action().cost;
-  if (costItem) performer.giveItem(costItem);
+  if (costItem) {
+    auto &inventorySlot = performer.inventory(0);
+    inventorySlot.first = costItem;
+    inventorySlot.second = 1;
+  }
 
   performer.removeConstruction("tutFire");
   server.sendMessage(performer.socket(), SV_UNLEARNED_CONSTRUCTION, "fire");
