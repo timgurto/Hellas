@@ -110,6 +110,7 @@ class Entity {
   void loadDebuff(const BuffType &type, ms_t timeRemaining);
   void removeBuff(Buff::ID id);
   void removeDebuff(Buff::ID id);
+  void removeAllBuffsAndDebuffs();
   virtual void sendBuffMsg(const Buff::ID &buff) const;
   virtual void sendDebuffMsg(const Buff::ID &buff) const;
   virtual void sendLostBuffMsg(const Buff::ID &buff) const;

@@ -398,13 +398,7 @@ void Entity::onEnergyChange() {
 }
 
 void Entity::onDeath() {
-  auto buffIDs = std::set<std::string>{};
-  for (const auto &buff : buffs()) buffIDs.insert(buff.type());
-  for (const auto &buffID : buffIDs) removeBuff(buffID);
-
-  auto debuffIDs = std::set<std::string>{};
-  for (const auto &debuff : debuffs()) debuffIDs.insert(debuff.type());
-  for (const auto &debuffID : debuffIDs) removeDebuff(debuffID);
+  removeAllBuffsAndDebuffs();
 
   if (timeToRemainAsCorpse() == 0)
     markForRemoval();
@@ -604,6 +598,16 @@ void Entity::removeDebuff(Buff::ID id) {
       // TODO: Alert client that debuff was removed
       return;
     }
+}
+
+void Entity::removeAllBuffsAndDebuffs() {
+  auto buffIDs = std::set<std::string>{};
+  for (const auto &buff : buffs()) buffIDs.insert(buff.type());
+  for (const auto &buffID : buffIDs) removeBuff(buffID);
+
+  auto debuffIDs = std::set<std::string>{};
+  for (const auto &debuff : debuffs()) debuffIDs.insert(debuff.type());
+  for (const auto &debuffID : debuffIDs) removeDebuff(debuffID);
 }
 
 void Entity::sendBuffMsg(const Buff::ID &buff) const {
