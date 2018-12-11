@@ -21,7 +21,7 @@ TEST_CASE("Buffs can be applied") {
 }
 
 TEST_CASE("Buffs disappear on death") {
-  GIVEN("a dog with a flea") {
+  GIVEN("a dog with a flea buff and a flea debuff") {
     auto data = R"(
       <buff id="flea" />
       <npcType id="dog" />
@@ -32,11 +32,15 @@ TEST_CASE("Buffs disappear on death") {
     auto &dog = s.getFirstNPC();
     auto &flea = s.getFirstBuff();
     dog.applyBuff(flea, dog);
+    dog.applyDebuff(flea, dog);
 
     WHEN("the dog dies") {
       dog.kill();
 
-      THEN("it doesn't have a flea") { CHECK(dog.buffs().empty()); }
+      THEN("it doesn't have any fleas") {
+        CHECK(dog.buffs().empty());
+        CHECK(dog.debuffs().empty());
+      }
     }
   }
 }

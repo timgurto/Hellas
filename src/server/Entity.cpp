@@ -402,6 +402,10 @@ void Entity::onDeath() {
   for (const auto &buff : buffs()) buffIDs.insert(buff.type());
   for (const auto &buffID : buffIDs) removeBuff(buffID);
 
+  auto debuffIDs = std::set<std::string>{};
+  for (const auto &debuff : debuffs()) debuffIDs.insert(debuff.type());
+  for (const auto &debuffID : debuffIDs) removeDebuff(debuffID);
+
   if (timeToRemainAsCorpse() == 0)
     markForRemoval();
   else
