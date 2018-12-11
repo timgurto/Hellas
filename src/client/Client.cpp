@@ -161,7 +161,7 @@ Client::Client()
   _connection.initialize(_config.serverHostDirectory);
 
   initUI();
-  _wordWrapper = WordWrapper{_defaultFont, _chatLog->width()};
+  _wordWrapper = WordWrapper{_defaultFont, _chatLog->contentWidth()};
 
   initializeMessageNames();
 
