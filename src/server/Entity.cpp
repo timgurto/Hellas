@@ -586,9 +586,7 @@ void Entity::removeBuff(Buff::ID id) {
       _buffs.erase(it);
       updateStats();
 
-      const Server &server = Server::instance();
-      server.broadcastToArea(location(), SV_ENTITY_LOST_BUFF,
-                             makeArgs(serial(), id));
+      sendLostBuffMsg(id);
 
       return;
     }
@@ -600,9 +598,7 @@ void Entity::removeDebuff(Buff::ID id) {
       _debuffs.erase(it);
       updateStats();
 
-      const Server &server = Server::instance();
-      server.broadcastToArea(location(), SV_ENTITY_LOST_DEBUFF,
-                             makeArgs(serial(), id));
+      sendLostDebuffMsg(id);
 
       return;
     }
