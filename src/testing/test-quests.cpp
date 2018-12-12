@@ -890,6 +890,9 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
   auto data = R"(
     <objectType id="A" />
     <quest id="startMe" startsAt="A" endsAt="A" />
+    <quest id="leaveUnfinished" startsAt="A" endsAt="A">
+      <objective type="kill" id="A" qty="10" />
+    </quest>
     <quest id="killIt" startsAt="A" endsAt="A">
       <objective type="kill" id="A" />
     </quest>
@@ -910,6 +913,9 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
 
     // Given that Alice has started a quest
     alice.startQuest(*s->findQuest("startMe"));
+
+    // And started another, but not met its objective
+    alice.startQuest(*s->findQuest("leaveUnfinished"));
 
     // And killed the target of another quest
     alice.startQuest(*s->findQuest("killIt"));
@@ -934,18 +940,23 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
     // Then she is on the first quest
     CHECK(alice.isOnQuest("startMe"));
 
-    // And has achieved the objective of the second quest
+    // And she knows she's on the second
+    const auto &leaveUnfinished = c->quests().find("leaveUnfinished")->second;
+    REPEAT_FOR_MS(100);
+    WAIT_UNTIL(leaveUnfinished.state == CQuest::IN_PROGRESS);
+
+    // And has achieved the objective of the third quest
     auto killIt = s->findQuest("killIt");
     CHECK(killIt->canBeCompletedByUser(alice));
 
-    // And has achieved the objective of the third quest
+    // And has achieved the objective of the fourth quest
     auto buidlIt = s->findQuest("buildIt");
     CHECK(buidlIt->canBeCompletedByUser(alice));
 
-    // And completed the fourth quest
+    // And completed the fifth quest
     CHECK(alice.hasCompletedQuest("finishMe"));
 
-    // And can see the quest requiring the fourth to have been completed
+    // And can see the quest requiring the fifth to have been completed
     s.addObject("A", {10, 15});
     WAIT_UNTIL(c.objects().size() == 1);
     const auto &cObj = c.getFirstObject();

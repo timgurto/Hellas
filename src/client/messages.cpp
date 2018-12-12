@@ -2277,6 +2277,8 @@ void Client::handle_SV_QUEST_PROGRESS(const std::string &questID,
   auto it = _quests.find(questID);
   if (it == _quests.end()) return;
 
+  it->second.state = CQuest::IN_PROGRESS;
+
   it->second.setProgress(objectiveIndex, progress);
 
   populateQuestLog();
