@@ -69,4 +69,6 @@ void Projectile::Type::instantiate(const MapPoint &start, const MapPoint &end,
     client.addEntity(tailSegment);
     projectile->_tail.push_back(tailSegment);
   }
+
+  if (_sounds) _sounds->playOnce("launch"s);
 }

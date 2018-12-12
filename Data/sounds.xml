@@ -93,6 +93,12 @@
     <sound type="impact" file="ignite" />
 </soundProfile>
 
+<soundProfile id="lightning" >
+    <sound type="launch" file="lightning0" />
+    <sound type="launch" file="lightning1" />
+    <sound type="drop" file="lightning1" />
+</soundProfile>
+
 <soundProfile id="water" >
     <sound type="impact" file="splash0" />
     <sound type="impact" file="splash1" />

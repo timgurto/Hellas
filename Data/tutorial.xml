@@ -265,7 +265,7 @@
     </objectType>
     <item id="tutOre" name="Othrysian Ore" stackSize="5" strength="3" />
     <item id="tutLightning" name="Handheld Lightning" stackSize="5" gearSlot="6" >
-        <weapon damage="12" speed="2.1" range="25" consumes="tutLightning" projectile="lightning" />
+        <weapon damage="12" speed="2.1" range="25" consumes="tutLightning" projectile="lightning" sounds="lightning" />
         <offset x="-8" y="-6" />
         <particles profile="lightningSparks" x=-7 y=-5 />
         <particles profile="lightningSparks" x=-6 y=-4 />
