@@ -15,7 +15,7 @@ Surface::Surface(const std::string &filename, const Color &colorKey)
                                         SDL_FreeSurface}) {
   if (!_raw) return;
 
-  if (&colorKey != &Color::TODO)
+  if (&colorKey != &Color::MAGENTA)
     SDL_SetColorKey(_raw.get(), SDL_TRUE, colorKey);
 
   if (isDebug()) _description = filename;

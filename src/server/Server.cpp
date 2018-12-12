@@ -118,8 +118,8 @@ void Server::checkSockets() {
   static const timeval selectTimeout = {0, 10000};
   int activity = select(0, &readFDs, nullptr, nullptr, &selectTimeout);
   if (activity == SOCKET_ERROR) {
-    _debug << Color::TODO << "Error polling sockets: " << WSAGetLastError()
-           << Log::endl;
+    _debug << Color::CHAT_ERROR
+           << "Error polling sockets: " << WSAGetLastError() << Log::endl;
     return;
   }
   _time = SDL_GetTicks();
@@ -140,7 +140,7 @@ void Server::checkSockets() {
       SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr *)&clientAddr,
                                  (int *)&Socket::sockAddrSize);
       if (tempSocket == SOCKET_ERROR) {
-        _debug << Color::TODO
+        _debug << Color::CHAT_ERROR
                << "Error accepting connection: " << WSAGetLastError()
                << Log::endl;
       } else {
@@ -437,7 +437,7 @@ void Server::removeUser(const Socket &socket) {
     _debug << "Removing user " << it->name() << Log::endl;
     removeUser(it);
   } else
-    _debug("User was already removed", Color::TODO);
+    _debug("User was already removed", Color::CHAT_ERROR);
 }
 
 std::set<User *> Server::findUsersInArea(MapPoint loc,

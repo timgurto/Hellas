@@ -90,14 +90,14 @@ const Tooltip &ClientItem::tooltip() const {
   // Tags
   if (hasTags()) {
     tooltip.addGap();
-    tooltip.setColor(Color::TODO);
+    tooltip.setColor(Color::TOOLTIP_TAG);
     for (const std::string &tag : tags()) tooltip.addLine(client.tagName(tag));
   }
 
   // Construction
   if (_constructsObject != nullptr) {
     tooltip.addGap();
-    tooltip.setColor(Color::TODO);
+    tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
     tooltip.addLine(std::string("Right-click to place ") +
                     _constructsObject->name());
     if (!_constructsObject->constructionReq().empty())
@@ -125,7 +125,7 @@ const Tooltip &ClientItem::tooltip() const {
 
     // Tags
     if (_constructsObject->hasTags()) {
-      tooltip.setColor(Color::TODO);
+      tooltip.setColor(Color::TOOLTIP_TAG);
       for (const std::string &tag : _constructsObject->tags())
         tooltip.addLine("  " + client.tagName(tag));
     }
@@ -138,7 +138,7 @@ const Tooltip &ClientItem::tooltip() const {
       client.showErrorMessage("Can't find spell: "s + spellToCastOnUse(),
                               Color::CHAT_ERROR);
     } else {
-      tooltip.setColor(Color::TODO);
+      tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
       tooltip.addLine("Right-click: "s + it->second->createEffectDescription());
     }
   }

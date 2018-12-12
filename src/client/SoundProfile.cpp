@@ -32,7 +32,7 @@ Channel SoundProfile::checkAndPlaySound(const SoundType &type,
   if (it == _sounds.end()) {
 #ifdef _DEBUG
     Client::_instance->showErrorMessage(
-        "\""s + _id + ":" + type + "\" sound not found."s, Color::TODO);
+        "\""s + _id + ":" + type + "\" sound not found."s, Color::CHAT_ERROR);
 #endif
     return NO_CHANNEL;
   }
@@ -40,7 +40,8 @@ Channel SoundProfile::checkAndPlaySound(const SoundType &type,
   Mix_Chunk *sound = variants.choose();
   if (sound == nullptr) {
     Client::_instance->showErrorMessage(
-        "\""s + _id + ":" + type + "\" sound variant not found."s, Color::TODO);
+        "\""s + _id + ":" + type + "\" sound variant not found."s,
+        Color::CHAT_ERROR);
     return NO_CHANNEL;
   }
   int loopArg = loop ? -1 : 0;

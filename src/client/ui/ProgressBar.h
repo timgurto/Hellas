@@ -30,7 +30,7 @@ class ProgressBar : public Element {
 
  public:
   ProgressBar(const ScreenRect &rect, const T &numerator, const T &denominator,
-              const Color &barColor = Color::TODO,
+              const Color &barColor = Color::WINDOW_FONT,
               const Color &backgroundColor = Color::UI_OUTLINE);
   void changeColor(const Color &newColor) { _bar->changeColor(newColor); }
 

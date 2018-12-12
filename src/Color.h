@@ -7,11 +7,10 @@
 
 class Color {
  public:
-  static const Color TODO;
-
   static const Color BLUE_HELL;
   static const Color NO_KEY;
   static const Color DEBUG_TEXT;
+  static const Color MISSING_IMAGE;
 
   static const Color BLACK;
   static const Color BLUE;
@@ -26,6 +25,7 @@ class Color {
   static const Color CHAT_DEFAULT;
   static const Color CHAT_SAY;
   static const Color CHAT_WHISPER;
+  static const Color CHAT_WARNING;
   static const Color CHAT_ERROR;
   static const Color CHAT_SUCCESS;
 
@@ -41,10 +41,19 @@ class Color {
   static const Color COMBATANT_ENEMY;
   static const Color COMBATANT_NEUTRAL;
 
+  static const Color FOOTPRINT_GOOD;
+  static const Color FOOTPRINT_BAD;
+  static const Color FOOTPRINT_ACTIVE;
+
   static const Color TOOLTIP_BACKGROUND;
   static const Color TOOLTIP_BORDER;
   static const Color TOOLTIP_NAME;
   static const Color TOOLTIP_BODY;
+  static const Color TOOLTIP_TAG;
+  static const Color TOOLTIP_INSTRUCTION;
+  static const Color TOOLTIP_FLAVOUR;
+
+  static const Color ITEM_NAME;
 
   static const Color STAT_HEALTH;
   static const Color STAT_ENERGY;
@@ -60,7 +69,10 @@ class Color {
   static const Color FLOATING_MISS;
   static const Color FLOATING_CRIT;
 
+  static const Color DEBUFF;
+
   static const Color UI_OUTLINE;
+  static const Color UI_OUTLINE_HIGHLIGHT;
   static const Color UI_TEXT;
   static const Color UI_DISABLED;
 

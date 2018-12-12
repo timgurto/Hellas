@@ -82,7 +82,7 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType,
 
   auto label = new Label{{x, 0, NAME_W, WAR_ROW_HEIGHT}, name};
   if (!isActive) {
-    label->setColor(Color::TODO);
+    label->setColor(Color::TOOLTIP_BODY);
     label->setTooltip("This personal war is inactive while you are in a city.");
   }
   row->addChild(label);

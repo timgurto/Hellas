@@ -50,7 +50,7 @@ void Spawner::spawn() {
     return;
   }
 
-  server._debug << Color::TODO << "Failed to spawn " << _type->id()
+  server._debug << Color::CHAT_ERROR << "Failed to spawn " << _type->id()
                 << Log::endl;
   scheduleSpawn();
 }

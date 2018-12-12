@@ -48,7 +48,7 @@ const Tooltip &ClientTalent::tooltip() const {
   if (hasCost() || reqPointsInTree > 0) tooltip.addGap();
 
   if (!flavourText.empty()) {
-    tooltip.setColor(Color::TODO);
+    tooltip.setColor(Color::TOOLTIP_FLAVOUR);
     tooltip.addLine(flavourText);
     tooltip.addGap();
   }

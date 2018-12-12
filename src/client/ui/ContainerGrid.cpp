@@ -86,7 +86,7 @@ void ContainerGrid::refresh() {
         slot.first->icon().draw(slotRect.x + 1, slotRect.y + 1);
         if (slot.second > 1) {
           Texture label(font(), makeArgs(slot.second), FONT_COLOR),
-              labelOutline(font(), toString(slot.second), Color::TODO);
+              labelOutline(font(), toString(slot.second), Color::UI_OUTLINE);
           px_t x = slotRect.x + slotRect.w - label.width() - 1,
                y = slotRect.y + slotRect.h - label.height() + textOffset;
           labelOutline.draw(x - 1, y);

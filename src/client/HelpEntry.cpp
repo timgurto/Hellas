@@ -12,7 +12,7 @@ void HelpEntry::addParagraph(const std::string &heading,
 class Words {
  public:
   void addWordsFromString(const std::string &paragraph,
-                          Color color = Color::TODO) {
+                          Color color = Color::WINDOW_FONT) {
     auto iss = std::istringstream(paragraph);
     while (iss) {
       auto word = std::string{};
@@ -22,7 +22,7 @@ class Words {
         word += " ";  // Not perfect, but will increase space between sentences.
       auto *label = new Label{{0, 0, 0, Element::TEXT_HEIGHT}, word};
       label->matchW();
-      if (color != Color::TODO) label->setColor(color);
+      if (color != Color::WINDOW_FONT) label->setColor(color);
       label->refresh();
       _container.push_back(label);
     }
@@ -82,7 +82,7 @@ void HelpEntry::draw(List *page) const {
         words.addBlankLine();
       else
         words.addNewLine();
-      words.addWordsFromString(paragraph.heading, Color::TODO);
+      words.addWordsFromString(paragraph.heading, Color::WINDOW_FONT);
     } else
       isFirstParagraphInBlock = false;
 

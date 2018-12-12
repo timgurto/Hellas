@@ -22,7 +22,7 @@ class Texture {
   Texture();
   Texture(px_t width,
           px_t height);  // Create a blank texture, which can be rendered to
-  Texture(const std::string &filename, const Color &colorKey = Color::TODO);
+  Texture(const std::string &filename, const Color &colorKey = Color::MAGENTA);
   Texture(const Surface &surface);
   Texture(TTF_Font *font, const std::string &text,
           const Color &color = Color::WINDOW_FONT);

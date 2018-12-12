@@ -197,7 +197,7 @@ TEST_CASE("A player's objects are the appropriate color",
 
   WAIT_UNTIL(c.objects().size() == 1);
   const auto &rock = c.getFirstObject();
-  WAIT_UNTIL(rock.nameColor() == Color::TODO);
+  WAIT_UNTIL(rock.nameColor() == Color::COMBATANT_SELF);
 }
 
 TEST_CASE("Word wrapper", "[ui]") {

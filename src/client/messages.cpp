@@ -70,7 +70,7 @@ void Client::handleMessage(const std::string &msg) {
     _messagesReceived.push_back(MessageCode(msgCode));
     _messagesReceivedMutex.unlock();
 
-    Color errorMessageColor = Color::TODO;
+    Color errorMessageColor = Color::CHAT_ERROR;
 
     switch (msgCode) {
       case SV_WELCOME: {
@@ -234,7 +234,7 @@ void Client::handleMessage(const std::string &msg) {
         auto vowels = std::string{"AaEeIiOoUu"};
         if (vowels.find(first) != vowels.npos) msg += 'n';
         showErrorMessage(msg + ' ' + reqItemTag + " tool to do that.",
-                         Color::TODO);
+                         Color::CHAT_WARNING);
         startAction(0);
         break;
       }
@@ -257,7 +257,7 @@ void Client::handleMessage(const std::string &msg) {
         const char first = ammoName.front();
         auto vowels = std::string{"AaEeIiOoUu"};
         if (vowels.find(first) != vowels.npos) msg += 'n';
-        showErrorMessage(msg + " " + ammoName + ".", Color::TODO);
+        showErrorMessage(msg + " " + ammoName + ".", Color::CHAT_WARNING);
         startAction(0);
         break;
       }
@@ -268,7 +268,7 @@ void Client::handleMessage(const std::string &msg) {
         singleMsg >> del;
         if (del != MSG_END) break;
         showErrorMessage("You may own only one " + category + " object",
-                         Color::TODO);
+                         Color::CHAT_WARNING);
         startAction(0);
         break;
       }
@@ -479,7 +479,7 @@ void Client::handleMessage(const std::string &msg) {
         if (item == _items.end()) break;
 
         addFloatingCombatText("+"s + toString(qty) + " "s + item->second.name(),
-                              _character.location(), Color::TODO);
+                              _character.location(), Color::ITEM_NAME);
 
         auto logMessage = "Received "s;
         if (qty > 1) logMessage += toString(qty) + "x "s;
@@ -2430,7 +2430,7 @@ void Client::performCommand(const std::string &commandString) {
   iss >> c;
   if (c != '/') {
     assert(false);
-    showErrorMessage("Commands must begin with '/'.", Color::TODO);
+    showErrorMessage("Commands must begin with '/'.", Color::CHAT_WARNING);
     return;
   }
 
@@ -2497,7 +2497,7 @@ void Client::performCommand(const std::string &commandString) {
     return;
   }
 
-  showErrorMessage("Unknown command: "s + command, Color::TODO);
+  showErrorMessage("Unknown command: "s + command, Color::CHAT_WARNING);
 }
 
 void Client::sendClearTargetMessage() const {

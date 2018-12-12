@@ -177,7 +177,8 @@ void ClientObject::onRightClick(Client &client) {
   // Make sure object is in range
   if (distance(client.playerCollisionRect(), collisionRect()) >
       Client::ACTION_DISTANCE) {
-    client.showErrorMessage("That object is too far away.", Color::TODO);
+    client.showErrorMessage("That object is too far away.",
+                            Color::CHAT_WARNING);
     return;
   }
 
@@ -432,7 +433,7 @@ void ClientObject::addActionToWindow() {
     if (!action.tooltip.empty() && action.cost) tooltip.addGap();
 
     if (action.cost) {
-      tooltip.setColor(Color::TODO);
+      tooltip.setColor(Color::TOOLTIP_BODY);
       tooltip.addLine("Consumes "s + action.cost->name());
     }
 
@@ -685,7 +686,7 @@ void ClientObject::sendMerchantSlot(size_t serial, size_t slot) {
   auto it = objects.find(serial);
   if (it == objects.end()) {
     Client::instance().showErrorMessage(
-        "Attempting to configure nonexistent object", Color::TODO);
+        "Attempting to configure nonexistent object", Color::CHAT_ERROR);
     return;
   }
   ClientObject &obj = *it->second;
@@ -697,7 +698,7 @@ void ClientObject::sendMerchantSlot(size_t serial, size_t slot) {
 
   if (mSlot.wareItem == nullptr || mSlot.priceItem == nullptr) {
     Client::instance().showErrorMessage(
-        "You must select an item; clearing slot.", Color::TODO);
+        "You must select an item; clearing slot.", Color::CHAT_WARNING);
     Client::_instance->sendMessage(CL_CLEAR_MERCHANT_SLOT,
                                    makeArgs(serial, slot));
     return;
@@ -927,7 +928,7 @@ const Tooltip &ClientObject::tooltip() const {
   // Tags
   if (ot.hasTags()) {
     tooltip.addGap();
-    tooltip.setColor(Color::TODO);
+    tooltip.setColor(Color::TOOLTIP_TAG);
     for (const std::string &tag : ot.tags())
       tooltip.addLine(client.tagName(tag));
   }
@@ -937,12 +938,12 @@ const Tooltip &ClientObject::tooltip() const {
       userHasAccess() && (classTag() == 'v' || isContainer ||
                           ot.canDeconstruct() || startsAQuest || hasAction)) {
     tooltip.addGap();
-    tooltip.setColor(Color::TODO);
+    tooltip.setColor(Color::TOOLTIP_BODY);
     tooltip.addLine(std::string("Right-click to interact"));
   }
 
   else if (classTag() == 'n') {
-    tooltip.setColor(Color::TODO);
+    tooltip.setColor(Color::TOOLTIP_BODY);
     const ClientNPC &npc = dynamic_cast<const ClientNPC &>(*this);
     if (npc.canBeAttackedByPlayer()) {
       tooltip.addGap();
@@ -955,7 +956,7 @@ const Tooltip &ClientObject::tooltip() const {
 
   else if (userHasAccess() && ot.canGather()) {
     tooltip.addGap();
-    tooltip.setColor(Color::TODO);
+    tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
     tooltip.addLine(std::string("Right-click to gather"));
   }
 

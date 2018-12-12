@@ -65,7 +65,7 @@ void Client::draw() const {
   auto top = _entities.lower_bound(&topEntity);
   auto bottom = _entities.upper_bound(&bottomEntity);
   // Construction sites
-  renderer.setDrawColor(Color::TODO);
+  renderer.setDrawColor(Color::FOOTPRINT_ACTIVE);
   for (auto it = top; it != bottom; ++it) {
     auto pObj = dynamic_cast<ClientObject *>(*it);
     if (!pObj) continue;
@@ -131,7 +131,7 @@ void Client::draw() const {
     auto footprintRect = ot->collisionRect() + toMapPoint(_mouse) - _offset;
     if (distance(playerCollisionRect(), footprintRect) <=
         Client::ACTION_DISTANCE) {
-      renderer.setDrawColor(Color::TODO);
+      renderer.setDrawColor(Color::FOOTPRINT_GOOD);
       renderer.fillRect(toScreenRect(footprintRect + _offset));
 
       const ScreenRect &drawRect = ot->drawRect();
@@ -140,7 +140,7 @@ void Client::draw() const {
       _constructionFootprint.draw(x, y);
       _constructionFootprint.setAlpha();
     } else {
-      renderer.setDrawColor(Color::TODO);
+      renderer.setDrawColor(Color::FOOTPRINT_BAD);
       renderer.fillRect(toScreenRect(footprintRect + _offset));
     }
     // TODO: Show message explaining controls
@@ -154,7 +154,7 @@ void Client::draw() const {
       charType.image().draw(_mouse + charType.drawRect());
       charType.image().setAlpha();
     } else {
-      renderer.setDrawColor(Color::TODO);
+      renderer.setDrawColor(Color::FOOTPRINT_BAD);
       renderer.fillRect(toScreenRect(footprintRect + _offset));
     }
   }

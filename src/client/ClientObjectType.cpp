@@ -59,12 +59,12 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
   // Tags
   if (hasTags()) {
     tooltip.addGap();
-    tooltip.setColor(Color::TODO);
+    tooltip.setColor(Color::TOOLTIP_TAG);
     for (const std::string &tag : tags()) tooltip.addLine(client.tagName(tag));
   }
 
   tooltip.addGap();
-  tooltip.setColor(Color::TODO);
+  tooltip.setColor(Color::TOOLTIP_BODY);
   tooltip.addLine("Construction materials:");
   for (const auto &material : _materials) {
     const ClientItem &item = *dynamic_cast<const ClientItem *>(material.first);
@@ -99,7 +99,8 @@ void ClientObjectType::corpseImage(const std::string &filename) {
   // Set corpse highlight image
   Surface corpseHighlightSurface(filename, Color::MAGENTA);
   if (!corpseHighlightSurface) return;
-  corpseHighlightSurface.swapColors(Color::SPRITE_OUTLINE, Color::SPRITE_OUTLINE_HIGHLIGHT);
+  corpseHighlightSurface.swapColors(Color::SPRITE_OUTLINE,
+                                    Color::SPRITE_OUTLINE_HIGHLIGHT);
   _corpseHighlightImage = Texture(corpseHighlightSurface);
 }
 

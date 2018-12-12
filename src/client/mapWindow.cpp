@@ -36,7 +36,7 @@ void Client::updateMapWindow(Element &) {
     client.addMapPin(avatar.location(), avatar.nameColor());
   }
 
-  client.addOutlinedMapPin(client._character.location(), Color::TODO);
+  client.addOutlinedMapPin(client._character.location(), Color::COMBATANT_SELF);
 }
 
 void Client::addMapPin(const MapPoint &worldPosition, const Color &color) {
@@ -46,7 +46,7 @@ void Client::addMapPin(const MapPoint &worldPosition, const Color &color) {
 
   _mapPins->addChild(new ColorBlock(PIN_RECT + mapPosition, color));
   _mapPinOutlines->addChild(
-      new ColorBlock(OUTLINE_RECT + mapPosition, Color::TODO));
+      new ColorBlock(OUTLINE_RECT + mapPosition, Color::UI_OUTLINE));
 }
 
 void Client::addOutlinedMapPin(const MapPoint &worldPosition,
@@ -57,13 +57,15 @@ void Client::addOutlinedMapPin(const MapPoint &worldPosition,
 
   auto mapPosition = convertToMapPosition(worldPosition);
 
-  _mapPins->addChild(new ColorBlock(BORDER_RECT_H + mapPosition, Color::TODO));
-  _mapPins->addChild(new ColorBlock(BORDER_RECT_V + mapPosition, Color::TODO));
+  _mapPins->addChild(
+      new ColorBlock(BORDER_RECT_H + mapPosition, Color::UI_OUTLINE_HIGHLIGHT));
+  _mapPins->addChild(
+      new ColorBlock(BORDER_RECT_V + mapPosition, Color::UI_OUTLINE_HIGHLIGHT));
   _mapPins->addChild(new ColorBlock(PIN_RECT + mapPosition, color));
   _mapPinOutlines->addChild(
-      new ColorBlock(OUTLINE_RECT_H + mapPosition, Color::TODO));
+      new ColorBlock(OUTLINE_RECT_H + mapPosition, Color::UI_OUTLINE));
   _mapPinOutlines->addChild(
-      new ColorBlock(OUTLINE_RECT_V + mapPosition, Color::TODO));
+      new ColorBlock(OUTLINE_RECT_V + mapPosition, Color::UI_OUTLINE));
 }
 
 ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const {

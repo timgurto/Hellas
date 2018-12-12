@@ -46,7 +46,7 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
     auto label = new Label({}, line);
     body->addChild(label);
     if (isHelpText) {
-      label->setColor(Color::TODO);
+      label->setColor(Color::TOOLTIP_INSTRUCTION);
     }
   }
 

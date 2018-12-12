@@ -1270,7 +1270,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
       }
 
       default:
-        _debug << Color::TODO << "Unhandled message: " << msg << Log::endl;
+        _debug << Color::CHAT_ERROR << "Unhandled message: " << msg
+               << Log::endl;
     }
   }
 }
@@ -1897,7 +1898,7 @@ void Server::broadcastToArea(const MapPoint &location, MessageCode msgCode,
 void Server::broadcastToCity(const std::string &cityName, MessageCode msgCode,
                              const std::string &args) const {
   if (!_cities.doesCityExist(cityName)) {
-    _debug << Color::TODO << "City " << cityName << " does not exist."
+    _debug << Color::CHAT_ERROR << "City " << cityName << " does not exist."
            << Log::endl;
     return;
   }
@@ -2065,7 +2066,7 @@ void Server::sendRelevantEntitiesToUser(const User &user) {
   // Send
   for (const Entity *entity : entitiesToDescribe) {
     if (entity->type() == nullptr) {
-      _debug("Null-type object skipped", Color::TODO);
+      _debug("Null-type object skipped", Color::CHAT_ERROR);
       continue;
     }
     entity->sendInfoToClient(user);

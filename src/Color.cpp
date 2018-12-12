@@ -1,11 +1,10 @@
 #include "Color.h"
 #include "util.h"
 
-const Color Color::TODO{0xff, 0x01, 0xff};
-
 const Color Color::BLUE_HELL{0x18, 0x52, 0xa1};
 const Color Color::NO_KEY{0x01, 0x02, 0x03};
 const Color Color::DEBUG_TEXT = {0x00, 0xff, 0xff};
+const Color Color::MISSING_IMAGE = BLUE_HELL;
 
 const Color Color::BLACK(0x00, 0x00, 0x00);
 const Color Color::BLUE(0x00, 0x00, 0xff);
@@ -20,6 +19,7 @@ const Color Color::CHAT_BACKGROUND = BLACK;
 const Color Color::CHAT_DEFAULT = YELLOW * 0.9;
 const Color Color::CHAT_SAY{0xcc, 0xcc, 0xcc};
 const Color Color::CHAT_WHISPER = {0xff, 0x99, 0x99};
+const Color Color::CHAT_WARNING = YELLOW;
 const Color Color::CHAT_ERROR = RED;
 const Color Color::CHAT_SUCCESS = CHAT_DEFAULT;
 
@@ -35,10 +35,19 @@ const Color Color::COMBATANT_DEFENSIVE = YELLOW * 0.9;
 const Color Color::COMBATANT_ENEMY = RED * 0.8 + WHITE * 0.2;
 const Color Color::COMBATANT_NEUTRAL = WHITE * 0.9;
 
+const Color Color::FOOTPRINT_GOOD = GREEN * 0.5 + WHITE * 0.2;
+const Color Color::FOOTPRINT_BAD = RED;
+const Color Color::FOOTPRINT_ACTIVE = WHITE * 0.2;
+
 const Color Color::TOOLTIP_BACKGROUND = {0x18, 0x1d, 0x56};
 const Color Color::TOOLTIP_BORDER{0xa7, 0xa7, 0xa7};
 const Color Color::TOOLTIP_NAME = WHITE;
 const Color Color::TOOLTIP_BODY{0xa7, 0xa7, 0xa7};
+const Color Color::TOOLTIP_TAG = GREEN * .7 + WHITE * .3;
+const Color Color::TOOLTIP_INSTRUCTION = YELLOW * .8 + RED * .2;
+const Color Color::TOOLTIP_FLAVOUR = WHITE * .7;
+
+const Color Color::ITEM_NAME = WHITE;
 
 const Color Color::STAT_HEALTH = GREEN * .8;
 const Color Color::STAT_ENERGY = RED + GREEN * .8;
@@ -54,7 +63,10 @@ const Color Color::FLOATING_HEAL = STAT_HEALTH;
 const Color Color::FLOATING_MISS = BLUE + GREEN * .5;
 const Color Color::FLOATING_CRIT = RED + YELLOW * .5;
 
+const Color Color::DEBUFF = RED * 0.9 + WHITE * 0.1;
+
 const Color Color::UI_OUTLINE = BLACK;
+const Color Color::UI_OUTLINE_HIGHLIGHT = WHITE;
 const Color Color::UI_TEXT = YELLOW * 0.9;
 const Color Color::UI_DISABLED = WHITE * 0.6;
 

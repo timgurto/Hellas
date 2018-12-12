@@ -1021,7 +1021,7 @@ void User::moveToSpawnPoint(bool isNewPlayer) {
   do {
     if (attempts > MAX_ATTEMPTS) {
       server._debug("Failed to find valid spawn location for user",
-                    Color::TODO);
+                    Color::CHAT_ERROR);
       return;
     }
     server._debug << "Attempt #" << ++attempts << " at placing new user"

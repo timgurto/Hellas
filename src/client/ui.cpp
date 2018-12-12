@@ -188,7 +188,7 @@ void Client::refreshBuffsDisplay() {
 
 Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
   auto e = new Element();
-  if (isDebuff) e->addChild(new ColorBlock({1, 1, 18, 18}, Color::TODO));
+  if (isDebuff) e->addChild(new ColorBlock({1, 1, 18, 18}, Color::DEBUFF));
   e->addChild(new Picture({2, 2, 16, 16}, type.icon()));
   e->setTooltip(type.name());
   return e;

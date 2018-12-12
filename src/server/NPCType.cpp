@@ -22,7 +22,7 @@ void NPCType::initialise() const {
   _knownSpell = Server::instance().findSpell(_knownSpellID);
   if (!_knownSpell) {
     Server::debug()("Skipping nonexistent NPC spell " + _knownSpellID,
-                    Color::TODO);
+                    Color::CHAT_ERROR);
   }
 }
 

@@ -30,7 +30,7 @@ bool City::isPlayerAMember(const std::string &username) const {
 void Cities::createCity(const City::Name &cityName) {
   if (doesCityExist(cityName)) {
     Server::debug()("Can't create city: a city with that name already exists",
-                    Color::TODO);
+                    Color::CHAT_ERROR);
     return;
   }
   _container[cityName] = City(cityName);

@@ -118,7 +118,7 @@ void Entity::reduceHealth(int damage) {
       Server::debug()("reduceHealth(): Entity has too much health: "s +
                           toString(_health) + "/"s +
                           toString(this->_stats.maxHealth),
-                      Color::TODO);
+                      Color::CHAT_ERROR);
       _health = this->_stats.maxHealth;
     }
     onHealthChange();
@@ -333,7 +333,7 @@ CombatResult Entity::castSpell(const Spell &spell) {
   for (auto target : targets) {
     outcome = spell.performAction(*this, *target);
     if (outcome == FAIL) {
-      Server::debug()("Spell "s + spell.id() + " failed."s, Color::TODO);
+      Server::debug()("Spell "s + spell.id() + " failed."s, Color::CHAT_ERROR);
       continue;
     }
 
@@ -416,7 +416,7 @@ void Entity::onAttackedBy(Entity &attacker, Threat threat) {
   if (isDead()) {
     if (!this->tagger()) {
       Server::debug()("Entity died without being tagged; no credit given.",
-                      Color::TODO);
+                      Color::CHAT_ERROR);
       return;
     }
     this->tagger()->onKilled(*this);

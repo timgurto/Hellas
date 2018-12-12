@@ -56,7 +56,7 @@ const Color &SpellSchool::color() const {
       return Color::STAT_WATER;
   }
   assert(false);
-  return {Color::TODO};
+  return {Color::CHAT_ERROR};
 }
 
 std::istream &operator>>(std::istream &lhs, SpellSchool &rhs) {

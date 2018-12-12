@@ -44,7 +44,8 @@ void DataLoader::load(bool keepOldData) {
       for (const auto &filename : _files) {
         auto xr = XmlReader::FromFile(filename);
         if (!xr) {
-          _server._debug("Failed to load XML file "s + filename, Color::TODO);
+          _server._debug("Failed to load XML file "s + filename,
+                         Color::CHAT_ERROR);
         }
       }
     }
@@ -265,7 +266,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     if (transform) {
       if (!xr.findAttr(transform, "id", s)) {
         _server._debug("Transformation specified without target id; skipping.",
-                       Color::TODO);
+                       Color::CHAT_ERROR);
         continue;
       }
       const ObjectType *transformObjPtr = _server.findObjectTypeByName(s);
@@ -301,7 +302,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
         ot->setHealthBasedOnItems(&*itemIt, n);
       } else
         _server._debug("Strength specified without item type; skipping.",
-                       Color::TODO);
+                       Color::CHAT_ERROR);
     }
 
     // Action
@@ -311,12 +312,13 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
 
       std::string target;
       if (!xr.findAttr(action, "target", target)) {
-        _server._debug("Skipping action with missing target", Color::TODO);
+        _server._debug("Skipping action with missing target",
+                       Color::CHAT_ERROR);
         continue;
       }
       auto it = Action::functionMap.find(target);
       if (it == Action::functionMap.end()) {
-        _server._debug << Color::TODO << "Action target " << target
+        _server._debug << Color::CHAT_ERROR << "Action target " << target
                        << "() doesn't exist; skipping" << Log::endl;
         continue;
       }
@@ -338,13 +340,14 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     if (onDestroy != nullptr) {
       std::string target;
       if (!xr.findAttr(onDestroy, "target", target)) {
-        _server._debug("Skipping onDestroy with missing target", Color::TODO);
+        _server._debug("Skipping onDestroy with missing target",
+                       Color::CHAT_ERROR);
         continue;
       }
       auto it = CallbackAction::functionMap.find(target);
       if (it == CallbackAction::functionMap.end()) {
-        _server._debug << Color::TODO << "CallbackAction target " << target
-                       << "() doesn't exist; skipping" << Log::endl;
+        _server._debug << Color::CHAT_ERROR << "CallbackAction target "
+                       << target << "() doesn't exist; skipping" << Log::endl;
         continue;
       }
 
@@ -543,7 +546,7 @@ void DataLoader::loadItems(XmlReader &xr) {
       if (stackSize > 1) {
         _server._debug(
             "Skipping return-on-construct item for stackable material",
-            Color::TODO);
+            Color::CHAT_ERROR);
         continue;
       }
 
@@ -565,14 +568,14 @@ void DataLoader::loadItems(XmlReader &xr) {
       auto damage = Hitpoints{0};
       if (!xr.findAttr(weaponElem, "damage", damage)) {
         _server._debug("Item "s + id + " is missing weapon damage"s,
-                       Color::TODO);
+                       Color::CHAT_ERROR);
         continue;
       }
 
       auto speedInS = 0.0;
       if (!xr.findAttr(weaponElem, "speed", speedInS)) {
         _server._debug("Item "s + id + " is missing weapon speed"s,
-                       Color::TODO);
+                       Color::CHAT_ERROR);
         continue;
       }
 
@@ -622,8 +625,9 @@ void DataLoader::loadRecipes(XmlReader &xr) {
     xr.findAttr(elem, "product", product);
     auto it = _server._items.find(product);
     if (it == _server._items.end()) {
-      _server._debug << Color::TODO << "Skipping recipe with invalid product "
-                     << product << Log::endl;
+      _server._debug << Color::CHAT_ERROR
+                     << "Skipping recipe with invalid product " << product
+                     << Log::endl;
       continue;
     }
     recipe.product(&*it);
@@ -640,8 +644,9 @@ void DataLoader::loadRecipes(XmlReader &xr) {
       if (xr.findAttr(child, "id", matID)) {
         auto it = _server._items.find(ServerItem(matID));
         if (it == _server._items.end()) {
-          _server._debug << Color::TODO << "Skipping invalid recipe material "
-                         << matID << Log::endl;
+          _server._debug << Color::CHAT_ERROR
+                         << "Skipping invalid recipe material " << matID
+                         << Log::endl;
           continue;
         }
         recipe.addMaterial(&*it, quantity);
@@ -885,20 +890,21 @@ void DataLoader::loadSpawners(XmlReader &xr) {
   for (auto elem : xr.getChildren("spawnPoint")) {
     std::string id;
     if (!xr.findAttr(elem, "type", id)) {
-      _server._debug("Skipping importing spawner with no type.", Color::TODO);
+      _server._debug("Skipping importing spawner with no type.",
+                     Color::CHAT_ERROR);
       continue;
     }
 
     MapPoint p;
     if (!xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
       _server._debug("Skipping importing spawner with invalid/no location",
-                     Color::TODO);
+                     Color::CHAT_ERROR);
       continue;
     }
 
     const ObjectType *type = _server.findObjectTypeByName(id);
     if (type == nullptr) {
-      _server._debug << Color::TODO
+      _server._debug << Color::CHAT_ERROR
                      << "Skipping importing spawner for unknown objects \""
                      << id << "\"." << Log::endl;
       continue;
@@ -927,7 +933,7 @@ void DataLoader::loadMap(XmlReader &xr) {
   if (!xr.findAttr(elem, "x", User::newPlayerSpawn.x) ||
       !xr.findAttr(elem, "y", User::newPlayerSpawn.y)) {
     _server._debug("New-player spawn point missing or incomplete.",
-                   Color::TODO);
+                   Color::CHAT_ERROR);
   }
   if (!xr.findAttr(elem, "range", User::spawnRadius)) User::spawnRadius = 0;
 
@@ -935,13 +941,13 @@ void DataLoader::loadMap(XmlReader &xr) {
   if (!xr.findAttr(elem, "x", User::postTutorialSpawn.x) ||
       !xr.findAttr(elem, "y", User::postTutorialSpawn.y)) {
     _server._debug("Post-tutorial spawn point missing or incomplete.",
-                   Color::TODO);
+                   Color::CHAT_ERROR);
   }
 
   elem = xr.findChild("size");
   if (elem == nullptr || !xr.findAttr(elem, "x", _server._mapX) ||
       !xr.findAttr(elem, "y", _server._mapY)) {
-    _server._debug("Map size missing or incomplete.", Color::TODO);
+    _server._debug("Map size missing or incomplete.", Color::CHAT_ERROR);
   }
 
   if (_server._map.size() != _server._mapX) {
