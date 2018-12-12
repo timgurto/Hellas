@@ -99,6 +99,18 @@
     <sound type="drop" file="lightning1" />
 </soundProfile>
 
+<soundProfile id="sprint" >
+    <sound type="launch" file="sprint" />
+</soundProfile>
+
+<soundProfile id="teleport" >
+    <sound type="launch" file="teleport" />
+</soundProfile>
+
+<soundProfile id="waterWalking" >
+    <sound type="launch" file="waterWalking" />
+</soundProfile>
+
 <soundProfile id="water" >
     <sound type="impact" file="splash0" />
     <sound type="impact" file="splash1" />
