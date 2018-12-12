@@ -2344,6 +2344,7 @@ void Client::initializeMessageNames() {
   _messageCommands["give"] = DG_GIVE;
   _messageCommands["unlock"] = DG_UNLOCK;
   _messageCommands["level"] = DG_LEVEL;
+  _messageCommands["spells"] = DG_SPELLS;
 
   _errorMessages[WARNING_TOO_FAR] =
       "You are too far away to perform that action.";

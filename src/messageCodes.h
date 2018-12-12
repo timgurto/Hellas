@@ -644,6 +644,9 @@ enum MessageCode {
   // Arguments: x, y
   DG_TELEPORT,
 
+  // "Teach me all spells"
+  DG_SPELLS,
+
 
 
   // Messages used in tests

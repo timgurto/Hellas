@@ -164,6 +164,7 @@ void Client::populateHotbar() {
     _hotbar->addChild(button);
     _hotbarButtons[i] = button;
     ++i;
+    if (i == _hotbarButtons.size()) break;
   }
 }
 

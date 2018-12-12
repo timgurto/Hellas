@@ -1257,6 +1257,18 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         sendRelevantEntitiesToUser(*user);
       }
 
+      case DG_SPELLS: {
+        if (!isDebug()) break;
+        if (del != MSG_END) return;
+        for (auto &pair : _spells) {
+          const auto &spell = *pair.second;
+          user->getClass().teachSpell(spell.id());
+        }
+        auto knownSpellsString = user->getClass().generateKnownSpellsString();
+        user->sendMessage(SV_KNOWN_SPELLS, knownSpellsString);
+        break;
+      }
+
       default:
         _debug << Color::TODO << "Unhandled message: " << msg << Log::endl;
     }
