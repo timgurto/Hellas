@@ -9,9 +9,9 @@ class Surface {
 
  public:
   Surface() {}
-  Surface(const std::string &filename, const Color &colorKey = Color::MAGENTA);
+  Surface(const std::string &filename, const Color &colorKey = Color::NO_KEY);
   Surface(TTF_Font *font, const std::string &text,
-          const Color &color = Color::MAGENTA);
+          const Color &color = Color::NO_KEY);
 
   bool operator!() const;
   operator bool() const;
