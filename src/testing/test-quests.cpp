@@ -889,9 +889,13 @@ TEST_CASE("Object window is updated with quest changes",
 TEST_CASE("Quest progress is persistent", "[quests]") {
   auto data = R"(
     <objectType id="A" />
+    <objectType id="B" />
     <quest id="startMe" startsAt="A" endsAt="A" />
     <quest id="leaveUnfinished" startsAt="A" endsAt="A">
       <objective type="kill" id="A" qty="10" />
+    </quest>
+    <quest id="makeNoProgress" startsAt="A" endsAt="A">
+      <objective type="kill" id="B" />
     </quest>
     <quest id="killIt" startsAt="A" endsAt="A">
       <objective type="kill" id="A" />
@@ -916,6 +920,9 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
 
     // And started another, but not met its objective
     alice.startQuest(*s->findQuest("leaveUnfinished"));
+
+    // And started another, but not made any progress
+    alice.startQuest(*s->findQuest("makeNoProgress"));
 
     // And killed the target of another quest
     alice.startQuest(*s->findQuest("killIt"));
@@ -942,21 +949,24 @@ TEST_CASE("Quest progress is persistent", "[quests]") {
 
     // And she knows she's on the second
     const auto &leaveUnfinished = c->quests().find("leaveUnfinished")->second;
-    REPEAT_FOR_MS(100);
     WAIT_UNTIL(leaveUnfinished.state == CQuest::IN_PROGRESS);
 
-    // And has achieved the objective of the third quest
+    // And she knows she's on the third
+    const auto &makeNoProgress = c->quests().find("makeNoProgress")->second;
+    WAIT_UNTIL(makeNoProgress.state == CQuest::IN_PROGRESS);
+
+    // And has achieved the objective of the fourth quest
     auto killIt = s->findQuest("killIt");
     CHECK(killIt->canBeCompletedByUser(alice));
 
-    // And has achieved the objective of the fourth quest
+    // And has achieved the objective of the fifth quest
     auto buidlIt = s->findQuest("buildIt");
     CHECK(buidlIt->canBeCompletedByUser(alice));
 
-    // And completed the fifth quest
+    // And completed the sixth quest
     CHECK(alice.hasCompletedQuest("finishMe"));
 
-    // And can see the quest requiring the fifth to have been completed
+    // And can see the quest requiring the sixth to have been completed
     s.addObject("A", {10, 15});
     WAIT_UNTIL(c.objects().size() == 1);
     const auto &cObj = c.getFirstObject();

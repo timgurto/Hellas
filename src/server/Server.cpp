@@ -369,13 +369,18 @@ void Server::addUser(const Socket &socket, const std::string &name,
     if (quest->objectives.empty())
       newUser.sendMessage(SV_QUEST_CAN_BE_FINISHED, questID);
     else {
+      bool progressHasBeenMade = false;
       for (auto i = 0; i != quest->objectives.size(); ++i) {
         auto &objective = quest->objectives[i];
         auto progress =
             newUser.questProgress(questID, objective.type, objective.id);
         if (progress == 0) continue;
         newUser.sendMessage(SV_QUEST_PROGRESS, makeArgs(questID, i, progress));
+        progressHasBeenMade = true;
       }
+
+      if (!progressHasBeenMade)
+        newUser.sendMessage(SV_QUEST_IN_PROGRESS, questID);
     }
   }
 
@@ -428,9 +433,10 @@ void Server::removeUser(const std::set<User>::iterator &it) {
 
 void Server::removeUser(const Socket &socket) {
   const std::set<User>::iterator it = _users.find(socket);
-  if (it != _users.end())
+  if (it != _users.end()) {
+    _debug << "Removing user " << it->name() << Log::endl;
     removeUser(it);
-  else
+  } else
     _debug("User was already removed", Color::TODO);
 }
 
