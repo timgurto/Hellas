@@ -207,8 +207,8 @@ void Server::run() {
     for (std::set<User>::iterator it = _users.begin(); it != _users.end();) {
 #ifndef _DEBUG
       if (!it->alive()) {
-        _debug << Color::TODO << "User " << it->name() << " has timed out."
-               << Log::endl;
+        _debug << Color::CHAT_ERROR << "User " << it->name()
+               << " has timed out." << Log::endl;
         std::set<User>::iterator next = it;
         ++next;
 
