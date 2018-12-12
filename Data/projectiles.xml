@@ -1,8 +1,5 @@
 <root>
 
-<projectile id="airball" speed=350 particlesAtEnd="air" >
-    <drawRect x=-7 y=-28 w=16 h=36 />
-</projectile>
 <projectile id="earthball" speed=350 particlesAtEnd="dirtExplosion" >
     <drawRect x=-7 y=-28 w=16 h=36 />
 </projectile>

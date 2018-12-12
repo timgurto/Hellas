@@ -46,7 +46,7 @@
 </npcType>
 <npcType
     id="airNymph" name="Air Nymph"
-	level="13" maxHealth="43" attack="3" attackTime="1195" speed="91" isRanged="1" school="air" projectile="airball"
+	level="13" maxHealth="43" attack="3" attackTime="1195" speed="91" isRanged="1" school="air" projectile="lightning"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
