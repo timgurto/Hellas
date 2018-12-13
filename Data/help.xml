@@ -69,15 +69,15 @@
     <p text="There are a number of talents available with which you can customise and specialise your character.  Some give you passive stat boosts, and some teach you new spells or abilities.  The set of talents is based on your class, and one talent point is awarded each time you gain a level."/>
     <p text="Talents are managed in the Class window, which can be opened by pressing 'K'."/>
     <p heading="Branches and levels"
-        text="The available talents are based on your class, and they are further split into three branches representing roles in society."/>
+        text="The available talents are based on your class, and they are further split into three branches representing your roles in society."/>
     <p text="Within a branch, talents are further divided into vertical levels.  Talents at the top have no special requirements, and cost a small amount of food to learn." />
-    <p text="As you move down, talents may need tools to learn, they may require a number of talents points to already be allocated in the branch.  This allows you to choose how deeply you want to specialise in each branch."/>
+    <p text="As you move down, talents may need tools to learn, and they require a number of talents points to already be allocated in that branch.  This allows you to choose how deeply you want to specialise."/>
     <p text="More advanced talents cost more food, and may also require additional items as part of the cost." />
     <p heading="Changing your mind"
         text="If you want to allocate your talents differently, at any time you may unlearn all of your talents by clicking on the 'Unlearn all' button in the Class window." />
     <p text="Note that you will need to pay the food and item costs of each talent point once again.  Thus, at higher levels the cost of revising your talents can be quite high." />
     <p heading="Death"
-        text="When you die, you lose one random talent point.  It can be reallocated, but you must once again bear its food and item costs." />
+        text="When you die, you lose one random talent point.  You can allocate the point again, but you must once again bear its food and item costs." />
 </entry>
 
 </root>
