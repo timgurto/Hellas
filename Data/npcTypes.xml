@@ -5,6 +5,7 @@
 	level="2" maxHealth="44" attack="6" attackTime="2030"
     xDrawOffset="-17" yDrawOffset="-28" >
     <collisionRect x="-15" y="-4" w="31" h="7" />
+    <loot id="meat" chance="0.3" />
     <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
     <loot id="fat" chance="0.05" />
     <loot id="horn" chance="0.05" />
@@ -25,6 +26,7 @@
     sounds = "pig" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
     <loot id="hide" chance="0.3" />
+    <loot id="meat" chance="0.3" />
     <loot id="fat" chance="0.05" />
     <loot id="entrails" chance="0.1" />
     <loot id="knucklebones" chance="0.02" />
