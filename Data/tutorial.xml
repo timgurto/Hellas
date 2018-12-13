@@ -121,7 +121,7 @@
         <material id="tutFat2" />
     </objectType>
 
-<quest id="tutReturnFromZeus" name="No more fire" startsAt="tutBrazier" endsAt="prometheus"
+<quest id="tutReturnFromZeus" name="Into Darkness" startsAt="tutBrazier" endsAt="prometheus"
     brief="What the . . . disgusting!  Where is the meat?  What are we supposed to do with these revolting entrails?
     The insolence to believe that you, a mere mortal, could outsmart a god!  Did you think you'd get away with this?
     What's done is done, and these are the sacrifices we must now accept.  But I can punish you in a different way.  I am banishing fire from your world; you and your kind can languish in primitive savagery for all time.
