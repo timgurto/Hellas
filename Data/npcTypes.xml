@@ -2,7 +2,8 @@
 
 <npcType
     id="goat" name="Goat"
-	level="5" maxHealth="25" attack="6" attackTime="2800"
+    level="5" maxHealth="25" attack="6" attackTime="2800"
+    sounds="goat" isNeutral="1"
     xDrawOffset="-17" yDrawOffset="-28" >
     <collisionRect x="-15" y="-4" w="31" h="7" />
     <loot id="meat" chance="0.3" />
