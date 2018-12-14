@@ -191,7 +191,7 @@ void Server::run() {
   if (!_dataLoaded) DataLoader::FromPath(*this).load();
   initialiseData();
   loadWorldState();
-  spawnInitialObjects();
+  if (!cmdLineArgs.contains("nospawn")) spawnInitialObjects();
 
   auto threadsOpen = 0;
 
