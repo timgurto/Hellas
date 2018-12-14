@@ -82,7 +82,7 @@ void HelpEntry::draw(List *page) const {
         words.addBlankLine();
       else
         words.addNewLine();
-      words.addWordsFromString(paragraph.heading, Color::WINDOW_FONT);
+      words.addWordsFromString(paragraph.heading, Color::WINDOW_HEADING);
     } else
       isFirstParagraphInBlock = false;
 
