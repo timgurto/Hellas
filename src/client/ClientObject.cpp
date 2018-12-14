@@ -938,18 +938,19 @@ const Tooltip &ClientObject::tooltip() const {
       userHasAccess() && (classTag() == 'v' || isContainer ||
                           ot.canDeconstruct() || startsAQuest || hasAction)) {
     tooltip.addGap();
-    tooltip.setColor(Color::TOOLTIP_BODY);
+    tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
     tooltip.addLine(std::string("Right-click to interact"));
   }
 
   else if (classTag() == 'n') {
-    tooltip.setColor(Color::TOOLTIP_BODY);
     const ClientNPC &npc = dynamic_cast<const ClientNPC &>(*this);
     if (npc.canBeAttackedByPlayer()) {
       tooltip.addGap();
+      tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
       tooltip.addLine("Right-click to attack");
     } else if (npc.lootable()) {
       tooltip.addGap();
+      tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
       tooltip.addLine("Right-click to loot");
     }
   }
