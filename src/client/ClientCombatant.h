@@ -50,8 +50,8 @@ class ClientCombatant {
 
   size_t numBuffs() const { return _buffs.size() + _debuffs.size(); }
   using Buffs = std::set<const ClientBuffType *>;
-  const Buffs buffs() const { return _buffs; }
-  const Buffs debuffs() const { return _debuffs; }
+  const Buffs &buffs() const { return _buffs; }
+  const Buffs &debuffs() const { return _debuffs; }
 
   virtual void playAttackSound() const = 0;
   void playSoundWhenHit() const;

@@ -57,6 +57,8 @@ class Client {
     assert(_instance != nullptr);
     return *_instance;
   }
+  static bool clientExists() { return _instance != nullptr; }
+  operator bool() { return clientExists(); }
 
   void run();
   void gameLoop();

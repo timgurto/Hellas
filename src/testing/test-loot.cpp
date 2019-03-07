@@ -108,7 +108,7 @@ TEST_CASE("Chance for strength-items as loot from object", "[loot][strength]") {
   }
 }
 
-TEST_CASE("Looting from a container", "[loot][container][only]") {
+TEST_CASE("Looting from a container", "[loot][container][only][.flaky]") {
   // Given a running server and client;
   // And a chest object type with 10 container slots;
   // And a gold item that stacks to 100;
