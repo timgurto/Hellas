@@ -75,6 +75,7 @@ class Color {
   static const Color UI_OUTLINE_HIGHLIGHT;
   static const Color UI_TEXT;
   static const Color UI_DISABLED;
+  static const Color UI_PROGRESS_BAR;
 
   static const Color SPRITE_OUTLINE;
   static const Color SPRITE_OUTLINE_HIGHLIGHT;

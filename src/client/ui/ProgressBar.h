@@ -31,7 +31,7 @@ class ProgressBar : public Element {
  public:
   ProgressBar(const ScreenRect &rect, const T &numerator, const T &denominator,
               const Color &barColor = Color::WINDOW_FONT,
-              const Color &backgroundColor = Color::UI_OUTLINE);
+              const Color &backgroundColor = Color::UI_PROGRESS_BAR);
   void changeColor(const Color &newColor) { _bar->changeColor(newColor); }
 
   void showValuesInTooltip() { _showValuesInTooltip = true; }
