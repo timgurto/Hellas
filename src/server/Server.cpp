@@ -32,8 +32,6 @@ extern Args cmdLineArgs;
 Server *Server::_instance = nullptr;
 LogConsole *Server::_debugInstance = nullptr;
 
-const int Server::MAX_CLIENTS = 20;
-
 const ms_t Server::CLIENT_TIMEOUT = 10000;
 const ms_t Server::MAX_TIME_BETWEEN_LOCATION_UPDATES = 300;
 

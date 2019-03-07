@@ -153,7 +153,7 @@ class Server {
   static Server *_instance;
   static LogConsole *_debugInstance;
 
-  static const int MAX_CLIENTS;
+  static const int MAX_CLIENTS = 100;
   static const size_t BUFFER_SIZE = 1023;
 
   ms_t _time, _lastTime;
