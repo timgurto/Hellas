@@ -241,7 +241,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 277,HoT buff,2,5,Feature,267,TRUE,,
 278,Spells are class-specific,2,5,Feature,265,TRUE,,
 279,A spell hotbar,13,8,Usability,265,TRUE,,
-280,Hotbar can be rearranged,13,21,Usability,279,,,
+280,Hotbar can be rearranged,13,34,Usability,279,,,
 281,Hotbar can include recipes,8,13,Usability,280,,,
 282,Hotbar can include constructions,3,13,Usability,280,,,
 283,"Spells must be learned, with commands",3,3,Feature,265,TRUE,,
@@ -385,7 +385,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 439,Account for vehicles in 'inaccessible' tooltips,2,3,Bug,438,,,
 440,A quest log,34,55,Usability,,TRUE,,1
 441,Show quest progress on screen,21,34,Usability,420,TRUE,,
-442,Fade in from black on first login,21,21,Aesthetics,,,,1
+442,Fade in from black on first login,21,21,Aesthetics,,,,2
 443,Editor: draw map,34,21,Tooling,,TRUE,,
 444,Editor: panning,21,1,Tooling,443,TRUE,,
 445,Editor: zooming,21,21,Tooling,443,TRUE,,
@@ -448,3 +448,13 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 503,Base aggro radius on level difference,8,5,Feature,,,,
 504,Anti-aliasing for map image,8,5,Aesthetics,,,,
 505,Show quest rewards in (de)briefs,8,8,Usability,,,,
+506,Add missing corpse images for offerings,2,3,Content,,,,1
+507,Clear quest progress if quest is abandoned,2,2,Bug,,,,
+508,Destroy all owned objects on tutorial completion,3,3,Exploit,,,,1
+509,Rename Cooking quest,5,2,Content,,,,1
+510,Make giant positioning more reliable,34,13,Bug,,,,1
+511,Use complete outlines for all text,8,3,Aesthetics,,,,
+512,'That object doesn't exist' after looting,8,5,Bug,,,,
+513,Sparkles ignore tags,5,3,Bug,,,,
+514,Quest tracker reseting on client restart,13,8,Bug,,,,1
+515,"Low-res sprites, high-res game",34,13,Aesthetics,,,,
